@@ -2,8 +2,8 @@
 
 - Base 저장소: `alsdmlals4-eng/Base`
 - 기준 브랜치: `main`
-- 기준 커밋: `9ea52ec2b0a7e8db4f23cf310dc266dff11245d1`
-- Base 문서 버전: `v1.9.2`
+- 기준 커밋: `b05dcc079485b1ea43d735130d6f7cca209739a9`
+- Base 문서 버전: `v1.9.3`
 - 프로젝트 동기화 날짜: `2026-07-16`
 - 적용 프로젝트: `alsdmlals4-eng/Ten-Paces-Hidden-Moves`
 
@@ -18,6 +18,9 @@
 - 한 번 채택한 설계를 실제 검증 전에는 검증된 공용 스킬로 표시하지 않는 지식 상태 규칙.
 - Base 채택→프로젝트 구체화→검증→Base 환류의 양방향 학습 사례.
 - 내부 난도·성장 데이터와 세계관 표현을 의미 키로 분리하는 사례.
+- 규칙·UI·연출·QA를 같은 의미 단계와 원인 키로 추적하는 사례.
+- 대표 하이라이트의 보유·미보유 양쪽 정상 완주 경로를 검증하는 Vertical Slice 사례.
+- 최초·반복·상세·결과 확인으로 정보 문구 역할을 나누는 대화·세계관 카피 사례.
 
 ## 프로젝트 구체화
 
@@ -32,6 +35,23 @@ Base에 반영한 사례:
 
 - `docs/knowledge/cases/BASE_PROJECT_BIDIRECTIONAL_LEARNING_CASE.md`
 - `docs/knowledge/cases/DIEGETIC_OPPONENT_INFORMATION_CASE.md`
+- `docs/knowledge/cases/TEN_PACES_RULE_PRESENTATION_TRACEABILITY_CASE.md`
+- `docs/knowledge/cases/TEN_PACES_OPTIONAL_HIGHLIGHT_VERTICAL_SLICE_CASE.md`
+
+Base에 반영한 method·skill:
+
+- `docs/CONTENT_DESIGN_METHOD.md`
+- `docs/knowledge/methods/PLANNING_SYSTEM_METHOD.md`
+- `docs/knowledge/methods/NARRATIVE_AND_RELATIONSHIP_METHOD.md`
+- `docs/knowledge/methods/DIALOGUE_AND_EVENT_PRESENTATION_METHOD.md`
+- `skills/writing-game-design-documents/SKILL.md`
+- `skills/designing-vertical-slices/SKILL.md`
+
+## 검증 상태
+
+- 문서 구조와 사례 연결은 Base PR #4에서 검토·병합했다.
+- Godot 구현, 실제 플레이어 문구 학습, 하이라이트 보유·미보유 완주율은 아직 확인하지 않았다.
+- 위 항목은 구현·플레이테스트 결과가 생기기 전까지 `채택·구현 전 검증 필요` 상태를 유지한다.
 
 ## 갱신 조건
 
