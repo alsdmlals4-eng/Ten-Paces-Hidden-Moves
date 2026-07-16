@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="810" viewBox="0 0 1440 810">
+<rect width="1440" height="810" fill="#171a20"/><rect x="20" y="18" width="1400" height="90" rx="10" fill="#242a32"/>
+<rect x="45" y="38" width="390" height="50" rx="8" fill="#263b49"/><text x="65" y="69" fill="white" font-size="24">플레이어 상태 · 체력 / 자원 / 절초 기세</text>
+<rect x="1005" y="38" width="390" height="50" rx="8" fill="#4a2d31"/><text x="1025" y="69" fill="white" font-size="24">상대 상태 · 체력 / 자원 / 절초 기세</text>
+<rect x="20" y="125" width="1400" height="390" rx="14" fill="#3b3429"/><path d="M80 430 Q360 210 700 330 T1360 310" fill="none" stroke="#817056" stroke-width="12"/>
+<circle cx="500" cy="350" r="48" fill="#3a7b91"/><rect x="470" y="395" width="60" height="85" rx="20" fill="#243844"/><text x="470" y="335" fill="white" font-size="22">검객</text>
+<circle cx="930" cy="350" r="48" fill="#9a4e50"/><rect x="900" y="395" width="60" height="85" rx="20" fill="#492c30"/><text x="900" y="335" fill="white" font-size="22">상대</text>
+<rect x="540" y="135" width="360" height="64" rx="12" fill="#1e232a" opacity=".9"/><text x="575" y="176" fill="#e7d39f" font-size="26">AI 선잠금 → 동시 공개 → 1수 / 2수</text>
+<rect x="70" y="535" width="1300" height="72" rx="10" fill="#222831"/><rect x="410" y="548" width="280" height="46" rx="8" fill="#314151"/><text x="490" y="579" fill="white" font-size="22">1수 슬롯</text>
+<rect x="750" y="548" width="280" height="46" rx="8" fill="#51363b"/><text x="830" y="579" fill="white" font-size="22">2수 슬롯</text>
+<g font-size="20" fill="white"><rect x="80" y="630" width="285" height="135" rx="10" fill="#2b3944"/><text x="105" y="668">접근 / 후퇴</text><text x="105" y="705">거리 조정 카드</text>
+<rect x="395" y="630" width="285" height="135" rx="10" fill="#3e3331"/><text x="420" y="668">검격 / 합</text><text x="420" y="705">공격 카드</text>
+<rect x="710" y="630" width="285" height="135" rx="10" fill="#2f3e38"/><text x="735" y="668">막기 / 회피</text><text x="735" y="705">방어 카드</text>
+<rect x="1025" y="630" width="285" height="135" rx="10" fill="#4a3d26"/><text x="1050" y="668">절초</text><text x="1050" y="705">기세 6 / 발동 가능</text></g>
+<text x="30" y="800" fill="#aeb6c0" font-size="16">사용자 제공 이미지의 정보 위계와 장면/카드 결합을 문서용으로 재구성한 참고 SVG</text></svg>
