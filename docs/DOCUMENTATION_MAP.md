@@ -5,8 +5,8 @@
 1. [게임 기획서](01_GAME_DESIGN.md) — 게임의 약속, 9전 대회 구조, 범위
 2. [전투 규칙](02_COMBAT_RULES.md) — 동시 선택과 10칸 전장의 기본 규칙
 3. [전투 시스템 아키텍처](09_COMBAT_SYSTEM_ARCHITECTURE.md) — 공용 행동·무기·장비·유파·대성의 분리
-4. [11세력 대회 세로 슬라이스 명세](05_COMBAT_POC_SPEC.md) — 이번 구현 범위와 완료 기준
-5. [문파·대성 데이터](06_STARTING_FACTION_MASTERY_DATA.md) — 시작 6세력과 추가 5세력의 규칙
+4. [12세력 대회 세로 슬라이스 명세](05_COMBAT_POC_SPEC.md) — 이번 구현 범위와 완료 기준
+5. [문파·대성 데이터](06_STARTING_FACTION_MASTERY_DATA.md) — 시작 6세력과 추가 6세력(사파 포함)의 규칙
 6. [구현 콘텐츠 카탈로그](03_CONTENT_CATALOG.md) — 구현 목록과 보류 경계
 7. [전투 UI 명세](07_COMBAT_UI_SPEC.md) — 화면에 표시할 전투·대진 정보
 8. [테스트 체크리스트](08_TEST_CHECKLIST.md) — 11세력·9전 회차의 검증 항목
