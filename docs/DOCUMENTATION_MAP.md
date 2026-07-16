@@ -4,32 +4,35 @@
 
 ## 읽기 순서
 
-1. [활성 컨텍스트](ACTIVE_CONTEXT.md) — 현재 방향, 최신 확정 사항, 미확정 범위와 다음 작업
-2. [게임 기획서](01_GAME_DESIGN.md) — 5전 데모, 10전 전체 구조, 플레이어 경험과 성장
-3. [전투 규칙](02_COMBAT_RULES.md) — 10타이밍, 2수 잠금, 합, 거리와 자원
-4. [전투 시스템 아키텍처](09_COMBAT_SYSTEM_ARCHITECTURE.md) — 공용 수정자, 상대 생성, 저장과 Godot 구현 경계
-5. [12세력 대회 세로 슬라이스 명세](05_COMBAT_POC_SPEC.md) — 구현 범위, 성과·행운·상대 성장과 완료 기준
-6. [전투·대회 연출 기획서](10_COMBAT_PRESENTATION_PLAN.md) — 상대 정보, 제약, 2수 공개·해상, 합, 성장, 데모 결말과 연출 로드맵
-7. [12세력 핵심무공·심법 데이터](06_STARTING_FACTION_MASTERY_DATA.md) — 1~10성, 절초·진의, 문파 기믹
-8. [구현 콘텐츠 카탈로그](03_CONTENT_CATALOG.md) — 문파 전용·공용 무공 목록과 보류 경계
-9. [전투 UI·아트 명세](07_COMBAT_UI_SPEC.md) — 2수 선택 UI, 카드, 행운 결과와 무림식 상대 정보
-10. [테스트 체크리스트](08_TEST_CHECKLIST.md) — 합·AI 잠금·수련·행운·상대 생성·연출·5전 데모·10전 검증
-11. [로드맵](04_ROADMAP.md) — 데모 우선 단계, 남은 설계·구현·검증과 전체판 확장 승인 기준
-12. [12세력 대회 세로 슬라이스 구현 Plan](../plans/2026-07-16-combat-poc-plan.md) — Codex 검수와 데모 우선 구현 순서
-13. [Base 적용·학습 순환 기록](11_BASE_ADOPTION_AND_LEARNING_LOG.md) — Base에서 채택한 구조, 프로젝트 구체화, Base 승격 사례와 후속 검증
+1. [Base 규칙 적용 버전](BASE_RULES_VERSION.md) — 적용 중인 Base 버전·커밋과 프로젝트 구체화 경계
+2. [활성 컨텍스트](ACTIVE_CONTEXT.md) — 현재 방향, 최신 확정 사항, 미확정 범위와 다음 작업
+3. [게임 기획서](01_GAME_DESIGN.md) — 5전 데모, 10전 전체 구조, 플레이어 경험과 성장
+4. [전투 규칙](02_COMBAT_RULES.md) — 10타이밍, 2수 잠금, 합, 거리와 자원
+5. [전투 시스템 아키텍처](09_COMBAT_SYSTEM_ARCHITECTURE.md) — 공용 수정자, 상대 생성, 저장과 Godot 구현 경계
+6. [12세력 대회 세로 슬라이스 명세](05_COMBAT_POC_SPEC.md) — 구현 범위, 성과·행운·상대 성장과 완료 기준
+7. [전투·대회 연출 기획서](10_COMBAT_PRESENTATION_PLAN.md) — 상대 정보, 제약, 2수 공개·해상, 합, 성장, 데모 결말과 연출 로드맵
+8. [12세력 핵심무공·심법 데이터](06_STARTING_FACTION_MASTERY_DATA.md) — 1~10성, 절초·진의, 문파 기믹
+9. [구현 콘텐츠 카탈로그](03_CONTENT_CATALOG.md) — 문파 전용·공용 무공 목록과 보류 경계
+10. [전투 UI·아트 명세](07_COMBAT_UI_SPEC.md) — 2수 선택 UI, 카드, 행운 결과와 무림식 상대 정보
+11. [테스트 체크리스트](08_TEST_CHECKLIST.md) — 합·AI 잠금·수련·행운·상대 생성·연출·5전 데모·10전 검증
+12. [로드맵](04_ROADMAP.md) — 데모 우선 단계, 남은 설계·구현·검증과 전체판 확장 승인 기준
+13. [12세력 대회 세로 슬라이스 구현 Plan](../plans/2026-07-16-combat-poc-plan.md) — Codex 검수와 데모 우선 구현 순서
+14. [기획·인수인계 스킬 확장](skills/TEN_PACES_PLANNING_HANDOFF_EXTENSION.md) — Base 스킬을 십보강호의 실제 문서·경로·검증에 연결
+15. [Base 적용·학습 순환 기록](11_BASE_ADOPTION_AND_LEARNING_LOG.md) — Base에서 채택한 구조, 프로젝트 구체화, Base 승격 사례와 후속 검증
 
 ## 작업별 최소 읽기
 
 | 작업 | 최소 문서 |
 |---|---|
-| 현재 방향·인수 | `AGENTS.md`, `ACTIVE_CONTEXT.md`, 이 문서 |
+| 현재 방향·인수 | `AGENTS.md`, `BASE_RULES_VERSION.md`, `ACTIVE_CONTEXT.md`, 이 문서 |
 | 전투 규칙·밸런스 | `01_GAME_DESIGN.md`, `02_COMBAT_RULES.md`, `05_COMBAT_POC_SPEC.md`, `09_COMBAT_SYSTEM_ARCHITECTURE.md` |
 | UI·카드 | `07_COMBAT_UI_SPEC.md`, `10_COMBAT_PRESENTATION_PLAN.md`, 실제 화면·자산 |
 | 전투·대회 연출 | `10_COMBAT_PRESENTATION_PLAN.md`, `02_COMBAT_RULES.md`, `07_COMBAT_UI_SPEC.md`, `09_COMBAT_SYSTEM_ARCHITECTURE.md` |
 | 무공·문파 데이터 | `03_CONTENT_CATALOG.md`, `06_STARTING_FACTION_MASTERY_DATA.md`, `09_COMBAT_SYSTEM_ARCHITECTURE.md` |
-| 구현 | `AGENTS.md`, `ACTIVE_CONTEXT.md`, 현재 Plan, 수정 대상과 연결 테스트 |
+| 구현 | `AGENTS.md`, `BASE_RULES_VERSION.md`, `ACTIVE_CONTEXT.md`, 현재 Plan, 수정 대상과 연결 테스트 |
 | 검수 | `08_TEST_CHECKLIST.md`, 관련 기준 문서, 실제 실행 결과 |
-| Base 동기화 | `11_BASE_ADOPTION_AND_LEARNING_LOG.md`, Base 문서 지도, Base 승격 스킬 |
+| 문서·인수인계 | `skills/TEN_PACES_PLANNING_HANDOFF_EXTENSION.md`, `ACTIVE_CONTEXT.md`, `04_ROADMAP.md`, 이 문서 |
+| Base 동기화 | `BASE_RULES_VERSION.md`, `11_BASE_ADOPTION_AND_LEARNING_LOG.md`, Base 문서 지도, Base 승격 스킬 |
 
 ## 우선순위
 
@@ -38,7 +41,7 @@
 1. 사용자 최신 확정 결정
 2. 저장소 루트 `AGENTS.md`
 3. `ACTIVE_CONTEXT.md`
-4. `BASE_RULES_VERSION.md`가 존재하면 해당 버전 정보
+4. `BASE_RULES_VERSION.md`
 5. 이 문서 지도
 6. 전투 규칙과 전투 시스템 아키텍처
 7. 대회 세로 슬라이스 명세
@@ -46,7 +49,7 @@
 9. 핵심무공·심법 데이터와 테스트 체크리스트
 10. 실제 구현 파일과 실행 결과
 
-실제 구현 여부는 파일과 테스트로 확인하며 문서만으로 완료를 추정하지 않는다.
+Base 버전은 적용한 공용 원칙의 기준을 기록하지만 최신 사용자 결정과 프로젝트 전용 승인 규칙을 덮어쓰지 않는다. 실제 구현 여부는 파일과 테스트로 확인하며 문서만으로 완료를 추정하지 않는다.
 
 ## 기준 문서 갱신 규칙
 
@@ -56,7 +59,9 @@
 - 기존 `docs/[백업]/`은 과거 기록 확인 외에는 읽거나 수정하지 않는다.
 - 기준 파일의 제목·경로·역할이 바뀌면 이 문서와 README의 연결을 확인한다.
 - 범위·완료 기준·데이터 구조가 바뀌면 테스트 체크리스트와 Codex Plan을 함께 확인한다.
+- 반복 작업 절차가 바뀌면 프로젝트 스킬 확장과 Base 스킬의 동기화 필요를 확인한다.
 - Base에서 채택하거나 Base로 승격한 내용은 `11_BASE_ADOPTION_AND_LEARNING_LOG.md`에 차이와 검증 상태를 기록한다.
+- Base 기준 커밋이 바뀌면 `BASE_RULES_VERSION.md`를 갱신한다.
 
 ## 책임 경계
 
@@ -64,6 +69,8 @@
 - `10_COMBAT_PRESENTATION_PLAN.md`: 화면 간 흐름, 시선·감정 곡선, 공개·해상·합·성장·결말 연출, 카메라·VFX·오디오·접근성 폴백.
 - `09_COMBAT_SYSTEM_ARCHITECTURE.md`: 전투·회차 도메인, 구조화 이벤트, 저장과 표현 데이터 경계.
 - `08_TEST_CHECKLIST.md`: 구현과 표현이 기준 문서대로 작동하는지 관찰 가능한 검증.
+- `skills/TEN_PACES_PLANNING_HANDOFF_EXTENSION.md`: 위 책임 문서를 어떤 조건과 순서로 갱신·검증·인계하는지 정의.
+- `11_BASE_ADOPTION_AND_LEARNING_LOG.md`: Base 공용 원칙과 프로젝트 전용 값을 분리하고 학습 환류 상태를 기록.
 
 UI와 연출 문서는 서로 전문을 복사하지 않고 책임 문서를 참조한다. 연출 시안의 임시 숫자는 전투·성장 기준을 변경하지 않는다.
 
@@ -107,6 +114,8 @@ UI와 연출 문서는 서로 전문을 복사하지 않고 책임 문서를 참
 
 - `ACTIVE_CONTEXT.md`가 이번 결정과 일치하는가?
 - README와 분야별 기준 문서가 낡은 수치·용어를 남기지 않았는가?
-- 테스트와 Plan이 새 완료 기준을 반영하는가?
+- 로드맵, 테스트와 Plan이 새 완료 기준을 반영하는가?
+- 프로젝트 스킬 확장이 실제 책임 문서·경로·검증과 일치하는가?
 - Base 적용·승격 기록이 공용·전용 경계를 명시하는가?
+- Base 기준 버전과 프로젝트 적용 상태가 기록됐는가?
 - 작업자가 바뀌어도 저장소만 읽고 다음 작업을 시작할 수 있는가?
