@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "updated": "2026-07-16",
+  "engine": "Godot 4.7.1 stable",
+  "status": "playtest-preparation",
+  "documents": [
+    {"type":"integrated","path":"[기획서]/00_통합/통합_게임기획서.md"},
+    {"type":"game_design","path":"[기획서]/01_게임기획/게임_핵심경험_및_범위.md"},
+    {"type":"combat_design","path":"[기획서]/02_전투기획/2수전투_및_절초기세.md"},
+    {"type":"ui_ux","path":"[기획서]/03_UI_UX/전투_UI_UX_기획서.md","images":["[기획서]/assets/예시이미지/전투_장면_카드_참고.svg","[기획서]/assets/예시이미지/전투_UI_와이어프레임_참고.svg"]},
+    {"type":"art_design","path":"[기획서]/04_아트디자인/전투_아트디자인_가이드.md","images":["[기획서]/assets/예시이미지/전투_장면_카드_참고.svg","[기획서]/assets/예시이미지/전투_UI_와이어프레임_참고.svg"]},
+    {"type":"playtest","path":"[기획서]/05_플레이테스트/T0_플레이테스트_계획.md"}
+  ],
+  "implementation": ["project.godot","scenes/combat_playtest.tscn","src/combat/combat_simulator.gd","src/ui/combat_playtest.gd","tests/run_all.gd"],
+  "validation": ["python scripts/check_planning_sync.py","python tests/static_check.py","godot --headless --path . --script res://tests/run_all.gd"]
+}
