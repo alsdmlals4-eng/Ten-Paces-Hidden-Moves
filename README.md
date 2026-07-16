@@ -35,10 +35,17 @@
 - [로드맵](docs/04_ROADMAP.md)
 - [대회 세로 슬라이스 명세](docs/05_COMBAT_POC_SPEC.md)
 - [문파·대성 데이터](docs/06_STARTING_FACTION_MASTERY_DATA.md)
-- [전투 UI 명세](docs/07_COMBAT_UI_SPEC.md)
+- [전투 UI·아트 명세](docs/07_COMBAT_UI_SPEC.md)
 - [테스트 체크리스트](docs/08_TEST_CHECKLIST.md)
 - [전투 시스템 아키텍처](docs/09_COMBAT_SYSTEM_ARCHITECTURE.md)
 - [구현 Plan](plans/2026-07-16-combat-poc-plan.md)
+
+## 문서 작업 규칙
+
+- 작업 전 저장소 루트의 [`AGENTS.md`](AGENTS.md)와 [문서 지도](docs/DOCUMENTATION_MAP.md)를 확인한다.
+- 확정된 기획은 새 버전 파일을 늘리지 않고 기존 기준 문서에 반영한다.
+- 큰 수정 전 이전 파일은 `docs/[백업]/YYYY-MM-DD/`에 보관한다.
+- `docs/[백업]/`은 과거 기록이며 현재 기획·구현·테스트 기준으로 사용하지 않는다.
 
 ## 이번 범위에서 보류
 
