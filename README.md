@@ -10,7 +10,7 @@
 - 같은 타이밍에 양측 공격이 유효하면 `[합]`을 겨루고 낮은 쪽이 차이만큼 피해를 받습니다.
 - 내부 시스템은 정확한 수치와 데이터로 설계하지만, 상대의 강도·성장·수련 성향은 이명·풍문·전적·정탐 문장으로 암시합니다.
 - 연출은 상대 읽기→제약→2수 전투→성과·행운→수련→예선 결승의 전체 흐름을 책임지며 전투 결과를 직접 계산하지 않습니다.
-- 작업자가 바뀔 때는 [`AGENTS.md`](AGENTS.md) → [활성 컨텍스트](docs/ACTIVE_CONTEXT.md) → [문서 지도](docs/DOCUMENTATION_MAP.md) 순서로 읽습니다.
+- 작업자가 바뀔 때는 [`AGENTS.md`](AGENTS.md) → [Base 규칙 적용 버전](docs/BASE_RULES_VERSION.md) → [활성 컨텍스트](docs/ACTIVE_CONTEXT.md) → [문서 지도](docs/DOCUMENTATION_MAP.md) 순서로 읽습니다.
 
 ## 데모 범위
 
@@ -63,16 +63,17 @@
 ## 현재 우선순위
 
 1. 실제 Godot 프로젝트·스크립트·데이터·테스트 상태 감사와 승인 Plan 작성.
-2. 2수 잠금·공개, 이동, 일반 공격, 합, 자원과 로그의 T0 전투 PoC.
-3. 상대 정보→제약→전투→성과·행운→수련의 T1 데모 흐름 연결.
-4. 성과 임계값, 상대 출현표, 이명·풍문 사전, 수련 알고리즘, 제약 보상과 자원 비용 확정.
+2. 성과 임계값, 상대 출현표, 이명·풍문 사전, 수련 알고리즘, 제약 보상과 자원 비용 확정.
+3. 2수 잠금·공개, 이동, 일반 공격, 합, 자원과 로그의 T0 전투 PoC.
+4. 상대 정보→제약→전투→성과·행운→수련의 T1 데모 흐름 연결.
 5. 절초 보유·미보유 양쪽으로 5전 예선 결승 완주 검증.
 6. 시작 6세력의 대표 연출과 문파 기믹을 검증한 뒤 12세력·10전으로 확장.
 
-세부 로드맵과 남은 작업은 [로드맵](docs/04_ROADMAP.md)과 [전투·대회 연출 기획서](docs/10_COMBAT_PRESENTATION_PLAN.md)를 따른다.
+세부 로드맵과 남은 작업은 [로드맵](docs/04_ROADMAP.md)과 [전투·대회 연출 기획서](docs/10_COMBAT_PRESENTATION_PLAN.md)를 따릅니다.
 
 ## 문서
 
+- [Base 규칙 적용 버전](docs/BASE_RULES_VERSION.md)
 - [활성 컨텍스트](docs/ACTIVE_CONTEXT.md)
 - [게임 기획서](docs/01_GAME_DESIGN.md)
 - [전투 규칙](docs/02_COMBAT_RULES.md)
@@ -85,6 +86,7 @@
 - [전투 시스템 아키텍처](docs/09_COMBAT_SYSTEM_ARCHITECTURE.md)
 - [전투·대회 연출 기획서](docs/10_COMBAT_PRESENTATION_PLAN.md)
 - [Base 적용·학습 순환 기록](docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md)
+- [기획·인수인계 스킬 확장](docs/skills/TEN_PACES_PLANNING_HANDOFF_EXTENSION.md)
 - [구현 Plan](plans/2026-07-16-combat-poc-plan.md)
 - [보류 항목](docs/%5B보류%5D/README.md)
 
@@ -93,7 +95,9 @@
 - 확정된 기획은 기존 기준 문서와 `ACTIVE_CONTEXT.md`에 반영합니다.
 - 이전 내용은 별도 백업 파일을 만들지 않고 Git 이력으로 보존합니다.
 - `docs/[백업]/`은 과거 기록, `docs/[보류]/`는 재개 전 구현 금지 영역입니다.
-- 작업 종료 시 README, 문서 지도, 테스트, Plan과 낡은 컨텍스트를 함께 점검합니다.
+- 작업 종료 시 README, 문서 지도, 로드맵, 테스트, Plan과 낡은 컨텍스트를 함께 점검합니다.
+- 반복 작업 절차는 프로젝트 스킬 확장에서 실제 책임 문서·경로·검증과 연결합니다.
 - Base에서 채택한 공용 원칙과 Base로 승격한 사례는 `11_BASE_ADOPTION_AND_LEARNING_LOG.md`에 기록합니다.
+- Base 기준이 바뀌면 `BASE_RULES_VERSION.md`를 갱신합니다.
 
 [문서 읽기 순서](docs/DOCUMENTATION_MAP.md)를 먼저 확인하세요.
