@@ -1,17 +1,36 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "updated": "2026-07-17",
   "engine": "Godot 4.7.1 stable",
   "status": "playtest-preparation",
-  "documents": [
-    {"type":"integrated","path":"[기획서]/00_통합/통합_게임기획서.md"},
-    {"type":"game_design","path":"[기획서]/01_게임기획/게임_핵심경험_및_범위.md"},
-    {"type":"martial_arts_taxonomy","path":"[기획서]/01_게임기획/10문파_무공_분류_및_배치.md","status":"confirmed"},
-    {"type":"combat_design","path":"[기획서]/02_전투기획/2수전투_및_절초기세.md"},
-    {"type":"ui_ux","path":"[기획서]/03_UI_UX/전투_UI_UX_기획서.md","images":["[기획서]/assets/예시이미지/전투_장면_카드_참고.svg","[기획서]/assets/예시이미지/전투_UI_와이어프레임_참고.svg"]},
-    {"type":"art_design","path":"[기획서]/04_아트디자인/전투_아트디자인_가이드.md","images":["[기획서]/assets/예시이미지/전투_장면_카드_참고.svg","[기획서]/assets/예시이미지/전투_UI_와이어프레임_참고.svg"]},
-    {"type":"playtest","path":"[기획서]/05_플레이테스트/T0_플레이테스트_계획.md"}
+  "active_documents": [
+    {"type":"game_design","path":"[기획서]/01_게임기획/게임기획서.md"},
+    {"type":"programming","path":"[기획서]/06_프로그래밍/프로그래밍_기획서_로드맵_MVP.md"},
+    {"type":"art","path":"[기획서]/04_아트디자인/아트_기획서.md","image_index":"[기획서]/04_아트디자인/이미지_인덱스.md"},
+    {"type":"sound","path":"[기획서]/07_사운드/사운드_기획서.md"},
+    {"type":"qa_pm","path":"[기획서]/08_QA_PM/QA_PM_기획서.md"}
   ],
-  "implementation": ["project.godot","scenes/combat_playtest.tscn","src/combat/combat_simulator.gd","src/ui/combat_playtest.gd","tests/run_all.gd"],
-  "validation": ["python scripts/check_planning_sync.py","python tests/static_check.py","godot --headless --path . --script res://tests/run_all.gd"]
+  "supporting_documents": [
+    "[기획서]/00_통합/팀별_기획서_체계_및_갱신규칙.md",
+    "[기획서]/04_아트디자인/이미지_인덱스.md",
+    "[기획서]/00_통합/통합_게임기획서.md",
+    "[기획서]/01_게임기획/게임_핵심경험_및_범위.md",
+    "[기획서]/01_게임기획/10문파_무공_분류_및_배치.md",
+    "[기획서]/02_전투기획/2수전투_및_절초기세.md",
+    "[기획서]/03_UI_UX/전투_UI_UX_기획서.md",
+    "[기획서]/04_아트디자인/전투_아트디자인_가이드.md",
+    "[기획서]/05_플레이테스트/T0_플레이테스트_계획.md"
+  ],
+  "implementation": [
+    "project.godot",
+    "scenes/combat_playtest.tscn",
+    "src/combat/combat_simulator.gd",
+    "src/ui/combat_playtest.gd",
+    "tests/run_all.gd"
+  ],
+  "validation": [
+    "python scripts/check_planning_sync.py",
+    "python tests/static_check.py",
+    "godot --headless --path . --script res://tests/run_all.gd"
+  ]
 }
