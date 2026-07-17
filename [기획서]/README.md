@@ -1,6 +1,6 @@
 ---
 title: "십보강호 활성 기획서 인덱스"
-status: "활성"
+status: "인덱스"
 updated: "2026-07-17"
 audience: ["human", "ai"]
 source_of_truth: "사용자와 작업자가 처음 읽는 다섯 활성 기획서"
