@@ -1,0 +1,37 @@
+name: Planning Sync
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "agent/**"
+
+permissions:
+  contents: read
+
+jobs:
+  planning-sync:
+    name: Validate five active plans
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Compile validation scripts
+        run: |
+          python -m py_compile scripts/check_planning_sync.py
+          python -m py_compile tests/static_check.py
+
+      - name: Validate planning structure
+        run: python scripts/check_planning_sync.py
+
+      - name: Run static checks
+        run: python tests/static_check.py
