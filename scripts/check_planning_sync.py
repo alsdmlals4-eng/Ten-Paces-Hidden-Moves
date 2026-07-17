@@ -92,8 +92,8 @@ for md in PLAN.rglob("*.md"):
             fail(f"broken image link: {rel} -> {target}")
 
 # Exactly five planning markdown files may have the exact active status.
-if active_status_paths != ACTIVE_PATHS:
-    fail(f"exact active-status documents must match the five plans: {active_status_paths}")
+if len(active_status_paths) != 5 or set(active_status_paths) != set(ACTIVE_PATHS):
+    fail(f"exact active-status documents must match the five plans: {sorted(active_status_paths)}")
 
 # Active plans must be readable handoff documents, not thin indexes.
 for rel in ACTIVE_PATHS:
