@@ -52,6 +52,7 @@ ACTIVE_REQUIRED_MARKERS = (
 )
 
 errors: list[str] = []
+active_status_paths: list[str] = []
 
 
 def fail(message: str) -> None:
@@ -81,9 +82,18 @@ for md in PLAN.rglob("*.md"):
     for key in FRONTMATTER_KEYS:
         if not re.search(rf"(?m)^{re.escape(key)}\s*:", front):
             fail(f"missing frontmatter key '{key}': {rel}")
+
+    status_match = re.search(r'(?m)^status\s*:\s*["\']?([^"\'\n]+)', front)
+    if status_match and status_match.group(1).strip() == "활성":
+        active_status_paths.append(str(rel))
+
     for target in re.findall(r"!\[[^\]]*\]\(([^)]+)\)", text):
         if "://" not in target and not (md.parent / target).resolve().is_file():
             fail(f"broken image link: {rel} -> {target}")
+
+# Exactly five planning markdown files may have the exact active status.
+if active_status_paths != ACTIVE_PATHS:
+    fail(f"exact active-status documents must match the five plans: {active_status_paths}")
 
 # Active plans must be readable handoff documents, not thin indexes.
 for rel in ACTIVE_PATHS:
@@ -152,7 +162,7 @@ if manifest:
         if not isinstance(impl, str) or not (ROOT / impl).is_file():
             fail(f"manifest implementation missing: {impl}")
 
-# Entry pages must expose only the five active plans as the primary set.
+# Entry pages must expose the five active plans as the primary set.
 readme_path = PLAN / "README.md"
 map_path = ROOT / "docs/DOCUMENTATION_MAP.md"
 for entry_path in (readme_path, map_path):
@@ -167,7 +177,8 @@ for entry_path in (readme_path, map_path):
         fail(f"entry document must label the five-plan entry set: {entry_path.relative_to(ROOT)}")
 
 # Art is the single source of truth for image direction.
-art_text = (ROOT / ACTIVE_PATHS[2]).read_text(encoding="utf-8") if (ROOT / ACTIVE_PATHS[2]).is_file() else ""
+art_path = ROOT / ACTIVE_PATHS[2]
+art_text = art_path.read_text(encoding="utf-8") if art_path.is_file() else ""
 if "이미지_인덱스.md" not in art_text:
     fail("art plan must link the canonical image index")
 
@@ -178,6 +189,6 @@ if errors:
     sys.exit(1)
 
 print("Planning sync check PASSED")
-print("- active planning documents: 5")
+print("- exact active planning documents: 5")
 print(f"- planning markdown files: {len(list(PLAN.rglob('*.md')))}")
 print(f"- reference images: {len(list((PLAN / 'assets/예시이미지').glob('*')))}")
