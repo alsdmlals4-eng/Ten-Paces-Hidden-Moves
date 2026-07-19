@@ -1,5 +1,5 @@
 {
-  "$schema": "../../../schemas/skill-registry-v3.schema.json",
+  "$schema": "../../schemas/skill-registry-v3.schema.json",
   "schema_version": 3,
   "registry_role": "project-skill-router-and-learning-index",
   "routing_policy": {
