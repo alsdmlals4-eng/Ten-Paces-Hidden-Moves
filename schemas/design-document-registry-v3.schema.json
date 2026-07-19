@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/alsdmlals4-eng/Base/schemas/design-document-registry-v3.schema.json",
+  "title": "Base Design Document Registry v3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "registry_role", "project_name", "documents"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "schema_version": {"const": 3},
+    "registry_role": {"const": "ai-design-document-router-and-publication-index"},
+    "project_name": {"type": "string", "minLength": 1},
+    "source_of_truth_policy": {"type": "string"},
+    "required_responsibility_coverage": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "available_responsibility_catalog": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "documents": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/document"}
+    },
+    "document_contract_example": {"$ref": "#/$defs/document"}
+  },
+  "$defs": {
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "document_id", "title", "discipline", "responsibility_coverage", "status",
+        "source_path", "source_format", "source_role", "publication_policy",
+        "output_pdf", "diagram_policy", "publication_manifest", "generator"
+      ],
+      "properties": {
+        "document_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+        "title": {"type": "string", "minLength": 1},
+        "discipline": {"type": "string", "minLength": 1},
+        "responsibility_coverage": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+        "status": {"enum": ["ACTIVE", "SUPPORT", "HOLD", "BACKUP", "REMOVAL_CANDIDATE", "NOT_INSTALLED"]},
+        "source_path": {"type": "string", "minLength": 1},
+        "source_format": {"enum": ["markdown", "json"]},
+        "source_role": {"enum": ["narrative_spec", "structured_data", "registry", "state"]},
+        "publication_policy": {"const": "always_sync"},
+        "output_pdf": {"type": "string", "minLength": 1},
+        "output_docx": {"type": ["string", "null"]},
+        "asset_dir": {"type": ["string", "null"]},
+        "diagram_policy": {"enum": ["none", "mermaid", "generated"]},
+        "publication_manifest": {"type": "string", "minLength": 1},
+        "generator": {"type": "string", "minLength": 1},
+        "required_sections": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+      }
+    }
+  }
+}
