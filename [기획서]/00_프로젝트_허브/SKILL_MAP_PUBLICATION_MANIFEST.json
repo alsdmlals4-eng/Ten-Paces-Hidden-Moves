@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "publication_role": "project-skill-map-publication-status",
+  "source_of_truth": "SKILL_REGISTRY.json",
+  "source_status": "ACTIVE",
+  "outputs": {
+    "markdown": {
+      "path": "PROJECT_SKILL_MAP.md",
+      "status": "GENERATED_PROVISIONAL",
+      "automated_validation": "NOT_RUN",
+      "human_visual_review": "NOT_RUN"
+    },
+    "pdf": {
+      "path": "PROJECT_SKILL_MAP.pdf",
+      "status": "MIGRATION_PENDING",
+      "automated_validation": "NOT_RUN",
+      "human_visual_review": "NOT_RUN"
+    },
+    "docx": {
+      "path": null,
+      "status": "NOT_REQUESTED"
+    },
+    "diagrams": {
+      "path": "PROJECT_SKILL_MAP.assets",
+      "status": "MIGRATION_PENDING"
+    }
+  },
+  "generator": "tools/build_project_skill_map.py",
+  "blocked_by": [
+    "generator_not_installed",
+    "publication_dependencies_not_verified",
+    "korean_font_not_verified"
+  ],
+  "base_reference_commit": "eb40b912e5f5a0e4d369105a4f0a770e0a6179a9",
+  "last_reviewed_at": "2026-07-20"
+}
