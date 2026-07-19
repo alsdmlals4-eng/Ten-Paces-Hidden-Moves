@@ -72,11 +72,12 @@ def validate_top_level_design_root(root: Path, design_root: str) -> None:
         raise GovernanceError(f"top-level design root is missing: {design_root}")
 
     nested: list[str] = []
-    for candidate in root.rglob(design_root):
+    for candidate in root.rglob("*"):
+        if not candidate.is_dir() or candidate.name != design_root:
+            continue
         if candidate == expected or is_ignored(candidate, root, set()):
             continue
-        if candidate.is_dir():
-            nested.append(candidate.relative_to(root).as_posix())
+        nested.append(candidate.relative_to(root).as_posix())
     if nested:
         raise GovernanceError(
             "nested active design roots are forbidden: " + ", ".join(sorted(nested))
