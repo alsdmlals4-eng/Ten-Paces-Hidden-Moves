@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/alsdmlals4-eng/Base/schemas/skill-registry-v3.schema.json",
+  "title": "Base Project Skill Registry v3",
+  "type": "object",
+  "required": ["schema_version", "registry_role", "routing_policy", "human_presentation", "skills", "selected_disciplines", "discipline_entrypoints"],
+  "properties": {
+    "schema_version": {"const": 3},
+    "registry_role": {"const": "project-skill-router-and-learning-index"},
+    "routing_policy": {"type": "object"},
+    "human_presentation": {
+      "type": "object",
+      "required": ["primary_reading_format", "publication_manifest", "generator", "source_of_truth", "markdown_summary"],
+      "properties": {
+        "primary_reading_format": {"const": "PROJECT_SKILL_MAP.pdf"},
+        "editable_derivative": {"type": ["string", "null"]},
+        "diagram_directory": {"type": ["string", "null"]},
+        "publication_manifest": {"const": "SKILL_MAP_PUBLICATION_MANIFEST.json"},
+        "generator": {"type": "string"},
+        "source_of_truth": {"const": "SKILL_REGISTRY.json"},
+        "markdown_summary": {"type": ["string", "null"]}
+      },
+      "additionalProperties": true
+    },
+    "skills": {"type": "array"},
+    "selected_disciplines": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "discipline_entrypoints": {"type": "object"},
+    "skill_contract_example": {"type": "object"}
+  },
+  "additionalProperties": true
+}
