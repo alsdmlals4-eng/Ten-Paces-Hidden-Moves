@@ -4,12 +4,14 @@
 
 ## 현재 단계
 
-- 운영: **Base schema v3 Governance foundation 마이그레이션 진행 중**.
+- 운영: **Base schema v3 Governance foundation 설치·정적 검증 완료 / Draft PR #5 검토 중**.
 - 제품: **전투·성장·대회·연출 승인 기획 정리와 구현 인수 준비**.
 - 다음 제품 기획: **절초 기세·상단 HUD UX 승인안 검토**.
 - 구현: 원격에서 Godot 프로젝트·코드·데이터·테스트를 확인하지 못함.
 - 로컬: 사용자가 제공한 Windows 작업본이 현재 실행 환경에 연결되지 않아 `[미검증]`.
 - 발행: PDF·Manifest·스킬맵은 생성 도구 사전점검 전이라 `MIGRATION_PENDING`.
+- 자동화: PR #5의 `documentation-governance` Actions가 성공함.
+- 강제 상태: Branch protection Required Check는 변경·확인하지 않음.
 
 ## 제품 고정 방향
 
@@ -25,21 +27,33 @@
 
 ## 운영 고정 방향
 
-- 기존 `docs/*.md`를 schema v3 Markdown 책임 원본으로 우선 보존한다.
+- 기존 `docs/*.md`를 schema v3 Markdown 책임 원본으로 보존한다.
 - 기존 파일을 루트 `[기획서]`에 복제하지 않는다.
 - PDF는 항상 동기화 대상이지만 실제 생성 전에는 CURRENT로 표시하지 않는다.
 - 기존 `docs/[백업]/`, `docs/[보류]/`, Plan을 삭제하거나 활성 범위에 혼입하지 않는다.
 - 프로젝트 교훈은 Base에 자동 반영하지 않고 `[수정제안서]` 제안 PR과 사용자 승인을 거친다.
 - Issue·직접 요청·Plan의 목표·범위·완료·검증을 작업 계약으로 남긴다.
+- Workflow 파일 존재, Actions 성공, Required Check 강제를 서로 다른 상태로 관리한다.
+
+## 완료한 운영 작업
+
+1. 루트 START_HERE와 `[기획서]` 프로젝트 허브 설치.
+2. Design Document Registry에 기존 11개 본책 등록.
+3. Skill Registry·선택 분야 6개·진입 스킬·Learning Log 설치.
+4. Development Gates·Update Matrix·Handoff·Decision·Changelog 설치.
+5. README·AGENTS·Base 기준 버전·제품 문서 지도 최신화.
+6. Interview Registry·확인 기록·실행 계약 설치.
+7. Python 표준 라이브러리 Governance 검사기·Workflow·PR 템플릿 설치.
+8. 첫 Actions 실패 원인을 진단 아티팩트로 회수하고 파일명 규칙을 수정.
+9. 후속 `documentation-governance` Actions 성공 확인.
 
 ## 즉시 다음 작업
 
-1. 루트 허브·Registry·Development Gates·Update Matrix 설치.
-2. 기존 11개 본책을 `DESIGN_DOCUMENT_REGISTRY.json`에 등록.
-3. 프로젝트 Skill Registry와 최소 분야 진입 스킬 설치.
-4. README·AGENTS·Base 버전 기록을 최신 계약에 맞춤.
-5. 문서 Governance 정적 검사와 Draft PR 생성.
-6. Windows 작업본 연결 후 원격 차이, Godot·자산·테스트·PDF 발행 감사.
+1. Draft PR #5의 사용자 검토와 병합 여부 결정.
+2. Windows 작업본을 직접 연결해 Git 상태·원격 차이·Godot·자산·테스트를 감사.
+3. 발행 의존성·한글 폰트를 확인하고 기획서 PDF·Manifest·Skill Map을 생성·검수.
+4. Branch protection에서 `documentation-governance`를 Required Check로 강제할지 별도 결정.
+5. 보존 대조 후에만 기존 경로 이동·중복 제거안을 별도 승인.
 
 ## 보호 범위
 
@@ -54,8 +68,8 @@
 - 문서 전용 원격과 실제 Godot 프로젝트가 분리됐을 수 있다.
 - Base `main`은 정식 태그 이후 Unreleased 변경을 포함하므로 커밋 SHA를 재현 기준으로 사용해야 한다.
 - PDF·DOCX·다이어그램을 생성하지 않고 구조만 설치하면 발행 게이트는 통과하지 않는다.
-- 기존 자동 Base 승격 규칙을 유지하면 최신 Base 승인 계약과 충돌한다.
+- Actions 성공은 Godot·PDF·플레이테스트 또는 Branch protection 강제를 의미하지 않는다.
 
 ## 완료 판정
 
-이번 마이그레이션 PR은 문서 운영체계의 **설치·정적 검증**까지만 완료할 수 있다. Godot 실행, 플레이테스트, PDF 사람 시각 검수, Branch protection 강제는 각각 별도 증거가 있어야 완료다.
+이번 마이그레이션 브랜치는 문서 운영체계의 **설치·정적 Actions 검증**을 완료했다. Godot 실행, 플레이테스트, PDF 자동·사람 시각 검수, Branch protection 강제는 각각 별도 증거가 있어야 완료다.
