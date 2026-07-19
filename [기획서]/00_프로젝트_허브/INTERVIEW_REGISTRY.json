@@ -7,8 +7,8 @@
       "title": "Base schema v3 전면 마이그레이션",
       "status": "USER_CONFIRMED",
       "request_source": "approved_direct_request",
-      "record_path": "INTERVIEWS/2026-07-20-base-schema-v3-migration.md",
-      "executable_prompt_path": "EXECUTABLE_PROMPTS/INT-2026-001-base-schema-v3-migration.md",
+      "record_path": "INTERVIEWS/2026-07-20-base-operating-system-migration.md",
+      "executable_prompt_path": "EXECUTABLE_PROMPTS/INT-2026-001-base-operating-system-migration.md",
       "confirmed_at": "2026-07-20",
       "related_issue": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/4"
     }
