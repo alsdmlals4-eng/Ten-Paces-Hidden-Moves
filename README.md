@@ -3,6 +3,40 @@
 
 10칸 전장에서 양측이 행동 두 개를 비공개로 잠그고 동시에 공개하며, 거리·합·행동력·기력·내공을 읽어 승부하는 1대1 무협 로그라이트입니다.
 
+## 가장 먼저 읽기
+
+새 작업자·GPT·Codex는 다음 순서로 시작합니다.
+
+```text
+START_HERE.md
+→ AGENTS.md
+→ [기획서]/00_프로젝트_허브/START_HERE.md
+→ ACTIVE_CONTEXT.md
+→ DOCUMENTATION_MAP.md
+→ DEVELOPMENT_GATES.md
+→ DESIGN_DOCUMENT_REGISTRY.json
+→ SKILL_REGISTRY.json
+→ 현재 작업의 책임 원본·실제 파일·테스트
+```
+
+- [프로젝트 시작 지점](START_HERE.md)
+- [프로젝트 기획 허브]([기획서]/00_프로젝트_허브/START_HERE.md)
+- [기획 책임 원본 Registry]([기획서]/DESIGN_DOCUMENT_REGISTRY.json)
+- [프로젝트 Skill Registry]([기획서]/00_프로젝트_허브/SKILL_REGISTRY.json)
+- [마이그레이션 감사]([기획서]/00_프로젝트_허브/SOURCE_AUDIT.md)
+
+## 운영체계 마이그레이션 상태
+
+- 적용 Base 기준: `alsdmlals4-eng/Base@eb40b912e5f5a0e4d369105a4f0a770e0a6179a9`.
+- 기존 `docs/01~11`은 schema v3 Markdown 단일 책임 원본으로 보존·등록합니다.
+- 루트 `[기획서]`는 현재 상태·Registry·스킬·게이트를 연결하는 운영 허브입니다.
+- 기존 본책·`docs/[백업]/`·`docs/[보류]/`·Plan은 보존 대조와 별도 승인 전 삭제하지 않습니다.
+- 기획서 PDF와 Skill Map PDF는 발행 도구·폰트·렌더 검수 전이라 `MIGRATION_PENDING`입니다.
+- 사용자 로컬 작업본 `C:\Users\user\Documents\바이브코딩\ten-paces-hidden-moves-base-full-11-migration`은 현재 실행 환경에서 직접 확인하지 못했습니다.
+- 원격에 없는 Godot 코드·씬·데이터·테스트·자산과 로컬 미커밋 변경은 `[미검증]`입니다.
+
+마이그레이션 진행과 완료 기준은 [운영 로드맵]([기획서]/00_프로젝트_허브/ROADMAP.md)과 [Development Gates]([기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md)을 따릅니다.
+
 ## 현재 방향
 
 - 전장 10칸, 라운드 행동 타이밍 10개, 전체 대회 10전의 `10-10-10` 구조입니다.
@@ -11,15 +45,14 @@
 - 내부 시스템은 정확한 수치와 데이터로 설계하지만, 상대의 강도·성장·수련 성향은 이명·풍문·전적·정탐 문장으로 암시합니다.
 - 연출은 상대 읽기→제약→2수 전투→성과·행운→수련→예선 결승의 전체 흐름을 책임지며 전투 결과를 직접 계산하지 않습니다.
 - 절초는 핵심무공 10성으로 해금한 뒤 전투 중 라운드 진행·합·회피 등으로 기세를 쌓아 발동하는 이중 조건으로 설계합니다.
-- 작업자가 바뀔 때는 [`AGENTS.md`](AGENTS.md) → [Base 규칙 적용 버전](docs/BASE_RULES_VERSION.md) → [활성 컨텍스트](docs/ACTIVE_CONTEXT.md) → [문서 지도](docs/DOCUMENTATION_MAP.md) 순서로 읽습니다.
 
 ## 데모 범위
 
 데모는 **1~5전**, 5전째 **예선 결승**까지 구성합니다.
 
-- 1~2전: 내부전
-- 3~4전: 예선
-- 5전: 예선 결승·데모 최종전
+- 1~2전: 내부전.
+- 3~4전: 예선.
+- 5전: 예선 결승·데모 최종전.
 - 시작 핵심무공과 심법은 각각 3성입니다.
 - 핵심무공은 3·6·9성에 기술, 10성에 절초를 얻습니다.
 - 심법은 패시브·기믹·명상 효과를 제공하고 10성에 진의를 얻습니다.
@@ -55,15 +88,15 @@
 
 ## 전체판 구조
 
-- 6~7전: 본선
-- 8전: 8강
-- 9전: 준결승
-- 10전: 결승
+- 6~7전: 본선.
+- 8전: 8강.
+- 9전: 준결승.
+- 10전: 결승.
 - 전체판 결승 전까지 최대 9회의 수련 단계를 거칩니다.
 
-## 현재 우선순위
+## 현재 제품 우선순위
 
-1. 절초 해금과 전투 발동의 이중 조건, 기세 획득·소모 규칙과 상단 칸형 HUD UX를 설계합니다.
+1. 절초 해금과 전투 발동의 이중 조건, 기세 획득·소모 규칙과 상단 칸형 HUD UX를 승인합니다.
 2. 실제 Godot 프로젝트·스크립트·데이터·테스트 상태를 감사하고 승인 Plan을 작성합니다.
 3. 성과 임계값, 상대 출현표, 이명·풍문 사전, 수련 알고리즘, 제약 보상과 자원 비용을 확정합니다.
 4. 2수 잠금·공개, 이동, 일반 공격, 합, 자원과 로그의 T0 전투 PoC를 구현합니다.
@@ -71,35 +104,29 @@
 6. 절초 보유·미보유 양쪽으로 5전 예선 결승 완주를 검증합니다.
 7. 시작 6세력의 대표 연출과 문파 기믹을 검증한 뒤 12세력·10전으로 확장합니다.
 
-세부 로드맵과 남은 작업은 [로드맵](docs/04_ROADMAP.md)과 [전투·대회 연출 기획서](docs/10_COMBAT_PRESENTATION_PLAN.md)를 따릅니다.
+세부 제품 로드맵은 [구현 로드맵](docs/04_ROADMAP.md), 연출은 [전투·대회 연출 기획서](docs/10_COMBAT_PRESENTATION_PLAN.md)를 따릅니다.
 
-## 문서
+## 활성 책임 원본
 
-- [Base 규칙 적용 버전](docs/BASE_RULES_VERSION.md)
-- [활성 컨텍스트](docs/ACTIVE_CONTEXT.md)
 - [게임 기획서](docs/01_GAME_DESIGN.md)
 - [전투 규칙](docs/02_COMBAT_RULES.md)
 - [구현 콘텐츠 카탈로그](docs/03_CONTENT_CATALOG.md)
-- [로드맵](docs/04_ROADMAP.md)
+- [제품 로드맵](docs/04_ROADMAP.md)
 - [대회 세로 슬라이스 명세](docs/05_COMBAT_POC_SPEC.md)
 - [핵심무공·심법 데이터](docs/06_STARTING_FACTION_MASTERY_DATA.md)
 - [전투 UI·아트 명세](docs/07_COMBAT_UI_SPEC.md)
 - [테스트 체크리스트](docs/08_TEST_CHECKLIST.md)
 - [전투 시스템 아키텍처](docs/09_COMBAT_SYSTEM_ARCHITECTURE.md)
 - [전투·대회 연출 기획서](docs/10_COMBAT_PRESENTATION_PLAN.md)
-- [Base 적용·학습 순환 기록](docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md)
-- [기획·인수인계 스킬 확장](docs/skills/TEN_PACES_PLANNING_HANDOFF_EXTENSION.md)
+- [Base 적용·학습 기록](docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md)
 - [구현 Plan](plans/2026-07-16-combat-poc-plan.md)
 - [보류 항목](docs/%5B보류%5D/README.md)
 
-## 문서 작업 규칙
+## 작업 규칙
 
-- 확정된 기획은 기존 기준 문서와 `ACTIVE_CONTEXT.md`에 반영합니다.
-- 이전 내용은 별도 백업 파일을 만들지 않고 Git 이력으로 보존합니다.
+- 확정된 기획은 해당 단일 책임 원본과 필요한 운영 라우터에 반영합니다.
+- 이전 내용은 별도 활성 복제본을 만들지 않고 Git 이력으로 보존합니다.
 - `docs/[백업]/`은 과거 기록, `docs/[보류]/`는 재개 전 구현 금지 영역입니다.
-- 작업 종료 시 README, 문서 지도, 로드맵, 테스트, Plan과 낡은 컨텍스트를 함께 점검합니다.
-- 반복 작업 절차는 프로젝트 스킬 확장에서 실제 책임 문서·경로·검증과 연결합니다.
-- Base에서 채택한 공용 원칙과 Base로 승격한 사례는 `11_BASE_ADOPTION_AND_LEARNING_LOG.md`에 기록합니다.
-- Base 기준이 바뀌면 `BASE_RULES_VERSION.md`를 갱신합니다.
-
-[문서 읽기 순서](docs/DOCUMENTATION_MAP.md)를 먼저 확인하세요.
+- 변경 후 [문서 갱신 매트릭스]([기획서]/00_프로젝트_허브/DOCUMENT_UPDATE_MATRIX.md)를 확인합니다.
+- Base로 일반화할 교훈은 자동 반영하지 않고 제안 PR·사용자 승인·별도 구현 PR을 따릅니다.
+- 체크리스트·Workflow·PDF·코드의 존재와 실제 검증 통과를 구분합니다.
