@@ -9,10 +9,12 @@
 - [x] Base 기준 커밋 고정.
 - [x] 대상 `main` 기준 커밋 고정.
 - [x] Issue #4 작업 계약 생성.
-- [x] 기존 11개 활성 본책·운영 문서·Plan 인벤토리.
+- [x] 기존 11개 활성 본책·운영 문서·Plan 원격 인벤토리.
 - [x] 자동 Base 승격 등 최신 계약 충돌 식별.
 - [ ] Windows 작업본 파일·Git 상태·원격 차이 감사.
 - [ ] 백업·보류 하위 파일별 고유 정보·참조 감사.
+
+**현재 판정: `PARTIAL` — 원격 감사 완료 / 로컬 감사 대기.**
 
 **종료 기준**
 
@@ -25,10 +27,12 @@
 
 - [x] 루트 `START_HERE.md`.
 - [x] `[기획서]/00_프로젝트_허브` 시작 구조.
-- [ ] Documentation Map·Development Gates·Update Matrix.
-- [ ] Active Context·Handoff·Decision Log·Changelog.
-- [ ] AI Workflow·Lifecycle Areas·Health Report.
-- [ ] README·AGENTS·Base Rules Version 최신화.
+- [x] Documentation Map·Development Gates·Update Matrix.
+- [x] Active Context·Handoff·Decision Log·Changelog.
+- [x] AI Workflow·Lifecycle Areas·Health Report.
+- [x] README·AGENTS·Base Rules Version 최신화.
+
+**현재 판정: `VERIFIED` — PR Actions 정적 검사 통과.**
 
 **종료 기준**
 
@@ -38,12 +42,14 @@
 
 목표: 기존 Markdown 본책과 프로젝트 스킬을 기계 판독 가능하게 연결한다.
 
-- [ ] `DESIGN_DOCUMENT_REGISTRY.json`에 활성 본책 등록.
-- [ ] 선택 책임 분야와 누락 분야를 명시.
-- [ ] `SKILL_REGISTRY.json` 설치.
-- [ ] 최소 Foundation·분야 진입 스킬 설치.
-- [ ] `SKILL_LEARNING_LOG.md` 설치.
-- [ ] 인터뷰 Registry와 사용자 확인 기록 경로 설치.
+- [x] `DESIGN_DOCUMENT_REGISTRY.json`에 활성 본책 등록.
+- [x] 선택 책임 분야와 누락 분야를 명시.
+- [x] `SKILL_REGISTRY.json` 설치.
+- [x] 최소 Foundation·분야 진입 스킬 설치.
+- [x] `SKILL_LEARNING_LOG.md` 설치.
+- [x] 인터뷰 Registry와 사용자 확인 기록 경로 설치.
+
+**현재 판정: `VERIFIED` — Registry 중복·경로·trigger·진입점 검사 통과.**
 
 **종료 기준**
 
@@ -53,15 +59,24 @@
 
 ## M3 — GitHub Governance·정적 검증
 
-목표: 구조·JSON·링크·금지 상태의 회귀를 자동 탐지한다.
+목표: 구조·JSON·경로·금지 상태의 회귀를 자동 탐지한다.
 
-- [ ] PR 템플릿.
-- [ ] 문서 Governance 설정.
-- [ ] 표준 라이브러리 기반 검사기.
-- [ ] GitHub Actions Workflow.
-- [ ] 원격 브랜치에서 검사 실행.
-- [ ] Actions 성공 상태 확인.
-- [ ] Branch protection Required Check 상태 확인.
+- [x] PR 템플릿.
+- [x] 문서 Governance 설정.
+- [x] 표준 라이브러리 기반 검사기.
+- [x] GitHub Actions Workflow.
+- [x] 원격 PR 브랜치에서 검사 실행.
+- [x] Actions 성공 상태 확인.
+- [ ] Branch protection Required Check 상태 확인·강제.
+
+**현재 판정: `VERIFIED_WITHOUT_ENFORCEMENT` — Actions 성공 / Required Check 미확인.**
+
+**검증 이력**
+
+- 첫 실행 실패: 인터뷰·실행 계약 파일명의 `-v3-`가 활성 버전 파일명 금지 규칙에 걸림.
+- 진단 아티팩트로 정확한 실패 원인을 회수함.
+- 역할 중심 파일명으로 교체하고 Registry를 동기화함.
+- 후속 `documentation-governance` 실행 성공.
 
 **종료 기준**
 
@@ -79,6 +94,8 @@
 - [ ] 사람 시각 검수.
 - [ ] Publication Manifest 해시 기록.
 - [ ] 프로젝트 Skill Map PDF 생성.
+
+**현재 판정: `MIGRATION_PENDING`.**
 
 **종료 기준**
 
@@ -98,6 +115,8 @@
 - [ ] 실제 검증 명령과 중단 기준 작성.
 - [ ] 제품 구현 Plan 갱신.
 
+**현재 판정: `BLOCKED` — 사용자 Windows 경로가 현재 실행 환경에 마운트되지 않음.**
+
 **종료 기준**
 
 문서의 승인·미확정·구현·검증 상태가 실제 파일과 모순되지 않는다.
@@ -111,6 +130,8 @@
 - [ ] 사용자 삭제 승인.
 - [ ] 이동·이름 변경과 모든 참조를 같은 PR에서 수정.
 - [ ] 콜드 스타트·PDF·Actions·링크 재검증.
+
+**현재 판정: `NOT_READY`.**
 
 **종료 기준**
 
