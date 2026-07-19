@@ -1,0 +1,35 @@
+name: Documentation Governance
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  governance:
+    name: documentation-governance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate project operating system
+        run: |
+          python tools/check_documentation_governance.py \
+            --root . \
+            --config .github/documentation-governance.json
+
+      - name: Record publication boundary
+        run: |
+          echo "PDF and skill-map publication remain a separate MIGRATION_PENDING gate."
+          echo "Workflow success does not imply Godot, PDF visual review, or branch-protection enforcement."
