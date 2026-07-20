@@ -19,11 +19,6 @@ function Invoke-NativeChecked {
 
     Write-Host "`n== $Label ==" -ForegroundColor Cyan
 
-    # Windows PowerShell 5.1 may convert normal native stderr output into a
-    # terminating NativeCommandError when ErrorActionPreference is Stop.
-    # Git commonly writes progress such as 'From https://...' to stderr even
-    # when the command succeeds. Temporarily use Continue and judge only by
-    # the native process exit code.
     $previousPreference = $ErrorActionPreference
     $ErrorActionPreference = "Continue"
     try {
@@ -108,20 +103,6 @@ function Resolve-GodotExecutable {
     throw "Godot executable was not found. Use -GodotPath or set GODOT_BIN."
 }
 
-function Resolve-PythonCommand {
-    $py = Get-Command "py" -ErrorAction SilentlyContinue
-    if ($null -ne $py) {
-        return @{ Exe = $py.Source; Prefix = @("-3") }
-    }
-
-    $python = Get-Command "python" -ErrorAction SilentlyContinue
-    if ($null -ne $python) {
-        return @{ Exe = $python.Source; Prefix = @() }
-    }
-
-    throw "Python 3 was not found. Add py or python to PATH."
-}
-
 function Format-IndentedBlock {
     param([string[]]$Lines)
 
@@ -132,9 +113,191 @@ function Format-IndentedBlock {
     return (($Lines | ForEach-Object { "    $_" }) -join "`r`n")
 }
 
+function Get-PropertyNames {
+    param([Parameter(Mandatory = $true)]$Object)
+    return @($Object.PSObject.Properties | ForEach-Object { $_.Name })
+}
+
+function Assert-SameSet {
+    param(
+        [Parameter(Mandatory = $true)][object[]]$Actual,
+        [Parameter(Mandatory = $true)][object[]]$Expected,
+        [Parameter(Mandatory = $true)][string]$Label
+    )
+
+    $actualNormalized = @($Actual | ForEach-Object { [string]$_ } | Sort-Object -Unique)
+    $expectedNormalized = @($Expected | ForEach-Object { [string]$_ } | Sort-Object -Unique)
+    $difference = @(Compare-Object -ReferenceObject $expectedNormalized -DifferenceObject $actualNormalized)
+    if ($difference.Count -gt 0) {
+        throw "$Label mismatch. expected=$($expectedNormalized -join ',') actual=$($actualNormalized -join ',')"
+    }
+}
+
+function Resolve-ResourcePath {
+    param(
+        [Parameter(Mandatory = $true)][string]$RepoRoot,
+        [Parameter(Mandatory = $true)][string]$ResourcePath
+    )
+
+    if (-not $ResourcePath.StartsWith("res://", [System.StringComparison]::Ordinal)) {
+        throw "Resource path must start with res:// : $ResourcePath"
+    }
+
+    $relative = $ResourcePath.Substring(6).Replace('/', [System.IO.Path]::DirectorySeparatorChar)
+    return Join-Path $RepoRoot $relative
+}
+
+function Assert-ResourceExists {
+    param(
+        [Parameter(Mandatory = $true)][string]$RepoRoot,
+        [Parameter(Mandatory = $true)][string]$ResourcePath,
+        [Parameter(Mandatory = $true)][string]$Label
+    )
+
+    $fullPath = Resolve-ResourcePath -RepoRoot $RepoRoot -ResourcePath $ResourcePath
+    if (-not (Test-Path -LiteralPath $fullPath -PathType Leaf)) {
+        throw "$Label resource was not found: $ResourcePath"
+    }
+}
+
+function Assert-AtlasSpec {
+    param(
+        [Parameter(Mandatory = $true)][string]$RepoRoot,
+        [Parameter(Mandatory = $true)]$Spec,
+        [Parameter(Mandatory = $true)][string]$Label
+    )
+
+    Assert-SameSet -Actual (Get-PropertyNames -Object $Spec) -Expected @("atlas", "region") -Label "$Label fields"
+    $atlasPath = [string]$Spec.atlas
+    Assert-ResourceExists -RepoRoot $RepoRoot -ResourcePath $atlasPath -Label "$Label atlas"
+
+    $region = @($Spec.region)
+    if ($region.Count -ne 4) {
+        throw "$Label region must contain exactly four numbers."
+    }
+
+    for ($index = 0; $index -lt 4; $index++) {
+        $value = 0
+        if (-not [int]::TryParse([string]$region[$index], [ref]$value) -or $value -lt 0) {
+            throw "$Label region contains an invalid value at index $index."
+        }
+        if ($index -ge 2 -and $value -le 0) {
+            throw "$Label region width and height must be greater than zero."
+        }
+    }
+}
+
+function Invoke-PowerShellCardContract {
+    param([Parameter(Mandatory = $true)][string]$RepoRoot)
+
+    Write-Host "`n== Validate card contract (PowerShell) ==" -ForegroundColor Cyan
+
+    $catalogPath = Join-Path $RepoRoot "data/cards/basic_cards.json"
+    $manifestPath = Join-Path $RepoRoot "assets/ui/cards/card_asset_manifest.json"
+    if (-not (Test-Path -LiteralPath $catalogPath -PathType Leaf)) {
+        throw "Card catalog was not found: $catalogPath"
+    }
+    if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf)) {
+        throw "Card asset manifest was not found: $manifestPath"
+    }
+
+    $catalog = Get-Content -LiteralPath $catalogPath -Raw -Encoding UTF8 | ConvertFrom-Json
+    $manifest = Get-Content -LiteralPath $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
+
+    $requiredFields = @(
+        "id", "name", "source_label", "source_badge", "range_text",
+        "category", "category_label", "category_badge", "illustration",
+        "target", "damage", "condition", "effect_text", "tags",
+        "action_slots", "stamina_cost", "internal_cost", "flavor"
+    )
+    $forbiddenFields = @("action_point_cost", "guard_reduction")
+    $expectedIds = @(
+        "basic_move", "basic_guard", "basic_evade", "basic_quick_attack",
+        "basic_heavy_attack", "basic_meditate", "basic_stance"
+    )
+    $expectedCategories = @("move", "attack", "response", "recovery", "strengthen")
+    $expectedBasicLabel = ([string][char]0xAE30) + ([string][char]0xCD08)
+
+    $cards = @($catalog.cards)
+    if ($cards.Count -ne 7) {
+        throw "The card catalog must contain exactly seven cards. actual=$($cards.Count)"
+    }
+
+    Assert-SameSet -Actual @($cards | ForEach-Object { $_.id }) -Expected $expectedIds -Label "Card IDs"
+    Assert-SameSet -Actual @($cards | ForEach-Object { $_.category }) -Expected $expectedCategories -Label "Card categories"
+
+    foreach ($card in $cards) {
+        $cardId = [string]$card.id
+        $names = Get-PropertyNames -Object $card
+        foreach ($field in $requiredFields) {
+            if ($names -notcontains $field) {
+                throw "$cardId is missing required field: $field"
+            }
+        }
+        foreach ($field in $forbiddenFields) {
+            if ($names -contains $field) {
+                throw "$cardId contains forbidden field: $field"
+            }
+        }
+        if ([string]$card.source_label -ne $expectedBasicLabel) {
+            throw "$cardId source_label is not the approved basic label."
+        }
+        if ([int]$card.action_slots -lt 1) {
+            throw "$cardId action_slots must be at least 1."
+        }
+        if ([int]$card.stamina_cost -lt 0 -or [int]$card.internal_cost -lt 0) {
+            throw "$cardId resource costs must be zero or greater."
+        }
+        Assert-AtlasSpec -RepoRoot $RepoRoot -Spec $card.source_badge -Label "$cardId.source_badge"
+        Assert-AtlasSpec -RepoRoot $RepoRoot -Spec $card.category_badge -Label "$cardId.category_badge"
+        Assert-AtlasSpec -RepoRoot $RepoRoot -Spec $card.illustration -Label "$cardId.illustration"
+    }
+
+    Assert-SameSet -Actual @($manifest.template_contract.bottom) -Expected @("action_slots", "stamina_cost", "internal_cost") -Label "Manifest bottom contract"
+    Assert-SameSet -Actual @($manifest.template_contract.removed) -Expected $forbiddenFields -Label "Manifest removed fields"
+    Assert-ResourceExists -RepoRoot $RepoRoot -ResourcePath ([string]$manifest.step_2_reference) -Label "STEP 2 reference"
+
+    foreach ($atlasProperty in @($manifest.atlases.PSObject.Properties)) {
+        $atlas = $atlasProperty.Value
+        Assert-ResourceExists -RepoRoot $RepoRoot -ResourcePath ([string]$atlas.path) -Label "Manifest atlas $($atlasProperty.Name)"
+        if (@($atlas.regions.PSObject.Properties).Count -eq 0) {
+            throw "Manifest atlas has no regions: $($atlasProperty.Name)"
+        }
+    }
+
+    $projectText = Get-Content -LiteralPath (Join-Path $RepoRoot "project.godot") -Raw -Encoding UTF8
+    if ($projectText -notlike '*run/main_scene="res://scenes/ui/card_component_preview.tscn"*') {
+        throw "project.godot does not point to the card component preview scene."
+    }
+
+    $requiredFiles = @(
+        "scenes/ui/card_view.tscn",
+        "scenes/ui/card_detail_panel.tscn",
+        "scenes/ui/card_component_preview.tscn",
+        "src/ui/card_catalog.gd",
+        "src/ui/card_view.gd",
+        "src/ui/card_detail_panel.gd",
+        "src/ui/card_component_preview.gd",
+        "tests/verify_step0.gd"
+    )
+    foreach ($relativePath in $requiredFiles) {
+        if (-not (Test-Path -LiteralPath (Join-Path $RepoRoot $relativePath) -PathType Leaf)) {
+            throw "Required STEP 0 file was not found: $relativePath"
+        }
+    }
+
+    $result = @(
+        "PowerShell card component contract: PASS",
+        "cards=7",
+        "categories=move,attack,response,recovery,strengthen",
+        "costs=action_slots,stamina_cost,internal_cost",
+        "forbidden=action_point_cost,guard_reduction"
+    )
+    $result | ForEach-Object { Write-Host $_ }
+    return $result
+}
+
 try {
-    # Derive the repository from the script location. This avoids corruption
-    # when Git emits a Korean Windows path through an OEM code page.
     $repoRootCandidate = Join-Path -Path $PSScriptRoot -ChildPath ".."
     $repoRoot = (Resolve-Path -LiteralPath $repoRootCandidate).Path
 
@@ -181,16 +344,13 @@ try {
     }
 
     $godotExe = Resolve-GodotExecutable -ExplicitPath $GodotPath
-    $python = Resolve-PythonCommand
-
     $godotVersion = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--version") -Label "Check Godot version"
     $versionText = ($godotVersion -join " ").Trim()
     if ($versionText -notmatch "^4\.") {
         throw "Godot 4.x is required. actual=$versionText"
     }
 
-    $staticArgs = @($python.Prefix) + @("tests/check_card_component_contract.py")
-    $staticOutput = Invoke-NativeChecked -FilePath $python.Exe -Arguments $staticArgs -Label "Validate card contract"
+    $staticOutput = Invoke-PowerShellCardContract -RepoRoot $repoRoot
 
     $parseOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @(
         "--headless", "--editor", "--path", $repoRoot, "--quit"
@@ -225,6 +385,7 @@ try {
 - Branch: $ExpectedBranch
 - Godot executable: `$godotExe`
 - Godot version: `$versionText`
+- Static validator: Windows PowerShell 5.1 compatible, no local Python required
 
 ## Checks
 
