@@ -9,7 +9,7 @@ const REQUIRED_FIELDS := [
     "action_slots", "stamina_cost", "internal_cost", "flavor"
 ]
 const FORBIDDEN_FIELDS := ["action_point_cost", "guard_reduction"]
-const REQUIRED_CATEGORIES := ["move", "attack", "response", "recovery", "enhancement"]
+const REQUIRED_CATEGORIES := ["move", "attack", "response", "recovery", "strengthen"]
 
 var failures: Array[String] = []
 
