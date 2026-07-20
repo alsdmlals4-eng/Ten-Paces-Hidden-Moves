@@ -10,7 +10,7 @@ $ExpectedBranch = "agent/t0-combat-poc-board"
 $ReportRelativePath = "artifacts/verification/step0-godot-verification.md"
 $CommitMessage = "test: verify STEP 0 card components in Godot"
 
-function Invoke-Checked {
+function Invoke-NativeChecked {
     param(
         [Parameter(Mandatory = $true)][string]$FilePath,
         [Parameter(Mandatory = $true)][string[]]$Arguments,
@@ -18,9 +18,25 @@ function Invoke-Checked {
     )
 
     Write-Host "`n== $Label ==" -ForegroundColor Cyan
-    $output = & $FilePath @Arguments 2>&1
-    $exitCode = $LASTEXITCODE
-    $output | ForEach-Object { Write-Host $_ }
+
+    # Windows PowerShell 5.1 may convert normal native stderr output into a
+    # terminating NativeCommandError when ErrorActionPreference is Stop.
+    # Git commonly writes progress such as 'From https://...' to stderr even
+    # when the command succeeds. Temporarily use Continue and judge only by
+    # the native process exit code.
+    $previousPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+        $output = @(& $FilePath @Arguments 2>&1)
+        $exitCode = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $previousPreference
+    }
+
+    foreach ($line in $output) {
+        Write-Host ([string]$line)
+    }
 
     if ($exitCode -ne 0) {
         throw "$Label failed (exit=$exitCode)"
@@ -39,11 +55,18 @@ function Resolve-GodotExecutable {
         return (Resolve-Path -LiteralPath $ExplicitPath).Path
     }
 
-    if (-not [string]::IsNullOrWhiteSpace($env:GODOT_BIN) -and (Test-Path -LiteralPath $env:GODOT_BIN -PathType Leaf)) {
-        return (Resolve-Path -LiteralPath $env:GODOT_BIN).Path
+    if (-not [string]::IsNullOrWhiteSpace($env:GODOT_BIN)) {
+        if (Test-Path -LiteralPath $env:GODOT_BIN -PathType Leaf) {
+            return (Resolve-Path -LiteralPath $env:GODOT_BIN).Path
+        }
     }
 
-    foreach ($commandName in @("godot4", "godot", "Godot_v4.7.1-stable_win64_console", "Godot_v4.7.1-stable_win64")) {
+    foreach ($commandName in @(
+        "godot4",
+        "godot",
+        "Godot_v4.7.1-stable_win64_console",
+        "Godot_v4.7.1-stable_win64"
+    )) {
         $command = Get-Command $commandName -ErrorAction SilentlyContinue
         if ($null -ne $command) {
             return $command.Source
@@ -55,6 +78,8 @@ function Resolve-GodotExecutable {
         "$env:USERPROFILE\scoop\shims\godot.exe",
         "$env:LOCALAPPDATA\Programs\Godot\Godot_v4.7.1-stable_win64_console.exe",
         "$env:LOCALAPPDATA\Programs\Godot\Godot_v4.7.1-stable_win64.exe",
+        "$env:ProgramFiles\Godot\Godot_v4.7.1-stable_win64_console.exe",
+        "$env:ProgramFiles\Godot\Godot_v4.7.1-stable_win64.exe",
         "C:\Godot\Godot_v4.7.1-stable_win64_console.exe",
         "C:\Godot\Godot_v4.7.1-stable_win64.exe"
     )
@@ -97,9 +122,19 @@ function Resolve-PythonCommand {
     throw "Python 3 was not found. Add py or python to PATH."
 }
 
+function Format-IndentedBlock {
+    param([string[]]$Lines)
+
+    if ($null -eq $Lines -or $Lines.Count -eq 0) {
+        return "    (no output)"
+    }
+
+    return (($Lines | ForEach-Object { "    $_" }) -join "`r`n")
+}
+
 try {
-    # Resolve the repository from this script location instead of parsing a
-    # Git-emitted path. This avoids OEM code-page corruption on Korean paths.
+    # Derive the repository from the script location. This avoids corruption
+    # when Git emits a Korean Windows path through an OEM code page.
     $repoRootCandidate = Join-Path -Path $PSScriptRoot -ChildPath ".."
     $repoRoot = (Resolve-Path -LiteralPath $repoRootCandidate).Path
 
@@ -107,30 +142,40 @@ try {
         throw "project.godot was not found under the repository root: $repoRoot"
     }
 
-    $insideWorkTree = ((& git -C $repoRoot rev-parse --is-inside-work-tree 2>&1) | Out-String).Trim()
-    if ($LASTEXITCODE -ne 0 -or $insideWorkTree -ne "true") {
+    $insideWorkTree = Invoke-NativeChecked -FilePath "git" -Arguments @(
+        "-C", $repoRoot, "rev-parse", "--is-inside-work-tree"
+    ) -Label "Check Git worktree"
+    if (($insideWorkTree -join "").Trim() -ne "true") {
         throw "The script directory is not inside a Git worktree: $repoRoot"
     }
 
     Set-Location -LiteralPath $repoRoot
 
-    $branch = ((& git branch --show-current) | Out-String).Trim()
-    if ($LASTEXITCODE -ne 0 -or $branch -ne $ExpectedBranch) {
+    $branchOutput = Invoke-NativeChecked -FilePath "git" -Arguments @(
+        "branch", "--show-current"
+    ) -Label "Check branch"
+    $branch = ($branchOutput -join "").Trim()
+    if ($branch -ne $ExpectedBranch) {
         throw "Unexpected branch. expected=$ExpectedBranch actual=$branch"
     }
 
-    $initialStatus = @(& git status --porcelain --untracked-files=all)
-    if ($LASTEXITCODE -ne 0) {
-        throw "git status failed."
-    }
+    $initialStatus = Invoke-NativeChecked -FilePath "git" -Arguments @(
+        "status", "--porcelain", "--untracked-files=all"
+    ) -Label "Check clean worktree"
+    $initialStatus = @($initialStatus | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
     if ($initialStatus.Count -gt 0) {
         throw "The worktree is not clean. Preserve or commit existing changes before retrying.`n$($initialStatus -join "`n")"
     }
 
-    Invoke-Checked -FilePath "git" -Arguments @("fetch", "origin") -Label "Fetch origin"
-    Invoke-Checked -FilePath "git" -Arguments @("pull", "--ff-only", "origin", $ExpectedBranch) -Label "Fast-forward branch"
+    Invoke-NativeChecked -FilePath "git" -Arguments @("fetch", "origin") -Label "Fetch origin" | Out-Null
+    Invoke-NativeChecked -FilePath "git" -Arguments @(
+        "pull", "--ff-only", "origin", $ExpectedBranch
+    ) -Label "Fast-forward branch" | Out-Null
 
-    $postPullStatus = @(& git status --porcelain --untracked-files=all)
+    $postPullStatus = Invoke-NativeChecked -FilePath "git" -Arguments @(
+        "status", "--porcelain", "--untracked-files=all"
+    ) -Label "Recheck clean worktree"
+    $postPullStatus = @($postPullStatus | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
     if ($postPullStatus.Count -gt 0) {
         throw "Unexpected local changes appeared after pull.`n$($postPullStatus -join "`n")"
     }
@@ -138,13 +183,27 @@ try {
     $godotExe = Resolve-GodotExecutable -ExplicitPath $GodotPath
     $python = Resolve-PythonCommand
 
-    $godotVersion = Invoke-Checked -FilePath $godotExe -Arguments @("--version") -Label "Check Godot version"
-    $staticArgs = @($python.Prefix) + @("tests/check_card_component_contract.py")
-    $staticOutput = Invoke-Checked -FilePath $python.Exe -Arguments $staticArgs -Label "Validate card contract"
-    $parseOutput = Invoke-Checked -FilePath $godotExe -Arguments @("--headless", "--editor", "--path", $repoRoot, "--quit") -Label "Import and parse Godot project"
-    $runtimeOutput = Invoke-Checked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_step0.gd") -Label "Run STEP 0 headless verification"
+    $godotVersion = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--version") -Label "Check Godot version"
+    $versionText = ($godotVersion -join " ").Trim()
+    if ($versionText -notmatch "^4\.") {
+        throw "Godot 4.x is required. actual=$versionText"
+    }
 
-    $unexpectedBeforeReport = @(& git status --porcelain --untracked-files=all)
+    $staticArgs = @($python.Prefix) + @("tests/check_card_component_contract.py")
+    $staticOutput = Invoke-NativeChecked -FilePath $python.Exe -Arguments $staticArgs -Label "Validate card contract"
+
+    $parseOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @(
+        "--headless", "--editor", "--path", $repoRoot, "--quit"
+    ) -Label "Import and parse Godot project"
+
+    $runtimeOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @(
+        "--headless", "--path", $repoRoot, "--script", "res://tests/verify_step0.gd"
+    ) -Label "Run STEP 0 headless verification"
+
+    $unexpectedBeforeReport = Invoke-NativeChecked -FilePath "git" -Arguments @(
+        "status", "--porcelain", "--untracked-files=all"
+    ) -Label "Check verification side effects"
+    $unexpectedBeforeReport = @($unexpectedBeforeReport | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
     if ($unexpectedBeforeReport.Count -gt 0) {
         throw "Verification modified unexpected tracked files. Commit was blocked.`n$($unexpectedBeforeReport -join "`n")"
     }
@@ -154,10 +213,9 @@ try {
     New-Item -ItemType Directory -Force -Path $reportDirectory | Out-Null
 
     $timestamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
-    $versionText = ($godotVersion -join "`n").Trim()
-    $staticText = ($staticOutput -join "`n").Trim()
-    $parseText = ($parseOutput -join "`n").Trim()
-    $runtimeText = ($runtimeOutput -join "`n").Trim()
+    $staticBlock = Format-IndentedBlock -Lines $staticOutput
+    $parseBlock = Format-IndentedBlock -Lines $parseOutput
+    $runtimeBlock = Format-IndentedBlock -Lines $runtimeOutput
 
     $report = @"
 # STEP 0 Godot local verification
@@ -165,8 +223,8 @@ try {
 - Status: PASS
 - Verified at (UTC): $timestamp
 - Branch: $ExpectedBranch
-- Godot executable: ``$godotExe``
-- Godot version: ``$versionText``
+- Godot executable: `$godotExe`
+- Godot version: `$versionText`
 
 ## Checks
 
@@ -181,21 +239,15 @@ try {
 
 ## Static contract output
 
-``````text
-$staticText
-``````
+$staticBlock
 
 ## Godot import and parse output
 
-``````text
-$parseText
-``````
+$parseBlock
 
 ## Godot STEP 0 output
 
-``````text
-$runtimeText
-``````
+$runtimeBlock
 
 ## Scope limitation
 
@@ -205,32 +257,51 @@ This automation verifies headless structure, data, parsing, and scene loading. W
     Set-Content -LiteralPath $reportPath -Value $report -Encoding UTF8
 
     $changedFiles = @()
-    $changedFiles += @(& git diff --name-only)
-    $changedFiles += @(& git ls-files --others --exclude-standard)
+    $changedFiles += Invoke-NativeChecked -FilePath "git" -Arguments @("diff", "--name-only") -Label "List tracked changes"
+    $changedFiles += Invoke-NativeChecked -FilePath "git" -Arguments @("ls-files", "--others", "--exclude-standard") -Label "List untracked changes"
     $changedFiles = @($changedFiles | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)
+
     $unexpectedFiles = @($changedFiles | Where-Object { $_ -ne $ReportRelativePath })
     if ($unexpectedFiles.Count -gt 0) {
         throw "Files other than the verification report changed. Commit was blocked.`n$($unexpectedFiles -join "`n")"
     }
 
-    Invoke-Checked -FilePath "git" -Arguments @("add", "--", $ReportRelativePath) -Label "Stage verification report"
-    & git diff --cached --quiet
-    if ($LASTEXITCODE -eq 0) {
-        Write-Host "Verification report is unchanged; no new commit was created." -ForegroundColor Yellow
-    } else {
-        Invoke-Checked -FilePath "git" -Arguments @("commit", "-m", $CommitMessage) -Label "Commit verification report"
+    Invoke-NativeChecked -FilePath "git" -Arguments @("add", "--", $ReportRelativePath) -Label "Stage verification report" | Out-Null
+
+    $cachedDiffExit = 0
+    $previousPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+        & git diff --cached --quiet
+        $cachedDiffExit = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $previousPreference
     }
 
-    $commitSha = ((& git rev-parse HEAD) | Out-String).Trim()
+    if ($cachedDiffExit -eq 0) {
+        Write-Host "Verification report is unchanged; no new commit was created." -ForegroundColor Yellow
+    }
+    elseif ($cachedDiffExit -eq 1) {
+        Invoke-NativeChecked -FilePath "git" -Arguments @("commit", "-m", $CommitMessage) -Label "Commit verification report" | Out-Null
+    }
+    else {
+        throw "git diff --cached --quiet failed (exit=$cachedDiffExit)"
+    }
+
+    $commitOutput = Invoke-NativeChecked -FilePath "git" -Arguments @("rev-parse", "HEAD") -Label "Read commit SHA"
+    $commitSha = ($commitOutput -join "").Trim()
+
     if (-not $NoPush) {
-        Invoke-Checked -FilePath "git" -Arguments @("push", "origin", $ExpectedBranch) -Label "Push verification result"
+        Invoke-NativeChecked -FilePath "git" -Arguments @("push", "origin", $ExpectedBranch) -Label "Push verification result" | Out-Null
     }
 
     Write-Host "`nSTEP 0 automated verification completed." -ForegroundColor Green
     Write-Host "Commit: $commitSha"
     if ($NoPush) {
         Write-Host "Push: skipped (-NoPush)"
-    } else {
+    }
+    else {
         Write-Host "Push: origin/$ExpectedBranch completed"
     }
 }
