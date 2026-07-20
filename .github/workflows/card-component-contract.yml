@@ -10,6 +10,9 @@ on:
       - "scenes/ui/**"
       - "src/ui/**"
       - "tests/check_card_component_contract.py"
+      - "tests/verify_step0.gd"
+      - "tools/verify_and_commit_step0.ps1"
+      - "tools/verify_and_commit_step0.cmd"
       - ".github/workflows/card-component-contract.yml"
   push:
     paths:
@@ -20,6 +23,9 @@ on:
       - "scenes/ui/**"
       - "src/ui/**"
       - "tests/check_card_component_contract.py"
+      - "tests/verify_step0.gd"
+      - "tools/verify_and_commit_step0.ps1"
+      - "tools/verify_and_commit_step0.cmd"
       - ".github/workflows/card-component-contract.yml"
 
 jobs:
@@ -34,3 +40,17 @@ jobs:
         run: python -m py_compile tests/check_card_component_contract.py
       - name: Validate card component contract
         run: python tests/check_card_component_contract.py
+      - name: Parse PowerShell automation
+        shell: pwsh
+        run: |
+          $tokens = $null
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path "tools/verify_and_commit_step0.ps1"),
+            [ref]$tokens,
+            [ref]$errors
+          ) | Out-Null
+          if ($errors.Count -gt 0) {
+            $errors | ForEach-Object { Write-Error $_ }
+            exit 1
+          }
