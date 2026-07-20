@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "approval_status": "USER_APPROVED",
+  "approved_at": "2026-07-21",
+  "template_contract": {
+    "top_left": "source_badge",
+    "top_center": "range_text",
+    "top_right": "category_badge",
+    "bottom": ["action_slots", "stamina_cost", "internal_cost"],
+    "removed": ["action_point_cost", "guard_reduction"]
+  },
+  "step_2_reference": "res://assets/reference/step_02_character_scale_and_tile_placement.svg",
+  "atlases": {
+    "badges": {"path":"res://assets/ui/cards/card_badge_atlas.svg","regions":{"source_basic":[8,5,112,126],"move":[136,12,112,112],"attack":[264,12,112,112],"response":[8,148,112,112],"recovery":[136,148,112,112],"strengthen":[264,148,112,112]}},
+    "cost_icons": {"path":"res://assets/ui/cards/cost_icon_atlas.svg","regions":{"action_slots":[9,7,65,70],"stamina":[91,7,70,70],"internal":[175,7,70,70]}},
+    "illustrations": {"path":"res://assets/ui/cards/basic_illustrations_atlas.svg","regions":{"basic_move":[0,0,240,270],"basic_guard":[240,0,240,270],"basic_evade":[480,0,240,270],"basic_quick_attack":[720,0,240,270],"basic_heavy_attack":[0,270,240,270],"basic_meditate":[240,270,240,270],"basic_stance":[480,270,240,270]}}
+  }
+}
