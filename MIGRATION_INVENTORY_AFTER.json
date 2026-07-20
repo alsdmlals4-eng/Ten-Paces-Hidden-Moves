@@ -1,0 +1,240 @@
+{
+  "baseline_files": 26,
+  "missing": [],
+  "rows": [
+    {
+      "source_path": ".gitignore",
+      "sha256": "6ef7a562169cb08f804f55c919e3787e2167a187dba6f2255ad8ff52a708bde1",
+      "disposition": "[증거]",
+      "preserved_paths": [
+        ".gitignore"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "AGENTS.md",
+      "sha256": "35414dfe72d5025c3c990f4472903c91656dd62e8ca8e2393194f69643d8dc34",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/[백업]/ten-paces/root/AGENTS.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "README.md",
+      "sha256": "2e419b4eeb669f9eb763578a11f41f6cc7e740f783ce356f3d8ef9dcbdd8b32a",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/[백업]/ten-paces/root/README.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/01_GAME_DESIGN.md",
+      "sha256": "9a542bb5fd737edaed9e695af1d4fd78ea7a4c3ad8608e2c530c40f808f4480d",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/02_게임_디자인/등록_부록/01_GAME_DESIGN.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/02_COMBAT_RULES.md",
+      "sha256": "90a1198eea47957c77da3d0723cf729b99998fba891a5b7768148b6e8f6760ec",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/02_게임_디자인/등록_부록/02_COMBAT_RULES.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/03_CONTENT_CATALOG.md",
+      "sha256": "627ef14771636906665cc7d4e7f665ebd3944d724ce807d895bfea94aa98899e",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/01_설정_내러티브/등록_부록/03_CONTENT_CATALOG.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/04_ROADMAP.md",
+      "sha256": "64738c2283c1f052f64513656b31e2bd3066f938fcdc6ee0d95b877d2c8356d4",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/09_프로덕션_PM/등록_부록/04_ROADMAP.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/05_COMBAT_POC_SPEC.md",
+      "sha256": "405ebd2637d4aa86d3791412039ab5ee0aced5427f6ff775af110c7e60d4cb33",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/02_게임_디자인/등록_부록/05_COMBAT_POC_SPEC.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/06_STARTING_FACTION_MASTERY_DATA.md",
+      "sha256": "621a6f46e57dd1ae0750653fa1f323cf1fca063a8c5f763fbc5c28ec259b3dc4",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/02_게임_디자인/등록_부록/06_STARTING_FACTION_MASTERY_DATA.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/07_COMBAT_UI_SPEC.md",
+      "sha256": "5c557bab19b0db267dfb751fcd1bde905c5fd02941522eccee8bdd3541c6a3f9",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/03_UX_UI_접근성/등록_부록/07_COMBAT_UI_SPEC.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/08_TEST_CHECKLIST.md",
+      "sha256": "e838a7c7d1938c05674b7c0af699544377ba987caae6f230ddb95c54423e14c3",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/08_QA/등록_부록/08_TEST_CHECKLIST.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/09_COMBAT_SYSTEM_ARCHITECTURE.md",
+      "sha256": "8e2fe5986c91879f314857f7caa08943af41f8e8dbc92edf0995d8b49fc7ee03",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/04_개발_엔지니어링/등록_부록/09_COMBAT_SYSTEM_ARCHITECTURE.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/10_COMBAT_PRESENTATION_PLAN.md",
+      "sha256": "942cfde88d05c8ea831c2f5dc2b6e3e57ece813528cb5dbafeb0d22ac7769a3f",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/06_아트/등록_부록/10_COMBAT_PRESENTATION_PLAN.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md",
+      "sha256": "60a3a476b9af6729b0c69e338b50d65495f93dd175df058bc9a1350e6405f882",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/10_분석_유저리서치/등록_부록/11_BASE_ADOPTION_AND_LEARNING_LOG.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/ACTIVE_CONTEXT.md",
+      "sha256": "0a8a58d9d13b6eba6448180ecc076b26555cce1e4a0d3b4190b9486c03c91772",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/09_프로덕션_PM/등록_부록/ACTIVE_CONTEXT.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/BASE_RULES_VERSION.md",
+      "sha256": "6144af9f88b783ddc19dd6d14e11e9b3874826890f565fffa4cc76425307d254",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/[백업]/ten-paces/root-docs/BASE_RULES_VERSION.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/DOCUMENTATION_MAP.md",
+      "sha256": "8a15d20b7e6eeebc6684aea8b2e9edff9e8f4f4d0268210d9390ea24df514cda",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/[백업]/ten-paces/root-docs/DOCUMENTATION_MAP.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/[백업]/2026-07-16/07_COMBAT_UI_SPEC_before_card_art_update.md",
+      "sha256": "13e61728e5038111ddb8a4213428b9ce8f1dede553c082638293a3e6fb7be1d0",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/[백업]/ten-paces/2026-07-16/07_COMBAT_UI_SPEC_before_card_art_update.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/[백업]/2026-07-16/DOCUMENTATION_MAP_before_backup_policy.md",
+      "sha256": "327474ba17c965d2686d41ac27115ace06d2e4c60e9a4d344d04203648492b51",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/[백업]/ten-paces/2026-07-16/DOCUMENTATION_MAP_before_backup_policy.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/[백업]/2026-07-16/README_before_document_workflow_update.md",
+      "sha256": "93a03a621b4dca61532cb16327947bd539d59935d0626f449c93e3fb8ef687b1",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/[백업]/ten-paces/2026-07-16/README_before_document_workflow_update.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/[백업]/README.md",
+      "sha256": "83538e3c3b7b6a2be850e585082853e4dec34e4d31692de4e3994076e8332874",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/[백업]/ten-paces/README.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/[보류]/FACTION_GIMMICK_PERFORMANCE_GRADING.md",
+      "sha256": "9766b552aae175856a9237d6ffe90c293bfb1b349eb8acb9de9633f3054a3613",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/[보류]/ten-paces/FACTION_GIMMICK_PERFORMANCE_GRADING.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/[보류]/README.md",
+      "sha256": "3098a46ebf968ca7fb8d6c43db8ab6a84e2d0afa6334f4d3e25c3c43d7e37429",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/[보류]/ten-paces/README.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/skills/TEN_PACES_PLANNING_HANDOFF_EXTENSION.md",
+      "sha256": "39eb42b3080588900351249cb52470c45167ff6310f3fba5df2e30d79e4b46c6",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/[백업]/ten-paces/skills/TEN_PACES_PLANNING_HANDOFF_EXTENSION.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "docs/superpowers/plans/2026-07-16-godot-12-faction-tournament-plan.md",
+      "sha256": "84dff6452db360987f77a45890e5b87a28a0535d20c8fac3beceed0481c3b81d",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/[백업]/ten-paces/superpowers/plans/2026-07-16-godot-12-faction-tournament-plan.md"
+      ],
+      "state": "PRESERVED"
+    },
+    {
+      "source_path": "plans/2026-07-16-combat-poc-plan.md",
+      "sha256": "0c86309e661d9e6c69cf397ad95480cfdfc418a4f0fbcbb890797cce2b559af8",
+      "disposition": "[본책 이주]",
+      "preserved_paths": [
+        "[기획서]/[백업]/ten-paces/plans/2026-07-16-combat-poc-plan.md"
+      ],
+      "state": "PRESERVED"
+    }
+  ]
+}

@@ -1,0 +1,509 @@
+{
+  "baseline_ref": "0ac66389ad6b1d10019680ebf1417d423fa1466e",
+  "files": [
+    {
+      "path": ".gitignore",
+      "blob": "e51f5b14e52e23e73dcccac561f76f5b190e1230",
+      "bytes": 42,
+      "sha256": "6ef7a562169cb08f804f55c919e3787e2167a187dba6f2255ad8ff52a708bde1",
+      "suffix": "",
+      "headings": [],
+      "disposition": "[증거]"
+    },
+    {
+      "path": "AGENTS.md",
+      "blob": "76a4c26127fd5e65cd7115a63f1f775c45a16fa8",
+      "bytes": 6337,
+      "sha256": "35414dfe72d5025c3c990f4472903c91656dd62e8ca8e2393194f69643d8dc34",
+      "suffix": ".md",
+      "headings": [
+        "십보강호 협업 규칙",
+        "1. 규칙 우선순위",
+        "2. 작업 시작 컨텍스트",
+        "3. 기획 문서 갱신",
+        "4. 이전 내용·중복·보류 파일",
+        "5. 관련 문서 동기화",
+        "6. 작업 종료 컨텍스트 정비 — 필수",
+        "7. Base 자동 승격",
+        "8. 작업 결과 보고"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "README.md",
+      "blob": "6cc6e504ff3ea81e5c444e890a0d8f9e31515524",
+      "bytes": 6119,
+      "sha256": "2e419b4eeb669f9eb763578a11f41f6cc7e740f783ce356f3d8ef9dcbdd8b32a",
+      "suffix": ".md",
+      "headings": [
+        "십보강호: 숨은 수의 비무",
+        "Ten Paces: Hidden Moves",
+        "현재 방향",
+        "데모 범위",
+        "수련과 행운",
+        "상대 성장과 제약",
+        "전체판 구조",
+        "현재 우선순위",
+        "문서",
+        "문서 작업 규칙"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/01_GAME_DESIGN.md",
+      "blob": "ffc0a7dc52ea1908b95d4452cefc647ca7caa1d8",
+      "bytes": 9589,
+      "sha256": "9a542bb5fd737edaed9e695af1d4fd78ea7a4c3ad8608e2c530c40f808f4480d",
+      "suffix": ".md",
+      "headings": [
+        "십보강호 게임 기획서",
+        "1. 한 줄 약속",
+        "2. 플레이어 경험",
+        "3. 정보 표현 원칙",
+        "4. 구현 범위",
+        "5. 결투 구조",
+        "6. 회차 구조",
+        "7. 무공과 심법",
+        "8. 수련과 성과",
+        "9. 상대 성장",
+        "10. 제약",
+        "11. 패배와 영구 성장"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/02_COMBAT_RULES.md",
+      "blob": "a1e4c078ee2b0ab227ba6c79c6d1174b86d251c2",
+      "bytes": 7075,
+      "sha256": "90a1198eea47957c77da3d0723cf729b99998fba891a5b7768148b6e8f6760ec",
+      "suffix": ".md",
+      "headings": [
+        "십보강호 전투 규칙서",
+        "1. 전장과 거리",
+        "2. 라운드와 2수 동시 선택",
+        "3. 타이밍 하나의 판정 순서",
+        "4. 합 판정",
+        "5. 자원",
+        "6. 공통 행동",
+        "7. 무기별 박자",
+        "8. 제한 횟수 보조병장",
+        "9. 마공과 마화",
+        "10. AI 공정성"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/03_CONTENT_CATALOG.md",
+      "blob": "0b06b9a7a597eef9071e179ac44241c26109015a",
+      "bytes": 3517,
+      "sha256": "627ef14771636906665cc7d4e7f665ebd3944d724ce807d895bfea94aa98899e",
+      "suffix": ".md",
+      "headings": [
+        "구현 콘텐츠 카탈로그",
+        "시작 선택 6세력",
+        "추가 구현 6세력",
+        "핵심무공 콘텐츠 단위",
+        "심법 콘텐츠 단위",
+        "공용 구현 기준",
+        "보류 관리"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/04_ROADMAP.md",
+      "blob": "d642c02a9f3a360ee4f9e7e3947ca6fec3e1d02f",
+      "bytes": 16301,
+      "sha256": "64738c2283c1f052f64513656b31e2bd3066f938fcdc6ee0d95b877d2c8356d4",
+      "suffix": ".md",
+      "headings": [
+        "십보강호 구현 로드맵과 검증 기준",
+        "단계 0 — 인수 가능한 컨텍스트 유지",
+        "단계 0A — 실제 저장소 상태 감사와 승인 Plan",
+        "단계 0B — 미확정 설계 고정",
+        "단계 1A — T0 전투 규칙 PoC",
+        "단계 1B — T0 전투 연출 PoC",
+        "단계 2A — 예선 결승 데모 시스템",
+        "단계 2B — 예선 결승 데모 연출",
+        "단계 3 — 시작 6세력 수직 슬라이스",
+        "단계 4 — 밸런스와 콘텐츠 밀도",
+        "단계 5 — 12세력 10전 전체판 수직 슬라이스",
+        "단계 6 — 출시 준비",
+        "남은 작업 요약",
+        "계속 보류"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/05_COMBAT_POC_SPEC.md",
+      "blob": "33294e5dc6bb8c7f9ba671935a91a314b61106f8",
+      "bytes": 9103,
+      "sha256": "405ebd2637d4aa86d3791412039ab5ee0aced5427f6ff775af110c7e60d4cb33",
+      "suffix": ".md",
+      "headings": [
+        "12세력 대회 세로 슬라이스 명세",
+        "1. 범위",
+        "2. 공통 전투 상태",
+        "3. 대진",
+        "4. 무공·심법·수련",
+        "5. 성과·행운",
+        "6. 상대 성장",
+        "7. 상대 정보 표현",
+        "8. 전투 제약",
+        "9. 저장·재도전",
+        "10. 완료 기준"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/06_STARTING_FACTION_MASTERY_DATA.md",
+      "blob": "ed9795db7059998bfd0290787340cf26a8dea928",
+      "bytes": 6313,
+      "sha256": "621a6f46e57dd1ae0750653fa1f323cf1fca063a8c5f763fbc5c28ec259b3dc4",
+      "suffix": ".md",
+      "headings": [
+        "12세력 핵심무공·심법·10성 데이터",
+        "1. 무공 보유 구조",
+        "2. 1~10성 공통 구조",
+        "3. 문파별 전용 계통과 진의 방향",
+        "4. 화산 연격 기준",
+        "5. 공용 무공 기준",
+        "6. 구현 경계"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/07_COMBAT_UI_SPEC.md",
+      "blob": "921fee04bcc6385f16855ff86d9cf151ad9b88a4",
+      "bytes": 9707,
+      "sha256": "5c557bab19b0db267dfb751fcd1bde905c5fd02941522eccee8bdd3541c6a3f9",
+      "suffix": ".md",
+      "headings": [
+        "12세력 대회 전투 UI·아트 명세",
+        "1. 회차·대진 화면",
+        "2. 상대 정보 표현",
+        "3. 전투 화면",
+        "4. 무공 카드 아트",
+        "5. 카드 상태",
+        "6. 상세 효과 패널",
+        "7. 2수 선택과 합 표시",
+        "8. 수련 결과 화면",
+        "9. 제약 선택 화면",
+        "10. 구현 전 UI 산출물",
+        "11. 완료 기준"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/08_TEST_CHECKLIST.md",
+      "blob": "6acc7f0d1e32f578235caf46d2979c9c9de715a0",
+      "bytes": 11874,
+      "sha256": "e838a7c7d1938c05674b7c0af699544377ba987caae6f230ddb95c54423e14c3",
+      "suffix": ".md",
+      "headings": [
+        "12세력 대회 세로 슬라이스 테스트 체크리스트",
+        "1. 공용 전장·2수",
+        "2. 합",
+        "3. 무기·장비·상태",
+        "4. 핵심무공·심법",
+        "5. 성과·행운·수련",
+        "6. 상대 생성과 성장",
+        "7. 무림식 상대 정보",
+        "8. 12세력 기믹",
+        "9. 제약",
+        "10. UI·전투 연출",
+        "11. 대진·저장·재도전",
+        "12. 문서·인수인계·Base 경계",
+        "13. 보류 경계",
+        "14. 빌드 승인"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/09_COMBAT_SYSTEM_ARCHITECTURE.md",
+      "blob": "eed003a08d10a1338be1884451c263bf0585483e",
+      "bytes": 8778,
+      "sha256": "8e2fe5986c91879f314857f7caa08943af41f8e8dbc92edf0995d8b49fc7ee03",
+      "suffix": ".md",
+      "headings": [
+        "전투 시스템 아키텍처",
+        "1. 기술·출시 기준",
+        "2. 시스템 층",
+        "3. 전투 시뮬레이션",
+        "4. 회차·성장 구성 요소",
+        "5. 데이터 계층",
+        "6. 공용 수정자 계약",
+        "7. 타이밍 해상 순서",
+        "8. 성장 규칙",
+        "9. 상대 생성",
+        "10. 무림식 정보 계약",
+        "11. 제약 규칙",
+        "12. 대회·저장"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/10_COMBAT_PRESENTATION_PLAN.md",
+      "blob": "caa4b66f56beec872f4e699f4a31feb682b11bf1",
+      "bytes": 22516,
+      "sha256": "942cfde88d05c8ea831c2f5dc2b6e3e57ece813528cb5dbafeb0d22ac7769a3f",
+      "suffix": ".md",
+      "headings": [
+        "십보강호 전투·대회 연출 기획서",
+        "1. 연출 목표",
+        "2. 데모 감정 곡선",
+        "3. 공통 연출 원칙",
+        "4. 상태 소유 경계",
+        "5. 대회·상대 정보 모듈",
+        "6. 전투 기본 화면 모듈",
+        "7. 2수 선택·잠금·공개 모듈",
+        "8. 행동 해상 모듈",
+        "9. 합 연출 모듈",
+        "10. 절초·진의·문파 기믹 모듈",
+        "11. 성과·행운·수련 모듈",
+        "12. 승리·패배·데모 종료 모듈",
+        "13. 카메라·VFX·오디오 예산",
+        "14. 접근성·폴백",
+        "15. 데이터·자산 계약",
+        "16. 제작 우선순위",
+        "17. 구현 전 남은 결정",
+        "18. 향후 로드맵",
+        "19. 남은 작업 목록",
+        "20. 수용 기준"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md",
+      "blob": "997653aada48f4e4561d057151ad6bfc88364a3f",
+      "bytes": 11554,
+      "sha256": "60a3a476b9af6729b0c69e338b50d65495f93dd175df058bc9a1350e6405f882",
+      "suffix": ".md",
+      "headings": [
+        "십보강호 Base 적용·학습 순환 기록",
+        "1. 기준 정보",
+        "2. 작업 순환",
+        "3. Base에서 받아들인 공용 구조",
+        "4. 프로젝트에 맞게 구체화한 규칙",
+        "5. 이번 작업에서 Base로 반영한 내용",
+        "6. Base로 승격하지 않은 프로젝트 전용 내용",
+        "7. 아직 Base 스킬로 승격하지 않은 항목",
+        "8. 후속 동기화 체크",
+        "9. 검증 결과",
+        "10. v1.9.3 추가 승격 기록"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/ACTIVE_CONTEXT.md",
+      "blob": "222165b9341c20acf7990645456f4818549279b7",
+      "bytes": 15536,
+      "sha256": "0a8a58d9d13b6eba6448180ecc076b26555cce1e4a0d3b4190b9486c03c91772",
+      "suffix": ".md",
+      "headings": [
+        "십보강호 활성 컨텍스트",
+        "1. 현재 상태",
+        "2. 제품 방향",
+        "3. 고정 숫자 구조",
+        "4. 전투 핵심",
+        "5. 무공·심법",
+        "6. 성과·행운·수련",
+        "7. 상대 성장·수련 스타일",
+        "8. 상대 정보의 플레이어 표현",
+        "9. 전투·대회 연출 방향",
+        "10. 제약",
+        "11. 현재 문서 책임 원본",
+        "12. 현재 보류",
+        "13. 구현 전 남은 결정",
+        "14. 현재 실행 순서",
+        "15. Base 적용·학습 순환",
+        "16. 작업 종료 체크"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/BASE_RULES_VERSION.md",
+      "blob": "03a944466eaf127b2f3ad06a5df7c8f444ce67ee",
+      "bytes": 3513,
+      "sha256": "6144af9f88b783ddc19dd6d14e11e9b3874826890f565fffa4cc76425307d254",
+      "suffix": ".md",
+      "headings": [
+        "Base 규칙 적용 버전",
+        "적용한 공용 구조",
+        "프로젝트 구체화",
+        "검증 상태",
+        "갱신 조건"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/DOCUMENTATION_MAP.md",
+      "blob": "cdaf268b1fd2e6268d4b8c1923c54535a038ac71",
+      "bytes": 10264,
+      "sha256": "8a15d20b7e6eeebc6684aea8b2e9edff9e8f4f4d0268210d9390ea24df514cda",
+      "suffix": ".md",
+      "headings": [
+        "문서 지도",
+        "읽기 순서",
+        "작업별 최소 읽기",
+        "우선순위",
+        "기준 문서 갱신 규칙",
+        "책임 경계",
+        "보류 문서 규칙",
+        "현재 핵심 동기화 범위",
+        "현재 다음 작업",
+        "작업 종료 필수 확인"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/[백업]/2026-07-16/07_COMBAT_UI_SPEC_before_card_art_update.md",
+      "blob": "c61f14b8b4fc85f36405fa5f162db73eda7d5e6f",
+      "bytes": 3104,
+      "sha256": "13e61728e5038111ddb8a4213428b9ce8f1dede553c082638293a3e6fb7be1d0",
+      "suffix": ".md",
+      "headings": [
+        "12세력 대회 전투 UI 명세",
+        "1. 회차·대진 화면",
+        "2. 전투 화면",
+        "3. 행동열 배치 규칙",
+        "4. 결과 설명 기준",
+        "5. UI 검증"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/[백업]/2026-07-16/DOCUMENTATION_MAP_before_backup_policy.md",
+      "blob": "89879f67f830f7faa5373abc99202d052eca034c",
+      "bytes": 1291,
+      "sha256": "327474ba17c965d2686d41ac27115ace06d2e4c60e9a4d344d04203648492b51",
+      "suffix": ".md",
+      "headings": [
+        "문서 지도",
+        "읽기 순서",
+        "우선순위"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/[백업]/2026-07-16/README_before_document_workflow_update.md",
+      "blob": "dbbdeb1ec14c5b8879a77a720907099285f70898",
+      "bytes": 2503,
+      "sha256": "93a03a621b4dca61532cb16327947bd539d59935d0626f449c93e3fb8ef687b1",
+      "suffix": ".md",
+      "headings": [
+        "십보강호: 숨은 수의 비무",
+        "Ten Paces: Hidden Moves",
+        "현재 구현 범위 — 대회 세로 슬라이스",
+        "전투의 층",
+        "문서",
+        "이번 범위에서 보류"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/[백업]/README.md",
+      "blob": "e05d21e1ba4f4b2f7b6ca68bfa7577cb34bc51c1",
+      "bytes": 838,
+      "sha256": "83538e3c3b7b6a2be850e585082853e4dec34e4d31692de4e3994076e8332874",
+      "suffix": ".md",
+      "headings": [
+        "백업 문서 보관소",
+        "작업 규칙"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/[보류]/FACTION_GIMMICK_PERFORMANCE_GRADING.md",
+      "blob": "4ef1b22ed1626c3bd672dc56a14fdfc8fe9aec4e",
+      "bytes": 1454,
+      "sha256": "9766b552aae175856a9237d6ffe90c293bfb1b349eb8acb9de9633f3054a3613",
+      "suffix": ".md",
+      "headings": [
+        "문파별 기믹 수행도 기반 성과 평가 — 보류",
+        "아이디어",
+        "보류 이유",
+        "재개 조건",
+        "현재 구현 금지"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/[보류]/README.md",
+      "blob": "2c638161a01a87a7fa202054d37d575f5d26a21d",
+      "bytes": 1080,
+      "sha256": "3098a46ebf968ca7fb8d6c43db8ab6a84e2d0afa6334f4d3e25c3c43d7e37429",
+      "suffix": ".md",
+      "headings": [
+        "보류 항목 인덱스",
+        "사용 규칙",
+        "현재 항목"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/skills/TEN_PACES_PLANNING_HANDOFF_EXTENSION.md",
+      "blob": "709b74135b7ca5fec9e15eb462b6007084f90ae1",
+      "bytes": 8176,
+      "sha256": "39eb42b3080588900351249cb52470c45167ff6310f3fba5df2e30d79e4b46c6",
+      "suffix": ".md",
+      "headings": [
+        "십보강호 기획·인수인계 스킬 확장",
+        "Base 스킬",
+        "프로젝트 Trigger",
+        "프로젝트 추가 규칙",
+        "작업 절차",
+        "산출물",
+        "프로젝트 전용 완료 기준",
+        "프로젝트 전용 검증",
+        "승격 검토"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-16-godot-12-faction-tournament-plan.md",
+      "blob": "8aea1106317c7ec15b6c843565342fb0ffa30e7f",
+      "bytes": 18614,
+      "sha256": "84dff6452db360987f77a45890e5b87a28a0535d20c8fac3beceed0481c3b81d",
+      "suffix": ".md",
+      "headings": [
+        "Godot 2D 12세력 대회 세로 슬라이스 구현 Plan",
+        "전역 제약",
+        "확정 전투 수치",
+        "대진·보상·AI 확정 데이터",
+        "반환값: { \"state\": CombatState, \"events\": Array[CombatEvent] }",
+        "Plan 자체 검토"
+      ],
+      "disposition": "[본책 이주]"
+    },
+    {
+      "path": "plans/2026-07-16-combat-poc-plan.md",
+      "blob": "6e2ba75e484bd052117da94b9560181fa00b075c",
+      "bytes": 14089,
+      "sha256": "0c86309e661d9e6c69cf397ad95480cfdfc418a4f0fbcbb890797cce2b559af8",
+      "suffix": ".md",
+      "headings": [
+        "12세력 대회 세로 슬라이스 구현 Plan",
+        "목적",
+        "먼저 읽을 문서",
+        "Codex 작업 시작 규칙",
+        "고정 제약",
+        "미확정 게이트",
+        "작업 0 — 저장소 감사와 승인 Plan",
+        "작업 1 — 공용 전투 엔진",
+        "작업 2 — 합·무기·공용 수정자",
+        "작업 3 — 핵심무공·심법",
+        "작업 4 — 성과·행운·수련",
+        "작업 5 — 상대 생성·성장·정보 표현",
+        "작업 6 — 제약",
+        "작업 7A — 데모 5전 진행",
+        "작업 7B — 전체판 10전과 저장",
+        "작업 8A — 전투 UI",
+        "작업 8B — 전투·대회 연출",
+        "작업 9 — 테스트와 빌드 검증",
+        "작업 10 — 문서·인수인계·Base 학습 정리",
+        "완료 기준"
+      ],
+      "disposition": "[본책 이주]"
+    }
+  ]
+}
