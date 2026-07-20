@@ -23,7 +23,7 @@ function Invoke-Checked {
     $output | ForEach-Object { Write-Host $_ }
 
     if ($exitCode -ne 0) {
-        throw "$Label 실패 (exit=$exitCode)"
+        throw "$Label failed (exit=$exitCode)"
     }
 
     return @($output | ForEach-Object { [string]$_ })
@@ -34,7 +34,7 @@ function Resolve-GodotExecutable {
 
     if (-not [string]::IsNullOrWhiteSpace($ExplicitPath)) {
         if (-not (Test-Path -LiteralPath $ExplicitPath -PathType Leaf)) {
-            throw "지정한 Godot 실행 파일을 찾을 수 없습니다: $ExplicitPath"
+            throw "Godot executable was not found: $ExplicitPath"
         }
         return (Resolve-Path -LiteralPath $ExplicitPath).Path
     }
@@ -80,7 +80,7 @@ function Resolve-GodotExecutable {
         }
     }
 
-    throw "Godot 실행 파일을 찾지 못했습니다. -GodotPath 또는 GODOT_BIN 환경 변수를 사용하세요."
+    throw "Godot executable was not found. Use -GodotPath or set GODOT_BIN."
 }
 
 function Resolve-PythonCommand {
@@ -94,51 +94,59 @@ function Resolve-PythonCommand {
         return @{ Exe = $python.Source; Prefix = @() }
     }
 
-    throw "Python 3 실행 파일을 찾지 못했습니다. py 또는 python을 PATH에 등록하세요."
+    throw "Python 3 was not found. Add py or python to PATH."
 }
 
 try {
-    $repoRootOutput = & git rev-parse --show-toplevel 2>&1
-    if ($LASTEXITCODE -ne 0) {
-        throw "현재 폴더가 Git 저장소가 아닙니다."
+    # Resolve the repository from this script location instead of parsing a
+    # Git-emitted path. This avoids OEM code-page corruption on Korean paths.
+    $repoRootCandidate = Join-Path -Path $PSScriptRoot -ChildPath ".."
+    $repoRoot = (Resolve-Path -LiteralPath $repoRootCandidate).Path
+
+    if (-not (Test-Path -LiteralPath (Join-Path $repoRoot "project.godot") -PathType Leaf)) {
+        throw "project.godot was not found under the repository root: $repoRoot"
     }
 
-    $repoRoot = ([string]$repoRootOutput).Trim()
+    $insideWorkTree = ((& git -C $repoRoot rev-parse --is-inside-work-tree 2>&1) | Out-String).Trim()
+    if ($LASTEXITCODE -ne 0 -or $insideWorkTree -ne "true") {
+        throw "The script directory is not inside a Git worktree: $repoRoot"
+    }
+
     Set-Location -LiteralPath $repoRoot
 
     $branch = ((& git branch --show-current) | Out-String).Trim()
     if ($LASTEXITCODE -ne 0 -or $branch -ne $ExpectedBranch) {
-        throw "현재 브랜치가 $ExpectedBranch 가 아닙니다. actual=$branch"
+        throw "Unexpected branch. expected=$ExpectedBranch actual=$branch"
     }
 
     $initialStatus = @(& git status --porcelain --untracked-files=all)
     if ($LASTEXITCODE -ne 0) {
-        throw "git status 실행에 실패했습니다."
+        throw "git status failed."
     }
     if ($initialStatus.Count -gt 0) {
-        throw "실행 전 작업 폴더가 깨끗하지 않습니다. 기존 변경을 커밋·보관한 뒤 다시 실행하세요.`n$($initialStatus -join "`n")"
+        throw "The worktree is not clean. Preserve or commit existing changes before retrying.`n$($initialStatus -join "`n")"
     }
 
-    Invoke-Checked -FilePath "git" -Arguments @("fetch", "origin") -Label "원격 갱신"
-    Invoke-Checked -FilePath "git" -Arguments @("pull", "--ff-only", "origin", $ExpectedBranch) -Label "브랜치 fast-forward"
+    Invoke-Checked -FilePath "git" -Arguments @("fetch", "origin") -Label "Fetch origin"
+    Invoke-Checked -FilePath "git" -Arguments @("pull", "--ff-only", "origin", $ExpectedBranch) -Label "Fast-forward branch"
 
     $postPullStatus = @(& git status --porcelain --untracked-files=all)
     if ($postPullStatus.Count -gt 0) {
-        throw "pull 이후 예상하지 못한 로컬 변경이 있습니다.`n$($postPullStatus -join "`n")"
+        throw "Unexpected local changes appeared after pull.`n$($postPullStatus -join "`n")"
     }
 
     $godotExe = Resolve-GodotExecutable -ExplicitPath $GodotPath
     $python = Resolve-PythonCommand
 
-    $godotVersion = Invoke-Checked -FilePath $godotExe -Arguments @("--version") -Label "Godot 버전 확인"
+    $godotVersion = Invoke-Checked -FilePath $godotExe -Arguments @("--version") -Label "Check Godot version"
     $staticArgs = @($python.Prefix) + @("tests/check_card_component_contract.py")
-    $staticOutput = Invoke-Checked -FilePath $python.Exe -Arguments $staticArgs -Label "카드 정적 계약 검사"
-    $parseOutput = Invoke-Checked -FilePath $godotExe -Arguments @("--headless", "--editor", "--path", $repoRoot, "--quit") -Label "Godot 프로젝트 import·파싱"
-    $runtimeOutput = Invoke-Checked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_step0.gd") -Label "STEP 0 headless 씬 검증"
+    $staticOutput = Invoke-Checked -FilePath $python.Exe -Arguments $staticArgs -Label "Validate card contract"
+    $parseOutput = Invoke-Checked -FilePath $godotExe -Arguments @("--headless", "--editor", "--path", $repoRoot, "--quit") -Label "Import and parse Godot project"
+    $runtimeOutput = Invoke-Checked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_step0.gd") -Label "Run STEP 0 headless verification"
 
     $unexpectedBeforeReport = @(& git status --porcelain --untracked-files=all)
     if ($unexpectedBeforeReport.Count -gt 0) {
-        throw "검증 과정에서 예상하지 못한 추적 파일 변경이 생겼습니다. 자동 커밋을 중단합니다.`n$($unexpectedBeforeReport -join "`n")"
+        throw "Verification modified unexpected tracked files. Commit was blocked.`n$($unexpectedBeforeReport -join "`n")"
     }
 
     $reportPath = Join-Path $repoRoot $ReportRelativePath
@@ -152,46 +160,46 @@ try {
     $runtimeText = ($runtimeOutput -join "`n").Trim()
 
     $report = @"
-# STEP 0 Godot 로컬 검증
+# STEP 0 Godot local verification
 
-- 상태: PASS
-- 검증 시각(UTC): $timestamp
-- 브랜치: $ExpectedBranch
-- Godot 실행 파일: ``$godotExe``
-- Godot 버전: ``$versionText``
+- Status: PASS
+- Verified at (UTC): $timestamp
+- Branch: $ExpectedBranch
+- Godot executable: ``$godotExe``
+- Godot version: ``$versionText``
 
-## 수행 검사
+## Checks
 
-- [x] 실행 전 작업 폴더 clean
-- [x] 원격 브랜치 fast-forward
-- [x] 카드 계약 정적 검사
-- [x] Godot 프로젝트 import·GDScript 파싱
-- [x] 카드 카탈로그 7종·필수/금지 필드 검사
-- [x] 배지·원화 Atlas 경로 검사
-- [x] 카드 미리보기 씬 인스턴스화
-- [x] CardView 7개·CardDetailPanel 1개 생성
+- [x] Clean worktree before execution
+- [x] Fast-forwarded from origin
+- [x] Static card contract
+- [x] Godot project import and GDScript parsing
+- [x] Seven basic cards and required/forbidden fields
+- [x] Badge and illustration atlas paths
+- [x] Card preview scene instantiation
+- [x] Seven CardView nodes and one CardDetailPanel node
 
-## 정적 검사 출력
+## Static contract output
 
 ``````text
 $staticText
 ``````
 
-## Godot import·파싱 출력
+## Godot import and parse output
 
 ``````text
 $parseText
 ``````
 
-## Godot STEP 0 검증 출력
+## Godot STEP 0 output
 
 ``````text
 $runtimeText
 ``````
 
-## 범위 제한
+## Scope limitation
 
-이 자동화는 headless 구조·데이터·씬 로드 검증이다. Windows 실제 클릭, 스크롤, 최소 해상도, 글꼴, 색각 접근성, 시각적 품질은 별도 수동 검수가 필요하다.
+This automation verifies headless structure, data, parsing, and scene loading. Windows click behavior, scrolling, minimum resolution, fonts, color accessibility, and visual quality still require manual review.
 "@
 
     Set-Content -LiteralPath $reportPath -Value $report -Encoding UTF8
@@ -202,33 +210,33 @@ $runtimeText
     $changedFiles = @($changedFiles | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)
     $unexpectedFiles = @($changedFiles | Where-Object { $_ -ne $ReportRelativePath })
     if ($unexpectedFiles.Count -gt 0) {
-        throw "검증 보고서 외 파일이 변경되어 자동 커밋을 중단합니다.`n$($unexpectedFiles -join "`n")"
+        throw "Files other than the verification report changed. Commit was blocked.`n$($unexpectedFiles -join "`n")"
     }
 
-    Invoke-Checked -FilePath "git" -Arguments @("add", "--", $ReportRelativePath) -Label "검증 보고서 stage"
+    Invoke-Checked -FilePath "git" -Arguments @("add", "--", $ReportRelativePath) -Label "Stage verification report"
     & git diff --cached --quiet
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "검증 보고서 내용 변화가 없어 새 커밋을 만들지 않습니다." -ForegroundColor Yellow
+        Write-Host "Verification report is unchanged; no new commit was created." -ForegroundColor Yellow
     } else {
-        Invoke-Checked -FilePath "git" -Arguments @("commit", "-m", $CommitMessage) -Label "검증 결과 커밋"
+        Invoke-Checked -FilePath "git" -Arguments @("commit", "-m", $CommitMessage) -Label "Commit verification report"
     }
 
     $commitSha = ((& git rev-parse HEAD) | Out-String).Trim()
     if (-not $NoPush) {
-        Invoke-Checked -FilePath "git" -Arguments @("push", "origin", $ExpectedBranch) -Label "검증 결과 push"
+        Invoke-Checked -FilePath "git" -Arguments @("push", "origin", $ExpectedBranch) -Label "Push verification result"
     }
 
-    Write-Host "`nSTEP 0 자동 검증 완료" -ForegroundColor Green
+    Write-Host "`nSTEP 0 automated verification completed." -ForegroundColor Green
     Write-Host "Commit: $commitSha"
     if ($NoPush) {
-        Write-Host "Push: 건너뜀 (-NoPush)"
+        Write-Host "Push: skipped (-NoPush)"
     } else {
-        Write-Host "Push: origin/$ExpectedBranch 완료"
+        Write-Host "Push: origin/$ExpectedBranch completed"
     }
 }
 catch {
-    Write-Host "`nSTEP 0 자동 검증 실패" -ForegroundColor Red
+    Write-Host "`nSTEP 0 automated verification failed." -ForegroundColor Red
     Write-Host $_.Exception.Message -ForegroundColor Red
-    Write-Host "실패 시 자동 commit·push는 수행하지 않습니다." -ForegroundColor Yellow
+    Write-Host "No automatic commit or push was performed after failure." -ForegroundColor Yellow
     exit 1
 }
