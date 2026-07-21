@@ -3,6 +3,18 @@
   "scan_globs": ["*.md", "*.json", ".github/**/*.json", ".github/**/*.yml", "[기획서]/**/*.md", "[기획서]/**/*.json", "docs/**/*.md", "skills/**/*.md", "skills/**/*.json", "templates/**/*.md", "tests/**/*.py", "tools/**/*.py"],
   "ignore_globs": [".git/**", ".godot/**", "docs/[백업]/**", "docs/[보류]/**", "**/[제거 후보]/**"],
   "legacy_aliases_path": "skills/LEGACY_SKILL_ALIASES.md",
+  "forbidden_active_paths": [
+    "[기획서]/00_프로젝트_허브/PROJECT_SKILL_MAP.md",
+    "[기획서]/00_프로젝트_허브/SKILL_MAP_PUBLICATION_MANIFEST.json",
+    "skills/foundation/project-operations-and-handoff/SKILL.md",
+    "skills/integrated-review/project-health-review/SKILL.md",
+    "templates/planning/GAME_BENCHMARK_PLAYER_EVIDENCE.md",
+    "templates/planning/GAME_CONCEPT_DIRECTION_REVIEW.md",
+    "templates/quality/CANONICAL_REFERENCE_FRESHNESS_AUDIT.md",
+    "tests/test_reference_freshness.py",
+    "tests/test_skill_package_integrity.py",
+    "tools/check_documentation_governance.py"
+  ],
   "strict_current_files": [
     "README.md",
     "START_HERE.md",
