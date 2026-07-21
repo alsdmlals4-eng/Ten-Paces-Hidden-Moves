@@ -26,6 +26,8 @@ var card_detail_panel: CardDetailPanel
 var combat_log_panel: CombatLogPanel
 var player_character: CombatCharacterPlaceholder
 var enemy_character: CombatCharacterPlaceholder
+var resolution_engine: CombatResolutionEngine
+var combat_state: Dictionary = {}
 
 var _tile_layer: Control
 var _character_layer: Control
@@ -35,15 +37,24 @@ var _tile_width := 0.0
 var _tile_height := 0.0
 var _tile_gap := 0.0
 var _board_top := 0.0
+var _player_tile := 3
+var _enemy_tile := 8
 var _detail_pinned := false
 var _pinned_card_id := ""
 var _selected_action_definition: Dictionary = {}
 var _progress_request_count := 0
+var _resolution_count := 0
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_PASS
     contract = _load_contract()
+    _player_tile = int(contract.get("player_start_tile", 3))
+    _enemy_tile = int(contract.get("enemy_start_tile", 8))
     _build_structure()
+    resolution_engine = CombatResolutionEngine.new()
+    combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
+    _sync_runtime_context()
+    _apply_combat_state_to_view()
     resized.connect(_layout_board)
     call_deferred("_layout_board")
     call_deferred("_sync_progress_availability")
@@ -141,7 +152,7 @@ func _build_structure() -> void:
     enemy_character.name = "EnemyCharacter"
     _character_layer.add_child(enemy_character)
 
-    set_meta("step", 9)
+    set_meta("step", 10)
     set_meta("background_component", "BattleBackground")
     set_meta("background_asset", "res://assets/backgrounds/step3_mountain_fortress.svg")
     set_meta("hud_component", "TopCombatHud")
@@ -151,8 +162,9 @@ func _build_structure() -> void:
     set_meta("action_timing_sequence", "3|3|4")
     set_meta("progress_button_component", "CombatProgressButton")
     set_meta("progress_button_layout", "bottom_upper_right")
-    set_meta("progress_request_mode", "signal_only")
-    set_meta("state_advancement_enabled", false)
+    set_meta("progress_request_mode", "resolve_bundle")
+    set_meta("state_advancement_enabled", true)
+    set_meta("resolution_order", "response|quick_attack|move|general")
     set_meta("basic_card_tray_component", "BasicCardTray")
     set_meta("basic_card_tray_layout", "bottom_lower")
     set_meta("basic_card_count", 7)
@@ -161,12 +173,13 @@ func _build_structure() -> void:
     set_meta("information_interactions_enabled", true)
     set_meta("action_placement_enabled", true)
     set_meta("progress_requires_complete_bundle", true)
+    set_meta("interruption_enabled", false)
     set_meta("lower_status_panels", false)
     set_meta("lower_skill_panel", true)
     set_meta("card_interactions_enabled", true)
     set_meta("tile_count", tile_count)
-    set_meta("player_start_tile", int(contract.get("player_start_tile", 3)))
-    set_meta("enemy_start_tile", int(contract.get("enemy_start_tile", 8)))
+    set_meta("player_start_tile", _player_tile)
+    set_meta("enemy_start_tile", _enemy_tile)
     set_meta("character_height_to_tile_width", float(contract.get("character_height_to_tile_width", 1.5)))
 
 func _layout_board() -> void:
@@ -244,19 +257,17 @@ func _layout_board() -> void:
         tile.custom_minimum_size = tile.size
         tile.set_occupied("")
 
-    var player_tile := int(contract.get("player_start_tile", 3))
-    var enemy_tile := int(contract.get("enemy_start_tile", 8))
-    get_tile(player_tile).set_occupied("player")
-    get_tile(enemy_tile).set_occupied("enemy")
+    get_tile(_player_tile).set_occupied("player")
+    get_tile(_enemy_tile).set_occupied("enemy")
 
     var height_ratio := float(contract.get("character_height_to_tile_width", 1.5))
     var body_width_ratio := float(contract.get("character_body_width_to_tile_width", 0.72))
-    player_character.configure("player", 1, player_tile, _tile_width, height_ratio, body_width_ratio)
-    enemy_character.configure("enemy", -1, enemy_tile, _tile_width, height_ratio, body_width_ratio)
-    player_character.place_foot_at(get_tile_foot_anchor(player_tile))
-    enemy_character.place_foot_at(get_tile_foot_anchor(enemy_tile))
+    player_character.configure("player", 1, _player_tile, _tile_width, height_ratio, body_width_ratio)
+    enemy_character.configure("enemy", -1, _enemy_tile, _tile_width, height_ratio, body_width_ratio)
+    player_character.place_foot_at(get_tile_foot_anchor(_player_tile))
+    enemy_character.place_foot_at(get_tile_foot_anchor(_enemy_tile))
 
-    var anchor_y := get_tile_foot_anchor(player_tile).y
+    var anchor_y := get_tile_foot_anchor(_player_tile).y
     _anchor_line.position = Vector2(board_left, anchor_y - 1.0)
     _anchor_line.size = Vector2(board_width, 2.0)
 
@@ -301,10 +312,7 @@ func _on_timing_slot_clicked(timing_index: int) -> void:
     var placed := action_timing_panel.place_card(_selected_action_definition, timing_index)
     if placed:
         var span := maxi(1, int(_selected_action_definition.get("action_slots", 1)))
-        var placement := {
-            "card_name": str(_selected_action_definition.get("name", "")),
-            "indices": _make_timing_indices(timing_index, span)
-        }
+        var placement := {"card_name": str(_selected_action_definition.get("name", "")), "indices": _make_timing_indices(timing_index, span)}
         if is_instance_valid(combat_log_panel):
             combat_log_panel.append_entry("[배치] %s · %s" % [str(placement.get("card_name", "")), _placement_timing_text(placement)], "system")
         _clear_action_selection()
@@ -329,6 +337,11 @@ func _placement_timing_text(placement: Dictionary) -> String:
 func _on_placement_changed(_snapshot: Dictionary) -> void:
     _sync_progress_availability()
 
+func _sync_runtime_context() -> void:
+    if not is_instance_valid(action_timing_panel) or not is_instance_valid(combat_progress_button):
+        return
+    combat_progress_button.set_runtime_context(action_timing_panel.get_runtime_context())
+
 func _sync_progress_availability() -> void:
     if not is_instance_valid(action_timing_panel) or not is_instance_valid(combat_progress_button):
         return
@@ -336,12 +349,46 @@ func _sync_progress_availability() -> void:
     set_meta("current_bundle_complete", action_timing_panel.is_current_bundle_complete())
 
 func _on_progress_requested(context: Dictionary) -> void:
+    if not action_timing_panel.is_current_bundle_complete():
+        return
     _progress_request_count += 1
     set_meta("progress_request_count", _progress_request_count)
+
+    var result := resolution_engine.resolve_bundle(action_timing_panel.get_resolution_placements(), context, combat_state)
+    combat_state = (result.get("state", {}) as Dictionary).duplicate(true)
+    _resolution_count += 1
+    set_meta("resolution_count", _resolution_count)
+    _append_resolution_logs(result.get("logs", []))
+
+    var advanced := action_timing_panel.advance_after_resolution()
+    combat_state["round_number"] = int(advanced.get("round_number", combat_state.get("round_number", 1)))
+    combat_state["bundle_index"] = int(advanced.get("current_bundle", combat_state.get("bundle_index", 1)))
+    _clear_action_selection()
+    _clear_card_detail()
+    _sync_runtime_context()
+    combat_progress_button.mark_resolution_applied()
+    _apply_combat_state_to_view()
     if is_instance_valid(combat_log_panel):
-        var round_number := int(context.get("round_number", 1))
-        var bundle_index := int(context.get("bundle_index", 1))
-        combat_log_panel.append_entry("[진행] %d라운드 %d묶음 진행 요청" % [round_number, bundle_index], "system")
+        combat_log_panel.append_entry("[판정 완료] 다음 행동 묶음을 준비합니다.", "system")
+
+func _append_resolution_logs(values) -> void:
+    if not is_instance_valid(combat_log_panel) or typeof(values) != TYPE_ARRAY:
+        return
+    for value in values:
+        combat_log_panel.append_entry(str(value), "resolution")
+
+func _apply_combat_state_to_view() -> void:
+    if combat_state.is_empty():
+        return
+    var player: Dictionary = combat_state.get("player", {})
+    var enemy: Dictionary = combat_state.get("enemy", {})
+    _player_tile = clampi(int(player.get("tile", _player_tile)), 1, tiles.size())
+    _enemy_tile = clampi(int(enemy.get("tile", _enemy_tile)), 1, tiles.size())
+    if is_instance_valid(top_hud):
+        top_hud.apply_combat_state(combat_state, action_timing_panel.timing_data.get("timing_sequence", [3, 3, 4]))
+    set_meta("player_tile", _player_tile)
+    set_meta("enemy_tile", _enemy_tile)
+    call_deferred("_layout_board")
 
 func _clear_action_selection() -> void:
     _selected_action_definition.clear()
@@ -398,6 +445,9 @@ func get_character_foot_anchor(role: String) -> Vector2:
         return enemy_character.position + enemy_character.get_foot_anchor_local()
     return Vector2.ZERO
 
+func get_combat_state_snapshot() -> Dictionary:
+    return combat_state.duplicate(true)
+
 func get_layout_snapshot() -> Dictionary:
     var hud_snapshot := top_hud.get_hud_snapshot() if is_instance_valid(top_hud) else {}
     var timing_snapshot := action_timing_panel.get_timing_snapshot() if is_instance_valid(action_timing_panel) else {}
@@ -422,6 +472,7 @@ func get_layout_snapshot() -> Dictionary:
         "progress_button_top": combat_progress_button.position.y if is_instance_valid(combat_progress_button) else 0.0,
         "progress_button_bottom": combat_progress_button.position.y + combat_progress_button.size.y if is_instance_valid(combat_progress_button) else 0.0,
         "progress_request_count": _progress_request_count,
+        "resolution_count": _resolution_count,
         "basic_card_tray_ready": is_instance_valid(basic_card_tray),
         "basic_card_tray_snapshot": tray_snapshot,
         "basic_card_tray_top": basic_card_tray.position.y if is_instance_valid(basic_card_tray) else 0.0,
@@ -434,12 +485,14 @@ func get_layout_snapshot() -> Dictionary:
         "current_bundle_complete": action_timing_panel.is_current_bundle_complete() if is_instance_valid(action_timing_panel) else false,
         "information_interactions_enabled": true,
         "action_placement_enabled": true,
-        "state_advancement_enabled": false,
+        "state_advancement_enabled": true,
+        "interruption_enabled": false,
+        "combat_state": get_combat_state_snapshot(),
         "lower_status_panels": false,
         "lower_skill_panel": true,
         "tile_count": tiles.size(),
-        "player_tile": int(contract.get("player_start_tile", 3)),
-        "enemy_tile": int(contract.get("enemy_start_tile", 8)),
+        "player_tile": _player_tile,
+        "enemy_tile": _enemy_tile,
         "tile_width": _tile_width,
         "tile_height": _tile_height,
         "tile_gap": _tile_gap,
@@ -447,8 +500,8 @@ func get_layout_snapshot() -> Dictionary:
         "board_bottom": _board_top + _tile_height,
         "player_foot": get_character_foot_anchor("player"),
         "enemy_foot": get_character_foot_anchor("enemy"),
-        "player_tile_anchor": get_tile_foot_anchor(int(contract.get("player_start_tile", 3))),
-        "enemy_tile_anchor": get_tile_foot_anchor(int(contract.get("enemy_start_tile", 8))),
+        "player_tile_anchor": get_tile_foot_anchor(_player_tile),
+        "enemy_tile_anchor": get_tile_foot_anchor(_enemy_tile),
         "player_size": player_character.size if is_instance_valid(player_character) else Vector2.ZERO,
         "enemy_size": enemy_character.size if is_instance_valid(enemy_character) else Vector2.ZERO
     }
