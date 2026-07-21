@@ -65,7 +65,7 @@ def main() -> None:
     top_hud = contract["top_hud"]
     assert top_hud["step"] == 4
     assert top_hud["approval_status"] == "USER_APPROVED_LAYOUT"
-    assert top_hud["momentum_segments"] == 6
+    assert top_hud["momentum_segments"] == 5
     assert top_hud["layout"] == [
         "player_status",
         "player_momentum",
@@ -79,11 +79,11 @@ def main() -> None:
     assert res_file(top_hud["data"]).exists()
 
     hud_data = json.loads(HUD_DATA.read_text(encoding="utf-8"))
-    assert hud_data["momentum_segments"] == 6
+    assert hud_data["momentum_segments"] == 5
     assert len(hud_data["player"]["momentum"]) == 2
     assert len(hud_data["enemy"]["momentum"]) == 2
-    assert hud_data["player"]["momentum"][1] == 6
-    assert hud_data["enemy"]["momentum"][1] == 6
+    assert hud_data["player"]["momentum"] == [4, 5]
+    assert hud_data["enemy"]["momentum"] == [3, 5]
     assert hud_data["round"]["round_number"] == 1
     assert hud_data["round"]["bundle_total"] == 3
     assert hud_data["round"]["resolution_order"] == "대응 → 속공 → 이동 → 일반 공격"
@@ -98,7 +98,7 @@ def main() -> None:
     assert action_timing["current_bundle"] == 2
     assert action_timing["current_timing"] == 5
     assert action_timing["progress_scope"] == "round"
-    assert action_timing["progress_label_format"] == "라운드 {round} / ({current}/{total}수)"
+    assert action_timing["progress_label_format"] == "라운드 {round}"
     assert action_timing["cards_inserted"] is False
     assert action_timing["interactions_enabled"] is False
     assert res_file(action_timing["scene"]).exists()
@@ -199,9 +199,17 @@ def main() -> None:
     assert 'set_meta("round_number", int(timing_data.get("round_number", 1)))' in timing_panel_script
     assert 'set_meta("timing_sequence", "3|3|4")' in timing_panel_script
     assert 'set_meta("progress_scope", "round")' in timing_panel_script
-    assert '"라운드 %d / (%d/%d수)"' in timing_panel_script
+    assert '"라운드 %d" % round_number' in timing_panel_script
+    assert '/ (%d/%d수)' not in timing_panel_script
     assert '"round_number": int(timing_data.get("round_number", 1))' in timing_panel_script
     assert 'set_meta("interactions_enabled", false)' in timing_panel_script
+
+    momentum_script = (ROOT / "src/ui/momentum_gauge.gd").read_text(encoding="utf-8")
+    assert "maximum_value: int = 5" in momentum_script
+    assert "fallback_maximum: int = 5" in momentum_script
+
+    top_hud_script = (ROOT / "src/ui/top_combat_hud.gd").read_text(encoding="utf-8")
+    assert 'hud_data.get("momentum_segments", 5)' in top_hud_script
 
     tray_script = (ROOT / "src/ui/basic_card_tray.gd").read_text(encoding="utf-8")
     assert 'DATA_PATH := "res://data/cards/basic_cards.json"' in tray_script
@@ -217,6 +225,7 @@ def main() -> None:
         assert f'"{category}"' in tray_item_script
 
     verifier = (ROOT / "tests/verify_combat_board.gd").read_text(encoding="utf-8")
+    assert "EXPECTED_MOMENTUM_SEGMENTS := 5" in verifier
     assert "EXPECTED_TIMING_SEQUENCE := [3, 3, 4]" in verifier
     assert "EXPECTED_CARD_IDS" in verifier
     assert '"basic_card_tray_ready"' in verifier
