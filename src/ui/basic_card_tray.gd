@@ -49,9 +49,10 @@ func _build_content() -> void:
     for definition_value in definitions:
         if typeof(definition_value) != TYPE_DICTIONARY:
             continue
+        var definition: Dictionary = definition_value
         var card := CARD_SCENE.instantiate() as BasicCardTrayItem
         card.name = "BasicCard%02d" % (cards.size() + 1)
-        card.configure(definition_value as Dictionary)
+        card.configure(definition)
         add_child(card)
         cards.append(card)
 
