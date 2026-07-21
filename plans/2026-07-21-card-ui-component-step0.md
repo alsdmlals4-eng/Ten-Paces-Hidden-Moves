@@ -1,22 +1,28 @@
-# STEP 0 — 카드 UI 컴포넌트 구현·검증 Plan
+# STEP 0 — 카드 템플릿 UI 컴포넌트 분리
 
-## 목적
+## 승인 근거
 
-승인된 카드 템플릿을 통이미지가 아니라 데이터와 자산을 교체할 수 있는 재사용 Godot UI 컴포넌트로 구현하고, 로컬 Windows Godot 검증을 안전하게 자동화한다.
+사용자가 확정한 카드 템플릿을 실제 Godot UI 컴포넌트와 데이터로 분리한다. 고정되는 것은 레이아웃과 정보 책임이며, 카드마다 소속·사거리·기능·카드명·원화·비용·상세 효과가 바뀔 수 있다.
 
-## 승인된 카드 계약
+## 고정 계약
 
-- 좌측 상단: 소속 배지.
-- 중앙 상단: 사거리.
-- 우측 상단: 이동·공격·대응·회복·강화 기능 배지.
-- 기초 행동 7종의 소속은 `기초`.
-- 하단 비용은 `행동 슬롯 / 기력 / 내력`만 사용한다.
-- 행동력과 공통 `막기 경감` 필드는 사용하지 않는다.
-- 카드 클릭 시 동일 데이터가 상세 패널에 표시된다.
-- 카드별 소속·사거리·기능·원화·수치·효과는 데이터에서 교체할 수 있다.
-- 사용자 편집기는 이후 별도 단계에서 구현한다.
+```text
+좌측 상단: 소속 배지
+중앙 상단: 사거리
+우측 상단: 이동 / 공격 / 대응 / 회복 / 강화 배지
+중앙: 카드명 + 원화
+하단: 행동 슬롯 / 기력 / 내력
+클릭 상세: 대상 / 사거리 / 피해 / 조건 / 효과 / 태그 / 세 비용 / 플레이버
+```
 
-## 구현 파일
+- 기초 행동의 소속은 `[기초]`다.
+- `[강호낭인]` 소속 배지는 사용하지 않는다.
+- 행동력은 카드 데이터와 UI에서 제거한다.
+- `막기 경감`은 공통 상세 항목과 데이터 필드에서 제거한다.
+- UI는 데이터를 표시하며 전투 결과를 계산하지 않는다.
+- 향후 사용자 편집 기능은 같은 데이터 필드를 수정하는 별도 단계다.
+
+## 생성 파일
 
 - `project.godot`
 - `data/cards/basic_cards.json`
@@ -24,13 +30,15 @@
 - `assets/ui/cards/card_badge_atlas.svg`
 - `assets/ui/cards/cost_icon_atlas.svg`
 - `assets/ui/cards/basic_illustrations_atlas.svg`
-- `scenes/ui/card_view.tscn`
-- `scenes/ui/card_detail_panel.tscn`
-- `scenes/ui/card_component_preview.tscn`
 - `src/ui/card_catalog.gd`
 - `src/ui/card_view.gd`
 - `src/ui/card_detail_panel.gd`
 - `src/ui/card_component_preview.gd`
+- `scenes/ui/card_view.tscn`
+- `scenes/ui/card_detail_panel.tscn`
+- `scenes/ui/card_component_preview.tscn`
+- `tests/check_card_component_contract.py`
+- `tests/verify_step0.gd`
 
 ## 기초 카드 7종
 
@@ -46,52 +54,16 @@
 
 수치는 데이터 예시이며 전투 밸런스 책임 원본과 플레이테스트 결과에 따라 교체할 수 있다.
 
-## 로컬 자동 검증
+## 자동 검증
 
-### 실행 파일
+기존 진입 파일 `tools/verify_and_commit_step0.cmd`는 `tools/verify_and_commit_combat_foundation.ps1`을 호출한다.
 
-- 원클릭 실행: `tools/verify_and_commit_step0.cmd`
-- PowerShell 본체: `tools/verify_and_commit_step0.ps1`
-- Godot headless 검사: `tests/verify_step0.gd`
-- 정적 계약 검사: `tests/check_card_component_contract.py`
-
-### 자동 실행 순서
-
-1. Git 저장소 루트와 현재 브랜치를 확인한다.
-2. 브랜치가 `agent/t0-combat-poc-board`가 아니면 중단한다.
-3. 실행 전 작업 폴더가 clean이 아니면 중단한다.
-4. 원격을 fetch하고 `--ff-only`로만 pull한다.
-5. Godot 실행 파일과 Python 3을 탐색한다.
-6. 카드 정적 계약 검사를 실행한다.
-7. Godot headless editor로 프로젝트 import·GDScript 파싱을 확인한다.
-8. 카드 7종, 필수·금지 필드, Atlas 경로와 미리보기 씬을 검사한다.
-9. 성공 보고서를 `artifacts/verification/step0-godot-verification.md`에 생성한다.
-10. 보고서 외 다른 파일이 바뀌면 중단한다.
-11. 보고서만 stage하고 `test: verify STEP 0 card components in Godot`으로 커밋한다.
-12. 기본값으로 현재 브랜치를 origin에 push한다.
-
-### 안전 조건
-
-- 하나라도 실패하면 검증 커밋과 push를 수행하지 않는다.
-- 기존 사용자 변경을 자동 stage하지 않는다.
-- 병합·rebase·강제 push를 수행하지 않는다.
-- `-NoPush` 옵션을 주면 검증·커밋 후 push만 건너뛴다.
-- 자동화는 headless 구조 검증이며 실제 마우스 클릭·스크롤·최소 해상도·시각 품질을 대신하지 않는다.
-
-## 실행 방법
-
-GitHub Desktop에서 현재 브랜치를 pull한 뒤 다음 파일을 더블클릭한다.
-
-```text
-tools\verify_and_commit_step0.cmd
-```
-
-Godot 자동 탐색에 실패하면 PowerShell에서 다음처럼 실행한다.
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\tools\verify_and_commit_step0.ps1 `
-  -GodotPath "C:\Godot\Godot_v4.7.1-stable_win64_console.exe"
-```
+- 로컬 Python은 필요하지 않는다.
+- Godot import·GDScript 파싱을 수행한다.
+- STEP 0 카드 7종과 상세 패널을 headless 검증한다.
+- 이어서 STEP 1·2 전투판까지 검증한다.
+- 모든 검사 성공 시 검증 보고서만 commit·push한다.
+- 실패 시 사용자 변경을 stage하거나 commit하지 않는다.
 
 ## PR 체크리스트
 
@@ -104,17 +76,12 @@ powershell -ExecutionPolicy Bypass -File .\tools\verify_and_commit_step0.ps1 `
 - [x] 기초 카드 7종이 동일 `CardView`를 사용한다.
 - [x] 클릭 상세 패널이 같은 JSON 데이터를 사용한다.
 - [x] 원화·배지·비용 아이콘이 독립 Atlas다.
-- [x] Python 정적 계약 검사 연결.
-- [x] Godot headless 씬 검사 연결.
-- [x] 실패 시 commit·push 금지.
-- [x] clean worktree와 지정 브랜치 강제.
-- [x] fast-forward pull만 허용.
-- [x] 보고서 외 변경 파일 자동 stage 금지.
-- [x] PowerShell 구문 CI 검사 연결.
-- [ ] 사용자 Windows에서 실제 자동화 실행.
-- [ ] 생성된 검증 보고서와 push 결과 확인.
-- [ ] 실제 화면 클릭·스크롤·최소 해상도 수동 검수.
+- [x] Python 정적 계약 검사를 통과했다.
+- [x] 로컬 자동화의 Python 의존성을 제거했다.
+- [x] Godot headless STEP 0 검증 코드를 추가했다.
+- [ ] 사용자 Windows에서 통합 자동 검증 PASS 보고서가 생성됐다.
+- [ ] Windows에서 클릭·스크롤·최소 해상도를 수동 확인했다.
 
 ## 검증 상태
 
-GitHub Actions는 정적 계약과 PowerShell 구문을 검사한다. 실제 Godot 실행과 보고서 커밋·push는 사용자의 Windows 작업본에서 원클릭 자동화가 실행된 뒤 증거로 확정한다.
+저장소의 구조·데이터·정적 계약·Godot headless 검증 코드는 완료했다. 사용자 Windows의 Godot 4.7에서 `tools/verify_and_commit_step0.cmd`를 실행해 PASS 보고서가 push되면 런타임 구조 검증을 완료로 전환한다.
