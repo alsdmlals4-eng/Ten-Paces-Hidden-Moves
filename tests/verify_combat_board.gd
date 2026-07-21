@@ -6,6 +6,7 @@ const EXPECTED_TILE_COUNT := 10
 const EXPECTED_PLAYER_TILE := 3
 const EXPECTED_ENEMY_TILE := 8
 const EXPECTED_HEIGHT_RATIO := 1.5
+const EXPECTED_MOMENTUM_SEGMENTS := 6
 const POSITION_TOLERANCE := 0.75
 const SIZE_TOLERANCE := 0.01
 
@@ -40,6 +41,7 @@ func _run() -> void:
     await process_frame
     await process_frame
     await process_frame
+    await process_frame
 
     var snapshot := board.get_layout_snapshot()
     if not bool(snapshot.get("layout_ready", false)):
@@ -56,6 +58,41 @@ func _run() -> void:
             failures.append("BattleBackground must be the first rendered child behind the board.")
         if str(board.battle_background.get_meta("contrast_role", "")) != "below_board_and_characters":
             failures.append("BattleBackground must declare the low-contrast presentation role.")
+
+    if not bool(snapshot.get("hud_ready", false)):
+        failures.append("STEP 4 top combat HUD did not instantiate.")
+    if bool(snapshot.get("lower_status_panels", true)):
+        failures.append("Player and enemy status panels must not be placed at the bottom.")
+    if board.top_hud == null:
+        failures.append("TopCombatHud component must exist.")
+    else:
+        var hud_snapshot := board.top_hud.get_hud_snapshot()
+        if not bool(hud_snapshot.get("player_panel", false)):
+            failures.append("Top HUD must include the player status panel on the left.")
+        if not bool(hud_snapshot.get("player_momentum", false)):
+            failures.append("Top HUD must include player ultimate momentum.")
+        if not bool(hud_snapshot.get("round_panel", false)):
+            failures.append("Top HUD must include the central round panel.")
+        if not bool(hud_snapshot.get("enemy_momentum", false)):
+            failures.append("Top HUD must include enemy ultimate momentum.")
+        if not bool(hud_snapshot.get("enemy_panel", false)):
+            failures.append("Top HUD must include the enemy status panel on the right.")
+        if int(hud_snapshot.get("momentum_segments", 0)) != EXPECTED_MOMENTUM_SEGMENTS:
+            failures.append("Both ultimate momentum gauges must use six segments.")
+        if bool(hud_snapshot.get("lower_status_panels", true)):
+            failures.append("Top HUD metadata must explicitly reject lower status panels.")
+        if str(hud_snapshot.get("layout", "")) != "player_status|player_momentum|round|enemy_momentum|enemy_status":
+            failures.append("Top HUD component order does not match the approved layout.")
+
+        var status_panels := board.top_hud.find_children("*", "CombatantStatusPanel", true, false)
+        var momentum_gauges := board.top_hud.find_children("*", "MomentumGauge", true, false)
+        var round_panels := board.top_hud.find_children("*", "RoundHudPanel", true, false)
+        if status_panels.size() != 2:
+            failures.append("Top HUD must have exactly two combatant status panels. actual=%d" % status_panels.size())
+        if momentum_gauges.size() != 2:
+            failures.append("Top HUD must have exactly two momentum gauges. actual=%d" % momentum_gauges.size())
+        if round_panels.size() != 1:
+            failures.append("Top HUD must have exactly one round panel. actual=%d" % round_panels.size())
 
     if int(snapshot.get("tile_count", 0)) != EXPECTED_TILE_COUNT:
         failures.append("Expected ten board tiles. actual=%s" % snapshot.get("tile_count", 0))
@@ -121,11 +158,11 @@ func _run() -> void:
 
 func _finish() -> void:
     if failures.is_empty():
-        print("COMBAT_BOARD_STEP1_STEP2_STEP3_VERIFY_OK")
+        print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_VERIFY_OK")
         quit(0)
         return
 
     for failure in failures:
         push_error(failure)
-    print("COMBAT_BOARD_STEP1_STEP2_STEP3_VERIFY_FAILED count=%d" % failures.size())
+    print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_VERIFY_FAILED count=%d" % failures.size())
     quit(1)
