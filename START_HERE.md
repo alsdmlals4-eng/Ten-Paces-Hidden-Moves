@@ -18,6 +18,7 @@ Gates·Roadmap·Registry·Audit·Handoff는 `DOCUMENTATION_MAP.md`가 지시할 
 - 프로젝트: `alsdmlals4-eng/Ten-Paces-Hidden-Moves`
 - Base: `alsdmlals4-eng/Base@ee265576da7f67d3278f8099dd97d4e714ef0651`
 - Base 버전·차이: `docs/BASE_RULES_VERSION.md`
+- Skill Registry: `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`
 - 70개 변경 파일 감사: `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`
 - 운영 PR: #5
 - 전투 POC PR: #7
