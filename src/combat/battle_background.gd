@@ -19,7 +19,11 @@ func _ready() -> void:
 	set_meta("step", 3)
 	set_meta("art_direction", "approved_ink_wash_mountain_fortress")
 	set_meta("contrast_role", "below_board_and_characters")
+<<<<<<< Updated upstream
 	set_meta("source_mode", "embedded_jpeg_relaxed_base64_decode")
+=======
+	set_meta("source_mode", "embedded_jpeg_runtime_decode")
+>>>>>>> Stashed changes
 
 func _load_embedded_jpeg_texture() -> Texture2D:
 	if not FileAccess.file_exists(BACKGROUND_SOURCE_PATH):
@@ -44,17 +48,24 @@ func _load_embedded_jpeg_texture() -> Texture2D:
 		return null
 
 	var encoded_jpeg := svg_text.substr(data_start, data_end - data_start)
+<<<<<<< Updated upstream
 	var jpeg_bytes := _decode_base64_relaxed(encoded_jpeg)
 	if jpeg_bytes.size() < 3:
 		push_error("Embedded STEP 3 JPEG decoded to an empty or invalid byte array.")
 		return null
 	if jpeg_bytes[0] != 0xFF or jpeg_bytes[1] != 0xD8 or jpeg_bytes[2] != 0xFF:
 		push_error("Embedded STEP 3 JPEG does not start with a valid JPEG signature.")
+=======
+	var jpeg_bytes := Marshalls.base64_to_raw(encoded_jpeg)
+	if jpeg_bytes.is_empty():
+		push_error("Embedded STEP 3 JPEG decoded to an empty byte array.")
+>>>>>>> Stashed changes
 		return null
 
 	var image := Image.new()
 	var load_error := image.load_jpg_from_buffer(jpeg_bytes)
 	if load_error != OK:
+<<<<<<< Updated upstream
 		push_error("Embedded STEP 3 JPEG could not be loaded. error=%d bytes=%d" % [load_error, jpeg_bytes.size()])
 		return null
 
@@ -102,3 +113,9 @@ func _base64_value(code: int) -> int:
 	if code == 47 or code == 95:
 		return 63
 	return -1
+=======
+		push_error("Embedded STEP 3 JPEG could not be loaded. error=%d" % load_error)
+		return null
+
+	return ImageTexture.create_from_image(image)
+>>>>>>> Stashed changes
