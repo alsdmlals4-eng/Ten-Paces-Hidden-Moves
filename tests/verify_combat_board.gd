@@ -7,6 +7,8 @@ const EXPECTED_PLAYER_TILE := 3
 const EXPECTED_ENEMY_TILE := 8
 const EXPECTED_HEIGHT_RATIO := 1.5
 const EXPECTED_MOMENTUM_SEGMENTS := 6
+const EXPECTED_TIMING_SEQUENCE := [3, 3, 4]
+const EXPECTED_TIMING_COUNT := 10
 const POSITION_TOLERANCE := 0.75
 const SIZE_TOLERANCE := 0.01
 
@@ -103,6 +105,56 @@ func _run() -> void:
         if round_panels.size() != 1:
             failures.append("Top HUD must have exactly one round panel. actual=%d" % round_panels.size())
 
+    if not bool(snapshot.get("action_timing_ready", false)):
+        failures.append("STEP 5 action timing panel did not instantiate.")
+    if bool(snapshot.get("lower_skill_panel", true)):
+        failures.append("STEP 5 must not add the lower skill catalog before STEP 6.")
+    if board.action_timing_panel == null:
+        failures.append("ActionTimingPanel component must exist.")
+    else:
+        var timing_snapshot := board.action_timing_panel.get_timing_snapshot()
+        if timing_snapshot.get("timing_sequence", []) != EXPECTED_TIMING_SEQUENCE:
+            failures.append("Action timing sequence must be 3, 3, 4.")
+        if int(timing_snapshot.get("total_timings", 0)) != EXPECTED_TIMING_COUNT:
+            failures.append("Action timing panel must contain exactly ten timings.")
+        if int(timing_snapshot.get("current_bundle", 0)) != 2:
+            failures.append("STEP 5 preview must highlight the second action bundle.")
+        if int(timing_snapshot.get("current_timing", 0)) != 5:
+            failures.append("STEP 5 preview must highlight timing 5 of 10.")
+        if bool(timing_snapshot.get("cards_inserted", true)):
+            failures.append("STEP 5 must not insert card content.")
+        if bool(timing_snapshot.get("interactions_enabled", true)):
+            failures.append("STEP 5 must not enable action placement interaction.")
+        if str(timing_snapshot.get("layout_role", "")) != "bottom_upper":
+            failures.append("Action timing panel must use the bottom-upper layout role.")
+
+        var timing_slots := board.action_timing_panel.find_children("TimingSlot*", "ActionTimingSlot", true, false)
+        if timing_slots.size() != EXPECTED_TIMING_COUNT:
+            failures.append("Action timing panel must instantiate ten independent slots. actual=%d" % timing_slots.size())
+        var group_counts := {1: 0, 2: 0, 3: 0}
+        for slot_node in timing_slots:
+            var group_index := int(slot_node.get_meta("bundle_index", 0))
+            group_counts[group_index] = int(group_counts.get(group_index, 0)) + 1
+            if bool(slot_node.get_meta("card_content", true)):
+                failures.append("STEP 5 timing slots must remain card-free.")
+        if int(group_counts.get(1, 0)) != 3 or int(group_counts.get(2, 0)) != 3 or int(group_counts.get(3, 0)) != 4:
+            failures.append("Independent timing slots must be grouped as 3, 3, 4.")
+
+        var state_counts: Dictionary = timing_snapshot.get("state_counts", {})
+        if int(state_counts.get("passed", 0)) != 4:
+            failures.append("STEP 5 preview must show four passed timings.")
+        if int(state_counts.get("current", 0)) != 1:
+            failures.append("STEP 5 preview must show exactly one current timing.")
+        if int(state_counts.get("available", 0)) != 1:
+            failures.append("STEP 5 preview must show one remaining selectable timing in the current bundle.")
+        if int(state_counts.get("locked", 0)) != 4:
+            failures.append("STEP 5 preview must keep the final four timings locked.")
+
+        var board_bottom := float(snapshot.get("board_bottom", 0.0))
+        var timing_top := float(snapshot.get("action_timing_top", 0.0))
+        if timing_top <= board_bottom:
+            failures.append("Bottom-upper action timing panel must not overlap the ten-tile board.")
+
     if int(snapshot.get("tile_count", 0)) != EXPECTED_TILE_COUNT:
         failures.append("Expected ten board tiles. actual=%s" % snapshot.get("tile_count", 0))
     if int(snapshot.get("player_tile", 0)) != EXPECTED_PLAYER_TILE:
@@ -167,11 +219,11 @@ func _run() -> void:
 
 func _finish() -> void:
     if failures.is_empty():
-        print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_VERIFY_OK")
+        print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_VERIFY_OK")
         quit(0)
         return
 
     for failure in failures:
         push_error(failure)
-    print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_VERIFY_FAILED count=%d" % failures.size())
+    print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_VERIFY_FAILED count=%d" % failures.size())
     quit(1)
