@@ -1,53 +1,72 @@
 # 십보강호 인수인계
 
+> 이 문서는 Base 최신 main 동기화와 전투 POC STEP 10.6 구현 이후의 경계 스냅샷이다. 현재 상태의 기본 원본은 `ACTIVE_CONTEXT.md`다.
+
 ## 첫 행동
 
-1. 루트 `START_HERE.md`를 읽는다.
-2. `AGENTS.md`와 이 허브의 `ACTIVE_CONTEXT.md`를 읽는다.
-3. `SOURCE_AUDIT.md`에서 원격·로컬 감사 범위와 보호 대상을 확인한다.
+1. 루트 `START_HERE.md`와 `AGENTS.md`를 읽는다.
+2. `docs/BASE_RULES_VERSION.md`와 `BASE_MAIN_SYNC_AUDIT.md`를 확인한다.
+3. `ACTIVE_CONTEXT.md`, `DOCUMENTATION_MAP.md`, `DEVELOPMENT_GATES.md`, `ROADMAP.md`를 읽는다.
 4. `../DESIGN_DOCUMENT_REGISTRY.json`에서 현재 질문의 책임 원본을 찾는다.
-5. `SKILL_REGISTRY.json`에서 trigger가 일치하는 최소 스킬만 선택한다.
-6. 구현 작업이라면 실제 Godot 파일·테스트 존재 여부부터 확인한다.
+5. `SKILL_REGISTRY.json` trigger로 Work Mode·최소 Skill·Skill Mode를 자동 선택한다.
+6. 구현 작업이면 PR #7과 `data/`, `scenes/`, `src/`, `tests/`를 확인한다.
 
 ## 현재 완료
 
-- Base 최신 `main` 기준 커밋과 대상 기준 커밋을 고정했다.
-- 마이그레이션 Issue #4와 전용 브랜치를 만들었다.
-- 루트 시작 지점, 프로젝트 허브와 원격 구조 감사 보고서를 설치했다.
-- 기존 활성 본책을 삭제·이동하지 않았다.
+- Base 기준을 `ee265576da7f67d3278f8099dd97d4e714ef0651`로 갱신했다.
+- 이전 기준 이후 155개 커밋·70개 변경 파일의 처리표를 작성했다.
+- 루트·허브 문서에 Work Mode·자동 Skill 라우팅·실행 보고를 반영했다.
+- Legacy Skill Alias와 운영·계획·검증 템플릿을 추가했다.
+- 정본 최신성·Skill 패키지 무결성 검사와 Workflow를 추가했다.
+- 전투 POC STEP 0~10과 TARGETING 10.5가 구현됐다.
+- RESPONSE 10.6과 RESOURCE PREVIEW 10.6이 구현됐다.
+- 사용자 Windows에서 STEP 0~10·행동 배치·대상 지정이 확인됐다.
 
-## 현재 진행
+## 현재 확인 대기
 
-- Design Document Registry.
-- Skill Registry·Learning Log·분야 진입 스킬.
-- Development Gates·Update Matrix·AI Workflow.
-- README·AGENTS·Base 버전 최신화.
-- GitHub Governance 정적 검사.
+- 최신 Documentation Governance·reference-freshness·Skill integrity Actions
+- PR #5·#7 체크리스트 최종 갱신
+- 스택 브랜치 운영 파일 동일화
+- 사용자 Windows의 RESPONSE 10.6 대응 판정
+- 사용자 Windows의 배치 즉시 자원 예상치
 
 ## 미완료·미검증
 
-- Windows 작업본과 원격의 차이.
-- Godot 프로젝트·코드·씬·데이터·테스트.
-- 승인 이미지·실제 캡처·자산 Manifest.
-- PDF·DOCX·다이어그램 생성과 전 페이지 렌더.
-- GitHub Actions 실제 성공과 Branch protection Required Check.
-- 절초 기세·상단 HUD UX의 사용자 승인과 제품 본책 동기화.
+- 사용자 로컬 작업본의 미커밋 파일·원격 차이
+- PDF·DOCX·다이어그램·Manifest 실제 발행과 전 페이지 시각 검수
+- 접근성 사용자 검수
+- 목표 플랫폼 성능 프로파일
+- Branch protection Required Check 강제
+- STEP 11 이후 전투 기능과 POC 플레이테스트
+
+## 보호 범위
+
+- 10칸·3수/3수/4수·8개 기초 행동·절초 기세 5칸
+- 승인 UI·배경·카드 방향과 실제 Godot 구현
+- 기존 `docs/01~11`, 백업·보류·Plan·PR·Git 이력
+- 프로젝트 고유 수치·세계관·경로
+- 실행하지 않은 검증의 미검증 상태
 
 ## 금지
 
-- 기존 `docs` 본책을 Registry·PDF·보존 대조 전에 제거하지 않는다.
-- `[보류]` 기능을 구현하지 않는다.
-- 로컬 작업본을 확인하지 않고 원격이 전체 프로젝트라고 단정하지 않는다.
-- 구조 설치를 Godot 구현 완료로 보고하지 않는다.
-- 프로젝트 고유 수치·세계관·경로를 Base 공용 규칙으로 자동 승격하지 않는다.
-- 검증·발행 스킬을 해당 게이트 전에 호출하지 않는다.
+- Base 템플릿·Skill 폴더 전체 복사
+- 보존 대조·사용자 승인 없는 삭제·대규모 이동
+- `[보류]` 기능 구현
+- 정적 Actions만으로 Godot·PDF·접근성·성능·Required Check 완료 주장
+- 프로젝트 고유 값을 Base 공용 규칙으로 자동 승격
 
-## 다음 작업의 중단 기준
+## 다음 작업
 
-다음 중 하나가 발생하면 변경을 확대하지 않고 위험을 기록한다.
+1. 두 PR의 최신 운영 파일과 체크리스트 정렬
+2. 최신 Actions 실패 시 진단 로그 기반 수정
+3. 사용자 Fetch/Pull 후 Godot F5
+4. RESPONSE 10.6·RESOURCE PREVIEW 10.6 확인
+5. STEP 11 피격 중단·집중·강건 작업 계약
 
-- 로컬 작업본에 원격과 충돌하는 최신 사용자 변경이 존재함.
-- 기존 문서·코드·외부 링크를 새 경로로 안전하게 수정할 수 없음.
-- PDF 생성 도구·폰트·입력 파일이 없어 정상 발행을 검증할 수 없음.
-- 기존 책임 원본의 고유 결정·표·예외·보류를 승계했는지 확인할 수 없음.
-- 사용자 승인 범위를 넘어서는 삭제·대규모 이름 변경이 필요함.
+## 중단 기준
+
+- 원격과 충돌하는 사용자 로컬 변경
+- 기존 고유 정보·참조·복구를 확인할 수 없는 삭제·이동 요구
+- 생성 도구·폰트·입력 없이 PDF CURRENT 요구
+- 사용자 승인 범위를 넘는 제품 규칙·자산 변경
+- 최신 Actions 또는 Godot 파싱 실패 원인을 확인하지 않은 채 변경 확대
