@@ -1,8 +1,6 @@
-# Base 통합 전 Skill ID 별칭
+# 통합 전 Skill ID 별칭
 
-이 문서는 과거 문서·Learning Log·Git 이력에서 발견되는 구형 Base Skill ID를 현재 통합 Skill과 Skill Mode로 해석하기 위한 호환표다.
-
-새 Registry, 작업 계약, Active Context, PR에는 현재 ID만 사용한다. 구형 ID를 실행 경로로 다시 활성화하지 않는다.
+과거 문서·Learning Log·Git 이력에서 발견되는 구형 Base 또는 프로젝트 Skill ID를 현재 통합 Skill과 Skill Mode로 해석한다. 새 Registry·작업 계약·Active Context·PR에는 현재 ID만 사용한다.
 
 | 구형 Skill ID | 현재 Skill | Skill Mode |
 |---|---|---|
@@ -17,18 +15,18 @@
 | `reviewing-external-ai-drafts` | `reviewing-and-validating-project-changes` | `external-source-review` |
 | `promoting-project-knowledge` | `managing-base-change-proposals` | `extract` / `submit` |
 | `reviewing-and-implementing-base-change-proposals` | `managing-base-change-proposals` | `review` / `implement` / `verify` |
+| `project-operations-and-handoff` | `managing-project-intake-and-work-contract` + `maintaining-project-context-and-handoff` | `route` / `execution-report` + context·handoff |
+| `project-health-review` | `managing-game-project-operating-system` + `reviewing-and-validating-project-changes` | `verify` + `contract-check` / `evidence-report` |
 
-프로젝트 고유 Skill ID는 이 표로 바꾸지 않는다.
+현재 프로젝트 고유 Skill:
 
-- `project-operations-and-handoff`
 - `ten-paces-game-design`
 - `combat-ux-and-accessibility`
 - `combat-implementation-handoff`
 - `ten-paces-verification`
-- `project-health-review`
 
 ## 검증
 
 - 활성 Entry Point와 Registry에 구형 ID가 있으면 실패다.
-- 이 파일, Learning Log, Changelog, 과거 Case·Plan에서 설명 목적으로 언급하는 것은 허용한다.
-- 통합 뒤 경로·ID·reference 소비자는 canonical reference freshness 검사로 확인한다.
+- 이 파일, Learning Log, Changelog, 과거 Audit·Plan에서 역사 설명으로 언급하는 것은 허용한다.
+- 통합 뒤 경로·ID·template·test·Workflow 소비자는 canonical reference freshness로 확인한다.

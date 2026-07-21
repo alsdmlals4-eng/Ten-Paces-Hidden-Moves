@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate Ten Paces canonical references and current-entrypoint freshness."""
+"""Validate Ten Paces canonical references and active-file freshness."""
 
 from __future__ import annotations
 
@@ -19,9 +19,7 @@ def load_json(path: Path) -> dict[str, Any]:
     except FileNotFoundError as exc:
         raise FreshnessError(f"missing config: {path.as_posix()}") from exc
     except json.JSONDecodeError as exc:
-        raise FreshnessError(
-            f"invalid JSON: {path.as_posix()}:{exc.lineno}:{exc.colno}: {exc.msg}"
-        ) from exc
+        raise FreshnessError(f"invalid JSON: {path.as_posix()}:{exc.lineno}:{exc.colno}: {exc.msg}") from exc
     if not isinstance(data, dict):
         raise FreshnessError("config root must be an object")
     return data
@@ -34,15 +32,19 @@ def read_text(root: Path, relative: str) -> str:
     return path.read_text(encoding="utf-8", errors="replace")
 
 
+def validate_absent_paths(root: Path, config: dict[str, Any]) -> None:
+    present = [str(relative) for relative in config.get("forbidden_active_paths", []) if (root / str(relative)).exists()]
+    if present:
+        raise FreshnessError("superseded active paths still exist: " + ", ".join(present))
+
+
 def validate_current_tokens(root: Path, config: dict[str, Any]) -> None:
     forbidden = [str(value) for value in config.get("forbidden_current_tokens", [])]
     for relative in config.get("strict_current_files", []):
         text = read_text(root, str(relative))
         found = [token for token in forbidden if token in text]
         if found:
-            raise FreshnessError(
-                f"stale current tokens in {relative}: {', '.join(found)}"
-            )
+            raise FreshnessError(f"stale current tokens in {relative}: {', '.join(found)}")
 
     required_map = config.get("required_current_tokens", {})
     if not isinstance(required_map, dict):
@@ -51,9 +53,7 @@ def validate_current_tokens(root: Path, config: dict[str, Any]) -> None:
         text = read_text(root, str(relative))
         missing = [str(token) for token in tokens if str(token) not in text]
         if missing:
-            raise FreshnessError(
-                f"missing current tokens in {relative}: {', '.join(missing)}"
-            )
+            raise FreshnessError(f"missing current tokens in {relative}: {', '.join(missing)}")
 
 
 def validate_canonical_rules(root: Path, config: dict[str, Any]) -> None:
@@ -74,14 +74,11 @@ def validate_canonical_rules(root: Path, config: dict[str, Any]) -> None:
             relative = str(consumer)
             text = read_text(root, relative)
             if not any(token in text for token in tokens):
-                raise FreshnessError(
-                    f"canonical reference missing: rule={name} consumer={relative}"
-                )
+                raise FreshnessError(f"canonical reference missing: rule={name} consumer={relative}")
 
 
 def validate_legacy_aliases(root: Path, config: dict[str, Any]) -> None:
-    relative = str(config.get("legacy_aliases_path", ""))
-    text = read_text(root, relative)
+    text = read_text(root, str(config.get("legacy_aliases_path", "")))
     required_ids = [
         "conducting-deep-requirement-interviews",
         "routing-project-work-by-discipline",
@@ -94,6 +91,8 @@ def validate_legacy_aliases(root: Path, config: dict[str, Any]) -> None:
         "reviewing-external-ai-drafts",
         "promoting-project-knowledge",
         "reviewing-and-implementing-base-change-proposals",
+        "project-operations-and-handoff",
+        "project-health-review",
     ]
     missing = [value for value in required_ids if value not in text]
     if missing:
@@ -104,6 +103,7 @@ def run(root: Path, config_path: Path) -> None:
     config = load_json(config_path)
     if int(config.get("schema_version", 0)) != 1:
         raise FreshnessError("reference freshness schema_version must be 1")
+    validate_absent_paths(root, config)
     validate_current_tokens(root, config)
     validate_canonical_rules(root, config)
     validate_legacy_aliases(root, config)
@@ -115,9 +115,8 @@ def main() -> int:
     parser.add_argument("--config", default=".github/reference-freshness.json")
     args = parser.parse_args()
     root = Path(args.root).resolve()
-    config_path = (root / args.config).resolve()
     try:
-        run(root, config_path)
+        run(root, (root / args.config).resolve())
     except FreshnessError as exc:
         print(f"canonical reference freshness: FAIL\n{exc}")
         return 1
