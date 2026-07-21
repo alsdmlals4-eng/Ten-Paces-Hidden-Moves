@@ -39,13 +39,15 @@
     "project-operations-and-handoff",
     "project-health-review",
     "PROJECT_SKILL_MAP.pdf",
-    "SKILL_MAP_PUBLICATION_MANIFEST.json"
+    "SKILL_MAP_PUBLICATION_MANIFEST.json",
+    "\"publication_policy\": \"milestone_sync\"",
+    "\"publication_policy\": \"always_sync\""
   ],
   "required_current_tokens": {
     "README.md": ["3수 → 3수 → 4수", "기초 행동 8종", "ee265576da7f67d3278f8099dd97d4e714ef0651"],
     "START_HERE.md": ["PLAN", "BUILD", "REVIEW", "ACTIVE_CONTEXT.md", "DOCUMENTATION_MAP.md"],
     "AGENTS.md": ["auditing-canonical-reference-freshness", "Skill Mode", "execution-report", "3수 → 3수 → 4수"],
-    "[기획서]/DESIGN_DOCUMENT_REGISTRY.json": ["milestone_sync", "source_only"],
+    "[기획서]/DESIGN_DOCUMENT_REGISTRY.json": ["publication_note", "source_only"],
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": ["STEP 0~10", "RESPONSE 10.6", "기초 행동 8종"],
     "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json": ["automatic-trigger-match", "require_execution_report", "shared_skill_routes", "source_only"]
   },
