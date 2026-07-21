@@ -1,5 +1,5 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "tile_count": 10,
   "player_start_tile": 3,
   "enemy_start_tile": 8,
@@ -35,7 +35,7 @@
   },
   "action_timing": {
     "step": 5,
-    "approval_status": "IMPLEMENTED_FOR_REVIEW",
+    "approval_status": "USER_APPROVED_LAYOUT",
     "scene": "res://scenes/ui/action_timing_panel.tscn",
     "data": "res://data/combat/combat_action_timing_preview.json",
     "layout_role": "bottom_upper",
@@ -43,13 +43,37 @@
     "total_timings": 10,
     "current_bundle": 2,
     "current_timing": 5,
+    "progress_scope": "round",
     "cards_inserted": false,
     "interactions_enabled": false
+  },
+  "basic_card_tray": {
+    "step": 6,
+    "approval_status": "IMPLEMENTED_FOR_REVIEW",
+    "scene": "res://scenes/ui/basic_card_tray.tscn",
+    "item_scene": "res://scenes/ui/basic_card_tray_item.tscn",
+    "data": "res://data/cards/basic_cards.json",
+    "layout_role": "bottom_lower",
+    "card_count": 7,
+    "card_ids": [
+      "basic_move",
+      "basic_guard",
+      "basic_evade",
+      "basic_quick_attack",
+      "basic_heavy_attack",
+      "basic_meditate",
+      "basic_stance"
+    ],
+    "compact_variant": true,
+    "uses_shared_card_data_and_atlases": true,
+    "interactions_enabled": false,
+    "action_timing_above": true
   },
   "presentation_scope": [
     "battle_background",
     "top_hud",
     "action_timing",
+    "basic_card_tray",
     "board",
     "tile_numbers",
     "player_placeholder",
@@ -57,9 +81,8 @@
     "foot_anchor_guides"
   ],
   "excluded_until_later_steps": [
-    "cards",
-    "skill_catalog",
-    "log_panel",
+    "card_detail_panel",
+    "combat_log_panel",
     "progress_button",
     "action_placement_interaction"
   ]
