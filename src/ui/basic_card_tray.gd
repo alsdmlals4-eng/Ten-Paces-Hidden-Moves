@@ -4,6 +4,7 @@ extends Control
 signal card_hovered(definition)
 signal card_unhovered(card_id)
 signal card_clicked(definition)
+signal action_card_selected(definition)
 
 const DATA_PATH := "res://data/cards/basic_cards.json"
 const CARD_SCENE := preload("res://scenes/ui/basic_card_tray_item.tscn")
@@ -16,6 +17,7 @@ const MUTED := Color("9b8c76")
 var card_data: Dictionary = {}
 var cards: Array[BasicCardTrayItem] = []
 var pinned_card_id := ""
+var selected_card_id := ""
 
 var _title_label: Label
 var _status_label: Label
@@ -25,6 +27,7 @@ func _ready() -> void:
     card_data = _load_data()
     _build_content()
     resized.connect(_layout)
+    _refresh_status()
     _layout()
 
 func _load_data() -> Dictionary:
@@ -48,7 +51,6 @@ func _build_content() -> void:
 
     _status_label = _make_label(12, MUTED, HORIZONTAL_ALIGNMENT_RIGHT)
     _status_label.name = "BasicCardTrayStatus"
-    _status_label.text = "7종 · 마우스 상세 · 클릭 고정"
 
     var definitions: Array = card_data.get("cards", [])
     for definition_value in definitions:
@@ -66,15 +68,17 @@ func _build_content() -> void:
 
     set_meta("step", 6)
     set_meta("information_interaction_step", 7)
+    set_meta("placement_step", 9)
     set_meta("layout_role", "bottom_lower")
     set_meta("card_count", cards.size())
     set_meta("card_ids", "|".join(get_card_ids()))
     set_meta("data_path", DATA_PATH)
     set_meta("compact_variant", true)
     set_meta("information_interactions_enabled", true)
-    set_meta("action_placement_enabled", false)
-    set_meta("interactions_enabled", false)
+    set_meta("action_placement_enabled", true)
+    set_meta("interactions_enabled", true)
     set_meta("action_timing_above", true)
+    set_meta("selected_card_id", "")
 
 func _on_card_hovered(definition: Dictionary) -> void:
     card_hovered.emit(definition)
@@ -84,6 +88,7 @@ func _on_card_unhovered(card_id: String) -> void:
 
 func _on_card_clicked(definition: Dictionary) -> void:
     card_clicked.emit(definition)
+    action_card_selected.emit(definition)
 
 func set_pinned_card(card_id: String) -> void:
     pinned_card_id = card_id
@@ -91,8 +96,38 @@ func set_pinned_card(card_id: String) -> void:
         card.set_pinned(str(card.definition.get("id", "")) == pinned_card_id and not pinned_card_id.is_empty())
     set_meta("pinned_card_id", pinned_card_id)
 
+func set_selected_card(card_id: String) -> void:
+    selected_card_id = card_id
+    for card in cards:
+        card.set_selected_for_placement(str(card.definition.get("id", "")) == selected_card_id and not selected_card_id.is_empty())
+    set_meta("selected_card_id", selected_card_id)
+    _refresh_status()
+
 func clear_card_focus() -> void:
     set_pinned_card("")
+
+func clear_action_selection() -> void:
+    set_selected_card("")
+
+func get_card_definition(card_id: String) -> Dictionary:
+    for card in cards:
+        if str(card.definition.get("id", "")) == card_id:
+            return card.definition.duplicate(true)
+    return {}
+
+func _refresh_status() -> void:
+    if _status_label == null:
+        return
+    if selected_card_id.is_empty():
+        _status_label.text = "카드 선택 → 현재 묶음 슬롯 클릭"
+        _status_label.add_theme_color_override("font_color", MUTED)
+        return
+    var definition := get_card_definition(selected_card_id)
+    _status_label.text = "%s 선택 · %d슬롯 배치" % [
+        str(definition.get("name", "")),
+        int(definition.get("action_slots", 1))
+    ]
+    _status_label.add_theme_color_override("font_color", GOLD)
 
 func _make_label(font_size: int, color: Color, alignment: int) -> Label:
     var label := Label.new()
@@ -115,9 +150,9 @@ func _layout() -> void:
     var side_margin := 10.0
     var width := maxf(1.0, size.x - side_margin * 2.0)
     _title_label.position = Vector2(side_margin, 3.0)
-    _title_label.size = Vector2(width * 0.45, 23.0)
-    _status_label.position = Vector2(side_margin + width * 0.55, 3.0)
-    _status_label.size = Vector2(width * 0.45, 23.0)
+    _title_label.size = Vector2(width * 0.35, 23.0)
+    _status_label.position = Vector2(side_margin + width * 0.35, 3.0)
+    _status_label.size = Vector2(width * 0.65, 23.0)
 
     var gap := clampf(size.x * 0.005, 4.0, 8.0)
     var total_gap := gap * float(cards.size() - 1)
@@ -143,15 +178,17 @@ func get_tray_snapshot() -> Dictionary:
     return {
         "step": 6,
         "information_interaction_step": 7,
+        "placement_step": 9,
         "layout_role": "bottom_lower",
         "card_count": cards.size(),
         "card_ids": get_card_ids(),
         "source": "basic",
         "compact_variant": true,
         "information_interactions_enabled": true,
-        "action_placement_enabled": false,
-        "interactions_enabled": false,
+        "action_placement_enabled": true,
+        "interactions_enabled": true,
         "pinned_card_id": pinned_card_id,
+        "selected_card_id": selected_card_id,
         "action_timing_above": true
     }
 
