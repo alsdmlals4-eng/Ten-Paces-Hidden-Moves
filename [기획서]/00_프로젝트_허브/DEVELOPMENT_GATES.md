@@ -57,7 +57,7 @@ contract-check
 
 ### G5 Documentation·Publication
 
-- 책임 원본·Registry·Legacy Alias·Update Matrix
+- 책임 원본·Registry·Schema·Legacy Alias·Update Matrix
 - Active Context·Roadmap·필요 시 Handoff
 - 현재 등록 문서·Skill Registry는 `source_only`
 - PDF가 필요한 마일스톤에서 생성기·폰트·렌더 검증과 함께 필요한 문서만 정책 승격
@@ -79,6 +79,7 @@ contract-check
 - [x] 기초 행동 8종·대상 지정
 - [x] `대응 → 속공 → 이동 → 일반 공격`
 - [x] 사용자 Windows STEP 0~10·대상 지정
+- [x] PR #7 Card Component Contract run #399
 - [ ] RESPONSE·RESOURCE PREVIEW 10.6 사용자 확인
 - [ ] STEP 11 피격 중단·집중·강건
 - [ ] STEP 12 AI
@@ -100,10 +101,11 @@ contract-check
 | 영역 | 상태 |
 |---|---|
 | Base 70파일 감사 | PASSED |
-| Base 공유 13·로컬 4 Skill | REVIEW_IN_PROGRESS |
-| Design Registry 정책 | REVIEW_IN_PROGRESS |
-| 정본 최신성·Skill 무결성·회귀 | REVIEW_IN_PROGRESS |
-| PR #5·#7 최신 Actions | PENDING |
+| Base 공유 13·로컬 4 Skill | PASSED |
+| Design·Skill Registry Schema | PASSED |
+| 정본 최신성·Skill 무결성·회귀 | PASSED |
+| PR #5 Governance run #371 | PASSED |
+| PR #7 Governance #370·Card #399 | PASSED |
 | Branch protection | NOT_RUN |
 | 발행 파이프라인 | NOT_INSTALLED_BY_DESIGN |
 | 전투 POC 구현 | IMPLEMENTED |

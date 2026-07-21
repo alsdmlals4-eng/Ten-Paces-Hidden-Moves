@@ -25,15 +25,16 @@
 - [x] Base 공유 Skill 13개 연결
 - [x] 로컬 Skill을 프로젝트 고유 4개로 축소
 - [x] 제거된 로컬·Base ID Legacy Alias
-- [x] Skill Registry를 `source_only`로 전환
-- [x] 사용 불가능한 Skill Map PDF·Manifest 계약 제거
+- [x] Skill Registry `source_only`
+- [x] 사용 불가능한 Skill Map PDF·Manifest 제거
 - [x] 컨셉·근거 템플릿 통합
-- [x] 정본 최신성 양식을 변경 검증에 통합
+- [x] 정본 최신성을 변경 검증에 통합
 - [x] Governance 회귀 테스트 단일화
-- [x] 중복 검사기 제거
-- [ ] 간소화 뒤 Actions 최종 성공
+- [x] 중복 checker 제거
+- [x] Design·Skill Registry Schema 계약 검증
+- [x] PR #5 Governance run #371 성공
 
-판정: `REVIEW_IN_PROGRESS`
+판정: `PASS`
 
 ## M3 정본·GitHub Governance
 
@@ -41,17 +42,18 @@
 - [x] canonical reference freshness
 - [x] Skill package integrity
 - [x] stale 전투·Skill·발행 경로 차단
-- [x] PR #5·#7 스택 동기화 1차 완료
-- [ ] 간소화 변경 PR #7 재동기화
-- [ ] PR #5·#7 최신 Actions 성공
+- [x] PR #9 최적화 동기화 merged
+- [x] PR #7 Governance run #370 성공
+- [x] PR #7 Card Component Contract run #399 성공
 - [ ] Branch protection 강제 상태 확인
 
-판정: `IN_PROGRESS_WITHOUT_ENFORCEMENT`
+판정: `PASS_WITHOUT_ENFORCEMENT`
 
 ## M4 발행
 
-- [x] 생성기 없는 현재 상태를 `source_only`로 정직하게 표현
+- [x] 생성기 없는 현재 상태를 `source_only`로 표현
 - [x] 존재하지 않는 PDF·Manifest·Skill Map 의무 제거
+- [x] 정책 승격 시 generator 존재 검사
 - [ ] PDF가 필요한 마일스톤에서 생성기·폰트·렌더 환경 설치
 - [ ] 필요한 문서만 `milestone_sync`로 전환
 - [ ] 전 페이지 자동 렌더·사용자 시각 검수
@@ -64,19 +66,19 @@
 - [x] TARGETING 10.5
 - [x] RESPONSE·RESOURCE PREVIEW 10.6 구현
 - [x] Windows에서 STEP 0~10·대상 지정 확인
+- [x] 정적 Card Component Contract 유지
 - [ ] RESPONSE·RESOURCE PREVIEW 10.6 사용자 확인
 
 판정: `PROTOTYPE_PARTIALLY_VERIFIED`
 
 ## M6 다음 제품 단계
 
-1. 간소화 Actions·PR 동기화 완료
-2. 사용자 Fetch/Pull과 STEP 10.6 확인
-3. STEP 11 피격 중단·집중·강건
-4. STEP 12 AI
-5. STEP 13 종료·재시작
-6. STEP 14 POC 플레이테스트
-7. T1 5전 데모
+1. 사용자 Fetch/Pull과 STEP 10.6 확인
+2. STEP 11 피격 중단·집중·강건
+3. STEP 12 AI
+4. STEP 13 종료·재시작
+5. STEP 14 POC 플레이테스트
+6. T1 5전 데모
 
 ## M7 추가 Cleanup
 
