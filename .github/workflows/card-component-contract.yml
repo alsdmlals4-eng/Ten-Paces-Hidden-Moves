@@ -7,6 +7,7 @@ on:
       - "data/cards/**"
       - "data/combat/**"
       - "assets/ui/cards/**"
+      - "assets/backgrounds/**"
       - "assets/reference/step_02_character_scale_and_tile_placement.svg"
       - "scenes/ui/**"
       - "scenes/combat/**"
@@ -28,6 +29,7 @@ on:
       - "data/cards/**"
       - "data/combat/**"
       - "assets/ui/cards/**"
+      - "assets/backgrounds/**"
       - "assets/reference/step_02_character_scale_and_tile_placement.svg"
       - "scenes/ui/**"
       - "scenes/combat/**"
@@ -58,7 +60,7 @@ jobs:
           python -m py_compile tests/check_combat_board_contract.py
       - name: Validate card component contract
         run: python tests/check_card_component_contract.py
-      - name: Validate STEP 1-2 combat board contract
+      - name: Validate STEP 1-3 combat presentation contract
         run: python tests/check_combat_board_contract.py
       - name: Parse PowerShell automations
         shell: pwsh
