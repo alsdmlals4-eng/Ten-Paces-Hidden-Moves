@@ -18,6 +18,7 @@ var card_data: Dictionary = {}
 var cards: Array[BasicCardTrayItem] = []
 var pinned_card_id := ""
 var selected_card_id := ""
+var virtual_definitions: Dictionary = {}
 
 var _title_label: Label
 var _status_label: Label
@@ -69,6 +70,7 @@ func _build_content() -> void:
     set_meta("step", 6)
     set_meta("information_interaction_step", 7)
     set_meta("placement_step", 9)
+    set_meta("response_combo_patch", "10.6")
     set_meta("layout_role", "bottom_lower")
     set_meta("card_count", cards.size())
     set_meta("card_ids", "|".join(get_card_ids()))
@@ -76,6 +78,7 @@ func _build_content() -> void:
     set_meta("compact_variant", true)
     set_meta("information_interactions_enabled", true)
     set_meta("action_placement_enabled", true)
+    set_meta("stance_response_combo_enabled", true)
     set_meta("interactions_enabled", true)
     set_meta("action_timing_above", true)
     set_meta("selected_card_id", "")
@@ -87,21 +90,81 @@ func _on_card_unhovered(card_id: String) -> void:
     card_unhovered.emit(card_id)
 
 func _on_card_clicked(definition: Dictionary) -> void:
-    card_clicked.emit(definition)
-    action_card_selected.emit(definition)
+    var emitted_definition := definition.duplicate(true)
+    var previous := get_card_definition(selected_card_id)
+    if _can_build_stance_response_combo(previous, definition):
+        emitted_definition = build_stance_response_combo(previous, definition)
+    if not emitted_definition.is_empty():
+        virtual_definitions[str(emitted_definition.get("id", ""))] = emitted_definition.duplicate(true)
+    card_clicked.emit(emitted_definition)
+    action_card_selected.emit(emitted_definition)
+
+func _can_build_stance_response_combo(first: Dictionary, second: Dictionary) -> bool:
+    if first.is_empty() or second.is_empty():
+        return false
+    var first_id := str(first.get("base_card_id", first.get("id", "")))
+    var second_id := str(second.get("base_card_id", second.get("id", "")))
+    var first_is_stance := first_id == "basic_stance"
+    var second_is_stance := second_id == "basic_stance"
+    var first_is_response := str(first.get("category", "")) == "response"
+    var second_is_response := str(second.get("category", "")) == "response"
+    return (first_is_stance and second_is_response) or (second_is_stance and first_is_response)
+
+func build_stance_response_combo(first: Dictionary, second: Dictionary) -> Dictionary:
+    if not _can_build_stance_response_combo(first, second):
+        return {}
+    var response: Dictionary = first if str(first.get("category", "")) == "response" else second
+    var stance: Dictionary = first if str(first.get("base_card_id", first.get("id", ""))) == "basic_stance" else second
+    var response_id := str(response.get("base_card_id", response.get("id", "")))
+    var combo := response.duplicate(true)
+    combo["id"] = "combo_stance_%s" % response_id
+    combo["base_card_id"] = response_id
+    combo["modifier_card_id"] = "basic_stance"
+    combo["name"] = "태세+%s" % str(response.get("name", "대응"))
+    combo["source_label"] = "기초"
+    combo["stance_response_combo"] = true
+    combo["combo_parts"] = PackedStringArray(["basic_stance", response_id])
+    combo["action_slots"] = 1
+    combo["stamina_cost"] = maxi(0, int(response.get("stamina_cost", 0))) + maxi(0, int(stance.get("stamina_cost", 0)))
+    combo["internal_cost"] = maxi(0, int(response.get("internal_cost", 0))) + maxi(0, int(stance.get("internal_cost", 0)))
+    var response_name := str(response.get("name", "대응"))
+    if response_id == "basic_evade":
+        combo["effect_text"] = "태세와 회피를 같은 슬롯에 결합한다. 완전 회피 범위가 현재 행동 묶음 전체로 확장된다."
+    else:
+        combo["effect_text"] = "태세와 막기를 같은 슬롯에 결합한다. 막기 범위가 현재 행동 묶음 전체로 확장되고 방어도가 50% 증가한다."
+    combo["condition"] = "태세와 %s 연계" % response_name
+    combo["tags"] = ["태세", response_name, "대응 강화"]
+    combo["flavor"] = "한 수에 형과 응을 겹쳐, 한 묶음의 공세를 받아낸다."
+    return combo
 
 func set_pinned_card(card_id: String) -> void:
     pinned_card_id = card_id
+    var focused_ids := _focus_ids_for_definition(get_card_definition(pinned_card_id))
     for card in cards:
-        card.set_pinned(str(card.definition.get("id", "")) == pinned_card_id and not pinned_card_id.is_empty())
+        var id := str(card.definition.get("id", ""))
+        card.set_pinned(id in focused_ids and not pinned_card_id.is_empty())
     set_meta("pinned_card_id", pinned_card_id)
 
 func set_selected_card(card_id: String) -> void:
     selected_card_id = card_id
+    var focused_ids := _focus_ids_for_definition(get_card_definition(selected_card_id))
     for card in cards:
-        card.set_selected_for_placement(str(card.definition.get("id", "")) == selected_card_id and not selected_card_id.is_empty())
+        var id := str(card.definition.get("id", ""))
+        card.set_selected_for_placement(id in focused_ids and not selected_card_id.is_empty())
     set_meta("selected_card_id", selected_card_id)
     _refresh_status()
+
+func _focus_ids_for_definition(definition: Dictionary) -> PackedStringArray:
+    var result := PackedStringArray()
+    if definition.is_empty():
+        return result
+    var combo_parts = definition.get("combo_parts", [])
+    if typeof(combo_parts) == TYPE_PACKED_STRING_ARRAY or typeof(combo_parts) == TYPE_ARRAY:
+        for value in combo_parts:
+            result.append(str(value))
+    else:
+        result.append(str(definition.get("id", "")))
+    return result
 
 func clear_card_focus() -> void:
     set_pinned_card("")
@@ -110,6 +173,8 @@ func clear_action_selection() -> void:
     set_selected_card("")
 
 func get_card_definition(card_id: String) -> Dictionary:
+    if virtual_definitions.has(card_id):
+        return (virtual_definitions[card_id] as Dictionary).duplicate(true)
     for card in cards:
         if str(card.definition.get("id", "")) == card_id:
             return card.definition.duplicate(true)
@@ -123,9 +188,11 @@ func _refresh_status() -> void:
         _status_label.add_theme_color_override("font_color", MUTED)
         return
     var definition := get_card_definition(selected_card_id)
-    _status_label.text = "%s 선택 · %d슬롯 배치" % [
+    var combo_text := " · 한 슬롯 연계" if bool(definition.get("stance_response_combo", false)) else ""
+    _status_label.text = "%s 선택 · %d슬롯 배치%s" % [
         str(definition.get("name", "")),
-        int(definition.get("action_slots", 1))
+        int(definition.get("action_slots", 1)),
+        combo_text
     ]
     _status_label.add_theme_color_override("font_color", GOLD)
 
@@ -154,9 +221,9 @@ func _layout() -> void:
     _status_label.position = Vector2(side_margin + width * 0.35, 3.0)
     _status_label.size = Vector2(width * 0.65, 23.0)
 
-    var gap := clampf(size.x * 0.005, 4.0, 8.0)
+    var gap := clampf(size.x * 0.004, 3.0, 7.0)
     var total_gap := gap * float(cards.size() - 1)
-    var card_width := maxf(108.0, (width - total_gap) / float(cards.size()))
+    var card_width := maxf(96.0, (width - total_gap) / float(cards.size()))
     var card_y := 29.0
     var card_height := maxf(96.0, size.y - card_y - 8.0)
     var x := side_margin
@@ -179,6 +246,7 @@ func get_tray_snapshot() -> Dictionary:
         "step": 6,
         "information_interaction_step": 7,
         "placement_step": 9,
+        "response_combo_patch": "10.6",
         "layout_role": "bottom_lower",
         "card_count": cards.size(),
         "card_ids": get_card_ids(),
@@ -186,6 +254,7 @@ func get_tray_snapshot() -> Dictionary:
         "compact_variant": true,
         "information_interactions_enabled": true,
         "action_placement_enabled": true,
+        "stance_response_combo_enabled": true,
         "interactions_enabled": true,
         "pinned_card_id": pinned_card_id,
         "selected_card_id": selected_card_id,
