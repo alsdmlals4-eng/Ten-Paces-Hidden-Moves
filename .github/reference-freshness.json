@@ -8,6 +8,7 @@
     "START_HERE.md",
     "AGENTS.md",
     "docs/BASE_RULES_VERSION.md",
+    "[기획서]/DESIGN_DOCUMENT_REGISTRY.json",
     "[기획서]/00_프로젝트_허브/START_HERE.md",
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
     "[기획서]/00_프로젝트_허브/ROADMAP.md",
@@ -22,14 +23,19 @@
     "2수 잠금",
     "기초 행동은 이동·막기·회피·속공·강공·명상·태세 7종",
     "Base@eb40b912e5f5a0e4d369105a4f0a770e0a6179a9",
-    "default_selection\": \"none"
+    "default_selection\": \"none",
+    "project-operations-and-handoff",
+    "project-health-review",
+    "PROJECT_SKILL_MAP.pdf",
+    "SKILL_MAP_PUBLICATION_MANIFEST.json"
   ],
   "required_current_tokens": {
     "README.md": ["3수 → 3수 → 4수", "기초 행동 8종", "ee265576da7f67d3278f8099dd97d4e714ef0651"],
-    "START_HERE.md": ["PLAN", "BUILD", "REVIEW", "ee265576da7f67d3278f8099dd97d4e714ef0651"],
+    "START_HERE.md": ["PLAN", "BUILD", "REVIEW", "ACTIVE_CONTEXT.md", "DOCUMENTATION_MAP.md"],
     "AGENTS.md": ["auditing-canonical-reference-freshness", "Skill Mode", "execution-report", "3수 → 3수 → 4수"],
+    "[기획서]/DESIGN_DOCUMENT_REGISTRY.json": ["milestone_sync", "source_only"],
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": ["STEP 0~10", "RESPONSE 10.6", "기초 행동 8종"],
-    "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json": ["automatic-trigger-match", "require_execution_report", "work_modes"]
+    "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json": ["automatic-trigger-match", "require_execution_report", "shared_skill_routes", "source_only"]
   },
   "canonical_reference_rules": [
     {
@@ -54,7 +60,7 @@
       "name": "base-sync-audit-entrypoints",
       "canonical_path": "[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md",
       "reference_tokens": ["BASE_MAIN_SYNC_AUDIT.md"],
-      "required_consumers": ["README.md", "START_HERE.md", "docs/BASE_RULES_VERSION.md", "[기획서]/00_프로젝트_허브/START_HERE.md"]
+      "required_consumers": ["README.md", "docs/BASE_RULES_VERSION.md", "[기획서]/00_프로젝트_허브/START_HERE.md"]
     }
   ]
 }
