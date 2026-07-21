@@ -107,14 +107,12 @@ func _refresh() -> void:
         return
     var sequence: Array = timing_data.get("timing_sequence", [3, 3, 4])
     var round_number := int(timing_data.get("round_number", 1))
-    var current_timing := int(timing_data.get("current_timing", 1))
-    var total_timings := int(timing_data.get("total_timings", 10))
     var sequence_texts := PackedStringArray()
     for value in sequence:
         sequence_texts.append("%d수" % int(value))
     _title_label.text = "행동 진행"
     _sequence_label.text = " → ".join(sequence_texts)
-    _progress_label.text = "라운드 %d / (%d/%d수)" % [round_number, current_timing, total_timings]
+    _progress_label.text = "라운드 %d" % round_number
 
 func _layout() -> void:
     if _title_label == null or slots.is_empty():
