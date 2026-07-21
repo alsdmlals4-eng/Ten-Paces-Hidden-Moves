@@ -1,6 +1,10 @@
 class_name BasicCardTray
 extends Control
 
+signal card_hovered(definition)
+signal card_unhovered(card_id)
+signal card_clicked(definition)
+
 const DATA_PATH := "res://data/cards/basic_cards.json"
 const CARD_SCENE := preload("res://scenes/ui/basic_card_tray_item.tscn")
 
@@ -11,12 +15,13 @@ const MUTED := Color("9b8c76")
 
 var card_data: Dictionary = {}
 var cards: Array[BasicCardTrayItem] = []
+var pinned_card_id := ""
 
 var _title_label: Label
 var _status_label: Label
 
 func _ready() -> void:
-    mouse_filter = Control.MOUSE_FILTER_IGNORE
+    mouse_filter = Control.MOUSE_FILTER_PASS
     card_data = _load_data()
     _build_content()
     resized.connect(_layout)
@@ -43,7 +48,7 @@ func _build_content() -> void:
 
     _status_label = _make_label(12, MUTED, HORIZONTAL_ALIGNMENT_RIGHT)
     _status_label.name = "BasicCardTrayStatus"
-    _status_label.text = "7종 · 표시 전용"
+    _status_label.text = "7종 · 마우스 상세 · 클릭 고정"
 
     var definitions: Array = card_data.get("cards", [])
     for definition_value in definitions:
@@ -53,17 +58,40 @@ func _build_content() -> void:
         var card := CARD_SCENE.instantiate() as BasicCardTrayItem
         card.name = "BasicCard%02d" % (cards.size() + 1)
         card.configure(definition)
+        card.detail_hovered.connect(_on_card_hovered)
+        card.detail_unhovered.connect(_on_card_unhovered)
+        card.detail_clicked.connect(_on_card_clicked)
         add_child(card)
         cards.append(card)
 
-    set_meta("step", 6)
+    set_meta("step", 7)
     set_meta("layout_role", "bottom_lower")
     set_meta("card_count", cards.size())
     set_meta("card_ids", "|".join(get_card_ids()))
     set_meta("data_path", DATA_PATH)
     set_meta("compact_variant", true)
+    set_meta("information_interactions_enabled", true)
+    set_meta("action_placement_enabled", false)
     set_meta("interactions_enabled", false)
     set_meta("action_timing_above", true)
+
+func _on_card_hovered(definition: Dictionary) -> void:
+    card_hovered.emit(definition)
+
+func _on_card_unhovered(card_id: String) -> void:
+    card_unhovered.emit(card_id)
+
+func _on_card_clicked(definition: Dictionary) -> void:
+    card_clicked.emit(definition)
+
+func set_pinned_card(card_id: String) -> void:
+    pinned_card_id = card_id
+    for card in cards:
+        card.set_pinned(str(card.definition.get("id", "")) == pinned_card_id and not pinned_card_id.is_empty())
+    set_meta("pinned_card_id", pinned_card_id)
+
+func clear_card_focus() -> void:
+    set_pinned_card("")
 
 func _make_label(font_size: int, color: Color, alignment: int) -> Label:
     var label := Label.new()
@@ -112,13 +140,16 @@ func get_card_ids() -> PackedStringArray:
 
 func get_tray_snapshot() -> Dictionary:
     return {
-        "step": 6,
+        "step": 7,
         "layout_role": "bottom_lower",
         "card_count": cards.size(),
         "card_ids": get_card_ids(),
         "source": "basic",
         "compact_variant": true,
+        "information_interactions_enabled": true,
+        "action_placement_enabled": false,
         "interactions_enabled": false,
+        "pinned_card_id": pinned_card_id,
         "action_timing_above": true
     }
 
