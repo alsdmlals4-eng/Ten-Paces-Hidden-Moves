@@ -1,93 +1,85 @@
 # 십보강호 운영 로드맵
 
-> 제품 구현 순서의 책임 원본은 `../../../docs/04_ROADMAP.md`다.
+> 제품 구현 순서는 `../../../docs/04_ROADMAP.md`가 책임진다.
 
-## M0 기준선·보존 감사
+## M0 기준선·보존
 
-- [x] 최초 대상·Base 기준 SHA 고정
-- [x] 기존 11개 본책·백업·보류·Plan 보존
-- [x] 최신 Base `ee265576...` 고정
-- [x] 155개 커밋·70개 변경 파일 전수 처리표
+- [x] Base `ee265576...` 고정
+- [x] 155개 커밋·70개 변경 파일 감사
+- [x] 본책·백업·보류·Plan·Godot 자산 보존
 - [ ] 사용자 로컬 미커밋 파일 확인
 
 판정: `PASS_REMOTE / LOCAL_UNVERIFIED`
 
-## M1 최신 Base 운영 계약
+## M1 운영 계약
 
-- [x] Work Mode `PLAN / BUILD / REVIEW`
-- [x] Skill·Skill Mode 자동 라우팅
+- [x] `PLAN / BUILD / REVIEW`
+- [x] 자동 Skill·Skill Mode 라우팅
 - [x] L1 이상 실행 보고
-- [x] `audit → reconcile-legacy → migrate → verify`
-- [x] 정책 기반 발행·독립 상태 축
-- [x] 접근성·성능 조건부 검증
-- [x] project operating-system structure Actions
+- [x] reconciliation·정본 최신성·접근성·성능 계약
 
 판정: `PASS`
 
-## M2 책임 원본·Skill Registry
+## M2 Skill·구조 간소화
 
-- [x] 11개 Markdown 책임 원본 Registry
-- [x] 프로젝트 선택 분야 6개와 진입 Skill
-- [x] Work Mode·Skill Mode·Learning Log
-- [x] 자동 trigger 선택 정책
-- [x] Base 13개 통합 Skill 연결
-- [x] Legacy Skill Alias
-- [x] Skill package integrity 검사
+- [x] Base 공유 Skill 13개 연결
+- [x] 로컬 Skill을 프로젝트 고유 4개로 축소
+- [x] 제거된 로컬·Base ID Legacy Alias
+- [x] Skill Registry를 `source_only`로 전환
+- [x] 사용 불가능한 Skill Map PDF·Manifest 계약 제거
+- [x] 컨셉·근거 템플릿 통합
+- [x] 정본 최신성 양식을 변경 검증에 통합
+- [x] Governance 회귀 테스트 단일화
+- [x] 중복 검사기 제거
+- [ ] 간소화 뒤 Actions 최종 성공
 
-판정: `PASS`
+판정: `REVIEW_IN_PROGRESS`
 
-## M3 정본 최신성·GitHub Governance
+## M3 정본·GitHub Governance
 
-- [x] Documentation Governance 검사·Workflow
-- [x] canonical reference freshness 검사
-- [x] 현행 `2수·두 행동·7개 기초 행동` stale Entry Point 차단
-- [x] PR #5 Documentation Governance run #298
-- [x] PR #8 운영 파일 44개 스택 동기화
-- [x] PR #7 Documentation Governance run #299
-- [x] PR #7 Card Component Contract run #395
-- [x] PR #7 mergeable 복구
-- [ ] Required Check 강제 상태 확인
+- [x] operating-system structure
+- [x] canonical reference freshness
+- [x] Skill package integrity
+- [x] stale 전투·Skill·발행 경로 차단
+- [x] PR #5·#7 스택 동기화 1차 완료
+- [ ] 간소화 변경 PR #7 재동기화
+- [ ] PR #5·#7 최신 Actions 성공
+- [ ] Branch protection 강제 상태 확인
 
-판정: `PASS_WITHOUT_BRANCH_PROTECTION_ENFORCEMENT`
+판정: `IN_PROGRESS_WITHOUT_ENFORCEMENT`
 
 ## M4 정책 기반 발행
 
-- [ ] 문서별 발행 정책 확인
+- [x] 제품 문서 `milestone_sync`
+- [x] 내부 운영 기록 `source_only`
+- [ ] 주요 게이트에서 정책 대상 PDF·Manifest 생성
 - [ ] 폰트·LibreOffice·Poppler·Mermaid 실행
-- [ ] 정책 대상 PDF·Manifest 생성
 - [ ] 전 페이지 자동 렌더·사용자 시각 검수
-- [ ] Skill Map 발행
 
-판정: `MIGRATION_PENDING`
+판정: `MILESTONE_NOT_REACHED`
 
 ## M5 전투 POC
 
 - [x] STEP 0~10
 - [x] TARGETING 10.5
-- [x] RESPONSE 10.6 구현
-- [x] RESOURCE PREVIEW 10.6 구현
+- [x] RESPONSE·RESOURCE PREVIEW 10.6 구현
 - [x] Windows에서 STEP 0~10·대상 지정 확인
-- [ ] RESPONSE 10.6 사용자 확인
-- [ ] RESOURCE PREVIEW 10.6 사용자 확인
+- [ ] RESPONSE·RESOURCE PREVIEW 10.6 사용자 확인
 
 판정: `PROTOTYPE_PARTIALLY_VERIFIED`
 
 ## M6 다음 제품 단계
 
-1. 사용자 Fetch/Pull과 STEP 10.6 확인
-2. STEP 11 피격 중단·집중·강건
-3. STEP 12 단순 AI
-4. STEP 13 전투 종료·재시작
-5. STEP 14 POC 플레이테스트
-6. T1 5전 데모
+1. 간소화 Actions·PR 동기화 완료
+2. 사용자 Fetch/Pull과 STEP 10.6 확인
+3. STEP 11 피격 중단·집중·강건
+4. STEP 12 AI
+5. STEP 13 종료·재시작
+6. STEP 14 POC 플레이테스트
+7. T1 5전 데모
 
-## M7 Cleanup·Enforcement
+## M7 추가 Cleanup
 
-- [ ] 고유 정보·참조·파생본·복구 확인
-- [ ] 사용자 삭제 승인
-- [ ] 승인 항목만 UPDATE·MERGE·STUB·ARCHIVE·DELETE
-- [ ] reference-freshness·회귀·콜드 스타트 재검증
+고유 정보·참조·파생본·복구·사용자 승인을 확인한 항목만 추가로 통합·삭제한다. 변경 뒤 reference-freshness·회귀·콜드 스타트를 다시 실행한다.
 
-판정: `NOT_READY`
-
-파일 존재, 정적 검사, Actions 성공, 실제 런타임, 사용자 시각 검수, 접근성·성능 검증, Required Check 강제는 독립 상태다.
+파일 존재, Actions 성공, Godot 런타임, 사람 검수, 접근성·성능, Branch protection은 독립 상태다.
