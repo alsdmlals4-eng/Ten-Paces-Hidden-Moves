@@ -1,26 +1,7 @@
 {
   "schema_version": 1,
-  "scan_globs": [
-    "*.md",
-    "*.json",
-    ".github/**/*.json",
-    ".github/**/*.yml",
-    "[기획서]/**/*.md",
-    "[기획서]/**/*.json",
-    "docs/**/*.md",
-    "skills/**/*.md",
-    "skills/**/*.json",
-    "templates/**/*.md",
-    "tests/**/*.py",
-    "tools/**/*.py"
-  ],
-  "ignore_globs": [
-    ".git/**",
-    ".godot/**",
-    "docs/[백업]/**",
-    "docs/[보류]/**",
-    "**/[제거 후보]/**"
-  ],
+  "scan_globs": ["*.md", "*.json", ".github/**/*.json", ".github/**/*.yml", "[기획서]/**/*.md", "[기획서]/**/*.json", "docs/**/*.md", "skills/**/*.md", "skills/**/*.json", "templates/**/*.md", "tests/**/*.py", "tools/**/*.py"],
+  "ignore_globs": [".git/**", ".godot/**", "docs/[백업]/**", "docs/[보류]/**", "**/[제거 후보]/**"],
   "legacy_aliases_path": "skills/LEGACY_SKILL_ALIASES.md",
   "strict_current_files": [
     "README.md",
@@ -46,7 +27,7 @@
   "required_current_tokens": {
     "README.md": ["3수 → 3수 → 4수", "기초 행동 8종", "ee265576da7f67d3278f8099dd97d4e714ef0651"],
     "START_HERE.md": ["PLAN", "BUILD", "REVIEW", "ee265576da7f67d3278f8099dd97d4e714ef0651"],
-    "AGENTS.md": ["auditing-canonical-reference-freshness", "automatic-trigger-match", "3수 → 3수 → 4수"],
+    "AGENTS.md": ["auditing-canonical-reference-freshness", "Skill Mode", "execution-report", "3수 → 3수 → 4수"],
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": ["STEP 0~10", "RESPONSE 10.6", "기초 행동 8종"],
     "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json": ["automatic-trigger-match", "require_execution_report", "work_modes"]
   },
