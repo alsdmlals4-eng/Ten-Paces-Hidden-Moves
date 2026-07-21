@@ -7,7 +7,6 @@ const DATA_PATH := "res://data/combat/combat_log_preview.json"
 const PANEL := Color(0.040, 0.034, 0.028, 0.97)
 const GOLD := Color("c79a50")
 const PAPER := Color("e0cfaa")
-const MUTED := Color("9b8c76")
 
 var log_data: Dictionary = {}
 var entries: Array = []
@@ -19,7 +18,8 @@ var _content: RichTextLabel
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_STOP
     log_data = _load_data()
-    entries = (log_data.get("entries", []) as Array).duplicate(true)
+    var loaded_entries: Array = log_data.get("entries", [])
+    entries = loaded_entries.duplicate(true)
     collapsed = bool(log_data.get("default_collapsed", true))
     _build()
     resized.connect(_layout)
@@ -95,12 +95,10 @@ func clear_entries() -> void:
     _refresh()
 
 func _refresh() -> void:
-    if _toggle_button == null:
+    if _toggle_button == null or _content == null:
         return
     _toggle_button.text = "기록" if collapsed else "전투 기록 ◀"
     _content.visible = not collapsed
-    if _content == null:
-        return
     var lines := PackedStringArray()
     for entry_value in entries:
         if typeof(entry_value) != TYPE_DICTIONARY:
@@ -111,7 +109,7 @@ func _refresh() -> void:
     queue_redraw()
 
 func _layout() -> void:
-    if _toggle_button == null:
+    if _toggle_button == null or _content == null:
         return
     if collapsed:
         _toggle_button.position = Vector2.ZERO
