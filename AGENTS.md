@@ -127,13 +127,7 @@ L2 이상 또는 다중 의존성 작업은 활동명이 아니라 `outcome / in
 - `v2`, `final`, `latest`, `copy` 활성 복제본을 만들지 않는다.
 - PDF·DOCX·다이어그램은 파생본이며 독립 원본이 아니다.
 
-발행 정책:
-
-- `source_only`: 원본·Schema·링크만 유지
-- `milestone_sync`: 주요 게이트·외부 공유 때 PDF·Manifest 동기화
-- `always_sync`: 같은 작업에서 항상 재생성할 수 있는 문서만 사용
-
-현재 제품 문서는 `milestone_sync`, 내부 Base 학습 기록과 Skill Registry는 `source_only`다. 생성 실패 시 기존 정상 산출물을 보존한다.
+현재 저장소에는 발행 생성기가 없으므로 기획 문서와 Skill Registry는 `source_only`다. PDF가 필요한 마일스톤에서 생성기·폰트·렌더·Manifest 검증을 함께 설치하고 필요한 문서만 `milestone_sync`로 전환한다. 실행 불가능한 `always_sync`를 선언하지 않는다.
 
 ## 7. 기존 구조·가지치기
 
@@ -179,7 +173,7 @@ contract-check
 ## 9. 작업 종료
 
 1. 책임 원본과 실제 파일을 맞춘다.
-2. Registry·Legacy Alias·Manifest·Update Matrix 영향을 확인한다.
+2. Registry·Legacy Alias·Update Matrix 영향을 확인한다.
 3. Active Context·Roadmap을 갱신한다.
 4. Handoff는 세션·브랜치·마일스톤 경계에서만 갱신한다.
 5. Changelog·Decision Log·Learning Log에 필요한 기록을 남긴다.
