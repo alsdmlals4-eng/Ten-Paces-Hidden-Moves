@@ -9,6 +9,7 @@ const PAPER := Color("e0cfaa")
 const GOLD := Color("c79a50")
 const MUTED := Color("8e8372")
 const LOCKED := Color("4f4940")
+const TARGET_PENDING := Color("e6a84f")
 
 var timing_index := 1
 var bundle_index := 1
@@ -18,6 +19,9 @@ var assigned_definition: Dictionary = {}
 var assignment_anchor_index := 0
 var assignment_span := 0
 var assignment_part_index := 0
+var target_text := ""
+var target_ready := true
+var targeting_mode := "none"
 var _hovered := false
 
 var _timing_label: Label
@@ -45,7 +49,7 @@ func configure(global_index: int, group_index: int, timing_in_group: int, state:
     set_meta("bundle_index", bundle_index)
     set_meta("local_index", local_index)
     set_meta("slot_state", slot_state)
-    set_meta("card_content", false)
+    set_meta("card_content", has_assignment())
     set_meta("placement_enabled", can_receive_placement())
     if is_inside_tree():
         _refresh()
@@ -63,6 +67,9 @@ func set_assignment(definition: Dictionary, anchor_index: int, span: int, part_i
     assignment_anchor_index = anchor_index
     assignment_span = span
     assignment_part_index = part_index
+    target_text = ""
+    target_ready = true
+    targeting_mode = "none"
     set_meta("card_content", true)
     set_meta("card_id", str(assigned_definition.get("id", "")))
     set_meta("card_name", str(assigned_definition.get("name", "")))
@@ -72,17 +79,33 @@ func set_assignment(definition: Dictionary, anchor_index: int, span: int, part_i
     _refresh()
     queue_redraw()
 
+func set_target_info(value_text: String, value_ready: bool, value_mode: String) -> void:
+    target_text = value_text
+    target_ready = value_ready
+    targeting_mode = value_mode
+    set_meta("target_text", target_text)
+    set_meta("target_ready", target_ready)
+    set_meta("targeting_mode", targeting_mode)
+    _refresh()
+    queue_redraw()
+
 func clear_assignment() -> void:
     assigned_definition.clear()
     assignment_anchor_index = 0
     assignment_span = 0
     assignment_part_index = 0
+    target_text = ""
+    target_ready = true
+    targeting_mode = "none"
     set_meta("card_content", false)
     set_meta("card_id", "")
     set_meta("card_name", "")
     set_meta("assignment_anchor_index", 0)
     set_meta("assignment_span", 0)
     set_meta("assignment_part_index", 0)
+    set_meta("target_text", "")
+    set_meta("target_ready", true)
+    set_meta("targeting_mode", "none")
     _refresh()
     queue_redraw()
 
@@ -126,7 +149,12 @@ func _refresh() -> void:
     if has_assignment():
         var card_name := str(assigned_definition.get("name", ""))
         _placeholder_label.text = card_name if assignment_part_index == 0 else "↳ %s" % card_name
-        _status_label.text = "%d슬롯" % assignment_span if assignment_part_index == 0 else "연결"
+        if not target_ready and targeting_mode != "none":
+            _status_label.text = "대상 선택"
+        elif not target_text.is_empty():
+            _status_label.text = target_text
+        else:
+            _status_label.text = "%d슬롯" % assignment_span if assignment_part_index == 0 else "연결"
     else:
         _placeholder_label.text = "＋" if can_receive_placement() else "—"
         _status_label.text = _state_text()
@@ -140,9 +168,7 @@ func _state_text() -> String:
     match slot_state:
         "passed":
             return "경과"
-        "current":
-            return "배치"
-        "available":
+        "current", "available":
             return "배치"
         _:
             return "잠김"
@@ -174,6 +200,8 @@ func _category_color(category: String) -> Color:
             return GOLD
 
 func _display_color() -> Color:
+    if has_assignment() and not target_ready and targeting_mode != "none":
+        return TARGET_PENDING
     if has_assignment():
         return _category_color(str(assigned_definition.get("category", "")))
     return _state_color()
