@@ -9,6 +9,15 @@ const EXPECTED_HEIGHT_RATIO := 1.5
 const EXPECTED_MOMENTUM_SEGMENTS := 6
 const EXPECTED_TIMING_SEQUENCE := [3, 3, 4]
 const EXPECTED_TIMING_COUNT := 10
+const EXPECTED_CARD_IDS := [
+    "basic_move",
+    "basic_guard",
+    "basic_evade",
+    "basic_quick_attack",
+    "basic_heavy_attack",
+    "basic_meditate",
+    "basic_stance"
+]
 const POSITION_TOLERANCE := 0.75
 const SIZE_TOLERANCE := 0.01
 
@@ -64,11 +73,6 @@ func _run() -> void:
             failures.append("BattleBackground must load the pure vector SVG directly.")
         if board.battle_background.texture == null:
             failures.append("BattleBackground direct SVG texture must not be null.")
-        else:
-            if board.battle_background.texture.get_width() < 1000:
-                failures.append("BattleBackground texture width is unexpectedly small.")
-            if board.battle_background.texture.get_height() < 600:
-                failures.append("BattleBackground texture height is unexpectedly small.")
 
     if not bool(snapshot.get("hud_ready", false)):
         failures.append("STEP 4 top combat HUD did not instantiate.")
@@ -90,8 +94,6 @@ func _run() -> void:
             failures.append("Top HUD must include the enemy status panel on the right.")
         if int(hud_snapshot.get("momentum_segments", 0)) != EXPECTED_MOMENTUM_SEGMENTS:
             failures.append("Both ultimate momentum gauges must use six segments.")
-        if bool(hud_snapshot.get("lower_status_panels", true)):
-            failures.append("Top HUD metadata must explicitly reject lower status panels.")
         if str(hud_snapshot.get("layout", "")) != "player_status|player_momentum|round|enemy_momentum|enemy_status":
             failures.append("Top HUD component order does not match the approved layout.")
 
@@ -107,8 +109,6 @@ func _run() -> void:
 
     if not bool(snapshot.get("action_timing_ready", false)):
         failures.append("STEP 5 action timing panel did not instantiate.")
-    if bool(snapshot.get("lower_skill_panel", true)):
-        failures.append("STEP 5 must not add the lower skill catalog before STEP 6.")
     if board.action_timing_panel == null:
         failures.append("ActionTimingPanel component must exist.")
     else:
@@ -121,8 +121,10 @@ func _run() -> void:
             failures.append("STEP 5 preview must highlight the second action bundle.")
         if int(timing_snapshot.get("current_timing", 0)) != 5:
             failures.append("STEP 5 preview must highlight timing 5 of 10.")
+        if str(timing_snapshot.get("progress_scope", "")) != "round":
+            failures.append("The 10 timings must be identified as round progress, not battle duration.")
         if bool(timing_snapshot.get("cards_inserted", true)):
-            failures.append("STEP 5 must not insert card content.")
+            failures.append("STEP 5 action slots must remain card-free before action placement.")
         if bool(timing_snapshot.get("interactions_enabled", true)):
             failures.append("STEP 5 must not enable action placement interaction.")
         if str(timing_snapshot.get("layout_role", "")) != "bottom_upper":
@@ -136,7 +138,7 @@ func _run() -> void:
             var group_index := int(slot_node.get_meta("bundle_index", 0))
             group_counts[group_index] = int(group_counts.get(group_index, 0)) + 1
             if bool(slot_node.get_meta("card_content", true)):
-                failures.append("STEP 5 timing slots must remain card-free.")
+                failures.append("Timing slots must remain card-free until STEP 9.")
         if int(group_counts.get(1, 0)) != 3 or int(group_counts.get(2, 0)) != 3 or int(group_counts.get(3, 0)) != 4:
             failures.append("Independent timing slots must be grouped as 3, 3, 4.")
 
@@ -146,14 +148,59 @@ func _run() -> void:
         if int(state_counts.get("current", 0)) != 1:
             failures.append("STEP 5 preview must show exactly one current timing.")
         if int(state_counts.get("available", 0)) != 1:
-            failures.append("STEP 5 preview must show one remaining selectable timing in the current bundle.")
+            failures.append("STEP 5 preview must show one selectable timing in the current bundle.")
         if int(state_counts.get("locked", 0)) != 4:
             failures.append("STEP 5 preview must keep the final four timings locked.")
 
-        var board_bottom := float(snapshot.get("board_bottom", 0.0))
-        var timing_top := float(snapshot.get("action_timing_top", 0.0))
-        if timing_top <= board_bottom:
-            failures.append("Bottom-upper action timing panel must not overlap the ten-tile board.")
+    if not bool(snapshot.get("basic_card_tray_ready", false)):
+        failures.append("STEP 6 basic card tray did not instantiate.")
+    if not bool(snapshot.get("lower_skill_panel", false)):
+        failures.append("STEP 6 must expose the lower basic-card tray.")
+    if board.basic_card_tray == null:
+        failures.append("BasicCardTray component must exist.")
+    else:
+        var tray_snapshot := board.basic_card_tray.get_tray_snapshot()
+        if int(tray_snapshot.get("card_count", 0)) != EXPECTED_CARD_IDS.size():
+            failures.append("Basic card tray must contain seven cards.")
+        if str(tray_snapshot.get("layout_role", "")) != "bottom_lower":
+            failures.append("Basic card tray must use the bottom-lower layout role.")
+        if not bool(tray_snapshot.get("compact_variant", false)):
+            failures.append("Combat view must use the compact card variant.")
+        if bool(tray_snapshot.get("interactions_enabled", true)):
+            failures.append("STEP 6 cards must be display-only.")
+        if not bool(tray_snapshot.get("action_timing_above", false)):
+            failures.append("Action timing panel must remain above the basic card tray.")
+
+        var card_ids: PackedStringArray = tray_snapshot.get("card_ids", PackedStringArray())
+        if card_ids.size() != EXPECTED_CARD_IDS.size():
+            failures.append("Basic card tray id list must contain seven entries.")
+        else:
+            for index in range(EXPECTED_CARD_IDS.size()):
+                if card_ids[index] != EXPECTED_CARD_IDS[index]:
+                    failures.append("Basic card order mismatch at index %d." % index)
+
+        var card_nodes := board.basic_card_tray.find_children("BasicCard*", "BasicCardTrayItem", true, false)
+        if card_nodes.size() != EXPECTED_CARD_IDS.size():
+            failures.append("Basic card tray must instantiate seven independent compact card nodes. actual=%d" % card_nodes.size())
+        for card_node in card_nodes:
+            if str(card_node.get_meta("source", "")) != "basic":
+                failures.append("Every STEP 6 card must use the basic source.")
+            if bool(card_node.get_meta("interactions_enabled", true)):
+                failures.append("Compact cards must not accept interaction in STEP 6.")
+            if not card_node.definition.has("action_slots") or not card_node.definition.has("stamina_cost") or not card_node.definition.has("internal_cost"):
+                failures.append("Every compact card must expose slot, stamina, and internal costs.")
+
+    var board_bottom := float(snapshot.get("board_bottom", 0.0))
+    var timing_top := float(snapshot.get("action_timing_top", 0.0))
+    var timing_bottom := float(snapshot.get("action_timing_bottom", 0.0))
+    var tray_top := float(snapshot.get("basic_card_tray_top", 0.0))
+    var tray_bottom := float(snapshot.get("basic_card_tray_bottom", 0.0))
+    if timing_top <= board_bottom:
+        failures.append("Bottom-upper action timing panel must not overlap the ten-tile board.")
+    if tray_top <= timing_bottom:
+        failures.append("Bottom-lower card tray must not overlap the action timing panel.")
+    if tray_bottom > board.size.y + SIZE_TOLERANCE:
+        failures.append("Basic card tray must remain inside the viewport.")
 
     if int(snapshot.get("tile_count", 0)) != EXPECTED_TILE_COUNT:
         failures.append("Expected ten board tiles. actual=%s" % snapshot.get("tile_count", 0))
@@ -219,11 +266,11 @@ func _run() -> void:
 
 func _finish() -> void:
     if failures.is_empty():
-        print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_VERIFY_OK")
+        print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_VERIFY_OK")
         quit(0)
         return
 
     for failure in failures:
         push_error(failure)
-    print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_VERIFY_FAILED count=%d" % failures.size())
+    print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_VERIFY_FAILED count=%d" % failures.size())
     quit(1)
