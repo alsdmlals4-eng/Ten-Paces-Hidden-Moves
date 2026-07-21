@@ -19,50 +19,33 @@
     "commit": "ee265576da7f67d3278f8099dd97d4e714ef0651",
     "legacy_aliases": "skills/LEGACY_SKILL_ALIASES.md",
     "shared_learning_log": "skills/SKILL_LEARNING_LOG.md",
-    "active_shared_skills": [
-      "managing-project-intake-and-work-contract",
-      "managing-game-project-operating-system",
-      "managing-design-documents",
-      "evolving-project-discipline-skills",
-      "maintaining-project-context-and-handoff",
-      "analyzing-and-refining-game-concepts",
-      "designing-vertical-slices",
-      "orchestrating-deepseek-worktrees",
-      "reviewing-and-validating-project-changes",
-      "auditing-canonical-reference-freshness",
-      "designing-art-prompts-and-technique-cards",
-      "auditing-and-refining-ui-art",
-      "managing-base-change-proposals"
-    ]
+    "shared_skill_routes": {
+      "intake_and_work_contract": "managing-project-intake-and-work-contract",
+      "operating_system": "managing-game-project-operating-system",
+      "design_documents": "managing-design-documents",
+      "skill_evolution": "evolving-project-discipline-skills",
+      "context_and_handoff": "maintaining-project-context-and-handoff",
+      "concept_and_research": "analyzing-and-refining-game-concepts",
+      "vertical_slice": "designing-vertical-slices",
+      "external_ai_worktrees": "orchestrating-deepseek-worktrees",
+      "change_validation": "reviewing-and-validating-project-changes",
+      "reference_freshness": "auditing-canonical-reference-freshness",
+      "art_prompting": "designing-art-prompts-and-technique-cards",
+      "runtime_ui_audit": "auditing-and-refining-ui-art",
+      "base_proposals": "managing-base-change-proposals"
+    }
   },
   "human_presentation": {
-    "primary_reading_format": "PROJECT_SKILL_MAP.pdf",
+    "publication_policy": "source_only",
+    "primary_reading_format": "SKILL_REGISTRY.json",
     "editable_derivative": null,
-    "diagram_directory": "PROJECT_SKILL_MAP.assets",
-    "publication_manifest": "SKILL_MAP_PUBLICATION_MANIFEST.json",
-    "generator": "tools/build_project_skill_map.py",
+    "diagram_directory": null,
+    "publication_manifest": null,
+    "generator": null,
     "source_of_truth": "SKILL_REGISTRY.json",
-    "markdown_summary": "PROJECT_SKILL_MAP.md",
-    "publication_status": "MIGRATION_PENDING"
+    "markdown_summary": null
   },
   "skills": [
-    {
-      "skill_id": "project-operations-and-handoff",
-      "layer": "foundation",
-      "discipline": "프로덕션·PM",
-      "path": "skills/foundation/project-operations-and-handoff/SKILL.md",
-      "status": "ACTIVE",
-      "load_by_default": false,
-      "trigger_tags": ["new-request", "cold-start", "handoff", "active-context-change", "base-migration", "work-mode-selection", "execution-report"],
-      "skill_modes": ["route", "context-update", "handoff", "execution-report"],
-      "use_when": ["새 작업을 라우팅하거나 현재 상태·다음 작업·보호 범위를 인계하고 실행 결과를 보고한다."],
-      "do_not_use_when": ["방향·범위·상태에 영향 없는 L0 수정이다."],
-      "learning_log": "skills/SKILL_LEARNING_LOG.md",
-      "review_triggers": ["콜드 스타트 실패", "Work Mode 누락", "실행 이유·결과 보고 누락", "과도한 기본 컨텍스트"],
-      "last_reviewed_at": "2026-07-21",
-      "last_reviewed_commit": "",
-      "knowledge_state": "PATTERN"
-    },
     {
       "skill_id": "ten-paces-game-design",
       "layer": "discipline",
@@ -77,7 +60,7 @@
       "learning_log": "skills/SKILL_LEARNING_LOG.md",
       "review_triggers": ["본책 수치 충돌", "제품 범위 변경", "플레이테스트 결과", "구현과 규칙 불일치"],
       "last_reviewed_at": "2026-07-21",
-      "last_reviewed_commit": "",
+      "last_reviewed_commit": "de9ad6e",
       "knowledge_state": "PATTERN"
     },
     {
@@ -94,7 +77,7 @@
       "learning_log": "skills/SKILL_LEARNING_LOG.md",
       "review_triggers": ["정보 판독 실패", "실제 렌더 불일치", "접근성 폴백 변경", "색상 단일 정보 채널"],
       "last_reviewed_at": "2026-07-21",
-      "last_reviewed_commit": "",
+      "last_reviewed_commit": "de9ad6e",
       "knowledge_state": "PATTERN"
     },
     {
@@ -111,7 +94,7 @@
       "learning_log": "skills/SKILL_LEARNING_LOG.md",
       "review_triggers": ["환각 경로", "저장 호환성 변경", "문서와 구현 불일치", "도메인 계산의 UI 침범"],
       "last_reviewed_at": "2026-07-21",
-      "last_reviewed_commit": "",
+      "last_reviewed_commit": "de9ad6e",
       "knowledge_state": "PATTERN"
     },
     {
@@ -123,33 +106,16 @@
       "load_by_default": false,
       "trigger_tags": ["qa", "test", "regression", "playtest", "determinism", "build-approval", "reference-freshness", "edge-case"],
       "skill_modes": ["contract-check", "static-validation", "runtime-validation", "regression", "evidence-report"],
-      "use_when": ["체크리스트를 실제 자동·수동·사용자 검증과 완료 증거로 연결한다."],
-      "do_not_use_when": ["검증 대상이나 실행 가능한 증거가 없는 아이디어 비교다."],
+      "use_when": ["십보강호 고유 규칙과 실제 Godot·데이터·저장·빌드의 검증 증거를 연결한다."],
+      "do_not_use_when": ["프로젝트 고유 검증 대상이 없는 일반 운영체계 감사다."],
       "learning_log": "skills/SKILL_LEARNING_LOG.md",
       "review_triggers": ["테스트 누락", "재현 실패", "체크리스트와 실행 불일치", "미검증 완료 주장"],
       "last_reviewed_at": "2026-07-21",
-      "last_reviewed_commit": "",
-      "knowledge_state": "PATTERN"
-    },
-    {
-      "skill_id": "project-health-review",
-      "layer": "discipline",
-      "discipline": "통합검수",
-      "path": "skills/integrated-review/project-health-review/SKILL.md",
-      "status": "ACTIVE",
-      "load_by_default": false,
-      "trigger_tags": ["operating-system-health", "post-migration", "major-gate", "cold-start-failure", "publication-stale", "skill-integrity", "canonical-reference-freshness"],
-      "skill_modes": ["contract-review", "reference-freshness", "health-review", "evidence-report"],
-      "use_when": ["문서·Registry·Skill·발행·자동화·실제 구현·콜드 스타트를 증거 기반으로 종합 검수한다."],
-      "do_not_use_when": ["운영체계와 무관한 작은 변경이다."],
-      "learning_log": "skills/SKILL_LEARNING_LOG.md",
-      "review_triggers": ["Governance 실패", "발행 최신성 불일치", "동일 운영 결함 반복", "untouched 소비자 누락"],
-      "last_reviewed_at": "2026-07-21",
-      "last_reviewed_commit": "",
+      "last_reviewed_commit": "de9ad6e",
       "knowledge_state": "PATTERN"
     }
   ],
-  "selected_disciplines": ["게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA", "프로덕션·PM", "통합검수"],
+  "selected_disciplines": ["게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA"],
   "discipline_entrypoints": {
     "설정·내러티브": [],
     "게임 디자인": ["ten-paces-game-design"],
@@ -159,8 +125,8 @@
     "아트": [],
     "사운드": [],
     "QA": ["ten-paces-verification"],
-    "프로덕션·PM": ["project-operations-and-handoff"],
+    "프로덕션·PM": [],
     "분석·유저리서치": [],
-    "통합검수": ["project-health-review"]
+    "통합검수": []
   }
 }
