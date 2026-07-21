@@ -3,6 +3,7 @@ extends Control
 
 signal slot_clicked(timing_index: int)
 signal placement_changed(snapshot: Dictionary)
+signal bundle_advanced(snapshot: Dictionary)
 
 const DATA_PATH := "res://data/combat/combat_action_timing_preview.json"
 const SLOT_SCENE := preload("res://scenes/ui/action_timing_slot.tscn")
@@ -54,23 +55,19 @@ func _build_content() -> void:
 
     var sequence: Array = timing_data.get("timing_sequence", [3, 3, 4])
     var labels: Array = timing_data.get("bundle_labels", ["1묶음", "2묶음", "3묶음"])
-    var current_bundle := int(timing_data.get("current_bundle", 1))
-    var current_timing := int(timing_data.get("current_timing", 1))
     var global_index := 1
-
     for group_index in range(sequence.size()):
         var count := int(sequence[group_index])
-        var group_label := _make_label(12, GOLD if group_index + 1 == current_bundle else MUTED, HORIZONTAL_ALIGNMENT_CENTER)
+        var group_label := _make_label(12, MUTED, HORIZONTAL_ALIGNMENT_CENTER)
         group_label.name = "BundleLabel%d" % (group_index + 1)
         var label_text := str(labels[group_index]) if group_index < labels.size() else "%d묶음" % (group_index + 1)
         group_label.text = "%s · %d수" % [label_text, count]
         _group_labels.append(group_label)
-
         var group_end := global_index + count - 1
         for local_index in range(1, count + 1):
             var slot := SLOT_SCENE.instantiate() as ActionTimingSlot
             slot.name = "TimingSlot%02d" % global_index
-            slot.configure(global_index, group_index + 1, local_index, _resolve_state(global_index, group_index + 1, group_end, current_bundle, current_timing))
+            slot.configure(global_index, group_index + 1, local_index, _resolve_state(global_index, group_index + 1, group_end))
             slot.slot_clicked.connect(_on_slot_clicked)
             add_child(slot)
             slots.append(slot)
@@ -78,23 +75,38 @@ func _build_content() -> void:
 
     set_meta("step", 5)
     set_meta("placement_step", 9)
+    set_meta("runtime_step", 10)
     set_meta("layout_role", "bottom_upper")
-    set_meta("round_number", int(timing_data.get("round_number", 1)))
     set_meta("timing_sequence", "3|3|4")
     set_meta("total_timings", slots.size())
     set_meta("progress_scope", "round")
-    set_meta("cards_inserted", false)
     set_meta("interactions_enabled", true)
     set_meta("placement_enabled", true)
+    set_meta("state_advancement_enabled", true)
+    _update_runtime_meta()
 
-func _resolve_state(global_index: int, group_index: int, group_end: int, current_bundle: int, current_timing: int) -> String:
+func _resolve_state(global_index: int, group_index: int, _group_end: int) -> String:
+    var current_bundle := int(timing_data.get("current_bundle", 1))
+    var current_timing := int(timing_data.get("current_timing", 1))
     if global_index < current_timing:
         return "passed"
+    if group_index < current_bundle:
+        return "passed"
+    if group_index > current_bundle:
+        return "locked"
     if global_index == current_timing:
         return "current"
-    if group_index == current_bundle and global_index <= group_end:
-        return "available"
-    return "locked"
+    return "available"
+
+func _refresh_slot_states() -> void:
+    for slot in slots:
+        slot.configure(slot.timing_index, slot.bundle_index, slot.local_index, _resolve_state(slot.timing_index, slot.bundle_index, slot.timing_index))
+    _update_group_colors()
+
+func _update_group_colors() -> void:
+    var current_bundle := int(timing_data.get("current_bundle", 1))
+    for index in range(_group_labels.size()):
+        _group_labels[index].add_theme_color_override("font_color", GOLD if index + 1 == current_bundle else MUTED)
 
 func _on_slot_clicked(timing_index: int) -> void:
     slot_clicked.emit(timing_index)
@@ -104,19 +116,20 @@ func get_slot(timing_index: int) -> ActionTimingSlot:
         return null
     return slots[timing_index - 1]
 
+func get_bundle_bounds(bundle_index: int) -> Vector2i:
+    var sequence: Array = timing_data.get("timing_sequence", [3, 3, 4])
+    var start := 1
+    for group_index in range(maxi(0, bundle_index - 1)):
+        if group_index < sequence.size():
+            start += int(sequence[group_index])
+    if bundle_index < 1 or bundle_index > sequence.size():
+        return Vector2i(start, start)
+    return Vector2i(start, start + int(sequence[bundle_index - 1]) - 1)
+
 func get_current_bundle_indices() -> PackedInt32Array:
     var result := PackedInt32Array()
-    var sequence: Array = timing_data.get("timing_sequence", [3, 3, 4])
-    var current_bundle := int(timing_data.get("current_bundle", 1))
-    var current_timing := int(timing_data.get("current_timing", 1))
-    var bundle_start := 1
-    for group_index in range(current_bundle - 1):
-        if group_index < sequence.size():
-            bundle_start += int(sequence[group_index])
-    if current_bundle < 1 or current_bundle > sequence.size():
-        return result
-    var bundle_end := bundle_start + int(sequence[current_bundle - 1]) - 1
-    for timing_index in range(maxi(bundle_start, current_timing), bundle_end + 1):
+    var bounds := get_bundle_bounds(int(timing_data.get("current_bundle", 1)))
+    for timing_index in range(maxi(bounds.x, int(timing_data.get("current_timing", bounds.x))), bounds.y + 1):
         result.append(timing_index)
     return result
 
@@ -175,12 +188,23 @@ func remove_at(timing_index: int) -> Dictionary:
     return placement.duplicate(true)
 
 func clear_current_bundle() -> void:
-    var anchors := placements.keys()
+    var anchors := placements.keys().duplicate()
     for anchor_value in anchors:
         var anchor_index := int(anchor_value)
         if is_index_actionable(anchor_index):
-            remove_at(anchor_index)
+            _clear_placement_without_signal(anchor_index)
     _emit_placement_changed()
+
+func _clear_placement_without_signal(anchor_index: int) -> void:
+    if not placements.has(anchor_index):
+        return
+    var placement: Dictionary = placements[anchor_index]
+    var indices: PackedInt32Array = placement.get("indices", PackedInt32Array())
+    for index_value in indices:
+        var slot := get_slot(int(index_value))
+        if slot != null:
+            slot.clear_assignment()
+    placements.erase(anchor_index)
 
 func is_current_bundle_complete() -> bool:
     var actionable := get_current_bundle_indices()
@@ -213,10 +237,65 @@ func get_placement_list() -> Array:
         })
     return result
 
+func get_resolution_placements() -> Array:
+    var result: Array = []
+    var anchors := placements.keys()
+    anchors.sort()
+    for anchor_value in anchors:
+        var anchor_index := int(anchor_value)
+        if not is_index_actionable(anchor_index):
+            continue
+        var placement: Dictionary = placements[anchor_index]
+        result.append(placement.duplicate(true))
+    return result
+
+func get_runtime_context() -> Dictionary:
+    return {
+        "round_number": int(timing_data.get("round_number", 1)),
+        "bundle_index": int(timing_data.get("current_bundle", 1)),
+        "current_timing": int(timing_data.get("current_timing", 1)),
+        "total_timings": slots.size(),
+        "timing_sequence": timing_data.get("timing_sequence", [3, 3, 4])
+    }
+
+func advance_after_resolution() -> Dictionary:
+    var resolved_bundle := int(timing_data.get("current_bundle", 1))
+    var resolved_bounds := get_bundle_bounds(resolved_bundle)
+    var anchors := placements.keys().duplicate()
+    for anchor_value in anchors:
+        _clear_placement_without_signal(int(anchor_value))
+
+    var sequence: Array = timing_data.get("timing_sequence", [3, 3, 4])
+    var next_bundle := resolved_bundle + 1
+    var next_round := int(timing_data.get("round_number", 1))
+    if next_bundle > sequence.size():
+        next_round += 1
+        next_bundle = 1
+    var next_bounds := get_bundle_bounds(next_bundle)
+    timing_data["round_number"] = next_round
+    timing_data["current_bundle"] = next_bundle
+    timing_data["current_timing"] = next_bounds.x
+
+    _refresh_slot_states()
+    _refresh()
+    _update_runtime_meta()
+    _emit_placement_changed()
+    var snapshot := get_timing_snapshot()
+    snapshot["resolved_bundle"] = resolved_bundle
+    snapshot["resolved_start"] = resolved_bounds.x
+    snapshot["resolved_end"] = resolved_bounds.y
+    bundle_advanced.emit(snapshot)
+    return snapshot
+
 func _emit_placement_changed() -> void:
     set_meta("cards_inserted", not placements.is_empty())
     set_meta("current_bundle_complete", is_current_bundle_complete())
     placement_changed.emit(get_timing_snapshot())
+
+func _update_runtime_meta() -> void:
+    set_meta("round_number", int(timing_data.get("round_number", 1)))
+    set_meta("current_bundle", int(timing_data.get("current_bundle", 1)))
+    set_meta("current_timing", int(timing_data.get("current_timing", 1)))
 
 func _make_label(font_size: int, color: Color, alignment: int) -> Label:
     var label := Label.new()
@@ -235,18 +314,17 @@ func _refresh() -> void:
     if _title_label == null:
         return
     var sequence: Array = timing_data.get("timing_sequence", [3, 3, 4])
-    var round_number := int(timing_data.get("round_number", 1))
     var sequence_texts := PackedStringArray()
     for value in sequence:
         sequence_texts.append("%d수" % int(value))
     _title_label.text = "행동 진행"
     _sequence_label.text = " → ".join(sequence_texts)
-    _progress_label.text = "라운드 %d" % round_number
+    _progress_label.text = "라운드 %d" % int(timing_data.get("round_number", 1))
+    _update_group_colors()
 
 func _layout() -> void:
     if _title_label == null or slots.is_empty():
         return
-
     var side_margin := 12.0
     var width := maxf(1.0, size.x - side_margin * 2.0)
     _title_label.position = Vector2(side_margin, 5.0)
@@ -286,22 +364,17 @@ func _layout() -> void:
         if group_index < sequence.size() - 1:
             _separator_x.append(x + group_extra_gap * 0.5 - base_gap * 0.5)
             x += group_extra_gap
-
     queue_redraw()
 
 func get_timing_snapshot() -> Dictionary:
-    var state_counts := {
-        "passed": 0,
-        "current": 0,
-        "available": 0,
-        "locked": 0
-    }
+    var state_counts := {"passed": 0, "current": 0, "available": 0, "locked": 0}
     for slot in slots:
         var state := str(slot.slot_state)
         state_counts[state] = int(state_counts.get(state, 0)) + 1
     return {
         "step": 5,
         "placement_step": 9,
+        "runtime_step": 10,
         "layout_role": "bottom_upper",
         "round_number": int(timing_data.get("round_number", 1)),
         "timing_sequence": timing_data.get("timing_sequence", [3, 3, 4]),
@@ -313,9 +386,10 @@ func get_timing_snapshot() -> Dictionary:
         "cards_inserted": not placements.is_empty(),
         "interactions_enabled": true,
         "placement_enabled": true,
-        "actionable_indices": get_current_bundle_indices(),
-        "occupied_actionable_slots": get_occupied_actionable_count(),
+        "state_advancement_enabled": true,
         "current_bundle_complete": is_current_bundle_complete(),
+        "occupied_actionable_count": get_occupied_actionable_count(),
+        "actionable_indices": get_current_bundle_indices(),
         "placements": get_placement_list()
     }
 
