@@ -1,7 +1,8 @@
 {
+  "schema_version": 2,
   "design_root": "[기획서]",
   "enforce_top_level_design_root": true,
-  "active_roots": ["[기획서]", "skills", "docs"],
+  "active_roots": ["[기획서]", "skills", "docs", "templates"],
   "ignored_segments": ["archive", "[백업]", "[보류]", "[제거 후보]", "hold", "deprecated"],
   "required_paths": [
     "START_HERE.md",
@@ -24,12 +25,25 @@
     "[기획서]/00_프로젝트_허브/SOURCE_AUDIT.md",
     "[기획서]/00_프로젝트_허브/LIFECYCLE_AREAS.md",
     "[기획서]/00_프로젝트_허브/OPERATING_SYSTEM_HEALTH_REPORT.md",
+    "[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md",
     "[기획서]/00_프로젝트_허브/PROJECT_SKILL_MAP.md",
     "[기획서]/00_프로젝트_허브/SKILL_MAP_PUBLICATION_MANIFEST.json",
     "skills/SKILL_LEARNING_LOG.md",
+    "skills/LEGACY_SKILL_ALIASES.md",
     "schemas/design-document-registry-v3.schema.json",
     "schemas/skill-registry-v3.schema.json",
-    "tools/check_documentation_governance.py"
+    "tools/check_documentation_governance.py",
+    "tools/check_canonical_reference_freshness.py",
+    ".github/reference-freshness.json",
+    "tests/test_reference_freshness.py",
+    "tests/test_skill_package_integrity.py",
+    "templates/project-operations/SKILL_EXECUTION_REPORT.md",
+    "templates/project-operations/LEGACY_ARTIFACT_RECONCILIATION.md",
+    "templates/planning/EXECUTION_SEQUENCE_PLAN.md",
+    "templates/planning/GAME_BENCHMARK_PLAYER_EVIDENCE.md",
+    "templates/planning/GAME_CONCEPT_DIRECTION_REVIEW.md",
+    "templates/quality/CANONICAL_REFERENCE_FRESHNESS_AUDIT.md",
+    "templates/quality/PROJECT_CHANGE_VALIDATION.md"
   ],
   "required_design_sources": [
     "docs/01_GAME_DESIGN.md",
@@ -44,22 +58,13 @@
     "docs/10_COMBAT_PRESENTATION_PLAN.md",
     "docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md"
   ],
-  "forbidden_active_name_patterns": [
-    "(?i)(^|[_-])(v[0-9]+|final|latest|copy|new)([_-]|\\.)"
-  ],
+  "forbidden_active_name_patterns": ["(?i)(^|[_-])(v[0-9]+|final|latest|copy|new)([_-]|\\.)"],
   "design_document_registry": "[기획서]/DESIGN_DOCUMENT_REGISTRY.json",
   "skill_registry": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
   "interview_registry": "[기획서]/00_프로젝트_허브/INTERVIEW_REGISTRY.json",
   "skill_map_publication_manifest": "[기획서]/00_프로젝트_허브/SKILL_MAP_PUBLICATION_MANIFEST.json",
   "enforce_publications": false,
   "enforce_skill_map_publication": false,
-  "migration_phase": "governance-foundation",
-  "required_skill_disciplines": [
-    "게임 디자인",
-    "UX·UI·접근성",
-    "개발·엔지니어링",
-    "QA",
-    "프로덕션·PM",
-    "통합검수"
-  ]
+  "migration_phase": "latest-base-operating-contract",
+  "required_skill_disciplines": ["게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA", "프로덕션·PM", "통합검수"]
 }

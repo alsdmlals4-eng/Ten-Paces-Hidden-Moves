@@ -1,64 +1,61 @@
 # 십보강호 프로젝트 허브
 
-## 목적
-
-이 허브는 프로젝트의 현재 상태, 기획 책임 원본, 선택적 스킬, 개발 게이트, 검증과 인수인계를 연결한다. 기존 `docs` 본책의 내용을 장문 복제하지 않고 정확한 경로와 상태만 라우팅한다.
+이 허브는 현재 상태, 책임 원본, Work Mode·Skill 라우팅, 개발 게이트, 검증과 인수인계를 연결한다.
 
 ## 작업 시작 순서
 
 ```text
 최신 사용자 지시
+→ ../../../START_HERE.md
 → ../../../AGENTS.md
+→ ../../../docs/BASE_RULES_VERSION.md
 → ACTIVE_CONTEXT.md
 → DOCUMENTATION_MAP.md
 → DEVELOPMENT_GATES.md
+→ ROADMAP.md
 → ../DESIGN_DOCUMENT_REGISTRY.json
+→ 현재 책임 원본
 → SKILL_REGISTRY.json
-→ 현재 작업의 책임 원본
-→ Roadmap·Issue·Plan
-→ 실제 파일·테스트
+→ 필요한 Skill·Skill Mode
+→ Issue·Plan·실제 파일·테스트
 ```
 
 ## 현재 상태
 
-- 단계: Base schema v3 비파괴 마이그레이션과 구현 인수 준비.
-- 제품 기획: 승인된 Markdown 본책을 유지한다.
-- 구현: 원격 저장소에서는 Godot 프로젝트·코드·테스트를 확인하지 못했다.
-- PDF: 생성 도구·폰트·로컬 원본 검증 전이므로 `MIGRATION_PENDING`.
-- 다음 제품 기획: 기존 Active Context 기준 절초 기세·상단 HUD UX.
-- 다음 운영 작업: 사용자의 Windows 작업본을 실제로 열어 원격과 차이를 감사하고 발행 파이프라인을 실행한다.
+- Base 기준: `ee265576da7f67d3278f8099dd97d4e714ef0651`
+- Base 변경 155개 커밋·70개 파일 감사: `BASE_MAIN_SYNC_AUDIT.md`
+- 운영 PR: #5
+- 전투 POC PR: #7
+- 전투 POC: STEP 0~10, TARGETING 10.5 구현
+- 대응·자원 보완: RESPONSE 10.6, RESOURCE PREVIEW 10.6 구현
+- 사용자 Windows 확인: STEP 0~10·행동 배치·대상 지정
+- 사용자 확인 대기: 최신 대응 연계·자원 미리보기
+- PDF·Skill Map·Manifest: `MIGRATION_PENDING`
+- Required Check 강제: 미확인
+
+## Work Mode
+
+- `PLAN`: 요구·정본·순서·승인
+- `BUILD`: 승인 범위 구현
+- `REVIEW`: 검토·검증·판정
+
+Registry trigger로 필요한 최소 Skill·Skill Mode를 자동 선택한다. L1 이상 작업은 사용 이유·수행 내용·결과·증거·미검증을 기록한다.
 
 ## 허브 문서
 
-| 문서 | 책임 |
-|---|---|
-| `ACTIVE_CONTEXT.md` | 현재 단계·우선순위·위험 라우터 |
-| `HANDOFF.md` | 다음 작업자의 첫 행동과 중단 기준 |
-| `ROADMAP.md` | 운영체계 마이그레이션과 제품 로드맵 연결 |
-| `DOCUMENTATION_MAP.md` | 질문별 책임 원본·스킬·검증 경로 |
-| `DEVELOPMENT_GATES.md` | 작업·제품 게이트와 완료 판정 |
-| `DOCUMENT_UPDATE_MATRIX.md` | 변경 유형별 동기화 대상 |
-| `DECISION_LOG.md` | 구조·책임 원본·보존 결정 |
-| `CHANGELOG.md` | 마이그레이션 변경·검증·미검증 |
-| `AI_WORKFLOW.md` | GPT·Codex·GitHub 역할과 승인 흐름 |
-| `SOURCE_AUDIT.md` | 변경 전 구조·보존·위험 감사 |
-| `LIFECYCLE_AREAS.md` | 현행·백업·보류·제거 후보 계약 |
-| `OPERATING_SYSTEM_HEALTH_REPORT.md` | 구조·Registry·발행·자동화 검수 |
+- `ACTIVE_CONTEXT.md`: 현재 상태 기본 원본
+- `HANDOFF.md`: 경계 스냅샷
+- `ROADMAP.md`: 운영·제품 게이트
+- `DOCUMENTATION_MAP.md`: 질문별 책임 원본과 Skill
+- `DEVELOPMENT_GATES.md`: 완료 증거
+- `DOCUMENT_UPDATE_MATRIX.md`: 변경 소비자
+- `BASE_MAIN_SYNC_AUDIT.md`: Base 전수 처리표
+- `DECISION_LOG.md`: 결정과 재검토 조건
+- `CHANGELOG.md`: 변경·검증·미검증
+- `AI_WORKFLOW.md`: AI·GitHub 흐름
+- `SOURCE_AUDIT.md`: 보존·구형본 감사
+- `OPERATING_SYSTEM_HEALTH_REPORT.md`: verify 결과
 
-## 책임 원본
+`../DESIGN_DOCUMENT_REGISTRY.json`이 제품 책임 원본을 연결한다. 실제 구현은 `data/`, `scenes/`, `src/`, `tests/`, `project.godot`에서 확인한다.
 
-`../DESIGN_DOCUMENT_REGISTRY.json`이 기획 본책의 기계 판독 라우터다. 현재는 기존 `docs/01~11` Markdown 파일을 단일 책임 원본으로 등록한다. 내용 승계와 발행 검증 전에는 기존 본책을 이동하거나 제거하지 않는다.
-
-## 선택적 스킬
-
-`SKILL_REGISTRY.json`에서 요청과 trigger가 일치하는 최소 스킬만 선택한다.
-
-- 모든 스킬 자동 로드 금지.
-- 주 책임 분야 스킬 최대 1개.
-- Foundation 스킬 최대 3개.
-- 검증·발행·Handoff 스킬은 해당 게이트에서만 사용.
-- `[보류]`, `[백업]`, `[제거 후보]`는 기본 호출 금지.
-
-## 완료의 의미
-
-문서 구조 설치, PDF 발행, GitHub Actions 존재, 실제 Actions 성공, Branch protection Required Check 강제, Godot 런타임 검증은 서로 다른 상태다. 확인하지 않은 상태를 완료로 기록하지 않는다.
+문서 존재, 정적 검사, Actions 성공, PDF 생성, Godot 런타임, 접근성·성능 검증, 사용자 시각 검수, Required Check 강제는 각각 독립 상태다.
