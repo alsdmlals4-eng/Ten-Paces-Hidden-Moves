@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "tile_count": 10,
   "player_start_tile": 3,
   "enemy_start_tile": 8,
@@ -17,8 +17,25 @@
     "scene": "res://scenes/combat/battle_background.tscn",
     "contrast_role": "below_board_and_characters"
   },
+  "top_hud": {
+    "step": 4,
+    "approval_status": "USER_APPROVED_LAYOUT",
+    "scene": "res://scenes/ui/top_combat_hud.tscn",
+    "data": "res://data/combat/combat_hud_preview.json",
+    "momentum_segments": 6,
+    "layout": [
+      "player_status",
+      "player_momentum",
+      "round_bundle",
+      "enemy_momentum",
+      "enemy_status"
+    ],
+    "resource_fields": ["health", "stamina", "internal"],
+    "lower_status_panels": false
+  },
   "presentation_scope": [
     "battle_background",
+    "top_hud",
     "board",
     "tile_numbers",
     "player_placeholder",
@@ -26,7 +43,6 @@
     "foot_anchor_guides"
   ],
   "excluded_until_later_steps": [
-    "top_hud",
     "action_slots",
     "cards",
     "log_panel",
