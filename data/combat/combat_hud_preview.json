@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "momentum_segments": 6,
+  "momentum_segments": 5,
   "player": {
     "name": "강호낭인",
     "epithet": "무명 검객",
     "health": [18, 20],
     "stamina": [3, 5],
     "internal": [2, 4],
-    "momentum": [4, 6],
+    "momentum": [4, 5],
     "statuses": [
       {"label": "방", "kind": "defense"},
       {"label": "집", "kind": "focus"}
@@ -26,7 +26,7 @@
     "health": [16, 20],
     "stamina": [3, 5],
     "internal": [2, 4],
-    "momentum": [3, 6],
+    "momentum": [3, 5],
     "statuses": [
       {"label": "출", "kind": "offense"},
       {"label": "방", "kind": "defense"}
