@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="십보강호: 카드 UI 컴포넌트"
-run/main_scene="res://scenes/ui/card_component_preview.tscn"
+config/name="십보강호: 전투 POC"
+run/main_scene="res://scenes/combat/combat_board_preview.tscn"
 config/features=PackedStringArray("4.7")
 
 [display]
