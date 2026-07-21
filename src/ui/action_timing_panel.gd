@@ -75,6 +75,7 @@ func _build_content() -> void:
     set_meta("layout_role", "bottom_upper")
     set_meta("timing_sequence", "3|3|4")
     set_meta("total_timings", slots.size())
+    set_meta("progress_scope", "round")
     set_meta("cards_inserted", false)
     set_meta("interactions_enabled", false)
 
@@ -111,7 +112,7 @@ func _refresh() -> void:
         sequence_texts.append("%d수" % int(value))
     _title_label.text = "행동 진행"
     _sequence_label.text = " → ".join(sequence_texts)
-    _progress_label.text = "%d / %d수" % [current_timing, total_timings]
+    _progress_label.text = "라운드 진행 %d / %d수" % [current_timing, total_timings]
 
 func _layout() -> void:
     if _title_label == null or slots.is_empty():
@@ -176,6 +177,7 @@ func get_timing_snapshot() -> Dictionary:
         "total_timings": slots.size(),
         "current_bundle": int(timing_data.get("current_bundle", 1)),
         "current_timing": int(timing_data.get("current_timing", 1)),
+        "progress_scope": "round",
         "state_counts": state_counts,
         "cards_inserted": false,
         "interactions_enabled": false
