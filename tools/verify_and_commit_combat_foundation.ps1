@@ -137,7 +137,7 @@ try {
 
     $parseOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--editor", "--path", $repoRoot, "--quit") -Label "Import and parse Godot project"
     $step0Output = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_step0.gd") -Label "Verify STEP 0 card components"
-    $boardOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_board.gd") -Label "Verify STEP 1-7 combat presentation foundation"
+    $boardOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_board.gd") -Label "Verify STEP 1-8 combat presentation foundation"
 
     $sideEffects = @(Invoke-NativeChecked -FilePath "git" -Arguments @("status", "--porcelain", "--untracked-files=all") -Label "Check verification side effects" |
         Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
@@ -177,10 +177,11 @@ try {
 - [x] STEP 5 displays only the round number in the right progress label
 - [x] STEP 6 compact basic-card tray contains seven cards
 - [x] STEP 7 hover preview and click pinning are information-only
-- [x] STEP 7 same-card click closes pinned detail
 - [x] STEP 7 collapsible combat log contains sample entries
-- [x] STEP 7 combat log append interface adds entries
-- [x] Detail and log overlays remain below the top HUD and above action timing
+- [x] STEP 8 progress button emits a request signal
+- [x] STEP 8 request appends one combat-log entry
+- [x] STEP 8 request does not advance round or timing state
+- [x] Progress button aligns beside the action timing panel without overlap
 - [x] Action placement remains disabled
 
 ## Godot import and parse output
@@ -191,13 +192,13 @@ $parseBlock
 
 $step0Block
 
-## STEP 1-7 output
+## STEP 1-8 output
 
 $boardBlock
 
 ## Scope limitation
 
-This automation verifies headless structure, data, parsing, scene instantiation, board geometry, top-HUD composition, action timing, the compact card tray, card-detail information interactions, and the collapsible combat-log interface. Final art quality, Windows pointer feel, minimum-resolution readability, fonts, and color accessibility still require manual review.
+This automation verifies headless structure, data, parsing, scene instantiation, board geometry, top-HUD composition, action timing, the compact card tray, card-detail information interactions, the collapsible combat log, and the STEP 8 progress-request signal. Actual round advancement, card placement, final art quality, Windows pointer feel, minimum-resolution readability, fonts, and color accessibility still require later implementation or manual review.
 "@
     Set-Content -LiteralPath $reportPath -Value $report -Encoding UTF8
 
