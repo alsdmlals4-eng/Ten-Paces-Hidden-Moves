@@ -58,12 +58,10 @@ func _run() -> void:
             failures.append("BattleBackground must be the first rendered child behind the board.")
         if str(board.battle_background.get_meta("contrast_role", "")) != "below_board_and_characters":
             failures.append("BattleBackground must declare the low-contrast presentation role.")
-        if str(board.battle_background.get_meta("source_mode", "")) != "embedded_jpeg_relaxed_base64_decode":
-            failures.append("BattleBackground must use the tolerant embedded JPEG decoder.")
-        if int(board.battle_background.get_meta("decoded_byte_count", 0)) <= 0:
-            failures.append("BattleBackground must expose a positive decoded JPEG byte count.")
+        if str(board.battle_background.get_meta("source_mode", "")) != "direct_vector_svg":
+            failures.append("BattleBackground must load the pure vector SVG directly.")
         if board.battle_background.texture == null:
-            failures.append("BattleBackground runtime texture must not be null.")
+            failures.append("BattleBackground direct SVG texture must not be null.")
         else:
             if board.battle_background.texture.get_width() < 1000:
                 failures.append("BattleBackground texture width is unexpectedly small.")
