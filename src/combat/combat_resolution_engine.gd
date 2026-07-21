@@ -32,8 +32,8 @@ func _load_json(path: String, label: String) -> Dictionary:
     return parsed
 
 func make_initial_state(hud_data: Dictionary, player_tile: int, enemy_tile: int) -> Dictionary:
-    var player: Dictionary = (hud_data.get("player", {}) as Dictionary).duplicate(true)
-    var enemy: Dictionary = (hud_data.get("enemy", {}) as Dictionary).duplicate(true)
+    var player := _prepare_combatant_start(hud_data.get("player", {}))
+    var enemy := _prepare_combatant_start(hud_data.get("enemy", {}))
     player["tile"] = player_tile
     enemy["tile"] = enemy_tile
     player["next_attack_bonus"] = 0
@@ -44,6 +44,19 @@ func make_initial_state(hud_data: Dictionary, player_tile: int, enemy_tile: int)
         "player": player,
         "enemy": enemy
     }
+
+func _prepare_combatant_start(source_value) -> Dictionary:
+    var actor: Dictionary = {}
+    if typeof(source_value) == TYPE_DICTIONARY:
+        actor = (source_value as Dictionary).duplicate(true)
+    var penalties: Dictionary = {}
+    if typeof(actor.get("start_penalties", {})) == TYPE_DICTIONARY:
+        penalties = actor.get("start_penalties", {})
+    for resource_key in ["health", "stamina", "internal"]:
+        var pair := _resource_pair(actor, resource_key)
+        var penalty := maxi(0, int(penalties.get(resource_key, 0)))
+        _set_resource(actor, resource_key, maxi(0, pair.y - penalty), pair.y)
+    return actor
 
 func resolve_bundle(player_placements: Array, context: Dictionary, state_value: Dictionary) -> Dictionary:
     var state := state_value.duplicate(true)
@@ -304,7 +317,6 @@ func _execute_move_phase(state: Dictionary, actions: Array, logs: Array[String],
         return
     var proposals: Dictionary = {}
     var board_size := maxi(1, int(rules.get("tile_count", 10)))
-    var movement_steps := maxi(1, int(rules.get("movement_steps", 1)))
     for action in actions:
         if not _pay_action_cost(state, action, logs, timing):
             continue
@@ -312,6 +324,8 @@ func _execute_move_phase(state: Dictionary, actions: Array, logs: Array[String],
         var target_key := _other_actor(actor_key)
         var actor: Dictionary = state.get(actor_key, {})
         var target: Dictionary = state.get(target_key, {})
+        var definition: Dictionary = action.get("definition", {})
+        var movement_steps := maxi(1, int(definition.get("move_range", rules.get("movement_steps", 1))))
         var from_tile := int(actor.get("tile", 1))
         var enemy_tile := int(target.get("tile", 1))
         var requested_tile := int(action.get("target_tile", 0))
