@@ -10,43 +10,45 @@
 - [x] 155개 커밋·70개 변경 파일 전수 처리표
 - [ ] 사용자 로컬 미커밋 파일 확인
 
-판정: `PARTIAL`
+판정: `PASS_REMOTE / LOCAL_UNVERIFIED`
 
 ## M1 최신 Base 운영 계약
 
 - [x] Work Mode `PLAN / BUILD / REVIEW`
-- [x] Skill·Skill Mode 자동 라우팅 계약
-- [x] L1 이상 실행 보고 계약
+- [x] Skill·Skill Mode 자동 라우팅
+- [x] L1 이상 실행 보고
 - [x] `audit → reconcile-legacy → migrate → verify`
 - [x] 정책 기반 발행·독립 상태 축
 - [x] 접근성·성능 조건부 검증
-- [ ] 최종 정적 검사
+- [x] project operating-system structure Actions
 
-판정: `IN_PROGRESS`
+판정: `PASS`
 
 ## M2 책임 원본·Skill Registry
 
 - [x] 11개 Markdown 책임 원본 Registry
 - [x] 프로젝트 선택 분야 6개와 진입 Skill
-- [x] Learning Log
-- [ ] 자동 trigger 선택 정책
-- [ ] Base 통합 Skill·mode 연결
-- [ ] Legacy Skill Alias
-- [ ] Skill 패키지 무결성 검사
+- [x] Work Mode·Skill Mode·Learning Log
+- [x] 자동 trigger 선택 정책
+- [x] Base 13개 통합 Skill 연결
+- [x] Legacy Skill Alias
+- [x] Skill package integrity 검사
 
-판정: `IN_PROGRESS`
+판정: `PASS`
 
 ## M3 정본 최신성·GitHub Governance
 
 - [x] Documentation Governance 검사·Workflow
-- [x] 기존 Actions 성공 이력
-- [ ] 정본·경로·ID·Schema 최신성 검사
-- [ ] 현행 `2수·두 행동·7개 기초 행동` stale 표현 차단
-- [ ] PR #5·#7 체크리스트 최신화
-- [ ] 최종 Actions 성공
+- [x] canonical reference freshness 검사
+- [x] 현행 `2수·두 행동·7개 기초 행동` stale Entry Point 차단
+- [x] PR #5 Documentation Governance run #298
+- [x] PR #8 운영 파일 44개 스택 동기화
+- [x] PR #7 Documentation Governance run #299
+- [x] PR #7 Card Component Contract run #395
+- [x] PR #7 mergeable 복구
 - [ ] Required Check 강제 상태 확인
 
-판정: `IN_PROGRESS_WITHOUT_ENFORCEMENT`
+판정: `PASS_WITHOUT_BRANCH_PROTECTION_ENFORCEMENT`
 
 ## M4 정책 기반 발행
 
@@ -62,6 +64,8 @@
 
 - [x] STEP 0~10
 - [x] TARGETING 10.5
+- [x] RESPONSE 10.6 구현
+- [x] RESOURCE PREVIEW 10.6 구현
 - [x] Windows에서 STEP 0~10·대상 지정 확인
 - [ ] RESPONSE 10.6 사용자 확인
 - [ ] RESOURCE PREVIEW 10.6 사용자 확인
@@ -70,7 +74,7 @@
 
 ## M6 다음 제품 단계
 
-1. RESPONSE 10.6 확인
+1. 사용자 Fetch/Pull과 STEP 10.6 확인
 2. STEP 11 피격 중단·집중·강건
 3. STEP 12 단순 AI
 4. STEP 13 전투 종료·재시작
