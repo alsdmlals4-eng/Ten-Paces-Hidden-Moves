@@ -5,6 +5,7 @@ const CONTRACT_PATH := "res://data/combat/combat_board_poc.json"
 const BACKGROUND_SCENE := preload("res://scenes/combat/battle_background.tscn")
 const TOP_HUD_SCENE := preload("res://scenes/ui/top_combat_hud.tscn")
 const ACTION_TIMING_SCENE := preload("res://scenes/ui/action_timing_panel.tscn")
+const BASIC_CARD_TRAY_SCENE := preload("res://scenes/ui/basic_card_tray.tscn")
 const TILE_SCENE := preload("res://scenes/combat/combat_board_tile.tscn")
 const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placeholder.tscn")
 
@@ -16,6 +17,7 @@ var tiles: Array[CombatBoardTile] = []
 var battle_background: BattleBackground
 var top_hud: TopCombatHud
 var action_timing_panel: ActionTimingPanel
+var basic_card_tray: BasicCardTray
 var player_character: CombatCharacterPlaceholder
 var enemy_character: CombatCharacterPlaceholder
 
@@ -84,6 +86,10 @@ func _build_structure() -> void:
     action_timing_panel.name = "ActionTimingPanel"
     add_child(action_timing_panel)
 
+    basic_card_tray = BASIC_CARD_TRAY_SCENE.instantiate() as BasicCardTray
+    basic_card_tray.name = "BasicCardTray"
+    add_child(basic_card_tray)
+
     top_hud = TOP_HUD_SCENE.instantiate() as TopCombatHud
     top_hud.name = "TopCombatHud"
     add_child(top_hud)
@@ -105,7 +111,7 @@ func _build_structure() -> void:
     enemy_character.name = "EnemyCharacter"
     _character_layer.add_child(enemy_character)
 
-    set_meta("step", 5)
+    set_meta("step", 6)
     set_meta("background_component", "BattleBackground")
     set_meta("background_asset", "res://assets/backgrounds/step3_mountain_fortress.svg")
     set_meta("hud_component", "TopCombatHud")
@@ -113,8 +119,12 @@ func _build_structure() -> void:
     set_meta("action_timing_component", "ActionTimingPanel")
     set_meta("action_timing_layout", "bottom_upper")
     set_meta("action_timing_sequence", "3|3|4")
+    set_meta("basic_card_tray_component", "BasicCardTray")
+    set_meta("basic_card_tray_layout", "bottom_lower")
+    set_meta("basic_card_count", 7)
     set_meta("lower_status_panels", false)
-    set_meta("lower_skill_panel", false)
+    set_meta("lower_skill_panel", true)
+    set_meta("card_interactions_enabled", false)
     set_meta("tile_count", tile_count)
     set_meta("player_start_tile", int(contract.get("player_start_tile", 3)))
     set_meta("enemy_start_tile", int(contract.get("enemy_start_tile", 8)))
@@ -131,12 +141,20 @@ func _layout_board() -> void:
         top_hud.position = Vector2(hud_margin, 10.0)
         top_hud.size = Vector2(maxf(1.0, size.x - hud_margin * 2.0), 124.0)
 
+    var lower_margin := maxf(10.0, size.x * 0.014)
+    var lower_bottom := maxf(8.0, size.y * 0.012)
+    var tray_height := clampf(size.y * 0.17, 126.0, 150.0)
+    var timing_height := clampf(size.y * 0.145, 112.0, 130.0)
+    var panel_gap := 8.0
+
+    if is_instance_valid(basic_card_tray):
+        basic_card_tray.position = Vector2(lower_margin, size.y - tray_height - lower_bottom)
+        basic_card_tray.size = Vector2(maxf(1.0, size.x - lower_margin * 2.0), tray_height)
+
     if is_instance_valid(action_timing_panel):
-        var action_margin := maxf(14.0, size.x * 0.022)
-        var action_bottom := maxf(12.0, size.y * 0.016)
-        var action_height := clampf(size.y * 0.16, 120.0, 142.0)
-        action_timing_panel.position = Vector2(action_margin, size.y - action_height - action_bottom)
-        action_timing_panel.size = Vector2(maxf(1.0, size.x - action_margin * 2.0), action_height)
+        var tray_top := basic_card_tray.position.y if is_instance_valid(basic_card_tray) else size.y - tray_height - lower_bottom
+        action_timing_panel.position = Vector2(lower_margin, tray_top - timing_height - panel_gap)
+        action_timing_panel.size = Vector2(maxf(1.0, size.x - lower_margin * 2.0), timing_height)
 
     var tile_count := tiles.size()
     var gap_ratio := float(contract.get("tile_gap_to_tile_width", 0.06))
@@ -149,10 +167,10 @@ func _layout_board() -> void:
 
     var board_width := _tile_width * float(tile_count) + _tile_gap * float(tile_count - 1)
     var board_left := (size.x - board_width) * 0.5
-    var desired_top := size.y * 0.48
-    var action_top := action_timing_panel.position.y if is_instance_valid(action_timing_panel) else size.y - 160.0
-    var maximum_top := maxf(160.0, action_top - _tile_height - 64.0)
-    var minimum_top := minf(240.0, maximum_top)
+    var desired_top := size.y * 0.43
+    var action_top := action_timing_panel.position.y if is_instance_valid(action_timing_panel) else size.y - 280.0
+    var maximum_top := maxf(150.0, action_top - _tile_height - 48.0)
+    var minimum_top := minf(220.0, maximum_top)
     _board_top = clampf(desired_top, minimum_top, maximum_top)
 
     for index in range(tile_count):
@@ -205,6 +223,7 @@ func get_character_foot_anchor(role: String) -> Vector2:
 func get_layout_snapshot() -> Dictionary:
     var hud_snapshot := top_hud.get_hud_snapshot() if is_instance_valid(top_hud) else {}
     var timing_snapshot := action_timing_panel.get_timing_snapshot() if is_instance_valid(action_timing_panel) else {}
+    var tray_snapshot := basic_card_tray.get_tray_snapshot() if is_instance_valid(basic_card_tray) else {}
     return {
         "layout_ready": _layout_ready,
         "background_ready": is_instance_valid(battle_background) and battle_background.texture != null,
@@ -214,8 +233,13 @@ func get_layout_snapshot() -> Dictionary:
         "action_timing_ready": is_instance_valid(action_timing_panel),
         "action_timing_snapshot": timing_snapshot,
         "action_timing_top": action_timing_panel.position.y if is_instance_valid(action_timing_panel) else 0.0,
+        "action_timing_bottom": action_timing_panel.position.y + action_timing_panel.size.y if is_instance_valid(action_timing_panel) else 0.0,
+        "basic_card_tray_ready": is_instance_valid(basic_card_tray),
+        "basic_card_tray_snapshot": tray_snapshot,
+        "basic_card_tray_top": basic_card_tray.position.y if is_instance_valid(basic_card_tray) else 0.0,
+        "basic_card_tray_bottom": basic_card_tray.position.y + basic_card_tray.size.y if is_instance_valid(basic_card_tray) else 0.0,
         "lower_status_panels": false,
-        "lower_skill_panel": false,
+        "lower_skill_panel": true,
         "tile_count": tiles.size(),
         "player_tile": int(contract.get("player_start_tile", 3)),
         "enemy_tile": int(contract.get("enemy_start_tile", 8)),
