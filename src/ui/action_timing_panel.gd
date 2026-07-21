@@ -87,7 +87,7 @@ func _resolve_state(global_index: int, group_index: int, group_end: int, current
         return "available"
     return "locked"
 
-func _make_label(font_size: int, color: Color, alignment: HorizontalAlignment) -> Label:
+func _make_label(font_size: int, color: Color, alignment: int) -> Label:
     var label := Label.new()
     label.horizontal_alignment = alignment
     label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -106,7 +106,7 @@ func _refresh() -> void:
     var sequence: Array = timing_data.get("timing_sequence", [3, 3, 4])
     var current_timing := int(timing_data.get("current_timing", 1))
     var total_timings := int(timing_data.get("total_timings", 10))
-    var sequence_texts: Array[String] = []
+    var sequence_texts := PackedStringArray()
     for value in sequence:
         sequence_texts.append("%d수" % int(value))
     _title_label.text = "행동 진행"
@@ -148,7 +148,7 @@ func _layout() -> void:
             slot_cursor += 1
             if slot_cursor < slots.size():
                 x += base_gap
-        var group_end_x := x - base_gap
+        var group_end_x := x - base_gap if slot_cursor < slots.size() else x
         if group_index < _group_labels.size():
             var group_label := _group_labels[group_index]
             group_label.position = Vector2(group_start_x, 29.0)
