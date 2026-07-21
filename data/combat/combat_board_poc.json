@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "tile_count": 10,
   "player_start_tile": 3,
   "enemy_start_tile": 8,
@@ -9,7 +9,16 @@
   "tile_gap_to_tile_width": 0.06,
   "foot_anchor_y_ratio": 0.68,
   "camera_mode": "fixed_wide",
+  "battle_background": {
+    "step": 3,
+    "approval_status": "USER_APPROVED",
+    "style": "ink_wash_mountain_fortress",
+    "asset": "res://assets/backgrounds/step3_mountain_fortress.svg",
+    "scene": "res://scenes/combat/battle_background.tscn",
+    "contrast_role": "below_board_and_characters"
+  },
   "presentation_scope": [
+    "battle_background",
     "board",
     "tile_numbers",
     "player_placeholder",
@@ -17,7 +26,6 @@
     "foot_anchor_guides"
   ],
   "excluded_until_later_steps": [
-    "final_background",
     "top_hud",
     "action_slots",
     "cards",
