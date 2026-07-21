@@ -11,8 +11,8 @@
 - STEP 6 — Seven basic-action cards
 - STEP 7 — Card detail and collapsible combat log
 - STEP 8 — Progress button
-- STEP 9 — Card-to-timing placement
-- STEP 10 — Deterministic bundle resolution and state advancement
+- STEP 9 — Card-to-timing placement, confirmed in Windows F5
+- STEP 10 — Deterministic bundle resolution and state advancement, awaiting Windows F5 review
 
 ## STEP 10 contract
 
