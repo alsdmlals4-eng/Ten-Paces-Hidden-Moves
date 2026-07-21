@@ -3,25 +3,23 @@ extends Control
 
 const CONTRACT_PATH := "res://data/combat/combat_board_poc.json"
 const BACKGROUND_SCENE := preload("res://scenes/combat/battle_background.tscn")
+const TOP_HUD_SCENE := preload("res://scenes/ui/top_combat_hud.tscn")
 const TILE_SCENE := preload("res://scenes/combat/combat_board_tile.tscn")
 const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placeholder.tscn")
 
 const CANVAS_COLOR := Color("171411")
 const GUIDE_COLOR := Color("b99254")
-const TEXT_COLOR := Color("dfcfac")
-const MUTED_TEXT_COLOR := Color("b4a68e")
 
 var contract: Dictionary = {}
 var tiles: Array[CombatBoardTile] = []
 var battle_background: BattleBackground
+var top_hud: TopCombatHud
 var player_character: CombatCharacterPlaceholder
 var enemy_character: CombatCharacterPlaceholder
 
 var _tile_layer: Control
 var _character_layer: Control
 var _anchor_line: ColorRect
-var _title: Label
-var _subtitle: Label
 var _layout_ready := false
 var _tile_width := 0.0
 var _tile_height := 0.0
@@ -61,33 +59,9 @@ func _build_structure() -> void:
     canvas.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     add_child(canvas)
 
-    _title = Label.new()
-    _title.name = "StepTitle"
-    _title.text = "STEP 3  전투 배경 · 10칸 전투판"
-    _title.add_theme_font_size_override("font_size", 30)
-    _title.add_theme_color_override("font_color", GUIDE_COLOR)
-    _title.add_theme_color_override("font_shadow_color", Color(0.05, 0.04, 0.03, 0.85))
-    _title.add_theme_constant_override("shadow_offset_x", 2)
-    _title.add_theme_constant_override("shadow_offset_y", 2)
-    _title.position = Vector2(42.0, 30.0)
-    _title.mouse_filter = Control.MOUSE_FILTER_IGNORE
-    add_child(_title)
-
-    _subtitle = Label.new()
-    _subtitle.name = "StepSubtitle"
-    _subtitle.text = "수묵 산성 배경 · 플레이어 3번 / 상대 8번 · 동일 스케일 · 발 앵커 유지"
-    _subtitle.add_theme_font_size_override("font_size", 18)
-    _subtitle.add_theme_color_override("font_color", MUTED_TEXT_COLOR)
-    _subtitle.add_theme_color_override("font_shadow_color", Color(0.05, 0.04, 0.03, 0.90))
-    _subtitle.add_theme_constant_override("shadow_offset_x", 1)
-    _subtitle.add_theme_constant_override("shadow_offset_y", 1)
-    _subtitle.position = Vector2(44.0, 74.0)
-    _subtitle.mouse_filter = Control.MOUSE_FILTER_IGNORE
-    add_child(_subtitle)
-
     _anchor_line = ColorRect.new()
     _anchor_line.name = "FootAnchorGuide"
-    _anchor_line.color = Color(GUIDE_COLOR, 0.48)
+    _anchor_line.color = Color(GUIDE_COLOR, 0.42)
     _anchor_line.mouse_filter = Control.MOUSE_FILTER_IGNORE
     add_child(_anchor_line)
 
@@ -102,6 +76,10 @@ func _build_structure() -> void:
     _character_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
     _character_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     add_child(_character_layer)
+
+    top_hud = TOP_HUD_SCENE.instantiate() as TopCombatHud
+    top_hud.name = "TopCombatHud"
+    add_child(top_hud)
 
     var tile_count := int(contract.get("tile_count", 10))
     var anchor_ratio := float(contract.get("foot_anchor_y_ratio", 0.68))
@@ -120,9 +98,12 @@ func _build_structure() -> void:
     enemy_character.name = "EnemyCharacter"
     _character_layer.add_child(enemy_character)
 
-    set_meta("step", 3)
+    set_meta("step", 4)
     set_meta("background_component", "BattleBackground")
     set_meta("background_asset", "res://assets/backgrounds/step3_mountain_fortress.svg")
+    set_meta("hud_component", "TopCombatHud")
+    set_meta("hud_layout", "player_status|player_momentum|round|enemy_momentum|enemy_status")
+    set_meta("lower_status_panels", false)
     set_meta("tile_count", tile_count)
     set_meta("player_start_tile", int(contract.get("player_start_tile", 3)))
     set_meta("enemy_start_tile", int(contract.get("enemy_start_tile", 8)))
@@ -133,6 +114,11 @@ func _layout_board() -> void:
         return
     if size.x <= 0.0 or size.y <= 0.0:
         return
+
+    if is_instance_valid(top_hud):
+        var hud_margin := maxf(10.0, size.x * 0.012)
+        top_hud.position = Vector2(hud_margin, 10.0)
+        top_hud.size = Vector2(maxf(1.0, size.x - hud_margin * 2.0), 124.0)
 
     var tile_count := tiles.size()
     var gap_ratio := float(contract.get("tile_gap_to_tile_width", 0.06))
@@ -145,8 +131,8 @@ func _layout_board() -> void:
 
     var board_width := _tile_width * float(tile_count) + _tile_gap * float(tile_count - 1)
     var board_left := (size.x - board_width) * 0.5
-    var desired_top := size.y * 0.46
-    var minimum_top := 220.0
+    var desired_top := size.y * 0.48
+    var minimum_top := 240.0
     var maximum_top := maxf(minimum_top, size.y - _tile_height - 92.0)
     var board_top := clampf(desired_top, minimum_top, maximum_top)
 
@@ -198,10 +184,14 @@ func get_character_foot_anchor(role: String) -> Vector2:
     return Vector2.ZERO
 
 func get_layout_snapshot() -> Dictionary:
+    var hud_snapshot := top_hud.get_hud_snapshot() if is_instance_valid(top_hud) else {}
     return {
         "layout_ready": _layout_ready,
         "background_ready": is_instance_valid(battle_background) and battle_background.texture != null,
         "background_path": "res://assets/backgrounds/step3_mountain_fortress.svg",
+        "hud_ready": is_instance_valid(top_hud),
+        "hud_snapshot": hud_snapshot,
+        "lower_status_panels": false,
         "tile_count": tiles.size(),
         "player_tile": int(contract.get("player_start_tile", 3)),
         "enemy_tile": int(contract.get("enemy_start_tile", 8)),
