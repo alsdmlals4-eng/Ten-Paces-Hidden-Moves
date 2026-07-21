@@ -167,7 +167,7 @@ try {
 
     $boardOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @(
         "--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_board.gd"
-    ) -Label "Verify STEP 1-2 combat board"
+    ) -Label "Verify STEP 1-4 combat presentation foundation"
 
     $sideEffects = Invoke-NativeChecked -FilePath "git" -Arguments @(
         "status", "--porcelain", "--untracked-files=all"
@@ -207,6 +207,11 @@ try {
 - [x] Player and enemy use identical scale
 - [x] Character height is 1.5 times tile width
 - [x] Character foot anchors match tile anchors
+- [x] STEP 3 approved low-contrast battle background loads behind the board
+- [x] STEP 4 player and enemy status panels are in the top HUD
+- [x] Both ultimate momentum gauges contain six segments
+- [x] Central round, bundle, selection, and resolution-order panel exists
+- [x] No lower player/enemy status panels are used
 
 ## Godot import and parse output
 
@@ -216,13 +221,13 @@ $parseBlock
 
 $step0Block
 
-## STEP 1-2 output
+## STEP 1-4 output
 
 $boardBlock
 
 ## Scope limitation
 
-This automation verifies headless structure, data, parsing, scene instantiation, tile count, scale, and anchor positions. Final art quality, Windows click behavior, minimum-resolution readability, fonts, and color accessibility still require manual review.
+This automation verifies headless structure, data, parsing, scene instantiation, tile count, scale, anchor positions, background layering, and top-HUD composition. Final art quality, Windows click behavior, minimum-resolution readability, fonts, and color accessibility still require manual review.
 "@
     Set-Content -LiteralPath $reportPath -Value $report -Encoding UTF8
 
