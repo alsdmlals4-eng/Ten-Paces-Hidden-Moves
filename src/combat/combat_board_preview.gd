@@ -371,7 +371,7 @@ func _begin_targeting_for_anchor(anchor_index: int) -> bool:
         var movement_steps := maxi(1, int(resolution_engine.rules.get("movement_steps", 1)))
         for direction in [-1, 1]:
             for step in range(1, movement_steps + 1):
-                var target_index := _targeting_origin_tile + direction * step
+                var target_index: int = _targeting_origin_tile + int(direction) * int(step)
                 if target_index < 1 or target_index > tiles.size() or target_index == _enemy_tile:
                     continue
                 get_tile(target_index).set_interaction_state("movable")
@@ -382,7 +382,7 @@ func _begin_targeting_for_anchor(anchor_index: int) -> bool:
         var attack_range := maxi(1, int(str(definition.get("range_text", "1"))))
         for direction in [-1, 1]:
             for step in range(1, attack_range + 1):
-                var target_index := _targeting_origin_tile + direction * step
+                var target_index: int = _targeting_origin_tile + int(direction) * int(step)
                 if target_index < 1 or target_index > tiles.size():
                     continue
                 get_tile(target_index).set_interaction_state("attackable")
