@@ -2,6 +2,7 @@
   "schema_version": 1,
   "step": 5,
   "layout_role": "bottom_upper",
+  "round_number": 1,
   "timing_sequence": [3, 3, 4],
   "total_timings": 10,
   "current_bundle": 2,
