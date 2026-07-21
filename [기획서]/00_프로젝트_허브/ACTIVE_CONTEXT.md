@@ -29,8 +29,8 @@
 - Base 공유 Skill 13개 유지
 - 로컬 Skill은 전투 디자인·UX·Godot 구현·QA 4개만 유지
 - 요청 접수·상태 인수·운영 검수의 로컬 복제는 Base Skill로 통합
-- 제품 문서는 `milestone_sync`
-- 내부 Base 학습 기록과 Skill Registry는 `source_only`
+- 문서·Skill Registry는 실제 생성기가 없어 `source_only`
+- PDF가 필요한 마일스톤에 발행 파이프라인을 별도 설치
 - 템플릿·검사·회귀 테스트 중복 통합
 - 삭제한 ID·경로는 Legacy Alias와 정본 최신성 검사로 보호
 
@@ -44,7 +44,7 @@
 - Governance 회귀 테스트: 검사 대상
 - PR #7 Card Component Contract: 기존 PASS, 운영 동기화 뒤 재확인 필요
 - 최신 Godot 대응·자원 기능: `UNVERIFIED`
-- PDF 발행·접근성·성능·외부 플레이테스트·Branch protection: `NOT_RUN`
+- PDF·접근성·성능·외부 플레이테스트·Branch protection: `NOT_RUN`
 
 ## 다음 작업
 
