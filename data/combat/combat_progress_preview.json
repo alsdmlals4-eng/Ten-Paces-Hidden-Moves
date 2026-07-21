@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "step": 8,
+  "button_text": "진행",
+  "caption": "행동 묶음 확정",
+  "ready_text": "판정 전",
+  "requested_text": "진행 요청됨",
+  "default_enabled": true,
+  "round_number": 1,
+  "bundle_index": 2,
+  "current_timing": 5,
+  "total_timings": 10,
+  "request_mode": "signal_only",
+  "advances_state": false,
+  "writes_combat_log": true,
+  "action_placement_required": false
+}
