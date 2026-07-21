@@ -10,7 +10,7 @@ const PAPER := Color("e0cfaa")
 const MUTED := Color("9b8c76")
 
 var progress_data: Dictionary = {}
-var progress_enabled := true
+var progress_enabled := false
 var request_count := 0
 var last_request_context: Dictionary = {}
 
@@ -21,7 +21,7 @@ var _status_label: Label
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_STOP
     progress_data = _load_data()
-    progress_enabled = bool(progress_data.get("default_enabled", true))
+    progress_enabled = bool(progress_data.get("default_enabled", false))
     _build()
     resized.connect(_layout)
     _refresh()
@@ -75,15 +75,17 @@ func _build() -> void:
     add_child(_status_label)
 
     set_meta("step", 8)
+    set_meta("placement_gate_step", int(progress_data.get("placement_gate_step", 9)))
     set_meta("layout_role", "bottom_upper_right")
     set_meta("request_mode", str(progress_data.get("request_mode", "signal_only")))
     set_meta("advances_state", bool(progress_data.get("advances_state", false)))
     set_meta("writes_combat_log", bool(progress_data.get("writes_combat_log", true)))
-    set_meta("action_placement_required", bool(progress_data.get("action_placement_required", false)))
+    set_meta("action_placement_required", bool(progress_data.get("action_placement_required", true)))
     set_meta("request_count", 0)
 
 func set_progress_enabled(value: bool) -> void:
     progress_enabled = value
+    set_meta("enabled", progress_enabled)
     _refresh()
 
 func request_progress() -> void:
@@ -111,8 +113,15 @@ func _refresh() -> void:
     _caption_label.text = str(progress_data.get("caption", "행동 묶음 확정"))
     _button.text = str(progress_data.get("button_text", "진행"))
     _button.disabled = not progress_enabled
-    _status_label.text = str(progress_data.get("requested_text", "진행 요청됨")) if request_count > 0 else str(progress_data.get("ready_text", "판정 전"))
-    _status_label.add_theme_color_override("font_color", GOLD if request_count > 0 else MUTED)
+    if request_count > 0:
+        _status_label.text = str(progress_data.get("requested_text", "진행 요청됨"))
+        _status_label.add_theme_color_override("font_color", GOLD)
+    elif progress_enabled:
+        _status_label.text = str(progress_data.get("ready_text", "배치 완료"))
+        _status_label.add_theme_color_override("font_color", GOLD)
+    else:
+        _status_label.text = str(progress_data.get("disabled_text", "행동 배치 필요"))
+        _status_label.add_theme_color_override("font_color", MUTED)
     queue_redraw()
 
 func _layout() -> void:
@@ -131,6 +140,7 @@ func _layout() -> void:
 func get_progress_snapshot() -> Dictionary:
     return {
         "step": 8,
+        "placement_gate_step": int(progress_data.get("placement_gate_step", 9)),
         "layout_role": "bottom_upper_right",
         "button_text": str(progress_data.get("button_text", "진행")),
         "enabled": progress_enabled,
@@ -138,7 +148,7 @@ func get_progress_snapshot() -> Dictionary:
         "request_mode": str(progress_data.get("request_mode", "signal_only")),
         "advances_state": bool(progress_data.get("advances_state", false)),
         "writes_combat_log": bool(progress_data.get("writes_combat_log", true)),
-        "action_placement_required": bool(progress_data.get("action_placement_required", false)),
+        "action_placement_required": bool(progress_data.get("action_placement_required", true)),
         "last_request_context": last_request_context.duplicate(true),
         "data_path": DATA_PATH
     }
@@ -149,5 +159,5 @@ func _notification(what: int) -> void:
 
 func _draw() -> void:
     draw_rect(Rect2(Vector2.ZERO, size), PANEL, true)
-    draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color(GOLD, 0.84), false, 2.0)
+    draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color(GOLD, 0.84 if progress_enabled else 0.42), false, 2.0)
     draw_line(Vector2(8.0, 28.0), Vector2(maxf(8.0, size.x - 8.0), 28.0), Color(GOLD, 0.30), 1.0)
