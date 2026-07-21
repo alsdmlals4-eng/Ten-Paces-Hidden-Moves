@@ -65,8 +65,9 @@ func _run() -> void:
     _verify_action_timing(board, snapshot)
     _verify_basic_cards(board, snapshot)
     await _verify_step7_overlays(board, snapshot)
-    _verify_layout_regions(board, snapshot)
-    _verify_board_and_characters(board, snapshot)
+    _verify_step8_progress(board, snapshot)
+    _verify_layout_regions(board, board.get_layout_snapshot())
+    _verify_board_and_characters(board, board.get_layout_snapshot())
 
     board.queue_free()
     await process_frame
@@ -258,6 +259,7 @@ func _verify_step7_overlays(board: CombatBoardPreview, snapshot: Dictionary) -> 
             failures.append("Combat log preview must contain four sample entries.")
         if not bool(log_snapshot.get("output_interface", false)):
             failures.append("Combat log must expose an output interface.")
+
         var original_count := int(log_snapshot.get("entry_count", 0))
         board.combat_log_panel.append_entry("STEP 7 검증 로그", "system")
         if int(board.combat_log_panel.get_log_snapshot().get("entry_count", 0)) != original_count + 1:
@@ -290,6 +292,75 @@ func _verify_step7_overlays(board: CombatBoardPreview, snapshot: Dictionary) -> 
         if board.card_detail_panel.visible or not board.basic_card_tray.pinned_card_id.is_empty():
             failures.append("Clicking the same card again must close the pinned detail.")
 
+func _verify_step8_progress(board: CombatBoardPreview, snapshot: Dictionary) -> void:
+    if not bool(snapshot.get("progress_button_ready", false)):
+        failures.append("STEP 8 progress button did not instantiate.")
+    if board.combat_progress_button == null:
+        failures.append("CombatProgressButton component must exist.")
+        return
+
+    var progress_snapshot := board.combat_progress_button.get_progress_snapshot()
+    if int(progress_snapshot.get("step", 0)) != 8:
+        failures.append("Progress button must belong to STEP 8.")
+    if str(progress_snapshot.get("layout_role", "")) != "bottom_upper_right":
+        failures.append("Progress button must use the bottom-upper-right layout role.")
+    if str(progress_snapshot.get("button_text", "")) != "진행":
+        failures.append("Progress button text must be 진행.")
+    if not bool(progress_snapshot.get("enabled", false)):
+        failures.append("STEP 8 preview progress button must start enabled.")
+    if str(progress_snapshot.get("request_mode", "")) != "signal_only":
+        failures.append("STEP 8 must emit a request signal without resolving combat.")
+    if bool(progress_snapshot.get("advances_state", true)):
+        failures.append("STEP 8 must not advance round or timing state.")
+    if not bool(progress_snapshot.get("writes_combat_log", false)):
+        failures.append("STEP 8 progress requests must write to the combat log.")
+    if bool(progress_snapshot.get("action_placement_required", true)):
+        failures.append("STEP 8 preview must not require STEP 9 action placement.")
+    if int(progress_snapshot.get("request_count", -1)) != 0:
+        failures.append("Progress button request count must start at zero.")
+
+    var button_nodes := board.combat_progress_button.find_children("ProgressButton", "Button", true, false)
+    if button_nodes.size() != 1:
+        failures.append("STEP 8 must expose one ProgressButton node.")
+    else:
+        if str(button_nodes[0].text) != "진행":
+            failures.append("The visible progress button label must be 진행.")
+        if bool(button_nodes[0].disabled):
+            failures.append("The STEP 8 preview progress button must be clickable.")
+
+    var timing_before := board.action_timing_panel.get_timing_snapshot()
+    var log_count_before := board.combat_log_panel.entries.size() if board.combat_log_panel != null else 0
+    board.combat_progress_button.request_progress()
+
+    progress_snapshot = board.combat_progress_button.get_progress_snapshot()
+    if int(progress_snapshot.get("request_count", 0)) != 1:
+        failures.append("Progress button must count one request after activation.")
+    var board_snapshot := board.get_layout_snapshot()
+    if int(board_snapshot.get("progress_request_count", 0)) != 1:
+        failures.append("Board must receive the STEP 8 progress request signal.")
+    if bool(board_snapshot.get("state_advancement_enabled", true)):
+        failures.append("Board state advancement must remain disabled in STEP 8.")
+
+    var context: Dictionary = progress_snapshot.get("last_request_context", {})
+    if int(context.get("round_number", 0)) != 1 or int(context.get("bundle_index", 0)) != 2:
+        failures.append("Progress request context must identify round 1, bundle 2.")
+    if int(context.get("current_timing", 0)) != 5 or int(context.get("total_timings", 0)) != 10:
+        failures.append("Progress request context must preserve timing 5 of 10.")
+    if bool(context.get("advances_state", true)):
+        failures.append("Progress request context must declare no state advancement.")
+
+    var timing_after := board.action_timing_panel.get_timing_snapshot()
+    if int(timing_before.get("round_number", 0)) != int(timing_after.get("round_number", -1)):
+        failures.append("STEP 8 progress request must not change the round number.")
+    if int(timing_before.get("current_timing", 0)) != int(timing_after.get("current_timing", -1)):
+        failures.append("STEP 8 progress request must not change the current timing.")
+
+    if board.combat_log_panel != null:
+        if board.combat_log_panel.entries.size() != log_count_before + 1:
+            failures.append("STEP 8 progress request must append one combat log entry.")
+        elif board.combat_log_panel.entries.is_empty() or "[진행] 1라운드 2묶음 진행 요청" not in str(board.combat_log_panel.entries[-1].get("text", "")):
+            failures.append("STEP 8 combat log entry must identify the requested round and bundle.")
+
 func _verify_layout_regions(board: CombatBoardPreview, snapshot: Dictionary) -> void:
     var board_bottom := float(snapshot.get("board_bottom", 0.0))
     var timing_top := float(snapshot.get("action_timing_top", 0.0))
@@ -302,6 +373,18 @@ func _verify_layout_regions(board: CombatBoardPreview, snapshot: Dictionary) -> 
         failures.append("Bottom-lower card tray must not overlap the action timing panel.")
     if tray_bottom > board.size.y + SIZE_TOLERANCE:
         failures.append("Basic card tray must remain inside the viewport.")
+
+    if board.combat_progress_button != null:
+        if absf(float(snapshot.get("progress_button_top", 0.0)) - timing_top) > SIZE_TOLERANCE:
+            failures.append("Progress button must align with the top of the action timing panel.")
+        if absf(float(snapshot.get("progress_button_bottom", 0.0)) - timing_bottom) > SIZE_TOLERANCE:
+            failures.append("Progress button must align with the bottom of the action timing panel.")
+        if float(snapshot.get("progress_button_left", 0.0)) <= board.action_timing_panel.position.x + board.action_timing_panel.size.x:
+            failures.append("Progress button must sit to the right of the action timing panel without overlap.")
+        if float(snapshot.get("progress_button_right", 0.0)) > board.size.x + SIZE_TOLERANCE:
+            failures.append("Progress button must remain inside the viewport.")
+        if float(snapshot.get("progress_button_bottom", 0.0)) >= tray_top:
+            failures.append("Progress button must remain above the basic card tray.")
 
     if board.card_detail_panel != null:
         if board.card_detail_panel.position.y < board.top_hud.position.y + board.top_hud.size.y:
@@ -376,11 +459,11 @@ func _verify_board_and_characters(board: CombatBoardPreview, snapshot: Dictionar
 
 func _finish() -> void:
     if failures.is_empty():
-        print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_VERIFY_OK")
+        print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_VERIFY_OK")
         quit(0)
         return
 
     for failure in failures:
         push_error(failure)
-    print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_VERIFY_FAILED count=%d" % failures.size())
+    print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_VERIFY_FAILED count=%d" % failures.size())
     quit(1)
