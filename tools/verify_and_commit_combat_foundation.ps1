@@ -167,7 +167,7 @@ try {
 
     $boardOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @(
         "--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_board.gd"
-    ) -Label "Verify STEP 1-5 combat presentation foundation"
+    ) -Label "Verify STEP 1-6 combat presentation foundation"
 
     $sideEffects = Invoke-NativeChecked -FilePath "git" -Arguments @(
         "status", "--porcelain", "--untracked-files=all"
@@ -214,8 +214,13 @@ try {
 - [x] No lower player/enemy status panels are used
 - [x] STEP 5 bottom-upper action timing panel exists
 - [x] Ten independent timing slots are grouped as 3, 3, and 4
-- [x] STEP 5 contains no card content or action-placement interaction
-- [x] Action timing panel does not overlap the ten-tile board
+- [x] Timing 5/10 is explicitly labeled as round progress
+- [x] Action timing slots contain no card content or action-placement interaction
+- [x] STEP 6 bottom-lower basic-card tray exists
+- [x] Seven compact cards use the shared basic-card JSON and atlas specifications
+- [x] Compact cards expose source, range, category, slot, stamina, and internal costs
+- [x] STEP 6 cards remain display-only
+- [x] Board, action timing panel, and basic-card tray do not overlap
 
 ## Godot import and parse output
 
@@ -225,13 +230,13 @@ $parseBlock
 
 $step0Block
 
-## STEP 1-5 output
+## STEP 1-6 output
 
 $boardBlock
 
 ## Scope limitation
 
-This automation verifies headless structure, data, parsing, scene instantiation, tile count, scale, anchor positions, background layering, top-HUD composition, and the STEP 5 action-timing layout. Final art quality, Windows click behavior, minimum-resolution readability, fonts, and color accessibility still require manual review.
+This automation verifies headless structure, data, parsing, scene instantiation, tile count, scale, anchor positions, background layering, top-HUD composition, the STEP 5 action-timing layout, and the STEP 6 compact basic-card tray. Final art quality, Windows click behavior, minimum-resolution readability, fonts, and color accessibility still require manual review.
 "@
     Set-Content -LiteralPath $reportPath -Value $report -Encoding UTF8
 
