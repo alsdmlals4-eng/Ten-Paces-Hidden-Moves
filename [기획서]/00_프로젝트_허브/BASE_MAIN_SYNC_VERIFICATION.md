@@ -8,7 +8,8 @@
 - 상세 파일별 판정: `BASE_MAIN_SYNC_AUDIT.md`
 - 운영 PR: #5 `agent/base-full-11-migration`
 - 전투 PR: #7 `agent/t0-combat-poc-board`
-- 동기화 기록: PR #8, merge commit `c8d940586af1e619d3adf76f1c8ad6b36d657de4`
+- 운영 파일 44개 동기화: PR #8, merge `c8d940586af1e619d3adf76f1c8ad6b36d657de4`
+- 최종 상태 문서 동기화: merge `6c79706f449723835fe80cc1dcdb52c664b94958`
 
 ## Work Mode·Skill
 
@@ -42,28 +43,29 @@ selection: user-directed
 
 ## 브랜치 동기화
 
-PR #5와 PR #7이 동일 운영 계약을 사용하도록 PR #5의 운영 파일 44개를 PR #7 전투 트리 위에 적용했다.
+PR #5와 PR #7이 동일 운영 계약을 사용하도록 PR #5의 운영 파일을 PR #7 전투 트리 위에 적용했다.
 
 - [x] 전투 코드·데이터·씬·테스트 보존
 - [x] 최신 Base 운영 파일 44개 적용
-- [x] 두 부모를 가진 병합 커밋 생성
+- [x] 최종 상태 문서·검증 보고서 추가 적용
+- [x] 두 부모를 가진 병합 커밋 사용
 - [x] PR #8 동기화 PR merged
 - [x] PR #7 base SHA가 PR #5 latest head를 가리킴
 - [x] PR #7 mergeable 상태 복구
 
 ## Actions 증거
 
-### PR #5
+### PR #5 최신 head
 
-- [x] `Documentation Governance` run #298 성공
+- [x] `Documentation Governance` run #307 성공
 - [x] project operating-system structure
 - [x] canonical reference freshness
 - [x] project Skill package integrity
 
-### PR #7
+### PR #7 최신 head
 
-- [x] `Documentation Governance` run #299 성공
-- [x] `Card Component Contract` run #395 성공
+- [x] `Documentation Governance` run #308 성공
+- [x] `Card Component Contract` run #396 성공
 - [x] 스택 동기화 뒤 PR mergeable 확인
 
 ## 보존 대조
