@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "step": 10,
+  "resolution_order": ["response", "quick_attack", "move", "general"],
+  "resolution_order_label": "대응 → 속공 → 이동 → 일반 공격",
+  "movement_steps": 1,
+  "guard_block": 4,
+  "meditate_stamina_restore": 2,
+  "meditate_internal_restore": 1,
+  "stance_attack_bonus": 2,
+  "damage_momentum_gain": 1,
+  "enemy_bundles": {
+    "1": [
+      {"timing": 1, "card_id": "basic_move"},
+      {"timing": 2, "card_id": "basic_guard"},
+      {"timing": 3, "card_id": "basic_quick_attack"}
+    ],
+    "2": [
+      {"timing": 4, "card_id": "basic_move"},
+      {"timing": 5, "card_id": "basic_quick_attack"},
+      {"timing": 6, "card_id": "basic_guard"}
+    ],
+    "3": [
+      {"timing": 7, "card_id": "basic_move"},
+      {"timing": 8, "card_id": "basic_quick_attack"},
+      {"timing": 9, "card_id": "basic_heavy_attack"}
+    ]
+  }
+}
