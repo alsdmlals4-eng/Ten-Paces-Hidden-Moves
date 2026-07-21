@@ -53,7 +53,7 @@ def main() -> None:
     log_data = json.loads(LOG_DATA.read_text(encoding="utf-8"))
     card_data = json.loads(CARD_DATA.read_text(encoding="utf-8"))
 
-    assert contract["schema_version"] >= 9
+    assert contract["schema_version"] >= 10
     assert contract["tile_count"] == 10
     assert contract["player_start_tile"] == 3
     assert contract["enemy_start_tile"] == 8
@@ -81,11 +81,13 @@ def main() -> None:
     assert timing["step"] == 5
     assert timing["placement_step"] == 9
     assert timing["runtime_step"] == 10
+    assert timing["targeting_patch"] == "10.5"
     assert timing["timing_sequence"] == [3, 3, 4]
     assert timing["total_timings"] == 10
     assert timing["current_bundle"] == 1
     assert timing["current_timing"] == 1
     assert timing["actionable_indices"] == [1, 2, 3]
+    assert timing["targeting_enabled"] is True
     assert timing["advances_after_resolution"] is True
     assert timing_data["schema_version"] == 2
     assert timing_data["current_bundle"] == 1
@@ -96,8 +98,9 @@ def main() -> None:
     assert progress["step"] == 8
     assert progress["placement_gate_step"] == 9
     assert progress["runtime_step"] == 10
+    assert progress["targeting_patch"] == "10.5"
     assert progress["default_enabled"] is False
-    assert progress["enable_condition"] == "current_bundle_complete"
+    assert progress["enable_condition"] == "current_bundle_complete_and_targets_ready"
     assert progress["request_mode"] == "resolve_bundle"
     assert progress["advances_state"] is True
     assert progress["action_placement_required"] is True
@@ -109,7 +112,6 @@ def main() -> None:
 
     tray = contract["basic_card_tray"]
     assert tray["step"] == 6
-    assert tray["information_interaction_step"] == 7
     assert tray["placement_step"] == 9
     assert tray["card_count"] == 7
     assert tray["card_ids"] == EXPECTED_CARD_IDS
@@ -120,40 +122,60 @@ def main() -> None:
 
     placement = contract["action_placement"]
     assert placement["step"] == 9
-    assert placement["approval_status"] == "USER_APPROVED_INTERACTION"
+    assert placement["targeting_patch"] == "10.5"
+    assert placement["interaction"] == "select_card_then_click_slot_then_choose_target"
     assert placement["editable_scope"] == "current_bundle_slots"
-    assert placement["current_bundle"] == 1
     assert placement["actionable_indices"] == [1, 2, 3]
+    assert placement["progress_requires_complete_bundle"] is True
+    assert placement["progress_requires_targets_ready"] is True
     assert placement["state_advancement_enabled"] is True
+
+    targeting = contract["action_targeting"]
+    assert targeting["patch"] == "10.5"
+    assert targeting["approval_status"] == "IMPLEMENTED_FOR_REVIEW"
+    assert targeting["move_mode"] == "select_destination_board_tile"
+    assert targeting["move_steps"] == 1
+    assert targeting["attack_mode"] == "select_left_or_right_direction"
+    assert targeting["attack_range_tiles_are_clickable"] is True
+    assert targeting["tile_states"] == ["default", "movable", "attackable", "selected", "disabled"]
+    assert targeting["shape_and_text_fallback"] is True
+    assert targeting["slot_target_summary"] is True
+    assert targeting["unresolved_target_blocks_progress"] is True
+    assert targeting["resolution_uses_explicit_target"] is True
 
     resolution = contract["resolution_engine"]
     assert resolution["step"] == 10
-    assert resolution["approval_status"] == "IMPLEMENTED_FOR_REVIEW"
+    assert resolution["targeting_patch"] == "10.5"
     assert resolution["resolution_order"] == ["response", "quick_attack", "move", "general"]
-    assert resolution["resolution_order_label"] == "대응 → 속공 → 이동 → 일반 공격"
     assert resolution["same_phase_attacks"] == "simultaneous_damage"
-    assert resolution["updates_health_stamina_internal_momentum"] is True
-    assert resolution["updates_board_position"] is True
+    assert resolution["uses_explicit_move_target"] is True
+    assert resolution["uses_explicit_attack_direction"] is True
     assert resolution["advances_bundle_and_round"] is True
     assert resolution["fixed_enemy_preview_plan"] is True
     assert resolution["interruption_enabled"] is False
     assert res_file(resolution["script"]).exists()
     assert res_file(resolution["data"]).exists()
 
-    assert resolution_data["schema_version"] == 1
-    assert resolution_data["step"] == 10
+    assert resolution_data["schema_version"] == 2
+    assert resolution_data["targeting_patch"] == "10.5"
+    assert resolution_data["tile_count"] == 10
+    assert resolution_data["explicit_player_move_target"] is True
+    assert resolution_data["explicit_player_attack_direction"] is True
     assert resolution_data["resolution_order"] == ["response", "quick_attack", "move", "general"]
-    assert resolution_data["guard_block"] == 4
     assert set(resolution_data["enemy_bundles"]) == {"1", "2", "3"}
-    assert [entry["timing"] for entry in resolution_data["enemy_bundles"]["1"]] == [1, 2, 3]
+    for bundle in resolution_data["enemy_bundles"].values():
+        for action in bundle:
+            assert "targeting_mode" in action
+            assert "direction" in action
 
     combat_log = contract["combat_log"]
     assert combat_log["resolution_output"] is True
+    assert combat_log["targeting_output"] is True
     assert len(log_data["entries"]) == 4
     assert "대응 → 속공 → 이동 → 일반 공격" in log_data["entries"][-1]["text"]
 
     scope = set(contract["presentation_scope"])
-    assert {"action_placement", "resolution_engine", "action_timing", "progress_button", "top_hud", "combat_log"} <= scope
+    assert {"action_placement", "action_targeting", "resolution_engine", "action_timing", "progress_button", "top_hud", "combat_log"} <= scope
     excluded = set(contract["excluded_until_later_steps"])
     assert "resolution_engine" not in excluded
     assert {"interruption_focus_fortitude", "combat_ai", "combat_end_restart"} <= excluded
@@ -162,7 +184,9 @@ def main() -> None:
         "data/combat/combat_resolution_preview.json",
         "src/combat/combat_resolution_engine.gd",
         "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_tile.gd",
         "src/ui/action_timing_panel.gd",
+        "src/ui/action_timing_slot.gd",
         "src/ui/combat_progress_button.gd",
         "src/ui/top_combat_hud.gd",
         "tests/verify_combat_board.gd",
@@ -170,44 +194,47 @@ def main() -> None:
     for relative in required_files:
         assert (ROOT / relative).exists(), relative
 
-    engine_script = (ROOT / "src/combat/combat_resolution_engine.gd").read_text(encoding="utf-8")
-    assert "class_name CombatResolutionEngine" in engine_script
-    assert "func resolve_bundle(" in engine_script
-    assert 'rules.get("resolution_order_label"' in engine_script
-    assert "func _execute_response(" in engine_script
-    assert "func _execute_attack_phase(" in engine_script
-    assert "func _execute_move_phase(" in engine_script
-    assert "func _execute_utility(" in engine_script
-    assert '"interruption_enabled"' not in engine_script
+    tile_script = (ROOT / "src/combat/combat_board_tile.gd").read_text(encoding="utf-8")
+    assert "signal tile_clicked(tile_index: int)" in tile_script
+    assert "func set_interaction_state(value: String)" in tile_script
+    assert 'interaction_state in ["movable", "attackable", "selected"]' in tile_script
+    assert 'draw_string(ThemeDB.fallback_font' in tile_script
 
     timing_script = (ROOT / "src/ui/action_timing_panel.gd").read_text(encoding="utf-8")
-    assert "func get_resolution_placements() -> Array" in timing_script
-    assert "func get_runtime_context() -> Dictionary" in timing_script
-    assert "func advance_after_resolution() -> Dictionary" in timing_script
-    assert '"state_advancement_enabled": true' in timing_script
+    assert "func set_placement_target(anchor_index: int, target_data: Dictionary) -> bool" in timing_script
+    assert "func get_pending_target_anchor() -> int" in timing_script
+    assert "func are_current_bundle_targets_ready() -> bool" in timing_script
+    assert "return are_current_bundle_targets_ready()" in timing_script
+    assert '"targeting_mode": targeting_mode' in timing_script
+    assert '"target_ready": targeting_mode == "none"' in timing_script
 
-    progress_script = (ROOT / "src/ui/combat_progress_button.gd").read_text(encoding="utf-8")
-    assert "func set_runtime_context(value: Dictionary)" in progress_script
-    assert "func mark_resolution_applied()" in progress_script
-    assert 'progress_data.get("request_mode", "resolve_bundle")' in progress_script
+    slot_script = (ROOT / "src/ui/action_timing_slot.gd").read_text(encoding="utf-8")
+    assert "func set_target_info(value_text: String, value_ready: bool, value_mode: String)" in slot_script
+    assert '"대상 선택"' in slot_script
 
-    hud_script = (ROOT / "src/ui/top_combat_hud.gd").read_text(encoding="utf-8")
-    assert "func apply_combat_state(state: Dictionary" in hud_script
+    engine_script = (ROOT / "src/combat/combat_resolution_engine.gd").read_text(encoding="utf-8")
+    assert "func resolve_bundle(" in engine_script
+    assert 'selected_direction != relative_direction' in engine_script
+    assert 'requested_tile := int(action.get("target_tile", 0))' in engine_script
+    assert '"direction": int(action.get("direction", 0))' in engine_script
+    assert '"target_tile": int(action.get("target_tile", 0))' in engine_script
 
     controller = (ROOT / "src/combat/combat_board_preview.gd").read_text(encoding="utf-8")
-    assert "resolution_engine = CombatResolutionEngine.new()" in controller
-    assert "resolution_engine.resolve_bundle(" in controller
-    assert "action_timing_panel.advance_after_resolution()" in controller
-    assert "top_hud.apply_combat_state(" in controller
-    assert '"state_advancement_enabled": true' in controller
+    assert "tile.tile_clicked.connect(_on_board_tile_clicked)" in controller
+    assert "func _begin_targeting_for_anchor(anchor_index: int) -> bool" in controller
+    assert "func _on_board_tile_clicked(tile_index: int) -> void" in controller
+    assert 'get_tile(target_index).set_interaction_state("movable")' in controller
+    assert 'get_tile(target_index).set_interaction_state("attackable")' in controller
+    assert "action_timing_panel.set_placement_target(_targeting_anchor, target_data)" in controller
+    assert '"targeting_enabled": true' in controller
     assert '"interruption_enabled": false' in controller
 
     verifier = (ROOT / "tests/verify_combat_board.gd").read_text(encoding="utf-8")
-    assert "STEP10" in verifier
-    assert "request_progress()" in verifier
-    assert "current_bundle" in verifier
+    assert "TARGETING_10_5" in verifier
+    assert "set_placement_target" in verifier
+    assert "miss_direction" in verifier
 
-    print("combat board STEP 1-10 contract: PASS")
+    print("combat board STEP 1-10 plus TARGETING 10.5 contract: PASS")
 
 
 if __name__ == "__main__":
