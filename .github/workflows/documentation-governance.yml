@@ -28,17 +28,17 @@ jobs:
       - name: Compile governance tools
         run: |
           python -m py_compile \
-            tools/check_documentation_governance.py \
+            tools/check_project_operating_system.py \
             tools/check_canonical_reference_freshness.py \
             tools/check_skill_package_integrity.py
 
       - name: Validate project operating system
         run: |
           set -o pipefail
-          python tools/check_documentation_governance.py \
+          python tools/check_project_operating_system.py \
             --root . \
             --config .github/documentation-governance.json \
-            2>&1 | tee documentation-governance.log
+            2>&1 | tee project-operating-system.log
 
       - name: Validate canonical reference freshness
         run: |
@@ -60,7 +60,7 @@ jobs:
         with:
           name: governance-diagnostics
           path: |
-            documentation-governance.log
+            project-operating-system.log
             reference-freshness.log
             skill-package-integrity.log
           if-no-files-found: warn
