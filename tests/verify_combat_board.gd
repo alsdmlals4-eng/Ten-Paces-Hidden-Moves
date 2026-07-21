@@ -7,6 +7,7 @@ const EXPECTED_PLAYER_TILE := 3
 const EXPECTED_ENEMY_TILE := 8
 const EXPECTED_HEIGHT_RATIO := 1.5
 const EXPECTED_MOMENTUM_SEGMENTS := 6
+const EXPECTED_ROUND_NUMBER := 1
 const EXPECTED_TIMING_SEQUENCE := [3, 3, 4]
 const EXPECTED_TIMING_COUNT := 10
 const EXPECTED_CARD_IDS := [
@@ -113,6 +114,8 @@ func _run() -> void:
         failures.append("ActionTimingPanel component must exist.")
     else:
         var timing_snapshot := board.action_timing_panel.get_timing_snapshot()
+        if int(timing_snapshot.get("round_number", 0)) != EXPECTED_ROUND_NUMBER:
+            failures.append("Action timing panel must show round 1 in the preview.")
         if timing_snapshot.get("timing_sequence", []) != EXPECTED_TIMING_SEQUENCE:
             failures.append("Action timing sequence must be 3, 3, 4.")
         if int(timing_snapshot.get("total_timings", 0)) != EXPECTED_TIMING_COUNT:
