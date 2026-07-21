@@ -15,6 +15,7 @@
 ## 현재 상태
 
 - Base: `ee265576da7f67d3278f8099dd97d4e714ef0651`
+- Base 버전·차이: `../../../docs/BASE_RULES_VERSION.md`
 - 감사: `BASE_MAIN_SYNC_AUDIT.md`
 - 검증: `BASE_MAIN_SYNC_VERIFICATION.md`
 - 운영 PR: #5
