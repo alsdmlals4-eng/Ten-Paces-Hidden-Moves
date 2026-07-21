@@ -220,7 +220,12 @@ This automation verifies headless structure, data, parsing, scene instantiation,
 
     Write-Host "`nCombat UI foundation verification completed." -ForegroundColor Green
     Write-Host "Commit: $commitSha"
-    Write-Host ("Push: skipped (-NoPush)" if $NoPush else "Push: origin/$ExpectedBranch completed")
+    if ($NoPush) {
+        Write-Host "Push: skipped (-NoPush)"
+    }
+    else {
+        Write-Host "Push: origin/$ExpectedBranch completed"
+    }
 }
 catch {
     Write-Host "`nCombat UI foundation verification failed." -ForegroundColor Red
