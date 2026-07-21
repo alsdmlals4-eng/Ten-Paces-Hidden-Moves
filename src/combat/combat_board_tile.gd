@@ -38,7 +38,7 @@ func _ready() -> void:
     _number_label.offset_top = -34.0
     _number_label.offset_bottom = -4.0
     add_child(_number_label)
-    _refresh_visuals()
+    set_interaction_state(interaction_state)
 
 func configure(index: int, anchor_ratio: float) -> void:
     tile_index = index
