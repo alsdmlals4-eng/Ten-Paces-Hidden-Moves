@@ -1,13 +1,14 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "step": 5,
+  "runtime_step": 10,
   "layout_role": "bottom_upper",
   "round_number": 1,
   "timing_sequence": [3, 3, 4],
   "total_timings": 10,
-  "current_bundle": 2,
-  "current_timing": 5,
+  "current_bundle": 1,
+  "current_timing": 1,
   "bundle_labels": ["1묶음", "2묶음", "3묶음"],
   "cards_inserted": false,
-  "interactions_enabled": false
+  "interactions_enabled": true
 }
