@@ -1,5 +1,5 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "tile_count": 10,
   "player_start_tile": 3,
   "enemy_start_tile": 8,
@@ -51,7 +51,8 @@
   },
   "basic_card_tray": {
     "step": 6,
-    "approval_status": "IMPLEMENTED_FOR_REVIEW",
+    "information_interaction_step": 7,
+    "approval_status": "USER_APPROVED_LAYOUT",
     "scene": "res://scenes/ui/basic_card_tray.tscn",
     "item_scene": "res://scenes/ui/basic_card_tray_item.tscn",
     "data": "res://data/cards/basic_cards.json",
@@ -68,14 +69,38 @@
     ],
     "compact_variant": true,
     "uses_shared_card_data_and_atlases": true,
-    "interactions_enabled": false,
+    "information_interactions_enabled": true,
+    "action_placement_enabled": false,
     "action_timing_above": true
+  },
+  "card_detail_overlay": {
+    "step": 7,
+    "approval_status": "IMPLEMENTED_FOR_REVIEW",
+    "scene": "res://scenes/ui/card_detail_panel.tscn",
+    "layout_role": "left_overlay",
+    "hover_preview": true,
+    "click_pin": true,
+    "same_card_or_blank_click_close": true,
+    "action_placement_enabled": false
+  },
+  "combat_log": {
+    "step": 7,
+    "approval_status": "IMPLEMENTED_FOR_REVIEW",
+    "scene": "res://scenes/ui/combat_log_panel.tscn",
+    "data": "res://data/combat/combat_log_preview.json",
+    "layout_role": "right_overlay",
+    "collapsible": true,
+    "default_collapsed": true,
+    "sample_entry_count": 4,
+    "output_interface": true
   },
   "presentation_scope": [
     "battle_background",
     "top_hud",
     "action_timing",
     "basic_card_tray",
+    "card_detail_overlay",
+    "combat_log",
     "board",
     "tile_numbers",
     "player_placeholder",
@@ -83,8 +108,6 @@
     "foot_anchor_guides"
   ],
   "excluded_until_later_steps": [
-    "card_detail_panel",
-    "combat_log_panel",
     "progress_button",
     "action_placement_interaction"
   ]
