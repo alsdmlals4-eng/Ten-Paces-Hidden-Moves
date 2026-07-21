@@ -73,6 +73,7 @@ func _build_content() -> void:
 
     set_meta("step", 5)
     set_meta("layout_role", "bottom_upper")
+    set_meta("round_number", int(timing_data.get("round_number", 1)))
     set_meta("timing_sequence", "3|3|4")
     set_meta("total_timings", slots.size())
     set_meta("progress_scope", "round")
@@ -105,6 +106,7 @@ func _refresh() -> void:
     if _title_label == null:
         return
     var sequence: Array = timing_data.get("timing_sequence", [3, 3, 4])
+    var round_number := int(timing_data.get("round_number", 1))
     var current_timing := int(timing_data.get("current_timing", 1))
     var total_timings := int(timing_data.get("total_timings", 10))
     var sequence_texts := PackedStringArray()
@@ -112,7 +114,7 @@ func _refresh() -> void:
         sequence_texts.append("%d수" % int(value))
     _title_label.text = "행동 진행"
     _sequence_label.text = " → ".join(sequence_texts)
-    _progress_label.text = "라운드 진행 %d / %d수" % [current_timing, total_timings]
+    _progress_label.text = "라운드 %d / (%d/%d수)" % [round_number, current_timing, total_timings]
 
 func _layout() -> void:
     if _title_label == null or slots.is_empty():
@@ -173,6 +175,7 @@ func get_timing_snapshot() -> Dictionary:
     return {
         "step": 5,
         "layout_role": "bottom_upper",
+        "round_number": int(timing_data.get("round_number", 1)),
         "timing_sequence": timing_data.get("timing_sequence", [3, 3, 4]),
         "total_timings": slots.size(),
         "current_bundle": int(timing_data.get("current_bundle", 1)),
