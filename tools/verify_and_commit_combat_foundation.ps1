@@ -47,18 +47,11 @@ function Resolve-GodotExecutable {
         return (Resolve-Path -LiteralPath $ExplicitPath).Path
     }
 
-    if (-not [string]::IsNullOrWhiteSpace($env:GODOT_BIN)) {
-        if (Test-Path -LiteralPath $env:GODOT_BIN -PathType Leaf) {
-            return (Resolve-Path -LiteralPath $env:GODOT_BIN).Path
-        }
+    if (-not [string]::IsNullOrWhiteSpace($env:GODOT_BIN) -and (Test-Path -LiteralPath $env:GODOT_BIN -PathType Leaf)) {
+        return (Resolve-Path -LiteralPath $env:GODOT_BIN).Path
     }
 
-    foreach ($commandName in @(
-        "godot4",
-        "godot",
-        "Godot_v4.7.1-stable_win64_console",
-        "Godot_v4.7.1-stable_win64"
-    )) {
+    foreach ($commandName in @("godot4", "godot", "Godot_v4.7.1-stable_win64_console", "Godot_v4.7.1-stable_win64")) {
         $command = Get-Command $commandName -ErrorAction SilentlyContinue
         if ($null -ne $command) {
             return $command.Source
@@ -81,12 +74,8 @@ function Resolve-GodotExecutable {
         }
     }
 
-    $searchRoots = @(
-        "$env:USERPROFILE\Downloads",
-        "$env:USERPROFILE\Desktop",
-        "$env:USERPROFILE\Documents"
-    ) | Where-Object { Test-Path -LiteralPath $_ -PathType Container }
-
+    $searchRoots = @("$env:USERPROFILE\Downloads", "$env:USERPROFILE\Desktop", "$env:USERPROFILE\Documents") |
+        Where-Object { Test-Path -LiteralPath $_ -PathType Container }
     foreach ($root in $searchRoots) {
         $candidate = Get-ChildItem -LiteralPath $root -Filter "Godot*.exe" -File -Recurse -ErrorAction SilentlyContinue |
             Sort-Object @{ Expression = { if ($_.Name -like "*console*") { 0 } else { 1 } } }, FullName |
@@ -113,39 +102,28 @@ try {
         throw "project.godot was not found under the repository root: $repoRoot"
     }
 
-    $insideWorkTree = Invoke-NativeChecked -FilePath "git" -Arguments @(
-        "-C", $repoRoot, "rev-parse", "--is-inside-work-tree"
-    ) -Label "Check Git worktree"
+    $insideWorkTree = Invoke-NativeChecked -FilePath "git" -Arguments @("-C", $repoRoot, "rev-parse", "--is-inside-work-tree") -Label "Check Git worktree"
     if (($insideWorkTree -join "").Trim() -ne "true") {
         throw "The script directory is not inside a Git worktree: $repoRoot"
     }
 
     Set-Location -LiteralPath $repoRoot
-    $branchOutput = Invoke-NativeChecked -FilePath "git" -Arguments @(
-        "branch", "--show-current"
-    ) -Label "Check branch"
-    $branch = ($branchOutput -join "").Trim()
+    $branch = ((Invoke-NativeChecked -FilePath "git" -Arguments @("branch", "--show-current") -Label "Check branch") -join "").Trim()
     if ($branch -ne $ExpectedBranch) {
         throw "Unexpected branch. expected=$ExpectedBranch actual=$branch"
     }
 
-    $initialStatus = Invoke-NativeChecked -FilePath "git" -Arguments @(
-        "status", "--porcelain", "--untracked-files=all"
-    ) -Label "Check clean worktree"
-    $initialStatus = @($initialStatus | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    $initialStatus = @(Invoke-NativeChecked -FilePath "git" -Arguments @("status", "--porcelain", "--untracked-files=all") -Label "Check clean worktree" |
+        Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
     if ($initialStatus.Count -gt 0) {
         throw "The worktree is not clean. Preserve or commit existing changes before retrying.`n$($initialStatus -join "`n")"
     }
 
     Invoke-NativeChecked -FilePath "git" -Arguments @("fetch", "origin") -Label "Fetch origin" | Out-Null
-    Invoke-NativeChecked -FilePath "git" -Arguments @(
-        "pull", "--ff-only", "origin", $ExpectedBranch
-    ) -Label "Fast-forward branch" | Out-Null
+    Invoke-NativeChecked -FilePath "git" -Arguments @("pull", "--ff-only", "origin", $ExpectedBranch) -Label "Fast-forward branch" | Out-Null
 
-    $postPullStatus = Invoke-NativeChecked -FilePath "git" -Arguments @(
-        "status", "--porcelain", "--untracked-files=all"
-    ) -Label "Recheck clean worktree"
-    $postPullStatus = @($postPullStatus | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    $postPullStatus = @(Invoke-NativeChecked -FilePath "git" -Arguments @("status", "--porcelain", "--untracked-files=all") -Label "Recheck clean worktree" |
+        Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
     if ($postPullStatus.Count -gt 0) {
         throw "Unexpected local changes appeared after pull.`n$($postPullStatus -join "`n")"
     }
@@ -157,22 +135,12 @@ try {
         throw "Godot 4.x is required. actual=$versionText"
     }
 
-    $parseOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @(
-        "--headless", "--editor", "--path", $repoRoot, "--quit"
-    ) -Label "Import and parse Godot project"
+    $parseOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--editor", "--path", $repoRoot, "--quit") -Label "Import and parse Godot project"
+    $step0Output = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_step0.gd") -Label "Verify STEP 0 card components"
+    $boardOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_board.gd") -Label "Verify STEP 1-7 combat presentation foundation"
 
-    $step0Output = Invoke-NativeChecked -FilePath $godotExe -Arguments @(
-        "--headless", "--path", $repoRoot, "--script", "res://tests/verify_step0.gd"
-    ) -Label "Verify STEP 0 card components"
-
-    $boardOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @(
-        "--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_board.gd"
-    ) -Label "Verify STEP 1-6 combat presentation foundation"
-
-    $sideEffects = Invoke-NativeChecked -FilePath "git" -Arguments @(
-        "status", "--porcelain", "--untracked-files=all"
-    ) -Label "Check verification side effects"
-    $sideEffects = @($sideEffects | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    $sideEffects = @(Invoke-NativeChecked -FilePath "git" -Arguments @("status", "--porcelain", "--untracked-files=all") -Label "Check verification side effects" |
+        Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
     if ($sideEffects.Count -gt 0) {
         throw "Verification modified unexpected files. Commit was blocked.`n$($sideEffects -join "`n")"
     }
@@ -200,27 +168,20 @@ try {
 - [x] Fast-forwarded from origin
 - [x] Project import and GDScript parsing
 - [x] STEP 0 card catalog and preview scene
-- [x] Seven CardView nodes and one CardDetailPanel
 - [x] STEP 1 board contains exactly ten tiles
-- [x] Player starts on tile 3
-- [x] Enemy starts on tile 8
-- [x] Player and enemy use identical scale
-- [x] Character height is 1.5 times tile width
-- [x] Character foot anchors match tile anchors
-- [x] STEP 3 approved low-contrast battle background loads behind the board
-- [x] STEP 4 player and enemy status panels are in the top HUD
-- [x] Both ultimate momentum gauges contain six segments
-- [x] Central round, bundle, selection, and resolution-order panel exists
-- [x] No lower player/enemy status panels are used
-- [x] STEP 5 bottom-upper action timing panel exists
-- [x] Ten independent timing slots are grouped as 3, 3, and 4
-- [x] Timing 5/10 is explicitly labeled as round progress
-- [x] Action timing slots contain no card content or action-placement interaction
-- [x] STEP 6 bottom-lower basic-card tray exists
-- [x] Seven compact cards use the shared basic-card JSON and atlas specifications
-- [x] Compact cards expose source, range, category, slot, stamina, and internal costs
-- [x] STEP 6 cards remain display-only
-- [x] Board, action timing panel, and basic-card tray do not overlap
+- [x] Player starts on tile 3 and enemy starts on tile 8
+- [x] Character scale and foot anchors match the board contract
+- [x] STEP 3 approved battle background loads behind the board
+- [x] STEP 4 top HUD uses five-segment ultimate momentum gauges
+- [x] STEP 5 ten timings are grouped as 3, 3, and 4
+- [x] STEP 5 displays only the round number in the right progress label
+- [x] STEP 6 compact basic-card tray contains seven cards
+- [x] STEP 7 hover preview and click pinning are information-only
+- [x] STEP 7 same-card click closes pinned detail
+- [x] STEP 7 collapsible combat log contains sample entries
+- [x] STEP 7 combat log append interface adds entries
+- [x] Detail and log overlays remain below the top HUD and above action timing
+- [x] Action placement remains disabled
 
 ## Godot import and parse output
 
@@ -230,13 +191,13 @@ $parseBlock
 
 $step0Block
 
-## STEP 1-6 output
+## STEP 1-7 output
 
 $boardBlock
 
 ## Scope limitation
 
-This automation verifies headless structure, data, parsing, scene instantiation, tile count, scale, anchor positions, background layering, top-HUD composition, the STEP 5 action-timing layout, and the STEP 6 compact basic-card tray. Final art quality, Windows click behavior, minimum-resolution readability, fonts, and color accessibility still require manual review.
+This automation verifies headless structure, data, parsing, scene instantiation, board geometry, top-HUD composition, action timing, the compact card tray, card-detail information interactions, and the collapsible combat-log interface. Final art quality, Windows pointer feel, minimum-resolution readability, fonts, and color accessibility still require manual review.
 "@
     Set-Content -LiteralPath $reportPath -Value $report -Encoding UTF8
 
@@ -251,8 +212,7 @@ This automation verifies headless structure, data, parsing, scene instantiation,
 
     Invoke-NativeChecked -FilePath "git" -Arguments @("add", "--", $ReportRelativePath) -Label "Stage verification report" | Out-Null
     Invoke-NativeChecked -FilePath "git" -Arguments @("commit", "-m", $CommitMessage) -Label "Commit verification report" | Out-Null
-    $commitOutput = Invoke-NativeChecked -FilePath "git" -Arguments @("rev-parse", "HEAD") -Label "Read commit SHA"
-    $commitSha = ($commitOutput -join "").Trim()
+    $commitSha = ((Invoke-NativeChecked -FilePath "git" -Arguments @("rev-parse", "HEAD") -Label "Read commit SHA") -join "").Trim()
 
     if (-not $NoPush) {
         Invoke-NativeChecked -FilePath "git" -Arguments @("push", "origin", $ExpectedBranch) -Label "Push verification result" | Out-Null
@@ -260,12 +220,7 @@ This automation verifies headless structure, data, parsing, scene instantiation,
 
     Write-Host "`nCombat UI foundation verification completed." -ForegroundColor Green
     Write-Host "Commit: $commitSha"
-    if ($NoPush) {
-        Write-Host "Push: skipped (-NoPush)"
-    }
-    else {
-        Write-Host "Push: origin/$ExpectedBranch completed"
-    }
+    Write-Host ("Push: skipped (-NoPush)" if $NoPush else "Push: origin/$ExpectedBranch completed")
 }
 catch {
     Write-Host "`nCombat UI foundation verification failed." -ForegroundColor Red
