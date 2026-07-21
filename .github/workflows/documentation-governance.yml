@@ -25,12 +25,13 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Compile governance tools
+      - name: Compile governance tools and tests
         run: |
           python -m py_compile \
             tools/check_project_operating_system.py \
             tools/check_canonical_reference_freshness.py \
-            tools/check_skill_package_integrity.py
+            tools/check_skill_package_integrity.py \
+            tests/test_project_governance.py
 
       - name: Validate project operating system
         run: |
@@ -54,6 +55,12 @@ jobs:
           python tools/check_skill_package_integrity.py \
             2>&1 | tee skill-package-integrity.log
 
+      - name: Run governance regression tests
+        run: |
+          set -o pipefail
+          python -m unittest discover -s tests -p 'test_project_governance.py' \
+            2>&1 | tee governance-regression.log
+
       - name: Upload governance diagnostics
         if: always()
         uses: actions/upload-artifact@v4
@@ -63,10 +70,11 @@ jobs:
             project-operating-system.log
             reference-freshness.log
             skill-package-integrity.log
+            governance-regression.log
           if-no-files-found: warn
           retention-days: 7
 
       - name: Record verification boundaries
         run: |
-          echo "Governance success proves repository structure, routing, canonical references, and Skill package integrity."
+          echo "Governance success proves structure, routing, publication-policy shape, canonical references, Skill integrity, and regression checks."
           echo "It does not prove Godot runtime, PDF rendering, accessibility, performance, user visual review, or branch-protection enforcement."
