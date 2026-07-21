@@ -1,5 +1,5 @@
 {
-  "schema_version": 8,
+  "schema_version": 9,
   "tile_count": 10,
   "player_start_tile": 3,
   "enemy_start_tile": 8,
@@ -19,17 +19,20 @@
   },
   "top_hud": {
     "step": 4,
+    "runtime_step": 10,
     "approval_status": "USER_APPROVED_LAYOUT",
     "scene": "res://scenes/ui/top_combat_hud.tscn",
     "data": "res://data/combat/combat_hud_preview.json",
     "momentum_segments": 5,
     "layout": ["player_status", "player_momentum", "round_bundle", "enemy_momentum", "enemy_status"],
     "resource_fields": ["health", "stamina", "internal"],
-    "lower_status_panels": false
+    "lower_status_panels": false,
+    "runtime_updates": true
   },
   "action_timing": {
     "step": 5,
     "placement_step": 9,
+    "runtime_step": 10,
     "approval_status": "USER_APPROVED_LAYOUT",
     "scene": "res://scenes/ui/action_timing_panel.tscn",
     "data": "res://data/combat/combat_action_timing_preview.json",
@@ -37,26 +40,28 @@
     "round_number": 1,
     "timing_sequence": [3, 3, 4],
     "total_timings": 10,
-    "current_bundle": 2,
-    "current_timing": 5,
+    "current_bundle": 1,
+    "current_timing": 1,
     "progress_scope": "round",
     "progress_label_format": "라운드 {round}",
-    "actionable_indices": [5, 6],
+    "actionable_indices": [1, 2, 3],
     "cards_inserted": true,
-    "interactions_enabled": true
+    "interactions_enabled": true,
+    "advances_after_resolution": true
   },
   "progress_button": {
     "step": 8,
     "placement_gate_step": 9,
-    "approval_status": "IMPLEMENTED_FOR_REVIEW",
+    "runtime_step": 10,
+    "approval_status": "USER_APPROVED_INTERACTION",
     "scene": "res://scenes/ui/combat_progress_button.tscn",
     "data": "res://data/combat/combat_progress_preview.json",
     "layout_role": "bottom_upper_right",
     "button_text": "진행",
     "default_enabled": false,
     "enable_condition": "current_bundle_complete",
-    "request_mode": "signal_only",
-    "advances_state": false,
+    "request_mode": "resolve_bundle",
+    "advances_state": true,
     "writes_combat_log": true,
     "action_placement_required": true
   },
@@ -89,6 +94,7 @@
   },
   "combat_log": {
     "step": 7,
+    "runtime_step": 10,
     "approval_status": "USER_APPROVED_INTERACTION",
     "scene": "res://scenes/ui/combat_log_panel.tscn",
     "data": "res://data/combat/combat_log_preview.json",
@@ -96,21 +102,36 @@
     "collapsible": true,
     "default_collapsed": true,
     "sample_entry_count": 4,
-    "output_interface": true
+    "output_interface": true,
+    "resolution_output": true
   },
   "action_placement": {
     "step": 9,
-    "approval_status": "IMPLEMENTED_FOR_REVIEW",
+    "approval_status": "USER_APPROVED_INTERACTION",
     "interaction": "select_card_then_click_slot",
-    "editable_scope": "current_bundle_remaining_slots",
-    "current_bundle": 2,
-    "actionable_indices": [5, 6],
+    "editable_scope": "current_bundle_slots",
+    "current_bundle": 1,
+    "actionable_indices": [1, 2, 3],
     "single_slot_supported": true,
     "consecutive_multi_slot_supported": true,
     "occupied_slot_click_removes_whole_card": true,
     "placement_log_enabled": true,
     "progress_requires_complete_bundle": true,
-    "state_advancement_enabled": false
+    "state_advancement_enabled": true
+  },
+  "resolution_engine": {
+    "step": 10,
+    "approval_status": "IMPLEMENTED_FOR_REVIEW",
+    "script": "res://src/combat/combat_resolution_engine.gd",
+    "data": "res://data/combat/combat_resolution_preview.json",
+    "resolution_order": ["response", "quick_attack", "move", "general"],
+    "resolution_order_label": "대응 → 속공 → 이동 → 일반 공격",
+    "same_phase_attacks": "simultaneous_damage",
+    "updates_health_stamina_internal_momentum": true,
+    "updates_board_position": true,
+    "advances_bundle_and_round": true,
+    "fixed_enemy_preview_plan": true,
+    "interruption_enabled": false
   },
   "presentation_scope": [
     "battle_background",
@@ -121,11 +142,12 @@
     "card_detail_overlay",
     "combat_log",
     "action_placement",
+    "resolution_engine",
     "board",
     "tile_numbers",
     "player_placeholder",
     "enemy_placeholder",
     "foot_anchor_guides"
   ],
-  "excluded_until_later_steps": ["state_advancement_engine", "resolution_engine"]
+  "excluded_until_later_steps": ["interruption_focus_fortitude", "combat_ai", "combat_end_restart"]
 }
