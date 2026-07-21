@@ -46,11 +46,47 @@ def validate_entrypoints(root: Path) -> None:
             raise ContractError(f"AGENTS is missing the routing contract token: {token}")
 
 
+def validate_schema_contracts(root: Path) -> None:
+    design = load_json(root / "schemas/design-document-registry-v3.schema.json")
+    if "Ten-Paces-Hidden-Moves" not in str(design.get("$id", "")):
+        raise ContractError("design registry schema $id must belong to this project")
+    document = design.get("$defs", {}).get("document", {})
+    properties = document.get("properties", {})
+    policies = set(properties.get("publication_policy", {}).get("enum", []))
+    if policies != {"source_only", "milestone_sync", "always_sync"}:
+        raise ContractError("design registry schema publication policies are incomplete")
+    source_only_rule = None
+    for rule in document.get("allOf", []):
+        expected = rule.get("if", {}).get("properties", {}).get("publication_policy", {}).get("const")
+        if expected == "source_only":
+            source_only_rule = rule.get("then", {}).get("properties", {})
+            break
+    if source_only_rule is None:
+        raise ContractError("design registry schema lacks source_only conditional shape")
+    for field in ("output_pdf", "output_docx", "asset_dir", "publication_manifest", "generator"):
+        if source_only_rule.get(field, {}).get("type") != "null":
+            raise ContractError(f"design schema source_only must null {field}")
+    if source_only_rule.get("diagram_policy", {}).get("const") != "none":
+        raise ContractError("design schema source_only must disable diagrams")
+
+    skill = load_json(root / "schemas/skill-registry-v3.schema.json")
+    if "Ten-Paces-Hidden-Moves" not in str(skill.get("$id", "")):
+        raise ContractError("Skill registry schema $id must belong to this project")
+    presentation = skill.get("properties", {}).get("human_presentation", {})
+    presentation_policies = set(
+        presentation.get("properties", {}).get("publication_policy", {}).get("enum", [])
+    )
+    if "source_only" not in presentation_policies:
+        raise ContractError("Skill registry schema must support source_only")
+
+
 def validate_design_registry(root: Path, config: dict[str, Any]) -> None:
     registry_path = root / str(config["design_document_registry"])
     registry = load_json(registry_path)
     if registry.get("schema_version") != 3:
         raise ContractError("design registry schema_version must be 3")
+    if not registry.get("publication_note"):
+        raise ContractError("design registry must explain its publication state")
     documents = registry.get("documents", [])
     if not documents:
         raise ContractError("design registry is empty")
@@ -86,6 +122,9 @@ def validate_design_registry(root: Path, config: dict[str, Any]) -> None:
             for field in ("output_pdf", "publication_manifest", "generator"):
                 if not isinstance(document.get(field), str) or not document.get(field):
                     raise ContractError(f"published document is missing {field}: {document_id}")
+            generator = root / str(document["generator"])
+            if not generator.is_file():
+                raise ContractError(f"publication generator is missing: {document_id}: {document['generator']}")
 
     expected = set(str(value) for value in config.get("required_design_sources", []))
     if sources != expected:
@@ -126,6 +165,8 @@ def validate_skill_registry(root: Path, config: dict[str, Any]) -> None:
     shared_routes = base.get("shared_skill_routes", {})
     if not isinstance(shared_routes, dict) or len(shared_routes) != 13:
         raise ContractError("all 13 Base shared Skill routes must be registered")
+    if len(set(shared_routes.values())) != 13:
+        raise ContractError("Base shared Skill routes must be unique")
     if not (root / str(base.get("legacy_aliases", ""))).is_file():
         raise ContractError("Legacy Skill Alias file is missing")
 
@@ -172,6 +213,7 @@ def run(root: Path, config_path: Path) -> None:
     config = load_json(config_path)
     validate_required_paths(root, config)
     validate_entrypoints(root)
+    validate_schema_contracts(root)
     validate_design_registry(root, config)
     validate_skill_registry(root, config)
     validate_interviews(root, config)
