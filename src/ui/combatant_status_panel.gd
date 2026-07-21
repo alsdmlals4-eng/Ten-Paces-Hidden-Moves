@@ -111,10 +111,10 @@ func _layout() -> void:
         label.size = Vector2(content_width, 18.0)
         label.horizontal_alignment = _name_label.horizontal_alignment
 
-    var chip_y := maxf(101.0, size.y - 24.0)
+    var chip_y := maxf(100.0, size.y - 22.0)
     for index in range(_status_labels.size()):
         var chip := _status_labels[index]
-        var chip_x := content_x + float(index) * 25.0 if side == "player" else content_right - 22.0 - float(index) * 25.0
+        var chip_x := portrait_x + 8.0 + float(index) * 25.0 if side == "player" else portrait_x + portrait_size - 30.0 - float(index) * 25.0
         chip.position = Vector2(chip_x, chip_y)
         chip.size = Vector2(22.0, 20.0)
 
