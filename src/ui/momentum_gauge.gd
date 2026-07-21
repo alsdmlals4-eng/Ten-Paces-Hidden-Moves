@@ -9,7 +9,7 @@ const MUTED := Color("a7977e")
 
 var side: String = "player"
 var current_value: int = 0
-var maximum_value: int = 6
+var maximum_value: int = 5
 
 var _title_label: Label
 var _value_label: Label
@@ -33,7 +33,7 @@ func _ready() -> void:
     _refresh()
     _layout()
 
-func configure(value_side: String, values: Array, fallback_maximum: int = 6) -> void:
+func configure(value_side: String, values: Array, fallback_maximum: int = 5) -> void:
     side = value_side
     maximum_value = maxi(1, fallback_maximum)
     if values.size() >= 2:
