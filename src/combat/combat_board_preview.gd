@@ -5,6 +5,7 @@ const CONTRACT_PATH := "res://data/combat/combat_board_poc.json"
 const BACKGROUND_SCENE := preload("res://scenes/combat/battle_background.tscn")
 const TOP_HUD_SCENE := preload("res://scenes/ui/top_combat_hud.tscn")
 const ACTION_TIMING_SCENE := preload("res://scenes/ui/action_timing_panel.tscn")
+const PROGRESS_BUTTON_SCENE := preload("res://scenes/ui/combat_progress_button.tscn")
 const BASIC_CARD_TRAY_SCENE := preload("res://scenes/ui/basic_card_tray.tscn")
 const CARD_DETAIL_SCENE := preload("res://scenes/ui/card_detail_panel.tscn")
 const COMBAT_LOG_SCENE := preload("res://scenes/ui/combat_log_panel.tscn")
@@ -19,6 +20,7 @@ var tiles: Array[CombatBoardTile] = []
 var battle_background: BattleBackground
 var top_hud: TopCombatHud
 var action_timing_panel: ActionTimingPanel
+var combat_progress_button: CombatProgressButton
 var basic_card_tray: BasicCardTray
 var card_detail_panel: CardDetailPanel
 var combat_log_panel: CombatLogPanel
@@ -35,6 +37,7 @@ var _tile_gap := 0.0
 var _board_top := 0.0
 var _detail_pinned := false
 var _pinned_card_id := ""
+var _progress_request_count := 0
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_PASS
@@ -93,6 +96,11 @@ func _build_structure() -> void:
     action_timing_panel.name = "ActionTimingPanel"
     add_child(action_timing_panel)
 
+    combat_progress_button = PROGRESS_BUTTON_SCENE.instantiate() as CombatProgressButton
+    combat_progress_button.name = "CombatProgressButton"
+    combat_progress_button.progress_requested.connect(_on_progress_requested)
+    add_child(combat_progress_button)
+
     basic_card_tray = BASIC_CARD_TRAY_SCENE.instantiate() as BasicCardTray
     basic_card_tray.name = "BasicCardTray"
     basic_card_tray.card_hovered.connect(_on_card_hovered)
@@ -131,7 +139,7 @@ func _build_structure() -> void:
     enemy_character.name = "EnemyCharacter"
     _character_layer.add_child(enemy_character)
 
-    set_meta("step", 7)
+    set_meta("step", 8)
     set_meta("background_component", "BattleBackground")
     set_meta("background_asset", "res://assets/backgrounds/step3_mountain_fortress.svg")
     set_meta("hud_component", "TopCombatHud")
@@ -139,6 +147,10 @@ func _build_structure() -> void:
     set_meta("action_timing_component", "ActionTimingPanel")
     set_meta("action_timing_layout", "bottom_upper")
     set_meta("action_timing_sequence", "3|3|4")
+    set_meta("progress_button_component", "CombatProgressButton")
+    set_meta("progress_button_layout", "bottom_upper_right")
+    set_meta("progress_request_mode", "signal_only")
+    set_meta("state_advancement_enabled", false)
     set_meta("basic_card_tray_component", "BasicCardTray")
     set_meta("basic_card_tray_layout", "bottom_lower")
     set_meta("basic_card_count", 7)
@@ -175,13 +187,23 @@ func _layout_board() -> void:
         basic_card_tray.position = Vector2(lower_margin, size.y - tray_height - lower_bottom)
         basic_card_tray.size = Vector2(maxf(1.0, size.x - lower_margin * 2.0), tray_height)
 
+    var tray_top := basic_card_tray.position.y if is_instance_valid(basic_card_tray) else size.y - tray_height - lower_bottom
+    var timing_row_y := tray_top - timing_height - panel_gap
+    var timing_row_width := maxf(1.0, size.x - lower_margin * 2.0)
+    var progress_width := clampf(size.x * 0.095, 120.0, 142.0)
+    var progress_gap := 8.0
+    var timing_width := maxf(1.0, timing_row_width - progress_width - progress_gap)
+
     if is_instance_valid(action_timing_panel):
-        var tray_top := basic_card_tray.position.y if is_instance_valid(basic_card_tray) else size.y - tray_height - lower_bottom
-        action_timing_panel.position = Vector2(lower_margin, tray_top - timing_height - panel_gap)
-        action_timing_panel.size = Vector2(maxf(1.0, size.x - lower_margin * 2.0), timing_height)
+        action_timing_panel.position = Vector2(lower_margin, timing_row_y)
+        action_timing_panel.size = Vector2(timing_width, timing_height)
+
+    if is_instance_valid(combat_progress_button):
+        combat_progress_button.position = Vector2(lower_margin + timing_width + progress_gap, timing_row_y)
+        combat_progress_button.size = Vector2(progress_width, timing_height)
 
     var overlay_top := 145.0
-    var overlay_bottom := action_timing_panel.position.y - 10.0 if is_instance_valid(action_timing_panel) else size.y - 290.0
+    var overlay_bottom := timing_row_y - 10.0
     var overlay_height := maxf(1.0, overlay_bottom - overlay_top)
     var overlay_margin := maxf(12.0, size.x * 0.014)
 
@@ -208,8 +230,7 @@ func _layout_board() -> void:
     var board_width := _tile_width * float(tile_count) + _tile_gap * float(tile_count - 1)
     var board_left := (size.x - board_width) * 0.5
     var desired_top := size.y * 0.43
-    var action_top := action_timing_panel.position.y if is_instance_valid(action_timing_panel) else size.y - 280.0
-    var maximum_top := maxf(150.0, action_top - _tile_height - 48.0)
+    var maximum_top := maxf(150.0, timing_row_y - _tile_height - 48.0)
     var minimum_top := minf(220.0, maximum_top)
     _board_top = clampf(desired_top, minimum_top, maximum_top)
 
@@ -262,6 +283,14 @@ func _on_card_clicked(definition: Dictionary) -> void:
     basic_card_tray.set_pinned_card(card_id)
     card_detail_panel.show_definition(definition, true)
 
+func _on_progress_requested(context: Dictionary) -> void:
+    _progress_request_count += 1
+    set_meta("progress_request_count", _progress_request_count)
+    if is_instance_valid(combat_log_panel):
+        var round_number := int(context.get("round_number", 1))
+        var bundle_index := int(context.get("bundle_index", 1))
+        combat_log_panel.append_entry("[진행] %d라운드 %d묶음 진행 요청" % [round_number, bundle_index], "system")
+
 func _clear_card_detail() -> void:
     _detail_pinned = false
     _pinned_card_id = ""
@@ -280,6 +309,8 @@ func _gui_input(event: InputEvent) -> void:
     if _control_contains_point(card_detail_panel, point):
         return
     if _control_contains_point(combat_log_panel, point):
+        return
+    if _control_contains_point(combat_progress_button, point):
         return
     if _control_contains_point(basic_card_tray, point):
         return
@@ -311,6 +342,7 @@ func get_character_foot_anchor(role: String) -> Vector2:
 func get_layout_snapshot() -> Dictionary:
     var hud_snapshot := top_hud.get_hud_snapshot() if is_instance_valid(top_hud) else {}
     var timing_snapshot := action_timing_panel.get_timing_snapshot() if is_instance_valid(action_timing_panel) else {}
+    var progress_snapshot := combat_progress_button.get_progress_snapshot() if is_instance_valid(combat_progress_button) else {}
     var tray_snapshot := basic_card_tray.get_tray_snapshot() if is_instance_valid(basic_card_tray) else {}
     var detail_snapshot := card_detail_panel.get_detail_snapshot() if is_instance_valid(card_detail_panel) else {}
     var log_snapshot := combat_log_panel.get_log_snapshot() if is_instance_valid(combat_log_panel) else {}
@@ -324,6 +356,13 @@ func get_layout_snapshot() -> Dictionary:
         "action_timing_snapshot": timing_snapshot,
         "action_timing_top": action_timing_panel.position.y if is_instance_valid(action_timing_panel) else 0.0,
         "action_timing_bottom": action_timing_panel.position.y + action_timing_panel.size.y if is_instance_valid(action_timing_panel) else 0.0,
+        "progress_button_ready": is_instance_valid(combat_progress_button),
+        "progress_button_snapshot": progress_snapshot,
+        "progress_button_left": combat_progress_button.position.x if is_instance_valid(combat_progress_button) else 0.0,
+        "progress_button_right": combat_progress_button.position.x + combat_progress_button.size.x if is_instance_valid(combat_progress_button) else 0.0,
+        "progress_button_top": combat_progress_button.position.y if is_instance_valid(combat_progress_button) else 0.0,
+        "progress_button_bottom": combat_progress_button.position.y + combat_progress_button.size.y if is_instance_valid(combat_progress_button) else 0.0,
+        "progress_request_count": _progress_request_count,
         "basic_card_tray_ready": is_instance_valid(basic_card_tray),
         "basic_card_tray_snapshot": tray_snapshot,
         "basic_card_tray_top": basic_card_tray.position.y if is_instance_valid(basic_card_tray) else 0.0,
@@ -334,6 +373,7 @@ func get_layout_snapshot() -> Dictionary:
         "combat_log_snapshot": log_snapshot,
         "information_interactions_enabled": true,
         "action_placement_enabled": false,
+        "state_advancement_enabled": false,
         "lower_status_panels": false,
         "lower_skill_panel": true,
         "tile_count": tiles.size(),
