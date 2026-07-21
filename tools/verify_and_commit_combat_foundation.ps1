@@ -138,6 +138,7 @@ try {
     $parseOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--editor", "--path", $repoRoot, "--quit") -Label "Import and parse Godot project"
     $step0Output = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_step0.gd") -Label "Verify STEP 0 card components"
     $boardOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_board.gd") -Label "Verify STEP 1-10 plus TARGETING 10.5 combat foundation"
+    $responseOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_response_rules.gd") -Label "Verify RESPONSE 10.6 and immediate resource preview"
 
     $sideEffects = @(Invoke-NativeChecked -FilePath "git" -Arguments @("status", "--porcelain", "--untracked-files=all") -Label "Check verification side effects" |
         Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
@@ -151,6 +152,7 @@ try {
     $parseBlock = Format-IndentedBlock -Lines $parseOutput
     $step0Block = Format-IndentedBlock -Lines $step0Output
     $boardBlock = Format-IndentedBlock -Lines $boardOutput
+    $responseBlock = Format-IndentedBlock -Lines $responseOutput
 
     $report = @"
 # Combat UI foundation Godot verification
@@ -177,6 +179,13 @@ try {
 - [x] Progress remains locked until all required targets are selected
 - [x] Wrong-direction attacks resolve as misses
 - [x] Explicit movement targets update the board position
+- [x] RESPONSE 10.6 same-timing guard uses the stronger of 50% reduction and guard block
+- [x] RESPONSE 10.6 same-bundle guard applies guard block
+- [x] RESPONSE 10.6 same-timing evade fully avoids damage
+- [x] Stance+response one-slot combos extend protection to the current bundle
+- [x] Stance+guard increases guard block by 50%
+- [x] Placement immediately previews resource costs and recovery
+- [x] Insufficient planned resources keep progress locked
 - [x] Completed bundle advances to the next bundle and round after timing 10
 - [x] Resolution and targeting entries append to the combat log
 - [x] STEP 11 interruption, focus, and fortitude remain disabled
@@ -193,9 +202,13 @@ $step0Block
 
 $boardBlock
 
+## RESPONSE 10.6 + resource preview output
+
+$responseBlock
+
 ## Scope limitation
 
-This automation verifies headless structure, parsing, scene instantiation, placement, movement-tile selection, attack-direction selection, deterministic bundle resolution, resource and board-state updates, and bundle advancement. STEP 11 interruption behavior, final art quality, Windows pointer feel, minimum-resolution readability, fonts, and color accessibility still require later implementation or manual review.
+This automation verifies headless structure, parsing, scene instantiation, placement, targeting, deterministic bundle resolution, response mitigation, stance-response combos, immediate planned-resource preview, board-state updates, and bundle advancement. STEP 11 interruption behavior, final art quality, Windows pointer feel, minimum-resolution readability, fonts, and color accessibility still require later implementation or manual review.
 "@
     Set-Content -LiteralPath $reportPath -Value $report -Encoding UTF8
 
