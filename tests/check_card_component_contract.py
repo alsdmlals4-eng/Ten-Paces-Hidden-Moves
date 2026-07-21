@@ -14,6 +14,7 @@ AUTOMATION_FILES = {
     "tests/verify_step0.gd",
     "tools/verify_and_commit_step0.ps1",
     "tools/verify_and_commit_step0.cmd",
+    "tools/verify_and_commit_combat_foundation.ps1",
 }
 
 
@@ -70,13 +71,16 @@ def main() -> None:
     assert '"action_point_cost"' in verifier
     assert '"guard_reduction"' in verifier
 
-    powershell = (ROOT / "tools/verify_and_commit_step0.ps1").read_text(encoding="utf-8")
-    assert 'git", "pull", "--ff-only"' not in powershell  # Invoke-Checked receives git and arguments separately.
+    wrapper = (ROOT / "tools/verify_and_commit_step0.ps1").read_text(encoding="utf-8")
+    assert 'verify_and_commit_combat_foundation.ps1' in wrapper
+
+    powershell = (ROOT / "tools/verify_and_commit_combat_foundation.ps1").read_text(encoding="utf-8")
     assert '"pull", "--ff-only", "origin", $ExpectedBranch' in powershell
-    assert 'git", "add", "--", $ReportRelativePath' not in powershell
     assert '"add", "--", $ReportRelativePath' in powershell
-    assert 'git", "push"' not in powershell
     assert '"push", "origin", $ExpectedBranch' in powershell
+    assert 'res://tests/verify_step0.gd' in powershell
+    assert 'res://tests/verify_combat_board.gd' in powershell
+    assert 'python' not in powershell.lower()
 
     print("card component contract: PASS")
 
