@@ -8,10 +8,11 @@
 
 - [x] Static card and combat-board contract
 - [x] Documentation governance
+- [x] STEP 9 action placement confirmed in Windows F5
 - [x] STEP 10 deterministic resolution contract
 - [x] Combat starts at round 1, bundle 1, timing 1
 - [x] Resolution order is response, quick attack, move, and general action
-- [x] Bundle and round advancement interfaces are present
+- [x] Resource, battlefield position, bundle, and round update interfaces are present
 - [ ] Windows Godot import, parse, and headless verification rerun
 - [ ] Windows F5 interaction review for STEP 10
 
