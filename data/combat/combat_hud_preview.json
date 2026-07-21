@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "momentum_segments": 5,
   "player": {
     "name": "강호낭인",
@@ -15,7 +15,7 @@
   },
   "round": {
     "round_number": 1,
-    "bundle_index": 2,
+    "bundle_index": 1,
     "bundle_total": 3,
     "selection_text": "1수 · 2수 · 3수 선택",
     "resolution_order": "대응 → 속공 → 이동 → 일반 공격"
