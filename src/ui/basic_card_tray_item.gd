@@ -9,10 +9,12 @@ const PAPER := Color("e0cfaa")
 const INK := Color("1d1915")
 const PANEL := Color(0.80, 0.72, 0.58, 0.97)
 const MUTED := Color("665b4b")
+const GOLD := Color("c79a50")
 
 var definition: Dictionary = {}
 var _hovered := false
 var _pinned := false
+var _selected_for_placement := false
 
 var _source_label: Label
 var _range_label: Label
@@ -43,6 +45,11 @@ func configure(value: Dictionary) -> void:
 func set_pinned(value: bool) -> void:
     _pinned = value
     set_meta("detail_pinned", _pinned)
+    queue_redraw()
+
+func set_selected_for_placement(value: bool) -> void:
+    _selected_for_placement = value
+    set_meta("selected_for_placement", _selected_for_placement)
     queue_redraw()
 
 func _on_mouse_entered() -> void:
@@ -126,9 +133,10 @@ func _apply_definition() -> void:
     set_meta("source", str(definition.get("source", "")))
     set_meta("category", category)
     set_meta("information_interactions_enabled", true)
-    set_meta("action_placement_enabled", false)
-    set_meta("interactions_enabled", false)
-    tooltip_text = "%s · %s · 사거리 %s · 상세 보기" % [
+    set_meta("action_placement_enabled", true)
+    set_meta("interactions_enabled", true)
+    set_meta("selected_for_placement", false)
+    tooltip_text = "%s · %s · 사거리 %s · 클릭 후 슬롯 배치" % [
         str(definition.get("source_label", "기초")),
         str(definition.get("category_label", "")),
         str(definition.get("range_text", "-"))
@@ -188,11 +196,13 @@ func _notification(what: int) -> void:
 
 func _draw() -> void:
     var accent := _category_color(str(definition.get("category", "move")))
-    var border_width := 4.0 if _pinned else (3.0 if _hovered else 2.0)
-    var highlight := Color(PAPER, 0.95) if _pinned else Color(accent, 1.0 if _hovered else 0.95)
+    var border_width := 5.0 if _selected_for_placement else (4.0 if _pinned else (3.0 if _hovered else 2.0))
+    var highlight := GOLD if _selected_for_placement else (Color(PAPER, 0.95) if _pinned else Color(accent, 1.0 if _hovered else 0.95))
     draw_rect(Rect2(Vector2.ZERO, size), PANEL, true)
     draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), highlight, false, border_width)
     if _pinned:
         draw_rect(Rect2(Vector2(4.0, 3.0), Vector2(maxf(1.0, size.x - 8.0), 4.0)), Color(PAPER, 0.90), true)
+    if _selected_for_placement:
+        draw_rect(Rect2(Vector2(5.0, maxf(4.0, size.y - 8.0)), Vector2(maxf(1.0, size.x - 10.0), 4.0)), GOLD, true)
     draw_line(Vector2(6.0, 48.0), Vector2(maxf(6.0, size.x - 6.0), 48.0), Color(INK, 0.30), 1.0)
     draw_line(Vector2(6.0, maxf(72.0, size.y - 27.0)), Vector2(maxf(6.0, size.x - 6.0), maxf(72.0, size.y - 27.0)), Color(INK, 0.30), 1.0)
