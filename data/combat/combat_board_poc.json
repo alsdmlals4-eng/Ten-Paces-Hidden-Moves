@@ -22,7 +22,7 @@
     "approval_status": "USER_APPROVED_LAYOUT",
     "scene": "res://scenes/ui/top_combat_hud.tscn",
     "data": "res://data/combat/combat_hud_preview.json",
-    "momentum_segments": 6,
+    "momentum_segments": 5,
     "layout": [
       "player_status",
       "player_momentum",
@@ -45,7 +45,7 @@
     "current_bundle": 2,
     "current_timing": 5,
     "progress_scope": "round",
-    "progress_label_format": "라운드 {round} / ({current}/{total}수)",
+    "progress_label_format": "라운드 {round}",
     "cards_inserted": false,
     "interactions_enabled": false
   },
