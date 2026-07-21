@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "tile_count": 10,
+  "player_start_tile": 3,
+  "enemy_start_tile": 8,
+  "character_height_to_tile_width": 1.5,
+  "character_body_width_to_tile_width": 0.72,
+  "tile_height_to_tile_width": 1.35,
+  "tile_gap_to_tile_width": 0.06,
+  "foot_anchor_y_ratio": 0.68,
+  "camera_mode": "fixed_wide",
+  "presentation_scope": [
+    "board",
+    "tile_numbers",
+    "player_placeholder",
+    "enemy_placeholder",
+    "foot_anchor_guides"
+  ],
+  "excluded_until_later_steps": [
+    "final_background",
+    "top_hud",
+    "action_slots",
+    "cards",
+    "log_panel",
+    "progress_button"
+  ]
+}
