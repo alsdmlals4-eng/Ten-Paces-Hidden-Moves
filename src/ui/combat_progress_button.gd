@@ -101,6 +101,7 @@ func set_runtime_context(value: Dictionary) -> void:
 
 func set_progress_enabled(value: bool) -> void:
     progress_enabled = value
+    resolution_applied = false
     set_meta("enabled", progress_enabled)
     _refresh()
 
