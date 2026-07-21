@@ -204,8 +204,8 @@ def main() -> None:
 
     verifier = (ROOT / "tests/verify_combat_board.gd").read_text(encoding="utf-8")
     assert "STEP10" in verifier
-    assert "resolve_bundle" in verifier
-    assert "advance_after_resolution" in verifier
+    assert "request_progress()" in verifier
+    assert "current_bundle" in verifier
 
     print("combat board STEP 1-10 contract: PASS")
 
