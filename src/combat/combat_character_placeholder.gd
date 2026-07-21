@@ -85,7 +85,9 @@ func _draw() -> void:
         Vector2(width * 0.18, waist_y)
     ])
     draw_colored_polygon(robe_points, fill)
-    draw_polyline(PackedVector2Array(Array(robe_points) + [robe_points[0]]), outline, 3.0, true)
+    var robe_outline := PackedVector2Array(robe_points)
+    robe_outline.append(robe_points[0])
+    draw_polyline(robe_outline, outline, 3.0, true)
 
     draw_line(Vector2(width * 0.24, shoulder_y + height * 0.06), Vector2(width * 0.05, height * 0.48), fill, width * 0.14, true)
     draw_line(Vector2(width * 0.76, shoulder_y + height * 0.04), Vector2(width * 0.95, height * 0.39), fill, width * 0.14, true)
