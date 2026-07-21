@@ -6,6 +6,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "data/combat/combat_board_poc.json"
 HUD_DATA = ROOT / "data/combat/combat_hud_preview.json"
+TEXT_SUFFIXES = {".gd", ".tscn", ".py", ".ps1", ".cmd", ".md", ".json", ".yml", ".yaml", ".godot"}
+CONFLICT_MARKERS = ("<<<<<<<", "=======", ">>>>>>>")
 
 
 def res_file(value: str) -> Path:
@@ -13,7 +15,23 @@ def res_file(value: str) -> Path:
     return ROOT / value.removeprefix("res://")
 
 
+def assert_no_conflict_markers() -> None:
+    failures: list[str] = []
+    for path in ROOT.rglob("*"):
+        if not path.is_file() or path.suffix.lower() not in TEXT_SUFFIXES:
+            continue
+        if ".git" in path.parts or ".godot" in path.parts:
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for line_number, line in enumerate(text.splitlines(), start=1):
+            if line.startswith(CONFLICT_MARKERS):
+                failures.append(f"{path.relative_to(ROOT)}:{line_number}:{line}")
+    assert not failures, "Committed VCS conflict markers found:\n" + "\n".join(failures)
+
+
 def main() -> None:
+    assert_no_conflict_markers()
+
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
 
     assert contract["schema_version"] >= 3
