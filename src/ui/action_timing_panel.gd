@@ -76,12 +76,14 @@ func _build_content() -> void:
     set_meta("step", 5)
     set_meta("placement_step", 9)
     set_meta("runtime_step", 10)
+    set_meta("targeting_patch", "10.5")
     set_meta("layout_role", "bottom_upper")
     set_meta("timing_sequence", "3|3|4")
     set_meta("total_timings", slots.size())
     set_meta("progress_scope", "round")
     set_meta("interactions_enabled", true)
     set_meta("placement_enabled", true)
+    set_meta("targeting_enabled", true)
     set_meta("state_advancement_enabled", true)
     _update_runtime_meta()
 
@@ -146,6 +148,11 @@ func get_assignment_anchor(timing_index: int) -> int:
         return 0
     return slot.assignment_anchor_index
 
+func get_placement(anchor_index: int) -> Dictionary:
+    if not placements.has(anchor_index):
+        return {}
+    return (placements[anchor_index] as Dictionary).duplicate(true)
+
 func place_card(definition: Dictionary, start_index: int) -> bool:
     if definition.is_empty() or not is_index_actionable(start_index):
         return false
@@ -157,21 +164,93 @@ func place_card(definition: Dictionary, start_index: int) -> bool:
             return false
         target_indices.append(timing_index)
 
+    var targeting_mode := _targeting_mode_for_definition(definition)
     var placement := {
         "card_id": str(definition.get("id", "")),
         "card_name": str(definition.get("name", "")),
         "definition": definition.duplicate(true),
         "anchor_index": start_index,
         "span": span,
-        "indices": target_indices
+        "indices": target_indices,
+        "targeting_mode": targeting_mode,
+        "target_ready": targeting_mode == "none",
+        "target_tile": 0,
+        "direction": 0,
+        "origin_tile": 0,
+        "target_text": ""
     }
     placements[start_index] = placement
     for part_index in range(target_indices.size()):
         var slot := get_slot(int(target_indices[part_index]))
         if slot != null:
             slot.set_assignment(definition, start_index, span, part_index)
+    _sync_placement_slots(placement)
     _emit_placement_changed()
     return true
+
+func _targeting_mode_for_definition(definition: Dictionary) -> String:
+    var category := str(definition.get("category", ""))
+    if category == "move":
+        return "move_tile"
+    if category == "attack":
+        return "attack_direction"
+    return "none"
+
+func set_placement_target(anchor_index: int, target_data: Dictionary) -> bool:
+    if not placements.has(anchor_index):
+        return false
+    var placement: Dictionary = placements[anchor_index]
+    var mode := str(placement.get("targeting_mode", "none"))
+    if mode == "none":
+        return false
+
+    var direction := clampi(int(target_data.get("direction", 0)), -1, 1)
+    var target_tile := int(target_data.get("target_tile", 0))
+    if direction == 0:
+        return false
+    if mode == "move_tile" and target_tile <= 0:
+        return false
+
+    placement["direction"] = direction
+    placement["target_tile"] = target_tile
+    placement["origin_tile"] = int(target_data.get("origin_tile", 0))
+    placement["target_text"] = str(target_data.get("target_text", _format_target_text(mode, direction, target_tile)))
+    placement["target_ready"] = true
+    placements[anchor_index] = placement
+    _sync_placement_slots(placement)
+    _emit_placement_changed()
+    return true
+
+func _format_target_text(mode: String, direction: int, target_tile: int) -> String:
+    var arrow := "→" if direction > 0 else "←"
+    if mode == "move_tile":
+        return "%s %d번" % [arrow, target_tile]
+    return "%s 공격" % arrow
+
+func _sync_placement_slots(placement: Dictionary) -> void:
+    var indices: PackedInt32Array = placement.get("indices", PackedInt32Array())
+    var ready := bool(placement.get("target_ready", true))
+    var mode := str(placement.get("targeting_mode", "none"))
+    var text := str(placement.get("target_text", ""))
+    for index_value in indices:
+        var slot := get_slot(int(index_value))
+        if slot != null:
+            slot.set_target_info(text, ready, mode)
+
+func get_pending_target_anchor() -> int:
+    var anchors := placements.keys()
+    anchors.sort()
+    for anchor_value in anchors:
+        var anchor_index := int(anchor_value)
+        if not is_index_actionable(anchor_index):
+            continue
+        var placement: Dictionary = placements[anchor_index]
+        if str(placement.get("targeting_mode", "none")) != "none" and not bool(placement.get("target_ready", false)):
+            return anchor_index
+    return 0
+
+func are_current_bundle_targets_ready() -> bool:
+    return get_pending_target_anchor() == 0
 
 func remove_at(timing_index: int) -> Dictionary:
     var anchor_index := get_assignment_anchor(timing_index)
@@ -213,7 +292,7 @@ func is_current_bundle_complete() -> bool:
     for timing_index in actionable:
         if not has_assignment_at(int(timing_index)):
             return false
-    return true
+    return are_current_bundle_targets_ready()
 
 func get_occupied_actionable_count() -> int:
     var count := 0
@@ -233,7 +312,13 @@ func get_placement_list() -> Array:
             "card_name": str(placement.get("card_name", "")),
             "anchor_index": int(placement.get("anchor_index", 0)),
             "span": int(placement.get("span", 0)),
-            "indices": placement.get("indices", PackedInt32Array())
+            "indices": placement.get("indices", PackedInt32Array()),
+            "targeting_mode": str(placement.get("targeting_mode", "none")),
+            "target_ready": bool(placement.get("target_ready", true)),
+            "target_tile": int(placement.get("target_tile", 0)),
+            "direction": int(placement.get("direction", 0)),
+            "origin_tile": int(placement.get("origin_tile", 0)),
+            "target_text": str(placement.get("target_text", ""))
         })
     return result
 
@@ -290,6 +375,8 @@ func advance_after_resolution() -> Dictionary:
 func _emit_placement_changed() -> void:
     set_meta("cards_inserted", not placements.is_empty())
     set_meta("current_bundle_complete", is_current_bundle_complete())
+    set_meta("pending_target_anchor", get_pending_target_anchor())
+    set_meta("targets_ready", are_current_bundle_targets_ready())
     placement_changed.emit(get_timing_snapshot())
 
 func _update_runtime_meta() -> void:
@@ -375,6 +462,7 @@ func get_timing_snapshot() -> Dictionary:
         "step": 5,
         "placement_step": 9,
         "runtime_step": 10,
+        "targeting_patch": "10.5",
         "layout_role": "bottom_upper",
         "round_number": int(timing_data.get("round_number", 1)),
         "timing_sequence": timing_data.get("timing_sequence", [3, 3, 4]),
@@ -386,10 +474,13 @@ func get_timing_snapshot() -> Dictionary:
         "cards_inserted": not placements.is_empty(),
         "interactions_enabled": true,
         "placement_enabled": true,
+        "targeting_enabled": true,
         "state_advancement_enabled": true,
         "current_bundle_complete": is_current_bundle_complete(),
         "occupied_actionable_count": get_occupied_actionable_count(),
         "actionable_indices": get_current_bundle_indices(),
+        "pending_target_anchor": get_pending_target_anchor(),
+        "targets_ready": are_current_bundle_targets_ready(),
         "placements": get_placement_list()
     }
 
