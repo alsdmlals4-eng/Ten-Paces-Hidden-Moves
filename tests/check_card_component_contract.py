@@ -8,7 +8,7 @@ CATALOG = ROOT / "data/cards/basic_cards.json"
 MANIFEST = ROOT / "assets/ui/cards/card_asset_manifest.json"
 REQUIRED = {"id", "name", "source_label", "source_badge", "range_text", "category", "category_label", "category_badge", "illustration", "target", "damage", "condition", "effect_text", "tags", "action_slots", "stamina_cost", "internal_cost", "flavor"}
 FORBIDDEN = {"action_point_cost", "guard_reduction"}
-EXPECTED_IDS = {"basic_move", "basic_guard", "basic_evade", "basic_quick_attack", "basic_heavy_attack", "basic_meditate", "basic_stance"}
+EXPECTED_IDS = {"basic_move", "basic_footwork", "basic_guard", "basic_evade", "basic_quick_attack", "basic_heavy_attack", "basic_meditate", "basic_stance"}
 EXPECTED_CATEGORIES = {"move", "attack", "response", "recovery", "strengthen"}
 AUTOMATION_FILES = {
     "tests/verify_step0.gd",
@@ -35,9 +35,10 @@ def validate_spec(spec: dict) -> None:
 def main() -> None:
     catalog = json.loads(CATALOG.read_text(encoding="utf-8"))
     cards = catalog["cards"]
-    assert len(cards) == 7
+    assert len(cards) == 8
     assert {card["id"] for card in cards} == EXPECTED_IDS
     assert {card["category"] for card in cards} == EXPECTED_CATEGORIES
+    by_id = {card["id"]: card for card in cards}
     for card in cards:
         assert not (REQUIRED - set(card)), card["id"]
         assert not (FORBIDDEN & set(card)), card["id"]
@@ -45,6 +46,15 @@ def main() -> None:
         assert card["action_slots"] >= 1
         for key in ("source_badge", "category_badge", "illustration"):
             validate_spec(card[key])
+
+    move = by_id["basic_move"]
+    footwork = by_id["basic_footwork"]
+    heavy = by_id["basic_heavy_attack"]
+    assert move["move_range"] == 1 and move["internal_cost"] == 0
+    assert footwork["move_range"] == 2 and footwork["internal_cost"] == 1
+    assert footwork["category"] == "move" and "보법" in footwork["tags"]
+    assert heavy["range_text"] == "2" and heavy["internal_cost"] == 1
+    assert heavy["action_slots"] == 2
 
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     assert manifest["template_contract"]["bottom"] == ["action_slots", "stamina_cost", "internal_cost"]
