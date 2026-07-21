@@ -10,6 +10,7 @@ const GOLD := Color("c79a50")
 const MUTED := Color("8e8372")
 const LOCKED := Color("4f4940")
 const TARGET_PENDING := Color("e6a84f")
+const RESOURCE_BLOCKED := Color("b85a4a")
 
 var timing_index := 1
 var bundle_index := 1
@@ -22,6 +23,8 @@ var assignment_part_index := 0
 var target_text := ""
 var target_ready := true
 var targeting_mode := "none"
+var resource_ready := true
+var resource_text := ""
 var _hovered := false
 
 var _timing_label: Label
@@ -70,12 +73,15 @@ func set_assignment(definition: Dictionary, anchor_index: int, span: int, part_i
     target_text = ""
     target_ready = true
     targeting_mode = "none"
+    resource_ready = true
+    resource_text = ""
     set_meta("card_content", true)
     set_meta("card_id", str(assigned_definition.get("id", "")))
     set_meta("card_name", str(assigned_definition.get("name", "")))
     set_meta("assignment_anchor_index", assignment_anchor_index)
     set_meta("assignment_span", assignment_span)
     set_meta("assignment_part_index", assignment_part_index)
+    set_meta("resource_ready", true)
     _refresh()
     queue_redraw()
 
@@ -89,6 +95,14 @@ func set_target_info(value_text: String, value_ready: bool, value_mode: String) 
     _refresh()
     queue_redraw()
 
+func set_resource_info(value_ready: bool, value_text: String = "") -> void:
+    resource_ready = value_ready
+    resource_text = value_text
+    set_meta("resource_ready", resource_ready)
+    set_meta("resource_text", resource_text)
+    _refresh()
+    queue_redraw()
+
 func clear_assignment() -> void:
     assigned_definition.clear()
     assignment_anchor_index = 0
@@ -97,6 +111,8 @@ func clear_assignment() -> void:
     target_text = ""
     target_ready = true
     targeting_mode = "none"
+    resource_ready = true
+    resource_text = ""
     set_meta("card_content", false)
     set_meta("card_id", "")
     set_meta("card_name", "")
@@ -106,6 +122,8 @@ func clear_assignment() -> void:
     set_meta("target_text", "")
     set_meta("target_ready", true)
     set_meta("targeting_mode", "none")
+    set_meta("resource_ready", true)
+    set_meta("resource_text", "")
     _refresh()
     queue_redraw()
 
@@ -149,7 +167,9 @@ func _refresh() -> void:
     if has_assignment():
         var card_name := str(assigned_definition.get("name", ""))
         _placeholder_label.text = card_name if assignment_part_index == 0 else "↳ %s" % card_name
-        if not target_ready and targeting_mode != "none":
+        if not resource_ready:
+            _status_label.text = resource_text if not resource_text.is_empty() else "자원 부족"
+        elif not target_ready and targeting_mode != "none":
             _status_label.text = "대상 선택"
         elif not target_text.is_empty():
             _status_label.text = target_text
@@ -200,6 +220,8 @@ func _category_color(category: String) -> Color:
             return GOLD
 
 func _display_color() -> Color:
+    if has_assignment() and not resource_ready:
+        return RESOURCE_BLOCKED
     if has_assignment() and not target_ready and targeting_mode != "none":
         return TARGET_PENDING
     if has_assignment():
