@@ -4,6 +4,7 @@ extends Control
 const CONTRACT_PATH := "res://data/combat/combat_board_poc.json"
 const BACKGROUND_SCENE := preload("res://scenes/combat/battle_background.tscn")
 const TOP_HUD_SCENE := preload("res://scenes/ui/top_combat_hud.tscn")
+const ACTION_TIMING_SCENE := preload("res://scenes/ui/action_timing_panel.tscn")
 const TILE_SCENE := preload("res://scenes/combat/combat_board_tile.tscn")
 const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placeholder.tscn")
 
@@ -14,6 +15,7 @@ var contract: Dictionary = {}
 var tiles: Array[CombatBoardTile] = []
 var battle_background: BattleBackground
 var top_hud: TopCombatHud
+var action_timing_panel: ActionTimingPanel
 var player_character: CombatCharacterPlaceholder
 var enemy_character: CombatCharacterPlaceholder
 
@@ -24,6 +26,7 @@ var _layout_ready := false
 var _tile_width := 0.0
 var _tile_height := 0.0
 var _tile_gap := 0.0
+var _board_top := 0.0
 
 func _ready() -> void:
     contract = _load_contract()
@@ -77,6 +80,10 @@ func _build_structure() -> void:
     _character_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     add_child(_character_layer)
 
+    action_timing_panel = ACTION_TIMING_SCENE.instantiate() as ActionTimingPanel
+    action_timing_panel.name = "ActionTimingPanel"
+    add_child(action_timing_panel)
+
     top_hud = TOP_HUD_SCENE.instantiate() as TopCombatHud
     top_hud.name = "TopCombatHud"
     add_child(top_hud)
@@ -98,12 +105,16 @@ func _build_structure() -> void:
     enemy_character.name = "EnemyCharacter"
     _character_layer.add_child(enemy_character)
 
-    set_meta("step", 4)
+    set_meta("step", 5)
     set_meta("background_component", "BattleBackground")
     set_meta("background_asset", "res://assets/backgrounds/step3_mountain_fortress.svg")
     set_meta("hud_component", "TopCombatHud")
     set_meta("hud_layout", "player_status|player_momentum|round|enemy_momentum|enemy_status")
+    set_meta("action_timing_component", "ActionTimingPanel")
+    set_meta("action_timing_layout", "bottom_upper")
+    set_meta("action_timing_sequence", "3|3|4")
     set_meta("lower_status_panels", false)
+    set_meta("lower_skill_panel", false)
     set_meta("tile_count", tile_count)
     set_meta("player_start_tile", int(contract.get("player_start_tile", 3)))
     set_meta("enemy_start_tile", int(contract.get("enemy_start_tile", 8)))
@@ -120,6 +131,13 @@ func _layout_board() -> void:
         top_hud.position = Vector2(hud_margin, 10.0)
         top_hud.size = Vector2(maxf(1.0, size.x - hud_margin * 2.0), 124.0)
 
+    if is_instance_valid(action_timing_panel):
+        var action_margin := maxf(14.0, size.x * 0.022)
+        var action_bottom := maxf(12.0, size.y * 0.016)
+        var action_height := clampf(size.y * 0.16, 120.0, 142.0)
+        action_timing_panel.position = Vector2(action_margin, size.y - action_height - action_bottom)
+        action_timing_panel.size = Vector2(maxf(1.0, size.x - action_margin * 2.0), action_height)
+
     var tile_count := tiles.size()
     var gap_ratio := float(contract.get("tile_gap_to_tile_width", 0.06))
     var horizontal_margin := maxf(40.0, size.x * 0.045)
@@ -132,13 +150,14 @@ func _layout_board() -> void:
     var board_width := _tile_width * float(tile_count) + _tile_gap * float(tile_count - 1)
     var board_left := (size.x - board_width) * 0.5
     var desired_top := size.y * 0.48
-    var minimum_top := 240.0
-    var maximum_top := maxf(minimum_top, size.y - _tile_height - 92.0)
-    var board_top := clampf(desired_top, minimum_top, maximum_top)
+    var action_top := action_timing_panel.position.y if is_instance_valid(action_timing_panel) else size.y - 160.0
+    var maximum_top := maxf(160.0, action_top - _tile_height - 64.0)
+    var minimum_top := minf(240.0, maximum_top)
+    _board_top = clampf(desired_top, minimum_top, maximum_top)
 
     for index in range(tile_count):
         var tile := tiles[index]
-        tile.position = Vector2(board_left + float(index) * (_tile_width + _tile_gap), board_top)
+        tile.position = Vector2(board_left + float(index) * (_tile_width + _tile_gap), _board_top)
         tile.size = Vector2(_tile_width, _tile_height)
         tile.custom_minimum_size = tile.size
         tile.set_occupied("")
@@ -185,19 +204,26 @@ func get_character_foot_anchor(role: String) -> Vector2:
 
 func get_layout_snapshot() -> Dictionary:
     var hud_snapshot := top_hud.get_hud_snapshot() if is_instance_valid(top_hud) else {}
+    var timing_snapshot := action_timing_panel.get_timing_snapshot() if is_instance_valid(action_timing_panel) else {}
     return {
         "layout_ready": _layout_ready,
         "background_ready": is_instance_valid(battle_background) and battle_background.texture != null,
         "background_path": "res://assets/backgrounds/step3_mountain_fortress.svg",
         "hud_ready": is_instance_valid(top_hud),
         "hud_snapshot": hud_snapshot,
+        "action_timing_ready": is_instance_valid(action_timing_panel),
+        "action_timing_snapshot": timing_snapshot,
+        "action_timing_top": action_timing_panel.position.y if is_instance_valid(action_timing_panel) else 0.0,
         "lower_status_panels": false,
+        "lower_skill_panel": false,
         "tile_count": tiles.size(),
         "player_tile": int(contract.get("player_start_tile", 3)),
         "enemy_tile": int(contract.get("enemy_start_tile", 8)),
         "tile_width": _tile_width,
         "tile_height": _tile_height,
         "tile_gap": _tile_gap,
+        "board_top": _board_top,
+        "board_bottom": _board_top + _tile_height,
         "player_foot": get_character_foot_anchor("player"),
         "enemy_foot": get_character_foot_anchor("enemy"),
         "player_tile_anchor": get_tile_foot_anchor(int(contract.get("player_start_tile", 3))),
