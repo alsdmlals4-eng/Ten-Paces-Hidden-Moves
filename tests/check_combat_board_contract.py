@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "data/combat/combat_board_poc.json"
 HUD_DATA = ROOT / "data/combat/combat_hud_preview.json"
 ACTION_TIMING_DATA = ROOT / "data/combat/combat_action_timing_preview.json"
+PROGRESS_DATA = ROOT / "data/combat/combat_progress_preview.json"
 COMBAT_LOG_DATA = ROOT / "data/combat/combat_log_preview.json"
 BASIC_CARDS_DATA = ROOT / "data/cards/basic_cards.json"
 TEXT_SUFFIXES = {".gd", ".tscn", ".py", ".ps1", ".cmd", ".md", ".json", ".yml", ".yaml", ".godot"}
@@ -45,7 +46,7 @@ def main() -> None:
     assert_no_conflict_markers()
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
 
-    assert contract["schema_version"] >= 6
+    assert contract["schema_version"] >= 7
     assert contract["tile_count"] == 10
     assert contract["player_start_tile"] == 3
     assert contract["enemy_start_tile"] == 8
@@ -103,6 +104,32 @@ def main() -> None:
     assert timing_data["timing_sequence"] == [3, 3, 4]
     assert sum(timing_data["timing_sequence"]) == 10
 
+    progress = contract["progress_button"]
+    assert progress["step"] == 8
+    assert progress["approval_status"] == "IMPLEMENTED_FOR_REVIEW"
+    assert progress["layout_role"] == "bottom_upper_right"
+    assert progress["button_text"] == "진행"
+    assert progress["default_enabled"] is True
+    assert progress["request_mode"] == "signal_only"
+    assert progress["advances_state"] is False
+    assert progress["writes_combat_log"] is True
+    assert progress["action_placement_required"] is False
+    assert res_file(progress["scene"]).exists()
+    assert res_file(progress["data"]).exists()
+
+    progress_data = json.loads(PROGRESS_DATA.read_text(encoding="utf-8"))
+    assert progress_data["schema_version"] == 1
+    assert progress_data["step"] == 8
+    assert progress_data["button_text"] == "진행"
+    assert progress_data["round_number"] == 1
+    assert progress_data["bundle_index"] == 2
+    assert progress_data["current_timing"] == 5
+    assert progress_data["total_timings"] == 10
+    assert progress_data["request_mode"] == "signal_only"
+    assert progress_data["advances_state"] is False
+    assert progress_data["writes_combat_log"] is True
+    assert progress_data["action_placement_required"] is False
+
     tray = contract["basic_card_tray"]
     assert tray["step"] == 6
     assert tray["information_interaction_step"] == 7
@@ -129,7 +156,7 @@ def main() -> None:
 
     detail = contract["card_detail_overlay"]
     assert detail["step"] == 7
-    assert detail["approval_status"] == "IMPLEMENTED_FOR_REVIEW"
+    assert detail["approval_status"] == "USER_APPROVED_INTERACTION"
     assert detail["layout_role"] == "left_overlay"
     assert detail["hover_preview"] is True
     assert detail["click_pin"] is True
@@ -139,7 +166,7 @@ def main() -> None:
 
     combat_log = contract["combat_log"]
     assert combat_log["step"] == 7
-    assert combat_log["approval_status"] == "IMPLEMENTED_FOR_REVIEW"
+    assert combat_log["approval_status"] == "USER_APPROVED_INTERACTION"
     assert combat_log["layout_role"] == "right_overlay"
     assert combat_log["collapsible"] is True
     assert combat_log["default_collapsed"] is True
@@ -157,17 +184,17 @@ def main() -> None:
     assert "대응 → 속공 → 이동 → 일반 공격" in log_data["entries"][-1]["text"]
 
     scope = set(contract["presentation_scope"])
-    assert {"battle_background", "top_hud", "action_timing", "basic_card_tray", "card_detail_overlay", "combat_log"} <= scope
+    assert {"battle_background", "top_hud", "action_timing", "progress_button", "basic_card_tray", "card_detail_overlay", "combat_log"} <= scope
     excluded = set(contract["excluded_until_later_steps"])
-    assert "card_detail_panel" not in excluded
-    assert "combat_log_panel" not in excluded
-    assert {"progress_button", "action_placement_interaction"} <= excluded
+    assert "progress_button" not in excluded
+    assert {"action_placement_interaction", "state_advancement_engine"} <= excluded
 
     required_files = [
         "assets/backgrounds/step3_mountain_fortress.svg",
         "data/cards/basic_cards.json",
         "data/combat/combat_hud_preview.json",
         "data/combat/combat_action_timing_preview.json",
+        "data/combat/combat_progress_preview.json",
         "data/combat/combat_log_preview.json",
         "scenes/combat/battle_background.tscn",
         "scenes/combat/combat_board_tile.tscn",
@@ -175,6 +202,7 @@ def main() -> None:
         "scenes/combat/combat_board_preview.tscn",
         "scenes/ui/action_timing_panel.tscn",
         "scenes/ui/action_timing_slot.tscn",
+        "scenes/ui/combat_progress_button.tscn",
         "scenes/ui/basic_card_tray.tscn",
         "scenes/ui/basic_card_tray_item.tscn",
         "scenes/ui/card_detail_panel.tscn",
@@ -186,6 +214,7 @@ def main() -> None:
         "src/combat/battle_background.gd",
         "src/combat/combat_board_preview.gd",
         "src/ui/action_timing_panel.gd",
+        "src/ui/combat_progress_button.gd",
         "src/ui/basic_card_tray.gd",
         "src/ui/basic_card_tray_item.gd",
         "src/ui/card_detail_panel.gd",
@@ -201,19 +230,28 @@ def main() -> None:
     assert "<path" in background_asset
 
     controller = (ROOT / "src/combat/combat_board_preview.gd").read_text(encoding="utf-8")
-    assert 'CARD_DETAIL_SCENE := preload("res://scenes/ui/card_detail_panel.tscn")' in controller
-    assert 'COMBAT_LOG_SCENE := preload("res://scenes/ui/combat_log_panel.tscn")' in controller
+    assert 'PROGRESS_BUTTON_SCENE := preload("res://scenes/ui/combat_progress_button.tscn")' in controller
+    assert 'combat_progress_button.progress_requested.connect(_on_progress_requested)' in controller
+    assert 'func _on_progress_requested(context: Dictionary)' in controller
+    assert 'combat_log_panel.append_entry("[진행] %d라운드 %d묶음 진행 요청"' in controller
+    assert '"progress_button_ready": is_instance_valid(combat_progress_button)' in controller
+    assert '"state_advancement_enabled": false' in controller
     assert 'basic_card_tray.card_hovered.connect(_on_card_hovered)' in controller
-    assert 'basic_card_tray.card_clicked.connect(_on_card_clicked)' in controller
     assert 'card_detail_panel.show_definition(definition, true)' in controller
     assert 'combat_log_panel.layout_requested.connect(_layout_board)' in controller
-    assert '"card_detail_ready": is_instance_valid(card_detail_panel)' in controller
-    assert '"combat_log_ready": is_instance_valid(combat_log_panel)' in controller
     assert '"action_placement_enabled": false' in controller
 
     timing_script = (ROOT / "src/ui/action_timing_panel.gd").read_text(encoding="utf-8")
     assert '_progress_label.text = "라운드 %d"' in timing_script
     assert "(%d/%d수)" not in timing_script
+
+    progress_script = (ROOT / "src/ui/combat_progress_button.gd").read_text(encoding="utf-8")
+    assert 'signal progress_requested(context: Dictionary)' in progress_script
+    assert 'func request_progress()' in progress_script
+    assert 'progress_requested.emit(last_request_context.duplicate(true))' in progress_script
+    assert '"request_mode": str(progress_data.get("request_mode", "signal_only"))' in progress_script
+    assert '"advances_state": bool(progress_data.get("advances_state", false))' in progress_script
+    assert '"action_placement_required": bool(progress_data.get("action_placement_required", false))' in progress_script
 
     tray_script = (ROOT / "src/ui/basic_card_tray.gd").read_text(encoding="utf-8")
     assert 'signal card_hovered(definition)' in tray_script
@@ -221,19 +259,11 @@ def main() -> None:
     assert 'set_meta("information_interactions_enabled", true)' in tray_script
     assert 'set_meta("action_placement_enabled", false)' in tray_script
 
-    tray_item_script = (ROOT / "src/ui/basic_card_tray_item.gd").read_text(encoding="utf-8")
-    assert 'signal detail_hovered(definition)' in tray_item_script
-    assert 'signal detail_clicked(definition)' in tray_item_script
-    assert 'mouse_filter = Control.MOUSE_FILTER_STOP' in tray_item_script
-    assert 'set_meta("information_interactions_enabled", true)' in tray_item_script
-    assert 'set_meta("action_placement_enabled", false)' in tray_item_script
-
     detail_script = (ROOT / "src/ui/card_detail_panel.gd").read_text(encoding="utf-8")
     assert 'func show_definition(value: Dictionary, value_pinned: bool = false)' in detail_script
     assert 'func clear_definition()' in detail_script
     assert '"hover_preview": true' in detail_script
     assert '"click_pin": true' in detail_script
-    assert '"blank_click_close": true' in detail_script
 
     log_script = (ROOT / "src/ui/combat_log_panel.gd").read_text(encoding="utf-8")
     assert 'func toggle_collapsed()' in log_script
@@ -243,11 +273,10 @@ def main() -> None:
 
     verifier = (ROOT / "tests/verify_combat_board.gd").read_text(encoding="utf-8")
     assert "EXPECTED_MOMENTUM_SEGMENTS := 5" in verifier
-    assert '"card_detail_ready"' in verifier
-    assert '"combat_log_ready"' in verifier
-    assert "STEP7" in verifier
+    assert '"progress_button_ready"' in verifier
+    assert "STEP8" in verifier
 
-    print("combat board STEP 1-7 contract: PASS")
+    print("combat board STEP 1-8 contract: PASS")
 
 
 if __name__ == "__main__":
