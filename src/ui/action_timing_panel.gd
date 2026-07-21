@@ -16,6 +16,9 @@ const MUTED := Color("948875")
 var timing_data: Dictionary = {}
 var slots: Array[ActionTimingSlot] = []
 var placements: Dictionary = {}
+var resource_plan_valid := true
+var projected_combat_state: Dictionary = {}
+var invalid_resource_anchors := PackedInt32Array()
 
 var _title_label: Label
 var _sequence_label: Label
@@ -77,6 +80,7 @@ func _build_content() -> void:
     set_meta("placement_step", 9)
     set_meta("runtime_step", 10)
     set_meta("targeting_patch", "10.5")
+    set_meta("resource_preview_patch", "10.6")
     set_meta("layout_role", "bottom_upper")
     set_meta("timing_sequence", "3|3|4")
     set_meta("total_timings", slots.size())
@@ -84,6 +88,7 @@ func _build_content() -> void:
     set_meta("interactions_enabled", true)
     set_meta("placement_enabled", true)
     set_meta("targeting_enabled", true)
+    set_meta("resource_preview_enabled", true)
     set_meta("state_advancement_enabled", true)
     _update_runtime_meta()
 
@@ -174,6 +179,7 @@ func place_card(definition: Dictionary, start_index: int) -> bool:
         "indices": target_indices,
         "targeting_mode": targeting_mode,
         "target_ready": targeting_mode == "none",
+        "resource_ready": true,
         "target_tile": 0,
         "direction": 0,
         "origin_tile": 0,
@@ -230,12 +236,14 @@ func _format_target_text(mode: String, direction: int, target_tile: int) -> Stri
 func _sync_placement_slots(placement: Dictionary) -> void:
     var indices: PackedInt32Array = placement.get("indices", PackedInt32Array())
     var ready := bool(placement.get("target_ready", true))
+    var resource_ready := bool(placement.get("resource_ready", true))
     var mode := str(placement.get("targeting_mode", "none"))
     var text := str(placement.get("target_text", ""))
     for index_value in indices:
         var slot := get_slot(int(index_value))
         if slot != null:
             slot.set_target_info(text, ready, mode)
+            slot.set_resource_info(resource_ready, "" if resource_ready else "자원 부족")
 
 func get_pending_target_anchor() -> int:
     var anchors := placements.keys()
@@ -251,6 +259,9 @@ func get_pending_target_anchor() -> int:
 
 func are_current_bundle_targets_ready() -> bool:
     return get_pending_target_anchor() == 0
+
+func are_current_bundle_resources_ready() -> bool:
+    return resource_plan_valid
 
 func remove_at(timing_index: int) -> Dictionary:
     var anchor_index := get_assignment_anchor(timing_index)
@@ -292,7 +303,7 @@ func is_current_bundle_complete() -> bool:
     for timing_index in actionable:
         if not has_assignment_at(int(timing_index)):
             return false
-    return are_current_bundle_targets_ready()
+    return are_current_bundle_targets_ready() and are_current_bundle_resources_ready()
 
 func get_occupied_actionable_count() -> int:
     var count := 0
@@ -315,6 +326,7 @@ func get_placement_list() -> Array:
             "indices": placement.get("indices", PackedInt32Array()),
             "targeting_mode": str(placement.get("targeting_mode", "none")),
             "target_ready": bool(placement.get("target_ready", true)),
+            "resource_ready": bool(placement.get("resource_ready", true)),
             "target_tile": int(placement.get("target_tile", 0)),
             "direction": int(placement.get("direction", 0)),
             "origin_tile": int(placement.get("origin_tile", 0)),
@@ -373,11 +385,40 @@ func advance_after_resolution() -> Dictionary:
     return snapshot
 
 func _emit_placement_changed() -> void:
+    _refresh_resource_projection()
     set_meta("cards_inserted", not placements.is_empty())
     set_meta("current_bundle_complete", is_current_bundle_complete())
     set_meta("pending_target_anchor", get_pending_target_anchor())
     set_meta("targets_ready", are_current_bundle_targets_ready())
+    set_meta("resources_ready", resource_plan_valid)
     placement_changed.emit(get_timing_snapshot())
+
+func _refresh_resource_projection() -> void:
+    resource_plan_valid = true
+    invalid_resource_anchors = PackedInt32Array()
+    projected_combat_state = {}
+    var host := get_parent()
+    if host == null:
+        return
+    var engine_value = host.get("resolution_engine")
+    var state_value = host.get("combat_state")
+    if engine_value == null or not engine_value is CombatResolutionEngine or typeof(state_value) != TYPE_DICTIONARY:
+        return
+    var engine := engine_value as CombatResolutionEngine
+    var preview := engine.preview_player_plan(state_value, get_resolution_placements())
+    resource_plan_valid = bool(preview.get("valid", true))
+    invalid_resource_anchors = preview.get("invalid_anchors", PackedInt32Array())
+    projected_combat_state = (preview.get("state", {}) as Dictionary).duplicate(true)
+    for anchor_value in placements.keys():
+        var anchor_index := int(anchor_value)
+        var placement: Dictionary = placements[anchor_index]
+        placement["resource_ready"] = anchor_index not in invalid_resource_anchors
+        placements[anchor_index] = placement
+        _sync_placement_slots(placement)
+    var hud_value = host.get("top_hud")
+    if hud_value != null and hud_value is TopCombatHud and not projected_combat_state.is_empty():
+        var hud := hud_value as TopCombatHud
+        hud.apply_combat_state(projected_combat_state, timing_data.get("timing_sequence", [3, 3, 4]))
 
 func _update_runtime_meta() -> void:
     set_meta("round_number", int(timing_data.get("round_number", 1)))
@@ -463,6 +504,7 @@ func get_timing_snapshot() -> Dictionary:
         "placement_step": 9,
         "runtime_step": 10,
         "targeting_patch": "10.5",
+        "resource_preview_patch": "10.6",
         "layout_role": "bottom_upper",
         "round_number": int(timing_data.get("round_number", 1)),
         "timing_sequence": timing_data.get("timing_sequence", [3, 3, 4]),
@@ -475,12 +517,16 @@ func get_timing_snapshot() -> Dictionary:
         "interactions_enabled": true,
         "placement_enabled": true,
         "targeting_enabled": true,
+        "resource_preview_enabled": true,
         "state_advancement_enabled": true,
         "current_bundle_complete": is_current_bundle_complete(),
         "occupied_actionable_count": get_occupied_actionable_count(),
         "actionable_indices": get_current_bundle_indices(),
         "pending_target_anchor": get_pending_target_anchor(),
         "targets_ready": are_current_bundle_targets_ready(),
+        "resources_ready": resource_plan_valid,
+        "invalid_resource_anchors": invalid_resource_anchors,
+        "projected_combat_state": projected_combat_state.duplicate(true),
         "placements": get_placement_list()
     }
 
