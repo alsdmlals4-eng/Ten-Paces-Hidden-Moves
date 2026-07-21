@@ -10,6 +10,7 @@ const REQUIRED_FIELDS := [
 ]
 const FORBIDDEN_FIELDS := ["action_point_cost", "guard_reduction"]
 const REQUIRED_CATEGORIES := ["move", "attack", "response", "recovery", "strengthen"]
+const EXPECTED_CARD_COUNT := 8
 
 var failures: Array[String] = []
 
@@ -49,11 +50,12 @@ func _verify_catalog() -> void:
     if typeof(cards) != TYPE_ARRAY:
         failures.append("cards 필드는 Array여야 합니다.")
         return
-    if cards.size() != 7:
-        failures.append("기초 카드는 정확히 7장이어야 합니다. actual=%d" % cards.size())
+    if cards.size() != EXPECTED_CARD_COUNT:
+        failures.append("기초 카드는 정확히 %d장이어야 합니다. actual=%d" % [EXPECTED_CARD_COUNT, cards.size()])
 
     var ids: Dictionary = {}
     var found_categories: Dictionary = {}
+    var by_id: Dictionary = {}
     for raw in cards:
         if typeof(raw) != TYPE_DICTIONARY:
             failures.append("카드 항목은 Dictionary여야 합니다.")
@@ -64,6 +66,7 @@ func _verify_catalog() -> void:
         if ids.has(card_id):
             failures.append("중복 카드 ID: %s" % card_id)
         ids[card_id] = true
+        by_id[card_id] = card
 
         for field in REQUIRED_FIELDS:
             if not card.has(field):
@@ -98,6 +101,13 @@ func _verify_catalog() -> void:
         if not found_categories.has(category):
             failures.append("필수 기능 분류 누락: %s" % category)
 
+    var footwork: Dictionary = by_id.get("basic_footwork", {})
+    if footwork.is_empty() or int(footwork.get("move_range", 0)) != 2 or int(footwork.get("internal_cost", 0)) != 1:
+        failures.append("보법은 내력 1을 소모하고 최대 2칸 이동해야 합니다.")
+    var heavy: Dictionary = by_id.get("basic_heavy_attack", {})
+    if heavy.is_empty() or str(heavy.get("range_text", "")) != "2" or int(heavy.get("internal_cost", 0)) != 1:
+        failures.append("강공은 사거리 2와 내력 1 비용을 가져야 합니다.")
+
 func _verify_preview_scene() -> void:
     if not ResourceLoader.exists(PREVIEW_SCENE_PATH):
         failures.append("미리보기 씬이 없습니다: %s" % PREVIEW_SCENE_PATH)
@@ -118,8 +128,8 @@ func _verify_preview_scene() -> void:
     await process_frame
 
     var card_views := preview.find_children("*", "CardView", true, false)
-    if card_views.size() != 7:
-        failures.append("미리보기 CardView는 7개여야 합니다. actual=%d" % card_views.size())
+    if card_views.size() != EXPECTED_CARD_COUNT:
+        failures.append("미리보기 CardView는 %d개여야 합니다. actual=%d" % [EXPECTED_CARD_COUNT, card_views.size()])
 
     var detail_panels := preview.find_children("*", "CardDetailPanel", true, false)
     if detail_panels.size() != 1:
