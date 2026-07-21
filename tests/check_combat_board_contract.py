@@ -149,7 +149,7 @@ def main() -> None:
     assert all(token in slot_script for token in ("set_target_info", "target_ready", "대상 선택"))
     assert all(token in engine_script for token in ("miss_direction", "target_tile", "selected_direction", "requested_tile"))
     assert all(token in controller for token in ("_begin_targeting_for_anchor", "_on_board_tile_clicked", "set_placement_target", "targeting_enabled"))
-    assert all(token in verifier for token in ("TARGETING_10_5", "set_placement_target", "miss_direction"))
+    assert all(token in verifier for token in ("TARGETING_10_5", "_on_board_tile_clicked", "miss_direction"))
 
     print("combat board STEP 1-10 plus TARGETING 10.5 contract: PASS")
 
