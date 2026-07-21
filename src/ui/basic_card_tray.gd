@@ -64,7 +64,8 @@ func _build_content() -> void:
         add_child(card)
         cards.append(card)
 
-    set_meta("step", 7)
+    set_meta("step", 6)
+    set_meta("information_interaction_step", 7)
     set_meta("layout_role", "bottom_lower")
     set_meta("card_count", cards.size())
     set_meta("card_ids", "|".join(get_card_ids()))
@@ -140,7 +141,8 @@ func get_card_ids() -> PackedStringArray:
 
 func get_tray_snapshot() -> Dictionary:
     return {
-        "step": 7,
+        "step": 6,
+        "information_interaction_step": 7,
         "layout_role": "bottom_lower",
         "card_count": cards.size(),
         "card_ids": get_card_ids(),
