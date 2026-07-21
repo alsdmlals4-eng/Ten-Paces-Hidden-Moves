@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "step": 5,
+  "layout_role": "bottom_upper",
+  "timing_sequence": [3, 3, 4],
+  "total_timings": 10,
+  "current_bundle": 2,
+  "current_timing": 5,
+  "bundle_labels": ["1묶음", "2묶음", "3묶음"],
+  "cards_inserted": false,
+  "interactions_enabled": false
+}
