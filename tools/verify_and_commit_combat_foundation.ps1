@@ -137,7 +137,7 @@ try {
 
     $parseOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--editor", "--path", $repoRoot, "--quit") -Label "Import and parse Godot project"
     $step0Output = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_step0.gd") -Label "Verify STEP 0 card components"
-    $boardOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_board.gd") -Label "Verify STEP 1-9 combat presentation foundation"
+    $boardOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_board.gd") -Label "Verify STEP 1-10 combat foundation"
 
     $sideEffects = @(Invoke-NativeChecked -FilePath "git" -Arguments @("status", "--porcelain", "--untracked-files=all") -Label "Check verification side effects" |
         Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
@@ -168,23 +168,15 @@ try {
 - [x] Fast-forwarded from origin
 - [x] Project import and GDScript parsing
 - [x] STEP 0 card catalog and preview scene
-- [x] STEP 1 board contains exactly ten tiles
-- [x] Player starts on tile 3 and enemy starts on tile 8
-- [x] Character scale and foot anchors match the board contract
-- [x] STEP 3 approved battle background loads behind the board
-- [x] STEP 4 top HUD uses five-segment ultimate momentum gauges
-- [x] STEP 5 ten timings are grouped as 3, 3, and 4
-- [x] STEP 5 displays only the round number
-- [x] STEP 6 compact basic-card tray contains seven cards
-- [x] STEP 7 hover preview, click pinning, and combat log remain available
-- [x] STEP 8 progress button remains signal-only
-- [x] STEP 9 card selection targets only remaining current-bundle slots
-- [x] STEP 9 one-slot cards occupy one timing
-- [x] STEP 9 two-slot cards occupy consecutive timings
-- [x] Clicking either occupied part removes the whole placement
-- [x] Progress remains disabled until the current bundle is complete
-- [x] Placement and progress requests append combat-log entries
-- [x] Round and timing state do not advance yet
+- [x] STEP 1-9 presentation, HUD, timing, cards, detail, log, progress, and placement
+- [x] Combat begins at round 1, bundle 1, timing 1
+- [x] STEP 10 resolves in response, quick attack, move, and general order
+- [x] Fixed enemy preview actions use the shared basic-card data
+- [x] Health, stamina, internal energy, momentum, and board position update from results
+- [x] Completed bundle advances to the next bundle and round after timing 10
+- [x] Resolution entries append to the combat log
+- [x] Progress locks again until the next bundle is filled
+- [x] STEP 11 interruption, focus, and fortitude remain disabled
 
 ## Godot import and parse output
 
@@ -194,13 +186,13 @@ $parseBlock
 
 $step0Block
 
-## STEP 1-9 output
+## STEP 1-10 output
 
 $boardBlock
 
 ## Scope limitation
 
-This automation verifies headless structure, data, parsing, scene instantiation, board geometry, top-HUD composition, card detail, combat log, progress signaling, and STEP 9 action placement including one-slot and consecutive two-slot cards. Actual resolution, round advancement, damage, interruption, final art quality, Windows pointer feel, minimum-resolution readability, fonts, and color accessibility still require later implementation or manual review.
+This automation verifies headless structure, parsing, scene instantiation, placement, deterministic bundle resolution, resource and board-state updates, and bundle advancement. STEP 11 interruption behavior, final art quality, Windows pointer feel, minimum-resolution readability, fonts, and color accessibility still require later implementation or manual review.
 "@
     Set-Content -LiteralPath $reportPath -Value $report -Encoding UTF8
 
