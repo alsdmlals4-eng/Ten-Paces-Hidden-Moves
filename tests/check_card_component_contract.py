@@ -15,6 +15,8 @@ AUTOMATION_FILES = {
     "tools/verify_and_commit_step0.ps1",
     "tools/verify_and_commit_step0.cmd",
     "tools/verify_and_commit_combat_foundation.ps1",
+    "tools/run_combat_board.cmd",
+    "tools/run_combat_board.ps1",
 }
 
 
@@ -51,7 +53,8 @@ def main() -> None:
     for atlas in manifest["atlases"].values():
         assert res_file(atlas["path"]).exists() and atlas["regions"]
 
-    assert 'run/main_scene="res://scenes/ui/card_component_preview.tscn"' in (ROOT / "project.godot").read_text(encoding="utf-8")
+    project_text = (ROOT / "project.godot").read_text(encoding="utf-8")
+    assert 'run/main_scene="res://scenes/combat/combat_board_preview.tscn"' in project_text
     for path in (
         "scenes/ui/card_view.tscn",
         "scenes/ui/card_detail_panel.tscn",
@@ -72,16 +75,19 @@ def main() -> None:
     assert '"guard_reduction"' in verifier
 
     wrapper = (ROOT / "tools/verify_and_commit_step0.ps1").read_text(encoding="utf-8")
-    assert 'verify_and_commit_combat_foundation.ps1' in wrapper
+    assert "verify_and_commit_combat_foundation.ps1" in wrapper
 
     powershell = (ROOT / "tools/verify_and_commit_combat_foundation.ps1").read_text(encoding="utf-8")
     assert '"pull", "--ff-only", "origin", $ExpectedBranch' in powershell
     assert '"add", "--", $ReportRelativePath' in powershell
     assert '"push", "origin", $ExpectedBranch' in powershell
-    assert 'res://tests/verify_step0.gd' in powershell
-    assert 'res://tests/verify_combat_board.gd' in powershell
+    assert "res://tests/verify_step0.gd" in powershell
+    assert "res://tests/verify_combat_board.gd" in powershell
     assert "Resolve-PythonCommand" not in powershell
     assert "check_card_component_contract.py" not in powershell
+
+    runner = (ROOT / "tools/run_combat_board.ps1").read_text(encoding="utf-8")
+    assert '"--path", $repoRoot' in runner
 
     print("card component contract: PASS")
 
