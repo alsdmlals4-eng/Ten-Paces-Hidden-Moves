@@ -19,6 +19,8 @@ on:
       - "tools/verify_and_commit_step0.ps1"
       - "tools/verify_and_commit_step0.cmd"
       - "tools/verify_and_commit_combat_foundation.ps1"
+      - "tools/run_combat_board.ps1"
+      - "tools/run_combat_board.cmd"
       - ".github/workflows/card-component-contract.yml"
   push:
     paths:
@@ -38,6 +40,8 @@ on:
       - "tools/verify_and_commit_step0.ps1"
       - "tools/verify_and_commit_step0.cmd"
       - "tools/verify_and_commit_combat_foundation.ps1"
+      - "tools/run_combat_board.ps1"
+      - "tools/run_combat_board.cmd"
       - ".github/workflows/card-component-contract.yml"
 
 jobs:
@@ -61,7 +65,8 @@ jobs:
         run: |
           $paths = @(
             "tools/verify_and_commit_step0.ps1",
-            "tools/verify_and_commit_combat_foundation.ps1"
+            "tools/verify_and_commit_combat_foundation.ps1",
+            "tools/run_combat_board.ps1"
           )
           foreach ($path in $paths) {
             $tokens = $null
