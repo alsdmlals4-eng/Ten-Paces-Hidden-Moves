@@ -1,36 +1,32 @@
 # 십보강호 기존 구조·구형 파일 감사
 
-- 작업 계약: Issue #4와 사용자 승인 직접 요청
-- 현재 Base: `ee265576da7f67d3278f8099dd97d4e714ef0651`
-- 최초 대상 기준: `0ac66389ad6b1d10019680ebf1417d423fa1466e`
-- 최신 Base 전수 처리표: `BASE_MAIN_SYNC_AUDIT.md`
-- 사용자 작업 경로: `C:\Users\user\Documents\GitHub\Ninza\Ten-Paces-Hidden-Moves`
-- 로컬 미커밋 상태: `[미검증]`
+- 사용자 승인: Base 전면 반영 후 가지치기·간소화·리팩터링·적대적 개선
+- Base: `ee265576da7f67d3278f8099dd97d4e714ef0651`
+- 최초 대상: `0ac66389ad6b1d10019680ebf1417d423fa1466e`
+- 파일별 Base 감사: `BASE_MAIN_SYNC_AUDIT.md`
+- 최종 검증: `BASE_MAIN_SYNC_VERIFICATION.md`
+- 사용자 로컬 미커밋 상태: `[미검증]`
 
-## 작업 절차
+## 절차
 
 ```text
 PLAN: audit
-→ reconcile-legacy 처리표
-→ 목표 구조·보존·롤백
+→ reconcile-legacy
+→ 고유 정보·참조·파생본·복구·롤백 확인
 → 사용자 승인
-→ BUILD: 승인된 UPDATE·MERGE·STUB·ARCHIVE·DELETE·migrate
-→ REVIEW: 보존·참조·파생본·복구 대조
-→ reference-freshness
-→ verify
+→ BUILD: 승인된 UPDATE·MERGE·STUB·ARCHIVE·DELETE
+→ REVIEW: reference-freshness·회귀·보존 대조
 ```
 
-## 보호 계약
+## 보호 범위
 
-- 기존 `docs/01~11`
-- `docs/[백업]`, `docs/[보류]`, Plan, PR·Git 이력
-- 프로젝트 고유 세계관·수치·용어·ID·Godot 경로
-- 승인 UI·배경·카드·전투 구현
+- `docs/01~11`, `docs/[백업]`, `docs/[보류]`, Plan, PR·Git 이력
+- 프로젝트 세계관·수치·용어·ID·Godot 경로
+- 승인 UI·배경·카드·전투 구현과 자산
+- 사용자 로컬 미커밋 변경
 - 실행하지 않은 검증의 미검증 상태
 
-사용자 승인 없이 대량 삭제·이동·통합·강제 개명을 하지 않는다.
-
-## 현재 구조
+## 현행 구조
 
 ```text
 START_HERE.md
@@ -39,89 +35,87 @@ README.md
 docs/
 plans/
 [기획서]/
-skills/
+skills/                  # 프로젝트 고유 Skill 4개 + Learning Log·Alias
+templates/               # 실행·reconciliation·컨셉근거·변경검증
+schemas/
+tools/                   # 운영 검사 3개 + 제품 자동화
+tests/                   # 통합 Governance 회귀 + 제품 테스트
+.github/
 data/
 scenes/
 src/
-tests/
-tools/
-.github/
 project.godot
 ```
 
-초기 감사 당시 원격에서 확인하지 못했던 Godot·Registry·Workflow 파일은 현재 PR #5·#7에 존재한다. 초기 관찰을 현재 사실처럼 유지하지 않는다.
-
-## 현행 책임 인벤토리
+## 책임 인벤토리
 
 | 경로 | 역할 | 판정 |
 |---|---|---|
-| `README.md`, `START_HERE.md`, `AGENTS.md` | 루트 Entry Point·최상위 규칙 | `UPDATE_IN_PLACE` 완료 |
-| `docs/01~11` | 제품·전투·UI·QA·아키텍처 책임 원본 | `CURRENT`, 내용 최신성 별도 감사 |
-| `docs/BASE_RULES_VERSION.md` | Base SHA·프로젝트 차이 | `UPDATE_IN_PLACE` 완료 |
-| `[기획서]/DESIGN_DOCUMENT_REGISTRY.json` | 기획 책임·경로·발행 정책 | `CURRENT`, 발행 대기 |
-| `[기획서]/00_프로젝트_허브` | 상태·Skill·게이트·검증 라우터 | `UPDATE_IN_PLACE` 진행 |
-| `skills/` 프로젝트 6개 Skill | 프로젝트 경로·규칙·검증 분화 | `UPDATE_IN_PLACE` 완료 |
-| `skills/LEGACY_SKILL_ALIASES.md` | 제거된 Base Skill ID 호환 | `CURRENT` |
-| `data/`, `scenes/`, `src/`, `tests/` | 전투 POC 실제 구현 | `CURRENT`, 최신 런타임 일부 미검증 |
-| `docs/[백업]` | 역사·복구 | `ARCHIVE_HISTORY`, 기본 수정 제외 |
-| `docs/[보류]` | 재개 승인 전 금지 | `KEEP_UNRESOLVED` |
-| `plans/` | 과거·현행 실행 계약 | `CURRENT` 또는 역사, 삭제 안 함 |
+| README·START_HERE·AGENTS | 최소 Entry Point·최상위 규칙 | `CURRENT` |
+| `docs/01~11` | 제품 책임 원본 | `CURRENT`, 전투 정본 최신성은 별도 제품 작업 |
+| `docs/BASE_RULES_VERSION.md` | Base SHA·프로젝트 차이 | `CURRENT` |
+| Design Registry | 책임 원본·현재 `source_only` 상태 | `CURRENT` |
+| 프로젝트 허브 | Context·Map·Gates·Audit·이력 | `CURRENT` |
+| Base 공유 Skill 13개 | 공용 작업 절차 | `REFERENCE` |
+| 프로젝트 Skill 4개 | 십보강호 고유 디자인·UX·구현·QA | `CURRENT` |
+| Legacy Alias | 제거된 Base·로컬 Skill ID 호환 | `CURRENT` |
+| `data/`, `scenes/`, `src/`, 제품 tests | 전투 POC | `CURRENT`, 일부 런타임 미검증 |
+| 백업 | 역사·복구 | `ARCHIVE_HISTORY` |
+| 보류 | 재개 승인 전 구현 금지 | `KEEP_UNRESOLVED` |
 
-## 구형·stale 상태
+## 이번 가지치기 처리표
 
-초기 운영 문서에는 다음 과거 표현이 현행 Entry Point에 남아 있었다.
+| 제거 경로·ID | 이전 역할 | 승계 위치 | 판정·검증 |
+|---|---|---|---|
+| `project-operations-and-handoff` | 요청 라우팅·Context·Handoff | Base intake + context/handoff | `DELETE_APPROVED`, Legacy Alias·Skill 검사 |
+| `project-health-review` | 운영체계 종합 검수 | Base operating-system + change-validation + freshness | `DELETE_APPROVED`, Legacy Alias·Skill 검사 |
+| `PROJECT_SKILL_MAP.md` | Registry 수동 요약 | `SKILL_REGISTRY.json` 직접 읽기 | `DELETE_APPROVED`, forbidden path 검사 |
+| Skill Map Manifest | 존재하지 않는 PDF 발행 상태 | `source_only` Registry | `DELETE_APPROVED`, forbidden path 검사 |
+| 벤치마크·컨셉 템플릿 2개 | 조사·컨셉 검토 | `GAME_CONCEPT_AND_EVIDENCE_REVIEW.md` | `MERGE_TO_CANONICAL` |
+| 정본 최신성 템플릿 | freshness 보고 | `PROJECT_CHANGE_VALIDATION.md` | `MERGE_TO_CANONICAL` |
+| 분리 Governance tests 2개 | freshness·Skill 회귀 | `test_project_governance.py` | `MERGE_TO_CANONICAL` |
+| `check_documentation_governance.py` | 구형 중복 검사 | `check_project_operating_system.py` | `DELETE_APPROVED`, Workflow 미참조·forbidden path 검사 |
 
-- 행동 두 개·2수 잠금
-- 기초 행동 7종
-- STEP 1·2 또는 Godot 미설치 상태
-- Base `eb40b9…`
-- Skill `default_selection=none`
+모든 삭제는 사용자 요청의 명시 승인 범위 안에서 수행했다. Git 이력으로 복구 가능하며 제품 코드·본책·자산을 건드리지 않았다.
+
+## 발행 감사
+
+발견:
+
+- Design Registry가 PDF·Manifest·생성기를 선언했지만 `tools/build_design_documents.py`가 존재하지 않았다.
+- Registry는 `source_only`로 바뀌었는데 이전 Schema는 `always_sync`를 강제했다.
 
 처리:
 
-- 루트·허브·Skill Registry·활성 Skill은 현재 10수·8종·STEP 10.6·자동 라우팅으로 갱신한다.
-- 과거 Changelog·Learning Log·Alias·Case는 역사 설명으로 보존할 수 있다.
-- 제품 본책 `docs/01~10`의 과거 규칙은 별도 제품 정본 갱신 작업으로 추적하며 Base 운영 동기화에서 무리하게 전면 재작성하지 않는다.
-- 현행 Entry Point의 stale 재등장은 canonical reference freshness 검사로 차단한다.
+- 11개 문서와 Skill Registry를 실제 사용 가능한 `source_only`로 변경.
+- 파생 경로·Manifest·generator를 null로 정리.
+- Design Registry Schema를 세 정책 조건부 계약으로 수정.
+- 정책 승격 시 생성기 파일 존재를 자동 검사.
 
-## 파일별 처리 상태
+## stale 방지
 
-```text
-CURRENT
-UPDATE_IN_PLACE
-MERGE_TO_CANONICAL
-COMPATIBILITY_STUB
-ARCHIVE_HISTORY
-DELETE_APPROVED
-KEEP_UNRESOLVED
-```
-
-현재 `DELETE_APPROVED` 항목은 없다.
+- 현행 Entry Point의 `2수·두 행동·7개 기초 행동·이전 Base SHA` 차단.
+- 제거된 로컬 Skill·Skill Map·구형 템플릿·중복 checker 경로 재등장 차단.
+- Base shared routes 13개와 프로젝트 Skill 정확히 4개 검사.
+- changed 파일과 expected-but-untouched 소비자 확인.
 
 ## 보존 대조
 
-- 핵심 경험·10칸·10수·10전: 보존
-- 5전 데모·10전 전체판: 보존
-- 무공·심법·절초: 보존
-- UI·연출·아키텍처 경계: 보존
-- QA 체크리스트와 Plan: 보존
-- 백업·보류: 보존
-- Godot 구현·사용자 확인: Active Context·PR #7에 연결
-- Base 적용 학습: 최신 SHA와 Work Mode 계약으로 갱신
+- 10칸·10수·10전, 5전 데모, 무공·심법·절초: 보존
+- UI·연출·아키텍처·QA 본책: 보존
+- Godot 코드·데이터·씬·자산: 보존
+- 백업·보류·Plan: 보존
+- 사용 기능: Base 공유 Skill·통합 템플릿·통합 검사로 승계
 
 ## 미검증
 
-- 사용자 로컬 미커밋 파일과 원격 차이
-- 백업·보류의 모든 외부 링크·고유 정보
-- PDF·DOCX·다이어그램·Manifest 실제 발행
+- 사용자 로컬 미커밋 파일·원격 차이
+- 백업·보류의 모든 외부 참조
 - RESPONSE 10.6 최신 Windows 런타임
+- PDF 발행 파이프라인·시각 검수
 - 접근성·성능·플레이테스트
 - Branch protection Required Check 강제
 
-## 다음 Cleanup 게이트
+## 추가 Cleanup 게이트
 
-1. 삭제·이동 후보별 reconciliation 표
-2. 고유 정보·활성 참조·파생본·복구 경로
-3. 사용자 명시 승인
-4. 승인된 처리만 같은 PR에서 수행
-5. reference-freshness·회귀·콜드 스타트 검증
+추가 삭제·이동은 후보별 고유 정보·참조·복구·사용자 승인을 다시 확인하고 reference-freshness·회귀·콜드 스타트를 통과해야 한다.
