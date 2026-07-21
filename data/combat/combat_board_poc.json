@@ -1,5 +1,5 @@
 {
-  "schema_version": 11,
+  "schema_version": 12,
   "tile_count": 10,
   "player_start_tile": 3,
   "enemy_start_tile": 8,
@@ -28,6 +28,7 @@
     "resource_fields": ["health", "stamina", "internal"],
     "combat_start_resources": "maximum_minus_start_penalties",
     "start_penalty_fields": ["health", "stamina", "internal"],
+    "placement_resource_preview": true,
     "lower_status_panels": false,
     "runtime_updates": true
   },
@@ -36,6 +37,7 @@
     "placement_step": 9,
     "runtime_step": 10,
     "targeting_patch": "10.5",
+    "resource_preview_patch": "10.6",
     "approval_status": "USER_APPROVED_LAYOUT",
     "scene": "res://scenes/ui/action_timing_panel.tscn",
     "data": "res://data/combat/combat_action_timing_preview.json",
@@ -51,6 +53,7 @@
     "cards_inserted": true,
     "interactions_enabled": true,
     "targeting_enabled": true,
+    "resource_preview_enabled": true,
     "advances_after_resolution": true
   },
   "progress_button": {
@@ -58,13 +61,14 @@
     "placement_gate_step": 9,
     "runtime_step": 10,
     "targeting_patch": "10.5",
+    "resource_preview_patch": "10.6",
     "approval_status": "USER_APPROVED_INTERACTION",
     "scene": "res://scenes/ui/combat_progress_button.tscn",
     "data": "res://data/combat/combat_progress_preview.json",
     "layout_role": "bottom_upper_right",
     "button_text": "진행",
     "default_enabled": false,
-    "enable_condition": "current_bundle_complete_and_targets_ready",
+    "enable_condition": "current_bundle_complete_targets_and_resources_ready",
     "request_mode": "resolve_bundle",
     "advances_state": true,
     "writes_combat_log": true,
@@ -74,6 +78,7 @@
     "step": 6,
     "information_interaction_step": 7,
     "placement_step": 9,
+    "response_combo_patch": "10.6",
     "approval_status": "USER_APPROVED_LAYOUT",
     "scene": "res://scenes/ui/basic_card_tray.tscn",
     "item_scene": "res://scenes/ui/basic_card_tray_item.tscn",
@@ -85,6 +90,7 @@
     "uses_shared_card_data_and_atlases": true,
     "information_interactions_enabled": true,
     "action_placement_enabled": true,
+    "stance_response_combo_enabled": true,
     "action_timing_above": true
   },
   "card_detail_overlay": {
@@ -101,6 +107,7 @@
     "step": 7,
     "runtime_step": 10,
     "targeting_patch": "10.5",
+    "response_combo_patch": "10.6",
     "approval_status": "USER_APPROVED_INTERACTION",
     "scene": "res://scenes/ui/combat_log_panel.tscn",
     "data": "res://data/combat/combat_log_preview.json",
@@ -110,11 +117,13 @@
     "sample_entry_count": 4,
     "output_interface": true,
     "resolution_output": true,
-    "targeting_output": true
+    "targeting_output": true,
+    "defense_output": true
   },
   "action_placement": {
     "step": 9,
     "targeting_patch": "10.5",
+    "resource_preview_patch": "10.6",
     "approval_status": "USER_APPROVED_INTERACTION",
     "interaction": "select_card_then_click_slot_then_choose_target",
     "editable_scope": "current_bundle_slots",
@@ -122,10 +131,15 @@
     "actionable_indices": [1, 2, 3],
     "single_slot_supported": true,
     "consecutive_multi_slot_supported": true,
+    "stance_response_same_slot_combo": true,
     "occupied_slot_click_removes_whole_card": true,
     "placement_log_enabled": true,
+    "placement_updates_resources_immediately": true,
+    "recovery_updates_resources_immediately": true,
+    "insufficient_resources_block_progress": true,
     "progress_requires_complete_bundle": true,
     "progress_requires_targets_ready": true,
+    "progress_requires_resources_ready": true,
     "state_advancement_enabled": true
   },
   "action_targeting": {
@@ -146,9 +160,22 @@
     "unresolved_target_blocks_progress": true,
     "resolution_uses_explicit_target": true
   },
+  "response_rules": {
+    "patch": "10.6",
+    "guard_same_timing": "halve_damage",
+    "guard_same_bundle": "reduce_by_guard_block",
+    "guard_comparison": "use_larger_reduction",
+    "guard_block": 4,
+    "evade_same_timing": "full_evade",
+    "stance_response_combo": "same_slot",
+    "stance_response_scope": "current_bundle",
+    "stance_guard_multiplier": 1.5,
+    "stance_evade_scope": "full_bundle_evade"
+  },
   "resolution_engine": {
     "step": 10,
     "targeting_patch": "10.5",
+    "response_combo_patch": "10.6",
     "approval_status": "IMPLEMENTED_FOR_REVIEW",
     "script": "res://src/combat/combat_resolution_engine.gd",
     "data": "res://data/combat/combat_resolution_preview.json",
@@ -160,6 +187,9 @@
     "uses_explicit_move_target": true,
     "uses_explicit_attack_direction": true,
     "uses_card_specific_move_range": true,
+    "uses_guard_bundle_profiles": true,
+    "uses_stance_response_combo": true,
+    "placement_resource_preview": true,
     "combat_start_resources": "maximum_minus_start_penalties",
     "advances_bundle_and_round": true,
     "fixed_enemy_preview_plan": true,
@@ -175,6 +205,7 @@
     "combat_log",
     "action_placement",
     "action_targeting",
+    "response_rules",
     "resolution_engine",
     "board",
     "tile_numbers",
