@@ -70,6 +70,7 @@ Base 공유 Skill:
 
 - 운영 문서는 제품 본책 전문을 복제하지 않는다.
 - 한 질문에 현행 책임 원본 하나만 둔다.
-- 제품 문서는 `milestone_sync`, 내부 운영 기록·Skill Registry는 `source_only`다.
+- 현재 모든 등록 문서와 Skill Registry는 실제 생성기가 없어 `source_only`다.
+- PDF가 필요한 마일스톤에서 발행 파이프라인과 함께 필요한 문서만 정책을 승격한다.
 - Workflow 존재, Actions 성공, Godot 런타임, 사람 검수, Required Check 강제를 구분한다.
 - 백업·보류·제거 후보는 기본 읽기와 구현에서 제외한다.
