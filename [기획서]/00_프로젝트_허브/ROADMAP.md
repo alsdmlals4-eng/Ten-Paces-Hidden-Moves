@@ -48,15 +48,15 @@
 
 판정: `IN_PROGRESS_WITHOUT_ENFORCEMENT`
 
-## M4 정책 기반 발행
+## M4 발행
 
-- [x] 제품 문서 `milestone_sync`
-- [x] 내부 운영 기록 `source_only`
-- [ ] 주요 게이트에서 정책 대상 PDF·Manifest 생성
-- [ ] 폰트·LibreOffice·Poppler·Mermaid 실행
+- [x] 생성기 없는 현재 상태를 `source_only`로 정직하게 표현
+- [x] 존재하지 않는 PDF·Manifest·Skill Map 의무 제거
+- [ ] PDF가 필요한 마일스톤에서 생성기·폰트·렌더 환경 설치
+- [ ] 필요한 문서만 `milestone_sync`로 전환
 - [ ] 전 페이지 자동 렌더·사용자 시각 검수
 
-판정: `MILESTONE_NOT_REACHED`
+판정: `NOT_INSTALLED_BY_DESIGN`
 
 ## M5 전투 POC
 
