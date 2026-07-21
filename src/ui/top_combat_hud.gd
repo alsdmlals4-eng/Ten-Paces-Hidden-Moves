@@ -56,7 +56,7 @@ func _build() -> void:
     enemy_panel.name = "EnemyStatusPanel"
     add_child(enemy_panel)
 
-    var segments := int(hud_data.get("momentum_segments", 6))
+    var segments := int(hud_data.get("momentum_segments", 5))
     var player_data: Dictionary = hud_data.get("player", {})
     var enemy_data: Dictionary = hud_data.get("enemy", {})
     player_panel.configure("player", player_data)
