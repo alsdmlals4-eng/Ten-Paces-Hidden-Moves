@@ -1,13 +1,14 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "momentum_segments": 5,
   "player": {
     "name": "강호낭인",
     "epithet": "무명 검객",
-    "health": [18, 20],
-    "stamina": [3, 5],
-    "internal": [2, 4],
+    "health": [20, 20],
+    "stamina": [5, 5],
+    "internal": [4, 4],
     "momentum": [4, 5],
+    "start_penalties": {"health": 0, "stamina": 0, "internal": 0},
     "statuses": [
       {"label": "방", "kind": "defense"},
       {"label": "집", "kind": "focus"}
@@ -23,10 +24,11 @@
   "enemy": {
     "name": "배외검객",
     "epithet": "무림 검사",
-    "health": [16, 20],
-    "stamina": [3, 5],
-    "internal": [2, 4],
+    "health": [20, 20],
+    "stamina": [5, 5],
+    "internal": [4, 4],
     "momentum": [3, 5],
+    "start_penalties": {"health": 0, "stamina": 0, "internal": 0},
     "statuses": [
       {"label": "출", "kind": "offense"},
       {"label": "방", "kind": "defense"}
