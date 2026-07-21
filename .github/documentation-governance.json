@@ -26,6 +26,7 @@
     "[기획서]/00_프로젝트_허브/LIFECYCLE_AREAS.md",
     "[기획서]/00_프로젝트_허브/OPERATING_SYSTEM_HEALTH_REPORT.md",
     "[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md",
+    "[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_VERIFICATION.md",
     "[기획서]/00_프로젝트_허브/PROJECT_SKILL_MAP.md",
     "[기획서]/00_프로젝트_허브/SKILL_MAP_PUBLICATION_MANIFEST.json",
     "skills/SKILL_LEARNING_LOG.md",
@@ -65,6 +66,6 @@
   "skill_map_publication_manifest": "[기획서]/00_프로젝트_허브/SKILL_MAP_PUBLICATION_MANIFEST.json",
   "enforce_publications": false,
   "enforce_skill_map_publication": false,
-  "migration_phase": "latest-base-operating-contract",
+  "migration_phase": "latest-base-operating-contract-verified",
   "required_skill_disciplines": ["게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA", "프로덕션·PM", "통합검수"]
 }

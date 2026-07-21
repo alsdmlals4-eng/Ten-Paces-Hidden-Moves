@@ -24,14 +24,26 @@
 
 - Base 기준: `ee265576da7f67d3278f8099dd97d4e714ef0651`
 - Base 변경 155개 커밋·70개 파일 감사: `BASE_MAIN_SYNC_AUDIT.md`
+- 최종 정적·스택 검증: `BASE_MAIN_SYNC_VERIFICATION.md`
 - 운영 PR: #5
 - 전투 POC PR: #7
+- 동기화 PR: #8 merged
 - 전투 POC: STEP 0~10, TARGETING 10.5 구현
 - 대응·자원 보완: RESPONSE 10.6, RESOURCE PREVIEW 10.6 구현
 - 사용자 Windows 확인: STEP 0~10·행동 배치·대상 지정
 - 사용자 확인 대기: 최신 대응 연계·자원 미리보기
 - PDF·Skill Map·Manifest: `MIGRATION_PENDING`
 - Required Check 강제: 미확인
+
+## 운영 정적 검증
+
+- [x] PR #5 Documentation Governance run #298
+- [x] Project operating-system structure
+- [x] Canonical reference freshness
+- [x] Project Skill package integrity
+- [x] PR #7 Documentation Governance run #299
+- [x] PR #7 Card Component Contract run #395
+- [x] PR #7 mergeable
 
 ## Work Mode
 
@@ -49,12 +61,13 @@ Registry trigger로 필요한 최소 Skill·Skill Mode를 자동 선택한다. L
 - `DOCUMENTATION_MAP.md`: 질문별 책임 원본과 Skill
 - `DEVELOPMENT_GATES.md`: 완료 증거
 - `DOCUMENT_UPDATE_MATRIX.md`: 변경 소비자
-- `BASE_MAIN_SYNC_AUDIT.md`: Base 전수 처리표
+- `BASE_MAIN_SYNC_AUDIT.md`: Base 70개 변경 파일 전수 처리표
+- `BASE_MAIN_SYNC_VERIFICATION.md`: 최종 Actions·브랜치·보존 검증
 - `DECISION_LOG.md`: 결정과 재검토 조건
 - `CHANGELOG.md`: 변경·검증·미검증
 - `AI_WORKFLOW.md`: AI·GitHub 흐름
 - `SOURCE_AUDIT.md`: 보존·구형본 감사
-- `OPERATING_SYSTEM_HEALTH_REPORT.md`: verify 결과
+- `OPERATING_SYSTEM_HEALTH_REPORT.md`: 종합 verify 결과
 
 `../DESIGN_DOCUMENT_REGISTRY.json`이 제품 책임 원본을 연결한다. 실제 구현은 `data/`, `scenes/`, `src/`, `tests/`, `project.godot`에서 확인한다.
 
