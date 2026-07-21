@@ -1,6 +1,9 @@
 class_name ActionTimingPanel
 extends Control
 
+signal slot_clicked(timing_index: int)
+signal placement_changed(snapshot: Dictionary)
+
 const DATA_PATH := "res://data/combat/combat_action_timing_preview.json"
 const SLOT_SCENE := preload("res://scenes/ui/action_timing_slot.tscn")
 
@@ -11,6 +14,7 @@ const MUTED := Color("948875")
 
 var timing_data: Dictionary = {}
 var slots: Array[ActionTimingSlot] = []
+var placements: Dictionary = {}
 
 var _title_label: Label
 var _sequence_label: Label
@@ -19,7 +23,7 @@ var _group_labels: Array[Label] = []
 var _separator_x: Array[float] = []
 
 func _ready() -> void:
-    mouse_filter = Control.MOUSE_FILTER_IGNORE
+    mouse_filter = Control.MOUSE_FILTER_PASS
     timing_data = _load_data()
     _build_content()
     resized.connect(_layout)
@@ -67,18 +71,21 @@ func _build_content() -> void:
             var slot := SLOT_SCENE.instantiate() as ActionTimingSlot
             slot.name = "TimingSlot%02d" % global_index
             slot.configure(global_index, group_index + 1, local_index, _resolve_state(global_index, group_index + 1, group_end, current_bundle, current_timing))
+            slot.slot_clicked.connect(_on_slot_clicked)
             add_child(slot)
             slots.append(slot)
             global_index += 1
 
     set_meta("step", 5)
+    set_meta("placement_step", 9)
     set_meta("layout_role", "bottom_upper")
     set_meta("round_number", int(timing_data.get("round_number", 1)))
     set_meta("timing_sequence", "3|3|4")
     set_meta("total_timings", slots.size())
     set_meta("progress_scope", "round")
     set_meta("cards_inserted", false)
-    set_meta("interactions_enabled", false)
+    set_meta("interactions_enabled", true)
+    set_meta("placement_enabled", true)
 
 func _resolve_state(global_index: int, group_index: int, group_end: int, current_bundle: int, current_timing: int) -> String:
     if global_index < current_timing:
@@ -88,6 +95,128 @@ func _resolve_state(global_index: int, group_index: int, group_end: int, current
     if group_index == current_bundle and global_index <= group_end:
         return "available"
     return "locked"
+
+func _on_slot_clicked(timing_index: int) -> void:
+    slot_clicked.emit(timing_index)
+
+func get_slot(timing_index: int) -> ActionTimingSlot:
+    if timing_index < 1 or timing_index > slots.size():
+        return null
+    return slots[timing_index - 1]
+
+func get_current_bundle_indices() -> PackedInt32Array:
+    var result := PackedInt32Array()
+    var sequence: Array = timing_data.get("timing_sequence", [3, 3, 4])
+    var current_bundle := int(timing_data.get("current_bundle", 1))
+    var current_timing := int(timing_data.get("current_timing", 1))
+    var bundle_start := 1
+    for group_index in range(current_bundle - 1):
+        if group_index < sequence.size():
+            bundle_start += int(sequence[group_index])
+    if current_bundle < 1 or current_bundle > sequence.size():
+        return result
+    var bundle_end := bundle_start + int(sequence[current_bundle - 1]) - 1
+    for timing_index in range(maxi(bundle_start, current_timing), bundle_end + 1):
+        result.append(timing_index)
+    return result
+
+func is_index_actionable(timing_index: int) -> bool:
+    return timing_index in get_current_bundle_indices()
+
+func has_assignment_at(timing_index: int) -> bool:
+    var slot := get_slot(timing_index)
+    return slot != null and slot.has_assignment()
+
+func get_assignment_anchor(timing_index: int) -> int:
+    var slot := get_slot(timing_index)
+    if slot == null or not slot.has_assignment():
+        return 0
+    return slot.assignment_anchor_index
+
+func place_card(definition: Dictionary, start_index: int) -> bool:
+    if definition.is_empty() or not is_index_actionable(start_index):
+        return false
+    var span := maxi(1, int(definition.get("action_slots", 1)))
+    var target_indices := PackedInt32Array()
+    for offset in range(span):
+        var timing_index := start_index + offset
+        if not is_index_actionable(timing_index) or has_assignment_at(timing_index):
+            return false
+        target_indices.append(timing_index)
+
+    var placement := {
+        "card_id": str(definition.get("id", "")),
+        "card_name": str(definition.get("name", "")),
+        "definition": definition.duplicate(true),
+        "anchor_index": start_index,
+        "span": span,
+        "indices": target_indices
+    }
+    placements[start_index] = placement
+    for part_index in range(target_indices.size()):
+        var slot := get_slot(int(target_indices[part_index]))
+        if slot != null:
+            slot.set_assignment(definition, start_index, span, part_index)
+    _emit_placement_changed()
+    return true
+
+func remove_at(timing_index: int) -> Dictionary:
+    var anchor_index := get_assignment_anchor(timing_index)
+    if anchor_index <= 0 or not placements.has(anchor_index):
+        return {}
+    var placement: Dictionary = placements[anchor_index]
+    var indices: PackedInt32Array = placement.get("indices", PackedInt32Array())
+    for index_value in indices:
+        var slot := get_slot(int(index_value))
+        if slot != null:
+            slot.clear_assignment()
+    placements.erase(anchor_index)
+    _emit_placement_changed()
+    return placement.duplicate(true)
+
+func clear_current_bundle() -> void:
+    var anchors := placements.keys()
+    for anchor_value in anchors:
+        var anchor_index := int(anchor_value)
+        if is_index_actionable(anchor_index):
+            remove_at(anchor_index)
+    _emit_placement_changed()
+
+func is_current_bundle_complete() -> bool:
+    var actionable := get_current_bundle_indices()
+    if actionable.is_empty():
+        return false
+    for timing_index in actionable:
+        if not has_assignment_at(int(timing_index)):
+            return false
+    return true
+
+func get_occupied_actionable_count() -> int:
+    var count := 0
+    for timing_index in get_current_bundle_indices():
+        if has_assignment_at(int(timing_index)):
+            count += 1
+    return count
+
+func get_placement_list() -> Array:
+    var result: Array = []
+    var anchors := placements.keys()
+    anchors.sort()
+    for anchor_value in anchors:
+        var placement: Dictionary = placements[anchor_value]
+        result.append({
+            "card_id": str(placement.get("card_id", "")),
+            "card_name": str(placement.get("card_name", "")),
+            "anchor_index": int(placement.get("anchor_index", 0)),
+            "span": int(placement.get("span", 0)),
+            "indices": placement.get("indices", PackedInt32Array())
+        })
+    return result
+
+func _emit_placement_changed() -> void:
+    set_meta("cards_inserted", not placements.is_empty())
+    set_meta("current_bundle_complete", is_current_bundle_complete())
+    placement_changed.emit(get_timing_snapshot())
 
 func _make_label(font_size: int, color: Color, alignment: int) -> Label:
     var label := Label.new()
@@ -141,7 +270,7 @@ func _layout() -> void:
     for group_index in range(sequence.size()):
         var count := int(sequence[group_index])
         var group_start_x := x
-        for local_index in range(count):
+        for _local_index in range(count):
             var slot := slots[slot_cursor]
             slot.position = Vector2(x, slot_y)
             slot.size = Vector2(slot_width, slot_height)
@@ -172,6 +301,7 @@ func get_timing_snapshot() -> Dictionary:
         state_counts[state] = int(state_counts.get(state, 0)) + 1
     return {
         "step": 5,
+        "placement_step": 9,
         "layout_role": "bottom_upper",
         "round_number": int(timing_data.get("round_number", 1)),
         "timing_sequence": timing_data.get("timing_sequence", [3, 3, 4]),
@@ -180,8 +310,13 @@ func get_timing_snapshot() -> Dictionary:
         "current_timing": int(timing_data.get("current_timing", 1)),
         "progress_scope": "round",
         "state_counts": state_counts,
-        "cards_inserted": false,
-        "interactions_enabled": false
+        "cards_inserted": not placements.is_empty(),
+        "interactions_enabled": true,
+        "placement_enabled": true,
+        "actionable_indices": get_current_bundle_indices(),
+        "occupied_actionable_slots": get_occupied_actionable_count(),
+        "current_bundle_complete": is_current_bundle_complete(),
+        "placements": get_placement_list()
     }
 
 func _notification(what: int) -> void:
