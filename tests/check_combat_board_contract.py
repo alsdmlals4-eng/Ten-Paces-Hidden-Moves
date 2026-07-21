@@ -111,16 +111,21 @@ def main() -> None:
     for relative in required_files:
         assert (ROOT / relative).exists(), relative
 
+    background_asset = (ROOT / "assets/backgrounds/step3_mountain_fortress.svg").read_text(encoding="utf-8")
+    assert "data:image/" not in background_asset
+    assert "<image" not in background_asset
+    assert "<path" in background_asset
+    assert 'width="1440"' in background_asset
+    assert 'height="900"' in background_asset
+
     background_script = (ROOT / "src/combat/battle_background.gd").read_text(encoding="utf-8")
     assert 'BACKGROUND_SOURCE_PATH := "res://assets/backgrounds/step3_mountain_fortress.svg"' in background_script
-    assert 'JPEG_DATA_PREFIX := "data:image/jpeg;base64,"' in background_script
-    assert "_decode_base64_relaxed" in background_script
-    assert "Marshalls.base64_to_raw" not in background_script
-    assert "image.load_jpg_from_buffer" in background_script
-    assert "ImageTexture.create_from_image" in background_script
+    assert 'preload("res://assets/backgrounds/step3_mountain_fortress.svg")' in background_script
+    assert "base64" not in background_script.lower()
+    assert "load_jpg_from_buffer" not in background_script
     assert 'stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED' in background_script
     assert '"below_board_and_characters"' in background_script
-    assert '"embedded_jpeg_relaxed_base64_decode"' in background_script
+    assert '"direct_vector_svg"' in background_script
 
     controller = (ROOT / "src/combat/combat_board_preview.gd").read_text(encoding="utf-8")
     assert 'const CONTRACT_PATH := "res://data/combat/combat_board_poc.json"' in controller
