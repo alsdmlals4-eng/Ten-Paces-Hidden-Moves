@@ -93,7 +93,7 @@ func _apply_definition() -> void:
     if not _built:
         return
     for child in _content.get_children():
-        child.queue_free()
+        child.free()
     if definition.is_empty():
         _title.text = "카드를 선택하세요"
         _category.text = ""
