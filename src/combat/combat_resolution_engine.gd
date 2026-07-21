@@ -137,7 +137,12 @@ func _build_player_actions(placements: Array) -> Array:
             "anchor_index": anchor,
             "span": span,
             "execution_timing": anchor + span - 1,
-            "definition": definition
+            "definition": definition,
+            "targeting_mode": str(placement.get("targeting_mode", "none")),
+            "target_ready": bool(placement.get("target_ready", true)),
+            "target_tile": int(placement.get("target_tile", 0)),
+            "direction": int(placement.get("direction", 0)),
+            "origin_tile": int(placement.get("origin_tile", 0))
         })
     return result
 
@@ -160,7 +165,12 @@ func _build_enemy_actions(bundle_index: int) -> Array:
             "anchor_index": anchor,
             "span": span,
             "execution_timing": anchor + span - 1,
-            "definition": definition
+            "definition": definition,
+            "targeting_mode": str(entry.get("targeting_mode", "none")),
+            "target_ready": true,
+            "target_tile": int(entry.get("target_tile", 0)),
+            "direction": clampi(int(entry.get("direction", -1)), -1, 1),
+            "origin_tile": 0
         })
     return result
 
@@ -233,8 +243,19 @@ func _execute_attack_phase(state: Dictionary, actions: Array, responses: Diction
         var actor: Dictionary = state.get(actor_key, {})
         var target: Dictionary = state.get(target_key, {})
         var definition: Dictionary = action.get("definition", {})
+        var actor_tile := int(actor.get("tile", 1))
+        var target_tile := int(target.get("tile", 1))
+        var relative_direction := signi(target_tile - actor_tile)
+        var selected_direction := clampi(int(action.get("direction", 0)), -1, 1)
+        if selected_direction == 0:
+            selected_direction = relative_direction
+        if relative_direction != 0 and selected_direction != relative_direction:
+            logs.append("[%d수 · %s] %s의 %s은(는) 반대 방향을 향해 빗나갔다." % [timing, phase_label, _actor_name(actor), str(definition.get("name", "공격"))])
+            resolved_actions.append(_resolved_record(action, timing, "miss_direction"))
+            continue
+
         var attack_range := maxi(0, int(str(definition.get("range_text", "0"))))
-        var distance := absi(int(actor.get("tile", 1)) - int(target.get("tile", 1)))
+        var distance := absi(actor_tile - target_tile)
         if distance > attack_range:
             logs.append("[%d수 · %s] %s의 %s은(는) 사거리가 닿지 않았다." % [timing, phase_label, _actor_name(actor), str(definition.get("name", "공격"))])
             resolved_actions.append(_resolved_record(action, timing, "miss_range"))
@@ -282,6 +303,8 @@ func _execute_move_phase(state: Dictionary, actions: Array, logs: Array[String],
     if actions.is_empty():
         return
     var proposals: Dictionary = {}
+    var board_size := maxi(1, int(rules.get("tile_count", 10)))
+    var movement_steps := maxi(1, int(rules.get("movement_steps", 1)))
     for action in actions:
         if not _pay_action_cost(state, action, logs, timing):
             continue
@@ -290,16 +313,23 @@ func _execute_move_phase(state: Dictionary, actions: Array, logs: Array[String],
         var actor: Dictionary = state.get(actor_key, {})
         var target: Dictionary = state.get(target_key, {})
         var from_tile := int(actor.get("tile", 1))
-        var target_tile := int(target.get("tile", 1))
-        var direction := 1 if target_tile > from_tile else -1
-        var proposed := from_tile + direction * int(rules.get("movement_steps", 1))
-        if proposed == target_tile:
+        var enemy_tile := int(target.get("tile", 1))
+        var requested_tile := int(action.get("target_tile", 0))
+        var direction := clampi(int(action.get("direction", 0)), -1, 1)
+        if requested_tile <= 0:
+            if direction == 0:
+                direction = signi(enemy_tile - from_tile)
+            requested_tile = from_tile + direction * movement_steps
+
+        var proposed := requested_tile
+        var invalid := proposed < 1 or proposed > board_size or absi(proposed - from_tile) > movement_steps or proposed == enemy_tile
+        if invalid:
             proposed = from_tile
         proposals[actor_key] = proposed
-        resolved_actions.append(_resolved_record(action, timing, "move"))
+        resolved_actions.append(_resolved_record(action, timing, "move" if not invalid else "move_invalid"))
 
     if proposals.has("player") and proposals.has("enemy") and int(proposals["player"]) == int(proposals["enemy"]):
-        logs.append("[%d수 · 이동] 양측의 이동 경로가 충돌해 모두 제자리에 멈췄다." % timing)
+        logs.append("[%d수 · 이동] 양측이 같은 칸을 선택해 모두 제자리에 멈췄다." % timing)
         return
 
     for actor_key in proposals.keys():
@@ -309,7 +339,7 @@ func _execute_move_phase(state: Dictionary, actions: Array, logs: Array[String],
         actor["tile"] = to_tile
         state[actor_key] = actor
         if from_tile == to_tile:
-            logs.append("[%d수 · 이동] %s은(는) 적과 인접해 제자리를 지켰다." % [timing, _actor_name(actor)])
+            logs.append("[%d수 · 이동] %s의 지정 이동 칸이 유효하지 않아 제자리를 지켰다." % [timing, _actor_name(actor)])
         else:
             logs.append("[%d수 · 이동] %s이(가) %d번에서 %d번 칸으로 이동했다." % [timing, _actor_name(actor), from_tile, to_tile])
 
@@ -338,7 +368,9 @@ func _resolved_record(action: Dictionary, timing: int, outcome: String) -> Dicti
         "timing": timing,
         "card_id": str(definition.get("id", "")),
         "card_name": str(definition.get("name", "")),
-        "outcome": outcome
+        "outcome": outcome,
+        "direction": int(action.get("direction", 0)),
+        "target_tile": int(action.get("target_tile", 0))
     }
 
 func _resource_pair(actor: Dictionary, key: String) -> Vector2i:
