@@ -47,7 +47,8 @@ Base `ee265576da7f67d3278f8099dd97d4e714ef0651`의 공용 계약을 프로젝트
 - Work Mode: `PLAN / BUILD / REVIEW`
 - Base 공유 Skill 13개 + 프로젝트 고유 Skill 4개
 - Registry trigger 기반 자동 Skill·Skill Mode 선택
-- 제품 문서 `milestone_sync`, 내부 운영 기록·Skill Registry `source_only`
+- 현재 기획·Skill Registry는 실제 생성기가 없어 `source_only`
+- PDF가 필요한 마일스톤에서 생성기·폰트·렌더 검증과 함께 필요한 문서만 `milestone_sync`로 전환
 - 구형 파일 `audit → reconcile-legacy → 승인된 migrate → verify`
 - 정본 최신성·정적·런타임·접근성·성능·회귀 증거 분리
 
