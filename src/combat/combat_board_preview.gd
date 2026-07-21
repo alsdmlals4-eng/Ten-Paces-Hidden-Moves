@@ -2,16 +2,18 @@ class_name CombatBoardPreview
 extends Control
 
 const CONTRACT_PATH := "res://data/combat/combat_board_poc.json"
+const BACKGROUND_SCENE := preload("res://scenes/combat/battle_background.tscn")
 const TILE_SCENE := preload("res://scenes/combat/combat_board_tile.tscn")
 const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placeholder.tscn")
 
 const CANVAS_COLOR := Color("171411")
 const GUIDE_COLOR := Color("b99254")
 const TEXT_COLOR := Color("dfcfac")
-const MUTED_TEXT_COLOR := Color("9f927d")
+const MUTED_TEXT_COLOR := Color("b4a68e")
 
 var contract: Dictionary = {}
 var tiles: Array[CombatBoardTile] = []
+var battle_background: BattleBackground
 var player_character: CombatCharacterPlaceholder
 var enemy_character: CombatCharacterPlaceholder
 
@@ -48,34 +50,44 @@ func _load_contract() -> Dictionary:
     return parsed
 
 func _build_structure() -> void:
+    battle_background = BACKGROUND_SCENE.instantiate() as BattleBackground
+    battle_background.name = "BattleBackground"
+    add_child(battle_background)
+
     var canvas := ColorRect.new()
-    canvas.name = "NeutralCanvas"
-    canvas.color = CANVAS_COLOR
+    canvas.name = "BackgroundReadabilityTint"
+    canvas.color = Color(CANVAS_COLOR, 0.20)
     canvas.mouse_filter = Control.MOUSE_FILTER_IGNORE
     canvas.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     add_child(canvas)
 
     _title = Label.new()
     _title.name = "StepTitle"
-    _title.text = "STEP 1·2  10칸 전투판 · 캐릭터 배치"
+    _title.text = "STEP 3  전투 배경 · 10칸 전투판"
     _title.add_theme_font_size_override("font_size", 30)
     _title.add_theme_color_override("font_color", GUIDE_COLOR)
+    _title.add_theme_color_override("font_shadow_color", Color(0.05, 0.04, 0.03, 0.85))
+    _title.add_theme_constant_override("shadow_offset_x", 2)
+    _title.add_theme_constant_override("shadow_offset_y", 2)
     _title.position = Vector2(42.0, 30.0)
     _title.mouse_filter = Control.MOUSE_FILTER_IGNORE
     add_child(_title)
 
     _subtitle = Label.new()
     _subtitle.name = "StepSubtitle"
-    _subtitle.text = "플레이어 3번 / 상대 8번 · 동일 스케일 · 발 중심과 칸 앵커 일치"
+    _subtitle.text = "수묵 산성 배경 · 플레이어 3번 / 상대 8번 · 동일 스케일 · 발 앵커 유지"
     _subtitle.add_theme_font_size_override("font_size", 18)
     _subtitle.add_theme_color_override("font_color", MUTED_TEXT_COLOR)
+    _subtitle.add_theme_color_override("font_shadow_color", Color(0.05, 0.04, 0.03, 0.90))
+    _subtitle.add_theme_constant_override("shadow_offset_x", 1)
+    _subtitle.add_theme_constant_override("shadow_offset_y", 1)
     _subtitle.position = Vector2(44.0, 74.0)
     _subtitle.mouse_filter = Control.MOUSE_FILTER_IGNORE
     add_child(_subtitle)
 
     _anchor_line = ColorRect.new()
     _anchor_line.name = "FootAnchorGuide"
-    _anchor_line.color = Color(GUIDE_COLOR, 0.60)
+    _anchor_line.color = Color(GUIDE_COLOR, 0.48)
     _anchor_line.mouse_filter = Control.MOUSE_FILTER_IGNORE
     add_child(_anchor_line)
 
@@ -108,6 +120,9 @@ func _build_structure() -> void:
     enemy_character.name = "EnemyCharacter"
     _character_layer.add_child(enemy_character)
 
+    set_meta("step", 3)
+    set_meta("background_component", "BattleBackground")
+    set_meta("background_asset", "res://assets/backgrounds/step3_mountain_fortress.svg")
     set_meta("tile_count", tile_count)
     set_meta("player_start_tile", int(contract.get("player_start_tile", 3)))
     set_meta("enemy_start_tile", int(contract.get("enemy_start_tile", 8)))
@@ -185,6 +200,8 @@ func get_character_foot_anchor(role: String) -> Vector2:
 func get_layout_snapshot() -> Dictionary:
     return {
         "layout_ready": _layout_ready,
+        "background_ready": is_instance_valid(battle_background) and battle_background.texture != null,
+        "background_path": "res://assets/backgrounds/step3_mountain_fortress.svg",
         "tile_count": tiles.size(),
         "player_tile": int(contract.get("player_start_tile", 3)),
         "enemy_tile": int(contract.get("enemy_start_tile", 8)),
