@@ -6,7 +6,7 @@ const EXPECTED_TILE_COUNT := 10
 const EXPECTED_PLAYER_TILE := 3
 const EXPECTED_ENEMY_TILE := 8
 const EXPECTED_HEIGHT_RATIO := 1.5
-const EXPECTED_MOMENTUM_SEGMENTS := 6
+const EXPECTED_MOMENTUM_SEGMENTS := 5
 const EXPECTED_ROUND_NUMBER := 1
 const EXPECTED_TIMING_SEQUENCE := [3, 3, 4]
 const EXPECTED_TIMING_COUNT := 10
@@ -94,7 +94,11 @@ func _run() -> void:
         if not bool(hud_snapshot.get("enemy_panel", false)):
             failures.append("Top HUD must include the enemy status panel on the right.")
         if int(hud_snapshot.get("momentum_segments", 0)) != EXPECTED_MOMENTUM_SEGMENTS:
-            failures.append("Both ultimate momentum gauges must use six segments.")
+            failures.append("Both ultimate momentum gauges must use five segments.")
+        if board.top_hud.player_momentum.maximum_value != EXPECTED_MOMENTUM_SEGMENTS:
+            failures.append("Player ultimate momentum maximum must be five.")
+        if board.top_hud.enemy_momentum.maximum_value != EXPECTED_MOMENTUM_SEGMENTS:
+            failures.append("Enemy ultimate momentum maximum must be five.")
         if str(hud_snapshot.get("layout", "")) != "player_status|player_momentum|round|enemy_momentum|enemy_status":
             failures.append("Top HUD component order does not match the approved layout.")
 
@@ -132,6 +136,12 @@ func _run() -> void:
             failures.append("STEP 5 must not enable action placement interaction.")
         if str(timing_snapshot.get("layout_role", "")) != "bottom_upper":
             failures.append("Action timing panel must use the bottom-upper layout role.")
+
+        var progress_labels := board.action_timing_panel.find_children("TimingProgressLabel", "Label", true, false)
+        if progress_labels.size() != 1:
+            failures.append("Action timing panel must expose one round label.")
+        elif str(progress_labels[0].text) != "라운드 1":
+            failures.append("Action timing panel must show only the round number.")
 
         var timing_slots := board.action_timing_panel.find_children("TimingSlot*", "ActionTimingSlot", true, false)
         if timing_slots.size() != EXPECTED_TIMING_COUNT:
