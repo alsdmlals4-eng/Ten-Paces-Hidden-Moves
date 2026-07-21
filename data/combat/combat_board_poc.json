@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "tile_count": 10,
   "player_start_tile": 3,
   "enemy_start_tile": 8,
@@ -33,9 +33,23 @@
     "resource_fields": ["health", "stamina", "internal"],
     "lower_status_panels": false
   },
+  "action_timing": {
+    "step": 5,
+    "approval_status": "IMPLEMENTED_FOR_REVIEW",
+    "scene": "res://scenes/ui/action_timing_panel.tscn",
+    "data": "res://data/combat/combat_action_timing_preview.json",
+    "layout_role": "bottom_upper",
+    "timing_sequence": [3, 3, 4],
+    "total_timings": 10,
+    "current_bundle": 2,
+    "current_timing": 5,
+    "cards_inserted": false,
+    "interactions_enabled": false
+  },
   "presentation_scope": [
     "battle_background",
     "top_hud",
+    "action_timing",
     "board",
     "tile_numbers",
     "player_placeholder",
@@ -43,9 +57,10 @@
     "foot_anchor_guides"
   ],
   "excluded_until_later_steps": [
-    "action_slots",
     "cards",
+    "skill_catalog",
     "log_panel",
-    "progress_button"
+    "progress_button",
+    "action_placement_interaction"
   ]
 }
