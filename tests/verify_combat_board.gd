@@ -55,7 +55,8 @@ func _run() -> void:
     _verify_timing_initial(board)
     _verify_cards_and_overlays(board, snapshot)
     await _verify_step9_placement(board)
-    await _verify_step10_resolution(board)
+    await _verify_targeting_10_5_and_step10_resolution(board)
+    _verify_wrong_attack_direction(board)
     _verify_layout(board, board.get_layout_snapshot())
     _verify_character_anchors(board, board.get_layout_snapshot())
 
@@ -74,6 +75,9 @@ func _verify_foundation(board: CombatBoardPreview, snapshot: Dictionary) -> void
         failures.append("Battle background must render behind the board.")
     if str(board.battle_background.get_meta("source_mode", "")) != "direct_vector_svg":
         failures.append("Battle background must use direct vector SVG loading.")
+    for tile in board.tiles:
+        if not tile.has_signal("tile_clicked"):
+            failures.append("Every board tile must expose a tile_clicked signal for TARGETING_10_5.")
 
 func _verify_hud(board: CombatBoardPreview, snapshot: Dictionary) -> void:
     if not bool(snapshot.get("hud_ready", false)) or board.top_hud == null:
@@ -101,6 +105,8 @@ func _verify_timing_initial(board: CombatBoardPreview) -> void:
         failures.append("Initial actionable timings must be 1, 2, and 3.")
     if not bool(timing.get("state_advancement_enabled", false)):
         failures.append("Timing panel must expose STEP 10 state advancement.")
+    if not bool(timing.get("targeting_enabled", false)):
+        failures.append("Timing panel must expose TARGETING_10_5.")
 
 func _verify_cards_and_overlays(board: CombatBoardPreview, snapshot: Dictionary) -> void:
     if board.basic_card_tray == null:
@@ -138,17 +144,19 @@ func _verify_step9_placement(board: CombatBoardPreview) -> void:
         return
     if not board.action_timing_panel.has_assignment_at(1) or not board.action_timing_panel.has_assignment_at(2):
         failures.append("Two-slot placement must occupy consecutive timings.")
+    if board.action_timing_panel.is_current_bundle_complete():
+        failures.append("An attack without a selected direction must not complete the bundle.")
     var removed := board.action_timing_panel.remove_at(2)
     if str(removed.get("card_id", "")) != "basic_heavy_attack":
         failures.append("Clicking either occupied part must remove the whole card.")
     await process_frame
 
-func _verify_step10_resolution(board: CombatBoardPreview) -> void:
+func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> void:
     var move := _card_definition(board, "basic_move")
     var meditate := _card_definition(board, "basic_meditate")
     var quick := _card_definition(board, "basic_quick_attack")
     if move.is_empty() or meditate.is_empty() or quick.is_empty():
-        failures.append("STEP 10 test cards were not found.")
+        failures.append("STEP 10 targeting test cards were not found.")
         return
 
     if not board.action_timing_panel.place_card(move, 1):
@@ -159,10 +167,43 @@ func _verify_step10_resolution(board: CombatBoardPreview) -> void:
         failures.append("Quick attack must place at timing 3.")
     await process_frame
 
+    if board.action_timing_panel.is_current_bundle_complete():
+        failures.append("Move and attack placements must require targets before progress enables.")
+    if board.combat_progress_button.progress_enabled:
+        failures.append("Progress must remain disabled while a movement tile or attack direction is unresolved.")
+    if board.action_timing_panel.get_pending_target_anchor() != 1:
+        failures.append("Move at timing 1 must be the first pending target.")
+
+    if not board._begin_targeting_for_anchor(1):
+        failures.append("Move placement must enter board-tile targeting mode.")
+        return
+    if board.get_tile(4).interaction_state != "movable":
+        failures.append("Tile 4 must be marked movable from player tile 3.")
+    if board.get_tile(5).interaction_state == "movable":
+        failures.append("Movement targeting must not exceed one tile.")
+    board._on_board_tile_clicked(4)
+    await process_frame
+
+    var move_placement := board.action_timing_panel.get_placement(1)
+    if not bool(move_placement.get("target_ready", false)) or int(move_placement.get("target_tile", 0)) != 4:
+        failures.append("Move targeting must store destination tile 4.")
+    if int(move_placement.get("direction", 0)) != 1:
+        failures.append("Move targeting must store the rightward direction.")
+
+    if int(board.get_meta("targeting_anchor", 0)) != 3:
+        failures.append("After movement targeting, the pending quick attack must become active.")
+    if board.get_tile(5).interaction_state != "attackable":
+        failures.append("Projected attack origin tile 4 must expose tile 5 as the right attack direction.")
+    board._on_board_tile_clicked(5)
+    await process_frame
+
+    var quick_placement := board.action_timing_panel.get_placement(3)
+    if not bool(quick_placement.get("target_ready", false)) or int(quick_placement.get("direction", 0)) != 1:
+        failures.append("Attack targeting must store the selected right direction.")
     if not board.action_timing_panel.is_current_bundle_complete():
-        failures.append("The first bundle must be complete after filling timings 1-3.")
+        failures.append("The first bundle must complete after all slots and targets are set.")
     if not board.combat_progress_button.progress_enabled:
-        failures.append("Progress button must enable when the current bundle is complete.")
+        failures.append("Progress button must enable when placements and targets are complete.")
 
     var before_state := board.get_combat_state_snapshot()
     var before_log_count := int(board.combat_log_panel.get_log_snapshot().get("entry_count", 0))
@@ -184,22 +225,53 @@ func _verify_step10_resolution(board: CombatBoardPreview) -> void:
     var player_after: Dictionary = after_state.get("player", {})
     var enemy_after: Dictionary = after_state.get("enemy", {})
     if int(player_after.get("tile", 0)) != int(player_before.get("tile", 0)) + 1:
-        failures.append("Player move must update the board tile from 3 to 4.")
+        failures.append("Explicit move target must update the player tile from 3 to 4.")
     if int(enemy_after.get("tile", 0)) != int(enemy_before.get("tile", 0)) - 1:
-        failures.append("Fixed enemy move must update the tile from 8 to 7.")
+        failures.append("Fixed enemy move direction must update the tile from 8 to 7.")
     var player_stamina: Array = player_after.get("stamina", [])
     if player_stamina.is_empty() or int(player_stamina[0]) != 4:
         failures.append("Meditate and quick attack must produce the expected player stamina value 4.")
 
     var after_log_count := int(board.combat_log_panel.get_log_snapshot().get("entry_count", 0))
     if after_log_count <= before_log_count:
-        failures.append("STEP 10 resolution must append combat-log entries.")
+        failures.append("Targeting and resolution must append combat-log entries.")
     if board.combat_progress_button.progress_enabled:
         failures.append("The next bundle must require new placements before progress enables again.")
-    if not bool(board.get_layout_snapshot().get("state_advancement_enabled", false)):
+    var snapshot := board.get_layout_snapshot()
+    if not bool(snapshot.get("targeting_enabled", false)):
+        failures.append("Board snapshot must expose TARGETING_10_5.")
+    if not bool(snapshot.get("state_advancement_enabled", false)):
         failures.append("Board snapshot must expose enabled state advancement.")
-    if bool(board.get_layout_snapshot().get("interruption_enabled", true)):
-        failures.append("STEP 11 interruption must remain disabled during STEP 10.")
+    if bool(snapshot.get("interruption_enabled", true)):
+        failures.append("STEP 11 interruption must remain disabled during targeting patch 10.5.")
+
+func _verify_wrong_attack_direction(board: CombatBoardPreview) -> void:
+    var quick := _card_definition(board, "basic_quick_attack")
+    if quick.is_empty():
+        return
+    var engine := CombatResolutionEngine.new()
+    var state := engine.make_initial_state(board.top_hud.hud_data, 3, 4)
+    var placement := {
+        "card_id": "basic_quick_attack",
+        "card_name": "속공",
+        "definition": quick,
+        "anchor_index": 1,
+        "span": 1,
+        "indices": PackedInt32Array([1]),
+        "targeting_mode": "attack_direction",
+        "target_ready": true,
+        "target_tile": 2,
+        "direction": -1,
+        "origin_tile": 3
+    }
+    var result := engine.resolve_bundle([placement], {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, state)
+    var found_miss_direction := false
+    for record_value in result.get("resolved_actions", []):
+        var record: Dictionary = record_value
+        if str(record.get("actor", "")) == "player" and str(record.get("outcome", "")) == "miss_direction":
+            found_miss_direction = true
+    if not found_miss_direction:
+        failures.append("An attack aimed away from an adjacent enemy must resolve as miss_direction.")
 
 func _verify_layout(board: CombatBoardPreview, snapshot: Dictionary) -> void:
     var board_bottom := float(snapshot.get("board_bottom", 0.0))
@@ -233,10 +305,10 @@ func _verify_character_anchors(board: CombatBoardPreview, snapshot: Dictionary) 
 
 func _finish() -> void:
     if failures.is_empty():
-        print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_VERIFY_OK")
+        print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_TARGETING_10_5_VERIFY_OK")
         quit(0)
         return
     for failure in failures:
         push_error(failure)
-    print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_VERIFY_FAILED count=%d" % failures.size())
+    print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_TARGETING_10_5_VERIFY_FAILED count=%d" % failures.size())
     quit(1)
