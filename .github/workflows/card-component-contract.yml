@@ -5,27 +5,39 @@ on:
     paths:
       - "project.godot"
       - "data/cards/**"
+      - "data/combat/**"
       - "assets/ui/cards/**"
       - "assets/reference/step_02_character_scale_and_tile_placement.svg"
       - "scenes/ui/**"
+      - "scenes/combat/**"
       - "src/ui/**"
+      - "src/combat/**"
       - "tests/check_card_component_contract.py"
+      - "tests/check_combat_board_contract.py"
       - "tests/verify_step0.gd"
+      - "tests/verify_combat_board.gd"
       - "tools/verify_and_commit_step0.ps1"
       - "tools/verify_and_commit_step0.cmd"
+      - "tools/verify_and_commit_combat_foundation.ps1"
       - ".github/workflows/card-component-contract.yml"
   push:
     paths:
       - "project.godot"
       - "data/cards/**"
+      - "data/combat/**"
       - "assets/ui/cards/**"
       - "assets/reference/step_02_character_scale_and_tile_placement.svg"
       - "scenes/ui/**"
+      - "scenes/combat/**"
       - "src/ui/**"
+      - "src/combat/**"
       - "tests/check_card_component_contract.py"
+      - "tests/check_combat_board_contract.py"
       - "tests/verify_step0.gd"
+      - "tests/verify_combat_board.gd"
       - "tools/verify_and_commit_step0.ps1"
       - "tools/verify_and_commit_step0.cmd"
+      - "tools/verify_and_commit_combat_foundation.ps1"
       - ".github/workflows/card-component-contract.yml"
 
 jobs:
@@ -36,21 +48,31 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Compile contract test
-        run: python -m py_compile tests/check_card_component_contract.py
+      - name: Compile contract tests
+        run: |
+          python -m py_compile tests/check_card_component_contract.py
+          python -m py_compile tests/check_combat_board_contract.py
       - name: Validate card component contract
         run: python tests/check_card_component_contract.py
-      - name: Parse PowerShell automation
+      - name: Validate STEP 1-2 combat board contract
+        run: python tests/check_combat_board_contract.py
+      - name: Parse PowerShell automations
         shell: pwsh
         run: |
-          $tokens = $null
-          $errors = $null
-          [System.Management.Automation.Language.Parser]::ParseFile(
-            (Resolve-Path "tools/verify_and_commit_step0.ps1"),
-            [ref]$tokens,
-            [ref]$errors
-          ) | Out-Null
-          if ($errors.Count -gt 0) {
-            $errors | ForEach-Object { Write-Error $_ }
-            exit 1
+          $paths = @(
+            "tools/verify_and_commit_step0.ps1",
+            "tools/verify_and_commit_combat_foundation.ps1"
+          )
+          foreach ($path in $paths) {
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile(
+              (Resolve-Path $path),
+              [ref]$tokens,
+              [ref]$errors
+            ) | Out-Null
+            if ($errors.Count -gt 0) {
+              $errors | ForEach-Object { Write-Error $_ }
+              exit 1
+            }
           }
