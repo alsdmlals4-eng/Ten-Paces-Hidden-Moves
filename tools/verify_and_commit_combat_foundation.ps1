@@ -137,7 +137,7 @@ try {
 
     $parseOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--editor", "--path", $repoRoot, "--quit") -Label "Import and parse Godot project"
     $step0Output = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_step0.gd") -Label "Verify STEP 0 card components"
-    $boardOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_board.gd") -Label "Verify STEP 1-10 combat foundation"
+    $boardOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_board.gd") -Label "Verify STEP 1-10 plus TARGETING 10.5 combat foundation"
 
     $sideEffects = @(Invoke-NativeChecked -FilePath "git" -Arguments @("status", "--porcelain", "--untracked-files=all") -Label "Check verification side effects" |
         Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
@@ -171,11 +171,14 @@ try {
 - [x] STEP 1-9 presentation, HUD, timing, cards, detail, log, progress, and placement
 - [x] Combat begins at round 1, bundle 1, timing 1
 - [x] STEP 10 resolves in response, quick attack, move, and general order
-- [x] Fixed enemy preview actions use the shared basic-card data
-- [x] Health, stamina, internal energy, momentum, and board position update from results
+- [x] TARGETING 10.5 movement cards require an explicit destination tile
+- [x] TARGETING 10.5 attack cards require an explicit left or right direction
+- [x] Movable and attackable tiles use color, shape, and text cues
+- [x] Progress remains locked until all required targets are selected
+- [x] Wrong-direction attacks resolve as misses
+- [x] Explicit movement targets update the board position
 - [x] Completed bundle advances to the next bundle and round after timing 10
-- [x] Resolution entries append to the combat log
-- [x] Progress locks again until the next bundle is filled
+- [x] Resolution and targeting entries append to the combat log
 - [x] STEP 11 interruption, focus, and fortitude remain disabled
 
 ## Godot import and parse output
@@ -186,13 +189,13 @@ $parseBlock
 
 $step0Block
 
-## STEP 1-10 output
+## STEP 1-10 + TARGETING 10.5 output
 
 $boardBlock
 
 ## Scope limitation
 
-This automation verifies headless structure, parsing, scene instantiation, placement, deterministic bundle resolution, resource and board-state updates, and bundle advancement. STEP 11 interruption behavior, final art quality, Windows pointer feel, minimum-resolution readability, fonts, and color accessibility still require later implementation or manual review.
+This automation verifies headless structure, parsing, scene instantiation, placement, movement-tile selection, attack-direction selection, deterministic bundle resolution, resource and board-state updates, and bundle advancement. STEP 11 interruption behavior, final art quality, Windows pointer feel, minimum-resolution readability, fonts, and color accessibility still require later implementation or manual review.
 "@
     Set-Content -LiteralPath $reportPath -Value $report -Encoding UTF8
 
