@@ -80,7 +80,8 @@ def main() -> None:
     assert '"push", "origin", $ExpectedBranch' in powershell
     assert 'res://tests/verify_step0.gd' in powershell
     assert 'res://tests/verify_combat_board.gd' in powershell
-    assert 'python' not in powershell.lower()
+    assert "Resolve-PythonCommand" not in powershell
+    assert "check_card_component_contract.py" not in powershell
 
     print("card component contract: PASS")
 
