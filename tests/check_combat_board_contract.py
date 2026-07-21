@@ -50,13 +50,14 @@ def main() -> None:
     resolution = load_json("data/combat/combat_resolution_preview.json")
     cards = load_json("data/cards/basic_cards.json")
 
-    assert contract["schema_version"] >= 11
+    assert contract["schema_version"] >= 12
     assert contract["tile_count"] == 10
     assert contract["player_start_tile"] == 3
     assert contract["enemy_start_tile"] == 8
     assert contract["camera_mode"] == "fixed_wide"
     assert contract["top_hud"]["momentum_segments"] == 5
     assert contract["top_hud"]["combat_start_resources"] == "maximum_minus_start_penalties"
+    assert contract["top_hud"]["placement_resource_preview"] is True
     assert hud["momentum_segments"] == 5
     assert hud["round"]["round_number"] == 1
     assert hud["round"]["bundle_index"] == 1
@@ -73,12 +74,13 @@ def main() -> None:
     assert action_timing["current_timing"] == 1
     assert action_timing["actionable_indices"] == [1, 2, 3]
     assert action_timing["targeting_enabled"] is True
+    assert action_timing["resource_preview_enabled"] is True
     assert timing["timing_sequence"] == [3, 3, 4]
     assert timing["current_bundle"] == 1
     assert timing["current_timing"] == 1
 
     progress_contract = contract["progress_button"]
-    assert progress_contract["enable_condition"] == "current_bundle_complete_and_targets_ready"
+    assert progress_contract["enable_condition"] == "current_bundle_complete_targets_and_resources_ready"
     assert progress_contract["request_mode"] == "resolve_bundle"
     assert progress_contract["advances_state"] is True
     assert progress["default_enabled"] is False
@@ -87,6 +89,7 @@ def main() -> None:
 
     assert contract["basic_card_tray"]["card_count"] == 8
     assert contract["basic_card_tray"]["card_ids"] == EXPECTED_CARD_IDS
+    assert contract["basic_card_tray"]["stance_response_combo_enabled"] is True
     assert [card["id"] for card in cards["cards"]] == EXPECTED_CARD_IDS
     assert cards["forbidden_fields"] == ["action_point_cost", "guard_reduction"]
     by_id = {card["id"]: card for card in cards["cards"]}
@@ -100,6 +103,9 @@ def main() -> None:
     assert by_id["basic_footwork"]["internal_cost"] == 1
     assert by_id["basic_heavy_attack"]["range_text"] == "2"
     assert by_id["basic_heavy_attack"]["internal_cost"] == 1
+    assert "50%" in by_id["basic_guard"]["effect_text"]
+    assert "완전히 회피" in by_id["basic_evade"]["effect_text"]
+    assert "대응" in by_id["basic_stance"]["effect_text"]
 
     targeting = contract["action_targeting"]
     assert targeting["patch"] == "10.5"
@@ -116,22 +122,50 @@ def main() -> None:
     assert targeting["unresolved_target_blocks_progress"] is True
     assert targeting["resolution_uses_explicit_target"] is True
 
+    response = contract["response_rules"]
+    assert response["patch"] == "10.6"
+    assert response["guard_same_timing"] == "halve_damage"
+    assert response["guard_same_bundle"] == "reduce_by_guard_block"
+    assert response["guard_comparison"] == "use_larger_reduction"
+    assert response["guard_block"] == 4
+    assert response["evade_same_timing"] == "full_evade"
+    assert response["stance_response_combo"] == "same_slot"
+    assert response["stance_response_scope"] == "current_bundle"
+    assert response["stance_guard_multiplier"] == 1.5
+    assert response["stance_evade_scope"] == "full_bundle_evade"
+
+    placement = contract["action_placement"]
+    assert placement["placement_updates_resources_immediately"] is True
+    assert placement["recovery_updates_resources_immediately"] is True
+    assert placement["insufficient_resources_block_progress"] is True
+    assert placement["progress_requires_resources_ready"] is True
+
     resolution_contract = contract["resolution_engine"]
     assert resolution_contract["resolution_order"] == ["response", "quick_attack", "move", "general"]
     assert resolution_contract["same_phase_attacks"] == "simultaneous_damage"
     assert resolution_contract["uses_explicit_move_target"] is True
     assert resolution_contract["uses_explicit_attack_direction"] is True
     assert resolution_contract["uses_card_specific_move_range"] is True
+    assert resolution_contract["uses_guard_bundle_profiles"] is True
+    assert resolution_contract["uses_stance_response_combo"] is True
+    assert resolution_contract["placement_resource_preview"] is True
     assert resolution_contract["combat_start_resources"] == "maximum_minus_start_penalties"
     assert resolution_contract["interruption_enabled"] is False
     assert res_file(resolution_contract["script"]).exists()
     assert res_file(resolution_contract["data"]).exists()
 
-    assert resolution["schema_version"] >= 3
+    assert resolution["schema_version"] >= 4
     assert resolution["targeting_patch"] == "10.5"
     assert resolution["tile_count"] == 10
     assert resolution["movement_range_source"] == "card.move_range"
     assert resolution["combat_start_resources"] == "maximum_minus_start_penalties"
+    assert resolution["guard_same_timing_damage_multiplier"] == 0.5
+    assert resolution["guard_bundle_mode"] == "fixed_block"
+    assert resolution["guard_uses_higher_reduction"] is True
+    assert resolution["evade_same_timing_full"] is True
+    assert resolution["stance_response_bundle_extension"] is True
+    assert resolution["stance_response_defense_multiplier"] == 1.5
+    assert resolution["placement_resource_preview"] is True
     assert resolution["explicit_player_move_target"] is True
     assert resolution["explicit_player_attack_direction"] is True
     assert set(resolution["enemy_bundles"]) == {"1", "2", "3"}
@@ -141,7 +175,7 @@ def main() -> None:
             assert int(action["direction"]) in {-1, 0, 1}
 
     scope = set(contract["presentation_scope"])
-    assert {"action_targeting", "action_placement", "resolution_engine"} <= scope
+    assert {"action_targeting", "action_placement", "response_rules", "resolution_engine"} <= scope
     excluded = set(contract["excluded_until_later_steps"])
     assert {"interruption_focus_fortitude", "combat_ai", "combat_end_restart"} <= excluded
 
@@ -156,6 +190,7 @@ def main() -> None:
         "src/combat/combat_resolution_engine.gd",
         "src/ui/action_timing_panel.gd",
         "src/ui/action_timing_slot.gd",
+        "src/ui/basic_card_tray.gd",
         "tests/verify_combat_board.gd",
     ]
     for relative in required_files:
@@ -164,18 +199,20 @@ def main() -> None:
     tile_script = (ROOT / "src/combat/combat_board_tile.gd").read_text(encoding="utf-8")
     timing_script = (ROOT / "src/ui/action_timing_panel.gd").read_text(encoding="utf-8")
     slot_script = (ROOT / "src/ui/action_timing_slot.gd").read_text(encoding="utf-8")
+    tray_script = (ROOT / "src/ui/basic_card_tray.gd").read_text(encoding="utf-8")
     engine_script = (ROOT / "src/combat/combat_resolution_engine.gd").read_text(encoding="utf-8")
     controller = (ROOT / "src/combat/combat_board_preview.gd").read_text(encoding="utf-8")
     verifier = (ROOT / "tests/verify_combat_board.gd").read_text(encoding="utf-8")
 
     assert all(token in tile_script for token in ("signal tile_clicked", "set_interaction_state", "movable", "attackable"))
-    assert all(token in timing_script for token in ("set_placement_target", "get_pending_target_anchor", "are_current_bundle_targets_ready", "target_ready"))
-    assert all(token in slot_script for token in ("set_target_info", "target_ready", "대상 선택"))
-    assert all(token in engine_script for token in ("miss_direction", "target_tile", "selected_direction", "requested_tile", "move_range", "start_penalties", "_prepare_combatant_start"))
+    assert all(token in timing_script for token in ("set_placement_target", "get_pending_target_anchor", "are_current_bundle_targets_ready", "are_current_bundle_resources_ready", "preview_player_plan", "projected_combat_state"))
+    assert all(token in slot_script for token in ("set_target_info", "set_resource_info", "resource_ready", "자원 부족"))
+    assert all(token in tray_script for token in ("build_stance_response_combo", "stance_response_combo", "combo_parts", "태세+"))
+    assert all(token in engine_script for token in ("miss_direction", "target_tile", "selected_direction", "requested_tile", "move_range", "start_penalties", "_prepare_combatant_start", "preview_player_plan", "_prepare_bundle_defenses", "guard_timings", "evade_bundle", "stance_response_defense_multiplier"))
     assert all(token in controller for token in ("_begin_targeting_for_anchor", "_on_board_tile_clicked", "set_placement_target", "targeting_enabled", "move_range"))
     assert all(token in verifier for token in ("TARGETING_10_5", "_on_board_tile_clicked", "miss_direction", "basic_footwork"))
 
-    print("combat board STEP 1-10 plus TARGETING 10.5 rule extension contract: PASS")
+    print("combat board STEP 1-10 plus TARGETING 10.5 and RESPONSE 10.6 contract: PASS")
 
 
 if __name__ == "__main__":
