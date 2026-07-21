@@ -37,6 +37,7 @@ var _tile_gap := 0.0
 var _board_top := 0.0
 var _detail_pinned := false
 var _pinned_card_id := ""
+var _selected_action_definition: Dictionary = {}
 var _progress_request_count := 0
 
 func _ready() -> void:
@@ -45,17 +46,16 @@ func _ready() -> void:
     _build_structure()
     resized.connect(_layout_board)
     call_deferred("_layout_board")
+    call_deferred("_sync_progress_availability")
 
 func _load_contract() -> Dictionary:
     if not FileAccess.file_exists(CONTRACT_PATH):
         push_error("Combat board contract was not found: %s" % CONTRACT_PATH)
         return {}
-
     var file := FileAccess.open(CONTRACT_PATH, FileAccess.READ)
     if file == null:
         push_error("Combat board contract could not be opened: %s" % CONTRACT_PATH)
         return {}
-
     var parsed = JSON.parse_string(file.get_as_text())
     if typeof(parsed) != TYPE_DICTIONARY:
         push_error("Combat board contract root must be a Dictionary.")
@@ -94,6 +94,8 @@ func _build_structure() -> void:
 
     action_timing_panel = ACTION_TIMING_SCENE.instantiate() as ActionTimingPanel
     action_timing_panel.name = "ActionTimingPanel"
+    action_timing_panel.slot_clicked.connect(_on_timing_slot_clicked)
+    action_timing_panel.placement_changed.connect(_on_placement_changed)
     add_child(action_timing_panel)
 
     combat_progress_button = PROGRESS_BUTTON_SCENE.instantiate() as CombatProgressButton
@@ -105,7 +107,7 @@ func _build_structure() -> void:
     basic_card_tray.name = "BasicCardTray"
     basic_card_tray.card_hovered.connect(_on_card_hovered)
     basic_card_tray.card_unhovered.connect(_on_card_unhovered)
-    basic_card_tray.card_clicked.connect(_on_card_clicked)
+    basic_card_tray.action_card_selected.connect(_on_action_card_selected)
     add_child(basic_card_tray)
 
     top_hud = TOP_HUD_SCENE.instantiate() as TopCombatHud
@@ -139,7 +141,7 @@ func _build_structure() -> void:
     enemy_character.name = "EnemyCharacter"
     _character_layer.add_child(enemy_character)
 
-    set_meta("step", 8)
+    set_meta("step", 9)
     set_meta("background_component", "BattleBackground")
     set_meta("background_asset", "res://assets/backgrounds/step3_mountain_fortress.svg")
     set_meta("hud_component", "TopCombatHud")
@@ -157,10 +159,11 @@ func _build_structure() -> void:
     set_meta("card_detail_component", "CardDetailPanel")
     set_meta("combat_log_component", "CombatLogPanel")
     set_meta("information_interactions_enabled", true)
-    set_meta("action_placement_enabled", false)
+    set_meta("action_placement_enabled", true)
+    set_meta("progress_requires_complete_bundle", true)
     set_meta("lower_status_panels", false)
     set_meta("lower_skill_panel", true)
-    set_meta("card_interactions_enabled", false)
+    set_meta("card_interactions_enabled", true)
     set_meta("tile_count", tile_count)
     set_meta("player_start_tile", int(contract.get("player_start_tile", 3)))
     set_meta("enemy_start_tile", int(contract.get("enemy_start_tile", 8)))
@@ -273,15 +276,64 @@ func _on_card_unhovered(_card_id: String) -> void:
         return
     card_detail_panel.clear_definition()
 
-func _on_card_clicked(definition: Dictionary) -> void:
+func _on_action_card_selected(definition: Dictionary) -> void:
     var card_id := str(definition.get("id", ""))
-    if _detail_pinned and card_id == _pinned_card_id:
+    var selected_id := str(_selected_action_definition.get("id", ""))
+    if not selected_id.is_empty() and selected_id == card_id:
+        _clear_action_selection()
         _clear_card_detail()
         return
+    _selected_action_definition = definition.duplicate(true)
+    basic_card_tray.set_selected_card(card_id)
     _detail_pinned = true
     _pinned_card_id = card_id
     basic_card_tray.set_pinned_card(card_id)
     card_detail_panel.show_definition(definition, true)
+
+func _on_timing_slot_clicked(timing_index: int) -> void:
+    if action_timing_panel.has_assignment_at(timing_index):
+        var removed := action_timing_panel.remove_at(timing_index)
+        if not removed.is_empty() and is_instance_valid(combat_log_panel):
+            combat_log_panel.append_entry("[배치 해제] %s · %s" % [str(removed.get("card_name", "")), _placement_timing_text(removed)], "system")
+        return
+    if _selected_action_definition.is_empty():
+        return
+    var placed := action_timing_panel.place_card(_selected_action_definition, timing_index)
+    if placed:
+        var span := maxi(1, int(_selected_action_definition.get("action_slots", 1)))
+        var placement := {
+            "card_name": str(_selected_action_definition.get("name", "")),
+            "indices": _make_timing_indices(timing_index, span)
+        }
+        if is_instance_valid(combat_log_panel):
+            combat_log_panel.append_entry("[배치] %s · %s" % [str(placement.get("card_name", "")), _placement_timing_text(placement)], "system")
+        _clear_action_selection()
+        _clear_card_detail()
+    elif is_instance_valid(combat_log_panel):
+        combat_log_panel.append_entry("[배치 불가] 연속된 빈 행동 슬롯이 부족합니다.", "system")
+
+func _make_timing_indices(start_index: int, span: int) -> PackedInt32Array:
+    var result := PackedInt32Array()
+    for offset in range(span):
+        result.append(start_index + offset)
+    return result
+
+func _placement_timing_text(placement: Dictionary) -> String:
+    var indices: PackedInt32Array = placement.get("indices", PackedInt32Array())
+    if indices.is_empty():
+        return ""
+    if indices.size() == 1:
+        return "%d수" % int(indices[0])
+    return "%d~%d수" % [int(indices[0]), int(indices[indices.size() - 1])]
+
+func _on_placement_changed(_snapshot: Dictionary) -> void:
+    _sync_progress_availability()
+
+func _sync_progress_availability() -> void:
+    if not is_instance_valid(action_timing_panel) or not is_instance_valid(combat_progress_button):
+        return
+    combat_progress_button.set_progress_enabled(action_timing_panel.is_current_bundle_complete())
+    set_meta("current_bundle_complete", action_timing_panel.is_current_bundle_complete())
 
 func _on_progress_requested(context: Dictionary) -> void:
     _progress_request_count += 1
@@ -290,6 +342,11 @@ func _on_progress_requested(context: Dictionary) -> void:
         var round_number := int(context.get("round_number", 1))
         var bundle_index := int(context.get("bundle_index", 1))
         combat_log_panel.append_entry("[진행] %d라운드 %d묶음 진행 요청" % [round_number, bundle_index], "system")
+
+func _clear_action_selection() -> void:
+    _selected_action_definition.clear()
+    if is_instance_valid(basic_card_tray):
+        basic_card_tray.clear_action_selection()
 
 func _clear_card_detail() -> void:
     _detail_pinned = false
@@ -300,21 +357,23 @@ func _clear_card_detail() -> void:
         card_detail_panel.clear_definition()
 
 func _gui_input(event: InputEvent) -> void:
-    if not _detail_pinned or not event is InputEventMouseButton:
-        return
-    var mouse_event := event as InputEventMouseButton
-    if mouse_event.button_index != MOUSE_BUTTON_LEFT or not mouse_event.pressed:
-        return
-    var point := mouse_event.position
-    if _control_contains_point(card_detail_panel, point):
-        return
-    if _control_contains_point(combat_log_panel, point):
-        return
-    if _control_contains_point(combat_progress_button, point):
-        return
-    if _control_contains_point(basic_card_tray, point):
-        return
-    _clear_card_detail()
+    if (_detail_pinned or not _selected_action_definition.is_empty()) and event is InputEventMouseButton:
+        var mouse_event := event as InputEventMouseButton
+        if mouse_event.button_index != MOUSE_BUTTON_LEFT or not mouse_event.pressed:
+            return
+        var point := mouse_event.position
+        if _control_contains_point(card_detail_panel, point):
+            return
+        if _control_contains_point(combat_log_panel, point):
+            return
+        if _control_contains_point(combat_progress_button, point):
+            return
+        if _control_contains_point(action_timing_panel, point):
+            return
+        if _control_contains_point(basic_card_tray, point):
+            return
+        _clear_action_selection()
+        _clear_card_detail()
 
 func _control_contains_point(control: Control, point: Vector2) -> bool:
     if not is_instance_valid(control) or not control.visible:
@@ -371,8 +430,10 @@ func get_layout_snapshot() -> Dictionary:
         "card_detail_snapshot": detail_snapshot,
         "combat_log_ready": is_instance_valid(combat_log_panel),
         "combat_log_snapshot": log_snapshot,
+        "selected_action_card_id": str(_selected_action_definition.get("id", "")),
+        "current_bundle_complete": action_timing_panel.is_current_bundle_complete() if is_instance_valid(action_timing_panel) else false,
         "information_interactions_enabled": true,
-        "action_placement_enabled": false,
+        "action_placement_enabled": true,
         "state_advancement_enabled": false,
         "lower_status_panels": false,
         "lower_skill_panel": true,
