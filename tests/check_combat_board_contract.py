@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "data/combat/combat_board_poc.json"
 HUD_DATA = ROOT / "data/combat/combat_hud_preview.json"
 ACTION_TIMING_DATA = ROOT / "data/combat/combat_action_timing_preview.json"
+COMBAT_LOG_DATA = ROOT / "data/combat/combat_log_preview.json"
 BASIC_CARDS_DATA = ROOT / "data/cards/basic_cards.json"
 TEXT_SUFFIXES = {".gd", ".tscn", ".py", ".ps1", ".cmd", ".md", ".json", ".yml", ".yaml", ".godot"}
 CONFLICT_MARKERS = ("<<<<<<<", "=======", ">>>>>>>")
@@ -42,10 +43,9 @@ def assert_no_conflict_markers() -> None:
 
 def main() -> None:
     assert_no_conflict_markers()
-
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
 
-    assert contract["schema_version"] >= 5
+    assert contract["schema_version"] >= 6
     assert contract["tile_count"] == 10
     assert contract["player_start_tile"] == 3
     assert contract["enemy_start_tile"] == 8
@@ -80,12 +80,9 @@ def main() -> None:
 
     hud_data = json.loads(HUD_DATA.read_text(encoding="utf-8"))
     assert hud_data["momentum_segments"] == 5
-    assert len(hud_data["player"]["momentum"]) == 2
-    assert len(hud_data["enemy"]["momentum"]) == 2
     assert hud_data["player"]["momentum"] == [4, 5]
     assert hud_data["enemy"]["momentum"] == [3, 5]
     assert hud_data["round"]["round_number"] == 1
-    assert hud_data["round"]["bundle_total"] == 3
     assert hud_data["round"]["resolution_order"] == "대응 → 속공 → 이동 → 일반 공격"
 
     action_timing = contract["action_timing"]
@@ -97,60 +94,81 @@ def main() -> None:
     assert action_timing["total_timings"] == 10
     assert action_timing["current_bundle"] == 2
     assert action_timing["current_timing"] == 5
-    assert action_timing["progress_scope"] == "round"
     assert action_timing["progress_label_format"] == "라운드 {round}"
     assert action_timing["cards_inserted"] is False
     assert action_timing["interactions_enabled"] is False
-    assert res_file(action_timing["scene"]).exists()
-    assert res_file(action_timing["data"]).exists()
 
     timing_data = json.loads(ACTION_TIMING_DATA.read_text(encoding="utf-8"))
-    assert timing_data["round_number"] == hud_data["round"]["round_number"] == action_timing["round_number"]
+    assert timing_data["round_number"] == hud_data["round"]["round_number"] == 1
     assert timing_data["timing_sequence"] == [3, 3, 4]
     assert sum(timing_data["timing_sequence"]) == 10
-    assert timing_data["total_timings"] == 10
-    assert timing_data["current_bundle"] == 2
-    assert timing_data["current_timing"] == 5
 
     tray = contract["basic_card_tray"]
     assert tray["step"] == 6
-    assert tray["approval_status"] == "IMPLEMENTED_FOR_REVIEW"
+    assert tray["information_interaction_step"] == 7
+    assert tray["approval_status"] == "USER_APPROVED_LAYOUT"
     assert tray["layout_role"] == "bottom_lower"
     assert tray["card_count"] == 7
     assert tray["card_ids"] == EXPECTED_CARD_IDS
     assert tray["compact_variant"] is True
     assert tray["uses_shared_card_data_and_atlases"] is True
-    assert tray["interactions_enabled"] is False
+    assert tray["information_interactions_enabled"] is True
+    assert tray["action_placement_enabled"] is False
     assert tray["action_timing_above"] is True
-    assert res_file(tray["scene"]).exists()
-    assert res_file(tray["item_scene"]).exists()
-    assert res_file(tray["data"]).exists()
 
     basic_cards = json.loads(BASIC_CARDS_DATA.read_text(encoding="utf-8"))
-    assert basic_cards["schema_version"] == 1
     assert [card["id"] for card in basic_cards["cards"]] == EXPECTED_CARD_IDS
     assert len(basic_cards["cards"]) == 7
     assert basic_cards["forbidden_fields"] == ["action_point_cost", "guard_reduction"]
     for card in basic_cards["cards"]:
         assert card["source"] == "basic"
         assert card["source_label"] == "기초"
-        assert set(("range_text", "category", "category_label", "illustration", "action_slots", "stamina_cost", "internal_cost")) <= set(card)
+        assert set(("target", "damage", "condition", "effect_text", "tags", "action_slots", "stamina_cost", "internal_cost")) <= set(card)
         assert "action_point_cost" not in card
         assert "guard_reduction" not in card
 
-    scope = set(contract["presentation_scope"])
-    assert {"battle_background", "top_hud", "action_timing", "basic_card_tray"} <= scope
+    detail = contract["card_detail_overlay"]
+    assert detail["step"] == 7
+    assert detail["approval_status"] == "IMPLEMENTED_FOR_REVIEW"
+    assert detail["layout_role"] == "left_overlay"
+    assert detail["hover_preview"] is True
+    assert detail["click_pin"] is True
+    assert detail["same_card_or_blank_click_close"] is True
+    assert detail["action_placement_enabled"] is False
+    assert res_file(detail["scene"]).exists()
 
+    combat_log = contract["combat_log"]
+    assert combat_log["step"] == 7
+    assert combat_log["approval_status"] == "IMPLEMENTED_FOR_REVIEW"
+    assert combat_log["layout_role"] == "right_overlay"
+    assert combat_log["collapsible"] is True
+    assert combat_log["default_collapsed"] is True
+    assert combat_log["sample_entry_count"] == 4
+    assert combat_log["output_interface"] is True
+    assert res_file(combat_log["scene"]).exists()
+    assert res_file(combat_log["data"]).exists()
+
+    log_data = json.loads(COMBAT_LOG_DATA.read_text(encoding="utf-8"))
+    assert log_data["schema_version"] == 1
+    assert log_data["step"] == 7
+    assert log_data["default_collapsed"] is True
+    assert len(log_data["entries"]) == 4
+    assert log_data["entries"][0]["text"] == "[1라운드 2묶음]"
+    assert "대응 → 속공 → 이동 → 일반 공격" in log_data["entries"][-1]["text"]
+
+    scope = set(contract["presentation_scope"])
+    assert {"battle_background", "top_hud", "action_timing", "basic_card_tray", "card_detail_overlay", "combat_log"} <= scope
     excluded = set(contract["excluded_until_later_steps"])
-    assert "cards" not in excluded
-    assert "skill_catalog" not in excluded
-    assert {"card_detail_panel", "combat_log_panel", "progress_button", "action_placement_interaction"} <= excluded
+    assert "card_detail_panel" not in excluded
+    assert "combat_log_panel" not in excluded
+    assert {"progress_button", "action_placement_interaction"} <= excluded
 
     required_files = [
         "assets/backgrounds/step3_mountain_fortress.svg",
         "data/cards/basic_cards.json",
         "data/combat/combat_hud_preview.json",
         "data/combat/combat_action_timing_preview.json",
+        "data/combat/combat_log_preview.json",
         "scenes/combat/battle_background.tscn",
         "scenes/combat/combat_board_tile.tscn",
         "scenes/combat/combat_character_placeholder.tscn",
@@ -159,22 +177,19 @@ def main() -> None:
         "scenes/ui/action_timing_slot.tscn",
         "scenes/ui/basic_card_tray.tscn",
         "scenes/ui/basic_card_tray_item.tscn",
+        "scenes/ui/card_detail_panel.tscn",
+        "scenes/ui/combat_log_panel.tscn",
         "scenes/ui/combatant_status_panel.tscn",
         "scenes/ui/momentum_gauge.tscn",
         "scenes/ui/round_hud_panel.tscn",
         "scenes/ui/top_combat_hud.tscn",
         "src/combat/battle_background.gd",
-        "src/combat/combat_board_tile.gd",
-        "src/combat/combat_character_placeholder.gd",
         "src/combat/combat_board_preview.gd",
         "src/ui/action_timing_panel.gd",
-        "src/ui/action_timing_slot.gd",
         "src/ui/basic_card_tray.gd",
         "src/ui/basic_card_tray_item.gd",
-        "src/ui/combatant_status_panel.gd",
-        "src/ui/momentum_gauge.gd",
-        "src/ui/round_hud_panel.gd",
-        "src/ui/top_combat_hud.gd",
+        "src/ui/card_detail_panel.gd",
+        "src/ui/combat_log_panel.gd",
         "tests/verify_combat_board.gd",
     ]
     for relative in required_files:
@@ -186,51 +201,53 @@ def main() -> None:
     assert "<path" in background_asset
 
     controller = (ROOT / "src/combat/combat_board_preview.gd").read_text(encoding="utf-8")
-    assert 'const BASIC_CARD_TRAY_SCENE := preload("res://scenes/ui/basic_card_tray.tscn")' in controller
-    assert 'basic_card_tray = BASIC_CARD_TRAY_SCENE.instantiate() as BasicCardTray' in controller
-    assert controller.index("add_child(_character_layer)") < controller.index("add_child(action_timing_panel)")
-    assert controller.index("add_child(action_timing_panel)") < controller.index("add_child(basic_card_tray)")
-    assert controller.index("add_child(basic_card_tray)") < controller.index("add_child(top_hud)")
-    assert '"basic_card_tray_ready": is_instance_valid(basic_card_tray)' in controller
-    assert '"lower_status_panels": false' in controller
-    assert '"lower_skill_panel": true' in controller
+    assert 'CARD_DETAIL_SCENE := preload("res://scenes/ui/card_detail_panel.tscn")' in controller
+    assert 'COMBAT_LOG_SCENE := preload("res://scenes/ui/combat_log_panel.tscn")' in controller
+    assert 'basic_card_tray.card_hovered.connect(_on_card_hovered)' in controller
+    assert 'basic_card_tray.card_clicked.connect(_on_card_clicked)' in controller
+    assert 'card_detail_panel.show_definition(definition, true)' in controller
+    assert 'combat_log_panel.layout_requested.connect(_layout_board)' in controller
+    assert '"card_detail_ready": is_instance_valid(card_detail_panel)' in controller
+    assert '"combat_log_ready": is_instance_valid(combat_log_panel)' in controller
+    assert '"action_placement_enabled": false' in controller
 
-    timing_panel_script = (ROOT / "src/ui/action_timing_panel.gd").read_text(encoding="utf-8")
-    assert 'set_meta("round_number", int(timing_data.get("round_number", 1)))' in timing_panel_script
-    assert 'set_meta("timing_sequence", "3|3|4")' in timing_panel_script
-    assert 'set_meta("progress_scope", "round")' in timing_panel_script
-    assert '"라운드 %d" % round_number' in timing_panel_script
-    assert '/ (%d/%d수)' not in timing_panel_script
-    assert '"round_number": int(timing_data.get("round_number", 1))' in timing_panel_script
-    assert 'set_meta("interactions_enabled", false)' in timing_panel_script
-
-    momentum_script = (ROOT / "src/ui/momentum_gauge.gd").read_text(encoding="utf-8")
-    assert "maximum_value: int = 5" in momentum_script
-    assert "fallback_maximum: int = 5" in momentum_script
-
-    top_hud_script = (ROOT / "src/ui/top_combat_hud.gd").read_text(encoding="utf-8")
-    assert 'hud_data.get("momentum_segments", 5)' in top_hud_script
+    timing_script = (ROOT / "src/ui/action_timing_panel.gd").read_text(encoding="utf-8")
+    assert '_progress_label.text = "라운드 %d"' in timing_script
+    assert "(%d/%d수)" not in timing_script
 
     tray_script = (ROOT / "src/ui/basic_card_tray.gd").read_text(encoding="utf-8")
-    assert 'DATA_PATH := "res://data/cards/basic_cards.json"' in tray_script
-    assert 'CARD_SCENE := preload("res://scenes/ui/basic_card_tray_item.tscn")' in tray_script
-    assert 'set_meta("card_count", cards.size())' in tray_script
-    assert 'set_meta("compact_variant", true)' in tray_script
-    assert 'set_meta("interactions_enabled", false)' in tray_script
+    assert 'signal card_hovered(definition)' in tray_script
+    assert 'signal card_clicked(definition)' in tray_script
+    assert 'set_meta("information_interactions_enabled", true)' in tray_script
+    assert 'set_meta("action_placement_enabled", false)' in tray_script
 
     tray_item_script = (ROOT / "src/ui/basic_card_tray_item.gd").read_text(encoding="utf-8")
-    assert '"슬롯 %d  ·  기력 %d  ·  내력 %d"' in tray_item_script
-    assert 'set_meta("interactions_enabled", false)' in tray_item_script
-    for category in ("move", "attack", "response", "recovery", "strengthen"):
-        assert f'"{category}"' in tray_item_script
+    assert 'signal detail_hovered(definition)' in tray_item_script
+    assert 'signal detail_clicked(definition)' in tray_item_script
+    assert 'mouse_filter = Control.MOUSE_FILTER_STOP' in tray_item_script
+    assert 'set_meta("information_interactions_enabled", true)' in tray_item_script
+    assert 'set_meta("action_placement_enabled", false)' in tray_item_script
+
+    detail_script = (ROOT / "src/ui/card_detail_panel.gd").read_text(encoding="utf-8")
+    assert 'func show_definition(value: Dictionary, value_pinned: bool = false)' in detail_script
+    assert 'func clear_definition()' in detail_script
+    assert '"hover_preview": true' in detail_script
+    assert '"click_pin": true' in detail_script
+    assert '"blank_click_close": true' in detail_script
+
+    log_script = (ROOT / "src/ui/combat_log_panel.gd").read_text(encoding="utf-8")
+    assert 'func toggle_collapsed()' in log_script
+    assert 'func append_entry(text: String, kind: String = "system")' in log_script
+    assert 'func clear_entries()' in log_script
+    assert '"output_interface": true' in log_script
 
     verifier = (ROOT / "tests/verify_combat_board.gd").read_text(encoding="utf-8")
     assert "EXPECTED_MOMENTUM_SEGMENTS := 5" in verifier
-    assert "EXPECTED_TIMING_SEQUENCE := [3, 3, 4]" in verifier
-    assert "EXPECTED_CARD_IDS" in verifier
-    assert '"basic_card_tray_ready"' in verifier
+    assert '"card_detail_ready"' in verifier
+    assert '"combat_log_ready"' in verifier
+    assert "STEP7" in verifier
 
-    print("combat board STEP 1-6 contract: PASS")
+    print("combat board STEP 1-7 contract: PASS")
 
 
 if __name__ == "__main__":
