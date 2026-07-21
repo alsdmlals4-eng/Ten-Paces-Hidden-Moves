@@ -84,6 +84,7 @@ def main() -> None:
     assert len(hud_data["enemy"]["momentum"]) == 2
     assert hud_data["player"]["momentum"][1] == 6
     assert hud_data["enemy"]["momentum"][1] == 6
+    assert hud_data["round"]["round_number"] == 1
     assert hud_data["round"]["bundle_total"] == 3
     assert hud_data["round"]["resolution_order"] == "대응 → 속공 → 이동 → 일반 공격"
 
@@ -91,17 +92,20 @@ def main() -> None:
     assert action_timing["step"] == 5
     assert action_timing["approval_status"] == "USER_APPROVED_LAYOUT"
     assert action_timing["layout_role"] == "bottom_upper"
+    assert action_timing["round_number"] == 1
     assert action_timing["timing_sequence"] == [3, 3, 4]
     assert action_timing["total_timings"] == 10
     assert action_timing["current_bundle"] == 2
     assert action_timing["current_timing"] == 5
     assert action_timing["progress_scope"] == "round"
+    assert action_timing["progress_label_format"] == "라운드 {round} / ({current}/{total}수)"
     assert action_timing["cards_inserted"] is False
     assert action_timing["interactions_enabled"] is False
     assert res_file(action_timing["scene"]).exists()
     assert res_file(action_timing["data"]).exists()
 
     timing_data = json.loads(ACTION_TIMING_DATA.read_text(encoding="utf-8"))
+    assert timing_data["round_number"] == hud_data["round"]["round_number"] == action_timing["round_number"]
     assert timing_data["timing_sequence"] == [3, 3, 4]
     assert sum(timing_data["timing_sequence"]) == 10
     assert timing_data["total_timings"] == 10
@@ -192,9 +196,11 @@ def main() -> None:
     assert '"lower_skill_panel": true' in controller
 
     timing_panel_script = (ROOT / "src/ui/action_timing_panel.gd").read_text(encoding="utf-8")
+    assert 'set_meta("round_number", int(timing_data.get("round_number", 1)))' in timing_panel_script
     assert 'set_meta("timing_sequence", "3|3|4")' in timing_panel_script
     assert 'set_meta("progress_scope", "round")' in timing_panel_script
-    assert '"라운드 진행 %d / %d수"' in timing_panel_script
+    assert '"라운드 %d / (%d/%d수)"' in timing_panel_script
+    assert '"round_number": int(timing_data.get("round_number", 1))' in timing_panel_script
     assert 'set_meta("interactions_enabled", false)' in timing_panel_script
 
     tray_script = (ROOT / "src/ui/basic_card_tray.gd").read_text(encoding="utf-8")
