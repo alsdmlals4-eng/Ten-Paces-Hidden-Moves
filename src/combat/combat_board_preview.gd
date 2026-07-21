@@ -6,6 +6,8 @@ const BACKGROUND_SCENE := preload("res://scenes/combat/battle_background.tscn")
 const TOP_HUD_SCENE := preload("res://scenes/ui/top_combat_hud.tscn")
 const ACTION_TIMING_SCENE := preload("res://scenes/ui/action_timing_panel.tscn")
 const BASIC_CARD_TRAY_SCENE := preload("res://scenes/ui/basic_card_tray.tscn")
+const CARD_DETAIL_SCENE := preload("res://scenes/ui/card_detail_panel.tscn")
+const COMBAT_LOG_SCENE := preload("res://scenes/ui/combat_log_panel.tscn")
 const TILE_SCENE := preload("res://scenes/combat/combat_board_tile.tscn")
 const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placeholder.tscn")
 
@@ -18,6 +20,8 @@ var battle_background: BattleBackground
 var top_hud: TopCombatHud
 var action_timing_panel: ActionTimingPanel
 var basic_card_tray: BasicCardTray
+var card_detail_panel: CardDetailPanel
+var combat_log_panel: CombatLogPanel
 var player_character: CombatCharacterPlaceholder
 var enemy_character: CombatCharacterPlaceholder
 
@@ -29,8 +33,11 @@ var _tile_width := 0.0
 var _tile_height := 0.0
 var _tile_gap := 0.0
 var _board_top := 0.0
+var _detail_pinned := false
+var _pinned_card_id := ""
 
 func _ready() -> void:
+    mouse_filter = Control.MOUSE_FILTER_PASS
     contract = _load_contract()
     _build_structure()
     resized.connect(_layout_board)
@@ -88,11 +95,24 @@ func _build_structure() -> void:
 
     basic_card_tray = BASIC_CARD_TRAY_SCENE.instantiate() as BasicCardTray
     basic_card_tray.name = "BasicCardTray"
+    basic_card_tray.card_hovered.connect(_on_card_hovered)
+    basic_card_tray.card_unhovered.connect(_on_card_unhovered)
+    basic_card_tray.card_clicked.connect(_on_card_clicked)
     add_child(basic_card_tray)
 
     top_hud = TOP_HUD_SCENE.instantiate() as TopCombatHud
     top_hud.name = "TopCombatHud"
     add_child(top_hud)
+
+    card_detail_panel = CARD_DETAIL_SCENE.instantiate() as CardDetailPanel
+    card_detail_panel.name = "CardDetailOverlay"
+    card_detail_panel.visible = false
+    add_child(card_detail_panel)
+
+    combat_log_panel = COMBAT_LOG_SCENE.instantiate() as CombatLogPanel
+    combat_log_panel.name = "CombatLogOverlay"
+    combat_log_panel.layout_requested.connect(_layout_board)
+    add_child(combat_log_panel)
 
     var tile_count := int(contract.get("tile_count", 10))
     var anchor_ratio := float(contract.get("foot_anchor_y_ratio", 0.68))
@@ -111,7 +131,7 @@ func _build_structure() -> void:
     enemy_character.name = "EnemyCharacter"
     _character_layer.add_child(enemy_character)
 
-    set_meta("step", 6)
+    set_meta("step", 7)
     set_meta("background_component", "BattleBackground")
     set_meta("background_asset", "res://assets/backgrounds/step3_mountain_fortress.svg")
     set_meta("hud_component", "TopCombatHud")
@@ -122,6 +142,10 @@ func _build_structure() -> void:
     set_meta("basic_card_tray_component", "BasicCardTray")
     set_meta("basic_card_tray_layout", "bottom_lower")
     set_meta("basic_card_count", 7)
+    set_meta("card_detail_component", "CardDetailPanel")
+    set_meta("combat_log_component", "CombatLogPanel")
+    set_meta("information_interactions_enabled", true)
+    set_meta("action_placement_enabled", false)
     set_meta("lower_status_panels", false)
     set_meta("lower_skill_panel", true)
     set_meta("card_interactions_enabled", false)
@@ -155,6 +179,22 @@ func _layout_board() -> void:
         var tray_top := basic_card_tray.position.y if is_instance_valid(basic_card_tray) else size.y - tray_height - lower_bottom
         action_timing_panel.position = Vector2(lower_margin, tray_top - timing_height - panel_gap)
         action_timing_panel.size = Vector2(maxf(1.0, size.x - lower_margin * 2.0), timing_height)
+
+    var overlay_top := 145.0
+    var overlay_bottom := action_timing_panel.position.y - 10.0 if is_instance_valid(action_timing_panel) else size.y - 290.0
+    var overlay_height := maxf(1.0, overlay_bottom - overlay_top)
+    var overlay_margin := maxf(12.0, size.x * 0.014)
+
+    if is_instance_valid(card_detail_panel):
+        var detail_width := clampf(size.x * 0.275, 310.0, 360.0)
+        card_detail_panel.position = Vector2(overlay_margin, overlay_top)
+        card_detail_panel.size = Vector2(detail_width, minf(420.0, overlay_height))
+
+    if is_instance_valid(combat_log_panel):
+        var expanded_width := clampf(size.x * 0.28, 300.0, 360.0)
+        var log_width := combat_log_panel.get_preferred_width(expanded_width)
+        combat_log_panel.position = Vector2(size.x - overlay_margin - log_width, overlay_top)
+        combat_log_panel.size = Vector2(log_width, overlay_height)
 
     var tile_count := tiles.size()
     var gap_ratio := float(contract.get("tile_gap_to_tile_width", 0.06))
@@ -202,6 +242,54 @@ func _layout_board() -> void:
     set_meta("tile_height", _tile_height)
     set_meta("tile_gap", _tile_gap)
 
+func _on_card_hovered(definition: Dictionary) -> void:
+    if _detail_pinned:
+        return
+    card_detail_panel.show_definition(definition, false)
+
+func _on_card_unhovered(_card_id: String) -> void:
+    if _detail_pinned:
+        return
+    card_detail_panel.clear_definition()
+
+func _on_card_clicked(definition: Dictionary) -> void:
+    var card_id := str(definition.get("id", ""))
+    if _detail_pinned and card_id == _pinned_card_id:
+        _clear_card_detail()
+        return
+    _detail_pinned = true
+    _pinned_card_id = card_id
+    basic_card_tray.set_pinned_card(card_id)
+    card_detail_panel.show_definition(definition, true)
+
+func _clear_card_detail() -> void:
+    _detail_pinned = false
+    _pinned_card_id = ""
+    if is_instance_valid(basic_card_tray):
+        basic_card_tray.clear_card_focus()
+    if is_instance_valid(card_detail_panel):
+        card_detail_panel.clear_definition()
+
+func _gui_input(event: InputEvent) -> void:
+    if not _detail_pinned or not event is InputEventMouseButton:
+        return
+    var mouse_event := event as InputEventMouseButton
+    if mouse_event.button_index != MOUSE_BUTTON_LEFT or not mouse_event.pressed:
+        return
+    var point := mouse_event.position
+    if _control_contains_point(card_detail_panel, point):
+        return
+    if _control_contains_point(combat_log_panel, point):
+        return
+    if _control_contains_point(basic_card_tray, point):
+        return
+    _clear_card_detail()
+
+func _control_contains_point(control: Control, point: Vector2) -> bool:
+    if not is_instance_valid(control) or not control.visible:
+        return false
+    return Rect2(control.position, control.size).has_point(point)
+
 func get_tile(index: int) -> CombatBoardTile:
     if index < 1 or index > tiles.size():
         return null
@@ -224,6 +312,8 @@ func get_layout_snapshot() -> Dictionary:
     var hud_snapshot := top_hud.get_hud_snapshot() if is_instance_valid(top_hud) else {}
     var timing_snapshot := action_timing_panel.get_timing_snapshot() if is_instance_valid(action_timing_panel) else {}
     var tray_snapshot := basic_card_tray.get_tray_snapshot() if is_instance_valid(basic_card_tray) else {}
+    var detail_snapshot := card_detail_panel.get_detail_snapshot() if is_instance_valid(card_detail_panel) else {}
+    var log_snapshot := combat_log_panel.get_log_snapshot() if is_instance_valid(combat_log_panel) else {}
     return {
         "layout_ready": _layout_ready,
         "background_ready": is_instance_valid(battle_background) and battle_background.texture != null,
@@ -238,6 +328,12 @@ func get_layout_snapshot() -> Dictionary:
         "basic_card_tray_snapshot": tray_snapshot,
         "basic_card_tray_top": basic_card_tray.position.y if is_instance_valid(basic_card_tray) else 0.0,
         "basic_card_tray_bottom": basic_card_tray.position.y + basic_card_tray.size.y if is_instance_valid(basic_card_tray) else 0.0,
+        "card_detail_ready": is_instance_valid(card_detail_panel),
+        "card_detail_snapshot": detail_snapshot,
+        "combat_log_ready": is_instance_valid(combat_log_panel),
+        "combat_log_snapshot": log_snapshot,
+        "information_interactions_enabled": true,
+        "action_placement_enabled": false,
         "lower_status_panels": false,
         "lower_skill_panel": true,
         "tile_count": tiles.size(),
