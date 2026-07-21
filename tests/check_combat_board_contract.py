@@ -6,6 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "data/combat/combat_board_poc.json"
 HUD_DATA = ROOT / "data/combat/combat_hud_preview.json"
+ACTION_TIMING_DATA = ROOT / "data/combat/combat_action_timing_preview.json"
 TEXT_SUFFIXES = {".gd", ".tscn", ".py", ".ps1", ".cmd", ".md", ".json", ".yml", ".yaml", ".godot"}
 CONFLICT_MARKERS = ("<<<<<<<", "=======", ">>>>>>>")
 
@@ -34,7 +35,7 @@ def main() -> None:
 
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
 
-    assert contract["schema_version"] >= 3
+    assert contract["schema_version"] >= 4
     assert contract["tile_count"] == 10
     assert contract["player_start_tile"] == 3
     assert contract["enemy_start_tile"] == 8
@@ -79,21 +80,49 @@ def main() -> None:
         for field in ("health", "stamina", "internal", "momentum"):
             assert len(hud_data[side][field]) == 2
 
+    action_timing = contract["action_timing"]
+    assert action_timing["step"] == 5
+    assert action_timing["approval_status"] == "IMPLEMENTED_FOR_REVIEW"
+    assert action_timing["layout_role"] == "bottom_upper"
+    assert action_timing["timing_sequence"] == [3, 3, 4]
+    assert action_timing["total_timings"] == 10
+    assert action_timing["current_bundle"] == 2
+    assert action_timing["current_timing"] == 5
+    assert action_timing["cards_inserted"] is False
+    assert action_timing["interactions_enabled"] is False
+    assert res_file(action_timing["scene"]).exists()
+    assert res_file(action_timing["data"]).exists()
+
+    timing_data = json.loads(ACTION_TIMING_DATA.read_text(encoding="utf-8"))
+    assert timing_data["schema_version"] == 1
+    assert timing_data["step"] == 5
+    assert timing_data["timing_sequence"] == [3, 3, 4]
+    assert sum(timing_data["timing_sequence"]) == 10
+    assert timing_data["total_timings"] == 10
+    assert timing_data["current_bundle"] == 2
+    assert timing_data["current_timing"] == 5
+    assert timing_data["cards_inserted"] is False
+    assert timing_data["interactions_enabled"] is False
+
     scope = set(contract["presentation_scope"])
-    assert {"battle_background", "top_hud"} <= scope
+    assert {"battle_background", "top_hud", "action_timing"} <= scope
 
     excluded = set(contract["excluded_until_later_steps"])
     assert "final_background" not in excluded
     assert "top_hud" not in excluded
-    assert {"action_slots", "cards", "log_panel", "progress_button"} <= excluded
+    assert "action_slots" not in excluded
+    assert {"cards", "skill_catalog", "log_panel", "progress_button", "action_placement_interaction"} <= excluded
 
     required_files = [
         "assets/backgrounds/step3_mountain_fortress.svg",
         "data/combat/combat_hud_preview.json",
+        "data/combat/combat_action_timing_preview.json",
         "scenes/combat/battle_background.tscn",
         "scenes/combat/combat_board_tile.tscn",
         "scenes/combat/combat_character_placeholder.tscn",
         "scenes/combat/combat_board_preview.tscn",
+        "scenes/ui/action_timing_panel.tscn",
+        "scenes/ui/action_timing_slot.tscn",
         "scenes/ui/combatant_status_panel.tscn",
         "scenes/ui/momentum_gauge.tscn",
         "scenes/ui/round_hud_panel.tscn",
@@ -102,6 +131,8 @@ def main() -> None:
         "src/combat/combat_board_tile.gd",
         "src/combat/combat_character_placeholder.gd",
         "src/combat/combat_board_preview.gd",
+        "src/ui/action_timing_panel.gd",
+        "src/ui/action_timing_slot.gd",
         "src/ui/combatant_status_panel.gd",
         "src/ui/momentum_gauge.gd",
         "src/ui/round_hud_panel.gd",
@@ -131,10 +162,13 @@ def main() -> None:
     assert 'const CONTRACT_PATH := "res://data/combat/combat_board_poc.json"' in controller
     assert 'const BACKGROUND_SCENE := preload("res://scenes/combat/battle_background.tscn")' in controller
     assert 'const TOP_HUD_SCENE := preload("res://scenes/ui/top_combat_hud.tscn")' in controller
+    assert 'const ACTION_TIMING_SCENE := preload("res://scenes/ui/action_timing_panel.tscn")' in controller
     assert 'battle_background = BACKGROUND_SCENE.instantiate() as BattleBackground' in controller
+    assert 'action_timing_panel = ACTION_TIMING_SCENE.instantiate() as ActionTimingPanel' in controller
     assert 'top_hud = TOP_HUD_SCENE.instantiate() as TopCombatHud' in controller
     assert controller.index("add_child(battle_background)") < controller.index("add_child(_tile_layer)")
-    assert controller.index("add_child(_tile_layer)") < controller.index("add_child(top_hud)")
+    assert controller.index("add_child(_character_layer)") < controller.index("add_child(action_timing_panel)")
+    assert controller.index("add_child(action_timing_panel)") < controller.index("add_child(top_hud)")
     assert 'tile.name = "Tile%02d" % index' in controller
     assert 'player_character.place_foot_at(get_tile_foot_anchor(player_tile))' in controller
     assert 'enemy_character.place_foot_at(get_tile_foot_anchor(enemy_tile))' in controller
@@ -142,7 +176,24 @@ def main() -> None:
     assert 'get_tile(enemy_tile).set_occupied("enemy")' in controller
     assert '"background_ready": is_instance_valid(battle_background)' in controller
     assert '"hud_ready": is_instance_valid(top_hud)' in controller
+    assert '"action_timing_ready": is_instance_valid(action_timing_panel)' in controller
     assert '"lower_status_panels": false' in controller
+    assert '"lower_skill_panel": false' in controller
+
+    timing_panel_script = (ROOT / "src/ui/action_timing_panel.gd").read_text(encoding="utf-8")
+    assert 'DATA_PATH := "res://data/combat/combat_action_timing_preview.json"' in timing_panel_script
+    assert 'SLOT_SCENE := preload("res://scenes/ui/action_timing_slot.tscn")' in timing_panel_script
+    assert 'set_meta("timing_sequence", "3|3|4")' in timing_panel_script
+    assert 'set_meta("cards_inserted", false)' in timing_panel_script
+    assert 'set_meta("interactions_enabled", false)' in timing_panel_script
+    assert '"timing_sequence": timing_data.get("timing_sequence", [3, 3, 4])' in timing_panel_script
+
+    timing_slot_script = (ROOT / "src/ui/action_timing_slot.gd").read_text(encoding="utf-8")
+    assert 'set_meta("card_content", false)' in timing_slot_script
+    assert '"passed"' in timing_slot_script
+    assert '"current"' in timing_slot_script
+    assert '"available"' in timing_slot_script
+    assert '"locked"' in timing_slot_script
 
     top_hud_script = (ROOT / "src/ui/top_combat_hud.gd").read_text(encoding="utf-8")
     assert 'player_panel.name = "PlayerStatusPanel"' in top_hud_script
@@ -158,11 +209,13 @@ def main() -> None:
     assert "EXPECTED_ENEMY_TILE := 8" in verifier
     assert "EXPECTED_HEIGHT_RATIO := 1.5" in verifier
     assert "EXPECTED_MOMENTUM_SEGMENTS := 6" in verifier
+    assert "EXPECTED_TIMING_SEQUENCE := [3, 3, 4]" in verifier
     assert '"background_ready"' in verifier
     assert '"hud_ready"' in verifier
+    assert '"action_timing_ready"' in verifier
     assert '"source_mode"' in verifier
 
-    print("combat board STEP 1-4 contract: PASS")
+    print("combat board STEP 1-5 contract: PASS")
 
 
 if __name__ == "__main__":
