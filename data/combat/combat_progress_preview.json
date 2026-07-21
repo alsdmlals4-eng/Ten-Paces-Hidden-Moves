@@ -1,14 +1,16 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "step": 8,
   "placement_gate_step": 9,
   "runtime_step": 10,
+  "response_combo_patch": "10.6",
   "button_text": "진행",
   "caption": "행동 묶음 판정",
   "ready_text": "배치 완료",
-  "disabled_text": "행동 배치 필요",
+  "disabled_text": "행동·대상·자원 확인 필요",
   "requested_text": "판정 완료",
   "default_enabled": false,
+  "enable_condition": "current_bundle_complete_targets_and_resources_ready",
   "round_number": 1,
   "bundle_index": 1,
   "current_timing": 1,
@@ -16,5 +18,7 @@
   "request_mode": "resolve_bundle",
   "advances_state": true,
   "writes_combat_log": true,
-  "action_placement_required": true
+  "action_placement_required": true,
+  "target_selection_required": true,
+  "resource_plan_required": true
 }
