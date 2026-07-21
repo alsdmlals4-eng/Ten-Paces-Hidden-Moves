@@ -1,6 +1,7 @@
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
+const BACKGROUND_ASSET_PATH := "res://assets/backgrounds/step3_mountain_fortress.svg"
 const EXPECTED_TILE_COUNT := 10
 const EXPECTED_PLAYER_TILE := 3
 const EXPECTED_ENEMY_TILE := 8
@@ -14,6 +15,9 @@ func _initialize() -> void:
     call_deferred("_run")
 
 func _run() -> void:
+    if not ResourceLoader.exists(BACKGROUND_ASSET_PATH):
+        failures.append("STEP 3 battle background asset was not found: %s" % BACKGROUND_ASSET_PATH)
+
     if not ResourceLoader.exists(BOARD_SCENE_PATH):
         failures.append("Combat board preview scene was not found: %s" % BOARD_SCENE_PATH)
         _finish()
@@ -40,6 +44,18 @@ func _run() -> void:
     var snapshot := board.get_layout_snapshot()
     if not bool(snapshot.get("layout_ready", false)):
         failures.append("Combat board layout did not become ready.")
+
+    if not bool(snapshot.get("background_ready", false)):
+        failures.append("STEP 3 battle background did not load a texture.")
+    if str(snapshot.get("background_path", "")) != BACKGROUND_ASSET_PATH:
+        failures.append("STEP 3 background path does not match the approved asset.")
+    if board.battle_background == null:
+        failures.append("BattleBackground component must exist.")
+    else:
+        if board.get_child_count() == 0 or board.get_child(0) != board.battle_background:
+            failures.append("BattleBackground must be the first rendered child behind the board.")
+        if str(board.battle_background.get_meta("contrast_role", "")) != "below_board_and_characters":
+            failures.append("BattleBackground must declare the low-contrast presentation role.")
 
     if int(snapshot.get("tile_count", 0)) != EXPECTED_TILE_COUNT:
         failures.append("Expected ten board tiles. actual=%s" % snapshot.get("tile_count", 0))
@@ -105,11 +121,11 @@ func _run() -> void:
 
 func _finish() -> void:
     if failures.is_empty():
-        print("COMBAT_BOARD_STEP1_STEP2_VERIFY_OK")
+        print("COMBAT_BOARD_STEP1_STEP2_STEP3_VERIFY_OK")
         quit(0)
         return
 
     for failure in failures:
         push_error(failure)
-    print("COMBAT_BOARD_STEP1_STEP2_VERIFY_FAILED count=%d" % failures.size())
+    print("COMBAT_BOARD_STEP1_STEP2_STEP3_VERIFY_FAILED count=%d" % failures.size())
     quit(1)
