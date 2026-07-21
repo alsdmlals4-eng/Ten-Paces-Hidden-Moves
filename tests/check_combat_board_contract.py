@@ -96,12 +96,13 @@ def main() -> None:
     background_script = (ROOT / "src/combat/battle_background.gd").read_text(encoding="utf-8")
     assert 'BACKGROUND_SOURCE_PATH := "res://assets/backgrounds/step3_mountain_fortress.svg"' in background_script
     assert 'JPEG_DATA_PREFIX := "data:image/jpeg;base64,"' in background_script
-    assert "Marshalls.base64_to_raw" in background_script
+    assert "_decode_base64_relaxed" in background_script
+    assert "Marshalls.base64_to_raw" not in background_script
     assert "image.load_jpg_from_buffer" in background_script
     assert "ImageTexture.create_from_image" in background_script
     assert 'stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED' in background_script
     assert '"below_board_and_characters"' in background_script
-    assert '"embedded_jpeg_runtime_decode"' in background_script
+    assert '"embedded_jpeg_relaxed_base64_decode"' in background_script
 
     controller = (ROOT / "src/combat/combat_board_preview.gd").read_text(encoding="utf-8")
     assert 'const CONTRACT_PATH := "res://data/combat/combat_board_poc.json"' in controller
