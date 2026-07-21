@@ -58,6 +58,54 @@ func _prepare_combatant_start(source_value) -> Dictionary:
         _set_resource(actor, resource_key, maxi(0, pair.y - penalty), pair.y)
     return actor
 
+func preview_player_plan(state_value: Dictionary, placements: Array) -> Dictionary:
+    var state := state_value.duplicate(true)
+    var actor: Dictionary = (state.get("player", {}) as Dictionary).duplicate(true)
+    var actions := _build_player_actions(placements)
+    actions.sort_custom(_sort_actions_by_timing)
+    var invalid_anchors := PackedInt32Array()
+    var resource_events: Array = []
+    for action in actions:
+        var definition: Dictionary = action.get("definition", {})
+        var timing := int(action.get("execution_timing", action.get("anchor_index", 0)))
+        var anchor := int(action.get("anchor_index", 0))
+        var stamina_cost := maxi(0, int(definition.get("stamina_cost", 0)))
+        var internal_cost := maxi(0, int(definition.get("internal_cost", 0)))
+        var stamina := _resource_pair(actor, "stamina")
+        var internal := _resource_pair(actor, "internal")
+        if stamina.x < stamina_cost or internal.x < internal_cost:
+            invalid_anchors.append(anchor)
+            resource_events.append({
+                "timing": timing,
+                "anchor_index": anchor,
+                "card_name": str(definition.get("name", "행동")),
+                "status": "insufficient"
+            })
+            continue
+        _set_resource(actor, "stamina", stamina.x - stamina_cost, stamina.y)
+        _set_resource(actor, "internal", internal.x - internal_cost, internal.y)
+        if _base_card_id(definition) == "basic_meditate":
+            var stamina_after := _resource_pair(actor, "stamina")
+            var internal_after := _resource_pair(actor, "internal")
+            _set_resource(actor, "stamina", mini(stamina_after.y, stamina_after.x + int(rules.get("meditate_stamina_restore", 2))), stamina_after.y)
+            _set_resource(actor, "internal", mini(internal_after.y, internal_after.x + int(rules.get("meditate_internal_restore", 1))), internal_after.y)
+        resource_events.append({
+            "timing": timing,
+            "anchor_index": anchor,
+            "card_name": str(definition.get("name", "행동")),
+            "status": "applied"
+        })
+    state["player"] = actor
+    return {
+        "valid": invalid_anchors.is_empty(),
+        "state": state,
+        "invalid_anchors": invalid_anchors,
+        "events": resource_events
+    }
+
+func _sort_actions_by_timing(a: Dictionary, b: Dictionary) -> bool:
+    return int(a.get("execution_timing", 0)) < int(b.get("execution_timing", 0))
+
 func resolve_bundle(player_placements: Array, context: Dictionary, state_value: Dictionary) -> Dictionary:
     var state := state_value.duplicate(true)
     var logs: Array[String] = []
@@ -76,6 +124,7 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
 
     var actions := _build_player_actions(player_placements)
     actions.append_array(_build_enemy_actions(bundle_index))
+    var defenses := _prepare_bundle_defenses(state, actions, logs, resolved_actions)
 
     for timing in range(bundle_start, bundle_end + 1):
         var timing_actions := _actions_for_timing(actions, timing)
@@ -83,15 +132,8 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
             logs.append("[%d수] 양측 모두 행동하지 않았다." % timing)
             continue
 
-        var responses: Dictionary = {}
-        var response_actions := _filter_phase(timing_actions, "response")
-        for action in response_actions:
-            if _pay_action_cost(state, action, logs, timing):
-                _execute_response(state, action, responses, logs, timing)
-                resolved_actions.append(_resolved_record(action, timing, "response"))
-
         var quick_actions := _filter_phase(timing_actions, "quick_attack")
-        _execute_attack_phase(state, quick_actions, responses, logs, timing, "속공", resolved_actions)
+        _execute_attack_phase(state, quick_actions, defenses, logs, timing, "속공", resolved_actions)
 
         var move_actions := _filter_phase(timing_actions, "move")
         _execute_move_phase(state, move_actions, logs, timing, resolved_actions)
@@ -105,7 +147,7 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
                 normal_attacks.append(action)
             else:
                 utility_actions.append(action)
-        _execute_attack_phase(state, normal_attacks, responses, logs, timing, "일반 공격", resolved_actions)
+        _execute_attack_phase(state, normal_attacks, defenses, logs, timing, "일반 공격", resolved_actions)
         for action in utility_actions:
             if not _pay_action_cost(state, action, logs, timing):
                 continue
@@ -120,7 +162,8 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
         "bundle_index": bundle_index,
         "bundle_start": bundle_start,
         "bundle_end": bundle_end,
-        "resolution_order": rules.get("resolution_order", ["response", "quick_attack", "move", "general"])
+        "resolution_order": rules.get("resolution_order", ["response", "quick_attack", "move", "general"]),
+        "defenses": defenses
     }
 
 func _bundle_bounds(bundle_index: int, sequence: Array) -> Vector2i:
@@ -215,12 +258,65 @@ func _phase_for_definition(definition_value) -> String:
         return "move"
     return "general"
 
+func _prepare_bundle_defenses(state: Dictionary, actions: Array, logs: Array[String], resolved_actions: Array) -> Dictionary:
+    var profiles := {
+        "player": _empty_defense_profile(),
+        "enemy": _empty_defense_profile()
+    }
+    for action in actions:
+        var definition: Dictionary = action.get("definition", {})
+        if str(definition.get("category", "")) != "response":
+            continue
+        var timing := int(action.get("execution_timing", 0))
+        if not _pay_action_cost(state, action, logs, timing):
+            continue
+        var actor_key := str(action.get("actor", "player"))
+        var actor: Dictionary = state.get(actor_key, {})
+        var profile: Dictionary = (profiles.get(actor_key, _empty_defense_profile()) as Dictionary).duplicate(true)
+        var card_id := _base_card_id(definition)
+        var stance_combo := bool(definition.get("stance_response_combo", false))
+        if card_id == "basic_evade":
+            if stance_combo:
+                profile["evade_bundle"] = true
+                logs.append("[%d수 · 대응 강화] %s이(가) 태세와 회피를 결합해 현재 묶음 전체를 완전 회피한다." % [timing, _actor_name(actor)])
+            else:
+                var evade_timings: PackedInt32Array = profile.get("evade_timings", PackedInt32Array())
+                if timing not in evade_timings:
+                    evade_timings.append(timing)
+                profile["evade_timings"] = evade_timings
+                logs.append("[%d수 · 대응] %s이(가) 같은 수의 공격을 완전 회피한다." % [timing, _actor_name(actor)])
+        else:
+            var block := maxi(0, int(rules.get("guard_block", 4)))
+            if stance_combo:
+                block = int(ceil(float(block) * float(rules.get("stance_response_defense_multiplier", 1.5))))
+                profile["guard_bundle_enhanced"] = true
+                logs.append("[%d수 · 대응 강화] %s이(가) 태세와 막기를 결합해 현재 묶음 전체에 방어도 %d를 적용한다." % [timing, _actor_name(actor), block])
+            else:
+                logs.append("[%d수 · 대응] %s이(가) 현재 묶음에 방어도 %d를 준비했다." % [timing, _actor_name(actor), block])
+            profile["guard_block"] = maxi(int(profile.get("guard_block", 0)), block)
+            var guard_timings: PackedInt32Array = profile.get("guard_timings", PackedInt32Array())
+            if timing not in guard_timings:
+                guard_timings.append(timing)
+            profile["guard_timings"] = guard_timings
+        profiles[actor_key] = profile
+        resolved_actions.append(_resolved_record(action, timing, "response_combo" if stance_combo else "response"))
+    return profiles
+
+func _empty_defense_profile() -> Dictionary:
+    return {
+        "guard_block": 0,
+        "guard_timings": PackedInt32Array(),
+        "guard_bundle_enhanced": false,
+        "evade_timings": PackedInt32Array(),
+        "evade_bundle": false
+    }
+
 func _pay_action_cost(state: Dictionary, action: Dictionary, logs: Array[String], timing: int) -> bool:
     var actor_key := str(action.get("actor", "player"))
     var actor: Dictionary = state.get(actor_key, {})
     var definition: Dictionary = action.get("definition", {})
-    var stamina_cost := int(definition.get("stamina_cost", 0))
-    var internal_cost := int(definition.get("internal_cost", 0))
+    var stamina_cost := maxi(0, int(definition.get("stamina_cost", 0)))
+    var internal_cost := maxi(0, int(definition.get("internal_cost", 0)))
     var stamina := _resource_pair(actor, "stamina")
     var internal := _resource_pair(actor, "internal")
     if stamina.x < stamina_cost or internal.x < internal_cost:
@@ -231,19 +327,7 @@ func _pay_action_cost(state: Dictionary, action: Dictionary, logs: Array[String]
     state[actor_key] = actor
     return true
 
-func _execute_response(state: Dictionary, action: Dictionary, responses: Dictionary, logs: Array[String], timing: int) -> void:
-    var actor_key := str(action.get("actor", "player"))
-    var actor: Dictionary = state.get(actor_key, {})
-    var definition: Dictionary = action.get("definition", {})
-    var card_id := str(definition.get("id", ""))
-    if card_id == "basic_evade":
-        responses[actor_key] = "evade"
-        logs.append("[%d수 · 대응] %s이(가) 회피를 준비했다." % [timing, _actor_name(actor)])
-    else:
-        responses[actor_key] = "guard"
-        logs.append("[%d수 · 대응] %s이(가) 막기를 준비했다." % [timing, _actor_name(actor)])
-
-func _execute_attack_phase(state: Dictionary, actions: Array, responses: Dictionary, logs: Array[String], timing: int, phase_label: String, resolved_actions: Array) -> void:
+func _execute_attack_phase(state: Dictionary, actions: Array, defenses: Dictionary, logs: Array[String], timing: int, phase_label: String, resolved_actions: Array) -> void:
     if actions.is_empty():
         return
     var pending_damage: Dictionary = {"player": 0, "enemy": 0}
@@ -280,17 +364,27 @@ func _execute_attack_phase(state: Dictionary, actions: Array, responses: Diction
         actor["next_attack_bonus"] = 0
         state[actor_key] = actor
 
-        var response := str(responses.get(target_key, ""))
-        if response == "evade":
+        var before := damage
+        var defense: Dictionary = defenses.get(target_key, _empty_defense_profile())
+        var evade_timings: PackedInt32Array = defense.get("evade_timings", PackedInt32Array())
+        if bool(defense.get("evade_bundle", false)) or timing in evade_timings:
             damage = 0
-            logs.append("[%d수 · %s] %s이(가) %s의 %s을(를) 회피했다." % [timing, phase_label, _actor_name(target), _actor_name(actor), str(definition.get("name", "공격"))])
-        elif response == "guard":
-            var block := int(rules.get("guard_block", 4))
-            var before := damage
-            damage = maxi(0, damage - block)
-            logs.append("[%d수 · %s] %s이(가) 막기로 피해 %d를 %d로 줄였다." % [timing, phase_label, _actor_name(target), before, damage])
+            logs.append("[%d수 · %s] %s이(가) %s의 %s을(를) 완전히 회피했다." % [timing, phase_label, _actor_name(target), _actor_name(actor), str(definition.get("name", "공격"))])
         else:
-            logs.append("[%d수 · %s] %s의 %s이(가) 적중했다. 피해 %d." % [timing, phase_label, _actor_name(actor), str(definition.get("name", "공격")), damage])
+            var guard_block := maxi(0, int(defense.get("guard_block", 0)))
+            var fixed_reduction := mini(before, guard_block)
+            var guard_timings: PackedInt32Array = defense.get("guard_timings", PackedInt32Array())
+            var same_timing_reduction := 0
+            if timing in guard_timings:
+                var same_timing_remaining := int(floor(float(before) * float(rules.get("guard_same_timing_damage_multiplier", 0.5))))
+                same_timing_reduction = before - same_timing_remaining
+            var reduction := maxi(fixed_reduction, same_timing_reduction)
+            if reduction > 0:
+                damage = maxi(0, before - reduction)
+                var source_text := "같은 수 50% 감소" if same_timing_reduction >= fixed_reduction and same_timing_reduction > 0 else "묶음 방어도 %d" % guard_block
+                logs.append("[%d수 · %s] %s의 막기가 %s를 적용해 피해 %d를 %d로 줄였다." % [timing, phase_label, _actor_name(target), source_text, before, damage])
+            else:
+                logs.append("[%d수 · %s] %s의 %s이(가) 적중했다. 피해 %d." % [timing, phase_label, _actor_name(actor), str(definition.get("name", "공격")), damage])
 
         pending_damage[target_key] = int(pending_damage.get(target_key, 0)) + damage
         if damage > 0:
@@ -361,7 +455,7 @@ func _execute_utility(state: Dictionary, action: Dictionary, logs: Array[String]
     var actor_key := str(action.get("actor", "player"))
     var actor: Dictionary = state.get(actor_key, {})
     var definition: Dictionary = action.get("definition", {})
-    var card_id := str(definition.get("id", ""))
+    var card_id := _base_card_id(definition)
     if card_id == "basic_meditate":
         var stamina := _resource_pair(actor, "stamina")
         var internal := _resource_pair(actor, "internal")
@@ -375,12 +469,16 @@ func _execute_utility(state: Dictionary, action: Dictionary, logs: Array[String]
         logs.append("[%d수 · 일반] %s이(가) %s을(를) 실행했다." % [timing, _actor_name(actor), str(definition.get("name", "행동"))])
     state[actor_key] = actor
 
+func _base_card_id(definition: Dictionary) -> String:
+    return str(definition.get("base_card_id", definition.get("id", "")))
+
 func _resolved_record(action: Dictionary, timing: int, outcome: String) -> Dictionary:
     var definition: Dictionary = action.get("definition", {})
     return {
         "actor": str(action.get("actor", "player")),
         "timing": timing,
         "card_id": str(definition.get("id", "")),
+        "base_card_id": _base_card_id(definition),
         "card_name": str(definition.get("name", "")),
         "outcome": outcome,
         "direction": int(action.get("direction", 0)),
