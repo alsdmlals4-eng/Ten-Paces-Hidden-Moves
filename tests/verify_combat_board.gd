@@ -10,6 +10,7 @@ const EXPECTED_MOMENTUM_SEGMENTS := 5
 const EXPECTED_TIMING_SEQUENCE := [3, 3, 4]
 const EXPECTED_CARD_IDS := [
     "basic_move",
+    "basic_footwork",
     "basic_guard",
     "basic_evade",
     "basic_quick_attack",
@@ -54,7 +55,9 @@ func _run() -> void:
     _verify_hud(board, snapshot)
     _verify_timing_initial(board)
     _verify_cards_and_overlays(board, snapshot)
+    await _verify_footwork_targeting(board)
     await _verify_step9_placement(board)
+    _verify_rule_resolution(board)
     await _verify_targeting_10_5_and_step10_resolution(board)
     _verify_wrong_attack_direction(board)
     _verify_layout(board, board.get_layout_snapshot())
@@ -91,6 +94,30 @@ func _verify_hud(board: CombatBoardPreview, snapshot: Dictionary) -> void:
     if bool(snapshot.get("lower_status_panels", true)):
         failures.append("Status panels must remain in the top HUD.")
 
+    var state := board.get_combat_state_snapshot()
+    for side in ["player", "enemy"]:
+        var actor: Dictionary = state.get(side, {})
+        for resource_key in ["health", "stamina", "internal"]:
+            var pair: Array = actor.get(resource_key, [])
+            if pair.size() < 2 or int(pair[0]) != int(pair[1]):
+                failures.append("%s %s must start at maximum unless a start penalty exists." % [side, resource_key])
+
+    var penalized_data: Dictionary = board.top_hud.hud_data.duplicate(true)
+    var penalized_player: Dictionary = penalized_data.get("player", {})
+    penalized_player["health"] = [1, 20]
+    penalized_player["stamina"] = [1, 5]
+    penalized_player["internal"] = [1, 4]
+    penalized_player["start_penalties"] = {"health": 2, "stamina": 1, "internal": 3}
+    penalized_data["player"] = penalized_player
+    var penalized_state := CombatResolutionEngine.new().make_initial_state(penalized_data, 3, 8)
+    var result_player: Dictionary = penalized_state.get("player", {})
+    if result_player.get("health", []) != [18, 20]:
+        failures.append("Health start penalty must reduce maximum health at combat start.")
+    if result_player.get("stamina", []) != [4, 5]:
+        failures.append("Stamina start penalty must reduce maximum stamina at combat start.")
+    if result_player.get("internal", []) != [1, 4]:
+        failures.append("Internal-energy start penalty must reduce maximum internal energy at combat start.")
+
 func _verify_timing_initial(board: CombatBoardPreview) -> void:
     if board.action_timing_panel == null:
         failures.append("ActionTimingPanel must exist.")
@@ -114,7 +141,7 @@ func _verify_cards_and_overlays(board: CombatBoardPreview, snapshot: Dictionary)
         return
     var tray := board.basic_card_tray.get_tray_snapshot()
     if int(tray.get("card_count", 0)) != EXPECTED_CARD_IDS.size():
-        failures.append("Basic card tray must contain seven cards.")
+        failures.append("Basic card tray must contain eight cards.")
     var card_ids: PackedStringArray = tray.get("card_ids", PackedStringArray())
     for index in range(mini(card_ids.size(), EXPECTED_CARD_IDS.size())):
         if card_ids[index] != EXPECTED_CARD_IDS[index]:
@@ -134,11 +161,38 @@ func _card_definition(board: CombatBoardPreview, card_id: String) -> Dictionary:
             return card.definition.duplicate(true)
     return {}
 
+func _verify_footwork_targeting(board: CombatBoardPreview) -> void:
+    var footwork := _card_definition(board, "basic_footwork")
+    if footwork.is_empty():
+        failures.append("Footwork definition was not found.")
+        return
+    if int(footwork.get("move_range", 0)) != 2 or int(footwork.get("internal_cost", 0)) != 1:
+        failures.append("Footwork must cost one internal energy and allow up to two tiles.")
+    if not board.action_timing_panel.place_card(footwork, 1):
+        failures.append("Footwork must place at timing 1.")
+        return
+    if not board._begin_targeting_for_anchor(1):
+        failures.append("Footwork must enter board-tile targeting mode.")
+        board.action_timing_panel.remove_at(1)
+        return
+    if board.get_tile(4).interaction_state != "movable" or board.get_tile(5).interaction_state != "movable":
+        failures.append("Footwork must allow choosing either one tile or two tiles to the right.")
+    board._on_board_tile_clicked(5)
+    await process_frame
+    var placement := board.action_timing_panel.get_placement(1)
+    if int(placement.get("target_tile", 0)) != 5:
+        failures.append("Footwork must store the selected two-tile destination.")
+    board.action_timing_panel.remove_at(1)
+    board._clear_targeting()
+    await process_frame
+
 func _verify_step9_placement(board: CombatBoardPreview) -> void:
     var heavy := _card_definition(board, "basic_heavy_attack")
     if heavy.is_empty():
         failures.append("Heavy attack definition was not found.")
         return
+    if str(heavy.get("range_text", "")) != "2" or int(heavy.get("internal_cost", 0)) != 1:
+        failures.append("Heavy attack must have range 2 and cost one internal energy.")
     if not board.action_timing_panel.place_card(heavy, 1):
         failures.append("STEP 9 must place a two-slot card at timings 1 and 2.")
         return
@@ -146,10 +200,67 @@ func _verify_step9_placement(board: CombatBoardPreview) -> void:
         failures.append("Two-slot placement must occupy consecutive timings.")
     if board.action_timing_panel.is_current_bundle_complete():
         failures.append("An attack without a selected direction must not complete the bundle.")
+    if not board._begin_targeting_for_anchor(1):
+        failures.append("Heavy attack must enter attack-direction targeting mode.")
+    elif board.get_tile(4).interaction_state != "attackable" or board.get_tile(5).interaction_state != "attackable":
+        failures.append("Heavy attack must expose both distance 1 and distance 2 in the chosen direction.")
+    board._clear_targeting()
     var removed := board.action_timing_panel.remove_at(2)
     if str(removed.get("card_id", "")) != "basic_heavy_attack":
         failures.append("Clicking either occupied part must remove the whole card.")
     await process_frame
+
+func _verify_rule_resolution(board: CombatBoardPreview) -> void:
+    var engine := CombatResolutionEngine.new()
+    var footwork := _card_definition(board, "basic_footwork")
+    var heavy := _card_definition(board, "basic_heavy_attack")
+
+    var footwork_state := engine.make_initial_state(board.top_hud.hud_data, 3, 8)
+    var footwork_placement := {
+        "card_id": "basic_footwork",
+        "card_name": "보법",
+        "definition": footwork,
+        "anchor_index": 1,
+        "span": 1,
+        "indices": PackedInt32Array([1]),
+        "targeting_mode": "move_tile",
+        "target_ready": true,
+        "target_tile": 5,
+        "direction": 1,
+        "origin_tile": 3
+    }
+    var footwork_result := engine.resolve_bundle([footwork_placement], {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, footwork_state)
+    var footwork_player: Dictionary = (footwork_result.get("state", {}) as Dictionary).get("player", {})
+    if int(footwork_player.get("tile", 0)) != 5:
+        failures.append("Footwork must move the player two tiles when tile 5 is selected from tile 3.")
+    var footwork_internal: Array = footwork_player.get("internal", [])
+    if footwork_internal.size() < 2 or int(footwork_internal[0]) != int(footwork_internal[1]) - 1:
+        failures.append("Footwork must consume exactly one internal energy.")
+
+    var heavy_state := engine.make_initial_state(board.top_hud.hud_data, 3, 6)
+    var heavy_placement := {
+        "card_id": "basic_heavy_attack",
+        "card_name": "강공",
+        "definition": heavy,
+        "anchor_index": 1,
+        "span": 2,
+        "indices": PackedInt32Array([1, 2]),
+        "targeting_mode": "attack_direction",
+        "target_ready": true,
+        "target_tile": 5,
+        "direction": 1,
+        "origin_tile": 3
+    }
+    var heavy_result := engine.resolve_bundle([heavy_placement], {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, heavy_state)
+    var heavy_state_after: Dictionary = heavy_result.get("state", {})
+    var heavy_player: Dictionary = heavy_state_after.get("player", {})
+    var heavy_enemy: Dictionary = heavy_state_after.get("enemy", {})
+    var heavy_internal: Array = heavy_player.get("internal", [])
+    var heavy_health: Array = heavy_enemy.get("health", [])
+    if heavy_internal.size() < 2 or int(heavy_internal[0]) != int(heavy_internal[1]) - 1:
+        failures.append("Heavy attack must consume exactly one internal energy.")
+    if heavy_health.size() < 2 or int(heavy_health[0]) >= int(heavy_health[1]):
+        failures.append("Heavy attack must hit an enemy at distance two in the selected direction.")
 
 func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> void:
     var move := _card_definition(board, "basic_move")
@@ -180,7 +291,7 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
     if board.get_tile(4).interaction_state != "movable":
         failures.append("Tile 4 must be marked movable from player tile 3.")
     if board.get_tile(5).interaction_state == "movable":
-        failures.append("Movement targeting must not exceed one tile.")
+        failures.append("Basic movement targeting must not exceed one tile.")
     board._on_board_tile_clicked(4)
     await process_frame
 
@@ -305,10 +416,10 @@ func _verify_character_anchors(board: CombatBoardPreview, snapshot: Dictionary) 
 
 func _finish() -> void:
     if failures.is_empty():
-        print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_TARGETING_10_5_VERIFY_OK")
+        print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_TARGETING_10_5_RULE_EXTENSION_VERIFY_OK")
         quit(0)
         return
     for failure in failures:
         push_error(failure)
-    print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_TARGETING_10_5_VERIFY_FAILED count=%d" % failures.size())
+    print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_TARGETING_10_5_RULE_EXTENSION_VERIFY_FAILED count=%d" % failures.size())
     quit(1)
