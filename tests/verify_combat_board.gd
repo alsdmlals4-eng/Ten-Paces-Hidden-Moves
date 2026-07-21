@@ -58,6 +58,15 @@ func _run() -> void:
             failures.append("BattleBackground must be the first rendered child behind the board.")
         if str(board.battle_background.get_meta("contrast_role", "")) != "below_board_and_characters":
             failures.append("BattleBackground must declare the low-contrast presentation role.")
+        if str(board.battle_background.get_meta("source_mode", "")) != "embedded_jpeg_runtime_decode":
+            failures.append("BattleBackground must decode the embedded JPEG at runtime.")
+        if board.battle_background.texture == null:
+            failures.append("BattleBackground runtime texture must not be null.")
+        else:
+            if board.battle_background.texture.get_width() < 1000:
+                failures.append("BattleBackground texture width is unexpectedly small.")
+            if board.battle_background.texture.get_height() < 600:
+                failures.append("BattleBackground texture height is unexpectedly small.")
 
     if not bool(snapshot.get("hud_ready", false)):
         failures.append("STEP 4 top combat HUD did not instantiate.")
