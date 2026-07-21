@@ -25,28 +25,48 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Validate project operating system
-        shell: bash
+      - name: Compile governance tools
         run: |
-          set +e
+          python -m py_compile \
+            tools/check_documentation_governance.py \
+            tools/check_canonical_reference_freshness.py \
+            tools/check_skill_package_integrity.py
+
+      - name: Validate project operating system
+        run: |
+          set -o pipefail
           python tools/check_documentation_governance.py \
             --root . \
             --config .github/documentation-governance.json \
-            > governance.log 2>&1
-          status=$?
-          cat governance.log
-          exit "$status"
+            2>&1 | tee documentation-governance.log
+
+      - name: Validate canonical reference freshness
+        run: |
+          set -o pipefail
+          python tools/check_canonical_reference_freshness.py \
+            --root . \
+            --config .github/reference-freshness.json \
+            2>&1 | tee reference-freshness.log
+
+      - name: Validate project Skill package integrity
+        run: |
+          set -o pipefail
+          python tools/check_skill_package_integrity.py \
+            2>&1 | tee skill-package-integrity.log
 
       - name: Upload governance diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: governance-diagnostics
-          path: governance.log
-          if-no-files-found: error
+          path: |
+            documentation-governance.log
+            reference-freshness.log
+            skill-package-integrity.log
+          if-no-files-found: warn
           retention-days: 7
 
-      - name: Record publication boundary
+      - name: Record verification boundaries
         run: |
-          echo "PDF and skill-map publication remain a separate MIGRATION_PENDING gate."
-          echo "Workflow success does not imply Godot, PDF visual review, or branch-protection enforcement."
+          echo "Governance success proves repository structure, routing, canonical references, and Skill package integrity."
+          echo "It does not prove Godot runtime, PDF rendering, accessibility, performance, user visual review, or branch-protection enforcement."
