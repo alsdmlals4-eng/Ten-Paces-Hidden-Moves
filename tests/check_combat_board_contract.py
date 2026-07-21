@@ -84,6 +84,8 @@ def main() -> None:
     assert progress_contract["request_mode"] == "resolve_bundle"
     assert progress_contract["advances_state"] is True
     assert progress["default_enabled"] is False
+    assert progress["enable_condition"] == "current_bundle_complete_targets_and_resources_ready"
+    assert progress["resource_plan_required"] is True
     assert progress["request_mode"] == "resolve_bundle"
     assert progress["advances_state"] is True
 
@@ -192,6 +194,7 @@ def main() -> None:
         "src/ui/action_timing_slot.gd",
         "src/ui/basic_card_tray.gd",
         "tests/verify_combat_board.gd",
+        "tests/verify_response_rules.gd",
     ]
     for relative in required_files:
         assert (ROOT / relative).exists(), relative
@@ -203,6 +206,8 @@ def main() -> None:
     engine_script = (ROOT / "src/combat/combat_resolution_engine.gd").read_text(encoding="utf-8")
     controller = (ROOT / "src/combat/combat_board_preview.gd").read_text(encoding="utf-8")
     verifier = (ROOT / "tests/verify_combat_board.gd").read_text(encoding="utf-8")
+    response_verifier = (ROOT / "tests/verify_response_rules.gd").read_text(encoding="utf-8")
+    powershell = (ROOT / "tools/verify_and_commit_combat_foundation.ps1").read_text(encoding="utf-8")
 
     assert all(token in tile_script for token in ("signal tile_clicked", "set_interaction_state", "movable", "attackable"))
     assert all(token in timing_script for token in ("set_placement_target", "get_pending_target_anchor", "are_current_bundle_targets_ready", "are_current_bundle_resources_ready", "preview_player_plan", "projected_combat_state"))
@@ -211,6 +216,8 @@ def main() -> None:
     assert all(token in engine_script for token in ("miss_direction", "target_tile", "selected_direction", "requested_tile", "move_range", "start_penalties", "_prepare_combatant_start", "preview_player_plan", "_prepare_bundle_defenses", "guard_timings", "evade_bundle", "stance_response_defense_multiplier"))
     assert all(token in controller for token in ("_begin_targeting_for_anchor", "_on_board_tile_clicked", "set_placement_target", "targeting_enabled", "move_range"))
     assert all(token in verifier for token in ("TARGETING_10_5", "_on_board_tile_clicked", "miss_direction", "basic_footwork"))
+    assert all(token in response_verifier for token in ("Same-timing guard", "Stance+guard", "Stance+evade", "preview_player_plan", "invalid_anchors"))
+    assert "res://tests/verify_response_rules.gd" in powershell
 
     print("combat board STEP 1-10 plus TARGETING 10.5 and RESPONSE 10.6 contract: PASS")
 
