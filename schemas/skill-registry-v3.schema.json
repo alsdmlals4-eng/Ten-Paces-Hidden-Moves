@@ -1,31 +1,57 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/alsdmlals4-eng/Base/schemas/skill-registry-v3.schema.json",
-  "title": "Base Project Skill Registry v3",
+  "$id": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/schemas/skill-registry-v3.schema.json",
+  "title": "Ten Paces Project Skill Registry v3",
   "type": "object",
-  "required": ["schema_version", "registry_role", "routing_policy", "human_presentation", "skills", "selected_disciplines", "discipline_entrypoints"],
+  "required": ["schema_version", "registry_role", "routing_policy", "base_integration", "human_presentation", "skills", "selected_disciplines", "discipline_entrypoints"],
   "properties": {
     "schema_version": {"const": 3},
     "registry_role": {"const": "project-skill-router-and-learning-index"},
-    "routing_policy": {"type": "object"},
+    "routing_policy": {
+      "type": "object",
+      "required": ["load_all_skills", "default_selection", "automatic_selection", "user_skill_declaration_required", "require_trigger_match", "require_execution_report", "work_modes", "max_primary_discipline_skills", "max_foundation_skills", "exclude_statuses"]
+    },
+    "base_integration": {
+      "type": "object",
+      "required": ["repository", "commit", "legacy_aliases", "shared_learning_log", "shared_skill_routes"]
+    },
     "human_presentation": {
       "type": "object",
-      "required": ["primary_reading_format", "publication_manifest", "generator", "source_of_truth", "markdown_summary"],
+      "required": ["publication_policy", "primary_reading_format", "publication_manifest", "generator", "source_of_truth", "markdown_summary"],
       "properties": {
-        "primary_reading_format": {"const": "PROJECT_SKILL_MAP.pdf"},
+        "publication_policy": {"enum": ["source_only", "milestone_sync"]},
+        "primary_reading_format": {"enum": ["SKILL_REGISTRY.json", "PROJECT_SKILL_MAP.pdf"]},
         "editable_derivative": {"type": ["string", "null"]},
         "diagram_directory": {"type": ["string", "null"]},
-        "publication_manifest": {"const": "SKILL_MAP_PUBLICATION_MANIFEST.json"},
-        "generator": {"type": "string"},
+        "publication_manifest": {"type": ["string", "null"]},
+        "generator": {"type": ["string", "null"]},
         "source_of_truth": {"const": "SKILL_REGISTRY.json"},
         "markdown_summary": {"type": ["string", "null"]}
       },
-      "additionalProperties": true
+      "allOf": [
+        {
+          "if": {"properties": {"publication_policy": {"const": "source_only"}}},
+          "then": {
+            "properties": {
+              "primary_reading_format": {"const": "SKILL_REGISTRY.json"},
+              "publication_manifest": {"type": "null"},
+              "generator": {"type": "null"},
+              "markdown_summary": {"type": "null"},
+              "diagram_directory": {"type": "null"}
+            }
+          }
+        }
+      ]
     },
-    "skills": {"type": "array"},
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["skill_id", "layer", "discipline", "path", "status", "load_by_default", "trigger_tags", "skill_modes", "use_when", "do_not_use_when", "learning_log", "review_triggers", "last_reviewed_at", "last_reviewed_commit", "knowledge_state"]
+      }
+    },
     "selected_disciplines": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-    "discipline_entrypoints": {"type": "object"},
-    "skill_contract_example": {"type": "object"}
+    "discipline_entrypoints": {"type": "object"}
   },
-  "additionalProperties": true
+  "additionalProperties": false
 }
