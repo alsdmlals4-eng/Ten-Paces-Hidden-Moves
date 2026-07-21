@@ -172,7 +172,7 @@ func _build_structure() -> void:
     set_meta("resolution_order", "response|quick_attack|move|general")
     set_meta("basic_card_tray_component", "BasicCardTray")
     set_meta("basic_card_tray_layout", "bottom_lower")
-    set_meta("basic_card_count", 7)
+    set_meta("basic_card_count", 8)
     set_meta("card_detail_component", "CardDetailPanel")
     set_meta("combat_log_component", "CombatLogPanel")
     set_meta("information_interactions_enabled", true)
@@ -368,7 +368,8 @@ func _begin_targeting_for_anchor(anchor_index: int) -> bool:
     _clear_tile_interactions()
 
     if mode == "move_tile":
-        var movement_steps := maxi(1, int(resolution_engine.rules.get("movement_steps", 1)))
+        var definition: Dictionary = placement.get("definition", {})
+        var movement_steps := maxi(1, int(definition.get("move_range", resolution_engine.rules.get("movement_steps", 1))))
         for direction in [-1, 1]:
             for step in range(1, movement_steps + 1):
                 var target_index: int = _targeting_origin_tile + int(direction) * int(step)
@@ -376,7 +377,7 @@ func _begin_targeting_for_anchor(anchor_index: int) -> bool:
                     continue
                 get_tile(target_index).set_interaction_state("movable")
         if is_instance_valid(combat_log_panel):
-            combat_log_panel.append_entry("[이동 칸 선택] %s · 출발 %d번 · 녹색 칸을 선택하세요." % [str(placement.get("card_name", "이동")), _targeting_origin_tile], "system")
+            combat_log_panel.append_entry("[이동 칸 선택] %s · 출발 %d번 · 최대 %d칸 내 녹색 칸을 선택하세요." % [str(placement.get("card_name", "이동")), _targeting_origin_tile, movement_steps], "system")
     elif mode == "attack_direction":
         var definition: Dictionary = placement.get("definition", {})
         var attack_range := maxi(1, int(str(definition.get("range_text", "1"))))
