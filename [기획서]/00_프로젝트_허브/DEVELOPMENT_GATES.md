@@ -59,8 +59,8 @@ contract-check
 
 - 책임 원본·Registry·Legacy Alias·Update Matrix
 - Active Context·Roadmap·필요 시 Handoff
-- 제품 문서 `milestone_sync`
-- 내부 운영 기록·Skill Registry `source_only`
+- 현재 등록 문서·Skill Registry는 `source_only`
+- PDF가 필요한 마일스톤에서 생성기·폰트·렌더 검증과 함께 필요한 문서만 정책 승격
 - Changelog·Decision Log·Learning Log
 
 ### G6 Integration
@@ -105,7 +105,7 @@ contract-check
 | 정본 최신성·Skill 무결성·회귀 | REVIEW_IN_PROGRESS |
 | PR #5·#7 최신 Actions | PENDING |
 | Branch protection | NOT_RUN |
-| 마일스톤 PDF | NOT_DUE |
+| 발행 파이프라인 | NOT_INSTALLED_BY_DESIGN |
 | 전투 POC 구현 | IMPLEMENTED |
 | 전투 POC 런타임 | PARTIAL |
 | 접근성·성능·플레이테스트 | NOT_RUN |
