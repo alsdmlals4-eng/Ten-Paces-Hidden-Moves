@@ -10,9 +10,11 @@ const PAPER := Color("e0cfaa")
 const MUTED := Color("9b8c76")
 
 var progress_data: Dictionary = {}
+var runtime_context: Dictionary = {}
 var progress_enabled := false
 var request_count := 0
 var last_request_context: Dictionary = {}
+var resolution_applied := false
 
 var _caption_label: Label
 var _button: Button
@@ -21,6 +23,13 @@ var _status_label: Label
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_STOP
     progress_data = _load_data()
+    runtime_context = {
+        "round_number": int(progress_data.get("round_number", 1)),
+        "bundle_index": int(progress_data.get("bundle_index", 1)),
+        "current_timing": int(progress_data.get("current_timing", 1)),
+        "total_timings": int(progress_data.get("total_timings", 10)),
+        "timing_sequence": [3, 3, 4]
+    }
     progress_enabled = bool(progress_data.get("default_enabled", false))
     _build()
     resized.connect(_layout)
@@ -75,23 +84,37 @@ func _build() -> void:
     add_child(_status_label)
 
     set_meta("step", 8)
+    set_meta("runtime_step", int(progress_data.get("runtime_step", 10)))
     set_meta("placement_gate_step", int(progress_data.get("placement_gate_step", 9)))
     set_meta("layout_role", "bottom_upper_right")
-    set_meta("request_mode", str(progress_data.get("request_mode", "signal_only")))
-    set_meta("advances_state", bool(progress_data.get("advances_state", false)))
+    set_meta("request_mode", str(progress_data.get("request_mode", "resolve_bundle")))
+    set_meta("advances_state", bool(progress_data.get("advances_state", true)))
     set_meta("writes_combat_log", bool(progress_data.get("writes_combat_log", true)))
     set_meta("action_placement_required", bool(progress_data.get("action_placement_required", true)))
     set_meta("request_count", 0)
+
+func set_runtime_context(value: Dictionary) -> void:
+    runtime_context = value.duplicate(true)
+    resolution_applied = false
+    set_meta("runtime_context", runtime_context.duplicate(true))
+    _refresh()
 
 func set_progress_enabled(value: bool) -> void:
     progress_enabled = value
     set_meta("enabled", progress_enabled)
     _refresh()
 
+func mark_resolution_applied() -> void:
+    resolution_applied = true
+    progress_enabled = false
+    set_meta("enabled", false)
+    _refresh()
+
 func request_progress() -> void:
     if not progress_enabled:
         return
     request_count += 1
+    resolution_applied = false
     last_request_context = get_request_context()
     set_meta("request_count", request_count)
     _refresh()
@@ -99,22 +122,23 @@ func request_progress() -> void:
 
 func get_request_context() -> Dictionary:
     return {
-        "round_number": int(progress_data.get("round_number", 1)),
-        "bundle_index": int(progress_data.get("bundle_index", 1)),
-        "current_timing": int(progress_data.get("current_timing", 1)),
-        "total_timings": int(progress_data.get("total_timings", 10)),
-        "request_mode": str(progress_data.get("request_mode", "signal_only")),
-        "advances_state": bool(progress_data.get("advances_state", false))
+        "round_number": int(runtime_context.get("round_number", progress_data.get("round_number", 1))),
+        "bundle_index": int(runtime_context.get("bundle_index", progress_data.get("bundle_index", 1))),
+        "current_timing": int(runtime_context.get("current_timing", progress_data.get("current_timing", 1))),
+        "total_timings": int(runtime_context.get("total_timings", progress_data.get("total_timings", 10))),
+        "timing_sequence": runtime_context.get("timing_sequence", [3, 3, 4]),
+        "request_mode": str(progress_data.get("request_mode", "resolve_bundle")),
+        "advances_state": bool(progress_data.get("advances_state", true))
     }
 
 func _refresh() -> void:
     if _button == null:
         return
-    _caption_label.text = str(progress_data.get("caption", "행동 묶음 확정"))
+    _caption_label.text = str(progress_data.get("caption", "행동 묶음 판정"))
     _button.text = str(progress_data.get("button_text", "진행"))
     _button.disabled = not progress_enabled
-    if request_count > 0:
-        _status_label.text = str(progress_data.get("requested_text", "진행 요청됨"))
+    if resolution_applied:
+        _status_label.text = str(progress_data.get("requested_text", "판정 완료"))
         _status_label.add_theme_color_override("font_color", GOLD)
     elif progress_enabled:
         _status_label.text = str(progress_data.get("ready_text", "배치 완료"))
@@ -140,15 +164,18 @@ func _layout() -> void:
 func get_progress_snapshot() -> Dictionary:
     return {
         "step": 8,
+        "runtime_step": int(progress_data.get("runtime_step", 10)),
         "placement_gate_step": int(progress_data.get("placement_gate_step", 9)),
         "layout_role": "bottom_upper_right",
         "button_text": str(progress_data.get("button_text", "진행")),
         "enabled": progress_enabled,
         "request_count": request_count,
-        "request_mode": str(progress_data.get("request_mode", "signal_only")),
-        "advances_state": bool(progress_data.get("advances_state", false)),
+        "request_mode": str(progress_data.get("request_mode", "resolve_bundle")),
+        "advances_state": bool(progress_data.get("advances_state", true)),
         "writes_combat_log": bool(progress_data.get("writes_combat_log", true)),
         "action_placement_required": bool(progress_data.get("action_placement_required", true)),
+        "resolution_applied": resolution_applied,
+        "runtime_context": runtime_context.duplicate(true),
         "last_request_context": last_request_context.duplicate(true),
         "data_path": DATA_PATH
     }
