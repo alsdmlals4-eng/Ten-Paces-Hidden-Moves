@@ -8,6 +8,7 @@
 - [작업 시작](START_HERE.md)
 - [현재 상태]([기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md)
 - [문서·Skill 지도]([기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md)
+- [Base 적용 기준](docs/BASE_RULES_VERSION.md)
 - [기획 책임 원본 Registry]([기획서]/DESIGN_DOCUMENT_REGISTRY.json)
 - [프로젝트 Skill Registry]([기획서]/00_프로젝트_허브/SKILL_REGISTRY.json)
 - [Base 70개 변경 파일 감사]([기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md)
