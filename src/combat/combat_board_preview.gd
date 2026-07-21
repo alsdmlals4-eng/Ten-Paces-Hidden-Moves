@@ -44,6 +44,9 @@ var _pinned_card_id := ""
 var _selected_action_definition: Dictionary = {}
 var _progress_request_count := 0
 var _resolution_count := 0
+var _targeting_anchor := 0
+var _targeting_mode := ""
+var _targeting_origin_tile := 0
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_PASS
@@ -93,7 +96,7 @@ func _build_structure() -> void:
 
     _tile_layer = Control.new()
     _tile_layer.name = "TileLayer"
-    _tile_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    _tile_layer.mouse_filter = Control.MOUSE_FILTER_PASS
     _tile_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     add_child(_tile_layer)
 
@@ -141,6 +144,7 @@ func _build_structure() -> void:
         var tile := TILE_SCENE.instantiate() as CombatBoardTile
         tile.name = "Tile%02d" % index
         tile.configure(index, anchor_ratio)
+        tile.tile_clicked.connect(_on_board_tile_clicked)
         _tile_layer.add_child(tile)
         tiles.append(tile)
 
@@ -153,6 +157,7 @@ func _build_structure() -> void:
     _character_layer.add_child(enemy_character)
 
     set_meta("step", 10)
+    set_meta("targeting_patch", "10.5")
     set_meta("background_component", "BattleBackground")
     set_meta("background_asset", "res://assets/backgrounds/step3_mountain_fortress.svg")
     set_meta("hud_component", "TopCombatHud")
@@ -172,6 +177,9 @@ func _build_structure() -> void:
     set_meta("combat_log_component", "CombatLogPanel")
     set_meta("information_interactions_enabled", true)
     set_meta("action_placement_enabled", true)
+    set_meta("targeting_enabled", true)
+    set_meta("move_target_mode", "board_tile")
+    set_meta("attack_target_mode", "left_or_right")
     set_meta("progress_requires_complete_bundle", true)
     set_meta("interruption_enabled", false)
     set_meta("lower_status_panels", false)
@@ -288,6 +296,11 @@ func _on_card_unhovered(_card_id: String) -> void:
     card_detail_panel.clear_definition()
 
 func _on_action_card_selected(definition: Dictionary) -> void:
+    if _targeting_anchor > 0:
+        basic_card_tray.clear_action_selection()
+        if is_instance_valid(combat_log_panel):
+            combat_log_panel.append_entry("[대상 선택] 먼저 배치한 행동의 이동 칸 또는 공격 방향을 지정해야 합니다.", "system")
+        return
     var card_id := str(definition.get("id", ""))
     var selected_id := str(_selected_action_definition.get("id", ""))
     if not selected_id.is_empty() and selected_id == card_id:
@@ -304,8 +317,13 @@ func _on_action_card_selected(definition: Dictionary) -> void:
 func _on_timing_slot_clicked(timing_index: int) -> void:
     if action_timing_panel.has_assignment_at(timing_index):
         var removed := action_timing_panel.remove_at(timing_index)
+        if int(removed.get("anchor_index", 0)) == _targeting_anchor:
+            _clear_targeting()
         if not removed.is_empty() and is_instance_valid(combat_log_panel):
             combat_log_panel.append_entry("[배치 해제] %s · %s" % [str(removed.get("card_name", "")), _placement_timing_text(removed)], "system")
+        _begin_next_pending_target()
+        return
+    if _targeting_anchor > 0:
         return
     if _selected_action_definition.is_empty():
         return
@@ -317,6 +335,8 @@ func _on_timing_slot_clicked(timing_index: int) -> void:
             combat_log_panel.append_entry("[배치] %s · %s" % [str(placement.get("card_name", "")), _placement_timing_text(placement)], "system")
         _clear_action_selection()
         _clear_card_detail()
+        if not _begin_targeting_for_anchor(timing_index):
+            _begin_next_pending_target()
     elif is_instance_valid(combat_log_panel):
         combat_log_panel.append_entry("[배치 불가] 연속된 빈 행동 슬롯이 부족합니다.", "system")
 
@@ -334,6 +354,116 @@ func _placement_timing_text(placement: Dictionary) -> String:
         return "%d수" % int(indices[0])
     return "%d~%d수" % [int(indices[0]), int(indices[indices.size() - 1])]
 
+func _begin_targeting_for_anchor(anchor_index: int) -> bool:
+    var placement := action_timing_panel.get_placement(anchor_index)
+    if placement.is_empty() or bool(placement.get("target_ready", true)):
+        return false
+    var mode := str(placement.get("targeting_mode", "none"))
+    if mode == "none":
+        return false
+
+    _targeting_anchor = anchor_index
+    _targeting_mode = mode
+    _targeting_origin_tile = _projected_player_tile_before(anchor_index)
+    _clear_tile_interactions()
+
+    if mode == "move_tile":
+        var movement_steps := maxi(1, int(resolution_engine.rules.get("movement_steps", 1)))
+        for direction in [-1, 1]:
+            for step in range(1, movement_steps + 1):
+                var target_index := _targeting_origin_tile + direction * step
+                if target_index < 1 or target_index > tiles.size() or target_index == _enemy_tile:
+                    continue
+                get_tile(target_index).set_interaction_state("movable")
+        if is_instance_valid(combat_log_panel):
+            combat_log_panel.append_entry("[이동 칸 선택] %s · 출발 %d번 · 녹색 칸을 선택하세요." % [str(placement.get("card_name", "이동")), _targeting_origin_tile], "system")
+    elif mode == "attack_direction":
+        var definition: Dictionary = placement.get("definition", {})
+        var attack_range := maxi(1, int(str(definition.get("range_text", "1"))))
+        for direction in [-1, 1]:
+            for step in range(1, attack_range + 1):
+                var target_index := _targeting_origin_tile + direction * step
+                if target_index < 1 or target_index > tiles.size():
+                    continue
+                get_tile(target_index).set_interaction_state("attackable")
+        if is_instance_valid(combat_log_panel):
+            combat_log_panel.append_entry("[공격 방향 선택] %s · 붉은 칸으로 좌·우 방향을 지정하세요." % str(placement.get("card_name", "공격")), "system")
+    else:
+        _clear_targeting()
+        return false
+
+    set_meta("targeting_anchor", _targeting_anchor)
+    set_meta("targeting_mode", _targeting_mode)
+    set_meta("targeting_origin_tile", _targeting_origin_tile)
+    return true
+
+func _projected_player_tile_before(anchor_index: int) -> int:
+    var projected := _player_tile
+    var current := action_timing_panel.get_placement(anchor_index)
+    var current_execution := anchor_index + maxi(1, int(current.get("span", 1))) - 1
+    for placement_value in action_timing_panel.get_placement_list():
+        var placement: Dictionary = placement_value
+        var execution := int(placement.get("anchor_index", 0)) + maxi(1, int(placement.get("span", 1))) - 1
+        if execution >= current_execution:
+            continue
+        if str(placement.get("targeting_mode", "none")) == "move_tile" and bool(placement.get("target_ready", false)):
+            projected = int(placement.get("target_tile", projected))
+    return clampi(projected, 1, tiles.size())
+
+func _on_board_tile_clicked(tile_index: int) -> void:
+    if _targeting_anchor <= 0:
+        return
+    var tile := get_tile(tile_index)
+    if tile == null:
+        return
+    if _targeting_mode == "move_tile" and tile.interaction_state != "movable":
+        return
+    if _targeting_mode == "attack_direction" and tile.interaction_state != "attackable":
+        return
+
+    var direction := signi(tile_index - _targeting_origin_tile)
+    if direction == 0:
+        return
+    var arrow := "→" if direction > 0 else "←"
+    var target_text := "%s %d번" % [arrow, tile_index] if _targeting_mode == "move_tile" else "%s 공격" % arrow
+    var placement := action_timing_panel.get_placement(_targeting_anchor)
+    var target_data := {
+        "direction": direction,
+        "target_tile": tile_index,
+        "origin_tile": _targeting_origin_tile,
+        "target_text": target_text
+    }
+    if not action_timing_panel.set_placement_target(_targeting_anchor, target_data):
+        return
+
+    if is_instance_valid(combat_log_panel):
+        if _targeting_mode == "move_tile":
+            combat_log_panel.append_entry("[이동 칸] %s · %d번 → %d번" % [str(placement.get("card_name", "이동")), _targeting_origin_tile, tile_index], "system")
+        else:
+            combat_log_panel.append_entry("[공격 방향] %s · %s" % [str(placement.get("card_name", "공격")), "오른쪽" if direction > 0 else "왼쪽"], "system")
+    _clear_targeting()
+    _begin_next_pending_target()
+
+func _begin_next_pending_target() -> void:
+    if _targeting_anchor > 0:
+        return
+    var pending_anchor := action_timing_panel.get_pending_target_anchor()
+    if pending_anchor > 0:
+        _begin_targeting_for_anchor(pending_anchor)
+
+func _clear_tile_interactions() -> void:
+    for tile in tiles:
+        tile.set_interaction_state("default")
+
+func _clear_targeting() -> void:
+    _targeting_anchor = 0
+    _targeting_mode = ""
+    _targeting_origin_tile = 0
+    _clear_tile_interactions()
+    set_meta("targeting_anchor", 0)
+    set_meta("targeting_mode", "")
+    set_meta("targeting_origin_tile", 0)
+
 func _on_placement_changed(_snapshot: Dictionary) -> void:
     _sync_progress_availability()
 
@@ -345,12 +475,15 @@ func _sync_runtime_context() -> void:
 func _sync_progress_availability() -> void:
     if not is_instance_valid(action_timing_panel) or not is_instance_valid(combat_progress_button):
         return
-    combat_progress_button.set_progress_enabled(action_timing_panel.is_current_bundle_complete())
-    set_meta("current_bundle_complete", action_timing_panel.is_current_bundle_complete())
+    var complete := action_timing_panel.is_current_bundle_complete()
+    combat_progress_button.set_progress_enabled(complete)
+    set_meta("current_bundle_complete", complete)
+    set_meta("targets_ready", action_timing_panel.are_current_bundle_targets_ready())
 
 func _on_progress_requested(context: Dictionary) -> void:
     if not action_timing_panel.is_current_bundle_complete():
         return
+    _clear_targeting()
     _progress_request_count += 1
     set_meta("progress_request_count", _progress_request_count)
 
@@ -483,6 +616,11 @@ func get_layout_snapshot() -> Dictionary:
         "combat_log_snapshot": log_snapshot,
         "selected_action_card_id": str(_selected_action_definition.get("id", "")),
         "current_bundle_complete": action_timing_panel.is_current_bundle_complete() if is_instance_valid(action_timing_panel) else false,
+        "targets_ready": action_timing_panel.are_current_bundle_targets_ready() if is_instance_valid(action_timing_panel) else false,
+        "targeting_enabled": true,
+        "targeting_anchor": _targeting_anchor,
+        "targeting_mode": _targeting_mode,
+        "targeting_origin_tile": _targeting_origin_tile,
         "information_interactions_enabled": true,
         "action_placement_enabled": true,
         "state_advancement_enabled": true,
