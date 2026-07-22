@@ -1,13 +1,13 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://fcp84rw7gqra"]
 
-[ext_resource path="res://src/combat/combat_board_preview.gd" type="Script" id="1"]
+[ext_resource type="Script" uid="uid://dqnashumffygi" path="res://src/combat/combat_board_preview.gd" id="1"]
 
-[node name="CombatBoardPreview" type="Control"]
+[node name="CombatBoardPreview" type="Control" unique_id=1862356270]
+custom_minimum_size = Vector2(960, 640)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-custom_minimum_size = Vector2(960, 640)
 script = ExtResource("1")
