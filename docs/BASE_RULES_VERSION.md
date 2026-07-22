@@ -17,11 +17,11 @@
 
 ### 작업·Skill
 
-- Work Mode: `PLAN / BUILD / REVIEW`
-- Registry trigger 기반 최소 Skill·Skill Mode 자동 선택
-- 주 책임 분야 Skill 최대 1개
-- L1 이상 `execution-report`
-- 기존 프로젝트 `audit → reconcile-legacy → 승인된 migrate → verify`
+- Work Mode: `PLAN / BUILD / REVIEW`.
+- Registry trigger 기반 최소 Skill·Skill Mode 자동 선택.
+- 주 책임 분야 Skill 최대 1개.
+- L1 이상 `execution-report`.
+- 기존 프로젝트 `audit → reconcile-legacy → 승인된 변경 → verify`.
 
 Base 공유 Skill 13개:
 
@@ -41,21 +41,21 @@ Base 공유 Skill 13개:
 
 프로젝트 로컬 Skill은 Base에 없는 십보강호 고유 판단만 유지한다.
 
-- `ten-paces-game-design`
-- `combat-ux-and-accessibility`
-- `combat-implementation-handoff`
-- `ten-paces-verification`
+- `ten-paces-game-design`.
+- `combat-ux-and-accessibility`.
+- `combat-implementation-handoff`.
+- `ten-paces-verification`.
 
 통합 전 ID는 `skills/LEGACY_SKILL_ALIASES.md`에서 새 Skill·mode로 연결한다.
 
 ### 책임 원본·발행
 
-- 한 질문에 Markdown 또는 JSON 책임 원본 하나
-- PDF·DOCX·다이어그램은 파생본
-- 제품 기획 문서: `milestone_sync`
-- 내부 Base 학습 기록·Skill Registry: `source_only`
-- 생성 실패 시 기존 정상 산출물 보존
-- `CURRENT`, 자동 렌더, 사용자 시각 검수는 독립 상태
+- 한 질문에 Markdown 또는 JSON 책임 원본 하나.
+- PDF·DOCX·다이어그램은 파생본.
+- 현재 11개 제품 기획 문서와 Skill Registry는 실제 생성기가 없어 `source_only`.
+- PDF가 필요한 마일스톤에서 생성기·폰트·Manifest·렌더·사용자 검수를 함께 설치하고 필요한 문서만 `milestone_sync`로 승격.
+- 생성 실패 시 기존 정상 산출물 보존.
+- `CURRENT`, 자동 렌더, 사용자 시각 검수는 독립 상태.
 
 ### 검증
 
@@ -74,52 +74,71 @@ contract-check
 
 ## 십보강호 고유 계약
 
-- `[강호낭인]`
-- 전장 10칸, 플레이어 3번·상대 8번
-- 라운드 `3수 → 3수 → 4수`, 총 10수
-- 판정 `대응 → 속공 → 이동 → 일반 공격`
-- 기초 행동 8종
-- 절초 기세 최대 5칸
-- 5전 데모·10전 전체판
-- Godot 코드·데이터·씬·자산·테스트·런타임 상태
+- `[강호낭인]`.
+- 전장 10칸, 플레이어 4번·상대 7번 시작.
+- 시작 거리 3칸.
+- 라운드 `3수 → 3수 → 4수`, 총 10수.
+- 판정 `대응 → 속공 → 이동 → 일반 공격`.
+- 같은 단계 공격 동시 피해.
+- 기초 행동 8종.
+- 절초 기세 최대 5칸.
+- 비용은 행동 슬롯·기력·내력.
+- T0 단일 전투 POC → T1 최소 세로 슬라이스 → T2 5전 데모 → 전체 10전.
+- Godot 코드·데이터·씬·자산·테스트·런타임 상태.
 
-기존 `docs/01~11`, 백업·보류·Plan·PR·Git 이력은 별도 승인 전 삭제·이동하지 않는다.
+기존 `docs/01~11`, 백업·보류·Plan·PR·Git 이력은 별도 승인 전 삭제·이동하지 않는다. 백업·보류·과거 기록은 활성 구현 기본 참조가 아니다.
 
 ## 최적화 결과
 
-- 공용 운영 기능을 로컬 Skill로 중복하지 않음
-- 로컬 Skill 6개 → 프로젝트 고유 4개
-- 사용 불가능한 Skill Map PDF·Manifest 계약 제거
-- 컨셉·벤치마크 템플릿 통합
-- 정본 최신성 양식을 변경 검증 양식에 통합
-- Governance 회귀 테스트를 표준 라이브러리 단일 파일로 통합
-- 중복 검사기 제거
-- 기본 읽기 문서 축소
+- 공용 운영 기능을 로컬 Skill로 중복하지 않음.
+- 로컬 Skill 6개 → 프로젝트 고유 4개.
+- 사용 불가능한 Skill Map PDF·Manifest 계약 제거.
+- 컨셉·벤치마크 템플릿 통합.
+- 정본 최신성 양식을 변경 검증 양식에 통합.
+- Governance 회귀 테스트를 표준 라이브러리 단일 파일로 통합.
+- 중복 검사기 제거.
+- 기본 읽기 문서 축소.
 
 기능 삭제가 아니라 Base 공유 Skill·Registry·Legacy Alias·자동 검사로 책임을 승계했다.
+
+## 최신 프로젝트 정렬
+
+- P0-1: `docs/01·02·05` 핵심 전투 책임 원본 정렬.
+- P0-2: UI·QA·아키텍처·연출 소비자 정렬.
+- P0-3: 플레이어 4번·상대 7번 시작을 데이터·fallback·테스트·SVG·문서·Skill에 전파.
+- `docs/03`은 현재 T0·T1 계획·전체판 가설·HOLD로 재구성.
+- `docs/06`은 T1 이후 성장 가설로 재구성.
+- `docs/ACTIVE_CONTEXT.md`는 현행 허브 Context 리디렉션으로 전환.
 
 ## 검증 상태
 
 확인:
 
-- Base canonical 읽기 순서와 13개 Skill
-- 70개 변경 파일 처리표
-- 운영 구조·발행 정책 형태·정본 최신성·Skill 무결성 검사
-- 기존 제품 본책·Godot 구현·자산 비삭제
+- Base canonical 읽기 순서와 13개 Skill.
+- 70개 변경 파일 처리표.
+- 과거 운영 구조·발행 정책 형태·정본 최신성·Skill 무결성 검사.
+- 기존 제품 본책·Godot 구현·자산 비삭제.
+- 시작 위치 4/7 데이터·코드·Godot fixture·SVG·활성 문서·Skill 변경.
+
+확인 대기:
+
+- 이번 변경의 최신 Documentation Governance와 Card Component Contract.
+- 사용자 Windows 플레이어 4번·상대 7번 렌더·판정.
+- RESPONSE·RESOURCE PREVIEW 10.6 최신 Godot 런타임.
 
 미검증:
 
-- 사용자 로컬 미커밋 파일
-- RESPONSE 10.6 최신 Godot 런타임
-- 마일스톤 PDF·Manifest와 전 페이지 시각 검수
-- 접근성 사용자 검수
-- 목표 플랫폼 성능 프로파일
-- 외부 POC 플레이테스트
-- Branch protection Required Check 강제
+- 사용자 로컬 미커밋 파일.
+- 마일스톤 PDF·Manifest와 전 페이지 시각 검수.
+- 접근성 사용자 검수.
+- 목표 플랫폼 성능 프로파일.
+- 외부 POC 플레이테스트.
+- Branch protection Required Check 강제.
 
 ## 재감사 조건
 
-- Base SHA·Skill Registry·Schema 변경
-- 책임 원본·경로·ID·발행 정책·생성기 변경
-- 운영체계 통합·삭제·대규모 검증
-- 동일 stale reference·Skill 중복·콜드 스타트 실패 반복
+- Base SHA·Skill Registry·Schema 변경.
+- 책임 원본·경로·ID·발행 정책·생성기 변경.
+- 시작 위치·전장 크기·타이밍 구조 변경.
+- 운영체계 통합·삭제·대규모 검증.
+- 동일 stale reference·Skill 중복·콜드 스타트 실패 반복.
