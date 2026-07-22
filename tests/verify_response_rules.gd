@@ -1,6 +1,8 @@
 extends SceneTree
 
 const HUD_PATH := "res://data/combat/combat_hud_preview.json"
+const PLAYER_START_TILE := 4
+const ENEMY_START_TILE := 7
 
 var failures: Array[String] = []
 
@@ -68,7 +70,7 @@ func _resolve_defense_case(hud: Dictionary, response_id: String, combo: bool, re
         response["stamina_cost"] = int(response.get("stamina_cost", 0)) + int(stance.get("stamina_cost", 0))
         response["internal_cost"] = int(response.get("internal_cost", 0)) + int(stance.get("internal_cost", 0))
 
-    var state := engine.make_initial_state(hud, 3, 4)
+    var state := engine.make_initial_state(hud, PLAYER_START_TILE, PLAYER_START_TILE + 1)
     var placement := _placement(response, response_timing)
     var result := engine.resolve_bundle([placement], {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, state)
     var player: Dictionary = (result.get("state", {}) as Dictionary).get("player", {})
@@ -77,7 +79,7 @@ func _resolve_defense_case(hud: Dictionary, response_id: String, combo: bool, re
 
 func _verify_resource_preview(hud: Dictionary) -> void:
     var engine := CombatResolutionEngine.new()
-    var state := engine.make_initial_state(hud, 3, 8)
+    var state := engine.make_initial_state(hud, PLAYER_START_TILE, ENEMY_START_TILE)
     var footwork: Dictionary = engine.cards_by_id.get("basic_footwork", {})
     var quick: Dictionary = engine.cards_by_id.get("basic_quick_attack", {})
     var meditate: Dictionary = engine.cards_by_id.get("basic_meditate", {})
@@ -120,7 +122,7 @@ func _placement(definition: Dictionary, anchor: int) -> Dictionary:
         "target_ready": true,
         "target_tile": 0,
         "direction": 1,
-        "origin_tile": 3
+        "origin_tile": PLAYER_START_TILE
     }
 
 func _load_json(path: String) -> Dictionary:
@@ -134,10 +136,10 @@ func _load_json(path: String) -> Dictionary:
 
 func _finish() -> void:
     if failures.is_empty():
-        print("RESPONSE_RULES_10_6_VERIFY_OK")
+        print("RESPONSE_RULES_10_6_START_4_7_VERIFY_OK")
         quit(0)
         return
     for failure in failures:
         push_error(failure)
-    print("RESPONSE_RULES_10_6_VERIFY_FAILED count=%d" % failures.size())
+    print("RESPONSE_RULES_10_6_START_4_7_VERIFY_FAILED count=%d" % failures.size())
     quit(1)
