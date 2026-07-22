@@ -24,30 +24,30 @@ func _run() -> void:
 
 func _verify_guard_rules(hud: Dictionary) -> void:
     var same_timing_health := _resolve_defense_case(hud, "basic_guard", false, 1, 1)
-    if same_timing_health != 14:
-        failures.append("Same-timing guard must use 50% reduction when it is stronger than guard block. expected=14 actual=%d" % same_timing_health)
+    if same_timing_health != 24:
+        failures.append("Same-timing guard must use 50%% reduction when it is stronger than guard block. expected=24 actual=%d" % same_timing_health)
 
     var bundle_health := _resolve_defense_case(hud, "basic_guard", false, 1, 2)
-    if bundle_health != 12:
-        failures.append("Same-bundle guard must reduce damage 12 by guard block 4. expected=12 actual=%d" % bundle_health)
+    if bundle_health != 22:
+        failures.append("Same-bundle guard must reduce damage 12 by guard block 4. expected=22 actual=%d" % bundle_health)
 
 func _verify_evade_rules(hud: Dictionary) -> void:
     var same_timing_health := _resolve_defense_case(hud, "basic_evade", false, 1, 1)
-    if same_timing_health != 20:
-        failures.append("Same-timing evade must fully avoid damage. expected=20 actual=%d" % same_timing_health)
+    if same_timing_health != 30:
+        failures.append("Same-timing evade must fully avoid damage. expected=30 actual=%d" % same_timing_health)
 
     var other_timing_health := _resolve_defense_case(hud, "basic_evade", false, 1, 2)
-    if other_timing_health != 8:
-        failures.append("Normal evade must not protect a different timing in the bundle. expected=8 actual=%d" % other_timing_health)
+    if other_timing_health != 18:
+        failures.append("Normal evade must not protect a different timing in the bundle. expected=18 actual=%d" % other_timing_health)
 
 func _verify_stance_response_combos(hud: Dictionary) -> void:
     var guard_combo_health := _resolve_defense_case(hud, "basic_guard", true, 1, 2)
-    if guard_combo_health != 14:
-        failures.append("Stance+guard must extend to the bundle with defense 6. expected=14 actual=%d" % guard_combo_health)
+    if guard_combo_health != 24:
+        failures.append("Stance+guard must extend to the bundle with defense 6. expected=24 actual=%d" % guard_combo_health)
 
     var evade_combo_health := _resolve_defense_case(hud, "basic_evade", true, 1, 2)
-    if evade_combo_health != 20:
-        failures.append("Stance+evade must fully evade attacks across the current bundle. expected=20 actual=%d" % evade_combo_health)
+    if evade_combo_health != 30:
+        failures.append("Stance+evade must fully evade attacks across the current bundle. expected=30 actual=%d" % evade_combo_health)
 
 func _resolve_defense_case(hud: Dictionary, response_id: String, combo: bool, response_timing: int, attack_timing: int) -> int:
     var engine := CombatResolutionEngine.new()

@@ -7,7 +7,7 @@ Godot 4.7.1에서 12세력의 공용 전투 엔진, 2수 비공개 동시 선택
 ## 먼저 읽을 문서
 
 1. `AGENTS.md`
-2. `docs/ACTIVE_CONTEXT.md`
+2. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
 3. `docs/DOCUMENTATION_MAP.md`
 4. `docs/01_GAME_DESIGN.md`
 5. `docs/02_COMBAT_RULES.md`

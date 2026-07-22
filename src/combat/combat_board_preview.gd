@@ -24,6 +24,14 @@ var combat_progress_button: CombatProgressButton
 var basic_card_tray: BasicCardTray
 var card_detail_panel: CardDetailPanel
 var combat_log_panel: CombatLogPanel
+var ultimate_menu: MenuButton
+var presentation_label: Label
+var fast_replay_button: Button
+var skip_presentation_button: Button
+var reduced_motion_button: Button
+var sound_toggle_button: Button
+var sound_volume_slider: HSlider
+var procedural_sfx_player: AudioStreamPlayer
 var player_character: CombatCharacterPlaceholder
 var enemy_character: CombatCharacterPlaceholder
 var resolution_engine: CombatResolutionEngine
@@ -47,6 +55,16 @@ var _resolution_count := 0
 var _targeting_anchor := 0
 var _targeting_mode := ""
 var _targeting_origin_tile := 0
+var _ultimate_definitions: Array[Dictionary] = []
+var _ultimate_reservation_anchors := PackedInt32Array()
+var _presentation_state := "planning"
+var _presentation_events: Array = []
+var _presentation_state_history := PackedStringArray(["planning"])
+var _fast_replay := false
+var _reduced_motion := false
+var _presentation_skip_requested := false
+var _sound_muted := false
+var _sound_volume := 0.65
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_PASS
@@ -55,6 +73,7 @@ func _ready() -> void:
     _enemy_tile = int(contract.get("enemy_start_tile", 7))
     _build_structure()
     resolution_engine = CombatResolutionEngine.new()
+    _configure_ultimate_menu()
     combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
     _sync_runtime_context()
     _apply_combat_state_to_view()
@@ -138,6 +157,55 @@ func _build_structure() -> void:
     combat_log_panel.layout_requested.connect(_layout_board)
     add_child(combat_log_panel)
 
+    ultimate_menu = MenuButton.new()
+    ultimate_menu.name = "UltimateMenu"
+    ultimate_menu.text = "절초 · 기세 필요"
+    ultimate_menu.tooltip_text = "기세가 정확히 5일 때 절초를 예약합니다. 예약 직후 기세 5를 소비하며 환불되지 않습니다."
+    ultimate_menu.get_popup().id_pressed.connect(_on_ultimate_menu_id_pressed)
+    add_child(ultimate_menu)
+
+    presentation_label = Label.new()
+    presentation_label.name = "PresentationResultLabel"
+    presentation_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    presentation_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+    presentation_label.add_theme_font_size_override("font_size", 19)
+    presentation_label.add_theme_color_override("font_color", Color("e8c46a"))
+    presentation_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    presentation_label.visible = false
+    add_child(presentation_label)
+
+    fast_replay_button = Button.new()
+    fast_replay_button.name = "FastReplayButton"
+    fast_replay_button.text = "빠르게: 끔"
+    fast_replay_button.pressed.connect(_toggle_fast_replay)
+    add_child(fast_replay_button)
+    skip_presentation_button = Button.new()
+    skip_presentation_button.name = "SkipPresentationButton"
+    skip_presentation_button.text = "즉시 완료"
+    skip_presentation_button.pressed.connect(_skip_presentation)
+    add_child(skip_presentation_button)
+    reduced_motion_button = Button.new()
+    reduced_motion_button.name = "ReducedMotionButton"
+    reduced_motion_button.text = "모션 감소: 끔"
+    reduced_motion_button.pressed.connect(_toggle_reduced_motion)
+    add_child(reduced_motion_button)
+    sound_toggle_button = Button.new()
+    sound_toggle_button.name = "SoundToggleButton"
+    sound_toggle_button.text = "소리: 켬"
+    sound_toggle_button.pressed.connect(_toggle_sound)
+    add_child(sound_toggle_button)
+    sound_volume_slider = HSlider.new()
+    sound_volume_slider.name = "SoundVolumeSlider"
+    sound_volume_slider.min_value = 0.0
+    sound_volume_slider.max_value = 1.0
+    sound_volume_slider.step = 0.05
+    sound_volume_slider.value = _sound_volume
+    sound_volume_slider.value_changed.connect(_set_sound_volume)
+    add_child(sound_volume_slider)
+    procedural_sfx_player = AudioStreamPlayer.new()
+    procedural_sfx_player.name = "ProceduralSfxPlayer"
+    add_child(procedural_sfx_player)
+
     var tile_count := int(contract.get("tile_count", 10))
     var anchor_ratio := float(contract.get("foot_anchor_y_ratio", 0.68))
     for index in range(1, tile_count + 1):
@@ -181,7 +249,9 @@ func _build_structure() -> void:
     set_meta("move_target_mode", "board_tile")
     set_meta("attack_target_mode", "left_or_right")
     set_meta("progress_requires_complete_bundle", true)
-    set_meta("interruption_enabled", false)
+    set_meta("interruption_enabled", true)
+    set_meta("ultimate_menu_component", "UltimateMenu")
+    set_meta("ultimate_reservation_requires_exact_momentum", 5)
     set_meta("lower_status_panels", false)
     set_meta("lower_skill_panel", true)
     set_meta("card_interactions_enabled", true)
@@ -226,6 +296,27 @@ func _layout_board() -> void:
         combat_progress_button.position = Vector2(lower_margin + timing_width + progress_gap, timing_row_y)
         combat_progress_button.size = Vector2(progress_width, timing_height)
 
+    if is_instance_valid(ultimate_menu):
+        ultimate_menu.position = Vector2(maxf(lower_margin, size.x - 250.0), 136.0)
+        ultimate_menu.size = Vector2(230.0, 34.0)
+    var presentation_y := 174.0
+    if is_instance_valid(presentation_label):
+        presentation_label.position = Vector2(size.x * 0.32, presentation_y)
+        presentation_label.size = Vector2(size.x * 0.36, 34.0)
+    var playback_x := maxf(lower_margin, size.x - 420.0)
+    for button_value in [fast_replay_button, skip_presentation_button, reduced_motion_button]:
+        if is_instance_valid(button_value):
+            var button := button_value as Button
+            button.position = Vector2(playback_x, presentation_y)
+            button.size = Vector2(128.0, 30.0)
+            playback_x += 134.0
+    if is_instance_valid(sound_toggle_button):
+        sound_toggle_button.position = Vector2(lower_margin, presentation_y)
+        sound_toggle_button.size = Vector2(90.0, 30.0)
+    if is_instance_valid(sound_volume_slider):
+        sound_volume_slider.position = Vector2(lower_margin + 96.0, presentation_y + 6.0)
+        sound_volume_slider.size = Vector2(130.0, 20.0)
+
     var overlay_top := 145.0
     var overlay_bottom := timing_row_y - 10.0
     var overlay_height := maxf(1.0, overlay_bottom - overlay_top)
@@ -265,15 +356,24 @@ func _layout_board() -> void:
         tile.custom_minimum_size = tile.size
         tile.set_occupied("")
 
-    get_tile(_player_tile).set_occupied("player")
-    get_tile(_enemy_tile).set_occupied("enemy")
+    if _player_tile == _enemy_tile:
+        get_tile(_player_tile).set_occupied(["player", "enemy"])
+    else:
+        get_tile(_player_tile).set_occupied("player")
+        get_tile(_enemy_tile).set_occupied("enemy")
 
     var height_ratio := float(contract.get("character_height_to_tile_width", 1.5))
     var body_width_ratio := float(contract.get("character_body_width_to_tile_width", 0.72))
     player_character.configure("player", 1, _player_tile, _tile_width, height_ratio, body_width_ratio)
     enemy_character.configure("enemy", -1, _enemy_tile, _tile_width, height_ratio, body_width_ratio)
-    player_character.place_foot_at(get_tile_foot_anchor(_player_tile))
-    enemy_character.place_foot_at(get_tile_foot_anchor(_enemy_tile))
+    var player_foot := get_tile_foot_anchor(_player_tile)
+    var enemy_foot := get_tile_foot_anchor(_enemy_tile)
+    if _player_tile == _enemy_tile:
+        var engage_offset := _tile_width * 0.18
+        player_foot.x -= engage_offset
+        enemy_foot.x += engage_offset
+    player_character.place_foot_at(player_foot)
+    enemy_character.place_foot_at(enemy_foot)
 
     var anchor_y := get_tile_foot_anchor(_player_tile).y
     _anchor_line.position = Vector2(board_left, anchor_y - 1.0)
@@ -296,6 +396,8 @@ func _on_card_unhovered(_card_id: String) -> void:
     card_detail_panel.clear_definition()
 
 func _on_action_card_selected(definition: Dictionary) -> void:
+    if _inputs_locked():
+        return
     if _targeting_anchor > 0:
         basic_card_tray.clear_action_selection()
         if is_instance_valid(combat_log_panel):
@@ -308,6 +410,7 @@ func _on_action_card_selected(definition: Dictionary) -> void:
         _clear_card_detail()
         return
     _selected_action_definition = definition.duplicate(true)
+    _refresh_ultimate_menu()
     basic_card_tray.set_selected_card(card_id)
     _detail_pinned = true
     _pinned_card_id = card_id
@@ -315,7 +418,15 @@ func _on_action_card_selected(definition: Dictionary) -> void:
     card_detail_panel.show_definition(definition, true)
 
 func _on_timing_slot_clicked(timing_index: int) -> void:
+    if _inputs_locked():
+        return
     if action_timing_panel.has_assignment_at(timing_index):
+        var existing := action_timing_panel.get_placement(action_timing_panel.get_assignment_anchor(timing_index))
+        var existing_definition: Dictionary = existing.get("definition", {})
+        if str(existing_definition.get("source", "")) == "ultimate":
+            if is_instance_valid(combat_log_panel):
+                combat_log_panel.append_entry("[절초 예약 유지] 예약된 절초는 기세를 환불하지 않으며 이 묶음에서 해제할 수 없습니다.", "system")
+            return
         var removed := action_timing_panel.remove_at(timing_index)
         if int(removed.get("anchor_index", 0)) == _targeting_anchor:
             _clear_targeting()
@@ -327,18 +438,122 @@ func _on_timing_slot_clicked(timing_index: int) -> void:
         return
     if _selected_action_definition.is_empty():
         return
+    var is_ultimate := str(_selected_action_definition.get("source", "")) == "ultimate"
+    if is_ultimate and not _can_reserve_ultimate(_selected_action_definition):
+        if is_instance_valid(combat_log_panel):
+            combat_log_panel.append_entry("[절초 예약 불가] 기세 5와 현재 묶음의 연속된 빈 슬롯이 모두 필요합니다.", "system")
+        _refresh_ultimate_menu()
+        return
     var placed := action_timing_panel.place_card(_selected_action_definition, timing_index)
     if placed:
+        if is_ultimate:
+            _reserve_ultimate_at(timing_index)
         var span := maxi(1, int(_selected_action_definition.get("action_slots", 1)))
         var placement := {"card_name": str(_selected_action_definition.get("name", "")), "indices": _make_timing_indices(timing_index, span)}
         if is_instance_valid(combat_log_panel):
-            combat_log_panel.append_entry("[배치] %s · %s" % [str(placement.get("card_name", "")), _placement_timing_text(placement)], "system")
+            var prefix := "[절초 예약]" if is_ultimate else "[배치]"
+            combat_log_panel.append_entry("%s %s · %s" % [prefix, str(placement.get("card_name", "")), _placement_timing_text(placement)], "system")
         _clear_action_selection()
         _clear_card_detail()
         if not _begin_targeting_for_anchor(timing_index):
             _begin_next_pending_target()
     elif is_instance_valid(combat_log_panel):
         combat_log_panel.append_entry("[배치 불가] 연속된 빈 행동 슬롯이 부족합니다.", "system")
+
+func _configure_ultimate_menu() -> void:
+    _ultimate_definitions.clear()
+    if resolution_engine == null:
+        return
+    for value in resolution_engine.cards_by_id.values():
+        if typeof(value) != TYPE_DICTIONARY:
+            continue
+        var definition: Dictionary = value
+        if str(definition.get("source", "")) == "ultimate":
+            _ultimate_definitions.append(definition.duplicate(true))
+    _ultimate_definitions.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+        return int(a.get("action_slots", 1)) < int(b.get("action_slots", 1))
+    )
+    _refresh_ultimate_menu()
+
+func _refresh_ultimate_menu() -> void:
+    if not is_instance_valid(ultimate_menu) or not is_instance_valid(action_timing_panel):
+        return
+    var popup := ultimate_menu.get_popup()
+    popup.clear()
+    var player: Dictionary = combat_state.get("player", {})
+    var momentum := _resource_value(player, "momentum")
+    var has_exact_momentum := momentum == 5
+    var any_available := false
+    for index in range(_ultimate_definitions.size()):
+        var definition := _ultimate_definitions[index]
+        var has_slots := _has_contiguous_open_slots(int(definition.get("action_slots", 1)))
+        var available := has_exact_momentum and has_slots and _targeting_anchor <= 0
+        any_available = any_available or available
+        var detail := "%s · %d수 · 사거리 %s · 피해 %s" % [str(definition.get("name", "절초")), int(definition.get("action_slots", 1)), str(definition.get("range_text", "1")), str(definition.get("damage", "0"))]
+        if not has_exact_momentum:
+            detail += " (기세 5 필요)"
+        elif not has_slots:
+            detail += " (연속 빈칸 부족)"
+        popup.add_item(detail, index)
+        popup.set_item_disabled(index, not available)
+        popup.set_item_tooltip(index, "기세 5를 즉시 소비하며, 중단·방향 실패·사거리 실패에도 환불되지 않습니다.")
+    ultimate_menu.disabled = not any_available
+    if not _selected_action_definition.is_empty() and str(_selected_action_definition.get("source", "")) == "ultimate":
+        ultimate_menu.text = "[절초 예약] %s · 슬롯 선택" % str(_selected_action_definition.get("name", ""))
+    else:
+        ultimate_menu.text = "절초 · 기세 %d/5" % momentum
+    set_meta("ultimate_available", any_available)
+    set_meta("ultimate_momentum", momentum)
+
+func _on_ultimate_menu_id_pressed(index: int) -> void:
+    if _inputs_locked() or index < 0 or index >= _ultimate_definitions.size() or _targeting_anchor > 0:
+        return
+    var definition := _ultimate_definitions[index].duplicate(true)
+    if not _can_reserve_ultimate(definition):
+        _refresh_ultimate_menu()
+        return
+    _selected_action_definition = definition
+    if is_instance_valid(basic_card_tray):
+        basic_card_tray.clear_action_selection()
+        basic_card_tray.clear_card_focus()
+    _detail_pinned = true
+    _pinned_card_id = str(definition.get("id", ""))
+    if is_instance_valid(card_detail_panel):
+        card_detail_panel.show_definition(definition, true)
+    if is_instance_valid(combat_log_panel):
+        combat_log_panel.append_entry("[절초 선택] 연속된 빈 슬롯을 눌러 [절초 예약]을 확정하세요. 기세는 즉시 소비되고 환불되지 않습니다.", "system")
+    _refresh_ultimate_menu()
+
+func _can_reserve_ultimate(definition: Dictionary) -> bool:
+    var player: Dictionary = combat_state.get("player", {})
+    return _resource_value(player, "momentum") == 5 and _has_contiguous_open_slots(int(definition.get("action_slots", 1)))
+
+func _has_contiguous_open_slots(span: int) -> bool:
+    for start in action_timing_panel.get_current_bundle_indices():
+        var fits := true
+        for offset in range(maxi(1, span)):
+            var index := int(start) + offset
+            if not action_timing_panel.is_index_actionable(index) or action_timing_panel.has_assignment_at(index):
+                fits = false
+                break
+        if fits:
+            return true
+    return false
+
+func _reserve_ultimate_at(anchor_index: int) -> void:
+    var player: Dictionary = combat_state.get("player", {})
+    var momentum = player.get("momentum", [0, 5])
+    var maximum := int(momentum[1]) if typeof(momentum) == TYPE_ARRAY and momentum.size() >= 2 else 5
+    player["momentum"] = [0, maximum]
+    combat_state["player"] = player
+    _ultimate_reservation_anchors.append(anchor_index)
+    _apply_combat_state_to_view()
+    _play_procedural_sfx("ultimate_reserve")
+    _refresh_ultimate_menu()
+
+func _resource_value(actor: Dictionary, key: String) -> int:
+    var pair = actor.get(key, [0, 0])
+    return int(pair[0]) if typeof(pair) == TYPE_ARRAY and pair.size() >= 1 else 0
 
 func _make_timing_indices(start_index: int, span: int) -> PackedInt32Array:
     var result := PackedInt32Array()
@@ -373,7 +588,7 @@ func _begin_targeting_for_anchor(anchor_index: int) -> bool:
         for direction in [-1, 1]:
             for step in range(1, movement_steps + 1):
                 var target_index: int = _targeting_origin_tile + int(direction) * int(step)
-                if target_index < 1 or target_index > tiles.size() or target_index == _enemy_tile:
+                if target_index < 1 or target_index > tiles.size():
                     continue
                 get_tile(target_index).set_interaction_state("movable")
         if is_instance_valid(combat_log_panel):
@@ -412,7 +627,7 @@ func _projected_player_tile_before(anchor_index: int) -> int:
     return clampi(projected, 1, tiles.size())
 
 func _on_board_tile_clicked(tile_index: int) -> void:
-    if _targeting_anchor <= 0:
+    if _inputs_locked() or _targeting_anchor <= 0:
         return
     var tile := get_tile(tile_index)
     if tile == null:
@@ -467,6 +682,7 @@ func _clear_targeting() -> void:
 
 func _on_placement_changed(_snapshot: Dictionary) -> void:
     _sync_progress_availability()
+    _refresh_ultimate_menu()
 
 func _sync_runtime_context() -> void:
     if not is_instance_valid(action_timing_panel) or not is_instance_valid(combat_progress_button):
@@ -477,22 +693,31 @@ func _sync_progress_availability() -> void:
     if not is_instance_valid(action_timing_panel) or not is_instance_valid(combat_progress_button):
         return
     var complete := action_timing_panel.is_current_bundle_complete()
-    combat_progress_button.set_progress_enabled(complete)
+    combat_progress_button.set_progress_enabled(complete and not _inputs_locked())
     set_meta("current_bundle_complete", complete)
     set_meta("targets_ready", action_timing_panel.are_current_bundle_targets_ready())
 
 func _on_progress_requested(context: Dictionary) -> void:
-    if not action_timing_panel.is_current_bundle_complete():
+    if _inputs_locked() or not action_timing_panel.is_current_bundle_complete():
         return
     _clear_targeting()
+    _set_presentation_state("committed")
     _progress_request_count += 1
     set_meta("progress_request_count", _progress_request_count)
 
+    await _resolve_and_present(context)
+
+func _resolve_and_present(context: Dictionary) -> void:
+
     var result := resolution_engine.resolve_bundle(action_timing_panel.get_resolution_placements(), context, combat_state)
+    _set_presentation_state("resolving")
     combat_state = (result.get("state", {}) as Dictionary).duplicate(true)
+    _presentation_events = result.get("presentation_events", [])
     _resolution_count += 1
     set_meta("resolution_count", _resolution_count)
     _append_resolution_logs(result.get("logs", []))
+
+    await _present_authoritative_events()
 
     var advanced := action_timing_panel.advance_after_resolution()
     combat_state["round_number"] = int(advanced.get("round_number", combat_state.get("round_number", 1)))
@@ -504,6 +729,130 @@ func _on_progress_requested(context: Dictionary) -> void:
     _apply_combat_state_to_view()
     if is_instance_valid(combat_log_panel):
         combat_log_panel.append_entry("[판정 완료] 다음 행동 묶음을 준비합니다.", "system")
+    _set_presentation_state("next_bundle_ready")
+    _sync_progress_availability()
+
+func _set_presentation_state(value: String) -> void:
+    _presentation_state = value
+    if _presentation_state_history.is_empty() or _presentation_state_history[_presentation_state_history.size() - 1] != value:
+        _presentation_state_history.append(value)
+    set_meta("presentation_state", value)
+    set_meta("presentation_state_history", _presentation_state_history)
+    set_meta("inputs_locked", _inputs_locked())
+
+func _inputs_locked() -> bool:
+    return _presentation_state not in ["planning", "next_bundle_ready"]
+
+func _present_authoritative_events() -> void:
+    _set_presentation_state("presenting_result")
+    _presentation_skip_requested = false
+    if not is_instance_valid(presentation_label):
+        return
+    var summary := "판정 완료"
+    for value in _presentation_events:
+        if typeof(value) != TYPE_DICTIONARY:
+            continue
+        var event: Dictionary = value
+        if str(event.get("type", "")) != "action_result":
+            continue
+        var outcome := str(event.get("outcome", ""))
+        summary = _presentation_summary_for_event(event, summary)
+        presentation_label.text = summary
+        presentation_label.visible = true
+        presentation_label.modulate = Color.WHITE if _reduced_motion else Color(1.0, 0.88, 0.50, 1.0)
+        _play_event_sfx(event)
+        if not _presentation_skip_requested:
+            var duration := 0.04 if _fast_replay else (0.0 if _reduced_motion else 0.16)
+            if duration > 0.0:
+                await get_tree().create_timer(duration).timeout
+        if _presentation_skip_requested:
+            break
+    presentation_label.text = summary
+    presentation_label.visible = not _presentation_skip_requested
+    set_meta("presentation_event_count", _presentation_events.size())
+
+func _presentation_summary_for_event(event: Dictionary, fallback: String) -> String:
+    var outcome := str(event.get("outcome", ""))
+    if outcome == "interrupted":
+        return "중단 · 이후 행동 취소"
+    if outcome == "miss_direction":
+        return "방향 실패"
+    if outcome == "miss_range":
+        return "사거리 실패"
+    if str(event.get("defense_outcome", "")) == "block":
+        return "막기 · 피해 경감"
+    if str(event.get("defense_outcome", "")) == "evade":
+        return "회피 · 피해 없음"
+    if int(event.get("damage", 0)) > 0:
+        return "%s · 피해 %d" % [str(event.get("card_name", "공격")), int(event.get("damage", 0))]
+    return fallback
+
+func _toggle_fast_replay() -> void:
+    _fast_replay = not _fast_replay
+    if is_instance_valid(fast_replay_button):
+        fast_replay_button.text = "빠르게: %s" % ("켬" if _fast_replay else "끔")
+
+func _skip_presentation() -> void:
+    _presentation_skip_requested = true
+    if is_instance_valid(presentation_label):
+        presentation_label.visible = false
+    set_meta("presentation_skipped", true)
+
+func _toggle_reduced_motion() -> void:
+    _reduced_motion = not _reduced_motion
+    if is_instance_valid(reduced_motion_button):
+        reduced_motion_button.text = "모션 감소: %s" % ("켬" if _reduced_motion else "끔")
+
+func _toggle_sound() -> void:
+    _sound_muted = not _sound_muted
+    if is_instance_valid(sound_toggle_button):
+        sound_toggle_button.text = "소리: %s" % ("끔" if _sound_muted else "켬")
+
+func _set_sound_volume(value: float) -> void:
+    _sound_volume = clampf(value, 0.0, 1.0)
+
+func _play_event_sfx(event: Dictionary) -> void:
+    var outcome := str(event.get("outcome", ""))
+    if outcome == "interrupted":
+        _play_procedural_sfx("interrupt")
+    elif str(event.get("defense_outcome", "")) == "evade":
+        _play_procedural_sfx("evade")
+    elif str(event.get("defense_outcome", "")) == "block":
+        _play_procedural_sfx("block")
+    elif int(event.get("damage", 0)) > 0:
+        _play_procedural_sfx("heavy_hit" if int(event.get("damage", 0)) >= 14 else "sword_wind")
+
+func _play_procedural_sfx(kind: String) -> void:
+    if _sound_muted or not is_instance_valid(procedural_sfx_player):
+        return
+    var frequency := 440.0
+    var duration := 0.12
+    match kind:
+        "momentum_charge": frequency = 660.0
+        "ultimate_reserve": frequency = 480.0
+        "sword_wind": frequency = 760.0
+        "metal_clash": frequency = 1100.0
+        "heavy_hit": frequency = 90.0
+        "block": frequency = 320.0
+        "evade": frequency = 880.0
+        "interrupt": frequency = 180.0
+        "defeat": frequency = 70.0
+    var sample_rate := 22050
+    var sample_count := maxi(1, int(duration * sample_rate))
+    var pcm := PackedByteArray()
+    pcm.resize(sample_count * 2)
+    for index in range(sample_count):
+        var envelope := 1.0 - float(index) / float(sample_count)
+        var sample := int(sin(TAU * frequency * float(index) / float(sample_rate)) * 14000.0 * envelope * _sound_volume)
+        pcm[index * 2] = sample & 0xff
+        pcm[index * 2 + 1] = (sample >> 8) & 0xff
+    var stream := AudioStreamWAV.new()
+    stream.format = AudioStreamWAV.FORMAT_16_BITS
+    stream.mix_rate = sample_rate
+    stream.stereo = false
+    stream.data = pcm
+    procedural_sfx_player.stream = stream
+    procedural_sfx_player.play()
 
 func _append_resolution_logs(values) -> void:
     if not is_instance_valid(combat_log_panel) or typeof(values) != TYPE_ARRAY:
@@ -522,12 +871,14 @@ func _apply_combat_state_to_view() -> void:
         top_hud.apply_combat_state(combat_state, action_timing_panel.timing_data.get("timing_sequence", [3, 3, 4]))
     set_meta("player_tile", _player_tile)
     set_meta("enemy_tile", _enemy_tile)
+    _refresh_ultimate_menu()
     call_deferred("_layout_board")
 
 func _clear_action_selection() -> void:
     _selected_action_definition.clear()
     if is_instance_valid(basic_card_tray):
         basic_card_tray.clear_action_selection()
+    _refresh_ultimate_menu()
 
 func _clear_card_detail() -> void:
     _detail_pinned = false
@@ -550,6 +901,8 @@ func _gui_input(event: InputEvent) -> void:
         if _control_contains_point(combat_progress_button, point):
             return
         if _control_contains_point(action_timing_panel, point):
+            return
+        if _control_contains_point(ultimate_menu, point):
             return
         if _control_contains_point(basic_card_tray, point):
             return
@@ -615,6 +968,14 @@ func get_layout_snapshot() -> Dictionary:
         "card_detail_snapshot": detail_snapshot,
         "combat_log_ready": is_instance_valid(combat_log_panel),
         "combat_log_snapshot": log_snapshot,
+        "ultimate_menu_ready": is_instance_valid(ultimate_menu),
+        "ultimate_menu_text": ultimate_menu.text if is_instance_valid(ultimate_menu) else "",
+        "ultimate_available": bool(get_meta("ultimate_available", false)),
+        "ultimate_momentum": int(get_meta("ultimate_momentum", 0)),
+        "presentation_state": _presentation_state,
+        "presentation_state_history": _presentation_state_history.duplicate(),
+        "presentation_event_count": _presentation_events.size(),
+        "inputs_locked": _inputs_locked(),
         "selected_action_card_id": str(_selected_action_definition.get("id", "")),
         "current_bundle_complete": action_timing_panel.is_current_bundle_complete() if is_instance_valid(action_timing_panel) else false,
         "targets_ready": action_timing_panel.are_current_bundle_targets_ready() if is_instance_valid(action_timing_panel) else false,
@@ -625,7 +986,7 @@ func get_layout_snapshot() -> Dictionary:
         "information_interactions_enabled": true,
         "action_placement_enabled": true,
         "state_advancement_enabled": true,
-        "interruption_enabled": false,
+        "interruption_enabled": true,
         "combat_state": get_combat_state_snapshot(),
         "lower_status_panels": false,
         "lower_skill_panel": true,

@@ -45,6 +45,7 @@ func _run() -> void:
         _finish()
         return
 
+    board.set_anchors_preset(Control.PRESET_TOP_LEFT)
     board.size = Vector2(1440.0, 900.0)
     root.add_child(board)
     for _index in range(6):
@@ -131,8 +132,12 @@ func _verify_timing_initial(board: CombatBoardPreview) -> void:
         failures.append("ActionTimingPanel must exist.")
         return
     var timing := board.action_timing_panel.get_timing_snapshot()
-    if timing.get("timing_sequence", []) != EXPECTED_TIMING_SEQUENCE:
-        failures.append("Timing sequence must be 3, 3, 4.")
+    var timing_sequence: Array = timing.get("timing_sequence", [])
+    var normalized_sequence := PackedInt32Array()
+    for value in timing_sequence:
+        normalized_sequence.append(int(value))
+    if normalized_sequence != PackedInt32Array(EXPECTED_TIMING_SEQUENCE):
+        failures.append("Timing sequence must be 3, 3, 4. actual=%s" % str(timing_sequence))
     if int(timing.get("current_bundle", 0)) != 1 or int(timing.get("current_timing", 0)) != 1:
         failures.append("STEP 10 combat must allow placement from timing 1.")
     var actionable: PackedInt32Array = timing.get("actionable_indices", PackedInt32Array())
@@ -329,7 +334,12 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
     var before_log_count := int(board.combat_log_panel.get_log_snapshot().get("entry_count", 0))
     board.combat_progress_button.request_progress()
     await process_frame
-    await process_frame
+    var presenting_snapshot := board.get_layout_snapshot()
+    if not bool(presenting_snapshot.get("inputs_locked", false)):
+        failures.append("Committed-to-presentation resolution must lock combat planning inputs.")
+    if str(presenting_snapshot.get("presentation_state", "")) not in ["resolving", "presenting_result"]:
+        failures.append("Resolution must enter resolving or presenting_result before the next bundle is ready.")
+    await create_timer(1.5).timeout
 
     var after_state := board.get_combat_state_snapshot()
     var timing := board.action_timing_panel.get_timing_snapshot()
@@ -362,8 +372,12 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
         failures.append("Board snapshot must expose TARGETING_10_5.")
     if not bool(snapshot.get("state_advancement_enabled", false)):
         failures.append("Board snapshot must expose enabled state advancement.")
-    if bool(snapshot.get("interruption_enabled", true)):
-        failures.append("STEP 11 interruption must remain disabled during targeting patch 10.5.")
+    if not bool(snapshot.get("interruption_enabled", false)):
+        failures.append("Issue #11 interruption must be enabled after the combat contract update.")
+    var presentation_history: PackedStringArray = snapshot.get("presentation_state_history", PackedStringArray())
+    for required_state in ["committed", "resolving", "presenting_result", "next_bundle_ready"]:
+        if required_state not in presentation_history:
+            failures.append("Presentation state history must include %s." % required_state)
 
 func _verify_wrong_attack_direction(board: CombatBoardPreview) -> void:
     var quick := _card_definition(board, "basic_quick_attack")

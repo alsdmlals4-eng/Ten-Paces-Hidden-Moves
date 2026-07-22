@@ -1,5 +1,5 @@
 {
-  "schema_version": 13,
+  "schema_version": 14,
   "tile_count": 10,
   "player_start_tile": 4,
   "enemy_start_tile": 7,
@@ -142,6 +142,27 @@
     "progress_requires_resources_ready": true,
     "state_advancement_enabled": true
   },
+  "engagement": {
+    "same_tile_allowed": true,
+    "max_combatants_per_tile": 2,
+    "distance": 0,
+    "label": "밀착",
+    "range_one_or_more_automatic": true,
+    "stationary_opponent_entry_allowed": true,
+    "shared_empty_destination_allowed": true,
+    "swap_and_pass_forbidden": true
+  },
+  "ultimate_skills": {
+    "data": "res://data/cards/ultimate_cards.json",
+    "asset_manifest": "res://assets/ASSET_MANIFEST.json",
+    "activation_momentum": 5,
+    "requires_exact_momentum": true,
+    "reservation_consumes_momentum_immediately": true,
+    "reservation_refund": false,
+    "extra_resource_cost": false,
+    "damage_formula": "base_damage + floor(attack_power * coefficient)",
+    "skills": ["ultimate_ten_paces_wave", "ultimate_cleave_peak", "ultimate_void_sword_qi"]
+  },
   "action_targeting": {
     "patch": "10.5",
     "approval_status": "IMPLEMENTED_FOR_REVIEW",
@@ -193,7 +214,9 @@
     "combat_start_resources": "maximum_minus_start_penalties",
     "advances_bundle_and_round": true,
     "fixed_enemy_preview_plan": true,
-    "interruption_enabled": false
+    "interruption_enabled": true,
+    "fortitude_enabled": true,
+    "presentation_events": true
   },
   "presentation_scope": [
     "battle_background",
@@ -213,5 +236,5 @@
     "enemy_placeholder",
     "foot_anchor_guides"
   ],
-  "excluded_until_later_steps": ["interruption_focus_fortitude", "combat_ai", "combat_end_restart"]
+  "excluded_until_later_steps": ["combat_ai", "combat_end_restart"]
 }

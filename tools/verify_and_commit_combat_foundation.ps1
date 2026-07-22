@@ -191,7 +191,7 @@ try {
 - [x] Insufficient planned resources keep progress locked
 - [x] Completed bundle advances to the next bundle and round after timing 10
 - [x] Resolution and targeting entries append to the combat log
-- [x] STEP 11 interruption, focus, and fortitude remain disabled
+- [x] Issue #11 interruption and fortitude are enabled; Focus is removed
 
 ## Godot import and parse output
 

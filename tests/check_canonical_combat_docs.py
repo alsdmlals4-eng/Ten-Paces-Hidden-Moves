@@ -213,9 +213,11 @@ def assert_core_rules(active: dict[str, str]) -> None:
             current, maximum = hud[side][resource]
             assert current == maximum
 
-    assert board["resolution_engine"]["interruption_enabled"] is False
+    assert board["resolution_engine"]["interruption_enabled"] is True
+    assert board["ultimate_skills"]["activation_momentum"] == 5
+    assert board["engagement"]["same_tile_allowed"] is True
     for key in ("game", "rules", "roadmap", "poc", "ui", "qa", "architecture", "presentation", "hub_context"):
-        assert "STEP 11" in active[key], key
+        assert "Issue #11" in active[key], key
     assert "고정 행동 계획" in active["rules"]
     assert "고정 행동 계획" in active["poc"]
     assert "정식 AI가 아니다" in active["rules"]
@@ -348,8 +350,9 @@ def assert_architecture_matches_runtime(active: dict[str, str], runtime: dict[st
         assert f'"{token}"' in engine, token
         assert token in architecture, token
 
-    assert "state_before" not in engine
-    assert '"state_after"' not in engine
+    assert "state_before_resolution" in engine
+    assert '"presentation_events"' in engine
+    assert "_build_presentation_events" in engine
     assert "현재 반환하지 않는 항목" in architecture
     assert "현재 별도 `BundlePlan` class는 없다" in architecture
     assert "현재 파일·class가 존재한다고 가정하지 않는다" in architecture

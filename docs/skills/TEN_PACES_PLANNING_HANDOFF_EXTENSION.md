@@ -44,7 +44,7 @@
 ```text
 AGENTS.md
 → docs/BASE_RULES_VERSION.md
-→ docs/ACTIVE_CONTEXT.md
+→ [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
 → docs/DOCUMENTATION_MAP.md
 → 현재 작업의 책임 기획서
 → docs/04_ROADMAP.md
@@ -58,7 +58,7 @@ AGENTS.md
 
 | 질문 | 책임 원본 |
 |---|---|
-| 현재 방향·미확정·다음 작업 | `docs/ACTIVE_CONTEXT.md` |
+| 현재 방향·미확정·다음 작업 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` |
 | 전체 경험·범위 | `docs/01_GAME_DESIGN.md` |
 | 전투 판정 | `docs/02_COMBAT_RULES.md` |
 | 구현 순서·남은 작업 | `docs/04_ROADMAP.md` |

@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-23",
+  "license": "Project-original AI-generated concept asset; retain generation prompt and do not claim third-party source material.",
+  "assets": [
+    {
+      "id": "ultimate_ink_gold_sprite_sheet_rgba",
+      "path": "res://assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png",
+      "role": "절초 수묵·금빛 VFX 스프라이트 시트",
+      "generator": "imagegen + approved RGBA post-process",
+      "source_asset": "ultimate_ink_gold_sprite_sheet_transparency_candidate",
+      "prompt": "Preserve the original effects and remove all background as true RGBA PNG.",
+      "transparency_required": true,
+      "transparency_audit": {"mode": "RGBA", "has_alpha": true, "alpha_extrema": [0, 255], "transparent_pixels": 1318410, "status": "APPROVED_ACTIVE"},
+      "active": true
+    },
+    {
+      "id": "ultimate_ink_gold_sprite_sheet",
+      "path": "res://assets/vfx/ultimate_ink_gold_sprite_sheet.png",
+      "role": "절초 수묵·금빛 VFX 원화 후보",
+      "generator": "imagegen",
+      "prompt": "Original Korean wuxia duel 3-panel VFX sprite sheet: short dash arc, heavy cleave, long sword-energy beam; black ink wash plus warm gold; no text or logos.",
+      "transparency_required": true,
+      "transparency_audit": {"mode": "RGB", "has_alpha": false, "status": "REJECTED_NOT_ACTIVE"},
+      "active": false
+    },
+    {
+      "id": "ultimate_ink_gold_sprite_sheet_transparency_candidate",
+      "path": "res://assets/vfx/ultimate_ink_gold_sprite_sheet_transparency_candidate.png",
+      "role": "투명화 편집 후보",
+      "generator": "imagegen",
+      "prompt": "Preserve the original effects and remove all background as true RGBA PNG.",
+      "transparency_required": true,
+      "transparency_audit": {"mode": "RGB", "has_alpha": false, "status": "REJECTED_NOT_ACTIVE"},
+      "active": false
+    }
+  ],
+  "fallback": "기존 SVG UI와 텍스트·형태 기반 결과 연출을 유지한다. 투명 RGBA 검수를 통과한 절초 원화가 준비되기 전에는 래스터 후보를 런타임 VFX로 참조하지 않는다."
+}

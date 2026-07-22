@@ -4,14 +4,14 @@
   "player": {
     "name": "강호낭인",
     "epithet": "무명 검객",
-    "health": [20, 20],
+    "health": [30, 30],
+    "attack_power": 8,
     "stamina": [5, 5],
     "internal": [4, 4],
     "momentum": [4, 5],
     "start_penalties": {"health": 0, "stamina": 0, "internal": 0},
     "statuses": [
-      {"label": "방", "kind": "defense"},
-      {"label": "집", "kind": "focus"}
+      {"label": "방", "kind": "defense"}
     ]
   },
   "round": {
@@ -24,7 +24,8 @@
   "enemy": {
     "name": "배외검객",
     "epithet": "무림 검사",
-    "health": [20, 20],
+    "health": [30, 30],
+    "attack_power": 8,
     "stamina": [5, 5],
     "internal": [4, 4],
     "momentum": [3, 5],

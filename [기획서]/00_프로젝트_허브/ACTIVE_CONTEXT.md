@@ -25,7 +25,7 @@
 - 비용은 행동 슬롯·기력·내력
 - 덱·손패·행동력·공통 `막기 경감` 없음
 - 현재 상대는 정식 AI가 아니라 고정 검증 계획
-- 피격 중단·집중·강건은 STEP 11 예정
+- Issue #11 피격 중단·강건·밀착·절초 3종 자동 검증 완료, 집중 제거
 
 세부 규칙은 `docs/02_COMBAT_RULES.md`, 현재 POC 범위는 `docs/05_COMBAT_POC_SPEC.md`, 구현 사실은 `data/`, `scenes/`, `src/`, `tests/`가 책임진다.
 
@@ -71,7 +71,7 @@
 
 - `docs/03_CONTENT_CATALOG.md`: T0 현재·T1 계획·전체판 가설·HOLD로 재구성.
 - `docs/06_STARTING_FACTION_MASTERY_DATA.md`: T1 이후 성장 가설로 재구성.
-- `docs/ACTIVE_CONTEXT.md`: 독립 제품 사실이 없는 `DEPRECATED_ENTRYPOINT`로 전환.
+- 구형 Context 파일: 독립 제품 사실이 없는 `DEPRECATED_ENTRYPOINT`로 전환.
 - 백업·보류·Plan·Git 이력은 역사 기록으로 보존.
 
 ### 적용 Skill
@@ -116,7 +116,7 @@ Base Foundation:
 3. 사용자 GitHub Desktop Fetch/Pull.
 4. Godot F5로 플레이어 4번·상대 7번과 4→5·7→6 판정 확인.
 5. RESPONSE·RESOURCE PREVIEW 10.6 확인.
-6. STEP 11 피격 중단·집중·강건.
+6. Issue #11 Windows/HiGodot 수동 UI·음향·접근성 및 성능 baseline.
 
 ## 보호 범위
 
@@ -125,3 +125,6 @@ Base Foundation:
 - 성장·행운·12세력 구상은 삭제하지 않고 T1 이후 가설로 보존.
 - 사용자 로컬 미커밋 변경.
 - 실행하지 않은 검증의 미검증 상태.
+# Issue #11 정본 갱신 (2026-07-23)
+
+절초 3종·피격 중단·강건·밀착은 구현 및 자동 검증 완료다. `[집중]`은 제거했다. 남은 작업은 Windows/HiGodot 수동 UI·음향·접근성 확인 및 성능 baseline 증거이며, 상세 규칙은 `docs/02_COMBAT_RULES.md`를 따른다.

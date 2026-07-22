@@ -93,14 +93,14 @@ Base canonical 읽기
 - 시작 위치가 데이터·코드·책임 원본·테스트·참조도에 분산됨.
 - `docs/03_CONTENT_CATALOG.md`가 전체판 후보와 구형 규칙을 현재 T0처럼 설명함.
 - `docs/06_STARTING_FACTION_MASTERY_DATA.md`가 미구현 성장 가설을 구형 비용·판정 기준으로 설명함.
-- `docs/ACTIVE_CONTEXT.md`가 현행 프로젝트 허브와 충돌하는 중복 활성 상태를 보유함.
+- 구형 Context 파일이 현행 프로젝트 허브와 충돌하는 중복 활성 상태를 보유함.
 - QA Skill과 Base 학습 기록이 구형 시작 위치를 보유함.
 
 ### 처리
 
 - `docs/03`은 CURRENT_T0·PLANNED_T1·HYPOTHESIS·HOLD 카탈로그로 재구성.
 - `docs/06`은 T1 이후 성장 가설로 재구성하고 현행 공용 필드만 사용.
-- `docs/ACTIVE_CONTEXT.md`는 독립 사실이 없는 `DEPRECATED_ENTRYPOINT`로 전환.
+- 구형 Context 파일은 독립 사실이 없는 `DEPRECATED_ENTRYPOINT`로 전환.
 - 시작 위치 계약을 코드 fallback·Godot test·Python test·SVG까지 전파.
 - 활성 정본 최신성 검사 범위를 문서·Skill·Entry Point까지 확대.
 

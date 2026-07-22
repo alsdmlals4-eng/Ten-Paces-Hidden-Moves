@@ -167,8 +167,6 @@ func _status_color(kind: String) -> Color:
     match kind:
         "defense":
             return Color("4d7f9e")
-        "focus":
-            return Color("6d8d45")
         "offense":
             return Color("a24d45")
         _:

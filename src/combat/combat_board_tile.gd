@@ -18,6 +18,7 @@ const PAPER := Color("e0cfaa")
 
 var tile_index: int = 0
 var occupied_role: String = ""
+var occupied_roles: PackedStringArray = []
 var foot_anchor_y_ratio: float = 0.68
 var interaction_state: String = "default"
 var _number_label: Label
@@ -47,9 +48,21 @@ func configure(index: int, anchor_ratio: float) -> void:
     set_meta("foot_anchor_y_ratio", foot_anchor_y_ratio)
     _refresh_visuals()
 
-func set_occupied(role: String) -> void:
-    occupied_role = role
+func set_occupied(role_value) -> void:
+    occupied_roles = PackedStringArray()
+    if typeof(role_value) == TYPE_ARRAY or role_value is PackedStringArray:
+        for value in role_value:
+            var role := str(value)
+            if role in ["player", "enemy"] and role not in occupied_roles:
+                occupied_roles.append(role)
+    else:
+        var role := str(role_value)
+        if role in ["player", "enemy"]:
+            occupied_roles.append(role)
+    occupied_role = occupied_roles[0] if occupied_roles.size() == 1 else ""
     set_meta("occupied_role", occupied_role)
+    set_meta("occupied_roles", occupied_roles)
+    set_meta("engaged", occupied_roles.size() == 2)
     _refresh_visuals()
 
 func set_interaction_state(value: String) -> void:
@@ -100,7 +113,9 @@ func _draw() -> void:
     draw_line(anchor + Vector2(-8.0, 0.0), anchor + Vector2(8.0, 0.0), GOLD, 2.0)
     draw_line(anchor + Vector2(0.0, -8.0), anchor + Vector2(0.0, 8.0), GOLD, 2.0)
 
-    if occupied_role == "player":
+    if occupied_roles.size() == 2:
+        draw_string(ThemeDB.fallback_font, Vector2(10.0, 24.0), "밀착", HORIZONTAL_ALIGNMENT_LEFT, -1.0, 16, GOLD)
+    elif occupied_role == "player":
         draw_string(ThemeDB.fallback_font, Vector2(10.0, 24.0), "P", HORIZONTAL_ALIGNMENT_LEFT, -1.0, 18, PLAYER_BORDER)
     elif occupied_role == "enemy":
         draw_string(ThemeDB.fallback_font, Vector2(10.0, 24.0), "E", HORIZONTAL_ALIGNMENT_LEFT, -1.0, 18, ENEMY_BORDER)
@@ -129,7 +144,10 @@ func _refresh_visuals() -> void:
     var fill_color := DEFAULT_FILL
     var border_color := DEFAULT_BORDER
     var border_width := 3
-    if occupied_role == "player":
+    if occupied_roles.size() == 2:
+        border_color = GOLD
+        border_width = 6
+    elif occupied_role == "player":
         border_color = PLAYER_BORDER
         border_width = 5
     elif occupied_role == "enemy":

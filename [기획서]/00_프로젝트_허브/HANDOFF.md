@@ -66,7 +66,7 @@
 1. `agent/t0-combat-poc-board` Fetch/Pull
 2. Godot F5로 RESPONSE·RESOURCE PREVIEW 10.6 확인
 3. 결과를 PR #7·Active Context에 기록
-4. STEP 11 피격 중단·집중·강건 작업 계약
+4. Issue #11 피격 중단·강건·절초 작업 계약
 
 ## 중단 기준
 

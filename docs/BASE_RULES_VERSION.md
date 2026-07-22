@@ -108,7 +108,7 @@ contract-check
 - P0-3: 플레이어 4번·상대 7번 시작을 데이터·fallback·테스트·SVG·문서·Skill에 전파.
 - `docs/03`은 현재 T0·T1 계획·전체판 가설·HOLD로 재구성.
 - `docs/06`은 T1 이후 성장 가설로 재구성.
-- `docs/ACTIVE_CONTEXT.md`는 현행 허브 Context 리디렉션으로 전환.
+- 구형 Context 파일은 현행 허브 Context 리디렉션으로 전환.
 
 ## 검증 상태
 

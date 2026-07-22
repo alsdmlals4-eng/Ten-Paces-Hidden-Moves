@@ -78,7 +78,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["현재 단계 요약", "P0-3 — 시작 위치 4/7 전파·활성 원본 정리", "STEP 11 — 피격 중단·집중·강건", "STEP 14 — POC 플레이테스트", "공통 검증 게이트"]
+      "required_sections": ["현재 단계 요약", "P0-3 — 시작 위치 4/7 전파·활성 원본 정리", "Issue #11 — 피격 중단·강건·절초", "STEP 14 — POC 플레이테스트", "공통 검증 게이트"]
     },
     {
       "document_id": "combat-vertical-slice",

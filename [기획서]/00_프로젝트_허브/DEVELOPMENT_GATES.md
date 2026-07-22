@@ -81,7 +81,7 @@ contract-check
 - [x] 사용자 Windows STEP 0~10·대상 지정
 - [x] PR #7 Card Component Contract run #399
 - [ ] RESPONSE·RESOURCE PREVIEW 10.6 사용자 확인
-- [ ] STEP 11 피격 중단·집중·강건
+- [x] Issue #11 피격 중단·강건·밀착·절초 3종 자동 검증
 - [ ] STEP 12 AI
 - [ ] STEP 13 종료·재시작
 - [ ] STEP 14 POC 플레이테스트
@@ -111,3 +111,8 @@ contract-check
 | 전투 POC 구현 | IMPLEMENTED |
 | 전투 POC 런타임 | PARTIAL |
 | 접근성·성능·플레이테스트 | NOT_RUN |
+# Issue #11 Gate 갱신 (2026-07-23)
+
+- [x] 절초 3종·피격 중단·강건·밀착 자동 검증
+- [ ] Windows/HiGodot 절초 UI·음향·접근성 수동 검증
+- [ ] 대표/최악 장면 성능 baseline 기록

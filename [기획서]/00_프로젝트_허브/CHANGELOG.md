@@ -143,3 +143,9 @@ P0-2에서 UI·QA·아키텍처·연출 소비자 문서를 현재 규칙으로 
 - Development Gates·Update Matrix·Handoff·Decision·Health Report.
 - 표준 라이브러리 Governance 검사와 GitHub Workflow.
 - 기존 본책·백업·보류·Plan 비파괴 보존.
+# 2026-07-23 — Issue #11 절초·전투 연출
+
+- 양측 체력 30/30·공격력 8, 절초 3종과 기세 5 예약/무환불을 추가했다.
+- 실제 피해 중단, 태세 강건의 1슬롯 속공 보호, 거리 0 밀착과 공동 타일 점유를 추가했다.
+- 엔진 `presentation_events`, 결과 상태, 소리 제어와 절차적 SFX를 추가했다.
+- `[집중]`을 활성 규칙·HUD fixture에서 제거했다.

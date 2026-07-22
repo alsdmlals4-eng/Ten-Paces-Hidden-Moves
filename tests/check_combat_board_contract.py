@@ -51,6 +51,7 @@ def main() -> None:
     progress = load_json("data/combat/combat_progress_preview.json")
     resolution = load_json("data/combat/combat_resolution_preview.json")
     cards = load_json("data/cards/basic_cards.json")
+    ultimate_cards = load_json("data/cards/ultimate_cards.json")
 
     assert contract["schema_version"] >= 13
     assert contract["tile_count"] == 10
@@ -68,6 +69,8 @@ def main() -> None:
             current, maximum = hud[side][resource]
             assert current == maximum
             assert hud[side]["start_penalties"][resource] == 0
+        assert hud[side]["health"] == [30, 30]
+        assert hud[side]["attack_power"] == 8
 
     action_timing = contract["action_timing"]
     assert action_timing["timing_sequence"] == [3, 3, 4]
@@ -144,6 +147,35 @@ def main() -> None:
     assert placement["insufficient_resources_block_progress"] is True
     assert placement["progress_requires_resources_ready"] is True
 
+    engagement = contract["engagement"]
+    assert engagement["same_tile_allowed"] is True
+    assert engagement["max_combatants_per_tile"] == 2
+    assert engagement["distance"] == 0
+    assert engagement["range_one_or_more_automatic"] is True
+    assert engagement["swap_and_pass_forbidden"] is True
+
+    ultimate = contract["ultimate_skills"]
+    assert ultimate["activation_momentum"] == 5
+    assert res_file(ultimate["asset_manifest"]).exists()
+    assert ultimate["requires_exact_momentum"] is True
+    assert ultimate["reservation_consumes_momentum_immediately"] is True
+    assert ultimate["reservation_refund"] is False
+    assert ultimate["damage_formula"] == "base_damage + floor(attack_power * coefficient)"
+    assert [card["id"] for card in ultimate_cards["cards"]] == ultimate["skills"]
+    expected_ultimate_damage = {
+        "ultimate_ten_paces_wave": (1, "quick_attack", "8", 0.25),
+        "ultimate_cleave_peak": (2, "general", "14", 0.75),
+        "ultimate_void_sword_qi": (3, "general", "22", 1.5),
+    }
+    for card in ultimate_cards["cards"]:
+        span, phase, damage, coefficient = expected_ultimate_damage[card["id"]]
+        assert card["source"] == "ultimate"
+        assert card["action_slots"] == span
+        assert card["resolution_phase"] == phase
+        assert card["damage"] == damage
+        assert card["attack_power_coefficient"] == coefficient
+        assert card["stamina_cost"] == 0 and card["internal_cost"] == 0
+
     resolution_contract = contract["resolution_engine"]
     assert resolution_contract["resolution_order"] == ["response", "quick_attack", "move", "general"]
     assert resolution_contract["same_phase_attacks"] == "simultaneous_damage"
@@ -154,7 +186,9 @@ def main() -> None:
     assert resolution_contract["uses_stance_response_combo"] is True
     assert resolution_contract["placement_resource_preview"] is True
     assert resolution_contract["combat_start_resources"] == "maximum_minus_start_penalties"
-    assert resolution_contract["interruption_enabled"] is False
+    assert resolution_contract["interruption_enabled"] is True
+    assert resolution_contract["fortitude_enabled"] is True
+    assert resolution_contract["presentation_events"] is True
     assert res_file(resolution_contract["script"]).exists()
     assert res_file(resolution_contract["data"]).exists()
 
@@ -172,6 +206,10 @@ def main() -> None:
     assert resolution["placement_resource_preview"] is True
     assert resolution["explicit_player_move_target"] is True
     assert resolution["explicit_player_attack_direction"] is True
+    assert resolution["damage_interrupts_future_actions"] is True
+    assert resolution["fortitude_quick_phase_one_slot_only"] is True
+    assert resolution["same_tile_engagement"] is True
+    assert resolution["same_tile_max_combatants"] == 2
     assert set(resolution["enemy_bundles"]) == {"1", "2", "3"}
     for bundle in resolution["enemy_bundles"].values():
         for action in bundle:
@@ -181,7 +219,8 @@ def main() -> None:
     scope = set(contract["presentation_scope"])
     assert {"action_targeting", "action_placement", "response_rules", "resolution_engine"} <= scope
     excluded = set(contract["excluded_until_later_steps"])
-    assert {"interruption_focus_fortitude", "combat_ai", "combat_end_restart"} <= excluded
+    assert {"combat_ai", "combat_end_restart"} <= excluded
+    assert "interruption_focus_fortitude" not in excluded
 
     required_files = [
         "assets/backgrounds/step3_mountain_fortress.svg",
@@ -198,6 +237,10 @@ def main() -> None:
         "src/ui/basic_card_tray.gd",
         "tests/verify_combat_board.gd",
         "tests/verify_response_rules.gd",
+        "tests/verify_ultimate_interrupt_engagement.gd",
+        "tests/verify_ultimate_ui.gd",
+        "tests/verify_combat_performance_headless.gd",
+        "data/cards/ultimate_cards.json",
     ]
     for relative in required_files:
         assert (ROOT / relative).exists(), relative
@@ -217,7 +260,7 @@ def main() -> None:
     assert all(token in timing_script for token in ("set_placement_target", "get_pending_target_anchor", "are_current_bundle_targets_ready", "are_current_bundle_resources_ready", "preview_player_plan", "projected_combat_state"))
     assert all(token in slot_script for token in ("set_target_info", "set_resource_info", "resource_ready", "자원 부족"))
     assert all(token in tray_script for token in ("build_stance_response_combo", "stance_response_combo", "combo_parts", "태세+"))
-    assert all(token in engine_script for token in ("miss_direction", "target_tile", "selected_direction", "requested_tile", "move_range", "start_penalties", "_prepare_combatant_start", "preview_player_plan", "_prepare_bundle_defenses", "guard_timings", "evade_bundle", "stance_response_defense_multiplier"))
+    assert all(token in engine_script for token in ("miss_direction", "target_tile", "selected_direction", "requested_tile", "move_range", "start_penalties", "_prepare_combatant_start", "preview_player_plan", "_prepare_bundle_defenses", "guard_timings", "evade_bundle", "stance_response_defense_multiplier", "ULTIMATES_PATH", "_apply_interruption_after_damage", "_build_presentation_events"))
     assert all(token in controller for token in (
         "_begin_targeting_for_anchor",
         "_on_board_tile_clicked",
@@ -228,6 +271,8 @@ def main() -> None:
         "var _enemy_tile := 7",
         'contract.get("player_start_tile", 4)',
         'contract.get("enemy_start_tile", 7)',
+        "UltimateMenu",
+        "presentation_state",
     ))
     assert all(token in verifier for token in ("TARGETING_10_5", "_on_board_tile_clicked", "miss_direction", "basic_footwork", "EXPECTED_PLAYER_TILE := 4", "EXPECTED_ENEMY_TILE := 7"))
     assert all(token in response_verifier for token in ("Same-timing guard", "Stance+guard", "Stance+evade", "preview_player_plan", "invalid_anchors"))
