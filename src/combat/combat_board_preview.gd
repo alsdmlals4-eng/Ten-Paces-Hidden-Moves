@@ -37,8 +37,8 @@ var _tile_width := 0.0
 var _tile_height := 0.0
 var _tile_gap := 0.0
 var _board_top := 0.0
-var _player_tile := 3
-var _enemy_tile := 8
+var _player_tile := 4
+var _enemy_tile := 7
 var _detail_pinned := false
 var _pinned_card_id := ""
 var _selected_action_definition: Dictionary = {}
@@ -51,8 +51,8 @@ var _targeting_origin_tile := 0
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_PASS
     contract = _load_contract()
-    _player_tile = int(contract.get("player_start_tile", 3))
-    _enemy_tile = int(contract.get("enemy_start_tile", 8))
+    _player_tile = int(contract.get("player_start_tile", 4))
+    _enemy_tile = int(contract.get("enemy_start_tile", 7))
     _build_structure()
     resolution_engine = CombatResolutionEngine.new()
     combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
