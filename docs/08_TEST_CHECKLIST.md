@@ -519,6 +519,7 @@ T1 진입 조건:
 - [x] 자동: 절초 10/20/34 피해식, 적중 기세 1 회복, structured `presentation_events`.
 - [x] 자동: 실제 피해 중단, 태세 강건의 1슬롯 속공 보호, 2슬롯 무효, 사망 우선.
 - [x] 자동: 밀착 자동 적중, 정지 상대 타일 진입, 공동 목적지, 자리 교환 금지.
+- [x] 자동: ImageGen 수묵·금빛 절초 VFX RGBA 알파(0~255)와 세 절초 AtlasTexture 밴드 선택.
 - [ ] 수동 Windows/HiGodot: 절초 메뉴·예약·입력 잠금·결과 UI·소리 제어.
 - [ ] 성능: 대표/최악 장면 frame time·CPU·GPU·메모리·로딩 baseline 기록.
 - [ ] 접근성: 실제 키보드 포커스·긴 한국어·최소 해상도 수동 확인.
@@ -527,4 +528,4 @@ T1 진입 조건:
 
 ### Headless 측정 기록 (2026-07-23)
 
-`res://tests/verify_combat_performance_headless.gd`를 1440×900, 120프레임으로 실행했다. 이 환경의 결과는 평균 `7.05ms/frame`, static memory `58,601,297 bytes`, node `206`, object `2,016`이었다. Headless라 draw call과 video memory는 0이므로 Windows GPU·최악 장면·로딩 기준선의 대체 증거가 아니며 해당 수동 Gate는 계속 `NOT_RUN`이다.
+`res://tests/verify_combat_performance_headless.gd`를 1440×900, 120프레임으로 실행했다. RGBA 절초 VFX 활성 후 이 환경의 결과는 평균 `7.07ms/frame`, static memory `64,984,694 bytes`, node `207`, object `2,020`이었다. Headless라 draw call과 video memory는 0이므로 Windows GPU·최악 장면·로딩 기준선의 대체 증거가 아니며 해당 수동 Gate는 계속 `NOT_RUN`이다.

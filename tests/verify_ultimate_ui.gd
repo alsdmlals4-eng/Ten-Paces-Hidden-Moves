@@ -35,6 +35,8 @@ func _verify_reservation(card_id: String, span: int) -> void:
     await process_frame
     if board.ultimate_menu.disabled:
         failures.append("Ultimate menu must activate at exactly five momentum for %s." % card_id)
+    if not bool(board.get_layout_snapshot().get("ultimate_vfx_ready", false)):
+        failures.append("Approved RGBA ultimate VFX sheet must load into the combat screen.")
 
     var selected_index := -1
     for index in range(board._ultimate_definitions.size()):
@@ -56,6 +58,9 @@ func _verify_reservation(card_id: String, span: int) -> void:
         for slot_index in range(1, span + 1):
             if not board.action_timing_panel.has_assignment_at(slot_index):
                 failures.append("Ultimate %s must occupy slot %d." % [card_id, slot_index])
+        board._show_ultimate_vfx({"card_id": card_id})
+        if not board.presentation_vfx.visible or board.presentation_vfx.texture == null:
+            failures.append("Ultimate VFX must select a visible atlas band: %s" % card_id)
         board._on_timing_slot_clicked(1)
         if board.action_timing_panel.get_placement(1).is_empty():
             failures.append("Reserved ultimate must not be removable or refundable: %s" % card_id)

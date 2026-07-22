@@ -11,6 +11,7 @@ const CARD_DETAIL_SCENE := preload("res://scenes/ui/card_detail_panel.tscn")
 const COMBAT_LOG_SCENE := preload("res://scenes/ui/combat_log_panel.tscn")
 const TILE_SCENE := preload("res://scenes/combat/combat_board_tile.tscn")
 const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placeholder.tscn")
+const ULTIMATE_VFX_PATH := "res://assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png"
 
 const CANVAS_COLOR := Color("171411")
 const GUIDE_COLOR := Color("b99254")
@@ -26,6 +27,7 @@ var card_detail_panel: CardDetailPanel
 var combat_log_panel: CombatLogPanel
 var ultimate_menu: MenuButton
 var presentation_label: Label
+var presentation_vfx: TextureRect
 var fast_replay_button: Button
 var skip_presentation_button: Button
 var reduced_motion_button: Button
@@ -63,6 +65,7 @@ var _presentation_state_history := PackedStringArray(["planning"])
 var _fast_replay := false
 var _reduced_motion := false
 var _presentation_skip_requested := false
+var _ultimate_vfx_sheet: Texture2D
 var _sound_muted := false
 var _sound_volume := 0.65
 
@@ -73,6 +76,7 @@ func _ready() -> void:
     _enemy_tile = int(contract.get("enemy_start_tile", 7))
     _build_structure()
     resolution_engine = CombatResolutionEngine.new()
+    _ultimate_vfx_sheet = load(ULTIMATE_VFX_PATH) as Texture2D
     _configure_ultimate_menu()
     combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
     _sync_runtime_context()
@@ -173,6 +177,14 @@ func _build_structure() -> void:
     presentation_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
     presentation_label.visible = false
     add_child(presentation_label)
+
+    presentation_vfx = TextureRect.new()
+    presentation_vfx.name = "UltimateInkGoldVfx"
+    presentation_vfx.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+    presentation_vfx.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+    presentation_vfx.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    presentation_vfx.visible = false
+    add_child(presentation_vfx)
 
     fast_replay_button = Button.new()
     fast_replay_button.name = "FastReplayButton"
@@ -303,6 +315,9 @@ func _layout_board() -> void:
     if is_instance_valid(presentation_label):
         presentation_label.position = Vector2(size.x * 0.32, presentation_y)
         presentation_label.size = Vector2(size.x * 0.36, 34.0)
+    if is_instance_valid(presentation_vfx):
+        presentation_vfx.position = Vector2(size.x * 0.20, presentation_y + 24.0)
+        presentation_vfx.size = Vector2(size.x * 0.60, clampf(size.y * 0.22, 150.0, 210.0))
     var playback_x := maxf(lower_margin, size.x - 420.0)
     for button_value in [fast_replay_button, skip_presentation_button, reduced_motion_button]:
         if is_instance_valid(button_value):
@@ -760,6 +775,7 @@ func _present_authoritative_events() -> void:
         presentation_label.text = summary
         presentation_label.visible = true
         presentation_label.modulate = Color.WHITE if _reduced_motion else Color(1.0, 0.88, 0.50, 1.0)
+        _show_ultimate_vfx(event)
         _play_event_sfx(event)
         if not _presentation_skip_requested:
             var duration := 0.04 if _fast_replay else (0.0 if _reduced_motion else 0.16)
@@ -769,6 +785,8 @@ func _present_authoritative_events() -> void:
             break
     presentation_label.text = summary
     presentation_label.visible = not _presentation_skip_requested
+    if is_instance_valid(presentation_vfx):
+        presentation_vfx.visible = false
     set_meta("presentation_event_count", _presentation_events.size())
 
 func _presentation_summary_for_event(event: Dictionary, fallback: String) -> String:
@@ -787,6 +805,28 @@ func _presentation_summary_for_event(event: Dictionary, fallback: String) -> Str
         return "%s · 피해 %d" % [str(event.get("card_name", "공격")), int(event.get("damage", 0))]
     return fallback
 
+func _show_ultimate_vfx(event: Dictionary) -> void:
+    if not is_instance_valid(presentation_vfx) or _ultimate_vfx_sheet == null:
+        return
+    var card_id := str(event.get("card_id", ""))
+    var band_index := -1
+    if card_id == "ultimate_ten_paces_wave":
+        band_index = 0
+    elif card_id == "ultimate_cleave_peak":
+        band_index = 1
+    elif card_id == "ultimate_void_sword_qi":
+        band_index = 2
+    if band_index < 0:
+        presentation_vfx.visible = false
+        return
+    var sheet_size := _ultimate_vfx_sheet.get_size()
+    var atlas := AtlasTexture.new()
+    atlas.atlas = _ultimate_vfx_sheet
+    atlas.region = Rect2(0.0, float(band_index) * sheet_size.y / 3.0, sheet_size.x, sheet_size.y / 3.0)
+    presentation_vfx.texture = atlas
+    presentation_vfx.modulate = Color.WHITE if _reduced_motion else Color(1.0, 1.0, 1.0, 0.96)
+    presentation_vfx.visible = true
+
 func _toggle_fast_replay() -> void:
     _fast_replay = not _fast_replay
     if is_instance_valid(fast_replay_button):
@@ -796,6 +836,8 @@ func _skip_presentation() -> void:
     _presentation_skip_requested = true
     if is_instance_valid(presentation_label):
         presentation_label.visible = false
+    if is_instance_valid(presentation_vfx):
+        presentation_vfx.visible = false
     set_meta("presentation_skipped", true)
 
 func _toggle_reduced_motion() -> void:
@@ -969,6 +1011,8 @@ func get_layout_snapshot() -> Dictionary:
         "combat_log_ready": is_instance_valid(combat_log_panel),
         "combat_log_snapshot": log_snapshot,
         "ultimate_menu_ready": is_instance_valid(ultimate_menu),
+        "ultimate_vfx_ready": is_instance_valid(presentation_vfx) and _ultimate_vfx_sheet != null,
+        "ultimate_vfx_active": presentation_vfx.visible if is_instance_valid(presentation_vfx) else false,
         "ultimate_menu_text": ultimate_menu.text if is_instance_valid(ultimate_menu) else "",
         "ultimate_available": bool(get_meta("ultimate_available", false)),
         "ultimate_momentum": int(get_meta("ultimate_momentum", 0)),

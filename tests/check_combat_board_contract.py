@@ -52,6 +52,7 @@ def main() -> None:
     resolution = load_json("data/combat/combat_resolution_preview.json")
     cards = load_json("data/cards/basic_cards.json")
     ultimate_cards = load_json("data/cards/ultimate_cards.json")
+    asset_manifest = load_json("assets/ASSET_MANIFEST.json")
 
     assert contract["schema_version"] >= 13
     assert contract["tile_count"] == 10
@@ -157,6 +158,11 @@ def main() -> None:
     ultimate = contract["ultimate_skills"]
     assert ultimate["activation_momentum"] == 5
     assert res_file(ultimate["asset_manifest"]).exists()
+    active_assets = [asset for asset in asset_manifest["assets"] if asset["active"]]
+    assert len(active_assets) == 1
+    assert active_assets[0]["id"] == "ultimate_ink_gold_sprite_sheet_rgba"
+    assert active_assets[0]["transparency_audit"]["has_alpha"] is True
+    assert active_assets[0]["transparency_audit"]["status"] == "APPROVED_ACTIVE"
     assert ultimate["requires_exact_momentum"] is True
     assert ultimate["reservation_consumes_momentum_immediately"] is True
     assert ultimate["reservation_refund"] is False

@@ -432,4 +432,4 @@ T0 통과 뒤 별도 범위로 진행한다.
 이명·풍문·정탐·절초·대회 결말은 현재 T0 화면 완료 조건이 아니다.
 ## Issue #11 연출 구현 갱신 (2026-07-23)
 
-화면 상태는 `planning → committed → resolving → presenting_result → next_bundle_ready`로 기록되며, committed부터 결과 준비까지 카드·슬롯·대상·절초 입력을 잠근다. 결과 라벨은 확정 이벤트로 중단·방향/사거리 실패·피해를 표시하고, 빠른 재생·즉시 완료·모션 감소·음소거·음량을 제공한다. 절차적 SFX는 예약·검풍·강타·막기·회피·중단 역할음을 재생한다. 래스터 수묵·금빛 원화는 투명 PNG 게이트를 통과한 자산만 활성 VFX로 쓴다.
+화면 상태는 `planning → committed → resolving → presenting_result → next_bundle_ready`로 기록되며, committed부터 결과 준비까지 카드·슬롯·대상·절초 입력을 잠근다. 결과 라벨은 확정 이벤트로 중단·방향/사거리 실패·피해를 표시하고, 빠른 재생·즉시 완료·모션 감소·음소거·음량을 제공한다. 절차적 SFX는 예약·검풍·강타·막기·회피·중단 역할음을 재생한다. `assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png`는 RGBA 알파 검수 뒤 활성화됐으며, 세 절초가 각 밴드를 AtlasTexture로 재생한다.
