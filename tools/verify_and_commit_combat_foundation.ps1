@@ -137,7 +137,7 @@ try {
 
     $parseOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--editor", "--path", $repoRoot, "--quit") -Label "Import and parse Godot project"
     $step0Output = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_step0.gd") -Label "Verify STEP 0 card components"
-    $boardOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_board.gd") -Label "Verify STEP 1-10 plus TARGETING 10.5 combat foundation"
+    $boardOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_board.gd") -Label "Verify STEP 1-10 plus TARGETING 10.5 and start tiles 4/7"
     $responseOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_response_rules.gd") -Label "Verify RESPONSE 10.6 and immediate resource preview"
 
     $sideEffects = @(Invoke-NativeChecked -FilePath "git" -Arguments @("status", "--porcelain", "--untracked-files=all") -Label "Check verification side effects" |
@@ -171,6 +171,9 @@ try {
 - [x] Project import and GDScript parsing
 - [x] STEP 0 card catalog and preview scene
 - [x] STEP 1-9 presentation, HUD, timing, cards, detail, log, progress, and placement
+- [x] Ten-tile board starts the player on tile 4 and the enemy on tile 7
+- [x] Initial combat distance is 3 tiles
+- [x] First movement fixture advances the player 4→5 and the enemy 7→6
 - [x] Combat begins at round 1, bundle 1, timing 1
 - [x] STEP 10 resolves in response, quick attack, move, and general order
 - [x] TARGETING 10.5 movement cards require an explicit destination tile
@@ -198,7 +201,7 @@ $parseBlock
 
 $step0Block
 
-## STEP 1-10 + TARGETING 10.5 output
+## STEP 1-10 + TARGETING 10.5 + start tiles 4/7 output
 
 $boardBlock
 
@@ -208,7 +211,7 @@ $responseBlock
 
 ## Scope limitation
 
-This automation verifies headless structure, parsing, scene instantiation, placement, targeting, deterministic bundle resolution, response mitigation, stance-response combos, immediate planned-resource preview, board-state updates, and bundle advancement. STEP 11 interruption behavior, final art quality, Windows pointer feel, minimum-resolution readability, fonts, and color accessibility still require later implementation or manual review.
+This automation verifies headless structure, parsing, scene instantiation, player tile 4 and enemy tile 7 initialization, placement, targeting, deterministic bundle resolution, response mitigation, stance-response combos, immediate planned-resource preview, board-state updates, and bundle advancement. STEP 11 interruption behavior, final art quality, Windows pointer feel, user-visible tile placement, minimum-resolution readability, fonts, and color accessibility still require later implementation or manual review.
 "@
     Set-Content -LiteralPath $reportPath -Value $report -Encoding UTF8
 
