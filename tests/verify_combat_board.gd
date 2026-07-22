@@ -3,8 +3,8 @@ extends SceneTree
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
 const BACKGROUND_ASSET_PATH := "res://assets/backgrounds/step3_mountain_fortress.svg"
 const EXPECTED_TILE_COUNT := 10
-const EXPECTED_PLAYER_TILE := 3
-const EXPECTED_ENEMY_TILE := 8
+const EXPECTED_PLAYER_TILE := 4
+const EXPECTED_ENEMY_TILE := 7
 const EXPECTED_HEIGHT_RATIO := 1.5
 const EXPECTED_MOMENTUM_SEGMENTS := 5
 const EXPECTED_TIMING_SEQUENCE := [3, 3, 4]
@@ -74,6 +74,14 @@ func _verify_foundation(board: CombatBoardPreview, snapshot: Dictionary) -> void
         failures.append("STEP 3 battle background did not load.")
     if board.tiles.size() != EXPECTED_TILE_COUNT:
         failures.append("Expected ten board tiles.")
+    if int(snapshot.get("player_tile", 0)) != EXPECTED_PLAYER_TILE:
+        failures.append("Player must start on tile %d." % EXPECTED_PLAYER_TILE)
+    if int(snapshot.get("enemy_tile", 0)) != EXPECTED_ENEMY_TILE:
+        failures.append("Enemy must start on tile %d." % EXPECTED_ENEMY_TILE)
+    if int(board.get_meta("player_start_tile", 0)) != EXPECTED_PLAYER_TILE:
+        failures.append("Board metadata must expose player start tile %d." % EXPECTED_PLAYER_TILE)
+    if int(board.get_meta("enemy_start_tile", 0)) != EXPECTED_ENEMY_TILE:
+        failures.append("Board metadata must expose enemy start tile %d." % EXPECTED_ENEMY_TILE)
     if board.get_child_count() == 0 or board.get_child(0) != board.battle_background:
         failures.append("Battle background must render behind the board.")
     if str(board.battle_background.get_meta("source_mode", "")) != "direct_vector_svg":
@@ -109,7 +117,7 @@ func _verify_hud(board: CombatBoardPreview, snapshot: Dictionary) -> void:
     penalized_player["internal"] = [1, 4]
     penalized_player["start_penalties"] = {"health": 2, "stamina": 1, "internal": 3}
     penalized_data["player"] = penalized_player
-    var penalized_state := CombatResolutionEngine.new().make_initial_state(penalized_data, 3, 8)
+    var penalized_state := CombatResolutionEngine.new().make_initial_state(penalized_data, EXPECTED_PLAYER_TILE, EXPECTED_ENEMY_TILE)
     var result_player: Dictionary = penalized_state.get("player", {})
     if result_player.get("health", []) != [18, 20]:
         failures.append("Health start penalty must reduce maximum health at combat start.")
@@ -175,13 +183,13 @@ func _verify_footwork_targeting(board: CombatBoardPreview) -> void:
         failures.append("Footwork must enter board-tile targeting mode.")
         board.action_timing_panel.remove_at(1)
         return
-    if board.get_tile(4).interaction_state != "movable" or board.get_tile(5).interaction_state != "movable":
-        failures.append("Footwork must allow choosing either one tile or two tiles to the right.")
-    board._on_board_tile_clicked(5)
+    if board.get_tile(5).interaction_state != "movable" or board.get_tile(6).interaction_state != "movable":
+        failures.append("Footwork must allow choosing either one tile or two tiles to the right from tile 4.")
+    board._on_board_tile_clicked(6)
     await process_frame
     var placement := board.action_timing_panel.get_placement(1)
-    if int(placement.get("target_tile", 0)) != 5:
-        failures.append("Footwork must store the selected two-tile destination.")
+    if int(placement.get("target_tile", 0)) != 6:
+        failures.append("Footwork must store the selected two-tile destination from tile 4 to tile 6.")
     board.action_timing_panel.remove_at(1)
     board._clear_targeting()
     await process_frame
@@ -202,8 +210,8 @@ func _verify_step9_placement(board: CombatBoardPreview) -> void:
         failures.append("An attack without a selected direction must not complete the bundle.")
     if not board._begin_targeting_for_anchor(1):
         failures.append("Heavy attack must enter attack-direction targeting mode.")
-    elif board.get_tile(4).interaction_state != "attackable" or board.get_tile(5).interaction_state != "attackable":
-        failures.append("Heavy attack must expose both distance 1 and distance 2 in the chosen direction.")
+    elif board.get_tile(5).interaction_state != "attackable" or board.get_tile(6).interaction_state != "attackable":
+        failures.append("Heavy attack must expose distance 1 and distance 2 to the right from tile 4.")
     board._clear_targeting()
     var removed := board.action_timing_panel.remove_at(2)
     if str(removed.get("card_id", "")) != "basic_heavy_attack":
@@ -212,10 +220,11 @@ func _verify_step9_placement(board: CombatBoardPreview) -> void:
 
 func _verify_rule_resolution(board: CombatBoardPreview) -> void:
     var engine := CombatResolutionEngine.new()
+    engine.rules["enemy_bundles"] = {}
     var footwork := _card_definition(board, "basic_footwork")
     var heavy := _card_definition(board, "basic_heavy_attack")
 
-    var footwork_state := engine.make_initial_state(board.top_hud.hud_data, 3, 8)
+    var footwork_state := engine.make_initial_state(board.top_hud.hud_data, EXPECTED_PLAYER_TILE, EXPECTED_ENEMY_TILE)
     var footwork_placement := {
         "card_id": "basic_footwork",
         "card_name": "보법",
@@ -225,19 +234,19 @@ func _verify_rule_resolution(board: CombatBoardPreview) -> void:
         "indices": PackedInt32Array([1]),
         "targeting_mode": "move_tile",
         "target_ready": true,
-        "target_tile": 5,
+        "target_tile": 6,
         "direction": 1,
-        "origin_tile": 3
+        "origin_tile": EXPECTED_PLAYER_TILE
     }
     var footwork_result := engine.resolve_bundle([footwork_placement], {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, footwork_state)
     var footwork_player: Dictionary = (footwork_result.get("state", {}) as Dictionary).get("player", {})
-    if int(footwork_player.get("tile", 0)) != 5:
-        failures.append("Footwork must move the player two tiles when tile 5 is selected from tile 3.")
+    if int(footwork_player.get("tile", 0)) != 6:
+        failures.append("Footwork must move the player two tiles when tile 6 is selected from tile 4.")
     var footwork_internal: Array = footwork_player.get("internal", [])
     if footwork_internal.size() < 2 or int(footwork_internal[0]) != int(footwork_internal[1]) - 1:
         failures.append("Footwork must consume exactly one internal energy.")
 
-    var heavy_state := engine.make_initial_state(board.top_hud.hud_data, 3, 6)
+    var heavy_state := engine.make_initial_state(board.top_hud.hud_data, EXPECTED_PLAYER_TILE, 6)
     var heavy_placement := {
         "card_id": "basic_heavy_attack",
         "card_name": "강공",
@@ -247,9 +256,9 @@ func _verify_rule_resolution(board: CombatBoardPreview) -> void:
         "indices": PackedInt32Array([1, 2]),
         "targeting_mode": "attack_direction",
         "target_ready": true,
-        "target_tile": 5,
+        "target_tile": 6,
         "direction": 1,
-        "origin_tile": 3
+        "origin_tile": EXPECTED_PLAYER_TILE
     }
     var heavy_result := engine.resolve_bundle([heavy_placement], {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, heavy_state)
     var heavy_state_after: Dictionary = heavy_result.get("state", {})
@@ -288,24 +297,24 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
     if not board._begin_targeting_for_anchor(1):
         failures.append("Move placement must enter board-tile targeting mode.")
         return
-    if board.get_tile(4).interaction_state != "movable":
-        failures.append("Tile 4 must be marked movable from player tile 3.")
-    if board.get_tile(5).interaction_state == "movable":
+    if board.get_tile(5).interaction_state != "movable":
+        failures.append("Tile 5 must be marked movable from player tile 4.")
+    if board.get_tile(6).interaction_state == "movable":
         failures.append("Basic movement targeting must not exceed one tile.")
-    board._on_board_tile_clicked(4)
+    board._on_board_tile_clicked(5)
     await process_frame
 
     var move_placement := board.action_timing_panel.get_placement(1)
-    if not bool(move_placement.get("target_ready", false)) or int(move_placement.get("target_tile", 0)) != 4:
-        failures.append("Move targeting must store destination tile 4.")
+    if not bool(move_placement.get("target_ready", false)) or int(move_placement.get("target_tile", 0)) != 5:
+        failures.append("Move targeting must store destination tile 5.")
     if int(move_placement.get("direction", 0)) != 1:
         failures.append("Move targeting must store the rightward direction.")
 
     if int(board.get_meta("targeting_anchor", 0)) != 3:
         failures.append("After movement targeting, the pending quick attack must become active.")
-    if board.get_tile(5).interaction_state != "attackable":
-        failures.append("Projected attack origin tile 4 must expose tile 5 as the right attack direction.")
-    board._on_board_tile_clicked(5)
+    if board.get_tile(6).interaction_state != "attackable":
+        failures.append("Projected attack origin tile 5 must expose tile 6 as the right attack direction.")
+    board._on_board_tile_clicked(6)
     await process_frame
 
     var quick_placement := board.action_timing_panel.get_placement(3)
@@ -335,10 +344,10 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
     var enemy_before: Dictionary = before_state.get("enemy", {})
     var player_after: Dictionary = after_state.get("player", {})
     var enemy_after: Dictionary = after_state.get("enemy", {})
-    if int(player_after.get("tile", 0)) != int(player_before.get("tile", 0)) + 1:
-        failures.append("Explicit move target must update the player tile from 3 to 4.")
-    if int(enemy_after.get("tile", 0)) != int(enemy_before.get("tile", 0)) - 1:
-        failures.append("Fixed enemy move direction must update the tile from 8 to 7.")
+    if int(player_before.get("tile", 0)) != EXPECTED_PLAYER_TILE or int(player_after.get("tile", 0)) != 5:
+        failures.append("Explicit move target must update the player tile from 4 to 5.")
+    if int(enemy_before.get("tile", 0)) != EXPECTED_ENEMY_TILE or int(enemy_after.get("tile", 0)) != 6:
+        failures.append("Fixed enemy move direction must update the tile from 7 to 6.")
     var player_stamina: Array = player_after.get("stamina", [])
     if player_stamina.is_empty() or int(player_stamina[0]) != 4:
         failures.append("Meditate and quick attack must produce the expected player stamina value 4.")
@@ -361,7 +370,8 @@ func _verify_wrong_attack_direction(board: CombatBoardPreview) -> void:
     if quick.is_empty():
         return
     var engine := CombatResolutionEngine.new()
-    var state := engine.make_initial_state(board.top_hud.hud_data, 3, 4)
+    engine.rules["enemy_bundles"] = {}
+    var state := engine.make_initial_state(board.top_hud.hud_data, EXPECTED_PLAYER_TILE, 5)
     var placement := {
         "card_id": "basic_quick_attack",
         "card_name": "속공",
@@ -371,9 +381,9 @@ func _verify_wrong_attack_direction(board: CombatBoardPreview) -> void:
         "indices": PackedInt32Array([1]),
         "targeting_mode": "attack_direction",
         "target_ready": true,
-        "target_tile": 2,
+        "target_tile": 3,
         "direction": -1,
-        "origin_tile": 3
+        "origin_tile": EXPECTED_PLAYER_TILE
     }
     var result := engine.resolve_bundle([placement], {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, state)
     var found_miss_direction := false
@@ -416,10 +426,10 @@ func _verify_character_anchors(board: CombatBoardPreview, snapshot: Dictionary) 
 
 func _finish() -> void:
     if failures.is_empty():
-        print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_TARGETING_10_5_RULE_EXTENSION_VERIFY_OK")
+        print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_TARGETING_10_5_START_4_7_VERIFY_OK")
         quit(0)
         return
     for failure in failures:
         push_error(failure)
-    print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_TARGETING_10_5_RULE_EXTENSION_VERIFY_FAILED count=%d" % failures.size())
+    print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_TARGETING_10_5_START_4_7_VERIFY_FAILED count=%d" % failures.size())
     quit(1)
