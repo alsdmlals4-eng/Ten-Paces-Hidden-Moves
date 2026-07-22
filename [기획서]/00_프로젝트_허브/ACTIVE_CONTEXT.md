@@ -51,7 +51,7 @@
 ## 정본 drift 방지
 
 - `docs/01`, `docs/02`, `docs/05`를 canonical reference freshness의 strict 대상에 추가
-- 과거 시작 위치·2타이밍 묶음·행동 두 개 잠금·행동력 설명의 재등장 차단
+- 과거 시작 위치·구형 묶음 방식·이중 행동 잠금·행동력 설명의 재등장 차단
 - `tests/check_canonical_combat_docs.py` 추가
 - 문서와 전장·타이밍·HUD·카드·대응 데이터의 양방향 계약 검사
 - Card Component Contract Workflow에 문서 변경 경로와 새 검사 연결
