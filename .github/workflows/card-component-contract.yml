@@ -4,6 +4,9 @@ on:
   pull_request:
     paths:
       - "project.godot"
+      - "docs/01_GAME_DESIGN.md"
+      - "docs/02_COMBAT_RULES.md"
+      - "docs/05_COMBAT_POC_SPEC.md"
       - "data/cards/**"
       - "data/combat/**"
       - "assets/ui/cards/**"
@@ -15,6 +18,7 @@ on:
       - "src/combat/**"
       - "tests/check_card_component_contract.py"
       - "tests/check_combat_board_contract.py"
+      - "tests/check_canonical_combat_docs.py"
       - "tests/verify_step0.gd"
       - "tests/verify_combat_board.gd"
       - "tools/verify_and_commit_step0.ps1"
@@ -26,6 +30,9 @@ on:
   push:
     paths:
       - "project.godot"
+      - "docs/01_GAME_DESIGN.md"
+      - "docs/02_COMBAT_RULES.md"
+      - "docs/05_COMBAT_POC_SPEC.md"
       - "data/cards/**"
       - "data/combat/**"
       - "assets/ui/cards/**"
@@ -37,6 +44,7 @@ on:
       - "src/combat/**"
       - "tests/check_card_component_contract.py"
       - "tests/check_combat_board_contract.py"
+      - "tests/check_canonical_combat_docs.py"
       - "tests/verify_step0.gd"
       - "tests/verify_combat_board.gd"
       - "tools/verify_and_commit_step0.ps1"
@@ -58,10 +66,13 @@ jobs:
         run: |
           python -m py_compile tests/check_card_component_contract.py
           python -m py_compile tests/check_combat_board_contract.py
+          python -m py_compile tests/check_canonical_combat_docs.py
       - name: Validate card component contract
         run: python tests/check_card_component_contract.py
-      - name: Validate STEP 1-3 combat presentation contract
+      - name: Validate STEP 1-10.6 combat contract
         run: python tests/check_combat_board_contract.py
+      - name: Validate canonical combat documents
+        run: python tests/check_canonical_combat_docs.py
       - name: Parse PowerShell automations
         shell: pwsh
         run: |
