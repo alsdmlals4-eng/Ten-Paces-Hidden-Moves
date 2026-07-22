@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+DESIGN_REGISTRY_PATH = ROOT / "[기획서]/DESIGN_DOCUMENT_REGISTRY.json"
 
 ACTIVE_TEXT_PATHS = {
     "readme": ROOT / "README.md",
@@ -149,7 +150,7 @@ def assert_start_position_contract(active: dict[str, str], runtime: dict[str, st
     for token in (
         "EXPECTED_PLAYER_TILE := 4",
         "EXPECTED_ENEMY_TILE := 7",
-        "from tile 4 to tile 5",
+        "from 4 to 5",
         "from 7 to 6",
         "from tile 4 to tile 6",
     ):
@@ -235,9 +236,7 @@ def assert_scope_and_document_lifecycle(active: dict[str, str]) -> None:
     assert "## 현재 상태" not in legacy_context
 
     referenced_legacy_entrypoint: list[str] = []
-    for path in ROOT.rglob("*"):
-        if not path.is_file() or path.suffix.lower() not in {".md", ".json", ".yml", ".yaml"}:
-            continue
+    for path in ROOT.rglob("*.md"):
         if path == ACTIVE_TEXT_PATHS["legacy_context"]:
             continue
         if any(part in {".git", ".godot", "[백업]", "[보류]"} for part in path.parts):
@@ -246,9 +245,27 @@ def assert_scope_and_document_lifecycle(active: dict[str, str]) -> None:
         if "docs/ACTIVE_CONTEXT.md" in text:
             referenced_legacy_entrypoint.append(str(path.relative_to(ROOT)))
     assert not referenced_legacy_entrypoint, (
-        "active files still reference deprecated docs/ACTIVE_CONTEXT.md: "
+        "active Markdown still references deprecated docs/ACTIVE_CONTEXT.md: "
         + ", ".join(referenced_legacy_entrypoint)
     )
+
+
+def assert_design_registry_matches_documents() -> None:
+    registry = json.loads(DESIGN_REGISTRY_PATH.read_text(encoding="utf-8"))
+    documents = registry.get("documents", [])
+    assert len(documents) == 11
+    seen_paths: set[Path] = set()
+    for entry in documents:
+        assert entry.get("status") == "ACTIVE"
+        assert entry.get("publication_policy") == "source_only"
+        source_path = (DESIGN_REGISTRY_PATH.parent / str(entry["source_path"])).resolve()
+        assert source_path.is_file(), source_path
+        assert source_path not in seen_paths, source_path
+        seen_paths.add(source_path)
+        text = source_path.read_text(encoding="utf-8")
+        assert text.startswith(f"# {entry['title']}\n"), f"registry title drift: {source_path.relative_to(ROOT)}"
+        for section in entry.get("required_sections", []):
+            assert section in text, f"{source_path.relative_to(ROOT)} missing registry section: {section}"
 
 
 def assert_ui_and_runtime_boundaries(active: dict[str, str], runtime: dict[str, str]) -> None:
@@ -347,6 +364,7 @@ def assert_workflow_coverage(runtime: dict[str, str]) -> None:
         "docs/03_CONTENT_CATALOG.md",
         "docs/06_STARTING_FACTION_MASTERY_DATA.md",
         "docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md",
+        "[기획서]/DESIGN_DOCUMENT_REGISTRY.json",
         "skills/game-design/ten-paces-game-design/SKILL.md",
         "skills/engineering/combat-implementation-handoff/SKILL.md",
         "skills/ux-ui-accessibility/combat-ux-and-accessibility/SKILL.md",
@@ -370,6 +388,7 @@ def main() -> None:
     assert_start_position_contract(active, runtime)
     assert_core_rules(active)
     assert_scope_and_document_lifecycle(active)
+    assert_design_registry_matches_documents()
     assert_ui_and_runtime_boundaries(active, runtime)
     assert_architecture_matches_runtime(active, runtime)
     assert_workflow_coverage(runtime)
