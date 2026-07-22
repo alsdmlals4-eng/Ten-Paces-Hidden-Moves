@@ -6,6 +6,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TEXT_SUFFIXES = {".gd", ".tscn", ".py", ".ps1", ".cmd", ".md", ".json", ".yml", ".yaml", ".godot"}
 CONFLICT_MARKERS = ("<<<<<<<", "=======", ">>>>>>>")
+EXPECTED_PLAYER_TILE = 4
+EXPECTED_ENEMY_TILE = 7
 EXPECTED_CARD_IDS = [
     "basic_move",
     "basic_footwork",
@@ -50,10 +52,10 @@ def main() -> None:
     resolution = load_json("data/combat/combat_resolution_preview.json")
     cards = load_json("data/cards/basic_cards.json")
 
-    assert contract["schema_version"] >= 12
+    assert contract["schema_version"] >= 13
     assert contract["tile_count"] == 10
-    assert contract["player_start_tile"] == 3
-    assert contract["enemy_start_tile"] == 8
+    assert contract["player_start_tile"] == EXPECTED_PLAYER_TILE
+    assert contract["enemy_start_tile"] == EXPECTED_ENEMY_TILE
     assert contract["camera_mode"] == "fixed_wide"
     assert contract["top_hud"]["momentum_segments"] == 5
     assert contract["top_hud"]["combat_start_resources"] == "maximum_minus_start_penalties"
@@ -183,6 +185,7 @@ def main() -> None:
 
     required_files = [
         "assets/backgrounds/step3_mountain_fortress.svg",
+        "assets/reference/step_02_character_scale_and_tile_placement.svg",
         "scenes/combat/combat_board_preview.tscn",
         "scenes/combat/combat_board_tile.tscn",
         "scenes/ui/action_timing_panel.tscn",
@@ -208,18 +211,33 @@ def main() -> None:
     verifier = (ROOT / "tests/verify_combat_board.gd").read_text(encoding="utf-8")
     response_verifier = (ROOT / "tests/verify_response_rules.gd").read_text(encoding="utf-8")
     powershell = (ROOT / "tools/verify_and_commit_combat_foundation.ps1").read_text(encoding="utf-8")
+    reference_svg = (ROOT / "assets/reference/step_02_character_scale_and_tile_placement.svg").read_text(encoding="utf-8")
 
     assert all(token in tile_script for token in ("signal tile_clicked", "set_interaction_state", "movable", "attackable"))
     assert all(token in timing_script for token in ("set_placement_target", "get_pending_target_anchor", "are_current_bundle_targets_ready", "are_current_bundle_resources_ready", "preview_player_plan", "projected_combat_state"))
     assert all(token in slot_script for token in ("set_target_info", "set_resource_info", "resource_ready", "자원 부족"))
     assert all(token in tray_script for token in ("build_stance_response_combo", "stance_response_combo", "combo_parts", "태세+"))
     assert all(token in engine_script for token in ("miss_direction", "target_tile", "selected_direction", "requested_tile", "move_range", "start_penalties", "_prepare_combatant_start", "preview_player_plan", "_prepare_bundle_defenses", "guard_timings", "evade_bundle", "stance_response_defense_multiplier"))
-    assert all(token in controller for token in ("_begin_targeting_for_anchor", "_on_board_tile_clicked", "set_placement_target", "targeting_enabled", "move_range"))
-    assert all(token in verifier for token in ("TARGETING_10_5", "_on_board_tile_clicked", "miss_direction", "basic_footwork"))
+    assert all(token in controller for token in (
+        "_begin_targeting_for_anchor",
+        "_on_board_tile_clicked",
+        "set_placement_target",
+        "targeting_enabled",
+        "move_range",
+        "var _player_tile := 4",
+        "var _enemy_tile := 7",
+        'contract.get("player_start_tile", 4)',
+        'contract.get("enemy_start_tile", 7)',
+    ))
+    assert all(token in verifier for token in ("TARGETING_10_5", "_on_board_tile_clicked", "miss_direction", "basic_footwork", "EXPECTED_PLAYER_TILE := 4", "EXPECTED_ENEMY_TILE := 7"))
     assert all(token in response_verifier for token in ("Same-timing guard", "Stance+guard", "Stance+evade", "preview_player_plan", "invalid_anchors"))
     assert "res://tests/verify_response_rules.gd" in powershell
+    assert "플레이어 4번 / 상대 7번" in reference_svg
+    assert "플레이어 · 4번 칸" in reference_svg
+    assert "상대 · 7번 칸" in reference_svg
+    assert "플레이어 3번 / 상대 8번" not in reference_svg
 
-    print("combat board STEP 1-10 plus TARGETING 10.5 and RESPONSE 10.6 contract: PASS")
+    print("combat board STEP 1-10.6 contract with start tiles 4 and 7: PASS")
 
 
 if __name__ == "__main__":
