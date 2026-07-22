@@ -21,7 +21,12 @@
     "AGENTS.md",
     "docs/01_GAME_DESIGN.md",
     "docs/02_COMBAT_RULES.md",
+    "docs/04_ROADMAP.md",
     "docs/05_COMBAT_POC_SPEC.md",
+    "docs/07_COMBAT_UI_SPEC.md",
+    "docs/08_TEST_CHECKLIST.md",
+    "docs/09_COMBAT_SYSTEM_ARCHITECTURE.md",
+    "docs/10_COMBAT_PRESENTATION_PLAN.md",
     "docs/BASE_RULES_VERSION.md",
     "[기획서]/DESIGN_DOCUMENT_REGISTRY.json",
     "[기획서]/00_프로젝트_허브/START_HERE.md",
@@ -33,16 +38,23 @@
     "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json"
   ],
   "forbidden_current_tokens": [
-    "행동 두 개",
-    "2수 선택",
+    "행동 두 개를 비공개",
+    "2수 비공개",
+    "2수 동시 선택",
     "2수 잠금",
+    "2타이밍을 한 묶음",
+    "2타이밍씩 묶어 총 5번",
+    "AI는 각 2수 묶음",
     "A=4, B=6",
     "A=4번 칸, B=6번 칸",
-    "2타이밍씩 묶어 총 5번",
-    "2타이밍을 한 묶음",
-    "각 묶음에서 AI와 플레이어는 행동 두 개",
-    "AI는 각 2수 묶음",
     "행동력은 타이밍 수와 다르다",
+    "체력·행동력·기력·내공",
+    "선택 묶음 | 두 행동 잠금",
+    "ActionPair",
+    "PairLockCoordinator",
+    "ClashResolver",
+    "합 수치와 차이 피해 계산",
+    "기초 행동 7종",
     "기초 행동은 이동·막기·회피·속공·강공·명상·태세 7종",
     "Base@eb40b912e5f5a0e4d369105a4f0a770e0a6179a9",
     "default_selection\": \"none",
@@ -59,7 +71,12 @@
     "AGENTS.md": ["auditing-canonical-reference-freshness", "Skill Mode", "execution-report", "3수 → 3수 → 4수"],
     "docs/01_GAME_DESIGN.md": ["10칸 전장에서", "3수 → 3수 → 4수", "플레이어 3번", "기초 행동 8종", "STEP 11 피격 중단·집중·강건"],
     "docs/02_COMBAT_RULES.md": ["플레이어 기본 시작 위치는 3번", "상대 기본 시작 위치는 8번", "대응 → 속공 → 이동 → 일반 공격", "태세+막기", "태세+회피", "2슬롯 행동"],
+    "docs/04_ROADMAP.md": ["P0 — 전투 정본 재정렬", "STEP 11 — 피격 중단·집중·강건", "STEP 14 — POC 플레이테스트", "T1 — 최소 세로 슬라이스"],
     "docs/05_COMBAT_POC_SPEC.md": ["T0 — 단일 전투 POC", "TARGETING 10.5", "RESPONSE 10.6", "RESOURCE PREVIEW 10.6", "STEP 11 — 피격 중단·집중·강건"],
+    "docs/07_COMBAT_UI_SPEC.md": ["기초 행동 8종", "과거의 별도 합 수치 비교", "STEP 11 예정 표현", "라운드 1"],
+    "docs/08_TEST_CHECKLIST.md": ["T0 필수 전장 계약", "기초 행동 8종", "STEP 11 예정 검증", "STEP 14 POC 플레이테스트"],
+    "docs/09_COMBAT_SYSTEM_ARCHITECTURE.md": ["T0 도메인 모델", "BundlePlan", "ResolutionResult", "STEP 12 AI 경계"],
+    "docs/10_COMBAT_PRESENTATION_PLAN.md": ["현재 T0 전투 흐름", "대응 → 속공 → 이동 → 일반 공격", "현재 POC에는 별도 합 수치 비교", "STEP 11 중단 연출 예정"],
     "[기획서]/DESIGN_DOCUMENT_REGISTRY.json": ["publication_note", "source_only"],
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": ["STEP 0~10", "RESPONSE 10.6", "기초 행동 8종"],
     "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json": ["automatic-trigger-match", "require_execution_report", "shared_skill_routes", "source_only"]
@@ -88,6 +105,12 @@
       "canonical_path": "[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md",
       "reference_tokens": ["BASE_MAIN_SYNC_AUDIT.md"],
       "required_consumers": ["README.md", "docs/BASE_RULES_VERSION.md", "[기획서]/00_프로젝트_허브/START_HERE.md"]
+    },
+    {
+      "name": "combat-rule-consumers",
+      "canonical_path": "docs/02_COMBAT_RULES.md",
+      "reference_tokens": ["docs/02_COMBAT_RULES.md", "02_COMBAT_RULES.md"],
+      "required_consumers": ["docs/01_GAME_DESIGN.md", "docs/04_ROADMAP.md", "docs/05_COMBAT_POC_SPEC.md", "docs/07_COMBAT_UI_SPEC.md", "docs/08_TEST_CHECKLIST.md", "docs/09_COMBAT_SYSTEM_ARCHITECTURE.md", "docs/10_COMBAT_PRESENTATION_PLAN.md"]
     }
   ]
 }
