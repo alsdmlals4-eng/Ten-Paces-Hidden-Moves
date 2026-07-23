@@ -82,19 +82,22 @@ contract-check
 
 ## 3. Canonical Refresh Gate
 
-- [x] PR #7 기준 SHA 고정.
-- [x] 정합화 브랜치 분리.
-- [x] docs/01~11 현행 계약 재작성.
+- [x] PR #7 기준 SHA `659c57e7ffa588ad6a6471ed9b5394985b159eaf` 고정.
+- [x] 정합화 브랜치와 PR #14 분리.
+- [x] docs/01~11 현행 전투 계약 재작성.
 - [x] Base `41a205...`·25 Skill route.
 - [x] 프로젝트 고유 Skill 4개 유지·간소화.
 - [x] board schema 16·Base SHA·Skill 집합 구조 검사.
 - [x] stale 보정 절·Schema·Base route 반례.
 - [x] Python 캐시 제거·재발 차단.
-- [ ] Design Registry required section 일치.
-- [ ] 로컬/Actions Governance 통과.
-- [ ] Card Component Contract 통과.
-- [ ] 기준 SHA 대비 제품 보호 경로 변경 0건.
-- [ ] 정합화 PR의 head SHA 불변 확인.
+- [x] Design Registry required section 일치.
+- [x] PR #14 Governance·Card Contract 통과.
+- [x] PR #14 기준 제품 보호 경로 변경 0건.
+- [x] PR #14를 PR #7에 병합.
+- [ ] PR #15 최신 head의 Governance·Card Contract 재확인.
+- [ ] PR #15 최신 head SHA와 최종 diff 고정.
+
+현재 판정: `MERGED_TO_PR7 / PR15_CLOSEOUT_REVIEW`.
 
 ## 4. Prototype Greenlight
 
@@ -123,29 +126,31 @@ contract-check
 
 ## 5. Project Core Gate
 
-- [ ] 기존 구현의 코어 후보를 읽기 전용 판정.
-- [ ] 핵심 컨셉 후보와 제약 정의.
-- [ ] 뾰족한 재미를 플레이어 행동·감정 변화로 정의.
-- [ ] core loop의 행동·보상·진척 정의.
-- [ ] 모든 요소의 WHY/HOW/WHAT 대조.
-- [ ] POC 증거와 반증 대조.
-- [ ] 제거·보류·강화·추가 최소 실험 결정.
-- [ ] SWOT·VRIO.
-- [ ] 적대적 검토와 최소 개선.
-- [ ] 사용자 `CORE_CONFIRMED` 승인.
+- [x] 기존 구현의 코어 후보를 읽기 전용 판정.
+- [x] 핵심 컨셉 후보와 제약 정의.
+- [x] 뾰족한 재미를 플레이어 행동·감정 변화로 정의.
+- [x] core loop의 행동·보상·진척 정의.
+- [x] 모든 요소의 WHY/HOW/WHAT 대조.
+- [x] POC 증거와 반증 대조.
+- [x] 제거·보류·강화·추가 최소 실험 결정.
+- [x] SWOT·VRIO.
+- [x] 적대적 검토와 최소 개선.
+- [x] 사용자 `CORE_CONFIRMED` 승인.
 
-현재 판정: `CORE_REVIEW_PENDING`.
+현재 판정: `CORE_CONFIRMED / PRODUCT_GATE_REPEAT_POC`.
+
+코어 확정은 Prototype 사람 증거 또는 T1 진입을 자동 승인하지 않는다.
 
 ## 6. Vertical Slice Greenlight
 
 프로젝트 코어와 실제 사용자 STEP 14를 모두 통과한 뒤 검토한다.
 
-- 플레이 스타일 2개.
-- 상대 3명·전투 3회 내외.
-- 상대 정보→전투→보상→강화 연결.
-- 대표 콘텐츠 품질·제작 파이프라인.
-- 외부 플레이 증거.
-- 접근성 장벽·대체 경로.
-- 목표 플랫폼 성능 위험·예산.
+- [ ] 플레이 스타일 2개.
+- [ ] 성향이 다른 상대 3명·전투 3회.
+- [ ] 상대 정보→가설→전투→복기→수평 보상 연결.
+- [ ] 대표 콘텐츠 품질·제작 파이프라인.
+- [ ] 외부 플레이 증거.
+- [ ] 접근성 장벽·대체 경로.
+- [ ] 목표 플랫폼 성능 위험·예산.
 
-현재 판정: `NOT_GRANTED`.
+현재 판정: `NOT_GRANTED / REPEAT_POC`.
