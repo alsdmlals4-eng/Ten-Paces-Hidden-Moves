@@ -11,6 +11,7 @@
 - 최신 전투 승인: Issue #13 STEP 12~14.
 - 제품 단계: T0 Prototype.
 - 프로젝트 코어: `CORE_CONFIRMED`.
+- 상태 전이 기록: `CORE_REVIEW_PENDING → CORE_CONFIRMED`.
 - 제품 게이트: `REPEAT_POC`.
 - T1 진입: `NOT_GRANTED`.
 - 구현 상태: `NOT_STARTED`.
