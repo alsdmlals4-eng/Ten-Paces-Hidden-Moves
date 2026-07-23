@@ -30,7 +30,7 @@
   "legacy_aliases_path": "skills/LEGACY_SKILL_ALIASES.md",
   "skill_registry_path": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
   "board_contract_path": "data/combat/combat_board_poc.json",
-  "expected_board_schema_version": 16,
+  "expected_board_schema_version": 17,
   "expected_base_commit": "41a20584dd2ee51d917e5c9d7cab6838e1ceba7e",
   "expected_base_skill_ids": [
     "managing-project-intake-and-work-contract",
@@ -177,7 +177,7 @@
     "docs/10_COMBAT_PRESENTATION_PLAN.md": ["같은 수 공격군의 합", "timing_results", "결전 다시 시작", "HUMAN_NOT_RUN"],
     "docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md": ["41a20584dd2ee51d917e5c9d7cab6838e1ceba7e", "25개", "프로젝트 고유 Skill 4개", "schema 16"],
     "docs/BASE_RULES_VERSION.md": ["41a20584dd2ee51d917e5c9d7cab6838e1ceba7e", "6개 커밋", "25개", "source_only"],
-    "data/combat/combat_board_poc.json": ["\"schema_version\": 16", "\"player_start_tile\": 4", "\"enemy_start_tile\": 7", "\"same_tile_allowed\": true", "\"clash_same_timing_attacks\": true"],
+    "data/combat/combat_board_poc.json": ["\"schema_version\": 17", "\"player_start_tile\": 4", "\"enemy_start_tile\": 7", "\"same_tile_allowed\": true", "\"clash_same_timing_attacks\": true"],
     "data/combat/combat_resolution_preview.json": ["\"enemy_plan_source\": \"public_state_ai\"", "\"enemy_bundles\": {}", "\"guard_resolution_order\"", "\"clash_same_timing_attacks\": true"],
     "data/combat/combat_hud_preview.json": ["\"health\": [30, 30]", "\"attack_power\": 8", "\"momentum\": [0, 5]"],
     "data/cards/basic_cards.json": ["basic_guard", "방어도 차감 뒤 남은 피해를 50%", "forbidden_fields"],
