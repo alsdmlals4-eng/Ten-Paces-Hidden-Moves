@@ -91,7 +91,7 @@ def verify_structured_contract() -> None:
     basics = data("data/cards/basic_cards.json")
     ultimates = data("data/cards/ultimate_cards.json")
 
-    assert (board["schema_version"], board["tile_count"]) == (16, 10)
+    assert (board["schema_version"], board["tile_count"]) == (17, 10)
     assert (board["player_start_tile"], board["enemy_start_tile"]) == (4, 7)
     assert timing["timing_sequence"] == [3, 3, 4]
     assert timing["total_timings"] == 10
@@ -198,7 +198,6 @@ def verify_registry() -> None:
         assert source_text.startswith(f"# {entry['title']}\n")
         for section in entry.get("required_sections", []):
             assert section in source_text, f"{source.relative_to(ROOT)} missing {section}"
-
     bad_refs: list[str] = []
     for path in ROOT.rglob("*.md"):
         if path == ROOT / DOCS["legacy"]:
