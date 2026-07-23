@@ -1,75 +1,95 @@
 # 십보강호 인수인계
 
-> 현재 상태의 기본 원본은 `ACTIVE_CONTEXT.md`다. 이 문서는 Base 통합·최적화와 전투 POC STEP 10.6 이후의 경계 스냅샷이다.
+> 현재 상태 원본: `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
 
 ## 첫 행동
 
 1. 루트 `AGENTS.md`를 읽는다.
 2. `ACTIVE_CONTEXT.md`와 `DOCUMENTATION_MAP.md`를 읽는다.
-3. Map이 지시한 책임 원본과 실제 `data/`, `scenes/`, `src/`, `tests/`를 확인한다.
-4. `SKILL_REGISTRY.json` trigger로 Work Mode·최소 Skill·Skill Mode를 자동 선택한다.
-5. 구현 작업이면 PR #7의 최신 head와 Actions를 확인한다.
+3. PR #7 `agent/t0-combat-poc-board`의 현재 HEAD와 기준 SHA 관계를 확인한다.
+4. Issue #13의 승인 규칙과 `docs/02_COMBAT_RULES.md`를 대조한다.
+5. Registry trigger로 최소 Skill·Skill Mode를 선택한다.
+6. 구현 작업이면 실제 `data/`, `src/`, `scenes/`, `assets/`, `tests/`를 확인한다.
 
-## 완료
+## 현재 기준
 
-- Base를 `ee265576da7f67d3278f8099dd97d4e714ef0651`로 갱신했다.
-- 이전 기준 이후 155개 커밋·70개 변경 파일을 전수 판정했다.
-- Work Mode·자동 Skill·Skill Mode·실행 보고를 적용했다.
-- Base 공유 Skill 13개를 유지하고 로컬 Skill을 고유 4개로 축소했다.
-- 제거한 로컬 Skill은 Base Skill·Legacy Alias로 승계했다.
-- 문서·Skill Registry를 실행 가능한 `source_only`로 정렬했다.
-- Skill Map·가짜 Manifest·중복 템플릿·checker·test를 통합·제거했다.
-- Design Registry와 Schema 정책 충돌을 수정했다.
-- 삭제 경로·stale 전투 표현·가짜 발행 상태의 재등장을 차단했다.
-- PR #5 Documentation Governance run #371이 성공했다.
-- PR #9로 최적화 운영체계를 PR #7에 동기화했다.
-- PR #7 Documentation Governance run #370과 Card Component Contract run #399가 성공했다.
-- 전투 POC STEP 0~10·TARGETING 10.5·RESPONSE/RESOURCE PREVIEW 10.6이 구현됐다.
-- 사용자 Windows에서 STEP 0~10·행동 배치·대상 지정이 확인됐다.
+- Base: `41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
+- 구현 PR: #7 `agent/t0-combat-poc-board`.
+- 기준 SHA: `147a031c75e96bff170d7f99016beb9e85b12066`.
+- 최신 승인: Issue #13 STEP 12~14.
+- 정합화 브랜치: `agent/pr7-canonical-skill-refresh`.
+- 프로젝트 코어: `CORE_REVIEW_PENDING`.
 
-## 기술 검증 완료
+## 완료된 구현
 
-- 4/7 시작 위치, RESPONSE·RESOURCE PREVIEW 10.6, Issue #11 전투·연출 범위의 자동·Windows·UI Automation 증거.
-- 최신 정본·전투 계약·reference freshness 정적 검사.
+- STEP 0~13.
+- 10칸·4/7·거리 3·밀착.
+- 3/3/4·기초 행동 8종·절초 3종.
+- 합·방어·회피·필중·중단·강건.
+- 공개 상태 기반 최소 AI.
+- 승패·무승부·완전 재시작.
+- 순차 연출·키보드·모션 감소·음향 제어.
 
-## 미완료·미검증
+## 현재 정합화 작업
 
-- 사용자 로컬 미커밋 파일·원격 차이
-- PDF 발행 파이프라인과 전 페이지 시각 검수
-- 접근성 사용자 검수
-- 목표 플랫폼 성능 프로파일
-- Branch protection Required Check 강제
-- STEP 12 비치팅 AI, STEP 13 종료·재시작, STEP 14 POC 플레이테스트
+- 활성 본책을 현행 계약으로 재작성.
+- Base 활성 Skill 25개 route.
+- 프로젝트 고유 Skill 4개 유지·간소화.
+- board schema 16·Base SHA·Skill 집합 단일 freshness 계약.
+- stale 반례·Python cache 재발 차단.
+- 기준 SHA 대비 제품 파일 보존 검증.
+- 정합화 Draft PR을 #7 대상으로 생성 예정.
+
+## 미검증
+
+- 실제 사용자 STEP 14 규칙 이해·재도전 행동.
+- 실제 보조기기 사용자 사용성.
+- 주관적 음향·모션 읽기성.
+- 외부 POC 표본.
+- 목표 장치 Release 성능.
+- Branch protection Required Check 강제.
+- 사용자 로컬 미커밋 파일과 원격 차이.
 
 ## 보호 범위
 
-- 10칸·3수/3수/4수·8개 기초 행동·절초 기세 5칸
-- 승인 UI·배경·카드 방향과 Godot 구현
-- 기존 `docs/01~11`, 백업·PR·Git 이력
-- 프로젝트 고유 수치·세계관·경로
-- 사용자 로컬 미커밋 변경
-- 실행하지 않은 검증의 미검증 상태
+정합화에서는 다음을 변경하지 않는다.
 
-## 금지
+- `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot`.
+- 제품 Godot 런타임 테스트.
+- 사용자 로컬 변경.
+- 백업·보류·과거 Plan·Git 이력.
+- T1 이후 성장·세력 가설의 고유 정보.
 
-- Base 공용 Skill을 로컬에 다시 중복 복제
-- 발행 생성기 없이 PDF·Manifest CURRENT 선언
-- 보존 대조·사용자 승인 없는 제품 본책·자산 삭제
-- 사용자 승인 없이 현재 T0 범위 밖의 기능 구현
-- 정적 Actions만으로 Godot·접근성·성능·Required Check 완료 주장
-- 프로젝트 고유 값을 Base 공용 규칙으로 자동 승격
+force push·reset·rebase를 금지한다.
 
 ## 다음 작업
 
-1. 검증된 로컬 변경을 의도적 커밋으로 정리하고 Draft PR #7을 갱신한 뒤 GitHub Actions를 재실행한다.
-2. STEP 12 비치팅 최소 AI를 별도 Issue·Plan으로 확정한다.
-3. STEP 13 종료·재시작을 별도 Issue·Plan으로 확정한다.
-4. STEP 14에서 실제 사용자 이해도·보조기기 사용성·주관적 음향/모션·Release 성능을 검수한다.
+1. Design Registry·Entry Point·Audit·Health 문서를 최종 정렬한다.
+2. Governance·Skill·freshness 반례를 실행한다.
+3. 기준 SHA compare로 허용 변경만 존재하는지 확인한다.
+4. 정합화 Draft PR을 #7 대상으로 생성한다.
+5. 최신 Actions 성공 뒤 #7 통합 여부를 결정한다.
+6. 정합화 뒤 PLAN 모드에서 프로젝트 코어를 확정한다.
+7. 코어 승인 뒤 STEP 14 실제 사용자 플레이를 실행한다.
+
+## 프로젝트 코어 PLAN 순서
+
+```text
+핵심 컨셉 후보
+→ 제약·조건
+→ 뾰족한 재미
+→ WHY/HOW/WHAT 정렬
+→ POC 증거 대조
+→ 기획 재조정
+→ SWOT / VRIO
+→ 적대적 검토
+→ 사용자 승인
+```
 
 ## 중단 기준
 
-- 원격과 충돌하는 사용자 로컬 변경
-- 고유 정보·참조·복구를 확인할 수 없는 삭제·이동 요구
-- 생성기·폰트·Manifest·렌더 없이 발행 정책 승격 요구
-- 사용자 승인 범위를 넘는 제품 규칙·자산 변경
-- Actions 또는 Godot 실패 원인을 확인하지 않은 변경 확대
+- PR #7 HEAD 또는 기준 SHA가 예상과 다르다.
+- 보호 경로에 예상 밖 변경이 있다.
+- Actions 실패 원인을 확인하지 않았다.
+- 사람 증거 없이 STEP 14·T1을 통과 처리하려 한다.
+- 구형 PR의 고유 정보 보존을 확인하지 않고 닫거나 병합하려 한다.
