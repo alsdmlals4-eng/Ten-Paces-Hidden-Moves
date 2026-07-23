@@ -17,6 +17,8 @@ AGENTS.md
 | 현재 프로젝트 코어·핵심 루프·불변 조건 | `docs/01_GAME_DESIGN.md` | `CORE_CONFIRMED`·재승인 경계 |
 | 코어 확정의 분석·벤치마킹·SWOT/VRIO 근거 | `docs/decisions/2026-07-23_PROJECT_CORE_DECISION_RECORD.md` | 사용자 승인·적대적 회귀 |
 | 코어를 구현 작업으로 전환하는 통합 명세 | `docs/decisions/2026-07-23_CORE_INTEGRATED_SPEC_AND_IMPLEMENTATION_PLAN.md` | WP·파일·테스트·DoD·롤백 |
+| 최종 적대적 검토·MVP 마감 판정·남은 결함 | `docs/decisions/2026-07-24_FINAL_ADVERSARIAL_REVIEW_AND_MVP_CLOSEOUT.md` | 5회 검토·finding·PR·PDF·미검증 |
+| 최종 마감 실행 순서 | `plans/2026-07-24-final-adversarial-review-closeout-plan.md` | Red→Green→Refactor·커밋·롤백 |
 | 현재 상태·다음 작업·위험 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` | 콜드 스타트·실제 PR 대조 |
 | 전투 판정·거리·자원·합·AI | `docs/02_COMBAT_RULES.md` + 실제 `data/`·`src/` | 자동·Godot·반례 |
 | 콘텐츠·T1·HOLD | `docs/03_CONTENT_CATALOG.md` | 실제 ID·단계 경계 |
@@ -88,9 +90,10 @@ project.godot
 - PR #7: `agent/t0-combat-poc-board`.
 - 구현 기준 SHA: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
 - 최신 승인 Issue: #13.
-- 코어 확정 PR: #15 `agent/project-core-confirmation`.
+- 코어 확정·마감 PR: #15 `agent/project-core-confirmation`.
 - 프로젝트 코어: `CORE_CONFIRMED`.
 - 제품 게이트: `REPEAT_POC`.
+- 최종 마감 판정: `REVISE`.
 
 구형 Draft PR은 기본 읽기·병합 입력이 아니다. 고유 정보 보존 확인 뒤 superseded 상태로 정리한다.
 
@@ -100,6 +103,7 @@ project.godot
 - 한 질문에 현행 책임 원본 하나만 둔다.
 - 결정 기록은 확정 과정과 근거를 보존하며 현재 계약을 대체하지 않는다.
 - 통합 구현계획은 실행 순서와 수용 기준을 연결하며 세부 판정 원본을 대체하지 않는다.
+- 최종 마감 보고서는 검증 증거와 병합 판정을 기록하며 제품 규칙 정본을 대체하지 않는다.
 - 활성 본문에는 현재 계약만 두고 과거 전문은 Git 이력에서 찾는다.
 - 모든 등록 문서와 Skill Registry는 생성기가 없어 `source_only`다.
 - Workflow 존재·Actions 성공·Godot 런타임·Windows 기술 증거·사람 검수·Required Check 강제를 구분한다.
