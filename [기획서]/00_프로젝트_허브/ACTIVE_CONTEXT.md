@@ -2,15 +2,17 @@
 
 ## 현재 기준
 
-- Work Mode: `PLAN → REVIEW` — 프로젝트 코어 확정과 STEP 14 진입 계약.
+- Work Mode: `REVIEW → 최소 문서 BUILD → REVIEW` — PR #15 최종 적대적 검토와 MVP 마감 검증.
 - Base: `41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
 - 구현 PR: #7 `agent/t0-combat-poc-board`.
 - 구현 기준 SHA: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
-- 코어 확정 브랜치: `agent/project-core-confirmation`.
+- 코어 확정·마감 브랜치: `agent/project-core-confirmation`.
 - 최신 전투 승인: Issue #13 STEP 12~14.
 - 제품 단계: T0 Prototype.
 - 프로젝트 코어: `CORE_CONFIRMED`.
 - 제품 게이트: `REPEAT_POC`.
+- 최종 마감 판정: `REVISE`.
+- T1 진입: `NOT_GRANTED`.
 - 상태 전이 기록: `CORE_REVIEW_PENDING → CORE_CONFIRMED`.
 
 ## 확정된 프로젝트 코어
@@ -55,9 +57,38 @@
 
 - PR #14 정본·Skill·Governance 최신화: PR #7에 병합 완료.
 - PR #7 통합 후 HEAD: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
-- Documentation Governance run #462: `PASS`.
-- PR #14 기준 Codex 보호 경로 변경: 0건.
-- 코어 확정 작업은 문서·기획 계약만 변경하며 `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot`을 수정하지 않는다.
+- PR #15 시작 head `ff378732...` Documentation Governance run #466: `PASS`.
+- PR #15 시작 head 대비 제품 보호 경로 변경: 0건.
+- PR #15 최신 head의 Governance·Card/Combat Contract: `PENDING`.
+- PR #15 unresolved review thread: 0건.
+- Branch protection Required Check 강제: `UNVERIFIED`.
+- 저장소 등록 문서·Skill Registry 발행 정책: `source_only`.
+
+## 최종 적대적 검토 결과
+
+책임 원본:
+
+- 실행 계획: `plans/2026-07-24-final-adversarial-review-closeout-plan.md`.
+- 최종 보고: `docs/decisions/2026-07-24_FINAL_ADVERSARIAL_REVIEW_AND_MVP_CLOSEOUT.md`.
+
+이번 마감에서 수정한 영역:
+
+- `AGENTS.md`.
+- 루트·허브 `START_HERE.md`.
+- `docs/BASE_RULES_VERSION.md`.
+- 허브 `DEVELOPMENT_GATES.md`, `ROADMAP.md`, `HANDOFF.md`, `DOCUMENTATION_MAP.md`.
+- `tests/test_project_governance.py`.
+
+제품 코드·데이터·씬·자산·Godot 테스트는 수정하지 않았다.
+
+## 남은 MUST_FIX
+
+1. `docs/02_COMBAT_RULES.md`, `docs/05_COMBAT_POC_SPEC.md`, `docs/08_TEST_CHECKLIST.md`, `docs/09_COMBAT_SYSTEM_ARCHITECTURE.md`의 이전 구현 기준 SHA를 현행 `659c57e7...`로 정렬한다.
+2. `data/combat/combat_board_poc.json`의 `fixed_enemy_preview_plan`과 판정 데이터·코드의 `public_state_ai` 의미 충돌을 별도 제품 계약에서 수정한다.
+3. 플레이어가 실제로 세운 가설을 기록하지 않은 상태에서 `내 예상`을 생성하지 않는다.
+4. 사람 STEP 14 전 결정적 복기 최소안과 읽을 수 있는 라이벌 성향을 구현·검증한다.
+5. PR #7 본문을 STEP 0~13·Issue #13·현재 증거 경계로 갱신한다.
+6. PR #15 최신 head Actions와 최종 protected-path diff를 확인한다.
 
 ## 증거 경계
 
@@ -66,41 +97,29 @@ step_0_to_13_implementation: IMPLEMENTED
 mechanical_step14_scenarios: RECORDED
 windows_and_godot_technical_evidence: PARTIAL_TO_PASS
 project_core: CORE_CONFIRMED
+final_closeout_decision: REVISE
+full_conversation_review: UNVERIFIED_CONTEXT
 human_rule_comprehension: NOT_RUN
 opponent_tendency_discovery: NOT_RUN
 assistive_technology_user_validation: NOT_RUN
 subjective_audio_motion_readability: NOT_RUN
 external_playtest: NOT_RUN
 release_performance_budget: NOT_RUN
-branch_protection_required_checks: NOT_RUN
+branch_protection_required_checks: UNVERIFIED
 local_uncommitted_state: UNVERIFIED
 t1_greenlight: NOT_GRANTED
+mvp_complete: false
 ```
 
 기계 시나리오와 개발자 반환값 확인은 실제 플레이어 이해·선호·상대 성향 발견을 대체하지 않는다.
 
-## 적대적 검토의 P0
-
-1. 결정적 최소 AI가 라이벌 읽기가 아니라 고정 퍼즐로 굳을 수 있다.
-2. 상세 로그만으로는 플레이어가 자신의 가설이 어디서 틀렸는지 알기 어렵다.
-3. 사람 STEP 14가 없어 코어 재미·체감 공정성·재도전 행동 증거가 없다.
-4. 12세력·10성·10전 가설이 T1 범위를 팽창시킬 수 있다.
-5. 합·절초·기세가 다른 읽기 선택을 압도할 가능성이 있다.
-
-## 현재 작업
-
-1. 코어 계약과 결정 기록을 Governance로 검증한다.
-2. 기준 SHA 대비 Codex 제품 경로 변경 0건을 재확인한다.
-3. 코어 확정 PR을 PR #7에 병합한다.
-4. PR #7 본문과 base를 최신 상태로 정리한다.
-5. STEP 14 발견형 플레이테스트를 준비한다.
-6. 확정 설계안을 PDF로 발행하고 전 페이지 시각 검수한다.
-
 ## 다음 제품 작업
 
 ```text
-결정적 복기 최소안
-+ 읽을 수 있는 라이벌 성향 실험 계약
+남은 정본 SHA·AI source 충돌 수정
+→ 플레이어 가설 기록 최소 계약
+→ 결정적 복기 최소안
+→ 읽을 수 있는 라이벌 성향 실험
 → STEP 14 신규 플레이어 5명
 → 이해·성향 발견·계획 변경 관찰
 → KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST
@@ -135,3 +154,4 @@ t1_greenlight: NOT_GRANTED
 - 실제 사용자 증거 없이 STEP 14 또는 T1을 통과 처리한다.
 - 라이벌 성향을 미확정 계획 읽기 또는 근거 없는 무작위로 구현하려 한다.
 - 코어보다 콘텐츠 수·성장 수치·대회 분량이 우선되기 시작한다.
+- 남은 `MUST_FIX` 또는 필수 `UNVERIFIED`를 숨기고 MVP 완료를 선언한다.
