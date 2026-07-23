@@ -4,12 +4,20 @@
   "goal_document": "docs/decisions/2026-07-24_REPEAT_POC_CORE_VALIDATION_GOAL.md",
   "implementation_plan": "plans/2026-07-24-repeat-poc-core-validation-implementation-plan.md",
   "codex_entrypoint": "plans/CODEX_GOAL_REPEAT_POC.md",
+  "github_issue": {
+    "number": 16,
+    "title": "REPEAT_POC: 가설 기록·결정적 복기·라이벌 성향·STEP 14",
+    "state": "OPEN"
+  },
   "baseline": {
     "project_core_branch": "agent/project-core-confirmation",
     "product_branch": "agent/t0-combat-poc-board",
     "product_sha": "659c57e7ffa588ad6a6471ed9b5394985b159eaf"
   },
   "status": {
+    "planning": "COMPLETE",
+    "codex_goal": "READY",
+    "current_task": "A0_CONTRACT_ALIGNMENT",
     "a0_contract_alignment": "NOT_STARTED",
     "a1_rival_ai": "NOT_STARTED",
     "a2_hypothesis_and_summary": "NOT_STARTED",
