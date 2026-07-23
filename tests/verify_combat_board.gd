@@ -63,6 +63,7 @@ func _run() -> void:
     _verify_wrong_attack_direction(board)
     _verify_layout(board, board.get_layout_snapshot())
     _verify_character_anchors(board, board.get_layout_snapshot())
+    await _verify_second_bundle_returns_to_planning(board)
 
     board.queue_free()
     await process_frame
@@ -378,6 +379,32 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
     for required_state in ["committed", "resolving", "presenting_result", "next_bundle_ready"]:
         if required_state not in presentation_history:
             failures.append("Presentation state history must include %s." % required_state)
+
+func _verify_second_bundle_returns_to_planning(board: CombatBoardPreview) -> void:
+    var quick := _card_definition(board, "basic_quick_attack")
+    var meditate := _card_definition(board, "basic_meditate")
+    if quick.is_empty() or meditate.is_empty():
+        failures.append("Second-bundle presentation test cards were not found.")
+        return
+    if not board.action_timing_panel.place_card(quick, 4):
+        failures.append("Quick attack must place at timing 4 after bundle 1 resolves.")
+        return
+    if not board._begin_targeting_for_anchor(4):
+        failures.append("Quick attack at timing 4 must enter target selection.")
+        return
+    board._on_board_tile_clicked(6)
+    if not board.action_timing_panel.place_card(meditate, 5) or not board.action_timing_panel.place_card(meditate, 6):
+        failures.append("Second bundle must accept non-targeted follow-up actions.")
+        return
+    if not board.combat_progress_button.progress_enabled:
+        failures.append("A complete second bundle must enable progress.")
+        return
+    board.combat_progress_button.request_progress()
+    for _attempt in range(100):
+        if str(board.get_meta("presentation_state", "")) == "next_bundle_ready":
+            return
+        await create_timer(0.05).timeout
+    failures.append("Second bundle must leave presenting_result and unlock planning without requiring immediate-complete.")
 
 func _verify_wrong_attack_direction(board: CombatBoardPreview) -> void:
     var quick := _card_definition(board, "basic_quick_attack")

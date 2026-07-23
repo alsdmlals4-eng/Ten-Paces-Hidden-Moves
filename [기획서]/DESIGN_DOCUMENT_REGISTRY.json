@@ -60,7 +60,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["상태 구분", "CURRENT_T0 — 단일 전투 POC", "PLANNED_T1 — 최소 세로 슬라이스", "HYPOTHESIS_T2_PLUS — 세력 후보", "HOLD 콘텐츠", "콘텐츠 추가 게이트"]
+      "required_sections": ["상태 구분", "CURRENT_T0 — 단일 전투 POC", "PLANNED_T1 — 최소 세로 슬라이스", "HYPOTHESIS_T2_PLUS — 세력 후보", "콘텐츠 추가 게이트"]
     },
     {
       "document_id": "product-roadmap",
@@ -114,7 +114,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["현재 상태", "현행 전투 계약과 연결 원칙", "T1 최소 성장 실험", "HOLD 수정자·콘텐츠", "성장 진입 게이트", "검증 기준"]
+      "required_sections": ["현재 상태", "현행 전투 계약과 연결 원칙", "T1 최소 성장 실험", "절초·진의 가설", "성장 진입 게이트", "검증 기준"]
     },
     {
       "document_id": "combat-ui-spec",
@@ -186,7 +186,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["현재 T0 전투 흐름", "첫 시선", "판정 표현 순서", "STEP 11 중단 연출 예정", "접근성 폴백", "현재 상태"]
+      "required_sections": ["현재 T0 전투 흐름", "첫 시선", "판정 표현 순서", "Issue #11 중단·강건 연출", "접근성 폴백", "현재 상태"]
     },
     {
       "document_id": "base-adoption-learning",

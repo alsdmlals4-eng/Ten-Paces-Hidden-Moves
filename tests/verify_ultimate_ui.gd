@@ -1,4 +1,4 @@
-# 절초 메뉴의 기세 조건·예약 잠금·연속 슬롯 점유를 UI 수준에서 검증한다.
+# 절초 메뉴의 기세 조건·진행 전 예약 취소·연속 슬롯 점유를 UI 수준에서 검증한다.
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
@@ -94,12 +94,28 @@ func _verify_reservation(card_id: String, span: int) -> void:
         for slot_index in range(1, span + 1):
             if not board.action_timing_panel.has_assignment_at(slot_index):
                 failures.append("Ultimate %s must occupy slot %d." % [card_id, slot_index])
+        if not board.action_timing_panel.get_slot(1).tooltip_text.contains("취소"):
+            failures.append("Reserved ultimate slots must explain that they can be cancelled before progress: %s" % card_id)
         board._show_ultimate_vfx({"card_id": card_id})
         if not board.presentation_vfx.visible or board.presentation_vfx.texture == null:
             failures.append("Ultimate VFX must select a visible atlas band: %s" % card_id)
+        board._on_timing_slot_clicked(span)
+        if not board.action_timing_panel.get_placement(1).is_empty():
+            failures.append("Reserved ultimate must be removable before progress: %s" % card_id)
+        var refunded_player: Dictionary = board.combat_state.get("player", {})
+        var refunded_momentum: Array = refunded_player.get("momentum", [0, 5])
+        if int(refunded_momentum[0]) != 5:
+            failures.append("Cancelling an ultimate reservation must refund momentum before progress: %s" % card_id)
+        if not board._ultimate_reservation_anchors.is_empty():
+            failures.append("Cancelling an ultimate reservation must clear its reservation lock: %s" % card_id)
+        board._on_ultimate_menu_id_pressed(selected_index)
         board._on_timing_slot_clicked(1)
-        if board.action_timing_panel.get_placement(1).is_empty():
-            failures.append("Reserved ultimate must not be removable or refundable: %s" % card_id)
+        board._set_presentation_state("resolving")
+        board._on_timing_slot_clicked(1)
+        var locked_player: Dictionary = board.combat_state.get("player", {})
+        var locked_momentum: Array = locked_player.get("momentum", [5, 5])
+        if board.action_timing_panel.get_placement(1).is_empty() or int(locked_momentum[0]) != 0:
+            failures.append("Ultimate cancellation must remain locked after progress begins: %s" % card_id)
 
     board.queue_free()
     await process_frame

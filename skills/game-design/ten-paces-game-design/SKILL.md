@@ -67,7 +67,7 @@ description: Use for Ten Paces combat, tournament, martial-art, growth, balance,
 - UI 시안 임시 숫자로 전투 기준 확정.
 - 문파 전용 해상 순서 추가.
 - 개발용 상대 태그 직접 노출.
-- `[보류]` 기능 구현.
+- 사용자 승인 없이 현재 T0 범위 밖의 기능 구현.
 - 외부 인기 기능 복사.
 - T1 이후 성장 후보를 T0 구현 완료로 표시.
 - 문서 또는 정적 검사만으로 구현·플레이 검증 완료 판정.

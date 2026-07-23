@@ -45,11 +45,10 @@
 
 현재 특징:
 
-- `[진행]` 신호 처리 안에서 한 묶음 판정을 즉시 완료한다.
-- 판정 단계 사이의 시간차 애니메이션은 없다.
-- 캐릭터 위치와 HUD는 최종 결과로 바로 갱신된다.
-- 세부 판정 순서는 전투 기록에서 확인한다.
-- 현재 POC에는 별도 합 수치 비교·차이 피해가 없다.
+- 엔진은 `[진행]`에서 한 묶음의 확정 결과를 한 번 계산한다.
+- 화면은 확정 `presentation_events`와 `timing_results`를 따라 대응 뒤 각 수의 속공·이동·일반 행동을 순차 재생한다.
+- 캐릭터 위치와 HUD는 확정 snapshot에만 따라 갱신되며, UI는 결과를 재계산하지 않는다.
+- 세부 판정 순서는 전투 기록과 결과 문구에서 확인한다.
 
 ## 4. 상태 소유 경계
 
@@ -341,9 +340,9 @@ PRESENTATION_TARGET:
 
 카드 본체·호버·클릭 상세에 같은 전문을 세 번 반복하지 않는다.
 
-## 12. STEP 11 중단 연출 예정
+## 12. Issue #11 중단·강건 연출
 
-현재 `PLANNED`다.
+현재 구현·자동·Windows 런타임 검증을 마쳤다.
 
 필요 흐름:
 
@@ -374,7 +373,7 @@ PRESENTATION_TARGET:
 
 - 이동·공격 후보는 색과 상태 이름을 함께 가진다.
 - 자산이 없어도 기본 SVG·벡터 도형·텍스트로 화면이 구성된다.
-- 기본 카드·현재 슬롯·대상 타일·진행·모션 감소·음향 토글은 키보드 포커스와 `Enter`/`ui_accept` 경로를 제공한다. 실제 Windows의 탭 순서·보조기기 경로는 `NOT_RUN`이다.
+- 기본 카드·현재 슬롯·대상 타일·진행·모션 감소·음향 토글은 키보드 포커스와 `Enter`/`ui_accept` 경로를 제공한다. 명시적 Tab 순서와 Windows UI Automation 노출은 기술 검증을 마쳤고, 실제 보조기기 사용자의 전체 경로는 `NOT_RUN`이다.
 
 ### ACCESSIBILITY_TARGET
 
@@ -395,7 +394,7 @@ PRESENTATION_TARGET:
 - 대표 장면과 동시 공격·다수 로그의 최악 장면을 분리한다.
 - frame time·CPU·GPU·메모리·로딩을 baseline과 비교한다.
 
-목표 Windows 사양과 성능 프로파일은 `NOT_RUN`이다.
+DEBUG 빌드의 대표·최악 Windows 장면 성능 표본은 기록했다. 목표 Windows 사양과 Release 성능 프로파일은 `NOT_RUN`이다.
 
 ## 16. 현재 상태
 
@@ -414,14 +413,12 @@ PRESENTATION_TARGET:
 
 ### PLANNED_OR_NOT_RUN
 
-- Windows/HiGodot에서 단계별 판정 모션과 명시적 resolving 입력 잠금의 실제 가시성·동작 확인.
 - 로그 자동 스크롤 정책.
-- Windows/HiGodot에서 STEP 11 중단·강건·밀착·절초 연출 확인.
 - STEP 12 AI 성향 표현.
 - STEP 13 승패·재시작.
 - STEP 14 플레이테스트.
-- 실제 Windows 키보드 탭 순서와 보조기기 검수.
-- 접근성·성능 검증.
+- 실제 보조기기 사용자의 전체 키보드/음성 출력 사용성.
+- 주관적 모션·음향 읽기성과 Release 목표 사양 성능.
 
 ## 17. T1 이후 대회 연출
 
@@ -449,10 +446,12 @@ T0 통과 뒤 별도 범위로 진행한다.
 - `즉시 완료`는 진행 중인 이벤트의 일반 타이머를 다음 프레임에 탈출시킨다. 따라서 절초의 최대 0.70초 VFX 대기를 끝까지 기다리지 않으며, 현재 결과 텍스트와 VFX를 숨기되 확정 상태·로그·자원·기세는 바꾸지 않는다.
 - 전장 전투원은 프로젝트 전용 전신 수묵 원화를 사용한다. 각 PNG는 크로마키를 RGBA로 변환해 모서리 알파·투명 픽셀 수를 검수했고, 원화의 발을 기존 타일 앵커에 맞춰 대기·이동·공격 transform을 적용한다.
 - 표준 버튼과 슬라이더는 흰색 2px 포커스 링과 옅은 면 채움으로 Tab 위치를 표시한다. 카드·수 슬롯·대상 타일의 기존 자체 포커스 테두리와 함께 색각에만 의존하지 않는 입력 경로를 만든다.
-- Tab 순서는 카드 8종 → 수 슬롯 1~10 → 대상 타일 1~10 → 진행 → 빠른 재생·즉시 완료·모션 감소·소리·음량 → 카드로 명시적 순환한다. 실제 보조기기와 Windows 전체 조작성은 별도 수동 Gate로 남긴다.
+- Tab 순서는 카드 8종 → 수 슬롯 1~10 → 대상 타일 1~10 → 진행 → 빠른 재생·즉시 완료·모션 감소·소리·음량 → 카드로 명시적 순환한다. Windows UI Automation은 이 제어들의 한국어 이름·역할 노출을 확인했고, 실제 보조기기 사용자의 전체 조작성은 별도 수동 Gate로 남긴다.
 - 포커스 가능한 전투 조작 요소에는 Godot Control의 한국어 `accessibility_name`·`accessibility_description`을 함께 설정한다. 이는 읽기 도구에 역할과 조작 결과를 제공하는 구현 증거이며, 운영체제 보조기기와의 실제 음성 출력 검수는 대체하지 않는다.
 - `verify_combat_pointer_lock.gd`는 실제 `InputEventMouseButton`을 카드·수 슬롯·절초 버튼에 전달한다. `resolving`에서는 기존 선택을 바꾸지 않고, 수 예약과 절초 기세 소비도 발생하지 않아야 한다.
-- 자동 검증과 HiGodot Windows 런타임의 4/7 시작 렌더, 절초 목록 활성·예약·대상 입력, 대시 후 5·6번 위치, 수묵·금빛 VFX와 `사거리 실패` 결과 표시, `소리:끔` → `소리:켬` 토글 텍스트는 완료했다. 진행 버튼 직후 `resolving`·`locked=true`와 카드 선택 핸들러 차단도 런타임에서 확인했다. Headless는 파공검기 처치 뒤 `combat_ended` 입력 잠금·전투 불능 문구·패배음 요청, 확정 기세 증가·금속 충돌/완전 막기 SFX 요청과 밀착·파공검기 VFX·로그 52개 장면의 120프레임 성능 표본도 확인했다. 대표 시작 장면의 5개 표본은 145 FPS·267 draw call·약 54.1MB video memory다. resolving 입력 잠금의 실제 마우스 상호작용, 실제 청취 음향과 실제 최악 장면/로딩 측정은 `NOT_RUN`이다.
+- 자동 검증과 HiGodot Windows 런타임의 4/7 시작 렌더, 절초 목록 활성·예약·대상 입력, 대시 후 5·6번 위치, 수묵·금빛 VFX와 `사거리 실패` 결과 표시, `소리:끔` → `소리:켬` 토글 텍스트는 완료했다. 진행 버튼 직후 `resolving`·`locked=true`와 카드 선택 핸들러 차단도 런타임에서 확인했다. Headless는 파공검기 처치 뒤 `combat_ended` 입력 잠금·전투 불능 문구·패배음 요청, 확정 기세 증가·금속 충돌/완전 막기 SFX 요청과 밀착·파공검기 VFX·로그 52개 장면의 120프레임 성능 표본도 확인했다. 대표 시작 장면의 5개 표본은 145 FPS·267 draw call·약 54.1MB video memory이고, RTX 3050 최악 장면은 평균 17.11ms·378 draw call·69.6MB video memory다. Windows AudioStreamWAV 재생·음소거 즉시 정지·PCM 음량과 UI Automation 노출도 확인했다. 주관적 청취/모션과 실제 보조기기 사용성, Release 사양은 `NOT_RUN`이다.
 ## Issue #11 연출 구현 갱신 (2026-07-23)
 
-화면 상태는 `planning → committed → resolving → presenting_result → next_bundle_ready`로 기록되며, 체력 0이면 마지막 결과 뒤 `combat_ended`로 전환해 추가 계획 입력을 잠근다. 절초 버튼은 기세 부족·연속 빈 수 부족·판정 중을 tooltip으로 별도 설명한다. 결과 라벨은 60px 높이·한국어 단어 단위 줄바꿈으로 확정 이벤트의 중단·방향/사거리 실패·피해·전투 불능을 표시하고, 빠른 재생·즉시 완료·모션 감소·음소거·음량을 제공한다. 절차적 SFX는 기세 충전·절초 예약·검풍·금속 충돌·강타·완전 막기·회피·중단·전투 불능 역할음을 확정 snapshot과 이벤트에서 요청한다. `assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png`는 RGBA 알파 검수 뒤 활성화됐으며, 세 절초가 각 밴드를 AtlasTexture로 재생한다.
+화면 상태는 `planning → committed → resolving → presenting_result → next_bundle_ready`로 기록되며, 체력 0이면 마지막 결과 뒤 `combat_ended`로 전환해 추가 계획 입력을 잠근다. 절초 버튼은 기세 부족·연속 빈 수 부족·판정 중을 tooltip으로 별도 설명한다. `planning`의 절초 점유 수 슬롯은 클릭 또는 Enter로 전체 예약을 취소하고 기세 5를 반환한다는 tooltip을 제공하며, `committed` 이후에는 입력 잠금과 함께 취소·환불도 막는다. 결과 라벨은 60px 높이·한국어 단어 단위 줄바꿈으로 확정 이벤트의 중단·방향/사거리 실패·피해·전투 불능을 표시하고, 빠른 재생·즉시 완료·모션 감소·음소거·음량을 제공한다. 절차적 SFX는 기세 충전·절초 예약·검풍·금속 충돌·강타·완전 막기·회피·중단·전투 불능 역할음을 확정 snapshot과 이벤트에서 요청한다. `assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png`는 RGBA 알파 검수 뒤 활성화됐으며, 세 절초가 각 밴드를 AtlasTexture로 재생한다.
+
+최신 Windows 검증에서는 절차적 SFX가 실제 `AudioStreamWAV`를 만들고 재생하며, 음소거는 현재 재생을 즉시 정지하고 음량은 PCM 진폭에 반영됨을 확인했다. 프로젝트는 `accessibility/general/accessibility_support=1`로 Godot 접근성 갱신을 항상 활성화하고, Windows UI Automation 트리에 전투 카드·수 슬롯·진행·절초·재생/음향 제어가 한국어 이름과 역할로 노출됨을 확인했다.

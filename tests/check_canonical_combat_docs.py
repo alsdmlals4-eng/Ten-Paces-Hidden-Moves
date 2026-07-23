@@ -228,9 +228,9 @@ def assert_scope_and_document_lifecycle(active: dict[str, str]) -> None:
     mastery = active["mastery"]
     legacy_context = active["legacy_context"]
 
-    for token in ("CURRENT_T0", "PLANNED_T1", "HYPOTHESIS_T2_PLUS", "HOLD"):
+    for token in ("CURRENT_T0", "PLANNED_T1", "HYPOTHESIS_T2_PLUS"):
         assert token in content, token
-    for token in ("T1 이후 가설 원본", "현재 T0에는 세력 선택", "HOLD 수정자·콘텐츠"):
+    for token in ("T1 이후 가설 원본", "현재 T0에는 세력 선택", "공용 절초 3종"):
         assert token in mastery, token
     assert "DEPRECATED_ENTRYPOINT" in legacy_context
     assert "독립적으로 보관하지 않는다" in legacy_context
@@ -291,8 +291,8 @@ def assert_ui_and_runtime_boundaries(active: dict[str, str], runtime: dict[str, 
     assert "focus_mode = Control.FOCUS_NONE" in runtime["log"]
     assert "Enter/`ui_accept`" in active["ui"]
     assert "키보드 포커스" in active["presentation"]
-    assert "키보드 흐름은 headless 자동 검증" in active["qa"]
-    assert "Windows 탭 순서·포커스 가시성·보조기기 사용성은 아직 `NOT_RUN`" in active["qa"]
+    assert "카드→수 슬롯→대상 타일→진행의 키보드 흐름, 명시적 Tab 순서" in active["qa"]
+    assert "실제 보조기기 사용자의 전체 사용성은 아직 `NOT_RUN`" in active["qa"]
 
     assert "scroll_to_line" not in runtime["log"]
     assert "scroll_to_paragraph" not in runtime["log"]

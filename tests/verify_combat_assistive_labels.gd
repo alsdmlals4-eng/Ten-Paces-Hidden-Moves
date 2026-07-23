@@ -9,6 +9,8 @@ func _initialize() -> void:
     call_deferred("_run")
 
 func _run() -> void:
+    if int(ProjectSettings.get_setting("accessibility/general/accessibility_support", 0)) != 1:
+        failures.append("Project accessibility support must be Always Active for Windows assistive-app verification.")
     var packed := load(BOARD_SCENE_PATH) as PackedScene
     if packed == null:
         failures.append("Assistive labels require the combat board scene.")

@@ -13,15 +13,13 @@ description: Use when approved Ten Paces design must be audited against a real G
 
 ## 사용 전제
 
-실제 저장소의 `project.godot`, GDScript, 씬, 데이터, 자산, 테스트와 Git 상태를 확인한다. 현재 원격에는 Godot 구현이 존재하며 사용자는 STEP 0~10·대상 지정의 이전 Windows 흐름을 확인했다.
+실제 저장소의 `project.godot`, GDScript, 씬, 데이터, 자산, 테스트와 Git 상태를 확인한다. STEP 0~10·대상 지정·4/7 시작·RESPONSE·RESOURCE PREVIEW는 Windows 기술 검증을 마쳤다.
 
-현재 최신 확인 대기:
+현재 다음 검증:
 
-- 플레이어 4번·상대 7번 시작 위치.
-- RESPONSE 10.6.
-- RESOURCE PREVIEW 10.6.
-
-사용자 재확인 전 위 항목은 `IMPLEMENTED_FOR_REVIEW` 또는 `UNVERIFIED`다.
+- STEP 12 비치팅 AI.
+- STEP 13 종료·재시작.
+- STEP 14 실제 사용자 이해도·보조기기 사용성·주관적 음향/모션·Release 성능.
 
 ## 책임 원본
 

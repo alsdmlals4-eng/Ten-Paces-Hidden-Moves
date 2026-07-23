@@ -34,6 +34,10 @@ enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
 
 theme/default_font_multichannel_signed_distance_field=true
 
+[accessibility]
+
+general/accessibility_support=1
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

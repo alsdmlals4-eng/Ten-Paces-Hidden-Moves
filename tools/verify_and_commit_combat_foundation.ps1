@@ -140,9 +140,10 @@ try {
     $boardOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_board.gd") -Label "Verify STEP 1-10 plus TARGETING 10.5 and start tiles 4/7"
     $responseOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_response_rules.gd") -Label "Verify RESPONSE 10.6 and immediate resource preview"
     $issue11Output = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_ultimate_interrupt_engagement.gd") -Label "Verify Issue #11 ultimates, interruption, fortitude, engagement, and timing snapshots"
-    $ultimateUiOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_ultimate_ui.gd") -Label "Verify ultimate reservation and visible authoritative playback"
+    $ultimateUiOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_ultimate_ui.gd") -Label "Verify ultimate reservation, pre-progress cancellation/refund, lock, and visible authoritative playback"
+    $presentationLivenessOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_presentation_liveness.gd") -Label "Verify completed bundles return to next_bundle_ready for subsequent planning"
     $terminalOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_terminal_presentation.gd") -Label "Verify terminal combat presentation state and defeat SFX"
-    $sfxOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_sfx_presentation.gd") -Label "Verify authoritative momentum and block SFX requests"
+    $sfxOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_sfx_presentation.gd") -Label "Verify authoritative SFX requests, AudioStreamWAV playback, mute stop, and volume PCM"
     $characterArtOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_character_art.gd") -Label "Verify full-body character art and tile foot anchors"
     $focusVisualsOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_focus_visuals.gd") -Label "Verify visible keyboard focus rings on standard combat controls"
     $focusOrderOutput = Invoke-NativeChecked -FilePath $godotExe -Arguments @("--headless", "--path", $repoRoot, "--script", "res://tests/verify_combat_focus_order.gd") -Label "Verify explicit keyboard focus order through combat planning controls"
@@ -168,6 +169,7 @@ try {
     $responseBlock = Format-IndentedBlock -Lines $responseOutput
     $issue11Block = Format-IndentedBlock -Lines $issue11Output
     $ultimateUiBlock = Format-IndentedBlock -Lines $ultimateUiOutput
+    $presentationLivenessBlock = Format-IndentedBlock -Lines $presentationLivenessOutput
     $terminalBlock = Format-IndentedBlock -Lines $terminalOutput
     $sfxBlock = Format-IndentedBlock -Lines $sfxOutput
     $characterArtBlock = Format-IndentedBlock -Lines $characterArtOutput
@@ -219,9 +221,10 @@ try {
 - [x] Resolution and targeting entries append to the combat log
 - [x] Issue #11 interruption and fortitude are enabled; Focus is removed
 - [x] Issue #11 three ultimate skills, engagement, interruption, fortitude, and authoritative timing snapshots
-- [x] Ultimate reservation and visible authoritative VFX playback
+- [x] Ultimate reservation, pre-progress cancellation/refund, post-progress lock, and visible authoritative VFX playback
+- [x] Completed bundles return to next_bundle_ready so subsequent planning inputs unlock
 - [x] Terminal combat presentation locks at combat_ended and requests defeat SFX
-- [x] Authoritative momentum charge and block/metal-clash SFX requests
+- [x] Authoritative SFX requests, AudioStreamWAV playback, mute stop, and volume PCM
 - [x] Full-body player/enemy character art loads while preserving tile foot anchors
 - [x] Standard keyboard controls expose a visible white focus ring
 - [x] Tab focus order is explicit: cards → timings → tiles → progress → presentation controls
@@ -255,6 +258,10 @@ $issue11Block
 ## Ultimate UI output
 
 $ultimateUiBlock
+
+## Presentation liveness output
+
+$presentationLivenessBlock
 
 ## Terminal combat presentation output
 

@@ -175,7 +175,7 @@ func _build_structure() -> void:
     ultimate_menu = MenuButton.new()
     ultimate_menu.name = "UltimateMenu"
     ultimate_menu.text = "절초 · 기세 필요"
-    ultimate_menu.tooltip_text = "기세가 정확히 5일 때 절초를 예약합니다. 예약 직후 기세 5를 소비하며 환불되지 않습니다."
+    ultimate_menu.tooltip_text = "기세가 정확히 5일 때 절초를 예약합니다. 진행 전에는 예약 슬롯을 눌러 취소하고 기세 5를 돌려받을 수 있습니다."
     _apply_keyboard_focus_ring(ultimate_menu)
     ultimate_menu.get_popup().id_pressed.connect(_on_ultimate_menu_id_pressed)
     add_child(ultimate_menu)
@@ -485,15 +485,16 @@ func _on_timing_slot_clicked(timing_index: int) -> void:
     if action_timing_panel.has_assignment_at(timing_index):
         var existing := action_timing_panel.get_placement(action_timing_panel.get_assignment_anchor(timing_index))
         var existing_definition: Dictionary = existing.get("definition", {})
-        if str(existing_definition.get("source", "")) == "ultimate":
-            if is_instance_valid(combat_log_panel):
-                combat_log_panel.append_entry("[절초 예약 유지] 예약된 절초는 기세를 환불하지 않으며 이 묶음에서 해제할 수 없습니다.", "system")
-            return
         var removed := action_timing_panel.remove_at(timing_index)
+        var was_ultimate := str(existing_definition.get("source", "")) == "ultimate"
+        if was_ultimate and not removed.is_empty():
+            _refund_ultimate_reservation(removed)
         if int(removed.get("anchor_index", 0)) == _targeting_anchor:
             _clear_targeting()
         if not removed.is_empty() and is_instance_valid(combat_log_panel):
-            combat_log_panel.append_entry("[배치 해제] %s · %s" % [str(removed.get("card_name", "")), _placement_timing_text(removed)], "system")
+            var prefix := "[절초 예약 취소]" if was_ultimate else "[배치 해제]"
+            var suffix := " · 기세 5 반환" if was_ultimate else ""
+            combat_log_panel.append_entry("%s %s · %s%s" % [prefix, str(removed.get("card_name", "")), _placement_timing_text(removed), suffix], "system")
         _begin_next_pending_target()
         return
     if _targeting_anchor > 0:
@@ -578,7 +579,7 @@ func _refresh_ultimate_menu() -> void:
             detail += " (연속 빈칸 부족)"
         popup.add_item(detail, index)
         popup.set_item_disabled(index, not available)
-        popup.set_item_tooltip(index, "기세 5를 즉시 소비하며, 중단·방향 실패·사거리 실패에도 환불되지 않습니다.")
+        popup.set_item_tooltip(index, "기세 5를 즉시 소비합니다. 진행 전에는 예약 슬롯을 눌러 취소할 수 있고, 진행 뒤 중단·방향 실패·사거리 실패는 환불되지 않습니다.")
     ultimate_menu.disabled = not any_available
     if not _selected_action_definition.is_empty() and str(_selected_action_definition.get("source", "")) == "ultimate":
         ultimate_menu.text = "[절초 예약] %s · 슬롯 선택" % str(_selected_action_definition.get("name", ""))
@@ -604,7 +605,7 @@ func _refresh_ultimate_menu() -> void:
         button.visible = true
         button.disabled = not list_available
         button.text = "%s · %d칸 · 위력 %s" % [str(list_definition.get("name", "절초")), int(list_definition.get("action_slots", 1)), str(list_definition.get("damage", "0"))]
-        button.tooltip_text = disabled_reason if not disabled_reason.is_empty() else "기세 5를 즉시 소모하고 빈 연속 슬롯에 예약합니다."
+        button.tooltip_text = disabled_reason if not disabled_reason.is_empty() else "기세 5를 즉시 소모하고 빈 연속 슬롯에 예약합니다. 진행 전에는 예약 슬롯 클릭 또는 Enter로 취소할 수 있습니다."
     set_meta("ultimate_available", any_available)
     set_meta("ultimate_momentum", momentum)
 
@@ -624,7 +625,7 @@ func _on_ultimate_menu_id_pressed(index: int) -> void:
     if is_instance_valid(card_detail_panel):
         card_detail_panel.show_definition(definition, true)
     if is_instance_valid(combat_log_panel):
-        combat_log_panel.append_entry("[절초 선택] 연속된 빈 슬롯을 눌러 [절초 예약]을 확정하세요. 기세는 즉시 소비되고 환불되지 않습니다.", "system")
+        combat_log_panel.append_entry("[절초 선택] 연속된 빈 슬롯을 눌러 [절초 예약]을 확정하세요. 기세는 즉시 소비되지만 진행 전에는 예약 슬롯 클릭으로 취소할 수 있습니다.", "system")
     _refresh_ultimate_menu()
 
 func _can_reserve_ultimate(definition: Dictionary) -> bool:
@@ -652,6 +653,20 @@ func _reserve_ultimate_at(anchor_index: int) -> void:
     _ultimate_reservation_anchors.append(anchor_index)
     _apply_combat_state_to_view()
     _play_procedural_sfx("ultimate_reserve")
+    _refresh_ultimate_menu()
+
+func _refund_ultimate_reservation(placement: Dictionary) -> void:
+    var anchor_index := int(placement.get("anchor_index", 0))
+    for index in range(_ultimate_reservation_anchors.size() - 1, -1, -1):
+        if _ultimate_reservation_anchors[index] == anchor_index:
+            _ultimate_reservation_anchors.remove_at(index)
+    var player: Dictionary = combat_state.get("player", {})
+    var momentum = player.get("momentum", [0, 5])
+    var current := int(momentum[0]) if typeof(momentum) == TYPE_ARRAY and momentum.size() >= 1 else 0
+    var maximum := int(momentum[1]) if typeof(momentum) == TYPE_ARRAY and momentum.size() >= 2 else 5
+    player["momentum"] = [mini(maximum, current + 5), maximum]
+    combat_state["player"] = player
+    _apply_combat_state_to_view()
     _refresh_ultimate_menu()
 
 func _resource_value(actor: Dictionary, key: String) -> int:
@@ -1024,6 +1039,8 @@ func _toggle_reduced_motion() -> void:
 
 func _toggle_sound() -> void:
     _sound_muted = not _sound_muted
+    if _sound_muted and is_instance_valid(procedural_sfx_player):
+        procedural_sfx_player.stop()
     if is_instance_valid(sound_toggle_button):
         sound_toggle_button.text = "소리: %s" % ("끔" if _sound_muted else "켬")
 

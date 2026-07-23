@@ -110,9 +110,11 @@ contract-check
 | 발행 파이프라인 | NOT_INSTALLED_BY_DESIGN |
 | 전투 POC 구현 | IMPLEMENTED |
 | 전투 POC 런타임 | PARTIAL |
-| 접근성·성능·플레이테스트 | NOT_RUN |
+| 접근성·성능 | 기술 증거 PASSED; 실제 사용자·Release 사양은 NOT_RUN |
+| 외부 플레이테스트 | NOT_RUN |
 # Issue #11 Gate 갱신 (2026-07-23)
 
 - [x] 절초 3종·피격 중단·강건·밀착 자동 검증
-- [ ] Windows/HiGodot 절초 UI·음향·접근성 수동 검증
-- [ ] 대표/최악 장면 성능 baseline 기록
+- [x] Windows/HiGodot 절초 UI·음향·UI Automation 접근성 기술 검증
+- [x] 대표/최악 장면 DEBUG 성능 baseline 기록
+- [ ] 실제 보조기기 사용자·주관적 음향/모션·Release 목표 사양은 STEP 14/배포 Gate에서 검증

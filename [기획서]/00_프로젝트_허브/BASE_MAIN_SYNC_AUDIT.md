@@ -18,7 +18,7 @@
 
 - 십보강호의 세계관·용어·밸런스·전투 수치·콘텐츠 범위
 - 승인된 전투 POC 구현과 사용자 Windows 확인 결과
-- 기존 `docs/01~11`, `docs/[백업]`, `docs/[보류]`, Plan, PR·Git 이력
+- 기존 `docs/01~11`, `docs/[백업]`, PR·Git 이력
 - 승인 이미지·UI 방향·Godot 자산
 - 실행하지 않은 런타임·접근성·성능·Branch protection 검증의 미검증 상태
 
@@ -149,7 +149,7 @@
 | 제품 소개 | 행동 두 개·2수 중심 | `3수 → 3수 → 4수`, 10수 라운드로 갱신 |
 | 기초 행동 | 7종 | 보법 포함 8종 |
 | 구현 상태 | STEP 1·2 수준 | STEP 0~10 + TARGETING 10.5 + RESPONSE/RESOURCE 10.6 |
-| 런타임 상태 | Godot 미확인 | 사용자 Windows에서 STEP 0~10·방향 지정·배치 확인, 최신 RESPONSE 10.6 재확인 대기 |
+| 런타임 상태 | Windows 기술 검증 완료 | STEP 0~10·방향 지정·배치·4/7·RESPONSE·RESOURCE PREVIEW와 Issue #11 런타임 증거 확보 |
 | 접근성·성능 | 일반 문구 | 영향 발생 시 독립 조건부 검증 |
 | 정본 최신성 | 수동 검색 | 설정·검사기·Workflow 회귀 검사 |
 | 구형 Skill ID | 활성 문서에 잔존 가능 | Legacy Alias로만 허용 |

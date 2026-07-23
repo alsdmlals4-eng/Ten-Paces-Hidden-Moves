@@ -21,8 +21,8 @@
 - 운영 PR: #5
 - 전투 POC PR: #7
 - 구현: STEP 0~10, TARGETING 10.5, RESPONSE·RESOURCE PREVIEW 10.6
-- 사용자 확인: STEP 0~10·행동 배치·대상 지정
-- 사용자 확인 대기: 최신 대응 연계·자원 미리보기
+- Windows 기술 검증: STEP 0~10·행동 배치·대상 지정·4/7·RESPONSE·RESOURCE PREVIEW 완료
+- 실제 사용자 이해도·선호 검수: STEP 14 대기
 - 문서·Skill Registry: 발행 생성기가 없어 `source_only`
 - Skill: Base 공유 13개 + 로컬 고유 4개
 - Branch protection: 미확인

@@ -33,7 +33,7 @@ STEP 0~10
 + RESOURCE PREVIEW 10.6 배치 즉시 자원 예상치
 ```
 
-사용자 Windows Godot에서 STEP 0~10과 대상 지정까지 확인했습니다. 최신 대응 판정·자원 미리보기와 4번·7번 시작 위치는 사용자 재확인 대기입니다.
+Windows Godot에서 STEP 0~10·대상 지정, 4번·7번 시작 위치, RESPONSE·RESOURCE PREVIEW 10.6의 기술 검증을 마쳤습니다. 실제 사용자 이해도·선호 검수는 STEP 14 플레이테스트에서 수행합니다.
 
 ## 범위
 

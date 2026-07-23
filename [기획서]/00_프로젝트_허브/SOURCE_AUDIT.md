@@ -20,7 +20,7 @@ PLAN: audit
 
 ## 보호 범위
 
-- `docs/01~11`, `docs/[백업]`, `docs/[보류]`, Plan, PR·Git 이력
+- `docs/01~11`, `docs/[백업]`, PR·Git 이력
 - 프로젝트 세계관·수치·용어·ID·Godot 경로
 - 승인 UI·배경·카드·전투 구현과 자산
 - 사용자 로컬 미커밋 변경
@@ -33,7 +33,6 @@ START_HERE.md
 AGENTS.md
 README.md
 docs/
-plans/
 [기획서]/
 skills/                  # 프로젝트 고유 Skill 4개 + Learning Log·Alias
 templates/               # 실행·reconciliation·컨셉근거·변경검증

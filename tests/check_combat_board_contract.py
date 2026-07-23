@@ -184,7 +184,8 @@ def main() -> None:
         assert audit["status"] == "APPROVED_ACTIVE"
     assert ultimate["requires_exact_momentum"] is True
     assert ultimate["reservation_consumes_momentum_immediately"] is True
-    assert ultimate["reservation_refund"] is False
+    assert ultimate["reservation_cancellation_refund_before_progress"] is True
+    assert ultimate["reservation_refund_after_progress"] is False
     assert ultimate["damage_formula"] == "base_damage + floor(attack_power * coefficient)"
     assert [card["id"] for card in ultimate_cards["cards"]] == ultimate["skills"]
     expected_ultimate_damage = {
@@ -308,6 +309,7 @@ def main() -> None:
         'contract.get("player_start_tile", 4)',
         'contract.get("enemy_start_tile", 7)',
         "UltimateMenu",
+        "_refund_ultimate_reservation",
         "presentation_state",
     ))
     assert all(token in character_script for token in (

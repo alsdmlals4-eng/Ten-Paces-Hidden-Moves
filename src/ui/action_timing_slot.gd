@@ -188,6 +188,14 @@ func _refresh() -> void:
     _placeholder_label.add_theme_color_override("font_color", accent)
     _status_label.add_theme_color_override("font_color", accent)
     mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if can_receive_placement() or has_assignment() else Control.CURSOR_ARROW
+    if has_assignment() and str(assigned_definition.get("source", "")) == "ultimate":
+        tooltip_text = "진행 전 클릭 또는 Enter로 절초 예약을 취소하고 기세 5를 돌려받습니다."
+    elif has_assignment():
+        tooltip_text = "클릭 또는 Enter로 배치한 행동을 해제합니다."
+    elif can_receive_placement():
+        tooltip_text = "선택한 행동을 이 수에 배치합니다."
+    else:
+        tooltip_text = "현재 행동 묶음에서 사용할 수 없는 수입니다."
 
 func _state_text() -> String:
     match slot_state:

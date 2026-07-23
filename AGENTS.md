@@ -25,7 +25,7 @@
 → 실제 파일·테스트·PR
 ```
 
-Gates·Roadmap·Registry·Audit·Handoff는 Documentation Map이 지시할 때만 읽는다. `docs/[백업]`, `docs/[보류]`, 제거 후보, 전체 `skills/`, 과거 생성물을 기본 컨텍스트로 로드하지 않는다.
+Gates·Roadmap·Registry·Audit·Handoff는 Documentation Map이 지시할 때만 읽는다. `docs/[백업]`, 제거 후보, 전체 `skills/`, 과거 생성물을 기본 컨텍스트로 로드하지 않는다.
 
 ## 3. Base와 Skill 라우팅
 
@@ -119,7 +119,6 @@ L2 이상 또는 다중 의존성 작업은 활동명이 아니라 `outcome / in
 - 현재 T0 상대는 고정 검증 계획이며 정식 AI가 아님
 - 정식 AI는 플레이어 비공개 행동을 읽지 않음
 - UI·VFX·오디오는 판정·보상·저장을 재계산하지 않음
-- `docs/[보류]` 기능은 재개 승인 전 구현 금지
 
 상세 규칙은 `docs/02_COMBAT_RULES.md`와 실제 `data/`, `src/`, `scenes/`, `tests/`를 함께 확인한다.
 

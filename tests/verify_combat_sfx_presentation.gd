@@ -37,6 +37,23 @@ func _run() -> void:
     if str(board.get_meta("last_sfx_kind", "")) != "block":
         failures.append("A fully stopped block must retain the separate block SFX.")
 
+    board._sound_muted = false
+    board._play_procedural_sfx("heavy_hit")
+    if board.procedural_sfx_player.stream == null:
+        failures.append("An enabled SFX request must build an AudioStreamWAV for playback.")
+    board._toggle_sound()
+    if board.procedural_sfx_player.is_playing():
+        failures.append("Muting must stop the currently playing procedural SFX immediately.")
+    board._toggle_sound()
+    board._set_sound_volume(0.25)
+    board._play_procedural_sfx("heavy_hit")
+    var quiet_peak := _peak_pcm_sample(board.procedural_sfx_player.stream)
+    board._set_sound_volume(1.0)
+    board._play_procedural_sfx("heavy_hit")
+    var full_peak := _peak_pcm_sample(board.procedural_sfx_player.stream)
+    if quiet_peak <= 0 or full_peak < quiet_peak * 3:
+        failures.append("The sound-volume control must produce meaningfully different PCM amplitudes.")
+
     board.queue_free()
     await process_frame
     _finish()
@@ -50,3 +67,14 @@ func _finish() -> void:
         push_error(failure)
     print("COMBAT_SFX_PRESENTATION_VERIFY_FAILED count=%d" % failures.size())
     quit(1)
+
+func _peak_pcm_sample(stream: AudioStreamWAV) -> int:
+    if stream == null or stream.data.is_empty():
+        return 0
+    var peak := 0
+    for byte_index in range(0, stream.data.size() - 1, 2):
+        var sample := int(stream.data[byte_index]) | (int(stream.data[byte_index + 1]) << 8)
+        if sample >= 32768:
+            sample -= 65536
+        peak = maxi(peak, absi(sample))
+    return peak

@@ -3,7 +3,7 @@
   "design_root": "[기획서]",
   "enforce_top_level_design_root": true,
   "active_roots": ["[기획서]", "skills", "docs", "templates"],
-  "ignored_segments": ["archive", "[백업]", "[보류]", "[제거 후보]", "hold", "deprecated"],
+  "ignored_segments": ["archive", "[백업]", "[제거 후보]", "hold", "deprecated"],
   "required_paths": [
     "START_HERE.md",
     "AGENTS.md",

@@ -29,16 +29,16 @@
 
 ## 문서
 
-- [게임 기획서](docs/01_GAME_DESIGN.md)
-- [전투 규칙](docs/02_COMBAT_RULES.md)
-- [구현 콘텐츠 카탈로그](docs/03_CONTENT_CATALOG.md)
-- [로드맵](docs/04_ROADMAP.md)
-- [대회 세로 슬라이스 명세](docs/05_COMBAT_POC_SPEC.md)
-- [문파·대성 데이터](docs/06_STARTING_FACTION_MASTERY_DATA.md)
-- [전투 UI 명세](docs/07_COMBAT_UI_SPEC.md)
-- [테스트 체크리스트](docs/08_TEST_CHECKLIST.md)
-- [전투 시스템 아키텍처](docs/09_COMBAT_SYSTEM_ARCHITECTURE.md)
-- [구현 Plan](plans/2026-07-16-combat-poc-plan.md)
+- [게임 기획서](../../01_GAME_DESIGN.md)
+- [전투 규칙](../../02_COMBAT_RULES.md)
+- [구현 콘텐츠 카탈로그](../../03_CONTENT_CATALOG.md)
+- [로드맵](../../04_ROADMAP.md)
+- [대회 세로 슬라이스 명세](../../05_COMBAT_POC_SPEC.md)
+- [문파·대성 데이터](../../06_STARTING_FACTION_MASTERY_DATA.md)
+- [전투 UI 명세](../../07_COMBAT_UI_SPEC.md)
+- [테스트 체크리스트](../../08_TEST_CHECKLIST.md)
+- [전투 시스템 아키텍처](../../09_COMBAT_SYSTEM_ARCHITECTURE.md)
+- 당시 구현 Plan은 Git 이력에서만 복구한다.
 
 ## 이번 범위에서 보류
 
@@ -47,4 +47,4 @@
 - 별도 장비 강화·경제 시스템
 - 멀티플레이/PvP 밸런스
 
-[문서 읽기 순서](docs/DOCUMENTATION_MAP.md)를 먼저 확인하세요.
+[문서 읽기 순서](../../DOCUMENTATION_MAP.md)를 먼저 확인하세요.

@@ -27,12 +27,10 @@
 - 전투 POC STEP 0~10·TARGETING 10.5·RESPONSE/RESOURCE PREVIEW 10.6이 구현됐다.
 - 사용자 Windows에서 STEP 0~10·행동 배치·대상 지정이 확인됐다.
 
-## 확인 대기
+## 기술 검증 완료
 
-- 사용자 작업본의 Fetch/Pull
-- RESPONSE 10.6 막기·회피·태세 실제 판정
-- RESOURCE PREVIEW 10.6 배치 즉시 자원 표시
-- 최신 Windows 통합 검증 보고서
+- 4/7 시작 위치, RESPONSE·RESOURCE PREVIEW 10.6, Issue #11 전투·연출 범위의 자동·Windows·UI Automation 증거.
+- 최신 정본·전투 계약·reference freshness 정적 검사.
 
 ## 미완료·미검증
 
@@ -41,13 +39,13 @@
 - 접근성 사용자 검수
 - 목표 플랫폼 성능 프로파일
 - Branch protection Required Check 강제
-- STEP 11 이후 전투 기능과 POC 플레이테스트
+- STEP 12 비치팅 AI, STEP 13 종료·재시작, STEP 14 POC 플레이테스트
 
 ## 보호 범위
 
 - 10칸·3수/3수/4수·8개 기초 행동·절초 기세 5칸
 - 승인 UI·배경·카드 방향과 Godot 구현
-- 기존 `docs/01~11`, 백업·보류·Plan·PR·Git 이력
+- 기존 `docs/01~11`, 백업·PR·Git 이력
 - 프로젝트 고유 수치·세계관·경로
 - 사용자 로컬 미커밋 변경
 - 실행하지 않은 검증의 미검증 상태
@@ -57,16 +55,16 @@
 - Base 공용 Skill을 로컬에 다시 중복 복제
 - 발행 생성기 없이 PDF·Manifest CURRENT 선언
 - 보존 대조·사용자 승인 없는 제품 본책·자산 삭제
-- `[보류]` 기능 구현
+- 사용자 승인 없이 현재 T0 범위 밖의 기능 구현
 - 정적 Actions만으로 Godot·접근성·성능·Required Check 완료 주장
 - 프로젝트 고유 값을 Base 공용 규칙으로 자동 승격
 
 ## 다음 작업
 
-1. `agent/t0-combat-poc-board` Fetch/Pull
-2. Godot F5로 RESPONSE·RESOURCE PREVIEW 10.6 확인
-3. 결과를 PR #7·Active Context에 기록
-4. Issue #11 피격 중단·강건·절초 작업 계약
+1. 검증된 로컬 변경을 의도적 커밋으로 정리하고 Draft PR #7을 갱신한 뒤 GitHub Actions를 재실행한다.
+2. STEP 12 비치팅 최소 AI를 별도 Issue·Plan으로 확정한다.
+3. STEP 13 종료·재시작을 별도 Issue·Plan으로 확정한다.
+4. STEP 14에서 실제 사용자 이해도·보조기기 사용성·주관적 음향/모션·Release 성능을 검수한다.
 
 ## 중단 기준
 

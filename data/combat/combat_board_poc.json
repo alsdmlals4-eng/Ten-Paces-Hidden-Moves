@@ -158,7 +158,8 @@
     "activation_momentum": 5,
     "requires_exact_momentum": true,
     "reservation_consumes_momentum_immediately": true,
-    "reservation_refund": false,
+    "reservation_cancellation_refund_before_progress": true,
+    "reservation_refund_after_progress": false,
     "extra_resource_cost": false,
     "damage_formula": "base_damage + floor(attack_power * coefficient)",
     "skills": ["ultimate_ten_paces_wave", "ultimate_cleave_peak", "ultimate_void_sword_qi"]
