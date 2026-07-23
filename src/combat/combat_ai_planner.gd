@@ -164,8 +164,15 @@ func _build_action(candidate: Dictionary, snapshot: Dictionary) -> Dictionary:
         "target_tile": clampi(enemy_tile + direction * step, 1, 10) if is_move else 0,
         "direction": direction,
         "ai_seed": int(_last_trace.get("seed", snapshot.get("ai_decision_seed", 0))),
-        "ai_reason": "+".join(_last_trace.get("reason_codes", []))
+        "ai_reason": _join_reason_codes(_last_trace.get("reason_codes", []))
     }
+
+func _join_reason_codes(value) -> String:
+    var codes := PackedStringArray()
+    if typeof(value) == TYPE_ARRAY:
+        for entry in value as Array:
+            codes.append(str(entry))
+    return "+".join(codes)
 
 func _active_profile() -> Dictionary:
     var active_id := str(_rival_data.get("active_rival_id", ""))
