@@ -25,13 +25,16 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Compile governance tools and tests
+      - name: Compile governance and combat contract tests
         run: |
           python -m py_compile \
             tools/check_project_operating_system.py \
             tools/check_canonical_reference_freshness.py \
             tools/check_skill_package_integrity.py \
-            tests/test_project_governance.py
+            tests/test_project_governance.py \
+            tests/check_card_component_contract.py \
+            tests/check_combat_board_contract.py \
+            tests/check_canonical_combat_docs.py
 
       - name: Validate project operating system
         run: |
@@ -61,6 +64,46 @@ jobs:
           python -m unittest discover -s tests -p 'test_project_governance.py' \
             2>&1 | tee governance-regression.log
 
+      - name: Validate card component contract
+        run: |
+          set -o pipefail
+          python tests/check_card_component_contract.py \
+            2>&1 | tee card-component-contract.log
+
+      - name: Validate combat contract
+        run: |
+          set -o pipefail
+          python tests/check_combat_board_contract.py \
+            2>&1 | tee combat-board-contract.log
+
+      - name: Validate canonical combat impact map
+        run: |
+          set -o pipefail
+          python tests/check_canonical_combat_docs.py \
+            2>&1 | tee canonical-combat-docs.log
+
+      - name: Parse PowerShell automations
+        shell: pwsh
+        run: |
+          $paths = @(
+            "tools/verify_and_commit_step0.ps1",
+            "tools/verify_and_commit_combat_foundation.ps1",
+            "tools/run_combat_board.ps1"
+          )
+          foreach ($path in $paths) {
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile(
+              (Resolve-Path $path),
+              [ref]$tokens,
+              [ref]$errors
+            ) | Out-Null
+            if ($errors.Count -gt 0) {
+              $errors | ForEach-Object { Write-Error $_ }
+              exit 1
+            }
+          }
+
       - name: Upload governance diagnostics
         if: always()
         uses: actions/upload-artifact@v4
@@ -71,10 +114,13 @@ jobs:
             reference-freshness.log
             skill-package-integrity.log
             governance-regression.log
+            card-component-contract.log
+            combat-board-contract.log
+            canonical-combat-docs.log
           if-no-files-found: warn
           retention-days: 7
 
       - name: Record verification boundaries
         run: |
-          echo "Governance success proves structure, routing, publication-policy shape, canonical references, Skill integrity, and regression checks."
-          echo "It does not prove Godot runtime, PDF rendering, accessibility, performance, user visual review, or branch-protection enforcement."
+          echo "Governance success proves structure, routing, publication-policy shape, canonical references, Skill integrity, regression checks, static card/combat contracts, and automation parsing on this commit."
+          echo "It does not prove Godot runtime, PDF rendering, Windows user comprehension, assistive-technology usability, release performance, user visual review, or branch-protection enforcement."
