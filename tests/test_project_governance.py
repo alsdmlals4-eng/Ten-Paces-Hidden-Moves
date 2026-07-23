@@ -34,6 +34,22 @@ class ProjectGovernanceTests(unittest.TestCase):
     def test_current_skill_integrity(self) -> None:
         SKILLS.run(ROOT)
 
+    def test_combat_ai_source_is_synchronized(self) -> None:
+        board = json.loads(
+            (ROOT / "data/combat/combat_board_poc.json").read_text(encoding="utf-8")
+        )
+        resolution = json.loads(
+            (ROOT / "data/combat/combat_resolution_preview.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        engine = board["resolution_engine"]
+        self.assertEqual(17, board["schema_version"])
+        self.assertEqual("public_state_ai", engine["enemy_plan_source"])
+        self.assertTrue(engine["fixture_enemy_plan_allowed_when_ai_disabled"])
+        self.assertNotIn("fixed_enemy_preview_plan", engine)
+        self.assertEqual("public_state_ai", resolution["enemy_plan_source"])
+
     def test_active_operating_state_is_synchronized(self) -> None:
         expected = {
             "AGENTS.md": [
