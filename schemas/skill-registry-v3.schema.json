@@ -3,21 +3,80 @@
   "$id": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/schemas/skill-registry-v3.schema.json",
   "title": "Ten Paces Project Skill Registry v3",
   "type": "object",
-  "required": ["schema_version", "registry_role", "routing_policy", "base_integration", "human_presentation", "skills", "selected_disciplines", "discipline_entrypoints"],
+  "required": [
+    "schema_version",
+    "registry_role",
+    "routing_policy",
+    "base_integration",
+    "human_presentation",
+    "skills",
+    "selected_disciplines",
+    "discipline_entrypoints"
+  ],
   "properties": {
+    "$schema": {"type": "string"},
     "schema_version": {"const": 3},
     "registry_role": {"const": "project-skill-router-and-learning-index"},
     "routing_policy": {
       "type": "object",
-      "required": ["load_all_skills", "default_selection", "automatic_selection", "user_skill_declaration_required", "require_trigger_match", "require_execution_report", "work_modes", "max_primary_discipline_skills", "max_foundation_skills", "exclude_statuses"]
+      "required": [
+        "load_all_skills",
+        "default_selection",
+        "automatic_selection",
+        "user_skill_declaration_required",
+        "require_trigger_match",
+        "require_execution_report",
+        "work_modes",
+        "max_primary_discipline_skills",
+        "max_foundation_skills",
+        "exclude_statuses"
+      ],
+      "properties": {
+        "load_all_skills": {"const": false},
+        "default_selection": {"const": "automatic-trigger-match"},
+        "automatic_selection": {"const": true},
+        "user_skill_declaration_required": {"const": false},
+        "require_trigger_match": {"const": true},
+        "require_execution_report": {"const": true},
+        "work_modes": {"const": ["PLAN", "BUILD", "REVIEW"]},
+        "max_primary_discipline_skills": {"type": "integer", "minimum": 1},
+        "max_foundation_skills": {"type": "integer", "minimum": 1},
+        "exclude_statuses": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
     },
     "base_integration": {
       "type": "object",
-      "required": ["repository", "commit", "legacy_aliases", "shared_learning_log", "shared_skill_routes"]
+      "required": ["repository", "commit", "legacy_aliases", "shared_learning_log", "shared_skill_routes"],
+      "properties": {
+        "repository": {"const": "alsdmlals4-eng/Base"},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "legacy_aliases": {"const": "skills/LEGACY_SKILL_ALIASES.md"},
+        "shared_learning_log": {"const": "skills/SKILL_LEARNING_LOG.md"},
+        "shared_skill_routes": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {"type": "string", "minLength": 1}
+        }
+      },
+      "additionalProperties": false
     },
     "human_presentation": {
       "type": "object",
-      "required": ["publication_policy", "primary_reading_format", "publication_manifest", "generator", "source_of_truth", "markdown_summary"],
+      "required": [
+        "publication_policy",
+        "primary_reading_format",
+        "editable_derivative",
+        "diagram_directory",
+        "publication_manifest",
+        "generator",
+        "source_of_truth",
+        "markdown_summary"
+      ],
       "properties": {
         "publication_policy": {"enum": ["source_only", "milestone_sync"]},
         "primary_reading_format": {"enum": ["SKILL_REGISTRY.json", "PROJECT_SKILL_MAP.pdf"]},
@@ -34,6 +93,7 @@
           "then": {
             "properties": {
               "primary_reading_format": {"const": "SKILL_REGISTRY.json"},
+              "editable_derivative": {"type": "null"},
               "publication_manifest": {"type": "null"},
               "generator": {"type": "null"},
               "markdown_summary": {"type": "null"},
@@ -41,16 +101,57 @@
             }
           }
         }
-      ]
+      ],
+      "additionalProperties": false
     },
     "skills": {
       "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
       "items": {
         "type": "object",
-        "required": ["skill_id", "layer", "discipline", "path", "status", "load_by_default", "trigger_tags", "skill_modes", "use_when", "do_not_use_when", "learning_log", "review_triggers", "last_reviewed_at", "last_reviewed_commit", "knowledge_state"]
+        "required": [
+          "skill_id",
+          "layer",
+          "discipline",
+          "path",
+          "status",
+          "load_by_default",
+          "trigger_tags",
+          "skill_modes",
+          "use_when",
+          "do_not_use_when",
+          "learning_log",
+          "review_triggers",
+          "last_reviewed_at",
+          "last_reviewed_commit",
+          "knowledge_state"
+        ],
+        "properties": {
+          "skill_id": {"type": "string", "minLength": 1},
+          "layer": {"const": "discipline"},
+          "discipline": {"type": "string", "minLength": 1},
+          "path": {"type": "string", "pattern": "^skills/.+/SKILL\\.md$"},
+          "status": {"const": "ACTIVE"},
+          "load_by_default": {"const": false},
+          "trigger_tags": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+          "skill_modes": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+          "use_when": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "do_not_use_when": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "learning_log": {"const": "skills/SKILL_LEARNING_LOG.md"},
+          "review_triggers": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "last_reviewed_at": {"type": "string", "format": "date"},
+          "last_reviewed_commit": {"type": "string", "pattern": "^[0-9a-f]{7,40}$"},
+          "knowledge_state": {"enum": ["HYPOTHESIS", "OBSERVATION", "PATTERN", "VERIFIED"]}
+        },
+        "additionalProperties": false
       }
     },
-    "selected_disciplines": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "selected_disciplines": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
     "discipline_entrypoints": {"type": "object"}
   },
   "additionalProperties": false

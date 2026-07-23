@@ -17,11 +17,13 @@ def load_json(path: Path) -> dict[str, Any]:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except FileNotFoundError as exc:
-        raise FreshnessError(f"missing config: {path.as_posix()}") from exc
+        raise FreshnessError(f"missing config or JSON: {path.as_posix()}") from exc
     except json.JSONDecodeError as exc:
-        raise FreshnessError(f"invalid JSON: {path.as_posix()}:{exc.lineno}:{exc.colno}: {exc.msg}") from exc
+        raise FreshnessError(
+            f"invalid JSON: {path.as_posix()}:{exc.lineno}:{exc.colno}: {exc.msg}"
+        ) from exc
     if not isinstance(data, dict):
-        raise FreshnessError("config root must be an object")
+        raise FreshnessError(f"JSON root must be an object: {path.as_posix()}")
     return data
 
 
@@ -33,7 +35,11 @@ def read_text(root: Path, relative: str) -> str:
 
 
 def validate_absent_paths(root: Path, config: dict[str, Any]) -> None:
-    present = [str(relative) for relative in config.get("forbidden_active_paths", []) if (root / str(relative)).exists()]
+    present = [
+        str(relative)
+        for relative in config.get("forbidden_active_paths", [])
+        if (root / str(relative)).exists()
+    ]
     if present:
         raise FreshnessError("superseded active paths still exist: " + ", ".join(present))
 
@@ -44,7 +50,9 @@ def validate_current_tokens(root: Path, config: dict[str, Any]) -> None:
         text = read_text(root, str(relative))
         found = [token for token in forbidden if token in text]
         if found:
-            raise FreshnessError(f"stale current tokens in {relative}: {', '.join(found)}")
+            raise FreshnessError(
+                f"stale current tokens in {relative}: " + ", ".join(found)
+            )
 
     required_map = config.get("required_current_tokens", {})
     if not isinstance(required_map, dict):
@@ -53,7 +61,63 @@ def validate_current_tokens(root: Path, config: dict[str, Any]) -> None:
         text = read_text(root, str(relative))
         missing = [str(token) for token in tokens if str(token) not in text]
         if missing:
-            raise FreshnessError(f"missing current tokens in {relative}: {', '.join(missing)}")
+            raise FreshnessError(
+                f"missing current tokens in {relative}: " + ", ".join(missing)
+            )
+
+
+def validate_structured_contracts(root: Path, config: dict[str, Any]) -> None:
+    board_path = root / str(config.get("board_contract_path", ""))
+    board = load_json(board_path)
+    expected_board_schema = int(config.get("expected_board_schema_version", 0))
+    if expected_board_schema <= 0:
+        raise FreshnessError("expected_board_schema_version must be a positive integer")
+    if int(board.get("schema_version", 0)) != expected_board_schema:
+        raise FreshnessError(
+            "combat board schema is stale: "
+            f"expected={expected_board_schema} actual={board.get('schema_version')!r}"
+        )
+
+    registry_path = root / str(config.get("skill_registry_path", ""))
+    registry = load_json(registry_path)
+    base = registry.get("base_integration", {})
+    if not isinstance(base, dict):
+        raise FreshnessError("Skill Registry base_integration must be an object")
+
+    expected_commit = str(config.get("expected_base_commit", ""))
+    if not expected_commit:
+        raise FreshnessError("expected_base_commit is required")
+    actual_commit = str(base.get("commit", ""))
+    if actual_commit != expected_commit:
+        raise FreshnessError(
+            f"Skill Registry Base commit is stale: expected={expected_commit} actual={actual_commit}"
+        )
+
+    expected_ids_value = config.get("expected_base_skill_ids", [])
+    if not isinstance(expected_ids_value, list) or not expected_ids_value:
+        raise FreshnessError("expected_base_skill_ids must be a non-empty list")
+    expected_ids = [str(value) for value in expected_ids_value]
+    if len(expected_ids) != len(set(expected_ids)):
+        raise FreshnessError("expected_base_skill_ids contains duplicates")
+
+    routes = base.get("shared_skill_routes", {})
+    if not isinstance(routes, dict):
+        raise FreshnessError("shared_skill_routes must be an object")
+    actual_ids = [str(value) for value in routes.values()]
+    if len(actual_ids) != len(set(actual_ids)):
+        raise FreshnessError("Base shared Skill routes contain duplicate targets")
+    if set(actual_ids) != set(expected_ids):
+        missing = sorted(set(expected_ids) - set(actual_ids))
+        unexpected = sorted(set(actual_ids) - set(expected_ids))
+        raise FreshnessError(
+            f"Base shared Skill routes differ: missing={missing} unexpected={unexpected}"
+        )
+
+    local_skills = registry.get("skills", [])
+    if not isinstance(local_skills, list) or len(local_skills) != 4:
+        raise FreshnessError(
+            f"expected four project-specific local Skills, found {len(local_skills) if isinstance(local_skills, list) else 'invalid'}"
+        )
 
 
 def validate_canonical_rules(root: Path, config: dict[str, Any]) -> None:
@@ -74,7 +138,9 @@ def validate_canonical_rules(root: Path, config: dict[str, Any]) -> None:
             relative = str(consumer)
             text = read_text(root, relative)
             if not any(token in text for token in tokens):
-                raise FreshnessError(f"canonical reference missing: rule={name} consumer={relative}")
+                raise FreshnessError(
+                    f"canonical reference missing: rule={name} consumer={relative}"
+                )
 
 
 def validate_legacy_aliases(root: Path, config: dict[str, Any]) -> None:
@@ -105,6 +171,7 @@ def run(root: Path, config_path: Path) -> None:
         raise FreshnessError("reference freshness schema_version must be 1")
     validate_absent_paths(root, config)
     validate_current_tokens(root, config)
+    validate_structured_contracts(root, config)
     validate_canonical_rules(root, config)
     validate_legacy_aliases(root, config)
 

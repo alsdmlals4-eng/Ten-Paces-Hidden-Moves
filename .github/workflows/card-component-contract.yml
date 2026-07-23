@@ -2,28 +2,13 @@ name: Card Component Contract
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - "project.godot"
       - "README.md"
-      - "docs/ACTIVE_CONTEXT.md"
-      - "docs/01_GAME_DESIGN.md"
-      - "docs/02_COMBAT_RULES.md"
-      - "docs/03_CONTENT_CATALOG.md"
-      - "docs/04_ROADMAP.md"
-      - "docs/05_COMBAT_POC_SPEC.md"
-      - "docs/06_STARTING_FACTION_MASTERY_DATA.md"
-      - "docs/07_COMBAT_UI_SPEC.md"
-      - "docs/08_TEST_CHECKLIST.md"
-      - "docs/09_COMBAT_SYSTEM_ARCHITECTURE.md"
-      - "docs/10_COMBAT_PRESENTATION_PLAN.md"
-      - "docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md"
-      - "[기획서]/DESIGN_DOCUMENT_REGISTRY.json"
-      - "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
-      - "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json"
-      - "skills/game-design/ten-paces-game-design/SKILL.md"
-      - "skills/engineering/combat-implementation-handoff/SKILL.md"
-      - "skills/ux-ui-accessibility/combat-ux-and-accessibility/SKILL.md"
-      - "skills/qa/ten-paces-verification/SKILL.md"
+      - "docs/**"
+      - "[[]기획서[]]/**"
+      - "skills/**"
       - "data/cards/**"
       - "data/combat/**"
       - "assets/ui/cards/**"
@@ -67,25 +52,9 @@ on:
     paths:
       - "project.godot"
       - "README.md"
-      - "docs/ACTIVE_CONTEXT.md"
-      - "docs/01_GAME_DESIGN.md"
-      - "docs/02_COMBAT_RULES.md"
-      - "docs/03_CONTENT_CATALOG.md"
-      - "docs/04_ROADMAP.md"
-      - "docs/05_COMBAT_POC_SPEC.md"
-      - "docs/06_STARTING_FACTION_MASTERY_DATA.md"
-      - "docs/07_COMBAT_UI_SPEC.md"
-      - "docs/08_TEST_CHECKLIST.md"
-      - "docs/09_COMBAT_SYSTEM_ARCHITECTURE.md"
-      - "docs/10_COMBAT_PRESENTATION_PLAN.md"
-      - "docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md"
-      - "[기획서]/DESIGN_DOCUMENT_REGISTRY.json"
-      - "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
-      - "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json"
-      - "skills/game-design/ten-paces-game-design/SKILL.md"
-      - "skills/engineering/combat-implementation-handoff/SKILL.md"
-      - "skills/ux-ui-accessibility/combat-ux-and-accessibility/SKILL.md"
-      - "skills/qa/ten-paces-verification/SKILL.md"
+      - "docs/**"
+      - "[[]기획서[]]/**"
+      - "skills/**"
       - "data/cards/**"
       - "data/combat/**"
       - "assets/ui/cards/**"
@@ -125,26 +94,39 @@ on:
       - "tools/run_combat_board.cmd"
       - ".github/reference-freshness.json"
       - ".github/workflows/card-component-contract.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   contract:
+    name: card-component-contract
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
       - name: Compile contract tests
         run: |
           python -m py_compile tests/check_card_component_contract.py
           python -m py_compile tests/check_combat_board_contract.py
           python -m py_compile tests/check_canonical_combat_docs.py
+
       - name: Validate card component contract
         run: python tests/check_card_component_contract.py
-      - name: Validate STEP 1-10.6 combat contract
+
+      - name: Validate combat contract
         run: python tests/check_combat_board_contract.py
+
       - name: Validate canonical combat impact map
         run: python tests/check_canonical_combat_docs.py
+
       - name: Parse PowerShell automations
         shell: pwsh
         run: |
@@ -166,3 +148,8 @@ jobs:
               exit 1
             }
           }
+
+      - name: Record verification boundaries
+        run: |
+          echo "Card contract success proves static data, document, automation, and contract checks on this commit."
+          echo "It does not prove Godot runtime, Windows user comprehension, assistive-technology usability, release performance, or branch-protection enforcement."

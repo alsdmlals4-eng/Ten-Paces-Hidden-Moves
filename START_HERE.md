@@ -7,48 +7,54 @@
 → AGENTS.md
 → [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
 → [기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md
-→ 현재 질문의 책임 원본
-→ 실제 코드·데이터·자산·테스트
+→ 질문별 책임 원본
+→ 실제 코드·데이터·씬·자산·테스트·PR·Issue
 ```
 
-Gates·Roadmap·Registry·Audit·Handoff는 `DOCUMENTATION_MAP.md`가 지시할 때만 읽는다. 전체 `skills/`, 백업·보류·과거 산출물을 기본 컨텍스트로 로드하지 않는다.
+전체 Skill 폴더, 백업·보류·과거 Plan·닫힌 PR을 기본 컨텍스트로 로드하지 않는다.
 
 ## 현재 기준
 
-- 프로젝트: `alsdmlals4-eng/Ten-Paces-Hidden-Moves`
-- Base: `alsdmlals4-eng/Base@ee265576da7f67d3278f8099dd97d4e714ef0651`
-- Base 버전·차이: `docs/BASE_RULES_VERSION.md`
-- Skill Registry: `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`
-- 70개 변경 파일 감사: `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`
-- 운영 PR: #5
-- 전투 POC PR: #7
+- 프로젝트: `alsdmlals4-eng/Ten-Paces-Hidden-Moves`.
+- Base: `alsdmlals4-eng/Base@41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
+- Base 버전·차이: `docs/BASE_RULES_VERSION.md`.
+- Skill Registry: `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`.
+- 현재 구현: PR #7 `agent/t0-combat-poc-board`.
+- 기준 SHA: `147a031c75e96bff170d7f99016beb9e85b12066`.
+- 최신 승인: Issue #13 STEP 12~14.
 
 ## Work Mode
 
-- `PLAN`: 요구·정본·근거·실행 순서
-- `BUILD`: 승인 범위 구현
-- `REVIEW`: 적대적 검토·반례·검증
+- `PLAN`: 요구·코어·근거·대안·실행 순서.
+- `BUILD`: 승인 범위 구현.
+- `REVIEW`: 적대적 검토·반례·검증.
 
-Skill·Skill Mode는 Registry trigger로 자동 선택한다. L1 이상은 선택 이유·수행 내용·결과·증거·미검증을 `execution-report`로 남긴다.
+Skill·Skill Mode는 Registry trigger로 자동 선택한다. L1 이상은 기준 SHA·선택 이유·수행·결과·증거·미검증을 `execution-report`로 남긴다.
 
-## 제품 기준
+## 현재 제품 상태
 
-- `[강호낭인]`, 전장 10칸, 플레이어 4번·상대 7번 시작
-- 시작 거리 3칸
-- 라운드 `3수 → 3수 → 4수`, 총 10수
-- 판정 `대응 → 속공 → 이동 → 일반 공격`
-- 기초 행동 8종, 절초 기세 최대 5칸
-- 비용은 행동 슬롯·기력·내력, 덱·손패·행동력 없음
+- 10칸, 플레이어 4번·상대 7번, 시작 거리 3.
+- 같은 칸 최대 2인과 거리 0 `[밀착]`.
+- 라운드 `3수 → 3수 → 4수`.
+- 기초 행동 8종·절초 3종.
+- `[합]`·방어·회피·필중·중단·강건.
+- 공개 상태 기반 결정적 최소 AI.
+- 승패·무승부·4/7 완전 재시작.
+- STEP 0~13 구현·기술 증거.
+- STEP 14 기계 시나리오 기록.
+- 실제 사용자 STEP 14: `NOT_RUN`.
+- 프로젝트 코어: `CORE_REVIEW_PENDING`.
 
-## 현재 구현
+## 다음 순서
 
-- STEP 0~10
-- TARGETING 10.5
-- RESPONSE 10.6
-- RESOURCE PREVIEW 10.6
-- Windows 기술 검증: STEP 0~10·대상 지정·4/7 시작·RESPONSE·RESOURCE PREVIEW 완료
-- 실제 사용자 이해도·선호 검수: STEP 14 대기
+```text
+정본·Skill·Governance 최신화
+→ PR #7 제품 파일 보존 검증
+→ 프로젝트 코어 PLAN·사용자 승인
+→ STEP 14 실제 사용자 플레이
+→ T1 진입 판단
+```
 
 ## 상태 경계
 
-정적 Actions 성공은 Godot 런타임, PDF 발행, 접근성, 성능, 사용자 시각 검수, Branch protection 강제를 증명하지 않는다. 원격 변경과 사용자 로컬 미커밋 파일도 자동으로 동일하지 않다.
+정적 Actions 성공은 Godot 런타임·Windows 사용자 경험·접근성 사용자 검수·Release 성능·PDF 발행·Branch protection 강제를 증명하지 않는다. 원격 변경과 사용자 로컬 미커밋 파일도 자동으로 동일하지 않다.

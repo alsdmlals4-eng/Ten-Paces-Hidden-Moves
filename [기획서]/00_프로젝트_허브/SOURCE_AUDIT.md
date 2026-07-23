@@ -1,120 +1,130 @@
-# 십보강호 기존 구조·구형 파일 감사
+# 십보강호 기존 구조·구형 자료 감사
 
-- 사용자 승인: Base 전면 반영 후 가지치기·간소화·리팩터링·적대적 개선
-- Base: `ee265576da7f67d3278f8099dd97d4e714ef0651`
-- 최초 대상: `0ac66389ad6b1d10019680ebf1417d423fa1466e`
-- 파일별 Base 감사: `BASE_MAIN_SYNC_AUDIT.md`
-- 최종 검증: `BASE_MAIN_SYNC_VERIFICATION.md`
-- 사용자 로컬 미커밋 상태: `[미검증]`
+## 1. 기준
 
-## 절차
+- 구현 기준: PR #7 `agent/t0-combat-poc-board@147a031c75e96bff170d7f99016beb9e85b12066`.
+- 정합화 브랜치: `agent/pr7-canonical-skill-refresh`.
+- Base: `41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
+- 최신 승인: Issue #13.
+- 사용자 로컬 미커밋 상태: `UNVERIFIED`.
+
+## 2. 절차
 
 ```text
 PLAN: audit
-→ reconcile-legacy
-→ 고유 정보·참조·파생본·복구·롤백 확인
-→ 사용자 승인
-→ BUILD: 승인된 UPDATE·MERGE·STUB·ARCHIVE·DELETE
-→ REVIEW: reference-freshness·회귀·보존 대조
+→ current/history/hold/removal 분류
+→ 고유 정보·활성 참조·복구 확인
+→ 사용자 승인 범위 확인
+→ BUILD: UPDATE·MERGE·STUB·ARCHIVE·DELETE
+→ REVIEW: reference-freshness·baseline diff·회귀
 ```
 
-## 보호 범위
+## 3. 보호 범위
 
-- `docs/01~11`, `docs/[백업]`, PR·Git 이력
-- 프로젝트 세계관·수치·용어·ID·Godot 경로
-- 승인 UI·배경·카드·전투 구현과 자산
-- 사용자 로컬 미커밋 변경
-- 실행하지 않은 검증의 미검증 상태
+- PR #7의 `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot`.
+- 제품 Godot 런타임 테스트.
+- 프로젝트 고유 세계관·수치·ID·경로.
+- 백업·보류·과거 Plan·Git 이력.
+- 사용자 로컬 미커밋 변경.
+- 실행하지 않은 검증의 미검증 상태.
 
-## 현행 구조
+## 4. 활성 구조
 
 ```text
+README.md
 START_HERE.md
 AGENTS.md
-README.md
-docs/
-[기획서]/
-skills/                  # 프로젝트 고유 Skill 4개 + Learning Log·Alias
-templates/               # 실행·reconciliation·컨셉근거·변경검증
+[기획서]/DESIGN_DOCUMENT_REGISTRY.json
+[기획서]/00_프로젝트_허브/
+docs/01~11 + BASE_RULES_VERSION.md
+skills/ 프로젝트 고유 4개 + Alias + Learning Log
 schemas/
-tools/                   # 운영 검사 3개 + 제품 자동화
-tests/                   # 통합 Governance 회귀 + 제품 테스트
-.github/
-data/
-scenes/
-src/
+templates/
+.github/ Governance·freshness·workflows
+tools/ 운영·제품 검사
+tests/
+data/ scenes/ src/ assets/ addons/
 project.godot
 ```
 
-## 책임 인벤토리
+## 5. 자료 판정
 
-| 경로 | 역할 | 판정 |
+| 경로·유형 | 역할 | 판정 |
 |---|---|---|
-| README·START_HERE·AGENTS | 최소 Entry Point·최상위 규칙 | `CURRENT` |
-| `docs/01~11` | 제품 책임 원본 | `CURRENT`, 전투 정본 최신성은 별도 제품 작업 |
-| `docs/BASE_RULES_VERSION.md` | Base SHA·프로젝트 차이 | `CURRENT` |
-| Design Registry | 책임 원본·현재 `source_only` 상태 | `CURRENT` |
-| 프로젝트 허브 | Context·Map·Gates·Audit·이력 | `CURRENT` |
-| Base 공유 Skill 13개 | 공용 작업 절차 | `REFERENCE` |
-| 프로젝트 Skill 4개 | 십보강호 고유 디자인·UX·구현·QA | `CURRENT` |
-| Legacy Alias | 제거된 Base·로컬 Skill ID 호환 | `CURRENT` |
-| `data/`, `scenes/`, `src/`, 제품 tests | 전투 POC | `CURRENT`, 일부 런타임 미검증 |
-| 백업 | 역사·복구 | `ARCHIVE_HISTORY` |
-| 보류 | 재개 승인 전 구현 금지 | `KEEP_UNRESOLVED` |
+| README·START_HERE·AGENTS | 최소 진입·최상위 계약 | `CURRENT` |
+| 허브 Active Context·Map·Gates·Roadmap·Handoff | 현재 운영 상태·라우팅 | `CURRENT` |
+| `docs/01~11` | 제품 책임 원본 | `CURRENT` |
+| `docs/BASE_RULES_VERSION.md` | Base SHA·공용/전용 차이 | `CURRENT` |
+| Design Registry | 책임 원본·발행 상태 | `CURRENT` |
+| Skill Registry | Base 25 route·로컬 4개 | `CURRENT` |
+| 로컬 Skill 4개 | 프로젝트 고유 판단 절차 | `CURRENT` |
+| Legacy Alias | 과거 Skill ID 호환 검색 | `HISTORY_COMPATIBILITY` |
+| `data/`, `src/`, `scenes/`, `assets/`, `tests/` | PR #7 제품 구현 | `PROTECTED_CURRENT` |
+| `docs/[백업]/` | 복구·역사 | `ARCHIVE_HISTORY` |
+| `docs/[보류]/` | 재개 승인 대기 | `KEEP_UNRESOLVED` |
+| 과거 Plan·닫힌 PR·Git 이력 | 당시 결정·복구 | `HISTORY` |
+| 열린 구형 Draft PR | 혼동 위험 | `SUPERSEDE_AFTER_UNIQUE_INFO_REVIEW` |
 
-## 이번 가지치기 처리표
+## 6. 이번 UPDATE_IN_PLACE
 
-| 제거 경로·ID | 이전 역할 | 승계 위치 | 판정·검증 |
-|---|---|---|---|
-| `project-operations-and-handoff` | 요청 라우팅·Context·Handoff | Base intake + context/handoff | `DELETE_APPROVED`, Legacy Alias·Skill 검사 |
-| `project-health-review` | 운영체계 종합 검수 | Base operating-system + change-validation + freshness | `DELETE_APPROVED`, Legacy Alias·Skill 검사 |
-| `PROJECT_SKILL_MAP.md` | Registry 수동 요약 | `SKILL_REGISTRY.json` 직접 읽기 | `DELETE_APPROVED`, forbidden path 검사 |
-| Skill Map Manifest | 존재하지 않는 PDF 발행 상태 | `source_only` Registry | `DELETE_APPROVED`, forbidden path 검사 |
-| 벤치마크·컨셉 템플릿 2개 | 조사·컨셉 검토 | `GAME_CONCEPT_AND_EVIDENCE_REVIEW.md` | `MERGE_TO_CANONICAL` |
-| 정본 최신성 템플릿 | freshness 보고 | `PROJECT_CHANGE_VALIDATION.md` | `MERGE_TO_CANONICAL` |
-| 분리 Governance tests 2개 | freshness·Skill 회귀 | `test_project_governance.py` | `MERGE_TO_CANONICAL` |
-| `check_documentation_governance.py` | 구형 중복 검사 | `check_project_operating_system.py` | `DELETE_APPROVED`, Workflow 미참조·forbidden path 검사 |
+- 활성 본책에서 날짜별 보정 절과 구형 계약 제거.
+- README·Entry Point·Context·Map·Gates·Roadmap·Handoff 최신화.
+- Base `41a205...`·25 Skill route.
+- 로컬 Skill 4개의 절차 router 간소화.
+- Design Registry required section의 Issue명 제거.
+- board schema 16·Base SHA·Skill 집합 구조 검사.
+- stale 보정 절·schema·route 반례 추가.
 
-모든 삭제는 사용자 요청의 명시 승인 범위 안에서 수행했다. Git 이력으로 복구 가능하며 제품 코드·본책·자산을 건드리지 않았다.
+## 7. 이번 DELETE_APPROVED
 
-## 발행 감사
+추적 생성물:
 
-발견:
+- `tools/__pycache__/check_canonical_reference_freshness.cpython-312.pyc`.
+- `tools/__pycache__/check_project_operating_system.cpython-312.pyc`.
+- `tools/__pycache__/check_skill_package_integrity.cpython-312.pyc`.
 
-- Design Registry가 PDF·Manifest·생성기를 선언했지만 `tools/build_design_documents.py`가 존재하지 않았다.
-- Registry는 `source_only`로 바뀌었는데 이전 Schema는 `always_sync`를 강제했다.
+이 파일은 실행 원본이 아니며 Git에서 복구할 가치가 없는 생성 캐시다. `.gitignore`로 재발을 막는다.
 
-처리:
+## 8. 계속 금지하는 재등장
 
-- 11개 문서와 Skill Registry를 실제 사용 가능한 `source_only`로 변경.
-- 파생 경로·Manifest·generator를 null로 정리.
-- Design Registry Schema를 세 정책 조건부 계약으로 수정.
-- 정책 승격 시 생성기 파일 존재를 자동 검사.
+- 제거된 로컬 공용 Skill 패키지.
+- Project Skill Map PDF·Manifest.
+- 실제 생성기 없는 CURRENT PDF·always_sync.
+- 두 수 비공개 잠금 전투 Skill.
+- 활성 본문의 한 칸 한 전투원·공동 목적지 정지·높은 감소량 선택·고정 상대 plan.
+- Base `ee265...`와 13 route를 현행으로 사용.
+- board schema 13·15.
+- 추적 `__pycache__`·`.pyc`.
 
-## stale 방지
+## 9. 열린 구형 PR 처리 원칙
 
-- 현행 Entry Point의 `2수·두 행동·7개 기초 행동·이전 Base SHA` 차단.
-- 제거된 로컬 Skill·Skill Map·구형 템플릿·중복 checker 경로 재등장 차단.
-- Base shared routes 13개와 프로젝트 Skill 정확히 4개 검사.
-- changed 파일과 expected-but-untouched 소비자 확인.
+정합화와 #7 통합 증거 전에는 닫지 않는다. 이후 PR별로 고유 정보를 확인한다.
 
-## 보존 대조
+- #2: 과거 문서 구조·초기 POC 전환 기록.
+- #3: 절초 HUD 계획. Issue #11 구현에 승계됐는지 대조.
+- #5: 이전 Base 운영체계 migration. 최신 Base audit로 승계.
+- #6: 폐기된 11개 분야 Skill Map/PDF 구조. 병합 금지.
+- #12: 현행 3/3/4와 다른 두 수 전투 Skill. 공정 AI·결과 설명 원칙만 기존 Skill에 흡수.
 
-- 10칸·10수·10전, 5전 데모, 무공·심법·절초: 보존
-- UI·연출·아키텍처·QA 본책: 보존
-- Godot 코드·데이터·씬·자산: 보존
-- 백업·보류·Plan: 보존
-- 사용 기능: Base 공유 Skill·통합 템플릿·통합 검사로 승계
+고유 정보·참조·복구를 확인한 뒤 `superseded by PR #7` 설명과 함께 종료한다.
 
-## 미검증
+## 10. 보존 대조
 
-- 사용자 로컬 미커밋 파일·원격 차이
-- 백업·보류의 모든 외부 참조
-- RESPONSE 10.6 최신 Windows 런타임
-- PDF 발행 파이프라인·시각 검수
-- 접근성·성능·플레이테스트
-- Branch protection Required Check 강제
+- 현재 전투 코드·데이터·씬·자산: 변경 금지.
+- 10칸·3/3/4·5전·10전·세력·성장 가설: 보존.
+- 과거 문서 전문: Git 이력 보존.
+- 백업·보류: 물리 보존.
+- 공용 운영 기능: Base route·Registry·검사로 승계.
 
-## 추가 Cleanup 게이트
+## 11. 미검증
 
-추가 삭제·이동은 후보별 고유 정보·참조·복구·사용자 승인을 다시 확인하고 reference-freshness·회귀·콜드 스타트를 통과해야 한다.
+- 기준 SHA 대비 최종 changed file 전체.
+- 최신 Governance·Card Actions.
+- 사용자 로컬 미커밋 파일.
+- 구형 열린 PR의 모든 외부 링크.
+- 실제 사용자 STEP 14.
+- 접근성 사용자·Release 성능·Branch protection.
+
+## 12. 추가 Cleanup 게이트
+
+추가 삭제·이동은 후보별 고유 정보·활성 참조·복구·사용자 승인과 baseline diff·reference-freshness·회귀를 다시 확인한다.
