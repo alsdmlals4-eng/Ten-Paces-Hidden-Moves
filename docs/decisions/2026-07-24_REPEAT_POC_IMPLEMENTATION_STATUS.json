@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "goal_id": "repeat_poc_technical_implementation",
   "goal_document": "docs/decisions/2026-07-24_REPEAT_POC_CORE_VALIDATION_GOAL.md",
   "implementation_plan": "plans/2026-07-24-repeat-poc-core-validation-implementation-plan.md",
@@ -13,14 +13,21 @@
   "baseline": {
     "project_core_branch": "agent/project-core-confirmation",
     "product_branch": "agent/t0-combat-poc-board",
-    "product_sha": "659c57e7ffa588ad6a6471ed9b5394985b159eaf"
+    "product_sha": "659c57e7ffa588ad6a6471ed9b5394985b159eaf",
+    "a0_branch": "agent/repeat-poc-a0-contract-alignment",
+    "a1_branch": "agent/repeat-poc-a1-rival-ai"
   },
   "status": {
     "planning": "COMPLETE",
     "codex_goal": "READY",
-    "current_task": "CI_OPTIMIZATION_AND_A0_CLOSEOUT",
+    "current_task": "A1_RIVAL_AI_CLOSEOUT",
     "a0_contract_alignment": "IMPLEMENTED_PENDING_FULL_ACTIONS_VERIFICATION",
-    "a1_rival_ai": "NOT_STARTED",
+    "a1_rival_ai": "IMPLEMENTED_PENDING_GODOT_AND_CANONICAL_DOC_SYNC",
+    "a1_red_test": "LOCAL_REPRO_PASS",
+    "a1_static_contract": "IMPLEMENTED_NOT_REPO_EXECUTED",
+    "a1_behavior_model": "LOCAL_MODEL_PASS",
+    "a1_godot_verifier": "BLOCKED_BY_ACTIONS_QUOTA_AND_LOCAL_GODOT_UNAVAILABLE",
+    "a1_canonical_doc_sync": "PENDING",
     "a2_hypothesis_and_summary": "NOT_STARTED",
     "a3_review_ui": "NOT_STARTED",
     "pr_scope_routing": "IMPLEMENTED_NOT_ACTIONS_VERIFIED",
