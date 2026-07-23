@@ -3,8 +3,8 @@
   "schema_version": 3,
   "registry_role": "ai-design-document-router-and-publication-index",
   "project_name": "십보강호: 숨은 수의 비무",
-  "source_of_truth_policy": "Each question has exactly one Markdown or JSON source of truth. Derivatives never become independent sources.",
-  "publication_note": "Current repository operation is source_only because no publication generator is installed. Promote selected documents to milestone_sync only when generator, fonts, rendering, and review are installed together.",
+  "source_of_truth_policy": "Each question has exactly one Markdown or JSON source of truth. Active sources describe the current contract; history lives in Git, Change Log, and Learning Log.",
+  "publication_note": "Current repository operation is source_only because no publication generator is installed. Promote selected documents to milestone_sync only when generator, fonts, rendering, manifest, and review are installed together.",
   "required_responsibility_coverage": ["프로젝트 전체", "게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA", "프로덕션·PM", "통합검수"],
   "available_responsibility_catalog": ["설정·내러티브", "게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "테크니컬 아트·파이프라인", "아트", "사운드", "QA", "프로덕션·PM", "분석·유저리서치", "통합검수"],
   "documents": [
@@ -24,7 +24,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["한 줄 약속", "프로젝트 코어", "현재 전투 구조", "제품 범위", "프로젝트 성공 조건"]
+      "required_sections": ["현재 한 줄 약속", "현재 핵심 경험 가설", "설계 원칙", "제품 범위", "프로젝트 성공 조건", "다음 기획 게이트"]
     },
     {
       "document_id": "combat-rules",
@@ -42,7 +42,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["전장과 위치", "라운드와 행동 묶음", "판정 순서", "태세+대응 결합", "검증 기준"]
+      "required_sections": ["전장과 거리", "라운드와 계획 확정", "판정 파이프라인", "`[합]`·방어·회피·`[필중]`", "태세·중단·`[강건]`", "공개 상태 기반 최소 AI", "전투 종료와 재시작", "T0 검증 기준"]
     },
     {
       "document_id": "content-catalog",
@@ -60,7 +60,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["상태 구분", "CURRENT_T0 — 단일 전투 POC", "PLANNED_T1 — 최소 세로 슬라이스", "HYPOTHESIS_T2_PLUS — 세력 후보", "콘텐츠 추가 게이트"]
+      "required_sections": ["상태 구분", "CURRENT_T0", "PLANNED_T1", "HYPOTHESIS_T2_PLUS", "HOLD", "콘텐츠 추가 게이트"]
     },
     {
       "document_id": "product-roadmap",
@@ -78,7 +78,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["현재 단계 요약", "P0-3 — 시작 위치 4/7 전파·활성 원본 정리", "Issue #11 — 피격 중단·강건·절초", "STEP 14 — POC 플레이테스트", "공통 검증 게이트"]
+      "required_sections": ["현재 단계", "현재 작업", "프로젝트 코어 확정", "STEP 14", "T1", "공통 검증 게이트", "중단·축소 조건"]
     },
     {
       "document_id": "combat-vertical-slice",
@@ -96,7 +96,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["목적", "단계 구분", "공통 전투 상태", "구현 단계와 확인 상태", "T0 완료 기준", "검증 증거와 미검증"]
+      "required_sections": ["목적", "단계 구분", "현행 T0 계약", "구현 단계와 증거 상태", "STEP 14 플레이테스트 계약", "T0 완료 기준", "현재 판정"]
     },
     {
       "document_id": "mastery-data",
@@ -114,7 +114,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["현재 상태", "현행 전투 계약과 연결 원칙", "T1 최소 성장 실험", "절초·진의 가설", "성장 진입 게이트", "검증 기준"]
+      "required_sections": ["현재 상태", "현행 전투 계약과 연결 원칙", "T1 최소 성장 실험", "장기 보유 구조 가설", "세력 정체성 후보", "절초·진의 가설", "성장 진입 게이트", "검증 기준"]
     },
     {
       "document_id": "combat-ui-spec",
@@ -132,7 +132,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["UI 목표", "화면 구조", "행동 슬롯", "전투 기록", "입력·접근성", "현재 구현·검증 상태"]
+      "required_sections": ["UI 목표", "화면 구조", "시각 자산", "상단 HUD", "행동 슬롯", "합·대응·중단 결과 UI", "입력·접근성", "현재 검증 상태"]
     },
     {
       "document_id": "qa-test-checklist",
@@ -150,7 +150,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["현재 증거 요약", "T0 필수 전장 계약", "기초 행동 8종", "STEP 14 POC 플레이테스트", "T1 진입 게이트", "종료 보고"]
+      "required_sections": ["판정 상태", "현재 증거 요약", "전장·점유·대상", "합·방어·회피·필중", "AI", "종료·재시작", "STEP 14 사람 플레이", "T1 진입 게이트", "종료 보고"]
     },
     {
       "document_id": "combat-system-architecture",
@@ -168,7 +168,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["실제 파일 책임", "시작 위치 계약 소비자", "현재 T0 도메인 모델", "판정 파이프라인", "STEP 11 확장 경계", "검증 경계"]
+      "required_sections": ["아키텍처 원칙", "실제 파일 책임", "현재 `CombatState`", "최소 AI 경계", "묶음 판정과 반환 구조", "순차 표현 상태", "종료·재시작", "검증 경계"]
     },
     {
       "document_id": "combat-presentation-plan",
@@ -186,7 +186,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["현재 T0 전투 흐름", "첫 시선", "판정 표현 순서", "Issue #11 중단·강건 연출", "접근성 폴백", "현재 상태"]
+      "required_sections": ["연출 목표", "첫 시선", "현재 전투 흐름", "수별 판정 표현", "합 연출", "중단·강건 연출", "절초 연출", "종료·재시작 연출", "접근성 폴백", "현재 상태"]
     },
     {
       "document_id": "base-adoption-learning",
@@ -204,7 +204,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["기준 정보", "이번 시작 위치 변경의 Skill 실행", "정본 최신성 감사에서 발견한 문제", "검증 상태", "후속 리뷰 조건"]
+      "required_sections": ["기준 정보", "이번 Base 변화", "프로젝트 적용 구조", "정본 최신화에서 발견한 문제", "프로젝트 고유 계약", "공용화 가능한 관찰", "검증 상태", "후속 리뷰 조건"]
     }
   ]
 }
