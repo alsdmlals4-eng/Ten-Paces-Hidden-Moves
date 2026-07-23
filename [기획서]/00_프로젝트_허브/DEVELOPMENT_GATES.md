@@ -1,120 +1,151 @@
 # 십보강호 개발 게이트
 
-## 상태 축
+## 1. 상태 축
 
 ```yaml
 lifecycle: ACTIVE | HOLD | BACKUP | REMOVAL_CANDIDATE
 approval: UNCONFIRMED | CONFIRMED | REJECTED
 implementation: NOT_STARTED | IN_PROGRESS | IMPLEMENTED
-verification: NOT_RUN | PASSED | FAILED | PARTIAL
+verification: NOT_RUN | PASS | PARTIAL | FAIL | BLOCKED
 publication: NOT_BUILT | STALE | CURRENT | FAILED
 ```
 
-파일 존재, Actions 성공, Godot 런타임, 사람 검수, 접근성·성능, Branch protection은 독립 증거다.
+파일 존재·Actions·Godot·Windows·사람 플레이·접근성 사용자 검수·Release 성능·Required Check 강제는 독립 증거다.
 
-## 작업 게이트
+## 2. 작업 게이트
 
-### G0 Intake·Context
+### G0 — Intake·Baseline
 
-사용자 요청·저장소·브랜치·기준 SHA, Work Mode, 책임 원본, 실제 파일, 보호 대상, 도구·권한을 확인한다.
+- 사용자 요청·저장소·브랜치·PR·Issue 확인.
+- 기준 branch·기준 SHA 고정.
+- Work Mode·Skill·Skill Mode 자동 선택.
+- 책임 원본·실제 파일·보호 경로 확인.
+- 도구·권한·로컬 미커밋 상태의 확인 가능 범위 기록.
 
-### G1 Ready
+### G1 — Ready
 
-- 주 책임 분야 하나와 영향 분야
-- 범위·제외·보호 대상
-- 필요한 Skill·Skill Mode·도구·권한
-- 완료·검증·중단·롤백
-- 정본·발행·접근성·성능 영향
+- 목표·사용자/플레이어 가치.
+- 범위·제외·보호 대상.
+- 기준 SHA·허용 변경 prefix.
+- 의존성·완료·검증·중단·롤백.
+- 정본·Schema·발행·접근성·성능 영향.
 
-### G2 Plan·Approval
+### G2 — Plan·Approval
 
-- L2 이상은 저장소 조사 기반 Plan
-- 다중 의존성은 결과·파일·의존성·게이트·롤백으로 분해
-- 삭제·이동·통합은 고유 정보·참조·복구와 사용자 승인을 확인
+- L2 이상은 저장소 조사 기반 Plan.
+- 다중 의존성은 결과·입력·파일·의존성·출력·게이트·롤백으로 분해.
+- 삭제·이동·통합은 고유 정보·참조·복구·사용자 승인 확인.
+- 프로젝트 코어 확정은 PLAN 모드와 사용자 승인을 요구.
 
-### G3 Build
+### G3 — Build
 
-- 승인 파일만 작은 검증 단위로 변경
-- 사용자 변경·저장·공개 인터페이스 보호
-- 보류 기능 구현 금지
-- 정본·경로·ID·Schema 변경은 소비자·테스트·Workflow 동기화
+- exact 기준 SHA의 격리 브랜치에서 승인 파일만 변경.
+- 사용자·Codex 변경과 공개 인터페이스 보호.
+- 보류·미승인 기능 구현 금지.
+- 정본·경로·ID·Schema 변경은 소비자·테스트·Workflow 동기화.
+- UI·연출은 도메인 결과를 재계산하지 않음.
 
-### G4 Review
+### G4 — Review
 
 ```text
 contract-check
 → reference-freshness
-→ syntax·static
+→ format·syntax·static
 → automated tests
 → runtime·render·build
 → 적용 시 accessibility-review
 → 적용 시 performance-profile
-→ normal·failure·edge·regression
+→ normal·failure·edge·counterexample·regression
+→ baseline diff
 → evidence-report
 ```
 
 실행하지 않은 검증은 `NOT_RUN` 또는 `UNVERIFIED`다.
 
-### G5 Documentation·Publication
+### G5 — Documentation·Publication
 
-- 책임 원본·Registry·Schema·Legacy Alias·Update Matrix
-- Active Context·Roadmap·필요 시 Handoff
-- 현재 등록 문서·Skill Registry는 `source_only`
-- PDF가 필요한 마일스톤에서 생성기·폰트·렌더 검증과 함께 필요한 문서만 정책 승격
-- Changelog·Decision Log·Learning Log
+- 책임 원본·Registry·Schema·Legacy Alias·Update Matrix.
+- Active Context·Roadmap·필요 시 Handoff.
+- 활성 본문은 현재 계약만 유지.
+- 과거 전문은 Git 이력·Change Log·Learning Log.
+- 현재 등록 문서·Skill Registry는 `source_only`.
+- PDF는 생성기·폰트·Manifest·렌더·사용자 검수와 함께 필요한 문서만 정책 승격.
 
-### G6 Integration
+### G6 — Integration
 
-- 승인 범위 전부 반영
-- 정적·자동·런타임·사용자 검증 분리
-- 미검증·위험·롤백 명확
-- 새 작업자가 저장소만으로 재개 가능
-- Work Mode·Skill·Skill Mode 실행 보고
+- 승인 범위 전부 반영.
+- 기준 SHA 대비 보호 경로 보존.
+- 정적·자동·런타임·Windows·사람 증거 분리.
+- 미검증·위험·롤백 명확.
+- 새 작업자가 저장소만으로 재개 가능.
+- 최신 head SHA의 Actions 확인.
 
-## Prototype Greenlight
+## 3. Canonical Refresh Gate
 
-- [x] Godot 프로젝트·씬·데이터·테스트
-- [x] 10칸·3번/8번
-- [x] `3수 → 3수 → 4수`
-- [x] 기초 행동 8종·대상 지정
-- [x] `대응 → 속공 → 이동 → 일반 공격`
-- [x] 사용자 Windows STEP 0~10·대상 지정
-- [x] PR #7 Card Component Contract run #399
-- [ ] RESPONSE·RESOURCE PREVIEW 10.6 사용자 확인
-- [x] Issue #11 피격 중단·강건·밀착·절초 3종 자동 검증
-- [ ] STEP 12 AI
-- [ ] STEP 13 종료·재시작
-- [ ] STEP 14 POC 플레이테스트
+- [x] PR #7 기준 SHA 고정.
+- [x] 정합화 브랜치 분리.
+- [x] docs/01~11 현행 계약 재작성.
+- [x] Base `41a205...`·25 Skill route.
+- [x] 프로젝트 고유 Skill 4개 유지·간소화.
+- [x] board schema 16·Base SHA·Skill 집합 구조 검사.
+- [x] stale 보정 절·Schema·Base route 반례.
+- [x] Python 캐시 제거·재발 차단.
+- [ ] Design Registry required section 일치.
+- [ ] 로컬/Actions Governance 통과.
+- [ ] Card Component Contract 통과.
+- [ ] 기준 SHA 대비 제품 보호 경로 변경 0건.
+- [ ] 정합화 PR의 head SHA 불변 확인.
 
-## Vertical Slice Greenlight
+## 4. Prototype Greenlight
 
-- 1~5전 예선 결승 완주
-- 절초 보유·미보유 정상 경로
-- 상대 정보→제약→전투→성과·행운→수련 연결
-- 대표 세력 목표 품질·제작 파이프라인
-- 외부 플레이 증거
-- 접근성 장벽·대체 경로
-- 목표 플랫폼 성능 예산
+### 구현·기술
 
-## 현재 판정
+- [x] Godot 프로젝트·씬·데이터·테스트.
+- [x] 10칸·4/7·거리 3·밀착.
+- [x] `3수 → 3수 → 4수`.
+- [x] 기초 행동 8종·절초 3종.
+- [x] 합·방어·회피·필중.
+- [x] 중단·강건.
+- [x] 공개 상태 최소 AI.
+- [x] 승패·무승부·재시작.
+- [x] 순차 연출·키보드·모션 감소·음향 제어 기술 증거.
 
-| 영역 | 상태 |
-|---|---|
-| Base 70파일 감사 | PASSED |
-| Base 공유 13·로컬 4 Skill | PASSED |
-| Design·Skill Registry Schema | PASSED |
-| 정본 최신성·Skill 무결성·회귀 | PASSED |
-| PR #5 Governance run #371 | PASSED |
-| PR #7 Governance #370·Card #399 | PASSED |
-| Branch protection | NOT_RUN |
-| 발행 파이프라인 | NOT_INSTALLED_BY_DESIGN |
-| 전투 POC 구현 | IMPLEMENTED |
-| 전투 POC 런타임 | PARTIAL |
-| 접근성·성능 | 기술 증거 PASSED; 실제 사용자·Release 사양은 NOT_RUN |
-| 외부 플레이테스트 | NOT_RUN |
-# Issue #11 Gate 갱신 (2026-07-23)
+### 사람 증거
 
-- [x] 절초 3종·피격 중단·강건·밀착 자동 검증
-- [x] Windows/HiGodot 절초 UI·음향·UI Automation 접근성 기술 검증
-- [x] 대표/최악 장면 DEBUG 성능 baseline 기록
-- [ ] 실제 보조기기 사용자·주관적 음향/모션·Release 목표 사양은 STEP 14/배포 Gate에서 검증
+- [ ] 규칙 이해.
+- [ ] AI 성향 발견과 공정성 신뢰.
+- [ ] 실패 이유 복기.
+- [ ] 계획 수정·재도전 행동.
+- [ ] 보조기기 사용자 검수.
+- [ ] 주관적 음향·모션 읽기성.
+
+현재 판정: `IMPLEMENTED / HUMAN_STEP14_NOT_RUN`.
+
+## 5. Project Core Gate
+
+- [ ] 기존 구현의 코어 후보를 읽기 전용 판정.
+- [ ] 핵심 컨셉 후보와 제약 정의.
+- [ ] 뾰족한 재미를 플레이어 행동·감정 변화로 정의.
+- [ ] core loop의 행동·보상·진척 정의.
+- [ ] 모든 요소의 WHY/HOW/WHAT 대조.
+- [ ] POC 증거와 반증 대조.
+- [ ] 제거·보류·강화·추가 최소 실험 결정.
+- [ ] SWOT·VRIO.
+- [ ] 적대적 검토와 최소 개선.
+- [ ] 사용자 `CORE_CONFIRMED` 승인.
+
+현재 판정: `CORE_REVIEW_PENDING`.
+
+## 6. Vertical Slice Greenlight
+
+프로젝트 코어와 실제 사용자 STEP 14를 모두 통과한 뒤 검토한다.
+
+- 플레이 스타일 2개.
+- 상대 3명·전투 3회 내외.
+- 상대 정보→전투→보상→강화 연결.
+- 대표 콘텐츠 품질·제작 파이프라인.
+- 외부 플레이 증거.
+- 접근성 장벽·대체 경로.
+- 목표 플랫폼 성능 위험·예산.
+
+현재 판정: `NOT_GRANTED`.
