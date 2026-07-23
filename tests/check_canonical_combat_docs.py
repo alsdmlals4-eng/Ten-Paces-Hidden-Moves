@@ -156,7 +156,7 @@ def verify_documents() -> None:
     ]
     assert not failures, "stale active references:\n" + "\n".join(failures)
 
-    sequence_forms = ("3수 → 3수 → 4수", "[3,3,4]", "[3, 3, 4]")
+    sequence_forms = ("3수 → 3수 → 4수", "3/3/4", "[3,3,4]", "[3, 3, 4]")
     for key in ("readme", "game", "rules", "roadmap", "poc", "ui", "qa", "architecture", "presentation", "hub"):
         any_token(docs[key], sequence_forms, f"{key} timing sequence")
 
