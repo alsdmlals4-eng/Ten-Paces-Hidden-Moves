@@ -40,6 +40,7 @@ jobs:
           python tests/check_card_component_contract.py
           python tests/check_combat_board_contract.py
           python tests/check_canonical_combat_docs.py
+          python tests/check_rival_tendency_contract.py
 
   godot-headless:
     name: ubuntu-godot-headless
@@ -69,6 +70,7 @@ jobs:
             tests/verify_combat_terminal_presentation.gd \
             tests/verify_combat_focus_order.gd \
             tests/verify_combat_keyboard_accessibility.gd \
-            tests/verify_combat_layout_accessibility.gd; do
+            tests/verify_combat_layout_accessibility.gd \
+            tests/verify_ai_rival_tendency.gd; do
             godot --headless --path . --script "res://$test"
           done
