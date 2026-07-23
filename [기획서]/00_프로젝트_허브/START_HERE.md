@@ -19,12 +19,15 @@
 - 감사: `BASE_MAIN_SYNC_AUDIT.md`.
 - 검증: `BASE_MAIN_SYNC_VERIFICATION.md`.
 - 구현 PR: #7 `agent/t0-combat-poc-board`.
-- 기준 SHA: `147a031c75e96bff170d7f99016beb9e85b12066`.
+- 기준 SHA: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
+- 코어 확정 PR: #15 `agent/project-core-confirmation`.
 - 최신 승인: Issue #13 STEP 12~14.
 - 구현: STEP 0~13.
 - STEP 14 기계 시나리오: 기록됨.
 - STEP 14 실제 사용자 관찰: `NOT_RUN`.
-- 프로젝트 코어: `CORE_REVIEW_PENDING`.
+- 프로젝트 코어: `CORE_CONFIRMED`.
+- 제품 게이트: `REPEAT_POC`.
+- T1 진입: `NOT_GRANTED`.
 - 문서·Skill Registry: `source_only`.
 - Skill: Base 활성 25개 route + 프로젝트 고유 4개.
 - Branch protection Required Check: `NOT_RUN`.
@@ -55,11 +58,10 @@ Registry trigger로 필요한 최소 Skill·Skill Mode를 자동 선택하고 L1
 ## 다음 순서
 
 ```text
-정본·Skill·Governance 검증
-→ PR #7 제품 파일 보존 확인
-→ 프로젝트 코어 PLAN·사용자 승인
+PR #15 최종 적대적 검토·활성 참조 동기화
+→ 결정적 복기·읽을 수 있는 라이벌 성향 실험 계약
 → STEP 14 실제 사용자 플레이
-→ T1 진입 또는 기획 재조정
+→ T1_GREENLIGHT_REVIEW 또는 REPEAT_POC
 ```
 
 정적 Actions 성공은 Godot 런타임·Windows 사용자 경험·접근성 사용자 검수·Release 성능·PDF·Branch protection을 증명하지 않는다.
