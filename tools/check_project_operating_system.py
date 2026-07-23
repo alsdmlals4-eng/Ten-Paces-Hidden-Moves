@@ -19,7 +19,9 @@ def load_json(path: Path) -> dict[str, Any]:
     except FileNotFoundError as exc:
         raise ContractError(f"missing JSON file: {path.as_posix()}") from exc
     except json.JSONDecodeError as exc:
-        raise ContractError(f"invalid JSON: {path.as_posix()}:{exc.lineno}:{exc.colno}: {exc.msg}") from exc
+        raise ContractError(
+            f"invalid JSON: {path.as_posix()}:{exc.lineno}:{exc.colno}: {exc.msg}"
+        ) from exc
     if not isinstance(value, dict):
         raise ContractError(f"JSON root must be an object: {path.as_posix()}")
     return value
@@ -30,7 +32,11 @@ def resolve_from(owner: Path, relative: str) -> Path:
 
 
 def validate_required_paths(root: Path, config: dict[str, Any]) -> None:
-    missing = [str(path) for path in config.get("required_paths", []) if not (root / str(path)).exists()]
+    missing = [
+        str(path)
+        for path in config.get("required_paths", [])
+        if not (root / str(path)).exists()
+    ]
     if missing:
         raise ContractError("required paths are missing: " + ", ".join(missing))
 
@@ -38,10 +44,24 @@ def validate_required_paths(root: Path, config: dict[str, Any]) -> None:
 def validate_entrypoints(root: Path) -> None:
     start = (root / "START_HERE.md").read_text(encoding="utf-8")
     agents = (root / "AGENTS.md").read_text(encoding="utf-8")
-    for token in ("AGENTS.md", "ACTIVE_CONTEXT.md", "DOCUMENTATION_MAP.md"):
+    for token in (
+        "AGENTS.md",
+        "ACTIVE_CONTEXT.md",
+        "DOCUMENTATION_MAP.md",
+        "PR #7",
+        "Issue #13",
+    ):
         if token not in start:
             raise ContractError(f"root START_HERE does not route to {token}")
-    for token in ("PLAN", "BUILD", "REVIEW", "Skill Mode", "execution-report"):
+    for token in (
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "Skill Mode",
+        "execution-report",
+        "기준 SHA",
+        "reference-freshness",
+    ):
         if token not in agents:
             raise ContractError(f"AGENTS is missing the routing contract token: {token}")
 
@@ -57,13 +77,24 @@ def validate_schema_contracts(root: Path) -> None:
         raise ContractError("design registry schema publication policies are incomplete")
     source_only_rule = None
     for rule in document.get("allOf", []):
-        expected = rule.get("if", {}).get("properties", {}).get("publication_policy", {}).get("const")
+        expected = (
+            rule.get("if", {})
+            .get("properties", {})
+            .get("publication_policy", {})
+            .get("const")
+        )
         if expected == "source_only":
             source_only_rule = rule.get("then", {}).get("properties", {})
             break
     if source_only_rule is None:
         raise ContractError("design registry schema lacks source_only conditional shape")
-    for field in ("output_pdf", "output_docx", "asset_dir", "publication_manifest", "generator"):
+    for field in (
+        "output_pdf",
+        "output_docx",
+        "asset_dir",
+        "publication_manifest",
+        "generator",
+    ):
         if source_only_rule.get(field, {}).get("type") != "null":
             raise ContractError(f"design schema source_only must null {field}")
     if source_only_rule.get("diagram_policy", {}).get("const") != "none":
@@ -88,13 +119,15 @@ def validate_design_registry(root: Path, config: dict[str, Any]) -> None:
     if not registry.get("publication_note"):
         raise ContractError("design registry must explain its publication state")
     documents = registry.get("documents", [])
-    if not documents:
+    if not isinstance(documents, list) or not documents:
         raise ContractError("design registry is empty")
 
     ids: set[str] = set()
     sources: set[str] = set()
     coverage: set[str] = set()
     for document in documents:
+        if not isinstance(document, dict):
+            raise ContractError("design document entry must be an object")
         document_id = str(document.get("document_id", ""))
         if not document_id or document_id in ids:
             raise ContractError(f"invalid or duplicate document_id: {document_id!r}")
@@ -112,30 +145,57 @@ def validate_design_registry(root: Path, config: dict[str, Any]) -> None:
         sources.add(source.relative_to(root).as_posix())
         coverage.update(str(value) for value in document.get("responsibility_coverage", []))
 
+        text = source.read_text(encoding="utf-8")
+        for section in document.get("required_sections", []):
+            if str(section) not in text:
+                raise ContractError(
+                    f"registered source is missing required section: {document_id}: {section}"
+                )
+
         if policy == "source_only":
-            for field in ("output_pdf", "output_docx", "asset_dir", "publication_manifest", "generator"):
+            for field in (
+                "output_pdf",
+                "output_docx",
+                "asset_dir",
+                "publication_manifest",
+                "generator",
+            ):
                 if document.get(field) is not None:
-                    raise ContractError(f"source_only document must not declare {field}: {document_id}")
+                    raise ContractError(
+                        f"source_only document must not declare {field}: {document_id}"
+                    )
             if document.get("diagram_policy") != "none":
-                raise ContractError(f"source_only document must use diagram_policy=none: {document_id}")
+                raise ContractError(
+                    f"source_only document must use diagram_policy=none: {document_id}"
+                )
         else:
             for field in ("output_pdf", "publication_manifest", "generator"):
                 if not isinstance(document.get(field), str) or not document.get(field):
                     raise ContractError(f"published document is missing {field}: {document_id}")
             generator = root / str(document["generator"])
             if not generator.is_file():
-                raise ContractError(f"publication generator is missing: {document_id}: {document['generator']}")
+                raise ContractError(
+                    f"publication generator is missing: {document_id}: {document['generator']}"
+                )
 
-    expected = set(str(value) for value in config.get("required_design_sources", []))
+    expected = {str(value) for value in config.get("required_design_sources", [])}
     if sources != expected:
-        raise ContractError(f"design sources differ: missing={sorted(expected-sources)} unexpected={sorted(sources-expected)}")
-    required = set(str(value) for value in registry.get("required_responsibility_coverage", []))
+        raise ContractError(
+            f"design sources differ: missing={sorted(expected-sources)} "
+            f"unexpected={sorted(sources-expected)}"
+        )
+    required = {
+        str(value) for value in registry.get("required_responsibility_coverage", [])
+    }
     if not required <= coverage:
-        raise ContractError(f"design responsibility coverage is incomplete: {sorted(required-coverage)}")
+        raise ContractError(
+            f"design responsibility coverage is incomplete: {sorted(required-coverage)}"
+        )
 
 
 def validate_skill_registry(root: Path, config: dict[str, Any]) -> None:
     registry = load_json(root / str(config["skill_registry"]))
+    freshness = load_json(root / str(config["reference_freshness_config"]))
     policy = registry.get("routing_policy", {})
     expectations = {
         "load_all_skills": False,
@@ -155,24 +215,44 @@ def validate_skill_registry(root: Path, config: dict[str, Any]) -> None:
         raise ContractError("project Skill Registry must use source_only presentation")
     if presentation.get("primary_reading_format") != "SKILL_REGISTRY.json":
         raise ContractError("project Skill Registry must be the primary reading format")
-    for field in ("publication_manifest", "generator", "markdown_summary", "diagram_directory"):
+    for field in (
+        "publication_manifest",
+        "generator",
+        "markdown_summary",
+        "diagram_directory",
+    ):
         if presentation.get(field) is not None:
             raise ContractError(f"source-only Skill Registry must not declare {field}")
 
     base = registry.get("base_integration", {})
-    if base.get("commit") != "ee265576da7f67d3278f8099dd97d4e714ef0651":
+    expected_commit = str(freshness.get("expected_base_commit", ""))
+    if str(base.get("commit", "")) != expected_commit:
         raise ContractError("Skill Registry Base commit is stale")
     shared_routes = base.get("shared_skill_routes", {})
-    if not isinstance(shared_routes, dict) or len(shared_routes) != 13:
-        raise ContractError("all 13 Base shared Skill routes must be registered")
-    if len(set(shared_routes.values())) != 13:
+    expected_ids = {str(value) for value in freshness.get("expected_base_skill_ids", [])}
+    if not isinstance(shared_routes, dict):
+        raise ContractError("Base shared Skill routes must be an object")
+    values = [str(value) for value in shared_routes.values()]
+    if len(values) != len(set(values)):
         raise ContractError("Base shared Skill routes must be unique")
+    if set(values) != expected_ids:
+        raise ContractError(
+            "Base shared Skill routes differ from freshness config: "
+            f"missing={sorted(expected_ids-set(values))} "
+            f"unexpected={sorted(set(values)-expected_ids)}"
+        )
     if not (root / str(base.get("legacy_aliases", ""))).is_file():
         raise ContractError("Legacy Skill Alias file is missing")
 
     skills = registry.get("skills", [])
+    if not isinstance(skills, list) or len(skills) != 4:
+        raise ContractError(
+            f"expected four project-specific local Skills, found {len(skills) if isinstance(skills, list) else 'invalid'}"
+        )
     ids: set[str] = set()
     for skill in skills:
+        if not isinstance(skill, dict):
+            raise ContractError("project Skill entry must be an object")
         skill_id = str(skill.get("skill_id", ""))
         if not skill_id or skill_id in ids:
             raise ContractError(f"invalid or duplicate skill_id: {skill_id!r}")
@@ -188,9 +268,9 @@ def validate_skill_registry(root: Path, config: dict[str, Any]) -> None:
 
     forbidden_local = {"project-operations-and-handoff", "project-health-review"}
     if ids & forbidden_local:
-        raise ContractError(f"generic Base responsibilities remain duplicated locally: {sorted(ids & forbidden_local)}")
-    if len(skills) != 4:
-        raise ContractError(f"expected four project-specific local Skills, found {len(skills)}")
+        raise ContractError(
+            f"generic Base responsibilities remain duplicated locally: {sorted(ids & forbidden_local)}"
+        )
 
     for discipline in registry.get("selected_disciplines", []):
         entrypoints = registry.get("discipline_entrypoints", {}).get(discipline, [])
