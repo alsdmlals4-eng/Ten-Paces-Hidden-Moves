@@ -117,6 +117,7 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
     var state_before_resolution := state.duplicate(true)
     var logs: Array[String] = []
     var resolved_actions: Array = []
+    var timing_results: Array = []
     var round_number := int(context.get("round_number", state.get("round_number", 1)))
     var bundle_index := int(context.get("bundle_index", state.get("bundle_index", 1)))
     var sequence: Array = context.get("timing_sequence", [3, 3, 4])
@@ -131,9 +132,28 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
 
     var actions := _build_player_actions(player_placements)
     actions.append_array(_build_enemy_actions(bundle_index))
+    var state_before_response := state.duplicate(true)
+    var response_action_start := resolved_actions.size()
+    var response_log_start := logs.size()
     var defenses := _prepare_bundle_defenses(state, actions, logs, resolved_actions)
+    var response_actions: Array = []
+    var response_logs: Array[String] = []
+    for index in range(response_action_start, resolved_actions.size()):
+        response_actions.append(resolved_actions[index])
+    for index in range(response_log_start, logs.size()):
+        response_logs.append(logs[index])
+    if not response_actions.is_empty():
+        timing_results.append({
+            "timing": 0,
+            "phase": "response",
+            "state": state.duplicate(true),
+            "events": _build_presentation_events(state_before_response, state, response_actions, response_logs, false)
+        })
 
     for timing in range(bundle_start, bundle_end + 1):
+        var state_before_timing := state.duplicate(true)
+        var action_start := resolved_actions.size()
+        var log_start := logs.size()
         var timing_actions := _actions_for_timing(actions, timing)
         if timing_actions.is_empty():
             logs.append("[%d수] 양측 모두 행동하지 않았다." % timing)
@@ -161,6 +181,19 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
             _execute_utility(state, action, logs, timing)
             resolved_actions.append(_resolved_record(action, timing, "general"))
 
+        var timing_resolved_actions: Array = []
+        var timing_logs: Array[String] = []
+        for index in range(action_start, resolved_actions.size()):
+            timing_resolved_actions.append(resolved_actions[index])
+        for index in range(log_start, logs.size()):
+            timing_logs.append(logs[index])
+        timing_results.append({
+            "timing": timing,
+            "phase": "timing",
+            "state": state.duplicate(true),
+            "events": _build_presentation_events(state_before_timing, state, timing_resolved_actions, timing_logs, false)
+        })
+
     var result := {
         "state": state,
         "logs": logs,
@@ -170,7 +203,8 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
         "bundle_start": bundle_start,
         "bundle_end": bundle_end,
         "resolution_order": rules.get("resolution_order", ["response", "quick_attack", "move", "general"]),
-        "defenses": defenses
+        "defenses": defenses,
+        "timing_results": timing_results
     }
     result["presentation_events"] = _build_presentation_events(state_before_resolution, state, resolved_actions, logs)
     return result
@@ -549,7 +583,7 @@ func _resolved_record(action: Dictionary, timing: int, outcome: String) -> Dicti
         "target_tile": int(action.get("target_tile", 0))
     }
 
-func _build_presentation_events(state_before: Dictionary, state_after: Dictionary, resolved_actions: Array, logs: Array[String]) -> Array:
+func _build_presentation_events(state_before: Dictionary, state_after: Dictionary, resolved_actions: Array, logs: Array[String], append_state: bool = true) -> Array:
     var events: Array = []
     var before_positions := {
         "player": int((state_before.get("player", {}) as Dictionary).get("tile", 1)),
@@ -579,13 +613,14 @@ func _build_presentation_events(state_before: Dictionary, state_after: Dictionar
             if action.has(key):
                 event[key] = action[key]
         events.append(event)
-    events.append({
-        "type": "bundle_state",
-        "phase": "result",
-        "player": (state_after.get("player", {}) as Dictionary).duplicate(true),
-        "enemy": (state_after.get("enemy", {}) as Dictionary).duplicate(true),
-        "logs": logs.duplicate()
-    })
+    if append_state:
+        events.append({
+            "type": "bundle_state",
+            "phase": "result",
+            "player": (state_after.get("player", {}) as Dictionary).duplicate(true),
+            "enemy": (state_after.get("enemy", {}) as Dictionary).duplicate(true),
+            "logs": logs.duplicate()
+        })
     return events
 
 func _resource_pair(actor: Dictionary, key: String) -> Vector2i:

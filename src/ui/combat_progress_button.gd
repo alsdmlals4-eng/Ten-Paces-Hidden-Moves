@@ -65,7 +65,8 @@ func _build() -> void:
 
     _button = Button.new()
     _button.name = "ProgressButton"
-    _button.focus_mode = Control.FOCUS_NONE
+    _button.focus_mode = Control.FOCUS_ALL
+    _apply_keyboard_focus_ring()
     _button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
     _button.add_theme_font_size_override("font_size", 24)
     _button.add_theme_color_override("font_color", Color("f2dfb0"))
@@ -92,6 +93,21 @@ func _build() -> void:
     set_meta("writes_combat_log", bool(progress_data.get("writes_combat_log", true)))
     set_meta("action_placement_required", bool(progress_data.get("action_placement_required", true)))
     set_meta("request_count", 0)
+
+func _apply_keyboard_focus_ring() -> void:
+    if _button == null:
+        return
+    var focus_style := StyleBoxFlat.new()
+    focus_style.bg_color = Color(1.0, 1.0, 1.0, 0.08)
+    focus_style.border_color = Color.WHITE
+    focus_style.set_border_width_all(2)
+    focus_style.set_corner_radius_all(4)
+    focus_style.content_margin_left = 3.0
+    focus_style.content_margin_right = 3.0
+    focus_style.content_margin_top = 2.0
+    focus_style.content_margin_bottom = 2.0
+    _button.add_theme_stylebox_override("focus", focus_style)
+    _button.set_meta("keyboard_focus_ring", true)
 
 func set_runtime_context(value: Dictionary) -> void:
     runtime_context = value.duplicate(true)

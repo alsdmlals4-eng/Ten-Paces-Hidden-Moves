@@ -12,8 +12,8 @@
   "battle_background": {
     "step": 3,
     "approval_status": "USER_APPROVED",
-    "style": "ink_wash_mountain_fortress",
-    "asset": "res://assets/backgrounds/step3_mountain_fortress.svg",
+    "style": "twilight_ink_wuxia_duel",
+    "asset": "res://assets/backgrounds/twilight_ink_duel_v1.png",
     "scene": "res://scenes/combat/battle_background.tscn",
     "contrast_role": "below_board_and_characters"
   },

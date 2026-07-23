@@ -9,6 +9,8 @@ const ENEMY_ACCENT := Color("b44d43")
 const HEALTH_COLOR := Color("b54d44")
 const STAMINA_COLOR := Color("4c9a91")
 const INTERNAL_COLOR := Color("8a63a9")
+const PLAYER_PORTRAIT := preload("res://assets/portraits/player_wanderer_ink_v1.png")
+const ENEMY_PORTRAIT := preload("res://assets/portraits/enemy_masked_ink_v1.png")
 
 var side: String = "player"
 var combatant: Dictionary = {}
@@ -19,9 +21,16 @@ var _health_label: Label
 var _stamina_label: Label
 var _internal_label: Label
 var _status_labels: Array[Label] = []
+var _portrait: TextureRect
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_IGNORE
+    _portrait = TextureRect.new()
+    _portrait.name = "CombatantInkPortrait"
+    _portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+    _portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+    _portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    add_child(_portrait)
     _name_label = _make_label(18, PAPER)
     _epithet_label = _make_label(12, MUTED)
     _health_label = _make_label(13, PAPER)
@@ -59,6 +68,9 @@ func _refresh() -> void:
     _stamina_label.text = _format_resource("기력", "stamina")
     _internal_label.text = _format_resource("내력", "internal")
 
+    if is_instance_valid(_portrait):
+        _portrait.texture = PLAYER_PORTRAIT if side == "player" else ENEMY_PORTRAIT
+
     for label in _status_labels:
         label.queue_free()
     _status_labels.clear()
@@ -90,11 +102,15 @@ func _layout() -> void:
     if _name_label == null:
         return
 
-    var portrait_size := minf(84.0, maxf(56.0, size.y - 26.0))
+    var portrait_size := minf(size.x * 0.48, maxf(92.0, size.y * 0.48))
     var portrait_x := 12.0 if side == "player" else size.x - portrait_size - 12.0
     var content_x := portrait_x + portrait_size + 14.0 if side == "player" else 12.0
     var content_right := size.x - 12.0 if side == "player" else portrait_x - 14.0
     var content_width := maxf(120.0, content_right - content_x)
+
+    if is_instance_valid(_portrait):
+        _portrait.position = Vector2(portrait_x, 14.0)
+        _portrait.size = Vector2(portrait_size, minf(size.y * 0.58, portrait_size * 1.18))
 
     _name_label.position = Vector2(content_x, 10.0)
     _name_label.size = Vector2(content_width, 24.0)
@@ -111,7 +127,7 @@ func _layout() -> void:
         label.size = Vector2(content_width, 18.0)
         label.horizontal_alignment = _name_label.horizontal_alignment
 
-    var chip_y := maxf(100.0, size.y - 22.0)
+    var chip_y := maxf(122.0, size.y - 24.0)
     for index in range(_status_labels.size()):
         var chip := _status_labels[index]
         var chip_x := portrait_x + 8.0 + float(index) * 25.0 if side == "player" else portrait_x + portrait_size - 30.0 - float(index) * 25.0
@@ -130,18 +146,11 @@ func _draw() -> void:
     draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color(accent, 0.72), false, 2.0)
     draw_rect(Rect2(Vector2(0.0, 0.0), Vector2(size.x, 4.0)), accent, true)
 
-    var portrait_size := minf(84.0, maxf(56.0, size.y - 26.0))
+    var portrait_size := minf(size.x * 0.48, maxf(92.0, size.y * 0.48))
     var portrait_x := 12.0 if side == "player" else size.x - portrait_size - 12.0
-    var portrait_rect := Rect2(Vector2(portrait_x, 14.0), Vector2(portrait_size, portrait_size))
-    draw_circle(portrait_rect.get_center(), portrait_size * 0.5, Color(0.02, 0.018, 0.016, 0.92))
-    draw_arc(portrait_rect.get_center(), portrait_size * 0.48, 0.0, TAU, 48, accent, 3.0, true)
-    draw_circle(portrait_rect.get_center() + Vector2(0.0, -portrait_size * 0.12), portrait_size * 0.13, Color(PAPER, 0.70))
-    var body := PackedVector2Array([
-        portrait_rect.get_center() + Vector2(-portrait_size * 0.22, portrait_size * 0.31),
-        portrait_rect.get_center() + Vector2(0.0, portrait_size * 0.04),
-        portrait_rect.get_center() + Vector2(portrait_size * 0.22, portrait_size * 0.31)
-    ])
-    draw_colored_polygon(body, Color(PAPER, 0.58))
+    var portrait_rect := Rect2(Vector2(portrait_x, 14.0), Vector2(portrait_size, minf(size.y * 0.58, portrait_size * 1.18)))
+    draw_rect(Rect2(portrait_rect.position - Vector2(3.0, 3.0), portrait_rect.size + Vector2(6.0, 6.0)), Color(0.02, 0.018, 0.016, 0.92), true)
+    draw_rect(Rect2(portrait_rect.position - Vector2(2.0, 2.0), portrait_rect.size + Vector2(4.0, 4.0)), Color(accent, 0.78), false, 2.0)
 
     var content_x := portrait_x + portrait_size + 14.0 if side == "player" else 12.0
     var content_right := size.x - 12.0 if side == "player" else portrait_x - 14.0

@@ -3,7 +3,7 @@
 [ext_resource path="res://src/ui/momentum_gauge.gd" type="Script" id="1"]
 
 [node name="MomentumGauge" type="Control"]
-custom_minimum_size = Vector2(150, 124)
+custom_minimum_size = Vector2(92, 96)
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 2

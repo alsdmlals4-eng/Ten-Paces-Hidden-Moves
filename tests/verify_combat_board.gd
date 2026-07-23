@@ -1,7 +1,7 @@
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
-const BACKGROUND_ASSET_PATH := "res://assets/backgrounds/step3_mountain_fortress.svg"
+const BACKGROUND_ASSET_PATH := "res://assets/backgrounds/twilight_ink_duel_v1.png"
 const EXPECTED_TILE_COUNT := 10
 const EXPECTED_PLAYER_TILE := 4
 const EXPECTED_ENEMY_TILE := 7
@@ -85,8 +85,8 @@ func _verify_foundation(board: CombatBoardPreview, snapshot: Dictionary) -> void
         failures.append("Board metadata must expose enemy start tile %d." % EXPECTED_ENEMY_TILE)
     if board.get_child_count() == 0 or board.get_child(0) != board.battle_background:
         failures.append("Battle background must render behind the board.")
-    if str(board.battle_background.get_meta("source_mode", "")) != "direct_vector_svg":
-        failures.append("Battle background must use direct vector SVG loading.")
+    if str(board.battle_background.get_meta("source_mode", "")) != "project_original_raster_png":
+        failures.append("Battle background must use the approved original raster asset.")
     for tile in board.tiles:
         if not tile.has_signal("tile_clicked"):
             failures.append("Every board tile must expose a tile_clicked signal for TARGETING_10_5.")
@@ -339,7 +339,7 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
         failures.append("Committed-to-presentation resolution must lock combat planning inputs.")
     if str(presenting_snapshot.get("presentation_state", "")) not in ["resolving", "presenting_result"]:
         failures.append("Resolution must enter resolving or presenting_result before the next bundle is ready.")
-    await create_timer(1.5).timeout
+    await create_timer(2.3).timeout
 
     var after_state := board.get_combat_state_snapshot()
     var timing := board.action_timing_panel.get_timing_snapshot()

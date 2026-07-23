@@ -33,6 +33,7 @@ var _status_label: Label
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_STOP
+    focus_mode = Control.FOCUS_ALL
     mouse_entered.connect(_on_mouse_entered)
     mouse_exited.connect(_on_mouse_exited)
     gui_input.connect(_on_gui_input)
@@ -136,10 +137,14 @@ func _on_mouse_exited() -> void:
     queue_redraw()
 
 func _on_gui_input(event: InputEvent) -> void:
-    if not event is InputEventMouseButton:
-        return
-    var mouse_event := event as InputEventMouseButton
-    if mouse_event.button_index != MOUSE_BUTTON_LEFT or not mouse_event.pressed:
+    var activated := false
+    if event is InputEventKey:
+        var key_event := event as InputEventKey
+        activated = key_event.pressed and not key_event.echo and key_event.is_action_pressed("ui_accept")
+    elif event is InputEventMouseButton:
+        var mouse_event := event as InputEventMouseButton
+        activated = mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed
+    if not activated:
         return
     if not can_receive_placement() and not has_assignment():
         return
@@ -258,3 +263,5 @@ func _draw() -> void:
         draw_line(Vector2(8.0, 3.0), Vector2(maxf(8.0, size.x - 8.0), 3.0), accent, 3.0)
     if has_assignment() and assignment_part_index > 0:
         draw_line(Vector2(3.0, 8.0), Vector2(3.0, maxf(8.0, size.y - 8.0)), accent, 3.0)
+    if has_focus():
+        draw_rect(Rect2(Vector2(5.0, 5.0), size - Vector2(10.0, 10.0)), Color.WHITE, false, 2.0)

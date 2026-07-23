@@ -12,6 +12,7 @@ func _run() -> void:
     _verify_ultimate_damage_and_momentum(hud)
     _verify_interruption_and_fortitude(hud)
     _verify_engagement_and_movement(hud)
+    _verify_timing_snapshots(hud)
     _finish()
 
 func _verify_ultimate_damage_and_momentum(hud: Dictionary) -> void:
@@ -97,6 +98,36 @@ func _verify_engagement_and_movement(hud: Dictionary) -> void:
     var swap_state: Dictionary = swap_result.get("state", {})
     if int((swap_state.get("player", {}) as Dictionary).get("tile", 0)) != 4 or int((swap_state.get("enemy", {}) as Dictionary).get("tile", 0)) != 5:
         failures.append("Direct position swapping must remain invalid.")
+
+func _verify_timing_snapshots(hud: Dictionary) -> void:
+    var engine := CombatResolutionEngine.new()
+    engine.rules["enemy_bundles"] = {"1": [{"timing": 1, "card_id": "basic_move", "target_tile": 6, "direction": -1}]}
+    var move: Dictionary = engine.cards_by_id.get("basic_move", {})
+    var meditate: Dictionary = engine.cards_by_id.get("basic_meditate", {})
+    var quick: Dictionary = engine.cards_by_id.get("basic_quick_attack", {})
+    var result := engine.resolve_bundle([
+        _placement(move, 1, 1, 5),
+        _placement(meditate, 2),
+        _placement(quick, 3, 1, 6)
+    ], _context(1), engine.make_initial_state(hud, 4, 7))
+    var timing_results: Array = result.get("timing_results", [])
+    if timing_results.size() != 3:
+        failures.append("A full 3-slot bundle must return one authoritative playback snapshot per timing.")
+        return
+    for index in range(timing_results.size()):
+        var timing_result: Dictionary = timing_results[index]
+        if int(timing_result.get("timing", 0)) != index + 1:
+            failures.append("Playback snapshots must be ordered by actual timing, not only by bundle completion.")
+    var first_state: Dictionary = (timing_results[0] as Dictionary).get("state", {})
+    var first_player: Dictionary = first_state.get("player", {})
+    var first_enemy: Dictionary = first_state.get("enemy", {})
+    if int(first_player.get("tile", 0)) != 5 or int(first_enemy.get("tile", 0)) != 6:
+        failures.append("Timing 1 playback must expose only the moves resolved at timing 1.")
+    var second_state: Dictionary = (timing_results[1] as Dictionary).get("state", {})
+    var second_player: Dictionary = second_state.get("player", {})
+    var second_stamina: Array = second_player.get("stamina", [])
+    if second_stamina.size() < 2 or int(second_stamina[0]) != 5:
+        failures.append("Timing 2 playback must expose meditation before timing 3 is resolved.")
 
 func _placement(definition: Dictionary, anchor: int, direction: int = 1, target_tile: int = 0) -> Dictionary:
     var span := maxi(1, int(definition.get("action_slots", 1)))

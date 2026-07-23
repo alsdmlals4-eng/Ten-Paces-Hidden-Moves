@@ -70,6 +70,7 @@ func set_interaction_state(value: String) -> void:
     set_meta("interaction_state", interaction_state)
     var interactive := interaction_state in ["movable", "attackable", "selected"]
     mouse_filter = Control.MOUSE_FILTER_STOP if interactive else Control.MOUSE_FILTER_IGNORE
+    focus_mode = Control.FOCUS_ALL if interactive else Control.FOCUS_NONE
     mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if interactive else Control.CURSOR_ARROW
     _refresh_visuals()
 
@@ -91,17 +92,23 @@ func _on_mouse_exited() -> void:
     queue_redraw()
 
 func _on_gui_input(event: InputEvent) -> void:
-    if not is_targetable() or not event is InputEventMouseButton:
+    if not is_targetable():
         return
-    var mouse_event := event as InputEventMouseButton
-    if mouse_event.button_index != MOUSE_BUTTON_LEFT or not mouse_event.pressed:
+    var activated := false
+    if event is InputEventKey:
+        var key_event := event as InputEventKey
+        activated = key_event.pressed and not key_event.echo and key_event.is_action_pressed("ui_accept")
+    elif event is InputEventMouseButton:
+        var mouse_event := event as InputEventMouseButton
+        activated = mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed
+    if not activated:
         return
     tile_clicked.emit(tile_index)
     accept_event()
 
 func _notification(what: int) -> void:
-    if what == NOTIFICATION_RESIZED:
-        queue_redraw()
+    if what == NOTIFICATION_RESIZED or what == NOTIFICATION_FOCUS_ENTER or what == NOTIFICATION_FOCUS_EXIT:
+        _refresh_visuals()
 
 func _draw() -> void:
     var center := Vector2(size.x * 0.5, size.y * 0.39)
@@ -172,6 +179,10 @@ func _refresh_visuals() -> void:
             border_color = Color(DEFAULT_BORDER, 0.66)
         _:
             pass
+
+    if has_focus() and is_targetable():
+        border_color = Color.WHITE
+        border_width = max(border_width, 6)
 
     var style := StyleBoxFlat.new()
     style.bg_color = fill_color

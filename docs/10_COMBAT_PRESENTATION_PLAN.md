@@ -38,7 +38,7 @@
 → 이동 목적지·공격 방향 지정
 → 예상 기력·내력 확인
 → 진행
-→ 대응 → 속공 → 이동 → 일반 공격 동기 판정
+→ 대응 → 속공 → 이동 → 일반 공격을 엔진이 한 번 판정
 → 확정 HUD·위치·슬롯·문자열 로그 즉시 반영
 → 다음 묶음 또는 다음 라운드
 ```
@@ -162,19 +162,9 @@ CURRENT 상태 문구:
 |---|---|
 | 조건 미충족 | `행동·대상·자원 확인 필요` |
 | 조건 충족 | `배치 완료` |
-| 동기 판정 완료 | `판정 완료` |
+| 수별 결과 연출과 다음 묶음 반영 후 | `판정 완료` |
 
-현재는 별도 `판정 중` 화면이 없다.
-
-```text
-진행 클릭
-→ 동기 판정
-→ 다음 묶음 상태와 판정 완료 문구
-```
-
-PRESENTATION_TARGET:
-
-단계별 애니메이션을 도입할 때만 다음 상태를 추가한다.
+현재 구현은 다음 상태를 사용한다.
 
 ```text
 committed
@@ -182,6 +172,15 @@ committed
 → presenting_result
 → next_bundle_ready
 ```
+
+```text
+진행 클릭
+→ 엔진 1회 판정
+→ 응답 준비 및 각 수 snapshot 순차 재생
+→ 다음 묶음 상태와 판정 완료 문구
+```
+
+- `timing_results`와 `presentation_events`는 표현 전용 입력이며 UI·VFX·오디오가 판정을 수정하지 않는다.
 
 - `resolving` 동안 슬롯·카드·대상 입력을 명시적으로 잠근다.
 - 스킵·빠른 재생을 제공해 반복 전투의 대기 시간을 줄인다.
@@ -199,7 +198,17 @@ committed
 → 피해·자원·기세 결과
 ```
 
-### 8.1 CURRENT
+### 8.1 Historical state (superseded on 2026-07-23)
+
+### 8.1A Current implementation: authoritative timing playback
+
+- `CombatResolutionEngine` resolves a committed bundle only once, then returns an immutable playback snapshot for response setup and for every actual timing in that bundle.
+- The board applies those snapshots in sequence: response setup → 1수 → 2수 → 3수 (or the corresponding 4수~10수 range). Character tiles, HUD resources, damage, and interruption state therefore change when their timing is reached, not only after the full bundle.
+- The UI consumes `timing_results.events` and never recomputes combat. Empty planning inputs remain locked through `committed`, `resolving`, and `presenting_result` until the next bundle is ready.
+- Ultimate event bands use the approved RGBA ink-and-gold atlas. An ultimate remains visible for 0.70 seconds in normal playback, has a short scale pulse, and is still supported by fast playback, skip, and reduced-motion modes.
+- Automated coverage verifies timing-1 movement state, timing-2 resource state, and actual ultimate VFX visibility during the authoritative playback path.
+
+### 8.1B Previous implementation notes
 
 - 단계별 애니메이션 대신 최종 위치·HUD와 문자열 로그를 즉시 표시한다.
 - 같은 단계 공격은 판정 엔진에서 동시 처리된다.
@@ -365,7 +374,7 @@ PRESENTATION_TARGET:
 
 - 이동·공격 후보는 색과 상태 이름을 함께 가진다.
 - 자산이 없어도 기본 SVG·벡터 도형·텍스트로 화면이 구성된다.
-- 주요 버튼은 포인터 입력 기준이며 키보드 전체 흐름은 아직 없다.
+- 기본 카드·현재 슬롯·대상 타일·진행·모션 감소·음향 토글은 키보드 포커스와 `Enter`/`ui_accept` 경로를 제공한다. 실제 Windows의 탭 순서·보조기기 경로는 `NOT_RUN`이다.
 
 ### ACCESSIBILITY_TARGET
 
@@ -394,7 +403,7 @@ PRESENTATION_TARGET:
 
 - 기존 전장·배경·캐릭터·상단 HUD.
 - 행동 슬롯·카드 트레이·상세·로그·진행.
-- 행동 배치·대상 지정·기본 동기 판정.
+- 행동 배치·대상 지정·기본 판정 계약.
 - STEP 0~10·TARGETING 10.5.
 
 ### IMPLEMENTED_FOR_REVIEW
@@ -405,15 +414,13 @@ PRESENTATION_TARGET:
 
 ### PLANNED_OR_NOT_RUN
 
-- 최신 4번·7번 Windows 시각 확인.
-- 단계별 판정 애니메이션.
-- 명시적 resolving 입력 잠금.
+- Windows/HiGodot에서 단계별 판정 모션과 명시적 resolving 입력 잠금의 실제 가시성·동작 확인.
 - 로그 자동 스크롤 정책.
-- STEP 11 중단 연출.
+- Windows/HiGodot에서 STEP 11 중단·강건·밀착·절초 연출 확인.
 - STEP 12 AI 성향 표현.
 - STEP 13 승패·재시작.
 - STEP 14 플레이테스트.
-- 키보드 전체 흐름.
+- 실제 Windows 키보드 탭 순서와 보조기기 검수.
 - 접근성·성능 검증.
 
 ## 17. T1 이후 대회 연출
@@ -430,6 +437,22 @@ T0 통과 뒤 별도 범위로 진행한다.
 ```
 
 이명·풍문·정탐·절초·대회 결말은 현재 T0 화면 완료 조건이 아니다.
+
+## 수묵 석양 UI와 단순 모션 구현 기록 (2026-07-23)
+
+- 전장은 전용 수묵 석양 PNG를 사용하고, 저대비 배경 위에 10칸 타일·전투원·금빛 절초 강조를 분리한다. 카드·타일·아이콘의 SVG 정보 계층은 래스터로 대체하지 않는다.
+- 좌우 상태 패널은 강호낭인/무명 검객의 프로젝트 전용 초상을 표시하며, 체력·기력·내력·기세는 기존 판정 상태만 표현한다.
+- 절초 목록은 플레이어 기세 게이지 하단에 놓여, 기세 5/5·연속 빈 수·현재 입력 잠금 여부를 버튼별 텍스트와 비활성 상태로 설명한다.
+- HUD 하위 패널의 최소 크기는 960×640 전장에서도 한 화면에 남도록 축소 가능하며, 960×640/1440×900 headless 배치 회귀를 둔다.
+- `presentation_events`와 `timing_results`는 한 번 계산된 엔진 결과다. UI는 대응 뒤 1수부터 순차적으로 상태를 적용하고, 이동은 짧은 발 앵커 이동, 공격/절초는 짧은 전진 공격, 대기는 가벼운 호흡 움직임으로 표현한다.
+- 이 모션은 판정·피해·위치·자원을 다시 계산하거나 변경하지 않는다. `모션 감소`는 이동/공격 트윈을 생략하고 확정 결과와 텍스트/로그/VFX 접근 경로는 유지한다.
+- `즉시 완료`는 진행 중인 이벤트의 일반 타이머를 다음 프레임에 탈출시킨다. 따라서 절초의 최대 0.70초 VFX 대기를 끝까지 기다리지 않으며, 현재 결과 텍스트와 VFX를 숨기되 확정 상태·로그·자원·기세는 바꾸지 않는다.
+- 전장 전투원은 프로젝트 전용 전신 수묵 원화를 사용한다. 각 PNG는 크로마키를 RGBA로 변환해 모서리 알파·투명 픽셀 수를 검수했고, 원화의 발을 기존 타일 앵커에 맞춰 대기·이동·공격 transform을 적용한다.
+- 표준 버튼과 슬라이더는 흰색 2px 포커스 링과 옅은 면 채움으로 Tab 위치를 표시한다. 카드·수 슬롯·대상 타일의 기존 자체 포커스 테두리와 함께 색각에만 의존하지 않는 입력 경로를 만든다.
+- Tab 순서는 카드 8종 → 수 슬롯 1~10 → 대상 타일 1~10 → 진행 → 빠른 재생·즉시 완료·모션 감소·소리·음량 → 카드로 명시적 순환한다. 실제 보조기기와 Windows 전체 조작성은 별도 수동 Gate로 남긴다.
+- 포커스 가능한 전투 조작 요소에는 Godot Control의 한국어 `accessibility_name`·`accessibility_description`을 함께 설정한다. 이는 읽기 도구에 역할과 조작 결과를 제공하는 구현 증거이며, 운영체제 보조기기와의 실제 음성 출력 검수는 대체하지 않는다.
+- `verify_combat_pointer_lock.gd`는 실제 `InputEventMouseButton`을 카드·수 슬롯·절초 버튼에 전달한다. `resolving`에서는 기존 선택을 바꾸지 않고, 수 예약과 절초 기세 소비도 발생하지 않아야 한다.
+- 자동 검증과 HiGodot Windows 런타임의 4/7 시작 렌더, 절초 목록 활성·예약·대상 입력, 대시 후 5·6번 위치, 수묵·금빛 VFX와 `사거리 실패` 결과 표시, `소리:끔` → `소리:켬` 토글 텍스트는 완료했다. 진행 버튼 직후 `resolving`·`locked=true`와 카드 선택 핸들러 차단도 런타임에서 확인했다. Headless는 파공검기 처치 뒤 `combat_ended` 입력 잠금·전투 불능 문구·패배음 요청, 확정 기세 증가·금속 충돌/완전 막기 SFX 요청과 밀착·파공검기 VFX·로그 52개 장면의 120프레임 성능 표본도 확인했다. 대표 시작 장면의 5개 표본은 145 FPS·267 draw call·약 54.1MB video memory다. resolving 입력 잠금의 실제 마우스 상호작용, 실제 청취 음향과 실제 최악 장면/로딩 측정은 `NOT_RUN`이다.
 ## Issue #11 연출 구현 갱신 (2026-07-23)
 
-화면 상태는 `planning → committed → resolving → presenting_result → next_bundle_ready`로 기록되며, committed부터 결과 준비까지 카드·슬롯·대상·절초 입력을 잠근다. 결과 라벨은 확정 이벤트로 중단·방향/사거리 실패·피해를 표시하고, 빠른 재생·즉시 완료·모션 감소·음소거·음량을 제공한다. 절차적 SFX는 예약·검풍·강타·막기·회피·중단 역할음을 재생한다. `assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png`는 RGBA 알파 검수 뒤 활성화됐으며, 세 절초가 각 밴드를 AtlasTexture로 재생한다.
+화면 상태는 `planning → committed → resolving → presenting_result → next_bundle_ready`로 기록되며, 체력 0이면 마지막 결과 뒤 `combat_ended`로 전환해 추가 계획 입력을 잠근다. 절초 버튼은 기세 부족·연속 빈 수 부족·판정 중을 tooltip으로 별도 설명한다. 결과 라벨은 60px 높이·한국어 단어 단위 줄바꿈으로 확정 이벤트의 중단·방향/사거리 실패·피해·전투 불능을 표시하고, 빠른 재생·즉시 완료·모션 감소·음소거·음량을 제공한다. 절차적 SFX는 기세 충전·절초 예약·검풍·금속 충돌·강타·완전 막기·회피·중단·전투 불능 역할음을 확정 snapshot과 이벤트에서 요청한다. `assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png`는 RGBA 알파 검수 뒤 활성화됐으며, 세 절초가 각 밴드를 AtlasTexture로 재생한다.

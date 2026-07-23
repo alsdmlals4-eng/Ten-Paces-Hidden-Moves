@@ -114,29 +114,28 @@ func _selection_text(bundle_index: int, timing_sequence: Array) -> String:
 func _layout() -> void:
     if not is_instance_valid(player_panel):
         return
-    var gap := maxf(4.0, size.x * 0.004)
-    var total_gap := gap * 4.0
-    var usable_width := maxf(1.0, size.x - total_gap)
-    var status_width := usable_width * 0.225
-    var momentum_width := usable_width * 0.13
-    var round_width := usable_width - status_width * 2.0 - momentum_width * 2.0
-    var panel_height := maxf(116.0, size.y)
+    var gap := clampf(size.x * 0.008, 6.0, 10.0)
+    var side_width := clampf(size.x * 0.18, 150.0, 270.0)
+    var gauge_width := clampf(size.x * 0.115, 92.0, 170.0)
+    var center_width := size.x - side_width * 2.0 - gauge_width * 2.0 - gap * 4.0
+    if center_width < 180.0:
+        var compact_side := clampf((size.x - 180.0 - gauge_width * 2.0 - gap * 4.0) * 0.5, 108.0, side_width)
+        side_width = compact_side
+        center_width = size.x - side_width * 2.0 - gauge_width * 2.0 - gap * 4.0
+    center_width = maxf(1.0, center_width)
+    var side_height := maxf(168.0, size.y)
+    var center_height := minf(116.0, side_height)
 
-    var cursor := 0.0
-    player_panel.position = Vector2(cursor, 0.0)
-    player_panel.size = Vector2(status_width, panel_height)
-    cursor += status_width + gap
-    player_momentum.position = Vector2(cursor, 0.0)
-    player_momentum.size = Vector2(momentum_width, panel_height)
-    cursor += momentum_width + gap
-    round_panel.position = Vector2(cursor, 0.0)
-    round_panel.size = Vector2(round_width, panel_height)
-    cursor += round_width + gap
-    enemy_momentum.position = Vector2(cursor, 0.0)
-    enemy_momentum.size = Vector2(momentum_width, panel_height)
-    cursor += momentum_width + gap
-    enemy_panel.position = Vector2(cursor, 0.0)
-    enemy_panel.size = Vector2(status_width, panel_height)
+    player_panel.position = Vector2(0.0, 0.0)
+    player_panel.size = Vector2(side_width, side_height)
+    player_momentum.position = Vector2(side_width + gap, 0.0)
+    player_momentum.size = Vector2(gauge_width, center_height)
+    round_panel.position = Vector2(side_width + gauge_width + gap * 2.0, 0.0)
+    round_panel.size = Vector2(center_width, center_height)
+    enemy_momentum.position = Vector2(round_panel.position.x + center_width + gap, 0.0)
+    enemy_momentum.size = Vector2(gauge_width, center_height)
+    enemy_panel.position = Vector2(enemy_momentum.position.x + gauge_width + gap, 0.0)
+    enemy_panel.size = Vector2(side_width, side_height)
 
 func get_hud_snapshot() -> Dictionary:
     return {

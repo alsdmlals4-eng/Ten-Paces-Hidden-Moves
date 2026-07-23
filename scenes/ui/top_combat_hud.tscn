@@ -3,7 +3,7 @@
 [ext_resource path="res://src/ui/top_combat_hud.gd" type="Script" id="1"]
 
 [node name="TopCombatHud" type="Control"]
-custom_minimum_size = Vector2(960, 124)
+custom_minimum_size = Vector2(720, 124)
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 2

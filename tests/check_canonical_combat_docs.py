@@ -287,11 +287,12 @@ def assert_ui_and_runtime_boundaries(active: dict[str, str], runtime: dict[str, 
     assert "행동 묶음  1/3" in active["ui"]
     assert "라운드 1" in active["ui"]
 
-    assert "focus_mode = Control.FOCUS_NONE" in runtime["progress"]
+    assert "focus_mode = Control.FOCUS_ALL" in runtime["progress"]
     assert "focus_mode = Control.FOCUS_NONE" in runtime["log"]
-    assert "키보드 전체 흐름은 구현 완료가 아니다" in active["ui"]
-    assert "키보드 전체 흐름은 아직 없다" in active["presentation"]
-    assert "키보드 항목은 `NOT_RUN`" in active["qa"]
+    assert "Enter/`ui_accept`" in active["ui"]
+    assert "키보드 포커스" in active["presentation"]
+    assert "키보드 흐름은 headless 자동 검증" in active["qa"]
+    assert "Windows 탭 순서·포커스 가시성·보조기기 사용성은 아직 `NOT_RUN`" in active["qa"]
 
     assert "scroll_to_line" not in runtime["log"]
     assert "scroll_to_paragraph" not in runtime["log"]
@@ -302,10 +303,12 @@ def assert_ui_and_runtime_boundaries(active: dict[str, str], runtime: dict[str, 
     resolve_index = runtime["board"].index("resolution_engine.resolve_bundle")
     advance_index = runtime["board"].index("action_timing_panel.advance_after_resolution")
     assert resolve_index < advance_index
-    assert "현재 판정은 신호 호출 안에서 동기적으로 완료" in active["ui"]
-    assert "현재 판정은 한 신호 호출 안에서 동기적으로 끝난다" in active["architecture"]
-    assert "별도 `판정 중` 화면이 없다" in active["presentation"]
-    assert "별도 `resolving` 상태 테스트" in active["qa"]
+    assert '"timing_results"' in runtime["engine"]
+    assert "await _apply_timing_snapshot" in runtime["board"]
+    assert "committed → resolving → presenting_result → next_bundle_ready" in active["ui"]
+    assert "표현은 `committed → resolving → presenting_result → next_bundle_ready` 상태" in active["architecture"]
+    assert "현재 구현은 다음 상태를 사용한다" in active["presentation"]
+    assert "입력 잠금과 `resolving`/`presenting_result` 상태를 자동 테스트" in active["qa"]
 
 
 def assert_architecture_matches_runtime(active: dict[str, str], runtime: dict[str, str]) -> None:
@@ -377,6 +380,7 @@ def assert_workflow_coverage(runtime: dict[str, str]) -> None:
         "tests/check_canonical_combat_docs.py",
         "tests/verify_combat_board.gd",
         "tests/verify_response_rules.gd",
+        "tests/verify_combat_layout_accessibility.gd",
         "assets/reference/step_02_character_scale_and_tile_placement.svg",
         ".github/reference-freshness.json",
     )

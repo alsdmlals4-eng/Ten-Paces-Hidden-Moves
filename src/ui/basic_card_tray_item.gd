@@ -25,6 +25,7 @@ var _art: TextureRect
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_STOP
+    focus_mode = Control.FOCUS_ALL
     mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
     mouse_entered.connect(_on_mouse_entered)
     mouse_exited.connect(_on_mouse_exited)
@@ -65,6 +66,12 @@ func _on_mouse_exited() -> void:
     queue_redraw()
 
 func _on_gui_input(event: InputEvent) -> void:
+    if event is InputEventKey:
+        var key_event := event as InputEventKey
+        if key_event.pressed and not key_event.echo and key_event.is_action_pressed("ui_accept"):
+            detail_clicked.emit(definition.duplicate(true))
+            accept_event()
+            return
     if event is InputEventMouseButton:
         var mouse_event := event as InputEventMouseButton
         if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed:
@@ -204,5 +211,7 @@ func _draw() -> void:
         draw_rect(Rect2(Vector2(4.0, 3.0), Vector2(maxf(1.0, size.x - 8.0), 4.0)), Color(PAPER, 0.90), true)
     if _selected_for_placement:
         draw_rect(Rect2(Vector2(5.0, maxf(4.0, size.y - 8.0)), Vector2(maxf(1.0, size.x - 10.0), 4.0)), GOLD, true)
+    if has_focus():
+        draw_rect(Rect2(Vector2(5.0, 5.0), size - Vector2(10.0, 10.0)), Color.WHITE, false, 2.0)
     draw_line(Vector2(6.0, 48.0), Vector2(maxf(6.0, size.x - 6.0), 48.0), Color(INK, 0.30), 1.0)
     draw_line(Vector2(6.0, maxf(72.0, size.y - 27.0)), Vector2(maxf(6.0, size.x - 6.0), maxf(72.0, size.y - 27.0)), Color(INK, 0.30), 1.0)

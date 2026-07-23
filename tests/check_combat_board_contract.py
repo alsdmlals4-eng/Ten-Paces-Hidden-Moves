@@ -159,10 +159,29 @@ def main() -> None:
     assert ultimate["activation_momentum"] == 5
     assert res_file(ultimate["asset_manifest"]).exists()
     active_assets = [asset for asset in asset_manifest["assets"] if asset["active"]]
-    assert len(active_assets) == 1
-    assert active_assets[0]["id"] == "ultimate_ink_gold_sprite_sheet_rgba"
-    assert active_assets[0]["transparency_audit"]["has_alpha"] is True
-    assert active_assets[0]["transparency_audit"]["status"] == "APPROVED_ACTIVE"
+    assert {asset["id"] for asset in active_assets} == {
+        "twilight_ink_duel_v1",
+        "player_wanderer_ink_v1",
+        "enemy_masked_ink_v1",
+        "player_wanderer_battler_rgba_v1",
+        "enemy_masked_battler_rgba_v1",
+        "ultimate_ink_gold_sprite_sheet_rgba",
+    }
+    for asset in active_assets:
+        assert res_file(asset["path"]).exists(), asset["path"]
+        assert asset["prompt"]
+        assert asset.get("license", asset_manifest.get("license", ""))
+    ultimate_vfx = next(asset for asset in active_assets if asset["id"] == "ultimate_ink_gold_sprite_sheet_rgba")
+    assert ultimate_vfx["transparency_audit"]["has_alpha"] is True
+    assert ultimate_vfx["transparency_audit"]["status"] == "APPROVED_ACTIVE"
+    for asset_id in ("player_wanderer_battler_rgba_v1", "enemy_masked_battler_rgba_v1"):
+        character_art = next(asset for asset in active_assets if asset["id"] == asset_id)
+        audit = character_art["transparency_audit"]
+        assert character_art["source_asset"]
+        assert audit["has_alpha"] is True
+        assert audit["alpha_extrema"] == [0, 255]
+        assert audit["corner_alpha"] == [0, 0, 0, 0]
+        assert audit["status"] == "APPROVED_ACTIVE"
     assert ultimate["requires_exact_momentum"] is True
     assert ultimate["reservation_consumes_momentum_immediately"] is True
     assert ultimate["reservation_refund"] is False
@@ -229,7 +248,9 @@ def main() -> None:
     assert "interruption_focus_fortitude" not in excluded
 
     required_files = [
-        "assets/backgrounds/step3_mountain_fortress.svg",
+        "assets/backgrounds/twilight_ink_duel_v1.png",
+        "assets/characters/player_wanderer_battler_rgba_v1.png",
+        "assets/characters/enemy_masked_battler_rgba_v1.png",
         "assets/reference/step_02_character_scale_and_tile_placement.svg",
         "scenes/combat/combat_board_preview.tscn",
         "scenes/combat/combat_board_tile.tscn",
@@ -245,6 +266,14 @@ def main() -> None:
         "tests/verify_response_rules.gd",
         "tests/verify_ultimate_interrupt_engagement.gd",
         "tests/verify_ultimate_ui.gd",
+        "tests/verify_combat_character_art.gd",
+        "tests/verify_combat_focus_visuals.gd",
+        "tests/verify_combat_focus_order.gd",
+        "tests/verify_combat_assistive_labels.gd",
+        "tests/verify_combat_pointer_lock.gd",
+        "tests/verify_combat_presentation_controls.gd",
+        "tests/verify_combat_keyboard_accessibility.gd",
+        "tests/verify_combat_layout_accessibility.gd",
         "tests/verify_combat_performance_headless.gd",
         "data/cards/ultimate_cards.json",
     ]
@@ -257,6 +286,7 @@ def main() -> None:
     tray_script = (ROOT / "src/ui/basic_card_tray.gd").read_text(encoding="utf-8")
     engine_script = (ROOT / "src/combat/combat_resolution_engine.gd").read_text(encoding="utf-8")
     controller = (ROOT / "src/combat/combat_board_preview.gd").read_text(encoding="utf-8")
+    character_script = (ROOT / "src/combat/combat_character_placeholder.gd").read_text(encoding="utf-8")
     verifier = (ROOT / "tests/verify_combat_board.gd").read_text(encoding="utf-8")
     response_verifier = (ROOT / "tests/verify_response_rules.gd").read_text(encoding="utf-8")
     powershell = (ROOT / "tools/verify_and_commit_combat_foundation.ps1").read_text(encoding="utf-8")
@@ -280,9 +310,24 @@ def main() -> None:
         "UltimateMenu",
         "presentation_state",
     ))
+    assert all(token in character_script for token in (
+        "player_wanderer_battler_rgba_v1.png",
+        "enemy_masked_battler_rgba_v1.png",
+        "get_render_texture",
+        "character_art_path",
+    ))
+    assert "_apply_keyboard_focus_ring" in controller
+    assert "keyboard_focus_ring" in controller
+    assert "_wait_for_presentation_delay" in controller
+    assert "_configure_keyboard_focus_order" in controller
+    assert "_configure_accessibility_semantics" in controller
     assert all(token in verifier for token in ("TARGETING_10_5", "_on_board_tile_clicked", "miss_direction", "basic_footwork", "EXPECTED_PLAYER_TILE := 4", "EXPECTED_ENEMY_TILE := 7"))
     assert all(token in response_verifier for token in ("Same-timing guard", "Stance+guard", "Stance+evade", "preview_player_plan", "invalid_anchors"))
     assert "res://tests/verify_response_rules.gd" in powershell
+    assert "res://tests/verify_combat_pointer_lock.gd" in powershell
+    assert "res://tests/verify_combat_presentation_controls.gd" in powershell
+    assert "res://tests/verify_combat_focus_order.gd" in powershell
+    assert "res://tests/verify_combat_assistive_labels.gd" in powershell
     assert "플레이어 4번 / 상대 7번" in reference_svg
     assert "플레이어 · 4번 칸" in reference_svg
     assert "상대 · 7번 칸" in reference_svg

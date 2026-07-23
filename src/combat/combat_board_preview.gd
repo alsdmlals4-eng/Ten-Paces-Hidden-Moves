@@ -26,6 +26,9 @@ var basic_card_tray: BasicCardTray
 var card_detail_panel: CardDetailPanel
 var combat_log_panel: CombatLogPanel
 var ultimate_menu: MenuButton
+var ultimate_list_panel: PanelContainer
+var ultimate_list_title: Label
+var ultimate_list_buttons: Array[Button] = []
 var presentation_label: Label
 var presentation_vfx: TextureRect
 var fast_replay_button: Button
@@ -68,6 +71,7 @@ var _presentation_skip_requested := false
 var _ultimate_vfx_sheet: Texture2D
 var _sound_muted := false
 var _sound_volume := 0.65
+var _defer_character_snap := false
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_PASS
@@ -83,7 +87,14 @@ func _ready() -> void:
     _apply_combat_state_to_view()
     resized.connect(_layout_board)
     call_deferred("_layout_board")
+    call_deferred("_configure_keyboard_focus_order")
+    call_deferred("_configure_accessibility_semantics")
     call_deferred("_sync_progress_availability")
+
+func _exit_tree() -> void:
+    if is_instance_valid(procedural_sfx_player):
+        procedural_sfx_player.stop()
+        procedural_sfx_player.stream = null
 
 func _load_contract() -> Dictionary:
     if not FileAccess.file_exists(CONTRACT_PATH):
@@ -165,13 +176,40 @@ func _build_structure() -> void:
     ultimate_menu.name = "UltimateMenu"
     ultimate_menu.text = "절초 · 기세 필요"
     ultimate_menu.tooltip_text = "기세가 정확히 5일 때 절초를 예약합니다. 예약 직후 기세 5를 소비하며 환불되지 않습니다."
+    _apply_keyboard_focus_ring(ultimate_menu)
     ultimate_menu.get_popup().id_pressed.connect(_on_ultimate_menu_id_pressed)
     add_child(ultimate_menu)
+
+    ultimate_list_panel = PanelContainer.new()
+    ultimate_list_panel.name = "UltimateListBelowMomentum"
+    ultimate_list_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+    var ultimate_style := StyleBoxFlat.new()
+    ultimate_style.bg_color = Color(0.045, 0.035, 0.026, 0.95)
+    ultimate_style.border_color = Color("c79a50")
+    ultimate_style.set_border_width_all(2)
+    ultimate_style.set_corner_radius_all(6)
+    ultimate_style.content_margin_left = 6.0
+    ultimate_style.content_margin_right = 6.0
+    ultimate_style.content_margin_top = 5.0
+    ultimate_style.content_margin_bottom = 5.0
+    ultimate_list_panel.add_theme_stylebox_override("panel", ultimate_style)
+    var ultimate_column := VBoxContainer.new()
+    ultimate_column.add_theme_constant_override("separation", 2)
+    ultimate_list_panel.add_child(ultimate_column)
+    ultimate_list_title = Label.new()
+    ultimate_list_title.name = "UltimateListTitle"
+    ultimate_list_title.text = "절초 목록"
+    ultimate_list_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    ultimate_list_title.add_theme_font_size_override("font_size", 13)
+    ultimate_list_title.add_theme_color_override("font_color", Color("e0cfaa"))
+    ultimate_column.add_child(ultimate_list_title)
+    add_child(ultimate_list_panel)
 
     presentation_label = Label.new()
     presentation_label.name = "PresentationResultLabel"
     presentation_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     presentation_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+    presentation_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     presentation_label.add_theme_font_size_override("font_size", 19)
     presentation_label.add_theme_color_override("font_color", Color("e8c46a"))
     presentation_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -189,21 +227,25 @@ func _build_structure() -> void:
     fast_replay_button = Button.new()
     fast_replay_button.name = "FastReplayButton"
     fast_replay_button.text = "빠르게: 끔"
+    _apply_keyboard_focus_ring(fast_replay_button)
     fast_replay_button.pressed.connect(_toggle_fast_replay)
     add_child(fast_replay_button)
     skip_presentation_button = Button.new()
     skip_presentation_button.name = "SkipPresentationButton"
     skip_presentation_button.text = "즉시 완료"
+    _apply_keyboard_focus_ring(skip_presentation_button)
     skip_presentation_button.pressed.connect(_skip_presentation)
     add_child(skip_presentation_button)
     reduced_motion_button = Button.new()
     reduced_motion_button.name = "ReducedMotionButton"
     reduced_motion_button.text = "모션 감소: 끔"
+    _apply_keyboard_focus_ring(reduced_motion_button)
     reduced_motion_button.pressed.connect(_toggle_reduced_motion)
     add_child(reduced_motion_button)
     sound_toggle_button = Button.new()
     sound_toggle_button.name = "SoundToggleButton"
     sound_toggle_button.text = "소리: 켬"
+    _apply_keyboard_focus_ring(sound_toggle_button)
     sound_toggle_button.pressed.connect(_toggle_sound)
     add_child(sound_toggle_button)
     sound_volume_slider = HSlider.new()
@@ -212,6 +254,7 @@ func _build_structure() -> void:
     sound_volume_slider.max_value = 1.0
     sound_volume_slider.step = 0.05
     sound_volume_slider.value = _sound_volume
+    _apply_keyboard_focus_ring(sound_volume_slider)
     sound_volume_slider.value_changed.connect(_set_sound_volume)
     add_child(sound_volume_slider)
     procedural_sfx_player = AudioStreamPlayer.new()
@@ -239,7 +282,7 @@ func _build_structure() -> void:
     set_meta("step", 10)
     set_meta("targeting_patch", "10.5")
     set_meta("background_component", "BattleBackground")
-    set_meta("background_asset", "res://assets/backgrounds/step3_mountain_fortress.svg")
+    set_meta("background_asset", "res://assets/backgrounds/twilight_ink_duel_v1.png")
     set_meta("hud_component", "TopCombatHud")
     set_meta("hud_layout", "player_status|player_momentum|round|enemy_momentum|enemy_status")
     set_meta("action_timing_component", "ActionTimingPanel")
@@ -281,7 +324,7 @@ func _layout_board() -> void:
     if is_instance_valid(top_hud):
         var hud_margin := maxf(10.0, size.x * 0.012)
         top_hud.position = Vector2(hud_margin, 10.0)
-        top_hud.size = Vector2(maxf(1.0, size.x - hud_margin * 2.0), 124.0)
+        top_hud.size = Vector2(maxf(1.0, size.x - hud_margin * 2.0), clampf(size.y * 0.23, 176.0, 220.0))
 
     var lower_margin := maxf(10.0, size.x * 0.014)
     var lower_bottom := maxf(8.0, size.y * 0.012)
@@ -309,14 +352,17 @@ func _layout_board() -> void:
         combat_progress_button.size = Vector2(progress_width, timing_height)
 
     if is_instance_valid(ultimate_menu):
-        ultimate_menu.position = Vector2(maxf(lower_margin, size.x - 250.0), 136.0)
-        ultimate_menu.size = Vector2(230.0, 34.0)
-    var presentation_y := 174.0
+        ultimate_menu.visible = false
+    if is_instance_valid(ultimate_list_panel) and is_instance_valid(top_hud):
+        var momentum_position := top_hud.position + top_hud.player_momentum.position
+        ultimate_list_panel.position = momentum_position + Vector2(0.0, top_hud.player_momentum.size.y + 8.0)
+        ultimate_list_panel.size = Vector2(top_hud.player_momentum.size.x, 104.0)
+    var presentation_y := maxf(224.0, top_hud.position.y + top_hud.round_panel.size.y + 12.0) if is_instance_valid(top_hud) else 224.0
     if is_instance_valid(presentation_label):
         presentation_label.position = Vector2(size.x * 0.32, presentation_y)
-        presentation_label.size = Vector2(size.x * 0.36, 34.0)
+        presentation_label.size = Vector2(size.x * 0.36, 60.0)
     if is_instance_valid(presentation_vfx):
-        presentation_vfx.position = Vector2(size.x * 0.20, presentation_y + 24.0)
+        presentation_vfx.position = Vector2(size.x * 0.20, presentation_y + 60.0)
         presentation_vfx.size = Vector2(size.x * 0.60, clampf(size.y * 0.22, 150.0, 210.0))
     var playback_x := maxf(lower_margin, size.x - 420.0)
     for button_value in [fast_replay_button, skip_presentation_button, reduced_motion_button]:
@@ -332,7 +378,7 @@ func _layout_board() -> void:
         sound_volume_slider.position = Vector2(lower_margin + 96.0, presentation_y + 6.0)
         sound_volume_slider.size = Vector2(130.0, 20.0)
 
-    var overlay_top := 145.0
+    var overlay_top := presentation_y + 70.0
     var overlay_bottom := timing_row_y - 10.0
     var overlay_height := maxf(1.0, overlay_bottom - overlay_top)
     var overlay_margin := maxf(12.0, size.x * 0.014)
@@ -359,7 +405,7 @@ func _layout_board() -> void:
 
     var board_width := _tile_width * float(tile_count) + _tile_gap * float(tile_count - 1)
     var board_left := (size.x - board_width) * 0.5
-    var desired_top := size.y * 0.43
+    var desired_top := size.y * 0.46
     var maximum_top := maxf(150.0, timing_row_y - _tile_height - 48.0)
     var minimum_top := minf(220.0, maximum_top)
     _board_top = clampf(desired_top, minimum_top, maximum_top)
@@ -387,8 +433,9 @@ func _layout_board() -> void:
         var engage_offset := _tile_width * 0.18
         player_foot.x -= engage_offset
         enemy_foot.x += engage_offset
-    player_character.place_foot_at(player_foot)
-    enemy_character.place_foot_at(enemy_foot)
+    if not _defer_character_snap:
+        player_character.place_foot_at(player_foot)
+        enemy_character.place_foot_at(enemy_foot)
 
     var anchor_y := get_tile_foot_anchor(_player_tile).y
     _anchor_line.position = Vector2(board_left, anchor_y - 1.0)
@@ -488,7 +535,27 @@ func _configure_ultimate_menu() -> void:
     _ultimate_definitions.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
         return int(a.get("action_slots", 1)) < int(b.get("action_slots", 1))
     )
+    _build_ultimate_list_buttons()
     _refresh_ultimate_menu()
+
+func _build_ultimate_list_buttons() -> void:
+    if not is_instance_valid(ultimate_list_panel):
+        return
+    for button in ultimate_list_buttons:
+        button.queue_free()
+    ultimate_list_buttons.clear()
+    var column := ultimate_list_title.get_parent() if is_instance_valid(ultimate_list_title) else null
+    if not is_instance_valid(column):
+        return
+    for index in range(_ultimate_definitions.size()):
+        var button := Button.new()
+        button.name = "UltimateListItem%d" % (index + 1)
+        _apply_keyboard_focus_ring(button)
+        button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+        button.add_theme_font_size_override("font_size", 12)
+        button.pressed.connect(_on_ultimate_menu_id_pressed.bind(index))
+        column.add_child(button)
+        ultimate_list_buttons.append(button)
 
 func _refresh_ultimate_menu() -> void:
     if not is_instance_valid(ultimate_menu) or not is_instance_valid(action_timing_panel):
@@ -517,6 +584,27 @@ func _refresh_ultimate_menu() -> void:
         ultimate_menu.text = "[절초 예약] %s · 슬롯 선택" % str(_selected_action_definition.get("name", ""))
     else:
         ultimate_menu.text = "절초 · 기세 %d/5" % momentum
+    for index in range(ultimate_list_buttons.size()):
+        var button := ultimate_list_buttons[index]
+        if index >= _ultimate_definitions.size():
+            button.visible = false
+            continue
+        var list_definition := _ultimate_definitions[index]
+        var list_slots_ok := _has_contiguous_open_slots(int(list_definition.get("action_slots", 1)))
+        var list_available := has_exact_momentum and list_slots_ok and _targeting_anchor <= 0 and not _inputs_locked()
+        var disabled_reason := ""
+        if _inputs_locked():
+            disabled_reason = "판정 중에는 절초 예약을 바꿀 수 없습니다."
+        elif _targeting_anchor > 0:
+            disabled_reason = "대상 지정이 끝난 뒤 다른 절초를 선택할 수 있습니다."
+        elif not has_exact_momentum:
+            disabled_reason = "기세 5 필요"
+        elif not list_slots_ok:
+            disabled_reason = "연속 빈 수 부족"
+        button.visible = true
+        button.disabled = not list_available
+        button.text = "%s · %d칸 · 위력 %s" % [str(list_definition.get("name", "절초")), int(list_definition.get("action_slots", 1)), str(list_definition.get("damage", "0"))]
+        button.tooltip_text = disabled_reason if not disabled_reason.is_empty() else "기세 5를 즉시 소모하고 빈 연속 슬롯에 예약합니다."
     set_meta("ultimate_available", any_available)
     set_meta("ultimate_momentum", momentum)
 
@@ -726,19 +814,39 @@ func _resolve_and_present(context: Dictionary) -> void:
 
     var result := resolution_engine.resolve_bundle(action_timing_panel.get_resolution_placements(), context, combat_state)
     _set_presentation_state("resolving")
-    combat_state = (result.get("state", {}) as Dictionary).duplicate(true)
     _presentation_events = result.get("presentation_events", [])
     _resolution_count += 1
     set_meta("resolution_count", _resolution_count)
     _append_resolution_logs(result.get("logs", []))
+    _presentation_skip_requested = false
 
-    await _present_authoritative_events()
+    var timing_results: Array = result.get("timing_results", [])
+    for timing_value in timing_results:
+        if typeof(timing_value) != TYPE_DICTIONARY:
+            continue
+        var timing_result: Dictionary = timing_value
+        await _apply_timing_snapshot(timing_result.get("state", combat_state))
+        set_meta("presentation_timing", int(timing_result.get("timing", 0)))
+        await _present_authoritative_events(timing_result.get("events", []), int(timing_result.get("timing", 0)))
+
+    combat_state = (result.get("state", combat_state) as Dictionary).duplicate(true)
+
+    _clear_action_selection()
+    _clear_card_detail()
+    if _combat_has_ended():
+        _apply_combat_state_to_view()
+        _set_presentation_state("combat_ended")
+        _play_procedural_sfx("defeat")
+        if is_instance_valid(presentation_label):
+            presentation_label.text = "전투 불능 · 결전 종료"
+            presentation_label.visible = true
+        if is_instance_valid(combat_log_panel):
+            combat_log_panel.append_entry("[전투 불능] 체력이 0이 되어 결전이 끝났습니다.", "system")
+        return
 
     var advanced := action_timing_panel.advance_after_resolution()
     combat_state["round_number"] = int(advanced.get("round_number", combat_state.get("round_number", 1)))
     combat_state["bundle_index"] = int(advanced.get("current_bundle", combat_state.get("bundle_index", 1)))
-    _clear_action_selection()
-    _clear_card_detail()
     _sync_runtime_context()
     combat_progress_button.mark_resolution_applied()
     _apply_combat_state_to_view()
@@ -746,6 +854,32 @@ func _resolve_and_present(context: Dictionary) -> void:
         combat_log_panel.append_entry("[판정 완료] 다음 행동 묶음을 준비합니다.", "system")
     _set_presentation_state("next_bundle_ready")
     _sync_progress_availability()
+
+func _apply_timing_snapshot(state_value) -> void:
+    if typeof(state_value) != TYPE_DICTIONARY:
+        return
+    var state_before_snapshot := combat_state.duplicate(true)
+    _defer_character_snap = true
+    combat_state = (state_value as Dictionary).duplicate(true)
+    _apply_combat_state_to_view()
+    _play_momentum_gain_sfx(state_before_snapshot, combat_state)
+    await get_tree().process_frame
+    var player_target := get_tile_foot_anchor(_player_tile)
+    var enemy_target := get_tile_foot_anchor(_enemy_tile)
+    if _player_tile == _enemy_tile:
+        player_target.x -= _tile_width * 0.18
+        enemy_target.x += _tile_width * 0.18
+    var player_moves := is_instance_valid(player_character) and player_character.get_foot_anchor_global().distance_to(player_target) > 1.0
+    var enemy_moves := is_instance_valid(enemy_character) and enemy_character.get_foot_anchor_global().distance_to(enemy_target) > 1.0
+    if not _reduced_motion:
+        if player_moves:
+            player_character.animate_move_to(player_target)
+        if enemy_moves:
+            enemy_character.animate_move_to(enemy_target)
+        if player_moves or enemy_moves:
+            await get_tree().create_timer(0.24).timeout
+    _defer_character_snap = false
+    _layout_board()
 
 func _set_presentation_state(value: String) -> void:
     _presentation_state = value
@@ -758,13 +892,20 @@ func _set_presentation_state(value: String) -> void:
 func _inputs_locked() -> bool:
     return _presentation_state not in ["planning", "next_bundle_ready"]
 
-func _present_authoritative_events() -> void:
+func _combat_has_ended() -> bool:
+    for actor_key in ["player", "enemy"]:
+        var actor: Dictionary = combat_state.get(actor_key, {})
+        var health = actor.get("health", [1, 1])
+        if typeof(health) == TYPE_ARRAY and health.size() >= 1 and int(health[0]) <= 0:
+            return true
+    return false
+
+func _present_authoritative_events(events_value: Array, timing: int) -> void:
     _set_presentation_state("presenting_result")
-    _presentation_skip_requested = false
     if not is_instance_valid(presentation_label):
         return
     var summary := "판정 완료"
-    for value in _presentation_events:
+    for value in events_value:
         if typeof(value) != TYPE_DICTIONARY:
             continue
         var event: Dictionary = value
@@ -776,18 +917,48 @@ func _present_authoritative_events() -> void:
         presentation_label.visible = true
         presentation_label.modulate = Color.WHITE if _reduced_motion else Color(1.0, 0.88, 0.50, 1.0)
         _show_ultimate_vfx(event)
+        _play_character_action_motion(event)
         _play_event_sfx(event)
         if not _presentation_skip_requested:
-            var duration := 0.04 if _fast_replay else (0.0 if _reduced_motion else 0.16)
+            var duration := _event_presentation_duration(event)
+            if _fast_replay:
+                duration = minf(duration, 0.10)
+            elif _reduced_motion:
+                duration = 0.0
             if duration > 0.0:
-                await get_tree().create_timer(duration).timeout
+                await _wait_for_presentation_delay(duration)
         if _presentation_skip_requested:
             break
     presentation_label.text = summary
     presentation_label.visible = not _presentation_skip_requested
     if is_instance_valid(presentation_vfx):
         presentation_vfx.visible = false
-    set_meta("presentation_event_count", _presentation_events.size())
+    set_meta("presentation_event_count", events_value.size())
+
+func _wait_for_presentation_delay(duration: float) -> void:
+    var deadline_usec := Time.get_ticks_usec() + int(duration * 1000000.0)
+    while not _presentation_skip_requested and Time.get_ticks_usec() < deadline_usec:
+        await get_tree().process_frame
+
+func _event_presentation_duration(event: Dictionary) -> float:
+    if str(event.get("card_id", "")).begins_with("ultimate_"):
+        return 0.70
+    if int(event.get("damage", 0)) > 0:
+        return 0.24
+    return 0.16
+
+func _play_character_action_motion(event: Dictionary) -> void:
+    if _reduced_motion:
+        return
+    var card_id := str(event.get("card_id", ""))
+    var is_attack := card_id.begins_with("ultimate_") or card_id.contains("attack")
+    if not is_attack:
+        return
+    var actor := str(event.get("actor", ""))
+    if actor == "player" and is_instance_valid(player_character):
+        player_character.play_attack_motion(_event_presentation_duration(event))
+    elif actor == "enemy" and is_instance_valid(enemy_character):
+        enemy_character.play_attack_motion(_event_presentation_duration(event))
 
 func _presentation_summary_for_event(event: Dictionary, fallback: String) -> String:
     var outcome := str(event.get("outcome", ""))
@@ -826,6 +997,12 @@ func _show_ultimate_vfx(event: Dictionary) -> void:
     presentation_vfx.texture = atlas
     presentation_vfx.modulate = Color.WHITE if _reduced_motion else Color(1.0, 1.0, 1.0, 0.96)
     presentation_vfx.visible = true
+    presentation_vfx.pivot_offset = presentation_vfx.size * 0.5
+    presentation_vfx.scale = Vector2.ONE
+    if not _reduced_motion:
+        var tween := create_tween()
+        tween.tween_property(presentation_vfx, "scale", Vector2(1.06, 1.06), 0.12)
+        tween.tween_property(presentation_vfx, "scale", Vector2.ONE, 0.32)
 
 func _toggle_fast_replay() -> void:
     _fast_replay = not _fast_replay
@@ -853,6 +1030,82 @@ func _toggle_sound() -> void:
 func _set_sound_volume(value: float) -> void:
     _sound_volume = clampf(value, 0.0, 1.0)
 
+func _apply_keyboard_focus_ring(control: Control) -> void:
+    if control == null:
+        return
+    control.focus_mode = Control.FOCUS_ALL
+    var focus_style := StyleBoxFlat.new()
+    focus_style.bg_color = Color(1.0, 1.0, 1.0, 0.08)
+    focus_style.border_color = Color.WHITE
+    focus_style.set_border_width_all(2)
+    focus_style.set_corner_radius_all(4)
+    focus_style.content_margin_left = 3.0
+    focus_style.content_margin_right = 3.0
+    focus_style.content_margin_top = 2.0
+    focus_style.content_margin_bottom = 2.0
+    control.add_theme_stylebox_override("focus", focus_style)
+    control.set_meta("keyboard_focus_ring", true)
+
+func _configure_keyboard_focus_order() -> void:
+    var sequence: Array[Control] = []
+    if is_instance_valid(basic_card_tray):
+        for card_value in basic_card_tray.cards:
+            if card_value is Control:
+                sequence.append(card_value as Control)
+    if is_instance_valid(action_timing_panel):
+        for timing_index in range(1, 11):
+            var slot := action_timing_panel.get_slot(timing_index)
+            if is_instance_valid(slot):
+                sequence.append(slot)
+    for tile in tiles:
+        if is_instance_valid(tile):
+            sequence.append(tile)
+    if is_instance_valid(combat_progress_button) and is_instance_valid(combat_progress_button._button):
+        sequence.append(combat_progress_button._button)
+    for presentation_control in [fast_replay_button, skip_presentation_button, reduced_motion_button, sound_toggle_button, sound_volume_slider]:
+        if is_instance_valid(presentation_control):
+            sequence.append(presentation_control as Control)
+    if sequence.size() < 2:
+        return
+    for index in range(sequence.size()):
+        var current := sequence[index]
+        var next := sequence[(index + 1) % sequence.size()]
+        var previous := sequence[(index - 1 + sequence.size()) % sequence.size()]
+        current.focus_next = current.get_path_to(next)
+        current.focus_previous = current.get_path_to(previous)
+    set_meta("keyboard_focus_order", "cards|timings|tiles|progress|presentation_controls")
+
+func _configure_accessibility_semantics() -> void:
+    if is_instance_valid(basic_card_tray):
+        for card_value in basic_card_tray.cards:
+            if card_value is BasicCardTrayItem:
+                var card := card_value as BasicCardTrayItem
+                var card_name := str(card.definition.get("name", "행동"))
+                _set_accessibility_semantics(card, "%s 행동 카드" % card_name, "선택 후 행동 수 슬롯에 배치합니다.")
+    if is_instance_valid(action_timing_panel):
+        for timing_index in range(1, 11):
+            var slot := action_timing_panel.get_slot(timing_index)
+            if is_instance_valid(slot):
+                _set_accessibility_semantics(slot, "%d수 행동 슬롯" % timing_index, "선택한 행동을 이 수에 배치하거나 배치 내용을 확인합니다.")
+    for tile in tiles:
+        if is_instance_valid(tile):
+            _set_accessibility_semantics(tile, "%d번 전장 타일" % tile.tile_index, "이동 또는 공격의 대상 타일입니다.")
+    if is_instance_valid(combat_progress_button) and is_instance_valid(combat_progress_button._button):
+        _set_accessibility_semantics(combat_progress_button._button, "행동 묶음 진행", "현재 행동 묶음을 확정하고 대응부터 순서대로 판정합니다.")
+    _set_accessibility_semantics(fast_replay_button, "빠른 재생", "전투 연출의 재생 시간을 짧게 전환합니다.")
+    _set_accessibility_semantics(skip_presentation_button, "즉시 완료", "진행 중인 전투 연출을 즉시 끝내고 확정 결과를 유지합니다.")
+    _set_accessibility_semantics(reduced_motion_button, "모션 감소", "이동과 공격 모션을 줄이고 결과 텍스트와 로그를 유지합니다.")
+    _set_accessibility_semantics(sound_toggle_button, "소리 켜기 또는 끄기", "전투 효과음 재생을 전환합니다.")
+    _set_accessibility_semantics(sound_volume_slider, "효과음 음량", "왼쪽과 오른쪽 화살표로 전투 효과음의 크기를 조절합니다.")
+    set_meta("accessibility_semantics", "cards|timings|tiles|progress|presentation_controls")
+
+func _set_accessibility_semantics(control: Control, name_value: String, description_value: String) -> void:
+    if not is_instance_valid(control):
+        return
+    control.accessibility_name = name_value
+    control.accessibility_description = description_value
+    control.set_meta("accessibility_semantics", true)
+
 func _play_event_sfx(event: Dictionary) -> void:
     var outcome := str(event.get("outcome", ""))
     if outcome == "interrupted":
@@ -860,11 +1113,24 @@ func _play_event_sfx(event: Dictionary) -> void:
     elif str(event.get("defense_outcome", "")) == "evade":
         _play_procedural_sfx("evade")
     elif str(event.get("defense_outcome", "")) == "block":
-        _play_procedural_sfx("block")
+        _play_procedural_sfx("metal_clash" if int(event.get("damage", 0)) > 0 else "block")
     elif int(event.get("damage", 0)) > 0:
         _play_procedural_sfx("heavy_hit" if int(event.get("damage", 0)) >= 14 else "sword_wind")
 
+func _play_momentum_gain_sfx(state_before: Dictionary, state_after: Dictionary) -> void:
+    for actor_key in ["player", "enemy"]:
+        var before_actor: Dictionary = state_before.get(actor_key, {})
+        var after_actor: Dictionary = state_after.get(actor_key, {})
+        var before_momentum = before_actor.get("momentum", [0, 5])
+        var after_momentum = after_actor.get("momentum", [0, 5])
+        var before_value := int(before_momentum[0]) if typeof(before_momentum) == TYPE_ARRAY and before_momentum.size() >= 1 else 0
+        var after_value := int(after_momentum[0]) if typeof(after_momentum) == TYPE_ARRAY and after_momentum.size() >= 1 else 0
+        if after_value > before_value:
+            _play_procedural_sfx("momentum_charge")
+            return
+
 func _play_procedural_sfx(kind: String) -> void:
+    set_meta("last_sfx_kind", kind)
     if _sound_muted or not is_instance_valid(procedural_sfx_player):
         return
     var frequency := 440.0
@@ -987,7 +1253,7 @@ func get_layout_snapshot() -> Dictionary:
     return {
         "layout_ready": _layout_ready,
         "background_ready": is_instance_valid(battle_background) and battle_background.texture != null,
-        "background_path": "res://assets/backgrounds/step3_mountain_fortress.svg",
+        "background_path": "res://assets/backgrounds/twilight_ink_duel_v1.png",
         "hud_ready": is_instance_valid(top_hud),
         "hud_snapshot": hud_snapshot,
         "action_timing_ready": is_instance_valid(action_timing_panel),

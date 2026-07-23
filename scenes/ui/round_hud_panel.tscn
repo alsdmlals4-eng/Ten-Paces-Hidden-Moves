@@ -3,7 +3,7 @@
 [ext_resource path="res://src/ui/round_hud_panel.gd" type="Script" id="1"]
 
 [node name="RoundHudPanel" type="Control"]
-custom_minimum_size = Vector2(360, 124)
+custom_minimum_size = Vector2(180, 96)
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 2

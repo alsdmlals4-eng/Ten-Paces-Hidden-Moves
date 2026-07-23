@@ -3,7 +3,7 @@
 [ext_resource path="res://src/ui/combatant_status_panel.gd" type="Script" id="1"]
 
 [node name="CombatantStatusPanel" type="Control"]
-custom_minimum_size = Vector2(260, 124)
+custom_minimum_size = Vector2(150, 124)
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 2

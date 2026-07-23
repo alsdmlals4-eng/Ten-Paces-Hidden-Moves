@@ -50,15 +50,15 @@
 - [x] Godot 전장·대응 검증 fixture: 4번·7번.
 - [ ] 최신 Actions 재실행·통과.
 
-### 최신 Windows 확인 대기
+### 최신 HiGodot Windows 런타임 확인
 
-- [ ] 플레이어 4번·상대 7번 렌더.
-- [ ] 시작 거리 3.
-- [ ] 1묶음 이동 후 플레이어 5번·상대 6번.
-- [ ] RESPONSE 10.6 실제 피해 감소·회피·태세 결합.
-- [ ] RESOURCE PREVIEW 10.6 HUD 예상값·해제 복원·부족 잠금.
+- [x] 플레이어 4번·상대 7번 렌더와 시작 거리 3.
+- [x] 1묶음 이동 후 플레이어 5번·상대 6번 fixture.
+- [x] RESPONSE 10.6: 같은 수 막기에서 피해 12가 체력 30→24로 감소.
+- [x] RESOURCE PREVIEW 10.6: 보법·속공·명상 계획이 유효하고 예상 기력 5/5·내력 4/4.
+- [x] 절초 목록은 기세 5에서 활성화되고, 실제 클릭으로 십보 유파 1수 예약·기세 5→0·오른쪽 대상 지정.
 
-판정: `NOT_RUN` for latest Windows build.
+증거: 2026-07-23 HiGodot `project_run` live session, framebuffer capture, `game_eval`, 실제 창 클릭. 회피·태세 결합의 결과 UI, 자원 해제 복원·부족 잠금의 실제 HUD 표시는 별도 수동 항목으로 남긴다.
 
 ### 미구현·미실행
 
@@ -304,7 +304,7 @@ notes:
 - [ ] 조건 미충족 시 `행동·대상·자원 확인 필요`다.
 - [ ] 판정 완료 후 `판정 완료`다.
 
-현재 판정은 동기 처리다. 별도 `resolving` 상태 테스트는 단계별 연출 구현 후 추가한다.
+엔진 판정은 한 번 수행하고, 응답 준비와 각 수의 확정 snapshot을 순차로 재생한다. `committed`부터 `next_bundle_ready`까지 입력 잠금과 `resolving`/`presenting_result` 상태를 자동 테스트한다.
 
 ### RESOURCE-001 시작 상태
 
@@ -458,7 +458,7 @@ KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST
 
 ## 16. 접근성 검증
 
-현재 포인터 흐름만 구현돼 있으므로 키보드 항목은 `NOT_RUN`이다.
+카드→수 슬롯→대상 타일→진행의 키보드 흐름은 headless 자동 검증으로 구현 확인했다. 실제 Windows 탭 순서·포커스 가시성·보조기기 사용성은 아직 `NOT_RUN`이다.
 
 - [ ] 색 없이 이동·공격·잠금·부족 상태를 구분한다.
 - [ ] 키보드만으로 카드→슬롯→대상→진행→상세→기록을 조작한다.
@@ -520,12 +520,69 @@ T1 진입 조건:
 - [x] 자동: 실제 피해 중단, 태세 강건의 1슬롯 속공 보호, 2슬롯 무효, 사망 우선.
 - [x] 자동: 밀착 자동 적중, 정지 상대 타일 진입, 공동 목적지, 자리 교환 금지.
 - [x] 자동: ImageGen 수묵·금빛 절초 VFX RGBA 알파(0~255)와 세 절초 AtlasTexture 밴드 선택.
-- [ ] 수동 Windows/HiGodot: 절초 메뉴·예약·입력 잠금·결과 UI·소리 제어.
-- [ ] 성능: 대표/최악 장면 frame time·CPU·GPU·메모리·로딩 baseline 기록.
+- [x] 수동 Windows/HiGodot: 절초 목록 활성, 클릭 선택, 1수 예약, 기세 5→0, 방향 대상 지정.
+- [x] 수동 Windows/HiGodot: 수묵·금빛 절초 VFX, 대시 후 5번/상대 6번 위치, `사거리 실패` 결과 문구.
+- [x] 수동 Windows/HiGodot: `소리:끔` → `소리:켬` 음소거 토글의 텍스트 상태 변경.
+- [x] HiGodot 런타임: 진행 버튼 직후 `resolving`·`locked=true`이며 카드 선택 핸들러가 기존 선택을 바꾸지 않는다.
+- [x] Headless: 파공검기 처치 후 `combat_ended`·입력 잠금·전투 불능 문구·패배음 요청 (`verify_combat_terminal_presentation.gd`).
+- [x] Headless: 확정 snapshot 기세 증가, 피해가 남은 막기의 금속 충돌, 완전 막기의 별도 SFX 요청 (`verify_combat_sfx_presentation.gd`).
+- [x] Headless: 강호낭인/무명 검객 전신 RGBA 원화가 각 역할에 맞게 로드되고 타일 발 앵커를 보존하며, 원화 상태에서도 짧은 공격 돌진 뒤 제자리로 복귀 (`verify_combat_character_art.gd`).
+- [x] Headless: 절초·재생·모션·소리·음량·진행의 표준 키보드 컨트롤이 명시적 포커스 링을 보유 (`verify_combat_focus_visuals.gd`).
+- [x] Headless: 실제 `InputEventMouseButton` 카드·수 슬롯·절초 버튼 입력이 `resolving` 중 선택·예약·기세를 바꾸지 않음 (`verify_combat_pointer_lock.gd`).
+- [x] Headless: `즉시 완료`가 이미 재생 중인 파공검기 연출 대기를 다음 프레임에 취소하고 텍스트·VFX를 숨김 (`verify_combat_presentation_controls.gd`).
+- [x] Headless: 절초 버튼의 기세 부족·연속 빈 수 부족·판정 중 비활성 사유 tooltip (`verify_ultimate_ui.gd`).
+- [ ] 수동 Windows/HiGodot: resolving 입력 잠금의 실제 마우스 상호작용 차단·실제 청취 음향.
+- [x] Windows/HiGodot 대표 시작 장면: 5개 표본에서 145 FPS, draw call 267, primitive 5,664~5,862, video memory 54,122,929 bytes, node 22,564.
+- [x] 성능: 대표 시작 장면의 Windows 로딩·CPU·프로세스 메모리와 최악 절초/밀착 장면의 실제 렌더 frame time·GPU draw call·video memory를 아래에 기록했다. Release 빌드/정식 목표 사양의 별도 예산은 후속 최적화에서 다시 측정한다.
 - [ ] 접근성: 실제 키보드 포커스·긴 한국어·최소 해상도 수동 확인.
 
 이 절은 이전의 체력 20, 한 칸 한 전투원, 집중/강건 예정 체크를 대체한다.
 
 ### Headless 측정 기록 (2026-07-23)
 
-`res://tests/verify_combat_performance_headless.gd`를 1440×900, 120프레임으로 실행했다. RGBA 절초 VFX 활성 후 이 환경의 결과는 평균 `7.07ms/frame`, static memory `64,984,694 bytes`, node `207`, object `2,020`이었다. Headless라 draw call과 video memory는 0이므로 Windows GPU·최악 장면·로딩 기준선의 대체 증거가 아니며 해당 수동 Gate는 계속 `NOT_RUN`이다.
+`res://tests/verify_combat_performance_headless.gd`를 1440×900, 120프레임으로 실행했다. 밀착 상태·파공검기 RGBA VFX·펼친 전투 로그 52개·긴 한국어 결과 문구와 전장 전신 원화·표준 컨트롤 포커스 링을 동시에 활성화한 최신 실행의 결과는 평균 `7.56ms/frame`, static memory `90,063,941 bytes`, node `215`, object `2,162`였다. 전신 원화 import 뒤 static memory가 약 12.6MB 증가했음을 기록한다. Headless라 draw call과 video memory는 0이므로 Windows GPU·실제 로딩·목표 사양 기준선의 대체 증거가 아니며 해당 수동 Gate는 계속 `NOT_RUN`이다.
+
+### HiGodot Windows 대표 장면 측정 (2026-07-23)
+
+실제 1280×800 override 창의 시작 장면을 HiGodot `monitors_get`으로 300ms 간격 5회 표본화했다. FPS는 모두 `145`, draw call `267`, primitive `5,664~5,862`, video memory `54,122,929 bytes`, node `22,564`였다. `memory/static`은 Editor·MCP 프로세스와 공유되는 `524,596,641~524,854,457 bytes`라 게임 단독 메모리로 해석하지 않는다. 이 기록은 대표 시작 장면의 런타임 증거다.
+
+### Windows 대표 시작 장면 로딩·프로세스 표본 (2026-07-23)
+
+Godot 4.7.1 Windows 독립 DEBUG 프로세스로 현재 프로젝트를 실행하고, 창 핸들이 생길 때까지와 그 뒤 5초 유휴 상태를 측정했다. 창 준비 시간은 `875ms`, 5.008초 표본의 CPU 누적 변화는 `6.1406s`(단일 논리 코어 환산 `122.62%`), 작업 집합은 `243,093,504 bytes`, 전용 메모리는 `309,710,848 bytes`였다. 이 값은 기기(`NVIDIA GeForce RTX 3050`, 8GB)와 DEBUG 실행의 대표 시작 장면 참고값이며, 정식 목표 사양/Release 빌드 예산은 아니다. `nvidia-smi`는 GPU·드라이버는 보고했으나 이 Windows 세션에서 프로세스별 GPU 메모리를 `N/A`로 반환했다.
+
+### Windows 실제 렌더 최악 장면 표본 (2026-07-23)
+
+동일 Godot 4.7.1 DEBUG 렌더러(OpenGL 3.3, `NVIDIA GeForce RTX 3050`)로 `verify_combat_performance_headless.gd`를 `--headless` 없이 실행했다. 장면은 밀착(거리 0), 파공검기 금빛/먹빛 VFX, 52개 전투 로그, 긴 한국어 결과 문구, 전신 전투원 원화를 동시에 표시한다. 120프레임 결과는 평균 `17.11ms/frame`, draw call `378`, video memory `69,602,965 bytes`, static memory `60,393,166 bytes`, node `215`, object `2,147`이었다. 실행 로그가 GPU와 장치를 직접 보고했고 video memory가 0이 아니므로 이 항목은 실제 렌더 증거다. Release 빌드·정식 최소/권장 사양 재측정은 후속 배포 Gate로 남긴다.
+
+## UI/UX 및 모션 회귀 갱신 (2026-07-23)
+
+- [x] Headless: 기본 카드 → 수 슬롯 → 대상 타일 순서의 포커스 및 Enter 입력이 카드 선택·배치·대상 확정을 수행한다 (`verify_combat_keyboard_accessibility.gd`).
+- [x] Headless: Tab 순서는 카드 8종 → 수 슬롯 1~10 → 대상 타일 1~10 → 진행 → 재생/음향 제어 → 카드로 명시적으로 순환한다 (`verify_combat_focus_order.gd`).
+- [x] Headless: 카드·수 슬롯·전장 타일·진행·재생/음향 제어가 한국어 접근성 이름·설명을 제공한다 (`verify_combat_assistive_labels.gd`).
+- [x] Windows Godot 4.7 렌더러(OpenGL 3.3, RTX 3050): 같은 접근성 이름·설명 검증이 실제 렌더 프로세스에서도 통과한다. 화면 읽기 음성 출력 자체는 계속 수동 검수다.
+- [x] Headless: 진행 버튼·모션 감소·음향 토글은 키보드 포커스 대상이다.
+- [x] Headless: 960×640과 1440×900에서 HUD·절초 목록·수 슬롯·진행·카드 트레이가 화면 밖으로 나가지 않고 수 슬롯이 카드 트레이 위에 유지되며 긴 한국어 결과가 60px 줄바꿈 라벨 안에 들어간다 (`verify_combat_layout_accessibility.gd`).
+- [x] Headless: 새 수묵 석양 배경과 초상 자산이 매니페스트의 프롬프트·경로·라이선스 기록과 함께 로드된다.
+- [x] Headless: 행동은 확정 `timing_results`를 따라 대응 → 각 수의 속공/이동/일반 행동 순으로 재생된다. 이동은 발 앵커까지 짧게 이동하고, 공격/절초는 짧은 전진 모션을 재생한다.
+- [x] Headless: 빠른 재생·모션 감소·즉시 완료 중 `즉시 완료`는 진행 중 절초의 최대 0.70초 대기를 남기지 않고 다음 프레임에 취소한다.
+- [x] Windows/HiGodot: 초기 화면에서 `Tab` 한 번으로 1수 슬롯의 흰 포커스 테두리가 표시된다.
+- [ ] Windows/HiGodot: 전체 탭 순서, Enter, 최소 해상도, 긴 한국어·보조기기는 수동 확인이 필요하다 (`NOT_RUN`).
+- [ ] Windows/HiGodot: 이동·대기·공격·절초 모션의 읽기성, 절초 VFX 지속 시간, 모션 감소/즉시 완료 동작은 수동 확인이 필요하다 (`NOT_RUN`).
+
+## Issue #11 종료 감사표 (2026-07-23)
+
+| 요구 범위 | 현재 증거 | 상태 |
+|---|---|---|
+| P1 4/7·RESPONSE·자원 미리보기 | `verify_combat_board.gd`, `verify_response_rules.gd`, HiGodot Windows 실행 기록 | PASS |
+| 30 체력·공격력 8·집중 제거 | `verify_ultimate_interrupt_engagement.gd`, 전투 계약/정본 검사 | PASS |
+| 피해 중단·태세 강건·동시 피해·사망 우선 | `verify_ultimate_interrupt_engagement.gd` | PASS |
+| 거리 0 밀착·공동 목적지·교환/통과 금지 | `verify_ultimate_interrupt_engagement.gd` | PASS |
+| 절초 3종·기세 5 예약/무환불·사거리·피해·재획득 | `verify_ultimate_interrupt_engagement.gd`, `verify_ultimate_ui.gd`, HiGodot 예약 기록 | PASS |
+| 확정 `presentation_events`·수별 순차 재생·입력 잠금 | 엔진/보드 회귀, `verify_combat_pointer_lock.gd`, `verify_combat_terminal_presentation.gd` | PASS |
+| 수묵·금빛 자산·전신 원화·절차적 SFX | 자산 매니페스트 알파 감사, 원화/SFX 회귀 | PARTIAL — 실제 청취가 남음 |
+| 빠른 재생·즉시 완료·모션 감소·Tab/Enter·한국어 레이아웃 | 연출 제어·포커스·키보드·레이아웃 회귀 | PASS |
+| 접근성 이름·설명·실제 보조기기 | `verify_combat_assistive_labels.gd` 및 Windows 렌더 통과 | PARTIAL — 화면 읽기 실제 음성 출력이 남음 |
+| 대표/최악 장면 성능·로딩 | Windows DEBUG 시작 875ms/243MB/310MB, RTX 3050 최악 장면 17.11ms·378 draw call·69.6MB | PASS — Release/정식 사양은 후속 Gate |
+| 문서·CI 범위·구형 활성 참조 | canonical combat docs·reference freshness·PowerShell 문법·`git diff --check` | PASS |
+
+Issue #11은 구현·자동/Windows 렌더 증거 기준으로는 `IMPLEMENTED_FOR_REVIEW`다. 실제 청취 음향, 운영체제 화면 읽기 도구의 음성 출력, 실제 마우스 입력 잠금 및 모션 읽기성은 사람이 확인해야 하므로 전체 종료 상태는 `PARTIAL`이다.

@@ -105,8 +105,8 @@ Base Foundation:
 - 시작 위치 4/7 데이터·코드·테스트·SVG 변경: 완료.
 - 활성 문서·Skill·중복 Context 정리: 완료.
 - 최신 canonical reference freshness·combat contract Actions: 실행 대기.
-- 사용자 Windows 4/7 렌더·판정: `NOT_RUN`.
-- 최신 RESPONSE·RESOURCE PREVIEW Godot: `UNVERIFIED`.
+- HiGodot Windows 런타임 4/7 렌더·판정: `PASSED` — 10칸 화면에서 플레이어 4번·상대 7번, 엔진 fixture의 4→5·7→6을 확인했다.
+- 최신 RESPONSE·RESOURCE PREVIEW Godot headless와 HiGodot 런타임: `PASSED` — 같은 수 막기 피해 12→체력 24, 자원 미리보기 기력 5/5·내력 4/4를 확인했다.
 - PDF 발행·접근성·성능·외부 플레이테스트·Branch protection: `NOT_RUN`.
 
 ## 다음 작업
@@ -114,9 +114,9 @@ Base Foundation:
 1. 최신 정본·전투 계약 Actions 실행·실패 개선 루프.
 2. PR #7과 Change Log에 정적 증거 기록.
 3. 사용자 GitHub Desktop Fetch/Pull.
-4. Godot F5로 플레이어 4번·상대 7번과 4→5·7→6 판정 확인.
-5. RESPONSE·RESOURCE PREVIEW 10.6 확인.
-6. Issue #11 Windows/HiGodot 수동 UI·음향·접근성 및 성능 baseline.
+4. Issue #11 절초 결과·수별 모션·입력 잠금·음향 제어의 Windows/HiGodot 수동 증거 수집.
+5. 실제 키보드 탭 순서·긴 한국어·최소 해상도와 보조기기 경로를 검수한다.
+6. 대표·최악 장면의 Windows GPU·CPU·메모리·로딩 성능 baseline을 기록한다.
 
 ## 보호 범위
 
@@ -125,6 +125,19 @@ Base Foundation:
 - 성장·행운·12세력 구상은 삭제하지 않고 T1 이후 가설로 보존.
 - 사용자 로컬 미커밋 변경.
 - 실행하지 않은 검증의 미검증 상태.
+# UI/UX와 단순 모션 갱신 (2026-07-23)
+
+- 상태: `IMPLEMENTED_FOR_REVIEW`.
+- 수묵 석양 전장·양측 초상은 프로젝트 전용 생성 자산이며, 추적 정보는 `assets/ASSET_MANIFEST.json`에 있다.
+- 전장 위 전투원도 단순 도형 대신 강호낭인/무명 검객 전신 RGBA 원화를 사용한다. Godot 4.7 실제 창 캡처에서 4번·7번 타일의 발 앵커, 수묵 석양 배경, HUD·절초 목록·카드 계층과 함께 렌더됨을 확인했다.
+- 표준 키보드 컨트롤은 흰색 2px 포커스 링을 사용한다. Windows 실제 창에 Tab 입력을 전달했고, headless에서는 절초·재생·모션·소리·음량·진행 컨트롤의 포커스 링 구성을 자동 확인했다.
+- 절초 목록은 플레이어 절초 기세 아래에 표시한다. 기세 5, 빈 연속 수, 입력 잠금 상태가 선택 가능 여부를 결정한다.
+- 행동은 `timing_results`를 따라 한 수씩 재생하며, 대기 호흡·이동·공격/절초의 단순 모션은 표현 전용이다.
+- Headless: 구형 배경 활성 참조 제거, 키보드 카드→수 슬롯→대상→진행 흐름, 보드/절초 회귀는 통과했다.
+- 2026-07-23 Godot 4.7 재검증: 프로젝트 파싱 및 STEP 0, 4/7·RESPONSE, 중단/강건/밀착/절초, 절초 UI, 전투 불능/SFX, `InputEventMouseButton` 기반 resolving 입력 잠금, 키보드, 960×640·1440×900 레이아웃, 밀착·절초 VFX·52개 로그 성능 테스트가 모두 통과했다. 전신 원화·표준 포커스 링 뒤 마지막 Headless 혼잡 표본은 평균 7.56ms/frame, static memory 90,063,941 bytes였다.
+- 활성 자산 매니페스트의 한글 역할명·폴백 설명을 UTF-8로 바로잡았고, 수묵·금빛 RGBA VFX의 프롬프트·경로·투명도 검수·라이선스 정보를 유지했다.
+- HiGodot Windows 런타임: 4/7 시작, 4→5·7→6, RESPONSE·RESOURCE PREVIEW, 절초 목록 활성·클릭 예약·방향 지정과 수묵·금빛 VFX/사거리 실패 결과/대시 후 5·6번 위치를 확인했다. 진행 직후 `resolving`·`locked=true`와 카드 선택 핸들러 차단, `Tab` 한 번의 1수 슬롯 포커스 테두리, `소리:끔` → `소리:켬` 토글 텍스트 상태와 대표 시작 장면 5개 표본 145 FPS·267 draw call·약 54.1MB video memory도 기록했다. 별도 Godot 4.7.1 DEBUG 프로세스의 대표 시작 장면은 창 준비 875ms, 5초 유휴 CPU 단일 코어 환산 122.62%, 작업 집합 약 243MB, 전용 메모리 약 310MB였다. 같은 RTX 3050 렌더러에서 밀착·파공검기 VFX·52개 로그 최악 장면은 120프레임 평균 17.11ms, 378 draw call, video memory 약 69.6MB를 기록했다. Headless는 파공검기 처치의 `combat_ended`·입력 잠금·패배음과 확정 기세/막기 SFX 요청을 검증했다. 입력 잠금의 실제 마우스 상호작용·실제 청취 음향, 전체 포커스 순서·최소 해상도·접근성은 계속 `NOT_RUN`이다.
+
 # Issue #11 정본 갱신 (2026-07-23)
 
-절초 3종·피격 중단·강건·밀착은 구현 및 자동 검증 완료다. `[집중]`은 제거했다. 남은 작업은 Windows/HiGodot 수동 UI·음향·접근성 확인 및 성능 baseline 증거이며, 상세 규칙은 `docs/02_COMBAT_RULES.md`를 따른다.
+절초 3종·피격 중단·강건·밀착·전투 불능 결과 상태는 구현 및 자동 검증 완료다. `[집중]`은 제거했다. 대표 시작과 최악 절초/밀착 Windows 성능 표본은 확보했다. `즉시 완료`는 진행 중 절초 타이머도 다음 프레임에 취소하고, Tab은 카드→수 슬롯→대상 타일→진행→재생/음향 제어 순서로 회귀 검증했다. 같은 조작 요소에 한국어 Godot 접근성 이름·설명도 부여했고, 이 검증은 RTX 3050 실제 Windows 렌더러에서도 통과했다. 남은 작업은 실제 청취 음향·보조기기 확인이며, 상세 규칙은 `docs/02_COMBAT_RULES.md`를 따른다.
