@@ -26,9 +26,9 @@
 | RESPONSE 10.6 | PASS — headless·Windows 기술 검증 | 막기·회피·태세 결합 |
 | RESOURCE PREVIEW 10.6 | PASS — headless·Windows 기술 검증 | 배치 즉시 예상 자원 |
 | Issue #11 | PASS — 자동·Windows 런타임·UI Automation·DEBUG 성능 증거 | 피격 중단·강건·밀착·절초 3종·단계별 연출 |
-| STEP 12 | 미구현 | 성향 기반 단순 AI |
-| STEP 13 | 미구현 | 승패·종료·재시작 |
-| STEP 14 | 미실행 | POC 플레이테스트 |
+| STEP 12 | 구현·MCP 런타임 확인 | 공개 상태 기반 결정적 최소 AI |
+| STEP 13 | 구현·MCP 런타임 확인 | 승패·종료·재시작 |
+| STEP 14 | 기계적 5시나리오 기록·사람 관찰 대기 | POC 플레이테스트 |
 
 ## 3. P0-1 — 핵심 전투 책임 원본 정렬
 

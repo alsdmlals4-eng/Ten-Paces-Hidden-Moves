@@ -119,7 +119,7 @@ def assert_start_position_contract(active: dict[str, str], runtime: dict[str, st
         "readme": ("플레이어 4번·상대 7번 시작",),
         "game": ("기본 시작 위치는 플레이어 4번, 상대 7번", "시작 거리는 3칸"),
         "rules": ("플레이어 기본 시작 위치는 4번", "상대 기본 시작 위치는 7번", "시작 거리는 3칸"),
-        "content": ("`[강호낭인]`, 4번 칸 시작", "고정 검증 상대, 7번 칸 시작"),
+        "content": ("`[강호낭인]`, 4번 칸 시작", "공개 상태 최소 AI 상대, 7번 칸 시작"),
         "roadmap": ("P0-3 — 시작 위치 4/7 전파·활성 원본 정리",),
         "poc": ("플레이어 시작 | 4번", "상대 시작 | 7번", "시작 거리 | 3칸"),
         "ui": ("플레이어 4번·상대 7번 시작", "시작 거리는 3칸"),
@@ -218,9 +218,9 @@ def assert_core_rules(active: dict[str, str]) -> None:
     assert board["engagement"]["same_tile_allowed"] is True
     for key in ("game", "rules", "roadmap", "poc", "ui", "qa", "architecture", "presentation", "hub_context"):
         assert "Issue #11" in active[key], key
-    assert "고정 행동 계획" in active["rules"]
-    assert "고정 행동 계획" in active["poc"]
-    assert "정식 AI가 아니다" in active["rules"]
+    assert "공개 상태 최소 AI" in active["rules"]
+    assert "공개 상태 최소 AI" in active["poc"]
+    assert "플레이어의 미확정 슬롯·대상·절초 예약은 읽지 않는다" in active["rules"]
 
 
 def assert_scope_and_document_lifecycle(active: dict[str, str]) -> None:

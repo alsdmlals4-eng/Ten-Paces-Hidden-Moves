@@ -2,12 +2,12 @@
 
 ## 현재 상태
 
-- Work Mode: `REVIEW` — Issue #11 마감 증거와 활성 정본 최신성 확인을 마쳤고, 다음 POC 범위를 준비한다.
+- Work Mode: `BUILD` — Issue #13의 합·방어·필중, STEP 12 AI, STEP 13 재시작을 구현하고 STEP 14 증거를 정리 중이다.
 - Base: `ee265576da7f67d3278f8099dd97d4e714ef0651`
 - 운영 PR: #5 `agent/base-full-11-migration`
 - 전투 POC PR: #7 `agent/t0-combat-poc-board`
 - 제품 단계: Prototype
-- 구현: STEP 0~10, TARGETING 10.5, RESPONSE 10.6, RESOURCE PREVIEW 10.6
+- 구현: STEP 0~13, TARGETING 10.5, RESPONSE 10.6, RESOURCE PREVIEW 10.6
 - 사용자 Windows 확인: 기존 STEP 0~10·행동 배치·이동 목적지·공격 방향
 - 기술 Windows 확인: 플레이어 4번·상대 7번, 최신 대응 판정·자원 미리보기까지 완료. 실제 사용자 이해도·선호 검수는 STEP 14에서 별도로 수행.
 - P0-1 핵심 책임 원본 정렬: 완료
@@ -24,8 +24,9 @@
 - 기초 행동 8종, 절초 기세 최대 5칸
 - 비용은 행동 슬롯·기력·내력
 - 덱·손패·행동력·공통 `막기 경감` 없음
-- 현재 상대는 정식 AI가 아니라 고정 검증 계획
+- 현재 상대는 플레이어 비공개 계획을 읽지 않는 공개 상태 기반 최소 AI
 - Issue #11 피격 중단·강건·밀착·절초 3종·단계별 연출은 자동·Windows·UI Automation·DEBUG 성능 증거 `PASS`, 집중 제거
+- Issue #13 합·순차 막기·파공검기 필중·AI·재시작은 구현 및 MCP Godot 런타임 확인, 실제 사용자 관찰은 STEP 14 `NOT_RUN`
 
 세부 규칙은 `docs/02_COMBAT_RULES.md`, 현재 POC 범위는 `docs/05_COMBAT_POC_SPEC.md`, 구현 사실은 `data/`, `scenes/`, `src/`, `tests/`가 책임진다.
 
@@ -113,9 +114,8 @@ Base Foundation:
 
 1. 검증된 로컬 변경을 하나의 의도적 커밋으로 정리하고 Draft PR #7을 갱신한 뒤, 해당 커밋의 GitHub Actions를 다시 실행한다.
 2. PR #7의 base 브랜치(`agent/base-full-11-migration`) 통합 순서를 정리하고, main 대상 전환 뒤 Required Check/브랜치 보호 상태를 확인한다.
-3. STEP 12 비치팅 최소 AI를 별도 Issue·Plan으로 구체화한다. AI는 플레이어의 비공개 예약을 읽지 않고 같은 카드·기세·슬롯·대상 규칙을 사용한다.
-4. STEP 13 종료·재시작을 별도 Issue·Plan으로 구체화한다. 현재 `combat_ended` 잠금과 완전한 재시작 흐름을 혼동하지 않는다.
-5. STEP 14에서 실제 플레이어의 전체 키보드/보조기기 사용성, 주관적 음향·모션 읽기성, Release 목표 사양 성능과 외부 POC 플레이테스트를 검수한다.
+3. STEP 14에서 실제 플레이어의 전체 키보드/보조기기 사용성, 주관적 음향·모션 읽기성, Release 목표 사양 성능과 외부 POC 플레이테스트를 검수한다.
+4. T1 진입 여부와 최소 AI의 성향·실수율 확장 필요성을 플레이테스트 결과로 결정한다.
 
 ## 보호 범위
 
