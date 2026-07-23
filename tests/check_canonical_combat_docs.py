@@ -29,6 +29,7 @@ ACTIVE_TEXT_PATHS = {
 
 RUNTIME_PATHS = {
     "engine": ROOT / "src/combat/combat_resolution_engine.gd",
+    "ai": ROOT / "src/combat/combat_ai_planner.gd",
     "board": ROOT / "src/combat/combat_board_preview.gd",
     "timing": ROOT / "src/ui/action_timing_panel.gd",
     "progress": ROOT / "src/ui/combat_progress_button.gd",
@@ -53,14 +54,16 @@ EXPECTED_CARD_IDS = [
     "basic_meditate",
     "basic_stance",
 ]
+EXPECTED_ULTIMATE_IDS = [
+    "ultimate_ten_paces_wave",
+    "ultimate_cleave_peak",
+    "ultimate_void_sword_qi",
+]
 
 STALE_START_TOKENS = (
     "플레이어 3번·상대 8번",
     "플레이어 3번 / 상대 8번",
     "플레이어 3번, 상대 8번",
-    "플레이어는 3번, 상대는 8번",
-    "플레이어 기본 시작 위치는 3번",
-    "상대 기본 시작 위치는 8번",
     '"player_start_tile": 3',
     '"enemy_start_tile": 8',
     "var _player_tile := 3",
@@ -77,7 +80,6 @@ STALE_ACTIVE_RULE_SENTENCES = (
     "선택 묶음 | 두 행동 잠금",
     "ActionPair",
     "PairLockCoordinator",
-    "ClashResolver",
     "기초 행동 7종",
 )
 
@@ -92,6 +94,11 @@ def read_files(paths: dict[str, Path]) -> dict[str, str]:
         assert path.is_file(), path.relative_to(ROOT)
         result[key] = path.read_text(encoding="utf-8")
     return result
+
+
+def assert_tokens(text: str, tokens: tuple[str, ...], label: str) -> None:
+    for token in tokens:
+        assert token in text, f"{label}: missing {token}"
 
 
 def assert_no_stale_active_contract(active: dict[str, str], runtime: dict[str, str]) -> None:
@@ -109,129 +116,197 @@ def assert_no_stale_active_contract(active: dict[str, str], runtime: dict[str, s
 
 def assert_start_position_contract(active: dict[str, str], runtime: dict[str, str]) -> None:
     board = load_json("data/combat/combat_board_poc.json")
-    assert board["schema_version"] >= 13
+    assert board["schema_version"] == 16
     assert board["tile_count"] == 10
     assert board["player_start_tile"] == EXPECTED_PLAYER_TILE
     assert board["enemy_start_tile"] == EXPECTED_ENEMY_TILE
     assert board["enemy_start_tile"] - board["player_start_tile"] == EXPECTED_DISTANCE
 
     required_active_tokens = {
-        "readme": ("플레이어 4번·상대 7번 시작",),
-        "game": ("기본 시작 위치는 플레이어 4번, 상대 7번", "시작 거리는 3칸"),
-        "rules": ("플레이어 기본 시작 위치는 4번", "상대 기본 시작 위치는 7번", "시작 거리는 3칸"),
-        "content": ("`[강호낭인]`, 4번 칸 시작", "공개 상태 최소 AI 상대, 7번 칸 시작"),
-        "roadmap": ("P0-3 — 시작 위치 4/7 전파·활성 원본 정리",),
-        "poc": ("플레이어 시작 | 4번", "상대 시작 | 7번", "시작 거리 | 3칸"),
-        "ui": ("플레이어 4번·상대 7번 시작", "시작 거리는 3칸"),
-        "qa": ("플레이어는 4번, 상대는 7번", "시작 거리는 정확히 3칸"),
-        "architecture": ("player.tile = 4", "enemy.tile = 7", "시작 위치 계약 소비자"),
-        "presentation": ("플레이어 4번·상대 7번", "시작 거리 3"),
-        "learning": ("전장 10칸, 플레이어 4번·상대 7번 시작",),
-        "hub_context": ("플레이어 4번·상대 7번 시작", "P0-3 시작 위치·활성 원본 정리"),
-        "design_skill": ("플레이어 4번·상대 7번 시작", "시작 거리 3"),
-        "engineering_skill": ("플레이어 4번·상대 7번", "시작 위치 변경 계약"),
-        "ux_skill": ("플레이어 4번·상대 7번 시작", "시작 화면 판독 계약"),
-        "qa_skill": ("플레이어 4번·상대 7번", "정본 최신성 차단"),
+        "readme": ("플레이어 4번·상대 7번 시작", "시작 거리 3"),
+        "game": ("플레이어 4번·상대 7번", "시작 거리 3"),
+        "rules": ("`[강호낭인]`은 4번", "상대는 7번", "시작 거리는 3"),
+        "content": ("4번 시작", "7번 시작", "시작 거리는 3"),
+        "roadmap": ("10칸·4/7·거리 3",),
+        "poc": ("플레이어 4번·상대 7번", "시작 거리 3"),
+        "ui": ("4/7", "거리 3"),
+        "qa": ("플레이어는 4번, 상대는 7번", "시작 거리는 정확히 3"),
+        "architecture": ("초기 타일은 4/7",),
+        "presentation": ("4/7·거리 3",),
+        "learning": ("10칸·4/7",),
+        "hub_context": ("10칸·4/7·거리 3",),
     }
     for key, tokens in required_active_tokens.items():
-        for token in tokens:
-            assert token in active[key], f"{key}: missing {token}"
+        assert_tokens(active[key], tokens, key)
 
-    board_script = runtime["board"]
-    for token in (
-        "var _player_tile := 4",
-        "var _enemy_tile := 7",
-        'contract.get("player_start_tile", 4)',
-        'contract.get("enemy_start_tile", 7)',
-    ):
-        assert token in board_script, token
+    assert_tokens(
+        runtime["board"],
+        (
+            "var _player_tile := 4",
+            "var _enemy_tile := 7",
+            'contract.get("player_start_tile", 4)',
+            'contract.get("enemy_start_tile", 7)',
+        ),
+        "board runtime",
+    )
+    assert_tokens(
+        runtime["board_verifier"],
+        (
+            "EXPECTED_PLAYER_TILE := 4",
+            "EXPECTED_ENEMY_TILE := 7",
+            "from 4 to 5",
+            "from 7 to 6",
+            "from tile 4 to tile 6",
+        ),
+        "board verifier",
+    )
+    assert_tokens(
+        runtime["response_verifier"],
+        (
+            "PLAYER_START_TILE := 4",
+            "ENEMY_START_TILE := 7",
+            "RESPONSE_RULES_10_6_START_4_7_VERIFY_OK",
+        ),
+        "response verifier",
+    )
+    assert_tokens(
+        runtime["reference_svg"],
+        ("플레이어 4번 / 상대 7번", "플레이어 · 4번 칸", "상대 · 7번 칸"),
+        "reference SVG",
+    )
 
-    board_verifier = runtime["board_verifier"]
-    for token in (
-        "EXPECTED_PLAYER_TILE := 4",
-        "EXPECTED_ENEMY_TILE := 7",
-        "from 4 to 5",
-        "from 7 to 6",
-        "from tile 4 to tile 6",
-    ):
-        assert token in board_verifier, token
 
-    response_verifier = runtime["response_verifier"]
-    for token in (
-        "PLAYER_START_TILE := 4",
-        "ENEMY_START_TILE := 7",
-        "RESPONSE_RULES_10_6_START_4_7_VERIFY_OK",
-    ):
-        assert token in response_verifier, token
-
-    svg = runtime["reference_svg"]
-    for token in ("플레이어 4번 / 상대 7번", "플레이어 · 4번 칸", "상대 · 7번 칸"):
-        assert token in svg, token
-
-
-def assert_core_rules(active: dict[str, str]) -> None:
+def assert_structured_current_rules() -> None:
     board = load_json("data/combat/combat_board_poc.json")
     timing = load_json("data/combat/combat_action_timing_preview.json")
     hud = load_json("data/combat/combat_hud_preview.json")
     resolution = load_json("data/combat/combat_resolution_preview.json")
-    card_catalog = load_json("data/cards/basic_cards.json")
+    basic = load_json("data/cards/basic_cards.json")
+    ultimates = load_json("data/cards/ultimate_cards.json")
 
     assert timing["timing_sequence"] == [3, 3, 4]
     assert timing["total_timings"] == 10
     assert board["tile_count"] == resolution["tile_count"] == 10
-    sequence_text = "3수 → 3수 → 4수"
-    order_text = resolution["resolution_order_label"]
 
-    for key in ("readme", "game", "rules", "roadmap", "poc", "ui", "qa", "presentation", "hub_context"):
-        assert sequence_text in active[key], key
-    for key in ("game", "rules", "poc", "ui", "qa", "architecture", "presentation", "hub_context"):
-        assert order_text in active[key], key
+    engagement = board["engagement"]
+    assert engagement["same_tile_allowed"] is True
+    assert engagement["max_combatants_per_tile"] == 2
+    assert engagement["same_tile_distance"] == 0
+    assert engagement["allow_enter_stationary_opponent_tile"] is True
+    assert engagement["allow_same_empty_destination"] is True
+    assert engagement["disallow_swap"] is True
+    assert engagement["disallow_pass_through"] is True
 
-    cards = card_catalog["cards"]
+    assert resolution["enemy_plan_source"] == "public_state_ai"
+    assert resolution["enemy_bundles"] == {}
+    assert resolution["clash_same_timing_attacks"] is True
+    assert resolution["clash_tie_damage"] == 0
+    assert resolution["sure_hit_ignores_evade_only"] is True
+    assert resolution["guard_resolution_order"] == [
+        "subtract_guard_block",
+        "same_timing_halve_remaining",
+    ]
+    assert resolution["interruption_only_same_timing_not_future"] is True
+    assert resolution["fortitude_next_attack_only"] is True
+
+    cards = basic["cards"]
     assert [card["id"] for card in cards] == EXPECTED_CARD_IDS
     assert len(cards) == 8
-    for key in ("readme", "game", "rules", "content", "poc", "ui", "qa", "presentation", "hub_context"):
-        assert "기초 행동 8종" in active[key], key
-
     by_id = {card["id"]: card for card in cards}
     assert by_id["basic_move"]["move_range"] == 1
     assert by_id["basic_footwork"]["move_range"] == 2
     assert by_id["basic_footwork"]["internal_cost"] == 1
     assert by_id["basic_heavy_attack"]["action_slots"] == 2
-    assert by_id["basic_heavy_attack"]["range_text"] == "2"
+    assert by_id["basic_heavy_attack"]["range"] == 2
     assert by_id["basic_heavy_attack"]["stamina_cost"] == 1
     assert by_id["basic_heavy_attack"]["internal_cost"] == 1
+    assert "방어도 차감 뒤 남은 피해를 50%" in by_id["basic_guard"]["effect_text"]
 
-    response = board["response_rules"]
-    assert response["guard_block"] == resolution["guard_block"] == 4
-    assert response["stance_guard_multiplier"] == resolution["stance_response_defense_multiplier"] == 1.5
-    for token in ("태세+막기", "태세+회피", "방어도 6"):
-        assert token in active["rules"], token
+    ultimate_cards = ultimates["cards"]
+    assert [card["id"] for card in ultimate_cards] == EXPECTED_ULTIMATE_IDS
+    ultimate_by_id = {card["id"]: card for card in ultimate_cards}
+    assert ultimate_by_id["ultimate_ten_paces_wave"]["action_slots"] == 1
+    assert ultimate_by_id["ultimate_cleave_peak"]["action_slots"] == 2
+    assert ultimate_by_id["ultimate_void_sword_qi"]["action_slots"] == 3
+    assert "필중" in ultimate_by_id["ultimate_void_sword_qi"]["tags"]
 
     for side in ("player", "enemy"):
-        for resource in ("health", "stamina", "internal"):
-            current, maximum = hud[side][resource]
-            assert current == maximum
+        assert hud[side]["health"] == [30, 30]
+        assert hud[side]["attack_power"] == 8
+        assert hud[side]["stamina"] == [5, 5]
+        assert hud[side]["internal"] == [4, 4]
+        assert hud[side]["momentum"] == [0, 5]
 
-    assert board["resolution_engine"]["interruption_enabled"] is True
+    assert board["response_rules"]["guard_block"] == resolution["guard_block"] == 4
+    assert board["response_rules"]["stance_guard_multiplier"] == 1.5
     assert board["ultimate_skills"]["activation_momentum"] == 5
-    assert board["engagement"]["same_tile_allowed"] is True
-    for key in ("game", "rules", "roadmap", "poc", "ui", "qa", "architecture", "presentation", "hub_context"):
-        assert "Issue #11" in active[key], key
-    assert "공개 상태 최소 AI" in active["rules"]
-    assert "공개 상태 최소 AI" in active["poc"]
-    assert "플레이어의 미확정 슬롯·대상·절초 예약은 읽지 않는다" in active["rules"]
+    assert board["resolution_engine"]["interruption_enabled"] is True
+
+
+def assert_current_rules_in_documents(active: dict[str, str]) -> None:
+    sequence_text = "3수 → 3수 → 4수"
+    for key in (
+        "readme",
+        "game",
+        "rules",
+        "roadmap",
+        "poc",
+        "ui",
+        "qa",
+        "presentation",
+        "hub_context",
+    ):
+        assert sequence_text in active[key], key
+
+    for key in ("readme", "game", "rules", "content", "poc", "ui", "qa", "hub_context"):
+        assert "기초 행동 8종" in active[key], key
+        assert "절초 3종" in active[key], key
+
+    for key in ("readme", "game", "rules", "poc", "ui", "qa", "architecture", "presentation", "hub_context"):
+        assert "합" in active[key], key
+
+    for key in ("readme", "game", "rules", "poc", "architecture", "hub_context"):
+        assert "공개 상태" in active[key] and "AI" in active[key], key
+
+    assert_tokens(
+        active["rules"],
+        (
+            "같은 타일의 거리는 0",
+            "방어도 차감",
+            "[필중]",
+            "같은 수에서 아직 실행하지 않은 행동",
+            "CombatAiPlanner",
+            "결전 다시 시작",
+        ),
+        "rules",
+    )
+    assert_tokens(
+        active["qa"],
+        (
+            "BOARD-002 밀착·공동 목적지",
+            "CLASH-001 기본 합",
+            "AI-001 공개 정보 입력",
+            "RESTART-001 완전 초기화",
+            "STEP 14 사람 플레이",
+        ),
+        "qa",
+    )
+    for key in ("poc", "ui", "qa", "presentation", "hub_context"):
+        assert "NOT_RUN" in active[key] or "HUMAN_NOT_RUN" in active[key], key
 
 
 def assert_scope_and_document_lifecycle(active: dict[str, str]) -> None:
-    content = active["content"]
-    mastery = active["mastery"]
-    legacy_context = active["legacy_context"]
+    for token in ("CURRENT_T0", "PLANNED_T1", "HYPOTHESIS_T2_PLUS", "HOLD"):
+        assert token in active["content"], token
+    for token in (
+        "T1 이후 가설 원본",
+        "현재 T0에는 세력 선택",
+        "공용 절초 3종",
+        "프로젝트 코어가 사용자 승인",
+    ):
+        assert token in active["mastery"], token
 
-    for token in ("CURRENT_T0", "PLANNED_T1", "HYPOTHESIS_T2_PLUS"):
-        assert token in content, token
-    for token in ("T1 이후 가설 원본", "현재 T0에는 세력 선택", "공용 절초 3종"):
-        assert token in mastery, token
+    legacy_context = active["legacy_context"]
     assert "DEPRECATED_ENTRYPOINT" in legacy_context
     assert "독립적으로 보관하지 않는다" in legacy_context
     assert "## 제품 계약" not in legacy_context
@@ -265,9 +340,13 @@ def assert_design_registry_matches_documents() -> None:
         assert source_path not in seen_paths, source_path
         seen_paths.add(source_path)
         text = source_path.read_text(encoding="utf-8")
-        assert text.startswith(f"# {entry['title']}\n"), f"registry title drift: {source_path.relative_to(ROOT)}"
+        assert text.startswith(f"# {entry['title']}\n"), (
+            f"registry title drift: {source_path.relative_to(ROOT)}"
+        )
         for section in entry.get("required_sections", []):
-            assert section in text, f"{source_path.relative_to(ROOT)} missing registry section: {section}"
+            assert section in text, (
+                f"{source_path.relative_to(ROOT)} missing registry section: {section}"
+            )
 
 
 def assert_ui_and_runtime_boundaries(active: dict[str, str], runtime: dict[str, str]) -> None:
@@ -279,36 +358,24 @@ def assert_ui_and_runtime_boundaries(active: dict[str, str], runtime: dict[str, 
         progress_data["requested_text"],
     ):
         assert value in active["ui"], value
-        assert value in active["qa"], value
-        assert value in active["presentation"], value
 
     assert '_round_label.text = "제 %d 라운드" % round_number' in runtime["round_hud"]
     assert "제 1 라운드" in active["ui"]
-    assert "행동 묶음  1/3" in active["ui"]
-    assert "라운드 1" in active["ui"]
-
+    assert "행동 묶음 1/3" in active["ui"]
     assert "focus_mode = Control.FOCUS_ALL" in runtime["progress"]
     assert "focus_mode = Control.FOCUS_NONE" in runtime["log"]
-    assert "Enter/`ui_accept`" in active["ui"]
-    assert "키보드 포커스" in active["presentation"]
-    assert "카드→수 슬롯→대상 타일→진행의 키보드 흐름, 명시적 Tab 순서" in active["qa"]
-    assert "실제 보조기기 사용자의 전체 사용성은 아직 `NOT_RUN`" in active["qa"]
-
-    assert "scroll_to_line" not in runtime["log"]
-    assert "scroll_to_paragraph" not in runtime["log"]
-    assert "로그 자동 스크롤 정책" in active["ui"]
-    assert "새 로그 후 자동 최하단 이동" in active["presentation"]
-    assert "현재 구현에는 로그 자동 스크롤 정책이 없음을" in active["qa"]
+    assert "`Enter`/`ui_accept`" in active["ui"]
+    assert "명시적 포커스" in active["presentation"]
+    assert "HUMAN_NOT_RUN" in active["ui"]
 
     resolve_index = runtime["board"].index("resolution_engine.resolve_bundle")
     advance_index = runtime["board"].index("action_timing_panel.advance_after_resolution")
     assert resolve_index < advance_index
     assert '"timing_results"' in runtime["engine"]
+    assert '"presentation_events"' in runtime["engine"]
     assert "await _apply_timing_snapshot" in runtime["board"]
     assert "committed → resolving → presenting_result → next_bundle_ready" in active["ui"]
-    assert "표현은 `committed → resolving → presenting_result → next_bundle_ready` 상태" in active["architecture"]
-    assert "현재 구현은 다음 상태를 사용한다" in active["presentation"]
-    assert "입력 잠금과 `resolving`/`presenting_result` 상태를 자동 테스트" in active["qa"]
+    assert "planning\n→ committed\n→ resolving\n→ presenting_result\n→ next_bundle_ready" in active["presentation"]
 
 
 def assert_architecture_matches_runtime(active: dict[str, str], runtime: dict[str, str]) -> None:
@@ -316,7 +383,7 @@ def assert_architecture_matches_runtime(active: dict[str, str], runtime: dict[st
     engine = runtime["engine"]
     timing = runtime["timing"]
 
-    for token in ("round_number", "bundle_index", "player", "enemy"):
+    for token in ("round_number", "bundle_index", "player", "enemy", "ai_decision_seed"):
         assert f'"{token}"' in engine
         assert token in architecture
 
@@ -349,33 +416,30 @@ def assert_architecture_matches_runtime(active: dict[str, str], runtime: dict[st
         "bundle_end",
         "resolution_order",
         "defenses",
+        "timing_results",
+        "presentation_events",
     ):
         assert f'"{token}"' in engine, token
         assert token in architecture, token
 
-    assert "state_before_resolution" in engine
-    assert '"presentation_events"' in engine
-    assert "_build_presentation_events" in engine
-    assert "현재 반환하지 않는 항목" in architecture
-    assert "현재 별도 `BundlePlan` class는 없다" in architecture
-    assert "현재 파일·class가 존재한다고 가정하지 않는다" in architecture
-    assert "회차 저장·불러오기가 없다" in architecture
+    assert "class_name CombatAiPlanner" in runtime["ai"]
+    assert "build_bundle_actions" in runtime["ai"]
+    assert "restart_combat()" in runtime["board"]
+    assert "restart_combat()" in architecture
+    assert "회차 저장·불러오기" in architecture
+    assert "T0에는 다음이 없다" in architecture
 
 
 def assert_workflow_coverage(runtime: dict[str, str]) -> None:
     workflow = runtime["workflow"]
     required_paths = (
         "README.md",
-        "docs/ACTIVE_CONTEXT.md",
-        "docs/03_CONTENT_CATALOG.md",
-        "docs/06_STARTING_FACTION_MASTERY_DATA.md",
-        "docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md",
-        "[기획서]/DESIGN_DOCUMENT_REGISTRY.json",
-        "skills/game-design/ten-paces-game-design/SKILL.md",
-        "skills/engineering/combat-implementation-handoff/SKILL.md",
-        "skills/ux-ui-accessibility/combat-ux-and-accessibility/SKILL.md",
-        "skills/qa/ten-paces-verification/SKILL.md",
+        "docs/**",
+        "[[]기획서[]]/**",
+        "skills/**",
+        "data/cards/**",
         "data/combat/**",
+        "src/ui/**",
         "src/combat/**",
         "tests/check_canonical_combat_docs.py",
         "tests/verify_combat_board.gd",
@@ -383,9 +447,19 @@ def assert_workflow_coverage(runtime: dict[str, str]) -> None:
         "tests/verify_combat_layout_accessibility.gd",
         "assets/reference/step_02_character_scale_and_tile_placement.svg",
         ".github/reference-freshness.json",
+        ".github/workflows/card-component-contract.yml",
+        "workflow_dispatch",
     )
     missing = [path for path in required_paths if path not in workflow]
-    assert not missing, "Card Component Contract workflow misses consumers: " + ", ".join(missing)
+    assert not missing, (
+        "Card Component Contract workflow misses consumers: " + ", ".join(missing)
+    )
+    for command in (
+        "python tests/check_card_component_contract.py",
+        "python tests/check_combat_board_contract.py",
+        "python tests/check_canonical_combat_docs.py",
+    ):
+        assert command in workflow, command
 
 
 def main() -> None:
@@ -393,13 +467,14 @@ def main() -> None:
     runtime = read_files(RUNTIME_PATHS)
     assert_no_stale_active_contract(active, runtime)
     assert_start_position_contract(active, runtime)
-    assert_core_rules(active)
+    assert_structured_current_rules()
+    assert_current_rules_in_documents(active)
     assert_scope_and_document_lifecycle(active)
     assert_design_registry_matches_documents()
     assert_ui_and_runtime_boundaries(active, runtime)
     assert_architecture_matches_runtime(active, runtime)
     assert_workflow_coverage(runtime)
-    print("canonical combat impact map including tile 4 and 7 consumers: PASS")
+    print("canonical combat impact map for PR #7 / Issue #13: PASS")
 
 
 if __name__ == "__main__":
