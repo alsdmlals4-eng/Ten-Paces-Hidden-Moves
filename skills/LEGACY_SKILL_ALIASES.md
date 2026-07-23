@@ -1,6 +1,6 @@
 # 통합 전 Skill ID 별칭
 
-과거 문서·Learning Log·Git 이력에서 발견되는 구형 Base 또는 프로젝트 Skill ID를 현재 통합 Skill과 Skill Mode로 해석한다. 새 Registry·작업 계약·Active Context·PR에는 현재 ID만 사용한다.
+과거 문서·Learning Log·PR·Git 이력에서 발견되는 구형 Base 또는 프로젝트 Skill ID를 현재 Skill과 Skill Mode로 해석한다. 새 Registry·작업 계약·Active Context·PR에는 현재 ID만 사용한다.
 
 | 구형 Skill ID | 현재 Skill | Skill Mode |
 |---|---|---|
@@ -10,23 +10,27 @@
 | `installing-game-project-operating-system` | `managing-game-project-operating-system` | `install` |
 | `migrating-existing-game-project-structure` | `managing-game-project-operating-system` | `audit` / `migrate` |
 | `verifying-game-project-operating-system` | `managing-game-project-operating-system` | `verify` |
-| `writing-game-design-documents` | `managing-design-documents` | `author` / `update` |
+| `writing-game-design-documents` | `managing-design-documents` | `author` / `update` / `restructure` |
 | `publishing-discipline-bibles` | `managing-design-documents` | `publish` / `validate` |
-| `reviewing-external-ai-drafts` | `reviewing-and-validating-project-changes` | `external-source-review` |
+| `reviewing-external-ai-drafts` | `reviewing-and-validating-project-changes` | `external-source-review` / `static-validation` / `regression` / `evidence-report` |
 | `promoting-project-knowledge` | `managing-base-change-proposals` | `extract` / `submit` |
 | `reviewing-and-implementing-base-change-proposals` | `managing-base-change-proposals` | `review` / `implement` / `verify` |
 | `project-operations-and-handoff` | `managing-project-intake-and-work-contract` + `maintaining-project-context-and-handoff` | `route` / `execution-report` + context·handoff |
 | `project-health-review` | `managing-game-project-operating-system` + `reviewing-and-validating-project-changes` | `verify` + `contract-check` / `evidence-report` |
+| `ten-paces-combat-prediction-validation` | `ten-paces-game-design` + `ten-paces-verification` | `poc-contract` / `rule-update` + `contract-check` / `regression` |
+
+`ten-paces-combat-prediction-validation`은 과거의 두 수 비공개 잠금 전투를 전제로 한 Draft PR ID다. 현행 `3수 → 3수 → 4수`의 공정 AI·결과 설명·합·절초 검증 책임만 위 두 Skill에 흡수하며, 두 수 전투 상태 머신은 활성 계약으로 승계하지 않는다.
 
 현재 프로젝트 고유 Skill:
 
-- `ten-paces-game-design`
-- `combat-ux-and-accessibility`
-- `combat-implementation-handoff`
-- `ten-paces-verification`
+- `ten-paces-game-design`.
+- `combat-ux-and-accessibility`.
+- `combat-implementation-handoff`.
+- `ten-paces-verification`.
 
 ## 검증
 
-- 활성 Entry Point와 Registry에 구형 ID가 있으면 실패다.
-- 이 파일, Learning Log, Changelog, 과거 Audit·Plan에서 역사 설명으로 언급하는 것은 허용한다.
+- 활성 Entry Point와 Registry에 구형 ID가 있으면 실패한다.
+- 이 파일, Learning Log, Changelog, 과거 Audit·Plan·PR에서 역사 설명으로 언급하는 것은 허용한다.
+- 실행 중 이전 ID를 발견하면 이 표로 라우팅하고 현재 ID를 결과에 기록한다.
 - 통합 뒤 경로·ID·template·test·Workflow 소비자는 canonical reference freshness로 확인한다.
