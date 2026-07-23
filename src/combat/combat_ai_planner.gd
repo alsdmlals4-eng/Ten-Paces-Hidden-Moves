@@ -10,11 +10,32 @@ func build_bundle_actions(state: Dictionary, bundle_index: int, cards_by_id: Dic
     var direction := signi(player_tile - enemy_tile)
     var bounds := _bundle_bounds(bundle_index)
     var timing := bounds.x
+    var slots := bounds.y - bounds.x + 1
     var distance := absi(player_tile - enemy_tile)
-    var card_id := "basic_quick_attack" if distance <= 1 else "basic_move"
+    var momentum: Array = enemy.get("momentum", [0, 5])
+    var stamina: Array = enemy.get("stamina", [0, 5])
+    var internal: Array = enemy.get("internal", [0, 4])
+    var card_id := _choose_card(distance, slots, int(momentum[0]), int(momentum[1]), int(stamina[0]), int(internal[0]))
     if not cards_by_id.has(card_id):
         return []
-    return [{"timing": timing, "card_id": card_id, "targeting_mode": "attack_direction" if card_id == "basic_quick_attack" else "move_tile", "target_tile": enemy_tile + direction, "direction": direction, "ai_reason": "public_distance_%d" % distance}]
+    var is_move := card_id in ["basic_move", "basic_footwork"]
+    return [{"timing": timing, "card_id": card_id, "targeting_mode": "move_tile" if is_move else ("none" if card_id in ["basic_meditate", "basic_guard", "basic_evade"] else "attack_direction"), "target_tile": clampi(enemy_tile + direction, 1, 10) if is_move else 0, "direction": direction, "ai_seed": int(state.get("ai_decision_seed", 0)), "ai_reason": "public_distance_%d_slots_%d" % [distance, slots]}]
+
+func _choose_card(distance: int, slots: int, momentum: int, momentum_max: int, stamina: int, internal: int) -> String:
+    if momentum == momentum_max:
+        if distance == 3 and slots >= 3:
+            return "ultimate_void_sword_qi"
+        if distance == 2 and slots >= 2:
+            return "ultimate_cleave_peak"
+        if distance <= 1:
+            return "ultimate_ten_paces_wave"
+    if stamina <= 0 or internal <= 0:
+        return "basic_meditate"
+    if distance <= 1:
+        return "basic_quick_attack"
+    if distance <= 2 and slots >= 2 and stamina >= 1 and internal >= 1:
+        return "basic_heavy_attack"
+    return "basic_move"
 
 func _bundle_bounds(bundle_index: int) -> Vector2i:
     var sequence := [3, 3, 4]

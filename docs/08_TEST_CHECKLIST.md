@@ -27,6 +27,18 @@
 
 체크박스는 해당 항목의 실제 증거가 기록됐을 때만 완료한다.
 
+### Issue #13 STEP 14 증거 상태 (2026-07-23)
+
+| 시나리오 | 자동·Godot 증거 | 사람 관찰 |
+|---|---|---|
+| 3수→3수→4수와 다음 라운드 | 기존 `verify_combat_presentation_liveness.gd` 회귀 PASS | `NOT_RUN` |
+| 속공 대 일반 공격 합 | `verify_clash_guard_sure_hit.gd` PASS | `NOT_RUN` |
+| 동점 합 상쇄 | `verify_clash_guard_sure_hit.gd` PASS | `NOT_RUN` |
+| 태세 강화·방어도 차감 후 반감 | `verify_response_rules.gd` PASS | `NOT_RUN` |
+| 파공검기 필중·회피 및 종료 후 재시작 | `verify_clash_guard_sure_hit.gd`, `verify_step12_13_restart_ai.gd` PASS | `NOT_RUN` |
+
+Windows HiGodot 실시간 렌더는 960×600 프레임 캡처와 게임 로그 무오류로 확인했다. 이는 개발자 또는 실제 사용자의 규칙 이해·연출 가독성 관찰을 대체하지 않는다.
+
 ## 2. 현재 증거 요약
 
 ### 이전 자동·Windows 증거

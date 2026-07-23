@@ -84,6 +84,7 @@ func _ready() -> void:
 	_ultimate_vfx_sheet = load(ULTIMATE_VFX_PATH) as Texture2D
 	_configure_ultimate_menu()
 	combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
+	combat_state["ai_enabled"] = true
 	_sync_runtime_context()
 	_apply_combat_state_to_view()
 	resized.connect(_layout_board)
@@ -856,7 +857,7 @@ func _resolve_and_present(context: Dictionary) -> void:
 
 	_clear_action_selection()
 	_clear_card_detail()
-		if _combat_has_ended():
+	if _combat_has_ended():
 		_apply_combat_state_to_view()
 		_set_presentation_state("combat_ended")
 		_play_procedural_sfx("defeat")
@@ -1075,6 +1076,7 @@ func restart_combat() -> void:
 	if is_instance_valid(action_timing_panel):
 		action_timing_panel.reset_to_initial()
 	combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
+	combat_state["ai_enabled"] = true
 	_set_presentation_state("planning")
 	_sync_runtime_context()
 	_apply_combat_state_to_view()
@@ -1162,6 +1164,7 @@ func _configure_accessibility_semantics() -> void:
 	_set_accessibility_semantics(fast_replay_button, "빠른 재생", "전투 연출의 재생 시간을 짧게 전환합니다.")
 	_set_accessibility_semantics(skip_presentation_button, "즉시 완료", "진행 중인 전투 연출을 즉시 끝내고 확정 결과를 유지합니다.")
 	_set_accessibility_semantics(reduced_motion_button, "모션 감소", "이동과 공격 모션을 줄이고 결과 텍스트와 로그를 유지합니다.")
+	_set_accessibility_semantics(restart_combat_button, "결전 다시 시작", "끝난 전투를 4번과 7번의 초기 상태로 다시 시작합니다.")
 	_set_accessibility_semantics(sound_toggle_button, "소리 켜기 또는 끄기", "전투 효과음 재생을 전환합니다.")
 	_set_accessibility_semantics(sound_volume_slider, "효과음 음량", "왼쪽과 오른쪽 화살표로 전투 효과음의 크기를 조절합니다.")
 	set_meta("accessibility_semantics", "cards|timings|tiles|progress|presentation_controls")

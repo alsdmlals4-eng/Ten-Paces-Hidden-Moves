@@ -51,7 +51,8 @@ func make_initial_state(hud_data: Dictionary, player_tile: int, enemy_tile: int)
         "round_number": int((hud_data.get("round", {}) as Dictionary).get("round_number", 1)),
         "bundle_index": int((hud_data.get("round", {}) as Dictionary).get("bundle_index", 1)),
         "player": player,
-        "enemy": enemy
+        "enemy": enemy,
+        "ai_decision_seed": 0
     }
 
 func _prepare_combatant_start(source_value) -> Dictionary:
@@ -266,6 +267,13 @@ func _build_enemy_actions(bundle_index: int, state: Dictionary = {}) -> Array:
             continue
         var anchor := int(entry.get("timing", 1))
         var span := maxi(1, int(definition.get("action_slots", 1)))
+        if str(definition.get("source", "")) == "ultimate":
+            var enemy: Dictionary = state.get("enemy", {})
+            var momentum := _resource_pair(enemy, "momentum")
+            if momentum.x != momentum.y:
+                continue
+            _set_resource(enemy, "momentum", 0, momentum.y)
+            state["enemy"] = enemy
         result.append({
             "actor": "enemy",
             "anchor_index": anchor,
@@ -276,7 +284,9 @@ func _build_enemy_actions(bundle_index: int, state: Dictionary = {}) -> Array:
             "target_ready": true,
             "target_tile": int(entry.get("target_tile", 0)),
             "direction": clampi(int(entry.get("direction", -1)), -1, 1),
-            "origin_tile": 0
+            "origin_tile": 0,
+            "ai_reason": str(entry.get("ai_reason", "fixture")),
+            "ai_seed": int(entry.get("ai_seed", state.get("ai_decision_seed", 0)))
         })
     return result
 
@@ -641,7 +651,8 @@ func _resolved_record(action: Dictionary, timing: int, outcome: String) -> Dicti
         "card_name": str(definition.get("name", "")),
         "outcome": outcome,
         "direction": int(action.get("direction", 0)),
-        "target_tile": int(action.get("target_tile", 0))
+        "target_tile": int(action.get("target_tile", 0)),
+        "ai_reason": str(action.get("ai_reason", ""))
     }
 
 func _build_presentation_events(state_before: Dictionary, state_after: Dictionary, resolved_actions: Array, logs: Array[String], append_state: bool = true) -> Array:
