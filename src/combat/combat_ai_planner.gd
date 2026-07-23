@@ -15,13 +15,14 @@ func build_bundle_actions(state: Dictionary, bundle_index: int, cards_by_id: Dic
     var momentum: Array = enemy.get("momentum", [0, 5])
     var stamina: Array = enemy.get("stamina", [0, 5])
     var internal: Array = enemy.get("internal", [0, 4])
-    var card_id := _choose_card(distance, slots, int(momentum[0]), int(momentum[1]), int(stamina[0]), int(internal[0]))
+    var health: Array = enemy.get("health", [30, 30])
+    var card_id := _choose_card(distance, slots, int(momentum[0]), int(momentum[1]), int(stamina[0]), int(internal[0]), int(health[0]))
     if not cards_by_id.has(card_id):
         return []
     var is_move := card_id in ["basic_move", "basic_footwork"]
     return [{"timing": timing, "card_id": card_id, "targeting_mode": "move_tile" if is_move else ("none" if card_id in ["basic_meditate", "basic_guard", "basic_evade"] else "attack_direction"), "target_tile": clampi(enemy_tile + direction, 1, 10) if is_move else 0, "direction": direction, "ai_seed": int(state.get("ai_decision_seed", 0)), "ai_reason": "public_distance_%d_slots_%d" % [distance, slots]}]
 
-func _choose_card(distance: int, slots: int, momentum: int, momentum_max: int, stamina: int, internal: int) -> String:
+func _choose_card(distance: int, slots: int, momentum: int, momentum_max: int, stamina: int, internal: int, health: int) -> String:
     if momentum == momentum_max:
         if distance == 3 and slots >= 3:
             return "ultimate_void_sword_qi"
@@ -29,6 +30,8 @@ func _choose_card(distance: int, slots: int, momentum: int, momentum_max: int, s
             return "ultimate_cleave_peak"
         if distance <= 1:
             return "ultimate_ten_paces_wave"
+    if health <= 10 and distance <= 2:
+        return "basic_evade" if stamina >= 1 else "basic_guard"
     if stamina <= 0 or internal <= 0:
         return "basic_meditate"
     if distance <= 1:

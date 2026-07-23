@@ -41,6 +41,14 @@ func _verify_public_state_ai(hud: Dictionary) -> void:
     var spent: Array = ((ultimate_state.get("enemy", {}) as Dictionary).get("momentum", [5, 5]) as Array)
     if int(spent[0]) != 0:
         failures.append("AI ultimate reservation must consume exact momentum immediately.")
+    var defense_state := engine.make_initial_state(hud, 4, 5)
+    defense_state["ai_enabled"] = true
+    var wounded_enemy: Dictionary = (defense_state.get("enemy", {}) as Dictionary).duplicate(true)
+    wounded_enemy["health"] = [10, 30]
+    defense_state["enemy"] = wounded_enemy
+    var defense_plan := engine._build_enemy_actions(1, defense_state)
+    if defense_plan.is_empty() or str((defense_plan[0] as Dictionary).get("definition", {}).get("id", "")) not in ["basic_guard", "basic_evade"]:
+        failures.append("Low-health AI in public close range must choose guard or evade.")
 
 func _verify_restart() -> void:
     var board := BOARD_SCENE.instantiate() as CombatBoardPreview
