@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "momentum_segments": 5,
   "player": {
     "name": "강호낭인",
@@ -8,7 +8,7 @@
     "attack_power": 8,
     "stamina": [5, 5],
     "internal": [4, 4],
-    "momentum": [4, 5],
+    "momentum": [0, 5],
     "start_penalties": {"health": 0, "stamina": 0, "internal": 0},
     "statuses": [
       {"label": "방", "kind": "defense"}
@@ -28,7 +28,7 @@
     "attack_power": 8,
     "stamina": [5, 5],
     "internal": [4, 4],
-    "momentum": [3, 5],
+    "momentum": [0, 5],
     "start_penalties": {"health": 0, "stamina": 0, "internal": 0},
     "statuses": [
       {"label": "출", "kind": "offense"},

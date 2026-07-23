@@ -1,5 +1,5 @@
 {
-  "schema_version": 15,
+  "schema_version": 16,
   "tile_count": 10,
   "player_start_tile": 4,
   "enemy_start_tile": 7,
@@ -157,6 +157,8 @@
     "asset_manifest": "res://assets/ASSET_MANIFEST.json",
     "activation_momentum": 5,
     "requires_exact_momentum": true,
+    "selection_trigger": "basic_heavy_attack",
+    "list_visible_only_after_heavy_attack": true,
     "reservation_consumes_momentum_immediately": true,
     "reservation_cancellation_refund_before_progress": true,
     "reservation_refund_after_progress": false,

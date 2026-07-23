@@ -219,7 +219,7 @@ def main() -> None:
     assert res_file(resolution_contract["script"]).exists()
     assert res_file(resolution_contract["data"]).exists()
 
-    assert resolution["schema_version"] >= 4
+    assert resolution["schema_version"] >= 7
     assert resolution["targeting_patch"] == "10.5"
     assert resolution["tile_count"] == 10
     assert resolution["movement_range_source"] == "card.move_range"
@@ -235,12 +235,18 @@ def main() -> None:
     assert resolution["placement_resource_preview"] is True
     assert resolution["explicit_player_move_target"] is True
     assert resolution["explicit_player_attack_direction"] is True
-    assert resolution["damage_interrupts_future_actions"] is True
+    assert resolution["damage_interrupts_current_timing_actions"] is True
+    assert resolution["bundle_momentum_gain"] == 1
+    assert resolution["guard_success_momentum_gain"] == 1
+    assert resolution["evade_success_momentum_gain"] == 1
+    assert resolution["clash_win_momentum_gain"] == 1
     assert resolution["fortitude_quick_phase_one_slot_only"] is True
     assert resolution["same_tile_engagement"] is True
     assert resolution["same_tile_max_combatants"] == 2
     assert resolution["enemy_plan_source"] == "public_state_ai"
     assert resolution["enemy_bundles"] == {}
+    assert contract["ultimate_skills"]["selection_trigger"] == "basic_heavy_attack"
+    assert contract["ultimate_skills"]["list_visible_only_after_heavy_attack"] is True
 
     scope = set(contract["presentation_scope"])
     assert {"action_targeting", "action_placement", "response_rules", "resolution_engine"} <= scope

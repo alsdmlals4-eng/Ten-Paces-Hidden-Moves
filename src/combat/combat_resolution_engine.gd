@@ -182,8 +182,12 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
         _execute_attack_phase(state, normal_attacks, defenses, logs, timing, "일반 공격", resolved_actions, actions, deferred_attacks)
         _resolve_timing_attacks(state, deferred_attacks, defenses, logs, timing, actions)
         for action in utility_actions:
+            if bool(action.get("cancelled", false)):
+                resolved_actions.append(_resolved_record(action, timing, "interrupted"))
+                continue
             if not _pay_action_cost(state, action, logs, timing):
                 continue
+            action["executed"] = true
             _execute_utility(state, action, logs, timing)
             resolved_actions.append(_resolved_record(action, timing, "general"))
 
@@ -200,6 +204,7 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
             "events": _build_presentation_events(state_before_timing, state, timing_resolved_actions, timing_logs, false)
         })
 
+    _award_bundle_momentum(state, logs)
     var result := {
         "state": state,
         "logs": logs,
@@ -399,6 +404,7 @@ func _execute_attack_phase(state: Dictionary, actions: Array, _defenses: Diction
             continue
         if not _pay_action_cost(state, action, logs, timing):
             continue
+        action["executed"] = true
         var actor_key := str(action.get("actor", "player"))
         var target_key := _other_actor(actor_key)
         var actor: Dictionary = state.get(actor_key, {})
@@ -454,12 +460,12 @@ func _resolve_timing_attacks(state: Dictionary, candidates: Array, defenses: Dic
     for candidate in candidates:
         by_actor[str((candidate as Dictionary).get("actor", ""))] = candidate
     var pending_damage := {"player": 0, "enemy": 0}
-    var successful_attackers: Array[String] = []
+    var momentum_awards := {"player": [], "enemy": []}
     if by_actor.has("player") and by_actor.has("enemy"):
-        _resolve_clash(by_actor["player"], by_actor["enemy"], defenses, timing, logs, pending_damage, successful_attackers)
+        _resolve_clash(by_actor["player"], by_actor["enemy"], defenses, timing, logs, pending_damage, momentum_awards)
     else:
         for candidate in candidates:
-            _resolve_single_attack(candidate, defenses, timing, logs, pending_damage, successful_attackers)
+            _resolve_single_attack(candidate, defenses, timing, logs, pending_damage, momentum_awards)
     _apply_pending_damage(state, pending_damage)
     var damage_phase := "attack_timing"
     for candidate in candidates:
@@ -467,13 +473,9 @@ func _resolve_timing_attacks(state: Dictionary, candidates: Array, defenses: Dic
             damage_phase = "속공"
             break
     _apply_interruption_after_damage(state, all_actions, pending_damage, timing, damage_phase, logs)
-    for actor_key in successful_attackers:
-        var actor: Dictionary = state.get(actor_key, {})
-        var momentum := _resource_pair(actor, "momentum")
-        _set_resource(actor, "momentum", mini(momentum.y, momentum.x + int(rules.get("damage_momentum_gain", 1))), momentum.y)
-        state[actor_key] = actor
+    _apply_timing_momentum_awards(state, momentum_awards, logs, timing)
 
-func _resolve_clash(first: Dictionary, second: Dictionary, defenses: Dictionary, timing: int, logs: Array[String], pending_damage: Dictionary, successful_attackers: Array[String]) -> void:
+func _resolve_clash(first: Dictionary, second: Dictionary, defenses: Dictionary, timing: int, logs: Array[String], pending_damage: Dictionary, momentum_awards: Dictionary) -> void:
     var first_raw := int(first.get("raw_damage", 0))
     var second_raw := int(second.get("raw_damage", 0))
     var first_record: Dictionary = first.get("record", {})
@@ -506,10 +508,10 @@ func _resolve_clash(first: Dictionary, second: Dictionary, defenses: Dictionary,
     loser_record["outcome"] = "clash_loss"
     pending_damage[str(loser.get("actor", ""))] = final_damage
     logs.append("[%d수 · 합] 공격력 %d 대 %d, 차이 %d." % [timing, first_raw, second_raw, difference])
-    if final_damage > 0:
-        successful_attackers.append(str(winner.get("actor", "")))
+    _queue_momentum_award(momentum_awards, str(winner.get("actor", "")), "clash_win")
+    _queue_defense_momentum_award(momentum_awards, str(loser.get("actor", "")), str(defended.get("outcome", "hit")))
 
-func _resolve_single_attack(candidate: Dictionary, defenses: Dictionary, timing: int, logs: Array[String], pending_damage: Dictionary, successful_attackers: Array[String]) -> void:
+func _resolve_single_attack(candidate: Dictionary, defenses: Dictionary, timing: int, logs: Array[String], pending_damage: Dictionary, momentum_awards: Dictionary) -> void:
     var actor_key := str(candidate.get("actor", ""))
     var target_key := str(candidate.get("target", ""))
     var defended := _apply_defense(int(candidate.get("raw_damage", 0)), actor_key, target_key, bool(candidate.get("sure_hit", false)), defenses, timing)
@@ -519,9 +521,65 @@ func _resolve_single_attack(candidate: Dictionary, defenses: Dictionary, timing:
     record["defense_outcome"] = str(defended.get("outcome", "hit"))
     record["sure_hit"] = bool(candidate.get("sure_hit", false))
     pending_damage[target_key] = int(defended.get("damage", 0))
+    _queue_defense_momentum_award(momentum_awards, target_key, str(defended.get("outcome", "hit")))
     if int(defended.get("damage", 0)) > 0:
-        successful_attackers.append(actor_key)
         logs.append("[%d수 · 공격] %s의 공격이 적중했다. 피해 %d." % [timing, str((candidate.get("action", {}) as Dictionary).get("definition", {}).get("name", "공격")), int(defended.get("damage", 0))])
+
+func _queue_defense_momentum_award(momentum_awards: Dictionary, actor_key: String, outcome: String) -> void:
+    if outcome == "evade":
+        _queue_momentum_award(momentum_awards, actor_key, "evade")
+    elif outcome in ["block", "sure_hit_block"]:
+        _queue_momentum_award(momentum_awards, actor_key, "guard")
+
+func _queue_momentum_award(momentum_awards: Dictionary, actor_key: String, reason: String) -> void:
+    if not momentum_awards.has(actor_key):
+        momentum_awards[actor_key] = []
+    var awards: Array = momentum_awards.get(actor_key, [])
+    awards.append(reason)
+    momentum_awards[actor_key] = awards
+
+func _apply_timing_momentum_awards(state: Dictionary, momentum_awards: Dictionary, logs: Array[String], timing: int) -> void:
+    for actor_key in ["player", "enemy"]:
+        var awards: Array = momentum_awards.get(actor_key, [])
+        for reason in awards:
+            var amount := _momentum_award_amount(str(reason))
+            if amount <= 0:
+                continue
+            _grant_momentum(state, actor_key, amount, logs, "[%d수 · 절초 기세] %s" % [timing, _momentum_award_label(str(reason))])
+
+func _award_bundle_momentum(state: Dictionary, logs: Array[String]) -> void:
+    var amount := maxi(0, int(rules.get("bundle_momentum_gain", 1)))
+    for actor_key in ["player", "enemy"]:
+        _grant_momentum(state, actor_key, amount, logs, "[묶음 완료 · 절초 기세]")
+
+func _momentum_award_amount(reason: String) -> int:
+    match reason:
+        "guard":
+            return maxi(0, int(rules.get("guard_success_momentum_gain", 1)))
+        "evade":
+            return maxi(0, int(rules.get("evade_success_momentum_gain", 1)))
+        "clash_win":
+            return maxi(0, int(rules.get("clash_win_momentum_gain", 1)))
+    return 0
+
+func _momentum_award_label(reason: String) -> String:
+    match reason:
+        "guard":
+            return "막기 성공"
+        "evade":
+            return "회피 성공"
+        "clash_win":
+            return "합 승리"
+    return "기세 획득"
+
+func _grant_momentum(state: Dictionary, actor_key: String, amount: int, logs: Array[String], source: String) -> void:
+    var actor: Dictionary = state.get(actor_key, {})
+    var momentum := _resource_pair(actor, "momentum")
+    var next := mini(momentum.y, momentum.x + amount)
+    if next > momentum.x:
+        _set_resource(actor, "momentum", next, momentum.y)
+        state[actor_key] = actor
+        logs.append("%s %s 기세 +%d (%d/%d)." % [source, _actor_name(actor), next - momentum.x, next, momentum.y])
 
 func _apply_defense(raw_damage: int, _attacker_key: String, target_key: String, sure_hit: bool, defenses: Dictionary, timing: int) -> Dictionary:
     var defense: Dictionary = defenses.get(target_key, _empty_defense_profile())
@@ -554,7 +612,10 @@ func _apply_interruption_after_damage(state: Dictionary, all_actions: Array, pen
         var actor: Dictionary = state.get(actor_key, {})
         var defeated := _resource_pair(actor, "health").x <= 0
         for action in all_actions:
-            if str(action.get("actor", "")) != actor_key or int(action.get("execution_timing", 0)) <= timing or bool(action.get("cancelled", false)):
+            var action_timing := int(action.get("execution_timing", 0))
+            if str(action.get("actor", "")) != actor_key or bool(action.get("cancelled", false)) or bool(action.get("executed", false)):
+                continue
+            if (not defeated and action_timing != timing) or (defeated and action_timing < timing):
                 continue
             var definition: Dictionary = action.get("definition", {})
             var protected_by_fortitude := phase_label == "속공" and bool(actor.get("fortitude_next_attack", false)) and int(action.get("span", 1)) == 1 and str(definition.get("category", "")) == "attack"
@@ -564,7 +625,7 @@ func _apply_interruption_after_damage(state: Dictionary, all_actions: Array, pen
                 continue
             action["cancelled"] = true
             action["interrupt_reason"] = "defeat" if defeated else "damage_%s" % phase_label
-            logs.append("[%d수 · 중단] %s의 이후 행동이 실제 피해로 취소됐다." % [timing, _actor_name(actor)])
+            logs.append("[%d수 · 중단] %s의 아직 실행되지 않은 이 수 행동이 실제 피해로 취소됐다." % [timing, _actor_name(actor)])
         state[actor_key] = actor
 
 func _execute_move_phase(state: Dictionary, actions: Array, logs: Array[String], timing: int, resolved_actions: Array) -> void:
@@ -578,6 +639,7 @@ func _execute_move_phase(state: Dictionary, actions: Array, logs: Array[String],
             continue
         if not _pay_action_cost(state, action, logs, timing):
             continue
+        action["executed"] = true
         var actor_key := str(action.get("actor", "player"))
         var target_key := _other_actor(actor_key)
         var actor: Dictionary = state.get(actor_key, {})

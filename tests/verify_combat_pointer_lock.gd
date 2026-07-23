@@ -28,6 +28,7 @@ func _run() -> void:
     player["momentum"] = [5, 5]
     board.combat_state["player"] = player
     board._apply_combat_state_to_view()
+    board._on_action_card_selected(board.basic_card_tray.cards[5].definition)
     var first_ultimate := board.ultimate_list_buttons[0]
     var momentum_before := int((board.combat_state.get("player", {}) as Dictionary).get("momentum", [0, 5])[0])
     board._set_presentation_state("resolving")

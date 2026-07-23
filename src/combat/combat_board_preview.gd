@@ -63,6 +63,7 @@ var _targeting_mode := ""
 var _targeting_origin_tile := 0
 var _ultimate_definitions: Array[Dictionary] = []
 var _ultimate_reservation_anchors := PackedInt32Array()
+var _heavy_attack_ultimate_choice_open := false
 var _presentation_state := "planning"
 var _presentation_events: Array = []
 var _presentation_state_history := PackedStringArray(["planning"])
@@ -481,6 +482,7 @@ func _on_action_card_selected(definition: Dictionary) -> void:
 		_clear_card_detail()
 		return
 	_selected_action_definition = definition.duplicate(true)
+	_heavy_attack_ultimate_choice_open = card_id == "basic_heavy_attack"
 	_refresh_ultimate_menu()
 	basic_card_tray.set_selected_card(card_id)
 	_detail_pinned = true
@@ -575,11 +577,12 @@ func _refresh_ultimate_menu() -> void:
 	var player: Dictionary = combat_state.get("player", {})
 	var momentum := _resource_value(player, "momentum")
 	var has_exact_momentum := momentum == 5
+	var choice_open := _heavy_attack_ultimate_choice_open and not _inputs_locked()
 	var any_available := false
 	for index in range(_ultimate_definitions.size()):
 		var definition := _ultimate_definitions[index]
 		var has_slots := _has_contiguous_open_slots(int(definition.get("action_slots", 1)))
-		var available := has_exact_momentum and has_slots and _targeting_anchor <= 0
+		var available := choice_open and has_exact_momentum and has_slots and _targeting_anchor <= 0
 		any_available = any_available or available
 		var detail := "%s · %d수 · 사거리 %s · 피해 %s" % [str(definition.get("name", "절초")), int(definition.get("action_slots", 1)), str(definition.get("range_text", "1")), str(definition.get("damage", "0"))]
 		if not has_exact_momentum:
@@ -589,11 +592,17 @@ func _refresh_ultimate_menu() -> void:
 		popup.add_item(detail, index)
 		popup.set_item_disabled(index, not available)
 		popup.set_item_tooltip(index, "기세 5를 즉시 소비합니다. 진행 전에는 예약 슬롯을 눌러 취소할 수 있고, 진행 뒤 중단·방향 실패·사거리 실패는 환불되지 않습니다.")
-	ultimate_menu.disabled = not any_available
+	ultimate_menu.disabled = not choice_open or not any_available
 	if not _selected_action_definition.is_empty() and str(_selected_action_definition.get("source", "")) == "ultimate":
 		ultimate_menu.text = "[절초 예약] %s · 슬롯 선택" % str(_selected_action_definition.get("name", ""))
+	elif choice_open:
+		ultimate_menu.text = "강공 절초 선택 · 기세 %d/5" % momentum
 	else:
-		ultimate_menu.text = "절초 · 기세 %d/5" % momentum
+		ultimate_menu.text = "강공 선택 시 절초 · 기세 %d/5" % momentum
+	if is_instance_valid(ultimate_list_panel):
+		ultimate_list_panel.visible = choice_open
+	if is_instance_valid(ultimate_list_title):
+		ultimate_list_title.text = "강공 절초 선택 · 기세 %d/5" % momentum
 	for index in range(ultimate_list_buttons.size()):
 		var button := ultimate_list_buttons[index]
 		if index >= _ultimate_definitions.size():
@@ -601,12 +610,14 @@ func _refresh_ultimate_menu() -> void:
 			continue
 		var list_definition := _ultimate_definitions[index]
 		var list_slots_ok := _has_contiguous_open_slots(int(list_definition.get("action_slots", 1)))
-		var list_available := has_exact_momentum and list_slots_ok and _targeting_anchor <= 0 and not _inputs_locked()
+		var list_available := choice_open and has_exact_momentum and list_slots_ok and _targeting_anchor <= 0
 		var disabled_reason := ""
 		if _inputs_locked():
 			disabled_reason = "판정 중에는 절초 예약을 바꿀 수 없습니다."
 		elif _targeting_anchor > 0:
 			disabled_reason = "대상 지정이 끝난 뒤 다른 절초를 선택할 수 있습니다."
+		elif not choice_open:
+			disabled_reason = "강공을 선택하면 절초 3종을 고를 수 있습니다."
 		elif not has_exact_momentum:
 			disabled_reason = "기세 5 필요"
 		elif not list_slots_ok:
@@ -619,7 +630,7 @@ func _refresh_ultimate_menu() -> void:
 	set_meta("ultimate_momentum", momentum)
 
 func _on_ultimate_menu_id_pressed(index: int) -> void:
-	if _inputs_locked() or index < 0 or index >= _ultimate_definitions.size() or _targeting_anchor > 0:
+	if _inputs_locked() or not _heavy_attack_ultimate_choice_open or index < 0 or index >= _ultimate_definitions.size() or _targeting_anchor > 0:
 		return
 	var definition := _ultimate_definitions[index].duplicate(true)
 	if not _can_reserve_ultimate(definition):
@@ -853,7 +864,9 @@ func _resolve_and_present(context: Dictionary) -> void:
 		set_meta("presentation_timing", int(timing_result.get("timing", 0)))
 		await _present_authoritative_events(timing_result.get("events", []), int(timing_result.get("timing", 0)))
 
+	var state_before_bundle_rewards := combat_state.duplicate(true)
 	combat_state = (result.get("state", combat_state) as Dictionary).duplicate(true)
+	_play_momentum_gain_sfx(state_before_bundle_rewards, combat_state)
 
 	_clear_action_selection()
 	_clear_card_detail()
@@ -1000,7 +1013,7 @@ func _presentation_summary_for_event(event: Dictionary, fallback: String) -> Str
 	if outcome == "clash_loss":
 		return "합 패배 · 차이 피해 %d" % int(event.get("damage", 0))
 	if outcome == "interrupted":
-		return "중단 · 이후 행동 취소"
+		return "중단 · 이 수 행동 취소"
 	if outcome == "miss_direction":
 		return "방향 실패"
 	if outcome == "miss_range":
@@ -1260,6 +1273,7 @@ func _apply_combat_state_to_view() -> void:
 
 func _clear_action_selection() -> void:
 	_selected_action_definition.clear()
+	_heavy_attack_ultimate_choice_open = false
 	if is_instance_valid(basic_card_tray):
 		basic_card_tray.clear_action_selection()
 	_refresh_ultimate_menu()

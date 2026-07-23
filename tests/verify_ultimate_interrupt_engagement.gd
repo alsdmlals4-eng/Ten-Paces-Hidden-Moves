@@ -11,6 +11,7 @@ func _run() -> void:
     var hud := _load_json(HUD_PATH)
     _verify_ultimate_damage_and_momentum(hud)
     _verify_interruption_and_fortitude(hud)
+    _verify_momentum_sources(hud)
     _verify_engagement_and_movement(hud)
     _verify_timing_snapshots(hud)
     _finish()
@@ -38,35 +39,78 @@ func _verify_ultimate_damage_and_momentum(hud: Dictionary) -> void:
         var result_player: Dictionary = (result.get("state", {}) as Dictionary).get("player", {})
         var momentum: Array = result_player.get("momentum", [0, 0])
         if int(momentum[0]) != int(case[4]):
-            failures.append("Ultimate %s must regain one momentum on hit. expected=%d actual=%d" % [str(case[0]), int(case[4]), int(momentum[0])])
+            failures.append("Ultimate %s must receive the automatic completed-bundle momentum. expected=%d actual=%d" % [str(case[0]), int(case[4]), int(momentum[0])])
         var events: Array = result.get("presentation_events", [])
         if events.is_empty() or str((events[events.size() - 1] as Dictionary).get("type", "")) != "bundle_state":
             failures.append("Ultimate resolution must expose one authoritative presentation event stream.")
 
 func _verify_interruption_and_fortitude(hud: Dictionary) -> void:
     var engine := CombatResolutionEngine.new()
-    engine.rules["enemy_bundles"] = {"1": [{"timing": 2, "card_id": "basic_quick_attack", "direction": -1}]}
+    engine.rules["enemy_bundles"] = {"1": [
+        {"timing": 1, "card_id": "basic_quick_attack", "direction": -1},
+        {"timing": 2, "card_id": "basic_move", "target_tile": 5, "direction": -1},
+        {"timing": 3, "card_id": "basic_quick_attack", "direction": -1}
+    ]}
     var state := engine.make_initial_state(hud, 4, 5)
     var stance: Dictionary = engine.cards_by_id.get("basic_stance", {})
-    var quick: Dictionary = engine.cards_by_id.get("basic_quick_attack", {})
-    var protected_result := engine.resolve_bundle([_placement(stance, 1), _placement(quick, 3)], _context(1), state)
-    if _has_outcome(protected_result.get("resolved_actions", []), "basic_quick_attack", "interrupted"):
-        failures.append("Fortitude must protect the next one-slot attack from quick-phase interruption.")
-
-    var ultimate_two: Dictionary = engine.cards_by_id.get("ultimate_cleave_peak", {})
-    var cancelled_result := engine.resolve_bundle([_placement(stance, 1), _placement(ultimate_two, 2)], _context(1), state)
-    if not _has_outcome(cancelled_result.get("resolved_actions", []), "ultimate_cleave_peak", "interrupted"):
-        failures.append("Fortitude must not protect a two-slot ultimate from quick-phase interruption.")
+    var heavy: Dictionary = engine.cards_by_id.get("basic_heavy_attack", {})
+    var result := engine.resolve_bundle([_placement(stance, 1), _placement(heavy, 2)], _context(1), state)
+    if not _has_outcome(result.get("resolved_actions", []), "basic_stance", "interrupted"):
+        failures.append("Damage must interrupt an unresolved utility action only at that same timing.")
+    if _has_outcome(result.get("resolved_actions", []), "basic_heavy_attack", "interrupted"):
+        failures.append("Damage at timing 1 must not interrupt an action scheduled for timing 3.")
+    if not _has_outcome(result.get("resolved_actions", []), "basic_heavy_attack", "clash_win"):
+        failures.append("The surviving timing-3 heavy attack must resolve as a clash against the timing-3 quick attack.")
+    var result_state: Dictionary = result.get("state", {})
+    var player: Dictionary = result_state.get("player", {})
+    var enemy: Dictionary = result_state.get("enemy", {})
+    if int((player.get("health", [0, 0]) as Array)[0]) != 24 or int((enemy.get("health", [0, 0]) as Array)[0]) != 28:
+        failures.append("The example sequence must deal only timing-1 hit damage to A and timing-3 clash difference to B.")
 
     var lethal_engine := CombatResolutionEngine.new()
     var lethal: Dictionary = (lethal_engine.cards_by_id.get("basic_quick_attack", {}) as Dictionary).duplicate(true)
     lethal["id"] = "lethal_quick"
     lethal["damage"] = "30"
     lethal_engine.cards_by_id["lethal_quick"] = lethal
-    lethal_engine.rules["enemy_bundles"] = {"1": [{"timing": 2, "card_id": "lethal_quick", "direction": -1}]}
-    var lethal_result := lethal_engine.resolve_bundle([_placement(stance, 1), _placement(quick, 3)], _context(1), state)
+    lethal_engine.rules["enemy_bundles"] = {"1": [{"timing": 1, "card_id": "lethal_quick", "direction": -1}]}
+    var quick: Dictionary = lethal_engine.cards_by_id.get("basic_quick_attack", {})
+    var lethal_result := lethal_engine.resolve_bundle([_placement(stance, 1), _placement(quick, 3)], _context(1), lethal_engine.make_initial_state(hud, 4, 5))
     if not _has_outcome(lethal_result.get("resolved_actions", []), "basic_quick_attack", "interrupted"):
-        failures.append("Defeat must override fortitude.")
+        failures.append("Combat incapacity must still cancel later actions after defeat.")
+
+func _verify_momentum_sources(hud: Dictionary) -> void:
+    var normal_hit_engine := CombatResolutionEngine.new()
+    normal_hit_engine.rules["enemy_bundles"] = {}
+    var quick: Dictionary = normal_hit_engine.cards_by_id.get("basic_quick_attack", {})
+    var normal_hit_result := normal_hit_engine.resolve_bundle([_placement(quick, 1)], _context(1), normal_hit_engine.make_initial_state(hud, 4, 5))
+    if _momentum_of(normal_hit_result, "player") != 1:
+        failures.append("A normal hit must not add momentum beyond the completed-bundle gain.")
+
+    var guard_engine := CombatResolutionEngine.new()
+    guard_engine.rules["enemy_bundles"] = {"1": [{"timing": 2, "card_id": "basic_quick_attack", "direction": -1}]}
+    var guard: Dictionary = guard_engine.cards_by_id.get("basic_guard", {})
+    var guard_result := guard_engine.resolve_bundle([_placement(guard, 1)], _context(1), guard_engine.make_initial_state(hud, 4, 5))
+    if _momentum_of(guard_result, "player") != 2:
+        failures.append("A successful guard must add one momentum in addition to the completed-bundle gain.")
+
+    var evade_engine := CombatResolutionEngine.new()
+    evade_engine.rules["enemy_bundles"] = {"1": [{"timing": 1, "card_id": "basic_quick_attack", "direction": -1}]}
+    var evade: Dictionary = evade_engine.cards_by_id.get("basic_evade", {})
+    var evade_result := evade_engine.resolve_bundle([_placement(evade, 1)], _context(1), evade_engine.make_initial_state(hud, 4, 5))
+    if _momentum_of(evade_result, "player") != 2:
+        failures.append("A successful evade must add one momentum in addition to the completed-bundle gain.")
+
+    var clash_engine := CombatResolutionEngine.new()
+    clash_engine.rules["enemy_bundles"] = {"1": [{"timing": 2, "card_id": "basic_quick_attack", "direction": -1}]}
+    var heavy: Dictionary = clash_engine.cards_by_id.get("basic_heavy_attack", {})
+    var clash_result := clash_engine.resolve_bundle([_placement(heavy, 1)], _context(1), clash_engine.make_initial_state(hud, 4, 5))
+    if _momentum_of(clash_result, "player") != 2:
+        failures.append("A clash winner must add one momentum in addition to the completed-bundle gain.")
+
+func _momentum_of(result: Dictionary, actor_key: String) -> int:
+    var actor: Dictionary = (result.get("state", {}) as Dictionary).get(actor_key, {})
+    var momentum: Array = actor.get("momentum", [0, 5])
+    return int(momentum[0]) if not momentum.is_empty() else 0
 
 func _verify_engagement_and_movement(hud: Dictionary) -> void:
     var engine := CombatResolutionEngine.new()
