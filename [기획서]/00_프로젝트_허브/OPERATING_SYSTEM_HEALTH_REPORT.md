@@ -1,69 +1,76 @@
 # 십보강호 운영체계 Health Report
 
-- 검사일: `2026-07-22`
-- 운영 브랜치: `agent/base-full-11-migration`
-- 구현 브랜치: `agent/t0-combat-poc-board`
-- Base: `ee265576da7f67d3278f8099dd97d4e714ef0651`
-- 비교: 이전 기준보다 155개 커밋·70개 변경 파일
-- 운영 PR: #5
-- 구현 PR: #7
-- 최적화 동기화 PR: #9 merged
+- 검사 기준일: `2026-07-23`.
+- 구현 기준: PR #7 `agent/t0-combat-poc-board@147a031c75e96bff170d7f99016beb9e85b12066`.
+- 정합화 브랜치: `agent/pr7-canonical-skill-refresh`.
+- Base: `41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
+- Base delta: 6개 커밋·43개 변경 파일.
+- 최신 승인: Issue #13 STEP 12~14.
 
 ## 종합 판정
 
-`PASS_WITH_UNVERIFIED_RUNTIME_AND_RELEASE_GATES`
+`IN_PROGRESS_WITH_PRODUCT_BASELINE_PROTECTED`
 
-Base 공용 기능은 공유 Skill 13개로 유지됐고 프로젝트 고유 기능은 로컬 Skill 4개로 압축됐다. 중복 Skill·템플릿·checker·가짜 발행 상태를 제거한 뒤 Registry·Schema·정본 최신성·Skill 무결성·회귀 테스트와 PR #7 전투 계약 Actions가 통과했다.
+현재 정본·Skill·Governance 변경은 적용됐으나 최신 Actions와 baseline 최종 compare 전이다.
 
 ## 영역별 상태
 
 | 영역 | 상태 | 증거 | 남은 작업 |
 |---|---|---|---|
-| Base 기준·70파일 감사 | PASS | `BASE_MAIN_SYNC_AUDIT.md` | Base SHA 변경 시 재감사 |
-| 적대적 최종 검증 | PASS | `BASE_MAIN_SYNC_VERIFICATION.md` | 미검증 게이트 유지 |
-| 루트 콜드 스타트 | PASS_SOURCE | AGENTS→Context→Map | 독립 작업자 시간 실측 |
-| Work Mode·자동 라우팅 | PASS | AGENTS·AI Workflow·Registry | 다음 L1 실행 보고 |
-| Design Registry·Schema | PASS | source_only 조건·generator 검사 | 발행 설치 시 재검증 |
-| Skill Registry | PASS | Base 13 route·로컬 4 Skill | 새 Skill 변경 시 재검증 |
-| Legacy·가지치기 | PASS | Source Audit·Alias·forbidden paths | 추가 Cleanup은 별도 승인 |
-| 정본 최신성 | PASS | PR #5 run #371, PR #7 run #370 | canonical 변경 시 재실행 |
-| Governance 회귀 | PASS | 통합 unittest·stale 반례 | checker 변경 시 재실행 |
-| Card Component Contract | PASS | PR #7 run #399 | 사용자 최신 런타임 |
-| 스택 브랜치 | PASS_STATIC | PR #9 merged | 최종 상태 문서 sync 뒤 재확인 |
-| Required Check | NOT_RUN | 설정 변경 없음 | 사용자 결정·권한 확인 |
-| Godot 구현 | IMPLEMENTED | data/scenes/src/tests, PR #7 | STEP 11 이후 |
-| Godot 런타임 | PARTIAL | STEP 0~10·대상 지정 사용자 확인 | RESPONSE·resource preview 확인 |
-| 발행 파이프라인 | NOT_INSTALLED_BY_DESIGN | Registry `source_only` | 필요 마일스톤에서 설치 |
-| 접근성 | NOT_RUN | 계약·Skill 존재 | 실제 장벽·대체 경로 검수 |
-| 성능 | NOT_RUN | 계약 존재 | 목표 플랫폼 baseline·profile |
-| 플레이테스트 | NOT_RUN | STEP 14 전 | 빌드·표본·행동 증거 |
-| 로컬 작업본 | UNVERIFIED | 원격만 직접 변경 | Fetch/Pull 후 확인 |
+| PR #7 기준선 | PASS_SOURCE | exact SHA 분기 | 최종 compare |
+| Base 기준 | APPLIED | `BASE_RULES_VERSION.md` | Actions |
+| Base Skill route | APPLIED | 25개 ID 설정·Registry | 통합 검사 실행 |
+| 프로젝트 Skill | APPLIED | 고유 4개 compact router | 무결성 실행 |
+| 제품 정본 | APPLIED | docs/01~11 재작성 | freshness 실행 |
+| Design Registry | APPLIED | durable required section | 운영 검사 실행 |
+| board schema | APPLIED | expected 16 | structured 반례 실행 |
+| stale 반례 | ADDED | 보정 절·Schema·Base route | unittest 실행 |
+| Python cache | PASS_SOURCE | 3개 삭제·ignore | Actions 확인 |
+| Documentation Governance | NOT_RUN | 새 HEAD 미실행 | PR 생성 후 실행 |
+| Card Component Contract | NOT_RUN | 새 HEAD 미실행 | PR 생성 후 실행 |
+| 제품 보호 경로 | PENDING | 변경 범위 계약 존재 | final compare |
+| STEP 0~13 | IMPLEMENTED | PR #7·Issue #13 | 사람 플레이 |
+| STEP 14 기계 시나리오 | RECORDED | 개발자/MCP 증거 | 사람 관찰 |
+| 프로젝트 코어 | PENDING | `CORE_REVIEW_PENDING` | PLAN·승인 |
+| 접근성 사용자 검수 | NOT_RUN | 기술 metadata만 존재 | 실제 사용자 |
+| Release 성능 | NOT_RUN | DEBUG 표본만 존재 | 목표 장치 profile |
+| Branch protection | NOT_RUN | 설정 미확인 | 통합 전 확인 |
+| 로컬 작업본 | UNVERIFIED | 원격 기준만 확인 | 사용자 로컬 확인 |
 
-## 최적화 보존 판정
+## 구조 건강성
 
-- Base 공유 Skill 13개: 유지
-- 프로젝트 고유 Skill 4개: 유지·자동 검사
-- 제거한 공용 로컬 Skill 2개: Base Skill·Legacy Alias로 승계
-- 템플릿·테스트·checker 중복: 통합 원본으로 승계
-- `docs/01~11`, 백업·보류·Plan: 변경·삭제 없음
-- 전투 코드·데이터·씬·자산: 변경 없음
-- 제품 규칙·사용자 확인 상태: 유지
-- Branch protection: 변경 없음
+### 현재 장점
+
+- 질문별 책임 원본이 명확하다.
+- 활성 본문에서 구형 계약을 제거했다.
+- Base SHA·Skill 집합·board schema를 단일 설정이 소유한다.
+- 로컬 Skill이 현재 상태를 복제하지 않는다.
+- exact 기준 SHA와 보호 prefix가 Codex 작업 유실을 차단한다.
+- 프로젝트 코어 확정과 현재 구현 사실을 구분한다.
+
+### 남은 위험
+
+- Actions 미실행.
+- 구형 열린 PR이 혼동을 줄 수 있음.
+- PR #7 본문이 아직 STEP 0~10.6 시점.
+- `main`과 PR #7 ancestry·통합 순서 미확정.
+- 실제 사용자 STEP 14와 코어 승인 없음.
 
 ## 콜드 스타트 질문
 
-1. 10칸·3/3/4·10수와 판정 순서는 무엇인가?
-2. STEP 10.6 중 무엇이 구현·사용자 확인·미확인인가?
-3. 책임 원본·실제 구현·검증 경로는 어디인가?
-4. Base 공유 13개와 로컬 4개 Skill의 경계는 무엇인가?
-5. 현재 문서가 `source_only`인 이유와 정책 승격 조건은 무엇인가?
-6. Actions·Godot·접근성·성능·Required Check의 상태 차이는 무엇인가?
-7. 다음 작업과 중단·롤백 조건은 무엇인가?
+1. 현재 기준 PR·SHA·Issue는 무엇인가?
+2. STEP 0~13과 STEP 14의 증거 차이는 무엇인가?
+3. 전투 규칙·범위·QA의 책임 원본은 어디인가?
+4. Base 활성 25개와 프로젝트 고유 4개의 경계는 무엇인가?
+5. 정합화에서 보호하는 제품 경로는 무엇인가?
+6. 프로젝트 코어가 아직 확정되지 않은 이유는 무엇인가?
+7. 다음 통합·기획·플레이테스트 게이트는 무엇인가?
 
 ## 다음 Health Review
 
-- RESPONSE·RESOURCE PREVIEW 10.6 사용자 확인 후
-- PR #5 병합 결정 전
-- 발행 파이프라인 설치 전후
-- STEP 14 POC 플레이테스트 전후
-- Base SHA 변경 시
+- 정합화 PR Actions 종료 후.
+- 기준 SHA final compare 후.
+- 정합화 PR을 #7에 통합한 뒤.
+- 프로젝트 코어 승인 후.
+- STEP 14 실제 플레이 전후.
+- Base SHA·Skill coverage 변경 시.
