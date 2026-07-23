@@ -3,21 +3,57 @@ name: Documentation Governance
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
-  push:
-    branches: [main]
+    paths:
+      - "README.md"
+      - "START_HERE.md"
+      - "AGENTS.md"
+      - "**/*.md"
+      - "docs/**"
+      - "[[]기획서[]]/**"
+      - "skills/**"
+      - "templates/**"
+      - "data/**"
+      - "assets/**"
+      - "scenes/**"
+      - "src/**"
+      - "addons/**"
+      - "tests/**"
+      - "tools/**"
+      - "project.godot"
+      - ".github/documentation-governance.json"
+      - ".github/reference-freshness.json"
+      - ".github/workflows/documentation-governance.yml"
+      - ".github/workflows/card-component-contract.yml"
+      - ".github/workflows/full-validation-matrix.yml"
   workflow_dispatch:
+    inputs:
+      scope:
+        description: Validation scope
+        required: true
+        type: choice
+        default: code
+        options: [docs, code]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
 
+env:
+  GODOT_VERSION: "4.7.1"
+
 jobs:
   governance:
     name: documentation-governance
+    if: ${{ vars.CI_ENABLED == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           show-progress: false
 
       - name: Set up Python
@@ -25,64 +61,28 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Compile governance and combat contract tests
+      - name: Classify change scope
+        id: scope
+        shell: bash
         run: |
-          python -m py_compile \
-            tools/check_project_operating_system.py \
-            tools/check_canonical_reference_freshness.py \
-            tools/check_skill_package_integrity.py \
-            tests/test_project_governance.py \
-            tests/check_card_component_contract.py \
-            tests/check_combat_board_contract.py \
-            tests/check_canonical_combat_docs.py
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            python tools/classify_ci_scope.py \
+              --base "${{ github.event.pull_request.base.sha }}" \
+              --head "${{ github.event.pull_request.head.sha }}"
+          else
+            echo "scope=${{ inputs.scope }}" >> "$GITHUB_OUTPUT"
+          fi
 
-      - name: Validate project operating system
-        run: |
-          set -o pipefail
-          python tools/check_project_operating_system.py \
-            --root . \
-            --config .github/documentation-governance.json \
-            2>&1 | tee project-operating-system.log
+      - name: Run documentation validation
+        if: ${{ steps.scope.outputs.scope == 'docs' }}
+        run: python tools/run_ci_suite.py docs
 
-      - name: Validate canonical reference freshness
-        run: |
-          set -o pipefail
-          python tools/check_canonical_reference_freshness.py \
-            --root . \
-            --config .github/reference-freshness.json \
-            2>&1 | tee reference-freshness.log
-
-      - name: Validate project Skill package integrity
-        run: |
-          set -o pipefail
-          python tools/check_skill_package_integrity.py \
-            2>&1 | tee skill-package-integrity.log
-
-      - name: Run governance regression tests
-        run: |
-          set -o pipefail
-          python -m unittest discover -s tests -p 'test_project_governance.py' \
-            2>&1 | tee governance-regression.log
-
-      - name: Validate card component contract
-        run: |
-          set -o pipefail
-          python tests/check_card_component_contract.py \
-            2>&1 | tee card-component-contract.log
-
-      - name: Validate combat contract
-        run: |
-          set -o pipefail
-          python tests/check_combat_board_contract.py \
-            2>&1 | tee combat-board-contract.log
-
-      - name: Validate canonical combat impact map
-        run: |
-          set -o pipefail
-          python tests/check_canonical_combat_docs.py \
-            2>&1 | tee canonical-combat-docs.log
+      - name: Run full Ubuntu contract validation
+        if: ${{ steps.scope.outputs.scope == 'code' }}
+        run: python tools/run_ci_suite.py code
 
       - name: Parse PowerShell automations
+        if: ${{ steps.scope.outputs.scope == 'code' }}
         shell: pwsh
         run: |
           $paths = @(
@@ -104,23 +104,25 @@ jobs:
             }
           }
 
-      - name: Upload governance diagnostics
-        if: always()
-        uses: actions/upload-artifact@v4
+      - name: Cache Godot
+        if: ${{ steps.scope.outputs.scope == 'code' }}
+        uses: actions/cache@v4
         with:
-          name: governance-diagnostics
-          path: |
-            project-operating-system.log
-            reference-freshness.log
-            skill-package-integrity.log
-            governance-regression.log
-            card-component-contract.log
-            combat-board-contract.log
-            canonical-combat-docs.log
-          if-no-files-found: warn
-          retention-days: 7
+          path: .ci/godot
+          key: godot-${{ runner.os }}-${{ env.GODOT_VERSION }}
 
-      - name: Record verification boundaries
+      - name: Install Godot
+        if: ${{ steps.scope.outputs.scope == 'code' }}
+        id: godot
+        run: python tools/install_godot_ci.py --version "${{ env.GODOT_VERSION }}"
+
+      - name: Run Godot PR verifiers
+        if: ${{ steps.scope.outputs.scope == 'code' }}
+        run: python tools/run_godot_ci.py --godot "${{ steps.godot.outputs.godot_path }}" --profile pr
+
+      - name: Record verification boundary
+        if: always()
         run: |
-          echo "Governance success proves structure, routing, publication-policy shape, canonical references, Skill integrity, regression checks, static card/combat contracts, and automation parsing on this commit."
-          echo "It does not prove Godot runtime, PDF rendering, Windows user comprehension, assistive-technology usability, release performance, user visual review, or branch-protection enforcement."
+          echo "scope=${{ steps.scope.outputs.scope }}"
+          echo "Actions quota availability is controlled by repository variable CI_ENABLED."
+          echo "This job does not prove human playtest, assistive-technology usability, release performance, or branch-protection enforcement."

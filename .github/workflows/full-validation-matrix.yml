@@ -1,13 +1,11 @@
-name: Card Component Contract
+name: Full Validation Matrix
 
 on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 18 * * *"
   workflow_dispatch:
-    inputs:
-      include_godot:
-        description: Run Godot headless verifiers
-        required: true
-        type: boolean
-        default: true
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -20,10 +18,15 @@ env:
   GODOT_VERSION: "4.7.1"
 
 jobs:
-  contract:
-    name: card-component-contract
+  matrix:
+    name: full-${{ matrix.os }}-py${{ matrix.python-version }}
     if: ${{ vars.CI_ENABLED == 'true' }}
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.11", "3.12", "3.13"]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -33,12 +36,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python-version }}
 
       - name: Run full static contract suite
-        run: python tools/run_ci_suite.py code
+        run: python tools/run_ci_suite.py full
 
-      - name: Parse PowerShell automations
+      - name: Parse PowerShell automations once per OS
+        if: ${{ matrix.python-version == '3.12' }}
         shell: pwsh
         run: |
           $paths = @(
@@ -60,18 +64,18 @@ jobs:
             }
           }
 
-      - name: Cache Godot
-        if: ${{ inputs.include_godot }}
+      - name: Cache Godot once per OS
+        if: ${{ matrix.python-version == '3.12' }}
         uses: actions/cache@v4
         with:
           path: .ci/godot
           key: godot-${{ runner.os }}-${{ env.GODOT_VERSION }}
 
-      - name: Install Godot
-        if: ${{ inputs.include_godot }}
+      - name: Install Godot once per OS
+        if: ${{ matrix.python-version == '3.12' }}
         id: godot
         run: python tools/install_godot_ci.py --version "${{ env.GODOT_VERSION }}"
 
-      - name: Run Godot PR verifiers
-        if: ${{ inputs.include_godot }}
-        run: python tools/run_godot_ci.py --godot "${{ steps.godot.outputs.godot_path }}" --profile pr
+      - name: Run full Godot verifiers once per OS
+        if: ${{ matrix.python-version == '3.12' }}
+        run: python tools/run_godot_ci.py --godot "${{ steps.godot.outputs.godot_path }}" --profile full

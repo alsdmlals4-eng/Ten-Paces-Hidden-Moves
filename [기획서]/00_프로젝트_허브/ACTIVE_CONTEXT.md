@@ -9,12 +9,14 @@
 - 코어 확정·계획 PR: #15 `agent/project-core-confirmation`.
 - 최신 전투 승인: Issue #13.
 - 현재 Goal Issue: #16.
+- A0 구현 PR: #17 `agent/repeat-poc-a0-contract-alignment`.
 - 프로젝트 코어: `CORE_CONFIRMED`.
 - 상태 전이: `CORE_REVIEW_PENDING → CORE_CONFIRMED`.
 - 제품 게이트: `REPEAT_POC`.
 - T1 진입: `NOT_GRANTED`.
-- 현재 Task: `A0_CONTRACT_ALIGNMENT`.
-- 기술 구현: `NOT_STARTED`.
+- 현재 Task: `CI_COST_OPTIMIZATION`.
+- A0 상태: `PARTIAL_ON_PR_17 / PAUSED_ACTIONS_QUOTA`.
+- GitHub Actions: `DEFERRED_ACTIONS_QUOTA`.
 - 신규 플레이어 STEP 14: `DEFERRED_BY_USER`.
 
 ## 프로젝트 코어
@@ -52,41 +54,68 @@
 ## 실행 계약
 
 - Goal: `docs/decisions/2026-07-24_REPEAT_POC_CORE_VALIDATION_GOAL.md`.
+- CI 결정: `docs/decisions/2026-07-24_CI_COST_OPTIMIZATION_AND_ACTIONS_FREEZE.md`.
 - Codex: `plans/CODEX_GOAL_REPEAT_POC.md`.
 - 계획: `plans/2026-07-24-repeat-poc-core-validation-implementation-plan.md`.
 - 상태: `docs/decisions/2026-07-24_REPEAT_POC_IMPLEMENTATION_STATUS.json`.
 - 플레이테스트 자료: 보존, 현재 `DEFERRED_BY_USER / DO_NOT_RUN`.
 
 ```text
-A0 정본 SHA·AI source·board schema
+CI 비용 최적화
+→ Actions 사용 가능 선언
+→ A0 최신 base 정렬·전체 Green
 → A1 라이벌 복수 후보 정책
 → A2 가설 기록·결정적 summary
 → A3 복기 UI·접근성·기술 closeout
 ```
 
-PR-A0~A3는 독립 스택형 PR로 수행한다.
+## CI 비용 정책
+
+```text
+문서 전용 PR
+→ Ubuntu·Python 3.12·문서 validator
+
+코드 변경 PR
+→ Ubuntu·전체 계약·Godot 4.7.1
+
+main/nightly
+→ Ubuntu·Windows × Python 3.11·3.12·3.13
+```
+
+- 모든 Workflow는 `concurrency`와 `cancel-in-progress: true`를 사용한다.
+- PR 전체 검증은 `Documentation Governance` 하나가 docs/code scope를 분기한다.
+- `Card Component Contract`는 수동 진단 전용이다.
+- `CI_ENABLED=true` 전에는 job이 runner를 할당하지 않는다.
 
 ## 다음 작업
 
-`agent/repeat-poc-a0-contract-alignment`에서 Red 검사부터 시작한다.
+CI 최적화 PR을 검토 가능한 상태로 만든다. Actions runner 검증은 실행하지 않는다.
 
-- `docs/02`, `05`, `08`, `09` 기준 SHA 정렬.
-- `fixed_enemy_preview_plan`과 `public_state_ai` 충돌 제거.
-- board schema 17.
+Actions 사용 가능 선언 후:
+
+1. docs scope 수동 실행.
+2. code+Godot scope 수동 실행.
+3. Ubuntu·Windows × Python 전체 matrix.
+4. Required Check 정렬.
+5. PR #17 A0 전체 Green.
 
 ## 범위
 
 포함:
 
+- CI 중복 제거.
+- concurrency 자동 취소.
+- Actions 비용 동결 gate.
 - 계약 정렬.
 - 라이벌 1명.
 - 가설 6개.
 - 결정적 복기.
 - 키보드·모션 감소.
-- 자동·Godot·Windows 기술 검증.
+- 자동·Godot·Windows 기술 검증은 Actions 재개 후 실행.
 
 제외:
 
+- 동결 중 Actions runner 실행.
 - 신규 플레이어 테스트.
 - 새 행동·절초.
 - 판정 공식 변경.
@@ -97,8 +126,10 @@ PR-A0~A3는 독립 스택형 PR로 수행한다.
 
 ```yaml
 repeat_poc_planning: COMPLETE
-codex_goal: READY
-repeat_poc_implementation: NOT_STARTED
+codex_goal: PAUSED_ACTIONS_QUOTA
+ci_cost_optimization: IMPLEMENTED_FOR_REVIEW
+a0_contract_alignment: PARTIAL_ON_PR_17
+actions_validation: DEFERRED_ACTIONS_QUOTA
 human_step14: DEFERRED_BY_USER
 human_validation: UNVERIFIED
 technical_implementation_complete: false
@@ -107,10 +138,13 @@ t1_greenlight: NOT_GRANTED
 mvp_complete: false
 ```
 
-기술 검증은 실제 플레이어 이해·성향 발견·재미를 대체하지 않는다.
+기술 검증은 실제 플레이어 이해·성향 발견·재미를 대체하지 않는다. Actions 미실행 상태도 CI PASS를 의미하지 않는다.
 
 ## 중단 조건
 
+- `CI_ENABLED`가 사용자 선언 전에 활성화된다.
+- 문서 전용 변경이 Godot 또는 OS matrix를 실행한다.
+- 동일 PR에서 전체 정적 계약이 둘 이상의 Workflow에서 중복 실행된다.
 - 기준 branch 또는 SHA가 예상과 다르다.
 - AI 입력에 미확정 계획이 포함된다.
 - 복기 UI가 판정을 재계산한다.

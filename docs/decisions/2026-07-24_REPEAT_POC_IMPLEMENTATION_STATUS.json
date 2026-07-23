@@ -1,9 +1,10 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "goal_id": "repeat_poc_technical_implementation",
   "goal_document": "docs/decisions/2026-07-24_REPEAT_POC_CORE_VALIDATION_GOAL.md",
   "implementation_plan": "plans/2026-07-24-repeat-poc-core-validation-implementation-plan.md",
   "codex_entrypoint": "plans/CODEX_GOAL_REPEAT_POC.md",
+  "ci_decision": "docs/decisions/2026-07-24_CI_COST_OPTIMIZATION_AND_ACTIONS_FREEZE.md",
   "github_issue": {
     "number": 16,
     "title": "REPEAT_POC: 가설 기록·결정적 복기·라이벌 성향 기술 구현",
@@ -14,11 +15,26 @@
     "product_branch": "agent/t0-combat-poc-board",
     "product_sha": "659c57e7ffa588ad6a6471ed9b5394985b159eaf"
   },
+  "actions": {
+    "availability": "DEFERRED_ACTIONS_QUOTA",
+    "ci_enabled_variable": false,
+    "automatic_runner_validation": "NOT_RUN",
+    "resume_signal": "USER_DECLARES_ACTIONS_AVAILABLE",
+    "required_after_resume": [
+      "PR_DOCUMENTATION_SCOPE_RUN",
+      "PR_CODE_AND_GODOT_RUN",
+      "UBUNTU_WINDOWS_PYTHON_MATRIX",
+      "CONCURRENCY_CANCELLATION_CHECK",
+      "BRANCH_PROTECTION_REQUIRED_CHECK_ALIGNMENT"
+    ]
+  },
   "status": {
     "planning": "COMPLETE",
-    "codex_goal": "READY",
-    "current_task": "A0_CONTRACT_ALIGNMENT",
-    "a0_contract_alignment": "NOT_STARTED",
+    "codex_goal": "PAUSED_ACTIONS_QUOTA",
+    "current_task": "CI_COST_OPTIMIZATION",
+    "ci_cost_optimization": "IMPLEMENTED_FOR_REVIEW",
+    "a0_contract_alignment": "PARTIAL_ON_PR_17",
+    "a0_actions_validation": "DEFERRED_ACTIONS_QUOTA",
     "a1_rival_ai": "NOT_STARTED",
     "a2_hypothesis_and_summary": "NOT_STARTED",
     "a3_review_ui": "NOT_STARTED",
