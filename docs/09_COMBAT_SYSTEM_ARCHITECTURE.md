@@ -265,7 +265,7 @@ defenses
 묶음 완료 재확인
 → 대상 선택 상태 해제
 → resolve_bundle() 한 번 호출
-→ 응답 준비와 각 수의 `timing_results` snapshot 순차 적용
+→ 응답 준비와 각 수의 `timing_results` snapshot 순차 적용 (`2·3슬롯`의 앞 수는 `preparation`, 마지막 수는 실행)
 → 해당 수의 HUD·전장·로그·VFX/SFX 표현
 → 모든 수 종료 후 반환 state를 최종 반영
 → 체력 0이면 `combat_ended`·전투 불능 결과·입력 잠금, 아니면 ActionTimingPanel 다음 묶음 진행
@@ -274,7 +274,7 @@ defenses
 ```
 
 - 엔진 판정은 한 번이지만, 표현은 `committed → resolving → presenting_result → next_bundle_ready` 상태로 비동기 재생한다.
-- UI·VFX·오디오는 snapshot과 `presentation_events`를 재생만 하며 state·피해·자원을 재계산하지 않는다.
+- UI·VFX·오디오는 snapshot과 `presentation_events`를 재생만 하며 state·피해·자원을 재계산하지 않는다. 각 행동 이벤트는 `action_stage: preparation|execution`을 포함하고, 태세가 만든 동적 `[강건]`은 state `statuses`에 동기화한다.
 
 ## 7. 4/7 시작 fixture 흐름
 

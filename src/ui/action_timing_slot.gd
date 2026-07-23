@@ -82,6 +82,7 @@ func set_assignment(definition: Dictionary, anchor_index: int, span: int, part_i
     set_meta("assignment_anchor_index", assignment_anchor_index)
     set_meta("assignment_span", assignment_span)
     set_meta("assignment_part_index", assignment_part_index)
+    set_meta("action_stage", _assignment_stage())
     set_meta("resource_ready", true)
     _refresh()
     queue_redraw()
@@ -120,6 +121,7 @@ func clear_assignment() -> void:
     set_meta("assignment_anchor_index", 0)
     set_meta("assignment_span", 0)
     set_meta("assignment_part_index", 0)
+    set_meta("action_stage", "")
     set_meta("target_text", "")
     set_meta("target_ready", true)
     set_meta("targeting_mode", "none")
@@ -171,15 +173,20 @@ func _refresh() -> void:
     _timing_label.text = "%d수" % local_index
     if has_assignment():
         var card_name := str(assigned_definition.get("name", ""))
-        _placeholder_label.text = card_name if assignment_part_index == 0 else "↳ %s" % card_name
+        var is_preparation := _assignment_stage() == "preparation"
+        _placeholder_label.text = "%s [준비]" % card_name if is_preparation else card_name
         if not resource_ready:
             _status_label.text = resource_text if not resource_text.is_empty() else "자원 부족"
         elif not target_ready and targeting_mode != "none":
             _status_label.text = "대상 선택"
         elif not target_text.is_empty():
             _status_label.text = target_text
+        elif is_preparation:
+            _status_label.text = "[준비]"
+        elif assignment_span > 1:
+            _status_label.text = "[실행]"
         else:
-            _status_label.text = "%d슬롯" % assignment_span if assignment_part_index == 0 else "연결"
+            _status_label.text = "1슬롯"
     else:
         _placeholder_label.text = "＋" if can_receive_placement() else "—"
         _status_label.text = _state_text()
@@ -189,13 +196,20 @@ func _refresh() -> void:
     _status_label.add_theme_color_override("font_color", accent)
     mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if can_receive_placement() or has_assignment() else Control.CURSOR_ARROW
     if has_assignment() and str(assigned_definition.get("source", "")) == "ultimate":
-        tooltip_text = "진행 전 클릭 또는 Enter로 절초 예약을 취소하고 기세 5를 돌려받습니다."
+        tooltip_text = "[준비] 마지막 점유 수에서 실행됩니다. 진행 전 클릭 또는 Enter로 절초 예약을 취소하고 기세 5를 돌려받습니다." if _assignment_stage() == "preparation" else "[실행] 진행 전 클릭 또는 Enter로 절초 예약을 취소하고 기세 5를 돌려받습니다."
+    elif has_assignment() and _assignment_stage() == "preparation":
+        tooltip_text = "[준비] 마지막 점유 수에서 이 행동을 실행합니다. 클릭 또는 Enter로 배치한 행동을 해제합니다."
     elif has_assignment():
         tooltip_text = "클릭 또는 Enter로 배치한 행동을 해제합니다."
     elif can_receive_placement():
         tooltip_text = "선택한 행동을 이 수에 배치합니다."
     else:
         tooltip_text = "현재 행동 묶음에서 사용할 수 없는 수입니다."
+
+func _assignment_stage() -> String:
+    if assignment_span > 1 and assignment_part_index < assignment_span - 1:
+        return "preparation"
+    return "execution"
 
 func _state_text() -> String:
     match slot_state:

@@ -20,6 +20,7 @@ func _run() -> void:
         await process_frame
 
     var cards: Array = board.basic_card_tray.cards
+    var ultimates: Array[Button] = board.ultimate_list_buttons
     var first_slot := board.action_timing_panel.get_slot(1)
     var last_slot := board.action_timing_panel.get_slot(10)
     var first_tile := board.get_tile(1)
@@ -29,7 +30,14 @@ func _run() -> void:
         failures.append("Focus order requires at least two basic cards.")
     else:
         _require_next(cards[0], cards[1], "first card")
-        _require_next(cards[cards.size() - 1], first_slot, "last card")
+        if ultimates.is_empty():
+            failures.append("Focus order requires the visible ultimate list.")
+        else:
+            _require_next(cards[cards.size() - 1], ultimates[0], "last card")
+    if not ultimates.is_empty():
+        if ultimates.size() > 1:
+            _require_next(ultimates[0], ultimates[1], "first ultimate")
+        _require_next(ultimates[ultimates.size() - 1], first_slot, "last ultimate")
     _require_next(first_slot, board.action_timing_panel.get_slot(2), "first timing slot")
     _require_next(last_slot, first_tile, "last timing slot")
     _require_next(first_tile, board.get_tile(2), "first target tile")

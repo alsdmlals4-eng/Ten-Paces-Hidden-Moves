@@ -245,8 +245,8 @@ def main() -> None:
     assert resolution["same_tile_max_combatants"] == 2
     assert resolution["enemy_plan_source"] == "public_state_ai"
     assert resolution["enemy_bundles"] == {}
-    assert contract["ultimate_skills"]["selection_trigger"] == "basic_heavy_attack"
-    assert contract["ultimate_skills"]["list_visible_only_after_heavy_attack"] is True
+    assert contract["ultimate_skills"]["selection_trigger"] == "momentum_gauge_below_list"
+    assert contract["ultimate_skills"]["list_visible_during_planning"] is True
 
     scope = set(contract["presentation_scope"])
     assert {"action_targeting", "action_placement", "response_rules", "resolution_engine"} <= scope

@@ -14,6 +14,7 @@ func _run() -> void:
     _verify_momentum_sources(hud)
     _verify_engagement_and_movement(hud)
     _verify_timing_snapshots(hud)
+    _verify_preparation_and_fortitude_tags(hud)
     _finish()
 
 func _verify_ultimate_damage_and_momentum(hud: Dictionary) -> void:
@@ -173,6 +174,25 @@ func _verify_timing_snapshots(hud: Dictionary) -> void:
     if second_stamina.size() < 2 or int(second_stamina[0]) != 5:
         failures.append("Timing 2 playback must expose meditation before timing 3 is resolved.")
 
+func _verify_preparation_and_fortitude_tags(hud: Dictionary) -> void:
+    var preparation_engine := CombatResolutionEngine.new()
+    preparation_engine.rules["enemy_bundles"] = {}
+    var heavy: Dictionary = preparation_engine.cards_by_id.get("basic_heavy_attack", {})
+    var preparation_result := preparation_engine.resolve_bundle([_placement(heavy, 1, 1)], _context(1), preparation_engine.make_initial_state(hud, 4, 6))
+    var preparation_timings: Array = preparation_result.get("timing_results", [])
+    if preparation_timings.is_empty() or not _has_event(preparation_timings[0].get("events", []), "basic_heavy_attack", "preparation"):
+        failures.append("A two-slot action must emit an authoritative [준비] event on its earlier timing.")
+    if preparation_timings.size() < 2 or not _has_event(preparation_timings[1].get("events", []), "basic_heavy_attack", "일반 공격"):
+        failures.append("A two-slot action must execute only on its final occupied timing.")
+
+    var stance_engine := CombatResolutionEngine.new()
+    stance_engine.rules["enemy_bundles"] = {}
+    var stance: Dictionary = stance_engine.cards_by_id.get("basic_stance", {})
+    var stance_result := stance_engine.resolve_bundle([_placement(stance, 1)], _context(1), stance_engine.make_initial_state(hud, 4, 7))
+    var stance_player: Dictionary = (stance_result.get("state", {}) as Dictionary).get("player", {})
+    if not _has_status(stance_player.get("statuses", []), "fortitude", "[강건]"):
+        failures.append("A successfully executed stance must synchronize the visible [강건] status tag.")
+
 func _placement(definition: Dictionary, anchor: int, direction: int = 1, target_tile: int = 0) -> Dictionary:
     var span := maxi(1, int(definition.get("action_slots", 1)))
     return {"card_id": str(definition.get("id", "")), "definition": definition.duplicate(true), "anchor_index": anchor, "span": span, "target_ready": true, "direction": direction, "target_tile": target_tile}
@@ -183,6 +203,18 @@ func _context(bundle_index: int) -> Dictionary:
 func _has_outcome(actions: Array, card_id: String, outcome: String) -> bool:
     for value in actions:
         if typeof(value) == TYPE_DICTIONARY and str(value.get("card_id", "")) == card_id and str(value.get("outcome", "")) == outcome:
+            return true
+    return false
+
+func _has_event(events: Array, card_id: String, outcome: String) -> bool:
+    for value in events:
+        if typeof(value) == TYPE_DICTIONARY and str(value.get("card_id", "")) == card_id and str(value.get("outcome", "")) == outcome:
+            return true
+    return false
+
+func _has_status(statuses: Array, kind: String, label: String) -> bool:
+    for value in statuses:
+        if typeof(value) == TYPE_DICTIONARY and str(value.get("kind", "")) == kind and str(value.get("label", "")) == label:
             return true
     return false
 

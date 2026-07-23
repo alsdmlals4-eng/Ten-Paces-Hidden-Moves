@@ -63,7 +63,6 @@ var _targeting_mode := ""
 var _targeting_origin_tile := 0
 var _ultimate_definitions: Array[Dictionary] = []
 var _ultimate_reservation_anchors := PackedInt32Array()
-var _heavy_attack_ultimate_choice_open := false
 var _presentation_state := "planning"
 var _presentation_events: Array = []
 var _presentation_state_history := PackedStringArray(["planning"])
@@ -482,7 +481,6 @@ func _on_action_card_selected(definition: Dictionary) -> void:
 		_clear_card_detail()
 		return
 	_selected_action_definition = definition.duplicate(true)
-	_heavy_attack_ultimate_choice_open = card_id == "basic_heavy_attack"
 	_refresh_ultimate_menu()
 	basic_card_tray.set_selected_card(card_id)
 	_detail_pinned = true
@@ -577,7 +575,7 @@ func _refresh_ultimate_menu() -> void:
 	var player: Dictionary = combat_state.get("player", {})
 	var momentum := _resource_value(player, "momentum")
 	var has_exact_momentum := momentum == 5
-	var choice_open := _heavy_attack_ultimate_choice_open and not _inputs_locked()
+	var choice_open := not _inputs_locked()
 	var any_available := false
 	for index in range(_ultimate_definitions.size()):
 		var definition := _ultimate_definitions[index]
@@ -592,17 +590,17 @@ func _refresh_ultimate_menu() -> void:
 		popup.add_item(detail, index)
 		popup.set_item_disabled(index, not available)
 		popup.set_item_tooltip(index, "기세 5를 즉시 소비합니다. 진행 전에는 예약 슬롯을 눌러 취소할 수 있고, 진행 뒤 중단·방향 실패·사거리 실패는 환불되지 않습니다.")
-	ultimate_menu.disabled = not choice_open or not any_available
+	ultimate_menu.disabled = not any_available
 	if not _selected_action_definition.is_empty() and str(_selected_action_definition.get("source", "")) == "ultimate":
 		ultimate_menu.text = "[절초 예약] %s · 슬롯 선택" % str(_selected_action_definition.get("name", ""))
 	elif choice_open:
-		ultimate_menu.text = "강공 절초 선택 · 기세 %d/5" % momentum
+		ultimate_menu.text = "절초 목록 · 기세 %d/5" % momentum
 	else:
-		ultimate_menu.text = "강공 선택 시 절초 · 기세 %d/5" % momentum
+		ultimate_menu.text = "절초 목록 · 판정 중"
 	if is_instance_valid(ultimate_list_panel):
-		ultimate_list_panel.visible = choice_open
+		ultimate_list_panel.visible = true
 	if is_instance_valid(ultimate_list_title):
-		ultimate_list_title.text = "강공 절초 선택 · 기세 %d/5" % momentum
+		ultimate_list_title.text = "절초 목록 · 기세 %d/5" % momentum
 	for index in range(ultimate_list_buttons.size()):
 		var button := ultimate_list_buttons[index]
 		if index >= _ultimate_definitions.size():
@@ -616,8 +614,6 @@ func _refresh_ultimate_menu() -> void:
 			disabled_reason = "판정 중에는 절초 예약을 바꿀 수 없습니다."
 		elif _targeting_anchor > 0:
 			disabled_reason = "대상 지정이 끝난 뒤 다른 절초를 선택할 수 있습니다."
-		elif not choice_open:
-			disabled_reason = "강공을 선택하면 절초 3종을 고를 수 있습니다."
 		elif not has_exact_momentum:
 			disabled_reason = "기세 5 필요"
 		elif not list_slots_ok:
@@ -630,7 +626,7 @@ func _refresh_ultimate_menu() -> void:
 	set_meta("ultimate_momentum", momentum)
 
 func _on_ultimate_menu_id_pressed(index: int) -> void:
-	if _inputs_locked() or not _heavy_attack_ultimate_choice_open or index < 0 or index >= _ultimate_definitions.size() or _targeting_anchor > 0:
+	if _inputs_locked() or index < 0 or index >= _ultimate_definitions.size() or _targeting_anchor > 0:
 		return
 	var definition := _ultimate_definitions[index].duplicate(true)
 	if not _can_reserve_ultimate(definition):
@@ -1136,6 +1132,9 @@ func _configure_keyboard_focus_order() -> void:
 		for card_value in basic_card_tray.cards:
 			if card_value is Control:
 				sequence.append(card_value as Control)
+	for ultimate_button in ultimate_list_buttons:
+		if is_instance_valid(ultimate_button) and ultimate_button.visible:
+			sequence.append(ultimate_button)
 	if is_instance_valid(action_timing_panel):
 		for timing_index in range(1, 11):
 			var slot := action_timing_panel.get_slot(timing_index)
@@ -1159,7 +1158,7 @@ func _configure_keyboard_focus_order() -> void:
 		var previous := sequence[(index - 1 + sequence.size()) % sequence.size()]
 		current.focus_next = current.get_path_to(next)
 		current.focus_previous = current.get_path_to(previous)
-	set_meta("keyboard_focus_order", "cards|timings|tiles|progress|presentation_controls")
+	set_meta("keyboard_focus_order", "cards|ultimate_list|timings|tiles|progress|presentation_controls")
 
 func _configure_accessibility_semantics() -> void:
 	if is_instance_valid(basic_card_tray):
@@ -1173,6 +1172,12 @@ func _configure_accessibility_semantics() -> void:
 			var slot := action_timing_panel.get_slot(timing_index)
 			if is_instance_valid(slot):
 				_set_accessibility_semantics(slot, "%d수 행동 슬롯" % timing_index, "선택한 행동을 이 수에 배치하거나 배치 내용을 확인합니다.")
+	for index in range(ultimate_list_buttons.size()):
+		var ultimate_button := ultimate_list_buttons[index]
+		if not is_instance_valid(ultimate_button) or index >= _ultimate_definitions.size():
+			continue
+		var ultimate_definition := _ultimate_definitions[index]
+		_set_accessibility_semantics(ultimate_button, "%s 절초" % str(ultimate_definition.get("name", "절초")), "기세 5에서 선택해 빈 연속 수에 예약합니다. 진행 전에는 예약한 수 슬롯을 눌러 취소할 수 있습니다.")
 	for tile in tiles:
 		if is_instance_valid(tile):
 			_set_accessibility_semantics(tile, "%d번 전장 타일" % tile.tile_index, "이동 또는 공격의 대상 타일입니다.")
@@ -1184,7 +1189,7 @@ func _configure_accessibility_semantics() -> void:
 	_set_accessibility_semantics(restart_combat_button, "결전 다시 시작", "끝난 전투를 4번과 7번의 초기 상태로 다시 시작합니다.")
 	_set_accessibility_semantics(sound_toggle_button, "소리 켜기 또는 끄기", "전투 효과음 재생을 전환합니다.")
 	_set_accessibility_semantics(sound_volume_slider, "효과음 음량", "왼쪽과 오른쪽 화살표로 전투 효과음의 크기를 조절합니다.")
-	set_meta("accessibility_semantics", "cards|timings|tiles|progress|presentation_controls")
+	set_meta("accessibility_semantics", "cards|ultimate_list|timings|tiles|progress|presentation_controls")
 
 func _set_accessibility_semantics(control: Control, name_value: String, description_value: String) -> void:
 	if not is_instance_valid(control):
@@ -1273,7 +1278,6 @@ func _apply_combat_state_to_view() -> void:
 
 func _clear_action_selection() -> void:
 	_selected_action_definition.clear()
-	_heavy_attack_ultimate_choice_open = false
 	if is_instance_valid(basic_card_tray):
 		basic_card_tray.clear_action_selection()
 	_refresh_ultimate_menu()

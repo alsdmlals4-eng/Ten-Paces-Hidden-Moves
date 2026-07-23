@@ -34,9 +34,8 @@ func _verify_disabled_reason_copy() -> void:
     player["momentum"] = [4, 5]
     board.combat_state["player"] = player
     board._apply_combat_state_to_view()
-    if board.ultimate_list_panel.visible:
-        failures.append("The ultimate list must stay hidden until Heavy Attack is selected.")
-    board._on_action_card_selected(_card_definition(board, "basic_heavy_attack"))
+    if not board.ultimate_list_panel.visible:
+        failures.append("The ultimate list must remain visible below the momentum gauge during planning.")
     if board.ultimate_list_buttons.is_empty() or not board.ultimate_list_buttons[0].tooltip_text.contains("기세 5 필요"):
         failures.append("Disabled ultimate buttons must explain the exact momentum requirement.")
 
@@ -72,10 +71,9 @@ func _verify_reservation(card_id: String, span: int) -> void:
     board.combat_state["player"] = player
     board._apply_combat_state_to_view()
     await process_frame
-    board._on_action_card_selected(_card_definition(board, "basic_heavy_attack"))
     await process_frame
     if board.ultimate_menu.disabled:
-        failures.append("Heavy Attack must open an available ultimate choice at exactly five momentum for %s." % card_id)
+        failures.append("The momentum-gauge ultimate list must offer a choice at exactly five momentum for %s." % card_id)
     if not bool(board.get_layout_snapshot().get("ultimate_vfx_ready", false)):
         failures.append("Approved RGBA ultimate VFX sheet must load into the combat screen.")
 
@@ -138,7 +136,6 @@ func _verify_ultimate_playback_visibility() -> void:
     player["momentum"] = [5, 5]
     board.combat_state["player"] = player
     board._apply_combat_state_to_view()
-    board._on_action_card_selected(_card_definition(board, "basic_heavy_attack"))
     var ultimate_index := -1
     for index in range(board._ultimate_definitions.size()):
         if str((board._ultimate_definitions[index] as Dictionary).get("id", "")) == "ultimate_ten_paces_wave":

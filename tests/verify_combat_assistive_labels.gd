@@ -22,6 +22,7 @@ func _run() -> void:
         await process_frame
 
     _require_label(board.basic_card_tray.cards[0], "basic card")
+    _require_label(board.ultimate_list_buttons[0], "ultimate list")
     _require_label(board.action_timing_panel.get_slot(1), "timing slot")
     _require_label(board.get_tile(1), "combat tile")
     _require_label(board.combat_progress_button._button, "progress button")

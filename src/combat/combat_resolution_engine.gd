@@ -47,6 +47,10 @@ func make_initial_state(hud_data: Dictionary, player_tile: int, enemy_tile: int)
     enemy["tile"] = enemy_tile
     player["next_attack_bonus"] = 0
     enemy["next_attack_bonus"] = 0
+    player["fortitude_next_attack"] = false
+    enemy["fortitude_next_attack"] = false
+    _sync_dynamic_statuses(player)
+    _sync_dynamic_statuses(enemy)
     return {
         "round_number": int((hud_data.get("round", {}) as Dictionary).get("round_number", 1)),
         "bundle_index": int((hud_data.get("round", {}) as Dictionary).get("bundle_index", 1)),
@@ -158,8 +162,18 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
         var state_before_timing := state.duplicate(true)
         var action_start := resolved_actions.size()
         var log_start := logs.size()
+        var preparation_actions := _actions_preparing_at(actions, timing)
+        for action in preparation_actions:
+            if bool(action.get("cancelled", false)):
+                continue
+            var preparation_record := _resolved_record(action, timing, "preparation")
+            preparation_record["action_stage"] = "preparation"
+            resolved_actions.append(preparation_record)
+            var preparation_actor: Dictionary = state.get(str(action.get("actor", "player")), {})
+            var preparation_definition: Dictionary = action.get("definition", {})
+            logs.append("[%d수 · 준비] %s이(가) %s의 준비를 이어 간다." % [timing, _actor_name(preparation_actor), str(preparation_definition.get("name", "행동"))])
         var timing_actions := _actions_for_timing(actions, timing)
-        if timing_actions.is_empty():
+        if timing_actions.is_empty() and preparation_actions.is_empty():
             logs.append("[%d수] 양측 모두 행동하지 않았다." % timing)
             continue
 
@@ -299,6 +313,15 @@ func _actions_for_timing(actions: Array, timing: int) -> Array:
     var result: Array = []
     for action in actions:
         if int(action.get("execution_timing", 0)) == timing:
+            result.append(action)
+    return result
+
+func _actions_preparing_at(actions: Array, timing: int) -> Array:
+    var result: Array = []
+    for action in actions:
+        var anchor := int(action.get("anchor_index", 0))
+        var execution_timing := int(action.get("execution_timing", 0))
+        if int(action.get("span", 1)) > 1 and timing >= anchor and timing < execution_timing:
             result.append(action)
     return result
 
@@ -621,6 +644,7 @@ func _apply_interruption_after_damage(state: Dictionary, all_actions: Array, pen
             var protected_by_fortitude := phase_label == "속공" and bool(actor.get("fortitude_next_attack", false)) and int(action.get("span", 1)) == 1 and str(definition.get("category", "")) == "attack"
             if protected_by_fortitude and not defeated:
                 actor["fortitude_next_attack"] = false
+                _sync_dynamic_statuses(actor)
                 logs.append("[%d수 · 강건] %s의 다음 1슬롯 공격은 속공 피격 중단을 버텼다." % [timing, _actor_name(actor)])
                 continue
             action["cancelled"] = true
@@ -695,13 +719,29 @@ func _execute_utility(state: Dictionary, action: Dictionary, logs: Array[String]
     elif card_id == "basic_stance":
         actor["next_attack_bonus"] = int(actor.get("next_attack_bonus", 0)) + int(rules.get("stance_attack_bonus", 2))
         actor["fortitude_next_attack"] = true
-        logs.append("[%d수 · 일반] %s이(가) 태세를 가다듬어 다음 공격을 강화했다." % [timing, _actor_name(actor)])
+        _sync_dynamic_statuses(actor)
+        logs.append("[%d수 · 일반] %s이(가) 태세를 가다듬어 다음 공격을 강화하고 [강건]을 얻었다." % [timing, _actor_name(actor)])
     else:
         logs.append("[%d수 · 일반] %s이(가) %s을(를) 실행했다." % [timing, _actor_name(actor), str(definition.get("name", "행동"))])
     state[actor_key] = actor
 
 func _base_card_id(definition: Dictionary) -> String:
     return str(definition.get("base_card_id", definition.get("id", "")))
+
+func _sync_dynamic_statuses(actor: Dictionary) -> void:
+    var existing_statuses: Array = actor.get("statuses", [])
+    var next_statuses: Array = []
+    for value in existing_statuses:
+        if typeof(value) == TYPE_DICTIONARY and str((value as Dictionary).get("kind", "")) == "fortitude":
+            continue
+        next_statuses.append(value)
+    if bool(actor.get("fortitude_next_attack", false)):
+        next_statuses.append({
+            "label": "[강건]",
+            "kind": "fortitude",
+            "description": "속공 피해에 의한 1슬롯 공격 중단을 한 번 막습니다."
+        })
+    actor["statuses"] = next_statuses
 
 func _resolved_record(action: Dictionary, timing: int, outcome: String) -> Dictionary:
     var definition: Dictionary = action.get("definition", {})
@@ -712,6 +752,7 @@ func _resolved_record(action: Dictionary, timing: int, outcome: String) -> Dicti
         "base_card_id": _base_card_id(definition),
         "card_name": str(definition.get("name", "")),
         "outcome": outcome,
+        "action_stage": "execution",
         "direction": int(action.get("direction", 0)),
         "target_tile": int(action.get("target_tile", 0)),
         "ai_reason": str(action.get("ai_reason", ""))
@@ -739,6 +780,7 @@ func _build_presentation_events(state_before: Dictionary, state_after: Dictionar
             "card_id": str(action.get("card_id", "")),
             "card_name": str(action.get("card_name", "")),
             "outcome": outcome,
+            "action_stage": str(action.get("action_stage", "execution")),
             "direction": int(action.get("direction", 0)),
             "target_tile": int(action.get("target_tile", 0)),
             "positions_before_bundle": before_positions.duplicate(true)

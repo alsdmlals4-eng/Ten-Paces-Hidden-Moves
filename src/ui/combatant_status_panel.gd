@@ -83,9 +83,14 @@ func _refresh() -> void:
             var status: Dictionary = raw_status
             var chip := _make_label(12, PAPER)
             chip.text = str(status.get("label", "?"))
+            if str(status.get("kind", "")) == "fortitude":
+                chip.add_theme_font_size_override("font_size", 10)
             chip.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
             chip.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
             chip.set_meta("kind", str(status.get("kind", "neutral")))
+            chip.tooltip_text = str(status.get("description", chip.text))
+            chip.accessibility_name = "%s 상태" % chip.text
+            chip.accessibility_description = chip.tooltip_text
             _status_labels.append(chip)
 
 func _format_resource(label: String, key: String) -> String:
@@ -130,9 +135,11 @@ func _layout() -> void:
     var chip_y := maxf(122.0, size.y - 24.0)
     for index in range(_status_labels.size()):
         var chip := _status_labels[index]
-        var chip_x := portrait_x + 8.0 + float(index) * 25.0 if side == "player" else portrait_x + portrait_size - 30.0 - float(index) * 25.0
+        var chip_width := 42.0
+        var chip_gap := 4.0
+        var chip_x := portrait_x + 8.0 + float(index) * (chip_width + chip_gap) if side == "player" else portrait_x + portrait_size - chip_width - 8.0 - float(index) * (chip_width + chip_gap)
         chip.position = Vector2(chip_x, chip_y)
-        chip.size = Vector2(22.0, 20.0)
+        chip.size = Vector2(chip_width, 20.0)
 
     queue_redraw()
 
@@ -178,5 +185,7 @@ func _status_color(kind: String) -> Color:
             return Color("4d7f9e")
         "offense":
             return Color("a24d45")
+        "fortitude":
+            return Color("c79a50")
         _:
             return Color("8a795f")
