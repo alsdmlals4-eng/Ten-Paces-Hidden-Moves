@@ -4,10 +4,11 @@
 
 | Base 스킬 | 경로 | 프로젝트 적용 목적 |
 |---|---|---|
-| 기획서 작성 | `skills/writing-game-design-documents/SKILL.md` | 전투·성장·UI·연출·아키텍처·로드맵의 책임 원본 분리 |
+| 기획서 작성·정본 발행 | `skills/managing-design-documents/SKILL.md` | 전투·성장·UI·연출·아키텍처·로드맵의 책임 원본 분리 |
 | Vertical Slice 설계 | `skills/designing-vertical-slices/SKILL.md` | 5전 예선 결승 데모의 핵심 경험·품질·제작성 검증 |
-| 프로젝트 지식 승격 | `skills/promoting-project-knowledge/SKILL.md` | 프로젝트 전용 결과와 Base 공용 학습 데이터 분리·환류 |
-| 요청 변환 | `skills/transforming-requests-into-prompts/SKILL.md` | 짧은 기획 요청을 구현 가능한 승인 계약으로 변환 |
+| Base 변경 제안 | `skills/managing-base-change-proposals/SKILL.md` | 프로젝트 전용 결과와 Base 공용 학습 데이터 분리·환류 |
+| 요청·작업 계약 | `skills/managing-project-intake-and-work-contract/SKILL.md` | 짧은 기획 요청을 구현 가능한 승인 계약으로 변환 |
+| 정본 최신성 감사 | `skills/auditing-canonical-reference-freshness/SKILL.md` | 수치·용어·경로 변경 뒤 남은 활성 소비자와 구형 참조 확인 |
 
 - 기준 Base 버전: `docs/BASE_RULES_VERSION.md`
 - 프로젝트 작업 규칙: `AGENTS.md`
@@ -21,12 +22,19 @@
 - Codex 또는 다른 작업자에게 구현을 인계할 때.
 - 작업 종료 시 Active Context와 Base 학습 환류를 정리할 때.
 - 기존 문서 사이의 중복·충돌·낡은 수치를 발견했을 때.
+- 두 수 잠금·동시 공개·순차 해상 또는 절초 기세 HUD를 구현·수정·검증할 때는 아래 프로젝트 전용 Skill을 함께 사용한다.
 
 사용하지 않는다.
 
 - 단순 오탈자처럼 방향·범위·검증에 영향이 없는 수정.
 - 사용자가 재개하지 않은 `docs/[보류]/` 항목.
 - 실제 파일을 읽지 않은 상태에서 구현 완료를 추정하는 작업.
+
+## 프로젝트 전용 Skill
+
+| Skill | 경로 | 사용 시점 |
+|---|---|---|
+| `ten-paces-combat-prediction-validation` | `skills/ten-paces-combat-prediction-validation/SKILL.md` | 두 수 예측전, 행동 잠금·해상, 합, 절초 기세, 전투 결과 설명, 관련 UI·저장·테스트의 계약을 설계하거나 검증할 때 |
 
 ## 프로젝트 추가 규칙
 
