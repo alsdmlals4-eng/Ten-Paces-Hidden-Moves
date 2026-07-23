@@ -1,0 +1,83 @@
+name: Full Validation
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "23 18 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  matrix-contracts:
+    name: ${{ matrix.os }}-python-${{ matrix.python }}
+    if: vars.ACTIONS_FULL_VALIDATION_ENABLED == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.11", "3.12"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Run Python contracts
+        run: |
+          python tools/check_project_operating_system.py --root . --config .github/documentation-governance.json
+          python tools/check_canonical_reference_freshness.py --root . --config .github/reference-freshness.json
+          python tools/check_skill_package_integrity.py
+          python -m unittest discover -s tests -p "test_project_governance.py"
+          python tests/check_card_component_contract.py
+          python tests/check_combat_board_contract.py
+          python tests/check_canonical_combat_docs.py
+
+  godot-headless:
+    name: ubuntu-godot-headless
+    if: vars.ACTIONS_FULL_VALIDATION_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - name: Set up Godot 4.7
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.0
+          use-dotnet: false
+          include-templates: false
+      - name: Run Godot verifiers once
+        shell: bash
+        run: |
+          set -euo pipefail
+          for test in \
+            tests/verify_step0.gd \
+            tests/verify_combat_board.gd \
+            tests/verify_response_rules.gd \
+            tests/verify_ultimate_interrupt_engagement.gd \
+            tests/verify_ultimate_ui.gd \
+            tests/verify_combat_presentation_liveness.gd \
+            tests/verify_combat_terminal_presentation.gd \
+            tests/verify_combat_focus_order.gd \
+            tests/verify_combat_keyboard_accessibility.gd \
+            tests/verify_combat_layout_accessibility.gd; do
+            godot --headless --path . --script "res://$test"
+          done
+
+  quota-disabled:
+    name: quota-disabled
+    if: vars.ACTIONS_FULL_VALIDATION_ENABLED != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Full validation is disabled by repository variable ACTIONS_FULL_VALIDATION_ENABLED."
+          echo "Report matrix and Godot checks as BLOCKED_BY_ACTIONS_QUOTA."
