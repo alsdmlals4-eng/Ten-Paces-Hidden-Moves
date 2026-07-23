@@ -128,7 +128,7 @@
     "docs/10_COMBAT_PRESENTATION_PLAN.md": ["플레이어 4번·상대 7번", "시작 거리 3", "대응 → 속공 → 이동 → 일반 공격", "presentation_events", "Issue #11 연출 구현 갱신"],
     "docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md": ["전장 10칸, 플레이어 4번·상대 7번 시작", "이번 시작 위치 변경의 Skill 실행", "정본 최신성 감사에서 발견한 문제"],
     "docs/BASE_RULES_VERSION.md": ["플레이어 4번·상대 7번 시작", "시작 거리 3칸", "현재 11개 제품 기획 문서와 Skill Registry는 실제 생성기가 없어 `source_only`", "P0-3"],
-    "data/combat/combat_board_poc.json": ["\"schema_version\": 14", "\"player_start_tile\": 4", "\"enemy_start_tile\": 7", "\"interruption_enabled\": true", "\"ultimate_skills\""],
+    "data/combat/combat_board_poc.json": ["\"schema_version\": 15", "\"player_start_tile\": 4", "\"enemy_start_tile\": 7", "\"interruption_enabled\": true", "\"ultimate_skills\""],
     "src/combat/combat_board_preview.gd": ["var _player_tile := 4", "var _enemy_tile := 7", "contract.get(\"player_start_tile\", 4)", "contract.get(\"enemy_start_tile\", 7)"],
     "tests/verify_combat_board.gd": ["EXPECTED_PLAYER_TILE := 4", "EXPECTED_ENEMY_TILE := 7", "from 4 to 5", "from 7 to 6"],
     "tests/verify_response_rules.gd": ["PLAYER_START_TILE := 4", "ENEMY_START_TILE := 7", "RESPONSE_RULES_10_6_START_4_7_VERIFY_OK"],

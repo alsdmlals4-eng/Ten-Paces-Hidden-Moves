@@ -24,8 +24,8 @@ func _run() -> void:
 
 func _verify_guard_rules(hud: Dictionary) -> void:
     var same_timing_health := _resolve_defense_case(hud, "basic_guard", false, 1, 1)
-    if same_timing_health != 24:
-        failures.append("Same-timing guard must use 50%% reduction when it is stronger than guard block. expected=24 actual=%d" % same_timing_health)
+    if same_timing_health != 26:
+        failures.append("Same-timing guard must subtract guard block before halving. expected=26 actual=%d" % same_timing_health)
 
     var bundle_health := _resolve_defense_case(hud, "basic_guard", false, 1, 2)
     if bundle_health != 22:

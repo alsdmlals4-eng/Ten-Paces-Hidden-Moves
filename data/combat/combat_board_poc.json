@@ -1,5 +1,5 @@
 {
-  "schema_version": 14,
+  "schema_version": 15,
   "tile_count": 10,
   "player_start_tile": 4,
   "enemy_start_tile": 7,
@@ -184,9 +184,9 @@
   },
   "response_rules": {
     "patch": "10.6",
-    "guard_same_timing": "halve_damage",
+    "guard_same_timing": "subtract_guard_then_halve_damage",
     "guard_same_bundle": "reduce_by_guard_block",
-    "guard_comparison": "use_larger_reduction",
+    "guard_comparison": "ordered_compound_reduction",
     "guard_block": 4,
     "evade_same_timing": "full_evade",
     "stance_response_combo": "same_slot",
@@ -215,6 +215,8 @@
     "combat_start_resources": "maximum_minus_start_penalties",
     "advances_bundle_and_round": true,
     "fixed_enemy_preview_plan": true,
+    "clash_same_timing_attacks": true,
+    "sure_hit_tag": "필중",
     "interruption_enabled": true,
     "fortitude_enabled": true,
     "presentation_events": true
@@ -237,5 +239,5 @@
     "enemy_placeholder",
     "foot_anchor_guides"
   ],
-  "excluded_until_later_steps": ["combat_ai", "combat_end_restart"]
+  "excluded_until_later_steps": []
 }

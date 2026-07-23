@@ -384,6 +384,17 @@ func advance_after_resolution() -> Dictionary:
     bundle_advanced.emit(snapshot)
     return snapshot
 
+func reset_to_initial() -> void:
+    for anchor_value in placements.keys().duplicate():
+        _clear_placement_without_signal(int(anchor_value))
+    timing_data["round_number"] = 1
+    timing_data["current_bundle"] = 1
+    timing_data["current_timing"] = 1
+    _refresh_slot_states()
+    _refresh()
+    _update_runtime_meta()
+    _emit_placement_changed()
+
 func _emit_placement_changed() -> void:
     _refresh_resource_projection()
     set_meta("cards_inserted", not placements.is_empty())

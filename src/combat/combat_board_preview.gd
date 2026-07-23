@@ -33,6 +33,7 @@ var presentation_label: Label
 var presentation_vfx: TextureRect
 var fast_replay_button: Button
 var skip_presentation_button: Button
+var restart_combat_button: Button
 var reduced_motion_button: Button
 var sound_toggle_button: Button
 var sound_volume_slider: HSlider
@@ -83,6 +84,7 @@ func _ready() -> void:
     _ultimate_vfx_sheet = load(ULTIMATE_VFX_PATH) as Texture2D
     _configure_ultimate_menu()
     combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
+    combat_state["ai_enabled"] = true
     _sync_runtime_context()
     _apply_combat_state_to_view()
     resized.connect(_layout_board)
@@ -236,6 +238,13 @@ func _build_structure() -> void:
     _apply_keyboard_focus_ring(skip_presentation_button)
     skip_presentation_button.pressed.connect(_skip_presentation)
     add_child(skip_presentation_button)
+    restart_combat_button = Button.new()
+    restart_combat_button.name = "RestartCombatButton"
+    restart_combat_button.text = "결전 다시 시작"
+    restart_combat_button.visible = false
+    _apply_keyboard_focus_ring(restart_combat_button)
+    restart_combat_button.pressed.connect(restart_combat)
+    add_child(restart_combat_button)
     reduced_motion_button = Button.new()
     reduced_motion_button.name = "ReducedMotionButton"
     reduced_motion_button.text = "모션 감소: 끔"
@@ -365,7 +374,7 @@ func _layout_board() -> void:
         presentation_vfx.position = Vector2(size.x * 0.20, presentation_y + 60.0)
         presentation_vfx.size = Vector2(size.x * 0.60, clampf(size.y * 0.22, 150.0, 210.0))
     var playback_x := maxf(lower_margin, size.x - 420.0)
-    for button_value in [fast_replay_button, skip_presentation_button, reduced_motion_button]:
+    for button_value in [fast_replay_button, skip_presentation_button, reduced_motion_button, restart_combat_button]:
         if is_instance_valid(button_value):
             var button := button_value as Button
             button.position = Vector2(playback_x, presentation_y)
@@ -853,8 +862,12 @@ func _resolve_and_present(context: Dictionary) -> void:
         _set_presentation_state("combat_ended")
         _play_procedural_sfx("defeat")
         if is_instance_valid(presentation_label):
-            presentation_label.text = "전투 불능 · 결전 종료"
+            var player_health := int(((combat_state.get("player", {}) as Dictionary).get("health", [0, 0]) as Array)[0])
+            var enemy_health := int(((combat_state.get("enemy", {}) as Dictionary).get("health", [0, 0]) as Array)[0])
+            presentation_label.text = "무승부 · 결전 종료" if player_health <= 0 and enemy_health <= 0 else "전투 불능 · 결전 종료"
             presentation_label.visible = true
+        if is_instance_valid(restart_combat_button):
+            restart_combat_button.visible = true
         if is_instance_valid(combat_log_panel):
             combat_log_panel.append_entry("[전투 불능] 체력이 0이 되어 결전이 끝났습니다.", "system")
         return
@@ -924,7 +937,7 @@ func _present_authoritative_events(events_value: Array, timing: int) -> void:
         if typeof(value) != TYPE_DICTIONARY:
             continue
         var event: Dictionary = value
-        if str(event.get("type", "")) != "action_result":
+        if str(event.get("type", "")) not in ["action_result", "clash"]:
             continue
         var outcome := str(event.get("outcome", ""))
         summary = _presentation_summary_for_event(event, summary)
@@ -956,6 +969,8 @@ func _wait_for_presentation_delay(duration: float) -> void:
         await get_tree().process_frame
 
 func _event_presentation_duration(event: Dictionary) -> float:
+    if str(event.get("type", "")) == "clash":
+        return 0.34
     if str(event.get("card_id", "")).begins_with("ultimate_"):
         return 0.70
     if int(event.get("damage", 0)) > 0:
@@ -977,6 +992,12 @@ func _play_character_action_motion(event: Dictionary) -> void:
 
 func _presentation_summary_for_event(event: Dictionary, fallback: String) -> String:
     var outcome := str(event.get("outcome", ""))
+    if outcome == "clash_draw":
+        return "합 상쇄 · 양측 피해 없음"
+    if outcome == "clash_win":
+        return "합 승리 · 차이 피해 %d" % int(event.get("damage", 0))
+    if outcome == "clash_loss":
+        return "합 패배 · 차이 피해 %d" % int(event.get("damage", 0))
     if outcome == "interrupted":
         return "중단 · 이후 행동 취소"
     if outcome == "miss_direction":
@@ -987,6 +1008,8 @@ func _presentation_summary_for_event(event: Dictionary, fallback: String) -> Str
         return "막기 · 피해 경감"
     if str(event.get("defense_outcome", "")) == "evade":
         return "회피 · 피해 없음"
+    if str(event.get("defense_outcome", "")) in ["sure_hit", "sure_hit_block"]:
+        return "필중 · 회피 불가 · 피해 %d" % int(event.get("damage", 0))
     if int(event.get("damage", 0)) > 0:
         return "%s · 피해 %d" % [str(event.get("card_name", "공격")), int(event.get("damage", 0))]
     return fallback
@@ -1031,6 +1054,35 @@ func _skip_presentation() -> void:
     if is_instance_valid(presentation_vfx):
         presentation_vfx.visible = false
     set_meta("presentation_skipped", true)
+
+func restart_combat() -> void:
+    _presentation_skip_requested = false
+    _presentation_events.clear()
+    _presentation_state_history = PackedStringArray(["planning"])
+    _selected_action_definition.clear()
+    _targeting_anchor = 0
+    _targeting_mode = ""
+    _ultimate_reservation_anchors.clear()
+    _resolution_count = 0
+    _progress_request_count = 0
+    if is_instance_valid(procedural_sfx_player):
+        procedural_sfx_player.stop()
+    if is_instance_valid(presentation_vfx):
+        presentation_vfx.visible = false
+    if is_instance_valid(presentation_label):
+        presentation_label.visible = false
+    if is_instance_valid(restart_combat_button):
+        restart_combat_button.visible = false
+    if is_instance_valid(action_timing_panel):
+        action_timing_panel.reset_to_initial()
+    combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
+    combat_state["ai_enabled"] = true
+    _set_presentation_state("planning")
+    _sync_runtime_context()
+    _apply_combat_state_to_view()
+    _sync_progress_availability()
+    if is_instance_valid(combat_log_panel):
+        combat_log_panel.append_entry("[재시작] 4번과 7번에서 새 결전을 시작합니다.", "system")
 
 func _toggle_reduced_motion() -> void:
     _reduced_motion = not _reduced_motion
@@ -1079,7 +1131,7 @@ func _configure_keyboard_focus_order() -> void:
             sequence.append(tile)
     if is_instance_valid(combat_progress_button) and is_instance_valid(combat_progress_button._button):
         sequence.append(combat_progress_button._button)
-    for presentation_control in [fast_replay_button, skip_presentation_button, reduced_motion_button, sound_toggle_button, sound_volume_slider]:
+    for presentation_control in [fast_replay_button, skip_presentation_button, reduced_motion_button, restart_combat_button, sound_toggle_button, sound_volume_slider]:
         if is_instance_valid(presentation_control):
             sequence.append(presentation_control as Control)
     if sequence.size() < 2:
@@ -1125,7 +1177,9 @@ func _set_accessibility_semantics(control: Control, name_value: String, descript
 
 func _play_event_sfx(event: Dictionary) -> void:
     var outcome := str(event.get("outcome", ""))
-    if outcome == "interrupted":
+    if outcome.begins_with("clash_"):
+        _play_procedural_sfx("metal_clash")
+    elif outcome == "interrupted":
         _play_procedural_sfx("interrupt")
     elif str(event.get("defense_outcome", "")) == "evade":
         _play_procedural_sfx("evade")

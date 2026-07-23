@@ -132,9 +132,9 @@ def main() -> None:
 
     response = contract["response_rules"]
     assert response["patch"] == "10.6"
-    assert response["guard_same_timing"] == "halve_damage"
+    assert response["guard_same_timing"] == "subtract_guard_then_halve_damage"
     assert response["guard_same_bundle"] == "reduce_by_guard_block"
-    assert response["guard_comparison"] == "use_larger_reduction"
+    assert response["guard_comparison"] == "ordered_compound_reduction"
     assert response["guard_block"] == 4
     assert response["evade_same_timing"] == "full_evade"
     assert response["stance_response_combo"] == "same_slot"
@@ -201,6 +201,7 @@ def main() -> None:
         assert card["damage"] == damage
         assert card["attack_power_coefficient"] == coefficient
         assert card["stamina_cost"] == 0 and card["internal_cost"] == 0
+    assert "필중" in next(card for card in ultimate_cards["cards"] if card["id"] == "ultimate_void_sword_qi")["tags"]
 
     resolution_contract = contract["resolution_engine"]
     assert resolution_contract["resolution_order"] == ["response", "quick_attack", "move", "general"]
@@ -225,7 +226,9 @@ def main() -> None:
     assert resolution["combat_start_resources"] == "maximum_minus_start_penalties"
     assert resolution["guard_same_timing_damage_multiplier"] == 0.5
     assert resolution["guard_bundle_mode"] == "fixed_block"
-    assert resolution["guard_uses_higher_reduction"] is True
+    assert resolution["guard_resolution_order"] == ["subtract_guard_block", "halve_if_same_timing"]
+    assert resolution["clash_same_timing_attacks"] is True
+    assert resolution["clash_damage_uses_defense"] is True
     assert resolution["evade_same_timing_full"] is True
     assert resolution["stance_response_bundle_extension"] is True
     assert resolution["stance_response_defense_multiplier"] == 1.5
@@ -236,17 +239,13 @@ def main() -> None:
     assert resolution["fortitude_quick_phase_one_slot_only"] is True
     assert resolution["same_tile_engagement"] is True
     assert resolution["same_tile_max_combatants"] == 2
-    assert set(resolution["enemy_bundles"]) == {"1", "2", "3"}
-    for bundle in resolution["enemy_bundles"].values():
-        for action in bundle:
-            assert action["targeting_mode"] in {"none", "move_tile", "attack_direction"}
-            assert int(action["direction"]) in {-1, 0, 1}
+    assert resolution["enemy_plan_source"] == "public_state_ai"
+    assert resolution["enemy_bundles"] == {}
 
     scope = set(contract["presentation_scope"])
     assert {"action_targeting", "action_placement", "response_rules", "resolution_engine"} <= scope
     excluded = set(contract["excluded_until_later_steps"])
-    assert {"combat_ai", "combat_end_restart"} <= excluded
-    assert "interruption_focus_fortitude" not in excluded
+    assert "combat_ai" not in excluded and "combat_end_restart" not in excluded
 
     required_files = [
         "assets/backgrounds/twilight_ink_duel_v1.png",
@@ -260,11 +259,14 @@ def main() -> None:
         "src/combat/combat_board_preview.gd",
         "src/combat/combat_board_tile.gd",
         "src/combat/combat_resolution_engine.gd",
+        "src/combat/combat_ai_planner.gd",
         "src/ui/action_timing_panel.gd",
         "src/ui/action_timing_slot.gd",
         "src/ui/basic_card_tray.gd",
         "tests/verify_combat_board.gd",
         "tests/verify_response_rules.gd",
+        "tests/verify_clash_guard_sure_hit.gd",
+        "tests/verify_step12_13_restart_ai.gd",
         "tests/verify_ultimate_interrupt_engagement.gd",
         "tests/verify_ultimate_ui.gd",
         "tests/verify_combat_character_art.gd",

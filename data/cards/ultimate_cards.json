@@ -1,9 +1,9 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "momentum_cost": 5,
   "cards": [
     {"id":"ultimate_ten_paces_wave","name":"십보 유파","source":"ultimate","category":"attack","resolution_phase":"quick_attack","range_text":"1","move_range":1,"dash_before_attack":true,"damage":"8","attack_power_coefficient":0.25,"action_slots":1,"stamina_cost":0,"internal_cost":0,"targeting_mode":"attack_direction","tags":["절초","속공"]},
     {"id":"ultimate_cleave_peak","name":"단악결","source":"ultimate","category":"attack","resolution_phase":"general","range_text":"2","damage":"14","attack_power_coefficient":0.75,"action_slots":2,"stamina_cost":0,"internal_cost":0,"targeting_mode":"attack_direction","tags":["절초"]},
-    {"id":"ultimate_void_sword_qi","name":"파공검기","source":"ultimate","category":"attack","resolution_phase":"general","range_text":"3","damage":"22","attack_power_coefficient":1.5,"action_slots":3,"stamina_cost":0,"internal_cost":0,"targeting_mode":"attack_direction","tags":["절초"]}
+    {"id":"ultimate_void_sword_qi","name":"파공검기","source":"ultimate","category":"attack","resolution_phase":"general","range_text":"3","damage":"22","attack_power_coefficient":1.5,"action_slots":3,"stamina_cost":0,"internal_cost":0,"targeting_mode":"attack_direction","tags":["절초","필중"]}
   ]
 }
