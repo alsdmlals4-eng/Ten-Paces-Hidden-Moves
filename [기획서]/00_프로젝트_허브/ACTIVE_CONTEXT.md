@@ -36,7 +36,7 @@
 - 위치·순서·대응·파훼 우선.
 - 결과 이유를 복기하고 다음 계획을 변경한다.
 
-책임 원본은 `docs/01_GAME_DESIGN.md`다.
+책임 원본은 `docs/01_GAME_DESIGN.md`다. 세부 전투 판정과 AI 계약은 `docs/02_COMBAT_RULES.md`가 책임진다.
 
 ## 현재 구현
 
