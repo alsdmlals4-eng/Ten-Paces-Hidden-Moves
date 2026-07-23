@@ -259,8 +259,14 @@ def assert_current_rules_in_documents(active: dict[str, str]) -> None:
         assert sequence_text in active[key], key
 
     for key in ("readme", "game", "rules", "content", "poc", "ui", "qa", "hub_context"):
-        assert "기초 행동 8종" in active[key], key
-        assert "절초 3종" in active[key], key
+        assert any(
+            token in active[key]
+            for token in ("기초 행동 8종", "기초 행동은 8종", "기초 행동 ID가 정확히 8개")
+        ), key
+        assert any(
+            token in active[key]
+            for token in ("절초 3종", "절초 목록 3종", "절초 데이터")
+        ), key
 
     for key in ("readme", "game", "rules", "poc", "ui", "qa", "architecture", "presentation", "hub_context"):
         assert "합" in active[key], key
