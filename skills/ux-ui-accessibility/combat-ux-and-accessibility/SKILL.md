@@ -75,6 +75,7 @@ description: Use for Ten Paces combat screens, cards, action timing, HUD, presen
 - 모션 감소·음향 끄기·자산 누락에서도 같은 의미가 남는다.
 - 긴 문구와 최소 해상도에서 핵심 UI가 잘리지 않는다.
 - 기술 노출을 실제 보조기기 사용성이나 법적 준수로 과장하지 않는다.
+- 실제 사용자 증거가 없으면 상태는 `HUMAN_NOT_RUN`이다.
 
 ## 금지
 
