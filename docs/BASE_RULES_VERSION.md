@@ -3,7 +3,7 @@
 ## 1. 기준
 
 - Base: `alsdmlals4-eng/Base@41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
-- 이전 프로젝트 기준: `ee265576da7f67d3278f8099dd97d4e714ef0651`.
+- 이전 프로젝트 기준의 재현 가능한 SHA는 `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`가 보존한다.
 - 추가 비교: 6개 커밋·43개 변경 파일.
 - 동기화 날짜: `2026-07-23`.
 - 전투 기준: PR #7 `agent/t0-combat-poc-board@147a031c75e96bff170d7f99016beb9e85b12066`.
@@ -117,9 +117,9 @@
 ```yaml
 base_diff_audit: COMPLETE
 registry_update: APPLIED_IN_REFRESH_BRANCH
-document_rewrite: IN_PROGRESS
-governance_checks: NOT_RUN_ON_REFRESH_HEAD
-card_contract: NOT_RUN_ON_REFRESH_HEAD
+document_rewrite: APPLIED
+governance_checks: NOT_RUN_ON_LATEST_REFRESH_HEAD
+card_contract: NOT_RUN_ON_LATEST_REFRESH_HEAD
 product_file_preservation: PENDING_FINAL_DIFF
 human_step14: NOT_RUN
 ```
