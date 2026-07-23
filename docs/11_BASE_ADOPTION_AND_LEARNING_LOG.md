@@ -5,7 +5,7 @@
 
 ## 1. 기준 정보
 
-- 이전 프로젝트 기준: `alsdmlals4-eng/Base@ee265576da7f67d3278f8099dd97d4e714ef0651`.
+- 이전 프로젝트 기준의 재현 가능한 SHA는 `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`에 보존한다.
 - 현재 적용 기준: `alsdmlals4-eng/Base@41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
 - 추가 변화: 6개 커밋·43개 변경 파일.
 - 전투 기준: PR #7 `agent/t0-combat-poc-board@147a031c75e96bff170d7f99016beb9e85b12066`.
@@ -69,7 +69,7 @@ Base 활성 Skill은 25개이며 모두 기본 로드하지 않는다. 프로젝
 ### 4.2 구조화 계약 drift
 
 - 실제 board JSON은 schema 16인데 freshness 설정은 15를 요구했다.
-- 프로젝트 Registry는 Base `ee265...`·13개 공유 Skill을 고정했다.
+- 프로젝트 Registry는 이전 Base와 13개 공유 Skill을 고정했다.
 - 검사기 두 곳도 같은 숫자를 하드코딩했다.
 
 처리:
@@ -140,8 +140,8 @@ board_schema_16_freshness: APPLIED_IN_REFRESH_BRANCH
 stale_counterexamples: ADDED
 tracked_python_cache: REMOVED
 product_code_data_scene_assets: PRESERVED_PENDING_FINAL_DIFF
-documentation_governance: NOT_RUN_ON_REFRESH_HEAD
-card_component_contract: NOT_RUN_ON_REFRESH_HEAD
+documentation_governance: NOT_RUN_ON_LATEST_REFRESH_HEAD
+card_component_contract: NOT_RUN_ON_LATEST_REFRESH_HEAD
 human_step14: NOT_RUN
 ```
 
