@@ -3,7 +3,7 @@
   "design_root": "[기획서]",
   "enforce_top_level_design_root": true,
   "active_roots": ["[기획서]", "skills", "docs", "templates"],
-  "ignored_segments": ["archive", "[백업]", "[제거 후보]", "hold", "deprecated"],
+  "ignored_segments": ["archive", "[백업]", "[보류]", "[제거 후보]", "hold", "deprecated"],
   "required_paths": [
     "START_HERE.md",
     "AGENTS.md",
@@ -58,8 +58,9 @@
   "forbidden_active_name_patterns": ["(?i)(^|[_-])(v[0-9]+|final|latest|copy|new)([_-]|\\.)"],
   "design_document_registry": "[기획서]/DESIGN_DOCUMENT_REGISTRY.json",
   "skill_registry": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
+  "reference_freshness_config": ".github/reference-freshness.json",
   "interview_registry": "[기획서]/00_프로젝트_허브/INTERVIEW_REGISTRY.json",
   "enforce_publications": false,
-  "migration_phase": "optimized-base-integration",
+  "migration_phase": "pr7-canonical-skill-refresh",
   "required_project_skill_disciplines": ["게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA"]
 }
