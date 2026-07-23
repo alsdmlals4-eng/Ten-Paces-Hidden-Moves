@@ -28,8 +28,10 @@ func _verify_public_state_ai(hud: Dictionary) -> void:
     var second := engine._build_enemy_actions(1, state)
     if first.is_empty() or first != second:
         failures.append("Public-state AI must produce a deterministic bundle plan.")
-    if not first.is_empty() and str((first[0] as Dictionary).get("card_id", "")) != "basic_move":
-        failures.append("AI must approach from public distance three without reading player placements.")
+    if not first.is_empty():
+        var first_definition: Dictionary = (first[0] as Dictionary).get("definition", {})
+        if str(first_definition.get("id", "")) != "basic_move":
+            failures.append("AI must approach from public distance three without reading player placements.")
     var ultimate_state := engine.make_initial_state(hud, 4, 7)
     ultimate_state["ai_enabled"] = true
     var enemy: Dictionary = (ultimate_state.get("enemy", {}) as Dictionary).duplicate(true)

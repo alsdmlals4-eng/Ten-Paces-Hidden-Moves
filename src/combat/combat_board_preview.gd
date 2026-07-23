@@ -868,6 +868,7 @@ func _resolve_and_present(context: Dictionary) -> void:
 			presentation_label.visible = true
 		if is_instance_valid(restart_combat_button):
 			restart_combat_button.visible = true
+			_configure_keyboard_focus_order()
 		if is_instance_valid(combat_log_panel):
 			combat_log_panel.append_entry("[전투 불능] 체력이 0이 되어 결전이 끝났습니다.", "system")
 		return
@@ -1073,6 +1074,7 @@ func restart_combat() -> void:
 		presentation_label.visible = false
 	if is_instance_valid(restart_combat_button):
 		restart_combat_button.visible = false
+		_configure_keyboard_focus_order()
 	if is_instance_valid(action_timing_panel):
 		action_timing_panel.reset_to_initial()
 	combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
@@ -1133,7 +1135,9 @@ func _configure_keyboard_focus_order() -> void:
 		sequence.append(combat_progress_button._button)
 	for presentation_control in [fast_replay_button, skip_presentation_button, reduced_motion_button, restart_combat_button, sound_toggle_button, sound_volume_slider]:
 		if is_instance_valid(presentation_control):
-			sequence.append(presentation_control as Control)
+			var control := presentation_control as Control
+			if control.visible:
+				sequence.append(control)
 	if sequence.size() < 2:
 		return
 	for index in range(sequence.size()):
