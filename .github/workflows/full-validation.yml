@@ -72,12 +72,3 @@ jobs:
             tests/verify_combat_layout_accessibility.gd; do
             godot --headless --path . --script "res://$test"
           done
-
-  quota-disabled:
-    name: quota-disabled
-    if: vars.ACTIONS_FULL_VALIDATION_ENABLED != 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo "Full validation is disabled by repository variable ACTIONS_FULL_VALIDATION_ENABLED."
-          echo "Report matrix and Godot checks as BLOCKED_BY_ACTIONS_QUOTA."
