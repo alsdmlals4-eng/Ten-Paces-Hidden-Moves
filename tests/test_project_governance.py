@@ -50,6 +50,24 @@ class ProjectGovernanceTests(unittest.TestCase):
         self.assertNotIn("fixed_enemy_preview_plan", engine)
         self.assertEqual("public_state_ai", resolution["enemy_plan_source"])
 
+    def test_active_combat_docs_use_current_baseline_and_fixture_boundary(self) -> None:
+        current_baseline = "659c57e7ffa588ad6a6471ed9b5394985b159eaf"
+        stale_baseline = "147a031c75e96bff170d7f99016beb9e85b12066"
+        docs = [
+            "docs/02_COMBAT_RULES.md",
+            "docs/05_COMBAT_POC_SPEC.md",
+            "docs/08_TEST_CHECKLIST.md",
+            "docs/09_COMBAT_SYSTEM_ARCHITECTURE.md",
+        ]
+        for relative in docs:
+            text = (ROOT / relative).read_text(encoding="utf-8")
+            self.assertIn(current_baseline, text, f"{relative} is missing current baseline")
+            self.assertNotIn(stale_baseline, text, f"{relative} still uses stale baseline")
+        for relative in ["docs/02_COMBAT_RULES.md", "docs/09_COMBAT_SYSTEM_ARCHITECTURE.md"]:
+            text = (ROOT / relative).read_text(encoding="utf-8")
+            for token in ["public_state_ai", "enemy_bundles", "ai_enabled == false"]:
+                self.assertIn(token, text, f"{relative} is missing fixture boundary {token!r}")
+
     def test_active_operating_state_is_synchronized(self) -> None:
         expected = {
             "AGENTS.md": [
