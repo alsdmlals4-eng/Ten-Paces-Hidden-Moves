@@ -3,7 +3,7 @@
 > 책임: T0 전투 POC의 자동·Godot·Windows·사람 검증과 T1 진입 증거  
 > 규칙 원본: `docs/02_COMBAT_RULES.md`  
 > 범위 원본: `docs/05_COMBAT_POC_SPEC.md`  
-> 기준 구현: PR #7 `147a031c75e96bff170d7f99016beb9e85b12066`
+> 기준 구현: PR #7 `659c57e7ffa588ad6a6471ed9b5394985b159eaf`
 
 ## 1. 판정 상태
 
@@ -13,6 +13,7 @@
 | `PARTIAL` | 일부 환경·경로만 확인 |
 | `FAIL` | 실제 결과가 기대와 다름 |
 | `NOT_RUN` | 실행하지 않음 |
+| `DEFERRED_BY_USER` | 사용자가 현재 실행 범위에서 명시적으로 제외 |
 | `BLOCKED` | 도구·권한·환경·선행 구현 부족으로 실행 불가 |
 
 다음을 서로 대체하지 않는다.
@@ -42,7 +43,7 @@
 | 종료·재시작 | PASS | 자동·MCP 런타임 | 반복 플레이 체감 |
 | 키보드·접근성 메타 | PASS/PARTIAL | 포커스·UI Automation 기술 증거 | 실제 보조기기 사용자 |
 | DEBUG 성능 | PARTIAL | 대표·최악 장면 표본 | 목표 장치 Release profile |
-| STEP 14 사람 플레이 | NOT_RUN | 개발자 기계 시나리오만 있음 | 실제 관찰·선호·재도전 |
+| STEP 14 사람 플레이 | DEFERRED_BY_USER | 개발자 기계 시나리오만 있음 | 실제 관찰·선호·재도전은 `UNVERIFIED` |
 
 ## 3. 테스트 기록 형식
 
@@ -57,7 +58,7 @@ precondition:
 actions:
 expected:
 actual:
-status: PASS | PARTIAL | FAIL | NOT_RUN | BLOCKED
+status: PASS | PARTIAL | FAIL | NOT_RUN | DEFERRED_BY_USER | BLOCKED
 evidence:
 notes:
 ```
@@ -288,7 +289,7 @@ notes:
 - 다시 플레이하려는가?
 - 키보드·보조기기·모션·음향 장벽이 있는가?
 
-현재 상태: `NOT_RUN`.
+현재 상태: `DEFERRED_BY_USER / NOT_RUN / UNVERIFIED`.
 
 ## 15. T1 진입 게이트
 
@@ -300,6 +301,8 @@ notes:
 - [ ] 프로젝트 코어가 사용자 승인으로 확정됐다.
 - [ ] 접근성 장벽과 목표 플랫폼 성능 위험을 기록했다.
 - [ ] `KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST` 결정을 문서화했다.
+
+사람 검증이 보류됐으므로 T1 진입은 `NOT_GRANTED`다.
 
 ## 16. 종료 보고
 
@@ -316,7 +319,7 @@ human_playtest:
 accessibility_user:
 release_performance:
 required_checks:
-result: PASS | PARTIAL | FAIL | NOT_RUN | BLOCKED
+result: PASS | PARTIAL | FAIL | NOT_RUN | DEFERRED_BY_USER | BLOCKED
 remaining_risks:
 next_gate:
 ```
