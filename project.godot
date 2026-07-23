@@ -8,6 +8,10 @@
 
 config_version=5
 
+[accessibility]
+
+general/accessibility_support=1
+
 [application]
 
 config/name="십보강호: 전투 POC"
@@ -33,10 +37,6 @@ enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
 [gui]
 
 theme/default_font_multichannel_signed_distance_field=true
-
-[accessibility]
-
-general/accessibility_support=1
 
 [rendering]
 
