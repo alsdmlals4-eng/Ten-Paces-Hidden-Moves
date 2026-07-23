@@ -116,7 +116,7 @@ Task 1의 Red가 예상 이유로 실패하기 전 제품 코드를 변경하지
 - PR #7 HEAD: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
 - PR #15: Open·Draft·mergeable.
 - 최종 마감 기준 head `b39e1e75...` Documentation Governance run #478: `PASS`.
-- REPEAT_POC 계획 변경 최신 head의 Governance: `PENDING`.
+- REPEAT_POC 계획 latest completed Documentation Governance: run #549 `PASS` on `bbf49e50...`.
 - Issue #16: Open, assignee `alsdmlals4-eng`.
 - REPEAT_POC 계획 diff: 정본 7개 + 이 Active Context·Documentation Map 소비자 갱신.
 - 제품 코드·데이터·씬·자산 변경: 0건.
