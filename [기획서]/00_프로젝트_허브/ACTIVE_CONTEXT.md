@@ -4,9 +4,10 @@
 
 - Work Mode: `BUILD → REVIEW`.
 - Base: `41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
-- 제품 구현 PR: #7 `agent/t0-combat-poc-board`.
+- 제품 구현 PR #7: `agent/t0-combat-poc-board`.
 - 제품 기준 SHA: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
 - 코어 확정·계획 PR: #15 `agent/project-core-confirmation`.
+- 최신 전투 승인: Issue #13.
 - 현재 Goal Issue: #16.
 - 프로젝트 코어: `CORE_CONFIRMED`.
 - 상태 전이: `CORE_REVIEW_PENDING → CORE_CONFIRMED`.
