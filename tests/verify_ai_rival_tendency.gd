@@ -4,6 +4,32 @@ extends SceneTree
 const DATA_PATH := "res://data/combat/combat_rival_tendency_poc.json"
 const BASIC_PATH := "res://data/cards/basic_cards.json"
 const ULTIMATE_PATH := "res://data/cards/ultimate_cards.json"
+const TRACE_KEYS := [
+    "public_snapshot",
+    "rival_id",
+    "candidate_ids",
+    "candidate_scores",
+    "selected_card_id",
+    "seed",
+    "reason_codes"
+]
+const SNAPSHOT_KEYS := [
+    "round_number",
+    "bundle_index",
+    "bundle_start",
+    "bundle_slots",
+    "player_tile",
+    "enemy_tile",
+    "distance",
+    "player_health",
+    "enemy_health",
+    "enemy_health_max",
+    "enemy_stamina",
+    "enemy_internal",
+    "enemy_momentum",
+    "enemy_momentum_max",
+    "ai_decision_seed"
+]
 const FORBIDDEN_TRACE_TOKENS := [
     "placement",
     "player_plan",
@@ -75,6 +101,7 @@ func _verify_seeded_policy(tendency: Dictionary, cards_by_id: Dictionary) -> voi
         var state := _public_state(seed_value)
         var actions := planner.build_bundle_actions(state, 1, cards_by_id)
         var trace := planner.get_last_trace()
+        _verify_trace_shape(trace)
         var selected := str(trace.get("selected_card_id", ""))
         var candidate_ids: Array = trace.get("candidate_ids", [])
         if actions.is_empty() or selected.is_empty() or selected not in candidate_ids:
@@ -82,6 +109,13 @@ func _verify_seeded_policy(tendency: Dictionary, cards_by_id: Dictionary) -> voi
             continue
         if candidate_ids.size() > 3:
             failures.append("Candidate pool must not exceed three actions.")
+        var candidate_scores: Dictionary = trace.get("candidate_scores", {})
+        if not candidate_scores.is_empty():
+            var score_values: Array[float] = []
+            for score_value in candidate_scores.values():
+                score_values.append(float(score_value))
+            if score_values.max() - score_values.min() > 2.0001:
+                failures.append("Rational candidate scores must remain inside the 2.0 window.")
         observed[selected] = true
         for reason_value in trace.get("reason_codes", []):
             if str(reason_value) not in public_clue_ids:
@@ -98,6 +132,33 @@ func _verify_seeded_policy(tendency: Dictionary, cards_by_id: Dictionary) -> voi
     var ultimate_actions := planner.build_bundle_actions(ultimate_state, 1, cards_by_id)
     if ultimate_actions.is_empty() or str((ultimate_actions[0] as Dictionary).get("card_id", "")) != "ultimate_void_sword_qi":
         failures.append("A ready range-three ultimate must remain the only rational top candidate.")
+
+    var recover_state := _public_state(0)
+    var recover_enemy: Dictionary = (recover_state.get("enemy", {}) as Dictionary).duplicate(true)
+    recover_enemy["internal"] = [0, 4]
+    recover_state["enemy"] = recover_enemy
+    var recover_actions := planner.build_bundle_actions(recover_state, 1, cards_by_id)
+    if recover_actions.is_empty() or str((recover_actions[0] as Dictionary).get("card_id", "")) != "basic_meditate":
+        failures.append("A resource-starved rival must keep meditation as the seed-zero top choice.")
+
+func _verify_trace_shape(trace: Dictionary) -> void:
+    var trace_keys: Array[String] = []
+    for key_value in trace.keys():
+        trace_keys.append(str(key_value))
+    trace_keys.sort()
+    var expected_trace_keys := TRACE_KEYS.duplicate()
+    expected_trace_keys.sort()
+    if trace_keys != expected_trace_keys:
+        failures.append("AI trace keys changed or exposed an unapproved field.")
+    var snapshot: Dictionary = trace.get("public_snapshot", {})
+    var snapshot_keys: Array[String] = []
+    for key_value in snapshot.keys():
+        snapshot_keys.append(str(key_value))
+    snapshot_keys.sort()
+    var expected_snapshot_keys := SNAPSHOT_KEYS.duplicate()
+    expected_snapshot_keys.sort()
+    if snapshot_keys != expected_snapshot_keys:
+        failures.append("Public AI snapshot keys changed or exposed an unapproved field.")
 
 func _public_state(seed_value: int) -> Dictionary:
     return {
@@ -132,7 +193,7 @@ func _contains_forbidden_trace_data(value) -> bool:
             if _contains_forbidden_trace_data((value as Dictionary)[key_value]):
                 return true
     elif typeof(value) == TYPE_ARRAY:
-        for child in value as Array:
+        for child in (value as Array):
             if _contains_forbidden_trace_data(child):
                 return true
     return false
