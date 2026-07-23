@@ -1,7 +1,7 @@
 # 십보강호 전투 규칙서
 
 > 책임: T0 전투 POC의 전장·계획·대상·비용·판정·합·대응·중단·절초·AI·종료 규칙  
-> 구현 기준: PR #7 `agent/t0-combat-poc-board@147a031c75e96bff170d7f99016beb9e85b12066`  
+> 구현 기준: PR #7 `agent/t0-combat-poc-board@659c57e7ffa588ad6a6471ed9b5394985b159eaf`  
 > 승인 규칙: Issue #11, Issue #13  
 > 실제 계약: `data/combat/`, `data/cards/`, `src/combat/`, `tests/`
 
@@ -283,7 +283,7 @@
 
 동일 공개 상태와 시드는 동일 행동과 `ai_reason`을 만든다. 현재 AI는 거리·자원·저체력·기세에 따른 최소 결정 규칙이며, 성향 다양화와 제한된 실수율은 T1 이후 가설이다.
 
-`data/combat/combat_resolution_preview.json`의 `enemy_bundles`는 빈 객체이며, 고정 plan은 AI를 끈 독립 회귀 fixture에서만 사용할 수 있다.
+운영 런타임의 `enemy_plan_source`는 `public_state_ai`다. `data/combat/combat_resolution_preview.json`의 `enemy_bundles`는 빈 객체를 유지한다. 고정 plan은 `ai_enabled == false`인 독립 회귀 fixture에서만 주입할 수 있으며 운영 AI source를 대체하지 않는다.
 
 ## 11. 전투 종료와 재시작
 
