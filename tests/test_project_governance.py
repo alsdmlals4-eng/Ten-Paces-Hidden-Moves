@@ -34,6 +34,62 @@ class ProjectGovernanceTests(unittest.TestCase):
     def test_current_skill_integrity(self) -> None:
         SKILLS.run(ROOT)
 
+    def test_active_operating_state_is_synchronized(self) -> None:
+        expected = {
+            "AGENTS.md": [
+                "659c57e7ffa588ad6a6471ed9b5394985b159eaf",
+                "CORE_CONFIRMED",
+                "REPEAT_POC",
+                "NOT_GRANTED",
+            ],
+            "START_HERE.md": [
+                "659c57e7ffa588ad6a6471ed9b5394985b159eaf",
+                "CORE_CONFIRMED",
+                "REPEAT_POC",
+                "NOT_GRANTED",
+            ],
+            "docs/BASE_RULES_VERSION.md": [
+                "659c57e7ffa588ad6a6471ed9b5394985b159eaf",
+                "CORE_CONFIRMED",
+                "REPEAT_POC",
+                "human_step14: NOT_RUN",
+            ],
+            "[기획서]/00_프로젝트_허브/START_HERE.md": [
+                "659c57e7ffa588ad6a6471ed9b5394985b159eaf",
+                "CORE_CONFIRMED",
+                "REPEAT_POC",
+                "NOT_GRANTED",
+            ],
+            "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md": [
+                "659c57e7ffa588ad6a6471ed9b5394985b159eaf",
+                "CORE_CONFIRMED / PRODUCT_GATE_REPEAT_POC",
+                "NOT_GRANTED / REPEAT_POC",
+            ],
+            "[기획서]/00_프로젝트_허브/ROADMAP.md": [
+                "659c57e7ffa588ad6a6471ed9b5394985b159eaf",
+                "CORE_CONFIRMED / PRODUCT_GATE_REPEAT_POC",
+                "HUMAN_NOT_RUN",
+                "NOT_GRANTED",
+            ],
+            "[기획서]/00_프로젝트_허브/HANDOFF.md": [
+                "659c57e7ffa588ad6a6471ed9b5394985b159eaf",
+                "CORE_CONFIRMED",
+                "REPEAT_POC",
+                "NOT_GRANTED",
+            ],
+        }
+        forbidden = [
+            "147a031c75e96bff170d7f99016beb9e85b12066",
+            "agent/pr7-canonical-skill-refresh",
+            "현재 판정: `CORE_REVIEW_PENDING`",
+        ]
+        for relative, required_tokens in expected.items():
+            text = (ROOT / relative).read_text(encoding="utf-8")
+            for token in required_tokens:
+                self.assertIn(token, text, f"{relative} is missing current token {token!r}")
+            for token in forbidden:
+                self.assertNotIn(token, text, f"{relative} still contains stale token {token!r}")
+
     def test_stale_current_token_is_rejected_even_with_appended_override(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
