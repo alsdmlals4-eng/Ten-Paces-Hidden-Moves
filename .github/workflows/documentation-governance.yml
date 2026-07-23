@@ -67,6 +67,7 @@ jobs:
           python tests/check_card_component_contract.py
           python tests/check_combat_board_contract.py
           python tests/check_canonical_combat_docs.py
+          python tests/check_rival_tendency_contract.py
 
       - name: Parse PowerShell automations for code changes
         if: steps.scope.outputs.code_changed == 'true'
