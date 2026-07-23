@@ -1,5 +1,5 @@
 {
-  "schema_version": 16,
+  "schema_version": 17,
   "tile_count": 10,
   "player_start_tile": 4,
   "enemy_start_tile": 7,
@@ -216,7 +216,8 @@
     "placement_resource_preview": true,
     "combat_start_resources": "maximum_minus_start_penalties",
     "advances_bundle_and_round": true,
-    "fixed_enemy_preview_plan": true,
+    "enemy_plan_source": "public_state_ai",
+    "fixture_enemy_plan_allowed_when_ai_disabled": true,
     "clash_same_timing_attacks": true,
     "sure_hit_tag": "필중",
     "interruption_enabled": true,
