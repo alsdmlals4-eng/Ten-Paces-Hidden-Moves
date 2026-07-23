@@ -33,13 +33,17 @@
 - Base 차이: `docs/BASE_RULES_VERSION.md`.
 - Skill Registry: `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`.
 - 현재 구현 기준: PR #7 `agent/t0-combat-poc-board`.
-- 기준 SHA: `147a031c75e96bff170d7f99016beb9e85b12066`.
+- 기준 SHA: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
+- 코어 확정 PR: #15 `agent/project-core-confirmation`.
 - 최신 승인 범위: Issue #13 STEP 12~14.
 - 전투 규칙: `docs/02_COMBAT_RULES.md`.
 - 현재 범위: `docs/05_COMBAT_POC_SPEC.md`.
 - 현재 증거: `docs/08_TEST_CHECKLIST.md`.
+- 프로젝트 코어: `CORE_CONFIRMED`.
+- 제품 게이트: `REPEAT_POC`.
+- T1 진입: `NOT_GRANTED`.
 
-STEP 14의 기계 시나리오는 기록됐지만 실제 사용자 이해·보조기기·주관적 음향/모션 관찰은 `NOT_RUN`이다.
+STEP 14의 기계 시나리오는 기록됐지만 실제 사용자 이해·상대 성향 발견·보조기기·주관적 음향/모션 관찰은 `NOT_RUN`이다.
 
 ## 4. Work Mode·Skill Mode
 
@@ -123,7 +127,7 @@ L2 이상은 `outcome / inputs / files / dependencies / output / acceptance / va
 - UI·VFX·오디오는 판정·보상·저장을 재계산하지 않는다.
 - 덱·손패·행동력·내공·`[집중]` 없음.
 
-프로젝트 코어는 `CORE_REVIEW_PENDING`이며 정합화 뒤 PLAN 모드와 사용자 승인으로 확정한다.
+프로젝트 코어는 `docs/01_GAME_DESIGN.md`에서 `CORE_CONFIRMED`다. 코어 확정은 실제 사람 STEP 14 통과나 T1 시작 승인이 아니며, 현재 제품 게이트는 `REPEAT_POC`다.
 
 ## 8. 기준 SHA와 Codex 작업 보존
 
