@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "goal_id": "repeat_poc_core_validation",
+  "goal_document": "docs/decisions/2026-07-24_REPEAT_POC_CORE_VALIDATION_GOAL.md",
+  "implementation_plan": "plans/2026-07-24-repeat-poc-core-validation-implementation-plan.md",
+  "codex_entrypoint": "plans/CODEX_GOAL_REPEAT_POC.md",
+  "baseline": {
+    "project_core_branch": "agent/project-core-confirmation",
+    "product_branch": "agent/t0-combat-poc-board",
+    "product_sha": "659c57e7ffa588ad6a6471ed9b5394985b159eaf"
+  },
+  "status": {
+    "a0_contract_alignment": "NOT_STARTED",
+    "a1_rival_ai": "NOT_STARTED",
+    "a2_hypothesis_and_summary": "NOT_STARTED",
+    "a3_review_ui": "NOT_STARTED",
+    "a4_step14": "NOT_RUN",
+    "product_gate": "REPEAT_POC",
+    "t1_greenlight": "NOT_GRANTED",
+    "mvp_complete": false
+  },
+  "last_updated_at": "2026-07-24"
+}
