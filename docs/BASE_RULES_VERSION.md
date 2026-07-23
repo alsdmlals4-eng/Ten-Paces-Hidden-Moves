@@ -6,7 +6,8 @@
 - 이전 프로젝트 기준의 재현 가능한 SHA는 `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`가 보존한다.
 - 추가 비교: 6개 커밋·43개 변경 파일.
 - 동기화 날짜: `2026-07-23`.
-- 전투 기준: PR #7 `agent/t0-combat-poc-board@147a031c75e96bff170d7f99016beb9e85b12066`.
+- 전투 기준: PR #7 `agent/t0-combat-poc-board@659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
+- 코어 확정 PR: #15 `agent/project-core-confirmation`.
 - 최신 승인 범위: Issue #13 STEP 12~14.
 - 감사: `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`.
 - 검증: `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_VERIFICATION.md`.
@@ -110,21 +111,26 @@
 - board schema 16·Base SHA·Skill 집합을 단일 freshness 설정으로 통합했다.
 - stale 문장 위에 최신 보정 절을 붙여도 실패하는 반례를 추가했다.
 - 추적된 Python 캐시를 제거하고 재발을 차단했다.
-- PR #7 제품 코드·데이터·씬·자산은 정합화 범위에서 보호한다.
+- PR #14를 PR #7에 병합했고 PR #7 HEAD를 `659c57e7...`로 고정했다.
+- PR #15는 이 기준에서 프로젝트 코어와 다음 검증 게이트를 문서화한다.
 
 ## 7. 검증 상태
 
 ```yaml
 base_diff_audit: COMPLETE
-registry_update: APPLIED_IN_REFRESH_BRANCH
-document_rewrite: APPLIED
-governance_checks: NOT_RUN_ON_LATEST_REFRESH_HEAD
-card_contract: NOT_RUN_ON_LATEST_REFRESH_HEAD
-product_file_preservation: PENDING_FINAL_DIFF
+registry_update: MERGED_TO_PR7
+canonical_document_refresh: MERGED_TO_PR7
+pr7_baseline: 659c57e7ffa588ad6a6471ed9b5394985b159eaf
+pr15_pre_closeout_governance: PASS_ON_FF378732
+governance_checks_on_current_head: PENDING
+card_contract_on_current_head: PENDING
+product_file_preservation: PASS_FOR_PR15_DOCUMENT_SCOPE
+project_core: CORE_CONFIRMED
+product_gate: REPEAT_POC
 human_step14: NOT_RUN
 ```
 
-최신 Actions와 최종 baseline diff 전에는 통합 완료로 표시하지 않는다.
+최신 Actions와 최종 baseline diff 전에는 PR #15 통합 완료로 표시하지 않는다. 프로젝트 코어 확정은 사람 STEP 14나 T1 진입을 의미하지 않는다.
 
 ## 8. 재감사 조건
 
