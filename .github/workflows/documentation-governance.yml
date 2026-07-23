@@ -13,23 +13,23 @@ permissions:
   contents: read
 
 jobs:
-  classify:
+  validate:
+    name: scope-aware-validation
     runs-on: ubuntu-latest
-    outputs:
-      code_changed: ${{ steps.scope.outputs.code_changed }}
-      docs_changed: ${{ steps.scope.outputs.docs_changed }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           show-progress: false
-      - id: scope
+
+      - name: Classify changed paths
+        id: scope
         shell: bash
         run: |
           set -euo pipefail
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             echo "code_changed=true" >> "$GITHUB_OUTPUT"
-            echo "docs_changed=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" > changed-files.txt
@@ -38,25 +38,14 @@ jobs:
           else
             echo "code_changed=false" >> "$GITHUB_OUTPUT"
           fi
-          if grep -Eq '^(docs/|\[기획서\]/|skills/|templates/|README\.md|START_HERE\.md|AGENTS\.md|\.github/.*\.(json|ya?ml)$)' changed-files.txt; then
-            echo "docs_changed=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "docs_changed=false" >> "$GITHUB_OUTPUT"
-          fi
 
-  docs-only:
-    name: docs-validator
-    needs: classify
-    if: needs.classify.outputs.docs_changed == 'true' && needs.classify.outputs.code_changed != 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          show-progress: false
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Validate documentation contracts
+
+      - name: Validate documentation-only change
+        if: steps.scope.outputs.code_changed != 'true'
         shell: bash
         run: |
           set -o pipefail
@@ -66,19 +55,8 @@ jobs:
           python -m unittest discover -s tests -p 'test_project_governance.py'
           python tests/check_canonical_combat_docs.py
 
-  code-contracts:
-    name: ubuntu-code-contracts
-    needs: classify
-    if: needs.classify.outputs.code_changed == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          show-progress: false
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Run full static contracts once
+      - name: Validate code change contracts
+        if: steps.scope.outputs.code_changed == 'true'
         shell: bash
         run: |
           set -o pipefail
@@ -89,7 +67,9 @@ jobs:
           python tests/check_card_component_contract.py
           python tests/check_combat_board_contract.py
           python tests/check_canonical_combat_docs.py
-      - name: Parse PowerShell automations
+
+      - name: Parse PowerShell automations for code changes
+        if: steps.scope.outputs.code_changed == 'true'
         shell: pwsh
         run: |
           $paths = @("tools/verify_and_commit_step0.ps1", "tools/verify_and_commit_combat_foundation.ps1", "tools/run_combat_board.ps1")
@@ -100,14 +80,6 @@ jobs:
             if ($errors.Count -gt 0) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }
           }
 
-  validation-boundary:
-    name: validation-boundary
-    needs: classify
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo "Docs-only: one Ubuntu/Python documentation validator."
-          echo "Code: one Ubuntu full static-contract job."
-          echo "Godot and OS/Python matrix are deferred while Actions quota is unavailable."
-          echo "Deferred checks are BLOCKED_BY_ACTIONS_QUOTA, never PASS."
+      - name: Record deferred runtime boundary
+        if: steps.scope.outputs.code_changed == 'true' && vars.ACTIONS_FULL_VALIDATION_ENABLED != 'true'
+        run: echo "Godot and OS/Python matrix checks are BLOCKED_BY_ACTIONS_QUOTA."
