@@ -23,4 +23,21 @@ jobs:
           use-dotnet: false
           include-templates: false
       - run: godot --headless --editor --path . --quit
-      - run: godot --headless --path . --script res://tests/verify_combat_terminal_presentation.gd
+      - name: Verify terminal review
+        id: terminal
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          godot --headless --path . --script res://tests/verify_combat_terminal_presentation.gd > terminal-v4.log 2>&1
+          status=$?
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit $status
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a3-terminal-v4-log
+          path: terminal-v4.log
+          if-no-files-found: error
+      - if: steps.terminal.outputs.status != '0'
+        run: exit 1
