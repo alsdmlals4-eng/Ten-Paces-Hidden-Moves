@@ -3,6 +3,7 @@ extends SceneTree
 const HUD_PATH := "res://data/combat/combat_hud_preview.json"
 const PLAYER_START_TILE := 4
 const ENEMY_START_TILE := 5
+const ENGINE_SCRIPT := preload("res://src/combat/combat_resolution_engine_prepare.gd")
 
 var failures: Array[String] = []
 
@@ -23,7 +24,7 @@ func _run() -> void:
     _finish()
 
 func _new_engine() -> CombatResolutionEngine:
-    var engine := CombatResolutionEngine.new()
+    var engine := ENGINE_SCRIPT.new() as CombatResolutionEngine
     engine.rules["enemy_bundles"] = {}
     return engine
 
@@ -41,8 +42,8 @@ func _verify_prepare_meditate(hud: Dictionary) -> void:
     ]
     var result := engine.resolve_bundle(placements, _context(), state)
     var player: Dictionary = (result.get("state", {}) as Dictionary).get("player", {})
-    if _resource_current(player, "momentum") != 1:
-        failures.append("Prepare -> meditation must grant exactly one ultimate momentum.")
+    if _resource_current(player, "momentum") != 2:
+        failures.append("Prepare -> meditation must grant +1 in addition to the normal bundle momentum. expected=2 actual=%d" % _resource_current(player, "momentum"))
     if bool(player.get("prepare_active", true)):
         failures.append("Meditation must consume prepare after the reward is applied.")
 
@@ -61,8 +62,8 @@ func _verify_prepare_survives_movement(hud: Dictionary) -> void:
     ]
     var result := engine.resolve_bundle(placements, _context(), state)
     var player: Dictionary = (result.get("state", {}) as Dictionary).get("player", {})
-    if _resource_current(player, "momentum") != 1:
-        failures.append("Movement between prepare and meditation must not remove the momentum reward.")
+    if _resource_current(player, "momentum") != 2:
+        failures.append("Movement between prepare and meditation must preserve the extra momentum reward. expected=2 actual=%d" % _resource_current(player, "momentum"))
     if bool(player.get("prepare_active", true)):
         failures.append("Meditation after movement must consume prepare.")
 
@@ -91,8 +92,8 @@ func _verify_prepare_attack(hud: Dictionary) -> void:
     if attack_damage != 8:
         failures.append("Prepare must add the existing +2 bonus to the next attack after movement. actual=%d" % attack_damage)
     var player: Dictionary = (result.get("state", {}) as Dictionary).get("player", {})
-    if bool(player.get("prepare_active", true)) or int(player.get("next_attack_bonus", -1)) != 0:
-        failures.append("The empowered attack must consume prepare and clear its attack bonus.")
+    if bool(player.get("prepare_active", true)) or int(player.get("next_attack_bonus", -1)) != 0 or bool(player.get("fortitude_next_attack", true)):
+        failures.append("The empowered attack must consume prepare, attack bonus, and fortitude.")
 
 func _verify_failed_non_move_consumes(hud: Dictionary) -> void:
     var engine := _new_engine()
