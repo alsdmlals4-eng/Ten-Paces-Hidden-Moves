@@ -1,8 +1,7 @@
-diff --git a/src/combat/combat_board_preview.gd b/src/combat/combat_board_preview.gd
-index f7fef12..0000000 100644
 --- a/src/combat/combat_board_preview.gd
 +++ b/src/combat/combat_board_preview.gd
-@@ -11,6 +11,8 @@ const BASIC_CARD_TRAY_SCENE := preload("res://scenes/ui/basic_card_tray.tscn")
+@@ -9,6 +9,8 @@
+ const BASIC_CARD_TRAY_SCENE := preload("res://scenes/ui/basic_card_tray.tscn")
  const CARD_DETAIL_SCENE := preload("res://scenes/ui/card_detail_panel.tscn")
  const COMBAT_LOG_SCENE := preload("res://scenes/ui/combat_log_panel.tscn")
 +const OPPONENT_HYPOTHESIS_SCENE := preload("res://scenes/ui/opponent_hypothesis_panel.tscn")
@@ -10,14 +9,15 @@ index f7fef12..0000000 100644
  const TILE_SCENE := preload("res://scenes/combat/combat_board_tile.tscn")
  const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placeholder.tscn")
  const ULTIMATE_VFX_PATH := "res://assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png"
-@@ -27,6 +29,7 @@ var basic_card_tray: BasicCardTray
+@@ -25,6 +27,7 @@
+ var basic_card_tray: BasicCardTray
  var card_detail_panel: CardDetailPanel
  var combat_log_panel: CombatLogPanel
 +var opponent_hypothesis_panel: OpponentHypothesisPanel
  var ultimate_menu: MenuButton
  var ultimate_list_panel: PanelContainer
  var ultimate_list_title: Label
-@@ -43,6 +46,7 @@ var procedural_sfx_player: AudioStreamPlayer
+@@ -41,6 +44,7 @@
  var player_character: CombatCharacterPlaceholder
  var enemy_character: CombatCharacterPlaceholder
  var resolution_engine: CombatResolutionEngine
@@ -25,7 +25,7 @@ index f7fef12..0000000 100644
  var combat_state: Dictionary = {}
  
  var _tile_layer: Control
-@@ -75,6 +79,10 @@ var _ultimate_vfx_sheet: Texture2D
+@@ -73,6 +77,10 @@
  var _sound_muted := false
  var _sound_volume := 0.65
  var _defer_character_snap := false
@@ -36,7 +36,7 @@ index f7fef12..0000000 100644
  
  func _ready() -> void:
  	mouse_filter = Control.MOUSE_FILTER_PASS
-@@ -83,6 +91,7 @@ func _ready() -> void:
+@@ -81,6 +89,7 @@
  	_enemy_tile = int(contract.get("enemy_start_tile", 7))
  	_build_structure()
  	resolution_engine = CombatResolutionEngine.new()
@@ -44,7 +44,7 @@ index f7fef12..0000000 100644
  	_ultimate_vfx_sheet = load(ULTIMATE_VFX_PATH) as Texture2D
  	_configure_ultimate_menu()
  	combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
-@@ -176,6 +185,11 @@ func _build_structure() -> void:
+@@ -174,6 +183,10 @@
  	combat_log_panel.layout_requested.connect(_layout_board)
  	add_child(combat_log_panel)
  
@@ -55,7 +55,8 @@ index f7fef12..0000000 100644
  	ultimate_menu = MenuButton.new()
  	ultimate_menu.name = "UltimateMenu"
  	ultimate_menu.text = "절초 · 기세 필요"
-@@ -309,6 +323,9 @@ func _build_structure() -> void:
+@@ -307,6 +320,9 @@
+ 	set_meta("basic_card_count", 8)
  	set_meta("card_detail_component", "CardDetailPanel")
  	set_meta("combat_log_component", "CombatLogPanel")
 +	set_meta("opponent_hypothesis_component", "OpponentHypothesisPanel")
@@ -64,7 +65,7 @@ index f7fef12..0000000 100644
  	set_meta("information_interactions_enabled", true)
  	set_meta("action_placement_enabled", true)
  	set_meta("targeting_enabled", true)
-@@ -407,6 +424,10 @@ func _layout_board() -> void:
+@@ -403,6 +419,10 @@
  		combat_log_panel.position = Vector2(size.x - overlay_margin - log_width, overlay_top)
  		combat_log_panel.size = Vector2(log_width, overlay_height)
  
@@ -75,7 +76,8 @@ index f7fef12..0000000 100644
  	var tile_count := tiles.size()
  	var gap_ratio := float(contract.get("tile_gap_to_tile_width", 0.06))
  	var horizontal_margin := maxf(40.0, size.x * 0.045)
-@@ -834,6 +855,14 @@ func _on_progress_requested(context: Dictionary) -> void:
+@@ -834,6 +854,13 @@
+ func _on_progress_requested(context: Dictionary) -> void:
  	if _inputs_locked() or not action_timing_panel.is_current_bundle_complete():
  		return
 +	_committed_hypothesis_snapshot = opponent_hypothesis_panel.get_current_hypothesis_snapshot() if is_instance_valid(opponent_hypothesis_panel) else {"id": "none", "label": "기록한 가설 없음", "recorded": false}
@@ -88,7 +90,8 @@ index f7fef12..0000000 100644
  	_clear_targeting()
  	_set_presentation_state("committed")
  	_progress_request_count += 1
-@@ -845,7 +874,7 @@ func _on_progress_requested(context: Dictionary) -> void:
+@@ -843,7 +870,7 @@
+ 
  func _resolve_and_present(context: Dictionary) -> void:
  
 -	var result := resolution_engine.resolve_bundle(action_timing_panel.get_resolution_placements(), context, combat_state)
@@ -96,7 +99,7 @@ index f7fef12..0000000 100644
  	_set_presentation_state("resolving")
  	_presentation_events = result.get("presentation_events", [])
  	_resolution_count += 1
-@@ -871,6 +900,10 @@ func _resolve_and_present(context: Dictionary) -> void:
+@@ -863,6 +890,9 @@
  	var state_before_bundle_rewards := combat_state.duplicate(true)
  	combat_state = (result.get("state", combat_state) as Dictionary).duplicate(true)
  	_play_momentum_gain_sfx(state_before_bundle_rewards, combat_state)
@@ -106,7 +109,8 @@ index f7fef12..0000000 100644
  
  	_clear_action_selection()
  	_clear_card_detail()
-@@ -894,6 +927,9 @@ func _resolve_and_present(context: Dictionary) -> void:
+@@ -888,6 +918,9 @@
+ 	_sync_runtime_context()
  	combat_progress_button.mark_resolution_applied()
  	_apply_combat_state_to_view()
 +	if is_instance_valid(opponent_hypothesis_panel):
@@ -115,7 +119,7 @@ index f7fef12..0000000 100644
  	if is_instance_valid(combat_log_panel):
  		combat_log_panel.append_entry("[판정 완료] 다음 행동 묶음을 준비합니다.", "system")
  	_set_presentation_state("next_bundle_ready")
-@@ -1070,6 +1106,10 @@ func restart_combat() -> void:
+@@ -1074,6 +1107,10 @@
  	_targeting_mode = ""
  	_ultimate_reservation_anchors.clear()
  	_resolution_count = 0
@@ -126,7 +130,8 @@ index f7fef12..0000000 100644
  	_progress_request_count = 0
  	if is_instance_valid(procedural_sfx_player):
  		procedural_sfx_player.stop()
-@@ -1085,6 +1125,8 @@ func restart_combat() -> void:
+@@ -1086,6 +1123,8 @@
+ 		_configure_keyboard_focus_order()
  	if is_instance_valid(action_timing_panel):
  		action_timing_panel.reset_to_initial()
 +	if is_instance_valid(opponent_hypothesis_panel):
@@ -134,7 +139,8 @@ index f7fef12..0000000 100644
  	combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
  	combat_state["ai_enabled"] = true
  	_set_presentation_state("planning")
-@@ -1127,6 +1169,10 @@ func _configure_keyboard_focus_order() -> void:
+@@ -1128,6 +1167,10 @@
+ 
  func _configure_keyboard_focus_order() -> void:
  	var sequence: Array[Control] = []
 +	if is_instance_valid(opponent_hypothesis_panel):
@@ -144,7 +150,8 @@ index f7fef12..0000000 100644
  	if is_instance_valid(basic_card_tray):
  		for card_value in basic_card_tray.cards:
  			if card_value is Control:
-@@ -1159,7 +1205,7 @@ func _configure_keyboard_focus_order() -> void:
+@@ -1158,9 +1201,12 @@
+ 		var previous := sequence[(index - 1 + sequence.size()) % sequence.size()]
  		current.focus_next = current.get_path_to(next)
  		current.focus_previous = current.get_path_to(previous)
 -	set_meta("keyboard_focus_order", "cards|ultimate_list|timings|tiles|progress|presentation_controls")
@@ -156,3 +163,4 @@ index f7fef12..0000000 100644
 +		_set_accessibility_semantics(hypothesis_focus, "상대 의도 가설 선택", "현재 묶음에서 예상하는 상대 의도를 직접 기록합니다. 기록하지 않음을 선택할 수 있습니다.")
  	if is_instance_valid(basic_card_tray):
  		for card_value in basic_card_tray.cards:
+ 			if card_value is BasicCardTrayItem:
