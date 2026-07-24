@@ -71,6 +71,10 @@ jobs:
         if: steps.scope.outputs.code_changed == 'true'
         run: python tests/check_rival_tendency_contract.py
 
+      - name: Validate A2 hypothesis and summary contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_repeat_poc_a2_contract.py
+
       - name: Parse PowerShell automations for code changes
         if: steps.scope.outputs.code_changed == 'true'
         shell: pwsh
