@@ -95,3 +95,5 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_combat_hypothesis.gd
       - name: Verify combat review summary
         run: godot --headless --path . --script res://tests/verify_combat_review_summary.gd
+      - name: Verify combat review UI
+        run: godot --headless --path . --script res://tests/verify_combat_review_ui.gd
