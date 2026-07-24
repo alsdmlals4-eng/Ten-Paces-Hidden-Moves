@@ -1,10 +1,11 @@
 # `[준비]` 강화·`[전조]`·카드 자동 배치 규칙 변경
 
 - 결정일: 2026-07-24
-- 상태: `USER_APPROVED / IMPLEMENTED_PENDING_FINAL_CLOSEOUT`
+- 상태: `USER_APPROVED / IMPLEMENTED_FULL_ACTIONS_PASS`
 - 제품 브랜치: `agent/prepare-momentum-and-auto-placement`
 - 제품 PR: #35
 - 기준: `agent/repeat-poc-a3-review-ui-closeout`
+- 검증 코드 head: `6b1c88759bcd416bbe0ee2bcd8b98697d7fd6417`
 
 ## 책임과 우선순위
 
@@ -75,17 +76,25 @@
 - `data/cards/basic_cards.json`: `basic_stance` 표시명과 설명.
 - `data/combat/combat_resolution_preview.json`: `prepare_meditate_momentum = 1`.
 
-## 6. 기술 검증 계약
+## 6. 기술 검증 증거
 
-- Python: `tests/check_prepare_auto_placement_contract.py`.
-- Godot: `tests/verify_prepare_momentum.gd`.
-- Godot: `tests/verify_auto_card_placement.gd`.
-- 기존 절초 UI·terminal restart·키보드 접근성 verifier를 자동 배치 입력 계약으로 갱신한다.
-- 최종 판정은 Ubuntu·Windows × Python 3.11·3.12와 Ubuntu Godot 전체 회귀가 같은 제품 head에서 통과한 뒤 기록한다.
+- Red: PR #35 PR Validation run #659에서 새 계약 step이 예상 실패.
+- 제품 정적 Green: PR #35 PR Validation run #681 성공.
+- 검증 전용 PR #40 PR Validation run #682 성공.
+- Full Validation run #21 성공.
+- Ubuntu Python 3.11·3.12 성공.
+- Windows Python 3.11·3.12 성공.
+- Ubuntu Godot 4.7 import 성공.
+- 기존 전투·절초·terminal restart·키보드·레이아웃·AI·A2·A3 verifier 성공.
+- `tests/verify_prepare_momentum.gd` 성공.
+- `tests/verify_auto_card_placement.gd` 성공.
+
+검증 전용 workflow trigger는 제품 브랜치에 포함하지 않으며 PR #40은 병합 없이 닫는다.
 
 ## 7. 증거 경계
 
 ```yaml
+technical_implementation: IMPLEMENTED_FULL_ACTIONS_PASS
 human_step14: DEFERRED_BY_USER
 human_validation: UNVERIFIED
 subjective_usability: UNVERIFIED
