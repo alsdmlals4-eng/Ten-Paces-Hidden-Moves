@@ -76,7 +76,7 @@ def main() -> None:
     board = read("src/combat/combat_board_preview.gd")
     for token in (
         "OPPONENT_HYPOTHESIS_SCENE",
-        "CombatReviewSummaryBuilder.new",
+        "REVIEW_SUMMARY_BUILDER_SCRIPT.new",
         "_committed_hypothesis_snapshot",
         "_committed_player_plan_snapshot",
         "_last_review_summary",
