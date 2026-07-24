@@ -1,4 +1,4 @@
-# 전투 화면의 카드·슬롯·대상 칸·진행 버튼 키보드 포커스와 Enter 조작을 검증한다.
+# 전투 화면의 카드 자동 배치·대상 칸·진행 버튼 키보드 포커스와 Enter 조작을 검증한다.
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
@@ -22,18 +22,16 @@ func _run() -> void:
         failures.append("Basic combat cards must participate in keyboard focus traversal.")
     move_card.grab_focus()
     move_card._on_gui_input(_accept_key())
-    if str(board._selected_action_definition.get("id", "")) != "basic_move":
-        failures.append("Enter on a focused card must select it for timing placement.")
+    if not board.action_timing_panel.has_assignment_at(1):
+        failures.append("Enter on a focused card must auto-place it in the earliest timing.")
+    if int(board.get_meta("targeting_anchor", 0)) != 1:
+        failures.append("Keyboard auto-placement of a move must enter tile targeting.")
+    if not board._selected_action_definition.is_empty():
+        failures.append("Automatic placement must clear the transient selected-card state.")
 
     var slot := board.action_timing_panel.get_slot(1)
     if slot.focus_mode != Control.FOCUS_ALL:
-        failures.append("Actionable timing slots must participate in keyboard focus traversal.")
-    slot.grab_focus()
-    slot._on_gui_input(_accept_key())
-    if not board.action_timing_panel.has_assignment_at(1):
-        failures.append("Enter on a focused timing slot must place the selected card.")
-    if int(board.get_meta("targeting_anchor", 0)) != 1:
-        failures.append("Keyboard placement of a move must enter tile targeting.")
+        failures.append("Assigned timing slots must remain keyboard focusable for removal.")
 
     var target_tile := board.get_tile(5)
     if target_tile.focus_mode != Control.FOCUS_ALL:
