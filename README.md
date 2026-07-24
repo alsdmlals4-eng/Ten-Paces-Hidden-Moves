@@ -17,6 +17,7 @@
 - [시스템 아키텍처](docs/09_COMBAT_SYSTEM_ARCHITECTURE.md)
 - [main 통합·재감사 결정](docs/decisions/2026-07-24_MAIN_STACK_INTEGRATION_AND_REASSESSMENT_START.md)
 - [Base 적용 기준](docs/BASE_RULES_VERSION.md)
+- [Base 동기화 감사]([기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md)
 - [기획 책임 원본 Registry]([기획서]/DESIGN_DOCUMENT_REGISTRY.json)
 - [프로젝트 Skill Registry]([기획서]/00_프로젝트_허브/SKILL_REGISTRY.json)
 
