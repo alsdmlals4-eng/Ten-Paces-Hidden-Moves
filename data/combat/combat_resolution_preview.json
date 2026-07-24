@@ -1,5 +1,5 @@
 {
-  "schema_version": 7,
+  "schema_version": 8,
   "step": 10,
   "targeting_patch": "10.5",
   "resolution_order": ["response", "quick_attack", "move", "general"],
@@ -21,6 +21,7 @@
   "meditate_stamina_restore": 2,
   "meditate_internal_restore": 1,
   "stance_attack_bonus": 2,
+  "prepare_meditate_momentum": 1,
   "bundle_momentum_gain": 1,
   "guard_success_momentum_gain": 1,
   "evade_success_momentum_gain": 1,
