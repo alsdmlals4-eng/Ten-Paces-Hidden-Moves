@@ -1,0 +1,41 @@
+name: A3 Board Verifier Patch Apply
+
+on:
+  pull_request:
+    branches:
+      - agent/repeat-poc-a2-hypothesis-summary
+    types: [opened, synchronize, reopened]
+    paths:
+      - ".github/workflows/a3-board-verifier-self-apply.yml"
+      - ".github/patches/a3-board-verifier.patch"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/repeat-poc-a3-review-ui-closeout
+          fetch-depth: 0
+          show-progress: false
+      - name: Apply verifier patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git apply --check .github/patches/a3-board-verifier.patch
+          git apply .github/patches/a3-board-verifier.patch
+          rm .github/patches/a3-board-verifier.patch
+          rm .github/workflows/a3-board-verifier-self-apply.yml
+      - name: Commit verifier contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tests/verify_combat_board.gd .github/patches .github/workflows/a3-board-verifier-self-apply.yml
+          git commit -m "test: require explicit review confirmation before advancing"
+          git push origin HEAD:agent/repeat-poc-a3-review-ui-closeout
