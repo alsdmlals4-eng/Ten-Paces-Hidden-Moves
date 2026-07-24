@@ -51,6 +51,8 @@ jobs:
         run: python tests/check_rival_tendency_contract.py
       - name: Validate A2 hypothesis and summary contract
         run: python tests/check_repeat_poc_a2_contract.py
+      - name: Validate A3 review UI contract
+        run: python tests/check_repeat_poc_a3_contract.py
 
   godot-headless:
     name: ubuntu-godot-headless
@@ -95,3 +97,5 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_combat_hypothesis.gd
       - name: Verify review summary
         run: godot --headless --path . --script res://tests/verify_combat_review_summary.gd
+      - name: Verify review UI
+        run: godot --headless --path . --script res://tests/verify_combat_review_ui.gd
