@@ -1,0 +1,55 @@
+name: A3 Godot Regression
+
+on:
+  pull_request:
+    branches:
+      - agent/repeat-poc-a3-review-ui-closeout
+    paths:
+      - ".github/workflows/a3-godot-regression.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  godot-headless:
+    name: ubuntu-godot-headless
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.0
+          use-dotnet: false
+          include-templates: false
+      - name: Import and parse project
+        run: godot --headless --editor --path . --quit
+      - name: Verify STEP 0
+        run: godot --headless --path . --script res://tests/verify_step0.gd
+      - name: Verify combat board
+        run: godot --headless --path . --script res://tests/verify_combat_board.gd
+      - name: Verify response rules
+        run: godot --headless --path . --script res://tests/verify_response_rules.gd
+      - name: Verify ultimate interruption engagement
+        run: godot --headless --path . --script res://tests/verify_ultimate_interrupt_engagement.gd
+      - name: Verify ultimate UI
+        run: godot --headless --path . --script res://tests/verify_ultimate_ui.gd
+      - name: Verify presentation liveness
+        run: godot --headless --path . --script res://tests/verify_combat_presentation_liveness.gd
+      - name: Verify terminal presentation
+        run: godot --headless --path . --script res://tests/verify_combat_terminal_presentation.gd
+      - name: Verify focus order
+        run: godot --headless --path . --script res://tests/verify_combat_focus_order.gd
+      - name: Verify keyboard accessibility
+        run: godot --headless --path . --script res://tests/verify_combat_keyboard_accessibility.gd
+      - name: Verify layout accessibility
+        run: godot --headless --path . --script res://tests/verify_combat_layout_accessibility.gd
+      - name: Verify rival tendency
+        run: godot --headless --path . --script res://tests/verify_ai_rival_tendency.gd
+      - name: Verify opponent hypothesis
+        run: godot --headless --path . --script res://tests/verify_combat_hypothesis.gd
+      - name: Verify review summary
+        run: godot --headless --path . --script res://tests/verify_combat_review_summary.gd
+      - name: Verify review UI
+        run: godot --headless --path . --script res://tests/verify_combat_review_ui.gd
