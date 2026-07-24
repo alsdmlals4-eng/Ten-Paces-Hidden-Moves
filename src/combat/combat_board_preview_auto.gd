@@ -14,6 +14,11 @@ func _ready() -> void:
     set_meta("card_selection_mode", "auto_earliest_contiguous")
     set_meta("prepare_rule_extension", true)
 
+func restart_combat() -> void:
+    _player_tile = int(contract.get("player_start_tile", 4))
+    _enemy_tile = int(contract.get("enemy_start_tile", 7))
+    super.restart_combat()
+
 func _on_action_card_selected(definition: Dictionary) -> void:
     if _inputs_locked():
         return
