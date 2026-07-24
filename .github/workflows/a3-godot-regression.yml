@@ -26,4 +26,22 @@ jobs:
       - name: Import and parse project
         run: godot --headless --editor --path . --quit
       - name: Verify terminal presentation
-        run: godot --headless --path . --script res://tests/verify_combat_terminal_presentation.gd
+        id: terminal
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          godot --headless --path . --script res://tests/verify_combat_terminal_presentation.gd > terminal-review.log 2>&1
+          status=$?
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit $status
+      - name: Upload terminal diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a3-terminal-review-log
+          path: terminal-review.log
+          if-no-files-found: error
+      - name: Fail on terminal verifier error
+        if: steps.terminal.outputs.status != '0'
+        run: exit 1
