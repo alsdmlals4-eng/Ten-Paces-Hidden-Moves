@@ -30,4 +30,20 @@ jobs:
       - name: Import and parse project
         run: godot --headless --editor --path . --quit
       - name: Verify terminal presentation
-        run: godot --headless --path . --script res://tests/verify_combat_terminal_presentation.gd
+        shell: bash
+        run: |
+          set +e
+          godot --headless --path . --script res://tests/verify_combat_terminal_presentation.gd > terminal-verifier.log 2>&1
+          status=$?
+          cat terminal-verifier.log
+          echo "$status" > terminal-verifier-exit.txt
+          exit "$status"
+      - name: Upload terminal diagnosis
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: terminal-presentation-diagnosis
+          path: |
+            terminal-verifier.log
+            terminal-verifier-exit.txt
+          retention-days: 1
