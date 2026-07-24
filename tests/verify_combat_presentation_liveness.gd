@@ -1,4 +1,4 @@
-# 두 묶음 연속 판정 뒤 planning 입력이 다시 열리는지를 실제 상태 전이로 검증한다.
+# 두 묶음 연속 판정에서 review_ready 복기 확인 뒤 planning 입력이 다시 열리는지를 검증한다.
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
@@ -18,9 +18,9 @@ func _run() -> void:
         await process_frame
 
     await _plan_first_bundle(board)
-    await _wait_for_next_bundle(board, "first")
+    await _wait_for_review_then_next_bundle(board, "first")
     await _plan_second_bundle(board)
-    await _wait_for_next_bundle(board, "second")
+    await _wait_for_review_then_next_bundle(board, "second")
 
     board.queue_free()
     await process_frame
@@ -46,6 +46,7 @@ func _plan_first_bundle(board: CombatBoardPreview) -> void:
 
 func _plan_second_bundle(board: CombatBoardPreview) -> void:
     if str(board.get_meta("presentation_state", "")) != "next_bundle_ready":
+        failures.append("Second bundle planning requires next_bundle_ready after review confirmation.")
         return
     var quick := _card(board, "basic_quick_attack")
     var meditate := _card(board, "basic_meditate")
@@ -64,12 +65,25 @@ func _plan_second_bundle(board: CombatBoardPreview) -> void:
         return
     board.combat_progress_button.request_progress()
 
-func _wait_for_next_bundle(board: CombatBoardPreview, bundle_name: String) -> void:
+func _wait_for_review_then_next_bundle(board: CombatBoardPreview, bundle_name: String) -> void:
+    var review_seen := false
     for _attempt in range(120):
-        if str(board.get_meta("presentation_state", "")) == "next_bundle_ready":
-            return
+        var state_value := str(board.get_meta("presentation_state", ""))
+        if state_value == "review_ready":
+            review_seen = true
+            if not bool(board.get_meta("inputs_locked", false)):
+                failures.append("%s bundle review must keep planning input locked." % bundle_name)
+            if board.combat_review_panel == null or not board.combat_review_panel.visible:
+                failures.append("%s bundle review panel must be visible." % bundle_name)
+            board._on_review_continue_requested()
+            await process_frame
+            if str(board.get_meta("presentation_state", "")) == "next_bundle_ready":
+                return
         await create_timer(0.05).timeout
-    failures.append("%s bundle must leave presenting_result and reopen planning input." % bundle_name)
+    if not review_seen:
+        failures.append("%s bundle must enter review_ready before reopening planning input." % bundle_name)
+    else:
+        failures.append("%s bundle must reopen planning input after explicit review confirmation." % bundle_name)
 
 func _card(board: CombatBoardPreview, card_id: String) -> Dictionary:
     for card in board.basic_card_tray.cards:
