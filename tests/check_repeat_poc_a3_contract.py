@@ -30,11 +30,11 @@ def main() -> None:
         "hide_review",
         "get_detail_button",
         "get_continue_button",
-        '"내 가설"',
-        '"상대 실제 행동"',
-        '"결정적 원인"',
-        '"전후 거리"',
-        '"다음 검토"',
+        "내 가설",
+        "상대 실제 행동",
+        "결정적 원인",
+        "전후 거리",
+        "다음 검토",
         "accessibility_name",
     ):
         assert token in panel, f"review panel missing token: {token}"
