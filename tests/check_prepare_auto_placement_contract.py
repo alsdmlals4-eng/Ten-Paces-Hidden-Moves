@@ -29,11 +29,13 @@ def main() -> None:
         "func _auto_place_selected_card(definition: Dictionary) -> bool:",
         "find_earliest_open_anchor",
         "_reserve_ultimate_at(anchor)",
-        "_refund_ultimate_reservation",
         "[전조]",
     ):
         assert token in board, f"board auto-placement contract missing {token}"
     assert "슬롯 선택" not in board
+    board_base = read("src/combat/combat_board_preview.gd")
+    assert "func _refund_ultimate_reservation(placement: Dictionary) -> void:" in board_base
+    assert "current + 5" in board_base
     board_scene = read("scenes/combat/combat_board_preview.tscn")
     assert "combat_board_preview_auto.gd" in board_scene
 
