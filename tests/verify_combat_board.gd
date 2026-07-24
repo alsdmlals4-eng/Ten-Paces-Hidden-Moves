@@ -342,6 +342,15 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
         failures.append("Resolution must enter resolving or presenting_result before the next bundle is ready.")
     await create_timer(2.3).timeout
 
+    if str(board.get_meta("presentation_state", "")) != "review_ready":
+        failures.append("Resolved bundle must stop at review_ready before advancing.")
+    if not bool(board.get_meta("inputs_locked", false)):
+        failures.append("Review must keep planning inputs locked.")
+    if board.combat_review_panel == null or not board.combat_review_panel.visible:
+        failures.append("Resolved bundle must show the combat review panel.")
+    board._on_review_continue_requested()
+    await process_frame
+
     var after_state := board.get_combat_state_snapshot()
     var timing := board.action_timing_panel.get_timing_snapshot()
     if int(board.get_meta("resolution_count", 0)) != 1:
@@ -376,7 +385,7 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
     if not bool(snapshot.get("interruption_enabled", false)):
         failures.append("Issue #11 interruption must be enabled after the combat contract update.")
     var presentation_history: PackedStringArray = snapshot.get("presentation_state_history", PackedStringArray())
-    for required_state in ["committed", "resolving", "presenting_result", "next_bundle_ready"]:
+    for required_state in ["committed", "resolving", "presenting_result", "review_ready", "next_bundle_ready"]:
         if required_state not in presentation_history:
             failures.append("Presentation state history must include %s." % required_state)
 
@@ -400,11 +409,22 @@ func _verify_second_bundle_returns_to_planning(board: CombatBoardPreview) -> voi
         failures.append("A complete second bundle must enable progress.")
         return
     board.combat_progress_button.request_progress()
+    var review_seen := false
     for _attempt in range(100):
-        if str(board.get_meta("presentation_state", "")) == "next_bundle_ready":
-            return
+        var state_value := str(board.get_meta("presentation_state", ""))
+        if state_value == "review_ready":
+            review_seen = true
+            if board.combat_review_panel == null or not board.combat_review_panel.visible:
+                failures.append("Second bundle review must show the combat review panel.")
+            board._on_review_continue_requested()
+            await process_frame
+            if str(board.get_meta("presentation_state", "")) == "next_bundle_ready":
+                return
         await create_timer(0.05).timeout
-    failures.append("Second bundle must leave presenting_result and unlock planning without requiring immediate-complete.")
+    if not review_seen:
+        failures.append("Second bundle must enter review_ready before the next bundle.")
+    else:
+        failures.append("Second bundle must advance after explicit review confirmation.")
 
 func _verify_wrong_attack_direction(board: CombatBoardPreview) -> void:
     var quick := _card_definition(board, "basic_quick_attack")
