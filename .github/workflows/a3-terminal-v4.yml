@@ -1,0 +1,26 @@
+name: A3 Terminal Review V4
+
+on:
+  pull_request:
+    branches:
+      - agent/repeat-poc-a3-review-ui-closeout
+    paths:
+      - ".github/workflows/a3-terminal-v4.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  terminal-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.0
+          use-dotnet: false
+          include-templates: false
+      - run: godot --headless --editor --path . --quit
+      - run: godot --headless --path . --script res://tests/verify_combat_terminal_presentation.gd
