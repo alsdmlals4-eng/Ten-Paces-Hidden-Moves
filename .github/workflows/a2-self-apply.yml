@@ -22,11 +22,29 @@ jobs:
           ref: agent/repeat-poc-a2-hypothesis-summary
           fetch-depth: 0
           show-progress: false
+      - name: Check integration patch
+        id: patch_check
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          git apply --check --verbose .github/patches/a2-board-integration.patch > a2-patch-check.txt 2>&1
+          status=$?
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit $status
+      - name: Upload patch diagnostics
+        uses: actions/upload-artifact@v4
+        with:
+          name: a2-patch-check
+          path: a2-patch-check.txt
+          if-no-files-found: error
+      - name: Stop on invalid patch
+        if: steps.patch_check.outputs.status != '0'
+        run: exit 1
       - name: Apply integration patch
         shell: bash
         run: |
           set -euo pipefail
-          git apply --check .github/patches/a2-board-integration.patch
           git apply .github/patches/a2-board-integration.patch
           rm .github/patches/a2-board-integration.patch
           rm .github/workflows/a2-self-apply.yml
