@@ -49,6 +49,8 @@ jobs:
         run: python tests/check_canonical_combat_docs.py
       - name: Validate rival tendency contract
         run: python tests/check_rival_tendency_contract.py
+      - name: Validate A2 hypothesis and summary contract
+        run: python tests/check_repeat_poc_a2_contract.py
 
   godot-headless:
     name: ubuntu-godot-headless
@@ -89,3 +91,7 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_combat_layout_accessibility.gd
       - name: Verify rival tendency
         run: godot --headless --path . --script res://tests/verify_ai_rival_tendency.gd
+      - name: Verify opponent hypothesis
+        run: godot --headless --path . --script res://tests/verify_combat_hypothesis.gd
+      - name: Verify review summary
+        run: godot --headless --path . --script res://tests/verify_combat_review_summary.gd
