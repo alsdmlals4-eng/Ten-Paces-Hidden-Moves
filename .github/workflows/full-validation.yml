@@ -19,7 +19,7 @@ permissions:
 jobs:
   matrix-contracts:
     name: ${{ matrix.os }}-python-${{ matrix.python }}
-    if: vars.ACTIONS_FULL_VALIDATION_ENABLED == 'true'
+    if: github.event_name == 'pull_request' || vars.ACTIONS_FULL_VALIDATION_ENABLED == 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -60,7 +60,7 @@ jobs:
 
   godot-headless:
     name: ubuntu-godot-headless
-    if: vars.ACTIONS_FULL_VALIDATION_ENABLED == 'true'
+    if: github.event_name == 'pull_request' || vars.ACTIONS_FULL_VALIDATION_ENABLED == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
