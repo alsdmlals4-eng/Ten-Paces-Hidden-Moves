@@ -1,4 +1,4 @@
-# 전투 계획의 Tab 포커스 순서가 카드·수 슬롯·대상 타일·진행으로 고정되는지 검증한다.
+# 전투 계획의 Tab 포커스 순서가 가설·카드·수 슬롯·대상 타일·진행으로 고정되는지 검증한다.
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
@@ -19,6 +19,7 @@ func _run() -> void:
     for _index in range(4):
         await process_frame
 
+    var hypothesis_focus := board.opponent_hypothesis_panel.get_focus_control()
     var cards: Array = board.basic_card_tray.cards
     var ultimates: Array[Button] = board.ultimate_list_buttons
     var first_slot := board.action_timing_panel.get_slot(1)
@@ -29,6 +30,7 @@ func _run() -> void:
     if cards.size() < 2:
         failures.append("Focus order requires at least two basic cards.")
     else:
+        _require_next(hypothesis_focus, cards[0], "hypothesis selector")
         _require_next(cards[0], cards[1], "first card")
         if ultimates.is_empty():
             failures.append("Focus order requires the visible ultimate list.")
@@ -47,7 +49,7 @@ func _run() -> void:
     _require_next(board.skip_presentation_button, board.reduced_motion_button, "skip playback")
     _require_next(board.reduced_motion_button, board.sound_toggle_button, "reduced motion")
     _require_next(board.sound_toggle_button, board.sound_volume_slider, "sound toggle")
-    _require_next(board.sound_volume_slider, cards[0], "sound volume")
+    _require_next(board.sound_volume_slider, hypothesis_focus, "sound volume")
 
     board.queue_free()
     await process_frame
