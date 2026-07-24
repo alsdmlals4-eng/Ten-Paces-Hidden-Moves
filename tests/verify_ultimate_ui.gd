@@ -1,4 +1,4 @@
-# 절초 메뉴의 기세 조건·진행 전 예약 취소·연속 슬롯 점유를 UI 수준에서 검증한다.
+# 절초 메뉴의 기세 조건·자동 예약·진행 전 예약 취소·연속 슬롯 점유를 UI 수준에서 검증한다.
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
@@ -85,15 +85,14 @@ func _verify_reservation(card_id: String, span: int) -> void:
         failures.append("Ultimate definition was missing from the menu: %s" % card_id)
     else:
         board._on_ultimate_menu_id_pressed(selected_index)
-        board._on_timing_slot_clicked(1)
         var reserved_player: Dictionary = board.combat_state.get("player", {})
         var momentum: Array = reserved_player.get("momentum", [5, 5])
         if int(momentum[0]) != 0:
-            failures.append("Ultimate reservation must immediately spend all momentum: %s" % card_id)
+            failures.append("Ultimate automatic reservation must immediately spend all momentum: %s" % card_id)
         var placement := board.action_timing_panel.get_placement(1)
         var definition: Dictionary = placement.get("definition", {})
         if str(definition.get("id", "")) != card_id or int(placement.get("span", 0)) != span:
-            failures.append("Ultimate reservation must occupy its declared consecutive slots: %s" % card_id)
+            failures.append("Ultimate selection must auto-reserve its declared consecutive slots: %s" % card_id)
         for slot_index in range(1, span + 1):
             if not board.action_timing_panel.has_assignment_at(slot_index):
                 failures.append("Ultimate %s must occupy slot %d." % [card_id, slot_index])
@@ -112,7 +111,6 @@ func _verify_reservation(card_id: String, span: int) -> void:
         if not board._ultimate_reservation_anchors.is_empty():
             failures.append("Cancelling an ultimate reservation must clear its reservation lock: %s" % card_id)
         board._on_ultimate_menu_id_pressed(selected_index)
-        board._on_timing_slot_clicked(1)
         board._set_presentation_state("resolving")
         board._on_timing_slot_clicked(1)
         var locked_player: Dictionary = board.combat_state.get("player", {})
@@ -144,12 +142,12 @@ func _verify_ultimate_playback_visibility() -> void:
         failures.append("Playback VFX test could not find the one-slot ultimate.")
     else:
         board._on_ultimate_menu_id_pressed(ultimate_index)
-        board._on_timing_slot_clicked(1)
         board.action_timing_panel.set_placement_target(1, {"direction": 1, "target_tile": 5, "origin_tile": 4})
+        board._clear_targeting()
         var meditate := _card_definition(board, "basic_meditate")
-        var stance := _card_definition(board, "basic_stance")
+        var prepare := _card_definition(board, "basic_stance")
         board.action_timing_panel.place_card(meditate, 2)
-        board.action_timing_panel.place_card(stance, 3)
+        board.action_timing_panel.place_card(prepare, 3)
         board._sync_progress_availability()
         if not board.combat_progress_button.progress_enabled:
             failures.append("Playback VFX test could not complete the first bundle.")
