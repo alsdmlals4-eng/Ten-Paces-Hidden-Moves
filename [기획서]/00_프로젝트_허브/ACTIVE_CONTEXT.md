@@ -15,6 +15,7 @@
 - 최신 전투 승인: Issue #13과 2026-07-24 사용자 승인.
 - 현재 Goal: Issue #16.
 - 프로젝트 코어: `CORE_CONFIRMED`.
+- 상태 전이 기록: `CORE_REVIEW_PENDING → CORE_CONFIRMED`.
 - 제품 게이트: `REPEAT_POC`.
 - T1 진입: `NOT_GRANTED`.
 - 현재 Task: `PREPARE_AND_AUTO_PLACEMENT_REVIEW_READY`.
