@@ -83,7 +83,8 @@ jobs:
             "tools/verify_and_commit_step0.ps1",
             "tools/verify_and_commit_combat_foundation.ps1",
             "tools/run_combat_board.ps1",
-            "tools/verify_repeat_poc_a1.ps1"
+            "tools/verify_repeat_poc_a1.ps1",
+            "tools/verify_repeat_poc_a2.ps1"
           )
           foreach ($path in $paths) {
             $tokens = $null
