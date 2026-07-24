@@ -1,128 +1,104 @@
-# 문서 지도
+# 십보강호 제품 문서 지도
 
-> 현재 작업은 이 문서에 연결된 기준 문서만 사용한다. 기존 `docs/[백업]/`은 과거 기록이며 기본 읽기와 수정 대상에서 제외한다. `docs/[보류]/`는 사용자가 재개하기 전까지 구현 대상에서 제외한다.
+> 최상위 운영·스킬·게이트 지도는 [`[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md`](../%5B기획서%5D/00_프로젝트_허브/DOCUMENTATION_MAP.md)가 책임진다. 이 문서는 기존 `docs` 제품 본책의 상세 읽기 순서와 책임 경계를 유지한다.
 
-## 읽기 순서
+## 최초 진입
 
-1. [Base 규칙 적용 버전](BASE_RULES_VERSION.md) — 적용 중인 Base 버전·커밋과 프로젝트 구체화 경계
-2. [활성 컨텍스트](ACTIVE_CONTEXT.md) — 현재 방향, 최신 확정 사항, 미확정 범위와 다음 작업
-3. [게임 기획서](01_GAME_DESIGN.md) — 5전 데모, 10전 전체 구조, 플레이어 경험과 성장
-4. [전투 규칙](02_COMBAT_RULES.md) — 10타이밍, 2수 잠금, 합, 거리와 자원
-5. [전투 시스템 아키텍처](09_COMBAT_SYSTEM_ARCHITECTURE.md) — 공용 수정자, 상대 생성, 저장과 Godot 구현 경계
-6. [12세력 대회 세로 슬라이스 명세](05_COMBAT_POC_SPEC.md) — 구현 범위, 성과·행운·상대 성장과 완료 기준
-7. [전투·대회 연출 기획서](10_COMBAT_PRESENTATION_PLAN.md) — 상대 정보, 제약, 2수 공개·해상, 합, 성장, 데모 결말과 연출 로드맵
-8. [12세력 핵심무공·심법 데이터](06_STARTING_FACTION_MASTERY_DATA.md) — 1~10성, 절초·진의, 문파 기믹
-9. [구현 콘텐츠 카탈로그](03_CONTENT_CATALOG.md) — 문파 전용·공용 무공 목록과 보류 경계
-10. [전투 UI·아트 명세](07_COMBAT_UI_SPEC.md) — 2수 선택 UI, 카드, 행운 결과와 무림식 상대 정보
-11. [테스트 체크리스트](08_TEST_CHECKLIST.md) — 합·AI 잠금·수련·행운·상대 생성·연출·5전 데모·10전 검증
-12. [로드맵](04_ROADMAP.md) — 데모 우선 단계, 절초 기세·상단 HUD 다음 작업, 남은 설계·구현·검증과 전체판 확장 승인 기준
-13. [12세력 대회 세로 슬라이스 구현 Plan](../plans/2026-07-16-combat-poc-plan.md) — Codex 검수와 데모 우선 구현 순서
-14. [기획·인수인계 스킬 확장](skills/TEN_PACES_PLANNING_HANDOFF_EXTENSION.md) — Base 스킬을 십보강호의 실제 문서·경로·검증에 연결
-15. [Base 적용·학습 순환 기록](11_BASE_ADOPTION_AND_LEARNING_LOG.md) — Base에서 채택한 구조, 프로젝트 구체화, Base 승격 사례와 후속 검증
+```text
+../START_HERE.md
+→ ../AGENTS.md
+→ ../[기획서]/00_프로젝트_허브/START_HERE.md
+→ 허브 ACTIVE_CONTEXT·DEVELOPMENT_GATES
+→ ../[기획서]/DESIGN_DOCUMENT_REGISTRY.json
+→ 현재 제품 책임 원본
+```
+
+- 기존 `docs/[백업]/`은 과거 기록이며 기본 읽기·수정 대상에서 제외한다.
+- 기존 `docs/01~11`은 schema v3 Markdown 단일 책임 원본으로 Registry에 등록돼 있다.
+- 제품 본책의 PDF·Manifest는 실제 생성·렌더·검수 전까지 `MIGRATION_PENDING`이다.
+
+## 제품 문서 읽기 순서
+
+1. [Base 규칙 적용 버전](BASE_RULES_VERSION.md) — 적용 Base 커밋과 프로젝트 구체화 경계.
+2. [제품 활성 컨텍스트](ACTIVE_CONTEXT.md) — 승인 제품 방향·미확정·다음 제품 작업.
+3. [게임 기획서](01_GAME_DESIGN.md) — 플레이어 경험, 10칸·4/7·3/3/4 전투와 다음 POC 단계.
+4. [전투 규칙](02_COMBAT_RULES.md) — 10수, 대응→속공→이동→일반 공격, 밀착·중단·강건·절초와 자원.
+5. [전투 시스템 아키텍처](09_COMBAT_SYSTEM_ARCHITECTURE.md) — 공용 수정자, 상대 생성, 저장과 Godot 구현 경계.
+6. [전투 POC 명세](05_COMBAT_POC_SPEC.md) — 구현 범위, 완료 기준과 STEP 12~14 진입 조건.
+7. [전투 연출 기획서](10_COMBAT_PRESENTATION_PLAN.md) — 구조화 이벤트, 수별 재생, VFX·SFX·접근성 폴백.
+8. [핵심무공·심법 데이터](06_STARTING_FACTION_MASTERY_DATA.md) — 1~10성, 절초·진의, 문파 기믹.
+9. [콘텐츠 카탈로그](03_CONTENT_CATALOG.md) — 현재 콘텐츠와 T1 이후 후보의 범위 경계.
+10. [전투 UI·아트 명세](07_COMBAT_UI_SPEC.md) — 카드·HUD·절초 메뉴·키보드·접근성 경로.
+11. [테스트 체크리스트](08_TEST_CHECKLIST.md) — 전투 계약·연출·Windows·접근성·성능·플레이테스트 검증.
+12. [제품 로드맵](04_ROADMAP.md) — 완료 범위와 STEP 12~14·T1 진입 순서.
+13. [Base 적용·학습 기록](11_BASE_ADOPTION_AND_LEARNING_LOG.md) — 채택·구체화·검증·Base 제안 경계.
 
 ## 작업별 최소 읽기
 
-| 작업 | 최소 문서 |
+| 작업 | 최소 문서·스킬 |
 |---|---|
-| 현재 방향·인수 | `AGENTS.md`, `BASE_RULES_VERSION.md`, `ACTIVE_CONTEXT.md`, 이 문서 |
-| 전투 규칙·밸런스 | `01_GAME_DESIGN.md`, `02_COMBAT_RULES.md`, `05_COMBAT_POC_SPEC.md`, `09_COMBAT_SYSTEM_ARCHITECTURE.md` |
-| 절초 기세·상단 HUD UX | `ACTIVE_CONTEXT.md`, `04_ROADMAP.md`, `02_COMBAT_RULES.md`, `06_STARTING_FACTION_MASTERY_DATA.md`, `07_COMBAT_UI_SPEC.md`, `09_COMBAT_SYSTEM_ARCHITECTURE.md`, `10_COMBAT_PRESENTATION_PLAN.md` |
-| UI·카드 | `07_COMBAT_UI_SPEC.md`, `10_COMBAT_PRESENTATION_PLAN.md`, 실제 화면·자산 |
-| 전투·대회 연출 | `10_COMBAT_PRESENTATION_PLAN.md`, `02_COMBAT_RULES.md`, `07_COMBAT_UI_SPEC.md`, `09_COMBAT_SYSTEM_ARCHITECTURE.md` |
-| 무공·문파 데이터 | `03_CONTENT_CATALOG.md`, `06_STARTING_FACTION_MASTERY_DATA.md`, `09_COMBAT_SYSTEM_ARCHITECTURE.md` |
-| 구현 | `AGENTS.md`, `BASE_RULES_VERSION.md`, `ACTIVE_CONTEXT.md`, 현재 Plan, 수정 대상과 연결 테스트 |
-| 검수 | `08_TEST_CHECKLIST.md`, 관련 기준 문서, 실제 실행 결과 |
-| 문서·인수인계 | `skills/TEN_PACES_PLANNING_HANDOFF_EXTENSION.md`, `ACTIVE_CONTEXT.md`, `04_ROADMAP.md`, 이 문서 |
-| Base 동기화 | `BASE_RULES_VERSION.md`, `11_BASE_ADOPTION_AND_LEARNING_LOG.md`, Base 문서 지도, Base 승격 스킬 |
+| 현재 방향·인수 | 루트 START_HERE, AGENTS, 허브 Active Context·Handoff, 이 문서 |
+| 전투 규칙·밸런스 | 01, 02, 05, 09, `ten-paces-game-design` |
+| 절초 기세·상단 HUD | 제품 Active Context, 02, 04, 05, 06, 07, 08, 09, 10, `combat-ux-and-accessibility` |
+| UI·카드·접근성 | 07, 10, 실제 화면·자산, UX 스킬 |
+| 전투·대회 연출 | 10, 02, 07, 09, 실제 렌더 |
+| 무공·문파 데이터 | 03, 06, 09, 게임 디자인 스킬 |
+| 구현 | Gates, 02, 05, 09, 현재 Plan, 실제 파일·테스트, `combat-implementation-handoff` |
+| 검수 | 08, 관련 본책, 실제 실행·렌더, `ten-paces-verification` |
+| Base 업데이트 | BASE_RULES_VERSION, 11, 허브 Source Audit·Decision Log, 최신 Base 원본 |
+| 문서 발행 | Design Registry, 생성기, Manifest, PDF 자동·사람 검수 |
 
-## 우선순위
+## 제품 책임 경계
 
-문서 간 충돌 시 다음 순서를 따른다.
+| 질문 | 책임 원본 |
+|---|---|
+| 전체 경험·범위 | `01_GAME_DESIGN.md` |
+| 전투 판정 | `02_COMBAT_RULES.md` |
+| 콘텐츠 목록·보류 | `03_CONTENT_CATALOG.md` |
+| 제품 구현 순서 | `04_ROADMAP.md` |
+| 데모·전체판 범위 | `05_COMBAT_POC_SPEC.md` |
+| 무공·심법·성장 | `06_STARTING_FACTION_MASTERY_DATA.md` |
+| UI·카드·HUD | `07_COMBAT_UI_SPEC.md` |
+| 관찰 가능한 검증 | `08_TEST_CHECKLIST.md` |
+| 도메인·데이터·저장 | `09_COMBAT_SYSTEM_ARCHITECTURE.md` |
+| 시선·연출·접근성 폴백 | `10_COMBAT_PRESENTATION_PLAN.md` |
+| Base 채택·교훈 | `11_BASE_ADOPTION_AND_LEARNING_LOG.md` |
+| 현재 운영 상태·위험 | 허브 `ACTIVE_CONTEXT.md` |
+| 문서·스킬·게이트 라우팅 | 허브 `DOCUMENTATION_MAP.md`·Registry |
 
-1. 사용자 최신 확정 결정
-2. 저장소 루트 `AGENTS.md`
-3. `ACTIVE_CONTEXT.md`
-4. `BASE_RULES_VERSION.md`
-5. 이 문서 지도
-6. 전투 규칙과 전투 시스템 아키텍처
-7. 대회 세로 슬라이스 명세
-8. 전투·대회 연출 기획서와 UI·아트 명세
-9. 핵심무공·심법 데이터와 테스트 체크리스트
-10. 실제 구현 파일과 실행 결과
+UI와 연출 문서는 전문을 복사하지 않는다. 연출 시안의 임시 숫자는 전투·성장 기준을 변경하지 않는다.
 
-Base 버전은 적용한 공용 원칙의 기준을 기록하지만 최신 사용자 결정과 프로젝트 전용 승인 규칙을 덮어쓰지 않는다. 실제 구현 여부는 파일과 테스트로 확인하며 문서만으로 완료를 추정하지 않는다.
+## 절초 기세 책임 분리
 
-## 기준 문서 갱신 규칙
+- `02_COMBAT_RULES.md`: 획득·상한·소모·초기화 판정.
+- `06_STARTING_FACTION_MASTERY_DATA.md`: 핵심무공 10성과 절초 해금.
+- `07_COMBAT_UI_SPEC.md`: 상단 HUD 위치·정보·잠금·축적·발동 가능·예약·소모 상태.
+- `09_COMBAT_SYSTEM_ARCHITECTURE.md`: 도메인 상태·구조화 이벤트·저장 경계.
+- `10_COMBAT_PRESENTATION_PLAN.md`: 증가 이유 피드백·강조·VFX·오디오·접근성 폴백.
+- `08_TEST_CHECKLIST.md`: 구현과 표현의 관찰 가능한 검증.
 
-- 확정된 기획 변경은 관련 분야의 기존 기준 파일과 `ACTIVE_CONTEXT.md`에 반영한다.
-- 활성 문서를 `v2`, `final`, `latest` 또는 날짜가 붙은 새 이름으로 복제하지 않는다.
-- 이전 내용은 Git 이력으로 보존하며 별도 백업 파일을 새로 만들지 않는다.
-- 기존 `docs/[백업]/`은 과거 기록 확인 외에는 읽거나 수정하지 않는다.
-- 기준 파일의 제목·경로·역할이 바뀌면 이 문서와 README의 연결을 확인한다.
-- 범위·완료 기준·데이터 구조가 바뀌면 테스트 체크리스트와 Codex Plan을 함께 확인한다.
-- 반복 작업 절차가 바뀌면 프로젝트 스킬 확장과 Base 스킬의 동기화 필요를 확인한다.
-- Base에서 채택하거나 Base로 승격한 내용은 `11_BASE_ADOPTION_AND_LEARNING_LOG.md`에 차이와 검증 상태를 기록한다.
-- Base 기준 커밋이 바뀌면 `BASE_RULES_VERSION.md`를 갱신한다.
+## 제품 고정 동기화 범위
 
-## 책임 경계
+- 전장 10칸, 플레이어 4번·상대 7번 시작, 라운드 `3수 → 3수 → 4수`.
+- 판정 `대응 → 속공 → 이동 → 일반 공격`, 같은 단계 공격 동시 피해.
+- 기초 행동 8종, 체력 30, 기세 5, 피해 중단·태세 강건·거리 0 밀착.
+- 기세 5에서 공용 절초 3종을 예약하며, 진행 전 취소·진행 뒤 무환불.
+- 다음 제품 범위는 STEP 12 비치팅 AI, STEP 13 종료·재시작, STEP 14 플레이테스트.
+- T1 이후 성장·세력·대회 가설은 각각 `docs/03`, `docs/06`, `docs/04`에서 분리한다.
+- 프레젠테이션은 피해·보상·수련·저장을 결정하지 않음.
 
-- `02_COMBAT_RULES.md`: 절초 기세의 획득·소모처럼 전투 결과에 영향을 주는 판정 규칙.
-- `06_STARTING_FACTION_MASTERY_DATA.md`: 핵심무공 10성과 절초 해금 조건.
-- `07_COMBAT_UI_SPEC.md`: 상단 절초 HUD 위치, 정보 배치, 잠금·축적·발동 가능·예약·소모 상태.
-- `10_COMBAT_PRESENTATION_PLAN.md`: 절초 기세 증가 피드백, 발동 가능 강조, 카메라·VFX·오디오·접근성 폴백.
-- `09_COMBAT_SYSTEM_ARCHITECTURE.md`: 전투·회차 도메인, 구조화 이벤트, 저장과 표현 데이터 경계.
-- `08_TEST_CHECKLIST.md`: 구현과 표현이 기준 문서대로 작동하는지 관찰 가능한 검증.
-- `skills/TEN_PACES_PLANNING_HANDOFF_EXTENSION.md`: 위 책임 문서를 어떤 조건과 순서로 갱신·검증·인계하는지 정의.
-- `11_BASE_ADOPTION_AND_LEARNING_LOG.md`: Base 공용 원칙과 프로젝트 전용 값을 분리하고 학습 환류 상태를 기록.
+## 현재 다음 제품 작업
 
-UI와 연출 문서는 서로 전문을 복사하지 않고 책임 문서를 참조한다. 연출 시안의 임시 숫자는 전투·성장 기준을 변경하지 않는다.
+1. 검증된 Issue #11 변경을 커밋·PR #7 갱신·GitHub Actions 재실행으로 운영 반영한다.
+2. STEP 12 비치팅 최소 AI의 행동 정보 경계·계획 규칙·검증 fixture를 별도 Issue·Plan으로 확정한다.
+3. STEP 13 종료·재시작의 사용자 흐름과 상태 초기화를 별도 Issue·Plan으로 확정한다.
+4. STEP 14 실제 플레이테스트에서 이해도·재도전 의사·보조기기 사용성·주관적 음향/모션·Release 성능을 검수한다.
 
-## 보류 문서 규칙
+## 갱신 규칙
 
-- [보류 항목 인덱스]([보류]/README.md)는 아이디어 보존용이며 활성 기준이 아니다.
-- Codex와 구현 에이전트는 사용자가 재개를 명시하지 않은 보류 항목을 구현하지 않는다.
-- 재개가 확정된 항목은 관련 기준 문서에 통합한 뒤 별도 Plan으로 작업한다.
-
-## 현재 핵심 동기화 범위
-
-- 숫자 구조: 전장 10칸, 라운드 행동 타이밍 10개, 전체 대회 10전.
-- 데모: 1~2전 내부전, 3~4전 예선, 5전 예선 결승.
-- 전체 대진: 8전 8강, 9전 준결승, 10전 결승.
-- 라운드 선택: 행동 두 개씩 비공개 잠금·동시 공개·순차 해상.
-- 공격 대 공격: 합 수치 비교와 차이 피해.
-- 핵심무공: 여러 개 보유, 3·6·9성 기술, 10성 절초, 10성 최대 1개.
-- 절초 발동 UX: 10성 해금과 전투 중 기세 충전을 분리하고 양측 상단 칸형 HUD로 상태를 표시한다. 정확한 점수표는 다음 작업에서 확정한다.
-- 심법: 최대 2개 보유, 패시브·기믹·명상 강화, 10성 진의, 10성 최대 1개.
-- 수련 정산: 기본 5 + 등급 보너스(C1/B3/A5/S7) + 행운 앞면 0~3.
-- 행운: 등급별 비공개 결과표를 사용하고 `A++`처럼 `+` 개수만 표시.
-- 데모 절초: A 4회 약 50%, A3+S1 약 60%, A3+B1 약 30%를 목표로 한다.
-- 상대 성장: A계열 60%, B계열 40%, 행운과 수련 스타일을 회차 생성 시 고정.
-- 상대 표현: 개발용 강도·등급·스타일 태그 대신 이명·풍문·전적·정탐으로 암시.
-- 제약: 상대 정보를 읽은 뒤 삼수양보 등 무협식 난이도와 추가 보상을 선택.
-- 연출: 상대 읽기→제약→2수 전투→성과·행운→수련→예선 결승의 전체 흐름을 하나의 모듈 체계로 관리.
-- 프레젠테이션은 도메인 결과를 표현하며 피해·보상·저장을 결정하지 않는다.
-- 문파별 기믹 수행도 성과 평가는 `[보류]`.
-
-## 현재 다음 작업
-
-1. 절초 해금·전투 발동의 이중 조건, 기세 명칭·최대치·획득·중복 상한·소모 규칙을 확정한다.
-2. 플레이어·상대 상단 칸형 게이지, 잠금·축적·발동 가능·예약·소모 상태와 증가 이유 피드백을 설계한다.
-3. 승인 뒤 `02`, `05`, `07`, `08`, `09`, `10` 문서와 구현 Plan을 동기화한다.
-4. 실제 Godot 프로젝트·데이터·테스트 상태 감사와 승인 Plan을 작성한다.
-5. 나머지 성과 임계값, 상대 출현표, 이명·풍문 사전, 수련 알고리즘, 제약 보상과 자원 비용을 확정한다.
-6. 2수 잠금·공개, 일반 공격, 합, 자원, 로그의 T0 전투 PoC를 구현한다.
-7. 상대 정보→제약→전투→성과·행운→수련·절초 기세의 T1 데모 흐름을 연결한다.
-8. 절초 보유·미보유 양쪽으로 5전 예선 결승을 완주 검증한다.
-9. 시작 6세력 대표 기믹·연출 검증 뒤 12세력·10전으로 확장한다.
-
-세부 항목은 `04_ROADMAP.md`의 `단계 0B — 다음 기획 작업`과 `10_COMBAT_PRESENTATION_PLAN.md`의 향후 로드맵·남은 작업 목록을 따른다.
-
-## 작업 종료 필수 확인
-
-- `ACTIVE_CONTEXT.md`가 이번 결정과 일치하는가?
-- README와 분야별 기준 문서가 낡은 수치·용어를 남기지 않았는가?
-- 로드맵, 테스트와 Plan이 새 완료 기준을 반영하는가?
-- 프로젝트 스킬 확장이 실제 책임 문서·경로·검증과 일치하는가?
-- Base 적용·승격 기록이 공용·전용 경계를 명시하는가?
-- Base 기준 버전과 프로젝트 적용 상태가 기록됐는가?
-- 작업자가 바뀌어도 저장소만 읽고 다음 작업을 시작할 수 있는가?
+- 변경 후 허브 `DOCUMENT_UPDATE_MATRIX.md`를 확인한다.
+- 책임 원본·경로가 바뀌면 Design Registry와 두 문서 지도를 갱신한다.
+- 활성 `v2`, `final`, `latest`, 날짜별 복제본을 만들지 않는다.
+- 이전 내용은 Git 이력으로 보존한다.
+- Base 교훈은 자동 반영하지 않고 제안·사용자 승인·별도 구현 PR을 따른다.
+- 체크리스트와 실제 테스트, Workflow와 Actions, PDF와 시각 검수를 구분한다.

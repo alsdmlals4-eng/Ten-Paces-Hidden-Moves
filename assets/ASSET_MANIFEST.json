@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-23",
+  "license": "Project-original AI-generated concept asset; retain generation prompt and do not claim third-party source material.",
+  "assets": [
+    {
+      "id": "twilight_ink_duel_v1",
+      "path": "res://assets/backgrounds/twilight_ink_duel_v1.png",
+      "role": "전투판 가독성을 유지하는 수묵 석양 결투 전장 배경",
+      "generator": "imagegen",
+      "prompt": "Original 16:9 empty Korean wuxia dueling courtyard at sunset, restrained sepia and burnt-orange ink wash, distant gate and mountains, stone ground kept low contrast for a readable 10-tile combat board, no people, no text, no logo, no UI.",
+      "reference_usage": "User-provided visual target informed mood, contrast, and composition only; no third-party image material is included.",
+      "license": "Project-original AI-generated concept asset; retain generation prompt and do not claim third-party source material.",
+      "transparency_required": false,
+      "active": true
+    },
+    {
+      "id": "player_wanderer_ink_v1",
+      "path": "res://assets/portraits/player_wanderer_ink_v1.png",
+      "role": "강호낭인 상태 패널 초상",
+      "generator": "imagegen",
+      "prompt": "Original Korean wuxia wandering swordsman portrait, half body facing right, restrained sepia ink wash, readable silhouette, dark layered robe, no text, no logo, transparent-background-friendly composition.",
+      "license": "Project-original AI-generated concept asset; retain generation prompt and do not claim third-party source material.",
+      "transparency_required": false,
+      "active": true
+    },
+    {
+      "id": "enemy_masked_ink_v1",
+      "path": "res://assets/portraits/enemy_masked_ink_v1.png",
+      "role": "무명 검객 상태 패널 초상",
+      "generator": "imagegen",
+      "prompt": "Original Korean wuxia masked swordsman portrait, half body facing left, restrained sepia ink wash, readable armored silhouette with a dark red accent, no text, no logo, transparent-background-friendly composition.",
+      "license": "Project-original AI-generated concept asset; retain generation prompt and do not claim third-party source material.",
+      "transparency_required": false,
+      "active": true
+    },
+    {
+      "id": "player_wanderer_battler_rgba_v1",
+      "path": "res://assets/characters/player_wanderer_battler_rgba_v1.png",
+      "role": "강호낭인 전장 전신 원화",
+      "generator": "imagegen + approved chroma-key RGBA post-process",
+      "source_asset": "player_wanderer_battler_chroma_v1",
+      "prompt": "Original full-body Korean wuxia wandering swordsman, standing in a restrained ready stance facing right, long dark layered robe, tied black hair, sword held low, readable silhouette at small size; restrained sepia, charcoal, muted blue-gray and a very small warm gold accent; no existing franchise, person, text, logo, UI, or watermark; flat #00ff00 chroma-key background.",
+      "reference_usage": "User-provided visual target informed ink-wash mood, low-contrast sunset palette, and combat-board readability only; no source image material is included.",
+      "license": "Project-original AI-generated concept asset; retain generation prompt and do not claim third-party source material.",
+      "transparency_required": true,
+      "transparency_audit": {
+        "mode": "RGBA",
+        "has_alpha": true,
+        "alpha_extrema": [0, 255],
+        "transparent_pixels": 1168818,
+        "partially_transparent_pixels": 8764,
+        "corner_alpha": [0, 0, 0, 0],
+        "status": "APPROVED_ACTIVE"
+      },
+      "active": true
+    },
+    {
+      "id": "player_wanderer_battler_chroma_v1",
+      "path": "res://assets/characters/player_wanderer_battler_chroma_v1.png",
+      "role": "강호낭인 전장 전신 원화 크로마키 보정 원본",
+      "generator": "imagegen",
+      "prompt": "Original full-body Korean wuxia wandering swordsman, standing in a restrained ready stance facing right, long dark layered robe, tied black hair, sword held low, readable silhouette at small size; flat #00ff00 chroma-key background.",
+      "transparency_required": true,
+      "transparency_audit": {
+        "mode": "RGB source",
+        "has_alpha": false,
+        "status": "SOURCE_FOR_POST_PROCESS"
+      },
+      "active": false
+    },
+    {
+      "id": "enemy_masked_battler_rgba_v1",
+      "path": "res://assets/characters/enemy_masked_battler_rgba_v1.png",
+      "role": "무명 검객 전장 전신 원화",
+      "generator": "imagegen + approved chroma-key RGBA post-process",
+      "source_asset": "enemy_masked_battler_chroma_v1",
+      "prompt": "Original full-body Korean wuxia masked swordsman, standing in a restrained ready stance facing left, dark black layered armor and robe, long dark hair, muted dark-red cloth accent, sword held low, readable silhouette at small size; restrained sepia, charcoal and muted dark-red; no existing franchise, person, text, logo, UI, or watermark; flat #00ff00 chroma-key background.",
+      "reference_usage": "User-provided visual target informed ink-wash mood, low-contrast sunset palette, and combat-board readability only; no source image material is included.",
+      "license": "Project-original AI-generated concept asset; retain generation prompt and do not claim third-party source material.",
+      "transparency_required": true,
+      "transparency_audit": {
+        "mode": "RGBA",
+        "has_alpha": true,
+        "alpha_extrema": [0, 255],
+        "transparent_pixels": 1131257,
+        "partially_transparent_pixels": 10451,
+        "corner_alpha": [0, 0, 0, 0],
+        "status": "APPROVED_ACTIVE"
+      },
+      "active": true
+    },
+    {
+      "id": "enemy_masked_battler_chroma_v1",
+      "path": "res://assets/characters/enemy_masked_battler_chroma_v1.png",
+      "role": "무명 검객 전장 전신 원화 크로마키 보정 원본",
+      "generator": "imagegen",
+      "prompt": "Original full-body Korean wuxia masked swordsman, standing in a restrained ready stance facing left, dark black layered armor and robe, long dark hair, muted dark-red cloth accent, sword held low, readable silhouette at small size; flat #00ff00 chroma-key background.",
+      "transparency_required": true,
+      "transparency_audit": {
+        "mode": "RGB source",
+        "has_alpha": false,
+        "status": "SOURCE_FOR_POST_PROCESS"
+      },
+      "active": false
+    },
+    {
+      "id": "ultimate_ink_gold_sprite_sheet_rgba",
+      "path": "res://assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png",
+      "role": "절초 수묵·금빛 VFX 스프라이트 시트",
+      "generator": "imagegen + approved RGBA post-process",
+      "source_asset": "ultimate_ink_gold_sprite_sheet_transparency_candidate",
+      "prompt": "Preserve the original effects and remove all background as true RGBA PNG.",
+      "transparency_required": true,
+      "transparency_audit": {
+        "mode": "RGBA",
+        "has_alpha": true,
+        "alpha_extrema": [0, 255],
+        "transparent_pixels": 1318410,
+        "status": "APPROVED_ACTIVE"
+      },
+      "active": true
+    },
+    {
+      "id": "ultimate_ink_gold_sprite_sheet",
+      "path": "res://assets/vfx/ultimate_ink_gold_sprite_sheet.png",
+      "role": "절초 수묵·금빛 VFX 원화 원본",
+      "generator": "imagegen",
+      "prompt": "Original Korean wuxia duel 3-panel VFX sprite sheet: short dash arc, heavy cleave, long sword-energy beam; black ink wash plus warm gold; no text or logos.",
+      "transparency_required": true,
+      "transparency_audit": {
+        "mode": "RGB",
+        "has_alpha": false,
+        "status": "REJECTED_NOT_ACTIVE"
+      },
+      "active": false
+    },
+    {
+      "id": "ultimate_ink_gold_sprite_sheet_transparency_candidate",
+      "path": "res://assets/vfx/ultimate_ink_gold_sprite_sheet_transparency_candidate.png",
+      "role": "투명화 보정 후보",
+      "generator": "imagegen",
+      "prompt": "Preserve the original effects and remove all background as true RGBA PNG.",
+      "transparency_required": true,
+      "transparency_audit": {
+        "mode": "RGB",
+        "has_alpha": false,
+        "status": "REJECTED_NOT_ACTIVE"
+      },
+      "active": false
+    }
+  ],
+  "fallback": "기존 SVG UI와 텍스트·도형 기반 결과 연출은 유지한다. 투명 RGBA 검수를 통과한 절초 원화가 준비되기 전에는 후보 원화를 활성 VFX로 참조하지 않는다."
+}

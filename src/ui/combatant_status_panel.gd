@@ -1,0 +1,191 @@
+class_name CombatantStatusPanel
+extends Control
+
+const PANEL := Color(0.055, 0.047, 0.039, 0.94)
+const PAPER := Color("dbc9a4")
+const MUTED := Color("a7977e")
+const PLAYER_ACCENT := Color("377fb2")
+const ENEMY_ACCENT := Color("b44d43")
+const HEALTH_COLOR := Color("b54d44")
+const STAMINA_COLOR := Color("4c9a91")
+const INTERNAL_COLOR := Color("8a63a9")
+const PLAYER_PORTRAIT := preload("res://assets/portraits/player_wanderer_ink_v1.png")
+const ENEMY_PORTRAIT := preload("res://assets/portraits/enemy_masked_ink_v1.png")
+
+var side: String = "player"
+var combatant: Dictionary = {}
+
+var _name_label: Label
+var _epithet_label: Label
+var _health_label: Label
+var _stamina_label: Label
+var _internal_label: Label
+var _status_labels: Array[Label] = []
+var _portrait: TextureRect
+
+func _ready() -> void:
+    mouse_filter = Control.MOUSE_FILTER_IGNORE
+    _portrait = TextureRect.new()
+    _portrait.name = "CombatantInkPortrait"
+    _portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+    _portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+    _portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    add_child(_portrait)
+    _name_label = _make_label(18, PAPER)
+    _epithet_label = _make_label(12, MUTED)
+    _health_label = _make_label(13, PAPER)
+    _stamina_label = _make_label(13, PAPER)
+    _internal_label = _make_label(13, PAPER)
+    resized.connect(_layout)
+    _refresh()
+    _layout()
+
+func configure(value_side: String, value_combatant: Dictionary) -> void:
+    side = value_side
+    combatant = value_combatant.duplicate(true)
+    if is_inside_tree():
+        _refresh()
+        _layout()
+    queue_redraw()
+
+func _make_label(font_size: int, color: Color) -> Label:
+    var label := Label.new()
+    label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    label.add_theme_font_size_override("font_size", font_size)
+    label.add_theme_color_override("font_color", color)
+    label.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.85))
+    label.add_theme_constant_override("shadow_offset_x", 1)
+    label.add_theme_constant_override("shadow_offset_y", 1)
+    add_child(label)
+    return label
+
+func _refresh() -> void:
+    if _name_label == null:
+        return
+    _name_label.text = str(combatant.get("name", "이름 미정"))
+    _epithet_label.text = "[%s]" % str(combatant.get("epithet", "이명 미정"))
+    _health_label.text = _format_resource("체력", "health")
+    _stamina_label.text = _format_resource("기력", "stamina")
+    _internal_label.text = _format_resource("내력", "internal")
+
+    if is_instance_valid(_portrait):
+        _portrait.texture = PLAYER_PORTRAIT if side == "player" else ENEMY_PORTRAIT
+
+    for label in _status_labels:
+        label.queue_free()
+    _status_labels.clear()
+
+    var statuses = combatant.get("statuses", [])
+    if typeof(statuses) == TYPE_ARRAY:
+        for raw_status in statuses:
+            if typeof(raw_status) != TYPE_DICTIONARY:
+                continue
+            var status: Dictionary = raw_status
+            var chip := _make_label(12, PAPER)
+            chip.text = str(status.get("label", "?"))
+            if str(status.get("kind", "")) == "fortitude":
+                chip.add_theme_font_size_override("font_size", 10)
+            chip.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+            chip.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+            chip.set_meta("kind", str(status.get("kind", "neutral")))
+            chip.tooltip_text = str(status.get("description", chip.text))
+            chip.accessibility_name = "%s 상태" % chip.text
+            chip.accessibility_description = chip.tooltip_text
+            _status_labels.append(chip)
+
+func _format_resource(label: String, key: String) -> String:
+    var pair := _resource_pair(key)
+    return "%s  %d/%d" % [label, pair.x, pair.y]
+
+func _resource_pair(key: String) -> Vector2i:
+    var value = combatant.get(key, [0, 0])
+    if typeof(value) == TYPE_ARRAY and value.size() >= 2:
+        return Vector2i(int(value[0]), maxi(1, int(value[1])))
+    return Vector2i.ZERO
+
+func _layout() -> void:
+    if _name_label == null:
+        return
+
+    var portrait_size := minf(size.x * 0.48, maxf(92.0, size.y * 0.48))
+    var portrait_x := 12.0 if side == "player" else size.x - portrait_size - 12.0
+    var content_x := portrait_x + portrait_size + 14.0 if side == "player" else 12.0
+    var content_right := size.x - 12.0 if side == "player" else portrait_x - 14.0
+    var content_width := maxf(120.0, content_right - content_x)
+
+    if is_instance_valid(_portrait):
+        _portrait.position = Vector2(portrait_x, 14.0)
+        _portrait.size = Vector2(portrait_size, minf(size.y * 0.58, portrait_size * 1.18))
+
+    _name_label.position = Vector2(content_x, 10.0)
+    _name_label.size = Vector2(content_width, 24.0)
+    _name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT if side == "player" else HORIZONTAL_ALIGNMENT_RIGHT
+
+    _epithet_label.position = Vector2(content_x, 31.0)
+    _epithet_label.size = Vector2(content_width, 18.0)
+    _epithet_label.horizontal_alignment = _name_label.horizontal_alignment
+
+    var labels := [_health_label, _stamina_label, _internal_label]
+    for index in range(labels.size()):
+        var label: Label = labels[index]
+        label.position = Vector2(content_x, 50.0 + float(index) * 21.0)
+        label.size = Vector2(content_width, 18.0)
+        label.horizontal_alignment = _name_label.horizontal_alignment
+
+    var chip_y := maxf(122.0, size.y - 24.0)
+    for index in range(_status_labels.size()):
+        var chip := _status_labels[index]
+        var chip_width := 42.0
+        var chip_gap := 4.0
+        var chip_x := portrait_x + 8.0 + float(index) * (chip_width + chip_gap) if side == "player" else portrait_x + portrait_size - chip_width - 8.0 - float(index) * (chip_width + chip_gap)
+        chip.position = Vector2(chip_x, chip_y)
+        chip.size = Vector2(chip_width, 20.0)
+
+    queue_redraw()
+
+func _notification(what: int) -> void:
+    if what == NOTIFICATION_RESIZED:
+        queue_redraw()
+
+func _draw() -> void:
+    var accent := PLAYER_ACCENT if side == "player" else ENEMY_ACCENT
+    draw_rect(Rect2(Vector2.ZERO, size), PANEL, true)
+    draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color(accent, 0.72), false, 2.0)
+    draw_rect(Rect2(Vector2(0.0, 0.0), Vector2(size.x, 4.0)), accent, true)
+
+    var portrait_size := minf(size.x * 0.48, maxf(92.0, size.y * 0.48))
+    var portrait_x := 12.0 if side == "player" else size.x - portrait_size - 12.0
+    var portrait_rect := Rect2(Vector2(portrait_x, 14.0), Vector2(portrait_size, minf(size.y * 0.58, portrait_size * 1.18)))
+    draw_rect(Rect2(portrait_rect.position - Vector2(3.0, 3.0), portrait_rect.size + Vector2(6.0, 6.0)), Color(0.02, 0.018, 0.016, 0.92), true)
+    draw_rect(Rect2(portrait_rect.position - Vector2(2.0, 2.0), portrait_rect.size + Vector2(4.0, 4.0)), Color(accent, 0.78), false, 2.0)
+
+    var content_x := portrait_x + portrait_size + 14.0 if side == "player" else 12.0
+    var content_right := size.x - 12.0 if side == "player" else portrait_x - 14.0
+    var bar_width := maxf(48.0, content_right - content_x - 78.0)
+    var bar_x := content_right - bar_width if side == "player" else content_x
+
+    _draw_resource_bar(Rect2(bar_x, 66.0, bar_width, 5.0), _resource_pair("health"), HEALTH_COLOR)
+    _draw_resource_bar(Rect2(bar_x, 87.0, bar_width, 5.0), _resource_pair("stamina"), STAMINA_COLOR)
+    _draw_resource_bar(Rect2(bar_x, 108.0, bar_width, 5.0), _resource_pair("internal"), INTERNAL_COLOR)
+
+    for chip in _status_labels:
+        var kind := str(chip.get_meta("kind", "neutral"))
+        var chip_color := _status_color(kind)
+        draw_rect(Rect2(chip.position, chip.size), Color(chip_color, 0.42), true)
+        draw_rect(Rect2(chip.position + Vector2.ONE, chip.size - Vector2(2.0, 2.0)), chip_color, false, 1.0)
+
+func _draw_resource_bar(rect: Rect2, pair: Vector2i, color: Color) -> void:
+    draw_rect(rect, Color(0.18, 0.16, 0.13, 0.92), true)
+    var ratio := clampf(float(pair.x) / float(maxi(1, pair.y)), 0.0, 1.0)
+    draw_rect(Rect2(rect.position, Vector2(rect.size.x * ratio, rect.size.y)), color, true)
+
+func _status_color(kind: String) -> Color:
+    match kind:
+        "defense":
+            return Color("4d7f9e")
+        "offense":
+            return Color("a24d45")
+        "fortitude":
+            return Color("c79a50")
+        _:
+            return Color("8a795f")

@@ -1,0 +1,107 @@
+name: PR Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: scope-aware-validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          show-progress: false
+
+      - name: Classify changed paths
+        id: scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "code_changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" > changed-files.txt
+          if grep -Eq '^(project\.godot|data/|src/|scenes/|assets/|addons/|tests/.*\.(gd|py)$|tools/.*\.(ps1|cmd)$|\.github/workflows/)' changed-files.txt; then
+            echo "code_changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "code_changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate project operating system
+        run: python tools/check_project_operating_system.py --root . --config .github/documentation-governance.json
+
+      - name: Validate canonical reference freshness
+        run: python tools/check_canonical_reference_freshness.py --root . --config .github/reference-freshness.json
+
+      - name: Validate Skill package integrity
+        run: python tools/check_skill_package_integrity.py
+
+      - name: Run governance regression tests
+        run: python -m unittest discover -s tests -p 'test_project_governance.py'
+
+      - name: Validate canonical combat impact map
+        run: python tests/check_canonical_combat_docs.py
+
+      - name: Validate card component contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_card_component_contract.py
+
+      - name: Validate combat contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_combat_board_contract.py
+
+      - name: Validate rival tendency contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_rival_tendency_contract.py
+
+      - name: Validate A2 hypothesis and summary contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_repeat_poc_a2_contract.py
+
+      - name: Validate A3 review UI contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_repeat_poc_a3_contract.py
+
+      - name: Validate prepare and auto placement contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_prepare_auto_placement_contract.py
+
+      - name: Parse PowerShell automations for code changes
+        if: steps.scope.outputs.code_changed == 'true'
+        shell: pwsh
+        run: |
+          $paths = @(
+            "tools/verify_and_commit_step0.ps1",
+            "tools/verify_and_commit_combat_foundation.ps1",
+            "tools/run_combat_board.ps1",
+            "tools/verify_repeat_poc_a1.ps1",
+            "tools/verify_repeat_poc_a2.ps1",
+            "tools/verify_repeat_poc_a3.ps1"
+          )
+          foreach ($path in $paths) {
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path), [ref]$tokens, [ref]$errors) | Out-Null
+            if ($errors.Count -gt 0) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }
+          }
+
+      - name: Record deferred runtime boundary
+        if: steps.scope.outputs.code_changed == 'true' && vars.ACTIONS_FULL_VALIDATION_ENABLED != 'true'
+        run: echo "Godot and OS/Python matrix checks require Full Validation evidence."

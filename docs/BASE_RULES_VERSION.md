@@ -1,66 +1,142 @@
 # Base 규칙 적용 버전
 
-- Base 저장소: `alsdmlals4-eng/Base`
-- 기준 브랜치: `main`
-- 기준 커밋: `b05dcc079485b1ea43d735130d6f7cca209739a9`
-- Base 문서 버전: `v1.9.3`
-- 프로젝트 동기화 날짜: `2026-07-16`
-- 적용 프로젝트: `alsdmlals4-eng/Ten-Paces-Hidden-Moves`
+## 1. 기준
 
-## 적용한 공용 구조
+- Base: `alsdmlals4-eng/Base@41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
+- 이전 프로젝트 기준의 재현 가능한 SHA는 `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`가 보존한다.
+- 추가 비교: 6개 커밋·43개 변경 파일.
+- 동기화 날짜: `2026-07-23`.
+- 전투 기준: PR #7 `agent/t0-combat-poc-board@659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
+- 코어 확정 PR: #15 `agent/project-core-confirmation`.
+- 최신 승인 범위: Issue #13 STEP 12~14.
+- 감사: `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`.
+- 검증: `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_VERIFICATION.md`.
 
-- 학습형 Base와 프로젝트 전용 데이터의 책임 분리.
-- 기획서·로드맵·Active Context·Documentation Map의 지속성 계약.
-- 요청을 목적·맥락·경험·범위·제약·산출물·완료·검증으로 변환하는 절차.
-- Vertical Slice와 데모의 범위·품질·제작성 검증.
-- UI·연출과 도메인 상태 소유 경계.
-- 프로젝트 결과를 Base method·skill·template·case로 환류하는 절차.
-- 한 번 채택한 설계를 실제 검증 전에는 검증된 공용 스킬로 표시하지 않는 지식 상태 규칙.
-- Base 채택→프로젝트 구체화→검증→Base 환류의 양방향 학습 사례.
-- 내부 난도·성장 데이터와 세계관 표현을 의미 키로 분리하는 사례.
-- 규칙·UI·연출·QA를 같은 의미 단계와 원인 키로 추적하는 사례.
-- 대표 하이라이트의 보유·미보유 양쪽 정상 완주 경로를 검증하는 Vertical Slice 사례.
-- 최초·반복·상세·결과 확인으로 정보 문구 역할을 나누는 대화·세계관 카피 사례.
+정식 버전명보다 commit SHA를 재현 가능한 기준으로 사용한다. 일상 작업은 프로젝트에 동기화된 Registry·검사·문서를 우선하고 Base 원격은 재감사 조건에서만 다시 비교한다.
 
-## 프로젝트 구체화
+## 2. 적용한 공용 운영 계약
 
-십보강호의 실제 수치, 문파·무공·제약 이름, Godot 경로, 구현 상태와 테스트 결과는 프로젝트 저장소가 책임진다.
+### Work Mode·Skill
 
-프로젝트 적용 기록:
+- Work Mode: `PLAN / BUILD / REVIEW`.
+- Registry trigger 기반 최소 Skill·Skill Mode 자동 선택.
+- 전체 Skill 기본 로드 금지.
+- 주 책임 분야 Skill 최대 1개, 필요한 Foundation만 조건부 선택.
+- L1 이상 `execution-report`.
+- 기존 프로젝트 변경은 `audit → reconcile-legacy → 승인 변경 → verify`.
 
-- `docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md`
-- `docs/skills/TEN_PACES_PLANNING_HANDOFF_EXTENSION.md`
+### Base 활성 Skill 25개
 
-Base에 반영한 사례:
+1. `managing-project-intake-and-work-contract`
+2. `managing-game-project-operating-system`
+3. `managing-design-documents`
+4. `evolving-project-discipline-skills`
+5. `maintaining-project-context-and-handoff`
+6. `analyzing-and-refining-game-concepts`
+7. `designing-vertical-slices`
+8. `orchestrating-deepseek-worktrees`
+9. `reviewing-and-validating-project-changes`
+10. `auditing-canonical-reference-freshness`
+11. `designing-art-prompts-and-technique-cards`
+12. `auditing-and-refining-ui-art`
+13. `managing-base-change-proposals`
+14. `identifying-project-core`
+15. `establishing-project-core`
+16. `running-adversarial-review-and-refinement`
+17. `refactoring-with-contract-preservation`
+18. `simplifying-skill-bodies`
+19. `pruning-stale-and-nonfunctional-material`
+20. `synchronizing-local-and-github-state`
+21. `maintaining-long-running-task-continuity`
+22. `governing-game-user-research-coverage`
+23. `creating-user-learning-notes`
+24. `building-project-visual-dashboards`
+25. `diagnosing-game-engine-runtime-failures`
 
-- `docs/knowledge/cases/BASE_PROJECT_BIDIRECTIONAL_LEARNING_CASE.md`
-- `docs/knowledge/cases/DIEGETIC_OPPONENT_INFORMATION_CASE.md`
-- `docs/knowledge/cases/TEN_PACES_RULE_PRESENTATION_TRACEABILITY_CASE.md`
-- `docs/knowledge/cases/TEN_PACES_OPTIONAL_HIGHLIGHT_VERTICAL_SLICE_CASE.md`
+프로젝트에 Base Skill 패키지를 복제하지 않는다. `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`이 ID와 trigger를 라우팅한다.
 
-Base에 반영한 method·skill:
+### 프로젝트 고유 Skill 4개
 
-- `docs/CONTENT_DESIGN_METHOD.md`
-- `docs/knowledge/methods/PLANNING_SYSTEM_METHOD.md`
-- `docs/knowledge/methods/NARRATIVE_AND_RELATIONSHIP_METHOD.md`
-- `docs/knowledge/methods/DIALOGUE_AND_EVENT_PRESENTATION_METHOD.md`
-- `skills/writing-game-design-documents/SKILL.md`
-- `skills/designing-vertical-slices/SKILL.md`
+- `ten-paces-game-design`.
+- `combat-ux-and-accessibility`.
+- `combat-implementation-handoff`.
+- `ten-paces-verification`.
 
-## 검증 상태
+로컬 Skill은 프로젝트 고유 판단·반례만 소유하고 현재 STEP 상태는 Active Context와 본책에서 읽는다.
 
-- 문서 구조와 사례 연결은 Base PR #4에서 검토·병합했다.
-- Godot 구현, 실제 플레이어 문구 학습, 하이라이트 보유·미보유 완주율은 아직 확인하지 않았다.
-- 위 항목은 구현·플레이테스트 결과가 생기기 전까지 `채택·구현 전 검증 필요` 상태를 유지한다.
+## 3. 문서·발행 계약
 
-## 갱신 조건
+- 한 질문에 Markdown 또는 JSON 책임 원본 하나.
+- 현재 본책은 현재 계약만 설명한다.
+- 과거 전문은 Git 이력·Change Log·Learning Log에서 찾는다.
+- 날짜별 보정 절을 활성 본문에 누적하지 않는다.
+- PDF·DOCX·다이어그램은 파생본이다.
+- 현재 11개 제품 기획 문서와 Skill Registry는 생성기가 없어 `source_only`다.
+- PDF가 필요한 마일스톤에서 생성기·폰트·Manifest·렌더·사용자 검수를 함께 설치하고 필요한 문서만 `milestone_sync`로 승격한다.
+- 생성 실패 시 기존 정상 산출물을 보존한다.
 
-다음 경우 Base `main`의 최신 Documentation Map과 Changelog를 확인한 뒤 이 파일을 갱신한다.
+## 4. 정본 최신성 계약
 
-- 프로젝트가 새로운 Base method·skill·template을 적용할 때.
-- Base의 우선순위·문서 수명주기·인수인계·지식 승격 규칙이 바뀔 때.
-- 프로젝트 작업에서 공용 지식을 Base로 승격한 뒤 양쪽 참조를 정리할 때.
-- Base 사례의 지식 상태가 `가설`·`채택`에서 `부분 검증`·`검증`으로 바뀔 때.
-- 새 작업자나 AI가 현재 Base 기준과 프로젝트 문서가 충돌한다고 보고할 때.
+`.github/reference-freshness.json`이 다음 구조화 기대값을 소유한다.
 
-Base 원격과 프로젝트 파일은 자동 동기화되지 않는다. 기준 커밋이 바뀌면 프로젝트 로컬 사본·스킬 확장·적용 기록과의 차이를 확인한다.
+- board contract schema 16.
+- Base commit `41a20584...`.
+- Base 활성 Skill 25개.
+- 프로젝트 고유 Skill 4개.
+- 활성 문서의 필수 현행 토큰과 금지 stale 토큰.
+- 책임 원본→활성 소비자 연결.
+
+운영·Skill 검사기는 이 설정을 읽고 별도 SHA·Skill 수를 하드코딩하지 않는다.
+
+## 5. 십보강호 고유 계약
+
+프로젝트에만 남긴다.
+
+- `[강호낭인]`.
+- 전장 10칸, 플레이어 4번·상대 7번, 거리 3, 거리 0 `[밀착]`.
+- 라운드 `3수 → 3수 → 4수`.
+- 기초 행동 8종과 절초 3종.
+- 합·방어·회피·필중·중단·강건.
+- 공개 상태 기반 최소 AI.
+- 승패·무승부·4/7 재시작.
+- T0 단일 전투 → T1 최소 세로 슬라이스 → T2 5전 데모 → 전체 10전.
+- 세력·무공·심법·성장·제약 가설.
+- Godot 코드·데이터·씬·자산·테스트·런타임 상태.
+
+## 6. 이번 동기화 결과
+
+- Base 6개 커밋·43개 파일을 프로젝트 영향 기준으로 재감사했다.
+- 프로젝트 코어·적대적 검토·구조 최적화·동기화·연속성·유저리서치·런타임 진단 Skill을 route에 추가했다.
+- 로컬 Skill 4개는 유지하고 진행 상태 복제를 제거했다.
+- board schema 16·Base SHA·Skill 집합을 단일 freshness 설정으로 통합했다.
+- stale 문장 위에 최신 보정 절을 붙여도 실패하는 반례를 추가했다.
+- 추적된 Python 캐시를 제거하고 재발을 차단했다.
+- PR #14를 PR #7에 병합했고 PR #7 HEAD를 `659c57e7...`로 고정했다.
+- PR #15는 이 기준에서 프로젝트 코어와 다음 검증 게이트를 문서화한다.
+
+## 7. 검증 상태
+
+```yaml
+base_diff_audit: COMPLETE
+registry_update: MERGED_TO_PR7
+canonical_document_refresh: MERGED_TO_PR7
+pr7_baseline: 659c57e7ffa588ad6a6471ed9b5394985b159eaf
+pr15_pre_closeout_governance: PASS_ON_FF378732
+governance_checks_on_current_head: PENDING
+card_contract_on_current_head: PENDING
+product_file_preservation: PASS_FOR_PR15_DOCUMENT_SCOPE
+project_core: CORE_CONFIRMED
+product_gate: REPEAT_POC
+human_step14: NOT_RUN
+```
+
+최신 Actions와 최종 baseline diff 전에는 PR #15 통합 완료로 표시하지 않는다. 프로젝트 코어 확정은 사람 STEP 14나 T1 진입을 의미하지 않는다.
+
+## 8. 재감사 조건
+
+- Base SHA·Skill Registry·coverage 변경.
+- board schema·전장·라운드·합·절초·AI 계약 변경.
+- 책임 원본·경로·ID·Schema·발행 정책 변경.
+- 프로젝트 코어 승인·재개방.
+- STEP 14 사람 결과와 T1 진입.
+- 운영체계 통합·삭제·대규모 검증.

@@ -1,0 +1,38 @@
+{
+  "schema_version": 4,
+  "momentum_segments": 5,
+  "player": {
+    "name": "강호낭인",
+    "epithet": "무명 검객",
+    "health": [30, 30],
+    "attack_power": 8,
+    "stamina": [5, 5],
+    "internal": [4, 4],
+    "momentum": [0, 5],
+    "start_penalties": {"health": 0, "stamina": 0, "internal": 0},
+    "statuses": [
+      {"label": "방", "kind": "defense"}
+    ]
+  },
+  "round": {
+    "round_number": 1,
+    "bundle_index": 1,
+    "bundle_total": 3,
+    "selection_text": "1수 · 2수 · 3수 선택",
+    "resolution_order": "대응 → 속공 → 이동 → 일반 공격"
+  },
+  "enemy": {
+    "name": "배외검객",
+    "epithet": "무림 검사",
+    "health": [30, 30],
+    "attack_power": 8,
+    "stamina": [5, 5],
+    "internal": [4, 4],
+    "momentum": [0, 5],
+    "start_penalties": {"health": 0, "stamina": 0, "internal": 0},
+    "statuses": [
+      {"label": "출", "kind": "offense"},
+      {"label": "방", "kind": "defense"}
+    ]
+  }
+}

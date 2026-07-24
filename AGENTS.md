@@ -1,99 +1,208 @@
 # 십보강호 협업 규칙
 
-## 1. 규칙 우선순위
+이 파일은 `Ten-Paces-Hidden-Moves`의 최상위 프로젝트 작업 계약이다. Base 공용 절차는 복제하지 않고 프로젝트 고유 기준·경로·보호·검증 차이만 둔다.
 
-문서와 실제 파일이 충돌하면 다음 순서를 따른다.
+## 1. 우선순위
 
-1. 사용자의 최신 확정 지시
-2. 이 `AGENTS.md`
-3. `docs/ACTIVE_CONTEXT.md`
-4. `docs/BASE_RULES_VERSION.md`가 존재하면 해당 버전 정보
-5. `docs/DOCUMENTATION_MAP.md`
-6. 프로젝트 내부에 동기화된 Base 규칙 사본
-7. 프로젝트 전용 기획서·README
-8. 현재 Issue·Goal·Plan
-9. 실제 구현 파일
+1. 사용자의 최신 확정 지시.
+2. 보안·플랫폼 제약과 이 `AGENTS.md`.
+3. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`와 승인 작업 계약.
+4. Design Registry가 등록한 질문별 책임 원본.
+5. 실제 코드·데이터·씬·자산·테스트·런타임 증거.
+6. `docs/BASE_RULES_VERSION.md`의 Base 기준과 프로젝트 차이.
+7. 외부 사례·과거 대화·추정.
 
-실제 구현 상태는 파일과 실행 결과로 확인한다. 문서만 보고 구현 완료를 추정하지 않는다.
+정상 동작 중인 사용자·Codex 변경을 임의로 되돌리지 않는다.
 
-## 2. 작업 시작 컨텍스트
-
-작업자는 다음 순서로 현재 상태를 확인한다.
+## 2. 기본 읽기
 
 ```text
 최신 사용자 지시
 → AGENTS.md
-→ docs/ACTIVE_CONTEXT.md
-→ docs/DOCUMENTATION_MAP.md
-→ 현재 작업과 연결된 기준 문서
-→ 실제 수정 대상 파일·테스트
+→ [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
+→ [기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md
+→ 질문별 책임 원본
+→ 실제 파일·테스트·PR·Issue
 ```
 
-- 저장소 전체를 무조건 읽지 않고 문서 지도와 참조 관계를 사용한다.
-- `docs/[백업]/`과 `docs/[보류]/`는 사용자가 재개하지 않는 한 기본 읽기·구현 대상에서 제외한다.
-- `ACTIVE_CONTEXT.md`가 실제 파일·기준 문서와 충돌하면 차이를 보고하고 같은 작업 안에서 정리한다.
+백업·보류·과거 Plan·닫힌 PR·전체 Skill 폴더를 기본 컨텍스트로 로드하지 않는다.
 
-## 3. 기획 문서 갱신
+## 3. 현재 기준
 
-- 대화에서 확정된 기획 변경은 관련 GitHub 기준 문서에 같은 작업 흐름 안에서 반영한다.
-- 전투, 아트, UI, 콘텐츠, 세계관 등 분야별 기획서는 누락 없이 서로 연결해 최신화한다.
-- 새 버전 문서를 계속 늘리지 않는다. `*_v2`, `*_final`, `*_latest`와 날짜별 활성 복제본을 만들지 않고 기존 기준 파일을 직접 갱신한다.
-- 파일명과 경로를 유지할 수 있으면 유지한다. 경로 변경이 필요하면 연결 문서와 링크를 함께 고친다.
-- 수치·용어가 여러 문서에 걸치면 단일 기준 문서를 먼저 정하고 나머지는 그 기준을 참조하게 한다.
-- 확정 사실, 권장안, 확인 필요, 보류를 명확히 구분한다.
+- Base: `alsdmlals4-eng/Base@41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
+- Base 차이: `docs/BASE_RULES_VERSION.md`.
+- Skill Registry: `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`.
+- 현재 구현 기준: PR #7 `agent/t0-combat-poc-board`.
+- 기준 SHA: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
+- 코어 확정 PR: #15 `agent/project-core-confirmation`.
+- 최신 승인 범위: Issue #13 STEP 12~14.
+- 전투 규칙: `docs/02_COMBAT_RULES.md`.
+- 현재 범위: `docs/05_COMBAT_POC_SPEC.md`.
+- 현재 증거: `docs/08_TEST_CHECKLIST.md`.
+- 프로젝트 코어: `CORE_CONFIRMED`.
+- 제품 게이트: `REPEAT_POC`.
+- T1 진입: `NOT_GRANTED`.
 
-## 4. 이전 내용·중복·보류 파일
+STEP 14의 기계 시나리오는 기록됐지만 실제 사용자 이해·상대 성향 발견·보조기기·주관적 음향/모션 관찰은 `NOT_RUN`이다.
 
-- 이전 내용은 별도 백업 파일을 새로 만들지 않고 Git 이력으로 보존한다.
-- 기존 `docs/[백업]/`은 읽기 전용 과거 기록으로 남기며 현재 기획·구현·테스트의 기본 읽기와 수정 대상에서 제외한다.
-- `docs/[보류]/`는 아이디어 보존과 재검토 대기 공간이며 사용자가 재개를 확정하기 전까지 활성 기획·구현·테스트의 기본 읽기 대상에서 제외한다.
-- Codex와 다른 구현 에이전트는 `[보류]` 항목을 승인 없이 코드·씬·데이터·테스트에 반영하지 않는다.
-- 보류 항목이 재개되면 관련 기준 문서에 통합하고 별도 Plan과 테스트 범위를 확정한다.
-- 새 기준 문서에 내용이 통합된 뒤 남은 이전 버전·중복 파일은 참조 경로를 확인하고 제거한다.
-- 외부 링크, 자동화, 코드 참조가 없는 중복 문서는 리디렉션 파일도 남기지 않는다.
-- 법무·감사·외부 링크 보존 등 명확한 사유가 있을 때만 사용자의 별도 지시로 백업 파일을 만든다.
+## 4. Work Mode·Skill Mode
 
-## 5. 관련 문서 동기화
+- `PLAN`: 요구·정본·근거·대안·실행 순서. 승인 전 제품 변경 금지.
+- `BUILD`: 승인된 범위의 코드·데이터·문서·자산 구현.
+- `REVIEW`: 적대적 검토·반례·증거·판정. 수정이 필요하면 BUILD 후 다시 REVIEW.
 
-- 기준 문서를 갱신하면 `docs/ACTIVE_CONTEXT.md`와 `docs/DOCUMENTATION_MAP.md`를 함께 확인한다.
-- 프로젝트 첫 화면의 설명·링크·현재 범위가 바뀌면 `README.md`도 함께 갱신한다.
-- 아트 시안에 표시된 임시 수치가 전투 데이터와 다르면 시안 수치를 규칙 기준으로 확정하지 않는다. 레이아웃 예시임을 명시하고 수치 기준 문서를 따른다.
-- 구현 범위 또는 완료 기준이 바뀌면 테스트 체크리스트와 Codex Plan의 동기화 필요 여부를 반드시 검토한다.
-- 활성 기준에서 제외한 항목은 `[보류]` 인덱스와 연결하고 활성 문서에는 보류 상태와 구현 금지만 남긴다.
+한 시점의 주 Work Mode는 하나다.
 
-## 6. 작업 종료 컨텍스트 정비 — 필수
+Registry trigger가 최소 Skill·Skill Mode를 자동 선택한다.
 
-기획·문서·구현·검수 작업은 다음 정비가 끝나야 종료할 수 있다.
+```text
+의도·현재 단계·위험
+→ Work Mode
+→ trigger·do_not_use_when
+→ 최소 Skill·Skill Mode
+→ 저장소 사실 조사
+→ contract
+→ 필요 시 decompose-and-sequence
+→ 실행·검증
+→ execution-report
+```
 
-1. 이번 작업에서 확정된 결정과 변경된 수치를 관련 기준 문서에 반영한다.
-2. `docs/ACTIVE_CONTEXT.md`의 현재 방향, 확정 사항, 미확정 사항, 다음 작업을 최신화한다.
-3. `docs/DOCUMENTATION_MAP.md`, README, 테스트 체크리스트, Codex Plan의 연결 영향을 확인한다.
-4. 폐기된 표현·수치·구조를 검색하고 중복·충돌·낡은 컨텍스트를 제거한다.
-5. 보류한 내용은 `docs/[보류]/`로 이동하고 활성 구현 금지를 명시한다.
-6. 실제 구현·테스트 상태와 문서가 일치하는지 확인한다. 확인하지 못한 상태는 구현 완료로 쓰지 않는다.
-7. 안정적이고 일반화 가능한 작업 규칙은 Base에 자동 승격한다.
-8. GitHub 반영 결과와 남은 위험을 보고한다.
+- 사용자는 Skill 이름을 선언할 필요가 없다.
+- `load_all_skills=false`를 유지한다.
+- 주 책임 분야 Skill은 최대 하나다.
+- 사용하지 않은 Skill을 실행 보고에 적지 않는다.
 
-단순 대화라도 프로젝트 방향·수치·용어·범위가 확정되었다면 문서 정비 대상이다. 작업자가 바뀌어도 과거 대화에 의존하지 않고 저장소만으로 현재 상태를 복원할 수 있어야 한다.
+## 5. Skill 경계
 
-## 7. Base 자동 승격
+Base 활성 Skill 25개는 공용 운영·기획·코어·검증·구조 최적화·연속성·유저리서치·디버깅을 책임진다.
 
-- 이 프로젝트는 공용 규칙의 자동 Base 승격이 승인된 프로젝트다.
-- 작업에서 확인된 안정적이고 일반화 가능한 규칙은 별도 재승인 없이 같은 작업 흐름 안에서 `alsdmlals4-eng/Base`의 기존 기준 파일에 반영한다.
-- 프로젝트 고유 이름, 밸런스 수치, 세계관, 카드 사양, Godot 경로와 일회성 구현 세부는 프로젝트 문서에만 남긴다.
-- Base 반영 전 기존 공용 규칙과 중복·충돌 여부를 확인한다.
-- Base에도 새 버전 파일을 만들지 않고 기존 기준 파일을 직접 갱신한다.
-- 프로젝트에 Base 로컬 사본 또는 `docs/BASE_RULES_VERSION.md`가 실제로 존재할 때만 후속 동기화를 수행한다.
+프로젝트 고유 Skill은 4개다.
 
-## 8. 작업 결과 보고
+- `ten-paces-game-design`.
+- `combat-ux-and-accessibility`.
+- `combat-implementation-handoff`.
+- `ten-paces-verification`.
 
-GitHub 갱신 후 다음을 보고한다.
+현재 STEP 상태는 Skill 본문에 복제하지 않고 Active Context·본책·실제 파일에서 읽는다. 통합 전 ID는 `skills/LEGACY_SKILL_ALIASES.md`에서만 허용한다.
 
-- 수정한 기준 파일과 변경 이유
-- 제거한 중복·이전 버전·폐기 규칙
-- 새로 만든 보류 항목과 활성 구현 제외 범위
-- 연결 영향이 있는 문서와 후속 동기화
-- 실제 수행한 검증과 수행하지 못한 검증
-- Base에 반영한 공용 규칙
-- 프로젝트 전용으로 남긴 규칙
-- 다음 작업자가 먼저 확인할 항목
+## 6. L1 이상 작업 계약
+
+```yaml
+work_level: L1 | L2 | L3 | L4
+work_mode: PLAN | BUILD | REVIEW
+primary_discipline:
+affected_disciplines:
+goal:
+user_or_player_value:
+scope:
+out_of_scope:
+baseline_branch:
+baseline_sha:
+protected_paths_decisions_assets:
+required_sources_tools_permissions:
+selected_skills_and_modes:
+execution_steps:
+acceptance_criteria:
+validation:
+stop_conditions:
+rollback:
+```
+
+L2 이상은 `outcome / inputs / files / dependencies / output / acceptance / validation / rollback`으로 분해한다.
+
+## 7. 현재 제품 계약
+
+세부 규칙은 `docs/02_COMBAT_RULES.md`를 따른다.
+
+- `[강호낭인]`.
+- 10칸·플레이어 4번·상대 7번·거리 3.
+- 같은 칸 최대 2인, 거리 0 `[밀착]`.
+- 라운드 `3수 → 3수 → 4수`.
+- 기초 행동 8종·절초 3종.
+- 같은 실행 수 공격의 `[합]`.
+- 방어도 차감 뒤 같은 수 반감, 회피, 파공검기 `[필중]`.
+- 같은 수 미실행 행동 중단과 태세 기반 `[강건]`.
+- 공개 상태 기반 결정적 최소 AI.
+- 승패·무승부·4/7 완전 재시작.
+- UI·VFX·오디오는 판정·보상·저장을 재계산하지 않는다.
+- 덱·손패·행동력·내공·`[집중]` 없음.
+
+프로젝트 코어는 `docs/01_GAME_DESIGN.md`에서 `CORE_CONFIRMED`다. 코어 확정은 실제 사람 STEP 14 통과나 T1 시작 승인이 아니며, 현재 제품 게이트는 `REPEAT_POC`다.
+
+## 8. 기준 SHA와 Codex 작업 보존
+
+구조·문서 정합화는 exact PR #7 기준 SHA에서 새 브랜치를 만든다.
+
+- force push·reset·rebase로 기준 브랜치를 덮어쓰지 않는다.
+- `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot`은 별도 승인 없는 구조 정리에서 수정하지 않는다.
+- 작업 전후 `compare`로 changed 파일을 확인한다.
+- 제품 경로 변경이 발견되면 즉시 중단하고 원인·복구를 보고한다.
+- 사용자 로컬 미커밋 상태는 원격과 동일하다고 가정하지 않는다.
+
+## 9. 책임 원본·발행
+
+- 한 질문에 책임 원본 하나.
+- 활성 본문에는 현재 계약만 둔다.
+- 날짜별 최신화 절을 누적하지 않는다.
+- 과거 전문은 Git 이력·Change Log·Learning Log에서 찾는다.
+- Markdown은 서술, JSON은 Registry·상태·ID·경로·게임 데이터에 사용한다.
+- `v2`, `final`, `latest`, `copy` 활성 복제본을 만들지 않는다.
+- 현재 제품 문서와 Skill Registry는 `source_only`다.
+- 실행 가능한 생성기·폰트·Manifest·렌더·검수 없이 `CURRENT` PDF나 `always_sync`를 선언하지 않는다.
+
+## 10. 기존 구조·삭제
+
+```text
+PLAN: audit
+→ reconcile-legacy
+→ 고유 정보·참조·복구·승계 확인
+→ 사용자 승인
+→ BUILD: UPDATE·MERGE·STUB·ARCHIVE·DELETE
+→ REVIEW: reference-freshness·회귀·복구
+```
+
+삭제·통합 전에 고유 정보, 활성 참조, 파생본, 복구 경로, 사용자 승인을 확인한다.
+
+## 11. reference-freshness·검증
+
+정본·경로·ID·Schema·Base SHA·Skill 변경 시 `reference-freshness`를 실행한다. changed 파일뿐 아니라 변경됐어야 할 untouched 소비자를 확인한다.
+
+```text
+contract-check
+→ reference-freshness
+→ syntax·static
+→ automated tests
+→ runtime·render·build
+→ 적용 시 accessibility-review
+→ 적용 시 performance-profile
+→ normal·failure·edge·counterexample·regression
+→ baseline diff
+→ evidence-report
+```
+
+파일 존재·Workflow 존재·Actions 성공·Godot 실행·Windows 확인·사람 플레이·Required Check 강제는 서로 다른 증거다.
+
+## 12. 작업 종료
+
+1. 책임 원본과 실제 파일을 맞춘다.
+2. Registry·Schema·Legacy Alias·Update Matrix 영향을 확인한다.
+3. Active Context·Roadmap·필요 시 Handoff를 갱신한다.
+4. stale 표현과 untouched 소비자를 검사한다.
+5. 기준 SHA 대비 보호 경로 보존을 확인한다.
+6. Governance·관련 제품 계약·런타임을 검증한다.
+7. 다음 작업·중단·롤백을 남긴다.
+
+```yaml
+work_mode:
+skill_id:
+skill_mode:
+selection: automatic | user-directed
+reason:
+baseline_sha:
+work_performed:
+result:
+evidence:
+status: PASS | PARTIAL | FAIL | UNVERIFIED
+```
+
+실행하지 않은 조사·테스트·렌더·접근성·성능·플레이테스트·브랜치 보호를 완료로 보고하지 않는다.

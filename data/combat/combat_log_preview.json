@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "step": 7,
+  "round_number": 1,
+  "bundle_index": 2,
+  "default_collapsed": true,
+  "entries": [
+    {"kind": "header", "text": "[1라운드 2묶음]"},
+    {"kind": "player", "text": "강호낭인이 속공을 준비했다."},
+    {"kind": "enemy", "text": "배외검객이 막기를 준비했다."},
+    {"kind": "system", "text": "판정 순서: 대응 → 속공 → 이동 → 일반 공격"}
+  ]
+}

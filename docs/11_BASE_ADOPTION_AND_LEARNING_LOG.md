@@ -1,227 +1,157 @@
 # 십보강호 Base 적용·학습 순환 기록
 
-> 상태: **활성 인수 문서**  
-> 목적: `alsdmlals4-eng/Base`의 공용 규칙·방법·스킬·사례를 프로젝트에 적용한 결과와, 십보강호에서 얻은 교훈 중 Base로 되돌려 보낸 내용을 기록한다.  
-> 이 문서는 프로젝트 기획서나 Base 원본을 복제하지 않는다. 적용 차이, 프로젝트 전용 값, 승격 결과와 남은 검증만 기록한다.
+> 책임: Base 공용 운영 계약을 십보강호에 적용한 차이·검증·프로젝트 고유 교훈·환류 조건  
+> Base 버전 원본: `docs/BASE_RULES_VERSION.md`
 
 ## 1. 기준 정보
 
-- Base 저장소: `alsdmlals4-eng/Base`
-- 적용 버전: `v1.9.3`
-- 기준 커밋: `b05dcc079485b1ea43d735130d6f7cca209739a9`
-- 동기화 기록: `BASE_RULES_VERSION.md`
-- 프로젝트 스킬 확장: `skills/TEN_PACES_PLANNING_HANDOFF_EXTENSION.md`
-- 확인일: `2026-07-16`
+- 이전 프로젝트 기준의 재현 가능한 SHA는 `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`에 보존한다.
+- 현재 적용 기준: `alsdmlals4-eng/Base@41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
+- 추가 변화: 6개 커밋·43개 변경 파일.
+- 전투 기준: PR #7 `agent/t0-combat-poc-board@147a031c75e96bff170d7f99016beb9e85b12066`.
+- 최신 승인 이슈: Issue #13 STEP 12~14.
+- 정합화 브랜치: `agent/pr7-canonical-skill-refresh`.
 
-## 2. 작업 순환
+## 2. 이번 Base 변화
+
+Base 최신 변화는 공용 절차의 책임을 더 명확히 분리했다.
+
+- 프로젝트 코어 식별·승인 확정.
+- 적대적 검토와 최소 개선.
+- 계약 보존 리팩터링.
+- stale·죽은 자료 가지치기.
+- Skill 본문 간소화와 조건부 reference.
+- 로컬·GitHub 상태 동기화.
+- 장기 작업 연속성.
+- 게임 유저리서치 11영역.
+- 사용자 학습 노트.
+- 프로젝트 시각 대시보드.
+- 게임 엔진 런타임 오류 진단.
+
+Base 활성 Skill은 25개이며 모두 기본 로드하지 않는다. 프로젝트 Registry trigger가 필요한 최소 Skill만 선택한다.
+
+## 3. 프로젝트 적용 구조
+
+### Base 공유 Skill 25개
+
+공용 운영·기획·검증 방법은 Base 원본을 라우팅한다. 프로젝트에 패키지를 복제하지 않는다.
+
+### 프로젝트 고유 Skill 4개
+
+- `ten-paces-game-design`.
+- `combat-ux-and-accessibility`.
+- `combat-implementation-handoff`.
+- `ten-paces-verification`.
+
+로컬 Skill은 십보강호 고유 규칙·UX·Godot 인수·반례만 소유한다. 현재 STEP 진행 상태는 Skill 본문에 복제하지 않고 Active Context와 제품 정본에서 읽는다.
+
+## 4. 정본 최신화에서 발견한 문제
+
+### 4.1 날짜별 보정 절
+
+여러 활성 문서의 앞부분에는 구형 계약이 남고 하단의 날짜별 갱신 절만 최신이었다.
+
+예:
+
+- 한 칸 한 전투원 대 거리 0 `[밀착]`.
+- 공동 목적지 양측 정지 대 공동 점유 허용.
+- 높은 감소량 선택 대 방어도 차감 후 같은 수 반감.
+- 고정 상대 plan 대 공개 상태 최소 AI.
+- STEP 11~13 미구현 대 실제 구현·기술 검증.
+
+처리:
+
+- 현재 사실을 책임 절에 통합했다.
+- 날짜별 보정 절을 제거했다.
+- 과거 전문은 Git 이력·Change Log에서 찾도록 했다.
+- stale 문장이 위에 남아 있으면 하단 보정 절이 있어도 freshness가 실패하는 반례를 추가했다.
+
+### 4.2 구조화 계약 drift
+
+- 실제 board JSON은 schema 16인데 freshness 설정은 15를 요구했다.
+- 프로젝트 Registry는 이전 Base와 13개 공유 Skill을 고정했다.
+- 검사기 두 곳도 같은 숫자를 하드코딩했다.
+
+처리:
+
+- `.github/reference-freshness.json`을 board schema·Base SHA·활성 Skill 집합의 단일 검사 계약으로 사용한다.
+- 운영·Skill 검사기는 그 설정을 읽는다.
+- schema·Base commit·route 누락/중복 반례를 자동 테스트에 추가했다.
+
+### 4.3 Skill의 상태 복제
+
+로컬 Skill에 특정 STEP·Issue·구현 상태를 직접 적어 빠르게 낡았다.
+
+처리:
+
+- Skill에는 책임·mode·사용 조건·절차·출력·금지만 남겼다.
+- 현재 상태는 Active Context·본책·실제 파일을 읽는다.
+- 프로젝트 코어·벤치마킹·구조 최적화는 최신 Base Skill로 라우팅한다.
+
+### 4.4 생성 캐시 추적
+
+`tools/__pycache__/*.pyc`가 PR에 포함돼 있었다.
+
+처리:
+
+- 추적된 캐시 3개를 제거했다.
+- `.gitignore`에 `__pycache__/`, `*.py[cod]`를 추가했다.
+
+## 5. 프로젝트 고유 계약
+
+Base로 승격하지 않는다.
+
+- `[강호낭인]`과 무협 세계관.
+- 10칸·4/7·3/3/4.
+- 합·밀착·중단·강건·필중·절초 3종 수치.
+- 기초 행동·자원·기세 경제.
+- 세력·무공·심법·제약 후보.
+- Godot 경로·씬·자산·테스트·PR 상태.
+- T0/T1/T2/10전 범위.
+
+## 6. 공용화 가능한 관찰
+
+다음은 Base BCP 후보이나 이번 프로젝트 작업에서 Base를 직접 수정하지 않는다.
+
+1. 활성 문서에 날짜별 최신화 절을 계속 붙이면 상충 문장이 동시에 존재하므로, freshness는 최신 토큰 존재뿐 아니라 stale 토큰 부재를 검사해야 한다.
+2. 외부 기준의 SHA·활성 ID 집합은 여러 검사기에 하드코딩하지 않고 하나의 구조화 설정에서 읽어야 한다.
+3. 프로젝트 Skill은 현재 진행 상태를 복제하기보다 현재 상태 정본을 읽는 절차 router로 유지해야 한다.
+4. 기준 브랜치 보존 작업은 exact SHA 분기와 보호 prefix diff 검사를 명시해야 한다.
+
+환류 절차:
 
 ```text
-Base 활성 문서 지도 확인
-→ 필요한 공용 method·skill·template·case 읽기
-→ 십보강호의 현재 책임 문서와 실제 파일 감사
-→ 공용 원칙을 프로젝트 제약에 맞게 구체화
-→ 프로젝트 기준 문서·로드맵·테스트·Plan 갱신
-→ 구현·플레이·문서 운영에서 결과 확인
-→ 프로젝트 고유 정보와 공용 교훈 분리
-→ Base의 기존 책임 문서·사례에 최소 변경으로 반영
-→ 양쪽 문서 지도와 인수 컨텍스트 갱신
+프로젝트 관찰·반례·검증
+→ 프로젝트 고유 값 제거
+→ 기존 Base 중복·충돌 확인
+→ BCP 작성
+→ 사용자 승인
+→ 별도 Base PR
+→ 프로젝트 Learning Log 갱신
 ```
 
-## 3. Base에서 받아들인 공용 구조
+## 7. 검증 상태
 
-| Base 원본 | 프로젝트 적용 | 십보강호 책임 문서 |
-|---|---|---|
-| 요청→경험→범위→완료→검증 | 기획 대화를 승인 구조와 구현 인수 문서로 전환 | `AGENTS.md`, `ACTIVE_CONTEXT.md` |
-| 질문별 책임 원본 | 전투·성장·UI·연출·아키텍처·검증을 분리 | `DOCUMENTATION_MAP.md` |
-| Active Context와 콜드 스타트 | 작업자가 과거 대화 없이 현재 방향 복원 | `ACTIVE_CONTEXT.md` |
-| Vertical Slice | 5전 예선 결승 데모를 핵심 경험 검증 단위로 설정 | `04_ROADMAP.md`, `05_COMBAT_POC_SPEC.md` |
-| 프레젠테이션 상태 비소유 | UI·컷인·VFX가 판정·수련·저장을 결정하지 않음 | `09_COMBAT_SYSTEM_ARCHITECTURE.md`, `10_COMBAT_PRESENTATION_PLAN.md` |
-| 정보 계층화 | 카드 상시 정보·호버 팝업·클릭 상세 분리 | `07_COMBAT_UI_SPEC.md`, `10_COMBAT_PRESENTATION_PLAN.md` |
-| 실제 화면·접근성 QA | 최소 해상도, 모션·점멸 감소, 자산 폴백 검증 | `08_TEST_CHECKLIST.md`, `10_COMBAT_PRESENTATION_PLAN.md` |
-| 프로젝트→Base 지식 승격 | 수치·세계관은 로컬, 일반 원리는 Base 사례·method로 분리 | 이 문서와 Base 사례 |
-| 프로젝트 skill extension | 공용 스킬을 실제 책임 문서·경로·검증에 연결 | `skills/TEN_PACES_PLANNING_HANDOFF_EXTENSION.md` |
-
-## 4. 프로젝트에 맞게 구체화한 규칙
-
-### 4.1 내부 수치와 플레이어 표현 분리
-
-Base의 `도메인 상태 / 의미 기반 표현 요청 / 실제 자산` 경계를 다음처럼 구체화했다.
-
-```text
-상대 내부 프로필
-- 등급
-- 행운
-- 수련 포인트
-- 투자 스타일
-- 실제 무공·심법
-- 종합 강도
-
-↓ 의미 키 변환
-
-플레이어 표현
-- 이명·수식언
-- 풍문·전적
-- 무공 평가
-- 정탐 문장
+```yaml
+base_commit_sync: APPLIED_IN_REFRESH_BRANCH
+base_skill_routes_25: APPLIED_IN_REFRESH_BRANCH
+local_skills_4: PRESERVED
+board_schema_16_freshness: APPLIED_IN_REFRESH_BRANCH
+stale_counterexamples: ADDED
+tracked_python_cache: REMOVED
+product_code_data_scene_assets: PRESERVED_PENDING_FINAL_DIFF
+documentation_governance: NOT_RUN_ON_LATEST_REFRESH_HEAD
+card_component_contract: NOT_RUN_ON_LATEST_REFRESH_HEAD
+human_step14: NOT_RUN
 ```
 
-개발용 태그를 직접 노출하지 않으면서도 같은 내부 의미에는 같은 어휘 계열을 사용해 반복 플레이로 학습하게 한다.
+Actions 성공 전에는 최신화 완료로 표시하지 않는다.
 
-### 4.2 데모를 공개용 수직 슬라이스로 제한
+## 8. 후속 리뷰 조건
 
-- 1~2전 내부전.
-- 3~4전 예선.
-- 5전 예선 결승.
-- 10칸·10타이밍·2수 잠금·합·수련·행운·상대 읽기·제약·조건부 절초를 연결한다.
-- 전체 10전 콘텐츠를 먼저 얕게 만들지 않고 5전 흐름의 완성도와 제작 파이프라인을 검증한다.
-
-### 4.3 연출 책임 원본 분리
-
-기존 `07_COMBAT_UI_SPEC.md`가 UI 정보 배치와 카드 아트를 책임하고, `10_COMBAT_PRESENTATION_PLAN.md`가 다음을 책임한다.
-
-- 데모 감정 곡선.
-- 상대 정보→제약→전투→성장→결말 흐름.
-- 2수 잠금·공개·해상 연출.
-- 합·절초·승패 연출.
-- 카메라·VFX·오디오 예산.
-- 접근성·자산 폴백.
-- 연출 구현 로드맵과 남은 작업.
-
-### 4.4 로드맵과 남은 작업의 책임 분리
-
-- `04_ROADMAP.md`: 현재 단계, 선행 조건, 단계별 범위와 종료 기준.
-- `10_COMBAT_PRESENTATION_PLAN.md`: 연출 분야의 상세 로드맵과 남은 기획·UX·데이터·검증 작업.
-- 현재 Codex Plan: 실제 파일 감사 뒤 수정할 작업 단위와 테스트.
-- `ACTIVE_CONTEXT.md`: 현재 실행 순서와 다음 승인 게이트의 압축본.
-
-## 5. 이번 작업에서 Base로 반영한 내용
-
-### 5.1 양방향 지식 순환 사례
-
-파일: `docs/knowledge/cases/BASE_PROJECT_BIDIRECTIONAL_LEARNING_CASE.md`
-
-상태: 문서 운영 패턴.
-
-공용으로 남긴 원칙:
-
-- Base 원격 전체를 매번 복제하지 않고 문서 지도에서 필요한 책임 원본을 읽는다.
-- 프로젝트 적용 결과는 프로젝트 전용 문서에 기록한다.
-- 실제 수치·세계관·경로는 Base에 복사하지 않는다.
-- 한 프로젝트에서 채택한 설계는 먼저 사례로 남기고 반복 검증 뒤 method·skill로 승격한다.
-- Base 갱신 뒤 프로젝트의 로컬 사본·버전 기록 존재 여부를 확인한다.
-
-### 5.2 내부 데이터와 세계관 표현 분리 사례
-
-파일: `docs/knowledge/cases/DIEGETIC_OPPONENT_INFORMATION_CASE.md`
-
-상태: 채택·구현 전 검증 필요.
-
-공용으로 남긴 원칙:
-
-- 난도·성향·성장 같은 내부 분류와 플레이어에게 보이는 표현을 분리한다.
-- 표현은 장식용 랜덤 문구가 아니라 내부 의미 키와 연결한다.
-- 같은 표현 계열은 같은 의미를 암시해 사용자가 경험으로 어휘를 학습하게 한다.
-- 더 높은 정보 단계는 원시 수치 공개가 아니라 표현의 구체성을 높일 수 있다.
-- 표시와 실제 데이터가 모순되면 안 된다.
-
-### 5.3 기존 Base 스킬·구조 최신화 확인
-
-Base `v1.9.2`에는 다음이 반영돼 있었다.
-
-- Base를 학습형 공용 원본, 프로젝트를 분화·적용·검증 공간으로 정의.
-- 기획서·로드맵·Active Context·Documentation Map의 지속성 계약.
-- `writing-game-design-documents`와 `promoting-project-knowledge`의 작업 종료·인수인계·사례 상태 규칙.
-- 콜드 스타트 검수와 프로젝트 skill extension 연결.
-- Base↔프로젝트 양방향 학습 순환과 내부 데이터→세계관 표현 사례.
-
-이번 프로젝트에서는 공용 스킬을 복제하지 않고 `skills/TEN_PACES_PLANNING_HANDOFF_EXTENSION.md`에서 실제 경로와 검증으로 구체화했다.
-
-## 6. Base로 승격하지 않은 프로젝트 전용 내용
-
-- 십보강호의 프로젝트명·세계관·문파·무공 이름.
-- 전장 10칸, 행동 타이밍 10개, 대회 10전.
-- 수련 포인트와 행운 결과표의 실제 수치.
-- 5전 데모의 대진과 절초 목표 확률.
-- Godot 버전, GDScript 구조와 실제 파일 경로.
-- 삼수양보 등 제약 이름과 세부 효과.
-- 이명·풍문 문장 원문과 상대 데이터 키.
-
-## 7. 아직 Base 스킬로 승격하지 않은 항목
-
-다음은 공용성이 있으나 아직 구현·사용자 테스트가 부족하므로 사례 또는 방법 보완 수준에 둔다.
-
-- 내부 수치 프로필을 세계관 문구로 자동 변환하는 실행 스킬.
-- 상대 정보 해석 정확도를 측정하는 표준 테스트 절차.
-- 합·동시 선택 전투의 카메라·VFX 타이밍 공식.
-- 데모 하이라이트 해금 확률을 조정하는 일반 밸런스 스킬.
-
-반복 프로젝트 또는 실제 플레이 검증이 쌓이면 Base의 실행 스킬·템플릿 승격을 검토한다.
-
-## 8. 후속 동기화 체크
-
-- [x] Base 버전과 기준 커밋을 `BASE_RULES_VERSION.md`에 기록했다.
-- [x] 프로젝트 전용 기획·인수인계 스킬 확장을 작성했다.
-- [x] Base 사례 네 건을 사례 인덱스에 연결했다.
-- [x] Base Changelog를 `v1.9.3`으로 갱신했다.
-- [x] 기획·서사·대화 method와 기획서·Vertical Slice 스킬에 적용 사례를 반영했다.
-- [ ] Godot 실제 저장소 구조 감사 뒤 프로젝트 AI 협업 프로필을 작성한다.
-- [ ] 구현·플레이테스트 결과를 이 문서의 `검증 결과`에 추가한다.
-- [ ] Base 사례 상태를 `채택`에서 `부분 검증` 또는 `검증`으로 갱신한다.
-- [ ] 새 공용 교훈이 기존 Base method·skill과 중복되는지 먼저 확인한다.
-- [x] Base 기준 커밋 변경에 맞춰 프로젝트 버전 기록을 재검토했다.
-
-## 9. 검증 결과
-
-현재 확인된 것:
-
-- Base의 활성 작업 규칙, 문서 지도, 기획·인수·연출·아트·외부 AI·지식 승격 구조를 읽고 프로젝트 책임 문서와 대조했다.
-- UI와 연출의 책임 혼합을 발견해 전투·대회 연출 책임 원본을 분리했다.
-- 연출 기획서에 향후 로드맵, 남은 기획·UX·데이터·검증 작업과 단계별 종료 기준을 기록했다.
-- 프로젝트 문서, 프로젝트 스킬 확장과 Base 사례에 공용·전용 경계를 명시했다.
-- Base `main` 기준 커밋과 문서 버전을 프로젝트에 기록했다.
-- Base 사례 인덱스와 Changelog에서 이번 학습 데이터의 위치와 상태를 확인했다.
-
-아직 확인하지 못한 것:
-
-- Godot 실제 구현과 테스트 존재 여부.
-- 연출 흐름의 실제 화면 가독성.
-- 플레이어가 이명·풍문을 의도대로 학습하는지 여부.
-- 자산 폴백과 접근성 옵션의 런타임 동작.
-- 새 Base 사례가 다른 프로젝트에서도 같은 효과를 내는지 여부.
-
-## 10. v1.9.3 추가 승격 기록
-
-Base PR: `alsdmlals4-eng/Base#4`  
-Base 확정 커밋: `b05dcc079485b1ea43d735130d6f7cca209739a9`
-
-### 10.1 신규 사례
-
-- `TEN_PACES_RULE_PRESENTATION_TRACEABILITY_CASE.md`
-  - 규칙·구조화 결과·UI·연출·QA를 같은 의미 단계와 원인 키로 추적.
-  - 상태: 문서 구조 채택·구현 전 검증 필요.
-- `TEN_PACES_OPTIONAL_HIGHLIGHT_VERTICAL_SLICE_CASE.md`
-  - 대표 하이라이트의 보유·미보유 양쪽 정상 완주 경로를 완료 기준으로 분리.
-  - 상태: 채택·구현 전 검증 필요.
-
-### 10.2 갱신한 Base method·skill
-
-- `CONTENT_DESIGN_METHOD.md`: 선택적 하이라이트와 정상 완주 경로 사례.
-- `PLANNING_SYSTEM_METHOD.md`: 규칙→UI→연출→QA 추적성 사례.
-- `NARRATIVE_AND_RELATIONSHIP_METHOD.md`: 정보 단계별로 같은 사실을 더 구체적으로 말하는 사례.
-- `DIALOGUE_AND_EVENT_PRESENTATION_METHOD.md`: 의미 키 기반 대사·풍문·보고서 작성 사례.
-- `writing-game-design-documents`: UI 명세와 연출 책임 분리 사례.
-- `designing-vertical-slices`: 하이라이트 보유·미보유 경로 검증 사례.
-
-### 10.3 프로젝트 전용으로 남긴 항목
-
-- 10-10-10 구조와 5전 데모의 실제 수치.
-- 문파·무공·심법·절초·제약 이름과 효과.
-- 실제 이명·풍문·전적·정탐 문장.
-- Godot 구현 경로, 데이터 ID, 테스트 명령과 현재 구현 상태.
-
-### 10.4 후속 검증
-
-- 실제 화면에서 규칙 처리 순서와 연출 재생 순서가 같은 의미로 읽히는지 확인.
-- 플레이어가 정보 문구의 어휘 계열을 반복 플레이로 학습하는지 확인.
-- 하이라이트 보유·미보유 양쪽의 최종전 완주율과 실패 원인을 비교.
-- 검증 결과가 쌓이기 전에는 신규 사례를 `검증된 공용 스킬`로 표시하지 않는다.
+- Base SHA·Skill Registry·Skill coverage 변경.
+- 전장·라운드·합·대응·절초·AI 계약 변경.
+- 책임 원본·경로·ID·Schema 변경.
+- 프로젝트 코어 승인 또는 재개방.
+- STEP 14 실제 플레이 결과.
+- T1 진입·발행 파이프라인·저장 Schema 도입.
