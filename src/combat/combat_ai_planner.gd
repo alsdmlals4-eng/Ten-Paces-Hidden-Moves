@@ -157,6 +157,10 @@ func _build_action(candidate: Dictionary, snapshot: Dictionary) -> Dictionary:
     var direction := signi(player_tile - enemy_tile)
     var is_move := card_id in ["basic_move", "basic_footwork"]
     var step := 2 if card_id == "basic_footwork" and int(snapshot.get("distance", 0)) >= 3 else 1
+    var reason_codes := _join_reason_codes(_last_trace.get("reason_codes", []))
+    var reason := "public_distance_%d" % int(snapshot.get("distance", 0))
+    if not reason_codes.is_empty():
+        reason += "_" + reason_codes
     return {
         "timing": int(snapshot.get("bundle_start", 1)),
         "card_id": card_id,
@@ -164,13 +168,13 @@ func _build_action(candidate: Dictionary, snapshot: Dictionary) -> Dictionary:
         "target_tile": clampi(enemy_tile + direction * step, 1, 10) if is_move else 0,
         "direction": direction,
         "ai_seed": int(_last_trace.get("seed", snapshot.get("ai_decision_seed", 0))),
-        "ai_reason": _join_reason_codes(_last_trace.get("reason_codes", []))
+        "ai_reason": reason
     }
 
 func _join_reason_codes(value) -> String:
     var codes := PackedStringArray()
     if typeof(value) == TYPE_ARRAY:
-        for entry in value as Array:
+        for entry in (value as Array):
             codes.append(str(entry))
     return "+".join(codes)
 
