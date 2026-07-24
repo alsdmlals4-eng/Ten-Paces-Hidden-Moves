@@ -1,4 +1,4 @@
-# 절초로 전투 불능이 된 묶음은 결과 연출 뒤 combat_ended 상태로 잠기고 패배음을 남기는지 검증한다.
+# 절초로 전투 불능이 된 묶음은 결과 연출 뒤 terminal review로 잠기고, 복기 확인 뒤 완전 재시작되는지 검증한다.
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
@@ -36,17 +36,33 @@ func _run() -> void:
             failures.append("A complete 3-slot terminal ultimate must enable progress.")
         else:
             board.combat_progress_button.request_progress()
-            for _attempt in range(80):
+            for _attempt in range(120):
                 await process_frame
-                if str(board.get_meta("presentation_state", "")) == "combat_ended":
+                if str(board.get_meta("presentation_state", "")) == "review_ready":
                     break
                 await create_timer(0.05).timeout
-            if str(board.get_meta("presentation_state", "")) != "combat_ended":
-                failures.append("A defeated combatant must end presentation in combat_ended, not next_bundle_ready.")
+            if str(board.get_meta("presentation_state", "")) != "review_ready":
+                failures.append("A defeated combatant must stop in terminal review_ready before restart.")
             if not board._inputs_locked():
-                failures.append("combat_ended must keep planning inputs locked.")
+                failures.append("Terminal review must keep planning inputs locked.")
+            if board.combat_review_panel == null or not board.combat_review_panel.visible:
+                failures.append("Terminal result must show the combat review panel.")
+            elif board.combat_review_panel.get_continue_button().text != "결전 다시 시작":
+                failures.append("Terminal review continue action must be 결전 다시 시작.")
             if str(board.get_meta("last_sfx_kind", "")) != "defeat":
                 failures.append("A terminal result must request the defeat SFX after its hit presentation.")
+
+            board._on_review_continue_requested()
+            await process_frame
+            if str(board.get_meta("presentation_state", "")) != "planning":
+                failures.append("Terminal review confirmation must restart into planning.")
+            if not board._last_review_summary.is_empty():
+                failures.append("Terminal restart must clear the review summary.")
+            if board.combat_review_panel != null and board.combat_review_panel.visible:
+                failures.append("Terminal restart must hide the review panel.")
+            var restarted := board.get_combat_state_snapshot()
+            if int(((restarted.get("player", {}) as Dictionary).get("tile", 0))) != 4 or int(((restarted.get("enemy", {}) as Dictionary).get("tile", 0))) != 7:
+                failures.append("Terminal restart must restore start tiles 4 and 7.")
 
     board.queue_free()
     await process_frame
