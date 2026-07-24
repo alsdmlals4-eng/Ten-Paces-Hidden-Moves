@@ -53,6 +53,8 @@ jobs:
         run: python tests/check_repeat_poc_a2_contract.py
       - name: Validate A3 review UI contract
         run: python tests/check_repeat_poc_a3_contract.py
+      - name: Validate prepare and auto placement contract
+        run: python tests/check_prepare_auto_placement_contract.py
 
   godot-headless:
     name: ubuntu-godot-headless
@@ -99,3 +101,7 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_combat_review_summary.gd
       - name: Verify review UI
         run: godot --headless --path . --script res://tests/verify_combat_review_ui.gd
+      - name: Verify prepare momentum
+        run: godot --headless --path . --script res://tests/verify_prepare_momentum.gd
+      - name: Verify auto card placement
+        run: godot --headless --path . --script res://tests/verify_auto_card_placement.gd
