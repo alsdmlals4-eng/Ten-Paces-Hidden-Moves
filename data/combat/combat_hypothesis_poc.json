@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "default_id": "none",
+  "none_label": "기록한 가설 없음",
+  "options": [
+    {"id": "approach", "label": "접근할 것이다"},
+    {"id": "quick_attack", "label": "속공할 것이다"},
+    {"id": "heavy_prepare", "label": "강공을 준비할 것이다"},
+    {"id": "response_or_recover", "label": "대응하거나 회복할 것이다"},
+    {"id": "ultimate", "label": "절초를 사용할 것이다"},
+    {"id": "none", "label": "기록한 가설 없음"}
+  ]
+}
