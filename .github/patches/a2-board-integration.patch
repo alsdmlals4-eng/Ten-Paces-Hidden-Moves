@@ -1,0 +1,158 @@
+diff --git a/src/combat/combat_board_preview.gd b/src/combat/combat_board_preview.gd
+index f7fef12..0000000 100644
+--- a/src/combat/combat_board_preview.gd
++++ b/src/combat/combat_board_preview.gd
+@@ -11,6 +11,8 @@ const BASIC_CARD_TRAY_SCENE := preload("res://scenes/ui/basic_card_tray.tscn")
+ const CARD_DETAIL_SCENE := preload("res://scenes/ui/card_detail_panel.tscn")
+ const COMBAT_LOG_SCENE := preload("res://scenes/ui/combat_log_panel.tscn")
++const OPPONENT_HYPOTHESIS_SCENE := preload("res://scenes/ui/opponent_hypothesis_panel.tscn")
++const REVIEW_SUMMARY_BUILDER_SCRIPT := preload("res://src/combat/combat_review_summary_builder.gd")
+ const TILE_SCENE := preload("res://scenes/combat/combat_board_tile.tscn")
+ const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placeholder.tscn")
+ const ULTIMATE_VFX_PATH := "res://assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png"
+@@ -27,6 +29,7 @@ var basic_card_tray: BasicCardTray
+ var card_detail_panel: CardDetailPanel
+ var combat_log_panel: CombatLogPanel
++var opponent_hypothesis_panel: OpponentHypothesisPanel
+ var ultimate_menu: MenuButton
+ var ultimate_list_panel: PanelContainer
+ var ultimate_list_title: Label
+@@ -43,6 +46,7 @@ var procedural_sfx_player: AudioStreamPlayer
+ var player_character: CombatCharacterPlaceholder
+ var enemy_character: CombatCharacterPlaceholder
+ var resolution_engine: CombatResolutionEngine
++var review_summary_builder: CombatReviewSummaryBuilder
+ var combat_state: Dictionary = {}
+ 
+ var _tile_layer: Control
+@@ -75,6 +79,10 @@ var _ultimate_vfx_sheet: Texture2D
+ var _sound_muted := false
+ var _sound_volume := 0.65
+ var _defer_character_snap := false
++var _committed_hypothesis_snapshot: Dictionary = {}
++var _committed_player_plan_snapshot: Array = []
++var _committed_state_before: Dictionary = {}
++var _last_review_summary: Dictionary = {}
+ 
+ func _ready() -> void:
+ 	mouse_filter = Control.MOUSE_FILTER_PASS
+@@ -83,6 +91,7 @@ func _ready() -> void:
+ 	_enemy_tile = int(contract.get("enemy_start_tile", 7))
+ 	_build_structure()
+ 	resolution_engine = CombatResolutionEngine.new()
++	review_summary_builder = REVIEW_SUMMARY_BUILDER_SCRIPT.new() as CombatReviewSummaryBuilder
+ 	_ultimate_vfx_sheet = load(ULTIMATE_VFX_PATH) as Texture2D
+ 	_configure_ultimate_menu()
+ 	combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
+@@ -176,6 +185,11 @@ func _build_structure() -> void:
+ 	combat_log_panel.layout_requested.connect(_layout_board)
+ 	add_child(combat_log_panel)
+ 
++	opponent_hypothesis_panel = OPPONENT_HYPOTHESIS_SCENE.instantiate() as OpponentHypothesisPanel
++	opponent_hypothesis_panel.name = "OpponentHypothesisPanel"
++	add_child(opponent_hypothesis_panel)
++
+ 	ultimate_menu = MenuButton.new()
+ 	ultimate_menu.name = "UltimateMenu"
+ 	ultimate_menu.text = "절초 · 기세 필요"
+@@ -309,6 +323,9 @@ func _build_structure() -> void:
+ 	set_meta("card_detail_component", "CardDetailPanel")
+ 	set_meta("combat_log_component", "CombatLogPanel")
++	set_meta("opponent_hypothesis_component", "OpponentHypothesisPanel")
++	set_meta("hypothesis_snapshot_before_commit", true)
++	set_meta("review_summary_recalculates_combat", false)
+ 	set_meta("information_interactions_enabled", true)
+ 	set_meta("action_placement_enabled", true)
+ 	set_meta("targeting_enabled", true)
+@@ -407,6 +424,10 @@ func _layout_board() -> void:
+ 		combat_log_panel.position = Vector2(size.x - overlay_margin - log_width, overlay_top)
+ 		combat_log_panel.size = Vector2(log_width, overlay_height)
+ 
++	if is_instance_valid(opponent_hypothesis_panel):
++		opponent_hypothesis_panel.position = Vector2(overlay_margin, presentation_y + 34.0)
++		opponent_hypothesis_panel.size = Vector2(clampf(size.x * 0.22, 280.0, 320.0), 112.0)
++
+ 	var tile_count := tiles.size()
+ 	var gap_ratio := float(contract.get("tile_gap_to_tile_width", 0.06))
+ 	var horizontal_margin := maxf(40.0, size.x * 0.045)
+@@ -834,6 +855,14 @@ func _on_progress_requested(context: Dictionary) -> void:
+ 	if _inputs_locked() or not action_timing_panel.is_current_bundle_complete():
+ 		return
++	_committed_hypothesis_snapshot = opponent_hypothesis_panel.get_current_hypothesis_snapshot() if is_instance_valid(opponent_hypothesis_panel) else {"id": "none", "label": "기록한 가설 없음", "recorded": false}
++	_committed_player_plan_snapshot = action_timing_panel.get_resolution_placements().duplicate(true)
++	_committed_state_before = combat_state.duplicate(true)
++	if is_instance_valid(opponent_hypothesis_panel):
++		opponent_hypothesis_panel.set_locked(true)
++	set_meta("committed_hypothesis_snapshot", _committed_hypothesis_snapshot.duplicate(true))
++	set_meta("committed_player_plan_count", _committed_player_plan_snapshot.size())
+ 	_clear_targeting()
+ 	_set_presentation_state("committed")
+ 	_progress_request_count += 1
+@@ -845,7 +874,7 @@ func _on_progress_requested(context: Dictionary) -> void:
+ func _resolve_and_present(context: Dictionary) -> void:
+ 
+-	var result := resolution_engine.resolve_bundle(action_timing_panel.get_resolution_placements(), context, combat_state)
++	var result := resolution_engine.resolve_bundle(_committed_player_plan_snapshot, context, combat_state)
+ 	_set_presentation_state("resolving")
+ 	_presentation_events = result.get("presentation_events", [])
+ 	_resolution_count += 1
+@@ -871,6 +900,10 @@ func _resolve_and_present(context: Dictionary) -> void:
+ 	var state_before_bundle_rewards := combat_state.duplicate(true)
+ 	combat_state = (result.get("state", combat_state) as Dictionary).duplicate(true)
+ 	_play_momentum_gain_sfx(state_before_bundle_rewards, combat_state)
++	if review_summary_builder != null:
++		_last_review_summary = review_summary_builder.build_summary(result, _committed_player_plan_snapshot, _committed_hypothesis_snapshot, _committed_state_before)
++		set_meta("last_review_summary", _last_review_summary.duplicate(true))
+ 
+ 	_clear_action_selection()
+ 	_clear_card_detail()
+@@ -894,6 +927,9 @@ func _resolve_and_present(context: Dictionary) -> void:
+ 	combat_progress_button.mark_resolution_applied()
+ 	_apply_combat_state_to_view()
++	if is_instance_valid(opponent_hypothesis_panel):
++		opponent_hypothesis_panel.reset_to_initial()
++		opponent_hypothesis_panel.set_locked(false)
+ 	if is_instance_valid(combat_log_panel):
+ 		combat_log_panel.append_entry("[판정 완료] 다음 행동 묶음을 준비합니다.", "system")
+ 	_set_presentation_state("next_bundle_ready")
+@@ -1070,6 +1106,10 @@ func restart_combat() -> void:
+ 	_targeting_mode = ""
+ 	_ultimate_reservation_anchors.clear()
+ 	_resolution_count = 0
++	_committed_hypothesis_snapshot.clear()
++	_committed_player_plan_snapshot.clear()
++	_committed_state_before.clear()
++	_last_review_summary.clear()
+ 	_progress_request_count = 0
+ 	if is_instance_valid(procedural_sfx_player):
+ 		procedural_sfx_player.stop()
+@@ -1085,6 +1125,8 @@ func restart_combat() -> void:
+ 	if is_instance_valid(action_timing_panel):
+ 		action_timing_panel.reset_to_initial()
++	if is_instance_valid(opponent_hypothesis_panel):
++		opponent_hypothesis_panel.reset_to_initial()
+ 	combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
+ 	combat_state["ai_enabled"] = true
+ 	_set_presentation_state("planning")
+@@ -1127,6 +1169,10 @@ func _configure_keyboard_focus_order() -> void:
+ func _configure_keyboard_focus_order() -> void:
+ 	var sequence: Array[Control] = []
++	if is_instance_valid(opponent_hypothesis_panel):
++		var hypothesis_focus := opponent_hypothesis_panel.get_focus_control()
++		if is_instance_valid(hypothesis_focus):
++			sequence.append(hypothesis_focus)
+ 	if is_instance_valid(basic_card_tray):
+ 		for card_value in basic_card_tray.cards:
+ 			if card_value is Control:
+@@ -1159,7 +1205,7 @@ func _configure_keyboard_focus_order() -> void:
+ 		current.focus_next = current.get_path_to(next)
+ 		current.focus_previous = current.get_path_to(previous)
+-	set_meta("keyboard_focus_order", "cards|ultimate_list|timings|tiles|progress|presentation_controls")
++	set_meta("keyboard_focus_order", "hypothesis|cards|ultimate_list|timings|tiles|progress|presentation_controls")
+ 
+ func _configure_accessibility_semantics() -> void:
++	if is_instance_valid(opponent_hypothesis_panel):
++		var hypothesis_focus := opponent_hypothesis_panel.get_focus_control()
++		_set_accessibility_semantics(hypothesis_focus, "상대 의도 가설 선택", "현재 묶음에서 예상하는 상대 의도를 직접 기록합니다. 기록하지 않음을 선택할 수 있습니다.")
+ 	if is_instance_valid(basic_card_tray):
+ 		for card_value in basic_card_tray.cards:
