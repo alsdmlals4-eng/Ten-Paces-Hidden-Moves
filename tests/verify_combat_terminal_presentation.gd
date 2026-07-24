@@ -60,7 +60,7 @@ func _run() -> void:
                 failures.append("Terminal restart must clear the review summary.")
             if board.combat_review_panel != null and board.combat_review_panel.visible:
                 failures.append("Terminal restart must hide the review panel.")
-            var restarted := board.get_combat_state_snapshot()
+            var restarted: Dictionary = board.combat_state.duplicate(true)
             if int(((restarted.get("player", {}) as Dictionary).get("tile", 0))) != 4 or int(((restarted.get("enemy", {}) as Dictionary).get("tile", 0))) != 7:
                 failures.append("Terminal restart must restore start tiles 4 and 7.")
 
