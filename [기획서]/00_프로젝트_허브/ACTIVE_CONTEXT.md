@@ -4,19 +4,19 @@
 
 - Work Mode: `BUILD → REVIEW`.
 - Base: `41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
-- 제품 구현 PR: PR #7 `agent/t0-combat-poc-board`.
-- 제품 기준 SHA: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
-- 코어 확정·계획 PR: PR #15 `agent/project-core-confirmation`.
-- 현재 구현 PR: PR #17 `agent/repeat-poc-a0-contract-alignment`.
+- 제품 구현 원본: PR #7 `agent/t0-combat-poc-board@659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
+- 코어 확정·계획: PR #15 `agent/project-core-confirmation`.
+- A0 계약 정렬: PR #17 `agent/repeat-poc-a0-contract-alignment`.
+- A1 라이벌 후보 AI: PR #19 `agent/repeat-poc-a1-rival-ai`.
 - 최신 전투 승인: Issue #13.
 - 현재 Goal: Issue #16.
 - 프로젝트 코어: `CORE_CONFIRMED`.
 - 상태 전이: `CORE_REVIEW_PENDING → CORE_CONFIRMED`.
 - 제품 게이트: `REPEAT_POC`.
 - T1 진입: `NOT_GRANTED`.
-- 현재 Task: `CI_OPTIMIZATION_AND_A0_CLOSEOUT`.
-- 신규 플레이어 STEP 14: `DEFERRED_BY_USER`.
-- GitHub Actions 전체 검증: `BLOCKED_BY_ACTIONS_QUOTA`.
+- 현재 Task: `A2_HYPOTHESIS_AND_SUMMARY_READY`.
+- 신규 플레이어 STEP 14: `DEFERRED_BY_USER / UNVERIFIED`.
+- GitHub Actions: `AVAILABLE / FULL_VALIDATION_PASS`.
 
 ## 프로젝트 코어
 
@@ -37,18 +37,39 @@
 - 위치·순서·대응·파훼 우선.
 - 결과 이유를 복기하고 다음 계획을 변경한다.
 
-책임 원본은 `docs/01_GAME_DESIGN.md`, 판정 원본은 `docs/02_COMBAT_RULES.md`다.
+책임 원본은 `docs/01_GAME_DESIGN.md`, 판정·AI 원본은 `docs/02_COMBAT_RULES.md`, 구조 원본은 `docs/09_COMBAT_SYSTEM_ARCHITECTURE.md`다.
 
 ## 현재 구현
+
+### T0 기반
 
 - STEP 0~13.
 - TARGETING 10.5, RESPONSE·RESOURCE PREVIEW 10.6.
 - 기초 행동 8종·절초 3종.
 - `[합]`·방어·회피·필중·중단·강건.
-- 공개 상태 기반 결정적 최소 AI.
 - 승패·무승부·완전 재시작.
 - `timing_results`·`presentation_events`.
 - 키보드·모션 감소·음향 제어 기술 증거.
+
+### A0 계약 정렬
+
+- board schema 17.
+- `resolution_engine.enemy_plan_source = public_state_ai`.
+- `fixed_enemy_preview_plan` 제거.
+- fixture plan은 `ai_enabled == false`인 독립 회귀에서만 허용.
+- 전투 정본 기준 SHA 정렬.
+- 상태: `IMPLEMENTED_FULL_ACTIONS_PASS`.
+
+### A1 라이벌 후보 AI
+
+- 활성 라이벌 `rival_t0_midrange_pressure`.
+- 공개 단서: 중거리 압박·안전한 강공 준비·저체력 대응.
+- 최대 후보 3개, score window 2.0.
+- 동일 공개 상태·seed 결정론.
+- 다른 seed도 합리 후보 경계 안에서만 선택.
+- `get_last_trace()` whitelist.
+- 미확정 계획·UI 내부 상태 누출 차단.
+- 상태: `IMPLEMENTED_FULL_ACTIONS_PASS`.
 
 ## REPEAT_POC 실행 계약
 
@@ -56,68 +77,69 @@
 - Codex: `plans/CODEX_GOAL_REPEAT_POC.md`.
 - 계획: `plans/2026-07-24-repeat-poc-core-validation-implementation-plan.md`.
 - 상태: `docs/decisions/2026-07-24_REPEAT_POC_IMPLEMENTATION_STATUS.json`.
-- CI 비용·할당량 정책: `docs/decisions/2026-07-24_CI_COST_OPTIMIZATION_AND_QUOTA_GATE.md`.
-- 플레이테스트 자료: 보존, 현재 `DEFERRED_BY_USER / DO_NOT_RUN`.
+- CI 정책: `docs/decisions/2026-07-24_CI_COST_OPTIMIZATION_AND_QUOTA_GATE.md`.
+- 사람 테스트 자료: 보존, 현재 `DEFERRED_BY_USER / DO_NOT_RUN`.
 
 ```text
-A0 정본 SHA·AI source·board schema
-→ A1 라이벌 복수 후보 정책
-→ A2 가설 기록·결정적 summary
-→ A3 복기 UI·접근성·기술 closeout
+A0 정본 SHA·AI source·board schema — PASS
+→ A1 라이벌 복수 후보 정책 — PASS
+→ A2 가설 기록·결정적 summary — READY_NOT_STARTED
+→ A3 복기 UI·접근성·기술 closeout — NOT_STARTED
 ```
 
-## A0 상태
-
-- board schema 17.
-- `resolution_engine.enemy_plan_source = public_state_ai`.
-- `fixed_enemy_preview_plan` 제거.
-- fixture plan은 `ai_enabled == false`인 독립 회귀에서만 허용.
-- `docs/02`, `05`, `08`, `09` 기준 SHA를 `659c57e7...`로 정렬.
-- Red 증거: Governance run #562에서 새 테스트가 `17 != 16`으로 실패.
-- 기존 Green 증거: workflow 구조 변경 전 run #570 PASS.
-- 최종 CI 구조 변경 후 검증: `BLOCKED_BY_ACTIONS_QUOTA`.
-
-## CI 구조
+## CI 구조와 증거
 
 PR은 `.github/workflows/documentation-governance.yml`의 단일 Ubuntu job이 변경 경로를 분류한다.
 
-- 문서 전용: Python 3.12 문서 validator만 실행.
+- 문서 전용: Python 3.12 문서 validator.
 - 코드·데이터·씬·워크플로: Python 3.12 전체 정적 계약과 PowerShell 파싱 1회.
-- 기존 중복 `.github/workflows/card-component-contract.yml` 삭제.
+- 중복 `.github/workflows/card-component-contract.yml` 삭제.
 - `concurrency`와 `cancel-in-progress: true` 적용.
 
 전체 검증은 `.github/workflows/full-validation.yml`이 소유한다.
 
 - Ubuntu·Windows × Python 3.11·3.12.
 - Godot 4.7 headless는 Ubuntu에서 1회.
-- 저장소 변수 `ACTIONS_FULL_VALIDATION_ENABLED=true`일 때만 runner 할당.
-- 현재 변수 활성 및 실행 결과는 `UNVERIFIED / BLOCKED_BY_ACTIONS_QUOTA`.
+- 각 계약·verifier를 독립 step으로 표시한다.
+- main·nightly·수동에서만 실행한다.
+- 저장소 변수 `ACTIONS_FULL_VALIDATION_ENABLED=true`가 필요하다.
+
+최신 증거:
+
+- PR #19 최종 PR Validation run #590: `PASS`.
+- 검증 전용 PR #21 PR Validation run #589: `PASS`.
+- Full Validation run #4: `PASS`.
+- Ubuntu·Windows Python 3.11·3.12: 모두 `PASS`.
+- Ubuntu Godot import·기존 회귀·신규 라이벌 verifier: 모두 `PASS`.
+- 검증 전용 PR #20·#21: 병합 없이 종료.
+
+`concurrency` 취소 설정은 적용됐지만 실제 진행 중 run의 취소 관찰은 아직 `NOT_OBSERVED`다.
 
 ## 다음 작업
 
-사용자가 Actions 사용 가능을 명시하기 전:
+A2의 Red 계약부터 시작한다.
 
-1. Actions 전체 검증을 요구하지 않는다.
-2. A1 설계·코드 작업은 로컬 또는 정적 검증 가능한 단위만 진행한다.
-3. Actions 의존 검증을 `BLOCKED_BY_ACTIONS_QUOTA`로 기록한다.
-
-사용자가 Actions 사용 가능을 명시한 뒤:
-
-1. `ACTIONS_FULL_VALIDATION_ENABLED=true` 확인.
-2. PR #17 최신 head에서 `Full Validation` 수동 실행.
-3. Python matrix와 Godot 결과를 Issue #16·PR #17·상태 JSON에 기록.
-4. 실패 job만 원인 분석하고 중복 전체 재실행을 피한다.
+1. `combat_hypothesis_poc.json` 가설 ID schema.
+2. 플레이어가 직접 선택한 가설만 commit 직전 snapshot.
+3. 미선택은 `none`이며 시스템 추정 금지.
+4. 판정 결과·계획 snapshot·가설 snapshot·판정 전 상태만 소비하는 summary builder.
+5. cause 우선순위: `clash > interrupted > defense > direction > range > resource > position > order`.
+6. 판정 엔진 재호출·피해 재계산 금지.
+7. A2 전용 PR·집중 verifier·Full Validation 증거.
 
 ## 증거 경계
 
 ```yaml
 repeat_poc_planning: COMPLETE
-a0_contract_alignment: IMPLEMENTED_PENDING_FULL_ACTIONS_VERIFICATION
-ci_scope_routing: IMPLEMENTED_NOT_ACTIONS_VERIFIED
-concurrency_cancellation: IMPLEMENTED_NOT_ACTIONS_VERIFIED
-full_validation: BLOCKED_BY_ACTIONS_QUOTA
-godot_headless: BLOCKED_BY_ACTIONS_QUOTA
-windows_python_matrix: BLOCKED_BY_ACTIONS_QUOTA
+a0_contract_alignment: IMPLEMENTED_FULL_ACTIONS_PASS
+a1_rival_ai: IMPLEMENTED_FULL_ACTIONS_PASS
+a2_hypothesis_and_summary: READY_NOT_STARTED
+a3_review_ui: NOT_STARTED
+pr_scope_routing: PASS
+concurrency_cancellation: CONFIGURED_NOT_CANCELLATION_OBSERVED
+full_validation: PASS
+godot_headless: PASS
+windows_python_matrix: PASS
 human_step14: DEFERRED_BY_USER
 human_validation: UNVERIFIED
 technical_implementation_complete: false
