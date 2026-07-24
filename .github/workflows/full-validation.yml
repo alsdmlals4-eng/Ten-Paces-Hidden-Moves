@@ -3,6 +3,11 @@ name: Full Validation
 on:
   push:
     branches: [main]
+  pull_request:
+    branches:
+      - agent/repeat-poc-a3-accessible-review-flow
+    paths:
+      - ".github/workflows/full-validation.yml"
   schedule:
     - cron: "23 18 * * *"
   workflow_dispatch:
@@ -17,7 +22,7 @@ permissions:
 jobs:
   matrix-contracts:
     name: ${{ matrix.os }}-python-${{ matrix.python }}
-    if: vars.ACTIONS_FULL_VALIDATION_ENABLED == 'true'
+    if: vars.ACTIONS_FULL_VALIDATION_ENABLED == 'true' || github.event_name == 'pull_request'
     strategy:
       fail-fast: false
       matrix:
@@ -54,7 +59,7 @@ jobs:
 
   godot-headless:
     name: ubuntu-godot-headless
-    if: vars.ACTIONS_FULL_VALIDATION_ENABLED == 'true'
+    if: vars.ACTIONS_FULL_VALIDATION_ENABLED == 'true' || github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
