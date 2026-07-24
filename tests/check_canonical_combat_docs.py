@@ -29,7 +29,9 @@ RUNTIME = {
     "board": "src/combat/combat_board_preview.gd",
     "board_test": "tests/verify_combat_board.gd",
     "response_test": "tests/verify_response_rules.gd",
-    "workflow": ".github/workflows/card-component-contract.yml",
+    "rival_test": "tests/verify_ai_rival_tendency.gd",
+    "pr_workflow": ".github/workflows/documentation-governance.yml",
+    "full_workflow": ".github/workflows/full-validation.yml",
 }
 
 BASIC_IDS = [
@@ -88,6 +90,7 @@ def verify_structured_contract() -> None:
     timing = data("data/combat/combat_action_timing_preview.json")
     hud = data("data/combat/combat_hud_preview.json")
     resolution = data("data/combat/combat_resolution_preview.json")
+    tendency = data("data/combat/combat_rival_tendency_poc.json")
     basics = data("data/cards/basic_cards.json")
     ultimates = data("data/cards/ultimate_cards.json")
 
@@ -116,6 +119,12 @@ def verify_structured_contract() -> None:
     assert resolution["guard_resolution_order"] == ["subtract_guard_block", "halve_if_same_timing"]
     assert resolution["damage_interrupts_current_timing_actions"] is True
     assert resolution["fortitude_quick_phase_one_slot_only"] is True
+
+    assert tendency["schema_version"] == 1
+    assert tendency["active_rival_id"] == "rival_t0_midrange_pressure"
+    assert tendency["max_candidates"] == 3
+    assert float(tendency["score_window"]) == 2.0
+    assert [profile["id"] for profile in tendency["profiles"]] == ["rival_t0_midrange_pressure"]
 
     assert board["response_rules"]["guard_block"] == resolution["guard_block"] == 4
     assert board["response_rules"]["stance_guard_multiplier"] == 1.5
@@ -176,11 +185,12 @@ def verify_documents() -> None:
     all_tokens(runtime["board"], ("var _player_tile := 4", "var _enemy_tile := 7", "resolution_engine.resolve_bundle", "await _apply_timing_snapshot"), "board")
     all_tokens(runtime["board_test"], ("EXPECTED_PLAYER_TILE := 4", "EXPECTED_ENEMY_TILE := 7"), "board test")
     all_tokens(runtime["response_test"], ("PLAYER_START_TILE := 4", "ENEMY_START_TILE := 7"), "response test")
-    all_tokens(runtime["ai"], ("class_name CombatAiPlanner",), "AI")
+    all_tokens(runtime["ai"], ("class_name CombatAiPlanner", "get_last_trace", "public_snapshot", "candidate_ids", "ai_decision_seed"), "AI")
+    all_tokens(runtime["rival_test"], ("AI_RIVAL_TENDENCY_VERIFY_OK", "TRACE_KEYS", "SNAPSHOT_KEYS"), "rival test")
     all_tokens(runtime["engine"], ('"timing_results"', '"presentation_events"', "_build_presentation_events"), "engine")
 
-    workflow = runtime["workflow"]
-    all_tokens(workflow, ('"docs/**"', '"[[]기획서[]]/**"', '"skills/**"', '"data/combat/**"', '"src/combat/**"', "workflow_dispatch:", "python tests/check_canonical_combat_docs.py"), "workflow")
+    all_tokens(runtime["pr_workflow"], ("name: PR Validation", "Classify changed paths", "python tests/check_rival_tendency_contract.py", "cancel-in-progress: true"), "PR workflow")
+    all_tokens(runtime["full_workflow"], ("name: Full Validation", "ubuntu-latest", "windows-latest", "tests/verify_ai_rival_tendency.gd", "cancel-in-progress: true"), "full workflow")
 
 
 def verify_registry() -> None:
