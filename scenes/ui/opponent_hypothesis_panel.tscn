@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource path="res://src/ui/opponent_hypothesis_panel.gd" type="Script" id="1"]
+
+[node name="OpponentHypothesisPanel" type="VBoxContainer"]
+script = ExtResource("1")
+
+[node name="Title" type="Label" parent="."]
+text = "내 가설"
+
+[node name="Description" type="Label" parent="."]
+text = "상대가 다음 묶음에 무엇을 할지 선택적으로 기록합니다."
+autowrap_mode = 2
