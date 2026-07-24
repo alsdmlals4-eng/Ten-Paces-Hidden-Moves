@@ -11,6 +11,7 @@
 - Base: `41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
 - 프로젝트 코어: `CORE_CONFIRMED`.
 - 과거 상태 전이: `CORE_REVIEW_PENDING → CORE_CONFIRMED`.
+- 최신 전투 승인 계보: `Issue #13`과 2026-07-24 사용자 승인.
 - 제품 게이트: `REPEAT_POC`.
 - T1 진입: `NOT_GRANTED`.
 - 신규 플레이어 STEP 14: `DEFERRED_BY_USER / UNVERIFIED`.
