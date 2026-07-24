@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://fcp84rw7gqra"]
 
-[ext_resource type="Script" uid="uid://dqnashumffygi" path="res://src/combat/combat_board_preview.gd" id="1"]
+[ext_resource type="Script" path="res://src/combat/combat_board_preview_auto.gd" id="1"]
 
 [node name="CombatBoardPreview" type="Control" unique_id=1862356270]
 custom_minimum_size = Vector2(960, 640)
