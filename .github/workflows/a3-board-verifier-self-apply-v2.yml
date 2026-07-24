@@ -4,9 +4,7 @@ on:
   pull_request:
     branches:
       - agent/repeat-poc-a2-hypothesis-summary
-    types: [opened, synchronize, reopened]
-    paths:
-      - ".github/workflows/a3-board-verifier-self-apply-v2.yml"
+    types: [opened, synchronize, reopened, ready_for_review]
 
 permissions:
   contents: write
