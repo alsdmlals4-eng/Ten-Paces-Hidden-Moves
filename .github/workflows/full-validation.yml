@@ -2,9 +2,12 @@ name: Full Validation
 
 on:
   push:
+    branches: [main]
+  pull_request:
     branches:
-      - main
-      - agent/repeat-poc-a1-full-validation
+      - agent/repeat-poc-a1-rival-ai
+    paths:
+      - ".github/workflows/full-validation.yml"
   schedule:
     - cron: "23 18 * * *"
   workflow_dispatch:
@@ -19,7 +22,7 @@ permissions:
 jobs:
   matrix-contracts:
     name: ${{ matrix.os }}-python-${{ matrix.python }}
-    if: vars.ACTIONS_FULL_VALIDATION_ENABLED == 'true' || github.ref == 'refs/heads/agent/repeat-poc-a1-full-validation'
+    if: vars.ACTIONS_FULL_VALIDATION_ENABLED == 'true' || github.event_name == 'pull_request'
     strategy:
       fail-fast: false
       matrix:
@@ -46,7 +49,7 @@ jobs:
 
   godot-headless:
     name: ubuntu-godot-headless
-    if: vars.ACTIONS_FULL_VALIDATION_ENABLED == 'true' || github.ref == 'refs/heads/agent/repeat-poc-a1-full-validation'
+    if: vars.ACTIONS_FULL_VALIDATION_ENABLED == 'true' || github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
