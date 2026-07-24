@@ -3,13 +3,14 @@
 > 책임: 현재 T0 전투의 실제 파일·데이터·상태·판정·AI·연출·재시작 경계  
 > 규칙 원본: `docs/02_COMBAT_RULES.md`  
 > 범위 원본: `docs/05_COMBAT_POC_SPEC.md`  
-> 구현 기준: PR #7 `659c57e7ffa588ad6a6471ed9b5394985b159eaf`
+> 구현 기준: PR #7 `659c57e7ffa588ad6a6471ed9b5394985b159eaf`, REPEAT_POC PR #19 `agent/repeat-poc-a1-rival-ai`
 
 ## 1. 아키텍처 원칙
 
 ```text
 JSON 데이터·사용자 입력
 → 계획·대상·자원 검증
+→ 공개 상태 AI 후보 생성·seed 선택
 → CombatResolutionEngine 단일 묶음 판정
 → 확정 state·timing_results·presentation_events·logs
 → CombatBoardPreview가 수별 snapshot 적용
@@ -17,7 +18,7 @@ JSON 데이터·사용자 입력
 ```
 
 - `CombatResolutionEngine`이 위치·비용·합·방어·피해·상태·기세·중단을 계산한다.
-- `CombatAiPlanner`는 공개 상태만으로 상대 묶음을 결정한다.
+- `CombatAiPlanner`는 공개 상태만으로 합리 후보를 만들고 결정적 seed로 상대 묶음을 선택한다.
 - `CombatBoardPreview`는 씬 조립·입력·판정 호출·순차 표현·종료·재시작을 조정한다.
 - `ActionTimingPanel`은 현재 묶음의 배치·대상·예상 자원·진행 가능 상태를 소유한다.
 - UI·VFX·오디오는 확정 결과를 재생하며 판정을 다시 계산하지 않는다.
@@ -35,8 +36,8 @@ JSON 데이터·사용자 입력
 | viewport | 1440×900 |
 | window override | 1280×800 |
 | 최소 레이아웃 회귀 | 960×640 |
-| 구현 브랜치 | `agent/t0-combat-poc-board` |
-| 기준 SHA | `659c57e7ffa588ad6a6471ed9b5394985b159eaf` |
+| 구현 브랜치 | `agent/repeat-poc-a1-rival-ai` |
+| 제품 기준 SHA | `659c57e7ffa588ad6a6471ed9b5394985b159eaf` |
 
 목표 플랫폼 Release 성능 예산은 `NOT_RUN`이다.
 
@@ -52,17 +53,18 @@ JSON 데이터·사용자 입력
 | `data/combat/combat_action_timing_preview.json` | `[3,3,4]`·라운드·묶음·수·슬롯 상태 |
 | `data/combat/combat_hud_preview.json` | 양측 30/5/4/0~5·공격력 8·표시 데이터 |
 | `data/combat/combat_resolution_preview.json` | 판정 순서·방어·합·기세·중단·AI source 계약 |
+| `data/combat/combat_rival_tendency_poc.json` | 활성 라이벌·공개 단서·후보 수·score window·가중치 |
 | `data/combat/combat_progress_preview.json` | 진행 버튼 문구·활성 조건 |
 | `data/combat/combat_log_preview.json` | 초기 로그·패널 상태 |
 
-`preview`는 T0 fixture임을 뜻하며 전체판 영속 Schema가 아니다.
+`preview`와 `poc`는 T0 fixture·기술 계약을 뜻하며 전체판 영속 Schema가 아니다.
 
 ### 3.2 도메인·조정
 
 | 경로·클래스 | 책임 |
 |---|---|
 | `src/combat/combat_resolution_engine.gd` / `CombatResolutionEngine` | 초기 상태·예상 자원·묶음 판정·합·방어·이동·중단·기세·이벤트 |
-| `src/combat/combat_ai_planner.gd` / `CombatAiPlanner` | 공개 상태 기반 최소 AI 행동 선택 |
+| `src/combat/combat_ai_planner.gd` / `CombatAiPlanner` | 공개 snapshot·후보 scoring·score window 필터·seed 선택·개발자 trace |
 | `src/combat/combat_board_preview.gd` / `CombatBoardPreview` | 씬·입력·판정 호출·snapshot 재생·종료·재시작 |
 | `src/ui/action_timing_panel.gd` / `ActionTimingPanel` | 슬롯 점유·대상·예상 자원·묶음 진행 |
 | `src/ui/combat_progress_button.gd` | 진행 가능 상태·요청 신호 |
@@ -221,21 +223,61 @@ events
 
 입력 state를 깊은 복사해 비용·명상 회복을 실행 순서로 계산하고 실제 `combat_state`는 변경하지 않는다.
 
-## 7. 최소 AI 경계
+## 7. 공개 상태 라이벌 후보 AI 경계
 
-`CombatAiPlanner.build_bundle_actions(state, bundle_index, cards_by_id)`가 상대 행동을 만든다.
+`CombatAiPlanner.build_bundle_actions(state, bundle_index, cards_by_id)` 시그니처를 유지한다. 내부 pipeline은 다음과 같다.
 
-### 입력
+```text
+공개 CombatState
+→ whitelist public_snapshot
+→ 활성 rival profile 가중치
+→ 행동 후보 scoring
+→ 최고점 - 2.0 score window
+→ 최대 3개 rational candidates
+→ round/bundle 범위 결정 seed
+→ 행동 1개와 개발자 trace
+```
 
-- 공개 player/enemy tile.
-- 거리.
-- 상대 체력·기력·내력·기세.
-- 현재 묶음의 슬롯 수.
-- `ai_decision_seed`.
+### 7.1 tendency 데이터
 
-### 출력
+`data/combat/combat_rival_tendency_poc.json`:
 
-현재 최소 AI는 한 묶음에 대표 행동 하나를 반환한다.
+```text
+schema_version = 1
+active_rival_id = rival_t0_midrange_pressure
+max_candidates = 3
+score_window = 2.0
+profiles[0].public_clues
+profiles[0].weights
+```
+
+현재 공개 단서 ID는 `midrange_pressure`, `safe_heavy_prepare`, `low_health_response`다.
+
+### 7.2 `public_snapshot` whitelist
+
+```text
+round_number
+bundle_index
+bundle_start
+bundle_slots
+player_tile
+enemy_tile
+distance
+player_health
+enemy_health
+enemy_health_max
+enemy_stamina
+enemy_internal
+enemy_momentum
+enemy_momentum_max
+ai_decision_seed
+```
+
+플래너는 입력 state 전체를 trace에 복사하지 않는다.
+
+### 7.3 출력 행동
+
+한 묶음에 대표 행동 하나를 반환한다.
 
 ```text
 timing
@@ -247,7 +289,27 @@ ai_seed
 ai_reason
 ```
 
-### 금지
+`ai_reason`은 `public_distance_<거리>`와 선택된 공개 reason code를 결합한다.
+
+### 7.4 개발자 trace
+
+`get_last_trace() -> Dictionary`의 허용 키:
+
+```text
+public_snapshot
+rival_id
+candidate_ids
+candidate_scores
+selected_card_id
+seed
+reason_codes
+```
+
+- 같은 공개 상태·seed는 같은 행동과 trace를 반환한다.
+- 다른 seed도 합리 후보 밖 행동을 선택하지 않는다.
+- trace는 정적·Godot 검증용이며 플레이어 UI에는 노출하지 않는다.
+
+### 7.5 금지 입력
 
 - 플레이어 현재 placement.
 - 미확정 대상·방향.
@@ -394,7 +456,7 @@ T0에는 다음이 없다.
 - 전투 중 저장과 계획 복구.
 - 리플레이 파일.
 - 보상·수련·대회 상태.
-- 상대 성장·성향 프로필 영속화.
+- 상대 성장·전투 간 성향 프로필 영속화.
 - Schema migration.
 
 T1에서 필요성이 확인될 때 다음 typed 모델을 검토한다.
@@ -418,7 +480,9 @@ T0 기술 구현 전에 필요 이상으로 선행 리팩터링하지 않는다.
 - `[3,3,4]`·기초 8종·절초 3종.
 - 카드 비용·사거리·피해·계수.
 - 합·방어·회피·필중·중단·강건.
-- AI 금지 입력.
+- 라이벌 tendency schema·공개 단서·후보 3개·score window 2.0.
+- 같은 공개 상태·seed 결정론과 합리 후보 경계.
+- AI snapshot·trace의 whitelist와 금지 입력.
 - 종료·재시작 초기화.
 - 문서·Skill·fallback·fixture 최신성.
 
@@ -428,6 +492,8 @@ T0 기술 구현 전에 필요 이상으로 선행 리팩터링하지 않는다.
 - 전장·발 앵커·대상·판정.
 - 수별 snapshot·VFX·SFX·입력 잠금.
 - 키보드·최소 해상도·UI Automation.
+- `verify_ai_rival_tendency.gd`의 결정론·후보 경계·비공개 입력 차단.
+- Ubuntu·Windows × Python 계약 매트릭스와 Ubuntu Godot headless는 Full Validation에서 분리 실행한다.
 
 ### 사람
 
