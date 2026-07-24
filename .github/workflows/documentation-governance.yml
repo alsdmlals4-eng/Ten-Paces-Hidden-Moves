@@ -44,30 +44,32 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Validate documentation-only change
-        if: steps.scope.outputs.code_changed != 'true'
-        shell: bash
-        run: |
-          set -o pipefail
-          python tools/check_project_operating_system.py --root . --config .github/documentation-governance.json
-          python tools/check_canonical_reference_freshness.py --root . --config .github/reference-freshness.json
-          python tools/check_skill_package_integrity.py
-          python -m unittest discover -s tests -p 'test_project_governance.py'
-          python tests/check_canonical_combat_docs.py
+      - name: Validate project operating system
+        run: python tools/check_project_operating_system.py --root . --config .github/documentation-governance.json
 
-      - name: Validate code change contracts
+      - name: Validate canonical reference freshness
+        run: python tools/check_canonical_reference_freshness.py --root . --config .github/reference-freshness.json
+
+      - name: Validate Skill package integrity
+        run: python tools/check_skill_package_integrity.py
+
+      - name: Run governance regression tests
+        run: python -m unittest discover -s tests -p 'test_project_governance.py'
+
+      - name: Validate canonical combat impact map
+        run: python tests/check_canonical_combat_docs.py
+
+      - name: Validate card component contract
         if: steps.scope.outputs.code_changed == 'true'
-        shell: bash
-        run: |
-          set -o pipefail
-          python tools/check_project_operating_system.py --root . --config .github/documentation-governance.json
-          python tools/check_canonical_reference_freshness.py --root . --config .github/reference-freshness.json
-          python tools/check_skill_package_integrity.py
-          python -m unittest discover -s tests -p 'test_project_governance.py'
-          python tests/check_card_component_contract.py
-          python tests/check_combat_board_contract.py
-          python tests/check_canonical_combat_docs.py
-          python tests/check_rival_tendency_contract.py
+        run: python tests/check_card_component_contract.py
+
+      - name: Validate combat contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_combat_board_contract.py
+
+      - name: Validate rival tendency contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_rival_tendency_contract.py
 
       - name: Parse PowerShell automations for code changes
         if: steps.scope.outputs.code_changed == 'true'
@@ -88,4 +90,4 @@ jobs:
 
       - name: Record deferred runtime boundary
         if: steps.scope.outputs.code_changed == 'true' && vars.ACTIONS_FULL_VALIDATION_ENABLED != 'true'
-        run: echo "Godot and OS/Python matrix checks are BLOCKED_BY_ACTIONS_QUOTA."
+        run: echo "Godot and OS/Python matrix checks require Full Validation evidence."
