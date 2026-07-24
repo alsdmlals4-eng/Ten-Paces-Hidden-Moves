@@ -22,6 +22,12 @@ jobs:
           ref: agent/repeat-poc-a2-hypothesis-summary
           fetch-depth: 0
           show-progress: false
+      - name: Upload board source
+        uses: actions/upload-artifact@v4
+        with:
+          name: a2-board-source
+          path: src/combat/combat_board_preview.gd
+          if-no-files-found: error
       - name: Check integration patch
         id: patch_check
         continue-on-error: true
