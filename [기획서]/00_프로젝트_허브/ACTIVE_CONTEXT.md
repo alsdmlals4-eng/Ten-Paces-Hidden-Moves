@@ -10,7 +10,10 @@
 - 현재 기획 branch: `planning/project-reassessment-and-pointed-fun`.
 - 현재 기획 PR: #42.
 - 승인 기획 기준선: `docs/decisions/2026-07-25_PROJECT_REASSESSMENT_APPROVED_PLANNING_BASELINE.md`.
+- 전투 규칙 현행 구현 원본: `docs/02_COMBAT_RULES.md`.
 - Base: `41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
+- 프로젝트 코어 과거 상태 전이: `CORE_REVIEW_PENDING → CORE_CONFIRMED`.
+- 최신 전투 승인 계보: `Issue #13`과 PR #42의 2026-07-24~25 사용자 승인.
 - 제품 게이트: `REPEAT_POC`.
 - T1 진입: `NOT_GRANTED`.
 - 신규 플레이어 STEP 14: `DEFERRED_BY_USER / UNVERIFIED`.
@@ -104,6 +107,7 @@ defense: 5
 - 방어도는 후속 피해를 흡수한 만큼 소모되고 라운드 종료 시 0.
 - 회피: 기력 1·기본 회피 횟수 1·타격 1회 회피.
 - 회피 횟수 N은 현재 수부터 N개의 행동 수 동안 유지.
+- 같은 수의 유효 공격은 `[합]`으로 방어·회피 전 원공격력 차이를 판정.
 
 ### 상태와 다중 슬롯
 
@@ -179,6 +183,12 @@ defense: 5
 2. 승인 기준선에서 열린 항목을 한 번에 하나씩 확정한다.
 3. 기획 완료 선언 후 전체 정본 문서를 교차 갱신하고 검수 단계로 전환한다.
 4. 검수 완료 선언 후에만 Codex 구현 계획을 작성한다.
+
+## 책임 원본
+
+- 최신 승인 기획: `docs/decisions/2026-07-25_PROJECT_REASSESSMENT_APPROVED_PLANNING_BASELINE.md`.
+- 현행 구현 전투 규칙: `docs/02_COMBAT_RULES.md`.
+- 현재 프로젝트 상태: `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`.
 
 ## 증거 경계
 
