@@ -4,9 +4,11 @@
 
 ```yaml
 phase: PLANNING_IN_PROGRESS
+technical_baseline_sha: 659c57e7ffa588ad6a6471ed9b5394985b159eaf
 main_baseline: a1580a01f4499e49d6b6913a66ffd6f1edd81c4d
 planning_branch: agent/poc-planning-baseline-and-legacy-audit
 project_core: CORE_CONFIRMED
+product_gate: REPEAT_POC
 runtime: IMPLEMENTED_LEGACY
 new_poc_implementation: NOT_STARTED
 human_validation: UNVERIFIED
