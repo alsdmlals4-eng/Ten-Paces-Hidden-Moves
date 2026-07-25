@@ -72,4 +72,4 @@
 - [x] 벤치마킹·1·2차 기획 검수·5회 적대적 검토를 기록한다.
 - [x] sanity model의 증거 경계를 기록한다.
 - [x] JSON·문서 정적 검증을 실행한다.
-- [ ] branch diff를 확인하고 draft PR을 연다.
+- [x] branch diff를 확인하고 draft PR #45를 연다.
