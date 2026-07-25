@@ -6,18 +6,34 @@
 
 - `poc_balance_budget.json`: 정수 틱 예산·효과 가격·변경 정책.
 - `poc_martial_arts.json`: 시작 무공 후보 6개와 1·3·5·7·9·10성 데이터.
-- `poc_enemy_duels.json`: 공개 상태 AI 계약과 주요 비무 10개.
-- `poc_map_rewards.json`: PoC 지도·성과 등급·수련 보상·`[의료]` 공급.
+- `poc_enemy_duels.json`: 공개 상태 AI 계약, 주요 비무 10개, `stage_id`, PoC 1~5 범위, 5번 절초 해금.
+- `poc_map_rewards.json`: 튜토리얼·3스테이지·히든 구조, 구간당 중간 노드 2~3개, 성과·보상·`[의료]`.
 - `poc_sanity_model.json`: 비런타임 수치 sanity model 결과.
+
+## 캠페인 편집 계약
+
+- 튜토리얼: 주요 비무 1.
+- 스테이지 1: 주요 비무 2~5.
+- 스테이지 2: 주요 비무 6~8.
+- 스테이지 3: 주요 비무 9~10.
+- 히든 천하제일인 배틀: 스테이지 3 이후 후속 추가.
+- PoC: 주요 비무 1~5.
+- 연속 주요 비무 사이 실제 방문 중간 노드: 2~3개.
+- PoC 총 방문 노드: 13~17개.
+- 주요 비무 5 승리 뒤 첫 `[절초]` 사용 가능.
+
+스테이지 배치는 `poc_enemy_duels.json`, 경로·노드 수는 `poc_map_rewards.json`이 소유한다. 두 파일의 주요 비무 ID와 순서가 일치해야 한다.
 
 ## 편집 순서
 
-1. `poc_balance_budget.json`의 중앙 가격을 바꾼다.
-2. 기존 기술은 자동 수정하지 않는다.
-3. 각 기술의 `components`, `calculated_ticks`, `variance_ticks`를 다시 계산한다.
-4. `abs(variance_ticks) <= 5`이면 PoC 자동 허용 범위다.
-5. 범위를 벗어나면 원인 항목과 변경 전후를 기록한 뒤 사람이 수정한다.
-6. 안정된 ID는 유지하고 이름·수치·설명·가중치는 독립 편집한다.
+1. 안정된 주요 비무·무공·기술 ID는 유지한다.
+2. 스테이지를 바꿀 때 결투의 `stage_id`와 `stage_contract`를 함께 수정한다.
+3. 중간 노드 수를 바꿀 때 구간 수·중간 노드 합계·총 방문 노드를 함께 수정한다.
+4. `poc_balance_budget.json`의 중앙 가격을 바꿔도 기존 기술은 자동 수정하지 않는다.
+5. 각 기술의 `components`, `calculated_ticks`, `variance_ticks`를 다시 계산한다.
+6. `abs(variance_ticks) <= 5`이면 PoC 자동 허용 범위다.
+7. 범위를 벗어나면 원인 항목과 변경 전후를 기록한 뒤 사람이 수정한다.
+8. `python tools/check_poc_planning_data.py --root .`로 참조·예산·스테이지·노드 계약을 확인한다.
 
 ## 상태
 
