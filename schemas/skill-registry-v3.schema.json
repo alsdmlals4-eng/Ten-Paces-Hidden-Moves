@@ -51,12 +51,22 @@
     },
     "base_integration": {
       "type": "object",
-      "required": ["repository", "commit", "legacy_aliases", "shared_learning_log", "shared_skill_routes"],
+      "required": [
+        "repository",
+        "commit",
+        "legacy_aliases",
+        "shared_learning_log",
+        "shared_extension_registry",
+        "shared_extension_commit",
+        "shared_skill_routes"
+      ],
       "properties": {
         "repository": {"const": "alsdmlals4-eng/Base"},
         "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
         "legacy_aliases": {"const": "skills/LEGACY_SKILL_ALIASES.md"},
         "shared_learning_log": {"const": "skills/SKILL_LEARNING_LOG.md"},
+        "shared_extension_registry": {"const": "skills/BASE_SHARED_SKILL_ROUTES.json"},
+        "shared_extension_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
         "shared_skill_routes": {
           "type": "object",
           "minProperties": 1,
