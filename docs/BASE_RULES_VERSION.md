@@ -2,17 +2,21 @@
 
 ## 1. 기준
 
-- Base: `alsdmlals4-eng/Base@41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
+- 기존 Base Registry: `alsdmlals4-eng/Base@41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
+- 신규 adapter-only 공용 route: `alsdmlals4-eng/Base@c7c1103e4a69f8fdc9ee27aa382a21288605a7fb`.
+- 프로젝트 route Registry: `[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ROUTES.json`.
+- 프로젝트 어댑터: `[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ADAPTER.json`.
+- 제3자 자산·플러그인 기록: `[기획서]/00_프로젝트_허브/THIRD_PARTY_ASSET_AND_PLUGIN_INVENTORY.json`.
 - 이전 프로젝트 기준의 재현 가능한 SHA는 `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`가 보존한다.
 - 추가 비교: 6개 커밋·43개 변경 파일.
-- 동기화 날짜: `2026-07-23`.
+- 동기화 날짜: `2026-07-25`.
 - 전투 기준: PR #7 `agent/t0-combat-poc-board@659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
 - 코어 확정 PR: #15 `agent/project-core-confirmation`.
 - 최신 승인 범위: Issue #13 STEP 12~14.
 - 감사: `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`.
 - 검증: `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_VERIFICATION.md`.
 
-정식 버전명보다 commit SHA를 재현 가능한 기준으로 사용한다. 일상 작업은 프로젝트에 동기화된 Registry·검사·문서를 우선하고 Base 원격은 재감사 조건에서만 다시 비교한다.
+기존 25개 Base Skill은 기존 고정 커밋을 유지하고, 신규 두 공용 Skill만 별도 route Registry의 고정 커밋에서 읽는다. 일상 작업은 프로젝트에 동기화된 Registry·route·adapter·검사·문서를 우선하고 Base 원격은 재감사 조건에서만 다시 비교한다.
 
 ## 2. 적용한 공용 운영 계약
 
@@ -23,9 +27,11 @@
 - 전체 Skill 기본 로드 금지.
 - 주 책임 분야 Skill 최대 1개, 필요한 Foundation만 조건부 선택.
 - L1 이상 `execution-report`.
-- 기존 프로젝트 변경은 `audit → reconcile-legacy → 승인 변경 → verify`.
+- 기존 프로젝트의 레거시 수명주기는 `governing-legacy-retention-and-archives`를 route하고, 운영체계 설치·마이그레이션은 `managing-game-project-operating-system`이 담당한다.
+- Godot 기능·에셋·플러그인은 직접 제작 전에 `evaluating-godot-assets-and-plugins-before-creation`으로 기본 기능·공식 Store·기존 Asset Library·GitHub·itch.io·상용 후보를 조사한다.
+- 구매·계정 연결·프로젝트 설치는 별도 사용자 승인 범위에서만 수행한다.
 
-### Base 활성 Skill 25개
+### 기존 Base 활성 Skill 25개
 
 1. `managing-project-intake-and-work-contract`
 2. `managing-game-project-operating-system`
@@ -53,7 +59,12 @@
 24. `building-project-visual-dashboards`
 25. `diagnosing-game-engine-runtime-failures`
 
-프로젝트에 Base Skill 패키지를 복제하지 않는다. `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`이 ID와 trigger를 라우팅한다.
+### 신규 adapter-only 공용 Skill 2개
+
+1. `governing-legacy-retention-and-archives`
+2. `evaluating-godot-assets-and-plugins-before-creation`
+
+프로젝트에 Base Skill 패키지를 복제하지 않는다. 기존 25개는 `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`, 신규 두 Skill은 `[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ROUTES.json`이 ID와 trigger를 라우팅하고 프로젝트 어댑터가 경로·정본·검증기만 연결한다.
 
 ### 프로젝트 고유 Skill 4개
 
@@ -62,7 +73,7 @@
 - `combat-implementation-handoff`.
 - `ten-paces-verification`.
 
-로컬 Skill은 프로젝트 고유 판단·반례만 소유하고 현재 STEP 상태는 Active Context와 본책에서 읽는다.
+로컬 Skill은 십보강호 고유 판단·반례만 소유하고 현재 STEP 상태는 Active Context와 본책에서 읽는다. 앞으로 프로젝트 로컬 Skill은 프로젝트 전용 책임에만 만들며, Base 공용 책임은 adapter route로 사용한다.
 
 ## 3. 문서·발행 계약
 
@@ -77,16 +88,16 @@
 
 ## 4. 정본 최신성 계약
 
-`.github/reference-freshness.json`이 다음 구조화 기대값을 소유한다.
+`.github/reference-freshness.json`이 기존 Registry 세대의 다음 구조화 기대값을 소유한다.
 
 - board contract schema 16.
-- Base commit `41a20584...`.
-- Base 활성 Skill 25개.
+- 기존 Base commit `41a20584...`.
+- 기존 Base 활성 Skill 25개.
 - 프로젝트 고유 Skill 4개.
 - 활성 문서의 필수 현행 토큰과 금지 stale 토큰.
 - 책임 원본→활성 소비자 연결.
 
-운영·Skill 검사기는 이 설정을 읽고 별도 SHA·Skill 수를 하드코딩하지 않는다.
+신규 adapter-only 두 Skill의 정합성은 `BASE_SHARED_SKILL_ROUTES.json`, `BASE_SHARED_SKILL_ADAPTER.json`, `THIRD_PARTY_ASSET_AND_PLUGIN_INVENTORY.json`의 JSON 검사와 Base route 커밋·경로 대조로 별도 검증한다. 기존 freshness 기대값을 무단 변경하지 않는다.
 
 ## 5. 십보강호 고유 계약
 
@@ -105,36 +116,35 @@
 
 ## 6. 이번 동기화 결과
 
-- Base 6개 커밋·43개 파일을 프로젝트 영향 기준으로 재감사했다.
-- 프로젝트 코어·적대적 검토·구조 최적화·동기화·연속성·유저리서치·런타임 진단 Skill을 route에 추가했다.
-- 로컬 Skill 4개는 유지하고 진행 상태 복제를 제거했다.
-- board schema 16·Base SHA·Skill 집합을 단일 freshness 설정으로 통합했다.
-- stale 문장 위에 최신 보정 절을 붙여도 실패하는 반례를 추가했다.
-- 추적된 Python 캐시를 제거하고 재발을 차단했다.
-- PR #14를 PR #7에 병합했고 PR #7 HEAD를 `659c57e7...`로 고정했다.
-- PR #15는 이 기준에서 프로젝트 코어와 다음 검증 게이트를 문서화한다.
+- Base 기존 25개 Skill pin은 그대로 보존했다.
+- 레거시 보존·아카이브와 Godot 에셋·플러그인 선행 검색을 신규 adapter-only route로 연결했다.
+- 프로젝트 경로·정본·보호 대상·검증기는 프로젝트 어댑터에만 기록했다.
+- 기존 `godot_ai` 애드온은 출처·버전·라이선스가 확인되기 전 `EXISTING_REVIEW_REQUIRED`로 보존했다.
+- 로컬 Skill 4개는 유지하고 공용 Skill 복사본을 새로 만들지 않았다.
+- 실제 레거시 삭제, 특정 에셋 구매·설치, 제품 코드·씬·데이터 수정은 수행하지 않았다.
 
 ## 7. 검증 상태
 
 ```yaml
-base_diff_audit: COMPLETE
-registry_update: MERGED_TO_PR7
-canonical_document_refresh: MERGED_TO_PR7
-pr7_baseline: 659c57e7ffa588ad6a6471ed9b5394985b159eaf
-pr15_pre_closeout_governance: PASS_ON_FF378732
-governance_checks_on_current_head: PENDING
-card_contract_on_current_head: PENDING
-product_file_preservation: PASS_FOR_PR15_DOCUMENT_SCOPE
+base_legacy_registry_pin: PRESERVED
+base_shared_route_pin: ADOPTED
+project_adapter: ADDED
+third_party_inventory: INITIALIZED
+registry_update: NOT_REQUIRED_FOR_EXTENSION_ROUTE
+product_file_preservation: PASS_FOR_DOCUMENT_AND_JSON_SCOPE
 project_core: CORE_CONFIRMED
 product_gate: REPEAT_POC
 human_step14: NOT_RUN
+runtime_validation: NOT_RUN
 ```
 
-최신 Actions와 최종 baseline diff 전에는 PR #15 통합 완료로 표시하지 않는다. 프로젝트 코어 확정은 사람 STEP 14나 T1 진입을 의미하지 않는다.
+Godot 코드·Scene·데이터를 변경하지 않았으므로 Godot 런타임과 사람 STEP 14를 자동 PASS로 표시하지 않는다.
 
 ## 8. 재감사 조건
 
-- Base SHA·Skill Registry·coverage 변경.
+- 기존 Base SHA·Skill Registry·coverage 변경.
+- adapter-only Base route SHA·Skill ID·어댑터 계약 변경.
+- Godot 버전·목표 플랫폼·`addons/`·제3자 라이선스 변경.
 - board schema·전장·라운드·합·절초·AI 계약 변경.
 - 책임 원본·경로·ID·Schema·발행 정책 변경.
 - 프로젝트 코어 승인·재개방.
