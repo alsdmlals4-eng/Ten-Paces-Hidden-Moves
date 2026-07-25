@@ -3,7 +3,7 @@
 ## 1. 기준
 
 - 기존 Base Registry: `alsdmlals4-eng/Base@41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
-- 신규 adapter-only 공용 route: `alsdmlals4-eng/Base@c7c1103e4a69f8fdc9ee27aa382a21288605a7fb`.
+- 신규 adapter-only 공용 route: `alsdmlals4-eng/Base@a8218b454bcfd9e72c792f4bb8ed614a385e22d6`.
 - 프로젝트 route Registry: `[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ROUTES.json`.
 - 프로젝트 어댑터: `[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ADAPTER.json`.
 - 제3자 자산·플러그인 기록: `[기획서]/00_프로젝트_허브/THIRD_PARTY_ASSET_AND_PLUGIN_INVENTORY.json`.
