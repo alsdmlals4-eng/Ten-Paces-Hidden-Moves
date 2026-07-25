@@ -1,107 +1,157 @@
 # 십보강호: 숨은 수의 비무
 ## Ten Paces: Hidden Moves
 
-상대의 공개된 상태와 반복 습관을 읽고, 서로의 현재 계획을 모른 채 10칸 전장에 `3수 → 3수 → 4수`로 수를 걸어 거리·`[합]`·대응·중단으로 한 수를 파훼하고, 그 이유를 복기해 다음 계획을 바꾸는 **1대1 무협 심리 전술 로그라이트**입니다.
+짧은 연속 비무를 통해 여러 무공을 습득·수련하고, 해금된 소수의 기술을 기초 행동과 자유롭게 조합하여 매 회차 자신만의 무학 체계를 완성하는 **무협 전술 로그라이트**입니다.
 
-> 미래를 미리 보는 무협 게임이 아니라, 보이지 않는 상대의 수를 읽고 파훼하는 무협 결투.
+> 짧은 비무에서 수를 읽고, 전투 사이에 무학을 키우며, 이번 회차만의 무공 체계를 완성한다.
 
 ## 시작
 
 - [작업 시작](START_HERE.md)
 - [현재 상태]([기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md)
+- [승인 기획 기준선](docs/decisions/2026-07-25_PROJECT_REASSESSMENT_APPROVED_PLANNING_BASELINE.md)
 - [문서·Skill 지도]([기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md)
 - [게임 기획·코어 계약](docs/01_GAME_DESIGN.md)
-- [코어 확정 결정 기록](docs/decisions/2026-07-23_PROJECT_CORE_DECISION_RECORD.md)
+- [전투 규칙](docs/02_COMBAT_RULES.md)
+- [제품 로드맵](docs/04_ROADMAP.md)
+- [테스트 체크리스트](docs/08_TEST_CHECKLIST.md)
+- [시스템 아키텍처](docs/09_COMBAT_SYSTEM_ARCHITECTURE.md)
+- [main 통합·재감사 결정](docs/decisions/2026-07-24_MAIN_STACK_INTEGRATION_AND_REASSESSMENT_START.md)
 - [Base 적용 기준](docs/BASE_RULES_VERSION.md)
+- [Base 동기화 감사]([기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md)
 - [기획 책임 원본 Registry]([기획서]/DESIGN_DOCUMENT_REGISTRY.json)
 - [프로젝트 Skill Registry]([기획서]/00_프로젝트_허브/SKILL_REGISTRY.json)
-- [Base 동기화 감사]([기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md)
 
 ## 현재 기준
 
+- 단일 제품 기준: `main@8b4380da79029dee5e07aae2622846fcf62e9431`.
+- 현재 기획 기준: `planning/project-reassessment-and-pointed-fun`의 승인 기획 기준선.
+- 통합 PR: #41.
+- 기획 PR: #42.
 - Base: `41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
-- 구현 기준: PR #7 `agent/t0-combat-poc-board@659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
-- 최신 전투 승인: Issue #13 STEP 12~14.
-- 프로젝트 코어: `CORE_CONFIRMED`.
+- REPEAT_POC 기술 Goal: Issue #16 `CLOSED / COMPLETED`.
 - 제품 게이트: `REPEAT_POC`.
-- 실제 사람 STEP 14: `NOT_RUN`.
+- T1 진입: `NOT_GRANTED`.
+- 실제 사람 STEP 14: `DEFERRED_BY_USER / UNVERIFIED`.
+- 현재 단계: `PLANNING_IN_PROGRESS`.
+
+사용자의 명시적 `기획 완료` 전에는 검수 단계·Codex 인계·새 제품 기능 구현으로 넘어가지 않습니다.
 
 ## 프로젝트 코어
 
 ```text
-대전 격투식 수읽기·파훼
-> 전술 퍼즐식 거리·순서
-> 로그라이트 성장
+짧은 연속 비무
+→ 무공 습득·수련·기술 해금
+→ 기초 행동과 기술 조합
+→ 현재 무학으로 적 계획 파훼
+→ 복기로 다음 성장·운용 변경
 ```
 
-### 뾰족한 재미
+상대의 공개 상태와 실제 전투 결과를 읽는 과정은 각 조우의 전술 축이며, 장기 라이벌 학습은 거시 제품 전제에서 후순위입니다.
 
-간파한 위험에 수를 걸고, 공개 순간 거리·합·대응이 맞아 상대 계획을 끊은 뒤, 그 근거를 복기해 다음 수에서 더 정확해지는 쾌감입니다.
+### 보호 계약
 
-### 불변 계약
-
-- 1대1 무협 라이벌 결투.
-- 10칸 일자형 전장.
-- `3수 → 3수 → 4수`, 총 10수의 비공개 동시 계획.
-- 공개 정보와 반복 습관으로 상대를 읽되 AI는 미확정 계획을 보지 않음.
-- 덱·손패 없이 항상 사용할 수 있는 소수 공용 행동.
+- 1대1 무협 비무.
+- 10칸 일자형 전장, 플레이어 4번·상대 7번 시작.
+- 한 라운드는 비공개 `3수 → 3수 → 4수`, 총 10수.
+- 같은 수의 유효 공격은 `[합]`으로 원공격력 차이를 판정.
+- AI는 플레이어의 미확정 계획을 보지 않음.
+- 덱·손패 없이 기초 행동과 해금 기술을 항상 사용 가능.
 - 위치·순서·대응·파훼가 원시 피해량보다 우선.
-- 결과 이유를 복기하고 다음 계획을 변경.
+- 전투 사이 무공 습득·수련·기술 해금으로 회차 빌드 진화.
+- 결과 이유를 복기하고 다음 계획과 수련을 변경.
 
-## 현재 전투 계약
+보호 계약을 변경하려면 별도 `CHANGE_PROPOSAL / USER_DECISION_REQUIRED`가 필요합니다.
 
-- 전장 10칸, 플레이어 4번·상대 7번 시작, 시작 거리 3.
-- 같은 칸 최대 2인, 거리 0 `[밀착]`.
-- 라운드 `3수 → 3수 → 4수`, 총 10수.
-- 기초 행동 8종: 이동·보법·막기·회피·속공·강공·명상·태세.
-- 절초 3종: 십보 유파·단악결·파공검기.
-- 같은 실행 수 공격은 `[합]`으로 원공격력 차이를 정산.
-- 방어도 차감 뒤 같은 수 반감, 회피, 파공검기 `[필중]`.
-- 같은 수 미실행 행동 중단과 태세 기반 `[강건]`.
-- 공개 상태 기반 결정적 최소 AI.
-- 승리·패배·무승부와 4/7 완전 재시작.
-- 비용은 행동 슬롯·기력·내력·절초 기세이며 덱·손패·행동력·내공은 없습니다.
+## 승인된 회차 구조
 
-상세 규칙은 [전투 규칙서](docs/02_COMBAT_RULES.md)가 책임집니다.
+- `10전`은 총 전투 10회가 아니라 필수 주요 비무·강적 조우 10개.
+- 주요 비무 사이에 2~4개 분기 노드와 선택 일반전 배치.
+- 실제 총 전투 수는 경로에 따라 10보다 많음.
+- 주요 비무 5 이전에 한 무공 10성 또는 동급 광역 빌드 가능.
+- 시작 무공서 4개를 3성으로 선택해 기술 4개로 시작.
+- 수련도 3·7성에서 기술, 5·9성에서 기존 기술 강화, 10성에서 절초·진의.
+- 해금 기술은 덱·손패·장착 제한 없이 항상 사용 가능.
 
-## 현재 전투 POC
+세부 성장·보상·금전·문파·관찰 기준은 [승인 기획 기준선](docs/decisions/2026-07-25_PROJECT_REASSESSMENT_APPROVED_PLANNING_BASELINE.md)이 책임집니다.
+
+## 승인된 전투 기준
+
+### 라운드와 자원
+
+- 승패가 날 때까지 `3수 → 3수 → 4수` 라운드 반복.
+- 강제 라운드 제한·3라운드 판정승·피로 피해 없음.
+- 일반전 대부분 3라운드 이내 종료는 밸런스 목표.
+- 체력은 전투 사이 유지.
+- 전투 시작 기력 5, 내력 5, 절초 기세 0/5.
+- 라운드 시작 기력 +1, 내력 자연 회복 없음.
+- 일반 명상: 기력 +1·내력 +1.
+- 승리 후 체력 회복: `min(잃은 체력, 2 + [의료])`, `[의료]` 0~4.
+
+### 기본 능력치와 행동
+
+```yaml
+maximum_health: 30
+attack_power: 4
+defense: 5
+```
+
+- 속공: 1슬롯, 기력 1, 피해 `[공격력]` = 4.
+- 강공: 2슬롯, 기력 1·내력 1, `전조 → 공격`, 피해 `2×[공격력]+2` = 10.
+- 막기: 기력 1, 실행 시 `[방어도]`만큼 방어도 5 누적.
+- 방어도는 피해를 흡수한 만큼 감소하고 라운드 종료 시 0.
+- 회피: 기력 1, 기본 1회, 타격 1회 회피.
+- 회피 횟수 N은 현재 수부터 N개의 행동 수 동안 유지.
+
+### 상태와 다중 슬롯
+
+- 태세 사용 시 `[강화]`와 `[강건]` 획득.
+- `[강화]`: 다음 공격 계산 결과 `×1.5`.
+- `[강건]`: 체력 피해로 인한 중단 1회 방지.
+- 다중 슬롯 행동은 첫 전조에서 자원과 `[강화]`를 전액 선지불.
+- 중단 시 자원·`[강화]`·점유 슬롯 환불 없음.
+- 슬롯 성능 예산: 1슬롯 `1.0`, 2슬롯 `2.5`, 3슬롯 `4.0`.
+
+상세 최신 판정은 [승인 기획 기준선](docs/decisions/2026-07-25_PROJECT_REASSESSMENT_APPROVED_PLANNING_BASELINE.md)이 우선합니다. 기존 [전투 규칙서](docs/02_COMBAT_RULES.md)는 이후 정본 갱신 대상입니다.
+
+## 현재 기술 구현
 
 ```text
-STEP 0~10 기본 전장·UI·배치·판정
-+ TARGETING 10.5 이동 목적지·공격 방향
-+ RESPONSE / RESOURCE PREVIEW 10.6
-+ Issue #11 밀착·중단·강건·절초 3종·순차 연출
-+ STEP 12 공개 상태 기반 최소 AI
-+ STEP 13 종료·재시작
-+ STEP 14 개발자 기계 시나리오 기록
+STEP 0~13 기본 전장·UI·배치·판정·종료·재시작
++ 이동 목적지·공격 방향
++ 대응·자원 미리보기
++ 밀착·중단·강건·절초 3종·순차 연출
++ 공개 상태 기반 라이벌 복수 후보 AI
++ 플레이어 가설 snapshot
++ 권위 결과 기반 결정적 복기
++ 복기 review gate
++ 과거 [준비]·[전조]·카드/절초 자동 배치 구현
 ```
 
-STEP 0~13은 구현·자동 또는 Windows/Godot 기술 증거가 있습니다. 실제 사용자 규칙 이해·상대 성향 발견·보조기기 사용성·주관적 음향/모션·외부 플레이는 아직 `NOT_RUN`입니다.
+기술 구현은 승인 기획 기준선보다 앞선 PoC 규칙을 포함합니다. 기획 완료 전에는 제품 코드를 새 규칙으로 변경하지 않습니다.
 
-## 제품 범위
+기술 상태:
 
-- T0: 단일 전투 POC와 실제 사용자 STEP 14.
-- T1: 플레이 스타일 2개·성향이 다른 상대 3명·전투 3회·수평 보상·최종 라이벌의 최소 세로 슬라이스.
-- T2: 증거를 통과한 경우에만 5전 데모.
-- 전체판: 10전·12세력·1~10성은 확정 수량이 아닌 장기 가설.
+- PR #35 closeout PR Validation #686: `PASS`.
+- 통합 PR #41 PR Validation #687: `PASS`.
+- 동일 제품 tree Full Validation #21: `PASS`.
+- main과 최종 제품 branch changed files: `0`.
+- main push-triggered Full Validation: `NOT_OBSERVED_VIA_CONNECTOR`.
 
-T1은 코어 확정만으로 시작하지 않습니다. STEP 14의 사람 이해·성향 발견·계획 변경 증거가 필요합니다.
+자동·개발자 기술 증거는 실제 플레이어의 규칙 이해·재미·사용성·시장 적합성을 대체하지 않습니다.
 
 ## 운영체계
 
 - Work Mode: `PLAN / BUILD / REVIEW`.
-- Base 활성 Skill 25개를 원본에서 조건부 라우팅.
+- Base 활성 Skill은 원본에서 trigger에 따라 조건부 라우팅.
 - 프로젝트 고유 Skill 4개 유지.
-- Registry trigger 기반 자동 Skill·Skill Mode 선택.
 - 기획 문서와 Skill Registry는 `source_only`.
-- 최신 본문에는 현재 계약만 유지하고 과거 전문은 Git 이력에서 확인.
-- 정본·경로·ID·Schema·Base SHA·Skill 집합을 `reference-freshness`로 검사.
-- 정확한 기준 SHA 분기와 보호 경로 diff로 Codex 작업을 보존.
-
-정적 Actions 성공은 Godot 런타임·Windows 사용자 경험·접근성·Release 성능·PDF 발행·Required Check 강제를 의미하지 않습니다.
+- 정본·경로·ID·Schema·Base SHA·Skill 집합은 reference freshness로 검사.
+- GitHub Actions는 PR scope-aware 검증과 main·nightly·수동 Full Validation을 분리.
 
 ## 책임 원본
 
+- [승인 기획 기준선](docs/decisions/2026-07-25_PROJECT_REASSESSMENT_APPROVED_PLANNING_BASELINE.md)
 - [게임 기획](docs/01_GAME_DESIGN.md)
 - [전투 규칙](docs/02_COMBAT_RULES.md)
 - [콘텐츠](docs/03_CONTENT_CATALOG.md)
@@ -113,13 +163,3 @@ T1은 코어 확정만으로 시작하지 않습니다. STEP 14의 사람 이해
 - [아키텍처](docs/09_COMBAT_SYSTEM_ARCHITECTURE.md)
 - [연출](docs/10_COMBAT_PRESENTATION_PLAN.md)
 - [Base 적용·학습](docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md)
-
-## 다음 작업
-
-```text
-확정된 코어와 현행 POC의 차이 정리
-→ 결정적 복기·라이벌 성향의 최소 실험 계약
-→ STEP 14 신규 플레이어 5명 발견형 테스트
-→ KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST
-→ T1 진입 또는 REPEAT_POC
-```
