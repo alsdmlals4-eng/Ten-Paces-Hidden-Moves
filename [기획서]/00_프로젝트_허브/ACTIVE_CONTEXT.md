@@ -9,6 +9,7 @@
 - 최신 승인 기준: `docs/decisions/2026-07-26_POC_PLANNING_BASELINE.md`.
 - 프로젝트 코어: `CORE_CONFIRMED`; 과거 `CORE_REVIEW_PENDING` 종료.
 - 구현 계보: `PR #7`의 T0 기준과 `Issue #13` 승인 규칙을 PR #41·#42에서 통합했다.
+- 코어 전투: 10칸·4/7·비공개 3/3/4, `[합]`, 공개 상태 기반 AI.
 - 현행 런타임: `IMPLEMENTED_LEGACY`.
 - 신규 플레이어 STEP 14: `NOT_RUN`.
 - T1: `NOT_GRANTED`.
