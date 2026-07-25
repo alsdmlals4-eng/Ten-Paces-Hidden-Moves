@@ -109,6 +109,11 @@ def validate_schema_contracts(root: Path) -> None:
     )
     if "source_only" not in presentation_policies:
         raise ContractError("Skill registry schema must support source_only")
+    base_schema = skill.get("properties", {}).get("base_integration", {})
+    base_properties = base_schema.get("properties", {})
+    for field in ("shared_extension_registry", "shared_extension_commit"):
+        if field not in base_properties:
+            raise ContractError(f"Skill registry schema is missing Base extension field: {field}")
 
 
 def validate_design_registry(root: Path, config: dict[str, Any]) -> None:
@@ -193,6 +198,44 @@ def validate_design_registry(root: Path, config: dict[str, Any]) -> None:
         )
 
 
+def validate_shared_extensions(
+    root: Path,
+    base: dict[str, Any],
+    shared_routes: dict[str, Any],
+) -> set[str]:
+    registry_path = str(base.get("shared_extension_registry", ""))
+    extension_commit = str(base.get("shared_extension_commit", ""))
+    if registry_path != "skills/BASE_SHARED_SKILL_ROUTES.json":
+        raise ContractError("Base shared extension Registry path mismatch")
+    if len(extension_commit) != 40 or any(
+        character not in "0123456789abcdef" for character in extension_commit
+    ):
+        raise ContractError("Base shared extension commit must be a lowercase 40-character SHA")
+
+    extension_registry = load_json(root / registry_path)
+    if extension_registry.get("base", {}).get("commit") != extension_commit:
+        raise ContractError("Base shared extension Registry commit is stale")
+    routes = extension_registry.get("routes", {})
+    if not isinstance(routes, dict) or not routes:
+        raise ContractError("Base shared extension Registry routes must not be empty")
+
+    extension_keys: set[str] = set()
+    extension_targets: set[str] = set()
+    for route_name, route in routes.items():
+        if not isinstance(route, dict):
+            raise ContractError(f"invalid Base shared extension route: {route_name}")
+        target = str(route.get("skill_id", ""))
+        if not target:
+            raise ContractError(f"Base shared extension route is missing skill_id: {route_name}")
+        if shared_routes.get(route_name) != target:
+            raise ContractError(f"project Skill Registry extension route mismatch: {route_name}")
+        if target in extension_targets:
+            raise ContractError("Base shared extension routes contain duplicate targets")
+        extension_keys.add(str(route_name))
+        extension_targets.add(target)
+    return extension_keys
+
+
 def validate_skill_registry(root: Path, config: dict[str, Any]) -> None:
     registry = load_json(root / str(config["skill_registry"]))
     freshness = load_json(root / str(config["reference_freshness_config"]))
@@ -232,14 +275,20 @@ def validate_skill_registry(root: Path, config: dict[str, Any]) -> None:
     expected_ids = {str(value) for value in freshness.get("expected_base_skill_ids", [])}
     if not isinstance(shared_routes, dict):
         raise ContractError("Base shared Skill routes must be an object")
-    values = [str(value) for value in shared_routes.values()]
-    if len(values) != len(set(values)):
-        raise ContractError("Base shared Skill routes must be unique")
-    if set(values) != expected_ids:
+
+    extension_keys = validate_shared_extensions(root, base, shared_routes)
+    core_values = [
+        str(value)
+        for route_name, value in shared_routes.items()
+        if str(route_name) not in extension_keys
+    ]
+    if len(core_values) != len(set(core_values)):
+        raise ContractError("Base core shared Skill routes must be unique")
+    if set(core_values) != expected_ids:
         raise ContractError(
-            "Base shared Skill routes differ from freshness config: "
-            f"missing={sorted(expected_ids-set(values))} "
-            f"unexpected={sorted(set(values)-expected_ids)}"
+            "Base core shared Skill routes differ from freshness config: "
+            f"missing={sorted(expected_ids-set(core_values))} "
+            f"unexpected={sorted(set(core_values)-expected_ids)}"
         )
     if not (root / str(base.get("legacy_aliases", ""))).is_file():
         raise ContractError("Legacy Skill Alias file is missing")
