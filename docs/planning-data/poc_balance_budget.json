@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "data_role": "NON_RUNTIME_POC_PLANNING",
+  "status": "POC_HYPOTHESIS",
+  "editable": true,
+  "owner": "docs/02_COMBAT_RULES.md",
+  "unit": {
+    "display_step": 0.05,
+    "ticks_per_display_step": 1,
+    "ticks_per_budget_point": 20
+  },
+  "slot_budget_ticks": {
+    "1": 20,
+    "2": 50,
+    "3": 80
+  },
+  "automatic_acceptance_tolerance_ticks": 5,
+  "pricing_ticks": {
+    "raw_damage_per_point": 5,
+    "range_per_tile_beyond_one": 4,
+    "movement_per_tile": 6,
+    "defense_gain_per_point": 4,
+    "defense_break_per_point": 4,
+    "evade_charge": 18,
+    "sure_hit": 10,
+    "fortitude": 10,
+    "extra_hit_after_first": 4,
+    "clash_power_per_point": 3,
+    "health_heal_per_point": 6,
+    "stamina_gain_per_point": 6,
+    "internal_gain_per_point": 9,
+    "momentum_gain_per_point": 12,
+    "stamina_cost_credit_per_point": -4,
+    "internal_cost_credit_per_point": -7,
+    "momentum_cost_5_credit": -30,
+    "self_health_cost_credit_per_point": -3,
+    "once_per_action_effect_base": 4,
+    "per_hit_effect_base": 5
+  },
+  "condition_credits": {
+    "common_public_condition": -3,
+    "strict_public_condition": -7,
+    "once_per_bundle": -4,
+    "once_per_battle": -10,
+    "requires_existing_defense": -4,
+    "requires_successful_evade": -5,
+    "requires_clash_win": -5
+  },
+  "effect_contract": {
+    "scope": [
+      "PER_HIT",
+      "ONCE_PER_ACTION"
+    ],
+    "trigger": [
+      "ON_HIT",
+      "ON_HEALTH_DAMAGE"
+    ],
+    "cancelled_hit_triggers": false,
+    "evaded_hit_triggers": false,
+    "zero_health_damage_triggers_on_hit": true,
+    "zero_health_damage_triggers_on_health_damage": false
+  },
+  "migration_policy": {
+    "central_price_change_auto_edits_existing_techniques": false,
+    "on_change": [
+      "mark_variance",
+      "produce_before_after_diff",
+      "list_excess_or_spare_ticks",
+      "list_changed_price_items"
+    ],
+    "status_vocabulary": [
+      "APPROVED",
+      "POC_HYPOTHESIS",
+      "UNVERIFIED",
+      "IMPLEMENTED_LEGACY"
+    ]
+  },
+  "authoring_rules": [
+    "Authoring UI may display decimals but stores integer ticks.",
+    "All input values snap to 0.05 budget increments.",
+    "5-star and 9-star upgrades each receive an additional 5-tick authoring allowance.",
+    "Capstones use the 3-slot 80-tick reference even when represented as a passive true meaning.",
+    "An out-of-tolerance technique is not auto-fixed; it is flagged for review."
+  ]
+}
