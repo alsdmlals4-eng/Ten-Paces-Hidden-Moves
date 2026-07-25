@@ -52,6 +52,7 @@ planning budget/manual/duel/map JSON
 - fortitude_charges
 - active_action_id·current_hit_index
 - effect_once_per_action_consumption
+- unlocked_manual_ultimates와 focused_mastery_progress
 
 Schema·fallback·재시작·AI whitelist·로그 소비자를 함께 갱신해야 한다.
 
@@ -67,16 +68,20 @@ Schema·fallback·재시작·AI whitelist·로그 소비자를 함께 갱신해�
 
 ```text
 attack_action_started
+action_start_effect_triggered
 hit_pair_clash | unmatched_hit
+clash_win_effect_triggered
 hit_evaded
+evade_success_effect_triggered
 defense_absorbed
 health_damage_applied
-effect_triggered
+hit_effect_triggered | health_damage_effect_triggered
 interrupt_attempted
 fortitude_consumed
 action_followups_cancelled
 combatant_defeated
-attack_action_finished
+action_end_effect_triggered
+attack_action_finished | non_attack_action_resolved
 ```
 
 `timing_results`는 각 이벤트 뒤 snapshot을 제공하고, `presentation_events`는 동일 ID와 순서를 사용한다.
@@ -93,7 +98,8 @@ attack_action_finished
 
 - planning JSON 정적 검증.
 - runtime adapter 단위 테스트.
-- 단일·연격·중단·강건·효과 반례.
+- 단일·연격·중단·강건·7개 효과 trigger 반례.
+- 기본 절초 시작 가용성과 무공 10성 절초의 성급 기반 해금.
 - `timing_results`와 `presentation_events` 순서 일치.
 - AI 비공개 입력 부재.
 - 재시작 완전 초기화.

@@ -22,6 +22,7 @@
 | Skill 라우팅 | `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json` |
 | 구형 감사 | `docs/decisions/2026-07-26_LEGACY_CANONICAL_AUDIT.md` |
 | 통합 PoC 기준선 | `docs/decisions/2026-07-26_POC_PLANNING_BASELINE.md` |
+| REVIEW 발견·교정 | `docs/decisions/2026-07-26_REVIEW_FINDINGS_AND_CORRECTIONS.md` |
 | 벤치마크·적대적 검토 | `docs/decisions/2026-07-26_POC_BENCHMARK_AND_ADVERSARIAL_REVIEW.md` |
 | 수치 sanity | `docs/decisions/2026-07-26_POC_BALANCE_SANITY_REPORT.md` |
 | 세션 인수 | `[기획서]/00_프로젝트_허브/HANDOFF.md` |
@@ -32,4 +33,4 @@
 
 ## 경계
 
-PoC planning JSON은 source-only 지원 데이터이며 런타임 권한이 없다. 구현·자동·Godot·Windows·사람 검증 상태를 독립 기록한다.
+PoC planning JSON은 source-only 지원 데이터이며 런타임 권한이 없다. 구현·자동·Godot·Windows·사람 검증 상태를 독립 기록한다. 결정·검수 기록은 변경 이유와 대체 관계를 보존하고, 현재 판정은 질문별 책임 원본이 소유한다.

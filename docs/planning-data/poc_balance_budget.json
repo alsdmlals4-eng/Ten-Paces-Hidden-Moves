@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "data_role": "NON_RUNTIME_POC_PLANNING",
   "status": "POC_HYPOTHESIS",
   "editable": true,
@@ -52,13 +52,28 @@
       "ONCE_PER_ACTION"
     ],
     "trigger": [
+      "ON_ACTION_START",
+      "ON_ACTION_RESOLVE",
+      "ON_CLASH_WIN",
+      "ON_EVADE_SUCCESS",
       "ON_HIT",
-      "ON_HEALTH_DAMAGE"
+      "ON_HEALTH_DAMAGE",
+      "ON_ACTION_END"
     ],
     "cancelled_hit_triggers": false,
     "evaded_hit_triggers": false,
     "zero_health_damage_triggers_on_hit": true,
-    "zero_health_damage_triggers_on_health_damage": false
+    "zero_health_damage_triggers_on_health_damage": false,
+    "trigger_order": [
+      "ON_ACTION_START",
+      "ON_CLASH_WIN",
+      "ON_EVADE_SUCCESS",
+      "ON_HIT",
+      "ON_HEALTH_DAMAGE",
+      "ON_ACTION_END"
+    ],
+    "non_attack_resolution_trigger": "ON_ACTION_RESOLVE",
+    "action_level_triggers_require_once_per_action": true
   },
   "migration_policy": {
     "central_price_change_auto_edits_existing_techniques": false,

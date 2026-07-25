@@ -1,5 +1,8 @@
 # PoC Planning Baseline Implementation Plan
 
+> REVIEW amendment: 현재 단계는 `REVIEW_IN_PROGRESS`다. 아래 `PLANNING_IN_PROGRESS` 문구는 이 문서 작성 당시의 제약을 보존한 역사 기록이다. 최신 교정은 `docs/decisions/2026-07-26_REVIEW_FINDINGS_AND_CORRECTIONS.md`가 소유한다.
+
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** 최신 승인 기획을 편집 가능한 PoC 데이터와 책임 원본으로 통합하되 런타임을 변경하지 않는다.
@@ -16,7 +19,7 @@
 - 0.05=1틱, 목표 20/50/80틱, 허용오차 ±5틱.
 - PoC 플레이 범위는 주요 비무 1~5다.
 - 주요 비무 사이 중간 노드는 각각 2~3개다.
-- 주요 비무 5 승리 뒤 첫 절초를 사용할 수 있다.
+- 기본 절초는 시작부터 사용할 수 있고, 집중 투자 시 주요 비무 5 전에 한 무공 10성 절초 도달이 가능하다.
 - 스테이지 분할은 튜토리얼 1 / 스테이지1 2~5 / 스테이지2 6~8 / 스테이지3 9~10이다.
 - 히든 천하제일인 전투는 스테이지3 이후 후속 추가이며 본편 종료 필수가 아니다.
 
@@ -95,14 +98,14 @@
 
 **Interfaces:**
 - Consumes: `major_duels[].id`, `major_duels[].order`, `poc_runtime_subset`, `poc_slice.major_duels`.
-- Produces: `major_duels[].stage_id`, `stage_contract`, `campaign_structure`, `intermediate_nodes_per_gap`, `target_visited_nodes`, `first_ultimate_available_after_duel_id`.
+- Produces: `major_duels[].stage_id`, `stage_contract`, `campaign_structure`, `intermediate_nodes_per_gap`, `target_visited_nodes`, `basic_ultimates_available_from_start`, `focused_mastery_milestone`.
 
 - [x] **Step 1: Write failing stage and node tests**
   - PoC subset must equal major duels 1~5.
   - Stage mapping must equal tutorial 1, stage1 2~5, stage2 6~8, stage3 9~10.
   - Every gap must allow 2~3 intermediate nodes.
   - PoC total visited range must equal 13~17.
-  - Duel 5 must unlock first ultimate after victory.
+  - Basic ultimates must be available from start; a focused 38-point path may unlock one manual ultimate before duel 5.
   - Hidden battle must be `FUTURE_HIDDEN` after stage3 and optional for the main ending.
 
 - [x] **Step 2: Run PR validation and verify RED**
@@ -113,10 +116,10 @@
   - 주요 비무 1~5를 `POC_PRIMARY`, 6~10을 `POC_EXPANSION`으로 분리했다.
   - 스테이지 ID·캠페인 메타데이터·네 구간 노드 범위를 추가했다.
   - 중간 노드 합계 8/10/12와 총 방문 노드 13/15/17을 기록했다.
-  - 주요 비무 5 첫 절초 해금과 히든 천하제일인 메타데이터를 추가했다.
+  - 기본 절초 시작 가용성과 주요 비무 5 전 집중 10성 도달성, 히든 천하제일인 메타데이터를 추가했다.
 
 - [x] **Step 4: Update validator**
-  - 정확한 PoC subset·스테이지 순서·노드 범위·파생 합계·절초 해금·히든 선택 범위를 검사한다.
+  - 정확한 PoC subset·스테이지 순서·노드 범위·파생 합계·기본/10성 절초 성장 경계·히든 선택 범위를 검사한다.
   - 기존 예산·효과·ID·보상·의료 검사를 유지한다.
 
 - [x] **Step 5: Run tests and verify GREEN**
@@ -124,7 +127,7 @@
 
 - [x] **Step 6: Synchronize responsible documents**
   - 활성 정본의 `1~3`, `3전`, `2회 성장`, `총 5노드` 현재 PoC 서술을 1~5·13~17노드 계약으로 교체했다.
-  - 스테이지 1 절초 해금과 스테이지 2·3·히든 비구현 경계를 기록했다.
+  - 기본 절초 시작 가용성, 집중 투자 시 비무 5 전 10성 가능성, 스테이지 2·3·히든 비구현 경계를 기록했다.
 
 - [x] **Step 7: Update PR trace**
   - PR #45 본문과 승인 추적 기록을 최신 PoC 구조와 검증 증거로 갱신한다.

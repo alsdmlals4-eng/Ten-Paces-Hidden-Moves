@@ -1,1 +1,499 @@
-{"schema_version":2,"data_role":"NON_RUNTIME_POC_PLANNING","status":"POC_HYPOTHESIS","editable":true,"owner":"docs/03_CONTENT_CATALOG.md","ai_contract":{"reads_player_uncommitted_plan":false,"allowed_inputs":["public_position","public_distance","public_resources","public_statuses","resolved_history","round_and_bundle","deterministic_seed"],"candidate_limit":3,"selection_rule":"Select only among rational candidates within the configured score window.","player_visible":["public_tells","representative_threat","phase_change_condition"],"developer_only":["candidate_ids","candidate_scores","seed","reason_codes"]},"poc_runtime_subset":["duel_01_clash_reader","duel_02_guard_breaker","duel_03_range_keeper","duel_04_counter_current","duel_05_flowing_combo"],"major_duels":[{"id":"duel_01_clash_reader","order":1,"name":"첫 검문","opponent":"연교","epithet":"사문검객","faction":"유랑 검객","status":"POC_PRIMARY","validation_role":"같은 수 공격과 [합]·중단을 학습","stats":{"health":24,"attack_power":4,"defense":4,"stamina":5,"internal":4,"momentum":0},"public_tells":["거리 1이면 속공을 선호","기력 2 이상이면 같은 수 공격으로 합을 노림"],"representative_threat":"중거리 접근 뒤 속공","candidate_actions":["basic_move","basic_quick_attack","basic_guard"],"phase_change":{"condition":"health_at_or_below_12","effect":"guard_weight_plus"},"public_task":"한 번 이상 [합]에서 승리한다.","reward":{"training_points":5,"money":6,"context_reward":"유운검결 1성 또는 지정 수련 3"},"stage_id":"tutorial"},{"id":"duel_02_guard_breaker","order":2,"name":"금강문답","opponent":"묵진","epithet":"철벽승","faction":"유랑 승려","status":"POC_PRIMARY","validation_role":"누적 방어도·방어도 파괴·[강건]을 학습","stats":{"health":28,"attack_power":4,"defense":5,"stamina":5,"internal":5,"momentum":0},"public_tells":["방어도가 0이면 막기를 선호","전조 행동 전에는 [강건] 확보를 선호"],"representative_threat":"막기 뒤 강공","candidate_actions":["basic_guard","basic_stance","basic_heavy_attack"],"phase_change":{"condition":"defense_at_or_above_7","effect":"heavy_attack_weight_plus"},"public_task":"한 행동에서 방어도 5 이상을 제거한다.","reward":{"training_points":5,"money":7,"context_reward":"금강호체공 1성 또는 지정 수련 3"},"stage_id":"stage_1"},{"id":"duel_03_range_keeper","order":3,"name":"장풍의 선","opponent":"설하","epithet":"유랑창객","faction":"장창 유파","status":"POC_PRIMARY","validation_role":"거리 2·보법·방향·사거리 실패를 학습","stats":{"health":26,"attack_power":4,"defense":4,"stamina":5,"internal":5,"momentum":0},"public_tells":["거리 2를 유지","밀착되면 후퇴 보법을 우선"],"representative_threat":"거리 2 창격","candidate_actions":["basic_footwork","pursuing_wind_thrust","basic_guard"],"phase_change":{"condition":"distance_zero","effect":"retreat_weight_plus"},"public_task":"상대의 거리 2 공격을 사거리 실패로 만든다.","reward":{"training_points":5,"money":7,"context_reward":"추풍창법 1성 또는 지정 수련 3"},"stage_id":"stage_1"},{"id":"duel_04_counter_current","order":4,"name":"유전의 문","opponent":"청허","epithet":"태극문객","faction":"무당 방계","status":"POC_PRIMARY","validation_role":"회피 횟수와 반격 조건","stats":{"health":27,"attack_power":4,"defense":5,"stamina":5,"internal":6,"momentum":0},"public_tells":["공격 예상 시 회피","회피 성공 뒤 반격"],"representative_threat":"회피 후 차력 반격","candidate_actions":["basic_evade","four_ounces","basic_meditate"],"phase_change":{"condition":"successful_evade_last_bundle","effect":"counter_weight_plus"},"public_task":"회피를 낭비시키거나 [필중]으로 돌파한다.","reward":{"training_points":5,"money":8,"context_reward":"태극유전검 1성 또는 지정 수련 4"},"stage_id":"stage_1"},{"id":"duel_05_flowing_combo","order":5,"name":"오봉연검","opponent":"적우","epithet":"화산검수","faction":"화산파","status":"POC_PRIMARY","validation_role":"연격 순차 [합]과 첫 타격 중단","stats":{"health":30,"attack_power":4,"defense":5,"stamina":6,"internal":5,"momentum":0},"public_tells":["이동 뒤 연격","첫 타격에 원공격력 집중"],"representative_threat":"유운삼첩","candidate_actions":["flowing_cloud_triple","basic_move","basic_stance"],"phase_change":{"condition":"health_at_or_below_15","effect":"fortitude_weight_plus"},"public_task":"연격 첫 타격을 이겨 후속타를 취소한다.","reward":{"training_points":5,"money":9,"context_reward":"자유 수련 4 또는 5성 패치 할인 + 첫 절초 사용 가능"},"stage_id":"stage_1","progression_unlock":{"type":"ultimate_access","timing":"after_victory","scope":"first_available","project_term":"절초"}},{"id":"duel_06_shadow_step","order":6,"name":"그림자 열 걸음","opponent":"소련","epithet":"비연객","faction":"경공 유파","status":"POC_EXPANSION","validation_role":"이동·회피·속공 우선순위","stats":{"health":27,"attack_power":4,"defense":4,"stamina":6,"internal":6,"momentum":0},"public_tells":["공격 전 위치 변경","낮은 체력에서 회피"],"representative_threat":"십보환위","candidate_actions":["iron_step_drift","basic_quick_attack","basic_evade"],"phase_change":{"condition":"health_at_or_below_10","effect":"evade_weight_plus"},"public_task":"이동 후 실제 위치를 읽어 공격을 적중시킨다.","reward":{"training_points":5,"money":9,"context_reward":"무영십보 1성 또는 지정 수련 4"},"stage_id":"stage_2"},{"id":"duel_07_vajra_pressure","order":7,"name":"파계의 금강","opponent":"무각","epithet":"파계승","faction":"소림 방계","status":"POC_EXPANSION","validation_role":"체력 압박·강건 소모 타이밍","stats":{"health":34,"attack_power":5,"defense":6,"stamina":5,"internal":5,"momentum":0},"public_tells":["강건 보유 중 강공","강건 소모 후 막기"],"representative_threat":"명왕진각","candidate_actions":["vajra_guard","basic_heavy_attack","basic_guard"],"phase_change":{"condition":"fortitude_zero_after_prevention","effect":"guard_weight_plus"},"public_task":"강건을 먼저 소모시킨 뒤 전조 행동을 중단한다.","reward":{"training_points":5,"money":10,"context_reward":"희귀 구결 또는 내력 상한 회차 보정"},"stage_id":"stage_2"},{"id":"duel_08_spear_line","order":8,"name":"백리 봉쇄","opponent":"단목","epithet":"장창장교","faction":"관군","status":"POC_EXPANSION","validation_role":"거리 2~3 압박과 접근 경로","stats":{"health":32,"attack_power":5,"defense":6,"stamina":5,"internal":6,"momentum":0},"public_tells":["거리 2~3 유지","접근 예상 시 후퇴"],"representative_threat":"백리추혼","candidate_actions":["hundred_li_soul_pursuit","basic_footwork","basic_guard"],"phase_change":{"condition":"distance_one_or_zero","effect":"retreat_weight_plus"},"public_task":"한 묶음 안에 거리 3에서 거리 1 이하로 접근한다.","reward":{"training_points":5,"money":11,"context_reward":"거리 기술 9성 패치 할인"},"stage_id":"stage_2"},{"id":"duel_09_sword_ghost","order":9,"name":"검귀의 복기","opponent":"백무","epithet":"검귀","faction":"무소속","status":"POC_EXPANSION","validation_role":"공개 이력 기반 혼합 성향 읽기","stats":{"health":35,"attack_power":5,"defense":6,"stamina":6,"internal":6,"momentum":0},"public_tells":["직전 두 묶음의 플레이어 거리 선택에 대응","동일 대응 3회 연속 금지"],"representative_threat":"상황별 연격·회피·강공","candidate_actions":["flowing_cloud_triple","four_ounces","basic_heavy_attack"],"phase_change":{"condition":"player_repeats_same_distance_plan_twice","effect":"counter_that_plan_weight_plus"},"public_task":"상대의 성향 전환을 유도하고 다른 계획으로 승리한다.","reward":{"training_points":5,"money":12,"context_reward":"두 번째 10성 돌파 자격"},"stage_id":"stage_3"},{"id":"duel_10_final_contender","order":10,"name":"십보의 끝","opponent":"진무결","epithet":"천하제일 후보","faction":"결승 진출자","status":"POC_EXPANSION","validation_role":"회차 무학의 최종 검증","stats":{"health":40,"attack_power":5,"defense":7,"stamina":6,"internal":7,"momentum":0},"public_tells":["전반은 거리 제어","체력 절반 이하에서 근접 압박","전환 조건을 전투 전에 공개"],"representative_threat":"두 공개 성향의 단계 전환","candidate_actions":["hundred_li_soul_pursuit","flowing_cloud_triple","vajra_guard"],"phase_change":{"condition":"health_at_or_below_20","effect":"switch_from_range_to_pressure"},"public_task":"두 전투 단계에서 각각 다른 대응으로 승리한다.","reward":{"training_points":8,"money":20,"context_reward":"회차 결말·무학 기록"},"stage_id":"stage_3"}],"edit_rules":["Enemy numbers are PoC hypotheses, not runtime truth.","Change stats, weights, tells, stage IDs, and rewards independently through stable IDs.","Do not add hidden player-plan inputs to increase difficulty.","The recommended PoC subset is major duels one through five.","Major duel five unlocks the first available ultimate after victory.","Stage 2, stage 3, and hidden world-best battles remain expansion scope."],"stage_contract":{"tutorial":{"stage_id":"tutorial","major_duel_orders":[1]},"stage_1":{"stage_id":"stage_1","label":"초반부","major_duel_orders":[2,3,4,5],"first_ultimate_available_after_duel_order":5},"stage_2":{"stage_id":"stage_2","label":"중반부","major_duel_orders":[6,7,8]},"stage_3":{"stage_id":"stage_3","label":"마지막","major_duel_orders":[9,10]},"hidden":{"stage_id":"hidden","label":"천하제일인 배틀","status":"FUTURE_HIDDEN","examples":["천마","무림맹주"]}}}
+{
+  "schema_version": 3,
+  "data_role": "NON_RUNTIME_POC_PLANNING",
+  "status": "POC_HYPOTHESIS",
+  "editable": true,
+  "owner": "docs/03_CONTENT_CATALOG.md",
+  "ai_contract": {
+    "reads_player_uncommitted_plan": false,
+    "allowed_inputs": [
+      "public_position",
+      "public_distance",
+      "public_resources",
+      "public_statuses",
+      "resolved_history",
+      "round_and_bundle",
+      "deterministic_seed"
+    ],
+    "candidate_limit": 3,
+    "selection_rule": "Select only among rational candidates within the configured score window.",
+    "player_visible": [
+      "public_tells",
+      "representative_threat",
+      "phase_change_condition"
+    ],
+    "developer_only": [
+      "candidate_ids",
+      "candidate_scores",
+      "seed",
+      "reason_codes"
+    ]
+  },
+  "poc_runtime_subset": [
+    "duel_01_clash_reader",
+    "duel_02_guard_breaker",
+    "duel_03_range_keeper",
+    "duel_04_counter_current",
+    "duel_05_flowing_combo"
+  ],
+  "major_duels": [
+    {
+      "id": "duel_01_clash_reader",
+      "order": 1,
+      "name": "첫 검문",
+      "opponent": "연교",
+      "epithet": "사문검객",
+      "faction": "유랑 검객",
+      "status": "POC_PRIMARY",
+      "validation_role": "같은 수 공격과 [합]·중단을 학습",
+      "stats": {
+        "health": 24,
+        "attack_power": 4,
+        "defense": 4,
+        "stamina": 5,
+        "internal": 4,
+        "momentum": 0
+      },
+      "public_tells": [
+        "거리 1이면 속공을 선호",
+        "기력 2 이상이면 같은 수 공격으로 합을 노림"
+      ],
+      "representative_threat": "중거리 접근 뒤 속공",
+      "candidate_actions": [
+        "basic_move",
+        "basic_quick_attack",
+        "basic_guard"
+      ],
+      "phase_change": {
+        "condition": "health_at_or_below_12",
+        "effect": "guard_weight_plus"
+      },
+      "public_task": "한 번 이상 [합]에서 승리한다.",
+      "reward": {
+        "training_points": 5,
+        "money": 6,
+        "context_reward": "유운검결 1성 또는 지정 수련 3"
+      },
+      "stage_id": "tutorial"
+    },
+    {
+      "id": "duel_02_guard_breaker",
+      "order": 2,
+      "name": "금강문답",
+      "opponent": "묵진",
+      "epithet": "철벽승",
+      "faction": "유랑 승려",
+      "status": "POC_PRIMARY",
+      "validation_role": "누적 방어도·방어도 파괴·[강건]을 학습",
+      "stats": {
+        "health": 28,
+        "attack_power": 4,
+        "defense": 5,
+        "stamina": 5,
+        "internal": 5,
+        "momentum": 0
+      },
+      "public_tells": [
+        "방어도가 0이면 막기를 선호",
+        "전조 행동 전에는 [강건] 확보를 선호"
+      ],
+      "representative_threat": "막기 뒤 강공",
+      "candidate_actions": [
+        "basic_guard",
+        "basic_stance",
+        "basic_heavy_attack"
+      ],
+      "phase_change": {
+        "condition": "defense_at_or_above_7",
+        "effect": "heavy_attack_weight_plus"
+      },
+      "public_task": "한 행동에서 방어도 5 이상을 제거한다.",
+      "reward": {
+        "training_points": 5,
+        "money": 7,
+        "context_reward": "금강호체공 1성 또는 지정 수련 3"
+      },
+      "stage_id": "stage_1"
+    },
+    {
+      "id": "duel_03_range_keeper",
+      "order": 3,
+      "name": "장풍의 선",
+      "opponent": "설하",
+      "epithet": "유랑창객",
+      "faction": "장창 유파",
+      "status": "POC_PRIMARY",
+      "validation_role": "거리 2·보법·방향·사거리 실패를 학습",
+      "stats": {
+        "health": 26,
+        "attack_power": 4,
+        "defense": 4,
+        "stamina": 5,
+        "internal": 5,
+        "momentum": 0
+      },
+      "public_tells": [
+        "거리 2를 유지",
+        "밀착되면 후퇴 보법을 우선"
+      ],
+      "representative_threat": "거리 2 창격",
+      "candidate_actions": [
+        "basic_footwork",
+        "pursuing_wind_thrust",
+        "basic_guard"
+      ],
+      "phase_change": {
+        "condition": "distance_zero",
+        "effect": "retreat_weight_plus"
+      },
+      "public_task": "상대의 거리 2 공격을 사거리 실패로 만든다.",
+      "reward": {
+        "training_points": 5,
+        "money": 7,
+        "context_reward": "추풍창법 1성 또는 지정 수련 3"
+      },
+      "stage_id": "stage_1"
+    },
+    {
+      "id": "duel_04_counter_current",
+      "order": 4,
+      "name": "유전의 문",
+      "opponent": "청허",
+      "epithet": "태극문객",
+      "faction": "무당 방계",
+      "status": "POC_PRIMARY",
+      "validation_role": "회피 횟수와 반격 조건",
+      "stats": {
+        "health": 27,
+        "attack_power": 4,
+        "defense": 5,
+        "stamina": 5,
+        "internal": 6,
+        "momentum": 0
+      },
+      "public_tells": [
+        "공격 예상 시 회피",
+        "회피 성공 뒤 반격"
+      ],
+      "representative_threat": "회피 후 차력 반격",
+      "candidate_actions": [
+        "basic_evade",
+        "four_ounces",
+        "basic_meditate"
+      ],
+      "phase_change": {
+        "condition": "successful_evade_last_bundle",
+        "effect": "counter_weight_plus"
+      },
+      "public_task": "회피를 낭비시키거나 [필중]으로 돌파한다.",
+      "reward": {
+        "training_points": 5,
+        "money": 8,
+        "context_reward": "태극유전검 1성 또는 지정 수련 4"
+      },
+      "stage_id": "stage_1"
+    },
+    {
+      "id": "duel_05_flowing_combo",
+      "order": 5,
+      "name": "오봉연검",
+      "opponent": "적우",
+      "epithet": "화산검수",
+      "faction": "화산파",
+      "status": "POC_PRIMARY",
+      "validation_role": "연격 순차 [합]과 첫 타격 중단",
+      "stats": {
+        "health": 30,
+        "attack_power": 4,
+        "defense": 5,
+        "stamina": 6,
+        "internal": 5,
+        "momentum": 0
+      },
+      "public_tells": [
+        "이동 뒤 연격",
+        "첫 타격에 원공격력 집중"
+      ],
+      "representative_threat": "유운삼첩",
+      "candidate_actions": [
+        "flowing_cloud_triple",
+        "basic_move",
+        "basic_stance"
+      ],
+      "phase_change": {
+        "condition": "health_at_or_below_15",
+        "effect": "fortitude_weight_plus"
+      },
+      "public_task": "연격 첫 타격을 이겨 후속타를 취소한다.",
+      "reward": {
+        "training_points": 5,
+        "money": 9,
+        "context_reward": "자유 수련 4 또는 5성 패치 할인"
+      },
+      "stage_id": "stage_1",
+      "progression_milestone": {
+        "type": "focused_mastery_reachability",
+        "timing": "before_battle_possible",
+        "target_mastery": 10,
+        "required_training_points": 38,
+        "availability": "POSSIBLE_NOT_GUARANTEED",
+        "result": "집중 투자한 무공의 10성 절초를 주요 비무 5에서 사용할 수 있음",
+        "modeled_sources": {
+          "major_duels_1_to_4_at_B_grade": 24,
+          "focused_intermediate_growth": 14,
+          "total": 38
+        }
+      }
+    },
+    {
+      "id": "duel_06_shadow_step",
+      "order": 6,
+      "name": "그림자 열 걸음",
+      "opponent": "소련",
+      "epithet": "비연객",
+      "faction": "경공 유파",
+      "status": "POC_EXPANSION",
+      "validation_role": "이동·회피·속공 우선순위",
+      "stats": {
+        "health": 27,
+        "attack_power": 4,
+        "defense": 4,
+        "stamina": 6,
+        "internal": 6,
+        "momentum": 0
+      },
+      "public_tells": [
+        "공격 전 위치 변경",
+        "낮은 체력에서 회피"
+      ],
+      "representative_threat": "십보환위",
+      "candidate_actions": [
+        "iron_step_drift",
+        "basic_quick_attack",
+        "basic_evade"
+      ],
+      "phase_change": {
+        "condition": "health_at_or_below_10",
+        "effect": "evade_weight_plus"
+      },
+      "public_task": "이동 후 실제 위치를 읽어 공격을 적중시킨다.",
+      "reward": {
+        "training_points": 5,
+        "money": 9,
+        "context_reward": "무영십보 1성 또는 지정 수련 4"
+      },
+      "stage_id": "stage_2"
+    },
+    {
+      "id": "duel_07_vajra_pressure",
+      "order": 7,
+      "name": "파계의 금강",
+      "opponent": "무각",
+      "epithet": "파계승",
+      "faction": "소림 방계",
+      "status": "POC_EXPANSION",
+      "validation_role": "체력 압박·강건 소모 타이밍",
+      "stats": {
+        "health": 34,
+        "attack_power": 5,
+        "defense": 6,
+        "stamina": 5,
+        "internal": 5,
+        "momentum": 0
+      },
+      "public_tells": [
+        "강건 보유 중 강공",
+        "강건 소모 후 막기"
+      ],
+      "representative_threat": "명왕진각",
+      "candidate_actions": [
+        "vajra_guard",
+        "basic_heavy_attack",
+        "basic_guard"
+      ],
+      "phase_change": {
+        "condition": "fortitude_zero_after_prevention",
+        "effect": "guard_weight_plus"
+      },
+      "public_task": "강건을 먼저 소모시킨 뒤 전조 행동을 중단한다.",
+      "reward": {
+        "training_points": 5,
+        "money": 10,
+        "context_reward": "희귀 구결 또는 내력 상한 회차 보정"
+      },
+      "stage_id": "stage_2"
+    },
+    {
+      "id": "duel_08_spear_line",
+      "order": 8,
+      "name": "백리 봉쇄",
+      "opponent": "단목",
+      "epithet": "장창장교",
+      "faction": "관군",
+      "status": "POC_EXPANSION",
+      "validation_role": "거리 2~3 압박과 접근 경로",
+      "stats": {
+        "health": 32,
+        "attack_power": 5,
+        "defense": 6,
+        "stamina": 5,
+        "internal": 6,
+        "momentum": 0
+      },
+      "public_tells": [
+        "거리 2~3 유지",
+        "접근 예상 시 후퇴"
+      ],
+      "representative_threat": "백리추혼",
+      "candidate_actions": [
+        "hundred_li_soul_pursuit",
+        "basic_footwork",
+        "basic_guard"
+      ],
+      "phase_change": {
+        "condition": "distance_one_or_zero",
+        "effect": "retreat_weight_plus"
+      },
+      "public_task": "한 묶음 안에 거리 3에서 거리 1 이하로 접근한다.",
+      "reward": {
+        "training_points": 5,
+        "money": 11,
+        "context_reward": "거리 기술 9성 패치 할인"
+      },
+      "stage_id": "stage_2"
+    },
+    {
+      "id": "duel_09_sword_ghost",
+      "order": 9,
+      "name": "검귀의 복기",
+      "opponent": "백무",
+      "epithet": "검귀",
+      "faction": "무소속",
+      "status": "POC_EXPANSION",
+      "validation_role": "공개 이력 기반 혼합 성향 읽기",
+      "stats": {
+        "health": 35,
+        "attack_power": 5,
+        "defense": 6,
+        "stamina": 6,
+        "internal": 6,
+        "momentum": 0
+      },
+      "public_tells": [
+        "직전 두 묶음의 플레이어 거리 선택에 대응",
+        "동일 대응 3회 연속 금지"
+      ],
+      "representative_threat": "상황별 연격·회피·강공",
+      "candidate_actions": [
+        "flowing_cloud_triple",
+        "four_ounces",
+        "basic_heavy_attack"
+      ],
+      "phase_change": {
+        "condition": "player_repeats_same_distance_plan_twice",
+        "effect": "counter_that_plan_weight_plus"
+      },
+      "public_task": "상대의 성향 전환을 유도하고 다른 계획으로 승리한다.",
+      "reward": {
+        "training_points": 5,
+        "money": 12,
+        "context_reward": "두 번째 10성 돌파 자격"
+      },
+      "stage_id": "stage_3"
+    },
+    {
+      "id": "duel_10_final_contender",
+      "order": 10,
+      "name": "십보의 끝",
+      "opponent": "진무결",
+      "epithet": "천하제일 후보",
+      "faction": "결승 진출자",
+      "status": "POC_EXPANSION",
+      "validation_role": "회차 무학의 최종 검증",
+      "stats": {
+        "health": 40,
+        "attack_power": 5,
+        "defense": 7,
+        "stamina": 6,
+        "internal": 7,
+        "momentum": 0
+      },
+      "public_tells": [
+        "전반은 거리 제어",
+        "체력 절반 이하에서 근접 압박",
+        "전환 조건을 전투 전에 공개"
+      ],
+      "representative_threat": "두 공개 성향의 단계 전환",
+      "candidate_actions": [
+        "hundred_li_soul_pursuit",
+        "flowing_cloud_triple",
+        "vajra_guard"
+      ],
+      "phase_change": {
+        "condition": "health_at_or_below_20",
+        "effect": "switch_from_range_to_pressure"
+      },
+      "public_task": "두 전투 단계에서 각각 다른 대응으로 승리한다.",
+      "reward": {
+        "training_points": 8,
+        "money": 20,
+        "context_reward": "회차 결말·무학 기록"
+      },
+      "stage_id": "stage_3"
+    }
+  ],
+  "edit_rules": [
+    "Enemy numbers are PoC hypotheses, not runtime truth.",
+    "Change stats, weights, tells, stage IDs, and rewards independently through stable IDs.",
+    "Do not add hidden player-plan inputs to increase difficulty.",
+    "The recommended PoC subset is major duels one through five.",
+    "Basic ultimates remain available from PoC start; a focused path may reach one manual at 10-star before major duel five.",
+    "stats.defense is the combat-start accumulated defense; basic guard generation remains a separate action rule.",
+    "Stage 2, stage 3, and hidden world-best battles remain expansion scope."
+  ],
+  "stage_contract": {
+    "tutorial": {
+      "stage_id": "tutorial",
+      "major_duel_orders": [
+        1
+      ]
+    },
+    "stage_1": {
+      "stage_id": "stage_1",
+      "label": "초반부",
+      "major_duel_orders": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "focused_mastery_10_possible_before_duel_order": 5
+    },
+    "stage_2": {
+      "stage_id": "stage_2",
+      "label": "중반부",
+      "major_duel_orders": [
+        6,
+        7,
+        8
+      ]
+    },
+    "stage_3": {
+      "stage_id": "stage_3",
+      "label": "마지막",
+      "major_duel_orders": [
+        9,
+        10
+      ]
+    },
+    "hidden": {
+      "stage_id": "hidden",
+      "label": "천하제일인 배틀",
+      "status": "FUTURE_HIDDEN",
+      "examples": [
+        "천마",
+        "무림맹주"
+      ]
+    }
+  }
+}
