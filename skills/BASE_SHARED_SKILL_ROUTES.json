@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "registry_role": "project-base-shared-skill-router",
+  "base": {
+    "repository": "alsdmlals4-eng/Base",
+    "commit": "5c95c8cc4434acc2505957d3ea2385064da99143",
+    "source_registry": "skills/BASE_SHARED_SKILL_ROUTES.json"
+  },
+  "project_adapter": "skills/PROJECT_BASE_SKILL_ADAPTER.json",
+  "routes": {
+    "legacy_retention_and_archives": {
+      "skill_id": "governing-legacy-retention-and-archives",
+      "base_path": "skills/governing-legacy-retention-and-archives/SKILL.md",
+      "adapter": "skills/PROJECT_BASE_SKILL_ADAPTER.json"
+    },
+    "godot_assets_before_creation": {
+      "skill_id": "evaluating-godot-assets-and-plugins-before-creation",
+      "base_path": "skills/evaluating-godot-assets-and-plugins-before-creation/SKILL.md",
+      "adapter": "skills/PROJECT_BASE_SKILL_ADAPTER.json"
+    }
+  },
+  "local_skill_policy": {
+    "base_shared_skills": "adapter-only",
+    "project_specific_skills": "local-only",
+    "duplicate_base_skill_bodies": false
+  }
+}
