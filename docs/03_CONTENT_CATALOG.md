@@ -1,6 +1,7 @@
 # 십보강호 콘텐츠 카탈로그
 
 > 책임: CURRENT_T0 구현, 다음 PoC 콘텐츠, PLANNED_T1, 확장 가설과 HOLD 경계  
+> 전투 규칙: `docs/02_COMBAT_RULES.md`  
 > 데이터: `docs/planning-data/poc_martial_arts.json`, `poc_enemy_duels.json`, `poc_map_rewards.json`
 
 ## 1. 상태 구분
@@ -15,7 +16,7 @@
 ## 2. CURRENT_T0
 
 - `[강호낭인]` 대 `[배외검객]`, 10칸·4/7·거리3.
-- 3수→3수→4수, 기초 행동 8종, 절초 목록 3종.
+- 3수→3수→4수, 기초 행동 8종, 절초 3종.
 - 합·방어·회피·필중·중단·강건·공개 상태 기반 최소 AI·복기.
 - 현재 수치는 최신 기획과 다르며 `docs/02_COMBAT_RULES.md`의 구현 차이 표를 따른다.
 
