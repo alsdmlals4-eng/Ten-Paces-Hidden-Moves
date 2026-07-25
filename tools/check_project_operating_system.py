@@ -227,12 +227,16 @@ def validate_shared_extensions(
         target = str(route.get("skill_id", ""))
         if not target:
             raise ContractError(f"Base shared extension route is missing skill_id: {route_name}")
+        if route_name not in shared_routes:
+            continue
         if shared_routes.get(route_name) != target:
             raise ContractError(f"project Skill Registry extension route mismatch: {route_name}")
         if target in extension_targets:
             raise ContractError("Base shared extension routes contain duplicate targets")
         extension_keys.add(str(route_name))
         extension_targets.add(target)
+    if not extension_keys:
+        raise ContractError("project Skill Registry exposes no Base shared extension route")
     return extension_keys
 
 
