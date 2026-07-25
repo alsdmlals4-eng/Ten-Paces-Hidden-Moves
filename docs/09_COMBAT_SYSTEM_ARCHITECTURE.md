@@ -1,7 +1,8 @@
 # 십보강호 전투 시스템 아키텍처
 
 > 책임: 실제 파일·상태·AI·판정·표현·재시작 경계와 최신 기획 데이터 인수 구조  
-> 규칙 원본: `docs/02_COMBAT_RULES.md`
+> 규칙 원본: `docs/02_COMBAT_RULES.md`  
+> 현재 기술 계보 기준: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`
 
 ## 1. 아키텍처 원칙
 
@@ -56,7 +57,7 @@ Schema·fallback·재시작·AI whitelist·로그 소비자를 함께 갱신해�
 
 현재 시그니처 `CombatAiPlanner.build_bundle_actions(...)`와 결정적 seed 원칙을 유지한다. 입력 whitelist만 사용하고 미확정 계획을 금지한다. 적 데이터의 public_tells·phase_change·candidate_actions를 runtime profile로 변환한다.
 
-현행 운영 토큰: `enemy_plan_source=public_state_ai`.
+현행 운영 토큰: `enemy_plan_source=public_state_ai`. `enemy_bundles` fixture는 `ai_enabled == false`인 명시적 테스트 경로에서만 허용한다.
 
 ## 6. 묶음 판정과 반환 구조
 
