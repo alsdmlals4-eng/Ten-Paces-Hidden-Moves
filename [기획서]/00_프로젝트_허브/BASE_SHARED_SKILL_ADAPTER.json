@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "adapter_role": "base-shared-skill-project-adapter",
+  "base": {
+    "repository": "alsdmlals4-eng/Base",
+    "commit": "c7c1103e4a69f8fdc9ee27aa382a21288605a7fb",
+    "adapter_contract": "docs/BASE_SHARED_SKILL_ADAPTER_CONTRACT.md"
+  },
+  "project": {
+    "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
+    "layout_policy": "preserve-existing-canonical-paths"
+  },
+  "role_bindings": {
+    "project_agents": "AGENTS.md",
+    "documentation_map": "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md",
+    "active_context": "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+    "skill_registry": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
+    "base_rules_version": "docs/BASE_RULES_VERSION.md",
+    "archive_root": "docs/archive/",
+    "third_party_inventory": "[기획서]/00_프로젝트_허브/THIRD_PARTY_ASSET_AND_PLUGIN_INVENTORY.json",
+    "license_record": "[기획서]/00_프로젝트_허브/THIRD_PARTY_ASSET_AND_PLUGIN_INVENTORY.json"
+  },
+  "canonical_sources": [
+    "docs/01_GAME_DESIGN.md",
+    "docs/02_COMBAT_RULES.md",
+    "docs/05_COMBAT_POC_SPEC.md",
+    "docs/08_TEST_CHECKLIST.md"
+  ],
+  "legacy_search_roots": [
+    "docs/",
+    "[기획서]/",
+    "skills/"
+  ],
+  "protected_paths": [
+    "data/**",
+    "src/**",
+    "scenes/**",
+    "assets/**",
+    "addons/**",
+    "project.godot"
+  ],
+  "engine": {
+    "name": "Godot",
+    "version": "4.7",
+    "language": "GDScript",
+    "renderer": "gl_compatibility",
+    "platforms": ["Windows PC"],
+    "project_root": ".",
+    "addon_root": "addons/",
+    "asset_roots": ["assets/", "scenes/", "data/"]
+  },
+  "existing_third_party": [
+    {
+      "path": "addons/godot_ai/",
+      "status": "EXISTING_REVIEW_REQUIRED",
+      "evidence": "project.godot editor_plugins and autoload"
+    }
+  ],
+  "validators": [
+    {
+      "id": "route-json",
+      "type": "static",
+      "command": "python -m json.tool \"[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ROUTES.json\"",
+      "status": "AVAILABLE"
+    },
+    {
+      "id": "adapter-json",
+      "type": "static",
+      "command": "python -m json.tool \"[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ADAPTER.json\"",
+      "status": "AVAILABLE"
+    },
+    {
+      "id": "project-registry-schema",
+      "type": "static",
+      "command": null,
+      "status": "USE_EXISTING_PROJECT_VALIDATOR"
+    },
+    {
+      "id": "godot-project-parse-and-related-scene-smoke",
+      "type": "runtime",
+      "command": null,
+      "status": "MANUAL_OR_PROJECT_WORKFLOW"
+    }
+  ],
+  "rollback_reference": "Git commit before adapter adoption",
+  "shared_skill_overrides": {
+    "governing-legacy-retention-and-archives": {
+      "archive_root": "docs/archive/",
+      "delete_requires_user_approval": true
+    },
+    "evaluating-godot-assets-and-plugins-before-creation": {
+      "search_before_creation": true,
+      "purchase_requires_user_approval": true,
+      "installation_requires_separate_scope": true,
+      "core_system_lock_in": "avoid"
+    }
+  }
+}
