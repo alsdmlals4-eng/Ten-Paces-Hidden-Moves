@@ -13,6 +13,8 @@
 
 `CombatResolutionEngine`이 계산하고, `CombatAiPlanner`는 공개 정보만 읽는다. UI·연출은 반환 이벤트를 재생한다.
 
+기술 구현 계보 기준은 PR #7 `659c57e7ffa588ad6a6471ed9b5394985b159eaf`이다. AI fixture는 `enemy_plan_source=public_state_ai`를 기본으로 하며 `enemy_bundles`는 `ai_enabled == false`인 명시적 테스트에서만 허용한다.
+
 ## 2. 전장과 거리
 
 - 전장은 1~10의 일자형 10칸.
