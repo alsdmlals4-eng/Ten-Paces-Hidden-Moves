@@ -1,17 +1,24 @@
 {
-  "schema_version": 8,
+  "schema_version": 9,
   "goal_id": "repeat_poc_technical_implementation",
   "goal_document": "docs/decisions/2026-07-24_REPEAT_POC_CORE_VALIDATION_GOAL.md",
   "implementation_plan": "plans/2026-07-24-repeat-poc-core-validation-implementation-plan.md",
   "codex_entrypoint": "plans/CODEX_GOAL_REPEAT_POC.md",
   "ci_policy": "docs/decisions/2026-07-24_CI_COST_OPTIMIZATION_AND_QUOTA_GATE.md",
-  "latest_rule_decision": "docs/decisions/2026-07-24_PREPARE_AND_AUTO_PLACEMENT_RULE_CHANGE.md",
+  "latest_implemented_rule_decision": "docs/decisions/2026-07-24_PREPARE_AND_AUTO_PLACEMENT_RULE_CHANGE.md",
   "integration_decision": "docs/decisions/2026-07-24_MAIN_STACK_INTEGRATION_AND_REASSESSMENT_START.md",
+  "approved_planning_baseline": "docs/decisions/2026-07-25_PROJECT_REASSESSMENT_APPROVED_PLANNING_BASELINE.md",
   "github_issue": {
     "number": 16,
     "title": "REPEAT_POC: 가설 기록·결정적 복기·라이벌 성향 기술 구현 — 완료",
     "state": "CLOSED",
     "state_reason": "COMPLETED"
+  },
+  "planning_pull_request": {
+    "number": 42,
+    "branch": "planning/project-reassessment-and-pointed-fun",
+    "state": "OPEN_DRAFT",
+    "purpose": "approved planning data consolidation and project reassessment"
   },
   "baseline": {
     "canonical_branch": "main",
@@ -77,6 +84,12 @@
     "main_push_full_validation": {
       "conclusion": "NOT_OBSERVED_VIA_CONNECTOR",
       "note": "Do not infer a push-triggered main run from the validated equivalent product tree."
+    },
+    "planning_data_consolidation": {
+      "date": "2026-07-25",
+      "conclusion": "COMPLETE_ON_PLANNING_BRANCH",
+      "canonical_record": "docs/decisions/2026-07-25_PROJECT_REASSESSMENT_APPROVED_PLANNING_BASELINE.md",
+      "source": "PR #42 approved user decisions and supersession trace"
     }
   },
   "status": {
@@ -85,14 +98,17 @@
     "repeat_poc_technical_goal": "COMPLETE",
     "planning": "IN_PROGRESS",
     "current_task": "PROJECT_REASSESSMENT_AND_POINTED_FUN",
+    "approved_planning_data_consolidated": true,
+    "planning_document_sync": "README_ACTIVE_CONTEXT_STATUS_UPDATED",
+    "canonical_gameplay_docs_full_rewrite": "PENDING_PLANNING_COMPLETE",
     "a0_contract_alignment": "IMPLEMENTED_FULL_ACTIONS_PASS",
     "a1_rival_ai": "IMPLEMENTED_FULL_ACTIONS_PASS",
     "a2_hypothesis_and_summary": "IMPLEMENTED_FULL_ACTIONS_PASS",
     "a3_review_ui_and_gate": "IMPLEMENTED_FULL_ACTIONS_PASS",
-    "prepare_card_rename": "IMPLEMENTED_FULL_ACTIONS_PASS",
-    "multislot_omen_label": "IMPLEMENTED_FULL_ACTIONS_PASS",
-    "prepare_movement_persistence": "IMPLEMENTED_FULL_ACTIONS_PASS",
-    "prepare_meditation_momentum": "IMPLEMENTED_FULL_ACTIONS_PASS",
+    "prepare_card_rename": "IMPLEMENTED_LEGACY_RULE_SUPERSEDED_BY_PLANNING",
+    "multislot_omen_label": "IMPLEMENTED_RULE_REVISED_IN_PLANNING",
+    "prepare_movement_persistence": "IMPLEMENTED_LEGACY_RULE_SUPERSEDED_BY_PLANNING",
+    "prepare_meditation_momentum": "IMPLEMENTED_LEGACY_RULE_SUPERSEDED_BY_PLANNING",
     "basic_card_auto_placement": "IMPLEMENTED_FULL_ACTIONS_PASS",
     "ultimate_auto_reservation": "IMPLEMENTED_FULL_ACTIONS_PASS",
     "ultimate_precommit_refund": "IMPLEMENTED_FULL_ACTIONS_PASS",
@@ -116,5 +132,5 @@
     "technical_implementation_complete": true,
     "mvp_complete": false
   },
-  "last_updated_at": "2026-07-24"
+  "last_updated_at": "2026-07-25"
 }
