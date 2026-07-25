@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "registry_role": "project-base-shared-skill-router",
+  "base": {
+    "repository": "alsdmlals4-eng/Base",
+    "commit": "c7c1103e4a69f8fdc9ee27aa382a21288605a7fb",
+    "source_registry": "skills/BASE_SHARED_SKILL_ROUTES.json"
+  },
+  "project_adapter": "[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ADAPTER.json",
+  "routes": {
+    "legacy_retention_and_archives": {
+      "skill_id": "governing-legacy-retention-and-archives",
+      "base_path": "skills/governing-legacy-retention-and-archives/SKILL.md",
+      "adapter": "[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ADAPTER.json",
+      "trigger_tags": ["legacy-retention", "archive-governance", "legacy-reconciliation"]
+    },
+    "godot_asset_plugin_reuse_first": {
+      "skill_id": "evaluating-godot-assets-and-plugins-before-creation",
+      "base_path": "skills/evaluating-godot-assets-and-plugins-before-creation/SKILL.md",
+      "adapter": "[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ADAPTER.json",
+      "trigger_tags": ["godot-asset-search", "godot-plugin-search", "commercial-plugin", "reuse-before-build"]
+    }
+  },
+  "local_skill_policy": {
+    "base_shared_skills": "adapter-only",
+    "project_specific_skills": "local-only",
+    "duplicate_base_skill_bodies": false,
+    "existing_local_shared_copies": "separate-legacy-review-required"
+  }
+}
