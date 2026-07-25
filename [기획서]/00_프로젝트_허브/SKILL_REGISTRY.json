@@ -19,6 +19,8 @@
     "commit": "41a20584dd2ee51d917e5c9d7cab6838e1ceba7e",
     "legacy_aliases": "skills/LEGACY_SKILL_ALIASES.md",
     "shared_learning_log": "skills/SKILL_LEARNING_LOG.md",
+    "shared_extension_registry": "skills/BASE_SHARED_SKILL_ROUTES.json",
+    "shared_extension_commit": "6a224e450f9420223c00921f3c56e051612f92ad",
     "shared_skill_routes": {
       "intake_and_work_contract": "managing-project-intake-and-work-contract",
       "operating_system": "managing-game-project-operating-system",
@@ -44,7 +46,8 @@
       "game_user_research": "governing-game-user-research-coverage",
       "user_learning_notes": "creating-user-learning-notes",
       "project_visual_dashboard": "building-project-visual-dashboards",
-      "engine_runtime_diagnosis": "diagnosing-game-engine-runtime-failures"
+      "engine_runtime_diagnosis": "diagnosing-game-engine-runtime-failures",
+      "legacy_retention_and_archives": "governing-legacy-retention-and-archives"
     }
   },
   "human_presentation": {
