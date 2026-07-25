@@ -3,7 +3,7 @@
   "adapter_role": "base-shared-skill-project-adapter",
   "base": {
     "repository": "alsdmlals4-eng/Base",
-    "commit": "039465c4f135f6de1e524bd147a8005d8a1da28f"
+    "commit": "6a224e450f9420223c00921f3c56e051612f92ad"
   },
   "project": {
     "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
@@ -25,14 +25,7 @@
     "docs/05_COMBAT_POC_SPEC.md",
     "docs/08_TEST_CHECKLIST.md"
   ],
-  "protected_paths": [
-    "data/",
-    "src/",
-    "scenes/",
-    "assets/",
-    "addons/",
-    "project.godot"
-  ],
+  "protected_paths": ["data/", "src/", "scenes/", "assets/", "addons/", "project.godot"],
   "engine": {
     "project_file": "project.godot",
     "addon_root": "addons/",
@@ -51,28 +44,12 @@
   "shared_skill_overrides": {
     "governing-legacy-retention-and-archives": {
       "adapter": "[기획서]/00_프로젝트_허브/ARCHIVE_RETENTION_ADAPTER.json",
-      "current_canon_priority": [
-        "docs/01_GAME_DESIGN.md",
-        "docs/02_COMBAT_RULES.md",
-        "docs/05_COMBAT_POC_SPEC.md",
-        "docs/08_TEST_CHECKLIST.md"
-      ],
+      "current_canon_priority": ["docs/01_GAME_DESIGN.md", "docs/02_COMBAT_RULES.md", "docs/05_COMBAT_POC_SPEC.md", "docs/08_TEST_CHECKLIST.md"],
       "existing_legacy_migration": "NOT_IN_THIS_ADOPTION"
     },
     "evaluating-godot-assets-and-plugins-before-creation": {
-      "search_focus": [
-        "card UI",
-        "tooltip",
-        "turn and action sequence",
-        "grid",
-        "combat log",
-        "test tooling"
-      ],
-      "core_systems_not_to_outsource": [
-        "martial-art combination",
-        "action-slot judgment",
-        "combat rules"
-      ]
+      "search_focus": ["card UI", "tooltip", "turn and action sequence", "grid", "combat log", "test tooling"],
+      "core_systems_not_to_outsource": ["martial-art combination", "action-slot judgment", "combat rules"]
     }
   }
 }
