@@ -32,6 +32,19 @@ BUILTIN_ACTION_IDS = {
     "basic_stance",
 }
 
+EXPECTED_STAGE_IDS = [
+    "tutorial",
+    "stage_1",
+    "stage_1",
+    "stage_1",
+    "stage_1",
+    "stage_2",
+    "stage_2",
+    "stage_2",
+    "stage_3",
+    "stage_3",
+]
+
 
 def load_object(path: Path) -> dict[str, Any]:
     try:
@@ -90,7 +103,10 @@ def validate_technique(
     technique_ids: set[str],
 ) -> None:
     technique_id = str(technique.get("id", ""))
-    require(technique_id and technique_id not in technique_ids, f"duplicate or empty technique id: {technique_id!r}")
+    require(
+        technique_id and technique_id not in technique_ids,
+        f"duplicate or empty technique id: {technique_id!r}",
+    )
     technique_ids.add(technique_id)
     action_slots = int(technique.get("action_slots", 0))
     require(action_slots in slots, f"{technique_id}: invalid action_slots")
@@ -106,7 +122,10 @@ def validate_technique(
     require(variance == calculated - target, f"{technique_id}: variance is inconsistent")
     within = abs(variance) <= tolerance
     require(within, f"{technique_id}: variance {variance} exceeds ±{tolerance}")
-    require(budget.get("within_auto_tolerance") is within, f"{technique_id}: tolerance flag is inconsistent")
+    require(
+        budget.get("within_auto_tolerance") is within,
+        f"{technique_id}: tolerance flag is inconsistent",
+    )
     effects = technique.get("effects", [])
     require(isinstance(effects, list), f"{technique_id}: effects must be a list")
     for index, effect in enumerate(effects):
@@ -128,28 +147,39 @@ def validate_manuals(
     start = data.get("starting_rule", {})
     manuals = data.get("manuals", [])
     require(isinstance(manuals, list), "manuals: manuals must be a list")
-    require(len(manuals) == int(start.get("candidate_manuals", -1)) == 6, "manuals: expected six candidates")
+    require(
+        len(manuals) == int(start.get("candidate_manuals", -1)) == 6,
+        "manuals: expected six candidates",
+    )
     require(int(start.get("choose", -1)) == 4, "manuals: starting choice must be four")
     require(int(start.get("starting_mastery", -1)) == 3, "manuals: starting mastery must be three")
     manual_ids: set[str] = set()
     technique_ids: set[str] = set()
-    pending_patch_targets: list[tuple[str, str]] = []
     required_mastery = {"1", "3", "5", "7", "9", "10"}
     medical_cap = int(data.get("medical_cap", -1))
     require(medical_cap == 4, "manuals: medical cap must be four")
     for manual in manuals:
         require(isinstance(manual, dict), "manuals: manual entry must be an object")
         manual_id = str(manual.get("id", ""))
-        require(manual_id and manual_id not in manual_ids, f"duplicate or empty manual id: {manual_id!r}")
+        require(
+            manual_id and manual_id not in manual_ids,
+            f"duplicate or empty manual id: {manual_id!r}",
+        )
         manual_ids.add(manual_id)
         medical = manual.get("medical", {})
-        require(all(0 <= int(value) <= medical_cap for value in medical.values()), f"{manual_id}: medical outside cap")
+        require(
+            all(0 <= int(value) <= medical_cap for value in medical.values()),
+            f"{manual_id}: medical outside cap",
+        )
         mastery = manual.get("mastery", {})
         require(set(mastery) == required_mastery, f"{manual_id}: mastery keys must be 1/3/5/7/9/10")
         local_techniques: set[str] = set()
         for star in ("3", "7", "10"):
             entry = mastery[star]
-            require(entry.get("type") in {"technique", "ultimate"}, f"{manual_id}:{star}: technique type required")
+            require(
+                entry.get("type") in {"technique", "ultimate"},
+                f"{manual_id}:{star}: technique type required",
+            )
             technique = entry.get("data", {})
             validate_technique(technique, slots, tolerance, scopes, triggers, technique_ids)
             local_techniques.add(str(technique["id"]))
@@ -157,54 +187,174 @@ def validate_manuals(
             entry = mastery[star]
             require(entry.get("type") == "patch", f"{manual_id}:{star}: patch type required")
             target = str(entry.get("target", ""))
-            pending_patch_targets.append((manual_id, target))
-        for owner, target in pending_patch_targets[-2:]:
-            require(target in local_techniques or target == "medical", f"{owner}: missing patch target {target!r}")
+            require(
+                target in local_techniques or target == "medical",
+                f"{manual_id}: missing patch target {target!r}",
+            )
     return technique_ids
 
 
-def validate_duels(data: dict[str, Any], technique_ids: set[str]) -> None:
+def validate_duels(data: dict[str, Any], technique_ids: set[str]) -> list[str]:
     validate_status(data, "duels")
     contract = data.get("ai_contract", {})
     require(contract.get("reads_player_uncommitted_plan") is False, "duels: AI may not read uncommitted plan")
     require(int(contract.get("candidate_limit", -1)) == 3, "duels: candidate limit must be three")
     duels = data.get("major_duels", [])
     require(isinstance(duels, list) and len(duels) == 10, "duels: expected ten major duels")
+    ordered = sorted(duels, key=lambda item: int(item.get("order", 0)))
+    require(
+        [int(item.get("order", 0)) for item in ordered] == list(range(1, 11)),
+        "duels: order must be 1 through 10",
+    )
+
     duel_ids: set[str] = set()
-    orders: list[int] = []
     allowed_actions = BUILTIN_ACTION_IDS | technique_ids
-    for duel in duels:
+    for duel in ordered:
         duel_id = str(duel.get("id", ""))
         require(duel_id and duel_id not in duel_ids, f"duels: duplicate or empty id {duel_id!r}")
         duel_ids.add(duel_id)
-        orders.append(int(duel.get("order", 0)))
         candidates = duel.get("candidate_actions", [])
-        require(isinstance(candidates, list) and 1 <= len(candidates) <= 3, f"{duel_id}: candidate actions must contain one to three ids")
+        require(
+            isinstance(candidates, list) and 1 <= len(candidates) <= 3,
+            f"{duel_id}: candidate actions must contain one to three ids",
+        )
         unknown = [str(value) for value in candidates if str(value) not in allowed_actions]
         require(not unknown, f"{duel_id}: unknown candidate actions {unknown}")
         require(bool(duel.get("public_tells")), f"{duel_id}: public tells required")
         require(bool(duel.get("public_task")), f"{duel_id}: public task required")
-    require(orders == list(range(1, 11)), "duels: order must be 1 through 10")
+
+    require(
+        [str(item.get("stage_id", "")) for item in ordered] == EXPECTED_STAGE_IDS,
+        "duels: stage mapping must be tutorial 1, stage1 2-5, stage2 6-8, stage3 9-10",
+    )
+    require(
+        [str(item.get("status", "")) for item in ordered[:5]] == ["POC_PRIMARY"] * 5,
+        "duels: major duels 1 through 5 must be POC_PRIMARY",
+    )
+    require(
+        [str(item.get("status", "")) for item in ordered[5:]] == ["POC_EXPANSION"] * 5,
+        "duels: major duels 6 through 10 must be POC_EXPANSION",
+    )
+
+    expected_subset = [str(item["id"]) for item in ordered[:5]]
     subset = [str(value) for value in data.get("poc_runtime_subset", [])]
-    require(len(subset) == 3 and len(set(subset)) == 3, "duels: PoC runtime subset must have three unique ids")
-    require(all(value in duel_ids for value in subset), "duels: PoC runtime subset references missing duel")
+    require(subset == expected_subset, "duels: PoC runtime subset must be major duels 1 through 5")
+
+    stage_contract = data.get("stage_contract", {})
+    require(
+        stage_contract.get("tutorial", {}).get("major_duel_orders") == [1],
+        "duels: tutorial must contain major duel 1",
+    )
+    require(
+        stage_contract.get("stage_1", {}).get("major_duel_orders") == [2, 3, 4, 5],
+        "duels: stage 1 must contain major duels 2 through 5",
+    )
+    require(
+        stage_contract.get("stage_2", {}).get("major_duel_orders") == [6, 7, 8],
+        "duels: stage 2 must contain major duels 6 through 8",
+    )
+    require(
+        stage_contract.get("stage_3", {}).get("major_duel_orders") == [9, 10],
+        "duels: stage 3 must contain major duels 9 and 10",
+    )
+    require(
+        int(stage_contract.get("stage_1", {}).get("first_ultimate_available_after_duel_order", 0)) == 5,
+        "duels: first ultimate must become available after major duel 5",
+    )
+    hidden = stage_contract.get("hidden", {})
+    require(hidden.get("status") == "FUTURE_HIDDEN", "duels: hidden battle must remain future scope")
+    require(bool(hidden.get("examples")), "duels: hidden battle examples are required")
+
+    unlock = ordered[4].get("progression_unlock", {})
+    require(unlock.get("type") == "ultimate_access", "duels: major duel 5 must unlock ultimate access")
+    require(unlock.get("timing") == "after_victory", "duels: ultimate unlock must happen after victory")
+    require(unlock.get("scope") == "first_available", "duels: unlock must expose the first available ultimate")
+    return expected_subset
 
 
-def validate_map(data: dict[str, Any]) -> None:
+def validate_map(data: dict[str, Any], expected_subset: list[str]) -> None:
     validate_status(data, "map")
+    campaign = data.get("campaign_structure", {})
+    require(
+        campaign.get("tutorial", {}).get("major_duel_orders") == [1],
+        "map: tutorial must contain major duel 1",
+    )
+    stages = campaign.get("stages", [])
+    require(isinstance(stages, list) and len(stages) == 3, "map: expected three stages")
+    require(
+        [stage.get("major_duel_orders") for stage in stages] == [[2, 3, 4, 5], [6, 7, 8], [9, 10]],
+        "map: stage duel ranges differ",
+    )
+    require(
+        int(stages[0].get("first_ultimate_available_after_duel_order", 0)) == 5,
+        "map: stage 1 must unlock the first ultimate after duel 5",
+    )
+    hidden = campaign.get("hidden_duel", {})
+    require(hidden.get("status") == "FUTURE_HIDDEN", "map: hidden duel must remain future scope")
+    require(hidden.get("position") == "after_stage_3", "map: hidden duel must follow stage 3")
+    require(hidden.get("required_for_main_ending") is False, "map: hidden duel must be optional")
+
     slice_data = data.get("poc_slice", {})
-    require(len(slice_data.get("major_duels", [])) == 3, "map: PoC slice must use three duels")
-    require(int(slice_data.get("target_visited_nodes", -1)) == 5, "map: PoC slice must target five nodes")
+    require(slice_data.get("major_duels") == expected_subset, "map: PoC slice must use major duels 1 through 5")
+    require(slice_data.get("included_sections") == ["tutorial", "stage_1"], "map: PoC must include tutorial and stage 1")
+    require(int(slice_data.get("gap_count", -1)) == 4, "map: five duels must create four gaps")
+
+    per_gap = slice_data.get("intermediate_nodes_per_gap", {})
+    require(
+        (int(per_gap.get("min", -1)), float(per_gap.get("target", -1)), int(per_gap.get("max", -1)))
+        == (2, 2.5, 3),
+        "map: every gap must contain two to three intermediate nodes",
+    )
+    totals = slice_data.get("total_intermediate_nodes", {})
+    require(
+        [int(totals.get(key, -1)) for key in ("min", "target", "max")] == [8, 10, 12],
+        "map: PoC intermediate-node totals must be 8/10/12",
+    )
+    visited = slice_data.get("target_visited_nodes", {})
+    require(
+        [int(visited.get(key, -1)) for key in ("min", "target", "max")] == [13, 15, 17],
+        "map: PoC visited-node totals must be 13/15/17",
+    )
+    require(
+        slice_data.get("first_ultimate_available_after_duel_id") == expected_subset[4],
+        "map: first ultimate unlock must reference major duel 5",
+    )
+
     full = data.get("full_run_hypothesis", {})
+    require(int(full.get("mandatory_major_duels", 0)) == 10, "map: full run must use ten major duels")
+    require(int(full.get("gap_count", 0)) == 9, "map: full run must contain nine duel gaps")
+    full_gap = full.get("intermediate_nodes_between_major_duels", {})
+    require(
+        (int(full_gap.get("min", -1)), float(full_gap.get("target", -1)), int(full_gap.get("max", -1)))
+        == (2, 2.5, 3),
+        "map: full-run gaps must contain two to three intermediate nodes",
+    )
+    full_nodes = full.get("expected_total_visited_nodes", {})
+    require(
+        [int(full_nodes.get(key, -1)) for key in ("min", "target", "max")] == [28, 33, 37],
+        "map: full-run visited-node totals must be 28/33/37",
+    )
     combats = full.get("expected_total_combats", {})
-    require(int(combats.get("min", 0)) <= int(combats.get("target", -1)) <= int(combats.get("max", -2)), "map: combat range is invalid")
+    require(
+        int(combats.get("min", 0)) <= int(combats.get("target", -1)) <= int(combats.get("max", -2)),
+        "map: combat range is invalid",
+    )
     weights = data.get("performance_grade", {}).get("dimensions", {})
     require(sum(int(value) for value in weights.values()) == 100, "map: performance weights must sum to 100")
     thresholds = data.get("performance_grade", {}).get("thresholds", {})
-    require([int(thresholds[key]) for key in ("S", "A", "B", "C")] == [85, 70, 55, 0], "map: grade thresholds differ")
+    require(
+        [int(thresholds[key]) for key in ("S", "A", "B", "C")] == [85, 70, 55, 0],
+        "map: grade thresholds differ",
+    )
     medical = data.get("medical", {})
-    require(int(medical.get("start", -1)) == 0 and int(medical.get("cap", -1)) == 4, "map: medical range must be 0 to 4")
-    require(str(medical.get("post_victory_heal", "")) == "min(missing_health, 2 + medical)", "map: recovery formula differs")
+    require(
+        int(medical.get("start", -1)) == 0 and int(medical.get("cap", -1)) == 4,
+        "map: medical range must be 0 to 4",
+    )
+    require(
+        str(medical.get("post_victory_heal", "")) == "min(missing_health, 2 + medical)",
+        "map: recovery formula differs",
+    )
 
 
 def validate_sanity(data: dict[str, Any]) -> None:
@@ -214,7 +364,10 @@ def validate_sanity(data: dict[str, Any]) -> None:
     results = data.get("results", {})
     require(float(results.get("median_rounds", 0)) > 0, "sanity: median rounds must be positive")
     distribution = results.get("distribution", {})
-    require(sum(int(value) for value in distribution.values()) == int(data["runs"]), "sanity: distribution must sum to runs")
+    require(
+        sum(int(value) for value in distribution.values()) == int(data["runs"]),
+        "sanity: distribution must sum to runs",
+    )
 
 
 def run(root: Path) -> None:
@@ -222,8 +375,8 @@ def run(root: Path) -> None:
     loaded = {key: load_object(directory / filename) for key, filename in FILES.items()}
     slots, tolerance, scopes, triggers = validate_budget(loaded["budget"])
     technique_ids = validate_manuals(loaded["manuals"], slots, tolerance, scopes, triggers)
-    validate_duels(loaded["duels"], technique_ids)
-    validate_map(loaded["map"])
+    expected_subset = validate_duels(loaded["duels"], technique_ids)
+    validate_map(loaded["map"], expected_subset)
     validate_sanity(loaded["sanity"])
 
 
