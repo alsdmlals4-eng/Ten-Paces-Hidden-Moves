@@ -3,7 +3,7 @@
   "adapter_role": "base-shared-skill-project-adapter",
   "base": {
     "repository": "alsdmlals4-eng/Base",
-    "commit": "c7c1103e4a69f8fdc9ee27aa382a21288605a7fb",
+    "commit": "a8218b454bcfd9e72c792f4bb8ed614a385e22d6",
     "adapter_contract": "docs/BASE_SHARED_SKILL_ADAPTER_CONTRACT.md"
   },
   "project": {
