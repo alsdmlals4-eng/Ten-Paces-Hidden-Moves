@@ -6,6 +6,12 @@
     "commit": "6a224e450f9420223c00921f3c56e051612f92ad",
     "source_registry": "skills/BASE_SHARED_SKILL_ROUTES.json"
   },
+  "base_registry_route": {
+    "source_registry": "skills/SKILL_REGISTRY.json",
+    "selection": "automatic-trigger-match",
+    "adapter": "skills/PROJECT_BASE_SKILL_ADAPTER.json",
+    "copy_skill_bodies_to_project": false
+  },
   "project_adapter": "skills/PROJECT_BASE_SKILL_ADAPTER.json",
   "routes": {
     "legacy_retention_and_archives": {
