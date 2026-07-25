@@ -28,6 +28,43 @@ def load_json(path: Path) -> dict[str, Any]:
     return value
 
 
+def shared_extension_keys(
+    root: Path,
+    base: dict[str, Any],
+    project_routes: dict[str, Any],
+) -> set[str]:
+    registry_path = str(base.get("shared_extension_registry", ""))
+    extension_commit = str(base.get("shared_extension_commit", ""))
+    if registry_path != "skills/BASE_SHARED_SKILL_ROUTES.json":
+        raise SkillIntegrityError("Base shared extension Registry path mismatch")
+    extension_registry = load_json(root / registry_path)
+    if extension_registry.get("base", {}).get("commit") != extension_commit:
+        raise SkillIntegrityError("Base shared extension Registry commit mismatch")
+    extension_routes = extension_registry.get("routes", {})
+    if not isinstance(extension_routes, dict) or not extension_routes:
+        raise SkillIntegrityError("Base shared extension routes must not be empty")
+
+    exposed: set[str] = set()
+    exposed_targets: set[str] = set()
+    for route_name, route in extension_routes.items():
+        if not isinstance(route, dict):
+            raise SkillIntegrityError(f"invalid Base shared extension route: {route_name}")
+        target = str(route.get("skill_id", ""))
+        if not target:
+            raise SkillIntegrityError(f"missing Base shared extension target: {route_name}")
+        if route_name not in project_routes:
+            continue
+        if project_routes.get(route_name) != target:
+            raise SkillIntegrityError(f"project shared extension route mismatch: {route_name}")
+        if target in exposed_targets:
+            raise SkillIntegrityError("project shared extension routes contain duplicate Skills")
+        exposed.add(str(route_name))
+        exposed_targets.add(target)
+    if not exposed:
+        raise SkillIntegrityError("project Skill Registry exposes no shared extension")
+    return exposed
+
+
 def run(root: Path = ROOT) -> None:
     registry_path = root / "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json"
     registry = load_json(registry_path)
@@ -93,12 +130,18 @@ def run(root: Path = ROOT) -> None:
         raise SkillIntegrityError("stale Base commit")
     if not isinstance(routes, dict):
         raise SkillIntegrityError("Base shared routes must be an object")
-    route_values = [str(value) for value in routes.values()]
+
+    extension_keys = shared_extension_keys(root, base, routes)
+    route_values = [
+        str(value)
+        for route_name, value in routes.items()
+        if str(route_name) not in extension_keys
+    ]
     if len(route_values) != len(set(route_values)):
-        raise SkillIntegrityError("Base shared routes must contain unique Skills")
+        raise SkillIntegrityError("Base core shared routes must contain unique Skills")
     if set(route_values) != expected_ids:
         raise SkillIntegrityError(
-            "Base shared routes differ from freshness contract: "
+            "Base core shared routes differ from freshness contract: "
             f"missing={sorted(expected_ids - set(route_values))} "
             f"unexpected={sorted(set(route_values) - expected_ids)}"
         )
