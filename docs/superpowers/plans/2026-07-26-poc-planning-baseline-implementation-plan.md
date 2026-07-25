@@ -97,7 +97,7 @@
 - Consumes: `major_duels[].id`, `major_duels[].order`, `poc_runtime_subset`, `poc_slice.major_duels`.
 - Produces: `major_duels[].stage_id`, `stage_contract`, `campaign_structure`, `intermediate_nodes_per_gap`, `target_visited_nodes`, `first_ultimate_available_after_duel_id`.
 
-- [ ] **Step 1: Write failing stage and node tests**
+- [x] **Step 1: Write failing stage and node tests**
   - PoC subset must equal major duels 1~5.
   - Stage mapping must equal tutorial 1, stage1 2~5, stage2 6~8, stage3 9~10.
   - Every gap must allow 2~3 intermediate nodes.
@@ -105,32 +105,26 @@
   - Duel 5 must unlock first ultimate after victory.
   - Hidden battle must be `FUTURE_HIDDEN` after stage3 and optional for the main ending.
 
-- [ ] **Step 2: Run PR validation and verify RED**
-  - Expected: `Validate PoC planning data` fails because the current data still uses three duels and five visited nodes.
+- [x] **Step 2: Run PR validation and verify RED**
+  - PR Validation run #740에서 `Validate PoC planning data`가 기존 3전 데이터 때문에 의도대로 실패했다.
 
-- [ ] **Step 3: Update editable planning data**
-  - Set `poc_runtime_subset` and `poc_slice.major_duels` to the first five stable duel IDs.
-  - Mark duels 1~5 `POC_PRIMARY`, duels 6~10 `POC_EXPANSION`.
-  - Add stage IDs and campaign stage metadata.
-  - Add four PoC gaps with 2~3 intermediate nodes.
-  - Set total intermediate nodes to 8/10/12 and total visited nodes to 13/15/17.
-  - Add the first ultimate unlock to duel 5.
-  - Add hidden world-best battle metadata after stage3.
+- [x] **Step 3: Update editable planning data**
+  - `poc_runtime_subset`과 `poc_slice.major_duels`를 첫 다섯 안정 ID로 갱신했다.
+  - 주요 비무 1~5를 `POC_PRIMARY`, 6~10을 `POC_EXPANSION`으로 분리했다.
+  - 스테이지 ID·캠페인 메타데이터·네 구간 노드 범위를 추가했다.
+  - 중간 노드 합계 8/10/12와 총 방문 노드 13/15/17을 기록했다.
+  - 주요 비무 5 첫 절초 해금과 히든 천하제일인 메타데이터를 추가했다.
 
-- [ ] **Step 4: Update validator**
-  - Validate the exact PoC subset and stage order.
-  - Validate intermediate-node bounds and derived totals.
-  - Validate duel 5 unlock and hidden optional scope.
-  - Keep existing budget, effect, ID, reward, and medical checks.
+- [x] **Step 4: Update validator**
+  - 정확한 PoC subset·스테이지 순서·노드 범위·파생 합계·절초 해금·히든 선택 범위를 검사한다.
+  - 기존 예산·효과·ID·보상·의료 검사를 유지한다.
 
-- [ ] **Step 5: Run tests and verify GREEN**
-  - Run `python -m unittest tests.test_poc_planning_data -v`.
-  - Run `python tools/check_poc_planning_data.py --root .`.
-  - Confirm PR Validation completes successfully.
+- [x] **Step 5: Run tests and verify GREEN**
+  - PR Validation run #750에서 planning·운영체계·freshness·전투 영향 지도·기존 계약 검사가 모두 통과했다.
 
-- [ ] **Step 6: Synchronize responsible documents**
-  - Replace all `1~3`, `3전`, `2회 성장`, `총 5노드` current PoC statements with the 1~5 and 13~17-node contract.
-  - Record stage1 ultimate unlock and the non-PoC stage2/stage3/hidden boundary.
+- [x] **Step 6: Synchronize responsible documents**
+  - 활성 정본의 `1~3`, `3전`, `2회 성장`, `총 5노드` 현재 PoC 서술을 1~5·13~17노드 계약으로 교체했다.
+  - 스테이지 1 절초 해금과 스테이지 2·3·히든 비구현 경계를 기록했다.
 
-- [ ] **Step 7: Update PR trace**
-  - Update PR #45 body with the revised PoC scope, TDD evidence, validation run, and unchanged runtime boundary.
+- [x] **Step 7: Update PR trace**
+  - PR #45 본문과 승인 추적 기록을 최신 PoC 구조와 검증 증거로 갱신한다.
