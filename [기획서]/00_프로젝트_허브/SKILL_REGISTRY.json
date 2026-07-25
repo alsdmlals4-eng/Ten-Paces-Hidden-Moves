@@ -16,7 +16,7 @@
   },
   "base_integration": {
     "repository": "alsdmlals4-eng/Base",
-    "commit": "41a20584dd2ee51d917e5c9d7cab6838e1ceba7e",
+    "commit": "c7c1103e4a69f8fdc9ee27aa382a21288605a7fb",
     "legacy_aliases": "skills/LEGACY_SKILL_ALIASES.md",
     "shared_learning_log": "skills/SKILL_LEARNING_LOG.md",
     "shared_skill_routes": {
@@ -44,7 +44,9 @@
       "game_user_research": "governing-game-user-research-coverage",
       "user_learning_notes": "creating-user-learning-notes",
       "project_visual_dashboard": "building-project-visual-dashboards",
-      "engine_runtime_diagnosis": "diagnosing-game-engine-runtime-failures"
+      "engine_runtime_diagnosis": "diagnosing-game-engine-runtime-failures",
+      "legacy_retention_archives": "governing-legacy-retention-and-archives",
+      "godot_asset_plugin_reuse_first": "evaluating-godot-assets-and-plugins-before-creation"
     }
   },
   "human_presentation": {
