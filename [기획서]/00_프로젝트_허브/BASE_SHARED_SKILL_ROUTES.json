@@ -3,7 +3,7 @@
   "registry_role": "project-base-shared-skill-router",
   "base": {
     "repository": "alsdmlals4-eng/Base",
-    "commit": "c7c1103e4a69f8fdc9ee27aa382a21288605a7fb",
+    "commit": "a8218b454bcfd9e72c792f4bb8ed614a385e22d6",
     "source_registry": "skills/BASE_SHARED_SKILL_ROUTES.json"
   },
   "project_adapter": "[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ADAPTER.json",
