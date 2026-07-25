@@ -2,11 +2,12 @@
 
 ## 현재 기준
 
-- Work Mode: `PLAN`.
-- 단계: `PLANNING_IN_PROGRESS / POC_PLANNING_BASELINE_AUTHORED`.
+- Work Mode: `REVIEW`.
+- 단계: `REVIEW_IN_PROGRESS / PLANNING_COMPLETE`.
 - 단일 제품 기준: `main@a1580a01f4499e49d6b6913a66ffd6f1edd81c4d`.
 - 작업 branch: `agent/poc-planning-baseline-and-legacy-audit`.
 - 최신 승인 기준: `docs/decisions/2026-07-26_POC_PLANNING_BASELINE.md`.
+- 기획 완료 선언: `2026-07-26 USER_CONFIRMED`.
 - 프로젝트 코어: `CORE_CONFIRMED`; 과거 `CORE_REVIEW_PENDING` 종료.
 - 구현 계보: `PR #7`의 T0 기준과 `Issue #13` 승인 규칙을 PR #41·#42에서 통합했다.
 - 코어 전투: 10칸·4/7·비공개 3/3/4, `[합]`, 공개 상태 기반 AI.
@@ -47,11 +48,12 @@
 
 main은 속공6·강공8·방어도4·내력4·명상2/1·`[준비]`+2·구형 강건을 구현한다. 신규 기획은 속공4·강공10·방어도5·내력5·명상1/1·`[강화]`×1.5·행동 중단1회 강건과 순차 연격을 요구한다.
 
-기획 완료 전 제품 동작을 바꾸지 않는다.
+기획은 완료됐지만 `검수 완료` 전에는 제품 동작이나 Codex 구현 인계를 시작하지 않는다.
 
 ## 다음 작업
 
-1. 사용자 기획 확인.
-2. 명시적 `기획 완료` 뒤 REVIEW 전환.
-3. 검수 완료 뒤 Codex 구현계획·연속 인계.
-4. 새 자동·Godot·Windows·사람 검증은 모두 `NOT_RUN`에서 시작.
+1. PR #45와 책임 원본·planning JSON·댓글 결정 원장을 교차 검수한다.
+2. 누락·충돌·중복·대체 누락·참조 드리프트를 5회 적대적 검토로 확인한다.
+3. 발견 사항은 책임 원본에 통합하고 PR Validation을 다시 통과시킨다.
+4. 사용자의 명시적 `검수 완료` 뒤에만 Codex 구현계획·연속 인계로 전환한다.
+5. 새 자동·Godot·Windows·사람 검증은 모두 `NOT_RUN`에서 시작한다.
