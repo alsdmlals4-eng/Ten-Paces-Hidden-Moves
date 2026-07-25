@@ -114,3 +114,11 @@ jobs:
       - name: Record deferred runtime boundary
         if: steps.scope.outputs.code_changed == 'true' && vars.ACTIONS_FULL_VALIDATION_ENABLED != 'true'
         run: echo "Godot and OS/Python matrix checks require Full Validation evidence."
+
+      - name: Upload planning source for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-planning-source
+          path: docs/planning-data/poc_martial_arts.json
+          if-no-files-found: error
+          retention-days: 1
