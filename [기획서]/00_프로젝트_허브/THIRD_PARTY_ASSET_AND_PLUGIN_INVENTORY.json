@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "inventory_role": "third-party-asset-and-plugin-evidence",
+  "project": "Ten-Paces-Hidden-Moves",
+  "policy": {
+    "search_before_creation": true,
+    "purchase_requires_user_approval": true,
+    "installation_requires_separate_scope": true,
+    "record_license_and_source": true
+  },
+  "records": [
+    {
+      "id": "existing-godot-ai-addon",
+      "name": "godot_ai",
+      "category": "editor-and-runtime-addon",
+      "source_url": null,
+      "installed_path": "addons/godot_ai/",
+      "detected_from": ["project.godot editor_plugins", "project.godot autoload"],
+      "version": "UNVERIFIED",
+      "license": "UNVERIFIED",
+      "maintenance": "UNVERIFIED",
+      "decision": "EXISTING_REVIEW_REQUIRED",
+      "notes": "기존 사용자 자산으로 보존한다. 별도 조사 없이 제거·교체하지 않는다."
+    }
+  ]
+}
