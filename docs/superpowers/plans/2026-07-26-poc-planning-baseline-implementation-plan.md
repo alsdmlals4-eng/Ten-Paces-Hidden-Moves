@@ -4,9 +4,9 @@
 
 **Goal:** 최신 승인 기획을 편집 가능한 PoC 데이터와 책임 원본으로 통합하되 런타임을 변경하지 않는다.
 
-**Architecture:** 중앙 JSON은 수치·콘텐츠를 소유하고 Markdown 책임 원본은 경험·규칙·경계·검증을 설명한다. 현재 main 런타임은 `IMPLEMENTED_LEGACY`로 분리한다.
+**Architecture:** 중앙 JSON은 수치·콘텐츠를 소유하고 Markdown 책임 원본은 경험·규칙·경계·검증을 설명한다. 현재 main 런타임은 `IMPLEMENTED_LEGACY`로 분리한다. 캠페인 구조는 결투 데이터의 `stage_id`와 지도 데이터의 구간별 중간 노드 계약으로 나눈다.
 
-**Tech Stack:** Markdown, JSON, GitHub branch/PR, 기존 Python/Godot 검증 파이프라인.
+**Tech Stack:** Markdown, JSON, Python unittest, GitHub branch/PR, 기존 Python/Godot 검증 파이프라인.
 
 ## Global Constraints
 
@@ -14,6 +14,11 @@
 - `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot` 변경 금지.
 - 사람·Godot·Windows 미실행 검증은 `NOT_RUN` 또는 `UNVERIFIED`.
 - 0.05=1틱, 목표 20/50/80틱, 허용오차 ±5틱.
+- PoC 플레이 범위는 주요 비무 1~5다.
+- 주요 비무 사이 중간 노드는 각각 2~3개다.
+- 주요 비무 5 승리 뒤 첫 절초를 사용할 수 있다.
+- 스테이지 분할은 튜토리얼 1 / 스테이지1 2~5 / 스테이지2 6~8 / 스테이지3 9~10이다.
+- 히든 천하제일인 전투는 스테이지3 이후 후속 추가이며 본편 종료 필수가 아니다.
 
 ---
 
@@ -54,7 +59,7 @@
 
 **Files:** Modify `docs/04_ROADMAP.md`, `docs/05_COMBAT_POC_SPEC.md`
 
-- [x] 3전+2선택 노드 PoC를 고정한다.
+- [x] 기존 3전+2선택 노드 PoC를 기록했다.
 - [x] 성공·실패·중단·T1 게이트를 명시한다.
 
 ### Task 6: UI·아키텍처·연출·QA
@@ -73,3 +78,59 @@
 - [x] sanity model의 증거 경계를 기록한다.
 - [x] JSON·문서 정적 검증을 실행한다.
 - [x] branch diff를 확인하고 draft PR #45를 연다.
+
+### Task 8: 5전 PoC와 3스테이지 캠페인 구조
+
+**Files:**
+- Modify: `tests/test_poc_planning_data.py`
+- Modify: `tools/check_poc_planning_data.py`
+- Modify: `docs/planning-data/poc_enemy_duels.json`
+- Modify: `docs/planning-data/poc_map_rewards.json`
+- Modify: `docs/03_CONTENT_CATALOG.md`
+- Modify: `docs/04_ROADMAP.md`
+- Modify: `docs/05_COMBAT_POC_SPEC.md`
+- Modify: `docs/decisions/2026-07-26_POC_PLANNING_BASELINE.md`
+- Modify: `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
+- Modify: `[기획서]/00_프로젝트_허브/HANDOFF.md`
+
+**Interfaces:**
+- Consumes: `major_duels[].id`, `major_duels[].order`, `poc_runtime_subset`, `poc_slice.major_duels`.
+- Produces: `major_duels[].stage_id`, `stage_contract`, `campaign_structure`, `intermediate_nodes_per_gap`, `target_visited_nodes`, `first_ultimate_available_after_duel_id`.
+
+- [ ] **Step 1: Write failing stage and node tests**
+  - PoC subset must equal major duels 1~5.
+  - Stage mapping must equal tutorial 1, stage1 2~5, stage2 6~8, stage3 9~10.
+  - Every gap must allow 2~3 intermediate nodes.
+  - PoC total visited range must equal 13~17.
+  - Duel 5 must unlock first ultimate after victory.
+  - Hidden battle must be `FUTURE_HIDDEN` after stage3 and optional for the main ending.
+
+- [ ] **Step 2: Run PR validation and verify RED**
+  - Expected: `Validate PoC planning data` fails because the current data still uses three duels and five visited nodes.
+
+- [ ] **Step 3: Update editable planning data**
+  - Set `poc_runtime_subset` and `poc_slice.major_duels` to the first five stable duel IDs.
+  - Mark duels 1~5 `POC_PRIMARY`, duels 6~10 `POC_EXPANSION`.
+  - Add stage IDs and campaign stage metadata.
+  - Add four PoC gaps with 2~3 intermediate nodes.
+  - Set total intermediate nodes to 8/10/12 and total visited nodes to 13/15/17.
+  - Add the first ultimate unlock to duel 5.
+  - Add hidden world-best battle metadata after stage3.
+
+- [ ] **Step 4: Update validator**
+  - Validate the exact PoC subset and stage order.
+  - Validate intermediate-node bounds and derived totals.
+  - Validate duel 5 unlock and hidden optional scope.
+  - Keep existing budget, effect, ID, reward, and medical checks.
+
+- [ ] **Step 5: Run tests and verify GREEN**
+  - Run `python -m unittest tests.test_poc_planning_data -v`.
+  - Run `python tools/check_poc_planning_data.py --root .`.
+  - Confirm PR Validation completes successfully.
+
+- [ ] **Step 6: Synchronize responsible documents**
+  - Replace all `1~3`, `3전`, `2회 성장`, `총 5노드` current PoC statements with the 1~5 and 13~17-node contract.
+  - Record stage1 ultimate unlock and the non-PoC stage2/stage3/hidden boundary.
+
+- [ ] **Step 7: Update PR trace**
+  - Update PR #45 body with the revised PoC scope, TDD evidence, validation run, and unchanged runtime boundary.
