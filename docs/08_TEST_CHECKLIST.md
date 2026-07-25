@@ -1,7 +1,8 @@
 # 십보강호 테스트 체크리스트
 
 > 책임: 최신 PoC 계약의 정적·자동·Godot·Windows·사람 증거와 완료 주장  
-> 규칙 원본: `docs/02_COMBAT_RULES.md`
+> 규칙 원본: `docs/02_COMBAT_RULES.md`  
+> 현재 기술 계보 기준: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`
 
 ## 1. 판정 상태
 
