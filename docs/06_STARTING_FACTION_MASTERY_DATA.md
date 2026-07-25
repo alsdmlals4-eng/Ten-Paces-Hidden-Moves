@@ -1,6 +1,7 @@
 # 십보강호 세력·핵심무공·심법 성장 가설
 
 > 책임: 시작 무공 후보·1~10성 성장·기술 예산·`[의료]` 공급  
+> 현재 전투 규칙: `docs/02_COMBAT_RULES.md`  
 > 데이터 원본: `docs/planning-data/poc_martial_arts.json`  
 > 상태: T1 이후 가설 원본이지만 다음 PoC의 성장 표본을 포함한다.
 
