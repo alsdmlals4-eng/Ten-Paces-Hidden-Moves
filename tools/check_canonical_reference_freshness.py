@@ -103,15 +103,34 @@ def validate_structured_contracts(root: Path, config: dict[str, Any]) -> None:
     routes = base.get("shared_skill_routes", {})
     if not isinstance(routes, dict):
         raise FreshnessError("shared_skill_routes must be an object")
-    actual_ids = [str(value) for value in routes.values()]
-    if len(actual_ids) != len(set(actual_ids)):
-        raise FreshnessError("Base shared Skill routes contain duplicate targets")
-    if set(actual_ids) != set(expected_ids):
-        missing = sorted(set(expected_ids) - set(actual_ids))
-        unexpected = sorted(set(actual_ids) - set(expected_ids))
+    extension_key = "legacy_retention_and_archives"
+    extension_target = "governing-legacy-retention-and-archives"
+    actual_core_ids = [
+        str(value) for key, value in routes.items() if str(key) != extension_key
+    ]
+    if len(actual_core_ids) != len(set(actual_core_ids)):
+        raise FreshnessError("Base core shared Skill routes contain duplicate targets")
+    if set(actual_core_ids) != set(expected_ids):
+        missing = sorted(set(expected_ids) - set(actual_core_ids))
+        unexpected = sorted(set(actual_core_ids) - set(expected_ids))
         raise FreshnessError(
-            f"Base shared Skill routes differ: missing={missing} unexpected={unexpected}"
+            f"Base core shared Skill routes differ: missing={missing} unexpected={unexpected}"
         )
+
+    if routes.get(extension_key) != extension_target:
+        raise FreshnessError("legacy retention shared extension route is missing")
+    extension_commit = str(base.get("shared_extension_commit", ""))
+    extension_registry = str(base.get("shared_extension_registry", ""))
+    if len(extension_commit) != 40 or any(character not in "0123456789abcdef" for character in extension_commit):
+        raise FreshnessError("shared_extension_commit must be a 40-character lowercase SHA")
+    if extension_registry != "skills/BASE_SHARED_SKILL_ROUTES.json":
+        raise FreshnessError("shared_extension_registry path mismatch")
+    extension_routes = load_json(root / extension_registry)
+    if extension_routes.get("base", {}).get("commit") != extension_commit:
+        raise FreshnessError("shared extension Registry commit differs from project Skill Registry")
+    extension_route = extension_routes.get("routes", {}).get(extension_key, {})
+    if extension_route.get("skill_id") != extension_target:
+        raise FreshnessError("shared extension Registry legacy route mismatch")
 
     local_skills = registry.get("skills", [])
     if not isinstance(local_skills, list) or len(local_skills) != 4:
