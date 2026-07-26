@@ -23,6 +23,27 @@ jobs:
           fetch-depth: 0
           show-progress: false
 
+      - name: Upload REVIEW build source snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-build-source-${{ github.sha }}
+          retention-days: 1
+          if-no-files-found: error
+          path: |
+            AGENTS.md
+            README.md
+            START_HERE.md
+            .github/reference-freshness.json
+            .github/documentation-governance.json
+            .github/workflows/documentation-governance.yml
+            [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
+            [기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md
+            [기획서]/00_프로젝트_허브/HANDOFF.md
+            [기획서]/DESIGN_DOCUMENT_REGISTRY.json
+            docs/**
+            tests/test_poc_planning_data.py
+            tools/check_poc_planning_data.py
+
       - name: Classify changed paths
         id: scope
         shell: bash
