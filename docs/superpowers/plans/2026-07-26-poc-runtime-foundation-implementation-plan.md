@@ -2,11 +2,11 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** 승인된 planning 계약을 현행 Godot 전투 엔진이 소비할 수 있는 런타임 데이터와 상태·판정·AI 계약으로 구현한다.
+**Goal:** 승인된 planning 계약을 현행 Godot 전투 엔진이 소비할 수 있는 런타임 데이터·상태·판정·AI 계약으로 구현한다.
 
-**Architecture:** planning JSON을 직접 소비하지 않고 `PocRuntimeAdapter`가 검증된 runtime Dictionary로 변환한다. `RunStateStore`는 회차 진행을, `CombatResolutionEngine`은 단일 전투 판정을 소유한다. 판정 결과는 불변 event stream으로 UI와 오디오에 전달한다.
+**Architecture:** Python build-time compiler가 `docs/planning-data`를 검증하고 canonical `data/runtime/poc_runtime_catalog.json`을 생성한다. Godot은 planning 문서를 직접 읽지 않고 `PocRuntimeCatalog` strict loader를 통해 생성물만 소비한다. `RunStateStore`는 회차 진행을, `CombatResolutionEngine`은 단일 전투 판정을 소유하며, 확정 결과는 안정 event stream으로 표현 계층에 전달한다.
 
-**Tech Stack:** Godot 4.x, GDScript, JSON, Python planning validator, Godot headless verification scripts.
+**Tech Stack:** Godot 4.x, GDScript, Python 3, JSON, unittest, Godot headless verification scripts.
 
 ## Global Constraints
 
@@ -19,86 +19,100 @@
 - 실제 체력 피해가 발생하면 패자 미실행 후속타를 중단한다. 강건은 한 번만 방지한다.
 - `[필중]`은 실제 회피 우회 타격마다 1스택 소비한다.
 - 기존 `restart_combat()`은 개발용 완전 초기화로 유지한다.
+- runtime 생성물은 build-time compiler 외의 손수 편집을 금지한다.
 
 ---
 
-### Task 1: Planning-to-runtime adapter
+### Task 1: Build-time runtime catalog compiler
 
 **Files:**
-- Create: `src/runtime/poc_runtime_adapter.gd`
-- Create: `data/runtime/poc_runtime_manifest.json`
+- Create: `tools/build_poc_runtime_catalog.py`
+- Create: `tests/test_poc_runtime_catalog_builder.py`
+- Create: `data/runtime/poc_runtime_catalog.json`
+- Create: `src/runtime/poc_runtime_catalog.gd`
 - Create: `tests/verify_p0_runtime_adapter.gd`
-- Modify: `project.godot` only if an autoload is required; prefer explicit dependency injection.
+- Modify: `.github/workflows/documentation-governance.yml`
 
 **Interfaces:**
-- Consumes: `docs/planning-data/poc_balance_budget.json`, `poc_martial_arts.json`, `poc_enemy_duels.json`, `poc_map_rewards.json`, `poc_run_state_contract.json`.
-- Produces: `PocRuntimeAdapter.load_manifest(root_path: String) -> Dictionary`, `build_runtime_catalog() -> Dictionary`.
+- Python: `build_catalog(root: Path) -> dict`, `write_catalog(root: Path) -> Path`.
+- Godot: `PocRuntimeCatalog.load_catalog(path := "res://data/runtime/poc_runtime_catalog.json") -> Dictionary`.
+- Source inputs: planning JSON 6종.
+- Runtime output: cards, manuals, first-five duels, map constraints, rewards, grades, run contract.
 
-- [ ] **Step 1: Write the failing adapter test**
+- [ ] **Step 1: Write Python RED tests**
+
+Test deterministic output, five-duel filtering, duplicate ID rejection, unknown trigger rejection, retry costs `[1,2,3]`, and output drift detection.
+
+```bash
+python -m unittest tests.test_poc_runtime_catalog_builder -v
+```
+
+Expected: import failure because compiler does not exist.
+
+- [ ] **Step 2: Implement minimal compiler**
+
+```python
+def build_catalog(root: Path) -> dict:
+    planning = load_and_validate_planning(root)
+    return {
+        "schema_version": 1,
+        "source_contract": "NON_RUNTIME_POC_PLANNING",
+        "cards": build_cards(planning),
+        "manuals": build_manuals(planning),
+        "duels": build_first_five_duels(planning),
+        "map": build_map_contract(planning),
+        "rewards": build_rewards(planning),
+        "grades": build_grade_contract(planning),
+        "run_contract": build_run_contract(planning),
+    }
+```
+
+Write canonical UTF-8 JSON with sorted keys disabled only where array order is semantic, two-space indentation, and trailing newline.
+
+- [ ] **Step 3: Verify generator GREEN and drift check**
+
+```bash
+python tools/build_poc_runtime_catalog.py --root . --write
+python -m unittest tests.test_poc_runtime_catalog_builder -v
+python tools/build_poc_runtime_catalog.py --root . --check
+```
+
+Expected: tests PASS and `--check` reports no generated-file drift.
+
+- [ ] **Step 4: Write Godot loader RED test**
 
 ```gdscript
 extends SceneTree
 
-const Adapter = preload("res://src/runtime/poc_runtime_adapter.gd")
+const Catalog = preload("res://src/runtime/poc_runtime_catalog.gd")
 
 func _init() -> void:
-    var adapter := Adapter.new()
-    var catalog: Dictionary = adapter.build_runtime_catalog()
-    assert(catalog.schema_version == 1)
-    assert(catalog.cards.has("basic_quick_attack"))
-    assert(catalog.duels.size() == 5)
-    assert(catalog.run_contract.retry_costs == [1, 2, 3])
+    var catalog: Dictionary = Catalog.new().load_catalog()
+    assert(catalog.get("schema_version") == 1)
+    assert(catalog.get("duels", []).size() == 5)
+    assert(catalog.get("run_contract", {}).get("retry_costs") == [1, 2, 3])
     print("P0_RUNTIME_ADAPTER_PASS")
     quit(0)
 ```
 
-- [ ] **Step 2: Run the test to verify RED**
-
 ```bash
 godot --headless --path . --script res://tests/verify_p0_runtime_adapter.gd
 ```
 
-Expected: preload or class-not-found failure for `poc_runtime_adapter.gd`.
+Expected: preload failure.
 
-- [ ] **Step 3: Implement strict loading**
+- [ ] **Step 5: Implement strict Godot loader**
 
-```gdscript
-class_name PocRuntimeAdapter
-extends RefCounted
+Loader validates schema version, root types, required sections, runtime ID uniqueness, and first-five duel boundary. It returns `{}` and emits an explicit error on invalid input. It never opens `res://docs/planning-data`.
 
-const PLANNING_ROOT := "res://docs/planning-data"
-
-func build_runtime_catalog() -> Dictionary:
-    var martial := _read_json(PLANNING_ROOT + "/poc_martial_arts.json")
-    var duels := _read_json(PLANNING_ROOT + "/poc_enemy_duels.json")
-    var map_rewards := _read_json(PLANNING_ROOT + "/poc_map_rewards.json")
-    var run_contract := _read_json(PLANNING_ROOT + "/poc_run_state_contract.json")
-    return {
-        "schema_version": 1,
-        "cards": _build_cards(martial),
-        "manuals": _build_manuals(martial),
-        "duels": _build_poc_duels(duels),
-        "map": _build_map(map_rewards),
-        "run_contract": _build_run_contract(run_contract),
-    }
-```
-
-Reject unknown IDs, missing required fields, duplicate runtime IDs, non-PoC duels, and unsupported trigger/scope values with `push_error()` plus an empty catalog.
-
-- [ ] **Step 4: Run adapter and planning tests**
+- [ ] **Step 6: Add CI checks and commit**
 
 ```bash
+python tools/build_poc_runtime_catalog.py --root . --check
+python -m unittest tests.test_poc_runtime_catalog_builder -v
 godot --headless --path . --script res://tests/verify_p0_runtime_adapter.gd
-python -m unittest tests.test_poc_planning_data -v
-```
-
-Expected: adapter PASS token and planning 24/24 PASS.
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add src/runtime/poc_runtime_adapter.gd data/runtime/poc_runtime_manifest.json tests/verify_p0_runtime_adapter.gd
-git commit -m "feat: add validated PoC runtime adapter"
+git add tools/build_poc_runtime_catalog.py tests/test_poc_runtime_catalog_builder.py data/runtime/poc_runtime_catalog.json src/runtime/poc_runtime_catalog.gd tests/verify_p0_runtime_adapter.gd .github/workflows/documentation-governance.yml
+git commit -m "feat: compile validated PoC runtime catalog"
 ```
 
 ### Task 2: RunState and combat snapshot boundary
@@ -107,50 +121,22 @@ git commit -m "feat: add validated PoC runtime adapter"
 - Create: `src/run/run_state_store.gd`
 - Create: `src/run/run_retry_service.gd`
 - Create: `tests/verify_p0_run_retry.gd`
-- Modify: `src/combat/combat_board_preview.gd` at combat entry/exit and defeat handling.
+- Modify: `src/combat/combat_board_preview.gd`
 
 **Interfaces:**
-- Produces: `RunStateStore.start_run(seed: int, selected_manual_ids: Array[String])`, `create_pre_battle_snapshot(battle_id: String)`, `commit_victory(result: Dictionary)`, `restore_for_retry() -> Dictionary`.
-- Produces: `RunRetryService.next_cost(retry_count: int) -> int`, `pay_and_restore(run_state: Dictionary) -> Dictionary`.
+- `start_run(seed: int, selected_manual_ids: Array[String]) -> Dictionary`.
+- `create_pre_battle_snapshot(battle_id: String) -> Dictionary`.
+- `commit_victory(result: Dictionary) -> Dictionary`.
+- `restore_for_retry() -> Dictionary`.
+- `next_cost(retry_count: int) -> int`.
+- `pay_and_restore(run_state: Dictionary) -> Dictionary`.
 
-- [ ] **Step 1: Write failing retry tests**
-
-Test first retry cost 1, second 2, third and later 3; another battle resets to 1; combat damage rolls back; permanent currency payment does not roll back; same battle seed remains unchanged.
-
-```gdscript
-assert(service.next_cost(0) == 1)
-assert(service.next_cost(1) == 2)
-assert(service.next_cost(2) == 3)
-assert(service.next_cost(8) == 3)
-```
-
-- [ ] **Step 2: Run to verify RED**
-
-```bash
-godot --headless --path . --script res://tests/verify_p0_run_retry.gd
-```
-
-- [ ] **Step 3: Implement state ownership**
-
-`RunStateStore` owns run seed, node position, persistent health, manuals/mastery, medical, currency, permanent currency, visited nodes, reward ledger, current battle ID, retry count, and pre-battle snapshot. `CombatState` owns only round/bundle, positions, combat resources, statuses, events, and battle outcome.
-
-- [ ] **Step 4: Integrate without changing `restart_combat()`**
-
-Add a separate `request_paid_retry()` path in `combat_board_preview.gd`. Never call `restart_combat()` from the paid retry service.
-
-- [ ] **Step 5: Run retry and legacy restart tests**
-
-```bash
-godot --headless --path . --script res://tests/verify_p0_run_retry.gd
-godot --headless --path . --script res://tests/verify_step12_13_restart_ai.gd
-```
-
-- [ ] **Step 6: Commit**
-
-```bash
-git add src/run src/combat/combat_board_preview.gd tests/verify_p0_run_retry.gd
-git commit -m "feat: separate run state and paid retries"
-```
+- [ ] Write RED cases for costs 1/2/3 cap, different-battle reset, damage rollback, permanent-currency non-rollback, same battle seed, insufficient balance, and reward non-commit on defeat.
+- [ ] Run `godot --headless --path . --script res://tests/verify_p0_run_retry.gd` and confirm RED.
+- [ ] Implement state ownership: RunState owns route, persistent HP, mastery, medical, currencies, reward ledger, battle ID, retry count, snapshot; CombatState owns only battle-local state.
+- [ ] Add separate `request_paid_retry()` path. Never call `restart_combat()` from paid retry.
+- [ ] Run new retry and existing restart tests.
+- [ ] Commit as `feat: separate run state and paid retries`.
 
 ### Task 3: New base numbers and status model
 
@@ -167,56 +153,26 @@ git commit -m "feat: separate run state and paid retries"
 - [ ] Write failing assertions for HP30/AP4/guard5/stamina5/internal5/momentum0, quick4, heavy10, meditate +1/+1.
 - [ ] Run and confirm RED against legacy values.
 - [ ] Replace legacy `[준비]+2` with `empowered_pending` and `floor(raw * 1.5)`.
-- [ ] Replace legacy fortitude damage behavior with one interruption-prevention charge.
-- [ ] Run new and legacy-compatible tests; update only tests that encode superseded values.
+- [ ] Replace legacy fortitude behavior with one interruption-prevention charge.
+- [ ] Run new tests and update only regressions that encode explicitly superseded values.
 - [ ] Commit as `feat: align combat base values and statuses`.
 
 ### Task 4: Sequential multi-hit clash resolver
 
 **Files:**
-- Modify: `src/combat/combat_resolution_engine.gd`
 - Create: `src/combat/sequential_hit_resolver.gd`
+- Modify: `src/combat/combat_resolution_engine.gd`
 - Create: `tests/verify_p0_sequential_clash.gd`
 
 **Interfaces:**
-- Produces: `SequentialHitResolver.resolve_pair(left_hit: Dictionary, right_hit: Dictionary, state: Dictionary) -> Dictionary`.
-- Result fields: `raw_difference`, `guard_absorbed`, `health_damage`, `effects`, `interruption`, `remaining_hits`, `events`.
+- `resolve_pair(left_hit: Dictionary, right_hit: Dictionary, state: Dictionary) -> Dictionary`.
+- Result: raw difference, guard absorbed, HP damage, effects, interruption, remaining hits, events.
 
-- [ ] **Step 1: Write failing cases**
-
-Cover equal raw cancellation, 8 vs 5 difference 3, guard absorption before HP, actual HP damage interruption, fortitude preserving follow-ups once, unmatched winner hits, simultaneous death after pair effects, and action-level momentum cap +1.
-
-- [ ] **Step 2: Run RED**
-
-```bash
-godot --headless --path . --script res://tests/verify_p0_sequential_clash.gd
-```
-
-- [ ] **Step 3: Implement the pair pipeline**
-
-```text
-raw clash
-→ loser cancellation or tie cancellation
-→ evade
-→ guard
-→ HP
-→ hit effects
-→ interruption/fortitude
-→ KO
-```
-
-Resolve all matched pairs in order, then execute unmatched surviving hits. Never apply interruption before the current hit's effects.
-
-- [ ] **Step 4: Run GREEN and existing combat contract tests**
-
-Run `verify_p0_sequential_clash.gd` plus existing combat, ultimate, interrupt, and prepare verifiers.
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add src/combat/sequential_hit_resolver.gd src/combat/combat_resolution_engine.gd tests/verify_p0_sequential_clash.gd
-git commit -m "feat: resolve sequential multi-hit clashes"
-```
+- [ ] RED cases: tie cancellation, 8 vs 5 difference3, guard before HP, HP interruption, one-use fortitude, unmatched hits, simultaneous death after effects, action momentum cap +1.
+- [ ] Implement pair pipeline: clash → evade → guard → HP → effects → interruption/fortitude → KO.
+- [ ] Resolve matched pairs in order, then unmatched surviving hits. Never interrupt before current-hit effects.
+- [ ] Run new test plus existing combat, ultimate, interrupt, and prepare verifiers.
+- [ ] Commit as `feat: resolve sequential multi-hit clashes`.
 
 ### Task 5: Effect triggers and stacked sure-hit
 
@@ -228,13 +184,14 @@ git commit -m "feat: resolve sequential multi-hit clashes"
 
 **Interfaces:**
 - `dispatch(trigger: StringName, action: Dictionary, hit: Dictionary, context: Dictionary) -> Array[Dictionary]`.
-- Supported triggers: `ON_ACTION_START`, `ON_ACTION_RESOLVE`, `ON_CLASH_WIN`, `ON_EVADE_SUCCESS`, `ON_HIT`, `ON_HEALTH_DAMAGE`, `ON_ACTION_END`.
+- Triggers: `ON_ACTION_START`, `ON_ACTION_RESOLVE`, `ON_CLASH_WIN`, `ON_EVADE_SUCCESS`, `ON_HIT`, `ON_HEALTH_DAMAGE`, `ON_ACTION_END`.
 
-- [ ] Test `PER_HIT` vs `ONCE_PER_ACTION`, no `ON_ACTION_END` after interruption, `ON_HIT` at zero HP damage, no `ON_HEALTH_DAMAGE` at zero HP damage.
-- [ ] Test sure-hit consumption only when an available evade would have prevented the hit.
-- [ ] Verify no stack consumption on clash cancellation, interruption, no target, range failure, or no evade charge.
+- [ ] Test `PER_HIT` and `ONCE_PER_ACTION` consumption.
+- [ ] Test no `ON_ACTION_END` after interruption; `ON_HIT` at zero HP damage; no `ON_HEALTH_DAMAGE` at zero HP damage.
+- [ ] Test sure-hit consumption only when an available evade is actually bypassed.
+- [ ] Test no consumption on clash cancellation, interruption, missing target, range failure, or absent evade.
 - [ ] Implement dispatcher and per-action consumption ledger.
-- [ ] Run both new tests and existing ultimate/evade tests.
+- [ ] Run new and existing ultimate/evade tests.
 - [ ] Commit as `feat: add effect dispatcher and sure-hit stacks`.
 
 ### Task 6: AI three-action bundle templates
@@ -245,13 +202,13 @@ git commit -m "feat: resolve sequential multi-hit clashes"
 - Create: `tests/verify_p0_ai_bundle_templates.gd`
 
 **Interfaces:**
-- Preserve: `build_bundle_actions(state: Dictionary, bundle_index: int, cards_by_id: Dictionary) -> Array`.
-- Return up to three scheduled actions with stable `timing`, `card_id`, target fields, `ai_seed`, `ai_reason`, and `candidate_id`.
+- Preserve `build_bundle_actions(state, bundle_index, cards_by_id) -> Array`.
+- Return the scheduled actions of one selected template with stable timing, target, seed, reason, and candidate ID.
 
-- [ ] Write RED tests for maximum three rational candidates, deterministic same snapshot+seed, no player uncommitted inputs, valid multi-action template, and fallback.
+- [ ] RED cases: maximum three rational candidates, deterministic same snapshot+seed, no uncommitted player inputs, valid multi-action template, valid fallback.
 - [ ] Implement public snapshot whitelist and structured score modifiers from runtime duel data.
-- [ ] Select one candidate template by deterministic seed; return all scheduled actions in that template.
-- [ ] Run `verify_p0_ai_bundle_templates.gd` and `verify_ai_rival_tendency.gd`.
+- [ ] Select one candidate template deterministically and return every scheduled action in that template.
+- [ ] Run new AI test and `verify_ai_rival_tendency.gd`.
 - [ ] Commit as `feat: execute deterministic AI bundle templates`.
 
 ### Task 7: Stable presentation event contract
@@ -265,10 +222,10 @@ git commit -m "feat: resolve sequential multi-hit clashes"
 **Interfaces:**
 - Event fields: `event_id`, `sequence`, `round`, `bundle`, `timing`, `actor`, `target`, `action_id`, `hit_index`, `payload`, `state_snapshot`.
 
-- [ ] Test strict sequence ordering and event IDs for clash, guard, HP damage, effect, interruption, fortitude, sure-hit consumption, reward boundary, and retry payment.
-- [ ] Emit events from domain code only; UI must not calculate damage or reward.
-- [ ] Update review summary builder to consume event IDs rather than parse display strings.
-- [ ] Run event, review summary, and A2/A3 regression tests.
+- [ ] Test strict sequence and IDs for clash, guard, HP damage, effect, interruption, fortitude, sure-hit consumption, reward boundary, and retry payment.
+- [ ] Emit events only from domain code; UI does not calculate damage or reward.
+- [ ] Update review summary builder to consume IDs rather than parse display strings.
+- [ ] Run event, summary, A2, and A3 regressions.
 - [ ] Commit as `feat: publish stable combat presentation events`.
 
 ### Task 8: Runtime foundation verification gate
@@ -276,11 +233,11 @@ git commit -m "feat: resolve sequential multi-hit clashes"
 **Files:**
 - Modify: `.github/workflows/full-validation.yml`
 - Modify: `docs/08_TEST_CHECKLIST.md`
-- Create: `docs/decisions/<date>_P0_RUNTIME_FOUNDATION_EVIDENCE.md`
+- Create: `docs/decisions/2026-07-26_P0_RUNTIME_FOUNDATION_EVIDENCE.md`
 
-- [ ] Run planning validator and 24 tests.
-- [ ] Run every new Godot verifier from Tasks 1–7.
+- [ ] Run planning validator, planning 24 tests, generator tests, and generated-file drift check.
+- [ ] Run every Godot verifier from Tasks 1–7.
 - [ ] Run existing combat, AI, restart, ultimate, prepare, A2, and A3 verifiers.
-- [ ] Run `godot --headless --path . --quit` and reject parser warnings promoted to errors.
-- [ ] Record exact commands, commit SHA, Godot version, OS, PASS/FAIL/NOT_RUN.
+- [ ] Run `godot --headless --path . --quit` and reject parse errors.
+- [ ] Record exact commands, commit SHA, Godot version, OS, and PASS/FAIL/NOT_RUN.
 - [ ] Return to REVIEW before campaign integration.
