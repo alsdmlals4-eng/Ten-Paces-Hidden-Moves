@@ -4,7 +4,7 @@
 
 **Goal:** 승인된 수묵 무협 컨셉과 전투 정보 구조에 맞는 UI·UX·사운드를 구축하고, 외부 에셋 검색·라이선스 감사·부족분 생성·접근성 검증을 완료한다.
 
-**Architecture:** domain event stream을 `CombatPresentationController`와 `AudioEventRouter`가 소비한다. 시각·음향 에셋은 `asset_gap_map.json`과 `asset_ledger.json`에서 출처와 판정을 추적하며, 에셋이 없어도 텍스트·도형·무음 폴백이 작동한다. 외부 에셋 때문에 전투 계약을 변경하지 않는다.
+**Architecture:** domain event stream을 `CombatPresentationController`와 `AudioEventRouter`가 소비한다. 시각·음향 에셋은 `p0_asset_gap_map.json`과 `p0_asset_ledger.json`에서 출처와 판정을 추적하며, 에셋이 없어도 텍스트·도형·무음 폴백이 작동한다. 외부 에셋 때문에 전투 계약을 변경하지 않는다.
 
 **Tech Stack:** Godot 4.x Control/AudioServer, GDScript, JSON asset ledger, SVG/PNG/WebP/OGG/WAV, current asset stores and licensed libraries, approved image/audio generation tools.
 
@@ -18,6 +18,7 @@
 - 라이선스가 불명확한 자산은 사용하지 않는다.
 - 적합한 후보가 없는 `GENERATE` 항목만 생성한다.
 - 사람·상표·저작물 모방과 출처 불명 스타일 복제를 금지한다.
+- 유료 에셋은 별도 사용자 구매 승인 전까지 `DEFER`한다.
 
 ---
 
@@ -170,7 +171,7 @@
 
 **Files:**
 - Create: `tests/verify_p0_accessibility_modes.gd`
-- Create: `docs/decisions/<date>_P0_UI_AUDIO_ASSET_EVIDENCE.md`
+- Create: `docs/decisions/2026-07-26_P0_UI_AUDIO_ASSET_EVIDENCE.md`
 - Modify: `docs/08_TEST_CHECKLIST.md`
 
 - [ ] Run UI event contract, run UI contract, audio router, asset ledger, and viewport tests.
