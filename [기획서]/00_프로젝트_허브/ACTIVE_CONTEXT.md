@@ -14,6 +14,7 @@
 - 기획 완료 선언: `2026-07-26 USER_CONFIRMED`.
 - 검수 완료 선언: `2026-07-26 USER_CONFIRMED`.
 - 프로젝트 코어: `CORE_CONFIRMED`; 과거 `CORE_REVIEW_PENDING` 종료.
+- 구현 계보: `PR #7`과 `Issue #13`의 T0 기반을 보존한다.
 - 현행 런타임: `IMPLEMENTED_LEGACY`.
 - 신규 PoC 런타임: `NOT_STARTED`.
 - 에셋 검색·생성·통합: `NOT_STARTED`.
