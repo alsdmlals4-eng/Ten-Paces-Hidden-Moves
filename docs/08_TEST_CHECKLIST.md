@@ -11,7 +11,7 @@
 ## 2. 현재 증거 요약
 
 - 기존 10칸·4/7·3/3/4·AI·재시작: 기술적으로 검증된 `IMPLEMENTED_LEGACY`.
-- planning Schema·validator·반례 테스트: `PASS` — 24개 단위 테스트와 standalone validator.
+- planning Schema·validator·반례 테스트: `PASS` — 로컬 24개 단위 테스트·standalone validator, 원격 PR Validation #775 전체 성공.
 - 새 Godot 수치·연격·효과·성장·5전 PoC runtime: `NOT_RUN`.
 - STEP 14 사람 플레이: `NOT_RUN`.
 
@@ -112,6 +112,7 @@
 - [x] CE-01~08 false-pass 회귀 차단.
 - [x] `python -m unittest tests.test_poc_planning_data -v`: 24/24 PASS.
 - [x] `python tools/check_poc_planning_data.py --root .`: PASS.
+- [x] PR Validation #775: 운영체계·reference freshness·governance·기존 전투 계약 포함 전체 PASS.
 
 ## 10. STEP 14 사람 플레이
 
@@ -128,4 +129,4 @@
 
 ## 12. 종료 보고
 
-실행하지 않은 항목을 PASS로 만들지 않는다. 이번 문서 작업의 Godot·Windows·사람 검증은 `NOT_RUN`이다.
+실행하지 않은 항목을 PASS로 만들지 않는다. 이번 planning REVIEW의 정적·참조·회귀 판정은 `PASS_WITH_FOLLOWUP`이며, 새 Godot runtime·Windows·접근성·성능·사람 검증은 `NOT_RUN / BLOCKED_UNVERIFIED`다.
