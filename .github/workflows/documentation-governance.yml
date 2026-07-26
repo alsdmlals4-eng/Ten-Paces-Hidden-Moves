@@ -33,6 +33,7 @@ jobs:
           base64 --decode /tmp/review-build-remediation.b64 > /tmp/review-build-remediation.tar.xz
           echo "9d52d7a4954894a6c9599c574c76ffb5c7283692f980a6ad6873e5a14c31a627  /tmp/review-build-remediation.tar.xz" | sha256sum --check --strict
           tar -xJf /tmp/review-build-remediation.tar.xz
+          git checkout HEAD -- .github/workflows/documentation-governance.yml
           rm -rf .review-build-remediation
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
