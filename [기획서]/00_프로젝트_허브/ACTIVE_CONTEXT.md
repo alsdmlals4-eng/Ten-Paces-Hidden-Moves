@@ -9,6 +9,7 @@
 - 최신 승인 기준: `docs/decisions/2026-07-26_POC_PLANNING_BASELINE.md`.
 - 전체 적대적 검토: `docs/decisions/2026-07-26_FULL_ADVERSARIAL_REVIEW_LOOP.md`.
 - 승인 BUILD 기록: `docs/decisions/2026-07-26_ADVERSARIAL_REVIEW_BUILD_REMEDIATION.md`.
+- UI·UX·사운드 에셋 파이프라인: `docs/superpowers/specs/2026-07-26-ui-ux-audio-asset-pipeline-design.md`.
 - 기획 완료 선언: `2026-07-26 USER_CONFIRMED`.
 - 프로젝트 코어: `CORE_CONFIRMED`; 과거 `CORE_REVIEW_PENDING` 종료.
 - 구현 계보: PR #7·Issue #13의 T0와 PR #41·#42의 과거 승인 기록을 보존한다.
@@ -22,7 +23,7 @@
 - `TECHNICAL_REVIEW_PROPOSAL`: 14건 검수안으로 정리하고 planning BUILD 범위 승인.
 - `USER_DECISION_REQUIRED`: 3건 모두 사용자 결정 완료.
 - `BLOCKED_UNVERIFIED`: runtime·Godot·Windows·접근성·성능·사람 증거가 필요한 9건 유지.
-- `NO_CHANGE`: 코어·PoC 범위·확장 경계 11건 보호.
+- `NO_CHANGE`: 코어·PoC 범위·확장 경계 12건 보호.
 
 ## 사용자 결정
 
@@ -31,18 +32,36 @@
 3. `[필중]`은 스택형이며 실제 회피를 우회한 유효 타격마다 1스택을 소비한다.
 4. 주요 비무 보상은 자유6 / 지정 무공5+자유3 / 문파 무공3성이다.
 5. 주요 비무5 진입 전 10성 경로는 집중32+최소 노드6 또는 자유24+고효율 노드14다.
+6. UI·UX·사운드는 컨셉과 정보 요구를 먼저 정하고, 에셋 스토어 검색·평가 뒤 부족분만 생성하며, 통합 후 접근성·피로·성능을 검증한다.
 
 ## 승인된 REVIEW BUILD
 
 - planning JSON에 정규화 card·tick ledger·patch·AI template·node·reward·grade·RunState 계약을 추가했다.
 - `poc_run_state_contract.json`을 추가했다.
 - CE-01~08과 사용자 결정 계약을 validator와 24개 단위 테스트로 고정했다.
+- UI·UX·사운드 asset gap·검색·채택·생성·통합 검증 파이프라인을 정본화했다.
 - 로컬 증거: `24/24 PASS`, standalone validator `PASS`.
 - 승인 BUILD 검증 기준 head: `eb06bd78316348bd3aa6027a8057575ee4dc9053`.
 - 승인 BUILD PR Validation `#775`: 운영체계·reference freshness·planning 24개·기존 전투 계약·PowerShell parse 전체 `PASS`.
+- UI·UX·사운드 파이프라인 반영 PR Validation `#788`: 전체 `PASS`.
 - 제품 `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot`은 변경하지 않았다.
 
 최신 PR head와 최신 CI run은 PR #45 본문·Actions를 추적 원장으로 사용한다.
+
+## UI·UX·사운드 제작 경계
+
+```text
+컨셉·정보 요구
+→ asset gap map
+→ 최신 에셋 스토어·라이브러리 검색
+→ 출처·라이선스·스타일·Godot 적합성 평가
+→ ADOPT / ADAPT / GENERATE / REJECT / DEFER
+→ 부족분만 생성
+→ Godot 통합
+→ 가독성·접근성·사운드 피로·성능·사람 검증
+```
+
+실제 검색·구매·다운로드·생성·통합은 아직 `NOT_STARTED / NOT_RUN`이다. 출처나 라이선스가 불명확한 에셋은 사용하지 않으며, 외부 에셋에 맞춰 전투 정보 구조를 변경하지 않는다.
 
 ## 다음 플레이 가능한 범위
 
@@ -57,7 +76,10 @@
 - 콘텐츠·지도·적: `docs/03_CONTENT_CATALOG.md` + `docs/planning-data/`.
 - 성장: `docs/06_STARTING_FACTION_MASTERY_DATA.md`.
 - PoC: `docs/05_COMBAT_POC_SPEC.md`.
-- UI·QA·아키텍처·연출: `docs/07~10`.
+- UI·UX: `docs/07_COMBAT_UI_SPEC.md`.
+- QA: `docs/08_TEST_CHECKLIST.md`.
+- 아키텍처: `docs/09_COMBAT_SYSTEM_ARCHITECTURE.md`.
+- 연출·사운드: `docs/10_COMBAT_PRESENTATION_PLAN.md`.
 
 ## 구현 차이
 
@@ -66,12 +88,14 @@ main은 속공6·강공8·방어도4·내력4·명상2/1·`[준비]`+2·구형 �
 ## 최종 REVIEW 판정
 
 - TRP-01~13: 승인 BUILD에 최소 반영하고 정적·참조·회귀 검증 완료.
-- TRP-14: PR branch는 역사상 main보다 1커밋 뒤에서 갈라졌지만 현재 PR base가 `main@48c26c02d53fe49a34b831f5bcf0924ae36f5dbd`이고 `mergeable=true`다. main 전용 변경은 이번 BUILD와 겹치지 않아 별도 중복 merge commit 없이 PR 가상 병합이 base를 보존하는 것으로 재분류했다.
+- TRP-14: PR base가 main을 보존하고 `mergeable=true`이므로 별도 중복 merge commit 없이 보호한다.
+- UI·UX·사운드 파이프라인: 사용자 승인 및 정본 반영, 실제 자산 실행은 follow-up.
 - 최종 판정: `PASS_WITH_FOLLOWUP`.
-- Follow-up: 신규 Godot runtime·Windows·접근성·성능·사람 플레이는 `BLOCKED_UNVERIFIED / NOT_RUN`.
+- Follow-up: 신규 Godot runtime·에셋 검색/생성·Windows·접근성·성능·사람 플레이는 `BLOCKED_UNVERIFIED / NOT_RUN`.
 
 ## 다음 작업
 
 1. 사용자의 명시적 `검수 완료` 선언을 기다린다.
 2. 선언 뒤에만 Codex 런타임 구현 인계와 P0 작업계획으로 전환한다.
-3. 구현 뒤 별도 REVIEW에서 Godot·Windows·저장 migration·접근성·성능·사람 증거를 수집한다.
+3. 인계 시 UI·UX·사운드 event matrix와 asset gap map을 만들고 최신 에셋 검색을 수행한다.
+4. 구현 뒤 별도 REVIEW에서 Godot·Windows·저장 migration·에셋 라이선스·접근성·성능·사람 증거를 수집한다.
