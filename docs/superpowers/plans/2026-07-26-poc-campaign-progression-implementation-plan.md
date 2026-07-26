@@ -4,9 +4,9 @@
 
 **Goal:** 주요 비무 1~5, 네 구간의 중간 노드, 성장·보상·등급·10성 절초를 하나의 재현 가능한 회차 흐름으로 구현한다.
 
-**Architecture:** `RunStateStore`가 현재 노드·체력·성장·재화를 소유하고, `PocCampaignController`가 런타임 adapter가 만든 결투·지도 카탈로그를 순회한다. 전투 결과는 `RewardService`가 한 번만 commit하며 UI는 선택지를 표시할 뿐 수치를 계산하지 않는다.
+**Architecture:** `RunStateStore`가 현재 노드·체력·성장·재화를 소유하고, `PocCampaignController`가 `PocRuntimeCatalog`이 로드한 결투·지도 카탈로그를 순회한다. 전투 결과는 `RewardService`가 한 번만 commit하며 UI는 선택지를 표시할 뿐 수치를 계산하지 않는다.
 
-**Tech Stack:** Godot 4.x, GDScript, JSON runtime catalog, Godot headless tests.
+**Tech Stack:** Godot 4.x, GDScript, generated JSON runtime catalog, Godot headless tests.
 
 ## Global Constraints
 
@@ -27,11 +27,10 @@
 
 **Files:**
 - Create: `src/run/poc_campaign_catalog.gd`
-- Create: `data/runtime/poc_campaign.json`
 - Create: `tests/verify_p0_campaign_catalog.gd`
 
 **Interfaces:**
-- Consumes: `PocRuntimeAdapter.build_runtime_catalog()`.
+- Consumes: `PocRuntimeCatalog.load_catalog()`의 `duels`와 `map` 섹션.
 - Produces: `get_duel(order: int) -> Dictionary`, `get_gap(from_order: int) -> Dictionary`, `build_route(seed: int) -> Array[Dictionary]`.
 
 - [ ] Write a failing test asserting duel orders `[1,2,3,4,5]`, four gaps, 2–3 nodes per gap, total 13–17 visited entries, and no duel 6+.
@@ -165,9 +164,9 @@
 **Files:**
 - Modify: `.github/workflows/full-validation.yml`
 - Modify: `docs/08_TEST_CHECKLIST.md`
-- Create: `docs/decisions/<date>_P0_CAMPAIGN_PROGRESSION_EVIDENCE.md`
+- Create: `docs/decisions/2026-07-26_P0_CAMPAIGN_PROGRESSION_EVIDENCE.md`
 
-- [ ] Run adapter, retry, campaign catalog, flow, manual, reward, grade, growth, recovery, and serialization verifiers.
+- [ ] Run runtime catalog, retry, campaign catalog, flow, manual, reward, grade, growth, recovery, and serialization verifiers.
 - [ ] Run all runtime foundation and legacy combat regressions.
 - [ ] Execute a headless deterministic run from manual selection through duel 5 for at least ten seeds.
 - [ ] Assert every run has 13–17 visits and every focused route reaches 38 before duel 5.
