@@ -3,7 +3,7 @@
 ## 현재 기준
 
 - Work Mode: `REVIEW`.
-- 단계: `REVIEW_IN_PROGRESS / PLANNING_COMPLETE / REVIEW_BUILD_APPLIED_LOCALLY`.
+- 단계: `REVIEW_IN_PROGRESS / PLANNING_COMPLETE / REVIEW_BUILD_APPLIED_AND_STATICALLY_VERIFIED`.
 - 단일 제품 기준: `main@48c26c02d53fe49a34b831f5bcf0924ae36f5dbd`.
 - 작업 branch: `agent/poc-planning-baseline-and-legacy-audit`.
 - 최신 승인 기준: `docs/decisions/2026-07-26_POC_PLANNING_BASELINE.md`.
@@ -38,7 +38,9 @@
 - `poc_run_state_contract.json`을 추가했다.
 - CE-01~08과 사용자 결정 계약을 validator와 24개 단위 테스트로 고정했다.
 - 로컬 증거: `24/24 PASS`, standalone validator `PASS`.
-- 제품 `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot`은 변경하지 않는다.
+- 원격 head: `eb06bd78316348bd3aa6027a8057575ee4dc9053`.
+- PR Validation `#775`: 운영체계·reference freshness·planning 24개·기존 전투 계약·PowerShell parse 전체 `PASS`.
+- 제품 `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot`은 변경하지 않았다.
 
 ## 다음 플레이 가능한 범위
 
@@ -59,9 +61,15 @@
 
 main은 속공6·강공8·방어도4·내력4·명상2/1·`[준비]`+2·구형 강건과 단일 전투 상태를 구현한다. 신규 기획은 속공4·강공10·방어도5·내력5·명상1/1·`[강화]`×1.5·중단1회 강건·순차 연격·스택형 필중·RunState 유료 재도전을 요구한다.
 
+## 최종 REVIEW 판정
+
+- TRP-01~13: 승인 BUILD에 최소 반영하고 정적·참조·회귀 검증 완료.
+- TRP-14: PR branch는 역사상 main보다 1커밋 뒤에서 갈라졌지만 현재 PR base가 `main@48c26c02d53fe49a34b831f5bcf0924ae36f5dbd`이고 `mergeable=true`다. main 전용 변경은 이번 BUILD와 겹치지 않아 별도 중복 merge commit 없이 PR 가상 병합이 base를 보존하는 것으로 재분류했다.
+- 최종 판정: `PASS_WITH_FOLLOWUP`.
+- Follow-up: 신규 Godot runtime·Windows·접근성·성능·사람 플레이는 `BLOCKED_UNVERIFIED / NOT_RUN`.
+
 ## 다음 작업
 
-1. 승인 BUILD를 원격 branch에 반영하고 main의 비충돌 1커밋을 merge한다.
-2. PR Validation·reference freshness·governance·기존 전투 계약 검사를 재실행한다.
-3. 제품 경로 미변경과 미검증 경계를 확인하고 최종 `PASS_WITH_FOLLOWUP` 또는 `REVISE_AGAIN`을 기록한다.
-4. 사용자의 명시적 `검수 완료` 뒤에만 Codex 런타임 구현 인계로 전환한다.
+1. 사용자의 명시적 `검수 완료` 선언을 기다린다.
+2. 선언 뒤에만 Codex 런타임 구현 인계와 P0 작업계획으로 전환한다.
+3. 구현 뒤 별도 REVIEW에서 Godot·Windows·저장 migration·접근성·성능·사람 증거를 수집한다.
