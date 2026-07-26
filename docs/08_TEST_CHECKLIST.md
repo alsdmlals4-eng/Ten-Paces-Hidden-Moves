@@ -11,7 +11,9 @@
 ## 2. 현재 증거 요약
 
 - 기존 10칸·4/7·3/3/4·AI·재시작: 기술적으로 검증된 `IMPLEMENTED_LEGACY`.
-- planning Schema·validator·반례 테스트: `PASS` — 로컬 24개 단위 테스트·standalone validator, 원격 PR Validation #775 전체 성공.
+- planning Schema·validator·반례 테스트: `PASS` — 로컬 24개 단위 테스트·standalone validator, 원격 PR Validation 전체 성공.
+- UI·UX·사운드 컨셉→검색→부족분 생성→통합 검증 파이프라인: `USER_APPROVED_NOT_EXECUTED`.
+- 실제 에셋 검색·취득·생성·Godot 통합: `NOT_RUN`.
 - 새 Godot 수치·연격·효과·성장·5전 PoC runtime: `NOT_RUN`.
 - STEP 14 사람 플레이: `NOT_RUN`.
 
@@ -112,9 +114,41 @@
 - [x] CE-01~08 false-pass 회귀 차단.
 - [x] `python -m unittest tests.test_poc_planning_data -v`: 24/24 PASS.
 - [x] `python tools/check_poc_planning_data.py --root .`: PASS.
-- [x] PR Validation #775: 운영체계·reference freshness·governance·기존 전투 계약 포함 전체 PASS.
+- [x] 운영체계·reference freshness·governance·기존 전투 계약 포함 PR Validation PASS.
 
-## 10. STEP 14 사람 플레이
+## 10. UI·UX·사운드 에셋 파이프라인
+
+### ASSET-001 컨셉·gap map
+
+- [ ] 화면·상태·전투 사건별 요구가 에셋 검색 전에 정의됨.
+- [ ] 기존 사용·보정·검색·생성·보류 항목이 gap map으로 분류됨.
+- [ ] 외부 에셋 때문에 전투 정보 구조나 프로젝트 코어를 변경하지 않음.
+
+### ASSET-002 검색·라이선스
+
+- [ ] 후보마다 출처 URL·제작자·버전·가격·취득일 기록.
+- [ ] 상업 이용·수정·표기·재배포 조건 확인.
+- [ ] 라이선스·원본 출처 불명 후보 제외.
+- [ ] Godot 4 import 형식·해상도·루프·샘플레이트·편집 가능성 확인.
+
+### ASSET-003 채택·생성
+
+- [ ] 각 후보를 `ADOPT / ADAPT / GENERATE / REJECT / DEFER`로 판정.
+- [ ] 검색에서 적합한 후보가 없는 항목만 생성.
+- [ ] 생성 프롬프트·원본·편집본·사용 도구·적용 위치 기록.
+- [ ] UI·VFX·사운드 누락 시 텍스트·도형·무음 폴백 유지.
+
+### ASSET-004 통합·검증
+
+- [ ] UI 에셋 교체가 규칙 로직과 입력 동작을 변경하지 않음.
+- [ ] 사운드 파일이 사건 ID와 audio bus를 통해 판정 엔진과 분리됨.
+- [ ] 색·모션·음향을 끄거나 줄여도 핵심 정보를 이해할 수 있음.
+- [ ] 다타격 사운드 겹침·반복 피로·BGM 마스킹 검사.
+- [ ] 파일 크기·메모리·동시 재생·목표 플랫폼 성능 검사.
+
+현재 ASSET-001~004의 실제 조사·통합·사람 검증은 `NOT_RUN / BLOCKED_UNVERIFIED`다.
+
+## 11. STEP 14 사람 플레이
 
 - [ ] 5명 중 4명 완료.
 - [ ] 4명 핵심 원인 설명.
@@ -122,11 +156,13 @@
 - [ ] 3명 재도전 계획 변경.
 - [ ] 연격 중단과 행동당 기세 제한 이해.
 - [ ] 색·모션·음향 단일 의존 없음.
+- [ ] UI 스타일과 음향이 전투 원인 파악을 방해하지 않음.
+- [ ] 반복 전투에서 시각·음향 피로가 중도 이탈을 유발하지 않음.
 
-## 11. T1 진입 게이트
+## 12. T1 진입 게이트
 
-새 PoC의 자동·Godot·Windows·사람 증거와 두 번째 콘텐츠 반복 제작 증거가 모두 필요하다. 현재 `t1_greenlight: NOT_GRANTED`.
+새 PoC의 자동·Godot·에셋 출처·Windows·접근성·성능·사람 증거와 두 번째 콘텐츠 반복 제작 증거가 모두 필요하다. 현재 `t1_greenlight: NOT_GRANTED`.
 
-## 12. 종료 보고
+## 13. 종료 보고
 
-실행하지 않은 항목을 PASS로 만들지 않는다. 이번 planning REVIEW의 정적·참조·회귀 판정은 `PASS_WITH_FOLLOWUP`이며, 새 Godot runtime·Windows·접근성·성능·사람 검증은 `NOT_RUN / BLOCKED_UNVERIFIED`다.
+실행하지 않은 항목을 PASS로 만들지 않는다. 이번 planning REVIEW의 정적·참조·회귀 판정은 `PASS_WITH_FOLLOWUP`이며, 실제 에셋 검색·취득·생성·새 Godot runtime·Windows·접근성·성능·사람 검증은 `NOT_RUN / BLOCKED_UNVERIFIED`다.
