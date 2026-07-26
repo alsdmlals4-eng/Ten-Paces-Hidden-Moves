@@ -16,6 +16,9 @@ product_gate: REPEAT_POC
 runtime: IMPLEMENTED_LEGACY
 new_poc_runtime_implementation: NOT_STARTED
 static_planning_tests: PASS_24
+remote_pr_validation: PASS_775
+review_decision: PASS_WITH_FOLLOWUP
+review_head: eb06bd78316348bd3aa6027a8057575ee4dc9053
 human_validation: UNVERIFIED
 t1_greenlight: NOT_GRANTED
 ```
@@ -45,12 +48,19 @@ t1_greenlight: NOT_GRANTED
 7. `docs/08_TEST_CHECKLIST.md`.
 8. PR #45 최신 본문·댓글.
 
+## 최종 REVIEW 결과
+
+- 원격 head `eb06bd78316348bd3aa6027a8057575ee4dc9053`.
+- PR Validation #775 전체 `PASS`.
+- TRP-01~13 반영 완료.
+- TRP-14는 main 전용 변경이 비충돌이고 PR base·가상 병합이 base를 보존하므로 별도 merge commit을 만들지 않는 `NO_CHANGE / BASE_PRESERVED_BY_PR_MERGE`로 재분류.
+- 제품 경로 변경 없음.
+- 최종 판정 `PASS_WITH_FOLLOWUP`.
+
 ## 다음 행동
 
-- main 비충돌 1커밋을 merge하고 baseline을 재고정한다.
-- PR Validation과 planning 24개 unit test, reference freshness, governance, 기존 전투 계약을 통과시킨다.
-- 최종 판정에서 runtime·Godot·Windows·접근성·성능·사람 검증을 `BLOCKED_UNVERIFIED`로 유지한다.
-- 사용자가 `검수 완료`라고 한 뒤에만 Codex 인계와 제품 런타임 구현계획을 작성한다.
+- 사용자가 정확히 `검수 완료`라고 한 뒤에만 Codex 인계와 제품 런타임 구현계획을 작성한다.
+- 신규 runtime·Godot·Windows·접근성·성능·사람 검증은 후속 구현 REVIEW의 `BLOCKED_UNVERIFIED`로 유지한다.
 
 ## 금지
 
