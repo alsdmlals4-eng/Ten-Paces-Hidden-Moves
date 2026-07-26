@@ -15,6 +15,7 @@ main_baseline: 48c26c02d53fe49a34b831f5bcf0924ae36f5dbd
 planning_review_branch: agent/poc-planning-baseline-and-legacy-audit
 implementation_branch: codex/p0-poc-runtime-foundation
 project_core: CORE_CONFIRMED
+product_gate: REPEAT_POC
 runtime: IMPLEMENTED_LEGACY
 new_poc_runtime_implementation: NOT_STARTED
 asset_search_generation_integration: NOT_STARTED
@@ -80,7 +81,7 @@ t1_greenlight: NOT_GRANTED
 
 ```bash
 git fetch origin
-git worktree add ../Ten-Paces-Hidden-Moves-p0 -b codex/p0-poc-runtime-foundation origin/agent/poc-planning-baseline-and-legacy-audit
+git worktree add ../Ten-Paces-Hidden-Moves-p0 codex/p0-poc-runtime-foundation
 cd ../Ten-Paces-Hidden-Moves-p0
 python -m unittest tests.test_poc_planning_data -v
 python tools/check_poc_planning_data.py --root .
