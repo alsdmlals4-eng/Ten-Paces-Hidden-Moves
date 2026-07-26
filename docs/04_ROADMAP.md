@@ -11,6 +11,7 @@ planning: USER_CONFIRMED_COMPLETE
 project_core: CORE_CONFIRMED
 implemented_runtime: IMPLEMENTED_LEGACY
 new_poc_planning: AUTHORED_NOT_IMPLEMENTED
+ui_ux_audio_asset_pipeline: USER_APPROVED_NOT_EXECUTED
 human_step14: NOT_RUN
 t1_greenlight: NOT_GRANTED
 ```
@@ -26,7 +27,9 @@ t1_greenlight: NOT_GRANTED
 - [x] 사용자 명시적 `기획 완료`.
 - [x] 책임 원본·planning JSON·댓글·PR 간 전체 적대적 검토와 사용자 결정 3건.
 - [x] 승인된 REVIEW BUILD: planning Schema·validator·반례 테스트 최소 교정.
-- [x] REVIEW 복귀 후 정적·참조·회귀 최종 판정: `PASS_WITH_FOLLOWUP` (PR Validation #775).
+- [x] REVIEW 복귀 후 정적·참조·회귀 최종 판정: `PASS_WITH_FOLLOWUP`.
+- [x] UI·UX·사운드 제작 순서를 컨셉 정의 → 에셋 검색 → 부족분 생성 → 통합 검증으로 확정.
+- [ ] 실제 에셋 스토어 최신 검색과 라이선스 원장 작성.
 - [ ] 사용자 명시적 `검수 완료`.
 - [ ] Codex 구현 인계.
 
@@ -44,6 +47,20 @@ t1_greenlight: NOT_GRANTED
 4. 순차 연격 `[합]`, 중단, 잔여타, 스택형 `[필중]`, 효과 scope와 7개 trigger.
 5. 실행 가능한 3수 AI bundle template·등급 산식·노드 생성 제약.
 6. 결과 이벤트·로그·복기와 정상·실패·경계·회귀 테스트.
+
+## 4.1 P0 시각·음향 에셋 파이프라인
+
+기능 계약과 병행하되 에셋 자체는 다음 순서를 지킨다.
+
+1. UI·UX·사운드 컨셉과 event matrix를 작성한다.
+2. 화면·상태·사건별 asset gap map을 만든다.
+3. 구현 시점의 최신 에셋 스토어·라이브러리를 검색한다.
+4. 라이선스·가격·출처·스타일·Godot 4 import·접근성·성능을 비교한다.
+5. 각 후보를 `ADOPT / ADAPT / GENERATE / REJECT / DEFER`로 판정한다.
+6. 적합한 후보가 없는 항목만 생성·편집한다.
+7. Godot에 통합한 뒤 가독성·접근성·사운드 피로·동시 재생·성능을 검증한다.
+
+외부 에셋 때문에 전투 정보 구조나 프로젝트 코어를 바꾸지 않는다. 라이선스·원본 출처가 불명확한 에셋은 사용하지 않는다. 상세 원본은 `docs/superpowers/specs/2026-07-26-ui-ux-audio-asset-pipeline-design.md`다.
 
 ## 5. P1 — 다음 PoC
 
@@ -113,6 +130,7 @@ PoC 사람 증거와 제작 반복성 증거 뒤에만 진입한다. 대표 경�
 → JSON·정적 검사
 → 자동 테스트
 → Godot runtime
+→ 에셋 출처·라이선스·통합 검사
 → Windows·접근성·성능
 → 사람 플레이
 → 증거 보고
@@ -129,5 +147,7 @@ PoC 사람 증거와 제작 반복성 증거 뒤에만 진입한다. 대표 경�
 - 3/3/4가 이해되지 않는다.
 - 두 번째 무공·적·중간 노드를 같은 데이터 구조로 만들 수 없다.
 - 플레이어 미확정 계획을 AI가 읽는다.
+- 외부 에셋을 맞추기 위해 정보 구조나 전투 계약을 왜곡한다.
+- 출처·라이선스가 불명확한 에셋에 핵심 화면이나 사운드가 의존한다.
 
 판정 어휘: `KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST`.
