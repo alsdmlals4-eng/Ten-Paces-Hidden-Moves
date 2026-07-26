@@ -38,9 +38,11 @@
 - `poc_run_state_contract.json`을 추가했다.
 - CE-01~08과 사용자 결정 계약을 validator와 24개 단위 테스트로 고정했다.
 - 로컬 증거: `24/24 PASS`, standalone validator `PASS`.
-- 원격 head: `eb06bd78316348bd3aa6027a8057575ee4dc9053`.
-- PR Validation `#775`: 운영체계·reference freshness·planning 24개·기존 전투 계약·PowerShell parse 전체 `PASS`.
+- 승인 BUILD 검증 기준 head: `eb06bd78316348bd3aa6027a8057575ee4dc9053`.
+- 승인 BUILD PR Validation `#775`: 운영체계·reference freshness·planning 24개·기존 전투 계약·PowerShell parse 전체 `PASS`.
 - 제품 `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot`은 변경하지 않았다.
+
+최신 PR head와 최신 CI run은 PR #45 본문·Actions를 추적 원장으로 사용한다.
 
 ## 다음 플레이 가능한 범위
 
