@@ -1,6 +1,3 @@
-> [!IMPORTANT]
-> 이 저장소는 새 저장소 이전 작업 중입니다.
-> 이전 완료 전까지 새로운 코드, Issue, PR을 추가하지 않습니다.
 > # 십보강호: 숨은 수의 비무
 ## Ten Paces: Hidden Moves
 
