@@ -34,7 +34,7 @@
 `docs/planning-data/*.json`은 `NON_RUNTIME_POC_PLANNING`이다. 후속 구현은 다음 adapter를 명시적으로 만든다.
 
 ```text
-planning budget/manual/duel/map JSON
+planning budget/manual/duel/map/run-state JSON
 → schema validation
 → runtime card/status/enemy/run data
 → engine consumers
@@ -42,25 +42,33 @@ planning budget/manual/duel/map JSON
 
 기획 파일을 런타임에서 암묵적으로 직접 읽지 않는다.
 
-## 4. 현재 `CombatState`
+## 4. 현재 `CombatState`와 `RunState`
 
-현행 주요 필드: round_number, bundle_index, player, enemy, tile, health, attack_power, stamina, internal, momentum, statuses, seed. 최신 구현에는 다음 상태가 필요하다.
+`RunState`는 회차 생존과 진행을 소유한다: run ID/seed, 현재·방문 노드, 이월 체력, 금전, 무공별 성급, 해금 기술, `[의료]`, 현재 전투 ID, 같은 전투 재도전 횟수. `[영구재화]`는 `RunState` 밖의 permanent profile이 소유한다.
 
-- accumulated_defense
-- evade_charges와 valid_until_timing
-- empowered_next_attack
-- fortitude_charges
-- active_action_id·current_hit_index
-- effect_once_per_action_consumption
-- unlocked_manual_ultimates와 focused_mastery_progress
+`CombatState`는 한 전투의 판정만 소유한다: round/bundle, 위치, 체력, 기력, 내력, 기세, 누적 방어도, 회피 스택, 필중 스택, 강건 스택, 임시 상태, 확정 행동·타격 진행·효과 소비 기록.
 
-Schema·fallback·재시작·AI whitelist·로그 소비자를 함께 갱신해야 한다.
+```text
+RunState + BattleDefinition
+→ PRE_BATTLE_RUN_STATE snapshot
+→ CombatState 생성
+→ 승리: 체력·회복·보상·노드 진행을 RunState에 1회 commit
+→ 패배 재도전: 영구재화 결제 후 snapshot 복원·동일 seed 재생성
+```
+
+전투 진입 시 기력·내력은 최대, 기세0, 임시 상태 clear, 위치는 battle definition을 사용한다. 패배 전투의 피해·임시 자원·미획득 보상은 롤백하지만 영구재화 결제는 permanent profile에 남는다.
 
 ## 5. 공개 상태 라이벌 후보 AI 경계
 
 현재 시그니처 `CombatAiPlanner.build_bundle_actions(...)`와 결정적 seed 원칙을 유지한다. 입력 whitelist만 사용하고 미확정 계획을 금지한다. 적 데이터의 public_tells·phase_change·candidate_actions를 runtime profile로 변환한다.
 
 현행 운영 토큰: `enemy_plan_source=public_state_ai`. `enemy_bundles` fixture는 `ai_enabled == false`인 명시적 테스트 경로에서만 허용한다.
+
+## 5.1 정규화 card·AI 계약
+
+무공 행동 adapter는 `category`, `resolution_phase`, `targeting_mode`, `attack.damage_model/raw_powers/range`, `movement.timing/mode/max_tiles`를 필수 입력으로 받는다. 중앙 `price_id × quantity` ledger를 다시 계산해 위조된 tick을 거부한다.
+
+AI profile은 숫자 score window·weights·조건 modifier·정확히 3수인 bundle template·timing/targeting·fallback을 소유한다. 현행 한 행동 반환 구현은 새 adapter에서 template 전체를 action 배열로 변환해야 하며 미확정 플레이어 계획을 읽지 않는다.
 
 ## 6. 묶음 판정과 반환 구조
 
@@ -90,9 +98,9 @@ attack_action_finished | non_attack_action_resolved
 
 `planning → committed → resolving → presenting_result → next_bundle_ready | combat_ended`. 빠른 재생·즉시 완료는 큐 대기만 줄이고 결과를 바꾸지 않는다.
 
-## 8. 종료·재시작
+## 8. 종료·재시작과 유료 재도전
 
-`restart_combat()`은 최신 초기 수치와 모든 신규 상태·이벤트 소비 기록을 초기화해야 한다. 반복 재시작에서 노드·signal·로그·효과 소비가 누적되면 실패다.
+현행 `restart_combat()`은 T0 개발용 완전 초기화로 유지한다. PoC 회차에서는 노출하지 않고 `RunState` retry service가 전투 직전 snapshot·영구재화 1/2/3 결제·동일 seed 복원을 담당한다. 반복 재도전에서 보상·노드 진행·signal·로그·효과 소비가 중복되거나 영구재화가 롤백되면 실패다.
 
 ## 9. 검증 경계
 
@@ -102,6 +110,7 @@ attack_action_finished | non_attack_action_resolved
 - 기본 절초 시작 가용성과 무공 10성 절초의 성급 기반 해금.
 - `timing_results`와 `presentation_events` 순서 일치.
 - AI 비공개 입력 부재.
-- 재시작 완전 초기화.
+- 유료 재도전 snapshot 복원·영구재화 비롤백·보상 1회 commit.
+- T0 개발용 재시작과 PoC 회차 재도전 분리.
 
 이번 작업에서는 코드·runtime·Godot을 변경하지 않았으므로 새 아키텍처는 `AUTHORED_NOT_IMPLEMENTED`다.

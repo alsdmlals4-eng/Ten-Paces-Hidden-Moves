@@ -32,18 +32,19 @@
 - Base: `alsdmlals4-eng/Base@41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
 - Base 차이: `docs/BASE_RULES_VERSION.md`.
 - Skill Registry: `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`.
-- 현재 구현 기준: PR #7 `agent/t0-combat-poc-board`.
-- 기준 SHA: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
-- 코어 확정 PR: #15 `agent/project-core-confirmation`.
-- 최신 승인 범위: Issue #13 STEP 12~14.
+- 현재 구현 기준: PR #7 `agent/t0-combat-poc-board`; 기준 SHA `659c57e7ffa588ad6a6471ed9b5394985b159eaf`; legacy 승인 추적 Issue #13.
+- 최신 기획·검수 PR: #45 `agent/poc-planning-baseline-and-legacy-audit`.
+- 통합 기획 기준선: `docs/decisions/2026-07-26_POC_PLANNING_BASELINE.md`.
+- 적대적 검토: `docs/decisions/2026-07-26_FULL_ADVERSARIAL_REVIEW_LOOP.md`.
 - 전투 규칙: `docs/02_COMBAT_RULES.md`.
 - 현재 범위: `docs/05_COMBAT_POC_SPEC.md`.
 - 현재 증거: `docs/08_TEST_CHECKLIST.md`.
+- 단계: `REVIEW_IN_PROGRESS`; 사용자 `검수 완료` 전 Codex 런타임 인계 금지.
 - 프로젝트 코어: `CORE_CONFIRMED`.
 - 제품 게이트: `REPEAT_POC`.
 - T1 진입: `NOT_GRANTED`.
 
-STEP 14의 기계 시나리오는 기록됐지만 실제 사용자 이해·상대 성향 발견·보조기기·주관적 음향/모션 관찰은 `NOT_RUN`이다.
+planning Schema·validator의 REVIEW BUILD 교정은 허용됐지만 제품 `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot`은 변경하지 않는다. Godot·Windows·실제 사용자 STEP 14는 `NOT_RUN / UNVERIFIED`다.
 
 ## 4. Work Mode·Skill Mode
 
@@ -119,11 +120,12 @@ L2 이상은 `outcome / inputs / files / dependencies / output / acceptance / va
 - 같은 칸 최대 2인, 거리 0 `[밀착]`.
 - 라운드 `3수 → 3수 → 4수`.
 - 기초 행동 8종·절초 3종.
-- 같은 실행 수 공격의 `[합]`.
-- 방어도 차감 뒤 같은 수 반감, 회피, 파공검기 `[필중]`.
-- 같은 수 미실행 행동 중단과 태세 기반 `[강건]`.
-- 공개 상태 기반 결정적 최소 AI.
-- 승패·무승부·4/7 완전 재시작.
+- 같은 실행 수 공격의 타격쌍을 앞에서부터 순차 `[합]`.
+- 방어도5 누적·피해 흡수 소모, 횟수형 회피, 스택형 `[필중]`.
+- 실제 체력 피해 뒤 미실행 후속타 중단과 중단 1회 방지 `[강건]`.
+- 공개 상태 기반 결정적 후보 AI와 실행 가능한 3수 묶음 template.
+- 승리 후 체력 이월·회복, 패배 시 전투 직전 `RunState` 복원 유료 재도전.
+- 같은 전투 재도전은 `[영구재화]` 1→2→3개를 소모하고 다른 전투 진입 시 비용 단계를 초기화.
 - UI·VFX·오디오는 판정·보상·저장을 재계산하지 않는다.
 - 덱·손패·행동력·내공·`[집중]` 없음.
 

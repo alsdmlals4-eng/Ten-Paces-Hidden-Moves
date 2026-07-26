@@ -19,10 +19,11 @@
 - Base: `alsdmlals4-eng/Base@41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
 - Base 버전·차이: `docs/BASE_RULES_VERSION.md`.
 - Skill Registry: `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`.
-- 현재 구현: PR #7 `agent/t0-combat-poc-board`.
-- 기준 SHA: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
-- 코어 확정 PR: #15 `agent/project-core-confirmation`.
-- 최신 승인: Issue #13 STEP 12~14.
+- 현재 구현 기준: PR #7 `agent/t0-combat-poc-board@659c57e7ffa588ad6a6471ed9b5394985b159eaf`; legacy 승인 추적 Issue #13.
+- 최신 기획·검수: PR #45 `agent/poc-planning-baseline-and-legacy-audit`.
+- 통합 기획 기준선: `docs/decisions/2026-07-26_POC_PLANNING_BASELINE.md`.
+- 적대적 검토·검수안: `docs/decisions/2026-07-26_FULL_ADVERSARIAL_REVIEW_LOOP.md`.
+- 현재 단계: `REVIEW_IN_PROGRESS`; `검수 완료` 전 제품 런타임 인계 금지.
 
 ## Work Mode
 
@@ -38,9 +39,9 @@ Skill·Skill Mode는 Registry trigger로 자동 선택한다. L1 이상은 기�
 - 같은 칸 최대 2인과 거리 0 `[밀착]`.
 - 라운드 `3수 → 3수 → 4수`.
 - 기초 행동 8종·절초 3종.
-- `[합]`·방어·회피·필중·중단·강건.
-- 공개 상태 기반 결정적 최소 AI.
-- 승패·무승부·4/7 완전 재시작.
+- 순차 타격쌍 `[합]`·누적 방어도·회피·스택형 필중·중단·강건.
+- 공개 상태 기반 결정적 후보 AI.
+- 승패·무승부와 전투 직전 `RunState` 유료 재도전 계약.
 - STEP 0~13 구현·기술 증거.
 - STEP 14 기계 시나리오 기록.
 - 실제 사용자 STEP 14: `NOT_RUN`.
@@ -51,11 +52,12 @@ Skill·Skill Mode는 Registry trigger로 자동 선택한다. L1 이상은 기�
 ## 다음 순서
 
 ```text
-PR #15 최종 적대적 검토·활성 참조 동기화
-→ 결정적 복기·읽을 수 있는 라이벌 성향의 최소 실험 계약
-→ STEP 14 실제 사용자 플레이
+PR #45 승인 검수안 최소 BUILD
+→ REVIEW 복귀·정적·참조·회귀 검증
+→ 사용자 `검수 완료`
+→ Codex 런타임 구현 인계
+→ Godot·Windows·접근성·성능·STEP 14 사람 검증
 → KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST
-→ T1_GREENLIGHT_REVIEW 또는 REPEAT_POC
 ```
 
 ## 상태 경계

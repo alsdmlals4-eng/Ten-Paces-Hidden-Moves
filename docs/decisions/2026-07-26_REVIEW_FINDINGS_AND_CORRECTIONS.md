@@ -16,6 +16,10 @@
 | R-04 | HIGH | 테스트와 validator가 구형 비무 5 절초 해금을 강제 | 전역 해금 필드의 부재, 기본 절초 시작 가용성, 3→10 비용 38, 비무 5 전 집중 도달성을 검사하도록 교체 |
 | R-05 | MEDIUM | 시작 상태 방어도5와 재시작 방어도0이 충돌 | 재시작이 최신 시작 방어도5를 복원하도록 정렬 |
 | R-06 | MEDIUM | 현재형 문서에 `PLANNING_IN_PROGRESS`가 남음 | 활성 책임 원본을 `REVIEW_IN_PROGRESS`로 교정. 과거 감사 기록의 당시 단계는 역사 정보로 보존 |
+| R-07 | HIGH | patch·AI·보상·등급·노드의 잘못된 데이터 8종이 validator를 통과 | CE-01~08 반례와 Schema·교차 파일 검사를 추가 |
+| R-08 | HIGH | 패배 회차 상태·재도전 비용·영구재화 경계 부재 | `RunState`/`CombatState`와 전투 직전 snapshot·1→2→3 유료 재도전 계약 추가 |
+| R-09 | HIGH | `[필중]` 다타격 소비 범위 불명확 | 스택형, 실제 회피 우회 유효 타격당 1스택 소비로 확정 |
+| R-10 | HIGH | 주요 비무 보상 이중 소유와 38포인트 경로 불명확 | 자유6 / 지정5+자유3 / 문파3성 option set과 32+6·24+14 경로 구조화 |
 
 ## 효과 trigger 정본
 
@@ -46,6 +50,14 @@ ON_ACTION_START
 - 비무 5에 `progression_unlock=ultimate_access`를 재도입하면 실패.
 - 기본 절초 시작 가용성 또는 집중 도달성 38포인트가 누락되면 실패.
 - PoC subset·스테이지·노드·예산·ID·의료 기존 검사를 유지.
+
+## REVIEW BUILD 정적 증거
+
+- planning JSON 6개를 canonical pretty-print와 stable Schema로 정렬.
+- `poc_run_state_contract.json` 추가.
+- CE-01~08, 유료 재도전, 스택형 필중, 보상 3선택, 38포인트 두 경로, AI template, acquisition을 포함해 24개 단위 테스트 통과.
+- standalone validator 통과.
+- 제품 런타임은 변경하지 않았으므로 runtime·Godot·Windows·사람 증거는 여전히 없다.
 
 ## 남은 미검증
 

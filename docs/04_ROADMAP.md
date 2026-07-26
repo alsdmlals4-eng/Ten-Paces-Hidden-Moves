@@ -24,7 +24,9 @@ t1_greenlight: NOT_GRANTED
 - [x] PoC 범위를 주요 비무 1~5와 구간당 중간 노드 2~3개로 확대.
 - [x] 튜토리얼·3스테이지·히든 천하제일인 구조를 데이터화.
 - [x] 사용자 명시적 `기획 완료`.
-- [ ] 책임 원본·planning JSON·댓글·PR 간 검수 루프.
+- [x] 책임 원본·planning JSON·댓글·PR 간 전체 적대적 검토와 사용자 결정 3건.
+- [x] 승인된 REVIEW BUILD: planning Schema·validator·반례 테스트 최소 교정.
+- [ ] REVIEW 복귀 후 정적·참조·회귀 최종 판정.
 - [ ] 사용자 명시적 `검수 완료`.
 - [ ] Codex 구현 인계.
 
@@ -36,11 +38,12 @@ t1_greenlight: NOT_GRANTED
 
 검수 완료 뒤 Codex가 수행한다.
 
-1. planning JSON을 런타임 Schema로 변환하는 명시적 adapter.
-2. 속공4·강공10·방어도5·내력5·명상1/1·`[강화]`·새 `[강건]`.
-3. 순차 연격 `[합]`, 중단, 잔여타, 효과 scope와 7개 trigger.
-4. 결과 이벤트·로그·복기.
-5. 정상·실패·경계·회귀 테스트.
+1. 정규화된 card/patch/tick ledger planning Schema를 런타임 Schema로 변환하는 명시적 adapter.
+2. `RunState`/`CombatState` 분리, 보상 1회 commit, 영구재화 유료 재도전.
+3. 속공4·강공10·방어도5·내력5·명상1/1·`[강화]`·새 `[강건]`.
+4. 순차 연격 `[합]`, 중단, 잔여타, 스택형 `[필중]`, 효과 scope와 7개 trigger.
+5. 실행 가능한 3수 AI bundle template·등급 산식·노드 생성 제약.
+6. 결과 이벤트·로그·복기와 정상·실패·경계·회귀 테스트.
 
 ## 5. P1 — 다음 PoC
 
@@ -53,6 +56,13 @@ t1_greenlight: NOT_GRANTED
 - 플레이 시간은 새 구조의 런타임과 사람 증거가 없으므로 `UNVERIFIED`.
 
 성공하면 `KEEP / AMPLIFY`, 규칙 이해는 되나 재미·선택이 약하면 `CHANGE / RETEST`, 이해가 막히면 `REMOVE / REPEAT_POC`로 판정한다.
+
+### 주요 비무5 전 성장 보장 구조
+
+- 집중 보상: 주요 비무1~4에서 `지정5+자유3`을 같은 무공에 선택해 32.
+- 최소 집중 노드: 네 구간 합계 6을 같은 무공에 투입 가능하도록 생성 제약으로 보장.
+- 집중 경로 합계: 38.
+- 자유 보상: 24 + 고효율 중간 노드 목표14 = 38이며 모든 경로 보장은 아니다.
 
 ## 6. 전체 스테이지 방향
 

@@ -9,7 +9,7 @@
 
 - [작업 시작](START_HERE.md)
 - [현재 상태]([기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md)
-- [승인 기획 기준선](docs/decisions/2026-07-25_PROJECT_REASSESSMENT_APPROVED_PLANNING_BASELINE.md)
+- [통합 기획 기준선](docs/decisions/2026-07-26_POC_PLANNING_BASELINE.md)
 - [문서·Skill 지도]([기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md)
 - [게임 기획·코어 계약](docs/01_GAME_DESIGN.md)
 - [전투 규칙](docs/02_COMBAT_RULES.md)
@@ -24,18 +24,17 @@
 
 ## 현재 기준
 
-- 단일 제품 기준: `main@8b4380da79029dee5e07aae2622846fcf62e9431`.
-- 현재 기획 기준: `planning/project-reassessment-and-pointed-fun`의 승인 기획 기준선.
-- 통합 PR: #41.
-- 기획 PR: #42.
+- 현재 기획·검수 PR: #45 `agent/poc-planning-baseline-and-legacy-audit`.
+- 현재 기획 기준: `docs/decisions/2026-07-26_POC_PLANNING_BASELINE.md`.
+- 전체 적대적 검토: `docs/decisions/2026-07-26_FULL_ADVERSARIAL_REVIEW_LOOP.md`.
 - Base: `41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
-- REPEAT_POC 기술 Goal: Issue #16 `CLOSED / COMPLETED`.
 - 제품 게이트: `REPEAT_POC`.
 - T1 진입: `NOT_GRANTED`.
-- 실제 사람 STEP 14: `DEFERRED_BY_USER / UNVERIFIED`.
-- 현재 단계: `PLANNING_IN_PROGRESS`.
+- 실제 사람 STEP 14: `NOT_RUN / UNVERIFIED`.
+- 현재 단계: `REVIEW_IN_PROGRESS`.
+- REVIEW BUILD 범위: 정본·planning Schema·validator·회귀 테스트만 교정; 제품 런타임 미변경.
 
-사용자의 명시적 `기획 완료` 전에는 검수 단계·Codex 인계·새 제품 기능 구현으로 넘어가지 않습니다.
+사용자의 명시적 `검수 완료` 전에는 Codex 런타임 인계나 새 제품 기능 구현으로 넘어가지 않습니다.
 
 ## 프로젝트 코어
 
@@ -66,14 +65,14 @@
 ## 승인된 회차 구조
 
 - `10전`은 총 전투 10회가 아니라 필수 주요 비무·강적 조우 10개.
-- 주요 비무 사이에 2~4개 분기 노드와 선택 일반전 배치.
+- 연속한 주요 비무 사이에 실제 방문 중간 노드 2~3개를 배치.
 - 실제 총 전투 수는 경로에 따라 10보다 많음.
 - 주요 비무 5 이전에 한 무공 10성 또는 동급 광역 빌드 가능.
 - 시작 무공서 4개를 3성으로 선택해 기술 4개로 시작.
 - 수련도 3·7성에서 기술, 5·9성에서 기존 기술 강화, 10성에서 절초·진의.
 - 해금 기술은 덱·손패·장착 제한 없이 항상 사용 가능.
 
-세부 성장·보상·금전·문파·관찰 기준은 [승인 기획 기준선](docs/decisions/2026-07-25_PROJECT_REASSESSMENT_APPROVED_PLANNING_BASELINE.md)이 책임집니다.
+세부 성장·보상·금전·문파·관찰 기준은 [통합 기획 기준선](docs/decisions/2026-07-26_POC_PLANNING_BASELINE.md)과 `docs/planning-data/`가 책임집니다. 주요 비무 보상은 자유 수련6, 지정 무공5+자유3, 문파 무공3성 중 하나이며 자유도가 낮을수록 총 가치가 높습니다.
 
 ## 승인된 전투 기준
 
@@ -112,7 +111,15 @@ defense: 5
 - 중단 시 자원·`[강화]`·점유 슬롯 환불 없음.
 - 슬롯 성능 예산: 1슬롯 `1.0`, 2슬롯 `2.5`, 3슬롯 `4.0`.
 
-상세 최신 판정은 [승인 기획 기준선](docs/decisions/2026-07-25_PROJECT_REASSESSMENT_APPROVED_PLANNING_BASELINE.md)이 우선합니다. 기존 [전투 규칙서](docs/02_COMBAT_RULES.md)는 이후 정본 갱신 대상입니다.
+상세 최신 판정은 [전투 규칙서](docs/02_COMBAT_RULES.md)가 책임지고, 수치·ID·Schema는 `docs/planning-data/`가 소유합니다.
+
+## 승인된 실패·보상 계약
+
+- 전투 패배 시 전투 직전 `RunState`를 복원해 같은 seed로 재도전할 수 있다.
+- 같은 전투 재도전 비용은 `[영구재화]` 1→2→3개이며 3에서 상한, 다른 전투 진입 시 1로 초기화한다.
+- `[영구재화]` 부족 시 회차 포기 또는 타이틀 복귀만 허용한다.
+- `[필중]`은 스택형이다. 실제 회피 판정에서 회피를 무시한 유효 타격마다 1스택을 소비하며 취소·중단·대상 부재·사거리 실패·회피 부재에는 소비하지 않는다.
+- 주요 비무 1~4에서 지정 무공5+자유3을 같은 무공에 투자하면 32, 중간 노드 최소 집중 수련6을 더해 주요 비무5 진입 전에 38을 확보할 수 있다.
 
 ## 현재 기술 구현
 
@@ -128,7 +135,7 @@ STEP 0~13 기본 전장·UI·배치·판정·종료·재시작
 + 과거 [준비]·[전조]·카드/절초 자동 배치 구현
 ```
 
-기술 구현은 승인 기획 기준선보다 앞선 PoC 규칙을 포함합니다. 기획 완료 전에는 제품 코드를 새 규칙으로 변경하지 않습니다.
+기술 구현은 최신 승인 기획보다 앞선 PoC 규칙을 포함합니다. `검수 완료` 전에는 제품 코드를 새 규칙으로 변경하지 않습니다.
 
 기술 상태:
 

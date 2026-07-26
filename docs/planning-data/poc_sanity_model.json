@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "data_role": "ANALYSIS_ONLY",
   "status": "UNVERIFIED_SANITY_MODEL",
   "seed": 20260726,
@@ -37,6 +37,18 @@
     "required_training_points": 38,
     "modeled_points_before_major_duel_5": 38,
     "result": "POSSIBLE_NOT_GUARANTEED",
-    "boundary": "This does not prove that every generated route, grade outcome, or player allocation reaches 10-star before duel 5."
+    "boundary": "This does not prove that every generated route, grade outcome, or player allocation reaches 10-star before duel 5.",
+    "validated_paths": {
+      "focused_rewards_plus_guaranteed_nodes": {
+        "duel_rewards": 32,
+        "intermediate_points": 6,
+        "total": 38
+      },
+      "free_rewards_plus_high_efficiency_nodes": {
+        "duel_rewards": 24,
+        "intermediate_points": 14,
+        "total": 38
+      }
+    }
   }
 }

@@ -68,13 +68,21 @@
 - 네 구간의 2~3개 중간 노드.
 - 기본 절초의 시작 가용성과 3→10 집중 성장 38포인트 도달성.
 
+### 실패·재도전
+
+- 패배 시 전투 직전 `RunState`를 복원하고 같은 seed로 재도전한다.
+- 같은 전투 재도전 비용은 `[영구재화]` 1→2→3개, 다른 전투 진입 시 초기화한다.
+- 전투 피해·임시 자원·미획득 보상은 롤백하지만 영구재화 지불은 유지한다.
+- 영구재화 부족 시 회차 포기 또는 타이틀 복귀를 선택한다.
+- `[필중]`은 스택형이며 실제 회피를 무시한 타격마다 1스택을 소비한다.
+
 ### 제외
 
 - 주요 비무 6~10 구현.
 - 스테이지 2·3 구현.
 - 천마·무림맹주 등 히든 천하제일인 전투.
 - 전체 지도 생성.
-- 저장·영구 성장·상점 완성.
+- 저장 migration·영구 성장 트리·상점 경제의 완성. 단, 재도전 비용을 위한 최소 `[영구재화]` profile 계약은 포함.
 - 최종 아트·사운드·Release 성능.
 
 ## 5. 구현 단계와 증거 상태
@@ -83,7 +91,8 @@
 current_runtime: TECHNICALLY_VERIFIED_LEGACY
 new_planning_contract: AUTHORED
 new_runtime_implementation: NOT_STARTED
-new_automated_validation: NOT_RUN
+new_static_planning_validation: PASS_24_TESTS
+new_runtime_automated_validation: NOT_RUN
 new_godot_validation: NOT_RUN
 new_windows_validation: NOT_RUN
 human_step14: NOT_RUN

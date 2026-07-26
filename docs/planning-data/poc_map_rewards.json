@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "data_role": "NON_RUNTIME_POC_PLANNING",
   "status": "POC_HYPOTHESIS",
   "editable": true,
@@ -94,11 +94,20 @@
       "required_training_points": 38,
       "possible_before_major_duel_id": "duel_05_flowing_combo",
       "availability": "POSSIBLE_NOT_GUARANTEED",
-      "path_rule": "Concentrate eligible training rewards and training nodes into one selected manual.",
-      "modeled_sources": {
-        "major_duels_1_to_4_at_B_grade": 24,
-        "focused_intermediate_growth": 14,
-        "total": 38
+      "path_rule": "Choose focused rewards for duels 1-4 plus guaranteed focus nodes, or choose free rewards plus the high-efficiency node route.",
+      "validated_paths": {
+        "focused_rewards_plus_guaranteed_nodes": {
+          "duel_rewards": 32,
+          "intermediate_points": 6,
+          "total": 38,
+          "availability": "GUARANTEED_IF_OPTIONS_CHOSEN"
+        },
+        "free_rewards_plus_high_efficiency_nodes": {
+          "duel_rewards": 24,
+          "intermediate_points": 14,
+          "total": 38,
+          "availability": "POSSIBLE_NOT_GUARANTEED"
+        }
       }
     }
   },
@@ -194,13 +203,7 @@
       }
     },
     "major_duel": {
-      "base": 5,
-      "grade_bonus": {
-        "C": 0,
-        "B": 1,
-        "A": 2,
-        "S": 3
-      }
+      "option_set_id": "major_duel_standard_v1"
     },
     "loss": {
       "base": 0,
@@ -209,11 +212,72 @@
   },
   "performance_grade": {
     "dimensions": {
-      "threat_response": 30,
-      "tactical_execution": 25,
-      "resource_use": 15,
-      "damage_management": 15,
-      "public_enemy_task": 15
+      "threat_response": {
+        "weight": 30,
+        "formula_id": "SUCCESS_RATIO",
+        "input_events": [
+          "published_threat_window",
+          "successful_threat_response"
+        ],
+        "clamp": {
+          "min": 0,
+          "max": 100
+        },
+        "zero_denominator_score": 100
+      },
+      "tactical_execution": {
+        "weight": 25,
+        "formula_id": "SUCCESS_RATIO",
+        "input_events": [
+          "planned_action",
+          "resolved_as_planned"
+        ],
+        "clamp": {
+          "min": 0,
+          "max": 100
+        },
+        "zero_denominator_score": 100
+      },
+      "resource_use": {
+        "weight": 15,
+        "formula_id": "RESOURCE_EFFICIENCY",
+        "input_events": [
+          "resource_spent",
+          "resource_wasted",
+          "resource_restored"
+        ],
+        "clamp": {
+          "min": 0,
+          "max": 100
+        },
+        "zero_denominator_score": 100
+      },
+      "damage_management": {
+        "weight": 15,
+        "formula_id": "DAMAGE_CONTROL",
+        "input_events": [
+          "avoidable_health_damage",
+          "prevented_health_damage"
+        ],
+        "clamp": {
+          "min": 0,
+          "max": 100
+        },
+        "zero_denominator_score": 100
+      },
+      "public_enemy_task": {
+        "weight": 15,
+        "formula_id": "PUBLISHED_TASK_PROGRESS",
+        "input_events": [
+          "published_task_progress",
+          "published_task_completed"
+        ],
+        "clamp": {
+          "min": 0,
+          "max": 100
+        },
+        "zero_denominator_score": 100
+      }
     },
     "thresholds": {
       "S": 85,
@@ -226,7 +290,19 @@
       "stalemate_count",
       "hidden_tasks"
     ],
-    "explanation_requirement": "Show dimension scores, decisive events, and the published enemy task."
+    "explanation_requirement": "Show dimension scores, decisive events, and the published enemy task.",
+    "calculation": {
+      "dimension_scale": {
+        "min": 0,
+        "max": 100
+      },
+      "weighted_total_formula": "SUM(DIMENSION_SCORE_X_WEIGHT_DIV_100)",
+      "rounding": "ROUND_HALF_UP_PER_DIMENSION",
+      "clamp_total": {
+        "min": 0,
+        "max": 100
+      }
+    }
   },
   "medical": {
     "start": 0,
@@ -269,5 +345,201 @@
     "Medical sources can be edited without changing the recovery formula.",
     "Basic ultimates do not use a duel-number unlock gate.",
     "A focused 38-point path may unlock one selected manual 10-star ultimate before major duel 5, but this is not guaranteed on every route."
+  ],
+  "major_duel_reward_options": {
+    "id": "major_duel_standard_v1",
+    "ownership": "poc_map_rewards.json",
+    "principle": "LOWER_FREEDOM_GRANTS_HIGHER_TOTAL_VALUE",
+    "options": [
+      {
+        "id": "free_training_6",
+        "type": "FREE_TRAINING",
+        "free_points": 6,
+        "total_value": 6
+      },
+      {
+        "id": "focused_training_5_plus_3",
+        "type": "FOCUSED_TRAINING",
+        "designated_points": 5,
+        "free_points": 3,
+        "total_value": 8
+      },
+      {
+        "id": "faction_manual_mastery_3",
+        "type": "FACTION_MANUAL",
+        "grant_mastery": 3,
+        "comparison_value": 10,
+        "convertible_to_training_points": false
+      }
+    ],
+    "duplicate_manual_conversion": {
+      "type": "DESIGNATED_TRAINING",
+      "points": 10,
+      "target": "SAME_MANUAL"
+    }
+  },
+  "generation_contract": {
+    "seed_field": "run_seed",
+    "deterministic_for_same_seed": true,
+    "reroll_on_reload": false
+  },
+  "node_catalog": {
+    "training_focus_1": {
+      "type": "training",
+      "reward_choices": [
+        {
+          "id": "focus_1",
+          "designated_training_points": 1
+        }
+      ]
+    },
+    "training_focus_2": {
+      "type": "training",
+      "reward_choices": [
+        {
+          "id": "focus_2",
+          "designated_training_points": 2
+        }
+      ]
+    },
+    "training_focus_3": {
+      "type": "training",
+      "reward_choices": [
+        {
+          "id": "focus_3",
+          "designated_training_points": 3
+        }
+      ]
+    },
+    "encounter_free_1": {
+      "type": "encounter",
+      "reward_choices": [
+        {
+          "id": "free_1",
+          "free_training_points": 1
+        }
+      ]
+    },
+    "normal_combat": {
+      "type": "combat",
+      "reward_formula_id": "normal_combat"
+    },
+    "inn_recovery": {
+      "type": "inn",
+      "reward_choices": [
+        {
+          "id": "recover_8",
+          "health_recovery": 8
+        }
+      ]
+    },
+    "faction_manual_offer": {
+      "type": "faction",
+      "reward_choices": [
+        {
+          "id": "manual_3",
+          "grant_manual_mastery": 3
+        }
+      ]
+    },
+    "market_supply": {
+      "type": "market",
+      "reward_choices": [
+        {
+          "id": "buy_information",
+          "money_cost": 3
+        }
+      ]
+    }
+  },
+  "poc_gap_constraints": [
+    {
+      "id": "gap_1",
+      "after_duel_id": "duel_01_clash_reader",
+      "before_duel_id": "duel_02_guard_breaker",
+      "min_nodes": 2,
+      "max_nodes": 3,
+      "candidate_node_ids": [
+        "training_focus_1",
+        "training_focus_2",
+        "training_focus_3",
+        "encounter_free_1",
+        "normal_combat",
+        "inn_recovery",
+        "faction_manual_offer",
+        "market_supply"
+      ],
+      "required_node_ids": [
+        "training_focus_2"
+      ],
+      "guaranteed_focus_points": 2,
+      "target_focus_points": 4
+    },
+    {
+      "id": "gap_2",
+      "after_duel_id": "duel_02_guard_breaker",
+      "before_duel_id": "duel_03_range_keeper",
+      "min_nodes": 2,
+      "max_nodes": 3,
+      "candidate_node_ids": [
+        "training_focus_1",
+        "training_focus_2",
+        "training_focus_3",
+        "encounter_free_1",
+        "normal_combat",
+        "inn_recovery",
+        "faction_manual_offer",
+        "market_supply"
+      ],
+      "required_node_ids": [
+        "training_focus_1"
+      ],
+      "guaranteed_focus_points": 1,
+      "target_focus_points": 3
+    },
+    {
+      "id": "gap_3",
+      "after_duel_id": "duel_03_range_keeper",
+      "before_duel_id": "duel_04_counter_current",
+      "min_nodes": 2,
+      "max_nodes": 3,
+      "candidate_node_ids": [
+        "training_focus_1",
+        "training_focus_2",
+        "training_focus_3",
+        "encounter_free_1",
+        "normal_combat",
+        "inn_recovery",
+        "faction_manual_offer",
+        "market_supply"
+      ],
+      "required_node_ids": [
+        "training_focus_2"
+      ],
+      "guaranteed_focus_points": 2,
+      "target_focus_points": 4
+    },
+    {
+      "id": "gap_4",
+      "after_duel_id": "duel_04_counter_current",
+      "before_duel_id": "duel_05_flowing_combo",
+      "min_nodes": 2,
+      "max_nodes": 3,
+      "candidate_node_ids": [
+        "training_focus_1",
+        "training_focus_2",
+        "training_focus_3",
+        "encounter_free_1",
+        "normal_combat",
+        "inn_recovery",
+        "faction_manual_offer",
+        "market_supply"
+      ],
+      "required_node_ids": [
+        "training_focus_1"
+      ],
+      "guaranteed_focus_points": 1,
+      "target_focus_points": 3
+    }
   ]
 }

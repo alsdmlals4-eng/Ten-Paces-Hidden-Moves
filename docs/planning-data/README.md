@@ -8,7 +8,8 @@
 - `poc_martial_arts.json`: 시작 무공 후보 6개와 1·3·5·7·9·10성 데이터.
 - `poc_enemy_duels.json`: 공개 상태 AI 계약, 주요 비무 10개, `stage_id`, PoC 1~5 범위, 주요 비무 5 전 집중 성장 도달성.
 - `poc_map_rewards.json`: 튜토리얼·3스테이지·히든 구조, 구간당 중간 노드 2~3개, 성과·보상·`[의료]`.
-- `poc_sanity_model.json`: 비런타임 수치 sanity model 결과.
+- `poc_run_state_contract.json`: `RunState`/`CombatState`, 전투 전후 commit, 영구재화 유료 재도전 계약.
+- `poc_sanity_model.json`: 비런타임 수치 sanity model과 38포인트 두 경로.
 
 ## 캠페인 편집 계약
 
@@ -21,7 +22,10 @@
 - 연속 주요 비무 사이 실제 방문 중간 노드: 2~3개.
 - PoC 총 방문 노드: 13~17개.
 - 기본 절초 3종은 시작부터 사용 가능.
-- 한 무공에 38 수련포인트를 집중하면 주요 비무 5 전에 10성 절초 도달 가능성이 있으나 보장되지 않음.
+- 주요 비무 보상은 자유6 / 지정5+자유3 / 문파 무공3성 중 하나이며 제한이 강할수록 총 가치가 높음.
+- 집중 경로는 주요 비무1~4에서 32 + 중간 노드 최소6 = 38. 자유 경로는 24 + 고효율 노드14 = 38.
+- 패배 재도전은 전투 직전 `RunState` 복원과 `[영구재화]` 1→2→3 결제를 사용.
+- `[필중]`은 실제 회피를 우회한 유효 타격마다 1스택 소비.
 
 스테이지 배치는 `poc_enemy_duels.json`, 경로·노드 수는 `poc_map_rewards.json`이 소유한다. 두 파일의 주요 비무 ID와 순서가 일치해야 한다.
 
@@ -30,12 +34,14 @@
 1. 안정된 주요 비무·무공·기술 ID는 유지한다.
 2. 스테이지를 바꿀 때 결투의 `stage_id`와 `stage_contract`를 함께 수정한다.
 3. 중간 노드 수를 바꿀 때 구간 수·중간 노드 합계·총 방문 노드를 함께 수정한다.
-4. `poc_balance_budget.json`의 중앙 가격을 바꿔도 기존 기술은 자동 수정하지 않는다.
-5. 각 기술의 `components`, `calculated_ticks`, `variance_ticks`를 다시 계산한다.
-6. `abs(variance_ticks) <= 5`이면 PoC 자동 허용 범위다.
-7. 범위를 벗어나면 원인 항목과 변경 전후를 기록한 뒤 사람이 수정한다.
-8. 효과 trigger는 판정 시점에 맞게 선택하고, 비공격 행동에 `ON_HIT`을 사용하지 않는다.
-9. `python tools/check_poc_planning_data.py --root .`로 참조·예산·스테이지·노드·성장 도달성 계약을 확인한다.
+4. 중앙 가격은 `price_id × quantity` ledger로 기술 예산을 재계산하며 기존 기술을 자동 보정하지 않는다.
+5. 5·9성 patch는 허용 필드만 사용하고 target 전후 차이로 추가 tick을 계산한다.
+6. 기술 예산은 목표 ±5tick, patch 추가량은 5tick±1 범위만 자동 허용한다.
+7. 효과 scope/trigger/condition, `[필중]` 스택 수량, card 판정 phase·이동 시점을 구조화한다.
+8. 주요 비무 보상은 중앙 option set ID만 참조하고 독자 포인트를 중복 소유하지 않는다.
+9. 노드는 stable ID·수치 선택·구간 제약·동일 seed 결정성을 유지한다.
+10. 모든 JSON은 UTF-8, 2칸 들여쓰기, key 순서 유지, 마지막 개행 형식으로 저장한다.
+11. `python -m unittest tests.test_poc_planning_data -v`와 `python tools/check_poc_planning_data.py --root .`를 실행한다.
 
 ## 상태
 

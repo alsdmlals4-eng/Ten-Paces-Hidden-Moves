@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "data_role": "NON_RUNTIME_POC_PLANNING",
   "status": "POC_HYPOTHESIS",
   "editable": true,
@@ -27,7 +27,31 @@
       "candidate_scores",
       "seed",
       "reason_codes"
-    ]
+    ],
+    "score_window": 2.0,
+    "phase_condition_vocabulary": [
+      "defense_at_or_above_7",
+      "distance_one_or_zero",
+      "distance_zero",
+      "fortitude_zero_after_prevention",
+      "health_at_or_below_10",
+      "health_at_or_below_12",
+      "health_at_or_below_15",
+      "health_at_or_below_20",
+      "player_repeats_same_distance_plan_twice",
+      "successful_evade_last_bundle"
+    ],
+    "phase_effect_vocabulary": [
+      "counter_that_plan_weight_plus",
+      "counter_weight_plus",
+      "evade_weight_plus",
+      "fortitude_weight_plus",
+      "guard_weight_plus",
+      "heavy_attack_weight_plus",
+      "retreat_weight_plus",
+      "switch_from_range_to_pressure"
+    ],
+    "bundle_template_slots": 3
   },
   "poc_runtime_subset": [
     "duel_01_clash_reader",
@@ -70,11 +94,79 @@
       },
       "public_task": "한 번 이상 [합]에서 승리한다.",
       "reward": {
-        "training_points": 5,
+        "option_set_id": "major_duel_standard_v1",
         "money": 6,
-        "context_reward": "유운검결 1성 또는 지정 수련 3"
+        "faction_manual_id": "flowing_cloud_sword"
       },
-      "stage_id": "tutorial"
+      "stage_id": "tutorial",
+      "ai_profile": {
+        "weights": {
+          "basic_move": 3.0,
+          "basic_quick_attack": 2.0,
+          "basic_guard": 1.0
+        },
+        "condition_modifiers": [
+          {
+            "condition": "health_at_or_below_12",
+            "effect": "guard_weight_plus",
+            "action_id": "basic_move",
+            "score_delta": 2.0
+          }
+        ],
+        "bundle_templates": [
+          {
+            "id": "duel_01_clash_reader_signature",
+            "when": "health_at_or_below_12",
+            "actions": [
+              {
+                "action_id": "basic_move",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              },
+              {
+                "action_id": "basic_quick_attack",
+                "anchor": 2,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_01_clash_reader_single_1",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_move",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_01_clash_reader_single_2",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_quick_attack",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_01_clash_reader_single_3",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_guard",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          }
+        ],
+        "fallback_action_id": "basic_guard",
+        "selection": "WITHIN_SCORE_WINDOW_THEN_DETERMINISTIC_SEED"
+      }
     },
     {
       "id": "duel_02_guard_breaker",
@@ -109,11 +201,79 @@
       },
       "public_task": "한 행동에서 방어도 5 이상을 제거한다.",
       "reward": {
-        "training_points": 5,
+        "option_set_id": "major_duel_standard_v1",
         "money": 7,
-        "context_reward": "금강호체공 1성 또는 지정 수련 3"
+        "faction_manual_id": "vajra_body"
       },
-      "stage_id": "stage_1"
+      "stage_id": "stage_1",
+      "ai_profile": {
+        "weights": {
+          "basic_guard": 3.0,
+          "basic_stance": 2.0,
+          "basic_heavy_attack": 1.0
+        },
+        "condition_modifiers": [
+          {
+            "condition": "defense_at_or_above_7",
+            "effect": "heavy_attack_weight_plus",
+            "action_id": "basic_guard",
+            "score_delta": 2.0
+          }
+        ],
+        "bundle_templates": [
+          {
+            "id": "duel_02_guard_breaker_signature",
+            "when": "defense_at_or_above_7",
+            "actions": [
+              {
+                "action_id": "basic_stance",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              },
+              {
+                "action_id": "basic_heavy_attack",
+                "anchor": 2,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_02_guard_breaker_single_1",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_guard",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_02_guard_breaker_single_2",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_stance",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_02_guard_breaker_single_3",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_heavy_attack",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          }
+        ],
+        "fallback_action_id": "basic_heavy_attack",
+        "selection": "WITHIN_SCORE_WINDOW_THEN_DETERMINISTIC_SEED"
+      }
     },
     {
       "id": "duel_03_range_keeper",
@@ -148,11 +308,79 @@
       },
       "public_task": "상대의 거리 2 공격을 사거리 실패로 만든다.",
       "reward": {
-        "training_points": 5,
+        "option_set_id": "major_duel_standard_v1",
         "money": 7,
-        "context_reward": "추풍창법 1성 또는 지정 수련 3"
+        "faction_manual_id": "pursuing_wind_spear"
       },
-      "stage_id": "stage_1"
+      "stage_id": "stage_1",
+      "ai_profile": {
+        "weights": {
+          "basic_footwork": 3.0,
+          "pursuing_wind_thrust": 2.0,
+          "basic_guard": 1.0
+        },
+        "condition_modifiers": [
+          {
+            "condition": "distance_zero",
+            "effect": "retreat_weight_plus",
+            "action_id": "basic_footwork",
+            "score_delta": 2.0
+          }
+        ],
+        "bundle_templates": [
+          {
+            "id": "duel_03_range_keeper_signature",
+            "when": "distance_zero",
+            "actions": [
+              {
+                "action_id": "basic_footwork",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              },
+              {
+                "action_id": "pursuing_wind_thrust",
+                "anchor": 2,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_03_range_keeper_single_1",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_footwork",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_03_range_keeper_single_2",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "pursuing_wind_thrust",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_03_range_keeper_single_3",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_guard",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          }
+        ],
+        "fallback_action_id": "basic_guard",
+        "selection": "WITHIN_SCORE_WINDOW_THEN_DETERMINISTIC_SEED"
+      }
     },
     {
       "id": "duel_04_counter_current",
@@ -187,11 +415,79 @@
       },
       "public_task": "회피를 낭비시키거나 [필중]으로 돌파한다.",
       "reward": {
-        "training_points": 5,
+        "option_set_id": "major_duel_standard_v1",
         "money": 8,
-        "context_reward": "태극유전검 1성 또는 지정 수련 4"
+        "faction_manual_id": "taiji_flow"
       },
-      "stage_id": "stage_1"
+      "stage_id": "stage_1",
+      "ai_profile": {
+        "weights": {
+          "basic_evade": 3.0,
+          "four_ounces": 2.0,
+          "basic_meditate": 1.0
+        },
+        "condition_modifiers": [
+          {
+            "condition": "successful_evade_last_bundle",
+            "effect": "counter_weight_plus",
+            "action_id": "basic_evade",
+            "score_delta": 2.0
+          }
+        ],
+        "bundle_templates": [
+          {
+            "id": "duel_04_counter_current_signature",
+            "when": "successful_evade_last_bundle",
+            "actions": [
+              {
+                "action_id": "basic_evade",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              },
+              {
+                "action_id": "four_ounces",
+                "anchor": 2,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_04_counter_current_single_1",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_evade",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_04_counter_current_single_2",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "four_ounces",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_04_counter_current_single_3",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_meditate",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          }
+        ],
+        "fallback_action_id": "basic_meditate",
+        "selection": "WITHIN_SCORE_WINDOW_THEN_DETERMINISTIC_SEED"
+      }
     },
     {
       "id": "duel_05_flowing_combo",
@@ -226,9 +522,9 @@
       },
       "public_task": "연격 첫 타격을 이겨 후속타를 취소한다.",
       "reward": {
-        "training_points": 5,
+        "option_set_id": "major_duel_standard_v1",
         "money": 9,
-        "context_reward": "자유 수련 4 또는 5성 패치 할인"
+        "faction_manual_id": "flowing_cloud_sword"
       },
       "stage_id": "stage_1",
       "progression_milestone": {
@@ -239,10 +535,78 @@
         "availability": "POSSIBLE_NOT_GUARANTEED",
         "result": "집중 투자한 무공의 10성 절초를 주요 비무 5에서 사용할 수 있음",
         "modeled_sources": {
-          "major_duels_1_to_4_at_B_grade": 24,
-          "focused_intermediate_growth": 14,
+          "focused_rewards_duels_1_to_4": 32,
+          "guaranteed_intermediate_focus_points": 6,
           "total": 38
         }
+      },
+      "ai_profile": {
+        "weights": {
+          "flowing_cloud_triple": 3.0,
+          "basic_move": 2.0,
+          "basic_stance": 1.0
+        },
+        "condition_modifiers": [
+          {
+            "condition": "health_at_or_below_15",
+            "effect": "fortitude_weight_plus",
+            "action_id": "flowing_cloud_triple",
+            "score_delta": 2.0
+          }
+        ],
+        "bundle_templates": [
+          {
+            "id": "duel_05_flowing_combo_signature",
+            "when": "health_at_or_below_15",
+            "actions": [
+              {
+                "action_id": "basic_move",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              },
+              {
+                "action_id": "flowing_cloud_triple",
+                "anchor": 2,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_05_flowing_combo_single_1",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "flowing_cloud_triple",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_05_flowing_combo_single_2",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_move",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_05_flowing_combo_single_3",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_stance",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          }
+        ],
+        "fallback_action_id": "basic_stance",
+        "selection": "WITHIN_SCORE_WINDOW_THEN_DETERMINISTIC_SEED"
       }
     },
     {
@@ -278,11 +642,79 @@
       },
       "public_task": "이동 후 실제 위치를 읽어 공격을 적중시킨다.",
       "reward": {
-        "training_points": 5,
+        "option_set_id": "major_duel_standard_v1",
         "money": 9,
-        "context_reward": "무영십보 1성 또는 지정 수련 4"
+        "faction_manual_id": "shadowless_steps"
       },
-      "stage_id": "stage_2"
+      "stage_id": "stage_2",
+      "ai_profile": {
+        "weights": {
+          "iron_step_drift": 3.0,
+          "basic_quick_attack": 2.0,
+          "basic_evade": 1.0
+        },
+        "condition_modifiers": [
+          {
+            "condition": "health_at_or_below_10",
+            "effect": "evade_weight_plus",
+            "action_id": "iron_step_drift",
+            "score_delta": 2.0
+          }
+        ],
+        "bundle_templates": [
+          {
+            "id": "duel_06_shadow_step_signature",
+            "when": "health_at_or_below_10",
+            "actions": [
+              {
+                "action_id": "iron_step_drift",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              },
+              {
+                "action_id": "basic_quick_attack",
+                "anchor": 2,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_06_shadow_step_single_1",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "iron_step_drift",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_06_shadow_step_single_2",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_quick_attack",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_06_shadow_step_single_3",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_evade",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          }
+        ],
+        "fallback_action_id": "basic_evade",
+        "selection": "WITHIN_SCORE_WINDOW_THEN_DETERMINISTIC_SEED"
+      }
     },
     {
       "id": "duel_07_vajra_pressure",
@@ -317,11 +749,79 @@
       },
       "public_task": "강건을 먼저 소모시킨 뒤 전조 행동을 중단한다.",
       "reward": {
-        "training_points": 5,
+        "option_set_id": "major_duel_standard_v1",
         "money": 10,
-        "context_reward": "희귀 구결 또는 내력 상한 회차 보정"
+        "faction_manual_id": "vajra_body"
       },
-      "stage_id": "stage_2"
+      "stage_id": "stage_2",
+      "ai_profile": {
+        "weights": {
+          "vajra_guard": 3.0,
+          "basic_heavy_attack": 2.0,
+          "basic_guard": 1.0
+        },
+        "condition_modifiers": [
+          {
+            "condition": "fortitude_zero_after_prevention",
+            "effect": "guard_weight_plus",
+            "action_id": "vajra_guard",
+            "score_delta": 2.0
+          }
+        ],
+        "bundle_templates": [
+          {
+            "id": "duel_07_vajra_pressure_signature",
+            "when": "fortitude_zero_after_prevention",
+            "actions": [
+              {
+                "action_id": "vajra_guard",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              },
+              {
+                "action_id": "basic_heavy_attack",
+                "anchor": 2,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_07_vajra_pressure_single_1",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "vajra_guard",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_07_vajra_pressure_single_2",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_heavy_attack",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_07_vajra_pressure_single_3",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_guard",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          }
+        ],
+        "fallback_action_id": "basic_guard",
+        "selection": "WITHIN_SCORE_WINDOW_THEN_DETERMINISTIC_SEED"
+      }
     },
     {
       "id": "duel_08_spear_line",
@@ -356,11 +856,63 @@
       },
       "public_task": "한 묶음 안에 거리 3에서 거리 1 이하로 접근한다.",
       "reward": {
-        "training_points": 5,
+        "option_set_id": "major_duel_standard_v1",
         "money": 11,
-        "context_reward": "거리 기술 9성 패치 할인"
+        "faction_manual_id": "pursuing_wind_spear"
       },
-      "stage_id": "stage_2"
+      "stage_id": "stage_2",
+      "ai_profile": {
+        "weights": {
+          "hundred_li_soul_pursuit": 3.0,
+          "basic_footwork": 2.0,
+          "basic_guard": 1.0
+        },
+        "condition_modifiers": [
+          {
+            "condition": "distance_one_or_zero",
+            "effect": "retreat_weight_plus",
+            "action_id": "hundred_li_soul_pursuit",
+            "score_delta": 2.0
+          }
+        ],
+        "bundle_templates": [
+          {
+            "id": "duel_08_spear_line_single_1",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "hundred_li_soul_pursuit",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_08_spear_line_single_2",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_footwork",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_08_spear_line_single_3",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_guard",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          }
+        ],
+        "fallback_action_id": "basic_guard",
+        "selection": "WITHIN_SCORE_WINDOW_THEN_DETERMINISTIC_SEED"
+      }
     },
     {
       "id": "duel_09_sword_ghost",
@@ -395,11 +947,63 @@
       },
       "public_task": "상대의 성향 전환을 유도하고 다른 계획으로 승리한다.",
       "reward": {
-        "training_points": 5,
+        "option_set_id": "major_duel_standard_v1",
         "money": 12,
-        "context_reward": "두 번째 10성 돌파 자격"
+        "faction_manual_id": "taiji_flow"
       },
-      "stage_id": "stage_3"
+      "stage_id": "stage_3",
+      "ai_profile": {
+        "weights": {
+          "flowing_cloud_triple": 3.0,
+          "four_ounces": 2.0,
+          "basic_heavy_attack": 1.0
+        },
+        "condition_modifiers": [
+          {
+            "condition": "player_repeats_same_distance_plan_twice",
+            "effect": "counter_that_plan_weight_plus",
+            "action_id": "flowing_cloud_triple",
+            "score_delta": 2.0
+          }
+        ],
+        "bundle_templates": [
+          {
+            "id": "duel_09_sword_ghost_single_1",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "flowing_cloud_triple",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_09_sword_ghost_single_2",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "four_ounces",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_09_sword_ghost_single_3",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "basic_heavy_attack",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          }
+        ],
+        "fallback_action_id": "basic_heavy_attack",
+        "selection": "WITHIN_SCORE_WINDOW_THEN_DETERMINISTIC_SEED"
+      }
     },
     {
       "id": "duel_10_final_contender",
@@ -435,11 +1039,63 @@
       },
       "public_task": "두 전투 단계에서 각각 다른 대응으로 승리한다.",
       "reward": {
-        "training_points": 8,
+        "option_set_id": "major_duel_standard_v1",
         "money": 20,
-        "context_reward": "회차 결말·무학 기록"
+        "faction_manual_id": "clear_heart_nurturing"
       },
-      "stage_id": "stage_3"
+      "stage_id": "stage_3",
+      "ai_profile": {
+        "weights": {
+          "hundred_li_soul_pursuit": 3.0,
+          "flowing_cloud_triple": 2.0,
+          "vajra_guard": 1.0
+        },
+        "condition_modifiers": [
+          {
+            "condition": "health_at_or_below_20",
+            "effect": "switch_from_range_to_pressure",
+            "action_id": "hundred_li_soul_pursuit",
+            "score_delta": 2.0
+          }
+        ],
+        "bundle_templates": [
+          {
+            "id": "duel_10_final_contender_single_1",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "hundred_li_soul_pursuit",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_10_final_contender_single_2",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "flowing_cloud_triple",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          },
+          {
+            "id": "duel_10_final_contender_single_3",
+            "when": "always",
+            "actions": [
+              {
+                "action_id": "vajra_guard",
+                "anchor": 1,
+                "targeting_mode": "AUTO_FROM_CARD"
+              }
+            ]
+          }
+        ],
+        "fallback_action_id": "vajra_guard",
+        "selection": "WITHIN_SCORE_WINDOW_THEN_DETERMINISTIC_SEED"
+      }
     }
   ],
   "edit_rules": [

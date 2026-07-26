@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "data_role": "NON_RUNTIME_POC_PLANNING",
   "status": "POC_HYPOTHESIS",
   "editable": true,
@@ -35,7 +35,8 @@
     "momentum_cost_5_credit": -30,
     "self_health_cost_credit_per_point": -3,
     "once_per_action_effect_base": 4,
-    "per_hit_effect_base": 5
+    "per_hit_effect_base": 5,
+    "medical_per_point": 5
   },
   "condition_credits": {
     "common_public_condition": -3,
@@ -73,7 +74,25 @@
       "ON_ACTION_END"
     ],
     "non_attack_resolution_trigger": "ON_ACTION_RESOLVE",
-    "action_level_triggers_require_once_per_action": true
+    "action_level_triggers_require_once_per_action": true,
+    "condition_vocabulary": [
+      "requires_existing_defense",
+      "requires_at_least_one_hit",
+      "attack_misses"
+    ],
+    "sure_hit_stack_policy": {
+      "unit": "ONE_STACK_PER_EFFECTIVE_HIT",
+      "consume_when": "BYPASSES_AVAILABLE_EVADE",
+      "persistence": "UNTIL_CONSUMED_OR_BATTLE_END",
+      "reset": "BATTLE_END",
+      "does_not_consume_on": [
+        "CLASH_CANCELLED",
+        "INTERRUPTED",
+        "NO_TARGET",
+        "OUT_OF_RANGE",
+        "NO_EVADE_PRESENT"
+      ]
+    }
   },
   "migration_policy": {
     "central_price_change_auto_edits_existing_techniques": false,
@@ -96,5 +115,20 @@
     "5-star and 9-star upgrades each receive an additional 5-tick authoring allowance.",
     "Capstones use the 3-slot 80-tick reference even when represented as a passive true meaning.",
     "An out-of-tolerance technique is not auto-fixed; it is flagged for review."
-  ]
+  ],
+  "patch_contract": {
+    "allowance_ticks": 5,
+    "automatic_tolerance_ticks": 1,
+    "max_added_budget_ticks": 6,
+    "allowed_fields": [
+      "hits",
+      "damage",
+      "move_range",
+      "defense_gain",
+      "clash_power_bonus",
+      "health_heal",
+      "medical",
+      "sure_hit_stacks"
+    ]
+  }
 }

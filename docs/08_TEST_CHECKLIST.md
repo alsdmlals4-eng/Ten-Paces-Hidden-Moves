@@ -11,7 +11,8 @@
 ## 2. 현재 증거 요약
 
 - 기존 10칸·4/7·3/3/4·AI·재시작: 기술적으로 검증된 `IMPLEMENTED_LEGACY`.
-- 새 수치·연격·효과·성장·5전 PoC: `NOT_RUN`.
+- planning Schema·validator·반례 테스트: `PASS` — 24개 단위 테스트와 standalone validator.
+- 새 Godot 수치·연격·효과·성장·5전 PoC runtime: `NOT_RUN`.
 - STEP 14 사람 플레이: `NOT_RUN`.
 
 ## 3. 전장·점유·대상
@@ -53,7 +54,9 @@
 ### EVADE-001
 
 - [ ] 타격 1회당 회피 횟수1 소비.
-- [ ] 필중은 회피만 무시하고 횟수를 소비하지 않음.
+- [ ] 필중 1스택은 실제 회피를 무시한 유효 타격 1회에만 소비.
+- [ ] 합 취소·중단·대상 부재·사거리 실패·회피 부재에는 필중 스택 미소비.
+- [ ] 필중으로 무시된 회피 횟수는 소비하지 않음.
 
 ## 6. 중단·강건·효과
 
@@ -83,18 +86,32 @@
 - [ ] 강화·강건·회피·예약·연격 진행·효과 소비 상태 초기화.
 - [ ] 로그·표현 큐·포커스·AI seed 재설정.
 
+### RETRY-001 유료 회차 재도전
+
+- [ ] 패배 시 전투 직전 `RunState` 복원과 같은 seed 유지.
+- [ ] 같은 전투 비용 1→2→3, 3 상한, 다른 전투 진입 시 초기화.
+- [ ] 피해·임시 자원·미획득 보상 롤백, 영구재화 지불 비롤백.
+- [ ] 잔액 부족 시 회차 포기·타이틀 복귀만 허용.
+- [ ] T0 개발용 완전 재시작과 유료 재도전 분리.
+
 ## 9. 기획 데이터 정적 검사
 
-- [ ] 모든 JSON 파싱.
-- [ ] 기술 ID·무공 ID·비무 ID 고유.
-- [ ] 기술 예산 ±5tick.
-- [ ] 5·9성 patch target 존재.
-- [ ] 의료 0~4.
-- [ ] 주요 비무 order 1~10.
-- [ ] PoC runtime subset이 주요 비무 1~5의 5개.
-- [ ] 기본 절초 시작 가용성과 전역 비무5 해금 필드 부재.
-- [ ] 3→10 비용 38과 주요 비무5 전 집중 도달성 `POSSIBLE_NOT_GUARANTEED`.
-- [ ] 성과 가중치 합100.
+- [x] 모든 planning JSON 파싱·canonical pretty-print.
+- [x] 기술 ID·무공 ID·비무 ID 고유.
+- [x] 중앙 가격표 ledger 재계산과 기술 예산 ±5tick.
+- [x] 5·9성 patch target·허용 필드·추가 tick 재계산.
+- [x] 효과 scope/trigger/condition 어휘와 스택형 필중.
+- [x] 의료 0~4와 무공·지도 source 교차 합계.
+- [x] 주요 비무 order 1~10과 실행 가능한 AI condition/effect/template.
+- [x] PoC runtime subset이 주요 비무 1~5의 5개.
+- [x] 주요 비무 보상 3선택과 중복 소유 금지.
+- [x] 집중 32+6, 자유 24+14의 두 38포인트 경로.
+- [x] stable node ID·네 구간 생성 제약·동일 seed 결정성.
+- [x] 성과 차원 각각 0~100·가중합·반올림·총점 clamp.
+- [x] `RunState`/`CombatState`와 유료 재도전 계약.
+- [x] CE-01~08 false-pass 회귀 차단.
+- [x] `python -m unittest tests.test_poc_planning_data -v`: 24/24 PASS.
+- [x] `python tools/check_poc_planning_data.py --root .`: PASS.
 
 ## 10. STEP 14 사람 플레이
 
