@@ -16,12 +16,14 @@ product_gate: REPEAT_POC
 runtime: IMPLEMENTED_LEGACY
 new_poc_runtime_implementation: NOT_STARTED
 static_planning_tests: PASS_24
-remote_pr_validation: PASS_775
+review_build_pr_validation: PASS_775
 review_decision: PASS_WITH_FOLLOWUP
-review_head: eb06bd78316348bd3aa6027a8057575ee4dc9053
+review_build_validation_head: eb06bd78316348bd3aa6027a8057575ee4dc9053
 human_validation: UNVERIFIED
 t1_greenlight: NOT_GRANTED
 ```
+
+최신 PR head와 최신 CI run은 PR #45 본문·Actions를 추적 원장으로 사용한다.
 
 ## 이번 작업
 
@@ -50,8 +52,8 @@ t1_greenlight: NOT_GRANTED
 
 ## 최종 REVIEW 결과
 
-- 원격 head `eb06bd78316348bd3aa6027a8057575ee4dc9053`.
-- PR Validation #775 전체 `PASS`.
+- 승인 BUILD 검증 기준 head `eb06bd78316348bd3aa6027a8057575ee4dc9053`.
+- 승인 BUILD PR Validation #775 전체 `PASS`.
 - TRP-01~13 반영 완료.
 - TRP-14는 main 전용 변경이 비충돌이고 PR base·가상 병합이 base를 보존하므로 별도 merge commit을 만들지 않는 `NO_CHANGE / BASE_PRESERVED_BY_PR_MERGE`로 재분류.
 - 제품 경로 변경 없음.
