@@ -14,6 +14,7 @@
 - 기획 완료 선언: `2026-07-26 USER_CONFIRMED`.
 - 검수 완료 선언: `2026-07-26 USER_CONFIRMED`.
 - 프로젝트 코어: `CORE_CONFIRMED`; 과거 `CORE_REVIEW_PENDING` 종료.
+- 코어 전투: `10칸·4/7·비공개 3/3/4·순차 타격쌍 [합]·공개 상태 기반 AI`.
 - 구현 계보: `PR #7`과 `Issue #13`의 T0 기반을 보존한다.
 - 현행 런타임: `IMPLEMENTED_LEGACY`.
 - 신규 PoC 런타임: `NOT_STARTED`.
@@ -104,6 +105,6 @@ main은 속공6·강공8·방어도4·내력4·명상2/1·구형 `[준비]`·구
 
 1. planning/review head에서 `codex/p0-poc-runtime-foundation` branch와 격리 worktree를 만든다.
 2. 기존 planning 24/24, validator, Godot parse 기준선을 확인한다.
-3. runtime adapter RED 테스트부터 시작한다.
+3. runtime catalog compiler RED 테스트부터 시작한다.
 4. runtime foundation 완료 뒤 REVIEW로 복귀해 Godot·회귀 증거를 기록한다.
 5. PR #45 병합은 별도 명시적 병합 작업으로 처리한다.
