@@ -6,112 +6,126 @@
 ## 1. 현재 단계
 
 ```yaml
-phase: REVIEW_IN_PROGRESS
+phase: BUILD_IN_PROGRESS
 planning: USER_CONFIRMED_COMPLETE
+review: USER_CONFIRMED_COMPLETE
 project_core: CORE_CONFIRMED
 implemented_runtime: IMPLEMENTED_LEGACY
-new_poc_planning: AUTHORED_NOT_IMPLEMENTED
-ui_ux_audio_asset_pipeline: USER_APPROVED_NOT_EXECUTED
+new_poc_runtime: NOT_STARTED
+implementation_plan: AUTHORED
+implementation_authorization: GRANTED
+ui_ux_audio_asset_pipeline: AUTHORIZED_NOT_EXECUTED
 human_step14: NOT_RUN
 t1_greenlight: NOT_GRANTED
 ```
 
-## 2. 현재 작업
+## 2. 완료된 기획·검수 작업
 
 - [x] 구형 규칙과 활성 소비자 감사.
-- [x] 1~10 PoC 기획 데이터를 편집 가능한 JSON으로 작성.
+- [x] 1~10 기획 데이터를 편집 가능한 JSON으로 작성.
+- [x] PoC 범위를 주요 비무 1~5와 구간당 중간 노드 2~3개로 확정.
 - [x] 전투·콘텐츠·성장·지도·UI·QA 책임 원본 동기화.
-- [x] 벤치마킹·1·2차 기획 검수·5회 적대적 검토 초안.
-- [x] PoC 범위를 주요 비무 1~5와 구간당 중간 노드 2~3개로 확대.
-- [x] 튜토리얼·3스테이지·히든 천하제일인 구조를 데이터화.
+- [x] 전체 적대적 검토와 사용자 결정 완료.
+- [x] planning Schema·validator·24개 반례 테스트 교정.
+- [x] UI·UX·사운드 제작 순서 확정.
 - [x] 사용자 명시적 `기획 완료`.
-- [x] 책임 원본·planning JSON·댓글·PR 간 전체 적대적 검토와 사용자 결정 3건.
-- [x] 승인된 REVIEW BUILD: planning Schema·validator·반례 테스트 최소 교정.
-- [x] REVIEW 복귀 후 정적·참조·회귀 최종 판정: `PASS_WITH_FOLLOWUP`.
-- [x] UI·UX·사운드 제작 순서를 컨셉 정의 → 에셋 검색 → 부족분 생성 → 통합 검증으로 확정.
-- [ ] 실제 에셋 스토어 최신 검색과 라이선스 원장 작성.
-- [ ] 사용자 명시적 `검수 완료`.
-- [ ] Codex 구현 인계.
+- [x] 사용자 명시적 `검수 완료`.
+- [x] Codex 구현 프로그램과 하위 계획 작성.
 
-## 3. 프로젝트 코어 확정
+## 3. 프로젝트 코어
 
 1대1·10칸·비공개 3/3/4·공개 정보 기반 상대 읽기·거리·합·대응·중단·복기는 불변이다. 로그라이트 성장은 다음 결투 판단을 바꾸는 보조 구조다.
 
-## 4. P0 — 편집 데이터와 계약 구현
+## 4. 구현 프로그램
 
-검수 완료 뒤 Codex가 수행한다.
+상세 프로그램: `docs/superpowers/plans/2026-07-26-poc-implementation-program.md`.
 
-1. 정규화된 card/patch/tick ledger planning Schema를 런타임 Schema로 변환하는 명시적 adapter.
-2. `RunState`/`CombatState` 분리, 보상 1회 commit, 영구재화 유료 재도전.
-3. 속공4·강공10·방어도5·내력5·명상1/1·`[강화]`·새 `[강건]`.
-4. 순차 연격 `[합]`, 중단, 잔여타, 스택형 `[필중]`, 효과 scope와 7개 trigger.
-5. 실행 가능한 3수 AI bundle template·등급 산식·노드 생성 제약.
-6. 결과 이벤트·로그·복기와 정상·실패·경계·회귀 테스트.
+### P0-A — 런타임 기반
 
-## 4.1 P0 시각·음향 에셋 파이프라인
+계획: `docs/superpowers/plans/2026-07-26-poc-runtime-foundation-implementation-plan.md`.
 
-기능 계약과 병행하되 에셋 자체는 다음 순서를 지킨다.
+- [ ] 격리 branch·worktree와 baseline 검증.
+- [ ] planning→runtime adapter.
+- [ ] `RunState`/`CombatState` 분리와 유료 재도전.
+- [ ] 속공4·강공10·방어도5·내력5·명상1/1.
+- [ ] `[강화]`×1.5·중단1회 `[강건]`.
+- [ ] 순차 연격 `[합]`, 잔여타, 스택형 `[필중]`.
+- [ ] 효과 scope와 7개 trigger.
+- [ ] 공개 상태 기반 3수 AI template.
+- [ ] stable event stream·로그·복기.
+- [ ] REVIEW 복귀와 runtime foundation 증거.
 
-1. UI·UX·사운드 컨셉과 event matrix를 작성한다.
-2. 화면·상태·사건별 asset gap map을 만든다.
-3. 구현 시점의 최신 에셋 스토어·라이브러리를 검색한다.
-4. 라이선스·가격·출처·스타일·Godot 4 import·접근성·성능을 비교한다.
-5. 각 후보를 `ADOPT / ADAPT / GENERATE / REJECT / DEFER`로 판정한다.
-6. 적합한 후보가 없는 항목만 생성·편집한다.
-7. Godot에 통합한 뒤 가독성·접근성·사운드 피로·동시 재생·성능을 검증한다.
+### P0-B — 캠페인·성장
 
-외부 에셋 때문에 전투 정보 구조나 프로젝트 코어를 바꾸지 않는다. 라이선스·원본 출처가 불명확한 에셋은 사용하지 않는다. 상세 원본은 `docs/superpowers/specs/2026-07-26-ui-ux-audio-asset-pipeline-design.md`다.
+계획: `docs/superpowers/plans/2026-07-26-poc-campaign-progression-implementation-plan.md`.
 
-## 5. P1 — 다음 PoC
+- [ ] 시작 무공 6개 중 4개 선택·3성 시작.
+- [ ] 주요 비무 1~5와 네 gap의 deterministic route.
+- [ ] gap당 중간 노드 2~3개, 총 방문 13~17개.
+- [ ] 자유6 / 지정5+자유3 / 문파 무공3성 보상.
+- [ ] 집중32+노드6·자유24+고효율14 성장 경로.
+- [ ] 성과 등급 산식.
+- [ ] 체력 이월·승리 회복·보상 1회 commit.
+- [ ] 최소 RunState serialization.
+- [ ] REVIEW 복귀와 campaign 증거.
 
-- 주요 비무 1은 첫 시작 튜토리얼.
+### P0-C — UI·UX·사운드·에셋
+
+계획: `docs/superpowers/plans/2026-07-26-poc-ui-audio-assets-implementation-plan.md`.
+
+- [ ] UI/audio event matrix와 asset gap map.
+- [ ] 최신 에셋 스토어·라이브러리 검색.
+- [ ] 출처·가격·라이선스·Godot 적합성 원장.
+- [ ] `ADOPT / ADAPT / GENERATE / REJECT / DEFER` 판정.
+- [ ] 부족분만 생성·편집.
+- [ ] HUD·타격 로그·보상·재도전 UX.
+- [ ] AudioEventRouter와 bus·polyphony 정책.
+- [ ] Godot 통합·접근성·피로·성능 검증.
+- [ ] REVIEW 복귀와 asset evidence.
+
+## 5. PoC 구현 범위
+
+- 주요 비무 1은 튜토리얼.
 - 주요 비무 2~5는 스테이지 1 초반부.
-- 기본 절초 3종은 시작부터 사용 가능하며, 집중 투자 시 주요 비무 5 전에 한 무공 10성 절초 도달 가능.
+- 기본 절초 3종은 시작부터 사용 가능.
+- 무공별 절초는 해당 무공 10성 도달로 해금.
 - 주요 비무 사이 네 구간마다 중간 노드 2~3개.
 - 중간 노드 총 8~12개, 주요 비무 포함 총 방문 노드 13~17개.
 - 시작 무공 6개 중 4개 선택.
-- 플레이 시간은 새 구조의 런타임과 사람 증거가 없으므로 `UNVERIFIED`.
 
-성공하면 `KEEP / AMPLIFY`, 규칙 이해는 되나 재미·선택이 약하면 `CHANGE / RETEST`, 이해가 막히면 `REMOVE / REPEAT_POC`로 판정한다.
-
-### 주요 비무5 전 성장 보장 구조
+### 주요 비무5 전 성장 구조
 
 - 집중 보상: 주요 비무1~4에서 `지정5+자유3`을 같은 무공에 선택해 32.
-- 최소 집중 노드: 네 구간 합계 6을 같은 무공에 투입 가능하도록 생성 제약으로 보장.
+- 최소 집중 노드: 네 구간 합계 6을 같은 무공에 투입 가능하도록 보장.
 - 집중 경로 합계: 38.
 - 자유 보상: 24 + 고효율 중간 노드 목표14 = 38이며 모든 경로 보장은 아니다.
 
-## 6. 전체 스테이지 방향
+## 6. 범위 제외
+
+- 주요 비무 6~10 런타임 구현.
+- 스테이지 2·3 런타임 구현.
+- 천마·무림맹주 등 히든 전투.
+- 전체 지도·영구 성장 트리·완성 상점 경제.
+- 최종 아트·사운드·Release 성능 주장.
+
+## 7. BUILD/REVIEW 루프
 
 ```text
-튜토리얼: 주요 비무 1
-→ 스테이지 1 초반부: 주요 비무 2~5
-→ 스테이지 2 중반부: 주요 비무 6~8
-→ 스테이지 3 마지막: 주요 비무 9~10
-→ 히든: 천하제일인 배틀
+BUILD: failing test → minimal implementation → focused tests
+→ REVIEW: diff·정적·Godot·참조·회귀 증거
+→ 승인 시 다음 BUILD
 ```
 
-스테이지 2·3과 히든은 다음 PoC 구현 범위가 아니다. 히든은 천마·무림맹주 같은 강자 후보를 사용하되 본편 결말 필수 전투로 두지 않는다.
-
-## 7. REVIEW 게이트
-
-검수는 새 기능을 추가하는 단계가 아니다. 다음을 책임 원본 기준으로 확인한다.
-
-1. 사용자 승인 사항의 누락.
-2. 문서·planning JSON·PR 댓글 간 충돌.
-3. 같은 규칙의 중복 정의와 책임 원본 불명확성.
-4. 구형 규칙의 대체 표시 누락.
-5. 파일·ID·상태·링크의 참조 드리프트.
-6. PoC와 스테이지 2·3·히든 범위의 혼입.
-7. 구현자가 두 가지로 해석할 수 있는 모호한 요구.
-
-`검수 완료` 전에는 PR 병합을 구현 착수 승인으로 해석하지 않으며 Codex 인계를 시작하지 않는다.
+- 각 Task는 독립 커밋과 리뷰 가능한 결과를 만든다.
+- 실패한 기준 테스트를 무시하고 새 기능을 진행하지 않는다.
+- 실행하지 않은 검증은 `NOT_RUN`이다.
+- 사람 증거 없이 UI 이해도·재미·사운드 선호를 PASS로 기록하지 않는다.
 
 ## 8. STEP 14
 
 - 신규 플레이어 5명.
-- 4명 이상 치명적 차단 없이 주요 비무 1~5를 완료하거나 중도 이탈 이유가 명확히 기록된다.
-- 4명 이상 3/3/4와 결정적 원인을 설명.
+- 4명 이상 치명적 차단 없이 주요 비무 1~5 완료 또는 이탈 이유 기록.
+- 4명 이상 3/3/4와 결정적 원인 설명.
 - 3명 이상 상대 성향 발견.
 - 3명 이상 중간 노드 선택 뒤 다음 전투 계획 변경.
 - 3명 이상 재도전에서 계획 변경.
@@ -119,9 +133,9 @@ t1_greenlight: NOT_GRANTED
 
 현재 STEP 14는 `NOT_RUN`이다.
 
-## 9. T1 — 최소 세로 슬라이스
+## 9. T1
 
-PoC 사람 증거와 제작 반복성 증거 뒤에만 진입한다. 대표 경험·목표 품질·접근성·성능·파이프라인을 한 구간에서 검증하며 전체 10비무와 히든을 만들지 않는다.
+PoC 자동·Godot·Windows·접근성·성능·사람 증거와 두 번째 콘텐츠 반복 제작 증거 뒤에만 진입한다. 현재 `t1_greenlight: NOT_GRANTED`.
 
 ## 10. 공통 검증 게이트
 
@@ -136,18 +150,16 @@ PoC 사람 증거와 제작 반복성 증거 뒤에만 진입한다. 대표 경�
 → 증거 보고
 ```
 
-실행하지 않은 단계는 `NOT_RUN`이다.
-
 ## 11. 중단·축소 조건
 
 - 연격이 다른 공격을 지배한다.
 - 성장·중간 노드 선택이 피해 증가만 만든다.
-- 주요 비무 사이 2~3개 노드가 반복 피로만 늘린다.
+- 주요 비무 사이 노드가 반복 피로만 늘린다.
 - 공개 성향 없이 정답 추측에 의존한다.
 - 3/3/4가 이해되지 않는다.
-- 두 번째 무공·적·중간 노드를 같은 데이터 구조로 만들 수 없다.
+- 두 번째 무공·적·노드를 같은 데이터 구조로 만들 수 없다.
 - 플레이어 미확정 계획을 AI가 읽는다.
 - 외부 에셋을 맞추기 위해 정보 구조나 전투 계약을 왜곡한다.
-- 출처·라이선스가 불명확한 에셋에 핵심 화면이나 사운드가 의존한다.
+- 출처·라이선스가 불명확한 에셋에 핵심 기능이 의존한다.
 
 판정 어휘: `KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST`.
