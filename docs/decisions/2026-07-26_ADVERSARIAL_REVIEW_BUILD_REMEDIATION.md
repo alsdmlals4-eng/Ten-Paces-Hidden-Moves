@@ -35,9 +35,24 @@ python tools/check_poc_planning_data.py --root .
 → PoC planning data: PASS
 ```
 
-## REVIEW 복귀 경계
+## 원격 REVIEW 재검증
 
-- 원격 CI·reference freshness·governance·기존 전투 계약 검사를 다시 실행한다.
-- 제품 경로 미변경과 main 동기화를 확인한다.
-- 실행하지 않은 runtime·Godot·Windows·접근성·성능·사람 검증은 `BLOCKED_UNVERIFIED`로 유지한다.
-- 최종 판정은 `PASS_WITH_FOLLOWUP` 또는 `REVISE_AGAIN`으로 기록하며 사용자의 `검수 완료`를 대신하지 않는다.
+- 적용 commit: `9e485472c3bb8cbb852267e08ed4b76075b5b3b3`.
+- 표준 workflow 복원 head: `eb06bd78316348bd3aa6027a8057575ee4dc9053`.
+- PR Validation #775: project operating system, reference freshness, Skill·archive·governance, planning 24개, 전투 영향 지도, card/combat/rival/A2/A3/prepare, PowerShell parse 전체 `PASS`.
+- 제품 `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot` 변경 없음.
+- PR은 `main@48c26c02d53fe49a34b831f5bcf0924ae36f5dbd`를 base로 `mergeable=true`다. branch 역사상 behind 1은 비충돌 main 전용 변경이며 PR 가상 병합이 base를 보존하므로 중복 merge commit을 만들지 않았다.
+
+## 최종 판정
+
+```yaml
+static_validation: PASS
+reference_validation: PASS
+regression_validation: PASS
+protected_runtime_paths: PASS_UNCHANGED
+runtime_godot_windows_accessibility_performance_human: BLOCKED_UNVERIFIED
+review_decision: PASS_WITH_FOLLOWUP
+phase: REVIEW_IN_PROGRESS
+```
+
+이 판정은 사용자의 `검수 완료` 선언을 대신하지 않는다.
