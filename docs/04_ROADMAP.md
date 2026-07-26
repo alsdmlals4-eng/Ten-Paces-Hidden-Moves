@@ -26,7 +26,7 @@ t1_greenlight: NOT_GRANTED
 - [x] 사용자 명시적 `기획 완료`.
 - [x] 책임 원본·planning JSON·댓글·PR 간 전체 적대적 검토와 사용자 결정 3건.
 - [x] 승인된 REVIEW BUILD: planning Schema·validator·반례 테스트 최소 교정.
-- [ ] REVIEW 복귀 후 정적·참조·회귀 최종 판정.
+- [x] REVIEW 복귀 후 정적·참조·회귀 최종 판정: `PASS_WITH_FOLLOWUP` (PR Validation #775).
 - [ ] 사용자 명시적 `검수 완료`.
 - [ ] Codex 구현 인계.
 
