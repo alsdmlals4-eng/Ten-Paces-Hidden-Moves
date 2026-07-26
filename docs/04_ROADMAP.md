@@ -133,7 +133,7 @@ BUILD: failing test → minimal implementation → focused tests
 
 현재 STEP 14는 `NOT_RUN`이다.
 
-## 9. T1
+## 9. T1 — 최소 세로 슬라이스
 
 PoC 자동·Godot·Windows·접근성·성능·사람 증거와 두 번째 콘텐츠 반복 제작 증거 뒤에만 진입한다. 현재 `t1_greenlight: NOT_GRANTED`.
 
