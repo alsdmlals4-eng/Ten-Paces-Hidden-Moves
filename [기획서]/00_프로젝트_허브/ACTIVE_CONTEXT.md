@@ -13,7 +13,7 @@
 - UI·UX·사운드 에셋 파이프라인: `docs/superpowers/specs/2026-07-26-ui-ux-audio-asset-pipeline-design.md`.
 - 기획 완료 선언: `2026-07-26 USER_CONFIRMED`.
 - 검수 완료 선언: `2026-07-26 USER_CONFIRMED`.
-- 프로젝트 코어: `CORE_CONFIRMED`.
+- 프로젝트 코어: `CORE_CONFIRMED`; 과거 `CORE_REVIEW_PENDING` 종료.
 - 현행 런타임: `IMPLEMENTED_LEGACY`.
 - 신규 PoC 런타임: `NOT_STARTED`.
 - 에셋 검색·생성·통합: `NOT_STARTED`.
