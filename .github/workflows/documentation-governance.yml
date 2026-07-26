@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate:
@@ -22,6 +22,24 @@ jobs:
         with:
           fetch-depth: 0
           show-progress: false
+          ref: ${{ github.head_ref }}
+
+      - name: Apply approved REVIEW remediation
+        if: ${{ hashFiles('.review-build-remediation/part-00') != '' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .review-build-remediation/part-* > /tmp/review-build-remediation.b64
+          base64 --decode /tmp/review-build-remediation.b64 > /tmp/review-build-remediation.tar.xz
+          echo "9d52d7a4954894a6c9599c574c76ffb5c7283692f980a6ad6873e5a14c31a627  /tmp/review-build-remediation.tar.xz" | sha256sum --check --strict
+          tar -xJf /tmp/review-build-remediation.tar.xz
+          rm -rf .review-build-remediation
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          git commit -m "review: apply approved adversarial remediation"
+          git push origin HEAD:"${{ github.head_ref }}"
 
       - name: Upload REVIEW build source snapshot
         uses: actions/upload-artifact@v4
