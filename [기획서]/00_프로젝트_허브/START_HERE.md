@@ -12,6 +12,7 @@
 ```
 
 - Base 적용 기준: `../../../docs/BASE_RULES_VERSION.md`.
+- Base 동기화 감사: `BASE_MAIN_SYNC_AUDIT.md`.
 - Skill Registry: `SKILL_REGISTRY.json`.
 - 현재 요청에 필요할 때만 Gates·Roadmap·Audit·Handoff를 추가로 읽는다.
 
