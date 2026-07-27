@@ -1,94 +1,80 @@
-# 십보강호 인수인계
+# 십보강호 세션 인수
 
-> 현재 상태 원본: `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
+## 현재 상태
 
-## 첫 행동
+```yaml
+project: 십보강호
+product_stage: CONCEPT_APPROVAL
+work_mode: PLAN
+execution_profile: PLANNING_ONLY_PROFILE
+runtime_implementation: PROHIBITED_UNTIL_NEW_APPROVAL
+planning_integration_pr: 45
+canonical_decision_ledger: docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md
+integration_review: docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md
+current_runtime: IMPLEMENTED_LEGACY
+new_v6_runtime: NOT_STARTED
+human_validation: UNVERIFIED
+t1_greenlight: NOT_GRANTED
+```
 
-1. 루트 `AGENTS.md`를 읽는다.
-2. `ACTIVE_CONTEXT.md`와 `DOCUMENTATION_MAP.md`를 읽는다.
-3. PR #7 `agent/t0-combat-poc-board`의 HEAD `659c57e7...`와 현재 작업 branch의 ancestry를 확인한다.
-4. Issue #13의 승인 규칙과 `docs/02_COMBAT_RULES.md`를 대조한다.
-5. 프로젝트 코어는 `docs/01_GAME_DESIGN.md`, 코어 확정 과정은 `docs/decisions/2026-07-23_PROJECT_CORE_DECISION_RECORD.md`에서 읽는다.
-6. Registry trigger로 최소 Skill·Skill Mode를 선택한다.
-7. 구현 작업이면 실제 `data/`, `src/`, `scenes/`, `assets/`, `tests/`를 확인한다.
+2026-07-26의 과거 BUILD·구현 승인 상태는 최신 v6 재설계 지시로 대체됐다. PR #45는 최신 계획 권한과 역사·검증 자료를 통합하지만 Codex 런타임 구현 인계를 허가하지 않는다.
 
-## 현재 기준
+## 반드시 읽을 파일
 
-- Base: `41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
-- 구현 PR: #7 `agent/t0-combat-poc-board`.
-- 기준 SHA: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
-- 최신 승인: Issue #13 STEP 12~14.
-- 코어 확정 PR: #15 `agent/project-core-confirmation`.
-- 프로젝트 코어: `CORE_CONFIRMED`.
-- 제품 게이트: `REPEAT_POC`.
-- T1 진입: `NOT_GRANTED`.
+1. `AGENTS.md`.
+2. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`.
+3. `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`와 Part 1A·1B·2·3.
+4. `docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md`.
+5. `[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md`.
+6. 질문별 책임 원본과 실제 코드·데이터·테스트.
 
-## 완료된 구현
+## 현재 핵심 결정
 
-- STEP 0~13.
-- 10칸·4/7·거리 3·밀착.
-- 3/3/4·기초 행동 8종·절초 3종.
-- 합·방어·회피·필중·중단·강건.
-- 공개 상태 기반 최소 AI.
-- 승패·무승부·완전 재시작.
-- 순차 연출·키보드·모션 감소·음향 제어.
+- 뾰족한 재미: 계획을 세워 상대의 숨은 수를 읽고 파훼한다.
+- 라운드: `3수 → 해결 → 3수 → 해결 → 4수 → 해결`.
+- 버티컬 슬라이스 앵커: 핵심 결투 5개.
+- `[연격 N]`: 총피해를 N회로 분할. 첫 피해만 합.
+- 방어·보호막: 통합 `[방어도]`, 피해 묶음별 감산, 피격으로 소모되지 않음.
+- 무공서: 16권, 1~10성, 시작 4권 3성.
+- 수련 중앙 목표: 전체 전투 5회 40~50, 10회 90~100.
+- 전투 랭크: A/A+/S/S+ 보너스 0/1/2/3.
+- 절초: 기세 5, 동일 슬롯 일반 기술보다 약 50% 높은 예산.
 
-## 완료된 운영·코어 작업
+## `[보류]`
 
-- Base 활성 Skill 25개 route와 프로젝트 고유 Skill 4개 유지.
-- board schema 16·Base SHA·Skill 집합 freshness 계약.
-- PR #14 정본·Skill·Governance 최신화를 PR #7에 병합.
-- PR #7 HEAD를 `659c57e7...`로 고정.
-- 프로젝트 코어를 `CORE_CONFIRMED`로 기록.
-- T1 범위를 2개 스타일·성향이 다른 상대 3명·전투 3회·수평 보상으로 제한.
-- 실제 사람 STEP 14 전에는 `REPEAT_POC`와 `T1_NOT_GRANTED` 유지.
+- Round 4 이후 전체 적대적 검토.
+- 16개 개별 절초 설계.
+- 2026-07-26 구현 계획과 구현 branch 실행.
+- Godot 런타임·데이터·씬·자산 변경.
 
-## 현재 PR #15 마감 작업
+## PR #45 통합 분류
 
-- 활성 운영 진입점의 기준 SHA·코어 상태·다음 게이트 동기화.
-- 5회 적대적 검토와 final finding 기록.
-- Governance가 상태 전파 누락을 다시 허용하지 않도록 freshness 계약 보강.
-- PR #7·#15 설명과 실제 diff·검증 경계 정렬.
-- 사용자용 PDF는 저장소 `source_only` 정책과 분리해 파생본으로 발행.
-
-## 미검증
-
-- 현재 대화의 일부 이전 메시지: `UNVERIFIED_CONTEXT`.
-- 실제 사용자 STEP 14 규칙 이해·성향 발견·재도전 행동.
-- 실제 보조기기 사용자 사용성.
-- 주관적 음향·모션 읽기성.
-- 외부 POC 표본.
-- 목표 장치 Release 성능.
-- Branch protection Required Check 강제.
-- 사용자 로컬 미커밋 파일과 원격 차이.
-
-## 보호 범위
-
-PR #15 마감에서는 다음을 변경하지 않는다.
-
-- `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot`.
-- 제품 Godot 런타임 테스트.
-- 사용자 로컬 변경.
-- 백업·보류·과거 Plan·Git 이력.
-- T1 이후 성장·세력 가설의 고유 정보.
-
-force push·reset·rebase를 금지한다.
+| 자산 | 현재 지위 |
+|---|---|
+| v6 결정 원장·통합 검수 | `CURRENT_DECISION_AUTHORITY` |
+| 2026-07-26 기획 기준선·BUILD 진입 | `SUPERSEDED_REFERENCE` |
+| 과거 적대적 검토·벤치마크·sanity | `HISTORICAL_EVIDENCE` |
+| `docs/planning-data/*.json` | `SOURCE_ONLY / HOLD` |
+| 2026-07-26 구현 계획 | `DEFERRED / REFERENCE_ONLY` |
+| planning validator·테스트·workflow | `VALIDATION_ASSET` |
+| 제품 런타임 경로 | 이번 통합에서 변경하지 않음 |
 
 ## 다음 작업
 
-1. PR #15 최신 head에서 Governance·Card/Combat Contract를 확인한다.
-2. `659c57e7...` 대비 제품 보호 경로 변경 0건을 재확인한다.
-3. PR #7과 PR #15 본문을 현재 STEP 0~13·코어·사람 증거 경계로 정렬한다.
-4. PR #15는 문서·검증 결함이 없을 때만 PR #7에 통합한다.
-5. 결정적 복기와 읽을 수 있는 라이벌 성향을 별도 승인 계약으로 준비한다.
-6. 동일 SHA의 STEP 14 신규 플레이어 5명 발견형 테스트를 실행한다.
-7. 결과로 `T1_GREENLIGHT_REVIEW` 또는 `REPEAT_POC`를 판정한다.
+사용자가 절초 설계를 재개하기 전에는 다음만 수행한다.
 
-## 중단 기준
+1. v6 원장과 활성 진입점의 최신성 유지.
+2. PR #45 Required Check와 changed files 검증.
+3. 제품 경로 무변경 확인.
+4. 미검증·보류 상태 보존.
 
-- PR #7 HEAD 또는 기준 SHA가 예상과 다르다.
-- 보호 경로에 예상 밖 변경이 있다.
-- Actions 실패 원인을 확인하지 않았다.
-- 사람 증거 없이 STEP 14·T1을 통과 처리하려 한다.
-- 읽을 수 있는 라이벌 성향을 AI 치팅이나 근거 없는 무작위로 구현하려 한다.
-- 구형 PR의 고유 정보 보존을 확인하지 않고 닫거나 병합하려 한다.
+새 BUILD는 사용자의 명시적 승인과 최신 구현 계획이 생긴 뒤 별도 브랜치·worktree에서 시작한다.
+
+## 금지
+
+- 2026-07-26 구현 계획을 현재 승인으로 해석.
+- planning JSON을 런타임 권한 원본으로 사용.
+- 주요 비무 10개·3→10 비용 38·구형 순차 연격·S/A/B/C 랭크를 최신 계약으로 복원.
+- 16개 절초를 사용자 승인 없이 확정.
+- 사람 증거 없이 재미·밸런스·T1 통과 주장.
+- 문서 검증을 런타임 구현 완료로 보고.

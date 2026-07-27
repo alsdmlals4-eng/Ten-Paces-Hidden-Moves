@@ -24,7 +24,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["현재 한 줄 약속", "현재 핵심 경험 가설", "설계 원칙", "제품 범위", "프로젝트 성공 조건", "다음 기획 게이트"]
+      "required_sections": ["현재 한 줄 약속", "현재 핵심 경험 가설", "설계 원칙", "제품 범위", "프로젝트 성공 조건", "현재 검수 게이트"]
     },
     {
       "document_id": "combat-rules",
@@ -114,7 +114,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["현재 상태", "현행 전투 계약과 연결 원칙", "T1 최소 성장 실험", "장기 보유 구조 가설", "세력 정체성 후보", "절초·진의 가설", "성장 진입 게이트", "검증 기준"]
+      "required_sections": ["현재 상태", "현행 전투 계약과 연결 원칙", "다음 PoC 성장 실험", "장기 보유 구조 가설", "세력 정체성 후보", "기본 절초·10성 절초·진의", "성장 진입 게이트", "검증 기준"]
     },
     {
       "document_id": "combat-ui-spec",

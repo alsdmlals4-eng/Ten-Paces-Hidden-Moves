@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "data_role": "ANALYSIS_ONLY",
+  "status": "UNVERIFIED_SANITY_MODEL",
+  "seed": 20260726,
+  "runs": 20000,
+  "assumptions": [
+    "HP 30",
+    "quick 4",
+    "heavy 10",
+    "guard 5",
+    "evade charge 1",
+    "ten abstract timings per round",
+    "abstract action probabilities only",
+    "no movement/resource/AI/interruption detail"
+  ],
+  "results": {
+    "mean_rounds": 2.969,
+    "median_rounds": 3.0,
+    "distribution": {
+      "1": 960,
+      "2": 6286,
+      "3": 7222,
+      "4": 3940,
+      "5": 1203,
+      "6": 314,
+      "7": 69,
+      "8": 5,
+      "9": 1
+    }
+  },
+  "interpretation": "The rough abstract model has a median of three rounds and does not contradict the normal-fight target. It is not engine, AI, or human balance evidence.",
+  "status_boundary": "Do not use this output to claim balance, fun, or production readiness.",
+  "growth_reachability": {
+    "starting_mastery": 3,
+    "target_mastery": 10,
+    "required_training_points": 38,
+    "modeled_points_before_major_duel_5": 38,
+    "result": "POSSIBLE_NOT_GUARANTEED",
+    "boundary": "This does not prove that every generated route, grade outcome, or player allocation reaches 10-star before duel 5.",
+    "validated_paths": {
+      "focused_rewards_plus_guaranteed_nodes": {
+        "duel_rewards": 32,
+        "intermediate_points": 6,
+        "total": 38
+      },
+      "free_rewards_plus_high_efficiency_nodes": {
+        "duel_rewards": 24,
+        "intermediate_points": 14,
+        "total": 38
+      }
+    }
+  }
+}
