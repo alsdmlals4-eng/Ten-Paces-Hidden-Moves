@@ -10,6 +10,9 @@ AGENTS.md
 → 실제 코드·데이터·테스트·PR
 ```
 
+- Base 적용 기준: `docs/BASE_RULES_VERSION.md`.
+- Skill Registry: `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`.
+
 ## 질문별 책임 원본
 
 | 질문 | 현재 책임 원본 | 과거·보조 자료 |
