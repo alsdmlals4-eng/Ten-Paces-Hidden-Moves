@@ -2,44 +2,41 @@
 
 ## 기본 읽기
 
-`AGENTS.md → ACTIVE_CONTEXT.md → 이 문서 → 질문별 책임 원본 → 실제 파일·테스트·PR·Issue`.
+```text
+AGENTS.md
+→ [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
+→ docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md
+→ 질문별 책임 원본
+→ 실제 코드·데이터·테스트·PR
+```
 
 ## 질문별 책임 원본
 
-| 질문 | 책임 원본 |
-|---|---|
-| 프로젝트 코어·루프 | `docs/01_GAME_DESIGN.md` |
-| 전투 판정·연격·필중·예산·재도전 | `docs/02_COMBAT_RULES.md` |
-| 콘텐츠·적·주요 비무·지도·보상 | `docs/03_CONTENT_CATALOG.md`와 `docs/planning-data/` |
-| 제품 순서 | `docs/04_ROADMAP.md` |
-| PoC·T1 | `docs/05_COMBAT_POC_SPEC.md` |
-| 무공·성장·의료 | `docs/06_STARTING_FACTION_MASTERY_DATA.md` |
-| UI·접근성 | `docs/07_COMBAT_UI_SPEC.md` |
-| QA | `docs/08_TEST_CHECKLIST.md` |
-| RunState·CombatState·adapter | `docs/09_COMBAT_SYSTEM_ARCHITECTURE.md` |
-| 연출 | `docs/10_COMBAT_PRESENTATION_PLAN.md` |
-| 현재 상태 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` |
-| Skill 라우팅 | `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json` |
-| 통합 PoC 기준선 | `docs/decisions/2026-07-26_POC_PLANNING_BASELINE.md` |
-| REVIEW 발견·교정 | `docs/decisions/2026-07-26_REVIEW_FINDINGS_AND_CORRECTIONS.md` |
-| 전체 적대적 검토 | `docs/decisions/2026-07-26_FULL_ADVERSARIAL_REVIEW_LOOP.md` |
-| 승인안 BUILD 교정 | `docs/decisions/2026-07-26_ADVERSARIAL_REVIEW_BUILD_REMEDIATION.md` |
-| 수치 sanity | `docs/decisions/2026-07-26_POC_BALANCE_SANITY_REPORT.md` |
-| 세션 인수 | `[기획서]/00_프로젝트_허브/HANDOFF.md` |
+| 질문 | 현재 책임 원본 | 과거·보조 자료 |
+|---|---|---|
+| 현재 단계·권한·보류·다음 작업 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` | PR #45 본문·과거 Active Context |
+| 전체 사용자 결정·대체·폐기·보류 | `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md` | 2026-07-25/26 기준선·결정 기록 |
+| PR #45 통합 판정·중복 제거 | `docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md` | PR #45 changed files·과거 검수 보고서 |
+| 프로젝트 코어·플레이어 약속 | `docs/01_GAME_DESIGN.md` | 과거 코어 결정 기록 |
+| 전투·슬롯·합·연격·방어도·태그 | `docs/02_COMBAT_RULES.md`와 v6 원장 해당 ID | 현행 PoC 코드·과거 규칙 |
+| 강호행·경로·콘텐츠 범위 | `docs/03_CONTENT_CATALOG.md`와 v6 원장 RUN ID | `docs/planning-data/` source-only |
+| 무공서·성급·수련·랭크·절초 공통 계약 | `docs/06_STARTING_FACTION_MASTERY_DATA.md`와 v6 원장 | 과거 PoC 무공 JSON |
+| UI·접근성 | `docs/07_COMBAT_UI_SPEC.md` | 실제 씬·사람 검증 |
+| 구현 사실 | 실제 `data/`, `src/`, `scenes/`, `tests/` | 문서의 구현 주장 |
 
-## planning 데이터
+## PR #45 중복 방지
 
-- `poc_balance_budget.json`: 가격표·effect·patch·필중 스택.
-- `poc_martial_arts.json`: 무공·card·ledger·습득·중복.
-- `poc_enemy_duels.json`: 주요 비무·보상 option 참조·AI template.
-- `poc_map_rewards.json`: 노드·보상·등급·38포인트 경로.
-- `poc_run_state_contract.json`: 회차/전투 상태와 유료 재도전.
-- `poc_sanity_model.json`: 분석 전용 가설.
+- `2026-07-26_POC_PLANNING_BASELINE.md`와 `2026-07-26_REVIEW_COMPLETE_AND_BUILD_ENTRY.md`는 역사 포인터이며 최신 규칙을 소유하지 않는다.
+- 과거 적대적 검토·벤치마크·sanity 문서는 변경 당시의 증거를 보존한다.
+- `docs/planning-data/*.json`은 source-only 분석 자료이며 런타임 입력이 아니다.
+- 2026-07-26 구현 계획은 새 BUILD 승인 전 실행하지 않는다.
+- 같은 질문에 여러 활성 정본을 두지 않는다.
 
-## 실제 구현 경로
+## 상태 분리
 
-`data/`, `src/`, `scenes/`, `assets/`, `addons/`, `tests/`, `tools/`, `project.godot`.
-
-## 경계
-
-PoC planning JSON은 source-only 지원 데이터이며 런타임 권한이 없다. 구현·자동·Godot·Windows·사람 검증 상태를 독립 기록한다. 결정·검수 기록은 변경 이유와 대체 관계를 보존하고, 현재 판정은 질문별 책임 원본이 소유한다.
+- 제품 단계: `CONCEPT_APPROVAL`
+- Work Mode: `PLAN`
+- 실행 프로필: `PLANNING_ONLY_PROFILE`
+- 후속 적대적 검토: `HOLD / [보류]`
+- 절초 16종 개별 설계: `DEFERRED / [보류]`
+- 런타임 구현: `PROHIBITED_UNTIL_NEW_APPROVAL`
