@@ -3,154 +3,108 @@
 ## 1. 상태 축
 
 ```yaml
-lifecycle: ACTIVE | HOLD | BACKUP | REMOVAL_CANDIDATE
-approval: UNCONFIRMED | CONFIRMED | REJECTED
-implementation: NOT_STARTED | IN_PROGRESS | IMPLEMENTED
-verification: NOT_RUN | PASS | PARTIAL | FAIL | BLOCKED
-publication: NOT_BUILT | STALE | CURRENT | FAILED
+product_stage: CONCEPT_APPROVAL | PROTOTYPE_AND_VERTICAL_SLICE | PRODUCTION_APPROVAL | RELEASE_CANDIDATE_APPROVAL
+work_mode: PLAN | BUILD | REVIEW
+gate: APPROVED | APPROVED_WITH_CONDITIONS | REWORK | REPEAT_VALIDATION | HOLD | STOP | UNVERIFIED
+implementation: IMPLEMENTED | PARTIALLY_IMPLEMENTED | PLANNED | PROPOSED_ONLY | DEFERRED | REMOVED | UNVERIFIED
 ```
 
-파일 존재·Actions·Godot·Windows·사람 플레이·접근성 사용자 검수·Release 성능·Required Check 강제는 독립 증거다.
+파일 존재·Actions·Godot·Windows·사람 플레이·접근성·성능·Required Check는 독립 증거다.
 
-## 2. 작업 게이트
+## 2. 현재 게이트
 
-### G0 — Intake·Baseline
+```yaml
+product_stage: CONCEPT_APPROVAL
+work_mode: PLAN
+execution_profile: PLANNING_ONLY_PROFILE
+runtime_implementation: PROHIBITED_UNTIL_NEW_APPROVAL
+planning_integration: PR_45
+gate_decision: APPROVED_WITH_CONDITIONS
+human_validation: UNVERIFIED
+t1_greenlight: NOT_GRANTED
+```
 
-- 사용자 요청·저장소·브랜치·PR·Issue 확인.
-- 기준 branch·기준 SHA 고정.
-- Work Mode·Skill·Skill Mode 자동 선택.
-- 책임 원본·실제 파일·보호 경로 확인.
-- 도구·권한·로컬 미커밋 상태의 확인 가능 범위 기록.
+조건:
 
-### G1 — Ready
+- v6 결정 원장과 PR #45 역사 자료의 중복 제거.
+- 최신 PR Validation PASS.
+- 제품 런타임 경로 무변경 확인.
+- `[보류]` 항목을 구현 입력에서 제외.
 
-- 목표·사용자/플레이어 가치.
-- 범위·제외·보호 대상.
-- 기준 SHA·허용 변경 prefix.
-- 의존성·완료·검증·중단·롤백.
-- 정본·Schema·발행·접근성·성능 영향.
+## 3. G0 — 권한·기준선
 
-### G2 — Plan·Approval
+- [x] 최신 사용자 지시와 v6 계약 확인.
+- [x] 저장소·PR #45·main 기준 확인.
+- [x] 현행 T0 구현 계보 PR #7·Issue #13 확인.
+- [x] 기술 기준 SHA `659c57e7ffa588ad6a6471ed9b5394985b159eaf`를 역사·구현 추적으로 보존.
+- [x] 최신 설계 권한과 현행 구현 사실 분리.
 
-- L2 이상은 저장소 조사 기반 Plan.
-- 다중 의존성은 결과·입력·파일·의존성·출력·게이트·롤백으로 분해.
-- 삭제·이동·통합은 고유 정보·참조·복구·사용자 승인 확인.
-- 프로젝트 코어 확정은 PLAN 모드와 사용자 승인을 요구.
+판정: `APPROVED`.
 
-### G3 — Build
+## 4. G1 — v6 계획 권한
 
-- exact 기준 SHA의 격리 브랜치에서 승인 파일만 변경.
-- 사용자·Codex 변경과 공개 인터페이스 보호.
-- 보류·미승인 기능 구현 금지.
-- 정본·경로·ID·Schema 변경은 소비자·테스트·Workflow 동기화.
-- UI·연출은 도메인 결과를 재계산하지 않음.
+- [x] 프로젝트 코어·강호행·전투·무공서·성장·메타 계약 추출.
+- [x] 폐기·대체·보류·미검증 분리.
+- [x] 결정별 연결 프로필 적용.
+- [x] PR #45의 BUILD 승인과 구형 규칙을 `SUPERSEDED_REFERENCE`로 분류.
 
-### G4 — Review
+판정: `APPROVED`.
+
+## 5. G2 — GitHub 계획 통합
+
+- [x] 최신 결정 원장과 통합 검수 문서 생성.
+- [x] Active Context·Documentation Map·Handoff·진입점 정렬.
+- [x] PR #45 메타데이터 교정.
+- [x] 제품 `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot` 변경 금지.
+- [ ] 최신 HEAD의 운영·최신성·거버넌스·planning 검증 PASS.
+- [ ] unresolved review thread 0건 확인.
+- [ ] 병합 뒤 main 재검증.
+
+판정: `REWORK` — 최신 CI가 통과할 때까지 병합 금지.
+
+## 6. G3 — `[보류]`
+
+- Round 4 이후 전체 적대적 검토.
+- 16개 개별 절초 설계.
+- 2026-07-26 구현 계획 실행.
+- Godot 런타임·데이터·씬·자산 변경.
+
+판정: `HOLD`.
+
+## 7. G4 — 향후 BUILD 진입
+
+다음 조건 전에는 BUILD로 전환하지 않는다.
+
+1. 사용자가 보류 항목을 재개한다.
+2. 개별 절초와 통합 명세가 승인된다.
+3. 보류된 적대적 검토에서 `MUST_FIX`가 0이다.
+4. 최신 구현 계획과 기준 SHA·보호 경로·롤백이 작성된다.
+5. 사용자가 명시적으로 구현을 승인한다.
+
+현재 판정: `NOT_GRANTED / PLANNING_ONLY`.
+
+## 8. 검증 순서
 
 ```text
 contract-check
 → reference-freshness
-→ format·syntax·static
+→ syntax·static
 → automated tests
-→ runtime·render·build
-→ 적용 시 accessibility-review
-→ 적용 시 performance-profile
+→ 적용 시 runtime·render·build
+→ accessibility·performance
 → normal·failure·edge·counterexample·regression
 → baseline diff
 → evidence-report
 ```
 
-실행하지 않은 검증은 `NOT_RUN` 또는 `UNVERIFIED`다.
+실행하지 않은 검증은 `NOT_RUN / UNVERIFIED`다.
 
-### G5 — Documentation·Publication
+## 9. 완료 금지 조건
 
-- 책임 원본·Registry·Schema·Legacy Alias·Update Matrix.
-- Active Context·Roadmap·필요 시 Handoff.
-- 활성 본문은 현재 계약만 유지.
-- 과거 전문은 Git 이력·Change Log·Learning Log.
-- 현재 등록 문서·Skill Registry는 `source_only`.
-- PDF는 생성기·폰트·Manifest·렌더·사용자 검수와 함께 필요한 문서만 정책 승격.
+- 최신 PR Validation 실패 또는 미완료.
+- 제품 경로 변경 발생.
+- 현재 권한과 과거 BUILD 승인 혼재.
+- 보류된 절초·검토를 완료로 표시.
+- 런타임·사람 증거 없이 구현·재미·T1 통과 주장.
 
-### G6 — Integration
-
-- 승인 범위 전부 반영.
-- 기준 SHA 대비 보호 경로 보존.
-- 정적·자동·런타임·Windows·사람 증거 분리.
-- 미검증·위험·롤백 명확.
-- 새 작업자가 저장소만으로 재개 가능.
-- 최신 head SHA의 Actions 확인.
-
-## 3. Canonical Refresh Gate
-
-- [x] PR #7 기준 SHA `659c57e7ffa588ad6a6471ed9b5394985b159eaf` 고정.
-- [x] 정합화 브랜치와 PR #14 분리.
-- [x] docs/01~11 현행 전투 계약 재작성.
-- [x] Base `41a205...`·25 Skill route.
-- [x] 프로젝트 고유 Skill 4개 유지·간소화.
-- [x] board schema 16·Base SHA·Skill 집합 구조 검사.
-- [x] stale 보정 절·Schema·Base route 반례.
-- [x] Python 캐시 제거·재발 차단.
-- [x] Design Registry required section 일치.
-- [x] PR #14 Governance·Card Contract 통과.
-- [x] PR #14 기준 제품 보호 경로 변경 0건.
-- [x] PR #14를 PR #7에 병합.
-- [ ] PR #15 최신 head의 Governance·Card Contract 재확인.
-- [ ] PR #15 최신 head SHA와 최종 diff 고정.
-
-현재 판정: `MERGED_TO_PR7 / PR15_CLOSEOUT_REVIEW`.
-
-## 4. Prototype Greenlight
-
-### 구현·기술
-
-- [x] Godot 프로젝트·씬·데이터·테스트.
-- [x] 10칸·4/7·거리 3·밀착.
-- [x] `3수 → 3수 → 4수`.
-- [x] 기초 행동 8종·절초 3종.
-- [x] 합·방어·회피·필중.
-- [x] 중단·강건.
-- [x] 공개 상태 최소 AI.
-- [x] 승패·무승부·재시작.
-- [x] 순차 연출·키보드·모션 감소·음향 제어 기술 증거.
-
-### 사람 증거
-
-- [ ] 규칙 이해.
-- [ ] AI 성향 발견과 공정성 신뢰.
-- [ ] 실패 이유 복기.
-- [ ] 계획 수정·재도전 행동.
-- [ ] 보조기기 사용자 검수.
-- [ ] 주관적 음향·모션 읽기성.
-
-현재 판정: `IMPLEMENTED / HUMAN_STEP14_NOT_RUN`.
-
-## 5. Project Core Gate
-
-- [x] 기존 구현의 코어 후보를 읽기 전용 판정.
-- [x] 핵심 컨셉 후보와 제약 정의.
-- [x] 뾰족한 재미를 플레이어 행동·감정 변화로 정의.
-- [x] core loop의 행동·보상·진척 정의.
-- [x] 모든 요소의 WHY/HOW/WHAT 대조.
-- [x] POC 증거와 반증 대조.
-- [x] 제거·보류·강화·추가 최소 실험 결정.
-- [x] SWOT·VRIO.
-- [x] 적대적 검토와 최소 개선.
-- [x] 사용자 `CORE_CONFIRMED` 승인.
-
-현재 판정: `CORE_CONFIRMED / PRODUCT_GATE_REPEAT_POC`.
-
-코어 확정은 Prototype 사람 증거 또는 T1 진입을 자동 승인하지 않는다.
-
-## 6. Vertical Slice Greenlight
-
-프로젝트 코어와 실제 사용자 STEP 14를 모두 통과한 뒤 검토한다.
-
-- [ ] 플레이 스타일 2개.
-- [ ] 성향이 다른 상대 3명·전투 3회.
-- [ ] 상대 정보→가설→전투→복기→수평 보상 연결.
-- [ ] 대표 콘텐츠 품질·제작 파이프라인.
-- [ ] 외부 플레이 증거.
-- [ ] 접근성 장벽·대체 경로.
-- [ ] 목표 플랫폼 성능 위험·예산.
-
-현재 판정: `NOT_GRANTED / REPEAT_POC`.
+현행 T0의 과거 판정 `CORE_CONFIRMED / PRODUCT_GATE_REPEAT_POC`는 역사·구현 계보이며 현재 v6 제품 단계 권한이 아니다.
