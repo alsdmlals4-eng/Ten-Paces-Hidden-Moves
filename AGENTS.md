@@ -1,6 +1,6 @@
 # 십보강호 협업 규칙
 
-이 파일은 `Ten-Paces-Hidden-Moves`의 최상위 프로젝트 작업 계약이다. Base 공용 절차는 복제하지 않고 프로젝트 고유 기준·경로·보호·검증 차이만 둔다.
+이 파일은 `Ten-Paces-Hidden-Moves`의 최상위 프로젝트 작업 계약이다.
 
 ## 1. 우선순위
 
@@ -44,11 +44,14 @@ human_validation: UNVERIFIED
 
 2026-07-26의 BUILD 승인·구현 인계·구형 PoC 기준선은 `SUPERSEDED_REFERENCE`다. PR #45는 v6 계획 정본과 역사·검증 자료를 정합화하며 제품 런타임을 변경하지 않는다.
 
-## 4. Work Mode
+## 4. Work Mode·Skill Mode
 
 - `PLAN`: 요구·정본·근거·설계·문서·검수. 승인 전 제품 변경 금지.
-- `BUILD`: 사용자가 명시적으로 승인한 범위의 코드·데이터·문서·자산 구현.
+- `BUILD`: 사용자가 명시적으로 승인한 범위의 구현.
 - `REVIEW`: 적대적 검토·반례·검증·판정.
+- Skill Mode는 Registry trigger와 작업 위험에 따라 최소 범위로 선택한다.
+- L1 이상 작업은 기준 SHA, 선택 Skill, 실제 수행, 결과, 증거, 미검증을 `execution-report`에 기록한다.
+- 정본·경로·ID·Schema·Base SHA 변경은 `reference-freshness`로 검사한다.
 
 한 시점의 주 Work Mode는 하나다. 현재는 `PLAN`이다.
 
