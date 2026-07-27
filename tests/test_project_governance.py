@@ -50,7 +50,7 @@ class ProjectGovernanceTests(unittest.TestCase):
         self.assertNotIn("fixed_enemy_preview_plan", engine)
         self.assertEqual("public_state_ai", resolution["enemy_plan_source"])
 
-    def test_active_combat_docs_use_current_baseline_and_fixture_boundary(self) -> None:
+    def test_active_combat_docs_use_current_implementation_baseline(self) -> None:
         current_baseline = "659c57e7ffa588ad6a6471ed9b5394985b159eaf"
         stale_baseline = "147a031c75e96bff170d7f99016beb9e85b12066"
         docs = [
@@ -61,68 +61,72 @@ class ProjectGovernanceTests(unittest.TestCase):
         ]
         for relative in docs:
             text = (ROOT / relative).read_text(encoding="utf-8")
-            self.assertIn(current_baseline, text, f"{relative} is missing current baseline")
+            self.assertIn(current_baseline, text, f"{relative} is missing implementation baseline")
             self.assertNotIn(stale_baseline, text, f"{relative} still uses stale baseline")
         for relative in ["docs/02_COMBAT_RULES.md", "docs/09_COMBAT_SYSTEM_ARCHITECTURE.md"]:
             text = (ROOT / relative).read_text(encoding="utf-8")
             for token in ["public_state_ai", "enemy_bundles", "ai_enabled == false"]:
                 self.assertIn(token, text, f"{relative} is missing fixture boundary {token!r}")
 
-    def test_active_operating_state_is_synchronized(self) -> None:
-        expected = {
-            "AGENTS.md": [
-                "659c57e7ffa588ad6a6471ed9b5394985b159eaf",
-                "CORE_CONFIRMED",
-                "REPEAT_POC",
-                "NOT_GRANTED",
-            ],
-            "START_HERE.md": [
-                "659c57e7ffa588ad6a6471ed9b5394985b159eaf",
-                "CORE_CONFIRMED",
-                "REPEAT_POC",
-                "NOT_GRANTED",
-            ],
-            "docs/BASE_RULES_VERSION.md": [
-                "659c57e7ffa588ad6a6471ed9b5394985b159eaf",
-                "CORE_CONFIRMED",
-                "REPEAT_POC",
-                "human_step14: NOT_RUN",
-            ],
-            "[기획서]/00_프로젝트_허브/START_HERE.md": [
-                "659c57e7ffa588ad6a6471ed9b5394985b159eaf",
-                "CORE_CONFIRMED",
-                "REPEAT_POC",
-                "NOT_GRANTED",
-            ],
-            "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md": [
-                "659c57e7ffa588ad6a6471ed9b5394985b159eaf",
-                "CORE_CONFIRMED / PRODUCT_GATE_REPEAT_POC",
-                "NOT_GRANTED / REPEAT_POC",
-            ],
-            "[기획서]/00_프로젝트_허브/ROADMAP.md": [
-                "659c57e7ffa588ad6a6471ed9b5394985b159eaf",
-                "CORE_CONFIRMED / PRODUCT_GATE_REPEAT_POC",
-                "HUMAN_NOT_RUN",
-                "NOT_GRANTED",
-            ],
-            "[기획서]/00_프로젝트_허브/HANDOFF.md": [
-                "659c57e7ffa588ad6a6471ed9b5394985b159eaf",
-                "CORE_CONFIRMED",
-                "REPEAT_POC",
-                "NOT_GRANTED",
-            ],
-        }
-        forbidden = [
-            "147a031c75e96bff170d7f99016beb9e85b12066",
-            "agent/pr7-canonical-skill-refresh",
-            "현재 판정: `CORE_REVIEW_PENDING`",
+    def test_active_v6_operating_state_is_synchronized(self) -> None:
+        v6_tokens = [
+            "CONCEPT_APPROVAL",
+            "PLAN",
+            "PLANNING_ONLY_PROFILE",
+            "PROHIBITED_UNTIL_NEW_APPROVAL",
+            "2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md",
         ]
-        for relative, required_tokens in expected.items():
+        active_docs = [
+            "AGENTS.md",
+            "START_HERE.md",
+            "README.md",
+            "[기획서]/00_프로젝트_허브/START_HERE.md",
+            "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+            "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
+            "[기획서]/00_프로젝트_허브/ROADMAP.md",
+            "[기획서]/00_프로젝트_허브/HANDOFF.md",
+        ]
+        for relative in active_docs:
             text = (ROOT / relative).read_text(encoding="utf-8")
-            for token in required_tokens:
-                self.assertIn(token, text, f"{relative} is missing current token {token!r}")
-            for token in forbidden:
-                self.assertNotIn(token, text, f"{relative} still contains stale token {token!r}")
+            for token in v6_tokens:
+                self.assertIn(token, text, f"{relative} is missing v6 token {token!r}")
+            self.assertNotIn(
+                "phase: BUILD_IN_PROGRESS",
+                text,
+                f"{relative} still grants the superseded BUILD state",
+            )
+            self.assertNotIn(
+                "implementation_authorization: GRANTED",
+                text,
+                f"{relative} still grants superseded implementation authority",
+            )
+
+    def test_v6_authority_and_pr45_integration_files_exist(self) -> None:
+        required = [
+            "docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md",
+            "docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER_PART1A.md",
+            "docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER_PART1B.md",
+            "docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER_PART2.md",
+            "docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER_PART3.md",
+            "docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md",
+        ]
+        for relative in required:
+            path = ROOT / relative
+            self.assertTrue(path.is_file(), f"missing v6 authority file: {relative}")
+            text = path.read_text(encoding="utf-8")
+            self.assertNotIn("<LARGE_CONTENT_PLACEHOLDER>", text)
+            self.assertNotIn("TODO", text)
+            self.assertNotIn("TBD", text)
+
+    def test_superseded_build_documents_are_historical_pointers(self) -> None:
+        expected = {
+            "docs/decisions/2026-07-26_POC_PLANNING_BASELINE.md": "SUPERSEDED_REFERENCE",
+            "docs/decisions/2026-07-26_REVIEW_COMPLETE_AND_BUILD_ENTRY.md": "SUPERSEDED_REFERENCE",
+        }
+        for relative, token in expected.items():
+            text = (ROOT / relative).read_text(encoding="utf-8")
+            self.assertIn(token, text)
+            self.assertIn("2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md", text)
 
     def test_stale_current_token_is_rejected_even_with_appended_override(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -147,16 +151,12 @@ class ProjectGovernanceTests(unittest.TestCase):
             (root / "data/combat/combat_board_poc.json").write_text(
                 json.dumps({"schema_version": 15}), encoding="utf-8"
             )
-            expected_ids = ["skill-a", "skill-b"]
             (root / "registry/SKILL_REGISTRY.json").write_text(
                 json.dumps(
                     {
                         "base_integration": {
                             "commit": "a" * 40,
-                            "shared_skill_routes": {
-                                "a": "skill-a",
-                                "b": "skill-b",
-                            },
+                            "shared_skill_routes": {"a": "skill-a", "b": "skill-b"},
                         },
                         "skills": [{}, {}, {}, {}],
                     }
@@ -168,7 +168,7 @@ class ProjectGovernanceTests(unittest.TestCase):
                 "expected_board_schema_version": 16,
                 "skill_registry_path": "registry/SKILL_REGISTRY.json",
                 "expected_base_commit": "a" * 40,
-                "expected_base_skill_ids": expected_ids,
+                "expected_base_skill_ids": ["skill-a", "skill-b"],
             }
             with self.assertRaises(FRESHNESS.FreshnessError):
                 FRESHNESS.validate_structured_contracts(root, config)
@@ -216,10 +216,7 @@ class ProjectGovernanceTests(unittest.TestCase):
                     {
                         "base_integration": {
                             "commit": "a" * 40,
-                            "shared_skill_routes": {
-                                "a": "skill-a",
-                                "b": "skill-a",
-                            },
+                            "shared_skill_routes": {"a": "skill-a", "b": "skill-a"},
                         },
                         "skills": [{}, {}, {}, {}],
                     }
