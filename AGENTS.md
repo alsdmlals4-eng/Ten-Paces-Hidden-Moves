@@ -42,7 +42,9 @@ integration_review: docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md
 human_validation: UNVERIFIED
 ```
 
-2026-07-26의 BUILD 승인·구현 인계·구형 PoC 기준선은 `SUPERSEDED_REFERENCE`다. PR #45는 v6 계획 정본과 역사·검증 자료를 정합화하며 제품 런타임을 변경하지 않는다.
+- 현행 T0 구현 계보는 PR #7과 Issue #13이다. 최신 v6 설계 권한과 분리한다.
+- 2026-07-26의 BUILD 승인·구현 인계·구형 PoC 기준선은 `SUPERSEDED_REFERENCE`다.
+- PR #45는 v6 계획 정본과 역사·검증 자료를 정합화하며 제품 런타임을 변경하지 않는다.
 
 ## 4. Work Mode·Skill Mode
 
