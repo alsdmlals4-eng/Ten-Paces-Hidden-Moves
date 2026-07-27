@@ -17,7 +17,7 @@ human_validation: UNVERIFIED
 t1_greenlight: NOT_GRANTED
 ```
 
-2026-07-26의 `BUILD_IN_PROGRESS / implementation_authorization: GRANTED` 상태는 최신 v6 재설계 지시로 대체됐다. PR #45는 최신 계획 권한과 역사·검증 자료를 통합하지만 Codex 런타임 구현 인계를 허가하지 않는다.
+2026-07-26의 과거 BUILD·구현 승인 상태는 최신 v6 재설계 지시로 대체됐다. PR #45는 최신 계획 권한과 역사·검증 자료를 통합하지만 Codex 런타임 구현 인계를 허가하지 않는다.
 
 ## 반드시 읽을 파일
 
