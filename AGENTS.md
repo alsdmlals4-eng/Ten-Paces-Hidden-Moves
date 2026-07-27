@@ -26,7 +26,9 @@
 → 실제 파일·테스트·PR·Issue
 ```
 
-백업·보류·과거 계획·닫힌 PR·전체 Skill 폴더를 기본 컨텍스트로 로드하지 않는다.
+- Base 기준: `docs/BASE_RULES_VERSION.md`.
+- Skill Registry: `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`.
+- 백업·보류·과거 계획·닫힌 PR·전체 Skill 폴더를 기본 컨텍스트로 로드하지 않는다.
 
 ## 3. 현재 기준
 
