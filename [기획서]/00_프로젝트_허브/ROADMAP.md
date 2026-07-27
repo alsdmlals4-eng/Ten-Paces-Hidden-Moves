@@ -2,6 +2,13 @@
 
 > 제품 구현의 상세 순서는 `docs/04_ROADMAP.md`, 현재 사용자 결정 권한은 `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`가 소유한다.
 
+```yaml
+product_stage: CONCEPT_APPROVAL
+work_mode: PLAN
+execution_profile: PLANNING_ONLY_PROFILE
+runtime_implementation: PROHIBITED_UNTIL_NEW_APPROVAL
+```
+
 ## R0 — 현행 구현·역사 보존
 
 - [x] T0 구현 계보 PR #7·Issue #13 확인.
