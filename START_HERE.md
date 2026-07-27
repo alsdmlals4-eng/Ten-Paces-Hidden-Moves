@@ -18,7 +18,8 @@
 
 - 프로젝트: `alsdmlals4-eng/Ten-Paces-Hidden-Moves`.
 - 제품 단계: `CONCEPT_APPROVAL`.
-- Work Mode: `PLAN`.
+- 현재 Work Mode: `PLAN`.
+- Work Mode 어휘: `PLAN / BUILD / REVIEW`.
 - 실행 프로필: `PLANNING_ONLY_PROFILE`.
 - 최신 기획 통합 PR: #45 `agent/poc-planning-baseline-and-legacy-audit`.
 - 현재 결정 권한: `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
