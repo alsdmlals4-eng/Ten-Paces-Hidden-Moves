@@ -17,6 +17,8 @@
 - [콘텐츠 카탈로그](docs/03_CONTENT_CATALOG.md)
 - [무공·성장 자료](docs/06_STARTING_FACTION_MASTERY_DATA.md)
 - [테스트 체크리스트](docs/08_TEST_CHECKLIST.md)
+- [Base 적용 기준](docs/BASE_RULES_VERSION.md)
+- [Base 동기화 감사]([기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md)
 
 ## 현재 작업 상태
 
@@ -27,6 +29,7 @@ execution_profile: PLANNING_ONLY_PROFILE
 runtime_implementation: PROHIBITED_UNTIL_NEW_APPROVAL
 planning_integration_pr: 45
 human_validation: UNVERIFIED
+base_commit: 41a20584dd2ee51d917e5c9d7cab6838e1ceba7e
 ```
 
 2026-07-26의 `BUILD_IN_PROGRESS`와 구현 인계 승인은 이후 v6 재설계 지시로 대체됐습니다. PR #45는 최신 결정 원장과 과거 감사·검증 자료를 정합화하는 계획 문서 통합이며 제품 런타임을 변경하지 않습니다.
@@ -48,10 +51,10 @@ human_validation: UNVERIFIED
 
 ## 현재 주요 기획 계약
 
-- 한 라운드는 `3수 → 해결 → 3수 → 해결 → 4수 → 해결`, 총 10수입니다.
+- 한 라운드는 `3수 → 3수 → 4수`, 각 묶음 뒤 해결하며 총 10수입니다.
 - 10칸 일자형 전장과 거리 0 `[밀착]`을 사용합니다.
 - 버티컬 슬라이스는 핵심 결투 5개를 앵커로 하며 일반전·강적전·사건·수련·정보·회복·시장 노드를 포함합니다.
-- `[연격 N]`은 최종 총피해를 N개의 피해 묶음으로 나눕니다. 첫 피해만 합에 참여하며 기본 회피는 피해 묶음 하나만 회피합니다.
+- `[연격 N]`은 최종 총피해를 N개의 피해 묶음으로 나눕니다. 첫 피해만 `[합]`에 참여하며 기본 회피는 피해 묶음 하나만 회피합니다.
 - 방어와 보호막은 하나의 `[방어도]`로 통합되고 피해 묶음마다 개별 감산됩니다.
 - 무공서는 16권, 1~10성입니다. 시작 시 해금된 무공서 4권을 3성으로 선택합니다.
 - 수련 중앙 목표는 전체 전투 5회 40~50, 10회 90~100입니다.
@@ -67,6 +70,6 @@ human_validation: UNVERIFIED
 
 ## 구현 사실과 설계 권한
 
-현재 `main`에는 기존 T0 전투 PoC가 존재하지만 최신 v6 기획과 완전히 일치하지 않습니다. 실제 코드·데이터는 현재 구현 사실의 근거이며, 최신 설계 권한은 v6 결정 원장이 소유합니다.
+현재 `main`에는 기존 T0 전투 PoC의 STEP 0~13이 존재하며 플레이어 4번·상대 7번 시작을 포함합니다. 최신 v6 기획과는 완전히 일치하지 않습니다. 실제 코드·데이터는 현재 구현 사실의 근거이며, 최신 설계 권한은 v6 결정 원장이 소유합니다.
 
 정적 검사·Actions 성공은 Godot 런타임, Windows 사용성, 접근성, 성능, 실제 플레이 재미를 증명하지 않습니다. 실행하지 않은 항목은 `UNVERIFIED`로 유지합니다.
