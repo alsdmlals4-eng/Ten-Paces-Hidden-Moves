@@ -23,6 +23,7 @@
 - 최신 기획 통합 PR: #45 `agent/poc-planning-baseline-and-legacy-audit`.
 - 현재 결정 권한: `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
 - PR #45 통합 검수: `docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md`.
+- 현행 T0 구현 계보: PR #7과 Issue #13. 최신 v6 설계 권한과는 분리한다.
 - 런타임 구현: `PROHIBITED_UNTIL_NEW_APPROVAL`.
 - 사람 검증: `UNVERIFIED`.
 
