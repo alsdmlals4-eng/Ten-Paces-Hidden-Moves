@@ -13,9 +13,12 @@ runtime_implementation: PROHIBITED_UNTIL_NEW_APPROVAL
 current_integration_pr: 45
 canonical_decision_ledger: docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md
 integration_review: docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md
+human_step14: NOT_RUN
 ```
 
 PR #45의 과거 BUILD 승인 선언은 최신 사용자 결정으로 대체됐다. 이번 PR은 v6 계획 정본과 역사 자료를 정합화하는 문서 통합 PR이며 런타임 구현 인계가 아니다.
+
+역사 추적: 현행 T0 구현 계보는 PR #7과 Issue #13이며 STEP 14 사람 검증은 아직 실행하지 않았다. 과거 상태 `CORE_REVIEW_PENDING`은 역사 토큰일 뿐 현재 제품 단계나 코어 권한이 아니다.
 
 ## 프로젝트 코어
 
