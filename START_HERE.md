@@ -17,6 +17,8 @@
 ## 현재 기준
 
 - 프로젝트: `alsdmlals4-eng/Ten-Paces-Hidden-Moves`.
+- Base 적용 기준: `docs/BASE_RULES_VERSION.md`.
+- Skill Registry: `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`.
 - 제품 단계: `CONCEPT_APPROVAL`.
 - 현재 Work Mode: `PLAN`.
 - Work Mode 어휘: `PLAN / BUILD / REVIEW`.
