@@ -1,5 +1,7 @@
 # 십보강호 개발 게이트
 
+> 현재 결정 권한: `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
+
 ## 1. 상태 축
 
 ```yaml
