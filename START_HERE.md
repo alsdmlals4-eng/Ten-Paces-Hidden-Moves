@@ -6,60 +6,46 @@
 최신 사용자 지시
 → AGENTS.md
 → [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
+→ docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md
 → [기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md
 → 질문별 책임 원본
 → 실제 코드·데이터·씬·자산·테스트·PR·Issue
 ```
 
-전체 Skill 폴더, 백업·보류·과거 Plan·닫힌 PR을 기본 컨텍스트로 로드하지 않는다.
+백업·보류·과거 계획·닫힌 PR·전체 Skill 폴더를 기본 컨텍스트로 로드하지 않는다.
 
 ## 현재 기준
 
 - 프로젝트: `alsdmlals4-eng/Ten-Paces-Hidden-Moves`.
-- Base: `alsdmlals4-eng/Base@41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
-- Base 버전·차이: `docs/BASE_RULES_VERSION.md`.
-- Skill Registry: `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`.
-- 현재 구현 기준: PR #7 `agent/t0-combat-poc-board@659c57e7ffa588ad6a6471ed9b5394985b159eaf`; legacy 승인 추적 Issue #13.
-- 최신 기획·검수: PR #45 `agent/poc-planning-baseline-and-legacy-audit`.
-- 통합 기획 기준선: `docs/decisions/2026-07-26_POC_PLANNING_BASELINE.md`.
-- 적대적 검토·검수안: `docs/decisions/2026-07-26_FULL_ADVERSARIAL_REVIEW_LOOP.md`.
-- 현재 단계: `REVIEW_IN_PROGRESS`; `검수 완료` 전 제품 런타임 인계 금지.
+- 제품 단계: `CONCEPT_APPROVAL`.
+- Work Mode: `PLAN`.
+- 실행 프로필: `PLANNING_ONLY_PROFILE`.
+- 최신 기획 통합 PR: #45 `agent/poc-planning-baseline-and-legacy-audit`.
+- 현재 결정 권한: `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
+- PR #45 통합 검수: `docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md`.
+- 런타임 구현: `PROHIBITED_UNTIL_NEW_APPROVAL`.
+- 사람 검증: `UNVERIFIED`.
 
-## Work Mode
+2026-07-26의 BUILD 승인과 구현 인계 기록은 `SUPERSEDED_REFERENCE`다. PR #45 통합은 최신 계획 문서와 역사 자료를 정합화하며 제품 런타임을 변경하지 않는다.
 
-- `PLAN`: 요구·코어·근거·대안·실행 순서.
-- `BUILD`: 승인 범위 구현.
-- `REVIEW`: 적대적 검토·반례·검증.
+## 현재 코어
 
-Skill·Skill Mode는 Registry trigger로 자동 선택한다. L1 이상은 기준 SHA·선택 이유·수행·결과·증거·미검증을 `execution-report`로 남긴다.
+> 상대의 다음 행동 단서를 모아 가설을 세우고 여러 수의 계획으로 의도를 무너뜨리는 무협 전술 로그라이트.
 
-## 현재 제품 상태
+- `3수 → 해결 → 3수 → 해결 → 4수 → 해결`.
+- 핵심 결투 5개를 버티컬 슬라이스 앵커로 사용한다.
+- `[연격 N]`은 총피해를 N회로 분할한다.
+- 방어와 보호막은 통합 `[방어도]`다.
+- 수련 중앙 목표는 전체 전투 5회 40~50, 10회 90~100이다.
+- 절초는 기세 5를 소비하고 동일 슬롯 일반 기술보다 약 50% 높은 예산을 가진다.
 
-- 10칸, 플레이어 4번·상대 7번, 시작 거리 3.
-- 같은 칸 최대 2인과 거리 0 `[밀착]`.
-- 라운드 `3수 → 3수 → 4수`.
-- 기초 행동 8종·절초 3종.
-- 순차 타격쌍 `[합]`·누적 방어도·회피·스택형 필중·중단·강건.
-- 공개 상태 기반 결정적 후보 AI.
-- 승패·무승부와 전투 직전 `RunState` 유료 재도전 계약.
-- STEP 0~13 구현·기술 증거.
-- STEP 14 기계 시나리오 기록.
-- 실제 사용자 STEP 14: `NOT_RUN`.
-- 프로젝트 코어: `CORE_CONFIRMED`.
-- 제품 게이트: `REPEAT_POC`.
-- T1 진입: `NOT_GRANTED`.
+## `[보류]`
 
-## 다음 순서
-
-```text
-PR #45 승인 검수안 최소 BUILD
-→ REVIEW 복귀·정적·참조·회귀 검증
-→ 사용자 `검수 완료`
-→ Codex 런타임 구현 인계
-→ Godot·Windows·접근성·성능·STEP 14 사람 검증
-→ KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST
-```
+- Round 4 이후 전체 적대적 검토.
+- 16권 절초의 개별 설계.
+- 2026-07-26 구현 계획 실행.
+- Godot 런타임·데이터·씬·자산 변경.
 
 ## 상태 경계
 
-정적 Actions 성공은 Godot 런타임·Windows 사용자 경험·접근성 사용자 검수·Release 성능·PDF 발행·Branch protection 강제를 증명하지 않는다. 원격 변경과 사용자 로컬 미커밋 파일도 자동으로 동일하지 않다.
+정적 검사와 문서 정합성은 Godot 런타임·Windows·성능·접근성·사람 플레이를 증명하지 않는다. 실행하지 않은 검증은 `UNVERIFIED`로 기록한다.
