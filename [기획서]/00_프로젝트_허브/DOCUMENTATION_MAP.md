@@ -17,12 +17,14 @@ AGENTS.md
 | 현재 단계·권한·보류·다음 작업 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` | PR #45 본문·과거 Active Context |
 | 전체 사용자 결정·대체·폐기·보류 | `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md` | 2026-07-25/26 기준선·결정 기록 |
 | PR #45 통합 판정·중복 제거 | `docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md` | PR #45 changed files·과거 검수 보고서 |
-| 프로젝트 코어·플레이어 약속 | `docs/01_GAME_DESIGN.md` | 과거 코어 결정 기록 |
-| 전투·슬롯·합·연격·방어도·태그 | `docs/02_COMBAT_RULES.md`와 v6 원장 해당 ID | 현행 PoC 코드·과거 규칙 |
-| 강호행·경로·콘텐츠 범위 | `docs/03_CONTENT_CATALOG.md`와 v6 원장 RUN ID | `docs/planning-data/` source-only |
-| 무공서·성급·수련·랭크·절초 공통 계약 | `docs/06_STARTING_FACTION_MASTERY_DATA.md`와 v6 원장 | 과거 PoC 무공 JSON |
+| 프로젝트 코어·플레이어 약속 | v6 원장 `CORE-*` | `docs/01_GAME_DESIGN.md`·과거 코어 결정 기록 |
+| 전투·슬롯·합·연격·방어도·태그 | v6 원장 `COMBAT/BOARD/SLOT/COST/STACK/AUTO/TAG/DEF-*` | `docs/02_COMBAT_RULES.md`·현행 PoC 코드 |
+| 강호행·경로·콘텐츠 범위 | v6 원장 `RUN-*` | `docs/03_CONTENT_CATALOG.md`·`docs/planning-data/` source-only |
+| 무공서·성급·수련·랭크·절초 공통 계약 | v6 원장 `MARTIAL/GLOBAL/ROSTER/POOL/BAN/OFFER/TRAIN/RANK/ULT-*` | `docs/06_STARTING_FACTION_MASTERY_DATA.md`·과거 PoC 무공 JSON |
 | UI·접근성 | `docs/07_COMBAT_UI_SPEC.md` | 실제 씬·사람 검증 |
 | 구현 사실 | 실제 `data/`, `src/`, `scenes/`, `tests/` | 문서의 구현 주장 |
+
+`docs/01`, `02`, `03`, `06`은 이번 통합 시점의 현행 구현·과거 기획 설명을 보존한다. 최신 v6 설계와 충돌할 때 결정 원장이 우선하며, 후속 통합 명세 작성 시 원장의 영향 책임 원본으로 갱신한다.
 
 ## PR #45 중복 방지
 
