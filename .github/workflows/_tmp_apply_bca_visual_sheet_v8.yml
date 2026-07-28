@@ -20,6 +20,17 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Normalize project registry adapter
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("tools/_tmp_apply_bca_visual_sheet_v8.py")
+          text = path.read_text(encoding="utf-8")
+          text = text.replace('data["project_local_skills"]', 'data["skills"]')
+          text = text.replace('["modes"]', '["skill_modes"]')
+          path.write_text(text, encoding="utf-8")
+          PY
       - name: Apply patch
         shell: bash
         run: |
