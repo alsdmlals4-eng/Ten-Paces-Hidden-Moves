@@ -23,6 +23,7 @@ AGENTS.md
 | 프로젝트 코어·플레이어 약속 | v6 원장 `CORE-*` | `docs/01_GAME_DESIGN.md`·과거 코어 결정 기록 |
 | 전투·슬롯·합·연격·방어도·태그 | v6 원장 `COMBAT/BOARD/SLOT/COST/STACK/AUTO/TAG/DEF-*` | `docs/02_COMBAT_RULES.md`·현행 PoC 코드 |
 | 적 의도 단서·가설·해결 후 인과 Pilot | `docs/decisions/2026-07-29_ENEMY_INTENT_EVIDENCE_PACK_PILOT.md` | v6 원장·실제 사람 플레이테스트; `PLANNING_INPUT / NOT_CANON` |
+| 적 의도 단서 사람 검증 Artifact | `docs/superpowers/plans/2026-07-29-enemy-intent-human-validation-artifact.md` | 기존 A2/A3 PoC·가설/복기 UI; `HUMAN_VALIDATION_INPUT / NOT_CANON` |
 | 강호행·경로·콘텐츠 범위 | v6 원장 `RUN-*` | `docs/03_CONTENT_CATALOG.md`·`docs/planning-data/` source-only |
 | 무공서·성급·수련·랭크·절초 공통 계약 | v6 원장 `MARTIAL/GLOBAL/ROSTER/POOL/BAN/OFFER/TRAIN/RANK/ULT-*` | `docs/06_STARTING_FACTION_MASTERY_DATA.md`·과거 PoC 무공 JSON |
 | UI·접근성 | `docs/07_COMBAT_UI_SPEC.md` | 실제 씬·사람 검증 |
