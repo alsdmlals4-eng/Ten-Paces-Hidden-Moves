@@ -2,11 +2,11 @@
 
 ## 1. 기준
 
-- Base 코어 Skill 집합: `alsdmlals4-eng/Base@41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
+- Base 코어 Skill 집합: `alsdmlals4-eng/Base@7072b9e2742a60d7548fd39df3328ad76a8dbad1`.
 - Base 공용 archive extension: `alsdmlals4-eng/Base@6a224e450f9420223c00921f3c56e051612f92ad`.
 - 이전 프로젝트 기준의 재현 가능한 SHA는 `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`가 보존한다.
 - 추가 비교: 6개 커밋·43개 변경 파일.
-- 코어 동기화 날짜: `2026-07-23`.
+- 코어 동기화 날짜: `2026-07-28`.
 - archive extension 채택일: `2026-07-25`.
 - 전투 기준: PR #7 `agent/t0-combat-poc-board@659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
 - 코어 확정 PR: #15 `agent/project-core-confirmation`.
@@ -178,3 +178,11 @@ fresh_context_pressure_scenarios: NOT_RUN
 - 프로젝트 코어 승인·재개방.
 - STEP 14 사람 결과와 T1 진입.
 - 운영체계 통합·삭제·대규모 검증.
+
+## 9. BCA v8 채택
+
+- 채택 Base: `alsdmlals4-eng/Base@7072b9e2742a60d7548fd39df3328ad76a8dbad1`.
+- 활성 통합 실행문: `templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md`.
+- 프로젝트 Sheet: `NOT_CONFIGURED`; `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md`의 tab·열 계약만 설치.
+- GPT 기획 시각화·최종 후보·검수: `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md`.
+- v6 결정 원장은 십보강호 고유 승인 이력으로 유지하지만 v6 공용 Prompt는 활성 실행 권한이 없다.

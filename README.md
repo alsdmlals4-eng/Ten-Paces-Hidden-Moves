@@ -73,3 +73,11 @@ base_commit: 41a20584dd2ee51d917e5c9d7cab6838e1ceba7e
 현재 `main`에는 기존 T0 전투 PoC의 STEP 0~13이 존재하며 플레이어 4번·상대 7번 시작을 포함합니다. 최신 v6 기획과는 완전히 일치하지 않습니다. 실제 코드·데이터는 현재 구현 사실의 근거이며, 최신 설계 권한은 v6 결정 원장이 소유합니다.
 
 정적 검사·Actions 성공은 Godot 런타임, Windows 사용성, 접근성, 성능, 실제 플레이 재미를 증명하지 않습니다. 실행하지 않은 항목은 `UNVERIFIED`로 유지합니다.
+
+## BCA v8 기획·이미지·Sheet 운영
+
+- Base 기준: `alsdmlals4-eng/Base@7072b9e2742a60d7548fd39df3328ad76a8dbad1`
+- 통합 실행문: `templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md`
+- 프로젝트 Sheet: `NOT_CONFIGURED`; 구조 계약은 `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md`
+- GPT 이미지·목업: `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md`
+- 적용 감사: `docs/BCA_VISUAL_SHEET_ADOPTION_AUDIT.md`

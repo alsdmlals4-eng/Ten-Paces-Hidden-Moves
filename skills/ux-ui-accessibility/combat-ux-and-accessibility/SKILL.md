@@ -14,6 +14,8 @@ description: Use for Ten Paces combat screens, cards, action timing, HUD, presen
 - `ui-contract`: 화면·카드·HUD·상태·상호작용 계약.
 - `runtime-review`: 실제 Godot 렌더·포인터·키보드·최소 해상도 검수.
 - `accessibility-review`: 정보·입력·탐색·시간·난이도·모션·음향 장벽과 대체 경로.
+- `planning-mockup-review`: GPT가 만든 전장·카드·HUD 기획 목업의 정보 위계와 코어 일치 검수.
+- `visual-qa-and-approval`: 최종 후보의 실제 화면·구현 가능성·오류·권리·승인 상태 검수.
 
 ## 사용 조건
 
@@ -84,6 +86,7 @@ description: Use for Ten Paces combat screens, cards, action timing, HUD, presen
 - 진행 뒤 확정 계획 변경.
 - UI·애니메이션 콜백에서 전투 결과 지급.
 - 승인 이미지 임의 교체.
+- 생성 목업은 자동 최종 자산이 아니다. `APPROVED_CANDIDATE`와 `PROJECT_ASSET_APPROVED`를 혼동하지 않는다.
 - 구형 배치·placeholder를 현행 승인 상태로 설명.
 - 빈 에디터 장면·정적 패턴·평균 FPS 하나로 통과 판정.
 
