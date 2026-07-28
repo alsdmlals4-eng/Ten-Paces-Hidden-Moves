@@ -56,7 +56,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add README.md AGENTS.md docs/BASE_RULES_VERSION.md docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md docs/BCA_VISUAL_SHEET_ADOPTION_AUDIT.md '[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json' skills/ux-ui-accessibility/combat-ux-and-accessibility/SKILL.md tests/test_bca_visual_sheet_adoption.py .github/workflows/validate-bca-visual-sheet-adoption.yml
+          git add README.md AGENTS.md docs/BASE_RULES_VERSION.md docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md docs/BCA_VISUAL_SHEET_ADOPTION_AUDIT.md '[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json' skills/ux-ui-accessibility/combat-ux-and-accessibility/SKILL.md tests/test_bca_visual_sheet_adoption.py
           git diff --cached --check
           git commit -m "feat: adopt Base v8 visual and sheet workflow"
           git push origin HEAD:agent/bca-visual-sheet-v8-adoption
