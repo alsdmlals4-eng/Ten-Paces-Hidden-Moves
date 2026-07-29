@@ -18,7 +18,7 @@ jobs:
       - run: python tools/fix_core_expected_ids_once.py
       - run: |
           python -m json.tool .github/reference-freshness.json >/dev/null
-          python tools/check_project_operating_system.py --root . --config .github/project-operating-system.json
+          python tools/check_project_operating_system.py --root . --config .github/documentation-governance.json
           git diff --check
       - run: |
           if git diff --quiet; then exit 0; fi
