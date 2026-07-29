@@ -29,7 +29,7 @@ execution_profile: PLANNING_ONLY_PROFILE
 runtime_implementation: PROHIBITED_UNTIL_NEW_APPROVAL
 planning_integration_pr: 45
 human_validation: UNVERIFIED
-base_commit: 41a20584dd2ee51d917e5c9d7cab6838e1ceba7e
+base_commit: c987647d01ad2baa028a16e03d85ddfc1572a727
 ```
 
 2026-07-26의 `BUILD_IN_PROGRESS`와 구현 인계 승인은 이후 v6 재설계 지시로 대체됐습니다. PR #45는 최신 결정 원장과 과거 감사·검증 자료를 정합화하는 계획 문서 통합이며 제품 런타임을 변경하지 않습니다.

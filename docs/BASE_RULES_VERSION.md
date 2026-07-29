@@ -14,7 +14,7 @@
 - 감사: `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`.
 - 검증: `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_VERIFICATION.md`.
 
-정식 버전명보다 commit SHA를 재현 가능한 기준으로 사용한다. 코어 25개 Skill 집합과 공용 extension은 서로 다른 채택 시점과 검증 경계를 가지므로 하나의 SHA로 덮어쓰지 않는다. 일상 작업은 프로젝트에 동기화된 Registry·검사·문서를 우선하고 Base 원격은 재감사 조건에서만 다시 비교한다.
+정식 버전명보다 commit SHA를 재현 가능한 기준으로 사용한다. 전체 ACTIVE 27개 Skill 집합과 공용 extension은 서로 다른 채택 시점과 검증 경계를 가지므로 하나의 SHA로 덮어쓰지 않는다. 일상 작업은 프로젝트에 동기화된 Registry·검사·문서를 우선하고 Base 원격은 재감사 조건에서만 다시 비교한다.
 
 ## 2. 적용한 공용 운영 계약
 
@@ -27,7 +27,7 @@
 - L1 이상 `execution-report`.
 - 기존 프로젝트 변경은 `audit → reconcile-legacy → 승인 변경 → verify`.
 
-### Base 활성 Skill 25개
+### Base 활성 Skill 27개
 
 1. `managing-project-intake-and-work-contract`
 2. `managing-game-project-operating-system`
@@ -54,6 +54,8 @@
 23. `creating-user-learning-notes`
 24. `building-project-visual-dashboards`
 25. `diagnosing-game-engine-runtime-failures`
+26. `governing-legacy-retention-and-archives`
+27. `evaluating-godot-assets-and-plugins-before-creation`
 
 프로젝트에 Base Skill 패키지를 복제하지 않는다. `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`이 ID와 trigger를 라우팅한다.
 
@@ -67,7 +69,7 @@
 - Manifest: `docs/archive/MANIFEST.json`.
 - 적용 방식: adapter-only. Base 공용 Skill 본문을 프로젝트에 복제하지 않는다.
 
-이 extension은 코어 25개 집합을 재정의하거나 자동 확장하지 않는다. Registry의 `shared_extension_commit`과 별도 route가 최신 Base SHA를 소유한다.
+이 extension은 전체 ACTIVE 27개 집합을 재정의하거나 자동 확장하지 않는다. Registry의 `shared_extension_commit`과 별도 route가 최신 Base SHA를 소유한다.
 
 ### 프로젝트 고유 Skill 4개
 
@@ -98,7 +100,7 @@
 
 - board contract schema 17.
 - Base 코어 commit `41a20584...`.
-- Base 활성 Skill 25개.
+- Base 활성 Skill 27개.
 - 프로젝트 고유 Skill 4개.
 - 활성 문서의 필수 현행 토큰과 금지 stale 토큰.
 - 책임 원본→활성 소비자 연결.
@@ -130,7 +132,7 @@ archive extension의 별도 기대값은 다음 파일이 소유한다.
 
 ## 6. 동기화 결과
 
-### 코어 25개 Skill 동기화
+### 전체 ACTIVE 27개 Skill 동기화
 
 - Base 6개 커밋·43개 파일을 프로젝트 영향 기준으로 재감사했다.
 - 프로젝트 코어·적대적 검토·구조 최적화·동기화·연속성·유저리서치·런타임 진단 Skill을 route에 추가했다.
