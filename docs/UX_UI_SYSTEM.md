@@ -1,7 +1,7 @@
 # Ten Paces: Hidden Moves UX/UI 시스템
 
 > Base 공용 기준: `alsdmlals4-eng/Base`의 `auditing-and-refining-ui-art`  
-> Base content commit: `074135e9dfb100ba4b09e58c7feb64c39879e8d9`  
+> Base content commit: `0fd95f4513343e77fd664af2763a01b02f52545b`  
 > 프로젝트 상태: `DESIGN_CONTRACT_ADOPTED`  
 > 런타임·사람 검증: `NOT_RUN`
 
