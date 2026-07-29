@@ -1,9 +1,9 @@
 
 # 십보강호 GPT 이미지 생성·검수 워크플로
 
-- Base: `alsdmlals4-eng/Base@7072b9e2742a60d7548fd39df3328ad76a8dbad1`
+- Base: `alsdmlals4-eng/Base@c987647d01ad2baa028a16e03d85ddfc1572a727`
 - 공용 Mode: `planning-visualization`, `final-visual-candidate`, `visual-qa-and-approval`
-- Sheet 상태: `NOT_CONFIGURED`
+- Sheet 상태: `PROJECT_SHEET_CONFIGURED`
 
 ## 기획 중 우선 이미지
 

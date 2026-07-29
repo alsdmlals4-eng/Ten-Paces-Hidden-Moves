@@ -76,8 +76,8 @@ base_commit: 41a20584dd2ee51d917e5c9d7cab6838e1ceba7e
 
 ## BCA v8 기획·이미지·Sheet 운영
 
-- Base 기준: `alsdmlals4-eng/Base@7072b9e2742a60d7548fd39df3328ad76a8dbad1`
+- Base 기준: `alsdmlals4-eng/Base@c987647d01ad2baa028a16e03d85ddfc1572a727`
 - 통합 실행문: `templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md`
-- 프로젝트 Sheet: `NOT_CONFIGURED`; 구조 계약은 `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md`
+- 프로젝트 Sheet: `PROJECT_SHEET_CONFIGURED`; 구조 계약은 `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md`
 - GPT 이미지·목업: `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md`
 - 적용 감사: `docs/BCA_VISUAL_SHEET_ADOPTION_AUDIT.md`

@@ -1,25 +1,31 @@
-
 # 십보강호 프로젝트 Google Sheets Workbook
 
 ```yaml
 project: Ten-Paces-Hidden-Moves
-sheet_status: NOT_CONFIGURED
-spreadsheet_url:
-base_commit: 7072b9e2742a60d7548fd39df3328ad76a8dbad1
+sheet_status: PROJECT_SHEET_CONFIGURED
+spreadsheet_url: https://docs.google.com/spreadsheets/d/1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0/edit
+spreadsheet_id: 1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0
+workbook_role: USER_FACING_GDD_WORKSPACE
+sheet_edit_policy: PROPOSED_SHEET_CHANGE
+base_commit: c987647d01ad2baa028a16e03d85ddfc1572a727
+last_verified_at: 2026-07-29
 ```
 
-정확한 기존 Sheet URL·ID·권한을 확인하지 못했으므로 신규 Sheet를 생성하지 않는다. 연결 시 기존 tab·수식·사용자 편집을 먼저 읽고 다음 tab을 작업 순서대로 설치·병합한다.
+Google Sheets는 사용자가 전체 흐름을 확인·수정하고 AI가 GitHub 정본·실제 구현과 함께 읽는 GDD 작업면이다. Sheet 단독 값으로 승인·구현·검증 완료를 확정하지 않는다.
 
+## 검증된 탭
 - `00_프로젝트_허브`
 - `01_작업순서`
 - `02_현재_확정결정`
 - `03_근거_라이브러리`
 - `04_누락_충돌_감사`
+- `05_GDD_요약`
 - `10_제품방향`
 - `11_세계관`
 - `12_핵심루프`
 - `13_주요인물`
 - `14_조연_세력_관계`
+- `15_조작_게임규칙`
 - `20_코어경험_데모목표`
 - `30_데모범위_품질기준_제작기반`
 - `40_핵심시스템_메인콘텐츠`
@@ -41,7 +47,7 @@ base_commit: 7072b9e2742a60d7548fd39df3328ad76a8dbad1
 | 세계관·세력·무공 | v6 결정 원장과 등록된 기획 문서 |
 | 핵심루프 | `docs/00_GAME_PILLARS.md`, 전투·진행 책임 원본 |
 | 주요인물·조연 | 캐릭터·결투·세력 책임 원본 |
-| 핵심시스템·메인콘텐츠 | 전장 10칸, 3/3/4 계획, 카드·거리·합, 5개 앵커 결투 |
+| 핵심시스템·메인콘텐츠 | 전장 10칸, 3/3/4 계획, 카드·거리·합, 주요 비무 |
 | 이미지 계획·검수 | `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md` |
 
-Sheet는 독립 정본이 아니라 Decision ID·GitHub 경로·상태를 연결한다.
+GitHub에 없는 사용자 수정은 자동 덮어쓰지 않고 `PROPOSED_SHEET_CHANGE`로 비교·승인한 뒤 양쪽을 재조회한다.

@@ -6,7 +6,7 @@
 
 1. 사용자의 최신 확정 지시.
 2. 보안·플랫폼 제약과 이 `AGENTS.md`.
-3. `alsdmlals4-eng/Base@7072b9e2742a60d7548fd39df3328ad76a8dbad1`의 `templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md`.
+3. `alsdmlals4-eng/Base@c987647d01ad2baa028a16e03d85ddfc1572a727`의 `templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md`.
 4. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`.
 5. `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
 6. 질문별 책임 원본과 실제 코드·데이터·테스트 증거.
@@ -160,9 +160,9 @@ rollback:
 
 ## 12. BCA Sheet·GPT 이미지 생성·검수
 
-- Base 기준: `alsdmlals4-eng/Base@7072b9e2742a60d7548fd39df3328ad76a8dbad1`.
+- Base 기준: `alsdmlals4-eng/Base@c987647d01ad2baa028a16e03d85ddfc1572a727`.
 - 통합 실행문: `templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md`.
-- 프로젝트 Google Sheets 상태: `NOT_CONFIGURED`. 정확한 URL·권한을 확인하기 전에는 새 Sheet를 추정 생성하지 않는다.
+- 프로젝트 Google Sheets 상태: `PROJECT_SHEET_CONFIGURED`. 검증된 URL·ID·탭을 사용하고 사용자 Sheet 수정은 `PROPOSED_SHEET_CHANGE`로 보존한다.
 - 의미 구조는 `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md`가 세계관·핵심루프·주요인물·조연·세력·관계·핵심시스템·메인콘텐츠와 이미지 tab을 프로젝트 정본에 연결한다.
 - GPT 이미지는 `planning-visualization`과 `final-visual-candidate`로 생성할 수 있지만 자동 최종 자산이 아니다.
 - 전장 10칸, 3수→3수→4수, 숨은 수 판독, 카드·거리·합 가독성을 실제 화면 기준으로 `visual-qa-and-approval` 검수한다.

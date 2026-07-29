@@ -24,7 +24,7 @@
   },
   "base_integration": {
     "repository": "alsdmlals4-eng/Base",
-    "commit": "7072b9e2742a60d7548fd39df3328ad76a8dbad1",
+    "commit": "c987647d01ad2baa028a16e03d85ddfc1572a727",
     "legacy_aliases": "skills/LEGACY_SKILL_ALIASES.md",
     "shared_learning_log": "skills/SKILL_LEARNING_LOG.md",
     "shared_extension_registry": "skills/BASE_SHARED_SKILL_ROUTES.json",
@@ -58,9 +58,14 @@
       "legacy_retention_and_archives": "governing-legacy-retention-and-archives"
     },
     "integrated_execution_prompt": "templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md",
-    "project_sheet_status": "NOT_CONFIGURED",
+    "project_sheet_status": "PROJECT_SHEET_CONFIGURED",
     "project_sheet_contract": "docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md",
-    "image_workflow": "docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md"
+    "image_workflow": "docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md",
+    "project_sheet_url": "https://docs.google.com/spreadsheets/d/1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0/edit",
+    "project_sheet_id": "1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0",
+    "project_sheet_role": "USER_FACING_GDD_WORKSPACE",
+    "project_sheet_edit_policy": "PROPOSED_SHEET_CHANGE",
+    "project_sheet_last_verified_at": "2026-07-29"
   },
   "human_presentation": {
     "publication_policy": "source_only",
@@ -296,18 +301,20 @@
   },
   "bca_visual_sheet": {
     "status": "ADOPTED",
-    "sheet_status": "NOT_CONFIGURED",
+    "sheet_status": "PROJECT_SHEET_CONFIGURED",
     "required_tabs": [
       "00_프로젝트_허브",
       "01_작업순서",
       "02_현재_확정결정",
       "03_근거_라이브러리",
       "04_누락_충돌_감사",
+      "05_GDD_요약",
       "10_제품방향",
       "11_세계관",
       "12_핵심루프",
       "13_주요인물",
       "14_조연_세력_관계",
+      "15_조작_게임규칙",
       "20_코어경험_데모목표",
       "30_데모범위_품질기준_제작기반",
       "40_핵심시스템_메인콘텐츠",
@@ -327,6 +334,11 @@
       "final-visual-candidate",
       "visual-qa-and-approval"
     ],
-    "adversarial_mode": "repository-wide-audit"
+    "adversarial_mode": "repository-wide-audit",
+    "spreadsheet_url": "https://docs.google.com/spreadsheets/d/1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0/edit",
+    "spreadsheet_id": "1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0",
+    "workbook_role": "USER_FACING_GDD_WORKSPACE",
+    "sheet_edit_policy": "PROPOSED_SHEET_CHANGE",
+    "last_verified_at": "2026-07-29"
   }
 }
