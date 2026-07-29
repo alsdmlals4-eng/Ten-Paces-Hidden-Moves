@@ -57,9 +57,7 @@
     "governing-game-user-research-coverage",
     "creating-user-learning-notes",
     "building-project-visual-dashboards",
-    "diagnosing-game-engine-runtime-failures",
-    "governing-legacy-retention-and-archives",
-    "evaluating-godot-assets-and-plugins-before-creation"
+    "diagnosing-game-engine-runtime-failures"
   ],
   "forbidden_active_paths": [
     "[기획서]/00_프로젝트_허브/PROJECT_SKILL_MAP.md",
