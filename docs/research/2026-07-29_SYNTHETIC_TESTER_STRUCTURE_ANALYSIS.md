@@ -11,7 +11,7 @@ validation_method: SYNTHETIC_TESTER_SIMULATION
 evidence_tier: T6_AI_INFERENCE
 human_validation: NOT_RUN
 implementation_authority: NONE
-base_governance_source: Base PR #61
+base_governance_commit: 9c4071c5ecefe28769b512d426442338ceb7acdd
 ```
 
 ## 1. 분석 목적
