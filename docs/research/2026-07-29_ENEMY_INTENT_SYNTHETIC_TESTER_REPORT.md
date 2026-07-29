@@ -5,7 +5,7 @@ simulation_id: TEN-PACES-SYNTH-001
 validation_method: SYNTHETIC_TESTER_SIMULATION
 evidence_tier: T6_AI_INFERENCE
 baseline_commit: 929b4b545e9a41e38d8b6d43dfcdd478daae0057
-base_governance_source: Base PR #61
+base_governance_commit: 9c4071c5ecefe28769b512d426442338ceb7acdd
 structure_analysis: docs/research/2026-07-29_SYNTHETIC_TESTER_STRUCTURE_ANALYSIS.md
 human_validation: NOT_RUN
 ai_simulation: COMPLETED
