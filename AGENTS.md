@@ -6,7 +6,7 @@
 
 1. 사용자의 최신 확정 지시.
 2. 보안·플랫폼 제약과 이 `AGENTS.md`.
-3. `VERTICAL_SLICE_MASTER_REFERENCE_v6.md`와 축약 실행문.
+3. `alsdmlals4-eng/Base@c987647d01ad2baa028a16e03d85ddfc1572a727`의 `templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md`.
 4. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`.
 5. `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
 6. 질문별 책임 원본과 실제 코드·데이터·테스트 증거.
@@ -157,3 +157,14 @@ rollback:
 4. 정적·자동 검증과 PR 상태를 새 HEAD에서 다시 확인한다.
 5. 미검증·보류·롤백 경계를 명시한다.
 6. 병합은 사용자의 명시적 승인과 최신 검증 증거가 있을 때만 수행한다.
+
+## 12. BCA Sheet·GPT 이미지 생성·검수
+
+- Base 기준: `alsdmlals4-eng/Base@c987647d01ad2baa028a16e03d85ddfc1572a727`.
+- 통합 실행문: `templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md`.
+- 프로젝트 Google Sheets 상태: `PROJECT_SHEET_CONFIGURED`. 검증된 URL·ID·탭을 사용하고 사용자 Sheet 수정은 `PROPOSED_SHEET_CHANGE`로 보존한다.
+- 의미 구조는 `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md`가 세계관·핵심루프·주요인물·조연·세력·관계·핵심시스템·메인콘텐츠와 이미지 tab을 프로젝트 정본에 연결한다.
+- GPT 이미지는 `planning-visualization`과 `final-visual-candidate`로 생성할 수 있지만 자동 최종 자산이 아니다.
+- 전장 10칸, 3수→3수→4수, 숨은 수 판독, 카드·거리·합 가독성을 실제 화면 기준으로 `visual-qa-and-approval` 검수한다.
+- 승인 뒤에만 Decision·정본·GitHub·Sheet·Asset Ledger·실제 적용 상태를 동기화한다.
+- 각 단계 종료 시 `repository-wide-audit`로 v6/v7 활성 참조, stale 목업, untouched 소비자와 승인 누락을 다시 공격한다.

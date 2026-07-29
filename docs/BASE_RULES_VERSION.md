@@ -2,11 +2,11 @@
 
 ## 1. 기준
 
-- Base 코어 Skill 집합: `alsdmlals4-eng/Base@41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
+- Base 코어 Skill 집합: `alsdmlals4-eng/Base@c987647d01ad2baa028a16e03d85ddfc1572a727`.
 - Base 공용 archive extension: `alsdmlals4-eng/Base@6a224e450f9420223c00921f3c56e051612f92ad`.
 - 이전 프로젝트 기준의 재현 가능한 SHA는 `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`가 보존한다.
 - 추가 비교: 6개 커밋·43개 변경 파일.
-- 코어 동기화 날짜: `2026-07-23`.
+- 코어 동기화 날짜: `2026-07-28`.
 - archive extension 채택일: `2026-07-25`.
 - 전투 기준: PR #7 `agent/t0-combat-poc-board@659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
 - 코어 확정 PR: #15 `agent/project-core-confirmation`.
@@ -14,7 +14,7 @@
 - 감사: `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`.
 - 검증: `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_VERIFICATION.md`.
 
-정식 버전명보다 commit SHA를 재현 가능한 기준으로 사용한다. 코어 25개 Skill 집합과 공용 extension은 서로 다른 채택 시점과 검증 경계를 가지므로 하나의 SHA로 덮어쓰지 않는다. 일상 작업은 프로젝트에 동기화된 Registry·검사·문서를 우선하고 Base 원격은 재감사 조건에서만 다시 비교한다.
+정식 버전명보다 commit SHA를 재현 가능한 기준으로 사용한다. 전체 ACTIVE 27개 Skill 집합과 공용 extension은 서로 다른 채택 시점과 검증 경계를 가지므로 하나의 SHA로 덮어쓰지 않는다. 일상 작업은 프로젝트에 동기화된 Registry·검사·문서를 우선하고 Base 원격은 재감사 조건에서만 다시 비교한다.
 
 ## 2. 적용한 공용 운영 계약
 
@@ -27,7 +27,7 @@
 - L1 이상 `execution-report`.
 - 기존 프로젝트 변경은 `audit → reconcile-legacy → 승인 변경 → verify`.
 
-### Base 활성 Skill 25개
+### Base 활성 Skill 27개
 
 1. `managing-project-intake-and-work-contract`
 2. `managing-game-project-operating-system`
@@ -54,6 +54,8 @@
 23. `creating-user-learning-notes`
 24. `building-project-visual-dashboards`
 25. `diagnosing-game-engine-runtime-failures`
+26. `governing-legacy-retention-and-archives`
+27. `evaluating-godot-assets-and-plugins-before-creation`
 
 프로젝트에 Base Skill 패키지를 복제하지 않는다. `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`이 ID와 trigger를 라우팅한다.
 
@@ -67,7 +69,7 @@
 - Manifest: `docs/archive/MANIFEST.json`.
 - 적용 방식: adapter-only. Base 공용 Skill 본문을 프로젝트에 복제하지 않는다.
 
-이 extension은 코어 25개 집합을 재정의하거나 자동 확장하지 않는다. Registry의 `shared_extension_commit`과 별도 route가 최신 Base SHA를 소유한다.
+이 extension은 전체 ACTIVE 27개 집합을 재정의하거나 자동 확장하지 않는다. Registry의 `shared_extension_commit`과 별도 route가 최신 Base SHA를 소유한다.
 
 ### 프로젝트 고유 Skill 4개
 
@@ -98,7 +100,7 @@
 
 - board contract schema 17.
 - Base 코어 commit `41a20584...`.
-- Base 활성 Skill 25개.
+- Base 활성 Skill 27개.
 - 프로젝트 고유 Skill 4개.
 - 활성 문서의 필수 현행 토큰과 금지 stale 토큰.
 - 책임 원본→활성 소비자 연결.
@@ -130,7 +132,7 @@ archive extension의 별도 기대값은 다음 파일이 소유한다.
 
 ## 6. 동기화 결과
 
-### 코어 25개 Skill 동기화
+### 전체 ACTIVE 27개 Skill 동기화
 
 - Base 6개 커밋·43개 파일을 프로젝트 영향 기준으로 재감사했다.
 - 프로젝트 코어·적대적 검토·구조 최적화·동기화·연속성·유저리서치·런타임 진단 Skill을 route에 추가했다.
@@ -178,3 +180,11 @@ fresh_context_pressure_scenarios: NOT_RUN
 - 프로젝트 코어 승인·재개방.
 - STEP 14 사람 결과와 T1 진입.
 - 운영체계 통합·삭제·대규모 검증.
+
+## 9. BCA v8 채택
+
+- 채택 Base: `alsdmlals4-eng/Base@c987647d01ad2baa028a16e03d85ddfc1572a727`.
+- 활성 통합 실행문: `templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md`.
+- 프로젝트 Sheet: `PROJECT_SHEET_CONFIGURED`; `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md`의 tab·열 계약만 설치.
+- GPT 기획 시각화·최종 후보·검수: `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md`.
+- v6 결정 원장은 십보강호 고유 승인 이력으로 유지하지만 v6 공용 Prompt는 활성 실행 권한이 없다.
