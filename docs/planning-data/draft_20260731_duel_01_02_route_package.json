@@ -339,7 +339,10 @@
     "ci_root_causes_addressed": [
       "DESIGN_DOCUMENT_REGISTRY_REQUIRED_SECTION_UPDATED_FOR_MULTI_HIT_HEADING",
       "NON_CONSUMING_GUARD_RULE_NOW_CONTAINS_FRESHNESS_TOKEN_WITH_NEGATION"
-    ]
+    ],
+    "validated_head": "e08c7118b5ba785c46a2f1b0208338dce863095a",
+    "pr_validation": "SUCCESS",
+    "base_v9_validation": "SUCCESS"
   },
   "approval_gate": {
     "user_review_required": true,
