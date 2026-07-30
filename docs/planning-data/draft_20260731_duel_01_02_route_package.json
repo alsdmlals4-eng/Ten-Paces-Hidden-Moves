@@ -334,6 +334,13 @@
       "mitigation": "EXPLAIN_ON_FIRST_TRIGGER_AND_COLLAPSE_ON_REPEAT"
     }
   ],
+  "review_notes": {
+    "sheet_overwrite_detected_and_restored": "TEN-CT-05_CHAMPION_ROW",
+    "ci_root_causes_addressed": [
+      "DESIGN_DOCUMENT_REGISTRY_REQUIRED_SECTION_UPDATED_FOR_MULTI_HIT_HEADING",
+      "NON_CONSUMING_GUARD_RULE_NOW_CONTAINS_FRESHNESS_TOKEN_WITH_NEGATION"
+    ]
+  },
   "approval_gate": {
     "user_review_required": true,
     "planning_complete": false,
