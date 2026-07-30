@@ -1,0 +1,286 @@
+{
+  "artifact_role": "PROJECT_BASE_ADAPTER",
+  "base_release": {
+    "release_commit": "3c158f52cfdad889970aef4d6ce6650a6fea0645",
+    "release_evidence_commit": "dd20ad3852e264d7e337e34d2cb963f71053a6cb",
+    "repository": "alsdmlals4-eng/Base",
+    "version": "9.1.0"
+  },
+  "compatibility": {
+    "cycle": "ONE_CYCLE",
+    "legacy_inputs": {
+      "skills/BASE_V9_ADAPTER.json": "docs/archive/base-v9-legacy-inputs/BASE_V9_ADAPTER.json",
+      "skills/PROJECT_BASE_SKILL_ADAPTER.json": "docs/archive/base-v9-legacy-inputs/PROJECT_BASE_SKILL_ADAPTER.json"
+    },
+    "views": [
+      "skills/BASE_V9_ADAPTER.json",
+      "skills/PROJECT_BASE_SKILL_ADAPTER.json"
+    ]
+  },
+  "gdd_sheet": {
+    "declared_sync_status": "SHEET_GITHUB_CONFLICT",
+    "id": "1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0",
+    "role": "USER_FACING_GDD_WORKSPACE",
+    "sheet_only_change_policy": "PROPOSED_SHEET_CHANGE",
+    "sync_status": "BLOCKED",
+    "write_policy": "NO_AUTOMATIC_OVERWRITE"
+  },
+  "project": {
+    "engine": "Godot 4.7",
+    "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
+    "root": "."
+  },
+  "protected_baseline": {
+    "authority_kind": "REMOTE_TRACKING_REF",
+    "authority_ref": "refs/remotes/origin/main",
+    "commit": "a68c70fd0c79448f67167aaa1e9b1f4f2d3cddd7",
+    "policy_sha256": "ed848e62f3292d704f602e2976737005b77100c476c6947e57ff0bcb5a3b6e52",
+    "policy_source_path": "skills/PROJECT_BASE_SKILL_ADAPTER.json",
+    "policy_source_type": "FIRST_MIGRATION_LEGACY_SOURCE",
+    "protected_paths_pointer": "/protected_paths"
+  },
+  "protected_paths": [
+    "data/",
+    "src/",
+    "scenes/",
+    "assets/",
+    "addons/",
+    "project.godot"
+  ],
+  "routing": {
+    "aliases": [],
+    "base_routes": [
+      {
+        "route_id": "analyzing-and-refining-game-concepts",
+        "skill_id": "analyzing-and-refining-game-concepts",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "auditing-and-refining-ui-art",
+        "skill_id": "auditing-and-refining-ui-art",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "auditing-canonical-reference-freshness",
+        "skill_id": "auditing-canonical-reference-freshness",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "building-project-visual-dashboards",
+        "skill_id": "building-project-visual-dashboards",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "creating-user-learning-notes",
+        "skill_id": "creating-user-learning-notes",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "designing-art-prompts-and-technique-cards",
+        "skill_id": "designing-art-prompts-and-technique-cards",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "designing-vertical-slices",
+        "skill_id": "designing-vertical-slices",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "diagnosing-game-engine-runtime-failures",
+        "skill_id": "diagnosing-game-engine-runtime-failures",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "establishing-project-core",
+        "skill_id": "establishing-project-core",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "evaluating-godot-assets-and-plugins-before-creation",
+        "skill_id": "evaluating-godot-assets-and-plugins-before-creation",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "evolving-project-discipline-skills",
+        "skill_id": "evolving-project-discipline-skills",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "governing-game-user-research-coverage",
+        "skill_id": "governing-game-user-research-coverage",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "governing-legacy-retention-and-archives",
+        "skill_id": "governing-legacy-retention-and-archives",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "identifying-project-core",
+        "skill_id": "identifying-project-core",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "maintaining-long-running-task-continuity",
+        "skill_id": "maintaining-long-running-task-continuity",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "maintaining-project-context-and-handoff",
+        "skill_id": "maintaining-project-context-and-handoff",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "managing-base-change-proposals",
+        "skill_id": "managing-base-change-proposals",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "managing-design-documents",
+        "skill_id": "managing-design-documents",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "managing-game-project-operating-system",
+        "skill_id": "managing-game-project-operating-system",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "managing-project-intake-and-work-contract",
+        "skill_id": "managing-project-intake-and-work-contract",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "orchestrating-deepseek-worktrees",
+        "skill_id": "orchestrating-deepseek-worktrees",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "pruning-stale-and-nonfunctional-material",
+        "skill_id": "pruning-stale-and-nonfunctional-material",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "refactoring-with-contract-preservation",
+        "skill_id": "refactoring-with-contract-preservation",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "reviewing-and-validating-project-changes",
+        "skill_id": "reviewing-and-validating-project-changes",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "running-adversarial-review-and-refinement",
+        "skill_id": "running-adversarial-review-and-refinement",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "simplifying-skill-bodies",
+        "skill_id": "simplifying-skill-bodies",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "synchronizing-local-and-github-state",
+        "skill_id": "synchronizing-local-and-github-state",
+        "status": "ACTIVE"
+      }
+    ],
+    "inactive_routes": [],
+    "precedence": "PROJECT_LOCAL_THEN_BASE_SHARED",
+    "project_routes": [
+      {
+        "route_id": "combat-implementation-handoff",
+        "skill_id": "combat-implementation-handoff",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "combat-ux-and-accessibility",
+        "skill_id": "combat-ux-and-accessibility",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "ten-paces-game-design",
+        "skill_id": "ten-paces-game-design",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "ten-paces-verification",
+        "skill_id": "ten-paces-verification",
+        "status": "ACTIVE"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "shared_overrides": {
+    "analyzing-and-refining-game-concepts": {},
+    "auditing-and-refining-ui-art": {},
+    "auditing-canonical-reference-freshness": {},
+    "building-project-visual-dashboards": {},
+    "creating-user-learning-notes": {},
+    "designing-art-prompts-and-technique-cards": {},
+    "designing-vertical-slices": {},
+    "diagnosing-game-engine-runtime-failures": {},
+    "establishing-project-core": {},
+    "evaluating-godot-assets-and-plugins-before-creation": {
+      "core_systems_not_to_outsource": [
+        "martial-art combination",
+        "action-slot judgment",
+        "combat rules"
+      ],
+      "search_focus": [
+        "card UI",
+        "tooltip",
+        "turn and action sequence",
+        "grid",
+        "combat log",
+        "test tooling"
+      ]
+    },
+    "evolving-project-discipline-skills": {},
+    "governing-game-user-research-coverage": {},
+    "governing-legacy-retention-and-archives": {
+      "adapter": "[기획서]/00_프로젝트_허브/ARCHIVE_RETENTION_ADAPTER.json",
+      "current_canon_priority": [
+        "docs/01_GAME_DESIGN.md",
+        "docs/02_COMBAT_RULES.md",
+        "docs/05_COMBAT_POC_SPEC.md",
+        "docs/08_TEST_CHECKLIST.md"
+      ],
+      "existing_legacy_migration": "NOT_IN_THIS_ADOPTION"
+    },
+    "identifying-project-core": {},
+    "maintaining-long-running-task-continuity": {},
+    "maintaining-project-context-and-handoff": {},
+    "managing-base-change-proposals": {},
+    "managing-design-documents": {},
+    "managing-game-project-operating-system": {},
+    "managing-project-intake-and-work-contract": {},
+    "orchestrating-deepseek-worktrees": {},
+    "pruning-stale-and-nonfunctional-material": {},
+    "refactoring-with-contract-preservation": {},
+    "reviewing-and-validating-project-changes": {},
+    "running-adversarial-review-and-refinement": {},
+    "simplifying-skill-bodies": {},
+    "synchronizing-local-and-github-state": {}
+  },
+  "skill_registry": {
+    "base": {
+      "hash_definition": "RAW_FILE_BYTES_SHA256",
+      "path": "skills/SKILL_REGISTRY.json",
+      "sha256": "e06003cb986e979aa46c06839de178c3fb9ff10bdf440e750712d90d6c5ae7bb"
+    },
+    "project": {
+      "hash_definition": "RAW_FILE_BYTES_SHA256",
+      "path": "skills/SKILL_REGISTRY.json",
+      "sha256": "1a0072ff8b0c7c37b5e3e94ef6e12fc410e48406531603d312a73d30f704d7af"
+    }
+  },
+  "validators": [
+    "python tests/test_base_shared_skill_adapter.py",
+    "python tools/check_archive_governance.py",
+    "python tools/check_project_operating_system.py",
+    "manual: Godot project parse/runtime check",
+    "manual: changed-file baseline diff"
+  ]
+}
