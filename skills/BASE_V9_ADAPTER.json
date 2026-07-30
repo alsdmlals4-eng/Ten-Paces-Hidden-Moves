@@ -1,1 +1,53 @@
-{"schema_version":1,"adapter_role":"project-base-v9-operating-system-adapter","base":{"repository":"alsdmlals4-eng/Base","release_line":"v9.0.0","release_commit":"585a53a25be1b04c543196f5901551deb49c7691","release_state":"BASE_RELEASED","registry_sha256":"c136d9bb3fde9fc1473fbbe518cc975313023fc9c104efd9692f6834cbf8d8ae","snapshot_sha256":"e30fca95d201a31937c7bddcbc341c79764d4940c318933a8902cb5bf901ba57","copy_common_skill_bodies":false},"project":{"repository":"alsdmlals4-eng/Ten-Paces-Hidden-Moves","local_registry":"[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json","project_skills_remain_local":true},"sheet":{"id":"1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0","role":"USER_FACING_GDD_WORKSPACE","sync_status":"SHEET_GITHUB_CONFLICT","sheet_only_change_policy":"PROPOSED_SHEET_CHANGE","write_policy":"NO_AUTOMATIC_OVERWRITE","last_read_at":"2026-07-30"},"maturity":{"level":2,"status":"CONFIRMED_PLANNING_ONLY","next_gate":"APPROVED_RUNTIME_CONTRACT"},"scope":"PLANNING_ONLY","validation":{"ci_gate":"REQUIRED_ON_PULL_REQUEST","adversarial_gate":"REQUIRED_ON_PULL_REQUEST","runtime":"NOT_RUN"}}
+{
+  "adapter_role": "project-base-v9-operating-system-adapter",
+  "artifact_role": "GENERATED_COMPATIBILITY_VIEW",
+  "base": {
+    "copy_common_skill_bodies": false,
+    "registry_sha256": "c136d9bb3fde9fc1473fbbe518cc975313023fc9c104efd9692f6834cbf8d8ae",
+    "release_commit": "585a53a25be1b04c543196f5901551deb49c7691",
+    "release_line": "v9.0.0",
+    "release_state": "BASE_RELEASED",
+    "repository": "alsdmlals4-eng/Base",
+    "snapshot_sha256": "e30fca95d201a31937c7bddcbc341c79764d4940c318933a8902cb5bf901ba57"
+  },
+  "base_release": {
+    "release_commit": "3c158f52cfdad889970aef4d6ce6650a6fea0645",
+    "release_evidence_commit": "dd20ad3852e264d7e337e34d2cb963f71053a6cb",
+    "repository": "alsdmlals4-eng/Base",
+    "version": "9.1.0"
+  },
+  "canonical_source": "skills/PROJECT_BASE_ADAPTER.json",
+  "canonical_source_sha256": "97d4c0f6158e581a8d25878f75871aad49d8b5ba78ede09b6a21551db9842eed",
+  "generated": true,
+  "hash_definition": "RAW_FILE_BYTES_SHA256",
+  "legacy_source": "docs/archive/base-v9-legacy-inputs/BASE_V9_ADAPTER.json",
+  "legacy_source_sha256": "49f4b947dde2c09699b04727de70349831344493e69ffce761178eddda04bfa6",
+  "lifecycle": "ONE_CYCLE",
+  "maturity": {
+    "level": 2,
+    "next_gate": "APPROVED_RUNTIME_CONTRACT",
+    "status": "CONFIRMED_PLANNING_ONLY"
+  },
+  "project": {
+    "engine": "Godot 4.7",
+    "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
+    "root": "."
+  },
+  "routing_precedence": "PROJECT_LOCAL_THEN_BASE_SHARED",
+  "schema_version": 1,
+  "scope": "PLANNING_ONLY",
+  "sheet": {
+    "id": "1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0",
+    "last_read_at": "2026-07-30",
+    "role": "USER_FACING_GDD_WORKSPACE",
+    "sheet_only_change_policy": "PROPOSED_SHEET_CHANGE",
+    "sync_status": "SHEET_GITHUB_CONFLICT",
+    "write_policy": "NO_AUTOMATIC_OVERWRITE"
+  },
+  "validation": {
+    "adversarial_gate": "REQUIRED_ON_PULL_REQUEST",
+    "ci_gate": "REQUIRED_ON_PULL_REQUEST",
+    "runtime": "NOT_RUN"
+  },
+  "view_name": "BASE_V9_ADAPTER.json"
+}

@@ -5,10 +5,10 @@
 ## 기준과 경로
 
 - 공용 Skill 기준: `alsdmlals4-eng/Base@6a224e450f9420223c00921f3c56e051612f92ad`
-- 공용 route: `skills/BASE_SHARED_SKILL_ROUTES.json`
-- 프로젝트 어댑터: `skills/PROJECT_BASE_SKILL_ADAPTER.json`
+- 현재 공용·로컬 route 계약: `skills/PROJECT_BASE_ADAPTER.json`
+- 생성 효과 route view: `skills/PROJECT_SKILL_SNAPSHOT.json`
 - 아카이브 어댑터: `[기획서]/00_프로젝트_허브/ARCHIVE_RETENTION_ADAPTER.json`
-- 프로젝트 고유 Skill Registry: `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`
+- 프로젝트 고유 Skill Registry: `skills/SKILL_REGISTRY.json`
 
 `docs/BASE_RULES_VERSION.md`의 전체 운영체계 기준과 이 공용 Skill 기준은 별도 책임이다. 공용 Skill pin 갱신으로 다른 Base 정책을 자동 강제하지 않는다.
 
@@ -16,8 +16,8 @@
 
 ```text
 작업 요청
-→ Base 메인 skills/SKILL_REGISTRY.json 자동 trigger 선택
-→ skills/PROJECT_BASE_SKILL_ADAPTER.json으로 프로젝트 경로·정본·검증기 주입
+→ skills/PROJECT_BASE_ADAPTER.json의 pin·보호 경로 검증
+→ skills/PROJECT_SKILL_SNAPSHOT.json의 effective_routes 선택
 → 필요할 때만 십보강호 고유 전투·UX·구현·QA Skill 선택
 ```
 

@@ -57,14 +57,14 @@
 26. `governing-legacy-retention-and-archives`
 27. `evaluating-godot-assets-and-plugins-before-creation`
 
-프로젝트에 Base Skill 패키지를 복제하지 않는다. `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`이 ID와 trigger를 라우팅한다.
+프로젝트에 Base Skill 패키지를 복제하지 않는다. `skills/PROJECT_BASE_ADAPTER.json`과 생성된 `skills/PROJECT_SKILL_SNAPSHOT.json`이 검증된 route를 제공한다. `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`은 명시적 호환·이력 참조다.
 
 ### Base 공용 archive extension
 
 - Skill ID: `governing-legacy-retention-and-archives`.
 - Base 경로: `skills/governing-legacy-retention-and-archives/SKILL.md`.
-- 프로젝트 route: `skills/BASE_SHARED_SKILL_ROUTES.json`.
-- 프로젝트 공용 어댑터: `skills/PROJECT_BASE_SKILL_ADAPTER.json`.
+- 프로젝트 route 계약: `skills/PROJECT_BASE_ADAPTER.json`.
+- 생성 route view: `skills/PROJECT_SKILL_SNAPSHOT.json`.
 - archive 전용 어댑터: `[기획서]/00_프로젝트_허브/ARCHIVE_RETENTION_ADAPTER.json`.
 - Manifest: `docs/archive/MANIFEST.json`.
 - 적용 방식: adapter-only. Base 공용 Skill 본문을 프로젝트에 복제하지 않는다.
