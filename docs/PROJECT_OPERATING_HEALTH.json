@@ -1,5 +1,12 @@
 {
   "artifact_role": "PROJECT_OPERATING_HEALTH",
+  "base_release": {
+    "evidence_commit": "462a86db192d23d0f386281a1eb54b0a8cbad62e",
+    "registry_sha256": "9847bb2b225c776ad7916930f0f48c490bc2a898bea8e02ea1fdd0e6caac60c1",
+    "release_commit": "30ca6c7b5f93521f0eb0eed42d01437cd43c50ae",
+    "state": "BASE_RELEASED",
+    "version": "9.3.0"
+  },
   "critical_gates": {
     "accessibility": "NOT_RUN",
     "device": "NOT_RUN",
@@ -15,12 +22,16 @@
       "runtime": [],
       "static": []
     },
-    "operating": [],
+    "operating": [
+      "skills/PROJECT_BASE_ADAPTER.json",
+      "skills/PROJECT_SKILL_SNAPSHOT.json"
+    ],
     "product": [],
     "sheet": []
   },
-  "integrity_verdict": "PASS_WITH_NOT_RUN_GATES",
+  "integrity_verdict": "PENDING_STATIC_VALIDATION_WITH_NOT_RUN_GATES",
   "operating_maturity": "OM-L0",
   "product_evidence_maturity": "PE-0",
-  "schema_version": 1
+  "schema_version": 1,
+  "sheet_sync_status": "BLOCKED"
 }
