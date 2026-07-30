@@ -10,12 +10,11 @@
 - [작업 시작](START_HERE.md)
 - [현재 상태]([기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md)
 - [v6 전체 결정 권한 원장](docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md)
-- [PR #45 v6 통합 검수](docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md)
 - [문서 지도]([기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md)
 - [게임 기획](docs/01_GAME_DESIGN.md)
 - [전투 규칙](docs/02_COMBAT_RULES.md)
 - [콘텐츠 카탈로그](docs/03_CONTENT_CATALOG.md)
-- [무공·성장 자료](docs/06_STARTING_FACTION_MASTERY_DATA.md)
+- [전투 시스템 아키텍처](docs/09_COMBAT_SYSTEM_ARCHITECTURE.md)
 - [테스트 체크리스트](docs/08_TEST_CHECKLIST.md)
 - [Base 적용 기준](docs/BASE_RULES_VERSION.md)
 - [Base 동기화 감사]([기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md)
@@ -27,23 +26,28 @@ product_stage: CONCEPT_APPROVAL
 work_mode: PLAN
 execution_profile: PLANNING_ONLY_PROFILE
 runtime_implementation: PROHIBITED_UNTIL_NEW_APPROVAL
-planning_integration_pr: 45
+primary_platform: PC
+future_platform: Mobile
 human_validation: UNVERIFIED
-base_commit: c987647d01ad2baa028a16e03d85ddfc1572a727
+base_release: v9.3.0
+base_release_commit: 30ca6c7b5f93521f0eb0eed42d01437cd43c50ae
+vertical_slice_execution_contract: v9 / contract 9.1
 ```
 
-2026-07-26의 `BUILD_IN_PROGRESS`와 구현 인계 승인은 이후 v6 재설계 지시로 대체됐습니다. PR #45는 최신 결정 원장과 과거 감사·검증 자료를 정합화하는 계획 문서 통합이며 제품 런타임을 변경하지 않습니다.
+Base 공용 Skill은 프로젝트에 복제하지 않습니다. `skills/PROJECT_BASE_ADAPTER.json`과 생성된 `skills/PROJECT_SKILL_SNAPSHOT.json`이 Base shared 27개와 프로젝트 local 4개의 effective route를 제공합니다.
 
 ## 프로젝트 코어
 
 ```text
 상대의 공개 상태·해결 이력 관찰
 → 다음 행동에 대한 가설 수립
-→ 3/3/4 행동 묶음 계획
+→ 3수 → 3수 → 4수 행동 묶음 계획
 → 상대 의도 완화·거부·반전·응징
 → 결과 복기와 무공 성장
 ```
 
+- 10칸 일자형 전장에서 플레이어 4번·상대 7번 시작을 사용합니다.
+- `[합]`, 거리, 연격, 통합 방어도의 인과를 복기할 수 있어야 합니다.
 - 성장은 더 다양하고 강력한 파훼 방법을 제공합니다.
 - 원시 수치 상승은 파훼 판단을 대체하지 않습니다.
 - AI는 플레이어의 미확정 계획을 읽지 않습니다.
@@ -53,31 +57,48 @@ base_commit: c987647d01ad2baa028a16e03d85ddfc1572a727
 
 - 한 라운드는 `3수 → 3수 → 4수`, 각 묶음 뒤 해결하며 총 10수입니다.
 - 10칸 일자형 전장과 거리 0 `[밀착]`을 사용합니다.
-- 버티컬 슬라이스는 핵심 결투 5개를 앵커로 하며 일반전·강적전·사건·수련·정보·회복·시장 노드를 포함합니다.
-- `[연격 N]`은 최종 총피해를 N개의 피해 묶음으로 나눕니다. 첫 피해만 `[합]`에 참여하며 기본 회피는 피해 묶음 하나만 회피합니다.
-- 방어와 보호막은 하나의 `[방어도]`로 통합되고 피해 묶음마다 개별 감산됩니다.
-- 무공서는 16권, 1~10성입니다. 시작 시 해금된 무공서 4권을 3성으로 선택합니다.
-- 수련 중앙 목표는 전체 전투 5회 40~50, 10회 90~100입니다.
-- 전투 랭크는 `A / A+ / S / S+`, 수련 보너스는 `0 / 1 / 2 / 3`입니다.
-- 절초는 무공서 10성에 해금되고 공유 절초기세 5를 소비하며 동일 슬롯 일반 기술보다 약 50% 높은 예산을 가집니다.
+- 버티컬 슬라이스는 핵심 결투 5개를 앵커로 합니다.
+- 필수 주요 비무 전체 목표는 10전입니다.
+- `[연격 N]`은 최종 총피해를 N개의 피해 묶음으로 나눕니다.
+- 방어와 보호막은 하나의 `[방어도]`로 통합됩니다.
+- 무공서는 16권, 1~10성입니다.
+
+## 천하제일인 이후 장기 콘텐츠
+
+본편 10전과 `[천하제일인]` 대전 승리 후 다음 **비동기 챔피언 배틀**을 별도 Gate에서 검토합니다.
+
+```text
+완성 캐릭터·등록 전투 구성 저장
+→ 사용자는 자신의 캐릭터를 직접 조작·계획
+→ 상대의 등록 캐릭터는 AI가 조종
+→ 결과 복기·재등록
+```
+
+- 공식 기획 용어: `등록 전투 구성`.
+- 데이터 용어: `Champion Build Snapshot`.
+- 등록 후 자신의 현재·과거 Snapshot과 싸우는 `자가 비무`를 지원하는 방향입니다.
+- 현재 Demo·Vertical Slice에는 서버, 계정, 랭킹, 모바일 UI를 넣지 않습니다.
+- 전투 판정 코어와 UI·씬·네트워크의 분리 가능성만 선행 설계 경계로 유지합니다.
+- 상세 추적: GitHub Issue #64.
+
+## 구현 사실과 설계 권한
+
+현재 `main`에는 기존 T0 전투 PoC의 STEP 0~13이 존재합니다. 최신 v6 기획과 완전히 일치하지 않을 수 있습니다. 실제 코드·데이터는 현재 구현 사실의 근거이며, 최신 설계 권한은 v6 결정 원장이 소유합니다.
+
+정적 검사·Actions 성공은 Godot 런타임, Windows 사용성, 접근성, 성능, 실제 플레이 재미를 증명하지 않습니다. 실행하지 않은 항목은 `UNVERIFIED` 또는 `NOT_RUN`으로 유지합니다.
 
 ## `[보류]`
 
 - Round 4 이후 전체 적대적 검토
 - 16개 개별 절초 설계
-- 2026-07-26 구현 계획 실행
 - Godot 런타임·데이터·씬·자산 변경
+- 서버·온라인 대전 구현
+- 모바일 포팅
 
-## 구현 사실과 설계 권한
+## Legacy/Compatibility
 
-현재 `main`에는 기존 T0 전투 PoC의 STEP 0~13이 존재하며 플레이어 4번·상대 7번 시작을 포함합니다. 최신 v6 기획과는 완전히 일치하지 않습니다. 실제 코드·데이터는 현재 구현 사실의 근거이며, 최신 설계 권한은 v6 결정 원장이 소유합니다.
+과거 BCA v8 채택의 재현 문자열은 남기되 현행 권한으로 사용하지 않습니다.
 
-정적 검사·Actions 성공은 Godot 런타임, Windows 사용성, 접근성, 성능, 실제 플레이 재미를 증명하지 않습니다. 실행하지 않은 항목은 `UNVERIFIED`로 유지합니다.
-
-## BCA v8 기획·이미지·Sheet 운영
-
-- Base 기준: `alsdmlals4-eng/Base@c987647d01ad2baa028a16e03d85ddfc1572a727`
-- 통합 실행문: `templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md`
-- 프로젝트 Sheet: `PROJECT_SHEET_CONFIGURED`; 구조 계약은 `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md`
-- GPT 이미지·목업: `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md`
-- 적용 감사: `docs/BCA_VISUAL_SHEET_ADOPTION_AUDIT.md`
+- Legacy Base: `alsdmlals4-eng/Base@c987647d01ad2baa028a16e03d85ddfc1572a727`
+- Legacy prompt: `templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md`
+- 상태: `SUPERSEDED_COMPATIBILITY / HISTORY_ONLY`
