@@ -1,10 +1,10 @@
 {
   "artifact_role": "PROJECT_BASE_ADAPTER",
   "base_release": {
-    "release_commit": "3c158f52cfdad889970aef4d6ce6650a6fea0645",
-    "release_evidence_commit": "dd20ad3852e264d7e337e34d2cb963f71053a6cb",
+    "release_commit": "30ca6c7b5f93521f0eb0eed42d01437cd43c50ae",
+    "release_evidence_commit": "462a86db192d23d0f386281a1eb54b0a8cbad62e",
     "repository": "alsdmlals4-eng/Base",
-    "version": "9.1.0"
+    "version": "9.3.0"
   },
   "compatibility": {
     "cycle": "ONE_CYCLE",
@@ -27,13 +27,18 @@
   },
   "project": {
     "engine": "Godot 4.7",
+    "execution_contract": "templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v9.md",
+    "execution_contract_version": "9.1",
+    "future_platform": "Mobile",
+    "primary_platform": "PC",
+    "release_line": "Base v9.3",
     "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
     "root": "."
   },
   "protected_baseline": {
     "authority_kind": "REMOTE_TRACKING_REF",
     "authority_ref": "refs/remotes/origin/main",
-    "commit": "a68c70fd0c79448f67167aaa1e9b1f4f2d3cddd7",
+    "commit": "bf60548cb461523ff655ce50951f1636808c5c02",
     "policy_sha256": "ed848e62f3292d704f602e2976737005b77100c476c6947e57ff0bcb5a3b6e52",
     "policy_source_path": "skills/PROJECT_BASE_SKILL_ADAPTER.json",
     "policy_source_type": "FIRST_MIGRATION_LEGACY_SOURCE",
@@ -268,7 +273,7 @@
     "base": {
       "hash_definition": "RAW_FILE_BYTES_SHA256",
       "path": "skills/SKILL_REGISTRY.json",
-      "sha256": "e06003cb986e979aa46c06839de178c3fb9ff10bdf440e750712d90d6c5ae7bb"
+      "sha256": "9847bb2b225c776ad7916930f0f48c490bc2a898bea8e02ea1fdd0e6caac60c1"
     },
     "project": {
       "hash_definition": "RAW_FILE_BYTES_SHA256",
@@ -277,6 +282,9 @@
     }
   },
   "validators": [
+    "python tests/test_base_v9_adoption.py",
+    "python tests/test_base_v91_operating_contract.py",
+    "python tests/test_bca_visual_sheet_adoption.py",
     "python tests/test_base_shared_skill_adapter.py",
     "python tools/check_archive_governance.py",
     "python tools/check_project_operating_system.py",
