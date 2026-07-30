@@ -1,33 +1,64 @@
 # Base 규칙 적용 버전
 
-## 1. 기준
+## 1. 현행 기준
 
-- Base 코어 Skill 집합: `alsdmlals4-eng/Base@c987647d01ad2baa028a16e03d85ddfc1572a727`.
-- Base 공용 archive extension: `alsdmlals4-eng/Base@6a224e450f9420223c00921f3c56e051612f92ad`.
-- 이전 프로젝트 기준의 재현 가능한 SHA는 `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`가 보존한다.
-- 추가 비교: 6개 커밋·43개 변경 파일.
-- 코어 동기화 날짜: `2026-07-28`.
-- archive extension 채택일: `2026-07-25`.
-- 전투 기준: PR #7 `agent/t0-combat-poc-board@659c57e7ffa588ad6a6471ed9b5394985b159eaf`.
-- 코어 확정 PR: #15 `agent/project-core-confirmation`.
-- 최신 승인 범위: Issue #13 STEP 12~14.
-- 감사: `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`.
-- 검증: `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_VERIFICATION.md`.
+```yaml
+base_repository: alsdmlals4-eng/Base
+base_release: v9.3.0
+release_state: BASE_RELEASED
+release_commit: 30ca6c7b5f93521f0eb0eed42d01437cd43c50ae
+release_evidence_commit: 462a86db192d23d0f386281a1eb54b0a8cbad62e
+base_registry_path: skills/SKILL_REGISTRY.json
+base_registry_sha256: 9847bb2b225c776ad7916930f0f48c490bc2a898bea8e02ea1fdd0e6caac60c1
+execution_contract: templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v9.md
+execution_contract_version: 9.1
+release_line: Base v9.3
+adopted_at: 2026-07-31
+```
 
-정식 버전명보다 commit SHA를 재현 가능한 기준으로 사용한다. 전체 ACTIVE 27개 Skill 집합과 공용 extension은 서로 다른 채택 시점과 검증 경계를 가지므로 하나의 SHA로 덮어쓰지 않는다. 일상 작업은 프로젝트에 동기화된 Registry·검사·문서를 우선하고 Base 원격은 재감사 조건에서만 다시 비교한다.
+`base-v9.3.lock.json`의 `BASE_RELEASED` 상태와 release/evidence pin을 함께 사용한다. 단일 최신 `main` SHA를 임의로 pin으로 바꾸지 않는다.
 
-## 2. 적용한 공용 운영 계약
+## 2. 프로젝트 Application Binding
 
-### Work Mode·Skill
+- 프로젝트: `alsdmlals4-eng/Ten-Paces-Hidden-Moves`.
+- 이관 기준 `main`: `bf60548cb461523ff655ce50951f1636808c5c02`.
+- 정본 어댑터: `skills/PROJECT_BASE_ADAPTER.json`.
+- 생성 route view: `skills/PROJECT_SKILL_SNAPSHOT.json`.
+- Workflow Router: `.agents/skills/ten-paces-hidden-moves-workflow-router/SKILL.md`.
+- 프로젝트 고유 Skill Registry: `skills/SKILL_REGISTRY.json`.
+- `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`은 호환·이력 참조다.
+- 제품 정본: v6 결정 원장과 등록된 분야별 책임 원본.
+- Sheet ID: `1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0`.
+- Sheet 상태: `SHEET_GITHUB_CONFLICT / BLOCKED / NO_AUTOMATIC_OVERWRITE`.
+
+## 3. 권한 순서
+
+```text
+최신 사용자 지시
+→ 프로젝트 AGENTS·보안·플랫폼 제약
+→ 프로젝트 정본·실제 구현·열린 Issue·PR
+→ PROJECT_BASE_ADAPTER.json
+→ PROJECT_SKILL_SNAPSHOT.json
+→ 프로젝트 Workflow Router
+→ 고정된 Base v9.3
+→ Vertical Slice v9 실행 계약
+→ v6~v8·v9.1 자료는 Legacy/Compatibility 입력
+```
+
+Adapter·Snapshot·Router의 release pin, Registry hash, route가 불일치하면 실패 처리한다. 추론으로 다른 Base 버전이나 Skill 본문을 섞지 않는다.
+
+## 4. 적용한 공용 운영 계약
 
 - Work Mode: `PLAN / BUILD / REVIEW`.
-- Registry trigger 기반 최소 Skill·Skill Mode 자동 선택.
-- 전체 Skill 기본 로드 금지.
-- 주 책임 분야 Skill 최대 1개, 필요한 Foundation만 조건부 선택.
+- 기존 프로젝트 변경: `audit → reconcile → approval bundle → approved migration → verify`.
+- 전체 Skill 자동 로드 금지.
+- Registry trigger 기반 최소 Skill·Skill Mode 선택.
 - L1 이상 `execution-report`.
-- 기존 프로젝트 변경은 `audit → reconcile-legacy → 승인 변경 → verify`.
+- `reference-freshness`, baseline diff, 적대적 검토를 분리 수행.
+- 실행하지 않은 runtime·device·accessibility·human 검증은 `NOT_RUN`.
+- Base 공용 Skill 본문을 프로젝트에 복제하지 않는다.
 
-### Base 활성 Skill 27개
+### Base shared Skill 27개
 
 1. `managing-project-intake-and-work-contract`
 2. `managing-game-project-operating-system`
@@ -57,134 +88,92 @@
 26. `governing-legacy-retention-and-archives`
 27. `evaluating-godot-assets-and-plugins-before-creation`
 
-프로젝트에 Base Skill 패키지를 복제하지 않는다. `skills/PROJECT_BASE_ADAPTER.json`과 생성된 `skills/PROJECT_SKILL_SNAPSHOT.json`이 검증된 route를 제공한다. `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`은 명시적 호환·이력 참조다.
-
-### Base 공용 archive extension
-
-- Skill ID: `governing-legacy-retention-and-archives`.
-- Base 경로: `skills/governing-legacy-retention-and-archives/SKILL.md`.
-- 프로젝트 route 계약: `skills/PROJECT_BASE_ADAPTER.json`.
-- 생성 route view: `skills/PROJECT_SKILL_SNAPSHOT.json`.
-- archive 전용 어댑터: `[기획서]/00_프로젝트_허브/ARCHIVE_RETENTION_ADAPTER.json`.
-- Manifest: `docs/archive/MANIFEST.json`.
-- 적용 방식: adapter-only. Base 공용 Skill 본문을 프로젝트에 복제하지 않는다.
-
-이 extension은 전체 ACTIVE 27개 집합을 재정의하거나 자동 확장하지 않는다. Registry의 `shared_extension_commit`과 별도 route가 최신 Base SHA를 소유한다.
-
 ### 프로젝트 고유 Skill 4개
 
-- `ten-paces-game-design`.
-- `combat-ux-and-accessibility`.
-- `combat-implementation-handoff`.
-- `ten-paces-verification`.
+- `ten-paces-game-design`
+- `combat-ux-and-accessibility`
+- `combat-implementation-handoff`
+- `ten-paces-verification`
 
-로컬 Skill은 프로젝트 고유 판단·반례만 소유하고 현재 STEP 상태는 Active Context와 본책에서 읽는다.
+프로젝트 고유 Skill은 제품별 판단과 반례만 소유한다. Base shared route와 이름이 충돌하면 `PROJECT_LOCAL_THEN_BASE_SHARED` 우선순위를 따른다.
 
-## 3. 문서·발행·아카이브 계약
+## 5. 문서·발행·아카이브 계약
 
-- 한 질문에 Markdown 또는 JSON 책임 원본 하나.
-- 현재 본책은 현재 계약만 설명한다.
-- 과거 전문은 Git 이력·Change Log·Learning Log 또는 승인된 archive에서 찾는다.
-- 날짜별 보정 절을 활성 본문에 누적하지 않는다.
-- PDF·DOCX·다이어그램은 파생본이다.
-- 현재 11개 제품 기획 문서와 Skill Registry는 생성기가 없어 `source_only`다.
-- PDF가 필요한 마일스톤에서 생성기·폰트·Manifest·렌더·사용자 검수를 함께 설치하고 필요한 문서만 `milestone_sync`로 승격한다.
-- 생성 실패 시 기존 정상 산출물을 보존한다.
-- archive는 현재 정본과 구현 권한을 갖지 않으며 원문을 빈 파일로 대체하지 않는다.
-- 비밀키·token·credential은 archive하지 않고 폐기·회전 절차로 처리한다.
-- 이번 extension 채택은 기존 구형 자료의 이동·삭제·재작성 권한을 부여하지 않는다.
+- 한 질문에 활성 책임 원본 하나.
+- 현재 본책에는 현재 계약만 설명한다.
+- 과거 전문은 Git 이력·Change Log·Learning Log·승인된 archive에서 찾는다.
+- PDF·DOCX·HTML 대시보드는 파생본이며 원본 권한이 없다.
+- HTML 기획 대시보드는 기본 작업 surface가 아니다.
+- 생성기가 없는 제품 문서와 Registry는 `source_only`다.
+- archive는 현재 정본과 구현 권한을 갖지 않는다.
+- 과거 자료를 이동·삭제·빈 파일화하지 않는다.
 
-## 4. 정본 최신성 계약
+## 6. 프로젝트 고유 보호 범위
 
-`.github/reference-freshness.json`이 다음 구조화 기대값을 소유한다.
-
-- board contract schema 17.
-- Base 코어 commit `41a20584...`.
-- Base 활성 Skill 27개.
-- 프로젝트 고유 Skill 4개.
-- 활성 문서의 필수 현행 토큰과 금지 stale 토큰.
-- 책임 원본→활성 소비자 연결.
-
-archive extension의 별도 기대값은 다음 파일이 소유한다.
-
-- `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`: `shared_extension_commit`.
-- `skills/BASE_SHARED_SKILL_ROUTES.json`: Base SHA와 route.
-- `skills/PROJECT_BASE_SKILL_ADAPTER.json`: 프로젝트 공용 경로.
-- `[기획서]/00_프로젝트_허브/ARCHIVE_RETENTION_ADAPTER.json`: 보존·권한·경로 정책.
-- `tools/check_archive_governance.py`: 기계 검증.
-
-운영·Skill 검사기는 이 설정을 읽고 별도 SHA·Skill 수를 중복 하드코딩하지 않는다. archive validator의 extension SHA 상수는 해당 공용 계약 자체의 exact pin이며 코어 Base SHA와 혼합하지 않는다.
-
-## 5. 십보강호 고유 계약
-
-프로젝트에만 남긴다.
-
-- `[강호낭인]`.
-- 전장 10칸, 플레이어 4번·상대 7번, 거리 3, 거리 0 `[밀착]`.
-- 라운드 `3수 → 3수 → 4수`.
-- 기초 행동 8종과 절초 3종.
-- 합·방어·회피·필중·중단·강건.
-- 공개 상태 기반 최소 AI.
-- 승패·무승부·4/7 재시작.
-- T0 단일 전투 → T1 최소 세로 슬라이스 → T2 5전 데모 → 전체 10전.
-- 세력·무공·심법·성장·제약 가설.
-- Godot 코드·데이터·씬·자산·테스트·런타임 상태.
-
-## 6. 동기화 결과
-
-### 전체 ACTIVE 27개 Skill 동기화
-
-- Base 6개 커밋·43개 파일을 프로젝트 영향 기준으로 재감사했다.
-- 프로젝트 코어·적대적 검토·구조 최적화·동기화·연속성·유저리서치·런타임 진단 Skill을 route에 추가했다.
-- 로컬 Skill 4개는 유지하고 진행 상태 복제를 제거했다.
-- board schema 17·Base SHA·Skill 집합을 단일 freshness 설정으로 통합했다.
-- stale 문장 위에 최신 보정 절을 붙여도 실패하는 반례를 추가했다.
-- 추적된 Python 캐시를 제거하고 재발을 차단했다.
-- PR #14를 PR #7에 병합했고 PR #7 HEAD를 `659c57e7...`로 고정했다.
-- PR #15는 이 기준에서 프로젝트 코어와 다음 검증 게이트를 문서화한다.
-
-### archive extension 채택
-
-- Base `6a224e450f9420223c00921f3c56e051612f92ad`의 `governing-legacy-retention-and-archives`를 adapter-only route로 연결했다.
-- archive README·Manifest·프로젝트 adapter·validator·회귀 테스트를 추가했다.
-- 기존 구형 자료 이동·삭제·본문 비우기·branch/tag 삭제는 수행하지 않았다.
-- 제품 코드·데이터·씬·에셋은 변경하지 않았다.
-
-## 7. 검증 상태
-
-```yaml
-base_diff_audit: COMPLETE
-registry_update: MERGED_TO_PR7
-canonical_document_refresh: MERGED_TO_PR7
-pr7_baseline: 659c57e7ffa588ad6a6471ed9b5394985b159eaf
-pr15_pre_closeout_governance: PASS_ON_FF378732
-governance_checks_on_current_head: PENDING
-archive_governance_on_current_head: PENDING
-card_contract_on_current_head: PENDING
-product_file_preservation: PASS_FOR_ARCHIVE_ADOPTION_SCOPE
-project_core: CORE_CONFIRMED
-product_gate: REPEAT_POC
-human_step14: NOT_RUN
-fresh_context_pressure_scenarios: NOT_RUN
+```text
+data/
+src/
+scenes/
+assets/
+addons/
+project.godot
 ```
 
-최신 Actions와 최종 baseline diff 전에는 archive extension 채택 완료로 표시하지 않는다. 프로젝트 코어 확정은 사람 STEP 14나 T1 진입을 의미하지 않는다.
+Issue #63 운영체계 이관에서는 위 경로를 수정하지 않는다. 제품 단계는 `CONCEPT_APPROVAL`, Work Mode는 `PLAN`, 런타임 구현은 새 사용자 승인 전 금지다.
 
-## 8. 재감사 조건
+## 7. 십보강호 제품 계약
 
-- Base 코어 SHA·Skill Registry·coverage 변경.
-- Base shared extension SHA·route·adapter Schema 변경.
-- archive Manifest·보존 정책·권한 경계 변경.
-- board schema·전장·라운드·합·절초·AI 계약 변경.
-- 책임 원본·경로·ID·Schema·발행 정책 변경.
-- 프로젝트 코어 승인·재개방.
-- STEP 14 사람 결과와 T1 진입.
-- 운영체계 통합·삭제·대규모 검증.
+- 전장 10칸, 플레이어 4번·상대 7번, 거리 0 `[밀착]`.
+- 라운드 `3수 → 3수 → 4수`.
+- 합·연격·통합 방어도·공개 상태 기반 AI.
+- AI는 플레이어의 미확정 계획을 읽지 않음.
+- 덱·손패·드로우·장착 기술 제한 없음.
+- 버티컬 슬라이스 앵커 결투 5개, 전체 필수 주요 비무 목표 10전.
+- 무공서 16권, 1~10성, 10성 절초.
+- T0 구현 사실과 최신 v6 설계 권한을 분리.
 
-## 9. BCA v8 채택
+### 미래 서버·모바일 경계
 
-- 채택 Base: `alsdmlals4-eng/Base@c987647d01ad2baa028a16e03d85ddfc1572a727`.
-- 활성 통합 실행문: `templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md`.
-- 프로젝트 Sheet: `PROJECT_SHEET_CONFIGURED`; `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md`의 tab·열 계약만 설치.
-- GPT 기획 시각화·최종 후보·검수: `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md`.
-- v6 결정 원장은 십보강호 고유 승인 이력으로 유지하지만 v6 공용 Prompt는 활성 실행 권한이 없다.
+- PC 우선, 차후 모바일.
+- 10전 완료와 `[천하제일인]` 승리 후 `Champion Build Snapshot` 등록을 검토.
+- 사용자는 자신의 캐릭터를 직접 조작·계획하고, 등록 상대는 AI가 조종.
+- 자신의 현재·과거 등록 구성과 싸우는 자가 비무를 지원하는 방향.
+- 서버·계정·랭킹·시즌·모바일 UI는 별도 Gate 전까지 구현하지 않음.
+
+## 8. 검증 계약
+
+필수 자동·정적 범위:
+
+```text
+adapter/schema/pin 검사
+→ snapshot provenance·route count 검사
+→ project operating system
+→ reference-freshness
+→ archive governance
+→ Markdown·JSON·link 검사
+→ baseline protected-path diff
+→ adversarial repository-wide review
+```
+
+Godot runtime, Windows, 접근성 사용자, 성능, 사람 플레이는 실제 실행 전까지 `NOT_RUN`이다.
+
+## 9. Sheet 동기화 계약
+
+- 운영체계 PR 병합 전 Sheet 쓰기 금지.
+- 병합된 `main` SHA를 다시 읽고 GitHub 정본과 Sheet 값을 대조한다.
+- 사용자 편집·수식·검증·서식을 자동 덮어쓰지 않는다.
+- 충돌이 있으면 `PROPOSED_SHEET_CHANGE` 또는 `BLOCKED`를 유지한다.
+- 동기화 후에도 Sheet가 GitHub 정본을 자동 대체하지 않는다.
+
+## 10. Legacy/Compatibility 기록
+
+다음은 과거 채택을 재현하기 위한 자료이며 현행 실행 권한이 아니다.
+
+- Legacy Base core: `alsdmlals4-eng/Base@c987647d01ad2baa028a16e03d85ddfc1572a727`.
+- Legacy archive extension: `alsdmlals4-eng/Base@6a224e450f9420223c00921f3c56e051612f92ad`.
+- Legacy prompt: `templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md`.
+- 과거 동기화 설명: `6개 커밋·43개 변경 파일`.
+- 상태: `SUPERSEDED_COMPATIBILITY / HISTORY_ONLY`.
+- 재현 근거: `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`.
+
+과거 v8·v9.1 문자열이 존재한다는 사실만으로 현재 권한을 갖지 않는다. 활성 판단에는 Base v9.3 Adapter와 Vertical Slice v9 계약을 사용한다.
