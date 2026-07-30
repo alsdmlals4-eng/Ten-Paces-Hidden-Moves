@@ -12,9 +12,9 @@ execution_profile: PLANNING_ONLY_PROFILE
 runtime_implementation: PROHIBITED_UNTIL_NEW_APPROVAL
 current_integration_pr: 65
 canonical_decision_ledger: docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md
-latest_user_decision: docs/decisions/2026-07-31_COMBAT_ROUTE_AND_CHAMPION_DECISION.md
-current_design_package: docs/planning/2026-07-31_DUEL_01_02_ROUTE_PACKAGE_DRAFT.md
-current_design_package_status: DESIGN_DRAFT_USER_REVIEW_PENDING
+latest_user_decision: docs/decisions/2026-07-31_PROCEDURAL_DUEL_POOL_AND_ROUTE_DECISION.md
+current_design_package: docs/superpowers/specs/2026-07-31-procedural-duel-pool-route-design.md
+current_design_package_status: APPROVED_PLANNING
 integration_review: docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md
 human_step14: NOT_RUN
 ```
@@ -49,13 +49,14 @@ PR #45의 과거 BUILD 승인 선언은 최신 사용자 결정으로 대체됐�
 - 수련 체크포인트: 전체 전투 5회 40~50, 10회 90~100의 표준 경로 중앙 목표.
 - 전투 랭크: A +0, A+ +1, S +2, S+ +3.
 
-최신 세부 결정 권한은 `docs/decisions/2026-07-31_COMBAT_ROUTE_AND_CHAMPION_DECISION.md`가 소유한다. `docs/02_COMBAT_RULES.md`는 세부 판정 책임 원본이며 충돌 시 최신 날짜의 승인 결정 문서가 우선한다.
+최신 전투·회차 결정은 `docs/decisions/2026-07-31_COMBAT_ROUTE_AND_CHAMPION_DECISION.md`, 절차형 비무·경로 결정은 `docs/decisions/2026-07-31_PROCEDURAL_DUEL_POOL_AND_ROUTE_DECISION.md`가 소유한다. `docs/02_COMBAT_RULES.md`는 세부 판정 책임 원본이며 충돌 시 최신 날짜의 승인 결정 문서가 우선한다.
 
 ## 데모·전체 회차 계약
 
 ```yaml
 demo:
   major_duels: 5
+  duel_candidates_per_slot: 3
   gaps: 4
   nodes_per_gap: 2
   intermediate_nodes: 8
@@ -63,33 +64,46 @@ demo:
 
 full_run:
   major_duels: 10
+  duel_candidates_per_slot: 3
   gaps: 9
   nodes_per_gap: 2
   intermediate_nodes: 18
   target_playtime: 30_to_40_minutes
 ```
 
+- 주요 비무 슬롯은 학습 역할과 난이도 단계만 고정한다.
+- 각 슬롯은 후보 3명을 보유한다.
+- 첫 비무는 후보 3명 중 1명을 `run_seed`로 선정한다.
+- 이후 비무는 후보 3명 중 2명을 경로 종착점으로 제시하고 플레이어가 선택한다.
 - 비무 사이 첫 노드는 상태 회복·성장, 둘째 노드는 다음 비무 정보·대비 역할을 우선한다.
+- 실제 노드·연결선·다음 상대 후보는 `run_seed`, `slot_id`, `gap_index`로 재현 가능하게 생성한다.
 - 첫 데모 노드 유형은 휴식·수련·정보·짧은 사건으로 제한한다.
 - 일반 전투 노드는 첫 데모 필수 범위에서 제외한다.
 
 ## 현재 상세 기획 패키지
 
-`TEN-PKG-20260731-DUEL01-02-ROUTE01`은 다음 구간의 상세 초안이다.
+`TEN-DEC-20260731-PROCEDURAL-DUEL-POOL-01`은 다음 구조를 승인한다.
 
 ```text
-주요 비무 1 연교
-→ 상태 회복·성장 노드
-→ 묵진 정보·대비 노드
-→ 주요 비무 2 묵진
+슬롯 1 후보 3명 중 1명
+→ 절차 생성 1차 노드층
+→ 절차 생성 2차 노드층
+→ 슬롯 2 후보 3명 중 제시된 2명 가운데 선택
 ```
 
-- 연교: 공개 전조·거리 1·같은 수 `[합]`·체력 피해 중단 입문.
-- 첫 노드층: 청죽객잔·폐연무장·길가의 표사.
-- 둘째 노드층: 금강문 비문·노승의 목인장·약사 찻집.
-- 묵진: 능력치 비례 방어도·비소모 감산·라운드 만료·강건과 중단.
-- 상태: `DESIGN_DRAFT_USER_REVIEW_PENDING`.
-- 상세 초안은 사용자 검토 전 승인 정본과 기존 데이터 필드를 대체하지 않는다.
+### 슬롯 1 — 합·거리 입문
+
+- 연교 — 사문검객
+- 백소령 — 유운검수
+- 진무백 — 철선문도
+
+### 슬롯 2 — 방어도·중단 입문
+
+- 묵진 — 철벽승
+- 하진강 — 진산권객
+- 위청람 — 현문도객
+
+기존 `TEN-PKG-20260731-DUEL01-02-ROUTE01`의 연교·묵진 상세 패턴은 후보 원형으로 재사용하지만, 고정 상대·고정 경로 표현은 최신 결정으로 대체된다.
 
 ## 천하제일인 후속 콘텐츠
 
@@ -120,14 +134,16 @@ full_run:
 ## PR #45 자산 지위
 
 - 최신 권한 원장: `2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
-- 최신 세부 사용자 결정: `2026-07-31_COMBAT_ROUTE_AND_CHAMPION_DECISION.md`.
-- 현재 상세 초안: `2026-07-31_DUEL_01_02_ROUTE_PACKAGE_DRAFT.md`.
+- 전투·강호행로 결정: `2026-07-31_COMBAT_ROUTE_AND_CHAMPION_DECISION.md`.
+- 절차형 비무·경로 결정: `2026-07-31_PROCEDURAL_DUEL_POOL_AND_ROUTE_DECISION.md`.
+- 현재 설계 명세: `docs/superpowers/specs/2026-07-31-procedural-duel-pool-route-design.md`.
+- 기존 고정 패키지: `2026-07-31_DUEL_01_02_ROUTE_PACKAGE_DRAFT.md`; 후보 원형 자료로 유지.
 - 2026-07-26 기획·BUILD 진입 문서: `SUPERSEDED_REFERENCE`.
 - 과거 적대적 검토·벤치마크·sanity: `HISTORICAL_EVIDENCE`.
-- `docs/planning-data/`: `SOURCE_ONLY / HOLD`; 승인된 기획 데이터 동기화와 사용자 검토용 상세 초안만 허용.
+- `docs/planning-data/`: `SOURCE_ONLY / HOLD`; 승인된 기획 데이터 동기화와 사용자 검토용 초안만 허용.
 - 2026-07-26 구현 계획: `DEFERRED / REFERENCE_ONLY`.
 - 제품 런타임: 이번 동기화에서 변경하지 않음.
 
 ## 다음 작업
 
-사용자 검토를 통해 주요 비무 1·2전과 첫 노드 패키지를 승인·수정한다. 이후 주요 비무 3 설하와 2→3전의 두 노드를 벤치마킹 후 상세화한다. 사용자의 명시적 `기획 완료`와 `검수 완료` 전에는 Codex Build로 전환하지 않는다.
+주요 비무 슬롯 3의 후보 3명과 슬롯 2→3 사이 절차형 노드 풀을 벤치마킹 후 상세화한다. 이후 데모 슬롯 1~5의 후보 수·제작량·플레이타임을 적대적으로 검토한다. 사용자의 명시적 `기획 완료`와 `검수 완료` 전에는 Codex Build로 전환하지 않는다.
