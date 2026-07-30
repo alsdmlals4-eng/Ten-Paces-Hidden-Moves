@@ -10,9 +10,11 @@ product_stage: CONCEPT_APPROVAL
 work_mode: PLAN
 execution_profile: PLANNING_ONLY_PROFILE
 runtime_implementation: PROHIBITED_UNTIL_NEW_APPROVAL
-current_integration_pr: 45
+current_integration_pr: 65
 canonical_decision_ledger: docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md
 latest_user_decision: docs/decisions/2026-07-31_COMBAT_ROUTE_AND_CHAMPION_DECISION.md
+current_design_package: docs/planning/2026-07-31_DUEL_01_02_ROUTE_PACKAGE_DRAFT.md
+current_design_package_status: DESIGN_DRAFT_USER_REVIEW_PENDING
 integration_review: docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md
 human_step14: NOT_RUN
 ```
@@ -71,6 +73,24 @@ full_run:
 - 첫 데모 노드 유형은 휴식·수련·정보·짧은 사건으로 제한한다.
 - 일반 전투 노드는 첫 데모 필수 범위에서 제외한다.
 
+## 현재 상세 기획 패키지
+
+`TEN-PKG-20260731-DUEL01-02-ROUTE01`은 다음 구간의 상세 초안이다.
+
+```text
+주요 비무 1 연교
+→ 상태 회복·성장 노드
+→ 묵진 정보·대비 노드
+→ 주요 비무 2 묵진
+```
+
+- 연교: 공개 전조·거리 1·같은 수 `[합]`·체력 피해 중단 입문.
+- 첫 노드층: 청죽객잔·폐연무장·길가의 표사.
+- 둘째 노드층: 금강문 비문·노승의 목인장·약사 찻집.
+- 묵진: 능력치 비례 방어도·비소모 감산·라운드 만료·강건과 중단.
+- 상태: `DESIGN_DRAFT_USER_REVIEW_PENDING`.
+- 상세 초안은 사용자 검토 전 승인 정본과 기존 데이터 필드를 대체하지 않는다.
+
 ## 천하제일인 후속 콘텐츠
 
 본편 주요 비무 1~10과 일반 엔딩 후 플레이 성향에 대응하는 후보 한 명의 도전장이 열린다. 첫 승리 후 나머지 후보를 선택할 수 있고 `등록 전투 구성`의 `Champion Build Snapshot` 등록 자격을 획득한다.
@@ -101,12 +121,13 @@ full_run:
 
 - 최신 권한 원장: `2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
 - 최신 세부 사용자 결정: `2026-07-31_COMBAT_ROUTE_AND_CHAMPION_DECISION.md`.
+- 현재 상세 초안: `2026-07-31_DUEL_01_02_ROUTE_PACKAGE_DRAFT.md`.
 - 2026-07-26 기획·BUILD 진입 문서: `SUPERSEDED_REFERENCE`.
 - 과거 적대적 검토·벤치마크·sanity: `HISTORICAL_EVIDENCE`.
-- `docs/planning-data/`: `SOURCE_ONLY / HOLD`; 승인된 기획 데이터 동기화만 허용.
+- `docs/planning-data/`: `SOURCE_ONLY / HOLD`; 승인된 기획 데이터 동기화와 사용자 검토용 상세 초안만 허용.
 - 2026-07-26 구현 계획: `DEFERRED / REFERENCE_ONLY`.
 - 제품 런타임: 이번 동기화에서 변경하지 않음.
 
 ## 다음 작업
 
-전투 정본과 주요 비무 1~5, 네 구간의 8개 강호행로 노드를 벤치마킹 후 상세화한다. 사용자의 명시적 `기획 완료`와 `검수 완료` 전에는 Codex Build로 전환하지 않는다.
+사용자 검토를 통해 주요 비무 1·2전과 첫 노드 패키지를 승인·수정한다. 이후 주요 비무 3 설하와 2→3전의 두 노드를 벤치마킹 후 상세화한다. 사용자의 명시적 `기획 완료`와 `검수 완료` 전에는 Codex Build로 전환하지 않는다.
