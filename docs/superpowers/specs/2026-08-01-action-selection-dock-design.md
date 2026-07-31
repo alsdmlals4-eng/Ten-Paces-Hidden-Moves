@@ -2,9 +2,9 @@
 
 > Spec ID: `TEN-SIT-SPEC-20260801-ACTION-SELECTION-DOCK-01`  
 > Decision dependency: `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`  
-> Status: `DESIGN_APPROVED_USER_REVIEW_PENDING`  
-> Runtime authority: `NONE`  
-> Work mode: `PLAN`
+> Status: `IMPLEMENTED_BUILD_PR_VALIDATION_PENDING`  
+> Runtime authority: `IMPLEMENTATION_CONTRACT`  
+> Work mode: `BUILD`
 
 ## 1. 목적
 
@@ -515,7 +515,7 @@ UI는 다음을 직접 계산하지 않는다.
 - 전투 중 성장 투자
 - 전체 16권을 위한 가상화 목록
 - 이미지·최종 아트 폴리싱
-- 런타임 구현
+- 전체 5전 회차·강호행로·성장·보상 런타임 구현
 
 ## 19. 테스트 계약
 
@@ -574,14 +574,21 @@ UI는 다음을 직접 계산하지 않는다.
 - 절초기세 예약·환불 상태를 오해하지 않는다.
 - 기존 Godot PoC 판정과 복기 결과를 변경하지 않는다.
 
-## 21. 승인 및 구현 Gate
+## 21. 승인·구현·검증 Gate
 
 ```yaml
-spec_status: DESIGN_APPROVED_USER_REVIEW_PENDING
-runtime_changes_allowed: false
-implementation_plan_written: false
+spec_status: IMPLEMENTED_BUILD_PR
+runtime_changes_allowed: true
+implementation_plan_written: true
+implementation_branch: agent/2026-08-01-action-selection-dock-build
+pull_request: 66
+static_contract: PASS
+pr_validation: PASS
+base_v9_validation: PASS
+godot_full_validation: PENDING
+windows_validation: NOT_RUN
 human_validation: NOT_RUN
 codex_handoff: false
 ```
 
-사용자 Spec 검토 승인 후에만 별도 구현 계획을 작성한다.
+사용자가 설계와 구현 계획을 승인해 BUILD로 전환했다. 현재 정적·PR 검증은 통과했지만 Godot Full Validation, Windows 확인, 사람 플레이가 끝나기 전에는 완료·병합 판정을 내리지 않는다.
