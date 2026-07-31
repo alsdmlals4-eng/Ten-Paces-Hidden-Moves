@@ -6,22 +6,29 @@
 project: 십보강호
 repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
 platform: PC
-product_stage: CONCEPT_APPROVAL
-work_mode: PLAN
-execution_profile: PLANNING_ONLY_PROFILE
-runtime_implementation: PROHIBITED_UNTIL_NEW_APPROVAL
-current_integration_pr: 65
+product_stage: COMBAT_UX_BUILD
+work_mode: BUILD
+execution_profile: IMPLEMENTATION_PROFILE
+runtime_implementation: ACTION_SELECTION_DOCK_BUILD_PR
+current_integration_pr: 66
+integration_base_pr: 65
 canonical_decision_ledger: docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md
-latest_user_decision: docs/decisions/2026-07-31_PROCEDURAL_DUEL_POOL_AND_ROUTE_DECISION.md
-current_design_package: docs/superpowers/specs/2026-07-31-procedural-duel-pool-route-design.md
-current_design_package_status: APPROVED_PLANNING
+latest_user_decision: docs/decisions/2026-08-01_MARTIAL_MANUAL_TECHNIQUE_TIMELINE_UX_DECISION.md
+current_design_package: docs/superpowers/specs/2026-08-01-action-selection-dock-design.md
+current_design_package_status: IMPLEMENTED_BUILD_PR_VALIDATION_PENDING
+current_implementation_plan: docs/superpowers/plans/2026-08-01-action-selection-dock.md
+current_implementation_branch: agent/2026-08-01-action-selection-dock-build
 current_review_package: docs/superpowers/specs/2026-07-31-situation-screen-implementation-spec.md
 current_review_package_status: DESIGN_DRAFT_USER_REVIEW_PENDING
 integration_review: docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md
+static_pr_validation: PASS
+base_v9_validation: PASS
+godot_full_validation: PENDING
+windows_validation: NOT_RUN
 human_step14: NOT_RUN
 ```
 
-PR #45의 과거 BUILD 승인 선언은 최신 사용자 결정으로 대체됐다. 이번 단계는 계획 정본과 Google Sheets GDD를 동기화하는 작업이며 런타임 구현 인계가 아니다.
+PR #45의 과거 BUILD 승인 선언과 PR #65의 PLAN 전용 상태는 최신 사용자 BUILD 승인으로 대체됐다. 현재 구현 범위는 전투 PoC의 행동 선택 Dock과 수 배치 UX이며, 전체 5전 회차·강호행로·성장·보상 구현 승인을 의미하지 않는다.
 
 역사 추적: 현행 T0 구현 계보는 PR #7과 Issue #13이며 STEP 14 사람 검증은 아직 실행하지 않았다. 현행 구현은 플레이어 4번·상대 7번 시작과 공개 상태 기반 AI를 사용한다. 과거 상태 `CORE_REVIEW_PENDING`은 역사 토큰일 뿐 현재 제품 단계나 코어 권한이 아니다.
 
@@ -51,7 +58,20 @@ PR #45의 과거 BUILD 승인 선언은 최신 사용자 결정으로 대체됐�
 - 수련 체크포인트: 전체 전투 5회 40~50, 10회 90~100의 표준 경로 중앙 목표.
 - 전투 랭크: A +0, A+ +1, S +2, S+ +3.
 
-최신 전투·회차 결정은 `docs/decisions/2026-07-31_COMBAT_ROUTE_AND_CHAMPION_DECISION.md`, 절차형 비무·경로 결정은 `docs/decisions/2026-07-31_PROCEDURAL_DUEL_POOL_AND_ROUTE_DECISION.md`가 소유한다. `docs/02_COMBAT_RULES.md`는 세부 판정 책임 원본이며 충돌 시 최신 날짜의 승인 결정 문서가 우선한다.
+### 행동 선택·수 배치 제품 계약
+
+- 전투 행동 출처는 `[기초] [무공] [절초]` 세 범주다.
+- 기초 행동 8종은 무공서와 독립된 공용 행동군이다.
+- 무공서는 성장·분류 단위이며 직접 수에 배치하지 않는다.
+- 무공서에서 현재 해금된 기술만 실제 행동으로 배치한다.
+- 세 출처 모두 현재 묶음의 가장 앞 유효 연속 수에 자동 배치한다.
+- 2수·3수 행동은 슬롯별 중복 카드가 아니라 `[전조] → [실행]` 하나의 연결 블록이다.
+- 진행 전 연결 블록 전체를 이동·제거할 수 있고 묶음 경계를 넘지 않는다.
+- 절초기세는 공유 `0~5`; 배치 성공 시 예약하고 진행 전 제거 시 환불한다.
+- 제품 P0에서는 `준비+막기/회피` 가상 카드를 생성하지 않는다.
+- `docs/planning-data/*.json`은 런타임에서 직접 읽지 않는다.
+
+최신 전투·회차 결정은 `docs/decisions/2026-07-31_COMBAT_ROUTE_AND_CHAMPION_DECISION.md`, 절차형 비무·경로 결정은 `docs/decisions/2026-07-31_PROCEDURAL_DUEL_POOL_AND_ROUTE_DECISION.md`, 행동 선택 결정은 `docs/decisions/2026-08-01_MARTIAL_MANUAL_TECHNIQUE_TIMELINE_UX_DECISION.md`가 소유한다. `docs/02_COMBAT_RULES.md`는 세부 판정 책임 원본이며 충돌 시 최신 날짜의 승인 결정 문서가 우선한다.
 
 ## 데모·전체 회차 계약
 
@@ -112,14 +132,34 @@ full_run:
 `TEN-SIT-SPEC-20260731-01`은 프로젝트 문서와 실제 Godot 파일을 대조한 사용자 검토용 초안이다.
 
 - 실제 시작 Scene은 `res://scenes/combat/combat_board_preview.tscn`이며 제품용 Main·Route·Result 흐름은 아직 확인되지 않았다.
-- 실제 전투 PoC에는 10칸 전장, 상단 HUD, 3/3/4 슬롯, 카드 Tray, 상세, 로그, 상대 가설, 결정적 복기 UI가 존재한다.
+- 실제 전투 PoC에는 10칸 전장, 상단 HUD, 3/3/4 슬롯, 로그, 상대 가설, 결정적 복기 UI가 존재한다.
+- 제품 전투 행동 영역은 PR #66에서 `ActionSelectionDock`으로 전환 중이며 레거시 카드 Tray·독립 절초 목록·상세 패널은 숨김 호환 경로다.
 - 전통적 인벤토리 대신 `무공 구성·성급·해금 기술·보유 자원·대비 효과` 화면을 대응 기준 화면으로 정의한다.
 - P0 상황은 Main 진입, 시작 무공, Route, Node, Briefing, Combat Plan, Resolve, Review, Victory Reward, Defeat Retry로 분해한다.
 - Route와 Combat은 별도 Scene, Combat Review는 같은 Scene Overlay, Duel Result는 별도 Scene을 권장한다.
 - P0 Autoload 후보는 `RunSession`, `SaveService`로 최소화하며 CombatState는 Combat Scene이 소유한다.
 - 현재 `CombatBoardPreview`의 판정 엔진과 UI 부품은 재사용하되 화면 조립·입력·연출·오디오·재시작 책임은 단계적으로 분리한다.
 - 구조화 초안은 `docs/planning-data/draft_20260731_situation_screen_contract.json`에 기록한다.
-- 상태는 `DESIGN_DRAFT_USER_REVIEW_PENDING`; 구현 승인·Codex 인계가 아니다.
+- 상황별 전체 화면 명세는 `DESIGN_DRAFT_USER_REVIEW_PENDING`; 행동 선택 Dock만 별도 승인·BUILD 상태다.
+
+## 행동 선택 Dock 구현 패키지
+
+```yaml
+spec: docs/superpowers/specs/2026-08-01-action-selection-dock-design.md
+plan: docs/superpowers/plans/2026-08-01-action-selection-dock.md
+build_approval: docs/implementation/BUILD_APPROVAL_2026-08-01.md
+branch: agent/2026-08-01-action-selection-dock-build
+pull_request: 66
+status: IMPLEMENTED_BUILD_PR_VALIDATION_PENDING
+static_contract: PASS
+pr_validation: PASS
+base_v9_validation: PASS
+godot_full_validation: PENDING
+windows_validation: NOT_RUN
+human_validation: NOT_RUN
+```
+
+실제 제품 입력 경로는 `ActionSelectionDock → ActionPlacementController → ActionTimingPanelAuto → CombatResolutionEngine`이다. 무공서 직접 배치와 제품 경로의 가상 `준비+대응` 카드는 정적 계약으로 차단한다.
 
 ## 천하제일인 후속 콘텐츠
 
@@ -142,25 +182,27 @@ full_run:
 - 16권 절초의 개별 이름·효과·슬롯·태그·대응점.
 - 주요 비무 6~10의 선제 구현.
 - 천하제일인·서버·비동기 챔피언 배틀 구현.
-- 2026-07-26 구현 계획 실행.
-- Godot 런타임·데이터·씬·자산 변경.
+- 전체 5전 회차·강호행로·성장·보상·저장 구현.
+- 행동 선택 Dock 외 제품 Scene·자산 변경.
 
 `[보류]`는 결정 행에서는 `DEFERRED`, 게이트에서는 `HOLD`로 기록한다.
 
-## PR #45 자산 지위
+## PR 자산 지위
 
 - 최신 권한 원장: `2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
 - 전투·강호행로 결정: `2026-07-31_COMBAT_ROUTE_AND_CHAMPION_DECISION.md`.
 - 절차형 비무·경로 결정: `2026-07-31_PROCEDURAL_DUEL_POOL_AND_ROUTE_DECISION.md`.
+- 행동 선택 결정: `2026-08-01_MARTIAL_MANUAL_TECHNIQUE_TIMELINE_UX_DECISION.md`.
 - 절차형 설계 명세: `docs/superpowers/specs/2026-07-31-procedural-duel-pool-route-design.md`.
+- 행동 선택 설계·구현: `docs/superpowers/specs/2026-08-01-action-selection-dock-design.md`, PR #66.
 - 화면·상황 구현 명세 중간점검: `docs/superpowers/specs/2026-07-31-situation-screen-implementation-spec.md`; 사용자 검토 대기.
 - 기존 고정 패키지: `2026-07-31_DUEL_01_02_ROUTE_PACKAGE_DRAFT.md`; 후보 원형 자료로 유지.
 - 2026-07-26 기획·BUILD 진입 문서: `SUPERSEDED_REFERENCE`.
 - 과거 적대적 검토·벤치마크·sanity: `HISTORICAL_EVIDENCE`.
 - `docs/planning-data/`: `SOURCE_ONLY / HOLD`; 승인된 기획 데이터 동기화와 사용자 검토용 초안만 허용.
 - 2026-07-26 구현 계획: `DEFERRED / REFERENCE_ONLY`.
-- 제품 런타임: 이번 동기화에서 변경하지 않음.
+- 제품 런타임: 행동 선택 Dock 범위만 PR #66에서 변경 중.
 
 ## 다음 작업
 
-먼저 `TEN-SIT-SPEC-20260731-01`의 필수 화면 4종, P0 상황, Scene 분리, 상태 소유권, Vertical Slice 순서를 사용자 검토한다. 승인 또는 수정 뒤 주요 비무 슬롯 3의 후보 3명과 슬롯 2→3 사이 절차형 노드 풀 상세화로 복귀한다. 사용자의 명시적 `기획 완료`와 `검수 완료` 전에는 Codex Build로 전환하지 않는다.
+PR #66의 정확한 최종 HEAD에서 Full Validation을 실행해 Godot 4.7.1 import·기존 회귀·새 행동 선택 검증 10종을 확인한다. 실패 시 해당 Task 범위에서 수정하고, 통과 후 Windows 1280×800 수동 확인과 STEP 14 사람 플레이를 별도 실행한다. 전체 5전 회차·강호행로·성장 구현은 별도 승인 전 시작하지 않는다.
