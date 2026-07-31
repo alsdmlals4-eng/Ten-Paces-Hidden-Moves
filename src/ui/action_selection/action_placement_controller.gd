@@ -3,6 +3,7 @@ extends RefCounted
 
 signal placement_succeeded(result: Dictionary)
 signal placement_failed(code: String, message: String)
+signal placement_moved(result: Dictionary)
 signal targeting_requested(anchor_index: int)
 
 const CODE_NO_CONTIGUOUS_TIMINGS := "NO_CONTIGUOUS_TIMINGS"
@@ -66,14 +67,7 @@ func select_and_place(definition: Dictionary) -> bool:
         reserve_ultimate.call(anchor)
 
     var placement := timing_panel.get_placement(anchor)
-    var targeting_started := false
-    if not placement.is_empty() and not bool(placement.get("target_ready", true)):
-        if begin_targeting.is_valid():
-            targeting_started = bool(begin_targeting.call(anchor))
-        if targeting_started:
-            targeting_in_progress = true
-            targeting_anchor = anchor
-            targeting_requested.emit(anchor)
+    var targeting_started := _start_targeting_if_needed(placement, anchor)
 
     var result := placement.duplicate(true)
     result["anchor_index"] = anchor
@@ -102,7 +96,41 @@ func move_placement(anchor_index: int, new_anchor_index: int) -> bool:
         return false
     if not timing_panel.has_method("move_placement"):
         return false
-    return bool(timing_panel.call("move_placement", anchor_index, new_anchor_index))
+    var original := timing_panel.get_placement(anchor_index)
+    if original.is_empty():
+        return false
+    if not bool(timing_panel.call("move_placement", anchor_index, new_anchor_index)):
+        return false
+
+    var definition: Dictionary = original.get("definition", {})
+    var is_ultimate := _is_ultimate(definition)
+    if is_ultimate:
+        if refund_ultimate.is_valid():
+            refund_ultimate.call(original)
+        if reserve_ultimate.is_valid():
+            reserve_ultimate.call(new_anchor_index)
+
+    var moved := timing_panel.get_placement(new_anchor_index)
+    var targeting_started := _start_targeting_if_needed(moved, new_anchor_index)
+    var result := moved.duplicate(true)
+    result["previous_anchor_index"] = anchor_index
+    result["anchor_index"] = new_anchor_index
+    result["is_ultimate"] = is_ultimate
+    result["targeting_started"] = targeting_started
+    placement_moved.emit(result)
+    return true
+
+func _start_targeting_if_needed(placement: Dictionary, anchor_index: int) -> bool:
+    if placement.is_empty() or bool(placement.get("target_ready", true)):
+        return false
+    var targeting_started := false
+    if begin_targeting.is_valid():
+        targeting_started = bool(begin_targeting.call(anchor_index))
+    if targeting_started:
+        targeting_in_progress = true
+        targeting_anchor = anchor_index
+        targeting_requested.emit(anchor_index)
+    return targeting_started
 
 func _is_ultimate(definition_value) -> bool:
     if typeof(definition_value) != TYPE_DICTIONARY:
