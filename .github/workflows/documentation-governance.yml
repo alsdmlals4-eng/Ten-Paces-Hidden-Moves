@@ -92,6 +92,10 @@ jobs:
         if: steps.scope.outputs.code_changed == 'true'
         run: python tests/check_prepare_auto_placement_contract.py
 
+      - name: Validate action selection contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_action_selection_contract.py
+
       - name: Parse PowerShell automations for code changes
         if: steps.scope.outputs.code_changed == 'true'
         shell: pwsh
