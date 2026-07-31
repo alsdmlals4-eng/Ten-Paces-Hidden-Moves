@@ -11,6 +11,7 @@ const LOCKED_STATES := ["targeting", "committed", "resolving", "presenting_resul
 const BASIC_PANEL_SCENE := preload("res://scenes/ui/action_selection/basic_action_panel.tscn")
 const MARTIAL_PANEL_SCENE := preload("res://scenes/ui/action_selection/martial_action_panel.tscn")
 const ULTIMATE_PANEL_SCENE := preload("res://scenes/ui/action_selection/ultimate_action_panel.tscn")
+const DETAIL_PANEL_SCENE := preload("res://scenes/ui/action_selection/action_detail_panel.tscn")
 
 @onready var basic_tab: Button = %BasicTab
 @onready var martial_tab: Button = %MartialTab
@@ -25,12 +26,14 @@ var switching_enabled := true
 var basic_panel: BasicActionPanel
 var martial_panel: MartialActionPanel
 var ultimate_panel: UltimateActionPanel
+var action_detail_panel: ActionDetailPanel
 
 func _ready() -> void:
     basic_tab.pressed.connect(func(): set_active_source("basic"))
     martial_tab.pressed.connect(func(): set_active_source("martial"))
     ultimate_tab.pressed.connect(func(): set_active_source("ultimate"))
     _build_source_panels()
+    _build_detail_panel()
     _apply_state()
 
 func set_active_source(source: String) -> void:
@@ -46,6 +49,7 @@ func set_interaction_state(state: String) -> void:
     if interaction_state == "new_combat":
         active_source = "basic"
         interaction_state = "planning"
+        clear_detail()
     switching_enabled = interaction_state not in LOCKED_STATES
     _apply_state()
 
@@ -74,13 +78,20 @@ func request_action(definition: Dictionary) -> void:
         return
     action_selected.emit(definition.duplicate(true))
 
-func request_detail(definition: Dictionary, pinned: bool = false) -> void:
-    if definition.is_empty():
-        detail_cleared.emit()
+func request_detail(value: Dictionary, pinned: bool = false) -> void:
+    if value.is_empty():
+        clear_detail()
         return
-    detail_requested.emit(definition.duplicate(true), pinned)
+    if is_instance_valid(action_detail_panel):
+        if value.has("manual_id") and not value.has("id"):
+            action_detail_panel.show_manual(value, pinned)
+        else:
+            action_detail_panel.show_action(value, pinned)
+    detail_requested.emit(value.duplicate(true), pinned)
 
 func clear_detail() -> void:
+    if is_instance_valid(action_detail_panel):
+        action_detail_panel.clear_detail()
     detail_cleared.emit()
 
 func get_dock_snapshot() -> Dictionary:
@@ -94,8 +105,10 @@ func get_dock_snapshot() -> Dictionary:
         "basic_panel_ready": is_instance_valid(basic_panel),
         "martial_panel_ready": is_instance_valid(martial_panel),
         "ultimate_panel_ready": is_instance_valid(ultimate_panel),
+        "action_detail_panel_ready": is_instance_valid(action_detail_panel),
         "selected_manual_id": martial_panel.get_selected_manual_id() if is_instance_valid(martial_panel) else "",
         "ultimate_snapshot": ultimate_panel.get_panel_snapshot() if is_instance_valid(ultimate_panel) else {},
+        "detail_snapshot": action_detail_panel.get_detail_snapshot() if is_instance_valid(action_detail_panel) else {},
         "runtime_context": runtime_context.duplicate(true)
     }
 
@@ -123,6 +136,12 @@ func _build_source_panels() -> void:
     ultimate_panel.ultimate_selected.connect(request_action)
     ultimate_panel.detail_requested.connect(request_detail)
     ultimate_panel.detail_cleared.connect(clear_detail)
+
+func _build_detail_panel() -> void:
+    action_detail_panel = DETAIL_PANEL_SCENE.instantiate() as ActionDetailPanel
+    action_detail_panel.name = "ActionDetailPanel"
+    _fill_host(action_detail_panel)
+    detail_host.add_child(action_detail_panel)
 
 func _fill_host(panel: Control) -> void:
     panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
