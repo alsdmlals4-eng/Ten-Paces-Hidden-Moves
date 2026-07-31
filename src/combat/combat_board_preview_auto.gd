@@ -37,7 +37,10 @@ func _configure_action_placement_controller() -> void:
     )
     action_placement_controller.placement_succeeded.connect(_on_controller_placement_succeeded)
     action_placement_controller.placement_failed.connect(_on_controller_placement_failed)
+    action_placement_controller.placement_moved.connect(_on_controller_placement_moved)
     action_placement_controller.targeting_requested.connect(_on_controller_targeting_requested)
+    if action_timing_panel.has_signal("linked_block_move_requested"):
+        action_timing_panel.connect("linked_block_move_requested", Callable(self, "_on_timing_linked_block_move_requested"))
     _sync_action_placement_controller_state()
 
 func _sync_action_placement_controller_state() -> void:
@@ -64,6 +67,14 @@ func _auto_place_selected_card(definition: Dictionary) -> bool:
     _sync_action_placement_controller_state()
     return action_placement_controller.select_and_place(definition.duplicate(true))
 
+func _on_timing_linked_block_move_requested(anchor_index: int, new_anchor_index: int) -> void:
+    if action_placement_controller == null:
+        return
+    _sync_action_placement_controller_state()
+    if action_placement_controller.move_placement(anchor_index, new_anchor_index):
+        if action_timing_panel.has_method("focus_linked_block"):
+            action_timing_panel.call_deferred("focus_linked_block", new_anchor_index)
+
 func _on_controller_placement_succeeded(result: Dictionary) -> void:
     var is_ultimate := bool(result.get("is_ultimate", false))
     if is_instance_valid(combat_log_panel):
@@ -77,6 +88,19 @@ func _on_controller_placement_succeeded(result: Dictionary) -> void:
     if not bool(result.get("targeting_started", false)):
         _begin_next_pending_target()
     _pending_controller_definition.clear()
+    _refresh_ultimate_menu()
+
+func _on_controller_placement_moved(result: Dictionary) -> void:
+    var is_ultimate := bool(result.get("is_ultimate", false))
+    if is_instance_valid(combat_log_panel):
+        var prefix := "[절초 예약 이동]" if is_ultimate else "[배치 이동]"
+        combat_log_panel.append_entry("%s %s · %s" % [
+            prefix,
+            str(result.get("card_name", result.get("card_id", "행동"))),
+            _placement_timing_text(result)
+        ], "system")
+    if not bool(result.get("targeting_started", false)):
+        _begin_next_pending_target()
     _refresh_ultimate_menu()
 
 func _on_controller_placement_failed(code: String, message: String) -> void:
