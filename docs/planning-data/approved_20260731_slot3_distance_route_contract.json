@@ -30,20 +30,29 @@
       "name": "설하",
       "epithet": "유설검객",
       "weapon": "장검",
-      "preferred_distance": [2],
+      "preferred_distance": [
+        2
+      ],
       "role": "DISTANCE_2_ORTHODOX",
       "signature_prototype": "설영일섬",
-      "signature_sequence": ["PREPARE", "RANGE_2_THRUST"]
+      "signature_sequence": [
+        "PREPARE",
+        "RANGE_2_THRUST"
+      ]
     },
     {
       "id": "gwak_yeonsan",
       "name": "곽연산",
       "epithet": "파진창객",
       "weapon": "장창",
-      "preferred_distance": [3],
+      "preferred_distance": [
+        3
+      ],
       "role": "LONG_RANGE_PRESSURE",
       "signature_prototype": "관월파진창",
-      "signature_sequence": ["RANGE_3_THRUST"],
+      "signature_sequence": [
+        "RANGE_3_THRUST"
+      ],
       "close_range_available": false
     },
     {
@@ -51,10 +60,16 @@
       "name": "연비홍",
       "epithet": "답풍도객",
       "weapon": "도",
-      "preferred_distance": [1, 2],
+      "preferred_distance": [
+        1,
+        2
+      ],
       "role": "DISTANCE_SWITCH_VARIANT",
       "signature_prototype": "답풍연환도",
-      "signature_sequence": ["APPROACH_1", "RANGE_1_ATTACK"],
+      "signature_sequence": [
+        "APPROACH_1",
+        "RANGE_1_ATTACK"
+      ],
       "interruptible_during_approach": true
     }
   ],
@@ -64,8 +79,15 @@
     "selection": "DETERMINISTIC_SAMPLE_WITHOUT_REPLACEMENT",
     "visited_nodes": 2,
     "layer_1": {
-      "role": ["RECOVERY", "GROWTH", "SHORT_EVENT"],
-      "candidate_count": [2, 3],
+      "role": [
+        "RECOVERY",
+        "GROWTH",
+        "SHORT_EVENT"
+      ],
+      "candidate_count": [
+        2,
+        3
+      ],
       "initial_pool": [
         "mountain_inn",
         "abandoned_training_ground",
@@ -73,8 +95,14 @@
       ]
     },
     "layer_2": {
-      "role": ["OPPONENT_INFORMATION", "DISTANCE_PREPARATION"],
-      "candidate_count": [2, 3],
+      "role": [
+        "OPPONENT_INFORMATION",
+        "DISTANCE_PREPARATION"
+      ],
+      "candidate_count": [
+        2,
+        3
+      ],
       "initial_pool": [
         "scarred_cliff_path",
         "collapsed_spear_formation",
@@ -100,7 +128,10 @@
       "count": 1
     },
     "alternative": {
-      "causes": ["MOVEMENT_INTERRUPTED", "PREFERRED_RANGE_DENIED"],
+      "causes": [
+        "MOVEMENT_INTERRUPTED",
+        "PREFERRED_RANGE_DENIED"
+      ],
       "count": 1
     }
   },
