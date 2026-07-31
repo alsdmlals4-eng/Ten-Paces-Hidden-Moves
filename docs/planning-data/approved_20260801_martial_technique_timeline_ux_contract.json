@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01",
+  "status": "APPROVED_PLANNING",
+  "data_role": "NON_RUNTIME_APPROVED_PLANNING",
+  "runtime_authority": "NONE",
+  "round_timeline": {
+    "total_timings": 10,
+    "bundles": [3, 3, 4],
+    "show_full_round_and_current_bundle": true,
+    "editable_scope": "CURRENT_BUNDLE_ONLY",
+    "commit_locks_current_bundle": true
+  },
+  "action_source_hierarchy": [
+    "BASIC_ACTIONS",
+    "MARTIAL_MANUALS_TO_UNLOCKED_TECHNIQUES",
+    "ULTIMATES"
+  ],
+  "manual_contract": {
+    "manual_is_growth_and_grouping_unit": true,
+    "manual_is_not_directly_placeable": true,
+    "placeable_unit": "UNLOCKED_TECHNIQUE",
+    "deck_hand_draw_equipment_limit": false,
+    "starting_manual_candidates": 6,
+    "starting_manual_choice": 4,
+    "starting_mastery": 3,
+    "mastery_unlocks": {
+      "1": "PASSIVE",
+      "3": "TECHNIQUE_1",
+      "5": "TECHNIQUE_1_PATCH",
+      "7": "TECHNIQUE_2",
+      "9": "TECHNIQUE_2_PATCH",
+      "10": "ULTIMATE_OR_TRUE_INTENT"
+    }
+  },
+  "basic_actions": [
+    "MOVE",
+    "FOOTWORK",
+    "GUARD",
+    "EVADE",
+    "QUICK_ATTACK",
+    "HEAVY_ATTACK",
+    "MEDITATE",
+    "PREPARE"
+  ],
+  "multi_timing_action": {
+    "one_timing": ["EXECUTE"],
+    "two_timings": ["TELEGRAPH", "EXECUTE"],
+    "three_timings": ["TELEGRAPH", "TELEGRAPH", "EXECUTE"],
+    "contiguous": true,
+    "cross_bundle": false,
+    "cost_paid_at_first_telegraph": true,
+    "refund_on_interrupt": false,
+    "display_as_single_linked_action": true
+  },
+  "auto_placement": {
+    "on_technique_selected": "PLACE_AT_EARLIEST_VALID_CONTIGUOUS_RANGE",
+    "failure_keeps_plan_unchanged": true,
+    "failure_reason_required": true,
+    "remove_before_commit": true,
+    "reposition_before_commit": true,
+    "manual_slot_first_placement": "OPTIONAL_SECONDARY_INPUT"
+  },
+  "ultimate_momentum": {
+    "shared_resource": true,
+    "range": [0, 5],
+    "display_separately_from_stamina_and_internal": true,
+    "selection_reserves": 5,
+    "remove_before_commit_refunds": 5,
+    "after_commit_refund": false,
+    "basic_and_mastery_ultimates_share_resource": true
+  },
+  "quick_access": {
+    "priority": "P1",
+    "recent_or_favorite_count": [3, 4],
+    "must_preserve_manual_origin": true,
+    "must_not_replace_manual_hierarchy": true,
+    "must_not_recommend_exact_answer": true
+  },
+  "prohibited_visual_models": [
+    "MANUAL_DIRECTLY_PLACED_IN_TIMING",
+    "RANDOM_HAND_OR_DRAW",
+    "MULTI_TIMING_ACTION_AS_DUPLICATE_CARDS",
+    "CURRENT_THREE_TIMINGS_WITHOUT_FULL_TEN_TIMING_CONTEXT",
+    "ULTIMATE_MOMENTUM_MERGED_WITH_OTHER_RESOURCES",
+    "OPPONENT_PLAN_OR_EXACT_ANSWER_PREVIEW"
+  ],
+  "pending_decisions": [
+    "MARTIAL_MANUAL_LIST_LAYOUT",
+    "LARGE_TECHNIQUE_COLLECTION_FILTERING",
+    "POST_AUTO_PLACEMENT_DRAG_CONTRACT",
+    "PREPARE_MEDITATE_MOMENTUM_PRODUCT_CANON",
+    "PASSIVE_AND_TRUE_INTENT_VISIBILITY"
+  ],
+  "approval_gate": {
+    "planning_complete": false,
+    "review_complete": false,
+    "runtime_changes_allowed": false,
+    "human_validation": "NOT_RUN",
+    "codex_handoff": false
+  }
+}
