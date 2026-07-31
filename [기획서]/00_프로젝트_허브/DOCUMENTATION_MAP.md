@@ -24,6 +24,7 @@ AGENTS.md
 | 2026-07-31 전투·노드 수·전체 회차·천하제일인 결정 | `docs/decisions/2026-07-31_COMBAT_ROUTE_AND_CHAMPION_DECISION.md` | `approved_20260731_combat_route_contract.json` |
 | 절차형 주요 비무 후보 3명·경로 생성·선정 규칙 | `docs/decisions/2026-07-31_PROCEDURAL_DUEL_POOL_AND_ROUTE_DECISION.md` | `approved_20260731_procedural_duel_pool_route_contract.json` |
 | 절차형 비무·경로 설계 명세 | `docs/superpowers/specs/2026-07-31-procedural-duel-pool-route-design.md` | 슬롯 1·2 후보와 생성 안전장치 |
+| 상황별 필수 화면 4종·P0 플레이 상태·Godot Scene/Node/State 구현 명세 | `docs/superpowers/specs/2026-07-31-situation-screen-implementation-spec.md` | `draft_20260731_situation_screen_contract.json`; `DESIGN_DRAFT_USER_REVIEW_PENDING` |
 | 주요 비무 1·2전 고정형 상세 초안 | `docs/planning/2026-07-31_DUEL_01_02_ROUTE_PACKAGE_DRAFT.md` | 후보 원형·고정 경로 역사 자료; 최신 절차형 결정이 우선 |
 | PR #45 통합 판정·중복 제거 | `docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md` | PR #45 changed files·과거 검수 보고서 |
 | 프로젝트 코어·플레이어 약속 | `docs/01_GAME_DESIGN.md` | v6 원장 `CORE-*`·과거 코어 결정 기록 |
@@ -35,10 +36,10 @@ AGENTS.md
 | 강호행로·데모 8노드·전체 18노드·콘텐츠 범위 | `docs/03_CONTENT_CATALOG.md` + 2026-07-31 결정 | 과거 `poc_map_rewards.json` 범위 가설 |
 | PoC 5전·4구간·노드 8개 검증 | `docs/05_COMBAT_POC_SPEC.md` | planning JSON·현행 T0 |
 | 무공서·성급·수련·랭크·절초 공통 계약 | v6 원장 `MARTIAL/GLOBAL/ROSTER/POOL/BAN/OFFER/TRAIN/RANK/ULT-*` | `docs/06_STARTING_FACTION_MASTERY_DATA.md`·과거 PoC 무공 JSON |
-| UI·접근성 | `docs/07_COMBAT_UI_SPEC.md` | 실제 씬·사람 검증 |
-| 구현 사실 | 실제 `data/`, `src/`, `scenes/`, `tests/` | 문서의 구현 주장 |
+| UI·접근성 | `docs/07_COMBAT_UI_SPEC.md` + `docs/UX_UI_SYSTEM.md` | 실제 씬·사람 검증 |
+| 구현 사실 | 실제 `data/`, `src/`, `scenes/`, `tests/`, `project.godot` | 문서의 구현 주장 |
 
-`docs/01`, `02`, `03`, `05`는 2026-07-31 승인 전투 결정에 맞춰 갱신했다. 고정형 연교→묵진 패키지는 후보 원형으로 유지하되, 상대·노드·연결을 고정한 표현은 최신 절차형 결정이 대체한다. 충돌할 때는 가장 최근 날짜의 승인 결정 문서가 우선한다.
+`docs/01`, `02`, `03`, `05`는 2026-07-31 승인 전투 결정에 맞춰 갱신했다. 고정형 연교→묵진 패키지는 후보 원형으로 유지하되, 상대·노드·연결을 고정한 표현은 최신 절차형 결정이 대체한다. 상황별 화면 명세는 사용자 검토용 설계 초안이며 승인 결정·구현 권한을 갖지 않는다. 충돌할 때는 가장 최근 날짜의 승인 결정 문서가 우선한다.
 
 ## PR #45 중복 방지
 
@@ -48,6 +49,7 @@ AGENTS.md
 - `docs/planning-data/approved_20260731_combat_route_contract.json`은 전투·회차 승인 기획의 구조화 포인터다.
 - `docs/planning-data/approved_20260731_procedural_duel_pool_route_contract.json`은 절차형 상대·경로 승인 기획의 구조화 포인터다.
 - `docs/planning-data/draft_20260731_duel_01_02_route_package.json`은 고정형 후보 원형 자료이며 런타임 입력 권한이 없다.
+- `docs/planning-data/draft_20260731_situation_screen_contract.json`은 상황별 화면 구현 명세의 구조화된 검토 입력이며 런타임 입력 권한이 없다.
 - 2026-07-26 구현 계획은 새 BUILD 승인 전 실행하지 않는다.
 - 같은 질문에 여러 활성 정본을 두지 않는다.
 
@@ -58,6 +60,7 @@ AGENTS.md
 - 실행 프로필: `PLANNING_ONLY_PROFILE`
 - 합성 검토: `AI_SIMULATION_COMPLETED / T6_AI_INFERENCE`
 - 절차형 비무 후보·경로 구조: `APPROVED_PLANNING`
+- 상황별 화면 구현 명세: `DESIGN_DRAFT_USER_REVIEW_PENDING`
 - 슬롯 1·2 정확 수치·전용 무공: `PLANNED / BALANCE_PENDING`
 - 사람 검증: `NOT_RUN`
 - 후속 적대적 검토: `HOLD / [보류]`
