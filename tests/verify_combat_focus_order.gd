@@ -2,6 +2,7 @@
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
+const REPORT_PATH := "res://focus-order-report.txt"
 
 var failures: Array[String] = []
 
@@ -90,11 +91,21 @@ func _require_next(control: Control, expected: Control, label: String) -> void:
             ]
         )
 
+func _write_report(lines: Array[String]) -> void:
+    var file := FileAccess.open(REPORT_PATH, FileAccess.WRITE)
+    if file == null:
+        push_error("Could not write focus-order report.")
+        return
+    file.store_string("\n".join(lines) + "\n")
+    file.close()
+
 func _finish() -> void:
     if failures.is_empty():
+        _write_report(["COMBAT_FOCUS_ORDER_VERIFY_OK"])
         print("COMBAT_FOCUS_ORDER_VERIFY_OK")
         quit(0)
         return
+    _write_report(failures)
     for failure in failures:
         push_error(failure)
         print("FOCUS_MISMATCH %s" % failure)
