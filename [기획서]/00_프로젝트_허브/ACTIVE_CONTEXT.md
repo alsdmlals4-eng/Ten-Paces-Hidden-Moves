@@ -15,6 +15,8 @@ canonical_decision_ledger: docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGE
 latest_user_decision: docs/decisions/2026-07-31_PROCEDURAL_DUEL_POOL_AND_ROUTE_DECISION.md
 current_design_package: docs/superpowers/specs/2026-07-31-procedural-duel-pool-route-design.md
 current_design_package_status: APPROVED_PLANNING
+current_review_package: docs/superpowers/specs/2026-07-31-situation-screen-implementation-spec.md
+current_review_package_status: DESIGN_DRAFT_USER_REVIEW_PENDING
 integration_review: docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md
 human_step14: NOT_RUN
 ```
@@ -105,6 +107,20 @@ full_run:
 
 기존 `TEN-PKG-20260731-DUEL01-02-ROUTE01`의 연교·묵진 상세 패턴은 후보 원형으로 재사용하지만, 고정 상대·고정 경로 표현은 최신 결정으로 대체된다.
 
+## 상황별 인게임 화면 구현 명세 중간점검
+
+`TEN-SIT-SPEC-20260731-01`은 프로젝트 문서와 실제 Godot 파일을 대조한 사용자 검토용 초안이다.
+
+- 실제 시작 Scene은 `res://scenes/combat/combat_board_preview.tscn`이며 제품용 Main·Route·Result 흐름은 아직 확인되지 않았다.
+- 실제 전투 PoC에는 10칸 전장, 상단 HUD, 3/3/4 슬롯, 카드 Tray, 상세, 로그, 상대 가설, 결정적 복기 UI가 존재한다.
+- 전통적 인벤토리 대신 `무공 구성·성급·해금 기술·보유 자원·대비 효과` 화면을 대응 기준 화면으로 정의한다.
+- P0 상황은 Main 진입, 시작 무공, Route, Node, Briefing, Combat Plan, Resolve, Review, Victory Reward, Defeat Retry로 분해한다.
+- Route와 Combat은 별도 Scene, Combat Review는 같은 Scene Overlay, Duel Result는 별도 Scene을 권장한다.
+- P0 Autoload 후보는 `RunSession`, `SaveService`로 최소화하며 CombatState는 Combat Scene이 소유한다.
+- 현재 `CombatBoardPreview`의 판정 엔진과 UI 부품은 재사용하되 화면 조립·입력·연출·오디오·재시작 책임은 단계적으로 분리한다.
+- 구조화 초안은 `docs/planning-data/draft_20260731_situation_screen_contract.json`에 기록한다.
+- 상태는 `DESIGN_DRAFT_USER_REVIEW_PENDING`; 구현 승인·Codex 인계가 아니다.
+
 ## 천하제일인 후속 콘텐츠
 
 본편 주요 비무 1~10과 일반 엔딩 후 플레이 성향에 대응하는 후보 한 명의 도전장이 열린다. 첫 승리 후 나머지 후보를 선택할 수 있고 `등록 전투 구성`의 `Champion Build Snapshot` 등록 자격을 획득한다.
@@ -136,7 +152,8 @@ full_run:
 - 최신 권한 원장: `2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
 - 전투·강호행로 결정: `2026-07-31_COMBAT_ROUTE_AND_CHAMPION_DECISION.md`.
 - 절차형 비무·경로 결정: `2026-07-31_PROCEDURAL_DUEL_POOL_AND_ROUTE_DECISION.md`.
-- 현재 설계 명세: `docs/superpowers/specs/2026-07-31-procedural-duel-pool-route-design.md`.
+- 절차형 설계 명세: `docs/superpowers/specs/2026-07-31-procedural-duel-pool-route-design.md`.
+- 화면·상황 구현 명세 중간점검: `docs/superpowers/specs/2026-07-31-situation-screen-implementation-spec.md`; 사용자 검토 대기.
 - 기존 고정 패키지: `2026-07-31_DUEL_01_02_ROUTE_PACKAGE_DRAFT.md`; 후보 원형 자료로 유지.
 - 2026-07-26 기획·BUILD 진입 문서: `SUPERSEDED_REFERENCE`.
 - 과거 적대적 검토·벤치마크·sanity: `HISTORICAL_EVIDENCE`.
@@ -146,4 +163,4 @@ full_run:
 
 ## 다음 작업
 
-주요 비무 슬롯 3의 후보 3명과 슬롯 2→3 사이 절차형 노드 풀을 벤치마킹 후 상세화한다. 이후 데모 슬롯 1~5의 후보 수·제작량·플레이타임을 적대적으로 검토한다. 사용자의 명시적 `기획 완료`와 `검수 완료` 전에는 Codex Build로 전환하지 않는다.
+먼저 `TEN-SIT-SPEC-20260731-01`의 필수 화면 4종, P0 상황, Scene 분리, 상태 소유권, Vertical Slice 순서를 사용자 검토한다. 승인 또는 수정 뒤 주요 비무 슬롯 3의 후보 3명과 슬롯 2→3 사이 절차형 노드 풀 상세화로 복귀한다. 사용자의 명시적 `기획 완료`와 `검수 완료` 전에는 Codex Build로 전환하지 않는다.
