@@ -324,19 +324,37 @@ func _configure_keyboard_focus_order() -> void:
             sequence.append_array(action_selection_dock.ultimate_panel.action_buttons)
         _:
             sequence.append_array(action_selection_dock.basic_panel.buttons)
-    if action_timing_panel.has_method("get_linked_block_snapshots"):
-        for snapshot in action_timing_panel.call("get_linked_block_snapshots"):
-            var anchor_index := int((snapshot as Dictionary).get("anchor_index", 0))
-            var block = action_timing_panel.call("get_linked_block", anchor_index)
-            if is_instance_valid(block):
-                sequence.append(block as Control)
-    if is_instance_valid(combat_progress_button):
-        sequence.append(combat_progress_button)
+
+    var appended_anchors: Dictionary = {}
+    for timing_index in range(1, 11):
+        if action_timing_panel.has_assignment_at(timing_index):
+            var anchor_index := action_timing_panel.get_assignment_anchor(timing_index)
+            if appended_anchors.has(anchor_index):
+                continue
+            appended_anchors[anchor_index] = true
+            if action_timing_panel.has_method("get_linked_block"):
+                var block = action_timing_panel.call("get_linked_block", anchor_index)
+                if is_instance_valid(block):
+                    sequence.append(block as Control)
+                    continue
+        var slot := action_timing_panel.get_slot(timing_index)
+        if is_instance_valid(slot):
+            sequence.append(slot)
+
+    for tile in tiles:
+        if is_instance_valid(tile):
+            sequence.append(tile)
+    if is_instance_valid(combat_progress_button) and is_instance_valid(combat_progress_button._button):
+        sequence.append(combat_progress_button._button)
     for control_value in [fast_replay_button, skip_presentation_button, reduced_motion_button, sound_toggle_button, sound_volume_slider]:
         if is_instance_valid(control_value):
             sequence.append(control_value as Control)
+    if is_instance_valid(opponent_hypothesis_panel):
+        var hypothesis_focus := opponent_hypothesis_panel.get_focus_control()
+        if is_instance_valid(hypothesis_focus):
+            sequence.append(hypothesis_focus)
     _link_product_focus_sequence(sequence)
-    set_meta("product_focus_order", "source_tabs|active_source|linked_blocks|progress|playback")
+    set_meta("product_focus_order", "source_tabs|active_source|timings|targets|progress|playback|hypothesis")
 
 func _link_product_focus_sequence(sequence: Array[Control]) -> void:
     var filtered: Array[Control] = []
