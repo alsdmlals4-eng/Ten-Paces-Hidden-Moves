@@ -60,6 +60,47 @@ jobs:
             echo "enabled=false" >> "$GITHUB_OUTPUT"
           fi
 
+  action-selection-godot-smoke:
+    name: action-selection-godot-smoke
+    needs: full-validation-scope
+    if: needs.full-validation-scope.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - name: Set up Godot 4.7.1
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.1
+          use-dotnet: false
+          include-templates: false
+      - name: Import and parse project
+        run: godot --headless --editor --path . --quit
+      - name: Verify product focus order
+        run: godot --headless --path . --script res://tests/verify_combat_focus_order.gd
+      - name: Verify action view model adapter
+        run: godot --headless --path . --script res://tests/verify_action_view_model_adapter.gd
+      - name: Verify action selection dock
+        run: godot --headless --path . --script res://tests/verify_action_selection_dock.gd
+      - name: Verify basic action panel
+        run: godot --headless --path . --script res://tests/verify_basic_action_panel.gd
+      - name: Verify martial action panel
+        run: godot --headless --path . --script res://tests/verify_martial_action_panel.gd
+      - name: Verify ultimate action panel
+        run: godot --headless --path . --script res://tests/verify_ultimate_action_panel.gd
+      - name: Verify action placement controller
+        run: godot --headless --path . --script res://tests/verify_action_placement_controller.gd
+      - name: Verify linked action blocks
+        run: godot --headless --path . --script res://tests/verify_linked_action_blocks.gd
+      - name: Verify action repositioning
+        run: godot --headless --path . --script res://tests/verify_action_repositioning.gd
+      - name: Verify action detail panel
+        run: godot --headless --path . --script res://tests/verify_action_detail_panel.gd
+      - name: Verify combat action selection integration
+        run: godot --headless --path . --script res://tests/verify_combat_action_selection_integration.gd
+
   matrix-contracts:
     name: ${{ matrix.os }}-python-${{ matrix.python }}
     needs: full-validation-scope
