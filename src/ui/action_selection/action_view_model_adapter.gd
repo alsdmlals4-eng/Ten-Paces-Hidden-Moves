@@ -3,6 +3,7 @@ extends RefCounted
 
 const BASIC_PATH := "res://data/cards/basic_cards.json"
 const ULTIMATE_PATH := "res://data/cards/ultimate_cards.json"
+const MASTERY_ULTIMATE_PATH := "res://data/combat/mastery_ultimate_poc.json"
 const ACTION_SELECTION_PATH := "res://data/combat/action_selection_poc.json"
 
 func build_basic_actions() -> Array[Dictionary]:
@@ -48,10 +49,14 @@ func build_owned_manuals() -> Array[Dictionary]:
     return result
 
 func build_ultimate_actions(momentum: int) -> Array[Dictionary]:
-    var root := _load_dictionary(ULTIMATE_PATH)
-    var required_momentum := maxi(0, int(root.get("momentum_cost", 5)))
+    var base_root := _load_dictionary(ULTIMATE_PATH)
+    var mastery_root := _load_dictionary(MASTERY_ULTIMATE_PATH)
+    var required_momentum := maxi(0, int(base_root.get("momentum_cost", 5)))
+    var sources: Array = []
+    sources.append_array(base_root.get("cards", []))
+    sources.append_array(mastery_root.get("cards", []))
     var result: Array[Dictionary] = []
-    for value in root.get("cards", []):
+    for value in sources:
         if typeof(value) != TYPE_DICTIONARY:
             continue
         var source: Dictionary = value
