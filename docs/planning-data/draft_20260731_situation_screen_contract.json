@@ -27,15 +27,15 @@
       "BattleBackground",
       "CombatCharacterPlaceholder"
     ],
-    "verified_missing_as_product_scenes": [
-      "MAIN_MENU_NOT_VERIFIED",
-      "RUN_SETUP_NOT_VERIFIED",
-      "ROUTE_MAP_NOT_VERIFIED",
-      "ROUTE_NODE_NOT_VERIFIED",
-      "DUEL_BRIEFING_NOT_VERIFIED",
-      "MARTIAL_BUILD_NOT_VERIFIED",
-      "DUEL_RESULT_REWARD_NOT_VERIFIED",
-      "PRODUCT_SAVE_MANAGER_NOT_VERIFIED"
+    "product_scenes_not_verified": [
+      "MAIN_MENU",
+      "RUN_SETUP",
+      "ROUTE_MAP",
+      "ROUTE_NODE",
+      "DUEL_BRIEFING",
+      "MARTIAL_BUILD",
+      "DUEL_RESULT_REWARD",
+      "PRODUCT_SAVE_MANAGER"
     ]
   },
   "mandatory_screens": [
@@ -183,6 +183,17 @@
     "960X640_TO_2560X1440_LAYOUT",
     "HUMAN_CAUSAL_UNDERSTANDING"
   ],
+  "external_sync": {
+    "google_sheet_id": "1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0",
+    "sheet_ranges": [
+      "01_작업순서!A7:N7",
+      "04_누락_충돌_감사!A9:H9",
+      "60_UX_UI_접근성!A5:J8",
+      "80_데모_버티컬슬라이스_플레이테스트!A4:L4",
+      "99_변경이력!A9:H9"
+    ],
+    "status": "SHEET_SYNCED_PR_OPEN_DRAFT"
+  },
   "approval_gate": {
     "planning_complete": false,
     "review_complete": false,
