@@ -10,6 +10,7 @@ const SOURCES := ["basic", "martial", "ultimate"]
 const LOCKED_STATES := ["targeting", "committed", "resolving", "presenting_result", "review"]
 const BASIC_PANEL_SCENE := preload("res://scenes/ui/action_selection/basic_action_panel.tscn")
 const MARTIAL_PANEL_SCENE := preload("res://scenes/ui/action_selection/martial_action_panel.tscn")
+const ULTIMATE_PANEL_SCENE := preload("res://scenes/ui/action_selection/ultimate_action_panel.tscn")
 
 @onready var basic_tab: Button = %BasicTab
 @onready var martial_tab: Button = %MartialTab
@@ -23,6 +24,7 @@ var runtime_context: Dictionary = {}
 var switching_enabled := true
 var basic_panel: BasicActionPanel
 var martial_panel: MartialActionPanel
+var ultimate_panel: UltimateActionPanel
 
 func _ready() -> void:
     basic_tab.pressed.connect(func(): set_active_source("basic"))
@@ -49,6 +51,22 @@ func set_interaction_state(state: String) -> void:
 
 func set_runtime_context(context: Dictionary) -> void:
     runtime_context = context.duplicate(true)
+    if is_instance_valid(ultimate_panel):
+        var current := 0
+        var maximum := 5
+        var momentum_value = runtime_context.get("momentum", runtime_context.get("ultimate_momentum", 0))
+        if typeof(momentum_value) == TYPE_ARRAY and (momentum_value as Array).size() >= 2:
+            current = int((momentum_value as Array)[0])
+            maximum = int((momentum_value as Array)[1])
+        else:
+            current = int(momentum_value)
+            maximum = int(runtime_context.get("momentum_maximum", 5))
+        ultimate_panel.set_momentum(current, maximum)
+        var reservation_values: Array[Dictionary] = []
+        for value in runtime_context.get("ultimate_reservations", []):
+            if typeof(value) == TYPE_DICTIONARY:
+                reservation_values.append((value as Dictionary).duplicate(true))
+        ultimate_panel.set_reservations(reservation_values)
     set_meta("runtime_context", runtime_context)
 
 func request_action(definition: Dictionary) -> void:
@@ -75,7 +93,9 @@ func get_dock_snapshot() -> Dictionary:
         "detail_host_ready": is_instance_valid(detail_host),
         "basic_panel_ready": is_instance_valid(basic_panel),
         "martial_panel_ready": is_instance_valid(martial_panel),
+        "ultimate_panel_ready": is_instance_valid(ultimate_panel),
         "selected_manual_id": martial_panel.get_selected_manual_id() if is_instance_valid(martial_panel) else "",
+        "ultimate_snapshot": ultimate_panel.get_panel_snapshot() if is_instance_valid(ultimate_panel) else {},
         "runtime_context": runtime_context.duplicate(true)
     }
 
@@ -96,6 +116,14 @@ func _build_source_panels() -> void:
     martial_panel.detail_requested.connect(request_detail)
     martial_panel.detail_cleared.connect(clear_detail)
 
+    ultimate_panel = ULTIMATE_PANEL_SCENE.instantiate() as UltimateActionPanel
+    ultimate_panel.name = "UltimateActionPanel"
+    _fill_host(ultimate_panel)
+    content_host.add_child(ultimate_panel)
+    ultimate_panel.ultimate_selected.connect(request_action)
+    ultimate_panel.detail_requested.connect(request_detail)
+    ultimate_panel.detail_cleared.connect(clear_detail)
+
 func _fill_host(panel: Control) -> void:
     panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
@@ -111,6 +139,8 @@ func _apply_state() -> void:
         basic_panel.set_interaction_enabled(switching_enabled)
     if is_instance_valid(martial_panel):
         martial_panel.set_interaction_enabled(switching_enabled)
+    if is_instance_valid(ultimate_panel):
+        ultimate_panel.set_interaction_enabled(switching_enabled)
     _refresh_tabs()
     _refresh_source_content()
     set_meta("active_source", active_source)
@@ -130,6 +160,8 @@ func _refresh_source_content() -> void:
         basic_panel.visible = active_source == "basic"
     if is_instance_valid(martial_panel):
         martial_panel.visible = active_source == "martial"
+    if is_instance_valid(ultimate_panel):
+        ultimate_panel.visible = active_source == "ultimate"
     set_meta("visible_source", active_source)
 
 func _set_tab_state(button: Button, source: String, label: String) -> void:
