@@ -43,7 +43,7 @@ func _verify_disabled_reason_copy() -> void:
     board.combat_state["player"] = player
     board._apply_combat_state_to_view()
     board.action_selection_dock.set_active_source("ultimate")
-    var momentum_locked := board.action_selection_dock.ultimate_panel.get_action_button("ultimate_ten_paces_wave")
+    var momentum_locked: Button = board.action_selection_dock.ultimate_panel.get_action_button("ultimate_ten_paces_wave")
     if not board.action_selection_dock.ultimate_panel.visible:
         failures.append("The ultimate source panel must be reachable from the product dock during planning.")
     if not is_instance_valid(momentum_locked) or not momentum_locked.disabled:
@@ -71,7 +71,7 @@ func _verify_disabled_reason_copy() -> void:
         failures.append("A failed ultimate placement must not create a momentum reservation.")
 
     board._set_presentation_state("resolving")
-    var resolving_button := board.action_selection_dock.ultimate_panel.get_action_button("ultimate_ten_paces_wave")
+    var resolving_button: Button = board.action_selection_dock.ultimate_panel.get_action_button("ultimate_ten_paces_wave")
     if board.action_selection_dock.switching_enabled:
         failures.append("Resolving must lock product action-source switching.")
     if not is_instance_valid(resolving_button) or not resolving_button.disabled:
@@ -97,7 +97,7 @@ func _verify_reservation(card_id: String, span: int) -> void:
     await process_frame
     await process_frame
 
-    var product_button := board.action_selection_dock.ultimate_panel.get_action_button(card_id)
+    var product_button: Button = board.action_selection_dock.ultimate_panel.get_action_button(card_id)
     if not is_instance_valid(product_button) or product_button.disabled:
         failures.append("The product ultimate panel must offer %s at exactly five momentum." % card_id)
     if not bool(board.get_layout_snapshot().get("ultimate_vfx_ready", false)):
@@ -117,7 +117,7 @@ func _verify_reservation(card_id: String, span: int) -> void:
         for slot_index in range(1, span + 1):
             if not board.action_timing_panel.has_assignment_at(slot_index):
                 failures.append("Ultimate %s must occupy timing %d." % [card_id, slot_index])
-        var linked_block = board.action_timing_panel.get_linked_block(1)
+        var linked_block: LinkedActionBlock = board.action_timing_panel.get_linked_block(1)
         if not is_instance_valid(linked_block) or not linked_block.tooltip_text.contains("제거"):
             failures.append("Reserved ultimate blocks must explain pre-commit removal: %s" % card_id)
         board._show_ultimate_vfx({"card_id": card_id})
