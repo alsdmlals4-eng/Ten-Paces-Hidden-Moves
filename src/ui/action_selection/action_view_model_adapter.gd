@@ -86,35 +86,40 @@ func build_ultimate_actions(momentum: int) -> Array[Dictionary]:
 
 func _normalize_action(definition: Dictionary, source_kind: String, source_id: String, source_label: String) -> Dictionary:
     var action_slots := maxi(1, int(definition.get("action_slots", 1)))
-    var detail := {
+    var normalized := definition.duplicate(true)
+    normalized["id"] = str(definition.get("id", ""))
+    normalized["name"] = str(definition.get("name", ""))
+    normalized["source"] = source_kind
+    normalized["source_kind"] = source_kind
+    normalized["source_id"] = source_id
+    normalized["source_label"] = source_label
+    normalized["category"] = str(definition.get("category", ""))
+    normalized["category_label"] = str(definition.get("category_label", ""))
+    normalized["action_slots"] = action_slots
+    normalized["stamina_cost"] = maxi(0, int(definition.get("stamina_cost", 0)))
+    normalized["internal_cost"] = maxi(0, int(definition.get("internal_cost", 0)))
+    normalized["momentum_cost"] = maxi(0, int(definition.get("momentum_cost", 0)))
+    normalized["range_text"] = str(definition.get("range_text", "-"))
+    normalized["targeting_mode"] = str(definition.get("targeting_mode", "none"))
+    normalized["telegraph_count"] = maxi(0, action_slots - 1)
+    normalized["execution_count"] = 1
+    normalized["locked"] = bool(definition.get("locked", false))
+    normalized["lock_reason"] = str(definition.get("lock_reason", ""))
+    normalized["tags"] = _string_array(definition.get("tags", []))
+    normalized["detail"] = {
         "target": str(definition.get("target", "")),
         "damage": str(definition.get("damage", "없음")),
         "condition": str(definition.get("condition", "없음")),
         "effect_text": str(definition.get("effect_text", "")),
         "flavor": str(definition.get("flavor", "")),
-        "hits": maxi(0, int(definition.get("hits", 0)))
+        "hits": _hit_count(definition.get("hits", 0))
     }
-    return {
-        "id": str(definition.get("id", "")),
-        "name": str(definition.get("name", "")),
-        "source_kind": source_kind,
-        "source_id": source_id,
-        "source_label": source_label,
-        "category": str(definition.get("category", "")),
-        "category_label": str(definition.get("category_label", "")),
-        "action_slots": action_slots,
-        "stamina_cost": maxi(0, int(definition.get("stamina_cost", 0))),
-        "internal_cost": maxi(0, int(definition.get("internal_cost", 0))),
-        "momentum_cost": maxi(0, int(definition.get("momentum_cost", 0))),
-        "range_text": str(definition.get("range_text", "-")),
-        "targeting_mode": str(definition.get("targeting_mode", "none")),
-        "telegraph_count": maxi(0, action_slots - 1),
-        "execution_count": 1,
-        "locked": bool(definition.get("locked", false)),
-        "lock_reason": str(definition.get("lock_reason", "")),
-        "tags": _string_array(definition.get("tags", [])),
-        "detail": detail
-    }
+    return normalized
+
+func _hit_count(value) -> int:
+    if typeof(value) == TYPE_ARRAY or typeof(value) == TYPE_PACKED_INT32_ARRAY or typeof(value) == TYPE_PACKED_INT64_ARRAY:
+        return value.size()
+    return maxi(0, int(value))
 
 func _load_dictionary(path: String) -> Dictionary:
     if not FileAccess.file_exists(path):
