@@ -34,10 +34,10 @@ func _run() -> void:
     var martial_tab: Button = board.action_selection_dock.martial_tab
     var ultimate_tab: Button = board.action_selection_dock.ultimate_tab
     var basic_buttons: Array[Button] = board.action_selection_dock.basic_panel.buttons
-    var first_slot := board.action_timing_panel.get_slot(1)
-    var last_slot := board.action_timing_panel.get_slot(10)
-    var first_tile := board.get_tile(1)
-    var last_tile := board.get_tile(10)
+    var first_slot: ActionTimingSlot = board.action_timing_panel.get_slot(1)
+    var last_slot: ActionTimingSlot = board.action_timing_panel.get_slot(10)
+    var first_tile: CombatBoardTile = board.get_tile(1)
+    var last_tile: CombatBoardTile = board.get_tile(10)
     var progress: Button = board.combat_progress_button._button
     var hypothesis_focus: Control = board.opponent_hypothesis_panel.get_focus_control()
 
@@ -77,8 +77,18 @@ func _require_next(control: Control, expected: Control, label: String) -> void:
     if control == null or expected == null:
         failures.append("%s focus controls must exist." % label)
         return
-    if control.focus_next != control.get_path_to(expected):
-        failures.append("%s must have an explicit next Tab target." % label)
+    var expected_path := control.get_path_to(expected)
+    var actual_path := control.focus_next
+    if actual_path != expected_path:
+        failures.append(
+            "%s next mismatch: control=%s actual=%s expected=%s target=%s" % [
+                label,
+                str(control.get_path()),
+                str(actual_path),
+                str(expected_path),
+                str(expected.get_path())
+            ]
+        )
 
 func _finish() -> void:
     if failures.is_empty():
@@ -87,5 +97,6 @@ func _finish() -> void:
         return
     for failure in failures:
         push_error(failure)
+        print("FOCUS_MISMATCH %s" % failure)
     print("COMBAT_FOCUS_ORDER_VERIFY_FAILED count=%d" % failures.size())
     quit(1)
