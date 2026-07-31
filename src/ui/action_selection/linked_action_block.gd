@@ -3,6 +3,8 @@ extends Control
 
 signal block_activated(anchor_index: int)
 signal block_drag_requested(anchor_index: int)
+signal block_move_requested(anchor_index: int, direction: int)
+signal block_remove_requested(anchor_index: int)
 
 const PANEL := Color(0.10, 0.075, 0.045, 0.96)
 const PAPER := Color("ead8b4")
@@ -46,6 +48,16 @@ func request_drag() -> void:
         return
     block_drag_requested.emit(anchor_index)
 
+func request_move(direction: int) -> void:
+    if anchor_index <= 0 or direction == 0:
+        return
+    block_move_requested.emit(anchor_index, signi(direction))
+
+func request_remove() -> void:
+    if anchor_index <= 0:
+        return
+    block_remove_requested.emit(anchor_index)
+
 func get_block_snapshot() -> Dictionary:
     var definition: Dictionary = placement.get("definition", {})
     return {
@@ -78,11 +90,11 @@ func _apply_content() -> void:
         status_parts.append("자원 부족")
     if not bool(snapshot.get("target_ready", true)):
         status_parts.append("대상 선택")
-    tooltip_text = "%s · %s" % [
+    tooltip_text = "%s · %s · 좌우 이동 / Esc 제거" % [
         str(snapshot.get("action_name", "행동")),
         " · ".join(status_parts) if not status_parts.is_empty() else stages_label.text
     ]
-    accessibility_name = "%s, %s, %d수, %s" % [
+    accessibility_name = "%s, %s, %d수, %s, 좌우 키로 이동, 취소 키로 제거" % [
         str(snapshot.get("action_name", "행동")),
         str(snapshot.get("source_label", "출처 없음")),
         span,
@@ -96,8 +108,22 @@ func _apply_content() -> void:
 func _on_gui_input(event: InputEvent) -> void:
     if event is InputEventKey:
         var key_event := event as InputEventKey
-        if key_event.pressed and not key_event.echo and key_event.is_action_pressed("ui_accept"):
+        if not key_event.pressed or key_event.echo:
+            return
+        if key_event.is_action_pressed("ui_accept"):
             activate()
+            accept_event()
+            return
+        if key_event.is_action_pressed("ui_left"):
+            request_move(-1)
+            accept_event()
+            return
+        if key_event.is_action_pressed("ui_right"):
+            request_move(1)
+            accept_event()
+            return
+        if key_event.is_action_pressed("ui_cancel"):
+            request_remove()
             accept_event()
             return
     if event is InputEventMouseButton:
@@ -110,7 +136,8 @@ func _on_gui_input(event: InputEvent) -> void:
             return
     if event is InputEventMouseMotion:
         var motion := event as InputEventMouseMotion
-        if motion.button_mask & MOUSE_BUTTON_MASK_LEFT and not _drag_emitted and motion.relative.length() >= 2.0:
+        var left_pressed := (motion.button_mask & MOUSE_BUTTON_MASK_LEFT) != 0
+        if left_pressed and not _drag_emitted and motion.relative.length() >= 2.0:
             _drag_emitted = true
             request_drag()
             accept_event()
