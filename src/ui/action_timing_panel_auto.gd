@@ -1,6 +1,7 @@
 extends ActionTimingPanel
 
 signal linked_block_drag_requested(anchor_index: int)
+signal linked_block_move_requested(anchor_index: int, new_anchor_index: int)
 signal linked_block_move_failed(anchor_index: int, requested_anchor: int)
 
 const LINKED_BLOCK_SCENE := preload("res://scenes/ui/action_selection/linked_action_block.tscn")
@@ -142,12 +143,21 @@ func drop_linked_block_at(new_anchor_index: int) -> bool:
     _drag_anchor = 0
     set_meta("drag_anchor", 0)
     set_meta("valid_drag_anchors", PackedInt32Array())
-    return move_placement(original_anchor, new_anchor_index)
+    if not can_move_placement(original_anchor, new_anchor_index):
+        linked_block_move_failed.emit(original_anchor, new_anchor_index)
+        return false
+    linked_block_move_requested.emit(original_anchor, new_anchor_index)
+    return true
 
 func cancel_linked_block_drag() -> void:
     _drag_anchor = 0
     set_meta("drag_anchor", 0)
     set_meta("valid_drag_anchors", PackedInt32Array())
+
+func focus_linked_block(anchor_index: int) -> void:
+    var block := get_linked_block(anchor_index)
+    if is_instance_valid(block):
+        block.grab_focus()
 
 func _emit_placement_changed() -> void:
     super._emit_placement_changed()
@@ -224,13 +234,10 @@ func _on_linked_block_drag_requested(anchor_index: int) -> void:
 
 func _on_linked_block_move_requested(anchor_index: int, direction: int) -> void:
     var requested_anchor := anchor_index + signi(direction)
-    if move_placement(anchor_index, requested_anchor):
-        call_deferred("_focus_linked_block", requested_anchor)
+    if can_move_placement(anchor_index, requested_anchor):
+        linked_block_move_requested.emit(anchor_index, requested_anchor)
+    else:
+        linked_block_move_failed.emit(anchor_index, requested_anchor)
 
 func _on_linked_block_remove_requested(anchor_index: int) -> void:
     slot_clicked.emit(anchor_index)
-
-func _focus_linked_block(anchor_index: int) -> void:
-    var block := get_linked_block(anchor_index)
-    if is_instance_valid(block):
-        block.grab_focus()
