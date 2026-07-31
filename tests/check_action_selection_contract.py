@@ -42,8 +42,11 @@ def main() -> None:
     assert 'technique_selected.emit(technique.duplicate(true))' in martial
     assert "technique_selected.emit(manual" not in martial
 
+    timing_data = json.loads(read("data/combat/combat_action_timing_preview.json"))
+    assert timing_data["timing_sequence"] == [3, 3, 4]
+    assert timing_data["total_timings"] == 10
     timing = read("src/ui/action_timing_panel.gd")
-    assert "const TIMING_SEQUENCE := [3, 3, 4]" in timing
+    assert 'const DATA_PATH := "res://data/combat/combat_action_timing_preview.json"' in timing
     timing_auto = read("src/ui/action_timing_panel_auto.gd")
     for token in (
         "get_linked_block_snapshots",
