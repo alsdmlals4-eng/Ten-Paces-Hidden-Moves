@@ -35,6 +35,8 @@ func _ready() -> void:
     _build_source_panels()
     _build_detail_panel()
     _apply_state()
+    set_meta("manual_is_not_directly_placeable", true)
+    set_meta("virtual_combo_enabled", false)
 
 func set_active_source(source: String) -> void:
     if not switching_enabled or source not in SOURCES or source == active_source:
@@ -142,6 +144,7 @@ func _build_detail_panel() -> void:
     action_detail_panel.name = "ActionDetailPanel"
     _fill_host(action_detail_panel)
     detail_host.add_child(action_detail_panel)
+    action_detail_panel.custom_minimum_size = Vector2(220.0, 0.0)
 
 func _fill_host(panel: Control) -> void:
     panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
