@@ -83,6 +83,7 @@ func set_assignment(definition: Dictionary, anchor_index: int, span: int, part_i
     set_meta("assignment_span", assignment_span)
     set_meta("assignment_part_index", assignment_part_index)
     set_meta("action_stage", _assignment_stage())
+    set_meta("stage_label", get_stage_label())
     set_meta("resource_ready", true)
     _refresh()
     queue_redraw()
@@ -122,6 +123,7 @@ func clear_assignment() -> void:
     set_meta("assignment_span", 0)
     set_meta("assignment_part_index", 0)
     set_meta("action_stage", "")
+    set_meta("stage_label", "")
     set_meta("target_text", "")
     set_meta("target_ready", true)
     set_meta("targeting_mode", "none")
@@ -129,6 +131,14 @@ func clear_assignment() -> void:
     set_meta("resource_text", "")
     _refresh()
     queue_redraw()
+
+func get_stage_label() -> String:
+    if not has_assignment():
+        return ""
+    return "전조" if _assignment_stage() == "preparation" else "실행"
+
+func get_assignment_display_text() -> String:
+    return _placeholder_label.text if is_instance_valid(_placeholder_label) else ""
 
 func _on_mouse_entered() -> void:
     _hovered = true
@@ -172,35 +182,37 @@ func _refresh() -> void:
         return
     _timing_label.text = "%d수" % local_index
     if has_assignment():
-        var card_name := str(assigned_definition.get("name", ""))
-        var is_preparation := _assignment_stage() == "preparation"
-        _placeholder_label.text = "%s [준비]" % card_name if is_preparation else card_name
+        var stage_label := get_stage_label()
+        _placeholder_label.text = "[%s]" % stage_label
         if not resource_ready:
             _status_label.text = resource_text if not resource_text.is_empty() else "자원 부족"
         elif not target_ready and targeting_mode != "none":
             _status_label.text = "대상 선택"
         elif not target_text.is_empty():
             _status_label.text = target_text
-        elif is_preparation:
-            _status_label.text = "[준비]"
-        elif assignment_span > 1:
-            _status_label.text = "[실행]"
         else:
-            _status_label.text = "1슬롯"
+            _status_label.text = ""
+        accessibility_name = "%d수, %s, %s" % [
+            timing_index,
+            stage_label,
+            str(assigned_definition.get("name", "행동"))
+        ]
     else:
         _placeholder_label.text = "＋" if can_receive_placement() else "—"
         _status_label.text = _state_text()
+        accessibility_name = "%d수, %s" % [timing_index, _state_text()]
     var accent := _display_color()
     _timing_label.add_theme_color_override("font_color", PAPER if slot_state != "locked" else MUTED)
     _placeholder_label.add_theme_color_override("font_color", accent)
     _status_label.add_theme_color_override("font_color", accent)
     mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if can_receive_placement() or has_assignment() else Control.CURSOR_ARROW
-    if has_assignment() and str(assigned_definition.get("source", "")) == "ultimate":
-        tooltip_text = "[준비] 마지막 점유 수에서 실행됩니다. 진행 전 클릭 또는 Enter로 절초 예약을 취소하고 기세 5를 돌려받습니다." if _assignment_stage() == "preparation" else "[실행] 진행 전 클릭 또는 Enter로 절초 예약을 취소하고 기세 5를 돌려받습니다."
+    var source_kind := str(assigned_definition.get("source_kind", assigned_definition.get("source", "")))
+    if has_assignment() and source_kind == "ultimate":
+        tooltip_text = "[%s] 진행 전 연결 행동 블록을 클릭하거나 Enter를 눌러 절초 예약을 취소하고 기세 5를 돌려받습니다." % get_stage_label()
     elif has_assignment() and _assignment_stage() == "preparation":
-        tooltip_text = "[준비] 마지막 점유 수에서 이 행동을 실행합니다. 클릭 또는 Enter로 배치한 행동을 해제합니다."
+        tooltip_text = "[전조] 마지막 점유 수에서 이 행동을 실행합니다. 연결 행동 블록을 클릭하거나 Enter로 해제합니다."
     elif has_assignment():
-        tooltip_text = "클릭 또는 Enter로 배치한 행동을 해제합니다."
+        tooltip_text = "[실행] 연결 행동 블록을 클릭하거나 Enter로 배치한 행동을 해제합니다."
     elif can_receive_placement():
         tooltip_text = "선택한 행동을 이 수에 배치합니다."
     else:
@@ -277,13 +289,13 @@ func _draw() -> void:
     if slot_state == "locked":
         fill = Color(PANEL, 0.72)
     if has_assignment():
-        fill = Color(accent, 0.26)
+        fill = Color(accent, 0.18)
     draw_rect(Rect2(Vector2.ZERO, size), fill, true)
     var border_alpha := 1.0 if _hovered else 0.78
     draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color(accent, border_alpha), false, 3.0 if _hovered else 2.0)
     if slot_state == "current" or (has_assignment() and assignment_part_index == 0):
         draw_line(Vector2(8.0, 3.0), Vector2(maxf(8.0, size.x - 8.0), 3.0), accent, 3.0)
     if has_assignment() and assignment_part_index > 0:
-        draw_line(Vector2(3.0, 8.0), Vector2(3.0, maxf(8.0, size.y - 8.0)), accent, 3.0)
+        draw_line(Vector2(3.0, 8.0), Vector2(3.0, maxf(8.0, size.y - 8.0)), accent, 2.0)
     if has_focus():
         draw_rect(Rect2(Vector2(5.0, 5.0), size - Vector2(10.0, 10.0)), Color.WHITE, false, 2.0)
