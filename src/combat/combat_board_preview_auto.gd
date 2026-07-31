@@ -2,8 +2,10 @@ extends CombatBoardPreview
 
 const PREPARE_ENGINE_SCRIPT := preload("res://src/combat/combat_resolution_engine_prepare.gd")
 const ACTION_PLACEMENT_CONTROLLER_SCRIPT := preload("res://src/ui/action_selection/action_placement_controller.gd")
+const ACTION_SELECTION_DOCK_SCENE := preload("res://scenes/ui/action_selection/action_selection_dock.tscn")
 
 var action_placement_controller: ActionPlacementController
+var action_selection_dock: ActionSelectionDock
 var _pending_controller_definition: Dictionary = {}
 
 func _ready() -> void:
@@ -11,20 +13,41 @@ func _ready() -> void:
     resolution_engine = PREPARE_ENGINE_SCRIPT.new()
     combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
     combat_state["ai_enabled"] = true
+    _build_product_action_selection_dock()
     _configure_action_placement_controller()
     _configure_ultimate_menu()
     _sync_runtime_context()
     _apply_combat_state_to_view()
     _refresh_ultimate_menu()
+    _sync_action_selection_dock()
+    call_deferred("_layout_board")
+    call_deferred("_configure_keyboard_focus_order")
     set_meta("card_selection_mode", "auto_earliest_contiguous")
     set_meta("prepare_rule_extension", true)
     set_meta("action_placement_controller", true)
+    set_meta("action_selection_dock_component", "ActionSelectionDock")
+    set_meta("product_action_selection_enabled", true)
+    set_meta("virtual_combo_enabled", false)
 
 func restart_combat() -> void:
     _player_tile = int(contract.get("player_start_tile", 4))
     _enemy_tile = int(contract.get("enemy_start_tile", 7))
     super.restart_combat()
+    if is_instance_valid(action_selection_dock):
+        action_selection_dock.set_interaction_state("new_combat")
     _sync_action_placement_controller_state()
+    _sync_action_selection_dock()
+
+func _build_product_action_selection_dock() -> void:
+    if is_instance_valid(action_selection_dock):
+        return
+    action_selection_dock = ACTION_SELECTION_DOCK_SCENE.instantiate() as ActionSelectionDock
+    action_selection_dock.name = "ActionSelectionDock"
+    action_selection_dock.set_anchors_preset(Control.PRESET_TOP_LEFT)
+    action_selection_dock.action_selected.connect(_on_product_action_selected)
+    action_selection_dock.source_changed.connect(_on_product_source_changed)
+    add_child(action_selection_dock)
+    _hide_legacy_action_ui()
 
 func _configure_action_placement_controller() -> void:
     action_placement_controller = ACTION_PLACEMENT_CONTROLLER_SCRIPT.new() as ActionPlacementController
@@ -48,6 +71,14 @@ func _sync_action_placement_controller_state() -> void:
         return
     action_placement_controller.set_locked(_inputs_locked())
     action_placement_controller.set_targeting_in_progress(_targeting_anchor > 0, _targeting_anchor)
+
+func _on_product_action_selected(definition: Dictionary) -> void:
+    if _inputs_locked():
+        return
+    _auto_place_selected_card(definition.duplicate(true))
+
+func _on_product_source_changed(_source: String) -> void:
+    call_deferred("_configure_keyboard_focus_order")
 
 func _on_action_card_selected(definition: Dictionary) -> void:
     if _inputs_locked():
@@ -89,6 +120,7 @@ func _on_controller_placement_succeeded(result: Dictionary) -> void:
         _begin_next_pending_target()
     _pending_controller_definition.clear()
     _refresh_ultimate_menu()
+    _sync_action_selection_dock()
 
 func _on_controller_placement_moved(result: Dictionary) -> void:
     var is_ultimate := bool(result.get("is_ultimate", false))
@@ -102,6 +134,7 @@ func _on_controller_placement_moved(result: Dictionary) -> void:
     if not bool(result.get("targeting_started", false)):
         _begin_next_pending_target()
     _refresh_ultimate_menu()
+    _sync_action_selection_dock()
 
 func _on_controller_placement_failed(code: String, message: String) -> void:
     var is_ultimate := _is_pending_ultimate()
@@ -119,9 +152,11 @@ func _on_controller_placement_failed(code: String, message: String) -> void:
                 combat_log_panel.append_entry("[배치 불가] %s" % message, "system")
     _pending_controller_definition.clear()
     _refresh_ultimate_menu()
+    _sync_action_selection_dock()
 
 func _on_controller_targeting_requested(anchor_index: int) -> void:
     set_meta("controller_targeting_anchor", anchor_index)
+    _sync_action_selection_dock()
 
 func _is_pending_ultimate() -> bool:
     return str(_pending_controller_definition.get("source_kind", _pending_controller_definition.get("source", ""))) == "ultimate"
@@ -131,6 +166,191 @@ func _clear_auto_selection_state() -> void:
     _clear_card_detail()
     if is_instance_valid(basic_card_tray):
         basic_card_tray.clear_action_selection()
+
+func _begin_targeting_for_anchor(anchor_index: int) -> bool:
+    var started := super._begin_targeting_for_anchor(anchor_index)
+    _sync_action_selection_dock()
+    return started
+
+func _clear_targeting() -> void:
+    super._clear_targeting()
+    _sync_action_selection_dock()
+
+func _on_timing_slot_clicked(timing_index: int) -> void:
+    super._on_timing_slot_clicked(timing_index)
+    _sync_action_placement_controller_state()
+    _sync_action_selection_dock()
+
+func _set_presentation_state(value: String) -> void:
+    super._set_presentation_state(value)
+    _sync_action_placement_controller_state()
+    _sync_action_selection_dock()
+
+func _refresh_ultimate_menu() -> void:
+    super._refresh_ultimate_menu()
+    _hide_legacy_action_ui()
+    _sync_action_selection_dock()
+
+func _layout_board() -> void:
+    super._layout_board()
+    _layout_product_action_dock()
+
+func _layout_product_action_dock() -> void:
+    if not is_instance_valid(action_selection_dock) or size.x <= 0.0 or size.y <= 0.0:
+        return
+    var lower_margin := maxf(10.0, size.x * 0.014)
+    var lower_bottom := maxf(8.0, size.y * 0.012)
+    var dock_height := clampf(size.y * 0.245, 190.0, 220.0)
+    var dock_y := size.y - dock_height - lower_bottom
+    action_selection_dock.position = Vector2(lower_margin, dock_y)
+    action_selection_dock.size = Vector2(maxf(1.0, size.x - lower_margin * 2.0), dock_height)
+
+    if is_instance_valid(action_timing_panel) and is_instance_valid(combat_progress_button):
+        var timing_height := action_timing_panel.size.y
+        var timing_y := dock_y - timing_height - 8.0
+        action_timing_panel.position.y = timing_y
+        combat_progress_button.position.y = timing_y
+        _shift_battlefield_above(timing_y - 30.0)
+        if is_instance_valid(combat_log_panel):
+            combat_log_panel.size.y = maxf(1.0, timing_y - 10.0 - combat_log_panel.position.y)
+    _hide_legacy_action_ui()
+
+func _shift_battlefield_above(maximum_bottom: float) -> void:
+    if tiles.is_empty() or _tile_height <= 0.0:
+        return
+    var current_bottom := _board_top + _tile_height
+    if current_bottom <= maximum_bottom:
+        return
+    var shift := current_bottom - maximum_bottom
+    _board_top = maxf(145.0, _board_top - shift)
+    for tile in tiles:
+        tile.position.y = _board_top
+    if not _defer_character_snap:
+        var player_foot := get_tile_foot_anchor(_player_tile)
+        var enemy_foot := get_tile_foot_anchor(_enemy_tile)
+        if _player_tile == _enemy_tile:
+            var engage_offset := _tile_width * 0.18
+            player_foot.x -= engage_offset
+            enemy_foot.x += engage_offset
+        player_character.place_foot_at(player_foot)
+        enemy_character.place_foot_at(enemy_foot)
+    if is_instance_valid(_anchor_line):
+        var board_left := tiles[0].position.x
+        var board_right := tiles[tiles.size() - 1].position.x + tiles[tiles.size() - 1].size.x
+        var anchor_y := get_tile_foot_anchor(_player_tile).y
+        _anchor_line.position = Vector2(board_left, anchor_y - 1.0)
+        _anchor_line.size = Vector2(board_right - board_left, 2.0)
+
+func _hide_legacy_action_ui() -> void:
+    for control_value in [basic_card_tray, ultimate_menu, ultimate_list_panel, card_detail_panel]:
+        if is_instance_valid(control_value):
+            var control := control_value as Control
+            control.visible = false
+            control.mouse_filter = Control.MOUSE_FILTER_IGNORE
+            control.focus_mode = Control.FOCUS_NONE
+
+func _sync_action_selection_dock() -> void:
+    if not is_instance_valid(action_selection_dock):
+        return
+    action_selection_dock.set_interaction_state(_dock_interaction_state())
+    action_selection_dock.set_runtime_context(_build_action_selection_runtime_context())
+    _hide_legacy_action_ui()
+    set_meta("action_selection_source", action_selection_dock.active_source)
+    set_meta("action_selection_state", _dock_interaction_state())
+
+func _dock_interaction_state() -> String:
+    if _targeting_anchor > 0:
+        return "targeting"
+    match _presentation_state:
+        "review_ready":
+            return "review"
+        "resolving":
+            return "resolving"
+        "presenting_result":
+            return "presenting_result"
+        "committed":
+            return "committed"
+        "next_bundle_ready":
+            return "next_bundle_ready"
+        _:
+            return "planning"
+
+func _build_action_selection_runtime_context() -> Dictionary:
+    var player: Dictionary = combat_state.get("player", {})
+    var momentum_value = player.get("momentum", [0, 5])
+    var current := int(momentum_value[0]) if typeof(momentum_value) == TYPE_ARRAY and momentum_value.size() >= 1 else 0
+    var maximum := int(momentum_value[1]) if typeof(momentum_value) == TYPE_ARRAY and momentum_value.size() >= 2 else 5
+    return {
+        "interaction_state": _dock_interaction_state(),
+        "round_number": int(combat_state.get("round_number", 1)),
+        "bundle_index": int(combat_state.get("bundle_index", 1)),
+        "momentum": [current, maximum],
+        "momentum_maximum": maximum,
+        "ultimate_reservations": _build_ultimate_reservation_snapshot()
+    }
+
+func _build_ultimate_reservation_snapshot() -> Array[Dictionary]:
+    var result: Array[Dictionary] = []
+    if not is_instance_valid(action_timing_panel):
+        return result
+    for anchor_value in _ultimate_reservation_anchors:
+        var anchor_index := int(anchor_value)
+        var placement := action_timing_panel.get_placement(anchor_index)
+        if placement.is_empty():
+            continue
+        var definition: Dictionary = placement.get("definition", {})
+        var indices: PackedInt32Array = placement.get("indices", PackedInt32Array())
+        result.append({
+            "action_id": str(definition.get("id", "")),
+            "start_timing": int(indices[0]) if not indices.is_empty() else anchor_index,
+            "end_timing": int(indices[indices.size() - 1]) if not indices.is_empty() else anchor_index
+        })
+    return result
+
+func _configure_keyboard_focus_order() -> void:
+    super._configure_keyboard_focus_order()
+    if not is_instance_valid(action_selection_dock):
+        return
+    var sequence: Array[Control] = [
+        action_selection_dock.basic_tab,
+        action_selection_dock.martial_tab,
+        action_selection_dock.ultimate_tab
+    ]
+    match action_selection_dock.active_source:
+        "martial":
+            sequence.append_array(action_selection_dock.martial_panel.manual_buttons)
+            sequence.append_array(action_selection_dock.martial_panel.technique_buttons)
+        "ultimate":
+            sequence.append_array(action_selection_dock.ultimate_panel.action_buttons)
+        _:
+            sequence.append_array(action_selection_dock.basic_panel.buttons)
+    if action_timing_panel.has_method("get_linked_block_snapshots"):
+        for snapshot in action_timing_panel.call("get_linked_block_snapshots"):
+            var anchor_index := int((snapshot as Dictionary).get("anchor_index", 0))
+            var block = action_timing_panel.call("get_linked_block", anchor_index)
+            if is_instance_valid(block):
+                sequence.append(block as Control)
+    if is_instance_valid(combat_progress_button):
+        sequence.append(combat_progress_button)
+    for control_value in [fast_replay_button, skip_presentation_button, reduced_motion_button, sound_toggle_button, sound_volume_slider]:
+        if is_instance_valid(control_value):
+            sequence.append(control_value as Control)
+    _link_product_focus_sequence(sequence)
+    set_meta("product_focus_order", "source_tabs|active_source|linked_blocks|progress|playback")
+
+func _link_product_focus_sequence(sequence: Array[Control]) -> void:
+    var filtered: Array[Control] = []
+    for control in sequence:
+        if is_instance_valid(control) and control.visible and control.focus_mode != Control.FOCUS_NONE:
+            filtered.append(control)
+    if filtered.size() < 2:
+        return
+    for index in range(filtered.size()):
+        var current := filtered[index]
+        var previous := filtered[(index - 1 + filtered.size()) % filtered.size()]
+        var next := filtered[(index + 1) % filtered.size()]
+        current.focus_previous = current.get_path_to(previous)
+        current.focus_next = current.get_path_to(next)
 
 func _presentation_summary_for_event(event: Dictionary, fallback: String) -> String:
     if str(event.get("action_stage", "execution")) == "preparation":
