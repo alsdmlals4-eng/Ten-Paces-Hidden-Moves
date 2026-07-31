@@ -106,6 +106,7 @@ func _verify_reservation(card_id: String, span: int) -> void:
     if not board.action_selection_dock.ultimate_panel.activate_ultimate(card_id):
         failures.append("Ultimate definition was missing or unavailable in the product panel: %s" % card_id)
     else:
+        await process_frame
         var reserved_player: Dictionary = board.combat_state.get("player", {})
         var momentum: Array = reserved_player.get("momentum", [5, 5])
         if int(momentum[0]) != 0:
