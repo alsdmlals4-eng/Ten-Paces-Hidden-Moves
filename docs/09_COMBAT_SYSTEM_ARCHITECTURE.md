@@ -113,4 +113,80 @@ attack_action_finished | non_attack_action_resolved
 - 유료 재도전 snapshot 복원·영구재화 비롤백·보상 1회 commit.
 - T0 개발용 재시작과 PoC 회차 재도전 분리.
 
-이번 작업에서는 코드·runtime·Godot을 변경하지 않았으므로 새 아키텍처는 `AUTHORED_NOT_IMPLEMENTED`다.
+전체 다음 PoC 아키텍처는 아직 `AUTHORED_NOT_IMPLEMENTED`다. 단, 행동 선택·수 배치 제품 UX는 아래 범위로 PR #66에서 구현 중이다.
+
+## 10. 행동 선택 Dock 구현 경계
+
+```text
+ActionSelectionDock
+├─ BasicActionPanel
+├─ MartialActionPanel
+│  └─ 무공서 → 해금 기술
+├─ UltimateActionPanel
+└─ ActionDetailPanel
+        │
+        ▼
+ActionPlacementController
+        │
+        ▼
+ActionTimingPanelAuto
+├─ earliest valid contiguous placement
+├─ linked `[전조] → [실행]` block
+├─ connected-block repositioning
+└─ target/direction handoff
+        │
+        ▼
+CombatResolutionEngine
+```
+
+### 10.1 책임
+
+- `ActionViewModelAdapter`: 기초·무공·절초 런타임 정의를 하나의 UI schema로 정규화하고 원본 판정 필드를 보존한다.
+- `ActionSelectionDock`: `[기초] [무공] [절초]` 탭, 활성 패널, 입력 잠금, 상세 패널을 소유한다.
+- `MartialActionPanel`: 무공서를 탐색하지만 `technique_selected`만 배치 요청으로 방출한다. 무공서는 직접 배치하지 않는다.
+- `ActionPlacementController`: 선택→자동 배치→대상 지정, 실패 코드, 제거·재배치, 절초 예약·환불 조정을 소유한다.
+- `ActionTimingPanelAuto`: 기존 3/3/4 배치 Dictionary를 유지하면서 연결 블록 표현과 원자적 이동 API를 제공한다.
+- `LinkedActionBlock`: 기술명·출처·전조·실행·Focus·키보드 이동·제거 요청을 표시한다.
+- `CombatBoardPreviewAuto`: 전투 오케스트레이션을 유지하고 제품 Dock과 Controller를 연결한다.
+
+### 10.2 데이터 경계
+
+```text
+data/cards/basic_cards.json
++ data/cards/ultimate_cards.json
++ data/combat/action_selection_poc.json
++ data/combat/mastery_ultimate_poc.json
+→ ActionViewModelAdapter
+→ ActionSelectionDock
+```
+
+- `docs/planning-data/*.json`은 런타임에서 직접 읽지 않는다.
+- `data/cards/ultimate_cards.json`은 canonical 기본 절초 3종만 유지한다.
+- 무공 10성 절초 UI 검증 자료는 별도 PoC runtime fixture에 둔다.
+- UI adapter는 원본 행동 Dictionary를 복제한 뒤 표시 필드를 추가하므로 판정 필드를 제거하지 않는다.
+
+### 10.3 상태·잠금 경계
+
+- 새 전투: `기초` 탭으로 초기화.
+- 다음 묶음: 마지막 탭과 선택 무공서를 유지.
+- 대상 지정·확정·해결·결과 연출·복기: Dock 편집 잠금.
+- 진행 전: 연결 블록 전체 이동·제거 가능.
+- 진행 후: 이동·제거·절초 환불 불가.
+- 절초 재배치: 기존 예약 환불 후 새 anchor에 즉시 재예약해 최종 기세 상태를 유지.
+
+### 10.4 레거시 호환
+
+기존 `BasicCardTray`, 독립 절초 목록, `CardDetailPanel`은 기존 회귀 소비자를 위해 남겨두지만 제품 전투 화면에서는 숨긴다. `CardDetailPanel`은 `ActionDetailPanel`의 호환 wrapper다. 제품 경로에서는 `준비+막기/회피` 가상 카드를 생성하지 않는다.
+
+### 10.5 검증 상태
+
+```yaml
+implementation_branch: agent/2026-08-01-action-selection-dock-build
+pull_request: 66
+static_contract: PASS
+pr_validation: PASS
+base_v9_validation: PASS
+godot_full_validation: PENDING
+windows_validation: NOT_RUN
+human_validation: NOT_RUN
+```
