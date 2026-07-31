@@ -68,7 +68,7 @@ class ProjectGovernanceTests(unittest.TestCase):
             for token in ["public_state_ai", "enemy_bundles", "ai_enabled == false"]:
                 self.assertIn(token, text, f"{relative} is missing fixture boundary {token!r}")
 
-    def test_active_v6_operating_state_is_synchronized(self) -> None:
+    def test_active_v6_operating_state_and_scoped_build_are_synchronized(self) -> None:
         v6_tokens = [
             "CONCEPT_APPROVAL",
             "PLAN",
@@ -76,30 +76,52 @@ class ProjectGovernanceTests(unittest.TestCase):
             "PROHIBITED_UNTIL_NEW_APPROVAL",
             "2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md",
         ]
-        active_docs = [
+        default_active_docs = [
             "AGENTS.md",
             "START_HERE.md",
             "README.md",
             "[기획서]/00_프로젝트_허브/START_HERE.md",
-            "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
             "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
             "[기획서]/00_프로젝트_허브/ROADMAP.md",
             "[기획서]/00_프로젝트_허브/HANDOFF.md",
         ]
-        for relative in active_docs:
+        for relative in default_active_docs:
             text = (ROOT / relative).read_text(encoding="utf-8")
             for token in v6_tokens:
                 self.assertIn(token, text, f"{relative} is missing v6 token {token!r}")
             self.assertNotIn(
                 "phase: BUILD_IN_PROGRESS",
                 text,
-                f"{relative} still grants the superseded BUILD state",
+                f"{relative} still grants the superseded global BUILD state",
             )
             self.assertNotIn(
                 "implementation_authorization: GRANTED",
                 text,
-                f"{relative} still grants superseded implementation authority",
+                f"{relative} still grants superseded global implementation authority",
             )
+
+        active_relative = "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
+        active_text = (ROOT / active_relative).read_text(encoding="utf-8")
+        self.assertIn("2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md", active_text)
+        if "work_mode: BUILD" in active_text:
+            scoped_tokens = [
+                "runtime_implementation: ACTION_SELECTION_DOCK_BUILD_PR",
+                "current_integration_pr: 66",
+                "current_implementation_branch: agent/2026-08-01-action-selection-dock-build",
+                "docs/implementation/BUILD_APPROVAL_2026-08-01.md",
+                "전체 5전 회차·강호행로·성장·보상 구현 승인을 의미하지 않는다",
+            ]
+            for token in scoped_tokens:
+                self.assertIn(token, active_text, f"{active_relative} is missing scoped BUILD token {token!r}")
+            self.assertTrue(
+                (ROOT / "docs/implementation/BUILD_APPROVAL_2026-08-01.md").is_file(),
+                "scoped BUILD requires an explicit approval record",
+            )
+        else:
+            for token in v6_tokens:
+                self.assertIn(token, active_text, f"{active_relative} is missing v6 token {token!r}")
+        self.assertNotIn("phase: BUILD_IN_PROGRESS", active_text)
+        self.assertNotIn("implementation_authorization: GRANTED", active_text)
 
     def test_v6_authority_and_pr45_integration_files_exist(self) -> None:
         required = [
