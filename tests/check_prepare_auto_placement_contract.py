@@ -27,12 +27,24 @@ def main() -> None:
     board = read("src/combat/combat_board_preview_auto.gd")
     for token in (
         "func _auto_place_selected_card(definition: Dictionary) -> bool:",
-        "find_earliest_open_anchor",
-        "_reserve_ultimate_at(anchor)",
+        "action_placement_controller.select_and_place",
+        "Callable(self, \"_reserve_ultimate_at\")",
         "[전조]",
     ):
-        assert token in board, f"board auto-placement contract missing {token}"
+        assert token in board, f"board auto-placement delegation missing {token}"
     assert "슬롯 선택" not in board
+
+    controller = read("src/ui/action_selection/action_placement_controller.gd")
+    for token in (
+        'timing_panel.call("find_earliest_open_anchor", span)',
+        "reserve_ultimate.call(anchor)",
+        "refund_ultimate.call(placement)",
+        "CODE_NO_CONTIGUOUS_TIMINGS",
+        "CODE_MOMENTUM_INSUFFICIENT",
+        "CODE_TARGETING_IN_PROGRESS",
+    ):
+        assert token in controller, f"placement controller contract missing {token}"
+
     board_base = read("src/combat/combat_board_preview.gd")
     assert "func _refund_ultimate_reservation(placement: Dictionary) -> void:" in board_base
     assert "current + 5" in board_base
@@ -52,7 +64,7 @@ def main() -> None:
     assert rules["schema_version"] == 8
     assert rules["prepare_meditate_momentum"] == 1
 
-    print("prepare and auto placement contract: PASS")
+    print("prepare and delegated auto placement contract: PASS")
 
 
 if __name__ == "__main__":
