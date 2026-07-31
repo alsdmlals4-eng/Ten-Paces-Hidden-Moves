@@ -58,9 +58,24 @@ func build_ultimate_actions(momentum: int) -> Array[Dictionary]:
         var source_id := str(source.get("source_id", "basic_ultimate"))
         var source_label := str(source.get("source_label", "기본 절초"))
         var action := _normalize_action(source, "ultimate", source_id, source_label)
-        action["momentum_cost"] = maxi(0, int(source.get("momentum_cost", required_momentum)))
-        action["locked"] = momentum < int(action["momentum_cost"])
-        action["lock_reason"] = "절초기세 %d/%d" % [momentum, int(action["momentum_cost"])] if bool(action["locked"]) else ""
+        var momentum_cost := maxi(0, int(source.get("momentum_cost", required_momentum)))
+        var unlock_mastery := maxi(0, int(source.get("unlock_mastery", 0)))
+        var current_mastery := maxi(0, int(source.get("current_mastery", unlock_mastery)))
+        var mastery_locked := unlock_mastery > 0 and current_mastery < unlock_mastery
+        var momentum_locked := momentum < momentum_cost
+        action["momentum_cost"] = momentum_cost
+        action["unlock_mastery"] = unlock_mastery
+        action["current_mastery"] = current_mastery
+        action["mastery_locked"] = mastery_locked
+        action["momentum_locked"] = momentum_locked
+        action["ultimate_origin"] = "mastery" if unlock_mastery > 0 else "basic"
+        action["locked"] = mastery_locked or momentum_locked
+        if mastery_locked:
+            action["lock_reason"] = "%d성 해금 · 현재 %d성" % [unlock_mastery, current_mastery]
+        elif momentum_locked:
+            action["lock_reason"] = "기세 %d/%d" % [momentum, momentum_cost]
+        else:
+            action["lock_reason"] = ""
         result.append(action)
     return result
 
