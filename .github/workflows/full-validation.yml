@@ -80,6 +80,14 @@ jobs:
         run: godot --headless --editor --path . --quit
       - name: Verify product focus order
         run: godot --headless --path . --script res://tests/verify_combat_focus_order.gd
+      - name: Upload focus diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: focus-order-report
+          path: focus-order-report.txt
+          if-no-files-found: warn
+          retention-days: 3
       - name: Verify action view model adapter
         run: godot --headless --path . --script res://tests/verify_action_view_model_adapter.gd
       - name: Verify action selection dock
