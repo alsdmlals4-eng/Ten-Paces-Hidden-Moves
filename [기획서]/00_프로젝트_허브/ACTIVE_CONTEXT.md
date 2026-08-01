@@ -108,6 +108,7 @@ App Root
 
 ## 역사·호환
 
+- v6 역사 인덱스: `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
 - PR #7과 Issue #13은 T0 `STEP 0~13` 구현 계보다.
 - 과거 상태 `CORE_REVIEW_PENDING`은 현재 권한이 아닌 역사 토큰이다.
 - 과거 Base SHA `c987647d01ad2baa028a16e03d85ddfc1572a727`은 `HISTORICAL_COMPATIBILITY_BASELINE`이다.
