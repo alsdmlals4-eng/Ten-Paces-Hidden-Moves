@@ -3,63 +3,122 @@
 ## 현재 기준
 
 ```yaml
-project: 십보강호
+project: 십보강호: 숨은 수의 비무
 repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
 platform: PC
-product_stage: CONCEPT_APPROVAL
-work_mode: PLAN
-execution_profile: PLANNING_ONLY_PROFILE
-runtime_implementation: PROHIBITED_UNTIL_NEW_APPROVAL
-current_integration_pr: 45
-canonical_decision_ledger: docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md
-integration_review: docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md
-human_step14: NOT_RUN
+engine: Godot 4.7
+product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
+work_mode: REVIEW
+current_integration_pr: 65
+runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
+implemented_decision: TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01
+planning_decision: TEN-DEC-20260801-SITUATION-SCREEN-01
+automated_validation: PASS
+human_validation: NOT_RUN
+next_package: VERTICAL_SLICE_APP_FLOW_SHELL
+base_release_pinned: 9.1.0
+base_v9_3_migration: SEPARATE_FOLLOWUP
 ```
-
-PR #45의 과거 BUILD 승인 선언은 최신 사용자 결정으로 대체됐다. 이번 PR은 v6 계획 정본과 역사 자료를 정합화하는 문서 통합 PR이며 런타임 구현 인계가 아니다.
-
-역사 추적: 현행 T0 구현 계보는 PR #7과 Issue #13이며 STEP 14 사람 검증은 아직 실행하지 않았다. 현행 구현은 플레이어 4번·상대 7번 시작과 공개 상태 기반 AI를 사용한다. 과거 상태 `CORE_REVIEW_PENDING`은 역사 토큰일 뿐 현재 제품 단계나 코어 권한이 아니다.
 
 ## 프로젝트 코어
 
 > 상대의 다음 행동 단서를 모아 가설을 세우고 여러 수의 계획으로 의도를 무너뜨리는 무협 전술 로그라이트.
 
-- 뾰족한 재미: 계획을 세워 상대의 숨은 수를 읽고 파훼한다.
-- 판매 문구: `보이지 않는 상대의 수를 읽고, 준비한 계획으로 꺾는다.`
-- 성장은 더 다양하고 강력한 파훼 방법을 제공한다.
-- 원시 수치 상승은 판단을 대체하지 않는다.
+- 전투 규칙 정본: `docs/02_COMBAT_RULES.md`.
+- 1대1 10칸 일자형 전장, 플레이어 4번·상대 7번 시작, 거리 0 `[밀착]`.
+- 한 라운드는 `3수 → 3수 → 4수`이며 각 묶음 뒤 해결한다.
+- `[합]`·방어도·회피·중단·강건과 결정적 복기를 사용한다.
+- 상대 AI는 공개 상태와 해결 이력만 사용하며 플레이어의 미확정 계획을 읽지 않는다.
+- 덱·손패·드로우·장착 기술 제한이 없다.
+- 성장은 판단을 대체하지 않고 파훼 선택지를 확장한다.
 
-## 현재 주요 계약
+## 구현 완료 — ActionSelectionDock
 
-- 한 라운드: `3수 → 3수 → 4수`, 각 묶음 뒤 해결.
-- 버티컬 슬라이스 앵커: 핵심 결투 5개. 총 전투 수는 별도다.
-- 전장: 10칸 일자형, 거리 0 `[밀착]`.
-- 절초: 무공서 10성, 절초기세 5, 동일 슬롯 일반 기술보다 약 50% 높은 예산.
-- `[연격 N]`: 총피해를 N회로 분할. 첫 피해만 합. 기본 회피는 한 피해만 회피.
-- 방어·보호막: 통합 `[방어도]`, 피해 묶음마다 고정 감산, 피격으로 소모되지 않음.
-- 수련 체크포인트: 전체 전투 5회 40~50, 10회 90~100의 표준 경로 중앙 목표.
-- 전투 랭크: A +0, A+ +1, S +2, S+ +3.
+- 출처: `[기초] [무공] [절초]`.
+- 무공서는 직접 배치하지 않고 현재 해금 기술을 배치한다.
+- 가장 앞 유효 연속 수에 자동 배치한다.
+- 2수·3수는 `[전조] → [실행]` 연결 블록이다.
+- 진행 전 이동·제거를 지원한다.
+- 절초기세 5를 예약하고 진행 전 환불·재예약한다.
+- 마우스 Drop 누락은 RED 회귀 뒤 수정했다.
+- 구현 검증 HEAD `673c209017ffe3e1c7ef2a89849ca4ea0846d1c5`: PR Validation #993, Base v9 #106, Full Validation #73 `PASS`.
+- Windows 실제 Godot·실물 게임패드·사람 이해도는 `NOT_RUN`이다.
 
-최신 설계 권한은 v6 원장이 소유한다. `docs/02_COMBAT_RULES.md`는 현행 T0 구현 규칙과 영향 책임 원본이며, 충돌 시 v6 원장이 우선한다.
+정본:
+
+- `docs/decisions/2026-08-01_MARTIAL_MANUAL_TECHNIQUE_TIMELINE_UX_DECISION.md`
+- `docs/implementation/2026-08-01_ACTION_SELECTION_DOCK_CLOSEOUT.md`
+- `docs/planning-data/approved_20260801_martial_technique_timeline_ux_contract.json`
+
+## 승인된 화면 구조
+
+- 필수 화면: 메인 / 비무 / 무공 구성·자원 / 결과·복기·보상.
+- P0: Main, Run Setup, Route, Node, Briefing, Combat Plan, Resolve, Review, Victory Reward, Defeat Retry.
+- Route와 Combat은 별도 Scene.
+- Combat Review는 Combat Overlay.
+- Duel Result는 별도 Scene.
+- P0 Autoload 후보는 `RunSession`, `SaveService`.
+- `CombatState`는 Combat Scene 소유.
+- 전체 제품 흐름 런타임은 아직 시작하지 않았다.
+
+정본:
+
+- `docs/decisions/2026-08-01_SITUATION_SCREEN_ARCHITECTURE_DECISION.md`
+- `docs/planning-data/approved_20260801_situation_screen_contract.json`
+
+## 회차 계약
+
+```yaml
+demo:
+  major_duel_slots: 5
+  candidates_per_slot: 3
+  nodes_per_gap: 2
+  intermediate_nodes: 8
+  target_playtime: 15_to_22_minutes
+full_run:
+  major_duel_slots: 10
+  candidates_per_slot: 3
+  nodes_per_gap: 2
+  intermediate_nodes: 18
+  target_playtime: 30_to_40_minutes
+```
+
+첫 비무는 후보 3명 중 1명을 seed로 선정하고 이후는 후보 3명 중 2명을 제시한다. 후보 15명 계약은 유지하되 첫 제품 흐름은 슬롯별 대표 후보로 파이프라인을 증명한다.
+
+## 현재 다음 작업
+
+`VERTICAL_SLICE_APP_FLOW_SHELL`
+
+```text
+App Root
+→ Main
+→ 시작 무공 6중4
+→ Route·Node·Briefing
+→ 기존 Combat
+→ Result·Reward·Retry
+```
+
+저장·전환·중복 commit 회귀 뒤 Windows·해상도·입력·사람 검증을 수행한다.
+
+## 적대적 감사
+
+- `docs/reviews/2026-08-01_BASE_PROJECT_SHEET_ADVERSARIAL_AUDIT.md`.
+- ActionSelectionDock 정본·Sheet 누락과 포인터 Drop 누락을 수정했다.
+- PR #45·PLAN·Base v8 중심 시작 문서를 현재 기준으로 교체했다.
+- Base v9.3은 PR #65 main 안정화 뒤 별도 migration으로 처리한다.
+
+## 역사·호환
+
+- v6 역사 인덱스: `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
+- PR #7과 Issue #13은 T0 `STEP 0~13` 구현 계보다.
+- 과거 상태 `CORE_REVIEW_PENDING`은 현재 권한이 아닌 역사 토큰이다.
+- 과거 Base SHA `c987647d01ad2baa028a16e03d85ddfc1572a727`은 `HISTORICAL_COMPATIBILITY_BASELINE`이다.
+- `docs/planning-data/*.json`은 직접 런타임 입력이 아니다.
+- 자동 검증은 `STEP 14` 사람 검증을 대체하지 않는다.
 
 ## `[보류]`
 
-- Round 4 이후 전체 적대적 검토.
-- 16권 절초의 개별 이름·효과·슬롯·태그·대응점.
-- 2026-07-26 구현 계획 실행.
-- Godot 런타임·데이터·씬·자산 변경.
-
-`[보류]`는 결정 행에서는 `DEFERRED`, 게이트에서는 `HOLD`로 기록한다.
-
-## PR #45 자산 지위
-
-- 최신 권한 원장: `2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
-- 2026-07-26 기획·BUILD 진입 문서: `SUPERSEDED_REFERENCE`.
-- 과거 적대적 검토·벤치마크·sanity: `HISTORICAL_EVIDENCE`.
-- `docs/planning-data/`: `SOURCE_ONLY / HOLD`.
-- 2026-07-26 구현 계획: `DEFERRED / REFERENCE_ONLY`.
-- 제품 런타임: 이번 통합에서 변경하지 않음.
-
-## 다음 작업
-
-사용자가 절초 설계를 재개하면 16권 절초를 하나씩 확정한다. 그 전에는 최신 원장과 PR #45 정합성만 유지하고 Codex Build로 전환하지 않는다.
+- 16권 절초 개별 설계.
+- 주요 비무 6~10 런타임.
+- 천하제일인·비동기 기능.
+- 최종 아트·오디오 폴리싱.

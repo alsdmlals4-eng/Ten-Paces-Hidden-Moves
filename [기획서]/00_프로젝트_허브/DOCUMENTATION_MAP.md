@@ -5,49 +5,92 @@
 ```text
 AGENTS.md
 → [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
-→ docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md
+→ 최신 관련 Decision
 → 질문별 책임 원본
-→ 실제 코드·데이터·테스트·PR
+→ 실제 코드·데이터·Scene·테스트·PR
 ```
 
-- Base 적용 기준: `docs/BASE_RULES_VERSION.md`.
-- Skill Registry: `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`.
+- Base route·Adapter: `skills/PROJECT_BASE_ADAPTER.json`.
+- 프로젝트 고유 Skill Registry: `skills/SKILL_REGISTRY.json`.
+- 과거 v6 원장은 승인 이력 인덱스이며 최신 날짜별 Decision이 우선한다.
 
-## 질문별 책임 원본
+## 질문별 현재 책임 원본
 
-| 질문 | 현재 책임 원본 | 과거·보조 자료 |
-|---|---|---|
-| 현재 단계·권한·보류·다음 작업 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` | PR #45 본문·과거 Active Context |
-| 전체 사용자 결정·대체·폐기·보류 | `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md` | 2026-07-25/26 기준선·결정 기록 |
-| PR #45 통합 판정·중복 제거 | `docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md` | PR #45 changed files·과거 검수 보고서 |
-| 프로젝트 코어·플레이어 약속 | v6 원장 `CORE-*` | `docs/01_GAME_DESIGN.md`·과거 코어 결정 기록 |
-| 전투·슬롯·합·연격·방어도·태그 | v6 원장 `COMBAT/BOARD/SLOT/COST/STACK/AUTO/TAG/DEF-*` | `docs/02_COMBAT_RULES.md`·현행 PoC 코드 |
-| 적 의도 단서·가설·해결 후 인과 Pilot | `docs/decisions/2026-07-29_ENEMY_INTENT_EVIDENCE_PACK_PILOT.md` | v6 원장·실제 사람 플레이테스트; `PLANNING_INPUT / NOT_CANON` |
-| 적 의도 단서 사람 검증 Artifact | `docs/superpowers/plans/2026-07-29-enemy-intent-human-validation-artifact.md` | 기존 A2/A3 PoC·가설/복기 UI; `HUMAN_VALIDATION_INPUT / NOT_CANON` |
-| 합성 테스터 적용 Skill·작업 구조 | `docs/research/2026-07-29_SYNTHETIC_TESTER_STRUCTURE_ANALYSIS.md` | Registry·Active Context·프로젝트 Skill; `T6_AI_INFERENCE / NOT_CANON` |
-| 적 의도 단서 합성 위험 검토 | `docs/research/2026-07-29_ENEMY_INTENT_SYNTHETIC_TESTER_REPORT.md` | 사람 검증 패킷·Evidence Pack; `AI_SIMULATION_COMPLETED / HUMAN_NOT_RUN` |
-| 강호행·경로·콘텐츠 범위 | v6 원장 `RUN-*` | `docs/03_CONTENT_CATALOG.md`·`docs/planning-data/` source-only |
-| 무공서·성급·수련·랭크·절초 공통 계약 | v6 원장 `MARTIAL/GLOBAL/ROSTER/POOL/BAN/OFFER/TRAIN/RANK/ULT-*` | `docs/06_STARTING_FACTION_MASTERY_DATA.md`·과거 PoC 무공 JSON |
-| UI·접근성 | `docs/07_COMBAT_UI_SPEC.md` | 실제 씬·사람 검증 |
-| 구현 사실 | 실제 `data/`, `src/`, `scenes/`, `tests/` | 문서의 구현 주장 |
+| 질문 | 현재 책임 원본 |
+|---|---|
+| 현재 단계·권한·다음 작업 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` |
+| 전체 문서 책임·위치 | `[기획서]/DESIGN_DOCUMENT_REGISTRY.json` |
+| 과거 v6 승인 인덱스 | `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md` |
+| 프로젝트 코어 | `docs/01_GAME_DESIGN.md` |
+| 전투 판정 | `docs/02_COMBAT_RULES.md` |
+| 회차·노드·천하제일인 | `docs/decisions/2026-07-31_COMBAT_ROUTE_AND_CHAMPION_DECISION.md` |
+| 절차형 상대·경로 | `docs/decisions/2026-07-31_PROCEDURAL_DUEL_POOL_AND_ROUTE_DECISION.md` |
+| 슬롯 3 거리 학습 | `docs/decisions/2026-07-31_SLOT3_DISTANCE_DUEL_AND_ROUTE_DECISION.md` |
+| 3수 계획 편집 | `docs/decisions/2026-07-31_THREE_MOVE_PLANNING_EDITOR_UX_DECISION.md` |
+| 해결·복기 | `docs/decisions/2026-07-31_COMBAT_RESOLUTION_AND_REVIEW_UX_DECISION.md` |
+| 무공서→기술→수 배치 | `docs/decisions/2026-08-01_MARTIAL_MANUAL_TECHNIQUE_TIMELINE_UX_DECISION.md` |
+| 행동 선택 구현 결과 | `docs/implementation/2026-08-01_ACTION_SELECTION_DOCK_CLOSEOUT.md` |
+| 필수 화면·P0 상태·Scene 소유권 | `docs/decisions/2026-08-01_SITUATION_SCREEN_ARCHITECTURE_DECISION.md` |
+| 상황별 상세 명세 | `docs/superpowers/specs/2026-07-31-situation-screen-implementation-spec.md` |
+| 다음 구현 순서 | `docs/04_ROADMAP.md` |
+| 콘텐츠 | `docs/03_CONTENT_CATALOG.md` |
+| PoC·Vertical Slice | `docs/05_COMBAT_POC_SPEC.md` |
+| 무공·성장 | `docs/06_STARTING_FACTION_MASTERY_DATA.md` |
+| UI·접근성 | `docs/07_COMBAT_UI_SPEC.md` |
+| 테스트·미검증 | `docs/08_TEST_CHECKLIST.md` |
+| 전투 시스템 책임 | `docs/09_COMBAT_SYSTEM_ARCHITECTURE.md` |
+| Base·프로젝트·Sheet 감사 | `docs/reviews/2026-08-01_BASE_PROJECT_SHEET_ADVERSARIAL_AUDIT.md` |
+| 구현 사실 | 실제 `data/`, `src/`, `scenes/`, `tests/`, `project.godot` |
 
-`docs/01`, `02`, `03`, `06`은 이번 통합 시점의 현행 구현·과거 기획 설명을 보존한다. 최신 v6 설계와 충돌할 때 결정 원장이 우선하며, 후속 통합 명세 작성 시 원장의 영향 책임 원본으로 갱신한다.
+## 최신 Decision 우선순위
 
-## PR #45 중복 방지
+```text
+최신 사용자 지시
+→ 2026-08-01 Decision
+→ 2026-07-31 Decision
+→ v6 Decision Authority Ledger
+→ 분야 책임 원본
+→ 실제 구현·테스트
+→ 과거 계획·초안
+```
 
-- `2026-07-26_POC_PLANNING_BASELINE.md`와 `2026-07-26_REVIEW_COMPLETE_AND_BUILD_ENTRY.md`는 역사 포인터이며 최신 규칙을 소유하지 않는다.
-- 과거 적대적 검토·벤치마크·sanity 문서는 변경 당시의 증거를 보존한다.
-- `docs/planning-data/*.json`은 source-only 분석 자료이며 런타임 입력이 아니다.
-- 2026-07-26 구현 계획은 새 BUILD 승인 전 실행하지 않는다.
-- 같은 질문에 여러 활성 정본을 두지 않는다.
+실제 구현과 최신 Decision이 다르면 `CANON_CONFLICT`로 보고한다.
 
-## 상태 분리
+## 구조화 계획 데이터
 
-- 제품 단계: `CONCEPT_APPROVAL`
-- Work Mode: `PLAN`
-- 실행 프로필: `PLANNING_ONLY_PROFILE`
-- 합성 검토: `AI_SIMULATION_COMPLETED / T6_AI_INFERENCE`
-- 사람 검증: `NOT_RUN`
-- 후속 적대적 검토: `HOLD / [보류]`
-- 절초 16종 개별 설계: `DEFERRED / [보류]`
-- 런타임 구현: `PROHIBITED_UNTIL_NEW_APPROVAL`
+- `approved_20260731_combat_route_contract.json`.
+- `approved_20260731_procedural_duel_pool_route_contract.json`.
+- `approved_20260731_slot3_distance_route_contract.json`.
+- `approved_20260731_combat_resolution_review_contract.json`.
+- `approved_20260801_martial_technique_timeline_ux_contract.json`.
+- `approved_20260801_situation_screen_contract.json`.
+
+`docs/planning-data/*.json`은 직접 런타임에서 읽지 않는다.
+
+## 현재 상태
+
+```yaml
+product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
+work_mode: REVIEW
+integration_pr: 65
+action_selection: IMPLEMENTED_AUTOMATED_VALIDATION_PASS_HUMAN_PENDING
+situation_screen_architecture: APPROVED_PLANNING
+full_product_flow_runtime: NOT_STARTED
+human_validation: NOT_RUN
+next_package: VERTICAL_SLICE_APP_FLOW_SHELL
+```
+
+## 역사·중복 방지
+
+- PR #7과 Issue #13은 T0 `STEP 0~13` 구현 이력이다.
+- PR #45는 v6 계획 통합 이력이다.
+- 2026-07-26 BUILD 문서와 고정형 연교→묵진 경로는 `SUPERSEDED_REFERENCE`다.
+- 같은 질문에 여러 현재 정본을 두지 않는다.
+- 상세 Spec의 과거 상태 문구보다 최신 Decision이 승인 상태를 소유한다.
+
+## `[보류]`
+
+- 16권 절초 개별 설계.
+- 주요 비무 6~10 런타임.
+- 천하제일인·비동기 기능.
+- 최종 아트·오디오 폴리싱.

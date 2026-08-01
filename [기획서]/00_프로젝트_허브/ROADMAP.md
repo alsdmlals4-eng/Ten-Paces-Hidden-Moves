@@ -1,83 +1,116 @@
 # 십보강호 운영 로드맵
 
-> 제품 구현의 상세 순서는 `docs/04_ROADMAP.md`, 현재 사용자 결정 권한은 `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`가 소유한다.
+> 상세 제품 로드맵: `../../../docs/04_ROADMAP.md`  
+> 현재 상태: `ACTIVE_CONTEXT.md`  
+> 과거 v6 결정 인덱스: `../../../docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`
 
 ```yaml
-product_stage: CONCEPT_APPROVAL
-work_mode: PLAN
-execution_profile: PLANNING_ONLY_PROFILE
-runtime_implementation: PROHIBITED_UNTIL_NEW_APPROVAL
+product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
+work_mode: REVIEW
+integration_pr: 65
+implemented_decision: TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01
+approved_planning_decision: TEN-DEC-20260801-SITUATION-SCREEN-01
+next_package: VERTICAL_SLICE_APP_FLOW_SHELL
+human_validation: NOT_RUN
 ```
 
-## R0 — 현행 구현·역사 보존
+## R0 — 구현·역사 기준선
 
-- [x] T0 구현 계보 PR #7·Issue #13 확인.
+- [x] T0 구현 계보 PR #7·Issue #13 보존.
 - [x] 기술 기준 SHA `659c57e7ffa588ad6a6471ed9b5394985b159eaf` 보존.
-- [x] Base 기준과 프로젝트 고유 Skill 경계 보존.
-- [x] 기존 코드·데이터·테스트는 현재 구현 사실로 유지.
+- [x] v6 원장을 역사 인덱스로 유지.
+- [x] 최신 날짜별 Decision과 실제 구현을 현재 권한으로 사용.
 
-상태: `IMPLEMENTED_LEGACY / REFERENCE_ONLY_FOR_V6_DESIGN`.
+상태: `APPROVED`.
 
-## R1 — v6 결정 권한 통합
+## R1 — 전투·회차 기획
 
-- [x] 제품 단계 `CONCEPT_APPROVAL`과 Work Mode `PLAN` 확정.
-- [x] 프로젝트 코어를 상대의 숨은 수를 읽고 파훼하는 경험으로 재정렬.
-- [x] 핵심 결투 5개 버티컬 슬라이스 앵커 확정.
-- [x] 무공서 16권·1~10성·수련·랭크 계약 연결.
-- [x] 연격·방어도·전조·비용·태그 계약 연결.
-- [x] PR #45의 BUILD 승인·구형 기획을 `SUPERSEDED_REFERENCE`로 재분류.
-- [x] 모든 결정에 주장 유형·근거·책임 원본·적용 빌드·재검토 조건 연결.
+- [x] 1대1 10칸·3/3/4·거리·합·방어도·중단·복기.
+- [x] 데모 5슬롯·후보 3명·중간 노드 8개.
+- [x] 전체 10슬롯·중간 노드 18개.
+- [x] 절차형 상대·경로와 슬롯 1~3 학습 역할.
+- [x] 3수 계획 편집·해결·복기 UX.
 
-상태: `V6_PLANNING_AUTHORITY_INTEGRATED`.
+상태: `APPROVED_PLANNING`.
 
-## R2 — 현재 GitHub 통합
+## R2 — ActionSelectionDock
 
-- [x] v6 전체 결정 권한 원장 작성.
-- [x] Active Context·Documentation Map·Handoff·진입점 갱신.
-- [x] PR #45 제목·본문을 계획 전용 통합으로 교정.
-- [x] 과거 기획 기준선과 BUILD 진입 문서를 역사 포인터로 축약.
-- [ ] 최신 PR Validation PASS.
-- [ ] PR #45 병합 후 main SHA와 파일 상태 재확인.
+- [x] `[기초] [무공] [절초]` 구조.
+- [x] 무공서→현재 해금 기술.
+- [x] 가장 앞 유효 연속 수 자동 배치.
+- [x] `[전조] → [실행]` 연결 블록.
+- [x] 진행 전 이동·제거.
+- [x] 절초기세 예약·환불.
+- [x] 포인터 Drop 회귀 수정.
+- [x] 구현 HEAD 자동 검증 PASS.
+- [ ] Windows 실제 Godot·사람 검증.
+
+상태: `IMPLEMENTED_AUTOMATED_PASS_HUMAN_PENDING`.
+
+## R3 — 정본·Sheet·PR #65
+
+- [x] 최신 Decision·planning data·Closeout·감사 문서.
+- [x] Active Context·Documentation Map·Roadmap·진입점 갱신.
+- [x] Google Sheets 7개 책임 탭 동기화·재조회.
+- [ ] 동일 HEAD의 PR Validation·Base v9·Full Validation PASS.
+- [ ] PR #65 main 병합.
+- [ ] main SHA와 Sheet 상태 `SYNCED` 재기록.
 
 상태: `INTEGRATION_REVIEW`.
 
-## R3 — `[보류]`
+## R4 — `VERTICAL_SLICE_APP_FLOW_SHELL`
 
-다음은 사용자가 재개하기 전 진행하지 않는다.
+```text
+App Root
+→ Main
+→ 시작 무공 6중4
+→ Route·Node·Briefing
+→ 기존 Combat
+→ Result·Reward·Retry
+```
 
-- Round 4 이후 전체 적대적 검토.
-- 16권 절초의 개별 이름·효과·슬롯·태그·대응점.
-- 2026-07-26 구현 계획 실행.
-- 런타임 구현 계획 재작성.
-- Godot 런타임·데이터·씬·자산 변경.
+- [ ] 명시적 화면 상태 전환과 입력 잠금.
+- [ ] `RunSession`·`SaveService` 최소 계약.
+- [ ] Route·Node·Briefing 저충실도 Shell.
+- [ ] Combat 진입·복귀.
+- [ ] Result·Reward·Retry transaction.
+- [ ] 저장 실패·same-seed 복원·이중 commit 회귀.
 
-상태: `HOLD`.
+상태: `APPROVED_NEXT_PACKAGE / NOT_STARTED`.
 
-## R4 — 설계 재개 후
+## R5 — 콘텐츠 반복 제작
 
-사용자가 절초 설계를 재개하면:
+```text
+슬롯별 대표 후보 1명으로 제품 흐름 증명
+→ 두 번째 후보·노드 반복 제작
+→ 제작 시간·데이터 재사용·사람 검증
+→ 검증된 슬롯부터 후보 3명으로 확장
+```
 
-1. 절초 공통 계약을 기준으로 16개 절초를 하나씩 확정한다.
-2. 일반 기술과 성급 효과를 내부 권장안으로 완성한다.
-3. 성장 경제·경로·적·UI의 통합 명세를 작성한다.
-4. 보류된 적대적 검토를 재개한다.
-5. 남은 `MUST_FIX`가 0일 때만 새 구현 계획과 BUILD 승인을 요청한다.
+최종 `5슬롯 × 후보 3명` 계약을 축소하지 않는다.
 
-상태: `NOT_STARTED / USER_RESTART_REQUIRED`.
+## R6 — 사람·Vertical Slice 게이트
 
-## R5 — 향후 BUILD 게이트
+- Windows 실제 Godot.
+- 키보드·마우스·게임패드.
+- 해상도·safe area.
+- 접근성·성능.
+- `STEP 14` 신규 플레이어 5명.
+- 두 번째 콘텐츠 반복 제작 증거.
 
-새 BUILD는 다음을 모두 요구한다.
+상태: `T1_NOT_GRANTED`.
 
-- 사용자의 명시적 구현 승인.
-- 최신 통합 명세와 구현 계획.
-- 보호 경로·기준 SHA·롤백 계약.
-- 격리 브랜치·worktree.
-- TDD와 구간별 REVIEW 복귀.
-- Godot·Windows·접근성·성능·사람 검증의 독립 기록.
+## R7 — Base v9.3
 
-현재 판정: `NOT_GRANTED`.
+PR #65가 main에 안정화된 뒤 별도 migration PR에서 Adapter·pin·generated view·Registry hash·protected baseline·freshness·회귀를 함께 갱신한다.
 
-## 독립 증거 원칙
+상태: `SEPARATE_FOLLOWUP`.
 
-파일 존재·정적 검사·Actions·Godot·Windows·접근성·성능·사람 플레이·시장 검증은 서로 다른 증거다. 실행하지 않은 항목은 `UNVERIFIED`다.
+## `[보류]`
+
+- 16권 절초 개별 설계.
+- 주요 비무 6~10 런타임.
+- 천하제일인·비동기 기능.
+- 최종 아트·오디오 폴리싱.
+
+실행하지 않은 검증은 `NOT_RUN / UNVERIFIED`다.

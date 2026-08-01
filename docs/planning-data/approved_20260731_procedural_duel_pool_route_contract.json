@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260731-PROCEDURAL-DUEL-POOL-01",
+  "status": "APPROVED_PLANNING",
+  "data_role": "NON_RUNTIME_PLANNING_AUTHORITY",
+  "runtime_authority": "NONE",
+  "owner": "docs/decisions/2026-07-31_PROCEDURAL_DUEL_POOL_AND_ROUTE_DECISION.md",
+  "parent_decision": "TEN-DEC-20260731-COMBAT-ROUTE-01",
+  "selection_contract": {
+    "candidate_count_per_duel_slot": 3,
+    "first_duel": {
+      "eligible_candidates": 3,
+      "offered_candidates": 1,
+      "selection": "DETERMINISTIC_WEIGHTED_RANDOM"
+    },
+    "later_duels": {
+      "eligible_candidates": 3,
+      "offered_destinations": 2,
+      "selection": "SAMPLE_WITHOUT_REPLACEMENT",
+      "player_selects_route_and_opponent": true
+    },
+    "seed_inputs": [
+      "run_seed",
+      "slot_id",
+      "gap_index"
+    ]
+  },
+  "route_generation": {
+    "nodes_visited_per_gap": 2,
+    "layers_per_gap": 2,
+    "candidate_nodes_per_layer": {
+      "min": 2,
+      "max": 3
+    },
+    "layer_01_role": "RECOVERY_GROWTH_OR_GENERAL_EVENT",
+    "layer_02_role": "OPPONENT_INFORMATION_OR_PREPARATION",
+    "dead_ends": false,
+    "backtracking": false,
+    "deterministic_from_seed": true,
+    "guarantees": [
+      "EACH_OFFERED_OPPONENT_HAS_AT_LEAST_ONE_ROUTE",
+      "EACH_OFFERED_OPPONENT_HAS_SAFE_RECOVERY_OR_GROWTH_ACCESS",
+      "EACH_OFFERED_OPPONENT_HAS_INFORMATION_OR_PREPARATION_ACCESS",
+      "LOW_HEALTH_HAS_AT_LEAST_ONE_REACHABLE_RECOVERY_PATH",
+      "CORE_RULES_ARE_NEVER_GATED_BY_INFORMATION_NODES",
+      "NO_DUPLICATE_NODE_OR_EVENT_IN_ONE_RUN",
+      "NO_THREE_IDENTICAL_NODE_TYPES_IN_SEQUENCE",
+      "NO_INFORMATION_NODE_FOR_UNOFFERED_OPPONENT"
+    ]
+  },
+  "slot_contracts": [
+    {
+      "slot_id": "duel_slot_01",
+      "learning_role": "CLASH_DISTANCE_AND_BASIC_INTERRUPT_INTRO",
+      "candidate_count": 3,
+      "candidates": [
+        {
+          "id": "yeongyo",
+          "name": "연교",
+          "epithet": "사문검객",
+          "style": "ORTHODOX_MOVE_QUICK_ATTACK_GUARD"
+        },
+        {
+          "id": "baek_soryeong",
+          "name": "백소령",
+          "epithet": "유운검수",
+          "style": "MOBILITY_WEIGHTED_DISTANCE_ONE_THRUST"
+        },
+        {
+          "id": "jin_mubaek",
+          "name": "진무백",
+          "epithet": "철선문도",
+          "style": "GUARD_TEMPO_INTO_SHORT_QUICK_ATTACK"
+        }
+      ]
+    },
+    {
+      "slot_id": "duel_slot_02",
+      "learning_role": "GUARD_HEALTH_DAMAGE_INTERRUPT_AND_FORTITUDE_INTRO",
+      "candidate_count": 3,
+      "candidates": [
+        {
+          "id": "mukjin",
+          "name": "묵진",
+          "epithet": "철벽승",
+          "style": "GUARD_FORTITUDE_HEAVY_ATTACK_CYCLE"
+        },
+        {
+          "id": "ha_jingang",
+          "name": "하진강",
+          "epithet": "진산권객",
+          "style": "LOW_MOBILITY_GUARD_CAP_HEAVY_FIST"
+        },
+        {
+          "id": "wi_cheongram",
+          "name": "위청람",
+          "epithet": "현문도객",
+          "style": "GUARD_EXPIRY_AND_HEAVY_TIMING_CROSSOVER"
+        }
+      ]
+    }
+  ],
+  "global_candidate_rules": [
+    "NO_DUPLICATE_PERSON_IN_ONE_RUN",
+    "REDUCE_WEIGHT_FOR_LAST_RUN_ENCOUNTERS",
+    "NO_THREE_CONSECUTIVE_SAME_FACTION_OR_WEAPON_ARCHETYPE",
+    "EXCLUDE_CANDIDATES_OUTSIDE_SLOT_DIFFICULTY_BUDGET",
+    "PUBLIC_STATE_ONLY_AI"
+  ],
+  "supersedes": [
+    "FIXED_YEONGYO_AS_DUEL_01",
+    "FIXED_MUKJIN_AS_DUEL_02",
+    "FIXED_YEONGYO_TO_MUKJIN_ROUTE",
+    "SEMI_AUTHORED_FIXED_FIRST_GAP_GRAPH"
+  ],
+  "production_guardrails": {
+    "demo_slots": 5,
+    "candidates_per_slot": 3,
+    "potential_demo_opponents": 15,
+    "shared_role_templates": true,
+    "candidate_unique_scope": [
+      "PUBLIC_TELL_SET",
+      "ACTION_WEIGHT_PROFILE",
+      "ONE_SIGNATURE_TECHNIQUE",
+      "VISUAL_IDENTITY",
+      "NARRATIVE_IDENTITY"
+    ],
+    "new_core_rule_per_candidate": false
+  },
+  "approval_gate": {
+    "planning_complete": false,
+    "review_complete": false,
+    "runtime_changes_allowed": false,
+    "human_validation": "NOT_RUN",
+    "codex_handoff": false
+  }
+}

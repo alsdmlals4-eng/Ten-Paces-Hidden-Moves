@@ -2,13 +2,14 @@
 
 > 책임: 현재 구현 상태와 다음 플레이 가능한 PoC의 목적·범위·성공·실패 기준  
 > 판정 원본: `docs/02_COMBAT_RULES.md`  
+> 최신 결정: `docs/decisions/2026-07-31_COMBAT_ROUTE_AND_CHAMPION_DECISION.md`  
 > 현재 기술 계보 기준: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`
 
 ## 1. 목적
 
 다음 PoC는 전체 게임 제작이 아니라 다음 질문을 검증한다.
 
-> 튜토리얼과 초반부의 공개 성향이 다른 다섯 상대 사이에서 2~3개 중간 노드를 거쳤을 때, 플레이어가 거리·합·대응·중단과 성장·회복 선택을 연결해 실제 계획을 바꾸는가?
+> 튜토리얼과 초반부의 공개 성향이 다른 다섯 상대 사이에서 각 구간 정확히 2개의 강호행로 노드를 거쳤을 때, 플레이어가 거리·합·대응·중단과 성장·회복·정보 선택을 연결해 실제 계획을 바꾸는가?
 
 ## 2. 단계 구분
 
@@ -16,16 +17,19 @@
 
 `STEP_0_TO_13_IMPLEMENTED`, `mechanical_step14` 기록 완료. 현재 런타임은 구형 수치를 구현하며 새 기획은 미구현이다.
 
-### 다음 PoC
+### 다음 PoC·첫 데모
 
 - 주요 비무 1~5.
 - 주요 비무 1은 첫 시작 튜토리얼.
 - 주요 비무 2~5는 스테이지 1 초반부.
-- 연속한 주요 비무 사이 중간 노드 2~3개.
-- 중간 노드 8~12개, 총 방문 노드 13~17개.
+- 연속한 주요 비무 사이 중간 노드 정확히 2개.
+- 네 구간 중간 노드 총 8개, 총 방문 노드 13개.
+- 첫 데모 노드 유형은 휴식·수련·정보·짧은 사건.
+- 일반 전투 노드는 첫 데모 필수 범위에서 제외.
 - 시작 무공 후보 6개 중 4개 선택.
 - 기본 절초는 시작부터 사용 가능하고, 집중 투자 경로에서는 주요 비무 5 전에 한 무공 10성 절초 도달 가능.
 - 최신 승인 전투 규칙과 결정적 복기.
+- 목표 플레이타임 15~22분.
 
 ### T1
 
@@ -42,30 +46,35 @@
 ```text
 시작 무공 4개 선택
 → 주요 비무 1 · 튜토리얼
-→ 중간 노드 2~3개
+→ 중간 노드 2개
 → 주요 비무 2
-→ 중간 노드 2~3개
+→ 중간 노드 2개
 → 주요 비무 3
-→ 중간 노드 2~3개
+→ 중간 노드 2개
 → 주요 비무 4
-→ 중간 노드 2~3개
+→ 중간 노드 2개
 → 주요 비무 5 · 집중 투자 시 10성 절초 도달 가능
 → 스테이지 1 복기·종료
 ```
 
-중간 노드는 전투·수련·세력·사건·객잔·시장 후보에서 구성한다. 모든 구간이 같은 노드 조합을 반복해서는 안 되며, 각 노드는 다음 주요 비무의 계획을 바꿀 정보·회복·성장·위험 중 하나를 제공해야 한다.
+각 구간의 첫 노드는 현재 상태 회복·성장, 둘째 노드는 다음 비무 정보·대비 역할을 우선한다. 모든 구간이 같은 노드 조합을 반복해서는 안 되며 각 노드는 다음 주요 비무의 계획을 바꿀 정보·회복·성장·위험 중 하나를 제공해야 한다.
 
 ### 포함
 
-- 순차 연격 합과 첫 피해 중단.
-- 방어도5 누적·소모.
+- 공격·막기의 `[공격력]`·`[방어력]` 비례 계산.
+- 피해 단위 순차 연격 합.
+- 합 패배·동점은 현재 피해 단위만 취소·상쇄.
+- 체력 피해 1 이상 중단 시 연격 미실행 후속타 전부 취소.
+- 방어도가 피해를 전부 막아 체력 감소 0이면 비중단.
+- 방어력 비례·합산 상한10·피격 비소모 방어도.
 - 횟수형 회피와 필중.
 - 강화×1.5와 중단 1회 강건.
 - 효과 scope와 7개 trigger.
 - 공개 성향과 최대 3 AI 후보.
 - 성과 등급·수련포인트.
 - 튜토리얼·스테이지 1의 5개 주요 비무.
-- 네 구간의 2~3개 중간 노드.
+- 네 구간의 중간 노드 정확히 2개, 총 8개.
+- 휴식·수련·정보·짧은 사건 노드.
 - 기본 절초의 시작 가용성과 3→10 집중 성장 38포인트 도달성.
 
 ### 실패·재도전
@@ -80,18 +89,32 @@
 
 - 주요 비무 6~10 구현.
 - 스테이지 2·3 구현.
-- 천마·무림맹주 등 히든 천하제일인 전투.
-- 전체 지도 생성.
+- 천하제일인 후보 6명 전투와 챔피언 등록.
+- 전체 10전 지도 생성.
+- 일반 전투 노드.
 - 저장 migration·영구 성장 트리·상점 경제의 완성. 단, 재도전 비용을 위한 최소 `[영구재화]` profile 계약은 포함.
 - 최종 아트·사운드·Release 성능.
 
-## 5. 구현 단계와 증거 상태
+## 5. 전체 회차 참조 가설
+
+```yaml
+mandatory_major_duels: 10
+gaps: 9
+visited_nodes_per_gap: 2
+visited_intermediate_nodes: 18
+target_playtime: 30_to_40_minutes
+target_median: 35_minutes
+```
+
+전체 회차와 천하제일인 콘텐츠는 PoC 통과 전 선제 구현하지 않는다.
+
+## 6. 구현 단계와 증거 상태
 
 ```yaml
 current_runtime: TECHNICALLY_VERIFIED_LEGACY
 new_planning_contract: AUTHORED
 new_runtime_implementation: NOT_STARTED
-new_static_planning_validation: PASS_24_TESTS
+new_static_planning_validation: REQUIRES_RERUN
 new_runtime_automated_validation: NOT_RUN
 new_godot_validation: NOT_RUN
 new_windows_validation: NOT_RUN
@@ -99,27 +122,63 @@ human_step14: NOT_RUN
 t1_greenlight: NOT_GRANTED
 ```
 
-## 6. STEP 14 플레이테스트 계약
+## 7. STEP 14 플레이테스트 계약
 
 - 빌드·commit·Godot 버전·플랫폼·입력 방법을 기록한다.
 - 행동 관찰과 인터뷰 반응을 분리한다.
-- 합·중단·강건·연격·성장 선택의 이해를 확인한다.
-- 네 중간 구간에서 선택이 다음 전투 계획을 바꾸는지 확인한다.
-- 주요 비무 5까지의 피로·이탈·재도전 의향을 기록한다.
+- 합·중단·강건·연격·능력치 비례 계산·비소모 방어도의 이해를 확인한다.
+- 네 중간 구간에서 두 노드 선택이 다음 전투 계획을 바꾸는지 확인한다.
+- 주요 비무 5까지의 피로·이탈·재도전 의향과 15~22분 목표를 기록한다.
 - 결과를 본 뒤 성공 기준을 바꾸지 않는다.
 
-## 7. T0 완료 기준
+## 8. T0 완료 기준
 
-다음 새 계약의 데이터·코드·테스트·문서가 일치하고, 비공개 계획 누출·재시작 누적·설명 불가능한 결과가 없어야 한다. 주요 비무 1~5와 네 구간의 노드 흐름을 중단 없이 완료할 수 있어야 한다. 기계 통과만으로 사람 이해를 통과 처리하지 않는다.
+다음 새 계약의 데이터·코드·테스트·문서가 일치하고, 비공개 계획 누출·재시작 누적·설명 불가능한 결과가 없어야 한다. 주요 비무 1~5와 네 구간의 정확히 2개 노드 흐름을 중단 없이 완료할 수 있어야 한다. 기계 통과만으로 사람 이해를 통과 처리하지 않는다.
 
-## 8. 현재 판정
+## 9. 현재 판정
 
 ```yaml
 planning_phase: REVIEW_IN_PROGRESS
-poc_scope: FIVE_DUELS_FOUR_GAPS_TWO_TO_THREE_NODES
-poc_visited_nodes: 13_TO_17
+poc_scope: FIVE_DUELS_FOUR_GAPS_TWO_NODES
+poc_visited_nodes: 13
+poc_intermediate_nodes: 8
 implementation: NOT_STARTED
 human_step14: NOT_RUN
 t1_greenlight: NOT_GRANTED
 decision: RETEST
 ```
+
+## 10. 행동 선택 Dock 구현 증거
+
+이 항목은 전체 5전 PoC 구현 완료를 의미하지 않는다. 기존 Godot 전투 PoC의 행동 선택·수 배치 UX만 제품 구조로 교체한 범위다.
+
+```yaml
+action_selection_dock: IMPLEMENTED_BUILD_PR
+build_pr: 66
+basic_actions: 8
+action_sources:
+  - BASIC
+  - MARTIAL
+  - ULTIMATE
+martial_flow: MANUAL_TO_UNLOCKED_TECHNIQUE
+manual_direct_placement: false
+ultimate_source: SHARED_MOMENTUM_0_TO_5
+auto_placement: EARLIEST_VALID_CONTIGUOUS
+repositioning: CONNECTED_BLOCK_PRE_COMMIT
+multi_timing_display: TELEGRAPH_TO_EXECUTION_LINKED_BLOCK
+virtual_prepare_response_combo: DISABLED_IN_PRODUCT_P0
+static_pr_validation: PASS
+base_v9_validation: PASS
+godot_full_validation: PENDING
+windows_validation: NOT_RUN
+human_validation: NOT_RUN
+```
+
+- 제품 입력 경로는 `ActionSelectionDock → ActionPlacementController → ActionTimingPanel`이다.
+- 기초 행동 8종은 독립 공용 행동군으로 유지한다.
+- 무공서는 성장·분류 단위이며 해금 기술만 수에 배치한다.
+- 기본 절초 3종과 10성 절초 표시 자리는 같은 절초 패널을 사용한다.
+- 다중 수 행동은 슬롯마다 이름을 반복하지 않고 `[전조] → [실행]` 연결 블록으로 표시한다.
+- 레거시 `BasicCardTray`·절초 목록·상세 패널은 회귀 호환용으로 남아 있지만 제품 화면에서는 숨긴다.
+- `docs/planning-data/*.json`은 런타임에서 직접 읽지 않는다.
+- 전체 5전 회차·강호행로·성장·보상·재도전 구현 상태는 위 `implementation: NOT_STARTED` 판정을 유지한다.
