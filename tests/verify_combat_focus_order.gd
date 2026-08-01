@@ -1,4 +1,4 @@
-# 제품 전투 계획의 Tab 포커스가 출처·행동·수·대상·진행·접근성 순서로 고정되는지 검증한다.
+# 제품 전투 계획의 Tab 포커스가 출처·행동·수·진행·접근성 순서로 고정되는지 검증한다.
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
@@ -37,8 +37,6 @@ func _run() -> void:
     var basic_buttons: Array[Button] = board.action_selection_dock.basic_panel.buttons
     var first_slot: ActionTimingSlot = board.action_timing_panel.get_slot(1)
     var last_slot: ActionTimingSlot = board.action_timing_panel.get_slot(10)
-    var first_tile: CombatBoardTile = board.get_tile(1)
-    var last_tile: CombatBoardTile = board.get_tile(10)
     var progress: Button = board.combat_progress_button._button
     var hypothesis_focus: Control = board.opponent_hypothesis_panel.get_focus_control()
 
@@ -58,10 +56,7 @@ func _run() -> void:
             board.action_timing_panel.get_slot(timing_index + 1),
             "timing slot %d" % timing_index
         )
-    _require_next(last_slot, first_tile, "last timing slot")
-    for tile_index in range(1, 10):
-        _require_next(board.get_tile(tile_index), board.get_tile(tile_index + 1), "target tile %d" % tile_index)
-    _require_next(last_tile, progress, "last target tile")
+    _require_next(last_slot, progress, "last timing slot")
     _require_next(progress, board.fast_replay_button, "progress button")
     _require_next(board.fast_replay_button, board.skip_presentation_button, "fast playback")
     _require_next(board.skip_presentation_button, board.reduced_motion_button, "skip playback")
