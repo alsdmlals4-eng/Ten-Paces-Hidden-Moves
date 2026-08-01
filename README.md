@@ -18,8 +18,11 @@
 - [행동 선택 Decision](docs/decisions/2026-08-01_MARTIAL_MANUAL_TECHNIQUE_TIMELINE_UX_DECISION.md)
 - [화면 구조 Decision](docs/decisions/2026-08-01_SITUATION_SCREEN_ARCHITECTURE_DECISION.md)
 - [ActionSelectionDock 종료 기록](docs/implementation/2026-08-01_ACTION_SELECTION_DOCK_CLOSEOUT.md)
-- [Base·프로젝트·Sheet 감사](docs/reviews/2026-08-01_BASE_PROJECT_SHEET_ADVERSARIAL_AUDIT.md)
+- [PR #65 정본·Sheet 동기화](docs/implementation/2026-08-01_PR65_CANON_SHEET_SYNC.md)
+- [Base·프로젝트·Sheet 적대적 감사](docs/reviews/2026-08-01_BASE_PROJECT_SHEET_ADVERSARIAL_AUDIT.md)
 - [Base 적용 기준](docs/BASE_RULES_VERSION.md)
+- [Base 동기화 감사]([기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md)
+- [Base 채택·학습 기록](docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md)
 
 ## 현재 작업 상태
 
