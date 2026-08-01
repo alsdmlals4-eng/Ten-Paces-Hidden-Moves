@@ -147,3 +147,38 @@ human_step14: NOT_RUN
 t1_greenlight: NOT_GRANTED
 decision: RETEST
 ```
+
+## 10. 행동 선택 Dock 구현 증거
+
+이 항목은 전체 5전 PoC 구현 완료를 의미하지 않는다. 기존 Godot 전투 PoC의 행동 선택·수 배치 UX만 제품 구조로 교체한 범위다.
+
+```yaml
+action_selection_dock: IMPLEMENTED_BUILD_PR
+build_pr: 66
+basic_actions: 8
+action_sources:
+  - BASIC
+  - MARTIAL
+  - ULTIMATE
+martial_flow: MANUAL_TO_UNLOCKED_TECHNIQUE
+manual_direct_placement: false
+ultimate_source: SHARED_MOMENTUM_0_TO_5
+auto_placement: EARLIEST_VALID_CONTIGUOUS
+repositioning: CONNECTED_BLOCK_PRE_COMMIT
+multi_timing_display: TELEGRAPH_TO_EXECUTION_LINKED_BLOCK
+virtual_prepare_response_combo: DISABLED_IN_PRODUCT_P0
+static_pr_validation: PASS
+base_v9_validation: PASS
+godot_full_validation: PENDING
+windows_validation: NOT_RUN
+human_validation: NOT_RUN
+```
+
+- 제품 입력 경로는 `ActionSelectionDock → ActionPlacementController → ActionTimingPanel`이다.
+- 기초 행동 8종은 독립 공용 행동군으로 유지한다.
+- 무공서는 성장·분류 단위이며 해금 기술만 수에 배치한다.
+- 기본 절초 3종과 10성 절초 표시 자리는 같은 절초 패널을 사용한다.
+- 다중 수 행동은 슬롯마다 이름을 반복하지 않고 `[전조] → [실행]` 연결 블록으로 표시한다.
+- 레거시 `BasicCardTray`·절초 목록·상세 패널은 회귀 호환용으로 남아 있지만 제품 화면에서는 숨긴다.
+- `docs/planning-data/*.json`은 런타임에서 직접 읽지 않는다.
+- 전체 5전 회차·강호행로·성장·보상·재도전 구현 상태는 위 `implementation: NOT_STARTED` 판정을 유지한다.

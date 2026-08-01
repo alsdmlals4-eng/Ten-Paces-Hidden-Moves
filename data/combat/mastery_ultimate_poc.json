@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "cards": [
+    {
+      "id": "ultimate_flowing_cloud_true_intent",
+      "name": "유운천검",
+      "source": "ultimate",
+      "source_id": "manual_flowing_cloud_sword",
+      "source_label": "유운검결",
+      "momentum_cost": 5,
+      "unlock_mastery": 10,
+      "current_mastery": 3,
+      "category": "attack",
+      "resolution_phase": "general",
+      "range_text": "3",
+      "damage": "20",
+      "attack_power_coefficient": 1.25,
+      "action_slots": 3,
+      "stamina_cost": 0,
+      "internal_cost": 0,
+      "targeting_mode": "attack_direction",
+      "tags": [
+        "절초",
+        "연격 4",
+        "추격"
+      ]
+    }
+  ]
+}

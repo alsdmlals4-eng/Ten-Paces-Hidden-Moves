@@ -15,6 +15,7 @@
 - UI·UX·사운드 컨셉→검색→부족분 생성→통합 검증 파이프라인: `USER_APPROVED_NOT_EXECUTED`.
 - 실제 에셋 검색·취득·생성·Godot 통합: `NOT_RUN`.
 - 새 Godot 수치·연격·효과·성장·5전 PoC runtime: `NOT_RUN`.
+- 행동 선택 Dock 정적 계약·PR Validation·Base v9: `PASS`; Godot Full Validation은 `PENDING`.
 - STEP 14 사람 플레이: `NOT_RUN`.
 
 ## 3. 전장·점유·대상
@@ -166,3 +167,55 @@
 ## 13. 종료 보고
 
 실행하지 않은 항목을 PASS로 만들지 않는다. 이번 planning REVIEW의 정적·참조·회귀 판정은 `PASS_WITH_FOLLOWUP`이며, 실제 에셋 검색·취득·생성·새 Godot runtime·Windows·접근성·성능·사람 검증은 `NOT_RUN / BLOCKED_UNVERIFIED`다.
+
+## 14. ACTION-SELECTION-001 제품 행동 선택 Dock
+
+### 정적·PR 증거
+
+- [x] `[기초] [무공] [절초]` 세 출처가 정적 계약에 등록됨.
+- [x] 기초 행동 8종과 기본 절초 3종 canonical catalog 유지.
+- [x] 무공서는 직접 배치하지 않고 해금 기술만 `technique_selected`를 방출함.
+- [x] 런타임 `src/**/*.gd`에서 `docs/planning-data` 직접 참조 없음.
+- [x] 자동 배치가 `ActionPlacementController`를 통해 가장 앞 유효 연속 수를 사용함.
+- [x] 다중 수 슬롯 표시가 `[전조]`·`[실행]`으로 분리됨.
+- [x] 제품 경로에서 `준비+막기/회피` 가상 카드 비활성.
+- [x] `.github/canonical-combat-impact-map.json` 소비자 등록.
+- [x] `python tests/check_action_selection_contract.py`: PR Validation 등록.
+- [x] PR #66 PR Validation: PASS.
+- [x] PR #66 Base v9 validation: PASS.
+
+### Godot 자동 증거
+
+- [ ] `verify_action_view_model_adapter.gd`.
+- [ ] `verify_action_selection_dock.gd`.
+- [ ] `verify_basic_action_panel.gd`.
+- [ ] `verify_martial_action_panel.gd`.
+- [ ] `verify_ultimate_action_panel.gd`.
+- [ ] `verify_action_placement_controller.gd`.
+- [ ] `verify_linked_action_blocks.gd`.
+- [ ] `verify_action_repositioning.gd`.
+- [ ] `verify_action_detail_panel.gd`.
+- [ ] `verify_combat_action_selection_integration.gd`.
+- [ ] 기존 전투·절초·복기·접근성 Godot 회귀 전체.
+
+위 Godot 항목은 Full Validation의 정확한 최종 HEAD 실행 전까지 `NOT_RUN`이다.
+
+### Windows·사람 증거
+
+- [ ] Windows 1280×800에서 기초 4×2·무공서 4권·절초 목록이 전장을 가리지 않음.
+- [ ] 마우스 없이 탭→행동→연결 블록→진행 이동 가능.
+- [ ] 2수·3수 행동이 한 행동으로 인식됨.
+- [ ] 절초 예약·이동·취소 시 기세 변화가 이해됨.
+- [ ] 무공서와 실제 배치 기술을 혼동하지 않음.
+- [ ] STEP 14 사람 플레이 별도 실행.
+
+현재 판정:
+
+```yaml
+action_selection_static: PASS
+action_selection_pr_validation: PASS
+action_selection_base_v9: PASS
+action_selection_godot: PENDING
+action_selection_windows: NOT_RUN
+action_selection_human: NOT_RUN
+```
