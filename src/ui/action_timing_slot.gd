@@ -2,6 +2,7 @@ class_name ActionTimingSlot
 extends Control
 
 signal slot_clicked(timing_index: int)
+signal slot_pointer_released(timing_index: int)
 
 const PANEL := Color(0.075, 0.062, 0.048, 0.96)
 const PANEL_ACTIVE := Color(0.13, 0.10, 0.055, 0.98)
@@ -149,6 +150,14 @@ func _on_mouse_exited() -> void:
     queue_redraw()
 
 func _on_gui_input(event: InputEvent) -> void:
+    if event is InputEventMouseButton:
+        var pointer_event := event as InputEventMouseButton
+        if pointer_event.button_index == MOUSE_BUTTON_LEFT and not pointer_event.pressed:
+            if can_receive_placement() or has_assignment():
+                slot_pointer_released.emit(timing_index)
+                accept_event()
+            return
+
     var activated := false
     if event is InputEventKey:
         var key_event := event as InputEventKey
