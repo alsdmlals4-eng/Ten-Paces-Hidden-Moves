@@ -23,6 +23,21 @@ jobs:
           python-version: "3.12"
       - name: Apply deterministic migration
         run: python tools/apply_base_v9_4_adoption.py
+      - name: Normalize official contract terminology
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('[기획서]/00_프로젝트_허브/AI_WORKFLOW.md')
+          text = path.read_text(encoding='utf-8')
+          old = '- 예시는 정답 권위가 아니라 정상·실패·경계·회귀 Fixture 또는 Golden Set으로 보존한다.'
+          new = '- `Example-as-Fixture`: 예시는 정답 권위가 아니라 정상·실패·경계·회귀 Fixture 또는 Golden Set으로 보존한다.'
+          if new not in text:
+              if old not in text:
+                  raise SystemExit('Example-as-Fixture source sentence missing')
+              text = text.replace(old, new, 1)
+              path.write_text(text, encoding='utf-8')
+          PY
       - name: Run focused adoption contracts
         run: |
           python -m unittest \
