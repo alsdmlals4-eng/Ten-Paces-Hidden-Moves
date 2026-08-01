@@ -13,6 +13,7 @@ var _drag_anchor := 0
 func _ready() -> void:
     super._ready()
     _build_linked_block_layer()
+    _connect_pointer_drop_targets()
     _refresh_linked_blocks()
 
 func find_earliest_open_anchor(span: int) -> int:
@@ -182,6 +183,15 @@ func _build_linked_block_layer() -> void:
     add_child(_linked_block_layer)
     set_meta("linked_action_blocks_enabled", true)
 
+func _connect_pointer_drop_targets() -> void:
+    var release_callback := Callable(self, "_on_slot_pointer_released")
+    for timing_index in range(1, 11):
+        var slot := get_slot(timing_index)
+        if slot == null or not slot.has_signal("slot_pointer_released"):
+            continue
+        if not slot.is_connected("slot_pointer_released", release_callback):
+            slot.connect("slot_pointer_released", release_callback)
+
 func _refresh_linked_blocks() -> void:
     if not is_instance_valid(_linked_block_layer):
         return
@@ -224,6 +234,11 @@ func _layout_linked_blocks() -> void:
         var block_rect := get_anchor_rect(anchor_index)
         block.position = block_rect.position
         block.size = block_rect.size
+
+func _on_slot_pointer_released(timing_index: int) -> void:
+    if _drag_anchor <= 0:
+        return
+    drop_linked_block_at(timing_index)
 
 func _on_linked_block_activated(anchor_index: int) -> void:
     slot_clicked.emit(anchor_index)
