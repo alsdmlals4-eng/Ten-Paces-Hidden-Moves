@@ -17,7 +17,13 @@
     },
     "operating": [],
     "product": [],
-    "sheet": []
+    "sheet": [
+      {
+        "id": "TEN-SHEET-EVIDENCE-20260801-01",
+        "sha256": "c564179608e7be5b64b9112489f911d173ac788047615df1cb2c1c7ca132d349",
+        "source": "docs/implementation/2026-08-01_PR65_POST_MERGE_SHEET_EVIDENCE.md"
+      }
+    ]
   },
   "integrity_verdict": "PASS_WITH_NOT_RUN_GATES",
   "operating_maturity": "OM-L0",
