@@ -1,0 +1,54 @@
+name: Apply Base v9.4 Adoption
+
+on:
+  pull_request:
+    paths:
+      - "tools/apply_base_v9_4_adoption.py"
+      - ".github/workflows/apply-base-v9-4-adoption.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply-adoption:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Apply deterministic migration
+        run: python tools/apply_base_v9_4_adoption.py
+      - name: Run focused adoption contracts
+        run: |
+          python -m unittest \
+            tests.test_base_v9_adoption \
+            tests.test_base_v91_operating_contract \
+            tests.test_base_v94_ai_operations_adoption \
+            -v
+      - name: Commit exact generated result
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet; then
+            echo "No adoption changes required."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add AGENTS.md START_HERE.md README.md \
+            docs/BASE_RULES_VERSION.md docs/DOCUMENTATION_MAP.md docs/UX_UI_SYSTEM.md \
+            docs/reviews/2026-08-01_BASE_V9_4_ADOPTION_AUDIT.md \
+            '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md' \
+            '[기획서]/00_프로젝트_허브/AI_WORKFLOW.md' \
+            '[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md' \
+            skills/PROJECT_BASE_ADAPTER.json skills/PROJECT_SKILL_SNAPSHOT.json \
+            skills/BASE_V9_ADAPTER.json skills/PROJECT_BASE_SKILL_ADAPTER.json \
+            .agents/skills/ten-paces-hidden-moves-workflow-router/SKILL.md \
+            tests/test_base_v9_adoption.py tests/test_base_v94_ai_operations_adoption.py
+          git commit -m "chore: adopt Base v9.4 operating contracts"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
