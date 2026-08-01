@@ -25,7 +25,11 @@
     "ULTIMATES"
   ],
   "round_timeline": {
-    "bundles": [3, 3, 4],
+    "bundles": [
+      3,
+      3,
+      4
+    ],
     "total_timings": 10,
     "editable_scope": "CURRENT_BUNDLE_ONLY",
     "show_full_round_and_current_bundle": true,
@@ -59,9 +63,18 @@
     "PREPARE"
   ],
   "multi_timing_action": {
-    "one_timing": ["EXECUTE"],
-    "two_timings": ["TELEGRAPH", "EXECUTE"],
-    "three_timings": ["TELEGRAPH", "TELEGRAPH", "EXECUTE"],
+    "one_timing": [
+      "EXECUTE"
+    ],
+    "two_timings": [
+      "TELEGRAPH",
+      "EXECUTE"
+    ],
+    "three_timings": [
+      "TELEGRAPH",
+      "TELEGRAPH",
+      "EXECUTE"
+    ],
     "display_as_single_linked_action": true,
     "contiguous": true,
     "cross_bundle": false,
@@ -80,7 +93,10 @@
     "manual_slot_first_placement": "OPTIONAL_SECONDARY_INPUT"
   },
   "ultimate_momentum": {
-    "range": [0, 5],
+    "range": [
+      0,
+      5
+    ],
     "shared_resource": true,
     "basic_and_mastery_ultimates_share_resource": true,
     "display_separately_from_stamina_and_internal": true,
@@ -100,7 +116,10 @@
   ],
   "quick_access": {
     "priority": "P1",
-    "recent_or_favorite_count": [3, 4],
+    "recent_or_favorite_count": [
+      3,
+      4
+    ],
     "must_not_replace_manual_hierarchy": true,
     "must_preserve_manual_origin": true,
     "must_not_recommend_exact_answer": true
