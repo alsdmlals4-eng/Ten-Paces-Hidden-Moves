@@ -16,8 +16,8 @@ planning_decision: TEN-DEC-20260801-SITUATION-SCREEN-01
 automated_validation: PASS
 human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-base_release_pinned: 9.1.0
-base_v9_3_migration: SEPARATE_FOLLOWUP
+base_release_pinned: 9.4.0
+base_v9_4_adoption: APPLIED_OPERATING_CONTRACT_ONLY
 ```
 
 ## 프로젝트 코어
@@ -105,7 +105,7 @@ App Root
 - `docs/reviews/2026-08-01_BASE_PROJECT_SHEET_ADVERSARIAL_AUDIT.md`.
 - ActionSelectionDock 정본·Sheet 누락과 포인터 Drop 누락을 수정했다.
 - PR #45·PLAN·Base v8 중심 시작 문서를 현재 기준으로 교체했다.
-- Base v9.3은 PR #65 main 안정화 뒤 별도 migration으로 처리한다.
+- Base v9.4 운영 계약은 제품 경로를 수정하지 않는 별도 adapter migration으로 적용한다.
 
 ## 역사·호환
 

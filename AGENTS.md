@@ -45,7 +45,7 @@ approved_planning_decision: TEN-DEC-20260801-SITUATION-SCREEN-01
 automated_validation: PASS
 human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-base_release_pinned: 9.1.0
+base_release_pinned: 9.4.0
 ```
 
 ## 4. Work Mode·Skill Mode
@@ -159,8 +159,8 @@ App Root
 - PR #7과 Issue #13은 T0 `STEP 0~13` 구현 계보다.
 - PR #45는 v6 계획 통합 이력이다.
 - 과거 Base SHA `c987647d01ad2baa028a16e03d85ddfc1572a727`은 역사 회귀 증거다.
-- 현재 Base 권한은 `skills/PROJECT_BASE_ADAPTER.json`의 v9.1 pin이다.
-- Base v9.3 adoption은 별도 migration PR에서 수행한다.
+- 현재 Base 권한은 `skills/PROJECT_BASE_ADAPTER.json`의 v9.4 payload/evidence pin이다.
+- Base v9.4 최종화 Commit은 운영 감사 증거이며 프로젝트 코어·제품 구현 권한을 변경하지 않는다.
 
 ## 13. `[보류]`
 

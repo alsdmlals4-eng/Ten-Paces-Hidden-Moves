@@ -17,9 +17,9 @@ skills/PROJECT_BASE_ADAPTER.json
 
 ```yaml
 base_repository: alsdmlals4-eng/Base
-base_release_version: 9.1.0
-release_commit: 3c158f52cfdad889970aef4d6ce6650a6fea0645
-release_evidence_commit: dd20ad3852e264d7e337e34d2cb963f71053a6cb
+base_release_version: 9.4.0
+release_commit: a728712cb776ec98f4875914a580fcf7d0156593
+release_evidence_commit: ef1fba11167e4da0b298123b0c85ebd268191a42
 adapter: skills/PROJECT_BASE_ADAPTER.json
 shared_skill_policy: adapter_only
 project_local_skills: 4
@@ -28,28 +28,21 @@ publication_policy: source_only
 
 Base 공용 Skill 본문을 프로젝트에 복제하지 않는다. 프로젝트 고유 규칙과 실제 경로만 로컬 Skill·Adapter가 소유한다.
 
-## 2. Base 원격 재감사
+## 2. Base v9.4 적용 감사
 
-2026-08-01 감사 기준:
+2026-08-01 적용 기준:
 
 ```yaml
-base_main_reviewed: a82976a3a42450ea413cdc5d4aebf701678110d8
-base_main_release_state: V9_3_RELEASED
-project_adoption: V9_1_PINNED_AND_VALIDATED
-migration_decision: SEPARATE_FOLLOWUP_AFTER_PR65_MAIN
+base_payload_commit: a728712cb776ec98f4875914a580fcf7d0156593
+base_trusted_evidence_commit: ef1fba11167e4da0b298123b0c85ebd268191a42
+base_pin_finalization_commit: 87a0b54c2847ce4b685879209205957c170cc1cd
+base_registry_sha256: 693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59
+base_release_state: BASE_RELEASED
+project_adoption: V9_4_OPERATING_CONTRACT_APPLIED
+product_paths_changed: false
 ```
 
-Base main의 v9.3은 단일 첨부 실행 복원, Vertical Slice 계약, release evidence·pin finalization을 포함한다. 현재 PR #65는 제품 코드·기획·Sheet 동기화가 큰 통합 작업이므로 Base release pin 교체를 섞지 않는다.
-
-별도 `BASE_V9_3_MIGRATION`에서 다음을 같은 변경 묶음으로 처리한다.
-
-- release·evidence pin
-- `PROJECT_BASE_ADAPTER.json`
-- generated compatibility views
-- Skill route·Registry hash
-- protected baseline
-- reference-freshness
-- 운영·Windows·CI 회귀
+Base v9.4의 모델·추론 단계·Prompt caching·비용 측정, 지시 권위, Interface-first Prompt, Context 큐레이션, Artifact 주장 상한, Godot UI 모션 계약을 프로젝트 adapter와 운영 문서에 적용한다. 십보강호의 전투 코어·무공 데이터·저장 Schema·승인 아트·실제 Godot 구현은 이 적용으로 변경하지 않는다.
 
 ## 3. 현재 적용 운영 계약
 
@@ -65,7 +58,7 @@ Base main의 v9.3은 단일 첨부 실행 복원, Vertical Slice 계약, release
 
 ## 4. Skill 구조
 
-현재 프로젝트 Adapter는 Base 활성 Skill 27개를 route하며 프로젝트 고유 Skill 4개를 유지한다.
+현재 프로젝트 Adapter는 Base 활성 Skill 28개를 route하며 프로젝트 고유 Skill 4개를 유지한다.
 
 프로젝트 고유 Skill:
 
@@ -134,4 +127,4 @@ human_validation: NOT_RUN
 - 프로젝트 Decision·정본·경로·ID·Schema 변경.
 - Google Sheets tab·열·Decision sync 계약 변경.
 - 제품 보호 경로 또는 저장 호환성 변경.
-- PR #65 main 병합 뒤 Base v9.3 migration 시작.
+- Base release·Registry·route·Adapter Schema가 다시 변경될 때 재감사.

@@ -1,7 +1,7 @@
 # Ten Paces: Hidden Moves UX/UI 시스템
 
 > Base 공용 기준: `alsdmlals4-eng/Base`의 `auditing-and-refining-ui-art`  
-> Base content commit: `0fd95f4513343e77fd664af2763a01b02f52545b`  
+> Base content commit: `a728712cb776ec98f4875914a580fcf7d0156593`  
 > 프로젝트 상태: `DESIGN_CONTRACT_ADOPTED`  
 > 런타임·사람 검증: `NOT_RUN`
 
@@ -122,6 +122,25 @@ UI는 전투 판정을 재계산하지 않고 권위 상태와 예상 결과 데
 - 음향을 꺼도 중단·반격·상태 변화가 텍스트·아이콘·로그로 보인다.
 - 긴 한국어 효과·최대 수치에서도 비용·사거리·핵심 효과가 잘리지 않는다.
 - 키보드·마우스·게임패드 중 선언한 경로로 계획→실행→복기를 완주한다.
+
+## 8A. UI 모션·중단·반복 계약
+
+UI 모션은 다음 상태를 명확하게 표현하되 전투 결과를 소유하지 않는다.
+
+```text
+입력 접수
+→ 처리 중
+→ 도메인 결과 확정
+→ 결과 표현
+```
+
+- 카드 선택·슬롯 배치·상세 팝업·합 연출은 입력 중단과 즉시 완료 경로를 가진다.
+- 빠른 반복 입력과 재진입에서 중복 배치·중복 비용·중복 보상·transform drift가 발생하지 않아야 한다.
+- `Reduced Motion`은 핵심 상태·사건 순서·결과 원인을 보존하며, `mute`와 `haptic-off`에서도 텍스트·아이콘·로그로 동등한 정보를 제공한다.
+- `AnimationPlayer`·`Tween` 완료 signal은 전투 판정·자원 소비·저장·보상의 권위 시점이 아니다.
+- 모션이 취소되거나 건너뛰어져도 CombatState와 결과 로그는 동일해야 한다.
+
+검증되지 않은 실제 화면 반복 피로·Windows 성능·사람 이해는 `NOT_RUN` 또는 `HUMAN_NOT_RUN`으로 유지한다.
 
 ## 9. 검증 매트릭스
 

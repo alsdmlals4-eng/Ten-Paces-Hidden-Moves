@@ -32,6 +32,7 @@
 11. [테스트 체크리스트](08_TEST_CHECKLIST.md) — 전투 계약·연출·Windows·접근성·성능·플레이테스트 검증.
 12. [제품 로드맵](04_ROADMAP.md) — 완료 범위와 STEP 12~14·T1 진입 순서.
 13. [Base 적용·학습 기록](11_BASE_ADOPTION_AND_LEARNING_LOG.md) — 채택·구체화·검증·Base 제안 경계.
+14. [Base v9.4 적용 감사](reviews/2026-08-01_BASE_V9_4_ADOPTION_AUDIT.md) — payload·evidence·Registry와 프로젝트 보호 경계.
 
 ## 작업별 최소 읽기
 
