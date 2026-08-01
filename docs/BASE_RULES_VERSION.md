@@ -11,6 +11,8 @@ skills/PROJECT_BASE_ADAPTER.json
 → 프로젝트 AGENTS·START_HERE·Active Context
 ```
 
+- Base 동기화 감사: `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`.
+
 현재 canonical Adapter:
 
 ```yaml
