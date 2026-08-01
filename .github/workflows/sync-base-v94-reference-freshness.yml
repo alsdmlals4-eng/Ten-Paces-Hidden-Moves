@@ -35,6 +35,6 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .github/reference-freshness.json
+          git add .github/reference-freshness.json '[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json'
           git commit -m "fix: synchronize Base v9.4 reference freshness"
           git push origin HEAD:${{ github.event.pull_request.head.ref }}
