@@ -30,7 +30,7 @@ approved_planning_decision: TEN-DEC-20260801-SITUATION-SCREEN-01
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
 human_validation: NOT_RUN
 base_adapter: skills/PROJECT_BASE_ADAPTER.json
-base_release_pinned: 9.1.0
+base_release_pinned: 9.4.0
 ```
 
 ## 현재 책임 원본

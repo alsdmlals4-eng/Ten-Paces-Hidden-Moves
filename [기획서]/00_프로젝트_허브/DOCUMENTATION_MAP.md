@@ -94,3 +94,7 @@ next_package: VERTICAL_SLICE_APP_FLOW_SHELL
 - 주요 비무 6~10 런타임.
 - 천하제일인·비동기 기능.
 - 최종 아트·오디오 폴리싱.
+
+## Base v9.4 적용
+
+- `docs/reviews/2026-08-01_BASE_V9_4_ADOPTION_AUDIT.md`: Base v9.4 payload·evidence·Registry와 프로젝트 보호 경계 감사.

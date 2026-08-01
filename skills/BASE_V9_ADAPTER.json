@@ -11,13 +11,13 @@
     "snapshot_sha256": "e30fca95d201a31937c7bddcbc341c79764d4940c318933a8902cb5bf901ba57"
   },
   "base_release": {
-    "release_commit": "3c158f52cfdad889970aef4d6ce6650a6fea0645",
-    "release_evidence_commit": "dd20ad3852e264d7e337e34d2cb963f71053a6cb",
+    "release_commit": "a728712cb776ec98f4875914a580fcf7d0156593",
+    "release_evidence_commit": "ef1fba11167e4da0b298123b0c85ebd268191a42",
     "repository": "alsdmlals4-eng/Base",
-    "version": "9.1.0"
+    "version": "9.4.0"
   },
   "canonical_source": "skills/PROJECT_BASE_ADAPTER.json",
-  "canonical_source_sha256": "97d4c0f6158e581a8d25878f75871aad49d8b5ba78ede09b6a21551db9842eed",
+  "canonical_source_sha256": "cac7497774b74fec6a2d6615fc925438713f3805a1e398698756bb85b1a78adc",
   "generated": true,
   "hash_definition": "RAW_FILE_BYTES_SHA256",
   "legacy_source": "docs/archive/base-v9-legacy-inputs/BASE_V9_ADAPTER.json",

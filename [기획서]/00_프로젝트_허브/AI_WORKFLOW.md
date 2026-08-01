@@ -40,7 +40,7 @@ AGENTS.md
 
 ## Skill 구조
 
-- Base 활성 Skill 25개: 공용 운영·코어·연구·검증·구조 최적화·동기화·디버깅.
+- Base 활성 Skill 28개: 공용 운영·코어·연구·검증·구조 최적화·동기화·디버깅.
 - 프로젝트 고유 Skill 4개:
   - `ten-paces-game-design`.
   - `combat-ux-and-accessibility`.
@@ -120,3 +120,15 @@ result:
 evidence:
 status: PASS | PARTIAL | FAIL | UNVERIFIED
 ```
+
+## Base v9.4 모델·지시·Context 계약
+
+- `[모델 추천]` 요청 시 작업 위험·재작업 비용·속도를 기준으로 모델과 추론 단계를 제안하고, 실제 설정 변경은 사용자가 수행한 다음 checkpoint부터 적용한다.
+- `HARD_CONSTRAINT`는 보안·권한·데이터 무결성·저장 호환성·불가역 변경에만 사용한다.
+- 일반 기술 구조는 `RECOMMENDED_DEFAULT`, 표현·비파괴 초안은 `JUDGMENT_SPACE`로 구분한다.
+- Prompt는 `problem / player_or_user_value / inputs / authority_and_source / output_contract / invariants / failure_conditions / validation`의 Interface-first 계약을 우선한다.
+- `Example-as-Fixture`: 예시는 정답 권위가 아니라 정상·실패·경계·회귀 Fixture 또는 Golden Set으로 보존한다.
+- Context는 `decision_question / include_criteria / exclude_criteria / authority_level / freshness / known_conflicts / progressive_load_trigger / refresh_trigger`를 기록한다.
+- 화면·Schema·Fixture는 실제 Godot 런타임·사람 이해·접근성·성능을 자동 증명하지 않는다. 실행하지 않은 항목은 `NOT_RUN` 또는 `HUMAN_NOT_RUN`이다.
+
+Base identity: payload `a728712cb776ec98f4875914a580fcf7d0156593`, evidence `ef1fba11167e4da0b298123b0c85ebd268191a42`, Registry `693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59`.

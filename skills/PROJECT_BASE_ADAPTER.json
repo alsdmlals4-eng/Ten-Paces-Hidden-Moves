@@ -1,10 +1,10 @@
 {
   "artifact_role": "PROJECT_BASE_ADAPTER",
   "base_release": {
-    "release_commit": "3c158f52cfdad889970aef4d6ce6650a6fea0645",
-    "release_evidence_commit": "dd20ad3852e264d7e337e34d2cb963f71053a6cb",
+    "release_commit": "a728712cb776ec98f4875914a580fcf7d0156593",
+    "release_evidence_commit": "ef1fba11167e4da0b298123b0c85ebd268191a42",
     "repository": "alsdmlals4-eng/Base",
-    "version": "9.1.0"
+    "version": "9.4.0"
   },
   "compatibility": {
     "cycle": "ONE_CYCLE",
@@ -33,7 +33,7 @@
   "protected_baseline": {
     "authority_kind": "REMOTE_TRACKING_REF",
     "authority_ref": "refs/remotes/origin/main",
-    "commit": "a68c70fd0c79448f67167aaa1e9b1f4f2d3cddd7",
+    "commit": "2d8b9fc2a435322ba26860421eecadf356f53a4b",
     "policy_sha256": "ed848e62f3292d704f602e2976737005b77100c476c6947e57ff0bcb5a3b6e52",
     "policy_source_path": "skills/PROJECT_BASE_SKILL_ADAPTER.json",
     "policy_source_type": "FIRST_MIGRATION_LEGACY_SOURCE",
@@ -151,6 +151,11 @@
         "status": "ACTIVE"
       },
       {
+        "route_id": "optimizing-ai-model-and-prompt-costs",
+        "skill_id": "optimizing-ai-model-and-prompt-costs",
+        "status": "ACTIVE"
+      },
+      {
         "route_id": "orchestrating-deepseek-worktrees",
         "skill_id": "orchestrating-deepseek-worktrees",
         "status": "ACTIVE"
@@ -262,13 +267,14 @@
     "reviewing-and-validating-project-changes": {},
     "running-adversarial-review-and-refinement": {},
     "simplifying-skill-bodies": {},
-    "synchronizing-local-and-github-state": {}
+    "synchronizing-local-and-github-state": {},
+    "optimizing-ai-model-and-prompt-costs": {}
   },
   "skill_registry": {
     "base": {
       "hash_definition": "RAW_FILE_BYTES_SHA256",
       "path": "skills/SKILL_REGISTRY.json",
-      "sha256": "e06003cb986e979aa46c06839de178c3fb9ff10bdf440e750712d90d6c5ae7bb"
+      "sha256": "693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59"
     },
     "project": {
       "hash_definition": "RAW_FILE_BYTES_SHA256",

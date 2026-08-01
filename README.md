@@ -35,7 +35,7 @@ automated_validation: PASS
 human_validation: NOT_RUN
 approved_screen_architecture: TEN-DEC-20260801-SITUATION-SCREEN-01
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-base_release_pinned: 9.1.0
+base_release_pinned: 9.4.0
 ```
 
 ## 프로젝트 코어
@@ -112,7 +112,7 @@ App Root
 - PR #7과 Issue #13은 현행 T0 `STEP 0~13` 구현 계보입니다.
 - PR #45와 v6 Decision 원장은 재설계·승인 이력입니다.
 - 과거 Base 기준 `c987647d01ad2baa028a16e03d85ddfc1572a727`은 `HISTORICAL_COMPATIBILITY_BASELINE`입니다.
-- 현재 공용 Skill route는 `skills/PROJECT_BASE_ADAPTER.json`의 Base v9.1 pin을 사용합니다.
+- 현재 공용 Skill route는 `skills/PROJECT_BASE_ADAPTER.json`의 Base v9.4 payload/evidence pin을 사용합니다.
 
 ## `[보류]`
 

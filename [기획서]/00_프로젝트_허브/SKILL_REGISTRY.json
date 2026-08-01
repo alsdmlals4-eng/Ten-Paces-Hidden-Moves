@@ -55,7 +55,8 @@
       "user_learning_notes": "creating-user-learning-notes",
       "project_visual_dashboard": "building-project-visual-dashboards",
       "engine_runtime_diagnosis": "diagnosing-game-engine-runtime-failures",
-      "legacy_retention_and_archives": "governing-legacy-retention-and-archives"
+      "legacy_retention_and_archives": "governing-legacy-retention-and-archives",
+      "model_prompt_cost_optimization": "optimizing-ai-model-and-prompt-costs"
     },
     "integrated_execution_prompt": "templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md",
     "project_sheet_status": "PROJECT_SHEET_CONFIGURED",
