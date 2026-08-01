@@ -8,12 +8,14 @@
 → docs/BASE_RULES_VERSION.md
 → [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
 → [기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md
+→ skills/SKILL_REGISTRY.json
+→ [기획서]/00_프로젝트_허브/SKILL_REGISTRY.json
 → 최신 관련 Decision
 → 질문별 책임 원본
 → 실제 코드·데이터·Scene·테스트·PR
 ```
 
-백업·보류·과거 계획·닫힌 PR·전체 Skill 폴더를 기본 로드하지 않는다.
+백업·보류·과거 계획·닫힌 PR·전체 Skill 폴더를 기본 로드하지 않는다. `skills/SKILL_REGISTRY.json`은 현재 프로젝트 고유 Skill 권한이며 `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`은 호환 진입점이다.
 
 ## 현재 기준
 
