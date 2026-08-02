@@ -261,7 +261,20 @@
     "managing-design-documents": {},
     "managing-game-project-operating-system": {},
     "managing-project-intake-and-work-contract": {},
-    "orchestrating-deepseek-worktrees": {},
+    "orchestrating-deepseek-worktrees": {
+      "base_contract_source": "skills/orchestrating-deepseek-worktrees/SKILL.md",
+      "work_package_source": "templates/ai/DEEPSEEK_WORK_PACKAGE.md",
+      "worktree_parent": ".worktrees/",
+      "task_branch_prefix": "ai/deepseek-",
+      "draft_root": "drafts/external-ai/",
+      "allowed_write_roots": [
+        "drafts/external-ai/**"
+      ],
+      "protected_paths_source": "skills/PROJECT_BASE_ADAPTER.json#/protected_paths",
+      "result_state": "REVIEW_PENDING",
+      "integration_policy": "LOCAL_REVIEW_REQUIRED_BEFORE_CANON",
+      "base_validator_adoption": "DEFER_UNTIL_NEXT_RELEASED_BASE_PIN"
+    },
     "pruning-stale-and-nonfunctional-material": {},
     "refactoring-with-contract-preservation": {},
     "reviewing-and-validating-project-changes": {},
@@ -286,6 +299,7 @@
     "python tests/test_base_shared_skill_adapter.py",
     "python tools/check_archive_governance.py",
     "python tools/check_project_operating_system.py",
+    "python tests/test_base_shared_external_ai_adapter.py",
     "manual: Godot project parse/runtime check",
     "manual: changed-file baseline diff"
   ]
