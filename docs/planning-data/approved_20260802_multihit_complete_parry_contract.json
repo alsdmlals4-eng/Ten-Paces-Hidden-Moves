@@ -37,7 +37,9 @@
   "secondary_effects": {
     "recorded_separately": true,
     "may_remain_after_zero_damage_block_or_clash": true,
-    "may_be_negated_by_dodge_per_effect_rule": true
+    "may_be_negated_by_dodge_per_effect_rule": true,
+    "push_example_survives_block_and_clash_zero_damage": true,
+    "push_example_is_negated_by_dodge": true
   },
   "unresolved": [
     "exact_threat_response_event_score",
