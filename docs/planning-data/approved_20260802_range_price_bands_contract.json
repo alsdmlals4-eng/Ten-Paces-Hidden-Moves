@@ -1,9 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "decision_id": "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
   "authority_status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "PLANNING_ONLY",
   "grillme_count": "2/10",
+  "followup_basic_palm_formula_decision": "TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01",
   "pricing_model": "MAX_RANGE_TOTAL_TICKS",
   "range_total_ticks": {
     "1": 0,
@@ -42,11 +43,12 @@
     },
     "basic_palm": {
       "range_ticks": 25,
-      "total_ticks": 38,
+      "total_ticks": 48,
       "target_ticks": 50,
-      "variance_ticks": -12,
-      "spare_ticks": 12,
-      "within_auto_tolerance": false
+      "variance_ticks": -2,
+      "spare_ticks": 2,
+      "within_auto_tolerance": true,
+      "formula_decision": "TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01"
     }
   },
   "validation": {
