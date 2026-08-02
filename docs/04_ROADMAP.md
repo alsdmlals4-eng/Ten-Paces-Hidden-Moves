@@ -7,11 +7,16 @@
 ## 1. 현재 단계
 
 ```yaml
+project_main: c5771ddae40f58d88824d9319fc4ef6cd1053bba
 phase: VERTICAL_SLICE_APP_FLOW_PLANNING
 project_core: CORE_CONFIRMED
+primary_platform: PC
+future_platform: MOBILE_CONSIDERATION_ONLY
 integration_pr: 65
+latest_operating_pr: 68
 action_selection_dock: IMPLEMENTED_AUTOMATED_VALIDATION_PASS_HUMAN_PENDING
 situation_screen_architecture: APPROVED_PLANNING
+platform_scope_decision: TEN-DEC-20260802-PLATFORM-SCOPE-01
 full_product_flow_runtime: NOT_STARTED
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
 human_step14: NOT_RUN
@@ -31,13 +36,23 @@ t1_greenlight: NOT_GRANTED
 - [x] 마우스 Drop 누락을 RED 회귀 뒤 수정.
 - [x] PR Validation·Base v9·Full Validation·Ubuntu Godot·Windows/Python matrix 통과.
 - [x] 필수 화면 4종·P0 상황 10종·Scene 소유권 승인.
+- [x] PR #65 병합과 GitHub 정본·Google Sheets post-merge 동기화.
+- [x] PR #68에서 Base v9.4 운영 계약·Adapter·생성 경로 적용.
+- [x] PC 우선·모바일 후속 고려 플랫폼 범위 Decision 확정.
 
-### 진행
+### 현재 Gate
 
-- [ ] PR #65 정본·Google Sheets 동기화.
-- [ ] PR #65 `main` 병합과 post-merge 재조회.
+`VERTICAL_SLICE_APP_FLOW_SHELL`의 Codex 구현 Packet을 실제 저장소 기준으로 닫는다.
 
-### 다음
+- [ ] App Root·화면 상태·Scene 소유권의 정확한 파일 경로 확정.
+- [ ] `RunSession`·`SaveService` 최소 Schema·저장·복구 계약 확정.
+- [ ] 시작 무공 6중4 선택 데이터·UI·취소·확정 계약 확정.
+- [ ] Route·Node·Briefing 저충실도 흐름의 상태·입출력·실패 계약 확정.
+- [ ] 기존 Combat 진입·복귀와 Result·Reward·Retry 단일 transaction 계약 확정.
+- [ ] 자동·Godot·Windows·접근성·성능·사람 검증 명령과 수용 기준 확정.
+- [ ] 롤백 단위와 보호 경로 확정.
+
+### 다음 BUILD 패키지
 
 `VERTICAL_SLICE_APP_FLOW_SHELL`
 
@@ -89,9 +104,25 @@ BOOT
 - 최종 아트·오디오.
 - 주요 비무 6~10.
 - 천하제일인·비동기 기능.
+- 모바일 포팅·스토어·터치 전용 UX.
 - 사람 검증 PASS 주장.
 
-## 5. 콘텐츠 제작 순서
+## 5. 플랫폼 제작 순서
+
+승인 Decision: `TEN-DEC-20260802-PLATFORM-SCOPE-01`.
+
+```text
+PC App Flow Shell
+→ Windows 실제 실행·입력·저장·성능·STEP 14 검증
+→ 대표 콘텐츠 반복 제작성 확인
+→ 모바일 타당성 조사
+→ 별도 사용자 승인·Decision
+→ 필요 시 모바일 포팅 패키지
+```
+
+모바일은 현재 출시 약속이나 동시 개발 범위가 아니다. 터치 UI·Android/iOS 빌드·스토어·모바일 성능·크로스 세이브는 별도 Decision 전까지 `NOT_STARTED`다.
+
+## 6. 콘텐츠 제작 순서
 
 최종 데모 계약은 `주요 비무 5슬롯 × 후보 3명`이다.
 
@@ -104,7 +135,7 @@ BOOT
 
 후보 수를 줄이는 결정이 아니라 파이프라인 위험을 먼저 줄이는 제작 게이트다.
 
-## 6. Demo·전체 회차
+## 7. Demo·전체 회차
 
 ```yaml
 demo:
@@ -123,7 +154,7 @@ full_run:
   target_playtime: 30_to_40_minutes
 ```
 
-## 7. BUILD/REVIEW 루프
+## 8. BUILD/REVIEW 루프
 
 ```text
 failing test
@@ -137,7 +168,7 @@ failing test
 
 실행하지 않은 검증은 `NOT_RUN`이다. 사람 증거 없이 이해도·재미·피로를 PASS로 기록하지 않는다.
 
-## 8. STEP 14
+## 9. STEP 14
 
 - 신규 플레이어 5명.
 - 4명 이상 치명적 차단 없이 데모 흐름 완료 또는 이탈 이유 기록.
@@ -149,7 +180,7 @@ failing test
 
 현재 `human_step14: NOT_RUN`이다.
 
-## 9. T1 — 최소 세로 슬라이스
+## 10. T1 — 최소 세로 슬라이스
 
 다음 증거가 모두 있어야 진입한다.
 
@@ -161,7 +192,7 @@ failing test
 
 현재 `t1_greenlight: NOT_GRANTED`다.
 
-## 10. 공통 검증 게이트
+## 11. 공통 검증 게이트
 
 ```text
 계약·Schema
@@ -175,17 +206,24 @@ failing test
 → evidence-report
 ```
 
-## 11. 후속 운영
+## 12. 후속 운영
 
-### Base v9.3 migration
+### Base 운영 계약
 
-PR #65가 main에 안정화된 뒤 별도 PR에서 release·evidence pin, Adapter, generated view, Registry hash, protected baseline, freshness, 회귀를 함께 갱신한다.
+Base v9.4 migration은 PR #68로 완료됐다. 다음 Base release·Registry·route·Adapter Schema가 바뀔 때만 별도 migration 감사로 재개한다.
 
 ### 사람 검증
 
 ActionSelectionDock은 자동 검증을 통과했지만 Windows 실제 Godot·실물 마우스 Drag·게임패드·화면 읽기 도구·신규 플레이어 이해도는 `NOT_RUN`이다.
 
-## 12. 중단·축소 조건
+### 열린 Issue 정리
+
+- Issue #60 Base v9.1 채택은 완료·역사화 대상이다.
+- Issue #63 Base v9.3 이관은 PR #68의 v9.4 적용으로 대체·완료 처리한다.
+- Issue #54 UX 사람 검증은 App Flow Shell 연결 빌드 뒤 실행한다.
+- Issue #46·#13은 실제 계약·구현·테스트 재조회 없이 완료로 닫지 않는다.
+
+## 13. 중단·축소 조건
 
 - 연격이 다른 공격을 지배한다.
 - 성장·노드 선택이 피해 증가만 만든다.
@@ -196,9 +234,10 @@ ActionSelectionDock은 자동 검증을 통과했지만 Windows 실제 Godot·�
 - 플레이어 미확정 계획을 AI가 읽는다.
 - 보상·저장이 이중 commit된다.
 - 외부 에셋 때문에 정보 구조나 전투 계약을 왜곡한다.
+- 모바일 고려가 PC 버티컬 슬라이스 범위를 무단 확장한다.
 
 판정 어휘: `KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST`.
 
-## 13. 역사
+## 14. 역사
 
-2026-07-26의 P0-A/B/C 계획은 역사 입력이다. 기존 `2~3노드`, `13~17개 방문`, `new_poc_runtime: NOT_STARTED` 표현은 최신 Decision으로 대체됐다.
+2026-07-26의 P0-A/B/C 계획은 역사 입력이다. 기존 `2~3노드`, `13~17개 방문`, `new_poc_runtime: NOT_STARTED`, `PR #65 병합 대기`, `Base v9.3 migration 대기` 표현은 최신 Decision과 완료 이력으로 대체됐다.
