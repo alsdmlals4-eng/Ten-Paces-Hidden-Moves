@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260803-STAR7-TECHNIQUE-PRIMARY-STAT8-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "PLANNING_ONLY",
+  "grillme_count": "10/10",
+  "predecessors": [
+    "TEN-DEC-20260802-OBSERVATION-STATS-MASTERY-01",
+    "TEN-DEC-20260802-STARTING-TECHNIQUE-PRIMARY-STAT4-01",
+    "TEN-DEC-20260802-EVEN-STAR-STAT-ESCALATION-01",
+    "TEN-DEC-20260803-UNCAPPED-CORE-STATS-01"
+  ],
+  "requirement": {
+    "milestone_star": 7,
+    "technique_index": 2,
+    "type": "PRIMARY_PERMANENT_STAT",
+    "value": 8,
+    "secondary_requirement": null,
+    "temporary_stats_count": false,
+    "actual_uncapped_permanent_value_is_used": true
+  },
+  "automatic_floor_before_star_7": {
+    "base_stat": 2,
+    "star_2_primary_grant": 1,
+    "star_4_primary_grant": 1,
+    "star_6_primary_grant": 2,
+    "total": 6,
+    "additional_primary_investment_required": 2
+  },
+  "valid_additional_investment_sources": [
+    "STARTING_FREE_ALLOCATION",
+    "OTHER_MANUAL_FIXED_GRANTS",
+    "APPROVED_ROUTE_NODE_PERMANENT_REWARD",
+    "OTHER_SEPARATELY_APPROVED_PERMANENT_GROWTH"
+  ],
+  "locked_behavior": {
+    "manual_retained": true,
+    "star_7_mastery_retained": true,
+    "existing_passives_techniques_and_even_star_grants_retained": true,
+    "star_7_technique_locked_only": true,
+    "manual_training_can_continue_to_star_10": true,
+    "auto_enable_when_permanent_primary_stat_met": true,
+    "additional_training_or_reacquisition_required": false,
+    "temporary_stat_drop_relocks": false
+  },
+  "benchmark_and_adversarial_guardrails": {
+    "protocol": "docs/reviews/2026-08-03_GRILLME_BENCHMARK_PROTOCOL.md",
+    "mastery_only_auto_unlock_rejected": true,
+    "primary_plus_secondary_double_gate_rejected_for_star_7": true,
+    "requirement_must_represent_build_investment": true,
+    "high_stats_must_not_consistently_override_wrong_plan": true
+  },
+  "followups": [
+    "STAR_10_ULTIMATE_REQUIREMENT",
+    "MANUAL_SECONDARY_STAT_MAPPING",
+    "ROUTE_NODE_PERMANENT_STAT_REWARD_POLICY",
+    "STAR_7_TECHNIQUE_EFFECTS_AND_AUTHORING_BUDGET",
+    "HIGH_STAT_CORE_FUN_HUMAN_VALIDATION"
+  ],
+  "validation": {
+    "automatic_floor": 6,
+    "requirement_value": 8,
+    "required_gap": 2,
+    "secondary_requirement_absent": true,
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  }
+}

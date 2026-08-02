@@ -1,8 +1,12 @@
 {
-  "schema_version": 1,
+  "schema_version": 5,
   "decision_id": "TEN-DEC-20260802-OBSERVATION-STATS-MASTERY-01",
   "status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "NONE",
+  "followup_starting_stat_decision": "TEN-DEC-20260802-STARTING-STAT-TOTAL20-MANUAL-BONUS-01",
+  "followup_starting_technique_decision": "TEN-DEC-20260802-STARTING-TECHNIQUE-PRIMARY-STAT4-01",
+  "followup_even_star_decision": "TEN-DEC-20260802-EVEN-STAR-STAT-ESCALATION-01",
+  "followup_uncapped_core_stats_decision": "TEN-DEC-20260803-UNCAPPED-CORE-STATS-01",
   "duel_structure": {
     "core_duels": 5,
     "candidates_per_slot": 3,
@@ -95,9 +99,16 @@
   },
   "stats": {
     "core_range": {
-      "min": 1,
-      "max": 15
+      "minimum": 1,
+      "designed_hard_cap": null,
+      "legacy_15_meaning": "INITIAL_BALANCE_VALIDATION_REFERENCE"
     },
+    "validation_reference_points": [
+      1,
+      4,
+      15,
+      "CURRENT_CONTENT_REACHABLE_MAX"
+    ],
     "primary": [
       "EXTERNAL",
       "CONSTITUTION",
@@ -111,6 +122,32 @@
       "MOVEMENT": "신법",
       "INTERNAL": "내공",
       "INSIGHT": "심안"
+    },
+    "starting_allocation": {
+      "authority_decision": "TEN-DEC-20260802-STARTING-STAT-TOTAL20-MANUAL-BONUS-01",
+      "base_each": 2,
+      "free_points": 6,
+      "pre_manual_total": 16,
+      "direct_allocation_cap_per_stat": 6,
+      "manual_star_2_bonuses_apply_after_direct_allocation": true,
+      "selected_manual_bonus_total": 4,
+      "final_starting_total": 20,
+      "final_starting_average": 4.0,
+      "manual_bonus_vectors_contract": "docs/planning-data/approved_20260802_starting_stat_total20_manual_bonus_contract.json"
+    },
+    "starting_technique_requirements": {
+      "authority_decision": "TEN-DEC-20260802-STARTING-TECHNIQUE-PRIMARY-STAT4-01",
+      "type": "PRIMARY_PERMANENT_STAT",
+      "value": 4,
+      "contract": "docs/planning-data/approved_20260802_starting_technique_primary_stat4_contract.json"
+    },
+    "uncapped_core_stats": {
+      "authority_decision": "TEN-DEC-20260803-UNCAPPED-CORE-STATS-01",
+      "contract": "docs/planning-data/approved_20260803_uncapped_core_stats_contract.json",
+      "clamp_at_15": false,
+      "overflow_conversion": "NONE",
+      "actual_values_feed_requirements_and_formulas": true,
+      "derived_rule_nullifying_effects_need_separate_guardrails": true
     },
     "legacy_deprecated_primary_stats": [
       "attack_power",
@@ -133,6 +170,8 @@
     "min_star": 1,
     "max_star": 10,
     "starting_star": 3,
+    "starting_manual_candidates": 6,
+    "starting_manuals_chosen": 4,
     "training_points_are_manual_level": true,
     "technique_specific_training": false,
     "destination_costs": {
@@ -157,12 +196,15 @@
       "10": "MANUAL_ULTIMATE_UNLOCK_CHECK"
     },
     "even_star_bonus_selection": "FIXED_PER_MANUAL",
+    "even_star_increment_contract": "docs/planning-data/approved_20260802_even_star_stat_escalation_contract.json",
+    "starting_star_2_bonus_applies_immediately": true,
     "star_up_stat_requirement": false,
     "new_technique_stat_requirement_stars": [
       3,
       7,
       10
     ],
+    "starting_star_3_primary_requirement": 4,
     "ultimate_reward": "ULTIMATE_ONLY",
     "truth_choice": false,
     "locked_technique_behavior": {
@@ -179,6 +221,9 @@
   ],
   "verification": {
     "static_contract": "REQUIRED",
+    "starting_stat_contract": "docs/planning-data/approved_20260802_starting_stat_total20_manual_bonus_contract.json",
+    "starting_technique_contract": "docs/planning-data/approved_20260802_starting_technique_primary_stat4_contract.json",
+    "uncapped_core_stats_contract": "docs/planning-data/approved_20260803_uncapped_core_stats_contract.json",
     "godot_runtime": "NOT_RUN",
     "windows_human": "NOT_RUN",
     "demo_ready": false

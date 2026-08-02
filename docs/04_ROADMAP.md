@@ -10,10 +10,9 @@
 
 ```yaml
 last_planning_checkpoint_merge: 76b48a1d5d4d3f8e91511d9b925672a9f6477c68
-last_checkpoint_pr: 72
-post_merge_state_sync_pr: 78
-last_checkpoint_state: MERGED_MAIN_SHEET_SYNCED
-current_approval_count: 0/10
+current_checkpoint_pr: 80
+current_checkpoint_state: APPROVED_PENDING_MERGE
+current_approval_count: 10/10
 phase: VERTICAL_SLICE_APP_FLOW_PLANNING
 project_core: CORE_CONFIRMED
 primary_platform: PC
@@ -32,7 +31,7 @@ next_package: VERTICAL_SLICE_APP_FLOW_SHELL
 t1_greenlight: NOT_GRANTED
 ```
 
-PR #72의 10개 승인 정본은 exact head `8adacf69bb4373fc6ffd15af7c77c2706a22cb89`에서 필수 CI 3종을 통과한 뒤 planning checkpoint merge `76b48a1d5d4d3f8e91511d9b925672a9f6477c68`로 병합됐다. PR #78에서 병합 후 상태 문서를 동기화했으며, 다음 GrillMe 승인 카운트는 `0/10`이다.
+PR #80의 이번 10개 승인 정본은 중앙 책임 문서·planning JSON·Google Sheet 동기화, 전체 diff 적대적 검토, exact-head CI, 리뷰·head 고정 검증을 통과한 뒤에만 squash merge한다. 병합 완료 전 승인 카운트를 0/10으로 재설정하지 않는다.
 
 ## 2. 프로젝트 코어 확정
 
@@ -43,9 +42,14 @@ PR #72의 10개 승인 정본은 exact head `8adacf69bb4373fc6ffd15af7c77c2706a2
 - [x] 장풍·사거리 밖 합·절초기세 보상.
 - [x] 연격 현재 순번 피해 단위끼리 합하고 양측 공격이 유지되면 다음 순번 합을 반복.
 - [x] 체력 피해 중단 시 피격측 후속타 취소, 강건 시 공격 유지 가능, 한쪽 종료 시 상대 잔여타 단독 해결.
-- [x] 외공·근골·신법·내공·심안 5종, 범위1~15.
-- [x] 기술 작성의 태그·고정치·주/보조 능력치 배수 분리.
-- [x] 능력치 배수 기준 스테이터스4·단위0.25·합산 후 내림.
+- [x] 외공·근골·신법·내공·심안 5종과 무상한 핵심 스테이터스 정책. 기존1~15는 초기 검증 구간.
+- [x] 기술 작성의 태그·고정치·주/보조 능력치 배수·사거리·자원 비용 분리.
+- [x] 슬롯 예산1수20틱·2수50틱·3수80틱, 최대 사거리 총비용0/10/25/40틱.
+- [x] 속공 `floor(3+외공×0.50)`, 강공 `floor(7+외공×1.00)`, 장풍 `floor(3+내공×0.75)`.
+- [x] 시작 기본2×5+자유6+시작 무공 보너스4=총20·평균4.
+- [x] 시작3성 기술 주 영구 능력치4·소프트 해금 추천.
+- [x] 짝수 성 신규 지급: 2성 주1, 4성 주1·보조1, 6성 주2·보조1, 8성 주3·보조2.
+- [x] 7성 두 번째 기술 주 영구 능력치8, 보조 요구 없음.
 - [x] 전투 종료 등급의 5개 원자료: 회피·합·잃은 체력·라운드·절초 사용.
 - [x] 무공서1~10성 성장 골격.
 - [x] 데모 주요 비무5슬롯×후보3명·노드8개.
@@ -56,6 +60,7 @@ PR #72의 10개 승인 정본은 exact head `8adacf69bb4373fc6ffd15af7c77c2706a2
 - [x] ActionSelectionDock과 필수 화면·Scene 소유권 기획.
 - [x] PC 우선·모바일 후속 고려.
 - [x] Base v9.4.1 공유 Skill Adapter 적용.
+- [x] 이후 GrillMe·주요 기획에 벤치마킹·현업 비교 프로토콜 적용.
 
 기획 승인은 런타임 구현·사람 검증 완료를 뜻하지 않는다.
 
@@ -88,23 +93,27 @@ BOOT → MAIN → RUN_SETUP → ROUTE → NODE → DUEL_BRIEFING
 
 후속 GrillMe에서 결정할 핵심 항목:
 
-- [ ] 시작 스테이터스 총점·최저값·직접 분배 방식.
-- [ ] 속공·강공·장풍의 정확한 고정 피해·배수.
+- [ ] 10성 절초의 정확한 영구 스테이터스 요구치.
+- [ ] 여섯 무공의 정확한 보조 능력치 매핑.
+- [ ] 중간 노드 영구 스테이터스 보상 여부·량.
 - [ ] 5개 전투 종료 지표의 가중치·정규화·S/A/B/C 경계.
 - [ ] 한 공격 행동 안의 다수 합 승리 상한·정규화·파밍 방지.
 - [ ] 절초 사용 평가와 패배 전투의 등급 제공 여부.
 - [ ] 챔피언 등록 슬롯·교체·보관 정책.
 - [ ] 시즌 길이·매칭 범위·반복 상대 제한·어뷰징 방지.
 - [ ] 친선전·자기 등록본의 관찰 규칙.
+- [ ] 고능력치가 잘못된 계획을 덮는 비율에 대한 사람 검증.
 
 ## 5. 구현 전 Combat Build Gate
 
 최신 전투 규칙을 구현하려면 별도 Build 승인과 다음 입력이 필요하다.
 
-- 정확한 시작 스테이터스.
-- 속공·강공·장풍 고정 피해·배수.
+- 승인된 시작 능력치·무공2성 보너스·3성/7성 기술 잠금·소프트 추천 배분 계약.
+- 승인된 속공·강공·장풍 공식, 슬롯 예산, 사거리·자원 ledger.
 - 관찰·장풍을 포함한 기초 행동 데이터와 UI.
 - 현재 순번 합→체력 피해·중단→다음 순번 합·잔여 단독타 판정 테스트.
+- 짝수 성 신규 지급의 중복 방지와 저장 왕복 테스트.
+- 무상한 실제값을 공식·요구치·AI·UI·저장에 사용하는 검증.
 - 기술 ledger와 런타임 adapter Schema.
 - 전투 종료 5지표 이벤트와 산식.
 
@@ -205,7 +214,7 @@ T1 진입 Gate:
 - 미해결 리뷰·CI 실패·Sheet 불일치·head 이동·P0/P1이 있으면 병합하지 않는다.
 - exact head만 병합하고 main·Sheet를 재조회한다.
 
-최근 체크포인트 `10/10`은 PR #72로 병합 완료됐다. 현재 GrillMe 승인 카운트는 `0/10`이다.
+현재 체크포인트는 PR #80의 `10/10 APPROVED_PENDING_MERGE`다. 병합 완료와 main·Sheet 재조회 뒤 다음 GrillMe 승인 카운트를 `0/10`으로 재설정한다.
 
 ## 13. 중단·축소 조건
 
