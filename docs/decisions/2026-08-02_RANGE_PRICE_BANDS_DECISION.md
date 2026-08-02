@@ -6,6 +6,7 @@
 - 구현 권한: `PLANNING_ONLY`
 - GrillMe 묶음: `2/10`
 - 선행 결정: `TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01`
+- 장풍 공식 후속 결정: `TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01`
 
 ## 1. 승인 결론
 
@@ -31,10 +32,10 @@
 |---|---:|---:|---:|---:|
 | 속공 | 25틱 | 0틱 | -4틱 | 21/20틱 |
 | 강공 | 55틱 | 10틱 | -11틱 | 54/50틱 |
-| 장풍 | 20틱 | 25틱 | -7틱 | 38/50틱 |
+| 장풍 | 30틱 | 25틱 | -7틱 | 48/50틱 |
 
-- 강공은 `+4틱`으로 자동 허용 오차 안이다.
-- 장풍은 `12틱`이 남으며 후속 Decision 전까지 자동 강화하지 않는다.
+- 강공은 `+4틱`, 장풍은 `-2틱`으로 모두 자동 허용 오차 안이다.
+- 장풍 피해·배수는 후속 Decision `TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01`이 소유한다.
 - 사거리 비용은 공격 피해·능력치 배수·자원 비용과 별도 ledger 행으로 기록한다.
 
 ## 3. 설계 목적
@@ -54,7 +55,7 @@
 
 1. 사거리 1/2/3/4가 각각 0/10/25/40틱으로 계산됨.
 2. 가격을 칸별 증분으로 중복 합산하지 않음.
-3. 강공 ledger가 54틱, 장풍이 38틱으로 재계산됨.
+3. 강공 ledger가 54틱, 장풍이 48틱으로 계산됨.
 4. 사거리 5 이상이 자동으로 55틱 등으로 확장되지 않음.
 5. 런타임 구현 완료로 오인하지 않음.
 
@@ -69,8 +70,9 @@ range_total_ticks:
 range_5_plus: TBD
 legacy_linear_pricing: SUPERSEDED_FOR_CURRENT_APPROVED_TECHNIQUES
 heavy_attack_ticks: 54
-basic_palm_ticks: 38
-basic_palm_spare_ticks: 12
+basic_palm_ticks: 48
+basic_palm_variance_ticks: -2
+basic_palm_formula_decision: TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01
 runtime_validation: NOT_RUN
 godot_validation: NOT_RUN
 windows_validation: NOT_RUN
