@@ -6,6 +6,7 @@
 - 구현 권한: `PLANNING_ONLY`
 - GrillMe 묶음: `1/10`
 - 후속 가격 결정: `TEN-DEC-20260802-RANGE-PRICE-BANDS-01`
+- 장풍 공식 후속 결정: `TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01`
 
 ## 1. 슬롯 기술 점수
 
@@ -88,27 +89,32 @@
 
 ### 장풍
 
+후속 Decision `TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01`에 따라 다음 공식이 최신 권위다.
+
 ```text
-장풍 피해 = floor(2 + 내공 × 0.50)
+장풍 피해 = floor(3 + 내공 × 0.75)
 ```
 
 | 구성 | 틱 |
 |---|---:|
-| 고정 피해 2 | 10 |
-| 내공 배수 0.50 | 10 |
+| 고정 피해 3 | 15 |
+| 내공 배수 0.75 | 15 |
 | 사거리 3 | 25 |
 | 내력 1 비용 | -7 |
-| **합계** | **38틱 / 50틱** |
+| **합계** | **48틱 / 50틱** |
 
-장풍은 동일 능력치에서 속공보다 항상 1 낮다. 현재 2슬롯 예산보다 `12틱` 낮으며, 잔여 예산은 피해에 자동 투입하지 않고 후속 Decision에서 처리한다.
+- `-2틱`으로 자동 허용 오차 안이다.
+- 장풍이 동일 능력치의 속공보다 반드시 낮아야 한다는 과거 제약은 대체됐다.
+- 장풍은 2슬롯·전조·내력 소모를 부담하므로 기준 스테이터스 4부터 속공보다 높은 피해를 가질 수 있다.
+- 밀치기와 강제 이동 효과는 추가하지 않는다.
 
 ## 4. 능력치 1·4·15 검산
 
 | 능력치 | 속공 | 강공 | 장풍 |
 |---:|---:|---:|---:|
-| 1 | 3 | 8 | 2 |
-| 4 | 5 | 11 | 4 |
-| 15 | 10 | 22 | 9 |
+| 1 | 3 | 8 | 3 |
+| 4 | 5 | 11 | 6 |
+| 15 | 10 | 22 | 14 |
 
 ## 5. 구현·권위 경계
 
@@ -120,18 +126,20 @@
 
 1. 슬롯 예산이 20/50/80틱으로 유지됨.
 2. 최대 사거리 총비용이 0/10/25/40틱으로 계산됨.
-3. 속공 21틱, 강공 54틱이 허용 오차 안임.
-4. 장풍 38틱·잔여 12틱이 표시됨.
-5. 사거리 5 이상을 임의 추정하지 않음.
-6. 런타임 구현 완료로 오인하지 않음.
+3. 속공 21틱, 강공 54틱, 장풍 48틱이 허용 오차 안임.
+4. 장풍에 밀치기나 강제 이동이 추가되지 않음.
+5. 속공보다 낮아야 한다는 구형 장풍 제약이 활성 규칙으로 남지 않음.
+6. 사거리 5 이상을 임의 추정하지 않음.
+7. 런타임 구현 완료로 오인하지 않음.
 
 ```yaml
 authority_status: CURRENT_APPROVED_PLANNING
 implementation_status: NOT_STARTED
 quick_attack_ticks: 21
 heavy_attack_ticks: 54
-basic_palm_ticks: 38
-basic_palm_spare_ticks: 12
+basic_palm_ticks: 48
+basic_palm_variance_ticks: -2
+basic_palm_formula_decision: TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01
 range_pricing_decision: TEN-DEC-20260802-RANGE-PRICE-BANDS-01
 runtime_validation: NOT_RUN
 godot_validation: NOT_RUN
