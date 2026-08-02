@@ -1,10 +1,10 @@
 {
   "artifact_role": "PROJECT_BASE_ADAPTER",
   "base_release": {
-    "release_commit": "a728712cb776ec98f4875914a580fcf7d0156593",
-    "release_evidence_commit": "ef1fba11167e4da0b298123b0c85ebd268191a42",
+    "release_commit": "3f2c4a624d302b704c1b5322eb5c9f34ad55abb9",
+    "release_evidence_commit": "ff117d24d5bdb121314e109a6aa9b4f552e0fdc1",
     "repository": "alsdmlals4-eng/Base",
-    "version": "9.4.0"
+    "version": "9.4.1"
   },
   "compatibility": {
     "cycle": "ONE_CYCLE",
@@ -273,7 +273,10 @@
       "protected_paths_source": "skills/PROJECT_BASE_ADAPTER.json#/protected_paths",
       "result_state": "REVIEW_PENDING",
       "integration_policy": "LOCAL_REVIEW_REQUIRED_BEFORE_CANON",
-      "base_validator_adoption": "DEFER_UNTIL_NEXT_RELEASED_BASE_PIN"
+      "base_validator_adoption": "ADOPTED_FROM_BASE_V9_4_1",
+      "base_validator_path": "tools/check_external_ai_worktree_contract.py",
+      "base_release_lock": "base-v9.4.1.lock.json",
+      "actual_external_ai_worktree_execution": "NOT_RUN"
     },
     "pruning-stale-and-nonfunctional-material": {},
     "refactoring-with-contract-preservation": {},
