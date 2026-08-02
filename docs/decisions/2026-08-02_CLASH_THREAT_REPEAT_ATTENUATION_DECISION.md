@@ -6,6 +6,7 @@
 - 구현 권한: `PLANNING_ONLY`
 - GrillMe 묶음: `4/10`
 - 선행 결정: `TEN-DEC-20260802-OUT-OF-RANGE-CLASH-GRADE-01`
+- 위협 ID 판별 후속 결정: `TEN-DEC-20260802-THREAT-ID-ACTION-01`
 
 ## 1. 승인 결론
 
@@ -21,6 +22,7 @@
 - 감쇠 카운트는 각 전투 시작 시 0으로 초기화한다.
 - 사거리 안 합 승리와 사거리 밖 합 승리에 완전히 같은 감쇠 규칙을 적용한다.
 - 사거리 밖이라는 이유로 별도 감액하지 않는다.
+- `같은 위협`은 후속 Decision에 따라 정확한 기초 행동 ID·무공 기술 ID·절초 ID로 판별한다.
 
 ## 2. 감쇠 적용 범위
 
@@ -42,7 +44,7 @@
 - 사거리 안·밖 성공에 같은 반복 카운트를 사용한다.
 - 같은 한 번의 파훼 사건을 `위협 대응`과 `전술 실행`에 자동 이중 가산하지 않는다.
 - 여러 타격을 가진 한 공격 행동의 동일한 위협 카운트 단위는 후속 성과 산식에서 확정한다.
-- 위협 ID의 정확한 데이터 키도 후속 성과 데이터 계약에서 확정하되, 단순 `[공격]` 공개 종류 전체를 하나의 위협으로 묶어서는 안 된다.
+- 단순 `[공격]` 공개 종류 전체를 하나의 위협으로 묶지 않는다.
 
 ## 4. 설계 목적
 
@@ -72,6 +74,7 @@
 5. 새 전투 시작 시 반복 카운트가 초기화됨.
 6. 같은 사건이 전술 실행에 자동 중복 가산되지 않음.
 7. 온라인 시즌 평점·챔피언 랭킹에는 영향이 없음.
+8. 정확한 ID가 다른 두 공격은 각각 첫 성공 100%를 가짐.
 
 ## 7. 구현·증거 경계
 
@@ -82,6 +85,7 @@ implementation_status: NOT_STARTED
 battle_grade_category: threat_response
 repeat_multipliers: [1.0, 0.5, 0.0]
 reset_scope: per_battle
+threat_identity_basis: EXACT_CANONICAL_ACTION_OR_TECHNIQUE_ID
 in_range_out_of_range_symmetric: true
 combat_rewards_attenuated: false
 online_season_rating_change: NONE
