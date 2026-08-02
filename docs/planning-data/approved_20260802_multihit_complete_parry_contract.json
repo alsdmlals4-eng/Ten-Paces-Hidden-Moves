@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260802-MULTIHIT-COMPLETE-PARRY-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "PLANNING_ONLY",
+  "grillme_count": "6/10",
+  "counting": {
+    "unit": "attack_action",
+    "maximum_threat_count_increment_per_attack_action": 1,
+    "damage_unit_count_does_not_increment_repeat_count": true,
+    "derived_hit_index_does_not_create_new_threat": true
+  },
+  "complete_parry": {
+    "all_effective_damage_units_cancelled": true,
+    "zero_health_damage_from_attack_action": true,
+    "no_remaining_effective_followup_damage_units": true,
+    "increments_repeat_count": true
+  },
+  "partial_parry": {
+    "logged": true,
+    "shown_in_review": true,
+    "increments_repeat_count": false,
+    "receives_complete_parry_score": false,
+    "separate_partial_score": "TBD"
+  },
+  "combat_rewards": {
+    "ultimate_momentum_max_gain_per_attack_action": 1,
+    "valid_on_clash_win_effects_preserved": true,
+    "battle_grade_attenuation_does_not_reduce_combat_rewards": true
+  },
+  "symmetry": {
+    "in_range_out_of_range_same_complete_parry_condition": true,
+    "normalized_threat_id_shared_across_range_state": true
+  },
+  "unresolved": [
+    "exact_threat_response_event_score",
+    "partial_parry_score",
+    "non_damage_secondary_effects_complete_parry_rule",
+    "basic_palm_exact_damage_formula"
+  ],
+  "validation": {
+    "static_validation": "PENDING_DRAFT_PR",
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  }
+}
