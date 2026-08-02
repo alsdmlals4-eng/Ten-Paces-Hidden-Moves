@@ -1,13 +1,14 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "decision_id": "TEN-DEC-20260802-EVEN-STAR-STAT-ESCALATION-01",
-  "authority_status": "CURRENT_APPROVED_PLANNING_WITH_CONFLICT_GATE",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "PLANNING_ONLY",
   "grillme_count": "8/10",
   "predecessors": [
     "TEN-DEC-20260802-OBSERVATION-STATS-MASTERY-01",
     "TEN-DEC-20260802-STARTING-STAT-TOTAL20-MANUAL-BONUS-01"
   ],
+  "conflict_resolution_decision": "TEN-DEC-20260803-UNCAPPED-CORE-STATS-01",
   "grant_semantics": {
     "type": "INCREMENTAL_NEW_GRANT_ON_FIRST_REACH",
     "snapshot_or_cumulative_display_value": false,
@@ -77,29 +78,36 @@
     "locked_technique_auto_enables_when_permanent_requirement_met": true,
     "exact_primary_secondary_mapping_is_per_manual": true
   },
-  "conflict_gate": {
-    "stat_operating_range_1_to_15_conflict": true,
-    "multi_manual_overlap_conflict": true,
-    "route_node_permanent_stat_reward_conflict": true,
-    "star_7_requirement_auto_unlock_conflict": true,
-    "star_10_requirement_auto_unlock_conflict": true,
-    "formula_above_15_unvalidated": true,
-    "implementation_blocked_until_resolved": true
+  "uncapped_core_stat_policy": {
+    "authority_decision": "TEN-DEC-20260803-UNCAPPED-CORE-STATS-01",
+    "contract": "docs/planning-data/approved_20260803_uncapped_core_stats_contract.json",
+    "designed_hard_cap": null,
+    "clamp_at_15": false,
+    "overflow_conversion": "NONE",
+    "actual_values_feed_requirements_and_formulas": true,
+    "legacy_15_is_validation_reference": true,
+    "release_validation_includes_current_reachable_max": true
+  },
+  "remaining_gates": {
+    "star_7_requirement": true,
+    "star_10_requirement": true,
+    "route_node_permanent_stat_rewards": true,
+    "manual_secondary_stat_mapping": true,
+    "high_stat_core_fun_human_validation": true
   },
   "blocked_pending_followup": [
-    "hard_cap_or_soft_cap_policy",
-    "overflow_handling",
     "star_7_technique_requirement_values",
     "star_10_ultimate_requirement_values",
-    "route_node_permanent_stat_reward_amounts",
+    "route_node_permanent_stat_reward_policy",
     "manual_secondary_stat_mapping",
-    "combat_formula_validation_above_stat_15"
+    "combat_formula_and_core_fun_validation_at_current_reachable_max"
   ],
   "validation": {
     "incremental_total_through_star_8": 11,
     "additional_total_from_star_3_to_star_8": 10,
     "single_manual_primary_additional_after_start": 6,
     "single_manual_secondary_additional_after_start": 4,
+    "current_known_multi_manual_reachable_example": 20,
     "runtime_validation": "NOT_RUN",
     "godot_validation": "NOT_RUN",
     "windows_validation": "NOT_RUN",
