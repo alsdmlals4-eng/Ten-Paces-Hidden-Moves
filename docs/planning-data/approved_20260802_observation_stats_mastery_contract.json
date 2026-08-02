@@ -1,8 +1,9 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "decision_id": "TEN-DEC-20260802-OBSERVATION-STATS-MASTERY-01",
   "status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "NONE",
+  "followup_starting_stat_decision": "TEN-DEC-20260802-STARTING-STAT-ALLOCATION-FIVE-01",
   "duel_structure": {
     "core_duels": 5,
     "candidates_per_slot": 3,
@@ -62,11 +63,7 @@
     ]
   },
   "bundle_flow": {
-    "round_bundles": [
-      3,
-      3,
-      4
-    ],
+    "round_bundles": [3, 3, 4],
     "sequence": [
       "RESOLVE_PREVIOUS_STATE",
       "ENEMY_PLAN_CURRENT_BUNDLE_FROM_PUBLIC_STATE",
@@ -94,10 +91,7 @@
     ]
   },
   "stats": {
-    "core_range": {
-      "min": 1,
-      "max": 15
-    },
+    "core_range": {"min": 1, "max": 15},
     "primary": [
       "EXTERNAL",
       "CONSTITUTION",
@@ -112,10 +106,15 @@
       "INTERNAL": "내공",
       "INSIGHT": "심안"
     },
-    "legacy_deprecated_primary_stats": [
-      "attack_power",
-      "defense"
-    ],
+    "starting_allocation": {
+      "base_each": 2,
+      "free_points": 5,
+      "pre_manual_total": 15,
+      "direct_allocation_cap_per_stat": 6,
+      "manual_star_2_bonuses_apply_after_direct_allocation": true,
+      "manual_bonus_vectors": "POC_HYPOTHESIS_TBD"
+    },
+    "legacy_deprecated_primary_stats": ["attack_power", "defense"],
     "structural_values_threshold_only": [
       "move_distance",
       "attack_range",
@@ -133,17 +132,11 @@
     "min_star": 1,
     "max_star": 10,
     "starting_star": 3,
+    "starting_manual_candidates": 6,
+    "starting_manuals_chosen": 4,
     "training_points_are_manual_level": true,
     "technique_specific_training": false,
-    "destination_costs": {
-      "4": 2,
-      "5": 3,
-      "6": 4,
-      "7": 5,
-      "8": 6,
-      "9": 8,
-      "10": 10
-    },
+    "destination_costs": {"4": 2, "5": 3, "6": 4, "7": 5, "8": 6, "9": 8, "10": 10},
     "rewards": {
       "1": "PASSIVE",
       "2": "FIXED_PERMANENT_STAT_BONUS",
@@ -157,12 +150,9 @@
       "10": "MANUAL_ULTIMATE_UNLOCK_CHECK"
     },
     "even_star_bonus_selection": "FIXED_PER_MANUAL",
+    "starting_star_2_bonus_applies_immediately": true,
     "star_up_stat_requirement": false,
-    "new_technique_stat_requirement_stars": [
-      3,
-      7,
-      10
-    ],
+    "new_technique_stat_requirement_stars": [3, 7, 10],
     "ultimate_reward": "ULTIMATE_ONLY",
     "truth_choice": false,
     "locked_technique_behavior": {
@@ -179,6 +169,7 @@
   ],
   "verification": {
     "static_contract": "REQUIRED",
+    "starting_stat_allocation_contract": "docs/planning-data/approved_20260802_starting_stat_allocation_five_contract.json",
     "godot_runtime": "NOT_RUN",
     "windows_human": "NOT_RUN",
     "demo_ready": false
