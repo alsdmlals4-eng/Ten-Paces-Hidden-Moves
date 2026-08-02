@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_status": "NOT_STARTED",
+  "approved_at": "2026-08-03",
+  "grillme_batch_count": "1/10",
+  "milestone": {
+    "star": 10,
+    "reward_type": "MARTIAL_ART_UNIQUE_ULTIMATE",
+    "tag": "ULTIMATE"
+  },
+  "unlock_requirement": {
+    "type": "PRIMARY_PERMANENT_STAT",
+    "value": 12,
+    "secondary_requirement": null,
+    "temporary_stat_counts": false,
+    "uses_actual_unclamped_permanent_value": true
+  },
+  "growth_ladder": {
+    "star_3": {
+      "automatic_primary_floor": 3,
+      "unlock_value": 4,
+      "additional_permanent_investment": 1
+    },
+    "star_7": {
+      "automatic_primary_floor": 6,
+      "unlock_value": 8,
+      "additional_permanent_investment": 2
+    },
+    "star_10": {
+      "automatic_primary_floor": 9,
+      "unlock_value": 12,
+      "additional_permanent_investment": 3
+    }
+  },
+  "locked_state": {
+    "state": "LOCKED_STAT_REQUIREMENT",
+    "manual_training_blocked": false,
+    "martial_art_star_preserved": true,
+    "prior_passives_stats_techniques_and_upgrades_preserved": true,
+    "only_ultimate_locked": true,
+    "auto_enable_when_permanent_requirement_met": true,
+    "additional_training_cost_on_enable": 0,
+    "temporary_stat_drop_relocks": false
+  },
+  "allowed_permanent_investment_sources": [
+    "STARTING_MANUAL_ALLOCATION",
+    "OTHER_MARTIAL_ART_FIXED_STAT_GRANT",
+    "APPROVED_INTERMEDIATE_NODE_PERMANENT_REWARD",
+    "OTHER_SEPARATELY_APPROVED_PERMANENT_GROWTH"
+  ],
+  "not_required": [
+    "SECONDARY_STAT",
+    "SPECIFIC_OTHER_MARTIAL_ART",
+    "SPECIFIC_INTERMEDIATE_NODE",
+    "TEMPORARY_COMBAT_BUFF"
+  ],
+  "supersedes": [
+    "STAR_10_REQUIREMENT_TBD",
+    "HIGH_REQUIREMENT_UNSPECIFIED"
+  ],
+  "follow_up_tbd": [
+    "SECONDARY_STAT_MAPPING_FOR_SIX_STARTING_MARTIAL_ARTS",
+    "INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS",
+    "INDIVIDUAL_ULTIMATE_EFFECT_AND_BUDGET",
+    "HIGH_STAT_HUMAN_VALIDATION"
+  ],
+  "validation_boundary": {
+    "product_code_changed": false,
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  }
+}
