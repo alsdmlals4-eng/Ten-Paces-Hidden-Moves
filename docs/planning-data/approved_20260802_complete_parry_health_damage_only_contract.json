@@ -20,7 +20,7 @@
     "example": {
       "effect": "push",
       "block_zero_damage": "push_applies",
-      "clash_zero_damage": "push_applies_when_attack_effect_rule_survives_clash",
+      "clash_zero_damage": "push_applies",
       "dodge": "push_does_not_apply"
     }
   },
