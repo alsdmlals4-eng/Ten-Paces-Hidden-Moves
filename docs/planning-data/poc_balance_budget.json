@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "data_role": "NON_RUNTIME_POC_PLANNING",
   "status": "POC_HYPOTHESIS",
   "editable": true,
@@ -37,6 +37,38 @@
     "once_per_action_effect_base": 4,
     "per_hit_effect_base": 5,
     "medical_per_point": 5
+  },
+  "stat_reference_pricing": {
+    "status": "MISSING_TBD",
+    "authority_decision": "TEN-DEC-20260802-TECHNIQUE-AUTHORING-TAG-FIXED-STAT-01",
+    "primary_stat_coefficient_tick_price": null,
+    "secondary_stat_coefficient_tick_price": null,
+    "coefficient_snap_step": null,
+    "rounding_rule": null,
+    "implementation_blocked_until_approved": true
+  },
+  "authoring_selection_contract": {
+    "authority_status": "CURRENT_APPROVED_PLANNING",
+    "decision_id": "TEN-DEC-20260802-TECHNIQUE-AUTHORING-TAG-FIXED-STAT-01",
+    "order": [
+      "structure_and_cost",
+      "tags",
+      "fixed_base_value",
+      "primary_secondary_stat_reference",
+      "mastery_patch_and_stat_threshold"
+    ],
+    "separate_ledger_entries_required": true,
+    "non_fixed_effect_requires_stat_reference": true,
+    "maximum_stat_references_per_effect": 2,
+    "fixed_only_effects": [
+      "observation",
+      "movement",
+      "dodge",
+      "strengthen"
+    ],
+    "structural_values_are_continuous_stat_scaled": false,
+    "tag_quantity_is_continuous_stat_scaled": false,
+    "exact_stat_coefficient_prices": "TBD"
   },
   "condition_credits": {
     "common_public_condition": -3,
@@ -112,9 +144,13 @@
   "authoring_rules": [
     "Authoring UI may display decimals but stores integer ticks.",
     "All input values snap to 0.05 budget increments.",
+    "Tags, fixed base values, and stat-reference coefficients must use separate ledger entries.",
+    "Observation, movement, dodge, and strengthen are fixed-only effects without continuous stat scaling.",
+    "All other numeric action effects require at least one explicit stat reference.",
     "5-star and 9-star upgrades each receive an additional 5-tick authoring allowance.",
     "Capstones use the 3-slot 80-tick reference even when represented as a passive true meaning.",
-    "An out-of-tolerance technique is not auto-fixed; it is flagged for review."
+    "An out-of-tolerance technique is not auto-fixed; it is flagged for review.",
+    "A technique with stat scaling is implementation-blocked while stat_reference_pricing is MISSING_TBD."
   ],
   "patch_contract": {
     "allowance_ticks": 5,
