@@ -1,0 +1,24 @@
+name: Validate Base Shared External AI Adapter
+
+on:
+  pull_request:
+    paths:
+      - ".gitignore"
+      - "skills/PROJECT_BASE_ADAPTER.json"
+      - "tests/test_base_shared_external_ai_adapter.py"
+      - ".github/workflows/validate-base-shared-external-ai-adapter.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  adapter-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run Base shared external AI adapter contract
+        run: python tests/test_base_shared_external_ai_adapter.py

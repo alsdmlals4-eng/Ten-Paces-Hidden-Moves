@@ -304,6 +304,13 @@
       "status": "ACTIVE",
       "target_route_id": "managing-project-intake-and-work-contract"
     },
+    "optimizing-ai-model-and-prompt-costs": {
+      "route_id": "optimizing-ai-model-and-prompt-costs",
+      "skill_id": "optimizing-ai-model-and-prompt-costs",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "optimizing-ai-model-and-prompt-costs"
+    },
     "orchestrating-deepseek-worktrees": {
       "route_id": "orchestrating-deepseek-worktrees",
       "skill_id": "orchestrating-deepseek-worktrees",
@@ -366,13 +373,6 @@
       "source": "PROJECT_LOCAL",
       "status": "ACTIVE",
       "target_route_id": "ten-paces-verification"
-    },
-    "optimizing-ai-model-and-prompt-costs": {
-      "route_id": "optimizing-ai-model-and-prompt-costs",
-      "skill_id": "optimizing-ai-model-and-prompt-costs",
-      "source": "BASE_SHARED",
-      "status": "ACTIVE",
-      "target_route_id": "optimizing-ai-model-and-prompt-costs"
     }
   },
   "generated": true,
@@ -408,6 +408,6 @@
   "source_registry": {
     "hash_definition": "RAW_FILE_BYTES_SHA256",
     "path": "skills/PROJECT_BASE_ADAPTER.json",
-    "sha256": "97d4c0f6158e581a8d25878f75871aad49d8b5ba78ede09b6a21551db9842eed"
+    "sha256": "c1da99aa52a58b0cd87ac38baeeb6303e920c0661fdbe62478c463ce604a8f22"
   }
 }
