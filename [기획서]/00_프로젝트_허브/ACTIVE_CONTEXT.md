@@ -20,7 +20,7 @@ integration_pr: 65
 base_release_pinned: 9.4.1
 runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
 latest_combat_planning_runtime: NOT_STARTED
-automated_validation: PENDING_EXACT_HEAD_RECHECK
+automated_validation: PASS
 windows_validation: NOT_RUN
 human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
