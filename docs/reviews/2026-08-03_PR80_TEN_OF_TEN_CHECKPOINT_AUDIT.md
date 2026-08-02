@@ -3,7 +3,7 @@
 - Audit ID: `TEN-AUD-034`
 - 감사일: 2026-08-03
 - 대상 PR: `#80`
-- 기준 exact head: `3a0233de4ed846b60c6a2541f9f03b5830b8dfbe`
+- 기준 head 소유권: `PR #80 metadata + Google Sheet checkpoint row`
 - 승인 누적: `10/10`
 - 상태: `SHEET_SYNCED_PENDING_EXACT_HEAD_VALIDATION`
 - 제품 코드 변경: 없음
@@ -11,6 +11,8 @@
 ## 1. 감사 목적
 
 이번 승인 묶음의 Decision·planning JSON·중앙 책임 문서·Google Sheet가 같은 의미를 가지는지 확인하고, 구형 문구·중복 권위·무단 런타임 구현·검증 과장·미승인 수치 유입을 병합 전에 차단한다.
+
+tracked 문서 안에 자신의 최종 commit SHA를 직접 기록하지 않는다. 최종 exact head는 PR metadata와 Google Sheet 체크포인트 행이 소유하며, 병합 직전에 다시 읽어 고정한다.
 
 ## 2. 이번 10개 승인
 
@@ -46,7 +48,7 @@
 - 7성 기술 요구치가 미확정이라는 표현
 - 현재 승인 카운트가 0/10 또는 8/10이라는 활성 상태 표현
 
-Google Sheet에는 Decision10·Audit34·핵심 시스템·성장 경제·변경이력과 `10/10_PENDING_MERGE` 상태를 기록했다. 최종 exact head는 본 문서의 기준 SHA로 교정하고 readback한다.
+Google Sheet에는 Decision10·Audit34·핵심 시스템·성장 경제·변경이력과 `10/10_PENDING_MERGE` 상태를 기록한다. 마지막 tracked-file commit 뒤의 exact head로 교정하고 readback한다.
 
 ## 4. 7성 요구치 적대적 판정
 
@@ -115,7 +117,7 @@ Google Sheet에는 Decision10·Audit34·핵심 시스템·성장 경제·변경�
 ```yaml
 audit_id: TEN-AUD-034
 approval_count: 10/10
-exact_head: 3a0233de4ed846b60c6a2541f9f03b5830b8dfbe
+exact_head_source: PR_METADATA_AND_SHEET
 p0_findings: 0
 sheet_sync: COMPLETE_PENDING_FINAL_HEAD_READBACK
 p1_merge_blockers_before_final_validation:
