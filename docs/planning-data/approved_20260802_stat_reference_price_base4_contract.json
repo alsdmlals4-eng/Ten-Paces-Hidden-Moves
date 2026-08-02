@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "PLANNING_ONLY",
+  "grillme_count": "10/10",
+  "balance_reference_stat": 4,
+  "initial_stat_design_center": 4,
+  "stat_operating_range": {
+    "min": 1,
+    "max": 15
+  },
+  "coefficient_authoring": {
+    "snap_step": 0.25,
+    "primary_secondary_same_price": true,
+    "secondary_discount": false,
+    "future_central_step_change_allowed": true,
+    "existing_techniques_auto_modified_on_step_change": false
+  },
+  "pricing_formula": {
+    "expression": "ceil(effect_unit_tick_price * coefficient * balance_reference_stat)",
+    "balance_reference_stat": 4,
+    "uses_effect_specific_unit_tick_price": true,
+    "separate_ledger_entry_per_stat_reference": true
+  },
+  "runtime_formula": {
+    "raw_value": "fixed_base_value + sum(current_stat_value * coefficient)",
+    "rounding": "floor_once_after_total_sum",
+    "per_term_rounding": false,
+    "non_negative_effect_floor": 0
+  },
+  "sanity_check_stat_points": [
+    1,
+    4,
+    15
+  ],
+  "confirmed_examples": {
+    "damage_unit_tick_price": 5,
+    "coefficient": 0.25,
+    "derived_ticks_at_reference_stat_4": 5
+  },
+  "unresolved": [
+    "starting_stat_total_and_distribution",
+    "quick_attack_fixed_damage_and_external_power_coefficient",
+    "heavy_attack_fixed_damage_and_external_power_coefficient",
+    "basic_palm_fixed_damage_and_internal_power_coefficient",
+    "effect_specific_overgrowth_thresholds",
+    "mastery_patch_coefficient_growth_caps"
+  ],
+  "validation": {
+    "static_validation": "PENDING_DRAFT_PR",
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  }
+}
