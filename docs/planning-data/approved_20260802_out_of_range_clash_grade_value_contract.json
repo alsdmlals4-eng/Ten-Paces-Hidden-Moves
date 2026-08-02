@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260802-OUT-OF-RANGE-CLASH-GRADE-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "PLANNING_ONLY",
+  "grillme_count": "3/10",
+  "battle_grade": {
+    "grade_scale": ["S", "A", "B", "C"],
+    "category": "threat_response",
+    "out_of_range_clash_win_value_relative_to_in_range": "EQUAL",
+    "automatic_tactical_execution_double_count": false,
+    "automatic_damage_score": false,
+    "automatic_hit_score": false
+  },
+  "event": {
+    "event_id": "out_of_range_clash_win",
+    "records_enemy_current_hit_cancelled": true,
+    "records_ultimate_momentum_gain": 1,
+    "records_health_damage": false,
+    "result_screen_explanation_required": true
+  },
+  "symmetry": {
+    "any_future_repeat_cap_or_decay_must_apply_equally_to_in_range_and_out_of_range_clash_wins": true
+  },
+  "scope": [
+    "major_duels_1_to_10",
+    "best_under_heaven_duel",
+    "future_modes_with_battle_grade"
+  ],
+  "online_season_rating_change": "NONE",
+  "unresolved": [
+    "event_points_within_threat_response_budget",
+    "repeat_counting_or_decay",
+    "per_battle_cap"
+  ],
+  "validation": {
+    "static_validation": "PENDING_DRAFT_PR",
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  }
+}
