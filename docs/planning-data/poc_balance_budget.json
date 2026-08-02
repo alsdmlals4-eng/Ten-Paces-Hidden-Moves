@@ -1,5 +1,5 @@
 {
-  "schema_version": 6,
+  "schema_version": 7,
   "data_role": "NON_RUNTIME_POC_PLANNING",
   "status": "POC_HYPOTHESIS",
   "editable": true,
@@ -44,12 +44,21 @@
     "medical_per_point": 5
   },
   "range_pricing_contract": {
-    "authority_decision": "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
-    "base_attack_range": 1,
-    "base_range_extra_ticks": 0,
-    "per_tile_beyond_one_ticks": 4,
-    "per_tile_beyond_one_points": 0.2,
-    "separate_ledger_entry_required": true
+    "authority_decision": "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
+    "model": "MAX_RANGE_TOTAL_TICKS",
+    "total_ticks_by_max_range": {
+      "1": 0,
+      "2": 10,
+      "3": 25,
+      "4": 40
+    },
+    "range_5_plus": "TBD_REQUIRES_NEW_DECISION",
+    "values_are_cumulative_total_costs": true,
+    "do_not_sum_band_values": true,
+    "separate_ledger_entry_required": true,
+    "legacy_linear_price_id": "range_per_tile_beyond_one",
+    "legacy_linear_price_status": "SUPERSEDED_FOR_CURRENT_APPROVED_TECHNIQUES",
+    "legacy_linear_price_allowed_for_poc_hypothesis_validation_only": true
   },
   "resource_cost_credit_contract": {
     "authority_decision": "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
@@ -74,14 +83,11 @@
     "runtime_value_formula": "floor(fixed_base_value + sum(current_stat_value * coefficient))",
     "round_each_stat_term": false,
     "implementation_blocked_until_approved": false,
-    "sanity_check_stat_points": [
-      1,
-      4,
-      15
-    ]
+    "sanity_check_stat_points": [1, 4, 15]
   },
   "approved_basic_attack_formulas": {
     "authority_decision": "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
+    "range_pricing_decision": "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
     "quick_attack": {
       "formula": "floor(3 + external_power * 0.50)",
       "ledger_ticks_at_stat_4": 21,
@@ -90,16 +96,16 @@
     },
     "heavy_attack": {
       "formula": "floor(7 + external_power * 1.00)",
-      "ledger_ticks_at_stat_4": 48,
+      "ledger_ticks_at_stat_4": 54,
       "target_ticks": 50,
-      "variance_ticks": -2
+      "variance_ticks": 4
     },
     "basic_palm": {
       "formula": "floor(2 + internal_power * 0.50)",
-      "ledger_ticks_at_stat_4": 21,
+      "ledger_ticks_at_stat_4": 38,
       "target_ticks": 50,
-      "variance_ticks": -29,
-      "spare_ticks": 29,
+      "variance_ticks": -12,
+      "spare_ticks": 12,
       "spare_budget_resolution": "TBD_FOLLOWUP_DECISION"
     }
   },
@@ -108,6 +114,7 @@
     "decision_id": "TEN-DEC-20260802-TECHNIQUE-AUTHORING-TAG-FIXED-STAT-01",
     "pricing_decision_id": "TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01",
     "basic_attack_formula_decision_id": "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
+    "range_pricing_decision_id": "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
     "order": [
       "structure_and_cost",
       "tags",
@@ -137,10 +144,7 @@
     "requires_clash_win": -5
   },
   "effect_contract": {
-    "scope": [
-      "PER_HIT",
-      "ONCE_PER_ACTION"
-    ],
+    "scope": ["PER_HIT", "ONCE_PER_ACTION"],
     "trigger": [
       "ON_ACTION_START",
       "ON_ACTION_RESOLVE",
@@ -203,7 +207,9 @@
     "All input values snap to 0.05 budget increments.",
     "Slot budgets are 1.0, 2.5, and 4.0 points for 1, 2, and 3 slots.",
     "Tags, fixed base values, stat-reference coefficients, range, and resource costs must use separate ledger entries.",
-    "Attack range beyond one tile consumes 4 ticks per additional tile.",
+    "Current approved attack range uses total ticks by maximum range: 1=0, 2=10, 3=25, 4=40.",
+    "Do not extrapolate range 5 or above without a new Decision.",
+    "The legacy range_per_tile_beyond_one price remains only for historical POC_HYPOTHESIS ledger validation.",
     "Guaranteed non-refundable resource costs grant authoring credits; waived or refunded costs do not receive full credit.",
     "Observation, movement, dodge, and strengthen are fixed-only effects without continuous stat scaling.",
     "All other numeric action effects require at least one explicit stat reference.",
