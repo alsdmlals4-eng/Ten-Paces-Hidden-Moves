@@ -1,5 +1,5 @@
 {
-  "schema_version": 7,
+  "schema_version": 8,
   "data_role": "NON_RUNTIME_POC_PLANNING",
   "status": "POC_HYPOTHESIS",
   "editable": true,
@@ -83,11 +83,16 @@
     "runtime_value_formula": "floor(fixed_base_value + sum(current_stat_value * coefficient))",
     "round_each_stat_term": false,
     "implementation_blocked_until_approved": false,
-    "sanity_check_stat_points": [1, 4, 15]
+    "sanity_check_stat_points": [
+      1,
+      4,
+      15
+    ]
   },
   "approved_basic_attack_formulas": {
     "authority_decision": "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
     "range_pricing_decision": "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
+    "basic_palm_formula_decision": "TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01",
     "quick_attack": {
       "formula": "floor(3 + external_power * 0.50)",
       "ledger_ticks_at_stat_4": 21,
@@ -101,12 +106,16 @@
       "variance_ticks": 4
     },
     "basic_palm": {
-      "formula": "floor(2 + internal_power * 0.50)",
-      "ledger_ticks_at_stat_4": 38,
+      "formula": "floor(3 + internal_power * 0.75)",
+      "fixed_damage": 3,
+      "coefficient": 0.75,
+      "ledger_ticks_at_stat_4": 48,
       "target_ticks": 50,
-      "variance_ticks": -12,
-      "spare_ticks": 12,
-      "spare_budget_resolution": "TBD_FOLLOWUP_DECISION"
+      "variance_ticks": -2,
+      "spare_ticks": 2,
+      "within_auto_tolerance": true,
+      "knockback": 0,
+      "lower_than_quick_constraint": "SUPERSEDED"
     }
   },
   "authoring_selection_contract": {
@@ -115,6 +124,7 @@
     "pricing_decision_id": "TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01",
     "basic_attack_formula_decision_id": "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
     "range_pricing_decision_id": "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
+    "basic_palm_formula_decision_id": "TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01",
     "order": [
       "structure_and_cost",
       "tags",
@@ -144,7 +154,10 @@
     "requires_clash_win": -5
   },
   "effect_contract": {
-    "scope": ["PER_HIT", "ONCE_PER_ACTION"],
+    "scope": [
+      "PER_HIT",
+      "ONCE_PER_ACTION"
+    ],
     "trigger": [
       "ON_ACTION_START",
       "ON_ACTION_RESOLVE",
@@ -216,6 +229,7 @@
     "Stat-reference coefficients snap to 0.25 and are priced at balance reference stat 4.",
     "Primary and secondary stat references use the same price with no secondary discount.",
     "Runtime continuous values sum fixed and all stat terms before one floor operation.",
+    "Basic palm uses floor(3 + internal_power * 0.75), 48 ticks at stat 4, and no knockback.",
     "Check each authored technique at stat points 1, 4, and 15.",
     "5-star and 9-star upgrades each receive an additional 5-tick authoring allowance.",
     "Capstones use the 3-slot 80-tick reference even when represented as a passive true meaning.",
