@@ -20,6 +20,7 @@ AI 성향·선호 행동·정답 파훼법은 자동 공개하지 않는다. 플
 
 ```yaml
 current_t0:
+  status: STEP_0_TO_13_IMPLEMENTED
   scope_status: CURRENT_T0
   implementation_status: IMPLEMENTED_LEGACY
   automated_validation: PASS
@@ -28,10 +29,15 @@ next_demo:
   scope_status: POC_PRIMARY
   authority_status: CURRENT_APPROVED_PLANNING
   implementation_status: NOT_STARTED
+step14:
+  mechanical_step14: NOT_STARTED_FOR_NEW_CONTRACT
+  human_step14: NOT_RUN
 t1:
   scope_status: PLANNED_T1
-  gate: NOT_GRANTED
+  t1_greenlight: NOT_GRANTED
 ```
+
+`STEP_0_TO_13_IMPLEMENTED`는 기존 T0 기술 PoC의 구현·자동 회귀 증거를 뜻한다. `mechanical_step14`와 `human_step14`는 최신 5전 계약의 사람 검증을 대신하지 않는다.
 
 현재 런타임은 기술 PoC로서 작동하지만 관찰·장풍·최신 스테이터스 배수·5전 회차·새 전투 종료 등급을 구현한 상태가 아니다.
 
@@ -235,7 +241,10 @@ T0와 최신 계획의 차이:
 - 순차 합·중단·잔여 단독타를 설명할 수 있는지 관찰.
 - 인터뷰 응답과 실제 행동 증거를 분리한다.
 
-현재 사람 증거는 `NOT_RUN`이다.
+```yaml
+mechanical_step14: NOT_STARTED_FOR_NEW_CONTRACT
+human_step14: NOT_RUN
+```
 
 ## 13. T0 완료 기준
 
@@ -260,6 +269,7 @@ T0 유지 기준:
 
 ```yaml
 planning_contract: CURRENT_APPROVED_PLANNING
+current_t0_status: STEP_0_TO_13_IMPLEMENTED
 current_t0_implementation: IMPLEMENTED_LEGACY
 next_demo_implementation: NOT_STARTED
 static_validation: REQUIRED
@@ -267,7 +277,8 @@ automated_validation: NOT_RUN_FOR_NEW_CONTRACT
 godot_validation: NOT_RUN
 windows_validation: NOT_RUN
 accessibility_validation: NOT_RUN
-human_validation: NOT_RUN
+mechanical_step14: NOT_STARTED_FOR_NEW_CONTRACT
+human_step14: NOT_RUN
 t1_greenlight: NOT_GRANTED
 demo_ready: NO
 ```
