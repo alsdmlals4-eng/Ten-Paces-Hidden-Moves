@@ -15,10 +15,11 @@ future_platform: MOBILE_CONSIDERATION_ONLY
 engine: Godot 4.7
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 work_mode: REVIEW
+integration_pr: 65
 base_release_pinned: 9.4.1
-runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_MAIN_HUMAN_PENDING
+runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
 latest_combat_planning_runtime: NOT_STARTED
-automated_validation: PENDING_EXACT_HEAD
+automated_validation: PASS
 windows_validation: NOT_RUN
 human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
@@ -36,8 +37,11 @@ PR #73은 Base v9.4.1 공유 Skill Adapter만 변경해 main에 병합됐으며 
 - 공식 챔피언 랭킹전은 양측 관찰을 금지하고 관찰 의존 효과에 공개·대칭·버전 고정 변환표를 적용한다.
 - 태그·상태·범위·검증 어휘는 `docs/00_TAG_STATUS_REGISTRY.md`가 소유한다.
 
-## 역사 연결과 현재 판정
+## 앱 흐름 권위와 역사 연결
 
+- `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`: 무공서가 아닌 해금 기술을 선택·배치하는 ActionSelectionDock UX 결정.
+- `TEN-DEC-20260801-SITUATION-SCREEN-01`: 전투 전 상황 화면과 전투 진입 정보 구조 결정.
+- 현재 앱 흐름 권위 원장은 `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`이며, 파일명 호환 토큰은 `2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`다.
 - `Issue #13`은 프로젝트 코어 검토와 PoC 검증 이력을 연결하는 역사 참조다. 현재 작업 지시나 미해결 이슈를 뜻하지 않는다.
 - 과거 상태 `CORE_REVIEW_PENDING`은 사용자 승인 뒤 `CORE_CONFIRMED`로 종료됐다.
 - `STEP 14`는 신규 플레이어 사람 검증 단계이며 현재 `human_validation: NOT_RUN`이다.
