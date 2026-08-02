@@ -9,7 +9,7 @@
 - 작업 Branch: `agent/2026-08-02-total-planning-audit-platform-sync`
 - 플랫폼 Decision: `TEN-DEC-20260802-PLATFORM-SCOPE-01`
 - 제품 경로 변경: `NONE`
-- 감사 상태: `CANON_FIXED_SHEET_SYNC_IN_PROGRESS_WITH_DECLARED_GAPS`
+- 감사 상태: `CANON_FIXED_SHEET_SYNCED_DRAFT_PR_READY_WITH_DECLARED_GAPS`
 
 ## 1. 작업 계약
 
@@ -93,6 +93,7 @@ human_validation: NOT_RUN
 - 실제 현재: Base v9.4 프로젝트 적용, project main `c5771dd...`.
 - 영향: 새 작업자가 오래된 Base 계약과 main을 기준으로 시작할 위험.
 - 조치: Hub·GDD 요약·변경이력을 v9.4와 현재 main으로 교정.
+- 결과: `FIXED_AND_READ_BACK`.
 
 #### TEN-FIND-20260802-02 — Sheet Stage·Work Mode·PR 상태 drift
 
@@ -100,7 +101,8 @@ human_validation: NOT_RUN
 - 증거: `05_GDD_요약`이 `CONCEPT_APPROVAL`, `PLAN`, `PR65_OPEN`, Base v9.1을 현재 상태로 표시했다.
 - 실제 현재: `VERTICAL_SLICE_APP_FLOW_PLANNING`, `REVIEW`, PR #65 merged, Base v9.4.
 - 영향: 다음 기획·구현 Gate와 검증 순서 왜곡.
-- 조치: 현재 상태·다음 패키지·검증 한계를 교정.
+- 조치: 현재 상태·다음 패키지·검증 한계를 교정하고 활성 Decision 행의 PR-open 상태를 main 병합 상태로 갱신.
+- 결과: `FIXED_AND_READ_BACK`.
 
 #### TEN-FIND-20260802-03 — GitHub Roadmap·START_HERE의 완료 작업 잔존
 
@@ -109,6 +111,7 @@ human_validation: NOT_RUN
 - 실제 현재: PR #65 merged·Sheet post-merge sync 완료, PR #68 Base v9.4 적용 완료.
 - 영향: 완료 작업 재수행, App Flow Shell 착수 지연.
 - 조치: 완료 이력으로 이동하고 현재 Gate를 App Flow Shell 구현 계약 정밀화로 전환.
+- 결과: `FIXED_IN_BRANCH`.
 
 #### TEN-FIND-20260802-04 — 플랫폼 범위 책임 원본 부재
 
@@ -116,26 +119,36 @@ human_validation: NOT_RUN
 - 사용자 승인 입력: `PC, 이후 모바일(고려 중)`.
 - 영향: 모바일 고려가 현재 포팅 승인 또는 동시 출시 범위로 오해될 위험.
 - 조치: `TEN-DEC-20260802-PLATFORM-SCOPE-01`을 Decision·planning JSON·entrypoint·Sheet에 같은 ID로 연결.
+- 결과: `CANONICALIZED_AND_READ_BACK`.
 
 #### TEN-FIND-20260802-05 — 완료된 Base 이관 Issue의 활성 잔존
 
 - 유형: `STALE_REFERENCE / DUPLICATE_WORK`.
 - 대상: Issue #60(v9.1), Issue #63(v9.3).
 - 실제 현재: PR #68로 Base v9.4 적용 완료.
-- 조치: 완료·대체 근거를 남기고 Issue를 completed로 닫는다.
+- 조치: 완료·대체 근거 댓글을 남기고 두 Issue를 `completed`로 닫음.
+- 결과: `FIXED`.
 
-### SHOULD_FIX — 다음 운영 정리
+#### TEN-FIND-20260802-06 — 현재 결정 Sheet의 역사·활성 상태 혼재
 
-#### TEN-FIND-20260802-06 — 현재 결정 Sheet의 역사 행 상태 혼재
-
-- 일부 과거 Decision은 `CURRENT`이면서 `SHEET_UPDATE_PENDING_GITHUB` 또는 `PR_OPEN` SHA를 함께 가진다.
-- 최신 2026-08-01 Decision 행은 post-merge 상태가 정확하므로 즉시 전체 과거 행을 재작성하지 않는다.
-- 후속으로 `CURRENT_CANON / HISTORICAL_INDEX / SUPERSEDED_REFERENCE` 분리 기준을 적용한다.
+- 유형: `STALE_REFERENCE / DUPLICATE_ACTIVE_STATE`.
+- 증거: 활성 Decision이 `CURRENT`이면서 `SHEET_UPDATE_PENDING_GITHUB`, `PR_OPEN`, `PENDING_PR65`를 사용했다.
+- 조치: 최신 main 병합 상태, 역사 인덱스, Pilot·사람 검증 대기를 구분해 갱신.
+- 결과: `FIXED_AND_READ_BACK`.
 
 #### TEN-FIND-20260802-07 — Issue #54의 차단 사유 drift
 
-- Issue #54는 `BLOCKED_BY_CONCEPT_APPROVAL`을 사용하지만 현재 화면 구조와 다음 App Flow Shell은 승인됐다.
-- 사람 검증은 여전히 미실행이므로 Issue를 닫지 않고 `READY_AFTER_APP_FLOW_SHELL`로 현재 상태 note를 남긴다.
+- 유형: `STALE_REFERENCE`.
+- 증거: Issue #54가 `BLOCKED_BY_CONCEPT_APPROVAL`을 사용했지만 화면 구조와 App Flow Shell 다음 패키지는 승인됨.
+- 조치: 이슈를 닫지 않고 `READY_AFTER_APP_FLOW_SHELL` 근거 댓글을 추가.
+- 결과: `FIXED_WITH_OPEN_VALIDATION_ISSUE`.
+
+#### TEN-FIND-20260802-08 — Sheet의 존재하지 않는 책임 원본 경로
+
+- 유형: `ORPHANED_REFERENCE`.
+- 증거: `10_제품방향`의 핵심 카피 책임 원본 `docs/00_GAME_PILLARS.md`는 GitHub main에 존재하지 않음.
+- 조치: 실제 현행 책임 원본 `docs/01_GAME_DESIGN.md`로 교정하고 플랫폼·현재 Gate 책임 경로도 최신 Decision·Active Context·Roadmap으로 연결.
+- 결과: `FIXED_AND_READ_BACK`.
 
 ### RESEARCH_OR_TEST_REQUIRED
 
@@ -155,8 +168,9 @@ human_validation: NOT_RUN
 | PR #65 완료 이력을 삭제했다 | README·Roadmap·Active Context 역사에 PR #65를 보존 | `NO_REGRESSION` |
 | Base 열린 PR #134를 main 규칙으로 적용했다 | Base main과 첨부 작업 계약을 분리하고 PR #134를 미병합으로 명시 | `NO_CONFLICT` |
 | Sheet를 GitHub 권위 원본처럼 사용했다 | GitHub Decision·planning JSON을 먼저 커밋하고 Sheet는 Draft-PR sync 상태로 기록 | `NO_CONFLICT` |
-| 오래된 모든 행을 무차별 덮어썼다 | 현재 상태를 오도하는 셀과 신규 Decision 행만 수정 | `NO_REGRESSION` |
+| 오래된 모든 행을 무차별 덮어썼다 | 현재 상태를 오도하는 활성 셀과 신규 Decision·감사·마일스톤 행만 수정 | `NO_REGRESSION` |
 | 런타임·사람 검증 없이 Demo Ready를 주장했다 | Demo/T1 Gate는 미충족으로 유지 | `BLOCKED_UNVERIFIED` |
+| 모바일 호환성을 이유로 조기 추상화를 추가했다 | 제품 코드·Scene·데이터·자산 변경 0, 미래 경계만 문서화 | `NO_REGRESSION` |
 
 ## 6. 플랫폼 Decision 동기화 Ledger
 
@@ -173,16 +187,38 @@ GITHUB_CANONICAL_LOCATION:
   planning_data_commit: 492edb4e6911e452f68f532672435805b1fe4c00
 GOOGLE_SHEET_LOCATION:
   spreadsheet: 1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0
-  tabs: 00_프로젝트_허브 / 02_현재_확정결정 / 20_코어경험_데모목표 / 30_데모범위_품질기준_제작기반 / 90_본제작_출시_사업 / 99_변경이력
-readback_result: PENDING
-sync_status: SHEET_SYNC_IN_PROGRESS
+  exact_locations:
+    - 00_프로젝트_허브!A1:K2
+    - 01_작업순서!A1:N11
+    - 02_현재_확정결정!A1:M12
+    - 04_누락_충돌_감사!A1:H12
+    - 05_GDD_요약!A1:J8
+    - 10_제품방향!A1:F4
+    - 20_코어경험_데모목표!A1:I4
+    - 30_데모범위_품질기준_제작기반!A1:H4
+    - 80_데모_버티컬슬라이스_플레이테스트!A1:L5
+    - 90_본제작_출시_사업!A1:H5
+    - 99_변경이력!A1:H12
+readback_result: PASS
+sync_status: SHEET_SYNCED_DRAFT_PR_POST_MERGE_MAIN_UPDATE_REQUIRED
 ```
 
-## 7. 프로젝트 건강도
+GitHub가 권위 원본이다. Draft PR 병합 전 Sheet에는 Decision의 canonical commit과 Draft branch 상태를 기록하며, 병합 뒤 최종 main commit·PR 상태를 다시 갱신해야 한다.
+
+## 7. Issue 정리
+
+| Issue | 판정 | 처리 |
+|---|---|---|
+| #60 Base v9.1 | PR #68 Base v9.4에 흡수 완료 | 근거 댓글 + `closed/completed` |
+| #63 Base v9.3 | PR #68 Base v9.4에 대체 완료 | 근거 댓글 + `closed/completed` |
+| #54 UX·사람 검증 | 화면 구조 승인, 연결 빌드·사람 증거 미실행 | 열린 상태 유지 + `READY_AFTER_APP_FLOW_SHELL` 댓글 |
+| #46·#13 | 이번 감사만으로 완료 증거 부족 | 변경하지 않음 |
+
+## 8. 프로젝트 건강도
 
 | 영역 | 상태 | 근거·제한 |
 |---|---|---|
-| 진입·운영 | `NEEDS_IMPROVEMENT → FIXED_IN_BRANCH` | current state drift 교정 |
+| 진입·운영 | `FIXED_IN_BRANCH` | current state drift 교정 |
 | 제품·경험 | `HEALTHY_WITH_UNVERIFIED_HUMAN` | 코어 명확, 사람 검증 NOT_RUN |
 | 시스템·콘텐츠 | `PARTIAL` | 전투 PoC·Dock 존재, 전체 제품 흐름 미구현 |
 | 세계·서사 | `NEEDS_IMPROVEMENT` | 주요 비무 후보·세력·후반 콘텐츠 다수 보류 |
@@ -190,12 +226,12 @@ sync_status: SHEET_SYNC_IN_PROGRESS
 | 데이터·기술 | `NEEDS_IMPROVEMENT` | App Flow Save/transaction 계약 정밀화 필요 |
 | 제작·검증 | `BLOCKED_UNVERIFIED` | Windows·성능·STEP 14 미실행 |
 | Skill·Workflow | `HEALTHY` | Base v9.4 Adapter·프로젝트 Skill 4개 유지 |
-| Sheet·파생본 | `CONFLICTED → SYNC_IN_PROGRESS` | 현재 상태 drift 교정 중 |
-| 콜드 스타트 | `NEEDS_IMPROVEMENT → FIXED_IN_BRANCH` | START_HERE·Active Context·Roadmap 정렬 |
+| Sheet·파생본 | `SYNCED_DRAFT_PR` | 동일 Decision ID·경로·canonical commit readback PASS |
+| 콜드 스타트 | `FIXED_IN_BRANCH` | START_HERE·Active Context·Roadmap 정렬 |
 
-## 8. 다음 작업 우선순위
+## 9. 다음 작업 우선순위
 
-1. 이 Branch의 GitHub 정본·Sheet readback·Draft PR exact-HEAD 검수.
+1. 이 Branch의 Draft PR exact-HEAD·changed-file·CI·review thread 검수.
 2. `VERTICAL_SLICE_APP_FLOW_SHELL` Codex 실행 Packet 작성.
 3. 별도 구현 Branch에서 App Root·Main·Setup·Route·Node·Briefing·Combat·Result Shell 구현.
 4. 저장·전환·중복 입력·same-seed·보상 단일 commit 자동 회귀.
@@ -204,7 +240,7 @@ sync_status: SHEET_SYNC_IN_PROGRESS
 7. 같은 파이프라인으로 두 번째 후보·노드를 반복 제작하고 후보 풀 확장 판정.
 8. 위 PC Gate가 닫힌 뒤 모바일 타당성 조사 여부 재결정.
 
-## 9. 현재 완료 판정
+## 10. 현재 완료 판정
 
 ```yaml
 base_structure_understood: PASS_WITH_REMOTE_EVIDENCE
@@ -213,8 +249,10 @@ sheet_structure_and_key_ranges_read: PASS
 adversarial_findings_validated: PASS
 platform_decision_canonicalized: PASS
 github_entrypoint_sync: PASS_IN_BRANCH
-google_sheet_sync: IN_PROGRESS
-issue_cleanup: IN_PROGRESS
+google_sheet_sync: PASS_DRAFT_PR_STATE
+sheet_readback: PASS
+issue_cleanup: PASS
+orphaned_sheet_reference_fix: PASS
 local_tracked_file_inventory: BLOCKED_UNVERIFIED_DNS
 local_tests: NOT_RUN_DNS
 windows_godot: NOT_RUN
@@ -223,4 +261,5 @@ human_step14: NOT_RUN
 mobile_runtime_and_validation: NOT_RUN
 demo_ready: NO
 merge_authority: NOT_REQUESTED
+post_merge_sheet_update: REQUIRED_AFTER_MERGE
 ```
