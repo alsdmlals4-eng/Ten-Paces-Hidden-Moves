@@ -1,0 +1,61 @@
+name: Temporary Finalize Base v9.4.1 Pin
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/temporary-finalize-base-v9-4-1-pin.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  patch-pin:
+    if: github.event.pull_request.head.ref == 'agent/base-shared-external-ai-adapter-20260802'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Patch canonical adapter and focused test
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = "3f2c4a624d302b704c1b5322eb5c9f34ad55abb9"
+          evidence = "ff117d24d5bdb121314e109a6aa9b4f552e0fdc1"
+          registry = "693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59"
+          adapter_path = Path("skills/PROJECT_BASE_ADAPTER.json")
+          adapter = json.loads(adapter_path.read_text(encoding="utf-8"))
+          adapter["base_release"].update({
+              "version": "9.4.1",
+              "release_commit": payload,
+              "release_evidence_commit": evidence,
+          })
+          adapter["skill_registry"]["base"]["sha256"] = registry
+          policy = adapter["shared_overrides"]["orchestrating-deepseek-worktrees"]
+          policy.update({
+              "base_validator_adoption": "ADOPTED_FROM_BASE_V9_4_1",
+              "base_validator_path": "tools/check_external_ai_worktree_contract.py",
+              "base_release_lock": "base-v9.4.1.lock.json",
+              "actual_external_ai_worktree_execution": "NOT_RUN",
+          })
+          adapter_path.write_text(json.dumps(adapter, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+          test_path = Path("tests/test_base_shared_external_ai_adapter.py")
+          text = test_path.read_text(encoding="utf-8")
+          text = text.replace("a728712cb776ec98f4875914a580fcf7d0156593", payload)
+          text = text.replace('self.assertEqual("9.4.0", adapter["base_release"]["version"])', 'self.assertEqual("9.4.1", adapter["base_release"]["version"])')
+          text = text.replace('self.assertEqual("DEFER_UNTIL_NEXT_RELEASED_BASE_PIN", override["base_validator_adoption"])', 'self.assertEqual("ADOPTED_FROM_BASE_V9_4_1", override["base_validator_adoption"])\n        self.assertEqual("tools/check_external_ai_worktree_contract.py", override["base_validator_path"])\n        self.assertEqual("base-v9.4.1.lock.json", override["base_release_lock"])\n        self.assertEqual("NOT_RUN", override["actual_external_ai_worktree_execution"])')
+          identity_anchor = 'self.assertEqual(BASE_RELEASE_COMMIT, adapter["base_release"]["release_commit"])'
+          if "release_evidence_commit" not in text:
+              text = text.replace(identity_anchor, identity_anchor + f'\n        self.assertEqual("{evidence}", adapter["base_release"]["release_evidence_commit"])')
+          test_path.write_text(text, encoding="utf-8")
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add skills/PROJECT_BASE_ADAPTER.json tests/test_base_shared_external_ai_adapter.py
+          git commit -m "chore: pin Base v9.4.1 compatibility release"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
