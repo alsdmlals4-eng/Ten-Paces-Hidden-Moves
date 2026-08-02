@@ -1,53 +1,34 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "decision_id": "TEN-DEC-20260802-MULTIHIT-COMPLETE-PARRY-01",
-  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "authority_status": "CURRENT_APPROVED_PLANNING_LOG_EVENT",
   "implementation_authority": "PLANNING_ONLY",
   "grillme_count": "6/10",
-  "supplemented_by": "TEN-DEC-20260802-COMPLETE-PARRY-HP-ONLY-01",
-  "counting": {
-    "unit": "attack_action",
-    "maximum_threat_count_increment_per_attack_action": 1,
-    "damage_unit_count_does_not_increment_repeat_count": true,
-    "derived_hit_index_does_not_create_new_threat": true
+  "clash_contract": {
+    "participating_packet": "FIRST_DAMAGE_PACKET_ONLY",
+    "losing_or_tied_attack_followups_cancelled": true,
+    "winning_attack_followups_reclash": false,
+    "ultimate_momentum_max_per_attack_action": 1
   },
-  "complete_parry": {
-    "zero_health_damage_from_attack_action": true,
-    "all_effective_damage_units_cancelled_required": false,
-    "secondary_hostile_effects_cancel_complete_parry": false,
-    "increments_repeat_count": true
+  "complete_parry_event": {
+    "counting_unit": "ATTACK_ACTION",
+    "maximum_events_per_attack_action": 1,
+    "condition": "ZERO_HEALTH_DAMAGE_FROM_ATTACK_ACTION",
+    "requires_all_packets_cancelled": false,
+    "secondary_effects_cancel_event": false
   },
-  "partial_parry": {
-    "definition": "some_damage_units_cancelled_but_attack_action_deals_positive_health_damage",
+  "partial_parry_event": {
+    "health_damage_at_least_one": true,
     "logged": true,
-    "shown_in_review": true,
-    "increments_repeat_count": false,
-    "receives_complete_parry_score": false,
-    "separate_partial_score": "TBD"
+    "automatic_grade_score": false
   },
-  "combat_rewards": {
-    "ultimate_momentum_max_gain_per_attack_action": 1,
-    "valid_on_clash_win_effects_preserved": true,
-    "battle_grade_attenuation_does_not_reduce_combat_rewards": true
+  "current_battle_grade": {
+    "decision_id": "TEN-DEC-20260802-BATTLE-GRADE-FIVE-METRICS-01",
+    "direct_complete_parry_score": false,
+    "repeat_attenuation_active": false
   },
-  "symmetry": {
-    "in_range_out_of_range_same_complete_parry_condition": true,
-    "normalized_threat_id_shared_across_range_state": true
-  },
-  "secondary_effects": {
-    "recorded_separately": true,
-    "may_remain_after_zero_damage_block_or_clash": true,
-    "may_be_negated_by_dodge_per_effect_rule": true,
-    "push_example_survives_block_and_clash_zero_damage": true,
-    "push_example_is_negated_by_dodge": true
-  },
-  "unresolved": [
-    "exact_threat_response_event_score",
-    "partial_parry_score",
-    "basic_palm_exact_damage_formula"
-  ],
   "validation": {
-    "static_validation": "PENDING_DRAFT_PR",
+    "static_validation": "PENDING_PR_CHECKPOINT",
     "runtime_validation": "NOT_RUN",
     "godot_validation": "NOT_RUN",
     "windows_validation": "NOT_RUN",
