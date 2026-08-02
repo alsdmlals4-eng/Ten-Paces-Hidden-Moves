@@ -102,6 +102,33 @@
 
 무공서는 성장·분류 단위이며 직접 수 슬롯에 배치하지 않는다. `[무공]` 탭에서 현재 해금 기술을 선택한다.
 
+### 기초 행동 수량과 구현 차이
+
+최신 승인 기획의 `[기초]` 행동은 9개다.
+
+- 이동
+- 보법
+- 막기
+- 회피
+- 속공
+- 강공
+- 관찰
+- 명상
+- 태세
+
+현재 main의 `data/cards/basic_cards.json`과 ActionSelectionDock은 8개를 제공한다.
+
+- 이동
+- 보법
+- 막기
+- 회피
+- 속공
+- 강공
+- 명상
+- 준비
+
+따라서 현재 구현은 `[관찰]`이 없고, 레거시 `준비`가 최신 기획의 `태세`와 규칙·명칭이 완전히 일치하지 않는 `IMPLEMENTED_LEGACY` 상태다. 숫자 8을 최신 기획 기준으로 재사용하지 않는다. 별도 Build 승인 전에는 런타임 데이터·UI를 자동 수정하지 않는다.
+
 ## 5. 권위 상태
 
 문서·Decision·planning JSON의 `authority_status`는 아래 값 중 하나를 사용한다.
@@ -110,7 +137,7 @@
 |---|---|
 | `CURRENT_APPROVED_PLANNING` | 사용자가 승인한 현재 기획 정본 |
 | `POC_HYPOTHESIS` | 비교·편집·검증용 가설이며 제품 약속이 아님 |
-| `IMPLEMENTED_LEGACY` | main에서 작동하지만 최신 기획과 다른 구현 |
+| `IMPLEMENTED_LEGACY` | main에서 작동하지만 최신 기획과 다른 규칙 |
 | `SUPERSEDED` | 후속 Decision으로 대체됨 |
 | `HOLD` | 별도 승인 전 활성 작업에서 제외 |
 
