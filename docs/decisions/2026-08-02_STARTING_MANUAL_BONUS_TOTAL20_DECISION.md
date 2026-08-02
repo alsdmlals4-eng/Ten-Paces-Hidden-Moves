@@ -126,10 +126,10 @@ maximum_possible_single_starting_stat: 8
 manual_bonus_vectors:
   flowing_cloud_sword: {agility: 1}
   vajra_body: {constitution: 1}
-  taiji_reversal_sword: {insight: 1}
-  gale_spear: {external_power: 1}
-  clear_heart_nourishing_art: {internal_power: 1}
-  shadowless_ten_steps: {agility: 1}
+  taiji_flow: {insight: 1}
+  pursuing_wind_spear: {external_power: 1}
+  clear_heart_nurturing: {internal_power: 1}
+  shadowless_steps: {agility: 1}
 runtime_validation: NOT_RUN
 godot_validation: NOT_RUN
 windows_validation: NOT_RUN
