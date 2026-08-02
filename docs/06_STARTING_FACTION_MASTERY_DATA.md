@@ -5,11 +5,11 @@
 > 현재 전투 규칙: `docs/02_COMBAT_RULES.md`  
 > 데이터 원본: `docs/planning-data/poc_martial_arts.json`  
 > 승인 계약: `docs/planning-data/approved_20260802_observation_stats_mastery_contract.json`  
-> 상태: 성장 골격은 `APPROVED_PLANNING`, 개별 수치·기술 데이터는 `POC_HYPOTHESIS`
+> 상태: T1 이후 가설 원본. 성장 골격은 `APPROVED_PLANNING`, 개별 수치·기술 데이터는 `POC_HYPOTHESIS`
 
 ## 1. 현재 상태
 
-프로젝트 코어와 무공서 성장 골격은 사용자 승인 상태다. 런타임에는 아직 최신 스테이터스·기술 요구 조건이 연결되지 않았으며 개별 무공 수치와 기술 예산은 `POC_HYPOTHESIS`다.
+프로젝트 코어가 사용자 승인된 상태에서 무공서 성장 골격도 승인되었다. 런타임에는 아직 최신 스테이터스·기술 요구 조건이 연결되지 않았으며 개별 무공 수치와 기술 예산은 `POC_HYPOTHESIS`다.
 
 현재 T0에는 세력 선택이 없고, 런타임의 공용 절초 3종은 기술 계보 보존 대상으로 남는다. 새 무공·세력 데이터는 공용 전투 계약을 대체하지 않고 확장한다.
 
