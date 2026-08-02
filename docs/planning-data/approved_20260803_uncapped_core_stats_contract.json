@@ -74,6 +74,17 @@
       "detect_enemy_hp_only_inflation"
     ]
   },
+  "benchmark_protocol": {
+    "path": "docs/reviews/2026-08-03_GRILLME_BENCHMARK_PROTOCOL.md",
+    "required_for_future_grillme_when_relevant": true,
+    "minimum_comparison_cases_when_material": 2,
+    "source_priority": [
+      "OFFICIAL_DEVELOPER_SOURCE",
+      "OFFICIAL_OR_DEVELOPER_HOSTED_WIKI",
+      "INDUSTRY_PRACTICE_SOURCE",
+      "SPECIALIST_ANALYSIS_AS_SECONDARY"
+    ]
+  },
   "followups": [
     "STAR_7_AND_STAR_10_TECHNIQUE_REQUIREMENTS",
     "MANUAL_SECONDARY_STAT_MAPPING",
