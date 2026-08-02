@@ -2,12 +2,14 @@
 
 - Decision ID: `TEN-DEC-20260802-EVEN-STAR-STAT-ESCALATION-01`
 - 승인일: 2026-08-02
-- 상태: `CURRENT_APPROVED_PLANNING_WITH_CONFLICT_GATE`
+- 상태: `CURRENT_APPROVED_PLANNING`
 - 구현 권한: `PLANNING_ONLY`
 - GrillMe 묶음: `8/10`
 - 선행 결정:
   - `TEN-DEC-20260802-OBSERVATION-STATS-MASTERY-01`
   - `TEN-DEC-20260802-STARTING-STAT-TOTAL20-MANUAL-BONUS-01`
+- 후속 충돌 해결:
+  - `TEN-DEC-20260803-UNCAPPED-CORE-STATS-01`
 
 ## 1. 승인 결론
 
@@ -62,30 +64,33 @@
 
 3성에서 8성까지 필요한 기존 수련포인트는 총 20이므로, 해당 경로는 수련포인트 20으로 영구 스테이터스 10점과 5성 강화·7성 기술을 함께 얻는 고성장 경로다.
 
-## 5. 충돌 Gate
+## 5. 무상한 스테이터스 정책과의 연결
 
-이번 승인으로 다음 충돌이 새로 확정적으로 발생할 수 있다.
+`TEN-DEC-20260803-UNCAPPED-CORE-STATS-01`에 따라 외공·근골·신법·내공·심안에는 게임 디자인상의 하드캡을 두지 않는다.
 
-1. 기존 주요 운용 범위 `1~15`와 다중 무공의 동일 능력치 중첩
-2. 7성·10성 기술 요구치가 성장 보너스만으로 자동 충족될 위험
-3. 중간 노드의 추가 영구 스테이터스 보상과의 중복 과성장
-4. 능력치 15를 넘길 경우 현재 기술 공식 검증 범위 이탈
-5. 유운검결·무영십보처럼 같은 주 능력치를 공유하는 무공의 성장 효율 집중
+- 기존 `1~15`는 초기 밸런스 검증 기준점이며 값 절단 기준이 아니다.
+- 같은 주 능력치를 공유하는 복수 무공을 성장시켜 15를 넘더라도 실제 영구값을 유지한다.
+- 초과분을 버리거나 자유 점수로 변환하지 않는다.
+- 실제 영구값을 기술 요구치와 전투 공식에 사용한다.
+- 각 콘텐츠 묶음에서 합법적으로 도달 가능한 최대값을 계산해 공식·AI·UI·저장 검증점으로 사용한다.
+- 회피율·피해 감소율처럼 핵심 규칙을 무효화할 수 있는 파생 효과는 원천 스테이터스 상한이 아니라 파생 효과 단계의 점근형·효과 한계·기술 임계 계약으로 보호한다.
 
-따라서 다음 항목은 충돌 해결 Decision 전 구현·병합 정본화가 금지된다.
+## 6. 남은 후속 결정
 
-- 능력치 상한과 초과분 처리
-- 7성 기술·10성 절초의 정확한 요구치
-- 중간 노드 영구 스테이터스 지급량
-- 여섯 무공의 정확한 보조 능력치 매핑
-- 능력치 15 초과 전투 공식
+능력치 상한 충돌은 해결되었으나 다음은 아직 미결정이다.
 
-## 6. 구현·검증 경계
+1. 7성 기술 요구치
+2. 10성 절초 요구치
+3. 여섯 무공의 정확한 보조 능력치 매핑
+4. 중간 노드 영구 스테이터스 보상 여부와 지급량
+5. 현재 최대 합법값에서 수읽기보다 수치가 지배하지 않는지 사람 검증
+
+## 7. 구현·검증 경계
 
 이번 승인은 지급 구조와 총량만 확정한다. 제품 코드·런타임 데이터·무공별 개별 벡터는 변경하지 않는다.
 
 ```yaml
-authority_status: CURRENT_APPROVED_PLANNING_WITH_CONFLICT_GATE
+authority_status: CURRENT_APPROVED_PLANNING
 implementation_status: NOT_STARTED
 star_2_new_grant:
   primary: 1
@@ -106,10 +111,11 @@ cumulative_through_star_8:
 milestone_grants_are_incremental: true
 grant_once_per_manual_per_run: true
 duplicate_acquisition_regrants_bonus: false
-stat_cap_policy: BLOCKED_PENDING_CONFLICT_DECISION
-star_7_requirement: BLOCKED_PENDING_CONFLICT_DECISION
-star_10_requirement: BLOCKED_PENDING_CONFLICT_DECISION
-secondary_stat_mapping: TBD_AFTER_CONFLICT_RESOLUTION
+core_stat_hard_cap: null
+legacy_15_is_validation_reference: true
+star_7_requirement: TBD_NEXT
+star_10_requirement: TBD_AFTER_STAR_7
+secondary_stat_mapping: TBD
 runtime_validation: NOT_RUN
 godot_validation: NOT_RUN
 windows_validation: NOT_RUN
