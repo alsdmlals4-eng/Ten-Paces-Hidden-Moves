@@ -1,95 +1,68 @@
-# 반복 합 파훼의 위협 대응 감쇠 결정
+# 반복 합 파훼 감쇠 후보 결정
 
 - Decision ID: `TEN-DEC-20260802-CLASH-THREAT-ATTENUATION-01`
 - 승인일: 2026-08-02
-- 상태: `CURRENT_APPROVED_PLANNING`
-- 구현 권한: `PLANNING_ONLY`
+- 상태: `SUPERSEDED_FOR_CURRENT_BATTLE_GRADE`
+- 구현 권한: `HOLD_PLANNING_CANDIDATE`
 - GrillMe 묶음: `4/10`
 - 선행 결정: `TEN-DEC-20260802-OUT-OF-RANGE-CLASH-GRADE-01`
-- 위협 ID 판별 후속 결정: `TEN-DEC-20260802-THREAT-ID-ACTION-01`
+- 대체 결정: `TEN-DEC-20260802-BATTLE-GRADE-FIVE-METRICS-01`
 
-## 1. 승인 결론
+## 1. 역사적 승인안
 
-한 전투 안에서 같은 적 기술 또는 같은 기초 공격 유형을 `[합]`으로 반복 무효화할 때, 전투 종료 `위협 대응` 점수 기여도는 다음처럼 감쇠한다.
+기존 위협 대응 점수 체계에서는 같은 공격 ID의 반복 합 파훼에 다음 감쇠를 적용하기로 했다.
 
-| 같은 위협의 성공 횟수 | 위협 대응 가치 |
+| 같은 위협의 성공 횟수 | 과거 위협 대응 가치 |
 |---:|---:|
 | 첫 번째 | 100% |
 | 두 번째 | 50% |
 | 세 번째 이후 | 0% |
 
-- 다른 적 기술 또는 다른 기초 공격 유형을 처음 파훼하면 다시 100%로 계산한다.
-- 감쇠 카운트는 각 전투 시작 시 0으로 초기화한다.
-- 사거리 안 합 승리와 사거리 밖 합 승리에 완전히 같은 감쇠 규칙을 적용한다.
-- 사거리 밖이라는 이유로 별도 감액하지 않는다.
-- `같은 위협`은 후속 Decision에 따라 정확한 기초 행동 ID·무공 기술 ID·절초 ID로 판별한다.
+사거리 안·밖에는 같은 감쇠를 적용하고 전투 판정·절초기세·`ON_CLASH_WIN`·로그는 감쇠하지 않는 안이었다.
 
-## 2. 감쇠 적용 범위
+## 2. 현재 권위
 
-이 감쇠는 전투 종료 `S/A/B/C` 평가 중 `위협 대응` 점수에만 적용한다.
+후속 `TEN-DEC-20260802-BATTLE-GRADE-FIVE-METRICS-01`이 전투 종료 등급의 핵심 입력을 아래 5개로 교체했다.
 
-감쇠하지 않는 항목:
+- 회피 성공 횟수
+- 합 승리 횟수
+- 플레이어가 잃은 체력
+- 전투 라운드 수
+- 절초 사용 여부·횟수
 
-- `[합]` 승패 판정
-- 패자의 현재 피해 단위 취소
-- 절초기세 +1
-- `ON_CLASH_WIN`
-- 전투 로그와 복기 사건
-- 실제 사거리·적중·피해 판정
+따라서 현재는:
 
-세 번째 이후 같은 위협을 다시 막아도 전투적으로는 정상적인 합 승리이며, 점수 기여만 0%다.
+- `100%→50%→0%` 감쇠를 전투 종료 등급에 적용하지 않는다.
+- 같은 공격 ID를 반복해서 합으로 이겨도 `합 승리 횟수` 원자료에는 실제 성공 횟수를 기록한다.
+- 파밍 방지가 필요하면 5개 지표의 정규화·상한·감쇠를 별도 GrillMe로 다시 승인한다.
+- 이 문서는 미래 파밍 방지 후보와 역사 근거로만 보존한다.
 
-## 3. 대칭성과 중복 방지
+## 3. 유지되는 비점수 계약
 
-- 사거리 안·밖 성공에 같은 반복 카운트를 사용한다.
-- 같은 한 번의 파훼 사건을 `위협 대응`과 `전술 실행`에 자동 이중 가산하지 않는다.
-- 여러 타격을 가진 한 공격 행동의 동일한 위협 카운트 단위는 후속 성과 산식에서 확정한다.
-- 단순 `[공격]` 공개 종류 전체를 하나의 위협으로 묶지 않는다.
+- 전투 로그에서 공격 행동의 안정 ID를 기록할 수 있다.
+- 합 판정·절초기세·`ON_CLASH_WIN`은 반복 횟수로 약화되지 않는다.
+- 사거리 안·밖 합 승리는 같은 판정 규칙을 따른다.
+- 온라인 시즌 평점에는 이 감쇠를 적용하지 않는다.
 
-## 4. 설계 목적
+## 4. 검증 요구
 
-- 약한 공격을 반복 유도해 위협 대응 30점을 채우는 점수 파밍을 억제한다.
-- 같은 패턴을 두 번 안정적으로 읽어낸 숙련도까지는 인정한다.
-- 다양한 위협을 파훼한 플레이를 더 높게 평가한다.
-- 평가 감쇠가 실제 전투 보상을 약화시키지 않게 한다.
+1. 현 전투 종료 등급 계산에 100%→50%→0%가 적용되지 않음.
+2. 실제 합 승리 횟수 원자료가 반복 성공을 누락하지 않음.
+3. 전투 판정·절초기세·로그가 감쇠되지 않음.
+4. 향후 재도입 시 새 Decision ID와 5지표 산식 연결이 필요함.
+5. 온라인 시즌 평점에 영향이 없음.
 
-## 5. 결과·복기 표시
-
-결과 화면은 필요할 경우 같은 위협의 성공 횟수와 점수 반영률을 구분해 표시한다.
-
-```text
-첫 파훼: 위협 대응 100%
-두 번째 파훼: 위협 대응 50%
-세 번째 이후: 전투 기록만 유지, 추가 점수 없음
-```
-
-절초기세 획득과 공격 무효화 결과는 감쇠 여부와 별도로 표시한다.
-
-## 6. 검증 요구
-
-1. 같은 적 기술 첫 파훼는 100%, 두 번째는 50%, 세 번째는 0%로 입력됨.
-2. 다른 적 기술의 첫 파훼는 다시 100%로 입력됨.
-3. 사거리 안 첫 성공 뒤 사거리 밖 두 번째 성공도 같은 위협의 두 번째 50%로 계산됨.
-4. 세 번째 이후에도 절초기세·`ON_CLASH_WIN`·로그는 정상 발생함.
-5. 새 전투 시작 시 반복 카운트가 초기화됨.
-6. 같은 사건이 전술 실행에 자동 중복 가산되지 않음.
-7. 온라인 시즌 평점·챔피언 랭킹에는 영향이 없음.
-8. 정확한 ID가 다른 두 공격은 각각 첫 성공 100%를 가짐.
-
-## 7. 구현·증거 경계
+## 5. 구현·증거 경계
 
 ```yaml
-authority_status: CURRENT_APPROVED_PLANNING
-scope_status: POC_PRIMARY
-implementation_status: NOT_STARTED
-battle_grade_category: threat_response
-repeat_multipliers: [1.0, 0.5, 0.0]
-reset_scope: per_battle
-threat_identity_basis: EXACT_CANONICAL_ACTION_OR_TECHNIQUE_ID
-in_range_out_of_range_symmetric: true
+authority_status: SUPERSEDED_FOR_CURRENT_BATTLE_GRADE
+scope_status: HOLD_FUTURE_ANTI_FARMING_CANDIDATE
+implementation_status: DEFERRED
+historical_repeat_multipliers: [1.0, 0.5, 0.0]
+current_battle_grade_application: false
+current_clash_win_raw_count_records_all_successes: true
 combat_rewards_attenuated: false
 online_season_rating_change: NONE
-static_validation: PENDING_DRAFT_PR
 runtime_validation: NOT_RUN
 godot_validation: NOT_RUN
 windows_validation: NOT_RUN
