@@ -5,14 +5,18 @@
 ```yaml
 project: 십보강호: 숨은 수의 비무
 repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
-platform: PC
+project_main: c5771ddae40f58d88824d9319fc4ef6cd1053bba
+primary_platform: PC
+future_platform: MOBILE_CONSIDERATION_ONLY
 engine: Godot 4.7
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 work_mode: REVIEW
 current_integration_pr: 65
+latest_operating_pr: 68
 runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
 implemented_decision: TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01
 planning_decision: TEN-DEC-20260801-SITUATION-SCREEN-01
+platform_decision: TEN-DEC-20260802-PLATFORM-SCOPE-01
 automated_validation: PASS
 human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
@@ -31,6 +35,20 @@ base_v9_4_adoption: APPLIED_OPERATING_CONTRACT_ONLY
 - 상대 AI는 공개 상태와 해결 이력만 사용하며 플레이어의 미확정 계획을 읽지 않는다.
 - 덱·손패·드로우·장착 기술 제한이 없다.
 - 성장은 판단을 대체하지 않고 파훼 선택지를 확장한다.
+
+## 플랫폼 범위
+
+Decision: `TEN-DEC-20260802-PLATFORM-SCOPE-01`.
+
+- 현재 기획·구현·검증·배포 기준은 `PC`다.
+- 모바일은 `CONSIDERATION_ONLY`이며 현재 포팅·출시·스토어·터치 UX 권한이 없다.
+- 모바일 재검토는 App Flow Shell, Windows 실제 실행, 저장·성능, STEP 14 사람 검증, 대표 콘텐츠 제작성 확인 뒤 별도 Decision으로 진행한다.
+- 미래 모바일 가능성을 이유로 현재 전투 코어·3/3/4·정보 구조·콘텐츠 범위를 선행 변경하지 않는다.
+
+정본:
+
+- `docs/decisions/2026-08-02_PLATFORM_SCOPE_DECISION.md`
+- `docs/planning-data/approved_20260802_platform_scope_contract.json`
 
 ## 구현 완료 — ActionSelectionDock
 
@@ -98,19 +116,26 @@ App Root
 → Result·Reward·Retry
 ```
 
-저장·전환·중복 commit 회귀 뒤 Windows·해상도·입력·사람 검증을 수행한다.
+1. 승인된 화면 구조를 실제 파일·Scene·상태 계약에 맞춘 Codex 구현 Packet으로 정밀화한다.
+2. 저충실도 흐름과 저장·전환·중복 commit 회귀를 별도 Branch/PR에서 구현한다.
+3. 자동·Godot headless 검증 뒤 Windows·해상도·입력·접근성·성능·사람 검증을 수행한다.
+4. 검증된 파이프라인으로 두 번째 후보·노드를 반복 제작한 뒤 후보 풀을 확장한다.
 
 ## 적대적 감사
 
 - `docs/reviews/2026-08-01_BASE_PROJECT_SHEET_ADVERSARIAL_AUDIT.md`.
+- `docs/reviews/2026-08-02_BASE_PROJECT_SHEET_TOTAL_PLANNING_AUDIT.md`.
 - ActionSelectionDock 정본·Sheet 누락과 포인터 Drop 누락을 수정했다.
 - PR #45·PLAN·Base v8 중심 시작 문서를 현재 기준으로 교체했다.
-- Base v9.4 운영 계약은 제품 경로를 수정하지 않는 별도 adapter migration으로 적용한다.
+- Base v9.4 운영 계약은 제품 경로를 수정하지 않는 별도 adapter migration으로 적용했다.
+- 2026-08-02 감사에서 GitHub·Sheet의 v9.1·CONCEPT_APPROVAL·PR #65 OPEN 잔존을 현재 상태와 분리했다.
 
 ## 역사·호환
 
 - v6 역사 인덱스: `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
 - PR #7과 Issue #13은 T0 `STEP 0~13` 구현 계보다.
+- PR #65는 ActionSelectionDock과 화면 구조 승인 통합 이력이다.
+- PR #68은 Base v9.4 운영 계약 적용 이력이다.
 - 과거 상태 `CORE_REVIEW_PENDING`은 현재 권한이 아닌 역사 토큰이다.
 - 과거 Base SHA `c987647d01ad2baa028a16e03d85ddfc1572a727`은 `HISTORICAL_COMPATIBILITY_BASELINE`이다.
 - `docs/planning-data/*.json`은 직접 런타임 입력이 아니다.
@@ -121,4 +146,5 @@ App Root
 - 16권 절초 개별 설계.
 - 주요 비무 6~10 런타임.
 - 천하제일인·비동기 기능.
+- 모바일 포팅·스토어·크로스 세이브.
 - 최종 아트·오디오 폴리싱.
