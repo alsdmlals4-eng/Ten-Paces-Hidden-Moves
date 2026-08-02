@@ -170,7 +170,9 @@ champion_battle:
 
 현재 `human_validation: NOT_RUN`이다.
 
-## 10. T1 진입 Gate
+## 10. T1 — 최소 세로 슬라이스
+
+T1 진입 Gate:
 
 - App Flow Shell 자동·Godot 검증.
 - Windows 실제 실행.
