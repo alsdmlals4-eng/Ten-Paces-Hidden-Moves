@@ -1,25 +1,22 @@
 from __future__ import annotations
 
-import inspect
-import json
 import unittest
 from pathlib import Path
 
-import tests.test_audit_latest_branch as target
+
+ROOT = Path(__file__).resolve().parents[1]
+ACTIVE_CONTEXT = ROOT / "[기획서]" / "00_프로젝트_허브" / "ACTIVE_CONTEXT.md"
 
 
-class AuditLatestBranchDiagnosticTests(unittest.TestCase):
-    def test_expose_audit_module_contract(self) -> None:
-        globals_snapshot: dict[str, str] = {}
-        for name, value in vars(target).items():
-            if name.startswith("__"):
-                continue
-            if isinstance(value, (str, int, float, bool, type(None), Path, list, tuple, dict, set)):
-                globals_snapshot[name] = repr(value)
+class CanonicalReferenceRegressionTests(unittest.TestCase):
+    def test_active_context_references_combat_rules(self) -> None:
+        text = ACTIVE_CONTEXT.read_text(encoding="utf-8")
+        self.assertIn(
+            "docs/02_COMBAT_RULES.md",
+            text,
+            "ACTIVE_CONTEXT.md must reference the canonical combat rules document",
+        )
 
-        payload = {
-            "module_file": str(Path(target.__file__).resolve()),
-            "globals": globals_snapshot,
-            "class_source": inspect.getsource(target.AuditLatestBranchTests),
-        }
-        self.fail("AUDIT_LATEST_BRANCH_DIAGNOSTIC=" + json.dumps(payload, ensure_ascii=False, sort_keys=True))
+
+if __name__ == "__main__":
+    unittest.main()
