@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260802-CLASH-THREAT-ATTENUATION-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "PLANNING_ONLY",
+  "grillme_count": "4/10",
+  "battle_end_grade": {
+    "category": "threat_response",
+    "repeat_scope": "per_battle",
+    "same_threat_repeat_multipliers": [1.0, 0.5, 0.0],
+    "third_and_later_multiplier": 0.0,
+    "different_threat_first_success_multiplier": 1.0,
+    "in_range_out_of_range_symmetric": true,
+    "automatic_tactical_execution_double_count": false
+  },
+  "threat_identity": {
+    "approved_basis": "same_enemy_technique_or_same_basic_attack_type",
+    "must_not_group_all_attack_categories_together": true,
+    "exact_data_key": "TBD",
+    "multi_hit_counting_unit": "TBD"
+  },
+  "combat_results_not_attenuated": {
+    "clash_resolution": true,
+    "loser_current_hit_cancelled": true,
+    "ultimate_momentum_gain": true,
+    "on_clash_win_effects": true,
+    "combat_log": true,
+    "review_event": true
+  },
+  "scope": {
+    "single_player_major_duels": true,
+    "champion_finale": true,
+    "future_modes_with_battle_end_grade": true,
+    "online_season_rating": false
+  },
+  "validation": {
+    "static_validation": "PENDING_DRAFT_PR",
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  }
+}
