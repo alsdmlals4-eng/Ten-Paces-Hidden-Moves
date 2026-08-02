@@ -1,0 +1,52 @@
+name: Temporary Regenerate Base v9.4.1 Views
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/temporary-regenerate-base-v9-4-1-views.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    if: github.event.pull_request.head.ref == 'agent/base-shared-external-ai-adapter-20260802'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+          path: project
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: alsdmlals4-eng/Base
+          ref: 79cae496b89eb519d93b1430ceb0caa13ac77d8b
+          path: base-release
+      - name: Regenerate official compatibility views
+        working-directory: project
+        shell: bash
+        run: |
+          python -m pip install jsonschema==4.26.0
+          protected_base="$(python - <<'PY'
+          import json
+          print(json.load(open('skills/PROJECT_BASE_ADAPTER.json', encoding='utf-8'))['protected_baseline']['commit'])
+          PY
+          )"
+          python ../base-release/tools/build_project_operating_artifacts.py \
+            --project-root . \
+            --base-repository ../base-release \
+            --protected-base "$protected_base" \
+            --write
+          python ../base-release/tools/build_project_operating_artifacts.py \
+            --project-root . \
+            --base-repository ../base-release \
+            --protected-base "$protected_base" \
+            --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add skills/BASE_V9_ADAPTER.json skills/PROJECT_BASE_SKILL_ADAPTER.json skills/PROJECT_SKILL_SNAPSHOT.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: regenerate Base v9.4.1 compatibility views"
+            git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          fi
