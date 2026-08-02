@@ -1,10 +1,11 @@
 {
   "artifact_role": "PROJECT_BASE_ADAPTER",
   "base_release": {
-    "release_commit": "3f2c4a624d302b704c1b5322eb5c9f34ad55abb9",
-    "release_evidence_commit": "ff117d24d5bdb121314e109a6aa9b4f552e0fdc1",
+    "finalization_commit": "ac9466edc2d93b59f274c9ac55ca719eba2809e3",
+    "release_commit": "dd705d7f48a7919187bc0507610ba5fc5b43a658",
+    "release_evidence_commit": "0c6cdd128bf1f5782e96b3a6240c9585f8d1ef6d",
     "repository": "alsdmlals4-eng/Base",
-    "version": "9.4.1"
+    "version": "9.4.2"
   },
   "compatibility": {
     "cycle": "ONE_CYCLE",
@@ -260,7 +261,20 @@
     "managing-base-change-proposals": {},
     "managing-design-documents": {},
     "managing-game-project-operating-system": {},
-    "managing-project-intake-and-work-contract": {},
+    "managing-project-intake-and-work-contract": {
+      "planning_first_governance": {
+        "actual_project_batch_execution": "NOT_RUN",
+        "base_contract_source": "docs/PLANNING_FIRST_GRILL_ME_BATCH_POLICY.md",
+        "base_release_finalization_commit": "ac9466edc2d93b59f274c9ac55ca719eba2809e3",
+        "base_release_lock": "base-v9.4.2.lock.json",
+        "checkpoint_template": "templates/project-operations/GRILL_ME_BATCH_CHECKPOINT.md",
+        "max_approved_decisions_per_batch": 10,
+        "numeric_default_state": "RECOMMENDED_DEFAULT",
+        "planning_conflict_state": "GRILL_ME_REQUIRED",
+        "post_merge_sheet_state": "SYNCED_TO_MAIN",
+        "pre_merge_sheet_state": "APPROVED_PENDING_MERGE"
+      }
+    },
     "orchestrating-deepseek-worktrees": {
       "base_contract_source": "skills/orchestrating-deepseek-worktrees/SKILL.md",
       "work_package_source": "templates/ai/DEEPSEEK_WORK_PACKAGE.md",
@@ -303,6 +317,7 @@
     "python tools/check_archive_governance.py",
     "python tools/check_project_operating_system.py",
     "python tests/test_base_shared_external_ai_adapter.py",
+    "python tests/test_base_v942_planning_first_adoption.py",
     "manual: Godot project parse/runtime check",
     "manual: changed-file baseline diff"
   ]
