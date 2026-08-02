@@ -4,7 +4,8 @@
 > 태그·상태: `docs/00_TAG_STATUS_REGISTRY.md`  
 > 규칙 원본: `docs/02_COMBAT_RULES.md`  
 > PoC 범위: `docs/05_COMBAT_POC_SPEC.md`  
-> 성장 원본: `docs/06_STARTING_FACTION_MASTERY_DATA.md`
+> 성장 원본: `docs/06_STARTING_FACTION_MASTERY_DATA.md`  
+> 현재 구현 기준: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`
 
 ## 1. 판정 상태
 
