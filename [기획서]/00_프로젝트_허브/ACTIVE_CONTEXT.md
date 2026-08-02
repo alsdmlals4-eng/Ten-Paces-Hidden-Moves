@@ -44,6 +44,7 @@ PR #80의 10개 사용자 승인 Decision은 중앙 책임 문서·planning JSON
 - `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`: 무공서가 아닌 해금 기술을 선택·배치하는 ActionSelectionDock UX 결정.
 - `TEN-DEC-20260801-SITUATION-SCREEN-01`: 전투 전 상황 화면과 전투 진입 정보 구조 결정.
 - 현재 앱 흐름 권위 원장은 `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`다.
+- `PR #7`은 초기 PoC·기획 계보의 canonical freshness 역사 참조이며 최신 Decision이나 본 문서의 현재 기준보다 우선하지 않는다.
 - `Issue #13`은 프로젝트 코어 검토와 PoC 검증 이력을 연결하는 역사 참조다.
 - 과거 상태 `CORE_REVIEW_PENDING`은 사용자 승인 뒤 `CORE_CONFIRMED`로 종료됐다.
 - `STEP 14`는 신규 플레이어 사람 검증 단계이며 현재 `human_validation: NOT_RUN`이다.
