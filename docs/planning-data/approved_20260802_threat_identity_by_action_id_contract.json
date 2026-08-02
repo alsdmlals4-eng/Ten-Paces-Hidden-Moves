@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260802-THREAT-ID-ACTION-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "PLANNING_ONLY",
+  "grillme_count": "5/10",
+  "identity": {
+    "basis": "EXACT_CANONICAL_ACTION_OR_TECHNIQUE_ID",
+    "basic_action_key": "basic_action_id",
+    "technique_key": "technique_id",
+    "ultimate_key": "ultimate_technique_id",
+    "normalized_format": "source_type:source_id",
+    "display_name_is_identity": false,
+    "public_action_category_is_identity": false,
+    "attack_structure_is_identity": false
+  },
+  "same_identity_despite": [
+    "temporary_stat_change",
+    "prepare_enhancement",
+    "temporary_damage_change",
+    "temporary_range_change",
+    "distance_or_direction_change",
+    "resource_state_or_discount",
+    "same_technique_mastery_upgrade",
+    "temporary_buff_or_debuff"
+  ],
+  "different_identity_when": {
+    "different_canonical_id": true,
+    "basic_action_vs_derived_martial_technique": true,
+    "permanent_structural_variant_with_new_id": true
+  },
+  "repeat_attenuation": {
+    "scope": "per_battle_per_normalized_threat_id",
+    "multipliers": [1.0, 0.5, 0.0],
+    "in_range_out_of_range_share_counter": true,
+    "combat_rewards_attenuated": false
+  },
+  "unresolved": {
+    "multi_hit_counting_unit": "TBD",
+    "derived_sub_hit_identity": "TBD"
+  },
+  "validation": {
+    "static_validation": "PENDING_DRAFT_PR",
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  }
+}
