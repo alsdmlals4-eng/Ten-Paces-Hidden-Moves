@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260802-BATTLE-GRADE-FIVE-METRICS-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "PLANNING_ONLY",
+  "grillme_count": "8/10",
+  "battle_end_grade": {
+    "primary_metrics": [
+      "successful_dodges",
+      "clash_wins",
+      "player_health_lost",
+      "rounds_elapsed",
+      "ultimate_uses"
+    ],
+    "successful_dodges_direction": "higher_is_better",
+    "clash_wins_direction": "higher_is_better",
+    "player_health_lost_direction": "lower_is_better",
+    "rounds_elapsed_direction": "lower_generally_better_but_normalization_tbd",
+    "ultimate_uses_direction": "tbd",
+    "exact_weights": "TBD",
+    "normalization": "TBD",
+    "grade_thresholds": "TBD"
+  },
+  "superseded_grade_formula": {
+    "weighted_categories": [
+      "threat_response_30",
+      "tactical_execution_25",
+      "resource_management_15",
+      "damage_management_15",
+      "public_objective_15"
+    ],
+    "thresholds": ["S85", "A70", "B55", "C0"],
+    "active": false
+  },
+  "event_semantics_preserved": {
+    "clash_win": true,
+    "out_of_range_clash_win": true,
+    "complete_parry": true,
+    "partial_parry": true,
+    "dodge_success": true,
+    "secondary_effect_application": true,
+    "ultimate_momentum": true,
+    "on_clash_win": true
+  },
+  "previous_grade_scoring_rules": {
+    "threat_response_conversion": "SUPERSEDED_PENDING_NEW_FORMULA",
+    "same_threat_attenuation": "HOLD_FOR_POSSIBLE_ANTI_FARMING_REUSE",
+    "threat_id_scoring_accumulation": "HOLD"
+  },
+  "unresolved": [
+    "metric_weights",
+    "metric_caps",
+    "health_absolute_or_percentage_normalization",
+    "round_target_normalization",
+    "ultimate_use_quality_rule",
+    "grade_thresholds",
+    "anti_farming_rules",
+    "defeat_grade_policy"
+  ],
+  "validation": {
+    "static_validation": "PENDING_DRAFT_PR",
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  }
+}
