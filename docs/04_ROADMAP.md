@@ -9,9 +9,10 @@
 ## 1. 현재 단계
 
 ```yaml
-current_main_before_pr72_merge: 07b3f15c50d9900321bcec3897b8d0b726bd174e
-checkpoint_pr: 72
-checkpoint_approvals: 10/10
+current_main: 76b48a1d5d4d3f8e91511d9b925672a9f6477c68
+last_checkpoint_pr: 72
+last_checkpoint_state: MERGED_MAIN_SHEET_SYNCED
+current_approval_count: 0/10
 phase: VERTICAL_SLICE_APP_FLOW_PLANNING
 project_core: CORE_CONFIRMED
 primary_platform: PC
@@ -29,6 +30,8 @@ full_product_flow_runtime: NOT_STARTED
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
 t1_greenlight: NOT_GRANTED
 ```
+
+PR #72의 10개 승인 정본은 exact head `8adacf69bb4373fc6ffd15af7c77c2706a22cb89`에서 필수 CI 3종을 통과한 뒤 main `76b48a1d5d4d3f8e91511d9b925672a9f6477c68`로 병합됐다. 다음 GrillMe 승인 카운트는 `0/10`이다.
 
 ## 2. 프로젝트 코어 확정
 
@@ -201,7 +204,7 @@ T1 진입 Gate:
 - 미해결 리뷰·CI 실패·Sheet 불일치·head 이동·P0/P1이 있으면 병합하지 않는다.
 - exact head만 병합하고 main·Sheet를 재조회한다.
 
-현재 체크포인트는 `10/10 MERGE_GATE`다. 병합 완료 뒤 다음 GrillMe는 `0/10`에서 시작한다.
+최근 체크포인트 `10/10`은 PR #72로 병합 완료됐다. 현재 GrillMe 승인 카운트는 `0/10`이다.
 
 ## 13. 중단·축소 조건
 

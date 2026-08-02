@@ -7,9 +7,10 @@
 ```yaml
 project: 십보강호: 숨은 수의 비무
 repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
-current_main_before_pr72_merge: 07b3f15c50d9900321bcec3897b8d0b726bd174e
-current_checkpoint_pr: 72
-checkpoint_state: PREMERGE_AUDIT_10_OF_10
+current_main: 76b48a1d5d4d3f8e91511d9b925672a9f6477c68
+last_checkpoint_pr: 72
+last_checkpoint_state: MERGED_MAIN_SHEET_SYNCED
+current_approval_count: 0/10
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 engine: Godot 4.7
@@ -25,7 +26,9 @@ human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
 ```
 
-PR #73은 Base v9.4.1 공유 Skill Adapter만 변경해 main에 병합됐으며 PR #72의 게임 정본 파일과 변경 경로가 겹치지 않는다.
+PR #72는 exact head `8adacf69bb4373fc6ffd15af7c77c2706a22cb89`에서 Full Validation·PR Validation·Base v9 adoption 검증을 통과한 뒤 main `76b48a1d5d4d3f8e91511d9b925672a9f6477c68`로 병합됐다. Google Sheet도 같은 main SHA와 다음 승인 `0/10`으로 동기화·재조회했다.
+
+PR #73은 Base v9.4.1 공유 Skill Adapter만 변경했으며 PR #72의 게임 정본 파일과 변경 경로가 겹치지 않는다.
 
 ## 프로젝트 코어
 
@@ -47,7 +50,7 @@ PR #73은 Base v9.4.1 공유 Skill Adapter만 변경해 main에 병합됐으며 
 - `STEP 14`는 신규 플레이어 사람 검증 단계이며 현재 `human_validation: NOT_RUN`이다.
 - 과거 이력 토큰은 최신 정본보다 우선하지 않으며, 현재 단계·권한은 이 문서의 `현재 기준`과 최신 Decision이 소유한다.
 
-## 이번 10개 승인 정본
+## 최근 병합된 10개 승인 정본
 
 1. `TEN-DEC-20260802-BASIC-ACTIONS-PALM-CLASH-01`
 2. `TEN-DEC-20260802-OUT-OF-RANGE-CLASH-REWARD-01`
@@ -120,7 +123,7 @@ PR #73은 Base v9.4.1 공유 Skill Adapter만 변경해 main에 병합됐으며 
 ## 검증 경계
 
 ```yaml
-planning_checkpoint: 10/10
+planning_checkpoint: 0/10
 product_code_changed: false
 runtime_validation: NOT_RUN
 godot_validation: NOT_RUN
