@@ -1,9 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "decision_id": "TEN-DEC-20260802-STARTING-TECHNIQUE-PRIMARY-STAT4-01",
   "authority_status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "PLANNING_ONLY",
   "grillme_count": "6/10",
+  "followup_soft_guarantee_decision": "TEN-DEC-20260802-STARTING-TECHNIQUE-SOFT-GUARANTEE-01",
+  "followup_soft_guarantee_contract": "docs/planning-data/approved_20260802_starting_technique_soft_guarantee_contract.json",
   "requirement_contract": {
     "applies_to": "STARTING_MANUAL_STAR_3_FIRST_TECHNIQUE",
     "type": "PRIMARY_PERMANENT_STAT",
@@ -54,24 +56,28 @@
     "auto_enable_when_permanent_stat_met": true,
     "temporary_stat_drop_relocks": false
   },
-  "build_gate_recommendation": {
-    "status": "RECOMMENDED_REQUIRED_FOR_BUILD_NOT_IMPLEMENTED",
+  "soft_guarantee": {
+    "status": "APPROVED_PLANNING_NOT_IMPLEMENTED",
+    "all_four_activatable_build_exists": true,
+    "all_four_activation_required_to_confirm": false,
+    "recommended_minimum_unlock_allocation": true,
     "show_projected_final_stats_before_confirm": true,
     "show_each_selected_manual_technique_lock_state": true,
     "show_missing_stat_amount": true,
-    "allow_direct_allocation_revision_before_confirm": true
+    "allow_manual_and_direct_allocation_revision_before_confirm": true,
+    "locked_confirmation_requires_warning": true
   },
   "unresolved": [
     "star_7_technique_requirement_values",
     "star_10_ultimate_requirement_values",
     "secondary_stat_requirements",
-    "exact_starting_setup_ui_flow",
-    "whether_all_four_selected_starting_techniques_must_be_simultaneously_activatable"
+    "exact_starting_setup_screen_layout"
   ],
   "validation": {
     "canonical_manual_ids_checked": true,
     "primary_stat_value_uniform": 4,
     "final_starting_permanent_stats_used": true,
+    "soft_guarantee_resolved_by_followup": true,
     "runtime_validation": "NOT_RUN",
     "godot_validation": "NOT_RUN",
     "windows_validation": "NOT_RUN",
