@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "decision_id": "TEN-DEC-20260802-BASIC-ACTIONS-PALM-CLASH-01",
   "authority_status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "PLANNING_ONLY",
@@ -28,7 +28,10 @@
     "source": "basic",
     "category": "attack",
     "action_slots": 2,
-    "slot_display": ["전조", "실행"],
+    "slot_display": [
+      "전조",
+      "실행"
+    ],
     "internal_cost": 1,
     "minimum_range": 1,
     "maximum_range": 3,
@@ -38,22 +41,43 @@
       "internal_stat_reference": true,
       "constraint": "effective_damage_under_equal_conditions_must_be_lower_than_basic_quick_attack"
     },
-    "usable_by": ["player", "enemy_ai"],
+    "usable_by": [
+      "player",
+      "enemy_ai"
+    ],
     "prepare_strengthening_applies": true,
     "observation_category": "공격"
   },
+  "clash_sequence": {
+    "comparison_unit": "CURRENT_DAMAGE_PACKET",
+    "process_front_to_back": true,
+    "loser_current_packet_cancelled_only": true,
+    "tie_cancels_both_current_packets_only": true,
+    "continue_when": {
+      "both_attack_actions_active": true,
+      "both_have_next_packet": true
+    },
+    "common_continue_case": "ZERO_HEALTH_DAMAGE_TO_BOTH",
+    "health_damage_interruption_cancels_remaining_packets": true,
+    "fortitude_may_prevent_interruption_and_allow_continuation": true,
+    "one_side_exhausted_other_remaining_packets_resolve_solo": true,
+    "ultimate_momentum_max_gain_per_attack_action": 1
+  },
   "out_of_range_clash": {
-    "clash_comparison_occurs": true,
-    "loser_current_hit_is_cancelled": true,
-    "tie_cancels_both_current_hits": true,
+    "clash_comparison_occurs_per_current_packet": true,
     "difference_damage_requires_winner_target_in_range": true,
     "out_of_range_difference_damage": 0,
+    "out_of_range_hit_event": false,
+    "may_continue_to_next_packet_if_both_attacks_active": true,
     "reward_contract_owned_by": "TEN-DEC-20260802-OUT-OF-RANGE-CLASH-REWARD-01"
   },
   "runtime_gap": {
     "current_runtime_basic_action_count": 8,
     "approved_basic_action_count": 10,
-    "missing_from_runtime": ["observation", "palm_strike"],
+    "missing_from_runtime": [
+      "observation",
+      "palm_strike"
+    ],
     "implementation_status": "IMPLEMENTED_LEGACY"
   },
   "validation": {
