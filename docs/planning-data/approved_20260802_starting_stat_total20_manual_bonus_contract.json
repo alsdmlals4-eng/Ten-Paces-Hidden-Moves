@@ -1,11 +1,12 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "decision_id": "TEN-DEC-20260802-STARTING-STAT-TOTAL20-MANUAL-BONUS-01",
   "authority_status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "PLANNING_ONLY",
   "grillme_count": "5/10",
   "supersedes": "TEN-DEC-20260802-STARTING-STAT-ALLOCATION-FIVE-01",
   "followup_starting_technique_decision": "TEN-DEC-20260802-STARTING-TECHNIQUE-PRIMARY-STAT4-01",
+  "followup_soft_guarantee_decision": "TEN-DEC-20260802-STARTING-TECHNIQUE-SOFT-GUARANTEE-01",
   "stats": [
     "external_power",
     "constitution",
@@ -63,7 +64,15 @@
     "authority_decision": "TEN-DEC-20260802-STARTING-TECHNIQUE-PRIMARY-STAT4-01",
     "requirement_type": "PRIMARY_PERMANENT_STAT",
     "requirement_value": 4,
-    "contract_path": "docs/planning-data/approved_20260802_starting_technique_primary_stat4_contract.json"
+    "contract_path": "docs/planning-data/approved_20260802_starting_technique_primary_stat4_contract.json",
+    "soft_guarantee_decision": "TEN-DEC-20260802-STARTING-TECHNIQUE-SOFT-GUARANTEE-01",
+    "soft_guarantee_contract": "docs/planning-data/approved_20260802_starting_technique_soft_guarantee_contract.json",
+    "all_four_activatable_build_exists": true,
+    "all_four_activation_required_to_confirm": false,
+    "minimum_unlock_points_range": [
+      2,
+      4
+    ]
   },
   "final_starting_stats": {
     "formula": "2 + direct_allocation + sum(selected_manual_star_2_fixed_bonuses)",
@@ -90,8 +99,7 @@
   "unresolved": [
     "later_even_star_bonus_vectors_for_4_6_8_stars",
     "route_node_stat_reward_amounts",
-    "starting_stat_allocation_ui_and_reset_flow",
-    "whether_all_four_selected_starting_techniques_must_be_simultaneously_activatable"
+    "exact_starting_setup_screen_layout"
   ],
   "validation": {
     "direct_allocation_sum": 6,
@@ -103,6 +111,8 @@
     "manual_bonus_not_clamped_at_six": true,
     "double_agility_manual_bonus_stacks": true,
     "starting_technique_primary_requirement": 4,
+    "all_four_selected_techniques_can_be_activated": true,
+    "maximum_points_needed_for_all_four": 4,
     "canonical_manual_ids_checked": true,
     "static_validation": "PENDING_DRAFT_PR",
     "runtime_validation": "NOT_RUN",
