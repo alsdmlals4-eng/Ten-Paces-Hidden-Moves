@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0.0",
+  "decision_id": "TEN-DEC-20260802-RANKED-OBSERVATION-CONVERSION-01",
+  "approved_at": "2026-08-02",
+  "status": "CURRENT_APPROVED_PLANNING",
+  "authority": {
+    "work_mode": "PLAN",
+    "runtime_implementation": "PROHIBITED",
+    "online_service_implementation": "PROHIBITED"
+  },
+  "ranked_observation": {
+    "player_action_enabled": false,
+    "ai_action_enabled": false,
+    "dependent_effect_policy": "OFFICIAL_VERSIONED_CONVERSION",
+    "snapshot_mutation": false,
+    "conversion_scope": "RANKED_BATTLE_INSTANCE_ONLY",
+    "pre_battle_disclosure": true,
+    "symmetry_required": true,
+    "hidden_plan_reveal_allowed": false,
+    "opponent_specific_adjustment_allowed": false,
+    "ai_only_bonus_allowed": false,
+    "hidden_winrate_adjustment_allowed": false
+  },
+  "conversion_categories": [
+    {
+      "source_role": "OBSERVATION_GAIN",
+      "target_role": "PUBLIC_RESOURCE_OR_NEXT_ACTION_COST_SUPPORT"
+    },
+    {
+      "source_role": "OBSERVATION_SPEND",
+      "target_role": "PUBLIC_RESOURCE_SPEND_DEFENSE_MOVE_OR_COUNTER"
+    },
+    {
+      "source_role": "COUNTER_AFTER_OBSERVATION",
+      "target_role": "COUNTER_AFTER_PUBLIC_ACTION_DISTANCE_OR_HIT_CONDITION"
+    },
+    {
+      "source_role": "OBSERVATION_SLOT_INCREASE",
+      "target_role": "RESOURCE_POSITION_OR_DEFENSE_EFFICIENCY_WITHOUT_SLOT_INCREASE"
+    },
+    {
+      "source_role": "ENEMY_ACTION_CATEGORY_REVEAL",
+      "target_role": "PUBLIC_STATE_BASED_PREPARATION_WITHOUT_INFORMATION_REVEAL"
+    }
+  ],
+  "failure_policy": {
+    "missing_conversion_entry": "BLOCK_OFFICIAL_RANKED_ENTRY",
+    "version_mismatch": "APPROVED_COMPATIBILITY_TABLE_OR_ISOLATE",
+    "ambiguous_conversion": "FAIL_CLOSED"
+  },
+  "grillme_checkpoint": {
+    "post_merge_counter": 0,
+    "threshold": 10,
+    "count_only_final_live_approvals": true,
+    "pause_questions_at_threshold": true,
+    "pre_merge_required_reads": [
+      "GITHUB_MAIN",
+      "WORK_BRANCH",
+      "PR_CHANGED_FILES_AND_DIFF",
+      "CANONICAL_DOCS",
+      "PLANNING_JSON",
+      "CONNECTED_GOOGLE_SHEET"
+    ],
+    "adversarial_checks": [
+      "MISSING_DECISIONS",
+      "CONFLICTING_DECISION_IDS",
+      "OBSOLETE_REFERENCES",
+      "DUPLICATE_AUTHORITY",
+      "IMPLEMENTATION_SCOPE_LEAK",
+      "SHEET_GITHUB_DRIFT",
+      "OVERSTATED_VALIDATION"
+    ],
+    "merge_blockers": [
+      "P0_OR_P1_CONFLICT",
+      "CI_FAILURE",
+      "SHEET_NOT_SYNCED",
+      "PR_HEAD_MOVED",
+      "UNRESOLVED_REVIEW_THREAD"
+    ],
+    "merge_exact_head_only": true,
+    "post_merge_main_and_sheet_readback": true
+  },
+  "verification": {
+    "static_contract": "REQUIRED",
+    "godot_runtime": "NOT_RUN",
+    "windows_human": "NOT_RUN",
+    "network": "NOT_RUN",
+    "demo_ready": false
+  }
+}
