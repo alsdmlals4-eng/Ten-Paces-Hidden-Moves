@@ -103,7 +103,7 @@ final_starting_stat
 7. 직접 분배 단계 각 스테이터스가 2~6임.
 8. 무공 보너스가 직접 분배 상한 6으로 잘리지 않음.
 9. 유운검결+무영십보 선택 시 신법 보너스가 +2로 합산됨.
-10. runtime canonical manual ID와 승인 계약 ID가 일치함.
+10. canonical manual ID와 승인 계약 ID가 일치함.
 11. 런타임 구현 완료로 오인하지 않음.
 
 ```yaml
