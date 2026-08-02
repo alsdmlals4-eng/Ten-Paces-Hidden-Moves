@@ -6,7 +6,8 @@
 > 성장 원본: `docs/06_STARTING_FACTION_MASTERY_DATA.md`  
 > 관찰·성장 결정: `docs/decisions/2026-08-02_OBSERVATION_STATS_MASTERY_DECISION.md`  
 > 기초 행동·합 결정: `docs/decisions/2026-08-02_BASIC_ACTIONS_PALM_CLASH_DECISION.md`  
-> 기술 작성·가격 결정: `docs/decisions/2026-08-02_TECHNIQUE_AUTHORING_TAG_FIXED_STAT_DECISION.md`, `docs/decisions/2026-08-02_STAT_REFERENCE_PRICE_BASE4_DECISION.md`
+> 기술 작성·가격 결정: `docs/decisions/2026-08-02_TECHNIQUE_AUTHORING_TAG_FIXED_STAT_DECISION.md`, `docs/decisions/2026-08-02_STAT_REFERENCE_PRICE_BASE4_DECISION.md`  
+> 현재 구현 기준: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`
 
 ## 1. 목적
 
@@ -241,10 +242,7 @@ T0와 최신 계획의 차이:
 - 순차 합·중단·잔여 단독타를 설명할 수 있는지 관찰.
 - 인터뷰 응답과 실제 행동 증거를 분리한다.
 
-```yaml
-mechanical_step14: NOT_STARTED_FOR_NEW_CONTRACT
-human_step14: NOT_RUN
-```
+현재 사람 증거는 `NOT_RUN`이다.
 
 ## 13. T0 완료 기준
 
@@ -269,7 +267,6 @@ T0 유지 기준:
 
 ```yaml
 planning_contract: CURRENT_APPROVED_PLANNING
-current_t0_status: STEP_0_TO_13_IMPLEMENTED
 current_t0_implementation: IMPLEMENTED_LEGACY
 next_demo_implementation: NOT_STARTED
 static_validation: REQUIRED
@@ -277,8 +274,7 @@ automated_validation: NOT_RUN_FOR_NEW_CONTRACT
 godot_validation: NOT_RUN
 windows_validation: NOT_RUN
 accessibility_validation: NOT_RUN
-mechanical_step14: NOT_STARTED_FOR_NEW_CONTRACT
-human_step14: NOT_RUN
+human_validation: NOT_RUN
 t1_greenlight: NOT_GRANTED
 demo_ready: NO
 ```
