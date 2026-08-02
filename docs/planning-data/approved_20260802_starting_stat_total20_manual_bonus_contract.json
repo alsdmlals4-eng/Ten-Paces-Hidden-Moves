@@ -7,7 +7,8 @@
   "supersedes": "TEN-DEC-20260802-STARTING-STAT-ALLOCATION-FIVE-01",
   "followup_starting_technique_decision": "TEN-DEC-20260802-STARTING-TECHNIQUE-PRIMARY-STAT4-01",
   "followup_soft_guarantee_decision": "TEN-DEC-20260802-STARTING-TECHNIQUE-SOFT-GUARANTEE-01",
-  "followup_even_star_stat_decision": "TEN-DEC-20260802-EVEN-STAR-STAT-ESCALATION-01",
+  "followup_even_star_decision": "TEN-DEC-20260802-EVEN-STAR-STAT-ESCALATION-01",
+  "followup_uncapped_core_stats_decision": "TEN-DEC-20260803-UNCAPPED-CORE-STATS-01",
   "stats": [
     "external_power",
     "constitution",
@@ -75,26 +76,6 @@
       4
     ]
   },
-  "later_even_star_growth": {
-    "authority_decision": "TEN-DEC-20260802-EVEN-STAR-STAT-ESCALATION-01",
-    "contract_path": "docs/planning-data/approved_20260802_even_star_stat_escalation_contract.json",
-    "incremental_new_grants": {
-      "4": {
-        "primary": 1,
-        "secondary": 1
-      },
-      "6": {
-        "primary": 2,
-        "secondary": 1
-      },
-      "8": {
-        "primary": 3,
-        "secondary": 2
-      }
-    },
-    "additional_total_from_starting_star_3_to_star_8": 10,
-    "stat_cap_conflict_status": "BLOCKED_PENDING_FOLLOWUP"
-  },
   "final_starting_stats": {
     "formula": "2 + direct_allocation + sum(selected_manual_star_2_fixed_bonuses)",
     "total": 20,
@@ -110,8 +91,9 @@
   },
   "operating_range": {
     "minimum": 1,
-    "maximum": 15,
-    "status": "CONFLICT_GATE_PENDING_STAT_CAP_AND_OVERFLOW_DECISION"
+    "designed_hard_cap": null,
+    "legacy_15_meaning": "INITIAL_BALANCE_VALIDATION_REFERENCE",
+    "uncapped_policy_contract": "docs/planning-data/approved_20260803_uncapped_core_stats_contract.json"
   },
   "balance_reference": {
     "stat_value": 4,
@@ -119,11 +101,10 @@
     "is_individual_stat_guarantee": false
   },
   "unresolved": [
-    "hard_cap_or_soft_cap_policy",
-    "overflow_handling",
+    "exact_secondary_stat_mapping_for_manuals",
     "route_node_stat_reward_amounts",
-    "manual_secondary_stat_mapping",
-    "exact_starting_setup_screen_layout"
+    "exact_starting_setup_screen_layout",
+    "star_7_and_star_10_requirements"
   ],
   "validation": {
     "direct_allocation_sum": 6,
@@ -137,10 +118,8 @@
     "starting_technique_primary_requirement": 4,
     "all_four_selected_techniques_can_be_activated": true,
     "maximum_points_needed_for_all_four": 4,
-    "single_manual_star_8_primary_max_general": 13,
-    "single_manual_star_8_primary_max_agility": 14,
-    "two_agility_manuals_star_8_can_reach": 20,
     "canonical_manual_ids_checked": true,
+    "core_stats_have_no_designed_hard_cap": true,
     "static_validation": "PENDING_DRAFT_PR",
     "runtime_validation": "NOT_RUN",
     "godot_validation": "NOT_RUN",
