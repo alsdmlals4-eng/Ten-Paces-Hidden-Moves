@@ -1,59 +1,31 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "decision_id": "TEN-DEC-20260802-OUT-OF-RANGE-CLASH-REWARD-01",
   "authority_status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "PLANNING_ONLY",
   "grillme_count": "2/10",
-  "terminology": {
-    "momentum_display_name": "절초기세",
-    "momentum_resource_id": "ultimate_momentum",
-    "online_ranked_rating_changed": false,
-    "battle_end_grade_changed": true
-  },
-  "ultimate_momentum": {
-    "minimum": 0,
-    "maximum": 5,
-    "gain_per_clash_win": 1,
-    "maximum_gain_per_attack_action_per_combatant": 1
-  },
-  "out_of_range_clash_win": {
-    "counts_as_clash_win": true,
-    "loser_current_hit_cancelled": true,
-    "ultimate_momentum_gain": 1,
+  "clash_contract": {
+    "participating_packet": "FIRST_DAMAGE_PACKET_ONLY",
+    "losing_attack_followups_cancelled": true,
+    "out_of_range_clash_still_resolves": true,
+    "winner_ultimate_momentum_gain": 1,
+    "winner_ultimate_momentum_max_per_attack_action": 1,
     "on_clash_win_triggers": true,
-    "difference_damage_requires_target_in_range": true,
-    "on_hit_requires_actual_hit": true,
-    "on_health_damage_requires_positive_health_damage": true,
-    "targeted_secondary_effects_require_own_target_and_range_checks": true,
-    "self_buffs_and_self_resource_effects_apply": true
+    "out_of_range_health_damage": 0,
+    "out_of_range_on_hit": false,
+    "out_of_range_on_health_damage": false,
+    "out_of_range_hit_required_target_effects": false
   },
   "battle_end_grade": {
-    "grade_scale": ["S", "A", "B", "C"],
-    "thresholds": {"S": 85, "A": 70, "B": 55, "C": 0},
-    "category_weights": {
-      "threat_response": 30,
-      "tactical_execution": 25,
-      "resource_operation": 15,
-      "damage_management": 15,
-      "public_objective": 15
-    },
-    "event_id": "out_of_range_clash_win",
-    "primary_category": "threat_response",
-    "must_affect_score": true,
-    "relative_value_to_in_range_clash_win": "EQUAL",
-    "automatic_double_count_into_tactical_execution": false,
-    "followup_decision_id": "TEN-DEC-20260802-OUT-OF-RANGE-CLASH-GRADE-01",
-    "exact_event_score": "TBD",
-    "repeat_cap_or_decay": "TBD"
+    "current_decision_id": "TEN-DEC-20260802-BATTLE-GRADE-FIVE-METRICS-01",
+    "metric": "clash_wins",
+    "out_of_range_win_count": 1,
+    "legacy_threat_response_category_active": false,
+    "legacy_repeat_attenuation_active": false
   },
-  "scope": {
-    "single_player_major_duels": true,
-    "champion_finale": true,
-    "future_modes_with_battle_end_grade": true,
-    "online_season_rating": false
-  },
+  "online_season_rating_change": "NONE",
   "validation": {
-    "static_validation": "PENDING_DRAFT_PR",
+    "static_validation": "PENDING_PR_CHECKPOINT",
     "runtime_validation": "NOT_RUN",
     "godot_validation": "NOT_RUN",
     "windows_validation": "NOT_RUN",
