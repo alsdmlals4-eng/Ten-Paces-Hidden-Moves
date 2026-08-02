@@ -5,8 +5,8 @@
   "implementation_authority": "NONE",
   "followup_starting_stat_decision": "TEN-DEC-20260802-STARTING-STAT-TOTAL20-MANUAL-BONUS-01",
   "followup_starting_technique_decision": "TEN-DEC-20260802-STARTING-TECHNIQUE-PRIMARY-STAT4-01",
-  "followup_starting_soft_guarantee_decision": "TEN-DEC-20260802-STARTING-TECHNIQUE-SOFT-GUARANTEE-01",
-  "followup_even_star_stat_decision": "TEN-DEC-20260802-EVEN-STAR-STAT-ESCALATION-01",
+  "followup_even_star_decision": "TEN-DEC-20260802-EVEN-STAR-STAT-ESCALATION-01",
+  "followup_uncapped_core_stats_decision": "TEN-DEC-20260803-UNCAPPED-CORE-STATS-01",
   "duel_structure": {
     "core_duels": 5,
     "candidates_per_slot": 3,
@@ -99,10 +99,16 @@
   },
   "stats": {
     "core_range": {
-      "min": 1,
-      "max": 15,
-      "status": "CONFLICT_GATE_PENDING_STAT_CAP_DECISION"
+      "minimum": 1,
+      "designed_hard_cap": null,
+      "legacy_15_meaning": "INITIAL_BALANCE_VALIDATION_REFERENCE"
     },
+    "validation_reference_points": [
+      1,
+      4,
+      15,
+      "CURRENT_CONTENT_REACHABLE_MAX"
+    ],
     "primary": [
       "EXTERNAL",
       "CONSTITUTION",
@@ -133,8 +139,15 @@
       "authority_decision": "TEN-DEC-20260802-STARTING-TECHNIQUE-PRIMARY-STAT4-01",
       "type": "PRIMARY_PERMANENT_STAT",
       "value": 4,
-      "contract": "docs/planning-data/approved_20260802_starting_technique_primary_stat4_contract.json",
-      "soft_guarantee_contract": "docs/planning-data/approved_20260802_starting_technique_soft_guarantee_contract.json"
+      "contract": "docs/planning-data/approved_20260802_starting_technique_primary_stat4_contract.json"
+    },
+    "uncapped_core_stats": {
+      "authority_decision": "TEN-DEC-20260803-UNCAPPED-CORE-STATS-01",
+      "contract": "docs/planning-data/approved_20260803_uncapped_core_stats_contract.json",
+      "clamp_at_15": false,
+      "overflow_conversion": "NONE",
+      "actual_values_feed_requirements_and_formulas": true,
+      "derived_rule_nullifying_effects_need_separate_guardrails": true
     },
     "legacy_deprecated_primary_stats": [
       "attack_power",
@@ -183,34 +196,8 @@
       "10": "MANUAL_ULTIMATE_UNLOCK_CHECK"
     },
     "even_star_bonus_selection": "FIXED_PER_MANUAL",
-    "even_star_bonus_contract": "docs/planning-data/approved_20260802_even_star_stat_escalation_contract.json",
-    "even_star_grant_semantics": "INCREMENTAL_NEW_GRANT_ON_FIRST_REACH",
-    "even_star_new_grants": {
-      "2": {
-        "primary": 1,
-        "secondary": 0
-      },
-      "4": {
-        "primary": 1,
-        "secondary": 1
-      },
-      "6": {
-        "primary": 2,
-        "secondary": 1
-      },
-      "8": {
-        "primary": 3,
-        "secondary": 2
-      }
-    },
-    "even_star_cumulative_through_8": {
-      "primary": 7,
-      "secondary": 4,
-      "total": 11
-    },
+    "even_star_increment_contract": "docs/planning-data/approved_20260802_even_star_stat_escalation_contract.json",
     "starting_star_2_bonus_applies_immediately": true,
-    "milestone_grant_once_per_manual_per_run": true,
-    "duplicate_acquisition_regrants_bonus": false,
     "star_up_stat_requirement": false,
     "new_technique_stat_requirement_stars": [
       3,
@@ -218,8 +205,6 @@
       10
     ],
     "starting_star_3_primary_requirement": 4,
-    "star_7_requirement_status": "BLOCKED_PENDING_STAT_CAP_CONFLICT_DECISION",
-    "star_10_requirement_status": "BLOCKED_PENDING_STAT_CAP_CONFLICT_DECISION",
     "ultimate_reward": "ULTIMATE_ONLY",
     "truth_choice": false,
     "locked_technique_behavior": {
@@ -234,19 +219,11 @@
     "MANUAL_EVEN_STAR_FIXED_BONUSES",
     "ROUTE_NODE_REWARDS"
   ],
-  "conflict_gate": {
-    "authority_audit": "docs/reviews/2026-08-02_EVEN_STAR_STAT_ESCALATION_CONFLICT_AUDIT.md",
-    "route_node_stat_reward_amounts": "BLOCKED",
-    "secondary_stat_mapping": "BLOCKED",
-    "stat_cap_and_overflow_policy": "REQUIRED_NEXT",
-    "runtime_implementation": "BLOCKED"
-  },
   "verification": {
     "static_contract": "REQUIRED",
     "starting_stat_contract": "docs/planning-data/approved_20260802_starting_stat_total20_manual_bonus_contract.json",
     "starting_technique_contract": "docs/planning-data/approved_20260802_starting_technique_primary_stat4_contract.json",
-    "starting_soft_guarantee_contract": "docs/planning-data/approved_20260802_starting_technique_soft_guarantee_contract.json",
-    "even_star_stat_contract": "docs/planning-data/approved_20260802_even_star_stat_escalation_contract.json",
+    "uncapped_core_stats_contract": "docs/planning-data/approved_20260803_uncapped_core_stats_contract.json",
     "godot_runtime": "NOT_RUN",
     "windows_human": "NOT_RUN",
     "demo_ready": false
