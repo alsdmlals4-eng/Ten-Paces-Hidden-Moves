@@ -264,7 +264,7 @@ trigger: ON_ACTION_START | ON_ACTION_RESOLVE | ON_CLASH_WIN | ON_EVADE_SUCCESS |
 
 묶음 시작에 현재 묶음의 합리 후보를 만들고 결정적 seed로 하나를 확정·잠근다. 이후 `ObservationBank`가 종류를 공개하고 플레이어가 계획한다. 플레이어에게 후보 점수·정답 행동·승률을 노출하지 않는다.
 
-## 13. 전투 종료·결착 압력·재도전
+## 13. 전투 종료와 재시작
 
 - 한쪽 체력 0: 승리·패배.
 - 같은 타격쌍 정산 결과 양측 체력 0: 무승부.
