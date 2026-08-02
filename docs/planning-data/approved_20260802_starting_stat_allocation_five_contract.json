@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260802-STARTING-STAT-ALLOCATION-FIVE-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "PLANNING_ONLY",
+  "grillme_count": "4/10",
+  "stats": [
+    "external_power",
+    "constitution",
+    "agility",
+    "internal_power",
+    "insight"
+  ],
+  "direct_allocation": {
+    "base_each": 2,
+    "free_points": 5,
+    "all_points_must_be_spent": true,
+    "minimum_after_direct_allocation": 2,
+    "maximum_after_direct_allocation": 6,
+    "base_total": 10,
+    "pre_manual_total": 15
+  },
+  "starting_manuals": {
+    "candidate_count": 6,
+    "choose_count": 4,
+    "starting_mastery": 3,
+    "star_2_fixed_bonus_applies_immediately": true,
+    "application_order": "AFTER_DIRECT_ALLOCATION",
+    "direct_allocation_cap_clamps_manual_bonus": false,
+    "bonus_vectors": "POC_HYPOTHESIS_TBD"
+  },
+  "final_starting_stat_formula": "2 + direct_allocation + sum(selected_manual_star_2_fixed_bonuses)",
+  "balance_reference": {
+    "stat_value": 4,
+    "applies_to": "FINAL_STARTING_BUILD_AFTER_MANUAL_BONUSES",
+    "pre_manual_average": 3.0,
+    "is_guaranteed_average": false
+  },
+  "operating_range": {
+    "minimum": 1,
+    "maximum": 15
+  },
+  "unresolved": [
+    "six_manual_star_2_bonus_vectors",
+    "minimum_and_maximum_total_starting_manual_bonus",
+    "recommended_final_starting_cap_per_stat",
+    "starting_technique_stat_requirements"
+  ],
+  "validation": {
+    "direct_allocation_sum": 5,
+    "pre_manual_total": 15,
+    "manual_bonus_applied_after_direct_allocation": true,
+    "manual_bonus_not_clamped_at_six": true,
+    "final_stat_must_not_exceed_operating_maximum": true,
+    "static_validation": "PENDING_DRAFT_PR",
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  }
+}
