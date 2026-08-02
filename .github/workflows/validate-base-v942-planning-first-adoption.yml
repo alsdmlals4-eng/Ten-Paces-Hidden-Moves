@@ -1,0 +1,27 @@
+name: Validate Base v9.4.2 Planning First Adoption
+
+on:
+  pull_request:
+    paths:
+      - "skills/PROJECT_BASE_ADAPTER.json"
+      - "skills/BASE_V9_ADAPTER.json"
+      - "skills/PROJECT_BASE_SKILL_ADAPTER.json"
+      - "skills/PROJECT_SKILL_SNAPSHOT.json"
+      - "tests/test_base_v942_planning_first_adoption.py"
+      - ".github/workflows/validate-base-v942-planning-first-adoption.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Validate planning-first Base adoption
+        run: python -m unittest tests.test_base_v942_planning_first_adoption -v
