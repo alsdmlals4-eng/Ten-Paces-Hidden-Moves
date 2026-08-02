@@ -1,25 +1,21 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "decision_id": "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
   "authority_status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "PLANNING_ONLY",
   "grillme_count": "1/10",
+  "followup_range_pricing_decision": "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
   "budget_unit": {
     "ticks_per_point": 20,
     "automatic_tolerance_ticks": 5,
-    "slot_budget_points": {
-      "1": 1.0,
-      "2": 2.5,
-      "3": 4.0
-    },
-    "slot_budget_ticks": {
-      "1": 20,
-      "2": 50,
-      "3": 80
-    }
+    "slot_budget_points": {"1": 1.0, "2": 2.5, "3": 4.0},
+    "slot_budget_ticks": {"1": 20, "2": 50, "3": 80}
   },
   "pricing": {
-    "range_per_tile_beyond_one_ticks": 4,
+    "range_model": "MAX_RANGE_TOTAL_TICKS",
+    "range_total_ticks": {"1": 0, "2": 10, "3": 25, "4": 40},
+    "range_5_plus": "TBD_REQUIRES_NEW_DECISION",
+    "legacy_linear_range_price_for_current_approved_techniques": false,
     "stamina_cost_credit_per_point_ticks": -4,
     "internal_cost_credit_per_point_ticks": -7,
     "momentum_cost_5_credit_ticks": -30,
@@ -32,10 +28,7 @@
     "quick_attack": {
       "slots": 1,
       "range": 1,
-      "costs": {
-        "stamina": 1,
-        "internal": 0
-      },
+      "costs": {"stamina": 1, "internal": 0},
       "fixed_damage": 3,
       "stat": "external_power",
       "coefficient": 0.5,
@@ -49,37 +42,31 @@
       "slots": 2,
       "telegraph_slots": 1,
       "range": 2,
-      "costs": {
-        "stamina": 1,
-        "internal": 1
-      },
+      "costs": {"stamina": 1, "internal": 1},
       "fixed_damage": 7,
       "stat": "external_power",
       "coefficient": 1.0,
       "runtime_formula": "floor(7 + external_power * 1.00)",
-      "ledger_ticks_at_stat_4": 48,
+      "ledger_ticks_at_stat_4": 54,
       "target_ticks": 50,
-      "variance_ticks": -2,
+      "variance_ticks": 4,
       "within_auto_tolerance": true
     },
     "basic_palm": {
       "slots": 2,
       "telegraph_slots": 1,
       "range": 3,
-      "costs": {
-        "stamina": 0,
-        "internal": 1
-      },
+      "costs": {"stamina": 0, "internal": 1},
       "fixed_damage": 2,
       "stat": "internal_power",
       "coefficient": 0.5,
       "runtime_formula": "floor(2 + internal_power * 0.50)",
       "must_be_lower_than_quick_at_equal_stat": true,
-      "ledger_ticks_at_stat_4": 21,
+      "ledger_ticks_at_stat_4": 38,
       "target_ticks": 50,
-      "variance_ticks": -29,
+      "variance_ticks": -12,
       "within_auto_tolerance": false,
-      "spare_ticks": 29,
+      "spare_ticks": 12,
       "spare_budget_resolution": "TBD_FOLLOWUP_DECISION"
     }
   },
