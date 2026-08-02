@@ -1,184 +1,199 @@
-# 십보강호 전투 POC·세로 슬라이스 명세
+# 십보강호 전투 PoC·세로 슬라이스 명세
 
 > 책임: 현재 구현 상태와 다음 플레이 가능한 PoC의 목적·범위·성공·실패 기준  
+> 태그·상태: `docs/00_TAG_STATUS_REGISTRY.md`  
 > 판정 원본: `docs/02_COMBAT_RULES.md`  
-> 최신 결정: `docs/decisions/2026-07-31_COMBAT_ROUTE_AND_CHAMPION_DECISION.md`  
-> 현재 기술 계보 기준: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`
+> 성장 원본: `docs/06_STARTING_FACTION_MASTERY_DATA.md`  
+> 최신 관찰·성장 결정: `docs/decisions/2026-08-02_OBSERVATION_STATS_MASTERY_DECISION.md`  
+> 회차 결정: `docs/decisions/2026-08-02_FULL_RUN_CHAMPION_RANKED_DECISION.md`
 
 ## 1. 목적
 
 다음 PoC는 전체 게임 제작이 아니라 다음 질문을 검증한다.
 
-> 튜토리얼과 초반부의 공개 성향이 다른 다섯 상대 사이에서 각 구간 정확히 2개의 강호행로 노드를 거쳤을 때, 플레이어가 거리·합·대응·중단과 성장·회복·정보 선택을 연결해 실제 계획을 바꾸는가?
+> 주요 비무 1~5와 네 구간의 강호행로에서, 플레이어가 상대의 객관 정보와 공개 상태를 조사하고 `[관찰]`로 현재 묶음의 행동 종류를 좁힌 뒤 거리·합·방어·회피·중단과 성장 선택을 연결해 실제 계획을 바꾸는가?
 
-## 2. 단계 구분
+AI 성향·선호 행동·정답 파훼법은 자동 공개하지 않는다. 플레이어는 상대 스테이터스·무공서·성취·현재 사용 가능한 기술과 공개 규칙을 조사한다.
 
-### CURRENT_T0
+## 2. 단계·상태
 
-`STEP_0_TO_13_IMPLEMENTED`, `mechanical_step14` 기록 완료. 현재 런타임은 구형 수치를 구현하며 새 기획은 미구현이다.
-
-### 다음 PoC·첫 데모
-
-- 주요 비무 1~5.
-- 주요 비무 1은 첫 시작 튜토리얼.
-- 주요 비무 2~5는 스테이지 1 초반부.
-- 연속한 주요 비무 사이 중간 노드 정확히 2개.
-- 네 구간 중간 노드 총 8개, 총 방문 노드 13개.
-- 첫 데모 노드 유형은 휴식·수련·정보·짧은 사건.
-- 일반 전투 노드는 첫 데모 필수 범위에서 제외.
-- 시작 무공 후보 6개 중 4개 선택.
-- 기본 절초는 시작부터 사용 가능하고, 집중 투자 경로에서는 주요 비무 5 전에 한 무공 10성 절초 도달 가능.
-- 최신 승인 전투 규칙과 결정적 복기.
-- 목표 플레이타임 15~22분.
-
-### T1
-
-사람 PoC 통과 뒤 목표 품질과 제작 파이프라인을 검증하는 최소 세로 슬라이스.
-
-## 3. 현행 T0 계약
-
-10칸·4/7·3/3/4·기초 행동 8종·절초 3종·합·방어·회피·필중·중단·강건·공개 상태 AI·재시작을 기술적으로 실행한다. 숫자는 `IMPLEMENTED_LEGACY`이며 상세 차이는 `docs/02_COMBAT_RULES.md`가 소유한다.
-
-## 4. 다음 PoC 계약
-
-### 흐름
-
-```text
-시작 무공 4개 선택
-→ 주요 비무 1 · 튜토리얼
-→ 중간 노드 2개
-→ 주요 비무 2
-→ 중간 노드 2개
-→ 주요 비무 3
-→ 중간 노드 2개
-→ 주요 비무 4
-→ 중간 노드 2개
-→ 주요 비무 5 · 집중 투자 시 10성 절초 도달 가능
-→ 스테이지 1 복기·종료
+```yaml
+current_t0:
+  scope_status: CURRENT_T0
+  implementation_status: IMPLEMENTED_LEGACY
+  automated_validation: PASS
+  human_validation: NOT_RUN
+next_demo:
+  scope_status: POC_PRIMARY
+  authority_status: CURRENT_APPROVED_PLANNING
+  implementation_status: NOT_STARTED
+t1:
+  scope_status: PLANNED_T1
+  gate: NOT_GRANTED
 ```
 
-각 구간의 첫 노드는 현재 상태 회복·성장, 둘째 노드는 다음 비무 정보·대비 역할을 우선한다. 모든 구간이 같은 노드 조합을 반복해서는 안 되며 각 노드는 다음 주요 비무의 계획을 바꿀 정보·회복·성장·위험 중 하나를 제공해야 한다.
+현재 런타임은 기술 PoC로서 작동하지만 최신 스테이터스·관찰·성장·5전 회차를 구현한 상태가 아니다.
+
+## 3. 다음 PoC·첫 데모 범위
+
+- 주요 비무 1~5.
+- 슬롯마다 후보 3명, 데모 후보 총 15명.
+- 첫 비무는 후보 3명 중 1명을 seed로 선정.
+- 이후 비무는 후보 3명 중 2명을 경로 종착점으로 제시.
+- 연속 주요 비무 사이 실제 방문 노드 정확히 2개.
+- 네 구간 중간 노드 총 8개, 주요 비무 포함 총 방문 노드 13개.
+- 첫 데모 노드 유형: 휴식·수련·정보·짧은 사건.
+- 일반 전투 노드는 필수 범위에서 제외.
+- 시작 무공 후보 6개 중 4개를 3성으로 선택.
+- 집중 투자 경로에서 주요 비무 5 전 한 무공 10성 절초 도달 가능성을 검증.
+- 목표 플레이타임 15~22분.
+- 5번째 비무 승리 뒤 데모 완주 결과 화면으로 종료.
+
+## 4. 플레이 흐름
+
+```text
+시작 무공 6중4 선택
+→ 주요 비무 1
+→ 노드 2개
+→ 주요 비무 2
+→ 노드 2개
+→ 주요 비무 3
+→ 노드 2개
+→ 주요 비무 4
+→ 노드 2개
+→ 주요 비무 5
+→ 데모 결과·복기
+```
+
+각 구간의 첫 노드는 현재 상태 회복·성장, 둘째 노드는 다음 비무 정보·대비 역할을 우선한다. 같은 노드 조합을 반복해서는 안 되며 선택은 다음 전투 계획을 바꿀 근거를 제공해야 한다.
+
+## 5. 승인 전투 계약
+
+### 계획·관찰
+
+```text
+직전 묶음 상태 정산
+→ 적 AI가 공개 상태로 현재 묶음 계획 확정
+→ 적 계획 잠금
+→ 보유 관찰량만큼 앞 수의 행동 종류 공개
+→ 플레이어 계획·확정
+→ 묶음 실행
+```
+
+- 관찰량은 묶음·라운드 경계를 넘어 이월한다.
+- 적은 미래 묶음을 미리 생성·잠금하지 않는다.
+- 적은 공개 뒤 계획을 교체하지 않는다.
+- 적은 플레이어의 미확정 슬롯·대상·방향을 읽지 않는다.
+- 관찰 공개 종류는 `[전조] [이동] [공격] [방어] [회피] [태세] [자원] [관찰]`이다.
+- 기술명·정확한 비용·방향·거리·피해·대상은 공개하지 않는다.
+
+### 스테이터스·행동
+
+- 영구 스테이터스: 외공·근골·신법·내공·심안, 주요 범위 1~15.
+- 신규 기획에서 `attack_power`·`defense`를 독립 영구 스테이터스로 사용하지 않는다.
+- 기술은 고정 효과와 명시된 스테이터스 참조를 사용한다.
+- 이동 거리·사거리·관찰량·행동 슬롯·회피 횟수 같은 구조 값은 기술별 임계 효과로만 변경한다.
+
+### 판정
+
+- 피해 단위 순차 `[합]`.
+- 합 패배·동점은 현재 피해 단위만 취소·상쇄.
+- 체력 피해 1 이상 중단 시 미실행 후속타 취소.
+- 방어도는 피해 단위마다 고정 감산하며 피격으로 소모되지 않는다.
+- 방어도는 라운드 종료 시 0.
+- 회피는 피해 단위 1회에 적용.
+- `[필중]`은 실제 회피를 무시한 유효 타격에만 소비.
+- `[강건]`은 중단 1회를 방지하며 KO를 막지 않는다.
+- 합 승리 기세는 공격 행동당 전투원별 최대 +1.
+
+### 결착 압력
+
+- 라운드 1~3 정상.
+- 라운드 4 종료부터 양측 동시 필중 피해.
+- 피해: `최대 체력 × 10% + 5 × (라운드 - 3)`.
+- 방어·회피·감소·무적·일반 반격을 무시한다.
+- 3묶음 해결·상태 정산→승리 판정→결착 피해→승리 판정 순서다.
+
+## 6. 성장 계약
+
+- 무공서 1~10성, 시작 3성.
+- 3→10 비용: 2/3/4/5/6/8/10, 총 38.
+- 2·4·6·8성: 무공별 고정 스테이터스.
+- 3·7성: 신규 기술 해금 검사.
+- 5·9성: 기본 강화와 기술별 스테이터스 임계 효과.
+- 10성: 무공별 절초 해금 검사.
+- 기술별 별도 수련도는 없다.
+- 기술 요구치는 최대 2종 영구 스테이터스.
+- 성은 오르지만 스테이터스가 부족하면 기술만 잠기며 나중에 조건 충족 시 자동 활성화된다.
+
+## 7. 패배·재도전
+
+- 패배 시 전투 직전 `RunState`를 복원하고 같은 seed로 재도전.
+- 같은 전투 재도전 비용은 `[영구재화]` 1→2→3개, 3에서 상한.
+- 다른 전투 진입 시 비용 단계 초기화.
+- 피해·임시 자원·미획득 보상은 롤백.
+- 영구재화 지불은 롤백하지 않는다.
+- 잔액 부족 시 회차 포기 또는 타이틀 복귀.
+
+정확한 영구재화 획득량과 장기 경제는 `POC_HYPOTHESIS`다.
+
+## 8. 포함·제외
 
 ### 포함
 
-- 공격·막기의 `[공격력]`·`[방어력]` 비례 계산.
-- 피해 단위 순차 연격 합.
-- 합 패배·동점은 현재 피해 단위만 취소·상쇄.
-- 체력 피해 1 이상 중단 시 연격 미실행 후속타 전부 취소.
-- 방어도가 피해를 전부 막아 체력 감소 0이면 비중단.
-- 방어력 비례·합산 상한10·피격 비소모 방어도.
-- 횟수형 회피와 필중.
-- 강화×1.5와 중단 1회 강건.
-- 효과 scope와 7개 trigger.
-- 공개 성향과 최대 3 AI 후보.
-- 성과 등급·수련포인트.
-- 튜토리얼·스테이지 1의 5개 주요 비무.
-- 네 구간의 중간 노드 정확히 2개, 총 8개.
-- 휴식·수련·정보·짧은 사건 노드.
-- 기본 절초의 시작 가용성과 3→10 집중 성장 38포인트 도달성.
-
-### 실패·재도전
-
-- 패배 시 전투 직전 `RunState`를 복원하고 같은 seed로 재도전한다.
-- 같은 전투 재도전 비용은 `[영구재화]` 1→2→3개, 다른 전투 진입 시 초기화한다.
-- 전투 피해·임시 자원·미획득 보상은 롤백하지만 영구재화 지불은 유지한다.
-- 영구재화 부족 시 회차 포기 또는 타이틀 복귀를 선택한다.
-- `[필중]`은 스택형이며 실제 회피를 무시한 타격마다 1스택을 소비한다.
+- 저충실도 App Flow Shell.
+- 시작 무공 선택.
+- Route·Node·Briefing.
+- 기존 Combat 진입·복귀.
+- 최신 관찰·스테이터스·성장 규칙을 위한 데이터·UI 계약.
+- Result·Reward·Retry transaction.
+- 주요 비무 1~5와 노드 8개를 위한 반복 제작 파이프라인.
 
 ### 제외
 
-- 주요 비무 6~10 구현.
-- 스테이지 2·3 구현.
-- 천하제일인 후보 6명 전투와 챔피언 등록.
-- 전체 10전 지도 생성.
+- 주요 비무 6~10 런타임.
+- 천하제일인전 런타임.
+- 챔피언 배틀·서버·계정·매칭·평점.
+- 정확한 랭킹전 관찰 변환 수치.
 - 일반 전투 노드.
-- 저장 migration·영구 성장 트리·상점 경제의 완성. 단, 재도전 비용을 위한 최소 `[영구재화]` profile 계약은 포함.
 - 최종 아트·사운드·Release 성능.
+- 모바일 포팅·스토어·크로스 세이브.
 
-## 5. 전체 회차 참조 가설
+## 9. 전체 회차 참조
 
 ```yaml
-mandatory_major_duels: 10
-gaps: 9
-visited_nodes_per_gap: 2
-visited_intermediate_nodes: 18
-target_playtime: 30_to_40_minutes
-target_median: 35_minutes
+major_duels_before_finale: 10
+candidates_per_slot: 3
+intermediate_nodes: 18
+target_playtime_before_finale: 30_to_40_minutes
+finale_candidates_presented: 2
+finale_player_selects: 1
 ```
 
-전체 회차와 천하제일인 콘텐츠는 PoC 통과 전 선제 구현하지 않는다.
+전체 회차·천하제일인·온라인 콘텐츠는 PoC 통과 전 선제 구현하지 않는다.
 
-## 6. 구현 단계와 증거 상태
+## 10. 성공 기준
 
-```yaml
-current_runtime: TECHNICALLY_VERIFIED_LEGACY
-new_planning_contract: AUTHORED
-new_runtime_implementation: NOT_STARTED
-new_static_planning_validation: REQUIRES_RERUN
-new_runtime_automated_validation: NOT_RUN
-new_godot_validation: NOT_RUN
-new_windows_validation: NOT_RUN
-human_step14: NOT_RUN
-t1_greenlight: NOT_GRANTED
-```
+- 플레이어가 상대의 가능한 행동을 객관 정보와 관찰 종류로 좁힌다.
+- 첫 시도와 재시도에서 계획이 실제로 달라진다.
+- 합·방어·회피·중단의 결정적 이유를 설명한다.
+- 무공·스테이터스 성장이 단순 피해 상승이 아니라 거리·순서·자원 판단을 바꾼다.
+- 노드 선택이 다음 전투 계획을 바꾼다.
+- 같은 데이터 구조로 두 번째 상대·무공·노드를 제작할 수 있다.
+- 15~22분 목표와 이탈·피로를 기록한다.
 
-## 7. STEP 14 플레이테스트 계약
-
-- 빌드·commit·Godot 버전·플랫폼·입력 방법을 기록한다.
-- 행동 관찰과 인터뷰 반응을 분리한다.
-- 합·중단·강건·연격·능력치 비례 계산·비소모 방어도의 이해를 확인한다.
-- 네 중간 구간에서 두 노드 선택이 다음 전투 계획을 바꾸는지 확인한다.
-- 주요 비무 5까지의 피로·이탈·재도전 의향과 15~22분 목표를 기록한다.
-- 결과를 본 뒤 성공 기준을 바꾸지 않는다.
-
-## 8. T0 완료 기준
-
-다음 새 계약의 데이터·코드·테스트·문서가 일치하고, 비공개 계획 누출·재시작 누적·설명 불가능한 결과가 없어야 한다. 주요 비무 1~5와 네 구간의 정확히 2개 노드 흐름을 중단 없이 완료할 수 있어야 한다. 기계 통과만으로 사람 이해를 통과 처리하지 않는다.
-
-## 9. 현재 판정
+## 11. 검증 상태
 
 ```yaml
-planning_phase: REVIEW_IN_PROGRESS
-poc_scope: FIVE_DUELS_FOUR_GAPS_TWO_NODES
-poc_visited_nodes: 13
-poc_intermediate_nodes: 8
-implementation: NOT_STARTED
-human_step14: NOT_RUN
-t1_greenlight: NOT_GRANTED
-decision: RETEST
-```
-
-## 10. 행동 선택 Dock 구현 증거
-
-이 항목은 전체 5전 PoC 구현 완료를 의미하지 않는다. 기존 Godot 전투 PoC의 행동 선택·수 배치 UX만 제품 구조로 교체한 범위다.
-
-```yaml
-action_selection_dock: IMPLEMENTED_BUILD_PR
-build_pr: 66
-basic_actions: 8
-action_sources:
-  - BASIC
-  - MARTIAL
-  - ULTIMATE
-martial_flow: MANUAL_TO_UNLOCKED_TECHNIQUE
-manual_direct_placement: false
-ultimate_source: SHARED_MOMENTUM_0_TO_5
-auto_placement: EARLIEST_VALID_CONTIGUOUS
-repositioning: CONNECTED_BLOCK_PRE_COMMIT
-multi_timing_display: TELEGRAPH_TO_EXECUTION_LINKED_BLOCK
-virtual_prepare_response_combo: DISABLED_IN_PRODUCT_P0
-static_pr_validation: PASS
-base_v9_validation: PASS
-godot_full_validation: PENDING
+planning_contract: CURRENT_APPROVED_PLANNING
+implementation_status: NOT_STARTED
+static_validation: REQUIRED
+automated_validation: NOT_RUN_FOR_NEW_CONTRACT
+godot_validation: NOT_RUN
 windows_validation: NOT_RUN
+accessibility_validation: NOT_RUN
 human_validation: NOT_RUN
+t1_greenlight: NOT_GRANTED
 ```
 
-- 제품 입력 경로는 `ActionSelectionDock → ActionPlacementController → ActionTimingPanel`이다.
-- 기초 행동 8종은 독립 공용 행동군으로 유지한다.
-- 무공서는 성장·분류 단위이며 해금 기술만 수에 배치한다.
-- 기본 절초 3종과 10성 절초 표시 자리는 같은 절초 패널을 사용한다.
-- 다중 수 행동은 슬롯마다 이름을 반복하지 않고 `[전조] → [실행]` 연결 블록으로 표시한다.
-- 레거시 `BasicCardTray`·절초 목록·상세 패널은 회귀 호환용으로 남아 있지만 제품 화면에서는 숨긴다.
-- `docs/planning-data/*.json`은 런타임에서 직접 읽지 않는다.
-- 전체 5전 회차·강호행로·성장·보상·재도전 구현 상태는 위 `implementation: NOT_STARTED` 판정을 유지한다.
+ActionSelectionDock의 기존 자동 검증 통과는 전체 5전 PoC 구현 완료를 뜻하지 않는다. 최신 체크리스트는 `docs/08_TEST_CHECKLIST.md`가 소유한다.
