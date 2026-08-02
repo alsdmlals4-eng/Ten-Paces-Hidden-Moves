@@ -8,9 +8,9 @@
 project: 십보강호: 숨은 수의 비무
 repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
 last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
-current_checkpoint_pr: 80
-current_checkpoint_state: MERGED_MAIN_SHEET_SYNCED
-current_approval_count: 0/10
+current_checkpoint_pr: 82
+current_checkpoint_state: APPROVED_DRAFT_PR_NOT_MERGED
+current_approval_count: 1/10
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 engine: Godot 4.7
@@ -20,14 +20,14 @@ integration_pr: 65
 base_release_pinned: 9.4.1
 runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
 latest_combat_planning_runtime: NOT_STARTED
-automated_validation: PASS
+automated_validation: PENDING_EXACT_HEAD_RECHECK
 windows_validation: NOT_RUN
 human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: STAR10_ULTIMATE_REQUIREMENT
+next_planning_decision: SECONDARY_STAT_MAPPING
 ```
 
-PR #80의 10개 사용자 승인 Decision은 exact-head CI 3종, 문서 전용 diff, main behind0, 리뷰·미해결 스레드0, Google Sheet readback을 확인한 뒤 squash merge됐다. 체크포인트 main SHA는 `d9f38e6f3cacaf170d4b290e95b3645114639aff`이며 다음 GrillMe 승인 카운트는 `0/10`에서 시작한다.
+PR #80의 10개 사용자 승인 Decision은 exact-head CI 3종, 문서 전용 diff, main behind0, 리뷰·미해결 스레드0, Google Sheet readback을 확인한 뒤 squash merge됐다. 체크포인트 main SHA는 `d9f38e6f3cacaf170d4b290e95b3645114639aff`다. PR #82는 새 승인 묶음의 첫 Decision을 보유한 Draft이며 `10/10` 전에는 병합하지 않는다.
 
 ## 프로젝트 코어
 
@@ -64,6 +64,10 @@ PR #80의 10개 사용자 승인 Decision은 exact-head CI 3종, 문서 전용 d
 9. `TEN-DEC-20260803-UNCAPPED-CORE-STATS-01`
 10. `TEN-DEC-20260803-STAR7-TECHNIQUE-PRIMARY-STAT8-01`
 
+## PR #82 현재 승인 정본
+
+1. `TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01`
+
 ## 현재 전투·성장 정본 요약
 
 - 기초 행동10종: 이동·보법·막기·회피·속공·강공·관찰·명상·준비·장풍.
@@ -76,7 +80,10 @@ PR #80의 10개 사용자 승인 Decision은 exact-head CI 3종, 문서 전용 d
 - 체력 피해로 한쪽 공격이 중단되면 그쪽 후속 피해 단위를 취소하고 상대 잔여타는 단독으로 해결한다. 강건이 중단을 막으면 다음 합을 계속할 수 있다.
 - 사거리 밖 합 승리도 절초기세와 `ON_CLASH_WIN`을 얻지만 해당 피해 단위의 적중·체력 피해 효과는 발생하지 않는다.
 - 시작 능력치는 기본2×5+자유6+선택 무공4개의2성 주능력치+1로 최종 총합20·평균4다.
-- 시작3성 기술은 주 영구 능력치4, 7성 두 번째 기술은 주 영구 능력치8을 요구한다. 미달 시 기술만 잠기며 영구 요구치 충족 시 자동 활성화한다.
+- 시작3성 기술은 주 영구 능력치4, 7성 두 번째 기술은 주 영구 능력치8, 10성 고유 절초는 주 영구 능력치12를 요구한다.
+- 3·7·10성의 무공 자체 자동 주 능력치 하한은3·6·9이며, 추가 영구 투자량은 각각+1·+2·+3이다.
+- 요구치 미달 시 해당 기술·절초만 잠기며 무공 수련과 기존 보상은 유지되고, 영구 요구치 충족 시 추가 비용 없이 자동 활성화한다.
+- 임시 능력치는 기술·절초 해금에 사용하지 않으며 활성화 후 임시 감소로 재잠금하지 않는다.
 - 모든 시작 무공4개 조합에 네 첫 기술을 여는 최소 추천 배분이 존재하지만 동시 활성은 강제하지 않는다.
 - 짝수 성은 최초 도달 시 새로 지급한다: 2성 주+1, 4성 주+1·보조+1, 6성 주+2·보조+1, 8성 주+3·보조+2.
 - 핵심 스테이터스에는 디자인 하드캡이 없고 기존1~15는 검증 구간이다. 실제값을 공식·요구치에 사용하며 검증점은1·4·15·현재 합법 최대값이다.
@@ -88,7 +95,7 @@ PR #80의 10개 사용자 승인 Decision은 exact-head CI 3종, 문서 전용 d
 
 - 관찰·장풍이 없는 기초 행동8종.
 - 일부 레거시 데이터의 절대 원공격력.
-- 최신 시작 총합20·무공 보너스·잠금 미리보기·짝수 성 지급·7성 주8 요구 미구현.
+- 최신 시작 총합20·무공 보너스·잠금 미리보기·짝수 성 지급·3/7/10성 요구 미구현.
 - 무상한 실제값의 공식·요구치·AI·UI·저장 연결 미구현.
 - 주요 비무5전·노드8개·성장·새 결과 등급 미구현.
 
@@ -108,7 +115,6 @@ PR #80의 10개 사용자 승인 Decision은 exact-head CI 3종, 문서 전용 d
 
 ## 다음 승인 묶음의 남은 기획
 
-- 10성 절초의 정확한 요구치.
 - 여섯 무공의 보조 능력치 매핑.
 - 중간 노드 영구 스테이터스 보상 여부·량.
 - 5개 전투 종료 지표의 가중치·정규화·등급 경계.
@@ -120,7 +126,7 @@ PR #80의 10개 사용자 승인 Decision은 exact-head CI 3종, 문서 전용 d
 ## 검증 경계
 
 ```yaml
-planning_checkpoint: MERGED_MAIN_SHEET_SYNCED_0_OF_10
+planning_checkpoint: DRAFT_PR82_1_OF_10
 checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
 product_code_changed: false
 runtime_validation: NOT_RUN
