@@ -39,10 +39,26 @@
     "spare_ticks": 2
   },
   "sanity_checks": {
-    "stat_points": [1, 4, 15],
-    "basic_palm_damage": [3, 6, 14],
-    "quick_attack_damage": [3, 5, 10],
-    "heavy_attack_damage": [8, 11, 22],
+    "stat_points": [
+      1,
+      4,
+      15
+    ],
+    "basic_palm_damage": [
+      3,
+      6,
+      14
+    ],
+    "quick_attack_damage": [
+      3,
+      5,
+      10
+    ],
+    "heavy_attack_damage": [
+      8,
+      11,
+      22
+    ],
     "palm_may_exceed_quick_from_stat_4": true,
     "palm_stays_below_heavy_at_stat_15": true
   },
