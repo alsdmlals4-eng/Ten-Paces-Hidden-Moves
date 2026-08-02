@@ -4,6 +4,7 @@
   "authority_status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "PLANNING_ONLY",
   "grillme_count": "1/10",
+  "follow_up_decision_id": "TEN-DEC-20260802-OUT-OF-RANGE-CLASH-REWARD-01",
   "basic_actions": [
     "move",
     "footwork",
@@ -27,10 +28,7 @@
     "source": "basic",
     "category": "attack",
     "action_slots": 2,
-    "slot_display": [
-      "전조",
-      "실행"
-    ],
+    "slot_display": ["전조", "실행"],
     "internal_cost": 1,
     "minimum_range": 1,
     "maximum_range": 3,
@@ -40,10 +38,7 @@
       "internal_stat_reference": true,
       "constraint": "effective_damage_under_equal_conditions_must_be_lower_than_basic_quick_attack"
     },
-    "usable_by": [
-      "player",
-      "enemy_ai"
-    ],
+    "usable_by": ["player", "enemy_ai"],
     "prepare_strengthening_applies": true,
     "observation_category": "공격"
   },
@@ -53,16 +48,12 @@
     "tie_cancels_both_current_hits": true,
     "difference_damage_requires_winner_target_in_range": true,
     "out_of_range_difference_damage": 0,
-    "momentum_on_out_of_range_win": "TBD",
-    "on_clash_win_effects_when_out_of_range": "TBD"
+    "reward_contract_owned_by": "TEN-DEC-20260802-OUT-OF-RANGE-CLASH-REWARD-01"
   },
   "runtime_gap": {
     "current_runtime_basic_action_count": 8,
     "approved_basic_action_count": 10,
-    "missing_from_runtime": [
-      "observation",
-      "palm_strike"
-    ],
+    "missing_from_runtime": ["observation", "palm_strike"],
     "implementation_status": "IMPLEMENTED_LEGACY"
   },
   "validation": {
