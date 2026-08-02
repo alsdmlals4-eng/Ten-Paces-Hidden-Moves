@@ -1,9 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "decision_id": "TEN-DEC-20260802-TECHNIQUE-AUTHORING-TAG-FIXED-STAT-01",
   "authority_status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "PLANNING_ONLY",
   "grillme_count": "9/10",
+  "pricing_decision_id": "TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01",
   "authoring_order": [
     "structure_and_cost",
     "tags",
@@ -50,7 +51,13 @@
       "internal_power",
       "insight"
     ],
-    "independent_ledger_entry_required": true
+    "independent_ledger_entry_required": true,
+    "balance_reference_stat": 4,
+    "coefficient_snap_step": 0.25,
+    "primary_secondary_same_price": true,
+    "secondary_discount": false,
+    "tick_formula": "ceil(effect_unit_tick_price * coefficient * 4)",
+    "runtime_rounding": "floor_once_after_total_sum"
   },
   "fixed_only_effects": {
     "observation_amount": true,
@@ -87,13 +94,20 @@
     "tag_fixed_stat_must_be_separate": true,
     "central_price_change_auto_edits_existing_techniques": false
   },
-  "current_gap": {
-    "stat_reference_price_table": "MISSING_TBD",
-    "exact_stat_coefficient_tick_prices": "TBD",
-    "primary_secondary_price_difference": "TBD",
-    "coefficient_snap_step": "TBD",
-    "rounding_rule": "TBD"
+  "resolved_gap": {
+    "stat_reference_price_table": "APPROVED_BASE4",
+    "pricing_contract": "approved_20260802_stat_reference_price_base4_contract.json",
+    "exact_stat_coefficient_tick_formula": "ceil(effect_unit_tick_price * coefficient * 4)",
+    "primary_secondary_price_difference": "NONE",
+    "coefficient_snap_step": 0.25,
+    "rounding_rule": "floor_once_after_total_sum"
   },
+  "remaining_tbd": [
+    "quick_attack_exact_fixed_damage_and_coefficient",
+    "heavy_attack_exact_fixed_damage_and_coefficient",
+    "basic_palm_exact_fixed_damage_and_coefficient",
+    "starting_stat_total_and_distribution"
+  ],
   "legacy_boundary": {
     "absolute_raw_power_techniques": "POC_HYPOTHESIS",
     "runtime_implementation_updated": false
