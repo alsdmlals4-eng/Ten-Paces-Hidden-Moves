@@ -9,10 +9,10 @@
 ## 1. 현재 단계
 
 ```yaml
-last_planning_checkpoint_merge: 76b48a1d5d4d3f8e91511d9b925672a9f6477c68
+last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
 current_checkpoint_pr: 80
-current_checkpoint_state: APPROVED_PENDING_MERGE
-current_approval_count: 10/10
+current_checkpoint_state: MERGED_MAIN_SHEET_SYNCED
+current_approval_count: 0/10
 phase: VERTICAL_SLICE_APP_FLOW_PLANNING
 project_core: CORE_CONFIRMED
 primary_platform: PC
@@ -28,10 +28,11 @@ latest_combat_planning:
   implementation_status: NOT_STARTED
 full_product_flow_runtime: NOT_STARTED
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
+next_planning_decision: STAR10_ULTIMATE_REQUIREMENT
 t1_greenlight: NOT_GRANTED
 ```
 
-PR #80의 이번 10개 승인 정본은 중앙 책임 문서·planning JSON·Google Sheet 동기화, 전체 diff 적대적 검토, exact-head CI, 리뷰·head 고정 검증을 통과한 뒤에만 squash merge한다. 병합 완료 전 승인 카운트를 0/10으로 재설정하지 않는다.
+PR #80의 10개 승인 정본은 중앙 책임 문서·planning JSON·Google Sheet 동기화, 전체 diff 적대적 검토, exact-head CI 3종, main behind0, 리뷰·head 고정 검증을 통과한 뒤 squash merge됐다. 안정 체크포인트 SHA는 `d9f38e6f3cacaf170d4b290e95b3645114639aff`이며 다음 승인 묶음은 `0/10`에서 시작한다.
 
 ## 2. 프로젝트 코어 확정
 
@@ -214,7 +215,7 @@ T1 진입 Gate:
 - 미해결 리뷰·CI 실패·Sheet 불일치·head 이동·P0/P1이 있으면 병합하지 않는다.
 - exact head만 병합하고 main·Sheet를 재조회한다.
 
-현재 체크포인트는 PR #80의 `10/10 APPROVED_PENDING_MERGE`다. 병합 완료와 main·Sheet 재조회 뒤 다음 GrillMe 승인 카운트를 `0/10`으로 재설정한다.
+PR #80 체크포인트는 `d9f38e6f3cacaf170d4b290e95b3645114639aff`로 main에 병합됐고 상태 동기화 뒤 승인 카운트가 `0/10`으로 재설정됐다. 다음 우선 기획 Decision은 10성 절초 요구치다.
 
 ## 13. 중단·축소 조건
 
