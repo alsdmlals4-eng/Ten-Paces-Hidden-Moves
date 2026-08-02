@@ -1,40 +1,22 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "decision_id": "TEN-DEC-20260802-OUT-OF-RANGE-CLASH-GRADE-01",
-  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "authority_status": "CURRENT_APPROVED_PLANNING_WITH_SUPERSEDED_SCORE_CATEGORY",
   "implementation_authority": "PLANNING_ONLY",
   "grillme_count": "3/10",
-  "battle_grade": {
-    "grade_scale": ["S", "A", "B", "C"],
-    "category": "threat_response",
-    "out_of_range_clash_win_value_relative_to_in_range": "EQUAL",
-    "automatic_tactical_execution_double_count": false,
-    "automatic_damage_score": false,
-    "automatic_hit_score": false
+  "current_battle_grade_decision_id": "TEN-DEC-20260802-BATTLE-GRADE-FIVE-METRICS-01",
+  "current_metric": "clash_wins",
+  "in_range_clash_win_count": 1,
+  "out_of_range_clash_win_count": 1,
+  "out_of_range_damage_or_hit_credit": false,
+  "legacy": {
+    "threat_response_category_active": false,
+    "tactical_execution_double_count_check_active": false,
+    "repeat_attenuation_active": false
   },
-  "event": {
-    "event_id": "out_of_range_clash_win",
-    "records_enemy_current_hit_cancelled": true,
-    "records_ultimate_momentum_gain": 1,
-    "records_health_damage": false,
-    "result_screen_explanation_required": true
-  },
-  "symmetry": {
-    "any_future_repeat_cap_or_decay_must_apply_equally_to_in_range_and_out_of_range_clash_wins": true
-  },
-  "scope": [
-    "major_duels_1_to_10",
-    "best_under_heaven_duel",
-    "future_modes_with_battle_grade"
-  ],
   "online_season_rating_change": "NONE",
-  "unresolved": [
-    "event_points_within_threat_response_budget",
-    "repeat_counting_or_decay",
-    "per_battle_cap"
-  ],
   "validation": {
-    "static_validation": "PENDING_DRAFT_PR",
+    "static_validation": "PENDING_PR_CHECKPOINT",
     "runtime_validation": "NOT_RUN",
     "godot_validation": "NOT_RUN",
     "windows_validation": "NOT_RUN",
