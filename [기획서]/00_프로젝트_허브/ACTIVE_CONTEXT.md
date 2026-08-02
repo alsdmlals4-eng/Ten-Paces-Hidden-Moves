@@ -7,15 +7,15 @@
 ```yaml
 project: 십보강호: 숨은 수의 비무
 repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
-last_planning_checkpoint_merge: 76b48a1d5d4d3f8e91511d9b925672a9f6477c68
+last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
 current_checkpoint_pr: 80
-current_checkpoint_state: APPROVED_PENDING_MERGE
-current_approval_count: 10/10
+current_checkpoint_state: MERGED_MAIN_SHEET_SYNCED
+current_approval_count: 0/10
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 engine: Godot 4.7
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
-work_mode: REVIEW
+work_mode: PLAN
 integration_pr: 65
 base_release_pinned: 9.4.1
 runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
@@ -24,9 +24,10 @@ automated_validation: PASS
 windows_validation: NOT_RUN
 human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
+next_planning_decision: STAR10_ULTIMATE_REQUIREMENT
 ```
 
-PR #80의 10개 사용자 승인 Decision은 중앙 책임 문서·planning JSON·Google Sheet·전체 diff·리뷰·exact-head CI를 다시 확인한 뒤 squash merge한다. 병합 완료와 main·Sheet 재조회 전에는 승인 카운트를 0/10으로 재설정하지 않는다.
+PR #80의 10개 사용자 승인 Decision은 exact-head CI 3종, 문서 전용 diff, main behind0, 리뷰·미해결 스레드0, Google Sheet readback을 확인한 뒤 squash merge됐다. 체크포인트 main SHA는 `d9f38e6f3cacaf170d4b290e95b3645114639aff`이며 다음 GrillMe 승인 카운트는 `0/10`에서 시작한다.
 
 ## 프로젝트 코어
 
@@ -50,7 +51,7 @@ PR #80의 10개 사용자 승인 Decision은 중앙 책임 문서·planning JSON
 - `STEP 14`는 신규 플레이어 사람 검증 단계이며 현재 `human_validation: NOT_RUN`이다.
 - 과거 이력 토큰은 최신 Decision과 본 문서의 현재 기준보다 우선하지 않는다.
 
-## PR #80 이번 10개 승인 정본
+## PR #80 체크포인트 승인 정본
 
 1. `TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01`
 2. `TEN-DEC-20260802-RANGE-PRICE-BANDS-01`
@@ -119,7 +120,8 @@ PR #80의 10개 사용자 승인 Decision은 중앙 책임 문서·planning JSON
 ## 검증 경계
 
 ```yaml
-planning_checkpoint: 10/10_APPROVED_PENDING_MERGE
+planning_checkpoint: MERGED_MAIN_SHEET_SYNCED_0_OF_10
+checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
 product_code_changed: false
 runtime_validation: NOT_RUN
 godot_validation: NOT_RUN
