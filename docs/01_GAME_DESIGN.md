@@ -6,9 +6,12 @@
 > 콘텐츠 범위: `docs/03_CONTENT_CATALOG.md`  
 > PoC 범위: `docs/05_COMBAT_POC_SPEC.md`  
 > 최신 기초 행동·합: `docs/decisions/2026-08-02_BASIC_ACTIONS_PALM_CLASH_DECISION.md`  
+> 기초 공격·사거리·장풍 공식: `docs/decisions/2026-08-02_BASIC_ATTACK_FORMULAS_SLOT_BUDGET_DECISION.md`, `docs/decisions/2026-08-02_RANGE_PRICE_BANDS_DECISION.md`, `docs/decisions/2026-08-02_BASIC_PALM_DAMAGE_GROWTH_DECISION.md`  
+> 시작 빌드·성장 요구치: `docs/decisions/2026-08-02_STARTING_STAT_TOTAL20_MANUAL_BONUS_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_PRIMARY_STAT4_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_SOFT_GUARANTEE_DECISION.md`, `docs/decisions/2026-08-02_EVEN_STAR_STAT_ESCALATION_DECISION.md`, `docs/decisions/2026-08-03_STAR7_TECHNIQUE_PRIMARY_STAT8_DECISION.md`  
+> 핵심 스테이터스 정책: `docs/decisions/2026-08-03_UNCAPPED_CORE_STATS_DECISION.md`  
 > 전투 종료 등급: `docs/decisions/2026-08-02_BATTLE_GRADE_FIVE_PRIMARY_METRICS_DECISION.md`  
 > 기술 작성·배수 가격: `docs/decisions/2026-08-02_TECHNIQUE_AUTHORING_TAG_FIXED_STAT_DECISION.md`, `docs/decisions/2026-08-02_STAT_REFERENCE_PRICE_BASE4_DECISION.md`  
-> 현재 단계: `REVIEW_IN_PROGRESS`
+> 현재 단계: `APPROVED_PENDING_MERGE_10_OF_10`
 
 ## 1. 현재 한 줄 약속
 
@@ -38,6 +41,7 @@ READ 공개 상태·이력
 - 1대1, 10칸, 비공개 계획, 공개 정보 기반 AI를 유지한다.
 - 덱·손패·드로우·행동력·`[집중]`을 재도입하지 않는다.
 - 영구 전투 스테이터스는 외공·근골·신법·내공·심안이다.
+- 핵심 스테이터스에는 디자인 하드캡을 두지 않으며 기존 1~15는 초기 밸런스 검증 구간이다.
 - UI·VFX·오디오는 판정·보상·저장을 재계산하지 않는다.
 - 새 시스템·핵심 규칙·콘텐츠 구조·UX 흐름은 벤치마킹과 적대적 검토를 먼저 수행한다.
 
@@ -76,7 +80,8 @@ READ 공개 상태·이력
 
 - `[전조]`는 다중 수 행동의 점유·표시 단계이며 강화 효과가 없다.
 - `[준비]`는 독립 행동으로 다음 비이동 행동에 고정 강화 효과를 적용한다.
-- 장풍은 2수·내력1·사거리1~3의 내공 참조 저위력 공격이다.
+- 속공 피해는 `floor(3 + 외공 × 0.50)`, 강공 피해는 `floor(7 + 외공 × 1.00)`, 장풍 피해는 `floor(3 + 내공 × 0.75)`다.
+- 장풍은 2수·내력1·사거리1~3의 내공 성장형 원거리 공격이며 밀치기·강제 이동은 없다. 2수·전조·내력 소모를 부담하므로 기준 스테이터스4부터 속공보다 높은 피해를 가질 수 있다.
 - 사거리 밖에서도 현재 순번 피해 단위의 합은 진행하지만 승자 공격이 닿지 않으면 해당 피해 단위의 체력 피해·적중 효과는 없다.
 - 연격 대 연격은 현재 순번 피해 단위를 합한다. 해당 순번 정산 뒤 양측 체력 피해가 0이고 두 공격이 유지되며 다음 피해 단위가 모두 남아 있으면 다음 순번도 다시 합한다.
 - 체력 피해로 한쪽 공격이 중단되면 그쪽 미실행 후속타를 취소하고 상대의 유지된 잔여타는 단독으로 해결한다. 강건 등 중단 방지가 있으면 공격이 유지될 수 있다.
@@ -86,9 +91,13 @@ READ 공개 상태·이력
 - 기술은 구조·비용→태그→고정 기본치→주/보조 능력치 배수→5/9성 patch·임계 효과 순서로 작성한다.
 - 관찰·이동·회피·준비의 기본 효과는 고정 전용이다.
 - 그 외 연속 수치 효과는 최소 1개 능력치를 참조한다.
-- 능력치 배수 예산의 기준 스테이터스는 4이며 초기 스테이터스 설계도 4 전후를 중심으로 한다.
-- 배수 작성 단위는 0.25이며 주·보조 능력치는 같은 가격이다.
-- 정확한 시작 총점과 속공·강공·장풍의 고정 피해·배수는 후속 결정이다.
+- 슬롯 기술 점수는 1수20틱·2수50틱·3수80틱이며 기본 허용 편차는 ±5틱이다.
+- 최대 사거리 총비용은 사거리1=0틱·2=10틱·3=25틱·4=40틱이고 사거리5 이상은 별도 승인 전 `TBD`다.
+- 능력치 배수 예산의 기준 스테이터스는 4이며 배수 작성 단위는 0.25, 주·보조 능력치는 같은 가격이다.
+- 시작 능력치는 기본2×5+자유분배6+선택 시작무공4개의 2성 주능력치+1로 최종 총합20·평균4다.
+- 시작 3성 첫 기술은 주 영구 능력치4, 7성 두 번째 기술은 주 영구 능력치8을 요구한다. 요구치 미달 시 기술만 잠기며 무공 수련은 계속되고 영구 요구치 충족 시 자동 활성화한다.
+- 짝수 성은 각 성 최초 도달 시 새로 지급한다: 2성 주+1, 4성 주+1·보조+1, 6성 주+2·보조+1, 8성 주+3·보조+2.
+- 핵심 스테이터스에는 디자인 하드캡이 없고 실제 영구값을 기술 요구치와 전투 공식에 사용한다. 검증점은 1·4·15와 현재 콘텐츠의 최대 합법 도달값이다.
 
 ### 전투 종료 등급
 
