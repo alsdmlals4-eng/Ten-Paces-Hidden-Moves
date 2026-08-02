@@ -4,10 +4,11 @@
 - 날짜: 2026-08-02
 - 시작 기준 main: `7082dab1c66e994ce3be1861640754f97080ed5c`
 - 병합 전 최신 main: `07b3f15c50d9900321bcec3897b8d0b726bd174e`
+- main 동기화 merge: `2e18396e86bb59408d809b57dc3b386020b69726`
 - 작업 브랜치: `agent/2026-08-02-tag-planning-canon-audit`
 - PR: `#72`
 - 작업 성격: 문서 정본 유지보수와 GrillMe 승인 10건 체크포인트
-- GrillMe 승인 카운트: `10/10`
+- GrillMe 승인 카운트: `10/10`; PR 병합 뒤 다음 질문은 `0/10`에서 시작
 
 ## 1. 감사 목적
 
@@ -38,8 +39,6 @@
 - 장풍은 2수·내력1·사거리1~3·고정 피해+내공 참조이며 동일 조건 속공보다 낮은 피해다.
 
 ### 합·연격
-
-정확한 규칙은 다음과 같다.
 
 ```text
 현재 순번 피해 단위끼리 합
@@ -96,7 +95,7 @@
 2. 현재 구현은 기초 행동 8종으로 최신 승인 10종과 차이가 있다.
 3. 기존 위협 대응 점수 체계가 후속 5지표 Decision과 동시에 활성인 것처럼 보이는 Decision·JSON이 있었다.
 4. 중앙 기술 점수표에 능력치 배수 가격이 없었으나 10번째 Decision으로 기준 스테이터스4 가격표를 확정했다.
-5. 감사 도중 main이 PR #73 병합으로 `07b3f15...`로 이동했다. PR #73은 Base v9.4.1 Adapter 7개 파일만 변경했고 PR #72 게임 정본 변경 경로와 겹치지 않는다. PR #72는 최신 main을 반영한 exact head에서 다시 검증해야 한다.
+5. 감사 도중 main이 PR #73 병합으로 `07b3f15...`로 이동했다. PR #74에서 PR #73의 Base v9.4.1 Adapter 7개 파일만 검증한 뒤 merge 방식으로 작업 브랜치에 반영했다. 게임 정본 파일과 경로 충돌은 없었다.
 
 ### 감사 과정의 해석 오류와 복구
 
@@ -108,23 +107,24 @@
 - 체력 피해·중단이 후속 합 지속 여부를 결정한다.
 - 합 패배·동점 자체는 현재 피해 단위만 취소·상쇄한다.
 
-잘못된 해석은 다음 활성 정본·Decision·planning JSON에서 모두 복구했다.
+잘못된 해석은 활성 정본·Decision·planning JSON·Google Sheet에서 모두 복구했다. 이 교정은 새 승인 1건으로 계산하지 않으며 기존 규칙의 의미 복구다.
 
-- `docs/00_TAG_STATUS_REGISTRY.md`
-- `docs/01_GAME_DESIGN.md`
-- `docs/02_COMBAT_RULES.md`
-- `docs/04_ROADMAP.md`
-- `docs/05_COMBAT_POC_SPEC.md`
-- `docs/08_TEST_CHECKLIST.md`
-- `docs/DOCUMENTATION_MAP.md`
-- Active Context
-- 기초 행동·사거리 밖 합·연격 완전 파훼 Decision
-- 관련 approved planning JSON
-- planning-data README
+## 5. Google Sheet 동기화
 
-이 교정은 새 승인 1건으로 계산하지 않으며 기존 규칙의 의미 복구다.
+다음 탭의 쓰기와 readback을 완료했다.
 
-## 5. 의도적으로 변경하지 않은 것
+- `01_작업순서`
+- `02_현재_확정결정`
+- `04_누락_충돌_감사`
+- `05_GDD_요약`
+- `15_조작_게임규칙`
+- `40_핵심시스템_메인콘텐츠`
+- `41_성장_경제`
+- `99_변경이력`
+
+Sheet는 현재 Draft PR Decision·순차 합·기준 스테이터스4를 반영한다. exact head가 확정되면 Draft SHA를 마지막으로 갱신하고, 병합 뒤 main SHA와 `SYNCED_MAIN`, 다음 승인 카운트 `0/10`을 기록한다.
+
+## 6. 의도적으로 변경하지 않은 것
 
 - 제품 코드·Scene·런타임 데이터.
 - 현재 8개 기초 행동 데이터와 ActionSelectionDock.
@@ -136,7 +136,7 @@
 - 평점·시즌·매칭·서버·보안.
 - Godot·Windows·네트워크·접근성·사람 검증 상태.
 
-## 6. 병합 차단 조건
+## 7. 병합 차단 조건
 
 다음 중 하나라도 남으면 병합하지 않는다.
 
@@ -150,7 +150,7 @@
 - 제품 코드·런타임 데이터의 무단 변경.
 - `첫 피해 단위만 합`, `후속타는 다시 합하지 않음`이 활성 정본에 남음.
 
-## 7. 현재 판정
+## 8. 현재 판정
 
 ```yaml
 authority_status: CURRENT_APPROVED_PLANNING_PRESERVED
@@ -162,8 +162,10 @@ human_validation: NOT_RUN
 p0_open: 0
 p1_document_drift_open: 0
 p1_implemented_legacy_gap: BASIC_ACTIONS_8_VS_APPROVED_10
-main_sync_required: true
-sheet_sync_required: true
+main_sync_required: false
+sheet_content_sync_required: false
+sheet_exact_head_refresh_required: true
 ci_required: true
-grillme_count: 10/10
+review_thread_check_required: true
+post_merge_grillme_count: 0/10
 ```
