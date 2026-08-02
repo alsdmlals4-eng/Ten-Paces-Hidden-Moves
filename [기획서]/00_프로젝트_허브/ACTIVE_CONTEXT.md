@@ -34,6 +34,13 @@ PR #73은 Base v9.4.1 공유 Skill Adapter만 변경해 main에 병합됐으며 
 - 공식 챔피언 랭킹전은 양측 관찰을 금지하고 관찰 의존 효과에 공개·대칭·버전 고정 변환표를 적용한다.
 - 태그·상태·범위·검증 어휘는 `docs/00_TAG_STATUS_REGISTRY.md`가 소유한다.
 
+## 역사 연결과 현재 판정
+
+- `Issue #13`은 프로젝트 코어 검토와 PoC 검증 이력을 연결하는 역사 참조다. 현재 작업 지시나 미해결 이슈를 뜻하지 않는다.
+- 과거 상태 `CORE_REVIEW_PENDING`은 사용자 승인 뒤 `CORE_CONFIRMED`로 종료됐다.
+- `STEP 14`는 신규 플레이어 사람 검증 단계이며 현재 `human_validation: NOT_RUN`이다.
+- 과거 이력 토큰은 최신 정본보다 우선하지 않으며, 현재 단계·권한은 이 문서의 `현재 기준`과 최신 Decision이 소유한다.
+
 ## 이번 10개 승인 정본
 
 1. `TEN-DEC-20260802-BASIC-ACTIONS-PALM-CLASH-01`
@@ -115,5 +122,6 @@ windows_validation: NOT_RUN
 network_validation: NOT_RUN
 accessibility_validation: NOT_RUN
 human_validation: NOT_RUN
+human_step14: NOT_RUN
 demo_ready: NO
 ```
