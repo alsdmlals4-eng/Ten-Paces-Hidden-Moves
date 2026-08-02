@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "decision_id": "TEN-DEC-20260802-STARTING-STAT-TOTAL20-MANUAL-BONUS-01",
   "authority_status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "PLANNING_ONLY",
@@ -31,18 +31,38 @@
     "bonus_each": 1,
     "selected_bonus_total": 4,
     "bonus_vectors": {
-      "flowing_cloud_sword": {"agility": 1},
-      "vajra_body": {"constitution": 1},
-      "taiji_flow_sword": {"insight": 1},
-      "wind_chasing_spear": {"external_power": 1},
-      "clear_heart_nourishing": {"internal_power": 1},
-      "shadowless_ten_steps": {"agility": 1}
-    }
+      "flowing_cloud_sword": {
+        "name": "유운검결",
+        "agility": 1
+      },
+      "vajra_body": {
+        "name": "금강호체공",
+        "constitution": 1
+      },
+      "taiji_flow": {
+        "name": "태극유전검",
+        "insight": 1
+      },
+      "pursuing_wind_spear": {
+        "name": "추풍창법",
+        "external_power": 1
+      },
+      "clear_heart_nurturing": {
+        "name": "청심양생공",
+        "internal_power": 1
+      },
+      "shadowless_steps": {
+        "name": "무영십보",
+        "agility": 1
+      }
+    },
+    "bonus_ids_match_poc_martial_arts": true
   },
   "final_starting_stats": {
     "formula": "2 + direct_allocation + sum(selected_manual_star_2_fixed_bonuses)",
     "total": 20,
     "average": 4.0,
+    "total_is_invariant_across_manual_combinations": true,
     "reachable_max_by_stat": {
       "external_power": 7,
       "constitution": 7,
@@ -63,13 +83,15 @@
   "unresolved": [
     "starting_technique_stat_requirements",
     "later_even_star_bonus_vectors_for_4_6_8_stars",
-    "route_node_stat_reward_amounts"
+    "route_node_stat_reward_amounts",
+    "starting_stat_allocation_ui_and_reset_flow"
   ],
   "validation": {
     "direct_allocation_sum": 6,
     "pre_manual_total": 16,
     "selected_manual_bonus_total": 4,
     "final_total": 20,
+    "final_average": 4.0,
     "manual_bonus_applied_after_direct_allocation": true,
     "manual_bonus_not_clamped_at_six": true,
     "double_agility_manual_bonus_stacks": true,
