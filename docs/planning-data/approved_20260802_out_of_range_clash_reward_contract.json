@@ -1,12 +1,13 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "decision_id": "TEN-DEC-20260802-OUT-OF-RANGE-CLASH-REWARD-01",
   "authority_status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "PLANNING_ONLY",
   "grillme_count": "2/10",
   "clash_contract": {
-    "participating_packet": "FIRST_DAMAGE_PACKET_ONLY",
-    "losing_attack_followups_cancelled": true,
+    "comparison_unit": "CURRENT_DAMAGE_PACKET",
+    "losing_current_packet_cancelled_only": true,
+    "tie_cancels_both_current_packets_only": true,
     "out_of_range_clash_still_resolves": true,
     "winner_ultimate_momentum_gain": 1,
     "winner_ultimate_momentum_max_per_attack_action": 1,
@@ -14,14 +15,22 @@
     "out_of_range_health_damage": 0,
     "out_of_range_on_hit": false,
     "out_of_range_on_health_damage": false,
-    "out_of_range_hit_required_target_effects": false
+    "out_of_range_hit_required_target_effects": false,
+    "continue_to_next_packet_when": {
+      "both_attack_actions_active": true,
+      "both_have_next_packet": true
+    },
+    "health_damage_interruption_cancels_remaining_packets": true,
+    "fortitude_may_preserve_attack_and_continue": true,
+    "one_side_exhausted_other_remaining_packets_resolve_solo": true
   },
   "battle_end_grade": {
     "current_decision_id": "TEN-DEC-20260802-BATTLE-GRADE-FIVE-METRICS-01",
     "metric": "clash_wins",
-    "out_of_range_win_count": 1,
+    "records_each_actual_packet_clash_win": true,
     "legacy_threat_response_category_active": false,
-    "legacy_repeat_attenuation_active": false
+    "legacy_repeat_attenuation_active": false,
+    "exact_multihit_clash_win_normalization": "TBD"
   },
   "online_season_rating_change": "NONE",
   "validation": {
