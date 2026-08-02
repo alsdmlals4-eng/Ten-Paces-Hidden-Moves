@@ -5,6 +5,7 @@
 - 상태: `CURRENT_APPROVED_PLANNING`
 - 구현 권한: `PLANNING_ONLY`
 - GrillMe 묶음: `9/10`
+- 후속 가격 결정: `TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01`
 - 복구 근거:
   - `TEN-DEC-20260802-OBSERVATION-STATS-MASTERY-01`
   - `docs/06_STARTING_FACTION_MASTERY_DATA.md`
@@ -19,7 +20,7 @@
 2. 전투 효과·조건 태그
 3. 항상 적용되는 고정 기본치
 4. 주·보조 스테이터스 참조와 각각의 배수
-5. 5·9성 기본 강화와 스테이터스 임계 효과
+5. 5·9성에서 해당 기술에 추가되는 기본 강화와 스테이터스 임계 효과
 
 태그만 적거나 최종 피해 숫자만 적는 기술은 작성 완료로 인정하지 않는다. 각 구성 요소는 `price_id × quantity` ledger 항목으로 추적할 수 있어야 한다.
 
@@ -53,8 +54,6 @@
 
 피해·방어도·회복·자원 회복·방어 파괴처럼 수치 결과가 있는 효과는 기술이 항상 보장하는 고정 기본치를 가진다.
 
-예시 공식:
-
 ```text
 최종 연속 수치 = 고정 기본치 + 스테이터스 참조 보정
 ```
@@ -77,7 +76,7 @@
 - `[강공]`: 고정 피해 + 외공 참조, 속공과 다른 배수
 - `[장풍]`: 고정 피해 + 내공 참조
 
-정확한 고정 피해·배수·반올림은 기술 점수표의 스테이터스 참조 가격 항목을 복구한 뒤 별도 승인한다.
+정확한 고정 피해와 개별 배수는 별도 승인한다.
 
 ## 3. 고정 전용 효과
 
@@ -138,16 +137,19 @@ derived_ticks: price × quantity
 - 중앙 가격 변경은 기존 기술을 자동 수정하지 않고 편차 보고만 생성한다.
 - 5·9성 기본 강화와 임계 효과도 별도 ledger를 가진다.
 
-## 6. 현재 누락과 권위 경계
+## 6. 스테이터스 참조 가격 — 후속 결정으로 해결
 
-현재 `poc_balance_budget.json`에는 고정 수치·태그·조건·비용 가격은 존재하지만 **스테이터스 참조 배수의 중앙 가격 항목이 없다**.
+`TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01`이 이 문서 작성 당시의 가격 누락을 해소한다.
 
-따라서 다음은 아직 확정하지 않는다.
+- 밸런스 기준 스테이터스: 4
+- 초기 스테이터스 설계 중심: 4 전후
+- 배수 작성 기본 단위: 0.25
+- 주·보조 스테이터스: 같은 가격, 보조 할인 없음
+- 배수 틱: `올림(효과 1점 가격 × 배수 × 4)`
+- 실제 수치: 고정치와 모든 능력치 보정을 합산한 뒤 한 번 내림
+- sanity 검사: 스테이터스 1·4·15
 
-- 스테이터스 배수 1단위당 틱 가격
-- 주·보조 스테이터스의 가격 차이
-- 속공·강공·장풍의 정확한 고정 피해와 배수
-- 소수 배수 허용 단위와 최종 반올림
+현재 남은 미확정은 속공·강공·장풍의 정확한 고정 피해와 배수, 시작 스테이터스 총점·분배 방식이다.
 
 기존 `poc_martial_arts.json`의 `ABSOLUTE_RAW_POWER` 기술은 비교·편집용 `POC_HYPOTHESIS`이며, 이 Decision의 능력치 참조 계약을 충족한 최신 공식이 아니다.
 
@@ -159,7 +161,8 @@ derived_ticks: price × quantity
 4. 한 효과가 최대 주1·보조1의 두 스테이터스만 참조함.
 5. 속공·강공은 외공, 장풍은 내공 참조를 기록함.
 6. 태그·고정치·스테이터스 배수·조건·비용이 별도 ledger 행으로 재계산됨.
-7. 스테이터스 참조 가격표가 없는 상태에서 임의 배수를 구현 승인으로 오인하지 않음.
+7. 능력치 배수 가격이 기준 스테이터스 4와 효과별 기존 단가를 사용함.
+8. 주·보조 능력치 분할로 가격을 우회할 수 없음.
 
 ## 8. 구현·증거 경계
 
@@ -181,7 +184,11 @@ fixed_only_effects:
 non_fixed_effect_requires_stat_reference: true
 maximum_stat_references_per_effect: 2
 score_ledger_separates_tag_fixed_stat: true
-stat_reference_price_table: MISSING_TBD
+stat_reference_price_table: APPROVED_BASE4
+pricing_decision: TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01
+balance_reference_stat: 4
+coefficient_snap_step: 0.25
+runtime_rounding: floor_after_total_sum
 runtime_validation: NOT_RUN
 godot_validation: NOT_RUN
 windows_validation: NOT_RUN
