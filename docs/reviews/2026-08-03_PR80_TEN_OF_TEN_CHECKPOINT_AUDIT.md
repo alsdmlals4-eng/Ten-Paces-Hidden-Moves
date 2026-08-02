@@ -4,7 +4,7 @@
 - 감사일: 2026-08-03
 - 대상 PR: `#80`
 - 승인 누적: `10/10`
-- 상태: `PENDING_EXACT_HEAD_VALIDATION_AND_SHEET_READBACK`
+- 상태: `SHEET_SYNCED_PENDING_EXACT_HEAD_VALIDATION`
 - 제품 코드 변경: 없음
 
 ## 1. 감사 목적
@@ -44,6 +44,8 @@
 - 2·4·6·8성 지급량이 미확정이라는 표현
 - 7성 기술 요구치가 미확정이라는 표현
 - 현재 승인 카운트가 0/10 또는 8/10이라는 활성 상태 표현
+
+Google Sheet에는 Decision10·Audit34·핵심 시스템·성장 경제·변경이력과 `10/10_PENDING_MERGE` 상태를 같은 기준 head 계보로 기록했다. 최종 exact head는 마지막 문서 커밋 뒤 다시 기록한다.
 
 ## 4. 7성 요구치 적대적 판정
 
@@ -99,7 +101,7 @@
 
 다음을 모두 충족해야 병합 가능하다.
 
-- Google Sheet Decision10·Audit34·변경이력과 exact head 동기화
+- Google Sheet Decision10·Audit34·변경이력과 exact head 동기화·readback
 - PR 전체 diff에서 제품 코드·런타임 데이터 변경 없음
 - 중앙 책임 문서에서 활성 구형 표현 없음
 - PR Validation·Full Validation·Base v9 Adoption exact-head PASS
@@ -113,8 +115,8 @@
 audit_id: TEN-AUD-034
 approval_count: 10/10
 p0_findings: 0
+sheet_sync: COMPLETE_PENDING_FINAL_HEAD_READBACK
 p1_merge_blockers_before_final_validation:
-  - sheet_sync_and_readback
   - exact_head_ci
   - full_diff_scope_review
   - review_thread_check
