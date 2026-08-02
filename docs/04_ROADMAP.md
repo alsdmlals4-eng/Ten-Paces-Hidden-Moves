@@ -30,7 +30,9 @@ next_package: VERTICAL_SLICE_APP_FLOW_SHELL
 t1_greenlight: NOT_GRANTED
 ```
 
-## 2. 완료된 기획 기준선
+## 2. 프로젝트 코어 확정
+
+완료된 기획 기준선:
 
 - [x] 1대1·10칸·3/3/4·비공개 계획·공개 상태 AI·복기 코어.
 - [x] 기초 행동10종과 전조·준비 분리.
@@ -53,22 +55,9 @@ t1_greenlight: NOT_GRANTED
 
 기획 승인은 런타임 구현·사람 검증 완료를 뜻하지 않는다.
 
-## 3. 남은 기획 Gate
+## 3. 현재 작업
 
-후속 GrillMe에서 결정할 핵심 항목:
-
-- [ ] 시작 스테이터스 총점·최저값·직접 분배 방식.
-- [ ] 속공·강공·장풍의 정확한 고정 피해·배수.
-- [ ] 5개 전투 종료 지표의 가중치·정규화·S/A/B/C 경계.
-- [ ] 한 공격 행동 안의 다수 합 승리 상한·정규화·파밍 방지.
-- [ ] 절초 사용 평가와 패배 전투의 등급 제공 여부.
-- [ ] 챔피언 등록 슬롯·교체·보관 정책.
-- [ ] 시즌 길이·매칭 범위·반복 상대 제한·어뷰징 방지.
-- [ ] 친선전·자기 등록본의 관찰 규칙.
-
-## 4. 다음 BUILD 패키지
-
-패키지: `VERTICAL_SLICE_APP_FLOW_SHELL`.
+현재 구현 우선 패키지는 `VERTICAL_SLICE_APP_FLOW_SHELL`이다.
 
 ```text
 BOOT → MAIN → RUN_SETUP → ROUTE → NODE → DUEL_BRIEFING
@@ -90,6 +79,19 @@ BOOT → MAIN → RUN_SETUP → ROUTE → NODE → DUEL_BRIEFING
 - 주요 비무6~10·천하제일인·챔피언 서버 런타임.
 - 최종 아트·오디오·모바일 포팅.
 - 사람 검증 PASS 주장.
+
+## 4. 남은 기획 Gate
+
+후속 GrillMe에서 결정할 핵심 항목:
+
+- [ ] 시작 스테이터스 총점·최저값·직접 분배 방식.
+- [ ] 속공·강공·장풍의 정확한 고정 피해·배수.
+- [ ] 5개 전투 종료 지표의 가중치·정규화·S/A/B/C 경계.
+- [ ] 한 공격 행동 안의 다수 합 승리 상한·정규화·파밍 방지.
+- [ ] 절초 사용 평가와 패배 전투의 등급 제공 여부.
+- [ ] 챔피언 등록 슬롯·교체·보관 정책.
+- [ ] 시즌 길이·매칭 범위·반복 상대 제한·어뷰징 방지.
+- [ ] 친선전·자기 등록본의 관찰 규칙.
 
 ## 5. 구현 전 Combat Build Gate
 
@@ -137,7 +139,7 @@ champion_battle:
   implementation_status: BLOCKED_NOT_AUTHORIZED
 ```
 
-## 8. 검증 계단
+## 8. 공통 검증 게이트
 
 ```text
 계약·Schema
@@ -151,19 +153,34 @@ champion_battle:
 → evidence report
 ```
 
-실행하지 않은 검증은 `NOT_RUN`이다.
+- 실행하지 않은 검증은 `NOT_RUN`이다.
+- 자동 검증은 Windows·네트워크·사람 검증을 대체하지 않는다.
+- PR은 최신 main을 포함한 exact head에서 검증한다.
+- review thread·Sheet drift·head 이동·P0/P1이 남으면 병합하지 않는다.
 
-## 9. T1 진입 Gate
+## 9. STEP 14
+
+- 신규 플레이어 5명.
+- 4명 이상 치명적 차단 없이 데모 흐름 완료 또는 이탈 이유 기록.
+- 4명 이상 3/3/4와 결정적 원인을 설명.
+- 3명 이상 상대 가능 행동을 조사·추론.
+- 3명 이상 노드 선택 뒤 다음 계획 변경.
+- 3명 이상 재도전에서 계획 변경.
+- 색·모션·음향 단일 채널 의존 없음.
+
+현재 `human_validation: NOT_RUN`이다.
+
+## 10. T1 진입 Gate
 
 - App Flow Shell 자동·Godot 검증.
 - Windows 실제 실행.
 - 접근성·해상도·성능 검증.
-- 신규 플레이어5명 STEP14.
+- 신규 플레이어5명 STEP 14.
 - 두 번째 상대·노드 반복 제작 증거.
 
 현재 `t1_greenlight: NOT_GRANTED`다.
 
-## 10. 온라인 경쟁 Gate
+## 11. 온라인 경쟁 Gate
 
 필요 증거:
 
@@ -174,7 +191,7 @@ champion_battle:
 - 계정·개인정보·보안·네트워크 운영.
 - 사람 경쟁 테스트.
 
-## 11. GrillMe 병합 운영
+## 12. GrillMe 병합 운영
 
 - 살아 있는 사용자 승인10건마다 질문을 중단한다.
 - main·브랜치·PR 전체 diff·정본·planning JSON·Sheet를 다시 읽는다.
@@ -182,9 +199,9 @@ champion_battle:
 - 미해결 리뷰·CI 실패·Sheet 불일치·head 이동·P0/P1이 있으면 병합하지 않는다.
 - exact head만 병합하고 main·Sheet를 재조회한다.
 
-현재 체크포인트는 `10/10 PREMERGE_AUDIT`다. 병합 완료 뒤 `0/10`으로 초기화한다.
+현재 체크포인트는 `10/10 MERGE_GATE`다. 병합 완료 뒤 다음 GrillMe는 `0/10`에서 시작한다.
 
-## 12. 중단·축소 조건
+## 13. 중단·축소 조건
 
 - 성장·노드 선택이 피해 증가만 만든다.
 - 조사·관찰 없이 정답 추측에 의존한다.
