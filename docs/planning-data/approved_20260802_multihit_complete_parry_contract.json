@@ -4,6 +4,7 @@
   "authority_status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "PLANNING_ONLY",
   "grillme_count": "6/10",
+  "supplemented_by": "TEN-DEC-20260802-COMPLETE-PARRY-HP-ONLY-01",
   "counting": {
     "unit": "attack_action",
     "maximum_threat_count_increment_per_attack_action": 1,
@@ -11,12 +12,13 @@
     "derived_hit_index_does_not_create_new_threat": true
   },
   "complete_parry": {
-    "all_effective_damage_units_cancelled": true,
     "zero_health_damage_from_attack_action": true,
-    "no_remaining_effective_followup_damage_units": true,
+    "all_effective_damage_units_cancelled_required": false,
+    "secondary_hostile_effects_cancel_complete_parry": false,
     "increments_repeat_count": true
   },
   "partial_parry": {
+    "definition": "some_damage_units_cancelled_but_attack_action_deals_positive_health_damage",
     "logged": true,
     "shown_in_review": true,
     "increments_repeat_count": false,
@@ -32,10 +34,14 @@
     "in_range_out_of_range_same_complete_parry_condition": true,
     "normalized_threat_id_shared_across_range_state": true
   },
+  "secondary_effects": {
+    "recorded_separately": true,
+    "may_remain_after_zero_damage_block_or_clash": true,
+    "may_be_negated_by_dodge_per_effect_rule": true
+  },
   "unresolved": [
     "exact_threat_response_event_score",
     "partial_parry_score",
-    "non_damage_secondary_effects_complete_parry_rule",
     "basic_palm_exact_damage_formula"
   ],
   "validation": {
