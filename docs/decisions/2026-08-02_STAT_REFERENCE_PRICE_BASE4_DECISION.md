@@ -6,6 +6,7 @@
 - 구현 권한: `PLANNING_ONLY`
 - GrillMe 묶음: `10/10`
 - 선행 결정: `TEN-DEC-20260802-TECHNIQUE-AUTHORING-TAG-FIXED-STAT-01`
+- 시작 스테이터스 후속 결정: `TEN-DEC-20260802-STARTING-STAT-ALLOCATION-FIVE-01`
 
 ## 1. 승인 결론
 
@@ -26,10 +27,12 @@
 
 ## 2. 초기 스테이터스 기준
 
-- 회차 시작 스테이터스 설계는 각 핵심 스테이터스가 **4 전후에서 실제 전투 공식의 기준 성능을 내는 방향**으로 설계한다.
-- 정확한 시작 총점·최저값·최대값·직접 분배량은 별도 성장 Decision에서 확정한다.
-- 기존 전체 운용 범위 `1~15`는 유지한다.
-- 스테이터스 4는 최대치나 평균 보장값이 아니라 기술 예산과 초기 전투 성능을 비교하기 위한 밸런스 기준점이다.
+- 회차 시작 스테이터스는 각 능력치 기본 2, 자유 분배 5점으로 무공 선택 전 총 15를 만든다.
+- 후보 무공 6개 중 4개를 3성으로 선택하며, 각 선택 무공의 2성 고정 영구 스테이터스 보너스를 자유 분배 뒤 적용한다.
+- 스테이터스 4는 자유 분배 직후의 평균 보장값이 아니라 **시작 무공 보너스까지 반영한 최종 시작 빌드와 초기 전투 성능의 검증 중심점**이다.
+- 자유 분배 단계의 능력치별 범위는 2~6이다. 무공 보너스는 이 직접 분배 상한으로 잘리지 않는다.
+- 전체 운용 범위 `1~15`는 유지한다.
+- 무공별 2성 보너스의 정확한 수치·분포는 별도 성장 Decision에서 확정한다.
 
 ## 3. 배수 작성 단위
 
@@ -93,6 +96,13 @@ derived_ticks: ceil(unit_effect_tick_price × coefficient × 4)
 
 복합 기술은 주·보조 스테이터스가 모두 15인 결과도 별도로 검사한다.
 
+시작 빌드는 다음도 별도로 검증한다.
+
+- 기본 2 + 자유 분배 5점의 모든 유효 분배
+- 시작 무공 6개 중 4개 조합
+- 각 조합의 2성 고정 보너스 적용 후 최종 능력치
+- 스테이터스 4 전후 빌드의 비율과 특정 능력치 과집중 여부
+
 ## 7. 확정·미확정 경계
 
 이번에 확정:
@@ -101,12 +111,13 @@ derived_ticks: ceil(unit_effect_tick_price × coefficient × 4)
 - 배수 작성 기본 단위 0.25
 - 주·보조 같은 가격, 할인 없음
 - 능력치 보정 합산 후 한 번 내림
-- 초기 스테이터스 설계 중심을 4 전후로 설정
+- 시작 기본값 2, 자유 분배 5점, 직접 분배 단계 상한 6
+- 시작 무공 2성 보너스를 직접 분배 뒤 적용
 
 후속 미확정:
 
-- 시작 스테이터스 총점과 직접 배분 방식
-- 속공·강공·장풍의 고정 피해와 정확한 배수
+- 여섯 시작 무공 각각의 2성 고정 보너스
+- 무공 보너스 적용 후 시작 능력치 상한
 - 효과별 과성장 허용 범위
 - 5·9성 patch에서 배수 증가 상한
 
@@ -118,7 +129,9 @@ derived_ticks: ceil(unit_effect_tick_price × coefficient × 4)
 4. 기술 결과가 모든 능력치 보정을 합산한 뒤 한 번 내림됨.
 5. 스테이터스 1·4·15 결과를 sanity 검사함.
 6. 배수 단위 변경 시 기존 기술을 자동 수정하지 않음.
-7. 정확한 기초 공격 공식이 별도 승인 전 구현값으로 오인되지 않음.
+7. 시작 자유 분배가 5점이고 무공 선택 전 총합이 15임.
+8. 시작 무공 2성 보너스가 직접 분배 뒤 적용됨.
+9. 정확한 무공별 보너스가 별도 승인 전 구현값으로 오인되지 않음.
 
 ## 9. 구현·증거 경계
 
@@ -128,6 +141,12 @@ scope_status: POC_PRIMARY
 implementation_status: NOT_STARTED
 balance_reference_stat: 4
 initial_stat_design_center: 4
+base_stat_each: 2
+free_allocation_points: 5
+pre_manual_total_stats: 15
+direct_allocation_max_per_stat: 6
+manual_star_2_bonus_applies_after_direct_allocation: true
+manual_bonus_vectors: POC_HYPOTHESIS_TBD
 stat_operating_range: 1..15
 coefficient_snap_step: 0.25
 primary_secondary_same_price: true
