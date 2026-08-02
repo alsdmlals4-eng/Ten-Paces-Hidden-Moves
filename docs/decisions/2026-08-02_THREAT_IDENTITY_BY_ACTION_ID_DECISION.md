@@ -1,114 +1,78 @@
-# 반복 파훼 위협 ID 판별 결정
+# 전투 사건의 안정 행동 ID 판별 결정
 
 - Decision ID: `TEN-DEC-20260802-THREAT-ID-ACTION-01`
 - 승인일: 2026-08-02
-- 상태: `CURRENT_APPROVED_PLANNING`
+- 상태: `CURRENT_APPROVED_PLANNING_LOG_IDENTITY`
 - 구현 권한: `PLANNING_ONLY`
 - GrillMe 묶음: `5/10`
-- 선행 결정: `TEN-DEC-20260802-CLASH-THREAT-ATTENUATION-01`
+- 역사적 선행: `TEN-DEC-20260802-CLASH-THREAT-ATTENUATION-01`
+- 현재 평가 정본: `TEN-DEC-20260802-BATTLE-GRADE-FIVE-METRICS-01`
 
 ## 1. 승인 결론
 
-전투 종료 `위협 대응` 반복 감쇠에서 `같은 위협`은 정확한 기초 행동 ID 또는 무공 기술 ID로 판별한다.
+전투 로그·복기·통계에서 공격 행동의 정체성은 정확한 안정 ID로 판별한다.
 
 ```text
 기초 행동 → basic_action_id
 무공 기술 → technique_id
 절초 → ultimate_technique_id
+정규화 ID → source_type + ':' + source_id
 ```
 
-- 같은 `속공` ID를 반복 파훼하면 같은 위협이다.
-- 같은 `장풍` ID를 반복 파훼하면 같은 위협이다.
-- 같은 무공 기술 ID를 반복 파훼하면 같은 위협이다.
-- 서로 다른 기술 ID는 공개 행동 종류가 모두 `[공격]`이어도 다른 위협이다.
-- 기초 속공과 속공 계열 무공 기술은 ID가 다르므로 다른 위협이다.
+- 같은 속공 ID는 같은 행동 정체성이다.
+- 같은 장풍 ID는 같은 행동 정체성이다.
+- 같은 무공 기술 ID는 같은 행동 정체성이다.
+- 서로 다른 기술 ID는 공개 종류가 모두 `[공격]`이어도 서로 다르다.
+- 기초 속공과 별도 속공계 무공 기술은 다른 ID다.
 
-## 2. 위협 ID를 바꾸지 않는 요소
+## 2. ID를 바꾸지 않는 요소
 
-다음 차이는 같은 행동·기술 ID를 새로운 위협으로 만들지 않는다.
-
-- 외공·내공 등 현재 스테이터스 차이
+- 현재 스테이터스 차이
 - `[준비]` 강화 적용 여부
-- 일시적인 공격력·피해·사거리 강화
-- 현재 거리·방향·대상 차이
-- 자원 잔량과 비용 할인
-- 무공서 성취 상승으로 같은 기술의 수치가 강화된 경우
-- 임시 버프·디버프·상태 효과
+- 일시적인 피해·사거리 보정
+- 현재 거리·방향·대상
+- 자원 잔량·비용 할인
+- 같은 기술의 성취 patch
+- 임시 버프·디버프
+- 표시명·번역 변경
 
-같은 기술의 구조가 영구적으로 변경되어 별도 데이터 ID가 부여된 경우에만 다른 위협으로 계산할 수 있다.
+구조가 영구 개편되어 새 정식 데이터 ID를 받았을 때만 별도 행동으로 취급한다.
 
-## 3. 판별하면 안 되는 기준
+## 3. 현재 전투 종료 등급과의 관계
 
-다음 기준만으로 위협을 묶지 않는다.
+- 현 5지표 등급은 실제 `합 승리 횟수`를 원자료로 기록한다.
+- 같은 행동 ID라는 이유로 현재 합 승리 횟수를 100%→50%→0% 감쇠하지 않는다.
+- 안정 ID는 복기·디버깅·통계와 향후 별도 승인될 파밍 방지 산식에 사용할 수 있다.
+- 모든 `[공격]`을 하나의 ID로 묶지 않는다.
 
-- 공개 행동 종류 `[공격]`
-- 사거리만 동일함
-- 연격 수만 동일함
-- 전조 수만 동일함
-- 피해량이나 내공 비용만 동일함
-- 같은 문파·무공서에서 파생됨
+## 4. 연격·복합 행동
 
-이 기준은 서로 다른 실제 기술을 과도하게 하나로 묶어 다양한 파훼를 감쇠시키므로 사용하지 않는다.
+- `[연격]`의 hit index는 별도 행동 ID가 아니다.
+- 한 공격 효과의 첫 피해 단위와 후속 피해 단위는 같은 source ID를 공유한다.
+- 하나의 복합 기술에 독립 공격 효과가 여러 개 있다면 데이터가 각 공격 효과의 parent action ID와 effect index를 기록할 수 있으나, 기술 정체성은 원본 technique ID를 유지한다.
 
-## 4. 반복 감쇠 연결
+## 5. 검증 요구
 
-한 전투 안에서 같은 정규화 위협 ID의 합 파훼 성공 횟수에 다음 값을 적용한다.
+1. 같은 기초 속공이 동일 정규화 ID로 기록됨.
+2. 기초 속공과 별도 무공 기술은 다른 ID임.
+3. 준비·스테이터스·거리 변화가 ID를 바꾸지 않음.
+4. 표시명 변경이 ID를 바꾸지 않음.
+5. 연격 hit index가 새 행동 ID를 만들지 않음.
+6. 현재 전투 종료 합 승리 횟수에 반복 감쇠가 적용되지 않음.
 
-| 성공 횟수 | 위협 대응 가치 |
-|---:|---:|
-| 1 | 100% |
-| 2 | 50% |
-| 3 이상 | 0% |
-
-- 사거리 안·밖 성공은 같은 ID 카운트를 공유한다.
-- 전투마다 카운트를 초기화한다.
-- 전투 판정·절초기세·`ON_CLASH_WIN`·로그는 감쇠하지 않는다.
-
-## 5. 데이터 계약
-
-권장 필드:
+## 6. 구현·증거 경계
 
 ```yaml
-threat_identity:
-  source_type: basic_action | technique | ultimate
-  source_id: stable canonical id
-  normalized_threat_id: source_type + ':' + source_id
-```
-
-표시명은 현지화·개명될 수 있으므로 감쇠 키로 사용하지 않는다. 동일한 안정 ID를 가진 기술의 이름이 바뀌어도 반복 카운트는 유지한다.
-
-## 6. 미결정 경계
-
-이 결정은 여러 피해 단위를 가진 한 번의 연격 행동이 반복 카운트를 몇 회 증가시키는지는 확정하지 않는다.
-
-- 행동 1회당 1회로 계산할지
-- 실제 합 승리 피해 단위마다 계산할지
-- 서로 다른 파생 타격에 별도 하위 ID를 줄지
-
-이 항목은 후속 GrillMe에서 정한다.
-
-## 7. 검증 요구
-
-1. 동일한 `basic_quick_attack` 파훼가 100%→50%→0%로 감쇠됨.
-2. `basic_quick_attack`과 별도 무공 기술 `shadow_quick_strike`는 다른 위협으로 각각 첫 성공 100%를 가짐.
-3. 같은 기술에 `[준비]` 강화가 붙어도 같은 위협으로 계산됨.
-4. 같은 기술의 거리·피해·스테이터스가 달라도 같은 위협으로 계산됨.
-5. 표시명 변경이 반복 카운트를 초기화하지 않음.
-6. 모든 `[공격]`을 하나의 위협으로 묶지 않음.
-7. 전투마다 위협 ID별 성공 횟수가 초기화됨.
-
-## 8. 구현·증거 경계
-
-```yaml
-authority_status: CURRENT_APPROVED_PLANNING
+authority_status: CURRENT_APPROVED_PLANNING_LOG_IDENTITY
 scope_status: POC_PRIMARY
 implementation_status: NOT_STARTED
 identity_basis: EXACT_CANONICAL_ACTION_OR_TECHNIQUE_ID
 name_used_as_identity: false
 public_category_used_as_identity: false
 temporary_modifiers_create_new_identity: false
-multi_hit_counting_unit: TBD
-static_validation: PENDING_DRAFT_PR
+multi_hit_subpacket_creates_new_identity: false
+current_battle_grade_repeat_attenuation: false
+future_anti_farming_input_allowed_with_new_decision: true
 runtime_validation: NOT_RUN
 godot_validation: NOT_RUN
 windows_validation: NOT_RUN
