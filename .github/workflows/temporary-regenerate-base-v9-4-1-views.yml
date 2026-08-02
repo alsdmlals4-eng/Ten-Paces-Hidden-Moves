@@ -22,6 +22,7 @@ jobs:
         with:
           repository: alsdmlals4-eng/Base
           ref: 79cae496b89eb519d93b1430ceb0caa13ac77d8b
+          fetch-depth: 0
           path: base-release
       - name: Regenerate official compatibility views
         working-directory: project
