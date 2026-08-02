@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "PLANNING_ONLY",
+  "grillme_count": "1/10",
+  "budget_unit": {
+    "ticks_per_point": 20,
+    "automatic_tolerance_ticks": 5,
+    "slot_budget_points": {
+      "1": 1.0,
+      "2": 2.5,
+      "3": 4.0
+    },
+    "slot_budget_ticks": {
+      "1": 20,
+      "2": 50,
+      "3": 80
+    }
+  },
+  "pricing": {
+    "range_per_tile_beyond_one_ticks": 4,
+    "stamina_cost_credit_per_point_ticks": -4,
+    "internal_cost_credit_per_point_ticks": -7,
+    "momentum_cost_5_credit_ticks": -30,
+    "self_health_cost_credit_per_point_ticks": -3,
+    "resource_cost_credit_requires_guaranteed_payment": true,
+    "refunded_or_waived_cost_gets_full_credit": false,
+    "range_and_resource_are_separate_ledger_entries": true
+  },
+  "formulas": {
+    "quick_attack": {
+      "slots": 1,
+      "range": 1,
+      "costs": {
+        "stamina": 1,
+        "internal": 0
+      },
+      "fixed_damage": 3,
+      "stat": "external_power",
+      "coefficient": 0.5,
+      "runtime_formula": "floor(3 + external_power * 0.50)",
+      "ledger_ticks_at_stat_4": 21,
+      "target_ticks": 20,
+      "variance_ticks": 1,
+      "within_auto_tolerance": true
+    },
+    "heavy_attack": {
+      "slots": 2,
+      "telegraph_slots": 1,
+      "range": 2,
+      "costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "fixed_damage": 7,
+      "stat": "external_power",
+      "coefficient": 1.0,
+      "runtime_formula": "floor(7 + external_power * 1.00)",
+      "ledger_ticks_at_stat_4": 48,
+      "target_ticks": 50,
+      "variance_ticks": -2,
+      "within_auto_tolerance": true
+    },
+    "basic_palm": {
+      "slots": 2,
+      "telegraph_slots": 1,
+      "range": 3,
+      "costs": {
+        "stamina": 0,
+        "internal": 1
+      },
+      "fixed_damage": 2,
+      "stat": "internal_power",
+      "coefficient": 0.5,
+      "runtime_formula": "floor(2 + internal_power * 0.50)",
+      "must_be_lower_than_quick_at_equal_stat": true,
+      "ledger_ticks_at_stat_4": 21,
+      "target_ticks": 50,
+      "variance_ticks": -29,
+      "within_auto_tolerance": false,
+      "spare_ticks": 29,
+      "spare_budget_resolution": "TBD_FOLLOWUP_DECISION"
+    }
+  },
+  "sanity_checks": {
+    "stat_points": [1, 4, 15],
+    "quick_attack_damage": [3, 5, 10],
+    "heavy_attack_damage": [8, 11, 22],
+    "basic_palm_damage": [2, 4, 9]
+  },
+  "legacy_boundary": {
+    "runtime_quick_absolute_damage": 6,
+    "runtime_heavy_absolute_damage": 8,
+    "runtime_basic_palm_exists": false,
+    "runtime_status": "IMPLEMENTED_LEGACY",
+    "product_code_changed": false
+  },
+  "validation": {
+    "static_validation": "PENDING_DRAFT_PR",
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  }
+}
