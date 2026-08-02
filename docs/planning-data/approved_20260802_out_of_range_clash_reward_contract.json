@@ -40,8 +40,11 @@
     "event_id": "out_of_range_clash_win",
     "primary_category": "threat_response",
     "must_affect_score": true,
+    "relative_value_to_in_range_clash_win": "EQUAL",
     "automatic_double_count_into_tactical_execution": false,
-    "exact_event_score": "TBD"
+    "followup_decision_id": "TEN-DEC-20260802-OUT-OF-RANGE-CLASH-GRADE-01",
+    "exact_event_score": "TBD",
+    "repeat_cap_or_decay": "TBD"
   },
   "scope": {
     "single_player_major_duels": true,
