@@ -29,7 +29,12 @@
       "damage_management_15",
       "public_objective_15"
     ],
-    "thresholds": ["S85", "A70", "B55", "C0"],
+    "thresholds": [
+      "S85",
+      "A70",
+      "B55",
+      "C0"
+    ],
     "active": false
   },
   "event_semantics_preserved": {
