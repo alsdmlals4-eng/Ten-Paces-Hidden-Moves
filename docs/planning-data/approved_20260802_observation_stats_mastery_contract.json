@@ -1,1 +1,94 @@
-{}
+{
+  "schema_version": 3,
+  "decision_id": "TEN-DEC-20260802-OBSERVATION-STATS-MASTERY-01",
+  "status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "NONE",
+  "followup_starting_stat_decision": "TEN-DEC-20260802-STARTING-STAT-TOTAL20-MANUAL-BONUS-01",
+  "duel_structure": {
+    "core_duels": 5,
+    "candidates_per_slot": 3,
+    "total_demo_candidates": 15,
+    "slot_learning_role_fixed": true,
+    "first_duel_selection": "SEEDED_ONE_OF_THREE",
+    "later_duel_selection": "PRESENT_TWO_OF_THREE_AND_ROUTE_SELECT"
+  },
+  "pre_duel_intel": {
+    "intro": "SHORT_WUXIA_INTRO_ONLY",
+    "visible": ["permanent_stats", "owned_manuals", "manual_mastery", "currently_usable_techniques", "public_technique_rules"],
+    "hidden": ["current_bundle_action_selection", "action_order", "direction_and_target", "ai_weights", "preferred_actions", "canonical_counter_solution"]
+  },
+  "observation": {
+    "player_only": true,
+    "enemy_can_observe": false,
+    "base_gain": 1,
+    "storage_cap": null,
+    "reveal_order": "EARLIEST_FUTURE_SLOT_FIRST",
+    "spill_across_bundles": true,
+    "spill_across_rounds": true,
+    "future_bundle_generation": "JUST_IN_TIME_AT_BUNDLE_START",
+    "reveal_categories": ["TELEGRAPH", "MOVE", "ATTACK", "DEFEND", "EVADE", "STANCE", "RESOURCE", "OBSERVE"],
+    "composite_reveal": "SHOW_ALL_COMPONENT_CATEGORIES",
+    "does_not_reveal": ["technique_name", "manual_name", "exact_cost", "direction", "distance", "damage", "exact_range", "target", "exact_secondary_values"]
+  },
+  "bundle_flow": {
+    "round_bundles": [3, 3, 4],
+    "sequence": ["RESOLVE_PREVIOUS_STATE", "ENEMY_PLAN_CURRENT_BUNDLE_FROM_PUBLIC_STATE", "LOCK_ENEMY_PLAN", "APPLY_RESERVED_OBSERVATION", "PLAYER_PLAN_CURRENT_BUNDLE", "LOCK_PLAYER_PLAN", "RESOLVE_BUNDLE"],
+    "enemy_future_bundle_prelock": false,
+    "enemy_reads_unconfirmed_player_plan": false
+  },
+  "settlement_pressure": {
+    "starts_after_round": 3,
+    "first_application_round_end": 4,
+    "base_percent_max_health": 0.1,
+    "flat_increment_per_stage": 5,
+    "formula": "max_health*0.10 + (round-3)*5",
+    "simultaneous": true,
+    "bypasses_defense": true,
+    "simultaneous_ko_tiebreak": ["PRE_PRESSURE_REMAINING_HEALTH_RATIO", "CURRENT_ROUND_EFFECTIVE_HEALTH_DAMAGE", "DRAW"]
+  },
+  "stats": {
+    "core_range": {"min": 1, "max": 15},
+    "primary": ["EXTERNAL", "CONSTITUTION", "MOVEMENT", "INTERNAL", "INSIGHT"],
+    "ko_names": {"EXTERNAL": "외공", "CONSTITUTION": "근골", "MOVEMENT": "신법", "INTERNAL": "내공", "INSIGHT": "심안"},
+    "starting_allocation": {
+      "authority_decision": "TEN-DEC-20260802-STARTING-STAT-TOTAL20-MANUAL-BONUS-01",
+      "base_each": 2,
+      "free_points": 6,
+      "pre_manual_total": 16,
+      "direct_allocation_cap_per_stat": 6,
+      "manual_star_2_bonuses_apply_after_direct_allocation": true,
+      "selected_manual_bonus_total": 4,
+      "final_starting_total": 20,
+      "final_starting_average": 4.0,
+      "manual_bonus_vectors_contract": "docs/planning-data/approved_20260802_starting_stat_total20_manual_bonus_contract.json"
+    },
+    "legacy_deprecated_primary_stats": ["attack_power", "defense"],
+    "structural_values_threshold_only": ["move_distance", "attack_range", "observation_gain", "action_slots", "evade_count", "telegraph_slots", "composite_action_shape", "cost_reduction", "interrupt_permission", "counter_permission"]
+  },
+  "manual_mastery": {
+    "min_star": 1,
+    "max_star": 10,
+    "starting_star": 3,
+    "starting_manual_candidates": 6,
+    "starting_manuals_chosen": 4,
+    "training_points_are_manual_level": true,
+    "technique_specific_training": false,
+    "destination_costs": {"4": 2, "5": 3, "6": 4, "7": 5, "8": 6, "9": 8, "10": 10},
+    "rewards": {"1": "PASSIVE", "2": "FIXED_PERMANENT_STAT_BONUS", "3": "TECHNIQUE_1_UNLOCK_CHECK", "4": "FIXED_PERMANENT_STAT_BONUS", "5": "TECHNIQUE_1_PATCH_AND_STAT_THRESHOLD", "6": "FIXED_PERMANENT_STAT_BONUS", "7": "TECHNIQUE_2_UNLOCK_CHECK", "8": "FIXED_PERMANENT_STAT_BONUS", "9": "TECHNIQUE_2_PATCH_AND_STAT_THRESHOLD", "10": "MANUAL_ULTIMATE_UNLOCK_CHECK"},
+    "even_star_bonus_selection": "FIXED_PER_MANUAL",
+    "starting_star_2_bonus_applies_immediately": true,
+    "star_up_stat_requirement": false,
+    "new_technique_stat_requirement_stars": [3, 7, 10],
+    "ultimate_reward": "ULTIMATE_ONLY",
+    "truth_choice": false,
+    "locked_technique_behavior": {"manual_can_continue_training": true, "unlock_opportunity_lost": false, "auto_enable_when_permanent_stats_met": true, "temporary_stat_drop_relocks": false}
+  },
+  "permanent_stat_sources": ["STARTING_DIRECT_ALLOCATION", "MANUAL_EVEN_STAR_FIXED_BONUSES", "ROUTE_NODE_REWARDS"],
+  "verification": {
+    "static_contract": "REQUIRED",
+    "starting_stat_contract": "docs/planning-data/approved_20260802_starting_stat_total20_manual_bonus_contract.json",
+    "godot_runtime": "NOT_RUN",
+    "windows_human": "NOT_RUN",
+    "demo_ready": false
+  }
+}
