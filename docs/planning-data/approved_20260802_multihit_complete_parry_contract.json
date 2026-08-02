@@ -1,13 +1,22 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "decision_id": "TEN-DEC-20260802-MULTIHIT-COMPLETE-PARRY-01",
   "authority_status": "CURRENT_APPROVED_PLANNING_LOG_EVENT",
   "implementation_authority": "PLANNING_ONLY",
   "grillme_count": "6/10",
   "clash_contract": {
-    "participating_packet": "FIRST_DAMAGE_PACKET_ONLY",
-    "losing_or_tied_attack_followups_cancelled": true,
-    "winning_attack_followups_reclash": false,
+    "comparison_unit": "CURRENT_DAMAGE_PACKET",
+    "process_front_to_back": true,
+    "losing_current_packet_cancelled_only": true,
+    "tie_cancels_both_current_packets_only": true,
+    "continue_when": {
+      "both_attack_actions_active": true,
+      "both_have_next_packet": true
+    },
+    "common_continue_case": "ZERO_HEALTH_DAMAGE_TO_BOTH",
+    "health_damage_interruption_cancels_remaining_packets": true,
+    "fortitude_may_prevent_interruption_and_allow_continuation": true,
+    "one_side_exhausted_other_remaining_packets_resolve_solo": true,
     "ultimate_momentum_max_per_attack_action": 1
   },
   "complete_parry_event": {
@@ -24,8 +33,10 @@
   },
   "current_battle_grade": {
     "decision_id": "TEN-DEC-20260802-BATTLE-GRADE-FIVE-METRICS-01",
+    "records_each_actual_packet_clash_win": true,
     "direct_complete_parry_score": false,
-    "repeat_attenuation_active": false
+    "repeat_attenuation_active": false,
+    "exact_multihit_clash_win_normalization": "TBD"
   },
   "validation": {
     "static_validation": "PENDING_PR_CHECKPOINT",
