@@ -1,40 +1,33 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "decision_id": "TEN-DEC-20260802-CLASH-THREAT-ATTENUATION-01",
-  "authority_status": "CURRENT_APPROVED_PLANNING",
-  "implementation_authority": "PLANNING_ONLY",
+  "authority_status": "SUPERSEDED_FOR_CURRENT_BATTLE_GRADE",
+  "implementation_authority": "HOLD_PLANNING_CANDIDATE",
   "grillme_count": "4/10",
-  "battle_end_grade": {
-    "category": "threat_response",
-    "repeat_scope": "per_battle",
-    "same_threat_repeat_multipliers": [1.0, 0.5, 0.0],
-    "third_and_later_multiplier": 0.0,
-    "different_threat_first_success_multiplier": 1.0,
-    "in_range_out_of_range_symmetric": true,
-    "automatic_tactical_execution_double_count": false
+  "superseded_by": "TEN-DEC-20260802-BATTLE-GRADE-FIVE-METRICS-01",
+  "historical_candidate": {
+    "same_threat_repeat_multipliers": [
+      1.0,
+      0.5,
+      0.0
+    ],
+    "reset_scope": "per_battle",
+    "in_range_out_of_range_symmetric": true
   },
-  "threat_identity": {
-    "basis": "EXACT_CANONICAL_ACTION_OR_TECHNIQUE_ID",
-    "successor_decision_id": "TEN-DEC-20260802-THREAT-ID-ACTION-01",
-    "must_not_group_all_attack_categories_together": true,
-    "multi_hit_counting_unit": "TBD"
+  "current_battle_grade": {
+    "application_active": false,
+    "clash_win_raw_count_records_all_successes": true,
+    "requires_new_decision_to_reintroduce": true
   },
   "combat_results_not_attenuated": {
     "clash_resolution": true,
-    "loser_current_hit_cancelled": true,
     "ultimate_momentum_gain": true,
     "on_clash_win_effects": true,
-    "combat_log": true,
-    "review_event": true
+    "combat_log": true
   },
-  "scope": {
-    "single_player_major_duels": true,
-    "champion_finale": true,
-    "future_modes_with_battle_end_grade": true,
-    "online_season_rating": false
-  },
+  "online_season_rating_change": "NONE",
   "validation": {
-    "static_validation": "PENDING_DRAFT_PR",
+    "static_validation": "PENDING_PR_CHECKPOINT",
     "runtime_validation": "NOT_RUN",
     "godot_validation": "NOT_RUN",
     "windows_validation": "NOT_RUN",
