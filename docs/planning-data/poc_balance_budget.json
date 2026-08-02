@@ -1,5 +1,5 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "data_role": "NON_RUNTIME_POC_PLANNING",
   "status": "POC_HYPOTHESIS",
   "editable": true,
@@ -8,6 +8,11 @@
     "display_step": 0.05,
     "ticks_per_display_step": 1,
     "ticks_per_budget_point": 20
+  },
+  "slot_budget_points": {
+    "1": 1.0,
+    "2": 2.5,
+    "3": 4.0
   },
   "slot_budget_ticks": {
     "1": 20,
@@ -38,6 +43,25 @@
     "per_hit_effect_base": 5,
     "medical_per_point": 5
   },
+  "range_pricing_contract": {
+    "authority_decision": "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
+    "base_attack_range": 1,
+    "base_range_extra_ticks": 0,
+    "per_tile_beyond_one_ticks": 4,
+    "per_tile_beyond_one_points": 0.2,
+    "separate_ledger_entry_required": true
+  },
+  "resource_cost_credit_contract": {
+    "authority_decision": "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
+    "credits_are_authoring_budget_not_runtime_score": true,
+    "guaranteed_payment_required": true,
+    "refunded_or_waived_cost_gets_full_credit": false,
+    "stamina_1_credit_ticks": -4,
+    "internal_1_credit_ticks": -7,
+    "momentum_5_credit_ticks": -30,
+    "self_health_1_credit_ticks": -3,
+    "resource_gain_and_cost_use_separate_ledger_entries": true
+  },
   "stat_reference_pricing": {
     "status": "CURRENT_APPROVED_PLANNING",
     "authority_decision": "TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01",
@@ -56,10 +80,34 @@
       15
     ]
   },
+  "approved_basic_attack_formulas": {
+    "authority_decision": "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
+    "quick_attack": {
+      "formula": "floor(3 + external_power * 0.50)",
+      "ledger_ticks_at_stat_4": 21,
+      "target_ticks": 20,
+      "variance_ticks": 1
+    },
+    "heavy_attack": {
+      "formula": "floor(7 + external_power * 1.00)",
+      "ledger_ticks_at_stat_4": 48,
+      "target_ticks": 50,
+      "variance_ticks": -2
+    },
+    "basic_palm": {
+      "formula": "floor(2 + internal_power * 0.50)",
+      "ledger_ticks_at_stat_4": 21,
+      "target_ticks": 50,
+      "variance_ticks": -29,
+      "spare_ticks": 29,
+      "spare_budget_resolution": "TBD_FOLLOWUP_DECISION"
+    }
+  },
   "authoring_selection_contract": {
     "authority_status": "CURRENT_APPROVED_PLANNING",
     "decision_id": "TEN-DEC-20260802-TECHNIQUE-AUTHORING-TAG-FIXED-STAT-01",
     "pricing_decision_id": "TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01",
+    "basic_attack_formula_decision_id": "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
     "order": [
       "structure_and_cost",
       "tags",
@@ -153,7 +201,10 @@
   "authoring_rules": [
     "Authoring UI may display decimals but stores integer ticks.",
     "All input values snap to 0.05 budget increments.",
-    "Tags, fixed base values, and stat-reference coefficients must use separate ledger entries.",
+    "Slot budgets are 1.0, 2.5, and 4.0 points for 1, 2, and 3 slots.",
+    "Tags, fixed base values, stat-reference coefficients, range, and resource costs must use separate ledger entries.",
+    "Attack range beyond one tile consumes 4 ticks per additional tile.",
+    "Guaranteed non-refundable resource costs grant authoring credits; waived or refunded costs do not receive full credit.",
     "Observation, movement, dodge, and strengthen are fixed-only effects without continuous stat scaling.",
     "All other numeric action effects require at least one explicit stat reference.",
     "Stat-reference coefficients snap to 0.25 and are priced at balance reference stat 4.",
