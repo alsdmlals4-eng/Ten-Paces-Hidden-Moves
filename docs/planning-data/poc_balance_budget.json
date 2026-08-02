@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 5,
   "data_role": "NON_RUNTIME_POC_PLANNING",
   "status": "POC_HYPOTHESIS",
   "editable": true,
@@ -37,6 +37,47 @@
     "once_per_action_effect_base": 4,
     "per_hit_effect_base": 5,
     "medical_per_point": 5
+  },
+  "stat_reference_pricing": {
+    "status": "CURRENT_APPROVED_PLANNING",
+    "authority_decision": "TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01",
+    "balance_reference_stat": 4,
+    "initial_stat_design_center": 4,
+    "coefficient_snap_step": 0.25,
+    "primary_secondary_same_price": true,
+    "secondary_discount": false,
+    "derived_tick_formula": "ceil(effect_unit_tick_price * coefficient * 4)",
+    "runtime_value_formula": "floor(fixed_base_value + sum(current_stat_value * coefficient))",
+    "round_each_stat_term": false,
+    "implementation_blocked_until_approved": false,
+    "sanity_check_stat_points": [
+      1,
+      4,
+      15
+    ]
+  },
+  "authoring_selection_contract": {
+    "authority_status": "CURRENT_APPROVED_PLANNING",
+    "decision_id": "TEN-DEC-20260802-TECHNIQUE-AUTHORING-TAG-FIXED-STAT-01",
+    "pricing_decision_id": "TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01",
+    "order": [
+      "structure_and_cost",
+      "tags",
+      "fixed_base_value",
+      "primary_secondary_stat_reference",
+      "mastery_patch_and_stat_threshold"
+    ],
+    "separate_ledger_entries_required": true,
+    "non_fixed_effect_requires_stat_reference": true,
+    "maximum_stat_references_per_effect": 2,
+    "fixed_only_effects": [
+      "observation",
+      "movement",
+      "dodge",
+      "strengthen"
+    ],
+    "structural_values_are_continuous_stat_scaled": false,
+    "tag_quantity_is_continuous_stat_scaled": false
   },
   "condition_credits": {
     "common_public_condition": -3,
@@ -112,6 +153,13 @@
   "authoring_rules": [
     "Authoring UI may display decimals but stores integer ticks.",
     "All input values snap to 0.05 budget increments.",
+    "Tags, fixed base values, and stat-reference coefficients must use separate ledger entries.",
+    "Observation, movement, dodge, and strengthen are fixed-only effects without continuous stat scaling.",
+    "All other numeric action effects require at least one explicit stat reference.",
+    "Stat-reference coefficients snap to 0.25 and are priced at balance reference stat 4.",
+    "Primary and secondary stat references use the same price with no secondary discount.",
+    "Runtime continuous values sum fixed and all stat terms before one floor operation.",
+    "Check each authored technique at stat points 1, 4, and 15.",
     "5-star and 9-star upgrades each receive an additional 5-tick authoring allowance.",
     "Capstones use the 3-slot 80-tick reference even when represented as a passive true meaning.",
     "An out-of-tolerance technique is not auto-fixed; it is flagged for review."
