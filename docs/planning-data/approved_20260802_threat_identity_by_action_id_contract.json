@@ -33,11 +33,16 @@
     "scope": "per_battle_per_normalized_threat_id",
     "multipliers": [1.0, 0.5, 0.0],
     "in_range_out_of_range_share_counter": true,
-    "combat_rewards_attenuated": false
+    "combat_rewards_attenuated": false,
+    "multi_hit_counting_unit": "attack_action",
+    "maximum_increment_per_attack_action": 1,
+    "complete_parry_required": true,
+    "partial_parry_consumes_counter": false,
+    "resolved_by_decision": "TEN-DEC-20260802-MULTIHIT-COMPLETE-PARRY-01"
   },
-  "unresolved": {
-    "multi_hit_counting_unit": "TBD",
-    "derived_sub_hit_identity": "TBD"
+  "derived_sub_hit_identity": {
+    "creates_new_threat": false,
+    "condition_for_separate_identity": "separate_canonical_action_or_technique_id"
   },
   "validation": {
     "static_validation": "PENDING_DRAFT_PR",
