@@ -29,16 +29,16 @@
 
 ## 2. 시작 무공 2성 고정 보너스
 
-| 무공 | 2성 고정 보너스 | 정체성 연결 |
-|---|---:|---|
-| 유운검결 | 신법 +1 | 이동 뒤 연격·순차 합 |
-| 금강호체공 | 근골 +1 | 방어·강건·버티기 |
-| 태극유전검 | 심안 +1 | 대응·간파·반격 |
-| 추풍창법 | 외공 +1 | 거리 병기·외가 공격 |
-| 청심양생공 | 내공 +1 | 내력·회복·양생 |
-| 무영십보 | 신법 +1 | 이동·회피·위치 파훼 |
+| 무공 ID | 무공 | 2성 고정 보너스 | 정체성 연결 |
+|---|---|---:|---|
+| `flowing_cloud_sword` | 유운검결 | 신법 +1 | 이동 뒤 연격·순차 합 |
+| `vajra_body` | 금강호체공 | 근골 +1 | 방어·강건·버티기 |
+| `taiji_flow` | 태극유전검 | 심안 +1 | 대응·간파·반격 |
+| `pursuing_wind_spear` | 추풍창법 | 외공 +1 | 거리 병기·외가 공격 |
+| `clear_heart_nurturing` | 청심양생공 | 내공 +1 | 내력·회복·양생 |
+| `shadowless_steps` | 무영십보 | 신법 +1 | 이동·회피·위치 파훼 |
 
-모든 무공은 같은 총량 `+1`을 지급한다. 기술 성능과 별개로 스테이터스 보너스 총량이 더 큰 무공은 만들지 않는다.
+모든 무공은 같은 총량 `+1`을 지급한다. 기술 성능과 별개로 스테이터스 보너스 총량이 더 큰 무공은 만들지 않는다. 위 ID는 `docs/planning-data/poc_martial_arts.json`의 현재 canonical manual ID와 일치한다.
 
 ## 3. 적용 순서
 
@@ -103,7 +103,8 @@ final_starting_stat
 7. 직접 분배 단계 각 스테이터스가 2~6임.
 8. 무공 보너스가 직접 분배 상한 6으로 잘리지 않음.
 9. 유운검결+무영십보 선택 시 신법 보너스가 +2로 합산됨.
-10. 런타임 구현 완료로 오인하지 않음.
+10. runtime canonical manual ID와 승인 계약 ID가 일치함.
+11. 런타임 구현 완료로 오인하지 않음.
 
 ```yaml
 authority_status: CURRENT_APPROVED_PLANNING
@@ -121,6 +122,13 @@ final_starting_total_stats: 20
 direct_allocation_min_per_stat: 2
 direct_allocation_max_per_stat: 6
 manual_bonus_clamped_by_direct_cap: false
+manual_bonus_vectors:
+  flowing_cloud_sword: {agility: 1}
+  vajra_body: {constitution: 1}
+  taiji_flow: {insight: 1}
+  pursuing_wind_spear: {external_power: 1}
+  clear_heart_nurturing: {internal_power: 1}
+  shadowless_steps: {agility: 1}
 reachable_starting_max:
   external_power: 7
   constitution: 7
