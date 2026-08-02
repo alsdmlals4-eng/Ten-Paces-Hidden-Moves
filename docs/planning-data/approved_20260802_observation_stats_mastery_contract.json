@@ -1,9 +1,9 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "decision_id": "TEN-DEC-20260802-OBSERVATION-STATS-MASTERY-01",
   "status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "NONE",
-  "followup_starting_stat_decision": "TEN-DEC-20260802-STARTING-STAT-ALLOCATION-FIVE-01",
+  "followup_starting_stat_decision": "TEN-DEC-20260802-STARTING-STAT-TOTAL20-MANUAL-BONUS-01",
   "duel_structure": {
     "core_duels": 5,
     "candidates_per_slot": 3,
@@ -14,21 +14,8 @@
   },
   "pre_duel_intel": {
     "intro": "SHORT_WUXIA_INTRO_ONLY",
-    "visible": [
-      "permanent_stats",
-      "owned_manuals",
-      "manual_mastery",
-      "currently_usable_techniques",
-      "public_technique_rules"
-    ],
-    "hidden": [
-      "current_bundle_action_selection",
-      "action_order",
-      "direction_and_target",
-      "ai_weights",
-      "preferred_actions",
-      "canonical_counter_solution"
-    ]
+    "visible": ["permanent_stats", "owned_manuals", "manual_mastery", "currently_usable_techniques", "public_technique_rules"],
+    "hidden": ["current_bundle_action_selection", "action_order", "direction_and_target", "ai_weights", "preferred_actions", "canonical_counter_solution"]
   },
   "observation": {
     "player_only": true,
@@ -39,40 +26,13 @@
     "spill_across_bundles": true,
     "spill_across_rounds": true,
     "future_bundle_generation": "JUST_IN_TIME_AT_BUNDLE_START",
-    "reveal_categories": [
-      "TELEGRAPH",
-      "MOVE",
-      "ATTACK",
-      "DEFEND",
-      "EVADE",
-      "STANCE",
-      "RESOURCE",
-      "OBSERVE"
-    ],
+    "reveal_categories": ["TELEGRAPH", "MOVE", "ATTACK", "DEFEND", "EVADE", "STANCE", "RESOURCE", "OBSERVE"],
     "composite_reveal": "SHOW_ALL_COMPONENT_CATEGORIES",
-    "does_not_reveal": [
-      "technique_name",
-      "manual_name",
-      "exact_cost",
-      "direction",
-      "distance",
-      "damage",
-      "exact_range",
-      "target",
-      "exact_secondary_values"
-    ]
+    "does_not_reveal": ["technique_name", "manual_name", "exact_cost", "direction", "distance", "damage", "exact_range", "target", "exact_secondary_values"]
   },
   "bundle_flow": {
     "round_bundles": [3, 3, 4],
-    "sequence": [
-      "RESOLVE_PREVIOUS_STATE",
-      "ENEMY_PLAN_CURRENT_BUNDLE_FROM_PUBLIC_STATE",
-      "LOCK_ENEMY_PLAN",
-      "APPLY_RESERVED_OBSERVATION",
-      "PLAYER_PLAN_CURRENT_BUNDLE",
-      "LOCK_PLAYER_PLAN",
-      "RESOLVE_BUNDLE"
-    ],
+    "sequence": ["RESOLVE_PREVIOUS_STATE", "ENEMY_PLAN_CURRENT_BUNDLE_FROM_PUBLIC_STATE", "LOCK_ENEMY_PLAN", "APPLY_RESERVED_OBSERVATION", "PLAYER_PLAN_CURRENT_BUNDLE", "LOCK_PLAYER_PLAN", "RESOLVE_BUNDLE"],
     "enemy_future_bundle_prelock": false,
     "enemy_reads_unconfirmed_player_plan": false
   },
@@ -84,21 +44,11 @@
     "formula": "max_health*0.10 + (round-3)*5",
     "simultaneous": true,
     "bypasses_defense": true,
-    "simultaneous_ko_tiebreak": [
-      "PRE_PRESSURE_REMAINING_HEALTH_RATIO",
-      "CURRENT_ROUND_EFFECTIVE_HEALTH_DAMAGE",
-      "DRAW"
-    ]
+    "simultaneous_ko_tiebreak": ["PRE_PRESSURE_REMAINING_HEALTH_RATIO", "CURRENT_ROUND_EFFECTIVE_HEALTH_DAMAGE", "DRAW"]
   },
   "stats": {
     "core_range": {"min": 1, "max": 15},
-    "primary": [
-      "EXTERNAL",
-      "CONSTITUTION",
-      "MOVEMENT",
-      "INTERNAL",
-      "INSIGHT"
-    ],
+    "primary": ["EXTERNAL", "CONSTITUTION", "MOVEMENT", "INTERNAL", "INSIGHT"],
     "ko_names": {
       "EXTERNAL": "외공",
       "CONSTITUTION": "근골",
@@ -107,26 +57,19 @@
       "INSIGHT": "심안"
     },
     "starting_allocation": {
+      "authority_decision": "TEN-DEC-20260802-STARTING-STAT-TOTAL20-MANUAL-BONUS-01",
       "base_each": 2,
-      "free_points": 5,
-      "pre_manual_total": 15,
+      "free_points": 6,
+      "pre_manual_total": 16,
       "direct_allocation_cap_per_stat": 6,
       "manual_star_2_bonuses_apply_after_direct_allocation": true,
-      "manual_bonus_vectors": "POC_HYPOTHESIS_TBD"
+      "selected_manual_bonus_total": 4,
+      "final_starting_total": 20,
+      "final_starting_average": 4.0,
+      "manual_bonus_vectors_contract": "docs/planning-data/approved_20260802_starting_stat_total20_manual_bonus_contract.json"
     },
     "legacy_deprecated_primary_stats": ["attack_power", "defense"],
-    "structural_values_threshold_only": [
-      "move_distance",
-      "attack_range",
-      "observation_gain",
-      "action_slots",
-      "evade_count",
-      "telegraph_slots",
-      "composite_action_shape",
-      "cost_reduction",
-      "interrupt_permission",
-      "counter_permission"
-    ]
+    "structural_values_threshold_only": ["move_distance", "attack_range", "observation_gain", "action_slots", "evade_count", "telegraph_slots", "composite_action_shape", "cost_reduction", "interrupt_permission", "counter_permission"]
   },
   "manual_mastery": {
     "min_star": 1,
@@ -162,14 +105,10 @@
       "temporary_stat_drop_relocks": false
     }
   },
-  "permanent_stat_sources": [
-    "STARTING_DIRECT_ALLOCATION",
-    "MANUAL_EVEN_STAR_FIXED_BONUSES",
-    "ROUTE_NODE_REWARDS"
-  ],
+  "permanent_stat_sources": ["STARTING_DIRECT_ALLOCATION", "MANUAL_EVEN_STAR_FIXED_BONUSES", "ROUTE_NODE_REWARDS"],
   "verification": {
     "static_contract": "REQUIRED",
-    "starting_stat_allocation_contract": "docs/planning-data/approved_20260802_starting_stat_allocation_five_contract.json",
+    "starting_stat_contract": "docs/planning-data/approved_20260802_starting_stat_total20_manual_bonus_contract.json",
     "godot_runtime": "NOT_RUN",
     "windows_human": "NOT_RUN",
     "demo_ready": false
