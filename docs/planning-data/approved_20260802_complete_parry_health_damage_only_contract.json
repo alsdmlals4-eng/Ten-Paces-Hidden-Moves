@@ -13,13 +13,14 @@
   },
   "secondary_effect_interaction": {
     "may_apply_after_block": true,
-    "may_apply_after_clash_zero_damage": true,
+    "may_apply_after_zero_damage_clash": true,
     "may_be_negated_by_dodge": true,
     "all_secondary_effects_are_dodge_only": false,
+    "resolved_per_technique_or_effect_rule": true,
     "example": {
       "effect": "push",
       "block_zero_damage": "push_applies",
-      "clash_zero_damage": "push_may_apply_per_technique_rule",
+      "clash_zero_damage": "push_applies_when_attack_effect_rule_survives_clash",
       "dodge": "push_does_not_apply"
     }
   },
