@@ -5,7 +5,7 @@
 - 대상 PR: `#80`
 - 기준 head 소유권: `PR #80 metadata + Google Sheet checkpoint row`
 - 승인 누적: `10/10`
-- 상태: `SHEET_SYNCED_PENDING_EXACT_HEAD_VALIDATION`
+- 상태: `FINAL_VALIDATION_IN_PROGRESS`
 - 제품 코드 변경: 없음
 
 ## 1. 감사 목적
@@ -120,11 +120,6 @@ approval_count: 10/10
 exact_head_source: PR_METADATA_AND_SHEET
 p0_findings: 0
 sheet_sync: COMPLETE_PENDING_FINAL_HEAD_READBACK
-p1_merge_blockers_before_final_validation:
-  - exact_head_ci
-  - full_diff_scope_review
-  - review_thread_check
-  - head_stability_check
 runtime_changed: false
 runtime_validation: NOT_RUN
 godot_validation: NOT_RUN
