@@ -9,8 +9,9 @@
 ## 1. 현재 단계
 
 ```yaml
-current_main: 76b48a1d5d4d3f8e91511d9b925672a9f6477c68
+last_planning_checkpoint_merge: 76b48a1d5d4d3f8e91511d9b925672a9f6477c68
 last_checkpoint_pr: 72
+post_merge_state_sync_pr: 78
 last_checkpoint_state: MERGED_MAIN_SHEET_SYNCED
 current_approval_count: 0/10
 phase: VERTICAL_SLICE_APP_FLOW_PLANNING
@@ -31,7 +32,7 @@ next_package: VERTICAL_SLICE_APP_FLOW_SHELL
 t1_greenlight: NOT_GRANTED
 ```
 
-PR #72의 10개 승인 정본은 exact head `8adacf69bb4373fc6ffd15af7c77c2706a22cb89`에서 필수 CI 3종을 통과한 뒤 main `76b48a1d5d4d3f8e91511d9b925672a9f6477c68`로 병합됐다. 다음 GrillMe 승인 카운트는 `0/10`이다.
+PR #72의 10개 승인 정본은 exact head `8adacf69bb4373fc6ffd15af7c77c2706a22cb89`에서 필수 CI 3종을 통과한 뒤 planning checkpoint merge `76b48a1d5d4d3f8e91511d9b925672a9f6477c68`로 병합됐다. PR #78에서 병합 후 상태 문서를 동기화했으며, 다음 GrillMe 승인 카운트는 `0/10`이다.
 
 ## 2. 프로젝트 코어 확정
 
