@@ -6,13 +6,13 @@
     "repository": "alsdmlals4-eng/Base"
   },
   "base_release": {
-    "release_commit": "a728712cb776ec98f4875914a580fcf7d0156593",
-    "release_evidence_commit": "ef1fba11167e4da0b298123b0c85ebd268191a42",
+    "release_commit": "3f2c4a624d302b704c1b5322eb5c9f34ad55abb9",
+    "release_evidence_commit": "ff117d24d5bdb121314e109a6aa9b4f552e0fdc1",
     "repository": "alsdmlals4-eng/Base",
-    "version": "9.4.0"
+    "version": "9.4.1"
   },
   "canonical_source": "skills/PROJECT_BASE_ADAPTER.json",
-  "canonical_source_sha256": "cac7497774b74fec6a2d6615fc925438713f3805a1e398698756bb85b1a78adc",
+  "canonical_source_sha256": "c1da99aa52a58b0cd87ac38baeeb6303e920c0661fdbe62478c463ce604a8f22",
   "canonical_sources": [
     "docs/01_GAME_DESIGN.md",
     "docs/02_COMBAT_RULES.md",
@@ -32,7 +32,7 @@
   "generated": true,
   "hash_definition": "RAW_FILE_BYTES_SHA256",
   "legacy_source": "docs/archive/base-v9-legacy-inputs/PROJECT_BASE_SKILL_ADAPTER.json",
-  "legacy_source_sha256": "4eab647b1c6fd4b896a2ce5ad944bed1f9598de2064d2082deb1e51877933053",
+  "legacy_source_sha256": "af3d44382bd7f440c2d5d7662924e4a8d9053cfa1bcd44df88fd930ff87c4c6f",
   "license_record": "docs/technical/THIRD_PARTY_LICENSES.md",
   "lifecycle": "ONE_CYCLE",
   "project": {
@@ -110,8 +110,7 @@
     "reviewing-and-validating-project-changes": {},
     "running-adversarial-review-and-refinement": {},
     "simplifying-skill-bodies": {},
-    "synchronizing-local-and-github-state": {},
-    "optimizing-ai-model-and-prompt-costs": {}
+    "synchronizing-local-and-github-state": {}
   },
   "third_party_inventory": "docs/technical/ADOPTED_ASSETS.md",
   "validators": [
