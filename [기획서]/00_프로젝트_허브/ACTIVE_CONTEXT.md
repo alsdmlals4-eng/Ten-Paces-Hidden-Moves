@@ -7,8 +7,9 @@
 ```yaml
 project: 십보강호: 숨은 수의 비무
 repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
-current_main: 76b48a1d5d4d3f8e91511d9b925672a9f6477c68
+last_planning_checkpoint_merge: 76b48a1d5d4d3f8e91511d9b925672a9f6477c68
 last_checkpoint_pr: 72
+post_merge_state_sync_pr: 78
 last_checkpoint_state: MERGED_MAIN_SHEET_SYNCED
 current_approval_count: 0/10
 primary_platform: PC
@@ -26,7 +27,7 @@ human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
 ```
 
-PR #72는 exact head `8adacf69bb4373fc6ffd15af7c77c2706a22cb89`에서 Full Validation·PR Validation·Base v9 adoption 검증을 통과한 뒤 main `76b48a1d5d4d3f8e91511d9b925672a9f6477c68`로 병합됐다. Google Sheet도 같은 main SHA와 다음 승인 `0/10`으로 동기화·재조회했다.
+PR #72는 exact head `8adacf69bb4373fc6ffd15af7c77c2706a22cb89`에서 Full Validation·PR Validation·Base v9 adoption 검증을 통과한 뒤 planning checkpoint merge `76b48a1d5d4d3f8e91511d9b925672a9f6477c68`로 병합됐다. Google Sheet도 해당 checkpoint SHA와 다음 승인 `0/10`으로 동기화·재조회했으며, PR #78에서 병합 후 상태 문서를 닫았다.
 
 PR #73은 Base v9.4.1 공유 Skill Adapter만 변경했으며 PR #72의 게임 정본 파일과 변경 경로가 겹치지 않는다.
 
