@@ -6,6 +6,7 @@
 - 구현 권한: `PLANNING_ONLY`
 - GrillMe 묶음: `2/10`
 - 선행 결정: `TEN-DEC-20260802-BASIC-ACTIONS-PALM-CLASH-01`
+- 후속 평가 결정: `TEN-DEC-20260802-OUT-OF-RANGE-CLASH-GRADE-01`
 
 ## 1. 용어 교정
 
@@ -67,6 +68,7 @@ clash_win_gain: 1
 
 - 결과 로그에 `out_of_range_clash_win` 사건을 기록한다.
 - 해당 사건은 `위협 대응` 항목의 성공 증거로 계산한다.
+- 사거리 안 합 승리와의 상대적 평가 가치는 후속 Decision `TEN-DEC-20260802-OUT-OF-RANGE-CLASH-GRADE-01`에 따라 동일하다.
 - 같은 한 번의 사건을 `위협 대응`과 `전술 실행`에 자동으로 이중 가산하지 않는다.
 - 전술 실행 점수는 행동 순서·거리 계획·자원 계획 등 별도 성과 규칙을 충족했을 때만 독립 산정한다.
 - 결과·복기 화면은 `사거리 밖에서 상대 공격을 합으로 무효화`한 사실과 획득한 절초기세를 표시한다.
@@ -97,6 +99,7 @@ authority_status: CURRENT_APPROVED_PLANNING
 scope_status: POC_PRIMARY
 implementation_status: NOT_STARTED
 battle_grade_integration: APPROVED
+relative_battle_grade_value: EQUAL_TO_IN_RANGE_CLASH_WIN
 online_season_rating_change: NONE
 static_validation: PENDING_DRAFT_PR
 runtime_validation: NOT_RUN
