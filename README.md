@@ -17,9 +17,11 @@
 - [테스트 체크리스트](docs/08_TEST_CHECKLIST.md)
 - [행동 선택 Decision](docs/decisions/2026-08-01_MARTIAL_MANUAL_TECHNIQUE_TIMELINE_UX_DECISION.md)
 - [화면 구조 Decision](docs/decisions/2026-08-01_SITUATION_SCREEN_ARCHITECTURE_DECISION.md)
+- [플랫폼 범위 Decision](docs/decisions/2026-08-02_PLATFORM_SCOPE_DECISION.md)
 - [ActionSelectionDock 종료 기록](docs/implementation/2026-08-01_ACTION_SELECTION_DOCK_CLOSEOUT.md)
 - [PR #65 정본·Sheet 동기화](docs/implementation/2026-08-01_PR65_CANON_SHEET_SYNC.md)
-- [Base·프로젝트·Sheet 적대적 감사](docs/reviews/2026-08-01_BASE_PROJECT_SHEET_ADVERSARIAL_AUDIT.md)
+- [2026-08-01 Base·프로젝트·Sheet 적대적 감사](docs/reviews/2026-08-01_BASE_PROJECT_SHEET_ADVERSARIAL_AUDIT.md)
+- [2026-08-02 총기획·정본·Sheet 감사](docs/reviews/2026-08-02_BASE_PROJECT_SHEET_TOTAL_PLANNING_AUDIT.md)
 - [Base 적용 기준](docs/BASE_RULES_VERSION.md)
 - [Base 동기화 감사]([기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md)
 - [Base 채택·학습 기록](docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md)
@@ -27,16 +29,28 @@
 ## 현재 작업 상태
 
 ```yaml
+project_main: c5771ddae40f58d88824d9319fc4ef6cd1053bba
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 work_mode: REVIEW
 integration_pr: 65
+latest_operating_pr: 68
 runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
 automated_validation: PASS
 human_validation: NOT_RUN
 approved_screen_architecture: TEN-DEC-20260801-SITUATION-SCREEN-01
+approved_platform_scope: TEN-DEC-20260802-PLATFORM-SCOPE-01
+primary_platform: PC
+future_platform: MOBILE_CONSIDERATION_ONLY
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
 base_release_pinned: 9.4.0
 ```
+
+## 플랫폼 범위
+
+- 현재 기획·구현·검증·배포 기준은 `PC`입니다.
+- 모바일은 PC 버티컬 슬라이스와 전투 코어 검증 뒤 재평가할 미래 후보이며 현재 구현 범위가 아닙니다.
+- 터치 UI, Android·iOS 빌드, 모바일 성능·스토어·크로스 세이브는 별도 Decision 전까지 `NOT_STARTED`입니다.
+- 모바일 가능성을 이유로 현재 전투 코어·3/3/4·정보 구조·콘텐츠 범위를 선행 변경하지 않습니다.
 
 ## 프로젝트 코어
 
@@ -111,6 +125,8 @@ App Root
 
 - PR #7과 Issue #13은 현행 T0 `STEP 0~13` 구현 계보입니다.
 - PR #45와 v6 Decision 원장은 재설계·승인 이력입니다.
+- PR #65는 행동 선택 구현과 화면 구조 승인 통합 이력입니다.
+- PR #68은 Base v9.4 운영 계약 적용 이력입니다.
 - 과거 Base 기준 `c987647d01ad2baa028a16e03d85ddfc1572a727`은 `HISTORICAL_COMPATIBILITY_BASELINE`입니다.
 - 현재 공용 Skill route는 `skills/PROJECT_BASE_ADAPTER.json`의 Base v9.4 payload/evidence pin을 사용합니다.
 
@@ -119,6 +135,7 @@ App Root
 - 16개 개별 절초 설계
 - 주요 비무 6~10 런타임
 - 천하제일인·비동기 기능
+- 모바일 포팅·스토어·크로스 세이브
 - 최종 아트·오디오 폴리싱
 
 정적 검사·Actions 성공은 Windows 실제 Godot, 실물 게임패드, 접근성 보조기술, 성능, 실제 플레이 재미를 증명하지 않습니다. 실행하지 않은 항목은 `NOT_RUN`입니다.
