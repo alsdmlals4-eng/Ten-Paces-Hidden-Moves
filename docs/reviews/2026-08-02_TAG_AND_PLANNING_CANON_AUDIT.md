@@ -11,7 +11,7 @@
 
 이미 승인된 게임 태그·상태·관찰·성장·회차·천하제일인·챔피언 랭킹 결정이 활성 책임 문서와 Google Sheet에서 누락되거나 구형 표현으로 되살아나는지 확인한다.
 
-## 2. 확인한 정본
+## 2. 확인한 정본·구현
 
 - `TEN-DEC-20260802-PLATFORM-SCOPE-01`
 - `TEN-DEC-20260802-OBSERVATION-STATS-MASTERY-01`
@@ -24,6 +24,9 @@
 - `docs/05_COMBAT_POC_SPEC.md`
 - `docs/08_TEST_CHECKLIST.md`
 - 허브 Active Context·Documentation Map
+- `src/ui/action_selection/basic_action_panel.gd`
+- `src/ui/action_selection/action_view_model_adapter.gd`
+- `data/cards/basic_cards.json`
 - Google Sheet 01·05·10·90 및 감사·변경 이력
 
 ## 3. 발견 사항
@@ -32,13 +35,14 @@
 
 없음. 제품 코드·런타임 데이터는 변경하지 않았고 현재 main의 실행 상태를 완료로 과장하지 않았다.
 
-### P1 — 활성 정본 충돌
+### P1 — 활성 정본·구현 충돌
 
 1. `docs/01`·`docs/03`에 관찰 의존 무공의 랭킹전 처리가 미결정으로 남아 있었다.
 2. `docs/04`·허브 Active Context·허브 Documentation Map에 main SHA와 PR #65/#68 중심 상태가 남아 있었다.
 3. `docs/05`에 공격력·방어력 중심 신규 성장, 공개 성향, 소모 방어도, 천하제일인 후보6명 표현이 남아 있었다.
 4. `docs/08`에 구형 시작 수치·소모 방어도 검사가 최신 완료 기준과 섞여 있었다.
 5. Google Sheet `05_GDD_요약`에 후보6명·구형 정본·구형 동기화 상태가 남아 있었다.
+6. 최신 승인 기획은 이동·보법·막기·회피·속공·강공·관찰·명상·태세의 기초 행동 9개지만, 현재 `basic_cards.json`과 ActionSelectionDock은 관찰이 없는 8개이며 레거시 `준비`를 제공한다. 이는 오탈자가 아니라 `CURRENT_APPROVED_PLANNING`과 `IMPLEMENTED_LEGACY`의 명시적 차이다.
 
 ### P2 — 태그·상태 구조 누락
 
@@ -52,6 +56,7 @@
 - 제품 태그를 무협·1대1 결투·턴제 전술·심리전·불완전 정보·로그라이트로 정리.
 - 덱빌딩·카드 배틀러·실시간 격투·PvP 중심을 오인 방지 태그로 분리.
 - 관찰 공개 종류 8종과 판정 키워드·행동 출처 태그를 분리.
+- 최신 승인 기초 행동 9개와 현재 구현 8개의 차이를 등록부에 명시.
 - 권위·콘텐츠 범위·구현·검증 상태를 별도 필드로 분리.
 - `docs/01`·`docs/03`에 공식 랭킹전 변환 결정을 반영.
 - Active Context·Roadmap·두 Documentation Map을 최신 PR #69~#71 이력과 App Flow Shell 기준으로 갱신.
@@ -61,16 +66,21 @@
 ## 5. 의도적으로 변경하지 않은 것
 
 - 제품 코드·Scene·런타임 데이터.
+- 현재 8개 기초 행동 데이터와 ActionSelectionDock.
+- `준비`를 `태세`로 바꾸거나 `[관찰]`을 런타임에 추가하는 구현.
 - 정확한 기술별 수치.
 - 정확한 랭킹전 관찰 변환표.
 - 평점 공식·시즌 길이·매칭·서버·보안.
 - Godot·Windows·네트워크·접근성·사람 검증 상태.
 - GrillMe 승인 카운트.
 
+기초 행동 구현 차이는 App Flow Shell 또는 별도 전투 데이터 Build 패키지에서 승인 기획 9개를 기준으로 해결해야 한다.
+
 ## 6. 후속 검증
 
 - 변경 파일 목록과 diff가 문서·Sheet 정본 범위를 벗어나지 않는지 확인.
 - 모든 활성 문서에서 `관찰 의존 ... 미결정`, `후보6명`, `공개 성향`, 신규 성장의 `공격력·방어력` 표현 재검색.
+- 기초 행동 9개 기획과 8개 레거시 데이터가 완료 상태로 혼동되지 않는지 확인.
 - planning JSON 파싱과 정적 계약 검사.
 - exact-head Full Validation·PR Validation·Base v9 Adoption 확인.
 - PR review thread와 head 이동 확인.
@@ -86,6 +96,7 @@ static_validation: PENDING_PR
 runtime_validation: NOT_RUN
 human_validation: NOT_RUN
 p0_open: 0
-p1_open: 0
+p1_document_drift_open: 0
+p1_implemented_legacy_gap: BASIC_ACTIONS_8_VS_APPROVED_9
 p2_open: 0
 ```
