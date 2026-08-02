@@ -1,0 +1,29 @@
+name: Sync Base v9.4.3 Adapter Consumers Once
+
+on:
+  push:
+    branches: ["agent/base-v9-4-3-first-prompt-adapter"]
+    paths:
+      - "tools/sync_base_v943_adapter_consumers.py"
+      - ".github/workflows/sync-base-v943-adapter-consumers.yml"
+permissions:
+  contents: write
+jobs:
+  sync-consumers:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: "agent/base-v9-4-3-first-prompt-adapter"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python tools/sync_base_v943_adapter_consumers.py
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tests
+          git diff --cached --quiet && exit 0
+          git commit -m "test: sync Base v9.4.3 adapter consumers"
+          git push origin HEAD:agent/base-v9-4-3-first-prompt-adapter
