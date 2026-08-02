@@ -7,6 +7,7 @@
 > 기술 작성 결정: `docs/decisions/2026-08-02_TECHNIQUE_AUTHORING_TAG_FIXED_STAT_DECISION.md`  
 > 능력치 배수 가격: `docs/decisions/2026-08-02_STAT_REFERENCE_PRICE_BASE4_DECISION.md`  
 > 중앙 편집 데이터: `docs/planning-data/poc_balance_budget.json`  
+> 현재 구현 기준: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`  
 > 상태: `CURRENT_APPROVED_PLANNING`; main 런타임은 일부 `IMPLEMENTED_LEGACY`
 
 ## 1. 권위와 구현 경계
@@ -245,7 +246,7 @@ A도 체력 피해 0이고 양측 공격이 유지됨
 - `CombatAiPlanner`는 현재 공개 상태, 보유 기술, 해결 이력, 결정적 seed만 사용한다.
 - 플레이어의 미확정 계획·UI hover·포커스·미공개 입력을 사용하지 않는다.
 - 관찰 공개 뒤 잠긴 묶음을 교체하지 않는다.
-- 테스트용 고정 bundle fixture는 AI 비활성 명시 경로에서만 허용한다.
+- 테스트용 고정 bundle fixture는 `enemy_bundles`를 사용하더라도 `ai_enabled == false`인 명시적 테스트 경로에서만 허용한다.
 - AI 가중치·선호 행동·정답 파훼법은 플레이어에게 자동 공개하지 않는다.
 
 ## 14. 전투 종료와 재시작 — 결전 다시 시작
