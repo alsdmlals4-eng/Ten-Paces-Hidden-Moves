@@ -62,7 +62,11 @@
     ]
   },
   "bundle_flow": {
-    "round_bundles": [3, 3, 4],
+    "round_bundles": [
+      3,
+      3,
+      4
+    ],
     "sequence": [
       "RESOLVE_PREVIOUS_STATE",
       "ENEMY_PLAN_CURRENT_BUNDLE_FROM_PUBLIC_STATE",
@@ -154,7 +158,11 @@
     },
     "even_star_bonus_selection": "FIXED_PER_MANUAL",
     "star_up_stat_requirement": false,
-    "new_technique_stat_requirement_stars": [3, 7, 10],
+    "new_technique_stat_requirement_stars": [
+      3,
+      7,
+      10
+    ],
     "ultimate_reward": "ULTIMATE_ONLY",
     "truth_choice": false,
     "locked_technique_behavior": {
