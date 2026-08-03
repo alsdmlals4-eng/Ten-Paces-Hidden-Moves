@@ -72,7 +72,11 @@
     ]
   },
   "bundle_flow": {
-    "round_bundles": [3, 3, 4],
+    "round_bundles": [
+      3,
+      3,
+      4
+    ],
     "sequence": [
       "RESOLVE_PREVIOUS_STATE",
       "ENEMY_PLAN_CURRENT_BUNDLE_FROM_PUBLIC_STATE",
@@ -105,8 +109,19 @@
       "designed_hard_cap": null,
       "legacy_15_meaning": "INITIAL_BALANCE_VALIDATION_REFERENCE"
     },
-    "validation_reference_points": [1, 4, 15, "CURRENT_CONTENT_REACHABLE_MAX"],
-    "primary": ["EXTERNAL", "CONSTITUTION", "MOVEMENT", "INTERNAL", "INSIGHT"],
+    "validation_reference_points": [
+      1,
+      4,
+      15,
+      "CURRENT_CONTENT_REACHABLE_MAX"
+    ],
+    "primary": [
+      "EXTERNAL",
+      "CONSTITUTION",
+      "MOVEMENT",
+      "INTERNAL",
+      "INSIGHT"
+    ],
     "ko_names": {
       "EXTERNAL": "외공",
       "CONSTITUTION": "근골",
@@ -212,7 +227,10 @@
       "actual_values_feed_requirements_and_formulas": true,
       "derived_rule_nullifying_effects_need_separate_guardrails": true
     },
-    "legacy_deprecated_primary_stats": ["attack_power", "defense"],
+    "legacy_deprecated_primary_stats": [
+      "attack_power",
+      "defense"
+    ],
     "structural_values_threshold_only": [
       "move_distance",
       "attack_range",
@@ -266,7 +284,11 @@
     "starting_star_2_bonus_applies_immediately": true,
     "star_4_is_first_secondary_grant": true,
     "star_up_stat_requirement": false,
-    "new_technique_stat_requirement_stars": [3, 7, 10],
+    "new_technique_stat_requirement_stars": [
+      3,
+      7,
+      10
+    ],
     "starting_star_3_primary_requirement": 4,
     "star_7_primary_requirement": 8,
     "star_10_primary_requirement": 12,
