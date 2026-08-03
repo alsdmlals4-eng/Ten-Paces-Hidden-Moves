@@ -1,5 +1,5 @@
 {
-  "schema_version": 8,
+  "schema_version": 9,
   "decision_id": "TEN-DEC-20260802-OBSERVATION-STATS-MASTERY-01",
   "status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "NONE",
@@ -12,6 +12,7 @@
   "followup_secondary_mapping_decision": "TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01",
   "followup_intermediate_node_stat_decision": "TEN-DEC-20260803-INTERMEDIATE-NODE-PERMANENT-STAT-REWARDS-01",
   "followup_technique_role_scaling_decision": "TEN-DEC-20260803-MARTIAL-TECHNIQUE-ROLE-AND-SCALING-MATRIX-01",
+  "followup_starting_technique_1_decision": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01",
   "duel_structure": {
     "core_duels": 5,
     "candidates_per_slot": 3,
@@ -71,11 +72,7 @@
     ]
   },
   "bundle_flow": {
-    "round_bundles": [
-      3,
-      3,
-      4
-    ],
+    "round_bundles": [3, 3, 4],
     "sequence": [
       "RESOLVE_PREVIOUS_STATE",
       "ENEMY_PLAN_CURRENT_BUNDLE_FROM_PUBLIC_STATE",
@@ -108,19 +105,8 @@
       "designed_hard_cap": null,
       "legacy_15_meaning": "INITIAL_BALANCE_VALIDATION_REFERENCE"
     },
-    "validation_reference_points": [
-      1,
-      4,
-      15,
-      "CURRENT_CONTENT_REACHABLE_MAX"
-    ],
-    "primary": [
-      "EXTERNAL",
-      "CONSTITUTION",
-      "MOVEMENT",
-      "INTERNAL",
-      "INSIGHT"
-    ],
+    "validation_reference_points": [1, 4, 15, "CURRENT_CONTENT_REACHABLE_MAX"],
+    "primary": ["EXTERNAL", "CONSTITUTION", "MOVEMENT", "INTERNAL", "INSIGHT"],
     "ko_names": {
       "EXTERNAL": "외공",
       "CONSTITUTION": "근골",
@@ -171,14 +157,39 @@
       "authority_decision": "TEN-DEC-20260803-MARTIAL-TECHNIQUE-ROLE-AND-SCALING-MATRIX-01",
       "contract": "docs/planning-data/approved_20260803_martial_technique_role_and_scaling_matrix_contract.json",
       "authoring_order": "ROLE_FIRST",
-      "primary_binding": "REQUIRED_CORE_EFFECT",
+      "primary_binding": "REQUIRED_CORE_EFFECT_OR_STRUCTURAL_UNLOCK_THRESHOLD",
       "secondary_binding": "OPTIONAL_DISTINCT_EFFECT_ONLY",
       "max_stat_references_per_technique": 2,
       "same_effect_dual_scaling": false,
       "structural_values_per_point_scaling": false,
       "star_5_patch": "REINFORCE_EXISTING_ROLE",
       "star_9_patch": "READ_BASED_CONDITIONAL_BRANCH",
-      "exact_values_status": "TBD_FOLLOWUP"
+      "exact_values_status": "TECHNIQUE_1_APPROVED_TECHNIQUE_2_TBD"
+    },
+    "starting_technique_1": {
+      "authority_decision": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01",
+      "contract": "docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json",
+      "approved_technique_ids": [
+        "flowing_cloud_triple",
+        "vajra_guard",
+        "cloud_hand_return",
+        "pursuing_wind_thrust",
+        "clear_heart_breath",
+        "iron_step_drift"
+      ],
+      "all_six_approved": true,
+      "reference_stat": 4,
+      "slot_tolerance_ticks": 5,
+      "all_within_tolerance": true,
+      "budget_display": [
+        "GROSS_EFFECT",
+        "RESOURCE_COST_CREDIT",
+        "CONDITION_CREDIT",
+        "NET_BUDGET",
+        "TARGET_AND_VARIANCE"
+      ],
+      "resource_cost_credit_visible": true,
+      "next_gate": "STARTING_MARTIAL_TECHNIQUE_2_BASE_EFFECTS_AND_BUDGETS"
     },
     "route_node_permanent_rewards": {
       "authority_decision": "TEN-DEC-20260803-INTERMEDIATE-NODE-PERMANENT-STAT-REWARDS-01",
@@ -201,10 +212,7 @@
       "actual_values_feed_requirements_and_formulas": true,
       "derived_rule_nullifying_effects_need_separate_guardrails": true
     },
-    "legacy_deprecated_primary_stats": [
-      "attack_power",
-      "defense"
-    ],
+    "legacy_deprecated_primary_stats": ["attack_power", "defense"],
     "structural_values_threshold_only": [
       "move_distance",
       "attack_range",
@@ -241,27 +249,24 @@
     "rewards": {
       "1": "PASSIVE",
       "2": "FIXED_PERMANENT_STAT_BONUS",
-      "3": "TECHNIQUE_1_UNLOCK_CHECK_AND_BASIC_ROLE",
+      "3": "APPROVED_TECHNIQUE_1_UNLOCK_CHECK_AND_BASIC_ROLE",
       "4": "FIXED_PERMANENT_STAT_BONUS",
-      "5": "TECHNIQUE_1_ROLE_REINFORCEMENT_PATCH",
+      "5": "TECHNIQUE_1_ROLE_REINFORCEMENT_PATCH_TBD",
       "6": "FIXED_PERMANENT_STAT_BONUS",
-      "7": "TECHNIQUE_2_UNLOCK_CHECK_AND_ADVANCED_INTERACTION",
+      "7": "TECHNIQUE_2_UNLOCK_CHECK_AND_ADVANCED_INTERACTION_TBD",
       "8": "FIXED_PERMANENT_STAT_BONUS",
-      "9": "TECHNIQUE_2_READ_BASED_CONDITIONAL_BRANCH",
+      "9": "TECHNIQUE_2_READ_BASED_CONDITIONAL_BRANCH_TBD",
       "10": "MANUAL_ULTIMATE_UNLOCK_CHECK"
     },
     "even_star_bonus_selection": "FIXED_PER_MANUAL",
     "even_star_increment_contract": "docs/planning-data/approved_20260802_even_star_stat_escalation_contract.json",
     "manual_primary_secondary_mapping_contract": "docs/planning-data/approved_20260803_starting_martial_secondary_stats_contract.json",
     "technique_role_scaling_contract": "docs/planning-data/approved_20260803_martial_technique_role_and_scaling_matrix_contract.json",
+    "starting_technique_1_contract": "docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json",
     "starting_star_2_bonus_applies_immediately": true,
     "star_4_is_first_secondary_grant": true,
     "star_up_stat_requirement": false,
-    "new_technique_stat_requirement_stars": [
-      3,
-      7,
-      10
-    ],
+    "new_technique_stat_requirement_stars": [3, 7, 10],
     "starting_star_3_primary_requirement": 4,
     "star_7_primary_requirement": 8,
     "star_10_primary_requirement": 12,
@@ -282,13 +287,15 @@
   "verification": {
     "static_contract": "REQUIRED",
     "starting_stat_contract": "docs/planning-data/approved_20260802_starting_stat_total20_manual_bonus_contract.json",
-    "starting_technique_contract": "docs/planning-data/approved_20260802_starting_technique_primary_stat4_contract.json",
+    "starting_technique_requirement_contract": "docs/planning-data/approved_20260802_starting_technique_primary_stat4_contract.json",
+    "starting_technique_1_effect_budget_contract": "docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json",
     "star_7_technique_contract": "docs/planning-data/approved_20260803_star7_technique_primary_stat8_contract.json",
     "star_10_ultimate_contract": "docs/planning-data/approved_20260803_star10_ultimate_primary_stat12_contract.json",
     "manual_secondary_mapping_contract": "docs/planning-data/approved_20260803_starting_martial_secondary_stats_contract.json",
     "technique_role_scaling_contract": "docs/planning-data/approved_20260803_martial_technique_role_and_scaling_matrix_contract.json",
     "route_node_permanent_stat_contract": "docs/planning-data/approved_20260803_intermediate_node_permanent_stat_rewards_contract.json",
     "uncapped_core_stats_contract": "docs/planning-data/approved_20260803_uncapped_core_stats_contract.json",
+    "budget_resource_credits_visible": true,
     "godot_runtime": "NOT_RUN",
     "windows_human": "NOT_RUN",
     "demo_ready": false
