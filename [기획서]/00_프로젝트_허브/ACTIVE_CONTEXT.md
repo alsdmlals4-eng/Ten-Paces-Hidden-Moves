@@ -10,7 +10,7 @@ repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
 last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
 current_checkpoint_pr: 82
 current_checkpoint_state: APPROVED_DRAFT_PR_NOT_MERGED
-current_approval_count: 1/10
+current_approval_count: 2/10
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 engine: Godot 4.7
@@ -24,10 +24,10 @@ automated_validation: PASS
 windows_validation: NOT_RUN
 human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: SECONDARY_STAT_MAPPING
+next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
 ```
 
-PR #80의 10개 사용자 승인 Decision은 exact-head CI 3종, 문서 전용 diff, main behind0, 리뷰·미해결 스레드0, Google Sheet readback을 확인한 뒤 squash merge됐다. 체크포인트 main SHA는 `d9f38e6f3cacaf170d4b290e95b3645114639aff`다. PR #82는 새 승인 묶음의 첫 Decision을 보유한 Draft이며 `10/10` 전에는 병합하지 않는다.
+PR #80의 10개 사용자 승인 Decision은 exact-head CI 3종, 문서 전용 diff, main behind0, 리뷰·미해결 스레드0, Google Sheet readback을 확인한 뒤 squash merge됐다. 체크포인트 main SHA는 `d9f38e6f3cacaf170d4b290e95b3645114639aff`다. PR #82는 새 승인 묶음의 두 Decision을 보유한 Draft이며 `10/10` 전에는 병합하지 않는다.
 
 ## 프로젝트 코어
 
@@ -67,6 +67,7 @@ PR #80의 10개 사용자 승인 Decision은 exact-head CI 3종, 문서 전용 d
 ## PR #82 현재 승인 정본
 
 1. `TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01`
+2. `TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01`
 
 ## 현재 전투·성장 정본 요약
 
@@ -86,6 +87,8 @@ PR #80의 10개 사용자 승인 Decision은 exact-head CI 3종, 문서 전용 d
 - 임시 능력치는 기술·절초 해금에 사용하지 않으며 활성화 후 임시 감소로 재잠금하지 않는다.
 - 모든 시작 무공4개 조합에 네 첫 기술을 여는 최소 추천 배분이 존재하지만 동시 활성은 강제하지 않는다.
 - 짝수 성은 최초 도달 시 새로 지급한다: 2성 주+1, 4성 주+1·보조+1, 6성 주+2·보조+1, 8성 주+3·보조+2.
+- 시작 무공 주/보조 벡터: 유운 신법/외공, 금강 근골/내공, 태극 심안/내공, 추풍 외공/신법, 청심 내공/근골, 무영 신법/심안.
+- 보조 능력치는4성부터 지급하며 모든 기술의 자동 이중 배수나3/7/10성 해금 요구를 뜻하지 않는다.
 - 핵심 스테이터스에는 디자인 하드캡이 없고 기존1~15는 검증 구간이다. 실제값을 공식·요구치에 사용하며 검증점은1·4·15·현재 합법 최대값이다.
 - 전투 종료 등급 핵심 원자료는 회피 성공·합 승리·잃은 체력·라운드 수·절초 사용이다.
 
@@ -95,7 +98,7 @@ PR #80의 10개 사용자 승인 Decision은 exact-head CI 3종, 문서 전용 d
 
 - 관찰·장풍이 없는 기초 행동8종.
 - 일부 레거시 데이터의 절대 원공격력.
-- 최신 시작 총합20·무공 보너스·잠금 미리보기·짝수 성 지급·3/7/10성 요구 미구현.
+- 최신 시작 총합20·무공 주/보조 벡터·잠금 미리보기·짝수 성 지급·3/7/10성 요구 미구현.
 - 무상한 실제값의 공식·요구치·AI·UI·저장 연결 미구현.
 - 주요 비무5전·노드8개·성장·새 결과 등급 미구현.
 
@@ -115,8 +118,8 @@ PR #80의 10개 사용자 승인 Decision은 exact-head CI 3종, 문서 전용 d
 
 ## 다음 승인 묶음의 남은 기획
 
-- 여섯 무공의 보조 능력치 매핑.
 - 중간 노드 영구 스테이터스 보상 여부·량.
+- 무공별 개별 기술의 주/보조 배수·5/9성 임계 효과.
 - 5개 전투 종료 지표의 가중치·정규화·등급 경계.
 - 한 공격 행동 안의 다수 합 승리 상한·정규화·파밍 방지.
 - 절초 사용의 평가 방식과 패배 전투 등급.
@@ -126,7 +129,7 @@ PR #80의 10개 사용자 승인 Decision은 exact-head CI 3종, 문서 전용 d
 ## 검증 경계
 
 ```yaml
-planning_checkpoint: DRAFT_PR82_1_OF_10
+planning_checkpoint: DRAFT_PR82_2_OF_10
 checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
 product_code_changed: false
 runtime_validation: NOT_RUN
