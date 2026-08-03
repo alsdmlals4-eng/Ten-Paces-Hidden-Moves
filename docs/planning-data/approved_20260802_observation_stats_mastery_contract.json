@@ -1,5 +1,5 @@
 {
-  "schema_version": 7,
+  "schema_version": 8,
   "decision_id": "TEN-DEC-20260802-OBSERVATION-STATS-MASTERY-01",
   "status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "NONE",
@@ -11,6 +11,7 @@
   "followup_star_10_requirement_decision": "TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01",
   "followup_secondary_mapping_decision": "TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01",
   "followup_intermediate_node_stat_decision": "TEN-DEC-20260803-INTERMEDIATE-NODE-PERMANENT-STAT-REWARDS-01",
+  "followup_technique_role_scaling_decision": "TEN-DEC-20260803-MARTIAL-TECHNIQUE-ROLE-AND-SCALING-MATRIX-01",
   "duel_structure": {
     "core_duels": 5,
     "candidates_per_slot": 3,
@@ -166,6 +167,19 @@
       "secondary_is_unlock_requirement": false,
       "secondary_auto_scales_every_technique": false
     },
+    "technique_role_scaling": {
+      "authority_decision": "TEN-DEC-20260803-MARTIAL-TECHNIQUE-ROLE-AND-SCALING-MATRIX-01",
+      "contract": "docs/planning-data/approved_20260803_martial_technique_role_and_scaling_matrix_contract.json",
+      "authoring_order": "ROLE_FIRST",
+      "primary_binding": "REQUIRED_CORE_EFFECT",
+      "secondary_binding": "OPTIONAL_DISTINCT_EFFECT_ONLY",
+      "max_stat_references_per_technique": 2,
+      "same_effect_dual_scaling": false,
+      "structural_values_per_point_scaling": false,
+      "star_5_patch": "REINFORCE_EXISTING_ROLE",
+      "star_9_patch": "READ_BASED_CONDITIONAL_BRANCH",
+      "exact_values_status": "TBD_FOLLOWUP"
+    },
     "route_node_permanent_rewards": {
       "authority_decision": "TEN-DEC-20260803-INTERMEDIATE-NODE-PERMANENT-STAT-REWARDS-01",
       "contract": "docs/planning-data/approved_20260803_intermediate_node_permanent_stat_rewards_contract.json",
@@ -196,12 +210,15 @@
       "attack_range",
       "observation_gain",
       "action_slots",
+      "hit_count",
       "evade_count",
       "telegraph_slots",
       "composite_action_shape",
       "cost_reduction",
       "interrupt_permission",
-      "counter_permission"
+      "counter_permission",
+      "sure_hit",
+      "rule_nullification"
     ]
   },
   "manual_mastery": {
@@ -224,18 +241,19 @@
     "rewards": {
       "1": "PASSIVE",
       "2": "FIXED_PERMANENT_STAT_BONUS",
-      "3": "TECHNIQUE_1_UNLOCK_CHECK",
+      "3": "TECHNIQUE_1_UNLOCK_CHECK_AND_BASIC_ROLE",
       "4": "FIXED_PERMANENT_STAT_BONUS",
-      "5": "TECHNIQUE_1_PATCH_AND_STAT_THRESHOLD",
+      "5": "TECHNIQUE_1_ROLE_REINFORCEMENT_PATCH",
       "6": "FIXED_PERMANENT_STAT_BONUS",
-      "7": "TECHNIQUE_2_UNLOCK_CHECK",
+      "7": "TECHNIQUE_2_UNLOCK_CHECK_AND_ADVANCED_INTERACTION",
       "8": "FIXED_PERMANENT_STAT_BONUS",
-      "9": "TECHNIQUE_2_PATCH_AND_STAT_THRESHOLD",
+      "9": "TECHNIQUE_2_READ_BASED_CONDITIONAL_BRANCH",
       "10": "MANUAL_ULTIMATE_UNLOCK_CHECK"
     },
     "even_star_bonus_selection": "FIXED_PER_MANUAL",
     "even_star_increment_contract": "docs/planning-data/approved_20260802_even_star_stat_escalation_contract.json",
     "manual_primary_secondary_mapping_contract": "docs/planning-data/approved_20260803_starting_martial_secondary_stats_contract.json",
+    "technique_role_scaling_contract": "docs/planning-data/approved_20260803_martial_technique_role_and_scaling_matrix_contract.json",
     "starting_star_2_bonus_applies_immediately": true,
     "star_4_is_first_secondary_grant": true,
     "star_up_stat_requirement": false,
@@ -268,6 +286,7 @@
     "star_7_technique_contract": "docs/planning-data/approved_20260803_star7_technique_primary_stat8_contract.json",
     "star_10_ultimate_contract": "docs/planning-data/approved_20260803_star10_ultimate_primary_stat12_contract.json",
     "manual_secondary_mapping_contract": "docs/planning-data/approved_20260803_starting_martial_secondary_stats_contract.json",
+    "technique_role_scaling_contract": "docs/planning-data/approved_20260803_martial_technique_role_and_scaling_matrix_contract.json",
     "route_node_permanent_stat_contract": "docs/planning-data/approved_20260803_intermediate_node_permanent_stat_rewards_contract.json",
     "uncapped_core_stats_contract": "docs/planning-data/approved_20260803_uncapped_core_stats_contract.json",
     "godot_runtime": "NOT_RUN",
