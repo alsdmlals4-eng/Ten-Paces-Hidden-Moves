@@ -4,17 +4,19 @@
 
 ## 바로 실행
 
-이 브랜치의 배포 패키지는 다음 파일들로 구성됩니다.
+가장 간단한 방법:
 
-- `dist/ten-paces-technique1-poc.html`
-- `dist/payload-1.js`
-- `dist/payload-2.js`
-- `dist/payload-3.js`
-- `dist/payload-4.js`
+1. `dist/ten-paces-technique1-poc.html`과 같은 폴더의 `payload-1.js`~`payload-4.js`를 함께 내려받습니다.
+2. HTML 파일을 Chrome 또는 Edge에서 엽니다.
 
-브랜치 ZIP을 내려받아 폴더 구조를 유지한 뒤 `dist/ten-paces-technique1-poc.html`을 Chrome 또는 Edge에서 여십시오. 최상위 `index.html`도 같은 실행 파일로 연결됩니다.
+저장소 폴더 그대로 실행:
 
-대화에 첨부된 `Ten-Paces-Technique1-PoC.html`은 페이로드까지 내장한 단일 실행 파일이며, `Ten-Paces-Technique1-HTML-PoC.zip`에는 원본 모듈·테스트·실행 문서가 포함됩니다.
+```bash
+cd web/technique1-poc
+python -m http.server 8000
+```
+
+브라우저에서 `http://localhost:8000`을 엽니다. 별도 npm 설치나 빌드가 필요하지 않습니다.
 
 ## 플레이 순서
 
@@ -25,42 +27,59 @@
 5. 배치된 플레이어 슬롯을 누르면 진행 전 제거되고 예약 자원이 환불됩니다.
 6. 빈 슬롯은 `[대기]`로 처리되므로 모든 슬롯을 채우지 않아도 진행할 수 있습니다.
 7. `[묶음 진행]` 뒤 한 단계·자동 재생·2배속·결과 즉시 보기로 판정을 확인합니다.
-8. `[다음 묶음]`을 누르면 이전에 획득한 관찰량이 새로 잠긴 적 계획에 적용됩니다.
+8. `[다음 묶음]`을 누르면 양측 내력·절초기세가 1씩 회복되고, 이전 관찰량이 새로 잠긴 적 계획에 적용됩니다.
+
+## 핵심 전투 교정 규칙
+
+- 준비: 무비용, 1수 소비, 다음 비이동 행동 강화
+- 해결 순서: `대응 → 속공 → 이동 → 공격`
+- 같은 수 공격에 체력 피해를 받으면 아직 실행되지 않은 명상은 중단
+- 모든 공격 카드에 거리와 피해 표시
+- 행동묶음 전환마다 양측 내력 `+1`, 절초기세 `+1`
 
 ## 절초기세 검증
 
 - 범위 `0~5`
+- 회피 성공 시 `+1`
 - 합 승리 시 공격 행동당 최대 `+1`
 - 준비가 적용된 명상 시 `+1`
 - 절초 배치 성공 시 기세5 예약
 - 진행 전 슬롯 제거 시 기세5 환불
 - 묶음 확정 뒤에는 환불하지 않음
 
-`[절초기세 5 설정]`은 기본 절초 3종의 예약·환불을 빠르게 검증하는 fixture 버튼입니다.
+`[절초기세 5 설정]`은 기본 절초 3종의 예약·환불만 빠르게 검증하기 위한 fixture 버튼입니다.
 
-## 자동 검증 증거
+## 자동 검증
 
-원본·테스트 동봉 ZIP에서 다음 검증을 실행했습니다.
+전체 소스·테스트 companion에서 다음을 실행합니다.
 
 ```bash
 cd web/technique1-poc
-npm run test:all
+node scripts/build-browser.mjs
+node --check dist/app.js
+node --test tests/*.test.mjs
+python tests/ui_smoke.py
 ```
 
-결과:
+현재 자동 검증 범위:
 
-- 브라우저 번들 생성 PASS
-- JavaScript syntax PASS
-- 엔진·AI 테스트 `18 PASS / 0 FAIL`
-- Chromium UI smoke PASS
-- 브라우저 page error `0`
-
-검증 범위에는 기술 공식, 비용 예약·환불, 고정 이동, 방어도 비소모, 중단·강건, 절초기세 상한, 관찰 이월, deterministic AI, 실제 브라우저 행동 배치·묶음 해결·절초 예약·초기화가 포함됩니다.
+- 여섯 기술1 기준 능력치4 공식
+- 준비 무비용·슬롯 소비와 기타 비용 예약·진행 전 환불
+- 추풍일섬 고정 전진
+- 철각유영 경계 후퇴
+- 방어도 비소모
+- 체력 피해 중단과 강건
+- 묶음별 내력·절초기세 자동 회복
+- 회피 성공 기세 획득과 공격 행동당 합 승리 기세 상한
+- 공격 우선 정산에 따른 명상 중단
+- 모든 공격 카드의 거리·피해 표시
+- 관찰량 이월·새 적 계획 공개
+- 공개 상태 기반 deterministic AI
+- 실제 Chromium에서 행동 배치·묶음 해결·절초 예약·초기화
 
 ## 정직한 검증 경계
 
-- 사람의 재미·역할 이해·가독성·접근성 평가는 `NOT_RUN`입니다.
-- Windows 실제 물리 입력 검증은 `NOT_RUN`입니다.
+- 사람의 재미·역할 이해·가독성·접근성 평가는 아직 `NOT_RUN`입니다.
 - 기본 막기 방어도5는 `POC_REFERENCE_VALUE`입니다.
 - 금강가세·철각유영의 대응 단계는 `POC_RESOLUTION_MAPPING`입니다.
 - 밀착 거리0 근접 공격은 `POC_ENGAGEMENT_COMPATIBILITY`입니다.
