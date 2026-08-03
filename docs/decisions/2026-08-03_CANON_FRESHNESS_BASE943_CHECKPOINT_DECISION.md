@@ -21,7 +21,7 @@ sheet_id: 1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0
 
 ## 문제
 
-프로젝트의 canonical Base Adapter는 Base `9.4.3`과 finalization commit `0b7c94f38d959efc0fc9442274c60b2e268a3c97`을 고정하고 PR #82는 새 GrillMe 승인 묶음 `2/10`을 보유한다. 그러나 최상위 진입점과 프로젝트 허브의 활성 소비자들은 Base `9.4.0~9.4.1`, PR #65 병합 대기, PR #72·#80 또는 이전 main SHA를 현재 작업처럼 표시했다. Google Sheet 일부 활성 요약도 Base·승인 수·기획/구현 Gate가 혼재했다.
+프로젝트의 canonical Base Adapter는 Base `9.4.3`과 finalization commit `0b7c94f38d959efc0fc9442274c60b2e268a3c97`을 고정하고 PR #82는 새 GrillMe 승인 묶음 `2/10`을 보유한다. 그러나 최상위 진입점, 프로젝트 허브, 제품 책임 원본과 제품 문서 지도는 Base `9.4.0~9.4.1`, PR #65 병합 대기, PR #72·#80, `0/10` 또는 `APPROVED_PENDING_MERGE_10_OF_10`을 현재 작업처럼 표시했다. Google Sheet 일부 활성 요약도 Base·승인 수·기획/구현 Gate가 혼재했다.
 
 첫 수정에서 `work_mode: REVIEW`와 `integration_pr: 65`를 활성 기획 상태로 오판해 제거했으나, 거버넌스 회귀 검사가 이 두 값을 현재 **런타임 통합 기준선**으로 강제함을 확인했다. 따라서 런타임 기준선과 활성 기획 배치를 단일 상태값으로 덮어쓰지 않고 두 축으로 분리해야 한다.
 
@@ -40,9 +40,10 @@ sheet_id: 1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0
    - 다음 Decision `INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS`
 4. PR #82의 두 승인 Decision은 `APPROVED_PENDING_MERGE`이며 `SYNCED_TO_MAIN`으로 과장하지 않는다.
 5. 프로젝트 허브의 `START_HERE`, `DEVELOPMENT_GATES`, `ROADMAP`, `HANDOFF`도 활성 소비자이므로 과거 PR #65 병합 대기·Base v9.3 후속 지시를 제거한다.
-6. Google Sheet의 활성 허브·GDD 요약·마일스톤·감사·변경이력만 갱신한다. 과거 PR·Commit을 보존하는 역사 행은 수정하지 않는다.
-7. `[기획 완료] → [전체 검토 완료] → [이미지·애니메이션·HX 승인] → [Codex BUILD]` Gate를 명시한다.
-8. 다음 제품 기획은 `INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS`이며 PR #82의 세 번째 GrillMe Decision으로 진행한다.
+6. 제품 책임 원본 `docs/01_GAME_DESIGN.md`, 제품 지도 `docs/DOCUMENTATION_MAP.md`, 구현 로드맵 `docs/04_ROADMAP.md`의 PR #80 병합 대기·Base 9.4.1·0/10 상태를 PR #82 2/10 활성 배치로 교정한다.
+7. Google Sheet의 활성 허브·GDD 요약·마일스톤·감사·변경이력만 갱신한다. 과거 PR·Commit을 보존하는 역사 행은 수정하지 않는다.
+8. `[기획 완료] → [전체 검토 완료] → [이미지·애니메이션·HX 승인] → [Codex BUILD]` Gate를 명시한다.
+9. 다음 제품 기획은 `INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS`이며 PR #82의 세 번째 GrillMe Decision으로 진행한다.
 
 ## 영향 파일
 
@@ -50,6 +51,9 @@ sheet_id: 1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0
 - `README.md`
 - `START_HERE.md`
 - `docs/BASE_RULES_VERSION.md`
+- `docs/01_GAME_DESIGN.md`
+- `docs/04_ROADMAP.md`
+- `docs/DOCUMENTATION_MAP.md`
 - `[기획서]/00_프로젝트_허브/START_HERE.md`
 - `[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md`
 - `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
