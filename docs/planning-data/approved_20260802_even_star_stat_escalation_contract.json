@@ -22,16 +22,48 @@
     "duplicate_manual_training_conversion_regrants": false
   },
   "new_grants_by_star": {
-    "2": {"primary": 1, "secondary": 0, "total": 1},
-    "4": {"primary": 1, "secondary": 1, "total": 2},
-    "6": {"primary": 2, "secondary": 1, "total": 3},
-    "8": {"primary": 3, "secondary": 2, "total": 5}
+    "2": {
+      "primary": 1,
+      "secondary": 0,
+      "total": 1
+    },
+    "4": {
+      "primary": 1,
+      "secondary": 1,
+      "total": 2
+    },
+    "6": {
+      "primary": 2,
+      "secondary": 1,
+      "total": 3
+    },
+    "8": {
+      "primary": 3,
+      "secondary": 2,
+      "total": 5
+    }
   },
   "cumulative_by_star": {
-    "2": {"primary": 1, "secondary": 0, "total": 1},
-    "4": {"primary": 2, "secondary": 1, "total": 3},
-    "6": {"primary": 4, "secondary": 2, "total": 6},
-    "8": {"primary": 7, "secondary": 4, "total": 11}
+    "2": {
+      "primary": 1,
+      "secondary": 0,
+      "total": 1
+    },
+    "4": {
+      "primary": 2,
+      "secondary": 1,
+      "total": 3
+    },
+    "6": {
+      "primary": 4,
+      "secondary": 2,
+      "total": 6
+    },
+    "8": {
+      "primary": 7,
+      "secondary": 4,
+      "total": 11
+    }
   },
   "starting_mastery_contract": {
     "starting_mastery": 3,
