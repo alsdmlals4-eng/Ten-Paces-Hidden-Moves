@@ -8,10 +8,13 @@
 > 최신 기초 행동·합: `docs/decisions/2026-08-02_BASIC_ACTIONS_PALM_CLASH_DECISION.md`  
 > 기초 공격·사거리·장풍 공식: `docs/decisions/2026-08-02_BASIC_ATTACK_FORMULAS_SLOT_BUDGET_DECISION.md`, `docs/decisions/2026-08-02_RANGE_PRICE_BANDS_DECISION.md`, `docs/decisions/2026-08-02_BASIC_PALM_DAMAGE_GROWTH_DECISION.md`  
 > 시작 빌드·성장 요구치: `docs/decisions/2026-08-02_STARTING_STAT_TOTAL20_MANUAL_BONUS_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_PRIMARY_STAT4_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_SOFT_GUARANTEE_DECISION.md`, `docs/decisions/2026-08-02_EVEN_STAR_STAT_ESCALATION_DECISION.md`, `docs/decisions/2026-08-03_STAR7_TECHNIQUE_PRIMARY_STAT8_DECISION.md`  
+> 활성 성장 배치: `docs/decisions/2026-08-03_STAR10_ULTIMATE_PRIMARY_STAT12_DECISION.md`, `docs/decisions/2026-08-03_STARTING_MARTIAL_SECONDARY_STATS_DECISION.md`  
 > 핵심 스테이터스 정책: `docs/decisions/2026-08-03_UNCAPPED_CORE_STATS_DECISION.md`  
 > 전투 종료 등급: `docs/decisions/2026-08-02_BATTLE_GRADE_FIVE_PRIMARY_METRICS_DECISION.md`  
 > 기술 작성·배수 가격: `docs/decisions/2026-08-02_TECHNIQUE_AUTHORING_TAG_FIXED_STAT_DECISION.md`, `docs/decisions/2026-08-02_STAT_REFERENCE_PRICE_BASE4_DECISION.md`  
-> 현재 단계: `APPROVED_PENDING_MERGE_10_OF_10`
+> 현재 단계: `ACTIVE_DRAFT_PR82_APPROVED_PENDING_MERGE_2_OF_10`
+
+PR #80의 10/10 성장 체크포인트는 main에 병합됐고, PR #82의 두 후속 Decision은 활성 Branch·planning data·Google Sheet에만 `APPROVED_PENDING_MERGE`로 기록되어 있다. 병합 후 main·Sheet 재조회 전에는 `SYNCED_TO_MAIN`으로 표시하지 않는다.
 
 ## 1. 현재 한 줄 약속
 
@@ -95,7 +98,8 @@ READ 공개 상태·이력
 - 최대 사거리 총비용은 사거리1=0틱·2=10틱·3=25틱·4=40틱이고 사거리5 이상은 별도 승인 전 `TBD`다.
 - 능력치 배수 예산의 기준 스테이터스는 4이며 배수 작성 단위는 0.25, 주·보조 능력치는 같은 가격이다.
 - 시작 능력치는 기본2×5+자유분배6+선택 시작무공4개의 2성 주능력치+1로 최종 총합20·평균4다.
-- 시작 3성 첫 기술은 주 영구 능력치4, 7성 두 번째 기술은 주 영구 능력치8을 요구한다. 요구치 미달 시 기술만 잠기며 무공 수련은 계속되고 영구 요구치 충족 시 자동 활성화한다.
+- 시작 3성 첫 기술은 주 영구 능력치4, 7성 두 번째 기술은 주 영구 능력치8, 10성 절초는 주 영구 능력치12를 요구한다. 요구치 미달 시 기술만 잠기며 무공 수련은 계속되고 영구 요구치 충족 시 자동 활성화한다.
+- 시작 무공의 보조 능력치는 PR #82 Decision의 여섯 무공별 매핑을 따른다.
 - 짝수 성은 각 성 최초 도달 시 새로 지급한다: 2성 주+1, 4성 주+1·보조+1, 6성 주+2·보조+1, 8성 주+3·보조+2.
 - 핵심 스테이터스에는 디자인 하드캡이 없고 실제 영구값을 기술 요구치와 전투 공식에 사용한다. 검증점은 1·4·15와 현재 콘텐츠의 최대 합법 도달값이다.
 
