@@ -19,8 +19,8 @@
   "automatic_acceptance_tolerance_ticks": 5,
   "pricing_ticks": {
     "raw_damage_per_point": 5,
-    "range_per_tile_beyond_one": 15,
-    "movement_per_tile": 15,
+    "range_per_tile_beyond_one": 4,
+    "movement_per_tile": 6,
     "defense_gain_per_point": 4,
     "defense_break_per_point": 4,
     "evade_charge": 18,
@@ -39,6 +39,13 @@
     "once_per_action_effect_base": 4,
     "per_hit_effect_base": 5,
     "medical_per_point": 5
+  },
+  "pricing_ticks_role": "LEGACY_APPROVED_TECHNIQUE_LEDGER_SNAPSHOT",
+  "active_authoring_distance_pricing_ticks": {
+    "authority_decision": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
+    "movement_per_tile": 15,
+    "range_per_tile_beyond_one": 15,
+    "new_or_revised_techniques_only": true
   },
   "budget_display_contract": {
     "authority_decision": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
@@ -129,7 +136,8 @@
     "movement_formula": "movement_tiles * 15",
     "movement_and_range_stack": true,
     "separate_ledger_entry_required": true,
-    "distance_5_plus": "LINEAR_15_TICKS_WITH_BOARD_AND_LEGAL_RANGE_REVIEW"
+    "distance_5_plus": "LINEAR_15_TICKS_WITH_BOARD_AND_LEGAL_RANGE_REVIEW",
+    "existing_approved_ledgers_keep_historical_price_snapshot_until_reviewed": true
   },
   "resource_cost_credit_contract": {
     "authority_decision": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
@@ -177,40 +185,48 @@
       "formula": "floor(3 + external_power * 0.50)",
       "ledger_ticks_at_stat_4": 21,
       "target_ticks": 20,
-      "variance_ticks": 1,
-      "effect_cost_ticks_at_stat_4": 25,
-      "slot_budget_ticks": 20,
-      "resource_allowance_ticks": 4,
-      "available_budget_ticks": 24,
-      "within_auto_tolerance": true
+      "variance_ticks": 1
     },
     "heavy_attack": {
       "formula": "floor(7 + external_power * 1.00)",
-      "ledger_ticks_at_stat_4": 59,
+      "ledger_ticks_at_stat_4": 54,
       "target_ticks": 50,
-      "variance_ticks": 9,
-      "effect_cost_ticks_at_stat_4": 70,
-      "slot_budget_ticks": 50,
-      "resource_allowance_ticks": 11,
-      "available_budget_ticks": 61,
-      "within_auto_tolerance": false,
-      "status": "REVIEW_REQUIRED_AFTER_DISTANCE_REPRICE"
+      "variance_ticks": 4
     },
     "basic_palm": {
       "formula": "floor(3 + internal_power * 0.75)",
       "fixed_damage": 3,
       "coefficient": 0.75,
-      "ledger_ticks_at_stat_4": 53,
+      "ledger_ticks_at_stat_4": 48,
       "target_ticks": 50,
-      "variance_ticks": 3,
-      "spare_ticks": -3,
+      "variance_ticks": -2,
+      "spare_ticks": 2,
       "within_auto_tolerance": true,
       "knockback": 0,
-      "lower_than_quick_constraint": "SUPERSEDED",
-      "effect_cost_ticks_at_stat_4": 60,
-      "slot_budget_ticks": 50,
-      "resource_allowance_ticks": 7,
-      "available_budget_ticks": 57
+      "lower_than_quick_constraint": "SUPERSEDED"
+    }
+  },
+  "distance_reprice_audit": {
+    "authority_decision": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
+    "reference_stat": 4,
+    "does_not_auto_edit_existing_actions": true,
+    "quick_attack": {
+      "effect_cost_ticks": 25,
+      "available_budget_ticks": 24,
+      "variance_ticks": 1,
+      "status": "WITHIN_TOLERANCE"
+    },
+    "heavy_attack": {
+      "effect_cost_ticks": 70,
+      "available_budget_ticks": 61,
+      "variance_ticks": 9,
+      "status": "REVIEW_REQUIRED"
+    },
+    "basic_palm": {
+      "effect_cost_ticks": 60,
+      "available_budget_ticks": 57,
+      "variance_ticks": 3,
+      "status": "WITHIN_TOLERANCE"
     }
   },
   "authoring_selection_contract": {
@@ -301,6 +317,8 @@
   },
   "migration_policy": {
     "central_price_change_auto_edits_existing_techniques": false,
+    "existing_approved_ledger_price_snapshot_is_immutable_until_explicit_review": true,
+    "new_or_revised_techniques_use_active_authoring_distance_pricing": true,
     "on_change": [
       "mark_variance",
       "produce_before_after_diff",
@@ -322,18 +340,18 @@
     "All resource costs are fully prepaid on the first slot, refunded only before commit, and not refunded after interruption, range failure, direction failure, dodge, or other committed failure.",
     "Every bundle transition grants each living actor stamina +1, internal +1, and ultimate momentum +1 before the enemy plan locks.",
     "Approval tables must show effect cost, slot budget, resource allowance, condition allowance, available budget, and variance in ticks only.",
-    "Legacy negative credit tables remain only to validate historical poc_martial_arts.json ledgers before runtime migration.",
+    "The pricing_ticks table is an immutable historical snapshot used to validate already-approved technique ledgers; it is not the active distance price for newly authored or revised techniques.",
     "Tags, fixed base values, stat-reference coefficients, range, and resource costs must use separate ledger entries.",
-    "Current approved distance price is unified at 15 ticks per tile: movement N=N*15; attack max range N=max(0,N-1)*15.",
+    "Current approved distance price for new or revised techniques is unified at 15 ticks per tile: movement N=N*15; attack max range N=max(0,N-1)*15.",
     "Distance 5 or above continues linearly at 15 ticks per tile but must be checked against the 10-tile board and each action's legal range.",
-    "The active range_per_tile_beyond_one and movement_per_tile values are both 15 ticks; earlier 0/10/25/40 range bands are superseded.",
+    "Earlier 0/10/25/40 range bands and movement 6 ticks remain only in historical approved ledger snapshots until each affected technique is explicitly reviewed.",
     "Guaranteed non-refundable stamina and internal costs add authoring allowance independently of slot count; short actions may exceed longer free-action budgets by paying more resources.",
     "Observation, movement, dodge, and strengthen are fixed-only effects without continuous stat scaling.",
     "All other numeric action effects require at least one explicit stat reference.",
     "Stat-reference coefficients snap to 0.25 and are priced at balance reference stat 4.",
     "Primary and secondary stat references use the same price with no secondary discount.",
     "Runtime continuous values sum fixed and all stat terms before one floor operation.",
-    "Basic palm uses floor(3 + internal_power * 0.75), 48 ticks at stat 4, and no knockback.",
+    "Basic palm uses floor(3 + internal_power * 0.75), 48 historical ledger ticks at stat 4, and no knockback.",
     "Check each authored technique at stat points 1, 4, and 15.",
     "5-star and 9-star upgrades each receive an additional 5-tick authoring allowance.",
     "Capstones use the 3-slot 80-tick reference even when represented as a passive true meaning.",
