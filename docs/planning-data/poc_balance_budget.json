@@ -60,24 +60,55 @@
     "hidden_resource_allowance_forbidden": true,
     "budget_points_forbidden_in_approval_tables": true,
     "reference_examples": {
-      "stamina_1": {"allowance_ticks": 4},
-      "internal_1": {"allowance_ticks": 7},
-      "stamina_1_plus_internal_1": {"allowance_ticks": 11},
-      "momentum_5": {"allowance_ticks": 30},
-      "self_health_1": {"allowance_ticks": 3},
-      "two_slot_stamina_1_internal_1": {"formula": "50(2 slots) + 7(internal 1) + 4(stamina 1)", "available_budget_ticks": 61}
+      "stamina_1": {
+        "allowance_ticks": 4
+      },
+      "internal_1": {
+        "allowance_ticks": 7
+      },
+      "stamina_1_plus_internal_1": {
+        "allowance_ticks": 11
+      },
+      "momentum_5": {
+        "allowance_ticks": 30
+      },
+      "self_health_1": {
+        "allowance_ticks": 3
+      },
+      "two_slot_stamina_1_internal_1": {
+        "formula": "50(2 slots) + 7(internal 1) + 4(stamina 1)",
+        "available_budget_ticks": 61
+      }
     }
   },
   "current_approval_allowance_ticks": {
-    "resource_costs": {"stamina_1": 4, "internal_1": 7, "momentum_5": 30, "self_health_1": 3},
-    "conditions": {"common_public_condition": 3, "strict_public_condition": 7, "once_per_bundle": 4, "once_per_battle": 10, "requires_existing_defense": 4, "requires_successful_evade": 5, "requires_clash_win": 5},
+    "resource_costs": {
+      "stamina_1": 4,
+      "internal_1": 7,
+      "momentum_5": 30,
+      "self_health_1": 3
+    },
+    "conditions": {
+      "common_public_condition": 3,
+      "strict_public_condition": 7,
+      "once_per_bundle": 4,
+      "once_per_battle": 10,
+      "requires_existing_defense": 4,
+      "requires_successful_evade": 5,
+      "requires_clash_win": 5
+    },
     "source_conversion": "absolute value of legacy negative PoC ledger credits",
     "runtime_score": false
   },
   "range_pricing_contract": {
     "authority_decision": "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
     "model": "MAX_RANGE_TOTAL_TICKS",
-    "total_ticks_by_max_range": {"1": 0, "2": 10, "3": 25, "4": 40},
+    "total_ticks_by_max_range": {
+      "1": 0,
+      "2": 10,
+      "3": 25,
+      "4": 40
+    },
     "range_5_plus": "TBD_REQUIRES_NEW_DECISION",
     "values_are_cumulative_total_costs": true,
     "do_not_sum_band_values": true,
@@ -111,15 +142,40 @@
     "runtime_value_formula": "floor(fixed_base_value + sum(current_stat_value * coefficient))",
     "round_each_stat_term": false,
     "implementation_blocked_until_approved": false,
-    "sanity_check_stat_points": [1, 4, 15]
+    "sanity_check_stat_points": [
+      1,
+      4,
+      15
+    ]
   },
   "approved_basic_attack_formulas": {
     "authority_decision": "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
     "range_pricing_decision": "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
     "basic_palm_formula_decision": "TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01",
-    "quick_attack": {"formula": "floor(3 + external_power * 0.50)", "ledger_ticks_at_stat_4": 21, "target_ticks": 20, "variance_ticks": 1},
-    "heavy_attack": {"formula": "floor(7 + external_power * 1.00)", "ledger_ticks_at_stat_4": 54, "target_ticks": 50, "variance_ticks": 4},
-    "basic_palm": {"formula": "floor(3 + internal_power * 0.75)", "fixed_damage": 3, "coefficient": 0.75, "ledger_ticks_at_stat_4": 48, "target_ticks": 50, "variance_ticks": -2, "spare_ticks": 2, "within_auto_tolerance": true, "knockback": 0, "lower_than_quick_constraint": "SUPERSEDED"}
+    "quick_attack": {
+      "formula": "floor(3 + external_power * 0.50)",
+      "ledger_ticks_at_stat_4": 21,
+      "target_ticks": 20,
+      "variance_ticks": 1
+    },
+    "heavy_attack": {
+      "formula": "floor(7 + external_power * 1.00)",
+      "ledger_ticks_at_stat_4": 54,
+      "target_ticks": 50,
+      "variance_ticks": 4
+    },
+    "basic_palm": {
+      "formula": "floor(3 + internal_power * 0.75)",
+      "fixed_damage": 3,
+      "coefficient": 0.75,
+      "ledger_ticks_at_stat_4": 48,
+      "target_ticks": 50,
+      "variance_ticks": -2,
+      "spare_ticks": 2,
+      "within_auto_tolerance": true,
+      "knockback": 0,
+      "lower_than_quick_constraint": "SUPERSEDED"
+    }
   },
   "authoring_selection_contract": {
     "authority_status": "CURRENT_APPROVED_PLANNING",
@@ -128,11 +184,22 @@
     "basic_attack_formula_decision_id": "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
     "range_pricing_decision_id": "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
     "basic_palm_formula_decision_id": "TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01",
-    "order": ["structure_and_cost", "tags", "fixed_base_value", "primary_secondary_stat_reference", "mastery_patch_and_stat_threshold"],
+    "order": [
+      "structure_and_cost",
+      "tags",
+      "fixed_base_value",
+      "primary_secondary_stat_reference",
+      "mastery_patch_and_stat_threshold"
+    ],
     "separate_ledger_entries_required": true,
     "non_fixed_effect_requires_stat_reference": true,
     "maximum_stat_references_per_effect": 2,
-    "fixed_only_effects": ["observation", "movement", "dodge", "strengthen"],
+    "fixed_only_effects": [
+      "observation",
+      "movement",
+      "dodge",
+      "strengthen"
+    ],
     "structural_values_are_continuous_stat_scaled": false,
     "tag_quantity_is_continuous_stat_scaled": false,
     "in_bundle_player_choice_allowed_for_current_scope": false,
@@ -148,22 +215,66 @@
     "requires_clash_win": -5
   },
   "effect_contract": {
-    "scope": ["PER_HIT", "ONCE_PER_ACTION"],
-    "trigger": ["ON_ACTION_START", "ON_ACTION_RESOLVE", "ON_CLASH_WIN", "ON_EVADE_SUCCESS", "ON_HIT", "ON_HEALTH_DAMAGE", "ON_ACTION_END"],
+    "scope": [
+      "PER_HIT",
+      "ONCE_PER_ACTION"
+    ],
+    "trigger": [
+      "ON_ACTION_START",
+      "ON_ACTION_RESOLVE",
+      "ON_CLASH_WIN",
+      "ON_EVADE_SUCCESS",
+      "ON_HIT",
+      "ON_HEALTH_DAMAGE",
+      "ON_ACTION_END"
+    ],
     "cancelled_hit_triggers": false,
     "evaded_hit_triggers": false,
     "zero_health_damage_triggers_on_hit": true,
     "zero_health_damage_triggers_on_health_damage": false,
-    "trigger_order": ["ON_ACTION_START", "ON_CLASH_WIN", "ON_EVADE_SUCCESS", "ON_HIT", "ON_HEALTH_DAMAGE", "ON_ACTION_END"],
+    "trigger_order": [
+      "ON_ACTION_START",
+      "ON_CLASH_WIN",
+      "ON_EVADE_SUCCESS",
+      "ON_HIT",
+      "ON_HEALTH_DAMAGE",
+      "ON_ACTION_END"
+    ],
     "non_attack_resolution_trigger": "ON_ACTION_RESOLVE",
     "action_level_triggers_require_once_per_action": true,
-    "condition_vocabulary": ["requires_existing_defense", "requires_at_least_one_hit", "attack_misses"],
-    "sure_hit_stack_policy": {"unit": "ONE_STACK_PER_EFFECTIVE_HIT", "consume_when": "BYPASSES_AVAILABLE_EVADE", "persistence": "UNTIL_CONSUMED_OR_BATTLE_END", "reset": "BATTLE_END", "does_not_consume_on": ["CLASH_CANCELLED", "INTERRUPTED", "NO_TARGET", "OUT_OF_RANGE", "NO_EVADE_PRESENT"]}
+    "condition_vocabulary": [
+      "requires_existing_defense",
+      "requires_at_least_one_hit",
+      "attack_misses"
+    ],
+    "sure_hit_stack_policy": {
+      "unit": "ONE_STACK_PER_EFFECTIVE_HIT",
+      "consume_when": "BYPASSES_AVAILABLE_EVADE",
+      "persistence": "UNTIL_CONSUMED_OR_BATTLE_END",
+      "reset": "BATTLE_END",
+      "does_not_consume_on": [
+        "CLASH_CANCELLED",
+        "INTERRUPTED",
+        "NO_TARGET",
+        "OUT_OF_RANGE",
+        "NO_EVADE_PRESENT"
+      ]
+    }
   },
   "migration_policy": {
     "central_price_change_auto_edits_existing_techniques": false,
-    "on_change": ["mark_variance", "produce_before_after_diff", "list_excess_or_spare_ticks", "list_changed_price_items"],
-    "status_vocabulary": ["APPROVED", "POC_HYPOTHESIS", "UNVERIFIED", "IMPLEMENTED_LEGACY"]
+    "on_change": [
+      "mark_variance",
+      "produce_before_after_diff",
+      "list_excess_or_spare_ticks",
+      "list_changed_price_items"
+    ],
+    "status_vocabulary": [
+      "APPROVED",
+      "POC_HYPOTHESIS",
+      "UNVERIFIED",
+      "IMPLEMENTED_LEGACY"
+    ]
   },
   "authoring_rules": [
     "Ticks are the only unit shown in current approval and authoring tables.",
@@ -193,6 +304,15 @@
     "allowance_ticks": 5,
     "automatic_tolerance_ticks": 1,
     "max_added_budget_ticks": 6,
-    "allowed_fields": ["hits", "damage", "move_range", "defense_gain", "clash_power_bonus", "health_heal", "medical", "sure_hit_stacks"]
+    "allowed_fields": [
+      "hits",
+      "damage",
+      "move_range",
+      "defense_gain",
+      "clash_power_bonus",
+      "health_heal",
+      "medical",
+      "sure_hit_stacks"
+    ]
   }
 }
