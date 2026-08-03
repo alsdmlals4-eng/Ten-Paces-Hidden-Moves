@@ -1,15 +1,15 @@
 # 십보강호 세력·핵심무공·심법 성장 가설
 
 > 책임: 시작 무공 후보·1~10성 성장·기술 예산·`[의료]` 공급  
-> 최신 성장 결정: `docs/decisions/2026-08-02_OBSERVATION_STATS_MASTERY_DECISION.md`, `docs/decisions/2026-08-02_STARTING_STAT_TOTAL20_MANUAL_BONUS_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_PRIMARY_STAT4_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_SOFT_GUARANTEE_DECISION.md`, `docs/decisions/2026-08-02_EVEN_STAR_STAT_ESCALATION_DECISION.md`, `docs/decisions/2026-08-03_UNCAPPED_CORE_STATS_DECISION.md`, `docs/decisions/2026-08-03_STAR7_TECHNIQUE_PRIMARY_STAT8_DECISION.md`, `docs/decisions/2026-08-03_STAR10_ULTIMATE_PRIMARY_STAT12_DECISION.md`  
+> 최신 성장 결정: `docs/decisions/2026-08-02_OBSERVATION_STATS_MASTERY_DECISION.md`, `docs/decisions/2026-08-02_STARTING_STAT_TOTAL20_MANUAL_BONUS_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_PRIMARY_STAT4_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_SOFT_GUARANTEE_DECISION.md`, `docs/decisions/2026-08-02_EVEN_STAR_STAT_ESCALATION_DECISION.md`, `docs/decisions/2026-08-03_UNCAPPED_CORE_STATS_DECISION.md`, `docs/decisions/2026-08-03_STAR7_TECHNIQUE_PRIMARY_STAT8_DECISION.md`, `docs/decisions/2026-08-03_STAR10_ULTIMATE_PRIMARY_STAT12_DECISION.md`, `docs/decisions/2026-08-03_STARTING_MARTIAL_SECONDARY_STATS_DECISION.md`  
 > 현재 전투 규칙: `docs/02_COMBAT_RULES.md`  
 > 데이터 원본: `docs/planning-data/poc_martial_arts.json`  
-> 승인 계약: `docs/planning-data/approved_20260802_observation_stats_mastery_contract.json`, `docs/planning-data/approved_20260803_star10_ultimate_primary_stat12_contract.json`  
-> 상태: T1 이후 가설 원본. 성장 골격·시작 총량·짝수 성 지급·3/7/10성 요구는 `APPROVED_PLANNING`; 개별 기술·보조 능력치 매핑·노드 보상은 `POC_HYPOTHESIS/TBD`
+> 승인 계약: `docs/planning-data/approved_20260802_observation_stats_mastery_contract.json`, `docs/planning-data/approved_20260803_star10_ultimate_primary_stat12_contract.json`, `docs/planning-data/approved_20260803_starting_martial_secondary_stats_contract.json`  
+> 상태: T1 이후 가설 원본. 성장 골격·시작 총량·짝수 성 지급·3/7/10성 요구·무공별 주/보조 벡터는 `APPROVED_PLANNING`; 개별 기술 배수·노드 보상은 `POC_HYPOTHESIS/TBD`
 
 ## 1. 현재 상태
 
-프로젝트 코어가 사용자 승인된 상태에서 무공서 성장 골격, 시작 총합20, 3성 주 능력치4, 7성 주 능력치8, 10성 절초 주 능력치12, 짝수 성 신규 지급 구조도 승인되었다. 런타임에는 아직 최신 스테이터스·기술 요구 조건이 연결되지 않았으며 개별 무공 기술 수치와 기술 예산은 `POC_HYPOTHESIS`다.
+프로젝트 코어가 사용자 승인된 상태에서 무공서 성장 골격, 시작 총합20, 3성 주 능력치4, 7성 주 능력치8, 10성 절초 주 능력치12, 짝수 성 신규 지급 구조와 시작 무공6종의 주·보조 능력치 벡터가 승인되었다. 런타임에는 아직 최신 스테이터스·기술 요구 조건이 연결되지 않았으며 개별 무공 기술 수치와 기술 예산은 `POC_HYPOTHESIS`다.
 
 현재 T0에는 세력 선택이 없고, 런타임의 공용 절초 3종은 기술 계보 보존 대상으로 남는다. 새 무공·세력 데이터는 공용 전투 계약을 대체하지 않고 확장한다.
 
@@ -26,6 +26,8 @@
 3. 5·9성에서 해당 기술에 추가되는 스테이터스 임계 효과
 
 이동거리(`move_range`), 공격 사거리, 관찰량, 행동 슬롯 수, 회피 횟수, 전조 수와 같은 구조적 값은 스테이터스1점마다 연속 증가하지 않는다. 기술에 명시된 임계 효과에서만 변경한다.
+
+무공별 주·보조 벡터는 짝수 성 고정 영구 능력치 보상과 무공 정체성의 권위다. 모든 기술이 주·보조 능력치를 자동으로 동시에 배수에 사용하는 것은 아니며, 개별 기술 배수와 5·9성 임계 효과는 별도 ledger와 승인을 요구한다.
 
 ## 3. 다음 PoC 성장 실험
 
@@ -68,16 +70,22 @@
 - 배운 무공 수 하드캡은 없다.
 - 실제 사용 가능 기술은 수련 자원, 영구 스테이터스와 회차 길이로 제한한다.
 
-## 5.1 시작 무공2성 보너스
+## 5.1 시작 무공 주·보조 능력치 벡터
 
-| 무공 | 주 능력치 보너스 |
-|---|---:|
-| 유운검결 | 신법+1 |
-| 금강호체공 | 근골+1 |
-| 태극유전검 | 심안+1 |
-| 추풍창법 | 외공+1 |
-| 청심양생공 | 내공+1 |
-| 무영십보 | 신법+1 |
+| 무공 | 주 능력치 | 보조 능력치 | 시작 3성 적용 |
+|---|---|---|---|
+| 유운검결 | 신법 | 외공 | 신법+1 |
+| 금강호체공 | 근골 | 내공 | 근골+1 |
+| 태극유전검 | 심안 | 내공 | 심안+1 |
+| 추풍창법 | 외공 | 신법 | 외공+1 |
+| 청심양생공 | 내공 | 근골 | 내공+1 |
+| 무영십보 | 신법 | 심안 | 신법+1 |
+
+- 시작3성에서는 이미 통과한2성의 주+1만 적용한다.
+- 보조 능력치는4성 최초 도달에서 처음 지급한다.
+- 8성 누적 기여는 무공마다 주+7·보조+4다.
+- 여섯 무공 전체 역할 연결 수는 외공2·근골2·신법3·내공3·심안2다.
+- 여섯 무공을 모두8성까지 성장시킨 무공 보너스 합은 외공11·근골11·신법18·내공15·심안11, 총66이다.
 
 ## 5.2 습득·중복 계약
 
@@ -167,7 +175,7 @@ PoC에서는 세력 전체를 제작하지 않고 다음 전투 역할만 검증
 | 청심양생공 | 자원·의료 | 회복과 장기 체력 관리 |
 | 무영십보 | 이동·회피 | 위치 파훼 |
 
-개별 무공의 보조 능력치 매핑·기술 효과·패치·예산은 후속 Decision과 JSON에서 편집한다.
+개별 무공의 기술 효과·주/보조 배수·5/9성 임계 효과·패치·예산은 후속 Decision과 JSON에서 편집한다.
 
 ## 10. 슬롯 예산
 
@@ -205,7 +213,8 @@ PoC에서는 세력 전체를 제작하지 않고 다음 전투 역할만 검증
 - 두 번째 기술을 같은 Schema로 만들 수 있다.
 - 강화가 단순 피해 정답이 아니라 계획을 바꾼다.
 - 5·9성 패치가 새 카드 수를 폭증시키지 않는다.
-- 짝수 성 보너스가 무공 정체성을 강화하고 무조건적인 범용 최적해가 되지 않는다.
+- 확정된 주·보조 벡터가 무공 정체성을 강화하고 무조건적인 범용 최적해가 되지 않는다.
+- 신법·내공 연결 수가 각각3인 구조가 이동·회피 또는 내가 효과를 범용 정답으로 만들지 않는다.
 - 3성 주4·7성 주8·10성 주12 요구가 정상 경로에서 과도한 잠금을 만들지 않는다.
 - 10성 절초 주12 요구는 집중 빌드에서 달성 가능하지만 분산 빌드의 자동 보상이 아니다.
 - AI도 공개 정보만으로 기술을 사용할 수 있다.
@@ -221,6 +230,9 @@ PoC에서는 세력 전체를 제작하지 않고 다음 전투 역할만 검증
 - 효과 trigger/condition
 - 습득/중복·3→10 총38포인트 경로
 - 짝수 성 신규 지급량과 성취별1회 지급
+- 여섯 무공의 주·보조 벡터와 전체 분포 합계66
+- 시작3성에는 주+1만 적용되고 보조는4성부터 지급
+- 주·보조 벡터가 모든 기술의 자동 이중 배수를 뜻하지 않음
 - 3성 주4·7성 주8·10성 주12·보조 요구 없음 계약
 - 기술·절초 잠금 상태에서도 무공서 수련과 기존 보상 유지
 - 영구 스테이터스 충족 시 추가 비용 없는 자동 활성화
