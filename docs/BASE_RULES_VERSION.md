@@ -17,9 +17,10 @@ skills/PROJECT_BASE_ADAPTER.json
 
 ```yaml
 base_repository: alsdmlals4-eng/Base
-base_release_version: 9.4.0
-release_commit: a728712cb776ec98f4875914a580fcf7d0156593
-release_evidence_commit: ef1fba11167e4da0b298123b0c85ebd268191a42
+base_release_version: 9.4.3
+release_commit: 7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8
+release_evidence_commit: da33a350d61b8adc52df97fccc7001708a933370
+release_finalization_commit: 0b7c94f38d959efc0fc9442274c60b2e268a3c97
 adapter: skills/PROJECT_BASE_ADAPTER.json
 shared_skill_policy: adapter_only
 project_local_skills: 4
@@ -28,31 +29,35 @@ publication_policy: source_only
 
 Base 공용 Skill 본문을 프로젝트에 복제하지 않는다. 프로젝트 고유 규칙과 실제 경로만 로컬 Skill·Adapter가 소유한다.
 
-## 2. Base v9.4 적용 감사
+## 2. Base v9.4.3 적용 감사
 
-2026-08-01 적용 기준:
+2026-08-02 적용 기준:
 
 ```yaml
-base_payload_commit: a728712cb776ec98f4875914a580fcf7d0156593
-base_trusted_evidence_commit: ef1fba11167e4da0b298123b0c85ebd268191a42
-base_pin_finalization_commit: 87a0b54c2847ce4b685879209205957c170cc1cd
+base_payload_commit: 7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8
+base_trusted_evidence_commit: da33a350d61b8adc52df97fccc7001708a933370
+base_pin_finalization_commit: 0b7c94f38d959efc0fc9442274c60b2e268a3c97
 base_registry_sha256: 693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59
 base_release_state: BASE_RELEASED
-project_adoption: V9_4_OPERATING_CONTRACT_APPLIED
+project_adoption: V9_4_3_OPERATING_CONTRACT_APPLIED
 product_paths_changed: false
 ```
 
-Base v9.4의 모델·추론 단계·Prompt caching·비용 측정, 지시 권위, Interface-first Prompt, Context 큐레이션, Artifact 주장 상한, Godot UI 모션 계약을 프로젝트 adapter와 운영 문서에 적용한다. 십보강호의 전투 코어·무공 데이터·저장 Schema·승인 아트·실제 Godot 구현은 이 적용으로 변경하지 않는다.
+Base v9.4 계열의 모델·추론 단계·Prompt caching·비용 측정, 지시 권위, Interface-first Prompt, Context 큐레이션, Artifact 주장 상한, Godot UI 모션 계약을 유지한다. v9.4.2의 기획 우선·Grill Me 최대 10건 승인 배치와 v9.4.3의 first-prompt 방향 고정·Grill Me alignment gate를 프로젝트 Adapter와 운영 문서에 적용한다. 십보강호의 전투 코어·무공 데이터·저장 Schema·승인 아트·실제 Godot 구현은 이 적용으로 변경하지 않는다.
 
 ## 3. 현재 적용 운영 계약
 
 - Work Mode: `PLAN / BUILD / REVIEW`.
 - Registry trigger 기반 최소 Skill·Skill Mode 자동 선택.
 - 전체 Skill 기본 로드 금지.
+- L1 이상은 `first-prompt → contract → clarify`와 Grill Me alignment gate를 거친다.
 - L1 이상 `execution-report`.
 - 기존 프로젝트 감사: `audit → reconcile-legacy → 승인 변경 → verify`.
-- 적대적 검토: `attack → validate-critique → 승인된 최소 수정 → regression-recheck`.
-- 승인 Decision은 같은 ID로 GitHub 정본·planning data·Google Sheets에 연결한다.
+- 적대적 검토: `attack → validate-critique → 승인된 최소 수정 → regression-recheck → decision-report`.
+- 상세·가역 수치는 GPT 권장 기본값을 사용할 수 있지만, 성장 속도·경제·세션 길이·빌드 우열·핵심 경험을 바꾸면 `GRILL_ME_REQUIRED`다.
+- 승인 Decision은 같은 ID로 활성 Branch의 GitHub 정본·planning data·Google Sheets에 즉시 연결한다.
+- 승인 Decision 배치는 최대 10건이며, 고위험·정본 충돌·세션 종료·사용자 요청에서는 조기 체크포인트를 허용한다.
+- 병합 전 Sheet 상태는 `APPROVED_PENDING_MERGE`, 병합 후 main·Sheet 재조회가 끝난 상태만 `SYNCED_TO_MAIN`이다.
 - Google Sheets는 `USER_FACING_GDD_WORKSPACE`이며 실제 구현·GitHub 정본을 대체하지 않는다.
 - 구현 PR은 동일 HEAD·필수 검사·P0/P1 없음·미해결 thread 0 뒤 담당 에이전트가 병합한다.
 
@@ -93,13 +98,18 @@ Base가 아닌 프로젝트가 소유한다.
 - 전체 10슬롯·중간 노드 18개.
 - Godot 코드·데이터·Scene·자산·테스트·런타임 상태.
 
-## 7. 현재 검증
+## 7. 현재 프로젝트 상태와 검증
 
 ```yaml
+main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
+active_planning_pr: 82
+active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
+active_approval_count: 2/10
+active_decision_state: APPROVED_PENDING_MERGE
 project_adapter_validation: PASS
-pr_validation: PASS
-base_v9_validation: PASS
-full_validation: PASS
+pr_validation: PASS_AT_ACTIVE_PR82_HEAD
+base_v9_validation: PASS_AT_ACTIVE_PR82_HEAD
+full_validation: PASS_AT_ACTIVE_PR82_HEAD
 action_selection_godot_smoke: PASS
 ubuntu_godot_headless: PASS
 ubuntu_windows_python_matrix: PASS
@@ -107,7 +117,7 @@ windows_godot_runtime: NOT_RUN
 human_validation: NOT_RUN
 ```
 
-자동 검증은 실제 Windows Godot·실물 게임패드·화면 읽기 도구·사람 플레이를 대체하지 않는다.
+자동 검증은 실제 Windows Godot·실물 게임패드·화면 읽기 도구·사람 플레이를 대체하지 않는다. 활성 PR #82의 성공 검사는 현재 head의 두 승인 Decision 정합성 증거이며, 10/10 또는 조기 체크포인트의 최종 병합 허가를 뜻하지 않는다.
 
 ## 8. 역사·호환 기준
 
@@ -118,8 +128,9 @@ human_validation: NOT_RUN
 - 당시 Base 비교 범위 `6개 커밋·43개 변경 파일`.
 - v8 통합 실행문과 BCA 문서.
 - PR #7·Issue #13 T0 계보.
+- Base v9.4.0·v9.4.1·v9.4.2 채택 기록과 호환 Adapter view.
 
-위 값은 `HISTORICAL_COMPATIBILITY_BASELINE`이며 canonical Adapter의 v9.1 pin을 덮어쓰지 않는다.
+위 값은 `HISTORICAL_COMPATIBILITY_BASELINE`이며 canonical Adapter의 Base v9.4.3 pin을 덮어쓰지 않는다.
 
 ## 9. 재감사 조건
 
@@ -127,4 +138,4 @@ human_validation: NOT_RUN
 - 프로젝트 Decision·정본·경로·ID·Schema 변경.
 - Google Sheets tab·열·Decision sync 계약 변경.
 - 제품 보호 경로 또는 저장 호환성 변경.
-- Base release·Registry·route·Adapter Schema가 다시 변경될 때 재감사.
+- first-prompt·기획 우선·Grill Me 배치 계약 변경.
