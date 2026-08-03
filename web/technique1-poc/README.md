@@ -4,19 +4,17 @@
 
 ## 바로 실행
 
-가장 간단한 방법:
+이 브랜치의 배포 패키지는 다음 파일들로 구성됩니다.
 
-1. `dist/ten-paces-technique1-poc.html`을 내려받습니다.
-2. 파일을 더블클릭해 Chrome, Edge, Firefox에서 엽니다.
+- `dist/ten-paces-technique1-poc.html`
+- `dist/payload-1.js`
+- `dist/payload-2.js`
+- `dist/payload-3.js`
+- `dist/payload-4.js`
 
-저장소 폴더 그대로 실행:
+브랜치 ZIP을 내려받아 폴더 구조를 유지한 뒤 `dist/ten-paces-technique1-poc.html`을 Chrome 또는 Edge에서 여십시오. 최상위 `index.html`도 같은 실행 파일로 연결됩니다.
 
-```bash
-cd web/technique1-poc
-python -m http.server 8000
-```
-
-브라우저에서 `http://localhost:8000`을 엽니다. `index.html`은 `dist/app.js`를 사용하므로 별도 npm 설치나 빌드가 필요하지 않습니다.
+대화에 첨부된 `Ten-Paces-Technique1-PoC.html`은 페이로드까지 내장한 단일 실행 파일이며, `Ten-Paces-Technique1-HTML-PoC.zip`에는 원본 모듈·테스트·실행 문서가 포함됩니다.
 
 ## 플레이 순서
 
@@ -38,34 +36,31 @@ python -m http.server 8000
 - 진행 전 슬롯 제거 시 기세5 환불
 - 묶음 확정 뒤에는 환불하지 않음
 
-`[절초기세 5 설정]`은 기본 절초 3종의 예약·환불만 빠르게 검증하기 위한 fixture 버튼입니다.
+`[절초기세 5 설정]`은 기본 절초 3종의 예약·환불을 빠르게 검증하는 fixture 버튼입니다.
 
-## 자동 검증
+## 자동 검증 증거
+
+원본·테스트 동봉 ZIP에서 다음 검증을 실행했습니다.
 
 ```bash
 cd web/technique1-poc
-node scripts/build-browser.mjs
-node --check dist/app.js
-node --test tests/engine.test.mjs tests/ai.test.mjs
-python tests/ui_smoke.py
+npm run test:all
 ```
 
-현재 자동 검증 범위:
+결과:
 
-- 여섯 기술1 기준 능력치4 공식
-- 비용 예약·진행 전 환불
-- 추풍일섬 고정 전진
-- 철각유영 경계 후퇴
-- 방어도 비소모
-- 체력 피해 중단과 강건
-- 공격 행동당 절초기세 획득 상한
-- 관찰량 이월·새 적 계획 공개
-- 공개 상태 기반 deterministic AI
-- 실제 Chromium에서 행동 배치·묶음 해결·절초 예약·초기화
+- 브라우저 번들 생성 PASS
+- JavaScript syntax PASS
+- 엔진·AI 테스트 `18 PASS / 0 FAIL`
+- Chromium UI smoke PASS
+- 브라우저 page error `0`
+
+검증 범위에는 기술 공식, 비용 예약·환불, 고정 이동, 방어도 비소모, 중단·강건, 절초기세 상한, 관찰 이월, deterministic AI, 실제 브라우저 행동 배치·묶음 해결·절초 예약·초기화가 포함됩니다.
 
 ## 정직한 검증 경계
 
-- 사람의 재미·역할 이해·가독성·접근성 평가는 아직 `NOT_RUN`입니다.
+- 사람의 재미·역할 이해·가독성·접근성 평가는 `NOT_RUN`입니다.
+- Windows 실제 물리 입력 검증은 `NOT_RUN`입니다.
 - 기본 막기 방어도5는 `POC_REFERENCE_VALUE`입니다.
 - 금강가세·철각유영의 대응 단계는 `POC_RESOLUTION_MAPPING`입니다.
 - 밀착 거리0 근접 공격은 `POC_ENGAGEMENT_COMPATIBILITY`입니다.
