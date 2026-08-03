@@ -10,9 +10,9 @@
 
 ```yaml
 last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
-current_checkpoint_pr: 80
-current_checkpoint_state: MERGED_MAIN_SHEET_SYNCED
-current_approval_count: 0/10
+current_checkpoint_pr: 82
+current_checkpoint_state: APPROVED_DRAFT_PR_NOT_MERGED
+current_approval_count: 1/10
 phase: VERTICAL_SLICE_APP_FLOW_PLANNING
 project_core: CORE_CONFIRMED
 primary_platform: PC
@@ -28,11 +28,11 @@ latest_combat_planning:
   implementation_status: NOT_STARTED
 full_product_flow_runtime: NOT_STARTED
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: STAR10_ULTIMATE_REQUIREMENT
+next_planning_decision: SECONDARY_STAT_MAPPING
 t1_greenlight: NOT_GRANTED
 ```
 
-PR #80의 10개 승인 정본은 중앙 책임 문서·planning JSON·Google Sheet 동기화, 전체 diff 적대적 검토, exact-head CI 3종, main behind0, 리뷰·head 고정 검증을 통과한 뒤 squash merge됐다. 안정 체크포인트 SHA는 `d9f38e6f3cacaf170d4b290e95b3645114639aff`이며 다음 승인 묶음은 `0/10`에서 시작한다.
+PR #80의 10개 승인 정본은 중앙 책임 문서·planning JSON·Google Sheet 동기화, 전체 diff 적대적 검토, exact-head CI 3종, main behind0, 리뷰·head 고정 검증을 통과한 뒤 squash merge됐다. 안정 체크포인트 SHA는 `d9f38e6f3cacaf170d4b290e95b3645114639aff`다. PR #82는 10성 절초 요구치 Decision을 보유한 Draft이며 새 승인 묶음은 `1/10`이다.
 
 ## 2. 프로젝트 코어 확정
 
@@ -51,6 +51,8 @@ PR #80의 10개 승인 정본은 중앙 책임 문서·planning JSON·Google She
 - [x] 시작3성 기술 주 영구 능력치4·소프트 해금 추천.
 - [x] 짝수 성 신규 지급: 2성 주1, 4성 주1·보조1, 6성 주2·보조1, 8성 주3·보조2.
 - [x] 7성 두 번째 기술 주 영구 능력치8, 보조 요구 없음.
+- [x] 10성 고유 절초 주 영구 능력치12, 보조 요구 없음.
+- [x] 3·7·10성 자동 하한3·6·9 대비 추가 영구 투자+1·+2·+3.
 - [x] 전투 종료 등급의 5개 원자료: 회피·합·잃은 체력·라운드·절초 사용.
 - [x] 무공서1~10성 성장 골격.
 - [x] 데모 주요 비무5슬롯×후보3명·노드8개.
@@ -94,7 +96,7 @@ BOOT → MAIN → RUN_SETUP → ROUTE → NODE → DUEL_BRIEFING
 
 후속 GrillMe에서 결정할 핵심 항목:
 
-- [ ] 10성 절초의 정확한 영구 스테이터스 요구치.
+- [x] 10성 절초의 정확한 영구 스테이터스 요구치: 주 영구 능력치12, 보조 요구 없음.
 - [ ] 여섯 무공의 정확한 보조 능력치 매핑.
 - [ ] 중간 노드 영구 스테이터스 보상 여부·량.
 - [ ] 5개 전투 종료 지표의 가중치·정규화·S/A/B/C 경계.
@@ -109,12 +111,13 @@ BOOT → MAIN → RUN_SETUP → ROUTE → NODE → DUEL_BRIEFING
 
 최신 전투 규칙을 구현하려면 별도 Build 승인과 다음 입력이 필요하다.
 
-- 승인된 시작 능력치·무공2성 보너스·3성/7성 기술 잠금·소프트 추천 배분 계약.
+- 승인된 시작 능력치·무공2성 보너스·3성/7성 기술·10성 절초 잠금·소프트 추천 배분 계약.
 - 승인된 속공·강공·장풍 공식, 슬롯 예산, 사거리·자원 ledger.
 - 관찰·장풍을 포함한 기초 행동 데이터와 UI.
 - 현재 순번 합→체력 피해·중단→다음 순번 합·잔여 단독타 판정 테스트.
 - 짝수 성 신규 지급의 중복 방지와 저장 왕복 테스트.
 - 무상한 실제값을 공식·요구치·AI·UI·저장에 사용하는 검증.
+- 10성 절초 주12 요구·임시 버프 제외·영구 충족 자동 활성 검증.
 - 기술 ledger와 런타임 adapter Schema.
 - 전투 종료 5지표 이벤트와 산식.
 
@@ -215,7 +218,7 @@ T1 진입 Gate:
 - 미해결 리뷰·CI 실패·Sheet 불일치·head 이동·P0/P1이 있으면 병합하지 않는다.
 - exact head만 병합하고 main·Sheet를 재조회한다.
 
-PR #80 체크포인트는 `d9f38e6f3cacaf170d4b290e95b3645114639aff`로 main에 병합됐고 상태 동기화 뒤 승인 카운트가 `0/10`으로 재설정됐다. 다음 우선 기획 Decision은 10성 절초 요구치다.
+PR #80 체크포인트는 `d9f38e6f3cacaf170d4b290e95b3645114639aff`로 main에 병합됐다. PR #82는 10성 절초 주12 Decision을 보유한 Draft이고 현재 승인 카운트는 `1/10`이다. 다음 우선 기획 Decision은 여섯 시작 무공의 보조 능력치 매핑이다.
 
 ## 13. 중단·축소 조건
 
