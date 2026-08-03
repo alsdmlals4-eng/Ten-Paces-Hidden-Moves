@@ -22,11 +22,14 @@ product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 base_release_pinned: 9.4.3
 runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
 latest_combat_planning_runtime: NOT_STARTED
+automated_validation: PASS
 windows_validation: NOT_RUN
 human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
 next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
 ```
+
+`automated_validation: PASS`는 병합된 런타임 기준선과 현재 정적 계약의 자동 검증 상태다. PR #84의 exact-head 세 검사는 별도로 재확인하며, Windows·접근성·성능·사람 검증을 대신하지 않는다.
 
 PR #83은 활성 정본 신선도 결함을 교정해 main에 병합됐다. PR #82의 승인 2건은 archive Branch에 보존하고 새 main 기반 PR #84로 이전한다. 두 Decision은 제품 코드 권한이 없는 `CURRENT_APPROVED_PLANNING / APPROVED_PENDING_MERGE`다.
 
