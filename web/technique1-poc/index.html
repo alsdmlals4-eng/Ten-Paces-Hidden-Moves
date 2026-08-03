@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17110c">
+  <title>십보강호 · 기술1 HTML 전투 검증 PoC</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="ink-noise" aria-hidden="true"></div>
+  <header class="titlebar">
+    <div>
+      <p class="eyebrow">TEN PACES · HIDDEN MOVES</p>
+      <h1>십보강호 <span>기술1 전투 검증장</span></h1>
+      <p class="subtitle">여섯 시작 무공의 3성 기술과 절초기세를 브라우저에서 직접 시험합니다.</p>
+    </div>
+    <div class="header-actions" aria-label="전투 보조 설정">
+      <button id="reset-button" class="ghost-button" type="button">전투 초기화</button>
+      <button id="momentum-fixture-button" class="ghost-button" type="button">절초기세 5 설정</button>
+      <label class="toggle-control"><input id="reduced-motion-toggle" type="checkbox"> 모션 감소</label>
+      <label class="toggle-control"><input id="mute-toggle" type="checkbox"> 음소거</label>
+      <label class="volume-control">음량 <input id="volume-slider" type="range" min="0" max="1" step="0.05" value="0.45"></label>
+    </div>
+  </header>
+
+  <main class="game-shell">
+    <section class="combat-frame" aria-label="전투 화면">
+      <div id="hud" class="hud-grid">
+        <article class="fighter-hud player-hud" data-side="player"></article>
+        <div class="round-seal" aria-live="polite">
+          <span id="round-label">제1라운드</span>
+          <strong id="bundle-label">첫째 묶음 · 1~3수</strong>
+          <span id="enemy-plan-hash" class="hash-label">AI 잠금 —</span>
+        </div>
+        <article class="fighter-hud enemy-hud" data-side="enemy"></article>
+      </div>
+
+      <div class="observation-ribbon" aria-live="polite">
+        <span>관찰량 <strong id="observation-bank">0</strong></span>
+        <span>공개된 적 계획 <strong id="observation-reveal">없음</strong></span>
+      </div>
+
+      <section id="battle-board" class="battle-board" aria-label="10칸 일자형 전장">
+        <div class="mountain-layer" aria-hidden="true"></div>
+        <div id="board-tiles" class="board-tiles"></div>
+        <div id="player-fighter" class="fighter player-fighter" data-side="player" aria-label="플레이어 전투원">
+          <span class="fighter-image" aria-hidden="true"></span>
+          <span class="fighter-name">강호낭인</span>
+        </div>
+        <div id="enemy-fighter" class="fighter enemy-fighter" data-side="enemy" aria-label="적 전투원">
+          <span class="fighter-image" aria-hidden="true"></span>
+          <span class="fighter-name">배외검객</span>
+        </div>
+        <div id="impact-layer" class="impact-layer" aria-live="assertive"></div>
+      </section>
+
+      <section class="timeline-panel" aria-label="전체 10수 타임라인">
+        <div class="timeline-heading">
+          <div>
+            <p class="section-kicker">ROUND TIMELINE</p>
+            <h2>전체 10수 · 현재 묶음 편집</h2>
+          </div>
+          <div class="legend" aria-label="슬롯 범례">
+            <span><i class="legend-current"></i>현재 묶음</span>
+            <span><i class="legend-telegraph"></i>전조</span>
+            <span><i class="legend-hidden"></i>숨은 수</span>
+          </div>
+        </div>
+        <div class="timeline-label">적 계획</div>
+        <div id="enemy-timeline" class="timeline-row enemy-timeline"></div>
+        <div class="timeline-label">내 계획 <small>배치된 수를 누르면 진행 전 제거·환불</small></div>
+        <div id="player-timeline" class="timeline-row player-timeline"></div>
+      </section>
+
+      <div class="progress-strip">
+        <p id="status-message" role="status">적 계획이 먼저 잠겼습니다. 공개된 단서와 거리를 읽고 현재 묶음을 계획하세요.</p>
+        <div class="progress-actions">
+          <button id="commit-button" class="primary-button" type="button">묶음 진행</button>
+          <button id="skip-results-button" class="secondary-button" type="button" hidden>결과 즉시 보기</button>
+          <button id="next-bundle-button" class="primary-button" type="button" hidden>다음 묶음</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="action-workspace" aria-label="행동 선택과 검증">
+      <div class="action-dock">
+        <div class="source-tabs" role="tablist" aria-label="행동 출처">
+          <button role="tab" aria-selected="true" aria-controls="action-list" id="tab-basic" data-tab="basic">기초</button>
+          <button role="tab" aria-selected="false" aria-controls="action-list" id="tab-martial" data-tab="martial">무공</button>
+          <button role="tab" aria-selected="false" aria-controls="action-list" id="tab-ultimate" data-tab="ultimate">절초</button>
+        </div>
+        <div class="dock-heading">
+          <div>
+            <p class="section-kicker">ACTION SELECTION</p>
+            <h2 id="action-list-title">기초 행동 10종</h2>
+          </div>
+          <p id="action-list-help">행동을 누르면 현재 묶음의 가장 앞 유효 연속 수에 자동 배치됩니다.</p>
+        </div>
+        <div id="action-list" class="action-list" role="tabpanel" aria-labelledby="tab-basic"></div>
+      </div>
+
+      <aside class="inspector-column">
+        <section class="inspector-card playback-card">
+          <div class="inspector-title-row">
+            <div>
+              <p class="section-kicker">RESOLUTION</p>
+              <h2>판정 재생</h2>
+            </div>
+            <span id="event-counter">0 / 0</span>
+          </div>
+          <div class="playback-controls">
+            <button id="event-step-button" class="icon-button" type="button" aria-label="사건 한 단계 진행">한 단계</button>
+            <button id="playback-button" class="icon-button" type="button">자동 재생</button>
+            <button id="speed-button" class="icon-button" type="button">1배속</button>
+          </div>
+          <div id="current-event" class="current-event" aria-live="polite">아직 해결된 사건이 없습니다.</div>
+        </section>
+
+        <section class="inspector-card validation-card">
+          <div class="inspector-title-row">
+            <div>
+              <p class="section-kicker">CONTRACT CHECK</p>
+              <h2>기술1 사용 현황</h2>
+            </div>
+            <span class="fixture-badge">기준 능력치 4</span>
+          </div>
+          <div id="validation-list" class="validation-list"></div>
+        </section>
+      </aside>
+    </section>
+
+    <section class="review-grid">
+      <details class="review-panel" open>
+        <summary>묶음 복기 · 사건 로그</summary>
+        <div id="event-log" class="event-log" aria-live="polite"></div>
+      </details>
+      <details class="review-panel">
+        <summary>원자료 · 재현 정보</summary>
+        <div id="metrics-panel" class="metrics-panel"></div>
+        <button id="copy-replay-button" class="ghost-button" type="button">JSON replay 복사</button>
+      </details>
+      <details class="review-panel">
+        <summary>PoC 경계와 검증 주의</summary>
+        <ul class="boundary-list">
+          <li><code>POC_REFERENCE_VALUE</code> 기본 막기 방어도 5</li>
+          <li><code>POC_RESOLUTION_MAPPING</code> 금강가세·철각유영은 대응 단계 처리</li>
+          <li><code>POC_ENGAGEMENT_COMPATIBILITY</code> 밀착 거리0에서 근접 공격 유효</li>
+          <li><code>LEGACY_SYSTEM_FIXTURE</code> 기본 절초 3종은 기세 검증용</li>
+          <li>전투 등급 산식과 5·7·9·10성 신규 효과는 포함하지 않음</li>
+        </ul>
+      </details>
+    </section>
+  </main>
+
+  <footer class="footer-note">
+    <span>브라우저 전투 PoC · 외부 서비스·빌드 도구 불필요</span>
+    <span>판정 엔진과 UI 연출 분리 · 동일 seed 재현</span>
+  </footer>
+
+  <script defer src="./dist/app.js"></script>
+</body>
+</html>
