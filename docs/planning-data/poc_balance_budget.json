@@ -1,5 +1,5 @@
 {
-  "schema_version": 8,
+  "schema_version": 9,
   "data_role": "NON_RUNTIME_POC_PLANNING",
   "status": "POC_HYPOTHESIS",
   "editable": true,
@@ -43,6 +43,46 @@
     "per_hit_effect_base": 5,
     "medical_per_point": 5
   },
+  "budget_display_contract": {
+    "authority_decision": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01",
+    "required_for_future_approval_tables": true,
+    "ticks_per_budget_point": 20,
+    "budget_point_per_tick": 0.05,
+    "required_columns": [
+      "GROSS_EFFECT_TICKS_AND_POINTS",
+      "RESOURCE_COST_CREDIT_TICKS_AND_POINTS",
+      "CONDITION_CREDIT_TICKS_AND_POINTS",
+      "NET_BUDGET_TICKS_AND_POINTS",
+      "TARGET_TICKS_AND_POINTS",
+      "VARIANCE_TICKS"
+    ],
+    "resource_cost_credit_must_be_visible": true,
+    "condition_credit_must_be_separate": true,
+    "net_formula": "gross_effect_ticks + resource_cost_credit_ticks + condition_credit_ticks",
+    "hidden_resource_credit_forbidden": true,
+    "reference_examples": {
+      "stamina_1": {
+        "ticks": -4,
+        "points": -0.2
+      },
+      "internal_1": {
+        "ticks": -7,
+        "points": -0.35
+      },
+      "stamina_1_plus_internal_1": {
+        "ticks": -11,
+        "points": -0.55
+      },
+      "momentum_5": {
+        "ticks": -30,
+        "points": -1.5
+      },
+      "self_health_1": {
+        "ticks": -3,
+        "points": -0.15
+      }
+    }
+  },
   "range_pricing_contract": {
     "authority_decision": "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
     "model": "MAX_RANGE_TOTAL_TICKS",
@@ -69,7 +109,8 @@
     "internal_1_credit_ticks": -7,
     "momentum_5_credit_ticks": -30,
     "self_health_1_credit_ticks": -3,
-    "resource_gain_and_cost_use_separate_ledger_entries": true
+    "resource_gain_and_cost_use_separate_ledger_entries": true,
+    "approval_display_must_show_each_credit": true
   },
   "stat_reference_pricing": {
     "status": "CURRENT_APPROVED_PLANNING",
@@ -220,6 +261,7 @@
     "All input values snap to 0.05 budget increments.",
     "Slot budgets are 1.0, 2.5, and 4.0 points for 1, 2, and 3 slots.",
     "Tags, fixed base values, stat-reference coefficients, range, and resource costs must use separate ledger entries.",
+    "Approval tables must show gross effect cost, resource cost credits, condition credits, net budget, target, and variance in both ticks and budget points.",
     "Current approved attack range uses total ticks by maximum range: 1=0, 2=10, 3=25, 4=40.",
     "Do not extrapolate range 5 or above without a new Decision.",
     "The legacy range_per_tile_beyond_one price remains only for historical POC_HYPOTHESIS ledger validation.",
