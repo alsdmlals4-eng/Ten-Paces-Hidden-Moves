@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "decision_id": "TEN-DEC-20260802-EVEN-STAR-STAT-ESCALATION-01",
   "authority_status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "PLANNING_ONLY",
@@ -12,7 +12,9 @@
   "followup_star_7_requirement_decision": "TEN-DEC-20260803-STAR7-TECHNIQUE-PRIMARY-STAT8-01",
   "followup_star_10_requirement_decision": "TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01",
   "followup_secondary_mapping_decision": "TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01",
+  "followup_route_node_stat_decision": "TEN-DEC-20260803-INTERMEDIATE-NODE-PERMANENT-STAT-REWARDS-01",
   "secondary_mapping_contract": "docs/planning-data/approved_20260803_starting_martial_secondary_stats_contract.json",
+  "route_node_stat_contract": "docs/planning-data/approved_20260803_intermediate_node_permanent_stat_rewards_contract.json",
   "grant_semantics": {
     "type": "INCREMENTAL_NEW_GRANT_ON_FIRST_REACH",
     "snapshot_or_cumulative_display_value": false,
@@ -96,16 +98,25 @@
     "legacy_15_is_validation_reference": true,
     "release_validation_includes_current_reachable_max": true
   },
+  "route_node_stat_policy": {
+    "authority_decision": "TEN-DEC-20260803-INTERMEDIATE-NODE-PERMANENT-STAT-REWARDS-01",
+    "scope": "CURRENT_RUN_PERMANENT",
+    "demo_max_points": 2,
+    "reward_per_node": 1,
+    "options_per_node": 2,
+    "max_nodes_same_gap": 1,
+    "counts_for_unlock_requirements": true,
+    "resets_on_new_run": true
+  },
   "remaining_gates": {
     "star_7_requirement": false,
     "star_10_requirement": false,
-    "route_node_permanent_stat_rewards": true,
+    "route_node_permanent_stat_rewards": false,
     "manual_secondary_stat_mapping": false,
     "individual_technique_stat_scaling": true,
     "high_stat_core_fun_human_validation": true
   },
   "blocked_pending_followup": [
-    "route_node_permanent_stat_reward_policy",
     "individual_technique_primary_secondary_scaling_and_thresholds",
     "combat_formula_and_core_fun_validation_at_current_reachable_max"
   ],
@@ -123,6 +134,9 @@
       "INSIGHT": 11
     },
     "current_known_multi_manual_reachable_example": 20,
+    "demo_route_node_additional_max": 2,
+    "route_node_pick_rate_human_validation_required": true,
+    "wrong_plan_rescue_rate_human_validation_required": true,
     "runtime_validation": "NOT_RUN",
     "godot_validation": "NOT_RUN",
     "windows_validation": "NOT_RUN",
