@@ -21,22 +21,26 @@
 
 ```yaml
 repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
-project_main: c5771ddae40f58d88824d9319fc4ef6cd1053bba
+main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
+last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
+active_planning_pr: 82
+active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
+active_approval_count: 2/10
+active_decision_state: APPROVED_PENDING_MERGE
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
-work_mode: REVIEW
-integration_pr: 65
-latest_operating_pr: 68
-implemented_feature: ACTION_SELECTION_DOCK
-implemented_decision: TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01
-approved_planning_decision: TEN-DEC-20260801-SITUATION-SCREEN-01
-approved_platform_decision: TEN-DEC-20260802-PLATFORM-SCOPE-01
+work_mode: PLAN
+runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
+latest_combat_planning_runtime: NOT_STARTED
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
+next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
 human_validation: NOT_RUN
 base_adapter: skills/PROJECT_BASE_ADAPTER.json
-base_release_pinned: 9.4.0
+base_release_pinned: 9.4.3
 ```
+
+병합된 main 상태와 활성 Draft PR 상태를 혼합하지 않는다. PR #82의 승인 두 건은 Branch·Decision·planning data·Sheet에 기록된 `APPROVED_PENDING_MERGE`이며, 병합 후 main·Sheet 재조회 전에는 `SYNCED_TO_MAIN`이 아니다.
 
 ## 현재 책임 원본
 
@@ -47,6 +51,8 @@ base_release_pinned: 9.4.0
 - 행동 선택: `docs/decisions/2026-08-01_MARTIAL_MANUAL_TECHNIQUE_TIMELINE_UX_DECISION.md`.
 - 화면 구조: `docs/decisions/2026-08-01_SITUATION_SCREEN_ARCHITECTURE_DECISION.md`.
 - 플랫폼 범위: `docs/decisions/2026-08-02_PLATFORM_SCOPE_DECISION.md`.
+- 최근 병합 성장 체크포인트: PR #80과 `d9f38e6f3cacaf170d4b290e95b3645114639aff`.
+- 현재 활성 성장 배치: PR #82와 두 Decision.
 - 구현 종료: `docs/implementation/2026-08-01_ACTION_SELECTION_DOCK_CLOSEOUT.md`.
 - 최신 총기획 감사: `docs/reviews/2026-08-02_BASE_PROJECT_SHEET_TOTAL_PLANNING_AUDIT.md`.
 
@@ -59,6 +65,7 @@ base_release_pinned: 9.4.0
 - AI의 미확정 플레이어 계획 열람 금지.
 - 덱·손패·드로우·장착 기술 제한 없음.
 - 무공서가 아니라 현재 해금 기술을 수에 배치.
+- 핵심 재미는 한 행동을 맞히는 것이 아니라 여러 가능성을 견디는 계획을 만들고, 해결·복기로 왜 상대의 의도가 무너졌는지 이해한 뒤 다음 계획을 바꾸는 데 있다.
 
 ## 플랫폼 경계
 
@@ -70,13 +77,16 @@ base_release_pinned: 9.4.0
 ## 현재 작업
 
 ```text
-PR #65 병합·정본·Sheet 동기화 완료
-→ PR #68 Base v9.4 운영 계약 적용 완료
-→ VERTICAL_SLICE_APP_FLOW_SHELL 구현 계약 정밀화
-→ Main→Setup→Route→Node→Briefing→Combat→Result 저충실도 연결
-→ 저장·전환·중복 commit 자동 검증
-→ Windows 실제 화면·입력·성능·STEP 14 사람 검증
+PR #80 병합·PR #81 main 상태 동기화 완료
+→ PR #82 GrillMe 승인 배치 2/10 수집 중
+→ 중간 노드 영구 스테이터스 보상 Decision
+→ 남은 기획 완료와 적대적 검토
+→ 필요한 이미지·모션·HX 기획·생성·승인
+→ VERTICAL_SLICE_APP_FLOW_SHELL Codex 구현 인계
+→ 자동·Godot·Windows·접근성·성능·STEP 14 사람 검증
 ```
+
+제품 코드·Scene·런타임 데이터는 별도 Build 승인 전 변경하지 않는다.
 
 ## Work Mode
 
@@ -90,6 +100,7 @@ PR #65 병합·정본·Sheet 동기화 완료
 - PR #45는 v6 계획 통합 이력이다.
 - PR #65는 ActionSelectionDock과 화면 구조 통합 이력이다.
 - PR #68은 Base v9.4 운영 계약 적용 이력이다.
-- 과거 Base v8 SHA는 호환성 회귀 증거일 뿐 현재 Adapter 권한이 아니다.
+- PR #72와 PR #80은 이후 전투·성장 기획 체크포인트 이력이다.
+- 현재 공용 Skill 권한은 `skills/PROJECT_BASE_ADAPTER.json`의 Base v9.4.3 pin이다.
 
 자동·정적 검증은 Windows 실제 Godot, 실물 게임패드, 화면 읽기 도구, 성능, 사람 플레이를 증명하지 않는다. 실행하지 않은 항목은 `NOT_RUN`이다.
