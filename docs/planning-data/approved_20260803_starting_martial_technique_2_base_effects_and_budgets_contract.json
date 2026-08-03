@@ -1,0 +1,394 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-2-BASE-EFFECTS-AND-BUDGETS-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "PLANNING_ONLY",
+  "approved_at": "2026-08-03",
+  "grillme_batch_count": "6/10",
+  "predecessors": [
+    "TEN-DEC-20260803-MARTIAL-TECHNIQUE-ROLE-AND-SCALING-MATRIX-01",
+    "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01",
+    "TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01"
+  ],
+  "budget_policy": {
+    "unit": "TICKS_ONLY",
+    "slot_budget_ticks": {
+      "1": 20,
+      "2": 50,
+      "3": 80
+    },
+    "resource_cost_allowance_ticks": {
+      "stamina_1": 4,
+      "internal_1": 7
+    },
+    "condition_allowance_ticks": {
+      "requires_existing_defense": 4,
+      "requires_successful_evade": 5,
+      "requires_clash_win": 5,
+      "strict_public_low_resource_condition": 7
+    },
+    "available_budget_formula": "slot_budget_ticks + resource_cost_allowance_ticks + condition_allowance_ticks",
+    "variance_formula": "effect_cost_ticks - available_budget_ticks",
+    "automatic_tolerance_ticks": 5,
+    "budget_points_forbidden": true
+  },
+  "implementation_simplification": {
+    "in_bundle_player_choice": false,
+    "runtime_prompt_during_committed_action_bundle": false,
+    "all_movement_paths_deterministic": true,
+    "deferred_until_new_decision": [
+      "ADVANCE_OR_RETREAT_CHOICE",
+      "POST_HIT_DIRECTION_CHOICE",
+      "POST_EVADE_DESTINATION_CHOICE"
+    ]
+  },
+  "techniques": {
+    "falling_petal_chasing_sword": {
+      "manual_id": "flowing_cloud_sword",
+      "name_ko": "낙영추검",
+      "milestone": 7,
+      "category": "ATTACK",
+      "role": "FIXED_FORWARD_REACH_ATTACK_NOT_CHAIN_REPLACEMENT",
+      "action_slots": 2,
+      "costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "movement": {
+        "timing": "BEFORE_ATTACK",
+        "tiles": 1,
+        "direction": "ADVANCE",
+        "player_choice": false
+      },
+      "range": {
+        "min": 1,
+        "max": 2,
+        "total_range_ticks": 10
+      },
+      "primary_binding": {
+        "stat": "MOVEMENT",
+        "type": "STAR_7_UNLOCK_AND_FIXED_FORWARD_MOTION_STRUCTURE",
+        "continuous_per_point_scaling": false
+      },
+      "secondary_binding": {
+        "stat": "EXTERNAL",
+        "damage_formula": "floor(5 + EXTERNAL * 0.75)"
+      },
+      "reference_values": {
+        "stat_1_damage": 5,
+        "stat_4_damage": 8,
+        "stat_15_damage": 16
+      },
+      "budget": {
+        "effect_cost_components": {
+          "damage_at_external_4": 40,
+          "max_range_2_total": 10,
+          "fixed_advance_1": 6
+        },
+        "effect_cost_ticks": 56,
+        "slot_budget_ticks": 50,
+        "resource_cost_allowance_components": {
+          "stamina_1": 4,
+          "internal_1": 7
+        },
+        "resource_cost_allowance_ticks": 11,
+        "condition_allowance_ticks": 0,
+        "available_budget_ticks": 61,
+        "variance_ticks": -5,
+        "within_auto_tolerance": true
+      }
+    },
+    "rebounding_vajra_fist": {
+      "manual_id": "diamond_body_art",
+      "legacy_manual_alias": "vajra_body",
+      "name_ko": "반진권",
+      "milestone": 7,
+      "category": "ATTACK",
+      "role": "EXISTING_DEFENSE_TO_COUNTER_PRESSURE",
+      "action_slots": 2,
+      "costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "range": {
+        "min": 1,
+        "max": 1
+      },
+      "condition": "REQUIRES_EXISTING_DEFENSE",
+      "primary_binding": {
+        "stat": "CONSTITUTION",
+        "damage_formula": "floor(4 + CONSTITUTION * 1.00)"
+      },
+      "secondary_binding": {
+        "stat": "INTERNAL",
+        "on_hit_defense_formula": "floor(2 + INTERNAL * 0.50)"
+      },
+      "fixed_effects": {
+        "fortitude_on_hit": 1
+      },
+      "reference_values": {
+        "stat_4_damage": 8,
+        "stat_4_defense_on_hit": 4
+      },
+      "budget": {
+        "effect_cost_components": {
+          "damage_at_constitution_4": 40,
+          "defense_at_internal_4": 16,
+          "fortitude_1": 10
+        },
+        "effect_cost_ticks": 66,
+        "slot_budget_ticks": 50,
+        "resource_cost_allowance_components": {
+          "stamina_1": 4,
+          "internal_1": 7
+        },
+        "resource_cost_allowance_ticks": 11,
+        "condition_allowance_ticks": 4,
+        "available_budget_ticks": 65,
+        "variance_ticks": 1,
+        "within_auto_tolerance": true
+      }
+    },
+    "four_ounces_move_thousand_pounds": {
+      "manual_id": "taiji_flowing_sword",
+      "legacy_manual_alias": "taiji_flow",
+      "name_ko": "사량발천근",
+      "milestone": 7,
+      "category": "ATTACK",
+      "role": "CLASH_READ_TO_FIXED_COUNTER_GUARD",
+      "action_slots": 2,
+      "costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "range": {
+        "min": 1,
+        "max": 1
+      },
+      "condition": "ON_CLASH_WIN",
+      "primary_binding": {
+        "stat": "INSIGHT",
+        "damage_formula": "floor(4 + INSIGHT * 1.00)",
+        "clash_power_bonus_formula": "floor(2 + INSIGHT * 0.50)"
+      },
+      "secondary_binding": {
+        "stat": "INTERNAL",
+        "on_clash_win_defense_formula": "floor(INTERNAL * 1.00)"
+      },
+      "reference_values": {
+        "stat_4_damage": 8,
+        "stat_4_clash_power_bonus": 4,
+        "stat_4_defense_on_clash_win": 4
+      },
+      "budget": {
+        "effect_cost_components": {
+          "damage_at_insight_4": 40,
+          "clash_power_bonus_at_insight_4": 12,
+          "defense_at_internal_4": 16
+        },
+        "effect_cost_ticks": 68,
+        "slot_budget_ticks": 50,
+        "resource_cost_allowance_components": {
+          "stamina_1": 4,
+          "internal_1": 7
+        },
+        "resource_cost_allowance_ticks": 11,
+        "condition_allowance_ticks": 5,
+        "available_budget_ticks": 66,
+        "variance_ticks": 2,
+        "within_auto_tolerance": true
+      }
+    },
+    "chained_road_lock": {
+      "manual_id": "chasing_wind_spear",
+      "legacy_manual_alias": "pursuing_wind_spear",
+      "name_ko": "연환쇄로",
+      "milestone": 7,
+      "category": "ATTACK",
+      "role": "TWO_HIT_REACH_PRESSURE_TO_FIXED_RETREAT",
+      "action_slots": 2,
+      "costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "range": {
+        "min": 1,
+        "max": 2,
+        "total_range_ticks": 10
+      },
+      "hit_formulas": [
+        "floor(2 + EXTERNAL * 0.75)",
+        "floor(2 + EXTERNAL * 0.50)"
+      ],
+      "after_at_least_one_hit": {
+        "fixed_retreat": 1,
+        "player_choice": false
+      },
+      "secondary_binding": {
+        "stat": "MOVEMENT",
+        "type": "FIXED_RETREAT_STRUCTURE",
+        "continuous_per_point_scaling": false
+      },
+      "reference_values": {
+        "stat_4_hit_1": 5,
+        "stat_4_hit_2": 4,
+        "stat_4_total_raw_power": 9
+      },
+      "budget": {
+        "effect_cost_components": {
+          "hit_1_at_external_4": 25,
+          "hit_2_at_external_4": 20,
+          "extra_hit_after_first": 4,
+          "max_range_2_total": 10,
+          "fixed_retreat_1": 6
+        },
+        "effect_cost_ticks": 65,
+        "slot_budget_ticks": 50,
+        "resource_cost_allowance_components": {
+          "stamina_1": 4,
+          "internal_1": 7
+        },
+        "resource_cost_allowance_ticks": 11,
+        "condition_allowance_ticks": 0,
+        "available_budget_ticks": 61,
+        "variance_ticks": 4,
+        "within_auto_tolerance": true
+      }
+    },
+    "returning_qi_meridian": {
+      "manual_id": "clear_heart_nourishing_art",
+      "legacy_manual_alias": "clear_heart_nurturing",
+      "name_ko": "회기전맥",
+      "milestone": 7,
+      "category": "RECOVERY",
+      "role": "LOW_RESOURCE_FIXED_RECOVERY_AND_STABILIZATION",
+      "action_slots": 2,
+      "costs": {
+        "stamina": 1
+      },
+      "targeting_mode": "SELF",
+      "condition": "CURRENT_STAMINA_PLUS_INTERNAL_AT_MOST_2",
+      "fixed_effects": {
+        "internal_gain": 2,
+        "fortitude": 1
+      },
+      "primary_binding": {
+        "stat": "INTERNAL",
+        "defense_formula": "floor(1 + INTERNAL * 0.25)"
+      },
+      "secondary_binding": {
+        "stat": "CONSTITUTION",
+        "health_heal_formula": "floor(2 + CONSTITUTION * 0.50)"
+      },
+      "reference_values": {
+        "stat_4_health_heal": 4,
+        "stat_4_defense": 2
+      },
+      "budget": {
+        "effect_cost_components": {
+          "health_heal_at_constitution_4": 24,
+          "internal_gain_2": 18,
+          "defense_at_internal_4": 8,
+          "fortitude_1": 10
+        },
+        "effect_cost_ticks": 60,
+        "slot_budget_ticks": 50,
+        "resource_cost_allowance_components": {
+          "stamina_1": 4
+        },
+        "resource_cost_allowance_ticks": 4,
+        "condition_allowance_ticks": 7,
+        "available_budget_ticks": 61,
+        "variance_ticks": -1,
+        "within_auto_tolerance": true
+      }
+    },
+    "ten_paces_position_reversal": {
+      "manual_id": "shadowless_ten_steps",
+      "legacy_manual_alias": "shadowless_steps",
+      "name_ko": "십보환위",
+      "milestone": 7,
+      "category": "RESPONSE",
+      "role": "EVADE_TO_FIXED_RETREAT_AND_COUNTER",
+      "action_slots": 2,
+      "resolution_phase": "RESPONSE",
+      "costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "fixed_effects": {
+        "evade": 1
+      },
+      "on_evade_success": {
+        "movement": {
+          "tiles": 2,
+          "direction": "RETREAT_FROM_ENEMY",
+          "edge_rule": "MOVE_AS_FAR_AS_POSSIBLE_UP_TO_2",
+          "player_choice": false
+        },
+        "counterattack": {
+          "range": {
+            "min": 1,
+            "max": 2
+          },
+          "damage_formula": "floor(2 + INSIGHT * 1.00)"
+        }
+      },
+      "primary_binding": {
+        "stat": "MOVEMENT",
+        "type": "STAR_7_UNLOCK_AND_FIXED_EVADE_RETREAT_STRUCTURE",
+        "continuous_per_point_scaling": false
+      },
+      "secondary_binding": {
+        "stat": "INSIGHT",
+        "type": "SEPARATE_COUNTERATTACK_DAMAGE"
+      },
+      "reference_values": {
+        "stat_4_counterattack_damage": 6
+      },
+      "budget": {
+        "effect_cost_components": {
+          "evade_1": 18,
+          "fixed_retreat_2": 12,
+          "counterattack_damage_at_insight_4": 30,
+          "max_range_2_total": 10
+        },
+        "effect_cost_ticks": 70,
+        "slot_budget_ticks": 50,
+        "resource_cost_allowance_components": {
+          "stamina_1": 4,
+          "internal_1": 7
+        },
+        "resource_cost_allowance_ticks": 11,
+        "condition_allowance_ticks": 5,
+        "available_budget_ticks": 66,
+        "variance_ticks": 4,
+        "within_auto_tolerance": true
+      }
+    }
+  },
+  "global_validation": {
+    "all_six_base_techniques_approved": true,
+    "all_within_plus_minus_5_ticks": true,
+    "technique_2_strictly_dominates_technique_1": false,
+    "budget_unit": "TICKS_ONLY",
+    "budget_points_present": false,
+    "in_bundle_player_choice_present": false,
+    "deterministic_movement_present": true,
+    "same_effect_dual_scaling_present": false,
+    "structural_per_point_scaling_present": false,
+    "product_code_changed": false,
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "accessibility_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  },
+  "follow_up_tbd": [
+    "STARTING_MARTIAL_TECHNIQUE_1_STAR5_ROLE_PATCHES",
+    "INDIVIDUAL_STAR_9_READ_BASED_BRANCHES",
+    "INDIVIDUAL_MARTIAL_ULTIMATE_EFFECTS_AND_BUDGETS",
+    "NON_STAT_NODE_EXPECTED_VALUE_AND_PLACEMENT",
+    "HIGH_STAT_CORE_FUN_HUMAN_VALIDATION"
+  ]
+}
