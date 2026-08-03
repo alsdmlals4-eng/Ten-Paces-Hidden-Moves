@@ -13,7 +13,7 @@ runtime_work_mode: REVIEW
 runtime_integration_pr: 65
 active_planning_work_mode: PLAN
 active_planning_pr: 84
-active_approval_count: 3/10
+active_approval_count: 4/10
 active_decision_state: APPROVED_PENDING_MERGE
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
@@ -26,7 +26,7 @@ automated_validation: PASS
 windows_validation: NOT_RUN
 human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: MARTIAL_TECHNIQUE_ROLE_AND_SCALING_MATRIX
+next_planning_decision: STARTING_MARTIAL_TECHNIQUE_1_BASE_EFFECTS_AND_BUDGETS
 ```
 
 `automated_validation: PASS`는 런타임 기준선의 자동 검증 상태이며 Windows·접근성·성능·사람 검증을 대신하지 않는다. PR #83은 정본 신선도 결함을 main에 동기화했고, PR #82의 승인 2건은 archive Branch에 보존한 뒤 새 main 기반 PR #84로 이전했다.
@@ -47,11 +47,12 @@ next_planning_decision: MARTIAL_TECHNIQUE_ROLE_AND_SCALING_MATRIX
 - `work_mode: REVIEW`, `integration_pr: 65`는 런타임 기준선이다.
 - 최신 전투·성장 기획은 런타임에 아직 반영되지 않았다.
 
-## 현재 활성 승인 — 3/10
+## 현재 활성 승인 — 4/10
 
 1. `TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01`: 10성 절초는 주 영구 능력치12, 보조 요구 없음, 임시 능력치 해금 불가, 미달 시 절초만 잠금.
 2. `TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01`: 유운검결 신법/외공, 금강호체공 근골/내공, 태극유전검 심안/내공, 추풍창법 외공/신법, 청심양생공 내공/근골, 무영십보 신법/심안. 시작3성에는2성 주+1만 적용하고 보조는4성부터 지급.
 3. `TEN-DEC-20260803-INTERMEDIATE-NODE-PERMANENT-STAT-REWARDS-01`: 데모 회차 중간 노드 영구 스테이터스는 최대2회, 노드마다 서로 다른 두 능력치 중 하나를 선택해 +1, 회차 종료 시 초기화, 공개 정보만으로 제시한다.
+4. `TEN-DEC-20260803-MARTIAL-TECHNIQUE-ROLE-AND-SCALING-MATRIX-01`: 기술은 역할을 먼저 고정하고 주 능력치는 핵심 효과에, 보조 능력치는 구분된 보조 효과가 있을 때만 연결한다. 5성은 기존 역할 강화, 9성은 공개 정보 기반 수읽기 조건부 분기다.
 
 ## 현재 정본 요약
 
@@ -61,6 +62,8 @@ next_planning_decision: MARTIAL_TECHNIQUE_ROLE_AND_SCALING_MATRIX
 - 3성 첫 기술 주4, 7성 두 번째 기술 주8, 10성 절초 주12.
 - 짝수 성 최초 지급: 2성 주+1, 4성 주+1·보조+1, 6성 주+2·보조+1, 8성 주+3·보조+2.
 - 데모 중간 노드의 회차 내 영구 스테이터스 공급은 최대 +2이며 한 노드에서 두 능력치 중 하나를 골라 +1한다.
+- 모든 기술에 주·보조 배수를 자동 적용하지 않으며 같은 효과의 이중 배수와 구조값의 점당 연속 증가를 금지한다.
+- 기술1은 기본 운용법, 기술2는 대체가 아닌 고급 상호작용, 5성은 역할 강화, 9성은 수읽기 조건부 분기다.
 - 전투 종료 등급 원자료는 회피·합·잃은 체력·라운드·절초 사용이다.
 
 ## 구현 차이
@@ -78,7 +81,7 @@ next_planning_decision: MARTIAL_TECHNIQUE_ROLE_AND_SCALING_MATRIX
 ## 다음 작업 Gate
 
 ```text
-무공별 기술 역할·주/보조 배수·5/9성 patch 구조 GrillMe
+여섯 시작 무공 3성 기술1의 정확한 기본 효과·행동 슬롯·비용·계수 GrillMe
 → 남은 승인 최대 10건
 → [기획 완료]
 → 전체 적대적 검토
@@ -91,7 +94,7 @@ next_planning_decision: MARTIAL_TECHNIQUE_ROLE_AND_SCALING_MATRIX
 ## 검증 경계
 
 ```yaml
-planning_checkpoint: ACTIVE_DRAFT_3_OF_10
+planning_checkpoint: ACTIVE_DRAFT_4_OF_10
 product_code_changed: false
 runtime_validation: NOT_RUN
 godot_validation: NOT_RUN
