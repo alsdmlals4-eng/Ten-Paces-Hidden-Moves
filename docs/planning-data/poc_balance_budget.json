@@ -1,5 +1,5 @@
 {
-  "schema_version": 10,
+  "schema_version": 11,
   "data_role": "NON_RUNTIME_POC_PLANNING",
   "status": "POC_HYPOTHESIS",
   "editable": true,
@@ -19,8 +19,8 @@
   "automatic_acceptance_tolerance_ticks": 5,
   "pricing_ticks": {
     "raw_damage_per_point": 5,
-    "range_per_tile_beyond_one": 4,
-    "movement_per_tile": 6,
+    "range_per_tile_beyond_one": 15,
+    "movement_per_tile": 15,
     "defense_gain_per_point": 4,
     "defense_break_per_point": 4,
     "evade_charge": 18,
@@ -41,8 +41,8 @@
     "medical_per_point": 5
   },
   "budget_display_contract": {
-    "authority_decision": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-2-BASE-EFFECTS-AND-BUDGETS-01",
-    "amends_display_policy_of": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01",
+    "authority_decision": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
+    "amends_display_policy_of": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-2-BASE-EFFECTS-AND-BUDGETS-01",
     "required_for_future_approval_tables": true,
     "unit": "TICKS_ONLY",
     "required_columns": [
@@ -78,8 +78,14 @@
       "two_slot_stamina_1_internal_1": {
         "formula": "50(2 slots) + 7(internal 1) + 4(stamina 1)",
         "available_budget_ticks": 61
+      },
+      "one_slot_stamina_2_internal_2": {
+        "formula": "20(1 slot) + 8(stamina 2) + 14(internal 2)",
+        "available_budget_ticks": 42
       }
-    }
+    },
+    "resource_allowance_independent_of_slot_count": true,
+    "short_action_can_exceed_longer_free_action_budget": true
   },
   "current_approval_allowance_ticks": {
     "resource_costs": {
@@ -101,24 +107,32 @@
     "runtime_score": false
   },
   "range_pricing_contract": {
-    "authority_decision": "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
-    "model": "MAX_RANGE_TOTAL_TICKS",
+    "authority_decision": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
+    "supersedes_decision": "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
+    "model": "UNIFIED_DISTANCE_PER_TILE_TICKS",
+    "per_tile_ticks": 15,
+    "attack_range_base": 1,
     "total_ticks_by_max_range": {
       "1": 0,
-      "2": 10,
-      "3": 25,
-      "4": 40
+      "2": 15,
+      "3": 30,
+      "4": 45
     },
-    "range_5_plus": "TBD_REQUIRES_NEW_DECISION",
-    "values_are_cumulative_total_costs": true,
-    "do_not_sum_band_values": true,
+    "movement_ticks_by_tiles": {
+      "0": 0,
+      "1": 15,
+      "2": 30,
+      "3": 45,
+      "4": 60
+    },
+    "range_formula": "max(0, max_range - 1) * 15",
+    "movement_formula": "movement_tiles * 15",
+    "movement_and_range_stack": true,
     "separate_ledger_entry_required": true,
-    "legacy_linear_price_id": "range_per_tile_beyond_one",
-    "legacy_linear_price_status": "SUPERSEDED_FOR_CURRENT_APPROVED_TECHNIQUES",
-    "legacy_linear_price_allowed_for_poc_hypothesis_validation_only": true
+    "distance_5_plus": "LINEAR_15_TICKS_WITH_BOARD_AND_LEGAL_RANGE_REVIEW"
   },
   "resource_cost_credit_contract": {
-    "authority_decision": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-2-BASE-EFFECTS-AND-BUDGETS-01",
+    "authority_decision": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
     "credits_are_authoring_budget_not_runtime_score": true,
     "guaranteed_payment_required": true,
     "refunded_or_waived_cost_gets_full_credit": false,
@@ -128,7 +142,14 @@
     "self_health_1_credit_ticks": -3,
     "current_approval_display_uses_positive_allowance": true,
     "resource_gain_and_cost_use_separate_ledger_entries": true,
-    "approval_display_must_show_each_credit": true
+    "approval_display_must_show_each_credit": true,
+    "slot_count_does_not_cap_resource_allowance": true,
+    "higher_resource_cost_can_raise_short_action_budget": true,
+    "payment_timing": "FIRST_SLOT_FULL_PREPAY",
+    "pre_commit_removal_refund": true,
+    "post_commit_failure_refund": false,
+    "must_be_affordable_at_commit": true,
+    "waived_or_conditional_nonpayment_gets_no_allowance": true
   },
   "stat_reference_pricing": {
     "status": "CURRENT_APPROVED_PLANNING",
@@ -150,31 +171,46 @@
   },
   "approved_basic_attack_formulas": {
     "authority_decision": "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
-    "range_pricing_decision": "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
+    "range_pricing_decision": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
     "basic_palm_formula_decision": "TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01",
     "quick_attack": {
       "formula": "floor(3 + external_power * 0.50)",
       "ledger_ticks_at_stat_4": 21,
       "target_ticks": 20,
-      "variance_ticks": 1
+      "variance_ticks": 1,
+      "effect_cost_ticks_at_stat_4": 25,
+      "slot_budget_ticks": 20,
+      "resource_allowance_ticks": 4,
+      "available_budget_ticks": 24,
+      "within_auto_tolerance": true
     },
     "heavy_attack": {
       "formula": "floor(7 + external_power * 1.00)",
-      "ledger_ticks_at_stat_4": 54,
+      "ledger_ticks_at_stat_4": 59,
       "target_ticks": 50,
-      "variance_ticks": 4
+      "variance_ticks": 9,
+      "effect_cost_ticks_at_stat_4": 70,
+      "slot_budget_ticks": 50,
+      "resource_allowance_ticks": 11,
+      "available_budget_ticks": 61,
+      "within_auto_tolerance": false,
+      "status": "REVIEW_REQUIRED_AFTER_DISTANCE_REPRICE"
     },
     "basic_palm": {
       "formula": "floor(3 + internal_power * 0.75)",
       "fixed_damage": 3,
       "coefficient": 0.75,
-      "ledger_ticks_at_stat_4": 48,
+      "ledger_ticks_at_stat_4": 53,
       "target_ticks": 50,
-      "variance_ticks": -2,
-      "spare_ticks": 2,
+      "variance_ticks": 3,
+      "spare_ticks": -3,
       "within_auto_tolerance": true,
       "knockback": 0,
-      "lower_than_quick_constraint": "SUPERSEDED"
+      "lower_than_quick_constraint": "SUPERSEDED",
+      "effect_cost_ticks_at_stat_4": 60,
+      "slot_budget_ticks": 50,
+      "resource_allowance_ticks": 7,
+      "available_budget_ticks": 57
     }
   },
   "authoring_selection_contract": {
@@ -182,7 +218,7 @@
     "decision_id": "TEN-DEC-20260802-TECHNIQUE-AUTHORING-TAG-FIXED-STAT-01",
     "pricing_decision_id": "TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01",
     "basic_attack_formula_decision_id": "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
-    "range_pricing_decision_id": "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
+    "range_pricing_decision_id": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
     "basic_palm_formula_decision_id": "TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01",
     "order": [
       "structure_and_cost",
@@ -203,7 +239,9 @@
     "structural_values_are_continuous_stat_scaled": false,
     "tag_quantity_is_continuous_stat_scaled": false,
     "in_bundle_player_choice_allowed_for_current_scope": false,
-    "deterministic_movement_required": true
+    "deterministic_movement_required": true,
+    "resource_budget_decision_id": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
+    "movement_pricing_decision_id": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01"
   },
   "condition_credits": {
     "common_public_condition": -3,
@@ -280,13 +318,16 @@
     "Ticks are the only unit shown in current approval and authoring tables.",
     "Slot budgets are 20, 50, and 80 ticks for 1, 2, and 3 slots.",
     "Current approval available budget equals slot ticks plus visible resource-cost allowances plus visible condition allowances.",
+    "Available budget equals slot ticks plus every visible guaranteed resource-cost allowance plus visible condition allowance; slot count does not cap resource allowance.",
+    "All resource costs are fully prepaid on the first slot, refunded only before commit, and not refunded after interruption, range failure, direction failure, dodge, or other committed failure.",
+    "Every bundle transition grants each living actor stamina +1, internal +1, and ultimate momentum +1 before the enemy plan locks.",
     "Approval tables must show effect cost, slot budget, resource allowance, condition allowance, available budget, and variance in ticks only.",
     "Legacy negative credit tables remain only to validate historical poc_martial_arts.json ledgers before runtime migration.",
     "Tags, fixed base values, stat-reference coefficients, range, and resource costs must use separate ledger entries.",
-    "Current approved attack range uses total ticks by maximum range: 1=0, 2=10, 3=25, 4=40.",
-    "Do not extrapolate range 5 or above without a new Decision.",
-    "The legacy range_per_tile_beyond_one price remains only for historical POC_HYPOTHESIS ledger validation.",
-    "Guaranteed non-refundable resource costs add authoring allowance; waived or refunded costs do not receive full allowance.",
+    "Current approved distance price is unified at 15 ticks per tile: movement N=N*15; attack max range N=max(0,N-1)*15.",
+    "Distance 5 or above continues linearly at 15 ticks per tile but must be checked against the 10-tile board and each action's legal range.",
+    "The active range_per_tile_beyond_one and movement_per_tile values are both 15 ticks; earlier 0/10/25/40 range bands are superseded.",
+    "Guaranteed non-refundable stamina and internal costs add authoring allowance independently of slot count; short actions may exceed longer free-action budgets by paying more resources.",
     "Observation, movement, dodge, and strengthen are fixed-only effects without continuous stat scaling.",
     "All other numeric action effects require at least one explicit stat reference.",
     "Stat-reference coefficients snap to 0.25 and are priced at balance reference stat 4.",
@@ -314,5 +355,46 @@
       "medical",
       "sure_hit_stacks"
     ]
+  },
+  "current_authority_decision": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
+  "bundle_transition_recovery_contract": {
+    "authority_decision": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
+    "applies_to": "BOTH_LIVING_ACTORS",
+    "first_bundle_battle_start_recovery": false,
+    "transitions": [
+      "BUNDLE_1_TO_2",
+      "BUNDLE_2_TO_3",
+      "BUNDLE_3_TO_NEXT_ROUND_BUNDLE_1"
+    ],
+    "stamina_gain": 1,
+    "internal_gain": 1,
+    "ultimate_momentum_gain": 1,
+    "resource_caps_apply": true,
+    "recovery_before_enemy_plan_lock": true
+  },
+  "linked_multislot_interruption_contract": {
+    "authority_decision": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
+    "link_key": "action_instance_id",
+    "health_damage_during_telegraph_interrupts_entire_action": true,
+    "cancel_remaining_telegraph_slots": true,
+    "cancel_execution_slot": true,
+    "fortitude_can_prevent_one_interruption": true,
+    "post_commit_cost_refund": false
+  },
+  "prepared_meditation_contract": {
+    "authority_decision": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
+    "prepare_cost": {
+      "stamina": 0,
+      "internal": 0,
+      "ultimate_momentum": 0,
+      "slots": 1
+    },
+    "meditation_gain": {
+      "stamina": 1,
+      "internal": 1,
+      "ultimate_momentum": 1
+    },
+    "consumes_prepare": true,
+    "interruptible_by_prior_health_damage_same_timing": true
   }
 }
