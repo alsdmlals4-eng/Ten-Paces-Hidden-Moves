@@ -20,6 +20,8 @@ windows_validation: NOT_RUN
 human_validation: NOT_RUN
 ```
 
+프로젝트 코어가 사용자 승인된 상태에서 성장 골격과 시작 무공 기술을 구체화하고 있다.
+
 현재 승인 범위:
 
 - 시작 총합20·평균4.
@@ -114,7 +116,7 @@ skill_milestone
 | `diamond_body_art` | 금강호체공 | 근골 | 내공 | 방어·강건과 내가 호신 | `vajra_body` |
 | `taiji_flowing_sword` | 태극유전검 | 심안 | 내공 | 간파·흘리기·합 뒤 반격 | `taiji_flow` |
 | `chasing_wind_spear` | 추풍창법 | 외공 | 신법 | 사거리 압박·직선 타격·간격 조정 | `pursuing_wind_spear` |
-| `clear_heart_nourishing_art` | 청심양생공 | 내공 | 근골 | 내력·회복·상태 안정 | `clear_heart_nurturing` |
+| `clear_heart_nourishing_art` | 청심양생공 | 내공 | 내력·회복·상태 안정 | `clear_heart_nurturing` |
 | `shadowless_ten_steps` | 무영십보 | 신법 | 심안 | 이동·회피·관찰 대응 | `shadowless_steps` |
 
 역사 ID는 `legacy_manual_alias`로만 보존한다. 새 Decision·Sheet·향후 adapter는 canonical ID를 사용한다.
