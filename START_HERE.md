@@ -23,13 +23,17 @@
 repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
 main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
 last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
+product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
+work_mode: REVIEW
+integration_pr: 65
+active_planning_work_mode: PLAN
 active_planning_pr: 82
 active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
 active_approval_count: 2/10
 active_decision_state: APPROVED_PENDING_MERGE
-product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
-work_mode: PLAN
 runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
+implemented_decision: TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01
+approved_screen_architecture: TEN-DEC-20260801-SITUATION-SCREEN-01
 latest_combat_planning_runtime: NOT_STARTED
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
@@ -40,7 +44,7 @@ base_adapter: skills/PROJECT_BASE_ADAPTER.json
 base_release_pinned: 9.4.3
 ```
 
-병합된 main 상태와 활성 Draft PR 상태를 혼합하지 않는다. PR #82의 승인 두 건은 Branch·Decision·planning data·Sheet에 기록된 `APPROVED_PENDING_MERGE`이며, 병합 후 main·Sheet 재조회 전에는 `SYNCED_TO_MAIN`이 아니다.
+`work_mode: REVIEW`와 `integration_pr: 65`는 런타임 통합 기준선이고, 활성 기획 작업은 `active_planning_work_mode: PLAN`과 PR #82다. PR #82의 승인 두 건은 Branch·Decision·planning data·Sheet에 기록된 `APPROVED_PENDING_MERGE`이며, 병합 후 main·Sheet 재조회 전에는 `SYNCED_TO_MAIN`이 아니다.
 
 ## 현재 책임 원본
 
