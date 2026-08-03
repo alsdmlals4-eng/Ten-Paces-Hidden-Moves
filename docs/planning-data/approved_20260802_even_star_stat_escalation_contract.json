@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "decision_id": "TEN-DEC-20260802-EVEN-STAR-STAT-ESCALATION-01",
   "authority_status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "PLANNING_ONLY",
@@ -9,6 +9,10 @@
     "TEN-DEC-20260802-STARTING-STAT-TOTAL20-MANUAL-BONUS-01"
   ],
   "conflict_resolution_decision": "TEN-DEC-20260803-UNCAPPED-CORE-STATS-01",
+  "followup_star_7_requirement_decision": "TEN-DEC-20260803-STAR7-TECHNIQUE-PRIMARY-STAT8-01",
+  "followup_star_10_requirement_decision": "TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01",
+  "followup_secondary_mapping_decision": "TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01",
+  "secondary_mapping_contract": "docs/planning-data/approved_20260803_starting_martial_secondary_stats_contract.json",
   "grant_semantics": {
     "type": "INCREMENTAL_NEW_GRANT_ON_FIRST_REACH",
     "snapshot_or_cumulative_display_value": false,
@@ -64,6 +68,7 @@
   "starting_mastery_contract": {
     "starting_mastery": 3,
     "star_2_primary_bonus_already_applied": true,
+    "star_4_is_first_secondary_grant": true,
     "additional_stat_points_from_star_3_to_star_8": 10,
     "training_points_from_star_3_to_star_8": 20
   },
@@ -76,7 +81,10 @@
   "fixed_rules": {
     "manual_training_blocked_by_stat_requirement": false,
     "locked_technique_auto_enables_when_permanent_requirement_met": true,
-    "exact_primary_secondary_mapping_is_per_manual": true
+    "exact_primary_secondary_mapping_is_per_manual": true,
+    "mapping_authority_decision": "TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01",
+    "secondary_auto_scales_every_technique": false,
+    "secondary_is_unlock_requirement": false
   },
   "uncapped_core_stat_policy": {
     "authority_decision": "TEN-DEC-20260803-UNCAPPED-CORE-STATS-01",
@@ -89,17 +97,16 @@
     "release_validation_includes_current_reachable_max": true
   },
   "remaining_gates": {
-    "star_7_requirement": true,
-    "star_10_requirement": true,
+    "star_7_requirement": false,
+    "star_10_requirement": false,
     "route_node_permanent_stat_rewards": true,
-    "manual_secondary_stat_mapping": true,
+    "manual_secondary_stat_mapping": false,
+    "individual_technique_stat_scaling": true,
     "high_stat_core_fun_human_validation": true
   },
   "blocked_pending_followup": [
-    "star_7_technique_requirement_values",
-    "star_10_ultimate_requirement_values",
     "route_node_permanent_stat_reward_policy",
-    "manual_secondary_stat_mapping",
+    "individual_technique_primary_secondary_scaling_and_thresholds",
     "combat_formula_and_core_fun_validation_at_current_reachable_max"
   ],
   "validation": {
@@ -107,6 +114,14 @@
     "additional_total_from_star_3_to_star_8": 10,
     "single_manual_primary_additional_after_start": 6,
     "single_manual_secondary_additional_after_start": 4,
+    "all_six_manuals_total_grants_at_star_8": 66,
+    "all_six_manuals_grants_by_stat": {
+      "EXTERNAL": 11,
+      "CONSTITUTION": 11,
+      "MOVEMENT": 18,
+      "INTERNAL": 15,
+      "INSIGHT": 11
+    },
     "current_known_multi_manual_reachable_example": 20,
     "runtime_validation": "NOT_RUN",
     "godot_validation": "NOT_RUN",
