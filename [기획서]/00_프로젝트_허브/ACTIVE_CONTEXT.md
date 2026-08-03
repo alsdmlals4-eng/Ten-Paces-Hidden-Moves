@@ -13,7 +13,7 @@ runtime_work_mode: REVIEW
 runtime_integration_pr: 65
 active_planning_work_mode: PLAN
 active_planning_pr: 84
-active_approval_count: 4/10
+active_approval_count: 5/10
 active_decision_state: APPROVED_PENDING_MERGE
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
@@ -26,7 +26,7 @@ automated_validation: PASS
 windows_validation: NOT_RUN
 human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: STARTING_MARTIAL_TECHNIQUE_1_BASE_EFFECTS_AND_BUDGETS
+next_planning_decision: STARTING_MARTIAL_TECHNIQUE_2_BASE_EFFECTS_AND_BUDGETS
 ```
 
 `automated_validation: PASS`는 런타임 기준선의 자동 검증 상태이며 Windows·접근성·성능·사람 검증을 대신하지 않는다. PR #83은 정본 신선도 결함을 main에 동기화했고, PR #82의 승인 2건은 archive Branch에 보존한 뒤 새 main 기반 PR #84로 이전했다.
@@ -44,15 +44,16 @@ next_planning_decision: STARTING_MARTIAL_TECHNIQUE_1_BASE_EFFECTS_AND_BUDGETS
 
 - `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`
 - `TEN-DEC-20260801-SITUATION-SCREEN-01`
-- `work_mode: REVIEW`, `integration_pr: 65`는 런타임 기준선이다.
+- `work_mode: REVIEW`, `integration_pr: 65`는 현재 런타임 기준선이다.
 - 최신 전투·성장 기획은 런타임에 아직 반영되지 않았다.
 
-## 현재 활성 승인 — 4/10
+## 현재 활성 승인 — 5/10
 
 1. `TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01`: 10성 절초는 주 영구 능력치12, 보조 요구 없음, 임시 능력치 해금 불가, 미달 시 절초만 잠금.
 2. `TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01`: 유운검결 신법/외공, 금강호체공 근골/내공, 태극유전검 심안/내공, 추풍창법 외공/신법, 청심양생공 내공/근골, 무영십보 신법/심안. 시작3성에는2성 주+1만 적용하고 보조는4성부터 지급.
 3. `TEN-DEC-20260803-INTERMEDIATE-NODE-PERMANENT-STAT-REWARDS-01`: 데모 회차 중간 노드 영구 스테이터스는 최대2회, 노드마다 서로 다른 두 능력치 중 하나를 선택해 +1, 회차 종료 시 초기화, 공개 정보만으로 제시한다.
 4. `TEN-DEC-20260803-MARTIAL-TECHNIQUE-ROLE-AND-SCALING-MATRIX-01`: 기술은 역할을 먼저 고정하고 주 능력치는 핵심 효과에, 보조 능력치는 구분된 보조 효과가 있을 때만 연결한다. 5성은 기존 역할 강화, 9성은 공개 정보 기반 수읽기 조건부 분기다.
+5. `TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01`: 여섯 시작 무공 3성 기술1의 구조·비용·공식·기준 능력치4 예산을 확정하고, 효과 원가·자원 소모 크레딧·조건 크레딧·순예산을 분리 표시한다.
 
 ## 현재 정본 요약
 
@@ -64,11 +65,14 @@ next_planning_decision: STARTING_MARTIAL_TECHNIQUE_1_BASE_EFFECTS_AND_BUDGETS
 - 데모 중간 노드의 회차 내 영구 스테이터스 공급은 최대 +2이며 한 노드에서 두 능력치 중 하나를 골라 +1한다.
 - 모든 기술에 주·보조 배수를 자동 적용하지 않으며 같은 효과의 이중 배수와 구조값의 점당 연속 증가를 금지한다.
 - 기술1은 기본 운용법, 기술2는 대체가 아닌 고급 상호작용, 5성은 역할 강화, 9성은 수읽기 조건부 분기다.
+- 3성 기술1: 유운삼첩·금강가세·운수회신·추풍일섬·청심조식·철각유영.
+- 기술 예산 검토는 `효과 원가 + 자원 소모 크레딧 + 조건 크레딧 = 순예산`을 틱과 예산점으로 함께 표시한다.
+- 여섯 3성 기술1은 기준 능력치4에서 슬롯 예산 허용 편차 `±5틱` 안에 있다.
 - 전투 종료 등급 원자료는 회피·합·잃은 체력·라운드·절초 사용이다.
 
 ## 구현 차이
 
-현재 런타임에는 관찰·장풍, 최신 시작 능력치·성장·해금, 주요 비무5전·노드8개·새 결과 등급이 구현되지 않았다. 별도 Build 승인 전 제품 코드·Scene·런타임 데이터를 변경하지 않는다.
+현재 런타임에는 관찰·장풍, 최신 시작 능력치·성장·해금, 승인된 여섯 3성 기술1, 주요 비무5전·노드8개·새 결과 등급이 구현되지 않았다. 별도 Build 승인 전 제품 코드·Scene·런타임 데이터를 변경하지 않는다.
 
 ## 역사·회귀 추적
 
@@ -77,11 +81,13 @@ next_planning_decision: STARTING_MARTIAL_TECHNIQUE_1_BASE_EFFECTS_AND_BUDGETS
 - 과거 `CORE_REVIEW_PENDING`은 사용자 승인 뒤 `CORE_CONFIRMED`로 종료됐다.
 - `STEP 14` 사람 검증은 현재 `NOT_RUN`이다.
 - 역사 토큰은 최신 Decision·Active Context보다 높은 권한을 갖지 않는다.
+- 과거 PoC 무공 ID는 새 계약에서 `legacy_manual_alias`로만 보존하며 canonical ID가 우선한다.
 
 ## 다음 작업 Gate
 
 ```text
-여섯 시작 무공 3성 기술1의 정확한 기본 효과·행동 슬롯·비용·계수 GrillMe
+여섯 시작 무공 7성 기술2의 정확한 기본 효과·행동 슬롯·비용·계수 GrillMe
+→ 기술1 5성 역할 강화 patch와 기술2 9성 수읽기 분기
 → 남은 승인 최대 10건
 → [기획 완료]
 → 전체 적대적 검토
@@ -94,7 +100,7 @@ next_planning_decision: STARTING_MARTIAL_TECHNIQUE_1_BASE_EFFECTS_AND_BUDGETS
 ## 검증 경계
 
 ```yaml
-planning_checkpoint: ACTIVE_DRAFT_4_OF_10
+planning_checkpoint: ACTIVE_DRAFT_5_OF_10
 product_code_changed: false
 runtime_validation: NOT_RUN
 godot_validation: NOT_RUN
