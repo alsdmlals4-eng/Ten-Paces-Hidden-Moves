@@ -1,0 +1,391 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "PLANNING_ONLY",
+  "approved_at": "2026-08-03",
+  "grillme_batch_count": "5/10",
+  "predecessors": [
+    "TEN-DEC-20260802-TECHNIQUE-AUTHORING-TAG-FIXED-STAT-01",
+    "TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01",
+    "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
+    "TEN-DEC-20260803-MARTIAL-TECHNIQUE-ROLE-AND-SCALING-MATRIX-01"
+  ],
+  "budget_display_contract": {
+    "ticks_per_budget_point": 20,
+    "budget_point_per_tick": 0.05,
+    "required_order": [
+      "GROSS_EFFECT_TICKS",
+      "RESOURCE_COST_CREDIT_TICKS",
+      "CONDITION_CREDIT_TICKS",
+      "NET_BUDGET_TICKS",
+      "TARGET_TICKS",
+      "VARIANCE_TICKS"
+    ],
+    "resource_cost_credit_must_be_visible": true,
+    "condition_credit_separate_from_resource_credit": true,
+    "stamina_1_credit_ticks": -4,
+    "stamina_1_credit_points": -0.2,
+    "internal_1_credit_ticks": -7,
+    "internal_1_credit_points": -0.35,
+    "stamina_1_plus_internal_1_credit_ticks": -11,
+    "stamina_1_plus_internal_1_credit_points": -0.55,
+    "net_formula": "gross_effect_ticks + resource_cost_credit_ticks + condition_credit_ticks",
+    "hidden_resource_credit_in_approval_table_forbidden": true
+  },
+  "canonical_manual_aliases": {
+    "vajra_body": "diamond_body_art",
+    "taiji_flow": "taiji_flowing_sword",
+    "pursuing_wind_spear": "chasing_wind_spear",
+    "clear_heart_nurturing": "clear_heart_nourishing_art",
+    "shadowless_steps": "shadowless_ten_steps"
+  },
+  "techniques": {
+    "flowing_cloud_triple": {
+      "manual_id": "flowing_cloud_sword",
+      "name_ko": "유운삼첩",
+      "milestone": 3,
+      "role": "MOBILE_CHAIN_PRESSURE_BASIC_OPERATION",
+      "action_slots": 2,
+      "target_ticks": 50,
+      "costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "range": {
+        "min": 1,
+        "max": 1
+      },
+      "primary_binding": {
+        "stat": "MOVEMENT",
+        "type": "STAR_3_UNLOCK_AND_FIXED_THREE_HIT_CHAIN_STRUCTURE",
+        "continuous_per_point_scaling": false
+      },
+      "secondary_binding": {
+        "stat": "EXTERNAL",
+        "type": "SEPARATE_PHYSICAL_HIT_DAMAGE",
+        "hit_formulas": [
+          "floor(3 + EXTERNAL * 0.25)",
+          "floor(2 + EXTERNAL * 0.25)",
+          "floor(2 + EXTERNAL * 0.25)"
+        ]
+      },
+      "reference_values": {
+        "stat_1_total_raw_power": 7,
+        "stat_4_total_raw_power": 10,
+        "stat_15_total_raw_power": 16
+      },
+      "budget": {
+        "gross_effect_components": {
+          "damage_at_stat_4": 50,
+          "two_extra_hits": 8
+        },
+        "gross_effect_ticks": 58,
+        "gross_effect_points": 2.9,
+        "resource_cost_credit_components": {
+          "stamina_1": -4,
+          "internal_1": -7
+        },
+        "resource_cost_credit_ticks": -11,
+        "resource_cost_credit_points": -0.55,
+        "condition_credit_ticks": 0,
+        "condition_credit_points": 0.0,
+        "net_budget_ticks": 47,
+        "net_budget_points": 2.35,
+        "target_ticks": 50,
+        "target_points": 2.5,
+        "variance_ticks": -3,
+        "within_auto_tolerance": true
+      }
+    },
+    "vajra_guard": {
+      "manual_id": "diamond_body_art",
+      "legacy_manual_alias": "vajra_body",
+      "name_ko": "금강가세",
+      "milestone": 3,
+      "role": "BODY_GUARD_FORTITUDE_BASIC_OPERATION",
+      "action_slots": 1,
+      "target_ticks": 20,
+      "costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "targeting_mode": "SELF",
+      "primary_binding": {
+        "stat": "CONSTITUTION",
+        "defense_formula": "floor(2 + CONSTITUTION * 0.75)"
+      },
+      "secondary_binding": null,
+      "fixed_effects": {
+        "fortitude": 1
+      },
+      "reference_values": {
+        "stat_1_defense": 2,
+        "stat_4_defense": 5,
+        "stat_15_defense": 13
+      },
+      "budget": {
+        "gross_effect_components": {
+          "defense_at_stat_4": 20,
+          "fortitude_1": 10
+        },
+        "gross_effect_ticks": 30,
+        "gross_effect_points": 1.5,
+        "resource_cost_credit_components": {
+          "stamina_1": -4,
+          "internal_1": -7
+        },
+        "resource_cost_credit_ticks": -11,
+        "resource_cost_credit_points": -0.55,
+        "condition_credit_ticks": 0,
+        "condition_credit_points": 0.0,
+        "net_budget_ticks": 19,
+        "net_budget_points": 0.95,
+        "target_ticks": 20,
+        "target_points": 1.0,
+        "variance_ticks": -1,
+        "within_auto_tolerance": true
+      }
+    },
+    "cloud_hand_return": {
+      "manual_id": "taiji_flowing_sword",
+      "legacy_manual_alias": "taiji_flow",
+      "name_ko": "운수회신",
+      "milestone": 3,
+      "role": "READ_DEFLECT_AND_POST_SUCCESS_RETURN",
+      "action_slots": 1,
+      "target_ticks": 20,
+      "resolution_phase": "RESPONSE",
+      "costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "primary_binding": {
+        "stat": "INSIGHT",
+        "type": "STAR_3_UNLOCK_AND_FIXED_READ_DEFLECT_STRUCTURE",
+        "continuous_per_point_scaling": false
+      },
+      "secondary_binding": {
+        "stat": "INTERNAL",
+        "type": "SEPARATE_POST_SUCCESS_RESOURCE_RECOVERY",
+        "internal_gain_formula": "floor(INTERNAL * 0.25)"
+      },
+      "fixed_effects": {
+        "evade": 1,
+        "free_move_on_evade_success": 1
+      },
+      "condition": "REQUIRES_SUCCESSFUL_EVADE",
+      "reference_values": {
+        "stat_1_internal_gain": 0,
+        "stat_4_internal_gain": 1,
+        "stat_15_internal_gain": 3
+      },
+      "budget": {
+        "gross_effect_components": {
+          "evade_1": 18,
+          "move_1": 6,
+          "internal_gain_at_stat_4": 9
+        },
+        "gross_effect_ticks": 33,
+        "gross_effect_points": 1.65,
+        "resource_cost_credit_components": {
+          "stamina_1": -4,
+          "internal_1": -7
+        },
+        "resource_cost_credit_ticks": -11,
+        "resource_cost_credit_points": -0.55,
+        "condition_credit_components": {
+          "requires_successful_evade": -5
+        },
+        "condition_credit_ticks": -5,
+        "condition_credit_points": -0.25,
+        "net_budget_ticks": 17,
+        "net_budget_points": 0.85,
+        "target_ticks": 20,
+        "target_points": 1.0,
+        "variance_ticks": -3,
+        "within_auto_tolerance": true
+      }
+    },
+    "pursuing_wind_thrust": {
+      "manual_id": "chasing_wind_spear",
+      "legacy_manual_alias": "pursuing_wind_spear",
+      "name_ko": "추풍일섬",
+      "milestone": 3,
+      "role": "REACH_PRESSURE_AND_AXIS_ADJUSTMENT_BASIC_OPERATION",
+      "action_slots": 1,
+      "target_ticks": 20,
+      "costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "range": {
+        "min": 1,
+        "max": 2,
+        "total_range_ticks": 10
+      },
+      "before_attack_axis_move": {
+        "tiles": 1,
+        "choice": [
+          "ADVANCE",
+          "RETREAT"
+        ]
+      },
+      "primary_binding": {
+        "stat": "EXTERNAL",
+        "damage_formula": "floor(2 + EXTERNAL * 0.50)"
+      },
+      "secondary_binding": {
+        "stat": "MOVEMENT",
+        "type": "FIXED_AXIS_MOVE_STRUCTURE",
+        "continuous_per_point_scaling": false
+      },
+      "reference_values": {
+        "stat_1_damage": 2,
+        "stat_4_damage": 4,
+        "stat_15_damage": 9
+      },
+      "budget": {
+        "gross_effect_components": {
+          "damage_at_stat_4": 20,
+          "max_range_2_total": 10,
+          "axis_move_1": 6
+        },
+        "gross_effect_ticks": 36,
+        "gross_effect_points": 1.8,
+        "resource_cost_credit_components": {
+          "stamina_1": -4,
+          "internal_1": -7
+        },
+        "resource_cost_credit_ticks": -11,
+        "resource_cost_credit_points": -0.55,
+        "condition_credit_ticks": 0,
+        "condition_credit_points": 0.0,
+        "net_budget_ticks": 25,
+        "net_budget_points": 1.25,
+        "target_ticks": 20,
+        "target_points": 1.0,
+        "variance_ticks": 5,
+        "within_auto_tolerance": true,
+        "at_upper_tolerance_boundary": true
+      }
+    },
+    "clear_heart_breath": {
+      "manual_id": "clear_heart_nourishing_art",
+      "legacy_manual_alias": "clear_heart_nurturing",
+      "name_ko": "청심조식",
+      "milestone": 3,
+      "role": "RESOURCE_RECOVERY_AND_STATE_STABILIZATION_BASIC_OPERATION",
+      "action_slots": 1,
+      "target_ticks": 20,
+      "costs": {},
+      "condition": "ONCE_PER_BUNDLE",
+      "fixed_effects": {
+        "stamina_gain": 1
+      },
+      "primary_binding": {
+        "stat": "INTERNAL",
+        "internal_gain_formula": "floor(INTERNAL * 0.25)"
+      },
+      "secondary_binding": {
+        "stat": "CONSTITUTION",
+        "defense_formula": "floor(1 + CONSTITUTION * 0.25)"
+      },
+      "reference_values": {
+        "stat_1_internal_gain": 0,
+        "stat_4_internal_gain": 1,
+        "stat_15_internal_gain": 3,
+        "stat_1_defense": 1,
+        "stat_4_defense": 2,
+        "stat_15_defense": 4
+      },
+      "budget": {
+        "gross_effect_components": {
+          "stamina_gain_1": 6,
+          "internal_gain_at_stat_4": 9,
+          "defense_at_stat_4": 8
+        },
+        "gross_effect_ticks": 23,
+        "gross_effect_points": 1.15,
+        "resource_cost_credit_ticks": 0,
+        "resource_cost_credit_points": 0.0,
+        "condition_credit_components": {
+          "once_per_bundle": -4
+        },
+        "condition_credit_ticks": -4,
+        "condition_credit_points": -0.2,
+        "net_budget_ticks": 19,
+        "net_budget_points": 0.95,
+        "target_ticks": 20,
+        "target_points": 1.0,
+        "variance_ticks": -1,
+        "within_auto_tolerance": true
+      }
+    },
+    "iron_step_drift": {
+      "manual_id": "shadowless_ten_steps",
+      "legacy_manual_alias": "shadowless_steps",
+      "name_ko": "철각유영",
+      "milestone": 3,
+      "role": "PROACTIVE_EVADE_REPOSITION_AND_ESCAPE_BASIC_OPERATION",
+      "action_slots": 1,
+      "target_ticks": 20,
+      "costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "primary_binding": {
+        "stat": "MOVEMENT",
+        "type": "STAR_3_UNLOCK_AND_FIXED_MOVE_EVADE_STRUCTURE",
+        "continuous_per_point_scaling": false
+      },
+      "secondary_binding": null,
+      "fixed_effects": {
+        "free_move": 2,
+        "evade": 1
+      },
+      "budget": {
+        "gross_effect_components": {
+          "move_2": 12,
+          "evade_1": 18
+        },
+        "gross_effect_ticks": 30,
+        "gross_effect_points": 1.5,
+        "resource_cost_credit_components": {
+          "stamina_1": -4,
+          "internal_1": -7
+        },
+        "resource_cost_credit_ticks": -11,
+        "resource_cost_credit_points": -0.55,
+        "condition_credit_ticks": 0,
+        "condition_credit_points": 0.0,
+        "net_budget_ticks": 19,
+        "net_budget_points": 0.95,
+        "target_ticks": 20,
+        "target_points": 1.0,
+        "variance_ticks": -1,
+        "within_auto_tolerance": true
+      }
+    }
+  },
+  "global_validation": {
+    "all_techniques_within_plus_minus_5_ticks": true,
+    "legacy_linear_range_price_used": false,
+    "resource_credits_visible": true,
+    "same_effect_dual_scaling_present": false,
+    "structural_per_point_scaling_present": false,
+    "product_code_changed": false,
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "accessibility_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  },
+  "follow_up_tbd": [
+    "STARTING_MARTIAL_TECHNIQUE_1_STAR5_ROLE_PATCHES",
+    "STARTING_MARTIAL_TECHNIQUE_2_BASE_EFFECTS_AND_BUDGETS",
+    "INDIVIDUAL_STAR_9_READ_BASED_BRANCHES",
+    "INDIVIDUAL_MARTIAL_ULTIMATE_EFFECTS_AND_BUDGETS",
+    "HIGH_STAT_CORE_FUN_HUMAN_VALIDATION"
+  ]
+}
