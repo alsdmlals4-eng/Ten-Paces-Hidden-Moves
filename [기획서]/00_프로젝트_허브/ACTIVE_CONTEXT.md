@@ -22,14 +22,14 @@ product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 base_release_pinned: 9.4.3
 runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
 latest_combat_planning_runtime: NOT_STARTED
-automated_validation: PENDING_EXACT_HEAD
+automated_validation: PASS
 windows_validation: NOT_RUN
 human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
 next_planning_decision: STARTING_MARTIAL_TECHNIQUE_1_STAR5_ROLE_PATCHES
 ```
 
-자동 검증은 새 exact head에서 다시 판정하며 Windows·접근성·성능·사람 검증을 대신하지 않는다. PR #83은 정본 신선도 결함을 main에 동기화했고 PR #82의 승인 2건은 새 main 기반 PR #84로 이전했다.
+자동·정적 검증 통과는 Windows·접근성·성능·사람 검증을 대신하지 않는다. PR #83은 정본 신선도 결함을 main에 동기화했고 PR #82의 승인 2건은 새 main 기반 PR #84로 이전했다.
 
 ## 프로젝트 코어
 
