@@ -77,6 +77,7 @@ next_planning_decision: STARTING_MARTIAL_TECHNIQUE_1_STAR5_ROLE_PATCHES
 ## 역사·회귀 추적
 
 - `PR #7`과 `Issue #13`은 T0 `STEP 0~13` 구현·검토 계보다.
+- `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`는 과거 v6 승인 이력 인덱스다.
 - 과거 `CORE_REVIEW_PENDING`은 사용자 승인 뒤 `CORE_CONFIRMED`로 종료됐다.
 - `STEP 14` 사람 검증은 `NOT_RUN`이다.
 - 과거 PoC 무공 ID는 `legacy_manual_alias`로만 보존한다.
