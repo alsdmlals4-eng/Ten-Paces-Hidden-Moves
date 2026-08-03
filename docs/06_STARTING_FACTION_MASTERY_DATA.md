@@ -4,7 +4,8 @@
 > 전투 규칙: `docs/02_COMBAT_RULES.md`  
 > 데이터 원본: `docs/planning-data/poc_martial_arts.json`  
 > 상위 계약: `docs/planning-data/approved_20260802_observation_stats_mastery_contract.json`  
-> 활성 승인 계약: `docs/planning-data/approved_20260803_star10_ultimate_primary_stat12_contract.json`, `docs/planning-data/approved_20260803_starting_martial_secondary_stats_contract.json`
+> 활성 승인 계약: `docs/planning-data/approved_20260803_star10_ultimate_primary_stat12_contract.json`, `docs/planning-data/approved_20260803_starting_martial_secondary_stats_contract.json`  
+> 역사 호환 분류: `T1 이후 가설 원본`. 현재 승인 Decision과 Active Context가 우선하며 이 표현은 과거 라우팅 회귀를 위한 토큰이다.
 
 ## 1. 현재 상태
 
@@ -19,7 +20,7 @@ windows_validation: NOT_RUN
 human_validation: NOT_RUN
 ```
 
-승인된 성장 골격은 시작 총합20, 짝수 성 고정 지급, 3성 주4·7성 주8·10성 절초 주12, 무공별 주·보조 벡터, 무상한 핵심 스테이터스다. 개별 기술 배수·5/9성 임계 효과·중간 노드 영구 보상은 아직 `TBD`다.
+프로젝트 코어가 사용자 승인된 상태에서 성장 골격을 구체화하고 있다. 승인된 범위는 시작 총합20, 짝수 성 고정 지급, 3성 주4·7성 주8·10성 절초 주12, 무공별 주·보조 벡터, 무상한 핵심 스테이터스다. 개별 기술 배수·5/9성 임계 효과·중간 노드 영구 보상은 아직 `TBD`다.
 
 활성 Decision:
 
@@ -182,15 +183,7 @@ skill_milestone
 
 `[의료]`는 회복·상태 안정·장기 체력 관리 역할이다. 영구 능력치와 수련포인트 공급을 자동으로 겸하지 않는다.
 
-중간 노드 보상은 다음을 분리한다.
-
-- 회복
-- 수련포인트
-- 영구 스테이터스
-- 상대 정보
-- 사건·재화
-
-영구 스테이터스 보상은 핵심 재미와 10성 요구치에 직접 영향을 주므로 다음 GrillMe 승인 전 확정하지 않는다.
+중간 노드 보상은 회복·수련포인트·영구 스테이터스·상대 정보·사건·재화를 분리한다. 영구 스테이터스 보상은 핵심 재미와 10성 요구치에 직접 영향을 주므로 다음 GrillMe 승인 전 확정하지 않는다.
 
 ## 12. 성장 진입 게이트
 
