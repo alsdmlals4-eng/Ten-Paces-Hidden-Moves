@@ -4,6 +4,7 @@
 
 ```text
 AGENTS.md
+→ docs/BASE_RULES_VERSION.md
 → [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
 → docs/00_TAG_STATUS_REGISTRY.md
 → 최신 관련 Decision
@@ -12,10 +13,11 @@ AGENTS.md
 ```
 
 - Base route·Adapter: `skills/PROJECT_BASE_ADAPTER.json`.
-- 현재 Base release: `9.4.1`.
+- 현재 Base release: `9.4.3`.
 - 프로젝트 고유 Skill Registry: `skills/SKILL_REGISTRY.json`.
 - 과거 v6 원장은 승인 이력 인덱스이며 최신 사용자 승인 Decision이 우선한다.
 - planning JSON은 정적 계약이며 런타임이 직접 읽지 않는다.
+- 병합된 main 상태와 활성 Draft PR 상태를 별도 축으로 기록한다.
 
 ## 질문별 현재 책임 원본
 
@@ -33,7 +35,8 @@ AGENTS.md
 | UI·접근성 | `docs/07_COMBAT_UI_SPEC.md` |
 | 테스트·미검증 | `docs/08_TEST_CHECKLIST.md` |
 | 시스템·저장·AI 경계 | `docs/09_COMBAT_SYSTEM_ARCHITECTURE.md` |
-| 현재 체크포인트 감사 | `docs/reviews/2026-08-02_TAG_AND_PLANNING_CANON_AUDIT.md` |
+| 최근 병합 체크포인트 | PR #80, `d9f38e6f3cacaf170d4b290e95b3645114639aff` |
+| 현재 활성 승인 배치 | PR #82, `289378c214702223dc0d1e149134438c3e761ba0`, 2/10 |
 | 구현 사실 | 실제 `data/`, `src/`, `scenes/`, `tests/`, `project.godot` |
 
 ## 최신 활성 Decision
@@ -51,12 +54,30 @@ PR #72 체크포인트:
 2. `TEN-DEC-20260802-OUT-OF-RANGE-CLASH-REWARD-01`
 3. `TEN-DEC-20260802-OUT-OF-RANGE-CLASH-GRADE-01`
 4. `TEN-DEC-20260802-CLASH-THREAT-ATTENUATION-01` — 현재 등급 산식에서는 HOLD
-5. `TEN-DEC-20260802-THREAT-ID-ACTION-01` — 로그·복기 안정 ID
+5. `TEN-DEC-20260802-THREAT-ID-ACTION-01`
 6. `TEN-DEC-20260802-MULTIHIT-COMPLETE-PARRY-01`
 7. `TEN-DEC-20260802-COMPLETE-PARRY-HP-ONLY-01`
 8. `TEN-DEC-20260802-BATTLE-GRADE-FIVE-METRICS-01`
 9. `TEN-DEC-20260802-TECHNIQUE-AUTHORING-TAG-FIXED-STAT-01`
 10. `TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01`
+
+PR #80 체크포인트:
+
+1. `TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01`
+2. `TEN-DEC-20260802-RANGE-PRICE-BANDS-01`
+3. `TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01`
+4. `TEN-DEC-20260802-STARTING-STAT-ALLOCATION-FIVE-01` — 후속 Decision으로 대체된 역사 승인
+5. `TEN-DEC-20260802-STARTING-STAT-TOTAL20-MANUAL-BONUS-01`
+6. `TEN-DEC-20260802-STARTING-TECHNIQUE-PRIMARY-STAT4-01`
+7. `TEN-DEC-20260802-STARTING-TECHNIQUE-SOFT-GUARANTEE-01`
+8. `TEN-DEC-20260802-EVEN-STAR-STAT-ESCALATION-01`
+9. `TEN-DEC-20260803-UNCAPPED-CORE-STATS-01`
+10. `TEN-DEC-20260803-STAR7-TECHNIQUE-PRIMARY-STAT8-01`
+
+PR #82 현재 승인 `APPROVED_PENDING_MERGE`:
+
+1. `TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01`
+2. `TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01`
 
 우선순위:
 
@@ -71,7 +92,7 @@ PR #72 체크포인트:
 
 실제 구현과 최신 Decision이 다르면 구현을 `IMPLEMENTED_LEGACY`로 분류하고 차이를 보고한다.
 
-## 현재 전투 핵심
+## 현재 전투·성장 핵심
 
 - 기초 행동 10종, 사용자 표시 `준비`, 강화 없는 `전조`.
 - 연격 대 연격은 현재 순번 피해 단위끼리 앞에서부터 합한다.
@@ -82,39 +103,40 @@ PR #72 체크포인트:
 - 사거리 밖 현재 순번 합도 같은 지속 조건을 사용한다.
 - 여러 합 승리에도 절초기세는 공격 행동당 최대 +1이다.
 - 완전 파훼 사건은 공격 행동당 최대 1회다.
+- 시작 능력치는 기본 2×5+자유 6+선택 무공 네 개의 2성 주 능력치+1로 총합 20이다.
+- 3성 첫 기술은 주 영구 능력치 4, 7성 두 번째 기술은 8, 10성 절초는 12를 요구한다.
+- 짝수 성은 2성 주+1, 4성 주+1·보조+1, 6성 주+2·보조+1, 8성 주+3·보조+2를 최초 도달 시 지급한다.
+- 핵심 스테이터스는 디자인 하드캡이 없으며 기존 1~15는 검증 구간이다.
 
 ## 구조화 계획 데이터
 
-이번 체크포인트의 승인 계약:
+최근 병합 체크포인트와 활성 PR의 승인 계약은 `docs/planning-data/approved_*.json`에 Decision별로 보존한다. 활성 PR #82의 현재 계약:
 
-- `approved_20260802_basic_actions_palm_clash_contract.json`
-- `approved_20260802_out_of_range_clash_reward_contract.json`
-- `approved_20260802_out_of_range_clash_grade_value_contract.json`
-- `approved_20260802_clash_threat_repeat_attenuation_contract.json`
-- `approved_20260802_threat_identity_by_action_id_contract.json`
-- `approved_20260802_multihit_complete_parry_contract.json`
-- `approved_20260802_complete_parry_health_damage_only_contract.json`
-- `approved_20260802_battle_grade_five_primary_metrics_contract.json`
-- `approved_20260802_technique_authoring_tag_fixed_stat_contract.json`
-- `approved_20260802_stat_reference_price_base4_contract.json`
+- `approved_20260803_star10_ultimate_primary_stat12_contract.json`
+- `approved_20260803_starting_martial_secondary_stats_contract.json`
 
 ## 현재 상태
 
 ```yaml
-main_before_checkpoint_merge: 07b3f15c50d9900321bcec3897b8d0b726bd174e
-checkpoint_pr: 72
-checkpoint_approvals: 10/10
+main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
+last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
+active_planning_pr: 82
+active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
+active_approval_count: 2/10
+active_decision_state: APPROVED_PENDING_MERGE
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
-work_mode: REVIEW
-base_release: 9.4.1
+work_mode: PLAN
+base_release: 9.4.3
 action_selection:
   implementation_status: IMPLEMENTED_CURRENT
   automated_validation: PASS
   human_validation: NOT_RUN
 latest_combat_planning:
+  authority_status: CURRENT_APPROVED_PLANNING
   implementation_status: NOT_STARTED
 full_product_flow_runtime: NOT_STARTED
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
+next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
 ```
 
 ## 구형·오해 표현 차단
@@ -134,24 +156,21 @@ next_package: VERTICAL_SLICE_APP_FLOW_SHELL
 - 능력치 배수 가격 미결정.
 - 천하제일인 후보6명 고정·사전 예고·첫 후보 자동 배정.
 - 챔피언 배틀 미정·HOLD.
+- Base 9.4.0·9.4.1을 현재 Adapter 권한으로 표시.
+- PR #65·#72·#80을 현재 활성 승인 PR로 표시.
 
 정확한 합 표현은 `현재 순번 합 → 피해·중단 정산 → 양측 공격 유지·다음 피해 단위 존재 시 다음 순번 합`이다.
 
 ## 현재 다음 작업
 
-`VERTICAL_SLICE_APP_FLOW_SHELL` 구현 Packet 정밀화:
+GrillMe 승인 묶음:
 
-1. App Root·Scene·화면 상태.
-2. `RunSession`·`SaveService`.
-3. 시작 무공 6중4.
-4. Route·Node·Briefing.
-5. Combat 진입·복귀.
-6. Result·Reward·Retry transaction.
-7. 자동·Godot·Windows·접근성·성능·사람 검증.
+1. 중간 노드 영구 스테이터스 보상 여부·량.
+2. 무공별 기술의 주/보조 배수와 5/9성 임계 효과.
+3. 전투 종료 5지표 가중치·정규화·등급 경계.
+4. 다수 합 승리 상한·정규화·파밍 방지.
+5. 절초 사용 평가와 패배 전투 등급.
+6. 챔피언 등록·시즌·매칭·어뷰징·친선전 관찰.
+7. 고능력치가 잘못된 계획을 덮는 비율의 사람 검증 계약.
 
-후속 GrillMe:
-
-- 시작 스테이터스 총점·분배.
-- 속공·강공·장풍 정확 수치.
-- 전투 종료 5지표 산식과 다수 합 승리 정규화.
-- 챔피언 등록 슬롯·시즌·매칭·어뷰징·친선전 관찰.
+기획 완료 후 전체 검토를 닫고, 필요한 이미지·애니메이션·HX를 생성·검수한 뒤 `VERTICAL_SLICE_APP_FLOW_SHELL` Codex 구현으로 진행한다.

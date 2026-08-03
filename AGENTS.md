@@ -39,14 +39,24 @@
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 work_mode: REVIEW
 integration_pr: 65
+active_planning_work_mode: PLAN
+main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
+last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
+active_planning_pr: 82
+active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
+active_approval_count: 2/10
+active_decision_state: APPROVED_PENDING_MERGE
 runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
-implemented_decision: TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01
-approved_planning_decision: TEN-DEC-20260801-SITUATION-SCREEN-01
+latest_combat_planning_runtime: NOT_STARTED
 automated_validation: PASS
+windows_validation: NOT_RUN
 human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-base_release_pinned: 9.4.0
+next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
+base_release_pinned: 9.4.3
 ```
+
+`work_mode: REVIEW`와 `integration_pr: 65`는 현재 런타임 통합 기준선이다. 활성 기획 작업은 `active_planning_work_mode: PLAN`과 PR #82로 별도 기록한다. PR #82의 두 Decision은 활성 배치 Branch에만 기록된 `APPROVED_PENDING_MERGE`이며, PR #82가 병합되고 main·Sheet를 재조회하기 전에는 `SYNCED_TO_MAIN`으로 표시하지 않는다.
 
 ## 4. Work Mode·Skill Mode
 
@@ -159,8 +169,8 @@ App Root
 - PR #7과 Issue #13은 T0 `STEP 0~13` 구현 계보다.
 - PR #45는 v6 계획 통합 이력이다.
 - 과거 Base SHA `c987647d01ad2baa028a16e03d85ddfc1572a727`은 역사 회귀 증거다.
-- 현재 Base 권한은 `skills/PROJECT_BASE_ADAPTER.json`의 v9.4 payload/evidence pin이다.
-- Base v9.4 최종화 Commit은 운영 감사 증거이며 프로젝트 코어·제품 구현 권한을 변경하지 않는다.
+- 현재 Base 권한은 `skills/PROJECT_BASE_ADAPTER.json`의 Base v9.4.3 payload/evidence/finalization pin이다.
+- Base release Commit은 운영 감사 증거이며 프로젝트 코어·제품 구현 권한을 변경하지 않는다.
 
 ## 13. `[보류]`
 
