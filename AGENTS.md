@@ -37,7 +37,9 @@
 
 ```yaml
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
-work_mode: PLAN
+work_mode: REVIEW
+integration_pr: 65
+active_planning_work_mode: PLAN
 main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
 last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
 active_planning_pr: 82
@@ -54,7 +56,7 @@ next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
 base_release_pinned: 9.4.3
 ```
 
-`main_state_sync_commit`은 병합된 프로젝트 상태이고, PR #82의 두 Decision은 활성 배치 Branch에만 기록된 `APPROVED_PENDING_MERGE` 상태다. PR #82가 병합되고 main·Sheet를 재조회하기 전에는 `SYNCED_TO_MAIN`으로 표시하지 않는다.
+`work_mode: REVIEW`와 `integration_pr: 65`는 현재 런타임 통합 기준선이다. 활성 기획 작업은 `active_planning_work_mode: PLAN`과 PR #82로 별도 기록한다. PR #82의 두 Decision은 활성 배치 Branch에만 기록된 `APPROVED_PENDING_MERGE`이며, PR #82가 병합되고 main·Sheet를 재조회하기 전에는 `SYNCED_TO_MAIN`으로 표시하지 않는다.
 
 ## 4. Work Mode·Skill Mode
 
