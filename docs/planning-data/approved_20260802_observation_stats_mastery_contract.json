@@ -20,8 +20,21 @@
   },
   "pre_duel_intel": {
     "intro": "SHORT_WUXIA_INTRO_ONLY",
-    "visible": ["permanent_stats", "owned_manuals", "manual_mastery", "currently_usable_techniques", "public_technique_rules"],
-    "hidden": ["current_bundle_action_selection", "action_order", "direction_and_target", "ai_weights", "preferred_actions", "canonical_counter_solution"]
+    "visible": [
+      "permanent_stats",
+      "owned_manuals",
+      "manual_mastery",
+      "currently_usable_techniques",
+      "public_technique_rules"
+    ],
+    "hidden": [
+      "current_bundle_action_selection",
+      "action_order",
+      "direction_and_target",
+      "ai_weights",
+      "preferred_actions",
+      "canonical_counter_solution"
+    ]
   },
   "observation": {
     "player_only": true,
@@ -32,13 +45,44 @@
     "spill_across_bundles": true,
     "spill_across_rounds": true,
     "future_bundle_generation": "JUST_IN_TIME_AT_BUNDLE_START",
-    "reveal_categories": ["TELEGRAPH", "MOVE", "ATTACK", "DEFEND", "EVADE", "STANCE", "RESOURCE", "OBSERVE"],
+    "reveal_categories": [
+      "TELEGRAPH",
+      "MOVE",
+      "ATTACK",
+      "DEFEND",
+      "EVADE",
+      "STANCE",
+      "RESOURCE",
+      "OBSERVE"
+    ],
     "composite_reveal": "SHOW_ALL_COMPONENT_CATEGORIES",
-    "does_not_reveal": ["technique_name", "manual_name", "exact_cost", "direction", "distance", "damage", "exact_range", "target", "exact_secondary_values"]
+    "does_not_reveal": [
+      "technique_name",
+      "manual_name",
+      "exact_cost",
+      "direction",
+      "distance",
+      "damage",
+      "exact_range",
+      "target",
+      "exact_secondary_values"
+    ]
   },
   "bundle_flow": {
-    "round_bundles": [3, 3, 4],
-    "sequence": ["RESOLVE_PREVIOUS_STATE", "ENEMY_PLAN_CURRENT_BUNDLE_FROM_PUBLIC_STATE", "LOCK_ENEMY_PLAN", "APPLY_RESERVED_OBSERVATION", "PLAYER_PLAN_CURRENT_BUNDLE", "LOCK_PLAYER_PLAN", "RESOLVE_BUNDLE"],
+    "round_bundles": [
+      3,
+      3,
+      4
+    ],
+    "sequence": [
+      "RESOLVE_PREVIOUS_STATE",
+      "ENEMY_PLAN_CURRENT_BUNDLE_FROM_PUBLIC_STATE",
+      "LOCK_ENEMY_PLAN",
+      "APPLY_RESERVED_OBSERVATION",
+      "PLAYER_PLAN_CURRENT_BUNDLE",
+      "LOCK_PLAYER_PLAN",
+      "RESOLVE_BUNDLE"
+    ],
     "enemy_future_bundle_prelock": false,
     "enemy_reads_unconfirmed_player_plan": false
   },
@@ -50,7 +94,11 @@
     "formula": "max_health*0.10 + (round-3)*5",
     "simultaneous": true,
     "bypasses_defense": true,
-    "simultaneous_ko_tiebreak": ["PRE_PRESSURE_REMAINING_HEALTH_RATIO", "CURRENT_ROUND_EFFECTIVE_HEALTH_DAMAGE", "DRAW"]
+    "simultaneous_ko_tiebreak": [
+      "PRE_PRESSURE_REMAINING_HEALTH_RATIO",
+      "CURRENT_ROUND_EFFECTIVE_HEALTH_DAMAGE",
+      "DRAW"
+    ]
   },
   "stats": {
     "core_range": {
@@ -58,8 +106,19 @@
       "designed_hard_cap": null,
       "legacy_15_meaning": "INITIAL_BALANCE_VALIDATION_REFERENCE"
     },
-    "validation_reference_points": [1, 4, 15, "CURRENT_CONTENT_REACHABLE_MAX"],
-    "primary": ["EXTERNAL", "CONSTITUTION", "MOVEMENT", "INTERNAL", "INSIGHT"],
+    "validation_reference_points": [
+      1,
+      4,
+      15,
+      "CURRENT_CONTENT_REACHABLE_MAX"
+    ],
+    "primary": [
+      "EXTERNAL",
+      "CONSTITUTION",
+      "MOVEMENT",
+      "INTERNAL",
+      "INSIGHT"
+    ],
     "ko_names": {
       "EXTERNAL": "외공",
       "CONSTITUTION": "근골",
@@ -114,8 +173,22 @@
       "actual_values_feed_requirements_and_formulas": true,
       "derived_rule_nullifying_effects_need_separate_guardrails": true
     },
-    "legacy_deprecated_primary_stats": ["attack_power", "defense"],
-    "structural_values_threshold_only": ["move_distance", "attack_range", "observation_gain", "action_slots", "evade_count", "telegraph_slots", "composite_action_shape", "cost_reduction", "interrupt_permission", "counter_permission"]
+    "legacy_deprecated_primary_stats": [
+      "attack_power",
+      "defense"
+    ],
+    "structural_values_threshold_only": [
+      "move_distance",
+      "attack_range",
+      "observation_gain",
+      "action_slots",
+      "evade_count",
+      "telegraph_slots",
+      "composite_action_shape",
+      "cost_reduction",
+      "interrupt_permission",
+      "counter_permission"
+    ]
   },
   "manual_mastery": {
     "min_star": 1,
@@ -125,7 +198,15 @@
     "starting_manuals_chosen": 4,
     "training_points_are_manual_level": true,
     "technique_specific_training": false,
-    "destination_costs": {"4": 2, "5": 3, "6": 4, "7": 5, "8": 6, "9": 8, "10": 10},
+    "destination_costs": {
+      "4": 2,
+      "5": 3,
+      "6": 4,
+      "7": 5,
+      "8": 6,
+      "9": 8,
+      "10": 10
+    },
     "rewards": {
       "1": "PASSIVE",
       "2": "FIXED_PERMANENT_STAT_BONUS",
@@ -144,7 +225,11 @@
     "starting_star_2_bonus_applies_immediately": true,
     "star_4_is_first_secondary_grant": true,
     "star_up_stat_requirement": false,
-    "new_technique_stat_requirement_stars": [3, 7, 10],
+    "new_technique_stat_requirement_stars": [
+      3,
+      7,
+      10
+    ],
     "starting_star_3_primary_requirement": 4,
     "star_7_primary_requirement": 8,
     "star_10_primary_requirement": 12,
@@ -157,7 +242,11 @@
       "temporary_stat_drop_relocks": false
     }
   },
-  "permanent_stat_sources": ["STARTING_DIRECT_ALLOCATION", "MANUAL_EVEN_STAR_FIXED_BONUSES", "ROUTE_NODE_REWARDS"],
+  "permanent_stat_sources": [
+    "STARTING_DIRECT_ALLOCATION",
+    "MANUAL_EVEN_STAR_FIXED_BONUSES",
+    "ROUTE_NODE_REWARDS"
+  ],
   "verification": {
     "static_contract": "REQUIRED",
     "starting_stat_contract": "docs/planning-data/approved_20260802_starting_stat_total20_manual_bonus_contract.json",
