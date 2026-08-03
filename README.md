@@ -31,12 +31,14 @@
 ```yaml
 main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
 last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
+product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
+work_mode: REVIEW
+integration_pr: 65
+active_planning_work_mode: PLAN
 active_planning_pr: 82
 active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
 active_approval_count: 2/10
 active_decision_state: APPROVED_PENDING_MERGE
-product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
-work_mode: PLAN
 runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
 latest_combat_planning_runtime: NOT_STARTED
 automated_validation: PASS
@@ -49,7 +51,7 @@ next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
 base_release_pinned: 9.4.3
 ```
 
-PR #82의 두 승인 Decision은 활성 Branch·Decision·planning data·Google Sheet에 `APPROVED_PENDING_MERGE`로 기록되어 있습니다. PR 병합과 main·Sheet 재조회 전에는 main 동기화 완료로 취급하지 않습니다.
+`work_mode: REVIEW`와 `integration_pr: 65`는 현재 런타임 통합 기준선입니다. 활성 기획은 `active_planning_work_mode: PLAN`과 PR #82로 분리합니다. PR #82의 두 승인 Decision은 활성 Branch·Decision·planning data·Google Sheet에 `APPROVED_PENDING_MERGE`로 기록되어 있으며, PR 병합과 main·Sheet 재조회 전에는 main 동기화 완료로 취급하지 않습니다.
 
 ## 플랫폼 범위
 
