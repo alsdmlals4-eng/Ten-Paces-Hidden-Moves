@@ -1,5 +1,5 @@
 {
-  "schema_version": 6,
+  "schema_version": 7,
   "decision_id": "TEN-DEC-20260802-OBSERVATION-STATS-MASTERY-01",
   "status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "NONE",
@@ -10,6 +10,7 @@
   "followup_star_7_requirement_decision": "TEN-DEC-20260803-STAR7-TECHNIQUE-PRIMARY-STAT8-01",
   "followup_star_10_requirement_decision": "TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01",
   "followup_secondary_mapping_decision": "TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01",
+  "followup_intermediate_node_stat_decision": "TEN-DEC-20260803-INTERMEDIATE-NODE-PERMANENT-STAT-REWARDS-01",
   "duel_structure": {
     "core_duels": 5,
     "candidates_per_slot": 3,
@@ -165,6 +166,19 @@
       "secondary_is_unlock_requirement": false,
       "secondary_auto_scales_every_technique": false
     },
+    "route_node_permanent_rewards": {
+      "authority_decision": "TEN-DEC-20260803-INTERMEDIATE-NODE-PERMANENT-STAT-REWARDS-01",
+      "contract": "docs/planning-data/approved_20260803_intermediate_node_permanent_stat_rewards_contract.json",
+      "scope": "CURRENT_RUN_PERMANENT",
+      "demo_max_reward_nodes": 2,
+      "reward_per_node": 1,
+      "options_per_node": 2,
+      "choices_per_node": 1,
+      "max_total_points": 2,
+      "counts_for_unlock_requirements": true,
+      "resets_on_new_run": true,
+      "uses_public_enemy_information_only": true
+    },
     "uncapped_core_stats": {
       "authority_decision": "TEN-DEC-20260803-UNCAPPED-CORE-STATS-01",
       "contract": "docs/planning-data/approved_20260803_uncapped_core_stats_contract.json",
@@ -245,7 +259,7 @@
   "permanent_stat_sources": [
     "STARTING_DIRECT_ALLOCATION",
     "MANUAL_EVEN_STAR_FIXED_BONUSES",
-    "ROUTE_NODE_REWARDS"
+    "ROUTE_NODE_PERMANENT_STAT_REWARDS"
   ],
   "verification": {
     "static_contract": "REQUIRED",
@@ -254,6 +268,7 @@
     "star_7_technique_contract": "docs/planning-data/approved_20260803_star7_technique_primary_stat8_contract.json",
     "star_10_ultimate_contract": "docs/planning-data/approved_20260803_star10_ultimate_primary_stat12_contract.json",
     "manual_secondary_mapping_contract": "docs/planning-data/approved_20260803_starting_martial_secondary_stats_contract.json",
+    "route_node_permanent_stat_contract": "docs/planning-data/approved_20260803_intermediate_node_permanent_stat_rewards_contract.json",
     "uncapped_core_stats_contract": "docs/planning-data/approved_20260803_uncapped_core_stats_contract.json",
     "godot_runtime": "NOT_RUN",
     "windows_human": "NOT_RUN",
