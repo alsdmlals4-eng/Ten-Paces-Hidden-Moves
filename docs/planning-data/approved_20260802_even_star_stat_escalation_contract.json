@@ -1,5 +1,5 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "decision_id": "TEN-DEC-20260802-EVEN-STAR-STAT-ESCALATION-01",
   "authority_status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "PLANNING_ONLY",
@@ -13,8 +13,10 @@
   "followup_star_10_requirement_decision": "TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01",
   "followup_secondary_mapping_decision": "TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01",
   "followup_route_node_stat_decision": "TEN-DEC-20260803-INTERMEDIATE-NODE-PERMANENT-STAT-REWARDS-01",
+  "followup_technique_role_scaling_decision": "TEN-DEC-20260803-MARTIAL-TECHNIQUE-ROLE-AND-SCALING-MATRIX-01",
   "secondary_mapping_contract": "docs/planning-data/approved_20260803_starting_martial_secondary_stats_contract.json",
   "route_node_stat_contract": "docs/planning-data/approved_20260803_intermediate_node_permanent_stat_rewards_contract.json",
+  "technique_role_scaling_contract": "docs/planning-data/approved_20260803_martial_technique_role_and_scaling_matrix_contract.json",
   "grant_semantics": {
     "type": "INCREMENTAL_NEW_GRANT_ON_FIRST_REACH",
     "snapshot_or_cumulative_display_value": false,
@@ -75,9 +77,9 @@
     "training_points_from_star_3_to_star_8": 20
   },
   "non_stat_stars": {
-    "5": "TECHNIQUE_1_PATCH_ONLY",
-    "7": "TECHNIQUE_2_UNLOCK_CHECK_ONLY",
-    "9": "TECHNIQUE_2_PATCH_ONLY",
+    "5": "TECHNIQUE_1_ROLE_REINFORCEMENT_PATCH",
+    "7": "TECHNIQUE_2_UNLOCK_CHECK_AND_ADVANCED_INTERACTION",
+    "9": "TECHNIQUE_2_READ_BASED_CONDITIONAL_BRANCH",
     "10": "ULTIMATE_UNLOCK_CHECK_ONLY"
   },
   "fixed_rules": {
@@ -85,8 +87,17 @@
     "locked_technique_auto_enables_when_permanent_requirement_met": true,
     "exact_primary_secondary_mapping_is_per_manual": true,
     "mapping_authority_decision": "TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01",
+    "technique_authoring_authority_decision": "TEN-DEC-20260803-MARTIAL-TECHNIQUE-ROLE-AND-SCALING-MATRIX-01",
+    "authoring_order": "ROLE_FIRST",
+    "primary_stat_binds_core_effect": true,
+    "secondary_binds_distinct_effect_only": true,
+    "max_stat_references_per_technique": 2,
+    "same_effect_dual_scaling": false,
     "secondary_auto_scales_every_technique": false,
-    "secondary_is_unlock_requirement": false
+    "secondary_is_unlock_requirement": false,
+    "structural_values_per_point_scaling": false,
+    "star_5_patch": "REINFORCE_EXISTING_ROLE",
+    "star_9_patch": "READ_BASED_CONDITIONAL_BRANCH"
   },
   "uncapped_core_stat_policy": {
     "authority_decision": "TEN-DEC-20260803-UNCAPPED-CORE-STATS-01",
@@ -113,11 +124,16 @@
     "star_10_requirement": false,
     "route_node_permanent_stat_rewards": false,
     "manual_secondary_stat_mapping": false,
-    "individual_technique_stat_scaling": true,
+    "technique_role_scaling_matrix": false,
+    "technique_1_exact_values": true,
+    "technique_2_exact_values": true,
+    "individual_star_5_and_star_9_values": true,
     "high_stat_core_fun_human_validation": true
   },
   "blocked_pending_followup": [
-    "individual_technique_primary_secondary_scaling_and_thresholds",
+    "starting_martial_technique_1_base_effects_and_budgets",
+    "starting_martial_technique_2_base_effects_and_budgets",
+    "individual_star_5_and_star_9_patch_values_and_conditions",
     "combat_formula_and_core_fun_validation_at_current_reachable_max"
   ],
   "validation": {
@@ -135,6 +151,9 @@
     },
     "current_known_multi_manual_reachable_example": 20,
     "demo_route_node_additional_max": 2,
+    "role_matrix_static_contract_required": true,
+    "same_effect_dual_scaling_forbidden": true,
+    "structural_values_per_point_scaling_forbidden": true,
     "route_node_pick_rate_human_validation_required": true,
     "wrong_plan_rescue_rate_human_validation_required": true,
     "runtime_validation": "NOT_RUN",
