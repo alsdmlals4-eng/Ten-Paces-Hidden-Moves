@@ -16,7 +16,7 @@ runtime_integration_pr: 65
 active_planning_work_mode: PLAN
 active_planning_pr: 84
 active_planning_head: PR_METADATA_AUTHORITY
-active_approval_count: 3/10
+active_approval_count: 4/10
 active_decision_state: APPROVED_PENDING_MERGE
 phase: VERTICAL_SLICE_APP_FLOW_PLANNING
 project_core: CORE_CONFIRMED
@@ -33,11 +33,11 @@ latest_combat_planning:
   implementation_status: NOT_STARTED
 full_product_flow_runtime: NOT_STARTED
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: MARTIAL_TECHNIQUE_ROLE_AND_SCALING_MATRIX
+next_planning_decision: STARTING_MARTIAL_TECHNIQUE_1_BASE_EFFECTS_AND_BUDGETS
 t1_greenlight: NOT_GRANTED
 ```
 
-PR #80의 10개 승인 정본은 main에 병합됐고 PR #81에서 main·Sheet 상태를 동기화했다. PR #83은 활성 정본 신선도를 Base 9.4.3과 최신 main에 맞춰 교정했다. PR #82의 승인 2건은 충돌 브랜치에서 보존된 뒤 PR #84로 이전됐으며, PR #84는 중간 노드 영구 스테이터스 보상까지 승인한 활성 배치 `3/10`이다.
+PR #80의 10개 승인 정본은 main에 병합됐고 PR #81에서 main·Sheet 상태를 동기화했다. PR #83은 활성 정본 신선도를 Base 9.4.3과 최신 main에 맞춰 교정했다. PR #82의 승인 2건은 충돌 브랜치에서 보존된 뒤 PR #84로 이전됐으며, PR #84는 역할 우선·선택적 보조 배수 기술 작성 구조까지 승인한 활성 배치 `4/10`이다.
 
 `active_planning_head`의 정확한 SHA는 자기참조 문서가 아니라 GitHub PR 메타데이터를 권위로 사용한다. `work_mode: REVIEW`·`integration_pr: 65`는 현재 런타임 기준선이고, 현재 GrillMe 기획 활동은 별도 `PLAN` 축이다. 기획 배치가 완료되기 전 App Flow Shell 구현 권한은 없다.
 
@@ -61,6 +61,9 @@ PR #80의 10개 승인 정본은 main에 병합됐고 PR #81에서 main·Sheet �
 - [x] 10성 절초 주 영구 능력치12.
 - [x] 시작 무공 여섯 종의 보조 능력치 매핑.
 - [x] 데모 중간 노드 영구 스테이터스 최대2회·노드당 두 능력치 중 하나 +1·회차 종료 초기화.
+- [x] 역할 우선 기술 작성·주 능력치 핵심 효과·보조 능력치 선택적 별도 효과.
+- [x] 같은 효과의 주/보조 이중 배수와 구조값의 점당 연속 증가 금지.
+- [x] 기술1 기본 운용법·기술2 고급 상호작용·5성 역할 강화·9성 수읽기 조건부 분기.
 - [x] 전투 종료 등급의 5개 원자료: 회피·합·잃은 체력·라운드·절초 사용.
 - [x] 무공서1~10성 성장 골격.
 - [x] 데모 주요 비무5슬롯×후보3명·노드8개.
@@ -116,7 +119,10 @@ BOOT → MAIN → RUN_SETUP → ROUTE → NODE → DUEL_BRIEFING
 
 후속 GrillMe에서 결정할 핵심 항목:
 
-- [ ] 여섯 무공 기술의 정확한 역할·주/보조 배수와 5/9성 patch·임계 효과.
+- [ ] 여섯 시작 무공 3성 기술1의 정확한 행동 슬롯·비용·사거리·고정 효과·계수.
+- [ ] 여섯 시작 무공 7성 기술2의 정확한 행동 슬롯·비용·사거리·고정 효과·계수.
+- [ ] 기술별 5·9성 patch의 실제 수치·조건·효과 예산.
+- [ ] 무공별 10성 고유 절초 효과·행동 슬롯·자원·효과 예산.
 - [ ] 비스탯 노드의 수련·회복·정보 기대가치와 정확한 배치·등장 가중치.
 - [ ] 5개 전투 종료 지표의 가중치·정규화·S/A/B/C 경계.
 - [ ] 한 공격 행동 안의 다수 합 승리 상한·정규화·파밍 방지.
@@ -132,11 +138,13 @@ BOOT → MAIN → RUN_SETUP → ROUTE → NODE → DUEL_BRIEFING
 
 - 승인된 시작 능력치·무공2성 보너스·3성/7성/10성 잠금·소프트 추천 배분 계약.
 - 승인된 속공·강공·장풍 공식, 슬롯 예산, 사거리·자원 ledger.
-- 승인된 중간 노드 성장과 기술별 배수·임계 효과.
+- 승인된 중간 노드 성장과 역할 우선·선택적 배수 기술 작성 계약.
+- 승인된 기술1·기술2 정확 효과·계수와 5/9성 patch ledger.
 - 관찰·장풍을 포함한 기초 행동 데이터와 UI.
 - 현재 순번 합→체력 피해·중단→다음 순번 합·잔여 단독타 판정 테스트.
 - 짝수 성 신규 지급의 중복 방지와 저장 왕복 테스트.
 - 노드 영구 스테이터스 최대+2·두 선택지·회차 초기화·중복 방지 테스트.
+- 같은 효과의 주/보조 이중 배수 금지와 구조값 임계 처리 테스트.
 - 무상한 실제값을 공식·요구치·AI·UI·저장에 사용하는 검증.
 - 기술 ledger와 런타임 adapter Schema.
 - 전투 종료 5지표 이벤트와 산식.
@@ -206,6 +214,7 @@ champion_battle:
 - 색·모션·음향 단일 채널 의존 없음.
 - 고능력치가 잘못된 계획을 덮는 빈도를 별도 기록.
 - 영구 스테이터스 노드 선택률과 비스탯 노드 포기율을 기록.
+- 기술2가 기술1을 대체하는 선택률과 5/9성 조건 이해도를 기록.
 
 현재 `human_validation: NOT_RUN`이다.
 
@@ -242,7 +251,7 @@ T1 진입 Gate:
 - 미해결 리뷰·CI 실패·Sheet 불일치·head 이동·P0/P1이 있으면 병합하지 않는다.
 - exact head만 병합하고 main·Sheet를 재조회한다.
 
-PR #80 체크포인트는 `d9f38e6f3cacaf170d4b290e95b3645114639aff`로 main에 병합됐다. PR #84의 현재 승인 수는 `3/10`, 다음 우선 기획 Decision은 무공별 기술 역할·주/보조 배수·5/9성 patch 구조다.
+PR #80 체크포인트는 `d9f38e6f3cacaf170d4b290e95b3645114639aff`로 main에 병합됐다. PR #84의 현재 승인 수는 `4/10`, 다음 우선 기획 Decision은 여섯 시작 무공 3성 기술1의 정확한 기본 효과·행동 슬롯·비용·계수다.
 
 ## 13. 중단·축소 조건
 
@@ -251,6 +260,11 @@ PR #80 체크포인트는 `d9f38e6f3cacaf170d4b290e95b3645114639aff`로 main에 
 - 연격·장풍·특정 스테이터스가 다른 선택을 지배한다.
 - 영구 스테이터스가 잘못된 계획을 반복적으로 구제한다.
 - 영구 스테이터스 노드가 회복·수련·정보 선택을 지배한다.
+- 모든 기술에 주·보조 배수가 자동으로 붙는다.
+- 같은 효과에 주·보조 계수가 중복된다.
+- 기술2가 기술1을 모든 상황에서 대체한다.
+- 5·9성 patch가 무조건 피해 증가만 제공한다.
+- 이동거리·사거리·행동 슬롯·회피 횟수 같은 구조값이 점당 연속 증가한다.
 - 관찰 누적이 불확실성을 사실상 제거한다.
 - 등급 산식이 합·회피 반복 파밍을 유도한다.
 - 연격 대 연격에서 순차 합·중단·잔여타 규칙이 이해되지 않는다.
