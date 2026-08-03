@@ -29,21 +29,27 @@
 ## 현재 작업 상태
 
 ```yaml
-project_main: c5771ddae40f58d88824d9319fc4ef6cd1053bba
+main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
+last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
+active_planning_pr: 82
+active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
+active_approval_count: 2/10
+active_decision_state: APPROVED_PENDING_MERGE
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
-work_mode: REVIEW
-integration_pr: 65
-latest_operating_pr: 68
+work_mode: PLAN
 runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
+latest_combat_planning_runtime: NOT_STARTED
 automated_validation: PASS
+windows_validation: NOT_RUN
 human_validation: NOT_RUN
-approved_screen_architecture: TEN-DEC-20260801-SITUATION-SCREEN-01
-approved_platform_scope: TEN-DEC-20260802-PLATFORM-SCOPE-01
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-base_release_pinned: 9.4.0
+next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
+base_release_pinned: 9.4.3
 ```
+
+PR #82의 두 승인 Decision은 활성 Branch·Decision·planning data·Google Sheet에 `APPROVED_PENDING_MERGE`로 기록되어 있습니다. PR 병합과 main·Sheet 재조회 전에는 main 동기화 완료로 취급하지 않습니다.
 
 ## 플랫폼 범위
 
@@ -52,14 +58,15 @@ base_release_pinned: 9.4.0
 - 터치 UI, Android·iOS 빌드, 모바일 성능·스토어·크로스 세이브는 별도 Decision 전까지 `NOT_STARTED`입니다.
 - 모바일 가능성을 이유로 현재 전투 코어·3/3/4·정보 구조·콘텐츠 범위를 선행 변경하지 않습니다.
 
-## 프로젝트 코어
+## 프로젝트 코어와 핵심 재미
 
 ```text
-상대의 공개 상태·해결 이력 관찰
-→ 다음 행동에 대한 가설 수립
-→ 3/3/4 행동 묶음 계획
-→ 상대 의도 완화·거부·반전·응징
-→ 결과 복기와 무공 성장
+공개 상태·해결 이력 읽기
+→ 가능한 행동 가설 세우기
+→ 여러 가능성을 견디는 3/3/4 비공개 계획
+→ 거리·현재 순번 합·대응·중단으로 해결
+→ 결정적 원인을 복기
+→ 다음 계획과 경로 선택 변경
 ```
 
 - 1대1 10칸 일자형 전장입니다.
@@ -69,6 +76,7 @@ base_release_pinned: 9.4.0
 - `[합]`, 순차 연격, 방어도, 회피, 중단, 강건을 사용합니다.
 - AI는 플레이어의 미확정 계획을 읽지 않습니다.
 - 덱·손패·드로우·장착 기술 제한을 사용하지 않습니다.
+- 뾰족한 재미는 단일 행동을 찍어 맞히는 것이 아니라, 불완전한 정보에서 강건한 계획을 만들고 왜 상대의 의도가 무너졌는지 이해하는 데 있습니다.
 - 성장은 원시 수치로 판단을 대체하지 않고 더 다양한 파훼 수단을 제공합니다.
 
 ## 행동 선택 UX
@@ -106,9 +114,19 @@ full_run:
 
 첫 비무는 후보 3명 중 1명을 seed 기반 선정하고, 이후 비무는 후보 3명 중 2명을 경로 종착점으로 제시합니다. 전체 후보 계약은 유지하되 첫 제품 흐름 구현은 슬롯별 대표 후보로 파이프라인을 먼저 증명합니다.
 
-## 다음 패키지
+## 다음 진행 순서
 
-`VERTICAL_SLICE_APP_FLOW_SHELL`
+```text
+PR #82 남은 기획 Decision 승인·동기화
+→ 기획 완료
+→ 전체 정본·PR·Sheet 적대적 검토
+→ 검토 완료
+→ 필요한 이미지·애니메이션·HX 생성·검수·승인
+→ 이미지 완료
+→ VERTICAL_SLICE_APP_FLOW_SHELL Codex 구현
+```
+
+`VERTICAL_SLICE_APP_FLOW_SHELL`의 흐름은 다음과 같습니다.
 
 ```text
 App Root
@@ -127,8 +145,9 @@ App Root
 - PR #45와 v6 Decision 원장은 재설계·승인 이력입니다.
 - PR #65는 행동 선택 구현과 화면 구조 승인 통합 이력입니다.
 - PR #68은 Base v9.4 운영 계약 적용 이력입니다.
+- PR #72와 PR #80은 이후 전투·성장 기획 체크포인트 이력입니다.
 - 과거 Base 기준 `c987647d01ad2baa028a16e03d85ddfc1572a727`은 `HISTORICAL_COMPATIBILITY_BASELINE`입니다.
-- 현재 공용 Skill route는 `skills/PROJECT_BASE_ADAPTER.json`의 Base v9.4 payload/evidence pin을 사용합니다.
+- 현재 공용 Skill route는 `skills/PROJECT_BASE_ADAPTER.json`의 Base v9.4.3 payload/evidence/finalization pin을 사용합니다.
 
 ## `[보류]`
 
