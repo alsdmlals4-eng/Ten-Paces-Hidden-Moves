@@ -125,7 +125,7 @@
     "stamina_1_credit_ticks": -4,
     "internal_1_credit_ticks": -7,
     "momentum_5_credit_ticks": -30,
-    "self_health_cost_credit_per_point": -3,
+    "self_health_1_credit_ticks": -3,
     "current_approval_display_uses_positive_allowance": true,
     "resource_gain_and_cost_use_separate_ledger_entries": true,
     "approval_display_must_show_each_credit": true
