@@ -73,7 +73,7 @@ skill_milestone
 
 효과 scope는 `PER_HIT|ONCE_PER_ACTION`, trigger는 `ON_ACTION_START|ON_ACTION_RESOLVE|ON_CLASH_WIN|ON_EVADE_SUCCESS|ON_HIT|ON_HEALTH_DAMAGE|ON_ACTION_END` 중 하나를 명시한다.
 
-## 3. PoC 성장 실험
+## 3. 다음 PoC 성장 실험
 
 - 시작 후보6개 중4개를3성으로 선택한다.
 - 자유 수련: 자유6.
