@@ -1,10 +1,12 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "decision_id": "TEN-DEC-20260803-MARTIAL-TECHNIQUE-ROLE-AND-SCALING-MATRIX-01",
   "authority_status": "CURRENT_APPROVED_PLANNING",
   "implementation_authority": "PLANNING_ONLY",
   "approved_at": "2026-08-03",
   "grillme_batch_count": "4/10",
+  "followup_technique_1_decision": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01",
+  "technique_1_contract": "docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json",
   "predecessors": [
     "TEN-DEC-20260802-TECHNIQUE-AUTHORING-TAG-FIXED-STAT-01",
     "TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01",
@@ -143,6 +145,15 @@
       "forbidden_collapse": "GUARANTEED_EVADE_WITH_HIDDEN_PLAN_ACCESS"
     }
   },
+  "approved_technique_1_status": {
+    "authority_decision": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01",
+    "contract": "docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json",
+    "all_six_base_techniques_approved": true,
+    "budget_reference_stat": 4,
+    "resource_cost_credit_visible": true,
+    "legacy_linear_range_price_used": false,
+    "all_within_plus_minus_5_ticks": true
+  },
   "global_forbidden_patterns": [
     "ALL_TECHNIQUES_AUTOMATIC_PRIMARY_SECONDARY_DUAL_SCALING",
     "SAME_EFFECT_DUAL_COEFFICIENT_STACKING",
@@ -150,12 +161,13 @@
     "STAR_5_OR_STAR_9_UNCONDITIONAL_DAMAGE_ONLY",
     "STRUCTURAL_VALUE_PER_POINT_CONTINUOUS_SCALING",
     "UNCONFIRMED_PLAYER_OR_ENEMY_PLAN_ACCESS",
-    "AI_WEIGHT_OR_CANONICAL_COUNTER_SOLUTION_ACCESS"
+    "AI_WEIGHT_OR_CANONICAL_COUNTER_SOLUTION_ACCESS",
+    "HIDDEN_RESOURCE_COST_CREDIT_IN_APPROVAL_TABLE"
   ],
   "follow_up_tbd": [
-    "STARTING_MARTIAL_TECHNIQUE_1_BASE_EFFECTS_AND_BUDGETS",
     "STARTING_MARTIAL_TECHNIQUE_2_BASE_EFFECTS_AND_BUDGETS",
-    "INDIVIDUAL_STAR_5_AND_STAR_9_PATCH_VALUES_AND_CONDITIONS",
+    "STARTING_MARTIAL_TECHNIQUE_1_STAR5_ROLE_PATCHES",
+    "INDIVIDUAL_STAR_9_READ_BASED_BRANCHES",
     "INDIVIDUAL_MARTIAL_ULTIMATE_EFFECTS_AND_BUDGETS",
     "HIGH_STAT_CORE_FUN_HUMAN_VALIDATION"
   ],
