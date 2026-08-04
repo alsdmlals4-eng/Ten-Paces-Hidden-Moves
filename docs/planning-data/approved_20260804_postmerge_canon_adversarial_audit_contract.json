@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260804-POSTMERGE-CANON-ADVERSARIAL-AUDIT-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING_GOVERNANCE",
+  "implementation_authority": "PLANNING_GOVERNANCE_AND_VALIDATION_ONLY",
+  "approved_at": "2026-08-04",
+  "base_main_commit": "0ba841ff2e62b2f716466356dd9e7ffcf587d150",
+  "merged_pr_lineage": [
+    {
+      "pr": 84,
+      "merge_commit": "81765e35c179b7a57eaa527a307080b63c32f0b8",
+      "status": "MERGED"
+    },
+    {
+      "pr": 86,
+      "merge_commit": "731e6431e76ebc76841f9253e87cd1e7a693ebb2",
+      "status": "MERGED"
+    },
+    {
+      "pr": 87,
+      "merge_commit": "0ba841ff2e62b2f716466356dd9e7ffcf587d150",
+      "status": "MERGED"
+    }
+  ],
+  "operating_state": {
+    "active_planning_pr": "NONE",
+    "active_planning_parent_pr": "NONE",
+    "active_approval_count": "7/10",
+    "active_decision_state": "MERGED_CANON_CHECKPOINT",
+    "runtime_work_mode": "REVIEW",
+    "runtime_integration_pr": 65,
+    "product_stage": "VERTICAL_SLICE_APP_FLOW_PLANNING",
+    "next_package": "VERTICAL_SLICE_APP_FLOW_SHELL",
+    "next_planning_decision": "STAR9_PUBLIC_READ_BRANCH_TEMPLATE"
+  },
+  "lifecycle_labels": {
+    "current": "[현행]",
+    "superseded": "[대체됨]",
+    "held": "[보류]",
+    "discarded": "[폐기]"
+  },
+  "current_authority": [
+    "docs/02_COMBAT_RULES.md",
+    "docs/decisions/2026-08-04_COMBAT_PRICING_INTERRUPTION_RECOVERY_DECISION.md",
+    "docs/decisions/2026-08-04_EXISTING_APPROVED_ACTIONS_REPRICE_DECISION.md",
+    "docs/decisions/2026-08-04_TECHNIQUE1_CONDITIONAL_REWORK_STAR5_DECISION.md",
+    "docs/planning-data/approved_20260804_combat_pricing_interruption_recovery_contract.json",
+    "docs/planning-data/approved_20260804_existing_action_reprice_contract.json",
+    "docs/planning-data/approved_20260804_technique1_conditional_rework_star5_contract.json"
+  ],
+  "superseded_authority": [
+    {
+      "path": "docs/decisions/2026-08-02_RANGE_PRICE_BANDS_DECISION.md",
+      "superseded_by": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
+      "allowed_use": "HISTORICAL_LEDGER_REPRODUCTION_ONLY"
+    },
+    {
+      "path": "docs/decisions/2026-08-03_STARTING_MARTIAL_TECHNIQUE_1_BASE_EFFECTS_AND_BUDGETS_DECISION.md",
+      "superseded_by": "TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01",
+      "allowed_use": "HISTORICAL_EFFECT_EVIDENCE_ONLY"
+    },
+    {
+      "path": "docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json",
+      "superseded_by": "TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01",
+      "allowed_use": "HISTORICAL_EFFECT_EVIDENCE_ONLY"
+    }
+  ],
+  "held_artifacts": [
+    {
+      "surface": "GITHUB_PR",
+      "id": 85,
+      "label": "[보류]",
+      "merge_allowed": false,
+      "current_product_authority": false,
+      "resume_condition": "EXPLICIT_USER_APPROVAL_TO_REOPEN_HTML_VALIDATION"
+    }
+  ],
+  "discarded_artifacts": [],
+  "core_fun_alignment": {
+    "core_loop": [
+      "OBSERVE_PUBLIC_FACTS",
+      "INFER_LOCKED_ENEMY_BUNDLE",
+      "COMMIT_HIDDEN_PLAN",
+      "RESOLVE_DISTANCE_ORDER_CLASH_INTERRUPT",
+      "REVIEW_CAUSE",
+      "CHANGE_NEXT_PLAN"
+    ],
+    "aligned_contracts": [
+      "ENEMY_CANNOT_READ_UNCOMMITTED_PLAYER_PLAN",
+      "ENEMY_LOCKS_CURRENT_BUNDLE_BEFORE_OBSERVATION_REVEAL",
+      "THREE_THREE_FOUR_BUNDLE_STRUCTURE",
+      "TELEGRAPH_AND_INTERRUPTION",
+      "TECHNIQUE1_LOW_FLOOR_HIGH_CEILING",
+      "NO_IN_BUNDLE_PLAYER_CHOICE",
+      "DETERMINISTIC_TECHNIQUE_MOVEMENT",
+      "CAUSE_EXPLAINABLE_REPLAY"
+    ],
+    "conclusion": "CORE_ALIGNED_WITH_UNVALIDATED_BALANCE_RISKS"
+  },
+  "adversarial_risks": {
+    "RESOURCE_SATURATION_RISK": {
+      "severity": "P1",
+      "mechanic_change_approved": false,
+      "required_metrics": [
+        "END_OF_BUNDLE_RESOURCE_CAP_RATE",
+        "AUTOMATIC_RECOVERY_WASTE_RATE",
+        "MEDITATION_AND_PREPARE_SELECTION_RATE",
+        "CONSECUTIVE_HIGH_COST_ACTION_RATE",
+        "PLAN_CHANGED_DUE_TO_RESOURCE_SHORTAGE_RATE"
+      ]
+    },
+    "CONDITION_CALIBRATION_RISK": {
+      "severity": "P1",
+      "mechanic_change_approved": false,
+      "required_metrics": [
+        "CONDITION_SUCCESS_RATE_BY_TECHNIQUE",
+        "DECLARED_DIFFICULTY_BAND_DEVIATION",
+        "FAILURE_POINT_DISTRIBUTION",
+        "SUCCESS_HIGH_FEEL_RATING",
+        "FAILURE_LOW_ACCEPTANCE_RATE"
+      ]
+    },
+    "WRONG_PLAN_RESCUE_RISK": {
+      "severity": "P1",
+      "mechanic_change_approved": false,
+      "required_metrics": [
+        "WRONG_PLAN_SURVIVAL_AND_WIN_RESCUE_RATE",
+        "CORRECT_READ_VS_WRONG_READ_OUTCOME_GAP",
+        "HIGH_STAT_REPETITION_WIN_RATE",
+        "PLAN_DIVERSITY_AFTER_GROWTH"
+      ]
+    },
+    "OBSERVATION_ANSWER_LEAK_RISK": {
+      "severity": "P1",
+      "mechanic_change_approved": false,
+      "required_metrics": [
+        "PLAN_CHANGE_AFTER_OBSERVATION_RATE",
+        "PLAYER_CAN_EXPLAIN_INFERENCE_RATE",
+        "OBSERVED_VS_GUESSED_OUTCOME_GAP",
+        "FORBIDDEN_INFORMATION_EXPOSURE_COUNT"
+      ]
+    },
+    "GRADE_FARMING_RISK": {
+      "severity": "P1",
+      "mechanic_change_approved": false,
+      "blocker": "COMBAT_GRADE_FORMULA_CANNOT_BECOME_PRODUCT_AUTHORITY_UNTIL_WEIGHT_NORMALIZATION_CAP_AND_ANTI_FARM_DECISION"
+    },
+    "RUNTIME_AUTHORITY_GAP": {
+      "severity": "P0",
+      "mechanic_change_approved": false,
+      "blocker": "MERGED_PLANNING_IS_NOT_IMPLEMENTED_RUNTIME"
+    }
+  },
+  "next_planning_order": [
+    "STAR9_PUBLIC_READ_BRANCH_TEMPLATE",
+    "SIX_INDIVIDUAL_STAR9_AUTOMATIC_BRANCHES",
+    "SIX_INDIVIDUAL_STAR10_ULTIMATES",
+    "NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHTS",
+    "COMBAT_GRADE_FORMULA_AND_ANTI_FARM",
+    "FULL_CORE_FUN_AND_CANON_ADVERSARIAL_REVIEW",
+    "IMAGE_GATE",
+    "SEPARATE_BUILD_APPROVAL"
+  ],
+  "runtime_boundary": {
+    "product_code_changed": false,
+    "runtime_data_changed": false,
+    "html_poc_changed": false,
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "accessibility_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN",
+    "balance_validation": "NOT_RUN"
+  }
+}
