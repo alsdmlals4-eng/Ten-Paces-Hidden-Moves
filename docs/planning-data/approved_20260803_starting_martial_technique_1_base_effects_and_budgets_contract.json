@@ -1,337 +1,44 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "decision_id": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01",
-  "authority_status": "CURRENT_APPROVED_PLANNING",
-  "implementation_authority": "PLANNING_ONLY",
+  "authority_status": "SUPERSEDED_HISTORICAL_EVIDENCE",
+  "implementation_authority": "HISTORICAL_PLANNING_EVIDENCE_ONLY",
+  "lifecycle_label_ko": "[대체됨]",
   "approved_at": "2026-08-03",
-  "grillme_batch_count": "5/10",
-  "amended_by": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-2-BASE-EFFECTS-AND-BUDGETS-01",
-  "amendment_summary": [
-    "BUDGET_DISPLAY_TICKS_ONLY",
-    "ADDITIVE_AVAILABLE_BUDGET_FORMULA",
-    "PURSUING_WIND_THRUST_FIXED_ADVANCE_1",
-    "NO_IN_BUNDLE_PLAYER_CHOICE_FOR_CURRENT_IMPLEMENTATION_SCOPE"
+  "superseded_at": "2026-08-04",
+  "superseded_by": "TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01",
+  "current_effect_contract": "docs/planning-data/approved_20260804_technique1_conditional_rework_star5_contract.json",
+  "current_cost_contract": "docs/planning-data/approved_20260804_existing_action_reprice_contract.json",
+  "historical_source": {
+    "original_blob_sha": "04247fdf6019a2245a3ab10a60f0eb896a399ec5",
+    "merged_pr": 84,
+    "merge_commit": "81765e35c179b7a57eaa527a307080b63c32f0b8",
+    "retrieval_policy": "USE_GIT_HISTORY_FOR_FULL_ORIGINAL_PAYLOAD"
+  },
+  "historical_scope": [
+    "ORIGINAL_TECHNIQUE1_NAMES_AND_ROLE_INTENT",
+    "PRE_CONDITIONAL_REWORK_EFFECT_FORMULAS",
+    "PRE_REPRICE_COSTS_AND_SLOTS",
+    "BEFORE_AFTER_MIGRATION_EVIDENCE"
   ],
-  "predecessors": [
-    "TEN-DEC-20260802-TECHNIQUE-AUTHORING-TAG-FIXED-STAT-01",
-    "TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01",
-    "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
-    "TEN-DEC-20260803-MARTIAL-TECHNIQUE-ROLE-AND-SCALING-MATRIX-01"
+  "allowed_use": [
+    "HISTORICAL_DIFF",
+    "MIGRATION_AUDIT",
+    "REGRESSION_PROVENANCE"
   ],
-  "budget_display_contract": {
-    "unit": "TICKS_ONLY",
-    "required_order": [
-      "EFFECT_COST_TICKS",
-      "SLOT_BUDGET_TICKS",
-      "RESOURCE_COST_ALLOWANCE_TICKS",
-      "CONDITION_ALLOWANCE_TICKS",
-      "AVAILABLE_BUDGET_TICKS",
-      "VARIANCE_TICKS"
-    ],
-    "available_budget_formula": "slot_budget_ticks + resource_cost_allowance_ticks + condition_allowance_ticks",
-    "variance_formula": "effect_cost_ticks - available_budget_ticks",
-    "resource_cost_allowance_must_be_visible": true,
-    "condition_allowance_separate_from_resource_allowance": true,
-    "stamina_1_allowance_ticks": 4,
-    "internal_1_allowance_ticks": 7,
-    "stamina_1_plus_internal_1_allowance_ticks": 11,
-    "hidden_resource_allowance_in_approval_table_forbidden": true,
-    "budget_points_forbidden": true
-  },
-  "implementation_simplification": {
-    "in_bundle_player_choice": false,
-    "runtime_prompt_during_committed_action_bundle": false,
-    "deterministic_movement_required": true,
-    "deferred_choices": [
-      "ADVANCE_OR_RETREAT_DURING_TECHNIQUE",
-      "POST_HIT_DIRECTION_CHOICE",
-      "POST_EVADE_DESTINATION_CHOICE"
-    ]
-  },
-  "canonical_manual_aliases": {
-    "vajra_body": "diamond_body_art",
-    "taiji_flow": "taiji_flowing_sword",
-    "pursuing_wind_spear": "chasing_wind_spear",
-    "clear_heart_nurturing": "clear_heart_nourishing_art",
-    "shadowless_steps": "shadowless_ten_steps"
-  },
-  "techniques": {
-    "flowing_cloud_triple": {
-      "manual_id": "flowing_cloud_sword",
-      "name_ko": "유운삼첩",
-      "milestone": 3,
-      "role": "MOBILE_CHAIN_PRESSURE_BASIC_OPERATION",
-      "action_slots": 2,
-      "costs": {
-        "stamina": 1,
-        "internal": 1
-      },
-      "range": {
-        "min": 1,
-        "max": 1
-      },
-      "primary_binding": {
-        "stat": "MOVEMENT",
-        "type": "STAR_3_UNLOCK_AND_FIXED_THREE_HIT_CHAIN_STRUCTURE",
-        "continuous_per_point_scaling": false
-      },
-      "secondary_binding": {
-        "stat": "EXTERNAL",
-        "type": "SEPARATE_PHYSICAL_HIT_DAMAGE",
-        "hit_formulas": [
-          "floor(3 + EXTERNAL * 0.25)",
-          "floor(2 + EXTERNAL * 0.25)",
-          "floor(2 + EXTERNAL * 0.25)"
-        ]
-      },
-      "reference_values": {
-        "stat_1_total_raw_power": 7,
-        "stat_4_total_raw_power": 10,
-        "stat_15_total_raw_power": 16
-      },
-      "budget": {
-        "effect_cost_ticks": 58,
-        "slot_budget_ticks": 50,
-        "resource_cost_allowance_components": {
-          "stamina_1": 4,
-          "internal_1": 7
-        },
-        "resource_cost_allowance_ticks": 11,
-        "condition_allowance_ticks": 0,
-        "available_budget_ticks": 61,
-        "variance_ticks": -3,
-        "within_auto_tolerance": true
-      }
-    },
-    "vajra_guard": {
-      "manual_id": "diamond_body_art",
-      "legacy_manual_alias": "vajra_body",
-      "name_ko": "금강가세",
-      "milestone": 3,
-      "role": "BODY_GUARD_FORTITUDE_BASIC_OPERATION",
-      "action_slots": 1,
-      "costs": {
-        "stamina": 1,
-        "internal": 1
-      },
-      "targeting_mode": "SELF",
-      "primary_binding": {
-        "stat": "CONSTITUTION",
-        "defense_formula": "floor(2 + CONSTITUTION * 0.75)"
-      },
-      "secondary_binding": null,
-      "fixed_effects": {
-        "fortitude": 1
-      },
-      "reference_values": {
-        "stat_1_defense": 2,
-        "stat_4_defense": 5,
-        "stat_15_defense": 13
-      },
-      "budget": {
-        "effect_cost_ticks": 30,
-        "slot_budget_ticks": 20,
-        "resource_cost_allowance_components": {
-          "stamina_1": 4,
-          "internal_1": 7
-        },
-        "resource_cost_allowance_ticks": 11,
-        "condition_allowance_ticks": 0,
-        "available_budget_ticks": 31,
-        "variance_ticks": -1,
-        "within_auto_tolerance": true
-      }
-    },
-    "cloud_hand_return": {
-      "manual_id": "taiji_flowing_sword",
-      "legacy_manual_alias": "taiji_flow",
-      "name_ko": "운수회신",
-      "milestone": 3,
-      "role": "READ_DEFLECT_AND_POST_SUCCESS_RETURN",
-      "action_slots": 1,
-      "resolution_phase": "RESPONSE",
-      "costs": {
-        "stamina": 1,
-        "internal": 1
-      },
-      "primary_binding": {
-        "stat": "INSIGHT",
-        "type": "STAR_3_UNLOCK_AND_FIXED_READ_DEFLECT_STRUCTURE",
-        "continuous_per_point_scaling": false
-      },
-      "secondary_binding": {
-        "stat": "INTERNAL",
-        "type": "SEPARATE_POST_SUCCESS_RESOURCE_RECOVERY",
-        "internal_gain_formula": "floor(INTERNAL * 0.25)"
-      },
-      "fixed_effects": {
-        "evade": 1,
-        "fixed_retreat_on_evade_success": 1
-      },
-      "condition": "REQUIRES_SUCCESSFUL_EVADE",
-      "reference_values": {
-        "stat_1_internal_gain": 0,
-        "stat_4_internal_gain": 1,
-        "stat_15_internal_gain": 3
-      },
-      "budget": {
-        "effect_cost_ticks": 33,
-        "slot_budget_ticks": 20,
-        "resource_cost_allowance_components": {
-          "stamina_1": 4,
-          "internal_1": 7
-        },
-        "resource_cost_allowance_ticks": 11,
-        "condition_allowance_ticks": 5,
-        "available_budget_ticks": 36,
-        "variance_ticks": -3,
-        "within_auto_tolerance": true
-      }
-    },
-    "pursuing_wind_thrust": {
-      "manual_id": "chasing_wind_spear",
-      "legacy_manual_alias": "pursuing_wind_spear",
-      "name_ko": "추풍일섬",
-      "milestone": 3,
-      "role": "REACH_PRESSURE_AND_FIXED_FORWARD_AXIS_ADJUSTMENT_BASIC_OPERATION",
-      "action_slots": 1,
-      "costs": {
-        "stamina": 1,
-        "internal": 1
-      },
-      "range": {
-        "min": 1,
-        "max": 2,
-        "total_range_ticks": 10
-      },
-      "before_attack_axis_move": {
-        "tiles": 1,
-        "direction": "ADVANCE",
-        "player_choice": false
-      },
-      "primary_binding": {
-        "stat": "EXTERNAL",
-        "damage_formula": "floor(2 + EXTERNAL * 0.50)"
-      },
-      "secondary_binding": {
-        "stat": "MOVEMENT",
-        "type": "FIXED_ADVANCE_STRUCTURE",
-        "continuous_per_point_scaling": false
-      },
-      "reference_values": {
-        "stat_1_damage": 2,
-        "stat_4_damage": 4,
-        "stat_15_damage": 9
-      },
-      "budget": {
-        "effect_cost_ticks": 36,
-        "slot_budget_ticks": 20,
-        "resource_cost_allowance_components": {
-          "stamina_1": 4,
-          "internal_1": 7
-        },
-        "resource_cost_allowance_ticks": 11,
-        "condition_allowance_ticks": 0,
-        "available_budget_ticks": 31,
-        "variance_ticks": 5,
-        "within_auto_tolerance": true
-      }
-    },
-    "clear_heart_breath": {
-      "manual_id": "clear_heart_nourishing_art",
-      "legacy_manual_alias": "clear_heart_nurturing",
-      "name_ko": "청심조식",
-      "milestone": 3,
-      "role": "RESOURCE_RECOVERY_AND_STATE_STABILIZATION_BASIC_OPERATION",
-      "action_slots": 1,
-      "costs": {},
-      "condition": "ONCE_PER_BUNDLE",
-      "fixed_effects": {
-        "stamina_gain": 1
-      },
-      "primary_binding": {
-        "stat": "INTERNAL",
-        "internal_gain_formula": "floor(INTERNAL * 0.25)"
-      },
-      "secondary_binding": {
-        "stat": "CONSTITUTION",
-        "defense_formula": "floor(1 + CONSTITUTION * 0.25)"
-      },
-      "reference_values": {
-        "stat_1_internal_gain": 0,
-        "stat_4_internal_gain": 1,
-        "stat_15_internal_gain": 3,
-        "stat_1_defense": 1,
-        "stat_4_defense": 2,
-        "stat_15_defense": 4
-      },
-      "budget": {
-        "effect_cost_ticks": 23,
-        "slot_budget_ticks": 20,
-        "resource_cost_allowance_components": {},
-        "resource_cost_allowance_ticks": 0,
-        "condition_allowance_ticks": 4,
-        "available_budget_ticks": 24,
-        "variance_ticks": -1,
-        "within_auto_tolerance": true
-      }
-    },
-    "iron_step_drift": {
-      "manual_id": "shadowless_ten_steps",
-      "legacy_manual_alias": "shadowless_steps",
-      "name_ko": "철각유영",
-      "milestone": 3,
-      "role": "PROACTIVE_EVADE_FIXED_RETREAT_AND_ESCAPE_BASIC_OPERATION",
-      "action_slots": 1,
-      "costs": {
-        "stamina": 1,
-        "internal": 1
-      },
-      "primary_binding": {
-        "stat": "MOVEMENT",
-        "type": "STAR_3_UNLOCK_AND_FIXED_MOVE_EVADE_STRUCTURE",
-        "continuous_per_point_scaling": false
-      },
-      "secondary_binding": null,
-      "fixed_effects": {
-        "fixed_retreat": 2,
-        "evade": 1
-      },
-      "budget": {
-        "effect_cost_ticks": 30,
-        "slot_budget_ticks": 20,
-        "resource_cost_allowance_components": {
-          "stamina_1": 4,
-          "internal_1": 7
-        },
-        "resource_cost_allowance_ticks": 11,
-        "condition_allowance_ticks": 0,
-        "available_budget_ticks": 31,
-        "variance_ticks": -1,
-        "within_auto_tolerance": true
-      }
-    }
-  },
-  "global_validation": {
-    "all_techniques_within_plus_minus_5_ticks": true,
-    "budget_unit": "TICKS_ONLY",
-    "budget_points_present": false,
-    "legacy_linear_range_price_used": false,
-    "resource_cost_allowance_visible": true,
-    "same_effect_dual_scaling_present": false,
-    "structural_per_point_scaling_present": false,
-    "in_bundle_player_choice_present": false,
+  "forbidden_use": [
+    "CURRENT_PRODUCT_CARD_GENERATION",
+    "CURRENT_RUNTIME_DATA_GENERATION",
+    "CURRENT_BALANCE_AUTHORITY",
+    "CURRENT_TECHNIQUE1_EFFECT_OR_COST_LOOKUP"
+  ],
+  "canon_conflict_rule": "DIRECT_CURRENT_USE_OF_THIS_SUPERSEDED_CONTRACT_IS_CANON_CONFLICT",
+  "runtime_boundary": {
     "product_code_changed": false,
+    "runtime_data_changed": false,
     "runtime_validation": "NOT_RUN",
     "godot_validation": "NOT_RUN",
     "windows_validation": "NOT_RUN",
-    "accessibility_validation": "NOT_RUN",
     "human_validation": "NOT_RUN"
-  },
-  "follow_up_tbd": [
-    "STARTING_MARTIAL_TECHNIQUE_1_STAR5_ROLE_PATCHES",
-    "INDIVIDUAL_STAR_9_READ_BASED_BRANCHES",
-    "INDIVIDUAL_MARTIAL_ULTIMATE_EFFECTS_AND_BUDGETS",
-    "HIGH_STAT_CORE_FUN_HUMAN_VALIDATION"
-  ]
+  }
 }
