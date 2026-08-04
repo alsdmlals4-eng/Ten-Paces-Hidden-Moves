@@ -1,5 +1,5 @@
 {
-  "schema_version": 8,
+  "schema_version": 10,
   "data_role": "NON_RUNTIME_POC_PLANNING",
   "status": "POC_HYPOTHESIS",
   "editable": true,
@@ -7,12 +7,9 @@
   "unit": {
     "display_step": 0.05,
     "ticks_per_display_step": 1,
-    "ticks_per_budget_point": 20
-  },
-  "slot_budget_points": {
-    "1": 1.0,
-    "2": 2.5,
-    "3": 4.0
+    "ticks_per_budget_point": 20,
+    "current_approval_display": "TICKS_ONLY",
+    "budget_points_for_approval_tables": false
   },
   "slot_budget_ticks": {
     "1": 20,
@@ -43,6 +40,66 @@
     "per_hit_effect_base": 5,
     "medical_per_point": 5
   },
+  "budget_display_contract": {
+    "authority_decision": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-2-BASE-EFFECTS-AND-BUDGETS-01",
+    "amends_display_policy_of": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01",
+    "required_for_future_approval_tables": true,
+    "unit": "TICKS_ONLY",
+    "required_columns": [
+      "EFFECT_COST_TICKS",
+      "SLOT_BUDGET_TICKS",
+      "RESOURCE_COST_ALLOWANCE_TICKS",
+      "CONDITION_ALLOWANCE_TICKS",
+      "AVAILABLE_BUDGET_TICKS",
+      "VARIANCE_TICKS"
+    ],
+    "resource_cost_allowance_must_be_visible": true,
+    "condition_allowance_must_be_separate": true,
+    "available_budget_formula": "slot_budget_ticks + resource_cost_allowance_ticks + condition_allowance_ticks",
+    "variance_formula": "effect_cost_ticks - available_budget_ticks",
+    "hidden_resource_allowance_forbidden": true,
+    "budget_points_forbidden_in_approval_tables": true,
+    "reference_examples": {
+      "stamina_1": {
+        "allowance_ticks": 4
+      },
+      "internal_1": {
+        "allowance_ticks": 7
+      },
+      "stamina_1_plus_internal_1": {
+        "allowance_ticks": 11
+      },
+      "momentum_5": {
+        "allowance_ticks": 30
+      },
+      "self_health_1": {
+        "allowance_ticks": 3
+      },
+      "two_slot_stamina_1_internal_1": {
+        "formula": "50(2 slots) + 7(internal 1) + 4(stamina 1)",
+        "available_budget_ticks": 61
+      }
+    }
+  },
+  "current_approval_allowance_ticks": {
+    "resource_costs": {
+      "stamina_1": 4,
+      "internal_1": 7,
+      "momentum_5": 30,
+      "self_health_1": 3
+    },
+    "conditions": {
+      "common_public_condition": 3,
+      "strict_public_condition": 7,
+      "once_per_bundle": 4,
+      "once_per_battle": 10,
+      "requires_existing_defense": 4,
+      "requires_successful_evade": 5,
+      "requires_clash_win": 5
+    },
+    "source_conversion": "absolute value of legacy negative PoC ledger credits",
+    "runtime_score": false
+  },
   "range_pricing_contract": {
     "authority_decision": "TEN-DEC-20260802-RANGE-PRICE-BANDS-01",
     "model": "MAX_RANGE_TOTAL_TICKS",
@@ -61,7 +118,7 @@
     "legacy_linear_price_allowed_for_poc_hypothesis_validation_only": true
   },
   "resource_cost_credit_contract": {
-    "authority_decision": "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
+    "authority_decision": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-2-BASE-EFFECTS-AND-BUDGETS-01",
     "credits_are_authoring_budget_not_runtime_score": true,
     "guaranteed_payment_required": true,
     "refunded_or_waived_cost_gets_full_credit": false,
@@ -69,7 +126,9 @@
     "internal_1_credit_ticks": -7,
     "momentum_5_credit_ticks": -30,
     "self_health_1_credit_ticks": -3,
-    "resource_gain_and_cost_use_separate_ledger_entries": true
+    "current_approval_display_uses_positive_allowance": true,
+    "resource_gain_and_cost_use_separate_ledger_entries": true,
+    "approval_display_must_show_each_credit": true
   },
   "stat_reference_pricing": {
     "status": "CURRENT_APPROVED_PLANNING",
@@ -142,7 +201,9 @@
       "strengthen"
     ],
     "structural_values_are_continuous_stat_scaled": false,
-    "tag_quantity_is_continuous_stat_scaled": false
+    "tag_quantity_is_continuous_stat_scaled": false,
+    "in_bundle_player_choice_allowed_for_current_scope": false,
+    "deterministic_movement_required": true
   },
   "condition_credits": {
     "common_public_condition": -3,
@@ -216,14 +277,16 @@
     ]
   },
   "authoring_rules": [
-    "Authoring UI may display decimals but stores integer ticks.",
-    "All input values snap to 0.05 budget increments.",
-    "Slot budgets are 1.0, 2.5, and 4.0 points for 1, 2, and 3 slots.",
+    "Ticks are the only unit shown in current approval and authoring tables.",
+    "Slot budgets are 20, 50, and 80 ticks for 1, 2, and 3 slots.",
+    "Current approval available budget equals slot ticks plus visible resource-cost allowances plus visible condition allowances.",
+    "Approval tables must show effect cost, slot budget, resource allowance, condition allowance, available budget, and variance in ticks only.",
+    "Legacy negative credit tables remain only to validate historical poc_martial_arts.json ledgers before runtime migration.",
     "Tags, fixed base values, stat-reference coefficients, range, and resource costs must use separate ledger entries.",
     "Current approved attack range uses total ticks by maximum range: 1=0, 2=10, 3=25, 4=40.",
     "Do not extrapolate range 5 or above without a new Decision.",
     "The legacy range_per_tile_beyond_one price remains only for historical POC_HYPOTHESIS ledger validation.",
-    "Guaranteed non-refundable resource costs grant authoring credits; waived or refunded costs do not receive full credit.",
+    "Guaranteed non-refundable resource costs add authoring allowance; waived or refunded costs do not receive full allowance.",
     "Observation, movement, dodge, and strengthen are fixed-only effects without continuous stat scaling.",
     "All other numeric action effects require at least one explicit stat reference.",
     "Stat-reference coefficients snap to 0.25 and are priced at balance reference stat 4.",
@@ -233,6 +296,8 @@
     "Check each authored technique at stat points 1, 4, and 15.",
     "5-star and 9-star upgrades each receive an additional 5-tick authoring allowance.",
     "Capstones use the 3-slot 80-tick reference even when represented as a passive true meaning.",
+    "Current implementation scope forbids player choice prompts after an action bundle is committed.",
+    "Movement inside current approved techniques must have a deterministic direction and edge rule.",
     "An out-of-tolerance technique is not auto-fixed; it is flagged for review."
   ],
   "patch_contract": {

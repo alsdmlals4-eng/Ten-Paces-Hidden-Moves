@@ -1,0 +1,204 @@
+{
+  "schema_version": 3,
+  "decision_id": "TEN-DEC-20260803-MARTIAL-TECHNIQUE-ROLE-AND-SCALING-MATRIX-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "PLANNING_ONLY",
+  "approved_at": "2026-08-03",
+  "grillme_batch_count": "4/10",
+  "followup_technique_1_decision": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01",
+  "technique_1_contract": "docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json",
+  "followup_technique_2_decision": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-2-BASE-EFFECTS-AND-BUDGETS-01",
+  "technique_2_contract": "docs/planning-data/approved_20260803_starting_martial_technique_2_base_effects_and_budgets_contract.json",
+  "predecessors": [
+    "TEN-DEC-20260802-TECHNIQUE-AUTHORING-TAG-FIXED-STAT-01",
+    "TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01",
+    "TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01",
+    "TEN-DEC-20260803-INTERMEDIATE-NODE-PERMANENT-STAT-REWARDS-01"
+  ],
+  "authoring_policy": {
+    "order": [
+      "TACTICAL_ROLE_AND_COUNTERPLAY",
+      "ACTION_STRUCTURE_AND_COST",
+      "FIXED_EFFECTS",
+      "PRIMARY_STAT_CORE_EFFECT_BINDING",
+      "OPTIONAL_SECONDARY_DISTINCT_EFFECT_BINDING",
+      "STAR_5_ROLE_REINFORCEMENT",
+      "STAR_9_READ_BASED_AUTOMATIC_CONDITION"
+    ],
+    "role_first": true,
+    "max_stat_references_per_technique": 2,
+    "primary_stat_binding": "REQUIRED_CORE_EFFECT",
+    "secondary_stat_binding": "OPTIONAL_DISTINCT_EFFECT_ONLY",
+    "secondary_is_unlock_requirement": false,
+    "secondary_auto_scales_every_technique": false,
+    "same_effect_primary_secondary_scaling": false,
+    "secondary_filler_scaling": false,
+    "budget_unit": "TICKS_ONLY",
+    "in_bundle_player_choice": false,
+    "deterministic_movement_required": true
+  },
+  "scaling_classes": {
+    "continuous_numeric_allowed": [
+      "DAMAGE_AMOUNT",
+      "DEFENSE_AMOUNT",
+      "GUARD_OR_SHIELD_AMOUNT",
+      "HEALING_OR_STABILIZATION_AMOUNT",
+      "STAMINA_OR_INTERNAL_RESOURCE_RECOVERY_AMOUNT"
+    ],
+    "threshold_or_milestone_only": [
+      "MOVE_DISTANCE",
+      "ATTACK_RANGE",
+      "OBSERVATION_GAIN",
+      "ACTION_SLOTS",
+      "HIT_COUNT",
+      "EVADE_COUNT",
+      "TELEGRAPH_SLOTS",
+      "INTERRUPT_PERMISSION",
+      "COUNTER_PERMISSION",
+      "SURE_HIT",
+      "COST_WAIVER",
+      "RULE_NULLIFICATION"
+    ],
+    "per_point_structural_scaling_allowed": false
+  },
+  "milestone_policy": {
+    "star_3": "TECHNIQUE_1_BASIC_MANUAL_OPERATION",
+    "star_5": {
+      "type": "REINFORCE_EXISTING_ROLE",
+      "allowed": [
+        "LIMITED_COST_OR_CONDITION_RELIEF",
+        "BUDGETED_FIXED_OR_ROLE_NUMERIC_IMPROVEMENT",
+        "ROLE_STABILITY_OR_READABILITY_IMPROVEMENT",
+        "SEPARATELY_PRICED_STRUCTURAL_THRESHOLD"
+      ],
+      "forbidden": [
+        "NEW_INDEPENDENT_ROLE",
+        "COUNTERPLAY_REMOVAL",
+        "UNCONDITIONAL_DAMAGE_MULTIPLIER_ONLY",
+        "FREE_ACTION_SLOT_RANGE_OR_SURE_HIT",
+        "IN_BUNDLE_PLAYER_CHOICE_PROMPT"
+      ]
+    },
+    "star_7": "TECHNIQUE_2_ADVANCED_INTERACTION_NOT_STRICT_REPLACEMENT",
+    "star_9": {
+      "type": "READ_BASED_AUTOMATIC_CONDITION",
+      "allowed_conditions": [
+        "ON_CLASH_WIN",
+        "ON_EVADE_SUCCESS",
+        "PUBLIC_ACTION_CATEGORY_PREDICTION_MATCH",
+        "DISTANCE_BAND_PLAN_SUCCESS",
+        "INTERRUPT_OR_COUNTER_CONDITION_MET",
+        "PLANNED_RESOURCE_TIMING_MET"
+      ],
+      "hidden_plan_or_ai_weight_access": false,
+      "unconditional_damage_multiplier_only": false,
+      "must_declare_success_reward_and_failure_opportunity_cost": true,
+      "player_choice_during_resolution": false
+    }
+  },
+  "manual_role_matrix": {
+    "flowing_cloud_sword": {
+      "primary_stat": "MOVEMENT",
+      "secondary_stat": "EXTERNAL",
+      "technique_1_role": "MOBILE_CHAIN_PRESSURE",
+      "technique_2_role": "FIXED_FORWARD_REACH_ATTACK",
+      "primary_effect_responsibility": "MOVEMENT_TIMING_AND_CHAIN_CONTINUITY_STRUCTURE_OR_THRESHOLD",
+      "secondary_effect_responsibility": "SEPARATE_PHYSICAL_HIT_DAMAGE_WHEN_PRESENT",
+      "forbidden_collapse": "MOVEMENT_STAT_SCALES_BOTH_DISTANCE_AND_DAMAGE_WITHOUT_LIMIT"
+    },
+    "diamond_body_art": {
+      "primary_stat": "CONSTITUTION",
+      "secondary_stat": "INTERNAL",
+      "technique_1_role": "BODY_GUARD_FORTITUDE_AND_ENDURANCE",
+      "technique_2_role": "EXISTING_DEFENSE_TO_COUNTER_PRESSURE",
+      "primary_effect_responsibility": "DEFENSE_FORTITUDE_OR_DAMAGE_ABSORPTION_AMOUNT",
+      "secondary_effect_responsibility": "SEPARATE_INTERNAL_GUARD_OR_RESOURCE_STABILIZATION",
+      "forbidden_collapse": "UNCONDITIONAL_INVULNERABILITY_REFLECTION_OR_PLAN_FAILURE_RESCUE"
+    },
+    "taiji_flowing_sword": {
+      "primary_stat": "INSIGHT",
+      "secondary_stat": "INTERNAL",
+      "technique_1_role": "READ_DEFLECT_CLASH_OR_DISCERN_PUBLIC_ATTACK",
+      "technique_2_role": "CLASH_WIN_TO_FIXED_COUNTER_GUARD",
+      "primary_effect_responsibility": "READ_DEFLECT_COUNTER_CONDITION_OR_EFFECT",
+      "secondary_effect_responsibility": "SEPARATE_INTERNAL_RESOURCE_RECOVERY_OR_GUARD_AFTER_SUCCESS",
+      "forbidden_collapse": "AUTOMATIC_COUNTER_WITHOUT_READ_OR_HIDDEN_PLAN_ACCESS"
+    },
+    "chasing_wind_spear": {
+      "primary_stat": "EXTERNAL",
+      "secondary_stat": "MOVEMENT",
+      "technique_1_role": "REACH_PRESSURE_AND_FIXED_FORWARD_STRIKE",
+      "technique_2_role": "TWO_HIT_REACH_TO_FIXED_RETREAT",
+      "primary_effect_responsibility": "THRUST_DAMAGE_OR_DEFENSE_BREAK",
+      "secondary_effect_responsibility": "SEPARATE_POSITION_ADJUSTMENT_OR_SPACING_THRESHOLD",
+      "forbidden_collapse": "MAX_RANGE_MAX_DAMAGE_AND_FREE_MOVEMENT_IN_ONE_TECHNIQUE"
+    },
+    "clear_heart_nourishing_art": {
+      "primary_stat": "INTERNAL",
+      "secondary_stat": "CONSTITUTION",
+      "technique_1_role": "INTERNAL_RESOURCE_RECOVERY_AND_STATE_STABILIZATION",
+      "technique_2_role": "LOW_RESOURCE_FIXED_RECOVERY_AND_STABILIZATION",
+      "primary_effect_responsibility": "INTERNAL_RESOURCE_GUARD_OR_RECOVERY_AMOUNT",
+      "secondary_effect_responsibility": "SEPARATE_HEALTH_OR_FORTITUDE_STABILIZATION",
+      "forbidden_collapse": "FULL_COMBAT_RESET_INFINITE_STALL_OR_FREE_FULL_RECOVERY"
+    },
+    "shadowless_ten_steps": {
+      "primary_stat": "MOVEMENT",
+      "secondary_stat": "INSIGHT",
+      "technique_1_role": "EVADE_FIXED_RETREAT_AND_ESCAPE",
+      "technique_2_role": "EVADE_SUCCESS_TO_FIXED_RETREAT_AND_COUNTER",
+      "primary_effect_responsibility": "EVADE_REPOSITION_STRUCTURE_OR_THRESHOLD",
+      "secondary_effect_responsibility": "SEPARATE_OBSERVATION_OR_TELEGRAPH_RESPONSE_EFFECT",
+      "forbidden_collapse": "GUARANTEED_EVADE_WITH_HIDDEN_PLAN_ACCESS"
+    }
+  },
+  "approved_technique_1_status": {
+    "authority_decision": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01",
+    "contract": "docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json",
+    "all_six_base_techniques_approved": true,
+    "budget_reference_stat": 4,
+    "budget_unit": "TICKS_ONLY",
+    "resource_cost_allowance_visible": true,
+    "legacy_linear_range_price_used": false,
+    "all_within_plus_minus_5_ticks": true,
+    "in_bundle_player_choice_present": false
+  },
+  "approved_technique_2_status": {
+    "authority_decision": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-2-BASE-EFFECTS-AND-BUDGETS-01",
+    "contract": "docs/planning-data/approved_20260803_starting_martial_technique_2_base_effects_and_budgets_contract.json",
+    "all_six_advanced_techniques_approved": true,
+    "budget_reference_stat": 4,
+    "budget_unit": "TICKS_ONLY",
+    "resource_cost_allowance_visible": true,
+    "all_within_plus_minus_5_ticks": true,
+    "strictly_dominates_technique_1": false,
+    "in_bundle_player_choice_present": false,
+    "deterministic_movement_present": true
+  },
+  "global_forbidden_patterns": [
+    "ALL_TECHNIQUES_AUTOMATIC_PRIMARY_SECONDARY_DUAL_SCALING",
+    "SAME_EFFECT_DUAL_COEFFICIENT_STACKING",
+    "TECHNIQUE_2_STRICTLY_DOMINATES_TECHNIQUE_1",
+    "STAR_5_OR_STAR_9_UNCONDITIONAL_DAMAGE_ONLY",
+    "STRUCTURAL_VALUE_PER_POINT_CONTINUOUS_SCALING",
+    "UNCONFIRMED_PLAYER_OR_ENEMY_PLAN_ACCESS",
+    "AI_WEIGHT_OR_CANONICAL_COUNTER_SOLUTION_ACCESS",
+    "HIDDEN_RESOURCE_COST_ALLOWANCE_IN_APPROVAL_TABLE",
+    "BUDGET_POINT_DISPLAY_IN_CURRENT_APPROVAL",
+    "IN_BUNDLE_PLAYER_CHOICE_PROMPT"
+  ],
+  "follow_up_tbd": [
+    "STARTING_MARTIAL_TECHNIQUE_1_STAR5_ROLE_PATCHES",
+    "INDIVIDUAL_STAR_9_READ_BASED_BRANCHES",
+    "INDIVIDUAL_MARTIAL_ULTIMATE_EFFECTS_AND_BUDGETS",
+    "HIGH_STAT_CORE_FUN_HUMAN_VALIDATION"
+  ],
+  "validation_boundary": {
+    "product_code_changed": false,
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "accessibility_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  }
+}

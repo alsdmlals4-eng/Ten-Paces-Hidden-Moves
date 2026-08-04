@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260803-INTERMEDIATE-NODE-PERMANENT-STAT-REWARDS-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_status": "NOT_STARTED",
+  "approved_at": "2026-08-03",
+  "grillme_batch_count": "3/10",
+  "reward_scope": "CURRENT_RUN_PERMANENT",
+  "demo_supply": {
+    "intermediate_nodes_total": 8,
+    "max_permanent_stat_reward_nodes_available": 2,
+    "max_permanent_stat_points_obtainable": 2,
+    "minimum_guaranteed_obtainable": 0,
+    "max_reward_nodes_in_same_gap": 1
+  },
+  "reward_choice": {
+    "options_presented": 2,
+    "options_must_be_distinct": true,
+    "choices_allowed": 1,
+    "permanent_stat_increment": 1,
+    "eligible_stats": [
+      "EXTERNAL",
+      "CONSTITUTION",
+      "MOVEMENT",
+      "INTERNAL",
+      "INSIGHT"
+    ],
+    "visible_before_route_commit": true
+  },
+  "offer_generation": {
+    "deterministic_inputs": [
+      "run_seed",
+      "gap_index",
+      "next_duel_slot",
+      "player_owned_manuals"
+    ],
+    "must_include_at_least_one_player_build_relevant_option": true,
+    "must_include_one_public_next_opponent_response_direction": true,
+    "uses_only_public_enemy_information": true,
+    "forbidden_inputs": [
+      "enemy_unconfirmed_plan",
+      "enemy_hidden_action_selection",
+      "enemy_ai_weights",
+      "canonical_counter_solution"
+    ]
+  },
+  "application": {
+    "feeds_actual_permanent_stat_value": true,
+    "counts_for_star_3_requirement": true,
+    "counts_for_star_7_requirement": true,
+    "counts_for_star_10_requirement": true,
+    "counts_for_approved_combat_formulas": true,
+    "clamp_at_15": false,
+    "overflow_conversion": "NONE",
+    "resets_on_new_run": true,
+    "persists_across_duels_in_current_run": true
+  },
+  "reward_separation": {
+    "automatically_combines_healing": false,
+    "automatically_combines_training_points": false,
+    "automatically_combines_extra_intel": false,
+    "automatically_combines_currency": false,
+    "compound_reward_requires_separate_approval": true
+  },
+  "idempotency": {
+    "key": "run_id+gap_index+node_id+reward_instance_id",
+    "reapply_on_load": false,
+    "reapply_on_screen_reentry": false,
+    "event_type": "ROUTE_NODE_PERMANENT_STAT"
+  },
+  "guardrails": {
+    "route_choice_should_not_collapse_to_stat_maximization": true,
+    "non_stat_alternatives_require_state_dependent_expected_value": true,
+    "wrong_plan_rescue_rate_requires_human_validation": true,
+    "stat_node_pick_rate_requires_human_validation": true
+  },
+  "supersedes": [
+    "INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS_TBD",
+    "UNBOUNDED_ROUTE_NODE_STAT_SUPPLY"
+  ],
+  "follow_up_tbd": [
+    "EXACT_NODE_PLACEMENT_AND_APPEARANCE_WEIGHTS",
+    "NON_STAT_NODE_REWARD_EXPECTED_VALUES",
+    "INDIVIDUAL_TECHNIQUE_PRIMARY_SECONDARY_SCALING",
+    "STAR_5_AND_9_PATCH_THRESHOLDS",
+    "HIGH_STAT_HUMAN_VALIDATION"
+  ],
+  "validation_boundary": {
+    "product_code_changed": false,
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  }
+}
