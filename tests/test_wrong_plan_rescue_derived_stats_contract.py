@@ -32,6 +32,12 @@ class WrongPlanRescueDerivedStatsContractTest(unittest.TestCase):
         temp.close()
         return Path(temp.name)
 
+    def assert_mutation_rejected(self, edit, expected: str):
+        mutated = self.mutate(edit)
+        result = self.run_checker(mutated)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(expected, result.stdout + result.stderr)
+
     def test_approved_contract_passes(self):
         result = self.run_checker()
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -44,32 +50,26 @@ class WrongPlanRescueDerivedStatsContractTest(unittest.TestCase):
         )
 
     def test_rejects_continuous_range_scaling(self):
-        mutated = self.mutate(
-            lambda data: data["forbidden_continuous_structural_scaling"].remove("ATTACK_RANGE")
+        self.assert_mutation_rejected(
+            lambda data: data["forbidden_continuous_structural_scaling"].remove("ATTACK_RANGE"),
+            "ATTACK_RANGE",
         )
-        result = self.run_checker(mutated)
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn("ATTACK_RANGE", result.stdout + result.stderr)
 
     def test_rejects_current_resource_fill_on_max_growth(self):
-        mutated = self.mutate(
+        self.assert_mutation_rejected(
             lambda data: data["max_change_policy"].update(
                 {"fill_current_on_max_increase": True}
-            )
+            ),
+            "fill_current",
         )
-        result = self.run_checker(mutated)
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn("fill_current", result.stdout + result.stderr)
 
     def test_rejects_legacy_attack_power_double_scaling(self):
-        mutated = self.mutate(
+        self.assert_mutation_rejected(
             lambda data: data["legacy_attack_power"].update(
                 {"may_add_to_stat_scaled_actions": True}
-            )
+            ),
+            "DOUBLE_SCALING_CONFLICT",
         )
-        result = self.run_checker(mutated)
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn("DOUBLE_SCALING_CONFLICT", result.stdout + result.stderr)
 
     def test_outcome_reversal_and_major_rescue_are_exclusive(self):
         data = self.load_contract()
@@ -91,6 +91,67 @@ class WrongPlanRescueDerivedStatsContractTest(unittest.TestCase):
         self.assertEqual(
             normalization["internal"],
             "clamp(reference_max_internal - spent_internal, 0, reference_max_internal)",
+        )
+
+    def test_rejects_passive_global_damage_reduction(self):
+        self.assert_mutation_rejected(
+            lambda data: data["derived_stats"]["constitution"].update(
+                {"passive_global_damage_reduction": True}
+            ),
+            "PASSIVE_DEFENSE_RESCUE_CONFLICT",
+        )
+
+    def test_rejects_hidden_plan_access_from_insight(self):
+        self.assert_mutation_rejected(
+            lambda data: data["derived_stats"]["insight"].update(
+                {"hidden_plan_access": True}
+            ),
+            "HIDDEN_PLAN_ACCESS",
+        )
+
+    def test_rejects_automatic_correct_counter_from_insight(self):
+        self.assert_mutation_rejected(
+            lambda data: data["derived_stats"]["insight"].update(
+                {"automatic_correct_counter": True}
+            ),
+            "AUTOMATIC_CORRECT_COUNTER",
+        )
+
+    def test_rejects_counterfactual_rng_drift(self):
+        self.assert_mutation_rejected(
+            lambda data: data["counterfactual_contract"].update(
+                {"same_rng_seed_and_consumption_order": False}
+            ),
+            "COUNTERFACTUAL_REPLAY_CONFLICT",
+        )
+
+    def test_rejects_missing_wrong_plan_reason_code(self):
+        self.assert_mutation_rejected(
+            lambda data: data["wrong_plan_reason_codes"].remove("MISSING_DEFENSE_RESPONSE"),
+            "MISSING_DEFENSE_RESPONSE",
+        )
+
+    def test_rejects_truncated_uncapped_sanity_points(self):
+        self.assert_mutation_rejected(
+            lambda data: data["sanity_stat_points"].remove(20),
+            "UNCAPPED_SANITY_BAND_CONFLICT",
+        )
+
+    def test_rejects_stat_adjustment_before_success_gates(self):
+        self.assert_mutation_rejected(
+            lambda data: data.update(
+                {
+                    "resolution_order": [
+                        "LEGALITY",
+                        "STAT_NUMERIC_ADJUSTMENT",
+                        "DISTANCE_ORDER_MOVEMENT_INTERRUPTION",
+                        "SUCCESS_GATES",
+                        "COUNTERFACTUAL_REPLAY",
+                        "RESCUE_CLASSIFICATION",
+                    ]
+                }
+            ),
+            "resolution order",
         )
 
 
