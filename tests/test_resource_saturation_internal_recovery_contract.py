@@ -84,6 +84,30 @@ class ResourceSaturationInternalRecoveryContractTests(unittest.TestCase):
         with self.assertRaisesRegex(validator.ResourceSaturationContractError, "soft-lock"):
             validator.validate(self.load_parent(), broken)
 
+    def test_canon_documents_are_synchronized(self):
+        validator = load_validator()
+        validator.validate_canon_documents(validator.load_canon_documents())
+
+    def test_validator_rejects_stale_next_risk_pointer(self):
+        validator = load_validator()
+        broken = copy.deepcopy(validator.load_canon_documents())
+        broken["active_context"] = broken["active_context"].replace(
+            "next_planning_decision: CONDITION_CALIBRATION_RISK",
+            "next_planning_decision: STAR9_PUBLIC_READ_BRANCH_TEMPLATE",
+        )
+        with self.assertRaisesRegex(validator.ResourceSaturationContractError, "next risk"):
+            validator.validate_canon_documents(broken)
+
+    def test_validator_rejects_missing_field_level_superseded_marker(self):
+        validator = load_validator()
+        broken = copy.deepcopy(validator.load_canon_documents())
+        broken["lifecycle"] = broken["lifecycle"].replace(
+            "bundle_transition_recovery.internal=1` | `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`",
+            "bundle_transition_recovery.internal=1` | `TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01`",
+        )
+        with self.assertRaisesRegex(validator.ResourceSaturationContractError, "superseded field"):
+            validator.validate_canon_documents(broken)
+
 
 if __name__ == "__main__":
     unittest.main()
