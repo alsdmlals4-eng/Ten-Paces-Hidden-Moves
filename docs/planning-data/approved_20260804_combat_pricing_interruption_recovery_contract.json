@@ -5,7 +5,9 @@
   "effective_date": "2026-08-04",
   "partial_amendment": {
     "decision_id": "TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01",
-    "superseded_fields": ["bundle_transition_recovery.internal"],
+    "superseded_fields": [
+      "bundle_transition_recovery.internal"
+    ],
     "effective_overlay": "docs/planning-data/approved_20260804_resource_saturation_internal_recovery_contract.json"
   },
   "runtime": false,
@@ -28,18 +30,39 @@
       "ultimate_momentum": 1
     }
   },
-  "resolution_order": ["RESPONSE", "QUICK_ATTACK", "MOVE", "ATTACK", "SURVIVING_NON_ATTACK"],
+  "resolution_order": [
+    "RESPONSE",
+    "QUICK_ATTACK",
+    "MOVE",
+    "ATTACK",
+    "SURVIVING_NON_ATTACK"
+  ],
   "distance_pricing": {
     "unit": "TICKS",
     "per_tile": 15,
     "movement_formula": "movement_tiles * 15",
     "attack_range_formula": "max(0, max_range - 1) * 15",
-    "attack_range_ticks": {"1": 0, "2": 15, "3": 30, "4": 45},
-    "movement_ticks": {"0": 0, "1": 15, "2": 30, "3": 45, "4": 60},
+    "attack_range_ticks": {
+      "1": 0,
+      "2": 15,
+      "3": 30,
+      "4": 45
+    },
+    "movement_ticks": {
+      "0": 0,
+      "1": 15,
+      "2": 30,
+      "3": 45,
+      "4": 60
+    },
     "movement_and_range_stack": true,
     "supersedes": "TEN-DEC-20260802-RANGE-PRICE-BANDS-01"
   },
-  "slot_budget_ticks": {"1": 20, "2": 50, "3": 80},
+  "slot_budget_ticks": {
+    "1": 20,
+    "2": 50,
+    "3": 80
+  },
   "resource_allowance_ticks": {
     "stamina_per_point": 4,
     "internal_per_point": 7,
@@ -57,7 +80,11 @@
   },
   "bundle_transition_recovery": {
     "first_bundle_start": false,
-    "transitions": ["BUNDLE_1_TO_2", "BUNDLE_2_TO_3", "BUNDLE_3_TO_NEXT_ROUND_BUNDLE_1"],
+    "transitions": [
+      "BUNDLE_1_TO_2",
+      "BUNDLE_2_TO_3",
+      "BUNDLE_3_TO_NEXT_ROUND_BUNDLE_1"
+    ],
     "stamina": 1,
     "internal": 1,
     "internal_lifecycle": "[대체됨] TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01",
@@ -74,9 +101,24 @@
   },
   "reprice_audit": {
     "reference_stat": 4,
-    "quick_attack": {"effect_cost_ticks": 25, "available_budget_ticks": 24, "variance_ticks": 1, "status": "WITHIN_TOLERANCE"},
-    "heavy_attack": {"effect_cost_ticks": 70, "available_budget_ticks": 61, "variance_ticks": 9, "status": "REVIEW_REQUIRED"},
-    "basic_palm": {"effect_cost_ticks": 60, "available_budget_ticks": 57, "variance_ticks": 3, "status": "WITHIN_TOLERANCE"}
+    "quick_attack": {
+      "effect_cost_ticks": 25,
+      "available_budget_ticks": 24,
+      "variance_ticks": 1,
+      "status": "WITHIN_TOLERANCE"
+    },
+    "heavy_attack": {
+      "effect_cost_ticks": 70,
+      "available_budget_ticks": 61,
+      "variance_ticks": 9,
+      "status": "REVIEW_REQUIRED"
+    },
+    "basic_palm": {
+      "effect_cost_ticks": 60,
+      "available_budget_ticks": 57,
+      "variance_ticks": 3,
+      "status": "WITHIN_TOLERANCE"
+    }
   },
   "implementation_boundary": {
     "html_poc_update": "STOPPED",
