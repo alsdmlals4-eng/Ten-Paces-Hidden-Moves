@@ -6,19 +6,51 @@
   "parent_decision_id": "TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01",
   "cohort_definition": "RULES_LITERATE_GENERAL_PLAYER_VALID_ATTEMPTS",
   "difficulty_bands": {
-    "extreme": {"min_inclusive": 0.0, "max_exclusive": 0.15, "coefficient": 0.25},
-    "very_hard": {"min_inclusive": 0.15, "max_exclusive": 0.3, "coefficient": 0.4},
-    "hard": {"min_inclusive": 0.3, "max_exclusive": 0.5, "coefficient": 0.55},
-    "moderate": {"min_inclusive": 0.5, "max_exclusive": 0.7, "coefficient": 0.7},
-    "easy": {"min_inclusive": 0.7, "max_exclusive": 0.85, "coefficient": 0.85},
-    "quasi_certain": {"min_inclusive": 0.85, "max_inclusive": 1.0, "coefficient": 1.0}
+    "extreme": {
+      "min_inclusive": 0.0,
+      "max_exclusive": 0.15,
+      "coefficient": 0.25
+    },
+    "very_hard": {
+      "min_inclusive": 0.15,
+      "max_exclusive": 0.3,
+      "coefficient": 0.4
+    },
+    "hard": {
+      "min_inclusive": 0.3,
+      "max_exclusive": 0.5,
+      "coefficient": 0.55
+    },
+    "moderate": {
+      "min_inclusive": 0.5,
+      "max_exclusive": 0.7,
+      "coefficient": 0.7
+    },
+    "easy": {
+      "min_inclusive": 0.7,
+      "max_exclusive": 0.85,
+      "coefficient": 0.85
+    },
+    "quasi_certain": {
+      "min_inclusive": 0.85,
+      "max_inclusive": 1.0,
+      "coefficient": 1.0
+    }
   },
   "measurement_contract": {
     "overall_use_success_rate": "condition_successes / legally_committed_uses",
     "valid_attempt_success_rate": "condition_successes / attempts_possible_from_public_state_at_commit",
     "pricing_reclassification_basis": "valid_attempt_success_rate",
-    "simulation_allowed_for": ["REACHABILITY", "FAILURE_POINT_VALIDATION", "LOG_SCHEMA_VALIDATION"],
-    "simulation_cannot_claim": ["HIGH_CEILING_FEEL_PASS", "LOW_FLOOR_ACCEPTANCE_PASS", "HUMAN_BALANCE_PASS"]
+    "simulation_allowed_for": [
+      "REACHABILITY",
+      "FAILURE_POINT_VALIDATION",
+      "LOG_SCHEMA_VALIDATION"
+    ],
+    "simulation_cannot_claim": [
+      "HIGH_CEILING_FEEL_PASS",
+      "LOW_FLOOR_ACCEPTANCE_PASS",
+      "HUMAN_BALANCE_PASS"
+    ]
   },
   "valid_attempt_contract": {
     "legally_committed_use_required": true,
@@ -29,7 +61,16 @@
     "debug_forced_outcomes_excluded": true,
     "abandoned_or_force_terminated_battles_excluded": true
   },
-  "failure_taxonomy": ["PUBLIC_STATE_MISMATCH", "PREDICTION_MISS", "POSITION_FAILURE", "INTERRUPTED", "EVADED_OR_MISSED", "NO_HEALTH_DAMAGE", "PARTIAL_CHAIN_FAILURE", "SUCCESS"],
+  "failure_taxonomy": [
+    "PUBLIC_STATE_MISMATCH",
+    "PREDICTION_MISS",
+    "POSITION_FAILURE",
+    "INTERRUPTED",
+    "EVADED_OR_MISSED",
+    "NO_HEALTH_DAMAGE",
+    "PARTIAL_CHAIN_FAILURE",
+    "SUCCESS"
+  ],
   "shared_trigger_counting": {
     "one_success_event_per_condition_group": true,
     "parent_and_star5_patch_do_not_double_count": true
@@ -43,7 +84,10 @@
   "reclassification_gate": {
     "min_valid_attempts": 100,
     "min_distinct_battles": 30,
-    "evidence_any_of": ["WILSON_95_CI_ENTIRELY_OUTSIDE_DECLARED_BAND", "TWO_CONSECUTIVE_SAME_DIRECTION_BATCHES"],
+    "evidence_any_of": [
+      "WILSON_95_CI_ENTIRELY_OUTSIDE_DECLARED_BAND",
+      "TWO_CONSECUTIVE_SAME_DIRECTION_BATCHES"
+    ],
     "consecutive_batch_min_valid_attempts": 50,
     "consecutive_batch_min_distinct_battles": 15
   },
@@ -63,14 +107,46 @@
     "same_trigger_duplicate_success_forbidden": true
   },
   "current_condition_groups": {
-    "flowing_cloud_hit2": {"technique_id": "flowing_cloud_triple", "condition": "HIT1_REAL_HEALTH_DAMAGE", "declared_difficulty": "moderate"},
-    "flowing_cloud_hit3": {"technique_id": "flowing_cloud_triple", "condition": "HIT1_AND_HIT2_REAL_HEALTH_DAMAGE", "declared_difficulty": "very_hard"},
-    "flowing_cloud_retreat": {"technique_id": "flowing_cloud_triple", "condition": "ALL_THREE_HITS_REAL_HEALTH_DAMAGE", "declared_difficulty": "extreme"},
-    "vajra_guard_full_absorb": {"technique_id": "vajra_guard", "condition": "REAL_ATTACK_FULLY_ABSORBED_BEFORE_NEXT_OWN_ACTION", "declared_difficulty": "hard"},
-    "cloud_hand_return_evade": {"technique_id": "cloud_hand_return", "condition": "SUCCESSFULLY_EVADE_REAL_EFFECTIVE_ATTACK", "declared_difficulty": "hard"},
-    "pursuing_wind_spear_tip": {"technique_id": "pursuing_wind_thrust", "condition": "FULL_ADVANCE_AND_EXACT_RANGE_2_AND_REAL_HEALTH_DAMAGE", "declared_difficulty": "very_hard"},
-    "clear_heart_low_resource": {"technique_id": "clear_heart_breath", "condition": "PRE_ACTION_STAMINA_PLUS_INTERNAL_LE_1", "declared_difficulty": "very_hard"},
-    "iron_step_complete_escape": {"technique_id": "iron_step_drift", "condition": "SUCCESSFULLY_EVADE_REAL_ATTACK_AND_COMPLETE_SECOND_RETREAT_TILE", "declared_difficulty": "hard"}
+    "flowing_cloud_hit2": {
+      "technique_id": "flowing_cloud_triple",
+      "condition": "HIT1_REAL_HEALTH_DAMAGE",
+      "declared_difficulty": "moderate"
+    },
+    "flowing_cloud_hit3": {
+      "technique_id": "flowing_cloud_triple",
+      "condition": "HIT1_AND_HIT2_REAL_HEALTH_DAMAGE",
+      "declared_difficulty": "very_hard"
+    },
+    "flowing_cloud_retreat": {
+      "technique_id": "flowing_cloud_triple",
+      "condition": "ALL_THREE_HITS_REAL_HEALTH_DAMAGE",
+      "declared_difficulty": "extreme"
+    },
+    "vajra_guard_full_absorb": {
+      "technique_id": "vajra_guard",
+      "condition": "REAL_ATTACK_FULLY_ABSORBED_BEFORE_NEXT_OWN_ACTION",
+      "declared_difficulty": "hard"
+    },
+    "cloud_hand_return_evade": {
+      "technique_id": "cloud_hand_return",
+      "condition": "SUCCESSFULLY_EVADE_REAL_EFFECTIVE_ATTACK",
+      "declared_difficulty": "hard"
+    },
+    "pursuing_wind_spear_tip": {
+      "technique_id": "pursuing_wind_thrust",
+      "condition": "FULL_ADVANCE_AND_EXACT_RANGE_2_AND_REAL_HEALTH_DAMAGE",
+      "declared_difficulty": "very_hard"
+    },
+    "clear_heart_low_resource": {
+      "technique_id": "clear_heart_breath",
+      "condition": "PRE_ACTION_STAMINA_PLUS_INTERNAL_LE_1",
+      "declared_difficulty": "very_hard"
+    },
+    "iron_step_complete_escape": {
+      "technique_id": "iron_step_drift",
+      "condition": "SUCCESSFULLY_EVADE_REAL_ATTACK_AND_COMPLETE_SECOND_RETREAT_TILE",
+      "declared_difficulty": "hard"
+    }
   },
   "current_technique_freeze": {
     "effects_changed": false,
@@ -79,7 +155,20 @@
     "declared_difficulties_changed": false,
     "coefficients_changed": false
   },
-  "star9_required_fields": ["declared_difficulty", "coefficient", "public_trigger", "valid_attempt_definition", "success_event", "failure_points", "opponent_counterplay", "all_or_nothing_scope", "high_ceiling", "low_floor", "measurement_metrics", "reclassification_gate"],
+  "star9_required_fields": [
+    "declared_difficulty",
+    "coefficient",
+    "public_trigger",
+    "valid_attempt_definition",
+    "success_event",
+    "failure_points",
+    "opponent_counterplay",
+    "all_or_nothing_scope",
+    "high_ceiling",
+    "low_floor",
+    "measurement_metrics",
+    "reclassification_gate"
+  ],
   "runtime_boundary": {
     "product_code_changed": false,
     "godot_runtime_changed": false,
