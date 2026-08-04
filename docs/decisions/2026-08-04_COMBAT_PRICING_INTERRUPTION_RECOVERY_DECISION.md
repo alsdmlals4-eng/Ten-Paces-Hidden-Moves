@@ -2,10 +2,13 @@
 
 - Decision ID: `TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01`
 - 승인일: 2026-08-04
-- 상태: `CURRENT_APPROVED_PLANNING`
+- 상태: `CURRENT_APPROVED_PLANNING_AMENDED`
 - 구현 권한: `PLANNING_ONLY`
 - 적용 범위: 전투 공통 판정, 기술 작성 예산, 거리·이동 가격, 자원 회복
 - 대체 결정: `TEN-DEC-20260802-RANGE-PRICE-BANDS-01`
+- 부분 개정: `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`
+- 부분 `[대체됨]`: `bundle_transition_recovery.internal: 1`
+- 유효 overlay: `docs/planning-data/approved_20260804_resource_saturation_internal_recovery_contract.json`
 - 제품 런타임: `NOT_IMPLEMENTED`
 
 ## 1. 연결 행동과 전조 중단
@@ -88,13 +91,13 @@ attack_range_formula: max(0, max_range - 1) * 15
 - 면제되거나 실제로 지불되지 않는 비용은 같은 추가 예산을 받지 않는다.
 - 절초도 기술별로 기력·내력 비용을 가질 수 있으며, 개별 비용과 효과는 각 절초 설계 Decision에서 확정한다.
 
-## 5. 묶음 전환 자동 회복
+## 5. 묶음 전환 자동 회복 — 부분 개정 후 현행
 
 전투 최초 1묶음 시작을 제외한 모든 묶음 전환 시 생존한 양측에 적용한다.
 
 ```yaml
 stamina_gain: 1
-internal_gain: 1
+internal_gain: 0
 ultimate_momentum_gain: 1
 resource_caps_apply: true
 ```
@@ -109,14 +112,19 @@ resource_caps_apply: true
 
 ```text
 직전 묶음과 전투불능 정산
-→ 기력 +1·내력 +1·절초기세 +1
+→ 기력 +1·절초기세 +1
 → 각 최대치 적용
 → AI가 회복된 공개 상태로 다음 계획 잠금
 → 관찰 공개
 → 플레이어 계획
 ```
 
-기존 라운드 시작 기력 회복은 이 규칙으로 대체하며 중복 적용하지 않는다.
+- 라운드 시작에 별도 내력 자동 회복을 적용하지 않는다.
+- 내력은 준비된 명상·청심조식·승인된 조건부 회수 등 명시적 효과로만 회복한다.
+- 준비된 명상의 내력 +1은 유지한다.
+- 내력 0에서도 무비용 기본 행동·이동·준비·명상·청심조식·내력 비소모 행동으로 합법 묶음을 만들 수 있어야 한다.
+- 과거 `internal_gain: 1`은 `[대체됨]` 역사 증거이며 신규 런타임 데이터에 직접 사용하면 `CANON_CONFLICT`다.
+- 기존 라운드 시작 기력 회복은 이 규칙으로 대체하며 중복 적용하지 않는다.
 
 ## 6. 절초기세 획득
 
@@ -144,13 +152,14 @@ resource_caps_apply: true
 
 - 권위 문서: `docs/02_COMBAT_RULES.md`
 - 중앙 가격 데이터: `docs/planning-data/poc_balance_budget.json`
-- 승인 계약: `docs/planning-data/approved_20260804_combat_pricing_interruption_recovery_contract.json`
-- Google Sheet에는 동일 Decision ID를 사용한다.
+- 부모 승인 계약: `docs/planning-data/approved_20260804_combat_pricing_interruption_recovery_contract.json`
+- 묶음 내력 회복 최종 overlay: `docs/planning-data/approved_20260804_resource_saturation_internal_recovery_contract.json`
+- Google Sheet에는 새 Decision ID `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`을 함께 사용한다.
 - HTML PoC 추가 수정은 중단한다.
 - Godot 제품 코드·런타임 데이터·Scene은 별도 Build 승인 전 변경하지 않는다.
 
 ```yaml
-authority_status: CURRENT_APPROVED_PLANNING
+authority_status: CURRENT_APPROVED_PLANNING_AMENDED
 static_validation: REQUIRED
 json_validation: REQUIRED
 html_poc_update: STOPPED
