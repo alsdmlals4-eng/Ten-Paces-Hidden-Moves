@@ -7,6 +7,7 @@ import unittest
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 VALIDATOR_PATH = ROOT / "tools" / "check_technique1_conditional_star5_contract.py"
 CONTRACT_PATH = ROOT / "docs" / "planning-data" / "approved_20260804_technique1_conditional_rework_star5_contract.json"
+REPRICE_PATH = ROOT / "docs" / "planning-data" / "approved_20260804_existing_action_reprice_contract.json"
 
 EXPECTED = {
     "flowing_cloud_triple": (58, 61, -3, 12, 11, -1),
@@ -30,6 +31,9 @@ def load_validator():
 class Technique1ConditionalStar5ContractTests(unittest.TestCase):
     def load_contract(self):
         return json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
+
+    def load_reprice_contract(self):
+        return json.loads(REPRICE_PATH.read_text(encoding="utf-8"))
 
     def test_contract_has_exact_six_approved_techniques_and_budget_values(self):
         validator = load_validator()
@@ -75,6 +79,14 @@ class Technique1ConditionalStar5ContractTests(unittest.TestCase):
         broken["techniques"]["flowing_cloud_triple"]["star5_patch"]["budget_ticks"] += 1
         with self.assertRaisesRegex(validator.Technique1ContractError, "20% patch budget"):
             validator.validate(broken)
+
+    def test_validator_rejects_parent_repricing_cost_drift(self):
+        validator = load_validator()
+        broken_reprice = copy.deepcopy(self.load_reprice_contract())
+        action = next(item for item in broken_reprice["actions"] if item["action_id"] == "cloud_hand_return")
+        action["effective_costs"]["stamina"] = 1
+        with self.assertRaisesRegex(validator.Technique1ContractError, "repricing authority"):
+            validator.validate(self.load_contract(), broken_reprice)
 
     def test_flowing_cloud_total_damage_is_split_40_30_remainder(self):
         validator = load_validator()
