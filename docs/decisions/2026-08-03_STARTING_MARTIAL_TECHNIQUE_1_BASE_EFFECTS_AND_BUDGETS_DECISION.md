@@ -1,11 +1,14 @@
 # 여섯 시작 무공 3성 기술1 기본 효과·예산 결정
 
+> **권위 상태:** 이 문서는 2026-08-03 승인 당시의 역사 증거다. 현재 기술1 효과·조건·5성 patch 권위는 `TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01`과 `docs/planning-data/approved_20260804_technique1_conditional_rework_star5_contract.json`이다. 현재 유효 슬롯·비용은 `TEN-DEC-20260804-EXISTING-ACTIONS-REPRICE-01`이 소유한다.
+
 - Decision ID: `TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01`
 - 승인일: 2026-08-03
-- 상태: `CURRENT_APPROVED_PLANNING`
-- 구현 권한: `PLANNING_ONLY`
+- 상태: `SUPERSEDED`
+- 대체 Decision: `TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01`
+- 구현 권한: `HISTORICAL_PLANNING_EVIDENCE_ONLY`
 - GrillMe 묶음: `5/10`
-- 상세 계약: `docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json`
+- 역사 계약: `docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json`
 - 표시·구현 단순화 개정: `TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-2-BASE-EFFECTS-AND-BUDGETS-01`
 
 ## 1. 승인 결론
@@ -45,6 +48,8 @@
 
 ## 3. 승인 기술과 틱 예산
 
+> 아래 표는 승인 당시 역사 스냅샷이며 현재 제품 유효 효과·비용 표가 아니다.
+
 | 무공·기술 | 구조·비용 | 기준 능력치4 효과 | 효과 원가 | 사용 가능 예산 | 편차 |
 |---|---|---|---:|---:|---:|
 | 유운검결 `유운삼첩` | 2수, 기력1·내력1, 거리1, 3연격 | 외공 기반 `4→3→3` | 58틱 | `50+4+7=61틱` | -3틱 |
@@ -54,7 +59,7 @@
 | 청심양생공 `청심조식` | 1수, 무비용, 묶음당1회 | 기력1·내력1·방어도2 | 23틱 | `20+4=24틱` | -1틱 |
 | 무영십보 `철각유영` | 1수 이동, 기력1·내력1 | 고정 후퇴2·회피1 | 30틱 | `20+4+7=31틱` | -1틱 |
 
-모든 기술은 사용 가능 예산의 허용 편차 `±5틱` 안에 있다. `추풍일섬`은 상한 `+5틱`이므로 후속 5성 강화가 기본 기술 예산을 무상 침범하지 않도록 별도 ledger를 사용한다.
+모든 기술은 당시 사용 가능 예산의 허용 편차 `±5틱` 안에 있었다. 이 표의 효과와 비용을 현재 구현에 직접 사용하면 `CANON_CONFLICT`다.
 
 ## 4. 기술별 공식
 
@@ -129,7 +134,7 @@ before_attack_axis_move: fixed advance1
 damage = floor(2 + EXTERNAL × 0.50)
 ```
 
-외공1/4/15의 피해는 `2/4/9`다. 행동 묶음 중 전진·후퇴를 다시 선택하지 않으며 항상 적 방향으로1칸 전진한 뒤 공격한다. 전진할 수 없으면 현재 위치에서 공격 판정을 계속한다. 사거리2는 현재 총 구간 가격 `10틱`을 사용하고 신법은 고정 전진1을 점당 증가시키지 않는다.
+외공1/4/15의 피해는 `2/4/9`다. 행동 묶음 중 전진·후퇴를 다시 선택하지 않으며 항상 적 방향으로1칸 전진한 뒤 공격한다. 전진할 수 없으면 현재 위치에서 공격 판정을 계속한다. 사거리2는 당시 총 구간 가격 `10틱`을 사용하고 신법은 고정 전진1을 점당 증가시키지 않는다.
 
 ```text
 효과36 / 예산31 = 20(1수)+4(기력1)+7(내력1) / 편차+5틱
@@ -185,30 +190,30 @@ evade: 1
 
 역사 ID는 `legacy_manual_alias`로만 보존하고 새 Decision·Sheet·향후 adapter는 canonical ID를 사용한다.
 
-## 6. 병합 차단 조건
+## 6. 당시 병합 차단 조건
 
 - 승인표에 예산점을 병기함.
 - 자원 소모 예산 추가분을 숨김.
 - 환불·면제 비용에 완전한 예산 추가분을 적용함.
 - 행동 묶음 확정 뒤 플레이어 선택 창을 호출함.
 - 이동 방향·도착 타일이 결정되지 않은 채 구현 인계함.
-- 구형 선형 사거리 가격을 현재 기술에 사용함.
 - 같은 효과에 주·보조 배수를 중복함.
 - 구조값을 능력치 점당 증가시킴.
 - 청심조식을 묶음당 제한 없이 반복함.
 - PoC 역사 ID와 canonical ID를 동시에 권위로 사용함.
 - 승인된 `±5틱` 범위를 벗어나면서 별도 검토 없이 자동 수정함.
 
-## 7. 후속 범위
+## 7. 대체 이후 범위
+
+이 문서에서 미확정이었던 3성 효과 재설계와 5성 patch는 `TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01`에서 확정됐다.
 
 아직 미확정:
 
-- 여섯 무공의 5성 기술1 patch 실제 효과·5틱 ledger
-- 9성 수읽기 조건부 분기
+- 여섯 7성 기술2의 9성 공개 정보 기반 자동 조건 분기
 - 10성 고유 절초
 - 현재 합법 최대 능력치에서 사람 밸런스 검증
 
-7성 기술2는 `TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-2-BASE-EFFECTS-AND-BUDGETS-01`에서 확정한다.
+7성 기술2 기본 효과는 `TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-2-BASE-EFFECTS-AND-BUDGETS-01`에서 확정한다.
 
 ## 8. 검증 경계
 
