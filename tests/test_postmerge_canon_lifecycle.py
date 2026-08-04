@@ -74,7 +74,7 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
             copy_fixture(root)
             path = root / TARGETS[1]
             path.write_text(
-                replace_scalar(path.read_text(encoding="utf-8"), "active_planning_parent_pr", "91"),
+                replace_scalar(path.read_text(encoding="utf-8"), "active_planning_parent_pr", "999"),
                 encoding="utf-8",
             )
             with self.assertRaisesRegex(validator.CanonLifecycleError, "operating checkpoint mismatch"):
