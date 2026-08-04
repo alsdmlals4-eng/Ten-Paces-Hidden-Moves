@@ -1,67 +1,80 @@
-# 십보강호 세력·핵심무공·심법 성장 가설
+# 십보강호 세력·핵심무공·심법 성장 정본
 
-> 책임: 시작 무공 후보·1~10성 성장·기술 예산·`[의료]` 공급  
+> 책임: 시작 무공 후보·1~10성 성장·기술 역할·기술 예산·성장 검증  
 > 전투 규칙: `docs/02_COMBAT_RULES.md`  
+> 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`  
 > 역사 PoC 데이터: `docs/planning-data/poc_martial_arts.json`  
-> 상위 계약: `docs/planning-data/approved_20260802_observation_stats_mastery_contract.json`  
-> 활성 승인 계약: `docs/planning-data/approved_20260803_star10_ultimate_primary_stat12_contract.json`, `docs/planning-data/approved_20260803_starting_martial_secondary_stats_contract.json`, `docs/planning-data/approved_20260803_intermediate_node_permanent_stat_rewards_contract.json`, `docs/planning-data/approved_20260803_martial_technique_role_and_scaling_matrix_contract.json`, `docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json`, `docs/planning-data/approved_20260803_starting_martial_technique_2_base_effects_and_budgets_contract.json`  
-> 역사 호환 분류: `T1 이후 가설 원본`. 현재 승인 Decision과 Active Context가 우선한다.
+> 역사 호환 분류: `T1 이후 가설 원본`. 현재 승인 Decision·approved contract·Active Context가 우선한다.
 
 ## 1. 현재 상태
 
 ```yaml
 authority_status: CURRENT_APPROVED_PLANNING
-active_batch: 6/10
+active_batch: 7/10
+merged_checkpoint: 0ba841ff2e62b2f716466356dd9e7ffcf587d150
 implementation_status: NOT_STARTED
 product_code_changed: false
 runtime_validation: NOT_RUN
 godot_validation: NOT_RUN
 windows_validation: NOT_RUN
 human_validation: NOT_RUN
+next_planning_decision: STAR9_PUBLIC_READ_BRANCH_TEMPLATE
 ```
 
-프로젝트 코어가 사용자 승인된 상태에서 성장 골격과 시작 무공 기술을 구체화하고 있다.
+프로젝트 코어가 사용자 승인된 상태에서 성장 골격과 시작 무공 기술을 구체화한다. 이 문서는 상세 수치를 복제하지 않고 현재 approved contract의 역할·관계·후속 Gate를 연결하는 성장 책임 원본이다.
 
-현재 승인 범위:
+## 2. 활성 승인 계약
+
+성장·해금:
+
+- `docs/planning-data/approved_20260802_observation_stats_mastery_contract.json`
+- `docs/planning-data/approved_20260803_star10_ultimate_primary_stat12_contract.json`
+- `docs/planning-data/approved_20260803_starting_martial_secondary_stats_contract.json`
+- `docs/planning-data/approved_20260803_intermediate_node_permanent_stat_rewards_contract.json`
+- `docs/planning-data/approved_20260803_martial_technique_role_and_scaling_matrix_contract.json`
+- `docs/planning-data/approved_20260803_starting_martial_technique_2_base_effects_and_budgets_contract.json`
+
+현재 전투·기술1:
+
+- `docs/planning-data/approved_20260804_combat_pricing_interruption_recovery_contract.json`
+- `docs/planning-data/approved_20260804_existing_action_reprice_contract.json`
+- `docs/planning-data/approved_20260804_technique1_conditional_rework_star5_contract.json`
+- `docs/planning-data/approved_20260804_postmerge_canon_adversarial_audit_contract.json`
+
+`approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json`은 `[대체됨]` 역사 증거다. 현재 기술1을 생성할 때 읽으면 `CANON_CONFLICT`다.
+
+## 3. 현재 승인 범위
 
 - 시작 총합20·평균4.
+- 후보6개 중 시작 무공4개를 3성으로 선택.
 - 2·4·6·8성 고정 영구 스테이터스 지급.
 - 3성 기술1 주4, 7성 기술2 주8, 10성 절초 주12.
 - 여섯 시작 무공의 주·보조 벡터.
-- 무상한 핵심 스테이터스와 실제값 사용.
+- 무상한 핵심 스테이터스와 실제 영구값 사용.
 - 데모 회차 중간 노드 영구 스테이터스 최대+2.
 - 역할 우선·선택적 보조 배수 기술 작성 원칙.
-- 여섯 시작 무공의 3성 기술1과 7성 기술2 구조·비용·공식·기준 능력치4 틱 예산.
-- 현재 승인표는 예산점을 사용하지 않고 틱만 사용.
+- 기술1 6종의 유효 비용·슬롯 repricing.
+- 기술1 6종의 실패 저점·조건 성공 고점·5성 무료20% patch.
+- 기술2 6종의 상태 전환형 고급 상호작용·틱 예산.
+- 승인표는 틱만 사용하며 슬롯·자원·조건·사용 가능 예산·편차를 분리.
 - 행동 묶음 확정 뒤 추가 플레이어 선택 금지.
-- 기술 안 이동은 고정 방향과 경계 폴백을 사용.
-
-활성 Decision:
-
-- `TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01`
-- `TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01`
-- `TEN-DEC-20260803-INTERMEDIATE-NODE-PERMANENT-STAT-REWARDS-01`
-- `TEN-DEC-20260803-MARTIAL-TECHNIQUE-ROLE-AND-SCALING-MATRIX-01`
-- `TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01`
-- `TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-2-BASE-EFFECTS-AND-BUDGETS-01`
+- 기술 안 이동은 고정 방향과 경계·점유 폴백 사용.
 
 현재 런타임에는 최신 성장·기술 계약이 반영되지 않았다. 별도 Build 승인 전 제품 코드·Scene·런타임 데이터를 변경하지 않는다.
 
-## 2. 현행 전투 계약과 연결 원칙
+## 4. 프로젝트 코어와 성장 원칙
 
-- 전투 행동은 `기초 행동 + 현재 해금된 무공 기술`이다.
-- 무공서 자체를 전투 수에 배치하지 않는다.
-- 기술은 전술 역할·구조/비용·고정 효과·능력치 연결·성취 patch를 분리한다.
-- 모든 기술에 주·보조 능력치를 자동으로 동시에 배수하지 않는다.
-- 주 능력치는 핵심 효과 또는 구조 해금 임계의 책임을 가진다.
-- 보조 능력치는 주 효과와 구분되는 별도 효과가 있을 때만 연결한다.
-- 같은 효과·같은 출력값에 주·보조 계수를 동시에 더하지 않는다.
-- 이동거리·사거리·관찰량·행동 슬롯·타격/회피 횟수·전조 수 같은 구조값은 능력치 점당 연속 증가하지 않는다.
-- 성장 수치는 거리·순서·대응·자원 계획을 확장해야 하며 잘못된 계획을 자동 구제하면 안 된다.
-- 행동 묶음이 확정된 뒤 추가 플레이어 선택을 호출하지 않는다.
-- 기술 안 이동은 `ADVANCE` 또는 `RETREAT`의 고정 방향과 이동 불가 폴백을 명시한다.
+성장은 다음 전투의 거리·순서·자원·대응 계획을 확장해야 한다.
 
-공용 필드:
+- 단순 피해 증가만으로 성장 체감을 만들지 않는다.
+- 높은 능력치가 잘못된 계획을 반복 자동 구제하면 실패다.
+- 기술1은 기본 운용법, 기술2는 공개 상태를 활용하는 고급 상호작용이다.
+- 기술2가 기술1을 전 상황에서 대체하면 실패다.
+- 5성·9성은 원래 역할을 확장하며 무조건 피해 증가로 수렴하지 않는다.
+- 9성은 공개 정보 기반 자동 분기이며 행동 해결 중 추가 선택을 만들지 않는다.
+- 10성 절초는 강력하지만 거리·중단·비용·대응 규칙을 무시하지 않는다.
+
+## 5. 공용 기술 Schema
 
 ```text
 action_slots
@@ -76,49 +89,20 @@ category
 resolution_phase
 targeting_mode
 skill_milestone
+condition_trigger
+condition_failure_scope
+replay_reason_code
 ```
 
 효과 scope는 `PER_HIT|ONCE_PER_ACTION`, trigger는 `ON_ACTION_START|ON_ACTION_RESOLVE|ON_CLASH_WIN|ON_EVADE_SUCCESS|ON_HIT|ON_HEALTH_DAMAGE|ON_ACTION_END` 중 하나를 명시한다.
 
-## 3. 다음 PoC 성장 실험
+- 한 효과는 주 능력치1개와 선택적 보조 능력치1개, 최대2개를 참조한다.
+- 같은 출력값에 주·보조 배수를 동시에 더하지 않는다.
+- 이동거리·사거리·관찰량·행동 슬롯·타격/회피 횟수·전조 수 같은 구조값은 능력치 점당 연속 증가하지 않는다.
+- 행동 묶음이 확정된 뒤 추가 입력을 호출하지 않는다.
+- 기술 이동은 `ADVANCE` 또는 `RETREAT`의 고정 방향과 이동 불가 폴백을 명시한다.
 
-- 시작 후보6개 중4개를3성으로 선택한다.
-- 자유 수련: 자유6.
-- 집중 수련: 지정 무공5 + 자유3, 총8.
-- 문파 전수: 해당 무공을3성으로 습득하며 수련포인트로 직접 환산하지 않는다.
-- 주요 비무1~4 집중 수련32 + 네 중간 구간 최소 집중 수련6 = 38로 주요 비무5 전 한 무공10성 경로를 검증한다.
-- 자유 수련24 경로는 고효율 중간 노드14가 추가로 필요하다.
-- 데모 중간 노드8개 중 회차 내 영구 스테이터스 보상 기회는 최대2개다.
-- 영구 스테이터스 노드는 수련·회복·정보를 자동으로 함께 지급하지 않으며 같은 구간에 둘 이상 나타나지 않는다.
-- 기술1은 기본 운용법, 기술2는 고급 상호작용으로 구분한다.
-- 기술1·기술2 선택률과 기술2가 기술1을 대체하는 비율을 기록한다.
-- 행동 묶음 중 추가 입력이 발생하면 현 구현 범위 실패로 기록한다.
-
-검증 질문:
-
-1. 성장 선택이 다음 전투의 거리·순서·자원 계획을 바꾸는가?
-2. 단순 피해 증가보다 합·중단·방어·회피·관찰 판단을 강화하는가?
-3. 3/7/10성 요구가 과도한 잠금을 만들지 않는가?
-4. 10성 주12가 집중 빌드의 결과인가?
-5. 높은 능력치가 잘못된 계획을 반복적으로 구제하지 않는가?
-6. 스테이터스 노드가 회복·수련·정보 노드를 압도하지 않는가?
-7. 기술2가 기술1을 전 상황에서 대체하지 않는가?
-8. 5·9성 patch가 무조건 피해 증가로 수렴하지 않는가?
-9. 같은 Schema로 두 번째 기술을 반복 제작할 수 있는가?
-10. 고정 이동이 이해 가능하며 행동 해결 중 추가 선택이 없는가?
-
-## 4. 장기 보유 구조 가설
-
-- 한 회차에 여러 무공을 익힐 수 있다.
-- 해금 기술은 덱·손패·장착 제한 없이 사용 후보다.
-- 수련포인트·회차 길이·해금 요구치가 실제 사용 기술 수를 제한한다.
-- 정확한 장기 보유 한도는 T1 이후 결정한다.
-- 중복 습득은 같은 무공 지정 수련10으로 변환하고 성취 보너스를 재지급하지 않는다.
-- 영구 메타 해금은 시작 선택지·도감·서사·외형·편의 중심이며 회차 전투 스테이터스를 보존하지 않는다.
-
-## 5. 세력 정체성 후보
-
-현재 T0에는 세력 선택 런타임이 없다. 아래 여섯 시작 무공은 세력·문파 확장을 위한 정체성 후보이며 공용 전투 규칙을 대체하지 않는다.
+## 6. 시작 무공 6종
 
 | canonical ID | 무공 | 주 | 보조 | 기술1 | 기술2 | 역사 PoC alias |
 |---|---|---|---|---|---|---|
@@ -129,9 +113,9 @@ skill_milestone
 | `clear_heart_nourishing_art` | 청심양생공 | 내공 | 근골 | 청심조식 | 회기전맥 | `clear_heart_nurturing` |
 | `shadowless_ten_steps` | 무영십보 | 신법 | 심안 | 철각유영 | 십보환위 | `shadowless_steps` |
 
-역사 ID는 `legacy_manual_alias`로만 보존한다. 새 Decision·Sheet·향후 adapter는 canonical ID를 사용한다.
+역사 ID는 `legacy_manual_alias`로만 보존한다. 새 Decision·Sheet·adapter는 canonical ID를 사용한다.
 
-## 6. 시작 규칙과 영구 스테이터스
+## 7. 시작 능력치
 
 ```text
 기본2 × 5종 = 10
@@ -141,7 +125,6 @@ skill_milestone
 
 - 최종 시작 총합20·평균4.
 - 직접 분배 단계 각 능력치는2~6이며 이후 무공 보너스는6에서 잘리지 않는다.
-- 후보6개 중4개를3성으로 선택한다.
 - `[추천 배분]`은 네 첫 기술의 최소 해금 기준선을 보여주되 강제하지 않는다.
 - 일부 기술을 잠근 전문화 배분은 경고 뒤 허용한다.
 
@@ -153,9 +136,9 @@ skill_milestone
 | 내공 `INTERNAL` | 최대 내력·내가 효과·호신·회복 |
 | 심안 `INSIGHT` | 관찰·간파·반격·전조 대응 |
 
-핵심 스테이터스에는 디자인 하드캡이 없다. 기존1~15는 초기 검증 구간이며 합법적인15 초과값을 절단·소실·재분배하지 않는다. 실제 영구값을 요구치와 공식에 사용한다.
+핵심 스테이터스에는 디자인 하드캡이 없다. 기존1~15는 초기 검증 구간이며 합법적인15 초과값을 실제 요구치와 공식에 사용한다.
 
-## 7. 1~10성 성장 구조
+## 8. 1~10성 성장 구조
 
 | 성 | 신규 지급·판정 |
 |---:|---|
@@ -163,243 +146,115 @@ skill_milestone
 | 2 | 주 영구 능력치 +1 |
 | 3 | 기술1 해금: 주 영구 능력치4, 기본 운용법 |
 | 4 | 주 +1·보조 +1 |
-| 5 | 기술1 기존 역할 강화 |
+| 5 | 기술1 기존 역할 무료20% 강화 |
 | 6 | 주 +2·보조 +1 |
-| 7 | 기술2 해금: 주 영구 능력치8, 보조 요구 없음, 고급 상호작용 |
+| 7 | 기술2 해금: 주 영구 능력치8, 고급 상호작용 |
 | 8 | 주 +3·보조 +2 |
 | 9 | 기술2 공개 정보 기반 자동 조건 분기 |
-| 10 | 고유 절초 해금: 주 영구 능력치12, 보조 요구 없음 |
+| 10 | 고유 절초 해금: 주 영구 능력치12 |
 
 도달 비용은4성2, 5성3, 6성4, 7성5, 8성6, 9성8, 10성10이며 3→10 총38이다.
 
-| 해금 | 자동 주 하한 | 요구치 | 추가 영구 투자 |
-|---|---:|---:|---:|
-| 3성 기술1 | 3 | 4 | +1 |
-| 7성 기술2 | 6 | 8 | +2 |
-| 10성 절초 | 9 | 12 | +3 |
+## 9. 기술1 현재 권위
 
-짝수 성 보너스는 무공·성취·회차별 최초1회만 지급한다. 무공 하나의8성 누적 기여는 주+7·보조+4, 총11이다.
+유효 슬롯·기력·내력 비용은 `approved_20260804_existing_action_reprice_contract.json`을 읽는다. 효과·조건·5성 patch는 `approved_20260804_technique1_conditional_rework_star5_contract.json`을 읽는다.
 
-## 8. 기본 절초·10성 절초·진의
+| 기술 | 유효 구조 | 실패 저점·성공 고점 요약 | 효과/예산/편차 |
+|---|---|---|---:|
+| 유운삼첩 | 2수·기력1·내력1 | 1타→조건부 2·3타→완주 후퇴 | `58/61/-3` |
+| 금강가세 | 1수·기력1·내력1 | 기본 방어→완전 방어 보상 | `31/31/0` |
+| 운수회신 | 1수·기력2·내력1 | 회피 시도→성공 후퇴·회복·방어 | `38/40/-2` |
+| 추풍일섬 | 1수·기력1·내력3 | 전진·기본 피해→창끝 고점 | `50/45/+5` |
+| 청심조식 | 1수·무비용 | 기본 내력→저자원 회복 고점 | `22/24/-2` |
+| 철각유영 | 1수·기력3·내력2 | 후퇴·회피→완전 탈출 보상 | `48/46/+2` |
 
-- 공용 절초 3종은 무공 성급과 독립적으로 시작부터 사용 후보다.
-- 10성 보상은 해당 무공 고유 `[절초]`다.
-- 10성 절초는 해당 무공의 주 영구 능력치12를 요구한다.
-- 보조 요구가 없고 임시 능력치는 해금에 사용하지 않는다.
-- 미달 시 절초만 `LOCKED_STAT_REQUIREMENT`이며 기존 무공·패시브·기술·보너스는 유지한다.
-- 영구 주12 도달 시 추가 비용 없이 자동 활성화한다.
-- 전투 중 임시 감소로 다시 잠기지 않는다.
-- 과거 `진의` 선택 구조는 사용하지 않는다.
-- 고유 절초의 실제 효과·행동 수·자원·틱 예산은 후속 승인 전 `TBD`다.
+5성 무료 예산은 각각 `12/6/8/9/5/9틱`이며 별도 슬롯·기력·내력 비용이 없다. 조건 실패 시 조건부 5성 patch도 전부0이다.
 
-## 9. 습득·중복·저장
+유운삼첩은 총피해를 한 번 계산한 뒤 `40% / 30% / 나머지`로 분배한다. 취소·실패한 후속타 피해는 재분배·이월하지 않는다.
 
-- 시작 선택 무공과 회차 중 신규 습득 무공은3성으로 시작한다.
-- 1성 패시브와2성 주+1은 회차당 최초1회만 적용한다.
-- 이미 보유한 무공의3성 습득은 같은 무공 지정 수련10으로 변환한다.
-- 중복 습득·저장 재로드·수련 변환으로 성취 보너스를 재지급하지 않는다.
-- idempotent 키는 `회차ID + 무공ID + 성취 milestone`이다.
-- 3·5·7·9·10성 전환점은 안정 필드 `skill_milestone`으로 기록한다.
+## 10. 기술2 현재 권위
 
-## 10. 기술 역할·배수·틱 예산 계약
+7성 기술2의 상세 공식·조건·고정 이동·틱 ledger는 `approved_20260803_starting_martial_technique_2_base_effects_and_budgets_contract.json`이 소유한다.
 
-기술 작성 순서:
+| 기술2 | 역할 |
+|---|---|
+| 낙영추검 | 고정 전진·공격으로 압박 전환 |
+| 반진권 | 방어 상태를 반격 기회로 전환 |
+| 사량발천근 | 합 결과를 위치·피해 전환으로 활용 |
+| 연환쇄로 | 적중과 고정 후퇴로 거리 재설정 |
+| 회기전맥 | 저자원 상태를 안정화 기회로 전환 |
+| 십보환위 | 회피·위치 교환 계열의 고급 상호작용 |
 
-```text
-전술 역할·대응 관계
-→ 행동 구조·비용
-→ 고정 효과
-→ 주 능력치 핵심 효과 또는 구조 임계
-→ 선택적 보조 능력치의 구분된 효과
-→ 5성 역할 강화
-→ 9성 공개 정보 기반 자동 조건
-```
+기술2는 기술1의 단순 상위호환이 아니다. 기술1/2 선택률과 기술2의 전 상황 대체율을 사람 검증에서 기록한다.
 
-공통 규칙:
+## 11. 중간 노드 성장
 
-- 기술당 능력치 참조는 주1종과 선택적 보조1종, 최대2종.
-- 같은 효과에 주·보조 계수를 중복하지 않는다.
-- 피해·방어·호신·회복·자원 회복량은 연속 배수 후보.
-- 이동거리·사거리·관찰량·행동 슬롯·타격/회피 횟수·합/중단/반격 허용·확정 명중·비용 면제는 임계·성취 전용.
-- 슬롯 예산은1수20틱·2수50틱·3수80틱, 허용 편차 `±5틱`.
-- 최대 사거리 총비용은1=0틱·2=10틱·3=25틱·4=40틱.
-- 배수 기준 스테이터스는4, 작성 단위는0.25.
-- 예산점은 현재 승인표에 사용하지 않는다.
+- 데모 중간 노드8개 중 영구 스테이터스 보상 기회는 회차 최대2개다.
+- 같은 구간에 영구 스테이터스 노드를 둘 이상 배치하지 않는다.
+- 하나의 노드가 수련·회복·정보를 자동으로 모두 지급하지 않는다.
+- 비스탯 노드의 기대가치·배치·가중치는 후속 Decision 전까지 제품 최종값이 아니다.
 
-현재 승인표 필수 순서:
+## 12. 적대적 성장 위험
 
-```text
-효과 원가
-/ 슬롯 예산
-+ 자원 소모 예산 추가분
-+ 조건 예산 추가분
-= 사용 가능 예산
-/ 편차
-```
+### `WRONG_PLAN_RESCUE_RISK`
 
-- 기력1=`+4틱`, 내력1=`+7틱`, 둘 합계=`+11틱`.
-- 환불·면제 가능한 비용에는 완전한 예산 추가분을 부여하지 않는다.
-- 역사 PoC JSON의 음수 credit 표기는 validator 호환용이며 현재 승인 표시가 아니다.
+필수 측정:
 
-## 11. 승인된 여섯 3성 기술1
+- 잘못된 계획의 생존·승리 구제율.
+- 올바른 읽기와 잘못된 읽기의 기대 성과 차이.
+- 고능력치 단순 반복 승리율.
+- 성장 전후 계획 다양성.
 
-| 무공·기술 | 구조·비용 | 기준 능력치4 효과 | 효과 원가 | 사용 가능 예산 | 편차 |
-|---|---|---|---:|---:|---:|
-| 유운삼첩 | 2수, 기력1·내력1, 거리1, 3연격 | `4→3→3` | 58틱 | `50+4+7=61틱` | -3틱 |
-| 금강가세 | 1수, 기력1·내력1 | 방어5·강건1 | 30틱 | `20+4+7=31틱` | -1틱 |
-| 운수회신 | 1수 반응, 기력1·내력1 | 회피1; 성공 시 고정 후퇴1·내력1 | 33틱 | `20+4+7+5=36틱` | -3틱 |
-| 추풍일섬 | 1수, 기력1·내력1, 거리1~2 | 고정 전진1·피해4 | 36틱 | `20+4+7=31틱` | +5틱 |
-| 청심조식 | 1수, 무비용, 묶음당1회 | 기력1·내력1·방어2 | 23틱 | `20+4=24틱` | -1틱 |
-| 철각유영 | 1수 이동, 기력1·내력1 | 고정 후퇴2·회피1 | 30틱 | `20+4+7=31틱` | -1틱 |
+### `CONDITION_CALIBRATION_RISK`
 
-정확 공식:
+필수 측정:
+
+- 기술별 조건 성공률.
+- 선언 난도 성공 범위 이탈률.
+- 실패 지점 분포.
+- 성공 고점 만족도와 실패 저점 수용도.
+
+### `RESOURCE_SATURATION_RISK`
+
+필수 측정:
+
+- 묶음 종료 자원 상한 도달률.
+- 자동 회복 낭비율.
+- 명상·준비 선택률.
+- 고비용 기술 연속 사용률.
+
+실측 전 승인 수치를 임의 조정하지 않는다.
+
+## 13. 다음 기획 Gate
 
 ```text
-유운삼첩
-hit1 = floor(3 + EXTERNAL×0.25)
-hit2 = floor(2 + EXTERNAL×0.25)
-hit3 = floor(2 + EXTERNAL×0.25)
-
-금강가세
-defense = floor(2 + CONSTITUTION×0.75)
-fortitude = 1
-
-운수회신
-evade = 1
-on evade success: fixed_retreat1, internal_gain=floor(INTERNAL×0.25)
-
-추풍일섬
-before attack: fixed_advance1
-damage = floor(2 + EXTERNAL×0.50)
-range = 1..2
-
-청심조식
-once per bundle
-stamina_gain=1
-internal_gain=floor(INTERNAL×0.25)
-defense=floor(1 + CONSTITUTION×0.25)
-
-철각유영
-fixed_retreat=2
-evade=1
+STAR9_PUBLIC_READ_BRANCH_TEMPLATE
+→ 여섯 개별 9성 자동 분기
+→ 여섯 10성 고유 절초
+→ 비스탯 노드 기대가치
+→ 전투 종료 등급 산식·파밍 방지
 ```
 
-## 12. 승인된 여섯 7성 기술2
+9성 템플릿은 공개 trigger, 자동 발동, 실패 0 범위, 조건 가격, 대응 수단, 복기 문구, 성공률 측정을 필수로 한다.
 
-| 무공·기술 | 고정 실행 구조 | 기준 능력치4 효과 | 효과 원가 | 사용 가능 예산 | 편차 |
-|---|---|---|---:|---:|---:|
-| 낙영추검 | 2수·기력1·내력1·고정 전진1·거리1~2 공격 | 피해8 | 56틱 | `50+4+7=61틱` | -5틱 |
-| 반진권 | 기존 방어 필요·2수·기력1·내력1 | 피해8·방어4·강건1 | 66틱 | `50+4+7+4=65틱` | +1틱 |
-| 사량발천근 | 2수·기력1·내력1·합 승리 시 방어 | 피해8·합 위력4·방어4 | 68틱 | `50+4+7+5=66틱` | +2틱 |
-| 연환쇄로 | 2수·기력1·내력1·거리1~2·2연격·적중 시 고정 후퇴1 | `5→4` | 65틱 | `50+4+7=61틱` | +4틱 |
-| 회기전맥 | 기력+내력≤2·2수·기력1 | 체력4·내력2·방어2·강건1 | 60틱 | `50+4+7=61틱` | -1틱 |
-| 십보환위 | 2수 반응·기력1·내력1·회피 성공 시 고정 후퇴2·반격 | 회피1·반격6 | 70틱 | `50+4+7+5=66틱` | +4틱 |
+## 14. 생명주기 경계
 
-정확 공식:
+- `[현행]`: 이 문서가 열거한 2026-08-04 전투·기술1 계약과 활성 성장 계약.
+- `[대체됨]`: 2026-08-03 기술1 기본 효과 Decision·contract.
+- `[보류]`: PR #85 HTML Technique1 PoC.
+- `[폐기]`: 현재 없음.
 
-```text
-낙영추검
-fixed_advance1
-range=1..2
-damage=floor(5 + EXTERNAL×0.75)
+구형 상세 자료는 Git 역사에서 재현하고 현재 제품 데이터 생성에는 사용하지 않는다.
 
-반진권
-condition=current_defense>=1
-damage=floor(4 + CONSTITUTION×1.00)
-on hit: defense=floor(2 + INTERNAL×0.50), fortitude1
+## 15. 검증 경계
 
-사량발천근
-damage=floor(4 + INSIGHT×1.00)
-clash_power_bonus=floor(2 + INSIGHT×0.50)
-on clash win: defense=floor(INTERNAL×1.00)
-
-연환쇄로
-hit1=floor(2 + EXTERNAL×0.75)
-hit2=floor(2 + EXTERNAL×0.50)
-on at least one hit: fixed_retreat1
-
-회기전맥
-condition=current_stamina+current_internal<=2
-cost=stamina1
-health_heal=floor(2 + CONSTITUTION×0.50)
-internal_gain=2
-defense=floor(1 + INTERNAL×0.25)
-fortitude1
-
-십보환위
-evade1
-on evade success:
-  fixed_retreat_up_to2_away_from_enemy
-  range1..2 counterattack
-  counter_damage=floor(2 + INSIGHT×1.00)
+```yaml
+product_code_changed: false
+runtime_data_changed: false
+runtime_validation: NOT_RUN
+godot_validation: NOT_RUN
+windows_validation: NOT_RUN
+accessibility_validation: NOT_RUN
+human_validation: NOT_RUN
+balance_validation: NOT_RUN
 ```
-
-기술 안 이동은 모두 고정이며 경계·점유 때문에 전량 이동할 수 없으면 가능한 거리까지만 이동한다. 이동할 수 없으면 현재 위치를 유지하고 나머지 유효 판정을 계속한다.
-
-## 13. `[의료]`와 중간 노드
-
-`[의료]`는 회복·상태 안정·장기 체력 관리 역할이며 영구 능력치와 수련포인트 공급을 자동으로 겸하지 않는다.
-
-중간 노드 보상은 회복·수련포인트·영구 스테이터스·상대 정보·사건·재화를 분리한다.
-
-영구 스테이터스 노드:
-
-- 데모 회차 중 최대2개 보상 기회.
-- 같은 구간 최대1개.
-- 서로 다른 핵심 능력치2종을 공개하고1종을 골라+1.
-- 현재 빌드 요구치와 다음 상대 공개 위협만 참고하며 비공개 계획·AI 가중치를 사용하지 않는다.
-- +1은 현재 회차 실제 영구 능력치이며 3·7·10성 요구치와 승인 공식에 사용한다.
-- 새 회차에서 초기화하며 메타 성장으로 이월하지 않는다.
-- 회복·수련·추가 정보·재화를 자동으로 함께 지급하지 않는다.
-- 지급 키는 `run_id + gap_index + node_id + reward_instance_id`이며 재로드로 재지급하지 않는다.
-
-## 14. 성장 진입 게이트
-
-현재 승인:
-
-- 여섯 시작 무공의 주·보조 벡터.
-- 시작 총합20.
-- 짝수 성 고정 지급.
-- 3성 주4·7성 주8·10성 주12.
-- 무상한 핵심 능력치와 중간 노드 최대+2.
-- 역할 우선·선택적 보조 배수.
-- 여섯 3성 기술1과 여섯 7성 기술2의 정확한 구조·비용·공식·틱 예산.
-- 틱 단독 예산 표시와 고정 실행 경로.
-
-Build 전 후속 승인:
-
-1. 여섯 5성 기술1 patch의 실제 효과·5틱 ledger.
-2. 여섯 9성 공개 정보 기반 자동 조건 분기.
-3. 무공별 고유 절초 효과·틱 예산.
-4. 비스탯 노드 기대가치와 배치.
-5. 현재 합법 최대 능력치 사람 밸런스 검증.
-6. 저장·중복·재로드 회귀 계약.
-7. 고정 이동·이동 불가·행동 중 추가 입력 금지 회귀 계약.
-
-기획 완료→전체 검토 완료→이미지·애니메이션·HX 승인→Codex BUILD 순서를 지킨다.
-
-## 15. 검증 기준
-
-1. 시작 총합이 모든4무공 조합에서20.
-2. 2·4·6·8성 지급은 최초1회.
-3. 3/7/10성 요구는 주4/8/12.
-4. 보조·임시 능력치는 해금 요구가 아님.
-5. 잠금 상태에서도 수련·기존 보상 보존.
-6. 영구 요구 충족 시 자동 활성화.
-7. 주·보조 벡터와 planning JSON 일치.
-8. 노드 영구 스테이터스 총합+2 이하 및 재로드 중복 없음.
-9. 기술마다 역할·구조·비용·공식·틱 ledger 존재.
-10. 예산점이 현재 승인표에 없음.
-11. 효과 원가·슬롯 예산·자원/조건 추가분·사용 가능 예산·편차가 틱으로 분리됨.
-12. 여섯 기술1과 여섯 기술2가 기준 능력치4에서 `±5틱` 안에 있음.
-13. 현재 사거리2 가격은10틱이며 구형 선형 가격을 사용하지 않음.
-14. 같은 효과 주·보조 중복 배수 없음.
-15. 구조값 점당 연속 증가 없음.
-16. 청심조식은 묶음당1회.
-17. 행동 묶음 해결 중 추가 플레이어 입력 없음.
-18. 모든 이동에 고정 방향·경계·이동불가 폴백 존재.
-19. canonical ID와 역사 alias가 구분됨.
-20. 능력치1·4·15·현재 합법 최대값 검증.
-21. 실행하지 않은 Godot·Windows·접근성·사람 검증은 `NOT_RUN`.
-
-자동·정적 검증은 실제 Windows Godot·접근성·성능·사람 플레이를 대체하지 않는다.
