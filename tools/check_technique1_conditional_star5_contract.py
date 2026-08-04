@@ -6,6 +6,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CONTRACT_PATH = ROOT / "docs" / "planning-data" / "approved_20260804_technique1_conditional_rework_star5_contract.json"
+REPRICE_PATH = ROOT / "docs" / "planning-data" / "approved_20260804_existing_action_reprice_contract.json"
 
 EXPECTED_IDS = {
     "flowing_cloud_triple",
@@ -81,10 +82,39 @@ def _validate_components(components: list[dict], context: str) -> int:
     return total
 
 
-def validate(data: dict) -> None:
+def _load_reprice_contract() -> dict:
+    return json.loads(REPRICE_PATH.read_text(encoding="utf-8"))
+
+
+def _validate_repricing_authority(reprice_data: dict) -> None:
+    _require(
+        reprice_data.get("decision_id") == "TEN-DEC-20260804-EXISTING-ACTIONS-REPRICE-01",
+        "repricing authority decision id drift",
+    )
+    actions = reprice_data.get("actions", [])
+    action_map = {item.get("action_id"): item for item in actions}
+    _require(EXPECTED_IDS.issubset(action_map), "repricing authority is missing Technique1 actions")
+    for technique_id, (slots, stamina, internal, available) in EXPECTED_EFFECTIVE.items():
+        action = action_map[technique_id]
+        costs = action.get("effective_costs", {})
+        _require(action.get("effective_action_slots") == slots, f"{technique_id}: repricing authority slot drift")
+        _require(costs.get("stamina", 0) == stamina, f"{technique_id}: repricing authority stamina drift")
+        _require(costs.get("internal", 0) == internal, f"{technique_id}: repricing authority internal drift")
+        _require(action.get("available_budget_ticks") == available, f"{technique_id}: repricing authority budget drift")
+
+
+def validate(data: dict, reprice_data: dict | None = None) -> None:
+    if reprice_data is None:
+        reprice_data = _load_reprice_contract()
+    _validate_repricing_authority(reprice_data)
+
     _require(data.get("decision_id") == "TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01", "wrong decision id")
     _require(data.get("authority_status") == "CURRENT_APPROVED_PLANNING", "wrong authority status")
     _require(data.get("condition_coefficients") == EXPECTED_COEFFICIENTS, "condition coefficients changed")
+    _require(
+        data.get("effective_cost_authority") == "docs/planning-data/approved_20260804_existing_action_reprice_contract.json",
+        "Technique1 contract must name the repricing authority",
+    )
 
     rules = data.get("condition_rules", {})
     _require(rules.get("conditional_bundle_all_or_nothing") is True, "conditional bundle must be all-or-nothing")
@@ -163,7 +193,8 @@ def validate(data: dict) -> None:
 def main() -> int:
     try:
         data = json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
-        validate(data)
+        reprice_data = _load_reprice_contract()
+        validate(data, reprice_data)
     except (OSError, json.JSONDecodeError, Technique1ContractError) as exc:
         print(f"FAIL: {exc}", file=sys.stderr)
         return 1
