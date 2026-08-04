@@ -22,7 +22,8 @@
 | 활성 운영 상태 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` |
 | 기획·구현 순서 | `docs/04_ROADMAP.md` |
 | 전투 규칙 | `docs/02_COMBAT_RULES.md` |
-| 거리·자원·중단·회복 | `TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01` |
+| 거리·자원·중단·회복 부모 | `TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01` |
+| 묶음 전환 내력 회복 최종값 | `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01` |
 | 기존 행동 유효 비용·슬롯 | `TEN-DEC-20260804-EXISTING-ACTIONS-REPRICE-01` |
 | 기술1 효과·조건·5성 | `TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01` |
 | 병합 후 정본·핵심 재미 감사 | `TEN-DEC-20260804-POSTMERGE-CANON-ADVERSARIAL-AUDIT-01` |
@@ -30,14 +31,16 @@
 현행 approved contracts:
 
 - `docs/planning-data/approved_20260804_combat_pricing_interruption_recovery_contract.json`
+- `docs/planning-data/approved_20260804_resource_saturation_internal_recovery_contract.json`
 - `docs/planning-data/approved_20260804_existing_action_reprice_contract.json`
 - `docs/planning-data/approved_20260804_technique1_conditional_rework_star5_contract.json`
 - `docs/planning-data/approved_20260804_postmerge_canon_adversarial_audit_contract.json`
 
 ## `[대체됨]`
 
-| 파일 | 대체 권위 | 허용 사용 |
+| 파일·필드 | 대체 권위 | 허용 사용 |
 |---|---|---|
+| `approved_20260804_combat_pricing_interruption_recovery_contract.json: bundle_transition_recovery.internal=1` | `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01` | 과거 전투 경제 재현만; 현재 유효값은 0 |
 | `docs/decisions/2026-08-02_RANGE_PRICE_BANDS_DECISION.md` | `TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01` | 과거 사거리 ledger 재현만 |
 | `docs/decisions/2026-08-03_STARTING_MARTIAL_TECHNIQUE_1_BASE_EFFECTS_AND_BUDGETS_DECISION.md` | `TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01` | 과거 기술1 효과 근거만 |
 | `docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json` | `TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01` | migration·before/after 회귀만 |
@@ -68,6 +71,7 @@
 
 다음은 `CANON_CONFLICT`다.
 
+- 부모 전투 계약의 `bundle_transition_recovery.internal=1`을 overlay 없이 현재 런타임 값으로 사용
 - `[대체됨]` 수치·효과를 신규 런타임 데이터에 직접 사용
 - `[보류]` PR 또는 산출물을 main 병합 근거로 사용
 - 병합된 PR 번호를 활성 작업 권위로 사용
@@ -77,4 +81,4 @@
 
 ## 다음 기획 Gate
 
-`STAR9_PUBLIC_READ_BRANCH_TEMPLATE`을 먼저 확정한 뒤 여섯 개별 9성 분기를 작성한다. 공통 템플릿은 공개 trigger, 자동 발동, 실패 0 범위, 가격 계수, 대응 수단, 복기 문구, 실제 성공률 측정을 필수로 한다.
+`CONDITION_CALIBRATION_RISK`의 측정·가격 보정 계약을 확정한 뒤 `STAR9_PUBLIC_READ_BRANCH_TEMPLATE`을 진행한다. 조건 위험 계약은 실제 성공률, 선언 난도 범위, 실패 지점, 고점 만족도, 저점 수용도를 필수로 한다.
