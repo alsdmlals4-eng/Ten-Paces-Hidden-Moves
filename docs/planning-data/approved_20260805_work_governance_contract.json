@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260805-WORK-GOVERNANCE-01",
+  "authority_status": "CURRENT_APPROVED_PROJECT_OPERATING_POLICY",
+  "effective_date": "2026-08-05",
+  "approval_batch": {
+    "maximum_approval_items": 10,
+    "counting_unit": "DISTINCT_USER_APPROVAL_DECISIONS",
+    "larger_batch_requires_split": true
+  },
+  "checkpoint_policy": {
+    "normal_checkpoint": "AT_OR_BEFORE_MAXIMUM_APPROVAL_BATCH",
+    "early_checkpoint_allowed": true,
+    "early_checkpoint_triggers": [
+      "HIGH_RISK_CONFLICT",
+      "SESSION_END",
+      "LARGE_CANON_IMPACT"
+    ],
+    "checkpoint_must_record": [
+      "DECISION_IDS",
+      "AUTHORITY_PATHS",
+      "EXACT_HEAD_OR_MERGE_SHA",
+      "VALIDATION_STATE",
+      "UNRESOLVED_RISKS",
+      "NEXT_GATE"
+    ]
+  },
+  "tdd_policy": {
+    "required_for_every_task": true,
+    "required_sequence": [
+      "RED",
+      "GREEN",
+      "REFACTOR",
+      "VERIFY_EXACT_HEAD"
+    ],
+    "implementation_before_red_allowed": false,
+    "non_executable_work": "WRITE_FAILING_CONTRACT_OR_REGRESSION_CHECK_BEFORE_CANON_IMPLEMENTATION",
+    "document_only_exception": false,
+    "failure_must_be_relevant": true
+  },
+  "benchmark_policy": {
+    "required_for_material_questions_and_tasks": true,
+    "material_scope": [
+      "GAME_DESIGN",
+      "SYSTEM_DESIGN",
+      "BALANCE",
+      "UX_UI",
+      "IMPLEMENTATION_ARCHITECTURE",
+      "WORKFLOW_GOVERNANCE",
+      "TOOLS_AND_PLATFORM_CHOICES"
+    ],
+    "compare_current_or_proposed_approach": true,
+    "industry_comparison_required": true,
+    "recommendation_required": true,
+    "preferred_source_order": [
+      "OFFICIAL_DOCUMENTATION_OR_STANDARD",
+      "PRIMARY_RESEARCH_OR_FIRST_PARTY_TECHNICAL_PAPER",
+      "FIRST_PARTY_CASE_STUDY_OR_POSTMORTEM",
+      "REPUTABLE_SECONDARY_SYNTHESIS"
+    ],
+    "minimum_reliable_comparables_when_available": 2,
+    "when_no_reliable_comparable": "DISCLOSE_GAP_AND_USE_EXPLICIT_INTERNAL_ASSUMPTIONS",
+    "current_verification_required_when_fact_may_have_changed": true,
+    "benchmark_must_not_override_project_core": true
+  },
+  "adversarial_review": {
+    "required": true,
+    "must_check": [
+      "CORE_FUN_ALIGNMENT",
+      "CANON_CONFLICT",
+      "MISSING_REQUIREMENT",
+      "EXPLOIT_OR_ABUSE_PATH",
+      "LEGACY_REFERENCE_DRIFT",
+      "VALIDATION_OVERCLAIM"
+    ]
+  },
+  "validation_boundary": {
+    "static_validation": "REQUIRED",
+    "human_validation": "NOT_RUN_UNLESS_EXECUTED",
+    "runtime_validation": "NOT_RUN_UNLESS_EXECUTED"
+  }
+}
