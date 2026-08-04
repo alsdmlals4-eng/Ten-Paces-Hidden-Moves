@@ -68,6 +68,18 @@ jobs:
       - name: Validate post-merge canon lifecycle
         run: python tools/check_postmerge_canon_lifecycle.py
 
+      - name: Run condition calibration regression tests
+        run: python -m unittest tests.test_condition_calibration_contract -v
+
+      - name: Validate condition calibration contract
+        run: python tools/check_condition_calibration_contract.py
+
+      - name: Run work governance regression tests
+        run: python -m unittest tests.test_work_governance_contract -v
+
+      - name: Validate work governance contract
+        run: python tools/check_work_governance_contract.py
+
       - name: Validate PoC planning data
         run: python -m unittest tests.test_poc_planning_data -v
 
