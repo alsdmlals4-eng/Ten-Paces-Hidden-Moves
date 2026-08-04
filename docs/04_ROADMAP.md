@@ -13,21 +13,21 @@ merged_pr_lineage: 84,86,87,88
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
 active_planning_work_mode: PLAN
-active_planning_pr: 91
-active_planning_parent_pr: 89
+active_planning_pr: 92
+active_planning_parent_pr: 91
 active_approval_count: 7/10
-active_decision_state: APPROVED_DRAFT_CONDITION_CALIBRATION
+active_decision_state: APPROVED_DRAFT_WRONG_PLAN_RESCUE_DERIVED_STATS
 phase: VERTICAL_SLICE_APP_FLOW_PLANNING
 project_core: CORE_CONFIRMED
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 base_release: 9.4.3
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: WRONG_PLAN_RESCUE_RISK
+next_planning_decision: OBSERVATION_ANSWER_LEAK_RISK
 t1_greenlight: NOT_GRANTED
 ```
 
-PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정·작업 운영 정책 Draft다. PR #91은 PR #89보다 먼저 독립 병합하지 않는다. PR #90은 `[대체됨]`, PR #85는 `[보류]`다.
+PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정·작업 운영 정책 Draft, PR #92는 그 위의 파생 스탯·오판 구제 Draft다. PR #92는 PR #91보다 먼저, PR #91은 PR #89보다 먼저 독립 병합하지 않는다. PR #90은 `[대체됨]`, PR #85는 `[보류]`다.
 
 ## 2. 프로젝트 코어 확정
 
@@ -42,6 +42,7 @@ PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정�
 - [x] 기술1 조건부 저점/고점·5성 무료20%·연격 총피해 선계산.
 - [x] 묶음 회복 기력1·내력0·절초기세1.
 - [x] 조건 난도 여섯 구간·유효 시도·수동 재분류 Gate.
+- [x] 파생 체력·기력·내력 공식과 결과 역전·중대 구제 분리.
 - [x] 승인 배치10·조기 체크포인트·모든 작업 TDD·현업 벤치마킹.
 
 기획 승인은 런타임 구현이나 사람 검증 완료를 뜻하지 않는다.
@@ -52,16 +53,15 @@ PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정�
 |---|---|---|
 | `RESOURCE_SATURATION_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 회복 세금·고갈 측정 |
 | `CONDITION_CALIBRATION_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 성공률·구간 이탈·체감 측정 |
-| `WRONG_PLAN_RESCUE_RISK` | 다음 작업 | 올바른 읽기와 오판의 결과 격차 계약 |
-| `OBSERVATION_ANSWER_LEAK_RISK` | 미실측 | 허용·금지 정보와 누출 검사 |
+| `WRONG_PLAN_RESCUE_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 결과 역전률·중대 구제율·올바른 계획 증폭률 |
+| `OBSERVATION_ANSWER_LEAK_RISK` | 다음 작업 | 허용·금지 정보와 누출 검사 |
 | `GRADE_FARMING_RISK` | 미확정 | 정규화·상한·반복 감쇠 |
 | `RUNTIME_AUTHORITY_GAP` | P0 | Build 승인 뒤 구현 |
 
 ## 4. 현재 작업 순서
 
 ```text
-잘못된 계획 구제 위험
-→ 관찰 정답 유출 위험
+관찰 정답 유출 위험
 → 전투 종료 등급 파밍 위험
 → STAR9_PUBLIC_READ_BRANCH_TEMPLATE
 → 여섯 개별 9성 자동 분기
@@ -80,7 +80,7 @@ PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정�
 
 - [x] 자원 포화 위험 계약.
 - [x] 조건 난도 보정 계약.
-- [ ] 잘못된 계획 구제 계약.
+- [x] 잘못된 계획 구제·파생 스탯 계약.
 - [ ] 관찰 정답 유출 계약.
 - [ ] 등급 파밍 방지 계약.
 - [ ] 9성 공통 템플릿과 여섯 분기.
@@ -98,6 +98,7 @@ PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정�
 - 최신 Decision·approved contract·amendment 일치.
 - 조건 실패 전부0, 연격 분배, 고정 이동, 추가 입력 금지 회귀 테스트.
 - 자원 포화·조건 성공률·오판 구제 위험 측정 계획.
+- 스탯 파생 공식과 구형 통합 공격력 이중 적용 금지.
 - canonical ID와 역사 alias migration.
 - 별도 사용자 Build 승인.
 
@@ -152,7 +153,7 @@ full_run_before_finale:
 - 조건별 전체 사용률·유효 시도 성공률·실패 지점 기록.
 - 성공 고점 만족도·실패 저점 수용도 기록.
 - 내력0 묶음률·회복 행동 선택률 기록.
-- 고능력치가 잘못된 계획을 구제한 사례 기록.
+- 잘못된 계획의 결과 역전률·중대 구제율·올바른 계획 증폭률 기록.
 
 현재 `human_validation: NOT_RUN`이다.
 
