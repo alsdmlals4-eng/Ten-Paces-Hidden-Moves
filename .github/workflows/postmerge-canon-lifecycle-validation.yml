@@ -1,0 +1,33 @@
+name: Validate post-merge canon lifecycle
+
+on:
+  pull_request:
+    paths:
+      - '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md'
+      - 'docs/04_ROADMAP.md'
+      - 'docs/06_STARTING_FACTION_MASTERY_DATA.md'
+      - 'docs/CANON_LIFECYCLE_REGISTRY.md'
+      - 'docs/decisions/**'
+      - 'docs/planning-data/**'
+      - 'tools/check_postmerge_canon_lifecycle.py'
+      - 'tests/test_postmerge_canon_lifecycle.py'
+      - '.github/workflows/postmerge-canon-lifecycle-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run post-merge lifecycle regressions
+        run: python -m unittest tests.test_postmerge_canon_lifecycle -v
+      - name: Validate post-merge canon lifecycle
+        run: python tools/check_postmerge_canon_lifecycle.py
