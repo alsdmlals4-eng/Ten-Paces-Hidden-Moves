@@ -1,11 +1,13 @@
 # 자원 포화 위험 — 내력 자동 회복 제거 결정
 
 - Decision ID: `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`
-- 승인일: 2026-08-05
+- 승인일: 2026-08-04
 - 상태: `CURRENT_APPROVED_PLANNING`
 - 위험 상태: `MITIGATED_PENDING_HUMAN_MEASUREMENT`
 - 부모 Decision: `TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01`
 - 상세 계약: `docs/planning-data/approved_20260804_resource_saturation_internal_recovery_contract.json`
+- 전투 규칙 개정: `docs/02_COMBAT_RULES_RESOURCE_RECOVERY_AMENDMENT.md`
+- 위험 로드맵 개정: `docs/04_ROADMAP_RESOURCE_RISK_AMENDMENT.md`
 - 제품 런타임: `NOT_IMPLEMENTED`
 
 ## 1. 승인 결론
@@ -73,6 +75,8 @@ resource_caps_apply: true
 bundle_transition_recovery.internal: 1
 → bundle_transition_recovery.internal: 0
 ```
+
+`docs/02_COMBAT_RULES.md`와 `docs/04_ROADMAP.md`의 구형 내력 자동 회복·위험 순서 문구도 해당 addendum이 필드 단위로 대체한다.
 
 신규 런타임 데이터는 부모 계약을 읽은 뒤 이 overlay를 적용해야 한다. overlay 없이 부모 내력 자동 회복 1을 사용하면 `CANON_CONFLICT`다.
 
