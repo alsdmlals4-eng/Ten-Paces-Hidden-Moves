@@ -6,6 +6,7 @@
 > 현재 기술1 효과·5성 권위: `TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01`  
 > 현재 자원 포화 완화 권위: `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`  
 > 현재 조건 난도 보정 권위: `TEN-DEC-20260805-CONDITION-CALIBRATION-01`  
+> 현재 파생 스탯·오판 구제 권위: `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01`  
 > 현재 작업 운영 권위: `TEN-DEC-20260805-WORK-GOVERNANCE-01`
 
 ## 현재 기준
@@ -18,10 +19,10 @@ merged_pr_lineage: 84,86,87,88
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
 active_planning_work_mode: PLAN
-active_planning_pr: 91
-active_planning_parent_pr: 89
+active_planning_pr: 92
+active_planning_parent_pr: 91
 active_approval_count: 7/10
-active_decision_state: APPROVED_DRAFT_CONDITION_CALIBRATION
+active_decision_state: APPROVED_DRAFT_WRONG_PLAN_RESCUE_DERIVED_STATS
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 engine: Godot 4.7
@@ -33,10 +34,10 @@ automated_validation: PASS
 windows_validation: NOT_RUN
 human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: WRONG_PLAN_RESCUE_RISK
+next_planning_decision: OBSERVATION_ANSWER_LEAK_RISK
 ```
 
-PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완화는 Draft PR #89, 조건 난도 보정과 작업 운영 정책은 그 위의 Draft PR #91에서 검증한다. PR #91은 PR #89보다 먼저 독립 병합하지 않는다. PR #90은 `[대체됨]`, PR #85 HTML PoC는 `[보류]`다.
+PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완화는 Draft PR #89, 조건 난도 보정과 작업 운영 정책은 그 위의 Draft PR #91, 파생 스탯·오판 구제는 그 위의 Draft PR #92에서 검증한다. PR #92는 PR #91보다 먼저, PR #91은 PR #89보다 먼저 독립 병합하지 않는다. PR #90은 `[대체됨]`, PR #85 HTML PoC는 `[보류]`다.
 
 자동·정적 검증 통과는 Godot·Windows·접근성·성능·사람 검증을 대신하지 않는다.
 
@@ -60,6 +61,7 @@ PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완�
 - 행동 묶음 확정 뒤 추가 플레이어 선택을 요구하지 않는다.
 - 기술 이동은 고정 방향·합법 타일 폴백을 사용한다.
 - 성장 수치는 잘못된 계획을 자동 구제하면 안 된다.
+- 스탯 보정은 합법성·거리·순서·중단·성공 Gate 뒤에만 적용한다.
 - 기력은 묶음 템포, 내력은 여러 묶음에 걸친 장기 자원, 절초기세는 승부 자원이다.
 
 ## 런타임 기준선
@@ -87,6 +89,7 @@ PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완�
 - `TEN-DEC-20260804-POSTMERGE-CANON-ADVERSARIAL-AUDIT-01`
 - `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`
 - `TEN-DEC-20260805-CONDITION-CALIBRATION-01`
+- `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01`
 - `TEN-DEC-20260805-WORK-GOVERNANCE-01`
 
 ## 현재 정본 요약
@@ -100,8 +103,10 @@ PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완�
 - 묶음 전환 자동 회복은 `기력1·내력0·절초기세1`; 라운드 시작 별도 내력 회복 없음.
 - 조건 난도는 극단적·매우 어려움·어려움·보통·쉬움·준확정 여섯 구간.
 - 가격 재분류는 규칙을 이해한 일반 플레이어의 유효 시도 성공률을 기준으로 하며 자동 repricing하지 않는다.
-- 공개 상태상 불가능한 사용은 가격 분모에서 제외하고 오사용 진단에 남긴다.
-- 숨은 상대 대응으로 발생한 실패는 유효 실패다.
+- 파생 수치는 `체력=26+근골`, `기력=4+floor(신법/4)`, `내력=3+floor(내공/4)`.
+- 외공·근골·신법·내공·심안은 성공한 명시 효과만 강화하고 구조 실패를 우회하지 않는다.
+- 잘못된 계획 구제는 `결과 역전`과 `중대 구제`로 분리하고 중복 집계하지 않는다.
+- 구형 `attack_power: 8`은 현행 공식 권위에서 `[대체됨]`이며 행동별 스탯 계수에 더하지 않는다.
 - 승인 배치는 최대10건이며 고위험 충돌·세션 종료·큰 정본 영향에서 조기 체크포인트를 허용한다.
 - 모든 작업은 `RED→GREEN→REFACTOR→exact-head verification`을 따른다.
 
@@ -111,23 +116,22 @@ PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완�
 |---|---|---|
 | `RESOURCE_SATURATION_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 회복 세금·자원 고갈 |
 | `CONDITION_CALIBRATION_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 성공률·구간 이탈·고점/저점 체감 |
-| `WRONG_PLAN_RESCUE_RISK` | P1·다음 작업 | 고능력치 오판 구제율 |
-| `OBSERVATION_ANSWER_LEAK_RISK` | P1·미실측 | 관찰 정보 누출 |
+| `WRONG_PLAN_RESCUE_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 결과 역전률·중대 구제율·올바른 계획 증폭률 |
+| `OBSERVATION_ANSWER_LEAK_RISK` | P1·다음 작업 | 관찰 정보 누출 |
 | `GRADE_FARMING_RISK` | P1·미확정 | 반복 파밍 |
 | `RUNTIME_AUTHORITY_GAP` | P0 | 최신 계획 미구현 |
 
 ## 생명주기 요약
 
-- `[현행]`: 전투 가격·repricing·기술1·자원 포화·조건 보정·작업 운영 정책.
-- `[대체됨]`: 구형 사거리·구형 기술1·부모 내력 자동회복1·PR #90.
+- `[현행]`: 전투 가격·repricing·기술1·자원 포화·조건 보정·파생 스탯·오판 구제·작업 운영 정책.
+- `[대체됨]`: 구형 사거리·구형 기술1·부모 내력 자동회복1·구형 통합 공격력 공식 권위·PR #90.
 - `[보류]`: PR #85 HTML PoC.
 - `[폐기]`: 현재 없음.
 
 ## 다음 작업 Gate
 
 ```text
-잘못된 계획 구제 위험
-→ 관찰 정답 유출 위험
+관찰 정답 유출 위험
 → 전투 종료 등급 파밍 위험
 → 9성 공개 정보 자동 분기 공통 템플릿
 → 여섯 개별 9성 분기
@@ -150,7 +154,7 @@ PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완�
 ## 검증 경계
 
 ```yaml
-planning_checkpoint: DRAFT_PR91_CONDITION_CALIBRATION
+planning_checkpoint: DRAFT_PR92_WRONG_PLAN_RESCUE_DERIVED_STATS
 product_code_changed: false
 html_poc_changed: false
 runtime_validation: NOT_RUN
