@@ -154,17 +154,28 @@ func _append_martial_candidates(candidates: Array, snapshot: Dictionary, cards_b
             continue
         if int(definition.get("stamina_cost", 0)) > stamina or int(definition.get("internal_cost", 0)) > internal:
             continue
-        if int(definition.get("unlock_star", 0)) >= 10 and momentum != momentum_max:
+        var unlock_star := int(definition.get("unlock_star", 0))
+        if unlock_star >= 10 and momentum != momentum_max:
             continue
         if not _martial_distance_is_reachable(definition, distance):
             continue
-        var score := 8.8 if int(definition.get("unlock_star", 0)) >= 10 else 6.8
+        var score := 8.8 if unlock_star >= 10 else 6.8
+        if unlock_star < 10 and not _martial_is_at_preferred_distance(definition, distance):
+            score -= 2.0
         if action_slots >= 3:
             score += 0.2
         var reason_codes := ["low_health_response"] if low_health else (["safe_heavy_prepare"] if action_slots >= 2 else ["midrange_pressure"])
         _append_candidate(candidates, card_id, score, reason_codes, cards_by_id, definition)
 
 func _martial_distance_is_reachable(definition: Dictionary, distance: int) -> bool:
+    var profile := _martial_range_profile(definition, distance)
+    return profile.x >= profile.y and profile.x <= profile.z
+
+func _martial_is_at_preferred_distance(definition: Dictionary, distance: int) -> bool:
+    var profile := _martial_range_profile(definition, distance)
+    return profile.x == profile.z
+
+func _martial_range_profile(definition: Dictionary, distance: int) -> Vector3i:
     var minimum := 0
     var maximum := 0
     var range_value = definition.get("range", {})
@@ -185,7 +196,7 @@ func _martial_distance_is_reachable(definition: Dictionary, distance: int) -> bo
                 maximum = maxi(minimum, int(step.get("max_range", maximum)))
             break
     var effective_distance := maxi(0, distance - approach)
-    return effective_distance >= minimum and effective_distance <= maximum
+    return Vector3i(effective_distance, minimum, maximum)
 
 func _append_candidate(candidates: Array, card_id: String, score: float, reason_codes: Array, cards_by_id: Dictionary, definition: Dictionary = {}) -> void:
     if not cards_by_id.has(card_id):
