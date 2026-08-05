@@ -1,0 +1,27 @@
+name: Validate Grade Farming Guardrails
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-grade-farming-guardrails:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run grade-farming regression tests
+        run: python -m unittest tests.test_grade_farming_guardrails_contract -v
+
+      - name: Validate grade-farming contract
+        run: python tools/check_grade_farming_guardrails_contract.py
