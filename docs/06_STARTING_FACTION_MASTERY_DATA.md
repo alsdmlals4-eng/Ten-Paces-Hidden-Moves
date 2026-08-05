@@ -10,7 +10,7 @@
 
 ```yaml
 authority_status: CURRENT_APPROVED_PLANNING
-active_batch: 7/10
+active_batch: 8/10
 merged_checkpoint: 0ba841ff2e62b2f716466356dd9e7ffcf587d150
 implementation_status: NOT_STARTED
 runtime_validation: NOT_RUN
@@ -180,6 +180,7 @@ Build 전에는 현재 repricing·기술1·기술2 계약, 승인될 9성·10성
 - 9성은 공개 정보만 사용하고 추가 입력을 만들지 않는다.
 - 10성 절초는 일반 거리·중단·자원 규칙을 따른다.
 - `RESOURCE_SATURATION_RISK`, `CONDITION_CALIBRATION_RISK`, `WRONG_PLAN_RESCUE_RISK`, `OBSERVATION_ANSWER_LEAK_RISK`를 사람 검증에서 측정한다.
+- 관찰은 `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`에 따라 직접 앞 슬롯 행동 종류 공개를 유지하며 자동 정답 대응·자동 nerf를 금지한다.
 - 사람 검증 전 재미·밸런스 PASS를 주장하지 않는다.
 
 생명주기:
