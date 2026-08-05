@@ -15,19 +15,19 @@ runtime_integration_pr: 65
 active_planning_work_mode: PLAN
 active_planning_pr: 92
 active_planning_parent_pr: 91
-active_approval_count: 8/10
-active_decision_state: APPROVED_DRAFT_OBSERVATION_ANSWER_LEAK_GUARDRAILS
+active_approval_count: 9/10
+active_decision_state: APPROVED_DRAFT_GRADE_FARMING_GUARDRAILS
 phase: VERTICAL_SLICE_APP_FLOW_PLANNING
 project_core: CORE_CONFIRMED
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 base_release: 9.4.3
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: GRADE_FARMING_RISK
+next_planning_decision: STAR9_PUBLIC_READ_BRANCH_TEMPLATE
 t1_greenlight: NOT_GRANTED
 ```
 
-PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정·작업 운영 정책 Draft, PR #92는 그 위의 파생 스탯·오판 구제 Draft다. PR #92는 PR #91보다 먼저, PR #91은 PR #89보다 먼저 독립 병합하지 않는다. PR #90은 `[대체됨]`, PR #85는 `[보류]`다.
+PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정·작업 운영 정책 Draft, PR #92는 그 위의 파생 스탯·오판 구제·관찰·등급 파밍 방지 Draft다. PR #92는 PR #91보다 먼저, PR #91은 PR #89보다 먼저 독립 병합하지 않는다. PR #90은 `[대체됨]`, PR #85는 `[보류]`다.
 
 ## 2. 프로젝트 코어 확정
 
@@ -44,6 +44,7 @@ PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정�
 - [x] 조건 난도 여섯 구간·유효 시도·수동 재분류 Gate.
 - [x] 파생 체력·기력·내력 공식과 결과 역전·중대 구제 분리.
 - [x] 관찰 행동1수·관찰량1·앞 슬롯 직접 공개 유지와 공정성·측정 가드레일.
+- [x] 원시 등급 사건 보존·동일 행동 감쇠·행동 인스턴스 상한·기준 라운드·경제 미연결.
 - [x] 승인 배치10·조기 체크포인트·모든 작업 TDD·현업 벤치마킹.
 
 기획 승인은 런타임 구현이나 사람 검증 완료를 뜻하지 않는다.
@@ -56,14 +57,13 @@ PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정�
 | `CONDITION_CALIBRATION_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 성공률·구간 이탈·체감 측정 |
 | `WRONG_PLAN_RESCUE_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 결과 역전률·중대 구제율·올바른 계획 증폭률 |
 | `OBSERVATION_ANSWER_LEAK_RISK` | `ACCEPTED_PENDING_HUMAN_MEASUREMENT` | 직접 공개 유지·사람 측정 |
-| `GRADE_FARMING_RISK` | 미확정 | 정규화·상한·반복 감쇠 |
+| `GRADE_FARMING_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 원시/유효 비율·반복 대응·기준 라운드·경제 미연결 측정 |
 | `RUNTIME_AUTHORITY_GAP` | P0 | Build 승인 뒤 구현 |
 
 ## 4. 현재 작업 순서
 
 ```text
-전투 종료 등급 파밍 위험
-→ STAR9_PUBLIC_READ_BRANCH_TEMPLATE
+STAR9_PUBLIC_READ_BRANCH_TEMPLATE
 → 여섯 개별 9성 자동 분기
 → 여섯 10성 고유 절초
 → 비스탯 노드 기대가치·가중치
@@ -82,7 +82,7 @@ PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정�
 - [x] 조건 난도 보정 계약.
 - [x] 잘못된 계획 구제·파생 스탯 계약.
 - [x] 관찰 정답 유출 가드레일·측정 계약.
-- [ ] 등급 파밍 방지 계약.
+- [x] 등급 파밍 방지 계약.
 - [ ] 9성 공통 템플릿과 여섯 분기.
 - [ ] 10성 절초와 비스탯 노드.
 
@@ -97,7 +97,9 @@ PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정�
 
 - 최신 Decision·approved contract·amendment 일치.
 - 조건 실패 전부0, 연격 분배, 고정 이동, 추가 입력 금지 회귀 테스트.
-- 자원 포화·조건 성공률·오판 구제 위험 측정 계획.
+- 자원 포화·조건 성공률·오판 구제·관찰·등급 파밍 위험 측정 계획.
+- 등급 원시 사건과 유효 반영량을 분리하고 동일 행동 감쇠·행동 인스턴스 상한·기준 라운드 cutoff를 검증.
+- 사람 검증 전 등급 경제 연결 금지.
 - 스탯 파생 공식과 구형 통합 공격력 이중 적용 금지.
 - canonical ID와 역사 alias migration.
 - 별도 사용자 Build 승인.
@@ -154,6 +156,8 @@ full_run_before_finale:
 - 성공 고점 만족도·실패 저점 수용도 기록.
 - 내력0 묶음률·회복 행동 선택률 기록.
 - 잘못된 계획의 결과 역전률·중대 구제율·올바른 계획 증폭률 기록.
+- 등급 원시/유효 반영량 비율·같은 행동 반복 대응·기준 라운드 이후 양의 사건·관찰 보조 상승폭 기록.
+- 경제 연결 전 완료 승리30회·서로 다른 상대5종·단일 상대 표본40% 이하를 충족.
 
 현재 `human_validation: NOT_RUN`이다.
 
@@ -163,7 +167,7 @@ T1 진입에는 기획·검토·이미지 완료, Godot·Windows·접근성·성
 
 ## 12. 온라인 경쟁 Gate
 
-등록 스냅샷, 버전 호환, 관찰 대칭성, 평점·반복 대전·어뷰징 방지, 보안·네트워크, 사람 경쟁 테스트가 필요하다.
+등록 스냅샷, 버전 호환, 관찰 대칭성, 평점·반복 대전·어뷰징 방지, 보안·네트워크, 사람 경쟁 테스트가 필요하다. 전투 종료 등급 감쇠는 온라인 시즌 평점에 자동 적용하지 않는다.
 
 ## 13. 정본 생명주기 운영
 
@@ -178,11 +182,11 @@ T1 진입에는 기획·검토·이미지 완료, Godot·Windows·접근성·성
 
 각 항목은 `KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST`로 기록한다.
 
-- `KEEP`: AI 비치팅 금지, 10칸·3/3/4, 전조·중단, 복기.
-- `AMPLIFY`: 조건 성공·실패 원인과 다음 계획 변경.
+- `KEEP`: AI 비치팅 금지, 10칸·3/3/4, 전조·중단, 복기, 원시 전투 로그.
+- `AMPLIFY`: 조건 성공·실패 원인과 다음 계획 변경, 원시/유효 등급 설명.
 - `CHANGE`: 실측으로 확인된 수치만 별도 Decision으로 변경.
-- `REMOVE`: 해결 중 추가 입력·숨은 정보 참조·구형 권위 사용.
-- `DEFER`: 온라인·최종 모바일·후보 전체 제작.
+- `REMOVE`: 해결 중 추가 입력·숨은 정보 참조·구형 권위 사용·등급 파밍 경제 연결.
+- `DEFER`: 온라인·최종 모바일·후보 전체 제작·최종 등급 가중치와 컷.
 - `RETEST`: 오판 구제·기술 대체율·등급 파밍·자원 회복.
 
 ## 15. 중단·축소 조건
@@ -193,6 +197,8 @@ T1 진입에는 기획·검토·이미지 완료, Godot·Windows·접근성·성
 - 묶음 회복이 비용 선택을 무력화.
 - 높은 능력치가 잘못된 계획을 반복 구제.
 - 관찰이 정답 정보를 공개.
+- 같은 안전 행동 반복 또는 전투 지연이 등급 양의 반영량을 계속 생성.
+- 사람 검증 전 등급이 재화·수련·드롭·영구재화에 영향.
 - 최신 계획 미구현 런타임을 완료로 홍보.
 
 위 조건이 확인되면 콘텐츠 확장보다 원인 분리·재검토를 우선한다.
