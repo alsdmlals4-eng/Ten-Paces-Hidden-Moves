@@ -17,33 +17,26 @@ implementation: IMPLEMENTED | PARTIALLY_IMPLEMENTED | PLANNED | PROPOSED_ONLY | 
 
 ## 2. 현재 게이트
 
+활성 PR·exact head·승인 수·다음 Decision은 `ACTIVE_CONTEXT.md`가 단독 책임진다. 이 문서는 Gate 조건만 책임지고 변동 상태를 복제하지 않는다.
+
+안정 경계:
+
 ```yaml
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
-work_mode: REVIEW
-integration_pr: 65
-active_planning_work_mode: PLAN
-main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
-active_planning_pr: 82
-active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
-active_approval_count: 2/10
-active_decision_state: APPROVED_PENDING_MERGE
+runtime_work_mode: REVIEW
+runtime_integration_pr: 65
+planning_work_mode: PLAN
 runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
-implemented_decision: TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01
-approved_planning_decision: TEN-DEC-20260801-SITUATION-SCREEN-01
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
-automated_validation: PASS_AT_PR82_HEAD
 human_validation: NOT_RUN
 t1_greenlight: NOT_GRANTED
 base_release_pinned: 9.4.3
 ```
 
-`work_mode: REVIEW`와 `integration_pr: 65`는 런타임 기준선이며, 현재 기획 승인 작업은 PR #82의 `PLAN` 축이다.
-
 ## 3. G0 — 권한·기준선
 
 - [x] 최신 사용자 지시와 프로젝트 코어 확인.
-- [x] main `6d8237e...`, 최근 체크포인트 PR #80, 활성 PR #82, Sheet 확인.
+- [x] 병합 main, 최근 체크포인트, ACTIVE_CONTEXT의 활성 Draft, Sheet 확인.
 - [x] PR #7·Issue #13 T0 구현 계보 보존.
 - [x] v6 원장을 역사 인덱스로 유지하고 최신 날짜별 Decision을 우선.
 - [x] Base v9.4.3 Adapter payload·evidence·finalization pin 확인.
@@ -65,15 +58,14 @@ base_release_pinned: 9.4.3
 
 ## 5. G2 — 현재 기획 배치·정본·Sheet
 
-- [x] PR #80 10/10 체크포인트 병합과 PR #81 main 상태 동기화.
-- [x] PR #82 승인 2건을 같은 Decision ID로 Branch·planning JSON·Sheet에 연결.
-- [x] PR #82 exact head `289378c...`의 PR Validation·Base adoption·Full Validation PASS.
-- [x] 미해결 review thread 0.
-- [ ] 중간 노드 영구 스테이터스 보상과 남은 GrillMe 승인.
+- [x] 병합 main 상태와 활성 Draft 상태를 분리한다.
+- [x] 승인 Decision을 같은 ID로 Branch·Decision·planning JSON·Sheet에 연결한다.
+- [x] 모든 작업에 전용 RED→GREEN 회귀와 exact-head Actions를 요구한다.
+- [x] 활성 PR·승인 수·다음 Decision은 `ACTIVE_CONTEXT.md`에서 단일 조회한다.
 - [ ] 최대 10건 또는 허용된 조기 체크포인트에서 전체 적대적 검토.
 - [ ] 병합 후 새 main SHA와 Sheet `SYNCED_TO_MAIN` 재기록.
 
-판정: `APPROVED_PENDING_MERGE_2_OF_10`.
+판정은 `ACTIVE_CONTEXT.md`와 latest exact-head Actions 결과에서 계산한다.
 
 ## 6. G3 — 기획 완료
 
