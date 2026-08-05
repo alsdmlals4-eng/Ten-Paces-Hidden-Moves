@@ -1,6 +1,7 @@
 # 십보강호 구현 로드맵과 검증 기준
 
 > 현재 상태: `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`  
+> 전투 규칙 책임 원본: `docs/02_COMBAT_RULES.md`  
 > 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`  
 > 성장 Decision: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`  
 > 런타임 Decision: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`
