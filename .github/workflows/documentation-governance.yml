@@ -86,6 +86,12 @@ jobs:
       - name: Validate wrong-plan rescue derived stats contract
         run: python tools/check_wrong_plan_rescue_derived_stats_contract.py
 
+      - name: Run observation guardrail regression tests
+        run: python -m unittest tests.test_observation_answer_leak_guardrails_contract -v
+
+      - name: Validate observation guardrail contract
+        run: python tools/check_observation_answer_leak_guardrails_contract.py
+
       - name: Validate PoC planning data
         run: python -m unittest tests.test_poc_planning_data -v
 
