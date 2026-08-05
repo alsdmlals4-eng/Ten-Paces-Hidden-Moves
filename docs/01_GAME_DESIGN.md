@@ -12,9 +12,10 @@
 > 핵심 스테이터스 정책: `docs/decisions/2026-08-03_UNCAPPED_CORE_STATS_DECISION.md`  
 > 전투 종료 등급: `docs/decisions/2026-08-02_BATTLE_GRADE_FIVE_PRIMARY_METRICS_DECISION.md`  
 > 기술 작성·배수 가격: `docs/decisions/2026-08-02_TECHNIQUE_AUTHORING_TAG_FIXED_STAT_DECISION.md`, `docs/decisions/2026-08-02_STAT_REFERENCE_PRICE_BASE4_DECISION.md`  
-> 현재 단계: `ACTIVE_DRAFT_PR82_APPROVED_PENDING_MERGE_2_OF_10`
+> 현재 단계·활성 PR·승인 수·다음 Decision: `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`  
+> 현재 관찰 가드레일: `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`
 
-PR #80의 10/10 성장 체크포인트는 main에 병합됐고, PR #82의 두 후속 Decision은 활성 Branch·planning data·Google Sheet에만 `APPROVED_PENDING_MERGE`로 기록되어 있다. 병합 후 main·Sheet 재조회 전에는 `SYNCED_TO_MAIN`으로 표시하지 않는다.
+변동 상태는 Active Context와 GitHub PR metadata가 책임진다. Draft Branch 승인과 main 동기화를 구분하며 병합 후 main·Sheet 재조회 전에는 `SYNCED_TO_MAIN`으로 표시하지 않는다.
 
 ## 1. 현재 한 줄 약속
 
@@ -99,7 +100,7 @@ READ 공개 상태·이력
 - 능력치 배수 예산의 기준 스테이터스는 4이며 배수 작성 단위는 0.25, 주·보조 능력치는 같은 가격이다.
 - 시작 능력치는 기본2×5+자유분배6+선택 시작무공4개의 2성 주능력치+1로 최종 총합20·평균4다.
 - 시작 3성 첫 기술은 주 영구 능력치4, 7성 두 번째 기술은 주 영구 능력치8, 10성 절초는 주 영구 능력치12를 요구한다. 요구치 미달 시 기술만 잠기며 무공 수련은 계속되고 영구 요구치 충족 시 자동 활성화한다.
-- 시작 무공의 보조 능력치는 PR #82 Decision의 여섯 무공별 매핑을 따른다.
+- 시작 무공의 보조 능력치는 승인된 여섯 무공별 매핑 Decision을 따른다.
 - 짝수 성은 각 성 최초 도달 시 새로 지급한다: 2성 주+1, 4성 주+1·보조+1, 6성 주+2·보조+1, 8성 주+3·보조+2.
 - 핵심 스테이터스에는 디자인 하드캡이 없고 실제 영구값을 기술 요구치와 전투 공식에 사용한다. 검증점은 1·4·15와 현재 콘텐츠의 최대 합법 도달값이다.
 
