@@ -36,48 +36,22 @@ AGENTS.md
 | 테스트·미검증 | `docs/08_TEST_CHECKLIST.md` |
 | 시스템·저장·AI 경계 | `docs/09_COMBAT_SYSTEM_ARCHITECTURE.md` |
 | 최근 병합 체크포인트 | PR #80, `d9f38e6f3cacaf170d4b290e95b3645114639aff` |
-| 현재 활성 승인 배치 | PR #82, `289378c214702223dc0d1e149134438c3e761ba0`, 2/10 |
+| 활성 기획 배치·승인 수·다음 Decision | `ACTIVE_CONTEXT.md` + GitHub PR metadata |
 | 구현 사실 | 실제 `data/`, `src/`, `scenes/`, `tests/`, `project.godot` |
 
 ## 최신 활성 Decision
 
-기존 핵심:
+현재 승인 Decision의 전체 순서·상태·대체 관계는 `ACTIVE_CONTEXT.md`, `docs/CANON_LIFECYCLE_REGISTRY.md`, `docs/decisions/`, `docs/planning-data/approved_*.json`이 책임진다.
 
-- `TEN-DEC-20260802-PLATFORM-SCOPE-01`
+현재 핵심 권위에는 다음이 포함된다.
+
 - `TEN-DEC-20260802-OBSERVATION-STATS-MASTERY-01`
-- `TEN-DEC-20260802-FULLRUN-CHAMPION-RANKED-01`
-- `TEN-DEC-20260802-RANKED-OBSERVATION-CONVERSION-01`
-
-PR #72 체크포인트:
-
-1. `TEN-DEC-20260802-BASIC-ACTIONS-PALM-CLASH-01`
-2. `TEN-DEC-20260802-OUT-OF-RANGE-CLASH-REWARD-01`
-3. `TEN-DEC-20260802-OUT-OF-RANGE-CLASH-GRADE-01`
-4. `TEN-DEC-20260802-CLASH-THREAT-ATTENUATION-01` — 현재 등급 산식에서는 HOLD
-5. `TEN-DEC-20260802-THREAT-ID-ACTION-01`
-6. `TEN-DEC-20260802-MULTIHIT-COMPLETE-PARRY-01`
-7. `TEN-DEC-20260802-COMPLETE-PARRY-HP-ONLY-01`
-8. `TEN-DEC-20260802-BATTLE-GRADE-FIVE-METRICS-01`
-9. `TEN-DEC-20260802-TECHNIQUE-AUTHORING-TAG-FIXED-STAT-01`
-10. `TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01`
-
-PR #80 체크포인트:
-
-1. `TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01`
-2. `TEN-DEC-20260802-RANGE-PRICE-BANDS-01`
-3. `TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01`
-4. `TEN-DEC-20260802-STARTING-STAT-ALLOCATION-FIVE-01` — 후속 Decision으로 대체된 역사 승인
-5. `TEN-DEC-20260802-STARTING-STAT-TOTAL20-MANUAL-BONUS-01`
-6. `TEN-DEC-20260802-STARTING-TECHNIQUE-PRIMARY-STAT4-01`
-7. `TEN-DEC-20260802-STARTING-TECHNIQUE-SOFT-GUARANTEE-01`
-8. `TEN-DEC-20260802-EVEN-STAR-STAT-ESCALATION-01`
-9. `TEN-DEC-20260803-UNCAPPED-CORE-STATS-01`
-10. `TEN-DEC-20260803-STAR7-TECHNIQUE-PRIMARY-STAT8-01`
-
-PR #82 현재 승인 `APPROVED_PENDING_MERGE`:
-
-1. `TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01`
-2. `TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01`
+- `TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01`
+- `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`
+- `TEN-DEC-20260805-CONDITION-CALIBRATION-01`
+- `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01`
+- `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`
+- `TEN-DEC-20260805-WORK-GOVERNANCE-01`
 
 우선순위:
 
@@ -85,7 +59,7 @@ PR #82 현재 승인 `APPROVED_PENDING_MERGE`:
 최신 사용자 지시
 → 최신 사용자 승인 Decision·approved planning JSON
 → 분야 책임 원본 docs/01~11
-→ Active Context·Roadmap·Google Sheet 요약
+→ ACTIVE_CONTEXT·Roadmap·Google Sheet 요약
 → 실제 구현·테스트
 → 과거 계획·초안·백업
 ```
@@ -110,33 +84,23 @@ PR #82 현재 승인 `APPROVED_PENDING_MERGE`:
 
 ## 구조화 계획 데이터
 
-최근 병합 체크포인트와 활성 PR의 승인 계약은 `docs/planning-data/approved_*.json`에 Decision별로 보존한다. 활성 PR #82의 현재 계약:
-
-- `approved_20260803_star10_ultimate_primary_stat12_contract.json`
-- `approved_20260803_starting_martial_secondary_stats_contract.json`
+최근 병합 체크포인트와 활성 Draft의 승인 계약은 `docs/planning-data/approved_*.json`에 Decision별로 보존한다. 활성 계약 목록과 순서는 `ACTIVE_CONTEXT.md` 및 `CANON_LIFECYCLE_REGISTRY.md`에서 찾는다.
 
 ## 현재 상태
 
+활성 PR·exact head·승인 수·다음 Decision은 `ACTIVE_CONTEXT.md`의 단독 책임이다. 이 지도에는 변동 상태를 복제하지 않는다.
+
+안정 상태:
+
 ```yaml
-main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
-last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
-active_planning_pr: 82
-active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
-active_approval_count: 2/10
-active_decision_state: APPROVED_PENDING_MERGE
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
-work_mode: PLAN
-base_release: 9.4.3
-action_selection:
-  implementation_status: IMPLEMENTED_CURRENT
-  automated_validation: PASS
-  human_validation: NOT_RUN
-latest_combat_planning:
-  authority_status: CURRENT_APPROVED_PLANNING
-  implementation_status: NOT_STARTED
-full_product_flow_runtime: NOT_STARTED
+runtime_work_mode: REVIEW
+planning_work_mode: PLAN
+runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
+latest_combat_planning_runtime: NOT_STARTED
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
+base_release: 9.4.3
+human_validation: NOT_RUN
 ```
 
 ## 구형·오해 표현 차단
@@ -163,14 +127,4 @@ next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
 
 ## 현재 다음 작업
 
-GrillMe 승인 묶음:
-
-1. 중간 노드 영구 스테이터스 보상 여부·량.
-2. 무공별 기술의 주/보조 배수와 5/9성 임계 효과.
-3. 전투 종료 5지표 가중치·정규화·등급 경계.
-4. 다수 합 승리 상한·정규화·파밍 방지.
-5. 절초 사용 평가와 패배 전투 등급.
-6. 챔피언 등록·시즌·매칭·어뷰징·친선전 관찰.
-7. 고능력치가 잘못된 계획을 덮는 비율의 사람 검증 계약.
-
-기획 완료 후 전체 검토를 닫고, 필요한 이미지·애니메이션·HX를 생성·검수한 뒤 `VERTICAL_SLICE_APP_FLOW_SHELL` Codex 구현으로 진행한다.
+`ACTIVE_CONTEXT.md`의 다음 Gate를 따른다. 기획 완료 후 전체 검토를 닫고, 필요한 이미지·애니메이션·HX를 생성·검수한 뒤 `VERTICAL_SLICE_APP_FLOW_SHELL` Codex 구현으로 진행한다.
