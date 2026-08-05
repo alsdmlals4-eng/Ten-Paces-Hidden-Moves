@@ -1,0 +1,47 @@
+name: Apply Observation Canon Patch
+
+on:
+  push:
+    branches:
+      - agent/2026-08-05-wrong-plan-rescue-stat-derived-design
+    paths:
+      - .github/observation-canon-patch/**
+      - .github/workflows/apply-observation-canon-patch.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/2026-08-05-wrong-plan-rescue-stat-derived-design
+          fetch-depth: 0
+
+      - name: Apply staged patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .github/observation-canon-patch/part*.b64 | base64 --decode > /tmp/observation-canon.patch
+          patch -p1 < /tmp/observation-canon.patch
+          rm -rf .github/observation-canon-patch
+          git rm .github/workflows/apply-observation-canon-patch.yml
+
+      - name: Verify focused contracts
+        run: |
+          python -m unittest tests.test_postmerge_canon_lifecycle tests.test_observation_answer_leak_guardrails_contract tests.test_wrong_plan_rescue_derived_stats_contract tests.test_condition_calibration_contract tests.test_work_governance_contract -v
+          python tools/check_project_operating_system.py --root . --config .github/documentation-governance.json
+          python tools/check_canonical_reference_freshness.py --root . --config .github/reference-freshness.json
+
+      - name: Commit canon repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "docs: retain direct observation reveal and repair canon freshness"
+          git push origin HEAD:agent/2026-08-05-wrong-plan-rescue-stat-derived-design
