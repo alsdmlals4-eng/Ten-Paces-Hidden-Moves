@@ -62,24 +62,15 @@ class GradeFarmingGuardrailsContractTest(unittest.TestCase):
         self.assertEqual(credit["identity_basis"], "CANONICAL_SOURCE_ID")
         self.assertEqual(credit["repeat_multipliers"], [1.0, 0.5, 0.0])
         self.assertEqual(credit["action_instance_combined_credit_cap"], 1.0)
-        self.assertEqual(
-            credit["multi_event_pool_distribution"],
-            "EQUAL_SPLIT_ACROSS_QUALIFYING_EVENTS",
-        )
+        self.assertEqual(credit["multi_event_pool_distribution"], "EQUAL_SPLIT_ACROSS_QUALIFYING_EVENTS")
         self.assertFalse(credit["hit_index_creates_new_identity"])
 
     def test_grade_metric_caps_are_fixed_poc_defaults(self):
         caps = self.load_contract()["metric_cap_contract"]
         self.assertEqual(caps["clash_credit_cap"], 3.0)
         self.assertEqual(caps["dodge_credit_cap"], 3.0)
-        self.assertEqual(
-            caps["normalized_clash_input"],
-            "min(total_clash_credit,3.0)/3.0",
-        )
-        self.assertEqual(
-            caps["normalized_dodge_input"],
-            "min(total_dodge_credit,3.0)/3.0",
-        )
+        self.assertEqual(caps["normalized_clash_input"], "min(total_clash_credit,3.0)/3.0")
+        self.assertEqual(caps["normalized_dodge_input"], "min(total_dodge_credit,3.0)/3.0")
 
     def test_scoring_window_stops_only_positive_credit(self):
         window = self.load_contract()["scoring_window_contract"]
@@ -135,91 +126,63 @@ class GradeFarmingGuardrailsContractTest(unittest.TestCase):
 
     def test_rejects_raw_event_attenuation(self):
         self.assert_mutation_rejected(
-            lambda data: data["raw_event_contract"].update(
-                {"clash_wins_record_all": False}
-            ),
+            lambda data: data["raw_event_contract"].update({"clash_wins_record_all": False}),
             "RAW_EVENT_PRESERVATION_CONFLICT",
         )
 
     def test_rejects_repeat_multiplier_drift(self):
         self.assert_mutation_rejected(
-            lambda data: data["defensive_credit_contract"].update(
-                {"repeat_multipliers": [1.0, 0.25, 0.0]}
-            ),
+            lambda data: data["defensive_credit_contract"].update({"repeat_multipliers": [1.0, 0.25, 0.0]}),
             "REPEAT_ATTENUATION_CONFLICT",
         )
 
     def test_rejects_action_instance_credit_above_one(self):
         self.assert_mutation_rejected(
-            lambda data: data["defensive_credit_contract"].update(
-                {"action_instance_combined_credit_cap": 2.0}
-            ),
+            lambda data: data["defensive_credit_contract"].update({"action_instance_combined_credit_cap": 2.0}),
             "ACTION_INSTANCE_CREDIT_CONFLICT",
         )
 
     def test_rejects_non_equal_multi_event_pool_distribution(self):
         self.assert_mutation_rejected(
-            lambda data: data["defensive_credit_contract"].update(
-                {"multi_event_pool_distribution": "EACH_EVENT_FULL_CREDIT"}
-            ),
+            lambda data: data["defensive_credit_contract"].update({"multi_event_pool_distribution": "EACH_EVENT_FULL_CREDIT"}),
             "EVENT_POOL_SPLIT_CONFLICT",
         )
 
     def test_rejects_grade_metric_cap_drift(self):
         self.assert_mutation_rejected(
-            lambda data: data["metric_cap_contract"].update(
-                {"clash_credit_cap": 5.0}
-            ),
+            lambda data: data["metric_cap_contract"].update({"clash_credit_cap": 5.0}),
             "GRADE_METRIC_CAP_CONFLICT",
         )
 
     def test_rejects_positive_credit_after_scoring_window(self):
         self.assert_mutation_rejected(
-            lambda data: data["scoring_window_contract"].update(
-                {"positive_credit_after_window": True}
-            ),
+            lambda data: data["scoring_window_contract"].update({"positive_credit_after_window": True}),
             "GRADE_SCORING_WINDOW_CONFLICT",
         )
 
     def test_rejects_multiple_ultimate_grade_credits(self):
         self.assert_mutation_rejected(
-            lambda data: data["ultimate_credit_contract"].update(
-                {"maximum_effective_ultimate_grade_credit": 2}
-            ),
+            lambda data: data["ultimate_credit_contract"].update({"maximum_effective_ultimate_grade_credit": 2}),
             "ULTIMATE_GRADE_CREDIT_CONFLICT",
         )
 
     def test_rejects_premature_grade_economy_link(self):
         self.assert_mutation_rejected(
-            lambda data: data["economy_gate"].update(
-                {"grade_affects_run_currency": True}
-            ),
+            lambda data: data["economy_gate"].update({"grade_affects_run_currency": True}),
             "GRADE_ECONOMY_GATE_CONFLICT",
         )
 
     def test_rejects_missing_measurement_diagnostic(self):
         self.assert_mutation_rejected(
-            lambda data: data["human_validation_gate"]["required_diagnostics"].remove(
-                "same_source_repeat_response_share"
-            ),
+            lambda data: data["human_validation_gate"]["required_diagnostics"].remove("same_source_repeat_response_share"),
             "GRADE_MEASUREMENT_CONFLICT",
         )
 
-    def test_active_context_moves_to_nine_of_ten_and_star9_template(self):
-        active = (
-            ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
-        ).read_text(encoding="utf-8")
-        self.assertIn("active_planning_pr: 92", active)
-        self.assertIn("active_approval_count: 9/10", active)
-        self.assertIn(
-            "active_decision_state: APPROVED_DRAFT_GRADE_FARMING_GUARDRAILS",
-            active,
-        )
-        self.assertIn(
-            "next_planning_decision: STAR9_PUBLIC_READ_BRANCH_TEMPLATE",
-            active,
-        )
-        self.assertIn("TEN-DEC-20260805-GRADE-FARMING-GUARDRAILS-01", active)
+    def test_historical_grade_checkpoint_remains_in_contract(self):
+        data = self.load_contract()
+        self.assertEqual(data["decision_id"], "TEN-DEC-20260805-GRADE-FARMING-GUARDRAILS-01")
+        self.assertEqual(data["active_approval_count"], "9/10")
+        self.assertEqual(data["next_planning_decision"], "STAR9_PUBLIC_READ_BRANCH_TEMPLATE")
 
 
 if __name__ == "__main__":

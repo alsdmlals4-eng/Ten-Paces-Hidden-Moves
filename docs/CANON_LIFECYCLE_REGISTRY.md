@@ -1,6 +1,7 @@
 # 십보강호 정본 생명주기 등록부
 
 - 기반 권위: `TEN-DEC-20260804-POSTMERGE-CANON-ADVERSARIAL-AUDIT-01`
+- 현행 성장 권위: `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01`
 - 위험 완화: `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`, `TEN-DEC-20260805-CONDITION-CALIBRATION-01`, `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01`, `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`, `TEN-DEC-20260805-GRADE-FARMING-GUARDRAILS-01`
 - 작업 운영: `TEN-DEC-20260805-WORK-GOVERNANCE-01`
 - 기준 main: `bbed0fd4d278ca0e0d52f4e6d9083aafa1997318`
@@ -26,10 +27,12 @@
 | 파생 스탯·오판 구제 개정 | `docs/02_COMBAT_RULES_DERIVED_STATS_AND_RESCUE_AMENDMENT.md` |
 | 관찰 직접 공개 개정 | `docs/02_COMBAT_RULES_OBSERVATION_GUARDRAILS_AMENDMENT.md` |
 | 등급 파밍 방지 개정 | `docs/02_COMBAT_RULES_GRADE_FARMING_GUARDRAILS_AMENDMENT.md` |
+| 7성·9성 숙련 예산 개정 | `docs/02_COMBAT_RULES_STAR7_STAR9_MASTERY_BONUS_AMENDMENT.md` |
 | 거리·중단·예산 부모 | `TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01` |
-| 묶음 내력 회복 최종값 | `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01` |
-| 기존 행동 비용 | `TEN-DEC-20260804-EXISTING-ACTIONS-REPRICE-01` |
+| 기존 행동 비용·기술2 유효 예산 | `TEN-DEC-20260804-EXISTING-ACTIONS-REPRICE-01` |
 | 기술1 효과·조건·5성 | `TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01` |
+| 7성·9성 숙련 예산·단일 효과 템플릿 | `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01` |
+| 묶음 내력 회복 최종값 | `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01` |
 | 조건 측정·재분류 | `TEN-DEC-20260805-CONDITION-CALIBRATION-01` |
 | 파생 수치·오판 구제 측정 | `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01` |
 | 관찰 직접 공개·정답 유출 측정 | `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01` |
@@ -46,6 +49,7 @@
 - `approved_20260805_wrong_plan_rescue_derived_stats_contract.json`
 - `approved_20260805_observation_answer_leak_guardrails_contract.json`
 - `approved_20260805_grade_farming_guardrails_contract.json`
+- `approved_20260805_star7_star9_mastery_bonus_contract.json`
 - `approved_20260805_work_governance_contract.json`
 
 ## `[대체됨]`
@@ -55,6 +59,8 @@
 | 부모 `bundle_transition_recovery.internal=1` | 자원 포화 Decision | 과거 재현만 |
 | `docs/decisions/2026-08-02_RANGE_PRICE_BANDS_DECISION.md` | 전투 가격 Decision | 과거 ledger만 |
 | 2026-08-03 기술1 효과 Decision·contract | 2026-08-04 기술1 Decision | 역사·migration만 |
+| 역사 기술2 계약의 구형 `available_budget_ticks` | 기존 행동 repricing + 7/9성 숙련 Decision | 기본 효과 근거만; 현행 예산 금지 |
+| 9성 공개 정보 자동 분기 가설 | 7/9성 숙련 Decision | 역사적 설계 검토만 |
 | `data/combat/combat_hud_preview.json`의 `attack_power: 8` 공식 권위 | 파생 스탯 Decision | 역사 PoC 표시·재현만 |
 | PR #90과 비최종 condition-calibration branch | PR #91 | 오류 추적만 |
 
@@ -64,6 +70,8 @@
 |---|---|---|
 | GitHub PR #85 HTML Technique1 PoC | 닫힘·병합 금지·제품 권위 없음 | 명시적 재개 승인 |
 | PR #85 테스트 결과 | 역사 참고 | 최신 계약 재작성·재검증 |
+| 여섯 7성 +10틱 실제 효과 배분 | 예산만 승인 | 새 승인 배치·개별 GrillMe |
+| 여섯 9성 단일 완성 효과 | 템플릿만 승인 | 7성 배분 뒤 개별 GrillMe |
 | 최종 등급 가중치·체력 정규화·라운드 감점·S/A/B/C 컷 | 원자료·파밍 방지 선확정 | 사람 표본과 별도 GrillMe |
 | 등급 기반 재화·수련·드롭·영구재화 보상 | 사람 검증 전 금지 | 30승·5상대·표본 집중40% 이하와 새 Decision |
 
@@ -82,35 +90,43 @@
 | #89 | Draft·자원 포화 완화 |
 | #90 | `[대체됨]` 닫힘 |
 | #91 | Draft·부모 #89·조건 보정·작업 운영 |
-| #92 | Draft·부모 #91·파생 스탯·오판 구제·관찰 직접 공개·등급 파밍 방지 |
+| #92 | Draft·부모 #91·파생 스탯·오판 구제·관찰·등급·7/9성 숙련 예산·10/10 |
 | #85 | `[보류]` HTML PoC |
 
 ## `CANON_CONFLICT`
 
+- 현행 repricing overlay 없이 역사 기술2 예산을 7성 기준으로 사용.
+- 7성 숙련 보너스를 +10틱 이외 값으로 적용.
+- 9성 20% 항을 반올림·올림하거나 7성 최종 예산이 아닌 다른 기준에 적용.
+- 9성에 상황별 분기·공개 trigger·우선순위·추가입력·추가비용·복수 효과를 추가.
+- 7성·9성이 기술1 역할을 복제해 전 상황에서 대체.
+- 숙련 보너스로 거리·순서·합·회피·중단 실패를 자동 삭제.
+- 별도 Decision 전에 여섯 개별 7성/9성 효과를 승인 또는 런타임 생성.
 - 부모 내력 자동회복1을 overlay 없이 현행값으로 사용.
 - 조건 성공률에 따라 자동·실시간 repricing.
 - 공개상 불가능한 사용을 가격 분모에 포함.
-- 같은 trigger의 부모 효과와 5성 patch 성공 중복 집계.
-- 스탯이 사거리·이동·슬롯·타격·회피 횟수·숨은 계획 접근을 점당 연속 증가.
-- 방어 행동 없이 근골이 상시 피해를 감소.
-- 최대 체력·기력·내력 증가가 현재값을 즉시 충전.
+- 스탯이 구조 실패·숨은 계획 접근을 우회.
 - 구형 `attack_power: 8`을 행동별 스탯 계수에 다시 더함.
-- 결과 역전과 중대 구제를 중복 집계.
 - 원시 합·회피·절초 로그 자체를 등급 감쇠로 삭제·축소.
 - 같은 적 공격 행동 인스턴스가 합·회피 합계1.0을 초과해 등급에 반영.
-- 연격 hit index·임시 보정·표시명으로 안정 행동 ID 반복 감쇠를 우회.
 - 기준 라운드 이후 합·회피·절초 양의 반영량을 계속 누적.
 - 사람 검증·새 Decision 전에 등급을 경제에 연결.
 - 승인10건 초과 배치를 분리하지 않음.
-- 고위험 충돌·세션 종료·큰 정본 영향의 조기 체크포인트 누락.
 - RED 없이 구현하거나 문서 작업을 TDD 예외로 처리.
-- 실질 작업에서 벤치마킹·현업 비교·권장 결론 생략.
 - `[대체됨]`·`[보류]` 자료를 현행 제품 권위로 사용.
 - `IMPLEMENTED_LEGACY`를 최신 계획 구현 완료로 표시.
 - 실행하지 않은 검증을 PASS로 표시.
 
 ## 다음 Gate
 
-`STAR9_PUBLIC_READ_BRANCH_TEMPLATE`가 다음 Decision이다. 등급 파밍 위험은 `MITIGATED_PENDING_HUMAN_MEASUREMENT`, 관찰 위험은 `ACCEPTED_PENDING_HUMAN_MEASUREMENT`다. 양쪽 모두 자동 조정 없이 사람 측정과 새 GrillMe Decision으로만 변경한다.
+`SIX_STAR7_MASTERY_BONUS_ALLOCATIONS`가 다음 Decision이다. 현재 승인 배치는 `10/10`으로 닫혔다.
 
-9성 조건은 공개 trigger, 유효 시도, 성공 사건, 실패 지점, 상대 대응, all-or-nothing 범위, 고점·저점, 측정 지표, 재분류 Gate를 필수로 한다.
+```text
+SIX_STAR7_MASTERY_BONUS_ALLOCATIONS
+→ SIX_STAR9_SINGLE_COMPLETION_BONUSES
+→ SIX_STAR10_UNIQUE_ULTIMATES
+→ NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT
+→ FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
+```
+
+여섯 개별 7성 효과와 9성 효과를 현재 권위로 사용하면 안 된다. 자동 조정 없이 새 GrillMe Decision으로만 승인한다.

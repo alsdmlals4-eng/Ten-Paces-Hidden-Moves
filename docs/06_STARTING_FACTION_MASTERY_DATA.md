@@ -1,208 +1,170 @@
 # 십보강호 세력·핵심무공·심법 성장 가설
 
-> 책임: 시작 무공 후보·1~10성 성장·기술 역할·기술 예산·성장 검증  
-> 전투 규칙: `docs/02_COMBAT_RULES.md`  
-> 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`  
-> 역사 PoC 데이터: `docs/planning-data/poc_martial_arts.json`  
-> 역사 호환 분류: `T1 이후 가설 원본`. 현재 Decision·approved contract·Active Context가 우선한다.
-
-## 1. 현재 상태
+## 현재 상태
 
 ```yaml
-authority_status: CURRENT_APPROVED_PLANNING
-active_batch: 9/10
-merged_checkpoint: 0ba841ff2e62b2f716466356dd9e7ffcf587d150
-implementation_status: NOT_STARTED
-runtime_validation: NOT_RUN
-godot_validation: NOT_RUN
-windows_validation: NOT_RUN
+status: T1 이후 가설 원본
+active_batch: 10/10
+current_decision: TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01
+next_decision: SIX_STAR7_MASTERY_BONUS_ALLOCATIONS
+implementation_authority: PLANNING_ONLY
 human_validation: NOT_RUN
-next_planning_decision: STAR9_PUBLIC_READ_BRANCH_TEMPLATE
 ```
 
-프로젝트 코어가 사용자 승인된 상태에서 성장 골격과 시작 무공을 구체화한다. 상세 수치는 아래 활성 계약이 소유한다.
+현재 T0에는 세력 선택·수련 분기·개별 7성/9성 보너스 효과가 구현되지 않았다. 프로젝트 코어가 사용자 승인됐다는 사실은 성장 런타임이나 사람 검증 완료를 뜻하지 않는다.
 
-- `approved_20260803_star10_ultimate_primary_stat12_contract.json`
-- `approved_20260803_starting_martial_secondary_stats_contract.json`
-- `approved_20260803_intermediate_node_permanent_stat_rewards_contract.json`
-- `approved_20260803_martial_technique_role_and_scaling_matrix_contract.json`
-- `approved_20260803_starting_martial_technique_2_base_effects_and_budgets_contract.json`
-- `approved_20260804_combat_pricing_interruption_recovery_contract.json`
-- `approved_20260804_existing_action_reprice_contract.json`
-- `approved_20260804_technique1_conditional_rework_star5_contract.json`
-- `approved_20260804_postmerge_canon_adversarial_audit_contract.json`
-- `approved_20260805_observation_answer_leak_guardrails_contract.json`
-- `approved_20260805_grade_farming_guardrails_contract.json`
+현행 성장 권위:
 
-`approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json`은 `[대체됨]` 역사 증거다. 현재 데이터 생성에 사용하면 `CANON_CONFLICT`다.
+- 기술1 효과·5성: `approved_20260804_technique1_conditional_rework_star5_contract.json`
+- 기술2 유효 비용·슬롯: `approved_20260804_existing_action_reprice_contract.json`
+- 7성·9성 숙련 예산: `approved_20260805_star7_star9_mastery_bonus_contract.json`
+- 등급 파밍 가드레일: `approved_20260805_grade_farming_guardrails_contract.json`
+- `approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json`은 `[대체됨]` 역사 증거다.
 
-## 2. 현행 전투 계약과 연결 원칙
-
-- 성장은 다음 전투의 거리·순서·자원·대응 계획을 확장해야 한다.
-- 기술1은 기본 운용법, 기술2는 공개 상태 기반 고급 상호작용이다.
-- 기술2가 기술1을 전 상황에서 대체하면 실패다.
-- 5성·9성은 원래 역할을 확장하며 무조건 피해 증가로 수렴하지 않는다.
-- 9성은 공개 정보 기반 자동 분기이며 행동 해결 중 추가 선택을 만들지 않는다.
-- 10성 절초도 거리·합·회피·중단·자원 규칙을 따른다.
-- 높은 능력치가 잘못된 계획을 반복 구제하면 성장 설계를 재검토한다.
-- 등급은 원시 사건과 유효 반영량을 분리하며 사람 검증 전 성장·재화 보상을 증폭하지 않는다.
-
-공용 Schema:
+## 현행 전투 계약과 연결 원칙
 
 ```text
-action_slots
-stamina_cost
-internal_cost
-range
-move_range
-hits
-effects
-sure_hit
-category
-resolution_phase
-targeting_mode
-skill_milestone
-condition_trigger
-condition_failure_scope
-replay_reason_code
+가치 상위호환 + 역할 비대체
 ```
 
-- 한 효과는 주 능력치1개와 선택적 보조 능력치1개, 최대2개를 참조한다.
-- 같은 출력에 주·보조 배수를 동시에 더하지 않는다.
-- 이동거리·사거리·슬롯·타격/회피 횟수·전조 수는 능력치 점당 연속 증가하지 않는다.
-- 기술 이동은 `ADVANCE|RETREAT` 고정 방향과 이동 불가 폴백을 명시한다.
+- 3성 기술1: 무공의 기본 초식.
+- 5성: 기술1의 기존 역할을 무료로 강화.
+- 7성 기술2: 같은 무공 원리를 다른 전술 역할로 응용.
+- 9성: 기술2를 분기하지 않고 단일 완성 보너스 효과 하나 추가.
+- 10성: 별도 고유 절초.
 
-## 3. 다음 PoC 성장 실험
+기술 카드와 런타임 데이터는 `action_slots`, 기력·내력 비용, 거리·이동, `sure_hit` 등 승인 필드를 명시적으로 가져야 한다. 7성·9성 숙련 보너스가 거리·순서·합·회피·중단의 실패를 자동 삭제하면 안 된다.
 
-- 시작 후보6개 중4개를3성으로 선택한다.
-- 시작 총합20·평균4에서 전문화와 네 기술 동시 해금 경로를 비교한다.
-- 주요 비무5 전 한 무공10성 경로의 수련 요구량과 노드 의존도를 검증한다.
-- 데모 중간 노드8개 중 영구 스테이터스 보상 기회는 회차 최대2개다.
-- 기술1/2 선택률과 기술2의 전 상황 대체율을 기록한다.
-- 자원 상한률·자동 회복 낭비율·명상/준비 선택률을 기록한다.
-- 조건 난도별 실제 성공률·실패 지점·고점/저점 체감을 기록한다.
-- 높은 능력치가 잘못된 계획을 구제한 사례를 기록한다.
-- 등급 원시/유효 방어 반영량 비율, 같은 안정 ID 반복 대응, 기준 라운드 이후 사건을 기록한다.
-
-## 4. 장기 보유 구조 가설
-
-- 한 회차에 여러 무공을 익힐 수 있다.
-- 해금 기술은 덱·손패·장착 제한 없이 사용 후보다.
-- 수련포인트·회차 길이·해금 요구치가 실제 사용 기술 수를 제한한다.
-- 정확한 장기 보유 한도는 T1 이후 결정한다.
-- 중복 습득은 지정 수련으로 변환하고 성취 보너스를 재지급하지 않는다.
-- 영구 메타 해금은 시작 선택지·도감·서사·외형·편의 중심이다.
-- 여러 무공 보유가 정답 기술 모음으로 수렴하면 보유 구조를 재검토한다.
-
-## 5. 세력 정체성 후보
-
-현재 T0에는 세력 선택 런타임이 없다. 아래 시작 무공은 세력·문파 확장을 위한 후보이며 공용 전투 규칙을 대체하지 않는다.
-
-| canonical ID | 무공 | 주 | 보조 | 기술1 | 기술2 | 역사 alias |
-|---|---|---|---|---|---|---|
-| `flowing_cloud_sword` | 유운검결 | 신법 | 외공 | 유운삼첩 | 낙영추검 | 동일 |
-| `diamond_body_art` | 금강호체공 | 근골 | 내공 | 금강가세 | 반진권 | `vajra_body` |
-| `taiji_flowing_sword` | 태극유전검 | 심안 | 내공 | 운수회신 | 사량발천근 | `taiji_flow` |
-| `chasing_wind_spear` | 추풍창법 | 외공 | 신법 | 추풍일섬 | 연환쇄로 | `pursuing_wind_spear` |
-| `clear_heart_nourishing_art` | 청심양생공 | 내공 | 근골 | 청심조식 | 회기전맥 | `clear_heart_nurturing` |
-| `shadowless_ten_steps` | 무영십보 | 신법 | 심안 | 철각유영 | 십보환위 | `shadowless_steps` |
-
-역사 ID는 `legacy_manual_alias`로만 보존한다.
-
-시작 구조:
+### 예산 공식
 
 ```text
-기본2 × 5종 + 자유 분배6 + 선택 무공4개의 2성 주+1 = 총합20
+star7_final_budget_ticks
+= effective_technique2_available_budget_ticks + 10
+
+star9_bonus_ticks
+= 10 + floor(star7_final_budget_ticks × 0.20)
+
+star9_total_budget_ticks
+= star7_final_budget_ticks + star9_bonus_ticks
 ```
 
-| 성 | 성장 |
-|---:|---|
-| 1 | 고유 패시브 |
-| 2 | 주+1 |
-| 3 | 기술1·주4 요구 |
-| 4 | 주+1·보조+1 |
-| 5 | 기술1 무료20% 역할 강화 |
-| 6 | 주+2·보조+1 |
-| 7 | 기술2·주8 요구 |
-| 8 | 주+3·보조+2 |
-| 9 | 기술2 공개 정보 자동 분기 |
-| 10 | 고유 절초·주12 요구 |
+20% 항은 정수 틱으로 내림한다.
 
-기술1 유효 비용은 `approved_20260804_existing_action_reprice_contract.json`, 효과·조건·5성은 `approved_20260804_technique1_conditional_rework_star5_contract.json`을 읽는다.
+| 기술2 | 현행 기준 | 7성 최종 | 9성 추가 | 9성 누적 최종 |
+|---|---:|---:|---:|---:|
+| 낙영추검 | 65 | 75 | 25 | 100 |
+| 반진권 | 65 | 75 | 25 | 100 |
+| 사량발천근 | 66 | 76 | 25 | 101 |
+| 연환쇄로 | 75 | 85 | 27 | 112 |
+| 회기전맥 | 61 | 71 | 24 | 95 |
+| 십보환위 | 96 | 106 | 31 | 137 |
 
-| 기술1 | 효과/예산/편차 | 5성 무료 예산 |
-|---|---:|---:|
-| 유운삼첩 | `58/61/-3` | 12 |
-| 금강가세 | `31/31/0` | 6 |
-| 운수회신 | `38/40/-2` | 8 |
-| 추풍일섬 | `50/45/+5` | 9 |
-| 청심조식 | `22/24/-2` | 5 |
-| 철각유영 | `48/46/+2` | 9 |
+개별 7성 +10틱 배분과 9성 효과는 아직 미승인이다.
 
-유운삼첩은 총피해를 한 번 계산해 `40%/30%/나머지`로 분배하고 취소된 후속타 피해를 이월하지 않는다.
+## 다음 PoC 성장 실험
 
-## 6. 기본 절초·10성 절초·진의
+### 성장 단계
 
-- 공용 절초 3종은 기존 T0 시스템 fixture이며 무공 10성 절초와 구분한다.
-- 10성 절초는 해당 무공 주 영구 능력치12를 요구한다.
-- 절초도 행동 슬롯·기력·내력·절초기세 비용을 가질 수 있다.
-- 절초 비용은 일반 기술과 같은 자원 허용량 모델을 사용한다.
-- 각 무공 절초의 효과·이동·사거리·조건·비용·예산은 아직 개별 승인되지 않았다.
-- 진의는 T1 이후 장기 성장 가설이며 현재 제품 범위가 아니다.
-- 절초가 거리·중단·회피·합을 무시하는 정답 행동이 되면 실패다.
-- 등급에는 기준 라운드 안에서 실제 비비용 효과를 낸 첫 절초1회만 유효 반영한다.
+| 성급 | 보상 | 역할 |
+|---:|---|---|
+| 2성 | 주능력치 +1 | 기초 성장 |
+| 3성 | 기술1 해금 | 기본 초식 |
+| 4성 | 주+1·보조+1 | 기반 확장 |
+| 5성 | 기술1 무료20% patch | 같은 기술을 더 잘 사용 |
+| 6성 | 주+2·보조+1 | 기술2 준비 |
+| 7성 | 기술2 + 숙련 예산10틱 | 같은 무공의 다른 전술 응용 |
+| 8성 | 주+3·보조+2 | 절초 준비 |
+| 9성 | 기술2 단일 완성 보너스 | `10 + floor(7성 최종 예산×20%)` |
+| 10성 | 고유 절초 | 무공 최종 경지 |
 
-## 7. 성장 진입 게이트
+9성 작성 규칙:
+
+- 효과 정확히 하나.
+- 상황별 분기·공개 trigger·우선순위 없음.
+- 추가 입력·버튼·자원 비용 없음.
+- 복수 효과 중첩 없음.
+- 카드 설명 한 문장.
+- 기술2 핵심 역할 유지.
+- 기술1 역할 복제·전 상황 대체 금지.
+
+## 장기 보유 구조 가설
+
+- 플레이어는 회차 중 배운 무공과 상대 정보를 발견 기록으로 축적한다.
+- 영구 성장은 전투 수치만 누적하지 않고 정보·시작 선택지·외형·서사를 확장한다.
+- 시작 무공은 주능력치와 보조능력치를 가지지만 단일 스탯 강제가 되지 않게 한다.
+- 같은 무공의 성급 상승은 동작 감각과 철학을 유지한다.
+- 높은 성급은 낮은 성급보다 가치가 높아도 사용 시점과 역할은 달라야 한다.
+- 7성 뒤 기술1 사용률이 사실상 0이 되면 `MASTERY_ROLE_REPLACEMENT_RISK`로 재검토한다.
+
+## 세력 정체성 후보
+
+현재 가설 세력은 여섯 시작 무공의 전투 철학을 대표한다.
+
+| 무공 | 기술1 기본 역할 | 기술2 다른 역할 |
+|---|---|---|
+| 유운검결 | 유운삼첩: 3연격 압박 | 낙영추검: 접근·거리2 단발 결착 |
+| 금강호체공 | 금강가세: 방어 준비 | 반진권: 준비한 방어를 공격으로 전환 |
+| 태극유전검 | 운수회신: 회피 대응 | 사량발천근: 합 대응 |
+| 추풍창법 | 추풍일섬: 공격 전 진입 | 연환쇄로: 적중 뒤 간격 회수 |
+| 청심양생공 | 청심조식: 평시 정비 | 회기전맥: 저자원 위기 안정화 |
+| 무영십보 | 철각유영: 안전 확보 | 십보환위: 회피 성공 뒤 반격 전환 |
+
+이 표는 동일 역할 금지를 위한 책임 원본이다. 실제 +10틱 효과와 9성 단일 효과는 후속 Decision에서 확정한다.
+
+## 기본 절초·10성 절초·진의
+
+현재 T0 런타임에는 공용 절초 3종이 역사 PoC 데이터로 존재한다. 시작 무공별 10성 절초는 주 영구 능력치12 요구만 승인됐고 개별 효과는 미승인이다.
+
+- 기본 절초: 공용 전투 검증용.
+- 10성 절초: 무공별 최종 경지, 별도 예산·효과 Decision 필요.
+- 진의: 10성 이후 장기 확장 가설이며 현재 `DEFERRED`.
+
+9성은 절초가 아니며 새 버튼이나 별도 자원 체계를 만들지 않는다.
+
+## 성장 진입 게이트
+
+현재 순서:
 
 ```text
-STAR9_PUBLIC_READ_BRANCH_TEMPLATE
-→ 여섯 개별 9성 자동 분기
-→ 여섯 10성 고유 절초
-→ 비스탯 노드 기대가치
-→ 전체 핵심 재미 적대적 검토
-→ 별도 Build 승인
+SIX_STAR7_MASTERY_BONUS_ALLOCATIONS
+→ SIX_STAR9_SINGLE_COMPLETION_BONUSES
+→ SIX_STAR10_UNIQUE_ULTIMATES
+→ NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT
+→ FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
 ```
 
-9성 템플릿 필수:
+개별 7성 배분 전 확인:
 
-- 공개 trigger.
-- 자동 발동·추가 입력 없음.
-- 실패 시 지급0 범위.
-- 조건 가격·예상 성공률.
-- 상대 대응 수단.
-- 복기 성공·실패 문구.
-- 기술1/2 대체율 측정.
+- 현행 repricing 예산을 사용했는가.
+- +10틱을 하나 이상의 명시 효과로 설명했는가.
+- 기술1과 다른 역할인가.
+- 기술2의 기존 실패·상대 대응을 보존하는가.
 
-Build 전에는 현재 repricing·기술1·기술2·등급 파밍 계약, 승인될 9성·10성 계약, canonical ID migration, 조건 실패·연격·고정 이동 회귀 테스트가 필요하다.
+개별 9성 효과 전 확인:
 
-## 8. 검증 기준
+- 효과가 정확히 하나인가.
+- 허용 추가 예산 안인가.
+- 한 문장으로 설명 가능한가.
+- 분기·추가입력·추가비용이 없는가.
+- 기술1 역할을 복제하지 않는가.
 
-- 시작 총합20·평균4와 짝수 성 보상이 중복 지급되지 않는다.
-- 요구치 미달 시 해당 기술만 잠기고 수련·기존 보상은 유지된다.
-- 구형 기술1 계약을 현재 데이터 생성에 사용하지 않는다.
-- 기술2는 기술1을 전 상황에서 대체하지 않는다.
-- 9성은 공개 정보만 사용하고 추가 입력을 만들지 않는다.
-- 10성 절초는 일반 거리·중단·자원 규칙을 따른다.
-- `RESOURCE_SATURATION_RISK`, `CONDITION_CALIBRATION_RISK`, `WRONG_PLAN_RESCUE_RISK`, `OBSERVATION_ANSWER_LEAK_RISK`, `GRADE_FARMING_RISK`를 사람 검증에서 측정한다.
-- 관찰은 `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`에 따라 직접 앞 슬롯 행동 종류 공개를 유지하며 자동 정답 대응·자동 nerf를 금지한다.
-- 등급은 `TEN-DEC-20260805-GRADE-FARMING-GUARDRAILS-01`에 따라 원시 사건을 보존하고 유효 반영량만 감쇠·상한 처리한다.
-- 사람 검증 전 등급을 수련·재화·드롭·영구재화에 연결하지 않는다.
-- 사람 검증 전 재미·밸런스 PASS를 주장하지 않는다.
+## 검증 기준
 
-생명주기:
+자동 검증:
 
-- `[현행]`: 2026-08-04 전투·repricing·기술1 계약과 활성 성장·관찰·등급 파밍 계약.
-- `[대체됨]`: 2026-08-03 기술1 효과 Decision·contract.
-- `[보류]`: PR #85 HTML Technique1 PoC, 최종 등급 가중치·컷·경제 연결.
-- `[폐기]`: 현재 없음.
+- 현행 repricing overlay의 여섯 기술2 예산을 독립 재조회.
+- 7성 `+10` 재계산.
+- 9성 `10 + floor(20%)` 재계산.
+- 분기·추가입력·추가비용·복수 효과 계약 위반 거부.
+- 개별 효과의 조기 승인 거부.
+- Active Context·Roadmap·Lifecycle과 10/10 상태 일치.
 
-```yaml
-product_code_changed: false
-runtime_data_changed: false
-runtime_validation: NOT_RUN
-godot_validation: NOT_RUN
-windows_validation: NOT_RUN
-accessibility_validation: NOT_RUN
-human_validation: NOT_RUN
-balance_validation: NOT_RUN
-```
+사람 검증:
+
+- 기술1/기술2 선택률.
+- 7성 해금 뒤 기술1 대체율.
+- 7성 보너스 체감과 무공 정체성 연결 설명률.
+- 9성 한 문장 효과 이해율.
+- 9성이 자동 정답 또는 규칙 우회로 느껴지는 비율.
+
+현재 Godot·Windows·접근성·성능·사람·밸런스 검증은 `NOT_RUN`이다.
