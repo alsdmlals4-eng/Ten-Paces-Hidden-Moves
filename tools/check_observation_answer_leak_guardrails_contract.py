@@ -174,13 +174,13 @@ def validate_contract(contract: dict[str, Any]) -> list[str]:
 
     batch = contract.get("approval_batch", {})
     if batch.get("active_planning_pr") != 92:
-        errors.append("ACTIVE_PLANNING_STATE_CONFLICT pr")
+        errors.append("OBSERVATION_APPROVAL_SNAPSHOT_CONFLICT pr")
     if batch.get("approved_decision_count") != 8:
-        errors.append("ACTIVE_PLANNING_STATE_CONFLICT approval count")
+        errors.append("OBSERVATION_APPROVAL_SNAPSHOT_CONFLICT approval count")
     if batch.get("maximum_decision_count") != 10:
-        errors.append("ACTIVE_PLANNING_STATE_CONFLICT maximum count")
+        errors.append("OBSERVATION_APPROVAL_SNAPSHOT_CONFLICT maximum count")
     if batch.get("next_planning_decision") != "GRADE_FARMING_RISK":
-        errors.append("ACTIVE_PLANNING_STATE_CONFLICT next decision")
+        errors.append("OBSERVATION_APPROVAL_SNAPSHOT_CONFLICT next decision")
 
     boundary = contract.get("product_boundary", {})
     for key in ("product_code_changed", "godot_changed", "html_poc_changed", "runtime_data_changed"):
@@ -236,17 +236,16 @@ def validate_canonical_files() -> list[str]:
     try:
         active = read_text(ACTIVE_CONTEXT)
     except OSError as exc:
-        errors.append(f"ACTIVE_PLANNING_STATE_CONFLICT cannot load Active Context: {exc}")
+        errors.append(f"OBSERVATION_AUTHORITY_DISCOVERY_CONFLICT cannot load Active Context: {exc}")
         return errors
     for token in (
         "active_planning_pr: 92",
-        "active_approval_count: 8/10",
-        "active_decision_state: APPROVED_DRAFT_OBSERVATION_ANSWER_LEAK_GUARDRAILS",
-        "next_planning_decision: GRADE_FARMING_RISK",
         "TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01",
+        "관찰은 행동1수→관찰량1→적 선잠금 뒤 앞 슬롯 실제 행동 종류 직접 공개를 유지",
+        "OBSERVATION_ANSWER_LEAK_RISK",
     ):
         if token not in active:
-            errors.append(f"ACTIVE_PLANNING_STATE_CONFLICT missing {token}")
+            errors.append(f"OBSERVATION_AUTHORITY_DISCOVERY_CONFLICT missing {token}")
 
     for path in STABLE_ENTRYPOINTS:
         try:
