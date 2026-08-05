@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01",
+  "manual_id": "nangong_boundless_sky_sword",
+  "faction": "남궁세가",
+  "manual_name": "창궁무애검법",
+  "primary_stat": "내공",
+  "secondary_stat": "심안",
+  "cards": {
+    "star3": {
+      "id": "nangong_boundless_sky_sword_star3",
+      "name": "철검십식",
+      "manual_id": "nangong_boundless_sky_sword",
+      "unlock_star": 3,
+      "source": "martial_manual",
+      "category": "attack",
+      "resolution_phase": "general",
+      "targeting_mode": "attack_direction",
+      "action_slots": 1,
+      "stamina_cost": 1,
+      "internal_cost": 2,
+      "range": {"min": 1, "max": 1},
+      "effect_steps": [
+        {"op": "CONSUME_STATUS", "status": "prepared", "optional": true},
+        {"op": "GAIN_RESOURCE", "resource": "defense", "amount": 1, "condition": "STATUS_CONSUMED"},
+        {"op": "RECHECK_RANGE", "min": 1, "max": 1},
+        {"op": "SPECIAL_CLASH", "power": 8, "stat": "내공", "coefficient": 1.0},
+        {"op": "BREAK_DEFENSE", "amount": 1, "condition": "STATUS_CONSUMED"}
+      ],
+      "budget_reference": "planning:star3",
+      "balance_status": "PROVISIONAL_WITHIN_APPROVED_BUDGET",
+      "tags": []
+    },
+    "star7": {
+      "id": "nangong_boundless_sky_sword_star7",
+      "name": "창궁검뢰",
+      "manual_id": "nangong_boundless_sky_sword",
+      "unlock_star": 7,
+      "source": "martial_manual",
+      "category": "attack",
+      "resolution_phase": "general",
+      "targeting_mode": "attack_direction",
+      "action_slots": 2,
+      "stamina_cost": 1,
+      "internal_cost": 4,
+      "range": {"min": 1, "max": 3},
+      "effect_steps": [
+        {"op": "GAIN_STATUS", "status": "telegraph", "amount": 1},
+        {"op": "RECHECK_RANGE", "min": 1, "max": 3},
+        {"op": "SPECIAL_CLASH", "power": 12, "stat": "내공", "coefficient": 1.0}
+      ],
+      "budget_reference": "star7_profiles.nangong_boundless_sky_sword",
+      "balance_status": "PROVISIONAL_WITHIN_APPROVED_BUDGET",
+      "tags": []
+    },
+    "star10": {
+      "id": "nangong_boundless_sky_sword_star10",
+      "name": "제왕검형",
+      "manual_id": "nangong_boundless_sky_sword",
+      "unlock_star": 10,
+      "source": "martial_manual",
+      "category": "attack",
+      "resolution_phase": "general",
+      "targeting_mode": "attack_direction",
+      "action_slots": 3,
+      "stamina_cost": 2,
+      "internal_cost": 4,
+      "range": {"min": 1, "max": 3},
+      "effect_steps": [
+        {"op": "GAIN_STATUS", "status": "telegraph", "amount": 1},
+        {"op": "RECHECK_RANGE", "min": 1, "max": 3},
+        {"op": "SPECIAL_CLASH", "power": 15, "stat": "내공", "coefficient": 1.0},
+        {"op": "REQUIRE_CLASH_WIN"},
+        {"op": "BREAK_DEFENSE", "amount": 3},
+        {"op": "ATTACK", "power": 12, "min_range": 1, "max_range": 3}
+      ],
+      "budget_reference": "ultimate_profiles.nangong_boundless_sky_sword",
+      "balance_status": "PROVISIONAL_WITHIN_APPROVED_BUDGET",
+      "tags": ["절초", "검압", "전조"]
+    }
+  },
+  "overlays": {
+    "star5": {
+      "name": "창궁입세",
+      "unlock_star": 5,
+      "target": "star3",
+      "effect_steps": [{"op": "GAIN_RESOURCE", "resource": "defense", "amount": 2, "condition": "PREPARED_CONSUMED_BEFORE_CLASH"}]
+    },
+    "star9": {
+      "name": "무애검세",
+      "unlock_star": 9,
+      "target": "star7",
+      "effect_steps": [{"op": "GAIN_MOMENTUM_ON_COMPLETE", "amount": 1, "condition": "CLASH_WIN_AT_MAX_RANGE"}],
+      "branching_allowed": false,
+      "additional_input_allowed": false,
+      "additional_resource_cost_allowed": false
+    }
+  }
+}
