@@ -13,8 +13,10 @@ ROADMAP_PATH = pathlib.Path("docs/04_ROADMAP.md")
 MASTERY_PATH = pathlib.Path("docs/06_STARTING_FACTION_MASTERY_DATA.md")
 REGISTRY_PATH = pathlib.Path("docs/CANON_LIFECYCLE_REGISTRY.md")
 RUNTIME_DECISION_PATH = pathlib.Path("docs/decisions/2026-08-06_TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE.md")
+UI_AI_DECISION_PATH = pathlib.Path("docs/decisions/2026-08-06_TEN_MANUAL_UI_AI_ADOPTION_GATE.md")
 BUILD_APPROVAL_PATH = pathlib.Path("docs/implementation/BUILD_APPROVAL_2026-08-06.md")
 RUNTIME_MANIFEST_PATH = pathlib.Path("data/cards/martial_manual_cards.json")
+UI_AI_LOADOUT_PATH = pathlib.Path("data/combat/ten_manual_loadout_poc.json")
 RANGE_DECISION_PATH = pathlib.Path("docs/decisions/2026-08-02_RANGE_PRICE_BANDS_DECISION.md")
 OLD_TECHNIQUE_DECISION_PATH = pathlib.Path("docs/decisions/2026-08-03_STARTING_MARTIAL_TECHNIQUE_1_BASE_EFFECTS_AND_BUDGETS_DECISION.md")
 OLD_TECHNIQUE_CONTRACT_PATH = pathlib.Path("docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json")
@@ -89,20 +91,25 @@ def validate_operating_state(active: str, roadmap: str) -> None:
     require(parent_pr not in MERGED_OR_HELD_PR_IDS, "active planning parent PR points to merged or held historical PR")
     require(parent_pr < active_pr, "stacked planning parent PR must precede active PR")
     require(active_state["active_approval_count"] == "10/10", "active approval count differs")
-    require(active_state["active_decision_state"] == "TEN_MANUAL_RUNTIME_FOUNDATION_IMPLEMENTED", "active decision state differs")
-    require(active_state["next_planning_decision"] == "TEN_MANUAL_UI_AI_ADOPTION_GATE", "next planning decision differs")
+    require(active_state["active_decision_state"] == "TEN_MANUAL_UI_AI_ADOPTED", "active decision state differs")
+    require(active_state["next_planning_decision"] == "TEN_MANUAL_PRODUCT_VALIDATION_GATE", "next planning decision differs")
 
     for token in [
         "runtime_work_mode: REVIEW",
         "runtime_integration_pr: 65",
-        "runtime_implementation: TEN_MANUAL_RUNTIME_FOUNDATION_PR92",
-        "latest_combat_planning_runtime: RUNTIME_FOUNDATION",
+        "runtime_implementation: TEN_MANUAL_UI_AI_ADOPTION_PR92",
+        "latest_combat_planning_runtime: UI_AI_ADOPTED",
+        "runtime_ui_adoption: ADOPTED",
+        "runtime_ai_adoption: ADOPTED_PUBLIC_STATE_LOADOUT_ONLY",
         "human_validation: NOT_RUN",
         "balance_validation: NOT_RUN",
         "TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01",
         "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE",
-        "DRAFT_PR92_TEN_MANUAL_RUNTIME_FOUNDATION_10_OF_10",
+        "TEN_MANUAL_UI_AI_ADOPTION_GATE",
+        "DRAFT_PR92_TEN_MANUAL_UI_AI_ADOPTION_10_OF_10",
         "능력치별 무공서 권수·균등 분포·최소/최대 쿼터는 사용하지 않는다",
+        "플레이어 비공개 계획·미확정 배치·포인터는 참조하지 않는다",
+        "03_무공서_무학",
     ]:
         require(token in active, f"active context missing operating token: {token}")
     for token in [
@@ -114,6 +121,7 @@ def validate_operating_state(active: str, roadmap: str) -> None:
         "중단·축소 조건",
         "KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST",
         "TEN_MANUAL_UI_AI_ADOPTION_GATE",
+        "TEN_MANUAL_PRODUCT_VALIDATION_GATE",
         "NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT",
     ]:
         require(token in roadmap, f"roadmap missing operating token: {token}")
@@ -144,6 +152,32 @@ def validate_runtime_authority(runtime_decision: str, build_approval: str, manif
     require(compatibility.get("explicit_loadout_required") is True, "martial cards must require an explicit loadout")
 
 
+def validate_ui_ai_authority(ui_ai_decision: str, loadout: dict[str, Any]) -> None:
+    for token in [
+        "TEN_MANUAL_UI_AI_ADOPTION_GATE",
+        "APPROVED_AND_IMPLEMENTED",
+        "TEN_MANUAL_PRODUCT_VALIDATION_GATE",
+        "martial_loadout",
+        "martial_mastery_by_manual",
+        "플레이어 비공개 계획",
+        "MartialEffectPipeline",
+        "31053963064",
+        "03_무공서_무학",
+    ]:
+        require(token in ui_ai_decision, f"UI AI Decision missing token: {token}")
+    require(loadout.get("schema_version") == 1, "ten-manual loadout schema differs")
+    require(loadout.get("authority") == "TEN_MANUAL_UI_AI_ADOPTION_GATE", "ten-manual loadout authority differs")
+    player = loadout.get("player")
+    enemy = loadout.get("enemy")
+    require(isinstance(player, dict) and isinstance(enemy, dict), "player and enemy loadouts must be separate")
+    player_loadout = player.get("loadout")
+    enemy_loadout = enemy.get("loadout")
+    require(isinstance(player_loadout, list) and bool(player_loadout), "player loadout must be explicit")
+    require(isinstance(enemy_loadout, list) and bool(enemy_loadout), "enemy loadout must be explicit")
+    require(isinstance(player.get("mastery_by_manual"), dict), "player mastery map missing")
+    require(isinstance(enemy.get("mastery_by_manual"), dict), "enemy mastery map missing")
+
+
 def validate_superseded_authority(range_decision: str, old_decision: str, old_contract: dict[str, Any]) -> None:
     require("# [대체됨]" in range_decision, "range Decision lifecycle label [대체됨] missing")
     require("상태: `SUPERSEDED`" in range_decision, "range Decision lifecycle status must be SUPERSEDED")
@@ -169,12 +203,16 @@ def validate_registry(registry: str) -> None:
         "approved_20260806_ten_manual_growth_budget_overlay_contract.json",
         "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE",
         "TEN_MANUAL_UI_AI_ADOPTION_GATE",
-        "RUNTIME_FOUNDATION",
+        "TEN_MANUAL_PRODUCT_VALIDATION_GATE",
+        "UI_AI_ADOPTED",
+        "ten_manual_loadout_poc.json",
+        "combat_board_preview_ten_manuals_auto.gd",
         "능력치별 무공서 권수·균등 분포·최소/최대 쿼터",
         "9성 공개 정보 자동 분기 가설",
     ]:
         require(token in registry, f"canon lifecycle registry missing token: {token}")
     require("초기 10권 런타임 구현 | 기획·예산 승인, 제품 미구현" not in registry, "registry still claims runtime is unimplemented")
+    require("10권 전체 UI·AI 채택 | 런타임 기반 완료, 제품 연결 미완" not in registry, "registry still claims UI AI is unimplemented")
 
 
 def validate_mastery(mastery: str) -> None:
@@ -226,14 +264,17 @@ def validate(root: pathlib.Path = ROOT) -> None:
     mastery = read_text(root, MASTERY_PATH)
     registry = read_text(root, REGISTRY_PATH)
     runtime_decision = read_text(root, RUNTIME_DECISION_PATH)
+    ui_ai_decision = read_text(root, UI_AI_DECISION_PATH)
     build_approval = read_text(root, BUILD_APPROVAL_PATH)
     runtime_manifest = read_json(root, RUNTIME_MANIFEST_PATH)
+    ui_ai_loadout = read_json(root, UI_AI_LOADOUT_PATH)
     range_decision = read_text(root, RANGE_DECISION_PATH)
     old_decision = read_text(root, OLD_TECHNIQUE_DECISION_PATH)
     old_contract = read_json(root, OLD_TECHNIQUE_CONTRACT_PATH)
     audit = read_json(root, AUDIT_CONTRACT_PATH)
     validate_operating_state(active, roadmap)
     validate_runtime_authority(runtime_decision, build_approval, runtime_manifest)
+    validate_ui_ai_authority(ui_ai_decision, ui_ai_loadout)
     validate_superseded_authority(range_decision, old_decision, old_contract)
     validate_registry(registry)
     validate_mastery(mastery)
@@ -246,7 +287,7 @@ def main() -> int:
     except (OSError, CanonLifecycleError) as exc:
         print(f"FAIL: {exc}", file=sys.stderr)
         return 1
-    print("PASS: post-merge canon lifecycle and ten-manual runtime foundation are valid")
+    print("PASS: post-merge canon lifecycle and ten-manual UI AI adoption are valid")
     return 0
 
 
