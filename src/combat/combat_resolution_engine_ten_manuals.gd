@@ -1,5 +1,5 @@
 class_name TenManualCombatResolutionEngine
-extends "res://src/combat/combat_resolution_engine.gd"
+extends "res://src/combat/combat_resolution_engine_prepare.gd"
 
 const MartialManualRegistryScript := preload("res://src/combat/martial_manual_registry.gd")
 const MartialEffectPipelineScript := preload("res://src/combat/martial_effect_pipeline.gd")
