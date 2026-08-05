@@ -1,6 +1,7 @@
 extends SceneTree
 
 const REGISTRY_SCRIPT := preload("res://src/combat/martial_manual_registry.gd")
+const ENGINE_ADAPTER_SCRIPT := preload("res://src/combat/combat_resolution_engine_ten_manuals.gd")
 
 var failures: Array[String] = []
 
@@ -19,6 +20,7 @@ func _run() -> void:
     _verify_overlay_targets(registry)
     _verify_loadout_merge(registry)
     _verify_source_immutability(registry)
+    _verify_engine_adapter()
     _finish()
 
 func _verify_mastery_unlocks(registry) -> void:
@@ -72,6 +74,19 @@ func _verify_source_immutability(registry) -> void:
     var second_star7 := _find_card(second, manual_id + "_star7")
     _assert(str(second_star7.get("name", "")) == "연환쇄로", "registry calls must return deep copies")
     _assert(int(second_star7.get("effect_steps", []).size()) + 1 == int(first_star7.get("effect_steps", []).size()), "mutating a returned card must not mutate source data")
+
+func _verify_engine_adapter() -> void:
+    var engine = ENGINE_ADAPTER_SCRIPT.new()
+    _assert(engine.cards_by_id.has("basic_move"), "adapter must preserve legacy basic cards")
+    _assert(engine.cards_by_id.has("ultimate_ten_paces_wave"), "adapter must preserve generic ultimates")
+    _assert(not engine.cards_by_id.has("mount_hua_plum_blossom_sword_star3"), "martial cards must not load without an explicit loadout")
+    engine.configure_martial_loadout(["mount_hua_plum_blossom_sword"], {"mount_hua_plum_blossom_sword": 7})
+    _assert(engine.cards_by_id.has("mount_hua_plum_blossom_sword_star3"), "adapter must merge unlocked star3 card")
+    _assert(engine.cards_by_id.has("mount_hua_plum_blossom_sword_star7"), "adapter must merge unlocked star7 card")
+    _assert(not engine.cards_by_id.has("mount_hua_plum_blossom_sword_star10"), "adapter must keep locked star10 absent")
+    engine.configure_martial_loadout([], {})
+    _assert(not engine.cards_by_id.has("mount_hua_plum_blossom_sword_star3"), "reconfiguration must remove previously loaded martial cards")
+    _assert(engine.cards_by_id.has("basic_move") and engine.cards_by_id.has("ultimate_ten_paces_wave"), "reconfiguration must not remove legacy cards")
 
 func _find_card(cards: Array, card_id: String) -> Dictionary:
     for value in cards:
