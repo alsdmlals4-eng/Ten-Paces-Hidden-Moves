@@ -176,7 +176,16 @@ def verify_documents() -> None:
     all_tokens(docs["poc"], ("STEP 14", "NOT_RUN", "공개 상태"), "poc")
     all_tokens(docs["qa"], ("BOARD-002", "CLASH-001", "AI-001", "RESTART-001", "STEP 14 사람 플레이"), "qa")
     all_tokens(docs["content"], ("CURRENT_T0", "PLANNED_T1", "HYPOTHESIS_T2_PLUS", "HOLD"), "content")
-    all_tokens(docs["mastery"], ("T1 이후 가설 원본", "현재 T0에는 세력 선택", "공용 절초 3종", "프로젝트 코어가 사용자 승인"), "mastery")
+    all_tokens(
+        docs["mastery"],
+        (
+            "T1 이후 가설 원본",
+            "초기 10권의 문파·3/5/7/9/10성 효과와 예산은 기획 승인됐지만 T0 제품 런타임에는 아직 구현되지 않았다.",
+            "공용 절초 3종",
+            "프로젝트 코어가 사용자 승인",
+        ),
+        "mastery",
+    )
 
     all_tokens(docs["legacy"], ("DEPRECATED_ENTRYPOINT", "독립적으로 보관하지 않는다"), "legacy")
     assert "## 제품 계약" not in docs["legacy"]
