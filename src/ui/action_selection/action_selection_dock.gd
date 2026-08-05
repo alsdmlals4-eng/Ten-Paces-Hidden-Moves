@@ -12,6 +12,7 @@ const BASIC_PANEL_SCENE := preload("res://scenes/ui/action_selection/basic_actio
 const MARTIAL_PANEL_SCENE := preload("res://scenes/ui/action_selection/martial_action_panel.tscn")
 const ULTIMATE_PANEL_SCENE := preload("res://scenes/ui/action_selection/ultimate_action_panel.tscn")
 const DETAIL_PANEL_SCENE := preload("res://scenes/ui/action_selection/action_detail_panel.tscn")
+const ADAPTER_SCRIPT := preload("res://src/ui/action_selection/action_view_model_adapter.gd")
 
 @onready var basic_tab: Button = %BasicTab
 @onready var martial_tab: Button = %MartialTab
@@ -57,6 +58,18 @@ func set_interaction_state(state: String) -> void:
 
 func set_runtime_context(context: Dictionary) -> void:
     runtime_context = context.duplicate(true)
+    var loadout: Array = []
+    var mastery_by_manual: Dictionary = {}
+    if runtime_context.has("martial_loadout"):
+        for value in runtime_context.get("martial_loadout", []):
+            loadout.append(str(value))
+    if typeof(runtime_context.get("martial_mastery_by_manual", {})) == TYPE_DICTIONARY:
+        mastery_by_manual = (runtime_context.get("martial_mastery_by_manual", {}) as Dictionary).duplicate(true)
+    if runtime_context.has("martial_loadout") or runtime_context.has("martial_mastery_by_manual"):
+        if is_instance_valid(martial_panel):
+            martial_panel.set_manuals(ADAPTER_SCRIPT.new().build_owned_manuals(loadout, mastery_by_manual))
+        if is_instance_valid(ultimate_panel):
+            ultimate_panel.set_martial_context(loadout, mastery_by_manual)
     if is_instance_valid(ultimate_panel):
         var current := 0
         var maximum := 5
@@ -109,6 +122,7 @@ func get_dock_snapshot() -> Dictionary:
         "ultimate_panel_ready": is_instance_valid(ultimate_panel),
         "action_detail_panel_ready": is_instance_valid(action_detail_panel),
         "selected_manual_id": martial_panel.get_selected_manual_id() if is_instance_valid(martial_panel) else "",
+        "martial_snapshot": martial_panel.get_panel_snapshot() if is_instance_valid(martial_panel) else {},
         "ultimate_snapshot": ultimate_panel.get_panel_snapshot() if is_instance_valid(ultimate_panel) else {},
         "detail_snapshot": action_detail_panel.get_detail_snapshot() if is_instance_valid(action_detail_panel) else {},
         "runtime_context": runtime_context.duplicate(true)
