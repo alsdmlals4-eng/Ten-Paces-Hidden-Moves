@@ -23,6 +23,8 @@ TARGETS = [
     "docs/decisions/2026-08-06_TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE.md",
     "docs/implementation/BUILD_APPROVAL_2026-08-06.md",
     "data/cards/martial_manual_cards.json",
+    "docs/decisions/2026-08-06_TEN_MANUAL_UI_AI_ADOPTION_GATE.md",
+    "data/combat/ten_manual_loadout_poc.json",
 ]
 
 
@@ -83,6 +85,24 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
             with self.assertRaisesRegex(validator.CanonLifecycleError, "operating checkpoint mismatch"):
                 validator.validate(root)
 
+    def test_ui_ai_adoption_state_cannot_revert_to_runtime_foundation(self) -> None:
+        validator = load_validator()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            copy_fixture(root)
+            for relative in TARGETS[:2]:
+                path = root / relative
+                path.write_text(
+                    replace_scalar(
+                        path.read_text(encoding="utf-8"),
+                        "active_decision_state",
+                        "TEN_MANUAL_RUNTIME_FOUNDATION_IMPLEMENTED",
+                    ),
+                    encoding="utf-8",
+                )
+            with self.assertRaisesRegex(validator.CanonLifecycleError, "active decision state"):
+                validator.validate(root)
+
     def test_runtime_foundation_cannot_reenable_stat_quotas(self) -> None:
         validator = load_validator()
         with tempfile.TemporaryDirectory() as directory:
@@ -105,6 +125,30 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
             data["compatibility"]["explicit_loadout_required"] = False
             path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
             with self.assertRaisesRegex(validator.CanonLifecycleError, "explicit loadout"):
+                validator.validate(root)
+
+    def test_ui_ai_loadout_must_separate_player_and_enemy(self) -> None:
+        validator = load_validator()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            copy_fixture(root)
+            path = root / TARGETS[12]
+            data = json.loads(path.read_text(encoding="utf-8"))
+            del data["enemy"]
+            path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            with self.assertRaisesRegex(validator.CanonLifecycleError, "player and enemy loadouts"):
+                validator.validate(root)
+
+    def test_ui_ai_loadout_authority_cannot_drift(self) -> None:
+        validator = load_validator()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            copy_fixture(root)
+            path = root / TARGETS[12]
+            data = json.loads(path.read_text(encoding="utf-8"))
+            data["authority"] = "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE"
+            path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            with self.assertRaisesRegex(validator.CanonLifecycleError, "loadout authority"):
                 validator.validate(root)
 
     def test_superseded_contract_cannot_claim_current_authority(self) -> None:
