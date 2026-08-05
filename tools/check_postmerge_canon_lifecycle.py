@@ -12,6 +12,9 @@ ACTIVE_PATH = pathlib.Path("[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
 ROADMAP_PATH = pathlib.Path("docs/04_ROADMAP.md")
 MASTERY_PATH = pathlib.Path("docs/06_STARTING_FACTION_MASTERY_DATA.md")
 REGISTRY_PATH = pathlib.Path("docs/CANON_LIFECYCLE_REGISTRY.md")
+RUNTIME_DECISION_PATH = pathlib.Path("docs/decisions/2026-08-06_TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE.md")
+BUILD_APPROVAL_PATH = pathlib.Path("docs/implementation/BUILD_APPROVAL_2026-08-06.md")
+RUNTIME_MANIFEST_PATH = pathlib.Path("data/cards/martial_manual_cards.json")
 RANGE_DECISION_PATH = pathlib.Path("docs/decisions/2026-08-02_RANGE_PRICE_BANDS_DECISION.md")
 OLD_TECHNIQUE_DECISION_PATH = pathlib.Path("docs/decisions/2026-08-03_STARTING_MARTIAL_TECHNIQUE_1_BASE_EFFECTS_AND_BUDGETS_DECISION.md")
 OLD_TECHNIQUE_CONTRACT_PATH = pathlib.Path("docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json")
@@ -85,34 +88,60 @@ def validate_operating_state(active: str, roadmap: str) -> None:
     require(parent_pr == 91, "active planning parent PR differs")
     require(parent_pr not in MERGED_OR_HELD_PR_IDS, "active planning parent PR points to merged or held historical PR")
     require(parent_pr < active_pr, "stacked planning parent PR must precede active PR")
-    require(active_state["active_approval_count"] == "9/10", "active approval count differs")
-    require(
-        active_state["active_decision_state"] == "APPROVED_DRAFT_TEN_RECOGNIZABLE_MARTIAL_MANUALS",
-        "active planning decision state differs",
-    )
-    require(
-        active_state["next_planning_decision"] == "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE",
-        "next planning decision differs",
-    )
+    require(active_state["active_approval_count"] == "10/10", "active approval count differs")
+    require(active_state["active_decision_state"] == "TEN_MANUAL_RUNTIME_FOUNDATION_IMPLEMENTED", "active decision state differs")
+    require(active_state["next_planning_decision"] == "TEN_MANUAL_UI_AI_ADOPTION_GATE", "next planning decision differs")
 
     for token in [
         "runtime_work_mode: REVIEW",
         "runtime_integration_pr: 65",
-        "runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65",
+        "runtime_implementation: TEN_MANUAL_RUNTIME_FOUNDATION_PR92",
+        "latest_combat_planning_runtime: RUNTIME_FOUNDATION",
         "human_validation: NOT_RUN",
+        "balance_validation: NOT_RUN",
         "TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01",
-        "DRAFT_PR92_TEN_RECOGNIZABLE_MARTIAL_MANUALS_9_OF_10",
+        "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE",
+        "DRAFT_PR92_TEN_MANUAL_RUNTIME_FOUNDATION_10_OF_10",
+        "능력치별 무공서 권수·균등 분포·최소/최대 쿼터는 사용하지 않는다",
     ]:
         require(token in active, f"active context missing operating token: {token}")
     for token in [
         "프로젝트 코어 확정",
+        "현재 작업",
         "STEP 14",
         "T1 — 최소 세로 슬라이스",
+        "공통 검증 게이트",
+        "중단·축소 조건",
         "KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST",
-        "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE",
+        "TEN_MANUAL_UI_AI_ADOPTION_GATE",
         "NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT",
     ]:
         require(token in roadmap, f"roadmap missing operating token: {token}")
+
+
+def validate_runtime_authority(runtime_decision: str, build_approval: str, manifest: dict[str, Any]) -> None:
+    for token in [
+        "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE",
+        "APPROVED_RUNTIME_FOUNDATION",
+        "RUNTIME_FOUNDATION",
+        "PR #92",
+        "PR #91",
+    ]:
+        require(token in runtime_decision, f"runtime Decision missing token: {token}")
+    for token in [
+        "registry + ordered effect pipeline + explicit engine loadout integration",
+        "human validation: NOT_RUN",
+        "balance validation: NOT_RUN",
+    ]:
+        require(token in build_approval, f"runtime build approval missing token: {token}")
+    require(manifest.get("runtime_status") == "RUNTIME_FOUNDATION", "runtime manifest authority differs")
+    require(manifest.get("stat_quota_rules_enabled") is False, "runtime manifest re-enabled stat quota rules")
+    files = manifest.get("manual_files")
+    require(isinstance(files, dict) and len(files) == 10, "runtime manifest must map exactly ten manuals")
+    compatibility = manifest.get("compatibility")
+    require(isinstance(compatibility, dict), "runtime compatibility contract missing")
+    require(compatibility.get("legacy_default_behavior_unchanged") is True, "legacy default behavior must remain unchanged")
+    require(compatibility.get("explicit_loadout_required") is True, "martial cards must require an explicit loadout")
 
 
 def validate_superseded_authority(range_decision: str, old_decision: str, old_contract: dict[str, Any]) -> None:
@@ -121,19 +150,10 @@ def validate_superseded_authority(range_decision: str, old_decision: str, old_co
     require("TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01" in range_decision, "range Decision replacement authority missing")
     require("# [대체됨]" in old_decision, "Technique1 Decision lifecycle label [대체됨] missing")
     require("상태: `SUPERSEDED`" in old_decision, "Technique1 Decision must be SUPERSEDED")
-    require(
-        old_contract.get("authority_status") == "SUPERSEDED_HISTORICAL_EVIDENCE",
-        "superseded Technique1 contract cannot claim current authority",
-    )
-    require(
-        old_contract.get("implementation_authority") == "HISTORICAL_PLANNING_EVIDENCE_ONLY",
-        "superseded Technique1 contract implementation authority differs",
-    )
+    require(old_contract.get("authority_status") == "SUPERSEDED_HISTORICAL_EVIDENCE", "superseded Technique1 contract cannot claim current authority")
+    require(old_contract.get("implementation_authority") == "HISTORICAL_PLANNING_EVIDENCE_ONLY", "superseded Technique1 contract implementation authority differs")
     require(old_contract.get("lifecycle_label_ko") == "[대체됨]", "superseded Technique1 contract Korean lifecycle label missing")
-    require(
-        old_contract.get("superseded_by") == "TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01",
-        "superseded Technique1 contract replacement differs",
-    )
+    require(old_contract.get("superseded_by") == "TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01", "superseded Technique1 contract replacement differs")
 
 
 def validate_registry(registry: str) -> None:
@@ -148,15 +168,20 @@ def validate_registry(registry: str) -> None:
         "approved_20260806_ten_recognizable_martial_manuals_contract.json",
         "approved_20260806_ten_manual_growth_budget_overlay_contract.json",
         "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE",
+        "TEN_MANUAL_UI_AI_ADOPTION_GATE",
+        "RUNTIME_FOUNDATION",
+        "능력치별 무공서 권수·균등 분포·최소/최대 쿼터",
         "9성 공개 정보 자동 분기 가설",
     ]:
         require(token in registry, f"canon lifecycle registry missing token: {token}")
+    require("초기 10권 런타임 구현 | 기획·예산 승인, 제품 미구현" not in registry, "registry still claims runtime is unimplemented")
 
 
 def validate_mastery(mastery: str) -> None:
     for token in [
         "T1 이후 가설 원본",
-        "active_batch: 9/10",
+        "active_batch: 10/10",
+        "implementation_authority: RUNTIME_FOUNDATION",
         "action_slots",
         "sure_hit",
         "프로젝트 코어가 사용자 승인",
@@ -165,19 +190,18 @@ def validate_mastery(mastery: str) -> None:
         "approved_20260805_grade_farming_guardrails_contract.json",
         "approved_20260805_star7_star9_mastery_bonus_contract.json",
         "9성 | 기술2 단일 완성 보너스",
-        "초기 10권의 문파·3/5/7/9/10성 효과와 예산은 기획 승인됐지만 T0 제품 런타임에는 아직 구현되지 않았다.",
         "공용 절초 3종",
         "approved_20260806_ten_recognizable_martial_manuals_contract.json",
         "approved_20260806_ten_manual_growth_budget_overlay_contract.json",
         "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE",
+        "TEN_MANUAL_UI_AI_ADOPTION_GATE",
+        "현재 Windows·접근성·성능·사람·밸런스 검증은 `NOT_RUN`이다",
     ]:
         require(token in mastery, f"growth authority missing token: {token}")
-    require("active_batch: 10/10" not in mastery, "growth authority still claims superseded active batch 10/10")
+    require("active_batch: 9/10" not in mastery, "growth authority still claims superseded active batch 9/10")
+    require("제품 런타임에는 아직 구현되지 않았다" not in mastery, "growth authority still claims runtime is unimplemented")
     require("9성 | 기술2 공개 정보 자동 분기" not in mastery, "growth authority still claims automatic branch")
-    require(
-        "approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json`은 `[대체됨]`" in mastery,
-        "growth authority must mark old Technique1 contract as superseded",
-    )
+    require("approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json`은 `[대체됨]`" in mastery, "growth authority must mark old Technique1 contract as superseded")
 
 
 def validate_historical_audit(data: dict[str, Any]) -> None:
@@ -201,11 +225,15 @@ def validate(root: pathlib.Path = ROOT) -> None:
     roadmap = read_text(root, ROADMAP_PATH)
     mastery = read_text(root, MASTERY_PATH)
     registry = read_text(root, REGISTRY_PATH)
+    runtime_decision = read_text(root, RUNTIME_DECISION_PATH)
+    build_approval = read_text(root, BUILD_APPROVAL_PATH)
+    runtime_manifest = read_json(root, RUNTIME_MANIFEST_PATH)
     range_decision = read_text(root, RANGE_DECISION_PATH)
     old_decision = read_text(root, OLD_TECHNIQUE_DECISION_PATH)
     old_contract = read_json(root, OLD_TECHNIQUE_CONTRACT_PATH)
     audit = read_json(root, AUDIT_CONTRACT_PATH)
     validate_operating_state(active, roadmap)
+    validate_runtime_authority(runtime_decision, build_approval, runtime_manifest)
     validate_superseded_authority(range_decision, old_decision, old_contract)
     validate_registry(registry)
     validate_mastery(mastery)
@@ -218,7 +246,7 @@ def main() -> int:
     except (OSError, CanonLifecycleError) as exc:
         print(f"FAIL: {exc}", file=sys.stderr)
         return 1
-    print("PASS: post-merge canon lifecycle and current mastery checkpoint are valid")
+    print("PASS: post-merge canon lifecycle and ten-manual runtime foundation are valid")
     return 0
 
 

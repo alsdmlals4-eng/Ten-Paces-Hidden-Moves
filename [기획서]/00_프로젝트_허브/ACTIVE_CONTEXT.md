@@ -2,16 +2,9 @@
 
 > 전투 규칙 책임 원본: `docs/02_COMBAT_RULES.md`  
 > 정본 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`  
-> 병합 후 감사: `TEN-DEC-20260804-POSTMERGE-CANON-ADVERSARIAL-AUDIT-01`  
-> 현재 기술1 효과·5성 권위: `TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01`  
-> 현재 7성·9성 숙련 예산 부모 권위: `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01`  
-> 현재 초기 무공서 10권 성장 권위: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`  
-> 현재 자원 포화 완화 권위: `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`  
-> 현재 조건 난도 보정 권위: `TEN-DEC-20260805-CONDITION-CALIBRATION-01`  
-> 현재 파생 스탯·오판 구제 권위: `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01`  
-> 현재 관찰 가드레일 권위: `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`  
-> 현재 등급 파밍 방지 권위: `TEN-DEC-20260805-GRADE-FARMING-GUARDRAILS-01`  
-> 현재 작업 운영 권위: `TEN-DEC-20260805-WORK-GOVERNANCE-01`
+> 초기 무공서 10권 성장 권위: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`  
+> 초기 무공서 10권 런타임 권위: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`  
+> 빌드 승인: `docs/implementation/BUILD_APPROVAL_2026-08-06.md`
 
 ## 현재 기준
 
@@ -22,32 +15,37 @@ merged_planning_checkpoint: bbed0fd4d278ca0e0d52f4e6d9083aafa1997318
 merged_pr_lineage: 84,86,87,88
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
-active_planning_work_mode: PLAN
+active_planning_work_mode: BUILD
 active_planning_pr: 92
 active_planning_parent_pr: 91
-active_approval_count: 9/10
-active_decision_state: APPROVED_DRAFT_TEN_RECOGNIZABLE_MARTIAL_MANUALS
+active_approval_count: 10/10
+active_decision_state: TEN_MANUAL_RUNTIME_FOUNDATION_IMPLEMENTED
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 engine: Godot 4.7
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 base_release_pinned: 9.4.3
-runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
-latest_combat_planning_runtime: NOT_STARTED
+runtime_implementation: TEN_MANUAL_RUNTIME_FOUNDATION_PR92
+latest_combat_planning_runtime: RUNTIME_FOUNDATION
+runtime_ui_adoption: DEFERRED
+runtime_ai_adoption: DEFERRED
 automated_validation: PASS
 windows_validation: NOT_RUN
 human_validation: NOT_RUN
+balance_validation: NOT_RUN
+accessibility_validation: NOT_RUN
+performance_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE
+next_planning_decision: TEN_MANUAL_UI_AI_ADOPTION_GATE
 ```
 
-PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완화는 Draft PR #89, 조건 난도 보정과 작업 운영 정책은 그 위의 Draft PR #91, 파생 스탯·오판 구제·관찰·등급 파밍 방지·7/9성 숙련 예산은 그 위의 Draft PR #92에서 검증한다. PR #92는 PR #91보다 먼저, PR #91은 PR #89보다 먼저 독립 병합하지 않는다. PR #90은 `[대체됨]`, PR #85 HTML PoC는 `[보류]`다.
+현재 체크포인트는 `DRAFT_PR92_TEN_MANUAL_RUNTIME_FOUNDATION_10_OF_10`이다. PR #92는 PR #91 위에 쌓인 Draft이므로 PR #91보다 먼저 독립 병합·Draft 해제·종료하지 않는다. PR #91도 PR #89보다 먼저 독립 병합하지 않는다. PR #90은 `[대체됨]`, PR #85 HTML PoC는 `[보류]`다.
 
-자동·정적 검증 통과는 Godot·Windows·접근성·성능·사람 검증을 대신하지 않는다.
+자동 검증 통과는 Godot·Windows·접근성·성능·사람 플레이·밸런스 승인을 대신하지 않는다.
 
 ## 프로젝트 코어
 
-공개 상태와 반복 습관을 읽고 서로의 현재 계획을 모른 채 10칸 전장에 `3수 → 3수 → 4수`로 수를 걸어 거리·순차 합·대응·중단으로 파훼하고 복기로 다음 계획을 바꾸는 1대1 무협 심리 전술 로그라이트다.
+공개 상태와 반복 습관을 읽고 서로의 현재 계획을 모른 채 10칸 전장에 `3수 → 3수 → 4수`로 수를 걸어 거리·순차 합·대응·중단으로 파훼하고, 복기로 다음 계획을 바꾸는 1대1 무협 심리 전술 로그라이트다.
 
 ```text
 객관 정보 조사·관찰
@@ -64,129 +62,100 @@ PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완�
 - 적은 관찰 공개 전에 현재 묶음을 잠그고 공개 뒤 교체하지 않는다.
 - 행동 묶음 확정 뒤 추가 플레이어 선택을 요구하지 않는다.
 - 기술 이동은 고정 방향·합법 타일 폴백을 사용한다.
-- 성장 수치는 잘못된 계획을 자동 구제하면 안 된다.
+- 이동으로 거리가 바뀌면 종속 공격 전에 사거리를 다시 검사한다.
+- 성장 수치는 잘못된 계획을 자동 구제하지 않는다.
 - 스탯 보정은 합법성·거리·순서·중단·성공 Gate 뒤에만 적용한다.
-- 7성·9성은 3성보다 높은 총가치를 가질 수 있으나 기술1과 동일 역할을 수행해 전 상황에서 대체하면 안 된다.
-- 9성은 분기 없이 기술2당 단일 완성 보너스 효과 하나만 사용한다.
-- 기력은 묶음 템포, 내력은 여러 묶음에 걸친 장기 자원, 절초기세는 승부 자원이다.
-- 등급 파밍 방지는 원시 전투 사건을 훼손하지 않고 유효 등급 입력만 제한한다.
+- 9성은 기술2에 단일·무분기 효과 하나만 추가한다.
+- 능력치별 무공서 권수·균등 분포·최소/최대 쿼터는 사용하지 않는다.
+- 주·보조능력치는 문파·무학·동작·피해 방식 적합성으로만 결정한다.
 
-## 런타임 기준선
+## 현재 런타임 권위
 
-- `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`
-- `TEN-DEC-20260801-SITUATION-SCREEN-01`
-- `work_mode: REVIEW`, `integration_pr: 65`는 현재 런타임 기준선이다.
-- 현재 런타임은 일부 `IMPLEMENTED_LEGACY`이며 최신 성장·전투 정본이 구현되지 않았다.
-- 별도 Build 승인 전 제품 코드·Scene·런타임 데이터를 변경하지 않는다.
+`TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE` 승인에 따라 다음 기반이 구현됐다.
 
-## 이전 승인 계보 — 10/10
+- `data/cards/martial_manual_cards.json`: 10권 manifest와 호환 정책.
+- `data/cards/martial_manuals/`: 무공서별 10개 런타임 파일.
+- `MartialManualRegistry`: 3·5·7·9·10성 해금과 overlay 합성.
+- `MartialEffectPipeline`: 상태 선행·이동·사거리 재검사·다단·조건부 후속·전투당 사용권의 결정적 실행.
+- `TenManualCombatResolutionEngine`: 기존 엔진을 보존하는 명시적 loadout 어댑터.
 
-1. `TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01`
-2. `TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01`
-3. `TEN-DEC-20260803-INTERMEDIATE-NODE-PERMANENT-STAT-REWARDS-01`
-4. `TEN-DEC-20260803-MARTIAL-TECHNIQUE-ROLE-AND-SCALING-MATRIX-01`
-5. `TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01` — `[대체됨]`
-6. `TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-2-BASE-EFFECTS-AND-BUDGETS-01`
-7. `TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01`
-8. `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`
-9. `TEN-DEC-20260805-GRADE-FARMING-GUARDRAILS-01`
-10. `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01`
+`RUNTIME_FOUNDATION`은 10권 데이터를 로드하고 구조적 효과를 실행할 수 있다는 뜻이다. 현재 Scene·행동 선택 UI·적 AI가 10권을 자동 채택했다는 뜻은 아니다.
 
-## 현재 승인 배치 — 9/10
+기존 기본 행동과 공용 절초 3종은 회귀·호환 기준으로 유지된다. 무공 카드는 명시적 loadout을 설정할 때만 추가된다.
 
-- `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`
-- 초기 10권의 문파·이름·주/보조능력치 적합성·3/5/7/9/10성 성장·예산을 승인한다.
-- 능력치별 권수·균등 분포·쿼터는 설계 규칙으로 사용하지 않는다.
-- 런타임 구현은 `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE` 전까지 금지한다.
+## 초기 무공서 10권
 
-지원 권위:
+| 문파·유파 | 무공서 | 주 / 보조 | 10성 절초 | 런타임 역할 |
+|---|---|---|---|---|
+| 화산파 | 매화검결 | 신법 / 외공 | 이십사수매화검법 | 이동형 적중 연격 |
+| 소림사 | 나한금강공 | 외공 / 내공 | 여래신장 | 강건·방어·근접 장격 |
+| 무당파 | 태극검결 | 심안 / 내공 | 태극혜검 | 흘리기·합·반격 |
+| 양가 | 양가창결 | 외공 / 신법 | 회마창 | 창끝 거리·재반격 |
+| 화산파 | 자하심법 | 내공 / 근골 | 자하신공 | 자원 순환·위기 복귀 |
+| 소요파 | 소요보결 | 신법 / 심안 | 능파미보 | 회피·반격·변위 |
+| 개방 | 강룡장결 | 내공 / 근골 | 항룡십팔장 | 중후한 장력·정면 돌파 |
+| 사천당문 | 천기암기록 | 심안 / 신법 | 만천화우 | 원거리 독립 다단 압박 |
+| 하북팽가 | 팽가도결 | 근골 / 외공 | 오호단문도 | 방어 파괴·결착 |
+| 남궁세가 | 창궁무애검법 | 내공 / 심안 | 제왕검형 | 준비형 검압·합 결착 |
 
-- `TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01`
-- `TEN-DEC-20260804-EXISTING-ACTIONS-REPRICE-01`
-- `TEN-DEC-20260804-POSTMERGE-CANON-ADVERSARIAL-AUDIT-01`
-- `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`
-- `TEN-DEC-20260805-CONDITION-CALIBRATION-01`
-- `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01`
-- `TEN-DEC-20260805-WORK-GOVERNANCE-01`
+성장 구조는 `3성 기술1 → 5성 기술1 추가 효과 → 7성 기술2 → 9성 기술2 단일 완성 효과 → 10성 대표 절초`다.
 
-## 현재 정본 요약
+## 특수 불변조건
 
-- 기초 행동 10종과 `3수→3수→4수`.
-- 이동·사거리 1칸은 각각 15틱.
-- 기술1은 조건 실패 시 낮은 저점, 성공 시 높은 고점.
-- 조건 실패 시 연결 묶음 전부0; 부분 지급·이월·대체·전환 없음.
-- 5성 patch는 별도 비용 없이 유효 예산의20%.
-- 기존 6권 기술2는 현행 repricing 유효 예산에 `+10틱`을 통합하고, 신규 4권 기술2는 새 승인 예산 프로필을 사용한다.
-- 초기 10권의 9성은 `10 + floor(7성 최종 예산×0.20)` 안에서 단일 효과·무분기·추가입력/비용 없음으로 승인됐다.
-- 초기 10권의 10성 절초는 각각 고유 해결 순서와 `±5틱` 계획 예산을 가진다.
-- 주·보조능력치 권수 분포는 검사하지 않고 문파·무학·동작·피해 방식 적합성만 검사한다.
-- 연격은 총피해를 한 번 계산하고 `40% / 30% / 나머지`로 분배.
-- 묶음 전환 자동 회복은 `기력1·내력0·절초기세1`; 라운드 시작 별도 내력 회복 없음.
-- 조건 난도는 극단적·매우 어려움·어려움·보통·쉬움·준확정 여섯 구간.
-- 가격 재분류는 규칙을 이해한 일반 플레이어의 유효 시도 성공률을 기준으로 하며 자동 repricing하지 않는다.
-- 파생 수치는 `체력=26+근골`, `기력=4+floor(신법/4)`, `내력=3+floor(내공/4)`.
-- 외공·근골·신법·내공·심안은 성공한 명시 효과만 강화하고 구조 실패를 우회하지 않는다.
-- 잘못된 계획 구제는 `결과 역전`과 `중대 구제`로 분리하고 중복 집계하지 않는다.
-- 관찰은 행동1수→관찰량1→적 선잠금 뒤 앞 슬롯 실제 행동 종류 직접 공개를 유지하며 자동 정답 대응은 생성하지 않는다.
-- 등급 원시 합·회피·손실·라운드·절초 사건은 모두 기록하고, 등급 반영량만 동일 행동 `1.0→0.5→0`, 공격 인스턴스 합계 최대1, 합/회피 각 상한3으로 제한한다.
-- 기준 라운드 기본값은3이며 이후 합·회피·절초 양의 반영량은0이지만 원시 사건·손실·라운드는 계속 기록한다.
-- 유효 절초는 기준 라운드 안의 첫 비비용 효과 발생1회만 반영하고, 사람 검증 전 등급을 경제에 연결하지 않는다.
-- 구형 `attack_power: 8`은 현행 공식 권위에서 `[대체됨]`이며 행동별 스탯 계수에 더하지 않는다.
-- 승인 배치는 최대10건이며 고위험 충돌·세션 종료·큰 정본 영향에서 조기 체크포인트를 허용한다.
-- 모든 작업은 `RED→GREEN→REFACTOR→exact-head verification`을 따른다.
+### 자하신공
 
-## 적대적 검토 결론
+- 전투당 1회 사용권을 프로그램 시작 시 소모한다.
+- 중단·전투불능에도 사용권을 환불하지 않는다.
+- 전체 프로그램 완료 시에만 절초기세 +1을 지급한다.
 
-| 위험 | 상태 | 다음 검증 |
+### 나한금강공
+
+- 방어와 `[강건]`을 공격 전에 생성한다.
+- `[강건]`은 현행 중단 1회 방지 범위만 사용한다.
+- 무적·피해 무시·절대 중단 면역은 없다.
+
+### 회마창·능파미보·만천화우
+
+- 회마창: 공격 → 후퇴 → 사거리 재검사 → 두 번째 공격.
+- 능파미보: 회피 성공 → 이동 전 반격 → 후퇴 → 준비 상태.
+- 만천화우: 무작위 타수가 아니라 독립 공격 4회를 결정적으로 처리한다.
+
+## 검증 상태
+
+RED 증거:
+
+- runtime manifest·레지스트리·pipeline 부재 실패: workflow `31049328495`.
+- combat adapter 부재 실패: workflow `31050666862`.
+
+GREEN 범위:
+
+- Python 정적 계약과 적대적 변조 테스트.
+- Godot 4.7.1 import·레지스트리·효과 pipeline 검증.
+- PR Validation과 Full Validation.
+- 기존 전투·관찰·등급·숙련·예산·Base 회귀.
+
+사람·밸런스·Windows·접근성·성능 검증은 `NOT_RUN`이다.
+
+## 현재 위험과 다음 순서
+
+| 위험 | 상태 | 다음 조치 |
 |---|---|---|
-| `RESOURCE_SATURATION_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 회복 세금·자원 고갈 |
-| `CONDITION_CALIBRATION_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 성공률·구간 이탈·고점/저점 체감 |
-| `WRONG_PLAN_RESCUE_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 결과 역전률·중대 구제율·올바른 계획 증폭률 |
-| `OBSERVATION_ANSWER_LEAK_RISK` | `ACCEPTED_PENDING_HUMAN_MEASUREMENT` | 직접 공개 유지·자동 nerf 금지·사람 측정 |
-| `GRADE_FARMING_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 원시/유효 비율·반복 대응·기준 라운드 이후 사건·경제 미연결 |
-| `MASTERY_ROLE_REPLACEMENT_RISK` | `ACCEPTED_PENDING_HUMAN_MEASUREMENT` | 기술1/2 선택률·전 상황 대체율·한 문장 이해율 |
-| `RUNTIME_AUTHORITY_GAP` | P0 | 최신 계획 미구현 |
-
-## 생명주기 요약
-
-- `[현행]`: 초기 무공서 10권 성장·전투 가격·repricing·기술1·7/9성 예산 부모·자원 포화·조건 보정·파생 스탯·오판 구제·관찰 직접 공개·등급 파밍 방지·작업 운영 정책.
-- `[대체됨]`: 구형 사거리·구형 기술1·부모 내력 자동회복1·구형 통합 공격력 공식 권위·9성 자동 분기 가설·PR #90.
-- `[보류]`: PR #85 HTML PoC.
-- `[폐기]`: 현재 없음.
-
-## 다음 작업 Gate
+| `RUNTIME_AUTHORITY_GAP` | `MITIGATED_RUNTIME_FOUNDATION` | UI·AI 명시적 채택 검토 |
+| `MASTERY_ROLE_REPLACEMENT_RISK` | `PENDING_HUMAN_MEASUREMENT` | 기술1/2 선택률·대체율 측정 |
+| `RESOURCE_SATURATION_RISK` | `PENDING_HUMAN_MEASUREMENT` | 회복 세금·고갈 측정 |
+| `OBSERVATION_ANSWER_LEAK_RISK` | `PENDING_HUMAN_MEASUREMENT` | 직접 공개 유지·사람 측정 |
+| `GRADE_FARMING_RISK` | `PENDING_HUMAN_MEASUREMENT` | 원시/유효 등급 비율 측정 |
 
 ```text
-TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE
-→ RED 런타임 계약·회귀 검사
-→ Godot 데이터·카드·해결기 구현
-→ 사람·밸런스 검증
+TEN_MANUAL_UI_AI_ADOPTION_GATE
+→ 행동 선택 UI에 명시적 loadout 연결
+→ AI 공개 상태 정책에 10권 후보 행동 연결
+→ Godot·Windows·접근성·성능 검증
+→ STEP 14 사람 플레이·밸런스 검증
 → NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT
 → FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
 ```
 
-현재 승인 배치는 9/10이다. GitHub·Google Sheet 정본 동기화 뒤 런타임 구현은 별도 승인 Gate에서 시작한다.
+## 정본 동기화 원칙
 
-## 역사·회귀 추적
-
-- `PR #7`과 `Issue #13`은 T0 `STEP 0~13` 구현·검토 계보다.
-- `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`는 과거 v6 승인 이력 인덱스다.
-- 과거 `CORE_REVIEW_PENDING`은 사용자 승인 뒤 `CORE_CONFIRMED`로 종료됐다.
-- `STEP 14` 사람 검증은 `NOT_RUN`이다.
-
-## 검증 경계
-
-```yaml
-planning_checkpoint: DRAFT_PR92_TEN_RECOGNIZABLE_MARTIAL_MANUALS_9_OF_10
-product_code_changed: false
-html_poc_changed: false
-runtime_validation: NOT_RUN
-godot_validation: NOT_RUN
-windows_validation: NOT_RUN
-network_validation: NOT_RUN
-accessibility_validation: NOT_RUN
-performance_validation: NOT_RUN
-human_validation: NOT_RUN
-balance_validation: NOT_RUN
-demo_ready: NO
-```
+주요 승인과 구현 상태는 GitHub 권위 문서와 연결된 Google Sheet에 같은 Decision ID와 exact SHA로 기록한다. 현재 PR #92는 Draft·stacked 상태를 유지하며 병합 권한은 별도 사용자 승인에 속한다.

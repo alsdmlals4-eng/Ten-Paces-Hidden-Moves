@@ -20,6 +20,9 @@ TARGETS = [
     "docs/decisions/2026-08-03_STARTING_MARTIAL_TECHNIQUE_1_BASE_EFFECTS_AND_BUDGETS_DECISION.md",
     "docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json",
     "docs/planning-data/approved_20260804_postmerge_canon_adversarial_audit_contract.json",
+    "docs/decisions/2026-08-06_TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE.md",
+    "docs/implementation/BUILD_APPROVAL_2026-08-06.md",
+    "data/cards/martial_manual_cards.json",
 ]
 
 
@@ -78,6 +81,30 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
                 encoding="utf-8",
             )
             with self.assertRaisesRegex(validator.CanonLifecycleError, "operating checkpoint mismatch"):
+                validator.validate(root)
+
+    def test_runtime_foundation_cannot_reenable_stat_quotas(self) -> None:
+        validator = load_validator()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            copy_fixture(root)
+            path = root / TARGETS[10]
+            data = json.loads(path.read_text(encoding="utf-8"))
+            data["stat_quota_rules_enabled"] = True
+            path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            with self.assertRaisesRegex(validator.CanonLifecycleError, "stat quota"):
+                validator.validate(root)
+
+    def test_runtime_foundation_requires_explicit_loadout(self) -> None:
+        validator = load_validator()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            copy_fixture(root)
+            path = root / TARGETS[10]
+            data = json.loads(path.read_text(encoding="utf-8"))
+            data["compatibility"]["explicit_loadout_required"] = False
+            path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            with self.assertRaisesRegex(validator.CanonLifecycleError, "explicit loadout"):
                 validator.validate(root)
 
     def test_superseded_contract_cannot_claim_current_authority(self) -> None:
