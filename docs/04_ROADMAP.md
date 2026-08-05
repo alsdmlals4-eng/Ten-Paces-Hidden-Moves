@@ -15,15 +15,15 @@ runtime_integration_pr: 65
 active_planning_work_mode: PLAN
 active_planning_pr: 92
 active_planning_parent_pr: 91
-active_approval_count: 7/10
-active_decision_state: APPROVED_DRAFT_WRONG_PLAN_RESCUE_DERIVED_STATS
+active_approval_count: 8/10
+active_decision_state: APPROVED_DRAFT_OBSERVATION_ANSWER_LEAK_GUARDRAILS
 phase: VERTICAL_SLICE_APP_FLOW_PLANNING
 project_core: CORE_CONFIRMED
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 base_release: 9.4.3
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: OBSERVATION_ANSWER_LEAK_RISK
+next_planning_decision: GRADE_FARMING_RISK
 t1_greenlight: NOT_GRANTED
 ```
 
@@ -43,6 +43,7 @@ PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정�
 - [x] 묶음 회복 기력1·내력0·절초기세1.
 - [x] 조건 난도 여섯 구간·유효 시도·수동 재분류 Gate.
 - [x] 파생 체력·기력·내력 공식과 결과 역전·중대 구제 분리.
+- [x] 관찰 행동1수·관찰량1·앞 슬롯 직접 공개 유지와 공정성·측정 가드레일.
 - [x] 승인 배치10·조기 체크포인트·모든 작업 TDD·현업 벤치마킹.
 
 기획 승인은 런타임 구현이나 사람 검증 완료를 뜻하지 않는다.
@@ -54,15 +55,14 @@ PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정�
 | `RESOURCE_SATURATION_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 회복 세금·고갈 측정 |
 | `CONDITION_CALIBRATION_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 성공률·구간 이탈·체감 측정 |
 | `WRONG_PLAN_RESCUE_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 결과 역전률·중대 구제율·올바른 계획 증폭률 |
-| `OBSERVATION_ANSWER_LEAK_RISK` | 다음 작업 | 허용·금지 정보와 누출 검사 |
+| `OBSERVATION_ANSWER_LEAK_RISK` | `ACCEPTED_PENDING_HUMAN_MEASUREMENT` | 직접 공개 유지·사람 측정 |
 | `GRADE_FARMING_RISK` | 미확정 | 정규화·상한·반복 감쇠 |
 | `RUNTIME_AUTHORITY_GAP` | P0 | Build 승인 뒤 구현 |
 
 ## 4. 현재 작업 순서
 
 ```text
-관찰 정답 유출 위험
-→ 전투 종료 등급 파밍 위험
+전투 종료 등급 파밍 위험
 → STAR9_PUBLIC_READ_BRANCH_TEMPLATE
 → 여섯 개별 9성 자동 분기
 → 여섯 10성 고유 절초
@@ -81,7 +81,7 @@ PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정�
 - [x] 자원 포화 위험 계약.
 - [x] 조건 난도 보정 계약.
 - [x] 잘못된 계획 구제·파생 스탯 계약.
-- [ ] 관찰 정답 유출 계약.
+- [x] 관찰 정답 유출 가드레일·측정 계약.
 - [ ] 등급 파밍 방지 계약.
 - [ ] 9성 공통 템플릿과 여섯 분기.
 - [ ] 10성 절초와 비스탯 노드.
