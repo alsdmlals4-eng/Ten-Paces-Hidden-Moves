@@ -7,6 +7,7 @@
 > 현재 자원 포화 완화 권위: `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`  
 > 현재 조건 난도 보정 권위: `TEN-DEC-20260805-CONDITION-CALIBRATION-01`  
 > 현재 파생 스탯·오판 구제 권위: `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01`  
+> 현재 관찰 가드레일 권위: `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`  
 > 현재 작업 운영 권위: `TEN-DEC-20260805-WORK-GOVERNANCE-01`
 
 ## 현재 기준
@@ -21,8 +22,8 @@ runtime_integration_pr: 65
 active_planning_work_mode: PLAN
 active_planning_pr: 92
 active_planning_parent_pr: 91
-active_approval_count: 7/10
-active_decision_state: APPROVED_DRAFT_WRONG_PLAN_RESCUE_DERIVED_STATS
+active_approval_count: 8/10
+active_decision_state: APPROVED_DRAFT_OBSERVATION_ANSWER_LEAK_GUARDRAILS
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 engine: Godot 4.7
@@ -34,7 +35,7 @@ automated_validation: PASS
 windows_validation: NOT_RUN
 human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: OBSERVATION_ANSWER_LEAK_RISK
+next_planning_decision: GRADE_FARMING_RISK
 ```
 
 PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완화는 Draft PR #89, 조건 난도 보정과 작업 운영 정책은 그 위의 Draft PR #91, 파생 스탯·오판 구제는 그 위의 Draft PR #92에서 검증한다. PR #92는 PR #91보다 먼저, PR #91은 PR #89보다 먼저 독립 병합하지 않는다. PR #90은 `[대체됨]`, PR #85 HTML PoC는 `[보류]`다.
@@ -72,7 +73,7 @@ PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완�
 - 현재 런타임은 일부 `IMPLEMENTED_LEGACY`이며 최신 성장·전투 정본이 구현되지 않았다.
 - 별도 Build 승인 전 제품 코드·Scene·런타임 데이터를 변경하지 않는다.
 
-## 현재 승인 계보 — 7/10
+## 현재 승인 계보 — 8/10
 
 1. `TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01`
 2. `TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01`
@@ -81,6 +82,7 @@ PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완�
 5. `TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01` — `[대체됨]`
 6. `TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-2-BASE-EFFECTS-AND-BUDGETS-01`
 7. `TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01`
+8. `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`
 
 지원 권위:
 
@@ -106,6 +108,7 @@ PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완�
 - 파생 수치는 `체력=26+근골`, `기력=4+floor(신법/4)`, `내력=3+floor(내공/4)`.
 - 외공·근골·신법·내공·심안은 성공한 명시 효과만 강화하고 구조 실패를 우회하지 않는다.
 - 잘못된 계획 구제는 `결과 역전`과 `중대 구제`로 분리하고 중복 집계하지 않는다.
+- 관찰은 행동1수→관찰량1→적 선잠금 뒤 앞 슬롯 실제 행동 종류 직접 공개를 유지하며 자동 정답 대응은 생성하지 않는다.
 - 구형 `attack_power: 8`은 현행 공식 권위에서 `[대체됨]`이며 행동별 스탯 계수에 더하지 않는다.
 - 승인 배치는 최대10건이며 고위험 충돌·세션 종료·큰 정본 영향에서 조기 체크포인트를 허용한다.
 - 모든 작업은 `RED→GREEN→REFACTOR→exact-head verification`을 따른다.
@@ -117,13 +120,13 @@ PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완�
 | `RESOURCE_SATURATION_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 회복 세금·자원 고갈 |
 | `CONDITION_CALIBRATION_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 성공률·구간 이탈·고점/저점 체감 |
 | `WRONG_PLAN_RESCUE_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 결과 역전률·중대 구제율·올바른 계획 증폭률 |
-| `OBSERVATION_ANSWER_LEAK_RISK` | P1·다음 작업 | 관찰 정보 누출 |
+| `OBSERVATION_ANSWER_LEAK_RISK` | `ACCEPTED_PENDING_HUMAN_MEASUREMENT` | 직접 공개 유지·자동 nerf 금지·사람 측정 |
 | `GRADE_FARMING_RISK` | P1·미확정 | 반복 파밍 |
 | `RUNTIME_AUTHORITY_GAP` | P0 | 최신 계획 미구현 |
 
 ## 생명주기 요약
 
-- `[현행]`: 전투 가격·repricing·기술1·자원 포화·조건 보정·파생 스탯·오판 구제·작업 운영 정책.
+- `[현행]`: 전투 가격·repricing·기술1·자원 포화·조건 보정·파생 스탯·오판 구제·관찰 직접 공개 가드레일·작업 운영 정책.
 - `[대체됨]`: 구형 사거리·구형 기술1·부모 내력 자동회복1·구형 통합 공격력 공식 권위·PR #90.
 - `[보류]`: PR #85 HTML PoC.
 - `[폐기]`: 현재 없음.
@@ -131,8 +134,7 @@ PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완�
 ## 다음 작업 Gate
 
 ```text
-관찰 정답 유출 위험
-→ 전투 종료 등급 파밍 위험
+전투 종료 등급 파밍 위험
 → 9성 공개 정보 자동 분기 공통 템플릿
 → 여섯 개별 9성 분기
 → 무공별 10성 고유 절초
@@ -154,7 +156,7 @@ PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완�
 ## 검증 경계
 
 ```yaml
-planning_checkpoint: DRAFT_PR92_WRONG_PLAN_RESCUE_DERIVED_STATS
+planning_checkpoint: DRAFT_PR92_OBSERVATION_ANSWER_LEAK_GUARDRAILS
 product_code_changed: false
 html_poc_changed: false
 runtime_validation: NOT_RUN
