@@ -4,7 +4,8 @@
 > 정본 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`  
 > 병합 후 감사: `TEN-DEC-20260804-POSTMERGE-CANON-ADVERSARIAL-AUDIT-01`  
 > 현재 기술1 효과·5성 권위: `TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01`  
-> 현재 7성·9성 숙련 예산 권위: `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01`  
+> 현재 7성·9성 숙련 예산 부모 권위: `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01`  
+> 현재 초기 무공서 10권 성장 권위: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`  
 > 현재 자원 포화 완화 권위: `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`  
 > 현재 조건 난도 보정 권위: `TEN-DEC-20260805-CONDITION-CALIBRATION-01`  
 > 현재 파생 스탯·오판 구제 권위: `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01`  
@@ -24,8 +25,8 @@ runtime_integration_pr: 65
 active_planning_work_mode: PLAN
 active_planning_pr: 92
 active_planning_parent_pr: 91
-active_approval_count: 10/10
-active_decision_state: APPROVED_DRAFT_STAR7_STAR9_MASTERY_BONUS
+active_approval_count: 9/10
+active_decision_state: APPROVED_DRAFT_TEN_RECOGNIZABLE_MARTIAL_MANUALS
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 engine: Godot 4.7
@@ -37,7 +38,7 @@ automated_validation: PASS
 windows_validation: NOT_RUN
 human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: SIX_STAR7_MASTERY_BONUS_ALLOCATIONS
+next_planning_decision: TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE
 ```
 
 PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완화는 Draft PR #89, 조건 난도 보정과 작업 운영 정책은 그 위의 Draft PR #91, 파생 스탯·오판 구제·관찰·등급 파밍 방지·7/9성 숙련 예산은 그 위의 Draft PR #92에서 검증한다. PR #92는 PR #91보다 먼저, PR #91은 PR #89보다 먼저 독립 병합하지 않는다. PR #90은 `[대체됨]`, PR #85 HTML PoC는 `[보류]`다.
@@ -78,7 +79,7 @@ PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완�
 - 현재 런타임은 일부 `IMPLEMENTED_LEGACY`이며 최신 성장·전투 정본이 구현되지 않았다.
 - 별도 Build 승인 전 제품 코드·Scene·런타임 데이터를 변경하지 않는다.
 
-## 현재 승인 계보 — 10/10
+## 이전 승인 계보 — 10/10
 
 1. `TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01`
 2. `TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01`
@@ -90,6 +91,13 @@ PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완�
 8. `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`
 9. `TEN-DEC-20260805-GRADE-FARMING-GUARDRAILS-01`
 10. `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01`
+
+## 현재 승인 배치 — 9/10
+
+- `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`
+- 초기 10권의 문파·이름·주/보조능력치 적합성·3/5/7/9/10성 성장·예산을 승인한다.
+- 능력치별 권수·균등 분포·쿼터는 설계 규칙으로 사용하지 않는다.
+- 런타임 구현은 `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE` 전까지 금지한다.
 
 지원 권위:
 
@@ -108,8 +116,10 @@ PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완�
 - 기술1은 조건 실패 시 낮은 저점, 성공 시 높은 고점.
 - 조건 실패 시 연결 묶음 전부0; 부분 지급·이월·대체·전환 없음.
 - 5성 patch는 별도 비용 없이 유효 예산의20%.
-- 7성 기술2는 현행 repricing 유효 예산에 숙련 보너스 `+10틱`을 받지만 실제 배분은 다음 Decision까지 미승인이다.
-- 9성 추가 예산은 `10 + floor(7성 최종 예산×0.20)`이며 단일 효과·무분기·추가입력/비용 없음이다.
+- 기존 6권 기술2는 현행 repricing 유효 예산에 `+10틱`을 통합하고, 신규 4권 기술2는 새 승인 예산 프로필을 사용한다.
+- 초기 10권의 9성은 `10 + floor(7성 최종 예산×0.20)` 안에서 단일 효과·무분기·추가입력/비용 없음으로 승인됐다.
+- 초기 10권의 10성 절초는 각각 고유 해결 순서와 `±5틱` 계획 예산을 가진다.
+- 주·보조능력치 권수 분포는 검사하지 않고 문파·무학·동작·피해 방식 적합성만 검사한다.
 - 연격은 총피해를 한 번 계산하고 `40% / 30% / 나머지`로 분배.
 - 묶음 전환 자동 회복은 `기력1·내력0·절초기세1`; 라운드 시작 별도 내력 회복 없음.
 - 조건 난도는 극단적·매우 어려움·어려움·보통·쉬움·준확정 여섯 구간.
@@ -139,7 +149,7 @@ PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완�
 
 ## 생명주기 요약
 
-- `[현행]`: 전투 가격·repricing·기술1·7/9성 숙련 예산·자원 포화·조건 보정·파생 스탯·오판 구제·관찰 직접 공개·등급 파밍 방지·작업 운영 정책.
+- `[현행]`: 초기 무공서 10권 성장·전투 가격·repricing·기술1·7/9성 예산 부모·자원 포화·조건 보정·파생 스탯·오판 구제·관찰 직접 공개·등급 파밍 방지·작업 운영 정책.
 - `[대체됨]`: 구형 사거리·구형 기술1·부모 내력 자동회복1·구형 통합 공격력 공식 권위·9성 자동 분기 가설·PR #90.
 - `[보류]`: PR #85 HTML PoC.
 - `[폐기]`: 현재 없음.
@@ -147,18 +157,15 @@ PR #84·#86·#87·#88은 main에 병합된 역사 계보다. 자원 포화 완�
 ## 다음 작업 Gate
 
 ```text
-SIX_STAR7_MASTERY_BONUS_ALLOCATIONS
-→ SIX_STAR9_SINGLE_COMPLETION_BONUSES
-→ SIX_STAR10_UNIQUE_ULTIMATES
+TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE
+→ RED 런타임 계약·회귀 검사
+→ Godot 데이터·카드·해결기 구현
+→ 사람·밸런스 검증
 → NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT
 → FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
-→ [기획 완료]
-→ 이미지·애니메이션·HX 승인
-→ [이미지 완료]
-→ VERTICAL_SLICE_APP_FLOW_SHELL Codex BUILD
 ```
 
-10/10 체크포인트이므로 새 승인 배치를 열기 전 현재 PR 계보·정본·Sheet의 일치를 먼저 검토한다.
+현재 승인 배치는 9/10이다. GitHub·Google Sheet 정본 동기화 뒤 런타임 구현은 별도 승인 Gate에서 시작한다.
 
 ## 역사·회귀 추적
 
@@ -170,7 +177,7 @@ SIX_STAR7_MASTERY_BONUS_ALLOCATIONS
 ## 검증 경계
 
 ```yaml
-planning_checkpoint: DRAFT_PR92_STAR7_STAR9_MASTERY_BONUS_10_OF_10
+planning_checkpoint: DRAFT_PR92_TEN_RECOGNIZABLE_MARTIAL_MANUALS_9_OF_10
 product_code_changed: false
 html_poc_changed: false
 runtime_validation: NOT_RUN

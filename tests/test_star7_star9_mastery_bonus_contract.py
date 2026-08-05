@@ -142,18 +142,18 @@ class Star7Star9MasteryBonusContractTest(unittest.TestCase):
         ]:
             self.assertEqual(scope[key], "NOT_RUN")
 
-    def test_current_canon_moves_to_ten_of_ten(self):
+    def test_later_ten_manual_decision_owns_current_canon(self):
         active = (ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md").read_text(encoding="utf-8")
         roadmap = (ROOT / "docs/04_ROADMAP.md").read_text(encoding="utf-8")
         mastery = (ROOT / "docs/06_STARTING_FACTION_MASTERY_DATA.md").read_text(encoding="utf-8")
-        for text in [active, roadmap]:
-            self.assertIn("active_approval_count: 10/10", text)
-            self.assertIn("active_decision_state: APPROVED_DRAFT_STAR7_STAR9_MASTERY_BONUS", text)
-            self.assertIn("next_planning_decision: SIX_STAR7_MASTERY_BONUS_ALLOCATIONS", text)
-        self.assertIn("active_batch: 10/10", mastery)
-        self.assertIn("9성 | 기술2 단일 완성 보너스", mastery)
-        self.assertNotIn("9성 | 기술2 공개 정보 자동 분기", mastery)
-
+        for current in [active, roadmap]:
+            self.assertIn("active_approval_count: 9/10", current)
+            self.assertIn("active_decision_state: APPROVED_DRAFT_TEN_RECOGNIZABLE_MARTIAL_MANUALS", current)
+            self.assertIn("next_planning_decision: TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE", current)
+        self.assertIn("active_batch: 9/10", mastery)
+        self.assertIn("approved_20260806_ten_recognizable_martial_manuals_contract.json", mastery)
+        self.assertIn("approved_20260806_ten_manual_growth_budget_overlay_contract.json", mastery)
+        self.assertNotIn("active_batch: 10/10", mastery)
     def test_rejects_star7_bonus_drift(self):
         self.assert_mutation_rejected(
             lambda data: data["star7_policy"].update({"fixed_mastery_bonus_ticks": 8}),

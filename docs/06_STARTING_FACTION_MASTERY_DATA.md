@@ -6,20 +6,23 @@
 
 ```yaml
 status: T1 이후 가설 원본
-active_batch: 10/10
-current_decision: TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01
-next_decision: SIX_STAR7_MASTERY_BONUS_ALLOCATIONS
+active_batch: 9/10
+current_decision: TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01
+next_decision: TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE
 implementation_authority: PLANNING_ONLY
 human_validation: NOT_RUN
 ```
 
-현재 T0에는 세력 선택·수련 분기·개별 7성/9성 보너스 효과가 구현되지 않았다. 프로젝트 코어가 사용자 승인됐다는 사실은 성장 런타임이나 사람 검증 완료를 뜻하지 않는다.
+초기 10권의 문파·3/5/7/9/10성 효과와 예산은 기획 승인됐지만 T0 제품 런타임에는 아직 구현되지 않았다. 프로젝트 코어가 사용자 승인됐다는 사실은 성장 런타임이나 사람 검증 완료를 뜻하지 않는다.
 
 현행 성장 권위:
 
 - 기술1 효과·5성: `approved_20260804_technique1_conditional_rework_star5_contract.json`
 - 기술2 유효 비용·슬롯: `approved_20260804_existing_action_reprice_contract.json`
-- 7성·9성 숙련 예산: `approved_20260805_star7_star9_mastery_bonus_contract.json`
+- 7성·9성 예산 부모: `approved_20260805_star7_star9_mastery_bonus_contract.json`
+- 초기 10권 의미·능력치 적합성·성급별 효과: `approved_20260806_ten_recognizable_martial_manuals_contract.json`
+- 초기 10권 기술2·절초 계획 예산: `approved_20260806_ten_manual_growth_budget_overlay_contract.json`
+- 플레이어용 목록: `docs/03_TEN_MARTIAL_MANUALS_CATALOG.md`
 - 등급 파밍 가드레일: `approved_20260805_grade_farming_guardrails_contract.json`
 - `approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json`은 `[대체됨]` 역사 증거다.
 
@@ -61,7 +64,7 @@ star9_total_budget_ticks
 | 회기전맥 | 61 | 71 | 24 | 95 |
 | 십보환위 | 96 | 106 | 31 | 137 |
 
-개별 7성 +10틱 배분과 9성 효과는 아직 미승인이다.
+초기 10권의 7성 기술2·9성 단일 효과·10성 절초는 승인됐으며, 제품 런타임 구현은 별도 Gate까지 금지한다.
 
 ## 다음 PoC 성장 실험
 
@@ -98,7 +101,7 @@ star9_total_budget_ticks
 - 높은 성급은 낮은 성급보다 가치가 높아도 사용 시점과 역할은 달라야 한다.
 - 7성 뒤 기술1 사용률이 사실상 0이 되면 `MASTERY_ROLE_REPLACEMENT_RISK`로 재검토한다.
 
-## 세력 정체성 후보
+## 역사적 6권 역할표
 
 현재 가설 세력은 여섯 시작 무공의 전투 철학을 대표한다.
 
@@ -111,11 +114,11 @@ star9_total_budget_ticks
 | 청심양생공 | 청심조식: 평시 정비 | 회기전맥: 저자원 위기 안정화 |
 | 무영십보 | 철각유영: 안전 확보 | 십보환위: 회피 성공 뒤 반격 전환 |
 
-이 표는 동일 역할 금지를 위한 책임 원본이다. 실제 +10틱 효과와 9성 단일 효과는 후속 Decision에서 확정한다.
+이 표는 구형 이름의 역할 계보를 추적하는 역사 자료다. 현재 표시명·문파·능력치·성장 효과는 2026-08-06 10권 계약과 카탈로그를 따른다.
 
 ## 기본 절초·10성 절초·진의
 
-현재 T0 런타임에는 공용 절초 3종이 역사 PoC 데이터로 존재한다. 시작 무공별 10성 절초는 주 영구 능력치12 요구만 승인됐고 개별 효과는 미승인이다.
+현재 T0 런타임에는 공용 절초 3종이 역사 PoC 데이터로 존재한다. 초기 10권의 고유 절초는 기획·예산 승인됐지만 런타임에는 아직 구현되지 않았다.
 
 - 기본 절초: 공용 전투 검증용.
 - 10성 절초: 무공별 최종 경지, 별도 예산·효과 Decision 필요.
@@ -128,9 +131,10 @@ star9_total_budget_ticks
 현재 순서:
 
 ```text
-SIX_STAR7_MASTERY_BONUS_ALLOCATIONS
-→ SIX_STAR9_SINGLE_COMPLETION_BONUSES
-→ SIX_STAR10_UNIQUE_ULTIMATES
+TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE
+→ RED 런타임 계약·회귀 검사
+→ 10권 Godot 데이터·카드·해결기 구현
+→ 사람·밸런스 검증
 → NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT
 → FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
 ```

@@ -85,13 +85,13 @@ def validate_operating_state(active: str, roadmap: str) -> None:
     require(parent_pr == 91, "active planning parent PR differs")
     require(parent_pr not in MERGED_OR_HELD_PR_IDS, "active planning parent PR points to merged or held historical PR")
     require(parent_pr < active_pr, "stacked planning parent PR must precede active PR")
-    require(active_state["active_approval_count"] == "10/10", "active approval count differs")
+    require(active_state["active_approval_count"] == "9/10", "active approval count differs")
     require(
-        active_state["active_decision_state"] == "APPROVED_DRAFT_STAR7_STAR9_MASTERY_BONUS",
+        active_state["active_decision_state"] == "APPROVED_DRAFT_TEN_RECOGNIZABLE_MARTIAL_MANUALS",
         "active planning decision state differs",
     )
     require(
-        active_state["next_planning_decision"] == "SIX_STAR7_MASTERY_BONUS_ALLOCATIONS",
+        active_state["next_planning_decision"] == "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE",
         "next planning decision differs",
     )
 
@@ -100,8 +100,8 @@ def validate_operating_state(active: str, roadmap: str) -> None:
         "runtime_integration_pr: 65",
         "runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65",
         "human_validation: NOT_RUN",
-        "TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01",
-        "DRAFT_PR92_STAR7_STAR9_MASTERY_BONUS_10_OF_10",
+        "TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01",
+        "DRAFT_PR92_TEN_RECOGNIZABLE_MARTIAL_MANUALS_9_OF_10",
     ]:
         require(token in active, f"active context missing operating token: {token}")
     for token in [
@@ -109,8 +109,8 @@ def validate_operating_state(active: str, roadmap: str) -> None:
         "STEP 14",
         "T1 — 최소 세로 슬라이스",
         "KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST",
-        "SIX_STAR7_MASTERY_BONUS_ALLOCATIONS",
-        "SIX_STAR9_SINGLE_COMPLETION_BONUSES",
+        "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE",
+        "NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT",
     ]:
         require(token in roadmap, f"roadmap missing operating token: {token}")
 
@@ -145,8 +145,9 @@ def validate_registry(registry: str) -> None:
         "731e6431e76ebc76841f9253e87cd1e7a693ebb2",
         "0ba841ff2e62b2f716466356dd9e7ffcf587d150",
         "TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01",
-        "approved_20260805_star7_star9_mastery_bonus_contract.json",
-        "SIX_STAR7_MASTERY_BONUS_ALLOCATIONS",
+        "approved_20260806_ten_recognizable_martial_manuals_contract.json",
+        "approved_20260806_ten_manual_growth_budget_overlay_contract.json",
+        "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE",
         "9성 공개 정보 자동 분기 가설",
     ]:
         require(token in registry, f"canon lifecycle registry missing token: {token}")
@@ -155,7 +156,7 @@ def validate_registry(registry: str) -> None:
 def validate_mastery(mastery: str) -> None:
     for token in [
         "T1 이후 가설 원본",
-        "active_batch: 10/10",
+        "active_batch: 9/10",
         "action_slots",
         "sure_hit",
         "프로젝트 코어가 사용자 승인",
@@ -166,10 +167,12 @@ def validate_mastery(mastery: str) -> None:
         "9성 | 기술2 단일 완성 보너스",
         "현재 T0에는 세력 선택",
         "공용 절초 3종",
-        "SIX_STAR7_MASTERY_BONUS_ALLOCATIONS",
+        "approved_20260806_ten_recognizable_martial_manuals_contract.json",
+        "approved_20260806_ten_manual_growth_budget_overlay_contract.json",
+        "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE",
     ]:
         require(token in mastery, f"growth authority missing token: {token}")
-    require("active_batch: 9/10" not in mastery, "growth authority still claims active batch 9/10")
+    require("active_batch: 10/10" not in mastery, "growth authority still claims superseded active batch 10/10")
     require("9성 | 기술2 공개 정보 자동 분기" not in mastery, "growth authority still claims automatic branch")
     require(
         "approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json`은 `[대체됨]`" in mastery,

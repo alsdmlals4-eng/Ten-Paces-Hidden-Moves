@@ -3,7 +3,8 @@
 > 현재 상태: `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`  
 > 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`  
 > 전투 규칙: `docs/02_COMBAT_RULES.md`  
-> 7성·9성 숙련 예산: `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01`
+> 초기 무공서 10권 성장: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`  
+> 7성·9성 예산 부모: `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01`
 
 ## 1. 현재 단계
 
@@ -15,15 +16,15 @@ runtime_integration_pr: 65
 active_planning_work_mode: PLAN
 active_planning_pr: 92
 active_planning_parent_pr: 91
-active_approval_count: 10/10
-active_decision_state: APPROVED_DRAFT_STAR7_STAR9_MASTERY_BONUS
+active_approval_count: 9/10
+active_decision_state: APPROVED_DRAFT_TEN_RECOGNIZABLE_MARTIAL_MANUALS
 phase: VERTICAL_SLICE_APP_FLOW_PLANNING
 project_core: CORE_CONFIRMED
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 base_release: 9.4.3
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: SIX_STAR7_MASTERY_BONUS_ALLOCATIONS
+next_planning_decision: TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE
 t1_greenlight: NOT_GRANTED
 ```
 
@@ -49,6 +50,9 @@ PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정�
 - [x] 관찰 행동1수·관찰량1·앞 슬롯 직접 공개 유지와 공정성·측정 가드레일.
 - [x] 원시 등급 사건 보존·동일 행동 감쇠·행동 인스턴스 상한·기준 라운드·경제 미연결.
 - [x] 승인 배치10·조기 체크포인트·모든 작업 TDD·현업 벤치마킹.
+- [x] 한국·중국 무협 인지도 기반 초기 무공서 10권과 문파 표시.
+- [x] 주·보조능력치 권수 쿼터 폐기와 무공별 적합성 근거.
+- [x] 10권의 3/5/7/9/10성 성장·절초·해결 순서·계획 예산.
 
 기획 승인은 런타임 구현이나 사람 검증 완료를 뜻하지 않는다.
 
@@ -67,18 +71,15 @@ PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정�
 ## 4. 현재 작업 순서
 
 ```text
-SIX_STAR7_MASTERY_BONUS_ALLOCATIONS
-→ SIX_STAR9_SINGLE_COMPLETION_BONUSES
-→ SIX_STAR10_UNIQUE_ULTIMATES
+TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE
+→ RED 런타임 계약·회귀 검사
+→ 10권 Godot 데이터·카드·해결기 구현
+→ 사람·밸런스·가독성 검증
 → NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT
 → FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
-→ [기획 완료]
-→ 이미지·애니메이션·HX 승인
-→ [이미지 완료]
-→ VERTICAL_SLICE_APP_FLOW_SHELL Codex BUILD
 ```
 
-현재 배치는 10/10이다. 여섯 개별 7성 배분은 새 승인 배치에서 시작하며, 7성 배분 전에 9성 개별 효과를 작성하지 않는다.
+현재 배치는 9/10이다. 초기 10권의 기획·예산은 승인됐지만 제품 런타임은 아직 변경하지 않는다.
 
 ## 5. 남은 기획 Gate
 
@@ -88,9 +89,11 @@ SIX_STAR7_MASTERY_BONUS_ALLOCATIONS
 - [x] 관찰 정답 유출 가드레일·측정 계약.
 - [x] 등급 파밍 방지 계약.
 - [x] 7성·9성 공통 숙련 예산과 9성 단일 효과 템플릿.
-- [ ] 여섯 7성 `+10틱` 효과 배분.
-- [ ] 여섯 9성 단일 완성 보너스.
-- [ ] 10성 절초와 비스탯 노드.
+- [x] 초기 10권 7성 기술2 효과와 통합 예산.
+- [x] 초기 10권 9성 단일 완성 효과.
+- [x] 초기 10권 10성 절초·해결 순서·계획 예산.
+- [ ] 10권 런타임 구현 Gate.
+- [ ] 비스탯 노드 기대값과 가중치.
 
 7성 개별 배분 필수 필드:
 
@@ -113,7 +116,7 @@ SIX_STAR7_MASTERY_BONUS_ALLOCATIONS
 
 - 최신 Decision·approved contract·amendment 일치.
 - 조건 실패 전부0, 연격 분배, 고정 이동, 추가 입력 금지 회귀 테스트.
-- 7성·9성 예산 overlay 적용과 개별 효과 승인 상태 확인.
+- 10권 의미 계약·예산 overlay·역사 alias 적용과 런타임 구현 Gate 확인.
 - 자원 포화·조건 성공률·오판 구제·관찰·등급 파밍·기술 대체 위험 측정 계획.
 - 등급 원시 사건과 유효 반영량 분리 및 사람 검증 전 경제 연결 금지.
 - 스탯 파생 공식과 구형 통합 공격력 이중 적용 금지.

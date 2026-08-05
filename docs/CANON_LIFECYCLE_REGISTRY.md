@@ -1,7 +1,8 @@
 # 십보강호 정본 생명주기 등록부
 
 - 기반 권위: `TEN-DEC-20260804-POSTMERGE-CANON-ADVERSARIAL-AUDIT-01`
-- 현행 성장 권위: `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01`
+- 현행 성장 권위: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`
+- 7성·9성 예산 부모: `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01`
 - 위험 완화: `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`, `TEN-DEC-20260805-CONDITION-CALIBRATION-01`, `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01`, `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`, `TEN-DEC-20260805-GRADE-FARMING-GUARDRAILS-01`
 - 작업 운영: `TEN-DEC-20260805-WORK-GOVERNANCE-01`
 - 기준 main: `bbed0fd4d278ca0e0d52f4e6d9083aafa1997318`
@@ -27,11 +28,14 @@
 | 파생 스탯·오판 구제 개정 | `docs/02_COMBAT_RULES_DERIVED_STATS_AND_RESCUE_AMENDMENT.md` |
 | 관찰 직접 공개 개정 | `docs/02_COMBAT_RULES_OBSERVATION_GUARDRAILS_AMENDMENT.md` |
 | 등급 파밍 방지 개정 | `docs/02_COMBAT_RULES_GRADE_FARMING_GUARDRAILS_AMENDMENT.md` |
-| 7성·9성 숙련 예산 개정 | `docs/02_COMBAT_RULES_STAR7_STAR9_MASTERY_BONUS_AMENDMENT.md` |
+| 7성·9성 예산 부모 개정 | `docs/02_COMBAT_RULES_STAR7_STAR9_MASTERY_BONUS_AMENDMENT.md` |
+| 초기 무공서 10권 전투 해결 개정 | `docs/02_COMBAT_RULES_TEN_RECOGNIZABLE_MARTIAL_MANUALS_AMENDMENT.md` |
+| 초기 무공서 10권 읽기 카탈로그 | `docs/03_TEN_MARTIAL_MANUALS_CATALOG.md` |
 | 거리·중단·예산 부모 | `TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01` |
 | 기존 행동 비용·기술2 유효 예산 | `TEN-DEC-20260804-EXISTING-ACTIONS-REPRICE-01` |
 | 기술1 효과·조건·5성 | `TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01` |
-| 7성·9성 숙련 예산·단일 효과 템플릿 | `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01` |
+| 7성·9성 예산 부모·단일 효과 템플릿 | `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01` |
+| 초기 10권 문파·능력치 적합성·3/5/7/9/10성 성장 | `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01` |
 | 묶음 내력 회복 최종값 | `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01` |
 | 조건 측정·재분류 | `TEN-DEC-20260805-CONDITION-CALIBRATION-01` |
 | 파생 수치·오판 구제 측정 | `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01` |
@@ -50,6 +54,8 @@
 - `approved_20260805_observation_answer_leak_guardrails_contract.json`
 - `approved_20260805_grade_farming_guardrails_contract.json`
 - `approved_20260805_star7_star9_mastery_bonus_contract.json`
+- `approved_20260806_ten_recognizable_martial_manuals_contract.json`
+- `approved_20260806_ten_manual_growth_budget_overlay_contract.json`
 - `approved_20260805_work_governance_contract.json`
 
 ## `[대체됨]`
@@ -70,8 +76,7 @@
 |---|---|---|
 | GitHub PR #85 HTML Technique1 PoC | 닫힘·병합 금지·제품 권위 없음 | 명시적 재개 승인 |
 | PR #85 테스트 결과 | 역사 참고 | 최신 계약 재작성·재검증 |
-| 여섯 7성 +10틱 실제 효과 배분 | 예산만 승인 | 새 승인 배치·개별 GrillMe |
-| 여섯 9성 단일 완성 효과 | 템플릿만 승인 | 7성 배분 뒤 개별 GrillMe |
+| 초기 10권 런타임 구현 | 기획·예산 승인, 제품 미구현 | `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE` 승인 |
 | 최종 등급 가중치·체력 정규화·라운드 감점·S/A/B/C 컷 | 원자료·파밍 방지 선확정 | 사람 표본과 별도 GrillMe |
 | 등급 기반 재화·수련·드롭·영구재화 보상 | 사람 검증 전 금지 | 30승·5상대·표본 집중40% 이하와 새 Decision |
 
@@ -90,7 +95,7 @@
 | #89 | Draft·자원 포화 완화 |
 | #90 | `[대체됨]` 닫힘 |
 | #91 | Draft·부모 #89·조건 보정·작업 운영 |
-| #92 | Draft·부모 #91·파생 스탯·오판 구제·관찰·등급·7/9성 숙련 예산·10/10 |
+| #92 | Draft·부모 #91·파생 스탯·관찰·등급·7/9성 예산 부모·초기 무공서 10권·현재 배치9/10 |
 | #85 | `[보류]` HTML PoC |
 
 ## `CANON_CONFLICT`
@@ -101,7 +106,9 @@
 - 9성에 상황별 분기·공개 trigger·우선순위·추가입력·추가비용·복수 효과를 추가.
 - 7성·9성이 기술1 역할을 복제해 전 상황에서 대체.
 - 숙련 보너스로 거리·순서·합·회피·중단 실패를 자동 삭제.
-- 별도 Decision 전에 여섯 개별 7성/9성 효과를 승인 또는 런타임 생성.
+- 2026-08-06 계약을 무시하고 구형 6권 이름·능력치·미승인 상태를 현행으로 사용.
+- 능력치별 무공서 권수·균등 분포·쿼터를 강제해 문파·무학 적합성을 왜곡.
+- `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE` 전에 10권 제품 런타임 데이터를 생성.
 - 부모 내력 자동회복1을 overlay 없이 현행값으로 사용.
 - 조건 성공률에 따라 자동·실시간 repricing.
 - 공개상 불가능한 사용을 가격 분모에 포함.
@@ -119,14 +126,15 @@
 
 ## 다음 Gate
 
-`SIX_STAR7_MASTERY_BONUS_ALLOCATIONS`가 다음 Decision이다. 현재 승인 배치는 `10/10`으로 닫혔다.
+`TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`가 다음 Decision이다. 현재 승인 배치는 `9/10`이다.
 
 ```text
-SIX_STAR7_MASTERY_BONUS_ALLOCATIONS
-→ SIX_STAR9_SINGLE_COMPLETION_BONUSES
-→ SIX_STAR10_UNIQUE_ULTIMATES
+TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE
+→ RED 런타임 계약·회귀 검사
+→ 10권 제품 데이터·카드·해결기 구현
+→ 사람·밸런스 검증
 → NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT
 → FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
 ```
 
-여섯 개별 7성 효과와 9성 효과를 현재 권위로 사용하면 안 된다. 자동 조정 없이 새 GrillMe Decision으로만 승인한다.
+기획 승인만으로 제품 코드·Godot Scene·런타임 데이터 구현 완료를 주장하면 안 된다.
