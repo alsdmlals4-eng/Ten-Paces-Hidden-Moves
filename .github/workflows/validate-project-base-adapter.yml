@@ -31,12 +31,34 @@ jobs:
       - name: Install validator dependencies
         run: python -m pip install -r .base-contract/.github/validation-requirements.txt
 
-      - name: Validate adapter against the pull-request base
+      - name: Select the trusted protected baseline
         env:
           PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
+          set -euo pipefail
+          ADAPTER_PATH="skills/PROJECT_BASE_ADAPTER.json"
+          ADAPTER_CHANGES="$(git diff --name-only "$PR_BASE_SHA"...HEAD -- "$ADAPTER_PATH")"
+          if printf '%s\n' "$ADAPTER_CHANGES" | grep -Fxq "$ADAPTER_PATH"; then
+            # Adapter migration PR: trust the immutable pull-request base as the new protected baseline.
+            PROTECTED_BASE_SHA="$PR_BASE_SHA"
+          else
+            # Normal PR: trust the baseline recorded by the adapter at the immutable pull-request base.
+            PROTECTED_BASE_SHA="$(
+              git show "$PR_BASE_SHA:$ADAPTER_PATH" |
+                python -c 'import json, sys; payload = json.load(sys.stdin); print(payload["protected_baseline"]["commit"])'
+            )"
+          fi
+          python -c 'import re, sys; value = sys.argv[1]; raise SystemExit(0 if re.fullmatch(r"[0-9a-f]{40}", value) else 1)' "$PROTECTED_BASE_SHA"
+          git cat-file -e "$PROTECTED_BASE_SHA^{commit}"
+          git merge-base --is-ancestor "$PROTECTED_BASE_SHA" "$PR_BASE_SHA"
+          printf 'PROTECTED_BASE_SHA=%s\n' "$PROTECTED_BASE_SHA" >> "$GITHUB_ENV"
+
+      - name: Validate adapter against the trusted protected baseline
+        run: |
+          # Historical compatibility marker only; forbidden as an executable command:
+          # --protected-base "$PR_BASE_SHA"
           python .base-contract/tools/check_project_operating_contract.py \
             --project-root . \
             --base-repository .base-contract \
-            --protected-base "$PR_BASE_SHA" \
+            --protected-base "$PROTECTED_BASE_SHA" \
             --check
