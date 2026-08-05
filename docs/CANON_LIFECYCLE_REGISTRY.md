@@ -1,7 +1,7 @@
 # 십보강호 정본 생명주기 등록부
 
 - 기반 권위: `TEN-DEC-20260804-POSTMERGE-CANON-ADVERSARIAL-AUDIT-01`
-- 위험 완화: `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`, `TEN-DEC-20260805-CONDITION-CALIBRATION-01`, `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01`, `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`
+- 위험 완화: `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`, `TEN-DEC-20260805-CONDITION-CALIBRATION-01`, `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01`, `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`, `TEN-DEC-20260805-GRADE-FARMING-GUARDRAILS-01`
 - 작업 운영: `TEN-DEC-20260805-WORK-GOVERNANCE-01`
 - 기준 main: `bbed0fd4d278ca0e0d52f4e6d9083aafa1997318`
 
@@ -24,6 +24,8 @@
 | 자원 회복 개정 | `docs/02_COMBAT_RULES_RESOURCE_RECOVERY_AMENDMENT.md` |
 | 조건 난도 개정 | `docs/02_COMBAT_RULES_CONDITION_CALIBRATION_AMENDMENT.md` |
 | 파생 스탯·오판 구제 개정 | `docs/02_COMBAT_RULES_DERIVED_STATS_AND_RESCUE_AMENDMENT.md` |
+| 관찰 직접 공개 개정 | `docs/02_COMBAT_RULES_OBSERVATION_GUARDRAILS_AMENDMENT.md` |
+| 등급 파밍 방지 개정 | `docs/02_COMBAT_RULES_GRADE_FARMING_GUARDRAILS_AMENDMENT.md` |
 | 거리·중단·예산 부모 | `TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01` |
 | 묶음 내력 회복 최종값 | `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01` |
 | 기존 행동 비용 | `TEN-DEC-20260804-EXISTING-ACTIONS-REPRICE-01` |
@@ -31,6 +33,7 @@
 | 조건 측정·재분류 | `TEN-DEC-20260805-CONDITION-CALIBRATION-01` |
 | 파생 수치·오판 구제 측정 | `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01` |
 | 관찰 직접 공개·정답 유출 측정 | `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01` |
+| 등급 원시/유효 분리·반복 감쇠·경제 Gate | `TEN-DEC-20260805-GRADE-FARMING-GUARDRAILS-01` |
 | 배치·체크포인트·TDD·벤치마킹 | `TEN-DEC-20260805-WORK-GOVERNANCE-01` |
 
 현행 contracts:
@@ -42,6 +45,7 @@
 - `approved_20260805_condition_calibration_contract.json`
 - `approved_20260805_wrong_plan_rescue_derived_stats_contract.json`
 - `approved_20260805_observation_answer_leak_guardrails_contract.json`
+- `approved_20260805_grade_farming_guardrails_contract.json`
 - `approved_20260805_work_governance_contract.json`
 
 ## `[대체됨]`
@@ -60,6 +64,8 @@
 |---|---|---|
 | GitHub PR #85 HTML Technique1 PoC | 닫힘·병합 금지·제품 권위 없음 | 명시적 재개 승인 |
 | PR #85 테스트 결과 | 역사 참고 | 최신 계약 재작성·재검증 |
+| 최종 등급 가중치·체력 정규화·라운드 감점·S/A/B/C 컷 | 원자료·파밍 방지 선확정 | 사람 표본과 별도 GrillMe |
+| 등급 기반 재화·수련·드롭·영구재화 보상 | 사람 검증 전 금지 | 30승·5상대·표본 집중40% 이하와 새 Decision |
 
 ## `[폐기]`
 
@@ -76,7 +82,7 @@
 | #89 | Draft·자원 포화 완화 |
 | #90 | `[대체됨]` 닫힘 |
 | #91 | Draft·부모 #89·조건 보정·작업 운영 |
-| #92 | Draft·부모 #91·파생 스탯·오판 구제·관찰 직접 공개 가드레일 |
+| #92 | Draft·부모 #91·파생 스탯·오판 구제·관찰 직접 공개·등급 파밍 방지 |
 | #85 | `[보류]` HTML PoC |
 
 ## `CANON_CONFLICT`
@@ -90,6 +96,11 @@
 - 최대 체력·기력·내력 증가가 현재값을 즉시 충전.
 - 구형 `attack_power: 8`을 행동별 스탯 계수에 다시 더함.
 - 결과 역전과 중대 구제를 중복 집계.
+- 원시 합·회피·절초 로그 자체를 등급 감쇠로 삭제·축소.
+- 같은 적 공격 행동 인스턴스가 합·회피 합계1.0을 초과해 등급에 반영.
+- 연격 hit index·임시 보정·표시명으로 안정 행동 ID 반복 감쇠를 우회.
+- 기준 라운드 이후 합·회피·절초 양의 반영량을 계속 누적.
+- 사람 검증·새 Decision 전에 등급을 경제에 연결.
 - 승인10건 초과 배치를 분리하지 않음.
 - 고위험 충돌·세션 종료·큰 정본 영향의 조기 체크포인트 누락.
 - RED 없이 구현하거나 문서 작업을 TDD 예외로 처리.
@@ -100,6 +111,6 @@
 
 ## 다음 Gate
 
-`GRADE_FARMING_RISK` → `STAR9_PUBLIC_READ_BRANCH_TEMPLATE` 순서다. 관찰 위험은 `ACCEPTED_PENDING_HUMAN_MEASUREMENT`이며 자동 nerf·repricing 없이 사람 측정으로 재검토한다.
+`STAR9_PUBLIC_READ_BRANCH_TEMPLATE`가 다음 Decision이다. 등급 파밍 위험은 `MITIGATED_PENDING_HUMAN_MEASUREMENT`, 관찰 위험은 `ACCEPTED_PENDING_HUMAN_MEASUREMENT`다. 양쪽 모두 자동 조정 없이 사람 측정과 새 GrillMe Decision으로만 변경한다.
 
 9성 조건은 공개 trigger, 유효 시도, 성공 사건, 실패 지점, 상대 대응, all-or-nothing 범위, 고점·저점, 측정 지표, 재분류 Gate를 필수로 한다.
