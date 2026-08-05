@@ -31,6 +31,7 @@ jobs:
         run: python tools/sync_ten_manual_current_authority.py
       - name: Commit synchronized current authority
         run: |
+          git checkout -- .github/workflows/documentation-governance.yml
           if git diff --quiet; then
             echo "Already synchronized"
             exit 0
@@ -42,7 +43,6 @@ jobs:
                   docs/06_STARTING_FACTION_MASTERY_DATA.md \
                   docs/CANON_LIFECYCLE_REGISTRY.md \
                   tools/check_postmerge_canon_lifecycle.py \
-                  tests/test_star7_star9_mastery_bonus_contract.py \
-                  .github/workflows/documentation-governance.yml
+                  tests/test_star7_star9_mastery_bonus_contract.py
           git commit -m "docs: synchronize ten-manual current authority"
           git push origin HEAD:${{ github.head_ref || github.ref_name }}
