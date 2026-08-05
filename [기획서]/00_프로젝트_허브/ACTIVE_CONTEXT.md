@@ -2,6 +2,7 @@
 
 > 전투 규칙 책임 원본: `docs/02_COMBAT_RULES.md`  
 > 정본 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`  
+> 관찰 권위: `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`  
 > 초기 무공서 10권 성장 권위: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`  
 > 초기 무공서 10권 런타임 권위: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`  
 > 빌드 승인: `docs/implementation/BUILD_APPROVAL_2026-08-06.md`
@@ -68,6 +69,17 @@ next_planning_decision: TEN_MANUAL_UI_AI_ADOPTION_GATE
 - 9성은 기술2에 단일·무분기 효과 하나만 추가한다.
 - 능력치별 무공서 권수·균등 분포·최소/최대 쿼터는 사용하지 않는다.
 - 주·보조능력치는 문파·무학·동작·피해 방식 적합성으로만 결정한다.
+
+## 관찰 권위
+
+`TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`은 후속 무공·런타임 Decision 뒤에도 유지된다.
+
+관찰은 행동1수→관찰량1→적 선잠금 뒤 앞 슬롯 실제 행동 종류 직접 공개를 유지한다.
+
+- 적은 공개 전에 현재 묶음을 잠근다.
+- 공개 뒤 적 계획을 교체하지 않는다.
+- 정답 카드·정확한 대응 추천·숨은 AI 가중치는 공개하지 않는다.
+- 관찰 약화나 자동 비용 인상은 사람 측정과 별도 Decision 전까지 금지한다.
 
 ## 현재 런타임 권위
 
@@ -155,6 +167,10 @@ TEN_MANUAL_UI_AI_ADOPTION_GATE
 → NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT
 → FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
 ```
+
+## 역사적 기준 표식
+
+`PR #7`, `Issue #13`, `CORE_REVIEW_PENDING`은 초기 프로젝트 코어 검토 이력을 찾기 위한 reference-freshness 표식이며 현재 작업 상태가 아니다. 현재 코어는 승인됐고, 현행 상태는 위 YAML과 Decision 원장을 따른다.
 
 ## 정본 동기화 원칙
 
