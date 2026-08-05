@@ -19,32 +19,23 @@
 
 ## 현재 기준
 
+활성 PR·exact head·승인 수·다음 Decision은 `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`만 책임진다. 이 문서는 안정적인 시작 경로와 보호 경계만 유지한다.
+
 ```yaml
-repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
-main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
-last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
-work_mode: REVIEW
-integration_pr: 65
-active_planning_work_mode: PLAN
-active_planning_pr: 82
-active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
-active_approval_count: 2/10
-active_decision_state: APPROVED_PENDING_MERGE
+runtime_work_mode: REVIEW
+runtime_integration_pr: 65
+planning_work_mode: PLAN
 runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
-implemented_decision: TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01
-approved_screen_architecture: TEN-DEC-20260801-SITUATION-SCREEN-01
 latest_combat_planning_runtime: NOT_STARTED
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
 human_validation: NOT_RUN
-base_adapter: skills/PROJECT_BASE_ADAPTER.json
 base_release_pinned: 9.4.3
 ```
 
-`work_mode: REVIEW`와 `integration_pr: 65`는 런타임 통합 기준선이고, 활성 기획 작업은 `active_planning_work_mode: PLAN`과 PR #82다. PR #82의 승인 두 건은 Branch·Decision·planning data·Sheet에 기록된 `APPROVED_PENDING_MERGE`이며, 병합 후 main·Sheet 재조회 전에는 `SYNCED_TO_MAIN`이 아니다.
+현재 Branch 승인 상태는 Active Context와 GitHub PR metadata를 비교하고, 병합 후 main·Sheet 재조회 전에는 `SYNCED_TO_MAIN`으로 표시하지 않는다.
 
 ## 현재 책임 원본
 
@@ -56,7 +47,7 @@ base_release_pinned: 9.4.3
 - 화면 구조: `docs/decisions/2026-08-01_SITUATION_SCREEN_ARCHITECTURE_DECISION.md`.
 - 플랫폼 범위: `docs/decisions/2026-08-02_PLATFORM_SCOPE_DECISION.md`.
 - 최근 병합 성장 체크포인트: PR #80과 `d9f38e6f3cacaf170d4b290e95b3645114639aff`.
-- 현재 활성 성장 배치: PR #82와 두 Decision.
+- 현재 활성 기획 배치: `ACTIVE_CONTEXT.md`와 GitHub PR metadata.
 - 구현 종료: `docs/implementation/2026-08-01_ACTION_SELECTION_DOCK_CLOSEOUT.md`.
 - 최신 총기획 감사: `docs/reviews/2026-08-02_BASE_PROJECT_SHEET_TOTAL_PLANNING_AUDIT.md`.
 
@@ -81,11 +72,10 @@ base_release_pinned: 9.4.3
 ## 현재 작업
 
 ```text
-PR #80 병합·PR #81 main 상태 동기화 완료
-→ PR #82 GrillMe 승인 배치 2/10 수집 중
-→ 중간 노드 영구 스테이터스 보상 Decision
-→ 남은 기획 완료와 적대적 검토
-→ 필요한 이미지·모션·HX 기획·생성·승인
+ACTIVE_CONTEXT의 다음 기획 Decision
+→ 남은 기획 완료
+→ 전체 정본·PR·Sheet 적대적 검토
+→ 필요한 이미지·애니메이션·HX 생성·검수·승인
 → VERTICAL_SLICE_APP_FLOW_SHELL Codex 구현 인계
 → 자동·Godot·Windows·접근성·성능·STEP 14 사람 검증
 ```
