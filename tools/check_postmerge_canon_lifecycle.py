@@ -110,7 +110,7 @@ def validate_operating_state(active: str, roadmap: str) -> None:
             "active planning checkpoint requires a draft decision state",
         )
 
-    require(active_state["active_approval_count"] == "7/10", "active approval count differs")
+    require(active_state["active_approval_count"] == "8/10", "active approval count differs")
     require(bool(next_decision) and next_decision != "NONE", "next planning decision is missing")
 
     for token in [
@@ -181,7 +181,7 @@ def validate_registry(registry: str) -> None:
 def validate_mastery(mastery: str) -> None:
     for token in [
         "T1 이후 가설 원본",
-        "active_batch: 7/10",
+        "active_batch: 8/10",
         "action_slots",
         "sure_hit",
         "프로젝트 코어가 사용자 승인",
@@ -190,7 +190,7 @@ def validate_mastery(mastery: str) -> None:
         "STAR9_PUBLIC_READ_BRANCH_TEMPLATE",
     ]:
         require(token in mastery, f"growth authority missing token: {token}")
-    require("active_batch: 6/10" not in mastery, "growth authority still claims active batch 6/10")
+    require("active_batch: 7/10" not in mastery, "growth authority still claims active batch 7/10")
     require(
         "approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json`은 `[대체됨]`" in mastery,
         "growth authority must mark old Technique1 contract as superseded",
