@@ -4,7 +4,8 @@
 > 정본 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`  
 > 관찰 권위: `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`  
 > 초기 무공서 10권 성장 권위: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`  
-> 초기 무공서 10권 런타임 권위: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`  
+> 초기 무공서 10권 런타임 기반: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`  
+> 초기 무공서 UI·AI 채택 권위: `TEN_MANUAL_UI_AI_ADOPTION_GATE`  
 > 빌드 승인: `docs/implementation/BUILD_APPROVAL_2026-08-06.md`
 
 ## 현재 기준
@@ -20,16 +21,16 @@ active_planning_work_mode: BUILD
 active_planning_pr: 92
 active_planning_parent_pr: 91
 active_approval_count: 10/10
-active_decision_state: TEN_MANUAL_RUNTIME_FOUNDATION_IMPLEMENTED
+active_decision_state: TEN_MANUAL_UI_AI_ADOPTED
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 engine: Godot 4.7
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 base_release_pinned: 9.4.3
-runtime_implementation: TEN_MANUAL_RUNTIME_FOUNDATION_PR92
-latest_combat_planning_runtime: RUNTIME_FOUNDATION
-runtime_ui_adoption: DEFERRED
-runtime_ai_adoption: DEFERRED
+runtime_implementation: TEN_MANUAL_UI_AI_ADOPTION_PR92
+latest_combat_planning_runtime: UI_AI_ADOPTED
+runtime_ui_adoption: ADOPTED
+runtime_ai_adoption: ADOPTED_PUBLIC_STATE_LOADOUT_ONLY
 automated_validation: PASS
 windows_validation: NOT_RUN
 human_validation: NOT_RUN
@@ -37,12 +38,12 @@ balance_validation: NOT_RUN
 accessibility_validation: NOT_RUN
 performance_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: TEN_MANUAL_UI_AI_ADOPTION_GATE
+next_planning_decision: TEN_MANUAL_PRODUCT_VALIDATION_GATE
 ```
 
-현재 체크포인트는 `DRAFT_PR92_TEN_MANUAL_RUNTIME_FOUNDATION_10_OF_10`이다. PR #92는 PR #91 위에 쌓인 Draft이므로 PR #91보다 먼저 독립 병합·Draft 해제·종료하지 않는다. PR #91도 PR #89보다 먼저 독립 병합하지 않는다. PR #90은 `[대체됨]`, PR #85 HTML PoC는 `[보류]`다.
+현재 체크포인트는 `DRAFT_PR92_TEN_MANUAL_UI_AI_ADOPTION_10_OF_10`이다. PR #92는 PR #91 위에 쌓인 Draft이므로 PR #91보다 먼저 독립 병합·Draft 해제·종료하지 않는다. PR #91도 PR #89보다 먼저 독립 병합하지 않는다. PR #90은 `[대체됨]`, PR #85 HTML PoC는 `[보류]`다.
 
-자동 검증 통과는 Godot·Windows·접근성·성능·사람 플레이·밸런스 승인을 대신하지 않는다.
+자동 검증 통과는 Windows·접근성·성능·사람 플레이·밸런스 승인을 대신하지 않는다.
 
 ## 프로젝트 코어
 
@@ -72,7 +73,7 @@ next_planning_decision: TEN_MANUAL_UI_AI_ADOPTION_GATE
 
 ## 관찰 권위
 
-`TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`은 후속 무공·런타임 Decision 뒤에도 유지된다.
+`TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`은 후속 무공·런타임·UI·AI Decision 뒤에도 유지된다.
 
 관찰은 행동1수→관찰량1→적 선잠금 뒤 앞 슬롯 실제 행동 종류 직접 공개를 유지한다.
 
@@ -81,23 +82,38 @@ next_planning_decision: TEN_MANUAL_UI_AI_ADOPTION_GATE
 - 정답 카드·정확한 대응 추천·숨은 AI 가중치는 공개하지 않는다.
 - 관찰 약화나 자동 비용 인상은 사람 측정과 별도 Decision 전까지 금지한다.
 
-## 현재 런타임 권위
+## 현재 제품 연결 권위
 
-`TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE` 승인에 따라 다음 기반이 구현됐다.
+`TEN_MANUAL_UI_AI_ADOPTION_GATE` 승인에 따라 런타임 기반을 실제 전투 미리보기의 UI와 공개 상태 AI에 연결했다.
 
-- `data/cards/martial_manual_cards.json`: 10권 manifest와 호환 정책.
-- `data/cards/martial_manuals/`: 무공서별 10개 런타임 파일.
-- `MartialManualRegistry`: 3·5·7·9·10성 해금과 overlay 합성.
-- `MartialEffectPipeline`: 상태 선행·이동·사거리 재검사·다단·조건부 후속·전투당 사용권의 결정적 실행.
-- `TenManualCombatResolutionEngine`: 기존 엔진을 보존하는 명시적 loadout 어댑터.
+### 행동 선택 UI
 
-`RUNTIME_FOUNDATION`은 10권 데이터를 로드하고 구조적 효과를 실행할 수 있다는 뜻이다. 현재 Scene·행동 선택 UI·적 AI가 10권을 자동 채택했다는 뜻은 아니다.
+- `ActionSelectionDock`은 `martial_loadout`과 `martial_mastery_by_manual`을 받는다.
+- `MartialManualRegistry`가 무공 카드의 유일한 공급 원본이다.
+- 무공 탭은 문파·무공서·주/보조능력치·현재 성취도·3성/7성 잠금을 표시한다.
+- 5성은 기술1 overlay, 9성은 기술2 단일 overlay로 표시한다.
+- 10성 절초는 기존 공용 절초와 함께 절초 탭에 표시한다.
 
-기존 기본 행동과 공용 절초 3종은 회귀·호환 기준으로 유지된다. 무공 카드는 명시적 loadout을 설정할 때만 추가된다.
+### 공개 상태 AI
+
+- 적 AI는 자기 명시적 loadout에서 현재 성취도로 해금된 카드만 후보로 평가한다.
+- 공개 거리·자원·묶음 슬롯·비용·사거리만 사용한다.
+- 플레이어 비공개 계획·미확정 배치·포인터는 참조하지 않는다.
+- 적 loadout이 없으면 기존 공개 상태 AI 후보가 유지된다.
+
+### 전투 해결
+
+- `TenManualCombatResolutionEngine`은 준비 엔진을 상속한다.
+- `[준비]`와 자동 배치 후처리를 보존한다.
+- 선택된 무공은 실행 수에서 `MartialEffectPipeline`의 `effect_steps`를 실제 처리한다.
+- 무공 피해도 현행 중단 규칙을 통과한다.
+- 특수 합은 공개 상대 합 위력을 사용하며 자동 승리는 없다.
+
+PoC 명시적 loadout은 `data/combat/ten_manual_loadout_poc.json`에 플레이어와 적을 분리해 기록한다. 이는 향후 세이브·성장 시스템으로 교체되는 임시 제품 미리보기 경계다.
 
 ## 초기 무공서 10권
 
-| 문파·유파 | 무공서 | 주 / 보조 | 10성 절초 | 런타임 역할 |
+| 문파·유파 | 무공서 | 주 / 보조 | 10성 절초 | 전투 방향 |
 |---|---|---|---|---|
 | 화산파 | 매화검결 | 신법 / 외공 | 이십사수매화검법 | 이동형 적중 연격 |
 | 소림사 | 나한금강공 | 외공 / 내공 | 여래신장 | 강건·방어·근접 장격 |
@@ -136,13 +152,15 @@ next_planning_decision: TEN_MANUAL_UI_AI_ADOPTION_GATE
 
 RED 증거:
 
-- runtime manifest·레지스트리·pipeline 부재 실패: workflow `31049328495`.
-- combat adapter 부재 실패: workflow `31050666862`.
+- runtime manifest·레지스트리·pipeline 부재: workflow `31049328495`.
+- combat adapter 부재: workflow `31050666862`.
+- UI·AI loadout 분리와 bundle pipeline 연결 부재: workflow `31053963064`.
 
 GREEN 범위:
 
-- Python 정적 계약과 적대적 변조 테스트.
-- Godot 4.7.1 import·레지스트리·효과 pipeline 검증.
+- Godot 4.7.1 무공 UI·AI 채택 검증.
+- 기존 ActionSelectionDock과 공개 상태 AI 회귀.
+- 10권 manifest·숙련 레지스트리·effect pipeline 검증.
 - PR Validation과 Full Validation.
 - 기존 전투·관찰·등급·숙련·예산·Base 회귀.
 
@@ -152,32 +170,34 @@ GREEN 범위:
 
 | 위험 | 상태 | 다음 조치 |
 |---|---|---|
-| `RUNTIME_AUTHORITY_GAP` | `MITIGATED_RUNTIME_FOUNDATION` | UI·AI 명시적 채택 검토 |
+| `RUNTIME_AUTHORITY_GAP` | `MITIGATED_UI_AI_ADOPTED` | 사람·플랫폼 검증 |
+| `AI_LOADOUT_FAIRNESS_RISK` | `MITIGATED_PUBLIC_STATE_ONLY` | 적별 loadout 사람 측정 |
 | `MASTERY_ROLE_REPLACEMENT_RISK` | `PENDING_HUMAN_MEASUREMENT` | 기술1/2 선택률·대체율 측정 |
 | `RESOURCE_SATURATION_RISK` | `PENDING_HUMAN_MEASUREMENT` | 회복 세금·고갈 측정 |
 | `OBSERVATION_ANSWER_LEAK_RISK` | `PENDING_HUMAN_MEASUREMENT` | 직접 공개 유지·사람 측정 |
 | `GRADE_FARMING_RISK` | `PENDING_HUMAN_MEASUREMENT` | 원시/유효 등급 비율 측정 |
 
 ```text
-TEN_MANUAL_UI_AI_ADOPTION_GATE
-→ 행동 선택 UI에 명시적 loadout 연결
-→ AI 공개 상태 정책에 10권 후보 행동 연결
-→ Godot·Windows·접근성·성능 검증
-→ STEP 14 사람 플레이·밸런스 검증
+TEN_MANUAL_PRODUCT_VALIDATION_GATE
+→ Godot Windows 실제 실행
+→ 접근성·성능 검증
+→ STEP 14 신규 플레이어 5명
+→ 기술 대체율·자원 포화·적 loadout 공정성·다단 가독성 측정
+→ 최종 밸런스 Decision
 → NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT
 → FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
 ```
 
 ## 선행 UX·앱 흐름 권위
 
-현재 런타임 기반은 다음 선행 권위를 대체하지 않고 계보로 보존한다.
+현재 UI·AI 채택은 다음 선행 권위를 대체하지 않고 계보로 보존한다.
 
 - `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`
 - `TEN-DEC-20260801-SITUATION-SCREEN-01`
 - 역사 구현 표식: `runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65`
 - V6 원장: `2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`
 
-위 표식은 PR #65 앱 흐름 기반의 역사·호환 근거이며 현재 구현 권위는 상단 YAML의 `TEN_MANUAL_RUNTIME_FOUNDATION_PR92`다.
+위 표식은 PR #65 앱 흐름 기반의 역사·호환 근거이며 현재 구현 권위는 상단 YAML의 `TEN_MANUAL_UI_AI_ADOPTION_PR92`다.
 
 ## 역사적 기준 표식
 
@@ -185,4 +205,4 @@ TEN_MANUAL_UI_AI_ADOPTION_GATE
 
 ## 정본 동기화 원칙
 
-주요 승인과 구현 상태는 GitHub 권위 문서와 연결된 Google Sheet에 같은 Decision ID와 exact SHA로 기록한다. 현재 PR #92는 Draft·stacked 상태를 유지하며 병합 권한은 별도 사용자 승인에 속한다.
+주요 승인과 구현 상태는 GitHub 권위 문서와 연결된 Google Sheet에 같은 Decision ID와 exact SHA로 기록한다. `03_무공서_무학` 탭에는 10권의 문파·무학 방향·주/보조능력치·3/5/7/9/10성 성취도를 한 행씩 유지한다. 현재 PR #92는 Draft·stacked 상태이며 병합 권한은 별도 사용자 승인에 속한다.
