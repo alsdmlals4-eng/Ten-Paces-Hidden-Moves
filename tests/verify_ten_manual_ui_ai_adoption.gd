@@ -1,7 +1,7 @@
 extends SceneTree
 
 const DOCK_SCENE := "res://scenes/ui/action_selection/action_selection_dock.tscn"
-const PREPARE_ENGINE_SCRIPT := preload("res://src/combat/combat_resolution_engine_prepare.gd")
+const PREPARE_ENGINE_SCRIPT := preload("res://src/combat/combat_resolution_engine_ten_manuals.gd")
 const HUD_PATH := "res://data/combat/combat_hud_preview.json"
 
 const HUA := "mount_hua_plum_blossom_sword"
@@ -75,7 +75,7 @@ func _verify_ui_registry_adoption() -> void:
 func _verify_ai_enemy_loadout_boundary() -> void:
     var engine = PREPARE_ENGINE_SCRIPT.new()
     if not engine.has_method("configure_martial_loadouts"):
-        failures.append("Prepare engine must expose configure_martial_loadouts.")
+        failures.append("Ten-manual prepare engine must expose configure_martial_loadouts.")
         return
     engine.configure_martial_loadouts(
         [HUA],
@@ -84,7 +84,7 @@ func _verify_ai_enemy_loadout_boundary() -> void:
         {TANG: 7}
     )
     if not engine.has_method("get_enemy_martial_card_ids") or not engine.has_method("get_enemy_ai_cards_by_id"):
-        failures.append("Prepare engine must expose enemy martial-card boundary APIs.")
+        failures.append("Ten-manual prepare engine must expose enemy martial-card boundary APIs.")
         return
     var enemy_ids: PackedStringArray = engine.get_enemy_martial_card_ids()
     _expect(TANG_STAR7 in enemy_ids, "Enemy Tang mastery7 card must be loaded.")
