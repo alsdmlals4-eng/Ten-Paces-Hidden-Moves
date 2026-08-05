@@ -104,7 +104,7 @@ replay_reason_code
 | `diamond_body_art` | 금강호체공 | 근골 | 내공 | 금강가세 | 반진권 | `vajra_body` |
 | `taiji_flowing_sword` | 태극유전검 | 심안 | 내공 | 운수회신 | 사량발천근 | `taiji_flow` |
 | `chasing_wind_spear` | 추풍창법 | 외공 | 신법 | 추풍일섬 | 연환쇄로 | `pursuing_wind_spear` |
-| `clear_heart_nourishing_art` | 청심양생공 | 내공 | 청심조식 | 회기전맥 | `clear_heart_nurturing` |
+| `clear_heart_nourishing_art` | 청심양생공 | 내공 | 근골 | 청심조식 | 회기전맥 | `clear_heart_nurturing` |
 | `shadowless_ten_steps` | 무영십보 | 신법 | 심안 | 철각유영 | 십보환위 | `shadowless_steps` |
 
 역사 ID는 `legacy_manual_alias`로만 보존한다.
