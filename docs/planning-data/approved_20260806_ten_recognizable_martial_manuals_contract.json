@@ -1,0 +1,362 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING_GOVERNANCE",
+  "implementation_authority": "PLANNING_ONLY",
+  "approval_batch": "9/10",
+  "stat_assignment_policy": "FACTION_MARTIAL_ACTION_FIT_ONLY",
+  "stat_quota_rules_enabled": false,
+  "growth_policy": {
+    "required_stages": ["star3", "star5", "star7", "star9", "star10"],
+    "star5_modifies_star3_only": true,
+    "star9_effect_count": 1,
+    "star9_branching_allowed": false,
+    "star9_additional_input_allowed": false,
+    "star9_additional_resource_cost_allowed": false,
+    "star7_bonus_is_integrated_budget": true,
+    "value_superior_role_nonreplacement_required": true
+  },
+  "provenance_policy": {
+    "korean_and_chinese_wuxia_research_required": true,
+    "real_martial_art_required": false,
+    "recognition_priority": true,
+    "allowed_classifications": [
+      "HISTORICAL_OR_ESTABLISHED",
+      "WUXIA_CONVENTIONAL",
+      "PROJECT_ORIGINAL",
+      "INSPIRED_HYBRID"
+    ]
+  },
+  "manuals": {
+    "mount_hua_plum_blossom_sword": {
+      "faction": "화산파",
+      "manual_name": "매화검결",
+      "primary_stat": "신법",
+      "secondary_stat": "외공",
+      "stat_fit_rationale": "빠른 보법과 이동형 연격을 신법이 주도하고 실제 검격 위력을 외공이 보조한다.",
+      "provenance": {
+        "classification": "WUXIA_CONVENTIONAL",
+        "traditions": ["KOREAN_WUXIA", "CHINESE_WUXIA"],
+        "recognition_basis": "화산파와 매화검법의 장르 관용 연결"
+      },
+      "martial_philosophy": "적중한 검초가 다음 검초를 피우며 이동과 연격으로 매화검세를 완성한다.",
+      "core_role": "MOBILE_ACTUAL_HP_HIT_CHAIN",
+      "forbidden_roles": ["DEFENSE_BREAK_CHAIN", "RANGED_PROJECTILE_BARRAGE"],
+      "growth": {
+        "star3": {
+          "name": "매화삼첩",
+          "role": "ACTUAL_HP_HIT_CHAIN",
+          "effect": "근거리 독립 검격을 최대 세 번 수행하며 실제 체력 피해가 발생해야 다음 타격으로 이어진다."
+        },
+        "star5": {
+          "name": "낙매유향",
+          "role": "STAR3_EXIT_STABILIZATION",
+          "modifies": "star3",
+          "effect": "세 타가 모두 성공하면 공격 후 후퇴하고 방어를 얻는다."
+        },
+        "star7": {
+          "name": "낙매추영",
+          "role": "APPROACH_SINGLE_CLASH_FINISHER",
+          "effect": "1칸 접근한 뒤 거리 1~2에서 단발 합 공격을 수행한다."
+        },
+        "star9": {
+          "name": "매화연세",
+          "role": "STAR7_PREPARATION_COMPLETION",
+          "modifies": "star7",
+          "effect": "낙매추영의 합에서 승리하면 준비를 얻는다.",
+          "effect_count": 1,
+          "branching_allowed": false,
+          "additional_input_allowed": false,
+          "additional_resource_cost_allowed": false
+        },
+        "star10": {
+          "name": "이십사수매화검법",
+          "role": "MOBILE_MULTI_STAGE_FINISHER",
+          "effect": "접근, 독립 3타, 제한 추격, 사거리 재확인, 결착검으로 완성되는 매화검식이다."
+        }
+      },
+      "resolution_order": [
+        "APPROACH_1",
+        "INDEPENDENT_STRIKE_1",
+        "INDEPENDENT_STRIKE_2",
+        "INDEPENDENT_STRIKE_3",
+        "REQUIRE_AT_LEAST_2_ACTUAL_HP_HITS",
+        "CHASE_1",
+        "RECHECK_RANGE",
+        "FINISHING_SWORD",
+        "LOCK_FINAL_POSITION"
+      ],
+      "counterplay": ["방어로 실제 체력 적중 연계를 끊는다.", "추격 후 사거리 밖으로 벗어난다."],
+      "measurement_risks": ["다단 로그 가독성", "화산 연격과 당문 다단의 체감 중복"]
+    },
+    "shaolin_arhat_vajra_art": {
+      "faction": "소림사",
+      "manual_name": "나한금강공",
+      "primary_stat": "외공",
+      "secondary_stat": "내공",
+      "stat_fit_rationale": "단련된 육체와 근접 장격을 외공이 주도하고 호체강기와 충격 전환을 내공이 보조한다.",
+      "provenance": {
+        "classification": "INSPIRED_HYBRID",
+        "traditions": ["KOREAN_WUXIA", "CHINESE_WUXIA", "HONG_KONG_WUXIA"],
+        "recognition_basis": "소림 금강공 관용 설정과 여래신장 대중 인지도의 프로젝트 재배정"
+      },
+      "martial_philosophy": "방어와 강건으로 공격을 받아내고 단련된 육체와 저장된 충격을 근접 장격으로 전환한다.",
+      "core_role": "CLOSE_EXTERNAL_VAJRA_IMPACT_CONVERSION",
+      "forbidden_roles": ["LONG_RANGE_INTERNAL_PALM_WIND", "ABSOLUTE_INTERRUPT_IMMUNITY"],
+      "growth": {
+        "star3": {
+          "name": "금강호체",
+          "role": "DEFENSE_TENACITY_SETUP",
+          "effect": "방어와 강건을 먼저 얻고 다음 자기 행동 전까지 공격을 완전히 흡수하면 추가 방어와 기력을 얻는다."
+        },
+        "star5": {
+          "name": "금강불괴",
+          "role": "STAR3_INTERNAL_RECOVERY",
+          "modifies": "star3",
+          "effect": "완전 흡수 성공 시 내력 1을 추가 회복한다."
+        },
+        "star7": {
+          "name": "대력금강장",
+          "role": "CLOSE_STORED_DEFENSE_STRIKE",
+          "effect": "강건과 방어 2를 먼저 얻고 현재 방어를 기록한 뒤 외공 기반 근접 장격을 수행하며 기록 방어만큼 상한 있는 추가 피해를 준다."
+        },
+        "star9": {
+          "name": "금강진력",
+          "role": "STAR7_TENACITY_RENEWAL",
+          "modifies": "star7",
+          "effect": "대력금강장이 실제 체력 피해를 주면 강건을 다시 얻는다.",
+          "effect_count": 1,
+          "branching_allowed": false,
+          "additional_input_allowed": false,
+          "additional_resource_cost_allowed": false
+        },
+        "star10": {
+          "name": "여래신장",
+          "role": "CLOSE_EXTERNAL_STORED_IMPACT_ULTIMATE",
+          "effect": "전조 전에 방어와 강건을 얻고 이번 행동에서 잃은 방어를 기록한 뒤 외공 기반의 짧은 도달 거리 장격과 상한 추가 피해를 방출한다."
+        }
+      },
+      "resolution_order": [
+        "GAIN_DEFENSE_AND_TENACITY_BEFORE_PRELUDE",
+        "START_THIS_ACTION_DEFENSE_LOSS_RECORD",
+        "RECORD_ACTUAL_DEFENSE_LOSS",
+        "RECHECK_CLOSE_RANGE",
+        "EXTERNAL_PALM_STRIKE",
+        "ADD_CAPPED_RECORDED_IMPACT_DAMAGE",
+        "END_RECORD"
+      ],
+      "counterplay": ["다단 공격으로 강건을 먼저 소진한다.", "실행 시 짧은 도달 거리 밖으로 벗어난다."],
+      "measurement_risks": ["여래신장을 원거리 장풍으로 오해할 위험", "단발 공격 상대로 강건 효율 과다"]
+    },
+    "wudang_taiji_sword": {
+      "faction": "무당파",
+      "manual_name": "태극검결",
+      "primary_stat": "심안",
+      "secondary_stat": "내공",
+      "stat_fit_rationale": "상대 힘과 검로를 읽는 심안이 주도하고 내공이 흘리기와 회복을 보조한다.",
+      "provenance": {
+        "classification": "WUXIA_CONVENTIONAL",
+        "traditions": ["KOREAN_WUXIA", "CHINESE_WUXIA"],
+        "recognition_basis": "무당 태극검과 태극혜검의 장르 인지도"
+      },
+      "martial_philosophy": "상대의 힘과 검로를 읽어 흘리고 기울어진 힘을 합과 반격으로 되돌린다.",
+      "core_role": "READ_REDIRECT_CLASH_COUNTER",
+      "forbidden_roles": ["AUTO_DODGE", "HIDDEN_PLAN_REVEAL"],
+      "growth": {
+        "star3": {"name": "운수검식", "role": "EVADE_RETREAT_RECOVERY", "effect": "회피를 부여하고 성공 시 후퇴한 뒤 내력과 방어를 회복한다."},
+        "star5": {"name": "유전회신", "role": "STAR3_MOMENTUM_GAIN", "modifies": "star3", "effect": "회피 성공 시 절초기세 1을 얻는다."},
+        "star7": {"name": "사량발천근", "role": "INSIGHT_CLASH_RESOURCE_RETURN", "effect": "심안 기반 합 공격을 수행하고 합 승리 시 방어와 내력을 얻는다."},
+        "star9": {"name": "음양전환", "role": "STAR7_PUSH_COMPLETION", "modifies": "star7", "effect": "합 승리 시 상대를 1칸 밀친다.", "effect_count": 1, "branching_allowed": false, "additional_input_allowed": false, "additional_resource_cost_allowed": false},
+        "star10": {"name": "태극혜검", "role": "CONTACT_CLASH_REDIRECT_COUNTER", "effect": "대응 시간에 들어오는 공격과 특별 합을 수행해 승리하면 공격을 흘리고 반격한 뒤 내력과 방어를 안정화한다."}
+      },
+      "resolution_order": ["PREPARE_TAIJI_SWORD_STATE", "CONTACT_INCOMING_ATTACK", "SPECIAL_INSIGHT_CLASH", "ON_WIN_REDIRECT_ATTACK", "COUNTERATTACK", "STABILIZE_INTERNAL_AND_DEFENSE"],
+      "counterplay": ["대응 시간에 공격하지 않는다.", "특별 합에서 승리한다."],
+      "measurement_risks": ["태극과 소요 회피의 체감 중복"]
+    },
+    "yang_family_spear": {
+      "faction": "양가",
+      "manual_name": "양가창결",
+      "primary_stat": "외공",
+      "secondary_stat": "신법",
+      "stat_fit_rationale": "창격과 창끝 위력을 외공이 주도하고 진입과 간격 회수를 신법이 보조한다.",
+      "provenance": {"classification": "WUXIA_CONVENTIONAL", "traditions": ["KOREAN_WUXIA", "CHINESE_WUXIA"], "recognition_basis": "양가창과 회마창의 장르 관용 연결"},
+      "martial_philosophy": "정확한 창끝 거리를 만들고 찌른 뒤 반격 거리 밖으로 물러나 되받아 찌른다.",
+      "core_role": "SPEAR_TIP_DISTANCE_REATTACK",
+      "forbidden_roles": ["STALE_RANGE_ATTACK", "AUTO_SECOND_STRIKE"],
+      "growth": {
+        "star3": {"name": "추풍일섬", "role": "APPROACH_SPEAR_TIP_THRUST", "effect": "1칸 접근 후 거리 1~2에서 찌르고 정확한 창끝 거리에서 추가 방어 파괴를 얻는다."},
+        "star5": {"name": "이화회창", "role": "STAR3_DISTANCE_RECOVERY", "modifies": "star3", "effect": "창끝 적중 성공 시 공격 후 1칸 후퇴한다."},
+        "star7": {"name": "연환쇄로", "role": "DOUBLE_THRUST_EXIT", "effect": "두 번 찌르고 한 번 이상 적중하면 후퇴한다."},
+        "star9": {"name": "쌍룡쇄로", "role": "STAR7_PUSH_COMPLETION", "modifies": "star7", "effect": "두 타 모두 적중하면 상대를 1칸 밀친다.", "effect_count": 1, "branching_allowed": false, "additional_input_allowed": false, "additional_resource_cost_allowed": false},
+        "star10": {"name": "회마창", "role": "RETREAT_RECHECK_RETURN_THRUST", "effect": "첫 찌르기 후 2칸 물러나 사거리를 다시 확인하고 회마 찌르기를 수행한다."}
+      },
+      "resolution_order": ["FIRST_THRUST", "RESOLVE_RESULT", "RETREAT_2", "RECHECK_RANGE", "RETURNING_HORSE_THRUST", "RESOLVE_RESULT"],
+      "counterplay": ["후퇴 뒤 두 번째 찌르기의 사거리를 끊는다."],
+      "measurement_risks": ["후퇴로 인한 의도치 않은 공격 실패 이해도"]
+    },
+    "mount_hua_purple_mist_art": {
+      "faction": "화산파",
+      "manual_name": "자하심법",
+      "primary_stat": "내공",
+      "secondary_stat": "근골",
+      "stat_fit_rationale": "내력 순환을 내공이 주도하고 육체 안정화와 회복을 근골이 보조한다.",
+      "provenance": {"classification": "INSPIRED_HYBRID", "traditions": ["KOREAN_WUXIA", "CHINESE_WUXIA"], "recognition_basis": "자하신공의 높은 화산파 연상도와 프로젝트 회복 체계 결합"},
+      "martial_philosophy": "자색 내공을 순환시켜 소모된 자원을 되돌리고 무너지기 직전의 몸을 안정화한다.",
+      "core_role": "INTERNAL_RESOURCE_CRISIS_RECOVERY",
+      "forbidden_roles": ["FULL_RESET", "UNLIMITED_ULTIMATE_LOOP"],
+      "growth": {
+        "star3": {"name": "자하토납", "role": "ROUTINE_INTERNAL_RECOVERY", "effect": "기본 내력을 회복하고 저자원 상태에서는 기력과 방어를 추가 회복한다."},
+        "star5": {"name": "자기양원", "role": "STAR3_LIMITED_HP_RECOVERY", "modifies": "star3", "effect": "저자원 조건을 만족한 자하토납에 제한된 체력 회복을 추가한다."},
+        "star7": {"name": "자하회천", "role": "CRISIS_MULTI_RESOURCE_STABILIZATION", "effect": "내력을 먼저 회복한 뒤 강건, 방어, 체력을 순서대로 안정화한다."},
+        "star9": {"name": "자하귀원", "role": "STAR7_PREPARATION_COMPLETION", "modifies": "star7", "effect": "저자원 조건을 만족한 자하회천은 종료 후 준비를 얻는다.", "effect_count": 1, "branching_allowed": false, "additional_input_allowed": false, "additional_resource_cost_allowed": false},
+        "star10": {"name": "자하신공", "role": "ONCE_PER_BATTLE_FULL_BODY_RETURN", "effect": "전투당 한 번 자원을 복귀선까지 회복하며 실행 완료 시 절초기세 1을 회복한다."}
+      },
+      "resolution_order": ["CONSUME_ONCE_PER_BATTLE_USE_AT_FIRST_PRELUDE", "SNAPSHOT_START_RESOURCES", "RECOVER_INTERNAL", "RECOVER_STAMINA", "STABILIZE_TENACITY_AND_DEFENSE", "IF_START_LOW_RESOURCE_RECOVER_LIMITED_HP", "ON_SUCCESSFUL_COMPLETION_GAIN_ULTIMATE_MOMENTUM_1"],
+      "counterplay": ["첫 전조 뒤 중단해 사용권을 소모시킨다."],
+      "measurement_risks": ["전투 후반 연속 절초 빈도 증가"]
+    },
+    "xiaoyao_lingbo_footwork": {
+      "faction": "소요파",
+      "manual_name": "소요보결",
+      "primary_stat": "신법",
+      "secondary_stat": "심안",
+      "stat_fit_rationale": "회피와 변위를 신법이 주도하고 공격선 판독과 반격 시점을 심안이 보조한다.",
+      "provenance": {"classification": "INSPIRED_HYBRID", "traditions": ["KOREAN_WUXIA", "CHINESE_WUXIA"], "recognition_basis": "능파미보의 소요파 대표 경공 인지도"},
+      "martial_philosophy": "공격이 닿기 전에 위치를 비우고 허공을 친 순간 반격한 뒤 다시 공격선 밖으로 빠진다.",
+      "core_role": "EVADE_COUNTER_REPOSITION",
+      "forbidden_roles": ["AUTO_EVADE", "RANDOM_MOVEMENT"],
+      "growth": {
+        "star3": {"name": "미진환보", "role": "PRE_RETREAT_EVADE", "effect": "먼저 후퇴하고 회피를 부여하며 성공 시 추가 후퇴와 절초기세를 얻는다."},
+        "star5": {"name": "나영무흔", "role": "STAR3_TENACITY_REWARD", "modifies": "star3", "effect": "선행과 후속 후퇴가 모두 성공하면 강건을 얻는다."},
+        "star7": {"name": "소요환위", "role": "EVADE_COUNTER_THEN_RETREAT", "effect": "회피 성공 시 후퇴 전에 원래 공격자를 반격하고 반격 후 최대 2칸 후퇴한다."},
+        "star9": {"name": "유영귀허", "role": "STAR7_CLASH_POWER_COMPLETION", "modifies": "star7", "effect": "반격의 합 위력이 증가한다.", "effect_count": 1, "branching_allowed": false, "additional_input_allowed": false, "additional_resource_cost_allowed": false},
+        "star10": {"name": "능파미보", "role": "EVADE_COUNTER_LONG_REPOSITION", "effect": "공격을 피하고 이동 전 반격한 뒤 공격자 반대 방향으로 최대 3칸 이동하고 준비를 얻는다."}
+      },
+      "resolution_order": ["GRANT_EVADE", "ON_EVADE_SUCCESS_COUNTER_FROM_PRE_MOVE_POSITION", "RESOLVE_COUNTER", "MOVE_OPPOSITE_ATTACKER_UP_TO_3", "GAIN_PREPARATION"],
+      "counterplay": ["회피를 소모시키는 다단 공격을 사용한다.", "반격 사거리 밖에서 공격한다."],
+      "measurement_risks": ["태극혜검과 대응 역할 혼동"]
+    },
+    "beggars_dragon_subduing_palm": {
+      "faction": "개방",
+      "manual_name": "강룡장결",
+      "primary_stat": "내공",
+      "secondary_stat": "근골",
+      "stat_fit_rationale": "중후한 양강 장력과 합 위력을 내공이 주도하고 장세 유지, 밀치기, 잔여 여력을 근골이 보조한다.",
+      "provenance": {"classification": "INSPIRED_HYBRID", "traditions": ["KOREAN_WUXIA", "CHINESE_WUXIA"], "recognition_basis": "개방과 항룡십팔장의 한중 무협 대표 연결"},
+      "martial_philosophy": "중후한 양강 내력을 장력으로 운용해 정면을 돌파하되 모든 힘을 소진하지 않고 여력을 남긴다.",
+      "core_role": "INTERNAL_EMITTED_FORCE_FRONT_BREAKTHROUGH",
+      "forbidden_roles": ["STORED_DEFENSE_CONVERSION", "PRE_ATTACK_TENACITY"],
+      "growth": {
+        "star3": {"name": "견룡재전", "role": "IMMEDIATE_INTERNAL_PALM_FORCE", "effect": "준비 없이 승인 사거리에서 내공 기반 단발 장력을 발사한다."},
+        "star5": {"name": "잠룡물용", "role": "STAR3_DEFENSE_RETURN", "modifies": "star3", "effect": "실제 체력 피해를 주면 방어를 얻는다."},
+        "star7": {"name": "비룡재천", "role": "APPROACH_INTERNAL_CLASH_PUSH", "effect": "1칸 접근해 내공 기반 합 장력을 가하고 합 승리 시 상대를 밀친다."},
+        "star9": {"name": "항룡유회", "role": "STAR7_STAMINA_RETURN", "modifies": "star7", "effect": "합 승리 시 기력 1을 회복한다.", "effect_count": 1, "branching_allowed": false, "additional_input_allowed": false, "additional_resource_cost_allowed": false},
+        "star10": {"name": "항룡십팔장", "role": "INTERNAL_CLASH_DEFENSE_BREAK_PUSH", "effect": "접근 후 내공 합을 수행하고 승리하면 방어 파괴, 체력 피해, 밀치기 2를 순서대로 적용한다."}
+      },
+      "resolution_order": ["APPROACH_1", "INTERNAL_FORCE_CLASH", "ON_WIN_BREAK_DEFENSE", "DEAL_HP_DAMAGE", "PUSH_2"],
+      "counterplay": ["합에서 승리한다.", "접근 후 유효 사거리를 끊는다."],
+      "measurement_risks": ["내공 장력 무공의 선택률 과다", "소림 장법과 시각적 혼동"]
+    },
+    "sichuan_tang_hidden_weapons": {
+      "faction": "사천당문",
+      "manual_name": "천기암기록",
+      "primary_stat": "심안",
+      "secondary_stat": "신법",
+      "stat_fit_rationale": "정밀 조준과 투사체 순서 판단을 심안이 주도하고 투척 동작과 거리 회수를 신법이 보조한다.",
+      "provenance": {"classification": "WUXIA_CONVENTIONAL", "traditions": ["KOREAN_WUXIA", "CHINESE_WUXIA"], "recognition_basis": "당문과 만천화우의 한국 무협 관용 연결 및 중국 무협 암기 이미지"},
+      "martial_philosophy": "정밀한 암기로 방어와 회피를 소모시키고 여러 투사체로 안전한 공간을 줄인다.",
+      "core_role": "RANGED_INDEPENDENT_PROJECTILE_PRESSURE",
+      "forbidden_roles": ["RANDOM_PROJECTILE_COUNT", "UNAPPROVED_POISON"],
+      "growth": {
+        "star3": {"name": "추혼표", "role": "RANGED_SINGLE_DEFENSE_BREAK", "effect": "거리 1~3의 단발 암기로 피해와 방어 파괴를 가한다."},
+        "star5": {"name": "비성추혼", "role": "STAR3_OBSERVATION_GAIN", "modifies": "star3", "effect": "실제 체력 피해를 주면 관찰 1을 얻는다."},
+        "star7": {"name": "폭우이화침", "role": "RANGED_DOUBLE_INDEPENDENT_HIT", "effect": "거리 2~4에서 두 발을 독립 판정하며 첫 적중은 방어를 추가 파괴한다."},
+        "star9": {"name": "유성귀영", "role": "STAR7_DISTANCE_RECOVERY", "modifies": "star7", "effect": "한 발 이상 적중하면 공격 후 1칸 후퇴한다.", "effect_count": 1, "branching_allowed": false, "additional_input_allowed": false, "additional_resource_cost_allowed": false},
+        "star10": {"name": "만천화우", "role": "RANGED_FOUR_INDEPENDENT_PROJECTILES", "effect": "거리 1~4에서 네 발을 순차적으로 독립 판정한다."}
+      },
+      "resolution_order": ["RECHECK_RANGE", "PROJECTILE_1", "PROJECTILE_2", "PROJECTILE_3", "PROJECTILE_4", "END_ACTION"],
+      "counterplay": ["방어와 회피를 보존해 독립 타격을 소모한다.", "사거리 밖으로 이동한다."],
+      "measurement_risks": ["네 발 로그 가독성", "회피 소모 압박 과다"]
+    },
+    "hebei_peng_five_tigers_saber": {
+      "faction": "하북팽가",
+      "manual_name": "팽가도결",
+      "primary_stat": "근골",
+      "secondary_stat": "외공",
+      "stat_fit_rationale": "무거운 도세와 자세 유지를 근골이 주도하고 실제 도격의 날카로운 위력을 외공이 보조한다.",
+      "provenance": {"classification": "WUXIA_CONVENTIONAL", "traditions": ["KOREAN_WUXIA", "CHINESE_WUXIA"], "recognition_basis": "한국 무협에서 하북팽가와 오호단문도의 강한 관용 연결"},
+      "martial_philosophy": "무거운 도세로 상대 방어문을 먼저 부수고 열린 틈에 결착도를 내려친다.",
+      "core_role": "DEFENSE_BREAK_CHAIN_FINISHER",
+      "forbidden_roles": ["ACTUAL_HP_HIT_CHAIN", "LIGHT_MOBILE_COMBO"],
+      "growth": {
+        "star3": {"name": "맹호출림", "role": "HEAVY_SINGLE_DEFENSE_BREAK", "effect": "거리 1의 묵직한 도격으로 피해와 방어 파괴를 가한다."},
+        "star5": {"name": "호아파문", "role": "STAR3_MOMENTUM_ON_ZERO_DEFENSE", "modifies": "star3", "effect": "이 공격으로 상대 방어가 0이 되면 절초기세 1을 얻는다."},
+        "star7": {"name": "백호단문", "role": "DEFENSE_ZERO_SECOND_STRIKE", "effect": "첫 도격 후 상대 방어가 0이면 두 번째 결착도가 이어진다."},
+        "star9": {"name": "호맥강신", "role": "STAR7_TENACITY_REWARD", "modifies": "star7", "effect": "두 번째 도격이 발생하면 강건을 얻는다.", "effect_count": 1, "branching_allowed": false, "additional_input_allowed": false, "additional_resource_cost_allowed": false},
+        "star10": {"name": "오호단문도", "role": "DOUBLE_BREAK_THEN_FINISH", "effect": "두 번의 파문도를 순차 처리한 뒤 상대 방어가 0이면 결착도를 수행한다."}
+      },
+      "resolution_order": ["BREAKING_SABER_1", "RESOLVE_DEFENSE", "BREAKING_SABER_2", "RESOLVE_DEFENSE", "REQUIRE_TARGET_DEFENSE_ZERO", "FINISHING_SABER"],
+      "counterplay": ["방어를 보충해 결착도 조건을 막는다."],
+      "measurement_risks": ["근골 주능력치가 피해보다 자세 유지로 체감될 위험"]
+    },
+    "nangong_boundless_sky_sword": {
+      "faction": "남궁세가",
+      "manual_name": "창궁무애검법",
+      "primary_stat": "내공",
+      "secondary_stat": "심안",
+      "stat_fit_rationale": "준비한 검압과 검강을 내공이 주도하고 합과 거리 판단을 심안이 보조한다.",
+      "provenance": {"classification": "WUXIA_CONVENTIONAL", "traditions": ["KOREAN_WUXIA"], "recognition_basis": "남궁세가의 왕도검·창궁 계열 한국 무협 관용 이미지"},
+      "martial_philosophy": "검세를 정면으로 세우고 준비된 내공과 심안으로 직선상의 상대를 검압과 합으로 제압한다.",
+      "core_role": "PREPARED_INTERNAL_SWORD_FORCE_CLASH",
+      "forbidden_roles": ["MOBILE_MULTI_HIT", "ATTACK_REDIRECTION"],
+      "growth": {
+        "star3": {"name": "철검십식", "role": "PREPARATION_CONSUMING_CLOSE_CLASH", "effect": "거리 1의 합 검격이며 준비를 소비하면 추가 방어 파괴를 얻는다."},
+        "star5": {"name": "창궁입세", "role": "STAR3_PRECLASH_DEFENSE", "modifies": "star3", "effect": "준비를 소비한 공격은 합 전에 방어를 얻는다."},
+        "star7": {"name": "창궁검뢰", "role": "PRELUDE_RANGED_SWORD_FORCE_CLASH", "effect": "전조 후 거리 1~3에서 내공 기반 직선 검압 합을 수행한다."},
+        "star9": {"name": "무애검세", "role": "STAR7_MOMENTUM_AT_EXACT_RANGE", "modifies": "star7", "effect": "정확한 거리 3에서 합에 승리하면 절초기세 1을 얻는다.", "effect_count": 1, "branching_allowed": false, "additional_input_allowed": false, "additional_resource_cost_allowed": false},
+        "star10": {"name": "제왕검형", "role": "PRELUDE_SPECIAL_CLASH_FINISHER", "effect": "전조 뒤 거리 1~3에서 특별 합을 수행하고 승리하면 방어를 파괴한 뒤 단발 결착검을 가한다."}
+      },
+      "resolution_order": ["FORM_EMPEROR_SWORD_PRELUDE", "RECHECK_RANGE", "SPECIAL_INTERNAL_SWORD_CLASH", "ON_WIN_BREAK_DEFENSE", "SINGLE_FINISHING_SWORD"],
+      "counterplay": ["전조 중 중단한다.", "실행 시 합에서 승리한다."],
+      "measurement_risks": ["화산·무당 검법과 역할 구분 가독성"]
+    }
+  },
+  "special_rules": {
+    "zixia_divine_art": {
+      "uses_per_battle": 1,
+      "consume_timing": "FIRST_PRELUDE_EXECUTION",
+      "refund_on_interrupt": false,
+      "recharge_allowed": false,
+      "ultimate_momentum_gain": 1,
+      "ultimate_momentum_timing": "ON_SUCCESSFUL_COMPLETION",
+      "respect_resource_caps": true
+    },
+    "vajra_tenacity": {
+      "grant_timing": "BEFORE_ATTACK_OR_PRELUDE",
+      "uses_existing_rule_only": true,
+      "absolute_interrupt_immunity": false,
+      "grants_invulnerability": false,
+      "prevents_defeat": false
+    },
+    "emitted_force_scaling": {
+      "default_primary_stat": "내공",
+      "approved_internal_examples": ["항룡십팔장", "창궁검뢰", "제왕검형"],
+      "approved_close_range_external_exceptions": ["대력금강장", "여래신장"],
+      "automatic_hit_allowed": false,
+      "automatic_clash_win_allowed": false
+    }
+  },
+  "scope_boundary": {
+    "product_code_changed": false,
+    "godot_scene_changed": false,
+    "html_poc_changed": false,
+    "runtime_data_changed": false,
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "accessibility_validation": "NOT_RUN",
+    "performance_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN",
+    "balance_validation": "NOT_RUN"
+  }
+}
