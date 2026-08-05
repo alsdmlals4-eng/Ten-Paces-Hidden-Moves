@@ -1,7 +1,7 @@
 # 십보강호 정본 생명주기 등록부
 
 - 기반 권위: `TEN-DEC-20260804-POSTMERGE-CANON-ADVERSARIAL-AUDIT-01`
-- 위험 완화: `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`, `TEN-DEC-20260805-CONDITION-CALIBRATION-01`, `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01`
+- 위험 완화: `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`, `TEN-DEC-20260805-CONDITION-CALIBRATION-01`, `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01`, `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`
 - 작업 운영: `TEN-DEC-20260805-WORK-GOVERNANCE-01`
 - 기준 main: `bbed0fd4d278ca0e0d52f4e6d9083aafa1997318`
 
@@ -30,6 +30,7 @@
 | 기술1 효과·조건·5성 | `TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01` |
 | 조건 측정·재분류 | `TEN-DEC-20260805-CONDITION-CALIBRATION-01` |
 | 파생 수치·오판 구제 측정 | `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01` |
+| 관찰 직접 공개·정답 유출 측정 | `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01` |
 | 배치·체크포인트·TDD·벤치마킹 | `TEN-DEC-20260805-WORK-GOVERNANCE-01` |
 
 현행 contracts:
@@ -40,6 +41,7 @@
 - `approved_20260804_technique1_conditional_rework_star5_contract.json`
 - `approved_20260805_condition_calibration_contract.json`
 - `approved_20260805_wrong_plan_rescue_derived_stats_contract.json`
+- `approved_20260805_observation_answer_leak_guardrails_contract.json`
 - `approved_20260805_work_governance_contract.json`
 
 ## `[대체됨]`
@@ -74,7 +76,7 @@
 | #89 | Draft·자원 포화 완화 |
 | #90 | `[대체됨]` 닫힘 |
 | #91 | Draft·부모 #89·조건 보정·작업 운영 |
-| #92 | Draft·부모 #91·파생 스탯·오판 구제 |
+| #92 | Draft·부모 #91·파생 스탯·오판 구제·관찰 직접 공개 가드레일 |
 | #85 | `[보류]` HTML PoC |
 
 ## `CANON_CONFLICT`
@@ -98,6 +100,6 @@
 
 ## 다음 Gate
 
-`OBSERVATION_ANSWER_LEAK_RISK` → `GRADE_FARMING_RISK` → `STAR9_PUBLIC_READ_BRANCH_TEMPLATE` 순서다.
+`GRADE_FARMING_RISK` → `STAR9_PUBLIC_READ_BRANCH_TEMPLATE` 순서다. 관찰 위험은 `ACCEPTED_PENDING_HUMAN_MEASUREMENT`이며 자동 nerf·repricing 없이 사람 측정으로 재검토한다.
 
 9성 조건은 공개 trigger, 유효 시도, 성공 사건, 실패 지점, 상대 대응, all-or-nothing 범위, 고점·저점, 측정 지표, 재분류 Gate를 필수로 한다.
