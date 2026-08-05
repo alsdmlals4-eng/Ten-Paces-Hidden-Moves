@@ -3,6 +3,7 @@
 - 기반 권위: `TEN-DEC-20260804-POSTMERGE-CANON-ADVERSARIAL-AUDIT-01`
 - 현행 성장 권위: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`
 - 현행 런타임 기반 권위: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`
+- 현행 UI·AI 채택 권위: `TEN_MANUAL_UI_AI_ADOPTION_GATE`
 - 7성·9성 예산 부모: `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01`
 - 작업 운영: `TEN-DEC-20260805-WORK-GOVERNANCE-01`
 - 기준 main: `bbed0fd4d278ca0e0d52f4e6d9083aafa1997318`
@@ -11,7 +12,7 @@
 
 | 표시 | 의미 | 허용 사용 |
 |---|---|---|
-| `[현행]` | 현재 기획·검증·런타임 기반 권위 | 후속 작성·구현 인계·검증 |
+| `[현행]` | 현재 기획·검증·제품 연결 권위 | 후속 작성·구현 인계·검증 |
 | `[대체됨]` | 새 Decision이 권위 인수 | 역사·migration·회귀 증거 |
 | `[보류]` | 증거 보존·진행 중지 | 명시적 재개 전 참고만 |
 | `[폐기]` | 현재·역사 가치 없음 | 참조 금지 |
@@ -26,13 +27,18 @@
 | 초기 10권 전투 해결 개정 | `docs/02_COMBAT_RULES_TEN_RECOGNIZABLE_MARTIAL_MANUALS_AMENDMENT.md` |
 | 초기 10권 읽기 카탈로그 | `docs/03_TEN_MARTIAL_MANUALS_CATALOG.md` |
 | 초기 10권 성장 Decision | `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01` |
-| 초기 10권 런타임 Decision | `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE` |
+| 초기 10권 런타임 기반 Decision | `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE` |
+| 초기 10권 UI·AI Decision | `TEN_MANUAL_UI_AI_ADOPTION_GATE` |
 | 런타임 빌드 승인 | `docs/implementation/BUILD_APPROVAL_2026-08-06.md` |
 | 런타임 manifest | `data/cards/martial_manual_cards.json` |
 | 무공서별 데이터 | `data/cards/martial_manuals/` |
+| PoC 플레이어·적 loadout | `data/combat/ten_manual_loadout_poc.json` |
 | 숙련 레지스트리 | `src/combat/martial_manual_registry.gd` |
 | 순차 효과 pipeline | `src/combat/martial_effect_pipeline.gd` |
-| 전투 호환 어댑터 | `src/combat/combat_resolution_engine_ten_manuals.gd` |
+| 준비 호환 전투 어댑터 | `src/combat/combat_resolution_engine_ten_manuals.gd` |
+| 제품 전투 장면 어댑터 | `src/combat/combat_board_preview_ten_manuals_auto.gd` |
+| 행동 선택 UI 공급자 | `src/ui/action_selection/action_view_model_adapter.gd` |
+| 공개 상태 AI | `src/combat/combat_ai_planner.gd` |
 | 기술1 효과·조건·5성 | `TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01` |
 | 7성·9성 예산 부모 | `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01` |
 | 자원 회복 | `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01` |
@@ -55,23 +61,27 @@
 - `approved_20260805_grade_farming_guardrails_contract.json`
 - `approved_20260805_work_governance_contract.json`
 
-## 런타임 권위 경계
+## 제품 연결 권위 경계
 
-현재 상태는 `RUNTIME_FOUNDATION`이다.
+현재 상태는 `UI_AI_ADOPTED`다.
 
 보장:
 
 - 정확한 초기 10권 roster와 승인된 문파·주/보조능력치.
 - 3·5·7·9·10성 카드 해금과 overlay 합성.
-- 순차 effect pipeline.
+- 행동 선택 UI의 명시적 플레이어 loadout·성취도 표시.
+- 10성 무공 절초와 기존 공용 절초의 동시 표시.
+- 적 AI의 적 전용 loadout과 공개 상태 기반 후보 평가.
+- 플레이어 비공개 계획·미확정 배치·포인터 접근 금지.
+- 묶음 해결 안에서 순차 effect pipeline 실행.
 - 자하신공·나한금강공·회마창·능파미보·만천화우의 핵심 불변조건.
 - 명시적 loadout에서만 무공 카드 병합.
-- 기본 행동·공용 절초 3종 ID와 기본 엔진 동작 보존.
+- 기본 행동·공용 절초 3종·준비·자동 배치의 호환성.
 
 아직 권위가 없는 범위:
 
-- 전체 행동 선택 UI 채택.
-- AI의 10권 자동 사용.
+- 최종 loadout 획득·교체 경제.
+- 적별 최종 무공 배치와 난이도 곡선.
 - 최종 밸런스·연출·아트·음향.
 - Windows·접근성·성능·사람 플레이 승인.
 
@@ -87,6 +97,7 @@
 | 구형 `attack_power: 8` 공식 권위 | 파생 스탯 Decision | 역사 PoC 표시만 |
 | PR #90과 비최종 condition branch | PR #91 | 오류 추적만 |
 | 런타임 미구현 상태 | `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE` | 과거 체크포인트만 |
+| UI·AI 미채택 상태 | `TEN_MANUAL_UI_AI_ADOPTION_GATE` | 과거 런타임 기반 체크포인트만 |
 
 ## `[보류]`
 
@@ -94,7 +105,8 @@
 |---|---|---|
 | GitHub PR #85 HTML Technique1 PoC | 닫힘·병합 금지·제품 권위 없음 | 명시적 재개 승인 |
 | PR #85 테스트 결과 | 역사 참고 | 최신 계약 재작성·재검증 |
-| 10권 전체 UI·AI 채택 | 런타임 기반 완료, 제품 연결 미완 | `TEN_MANUAL_UI_AI_ADOPTION_GATE` 승인 |
+| 최종 loadout 경제 | PoC fixture만 존재 | 성장·획득 경제 Decision |
+| 적별 최종 loadout·난이도 | 공개 상태 경계만 구현 | 사람 측정과 난이도 Decision |
 | 최종 등급 가중치·컷 | 사람 표본 전 보류 | 별도 Decision |
 | 등급 기반 경제 보상 | 사람 검증 전 금지 | 30승·5상대·표본 집중40% 이하와 새 Decision |
 
@@ -113,7 +125,7 @@
 | #89 | Draft·자원 포화 완화 |
 | #90 | `[대체됨]` 닫힘 |
 | #91 | Draft·부모 #89·조건 보정·작업 운영 |
-| #92 | Draft·부모 #91·초기 10권 성장·런타임 기반·현재 배치10/10 |
+| #92 | Draft·부모 #91·초기 10권 성장·런타임 기반·UI·AI 채택·현재 배치10/10 |
 | #85 | `[보류]` HTML PoC |
 
 ## `CANON_CONFLICT`
@@ -126,7 +138,9 @@
 - 자하신공 사용권을 중단 뒤 환불하거나 미완료 상태에서 기세를 지급함.
 - `[강건]`을 무적·피해 무시·절대 중단 면역으로 확장함.
 - 명시적 loadout 없이 무공 카드를 기본 엔진에 삽입함.
-- 기본 행동·공용 절초 ID를 삭제·변경함.
+- 적 AI가 플레이어 전용 loadout이나 비공개 계획을 참조함.
+- UI에 선택 가능한 무공 카드가 실제 `effect_steps`를 실행하지 않음.
+- 기본 행동·공용 절초·준비·자동 배치 ID나 동작을 삭제·변경함.
 - 숨은 계획 접근·자동 정답·자동 합 승리를 추가함.
 - 사람 검증 없이 최종 밸런스·T1 완료를 주장함.
 - PR #92를 PR #91보다 먼저 독립 병합하거나 Draft 해제함.
@@ -134,16 +148,17 @@
 
 ## 다음 Gate
 
-`TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`는 완료됐다. 현재 승인 배치는 `10/10`이다.
+`TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`와 `TEN_MANUAL_UI_AI_ADOPTION_GATE`는 완료됐다. 현재 승인 배치는 `10/10`이다.
 
 ```text
-TEN_MANUAL_UI_AI_ADOPTION_GATE
-→ 행동 선택 UI 명시적 loadout 연결
-→ 공개 상태 기반 AI 후보 행동 연결
-→ Godot·Windows·접근성·성능 검증
+TEN_MANUAL_PRODUCT_VALIDATION_GATE
+→ Godot Windows 실제 실행
+→ 접근성·성능 검증
 → STEP 14 사람·밸런스 검증
+→ 적 loadout 공정성·기술 대체율·자원 포화 측정
+→ 최종 밸런스 Decision
 → NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT
 → FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
 ```
 
-런타임 기반 구현만으로 최종 UI·AI·사람·밸런스 완료를 주장하면 안 된다.
+자동 검증만으로 Windows·접근성·성능·사람·밸런스 완료를 주장하면 안 된다.
