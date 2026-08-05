@@ -1,6 +1,6 @@
 ---
 name: ten-paces-hidden-moves-workflow-router
-description: Resolve this project's Base shared and project-local Skills through its verified v9.4 operating contracts.
+description: Resolve this project's Base shared and project-local Skills through its verified v9.1 operating contracts.
 ---
 
 # Project Workflow Router
