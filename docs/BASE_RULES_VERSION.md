@@ -76,7 +76,7 @@ Base v9.4 계열의 모델·추론 단계·Prompt caching·비용 측정, 지시
 
 ## 5. 정본·발행·아카이브
 
-- 한 질문에 Markdown 또는 JSON 현재 책임 원본 하나.
+- 한 질문에는 Markdown 또는 JSON 현재 책임 원본 하나.
 - 승인 상태·구현 상태·검증 상태를 한 `status`에 혼합하지 않는다.
 - DOCX·PDF·Dashboard는 정본이 아니다.
 - 현재 제품 기획 문서는 생성기가 없는 `source_only`다.
@@ -100,24 +100,21 @@ Base가 아닌 프로젝트가 소유한다.
 
 ## 7. 현재 프로젝트 상태와 검증
 
+변동 상태의 단독 책임 원본은 `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`다. 활성 PR exact head와 Actions 결과는 GitHub metadata에서 직접 확인하고 이 Base 적용 문서에 복제하지 않는다.
+
+안정 기준:
+
 ```yaml
-main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
-active_planning_pr: 82
-active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
-active_approval_count: 2/10
-active_decision_state: APPROVED_PENDING_MERGE
-project_adapter_validation: PASS
-pr_validation: PASS_AT_ACTIVE_PR82_HEAD
-base_v9_validation: PASS_AT_ACTIVE_PR82_HEAD
-full_validation: PASS_AT_ACTIVE_PR82_HEAD
-action_selection_godot_smoke: PASS
-ubuntu_godot_headless: PASS
-ubuntu_windows_python_matrix: PASS
+product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
+runtime_integration_pr: 65
+runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
+latest_combat_planning_runtime: NOT_STARTED
+base_release: 9.4.3
 windows_godot_runtime: NOT_RUN
 human_validation: NOT_RUN
 ```
 
-자동 검증은 실제 Windows Godot·실물 게임패드·화면 읽기 도구·사람 플레이를 대체하지 않는다. 활성 PR #82의 성공 검사는 현재 head의 두 승인 Decision 정합성 증거이며, 10/10 또는 조기 체크포인트의 최종 병합 허가를 뜻하지 않는다.
+자동 검증은 실제 Windows Godot·실물 게임패드·화면 읽기 도구·사람 플레이를 대체하지 않는다. Draft PR의 성공 검사는 해당 exact head 정합성 증거이며 병합 허가나 `SYNCED_TO_MAIN`을 뜻하지 않는다.
 
 ## 8. 역사·호환 기준
 
