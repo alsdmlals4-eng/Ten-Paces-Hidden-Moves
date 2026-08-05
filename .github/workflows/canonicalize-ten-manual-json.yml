@@ -1,6 +1,11 @@
 name: Canonicalize Ten Manual Planning JSON
 
 on:
+  pull_request:
+    paths:
+      - .github/workflows/canonicalize-ten-manual-json.yml
+      - docs/planning-data/approved_20260806_ten_recognizable_martial_manuals_contract.json
+      - docs/planning-data/approved_20260806_ten_manual_growth_budget_overlay_contract.json
   push:
     branches:
       - agent/2026-08-05-wrong-plan-rescue-stat-derived-design
@@ -19,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
@@ -52,4 +57,4 @@ jobs:
           git add docs/planning-data/approved_20260806_ten_recognizable_martial_manuals_contract.json \
                   docs/planning-data/approved_20260806_ten_manual_growth_budget_overlay_contract.json
           git commit -m "style: canonicalize ten-manual planning json"
-          git push origin HEAD:${{ github.ref_name }}
+          git push origin HEAD:${{ github.head_ref || github.ref_name }}
