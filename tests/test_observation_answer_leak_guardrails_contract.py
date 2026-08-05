@@ -134,18 +134,18 @@ class ObservationAnswerLeakGuardrailsContractTest(unittest.TestCase):
         self.assertNotIn("현재 활성 승인 배치 | PR #82", documentation_map)
         self.assertNotIn("PASS_AT_PR82_HEAD", gates)
 
-    def test_active_context_moves_to_eight_of_ten_and_grade_risk(self):
+    def test_active_context_retains_observation_authority_after_later_decisions(self):
         active = (
             ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
         ).read_text(encoding="utf-8")
         self.assertIn("active_planning_pr: 92", active)
-        self.assertIn("active_approval_count: 8/10", active)
+        self.assertIn("TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01", active)
         self.assertIn(
-            "active_decision_state: APPROVED_DRAFT_OBSERVATION_ANSWER_LEAK_GUARDRAILS",
+            "관찰은 행동1수→관찰량1→적 선잠금 뒤 앞 슬롯 실제 행동 종류 직접 공개를 유지",
             active,
         )
-        self.assertIn("next_planning_decision: GRADE_FARMING_RISK", active)
-        self.assertIn("TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01", active)
+        self.assertIn("OBSERVATION_ANSWER_LEAK_RISK", active)
+        self.assertNotIn("TACTICAL_CLUE", active)
 
 
 if __name__ == "__main__":
