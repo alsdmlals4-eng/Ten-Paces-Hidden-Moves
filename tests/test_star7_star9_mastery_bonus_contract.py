@@ -148,8 +148,9 @@ class Star7Star9MasteryBonusContractTest(unittest.TestCase):
         mastery = (ROOT / "docs/06_STARTING_FACTION_MASTERY_DATA.md").read_text(encoding="utf-8")
         for current in [active, roadmap]:
             self.assertIn("active_approval_count: 10/10", current)
-            self.assertIn("active_decision_state: TEN_MANUAL_RUNTIME_FOUNDATION_IMPLEMENTED", current)
-            self.assertIn("next_planning_decision: TEN_MANUAL_UI_AI_ADOPTION_GATE", current)
+            self.assertIn("active_decision_state: TEN_MANUAL_UI_AI_ADOPTED", current)
+            self.assertIn("next_planning_decision: TEN_MANUAL_PRODUCT_VALIDATION_GATE", current)
+            self.assertIn("TEN_MANUAL_UI_AI_ADOPTION_GATE", current)
         self.assertIn("active_batch: 10/10", mastery)
         self.assertIn("implementation_authority: RUNTIME_FOUNDATION", mastery)
         self.assertIn("approved_20260806_ten_recognizable_martial_manuals_contract.json", mastery)
