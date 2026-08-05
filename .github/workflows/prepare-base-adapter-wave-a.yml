@@ -1,0 +1,57 @@
+name: Prepare exact Base adapter migration
+
+on:
+  push:
+    branches:
+      - agent/repair-base-adapter-wave-a
+    paths:
+      - .github/workflows/prepare-base-adapter-wave-a.yml
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out project history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+
+      - name: Refresh exact baseline and raw-byte hashes
+        env:
+          PROJECT_BASE_SHA: 4b5967dee99592de4a09a611068344994e1ee026
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          adapter_path = Path("skills/PROJECT_BASE_ADAPTER.json")
+          adapter = json.loads(adapter_path.read_text(encoding="utf-8"))
+          baseline = os.environ["PROJECT_BASE_SHA"]
+          policy_path = adapter["protected_baseline"]["policy_source_path"]
+          policy_bytes = subprocess.check_output(["git", "show", f"{baseline}:{policy_path}"])
+          registry_path = Path(adapter["skill_registry"]["project"]["path"])
+          registry_bytes = registry_path.read_bytes()
+
+          adapter["protected_baseline"]["commit"] = baseline
+          adapter["protected_baseline"]["policy_sha256"] = hashlib.sha256(policy_bytes).hexdigest()
+          adapter["skill_registry"]["project"]["sha256"] = hashlib.sha256(registry_bytes).hexdigest()
+          adapter_path.write_text(
+              json.dumps(adapter, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Commit adapter only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add skills/PROJECT_BASE_ADAPTER.json
+          git diff --cached --check
+          git commit -m "fix: refresh exact Base adapter baseline"
+          git push origin HEAD:agent/repair-base-adapter-wave-a
