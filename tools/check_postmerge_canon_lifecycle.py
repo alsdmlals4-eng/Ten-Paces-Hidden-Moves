@@ -165,7 +165,7 @@ def validate_mastery(mastery: str) -> None:
         "approved_20260805_grade_farming_guardrails_contract.json",
         "approved_20260805_star7_star9_mastery_bonus_contract.json",
         "9성 | 기술2 단일 완성 보너스",
-        "현재 T0에는 세력 선택",
+        "초기 10권의 문파·3/5/7/9/10성 효과와 예산은 기획 승인됐지만 T0 제품 런타임에는 아직 구현되지 않았다.",
         "공용 절초 3종",
         "approved_20260806_ten_recognizable_martial_manuals_contract.json",
         "approved_20260806_ten_manual_growth_budget_overlay_contract.json",
