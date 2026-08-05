@@ -1,0 +1,39 @@
+name: Validate platform release and asset rights
+
+on:
+  pull_request:
+    paths:
+      - 'AGENTS.md'
+      - 'docs/PLATFORM_RELEASE_AND_ASSET_RIGHTS_PROFILE.md'
+      - 'docs/ASSET_RIGHTS_AND_PROVENANCE_RECORD.md'
+      - 'docs/GAME_RELEASE_COMPLIANCE_EVIDENCE_PACK.md'
+      - 'tests/test_platform_release_asset_rights_contract.py'
+      - '.github/workflows/platform-release-asset-rights.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'AGENTS.md'
+      - 'docs/PLATFORM_RELEASE_AND_ASSET_RIGHTS_PROFILE.md'
+      - 'docs/ASSET_RIGHTS_AND_PROVENANCE_RECORD.md'
+      - 'docs/GAME_RELEASE_COMPLIANCE_EVIDENCE_PACK.md'
+      - 'tests/test_platform_release_asset_rights_contract.py'
+      - '.github/workflows/platform-release-asset-rights.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run platform release and asset rights contract
+        run: python -m unittest tests.test_platform_release_asset_rights_contract -v
+      - name: Check whitespace
+        run: git diff --check
