@@ -110,8 +110,8 @@ def validate_operating_state(active: str, roadmap: str) -> None:
             "active planning checkpoint requires a draft decision state",
         )
 
-    require(active_state["active_approval_count"] == "8/10", "active approval count differs")
-    require(bool(next_decision) and next_decision != "NONE", "next planning decision is missing")
+    require(active_state["active_approval_count"] == "9/10", "active approval count differs")
+    require(next_decision == "STAR9_PUBLIC_READ_BRANCH_TEMPLATE", "next planning decision differs")
 
     for token in [
         "runtime_work_mode: REVIEW",
@@ -120,6 +120,7 @@ def validate_operating_state(active: str, roadmap: str) -> None:
         "automated_validation: PASS",
         "human_validation: NOT_RUN",
         "2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md",
+        "TEN-DEC-20260805-GRADE-FARMING-GUARDRAILS-01",
     ]:
         require(token in active, f"active context missing operating token: {token}")
 
@@ -128,6 +129,7 @@ def validate_operating_state(active: str, roadmap: str) -> None:
         "STEP 14",
         "T1 — 최소 세로 슬라이스",
         "KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST",
+        "GRADE_FARMING_RISK",
     ]:
         require(token in roadmap, f"roadmap missing operating token: {token}")
 
@@ -174,6 +176,8 @@ def validate_registry(registry: str) -> None:
         "731e6431e76ebc76841f9253e87cd1e7a693ebb2",
         "0ba841ff2e62b2f716466356dd9e7ffcf587d150",
         "STAR9_PUBLIC_READ_BRANCH_TEMPLATE",
+        "TEN-DEC-20260805-GRADE-FARMING-GUARDRAILS-01",
+        "approved_20260805_grade_farming_guardrails_contract.json",
     ]:
         require(token in registry, f"canon lifecycle registry missing token: {token}")
 
@@ -181,15 +185,17 @@ def validate_registry(registry: str) -> None:
 def validate_mastery(mastery: str) -> None:
     for token in [
         "T1 이후 가설 원본",
-        "active_batch: 8/10",
+        "active_batch: 9/10",
         "action_slots",
         "sure_hit",
         "프로젝트 코어가 사용자 승인",
         "approved_20260804_existing_action_reprice_contract.json",
         "approved_20260804_technique1_conditional_rework_star5_contract.json",
+        "approved_20260805_grade_farming_guardrails_contract.json",
         "STAR9_PUBLIC_READ_BRANCH_TEMPLATE",
     ]:
         require(token in mastery, f"growth authority missing token: {token}")
+    require("active_batch: 8/10" not in mastery, "growth authority still claims active batch 8/10")
     require("active_batch: 7/10" not in mastery, "growth authority still claims active batch 7/10")
     require(
         "approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json`은 `[대체됨]`" in mastery,
