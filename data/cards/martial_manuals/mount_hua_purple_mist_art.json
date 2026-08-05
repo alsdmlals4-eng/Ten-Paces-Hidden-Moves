@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01",
+  "manual_id": "mount_hua_purple_mist_art",
+  "faction": "화산파",
+  "manual_name": "자하심법",
+  "primary_stat": "내공",
+  "secondary_stat": "근골",
+  "cards": {
+    "star3": {
+      "id": "mount_hua_purple_mist_art_star3",
+      "name": "자하토납",
+      "manual_id": "mount_hua_purple_mist_art",
+      "unlock_star": 3,
+      "source": "martial_manual",
+      "category": "recovery",
+      "resolution_phase": "general",
+      "targeting_mode": "self",
+      "action_slots": 1,
+      "stamina_cost": 0,
+      "internal_cost": 0,
+      "range": {"min": 0, "max": 0},
+      "effect_steps": [
+        {"op": "GAIN_RESOURCE", "resource": "internal", "amount": 2},
+        {"op": "GAIN_RESOURCE", "resource": "stamina", "amount": 1, "condition": "LOW_RESOURCE"},
+        {"op": "GAIN_RESOURCE", "resource": "defense", "amount": 1, "condition": "LOW_RESOURCE"}
+      ],
+      "budget_reference": "planning:star3",
+      "balance_status": "PROVISIONAL_WITHIN_APPROVED_BUDGET",
+      "tags": []
+    },
+    "star7": {
+      "id": "mount_hua_purple_mist_art_star7",
+      "name": "자하회천",
+      "manual_id": "mount_hua_purple_mist_art",
+      "unlock_star": 7,
+      "source": "martial_manual",
+      "category": "recovery",
+      "resolution_phase": "general",
+      "targeting_mode": "self",
+      "action_slots": 2,
+      "stamina_cost": 0,
+      "internal_cost": 2,
+      "range": {"min": 0, "max": 0},
+      "effect_steps": [
+        {"op": "GAIN_RESOURCE", "resource": "internal", "amount": 3},
+        {"op": "GAIN_STATUS", "status": "fortitude", "amount": 1, "condition": "LOW_RESOURCE"},
+        {"op": "GAIN_RESOURCE", "resource": "defense", "amount": 2, "condition": "LOW_RESOURCE"},
+        {"op": "GAIN_RESOURCE", "resource": "health", "amount": 2, "condition": "LOW_RESOURCE"}
+      ],
+      "budget_reference": "star7_profiles.mount_hua_purple_mist_art",
+      "balance_status": "PROVISIONAL_WITHIN_APPROVED_BUDGET",
+      "tags": []
+    },
+    "star10": {
+      "id": "mount_hua_purple_mist_art_star10",
+      "name": "자하신공",
+      "manual_id": "mount_hua_purple_mist_art",
+      "unlock_star": 10,
+      "source": "martial_manual",
+      "category": "recovery",
+      "resolution_phase": "general",
+      "targeting_mode": "self",
+      "action_slots": 3,
+      "stamina_cost": 0,
+      "internal_cost": 0,
+      "range": {"min": 0, "max": 0},
+      "effect_steps": [
+        {"op": "CONSUME_ONCE_PER_BATTLE", "key": "purple_mist_ultimate"},
+        {"op": "GAIN_RESOURCE", "resource": "internal", "amount": 4},
+        {"op": "GAIN_RESOURCE", "resource": "stamina", "amount": 3},
+        {"op": "GAIN_STATUS", "status": "fortitude", "amount": 1},
+        {"op": "GAIN_RESOURCE", "resource": "defense", "amount": 3},
+        {"op": "GAIN_RESOURCE", "resource": "health", "amount": 4, "condition": "LOW_RESOURCE_AT_START"},
+        {"op": "GAIN_MOMENTUM_ON_COMPLETE", "amount": 1}
+      ],
+      "budget_reference": "ultimate_profiles.mount_hua_purple_mist_art",
+      "balance_status": "PROVISIONAL_WITHIN_APPROVED_BUDGET",
+      "tags": ["절초", "전투당1회"]
+    }
+  },
+  "overlays": {
+    "star5": {
+      "name": "자기양원",
+      "unlock_star": 5,
+      "target": "star3",
+      "effect_steps": [{"op": "GAIN_RESOURCE", "resource": "health", "amount": 2, "condition": "LOW_RESOURCE"}]
+    },
+    "star9": {
+      "name": "자하귀원",
+      "unlock_star": 9,
+      "target": "star7",
+      "effect_steps": [{"op": "GAIN_STATUS", "status": "prepared", "amount": 1, "condition": "LOW_RESOURCE_AT_START"}],
+      "branching_allowed": false,
+      "additional_input_allowed": false,
+      "additional_resource_cost_allowed": false
+    }
+  }
+}
