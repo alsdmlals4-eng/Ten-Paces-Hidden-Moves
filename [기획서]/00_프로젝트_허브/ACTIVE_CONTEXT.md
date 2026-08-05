@@ -168,6 +168,17 @@ TEN_MANUAL_UI_AI_ADOPTION_GATE
 → FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
 ```
 
+## 선행 UX·앱 흐름 권위
+
+현재 런타임 기반은 다음 선행 권위를 대체하지 않고 계보로 보존한다.
+
+- `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`
+- `TEN-DEC-20260801-SITUATION-SCREEN-01`
+- 역사 구현 표식: `runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65`
+- V6 원장: `2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`
+
+위 표식은 PR #65 앱 흐름 기반의 역사·호환 근거이며 현재 구현 권위는 상단 YAML의 `TEN_MANUAL_RUNTIME_FOUNDATION_PR92`다.
+
 ## 역사적 기준 표식
 
 `PR #7`, `Issue #13`, `CORE_REVIEW_PENDING`은 초기 프로젝트 코어 검토 이력을 찾기 위한 reference-freshness 표식이며 현재 작업 상태가 아니다. 현재 코어는 승인됐고, 현행 상태는 위 YAML과 Decision 원장을 따른다.
