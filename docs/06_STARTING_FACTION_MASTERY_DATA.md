@@ -10,7 +10,7 @@
 
 ```yaml
 authority_status: CURRENT_APPROVED_PLANNING
-active_batch: 8/10
+active_batch: 9/10
 merged_checkpoint: 0ba841ff2e62b2f716466356dd9e7ffcf587d150
 implementation_status: NOT_STARTED
 runtime_validation: NOT_RUN
@@ -31,6 +31,8 @@ next_planning_decision: STAR9_PUBLIC_READ_BRANCH_TEMPLATE
 - `approved_20260804_existing_action_reprice_contract.json`
 - `approved_20260804_technique1_conditional_rework_star5_contract.json`
 - `approved_20260804_postmerge_canon_adversarial_audit_contract.json`
+- `approved_20260805_observation_answer_leak_guardrails_contract.json`
+- `approved_20260805_grade_farming_guardrails_contract.json`
 
 `approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json`은 `[대체됨]` 역사 증거다. 현재 데이터 생성에 사용하면 `CANON_CONFLICT`다.
 
@@ -43,6 +45,7 @@ next_planning_decision: STAR9_PUBLIC_READ_BRANCH_TEMPLATE
 - 9성은 공개 정보 기반 자동 분기이며 행동 해결 중 추가 선택을 만들지 않는다.
 - 10성 절초도 거리·합·회피·중단·자원 규칙을 따른다.
 - 높은 능력치가 잘못된 계획을 반복 구제하면 성장 설계를 재검토한다.
+- 등급은 원시 사건과 유효 반영량을 분리하며 사람 검증 전 성장·재화 보상을 증폭하지 않는다.
 
 공용 Schema:
 
@@ -79,6 +82,7 @@ replay_reason_code
 - 자원 상한률·자동 회복 낭비율·명상/준비 선택률을 기록한다.
 - 조건 난도별 실제 성공률·실패 지점·고점/저점 체감을 기록한다.
 - 높은 능력치가 잘못된 계획을 구제한 사례를 기록한다.
+- 등급 원시/유효 방어 반영량 비율, 같은 안정 ID 반복 대응, 기준 라운드 이후 사건을 기록한다.
 
 ## 4. 장기 보유 구조 가설
 
@@ -100,7 +104,7 @@ replay_reason_code
 | `diamond_body_art` | 금강호체공 | 근골 | 내공 | 금강가세 | 반진권 | `vajra_body` |
 | `taiji_flowing_sword` | 태극유전검 | 심안 | 내공 | 운수회신 | 사량발천근 | `taiji_flow` |
 | `chasing_wind_spear` | 추풍창법 | 외공 | 신법 | 추풍일섬 | 연환쇄로 | `pursuing_wind_spear` |
-| `clear_heart_nourishing_art` | 청심양생공 | 내공 | 근골 | 청심조식 | 회기전맥 | `clear_heart_nurturing` |
+| `clear_heart_nourishing_art` | 청심양생공 | 내공 | 청심조식 | 회기전맥 | `clear_heart_nurturing` |
 | `shadowless_ten_steps` | 무영십보 | 신법 | 심안 | 철각유영 | 십보환위 | `shadowless_steps` |
 
 역사 ID는 `legacy_manual_alias`로만 보존한다.
@@ -146,6 +150,7 @@ replay_reason_code
 - 각 무공 절초의 효과·이동·사거리·조건·비용·예산은 아직 개별 승인되지 않았다.
 - 진의는 T1 이후 장기 성장 가설이며 현재 제품 범위가 아니다.
 - 절초가 거리·중단·회피·합을 무시하는 정답 행동이 되면 실패다.
+- 등급에는 기준 라운드 안에서 실제 비비용 효과를 낸 첫 절초1회만 유효 반영한다.
 
 ## 7. 성장 진입 게이트
 
@@ -154,7 +159,6 @@ STAR9_PUBLIC_READ_BRANCH_TEMPLATE
 → 여섯 개별 9성 자동 분기
 → 여섯 10성 고유 절초
 → 비스탯 노드 기대가치
-→ 전투 종료 등급 산식·파밍 방지
 → 전체 핵심 재미 적대적 검토
 → 별도 Build 승인
 ```
@@ -169,7 +173,7 @@ STAR9_PUBLIC_READ_BRANCH_TEMPLATE
 - 복기 성공·실패 문구.
 - 기술1/2 대체율 측정.
 
-Build 전에는 현재 repricing·기술1·기술2 계약, 승인될 9성·10성 계약, canonical ID migration, 조건 실패·연격·고정 이동 회귀 테스트가 필요하다.
+Build 전에는 현재 repricing·기술1·기술2·등급 파밍 계약, 승인될 9성·10성 계약, canonical ID migration, 조건 실패·연격·고정 이동 회귀 테스트가 필요하다.
 
 ## 8. 검증 기준
 
@@ -179,15 +183,17 @@ Build 전에는 현재 repricing·기술1·기술2 계약, 승인될 9성·10성
 - 기술2는 기술1을 전 상황에서 대체하지 않는다.
 - 9성은 공개 정보만 사용하고 추가 입력을 만들지 않는다.
 - 10성 절초는 일반 거리·중단·자원 규칙을 따른다.
-- `RESOURCE_SATURATION_RISK`, `CONDITION_CALIBRATION_RISK`, `WRONG_PLAN_RESCUE_RISK`, `OBSERVATION_ANSWER_LEAK_RISK`를 사람 검증에서 측정한다.
+- `RESOURCE_SATURATION_RISK`, `CONDITION_CALIBRATION_RISK`, `WRONG_PLAN_RESCUE_RISK`, `OBSERVATION_ANSWER_LEAK_RISK`, `GRADE_FARMING_RISK`를 사람 검증에서 측정한다.
 - 관찰은 `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`에 따라 직접 앞 슬롯 행동 종류 공개를 유지하며 자동 정답 대응·자동 nerf를 금지한다.
+- 등급은 `TEN-DEC-20260805-GRADE-FARMING-GUARDRAILS-01`에 따라 원시 사건을 보존하고 유효 반영량만 감쇠·상한 처리한다.
+- 사람 검증 전 등급을 수련·재화·드롭·영구재화에 연결하지 않는다.
 - 사람 검증 전 재미·밸런스 PASS를 주장하지 않는다.
 
 생명주기:
 
-- `[현행]`: 2026-08-04 전투·repricing·기술1 계약과 활성 성장 계약.
+- `[현행]`: 2026-08-04 전투·repricing·기술1 계약과 활성 성장·관찰·등급 파밍 계약.
 - `[대체됨]`: 2026-08-03 기술1 효과 Decision·contract.
-- `[보류]`: PR #85 HTML Technique1 PoC.
+- `[보류]`: PR #85 HTML Technique1 PoC, 최종 등급 가중치·컷·경제 연결.
 - `[폐기]`: 현재 없음.
 
 ```yaml
