@@ -15,7 +15,7 @@ func _initialize() -> void:
     call_deferred("_run")
 
 func _run() -> void:
-    _verify_ui_registry_adoption()
+    await _verify_ui_registry_adoption()
     _verify_ai_enemy_loadout_boundary()
     _verify_bundle_executes_martial_pipeline()
     print("TEN_MANUAL_UI_AI_ADOPTION_VERIFY_OK")
@@ -24,7 +24,7 @@ func _run() -> void:
 func _verify_ui_registry_adoption() -> void:
     var packed := load(DOCK_SCENE) as PackedScene
     assert(packed != null)
-    var dock = packed.instantiate()
+    var dock: ActionSelectionDock = packed.instantiate() as ActionSelectionDock
     root.add_child(dock)
     await process_frame
 
@@ -41,19 +41,19 @@ func _verify_ui_registry_adoption() -> void:
     assert(panel_snapshot.get("manual_ids", []) == [HUA, TANG])
     assert(int(panel_snapshot.get("manual_count", 0)) == 2)
 
-    var hua_manual := _find_by_key(dock.martial_panel.manuals, "manual_id", HUA)
+    var hua_manual: Dictionary = _find_by_key(dock.martial_panel.manuals, "manual_id", HUA)
     assert(not hua_manual.is_empty())
     assert(str(hua_manual.get("faction", "")) == "화산파")
     assert(str(hua_manual.get("primary_stat", "")) == "신법")
     assert(str(hua_manual.get("secondary_stat", "")) == "외공")
-    var hua_star3 := _find_by_key(hua_manual.get("techniques", []), "id", HUA_STAR3)
-    var hua_star7 := _find_by_key(hua_manual.get("techniques", []), "id", HUA_STAR7)
+    var hua_star3: Dictionary = _find_by_key(hua_manual.get("techniques", []), "id", HUA_STAR3)
+    var hua_star7: Dictionary = _find_by_key(hua_manual.get("techniques", []), "id", HUA_STAR7)
     assert(not bool(hua_star3.get("locked", true)))
     assert("낙매유향" in hua_star3.get("applied_overlays", []))
     assert(bool(hua_star7.get("locked", false)))
     assert(int(hua_star7.get("unlock_mastery", 0)) == 7)
 
-    var tang_ultimate := dock.ultimate_panel.get_action(TANG_STAR10)
+    var tang_ultimate: Dictionary = dock.ultimate_panel.get_action(TANG_STAR10)
     assert(not tang_ultimate.is_empty())
     assert(str(tang_ultimate.get("source", "")) == "martial_manual")
     assert(str(tang_ultimate.get("source_kind", "")) == "ultimate")
@@ -75,11 +75,11 @@ func _verify_ai_enemy_loadout_boundary() -> void:
     assert(TANG_STAR7 in enemy_ids)
     assert(HUA_STAR3 not in enemy_ids)
 
-    var hud := _load_json(HUD_PATH)
+    var hud: Dictionary = _load_json(HUD_PATH)
     var state: Dictionary = engine.make_initial_state(hud, 4, 8)
     state["ai_enabled"] = true
     state["ai_decision_seed"] = 0
-    var actions := engine.ai_planner.build_bundle_actions(state, 1, engine.get_enemy_ai_cards_by_id())
+    var actions: Array = engine.ai_planner.build_bundle_actions(state, 1, engine.get_enemy_ai_cards_by_id())
     var trace: Dictionary = engine.ai_planner.get_last_trace()
     assert(not actions.is_empty())
     assert(TANG_STAR7 in trace.get("candidate_ids", []))
@@ -96,13 +96,13 @@ func _verify_bundle_executes_martial_pipeline() -> void:
         [],
         {}
     )
-    var hud := _load_json(HUD_PATH)
+    var hud: Dictionary = _load_json(HUD_PATH)
     var state: Dictionary = engine.make_initial_state(hud, 4, 7)
     state["ai_enabled"] = false
     var before_health := int(((state.get("enemy", {}) as Dictionary).get("health", [30, 30]) as Array)[0])
     var definition: Dictionary = (engine.cards_by_id.get(TANG_STAR10, {}) as Dictionary).duplicate(true)
     assert(not definition.is_empty())
-    var result := engine.resolve_bundle([
+    var result: Dictionary = engine.resolve_bundle([
         {
             "card_id": TANG_STAR10,
             "definition": definition,
