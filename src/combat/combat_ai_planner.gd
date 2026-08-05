@@ -42,9 +42,10 @@ func build_bundle_actions(state: Dictionary, bundle_index: int, cards_by_id: Dic
         if rational_candidates.size() >= max_candidates:
             break
 
+    var selection_candidates := _selection_candidates(rational_candidates, cards_by_id)
     var seed := _scoped_seed(snapshot)
-    var selected_index := absi(seed) % rational_candidates.size()
-    var selected: Dictionary = rational_candidates[selected_index]
+    var selected_index := absi(seed) % selection_candidates.size()
+    var selected: Dictionary = selection_candidates[selected_index]
     var candidate_ids: Array[String] = []
     var candidate_scores: Dictionary = {}
     for value in rational_candidates:
@@ -63,6 +64,25 @@ func build_bundle_actions(state: Dictionary, bundle_index: int, cards_by_id: Dic
         "reason_codes": (selected.get("reason_codes", []) as Array).duplicate(true)
     }
     return [_build_action(selected, snapshot)]
+
+func _selection_candidates(rational_candidates: Array, cards_by_id: Dictionary) -> Array:
+    var legacy_candidates: Array = []
+    var martial_candidates: Array = []
+    for value in rational_candidates:
+        var candidate: Dictionary = value
+        var card_id := str(candidate.get("card_id", ""))
+        var definition: Dictionary = cards_by_id.get(card_id, {})
+        if str(definition.get("source", "")) == "martial_manual":
+            martial_candidates.append(candidate)
+        else:
+            legacy_candidates.append(candidate)
+    if legacy_candidates.is_empty() or martial_candidates.is_empty():
+        return rational_candidates
+    var best_legacy := float((legacy_candidates[0] as Dictionary).get("score", 0.0))
+    var best_martial := float((martial_candidates[0] as Dictionary).get("score", 0.0))
+    if best_martial >= best_legacy + 1.0:
+        return rational_candidates
+    return legacy_candidates
 
 func _build_public_snapshot(state: Dictionary, bundle_index: int) -> Dictionary:
     var enemy: Dictionary = state.get("enemy", {})
