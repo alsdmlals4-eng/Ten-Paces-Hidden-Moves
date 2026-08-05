@@ -92,6 +92,12 @@ jobs:
       - name: Validate observation guardrail contract
         run: python tools/check_observation_answer_leak_guardrails_contract.py
 
+      - name: Run grade-farming guardrail regression tests
+        run: python -m unittest tests.test_grade_farming_guardrails_contract -v
+
+      - name: Validate grade-farming guardrail contract
+        run: python tools/check_grade_farming_guardrails_contract.py
+
       - name: Validate PoC planning data
         run: python -m unittest tests.test_poc_planning_data -v
 
