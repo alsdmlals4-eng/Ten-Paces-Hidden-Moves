@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01",
+  "manual_id": "shaolin_arhat_vajra_art",
+  "faction": "소림사",
+  "manual_name": "나한금강공",
+  "primary_stat": "외공",
+  "secondary_stat": "내공",
+  "cards": {
+    "star3": {
+      "id": "shaolin_arhat_vajra_art_star3",
+      "name": "금강호체",
+      "manual_id": "shaolin_arhat_vajra_art",
+      "unlock_star": 3,
+      "source": "martial_manual",
+      "category": "strengthen",
+      "resolution_phase": "general",
+      "targeting_mode": "self",
+      "action_slots": 1,
+      "stamina_cost": 0,
+      "internal_cost": 1,
+      "range": {"min": 0, "max": 0},
+      "effect_steps": [
+        {"op": "GAIN_RESOURCE", "resource": "defense", "amount": 3},
+        {"op": "GAIN_STATUS", "status": "fortitude", "amount": 1}
+      ],
+      "budget_reference": "planning:star3",
+      "balance_status": "PROVISIONAL_WITHIN_APPROVED_BUDGET",
+      "tags": []
+    },
+    "star7": {
+      "id": "shaolin_arhat_vajra_art_star7",
+      "name": "대력금강장",
+      "manual_id": "shaolin_arhat_vajra_art",
+      "unlock_star": 7,
+      "source": "martial_manual",
+      "category": "attack",
+      "resolution_phase": "general",
+      "targeting_mode": "attack_direction",
+      "action_slots": 2,
+      "stamina_cost": 1,
+      "internal_cost": 1,
+      "range": {"min": 1, "max": 1},
+      "effect_steps": [
+        {"op": "GAIN_STATUS", "status": "fortitude", "amount": 1},
+        {"op": "GAIN_RESOURCE", "resource": "defense", "amount": 2},
+        {"op": "START_DEFENSE_LOSS_RECORD"},
+        {"op": "RECHECK_RANGE", "min": 1, "max": 1},
+        {"op": "ATTACK", "power": 9, "min_range": 1, "max_range": 1},
+        {"op": "END_DEFENSE_LOSS_RECORD", "bonus_cap": 4}
+      ],
+      "budget_reference": "star7_profiles.shaolin_arhat_vajra_art",
+      "balance_status": "PROVISIONAL_WITHIN_APPROVED_BUDGET",
+      "tags": []
+    },
+    "star10": {
+      "id": "shaolin_arhat_vajra_art_star10",
+      "name": "여래신장",
+      "manual_id": "shaolin_arhat_vajra_art",
+      "unlock_star": 10,
+      "source": "martial_manual",
+      "category": "attack",
+      "resolution_phase": "general",
+      "targeting_mode": "attack_direction",
+      "action_slots": 3,
+      "stamina_cost": 2,
+      "internal_cost": 3,
+      "range": {"min": 1, "max": 2},
+      "effect_steps": [
+        {"op": "GAIN_RESOURCE", "resource": "defense", "amount": 4},
+        {"op": "GAIN_STATUS", "status": "fortitude", "amount": 1},
+        {"op": "START_DEFENSE_LOSS_RECORD"},
+        {"op": "RECHECK_RANGE", "min": 1, "max": 2},
+        {"op": "ATTACK", "power": 12, "min_range": 1, "max_range": 2},
+        {"op": "END_DEFENSE_LOSS_RECORD", "bonus_cap": 6}
+      ],
+      "budget_reference": "ultimate_profiles.shaolin_arhat_vajra_art",
+      "balance_status": "PROVISIONAL_WITHIN_APPROVED_BUDGET",
+      "tags": ["절초", "강건"]
+    }
+  },
+  "overlays": {
+    "star5": {
+      "name": "금강불괴",
+      "unlock_star": 5,
+      "target": "star3",
+      "effect_steps": [{"op": "GAIN_RESOURCE", "resource": "internal", "amount": 1, "condition": "FULL_ABSORB"}]
+    },
+    "star9": {
+      "name": "금강진력",
+      "unlock_star": 9,
+      "target": "star7",
+      "effect_steps": [{"op": "GAIN_STATUS", "status": "fortitude", "amount": 1, "condition": "ACTUAL_HP_HIT"}],
+      "branching_allowed": false,
+      "additional_input_allowed": false,
+      "additional_resource_cost_allowed": false
+    }
+  }
+}
