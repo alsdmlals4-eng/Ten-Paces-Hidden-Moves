@@ -29,6 +29,9 @@ AUDIT_CONTRACT_PATH = pathlib.Path("docs/planning-data/approved_20260804_postmer
 
 EXPECTED_RISKS = {"RESOURCE_SATURATION_RISK", "CONDITION_CALIBRATION_RISK", "WRONG_PLAN_RESCUE_RISK", "OBSERVATION_ANSWER_LEAK_RISK", "GRADE_FARMING_RISK", "RUNTIME_AUTHORITY_GAP"}
 OPERATING_KEYS = ("active_planning_pr", "active_planning_parent_pr", "active_approval_count", "active_decision_state", "next_planning_decision")
+PRODUCT_EVIDENCE_HEAD = "0a8bf577b936ddac5cb7130a0cc58e519ea6eff6"
+PRODUCT_WORKFLOW_RUN = "31074079068"
+PRODUCT_WINDOWS_ARTIFACT = "8956790279"
 
 class CanonLifecycleError(ValueError):
     pass
@@ -74,6 +77,7 @@ def validate_operating_state(active: str, roadmap: str) -> None:
         "performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN",
         "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE", "TEN_MANUAL_UI_AI_ADOPTION_GATE",
         "TEN_MANUAL_PRODUCT_VALIDATION_GATE", "PARTIAL_AUTOMATED_COMPLETE",
+        PRODUCT_EVIDENCE_HEAD, PRODUCT_WORKFLOW_RUN, PRODUCT_WINDOWS_ARTIFACT,
         "플레이어 비공개 계획·미확정 배치·포인터는 참조하지 않는다",
         "능력치별 무공서 권수·균등 분포·최소/최대 쿼터는 사용하지 않는다",
         "03_무공서_무학",
@@ -103,12 +107,36 @@ def validate_ui_ai_authority(ui_ai_decision: str, loadout: dict[str, Any]) -> No
     require(bool(loadout["player"].get("loadout")) and bool(loadout["enemy"].get("loadout")), "player and enemy loadouts must be explicit")
 
 def validate_product_authority(decision: str, contract: dict[str, Any], evidence: str, protocol: str, results: str) -> None:
-    require_tokens(decision, ["TEN_MANUAL_PRODUCT_VALIDATION_GATE", "APPROVED_AND_IMPLEMENTED_PARTIAL_AUTOMATED_COMPLETE", "7494f50c48573168542781e007eeab6af11dda7d", "31068098197", "8954602789", "windows_local_render: NOT_RUN", "human_step14: NOT_RUN", "t1_greenlight: NOT_GRANTED"], "product Decision")
+    require_tokens(decision, [
+        "TEN_MANUAL_PRODUCT_VALIDATION_GATE",
+        "APPROVED_AND_IMPLEMENTED_PARTIAL_AUTOMATED_COMPLETE",
+        PRODUCT_EVIDENCE_HEAD,
+        PRODUCT_WORKFLOW_RUN,
+        PRODUCT_WINDOWS_ARTIFACT,
+        "2344.67",
+        "188571648",
+        "123037256",
+        "windows_local_render: NOT_RUN",
+        "human_step14: NOT_RUN",
+        "t1_greenlight: NOT_GRANTED",
+    ], "product Decision")
     require(contract.get("decision_id") == "TEN_MANUAL_PRODUCT_VALIDATION_GATE", "product contract decision differs")
     require(contract.get("required_scenario_count") == 50 and len(contract.get("scenario_matrix", [])) == 50, "product contract scenario count differs")
     require(contract.get("forced_not_run") == ["windows_local_render", "gamepad_physical", "accessibility_user", "release_performance", "human_step14"], "product contract NOT_RUN axes differ")
-    require_tokens(evidence, ["scenario_passed: 50", "windows_ci_runtime: PASS", "PARTIAL_AUTOMATED_COMPLETE", "windows_local_render: NOT_RUN", "participant_count: 0"], "product evidence")
-    require_tokens(protocol, ["REACTIVATED_BY_USER", "participant_count: 0", "human_step14: NOT_RUN", "7494f50c48573168542781e007eeab6af11dda7d"], "STEP14 protocol")
+    require_tokens(evidence, [
+        PRODUCT_EVIDENCE_HEAD,
+        PRODUCT_WORKFLOW_RUN,
+        PRODUCT_WINDOWS_ARTIFACT,
+        "scenario_passed: 50",
+        "windows_ci_runtime: PASS",
+        "PARTIAL_AUTOMATED_COMPLETE",
+        "windows_local_render: NOT_RUN",
+        "participant_count: 0",
+        "2344.67",
+        "188571648",
+        "123037256",
+    ], "product evidence")
+    require_tokens(protocol, ["REACTIVATED_BY_USER", "participant_count: 0", "human_step14: NOT_RUN", PRODUCT_EVIDENCE_HEAD, PRODUCT_WORKFLOW_RUN, PRODUCT_WINDOWS_ARTIFACT], "STEP14 protocol")
     require_tokens(results, ["participant_count: 0", "human_step14: NOT_RUN", "P05 | NOT_RUN", "t1_greenlight: NOT_GRANTED"], "STEP14 results")
 
 def validate_superseded_authority(range_decision: str, old_decision: str, old_contract: dict[str, Any]) -> None:
