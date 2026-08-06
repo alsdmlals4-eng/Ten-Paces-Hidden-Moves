@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260807-WINDOWS-WSL2-LOCAL-VALIDATION-PACK-01",
+  "parent_decision_ids": [
+    "TEN-DEC-20260806-INTEGRATED-WORK-CONTRACT-V4-3-01",
+    "TEN-DEC-20260807-ACTIONS-BUDGET-MANUAL-VALIDATION-FALLBACK-01"
+  ],
+  "approved_at": "2026-08-07T07:19:00+09:00",
+  "approved_by": "USER_CURRENT_CONVERSATION",
+  "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
+  "target_main_at_authoring": "956dc9b86ea99176ffc35568530137fbf9007736",
+  "workflow_source": ".github/workflows/full-validation.yml",
+  "workflow_job": "matrix-contracts",
+  "matrix": [
+    {
+      "id": "windows-py311",
+      "host": "windows",
+      "python": "3.11",
+      "launcher": ["py", "-3.11"],
+      "required": true
+    },
+    {
+      "id": "windows-py312",
+      "host": "windows",
+      "python": "3.12",
+      "launcher": ["py", "-3.12"],
+      "required": true
+    },
+    {
+      "id": "windows-py313",
+      "host": "windows",
+      "python": "3.13",
+      "launcher": ["py", "-3.13"],
+      "required": true,
+      "relation_to_workflow": "LOCAL_FORWARD_COMPATIBILITY_EXTENSION"
+    },
+    {
+      "id": "wsl2-ubuntu-py312",
+      "host": "wsl2-ubuntu",
+      "python": "3.12",
+      "launcher": ["wsl.exe", "-d", "<auto-detected Ubuntu>", "--", "python3.12"],
+      "required": true
+    }
+  ],
+  "files": {
+    "command_manifest": "tools/local_validation/matrix_contract_commands.json",
+    "environment_runner": "tools/local_validation/run_matrix_contracts.py",
+    "windows_orchestrator": "tools/run_windows_wsl2_validation.ps1",
+    "validator": "tools/check_windows_wsl2_local_validation_pack.py",
+    "guide": "docs/verification/WINDOWS_WSL2_LOCAL_VALIDATION_PACK.md",
+    "test": "tests/test_windows_wsl2_local_validation_pack.py",
+    "output_root": "build/local-validation"
+  },
+  "requirements": {
+    "exact_head_required": true,
+    "clean_tree_before_after_required": true,
+    "all_four_environments_required": true,
+    "workflow_command_parity_required": true,
+    "per_environment_json_required": true,
+    "combined_summary_required": true,
+    "stdout_stderr_log_required": true,
+    "head_change_invalidates": true,
+    "no_dependency_install": true,
+    "wsl2_kernel_required": true,
+    "ubuntu_distribution_required": true
+  },
+  "claim_on_all_pass": "LOCAL_PYTHON_MATRIX_4_OF_4_PASS",
+  "limitations": {
+    "godot_execution": "NOT_INCLUDED",
+    "gut_execution": "NOT_INCLUDED",
+    "export_validation": "NOT_INCLUDED",
+    "windows_product_runtime": "NOT_INCLUDED",
+    "android": "NOT_INCLUDED",
+    "human_validation": "NOT_INCLUDED",
+    "product_implementation_effect": "NONE",
+    "production_readiness": false
+  },
+  "invalidation": [
+    "HEAD_CHANGED",
+    "DIRTY_TREE_BEFORE_OR_AFTER",
+    "ANY_ENVIRONMENT_MISSING",
+    "ANY_COMMAND_FAILED",
+    "WORKFLOW_COMMAND_DRIFT",
+    "PYTHON_VERSION_MISMATCH",
+    "WSL_NOT_VERSION_2"
+  ],
+  "status": "PACK_IMPLEMENTED_LOCAL_EXECUTION_PENDING"
+}
