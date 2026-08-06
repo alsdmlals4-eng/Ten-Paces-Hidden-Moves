@@ -5,6 +5,7 @@
 > 정본 생명주기: `../../../docs/CANON_LIFECYCLE_REGISTRY.md`
 
 ```yaml
+product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
 active_planning_work_mode: BUILD
@@ -12,6 +13,7 @@ active_planning_pr: 92
 active_planning_parent_pr: 91
 active_approval_count: 10/10
 active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED
+next_package: VERTICAL_SLICE_APP_FLOW_SHELL
 next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE
 human_validation: NOT_RUN
 base_release_pinned: 9.4.3
