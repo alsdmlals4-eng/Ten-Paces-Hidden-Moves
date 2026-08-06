@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 V43_DECISION_ID = "TEN-DEC-20260806-INTEGRATED-WORK-CONTRACT-V4-3-01"
 GUT_DECISION_ID = "TEN-DEC-20260806-GUT-HIGODOT-TEST-AUTHORITY-01"
 EXPECTED_GUT_TAG_COMMIT = "aeb5d4f3f7f0a6c9b5e178876d6c99b791fda605"
+EXISTING_INSTALL_COMMIT = "6e471b62a6236749312f31264428a46b97c8387a"
 V43_DECISION = ROOT / "docs/decisions/2026-08-06_INTEGRATED_WORK_CONTRACT_V4_3_BINDING_DECISION.md"
 V43_CONTRACT = ROOT / "docs/planning-data/approved_20260806_integrated_work_contract_v4_3_binding.json"
 GUT_DECISION = ROOT / "docs/decisions/2026-08-06_GUT_9_7_1_ADOPTION_SPEC_DECISION.md"
@@ -37,7 +38,7 @@ class V43GutAdoptionSpecGateTests(unittest.TestCase):
         self.assertEqual(payload["godot_project_path"], "C:/Users/user/Documents/GitHub/Ninza/Ten-Paces-Hidden-Moves")
         self.assertEqual(payload["project_google_sheet_id"], "1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0")
 
-    def test_gut_spec_precedes_formal_installation(self) -> None:
+    def test_gut_spec_precedes_formal_authority_even_when_files_preexist(self) -> None:
         payload = self.load_json(GUT_SPEC)
         self.assertEqual(payload["decision_id"], GUT_DECISION_ID)
         self.assertEqual(payload["version"], "9.7.1")
@@ -45,8 +46,28 @@ class V43GutAdoptionSpecGateTests(unittest.TestCase):
         self.assertEqual(payload["source_ref"], "refs/tags/v9.7.1")
         self.assertEqual(payload["adoption_spec_branch"], "chore/gut-9.7.1-adoption-spec")
         self.assertEqual(payload["stage"], "ADOPTION_SPEC_DRAFT_PR")
-        self.assertEqual(payload["formal_installation"], "BLOCKED_UNTIL_SPEC_MERGED_TO_MAIN")
+        self.assertEqual(
+            payload["formal_installation"],
+            "BLOCKED_UNTIL_SPEC_MERGED_AND_EXISTING_INSTALL_RECONCILED",
+        )
         self.assertFalse(payload["production_files_may_be_modified"])
+
+    def test_preexisting_out_of_sequence_install_is_explicitly_reconciled(self) -> None:
+        payload = self.load_json(GUT_SPEC)
+        existing = payload["existing_installation"]
+        self.assertTrue(existing["detected_on_main"])
+        self.assertEqual(existing["introduction_commit"], EXISTING_INSTALL_COMMIT)
+        self.assertEqual(existing["state"], "PREEXISTING_OUT_OF_SEQUENCE_INSTALLATION")
+        self.assertFalse(existing["modified_by_adoption_spec_pr"])
+        self.assertEqual(existing["authority"], "NOT_GRANTED_BY_FILE_PRESENCE")
+        self.assertEqual(
+            existing["required_remediation"],
+            "POST_SPEC_MERGE_RECONCILIATION_AND_VALIDATION_PR",
+        )
+        self.assertEqual(
+            payload["claim_ceiling"]["formal_installation"],
+            "EXISTING_FILES_PRESENT_AUTHORITY_NOT_GRANTED",
+        )
 
     def test_gut_source_provenance_is_verified_against_the_release_tag(self) -> None:
         payload = self.load_json(GUT_SPEC)
@@ -79,6 +100,7 @@ class V43GutAdoptionSpecGateTests(unittest.TestCase):
             "source_provenance",
             "license_verification",
             "godot_compatibility",
+            "existing_installation",
             "consumer_path",
             "ci_plan",
             "removal_and_rollback",
@@ -104,14 +126,17 @@ class V43GutAdoptionSpecGateTests(unittest.TestCase):
         for marker in (
             GUT_DECISION_ID,
             "GUT_ADOPTION_SPEC_DRAFT_PR_GATE",
-            "BLOCKED_UNTIL_SPEC_MERGED_TO_MAIN",
+            "BLOCKED_UNTIL_SPEC_MERGED_AND_EXISTING_INSTALL_RECONCILED",
+            "PREEXISTING_OUT_OF_SEQUENCE_INSTALLATION",
             "HIGODOT_GUT_ROLE_NON_OVERLAP_GATE",
             EXPECTED_GUT_TAG_COMMIT,
+            EXISTING_INSTALL_COMMIT,
         ):
             self.assertIn(marker, gut_text)
         self.assertIn(V43_DECISION_ID, validator_text)
         self.assertIn(GUT_DECISION_ID, validator_text)
         self.assertIn(EXPECTED_GUT_TAG_COMMIT, validator_text)
+        self.assertIn(EXISTING_INSTALL_COMMIT, validator_text)
 
 
 if __name__ == "__main__":
