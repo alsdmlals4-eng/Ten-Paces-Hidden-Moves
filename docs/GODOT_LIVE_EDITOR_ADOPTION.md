@@ -10,12 +10,12 @@ mutation_authority_policy: DUAL_MUTATION_AUTHORITY_FORBIDDEN
 main_scene_policy: MAIN_SCENE_READ_ONLY
 mutation_policy: SCRATCH_SCENE_MUTATION_ONLY
 source_integrity: SOURCE_TREE_UNCHANGED
-base_pilot_commit: 8d6df19de04374506560408cf0819a5990861c2e
+base_pilot_commit: 2b595570bd237174b2b962a1eb54588b5ecc508d
 evidence_bundle: SELF_CONTAINED_EVIDENCE_BUNDLE
 PRODUCTION_ADAPTER_READY: NOT_READY
 ```
 
-This repository adopts the immutable Base C0.1 Pilot commit `8d6df19de04374506560408cf0819a5990861c2e` through four adoption files only.
+This repository adopts the immutable Base C0.1 Pilot commit `2b595570bd237174b2b962a1eb54588b5ecc508d` through four adoption files only.
 
 ## Legacy coexistence boundary
 
@@ -27,7 +27,7 @@ This repository adopts the immutable Base C0.1 Pilot commit `8d6df19de0437450656
 
 ## What the Pilot does
 
-The workflow first runs `res://tests/verify_step0.gd`, then builds a disposable project copy. It opens `res://scenes/combat/combat_board_preview.tscn` only under `MAIN_SCENE_READ_ONLY`.
+The workflow builds a disposable project copy, disables the declared legacy Plugin and Autoload only in that copy, imports and parses it, and then runs `res://tests/verify_step0.gd` in the same prepared workspace. It opens `res://scenes/combat/combat_board_preview.tscn` only under `MAIN_SCENE_READ_ONLY`.
 
 Rename, Editor Undo, save, ledger recording, and physical SHA-256 verification occur only in the runner-owned `res://.godot-live-editor-pilot/scratch.tscn` under `SCRATCH_SCENE_MUTATION_ONLY`.
 

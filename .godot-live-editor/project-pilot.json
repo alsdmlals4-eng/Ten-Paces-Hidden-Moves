@@ -4,7 +4,7 @@
     "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
     "project_id": "ten-paces-hidden-moves"
   },
-  "base_pilot_commit": "8d6df19de04374506560408cf0819a5990861c2e",
+  "base_pilot_commit": "2b595570bd237174b2b962a1eb54588b5ecc508d",
   "project_state": "EXISTING_GODOT_PROJECT",
   "godot": {
     "version": "4.7.1-stable",
