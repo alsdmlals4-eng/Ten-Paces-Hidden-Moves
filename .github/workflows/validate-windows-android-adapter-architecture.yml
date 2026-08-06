@@ -1,0 +1,39 @@
+name: Validate Windows Android Adapter Architecture
+
+on:
+  push:
+    branches:
+      - planning/windows-android-adapter-architecture
+    paths:
+      - .github/workflows/validate-windows-android-adapter-architecture.yml
+      - docs/decisions/2026-08-06_WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_DECISION.md
+      - docs/planning-data/approved_20260806_windows_android_adapter_architecture_contract.json
+      - tools/check_windows_android_adapter_architecture_contract.py
+      - tests/test_windows_android_adapter_architecture_contract.py
+      - '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md'
+      - docs/04_ROADMAP.md
+  pull_request:
+    paths:
+      - .github/workflows/validate-windows-android-adapter-architecture.yml
+      - docs/decisions/2026-08-06_WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_DECISION.md
+      - docs/planning-data/approved_20260806_windows_android_adapter_architecture_contract.json
+      - tools/check_windows_android_adapter_architecture_contract.py
+      - tests/test_windows_android_adapter_architecture_contract.py
+      - '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md'
+      - docs/04_ROADMAP.md
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Run adapter architecture regression tests
+        run: python -m unittest tests.test_windows_android_adapter_architecture_contract -v
