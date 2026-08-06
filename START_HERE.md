@@ -22,21 +22,17 @@
 
 ## 현재 기준
 
-활성 기획 PR·exact head·승인 수·다음 Decision은 `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`와 `docs/planning-data/current_operating_state.json`이 함께 책임진다. 개발 도구 PR은 제품 기획 PR과 분리한다.
+활성 PR·exact head·승인 수·다음 Decision 같은 변동 상태는 `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`와 `docs/planning-data/current_operating_state.json`만 책임진다. 이 문서는 안정적인 진입 경로와 보호 경계를 유지하며 개발 도구 작업과 제품 기획·구현을 구분한다.
 
 ```yaml
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 runtime_work_mode: REVIEW
-active_planning_pr: NONE
-active_tooling_pr: 104
-active_tooling_package: GUT_9_7_1_HIGODOT_3_1_2_ADOPTION
 runtime_implementation: TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92
 latest_combat_planning_runtime: PRODUCT_VALIDATION_AUTOMATED
 design_platforms: WINDOWS_ANDROID
 platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
 next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
 next_package_state: BLOCKED_BY_WORK_ENTRY_COMPLETENESS_GATE
-next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 work_entry_gate_decision: TEN-DEC-20260806-WORK-ENTRY-COMPLETENESS-GATE-01
 product_implementation_entry: BLOCKED
 tooling_visual_disposition: NO_NEW_VISUAL_ASSET_REQUIRED
@@ -126,7 +122,7 @@ GUT EditorPlugin은 제품 프로젝트에서 활성화하지 않는다. HiGodot
 ## 현재 작업 순서
 
 ```text
-PR #104 GUT·HiGodot 도구 채택과 작업 진입 Gate 검증
+활성 GOVERNANCE_TOOLING PR의 GUT·HiGodot 도구 채택과 작업 진입 Gate 검증
 → exact-head CI·적대적 검토·독립 리뷰
 → 병합 후 main·Sheet 동일 Decision ID readback
 → 미확정 P0/P1·기획·검토·이미지 Gate 해소
