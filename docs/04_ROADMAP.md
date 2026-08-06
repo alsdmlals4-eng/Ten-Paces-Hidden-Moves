@@ -3,6 +3,7 @@
 > 현재 상태: `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`  
 > 전투 규칙 책임 원본: `docs/02_COMBAT_RULES.md`  
 > 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`  
+> 플랫폼 Decision: `TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`  
 > 성장 Decision: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`  
 > 런타임 기반 Decision: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`  
 > UI·AI 채택 Decision: `TEN_MANUAL_UI_AI_ADOPTION_GATE`  
@@ -11,26 +12,31 @@
 ## 1. 현재 단계
 
 ```yaml
-merged_planning_checkpoint: bbed0fd4d278ca0e0d52f4e6d9083aafa1997318
-merged_pr_lineage: 84,86,87,88
+merged_planning_checkpoint: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90
+merged_pr_lineage: 84,86,87,88,89,91,92,100
+product_implementation_merge_commit: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90
+merged_product_pr: 92
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
-active_planning_work_mode: BUILD
-active_planning_pr: 92
-active_planning_parent_pr: 91
+active_planning_work_mode: REVIEW
+active_planning_pr: NONE
+active_planning_parent_pr: NONE
 active_approval_count: 10/10
-active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED
+active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_MERGED
 phase: VERTICAL_SLICE_APP_FLOW_PLANNING
 project_core: CORE_CONFIRMED
-primary_platform: PC
-future_platform: MOBILE_CONSIDERATION_ONLY
+platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
+design_platforms: WINDOWS_ANDROID
+platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
+windows_validation: CI_EXPORT_RUNTIME_PASS_LOCAL_NOT_RUN
+android_validation: NOT_RUN
 base_release: 9.4.3
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE
+next_planning_decision: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT
 t1_greenlight: NOT_GRANTED
 ```
 
-PR #92는 PR #91 위에 쌓인 Draft이며 독립 병합·Draft 해제 권한은 없다. PR #90은 `[대체됨]`, PR #85는 `[보류]`다.
+PR #89·#91·#92 승인 계보는 main에 병합됐다. 제품 구현 병합 Commit은 `a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90`이며, PR #90은 `[대체됨]`, PR #85는 `[보류]`다.
 
 ## 2. 프로젝트 코어 확정
 
@@ -51,43 +57,57 @@ PR #92는 PR #91 위에 쌓인 Draft이며 독립 병합·Draft 해제 권한은
 - [x] 묶음 해결 안에서 무공 effect program 실행.
 - [x] 기존 준비·자동 배치·기본 행동·공용 절초 호환성.
 - [x] RED→GREEN과 exact-head 자동 검증.
+- [x] PR #92 main 병합과 보호 경로 승인 Gate.
 
-UI·AI 채택과 자동 제품 검증은 완료됐지만, 로컬 Windows 렌더·실물 입력·접근성 사용자·Release 성능·사람·밸런스 승인은 완료되지 않았다.
+UI·AI 채택과 자동 제품 검증은 완료됐지만 로컬 Windows 렌더·실물 입력·접근성 사용자·Release 성능·사람·실제 Android·밸런스 승인은 완료되지 않았다.
 
-## 3. 현재 작업
+## 3. 핵심 재미·시스템 정렬
 
-완료된 현재 배치는 `10/10`이다.
-
-```text
-TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE — 완료
-→ manifest + 무공서별 10개 데이터 — 완료
-→ MartialManualRegistry — 완료
-→ MartialEffectPipeline — 완료
-→ TenManualCombatResolutionEngine 기반 — 완료
-
-TEN_MANUAL_UI_AI_ADOPTION_GATE — 완료
-→ ActionSelectionDock loadout·성취도 연결 — 완료
-→ 3/5/7/9/10성 잠금·overlay·절초 표시 — 완료
-→ 공개 상태 AI 적 loadout 후보 연결 — 완료
-→ bundle effect pipeline 실행 — 완료
-→ 준비·자동 배치 계보 보존 — 완료
-→ 전용 Godot 검증과 전체 회귀 — 완료
-```
-
-다음 작업:
+핵심 재미:
 
 ```text
-TEN_MANUAL_PRODUCT_VALIDATION_GATE
-→ Godot Windows 실제 실행
-→ 접근성·성능 검증
-→ STEP 14 신규 플레이어 5명
-→ 기술1/2 대체율·자원 포화·적 loadout 공정성·다단 가독성 측정
-→ 최종 밸런스 Decision
-→ NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT
-→ FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
+공개 상태·반복 습관 읽기
+→ 잠긴 상대 묶음 추론
+→ 비공개 3/3/4 계획 확정
+→ 거리·순서·합·대응·중단 해결
+→ 결정적 원인 복기
+→ 다음 계획 변경
 ```
 
-### TEN_MANUAL_PRODUCT_VALIDATION_GATE — 자동 증거 완료
+핵심 시스템은 관찰·선잠금, 비공개 행동 묶음, 결정적 전투 해결, 복기·적응이다. 무공·성취도·자원·등급·보상·loadout·앱 흐름·플랫폼 adapter는 보조 시스템이며 다음 조건을 지킨다.
+
+- 정답을 직접 제시하지 않는다.
+- 잘못된 계획을 수치로 자동 구제하지 않는다.
+- 성장으로 추론·거리·순서·중단 Gate를 우회하지 않는다.
+- 불투명한 적 loadout이나 숨은 AI 정보로 공정성을 훼손하지 않는다.
+- 메타 성장과 콘텐츠 제작량이 복기·적응보다 중심이 되지 않는다.
+
+## 4. 현재 작업
+
+완료된 제품 배치는 `10/10`이며 PR #92로 main에 병합됐다.
+
+```text
+TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE — 완료·병합
+→ manifest + 무공서별 10개 데이터
+→ MartialManualRegistry
+→ MartialEffectPipeline
+→ TenManualCombatResolutionEngine 기반
+
+TEN_MANUAL_UI_AI_ADOPTION_GATE — 완료·병합
+→ ActionSelectionDock loadout·성취도 연결
+→ 3/5/7/9/10성 잠금·overlay·절초 표시
+→ 공개 상태 AI 적 loadout 후보 연결
+→ bundle effect pipeline 실행
+→ 준비·자동 배치 계보 보존
+
+TEN_MANUAL_PRODUCT_VALIDATION_GATE — 자동 증거 완료·병합
+→ Windows CI export·runtime
+→ 50개 제품 시나리오
+→ 세 해상도·합성 입력·자동 접근성
+→ 성능 baseline
+```
+
+### 자동 제품 검증 권위
 
 - [x] 10권 × 3·5·7·9·10성 = 50개 제품 시나리오.
 - [x] Windows x86_64 Release export.
@@ -97,37 +117,54 @@ TEN_MANUAL_PRODUCT_VALIDATION_GATE
 - [x] 성능 baseline 캡처.
 - [x] SHA·artifact·사람 상태 과장 validator.
 - [ ] 로컬 Windows 렌더와 실물 입력.
+- [ ] 실제 Android export·설치·실기기·터치·앱 생명주기.
 - [ ] 접근성 사용자 검증.
 - [ ] Release 성능 검증.
 - [ ] STEP 14 신규 플레이어 5명.
 
-증거: `7494f50c48573168542781e007eeab6af11dda7d` / workflow `31068098197` / artifact `8954602789`. 현재 판정은 `PARTIAL_AUTOMATED_COMPLETE`다.
+증거: `0a8bf577b936ddac5cb7130a0cc58e519ea6eff6` / workflow `31074079068` / artifact `8956790279`. 현재 판정은 `PARTIAL_AUTOMATED_COMPLETE`다.
+
+## 5. Windows·Android 기본 대상
+
+`TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`에 따라 두 플랫폼을 기본 설계 대상으로 유지한다.
+
+공유 단일 코어:
+
+- 전투 규칙·AI·콘텐츠·ID·수치·seed.
+- 저장 Schema·버전·마이그레이션 의미.
+- 결과·복기·보상·진행 도메인 규칙.
+
+분리 adapter:
+
+- 장치 중립 입력 의도와 키보드·마우스·게임패드·터치 변환.
+- 반응형 UI·안전영역·밀도·포커스·터치 표적.
+- 뒤로가기·pause/resume·background/foreground·suspend/restore.
+- 스토어·업적·클라우드·권한 같은 선택적 플랫폼 서비스.
+- export·그래픽 품질·메모리·프레임·발열·배터리 예산.
+
+동일 규칙·데이터·저장 의미는 필수지만 픽셀 동일 UI와 동시 출시는 필수가 아니다. 실제 Android 증거가 없으므로 `android_validation: NOT_RUN`이다.
 
 다음 작업:
 
 ```text
-TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE
+WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT
+→ LOCAL_WINDOWS_ANDROID_DEVICE_ACCESSIBILITY_PERFORMANCE_GATE
 → TEN_MANUAL_STEP14_HUMAN_VALIDATION_GATE
 → TEN_MANUAL_BALANCE_MEASUREMENT_GATE
-→ 최종 밸런스 Decision
 → NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT
 → FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
 ```
 
-## 4. 제품 연결 범위
+## 6. 제품 연결 범위
 
-현재 `UI_AI_ADOPTED`는 다음을 보장한다.
+현재 보장:
 
 - 정확한 10권 roster와 문파·주/보조능력치 조합.
 - 3·5·7·9·10성 해금과 overlay 합성.
 - 플레이어 명시적 loadout의 무공·절초 UI 표시.
 - 적 명시적 loadout의 해금 카드만 공개 상태 AI 후보로 사용.
 - 상태 선행·이동·사거리 재검사·독립 다단·조건부 후속의 실제 묶음 실행.
-- 자하신공 사용권 선소모·미환불·완료 시 기세 지급.
-- 나한금강공의 제한된 `[강건]`과 방어 선행.
-- 회마창의 공격→후퇴→사거리 재검사→공격.
-- 능파미보의 이동 전 반격.
-- 만천화우의 결정적 독립 공격 4회.
+- 자하신공 사용권·나한금강공 강건·회마창 사거리 재검사·능파미보 이동 전 반격·만천화우 독립 4회.
 - 기존 기본 행동·공용 절초·준비·자동 배치 동작 보존.
 
 현재 범위 밖:
@@ -136,13 +173,14 @@ TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE
 - 적별 최종 무공 배치와 난이도 곡선.
 - 최종 피해 계수·자원 비용 승인.
 - 최종 연출·아트·음향.
-- 사람·Windows·접근성·성능 검증.
+- 로컬 Windows·실제 Android·접근성 사용자·Release 성능·사람·밸런스 검증.
 
-## 5. 핵심 위험 순서
+## 7. 핵심 위험 순서
 
 | 위험 | 상태 | 다음 조치 |
 |---|---|---|
-| `RUNTIME_AUTHORITY_GAP` | `MITIGATED_UI_AI_ADOPTED` | 제품 검증 Gate |
+| `RUNTIME_AUTHORITY_GAP` | `MITIGATED_UI_AI_ADOPTED` | 로컬·실기기 검증 |
+| `ANDROID_ADAPTER_GAP` | `PLANNING_APPROVED_IMPLEMENTATION_NOT_RUN` | adapter 계약·실기기 Gate |
 | `AI_LOADOUT_FAIRNESS_RISK` | `MITIGATED_PUBLIC_STATE_ONLY` | 적별 사람 측정 |
 | `MASTERY_ROLE_REPLACEMENT_RISK` | `PENDING_HUMAN_MEASUREMENT` | 기술1/2 선택률·대체율 |
 | `RESOURCE_SATURATION_RISK` | `PENDING_HUMAN_MEASUREMENT` | 회복 세금·고갈 |
@@ -151,7 +189,7 @@ TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE
 | `OBSERVATION_ANSWER_LEAK_RISK` | `PENDING_HUMAN_MEASUREMENT` | 직접 공개 유지 측정 |
 | `GRADE_FARMING_RISK` | `PENDING_HUMAN_MEASUREMENT` | 원시/유효 등급 비율 |
 
-## 6. 공통 검증 게이트
+## 8. 공통 검증 게이트
 
 ```text
 계약·Schema
@@ -161,6 +199,7 @@ TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE
 → exact-head CI
 → Godot headless
 → Windows runtime·render
+→ Android export·device·lifecycle
 → 접근성·성능
 → 사람 플레이
 → 정본·Sheet 동기화
@@ -168,7 +207,7 @@ TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE
 
 실행하지 않은 검증은 `NOT_RUN`으로 남긴다.
 
-## 7. STEP 14
+## 9. STEP 14
 
 - 신규 플레이어 5명.
 - 4명 이상 데모 흐름 완료 또는 이탈 이유 기록.
@@ -182,11 +221,11 @@ TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE
 
 현재 `human_validation: NOT_RUN`이다.
 
-## 8. T1 — 최소 세로 슬라이스
+## 10. T1 — 최소 세로 슬라이스
 
-T1 진입에는 기획·검토·이미지 완료, Godot·Windows·접근성·성능 검증, 신규 플레이어 5명 STEP 14가 필요하다. 현재 `t1_greenlight: NOT_GRANTED`다.
+T1 진입에는 기획·검토·이미지 완료, 로컬 Windows·실제 Android·접근성·성능 검증, 신규 플레이어 5명 STEP 14가 필요하다. 현재 `t1_greenlight: NOT_GRANTED`다.
 
-## 9. 중단·축소 조건
+## 11. 중단·축소 조건
 
 - 10권 UI·AI 채택이 기존 기본 행동·준비·자동 배치 회귀를 깨뜨림.
 - 무공 카드가 명시적 loadout 없이 기본 엔진에 침투함.
@@ -197,19 +236,29 @@ T1 진입에는 기획·검토·이미지 완료, Godot·Windows·접근성·성
 - 자하신공이 중단 뒤 사용권을 환불하거나 미완료 상태에서 기세를 지급함.
 - `[강건]`이 무적·절대 중단 면역으로 확장됨.
 - 능력치별 권수 분포를 맞추기 위해 문파 적합성을 왜곡함.
-- 사람 검증 없이 최종 밸런스나 T1 완료를 주장함.
+- Windows와 Android가 서로 다른 전투 규칙·데이터·저장 의미를 가짐.
+- 실제 기기·사람 검증 없이 Android·최종 밸런스·T1 완료를 주장함.
 
-발생 시 관련 범위를 호환 어댑터 수준으로 축소하고 별도 Decision 전까지 확장하지 않는다.
+발생 시 관련 범위를 호환 adapter 수준으로 축소하고 별도 Decision 전까지 확장하지 않는다.
 
-## 10. 정본 생명주기
+## 12. 역사적 회귀 호환 표식
+
+다음 문자열은 PR #92 병합 전 회귀의 발견용 표식일 뿐 현행 상태가 아니다.
+
+- `active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED`.
+- `next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE`.
+
+현행 값은 상단 YAML의 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED`와 `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT`다.
+
+## 13. 정본 생명주기
 
 각 항목은 `KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST`로 분류한다.
 
-- `KEEP`: AI 비치팅 금지, 10칸·3/3/4, 전조·중단, 복기, 원시 로그, stat-fit-only 정책.
-- `AMPLIFY`: 무공별 역할·성취도·실패 원인 설명.
-- `CHANGE`: 사람 측정으로 확인된 수치와 적 loadout만 별도 Decision으로 변경.
-- `REMOVE`: 추가 입력, 숨은 계획 접근, 자동 합 승리, 능력치 쿼터.
-- `DEFER`: 최종 loadout 경제, 최종 연출, 비스탯 노드 경제.
-- `RETEST`: 자원 포화·기술 대체·AI 공정성·관찰·등급 파밍 위험.
+- `KEEP`: AI 비치팅 금지, 10칸·3/3/4, 전조·중단, 복기, 원시 로그, stat-fit-only, 단일 공유 코어.
+- `AMPLIFY`: 무공별 역할·성취도·실패 원인 설명, 플랫폼별 정보·조작 동등성.
+- `CHANGE`: 사람·실기기 측정으로 확인된 수치·적 loadout·UI 밀도·품질 프로필만 별도 Decision으로 변경.
+- `REMOVE`: 추가 입력, 숨은 계획 접근, 자동 합 승리, 능력치 쿼터, 플랫폼별 도메인 규칙 복제.
+- `DEFER`: 최종 loadout 경제, 최종 연출, 비스탯 노드 경제, 온라인·크로스 세이브·과금.
+- `RETEST`: 자원 포화·기술 대체·AI 공정성·관찰·등급 파밍·Android 생명주기·성능 위험.
 
 병합 전후 Active Context·Roadmap·Lifecycle·Sheet는 같은 Decision ID와 exact SHA를 사용한다.
