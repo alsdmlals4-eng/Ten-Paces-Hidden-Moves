@@ -30,7 +30,8 @@
     "consumption_path": {
       "config": ".gutconfig.json",
       "representative_test": "tests/gut/test_martial_manual_registry.gd",
-      "workflow": ".github/workflows/validate-gut-higodot-adoption.yml",
+      "workflow": ".github/workflows/documentation-governance.yml",
+      "workflow_job": "gut-adoption-exact-head",
       "command": "godot --headless --path . --script res://addons/gut/gut_cmdln.gd -gconfig=res://.gutconfig.json",
       "junit": "build/test-results/gut.xml"
     },
@@ -44,12 +45,12 @@
     "validation": {
       "godot_4_7_1_import": "PASS_RED_RUN_31104521577",
       "representative_test": "PASS_RED_RUN_31105746623_TWO_OF_TWO",
-      "junit_artifact": "PENDING_GREEN_CI_AFTER_DIRECTORY_FIX",
+      "junit_artifact": "PENDING_GREEN_EXACT_HEAD_PR_VALIDATION",
       "local_windows": "NOT_RUN",
       "android": "NOT_RUN",
       "human_editor_use": "HUMAN_NOT_RUN"
     },
-    "rollback_or_removal": "Revert the adoption PR, remove .gutconfig.json and tests/gut, and remove addons/gut only after confirming no remaining CI or local test consumer."
+    "rollback_or_removal": "Revert the adoption PR, remove .gutconfig.json and tests/gut, remove the PR Validation GUT job, and remove addons/gut only after confirming no remaining CI or local test consumer."
   },
   "higodot": {
     "name": "HiGodot / Godot AI",
