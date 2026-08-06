@@ -2,11 +2,11 @@
 
 > 상태: `REACTIVATED_BY_USER / READY_NOT_RUN`  
 > 제품 Gate: `TEN_MANUAL_PRODUCT_VALIDATION_GATE`  
-> 고정 자동 증거 build: `7494f50c48573168542781e007eeab6af11dda7d`
+> 고정 자동 증거 build: `0a8bf577b936ddac5cb7130a0cc58e519ea6eff6`
 
 ```yaml
 protocol_status: REACTIVATED_BY_USER
-build_commit: 7494f50c48573168542781e007eeab6af11dda7d
+build_commit: 0a8bf577b936ddac5cb7130a0cc58e519ea6eff6
 participant_count: 0
 human_step14: NOT_RUN
 status: READY_NOT_RUN
@@ -14,7 +14,7 @@ status: READY_NOT_RUN
 
 ## 실행 전제
 
-- 자동 제품 증거 workflow `31068098197`와 Windows artifact `8954602789`가 존재한다.
+- 자동 제품 증거 workflow `31074079068`와 Windows artifact `8956790279`가 존재한다.
 - 참가자는 신규 플레이어 5명이다.
 - 첫 참가자 이후 질문·통과 기준을 변경하지 않는다.
 - 관찰 사실·참가자 발화 요약·진행자 개입·해석을 분리한다.
