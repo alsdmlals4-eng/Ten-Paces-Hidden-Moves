@@ -9,6 +9,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONTRACT = ROOT / "docs/planning-data/approved_20260806_windows_android_adapter_architecture_contract.json"
+CURRENT_STATE = ROOT / "docs/planning-data/current_operating_state.json"
 DECISION = ROOT / "docs/decisions/2026-08-06_WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_DECISION.md"
 PARENT_DECISION = ROOT / "docs/decisions/2026-08-06_WINDOWS_ANDROID_DUAL_TARGET_DECISION.md"
 ACTIVE_CONTEXT = ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
@@ -68,6 +69,19 @@ EXPECTED_CHECKPOINTS = [
     "RESULT_ENTERED",
 ]
 
+EXPECTED_CURRENT_STATE = {
+    "schema_version": 1,
+    "authority": "CURRENT_OPERATING_STATE",
+    "source_decision": DECISION_ID,
+    "active_planning_work_mode": "REVIEW",
+    "active_planning_pr": "102",
+    "active_planning_parent_pr": "NONE",
+    "active_approval_count": "1/10",
+    "active_decision_state": "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED",
+    "next_package": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION",
+    "next_planning_decision": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE",
+}
+
 NOT_RUN_VALIDATIONS = {
     "windows_local_render",
     "physical_gamepad",
@@ -103,6 +117,8 @@ def validate_contract(data: dict[str, Any]) -> list[str]:
         errors.append("AUTHORITY_STATE_CONFLICT")
     if data.get("implementation_authority") != "PLANNING_CONTRACT_ONLY":
         errors.append("IMPLEMENTATION_SCOPE_CONFLICT")
+    if "current_operating_state" in data:
+        errors.append("MUTABLE_STATE_IN_IMMUTABLE_DECISION_CONFLICT")
     if set(data.get("platforms", [])) != {"WINDOWS", "ANDROID"}:
         errors.append("PLATFORM_SCOPE_CONFLICT")
     if set(data.get("adapter_layers", [])) != REQUIRED_ADAPTERS:
@@ -113,17 +129,6 @@ def validate_contract(data: dict[str, Any]) -> list[str]:
         errors.append("APPROVAL_BATCH_CONFLICT")
     if batch.get("maximum_decision_count") != 10:
         errors.append("APPROVAL_BATCH_CONFLICT")
-
-    expected_operating_state = {
-        "active_planning_work_mode": "REVIEW",
-        "active_planning_pr": "102",
-        "active_planning_parent_pr": "NONE",
-        "active_approval_count": "1/10",
-        "active_decision_state": "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED",
-        "next_planning_decision": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE",
-    }
-    if data.get("current_operating_state") != expected_operating_state:
-        errors.append("CURRENT_OPERATING_STATE_CONFLICT")
 
     core = data.get("core_policy", {})
     if core.get("authority") != "SINGLE_SHARED_CORE":
@@ -162,6 +167,10 @@ def validate_contract(data: dict[str, Any]) -> list[str]:
         errors.append("RESPONSIVE_LAYOUT_CONFLICT")
     if ui.get("minimum_touch_target_dp") != 48:
         errors.append("ACCESSIBILITY_TARGET_CONFLICT")
+    if ui.get("touch_target_unit") != "ANDROID_DP_NOT_RAW_PIXELS":
+        errors.append("ACCESSIBILITY_UNIT_CONFLICT")
+    if ui.get("breakpoint_measure") != "AVAILABLE_SAFE_AREA_UI_LOGICAL_WIDTH_NOT_FRAMEBUFFER_PIXELS":
+        errors.append("RESPONSIVE_MEASURE_CONFLICT")
     if ui.get("breakpoints_logical_px") != {
         "compact_max": 899,
         "standard_max": 1439,
@@ -182,6 +191,8 @@ def validate_contract(data: dict[str, Any]) -> list[str]:
         errors.append("ANDROID_SAFE_AREA_CONFLICT")
     if window.get("cutout_api") != "DisplayServer.get_display_cutouts":
         errors.append("ANDROID_CUTOUT_CONFLICT")
+    if window.get("safe_area_coordinate_conversion") != "DISPLAY_SPACE_TO_VIEWPORT_CONTROL_SPACE_REQUIRED":
+        errors.append("ANDROID_SAFE_AREA_COORDINATE_CONFLICT")
     if window.get("back_event") != "WINDOW_EVENT_GO_BACK_REQUEST":
         errors.append("ANDROID_BACK_CONFLICT")
     if window.get("back_priority") != EXPECTED_BACK_PRIORITY:
@@ -236,6 +247,8 @@ def validate_contract(data: dict[str, Any]) -> list[str]:
     }
     if set(save.get("required_envelope_fields", [])) != required_envelope:
         errors.append("SAVE_ENVELOPE_CONFLICT")
+    if save.get("integrity_hash_scope") != "CORRUPTION_DETECTION_NOT_SECURITY_BOUNDARY":
+        errors.append("SAVE_INTEGRITY_SCOPE_CONFLICT")
 
     services = data.get("platform_services_contract", {})
     if services.get("service_boundary") != "OPTIONAL_ADAPTERS_MUST_NOT_CHANGE_OFFLINE_GAME_RULES":
@@ -276,6 +289,17 @@ def validate_contract(data: dict[str, Any]) -> list[str]:
     if data.get("next_gate") != "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE":
         errors.append("NEXT_GATE_CONFLICT")
 
+    return errors
+
+
+def validate_current_operating_state() -> list[str]:
+    errors: list[str] = []
+    try:
+        state = load_json(CURRENT_STATE)
+    except (OSError, json.JSONDecodeError) as exc:
+        return [f"CURRENT_OPERATING_STATE_CONFLICT cannot load: {exc}"]
+    if state != EXPECTED_CURRENT_STATE:
+        errors.append("CURRENT_OPERATING_STATE_CONFLICT")
     return errors
 
 
@@ -341,6 +365,7 @@ def main() -> int:
         return 1
 
     errors = validate_contract(data)
+    errors.extend(validate_current_operating_state())
     errors.extend(validate_current_project(data))
     errors.extend(validate_canonical_files())
     if errors:
