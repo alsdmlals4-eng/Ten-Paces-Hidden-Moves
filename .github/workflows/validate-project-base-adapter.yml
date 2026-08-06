@@ -2,6 +2,7 @@ name: Validate Project Base Adapter
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
 
 permissions:
   contents: read
@@ -19,7 +20,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           repository: alsdmlals4-eng/Base
-          ref: bfdc9e44d4a6920dc085eaa3f9d19d31b1acd2a1
+          ref: 4ec410e611152294f3f2685570fca6019c7abcfa
           path: .base-contract
           fetch-depth: 0
 
@@ -39,10 +40,8 @@ jobs:
           ADAPTER_PATH="skills/PROJECT_BASE_ADAPTER.json"
           ADAPTER_CHANGES="$(git diff --name-only "$PR_BASE_SHA"...HEAD -- "$ADAPTER_PATH")"
           if printf '%s\n' "$ADAPTER_CHANGES" | grep -Fxq "$ADAPTER_PATH"; then
-            # Adapter migration PR: trust the immutable pull-request base as the new protected baseline.
             PROTECTED_BASE_SHA="$PR_BASE_SHA"
           else
-            # Normal PR: trust the baseline recorded by the adapter at the immutable pull-request base.
             PROTECTED_BASE_SHA="$(
               git show "$PR_BASE_SHA:$ADAPTER_PATH" |
                 python -c 'import json, sys; payload = json.load(sys.stdin); print(payload["protected_baseline"]["commit"])'
@@ -53,12 +52,23 @@ jobs:
           git merge-base --is-ancestor "$PROTECTED_BASE_SHA" "$PR_BASE_SHA"
           printf 'PROTECTED_BASE_SHA=%s\n' "$PROTECTED_BASE_SHA" >> "$GITHUB_ENV"
 
-      - name: Validate adapter against the trusted protected baseline
+      - name: Validate adapter and exact protected change approval
+        env:
+          EXTERNAL_APPROVAL: ${{ contains(github.event.pull_request.labels.*.name, 'approved-protected-change') }}
         run: |
-          # Historical compatibility marker only; forbidden as an executable command:
-          # --protected-base "$PR_BASE_SHA"
-          python .base-contract/tools/check_project_operating_contract.py \
+          set -euo pipefail
+          APPROVAL_PATH="docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
+          APPROVAL_ARGS=()
+          if [ -f "$APPROVAL_PATH" ]; then
+            APPROVAL_ARGS=(--approval "$APPROVAL_PATH")
+          fi
+          python .base-contract/tools/check_approved_project_operating_contract.py \
             --project-root . \
             --base-repository .base-contract \
             --protected-base "$PROTECTED_BASE_SHA" \
+            --external-approval "$EXTERNAL_APPROVAL" \
+            "${APPROVAL_ARGS[@]}" \
             --check
+
+      - name: Run workflow adoption regression test
+        run: python -m unittest tests.test_approved_protected_change_workflow -v
