@@ -3,7 +3,7 @@ extends SceneTree
 const REGISTRY_SCRIPT := preload("res://src/combat/martial_manual_registry.gd")
 const PIPELINE_SCRIPT := preload("res://src/combat/martial_effect_pipeline.gd")
 const CONTRACT_PATH := "res://docs/planning-data/approved_20260806_ten_manual_product_validation_gate_contract.json"
-const OUTPUT_PATH := "res://artifacts/ten-manual-product-validation/product_scenarios.json"
+const DEFAULT_OUTPUT_PATH := "res://artifacts/ten-manual-product-validation/product_scenarios.json"
 
 var failures: Array[String] = []
 var results: Array[Dictionary] = []
@@ -31,7 +31,7 @@ func _run() -> void:
     for result in results:
         if bool(result.get("passed", false)):
             passed += 1
-    _write_json(OUTPUT_PATH, {
+    _write_json(_evidence_output_path(), {
         "decision_id": "TEN_MANUAL_PRODUCT_VALIDATION_GATE",
         "scenario_count": results.size(),
         "passed": passed,
@@ -124,14 +124,23 @@ func _load_json(path: String) -> Dictionary:
         return {}
     return parsed as Dictionary
 
+func _evidence_output_path() -> String:
+    var evidence_dir := OS.get_environment("TEN_MANUAL_EVIDENCE_DIR").strip_edges()
+    if evidence_dir.is_empty():
+        return DEFAULT_OUTPUT_PATH
+    return evidence_dir.path_join("product_scenarios.json")
+
 func _write_json(path: String, value: Dictionary) -> void:
-    var absolute_dir := ProjectSettings.globalize_path(path.get_base_dir())
+    var absolute_path := path
+    if path.begins_with("res://") or path.begins_with("user://"):
+        absolute_path = ProjectSettings.globalize_path(path)
+    var absolute_dir := absolute_path.get_base_dir()
     var error := DirAccess.make_dir_recursive_absolute(absolute_dir)
     if error != OK and error != ERR_ALREADY_EXISTS:
         failures.append("Could not create evidence directory: %s" % error)
         return
-    var file := FileAccess.open(path, FileAccess.WRITE)
+    var file := FileAccess.open(absolute_path, FileAccess.WRITE)
     if file == null:
-        failures.append("Could not write evidence JSON: %s" % path)
+        failures.append("Could not write evidence JSON: %s" % absolute_path)
         return
     file.store_string(JSON.stringify(value, "  ") + "\n")
