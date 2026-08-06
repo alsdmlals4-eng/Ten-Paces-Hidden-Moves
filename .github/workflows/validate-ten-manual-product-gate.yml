@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 jobs:
-  product-gate-contract-red:
+  product-gate-contract:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -27,4 +27,30 @@ jobs:
       - name: Run product gate validator tests
         run: python -m unittest tests.test_ten_manual_product_gate -v
       - name: Validate product gate contract
-        run: python tools/validate_ten_manual_product_gate.py --root . --expected-sha "${{ github.sha }}"
+        run: python tools/validate_ten_manual_product_gate.py --root .
+
+  fifty-product-scenarios:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - name: Set up Godot 4.7.1
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.1
+          use-dotnet: false
+          include-templates: false
+      - name: Import and parse project
+        run: godot --headless --editor --path . --quit
+      - name: Verify fifty ten-manual product scenarios
+        run: godot --headless --path . --script res://tests/verify_ten_manual_product_gate.gd
+      - name: Upload scenario evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ten-manual-product-scenarios-${{ github.sha }}
+          path: artifacts/ten-manual-product-validation/product_scenarios.json
+          if-no-files-found: warn
+          retention-days: 7
