@@ -4,9 +4,10 @@
 - 상태: `APPROVED_AND_IMPLEMENTED_PARTIAL_AUTOMATED_COMPLETE`
 - 승인 근거: 사용자 `권장안대로 진행` 후 written spec 승인
 - 부모 권위: `TEN_MANUAL_UI_AI_ADOPTION_GATE`
-- evidence source head: `7494f50c48573168542781e007eeab6af11dda7d`
-- workflow run: `31068098197`
-- Windows artifact: `8954602789`
+- evidence source head: `0a8bf577b936ddac5cb7130a0cc58e519ea6eff6`
+- workflow run: `31074079068`
+- Windows artifact: `8956790279`
+- artifact digest: `sha256:df028164c57480d396f8495d54a5ab08cd293cba5ae0a9d467916331fdf7bb28`
 
 ## 승인 결과
 
@@ -33,8 +34,8 @@ mvp_complete: false
 
 ## 성능 baseline
 
-- exported runtime: 3018.23ms.
-- peak working set: 188674048 bytes.
+- exported runtime: 2344.67ms.
+- peak working set: 188571648 bytes.
 - exe+pck: 123037256 bytes.
 - runner: windows-latest.
 - Godot: 4.7.1.
