@@ -1,28 +1,30 @@
 # 십보강호 운영 로드맵
 
-> 상세 제품 로드맵: `../../../docs/04_ROADMAP.md`  
-> 현재 상태: `ACTIVE_CONTEXT.md`  
-> 정본 생명주기: `../../../docs/CANON_LIFECYCLE_REGISTRY.md`  
+> 상세 제품 로드맵: `../../../docs/04_ROADMAP.md`
+> 현재 상태: `ACTIVE_CONTEXT.md`
+> 정본 생명주기: `../../../docs/CANON_LIFECYCLE_REGISTRY.md`
 > 플랫폼 권위: `../../../docs/decisions/2026-08-06_WINDOWS_ANDROID_DUAL_TARGET_DECISION.md`
+> 플랫폼 Adapter 권위: `../../../docs/decisions/2026-08-06_WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_DECISION.md`
 
 ```yaml
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
-active_planning_pr: NONE
+active_planning_pr: 102
 active_planning_parent_pr: NONE
-active_approval_count: 10/10
-active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_MERGED
+active_approval_count: 1/10
+active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED
 product_implementation_merge_commit: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90
 merged_product_pr: 92
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
+platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
 design_platforms: WINDOWS_ANDROID
 platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
 windows_validation: CI_EXPORT_RUNTIME_PASS_LOCAL_NOT_RUN
 android_validation: NOT_RUN
-next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT
+next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
+next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 human_validation: NOT_RUN
 base_release_pinned: 9.4.3
 ```
@@ -34,10 +36,17 @@ base_release_pinned: 9.4.3
 - `TEN_MANUAL_PRODUCT_VALIDATION_GATE`: 자동 증거 `PARTIAL_AUTOMATED_COMPLETE`, PR #92 main 병합.
 - Windows CI export·runtime, 50개 성취도 시나리오, 3개 해상도, 합성 입력, 자동 접근성, 성능 baseline: PASS/CAPTURED.
 
+## Adapter Architecture 승인
+
+- 공유 코어: 전투·AI·콘텐츠 ID·수치·저장·결정적 해결.
+- Adapter: 입력·반응형 UI·앱 생명주기·플랫폼 서비스·품질·export.
+- 기본값: 48dp touch target, landscape primary, safe area·back 처리, atomic checkpoint save.
+- Android 구현·export·실기기 증거는 `NOT_RUN`.
+
 ## 다음 순서
 
 ```text
-WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT
+WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 → LOCAL_WINDOWS_ANDROID_DEVICE_ACCESSIBILITY_PERFORMANCE_GATE
 → TEN_MANUAL_STEP14_HUMAN_VALIDATION_GATE
 → TEN_MANUAL_BALANCE_MEASUREMENT_GATE
