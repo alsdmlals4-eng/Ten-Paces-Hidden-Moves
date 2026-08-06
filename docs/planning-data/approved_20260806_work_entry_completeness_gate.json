@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260806-WORK-ENTRY-COMPLETENESS-GATE-01",
+  "mode": "FAIL_CLOSED",
+  "blocking_gate": true,
+  "checklist_only": false,
+  "required_readbacks": [
+    "GITHUB_DECISION_LEDGER",
+    "SHEET_02_CURRENT_DECISIONS",
+    "SHEET_04_UNRESOLVED_AUDIT",
+    "SHEET_71_IMAGE_PLAN",
+    "SHEET_72_IMAGE_REVIEW",
+    "CURRENT_OPERATING_STATE"
+  ],
+  "missing_readback_result": "WORK_ENTRY_BLOCKED_UNVERIFIED",
+  "source_conflict_result": "WORK_ENTRY_BLOCKED_CANON_CONFLICT",
+  "open_blocker_result": "WORK_ENTRY_BLOCKED_FINDINGS_OPEN",
+  "unsynced_sheet_result": "WORK_ENTRY_BLOCKED_SHEET_SYNC",
+  "forbidden_unqualified_states": [
+    "READY",
+    "READY_NOT_RUN",
+    "AWAITING_IMPLEMENTATION",
+    "IMPLEMENTATION_READY",
+    "CODEX_READY"
+  ],
+  "product_implementation": {
+    "package": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION",
+    "entry_state": "BLOCKED",
+    "reason": "PLANNING_REVIEW_VISUAL_AND_AUTHORITY_GATES_OPEN",
+    "required_gates": [
+      "PLANNING_COMPLETE",
+      "REVIEW_COMPLETE",
+      "VISUAL_COMPLETE_OR_NO_NEW_ASSET_REQUIRED",
+      "NO_OPEN_P0_P1_CANON_CONFLICT",
+      "GITHUB_SHEET_SAME_DECISION_ID_SYNC",
+      "TEST_FIRST_ACCEPTANCE_EXISTS"
+    ]
+  },
+  "governance_tooling": {
+    "package": "GUT_9_7_1_HIGODOT_3_1_2_ADOPTION",
+    "entry_state": "ALLOWED_WITH_BOUNDED_SCOPE",
+    "visual_disposition": "NO_NEW_VISUAL_ASSET_REQUIRED",
+    "product_behavior_change": false,
+    "higodot_authority": "SOLE_GODOT_AUTHORING_AUTHORITY",
+    "gut_authority": "GDSCRIPT_TEST_EXECUTION_AND_JUNIT_ONLY"
+  },
+  "false_ready_reversal": {
+    "sheet_01_previous": "NEXT_APPROVED_PACKAGE_NOT_IMPLEMENTED",
+    "replacement": "BLOCKED_BY_WORK_ENTRY_COMPLETENESS_GATE",
+    "product_entry_claim": "PRODUCT_IMPLEMENTATION_BLOCKED"
+  }
+}
