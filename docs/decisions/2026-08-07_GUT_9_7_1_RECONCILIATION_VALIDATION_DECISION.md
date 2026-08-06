@@ -2,6 +2,7 @@
 
 - Decision ID: `TEN-DEC-20260807-GUT-9-7-1-RECONCILIATION-01`
 - 부모 Decision: `TEN-DEC-20260806-GUT-HIGODOT-TEST-AUTHORITY-01`
+- Actions 예산 대체 Decision: `TEN-DEC-20260807-ACTIONS-BUDGET-MANUAL-VALIDATION-FALLBACK-01`
 - 승인일: 2026-08-07
 - 상태: `CURRENT_APPROVED_RECONCILIATION_DRAFT`
 - 계약: `docs/planning-data/approved_20260807_gut_9_7_1_reconciliation.json`
@@ -39,9 +40,9 @@ junit_output: build/test-results/gut.xml
 
 대표 테스트는 무공서 registry 10권과 숙련도 3·7·10성 해금 경계를 GDScript에서 직접 검증한다. 기존 Python·SceneTree 검증은 보존한다.
 
-## 4. exact-HEAD 검증
+## 4. exact-HEAD 검증과 Actions 예산 대체 경로
 
-Draft PR의 exact HEAD에서 다음을 모두 실행한다.
+정상적인 GitHub Actions 경로에서는 Draft PR의 exact HEAD에서 다음을 모두 실행한다.
 
 1. 프로젝트 exact HEAD checkout.
 2. 공식 GUT `v9.7.1` checkout.
@@ -52,6 +53,19 @@ Draft PR의 exact HEAD에서 다음을 모두 실행한다.
 7. JUnit 파일 확인·artifact 업로드.
 8. GUT 실행 후 production scope hash 재계산·동일성 확인.
 
+현재는 GitHub Actions 예산을 사용할 수 없으므로 다음 사용자 승인 Decision을 적용한다.
+
+```yaml
+fallback_decision_id: TEN-DEC-20260807-ACTIONS-BUDGET-MANUAL-VALIDATION-FALLBACK-01
+github_actions: NOT_RUN_BUDGET_UNAVAILABLE
+fallback_route: CONTENT_ADDRESSED_EXACT_HEAD_STATIC_PLUS_RUNTIME_CLOSURE_EQUIVALENCE
+state: FALLBACK_ROUTE_AUTHORIZED_PER_HEAD_EVIDENCE_REQUIRED
+```
+
+대체 경로는 current HEAD의 변경 파일을 GitHub API로 재구성하고 Git blob SHA를 일치시킨 뒤 정적 계약 테스트를 직접 실행한다. Godot·GUT runtime 입력은 과거 Godot 4.7.1·GUT 성공 HEAD와 Git tree/blob SHA가 동일한 범위만 제한적으로 재사용한다. 동일하지 않은 입력은 재사용하지 않고 `NOT_RUN_BUDGET_UNAVAILABLE`로 남긴다.
+
+Actions workflow는 보존하며 branch protection·Ruleset·Required Check를 변경하지 않는다. HEAD가 바뀌면 대체 증거도 무효화한다.
+
 Production scope는 `src`, `scenes`, `data`, `assets`, `project.godot`, `export_presets.cfg`, 그리고 `addons/gut`을 제외한 `addons`다.
 
 ## 5. HiGodot 경계와 남은 Gate
@@ -61,10 +75,13 @@ HiGodot은 Scene·Node·Resource·project settings의 단일 저작 권위다. �
 - 두 vendored GUT Scene의 raw upstream 재저장.
 - `export_presets.cfg`의 GUT 제외 규칙 변경.
 
-현재 product export는 `all_resources`이며 GUT 제외 규칙이 없다. 따라서 검증이 GREEN이어도 권위 상태는 다음으로 제한한다.
+현재 product export는 `all_resources`이며 GUT 제외 규칙이 없다. 또한 current HEAD의 `export_presets.cfg`는 과거 runtime 성공 HEAD와 blob이 다르므로 과거 실행 증거를 재사용하지 않는다.
+
+따라서 정적 대체 검증이 GREEN이어도 권위 상태는 다음으로 제한한다.
 
 ```yaml
 authority_state: PARTIAL_VALIDATED_EXPORT_GATE_OPEN
+export_presets_equivalence: NOT_CLAIMED_DIFFERENT_BLOB
 export_exclusion: BLOCKED_PENDING_HIGODOT_L1
 formal_adoption_claim: NOT_COMPLETE
 ```
@@ -77,6 +94,7 @@ formal_adoption_claim: NOT_COMPLETE
 - GUT addon tree 변경 금지.
 - 제품 visible/audio diff 0.
 - `PRODUCT_IMPLEMENTATION_EFFECT_NONE`.
+- current exact HEAD의 Godot·GUT·JUnit은 `NOT_RUN_BUDGET_UNAVAILABLE` 또는 `NOT_GENERATED`다.
 - local HiGodot·local Godot·local Windows·Android·사람 검증은 `NOT_RUN`.
 - 제품 구현은 기존 Work Entry Completeness Gate에 따라 계속 차단.
 
