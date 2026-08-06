@@ -32,8 +32,8 @@ jobs:
 
   project-pilot:
     needs: adoption-contract
-    uses: alsdmlals4-eng/Base/.github/workflows/reusable-godot-project-pilot.yml@8d6df19de04374506560408cf0819a5990861c2e
+    uses: alsdmlals4-eng/Base/.github/workflows/reusable-godot-project-pilot.yml@2b595570bd237174b2b962a1eb54588b5ecc508d
     with:
-      base_pilot_commit: 8d6df19de04374506560408cf0819a5990861c2e
+      base_pilot_commit: 2b595570bd237174b2b962a1eb54588b5ecc508d
       descriptor_path: .godot-live-editor/project-pilot.json
       artifact_retention_days: 14
