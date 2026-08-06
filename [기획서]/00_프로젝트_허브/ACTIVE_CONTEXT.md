@@ -4,6 +4,8 @@
 > 정본 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`
 > 플랫폼 권위: `TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`
 > 플랫폼 Adapter 아키텍처 권위: `TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01`
+> 작업 진입 필수 Gate: `TEN-DEC-20260806-WORK-ENTRY-COMPLETENESS-GATE-01`
+> GUT·HiGodot 권위: `TEN-DEC-20260806-GUT-HIGODOT-TEST-AUTHORITY-01`
 > 관찰 권위: `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`
 > 초기 무공서 10권 성장 권위: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`
 > 초기 무공서 10권 런타임 기반: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`
@@ -26,6 +28,8 @@ active_planning_pr: NONE
 active_planning_parent_pr: NONE
 active_approval_count: 1/10
 active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED
+active_tooling_pr: 104
+active_tooling_package: GUT_9_7_1_HIGODOT_3_1_2_ADOPTION
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 evidence_source_head: 0a8bf577b936ddac5cb7130a0cc58e519ea6eff6
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
@@ -49,12 +53,40 @@ balance_validation: NOT_RUN
 accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
 performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
+next_package_state: BLOCKED_BY_WORK_ENTRY_COMPLETENESS_GATE
 next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
+work_entry_gate_decision: TEN-DEC-20260806-WORK-ENTRY-COMPLETENESS-GATE-01
+product_implementation_entry: BLOCKED
+tooling_visual_disposition: NO_NEW_VISUAL_ASSET_REQUIRED
 ```
 
 현재 기획 체크포인트는 `MERGED_PR102_WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_1_OF_10`이다. PR #89·#91·#92·#100·#101·#102 계보는 main에 병합됐고, 플랫폼 Adapter 아키텍처 병합 Commit은 `023385d372d127044d48afcb50e6f232ab9ffaa1`다. 제품 구현 병합 Commit `a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90`과 자동 제품 증거 HEAD는 별도 권위로 유지한다. PR #90은 `[대체됨]`, PR #85 HTML PoC는 `[보류]`다.
 
 자동 제품 검증은 Windows CI export·runtime, 세 해상도, 합성 입력, 자동 접근성, 성능 baseline까지만 증명한다. 로컬 Windows 렌더·실물 입력·접근성 사용자·Release 성능·사람 플레이·실제 Android·밸런스 승인을 대신하지 않는다.
+
+## 작업 진입 누락 방지 필수 Gate
+
+`TEN-DEC-20260806-WORK-ENTRY-COMPLETENESS-GATE-01`에 따라 누락 방지는 체크리스트가 아니라 작업 진입을 차단하는 fail-closed Gate다.
+
+```yaml
+required_readbacks:
+  - GITHUB_DECISION_LEDGER
+  - SHEET_02_CURRENT_DECISIONS
+  - SHEET_04_UNRESOLVED_AUDIT
+  - SHEET_71_IMAGE_PLAN
+  - SHEET_72_IMAGE_REVIEW
+  - CURRENT_OPERATING_STATE
+missing_readback: WORK_ENTRY_BLOCKED_UNVERIFIED
+canon_conflict: WORK_ENTRY_BLOCKED_CANON_CONFLICT
+product_implementation_entry: BLOCKED
+block_reason: PLANNING_REVIEW_VISUAL_AND_AUTHORITY_GATES_OPEN
+governance_tooling_entry: ALLOWED_WITH_BOUNDED_SCOPE
+tooling_visual_disposition: NO_NEW_VISUAL_ASSET_REQUIRED
+```
+
+현재 Sheet readback에는 `P0_RUNTIME_AUTHORITY_GAP`, 미완료 기획·독립 검토, 제품 이미지 `PLANNED / IN_REVIEW / NOT_RUN`이 남아 있다. 따라서 `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION`은 승인된 다음 패키지이지만 구현 진입 상태는 아니다. `READY`, `READY_NOT_RUN`, `AWAITING_IMPLEMENTATION`, `IMPLEMENTATION_READY`, `CODEX_READY`를 근거 없이 사용하지 않는다.
+
+PR #104는 제품 기획 PR이 아니라 `GOVERNANCE_TOOLING` PR이다. GUT 9.7.1은 GDScript 테스트·JUnit 실행 권위, HiGodot 3.1.2는 Godot Scene·Node·Resource·프로젝트 설정·스크립트 저작의 유일한 권위로 제한한다. 이 도구 채택은 `NO_NEW_VISUAL_ASSET_REQUIRED`로 진행하지만 제품 Adapter 구현 Gate를 해제하지 않는다.
 
 ## 프로젝트 코어
 
@@ -208,6 +240,8 @@ RED 증거:
 - UI·AI loadout 분리와 bundle pipeline 연결 부재: workflow `31053963064`.
 - 최종 제품 Artifact 뒤 정본이 이전 증거를 유지한 회귀: workflow `31076828345`.
 - PR #92 병합 뒤 Active Context·Roadmap이 Draft 상태를 유지한 회귀: workflow `31080748151`.
+- 작업 진입 Gate 계약·validator·Sheet snapshot 부재: PR #104 RED.
+- GUT JUnit 출력 폴더 부재: workflow `31105746623`, GUT 테스트 2/2 PASS 후 XML 생성 실패.
 
 GREEN 범위:
 
@@ -215,6 +249,9 @@ GREEN 범위:
 - 기존 ActionSelectionDock과 공개 상태 AI 회귀.
 - 10권 manifest·숙련 레지스트리·effect pipeline 검증.
 - Windows CI export·runtime과 제품 시나리오 50/50.
+- GUT 9.7.1 대표 제품 테스트·JUnit 증거.
+- HiGodot 3.1.2 저작 권위와 GUT 실행 권위 분리.
+- 작업 진입 Gate의 false READY/AWAITING 차단.
 - PR Validation·Full Validation·Base Adapter·보호 경로 승인 Gate.
 
 사람·밸런스·로컬 Windows 렌더·실물 게임패드·실제 Android·접근성 사용자·Release 성능 검증은 `NOT_RUN`이다.
@@ -249,8 +286,8 @@ Windows CI 기준 runtime은 약 2344.67ms, peak working set은 188571648 bytes,
 
 | 위험 | 상태 | 다음 조치 |
 |---|---|---|
-| `RUNTIME_AUTHORITY_GAP` | `MITIGATED_UI_AI_ADOPTED` | 로컬·실기기 검증 |
-| `ANDROID_ADAPTER_GAP` | `PLANNING_APPROVED_IMPLEMENTATION_NOT_RUN` | adapter 계약·실기기 Gate |
+| `RUNTIME_AUTHORITY_GAP` | `P0_OPEN_PRODUCT_ENTRY_BLOCKED` | 기획·검토·이미지·권위 Gate 해소 후 구현 |
+| `ANDROID_ADAPTER_GAP` | `PLANNING_APPROVED_IMPLEMENTATION_BLOCKED` | 작업 진입 Gate 해제 뒤 TDD Adapter 구현·실기기 Gate |
 | `AI_LOADOUT_FAIRNESS_RISK` | `MITIGATED_PUBLIC_STATE_ONLY` | 적별 loadout 사람 측정 |
 | `MASTERY_ROLE_REPLACEMENT_RISK` | `PENDING_HUMAN_MEASUREMENT` | 기술1/2 선택률·대체율 측정 |
 | `RESOURCE_SATURATION_RISK` | `PENDING_HUMAN_MEASUREMENT` | 회복 세금·고갈 측정 |
@@ -258,7 +295,12 @@ Windows CI 기준 runtime은 약 2344.67ms, peak working set은 188571648 bytes,
 | `GRADE_FARMING_RISK` | `PENDING_HUMAN_MEASUREMENT` | 원시/유효 등급 비율 측정 |
 
 ```text
-WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
+PR #104 GOVERNANCE_TOOLING exact-head 검증·병합·Sheet readback
+→ PLANNING_COMPLETE
+→ INDEPENDENT_PLANNING_REVIEW_COMPLETE
+→ VISUAL_COMPLETE_OR_NO_NEW_ASSET_REQUIRED
+→ NO_OPEN_P0_P1_CANON_CONFLICT
+→ WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 → LOCAL_WINDOWS_ANDROID_DEVICE_ACCESSIBILITY_PERFORMANCE_GATE
 → STEP 14 신규 플레이어 5명
 → 기술 대체율·자원 포화·적 loadout 공정성·다단 가독성 측정
@@ -286,8 +328,8 @@ WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 - 제품 병합 전 상태: `active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED`.
 - 제품 병합 전 다음 Gate: `next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE`.
 
-현행 운영 값은 문서 상단 YAML의 `active_planning_pr: NONE`, `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED`, `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE`를 사용한다. 제품 병합 권위는 별도 `merged_product_pr: 92`와 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`로 유지한다.
+현행 운영 값은 문서 상단 YAML의 `active_planning_pr: NONE`, `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED`, `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE`를 사용한다. PR #104는 `active_tooling_pr`이며 제품 기획 PR이 아니다. 제품 병합 권위는 별도 `merged_product_pr: 92`와 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`로 유지한다.
 
 ## 정본 동기화 원칙
 
-주요 승인과 구현 상태는 GitHub 권위 문서와 연결된 Google Sheet에 같은 Decision ID와 exact SHA로 기록한다. `03_무공서_무학` 탭에는 10권의 문파·무학 방향·주/보조능력치·3/5/7/9/10성 성취도를 한 행씩 유지한다. PR #92 제품 구현 병합과 플랫폼 Decision의 최종 Sheet 상태는 post-merge 정본 PR의 main Commit으로 `SYNCED_TO_MAIN` readback한다.
+주요 승인과 구현 상태는 GitHub 권위 문서와 연결된 Google Sheet에 같은 Decision ID와 exact SHA로 기록한다. `03_무공서_무학` 탭에는 10권의 문파·무학 방향·주/보조능력치·3/5/7/9/10성 성취도를 한 행씩 유지한다. PR #92 제품 구현 병합과 플랫폼 Decision의 최종 Sheet 상태는 post-merge 정본 PR의 main Commit으로 `SYNCED_TO_MAIN` readback한다. PR #104의 두 Decision은 Draft 동안 `SHEET_SYNCED_DRAFT_PR104`로 기록하고 병합 뒤 main SHA로 다시 닫는다.
