@@ -2,11 +2,11 @@
 
 ```yaml
 decision_id: TEN_MANUAL_PRODUCT_VALIDATION_GATE
-evidence_source_head: 7494f50c48573168542781e007eeab6af11dda7d
-workflow_run_id: 31068098197
-windows_artifact_id: 8954602789
-windows_artifact_name: ten-manual-product-validation-7494f50c48573168542781e007eeab6af11dda7d
-artifact_digest: sha256:b266edee31662d788cb2cdb16c32ea0380842c84a5d72a3201a4709afdab0cc7
+evidence_source_head: 0a8bf577b936ddac5cb7130a0cc58e519ea6eff6
+workflow_run_id: 31074079068
+windows_artifact_id: 8956790279
+windows_artifact_name: ten-manual-product-validation-0a8bf577b936ddac5cb7130a0cc58e519ea6eff6
+artifact_digest: sha256:df028164c57480d396f8495d54a5ab08cd293cba5ae0a9d467916331fdf7bb28
 scenario_count: 50
 scenario_passed: 50
 scenario_failed: 0
@@ -31,10 +31,10 @@ product_gate: PARTIAL_AUTOMATED_COMPLETE
 - Windows executable: 109212160 bytes.
 - PCK: 13825096 bytes.
 - combined: 123037256 bytes.
-- runtime elapsed: 3018.23ms.
-- peak working set: 188674048 bytes.
+- runtime elapsed: 2344.67ms.
+- peak working set: 188571648 bytes.
 - stdout: `TEN_MANUAL_EXPORTED_PRODUCT_VALIDATION_OK`.
 - stderr: empty.
-- scenario evidence elapsed: 12ms; failures: none.
+- scenario evidence elapsed: 8ms; failures: none.
 
 생성 JSON은 Actions artifact이며 저장소 정본이 아니다. 이 문서는 검증된 요약과 증거 식별자만 보존한다.
