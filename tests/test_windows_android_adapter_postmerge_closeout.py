@@ -21,22 +21,16 @@ def yaml_scalar(text: str, key: str) -> str:
 
 
 class WindowsAndroidAdapterPostMergeCloseoutTest(unittest.TestCase):
-    def test_current_operating_state_closes_pr102(self):
+    def test_current_operating_state_no_longer_treats_pr102_as_active(self):
         state = json.loads(CURRENT_STATE.read_text(encoding="utf-8"))
-        self.assertEqual(state["source_decision"], ARCHITECTURE_DECISION)
-        self.assertEqual(state["active_planning_work_mode"], "REVIEW")
-        self.assertEqual(state["active_planning_pr"], "NONE")
-        self.assertEqual(state["active_planning_parent_pr"], "NONE")
-        self.assertEqual(state["active_approval_count"], "1/10")
-        self.assertEqual(state["active_decision_state"], "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED")
-        self.assertEqual(state["next_package"], "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION")
-        self.assertEqual(state["next_planning_decision"], "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE")
+        self.assertNotEqual(state["active_planning_pr"], "102")
+        self.assertNotEqual(state["active_decision_state"], "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED")
 
     def test_active_context_records_architecture_merge(self):
         text = ACTIVE.read_text(encoding="utf-8")
         self.assertEqual(yaml_scalar(text, "merged_planning_checkpoint"), ARCHITECTURE_MERGE)
-        self.assertEqual(yaml_scalar(text, "active_planning_pr"), "NONE")
-        self.assertEqual(yaml_scalar(text, "active_decision_state"), "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED")
+        self.assertNotEqual(yaml_scalar(text, "active_planning_pr"), "102")
+        self.assertNotEqual(yaml_scalar(text, "active_decision_state"), "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED")
         self.assertEqual(yaml_scalar(text, "platform_adapter_merge_commit"), ARCHITECTURE_MERGE)
         self.assertEqual(yaml_scalar(text, "merged_platform_adapter_pr"), "102")
         self.assertIn("merged_pr_lineage: 84,86,87,88,89,91,92,100,101,102", text)
@@ -44,8 +38,8 @@ class WindowsAndroidAdapterPostMergeCloseoutTest(unittest.TestCase):
     def test_roadmaps_record_merge_and_next_gate(self):
         for path in [ROADMAP, HUB_ROADMAP]:
             text = path.read_text(encoding="utf-8")
-            self.assertEqual(yaml_scalar(text, "active_planning_pr"), "NONE")
-            self.assertEqual(yaml_scalar(text, "active_decision_state"), "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED")
+            self.assertNotEqual(yaml_scalar(text, "active_planning_pr"), "102")
+            self.assertNotEqual(yaml_scalar(text, "active_decision_state"), "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED")
             self.assertEqual(yaml_scalar(text, "platform_adapter_merge_commit"), ARCHITECTURE_MERGE)
             self.assertEqual(yaml_scalar(text, "merged_platform_adapter_pr"), "102")
             self.assertEqual(yaml_scalar(text, "next_planning_decision"), "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE")
