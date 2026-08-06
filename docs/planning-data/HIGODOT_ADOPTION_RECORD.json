@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "project": "TEN_PACES_HIDDEN_MOVES",
+  "provider": "hi-godot/godot-ai",
+  "product_name": "HiGodot / Godot AI",
+  "exact_release": "v3.1.2",
+  "installed_plugin_version": "3.1.2",
+  "release_asset": "godot-ai-plugin.zip",
+  "release_asset_sha256": "60915d780e112aa25b142a596548786a0fb558f795278b9337722532e5dfdb33",
+  "project_addon_path": "addons/godot_ai",
+  "plugin_config": "addons/godot_ai/plugin.cfg",
+  "plugin_enabled_in_project": true,
+  "execution_authority": "SOLE_GODOT_EXECUTION_AUTHORITY",
+  "authoring_authority": "SOLE_GODOT_AUTHORING_AUTHORITY",
+  "network_mode": "LOOPBACK_ONLY",
+  "automatic_update": false,
+  "floating_latest": false,
+  "approved_operation_model": {
+    "L0": "READ_ONLY_INSPECTION",
+    "L1": "BOUNDED_REVERSIBLE_WRITE_WITH_DIFF_AND_UNDO",
+    "L2": "PROTECTED_OR_MULTI_FILE_CHANGE_REQUIRES_APPROVAL_MANIFEST",
+    "L3": "PROJECT_WIDE_OR_IRREVERSIBLE_CHANGE_REQUIRES_SEPARATE_USER_APPROVAL"
+  },
+  "intended_clients": {
+    "gpt_work": "REQUIRED_WHEN_GODOT_AUTHORING_IS_REQUESTED",
+    "codex": "REQUIRED_WHEN_GODOT_AUTHORING_IS_REQUESTED"
+  },
+  "mcp_host_registration": "UNVERIFIED",
+  "deepseek_profile": {
+    "mcp_registration": "ABSENT_REQUIRED",
+    "credential_access": "ABSENT_REQUIRED",
+    "godot_authoring": false,
+    "godot_runtime_mutation": false
+  },
+  "coexisting_non_authoring_tools": {
+    "GUT_9_7_1": "GDSCRIPT_TEST_EXECUTION_AND_JUNIT_ONLY",
+    "PYTHON_TESTS": "REPOSITORY_CANON_AND_STATIC_CONTRACT_VALIDATION"
+  },
+  "forbidden": [
+    "SECOND_GODOT_MCP",
+    "SECOND_EDITOR_MUTATION_AUTHORITY",
+    "NON_LOOPBACK_LISTENER",
+    "AUTOMATIC_UNREVIEWED_UPDATE",
+    "CREDENTIAL_COMMIT",
+    "GUT_SCENE_AUTHORING",
+    "GUT_PROJECT_MUTATION"
+  ],
+  "observed_validation": {
+    "godot_4_7_1_project_import": "PASS",
+    "headless_plugin_behavior": "DISABLED_IN_HEADLESS_MODE_AS_EXPECTED",
+    "source": "PR_104_RED_RUN_31104521577",
+    "interactive_editor": "HUMAN_NOT_RUN",
+    "mcp_connection": "NOT_RUN",
+    "l0_read": "NOT_RUN",
+    "l1_write_undo_save": "NOT_RUN"
+  },
+  "rollback": {
+    "method": "Revert the adoption commit or restore the exact v3.1.2 release asset after hash verification.",
+    "project_godot_restore_required": true,
+    "credentials_or_host_config_in_repository": false
+  },
+  "production_readiness": false,
+  "last_verified_at": "2026-08-06",
+  "next_verification": "LOCAL_WINDOWS_EDITOR_MCP_HOST_L0_THEN_L1_BOUNDED_OPERATION"
+}
