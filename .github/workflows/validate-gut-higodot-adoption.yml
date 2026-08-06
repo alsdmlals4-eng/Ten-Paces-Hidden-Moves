@@ -7,6 +7,8 @@ on:
       - addons/gut/**
       - tests/gut/**
       - tests/test_gut_higodot_adoption.py
+      - tests/test_conflict_marker_detection.py
+      - tests/check_combat_board_contract.py
       - .gutconfig.json
       - project.godot
       - export_presets.cfg
@@ -38,7 +40,11 @@ jobs:
         with:
           python-version: "3.12"
       - name: Run GUT and HiGodot adoption contract
-        run: python -m unittest tests.test_gut_higodot_adoption -v
+        run: >-
+          python -m unittest
+          tests.test_gut_higodot_adoption
+          tests.test_conflict_marker_detection
+          -v
 
   gut-runtime:
     runs-on: ubuntu-latest
