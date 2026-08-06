@@ -63,7 +63,8 @@ class WorkEntryCompletenessGateTests(unittest.TestCase):
         self.assertEqual(gate["product_implementation_entry"], "BLOCKED")
         self.assertEqual(gate["reason"], "PLANNING_REVIEW_VISUAL_AND_AUTHORITY_GATES_OPEN")
         self.assertEqual(state["next_package_state"], "BLOCKED_BY_WORK_ENTRY_COMPLETENESS_GATE")
-        self.assertEqual(state["active_planning_pr"], "104")
+        self.assertEqual(state["active_tooling_pr"], "104")
+        self.assertEqual(state["active_planning_pr"], "NONE")
 
     def test_active_context_does_not_claim_unqualified_readiness(self) -> None:
         text = ACTIVE_CONTEXT.read_text(encoding="utf-8")
@@ -82,6 +83,7 @@ class WorkEntryCompletenessGateTests(unittest.TestCase):
         workflow_text = WORKFLOW.read_text(encoding="utf-8")
         self.assertIn("tests.test_work_entry_completeness_gate", workflow_text)
         self.assertIn("python tools/check_work_entry_completeness_gate.py", workflow_text)
+        self.assertIn("mkdir -p build/test-results", workflow_text)
 
     def test_decision_explicitly_forbids_checklist_bypass(self) -> None:
         text = DECISION.read_text(encoding="utf-8")
