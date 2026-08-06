@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260806-GUT-HIGODOT-TEST-AUTHORITY-01",
+  "authority_status": "CURRENT_APPROVED_ADOPTION_SPEC_PENDING_MERGE",
+  "tool": "GUT",
+  "canonical_source_repository": "bitwes/Gut",
+  "version": "9.7.1",
+  "source_branch_or_release": "v9.7.1",
+  "source_ref": "refs/tags/v9.7.1",
+  "pinned_source_commit": "aeb5d4f3f7f0a6c9b5e178876d6c99b791fda605",
+  "stage": "ADOPTION_SPEC_DRAFT_PR",
+  "adoption_spec_branch": "chore/gut-9.7.1-adoption-spec",
+  "formal_installation": "BLOCKED_UNTIL_SPEC_MERGED_AND_EXISTING_INSTALL_RECONCILED",
+  "production_files_may_be_modified": false,
+  "higodot_authority": "SINGLE_GODOT_SCENE_NODE_RESOURCE_PROJECT_SETTINGS_AUTHOR",
+  "gut_authority": "FORMAL_TEST_EXECUTION_AND_ASSERTION",
+  "gut_production_mutation": "FORBIDDEN",
+  "production_hash_before_after_required": true,
+  "higodot_authoring_manifest_required_for_godot_mutations": true,
+  "source_provenance": {
+    "repository": "bitwes/Gut",
+    "release_tag": "v9.7.1",
+    "tag_commit": "aeb5d4f3f7f0a6c9b5e178876d6c99b791fda605",
+    "plugin_manifest_path": "addons/gut/plugin.cfg",
+    "plugin_manifest_version": "9.7.1",
+    "verification_state": "VERIFIED_AT_ADOPTION_SPEC"
+  },
+  "license_verification": {
+    "expected": "MIT",
+    "path": "addons/gut/LICENSE.md",
+    "verified_at_ref": "v9.7.1",
+    "license_file_required_at_install": true,
+    "state": "VERIFIED_AT_ADOPTION_SPEC_RECHECK_AT_INSTALL"
+  },
+  "godot_compatibility": {
+    "required": "4.7.x",
+    "upstream_branch_family": "godot_4_7",
+    "project_expected": "4.7.x",
+    "exact_project_version": "4.7.1_CI_EVIDENCE_LOCAL_UNVERIFIED",
+    "import_and_smoke_required_at_install": true
+  },
+  "existing_installation": {
+    "detected_on_main": true,
+    "introduction_commit": "6e471b62a6236749312f31264428a46b97c8387a",
+    "state": "PREEXISTING_OUT_OF_SEQUENCE_INSTALLATION",
+    "modified_by_adoption_spec_pr": false,
+    "authority": "NOT_GRANTED_BY_FILE_PRESENCE",
+    "tree_match_to_verified_tag": "NOT_YET_VERIFIED",
+    "runtime_execution_evidence": "NOT_ACCEPTED_AS_FORMAL_ADOPTION_EVIDENCE",
+    "required_remediation": "POST_SPEC_MERGE_RECONCILIATION_AND_VALIDATION_PR"
+  },
+  "consumer_path": {
+    "test_root": "tests/gut",
+    "junit_output": "build/test-results/gut.xml",
+    "representative_scope": "MARTIAL_MANUAL_REGISTRY_AND_MASTERY_BOUNDARIES",
+    "product_export_exclusion_required": true,
+    "plugin_enablement_in_project_godot": "NOT_REQUIRED_FOR_CLI_TEST_EXECUTION"
+  },
+  "ci_plan": {
+    "exact_head_checkout": true,
+    "source_and_version_assertion": true,
+    "existing_addon_tree_match_assertion": true,
+    "godot_import": true,
+    "gut_cli_execution": true,
+    "junit_required": true,
+    "junit_artifact_upload": true,
+    "production_hash_unchanged_assertion": true,
+    "installation_workflow_state": "DEFERRED_TO_POST_SPEC_MERGE_RECONCILIATION_PR"
+  },
+  "removal_and_rollback": {
+    "remove_addon_and_test_configuration": true,
+    "remove_gut_specific_workflow_steps": true,
+    "preserve_non_gut_python_and_scenetree_tests": true,
+    "verify_project_import_after_removal": true,
+    "restore_export_exclusions_if_added": true,
+    "state": "SPECIFIED_NOT_EXECUTED"
+  },
+  "role_non_overlap": {
+    "gut_may_read_production_files": true,
+    "gut_may_assert_production_behavior": true,
+    "gut_may_write_reports_and_artifacts": true,
+    "gut_may_modify_scene_resource_project_settings": false,
+    "gut_may_modify_production_gdscript": false,
+    "higodot_required_for_scene_resource_project_settings_changes": true
+  },
+  "claim_ceiling": {
+    "spec_review": "PENDING_EXACT_HEAD_REVIEW",
+    "formal_installation": "EXISTING_FILES_PRESENT_AUTHORITY_NOT_GRANTED",
+    "local_higodot": "NOT_RUN",
+    "local_godot": "NOT_RUN",
+    "windows_local": "NOT_RUN",
+    "android": "NOT_RUN",
+    "human": "NOT_RUN",
+    "production_readiness": false
+  },
+  "visual_audio_disposition": "NO_NEW_VISUAL_OR_AUDIO_ASSET_REQUIRED",
+  "next_gate": "MERGE_ADOPTION_SPEC_THEN_RECONCILE_AND_VALIDATE_EXISTING_INSTALL"
+}
