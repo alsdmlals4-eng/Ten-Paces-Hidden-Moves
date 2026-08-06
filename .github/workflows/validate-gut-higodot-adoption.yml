@@ -33,21 +33,23 @@ concurrency:
 permissions:
   contents: read
 
-env:
-  EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-
 jobs:
   adoption-contract:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Check out exact head
+      - name: Check out exact pull-request head
         uses: actions/checkout@v4
         with:
-          ref: ${{ env.EXPECTED_HEAD_SHA }}
+          ref: ${{ github.event.pull_request.head.sha }}
           show-progress: false
-      - name: Require exact head checkout
-        run: test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD_SHA"
+      - name: Require exact pull-request head checkout
+        env:
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [ -n "$EXPECTED_HEAD_SHA" ]; then
+            test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD_SHA"
+          fi
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -66,13 +68,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Check out exact head
+      - name: Check out exact pull-request head
         uses: actions/checkout@v4
         with:
-          ref: ${{ env.EXPECTED_HEAD_SHA }}
+          ref: ${{ github.event.pull_request.head.sha }}
           show-progress: false
-      - name: Require exact head checkout
-        run: test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD_SHA"
+      - name: Require exact pull-request head checkout
+        env:
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [ -n "$EXPECTED_HEAD_SHA" ]; then
+            test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD_SHA"
+          fi
       - name: Set up Godot 4.7.1
         uses: chickensoft-games/setup-godot@v2
         with:
@@ -94,7 +101,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: gut-junit-${{ env.EXPECTED_HEAD_SHA }}
+          name: gut-junit-${{ github.run_id }}
           path: build/test-results/gut.xml
           if-no-files-found: error
           retention-days: 14
