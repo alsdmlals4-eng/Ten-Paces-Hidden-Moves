@@ -72,6 +72,8 @@ jobs:
           include-templates: false
       - name: Import and parse project
         run: godot --headless --editor --path . --quit
+      - name: Prepare GUT JUnit directory
+        run: mkdir -p build/test-results
       - name: Run GUT project tests
         run: >-
           godot --headless --path . --script res://addons/gut/gut_cmdln.gd
