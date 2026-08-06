@@ -173,3 +173,15 @@ App Root
 - 주요 비무 6~10 런타임.
 - 천하제일인·비동기 기능.
 - 최종 아트·오디오 폴리싱.
+
+## 14. 플랫폼 출시·에셋 권리
+
+출시·외부 자산·참조 기반 제작 작업은 다음 프로젝트 증거를 추가로 읽는다.
+
+- `docs/PLATFORM_RELEASE_AND_ASSET_RIGHTS_PROFILE.md`
+- `docs/ASSET_RIGHTS_AND_PROVENANCE_RECORD.md`
+- `docs/GAME_RELEASE_COMPLIANCE_EVIDENCE_PACK.md`
+
+Steam·STOVE 후보 출시에서는 실제 build·store·trailer·questionnaire 일치와 shipping·marketing 자산 권리를 함께 검토한다. 원본 에셋을 조금 수정하거나 AI로 변환했다는 이유만으로 독립 자산으로 보지 않는다. 기능·구조·정보 위계·일반 제작 원리만 참조하고 `reference_brief`, `forbidden_expression`, 별도 `final_asset_record`, 유사성 검토를 남긴다.
+
+필수 권리·계약·약관 버전·플랫폼 답변이 미확인이거나 실제 사용과 증빙이 다르면 `RELEASE_BLOCKED_UNVERIFIED`다. 자동 테스트와 Template 존재는 실제 자산 감사, 법률 검토, 플랫폼 제출 또는 최종 등급을 대체하지 않는다.
