@@ -112,10 +112,12 @@ class Gut971ReconciliationTests(unittest.TestCase):
             "v9.7.1",
             "Require exact PR head",
             "Compare installed GUT tree to official tag",
+            "Require clean tracked tree after import",
             "Hash production scope before GUT",
             "Run GUT project tests",
             "Require JUnit output",
             "Verify production hash unchanged",
+            "Require clean tracked tree after GUT",
         ):
             self.assertIn(marker, workflow_text)
 
