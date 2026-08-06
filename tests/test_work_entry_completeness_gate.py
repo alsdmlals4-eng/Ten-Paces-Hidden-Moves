@@ -13,7 +13,7 @@ SHEET_SNAPSHOT = ROOT / "docs/planning-data/sheet_work_entry_gate_snapshot_20260
 STATE = ROOT / "docs/planning-data/current_operating_state.json"
 ACTIVE_CONTEXT = ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
 VALIDATOR = ROOT / "tools/check_work_entry_completeness_gate.py"
-WORKFLOW = ROOT / ".github/workflows/validate-gut-higodot-adoption.yml"
+WORKFLOW = ROOT / ".github/workflows/documentation-governance.yml"
 
 
 class WorkEntryCompletenessGateTests(unittest.TestCase):
@@ -85,6 +85,7 @@ class WorkEntryCompletenessGateTests(unittest.TestCase):
         self.assertIn("PLANNING_REVIEW_VISUAL_AND_AUTHORITY_GATES_OPEN", validator_text)
 
         workflow_text = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn("gut-adoption-exact-head", workflow_text)
         self.assertIn("tests.test_work_entry_completeness_gate", workflow_text)
         self.assertIn("python tools/check_work_entry_completeness_gate.py", workflow_text)
         self.assertIn("mkdir -p build/test-results", workflow_text)
