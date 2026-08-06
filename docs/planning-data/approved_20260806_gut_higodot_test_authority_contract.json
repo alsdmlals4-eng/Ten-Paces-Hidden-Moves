@@ -43,8 +43,8 @@
     ],
     "validation": {
       "godot_4_7_1_import": "PASS_RED_RUN_31104521577",
-      "representative_test": "PENDING_GREEN_CI",
-      "junit_artifact": "PENDING_GREEN_CI",
+      "representative_test": "PASS_RED_RUN_31105746623_TWO_OF_TWO",
+      "junit_artifact": "PENDING_GREEN_CI_AFTER_DIRECTORY_FIX",
       "local_windows": "NOT_RUN",
       "android": "NOT_RUN",
       "human_editor_use": "HUMAN_NOT_RUN"
@@ -67,18 +67,29 @@
       "SCRIPT",
       "EDITOR_DIAGNOSTICS"
     ],
+    "runtime_helper": {
+      "autoload": "_mcp_game_helper",
+      "path": "res://addons/godot_ai/runtime/game_helper.gd",
+      "status": "EXISTING_BASELINE_PRESENT",
+      "product_export_dependency": true,
+      "editor_plugin_headless_state": "DISABLED_IN_HEADLESS_MODE_AS_EXPECTED",
+      "removal_state": "BLOCKED_PENDING_HIGODOT_L1_OR_L2_VALIDATION",
+      "scope_rule": "PR_104_MUST_NOT_REMOVE_OR_EXCLUDE_WITHOUT_PROJECT_GODOT_AND_EXPORT_VALIDATION"
+    },
     "forbidden_overlap": [
       "SECOND_GODOT_MCP",
       "SECOND_EDITOR_MUTATION_PLUGIN",
       "GUT_AUTHORING",
-      "GUT_PROJECT_MUTATION"
+      "GUT_PROJECT_MUTATION",
+      "GAMEPLAY_OR_CANON_AUTHORITY"
     ],
     "validation": {
       "plugin_discovery_godot_4_7_1": "PASS_RED_RUN_31104521577",
       "mcp_host_registration": "UNVERIFIED",
       "interactive_editor_authoring": "HUMAN_NOT_RUN",
       "l0_read_operation": "NOT_RUN",
-      "l1_bounded_write_and_undo": "NOT_RUN"
+      "l1_bounded_write_and_undo": "NOT_RUN",
+      "runtime_helper_product_separation": "NOT_RUN_BLOCKS_PRODUCTION_READINESS"
     }
   },
   "python_contract_tests": {
@@ -92,9 +103,11 @@
   },
   "production_readiness": false,
   "next_product_package": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION",
+  "next_product_package_state": "BLOCKED_BY_WORK_ENTRY_COMPLETENESS_GATE",
   "unverified": [
     "LOCAL_WINDOWS_HIGODOT_INTERACTIVE_USE",
     "MCP_HOST_REGISTRATION",
+    "HIGODOT_RUNTIME_HELPER_PRODUCT_EXPORT_BOUNDARY",
     "PHYSICAL_GAMEPAD",
     "ANDROID_EXPORT_INSTALL_DEVICE_TOUCH_LIFECYCLE_PERFORMANCE",
     "ACCESSIBILITY_USER",
