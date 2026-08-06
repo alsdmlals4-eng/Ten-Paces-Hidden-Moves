@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260806-SOLO-MAINTAINER-REVIEW-EXCEPTION-01",
+  "authority_status": "CURRENT_APPROVED_PROJECT_OPERATING_EXCEPTION",
+  "approved_at": "2026-08-06T23:37:00+09:00",
+  "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
+  "scope": "PROJECT_WIDE_WHILE_SOLO_MAINTAINED",
+  "base_policy_conflict": {
+    "base_rule": "INDEPENDENT_REVIEW_REQUIRED_BEFORE_MERGE",
+    "resolution": "LATEST_USER_AUTHORIZED_PROJECT_LOCAL_EXCEPTION",
+    "base_repository_changed": false,
+    "base_rule_claimed_superseded_globally": false
+  },
+  "activation_condition": {
+    "sole_maintainer_required": true,
+    "independent_reviewer_candidates_required": 0,
+    "collaborator_and_reviewer_readback_required_per_pr": true
+  },
+  "independent_review": "WAIVED_WHILE_ACTIVATION_CONDITION_TRUE",
+  "review_record": "SOLO_MAINTAINER_REVIEW_ATTESTATION",
+  "required_controls": {
+    "fresh_base_github_sheet_readback": true,
+    "exact_head_required": true,
+    "all_required_checks_pass": true,
+    "tdd_evidence_required": true,
+    "adversarial_diff_review_required": true,
+    "unresolved_threads_zero": true,
+    "open_p0_p1_zero": true,
+    "github_sheet_same_decision_id": true,
+    "explicit_user_merge_authorization_per_pr": true,
+    "head_change_invalidates_attestation": true,
+    "automatic_merge_allowed": false
+  },
+  "waivers": {
+    "tests": false,
+    "exact_head_validation": false,
+    "adversarial_review": false,
+    "runtime_or_human_evidence": false,
+    "security_or_permission_safety": false,
+    "branch_protection_change_approval": false,
+    "product_entry_gate": false,
+    "postmerge_main_and_sheet_sync": false
+  },
+  "high_risk_escalation": {
+    "additional_explicit_risk_acknowledgement_required": true,
+    "surfaces": [
+      "SECURITY_AUTH_CREDENTIALS",
+      "REPOSITORY_PERMISSIONS_OR_BRANCH_PROTECTION",
+      "DESTRUCTIVE_DATA_OR_SAVE_MIGRATION",
+      "RELEASE_SIGNING_OR_STORE_PUBLISHING",
+      "LEGAL_PRIVACY_OR_USER_DATA",
+      "IRREVERSIBLE_PRODUCTION_OPERATION"
+    ]
+  },
+  "suspension": {
+    "on_additional_reviewer_or_maintainer": true,
+    "on_user_revocation": true,
+    "on_unresolved_governance_conflict": true,
+    "on_missing_required_readback": true,
+    "result": "MERGE_BLOCKED_UNTIL_REVALIDATED"
+  },
+  "product_implementation_effect": "NONE",
+  "current_product_entry": "BLOCKED_BY_WORK_ENTRY_COMPLETENESS_GATE",
+  "current_pr": {
+    "number": 104,
+    "previous_head": "2077732d308069d37e2391e3a8711c3215b07471",
+    "state_after_policy_change": "EXACT_HEAD_REVALIDATION_REQUIRED",
+    "merge_authorization": "NOT_YET_GIVEN_FOR_CURRENT_EXACT_HEAD"
+  }
+}
