@@ -90,7 +90,13 @@ if ($kernel -notmatch "WSL2") {
 }
 Invoke-NativeChecked -FilePath "wsl.exe" -Arguments @("-d", $WslDistribution, "--", "python3.12", "--version") -WorkingDirectory $RepoRoot | Out-Null
 Invoke-NativeChecked -FilePath "wsl.exe" -Arguments @("-d", $WslDistribution, "--", "git", "--version") -WorkingDirectory $RepoRoot | Out-Null
-$wslRoot = (Invoke-NativeChecked -FilePath "wsl.exe" -Arguments @("-d", $WslDistribution, "--", "wslpath", "-a", $RepoRoot) -WorkingDirectory $RepoRoot).Trim()
+
+# WSL inherits the Windows working directory and exposes its mounted Linux path.
+# Resolving it with pwd avoids passing a backslash-heavy Windows path through Linux argument parsing.
+$wslRoot = (Invoke-NativeChecked -FilePath "wsl.exe" -Arguments @("-d", $WslDistribution, "--", "pwd") -WorkingDirectory $RepoRoot).Trim()
+if ([string]::IsNullOrWhiteSpace($wslRoot) -or -not $wslRoot.StartsWith("/")) {
+    throw "WSL_ROOT_RESOLUTION_FAILED value=$wslRoot"
+}
 $wslRunner = "$wslRoot/tools/local_validation/run_matrix_contracts.py"
 
 Write-Host "=== wsl2-ubuntu-py312 ($WslDistribution) ==="
