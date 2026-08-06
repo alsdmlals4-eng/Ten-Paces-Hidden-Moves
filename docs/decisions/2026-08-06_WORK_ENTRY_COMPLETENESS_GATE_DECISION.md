@@ -100,6 +100,6 @@ CODEX_READY
 
 - `tests/test_work_entry_completeness_gate.py`
 - `tools/check_work_entry_completeness_gate.py`
-- `.github/workflows/validate-gut-higodot-adoption.yml`
+- `.github/workflows/documentation-governance.yml`의 `gut-adoption-exact-head` job
 
 Gate 자체가 누락되면 CI가 실패해야 한다. Gate가 제품 구현을 차단하는 현재 상태는 validator PASS이며, 제품 구현이 성공했다는 의미가 아니다.
