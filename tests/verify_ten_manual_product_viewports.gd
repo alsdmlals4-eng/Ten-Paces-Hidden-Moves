@@ -31,6 +31,7 @@ func _run() -> void:
             "momentum_maximum": 5,
             "ultimate_reservations": []
         })
+        dock.set_active_source("martial")
         await process_frame
         _verify_viewport(dock, viewport_size)
         dock.queue_free()
@@ -44,6 +45,7 @@ func _verify_viewport(dock: ActionSelectionDock, viewport_size: Vector2i) -> voi
     _expect(dock.visible, "%s dock must be visible." % viewport_size)
     _expect(dock_rect.size.x > 0.0 and dock_rect.size.y > 0.0, "%s dock must have a non-zero rect." % viewport_size)
     _expect(dock_rect.position.x < viewport_size.x and dock_rect.position.y < viewport_size.y, "%s dock must intersect the viewport." % viewport_size)
+    _expect(dock.active_source == "martial", "%s must activate the martial source." % viewport_size)
     _expect(dock.martial_panel != null and dock.martial_panel.visible, "%s martial panel must exist and be visible." % viewport_size)
     _expect(dock.ultimate_panel != null, "%s ultimate panel must exist." % viewport_size)
     var panel_snapshot: Dictionary = dock.martial_panel.get_panel_snapshot()
