@@ -1,0 +1,122 @@
+{
+  "schema_version": 2,
+  "decision_id": "TEN-DEC-20260802-TECHNIQUE-AUTHORING-TAG-FIXED-STAT-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "PLANNING_ONLY",
+  "grillme_count": "9/10",
+  "pricing_decision_id": "TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01",
+  "authoring_order": [
+    "structure_and_cost",
+    "tags",
+    "fixed_base_value",
+    "stat_references",
+    "mastery_patch_and_stat_threshold"
+  ],
+  "structure_fields_are_continuous_stat_scaled": false,
+  "structure_fields": [
+    "action_slots",
+    "telegraph_slots",
+    "costs",
+    "targeting",
+    "direction",
+    "resolution_phase",
+    "attack_range",
+    "move_range",
+    "hit_count",
+    "composite_action_structure"
+  ],
+  "tag_contract": {
+    "canonical_dictionary_required": true,
+    "independent_ledger_entry_required": true,
+    "implicit_stat_reference": false,
+    "tag_quantity_is_fixed_by_default": true,
+    "continuous_stat_scaling_for_tag_quantity": false,
+    "change_only_by_explicit_patch_or_threshold": true
+  },
+  "fixed_base_value_contract": {
+    "required_for_continuous_numeric_effects": true,
+    "formula": "final_continuous_value = fixed_base_value + stat_reference_adjustment",
+    "independent_ledger_entry_required": true
+  },
+  "stat_reference_contract": {
+    "required_for_non_fixed_effects": true,
+    "primary_stat_required": true,
+    "secondary_stat_optional": true,
+    "maximum_references_per_effect": 2,
+    "coefficient_required_per_reference": true,
+    "allowed_stats": [
+      "external_power",
+      "constitution",
+      "agility",
+      "internal_power",
+      "insight"
+    ],
+    "independent_ledger_entry_required": true,
+    "balance_reference_stat": 4,
+    "coefficient_snap_step": 0.25,
+    "primary_secondary_same_price": true,
+    "secondary_discount": false,
+    "tick_formula": "ceil(effect_unit_tick_price * coefficient * 4)",
+    "runtime_rounding": "floor_once_after_total_sum"
+  },
+  "fixed_only_effects": {
+    "observation_amount": true,
+    "movement_distance": true,
+    "dodge_count_and_permission": true,
+    "strengthen_base_effect": true,
+    "continuous_stat_scaling": false,
+    "change_by_explicit_patch_or_threshold_only": true
+  },
+  "confirmed_basic_action_references": {
+    "quick_attack": {
+      "formula_shape": "fixed_damage + external_power_coefficient",
+      "exact_values": "TBD"
+    },
+    "heavy_attack": {
+      "formula_shape": "fixed_damage + external_power_coefficient",
+      "coefficient_differs_from_quick_attack": true,
+      "exact_values": "TBD"
+    },
+    "basic_palm": {
+      "formula_shape": "fixed_damage + internal_power_coefficient",
+      "exact_values": "TBD"
+    }
+  },
+  "score_ledger": {
+    "formula": "structure_ticks + tag_ticks + fixed_value_ticks + stat_reference_ticks + condition_and_cost_credits",
+    "required_fields": [
+      "component_id",
+      "source_table",
+      "price_id",
+      "quantity",
+      "derived_ticks"
+    ],
+    "tag_fixed_stat_must_be_separate": true,
+    "central_price_change_auto_edits_existing_techniques": false
+  },
+  "resolved_gap": {
+    "stat_reference_price_table": "APPROVED_BASE4",
+    "pricing_contract": "approved_20260802_stat_reference_price_base4_contract.json",
+    "exact_stat_coefficient_tick_formula": "ceil(effect_unit_tick_price * coefficient * 4)",
+    "primary_secondary_price_difference": "NONE",
+    "coefficient_snap_step": 0.25,
+    "rounding_rule": "floor_once_after_total_sum"
+  },
+  "remaining_tbd": [
+    "quick_attack_exact_fixed_damage_and_coefficient",
+    "heavy_attack_exact_fixed_damage_and_coefficient",
+    "basic_palm_exact_fixed_damage_and_coefficient",
+    "starting_stat_total_and_distribution"
+  ],
+  "legacy_boundary": {
+    "absolute_raw_power_techniques": "POC_HYPOTHESIS",
+    "runtime_implementation_updated": false
+  },
+  "validation": {
+    "static_validation": "PENDING_DRAFT_PR",
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  }
+}

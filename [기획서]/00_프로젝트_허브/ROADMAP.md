@@ -1,83 +1,165 @@
 # 십보강호 운영 로드맵
 
-> 제품 구현의 상세 순서는 `docs/04_ROADMAP.md`, 현재 사용자 결정 권한은 `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`가 소유한다.
+> 상세 제품 로드맵: `../../../docs/04_ROADMAP.md`  
+> 현재 상태: `ACTIVE_CONTEXT.md`  
+> 과거 v6 결정 인덱스: `../../../docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`
 
 ```yaml
-product_stage: CONCEPT_APPROVAL
-work_mode: PLAN
-execution_profile: PLANNING_ONLY_PROFILE
-runtime_implementation: PROHIBITED_UNTIL_NEW_APPROVAL
+product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
+work_mode: REVIEW
+integration_pr: 65
+active_planning_work_mode: PLAN
+main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
+last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
+active_planning_pr: 82
+active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
+active_approval_count: 2/10
+implemented_decision: TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01
+approved_planning_decision: TEN-DEC-20260801-SITUATION-SCREEN-01
+next_package: VERTICAL_SLICE_APP_FLOW_SHELL
+next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
+human_validation: NOT_RUN
+base_release_pinned: 9.4.3
 ```
 
-## R0 — 현행 구현·역사 보존
+`work_mode: REVIEW`·`integration_pr: 65`는 런타임 기준선이며 PR #82는 별도의 활성 `PLAN` 승인 배치다.
 
-- [x] T0 구현 계보 PR #7·Issue #13 확인.
+## R0 — 구현·역사·Base 기준선
+
+- [x] T0 구현 계보 PR #7·Issue #13 보존.
 - [x] 기술 기준 SHA `659c57e7ffa588ad6a6471ed9b5394985b159eaf` 보존.
-- [x] Base 기준과 프로젝트 고유 Skill 경계 보존.
-- [x] 기존 코드·데이터·테스트는 현재 구현 사실로 유지.
+- [x] v6 원장을 역사 인덱스로 유지.
+- [x] 최신 날짜별 Decision과 실제 구현을 현재 권한으로 사용.
+- [x] Base v9.4.3 Adapter payload·evidence·finalization pin 확인.
+- [x] main 체크포인트와 활성 Draft PR을 분리.
 
-상태: `IMPLEMENTED_LEGACY / REFERENCE_ONLY_FOR_V6_DESIGN`.
+상태: `APPROVED`.
 
-## R1 — v6 결정 권한 통합
+## R1 — 전투·회차·성장 기획
 
-- [x] 제품 단계 `CONCEPT_APPROVAL`과 Work Mode `PLAN` 확정.
-- [x] 프로젝트 코어를 상대의 숨은 수를 읽고 파훼하는 경험으로 재정렬.
-- [x] 핵심 결투 5개 버티컬 슬라이스 앵커 확정.
-- [x] 무공서 16권·1~10성·수련·랭크 계약 연결.
-- [x] 연격·방어도·전조·비용·태그 계약 연결.
-- [x] PR #45의 BUILD 승인·구형 기획을 `SUPERSEDED_REFERENCE`로 재분류.
-- [x] 모든 결정에 주장 유형·근거·책임 원본·적용 빌드·재검토 조건 연결.
+- [x] 1대1 10칸·3/3/4·거리·합·방어도·중단·복기.
+- [x] 데모 5슬롯·후보 3명·중간 노드 8개.
+- [x] 전체 10슬롯·중간 노드 18개.
+- [x] 절차형 상대·경로와 슬롯 1~3 학습 역할.
+- [x] 3수 계획 편집·해결·복기 UX.
+- [x] PR #80 성장 기획 10/10 체크포인트 병합.
+- [x] PR #82 10성 절초 주 능력치12·시작 무공 보조 능력치 매핑 승인 2/10.
+- [ ] 중간 노드 영구 스테이터스 보상.
+- [ ] 개별 기술 배수·5/9성 임계 효과.
+- [ ] 전투 종료 등급 산식·파밍 방지·절초 평가.
+- [ ] 경쟁·관찰·고능력치 사람 검증 계약.
 
-상태: `V6_PLANNING_AUTHORITY_INTEGRATED`.
+상태: `APPROVED_PENDING_MERGE_2_OF_10`.
 
-## R2 — 현재 GitHub 통합
+## R2 — ActionSelectionDock 런타임 기준선
 
-- [x] v6 전체 결정 권한 원장 작성.
-- [x] Active Context·Documentation Map·Handoff·진입점 갱신.
-- [x] PR #45 제목·본문을 계획 전용 통합으로 교정.
-- [x] 과거 기획 기준선과 BUILD 진입 문서를 역사 포인터로 축약.
-- [ ] 최신 PR Validation PASS.
-- [ ] PR #45 병합 후 main SHA와 파일 상태 재확인.
+- [x] `[기초] [무공] [절초]` 구조.
+- [x] 무공서→현재 해금 기술.
+- [x] 가장 앞 유효 연속 수 자동 배치.
+- [x] `[전조] → [실행]` 연결 블록.
+- [x] 진행 전 이동·제거.
+- [x] 절초기세 예약·환불.
+- [x] 포인터 Drop 회귀 수정.
+- [x] 구현 HEAD 자동 검증 PASS.
+- [ ] Windows 실제 Godot·사람 검증.
 
-상태: `INTEGRATION_REVIEW`.
+상태: `IMPLEMENTED_AUTOMATED_PASS_HUMAN_PENDING`.
 
-## R3 — `[보류]`
+## R3 — 정본·Sheet·PR 운영
 
-다음은 사용자가 재개하기 전 진행하지 않는다.
+- [x] PR #80 10/10 exact-head 검증·병합.
+- [x] PR #81 main 상태 동기화와 Sheet readback.
+- [x] PR #82 두 승인 Decision을 Branch·planning data·Sheet에 같은 ID로 기록.
+- [x] PR #82 exact-head 세 필수 Workflow PASS·review thread 0.
+- [ ] PR #82 최대 10건 또는 허용된 조기 체크포인트 완료.
+- [ ] 전체 적대적 검토·P0/P1 0·exact-head 재검증.
+- [ ] 병합 후 main SHA와 Sheet `SYNCED_TO_MAIN` 재기록.
 
-- Round 4 이후 전체 적대적 검토.
-- 16권 절초의 개별 이름·효과·슬롯·태그·대응점.
-- 2026-07-26 구현 계획 실행.
-- 런타임 구현 계획 재작성.
-- Godot 런타임·데이터·씬·자산 변경.
+상태: `ACTIVE_PLANNING_BATCH`.
 
-상태: `HOLD`.
+## R4 — 기획 완료
 
-## R4 — 설계 재개 후
+```text
+중간 노드 영구 스탯
+→ 기술 배수·임계
+→ 등급·파밍·절초 평가
+→ 경쟁·관찰·사람 검증 계약
+→ 10/10 또는 조기 체크포인트
+→ exact-head PR·Sheet·정본 감사
+```
 
-사용자가 절초 설계를 재개하면:
+상태: `NOT_COMPLETE`.
 
-1. 절초 공통 계약을 기준으로 16개 절초를 하나씩 확정한다.
-2. 일반 기술과 성급 효과를 내부 권장안으로 완성한다.
-3. 성장 경제·경로·적·UI의 통합 명세를 작성한다.
-4. 보류된 적대적 검토를 재개한다.
-5. 남은 `MUST_FIX`가 0일 때만 새 구현 계획과 BUILD 승인을 요청한다.
+## R5 — 전체 검토
 
-상태: `NOT_STARTED / USER_RESTART_REQUIRED`.
+- 핵심 시스템·보조 시스템·핵심 재미·제품 목표 정렬.
+- 성장·관찰·보상·등급이 수읽기를 대체하는 반례 검증.
+- main·PR·Sheet·활성 소비자·untouched 문서·테스트 대조.
+- 구현과 승인 기획 차이 목록·Codex 범위 확정.
 
-## R5 — 향후 BUILD 게이트
+상태: `BLOCKED_BY_R4`.
 
-새 BUILD는 다음을 모두 요구한다.
+## R6 — 이미지·애니메이션·HX
 
-- 사용자의 명시적 구현 승인.
-- 최신 통합 명세와 구현 계획.
-- 보호 경로·기준 SHA·롤백 계약.
-- 격리 브랜치·worktree.
-- TDD와 구간별 REVIEW 복귀.
-- Godot·Windows·접근성·성능·사람 검증의 독립 기록.
+```text
+필요 목록 확정
+→ 브리프·금지요소·화면 위치
+→ 생성
+→ 시각 QA·접근성·일관성 검수
+→ 승인 ID·버전·파일 경로 기록
+```
 
-현재 판정: `NOT_GRANTED`.
+상태: `BLOCKED_BY_R5`.
 
-## 독립 증거 원칙
+## R7 — `VERTICAL_SLICE_APP_FLOW_SHELL`
 
-파일 존재·정적 검사·Actions·Godot·Windows·접근성·성능·사람 플레이·시장 검증은 서로 다른 증거다. 실행하지 않은 항목은 `UNVERIFIED`다.
+```text
+App Root
+→ Main
+→ 시작 무공 6중4
+→ Route·Node·Briefing
+→ 기존 Combat
+→ Result·Reward·Retry
+```
+
+- [ ] 명시적 화면 상태 전환과 입력 잠금.
+- [ ] `RunSession`·`SaveService` 최소 계약.
+- [ ] Route·Node·Briefing 저충실도 Shell.
+- [ ] Combat 진입·복귀.
+- [ ] Result·Reward·Retry transaction.
+- [ ] 저장 실패·same-seed 복원·이중 commit 회귀.
+
+상태: `NOT_GRANTED_UNTIL_PLANNING_REVIEW_IMAGES_COMPLETE`.
+
+## R8 — 콘텐츠 반복 제작
+
+```text
+슬롯별 대표 후보 1명으로 제품 흐름 증명
+→ 두 번째 후보·노드 반복 제작
+→ 제작 시간·데이터 재사용·사람 검증
+→ 검증된 슬롯부터 후보 3명으로 확장
+```
+
+최종 `5슬롯 × 후보 3명` 계약을 축소하지 않는다.
+
+## R9 — 사람·Vertical Slice 게이트
+
+- Windows 실제 Godot.
+- 키보드·마우스·게임패드.
+- 해상도·safe area.
+- 접근성·성능.
+- `STEP 14` 신규 플레이어 5명.
+- 고능력치가 잘못된 계획을 덮는 비율.
+- 두 번째 콘텐츠 반복 제작 증거.
+
+상태: `T1_NOT_GRANTED`.
+
+## `[보류]`
+
+- 16권 절초 개별 설계.
+- 주요 비무 6~10 런타임.
+- 천하제일인·비동기 기능.
+- 모바일 포팅·스토어·크로스 세이브.
+- 최종 아트·오디오 폴리싱.
+
+실행하지 않은 검증은 `NOT_RUN / UNVERIFIED`다.

@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "decision_id": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01",
+  "authority_status": "SUPERSEDED_HISTORICAL_EVIDENCE",
+  "implementation_authority": "HISTORICAL_PLANNING_EVIDENCE_ONLY",
+  "lifecycle_label_ko": "[대체됨]",
+  "approved_at": "2026-08-03",
+  "superseded_at": "2026-08-04",
+  "superseded_by": "TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01",
+  "current_effect_contract": "docs/planning-data/approved_20260804_technique1_conditional_rework_star5_contract.json",
+  "current_cost_contract": "docs/planning-data/approved_20260804_existing_action_reprice_contract.json",
+  "historical_source": {
+    "original_blob_sha": "04247fdf6019a2245a3ab10a60f0eb896a399ec5",
+    "merged_pr": 84,
+    "merge_commit": "81765e35c179b7a57eaa527a307080b63c32f0b8",
+    "retrieval_policy": "USE_GIT_HISTORY_FOR_FULL_ORIGINAL_PAYLOAD"
+  },
+  "historical_scope": [
+    "ORIGINAL_TECHNIQUE1_NAMES_AND_ROLE_INTENT",
+    "PRE_CONDITIONAL_REWORK_EFFECT_FORMULAS",
+    "PRE_REPRICE_COSTS_AND_SLOTS",
+    "BEFORE_AFTER_MIGRATION_EVIDENCE"
+  ],
+  "allowed_use": [
+    "HISTORICAL_DIFF",
+    "MIGRATION_AUDIT",
+    "REGRESSION_PROVENANCE"
+  ],
+  "forbidden_use": [
+    "CURRENT_PRODUCT_CARD_GENERATION",
+    "CURRENT_RUNTIME_DATA_GENERATION",
+    "CURRENT_BALANCE_AUTHORITY",
+    "CURRENT_TECHNIQUE1_EFFECT_OR_COST_LOOKUP"
+  ],
+  "canon_conflict_rule": "DIRECT_CURRENT_USE_OF_THIS_SUPERSEDED_CONTRACT_IS_CANON_CONFLICT",
+  "runtime_boundary": {
+    "product_code_changed": false,
+    "runtime_data_changed": false,
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  }
+}

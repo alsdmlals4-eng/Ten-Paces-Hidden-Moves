@@ -1,0 +1,25 @@
+{
+  "schema_version": 2,
+  "decision_id": "TEN-DEC-20260802-STARTING-STAT-ALLOCATION-FIVE-01",
+  "authority_status": "SUPERSEDED",
+  "implementation_authority": "NONE_HISTORICAL",
+  "historical_grillme_count": "4/10",
+  "successor_decision": "TEN-DEC-20260802-STARTING-STAT-TOTAL20-MANUAL-BONUS-01",
+  "historical_rule": {
+    "base_each": 2,
+    "free_points": 5,
+    "pre_manual_total": 15,
+    "minimum_after_direct_allocation": 2,
+    "maximum_after_direct_allocation": 6,
+    "manual_bonus_applied_after_direct_allocation": true,
+    "manual_bonus_clamped_at_six": false
+  },
+  "superseded_values": [
+    "free_allocation_points_5",
+    "pre_manual_total_15",
+    "manual_bonus_vectors_tbd",
+    "final_starting_total_tbd"
+  ],
+  "current_contract_path": "docs/planning-data/approved_20260802_starting_stat_total20_manual_bonus_contract.json",
+  "current_use_allowed": false
+}

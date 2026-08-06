@@ -62,6 +62,12 @@ jobs:
       - name: Run governance regression tests
         run: python -m unittest discover -s tests -p 'test_project_governance.py'
 
+      - name: Run post-merge canon lifecycle regression tests
+        run: python -m unittest tests.test_postmerge_canon_lifecycle -v
+
+      - name: Validate post-merge canon lifecycle
+        run: python tools/check_postmerge_canon_lifecycle.py
+
       - name: Validate PoC planning data
         run: python -m unittest tests.test_poc_planning_data -v
 
@@ -91,6 +97,10 @@ jobs:
       - name: Validate prepare and auto placement contract
         if: steps.scope.outputs.code_changed == 'true'
         run: python tests/check_prepare_auto_placement_contract.py
+
+      - name: Validate action selection contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_action_selection_contract.py
 
       - name: Parse PowerShell automations for code changes
         if: steps.scope.outputs.code_changed == 'true'

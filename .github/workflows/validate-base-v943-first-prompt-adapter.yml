@@ -1,0 +1,22 @@
+name: Validate Base v9.4.3 First Prompt Adapter
+
+on:
+  pull_request:
+    paths:
+      - "skills/PROJECT_BASE_ADAPTER.json"
+      - "tests/test_base_v943_first_prompt_adoption.py"
+      - ".github/workflows/validate-base-v943-first-prompt-adapter.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  adapter-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run Base v9.4.3 first-prompt adapter contract
+        run: python tests/test_base_v943_first_prompt_adoption.py

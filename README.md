@@ -1,7 +1,7 @@
 > # 십보강호: 숨은 수의 비무
 ## Ten Paces: Hidden Moves
 
-상대의 다음 행동 단서를 모아 가설을 세우고 여러 수의 계획으로 의도를 무너뜨리는 **무협 전술 로그라이트**입니다.
+상대의 다음 행동 단서를 모아 가설을 세우고 여러 수의 계획으로 의도를 무너뜨리는 **1대1 무협 전술 로그라이트**입니다.
 
 > 보이지 않는 상대의 수를 읽고, 준비한 계획으로 꺾는다.
 
@@ -9,75 +9,154 @@
 
 - [작업 시작](START_HERE.md)
 - [현재 상태]([기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md)
-- [v6 전체 결정 권한 원장](docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md)
-- [PR #45 v6 통합 검수](docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md)
 - [문서 지도]([기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md)
 - [게임 기획](docs/01_GAME_DESIGN.md)
 - [전투 규칙](docs/02_COMBAT_RULES.md)
 - [콘텐츠 카탈로그](docs/03_CONTENT_CATALOG.md)
-- [무공·성장 자료](docs/06_STARTING_FACTION_MASTERY_DATA.md)
+- [로드맵](docs/04_ROADMAP.md)
 - [테스트 체크리스트](docs/08_TEST_CHECKLIST.md)
+- [행동 선택 Decision](docs/decisions/2026-08-01_MARTIAL_MANUAL_TECHNIQUE_TIMELINE_UX_DECISION.md)
+- [화면 구조 Decision](docs/decisions/2026-08-01_SITUATION_SCREEN_ARCHITECTURE_DECISION.md)
+- [플랫폼 범위 Decision](docs/decisions/2026-08-02_PLATFORM_SCOPE_DECISION.md)
+- [ActionSelectionDock 종료 기록](docs/implementation/2026-08-01_ACTION_SELECTION_DOCK_CLOSEOUT.md)
+- [PR #65 정본·Sheet 동기화](docs/implementation/2026-08-01_PR65_CANON_SHEET_SYNC.md)
+- [2026-08-01 Base·프로젝트·Sheet 적대적 감사](docs/reviews/2026-08-01_BASE_PROJECT_SHEET_ADVERSARIAL_AUDIT.md)
+- [2026-08-02 총기획·정본·Sheet 감사](docs/reviews/2026-08-02_BASE_PROJECT_SHEET_TOTAL_PLANNING_AUDIT.md)
 - [Base 적용 기준](docs/BASE_RULES_VERSION.md)
 - [Base 동기화 감사]([기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md)
+- [Base 채택·학습 기록](docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md)
 
 ## 현재 작업 상태
 
 ```yaml
-product_stage: CONCEPT_APPROVAL
-work_mode: PLAN
-execution_profile: PLANNING_ONLY_PROFILE
-runtime_implementation: PROHIBITED_UNTIL_NEW_APPROVAL
-planning_integration_pr: 45
-human_validation: UNVERIFIED
-base_commit: c987647d01ad2baa028a16e03d85ddfc1572a727
+main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
+last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
+product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
+work_mode: REVIEW
+integration_pr: 65
+active_planning_work_mode: PLAN
+active_planning_pr: 82
+active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
+active_approval_count: 2/10
+active_decision_state: APPROVED_PENDING_MERGE
+runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
+latest_combat_planning_runtime: NOT_STARTED
+automated_validation: PASS
+windows_validation: NOT_RUN
+human_validation: NOT_RUN
+primary_platform: PC
+future_platform: MOBILE_CONSIDERATION_ONLY
+next_package: VERTICAL_SLICE_APP_FLOW_SHELL
+next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
+base_release_pinned: 9.4.3
 ```
 
-2026-07-26의 `BUILD_IN_PROGRESS`와 구현 인계 승인은 이후 v6 재설계 지시로 대체됐습니다. PR #45는 최신 결정 원장과 과거 감사·검증 자료를 정합화하는 계획 문서 통합이며 제품 런타임을 변경하지 않습니다.
+`work_mode: REVIEW`와 `integration_pr: 65`는 현재 런타임 통합 기준선입니다. 활성 기획은 `active_planning_work_mode: PLAN`과 PR #82로 분리합니다. PR #82의 두 승인 Decision은 활성 Branch·Decision·planning data·Google Sheet에 `APPROVED_PENDING_MERGE`로 기록되어 있으며, PR 병합과 main·Sheet 재조회 전에는 main 동기화 완료로 취급하지 않습니다.
 
-## 프로젝트 코어
+## 플랫폼 범위
+
+- 현재 기획·구현·검증·배포 기준은 `PC`입니다.
+- 모바일은 PC 버티컬 슬라이스와 전투 코어 검증 뒤 재평가할 미래 후보이며 현재 구현 범위가 아닙니다.
+- 터치 UI, Android·iOS 빌드, 모바일 성능·스토어·크로스 세이브는 별도 Decision 전까지 `NOT_STARTED`입니다.
+- 모바일 가능성을 이유로 현재 전투 코어·3/3/4·정보 구조·콘텐츠 범위를 선행 변경하지 않습니다.
+
+## 프로젝트 코어와 핵심 재미
 
 ```text
-상대의 공개 상태·해결 이력 관찰
-→ 다음 행동에 대한 가설 수립
-→ 3/3/4 행동 묶음 계획
-→ 상대 의도 완화·거부·반전·응징
-→ 결과 복기와 무공 성장
+공개 상태·해결 이력 읽기
+→ 가능한 행동 가설 세우기
+→ 여러 가능성을 견디는 3/3/4 비공개 계획
+→ 거리·현재 순번 합·대응·중단으로 해결
+→ 결정적 원인을 복기
+→ 다음 계획과 경로 선택 변경
 ```
 
-- 성장은 더 다양하고 강력한 파훼 방법을 제공합니다.
-- 원시 수치 상승은 파훼 판단을 대체하지 않습니다.
+- 1대1 10칸 일자형 전장입니다.
+- 플레이어 4번·상대 7번에서 시작하는 현행 T0 구현을 유지합니다.
+- 거리 0은 `[밀착]`입니다.
+- 한 라운드는 `3수 → 3수 → 4수`, 각 묶음 뒤 해결하며 총 10수입니다.
+- `[합]`, 순차 연격, 방어도, 회피, 중단, 강건을 사용합니다.
 - AI는 플레이어의 미확정 계획을 읽지 않습니다.
 - 덱·손패·드로우·장착 기술 제한을 사용하지 않습니다.
+- 뾰족한 재미는 단일 행동을 찍어 맞히는 것이 아니라, 불완전한 정보에서 강건한 계획을 만들고 왜 상대의 의도가 무너졌는지 이해하는 데 있습니다.
+- 성장은 원시 수치로 판단을 대체하지 않고 더 다양한 파훼 수단을 제공합니다.
 
-## 현재 주요 기획 계약
+## 행동 선택 UX
 
-- 한 라운드는 `3수 → 3수 → 4수`, 각 묶음 뒤 해결하며 총 10수입니다.
-- 10칸 일자형 전장과 거리 0 `[밀착]`을 사용합니다.
-- 버티컬 슬라이스는 핵심 결투 5개를 앵커로 하며 일반전·강적전·사건·수련·정보·회복·시장 노드를 포함합니다.
-- `[연격 N]`은 최종 총피해를 N개의 피해 묶음으로 나눕니다. 첫 피해만 `[합]`에 참여하며 기본 회피는 피해 묶음 하나만 회피합니다.
-- 방어와 보호막은 하나의 `[방어도]`로 통합되고 피해 묶음마다 개별 감산됩니다.
-- 무공서는 16권, 1~10성입니다. 시작 시 해금된 무공서 4권을 3성으로 선택합니다.
-- 수련 중앙 목표는 전체 전투 5회 40~50, 10회 90~100입니다.
-- 전투 랭크는 `A / A+ / S / S+`, 수련 보너스는 `0 / 1 / 2 / 3`입니다.
-- 절초는 무공서 10성에 해금되고 공유 절초기세 5를 소비하며 동일 슬롯 일반 기술보다 약 50% 높은 예산을 가집니다.
+```text
+[기초]
+[무공] → 무공서 → 현재 해금 기술
+[절초]
+→ 가장 앞 유효 연속 수 자동 배치
+→ 대상·방향 지정
+→ 진행 전 연결 블록 이동·제거
+→ 진행 후 잠금·해결
+```
+
+- 무공서는 직접 배치하지 않습니다.
+- 2수·3수 행동은 `[전조] → [실행]` 연결 블록입니다.
+- 절초기세는 공유 `0~5`이며 예약·진행 전 환불을 지원합니다.
+- ActionSelectionDock은 PR #65에서 구현됐고 자동 검증을 통과했습니다.
+- Windows 실제 Godot와 사람 이해도 검증은 아직 실행하지 않았습니다.
+
+## 회차·콘텐츠
+
+```yaml
+demo:
+  major_duel_slots: 5
+  candidates_per_slot: 3
+  intermediate_nodes: 8
+  target_playtime: 15_to_22_minutes
+full_run:
+  major_duel_slots: 10
+  candidates_per_slot: 3
+  intermediate_nodes: 18
+  target_playtime: 30_to_40_minutes
+```
+
+첫 비무는 후보 3명 중 1명을 seed 기반 선정하고, 이후 비무는 후보 3명 중 2명을 경로 종착점으로 제시합니다. 전체 후보 계약은 유지하되 첫 제품 흐름 구현은 슬롯별 대표 후보로 파이프라인을 먼저 증명합니다.
+
+## 다음 진행 순서
+
+```text
+PR #82 남은 기획 Decision 승인·동기화
+→ 기획 완료
+→ 전체 정본·PR·Sheet 적대적 검토
+→ 검토 완료
+→ 필요한 이미지·애니메이션·HX 생성·검수·승인
+→ 이미지 완료
+→ VERTICAL_SLICE_APP_FLOW_SHELL Codex 구현
+```
+
+`VERTICAL_SLICE_APP_FLOW_SHELL`의 흐름은 다음과 같습니다.
+
+```text
+App Root
+→ Main
+→ 시작 무공 6중4 선택
+→ Route·Node·Briefing
+→ 기존 Combat
+→ Result·Reward·Retry
+```
+
+저충실도 제품 흐름과 저장·전환·중복 commit 회귀를 먼저 검증하고, 실제 화면·입력·사람 검증 뒤 후보 풀을 확장합니다.
+
+## 역사·호환 기준
+
+- PR #7과 Issue #13은 현행 T0 `STEP 0~13` 구현 계보입니다.
+- PR #45와 v6 Decision 원장은 재설계·승인 이력입니다.
+- PR #65는 행동 선택 구현과 화면 구조 승인 통합 이력입니다.
+- PR #68은 Base v9.4 운영 계약 적용 이력입니다.
+- PR #72와 PR #80은 이후 전투·성장 기획 체크포인트 이력입니다.
+- 과거 Base 기준 `c987647d01ad2baa028a16e03d85ddfc1572a727`은 `HISTORICAL_COMPATIBILITY_BASELINE`입니다.
+- 현재 공용 Skill route는 `skills/PROJECT_BASE_ADAPTER.json`의 Base v9.4.3 payload/evidence/finalization pin을 사용합니다.
 
 ## `[보류]`
 
-- Round 4 이후 전체 적대적 검토
 - 16개 개별 절초 설계
-- 2026-07-26 구현 계획 실행
-- Godot 런타임·데이터·씬·자산 변경
+- 주요 비무 6~10 런타임
+- 천하제일인·비동기 기능
+- 모바일 포팅·스토어·크로스 세이브
+- 최종 아트·오디오 폴리싱
 
-## 구현 사실과 설계 권한
-
-현재 `main`에는 기존 T0 전투 PoC의 STEP 0~13이 존재하며 플레이어 4번·상대 7번 시작을 포함합니다. 최신 v6 기획과는 완전히 일치하지 않습니다. 실제 코드·데이터는 현재 구현 사실의 근거이며, 최신 설계 권한은 v6 결정 원장이 소유합니다.
-
-정적 검사·Actions 성공은 Godot 런타임, Windows 사용성, 접근성, 성능, 실제 플레이 재미를 증명하지 않습니다. 실행하지 않은 항목은 `UNVERIFIED`로 유지합니다.
-
-## BCA v8 기획·이미지·Sheet 운영
-
-- Base 기준: `alsdmlals4-eng/Base@c987647d01ad2baa028a16e03d85ddfc1572a727`
-- 통합 실행문: `templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md`
-- 프로젝트 Sheet: `PROJECT_SHEET_CONFIGURED`; 구조 계약은 `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md`
-- GPT 이미지·목업: `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md`
-- 적용 감사: `docs/BCA_VISUAL_SHEET_ADOPTION_AUDIT.md`
+정적 검사·Actions 성공은 Windows 실제 Godot, 실물 게임패드, 접근성 보조기술, 성능, 실제 플레이 재미를 증명하지 않습니다. 실행하지 않은 항목은 `NOT_RUN`입니다.

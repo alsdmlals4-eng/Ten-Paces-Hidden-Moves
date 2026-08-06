@@ -11,17 +11,18 @@
     "snapshot_sha256": "e30fca95d201a31937c7bddcbc341c79764d4940c318933a8902cb5bf901ba57"
   },
   "base_release": {
-    "release_commit": "3c158f52cfdad889970aef4d6ce6650a6fea0645",
-    "release_evidence_commit": "dd20ad3852e264d7e337e34d2cb963f71053a6cb",
+    "finalization_commit": "0b7c94f38d959efc0fc9442274c60b2e268a3c97",
+    "release_commit": "7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8",
+    "release_evidence_commit": "da33a350d61b8adc52df97fccc7001708a933370",
     "repository": "alsdmlals4-eng/Base",
-    "version": "9.1.0"
+    "version": "9.4.3"
   },
   "canonical_source": "skills/PROJECT_BASE_ADAPTER.json",
-  "canonical_source_sha256": "97d4c0f6158e581a8d25878f75871aad49d8b5ba78ede09b6a21551db9842eed",
+  "canonical_source_sha256": "c196b2f479e94010931508229dbbfb0024c9efa43c722233aee39bd20647a2ad",
   "generated": true,
   "hash_definition": "RAW_FILE_BYTES_SHA256",
   "legacy_source": "docs/archive/base-v9-legacy-inputs/BASE_V9_ADAPTER.json",
-  "legacy_source_sha256": "49f4b947dde2c09699b04727de70349831344493e69ffce761178eddda04bfa6",
+  "legacy_source_sha256": "36f635bab709f8b8f7b906d945a0a259bfc4d45f2434d15d1308db8bd99a522e",
   "lifecycle": "ONE_CYCLE",
   "maturity": {
     "level": 2,

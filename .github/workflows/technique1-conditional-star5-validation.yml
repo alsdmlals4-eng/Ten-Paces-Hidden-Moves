@@ -1,0 +1,31 @@
+name: Validate Technique1 conditional Star5
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run Technique1 conditional Star5 regression tests
+        run: python -m unittest tests.test_technique1_conditional_star5_contract -v
+
+      - name: Validate Technique1 conditional Star5 contract
+        run: python tools/check_technique1_conditional_star5_contract.py

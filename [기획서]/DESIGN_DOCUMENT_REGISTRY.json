@@ -42,7 +42,7 @@
       "diagram_policy": "none",
       "publication_manifest": null,
       "generator": null,
-      "required_sections": ["전장과 거리", "라운드와 계획 확정", "판정 파이프라인", "`[합]`·방어·회피·`[필중]`", "태세·중단·`[강건]`", "공개 상태 기반 라이벌 후보 AI", "전투 종료와 재시작", "T0 검증 기준"]
+      "required_sections": ["전장과 거리", "라운드와 계획 확정", "판정 파이프라인", "`[합]`·연격·방어·회피·`[필중]`", "태세·중단·`[강건]`", "공개 상태 기반 라이벌 후보 AI", "전투 종료와 재시작", "T0 검증 기준"]
     },
     {
       "document_id": "content-catalog",

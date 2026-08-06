@@ -1,0 +1,517 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "data_role": "APPROVED_TECHNIQUE1_EFFECT_AND_STAR5_OVERRIDE",
+  "approved_at": "2026-08-04",
+  "grillme_batch_count": "7/10",
+  "parent_decisions": [
+    "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
+    "TEN-DEC-20260804-EXISTING-ACTIONS-REPRICE-01",
+    "TEN-DEC-20260803-MARTIAL-TECHNIQUE-ROLE-AND-SCALING-MATRIX-01"
+  ],
+  "supersedes_effect_fields_of": "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01",
+  "effective_cost_authority": "docs/planning-data/approved_20260804_existing_action_reprice_contract.json",
+  "condition_coefficients": {
+    "easy": 0.85,
+    "moderate": 0.7,
+    "hard": 0.55,
+    "very_hard": 0.4,
+    "extreme": 0.25
+  },
+  "condition_rules": {
+    "conditional_bundle_all_or_nothing": true,
+    "partial_reward_on_failure": false,
+    "carryover_on_failure": false,
+    "substitution_on_failure": false,
+    "conversion_on_failure": false,
+    "self_created_prerequisite_credit_allowed": false,
+    "multiple_conditions_use_one_composite_coefficient": true,
+    "round_once_after_bundle_discount": true,
+    "condition_checked_at_declared_trigger": true
+  },
+  "star5_contract": {
+    "free_bonus_ratio": 0.2,
+    "rounding": "HALF_UP_TO_NEAREST_TICK",
+    "extra_slot_cost": 0,
+    "extra_resource_cost": 0,
+    "budget_recalculation_on_future_base_change": "REVIEW_REQUIRED_NOT_AUTOMATIC"
+  },
+  "multi_hit_contract": {
+    "calculate_total_damage_once": true,
+    "three_hit_distribution": [
+      0.4,
+      0.3,
+      "remainder"
+    ],
+    "cancelled_damage_redistributed": false,
+    "failed_hit_damage_carried_forward": false,
+    "stat_scaling_per_hit": false,
+    "rounding_per_hit_formula": false
+  },
+  "runtime_boundary": {
+    "planning_and_validation_only": true,
+    "html_poc_changed": false,
+    "godot_runtime_changed": false,
+    "runtime_game_data_changed": false,
+    "human_balance_validation": "NOT_RUN"
+  },
+  "techniques": {
+    "flowing_cloud_triple": {
+      "manual_id": "flowing_cloud_sword",
+      "name_ko": "유운삼첩",
+      "effective_action_slots": 2,
+      "effective_costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "available_budget_ticks": 61,
+      "low_floor": "REFERENCE_STAT4_FIRST_HIT_DAMAGE_5",
+      "high_ceiling": "REFERENCE_STAT4_TOTAL_DAMAGE_14_AND_FIXED_RETREAT_1",
+      "multi_hit": {
+        "total_damage_formula": "floor(10 + EXTERNAL * 1.00)",
+        "calculate_once": true,
+        "distribution": [
+          0.4,
+          0.3,
+          "remainder"
+        ],
+        "reference_stat4_total_damage": 14,
+        "reference_stat4_hits": [
+          5,
+          4,
+          5
+        ],
+        "hit2_condition": "HIT1_REAL_HEALTH_DAMAGE",
+        "hit3_condition": "HIT1_AND_HIT2_REAL_HEALTH_DAMAGE",
+        "retreat_condition": "ALL_THREE_HITS_REAL_HEALTH_DAMAGE",
+        "cancelled_damage_redistributed": false,
+        "failed_hit_damage_carried_forward": false
+      },
+      "base_design": {
+        "components": [
+          {
+            "id": "hit1_damage_5",
+            "raw_ticks": 25,
+            "difficulty": "none",
+            "coefficient": 1.0,
+            "priced_ticks": 25
+          },
+          {
+            "id": "hit2_damage_4_plus_extra_hit",
+            "raw_ticks": 24,
+            "difficulty": "moderate",
+            "coefficient": 0.7,
+            "priced_ticks": 17,
+            "condition": "HIT1_REAL_HEALTH_DAMAGE",
+            "all_or_nothing": true
+          },
+          {
+            "id": "hit3_damage_5_plus_extra_hit",
+            "raw_ticks": 29,
+            "difficulty": "very_hard",
+            "coefficient": 0.4,
+            "priced_ticks": 12,
+            "condition": "HIT1_AND_HIT2_REAL_HEALTH_DAMAGE",
+            "all_or_nothing": true
+          },
+          {
+            "id": "fixed_retreat_1",
+            "raw_ticks": 15,
+            "difficulty": "extreme",
+            "coefficient": 0.25,
+            "priced_ticks": 4,
+            "condition": "ALL_THREE_HITS_REAL_HEALTH_DAMAGE",
+            "all_or_nothing": true
+          }
+        ],
+        "effect_cost_ticks": 58,
+        "variance_ticks": -3
+      },
+      "star5_patch": {
+        "budget_ticks": 12,
+        "effect": "TOTAL_DAMAGE_PLUS_3_BEFORE_DISTRIBUTION",
+        "total_damage_bonus": 3,
+        "reference_stat4_total_damage": 17,
+        "reference_stat4_hits": [
+          6,
+          5,
+          6
+        ],
+        "components": [
+          {
+            "id": "hit1_bonus_damage_1",
+            "raw_ticks": 5,
+            "difficulty": "none",
+            "coefficient": 1.0,
+            "priced_ticks": 5
+          },
+          {
+            "id": "hit2_bonus_damage_1",
+            "raw_ticks": 5,
+            "difficulty": "moderate",
+            "coefficient": 0.7,
+            "priced_ticks": 4,
+            "condition": "HIT1_REAL_HEALTH_DAMAGE",
+            "all_or_nothing": true
+          },
+          {
+            "id": "hit3_bonus_damage_1",
+            "raw_ticks": 5,
+            "difficulty": "very_hard",
+            "coefficient": 0.4,
+            "priced_ticks": 2,
+            "condition": "HIT1_AND_HIT2_REAL_HEALTH_DAMAGE",
+            "all_or_nothing": true
+          }
+        ],
+        "priced_ticks": 11,
+        "variance_ticks": -1,
+        "extra_slot_cost": 0,
+        "extra_stamina_cost": 0,
+        "extra_internal_cost": 0
+      }
+    },
+    "vajra_guard": {
+      "manual_id": "diamond_body_art",
+      "legacy_manual_alias": "vajra_body",
+      "name_ko": "금강가세",
+      "effective_action_slots": 1,
+      "effective_costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "available_budget_ticks": 31,
+      "low_floor": "DEFENSE_4",
+      "high_ceiling": "DEFENSE_7_FORTITUDE_1_STAMINA_1_ON_FULL_ABSORB",
+      "base_design": {
+        "components": [
+          {
+            "id": "defense_4",
+            "raw_ticks": 16,
+            "difficulty": "none",
+            "coefficient": 1.0,
+            "priced_ticks": 16
+          },
+          {
+            "id": "full_absorb_bundle",
+            "raw_ticks": 28,
+            "difficulty": "hard",
+            "coefficient": 0.55,
+            "priced_ticks": 15,
+            "condition": "REAL_ATTACK_FULLY_ABSORBED_BEFORE_NEXT_OWN_ACTION",
+            "trigger": "ON_ZERO_HEALTH_DAMAGE_FROM_REAL_ATTACK",
+            "effects": {
+              "defense_gain": 3,
+              "fortitude": 1,
+              "stamina_gain": 1
+            },
+            "all_or_nothing": true
+          }
+        ],
+        "effect_cost_ticks": 31,
+        "variance_ticks": 0
+      },
+      "star5_patch": {
+        "budget_ticks": 6,
+        "effect": "INTERNAL_GAIN_1_ON_FULL_ABSORB",
+        "components": [
+          {
+            "id": "internal_gain_1",
+            "raw_ticks": 9,
+            "difficulty": "hard",
+            "coefficient": 0.55,
+            "priced_ticks": 5,
+            "condition": "REAL_ATTACK_FULLY_ABSORBED_BEFORE_NEXT_OWN_ACTION",
+            "trigger": "ON_ZERO_HEALTH_DAMAGE_FROM_REAL_ATTACK",
+            "all_or_nothing": true
+          }
+        ],
+        "priced_ticks": 5,
+        "variance_ticks": -1,
+        "extra_slot_cost": 0,
+        "extra_stamina_cost": 0,
+        "extra_internal_cost": 0
+      }
+    },
+    "cloud_hand_return": {
+      "manual_id": "taiji_flowing_sword",
+      "legacy_manual_alias": "taiji_flow",
+      "name_ko": "운수회신",
+      "effective_action_slots": 1,
+      "effective_costs": {
+        "stamina": 2,
+        "internal": 1
+      },
+      "available_budget_ticks": 40,
+      "low_floor": "EVADE_ATTEMPT_ONLY",
+      "high_ceiling": "EVADE_RETREAT_1_INTERNAL_1_DEFENSE_3",
+      "base_design": {
+        "components": [
+          {
+            "id": "evade_1",
+            "raw_ticks": 18,
+            "difficulty": "none",
+            "coefficient": 1.0,
+            "priced_ticks": 18
+          },
+          {
+            "id": "evade_success_bundle",
+            "raw_ticks": 36,
+            "difficulty": "hard",
+            "coefficient": 0.55,
+            "priced_ticks": 20,
+            "condition": "SUCCESSFULLY_EVADE_REAL_EFFECTIVE_ATTACK",
+            "trigger": "ON_EVADE_SUCCESS",
+            "effects": {
+              "fixed_retreat": 1,
+              "internal_gain": 1,
+              "defense_gain": 3
+            },
+            "all_or_nothing": true
+          }
+        ],
+        "effect_cost_ticks": 38,
+        "variance_ticks": -2
+      },
+      "star5_patch": {
+        "budget_ticks": 8,
+        "effect": "MOMENTUM_GAIN_1_ON_EVADE_SUCCESS",
+        "components": [
+          {
+            "id": "momentum_gain_1",
+            "raw_ticks": 12,
+            "difficulty": "hard",
+            "coefficient": 0.55,
+            "priced_ticks": 7,
+            "condition": "SUCCESSFULLY_EVADE_REAL_EFFECTIVE_ATTACK",
+            "trigger": "ON_EVADE_SUCCESS",
+            "all_or_nothing": true
+          }
+        ],
+        "priced_ticks": 7,
+        "variance_ticks": -1,
+        "extra_slot_cost": 0,
+        "extra_stamina_cost": 0,
+        "extra_internal_cost": 0
+      }
+    },
+    "pursuing_wind_thrust": {
+      "manual_id": "chasing_wind_spear",
+      "legacy_manual_alias": "pursuing_wind_spear",
+      "name_ko": "추풍일섬",
+      "effective_action_slots": 1,
+      "effective_costs": {
+        "stamina": 1,
+        "internal": 3
+      },
+      "available_budget_ticks": 45,
+      "low_floor": "FIXED_ADVANCE_1_AND_DAMAGE_1",
+      "high_ceiling": "TOTAL_DAMAGE_7_AND_DEFENSE_BREAK_2_AT_SPEAR_TIP",
+      "base_design": {
+        "components": [
+          {
+            "id": "fixed_advance_1",
+            "raw_ticks": 15,
+            "difficulty": "none",
+            "coefficient": 1.0,
+            "priced_ticks": 15
+          },
+          {
+            "id": "max_range_2",
+            "raw_ticks": 15,
+            "difficulty": "none",
+            "coefficient": 1.0,
+            "priced_ticks": 15
+          },
+          {
+            "id": "base_damage_1",
+            "raw_ticks": 5,
+            "difficulty": "none",
+            "coefficient": 1.0,
+            "priced_ticks": 5
+          },
+          {
+            "id": "spear_tip_bundle",
+            "raw_ticks": 38,
+            "difficulty": "very_hard",
+            "coefficient": 0.4,
+            "priced_ticks": 15,
+            "condition": "FULL_ADVANCE_AND_EXACT_RANGE_2_AND_REAL_HEALTH_DAMAGE",
+            "trigger": "ON_HEALTH_DAMAGE",
+            "effects": {
+              "bonus_damage": 6,
+              "defense_break": 2
+            },
+            "all_or_nothing": true
+          }
+        ],
+        "effect_cost_ticks": 50,
+        "variance_ticks": 5
+      },
+      "star5_patch": {
+        "budget_ticks": 9,
+        "effect": "RETREAT_1_AND_DEFENSE_2_ON_SPEAR_TIP_SUCCESS",
+        "components": [
+          {
+            "id": "spear_tip_recovery_bundle",
+            "raw_ticks": 23,
+            "difficulty": "very_hard",
+            "coefficient": 0.4,
+            "priced_ticks": 9,
+            "condition": "FULL_ADVANCE_AND_EXACT_RANGE_2_AND_REAL_HEALTH_DAMAGE",
+            "trigger": "ON_HEALTH_DAMAGE",
+            "effects": {
+              "fixed_retreat": 1,
+              "defense_gain": 2
+            },
+            "all_or_nothing": true
+          }
+        ],
+        "priced_ticks": 9,
+        "variance_ticks": 0,
+        "extra_slot_cost": 0,
+        "extra_stamina_cost": 0,
+        "extra_internal_cost": 0
+      }
+    },
+    "clear_heart_breath": {
+      "manual_id": "clear_heart_nourishing_art",
+      "legacy_manual_alias": "clear_heart_nurturing",
+      "name_ko": "청심조식",
+      "effective_action_slots": 1,
+      "effective_costs": {
+        "stamina": 0,
+        "internal": 0
+      },
+      "available_budget_ticks": 24,
+      "frequency_limit": "ONCE_PER_BUNDLE",
+      "low_floor": "INTERNAL_GAIN_1",
+      "high_ceiling": "STAMINA_2_INTERNAL_2_DEFENSE_3_AT_RESOURCE_SUM_LE_1",
+      "base_design": {
+        "components": [
+          {
+            "id": "internal_gain_1",
+            "raw_ticks": 9,
+            "difficulty": "none",
+            "coefficient": 1.0,
+            "priced_ticks": 9
+          },
+          {
+            "id": "low_resource_bundle",
+            "raw_ticks": 33,
+            "difficulty": "very_hard",
+            "coefficient": 0.4,
+            "priced_ticks": 13,
+            "condition": "PRE_ACTION_STAMINA_PLUS_INTERNAL_LE_1",
+            "trigger": "ON_ACTION_START_SNAPSHOT",
+            "effects": {
+              "stamina_gain": 2,
+              "internal_gain": 1,
+              "defense_gain": 3
+            },
+            "all_or_nothing": true,
+            "condition_checked_before_own_gains": true
+          }
+        ],
+        "effect_cost_ticks": 22,
+        "variance_ticks": -2
+      },
+      "star5_patch": {
+        "budget_ticks": 5,
+        "effect": "HEALTH_HEAL_2_ON_LOW_RESOURCE_SUCCESS",
+        "components": [
+          {
+            "id": "health_heal_2",
+            "raw_ticks": 12,
+            "difficulty": "very_hard",
+            "coefficient": 0.4,
+            "priced_ticks": 5,
+            "condition": "PRE_ACTION_STAMINA_PLUS_INTERNAL_LE_1",
+            "trigger": "ON_ACTION_START_SNAPSHOT",
+            "all_or_nothing": true
+          }
+        ],
+        "priced_ticks": 5,
+        "variance_ticks": 0,
+        "extra_slot_cost": 0,
+        "extra_stamina_cost": 0,
+        "extra_internal_cost": 0
+      }
+    },
+    "iron_step_drift": {
+      "manual_id": "shadowless_ten_steps",
+      "legacy_manual_alias": "shadowless_steps",
+      "name_ko": "철각유영",
+      "effective_action_slots": 1,
+      "effective_costs": {
+        "stamina": 3,
+        "internal": 2
+      },
+      "available_budget_ticks": 46,
+      "low_floor": "FIXED_RETREAT_1_AND_EVADE_ATTEMPT",
+      "high_ceiling": "FULL_RETREAT_2_EVADE_AND_MOMENTUM_1",
+      "base_design": {
+        "components": [
+          {
+            "id": "fixed_retreat_1",
+            "raw_ticks": 15,
+            "difficulty": "none",
+            "coefficient": 1.0,
+            "priced_ticks": 15
+          },
+          {
+            "id": "evade_1",
+            "raw_ticks": 18,
+            "difficulty": "none",
+            "coefficient": 1.0,
+            "priced_ticks": 18
+          },
+          {
+            "id": "full_escape_bundle",
+            "raw_ticks": 27,
+            "difficulty": "hard",
+            "coefficient": 0.55,
+            "priced_ticks": 15,
+            "condition": "SUCCESSFULLY_EVADE_REAL_ATTACK_AND_COMPLETE_SECOND_RETREAT_TILE",
+            "trigger": "ON_EVADE_SUCCESS_AFTER_MOVEMENT_VALIDATION",
+            "effects": {
+              "additional_fixed_retreat": 1,
+              "momentum_gain": 1
+            },
+            "all_or_nothing": true,
+            "blocked_second_retreat_grants_momentum": false
+          }
+        ],
+        "effect_cost_ticks": 48,
+        "variance_ticks": 2
+      },
+      "star5_patch": {
+        "budget_ticks": 9,
+        "effect": "FORTITUDE_1_AND_DEFENSE_1_ON_FULL_ESCAPE",
+        "components": [
+          {
+            "id": "full_escape_stability_bundle",
+            "raw_ticks": 14,
+            "difficulty": "hard",
+            "coefficient": 0.55,
+            "priced_ticks": 8,
+            "condition": "SUCCESSFULLY_EVADE_REAL_ATTACK_AND_COMPLETE_SECOND_RETREAT_TILE",
+            "trigger": "ON_EVADE_SUCCESS_AFTER_MOVEMENT_VALIDATION",
+            "effects": {
+              "fortitude": 1,
+              "defense_gain": 1
+            },
+            "all_or_nothing": true
+          }
+        ],
+        "priced_ticks": 8,
+        "variance_ticks": -1,
+        "extra_slot_cost": 0,
+        "extra_stamina_cost": 0,
+        "extra_internal_cost": 0
+      }
+    }
+  },
+  "next_grillme": "INDIVIDUAL_STAR_9_READ_BASED_BRANCHES"
+}

@@ -3,78 +3,151 @@
 ## 현재 상태
 
 ```yaml
-project: 십보강호
-product_stage: CONCEPT_APPROVAL
-work_mode: PLAN
-execution_profile: PLANNING_ONLY_PROFILE
-runtime_implementation: PROHIBITED_UNTIL_NEW_APPROVAL
-planning_integration_pr: 45
-canonical_decision_ledger: docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md
-integration_review: docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md
-current_runtime: IMPLEMENTED_LEGACY
-new_v6_runtime: NOT_STARTED
-human_validation: UNVERIFIED
+project: 십보강호: 숨은 수의 비무
+product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
+work_mode: REVIEW
+integration_pr: 65
+active_planning_work_mode: PLAN
+main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
+last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
+active_planning_pr: 82
+active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
+active_approval_count: 2/10
+active_decision_state: APPROVED_PENDING_MERGE
+runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
+implemented_decision: TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01
+approved_planning_decision: TEN-DEC-20260801-SITUATION-SCREEN-01
+automated_validation: PASS_AT_PR82_HEAD
+human_validation: NOT_RUN
+next_package: VERTICAL_SLICE_APP_FLOW_SHELL
+next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
+base_release_pinned: 9.4.3
 t1_greenlight: NOT_GRANTED
 ```
 
-2026-07-26의 과거 BUILD·구현 승인 상태는 최신 v6 재설계 지시로 대체됐다. PR #45는 최신 계획 권한과 역사·검증 자료를 통합하지만 Codex 런타임 구현 인계를 허가하지 않는다.
+`work_mode: REVIEW`와 `integration_pr: 65`는 런타임 기준선이다. 현재 승인 활동은 PR #82의 `PLAN`이며 병합 전 상태는 `APPROVED_PENDING_MERGE`다.
 
 ## 반드시 읽을 파일
 
-1. `AGENTS.md`.
-2. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`.
-3. `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`와 Part 1A·1B·2·3.
-4. `docs/decisions/2026-07-28_V6_PR45_INTEGRATION_REVIEW.md`.
-5. `[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md`.
-6. 질문별 책임 원본과 실제 코드·데이터·테스트.
+1. `../../../AGENTS.md`.
+2. `../../../docs/BASE_RULES_VERSION.md`.
+3. `ACTIVE_CONTEXT.md` — 병합된 main 체크포인트.
+4. `DOCUMENTATION_MAP.md` — 활성 PR #82 포함 현재 권한 지도.
+5. `../../../docs/decisions/2026-08-01_MARTIAL_MANUAL_TECHNIQUE_TIMELINE_UX_DECISION.md`.
+6. `../../../docs/decisions/2026-08-01_SITUATION_SCREEN_ARCHITECTURE_DECISION.md`.
+7. `../../../docs/implementation/2026-08-01_ACTION_SELECTION_DOCK_CLOSEOUT.md`.
+8. `../../../docs/reviews/2026-08-02_BASE_PROJECT_SHEET_TOTAL_PLANNING_AUDIT.md`.
+9. PR #82의 두 최신 Decision·planning JSON.
+10. 질문별 책임 원본과 실제 코드·데이터·테스트·PR.
 
-## 현재 핵심 결정
+과거 v6 결정 인덱스는 `../../../docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`이며 현재 날짜별 Decision보다 높은 권한을 갖지 않는다.
 
-- 뾰족한 재미: 계획을 세워 상대의 숨은 수를 읽고 파훼한다.
-- 라운드: `3수 → 해결 → 3수 → 해결 → 4수 → 해결`.
-- 버티컬 슬라이스 앵커: 핵심 결투 5개.
-- `[연격 N]`: 총피해를 N회로 분할. 첫 피해만 합.
-- 방어·보호막: 통합 `[방어도]`, 피해 묶음별 감산, 피격으로 소모되지 않음.
-- 무공서: 16권, 1~10성, 시작 4권 3성.
-- 수련 중앙 목표: 전체 전투 5회 40~50, 10회 90~100.
-- 전투 랭크: A/A+/S/S+ 보너스 0/1/2/3.
-- 절초: 기세 5, 동일 슬롯 일반 기술보다 약 50% 높은 예산.
+## 현재 구현
 
-## `[보류]`
+ActionSelectionDock:
 
-- Round 4 이후 전체 적대적 검토.
-- 16개 개별 절초 설계.
-- 2026-07-26 구현 계획과 구현 branch 실행.
-- Godot 런타임·데이터·씬·자산 변경.
+- `[기초] [무공] [절초]` 출처.
+- 무공서→현재 해금 기술.
+- 전체 10수·3/3/4 현재 묶음 편집.
+- 가장 앞 유효 연속 수 자동 배치.
+- `[전조] → [실행]` 연결 블록.
+- 진행 전 이동·제거.
+- 절초기세 예약·환불·재예약.
+- 가상 `준비+막기/회피` 제품 경로 제외.
 
-## PR #45 통합 분류
+적대적 검토에서 실제 포인터 Drop 소비자 누락을 발견했고 RED 회귀 뒤 수정했다.
 
-| 자산 | 현재 지위 |
-|---|---|
-| v6 결정 원장·통합 검수 | `CURRENT_DECISION_AUTHORITY` |
-| 2026-07-26 기획 기준선·BUILD 진입 | `SUPERSEDED_REFERENCE` |
-| 과거 적대적 검토·벤치마크·sanity | `HISTORICAL_EVIDENCE` |
-| `docs/planning-data/*.json` | `SOURCE_ONLY / HOLD` |
-| 2026-07-26 구현 계획 | `DEFERRED / REFERENCE_ONLY` |
-| planning validator·테스트·workflow | `VALIDATION_ASSET` |
-| 제품 런타임 경로 | 이번 통합에서 변경하지 않음 |
+구현 증거:
+
+```yaml
+implementation_head: 673c209017ffe3e1c7ef2a89849ca4ea0846d1c5
+pr_validation_993: PASS
+base_v9_106: PASS
+full_validation_73: PASS
+ubuntu_godot_headless: PASS
+ubuntu_windows_python_matrix: PASS
+windows_godot_runtime: NOT_RUN
+human_validation: NOT_RUN
+```
+
+최신 전투·성장 기획은 런타임에 아직 반영되지 않았다.
+
+## 승인된 제품 구조
+
+`TEN-DEC-20260801-SITUATION-SCREEN-01`:
+
+```text
+MAIN
+→ RUN_SETUP
+→ ROUTE
+→ NODE
+→ DUEL_BRIEFING
+→ COMBAT
+→ COMBAT_REVIEW
+→ DUEL_RESULT
+→ REWARD_OR_RETRY
+```
+
+- Route와 Combat은 별도 Scene.
+- Combat Review는 Combat Overlay.
+- Duel Result는 별도 Scene.
+- P0 Autoload 후보는 `RunSession`, `SaveService`.
+- 전체 제품 흐름 런타임은 아직 시작하지 않았다.
+
+## 현재 기획 배치
+
+PR #80·#81:
+
+- 성장 기획 10/10 체크포인트 병합.
+- main 상태 `6d8237e...`와 Sheet 0/10 동기화 완료.
+
+PR #82 `2/10`:
+
+1. `TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01`.
+2. `TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01`.
+
+- exact head: `289378c214702223dc0d1e149134438c3e761ba0`.
+- PR Validation·Base adoption·Full Validation: PASS.
+- review threads: 0.
+- runtime·Windows·network·accessibility·performance·human: `NOT_RUN`.
+
+## GitHub·Sheet 동기화
+
+- main checkpoint: PR #80 `d9f38e6...`.
+- state sync: PR #81 `6d8237e...`.
+- active planning: PR #82 `289378c...`, 2/10.
+- Sheet 상태: `ACTIVE_DRAFT_PR82_2_OF_10`.
+- 병합 전 Decision은 `APPROVED_PENDING_MERGE`; 병합 후 main·Sheet 재조회 뒤에만 `SYNCED_TO_MAIN`.
 
 ## 다음 작업
 
-사용자가 절초 설계를 재개하기 전에는 다음만 수행한다.
+1. 중간 노드 영구 스테이터스 보상 GrillMe 승인.
+2. 무공별 기술 주/보조 배수와 5/9성 임계 효과.
+3. 전투 종료 5지표 가중치·등급·파밍 방지·절초 평가.
+4. 경쟁·관찰·고능력치 사람 검증 계약.
+5. 10/10 또는 조기 체크포인트의 exact-head CI·적대적 검토·병합·main/Sheet readback.
+6. 기획 완료 뒤 전체 검토 완료.
+7. 필요한 이미지·애니메이션·HX 생성·검수·승인.
+8. 이미지 완료 뒤 `VERTICAL_SLICE_APP_FLOW_SHELL` Codex Build.
+9. Windows·입력·해상도·접근성·성능·`STEP 14` 사람 검증.
 
-1. v6 원장과 활성 진입점의 최신성 유지.
-2. PR #45 Required Check와 changed files 검증.
-3. 제품 경로 무변경 확인.
-4. 미검증·보류 상태 보존.
+## 현재 제외
 
-새 BUILD는 사용자의 명시적 승인과 최신 구현 계획이 생긴 뒤 별도 브랜치·worktree에서 시작한다.
+- 기획·검토·이미지 Gate 전 Codex BUILD.
+- 후보 15명 전체를 첫 App Flow 구현의 선행 조건으로 삼는 것.
+- 16권 절초 개별 설계.
+- 주요 비무 6~10 런타임.
+- 천하제일인·비동기 기능.
+- 모바일 포팅·스토어·크로스 세이브.
+- 최종 아트·오디오 폴리싱.
 
-## 금지
+## 역사
 
-- 2026-07-26 구현 계획을 현재 승인으로 해석.
-- planning JSON을 런타임 권한 원본으로 사용.
-- 주요 비무 10개·3→10 비용 38·구형 순차 연격·S/A/B/C 랭크를 최신 계약으로 복원.
-- 16개 절초를 사용자 승인 없이 확정.
-- 사람 증거 없이 재미·밸런스·T1 통과 주장.
-- 문서 검증을 런타임 구현 완료로 보고.
+- PR #7·Issue #13: T0 `STEP 0~13` 구현 계보.
+- PR #45·`2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`: 재설계·승인 이력.
+- PR #65: 현재 런타임 통합 기준선.
+- PR #68: Base v9.4 운영 계약 초기 적용 이력.
+- PR #72·#80: 이후 전투·성장 기획 체크포인트.
+- 2026-07-26 BUILD 문서: `SUPERSEDED_REFERENCE`.
+
+자동 검증은 Windows 실제 Godot·실물 게임패드·화면 읽기 도구·성능·사람 플레이를 증명하지 않는다.

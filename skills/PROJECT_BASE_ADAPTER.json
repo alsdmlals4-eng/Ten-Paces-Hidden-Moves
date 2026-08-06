@@ -1,10 +1,11 @@
 {
   "artifact_role": "PROJECT_BASE_ADAPTER",
   "base_release": {
-    "release_commit": "3c158f52cfdad889970aef4d6ce6650a6fea0645",
-    "release_evidence_commit": "dd20ad3852e264d7e337e34d2cb963f71053a6cb",
+    "finalization_commit": "0b7c94f38d959efc0fc9442274c60b2e268a3c97",
+    "release_commit": "7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8",
+    "release_evidence_commit": "da33a350d61b8adc52df97fccc7001708a933370",
     "repository": "alsdmlals4-eng/Base",
-    "version": "9.1.0"
+    "version": "9.4.3"
   },
   "compatibility": {
     "cycle": "ONE_CYCLE",
@@ -33,7 +34,7 @@
   "protected_baseline": {
     "authority_kind": "REMOTE_TRACKING_REF",
     "authority_ref": "refs/remotes/origin/main",
-    "commit": "a68c70fd0c79448f67167aaa1e9b1f4f2d3cddd7",
+    "commit": "4b5967dee99592de4a09a611068344994e1ee026",
     "policy_sha256": "ed848e62f3292d704f602e2976737005b77100c476c6947e57ff0bcb5a3b6e52",
     "policy_source_path": "skills/PROJECT_BASE_SKILL_ADAPTER.json",
     "policy_source_type": "FIRST_MIGRATION_LEGACY_SOURCE",
@@ -151,6 +152,11 @@
         "status": "ACTIVE"
       },
       {
+        "route_id": "optimizing-ai-model-and-prompt-costs",
+        "skill_id": "optimizing-ai-model-and-prompt-costs",
+        "status": "ACTIVE"
+      },
+      {
         "route_id": "orchestrating-deepseek-worktrees",
         "skill_id": "orchestrating-deepseek-worktrees",
         "status": "ACTIVE"
@@ -255,20 +261,70 @@
     "managing-base-change-proposals": {},
     "managing-design-documents": {},
     "managing-game-project-operating-system": {},
-    "managing-project-intake-and-work-contract": {},
-    "orchestrating-deepseek-worktrees": {},
+    "managing-project-intake-and-work-contract": {
+      "planning_first_governance": {
+        "actual_project_batch_execution": "NOT_RUN",
+        "base_contract_source": "docs/PLANNING_FIRST_GRILL_ME_BATCH_POLICY.md",
+        "base_release_finalization_commit": "0b7c94f38d959efc0fc9442274c60b2e268a3c97",
+        "base_release_lock": "base-v9.4.3.lock.json",
+        "checkpoint_template": "templates/project-operations/GRILL_ME_BATCH_CHECKPOINT.md",
+        "max_approved_decisions_per_batch": 10,
+        "numeric_default_state": "RECOMMENDED_DEFAULT",
+        "planning_conflict_state": "GRILL_ME_REQUIRED",
+        "post_merge_sheet_state": "SYNCED_TO_MAIN",
+        "pre_merge_sheet_state": "APPROVED_PENDING_MERGE"
+      },
+      "first_prompt_governance": {
+        "actual_project_instruction_execution": "NOT_RUN",
+        "approval_reuse": "REUSE_EXACT_APPROVAL_REFERENCE",
+        "base_contract_source": "skills/managing-project-intake-and-work-contract/SKILL.md",
+        "base_release_finalization_commit": "0b7c94f38d959efc0fc9442274c60b2e268a3c97",
+        "base_release_lock": "base-v9.4.3.lock.json",
+        "direction_anchor_reference": "skills/managing-project-intake-and-work-contract/references/first-prompt-direction-anchoring.md",
+        "instruction_flow": [
+          "route",
+          "first-prompt",
+          "contract",
+          "clarify"
+        ],
+        "l0_exceptions": [
+          "TYPO",
+          "OBVIOUS_FORMAT",
+          "IDENTICAL_VALIDATION_RERUN"
+        ],
+        "unconfirmed_state": "AWAITING_USER_CONFIRMATION"
+      }
+    },
+    "orchestrating-deepseek-worktrees": {
+      "base_contract_source": "skills/orchestrating-deepseek-worktrees/SKILL.md",
+      "work_package_source": "templates/ai/DEEPSEEK_WORK_PACKAGE.md",
+      "worktree_parent": ".worktrees/",
+      "task_branch_prefix": "ai/deepseek-",
+      "draft_root": "drafts/external-ai/",
+      "allowed_write_roots": [
+        "drafts/external-ai/**"
+      ],
+      "protected_paths_source": "skills/PROJECT_BASE_ADAPTER.json#/protected_paths",
+      "result_state": "REVIEW_PENDING",
+      "integration_policy": "LOCAL_REVIEW_REQUIRED_BEFORE_CANON",
+      "base_validator_adoption": "ADOPTED_FROM_BASE_V9_4_1",
+      "base_validator_path": "tools/check_external_ai_worktree_contract.py",
+      "base_release_lock": "base-v9.4.1.lock.json",
+      "actual_external_ai_worktree_execution": "NOT_RUN"
+    },
     "pruning-stale-and-nonfunctional-material": {},
     "refactoring-with-contract-preservation": {},
     "reviewing-and-validating-project-changes": {},
     "running-adversarial-review-and-refinement": {},
     "simplifying-skill-bodies": {},
-    "synchronizing-local-and-github-state": {}
+    "synchronizing-local-and-github-state": {},
+    "optimizing-ai-model-and-prompt-costs": {}
   },
   "skill_registry": {
     "base": {
       "hash_definition": "RAW_FILE_BYTES_SHA256",
       "path": "skills/SKILL_REGISTRY.json",
-      "sha256": "e06003cb986e979aa46c06839de178c3fb9ff10bdf440e750712d90d6c5ae7bb"
+      "sha256": "693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59"
     },
     "project": {
       "hash_definition": "RAW_FILE_BYTES_SHA256",
@@ -280,7 +336,10 @@
     "python tests/test_base_shared_skill_adapter.py",
     "python tools/check_archive_governance.py",
     "python tools/check_project_operating_system.py",
+    "python tests/test_base_shared_external_ai_adapter.py",
+    "python tests/test_base_v942_planning_first_adoption.py",
     "manual: Godot project parse/runtime check",
-    "manual: changed-file baseline diff"
+    "manual: changed-file baseline diff",
+    "python tests/test_base_v943_first_prompt_adoption.py"
   ]
 }

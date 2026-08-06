@@ -57,7 +57,8 @@
     "governing-game-user-research-coverage",
     "creating-user-learning-notes",
     "building-project-visual-dashboards",
-    "diagnosing-game-engine-runtime-failures"
+    "diagnosing-game-engine-runtime-failures",
+    "optimizing-ai-model-and-prompt-costs"
   ],
   "forbidden_active_paths": [
     "[기획서]/00_프로젝트_허브/PROJECT_SKILL_MAP.md",
@@ -265,7 +266,7 @@
     "docs/BASE_RULES_VERSION.md": [
       "c987647d01ad2baa028a16e03d85ddfc1572a727",
       "6개 커밋",
-      "27개",
+      "28개",
       "source_only"
     ],
     "data/combat/combat_board_poc.json": [

@@ -68,38 +68,65 @@ class ProjectGovernanceTests(unittest.TestCase):
             for token in ["public_state_ai", "enemy_bundles", "ai_enabled == false"]:
                 self.assertIn(token, text, f"{relative} is missing fixture boundary {token!r}")
 
-    def test_active_v6_operating_state_is_synchronized(self) -> None:
-        v6_tokens = [
-            "CONCEPT_APPROVAL",
-            "PLAN",
-            "PLANNING_ONLY_PROFILE",
-            "PROHIBITED_UNTIL_NEW_APPROVAL",
-            "2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md",
+    def test_active_app_flow_operating_state_is_synchronized(self) -> None:
+        current_tokens = [
+            "VERTICAL_SLICE_APP_FLOW_PLANNING",
+            "work_mode: REVIEW",
+            "integration_pr: 65",
+            "VERTICAL_SLICE_APP_FLOW_SHELL",
         ]
-        active_docs = [
+        default_active_docs = [
             "AGENTS.md",
             "START_HERE.md",
             "README.md",
             "[기획서]/00_프로젝트_허브/START_HERE.md",
-            "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
             "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
             "[기획서]/00_프로젝트_허브/ROADMAP.md",
             "[기획서]/00_프로젝트_허브/HANDOFF.md",
         ]
-        for relative in active_docs:
+        superseded_active_tokens = [
+            "product_stage: CONCEPT_APPROVAL",
+            "execution_profile: PLANNING_ONLY_PROFILE",
+            "runtime_implementation: PROHIBITED_UNTIL_NEW_APPROVAL",
+            "phase: BUILD_IN_PROGRESS",
+            "implementation_authorization: GRANTED",
+        ]
+        for relative in default_active_docs:
             text = (ROOT / relative).read_text(encoding="utf-8")
-            for token in v6_tokens:
-                self.assertIn(token, text, f"{relative} is missing v6 token {token!r}")
-            self.assertNotIn(
-                "phase: BUILD_IN_PROGRESS",
-                text,
-                f"{relative} still grants the superseded BUILD state",
-            )
-            self.assertNotIn(
-                "implementation_authorization: GRANTED",
-                text,
-                f"{relative} still grants superseded implementation authority",
-            )
+            for token in current_tokens:
+                self.assertIn(token, text, f"{relative} is missing current token {token!r}")
+            for token in superseded_active_tokens:
+                self.assertNotIn(token, text, f"{relative} still grants superseded state {token!r}")
+
+        current_decision_tokens = [
+            "TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01",
+            "TEN-DEC-20260801-SITUATION-SCREEN-01",
+        ]
+        decision_consumers = [
+            "AGENTS.md",
+            "START_HERE.md",
+            "[기획서]/00_프로젝트_허브/START_HERE.md",
+            "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
+            "[기획서]/00_프로젝트_허브/ROADMAP.md",
+            "[기획서]/00_프로젝트_허브/HANDOFF.md",
+            "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+        ]
+        for relative in decision_consumers:
+            text = (ROOT / relative).read_text(encoding="utf-8")
+            for token in current_decision_tokens:
+                self.assertIn(token, text, f"{relative} is missing current decision {token!r}")
+
+        active_relative = "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
+        active_text = (ROOT / active_relative).read_text(encoding="utf-8")
+        for token in [
+            "runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65",
+            "automated_validation: PASS",
+            "human_validation: NOT_RUN",
+            "2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md",
+        ]:
+            self.assertIn(token, active_text, f"{active_relative} is missing state token {token!r}")
+        self.assertNotIn("phase: BUILD_IN_PROGRESS", active_text)
+        self.assertNotIn("implementation_authorization: GRANTED", active_text)
 
     def test_v6_authority_and_pr45_integration_files_exist(self) -> None:
         required = [
