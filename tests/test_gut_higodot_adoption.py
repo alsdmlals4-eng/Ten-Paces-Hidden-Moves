@@ -80,12 +80,16 @@ class GutHiGodotAdoptionTests(unittest.TestCase):
         self.assertIn("test_registry_loads_exactly_ten_manuals", test_text)
         self.assertIn("test_mastery_unlock_boundaries", test_text)
 
-    def test_workflow_runs_static_and_runtime_gates(self) -> None:
+    def test_workflow_runs_static_runtime_and_entry_gates(self) -> None:
         text = WORKFLOW.read_text(encoding="utf-8")
         for marker in (
-            "python -m unittest tests.test_gut_higodot_adoption -v",
+            "tests.test_gut_higodot_adoption",
+            "tests.test_conflict_marker_detection",
+            "tests.test_work_entry_completeness_gate",
+            "python tools/check_work_entry_completeness_gate.py",
             "chickensoft-games/setup-godot@v2",
             "version: 4.7.1",
+            "mkdir -p build/test-results",
             "res://addons/gut/gut_cmdln.gd",
             "-gconfig=res://.gutconfig.json",
             "build/test-results/gut.xml",
@@ -103,6 +107,7 @@ class GutHiGodotAdoptionTests(unittest.TestCase):
         text = START_HERE.read_text(encoding="utf-8")
         self.assertIn("design_platforms: WINDOWS_ANDROID", text)
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", text)
+        self.assertIn("next_package_state: BLOCKED_BY_WORK_ENTRY_COMPLETENESS_GATE", text)
         self.assertNotIn("future_platform: MOBILE_CONSIDERATION_ONLY", text)
 
 
