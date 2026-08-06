@@ -5,7 +5,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 TEXT_SUFFIXES = {".gd", ".tscn", ".py", ".ps1", ".cmd", ".md", ".json", ".yml", ".yaml", ".godot"}
-CONFLICT_MARKERS = ("<<<<<<<", "=======", ">>>>>>>")
 EXPECTED_PLAYER_TILE = 4
 EXPECTED_ENEMY_TILE = 7
 EXPECTED_CARD_IDS = [
@@ -29,6 +28,21 @@ def res_file(value: str) -> Path:
     return ROOT / value.removeprefix("res://")
 
 
+def find_conflict_markers(text: str) -> list[tuple[int, str]]:
+    markers: list[tuple[int, str]] = []
+    in_conflict = False
+    for line_number, line in enumerate(text.splitlines(), start=1):
+        if line.startswith("<<<<<<<"):
+            markers.append((line_number, line))
+            in_conflict = True
+        elif line.startswith("=======") and in_conflict:
+            markers.append((line_number, line))
+        elif line.startswith(">>>>>>>"):
+            markers.append((line_number, line))
+            in_conflict = False
+    return markers
+
+
 def assert_no_conflict_markers() -> None:
     failures: list[str] = []
     for path in ROOT.rglob("*"):
@@ -36,9 +50,9 @@ def assert_no_conflict_markers() -> None:
             continue
         if ".git" in path.parts or ".godot" in path.parts:
             continue
-        for line_number, line in enumerate(path.read_text(encoding="utf-8", errors="replace").splitlines(), start=1):
-            if line.startswith(CONFLICT_MARKERS):
-                failures.append(f"{path.relative_to(ROOT)}:{line_number}:{line}")
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for line_number, line in find_conflict_markers(text):
+            failures.append(f"{path.relative_to(ROOT)}:{line_number}:{line}")
     assert not failures, "Committed VCS conflict markers found:\n" + "\n".join(failures)
 
 
