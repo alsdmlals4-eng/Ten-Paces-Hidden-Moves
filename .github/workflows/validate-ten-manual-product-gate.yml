@@ -30,9 +30,9 @@ jobs:
       - name: Validate product gate contract
         run: python tools/validate_ten_manual_product_gate.py --root .
 
-  fifty-product-scenarios:
+  automated-product-evidence:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -48,11 +48,21 @@ jobs:
         run: godot --headless --editor --path . --quit
       - name: Verify fifty ten-manual product scenarios
         run: godot --headless --path . --script res://tests/verify_ten_manual_product_gate.gd
-      - name: Upload scenario evidence
+      - name: Verify product viewport matrix
+        run: godot --headless --path . --script res://tests/verify_ten_manual_product_viewports.gd
+      - name: Verify keyboard accessibility
+        run: godot --headless --path . --script res://tests/verify_combat_keyboard_accessibility.gd
+      - name: Verify focus order
+        run: godot --headless --path . --script res://tests/verify_combat_focus_order.gd
+      - name: Verify layout accessibility
+        run: godot --headless --path . --script res://tests/verify_combat_layout_accessibility.gd
+      - name: Verify action selection integration
+        run: godot --headless --path . --script res://tests/verify_combat_action_selection_integration.gd
+      - name: Upload automated product evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ten-manual-product-scenarios-${{ github.sha }}
-          path: artifacts/ten-manual-product-validation/product_scenarios.json
+          name: ten-manual-automated-product-evidence-${{ github.sha }}
+          path: artifacts/ten-manual-product-validation
           if-no-files-found: warn
           retention-days: 7
