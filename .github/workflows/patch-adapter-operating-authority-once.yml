@@ -1,0 +1,37 @@
+name: Patch Adapter Operating Authority Once
+
+on:
+  push:
+    branches:
+      - planning/windows-android-adapter-architecture
+    paths:
+      - .github/workflows/patch-adapter-operating-authority-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out planning branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: planning/windows-android-adapter-architecture
+          fetch-depth: 0
+      - name: Patch current operating authority
+        run: python tools/patch_adapter_operating_authority_once.py
+      - name: Commit authority updates
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add docs/planning-data/approved_20260806_windows_android_adapter_architecture_contract.json tests/test_windows_android_adapter_architecture_contract.py tools/check_windows_android_adapter_architecture_contract.py tools/check_postmerge_canon_lifecycle.py tests/test_postmerge_canon_lifecycle.py
+          git diff --cached --check
+          if git diff --cached --quiet; then
+            echo 'No authority changes required.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix: source current planning state from adapter contract'
+          git push origin HEAD:planning/windows-android-adapter-architecture
