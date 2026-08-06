@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260806-GUT-HIGODOT-TEST-AUTHORITY-01",
+  "date": "2026-08-06",
+  "status": "APPROVED_FOR_IMPLEMENTATION",
+  "approval_batch": "2/10",
+  "project_baseline": "6e471b62a6236749312f31264428a46b97c8387a",
+  "project": {
+    "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
+    "engine": "Godot 4.7.1",
+    "design_platforms": [
+      "WINDOWS",
+      "ANDROID"
+    ]
+  },
+  "gut": {
+    "name": "GUT",
+    "version": "9.7.1",
+    "source_repository": "bitwes/Gut",
+    "upstream_branch": "godot_4_7",
+    "upstream_commit": "aeb5d4f3f7f0a6c9b5e178876d6c99b791fda605",
+    "project_path": "addons/gut",
+    "project_tree_sha_at_intake": "09d040309bbed0e07420ad72c4aa69cbd0e58190",
+    "license": "MIT",
+    "bundled_font_license": "SIL_OPEN_FONT_LICENSE_WHERE_APPLICABLE",
+    "adoption_state": "TRIAL_APPROVED",
+    "owner_boundary": "GDSCRIPT_TEST_EXECUTION_AND_JUNIT_ONLY",
+    "editor_plugin_enabled": false,
+    "product_export_included": false,
+    "consumption_path": {
+      "config": ".gutconfig.json",
+      "representative_test": "tests/gut/test_martial_manual_registry.gd",
+      "workflow": ".github/workflows/validate-gut-higodot-adoption.yml",
+      "command": "godot --headless --path . --script res://addons/gut/gut_cmdln.gd -gconfig=res://.gutconfig.json",
+      "junit": "build/test-results/gut.xml"
+    },
+    "forbidden_roles": [
+      "MCP_SERVER",
+      "SCENE_AUTHORING_AUTHORITY",
+      "PROJECT_MUTATION_AUTHORITY",
+      "CANON_AUTHORITY",
+      "GAMEPLAY_DATA_AUTHORITY"
+    ],
+    "validation": {
+      "godot_4_7_1_import": "PASS_RED_RUN_31104521577",
+      "representative_test": "PENDING_GREEN_CI",
+      "junit_artifact": "PENDING_GREEN_CI",
+      "local_windows": "NOT_RUN",
+      "android": "NOT_RUN",
+      "human_editor_use": "HUMAN_NOT_RUN"
+    },
+    "rollback_or_removal": "Revert the adoption PR, remove .gutconfig.json and tests/gut, and remove addons/gut only after confirming no remaining CI or local test consumer."
+  },
+  "higodot": {
+    "name": "HiGodot / Godot AI",
+    "version": "3.1.2",
+    "provider": "hi-godot/godot-ai",
+    "project_path": "addons/godot_ai",
+    "plugin_enabled": true,
+    "execution_authority": "SOLE_GODOT_AUTHORING_AUTHORITY",
+    "network_mode": "LOOPBACK_ONLY",
+    "authoring_scope": [
+      "SCENE",
+      "NODE",
+      "RESOURCE",
+      "PROJECT_SETTINGS",
+      "SCRIPT",
+      "EDITOR_DIAGNOSTICS"
+    ],
+    "forbidden_overlap": [
+      "SECOND_GODOT_MCP",
+      "SECOND_EDITOR_MUTATION_PLUGIN",
+      "GUT_AUTHORING",
+      "GUT_PROJECT_MUTATION"
+    ],
+    "validation": {
+      "plugin_discovery_godot_4_7_1": "PASS_RED_RUN_31104521577",
+      "mcp_host_registration": "UNVERIFIED",
+      "interactive_editor_authoring": "HUMAN_NOT_RUN",
+      "l0_read_operation": "NOT_RUN",
+      "l1_bounded_write_and_undo": "NOT_RUN"
+    }
+  },
+  "python_contract_tests": {
+    "owner_boundary": "REPOSITORY_CANON_AND_STATIC_CONTRACT_VALIDATION",
+    "replacement_by_gut": false
+  },
+  "authority_count": {
+    "godot_authoring": 1,
+    "godot_test_execution": 1,
+    "repository_contract_validation": 1
+  },
+  "production_readiness": false,
+  "next_product_package": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION",
+  "unverified": [
+    "LOCAL_WINDOWS_HIGODOT_INTERACTIVE_USE",
+    "MCP_HOST_REGISTRATION",
+    "PHYSICAL_GAMEPAD",
+    "ANDROID_EXPORT_INSTALL_DEVICE_TOUCH_LIFECYCLE_PERFORMANCE",
+    "ACCESSIBILITY_USER",
+    "RELEASE_PERFORMANCE",
+    "HUMAN_PLAYTEST"
+  ]
+}
