@@ -1,0 +1,68 @@
+name: Regenerate Project Operating Artifacts Once
+
+on:
+  push:
+    branches:
+      - fix/postmerge-canon-and-dual-platform-sync
+    paths:
+      - .github/workflows/regenerate-project-operating-artifacts-once.yml
+      - skills/PROJECT_BASE_ADAPTER.json
+
+permissions:
+  contents: write
+
+concurrency:
+  group: regenerate-project-operating-artifacts-once
+  cancel-in-progress: false
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out project branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: fix/postmerge-canon-and-dual-platform-sync
+          fetch-depth: 0
+
+      - name: Check out pinned Base generator
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: alsdmlals4-eng/Base
+          ref: 4ec410e611152294f3f2685570fca6019c7abcfa
+          path: .base-contract
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Install generator dependencies
+        run: python -m pip install -r .base-contract/.github/validation-requirements.txt
+
+      - name: Regenerate deterministic project operating views
+        run: >-
+          python .base-contract/tools/build_project_operating_artifacts.py
+          --project-root .
+          --base-repository .base-contract
+          --protected-base a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90
+          --write
+
+      - name: Commit generated outputs when changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add \
+            skills/PROJECT_SKILL_SNAPSHOT.json \
+            docs/PROJECT_OPERATING_DASHBOARD.html \
+            skills/BASE_V9_ADAPTER.json \
+            skills/PROJECT_BASE_SKILL_ADAPTER.json
+          if git diff --cached --quiet; then
+            echo 'Generated outputs are already current.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'chore: regenerate project operating artifacts'
+          git push origin HEAD:fix/postmerge-canon-and-dual-platform-sync
