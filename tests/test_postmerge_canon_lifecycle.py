@@ -13,8 +13,11 @@ VALIDATOR_PATH = ROOT / "tools" / "check_postmerge_canon_lifecycle.py"
 TARGETS = [
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
     "docs/04_ROADMAP.md",
+    "AGENTS.md",
     "docs/06_STARTING_FACTION_MASTERY_DATA.md",
     "docs/CANON_LIFECYCLE_REGISTRY.md",
+    "docs/decisions/2026-08-02_PLATFORM_SCOPE_DECISION.md",
+    "docs/decisions/2026-08-06_WINDOWS_ANDROID_DUAL_TARGET_DECISION.md",
     "docs/decisions/2026-08-02_RANGE_PRICE_BANDS_DECISION.md",
     "docs/decisions/2026-08-03_STARTING_MARTIAL_TECHNIQUE_1_BASE_EFFECTS_AND_BUDGETS_DECISION.md",
     "docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json",
@@ -83,11 +86,20 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
             with self.assertRaisesRegex(validator.CanonLifecycleError, "active decision state"):
                 validator.validate(root)
 
+    def test_platform_decision_cannot_revert_to_pc_first(self) -> None:
+        validator = load_validator()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); copy_fixture(root)
+            p = root / TARGETS[6]
+            p.write_text(p.read_text(encoding="utf-8").replace("design_targets: [WINDOWS, ANDROID]", "design_targets: [WINDOWS]", 1), encoding="utf-8")
+            with self.assertRaisesRegex(validator.CanonLifecycleError, "current platform Decision"):
+                validator.validate(root)
+
     def test_runtime_foundation_cannot_reenable_stat_quotas(self) -> None:
         validator = load_validator()
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); copy_fixture(root)
-            p = root / TARGETS[10]; data = json.loads(p.read_text(encoding="utf-8")); data["stat_quota_rules_enabled"] = True; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+            p = root / TARGETS[13]; data = json.loads(p.read_text(encoding="utf-8")); data["stat_quota_rules_enabled"] = True; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
             with self.assertRaisesRegex(validator.CanonLifecycleError, "stat quota"):
                 validator.validate(root)
 
@@ -95,7 +107,7 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
         validator = load_validator()
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); copy_fixture(root)
-            p = root / TARGETS[10]; data = json.loads(p.read_text(encoding="utf-8")); data["compatibility"]["explicit_loadout_required"] = False; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+            p = root / TARGETS[13]; data = json.loads(p.read_text(encoding="utf-8")); data["compatibility"]["explicit_loadout_required"] = False; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
             with self.assertRaisesRegex(validator.CanonLifecycleError, "explicit loadout"):
                 validator.validate(root)
 
@@ -103,7 +115,7 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
         validator = load_validator()
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); copy_fixture(root)
-            p = root / TARGETS[12]; data = json.loads(p.read_text(encoding="utf-8")); del data["enemy"]; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+            p = root / TARGETS[15]; data = json.loads(p.read_text(encoding="utf-8")); del data["enemy"]; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
             with self.assertRaisesRegex(validator.CanonLifecycleError, "player and enemy loadouts"):
                 validator.validate(root)
 
@@ -111,7 +123,7 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
         validator = load_validator()
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); copy_fixture(root)
-            p = root / TARGETS[12]; data = json.loads(p.read_text(encoding="utf-8")); data["authority"] = "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE"; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+            p = root / TARGETS[15]; data = json.loads(p.read_text(encoding="utf-8")); data["authority"] = "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE"; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
             with self.assertRaisesRegex(validator.CanonLifecycleError, "loadout authority"):
                 validator.validate(root)
 
@@ -119,7 +131,7 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
         validator = load_validator()
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); copy_fixture(root)
-            p = root / TARGETS[14]; data = json.loads(p.read_text(encoding="utf-8")); data["scenario_matrix"] = data["scenario_matrix"][:-1]; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+            p = root / TARGETS[17]; data = json.loads(p.read_text(encoding="utf-8")); data["scenario_matrix"] = data["scenario_matrix"][:-1]; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
             with self.assertRaisesRegex(validator.CanonLifecycleError, "scenario count"):
                 validator.validate(root)
 
@@ -127,7 +139,7 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
         validator = load_validator()
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); copy_fixture(root)
-            p = root / TARGETS[16]; p.write_text(p.read_text(encoding="utf-8").replace("human_step14: NOT_RUN", "human_step14: PASS", 1), encoding="utf-8")
+            p = root / TARGETS[19]; p.write_text(p.read_text(encoding="utf-8").replace("human_step14: NOT_RUN", "human_step14: PASS", 1), encoding="utf-8")
             with self.assertRaisesRegex(validator.CanonLifecycleError, "STEP14 protocol"):
                 validator.validate(root)
 
@@ -135,7 +147,7 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
         validator = load_validator()
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); copy_fixture(root)
-            p = root / TARGETS[6]; data = json.loads(p.read_text(encoding="utf-8")); data["authority_status"] = "CURRENT_APPROVED_PLANNING"; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+            p = root / TARGETS[9]; data = json.loads(p.read_text(encoding="utf-8")); data["authority_status"] = "CURRENT_APPROVED_PLANNING"; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
             with self.assertRaisesRegex(validator.CanonLifecycleError, "superseded Technique1 contract"):
                 validator.validate(root)
 
@@ -143,7 +155,7 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
         validator = load_validator()
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); copy_fixture(root)
-            p = root / TARGETS[4]; p.write_text(p.read_text(encoding="utf-8").replace("[대체됨]", "[현행]"), encoding="utf-8")
+            p = root / TARGETS[7]; p.write_text(p.read_text(encoding="utf-8").replace("[대체됨]", "[현행]"), encoding="utf-8")
             with self.assertRaisesRegex(validator.CanonLifecycleError, "range Decision lifecycle"):
                 validator.validate(root)
 
@@ -151,7 +163,7 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
         validator = load_validator()
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); copy_fixture(root)
-            p = root / TARGETS[7]; data = json.loads(p.read_text(encoding="utf-8")); del data["adversarial_risks"]["RESOURCE_SATURATION_RISK"]; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+            p = root / TARGETS[10]; data = json.loads(p.read_text(encoding="utf-8")); del data["adversarial_risks"]["RESOURCE_SATURATION_RISK"]; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
             with self.assertRaisesRegex(validator.CanonLifecycleError, "adversarial risk coverage"):
                 validator.validate(root)
 
@@ -159,7 +171,7 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
         validator = load_validator()
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); copy_fixture(root)
-            p = root / TARGETS[7]; data = json.loads(p.read_text(encoding="utf-8")); data["held_artifacts"][0]["merge_allowed"] = True; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+            p = root / TARGETS[10]; data = json.loads(p.read_text(encoding="utf-8")); data["held_artifacts"][0]["merge_allowed"] = True; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
             with self.assertRaisesRegex(validator.CanonLifecycleError, "held HTML PR"):
                 validator.validate(root)
 
@@ -167,7 +179,7 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
         validator = load_validator()
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); copy_fixture(root)
-            p = root / TARGETS[7]; data = json.loads(p.read_text(encoding="utf-8")); data["next_planning_order"] = data["next_planning_order"][1:]; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+            p = root / TARGETS[10]; data = json.loads(p.read_text(encoding="utf-8")); data["next_planning_order"] = data["next_planning_order"][1:]; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
             with self.assertRaisesRegex(validator.CanonLifecycleError, "9-star template"):
                 validator.validate(root)
 
