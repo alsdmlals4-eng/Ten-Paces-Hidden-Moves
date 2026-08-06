@@ -85,6 +85,17 @@ class WindowsAndroidAdapterArchitectureContractTest(unittest.TestCase):
         self.assertEqual(set(data["platforms"]), {"WINDOWS", "ANDROID"})
         self.assertEqual(set(data["adapter_layers"]), REQUIRED_ADAPTERS)
         self.assertEqual(data["core_policy"]["authority"], "SINGLE_SHARED_CORE")
+        self.assertEqual(
+            data["current_operating_state"],
+            {
+                "active_planning_work_mode": "REVIEW",
+                "active_planning_pr": "102",
+                "active_planning_parent_pr": "NONE",
+                "active_approval_count": "1/10",
+                "active_decision_state": "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED",
+                "next_planning_decision": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE",
+            },
+        )
         for key in ["combat_rules", "ai", "content_ids", "numeric_balance", "save_schema", "deterministic_resolution"]:
             self.assertEqual(data["core_policy"][key], "SHARED")
 

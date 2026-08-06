@@ -18,6 +18,7 @@ TARGETS = [
     "docs/CANON_LIFECYCLE_REGISTRY.md",
     "docs/decisions/2026-08-02_PLATFORM_SCOPE_DECISION.md",
     "docs/decisions/2026-08-06_WINDOWS_ANDROID_DUAL_TARGET_DECISION.md",
+    "docs/planning-data/approved_20260806_windows_android_adapter_architecture_contract.json",
     "docs/decisions/2026-08-02_RANGE_PRICE_BANDS_DECISION.md",
     "docs/decisions/2026-08-03_STARTING_MARTIAL_TECHNIQUE_1_BASE_EFFECTS_AND_BUDGETS_DECISION.md",
     "docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json",

@@ -114,6 +114,17 @@ def validate_contract(data: dict[str, Any]) -> list[str]:
     if batch.get("maximum_decision_count") != 10:
         errors.append("APPROVAL_BATCH_CONFLICT")
 
+    expected_operating_state = {
+        "active_planning_work_mode": "REVIEW",
+        "active_planning_pr": "102",
+        "active_planning_parent_pr": "NONE",
+        "active_approval_count": "1/10",
+        "active_decision_state": "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED",
+        "next_planning_decision": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE",
+    }
+    if data.get("current_operating_state") != expected_operating_state:
+        errors.append("CURRENT_OPERATING_STATE_CONFLICT")
+
     core = data.get("core_policy", {})
     if core.get("authority") != "SINGLE_SHARED_CORE":
         errors.append("SHARED_CORE_CONFLICT authority")

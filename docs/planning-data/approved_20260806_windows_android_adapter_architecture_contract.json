@@ -9,6 +9,14 @@
     "maximum_decision_count": 10,
     "automatic_approval_source": "CURRENT_CONVERSATION_USER_INSTRUCTION"
   },
+  "current_operating_state": {
+    "active_planning_work_mode": "REVIEW",
+    "active_planning_pr": "102",
+    "active_planning_parent_pr": "NONE",
+    "active_approval_count": "1/10",
+    "active_decision_state": "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED",
+    "next_planning_decision": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE"
+  },
   "platforms": [
     "WINDOWS",
     "ANDROID"

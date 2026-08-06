@@ -28,6 +28,7 @@ OLD_TECHNIQUE_DECISION_PATH = pathlib.Path("docs/decisions/2026-08-03_STARTING_M
 OLD_TECHNIQUE_CONTRACT_PATH = pathlib.Path("docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json")
 OLD_PLATFORM_DECISION_PATH = pathlib.Path("docs/decisions/2026-08-02_PLATFORM_SCOPE_DECISION.md")
 PLATFORM_DECISION_PATH = pathlib.Path("docs/decisions/2026-08-06_WINDOWS_ANDROID_DUAL_TARGET_DECISION.md")
+ADAPTER_CONTRACT_PATH = pathlib.Path("docs/planning-data/approved_20260806_windows_android_adapter_architecture_contract.json")
 AUDIT_CONTRACT_PATH = pathlib.Path("docs/planning-data/approved_20260804_postmerge_canon_adversarial_audit_contract.json")
 
 EXPECTED_RISKS = {"RESOURCE_SATURATION_RISK", "CONDITION_CALIBRATION_RISK", "WRONG_PLAN_RESCUE_RISK", "OBSERVATION_ANSWER_LEAK_RISK", "GRADE_FARMING_RISK", "RUNTIME_AUTHORITY_GAP"}
@@ -64,16 +65,24 @@ def require_tokens(text: str, tokens: list[str], label: str) -> None:
     for token in tokens:
         require(token in text, f"{label} missing token: {token}")
 
-def validate_operating_state(active: str, roadmap: str) -> None:
+def validate_operating_state(active: str, roadmap: str, current_contract: dict[str, Any]) -> None:
     active_state = {key: yaml_scalar(active, key) for key in OPERATING_KEYS}
     roadmap_state = {key: yaml_scalar(roadmap, key) for key in OPERATING_KEYS}
     require(active_state == roadmap_state, "operating checkpoint mismatch between active context and roadmap")
-    require(active_state["active_planning_work_mode"] == "REVIEW", "active planning work mode differs")
-    require(active_state["active_planning_pr"] == "NONE", "active planning PR must be NONE after PR #92 merge")
-    require(active_state["active_planning_parent_pr"] == "NONE", "active planning parent PR must be NONE after merge")
-    require(active_state["active_approval_count"] == "10/10", "active approval count differs")
-    require(active_state["active_decision_state"] == "TEN_MANUAL_PRODUCT_VALIDATION_MERGED", "active decision state differs")
-    require(active_state["next_planning_decision"] == "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT", "next planning decision differs")
+
+    expected_state = current_contract.get("current_operating_state")
+    require(isinstance(expected_state, dict), "current planning authority must define current_operating_state")
+    messages = {
+        "active_planning_work_mode": "active planning work mode differs",
+        "active_planning_pr": "active planning PR differs from current planning authority",
+        "active_planning_parent_pr": "active planning parent PR differs",
+        "active_approval_count": "active approval count differs",
+        "active_decision_state": "active decision state differs",
+        "next_planning_decision": "next planning decision differs",
+    }
+    for key in OPERATING_KEYS:
+        require(str(expected_state.get(key)) == active_state[key], messages[key])
+
     require_tokens(active, [
         f"product_implementation_merge_commit: {PRODUCT_MERGE_COMMIT}",
         "merged_product_pr: 92",
@@ -83,6 +92,7 @@ def validate_operating_state(active: str, roadmap: str) -> None:
         "windows_validation: CI_EXPORT_RUNTIME_PASS_LOCAL_NOT_RUN",
         "android_validation: NOT_RUN",
         f"platform_decision: {PLATFORM_DECISION_ID}",
+        "platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01",
         "design_platforms: WINDOWS_ANDROID",
         "platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS",
         "accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN",
@@ -102,7 +112,8 @@ def validate_operating_state(active: str, roadmap: str) -> None:
         "공통 검증 게이트", "중단·축소 조건", "KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST",
         "TEN_MANUAL_PRODUCT_VALIDATION_GATE", "PARTIAL_AUTOMATED_COMPLETE",
         f"증거: `{PRODUCT_EVIDENCE_HEAD}` / workflow `{PRODUCT_WORKFLOW_RUN}` / artifact `{PRODUCT_WINDOWS_ARTIFACT}`",
-        "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT", "LOCAL_WINDOWS_ANDROID_DEVICE_ACCESSIBILITY_PERFORMANCE_GATE",
+        "TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01",
+        "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", "LOCAL_WINDOWS_ANDROID_DEVICE_ACCESSIBILITY_PERFORMANCE_GATE",
         "NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT",
     ], "roadmap")
 
@@ -202,7 +213,7 @@ def validate(root: pathlib.Path = ROOT) -> None:
     roadmap = read_text(root, ROADMAP_PATH)
     mastery = read_text(root, MASTERY_PATH)
     registry = read_text(root, REGISTRY_PATH)
-    validate_operating_state(active, roadmap)
+    validate_operating_state(active, roadmap, read_json(root, ADAPTER_CONTRACT_PATH))
     validate_platform_authority(read_text(root, AGENTS_PATH), read_text(root, OLD_PLATFORM_DECISION_PATH), read_text(root, PLATFORM_DECISION_PATH))
     validate_runtime_authority(read_text(root, RUNTIME_DECISION_PATH), read_text(root, BUILD_APPROVAL_PATH), read_json(root, RUNTIME_MANIFEST_PATH))
     validate_ui_ai_authority(read_text(root, UI_AI_DECISION_PATH), read_json(root, UI_AI_LOADOUT_PATH))
