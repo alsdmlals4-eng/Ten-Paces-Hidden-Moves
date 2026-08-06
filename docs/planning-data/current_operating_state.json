@@ -5,8 +5,13 @@
   "active_planning_work_mode": "REVIEW",
   "active_planning_pr": "NONE",
   "active_planning_parent_pr": "NONE",
-  "active_approval_count": "1/10",
+  "active_approval_count": "2/10",
   "active_decision_state": "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED",
+  "review_governance_decision": "TEN-DEC-20260806-SOLO-MAINTAINER-REVIEW-EXCEPTION-01",
+  "review_mode": "SOLO_MAINTAINER_REVIEW_ATTESTATION",
+  "solo_maintainer_exception": "APPROVED_ACTIVE_WHILE_SOLO_MAINTAINED",
+  "independent_reviewer_candidates": 0,
+  "merge_authorization_per_pr": "EXPLICIT_USER_APPROVAL_REQUIRED",
   "next_package": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION",
   "next_planning_decision": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE"
 }
