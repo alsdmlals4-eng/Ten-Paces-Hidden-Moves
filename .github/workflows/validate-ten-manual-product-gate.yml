@@ -100,7 +100,7 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path build/windows | Out-Null
           $godot = (Get-Command godot).Source
-          $arguments = @('--headless', '--path', '.', '--export-release', 'Windows Desktop Product Validation', 'build/windows/TenPacesHiddenMoves.exe')
+          $arguments = @('--headless', '--path', '.', '--export-release', '"Windows Desktop Product Validation"', '"build/windows/TenPacesHiddenMoves.exe"')
           $process = Start-Process -FilePath $godot -ArgumentList $arguments -Wait -PassThru -NoNewWindow
           if ($process.ExitCode -ne 0) { throw "Godot export failed with exit code $($process.ExitCode)" }
           if (-not (Test-Path -LiteralPath "build/windows/TenPacesHiddenMoves.exe")) {
