@@ -80,6 +80,7 @@ def validate_operating_state(active: str, roadmap: str, current_state: dict[str,
         "active_planning_parent_pr": "active planning parent PR differs",
         "active_approval_count": "active approval count differs",
         "active_decision_state": "active decision state differs",
+        "next_package": "next package differs",
         "next_planning_decision": "next planning decision differs",
     }
     for key in OPERATING_KEYS:
