@@ -7,6 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "docs/planning-data/approved_20260806_windows_android_adapter_architecture_contract.json"
+CURRENT_STATE = ROOT / "docs/planning-data/current_operating_state.json"
 DECISION = ROOT / "docs/decisions/2026-08-06_WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_DECISION.md"
 CHECKER = ROOT / "tools/check_windows_android_adapter_architecture_contract.py"
 ACTIVE = ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
@@ -36,6 +37,19 @@ REQUIRED_ADAPTERS = {
     "APP_LIFECYCLE",
     "PLATFORM_SERVICES",
     "QUALITY_EXPORT",
+}
+
+EXPECTED_CURRENT_STATE = {
+    "schema_version": 1,
+    "authority": "CURRENT_OPERATING_STATE",
+    "source_decision": "TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01",
+    "active_planning_work_mode": "REVIEW",
+    "active_planning_pr": "102",
+    "active_planning_parent_pr": "NONE",
+    "active_approval_count": "1/10",
+    "active_decision_state": "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED",
+    "next_package": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION",
+    "next_planning_decision": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE",
 }
 
 
@@ -70,6 +84,7 @@ class WindowsAndroidAdapterArchitectureContractTest(unittest.TestCase):
 
     def test_contract_artifacts_exist(self):
         self.assertTrue(CONTRACT.is_file())
+        self.assertTrue(CURRENT_STATE.is_file())
         self.assertTrue(DECISION.is_file())
         self.assertTrue(CHECKER.is_file())
 
@@ -78,6 +93,12 @@ class WindowsAndroidAdapterArchitectureContractTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT_PASS", result.stdout)
 
+    def test_mutable_operating_state_is_separate_from_immutable_decision(self):
+        data = self.load_contract()
+        self.assertNotIn("current_operating_state", data)
+        current = json.loads(CURRENT_STATE.read_text(encoding="utf-8"))
+        self.assertEqual(current, EXPECTED_CURRENT_STATE)
+
     def test_shared_core_and_adapter_set_are_fixed(self):
         data = self.load_contract()
         self.assertEqual(data["decision_id"], "TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01")
@@ -85,17 +106,6 @@ class WindowsAndroidAdapterArchitectureContractTest(unittest.TestCase):
         self.assertEqual(set(data["platforms"]), {"WINDOWS", "ANDROID"})
         self.assertEqual(set(data["adapter_layers"]), REQUIRED_ADAPTERS)
         self.assertEqual(data["core_policy"]["authority"], "SINGLE_SHARED_CORE")
-        self.assertEqual(
-            data["current_operating_state"],
-            {
-                "active_planning_work_mode": "REVIEW",
-                "active_planning_pr": "102",
-                "active_planning_parent_pr": "NONE",
-                "active_approval_count": "1/10",
-                "active_decision_state": "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED",
-                "next_planning_decision": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE",
-            },
-        )
         for key in ["combat_rules", "ai", "content_ids", "numeric_balance", "save_schema", "deterministic_resolution"]:
             self.assertEqual(data["core_policy"][key], "SHARED")
 
@@ -111,6 +121,8 @@ class WindowsAndroidAdapterArchitectureContractTest(unittest.TestCase):
         ui = self.load_contract()["responsive_ui_contract"]
         self.assertEqual(ui["semantic_equivalence"], "REQUIRED")
         self.assertEqual(ui["minimum_touch_target_dp"], 48)
+        self.assertEqual(ui["touch_target_unit"], "ANDROID_DP_NOT_RAW_PIXELS")
+        self.assertEqual(ui["breakpoint_measure"], "AVAILABLE_SAFE_AREA_UI_LOGICAL_WIDTH_NOT_FRAMEBUFFER_PIXELS")
         self.assertEqual(ui["breakpoints_logical_px"], {"compact_max": 899, "standard_max": 1439, "wide_min": 1440})
         self.assertEqual(ui["compact_layout"], "STACKED_OR_BOTTOM_SHEET")
         self.assertFalse(ui["pixel_identical_layout_required"])
@@ -119,6 +131,7 @@ class WindowsAndroidAdapterArchitectureContractTest(unittest.TestCase):
         mobile = self.load_contract()["android_window_contract"]
         self.assertEqual(mobile["safe_area_api"], "DisplayServer.get_display_safe_area")
         self.assertEqual(mobile["cutout_api"], "DisplayServer.get_display_cutouts")
+        self.assertEqual(mobile["safe_area_coordinate_conversion"], "DISPLAY_SPACE_TO_VIEWPORT_CONTROL_SPACE_REQUIRED")
         self.assertEqual(mobile["back_event"], "WINDOW_EVENT_GO_BACK_REQUEST")
         self.assertEqual(mobile["back_priority"], ["CLOSE_TOP_OVERLAY", "CANCEL_REVERSIBLE_STEP", "OPEN_PAUSE_CONFIRM", "REQUEST_EXIT"])
         self.assertEqual(mobile["orientation_policy"], "LANDSCAPE_PRIMARY_PORTRAIT_NOT_SUPPORTED_IN_T1")
@@ -141,6 +154,7 @@ class WindowsAndroidAdapterArchitectureContractTest(unittest.TestCase):
         self.assertTrue(save["schema_version_required"])
         self.assertTrue(save["migration_tests_required"])
         self.assertFalse(save["platform_specific_gameplay_fields_allowed"])
+        self.assertEqual(save["integrity_hash_scope"], "CORRUPTION_DETECTION_NOT_SECURITY_BOUNDARY")
 
     def test_renderer_and_export_boundary_are_conservative(self):
         quality = self.load_contract()["quality_export_contract"]
