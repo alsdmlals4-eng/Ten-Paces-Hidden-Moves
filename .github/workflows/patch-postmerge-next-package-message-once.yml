@@ -1,0 +1,37 @@
+name: Patch Postmerge Next Package Message Once
+
+on:
+  push:
+    branches:
+      - planning/windows-android-adapter-architecture
+    paths:
+      - .github/workflows/patch-postmerge-next-package-message-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out planning branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: planning/windows-android-adapter-architecture
+          fetch-depth: 0
+      - name: Patch message mapping
+        run: python tools/patch_postmerge_next_package_message_once.py
+      - name: Commit fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add tools/check_postmerge_canon_lifecycle.py
+          git diff --cached --check
+          if git diff --cached --quiet; then
+            echo 'No message mapping change required.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix: report next package lifecycle mismatch'
+          git push origin HEAD:planning/windows-android-adapter-architecture
