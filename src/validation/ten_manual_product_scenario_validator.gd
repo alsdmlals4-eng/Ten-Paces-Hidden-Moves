@@ -3,6 +3,24 @@ extends RefCounted
 
 const REGISTRY_SCRIPT := preload("res://src/combat/martial_manual_registry.gd")
 const PIPELINE_SCRIPT := preload("res://src/combat/martial_effect_pipeline.gd")
+const MASTERY_LEVELS := [3, 5, 7, 9, 10]
+
+func build_runtime_contract() -> Dictionary:
+    var registry = REGISTRY_SCRIPT.new()
+    var scenario_matrix: Array[Dictionary] = []
+    if registry.is_valid():
+        for manual_id_value in registry.get_manual_ids():
+            var manual_id := str(manual_id_value)
+            for mastery in MASTERY_LEVELS:
+                scenario_matrix.append({
+                    "scenario_id": "%s-star-%d" % [manual_id, mastery],
+                    "manual_id": manual_id,
+                    "mastery": mastery
+                })
+    return {
+        "mastery_levels": MASTERY_LEVELS.duplicate(),
+        "scenario_matrix": scenario_matrix
+    }
 
 func run(contract: Dictionary) -> Dictionary:
     var started := Time.get_ticks_msec()
