@@ -10,7 +10,7 @@
   "pinned_source_commit": "aeb5d4f3f7f0a6c9b5e178876d6c99b791fda605",
   "stage": "ADOPTION_SPEC_DRAFT_PR",
   "adoption_spec_branch": "chore/gut-9.7.1-adoption-spec",
-  "formal_installation": "BLOCKED_UNTIL_SPEC_MERGED_TO_MAIN",
+  "formal_installation": "BLOCKED_UNTIL_SPEC_MERGED_AND_EXISTING_INSTALL_RECONCILED",
   "production_files_may_be_modified": false,
   "higodot_authority": "SINGLE_GODOT_SCENE_NODE_RESOURCE_PROJECT_SETTINGS_AUTHOR",
   "gut_authority": "FORMAL_TEST_EXECUTION_AND_ASSERTION",
@@ -39,6 +39,16 @@
     "exact_project_version": "4.7.1_CI_EVIDENCE_LOCAL_UNVERIFIED",
     "import_and_smoke_required_at_install": true
   },
+  "existing_installation": {
+    "detected_on_main": true,
+    "introduction_commit": "6e471b62a6236749312f31264428a46b97c8387a",
+    "state": "PREEXISTING_OUT_OF_SEQUENCE_INSTALLATION",
+    "modified_by_adoption_spec_pr": false,
+    "authority": "NOT_GRANTED_BY_FILE_PRESENCE",
+    "tree_match_to_verified_tag": "NOT_YET_VERIFIED",
+    "runtime_execution_evidence": "NOT_ACCEPTED_AS_FORMAL_ADOPTION_EVIDENCE",
+    "required_remediation": "POST_SPEC_MERGE_RECONCILIATION_AND_VALIDATION_PR"
+  },
   "consumer_path": {
     "test_root": "tests/gut",
     "junit_output": "build/test-results/gut.xml",
@@ -49,12 +59,13 @@
   "ci_plan": {
     "exact_head_checkout": true,
     "source_and_version_assertion": true,
+    "existing_addon_tree_match_assertion": true,
     "godot_import": true,
     "gut_cli_execution": true,
     "junit_required": true,
     "junit_artifact_upload": true,
     "production_hash_unchanged_assertion": true,
-    "installation_workflow_state": "DEFERRED_TO_POST_SPEC_MERGE_PR"
+    "installation_workflow_state": "DEFERRED_TO_POST_SPEC_MERGE_RECONCILIATION_PR"
   },
   "removal_and_rollback": {
     "remove_addon_and_test_configuration": true,
@@ -74,7 +85,7 @@
   },
   "claim_ceiling": {
     "spec_review": "PENDING_EXACT_HEAD_REVIEW",
-    "formal_installation": "NOT_STARTED",
+    "formal_installation": "EXISTING_FILES_PRESENT_AUTHORITY_NOT_GRANTED",
     "local_higodot": "NOT_RUN",
     "local_godot": "NOT_RUN",
     "windows_local": "NOT_RUN",
@@ -83,5 +94,5 @@
     "production_readiness": false
   },
   "visual_audio_disposition": "NO_NEW_VISUAL_OR_AUDIO_ASSET_REQUIRED",
-  "next_gate": "MERGE_ADOPTION_SPEC_THEN_CREATE_FORMAL_INSTALLATION_PR"
+  "next_gate": "MERGE_ADOPTION_SPEC_THEN_RECONCILE_AND_VALIDATE_EXISTING_INSTALL"
 }
