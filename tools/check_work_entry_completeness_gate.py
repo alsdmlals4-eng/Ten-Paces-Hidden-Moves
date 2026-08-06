@@ -44,21 +44,34 @@ def main() -> None:
     required = contract.get("required_readbacks")
     require(isinstance(required, list) and len(required) == 6, "WORK_ENTRY_BLOCKED_UNVERIFIED: mandatory readbacks incomplete")
 
+    product_gate = contract.get("product_implementation", {})
+    require(product_gate.get("entry_state") == "BLOCKED", "WORK_ENTRY_BLOCKED_CANON_CONFLICT: product entry must be blocked")
+    require(
+        product_gate.get("reason") == "PLANNING_REVIEW_VISUAL_AND_AUTHORITY_GATES_OPEN",
+        "PLANNING_REVIEW_VISUAL_AND_AUTHORITY_GATES_OPEN",
+    )
+
     require(snapshot.get("product_implementation_entry") == "BLOCKED", "WORK_ENTRY_BLOCKED_CANON_CONFLICT: false READY state")
     require(snapshot.get("unresolved", {}).get("blocking_finding") == "P0_RUNTIME_AUTHORITY_GAP", "WORK_ENTRY_BLOCKED_CANON_CONFLICT: unresolved list differs")
     require(snapshot.get("visual_review", {}).get("approval_state") == "IN_REVIEW", "WORK_ENTRY_BLOCKED_CANON_CONFLICT: image review state differs")
     require(snapshot.get("visual_review", {}).get("runtime_validation") == "NOT_RUN", "WORK_ENTRY_BLOCKED_CANON_CONFLICT: image runtime state differs")
 
-    gate = state.get("work_entry_completeness_gate")
-    require(isinstance(gate, dict), "WORK_ENTRY_BLOCKED_UNVERIFIED: current operating gate missing")
-    require(gate.get("decision_id") == DECISION_ID, "WORK_ENTRY_BLOCKED_CANON_CONFLICT: operating Decision differs")
-    require(gate.get("product_implementation_entry") == "BLOCKED", "WORK_ENTRY_BLOCKED_CANON_CONFLICT: product entry must be blocked")
-    require(gate.get("reason") == "PLANNING_REVIEW_VISUAL_AND_AUTHORITY_GATES_OPEN", "PLANNING_REVIEW_VISUAL_AND_AUTHORITY_GATES_OPEN")
-    require(state.get("next_package_state") == "BLOCKED_BY_WORK_ENTRY_COMPLETENESS_GATE", "WORK_ENTRY_BLOCKED_CANON_CONFLICT: next package state differs")
-    require(state.get("active_tooling_pr") == "104", "WORK_ENTRY_BLOCKED_CANON_CONFLICT: tooling PR differs")
+    require(state.get("authority") == "CURRENT_OPERATING_STATE", "WORK_ENTRY_BLOCKED_CANON_CONFLICT: current state authority differs")
+    require(
+        state.get("source_decision") == "TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01",
+        "WORK_ENTRY_BLOCKED_CANON_CONFLICT: current state source differs",
+    )
+    require(state.get("active_planning_pr") == "NONE", "WORK_ENTRY_BLOCKED_CANON_CONFLICT: unexpected active planning PR")
+    require(
+        state.get("next_package") == "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION",
+        "WORK_ENTRY_BLOCKED_CANON_CONFLICT: next package differs",
+    )
+    require("next_package_state" not in state, "WORK_ENTRY_BLOCKED_CANON_CONFLICT: gate state duplicated into adapter state")
+    require("work_entry_completeness_gate" not in state, "WORK_ENTRY_BLOCKED_CANON_CONFLICT: gate contract duplicated into adapter state")
 
     active = active_path.read_text(encoding="utf-8")
     require(DECISION_ID in active, "WORK_ENTRY_BLOCKED_UNVERIFIED: Active Context gate missing")
+    require("active_tooling_pr: 104" in active, "WORK_ENTRY_BLOCKED_CANON_CONFLICT: tooling PR differs")
     require("product_implementation_entry: BLOCKED" in active, "WORK_ENTRY_BLOCKED_CANON_CONFLICT: Active Context false READY")
     require("NO_NEW_VISUAL_ASSET_REQUIRED" in active, "WORK_ENTRY_BLOCKED_UNVERIFIED: tooling visual disposition missing")
     require("next_package_state: READY" not in active, "WORK_ENTRY_BLOCKED_CANON_CONFLICT: false READY remains")
