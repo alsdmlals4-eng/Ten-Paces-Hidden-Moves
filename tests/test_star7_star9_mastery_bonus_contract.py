@@ -142,16 +142,24 @@ class Star7Star9MasteryBonusContractTest(unittest.TestCase):
         ]:
             self.assertEqual(scope[key], "NOT_RUN")
 
-    def test_later_runtime_decision_owns_current_canon(self):
+    def test_later_authorities_preserve_mastery_and_product_lineage(self):
         active = (ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md").read_text(encoding="utf-8")
         roadmap = (ROOT / "docs/04_ROADMAP.md").read_text(encoding="utf-8")
         mastery = (ROOT / "docs/06_STARTING_FACTION_MASTERY_DATA.md").read_text(encoding="utf-8")
+
         for current in [active, roadmap]:
-            self.assertIn("active_approval_count: 10/10", current)
-            self.assertIn("active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED", current)
-            self.assertIn("next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE", current)
             self.assertIn("TEN_MANUAL_UI_AI_ADOPTION_GATE", current)
             self.assertIn("TEN_MANUAL_PRODUCT_VALIDATION_GATE", current)
+            self.assertIn("merged_product_pr: 92", current)
+            self.assertIn("product_implementation_merge_commit: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90", current)
+            self.assertIn("active_approval_count: 1/10", current)
+            self.assertIn("active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED", current)
+            self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current)
+
+        self.assertIn("runtime_implementation: TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92", active)
+        self.assertIn("product_gate: PARTIAL_AUTOMATED_COMPLETE", active)
+        self.assertIn("evidence_source_head: 0a8bf577b936ddac5cb7130a0cc58e519ea6eff6", active)
+
         self.assertIn("active_batch: 10/10", mastery)
         self.assertIn("implementation_authority: RUNTIME_FOUNDATION", mastery)
         self.assertIn("approved_20260806_ten_recognizable_martial_manuals_contract.json", mastery)
