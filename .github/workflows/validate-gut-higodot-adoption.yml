@@ -33,15 +33,21 @@ concurrency:
 permissions:
   contents: read
 
+env:
+  EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+
 jobs:
   adoption-contract:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Check out repository
+      - name: Check out exact head
         uses: actions/checkout@v4
         with:
+          ref: ${{ env.EXPECTED_HEAD_SHA }}
           show-progress: false
+      - name: Require exact head checkout
+        run: test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD_SHA"
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -60,10 +66,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Check out repository
+      - name: Check out exact head
         uses: actions/checkout@v4
         with:
+          ref: ${{ env.EXPECTED_HEAD_SHA }}
           show-progress: false
+      - name: Require exact head checkout
+        run: test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD_SHA"
       - name: Set up Godot 4.7.1
         uses: chickensoft-games/setup-godot@v2
         with:
@@ -85,7 +94,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: gut-junit-${{ github.sha }}
+          name: gut-junit-${{ env.EXPECTED_HEAD_SHA }}
           path: build/test-results/gut.xml
           if-no-files-found: error
           retention-days: 14
