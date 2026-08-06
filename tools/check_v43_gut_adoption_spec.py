@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 V43_DECISION_ID = "TEN-DEC-20260806-INTEGRATED-WORK-CONTRACT-V4-3-01"
 GUT_DECISION_ID = "TEN-DEC-20260806-GUT-HIGODOT-TEST-AUTHORITY-01"
+EXPECTED_GUT_TAG_COMMIT = "aeb5d4f3f7f0a6c9b5e178876d6c99b791fda605"
 
 
 class ContractError(RuntimeError):
@@ -62,7 +63,9 @@ def main() -> None:
 
     require(spec.get("decision_id") == GUT_DECISION_ID, "GUT_ADOPTION_SPEC_CANON_CONFLICT: Decision ID")
     require(spec.get("version") == "9.7.1", "GUT_ADOPTION_SPEC_CANON_CONFLICT: version")
-    require(spec.get("source_branch_or_release") == "godot_4_7", "GUT_ADOPTION_SPEC_CANON_CONFLICT: source branch")
+    require(spec.get("source_branch_or_release") == "v9.7.1", "GUT_ADOPTION_SPEC_CANON_CONFLICT: release tag")
+    require(spec.get("source_ref") == "refs/tags/v9.7.1", "GUT_ADOPTION_SPEC_CANON_CONFLICT: source ref")
+    require(spec.get("pinned_source_commit") == EXPECTED_GUT_TAG_COMMIT, "GUT_ADOPTION_SPEC_CANON_CONFLICT: pinned commit")
     require(spec.get("stage") == "ADOPTION_SPEC_DRAFT_PR", "GUT_ADOPTION_SPEC_CANON_CONFLICT: stage")
     require(
         spec.get("adoption_spec_branch") == "chore/gut-9.7.1-adoption-spec",
@@ -94,8 +97,25 @@ def main() -> None:
     ):
         require(isinstance(spec.get(key), dict), f"GUT_ADOPTION_SPEC_BLOCKED_UNVERIFIED: missing {key}")
 
-    require(spec["license_verification"].get("expected") == "MIT", "GUT_ADOPTION_SPEC_CANON_CONFLICT: license")
-    require(spec["godot_compatibility"].get("required") == "4.7.x", "GUT_ADOPTION_SPEC_CANON_CONFLICT: Godot compatibility")
+    provenance = spec["source_provenance"]
+    require(provenance.get("release_tag") == "v9.7.1", "GUT_ADOPTION_SPEC_CANON_CONFLICT: provenance tag")
+    require(provenance.get("tag_commit") == EXPECTED_GUT_TAG_COMMIT, "GUT_ADOPTION_SPEC_CANON_CONFLICT: provenance commit")
+    require(provenance.get("plugin_manifest_path") == "addons/gut/plugin.cfg", "GUT_ADOPTION_SPEC_CANON_CONFLICT: plugin manifest path")
+    require(provenance.get("plugin_manifest_version") == "9.7.1", "GUT_ADOPTION_SPEC_CANON_CONFLICT: plugin manifest version")
+    require(provenance.get("verification_state") == "VERIFIED_AT_ADOPTION_SPEC", "GUT_ADOPTION_SPEC_BLOCKED_UNVERIFIED: source provenance")
+
+    license_info = spec["license_verification"]
+    require(license_info.get("expected") == "MIT", "GUT_ADOPTION_SPEC_CANON_CONFLICT: license")
+    require(license_info.get("path") == "addons/gut/LICENSE.md", "GUT_ADOPTION_SPEC_CANON_CONFLICT: license path")
+    require(license_info.get("verified_at_ref") == "v9.7.1", "GUT_ADOPTION_SPEC_CANON_CONFLICT: license ref")
+    require(
+        license_info.get("state") == "VERIFIED_AT_ADOPTION_SPEC_RECHECK_AT_INSTALL",
+        "GUT_ADOPTION_SPEC_BLOCKED_UNVERIFIED: license verification",
+    )
+
+    compatibility = spec["godot_compatibility"]
+    require(compatibility.get("required") == "4.7.x", "GUT_ADOPTION_SPEC_CANON_CONFLICT: Godot compatibility")
+    require(compatibility.get("upstream_branch_family") == "godot_4_7", "GUT_ADOPTION_SPEC_CANON_CONFLICT: compatibility branch family")
     require(spec["ci_plan"].get("production_hash_unchanged_assertion") is True, "GUT_ADOPTION_SPEC_CANON_CONFLICT: CI hash assertion")
     require(spec["claim_ceiling"].get("formal_installation") == "NOT_STARTED", "GUT_ADOPTION_SPEC_OVERCLAIM: installation")
     require(spec["claim_ceiling"].get("android") == "NOT_RUN", "GUT_ADOPTION_SPEC_OVERCLAIM: Android")
@@ -105,10 +125,16 @@ def main() -> None:
     gut_decision = (ROOT / "docs/decisions/2026-08-06_GUT_9_7_1_ADOPTION_SPEC_DECISION.md").read_text(encoding="utf-8")
     for marker in (V43_DECISION_ID, "GPT_ROLE_SEPARATED_PLUS_USER_DECISION_AUTHORITY", "CURRENT_CONVERSATION_RECOMMENDED_MERGES_AUTO_APPROVED"):
         require(marker in v43_decision, f"V43_BINDING_BLOCKED_UNVERIFIED: missing marker {marker}")
-    for marker in (GUT_DECISION_ID, "GUT_ADOPTION_SPEC_DRAFT_PR_GATE", "BLOCKED_UNTIL_SPEC_MERGED_TO_MAIN", "HIGODOT_GUT_ROLE_NON_OVERLAP_GATE"):
+    for marker in (
+        GUT_DECISION_ID,
+        "GUT_ADOPTION_SPEC_DRAFT_PR_GATE",
+        "BLOCKED_UNTIL_SPEC_MERGED_TO_MAIN",
+        "HIGODOT_GUT_ROLE_NON_OVERLAP_GATE",
+        EXPECTED_GUT_TAG_COMMIT,
+    ):
         require(marker in gut_decision, f"GUT_ADOPTION_SPEC_BLOCKED_UNVERIFIED: missing marker {marker}")
 
-    print("v4.3 binding and GUT 9.7.1 adoption spec: PASS")
+    print("v4.3 binding and verified GUT 9.7.1 adoption spec: PASS")
 
 
 if __name__ == "__main__":
