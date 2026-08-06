@@ -16,21 +16,30 @@
       "id": "windows-py311",
       "host": "windows",
       "python": "3.11",
-      "launcher": ["py", "-3.11"],
+      "launcher": [
+        "py",
+        "-3.11"
+      ],
       "required": true
     },
     {
       "id": "windows-py312",
       "host": "windows",
       "python": "3.12",
-      "launcher": ["py", "-3.12"],
+      "launcher": [
+        "py",
+        "-3.12"
+      ],
       "required": true
     },
     {
       "id": "windows-py313",
       "host": "windows",
       "python": "3.13",
-      "launcher": ["py", "-3.13"],
+      "launcher": [
+        "py",
+        "-3.13"
+      ],
       "required": true,
       "relation_to_workflow": "LOCAL_FORWARD_COMPATIBILITY_EXTENSION"
     },
@@ -38,7 +47,13 @@
       "id": "wsl2-ubuntu-py312",
       "host": "wsl2-ubuntu",
       "python": "3.12",
-      "launcher": ["wsl.exe", "-d", "<auto-detected Ubuntu>", "--", "python3.12"],
+      "launcher": [
+        "wsl.exe",
+        "-d",
+        "<auto-detected Ubuntu>",
+        "--",
+        "python3.12"
+      ],
       "required": true
     }
   ],
