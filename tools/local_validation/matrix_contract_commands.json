@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "source_workflow": ".github/workflows/full-validation.yml",
+  "source_job": "matrix-contracts",
+  "pack_self_check_commands": [
+    {
+      "id": "local-pack-contract-tests",
+      "workflow_run": "python -m unittest tests.test_windows_wsl2_local_validation_pack -v",
+      "args": ["{python}", "-m", "unittest", "tests.test_windows_wsl2_local_validation_pack", "-v"]
+    },
+    {
+      "id": "local-pack-validator",
+      "workflow_run": "python tools/check_windows_wsl2_local_validation_pack.py",
+      "args": ["{python}", "tools/check_windows_wsl2_local_validation_pack.py"]
+    }
+  ],
+  "matrix_contract_commands": [
+    {
+      "id": "project-operating-system",
+      "workflow_run": "python tools/check_project_operating_system.py --root . --config .github/documentation-governance.json",
+      "args": ["{python}", "tools/check_project_operating_system.py", "--root", ".", "--config", ".github/documentation-governance.json"]
+    },
+    {
+      "id": "canonical-reference-freshness",
+      "workflow_run": "python tools/check_canonical_reference_freshness.py --root . --config .github/reference-freshness.json",
+      "args": ["{python}", "tools/check_canonical_reference_freshness.py", "--root", ".", "--config", ".github/reference-freshness.json"]
+    },
+    {
+      "id": "skill-package-integrity",
+      "workflow_run": "python tools/check_skill_package_integrity.py",
+      "args": ["{python}", "tools/check_skill_package_integrity.py"]
+    },
+    {
+      "id": "archive-governance",
+      "workflow_run": "python tools/check_archive_governance.py",
+      "args": ["{python}", "tools/check_archive_governance.py"]
+    },
+    {
+      "id": "archive-retention-regression",
+      "workflow_run": "python -m unittest tests.test_archive_retention_governance -v",
+      "args": ["{python}", "-m", "unittest", "tests.test_archive_retention_governance", "-v"]
+    },
+    {
+      "id": "project-governance-regression",
+      "workflow_run": "python -m unittest discover -s tests -p \"test_project_governance.py\"",
+      "args": ["{python}", "-m", "unittest", "discover", "-s", "tests", "-p", "test_project_governance.py"]
+    },
+    {
+      "id": "poc-planning-data",
+      "workflow_run": "python -m unittest tests.test_poc_planning_data -v",
+      "args": ["{python}", "-m", "unittest", "tests.test_poc_planning_data", "-v"]
+    },
+    {
+      "id": "card-component-contract",
+      "workflow_run": "python tests/check_card_component_contract.py",
+      "args": ["{python}", "tests/check_card_component_contract.py"]
+    },
+    {
+      "id": "combat-contract",
+      "workflow_run": "python tests/check_combat_board_contract.py",
+      "args": ["{python}", "tests/check_combat_board_contract.py"]
+    },
+    {
+      "id": "canonical-combat-impact-map",
+      "workflow_run": "python tests/check_canonical_combat_docs.py",
+      "args": ["{python}", "tests/check_canonical_combat_docs.py"]
+    },
+    {
+      "id": "rival-tendency-contract",
+      "workflow_run": "python tests/check_rival_tendency_contract.py",
+      "args": ["{python}", "tests/check_rival_tendency_contract.py"]
+    },
+    {
+      "id": "repeat-poc-a2-contract",
+      "workflow_run": "python tests/check_repeat_poc_a2_contract.py",
+      "args": ["{python}", "tests/check_repeat_poc_a2_contract.py"]
+    },
+    {
+      "id": "repeat-poc-a3-contract",
+      "workflow_run": "python tests/check_repeat_poc_a3_contract.py",
+      "args": ["{python}", "tests/check_repeat_poc_a3_contract.py"]
+    },
+    {
+      "id": "prepare-auto-placement-contract",
+      "workflow_run": "python tests/check_prepare_auto_placement_contract.py",
+      "args": ["{python}", "tests/check_prepare_auto_placement_contract.py"]
+    },
+    {
+      "id": "action-selection-contract",
+      "workflow_run": "python tests/check_action_selection_contract.py",
+      "args": ["{python}", "tests/check_action_selection_contract.py"]
+    }
+  ]
+}
