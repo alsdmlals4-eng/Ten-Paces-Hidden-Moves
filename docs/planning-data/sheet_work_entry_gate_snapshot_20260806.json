@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "spreadsheet_id": "1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0",
+  "sheet_read_at": "2026-08-06T22:20:00+09:00",
+  "decision_ledger": {
+    "tab": "02_현재_확정결정",
+    "latest_synced_main": "5f4add5d98721413681cf92c01bb810f16677703",
+    "gut_higodot_decision_before_sync": "MISSING",
+    "work_entry_gate_decision_before_sync": "MISSING"
+  },
+  "unresolved": {
+    "tab": "04_누락_충돌_감사",
+    "blocking_finding": "P0_RUNTIME_AUTHORITY_GAP",
+    "other_open_evidence": [
+      "PLANNING_NOT_COMPLETE",
+      "REVIEW_NOT_COMPLETE",
+      "ANDROID_RUNTIME_NOT_RUN",
+      "LOCAL_WINDOWS_NOT_RUN",
+      "HUMAN_VALIDATION_NOT_RUN"
+    ]
+  },
+  "visual_plan": {
+    "tab": "71_이미지기획_생성목록",
+    "ten_img_001": "PLANNED",
+    "ten_img_002": "PLANNED",
+    "ten_img_003": "BLOCKED_BY_DEMO"
+  },
+  "visual_review": {
+    "tab": "72_이미지검수_승인로그",
+    "review_id": "TEN-REV-INIT",
+    "approval_state": "IN_REVIEW",
+    "runtime_validation": "NOT_RUN",
+    "error": "이미지 미생성"
+  },
+  "product_implementation_entry": "BLOCKED",
+  "product_entry_reason": "PLANNING_REVIEW_VISUAL_AND_AUTHORITY_GATES_OPEN",
+  "governance_tooling_visual_disposition": "NO_NEW_VISUAL_ASSET_REQUIRED",
+  "false_ready_reversal": [
+    "READY_NOT_RUN",
+    "NEXT_APPROVED_PACKAGE_NOT_IMPLEMENTED"
+  ]
+}
