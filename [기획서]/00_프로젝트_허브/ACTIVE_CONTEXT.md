@@ -156,6 +156,7 @@ RED 증거:
 - runtime manifest·레지스트리·pipeline 부재: workflow `31049328495`.
 - combat adapter 부재: workflow `31050666862`.
 - UI·AI loadout 분리와 bundle pipeline 연결 부재: workflow `31053963064`.
+- 최종 제품 Artifact 재실행 뒤 정본이 이전 SHA·run·artifact·성능값을 유지한 회귀: workflow `31076828345`의 `product-gate-contract` 실패.
 
 GREEN 범위:
 
@@ -165,7 +166,7 @@ GREEN 범위:
 - PR Validation과 Full Validation.
 - 기존 전투·관찰·등급·숙련·예산·Base 회귀.
 
-사람·밸런스·Windows·접근성·성능 검증은 `NOT_RUN`이다.
+사람·밸런스·로컬 Windows 렌더·실물 게임패드·접근성 사용자·Release 성능 검증은 `NOT_RUN`이다.
 
 ## 자동 제품 검증 권위
 
@@ -173,9 +174,9 @@ GREEN 범위:
 
 ```yaml
 product_gate: PARTIAL_AUTOMATED_COMPLETE
-evidence_source_head: 7494f50c48573168542781e007eeab6af11dda7d
-workflow_run_id: 31068098197
-windows_artifact_id: 8954602789
+evidence_source_head: 0a8bf577b936ddac5cb7130a0cc58e519ea6eff6
+workflow_run_id: 31074079068
+windows_artifact_id: 8956790279
 windows_export: PASS
 windows_ci_runtime: PASS
 scenario_matrix: 50/50 PASS
@@ -192,7 +193,7 @@ human_step14: NOT_RUN
 balance_validation: NOT_RUN
 ```
 
-Windows CI 기준 runtime은 약 3018.23ms, peak working set은 188674048 bytes, exe+pck는 123037256 bytes였다. runner 또는 Godot 버전이 바뀌면 직접 baseline 비교를 금지한다.
+Windows CI 기준 runtime은 약 2344.67ms, peak working set은 188571648 bytes, exe+pck는 123037256 bytes였다. runner 또는 Godot 버전이 바뀌면 직접 baseline 비교를 금지한다.
 
 Google Sheet 정본 탭 `03_무공서_무학`은 최종 exact head 검증 뒤 같은 Decision/SHA로 갱신한다.
 
