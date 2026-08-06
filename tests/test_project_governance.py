@@ -53,16 +53,24 @@ class ProjectGovernanceTests(unittest.TestCase):
     def test_active_combat_docs_use_current_implementation_baseline(self) -> None:
         current_baseline = "659c57e7ffa588ad6a6471ed9b5394985b159eaf"
         stale_baseline = "147a031c75e96bff170d7f99016beb9e85b12066"
-        docs = [
+        implementation_docs = [
             "docs/02_COMBAT_RULES.md",
             "docs/05_COMBAT_POC_SPEC.md",
-            "docs/08_TEST_CHECKLIST.md",
             "docs/09_COMBAT_SYSTEM_ARCHITECTURE.md",
         ]
-        for relative in docs:
+        for relative in implementation_docs:
             text = (ROOT / relative).read_text(encoding="utf-8")
             self.assertIn(current_baseline, text, f"{relative} is missing implementation baseline")
             self.assertNotIn(stale_baseline, text, f"{relative} still uses stale baseline")
+
+        checklist = (ROOT / "docs/08_TEST_CHECKLIST.md").read_text(encoding="utf-8")
+        self.assertIn(
+            "자동 제품 검증 증거 기준:",
+            checklist,
+            "docs/08_TEST_CHECKLIST.md must identify its separate product-evidence baseline",
+        )
+        self.assertNotIn(stale_baseline, checklist)
+
         for relative in ["docs/02_COMBAT_RULES.md", "docs/09_COMBAT_SYSTEM_ARCHITECTURE.md"]:
             text = (ROOT / relative).read_text(encoding="utf-8")
             for token in ["public_state_ai", "enemy_bundles", "ai_enabled == false"]:
