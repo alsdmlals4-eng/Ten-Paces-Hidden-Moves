@@ -70,6 +70,10 @@ jobs:
         working-directory: project
         run: godot --headless --editor --path . --quit
 
+      - name: Require clean tracked tree after import
+        working-directory: project
+        run: git diff --exit-code
+
       - name: Hash production scope before GUT
         working-directory: project
         run: >-
@@ -107,6 +111,11 @@ jobs:
           python tools/check_gut_9_7_1_reconciliation.py verify-hash
           --before build/gut-reconciliation/production-before.json
           --after build/gut-reconciliation/production-after.json
+
+      - name: Require clean tracked tree after GUT
+        if: always()
+        working-directory: project
+        run: git diff --exit-code
 
       - name: Upload reconciliation evidence
         if: always()
