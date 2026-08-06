@@ -100,6 +100,14 @@ class WindowsWsl2LocalValidationPackTests(unittest.TestCase):
         self.assertNotIn("Skip", text)
         self.assertNotIn("--skip", text)
 
+    def test_orchestrator_resolves_wsl_root_from_inherited_working_directory(self) -> None:
+        text = ORCHESTRATOR.read_text(encoding="utf-8")
+        self.assertIn(
+            '-Arguments @("-d", $WslDistribution, "--", "pwd") -WorkingDirectory $RepoRoot',
+            text,
+        )
+        self.assertNotIn('"wslpath"', text)
+
     def test_contract_is_fail_closed_and_keeps_claim_ceiling(self) -> None:
         payload = json.loads(CONTRACT.read_text(encoding="utf-8"))
         requirements = payload["requirements"]
