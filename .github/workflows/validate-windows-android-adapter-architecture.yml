@@ -21,3 +21,5 @@ jobs:
           python-version: '3.12'
       - name: Run adapter architecture regression tests
         run: python -m unittest tests.test_windows_android_adapter_architecture_contract -v
+      - name: Validate adapter architecture contract
+        run: python tools/check_windows_android_adapter_architecture_contract.py
