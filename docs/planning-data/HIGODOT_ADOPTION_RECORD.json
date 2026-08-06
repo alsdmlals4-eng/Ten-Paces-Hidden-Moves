@@ -10,7 +10,7 @@
   "project_addon_path": "addons/godot_ai",
   "plugin_config": "addons/godot_ai/plugin.cfg",
   "plugin_enabled_in_project": true,
-  "execution_authority": "SOLE_GODOT_EXECUTION_AUTHORITY",
+  "execution_authority": "SOLE_GODOT_AUTHORING_AUTHORITY",
   "authoring_authority": "SOLE_GODOT_AUTHORING_AUTHORITY",
   "network_mode": "LOOPBACK_ONLY",
   "automatic_update": false,
@@ -36,6 +36,16 @@
     "GUT_9_7_1": "GDSCRIPT_TEST_EXECUTION_AND_JUNIT_ONLY",
     "PYTHON_TESTS": "REPOSITORY_CANON_AND_STATIC_CONTRACT_VALIDATION"
   },
+  "runtime_helper_boundary": {
+    "autoload": "_mcp_game_helper",
+    "path": "res://addons/godot_ai/runtime/game_helper.gd",
+    "status": "EXISTING_BASELINE_PRESENT",
+    "included_by_current_product_export": true,
+    "editor_plugin_headless_state": "DISABLED_IN_HEADLESS_MODE_AS_EXPECTED",
+    "product_authority": false,
+    "removal_state": "BLOCKED_PENDING_HIGODOT_L1_OR_L2_VALIDATION",
+    "required_followup": "Use HiGodot bounded project-setting authoring to remove or isolate the autoload, then validate clean import, startup, Windows export/runtime, and Android export before excluding addons/godot_ai from product exports."
+  },
   "forbidden": [
     "SECOND_GODOT_MCP",
     "SECOND_EDITOR_MUTATION_AUTHORITY",
@@ -43,16 +53,19 @@
     "AUTOMATIC_UNREVIEWED_UPDATE",
     "CREDENTIAL_COMMIT",
     "GUT_SCENE_AUTHORING",
-    "GUT_PROJECT_MUTATION"
+    "GUT_PROJECT_MUTATION",
+    "UNVALIDATED_RUNTIME_HELPER_REMOVAL_OR_EXPORT_EXCLUSION"
   ],
   "observed_validation": {
     "godot_4_7_1_project_import": "PASS",
     "headless_plugin_behavior": "DISABLED_IN_HEADLESS_MODE_AS_EXPECTED",
-    "source": "PR_104_RED_RUN_31104521577",
+    "runtime_helper_behavior": "EXISTING_AUTOLOAD_STARTED_IN_HEADLESS_BASELINE",
+    "source": "PR_104_RED_RUN_31104521577_AND_31105746623",
     "interactive_editor": "HUMAN_NOT_RUN",
     "mcp_connection": "NOT_RUN",
     "l0_read": "NOT_RUN",
-    "l1_write_undo_save": "NOT_RUN"
+    "l1_write_undo_save": "NOT_RUN",
+    "runtime_helper_product_separation": "NOT_RUN"
   },
   "rollback": {
     "method": "Revert the adoption commit or restore the exact v3.1.2 release asset after hash verification.",
@@ -61,5 +74,5 @@
   },
   "production_readiness": false,
   "last_verified_at": "2026-08-06",
-  "next_verification": "LOCAL_WINDOWS_EDITOR_MCP_HOST_L0_THEN_L1_BOUNDED_OPERATION"
+  "next_verification": "LOCAL_WINDOWS_EDITOR_MCP_HOST_L0_THEN_L1_BOUNDED_OPERATION_AND_RUNTIME_HELPER_PRODUCT_SEPARATION"
 }
