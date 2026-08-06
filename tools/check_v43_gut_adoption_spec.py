@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 V43_DECISION_ID = "TEN-DEC-20260806-INTEGRATED-WORK-CONTRACT-V4-3-01"
 GUT_DECISION_ID = "TEN-DEC-20260806-GUT-HIGODOT-TEST-AUTHORITY-01"
 EXPECTED_GUT_TAG_COMMIT = "aeb5d4f3f7f0a6c9b5e178876d6c99b791fda605"
+EXISTING_INSTALL_COMMIT = "6e471b62a6236749312f31264428a46b97c8387a"
 
 
 class ContractError(RuntimeError):
@@ -72,8 +73,8 @@ def main() -> None:
         "GUT_ADOPTION_SPEC_CANON_CONFLICT: branch",
     )
     require(
-        spec.get("formal_installation") == "BLOCKED_UNTIL_SPEC_MERGED_TO_MAIN",
-        "BLOCKED_BY_GUT_ADOPTION_SPEC",
+        spec.get("formal_installation") == "BLOCKED_UNTIL_SPEC_MERGED_AND_EXISTING_INSTALL_RECONCILED",
+        "BLOCKED_BY_GUT_ADOPTION_SPEC_AND_RECONCILIATION",
     )
     require(spec.get("production_files_may_be_modified") is False, "GUT_ADOPTION_SPEC_SCOPE_VIOLATION")
     require(
@@ -89,6 +90,7 @@ def main() -> None:
         "source_provenance",
         "license_verification",
         "godot_compatibility",
+        "existing_installation",
         "consumer_path",
         "ci_plan",
         "removal_and_rollback",
@@ -116,8 +118,25 @@ def main() -> None:
     compatibility = spec["godot_compatibility"]
     require(compatibility.get("required") == "4.7.x", "GUT_ADOPTION_SPEC_CANON_CONFLICT: Godot compatibility")
     require(compatibility.get("upstream_branch_family") == "godot_4_7", "GUT_ADOPTION_SPEC_CANON_CONFLICT: compatibility branch family")
+
+    existing = spec["existing_installation"]
+    require(existing.get("detected_on_main") is True, "GUT_EXISTING_INSTALL_CONFLICT: main presence missing")
+    require(existing.get("introduction_commit") == EXISTING_INSTALL_COMMIT, "GUT_EXISTING_INSTALL_CONFLICT: introduction commit")
+    require(existing.get("state") == "PREEXISTING_OUT_OF_SEQUENCE_INSTALLATION", "GUT_EXISTING_INSTALL_CONFLICT: state")
+    require(existing.get("modified_by_adoption_spec_pr") is False, "GUT_ADOPTION_SPEC_SCOPE_VIOLATION: existing addon modified")
+    require(existing.get("authority") == "NOT_GRANTED_BY_FILE_PRESENCE", "GUT_EXISTING_INSTALL_OVERCLAIM: file presence")
+    require(existing.get("tree_match_to_verified_tag") == "NOT_YET_VERIFIED", "GUT_EXISTING_INSTALL_OVERCLAIM: tree match")
+    require(
+        existing.get("required_remediation") == "POST_SPEC_MERGE_RECONCILIATION_AND_VALIDATION_PR",
+        "GUT_EXISTING_INSTALL_CONFLICT: remediation",
+    )
+
+    require(spec["ci_plan"].get("existing_addon_tree_match_assertion") is True, "GUT_ADOPTION_SPEC_CANON_CONFLICT: tree match assertion")
     require(spec["ci_plan"].get("production_hash_unchanged_assertion") is True, "GUT_ADOPTION_SPEC_CANON_CONFLICT: CI hash assertion")
-    require(spec["claim_ceiling"].get("formal_installation") == "NOT_STARTED", "GUT_ADOPTION_SPEC_OVERCLAIM: installation")
+    require(
+        spec["claim_ceiling"].get("formal_installation") == "EXISTING_FILES_PRESENT_AUTHORITY_NOT_GRANTED",
+        "GUT_ADOPTION_SPEC_OVERCLAIM: installation authority",
+    )
     require(spec["claim_ceiling"].get("android") == "NOT_RUN", "GUT_ADOPTION_SPEC_OVERCLAIM: Android")
     require(spec.get("visual_audio_disposition") == "NO_NEW_VISUAL_OR_AUDIO_ASSET_REQUIRED", "GUT_ADOPTION_SPEC_CANON_CONFLICT: visual/audio")
 
@@ -128,13 +147,15 @@ def main() -> None:
     for marker in (
         GUT_DECISION_ID,
         "GUT_ADOPTION_SPEC_DRAFT_PR_GATE",
-        "BLOCKED_UNTIL_SPEC_MERGED_TO_MAIN",
+        "BLOCKED_UNTIL_SPEC_MERGED_AND_EXISTING_INSTALL_RECONCILED",
+        "PREEXISTING_OUT_OF_SEQUENCE_INSTALLATION",
         "HIGODOT_GUT_ROLE_NON_OVERLAP_GATE",
         EXPECTED_GUT_TAG_COMMIT,
+        EXISTING_INSTALL_COMMIT,
     ):
         require(marker in gut_decision, f"GUT_ADOPTION_SPEC_BLOCKED_UNVERIFIED: missing marker {marker}")
 
-    print("v4.3 binding and verified GUT 9.7.1 adoption spec: PASS")
+    print("v4.3 binding and verified GUT 9.7.1 reconciliation spec: PASS")
 
 
 if __name__ == "__main__":
