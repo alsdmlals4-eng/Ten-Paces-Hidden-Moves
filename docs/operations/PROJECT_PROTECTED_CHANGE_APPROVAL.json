@@ -12,6 +12,6 @@
     "project.godot"
   ],
   "approval_source": "GITHUB_PR_LABEL_APPROVED_PROTECTED_CHANGE",
-  "approval_time": "2026-08-06T16:04:28+09:00",
-  "scope_summary": "Approve the exact project.godot runtime registration change already covered by the ten-manual runtime, UI/AI adoption, and automated product-validation Decisions. No other protected path is authorized."
+  "approval_time": "2026-08-06T16:15:36+09:00",
+  "scope_summary": "Approve the exact project.godot runtime registration change already covered by the ten-manual runtime, UI/AI adoption, and automated product-validation Decisions after Base Gate adoption on main. No other protected path is authorized."
 }
