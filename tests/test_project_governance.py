@@ -77,7 +77,7 @@ class ProjectGovernanceTests(unittest.TestCase):
                 self.assertIn(token, text, f"{relative} is missing fixture boundary {token!r}")
 
     def test_active_app_flow_operating_state_is_synchronized(self) -> None:
-        default_active_docs = [
+        stable_discovery_docs = [
             "AGENTS.md",
             "START_HERE.md",
             "README.md",
@@ -93,17 +93,12 @@ class ProjectGovernanceTests(unittest.TestCase):
             "phase: BUILD_IN_PROGRESS",
             "implementation_authorization: GRANTED",
         ]
-        for relative in default_active_docs:
+        for relative in stable_discovery_docs:
             text = (ROOT / relative).read_text(encoding="utf-8")
             self.assertIn(
                 "VERTICAL_SLICE_APP_FLOW_PLANNING",
                 text,
                 f"{relative} is missing the current product stage",
-            )
-            self.assertIn(
-                "VERTICAL_SLICE_APP_FLOW_SHELL",
-                text,
-                f"{relative} is missing the next package",
             )
             self.assertTrue(
                 any(
@@ -133,6 +128,23 @@ class ProjectGovernanceTests(unittest.TestCase):
 
         active_relative = "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
         active_text = (ROOT / active_relative).read_text(encoding="utf-8")
+        current_mutable_tokens = [
+            "active_planning_pr: 102",
+            "active_approval_count: 1/10",
+            "active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED",
+            "next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION",
+            "next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE",
+            "TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01",
+        ]
+        for token in current_mutable_tokens:
+            self.assertIn(token, active_text, f"{active_relative} is missing mutable state {token!r}")
+
+        hub_roadmap = (
+            ROOT / "[기획서]/00_프로젝트_허브/ROADMAP.md"
+        ).read_text(encoding="utf-8")
+        for token in current_mutable_tokens:
+            self.assertIn(token, hub_roadmap, f"hub roadmap is missing mutable state {token!r}")
+
         for token in [
             "TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01",
             "TEN-DEC-20260801-SITUATION-SCREEN-01",
