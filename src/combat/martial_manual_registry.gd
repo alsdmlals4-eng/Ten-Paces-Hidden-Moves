@@ -66,6 +66,42 @@ func build_loadout_cards(loadout: Array, mastery_by_manual: Dictionary) -> Dicti
             result[card_id] = card.duplicate(true)
     return result
 
+func build_product_validation_snapshot(manual_id: String, mastery: int) -> Dictionary:
+    var manual: Dictionary = manuals.get(manual_id, {})
+    if manual.is_empty() or mastery < 0 or mastery > 10:
+        return {}
+    var cards: Array = build_unlocked_cards(manual_id, mastery)
+    var star5_overlay_count := 0
+    var star9_overlay_count := 0
+    for card_value in cards:
+        if typeof(card_value) != TYPE_DICTIONARY:
+            continue
+        var card: Dictionary = card_value
+        var card_id := str(card.get("id", ""))
+        var overlays_value = card.get("applied_overlays", [])
+        if typeof(overlays_value) != TYPE_ARRAY:
+            continue
+        var overlays: Array = overlays_value
+        if card_id.ends_with("_star3"):
+            star5_overlay_count += overlays.size()
+        elif card_id.ends_with("_star7"):
+            star9_overlay_count += overlays.size()
+    return {
+        "manual_id": manual_id,
+        "manual_name": str(manual.get("manual_name", "")),
+        "faction": str(manual.get("faction", "")),
+        "primary_stat": str(manual.get("primary_stat", "")),
+        "secondary_stat": str(manual.get("secondary_stat", "")),
+        "mastery": mastery,
+        "star3_unlocked": mastery >= 3,
+        "star7_unlocked": mastery >= 7,
+        "star10_unlocked": mastery >= 10,
+        "star5_overlay_count": star5_overlay_count,
+        "star9_overlay_count": star9_overlay_count,
+        "card_count": cards.size(),
+        "cards": cards.duplicate(true)
+    }
+
 func _apply_unlocked_overlays(manual: Dictionary, card_stage: String, mastery: int, card: Dictionary) -> void:
     var overlays: Dictionary = manual.get("overlays", {})
     var applied: Array = card.get("applied_overlays", [])
