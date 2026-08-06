@@ -1,0 +1,73 @@
+name: Validate GUT HiGodot Adoption
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - addons/gut/**
+      - tests/gut/**
+      - tests/test_gut_higodot_adoption.py
+      - .gutconfig.json
+      - project.godot
+      - export_presets.cfg
+      - START_HERE.md
+      - docs/decisions/2026-08-06_GUT_9_7_1_TEST_FRAMEWORK_ADOPTION_DECISION.md
+      - docs/planning-data/approved_20260806_gut_higodot_test_authority_contract.json
+      - docs/planning-data/HIGODOT_ADOPTION_RECORD.json
+      - .github/workflows/validate-gut-higodot-adoption.yml
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  adoption-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run GUT and HiGodot adoption contract
+        run: python -m unittest tests.test_gut_higodot_adoption -v
+
+  gut-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - name: Set up Godot 4.7.1
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.1
+          use-dotnet: false
+          include-templates: false
+      - name: Import and parse project
+        run: godot --headless --editor --path . --quit
+      - name: Run GUT project tests
+        run: >-
+          godot --headless --path . --script res://addons/gut/gut_cmdln.gd
+          -gconfig=res://.gutconfig.json
+      - name: Require JUnit output
+        if: always()
+        run: test -f build/test-results/gut.xml
+      - name: Upload GUT JUnit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gut-junit-${{ github.sha }}
+          path: build/test-results/gut.xml
+          if-no-files-found: error
+          retention-days: 14
