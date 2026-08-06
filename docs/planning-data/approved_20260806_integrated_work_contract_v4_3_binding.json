@@ -43,7 +43,10 @@
     "runtime_absolute_reference_forbidden": true,
     "local_access_status": "BLOCKED_NO_LOCAL_ACCESS"
   },
-  "target_platforms": ["Windows", "Android"],
+  "target_platforms": [
+    "Windows",
+    "Android"
+  ],
   "shared_core_policy": "SINGLE_GAME_LOGIC_AND_DATA_CORE",
   "test_first_every_task": true,
   "grill_me_approval_batch_max": 10,
