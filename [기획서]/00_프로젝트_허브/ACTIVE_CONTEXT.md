@@ -243,6 +243,18 @@ WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT
 
 위 표식은 PR #65 앱 흐름 기반의 역사·호환 근거이며 현재 구현 권위는 상단 YAML의 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`다.
 
+## 역사적 발견·회귀 호환 표식
+
+다음 문자열은 과거 계보와 구형 회귀의 발견용 표식일 뿐 현행 상태가 아니다.
+
+- 초기 T0 계보: `PR #7`, `Issue #13`.
+- 초기 코어 검토 상태: `CORE_REVIEW_PENDING`.
+- PR #92 병합 전 스냅샷: `active_planning_pr: 92`.
+- 제품 병합 전 상태: `active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED`.
+- 제품 병합 전 다음 Gate: `next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE`.
+
+현행 운영 값은 문서 상단 YAML의 `active_planning_pr: NONE`, `TEN_MANUAL_PRODUCT_VALIDATION_MERGED`, `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT`만 사용한다.
+
 ## 정본 동기화 원칙
 
 주요 승인과 구현 상태는 GitHub 권위 문서와 연결된 Google Sheet에 같은 Decision ID와 exact SHA로 기록한다. `03_무공서_무학` 탭에는 10권의 문파·무학 방향·주/보조능력치·3/5/7/9/10성 성취도를 한 행씩 유지한다. PR #92 제품 구현 병합과 플랫폼 Decision의 최종 Sheet 상태는 post-merge 정본 PR의 main Commit으로 `SYNCED_TO_MAIN` readback한다.
