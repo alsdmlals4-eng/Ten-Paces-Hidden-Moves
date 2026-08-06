@@ -93,13 +93,17 @@ jobs:
         shell: pwsh
         run: |
           godot --headless --editor --path . --quit
-          if ($LASTEXITCODE -ne 0) { throw "Godot import failed with exit code $LASTEXITCODE" }
+          if ($null -ne $LASTEXITCODE -and $LASTEXITCODE -ne 0) {
+            throw "Godot import failed with exit code $LASTEXITCODE"
+          }
       - name: Export Windows product build
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path build/windows | Out-Null
           godot --headless --path . --export-release "Windows Desktop Product Validation" "build/windows/TenPacesHiddenMoves.exe"
-          if ($LASTEXITCODE -ne 0) { throw "Godot export failed with exit code $LASTEXITCODE" }
+          if ($null -ne $LASTEXITCODE -and $LASTEXITCODE -ne 0) {
+            throw "Godot export failed with exit code $LASTEXITCODE"
+          }
           if (-not (Test-Path -LiteralPath "build/windows/TenPacesHiddenMoves.exe")) {
             throw "Godot export did not create build/windows/TenPacesHiddenMoves.exe"
           }
