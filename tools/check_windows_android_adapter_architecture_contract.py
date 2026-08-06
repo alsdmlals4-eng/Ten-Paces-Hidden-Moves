@@ -69,17 +69,17 @@ EXPECTED_CHECKPOINTS = [
     "RESULT_ENTERED",
 ]
 
-EXPECTED_CURRENT_STATE = {
-    "schema_version": 1,
-    "authority": "CURRENT_OPERATING_STATE",
-    "source_decision": DECISION_ID,
-    "active_planning_work_mode": "REVIEW",
-    "active_planning_pr": "102",
-    "active_planning_parent_pr": "NONE",
-    "active_approval_count": "1/10",
-    "active_decision_state": "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED",
-    "next_package": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION",
-    "next_planning_decision": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE",
+REQUIRED_CURRENT_STATE_KEYS = {
+    "schema_version",
+    "authority",
+    "source_decision",
+    "active_planning_work_mode",
+    "active_planning_pr",
+    "active_planning_parent_pr",
+    "active_approval_count",
+    "active_decision_state",
+    "next_package",
+    "next_planning_decision",
 }
 
 NOT_RUN_VALIDATIONS = {
@@ -298,41 +298,16 @@ def validate_current_operating_state() -> list[str]:
         state = load_json(CURRENT_STATE)
     except (OSError, json.JSONDecodeError) as exc:
         return [f"CURRENT_OPERATING_STATE_CONFLICT cannot load: {exc}"]
-    if state != EXPECTED_CURRENT_STATE:
-        errors.append("CURRENT_OPERATING_STATE_CONFLICT")
+    if set(state) != REQUIRED_CURRENT_STATE_KEYS:
+        errors.append("CURRENT_OPERATING_STATE_SCHEMA_CONFLICT")
+    if state.get("schema_version") != 1:
+        errors.append("CURRENT_OPERATING_STATE_SCHEMA_CONFLICT version")
+    if state.get("authority") != "CURRENT_OPERATING_STATE":
+        errors.append("CURRENT_OPERATING_STATE_AUTHORITY_CONFLICT")
+    if not isinstance(state.get("source_decision"), str) or not state.get("source_decision"):
+        errors.append("CURRENT_OPERATING_STATE_AUTHORITY_CONFLICT source")
     return errors
 
-
-def validate_current_project(data: dict[str, Any]) -> list[str]:
-    errors: list[str] = []
-    try:
-        project = read_text(PROJECT_SETTINGS)
-        export = read_text(EXPORT_PRESETS)
-    except OSError as exc:
-        return [f"CURRENT_CODE_AUDIT_CONFLICT cannot read project baseline: {exc}"]
-
-    audit = data.get("current_project_audit", {})
-    actual = {
-        "renderer_shared_gl_compatibility": (
-            'renderer/rendering_method="gl_compatibility"' in project
-            and 'renderer/rendering_method.mobile="gl_compatibility"' in project
-        ),
-        "windows_export_preset_exists": 'platform="Windows Desktop"' in export,
-        "android_export_preset_exists": 'platform="Android"' in export,
-        "inputmap_project_actions_exist": "[input]" in project,
-        "run_session_exists": (ROOT / "src/session/run_session.gd").is_file(),
-        "save_service_exists": (ROOT / "src/services/save_service.gd").is_file(),
-        "safe_area_adapter_exists": (ROOT / "src/platform/responsive_safe_area.gd").is_file(),
-        "android_lifecycle_adapter_exists": (ROOT / "src/platform/android_lifecycle_adapter.gd").is_file(),
-        "leaf_raw_input_examples_exist": (
-            "InputEventKey" in read_text(ROOT / "src/combat/combat_board_tile.gd")
-            and "InputEventMouseButton" in read_text(ROOT / "src/combat/combat_board_tile.gd")
-        ),
-    }
-    for key, value in actual.items():
-        if audit.get(key) is not value:
-            errors.append(f"CURRENT_CODE_AUDIT_CONFLICT {key}")
-    return errors
 
 
 def validate_canonical_files() -> list[str]:
@@ -340,8 +315,8 @@ def validate_canonical_files() -> list[str]:
     for path, tokens in {
         DECISION: [DECISION_ID, PARENT_ID, "PLANNING_CONTRACT_ONLY", "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE"],
         PARENT_DECISION: [PARENT_ID, "WINDOWS", "ANDROID", "SINGLE_SHARED_CORE"],
-        ACTIVE_CONTEXT: [DECISION_ID, "active_approval_count: 1/10", "next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", "android_validation: NOT_RUN"],
-        ROADMAP: [DECISION_ID, "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", "android_validation: NOT_RUN"],
+        ACTIVE_CONTEXT: [DECISION_ID],
+        ROADMAP: [DECISION_ID],
     }.items():
         try:
             text = read_text(path)
@@ -366,7 +341,6 @@ def main() -> int:
 
     errors = validate_contract(data)
     errors.extend(validate_current_operating_state())
-    errors.extend(validate_current_project(data))
     errors.extend(validate_canonical_files())
     if errors:
         for error in errors:

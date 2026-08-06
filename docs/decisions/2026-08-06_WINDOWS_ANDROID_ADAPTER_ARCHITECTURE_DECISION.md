@@ -126,7 +126,8 @@ PAUSE_MENU
 compact_max: 899 logical px
 standard_max: 1439 logical px
 wide_min: 1440 logical px
-minimum_touch_target: 48dp
+minimum_touch_target: 48dp (Android density-independent unit; raw pixel 고정값 아님)
+breakpoint_measure: available safe-area UI logical width (framebuffer pixel 아님)
 orientation: LANDSCAPE_PRIMARY
 portrait_t1: NOT_SUPPORTED
 ```
@@ -159,7 +160,7 @@ WINDOW_EVENT_GO_BACK_REQUEST
 orientation_changed
 ```
 
-safe area는 시작, resize, orientation change, resume에서 다시 계산한다. 배경·장식은 edge-to-edge를 허용하지만 핵심 선택 영역은 system bar·cutout과 겹치지 않는다.
+safe area는 시작, resize, orientation change, resume에서 다시 계산한다. DisplayServer가 반환한 display-space 좌표는 viewport·Control 좌표계로 변환한 뒤 레이아웃에 적용한다. 배경·장식은 edge-to-edge를 허용하지만 핵심 선택 영역은 system bar·cutout과 겹치지 않는다.
 
 Back 우선순위:
 
@@ -208,7 +209,7 @@ cloud_sync: DEFERRED
 - `written_at_utc`
 - `app_version`
 - `run_state`
-- `integrity_hash`
+- `integrity_hash` — 우발적 손상 탐지용이며 보안·위변조 방지 경계로 간주하지 않는다.
 
 primary가 손상되면 backup을 검증한 뒤 복구한다. 둘 다 실패하면 새 run 시작 여부를 명시적으로 묻는다. 플랫폼별 gameplay field는 금지하고 migration test가 없는 schema 변경은 병합하지 않는다.
 

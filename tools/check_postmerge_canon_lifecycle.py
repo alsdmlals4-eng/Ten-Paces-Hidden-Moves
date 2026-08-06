@@ -28,11 +28,11 @@ OLD_TECHNIQUE_DECISION_PATH = pathlib.Path("docs/decisions/2026-08-03_STARTING_M
 OLD_TECHNIQUE_CONTRACT_PATH = pathlib.Path("docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json")
 OLD_PLATFORM_DECISION_PATH = pathlib.Path("docs/decisions/2026-08-02_PLATFORM_SCOPE_DECISION.md")
 PLATFORM_DECISION_PATH = pathlib.Path("docs/decisions/2026-08-06_WINDOWS_ANDROID_DUAL_TARGET_DECISION.md")
-ADAPTER_CONTRACT_PATH = pathlib.Path("docs/planning-data/approved_20260806_windows_android_adapter_architecture_contract.json")
+CURRENT_STATE_PATH = pathlib.Path("docs/planning-data/current_operating_state.json")
 AUDIT_CONTRACT_PATH = pathlib.Path("docs/planning-data/approved_20260804_postmerge_canon_adversarial_audit_contract.json")
 
 EXPECTED_RISKS = {"RESOURCE_SATURATION_RISK", "CONDITION_CALIBRATION_RISK", "WRONG_PLAN_RESCUE_RISK", "OBSERVATION_ANSWER_LEAK_RISK", "GRADE_FARMING_RISK", "RUNTIME_AUTHORITY_GAP"}
-OPERATING_KEYS = ("active_planning_work_mode", "active_planning_pr", "active_planning_parent_pr", "active_approval_count", "active_decision_state", "next_planning_decision")
+OPERATING_KEYS = ("active_planning_work_mode", "active_planning_pr", "active_planning_parent_pr", "active_approval_count", "active_decision_state", "next_package", "next_planning_decision")
 PRODUCT_EVIDENCE_HEAD = "0a8bf577b936ddac5cb7130a0cc58e519ea6eff6"
 PRODUCT_WORKFLOW_RUN = "31074079068"
 PRODUCT_WINDOWS_ARTIFACT = "8956790279"
@@ -65,13 +65,15 @@ def require_tokens(text: str, tokens: list[str], label: str) -> None:
     for token in tokens:
         require(token in text, f"{label} missing token: {token}")
 
-def validate_operating_state(active: str, roadmap: str, current_contract: dict[str, Any]) -> None:
+def validate_operating_state(active: str, roadmap: str, current_state: dict[str, Any]) -> None:
     active_state = {key: yaml_scalar(active, key) for key in OPERATING_KEYS}
     roadmap_state = {key: yaml_scalar(roadmap, key) for key in OPERATING_KEYS}
     require(active_state == roadmap_state, "operating checkpoint mismatch between active context and roadmap")
 
-    expected_state = current_contract.get("current_operating_state")
-    require(isinstance(expected_state, dict), "current planning authority must define current_operating_state")
+    require(current_state.get("schema_version") == 1, "current operating state schema differs")
+    require(current_state.get("authority") == "CURRENT_OPERATING_STATE", "current operating state authority differs")
+    require(isinstance(current_state.get("source_decision"), str) and current_state.get("source_decision"), "current operating state source Decision missing")
+    expected_state = current_state
     messages = {
         "active_planning_work_mode": "active planning work mode differs",
         "active_planning_pr": "active planning PR differs from current planning authority",
@@ -213,7 +215,7 @@ def validate(root: pathlib.Path = ROOT) -> None:
     roadmap = read_text(root, ROADMAP_PATH)
     mastery = read_text(root, MASTERY_PATH)
     registry = read_text(root, REGISTRY_PATH)
-    validate_operating_state(active, roadmap, read_json(root, ADAPTER_CONTRACT_PATH))
+    validate_operating_state(active, roadmap, read_json(root, CURRENT_STATE_PATH))
     validate_platform_authority(read_text(root, AGENTS_PATH), read_text(root, OLD_PLATFORM_DECISION_PATH), read_text(root, PLATFORM_DECISION_PATH))
     validate_runtime_authority(read_text(root, RUNTIME_DECISION_PATH), read_text(root, BUILD_APPROVAL_PATH), read_json(root, RUNTIME_MANIFEST_PATH))
     validate_ui_ai_authority(read_text(root, UI_AI_DECISION_PATH), read_json(root, UI_AI_LOADOUT_PATH))

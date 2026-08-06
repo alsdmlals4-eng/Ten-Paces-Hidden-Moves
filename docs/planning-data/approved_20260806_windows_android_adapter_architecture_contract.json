@@ -211,6 +211,8 @@
     "implementation_authority": "PLANNING_CONTRACT_ONLY"
   },
   "current_project_audit": {
+    "snapshot_status": "PLANNING_BASELINE",
+    "baseline_main_commit": "7d20c2c9d5d1c92b80d32dc9bf25bd833a48ad58",
     "renderer_shared_gl_compatibility": true,
     "windows_export_preset_exists": true,
     "android_export_preset_exists": false,

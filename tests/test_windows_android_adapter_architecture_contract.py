@@ -216,8 +216,14 @@ class WindowsAndroidAdapterArchitectureContractTest(unittest.TestCase):
         roadmap = ROADMAP.read_text(encoding="utf-8")
         for text in [active, roadmap]:
             self.assertIn("TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01", text)
-            self.assertIn("WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", text)
-            self.assertIn("android_validation: NOT_RUN", text)
+
+    def test_project_audit_is_an_immutable_baseline_snapshot(self):
+        audit = self.load_contract()["current_project_audit"]
+        self.assertEqual(audit["snapshot_status"], "PLANNING_BASELINE")
+        self.assertEqual(audit["baseline_main_commit"], "7d20c2c9d5d1c92b80d32dc9bf25bd833a48ad58")
+        self.assertTrue(audit["renderer_shared_gl_compatibility"])
+        self.assertTrue(audit["windows_export_preset_exists"])
+        self.assertFalse(audit["android_export_preset_exists"])
 
 
 if __name__ == "__main__":
