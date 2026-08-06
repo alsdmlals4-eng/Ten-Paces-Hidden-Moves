@@ -25,12 +25,9 @@ $stderrPath = Join-Path $outputPath 'windows-runtime.stderr.log'
 $scenarioPath = Join-Path $outputPath 'product_scenarios.json'
 $evidencePath = Join-Path $outputPath 'product_validation_evidence.json'
 
+$env:TEN_MANUAL_PRODUCT_VALIDATION = '1'
 $env:TEN_MANUAL_EVIDENCE_DIR = $outputPath
-$arguments = @(
-    '--headless',
-    '--script',
-    'res://tests/verify_ten_manual_product_gate.gd'
-)
+$arguments = @('--headless')
 
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 $process = Start-Process `
