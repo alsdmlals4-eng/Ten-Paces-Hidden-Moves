@@ -21,16 +21,22 @@ production_files_may_be_modified: false
 
 ## 2. 출처·버전·라이선스
 
+공식 upstream의 `refs/tags/v9.7.1`을 다시 조회해 실제 tag commit, plugin manifest, 라이선스를 검증했다.
+
 ```yaml
 source_repository: bitwes/Gut
-version: 9.7.1
-source_branch_or_release: godot_4_7
-pinned_source_commit: aeb5d4f3c66e2743cb7d1e6c1edc3f65a7721ea5
-license_expected: MIT
+source_ref: refs/tags/v9.7.1
+source_branch_or_release: v9.7.1
+pinned_source_commit: aeb5d4f3f7f0a6c9b5e178876d6c99b791fda605
+plugin_manifest: addons/gut/plugin.cfg
+plugin_manifest_version: 9.7.1
+license_path: addons/gut/LICENSE.md
+license: MIT
+upstream_compatibility_branch_family: godot_4_7
 required_godot_compatibility: 4.7.x
 ```
 
-이 값은 설치 PR에서 upstream source, license 파일, plugin metadata, project exact Godot version과 다시 대조한다. 명세의 기록만으로 설치 호환성을 완료 처리하지 않는다.
+초기 명세에 기록된 존재하지 않는 SHA `aeb5d4f3c66e2743cb7d1e6c1edc3f65a7721ea5`는 검토 중 P1 출처 오류로 발견해 폐기했다. 설치 PR에서 tag ref·commit·license·plugin manifest·project exact Godot version을 다시 대조한다.
 
 ## 3. HiGodot·GUT 권위 분리
 
@@ -61,7 +67,7 @@ GUT는 기존 Python·SceneTree 검증을 전면 대체하지 않고 GDScript �
 
 설치 PR의 exact HEAD에서 다음을 수행한다.
 
-- pinned source·version·license 확인.
+- tag ref·pinned commit·plugin manifest version·license 확인.
 - exact PR HEAD checkout.
 - Godot 4.7.x import.
 - GUT CLI test discovery·execution.
@@ -77,6 +83,7 @@ GUT 제거 시 addon·config·GUT workflow 단계·GUT test만 제거하고 기�
 
 ```yaml
 spec: IN_REVIEW
+source_provenance: VERIFIED_AT_ADOPTION_SPEC
 formal_installation: BLOCKED_BY_GUT_ADOPTION_SPEC
 higodot_local_authority_validation: NOT_RUN
 local_godot_validation: NOT_RUN
