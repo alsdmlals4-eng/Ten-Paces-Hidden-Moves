@@ -80,6 +80,42 @@ jobs:
       - name: Validate work governance contract
         run: python tools/check_work_governance_contract.py
 
+      - name: Run wrong-plan rescue derived stats regression tests
+        run: python -m unittest tests.test_wrong_plan_rescue_derived_stats_contract -v
+
+      - name: Validate wrong-plan rescue derived stats contract
+        run: python tools/check_wrong_plan_rescue_derived_stats_contract.py
+
+      - name: Run observation guardrail regression tests
+        run: python -m unittest tests.test_observation_answer_leak_guardrails_contract -v
+
+      - name: Validate observation guardrail contract
+        run: python tools/check_observation_answer_leak_guardrails_contract.py
+
+      - name: Run grade-farming guardrail regression tests
+        run: python -m unittest tests.test_grade_farming_guardrails_contract -v
+
+      - name: Validate grade-farming guardrail contract
+        run: python tools/check_grade_farming_guardrails_contract.py
+
+      - name: Run Star7 Star9 mastery bonus regression tests
+        run: python -m unittest tests.test_star7_star9_mastery_bonus_contract -v
+
+      - name: Validate Star7 Star9 mastery bonus contract
+        run: python tools/check_star7_star9_mastery_bonus_contract.py
+
+      - name: Run ten-manual semantic regression tests
+        run: python -m unittest tests.test_ten_recognizable_martial_manuals_contract -v
+
+      - name: Validate ten-manual semantic contract
+        run: python tools/check_ten_recognizable_martial_manuals_contract.py
+
+      - name: Run ten-manual budget regression tests
+        run: python -m unittest tests.test_ten_manual_growth_budget_overlay -v
+
+      - name: Validate ten-manual budget overlay
+        run: python tools/check_ten_manual_growth_budget_overlay.py
+
       - name: Validate PoC planning data
         run: python -m unittest tests.test_poc_planning_data -v
 

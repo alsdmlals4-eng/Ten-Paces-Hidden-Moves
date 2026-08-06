@@ -1,0 +1,132 @@
+name: Validate Ten Manual Product Gate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  product-gate-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run product gate validator tests
+        run: python -m unittest tests.test_ten_manual_product_gate -v
+      - name: Validate product gate contract
+        run: python tools/validate_ten_manual_product_gate.py --root .
+
+  automated-product-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - name: Set up Godot 4.7.1
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.1
+          use-dotnet: false
+          include-templates: false
+      - name: Import and parse project
+        run: godot --headless --editor --path . --quit
+      - name: Verify fifty ten-manual product scenarios
+        run: godot --headless --path . --script res://tests/verify_ten_manual_product_gate.gd
+      - name: Verify product viewport matrix
+        run: godot --headless --path . --script res://tests/verify_ten_manual_product_viewports.gd
+      - name: Verify keyboard accessibility
+        run: godot --headless --path . --script res://tests/verify_combat_keyboard_accessibility.gd
+      - name: Verify focus order
+        run: godot --headless --path . --script res://tests/verify_combat_focus_order.gd
+      - name: Verify layout accessibility
+        run: godot --headless --path . --script res://tests/verify_combat_layout_accessibility.gd
+      - name: Verify action selection integration
+        run: godot --headless --path . --script res://tests/verify_combat_action_selection_integration.gd
+      - name: Upload automated product evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ten-manual-automated-product-evidence-${{ github.sha }}
+          path: artifacts/ten-manual-product-validation
+          if-no-files-found: warn
+          retention-days: 7
+
+  windows-product-evidence:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    env:
+      HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      PR_NUMBER: ${{ github.event.pull_request.number || 92 }}
+      TEN_MANUAL_EVIDENCE_DIR: ${{ github.workspace }}\artifacts\ten-manual-product-validation
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Godot 4.7.1 and export templates
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.1
+          use-dotnet: false
+          include-templates: true
+      - name: Import and parse project
+        shell: pwsh
+        run: |
+          $godot = (Get-Command godot).Source
+          $process = Start-Process -FilePath $godot -ArgumentList @('--headless', '--editor', '--path', '.', '--quit') -Wait -PassThru -NoNewWindow
+          if ($process.ExitCode -ne 0) { throw "Godot import failed with exit code $($process.ExitCode)" }
+      - name: Export Windows product build
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path build/windows | Out-Null
+          $godot = (Get-Command godot).Source
+          $arguments = @('--headless', '--path', '.', '--export-release', '"Windows Desktop Product Validation"', '"build/windows/TenPacesHiddenMoves.exe"')
+          $process = Start-Process -FilePath $godot -ArgumentList $arguments -Wait -PassThru -NoNewWindow
+          if ($process.ExitCode -ne 0) { throw "Godot export failed with exit code $($process.ExitCode)" }
+          if (-not (Test-Path -LiteralPath "build/windows/TenPacesHiddenMoves.exe")) {
+            throw "Godot export did not create build/windows/TenPacesHiddenMoves.exe"
+          }
+      - name: Run exported Windows product validation
+        shell: pwsh
+        run: |
+          ./scripts/windows/run_ten_manual_product_validation.ps1 `
+            -Executable "build/windows/TenPacesHiddenMoves.exe" `
+            -HeadSha "$env:HEAD_SHA" `
+            -OutputDirectory "$env:TEN_MANUAL_EVIDENCE_DIR"
+      - name: Validate Windows evidence
+        shell: pwsh
+        run: |
+          python tools/validate_ten_manual_product_gate.py `
+            --root . `
+            --expected-sha "$env:HEAD_SHA" `
+            --evidence "artifacts/ten-manual-product-validation/product_validation_evidence.json"
+      - name: Upload Windows product build and evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ten-manual-product-validation-${{ env.HEAD_SHA }}
+          path: |
+            build/windows
+            artifacts/ten-manual-product-validation
+          if-no-files-found: warn
+          retention-days: 14

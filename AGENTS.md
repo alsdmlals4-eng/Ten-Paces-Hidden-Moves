@@ -35,28 +35,23 @@
 
 ## 3. 현재 기준
 
+변동이 잦은 활성 PR·exact head·승인 수·다음 Decision은 `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`만 책임진다. 이 진입 문서는 해당 값을 복제하지 않는다.
+
+안정 기준:
+
 ```yaml
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
-work_mode: REVIEW
-integration_pr: 65
-active_planning_work_mode: PLAN
-main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
-last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
-active_planning_pr: 82
-active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
-active_approval_count: 2/10
-active_decision_state: APPROVED_PENDING_MERGE
+runtime_work_mode: REVIEW
+runtime_integration_pr: 65
+planning_work_mode: PLAN
 runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
 latest_combat_planning_runtime: NOT_STARTED
-automated_validation: PASS
-windows_validation: NOT_RUN
-human_validation: NOT_RUN
-next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
+primary_platform: PC
+future_platform: MOBILE_CONSIDERATION_ONLY
 base_release_pinned: 9.4.3
 ```
 
-`work_mode: REVIEW`와 `integration_pr: 65`는 현재 런타임 통합 기준선이다. 활성 기획 작업은 `active_planning_work_mode: PLAN`과 PR #82로 별도 기록한다. PR #82의 두 Decision은 활성 배치 Branch에만 기록된 `APPROVED_PENDING_MERGE`이며, PR #82가 병합되고 main·Sheet를 재조회하기 전에는 `SYNCED_TO_MAIN`으로 표시하지 않는다.
+활성 기획 상태는 Active Context와 GitHub PR metadata를 함께 읽는다. Draft Branch의 승인은 main 병합 완료가 아니며, 병합 후 main·Sheet 재조회 전에는 `SYNCED_TO_MAIN`으로 표시하지 않는다.
 
 ## 4. Work Mode·Skill Mode
 

@@ -53,28 +53,30 @@ class ProjectGovernanceTests(unittest.TestCase):
     def test_active_combat_docs_use_current_implementation_baseline(self) -> None:
         current_baseline = "659c57e7ffa588ad6a6471ed9b5394985b159eaf"
         stale_baseline = "147a031c75e96bff170d7f99016beb9e85b12066"
-        docs = [
+        implementation_docs = [
             "docs/02_COMBAT_RULES.md",
             "docs/05_COMBAT_POC_SPEC.md",
-            "docs/08_TEST_CHECKLIST.md",
             "docs/09_COMBAT_SYSTEM_ARCHITECTURE.md",
         ]
-        for relative in docs:
+        for relative in implementation_docs:
             text = (ROOT / relative).read_text(encoding="utf-8")
             self.assertIn(current_baseline, text, f"{relative} is missing implementation baseline")
             self.assertNotIn(stale_baseline, text, f"{relative} still uses stale baseline")
+
+        checklist = (ROOT / "docs/08_TEST_CHECKLIST.md").read_text(encoding="utf-8")
+        self.assertIn(
+            "자동 제품 검증 증거 기준:",
+            checklist,
+            "docs/08_TEST_CHECKLIST.md must identify its separate product-evidence baseline",
+        )
+        self.assertNotIn(stale_baseline, checklist)
+
         for relative in ["docs/02_COMBAT_RULES.md", "docs/09_COMBAT_SYSTEM_ARCHITECTURE.md"]:
             text = (ROOT / relative).read_text(encoding="utf-8")
             for token in ["public_state_ai", "enemy_bundles", "ai_enabled == false"]:
                 self.assertIn(token, text, f"{relative} is missing fixture boundary {token!r}")
 
     def test_active_app_flow_operating_state_is_synchronized(self) -> None:
-        current_tokens = [
-            "VERTICAL_SLICE_APP_FLOW_PLANNING",
-            "work_mode: REVIEW",
-            "integration_pr: 65",
-            "VERTICAL_SLICE_APP_FLOW_SHELL",
-        ]
         default_active_docs = [
             "AGENTS.md",
             "START_HERE.md",
@@ -93,38 +95,70 @@ class ProjectGovernanceTests(unittest.TestCase):
         ]
         for relative in default_active_docs:
             text = (ROOT / relative).read_text(encoding="utf-8")
-            for token in current_tokens:
-                self.assertIn(token, text, f"{relative} is missing current token {token!r}")
+            self.assertIn(
+                "VERTICAL_SLICE_APP_FLOW_PLANNING",
+                text,
+                f"{relative} is missing the current product stage",
+            )
+            self.assertIn(
+                "VERTICAL_SLICE_APP_FLOW_SHELL",
+                text,
+                f"{relative} is missing the next package",
+            )
+            self.assertTrue(
+                any(
+                    token in text
+                    for token in (
+                        "work_mode: REVIEW",
+                        "runtime_work_mode: REVIEW",
+                        "런타임 운영 기준은 `REVIEW`",
+                        "런타임 기준선",
+                    )
+                ),
+                f"{relative} is missing stable REVIEW runtime evidence",
+            )
+            self.assertTrue(
+                any(
+                    token in text
+                    for token in (
+                        "integration_pr: 65",
+                        "runtime_integration_pr: 65",
+                        "PR #65",
+                    )
+                ),
+                f"{relative} is missing stable PR #65 runtime evidence",
+            )
             for token in superseded_active_tokens:
                 self.assertNotIn(token, text, f"{relative} still grants superseded state {token!r}")
-
-        current_decision_tokens = [
-            "TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01",
-            "TEN-DEC-20260801-SITUATION-SCREEN-01",
-        ]
-        decision_consumers = [
-            "AGENTS.md",
-            "START_HERE.md",
-            "[기획서]/00_프로젝트_허브/START_HERE.md",
-            "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
-            "[기획서]/00_프로젝트_허브/ROADMAP.md",
-            "[기획서]/00_프로젝트_허브/HANDOFF.md",
-            "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
-        ]
-        for relative in decision_consumers:
-            text = (ROOT / relative).read_text(encoding="utf-8")
-            for token in current_decision_tokens:
-                self.assertIn(token, text, f"{relative} is missing current decision {token!r}")
 
         active_relative = "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
         active_text = (ROOT / active_relative).read_text(encoding="utf-8")
         for token in [
+            "TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01",
+            "TEN-DEC-20260801-SITUATION-SCREEN-01",
             "runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65",
             "automated_validation: PASS",
             "human_validation: NOT_RUN",
             "2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md",
         ]:
             self.assertIn(token, active_text, f"{active_relative} is missing state token {token!r}")
+
+        discovery_consumers = [
+            "AGENTS.md",
+            "START_HERE.md",
+            "[기획서]/00_프로젝트_허브/START_HERE.md",
+            "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
+            "[기획서]/00_프로젝트_허브/ROADMAP.md",
+            "[기획서]/00_프로젝트_허브/HANDOFF.md",
+        ]
+        for relative in discovery_consumers:
+            text = (ROOT / relative).read_text(encoding="utf-8")
+            self.assertIn(
+                "ACTIVE_CONTEXT.md",
+                text,
+                f"{relative} cannot discover the mutable planning-state authority",
+            )
+
         self.assertNotIn("phase: BUILD_IN_PROGRESS", active_text)
         self.assertNotIn("implementation_authorization: GRANTED", active_text)
 

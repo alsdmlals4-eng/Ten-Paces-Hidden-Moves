@@ -21,6 +21,7 @@ config/features=PackedStringArray("4.7")
 [autoload]
 
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
+TenManualProductValidationBootstrap="*res://src/validation/ten_manual_product_validation_bootstrap.gd"
 
 [display]
 

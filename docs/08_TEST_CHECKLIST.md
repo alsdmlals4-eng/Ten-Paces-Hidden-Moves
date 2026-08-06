@@ -5,7 +5,7 @@
 > 규칙 원본: `docs/02_COMBAT_RULES.md`  
 > PoC 범위: `docs/05_COMBAT_POC_SPEC.md`  
 > 성장 원본: `docs/06_STARTING_FACTION_MASTERY_DATA.md`  
-> 현재 구현 기준: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`
+> 자동 제품 검증 증거 기준: `7494f50c48573168542781e007eeab6af11dda7d`
 
 ## 1. 판정 상태
 
@@ -261,6 +261,25 @@ human_step14: NOT_RUN
 - [ ] 성장 비용·도달 경로·임계 효과 재계산.
 - [ ] false-pass 회귀 차단.
 - [ ] PR exact-head에서 Full Validation·PR Validation·Base Adoption을 확인한다.
+
+## 19A. 초기 10권 자동 제품 검증
+
+- [x] 계약·validator 변조 테스트.
+- [x] 10권 × 3·5·7·9·10성 = 50개 시나리오.
+- [x] Windows x86_64 Release export.
+- [x] export된 실행 파일 Windows CI runtime.
+- [x] 1280×800·1440×900·1920×1080.
+- [x] 키보드·마우스 합성 입력.
+- [x] 포커스·레이아웃·자동 접근성.
+- [x] 성능 baseline 캡처.
+- [x] evidence SHA와 artifact metadata 검증.
+- [ ] 로컬 Windows 렌더.
+- [ ] 실물 게임패드.
+- [ ] 접근성 사용자.
+- [ ] Release 성능.
+- [ ] STEP 14 참가자 5명.
+
+현재 판정: `PARTIAL_AUTOMATED_COMPLETE`; `7494f50c48573168542781e007eeab6af11dda7d` / workflow `31068098197` / artifact `8954602789`.
 
 ## 20. STEP 14 사람 플레이
 

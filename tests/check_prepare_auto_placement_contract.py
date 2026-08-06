@@ -49,7 +49,14 @@ def main() -> None:
     assert "func _refund_ultimate_reservation(placement: Dictionary) -> void:" in board_base
     assert "current + 5" in board_base
     board_scene = read("scenes/combat/combat_board_preview.tscn")
-    assert "combat_board_preview_auto.gd" in board_scene
+    if "combat_board_preview_ten_manuals_auto.gd" in board_scene:
+        board_wrapper = read("src/combat/combat_board_preview_ten_manuals_auto.gd")
+        assert 'extends "res://src/combat/combat_board_preview_auto.gd"' in board_wrapper
+        assert "TEN_MANUAL_ENGINE_SCRIPT" in board_wrapper
+        assert "func _build_action_selection_runtime_context() -> Dictionary:" in board_wrapper
+        assert 'context["martial_loadout"]' in board_wrapper
+    else:
+        assert "combat_board_preview_auto.gd" in board_scene
 
     engine = read("src/combat/combat_resolution_engine_prepare.gd")
     for token in (
@@ -59,6 +66,10 @@ def main() -> None:
         'if category == "move":',
     ):
         assert token in engine, f"prepare engine contract missing {token}"
+
+    ten_manual_engine = read("src/combat/combat_resolution_engine_ten_manuals.gd")
+    assert 'extends "res://src/combat/combat_resolution_engine_prepare.gd"' in ten_manual_engine
+    assert "configure_martial_loadouts" in ten_manual_engine
 
     rules = json.loads(read("data/combat/combat_resolution_preview.json"))
     assert rules["schema_version"] == 8

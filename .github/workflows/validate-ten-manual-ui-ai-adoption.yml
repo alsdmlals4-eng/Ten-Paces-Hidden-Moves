@@ -1,0 +1,36 @@
+name: Validate Ten Manual UI AI Adoption
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  godot-ui-ai-adoption:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - name: Set up Godot 4.7.1
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.1
+          use-dotnet: false
+          include-templates: false
+      - name: Import and parse project
+        run: godot --headless --editor --path . --quit
+      - name: Verify ten-manual UI AI adoption
+        run: godot --headless --path . --script res://tests/verify_ten_manual_ui_ai_adoption.gd
+      - name: Verify existing action selection dock
+        run: godot --headless --path . --script res://tests/verify_action_selection_dock.gd
+      - name: Verify existing public-state AI
+        run: godot --headless --path . --script res://tests/verify_ai_rival_tendency.gd

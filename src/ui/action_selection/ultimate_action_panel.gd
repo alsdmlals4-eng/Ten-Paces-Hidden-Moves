@@ -13,6 +13,8 @@ const ADAPTER_SCRIPT := preload("res://src/ui/action_selection/action_view_model
 
 var momentum_current := 0
 var momentum_maximum := 5
+var martial_loadout: Array = []
+var martial_mastery_by_manual: Dictionary = {}
 var actions: Array[Dictionary] = []
 var reservations: Array[Dictionary] = []
 var action_buttons: Array[Button] = []
@@ -21,10 +23,18 @@ var interaction_enabled := true
 func _ready() -> void:
     set_momentum(momentum_current, momentum_maximum)
 
+func set_martial_context(loadout: Array, mastery_by_manual: Dictionary) -> void:
+    martial_loadout.clear()
+    for value in loadout:
+        martial_loadout.append(str(value))
+    martial_mastery_by_manual = mastery_by_manual.duplicate(true)
+    actions = ADAPTER_SCRIPT.new().build_ultimate_actions(momentum_current, martial_loadout, martial_mastery_by_manual)
+    _rebuild_actions()
+
 func set_momentum(current: int, maximum: int) -> void:
     momentum_maximum = maxi(1, maximum)
     momentum_current = clampi(current, 0, momentum_maximum)
-    actions = ADAPTER_SCRIPT.new().build_ultimate_actions(momentum_current)
+    actions = ADAPTER_SCRIPT.new().build_ultimate_actions(momentum_current, martial_loadout, martial_mastery_by_manual)
     _rebuild_segments()
     _rebuild_actions()
 
@@ -66,10 +76,13 @@ func get_action_button(action_id: String) -> Button:
 
 func get_panel_snapshot() -> Dictionary:
     var enabled_count := 0
+    var martial_count := 0
     var action_ids: Array[String] = []
     for action in actions:
         var action_id := str(action.get("id", ""))
         action_ids.append(action_id)
+        if str(action.get("source", "")) == "martial_manual":
+            martial_count += 1
         if not bool(action.get("locked", false)) and not _is_reserved(action_id):
             enabled_count += 1
     return {
@@ -77,10 +90,13 @@ func get_panel_snapshot() -> Dictionary:
         "momentum_maximum": momentum_maximum,
         "segment_count": momentum_maximum,
         "action_count": actions.size(),
+        "martial_ultimate_count": martial_count,
         "action_ids": action_ids,
         "enabled_count": enabled_count,
         "reservation_count": reservations.size(),
-        "interaction_enabled": interaction_enabled
+        "interaction_enabled": interaction_enabled,
+        "martial_loadout": martial_loadout.duplicate(),
+        "martial_mastery_by_manual": martial_mastery_by_manual.duplicate(true)
     }
 
 func _rebuild_segments() -> void:

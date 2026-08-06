@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01",
+  "decision_state": "CURRENT_APPROVED_PLANNING_GOVERNANCE",
+  "risk_state": "ACCEPTED_PENDING_HUMAN_MEASUREMENT",
+  "implementation_authority": "PLANNING_ONLY",
+  "parent_authority": "TEN-DEC-20260802-OBSERVATION-STATS-MASTERY-01",
+  "design_conclusion": "RETAIN_EXISTING_DIRECT_REVEAL",
+  "rationale": [
+    "Observation spends one action slot and converts it into a consumable observation point, so its result must remain immediate and legible.",
+    "Replacing direct reveal with inferred tactical clues would add content, UI, AI, localization, and validation cost without enough expected improvement to the core loop.",
+    "The remaining answer-leak risk is accepted for human measurement rather than hidden behind an automatic nerf."
+  ],
+  "observation_cost_contract": {
+    "action_slots_spent": 1,
+    "observation_points_gained": 1,
+    "points_spent_per_revealed_slot": 1,
+    "stamina_or_internal_cost_added": false,
+    "opportunity_cost": "The observation action replaces another combat action in the current bundle."
+  },
+  "observation_reveal_contract": {
+    "payload": "ACTUAL_ACTION_TYPES",
+    "spend_order": "FRONT_TO_BACK",
+    "bundle_scope": "CURRENT_LOCKED_ENEMY_BUNDLE",
+    "compound_action_types_all_displayed": true,
+    "unlimited_storage": true,
+    "cross_bundle_carryover": true,
+    "future_bundle_pre_generation": false,
+    "reveal_after_enemy_lock": true,
+    "direct_reveal_may_logically_identify_one_technique": true,
+    "recommended_counter_is_never_generated": true
+  },
+  "fairness_contract": {
+    "enemy_bundle_locked_before_reveal": true,
+    "enemy_may_replan_after_reveal": false,
+    "enemy_may_read_uncommitted_player_plan": false,
+    "reveal_uses_actual_locked_action_types": true,
+    "player_commits_after_reveal": true
+  },
+  "forbidden_outputs": [
+    "AI_WEIGHT",
+    "AI_PREFERENCE_SCORE",
+    "EXACT_TECHNIQUE_NAME",
+    "EXACT_MARTIAL_MANUAL_NAME",
+    "EXACT_COST",
+    "EXACT_DIRECTION",
+    "EXACT_DISTANCE",
+    "EXACT_DAMAGE",
+    "EXACT_RANGE",
+    "EXACT_TARGET",
+    "RECOMMENDED_CORRECT_COUNTER"
+  ],
+  "risk_policy": {
+    "preserve_current_design": true,
+    "automatic_nerf": false,
+    "automatic_reprice": false,
+    "automatic_category_blurring": false,
+    "planning_change_requires_new_user_decision": true,
+    "measurement_does_not_change_runtime_by_itself": true
+  },
+  "measurement_metrics": [
+    "observation_use_rate",
+    "observation_points_spent_per_bundle",
+    "full_bundle_reveal_rate",
+    "exact_technique_inference_rate",
+    "observation_assisted_correct_counter_rate",
+    "non_observation_correct_counter_rate",
+    "observation_assisted_grade_uplift",
+    "non_observation_win_rate"
+  ],
+  "measurement_protocol": {
+    "minimum_valid_observed_bundles": 30,
+    "warning_thresholds_are_recommended_defaults": true,
+    "exact_technique_inference_rate_warning_above": 0.7,
+    "correct_counter_uplift_percentage_points_warning_above": 20,
+    "full_bundle_reveal_rate_warning_above": 0.5,
+    "warnings_trigger_manual_review_only": true,
+    "human_play_and_balance_validation": "NOT_RUN"
+  },
+  "resolution_order": [
+    "BUNDLE_END_STATE_AND_RECOVERY",
+    "ENEMY_PLAN_CURRENT_BUNDLE",
+    "ENEMY_BUNDLE_LOCK",
+    "OBSERVATION_POINT_SPEND_FRONT_TO_BACK",
+    "ACTION_TYPE_REVEAL",
+    "PLAYER_PLAN_AND_COMMIT",
+    "BUNDLE_RESOLUTION"
+  ],
+  "approval_batch": {
+    "active_planning_pr": 92,
+    "approved_decision_count": 8,
+    "maximum_decision_count": 10,
+    "next_planning_decision": "GRADE_FARMING_RISK"
+  },
+  "product_boundary": {
+    "product_code_changed": false,
+    "godot_changed": false,
+    "html_poc_changed": false,
+    "runtime_data_changed": false,
+    "human_validation": "NOT_RUN",
+    "balance_validation": "NOT_RUN",
+    "accessibility_validation": "NOT_RUN",
+    "performance_validation": "NOT_RUN"
+  }
+}

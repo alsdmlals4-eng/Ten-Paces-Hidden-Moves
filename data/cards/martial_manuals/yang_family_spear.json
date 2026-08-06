@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01",
+  "manual_id": "yang_family_spear",
+  "faction": "양가",
+  "manual_name": "양가창결",
+  "primary_stat": "외공",
+  "secondary_stat": "신법",
+  "cards": {
+    "star3": {
+      "id": "yang_family_spear_star3",
+      "name": "추풍일섬",
+      "manual_id": "yang_family_spear",
+      "unlock_star": 3,
+      "source": "martial_manual",
+      "category": "attack",
+      "resolution_phase": "general",
+      "targeting_mode": "attack_direction",
+      "action_slots": 1,
+      "stamina_cost": 1,
+      "internal_cost": 0,
+      "range": {"min": 1, "max": 2},
+      "effect_steps": [
+        {"op": "MOVE_TOWARD", "tiles": 1},
+        {"op": "RECHECK_RANGE", "min": 1, "max": 2},
+        {"op": "ATTACK", "power": 7, "min_range": 1, "max_range": 2},
+        {"op": "BREAK_DEFENSE", "amount": 1, "condition": "EXACT_MAX_RANGE"}
+      ],
+      "budget_reference": "planning:star3",
+      "balance_status": "PROVISIONAL_WITHIN_APPROVED_BUDGET",
+      "tags": []
+    },
+    "star7": {
+      "id": "yang_family_spear_star7",
+      "name": "연환쇄로",
+      "manual_id": "yang_family_spear",
+      "unlock_star": 7,
+      "source": "martial_manual",
+      "category": "attack",
+      "resolution_phase": "general",
+      "targeting_mode": "attack_direction",
+      "action_slots": 2,
+      "stamina_cost": 2,
+      "internal_cost": 1,
+      "range": {"min": 1, "max": 2},
+      "effect_steps": [
+        {"op": "RECHECK_RANGE", "min": 1, "max": 2},
+        {"op": "INDEPENDENT_ATTACK", "power": 5, "min_range": 1, "max_range": 2},
+        {"op": "INDEPENDENT_ATTACK", "power": 5, "min_range": 1, "max_range": 2},
+        {"op": "REQUIRE_ACTUAL_HP_HITS", "count": 1},
+        {"op": "MOVE_AWAY", "tiles": 1}
+      ],
+      "budget_reference": "star7_profiles.yang_family_spear",
+      "balance_status": "PROVISIONAL_WITHIN_APPROVED_BUDGET",
+      "tags": []
+    },
+    "star10": {
+      "id": "yang_family_spear_star10",
+      "name": "회마창",
+      "manual_id": "yang_family_spear",
+      "unlock_star": 10,
+      "source": "martial_manual",
+      "category": "attack",
+      "resolution_phase": "general",
+      "targeting_mode": "attack_direction",
+      "action_slots": 3,
+      "stamina_cost": 3,
+      "internal_cost": 3,
+      "range": {"min": 1, "max": 2},
+      "effect_steps": [
+        {"op": "ATTACK", "power": 9, "min_range": 1, "max_range": 2},
+        {"op": "MOVE_AWAY", "tiles": 2},
+        {"op": "RECHECK_RANGE", "min": 1, "max": 2},
+        {"op": "ATTACK", "power": 12, "min_range": 1, "max_range": 2}
+      ],
+      "budget_reference": "ultimate_profiles.yang_family_spear",
+      "balance_status": "PROVISIONAL_WITHIN_APPROVED_BUDGET",
+      "tags": ["절초", "회마"]
+    }
+  },
+  "overlays": {
+    "star5": {
+      "name": "이화회창",
+      "unlock_star": 5,
+      "target": "star3",
+      "effect_steps": [{"op": "MOVE_AWAY", "tiles": 1, "condition": "ACTUAL_HP_HIT_AT_MAX_RANGE"}]
+    },
+    "star9": {
+      "name": "쌍룡쇄로",
+      "unlock_star": 9,
+      "target": "star7",
+      "effect_steps": [{"op": "PUSH_TARGET", "tiles": 1, "condition": "ALL_ATTACKS_HIT"}],
+      "branching_allowed": false,
+      "additional_input_allowed": false,
+      "additional_resource_cost_allowed": false
+    }
+  }
+}

@@ -42,9 +42,10 @@ func build_bundle_actions(state: Dictionary, bundle_index: int, cards_by_id: Dic
         if rational_candidates.size() >= max_candidates:
             break
 
+    var selection_candidates := _selection_candidates(rational_candidates, cards_by_id)
     var seed := _scoped_seed(snapshot)
-    var selected_index := absi(seed) % rational_candidates.size()
-    var selected: Dictionary = rational_candidates[selected_index]
+    var selected_index := absi(seed) % selection_candidates.size()
+    var selected: Dictionary = selection_candidates[selected_index]
     var candidate_ids: Array[String] = []
     var candidate_scores: Dictionary = {}
     for value in rational_candidates:
@@ -63,6 +64,25 @@ func build_bundle_actions(state: Dictionary, bundle_index: int, cards_by_id: Dic
         "reason_codes": (selected.get("reason_codes", []) as Array).duplicate(true)
     }
     return [_build_action(selected, snapshot)]
+
+func _selection_candidates(rational_candidates: Array, cards_by_id: Dictionary) -> Array:
+    var legacy_candidates: Array = []
+    var martial_candidates: Array = []
+    for value in rational_candidates:
+        var candidate: Dictionary = value
+        var card_id := str(candidate.get("card_id", ""))
+        var definition: Dictionary = cards_by_id.get(card_id, {})
+        if str(definition.get("source", "")) == "martial_manual":
+            martial_candidates.append(candidate)
+        else:
+            legacy_candidates.append(candidate)
+    if legacy_candidates.is_empty() or martial_candidates.is_empty():
+        return rational_candidates
+    var best_legacy := float((legacy_candidates[0] as Dictionary).get("score", 0.0))
+    var best_martial := float((martial_candidates[0] as Dictionary).get("score", 0.0))
+    if best_martial >= best_legacy + 1.0:
+        return rational_candidates
+    return legacy_candidates
 
 func _build_public_snapshot(state: Dictionary, bundle_index: int) -> Dictionary:
     var enemy: Dictionary = state.get("enemy", {})
@@ -127,21 +147,91 @@ func _build_candidates(snapshot: Dictionary, profile: Dictionary, cards_by_id: D
         if distance >= 3 and internal >= 1:
             _append_candidate(candidates, "basic_footwork", 5.8 + float(weights.get("approach", 0.0)), ["midrange_pressure"], cards_by_id)
 
+    _append_martial_candidates(candidates, snapshot, cards_by_id)
+
     if candidates.is_empty():
         _append_candidate(candidates, "basic_guard", 1.0, ["low_health_response"], cards_by_id)
     return candidates
 
-func _append_candidate(candidates: Array, card_id: String, score: float, reason_codes: Array, cards_by_id: Dictionary) -> void:
+func _append_martial_candidates(candidates: Array, snapshot: Dictionary, cards_by_id: Dictionary) -> void:
+    var ids := PackedStringArray()
+    for key_value in cards_by_id.keys():
+        ids.append(str(key_value))
+    ids.sort()
+    var distance := int(snapshot.get("distance", 0))
+    var slots := int(snapshot.get("bundle_slots", 1))
+    var stamina := int(snapshot.get("enemy_stamina", 0))
+    var internal := int(snapshot.get("enemy_internal", 0))
+    var momentum := int(snapshot.get("enemy_momentum", 0))
+    var momentum_max := maxi(1, int(snapshot.get("enemy_momentum_max", 5)))
+    var low_health := int(snapshot.get("enemy_health", 0)) * 3 <= maxi(1, int(snapshot.get("enemy_health_max", 30)))
+    for card_id in ids:
+        var definition: Dictionary = cards_by_id.get(card_id, {})
+        if str(definition.get("source", "")) != "martial_manual":
+            continue
+        var action_slots := maxi(1, int(definition.get("action_slots", 1)))
+        if action_slots > slots:
+            continue
+        if int(definition.get("stamina_cost", 0)) > stamina or int(definition.get("internal_cost", 0)) > internal:
+            continue
+        var unlock_star := int(definition.get("unlock_star", 0))
+        if unlock_star >= 10 and momentum != momentum_max:
+            continue
+        if not _martial_distance_is_reachable(definition, distance):
+            continue
+        var score := 8.8 if unlock_star >= 10 else 6.8
+        if unlock_star < 10 and not _martial_is_at_preferred_distance(definition, distance):
+            score -= 2.0
+        if action_slots >= 3:
+            score += 0.2
+        var reason_codes := ["low_health_response"] if low_health else (["safe_heavy_prepare"] if action_slots >= 2 else ["midrange_pressure"])
+        _append_candidate(candidates, card_id, score, reason_codes, cards_by_id, definition)
+
+func _martial_distance_is_reachable(definition: Dictionary, distance: int) -> bool:
+    var profile := _martial_range_profile(definition, distance)
+    return profile.x >= profile.y and profile.x <= profile.z
+
+func _martial_is_at_preferred_distance(definition: Dictionary, distance: int) -> bool:
+    var profile := _martial_range_profile(definition, distance)
+    return profile.x == profile.z
+
+func _martial_range_profile(definition: Dictionary, distance: int) -> Vector3i:
+    var minimum := 0
+    var maximum := 0
+    var range_value = definition.get("range", {})
+    if typeof(range_value) == TYPE_DICTIONARY:
+        minimum = maxi(0, int((range_value as Dictionary).get("min", 0)))
+        maximum = maxi(minimum, int((range_value as Dictionary).get("max", minimum)))
+    var approach := 0
+    for step_value in definition.get("effect_steps", []):
+        if typeof(step_value) != TYPE_DICTIONARY:
+            continue
+        var step: Dictionary = step_value
+        if str(step.get("op", "")) == "MOVE_TOWARD":
+            approach += maxi(0, int(step.get("tiles", 0)))
+        if str(step.get("op", "")) in ["ATTACK", "INDEPENDENT_ATTACK", "SPECIAL_CLASH"]:
+            if step.has("min_range"):
+                minimum = maxi(0, int(step.get("min_range", minimum)))
+            if step.has("max_range"):
+                maximum = maxi(minimum, int(step.get("max_range", maximum)))
+            break
+    var effective_distance := maxi(0, distance - approach)
+    return Vector3i(effective_distance, minimum, maximum)
+
+func _append_candidate(candidates: Array, card_id: String, score: float, reason_codes: Array, cards_by_id: Dictionary, definition: Dictionary = {}) -> void:
     if not cards_by_id.has(card_id):
         return
     for value in candidates:
         if str((value as Dictionary).get("card_id", "")) == card_id:
             return
-    candidates.append({
+    var candidate := {
         "card_id": card_id,
         "score": score,
         "reason_codes": reason_codes.duplicate(true)
-    })
+    }
+    if not definition.is_empty():
+        candidate["definition"] = definition.duplicate(true)
+    candidates.append(candidate)
 
 func _candidate_before(a: Dictionary, b: Dictionary) -> bool:
     var a_score := float(a.get("score", 0.0))
@@ -152,19 +242,23 @@ func _candidate_before(a: Dictionary, b: Dictionary) -> bool:
 
 func _build_action(candidate: Dictionary, snapshot: Dictionary) -> Dictionary:
     var card_id := str(candidate.get("card_id", ""))
+    var definition: Dictionary = candidate.get("definition", {})
     var enemy_tile := int(snapshot.get("enemy_tile", 7))
     var player_tile := int(snapshot.get("player_tile", 4))
     var direction := signi(player_tile - enemy_tile)
-    var is_move := card_id in ["basic_move", "basic_footwork"]
+    var targeting_mode := str(definition.get("targeting_mode", ""))
+    var is_move := card_id in ["basic_move", "basic_footwork"] or targeting_mode == "move_tile"
     var step := 2 if card_id == "basic_footwork" and int(snapshot.get("distance", 0)) >= 3 else 1
-    var reason_codes := _join_reason_codes(_last_trace.get("reason_codes", []))
+    var reason_codes := _join_reason_codes(candidate.get("reason_codes", []))
     var reason := "public_distance_%d" % int(snapshot.get("distance", 0))
     if not reason_codes.is_empty():
         reason += "_" + reason_codes
+    if targeting_mode.is_empty():
+        targeting_mode = "move_tile" if is_move else ("none" if card_id in ["basic_meditate", "basic_guard", "basic_evade"] else "attack_direction")
     return {
         "timing": int(snapshot.get("bundle_start", 1)),
         "card_id": card_id,
-        "targeting_mode": "move_tile" if is_move else ("none" if card_id in ["basic_meditate", "basic_guard", "basic_evade"] else "attack_direction"),
+        "targeting_mode": targeting_mode,
         "target_tile": clampi(enemy_tile + direction * step, 1, 10) if is_move else 0,
         "direction": direction,
         "ai_seed": int(_last_trace.get("seed", snapshot.get("ai_decision_seed", 0))),

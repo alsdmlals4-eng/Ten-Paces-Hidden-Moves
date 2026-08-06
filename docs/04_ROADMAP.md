@@ -1,9 +1,12 @@
 # 십보강호 구현 로드맵과 검증 기준
 
 > 현재 상태: `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`  
+> 전투 규칙 책임 원본: `docs/02_COMBAT_RULES.md`  
 > 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`  
-> 전투 규칙: `docs/02_COMBAT_RULES.md`  
-> 병합 후 감사: `TEN-DEC-20260804-POSTMERGE-CANON-ADVERSARIAL-AUDIT-01`
+> 성장 Decision: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`  
+> 런타임 기반 Decision: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`  
+> UI·AI 채택 Decision: `TEN_MANUAL_UI_AI_ADOPTION_GATE`  
+> 자동 제품 검증 Decision: `TEN_MANUAL_PRODUCT_VALIDATION_GATE`
 
 ## 1. 현재 단계
 
@@ -12,122 +15,143 @@ merged_planning_checkpoint: bbed0fd4d278ca0e0d52f4e6d9083aafa1997318
 merged_pr_lineage: 84,86,87,88
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
-active_planning_work_mode: PLAN
-active_planning_pr: 91
-active_planning_parent_pr: 89
-active_approval_count: 7/10
-active_decision_state: APPROVED_DRAFT_CONDITION_CALIBRATION
+active_planning_work_mode: BUILD
+active_planning_pr: 92
+active_planning_parent_pr: 91
+active_approval_count: 10/10
+active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED
 phase: VERTICAL_SLICE_APP_FLOW_PLANNING
 project_core: CORE_CONFIRMED
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 base_release: 9.4.3
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: WRONG_PLAN_RESCUE_RISK
+next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE
 t1_greenlight: NOT_GRANTED
 ```
 
-PR #89는 자원 포화 완화 Draft, PR #91은 그 위의 조건 난도 보정·작업 운영 정책 Draft다. PR #91은 PR #89보다 먼저 독립 병합하지 않는다. PR #90은 `[대체됨]`, PR #85는 `[보류]`다.
+PR #92는 PR #91 위에 쌓인 Draft이며 독립 병합·Draft 해제 권한은 없다. PR #90은 `[대체됨]`, PR #85는 `[보류]`다.
 
 ## 2. 프로젝트 코어 확정
 
-> 공개된 객관 정보와 관찰로 잠긴 상대 계획을 추론하고, `3수 → 3수 → 4수` 비공개 계획으로 거리·순서·합·방어·회피·중단을 파훼한 뒤 복기에서 원인을 이해하고 다음 계획을 바꾸는 1대1 무협 심리 전술 로그라이트.
+공개 상태와 관찰로 잠긴 상대 계획을 추론하고 `3수 → 3수 → 4수` 비공개 계획으로 거리·순서·합·방어·회피·중단을 파훼한 뒤, 복기에서 원인을 이해하고 다음 계획을 바꾸는 1대1 무협 심리 전술 로그라이트다.
 
 확정 기준:
 
 - [x] AI 비치팅 금지와 적 계획 선잠금.
 - [x] 10칸·3/3/4·전조·중단·순차 해결.
-- [x] 기초 행동10종과 핵심 스테이터스5종.
-- [x] 이동·사거리15틱, 1/2/3수 예산20/50/80틱.
-- [x] 기술1 조건부 저점/고점·5성 무료20%·연격 총피해 선계산.
-- [x] 묶음 회복 기력1·내력0·절초기세1.
-- [x] 조건 난도 여섯 구간·유효 시도·수동 재분류 Gate.
-- [x] 승인 배치10·조기 체크포인트·모든 작업 TDD·현업 벤치마킹.
+- [x] 기술1·5성·기술2·9성 단일 효과·10성 절초 구조.
+- [x] 능력치 권수 쿼터 폐기와 문파·무학 적합성 우선.
+- [x] 초기 무공서 10권 의미·예산 정본.
+- [x] 10권 manifest와 분할 런타임 데이터.
+- [x] 숙련 해금·overlay 레지스트리.
+- [x] 순차 effect pipeline과 명시적 loadout 어댑터.
+- [x] 행동 선택 UI의 loadout·성취도 채택.
+- [x] 공개 상태 AI의 적 전용 loadout 후보 채택.
+- [x] 묶음 해결 안에서 무공 effect program 실행.
+- [x] 기존 준비·자동 배치·기본 행동·공용 절초 호환성.
+- [x] RED→GREEN과 exact-head 자동 검증.
 
-기획 승인은 런타임 구현이나 사람 검증 완료를 뜻하지 않는다.
+UI·AI 채택과 자동 제품 검증은 완료됐지만, 로컬 Windows 렌더·실물 입력·접근성 사용자·Release 성능·사람·밸런스 승인은 완료되지 않았다.
 
-## 3. 핵심 위험 순서
+## 3. 현재 작업
+
+완료된 현재 배치는 `10/10`이다.
+
+```text
+TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE — 완료
+→ manifest + 무공서별 10개 데이터 — 완료
+→ MartialManualRegistry — 완료
+→ MartialEffectPipeline — 완료
+→ TenManualCombatResolutionEngine 기반 — 완료
+
+TEN_MANUAL_UI_AI_ADOPTION_GATE — 완료
+→ ActionSelectionDock loadout·성취도 연결 — 완료
+→ 3/5/7/9/10성 잠금·overlay·절초 표시 — 완료
+→ 공개 상태 AI 적 loadout 후보 연결 — 완료
+→ bundle effect pipeline 실행 — 완료
+→ 준비·자동 배치 계보 보존 — 완료
+→ 전용 Godot 검증과 전체 회귀 — 완료
+```
+
+다음 작업:
+
+```text
+TEN_MANUAL_PRODUCT_VALIDATION_GATE
+→ Godot Windows 실제 실행
+→ 접근성·성능 검증
+→ STEP 14 신규 플레이어 5명
+→ 기술1/2 대체율·자원 포화·적 loadout 공정성·다단 가독성 측정
+→ 최종 밸런스 Decision
+→ NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT
+→ FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
+```
+
+### TEN_MANUAL_PRODUCT_VALIDATION_GATE — 자동 증거 완료
+
+- [x] 10권 × 3·5·7·9·10성 = 50개 제품 시나리오.
+- [x] Windows x86_64 Release export.
+- [x] export된 실행 파일 Windows CI runtime.
+- [x] 1280×800·1440×900·1920×1080.
+- [x] 키보드·마우스 합성 입력과 포커스·레이아웃 자동 접근성.
+- [x] 성능 baseline 캡처.
+- [x] SHA·artifact·사람 상태 과장 validator.
+- [ ] 로컬 Windows 렌더와 실물 입력.
+- [ ] 접근성 사용자 검증.
+- [ ] Release 성능 검증.
+- [ ] STEP 14 신규 플레이어 5명.
+
+증거: `7494f50c48573168542781e007eeab6af11dda7d` / workflow `31068098197` / artifact `8954602789`. 현재 판정은 `PARTIAL_AUTOMATED_COMPLETE`다.
+
+다음 작업:
+
+```text
+TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE
+→ TEN_MANUAL_STEP14_HUMAN_VALIDATION_GATE
+→ TEN_MANUAL_BALANCE_MEASUREMENT_GATE
+→ 최종 밸런스 Decision
+→ NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT
+→ FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
+```
+
+## 4. 제품 연결 범위
+
+현재 `UI_AI_ADOPTED`는 다음을 보장한다.
+
+- 정확한 10권 roster와 문파·주/보조능력치 조합.
+- 3·5·7·9·10성 해금과 overlay 합성.
+- 플레이어 명시적 loadout의 무공·절초 UI 표시.
+- 적 명시적 loadout의 해금 카드만 공개 상태 AI 후보로 사용.
+- 상태 선행·이동·사거리 재검사·독립 다단·조건부 후속의 실제 묶음 실행.
+- 자하신공 사용권 선소모·미환불·완료 시 기세 지급.
+- 나한금강공의 제한된 `[강건]`과 방어 선행.
+- 회마창의 공격→후퇴→사거리 재검사→공격.
+- 능파미보의 이동 전 반격.
+- 만천화우의 결정적 독립 공격 4회.
+- 기존 기본 행동·공용 절초·준비·자동 배치 동작 보존.
+
+현재 범위 밖:
+
+- 최종 loadout 획득·교체 경제.
+- 적별 최종 무공 배치와 난이도 곡선.
+- 최종 피해 계수·자원 비용 승인.
+- 최종 연출·아트·음향.
+- 사람·Windows·접근성·성능 검증.
+
+## 5. 핵심 위험 순서
 
 | 위험 | 상태 | 다음 조치 |
 |---|---|---|
-| `RESOURCE_SATURATION_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 회복 세금·고갈 측정 |
-| `CONDITION_CALIBRATION_RISK` | `MITIGATED_PENDING_HUMAN_MEASUREMENT` | 성공률·구간 이탈·체감 측정 |
-| `WRONG_PLAN_RESCUE_RISK` | 다음 작업 | 올바른 읽기와 오판의 결과 격차 계약 |
-| `OBSERVATION_ANSWER_LEAK_RISK` | 미실측 | 허용·금지 정보와 누출 검사 |
-| `GRADE_FARMING_RISK` | 미확정 | 정규화·상한·반복 감쇠 |
-| `RUNTIME_AUTHORITY_GAP` | P0 | Build 승인 뒤 구현 |
+| `RUNTIME_AUTHORITY_GAP` | `MITIGATED_UI_AI_ADOPTED` | 제품 검증 Gate |
+| `AI_LOADOUT_FAIRNESS_RISK` | `MITIGATED_PUBLIC_STATE_ONLY` | 적별 사람 측정 |
+| `MASTERY_ROLE_REPLACEMENT_RISK` | `PENDING_HUMAN_MEASUREMENT` | 기술1/2 선택률·대체율 |
+| `RESOURCE_SATURATION_RISK` | `PENDING_HUMAN_MEASUREMENT` | 회복 세금·고갈 |
+| `CONDITION_CALIBRATION_RISK` | `PENDING_HUMAN_MEASUREMENT` | 성공률·조건 체감 |
+| `WRONG_PLAN_RESCUE_RISK` | `PENDING_HUMAN_MEASUREMENT` | 결과 역전·구제율 |
+| `OBSERVATION_ANSWER_LEAK_RISK` | `PENDING_HUMAN_MEASUREMENT` | 직접 공개 유지 측정 |
+| `GRADE_FARMING_RISK` | `PENDING_HUMAN_MEASUREMENT` | 원시/유효 등급 비율 |
 
-## 4. 현재 작업 순서
-
-```text
-잘못된 계획 구제 위험
-→ 관찰 정답 유출 위험
-→ 전투 종료 등급 파밍 위험
-→ STAR9_PUBLIC_READ_BRANCH_TEMPLATE
-→ 여섯 개별 9성 자동 분기
-→ 여섯 10성 고유 절초
-→ 비스탯 노드 기대가치·가중치
-→ 전체 핵심 재미·정본 적대적 검토
-→ [기획 완료]
-→ 이미지·애니메이션·HX 승인
-→ [이미지 완료]
-→ VERTICAL_SLICE_APP_FLOW_SHELL Codex BUILD
-```
-
-개별 9성은 공통 템플릿 전에 작성하지 않는다.
-
-## 5. 남은 기획 Gate
-
-- [x] 자원 포화 위험 계약.
-- [x] 조건 난도 보정 계약.
-- [ ] 잘못된 계획 구제 계약.
-- [ ] 관찰 정답 유출 계약.
-- [ ] 등급 파밍 방지 계약.
-- [ ] 9성 공통 템플릿과 여섯 분기.
-- [ ] 10성 절초와 비스탯 노드.
-
-9성 필수 필드:
-
-- 공개 trigger와 유효 시도 정의.
-- 성공 사건·실패 지점·상대 대응.
-- all-or-nothing 범위·고점·저점.
-- 측정 지표·재분류 Gate.
-
-## 6. 구현 전 Combat Build Gate
-
-- 최신 Decision·approved contract·amendment 일치.
-- 조건 실패 전부0, 연격 분배, 고정 이동, 추가 입력 금지 회귀 테스트.
-- 자원 포화·조건 성공률·오판 구제 위험 측정 계획.
-- canonical ID와 역사 alias migration.
-- 별도 사용자 Build 승인.
-
-현재 제품 런타임은 `IMPLEMENTED_LEGACY`다.
-
-## 7. 콘텐츠 제작 순서
-
-```text
-대표 후보1명으로 흐름 증명
-→ 두 번째 후보·노드 반복 제작
-→ 제작 시간·재사용·사람 검증
-→ 검증된 슬롯부터 후보3명 확장
-```
-
-## 8. Demo·정식 회차
-
-```yaml
-demo:
-  major_duels: 5
-  candidates_per_slot: 3
-  intermediate_nodes: 8
-  target_playtime: 15_to_22_minutes
-full_run_before_finale:
-  major_duels: 10
-  candidates_per_slot: 3
-  intermediate_nodes: 18
-  target_playtime: 30_to_40_minutes
-```
-
-## 9. 공통 검증 게이트
+## 6. 공통 검증 게이트
 
 ```text
 계약·Schema
@@ -142,56 +166,50 @@ full_run_before_finale:
 → 정본·Sheet 동기화
 ```
 
-실행하지 않은 검증은 `NOT_RUN`이다. `[대체됨]`·`[보류]` 자료는 현행 제품 권위에서 제외한다.
+실행하지 않은 검증은 `NOT_RUN`으로 남긴다.
 
-## 10. STEP 14
+## 7. STEP 14
 
-- 신규 플레이어5명.
+- 신규 플레이어 5명.
 - 4명 이상 데모 흐름 완료 또는 이탈 이유 기록.
 - 4명 이상 3/3/4와 결정적 원인 설명.
-- 조건별 전체 사용률·유효 시도 성공률·실패 지점 기록.
-- 성공 고점 만족도·실패 저점 수용도 기록.
-- 내력0 묶음률·회복 행동 선택률 기록.
-- 고능력치가 잘못된 계획을 구제한 사례 기록.
+- 기술1/기술2 선택률·7성 후 기술1 대체율·9성 효과 이해율 기록.
+- 문파·무공서와 주·보조능력치 적합성 체감 기록.
+- UI의 성취도·잠금·절초 해금 이해도 기록.
+- 적 loadout이 공정하고 읽을 수 있는지 기록.
+- 자하신공 사용권·강건·회마창 사거리 실패 이해도 기록.
+- 원시/유효 등급 사건과 자원 포화 측정.
 
 현재 `human_validation: NOT_RUN`이다.
 
-## 11. T1 — 최소 세로 슬라이스
+## 8. T1 — 최소 세로 슬라이스
 
-T1 진입에는 기획·검토·이미지 완료, Godot·Windows·접근성·성능 검증, 신규 플레이어5명 STEP14가 필요하다. 현재 `t1_greenlight: NOT_GRANTED`다.
+T1 진입에는 기획·검토·이미지 완료, Godot·Windows·접근성·성능 검증, 신규 플레이어 5명 STEP 14가 필요하다. 현재 `t1_greenlight: NOT_GRANTED`다.
 
-## 12. 온라인 경쟁 Gate
+## 9. 중단·축소 조건
 
-등록 스냅샷, 버전 호환, 관찰 대칭성, 평점·반복 대전·어뷰징 방지, 보안·네트워크, 사람 경쟁 테스트가 필요하다.
+- 10권 UI·AI 채택이 기존 기본 행동·준비·자동 배치 회귀를 깨뜨림.
+- 무공 카드가 명시적 loadout 없이 기본 엔진에 침투함.
+- 적 AI가 플레이어 비공개 계획이나 플레이어 전용 loadout을 참조함.
+- UI에 선택 가능하지만 실제 `effect_steps`가 실행되지 않음.
+- 9성이 기술2에 둘 이상의 효과·분기·추가입력을 만듦.
+- 이동 뒤 종속 공격이 사거리 재검사를 우회함.
+- 자하신공이 중단 뒤 사용권을 환불하거나 미완료 상태에서 기세를 지급함.
+- `[강건]`이 무적·절대 중단 면역으로 확장됨.
+- 능력치별 권수 분포를 맞추기 위해 문파 적합성을 왜곡함.
+- 사람 검증 없이 최종 밸런스나 T1 완료를 주장함.
 
-## 13. 정본 생명주기 운영
+발생 시 관련 범위를 호환 어댑터 수준으로 축소하고 별도 Decision 전까지 확장하지 않는다.
 
-- `[현행]`: 후속 기획·구현 인계.
-- `[대체됨]`: 역사·migration·회귀만.
-- `[보류]`: 명시적 재개 전 병합 금지.
-- `[폐기]`: 현재·역사 가치가 모두 없을 때만.
+## 10. 정본 생명주기
 
-병합 뒤 Active Context·Roadmap·Sheet를 같은 Decision ID로 즉시 갱신한다.
+각 항목은 `KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST`로 분류한다.
 
-## 14. 전체 적대적 검토 분류
+- `KEEP`: AI 비치팅 금지, 10칸·3/3/4, 전조·중단, 복기, 원시 로그, stat-fit-only 정책.
+- `AMPLIFY`: 무공별 역할·성취도·실패 원인 설명.
+- `CHANGE`: 사람 측정으로 확인된 수치와 적 loadout만 별도 Decision으로 변경.
+- `REMOVE`: 추가 입력, 숨은 계획 접근, 자동 합 승리, 능력치 쿼터.
+- `DEFER`: 최종 loadout 경제, 최종 연출, 비스탯 노드 경제.
+- `RETEST`: 자원 포화·기술 대체·AI 공정성·관찰·등급 파밍 위험.
 
-각 항목은 `KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST`로 기록한다.
-
-- `KEEP`: AI 비치팅 금지, 10칸·3/3/4, 전조·중단, 복기.
-- `AMPLIFY`: 조건 성공·실패 원인과 다음 계획 변경.
-- `CHANGE`: 실측으로 확인된 수치만 별도 Decision으로 변경.
-- `REMOVE`: 해결 중 추가 입력·숨은 정보 참조·구형 권위 사용.
-- `DEFER`: 온라인·최종 모바일·후보 전체 제작.
-- `RETEST`: 오판 구제·기술 대체율·등급 파밍·자원 회복.
-
-## 15. 중단·축소 조건
-
-- 관찰 없이 정답 추측에 의존.
-- 특정 능력치·기술이 다른 선택을 지배.
-- 조건 실패 시 부분 보상 발생.
-- 묶음 회복이 비용 선택을 무력화.
-- 높은 능력치가 잘못된 계획을 반복 구제.
-- 관찰이 정답 정보를 공개.
-- 최신 계획 미구현 런타임을 완료로 홍보.
-
-위 조건이 확인되면 콘텐츠 확장보다 원인 분리·재검토를 우선한다.
+병합 전후 Active Context·Roadmap·Lifecycle·Sheet는 같은 Decision ID와 exact SHA를 사용한다.

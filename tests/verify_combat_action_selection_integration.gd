@@ -26,11 +26,12 @@ func _run() -> void:
     combat._on_timing_slot_clicked(1)
     await process_frame
     combat.action_selection_dock.set_active_source("martial")
-    assert(combat.action_selection_dock.martial_panel.select_manual("manual_vajra_body"))
-    assert(combat.action_selection_dock.martial_panel.activate_technique("technique_vajra_guard"))
+    assert(combat.action_selection_dock.martial_panel.select_manual("shaolin_arhat_vajra_art"))
+    assert(combat.action_selection_dock.martial_panel.activate_technique("shaolin_arhat_vajra_art_star3"))
     await process_frame
     assert(not combat.action_timing_panel.get_placement(1).is_empty())
     assert(str((combat.action_timing_panel.get_placement(1).get("definition", {}) as Dictionary).get("source_kind", "")) == "martial")
+    assert(str((combat.action_timing_panel.get_placement(1).get("definition", {}) as Dictionary).get("faction", "")) == "소림사")
 
     combat._on_timing_slot_clicked(1)
     await process_frame

@@ -1,24 +1,21 @@
 # STEP 14 REPEAT_POC 결과 기록
 
-> 상태: `NOT_RUN`  
+> 상태: `READY_NOT_RUN`  
 > 프로토콜: `docs/research/STEP14_REPEAT_POC_PROTOCOL_DRAFT.md`  
-> build commit: `NOT_LOCKED`
-
-## 1. 실행 환경
+> build commit: `7494f50c48573168542781e007eeab6af11dda7d`
 
 ```yaml
-build_commit: NOT_LOCKED
-godot_version: NOT_RUN
-windows_version: NOT_RUN
-viewport: NOT_RUN
-input_methods: []
+build_commit: 7494f50c48573168542781e007eeab6af11dda7d
+godot_version: 4.7.1
+windows_ci_runtime: PASS
+windows_local_render: NOT_RUN
+viewport_matrix: 1280x800,1440x900,1920x1080
+input_methods_automated: [keyboard_synthetic, mouse_synthetic]
+input_methods_physical: []
 participant_count: 0
+human_step14: NOT_RUN
 protocol_changed_after_first_participant: false
 ```
-
-## 2. 참가자 결과
-
-실제 실행 전에는 행을 PASS로 채우지 않는다.
 
 | 참가자 | 한 판 완료 | 3/3/4 설명 | 결정적 원인 설명 | 성향 발견 | 계획 변경 | 자발적 재도전/다음 수 | 단일 채널 장벽 | 상태 |
 |---|---|---|---|---|---|---|---|---|
@@ -28,9 +25,7 @@ protocol_changed_after_first_participant: false
 | P04 | NOT_RUN | NOT_RUN | NOT_RUN | NOT_RUN | NOT_RUN | NOT_RUN | NOT_RUN | NOT_RUN |
 | P05 | NOT_RUN | NOT_RUN | NOT_RUN | NOT_RUN | NOT_RUN | NOT_RUN | NOT_RUN | NOT_RUN |
 
-## 3. 관찰 원문
-
-각 참가자별로 다음 구조를 복제한다.
+## 관찰 원문 템플릿
 
 ```yaml
 participant_id:
@@ -41,9 +36,7 @@ interpretation: []
 suggested_change: []
 ```
 
-관찰 사실과 해석을 같은 문장에 섞지 않는다.
-
-## 4. 통과 신호 집계
+## 통과 신호 집계
 
 ```yaml
 completed_battle_4_of_5: NOT_RUN
@@ -54,23 +47,10 @@ voluntary_retry_or_next_move_3_of_5: NOT_RUN
 single_channel_barrier_zero: NOT_RUN
 ```
 
-## 5. Finding 판정
-
-| finding | 근거 | 판정 | 변경 범위 | 재시험 필요 |
-|---|---|---|---|---|
-| 등록 없음 | NOT_RUN | RETEST | 없음 | yes |
-
-허용 판정:
-
-```text
-KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST
-```
-
-## 6. 최종 제품 게이트
-
 ```yaml
+automated_product_gate: PARTIAL_AUTOMATED_COMPLETE
 human_step14: NOT_RUN
-product_gate: REPEAT_POC
+product_gate: HUMAN_VALIDATION_PENDING
 t1_greenlight: NOT_GRANTED
 mvp_complete: false
 ```

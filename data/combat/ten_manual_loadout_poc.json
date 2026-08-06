@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "authority": "TEN_MANUAL_UI_AI_ADOPTION_GATE",
+  "player": {
+    "loadout": [
+      "mount_hua_plum_blossom_sword",
+      "shaolin_arhat_vajra_art",
+      "mount_hua_purple_mist_art",
+      "sichuan_tang_hidden_weapons"
+    ],
+    "mastery_by_manual": {
+      "mount_hua_plum_blossom_sword": 5,
+      "shaolin_arhat_vajra_art": 7,
+      "mount_hua_purple_mist_art": 9,
+      "sichuan_tang_hidden_weapons": 10
+    }
+  },
+  "enemy": {
+    "loadout": [
+      "sichuan_tang_hidden_weapons",
+      "yang_family_spear",
+      "wudang_taiji_sword"
+    ],
+    "mastery_by_manual": {
+      "sichuan_tang_hidden_weapons": 7,
+      "yang_family_spear": 10,
+      "wudang_taiji_sword": 5
+    }
+  },
+  "notes": [
+    "PoC 전투 미리보기용 명시적 loadout이며 향후 세이브·성장 시스템으로 교체한다.",
+    "플레이어 비공개 계획은 AI 입력에 포함하지 않는다.",
+    "적 AI는 enemy.loadout에서 현재 성취도로 해금된 카드만 후보로 사용한다."
+  ]
+}

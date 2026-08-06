@@ -28,30 +28,16 @@
 
 ## 현재 작업 상태
 
-```yaml
-main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
-last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
-product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
-work_mode: REVIEW
-integration_pr: 65
-active_planning_work_mode: PLAN
-active_planning_pr: 82
-active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
-active_approval_count: 2/10
-active_decision_state: APPROVED_PENDING_MERGE
-runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
-latest_combat_planning_runtime: NOT_STARTED
-automated_validation: PASS
-windows_validation: NOT_RUN
-human_validation: NOT_RUN
-primary_platform: PC
-future_platform: MOBILE_CONSIDERATION_ONLY
-next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
-base_release_pinned: 9.4.3
-```
+활성 PR·승인 수·다음 Decision은 [현재 상태]([기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md)가 단독 책임진다. GitHub PR metadata와 함께 읽으며 이 README에는 변동 상태를 복제하지 않는다.
 
-`work_mode: REVIEW`와 `integration_pr: 65`는 현재 런타임 통합 기준선입니다. 활성 기획은 `active_planning_work_mode: PLAN`과 PR #82로 분리합니다. PR #82의 두 승인 Decision은 활성 Branch·Decision·planning data·Google Sheet에 `APPROVED_PENDING_MERGE`로 기록되어 있으며, PR 병합과 main·Sheet 재조회 전에는 main 동기화 완료로 취급하지 않습니다.
+안정 경계:
+
+- 제품 단계: `VERTICAL_SLICE_APP_FLOW_PLANNING`
+- 런타임 기준선: PR #65 `ACTION_SELECTION_DOCK_IMPLEMENTED`
+- 최신 전투 기획 런타임: `NOT_STARTED`
+- 플랫폼: PC 우선, 모바일 고려만
+- Base: v9.4.3
+- Windows 실제 Godot·사람·접근성·성능 검증: `NOT_RUN`
 
 ## 플랫폼 범위
 
@@ -119,7 +105,7 @@ full_run:
 ## 다음 진행 순서
 
 ```text
-PR #82 남은 기획 Decision 승인·동기화
+활성 기획 Decision 승인·동기화
 → 기획 완료
 → 전체 정본·PR·Sheet 적대적 검토
 → 검토 완료

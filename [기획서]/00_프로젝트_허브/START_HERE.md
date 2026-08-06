@@ -19,32 +19,23 @@
 
 ## 현재 상태
 
+변동 상태는 `ACTIVE_CONTEXT.md`만 책임진다. 활성 PR·exact head·승인 수·다음 Decision은 GitHub PR metadata와 함께 그 문서에서 확인한다.
+
+안정 기준:
+
 ```yaml
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
-work_mode: REVIEW
-integration_pr: 65
-active_planning_work_mode: PLAN
-main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
-last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
-active_planning_pr: 82
-active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
-active_approval_count: 2/10
-active_decision_state: APPROVED_PENDING_MERGE
+runtime_work_mode: REVIEW
+runtime_integration_pr: 65
+planning_work_mode: PLAN
 runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
-implemented_decision: TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01
-approved_planning_decision: TEN-DEC-20260801-SITUATION-SCREEN-01
-automated_validation: PASS
-human_validation: NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
 base_release_pinned: 9.4.3
 t1_greenlight: NOT_GRANTED
+human_validation: NOT_RUN
 ```
 
-- `work_mode: REVIEW`와 `integration_pr: 65`는 현재 런타임 통합 기준선이다.
-- 활성 기획은 `active_planning_work_mode: PLAN`과 PR #82이며 두 승인 Decision은 `APPROVED_PENDING_MERGE`다.
-- PR #80 체크포인트와 PR #81 main 상태 동기화는 완료됐다.
-- 전체 제품 화면 흐름 런타임은 기획·검토·이미지 Gate 뒤 별도 Codex 패키지에서 시작한다.
+전체 제품 화면 흐름 런타임은 기획·검토·이미지 Gate 뒤 별도 Codex 패키지에서 시작한다.
 
 ## Work Mode
 
@@ -57,8 +48,7 @@ t1_greenlight: NOT_GRANTED
 ## 현재 다음 작업
 
 ```text
-PR #82 GrillMe 승인 배치 2/10
-→ 중간 노드 영구 스테이터스 보상 Decision
+ACTIVE_CONTEXT의 다음 기획 Decision
 → 남은 기획 완료
 → 전체 정본·PR·Sheet 적대적 검토 완료
 → 필요한 이미지·애니메이션·HX 생성·검수·승인
