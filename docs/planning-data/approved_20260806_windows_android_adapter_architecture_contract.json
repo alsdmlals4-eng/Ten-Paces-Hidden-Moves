@@ -9,14 +9,6 @@
     "maximum_decision_count": 10,
     "automatic_approval_source": "CURRENT_CONVERSATION_USER_INSTRUCTION"
   },
-  "current_operating_state": {
-    "active_planning_work_mode": "REVIEW",
-    "active_planning_pr": "102",
-    "active_planning_parent_pr": "NONE",
-    "active_approval_count": "1/10",
-    "active_decision_state": "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED",
-    "next_planning_decision": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE"
-  },
   "platforms": [
     "WINDOWS",
     "ANDROID"
@@ -80,6 +72,8 @@
     "semantic_equivalence": "REQUIRED",
     "pixel_identical_layout_required": false,
     "minimum_touch_target_dp": 48,
+    "touch_target_unit": "ANDROID_DP_NOT_RAW_PIXELS",
+    "breakpoint_measure": "AVAILABLE_SAFE_AREA_UI_LOGICAL_WIDTH_NOT_FRAMEBUFFER_PIXELS",
     "breakpoints_logical_px": {
       "compact_max": 899,
       "standard_max": 1439,
@@ -97,6 +91,7 @@
   "android_window_contract": {
     "safe_area_api": "DisplayServer.get_display_safe_area",
     "cutout_api": "DisplayServer.get_display_cutouts",
+    "safe_area_coordinate_conversion": "DISPLAY_SPACE_TO_VIEWPORT_CONTROL_SPACE_REQUIRED",
     "back_event": "WINDOW_EVENT_GO_BACK_REQUEST",
     "back_priority": [
       "CLOSE_TOP_OVERLAY",
@@ -147,6 +142,7 @@
       "run_state",
       "integrity_hash"
     ],
+    "integrity_hash_scope": "CORRUPTION_DETECTION_NOT_SECURITY_BOUNDARY",
     "corrupt_primary_policy": "TRY_BACKUP_THEN_SAFE_NEW_RUN_PROMPT",
     "cross_platform_transfer": "DEFERRED_NO_CLOUD_SYNC_AUTHORITY"
   },
