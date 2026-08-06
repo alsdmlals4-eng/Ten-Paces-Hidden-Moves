@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 V43_DECISION_ID = "TEN-DEC-20260806-INTEGRATED-WORK-CONTRACT-V4-3-01"
 GUT_DECISION_ID = "TEN-DEC-20260806-GUT-HIGODOT-TEST-AUTHORITY-01"
+EXPECTED_GUT_TAG_COMMIT = "aeb5d4f3f7f0a6c9b5e178876d6c99b791fda605"
 V43_DECISION = ROOT / "docs/decisions/2026-08-06_INTEGRATED_WORK_CONTRACT_V4_3_BINDING_DECISION.md"
 V43_CONTRACT = ROOT / "docs/planning-data/approved_20260806_integrated_work_contract_v4_3_binding.json"
 GUT_DECISION = ROOT / "docs/decisions/2026-08-06_GUT_9_7_1_ADOPTION_SPEC_DECISION.md"
@@ -40,11 +41,26 @@ class V43GutAdoptionSpecGateTests(unittest.TestCase):
         payload = self.load_json(GUT_SPEC)
         self.assertEqual(payload["decision_id"], GUT_DECISION_ID)
         self.assertEqual(payload["version"], "9.7.1")
-        self.assertEqual(payload["source_branch_or_release"], "godot_4_7")
+        self.assertEqual(payload["source_branch_or_release"], "v9.7.1")
+        self.assertEqual(payload["source_ref"], "refs/tags/v9.7.1")
         self.assertEqual(payload["adoption_spec_branch"], "chore/gut-9.7.1-adoption-spec")
         self.assertEqual(payload["stage"], "ADOPTION_SPEC_DRAFT_PR")
         self.assertEqual(payload["formal_installation"], "BLOCKED_UNTIL_SPEC_MERGED_TO_MAIN")
         self.assertFalse(payload["production_files_may_be_modified"])
+
+    def test_gut_source_provenance_is_verified_against_the_release_tag(self) -> None:
+        payload = self.load_json(GUT_SPEC)
+        provenance = payload["source_provenance"]
+        self.assertEqual(payload["pinned_source_commit"], EXPECTED_GUT_TAG_COMMIT)
+        self.assertEqual(provenance["release_tag"], "v9.7.1")
+        self.assertEqual(provenance["tag_commit"], EXPECTED_GUT_TAG_COMMIT)
+        self.assertEqual(provenance["plugin_manifest_path"], "addons/gut/plugin.cfg")
+        self.assertEqual(provenance["plugin_manifest_version"], "9.7.1")
+        self.assertEqual(provenance["verification_state"], "VERIFIED_AT_ADOPTION_SPEC")
+        license_info = payload["license_verification"]
+        self.assertEqual(license_info["path"], "addons/gut/LICENSE.md")
+        self.assertEqual(license_info["verified_at_ref"], "v9.7.1")
+        self.assertEqual(license_info["state"], "VERIFIED_AT_ADOPTION_SPEC_RECHECK_AT_INSTALL")
 
     def test_higodot_and_gut_roles_do_not_overlap(self) -> None:
         payload = self.load_json(GUT_SPEC)
@@ -71,6 +87,7 @@ class V43GutAdoptionSpecGateTests(unittest.TestCase):
             self.assertIn(key, payload)
         self.assertEqual(payload["license_verification"]["expected"], "MIT")
         self.assertEqual(payload["godot_compatibility"]["required"], "4.7.x")
+        self.assertEqual(payload["godot_compatibility"]["upstream_branch_family"], "godot_4_7")
         self.assertEqual(payload["claim_ceiling"]["local_higodot"], "NOT_RUN")
         self.assertEqual(payload["claim_ceiling"]["android"], "NOT_RUN")
 
@@ -89,10 +106,12 @@ class V43GutAdoptionSpecGateTests(unittest.TestCase):
             "GUT_ADOPTION_SPEC_DRAFT_PR_GATE",
             "BLOCKED_UNTIL_SPEC_MERGED_TO_MAIN",
             "HIGODOT_GUT_ROLE_NON_OVERLAP_GATE",
+            EXPECTED_GUT_TAG_COMMIT,
         ):
             self.assertIn(marker, gut_text)
         self.assertIn(V43_DECISION_ID, validator_text)
         self.assertIn(GUT_DECISION_ID, validator_text)
+        self.assertIn(EXPECTED_GUT_TAG_COMMIT, validator_text)
 
 
 if __name__ == "__main__":
