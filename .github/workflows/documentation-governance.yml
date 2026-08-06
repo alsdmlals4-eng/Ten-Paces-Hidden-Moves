@@ -44,6 +44,17 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Run GUT, HiGodot, conflict-marker, and work-entry contracts
+        run: >-
+          python -m unittest
+          tests.test_gut_higodot_adoption
+          tests.test_conflict_marker_detection
+          tests.test_work_entry_completeness_gate
+          -v
+
+      - name: Enforce work-entry completeness gate
+        run: python tools/check_work_entry_completeness_gate.py
+
       - name: Validate project operating system
         run: python tools/check_project_operating_system.py --root . --config .github/documentation-governance.json
 
@@ -172,3 +183,55 @@ jobs:
       - name: Record deferred runtime boundary
         if: steps.scope.outputs.code_changed == 'true' && vars.ACTIONS_FULL_VALIDATION_ENABLED != 'true'
         run: echo "Godot and OS/Python matrix checks require Full Validation evidence."
+
+  gut-adoption-exact-head:
+    name: gut-adoption-exact-head
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          show-progress: false
+      - name: Require exact PR head
+        run: test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run exact-head adoption contracts
+        run: >-
+          python -m unittest
+          tests.test_gut_higodot_adoption
+          tests.test_conflict_marker_detection
+          tests.test_work_entry_completeness_gate
+          -v
+      - name: Enforce exact-head work-entry gate
+        run: python tools/check_work_entry_completeness_gate.py
+      - name: Set up Godot 4.7.1
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.1
+          use-dotnet: false
+          include-templates: false
+      - name: Import and parse project
+        run: godot --headless --editor --path . --quit
+      - name: Prepare GUT JUnit directory
+        run: mkdir -p build/test-results
+      - name: Run GUT project tests
+        run: >-
+          godot --headless --path . --script res://addons/gut/gut_cmdln.gd
+          -gconfig=res://.gutconfig.json
+      - name: Require JUnit output
+        if: always()
+        run: test -f build/test-results/gut.xml
+      - name: Upload exact-head GUT JUnit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gut-junit-${{ github.run_id }}
+          path: build/test-results/gut.xml
+          if-no-files-found: error
+          retention-days: 14
