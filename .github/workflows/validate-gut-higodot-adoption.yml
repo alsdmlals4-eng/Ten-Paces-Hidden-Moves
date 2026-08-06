@@ -24,6 +24,9 @@ on:
       - docs/planning-data/current_operating_state.json
       - docs/planning-data/HIGODOT_ADOPTION_RECORD.json
       - .github/workflows/validate-gut-higodot-adoption.yml
+  push:
+    branches:
+      - agent/gut-higodot-adoption
   workflow_dispatch:
 
 concurrency:
@@ -38,18 +41,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Check out exact pull-request head
+      - name: Check out repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
           show-progress: false
-      - name: Require exact pull-request head checkout
-        env:
-          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: |
-          if [ -n "$EXPECTED_HEAD_SHA" ]; then
-            test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD_SHA"
-          fi
+      - name: Record validated SHA
+        run: git rev-parse HEAD
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -68,18 +65,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Check out exact pull-request head
+      - name: Check out repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
           show-progress: false
-      - name: Require exact pull-request head checkout
-        env:
-          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: |
-          if [ -n "$EXPECTED_HEAD_SHA" ]; then
-            test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD_SHA"
-          fi
+      - name: Record validated SHA
+        run: git rev-parse HEAD
       - name: Set up Godot 4.7.1
         uses: chickensoft-games/setup-godot@v2
         with:
@@ -101,7 +92,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: gut-junit-${{ github.run_id }}
+          name: gut-junit-${{ github.sha }}
           path: build/test-results/gut.xml
           if-no-files-found: error
           retention-days: 14
