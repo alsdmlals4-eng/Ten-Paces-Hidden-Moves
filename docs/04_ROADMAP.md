@@ -1,42 +1,44 @@
 # 십보강호 구현 로드맵과 검증 기준
 
-> 현재 상태: `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`  
-> 전투 규칙 책임 원본: `docs/02_COMBAT_RULES.md`  
-> 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`  
-> 플랫폼 Decision: `TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`  
-> 성장 Decision: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`  
-> 런타임 기반 Decision: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`  
-> UI·AI 채택 Decision: `TEN_MANUAL_UI_AI_ADOPTION_GATE`  
+> 현재 상태: `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
+> 전투 규칙 책임 원본: `docs/02_COMBAT_RULES.md`
+> 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`
+> 플랫폼 Decision: `TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`
+> 플랫폼 Adapter Decision: `TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01`
+> 성장 Decision: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`
+> 런타임 기반 Decision: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`
+> UI·AI 채택 Decision: `TEN_MANUAL_UI_AI_ADOPTION_GATE`
 > 자동 제품 검증 Decision: `TEN_MANUAL_PRODUCT_VALIDATION_GATE`
 
 ## 1. 현재 단계
 
 ```yaml
-merged_planning_checkpoint: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90
-merged_pr_lineage: 84,86,87,88,89,91,92,100
+merged_planning_checkpoint: 7d20c2c9d5d1c92b80d32dc9bf25bd833a48ad58
+merged_pr_lineage: 84,86,87,88,89,91,92,100,101
 product_implementation_merge_commit: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90
 merged_product_pr: 92
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
-active_planning_pr: NONE
+active_planning_pr: 102
 active_planning_parent_pr: NONE
-active_approval_count: 10/10
-active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_MERGED
+active_approval_count: 1/10
+active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED
 phase: VERTICAL_SLICE_APP_FLOW_PLANNING
 project_core: CORE_CONFIRMED
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
+platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
 design_platforms: WINDOWS_ANDROID
 platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
 windows_validation: CI_EXPORT_RUNTIME_PASS_LOCAL_NOT_RUN
 android_validation: NOT_RUN
 base_release: 9.4.3
-next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT
+next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
+next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 t1_greenlight: NOT_GRANTED
 ```
 
-PR #89·#91·#92 승인 계보는 main에 병합됐다. 제품 구현 병합 Commit은 `a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90`이며, PR #90은 `[대체됨]`, PR #85는 `[보류]`다.
+PR #89·#91·#92 제품 계보와 PR #101 post-merge 플랫폼 정본은 main에 병합됐다. 제품 구현 병합 Commit은 `a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90`이며, PR #90은 `[대체됨]`, PR #85는 `[보류]`다.
 
 ## 2. 프로젝트 코어 확정
 
@@ -144,10 +146,22 @@ TEN_MANUAL_PRODUCT_VALIDATION_GATE — 자동 증거 완료·병합
 
 동일 규칙·데이터·저장 의미는 필수지만 픽셀 동일 UI와 동시 출시는 필수가 아니다. 실제 Android 증거가 없으므로 `android_validation: NOT_RUN`이다.
 
+### Adapter Architecture 계약 승인
+
+`TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01`에서 다음을 고정했다.
+
+- 전투·AI·콘텐츠 ID·수치·저장 Schema·결정적 해결은 단일 공유 코어.
+- device-neutral logical command와 InputMap 소비 경계.
+- compact `≤899`, standard `≤1439`, wide `≥1440` logical px.
+- 핵심 touch target `48dp`, landscape primary, safe area·cutout·Android back 처리.
+- 묶음 commit/resolve·노드 선택·결과 진입 checkpoint와 atomic save·backup·migration.
+- Compatibility renderer 공통 기준선과 Windows EXE+PCK / Android AAB·APK export 경계.
+- 실제 Android·로컬 Windows·실물 gamepad·사용자 접근성·Release 성능은 `NOT_RUN`.
+
 다음 작업:
 
 ```text
-WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT
+WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 → LOCAL_WINDOWS_ANDROID_DEVICE_ACCESSIBILITY_PERFORMANCE_GATE
 → TEN_MANUAL_STEP14_HUMAN_VALIDATION_GATE
 → TEN_MANUAL_BALANCE_MEASUREMENT_GATE
@@ -248,7 +262,7 @@ T1 진입에는 기획·검토·이미지 완료, 로컬 Windows·실제 Android
 - `active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED`.
 - `next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE`.
 
-현행 값은 상단 YAML의 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED`와 `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT`다.
+현행 값은 상단 YAML의 `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED`와 `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE`다. 제품 병합 권위는 `merged_product_pr: 92`와 제품 구현 병합 Commit으로 별도 보존한다.
 
 ## 13. 정본 생명주기
 

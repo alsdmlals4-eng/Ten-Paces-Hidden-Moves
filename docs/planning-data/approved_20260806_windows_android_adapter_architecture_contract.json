@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01",
+  "parent_decision": "TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "PLANNING_CONTRACT_ONLY",
+  "approval_batch": {
+    "active_approval_count": "1/10",
+    "maximum_decision_count": 10,
+    "automatic_approval_source": "CURRENT_CONVERSATION_USER_INSTRUCTION"
+  },
+  "platforms": [
+    "WINDOWS",
+    "ANDROID"
+  ],
+  "adapter_layers": [
+    "INPUT",
+    "RESPONSIVE_UI",
+    "APP_LIFECYCLE",
+    "PLATFORM_SERVICES",
+    "QUALITY_EXPORT"
+  ],
+  "core_policy": {
+    "authority": "SINGLE_SHARED_CORE",
+    "combat_rules": "SHARED",
+    "ai": "SHARED",
+    "content_ids": "SHARED",
+    "numeric_balance": "SHARED",
+    "save_schema": "SHARED",
+    "deterministic_resolution": "SHARED",
+    "platform_specific_game_rules_allowed": false,
+    "platform_specific_balance_allowed": false,
+    "platform_specific_save_meaning_allowed": false
+  },
+  "input_contract": {
+    "consumer_boundary": "LOGICAL_COMMANDS_OR_INPUTMAP_ONLY",
+    "logical_commands": [
+      "NAVIGATE_LEFT",
+      "NAVIGATE_RIGHT",
+      "NAVIGATE_UP",
+      "NAVIGATE_DOWN",
+      "CONFIRM",
+      "CANCEL_BACK",
+      "TAB_PREVIOUS",
+      "TAB_NEXT",
+      "COMBAT_SELECT",
+      "COMBAT_REMOVE",
+      "COMBAT_COMMIT",
+      "COMBAT_INSPECT",
+      "REVIEW_PREVIOUS",
+      "REVIEW_NEXT",
+      "PAUSE_MENU"
+    ],
+    "windows_sources": [
+      "KEYBOARD",
+      "MOUSE",
+      "GAMEPAD"
+    ],
+    "android_sources": [
+      "TOUCH",
+      "ANDROID_BACK",
+      "OPTIONAL_GAMEPAD"
+    ],
+    "hover_only_action_allowed": false,
+    "touch_reorder_requires_button_alternative": true,
+    "drag_required_for_core_action": false,
+    "focus_navigation_required": true,
+    "existing_raw_leaf_input_status": "MIGRATION_REQUIRED_NOT_PRODUCT_FAILURE",
+    "migration_rule": "LEAF_CONTROLS_MAY_TRANSLATE_DEVICE_EVENTS_BUT_CORE_CONTROLLERS_CONSUME_LOGICAL_COMMANDS"
+  },
+  "responsive_ui_contract": {
+    "semantic_equivalence": "REQUIRED",
+    "pixel_identical_layout_required": false,
+    "minimum_touch_target_dp": 48,
+    "touch_target_unit": "ANDROID_DP_NOT_RAW_PIXELS",
+    "breakpoint_measure": "AVAILABLE_SAFE_AREA_UI_LOGICAL_WIDTH_NOT_FRAMEBUFFER_PIXELS",
+    "breakpoints_logical_px": {
+      "compact_max": 899,
+      "standard_max": 1439,
+      "wide_min": 1440
+    },
+    "compact_layout": "STACKED_OR_BOTTOM_SHEET",
+    "standard_layout": "TWO_REGION_ADAPTIVE",
+    "wide_layout": "CURRENT_MULTI_PANEL_BASELINE",
+    "text_scaling_must_not_hide_actions": true,
+    "color_only_state_allowed": false,
+    "hover_only_information_allowed": false,
+    "landscape_phone_primary": true,
+    "portrait_t1_support": "NOT_SUPPORTED"
+  },
+  "android_window_contract": {
+    "safe_area_api": "DisplayServer.get_display_safe_area",
+    "cutout_api": "DisplayServer.get_display_cutouts",
+    "safe_area_coordinate_conversion": "DISPLAY_SPACE_TO_VIEWPORT_CONTROL_SPACE_REQUIRED",
+    "back_event": "WINDOW_EVENT_GO_BACK_REQUEST",
+    "back_priority": [
+      "CLOSE_TOP_OVERLAY",
+      "CANCEL_REVERSIBLE_STEP",
+      "OPEN_PAUSE_CONFIRM",
+      "REQUEST_EXIT"
+    ],
+    "orientation_policy": "LANDSCAPE_PRIMARY_PORTRAIT_NOT_SUPPORTED_IN_T1",
+    "core_interaction_may_overlap_system_bars": false,
+    "safe_area_recalculation_events": [
+      "STARTUP",
+      "WINDOW_RESIZED",
+      "ORIENTATION_CHANGED",
+      "RESUME"
+    ],
+    "edge_to_edge_background_allowed": true,
+    "edge_to_edge_interactive_content_allowed": false
+  },
+  "lifecycle_contract": {
+    "on_focus_lost": "PAUSE_PRESENTATION_AND_BLOCK_NEW_COMMIT",
+    "on_pause": "QUEUE_IDEMPOTENT_CHECKPOINT",
+    "on_stop_or_suspend": "FLUSH_CHECKPOINT_IF_DIRTY",
+    "on_resume": "RESTORE_UI_THEN_ACCEPT_INPUT",
+    "save_only_on_pause_allowed": false,
+    "checkpoint_boundaries": [
+      "BUNDLE_COMMITTED",
+      "BUNDLE_RESOLVED",
+      "ROUTE_NODE_CHOSEN",
+      "RESULT_ENTERED"
+    ],
+    "mid_resolution_restore_policy": "RESTORE_LAST_COMPLETED_DETERMINISTIC_BOUNDARY",
+    "resume_requires_duplicate_effect_guard": true,
+    "background_simulation_allowed": false
+  },
+  "save_contract": {
+    "path_root": "user://",
+    "schema_authority": "SHARED_CROSS_PLATFORM",
+    "write_policy": "TEMP_WRITE_VALIDATE_ATOMIC_REPLACE",
+    "minimum_backups": 1,
+    "schema_version_required": true,
+    "migration_tests_required": true,
+    "platform_specific_gameplay_fields_allowed": false,
+    "required_envelope_fields": [
+      "schema_version",
+      "save_id",
+      "written_at_utc",
+      "app_version",
+      "run_state",
+      "integrity_hash"
+    ],
+    "integrity_hash_scope": "CORRUPTION_DETECTION_NOT_SECURITY_BOUNDARY",
+    "corrupt_primary_policy": "TRY_BACKUP_THEN_SAFE_NEW_RUN_PROMPT",
+    "cross_platform_transfer": "DEFERRED_NO_CLOUD_SYNC_AUTHORITY"
+  },
+  "platform_services_contract": {
+    "service_boundary": "OPTIONAL_ADAPTERS_MUST_NOT_CHANGE_OFFLINE_GAME_RULES",
+    "store_sdk": "DEFERRED",
+    "cloud_save": "DEFERRED",
+    "achievements": "DEFERRED",
+    "billing": "DEFERRED",
+    "ads": "DEFERRED",
+    "push_notifications": "DEFERRED",
+    "haptics": "OPTIONAL_PRESENTATION_ONLY",
+    "analytics": "DEFERRED_CONSENT_REQUIRED"
+  },
+  "quality_export_contract": {
+    "shared_renderer_baseline": "GL_COMPATIBILITY",
+    "renderer_reason": "2D_WIDE_HARDWARE_SUPPORT_AND_EXISTING_PROJECT_BASELINE",
+    "windows_artifact": "EXE_PLUS_PCK_RELEASE",
+    "android_package_artifact": "AAB_RELEASE",
+    "android_local_validation_artifact": "APK_DEBUG_OR_RELEASE",
+    "android_architectures": [
+      "ARM64"
+    ],
+    "release_signing_secret_policy": "ENVIRONMENT_OR_SECRET_STORE_ONLY",
+    "keystore_in_repository_allowed": false,
+    "custom_gradle_required_now": false,
+    "custom_gradle_trigger": "STORE_OR_THIRD_PARTY_SDK_REQUIRES_IT",
+    "android_export_status": "NOT_RUN",
+    "android_export_preset_status": "NOT_CREATED",
+    "windows_export_status": "PASS_EXISTING_EVIDENCE"
+  },
+  "implementation_packages": [
+    {
+      "package": "PLATFORM_COMMAND_ROUTER",
+      "scope": "INPUTMAP_AND_DEVICE_EVENT_TRANSLATION",
+      "product_code_status": "NOT_RUN"
+    },
+    {
+      "package": "RESPONSIVE_ROOT_AND_SAFE_AREA",
+      "scope": "BREAKPOINT_LAYOUT_TOUCH_TARGET_SAFE_AREA",
+      "product_code_status": "NOT_RUN"
+    },
+    {
+      "package": "RUN_SESSION_AND_SAVE_SERVICE",
+      "scope": "VERSIONED_ATOMIC_CHECKPOINT_AND_RESUME",
+      "product_code_status": "NOT_RUN"
+    },
+    {
+      "package": "ANDROID_EXPORT_AND_DEVICE_GATE",
+      "scope": "EXPORT_INSTALL_TOUCH_BACK_LIFECYCLE_PERFORMANCE",
+      "product_code_status": "NOT_RUN"
+    }
+  ],
+  "validation_matrix": {
+    "windows_ci_export_runtime": "PASS_EXISTING_EVIDENCE",
+    "windows_local_render": "NOT_RUN",
+    "physical_gamepad": "NOT_RUN",
+    "android_export": "NOT_RUN",
+    "android_install_launch": "NOT_RUN",
+    "android_touch": "NOT_RUN",
+    "android_back_safe_area": "NOT_RUN",
+    "android_pause_resume_restore": "NOT_RUN",
+    "android_performance": "NOT_RUN",
+    "accessibility_user": "NOT_RUN",
+    "release_performance": "NOT_RUN",
+    "implementation_authority": "PLANNING_CONTRACT_ONLY"
+  },
+  "current_project_audit": {
+    "snapshot_status": "PLANNING_BASELINE",
+    "baseline_main_commit": "7d20c2c9d5d1c92b80d32dc9bf25bd833a48ad58",
+    "renderer_shared_gl_compatibility": true,
+    "windows_export_preset_exists": true,
+    "android_export_preset_exists": false,
+    "inputmap_project_actions_exist": false,
+    "run_session_exists": false,
+    "save_service_exists": false,
+    "safe_area_adapter_exists": false,
+    "android_lifecycle_adapter_exists": false,
+    "leaf_raw_input_examples_exist": true
+  },
+  "next_gate": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE"
+}

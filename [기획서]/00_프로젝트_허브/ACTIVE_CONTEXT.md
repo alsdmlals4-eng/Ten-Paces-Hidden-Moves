@@ -1,12 +1,13 @@
 # 십보강호 활성 컨텍스트
 
-> 전투 규칙 책임 원본: `docs/02_COMBAT_RULES.md`  
-> 정본 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`  
-> 플랫폼 권위: `TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`  
-> 관찰 권위: `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`  
-> 초기 무공서 10권 성장 권위: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`  
-> 초기 무공서 10권 런타임 기반: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`  
-> 초기 무공서 UI·AI 채택 권위: `TEN_MANUAL_UI_AI_ADOPTION_GATE`  
+> 전투 규칙 책임 원본: `docs/02_COMBAT_RULES.md`
+> 정본 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`
+> 플랫폼 권위: `TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`
+> 플랫폼 Adapter 아키텍처 권위: `TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01`
+> 관찰 권위: `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`
+> 초기 무공서 10권 성장 권위: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`
+> 초기 무공서 10권 런타임 기반: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`
+> 초기 무공서 UI·AI 채택 권위: `TEN_MANUAL_UI_AI_ADOPTION_GATE`
 > 초기 무공서 자동 제품 검증 권위: `TEN_MANUAL_PRODUCT_VALIDATION_GATE`
 
 ## 현재 기준
@@ -14,20 +15,21 @@
 ```yaml
 project: 십보강호: 숨은 수의 비무
 repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
-merged_planning_checkpoint: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90
-merged_pr_lineage: 84,86,87,88,89,91,92,100
+merged_planning_checkpoint: 7d20c2c9d5d1c92b80d32dc9bf25bd833a48ad58
+merged_pr_lineage: 84,86,87,88,89,91,92,100,101
 product_implementation_merge_commit: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90
 merged_product_pr: 92
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
-active_planning_pr: NONE
+active_planning_pr: 102
 active_planning_parent_pr: NONE
-active_approval_count: 10/10
-active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_MERGED
+active_approval_count: 1/10
+active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 evidence_source_head: 0a8bf577b936ddac5cb7130a0cc58e519ea6eff6
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
+platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
 design_platforms: WINDOWS_ANDROID
 platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
 windows_validation: CI_EXPORT_RUNTIME_PASS_LOCAL_NOT_RUN
@@ -44,8 +46,8 @@ human_validation: NOT_RUN
 balance_validation: NOT_RUN
 accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
 performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
-next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT
+next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
+next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 ```
 
 현재 체크포인트는 `MERGED_PR92_TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED_10_OF_10`이다. PR #89·#91·#92 계보는 main에 병합됐고, 제품 구현 병합 Commit은 `a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90`이다. PR #90은 `[대체됨]`, PR #85 HTML PoC는 `[보류]`다.
@@ -114,6 +116,35 @@ android_runtime_evidence: NOT_RUN
 ```
 
 전투 규칙·AI·콘텐츠·ID·수치·저장 Schema는 공유 코어 하나를 사용한다. 입력, 반응형 UI·안전영역, Android 뒤로가기·pause/resume·suspend/restore, 플랫폼 서비스, 품질·성능·export만 분리한다. Android export·설치·실기기·터치·앱 생명주기·저장·성능·접근성 증거가 닫히기 전 Android 완료를 주장하지 않는다.
+
+## Windows·Android Adapter 아키텍처 권위
+
+`TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01`은 부모 플랫폼 Decision을 제품 구조 계약으로 구체화한다.
+
+```yaml
+shared_core: COMBAT_RULES_AI_CONTENT_IDS_NUMERIC_BALANCE_SAVE_SCHEMA_DETERMINISTIC_RESOLUTION
+adapter_layers: [INPUT, RESPONSIVE_UI, APP_LIFECYCLE, PLATFORM_SERVICES, QUALITY_EXPORT]
+logical_input_boundary: LOGICAL_COMMANDS_OR_INPUTMAP_ONLY
+responsive_breakpoints: COMPACT_899_STANDARD_1439_WIDE_1440
+minimum_touch_target_dp: 48
+android_orientation: LANDSCAPE_PRIMARY
+android_safe_area: REQUIRED
+save_write_policy: TEMP_WRITE_VALIDATE_ATOMIC_REPLACE
+renderer_baseline: GL_COMPATIBILITY
+android_export: NOT_RUN
+implementation_authority: PLANNING_CONTRACT_ONLY
+```
+
+보호 규칙:
+
+- Windows·Android 전투 규칙·AI·콘텐츠 ID·수치·저장 의미를 분기하지 않는다.
+- hover 또는 drag만으로 가능한 필수 행동을 두지 않는다.
+- compact 화면에서도 거리·3/3/4 계획·비용·사거리·관찰·합·중단·복기 원인을 보존한다.
+- Android back은 overlay 닫기 → 되돌릴 수 있는 단계 취소 → pause/종료 확인 순서를 사용한다.
+- pause 한 시점에만 저장을 의존하지 않고 결정적 경계 checkpoint를 사용한다.
+- Android AAB/APK·설치·실기기·터치·safe area·lifecycle·성능 증거 전에는 지원 완료를 주장하지 않는다.
+
+현재 코드 감사에서 Android export preset, 제품 InputMap action, RunSession, SaveService, safe-area·lifecycle adapter는 `NOT_RUN / NOT_IMPLEMENTED`다. 기존 leaf control의 raw key·mouse 입력은 제품 실패가 아니라 구현 Gate의 migration inventory다.
 
 ## 관찰 권위
 
@@ -225,7 +256,7 @@ Windows CI 기준 runtime은 약 2344.67ms, peak working set은 188571648 bytes,
 | `GRADE_FARMING_RISK` | `PENDING_HUMAN_MEASUREMENT` | 원시/유효 등급 비율 측정 |
 
 ```text
-WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT
+WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 → LOCAL_WINDOWS_ANDROID_DEVICE_ACCESSIBILITY_PERFORMANCE_GATE
 → STEP 14 신규 플레이어 5명
 → 기술 대체율·자원 포화·적 loadout 공정성·다단 가독성 측정
@@ -253,7 +284,7 @@ WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT
 - 제품 병합 전 상태: `active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED`.
 - 제품 병합 전 다음 Gate: `next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE`.
 
-현행 운영 값은 문서 상단 YAML의 `active_planning_pr: NONE`, `TEN_MANUAL_PRODUCT_VALIDATION_MERGED`, `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT`만 사용한다.
+현행 운영 값은 문서 상단 YAML의 `active_planning_pr: 102`, `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED`, `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE`를 사용한다. 제품 병합 권위는 별도 `merged_product_pr: 92`와 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`로 유지한다.
 
 ## 정본 동기화 원칙
 
