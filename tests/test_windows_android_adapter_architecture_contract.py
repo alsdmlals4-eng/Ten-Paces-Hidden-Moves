@@ -1,4 +1,5 @@
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -39,18 +40,22 @@ REQUIRED_ADAPTERS = {
     "QUALITY_EXPORT",
 }
 
-EXPECTED_CURRENT_STATE = {
-    "schema_version": 1,
-    "authority": "CURRENT_OPERATING_STATE",
-    "source_decision": "TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01",
-    "active_planning_work_mode": "REVIEW",
-    "active_planning_pr": "102",
-    "active_planning_parent_pr": "NONE",
-    "active_approval_count": "1/10",
-    "active_decision_state": "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED",
-    "next_package": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION",
-    "next_planning_decision": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE",
+OPERATING_KEYS = {
+    "active_planning_work_mode",
+    "active_planning_pr",
+    "active_planning_parent_pr",
+    "active_approval_count",
+    "active_decision_state",
+    "next_package",
+    "next_planning_decision",
 }
+
+
+def yaml_scalar(text: str, key: str) -> str:
+    values = re.findall(rf"(?m)^{re.escape(key)}:\s*([^\s#]+)", text)
+    if len(values) != 1:
+        raise AssertionError(f"expected one YAML scalar for {key}, found {len(values)}")
+    return values[0]
 
 
 class WindowsAndroidAdapterArchitectureContractTest(unittest.TestCase):
@@ -93,11 +98,22 @@ class WindowsAndroidAdapterArchitectureContractTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT_PASS", result.stdout)
 
-    def test_mutable_operating_state_is_separate_from_immutable_decision(self):
+    def test_mutable_operating_state_is_separate_and_matches_canon(self):
         data = self.load_contract()
         self.assertNotIn("current_operating_state", data)
         current = json.loads(CURRENT_STATE.read_text(encoding="utf-8"))
-        self.assertEqual(current, EXPECTED_CURRENT_STATE)
+        self.assertEqual(current["schema_version"], 1)
+        self.assertEqual(current["authority"], "CURRENT_OPERATING_STATE")
+        self.assertTrue(current["source_decision"])
+        self.assertTrue(OPERATING_KEYS.issubset(current))
+
+        active = ACTIVE.read_text(encoding="utf-8")
+        roadmap = ROADMAP.read_text(encoding="utf-8")
+        for key in OPERATING_KEYS:
+            self.assertEqual(str(current[key]), yaml_scalar(active, key), key)
+            self.assertEqual(str(current[key]), yaml_scalar(roadmap, key), key)
+        self.assertIn(current["source_decision"], active)
+        self.assertIn(current["source_decision"], roadmap)
 
     def test_shared_core_and_adapter_set_are_fixed(self):
         data = self.load_contract()
@@ -202,8 +218,6 @@ class WindowsAndroidAdapterArchitectureContractTest(unittest.TestCase):
             self.assertIn("TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01", text)
             self.assertIn("WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", text)
             self.assertIn("android_validation: NOT_RUN", text)
-        self.assertIn("active_approval_count: 1/10", active)
-        self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", active)
 
 
 if __name__ == "__main__":
