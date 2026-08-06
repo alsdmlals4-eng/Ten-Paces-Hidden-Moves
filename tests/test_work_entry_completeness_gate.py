@@ -7,8 +7,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DECISION_ID = "TEN-DEC-20260806-WORK-ENTRY-COMPLETENESS-GATE-01"
+SOLO_DECISION_ID = "TEN-DEC-20260806-SOLO-MAINTAINER-REVIEW-EXCEPTION-01"
 DECISION = ROOT / "docs/decisions/2026-08-06_WORK_ENTRY_COMPLETENESS_GATE_DECISION.md"
+SOLO_DECISION = ROOT / "docs/decisions/2026-08-06_SOLO_MAINTAINER_REVIEW_EXCEPTION_DECISION.md"
 CONTRACT = ROOT / "docs/planning-data/approved_20260806_work_entry_completeness_gate.json"
+SOLO_CONTRACT = ROOT / "docs/planning-data/approved_20260806_solo_maintainer_review_exception.json"
 SHEET_SNAPSHOT = ROOT / "docs/planning-data/sheet_work_entry_gate_snapshot_20260806.json"
 STATE = ROOT / "docs/planning-data/current_operating_state.json"
 ACTIVE_CONTEXT = ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
@@ -83,6 +86,7 @@ class WorkEntryCompletenessGateTests(unittest.TestCase):
         self.assertIn("WORK_ENTRY_BLOCKED_UNVERIFIED", validator_text)
         self.assertIn("WORK_ENTRY_BLOCKED_CANON_CONFLICT", validator_text)
         self.assertIn("PLANNING_REVIEW_VISUAL_AND_AUTHORITY_GATES_OPEN", validator_text)
+        self.assertIn(SOLO_DECISION_ID, validator_text)
 
         workflow_text = WORKFLOW.read_text(encoding="utf-8")
         self.assertIn("gut-adoption-exact-head", workflow_text)
@@ -99,6 +103,48 @@ class WorkEntryCompletenessGateTests(unittest.TestCase):
             "FALSE_READY_REVERSAL",
             "GITHUB_SHEET_READBACK_REQUIRED",
             "PRODUCT_IMPLEMENTATION_BLOCKED",
+        ):
+            self.assertIn(marker, text)
+
+    def test_solo_maintainer_exception_is_bounded_and_not_fake_approval(self) -> None:
+        payload = json.loads(SOLO_CONTRACT.read_text(encoding="utf-8"))
+        self.assertEqual(payload["decision_id"], SOLO_DECISION_ID)
+        self.assertEqual(payload["repository"], "alsdmlals4-eng/Ten-Paces-Hidden-Moves")
+        self.assertEqual(payload["scope"], "PROJECT_WIDE_WHILE_SOLO_MAINTAINED")
+        self.assertEqual(payload["independent_review"], "WAIVED_WHILE_ACTIVATION_CONDITION_TRUE")
+        self.assertEqual(payload["review_record"], "SOLO_MAINTAINER_REVIEW_ATTESTATION")
+        self.assertNotEqual(payload["review_record"], "INDEPENDENT_APPROVE")
+        self.assertTrue(payload["activation_condition"]["sole_maintainer_required"])
+        self.assertTrue(payload["suspension"]["on_additional_reviewer_or_maintainer"])
+
+    def test_solo_maintainer_exception_preserves_merge_safety(self) -> None:
+        payload = json.loads(SOLO_CONTRACT.read_text(encoding="utf-8"))
+        controls = payload["required_controls"]
+        self.assertTrue(controls["exact_head_required"])
+        self.assertTrue(controls["all_required_checks_pass"])
+        self.assertTrue(controls["adversarial_diff_review_required"])
+        self.assertTrue(controls["unresolved_threads_zero"])
+        self.assertTrue(controls["open_p0_p1_zero"])
+        self.assertTrue(controls["github_sheet_same_decision_id"])
+        self.assertTrue(controls["explicit_user_merge_authorization_per_pr"])
+        self.assertTrue(controls["head_change_invalidates_attestation"])
+        self.assertFalse(controls["automatic_merge_allowed"])
+        self.assertFalse(payload["waivers"]["tests"])
+        self.assertFalse(payload["waivers"]["runtime_or_human_evidence"])
+        self.assertFalse(payload["waivers"]["product_entry_gate"])
+
+    def test_solo_exception_does_not_release_product_implementation(self) -> None:
+        payload = json.loads(SOLO_CONTRACT.read_text(encoding="utf-8"))
+        self.assertEqual(payload["product_implementation_effect"], "NONE")
+        self.assertEqual(payload["current_product_entry"], "BLOCKED_BY_WORK_ENTRY_COMPLETENESS_GATE")
+        text = SOLO_DECISION.read_text(encoding="utf-8")
+        for marker in (
+            SOLO_DECISION_ID,
+            "PROJECT_WIDE_WHILE_SOLO_MAINTAINED",
+            "SOLO_MAINTAINER_REVIEW_ATTESTATION",
+            "NO_FAKE_INDEPENDENT_APPROVE",
+            "EXPLICIT_USER_MERGE_AUTHORIZATION_PER_PR",
+            "PRODUCT_ENTRY_GATE_NOT_WAIVED",
         ):
             self.assertIn(marker, text)
 
