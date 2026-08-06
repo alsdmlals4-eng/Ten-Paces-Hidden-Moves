@@ -1,0 +1,62 @@
+name: Temporary Ten Manual Product Gate Canon Sync
+
+on:
+  pull_request:
+    types: [synchronize]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tmp-ten-manual-product-canon-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  sync-product-gate-canon:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'agent/2026-08-05-wrong-plan-rescue-stat-derived-design'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          fetch-depth: 0
+          show-progress: false
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply product gate canon sync
+        run: python tools/tmp_sync_ten_manual_product_gate.py
+      - name: Verify product gate contract
+        run: python -m unittest tests.test_ten_manual_product_gate -v
+      - name: Verify canon lifecycle mutations
+        run: python -m unittest tests.test_postmerge_canon_lifecycle -v
+      - name: Verify current canon lifecycle
+        run: python tools/check_postmerge_canon_lifecycle.py
+      - name: Commit synchronized canon
+        shell: bash
+        run: |
+          git config user.name 'alsdmlals4-eng'
+          git config user.email 'alsdmlals4@gmail.com'
+          git add \
+            '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md' \
+            '[기획서]/00_프로젝트_허브/ROADMAP.md' \
+            '[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md' \
+            docs/04_ROADMAP.md \
+            docs/08_TEST_CHECKLIST.md \
+            docs/CANON_LIFECYCLE_REGISTRY.md \
+            docs/decisions/2026-08-06_TEN_MANUAL_PRODUCT_VALIDATION_GATE.md \
+            docs/evidence/TEN_MANUAL_PRODUCT_VALIDATION_EVIDENCE.md \
+            docs/research/STEP14_REPEAT_POC_PROTOCOL_DRAFT.md \
+            docs/research/STEP14_REPEAT_POC_RESULTS_TEMPLATE.md \
+            tools/check_postmerge_canon_lifecycle.py \
+            tests/test_postmerge_canon_lifecycle.py
+          if git diff --cached --quiet; then
+            echo 'TEN_MANUAL_PRODUCT_GATE_CANON_ALREADY_SYNCED'
+            exit 0
+          fi
+          git commit -m 'docs: record automated ten-manual product validation'
+          git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref_name }}
