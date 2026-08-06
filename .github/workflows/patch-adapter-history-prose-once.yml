@@ -1,0 +1,37 @@
+name: Patch Adapter History Prose Once
+
+on:
+  push:
+    branches:
+      - planning/windows-android-adapter-architecture
+    paths:
+      - .github/workflows/patch-adapter-history-prose-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out planning branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: planning/windows-android-adapter-architecture
+          fetch-depth: 0
+      - name: Patch historical current-state prose
+        run: python tools/patch_adapter_historical_prose_once.py
+      - name: Commit canon corrections
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md' docs/04_ROADMAP.md
+          git diff --cached --check
+          if git diff --cached --quiet; then
+            echo 'No canon changes required.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs: align adapter history prose with active batch'
+          git push origin HEAD:planning/windows-android-adapter-architecture
