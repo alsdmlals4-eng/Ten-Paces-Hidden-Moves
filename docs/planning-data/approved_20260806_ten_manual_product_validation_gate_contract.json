@@ -8,11 +8,26 @@
   "platform": "windows-x86_64",
   "export_preset": "Windows Desktop Product Validation",
   "viewports": [
-    [1280, 800],
-    [1440, 900],
-    [1920, 1080]
+    [
+      1280,
+      800
+    ],
+    [
+      1440,
+      900
+    ],
+    [
+      1920,
+      1080
+    ]
   ],
-  "mastery_levels": [3, 5, 7, 9, 10],
+  "mastery_levels": [
+    3,
+    5,
+    7,
+    9,
+    10
+  ],
   "required_scenario_count": 50,
   "allowed_product_gate": [
     "PARTIAL_AUTOMATED_COMPLETE",
@@ -40,55 +55,255 @@
     "godot_version"
   ],
   "scenario_matrix": [
-    {"scenario_id":"mount_hua_plum_blossom_sword-star-3","manual_id":"mount_hua_plum_blossom_sword","mastery":3},
-    {"scenario_id":"mount_hua_plum_blossom_sword-star-5","manual_id":"mount_hua_plum_blossom_sword","mastery":5},
-    {"scenario_id":"mount_hua_plum_blossom_sword-star-7","manual_id":"mount_hua_plum_blossom_sword","mastery":7},
-    {"scenario_id":"mount_hua_plum_blossom_sword-star-9","manual_id":"mount_hua_plum_blossom_sword","mastery":9},
-    {"scenario_id":"mount_hua_plum_blossom_sword-star-10","manual_id":"mount_hua_plum_blossom_sword","mastery":10},
-    {"scenario_id":"shaolin_arhat_vajra_art-star-3","manual_id":"shaolin_arhat_vajra_art","mastery":3},
-    {"scenario_id":"shaolin_arhat_vajra_art-star-5","manual_id":"shaolin_arhat_vajra_art","mastery":5},
-    {"scenario_id":"shaolin_arhat_vajra_art-star-7","manual_id":"shaolin_arhat_vajra_art","mastery":7},
-    {"scenario_id":"shaolin_arhat_vajra_art-star-9","manual_id":"shaolin_arhat_vajra_art","mastery":9},
-    {"scenario_id":"shaolin_arhat_vajra_art-star-10","manual_id":"shaolin_arhat_vajra_art","mastery":10},
-    {"scenario_id":"wudang_taiji_sword-star-3","manual_id":"wudang_taiji_sword","mastery":3},
-    {"scenario_id":"wudang_taiji_sword-star-5","manual_id":"wudang_taiji_sword","mastery":5},
-    {"scenario_id":"wudang_taiji_sword-star-7","manual_id":"wudang_taiji_sword","mastery":7},
-    {"scenario_id":"wudang_taiji_sword-star-9","manual_id":"wudang_taiji_sword","mastery":9},
-    {"scenario_id":"wudang_taiji_sword-star-10","manual_id":"wudang_taiji_sword","mastery":10},
-    {"scenario_id":"yang_family_spear-star-3","manual_id":"yang_family_spear","mastery":3},
-    {"scenario_id":"yang_family_spear-star-5","manual_id":"yang_family_spear","mastery":5},
-    {"scenario_id":"yang_family_spear-star-7","manual_id":"yang_family_spear","mastery":7},
-    {"scenario_id":"yang_family_spear-star-9","manual_id":"yang_family_spear","mastery":9},
-    {"scenario_id":"yang_family_spear-star-10","manual_id":"yang_family_spear","mastery":10},
-    {"scenario_id":"mount_hua_purple_mist_art-star-3","manual_id":"mount_hua_purple_mist_art","mastery":3},
-    {"scenario_id":"mount_hua_purple_mist_art-star-5","manual_id":"mount_hua_purple_mist_art","mastery":5},
-    {"scenario_id":"mount_hua_purple_mist_art-star-7","manual_id":"mount_hua_purple_mist_art","mastery":7},
-    {"scenario_id":"mount_hua_purple_mist_art-star-9","manual_id":"mount_hua_purple_mist_art","mastery":9},
-    {"scenario_id":"mount_hua_purple_mist_art-star-10","manual_id":"mount_hua_purple_mist_art","mastery":10},
-    {"scenario_id":"xiaoyao_lingbo_footwork-star-3","manual_id":"xiaoyao_lingbo_footwork","mastery":3},
-    {"scenario_id":"xiaoyao_lingbo_footwork-star-5","manual_id":"xiaoyao_lingbo_footwork","mastery":5},
-    {"scenario_id":"xiaoyao_lingbo_footwork-star-7","manual_id":"xiaoyao_lingbo_footwork","mastery":7},
-    {"scenario_id":"xiaoyao_lingbo_footwork-star-9","manual_id":"xiaoyao_lingbo_footwork","mastery":9},
-    {"scenario_id":"xiaoyao_lingbo_footwork-star-10","manual_id":"xiaoyao_lingbo_footwork","mastery":10},
-    {"scenario_id":"beggars_dragon_subduing_palm-star-3","manual_id":"beggars_dragon_subduing_palm","mastery":3},
-    {"scenario_id":"beggars_dragon_subduing_palm-star-5","manual_id":"beggars_dragon_subduing_palm","mastery":5},
-    {"scenario_id":"beggars_dragon_subduing_palm-star-7","manual_id":"beggars_dragon_subduing_palm","mastery":7},
-    {"scenario_id":"beggars_dragon_subduing_palm-star-9","manual_id":"beggars_dragon_subduing_palm","mastery":9},
-    {"scenario_id":"beggars_dragon_subduing_palm-star-10","manual_id":"beggars_dragon_subduing_palm","mastery":10},
-    {"scenario_id":"sichuan_tang_hidden_weapons-star-3","manual_id":"sichuan_tang_hidden_weapons","mastery":3},
-    {"scenario_id":"sichuan_tang_hidden_weapons-star-5","manual_id":"sichuan_tang_hidden_weapons","mastery":5},
-    {"scenario_id":"sichuan_tang_hidden_weapons-star-7","manual_id":"sichuan_tang_hidden_weapons","mastery":7},
-    {"scenario_id":"sichuan_tang_hidden_weapons-star-9","manual_id":"sichuan_tang_hidden_weapons","mastery":9},
-    {"scenario_id":"sichuan_tang_hidden_weapons-star-10","manual_id":"sichuan_tang_hidden_weapons","mastery":10},
-    {"scenario_id":"hebei_peng_five_tigers_saber-star-3","manual_id":"hebei_peng_five_tigers_saber","mastery":3},
-    {"scenario_id":"hebei_peng_five_tigers_saber-star-5","manual_id":"hebei_peng_five_tigers_saber","mastery":5},
-    {"scenario_id":"hebei_peng_five_tigers_saber-star-7","manual_id":"hebei_peng_five_tigers_saber","mastery":7},
-    {"scenario_id":"hebei_peng_five_tigers_saber-star-9","manual_id":"hebei_peng_five_tigers_saber","mastery":9},
-    {"scenario_id":"hebei_peng_five_tigers_saber-star-10","manual_id":"hebei_peng_five_tigers_saber","mastery":10},
-    {"scenario_id":"nangong_boundless_sky_sword-star-3","manual_id":"nangong_boundless_sky_sword","mastery":3},
-    {"scenario_id":"nangong_boundless_sky_sword-star-5","manual_id":"nangong_boundless_sky_sword","mastery":5},
-    {"scenario_id":"nangong_boundless_sky_sword-star-7","manual_id":"nangong_boundless_sky_sword","mastery":7},
-    {"scenario_id":"nangong_boundless_sky_sword-star-9","manual_id":"nangong_boundless_sky_sword","mastery":9},
-    {"scenario_id":"nangong_boundless_sky_sword-star-10","manual_id":"nangong_boundless_sky_sword","mastery":10}
+    {
+      "scenario_id": "mount_hua_plum_blossom_sword-star-3",
+      "manual_id": "mount_hua_plum_blossom_sword",
+      "mastery": 3
+    },
+    {
+      "scenario_id": "mount_hua_plum_blossom_sword-star-5",
+      "manual_id": "mount_hua_plum_blossom_sword",
+      "mastery": 5
+    },
+    {
+      "scenario_id": "mount_hua_plum_blossom_sword-star-7",
+      "manual_id": "mount_hua_plum_blossom_sword",
+      "mastery": 7
+    },
+    {
+      "scenario_id": "mount_hua_plum_blossom_sword-star-9",
+      "manual_id": "mount_hua_plum_blossom_sword",
+      "mastery": 9
+    },
+    {
+      "scenario_id": "mount_hua_plum_blossom_sword-star-10",
+      "manual_id": "mount_hua_plum_blossom_sword",
+      "mastery": 10
+    },
+    {
+      "scenario_id": "shaolin_arhat_vajra_art-star-3",
+      "manual_id": "shaolin_arhat_vajra_art",
+      "mastery": 3
+    },
+    {
+      "scenario_id": "shaolin_arhat_vajra_art-star-5",
+      "manual_id": "shaolin_arhat_vajra_art",
+      "mastery": 5
+    },
+    {
+      "scenario_id": "shaolin_arhat_vajra_art-star-7",
+      "manual_id": "shaolin_arhat_vajra_art",
+      "mastery": 7
+    },
+    {
+      "scenario_id": "shaolin_arhat_vajra_art-star-9",
+      "manual_id": "shaolin_arhat_vajra_art",
+      "mastery": 9
+    },
+    {
+      "scenario_id": "shaolin_arhat_vajra_art-star-10",
+      "manual_id": "shaolin_arhat_vajra_art",
+      "mastery": 10
+    },
+    {
+      "scenario_id": "wudang_taiji_sword-star-3",
+      "manual_id": "wudang_taiji_sword",
+      "mastery": 3
+    },
+    {
+      "scenario_id": "wudang_taiji_sword-star-5",
+      "manual_id": "wudang_taiji_sword",
+      "mastery": 5
+    },
+    {
+      "scenario_id": "wudang_taiji_sword-star-7",
+      "manual_id": "wudang_taiji_sword",
+      "mastery": 7
+    },
+    {
+      "scenario_id": "wudang_taiji_sword-star-9",
+      "manual_id": "wudang_taiji_sword",
+      "mastery": 9
+    },
+    {
+      "scenario_id": "wudang_taiji_sword-star-10",
+      "manual_id": "wudang_taiji_sword",
+      "mastery": 10
+    },
+    {
+      "scenario_id": "yang_family_spear-star-3",
+      "manual_id": "yang_family_spear",
+      "mastery": 3
+    },
+    {
+      "scenario_id": "yang_family_spear-star-5",
+      "manual_id": "yang_family_spear",
+      "mastery": 5
+    },
+    {
+      "scenario_id": "yang_family_spear-star-7",
+      "manual_id": "yang_family_spear",
+      "mastery": 7
+    },
+    {
+      "scenario_id": "yang_family_spear-star-9",
+      "manual_id": "yang_family_spear",
+      "mastery": 9
+    },
+    {
+      "scenario_id": "yang_family_spear-star-10",
+      "manual_id": "yang_family_spear",
+      "mastery": 10
+    },
+    {
+      "scenario_id": "mount_hua_purple_mist_art-star-3",
+      "manual_id": "mount_hua_purple_mist_art",
+      "mastery": 3
+    },
+    {
+      "scenario_id": "mount_hua_purple_mist_art-star-5",
+      "manual_id": "mount_hua_purple_mist_art",
+      "mastery": 5
+    },
+    {
+      "scenario_id": "mount_hua_purple_mist_art-star-7",
+      "manual_id": "mount_hua_purple_mist_art",
+      "mastery": 7
+    },
+    {
+      "scenario_id": "mount_hua_purple_mist_art-star-9",
+      "manual_id": "mount_hua_purple_mist_art",
+      "mastery": 9
+    },
+    {
+      "scenario_id": "mount_hua_purple_mist_art-star-10",
+      "manual_id": "mount_hua_purple_mist_art",
+      "mastery": 10
+    },
+    {
+      "scenario_id": "xiaoyao_lingbo_footwork-star-3",
+      "manual_id": "xiaoyao_lingbo_footwork",
+      "mastery": 3
+    },
+    {
+      "scenario_id": "xiaoyao_lingbo_footwork-star-5",
+      "manual_id": "xiaoyao_lingbo_footwork",
+      "mastery": 5
+    },
+    {
+      "scenario_id": "xiaoyao_lingbo_footwork-star-7",
+      "manual_id": "xiaoyao_lingbo_footwork",
+      "mastery": 7
+    },
+    {
+      "scenario_id": "xiaoyao_lingbo_footwork-star-9",
+      "manual_id": "xiaoyao_lingbo_footwork",
+      "mastery": 9
+    },
+    {
+      "scenario_id": "xiaoyao_lingbo_footwork-star-10",
+      "manual_id": "xiaoyao_lingbo_footwork",
+      "mastery": 10
+    },
+    {
+      "scenario_id": "beggars_dragon_subduing_palm-star-3",
+      "manual_id": "beggars_dragon_subduing_palm",
+      "mastery": 3
+    },
+    {
+      "scenario_id": "beggars_dragon_subduing_palm-star-5",
+      "manual_id": "beggars_dragon_subduing_palm",
+      "mastery": 5
+    },
+    {
+      "scenario_id": "beggars_dragon_subduing_palm-star-7",
+      "manual_id": "beggars_dragon_subduing_palm",
+      "mastery": 7
+    },
+    {
+      "scenario_id": "beggars_dragon_subduing_palm-star-9",
+      "manual_id": "beggars_dragon_subduing_palm",
+      "mastery": 9
+    },
+    {
+      "scenario_id": "beggars_dragon_subduing_palm-star-10",
+      "manual_id": "beggars_dragon_subduing_palm",
+      "mastery": 10
+    },
+    {
+      "scenario_id": "sichuan_tang_hidden_weapons-star-3",
+      "manual_id": "sichuan_tang_hidden_weapons",
+      "mastery": 3
+    },
+    {
+      "scenario_id": "sichuan_tang_hidden_weapons-star-5",
+      "manual_id": "sichuan_tang_hidden_weapons",
+      "mastery": 5
+    },
+    {
+      "scenario_id": "sichuan_tang_hidden_weapons-star-7",
+      "manual_id": "sichuan_tang_hidden_weapons",
+      "mastery": 7
+    },
+    {
+      "scenario_id": "sichuan_tang_hidden_weapons-star-9",
+      "manual_id": "sichuan_tang_hidden_weapons",
+      "mastery": 9
+    },
+    {
+      "scenario_id": "sichuan_tang_hidden_weapons-star-10",
+      "manual_id": "sichuan_tang_hidden_weapons",
+      "mastery": 10
+    },
+    {
+      "scenario_id": "hebei_peng_five_tigers_saber-star-3",
+      "manual_id": "hebei_peng_five_tigers_saber",
+      "mastery": 3
+    },
+    {
+      "scenario_id": "hebei_peng_five_tigers_saber-star-5",
+      "manual_id": "hebei_peng_five_tigers_saber",
+      "mastery": 5
+    },
+    {
+      "scenario_id": "hebei_peng_five_tigers_saber-star-7",
+      "manual_id": "hebei_peng_five_tigers_saber",
+      "mastery": 7
+    },
+    {
+      "scenario_id": "hebei_peng_five_tigers_saber-star-9",
+      "manual_id": "hebei_peng_five_tigers_saber",
+      "mastery": 9
+    },
+    {
+      "scenario_id": "hebei_peng_five_tigers_saber-star-10",
+      "manual_id": "hebei_peng_five_tigers_saber",
+      "mastery": 10
+    },
+    {
+      "scenario_id": "nangong_boundless_sky_sword-star-3",
+      "manual_id": "nangong_boundless_sky_sword",
+      "mastery": 3
+    },
+    {
+      "scenario_id": "nangong_boundless_sky_sword-star-5",
+      "manual_id": "nangong_boundless_sky_sword",
+      "mastery": 5
+    },
+    {
+      "scenario_id": "nangong_boundless_sky_sword-star-7",
+      "manual_id": "nangong_boundless_sky_sword",
+      "mastery": 7
+    },
+    {
+      "scenario_id": "nangong_boundless_sky_sword-star-9",
+      "manual_id": "nangong_boundless_sky_sword",
+      "mastery": 9
+    },
+    {
+      "scenario_id": "nangong_boundless_sky_sword-star-10",
+      "manual_id": "nangong_boundless_sky_sword",
+      "mastery": 10
+    }
   ]
 }
