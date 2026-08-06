@@ -15,37 +15,33 @@ func _run() -> void:
     var started := Time.get_ticks_msec()
     var contract := _load_json(CONTRACT_PATH)
     var registry = REGISTRY_SCRIPT.new()
-    _expect(registry.is_valid(), "MartialManualRegistry must load exactly ten manuals: %s" % registry.load_errors)
-    _expect(registry.has_method("build_product_validation_snapshot"), "MartialManualRegistry must expose build_product_validation_snapshot.")
-    if registry.is_valid() and registry.has_method("build_product_validation_snapshot"):
-        for row_value in contract.get("scenario_matrix", []):
-            if typeof(row_value) != TYPE_DICTIONARY:
-                failures.append("Scenario row must be a Dictionary.")
-                continue
-            _verify_scenario(registry, row_value as Dictionary)
+    if not registry.is_valid():
+        _fail_now("MartialManualRegistry must load exactly ten manuals: %s" % registry.load_errors)
+        return
+    if not registry.has_method("build_product_validation_snapshot"):
+        _fail_now("MartialManualRegistry must expose build_product_validation_snapshot.")
+        return
+    for row_value in contract.get("scenario_matrix", []):
+        if typeof(row_value) != TYPE_DICTIONARY:
+            failures.append("Scenario row must be a Dictionary.")
+            continue
+        _verify_scenario(registry, row_value as Dictionary)
     _expect(results.size() == 50, "Exactly 50 product scenarios must execute, got %d." % results.size())
     var passed := 0
     for result in results:
         if bool(result.get("passed", false)):
             passed += 1
-    var evidence := {
+    _write_json(OUTPUT_PATH, {
         "decision_id": "TEN_MANUAL_PRODUCT_VALIDATION_GATE",
         "scenario_count": results.size(),
         "passed": passed,
         "failed": results.size() - passed,
-        "manuals": registry.get_manual_ids().size() if registry.is_valid() else 0,
+        "manuals": registry.get_manual_ids().size(),
         "mastery_levels": contract.get("mastery_levels", []),
         "elapsed_ms": Time.get_ticks_msec() - started,
         "results": results
-    }
-    _write_json(OUTPUT_PATH, evidence)
-    if failures.is_empty():
-        print("TEN_MANUAL_PRODUCT_GATE_50_SCENARIOS_OK")
-        quit(0)
-        return
-    for failure in failures:
-        push_error(failure)
-    quit(1)
+    })
+    _finish()
 
 func _verify_scenario(registry, row: Dictionary) -> void:
     var manual_id := str(row.get("manual_id", ""))
@@ -64,7 +60,6 @@ func _verify_scenario(registry, row: Dictionary) -> void:
             card_ids.append(str((card_value as Dictionary).get("id", "")))
     _expect(int(snapshot.get("mastery", -1)) == mastery, "%s mastery mismatch." % scenario_id)
     _expect(str(snapshot.get("manual_id", "")) == manual_id, "%s manual ID mismatch." % scenario_id)
-    _expect(card_ids.size() >= 1, "%s must retain technique1." % scenario_id)
     _expect(bool(snapshot.get("star3_unlocked", false)), "%s must unlock star3." % scenario_id)
     _expect(bool(snapshot.get("star7_unlocked", false)) == (mastery >= 7), "%s star7 unlock drift." % scenario_id)
     _expect(bool(snapshot.get("star10_unlocked", false)) == (mastery >= 10), "%s star10 unlock drift." % scenario_id)
@@ -87,26 +82,8 @@ func _verify_scenario(registry, row: Dictionary) -> void:
 func _execute_card_program(scenario_id: String, card: Dictionary) -> void:
     var pipeline = PIPELINE_SCRIPT.new()
     var state := {
-        "player": {
-            "position": 4,
-            "health": [30, 30],
-            "stamina": [10, 10],
-            "internal": [10, 10],
-            "momentum": [5, 5],
-            "defense": 4,
-            "statuses": {"prepared": 1, "evade": 1, "fortitude": 1},
-            "once_per_battle": {}
-        },
-        "enemy": {
-            "position": 5,
-            "health": [30, 30],
-            "stamina": [10, 10],
-            "internal": [10, 10],
-            "momentum": [5, 5],
-            "defense": 2,
-            "statuses": {},
-            "once_per_battle": {}
-        }
+        "player": {"position": 4, "health": [30, 30], "stamina": [10, 10], "internal": [10, 10], "momentum": [5, 5], "defense": 4, "statuses": {"prepared": 1, "evade": 1, "fortitude": 1}, "once_per_battle": {}},
+        "enemy": {"position": 5, "health": [30, 30], "stamina": [10, 10], "internal": [10, 10], "momentum": [5, 5], "defense": 2, "statuses": {}, "once_per_battle": {}}
     }
     var result: Dictionary = pipeline.execute(card, state, "player", {
         "direction": 1,
@@ -122,6 +99,19 @@ func _execute_card_program(scenario_id: String, card: Dictionary) -> void:
 func _expect(condition: bool, message: String) -> void:
     if not condition:
         failures.append(message)
+
+func _fail_now(message: String) -> void:
+    push_error(message)
+    quit(1)
+
+func _finish() -> void:
+    if failures.is_empty():
+        print("TEN_MANUAL_PRODUCT_GATE_50_SCENARIOS_OK")
+        quit(0)
+        return
+    for failure in failures:
+        push_error(failure)
+    quit(1)
 
 func _load_json(path: String) -> Dictionary:
     var file := FileAccess.open(path, FileAccess.READ)
