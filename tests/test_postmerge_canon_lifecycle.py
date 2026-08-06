@@ -18,7 +18,6 @@ TARGETS = [
     "docs/CANON_LIFECYCLE_REGISTRY.md",
     "docs/decisions/2026-08-02_PLATFORM_SCOPE_DECISION.md",
     "docs/decisions/2026-08-06_WINDOWS_ANDROID_DUAL_TARGET_DECISION.md",
-    "docs/planning-data/approved_20260806_windows_android_adapter_architecture_contract.json",
     "docs/decisions/2026-08-02_RANGE_PRICE_BANDS_DECISION.md",
     "docs/decisions/2026-08-03_STARTING_MARTIAL_TECHNIQUE_1_BASE_EFFECTS_AND_BUDGETS_DECISION.md",
     "docs/planning-data/approved_20260803_starting_martial_technique_1_base_effects_and_budgets_contract.json",
@@ -33,7 +32,9 @@ TARGETS = [
     "docs/evidence/TEN_MANUAL_PRODUCT_VALIDATION_EVIDENCE.md",
     "docs/research/STEP14_REPEAT_POC_PROTOCOL_DRAFT.md",
     "docs/research/STEP14_REPEAT_POC_RESULTS_TEMPLATE.md",
+    "docs/planning-data/current_operating_state.json",
 ]
+
 
 def load_validator():
     spec = importlib.util.spec_from_file_location("postmerge_canon_lifecycle", VALIDATOR_PATH)
@@ -43,6 +44,7 @@ def load_validator():
     spec.loader.exec_module(module)
     return module
 
+
 def copy_fixture(destination: Path) -> None:
     for relative in TARGETS:
         source = ROOT / relative
@@ -50,12 +52,14 @@ def copy_fixture(destination: Path) -> None:
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, target)
 
+
 def replace_scalar(text: str, key: str, value: str) -> str:
     pattern = rf"(?m)^{re.escape(key)}:\s*\S+\s*$"
     replaced, count = re.subn(pattern, f"{key}: {value}", text)
     if count != 1:
         raise AssertionError(f"expected one scalar for {key}, found {count}")
     return replaced
+
 
 class PostMergeCanonLifecycleTests(unittest.TestCase):
     def test_current_repository_passes(self) -> None:
@@ -67,6 +71,17 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
             root = Path(directory); copy_fixture(root)
             for relative in TARGETS[:2]:
                 p = root / relative; p.write_text(replace_scalar(p.read_text(encoding="utf-8"), "active_planning_pr", "87"), encoding="utf-8")
+            with self.assertRaisesRegex(validator.CanonLifecycleError, "active planning PR"):
+                validator.validate(root)
+
+    def test_current_state_authority_must_match_canon(self) -> None:
+        validator = load_validator()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); copy_fixture(root)
+            p = root / TARGETS[-1]
+            data = json.loads(p.read_text(encoding="utf-8"))
+            data["active_planning_pr"] = "999"
+            p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
             with self.assertRaisesRegex(validator.CanonLifecycleError, "active planning PR"):
                 validator.validate(root)
 
@@ -183,6 +198,7 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
             p = root / TARGETS[10]; data = json.loads(p.read_text(encoding="utf-8")); data["next_planning_order"] = data["next_planning_order"][1:]; p.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
             with self.assertRaisesRegex(validator.CanonLifecycleError, "9-star template"):
                 validator.validate(root)
+
 
 if __name__ == "__main__":
     unittest.main()
