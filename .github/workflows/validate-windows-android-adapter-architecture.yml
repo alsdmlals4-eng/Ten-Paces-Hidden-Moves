@@ -4,23 +4,7 @@ on:
   push:
     branches:
       - planning/windows-android-adapter-architecture
-    paths:
-      - .github/workflows/validate-windows-android-adapter-architecture.yml
-      - docs/decisions/2026-08-06_WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_DECISION.md
-      - docs/planning-data/approved_20260806_windows_android_adapter_architecture_contract.json
-      - tools/check_windows_android_adapter_architecture_contract.py
-      - tests/test_windows_android_adapter_architecture_contract.py
-      - '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md'
-      - docs/04_ROADMAP.md
   pull_request:
-    paths:
-      - .github/workflows/validate-windows-android-adapter-architecture.yml
-      - docs/decisions/2026-08-06_WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_DECISION.md
-      - docs/planning-data/approved_20260806_windows_android_adapter_architecture_contract.json
-      - tools/check_windows_android_adapter_architecture_contract.py
-      - tests/test_windows_android_adapter_architecture_contract.py
-      - '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md'
-      - docs/04_ROADMAP.md
 
 permissions:
   contents: read
