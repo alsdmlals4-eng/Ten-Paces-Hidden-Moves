@@ -1,7 +1,6 @@
 extends Node
 
 const VALIDATOR_SCRIPT := preload("res://src/validation/ten_manual_product_scenario_validator.gd")
-const CONTRACT_PATH := "res://docs/planning-data/approved_20260806_ten_manual_product_validation_gate_contract.json"
 const ENABLE_ENV := "TEN_MANUAL_PRODUCT_VALIDATION"
 const OUTPUT_DIR_ENV := "TEN_MANUAL_EVIDENCE_DIR"
 
@@ -11,11 +10,8 @@ func _ready() -> void:
     call_deferred("_run_validation")
 
 func _run_validation() -> void:
-    var contract := _load_json(CONTRACT_PATH)
-    if contract.is_empty():
-        get_tree().quit(1)
-        return
-    var report: Dictionary = VALIDATOR_SCRIPT.new().run(contract)
+    var validator = VALIDATOR_SCRIPT.new()
+    var report: Dictionary = validator.run(validator.build_runtime_contract())
     var output_dir := OS.get_environment(OUTPUT_DIR_ENV).strip_edges()
     if output_dir.is_empty():
         push_error("%s must be set for exported product validation." % OUTPUT_DIR_ENV)
@@ -33,17 +29,6 @@ func _run_validation() -> void:
     for failure in failures:
         push_error(str(failure))
     get_tree().quit(1)
-
-func _load_json(path: String) -> Dictionary:
-    var file := FileAccess.open(path, FileAccess.READ)
-    if file == null:
-        push_error("Could not open product validation contract: %s" % path)
-        return {}
-    var parsed = JSON.parse_string(file.get_as_text())
-    if typeof(parsed) != TYPE_DICTIONARY:
-        push_error("Product validation contract root must be a Dictionary.")
-        return {}
-    return parsed as Dictionary
 
 func _write_json(path: String, value: Dictionary) -> bool:
     var error := DirAccess.make_dir_recursive_absolute(path.get_base_dir())
