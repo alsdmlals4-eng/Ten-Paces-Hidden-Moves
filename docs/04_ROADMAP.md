@@ -241,7 +241,16 @@ T1 진입에는 기획·검토·이미지 완료, 로컬 Windows·실제 Android
 
 발생 시 관련 범위를 호환 adapter 수준으로 축소하고 별도 Decision 전까지 확장하지 않는다.
 
-## 12. 정본 생명주기
+## 12. 역사적 회귀 호환 표식
+
+다음 문자열은 PR #92 병합 전 회귀의 발견용 표식일 뿐 현행 상태가 아니다.
+
+- `active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED`.
+- `next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE`.
+
+현행 값은 상단 YAML의 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED`와 `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_CONTRACT`다.
+
+## 13. 정본 생명주기
 
 각 항목은 `KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST`로 분류한다.
 
