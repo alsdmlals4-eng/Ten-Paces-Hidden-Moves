@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "4b5967dee99592de4a09a611068344994e1ee026",
+  "decision_ids": [
+    "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE",
+    "TEN_MANUAL_UI_AI_ADOPTION_GATE",
+    "TEN_MANUAL_PRODUCT_VALIDATION_GATE"
+  ],
+  "approved_paths": [
+    "project.godot"
+  ],
+  "approval_source": "GITHUB_PR_LABEL_APPROVED_PROTECTED_CHANGE",
+  "approval_time": "2026-08-06T16:04:28+09:00",
+  "scope_summary": "Approve the exact project.godot runtime registration change already covered by the ten-manual runtime, UI/AI adoption, and automated product-validation Decisions. No other protected path is authorized."
+}
