@@ -29,6 +29,13 @@ class GutHiGodotAdoptionTests(unittest.TestCase):
         self.assertEqual(payload["higodot"]["version"], "3.1.2")
         self.assertEqual(payload["higodot"]["execution_authority"], "SOLE_GODOT_AUTHORING_AUTHORITY")
         self.assertEqual(payload["higodot"]["network_mode"], "LOOPBACK_ONLY")
+        self.assertEqual(payload["higodot"]["runtime_helper"]["autoload"], "_mcp_game_helper")
+        self.assertEqual(payload["higodot"]["runtime_helper"]["status"], "EXISTING_BASELINE_PRESENT")
+        self.assertTrue(payload["higodot"]["runtime_helper"]["product_export_dependency"])
+        self.assertEqual(
+            payload["higodot"]["runtime_helper"]["removal_state"],
+            "BLOCKED_PENDING_HIGODOT_L1_OR_L2_VALIDATION",
+        )
         self.assertFalse(payload["production_readiness"])
 
     def test_decision_records_approval_and_non_overclaiming(self) -> None:
@@ -40,6 +47,8 @@ class GutHiGodotAdoptionTests(unittest.TestCase):
             "HiGodot 3.1.2",
             "SOLE_GODOT_AUTHORING_AUTHORITY",
             "GDSCRIPT_TEST_EXECUTION_AND_JUNIT_ONLY",
+            "EXISTING_BASELINE_PRESENT",
+            "BLOCKED_PENDING_HIGODOT_L1_OR_L2_VALIDATION",
             "HUMAN_NOT_RUN",
             "ANDROID_NOT_RUN",
         ):
@@ -53,10 +62,16 @@ class GutHiGodotAdoptionTests(unittest.TestCase):
             payload["release_asset_sha256"],
             "60915d780e112aa25b142a596548786a0fb558f795278b9337722532e5dfdb33",
         )
-        self.assertEqual(payload["execution_authority"], "SOLE_GODOT_EXECUTION_AUTHORITY")
+        self.assertEqual(payload["execution_authority"], "SOLE_GODOT_AUTHORING_AUTHORITY")
         self.assertEqual(payload["network_mode"], "LOOPBACK_ONLY")
         self.assertEqual(payload["deepseek_profile"]["mcp_registration"], "ABSENT_REQUIRED")
         self.assertEqual(payload["mcp_host_registration"], "UNVERIFIED")
+        helper = payload["runtime_helper_boundary"]
+        self.assertEqual(helper["autoload"], "_mcp_game_helper")
+        self.assertEqual(helper["path"], "res://addons/godot_ai/runtime/game_helper.gd")
+        self.assertEqual(helper["status"], "EXISTING_BASELINE_PRESENT")
+        self.assertTrue(helper["included_by_current_product_export"])
+        self.assertEqual(helper["removal_state"], "BLOCKED_PENDING_HIGODOT_L1_OR_L2_VALIDATION")
         self.assertFalse(payload["production_readiness"])
 
     def test_project_keeps_higodot_enabled_and_gut_cli_only(self) -> None:
@@ -66,6 +81,7 @@ class GutHiGodotAdoptionTests(unittest.TestCase):
         enabled = match.group(1)
         self.assertIn('res://addons/godot_ai/plugin.cfg', enabled)
         self.assertNotIn('res://addons/gut/plugin.cfg', enabled)
+        self.assertIn('_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"', text)
 
     def test_gut_has_real_consumption_path_and_junit_output(self) -> None:
         config = json.loads(GUT_CONFIG.read_text(encoding="utf-8"))
@@ -97,11 +113,12 @@ class GutHiGodotAdoptionTests(unittest.TestCase):
         ):
             self.assertIn(marker, text)
 
-    def test_test_framework_is_excluded_from_product_export(self) -> None:
+    def test_product_export_excludes_gut_without_breaking_existing_higodot_autoload(self) -> None:
         text = EXPORT_PRESETS.read_text(encoding="utf-8")
         self.assertIn("addons/gut/**", text)
         self.assertIn("tests/gut/**", text)
         self.assertIn(".gutconfig.json", text)
+        self.assertNotIn("addons/godot_ai/**", text)
 
     def test_start_here_uses_current_platform_authority(self) -> None:
         text = START_HERE.read_text(encoding="utf-8")
