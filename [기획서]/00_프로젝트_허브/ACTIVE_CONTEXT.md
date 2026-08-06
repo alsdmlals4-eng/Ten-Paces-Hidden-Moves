@@ -6,6 +6,7 @@
 > 초기 무공서 10권 성장 권위: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`  
 > 초기 무공서 10권 런타임 기반: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`  
 > 초기 무공서 UI·AI 채택 권위: `TEN_MANUAL_UI_AI_ADOPTION_GATE`  
+> 초기 무공서 자동 제품 검증 권위: `TEN_MANUAL_PRODUCT_VALIDATION_GATE`  
 > 빌드 승인: `docs/implementation/BUILD_APPROVAL_2026-08-06.md`
 
 ## 현재 기준
@@ -21,29 +22,29 @@ active_planning_work_mode: BUILD
 active_planning_pr: 92
 active_planning_parent_pr: 91
 active_approval_count: 10/10
-active_decision_state: TEN_MANUAL_UI_AI_ADOPTED
+active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 engine: Godot 4.7
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 base_release_pinned: 9.4.3
-runtime_implementation: TEN_MANUAL_UI_AI_ADOPTION_PR92
-latest_combat_planning_runtime: UI_AI_ADOPTED
+runtime_implementation: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED_PR92
+latest_combat_planning_runtime: PRODUCT_VALIDATION_AUTOMATED
 runtime_ui_adoption: ADOPTED
 runtime_ai_adoption: ADOPTED_PUBLIC_STATE_LOADOUT_ONLY
 automated_validation: PASS
-windows_validation: NOT_RUN
+windows_validation: CI_EXPORT_RUNTIME_PASS_LOCAL_NOT_RUN
 human_validation: NOT_RUN
 balance_validation: NOT_RUN
-accessibility_validation: NOT_RUN
-performance_validation: NOT_RUN
+accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
+performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: TEN_MANUAL_PRODUCT_VALIDATION_GATE
+next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE
 ```
 
-현재 체크포인트는 `DRAFT_PR92_TEN_MANUAL_UI_AI_ADOPTION_10_OF_10`이다. PR #92는 PR #91 위에 쌓인 Draft이므로 PR #91보다 먼저 독립 병합·Draft 해제·종료하지 않는다. PR #91도 PR #89보다 먼저 독립 병합하지 않는다. PR #90은 `[대체됨]`, PR #85 HTML PoC는 `[보류]`다.
+현재 체크포인트는 `DRAFT_PR92_TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED_10_OF_10`이다. PR #92는 PR #91 위에 쌓인 Draft이므로 PR #91보다 먼저 독립 병합·Draft 해제·종료하지 않는다. PR #91도 PR #89보다 먼저 독립 병합하지 않는다. PR #90은 `[대체됨]`, PR #85 HTML PoC는 `[보류]`다.
 
-자동 검증 통과는 Windows·접근성·성능·사람 플레이·밸런스 승인을 대신하지 않는다.
+자동 제품 검증은 Windows CI export·runtime, 세 해상도, 합성 입력, 자동 접근성, 성능 baseline까지만 증명한다. 로컬 Windows 렌더·실물 입력·접근성 사용자·Release 성능·사람 플레이·밸런스 승인을 대신하지 않는다.
 
 ## 프로젝트 코어
 
@@ -165,6 +166,35 @@ GREEN 범위:
 - 기존 전투·관찰·등급·숙련·예산·Base 회귀.
 
 사람·밸런스·Windows·접근성·성능 검증은 `NOT_RUN`이다.
+
+## 자동 제품 검증 권위
+
+`TEN_MANUAL_PRODUCT_VALIDATION_GATE`은 UI·AI 채택 부모 권위 위에서 자동 제품 증거만 승인한다.
+
+```yaml
+product_gate: PARTIAL_AUTOMATED_COMPLETE
+evidence_source_head: 7494f50c48573168542781e007eeab6af11dda7d
+workflow_run_id: 31068098197
+windows_artifact_id: 8954602789
+windows_export: PASS
+windows_ci_runtime: PASS
+scenario_matrix: 50/50 PASS
+resolution_matrix: 1280x800,1440x900,1920x1080 PASS
+keyboard_synthetic: PASS
+mouse_synthetic: PASS
+accessibility_automated: PASS
+performance_baseline: CAPTURED
+windows_local_render: NOT_RUN
+gamepad_physical: NOT_RUN
+accessibility_user: NOT_RUN
+release_performance: NOT_RUN
+human_step14: NOT_RUN
+balance_validation: NOT_RUN
+```
+
+Windows CI 기준 runtime은 약 3018.23ms, peak working set은 188674048 bytes, exe+pck는 123037256 bytes였다. runner 또는 Godot 버전이 바뀌면 직접 baseline 비교를 금지한다.
+
+Google Sheet 정본 탭 `03_무공서_무학`은 최종 exact head 검증 뒤 같은 Decision/SHA로 갱신한다.
 
 ## 현재 위험과 다음 순서
 

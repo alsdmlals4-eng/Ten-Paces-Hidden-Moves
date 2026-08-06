@@ -5,7 +5,8 @@
 > 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`  
 > 성장 Decision: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`  
 > 런타임 기반 Decision: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`  
-> UI·AI 채택 Decision: `TEN_MANUAL_UI_AI_ADOPTION_GATE`
+> UI·AI 채택 Decision: `TEN_MANUAL_UI_AI_ADOPTION_GATE`  
+> 자동 제품 검증 Decision: `TEN_MANUAL_PRODUCT_VALIDATION_GATE`
 
 ## 1. 현재 단계
 
@@ -18,14 +19,14 @@ active_planning_work_mode: BUILD
 active_planning_pr: 92
 active_planning_parent_pr: 91
 active_approval_count: 10/10
-active_decision_state: TEN_MANUAL_UI_AI_ADOPTED
+active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED
 phase: VERTICAL_SLICE_APP_FLOW_PLANNING
 project_core: CORE_CONFIRMED
 primary_platform: PC
 future_platform: MOBILE_CONSIDERATION_ONLY
 base_release: 9.4.3
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: TEN_MANUAL_PRODUCT_VALIDATION_GATE
+next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE
 t1_greenlight: NOT_GRANTED
 ```
 
@@ -51,7 +52,7 @@ PR #92는 PR #91 위에 쌓인 Draft이며 독립 병합·Draft 해제 권한은
 - [x] 기존 준비·자동 배치·기본 행동·공용 절초 호환성.
 - [x] RED→GREEN과 exact-head 자동 검증.
 
-UI·AI 채택은 사람·밸런스·Windows·접근성·성능 승인 완료를 뜻하지 않는다.
+UI·AI 채택과 자동 제품 검증은 완료됐지만, 로컬 Windows 렌더·실물 입력·접근성 사용자·Release 성능·사람·밸런스 승인은 완료되지 않았다.
 
 ## 3. 현재 작업
 
@@ -81,6 +82,33 @@ TEN_MANUAL_PRODUCT_VALIDATION_GATE
 → 접근성·성능 검증
 → STEP 14 신규 플레이어 5명
 → 기술1/2 대체율·자원 포화·적 loadout 공정성·다단 가독성 측정
+→ 최종 밸런스 Decision
+→ NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT
+→ FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
+```
+
+### TEN_MANUAL_PRODUCT_VALIDATION_GATE — 자동 증거 완료
+
+- [x] 10권 × 3·5·7·9·10성 = 50개 제품 시나리오.
+- [x] Windows x86_64 Release export.
+- [x] export된 실행 파일 Windows CI runtime.
+- [x] 1280×800·1440×900·1920×1080.
+- [x] 키보드·마우스 합성 입력과 포커스·레이아웃 자동 접근성.
+- [x] 성능 baseline 캡처.
+- [x] SHA·artifact·사람 상태 과장 validator.
+- [ ] 로컬 Windows 렌더와 실물 입력.
+- [ ] 접근성 사용자 검증.
+- [ ] Release 성능 검증.
+- [ ] STEP 14 신규 플레이어 5명.
+
+증거: `7494f50c48573168542781e007eeab6af11dda7d` / workflow `31068098197` / artifact `8954602789`. 현재 판정은 `PARTIAL_AUTOMATED_COMPLETE`다.
+
+다음 작업:
+
+```text
+TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE
+→ TEN_MANUAL_STEP14_HUMAN_VALIDATION_GATE
+→ TEN_MANUAL_BALANCE_MEASUREMENT_GATE
 → 최종 밸런스 Decision
 → NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT
 → FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW

@@ -26,7 +26,7 @@ product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
 planning_work_mode: PLAN
-runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
+runtime_implementation: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED_PR92
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
 human_validation: NOT_RUN
 t1_greenlight: NOT_GRANTED
@@ -129,6 +129,19 @@ BUILD 진입 조건:
 - 고능력치가 잘못된 계획을 덮는 비율 검증.
 
 현재 판정: `NOT_GRANTED`.
+
+## 10A — 초기 10권 자동 제품 검증
+
+- [x] Windows x86_64 Release export.
+- [x] export된 실행 파일 Windows CI runtime.
+- [x] 50개 성취도 제품 시나리오.
+- [x] 1280×800·1440×900·1920×1080.
+- [x] 합성 키보드·마우스와 자동 접근성.
+- [x] 성능 baseline.
+- [ ] 로컬 Windows·실물 입력·접근성 사용자·Release 성능.
+- [ ] STEP 14 신규 플레이어 5명.
+
+판정: `PARTIAL_AUTOMATED_COMPLETE`; 증거 `7494f50c48573168542781e007eeab6af11dda7d` / `31068098197` / `8954602789`.
 
 ## 11. `[보류]`
 

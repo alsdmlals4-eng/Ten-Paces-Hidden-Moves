@@ -4,6 +4,7 @@
 - 현행 성장 권위: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`
 - 현행 런타임 기반 권위: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`
 - 현행 UI·AI 채택 권위: `TEN_MANUAL_UI_AI_ADOPTION_GATE`
+- 현행 자동 제품 검증 권위: `TEN_MANUAL_PRODUCT_VALIDATION_GATE`
 - 7성·9성 예산 부모: `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01`
 - 작업 운영: `TEN-DEC-20260805-WORK-GOVERNANCE-01`
 - 기준 main: `bbed0fd4d278ca0e0d52f4e6d9083aafa1997318`
@@ -29,6 +30,8 @@
 | 초기 10권 성장 Decision | `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01` |
 | 초기 10권 런타임 기반 Decision | `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE` |
 | 초기 10권 UI·AI Decision | `TEN_MANUAL_UI_AI_ADOPTION_GATE` |
+| 초기 10권 자동 제품 검증 Decision | `TEN_MANUAL_PRODUCT_VALIDATION_GATE` |
+| 자동 제품 검증 증거 | `docs/evidence/TEN_MANUAL_PRODUCT_VALIDATION_EVIDENCE.md` |
 | 런타임 빌드 승인 | `docs/implementation/BUILD_APPROVAL_2026-08-06.md` |
 | 런타임 manifest | `data/cards/martial_manual_cards.json` |
 | 무공서별 데이터 | `data/cards/martial_manuals/` |
@@ -60,10 +63,11 @@
 - `approved_20260805_observation_answer_leak_guardrails_contract.json`
 - `approved_20260805_grade_farming_guardrails_contract.json`
 - `approved_20260805_work_governance_contract.json`
+- `approved_20260806_ten_manual_product_validation_gate_contract.json`
 
 ## 제품 연결 권위 경계
 
-현재 상태는 `UI_AI_ADOPTED`다.
+현재 상태는 `PRODUCT_VALIDATION_AUTOMATED / PARTIAL_AUTOMATED_COMPLETE`다.
 
 보장:
 
@@ -83,7 +87,17 @@
 - 최종 loadout 획득·교체 경제.
 - 적별 최종 무공 배치와 난이도 곡선.
 - 최종 밸런스·연출·아트·음향.
-- Windows·접근성·성능·사람 플레이 승인.
+- 로컬 Windows 렌더·실물 입력·접근성 사용자·Release 성능·사람 플레이 승인.
+
+## 자동 제품 검증 증거 경계
+
+- evidence source head: `7494f50c48573168542781e007eeab6af11dda7d`.
+- workflow: `31068098197`.
+- Windows artifact: `8954602789`.
+- 50/50 성취도 시나리오, Windows export/runtime, 세 해상도, 합성 입력, 자동 접근성: PASS.
+- 성능 baseline: CAPTURED.
+- `windows_local_render`, `gamepad_physical`, `accessibility_user`, `release_performance`, `human_step14`: NOT_RUN.
+- 위 자동 증거는 T1·MVP·Draft 해제·병합 권한을 만들지 않는다.
 
 ## `[대체됨]`
 
@@ -148,13 +162,12 @@
 
 ## 다음 Gate
 
-`TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`와 `TEN_MANUAL_UI_AI_ADOPTION_GATE`는 완료됐다. 현재 승인 배치는 `10/10`이다.
+`TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`, `TEN_MANUAL_UI_AI_ADOPTION_GATE`, `TEN_MANUAL_PRODUCT_VALIDATION_GATE`의 자동 범위는 완료됐다. 현재 승인 배치는 `10/10`이다.
 
 ```text
-TEN_MANUAL_PRODUCT_VALIDATION_GATE
-→ Godot Windows 실제 실행
-→ 접근성·성능 검증
-→ STEP 14 사람·밸런스 검증
+TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE
+→ TEN_MANUAL_STEP14_HUMAN_VALIDATION_GATE
+→ TEN_MANUAL_BALANCE_MEASUREMENT_GATE
 → 적 loadout 공정성·기술 대체율·자원 포화 측정
 → 최종 밸런스 Decision
 → NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT

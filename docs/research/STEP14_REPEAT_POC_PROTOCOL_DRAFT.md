@@ -1,41 +1,41 @@
-# STEP 14 REPEAT_POC 플레이테스트 프로토콜 초안
+# STEP 14 REPEAT_POC 플레이테스트 프로토콜
 
-> 상태: `DEFERRED_BY_USER / DO_NOT_RUN`  
-> 현재 Goal 포함 여부: `EXCLUDED`  
-> Goal: `docs/decisions/2026-07-24_REPEAT_POC_CORE_VALIDATION_GOAL.md`
-
-## 보존 이유
-
-이 문서는 향후 사용자가 사람 테스트를 다시 활성화할 경우 질문·표본·판정 기준을 사전에 고정하기 위한 보류 자료다. 현재 구현 계획, 완료 기준, T1 게이트에서는 사용하지 않는다.
-
-## 미실행 상태
+> 상태: `REACTIVATED_BY_USER / READY_NOT_RUN`  
+> 제품 Gate: `TEN_MANUAL_PRODUCT_VALIDATION_GATE`  
+> 고정 자동 증거 build: `7494f50c48573168542781e007eeab6af11dda7d`
 
 ```yaml
+protocol_status: REACTIVATED_BY_USER
+build_commit: 7494f50c48573168542781e007eeab6af11dda7d
 participant_count: 0
-build_commit: NOT_LOCKED
-human_step14: DEFERRED_BY_USER
-human_validation: UNVERIFIED
-status: DO_NOT_RUN
+human_step14: NOT_RUN
+status: READY_NOT_RUN
 ```
 
-## 재활성화 조건
+## 실행 전제
 
-다음 조건이 모두 충족되고 사용자가 명시적으로 실행을 지시한 경우에만 새 버전으로 활성화한다.
+- 자동 제품 증거 workflow `31068098197`와 Windows artifact `8954602789`가 존재한다.
+- 참가자는 신규 플레이어 5명이다.
+- 첫 참가자 이후 질문·통과 기준을 변경하지 않는다.
+- 관찰 사실·참가자 발화 요약·진행자 개입·해석을 분리한다.
+- 자동검증이나 가상 응답을 사람 결과로 기록하지 않는다.
 
-1. A0~A3 기술 구현 완료.
-2. Governance·Godot·Windows 기술 검증 기록.
-3. 정확한 build SHA 고정.
-4. 표본·진행 방식·관찰 항목 재승인.
-
-## 보류된 검증 질문
+## 고정 질문
 
 - 3/3/4 묶음을 자기 말로 설명하는가?
-- 가설 선택이 실제 계획에 영향을 주는가?
 - 결정적 원인을 거리·방향·합·대응·순서·자원 중 하나로 설명하는가?
-- 라이벌의 반복 성향을 발견하는가?
+- 문파·무공서·별 성취도와 기술 해금을 이해하는가?
+- 상대의 반복 성향을 발견하는가?
 - 다음 묶음 또는 재도전에서 계획을 변경하는가?
-- 색·모션·음향 없이도 핵심 결과를 이해하는가?
+- 색·모션·음향 없이 핵심 결과를 이해하는가?
 
-## 증거 경계
+## 통과 신호
 
-자동 테스트와 개발자 검수는 위 질문에 답하지 않는다. 현재 결과는 모두 `UNVERIFIED`이며, 기술 구현 완료를 사람 검증 완료로 해석하지 않는다.
+- 4/5 이상 전투 완료.
+- 4/5 이상 3/3/4와 결정적 원인 설명.
+- 3/5 이상 상대 성향 발견.
+- 3/5 이상 계획 변경.
+- 3/5 이상 자발적 재도전 또는 다음 수 선택.
+- 핵심 결과를 막는 단일 정보 채널 장벽 0건.
+
+실행 전 결과는 모두 `NOT_RUN`이다.
