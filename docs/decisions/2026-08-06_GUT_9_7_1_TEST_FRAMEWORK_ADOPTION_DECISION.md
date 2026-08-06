@@ -9,6 +9,7 @@ approval_batch: 2/10
 baseline_main: 6e471b62a6236749312f31264428a46b97c8387a
 product_behavior_change: false
 next_product_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
+next_product_package_state: BLOCKED_BY_WORK_ENTRY_COMPLETENESS_GATE
 ```
 
 ## 결정
@@ -81,11 +82,50 @@ HiGodot은 Godot 저작 작업에서 적극 사용한다.
 6. DeepSeek 프로필에는 HiGodot MCP·credential을 등록하지 않는다.
 7. GUT가 Scene·Node·Resource를 수정하도록 사용하지 않는다.
 
-현재 저장소에서 HiGodot 플러그인은 활성 상태이며 GUT EditorPlugin은 활성화하지 않는다. GUT는 CLI·CI 테스트 실행에만 사용한다.
+현재 저장소에서 HiGodot EditorPlugin은 활성 상태이며 headless에서는 비활성화된다. GUT EditorPlugin은 활성화하지 않고 CLI·CI 테스트 실행에만 사용한다.
+
+## HiGodot runtime helper 경계
+
+적대적 재검토에서 `project.godot`의 기존 autoload를 확인했다.
+
+```yaml
+autoload: _mcp_game_helper
+path: res://addons/godot_ai/runtime/game_helper.gd
+status: EXISTING_BASELINE_PRESENT
+included_by_current_product_export: true
+product_authority: false
+removal_state: BLOCKED_PENDING_HIGODOT_L1_OR_L2_VALIDATION
+```
+
+EditorPlugin이 headless에서 비활성화되는 것과 runtime helper autoload가 시작되는 것은 서로 다른 상태다. 따라서 현재 `addons/godot_ai/**`를 export에서 단순 제외하면 autoload 참조가 깨질 수 있다.
+
+PR #104는 `product_behavior_change: false`인 거버넌스·도구 채택 PR이므로 보호 파일인 `project.godot`의 autoload를 임의 삭제하거나 addon 전체를 export 제외하지 않는다. 제품용 helper 제거·격리는 후속 패키지에서 HiGodot L1 또는 L2 저작 절차로 수행하고 다음을 모두 검증해야 한다.
+
+```text
+project setting 전후 diff
+→ Undo·save 증거
+→ clean import·startup
+→ Windows export·runtime
+→ Android export
+→ addons/godot_ai 제품 export 제외 가능 여부
+```
+
+이 경계가 닫히기 전 HiGodot은 제품 런타임 기능으로 승인된 것이 아니며 production readiness는 false다.
 
 ## 제품 빌드 경계
 
-`addons/gut/**`, `tests/gut/**`, `.gutconfig.json`은 Windows·Android 제품 export에서 제외한다. 테스트 프레임워크와 결과는 개발·CI 도구이며 런타임 제품 의존성이 아니다. HiGodot도 개발 편집기 도구로 취급하며 플랫폼 런타임 기능이나 전투 권위를 갖지 않는다.
+`addons/gut/**`, `tests/gut/**`, `.gutconfig.json`은 Windows·Android 제품 export에서 제외한다. 테스트 프레임워크와 결과는 개발·CI 도구이며 런타임 제품 의존성이 아니다.
+
+HiGodot EditorPlugin은 개발 저작 도구이고 플랫폼 런타임·전투 권위를 갖지 않는다. 다만 기존 `_mcp_game_helper` autoload 때문에 현재 addon 전체는 제품 export 의존 상태다. 이는 `EXISTING_BASELINE_PRESENT`로 기록하며 `BLOCKED_PENDING_HIGODOT_L1_OR_L2_VALIDATION` 전에는 제거 완료나 제품 격리 완료를 주장하지 않는다.
+
+## 작업 진입 Gate 연결
+
+`TEN-DEC-20260806-WORK-ENTRY-COMPLETENESS-GATE-01`에 따라 이 PR은 `GOVERNANCE_TOOLING` 범위에서 `NO_NEW_VISUAL_ASSET_REQUIRED`로 진행한다. 이 예외는 다음 제품 패키지를 열지 않는다.
+
+```yaml
+product_implementation_entry: BLOCKED
+reason: PLANNING_REVIEW_VISUAL_AND_AUTHORITY_GATES_OPEN
+```
 
 ## TDD RED 증거
 
@@ -113,13 +153,24 @@ observed: find_conflict_markers 미구현으로 회귀 테스트 import 실패
 related_pr_validation_failure: GUT MIT 라이선스의 Markdown 밑줄을 병합 충돌로 오인
 ```
 
-수정은 실제 `<<<<<<<` 시작 또는 `>>>>>>>` 종료와 conflict block 내부 `=======`만 검출하도록 구조화하며, 일반 Markdown 제목 밑줄은 허용한다.
+GUT JUnit RED:
+
+```yaml
+workflow_run: 31105746623
+observed:
+  - Godot 4.7.1 import PASS
+  - GUT 대표 테스트 2/2 PASS
+  - build/test-results 디렉터리 부재로 JUnit XML 생성 실패
+minimal_fix: mkdir -p build/test-results
+```
+
+충돌 마커 수정은 실제 `<<<<<<<` 시작 또는 `>>>>>>>` 종료와 conflict block 내부 `=======`만 검출하도록 구조화하며, 일반 Markdown 제목 밑줄은 허용한다.
 
 ## 검증·주장 상한
 
 GREEN에서 요구하는 자동 증거:
 
-- Python 채택·권위·충돌 마커 계약 PASS.
+- Python 채택·권위·충돌 마커·작업 진입 계약 PASS.
 - Godot 4.7.1 clean checkout import PASS.
 - 대표 GUT 테스트 PASS.
 - JUnit XML 생성·artifact 업로드 PASS.
@@ -132,6 +183,7 @@ local_windows_higodot_editor: HUMAN_NOT_RUN
 mcp_host_registration: UNVERIFIED
 higodot_l0_read: NOT_RUN
 higodot_l1_write_undo_save: NOT_RUN
+higodot_runtime_helper_product_separation: NOT_RUN
 physical_gamepad: NOT_RUN
 android_export_install_device_touch_lifecycle_performance: ANDROID_NOT_RUN
 accessibility_user: HUMAN_NOT_RUN
@@ -142,4 +194,4 @@ production_readiness: false
 
 ## 제거·rollback
 
-GUT 제거 시 `.gutconfig.json`, `tests/gut/**`, 전용 Workflow와 소비자를 먼저 제거하고 남은 참조가 없는지 확인한 뒤 `addons/gut/**`를 제거한다. HiGodot rollback은 exact v3.1.2 asset과 hash를 기준으로 복원하며 `project.godot` enabled plugin 상태를 함께 확인한다. 자동 업데이트나 floating latest는 허용하지 않는다.
+GUT 제거 시 `.gutconfig.json`, `tests/gut/**`, 전용 Workflow와 소비자를 먼저 제거하고 남은 참조가 없는지 확인한 뒤 `addons/gut/**`를 제거한다. HiGodot rollback은 exact v3.1.2 asset과 hash를 기준으로 복원하며 `project.godot` enabled plugin·autoload 상태를 함께 확인한다. 자동 업데이트나 floating latest는 허용하지 않는다.
