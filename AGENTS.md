@@ -44,14 +44,17 @@ product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
 planning_work_mode: PLAN
-runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
-latest_combat_planning_runtime: NOT_STARTED
-primary_platform: PC
-future_platform: MOBILE_CONSIDERATION_ONLY
+runtime_implementation: TEN_MANUAL_PRODUCT_VALIDATION_MERGED
+latest_combat_planning_runtime: PRODUCT_VALIDATION_AUTOMATED
+design_platforms: WINDOWS_ANDROID
+platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
+platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
+windows_runtime_evidence: CI_EXPORT_RUNTIME_PASS_LOCAL_NOT_RUN
+android_runtime_evidence: NOT_RUN
 base_release_pinned: 9.4.3
 ```
 
-활성 기획 상태는 Active Context와 GitHub PR metadata를 함께 읽는다. Draft Branch의 승인은 main 병합 완료가 아니며, 병합 후 main·Sheet 재조회 전에는 `SYNCED_TO_MAIN`으로 표시하지 않는다.
+활성 기획 상태는 Active Context와 GitHub PR metadata를 함께 읽는다. Branch의 승인이나 PR 통과는 main 병합 완료가 아니며, 병합 후 main·Sheet 재조회 전에는 `SYNCED_TO_MAIN`으로 표시하지 않는다.
 
 ## 4. Work Mode·Skill Mode
 
@@ -102,7 +105,18 @@ Decision: `TEN-DEC-20260801-SITUATION-SCREEN-01`.
 - P0 Autoload 후보는 `RunSession`, `SaveService`.
 - `CombatState`는 Combat Scene 소유.
 
-## 8. 정본·Sheet
+## 8. 플랫폼 구조 계약
+
+Decision: `TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`.
+
+- Windows와 Android를 기본 설계 대상으로 유지한다.
+- 전투 규칙·AI·콘텐츠·ID·수치·저장 Schema는 하나의 공유 코어를 사용한다.
+- 플랫폼 차이는 입력, 반응형 UI·안전영역, 앱 생명주기·뒤로가기, 플랫폼 서비스, 품질·성능·export adapter에 한정한다.
+- 핵심 규칙·데이터·저장 의미의 동등성을 요구하며 픽셀 동일 UI나 동시 출시를 요구하지 않는다.
+- Android export·설치·실기기·터치·뒤로가기·pause/resume·suspend/restore·저장·성능 증거가 없으면 Android 런타임 지원 완료를 주장하지 않는다.
+- 플랫폼 편의를 이유로 10칸·3/3/4·비공개 계획·순차 해결·복기 코어를 분기하지 않는다.
+
+## 9. 정본·Sheet
 
 - 한 질문에는 현재 책임 원본 하나만 둔다.
 - 승인 Decision은 같은 ID로 Decision 문서, 분야 정본, planning JSON, Google Sheets에 연결한다.
@@ -110,7 +124,7 @@ Decision: `TEN-DEC-20260801-SITUATION-SCREEN-01`.
 - Sheet 전용 변경은 `PROPOSED_SHEET_CHANGE`로 보존한다.
 - `docs/planning-data/*.json`은 직접 런타임 입력이 아니다.
 
-## 9. 구현·검증
+## 10. 구현·검증
 
 제품 보호 경로:
 
@@ -128,9 +142,9 @@ project.godot
 - 최소 수정 뒤 focused test와 전체 회귀를 실행한다.
 - 동일 HEAD, 필수 검사, P0/P1 없음, 미해결 thread 0 뒤 병합한다.
 - 실행하지 않은 검증은 PASS로 표시하지 않는다.
-- 자동 검증은 Windows 실제 Godot·실물 게임패드·접근성·성능·사람 플레이를 대체하지 않는다.
+- 자동 검증은 로컬 Windows 실제 렌더·실물 게임패드·실제 Android 기기·접근성 사용자·Release 성능·사람 플레이를 대체하지 않는다.
 
-## 10. 적대적 검토
+## 11. 적대적 검토
 
 ```text
 review-scope-map
@@ -144,7 +158,7 @@ review-scope-map
 
 변경 파일뿐 아니라 정본, 활성 소비자, 인접 시스템, untouched 파일, 테스트, Sheet, 파생본을 확인한다.
 
-## 11. 다음 패키지
+## 12. 다음 패키지
 
 `VERTICAL_SLICE_APP_FLOW_SHELL`
 
@@ -159,22 +173,23 @@ App Root
 
 후보 15명 전체, 최종 아트·오디오, 주요 비무 6~10, 천하제일인은 제외한다.
 
-## 12. 역사·호환
+## 13. 역사·호환
 
 - PR #7과 Issue #13은 T0 `STEP 0~13` 구현 계보다.
 - PR #45는 v6 계획 통합 이력이다.
+- PR #92는 초기 10권 런타임·UI/AI·자동 제품 검증의 main 병합 계보다.
 - 과거 Base SHA `c987647d01ad2baa028a16e03d85ddfc1572a727`은 역사 회귀 증거다.
 - 현재 Base 권한은 `skills/PROJECT_BASE_ADAPTER.json`의 Base v9.4.3 payload/evidence/finalization pin이다.
 - Base release Commit은 운영 감사 증거이며 프로젝트 코어·제품 구현 권한을 변경하지 않는다.
 
-## 13. `[보류]`
+## 14. `[보류]`
 
 - 16권 절초 개별 설계.
 - 주요 비무 6~10 런타임.
 - 천하제일인·비동기 기능.
 - 최종 아트·오디오 폴리싱.
 
-## 14. 플랫폼 출시·에셋 권리
+## 15. 플랫폼 출시·에셋 권리
 
 출시·외부 자산·참조 기반 제작 작업은 다음 프로젝트 증거를 추가로 읽는다.
 
@@ -182,6 +197,6 @@ App Root
 - `docs/ASSET_RIGHTS_AND_PROVENANCE_RECORD.md`
 - `docs/GAME_RELEASE_COMPLIANCE_EVIDENCE_PACK.md`
 
-Steam·STOVE 후보 출시에서는 실제 build·store·trailer·questionnaire 일치와 shipping·marketing 자산 권리를 함께 검토한다. 원본 에셋을 조금 수정하거나 AI로 변환했다는 이유만으로 독립 자산으로 보지 않는다. 기능·구조·정보 위계·일반 제작 원리만 참조하고 `reference_brief`, `forbidden_expression`, 별도 `final_asset_record`, 유사성 검토를 남긴다.
+Steam·STOVE·Google Play 후보 출시에서는 실제 build·store·trailer·questionnaire 일치와 shipping·marketing 자산 권리를 함께 검토한다. 원본 에셋을 조금 수정하거나 AI로 변환했다는 이유만으로 독립 자산으로 보지 않는다. 기능·구조·정보 위계·일반 제작 원리만 참조하고 `reference_brief`, `forbidden_expression`, 별도 `final_asset_record`, 유사성 검토를 남긴다.
 
 필수 권리·계약·약관 버전·플랫폼 답변이 미확인이거나 실제 사용과 증빙이 다르면 `RELEASE_BLOCKED_UNVERIFIED`다. 자동 테스트와 Template 존재는 실제 자산 감사, 법률 검토, 플랫폼 제출 또는 최종 등급을 대체하지 않는다.
