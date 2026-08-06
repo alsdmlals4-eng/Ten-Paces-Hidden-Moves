@@ -56,19 +56,23 @@ class WorkEntryCompletenessGateTests(unittest.TestCase):
         self.assertEqual(snapshot["product_implementation_entry"], "BLOCKED")
         self.assertNotIn(snapshot["product_implementation_entry"], {"READY", "AWAITING_IMPLEMENTATION"})
 
-    def test_operating_state_blocks_product_implementation(self) -> None:
+    def test_operating_state_remains_adapter_owned_while_gate_blocks_entry(self) -> None:
         state = json.loads(STATE.read_text(encoding="utf-8"))
-        gate = state["work_entry_completeness_gate"]
-        self.assertEqual(gate["decision_id"], DECISION_ID)
-        self.assertEqual(gate["product_implementation_entry"], "BLOCKED")
-        self.assertEqual(gate["reason"], "PLANNING_REVIEW_VISUAL_AND_AUTHORITY_GATES_OPEN")
-        self.assertEqual(state["next_package_state"], "BLOCKED_BY_WORK_ENTRY_COMPLETENESS_GATE")
-        self.assertEqual(state["active_tooling_pr"], "104")
+        self.assertEqual(state["authority"], "CURRENT_OPERATING_STATE")
+        self.assertEqual(state["source_decision"], "TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01")
         self.assertEqual(state["active_planning_pr"], "NONE")
+        self.assertEqual(state["next_package"], "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION")
+        self.assertNotIn("next_package_state", state)
+        self.assertNotIn("work_entry_completeness_gate", state)
+
+        gate = json.loads(CONTRACT.read_text(encoding="utf-8"))["product_implementation"]
+        self.assertEqual(gate["entry_state"], "BLOCKED")
+        self.assertEqual(gate["reason"], "PLANNING_REVIEW_VISUAL_AND_AUTHORITY_GATES_OPEN")
 
     def test_active_context_does_not_claim_unqualified_readiness(self) -> None:
         text = ACTIVE_CONTEXT.read_text(encoding="utf-8")
         self.assertIn(DECISION_ID, text)
+        self.assertIn("active_tooling_pr: 104", text)
         self.assertIn("product_implementation_entry: BLOCKED", text)
         self.assertIn("NO_NEW_VISUAL_ASSET_REQUIRED", text)
         self.assertNotIn("next_package_state: READY", text)
