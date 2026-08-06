@@ -128,13 +128,16 @@ class ProjectGovernanceTests(unittest.TestCase):
 
         active_relative = "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
         active_text = (ROOT / active_relative).read_text(encoding="utf-8")
+        current_state = json.loads(
+            (ROOT / "docs/planning-data/current_operating_state.json").read_text(encoding="utf-8")
+        )
         current_mutable_tokens = [
-            "active_planning_pr: 102",
-            "active_approval_count: 1/10",
-            "active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED",
-            "next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION",
-            "next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE",
-            "TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01",
+            f"active_planning_pr: {current_state['active_planning_pr']}",
+            f"active_approval_count: {current_state['active_approval_count']}",
+            f"active_decision_state: {current_state['active_decision_state']}",
+            f"next_package: {current_state['next_package']}",
+            f"next_planning_decision: {current_state['next_planning_decision']}",
+            current_state["source_decision"],
         ]
         for token in current_mutable_tokens:
             self.assertIn(token, active_text, f"{active_relative} is missing mutable state {token!r}")

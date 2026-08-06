@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import unittest
 from pathlib import Path
 
@@ -7,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 ACTIVE = ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
 ROADMAP = ROOT / "docs/04_ROADMAP.md"
+CURRENT_STATE = ROOT / "docs/planning-data/current_operating_state.json"
 PLATFORM = ROOT / "docs/decisions/2026-08-06_WINDOWS_ANDROID_DUAL_TARGET_DECISION.md"
 PRODUCT_MERGE = "a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90"
 EVIDENCE_HEAD = "0a8bf577b936ddac5cb7130a0cc58e519ea6eff6"
@@ -27,17 +29,18 @@ class ProductPostMergeAndPlatformCanonTests(unittest.TestCase):
         for token in product_authority:
             self.assertIn(token, text)
 
-        current_planning = (
-            "active_planning_pr: 102",
-            "active_planning_parent_pr: NONE",
-            "active_planning_work_mode: REVIEW",
-            "active_approval_count: 1/10",
-            "active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED",
-            f"platform_adapter_decision: {ADAPTER_DECISION}",
-            "next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE",
-        )
-        for token in current_planning:
-            self.assertIn(token, text)
+        current = json.loads(CURRENT_STATE.read_text(encoding="utf-8"))
+        for key in (
+            "active_planning_work_mode",
+            "active_planning_pr",
+            "active_planning_parent_pr",
+            "active_approval_count",
+            "active_decision_state",
+            "next_package",
+            "next_planning_decision",
+        ):
+            self.assertIn(f"{key}: {current[key]}", text)
+        self.assertIn(f"platform_adapter_decision: {ADAPTER_DECISION}", text)
 
         forbidden = (
             "DRAFT_PR92_TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED_10_OF_10",
@@ -52,14 +55,20 @@ class ProductPostMergeAndPlatformCanonTests(unittest.TestCase):
             f"product_implementation_merge_commit: {PRODUCT_MERGE}",
             "merged_product_pr: 92",
             f"증거: `{EVIDENCE_HEAD}` / workflow `31074079068` / artifact `8956790279`",
-            "active_planning_pr: 102",
-            "active_approval_count: 1/10",
-            "active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED",
-            "next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION",
-            "next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE",
         )
         for token in required:
             self.assertIn(token, text)
+        current = json.loads(CURRENT_STATE.read_text(encoding="utf-8"))
+        for key in (
+            "active_planning_work_mode",
+            "active_planning_pr",
+            "active_planning_parent_pr",
+            "active_approval_count",
+            "active_decision_state",
+            "next_package",
+            "next_planning_decision",
+        ):
+            self.assertIn(f"{key}: {current[key]}", text)
         for stale in (
             "7494f50c48573168542781e007eeab6af11dda7d",
             "31068098197",

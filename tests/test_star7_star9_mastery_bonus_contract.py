@@ -147,14 +147,17 @@ class Star7Star9MasteryBonusContractTest(unittest.TestCase):
         roadmap = (ROOT / "docs/04_ROADMAP.md").read_text(encoding="utf-8")
         mastery = (ROOT / "docs/06_STARTING_FACTION_MASTERY_DATA.md").read_text(encoding="utf-8")
 
+        current_state = json.loads(
+            (ROOT / "docs/planning-data/current_operating_state.json").read_text(encoding="utf-8")
+        )
         for current in [active, roadmap]:
             self.assertIn("TEN_MANUAL_UI_AI_ADOPTION_GATE", current)
             self.assertIn("TEN_MANUAL_PRODUCT_VALIDATION_GATE", current)
             self.assertIn("merged_product_pr: 92", current)
             self.assertIn("product_implementation_merge_commit: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90", current)
-            self.assertIn("active_approval_count: 1/10", current)
-            self.assertIn("active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED", current)
-            self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current)
+            self.assertIn(f"active_approval_count: {current_state['active_approval_count']}", current)
+            self.assertIn(f"active_decision_state: {current_state['active_decision_state']}", current)
+            self.assertIn(f"next_planning_decision: {current_state['next_planning_decision']}", current)
 
         self.assertIn("runtime_implementation: TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92", active)
         self.assertIn("product_gate: PARTIAL_AUTOMATED_COMPLETE", active)
