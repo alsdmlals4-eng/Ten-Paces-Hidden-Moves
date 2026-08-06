@@ -7,6 +7,16 @@
   "active_planning_parent_pr": "NONE",
   "active_approval_count": "1/10",
   "active_decision_state": "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED",
+  "active_tooling_pr": "104",
+  "active_tooling_package": "GUT_9_7_1_HIGODOT_3_1_2_ADOPTION",
   "next_package": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION",
-  "next_planning_decision": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE"
+  "next_package_state": "BLOCKED_BY_WORK_ENTRY_COMPLETENESS_GATE",
+  "next_planning_decision": "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE",
+  "work_entry_completeness_gate": {
+    "decision_id": "TEN-DEC-20260806-WORK-ENTRY-COMPLETENESS-GATE-01",
+    "product_implementation_entry": "BLOCKED",
+    "reason": "PLANNING_REVIEW_VISUAL_AND_AUTHORITY_GATES_OPEN",
+    "governance_tooling_entry": "ALLOWED_WITH_BOUNDED_SCOPE",
+    "visual_disposition": "NO_NEW_VISUAL_ASSET_REQUIRED"
+  }
 }
