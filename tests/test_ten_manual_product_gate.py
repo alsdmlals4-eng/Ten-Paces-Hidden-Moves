@@ -112,6 +112,35 @@ class TenManualProductGateTests(unittest.TestCase):
         )
         self.assertEqual([], errors)
 
+    def test_canonical_product_evidence_matches_latest_verified_artifact(self) -> None:
+        canonical_paths = (
+            ROOT / "docs/decisions/2026-08-06_TEN_MANUAL_PRODUCT_VALIDATION_GATE.md",
+            ROOT / "docs/evidence/TEN_MANUAL_PRODUCT_VALIDATION_EVIDENCE.md",
+            ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+        )
+        required_tokens = (
+            "0a8bf577b936ddac5cb7130a0cc58e519ea6eff6",
+            "31074079068",
+            "8956790279",
+            "2344.67",
+            "188571648",
+            "123037256",
+        )
+        stale_tokens = (
+            "7494f50c48573168542781e007eeab6af11dda7d",
+            "31068098197",
+            "8954602789",
+            "3018.23",
+            "188674048",
+        )
+
+        for path in canonical_paths:
+            text = path.read_text(encoding="utf-8")
+            for token in required_tokens:
+                self.assertIn(token, text, f"{path} missing {token}")
+            for token in stale_tokens:
+                self.assertNotIn(token, text, f"{path} retains stale {token}")
+
 
 if __name__ == "__main__":
     unittest.main()
