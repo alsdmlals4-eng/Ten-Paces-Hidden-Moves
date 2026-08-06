@@ -11,14 +11,16 @@ product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
-active_planning_pr: 102
+active_planning_pr: NONE
 active_planning_parent_pr: NONE
 active_approval_count: 1/10
-active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED
+active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED
 product_implementation_merge_commit: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90
 merged_product_pr: 92
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
 platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
+platform_adapter_merge_commit: 023385d372d127044d48afcb50e6f232ab9ffaa1
+merged_platform_adapter_pr: 102
 design_platforms: WINDOWS_ANDROID
 platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
 windows_validation: CI_EXPORT_RUNTIME_PASS_LOCAL_NOT_RUN
@@ -36,7 +38,9 @@ base_release_pinned: 9.4.3
 - `TEN_MANUAL_PRODUCT_VALIDATION_GATE`: 자동 증거 `PARTIAL_AUTOMATED_COMPLETE`, PR #92 main 병합.
 - Windows CI export·runtime, 50개 성취도 시나리오, 3개 해상도, 합성 입력, 자동 접근성, 성능 baseline: PASS/CAPTURED.
 
-## Adapter Architecture 승인
+## Adapter Architecture 병합 완료
+
+- PR #102 main 병합 Commit: `023385d372d127044d48afcb50e6f232ab9ffaa1`.
 
 - 공유 코어: 전투·AI·콘텐츠 ID·수치·저장·결정적 해결.
 - Adapter: 입력·반응형 UI·앱 생명주기·플랫폼 서비스·품질·export.

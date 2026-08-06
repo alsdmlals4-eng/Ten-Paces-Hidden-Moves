@@ -15,21 +15,23 @@
 ```yaml
 project: 십보강호: 숨은 수의 비무
 repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
-merged_planning_checkpoint: 7d20c2c9d5d1c92b80d32dc9bf25bd833a48ad58
-merged_pr_lineage: 84,86,87,88,89,91,92,100,101
+merged_planning_checkpoint: 023385d372d127044d48afcb50e6f232ab9ffaa1
+merged_pr_lineage: 84,86,87,88,89,91,92,100,101,102
 product_implementation_merge_commit: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90
 merged_product_pr: 92
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
-active_planning_pr: 102
+active_planning_pr: NONE
 active_planning_parent_pr: NONE
 active_approval_count: 1/10
-active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED
+active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 evidence_source_head: 0a8bf577b936ddac5cb7130a0cc58e519ea6eff6
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
 platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
+platform_adapter_merge_commit: 023385d372d127044d48afcb50e6f232ab9ffaa1
+merged_platform_adapter_pr: 102
 design_platforms: WINDOWS_ANDROID
 platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
 windows_validation: CI_EXPORT_RUNTIME_PASS_LOCAL_NOT_RUN
@@ -50,7 +52,7 @@ next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
 next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 ```
 
-현재 체크포인트는 `MERGED_PR92_TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED_10_OF_10`이다. PR #89·#91·#92 계보는 main에 병합됐고, 제품 구현 병합 Commit은 `a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90`이다. PR #90은 `[대체됨]`, PR #85 HTML PoC는 `[보류]`다.
+현재 기획 체크포인트는 `MERGED_PR102_WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_1_OF_10`이다. PR #89·#91·#92·#100·#101·#102 계보는 main에 병합됐고, 플랫폼 Adapter 아키텍처 병합 Commit은 `023385d372d127044d48afcb50e6f232ab9ffaa1`다. 제품 구현 병합 Commit `a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90`과 자동 제품 증거 HEAD는 별도 권위로 유지한다. PR #90은 `[대체됨]`, PR #85 HTML PoC는 `[보류]`다.
 
 자동 제품 검증은 Windows CI export·runtime, 세 해상도, 합성 입력, 자동 접근성, 성능 baseline까지만 증명한다. 로컬 Windows 렌더·실물 입력·접근성 사용자·Release 성능·사람 플레이·실제 Android·밸런스 승인을 대신하지 않는다.
 
@@ -284,7 +286,7 @@ WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 - 제품 병합 전 상태: `active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED`.
 - 제품 병합 전 다음 Gate: `next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE`.
 
-현행 운영 값은 문서 상단 YAML의 `active_planning_pr: 102`, `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED`, `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE`를 사용한다. 제품 병합 권위는 별도 `merged_product_pr: 92`와 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`로 유지한다.
+현행 운영 값은 문서 상단 YAML의 `active_planning_pr: NONE`, `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED`, `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE`를 사용한다. 제품 병합 권위는 별도 `merged_product_pr: 92`와 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`로 유지한다.
 
 ## 정본 동기화 원칙
 

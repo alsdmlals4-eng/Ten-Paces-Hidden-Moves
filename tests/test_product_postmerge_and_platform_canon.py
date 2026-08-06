@@ -28,11 +28,11 @@ class ProductPostMergeAndPlatformCanonTests(unittest.TestCase):
             self.assertIn(token, text)
 
         current_planning = (
-            "active_planning_pr: 102",
+            "active_planning_pr: NONE",
             "active_planning_parent_pr: NONE",
             "active_planning_work_mode: REVIEW",
             "active_approval_count: 1/10",
-            "active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED",
+            "active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED",
             f"platform_adapter_decision: {ADAPTER_DECISION}",
             "next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE",
         )
@@ -52,9 +52,9 @@ class ProductPostMergeAndPlatformCanonTests(unittest.TestCase):
             f"product_implementation_merge_commit: {PRODUCT_MERGE}",
             "merged_product_pr: 92",
             f"증거: `{EVIDENCE_HEAD}` / workflow `31074079068` / artifact `8956790279`",
-            "active_planning_pr: 102",
+            "active_planning_pr: NONE",
             "active_approval_count: 1/10",
-            "active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED",
+            "active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED",
             "next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION",
             "next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE",
         )

@@ -13,21 +13,23 @@
 ## 1. 현재 단계
 
 ```yaml
-merged_planning_checkpoint: 7d20c2c9d5d1c92b80d32dc9bf25bd833a48ad58
-merged_pr_lineage: 84,86,87,88,89,91,92,100,101
+merged_planning_checkpoint: 023385d372d127044d48afcb50e6f232ab9ffaa1
+merged_pr_lineage: 84,86,87,88,89,91,92,100,101,102
 product_implementation_merge_commit: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90
 merged_product_pr: 92
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
-active_planning_pr: 102
+active_planning_pr: NONE
 active_planning_parent_pr: NONE
 active_approval_count: 1/10
-active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED
+active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED
 phase: VERTICAL_SLICE_APP_FLOW_PLANNING
 project_core: CORE_CONFIRMED
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
 platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
+platform_adapter_merge_commit: 023385d372d127044d48afcb50e6f232ab9ffaa1
+merged_platform_adapter_pr: 102
 design_platforms: WINDOWS_ANDROID
 platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
 windows_validation: CI_EXPORT_RUNTIME_PASS_LOCAL_NOT_RUN
@@ -38,7 +40,7 @@ next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 t1_greenlight: NOT_GRANTED
 ```
 
-PR #89·#91·#92 제품 계보와 PR #101 post-merge 플랫폼 정본은 main에 병합됐다. 제품 구현 병합 Commit은 `a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90`이며, PR #90은 `[대체됨]`, PR #85는 `[보류]`다.
+PR #89·#91·#92 제품 계보, PR #101 post-merge 플랫폼 정본, PR #102 Adapter Architecture는 main에 병합됐다. PR #102 병합 Commit은 `023385d372d127044d48afcb50e6f232ab9ffaa1`다. 제품 구현 병합 Commit은 `a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90`이며, PR #90은 `[대체됨]`, PR #85는 `[보류]`다.
 
 ## 2. 프로젝트 코어 확정
 
@@ -262,7 +264,7 @@ T1 진입에는 기획·검토·이미지 완료, 로컬 Windows·실제 Android
 - `active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED`.
 - `next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE`.
 
-현행 값은 상단 YAML의 `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED`와 `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE`다. 제품 병합 권위는 `merged_product_pr: 92`와 제품 구현 병합 Commit으로 별도 보존한다.
+현행 값은 상단 YAML의 `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED`와 `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE`다. 제품 병합 권위는 `merged_product_pr: 92`와 제품 구현 병합 Commit으로 별도 보존한다.
 
 ## 13. 정본 생명주기
 

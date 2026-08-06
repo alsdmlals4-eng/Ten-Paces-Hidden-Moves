@@ -153,7 +153,7 @@ class Star7Star9MasteryBonusContractTest(unittest.TestCase):
             self.assertIn("merged_product_pr: 92", current)
             self.assertIn("product_implementation_merge_commit: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90", current)
             self.assertIn("active_approval_count: 1/10", current)
-            self.assertIn("active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED", current)
+            self.assertIn("active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED", current)
             self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current)
 
         self.assertIn("runtime_implementation: TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92", active)

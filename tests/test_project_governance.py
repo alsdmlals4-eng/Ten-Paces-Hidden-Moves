@@ -129,9 +129,9 @@ class ProjectGovernanceTests(unittest.TestCase):
         active_relative = "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
         active_text = (ROOT / active_relative).read_text(encoding="utf-8")
         current_mutable_tokens = [
-            "active_planning_pr: 102",
+            "active_planning_pr: NONE",
             "active_approval_count: 1/10",
-            "active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED",
+            "active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED",
             "next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION",
             "next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE",
             "TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01",
