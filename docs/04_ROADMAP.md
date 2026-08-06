@@ -11,15 +11,15 @@
 ## 1. 현재 단계
 
 ```yaml
-merged_planning_checkpoint: 0ba841ff2e62b2f716466356dd9e7ffcf587d150
-merged_pr_lineage: 84,86,87
+merged_planning_checkpoint: bbed0fd4d278ca0e0d52f4e6d9083aafa1997318
+merged_pr_lineage: 84,86,87,88
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
 active_planning_work_mode: PLAN
-active_planning_pr: NONE
+active_planning_pr: 89
 active_planning_parent_pr: NONE
 active_approval_count: 7/10
-active_decision_state: MERGED_CANON_CHECKPOINT
+active_decision_state: APPROVED_DRAFT_RESOURCE_SATURATION_MITIGATION
 phase: VERTICAL_SLICE_APP_FLOW_PLANNING
 project_core: CORE_CONFIRMED
 primary_platform: PC
@@ -29,11 +29,11 @@ latest_combat_planning:
   authority_status: CURRENT_APPROVED_PLANNING
   implementation_status: NOT_STARTED
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: STAR9_PUBLIC_READ_BRANCH_TEMPLATE
+next_planning_decision: CONDITION_CALIBRATION_RISK
 t1_greenlight: NOT_GRANTED
 ```
 
-PR #84·#86·#87은 병합 완료된 역사 계보다. 현행 권위는 main의 Decision·approved contract·책임 원본이다. PR #85 HTML PoC는 `[보류]`로 닫혔으며 별도 재개 승인 전 병합·제품 참조를 금지한다.
+PR #84·#86·#87·#88은 병합 완료된 역사 계보다. 자원 포화 완화는 Draft PR #89에서 검증 중이며 병합 전에는 main 런타임 권위가 아니다. PR #85 HTML PoC는 `[보류]`로 닫혔으며 별도 재개 승인 전 병합·제품 참조를 금지한다.
 
 ## 2. 프로젝트 코어 확정
 
@@ -66,27 +66,30 @@ PR #84·#86·#87은 병합 완료된 역사 계보다. 현행 권위는 main의 
 
 ## 3. 병합 후 적대적 검토 결론
 
-현재 구조는 핵심 재미와 맞는다. 즉시 수치나 전투 골격을 교체하기보다 다음 위험을 실측하는 것이 우선이다.
+현재 구조는 핵심 재미와 맞는다. 즉시 수치나 전투 골격을 교체하기보다 다음 위험을 측정 가능한 계약으로 하나씩 완화한다.
 
 | 위험 | 왜 핵심 재미를 위협하는가 | 현재 조치 |
 |---|---|---|
-| `RESOURCE_SATURATION_RISK` | 묶음마다 3자원+1이 희소성과 명상·준비 가치를 약화할 수 있음 | 규칙 유지·상한률/낭비율/선택률 실측 |
-| `CONDITION_CALIBRATION_RISK` | 조건 계수가 실제 성공률과 다르면 무료 고효율 또는 함정이 됨 | 기술별 성공률과 선언 난도 범위 비교 |
-| `WRONG_PLAN_RESCUE_RISK` | 높은 능력치가 잘못된 거리·순서를 구제하면 계획 재미가 수치에 대체됨 | 올바른 읽기와 잘못된 읽기의 성과 차이 측정 |
-| `OBSERVATION_ANSWER_LEAK_RISK` | 관찰이 정답을 직접 주면 추론 긴장이 사라짐 | 계획 변경률·추론 설명률·금지 정보 노출 검사 |
+| `RESOURCE_SATURATION_RISK` | 자동 회복이 희소성과 명상·준비 가치를 약화할 수 있음 | 묶음 회복을 기력1·내력0·절초기세1로 개정; 사람 측정 대기 |
+| `CONDITION_CALIBRATION_RISK` | 조건 계수가 실제 성공률과 다르면 무료 고효율 또는 함정이 됨 | 다음 Decision에서 성공률 구간·유효 시도·재분류 Gate 확정 |
+| `WRONG_PLAN_RESCUE_RISK` | 높은 능력치가 잘못된 거리·순서를 구제하면 계획 재미가 수치에 대체됨 | 올바른 읽기와 잘못된 읽기의 성과 차이 측정 예정 |
+| `OBSERVATION_ANSWER_LEAK_RISK` | 관찰이 정답을 직접 주면 추론 긴장이 사라짐 | 계획 변경률·추론 설명률·금지 정보 노출 검사 예정 |
 | `GRADE_FARMING_RISK` | 등급 산식 미확정으로 합·회피·절초 반복 파밍 가능 | 산식 Decision 전 제품 권위 금지 |
 | `RUNTIME_AUTHORITY_GAP` | 최신 기획이 현재 런타임에 미구현 | Build 승인 전 구현 완료 주장 금지 |
 
-실측 전 자원 회복량·조건 계수·능력치 배수를 자동 조정하지 않는다.
+실측 전 자원 비용·조건 계수·능력치 배수를 자동 조정하지 않는다.
 
 ## 4. 현재 작업 순서
 
 ```text
-9성 공개 정보 자동 분기 공통 템플릿
+조건 난도·실제 성공률 보정 계약
+→ 잘못된 계획 구제 위험
+→ 관찰 정답 유출 위험
+→ 전투 종료 등급 파밍 위험
+→ 9성 공개 정보 자동 분기 공통 템플릿
 → 여섯 개별 9성 분기
 → 여섯 10성 고유 절초 효과·슬롯·자원·틱 예산
 → 비스탯 노드 기대가치·배치·가중치
-→ 전투 종료 5지표 등급 산식·파밍 방지
 → 전체 핵심 재미·정본 적대적 검토
 → [기획 완료]
 → 필요한 이미지·애니메이션·HX 생성·검수·승인
@@ -95,7 +98,7 @@ PR #84·#86·#87은 병합 완료된 역사 계보다. 현행 권위는 main의 
 → Godot·Windows·접근성·성능·사람 검증
 ```
 
-기존처럼 여섯 9성 분기를 바로 독립 작성하지 않는다. 먼저 공통 trigger·실패 경로·가격·복기·대응 수단을 고정해 분기 간 설계 편차와 숨은 정보 참조를 막는다.
+기존처럼 여섯 9성 분기를 바로 독립 작성하지 않는다. 위험 계약과 공통 trigger·실패 경로·가격·복기·대응 수단을 먼저 고정해 분기 간 설계 편차와 숨은 정보 참조를 막는다.
 
 현재 제외:
 
@@ -109,7 +112,15 @@ PR #84·#86·#87은 병합 완료된 역사 계보다. 현행 권위는 main의 
 
 ## 5. 남은 기획 Gate
 
-### 5.1 9성 공통 템플릿
+### 5.1 조건·계획 위험 Gate
+
+- [x] 자원 포화: 묶음 전환 `기력1·내력0·절초기세1`, 사람 측정 대기.
+- [ ] 조건 난도: 성공률 구간·유효 시도 분모·실패 taxonomy·재분류 Gate.
+- [ ] 잘못된 계획 구제: 고능력치가 오판을 구제하지 않는 결과 격차·상한·측정 계약.
+- [ ] 관찰 정답 유출: 공개 가능 정보·금지 정보·추론 설명·누출 검사.
+- [ ] 등급 파밍: 가중치·정규화·상한·반복 행동 감쇠.
+
+### 5.2 9성 공통 템플릿
 
 필수 필드:
 
@@ -122,7 +133,7 @@ PR #84·#86·#87은 병합 완료된 역사 계보다. 현행 권위는 main의 
 - 복기에서 보여줄 성공·실패 원인 문구.
 - 기술1·기술2 대체율과 실제 성공률 측정 계획.
 
-### 5.2 개별 9성 분기
+### 5.3 개별 9성 분기
 
 - [ ] 유운검결.
 - [ ] 금강호체공.
@@ -131,14 +142,14 @@ PR #84·#86·#87은 병합 완료된 역사 계보다. 현행 권위는 main의 
 - [ ] 청심양생공.
 - [ ] 무영십보.
 
-### 5.3 10성 절초
+### 5.4 10성 절초
 
 - [ ] 여섯 고유 절초 효과.
 - [ ] 행동 슬롯·기력·내력·절초기세 비용.
 - [ ] 이동·사거리·조건·중단 ledger.
 - [ ] 기술1·2를 무효화하지 않는 역할.
 
-### 5.4 회차·평가
+### 5.5 회차·평가
 
 - [ ] 비스탯 노드의 수련·회복·정보 기대가치·배치·가중치.
 - [ ] 전투 종료 5지표의 가중치·정규화·S/A/B/C 경계·상한.
@@ -154,7 +165,8 @@ PR #84·#86·#87은 병합 완료된 역사 계보다. 현행 권위는 main의 
 - 승인된 기존 행동 유효 슬롯·비용 repricing overlay.
 - 승인된 기술1 조건부 효과·5성 patch overlay.
 - 승인된 여섯 7성 기술2 contract.
-- 후속 승인될 9성 자동 분기·10성 절초 ledger.
+- 자원 포화 approved overlay.
+- 후속 승인될 조건 보정·9성 자동 분기·10성 절초 ledger.
 - 조건 trigger와 all-or-nothing 실패 회귀 테스트.
 - 연격 총피해 선계산·분배·후속타 취소 테스트.
 - 고정 이동 방향·경계·점유·이동불가 폴백 테스트.
@@ -231,6 +243,7 @@ champion_battle:
 - 유운삼첩 총피해 분배와 후속타 취소를 이해하는지 기록.
 - 기술2가 기술1을 전 상황에서 대체하지 않는지 기록.
 - 자원 상한·자동 회복 낭비·명상/준비 선택률 기록.
+- 내력0 묶음률·내력 부족 계획 변경률·고내력 기술 사용 간격 기록.
 - 고능력치가 잘못된 계획을 구제한 사례 기록.
 
 현재 `human_validation: NOT_RUN`이다.

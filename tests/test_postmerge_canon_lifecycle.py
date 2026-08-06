@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import shutil
 import tempfile
 import unittest
@@ -39,6 +40,14 @@ def copy_fixture(destination: Path) -> None:
         shutil.copy2(source, target)
 
 
+def replace_scalar(text: str, key: str, value: str) -> str:
+    pattern = rf"(?m)^{re.escape(key)}:\s*\S+\s*$"
+    replaced, count = re.subn(pattern, f"{key}: {value}", text)
+    if count != 1:
+        raise AssertionError(f"expected one scalar for {key}, found {count}")
+    return replaced
+
+
 class PostMergeCanonLifecycleTests(unittest.TestCase):
     def test_current_repository_passes(self) -> None:
         validator = load_validator()
@@ -49,14 +58,26 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             copy_fixture(root)
-            path = root / TARGETS[0]
+            for relative in TARGETS[:2]:
+                path = root / relative
+                path.write_text(
+                    replace_scalar(path.read_text(encoding="utf-8"), "active_planning_pr", "87"),
+                    encoding="utf-8",
+                )
+            with self.assertRaisesRegex(validator.CanonLifecycleError, "active planning PR"):
+                validator.validate(root)
+
+    def test_active_context_and_roadmap_must_share_checkpoint(self) -> None:
+        validator = load_validator()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            copy_fixture(root)
+            path = root / TARGETS[1]
             path.write_text(
-                path.read_text(encoding="utf-8").replace(
-                    "active_planning_pr: NONE", "active_planning_pr: 87"
-                ),
+                replace_scalar(path.read_text(encoding="utf-8"), "active_planning_parent_pr", "91"),
                 encoding="utf-8",
             )
-            with self.assertRaisesRegex(validator.CanonLifecycleError, "active planning PR"):
+            with self.assertRaisesRegex(validator.CanonLifecycleError, "operating checkpoint mismatch"):
                 validator.validate(root)
 
     def test_superseded_contract_cannot_claim_current_authority(self) -> None:

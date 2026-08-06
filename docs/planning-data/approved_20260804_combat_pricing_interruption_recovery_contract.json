@@ -3,6 +3,13 @@
   "decision_id": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
   "status": "CURRENT_APPROVED_PLANNING",
   "effective_date": "2026-08-04",
+  "partial_amendment": {
+    "decision_id": "TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01",
+    "superseded_fields": [
+      "bundle_transition_recovery.internal"
+    ],
+    "effective_overlay": "docs/planning-data/approved_20260804_resource_saturation_internal_recovery_contract.json"
+  },
   "runtime": false,
   "linked_multislot_interruption": {
     "link_key": "action_instance_id",
@@ -80,6 +87,7 @@
     ],
     "stamina": 1,
     "internal": 1,
+    "internal_lifecycle": "[대체됨] TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01",
     "ultimate_momentum": 1,
     "caps_apply": true,
     "before_enemy_plan_lock": true

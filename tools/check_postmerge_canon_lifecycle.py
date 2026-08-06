@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import pathlib
+import re
 import sys
 from typing import Any
 
@@ -29,11 +30,17 @@ EXPECTED_RISKS = {
 STALE_ACTIVE_TOKENS = {
     "APPROVED_PENDING_MERGE",
     "ACTIVE_DRAFT_7_OF_10_PR87",
-    "active_planning_pr: 87",
-    "active_planning_parent_pr: 86",
     "PR #87 남은 GrillMe 승인",
     "PR #87은 PR #86",
 }
+MERGED_OR_HELD_PR_IDS = {84, 85, 86, 87, 88}
+OPERATING_KEYS = (
+    "active_planning_pr",
+    "active_planning_parent_pr",
+    "active_approval_count",
+    "active_decision_state",
+    "next_planning_decision",
+)
 
 
 class CanonLifecycleError(ValueError):
@@ -61,17 +68,52 @@ def read_json(root: pathlib.Path, relative: pathlib.Path) -> dict[str, Any]:
     return data
 
 
+def yaml_scalar(text: str, key: str) -> str:
+    matches = re.findall(rf"(?m)^{re.escape(key)}:\s*([^\s#]+)\s*(?:#.*)?$", text)
+    require(len(matches) == 1, f"operating checkpoint key must appear exactly once: {key}")
+    return matches[0]
+
+
+def parse_pr_id(value: str, field: str, *, allow_none: bool) -> int | None:
+    if value == "NONE":
+        require(allow_none, f"{field} cannot be NONE")
+        return None
+    require(value.isdigit(), f"{field} must be a PR number or NONE")
+    return int(value)
+
+
 def validate_operating_state(active: str, roadmap: str) -> None:
     for token in STALE_ACTIVE_TOKENS:
         require(token not in active, f"active planning PR state is stale: {token}")
         require(token not in roadmap, f"roadmap active planning PR state is stale: {token}")
 
+    active_state = {key: yaml_scalar(active, key) for key in OPERATING_KEYS}
+    roadmap_state = {key: yaml_scalar(roadmap, key) for key in OPERATING_KEYS}
+    require(active_state == roadmap_state, "operating checkpoint mismatch between active context and roadmap")
+
+    active_pr = parse_pr_id(active_state["active_planning_pr"], "active planning PR", allow_none=True)
+    parent_pr = parse_pr_id(active_state["active_planning_parent_pr"], "active planning parent PR", allow_none=True)
+    decision_state = active_state["active_decision_state"]
+    next_decision = active_state["next_planning_decision"]
+
+    if active_pr is None:
+        require(parent_pr is None, "merged checkpoint cannot have an active planning parent PR")
+        require(decision_state == "MERGED_CANON_CHECKPOINT", "merged checkpoint decision state differs")
+    else:
+        require(active_pr not in MERGED_OR_HELD_PR_IDS, "active planning PR points to merged or held historical PR")
+        require(parent_pr != active_pr, "active planning PR cannot be its own parent")
+        if parent_pr is not None:
+            require(parent_pr not in MERGED_OR_HELD_PR_IDS, "active planning parent PR points to merged or held historical PR")
+            require(parent_pr < active_pr, "stacked planning parent PR must precede active PR")
+        require(
+            decision_state.startswith("APPROVED_DRAFT_") or decision_state.startswith("ACTIVE_DRAFT_"),
+            "active planning checkpoint requires a draft decision state",
+        )
+
+    require(active_state["active_approval_count"] == "7/10", "active approval count differs")
+    require(bool(next_decision) and next_decision != "NONE", "next planning decision is missing")
+
     for token in [
-        "active_planning_pr: NONE",
-        "active_planning_parent_pr: NONE",
-        "active_approval_count: 7/10",
-        "active_decision_state: MERGED_CANON_CHECKPOINT",
-        "next_planning_decision: STAR9_PUBLIC_READ_BRANCH_TEMPLATE",
         "runtime_work_mode: REVIEW",
         "runtime_integration_pr: 65",
         "runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65",
@@ -79,19 +121,15 @@ def validate_operating_state(active: str, roadmap: str) -> None:
         "human_validation: NOT_RUN",
         "2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md",
     ]:
-        require(token in active, f"active context missing merged checkpoint token: {token}")
+        require(token in active, f"active context missing operating token: {token}")
 
     for token in [
-        "active_planning_pr: NONE",
-        "active_planning_parent_pr: NONE",
-        "active_decision_state: MERGED_CANON_CHECKPOINT",
-        "next_planning_decision: STAR9_PUBLIC_READ_BRANCH_TEMPLATE",
         "프로젝트 코어 확정",
         "STEP 14",
         "T1 — 최소 세로 슬라이스",
         "KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST",
     ]:
-        require(token in roadmap, f"roadmap missing merged checkpoint token: {token}")
+        require(token in roadmap, f"roadmap missing operating token: {token}")
 
 
 def validate_superseded_authority(
