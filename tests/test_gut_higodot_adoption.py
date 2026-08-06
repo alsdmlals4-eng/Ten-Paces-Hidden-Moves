@@ -12,7 +12,7 @@ CONTRACT = ROOT / "docs/planning-data/approved_20260806_gut_higodot_test_authori
 HIGODOT_RECORD = ROOT / "docs/planning-data/HIGODOT_ADOPTION_RECORD.json"
 GUT_CONFIG = ROOT / ".gutconfig.json"
 GUT_TEST = ROOT / "tests/gut/test_martial_manual_registry.gd"
-WORKFLOW = ROOT / ".github/workflows/validate-gut-higodot-adoption.yml"
+WORKFLOW = ROOT / ".github/workflows/documentation-governance.yml"
 PROJECT = ROOT / "project.godot"
 EXPORT_PRESETS = ROOT / "export_presets.cfg"
 START_HERE = ROOT / "START_HERE.md"
@@ -99,6 +99,8 @@ class GutHiGodotAdoptionTests(unittest.TestCase):
     def test_workflow_runs_static_runtime_and_entry_gates(self) -> None:
         text = WORKFLOW.read_text(encoding="utf-8")
         for marker in (
+            "gut-adoption-exact-head",
+            "ref: ${{ github.event.pull_request.head.sha }}",
             "tests.test_gut_higodot_adoption",
             "tests.test_conflict_marker_detection",
             "tests.test_work_entry_completeness_gate",
