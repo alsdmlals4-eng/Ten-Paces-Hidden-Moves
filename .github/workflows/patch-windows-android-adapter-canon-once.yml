@@ -20,7 +20,9 @@ jobs:
           ref: planning/windows-android-adapter-architecture
           fetch-depth: 0
       - name: Patch canonical planning surfaces
-        run: python tools/patch_windows_android_adapter_canon_once.py
+        run: |
+          python tools/patch_windows_android_adapter_canon_once.py
+          python tools/strip_adapter_canon_trailing_whitespace_once.py
       - name: Commit canon updates
         shell: bash
         run: |
