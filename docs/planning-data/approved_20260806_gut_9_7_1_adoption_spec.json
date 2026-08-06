@@ -5,8 +5,9 @@
   "tool": "GUT",
   "canonical_source_repository": "bitwes/Gut",
   "version": "9.7.1",
-  "source_branch_or_release": "godot_4_7",
-  "pinned_source_commit": "aeb5d4f3c66e2743cb7d1e6c1edc3f65a7721ea5",
+  "source_branch_or_release": "v9.7.1",
+  "source_ref": "refs/tags/v9.7.1",
+  "pinned_source_commit": "aeb5d4f3f7f0a6c9b5e178876d6c99b791fda605",
   "stage": "ADOPTION_SPEC_DRAFT_PR",
   "adoption_spec_branch": "chore/gut-9.7.1-adoption-spec",
   "formal_installation": "BLOCKED_UNTIL_SPEC_MERGED_TO_MAIN",
@@ -18,18 +19,22 @@
   "higodot_authoring_manifest_required_for_godot_mutations": true,
   "source_provenance": {
     "repository": "bitwes/Gut",
-    "version": "9.7.1",
-    "branch_family": "godot_4_7",
-    "pinned_commit": "aeb5d4f3c66e2743cb7d1e6c1edc3f65a7721ea5",
-    "verification_state": "REMOTE_SOURCE_PREVIOUSLY_VERIFIED_RECHECK_REQUIRED_AT_INSTALL"
+    "release_tag": "v9.7.1",
+    "tag_commit": "aeb5d4f3f7f0a6c9b5e178876d6c99b791fda605",
+    "plugin_manifest_path": "addons/gut/plugin.cfg",
+    "plugin_manifest_version": "9.7.1",
+    "verification_state": "VERIFIED_AT_ADOPTION_SPEC"
   },
   "license_verification": {
     "expected": "MIT",
+    "path": "addons/gut/LICENSE.md",
+    "verified_at_ref": "v9.7.1",
     "license_file_required_at_install": true,
-    "state": "RECHECK_REQUIRED_AT_INSTALL"
+    "state": "VERIFIED_AT_ADOPTION_SPEC_RECHECK_AT_INSTALL"
   },
   "godot_compatibility": {
     "required": "4.7.x",
+    "upstream_branch_family": "godot_4_7",
     "project_expected": "4.7.x",
     "exact_project_version": "4.7.1_CI_EVIDENCE_LOCAL_UNVERIFIED",
     "import_and_smoke_required_at_install": true
