@@ -132,7 +132,25 @@ class Gut971ReconciliationTests(unittest.TestCase):
         self.assertEqual(payload["initial_project_addon_tree"], INITIAL_PROJECT_TREE)
         self.assertEqual(
             payload["expected_normalized_scene_variances"],
-            ["GutScene.tscn", "UserFileViewer.tscn", "gui/GutSceneTheme.tres"],
+            [
+                "GutScene.tscn",
+                "UserFileViewer.tscn",
+                "gui/GutControl.tscn",
+                "gui/GutLogo.tscn",
+                "gui/GutRunner.tscn",
+                "gui/GutSceneTheme.tres",
+                "gui/MinGui.tscn",
+                "gui/NormalGui.tscn",
+                "gui/OutputText.tscn",
+                "gui/ResizeHandle.tscn",
+                "gui/RunAtCursor.tscn",
+                "gui/RunExternally.tscn",
+                "gui/RunResults.tscn",
+                "gui/ShellOutOptions.tscn",
+                "gui/ShortcutButton.tscn",
+                "gui/run_from_editor.tscn",
+                "gut_loader_the_scene.tscn",
+            ],
         )
         self.assertEqual(payload["authority_state"], "PARTIAL_VALIDATED_EXPORT_GATE_OPEN")
         self.assertEqual(payload["export_exclusion"], "BLOCKED_PENDING_HIGODOT_L1")
