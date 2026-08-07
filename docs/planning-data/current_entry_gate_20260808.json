@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "authority": "ENTRY_GATE_SNAPSHOT",
+  "decision_id": "TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01",
+  "observed_main": "8e06c3ed4b572d211aeb9447d5d0b1491b1b8467",
+  "observed_base_main": "fa69a77a14f923a756064f6ae151d34cadb374f7",
+  "decision_ledger_readback": "PASS",
+  "unresolved_audit_readback": "PASS",
+  "image_review_readback": "PASS",
+  "github_sheet_sync": "STALE_BEFORE_THIS_RECONCILIATION",
+  "hera_addon_provenance": "VERIFIED_EXACT_V1_0_0",
+  "hera_active_adoption": "BLOCKED_CLI_PAIR_AND_LOCAL_CANARY_UNVERIFIED",
+  "open_pr_109": "DIVERGED_BEHIND_MAIN_2_COMMITS",
+  "ten_img_001": "PLANNED_IN_REVIEW_NOT_RUN",
+  "local_windows_checkout": "BLOCKED_UNVERIFIED",
+  "decision": "BLOCK",
+  "allowed_next_actions": [
+    "SYNC_GITHUB_SHEET_CURRENT_STATE",
+    "REBASE_OR_MERGE_LATEST_MAIN_INTO_PR109_AND_RERUN_EXACT_HEAD_GUT_JUNIT",
+    "VERIFY_LOCAL_HERA_CLI_ADDON_EXACT_PAIR_AND_CANARY",
+    "COMPLETE_VISUAL_REQUIREMENT_REVIEW_FOR_PRODUCT_VISIBLE_UI",
+    "RECHECK_WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE"
+  ]
+}
