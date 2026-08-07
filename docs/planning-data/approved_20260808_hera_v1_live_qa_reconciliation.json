@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "decision_id": "TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01",
-  "authority_status": "CURRENT_APPROVED_RECONCILIATION_DRAFT",
+  "authority_status": "CURRENT_APPROVED_RECONCILIATION",
   "approved_at": "2026-08-08T07:50:00+09:00",
   "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
   "branch": "chore/hera-v1-reconciliation",
