@@ -15,7 +15,21 @@ INITIAL_PROJECT_TREE = "09d040309bbed0e07420ad72c4aa69cbd0e58190"
 EXPECTED_NORMALIZED_SCENE_VARIANCES = {
     "GutScene.tscn",
     "UserFileViewer.tscn",
+    "gui/GutControl.tscn",
+    "gui/GutLogo.tscn",
+    "gui/GutRunner.tscn",
     "gui/GutSceneTheme.tres",
+    "gui/MinGui.tscn",
+    "gui/NormalGui.tscn",
+    "gui/OutputText.tscn",
+    "gui/ResizeHandle.tscn",
+    "gui/RunAtCursor.tscn",
+    "gui/RunExternally.tscn",
+    "gui/RunResults.tscn",
+    "gui/ShellOutOptions.tscn",
+    "gui/ShortcutButton.tscn",
+    "gui/run_from_editor.tscn",
+    "gut_loader_the_scene.tscn",
 }
 PRODUCTION_ROOTS = (
     "src",

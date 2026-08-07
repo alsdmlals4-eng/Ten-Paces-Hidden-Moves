@@ -8,9 +8,11 @@ on:
       - "addons/gut/**"
       - "tests/gut/**"
       - "tests/test_gut_9_7_1_reconciliation.py"
+      - "tests/test_gut_9_7_1_observed_variance_manifest.py"
       - "tools/check_gut_9_7_1_reconciliation.py"
       - "docs/decisions/2026-08-07_GUT_9_7_1_RECONCILIATION_VALIDATION_DECISION.md"
       - "docs/planning-data/approved_20260807_gut_9_7_1_reconciliation.json"
+      - "docs/implementation/BUILD_APPROVAL_2026-08-08.md"
   workflow_dispatch:
 
 permissions:
@@ -49,7 +51,11 @@ jobs:
 
       - name: Run reconciliation contract tests
         working-directory: project
-        run: python -m unittest tests.test_gut_9_7_1_reconciliation -v
+        run: >-
+          python -m unittest
+          tests.test_gut_9_7_1_reconciliation
+          tests.test_gut_9_7_1_observed_variance_manifest
+          -v
 
       - name: Compare installed GUT tree to official tag
         working-directory: project

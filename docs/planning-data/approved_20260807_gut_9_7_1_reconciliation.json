@@ -6,7 +6,7 @@
   "approved_at": "2026-08-07T00:49:00+09:00",
   "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
   "branch": "fix/gut-9-7-1-tree-reconciliation",
-  "base_main": "956dc9b86ea99176ffc35568530137fbf9007736",
+  "base_main": "8315fde182f4c26669a983c8da71b2174655a823",
   "official_source": {
     "repository": "bitwes/Gut",
     "tag": "v9.7.1",
@@ -20,12 +20,28 @@
     "comparison": "FILE_BY_FILE_AGAINST_LIVE_OFFICIAL_TAG_CHECKOUT",
     "exact_tree_match": false,
     "accepted_variance_policy": "GODOT_TEXT_RESOURCE_LOAD_STEPS_METADATA_ONLY",
-    "unexpected_difference_result": "BLOCKED_UNEXPECTED_ADDON_DIFFERENCE"
+    "unexpected_difference_result": "BLOCKED_UNEXPECTED_ADDON_DIFFERENCE",
+    "fresh_red_run": 31227143260,
+    "fresh_red_actual_normalized_variance_count": 17
   },
   "expected_normalized_scene_variances": [
     "GutScene.tscn",
     "UserFileViewer.tscn",
-    "gui/GutSceneTheme.tres"
+    "gui/GutControl.tscn",
+    "gui/GutLogo.tscn",
+    "gui/GutRunner.tscn",
+    "gui/GutSceneTheme.tres",
+    "gui/MinGui.tscn",
+    "gui/NormalGui.tscn",
+    "gui/OutputText.tscn",
+    "gui/ResizeHandle.tscn",
+    "gui/RunAtCursor.tscn",
+    "gui/RunExternally.tscn",
+    "gui/RunResults.tscn",
+    "gui/ShellOutOptions.tscn",
+    "gui/ShortcutButton.tscn",
+    "gui/run_from_editor.tscn",
+    "gut_loader_the_scene.tscn"
   ],
   "consumer_path": {
     "config": ".gutconfig.json",
@@ -43,12 +59,14 @@
     "junit_required": true,
     "artifact_required": true,
     "production_hash_before_after_required": true,
+    "observed_variance_manifest_test_required": true,
     "validation_route_decision_id": "TEN-DEC-20260807-PUBLIC-REPO-FREE-GITHUB-HOSTED-ACTIONS-01",
     "github_actions": "STANDARD_GITHUB_HOSTED_RUNNER_REQUIRED",
     "fallback_decision_id": "TEN-DEC-20260807-ACTIONS-BUDGET-MANUAL-VALIDATION-FALLBACK-01",
     "fallback_status": "HISTORICAL_PR107_ONLY_SUPERSEDED_FOR_FUTURE_HEADS",
     "state": "EXACT_HEAD_HOSTED_VALIDATION_REQUIRED"
   },
+  "build_approval_record": "docs/implementation/BUILD_APPROVAL_2026-08-08.md",
   "production_hash_scope": [
     "src/**",
     "scenes/**",

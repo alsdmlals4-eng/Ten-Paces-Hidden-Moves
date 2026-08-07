@@ -7,6 +7,7 @@
 - 승인일: 2026-08-07
 - 상태: `CURRENT_APPROVED_RECONCILIATION_REPAIR_IN_REVIEW`
 - 계약: `docs/planning-data/approved_20260807_gut_9_7_1_reconciliation.json`
+- BUILD 승인: `docs/implementation/BUILD_APPROVAL_2026-08-08.md`
 
 ## 1. 목적
 
@@ -17,22 +18,36 @@ official_tag: v9.7.1
 official_commit: aeb5d4f3f7f0a6c9b5e178876d6c99b791fda605
 official_addon_tree: 5d6893836af4917ee62b1a395125a7530b1f239d
 initial_project_addon_tree: 09d040309bbed0e07420ad72c4aa69cbd0e58190
+latest_main_reconciled: 8315fde182f4c26669a983c8da71b2174655a823
 ```
 
 ## 2. GUT tree 정합화
 
-공식 tag와 프로젝트 `addons/gut/**`를 파일 단위로 비교한다. 실제 hosted run에서 확인된 차이는 다음과 같다.
+공식 tag와 프로젝트 `addons/gut/**`를 파일 단위로 비교한다. PR #109를 최신 main 위에 재구성한 exact HEAD `15f5dbfaf5d4bf137799f3dbdfcbcb526c833973`의 hosted RED run `31227143260`에서, 바이너리·의미 차이가 아니라 첫 줄 `load_steps` 메타데이터만 다른 text resource가 다음 17개임을 fail-closed 비교가 직접 보고했다.
 
-- `GutScene.tscn`: 첫 줄의 선택적 `load_steps` 메타데이터만 생략됨.
-- `UserFileViewer.tscn`: 첫 줄의 선택적 `load_steps` 메타데이터만 생략됨.
-- `gui/GutSceneTheme.tres`: 첫 줄의 선택적 `load_steps` 메타데이터만 생략됨.
-- `source_code_pro.fnt`: 바이너리 내용이 공식 v9.7.1 blob과 달랐으므로 정규화 예외를 허용하지 않고 공식 blob으로 정확히 복원한다.
+- `GutScene.tscn`
+- `UserFileViewer.tscn`
+- `gui/GutControl.tscn`
+- `gui/GutLogo.tscn`
+- `gui/GutRunner.tscn`
+- `gui/GutSceneTheme.tres`
+- `gui/MinGui.tscn`
+- `gui/NormalGui.tscn`
+- `gui/OutputText.tscn`
+- `gui/ResizeHandle.tscn`
+- `gui/RunAtCursor.tscn`
+- `gui/RunExternally.tscn`
+- `gui/RunResults.tscn`
+- `gui/ShellOutOptions.tscn`
+- `gui/ShortcutButton.tscn`
+- `gui/run_from_editor.tscn`
+- `gut_loader_the_scene.tscn`
 
-세 text resource의 노드·리소스·UID·property·connection 등 의미 내용은 동일하다. 이를 `GUT_TREE_NORMALIZATION_VARIANCE`로 기록하며 허용 범위는 `GODOT_TEXT_RESOURCE_LOAD_STEPS_METADATA_ONLY`다.
+이 17개는 `normalize_godot_text_resource`가 허용하는 첫 줄 `load_steps=<정수>` 토큰 하나를 제거했을 때 공식 v9.7.1과 정확히 같아지는 파일만 포함한다. 노드·리소스·UID·property·connection 등 의미 차이가 하나라도 남으면 허용 목록에 있어도 통과하지 않는다.
 
-정규화는 `.tscn`과 `.tres`의 첫 줄이 `[gd_scene ...]` 또는 `[gd_resource ...]`인 경우에 한해 `load_steps=<정수>` 토큰 하나만 제거한다. 그 외 누락·추가·내용 차이와 모든 바이너리 차이는 `BLOCKED_UNEXPECTED_ADDON_DIFFERENCE`로 차단한다.
+`source_code_pro.fnt`는 바이너리 정규화 예외를 허용하지 않는다. 공식 v9.7.1 blob `eb6b9b859954c85bc878e93e6893d6f552b01a9e`, SHA-256 `404094d0aae3de496a64fca1795bed8bd60c2411a3d992551f9e8f00789b71fe`로 정확히 복원한다.
 
-이 repair에서 `.tscn`·`.tres`를 다시 저작하지 않는다. `source_code_pro.fnt`만 공식 tag의 exact binary blob으로 복원한다.
+정규화 허용 범위는 계속 `GODOT_TEXT_RESOURCE_LOAD_STEPS_METADATA_ONLY`다. 그 외 누락·추가·내용 차이와 모든 바이너리 차이는 `BLOCKED_UNEXPECTED_ADDON_DIFFERENCE`로 차단한다. 이 repair에서 `.tscn`·`.tres`를 다시 저작하지 않는다.
 
 ## 3. 실제 소비 경로
 
@@ -43,7 +58,7 @@ representative_test: tests/gut/test_martial_manual_registry.gd
 junit_output: build/test-results/gut.xml
 ```
 
-대표 테스트는 무공서 registry 10권과 숙련도 3·7·10성 해금 경계를 GDScript에서 직접 검증한다. 기존 Python·SceneTree 검증은 보존한다.
+대표 테스트는 무공서 registry 10권과 숙련도 3·7·10성 해금 경계를 GDScript에서 직접 검증한다. 기존 Python·SceneTree 검증은 보존한다. 또한 `tests/test_gut_9_7_1_observed_variance_manifest.py`를 dedicated workflow에서 직접 실행해 17개 allowlist가 validator와 계약에서 서로 다르면 즉시 실패시킨다.
 
 ## 4. exact-HEAD 검증 경로
 
@@ -51,7 +66,7 @@ junit_output: build/test-results/gut.xml
 
 1. 프로젝트 exact HEAD checkout.
 2. 공식 GUT `v9.7.1` checkout.
-3. reconciliation contract unit tests.
+3. reconciliation contract 및 observed-variance manifest unit tests.
 4. addon tree 파일 단위 비교와 제한된 text-resource 정규화 검사.
 5. Godot 4.7.1 import.
 6. import 후 tracked tree clean 확인.
@@ -66,7 +81,9 @@ PR #107 전용 예산 fallback은 이력으로만 보존하며 새 HEAD의 성�
 
 Production scope는 `src`, `scenes`, `data`, `assets`, `project.godot`, `export_presets.cfg`, 그리고 `addons/gut`을 제외한 `addons`다.
 
-## 5. HiGodot 경계와 남은 Gate
+## 5. BUILD 승인과 HiGodot 경계
+
+Base adversarial gate는 `addons/` binary 변경을 보호 경로로 취급하므로, 공식 GUT 폰트 복원은 같은 diff의 `docs/implementation/BUILD_APPROVAL_2026-08-08.md`에 사용자 승인 출처와 정확한 tooling-only 범위를 기록한다. 이 승인으로 제품 런타임 기능·Scene·Resource·플랫폼 adapter 변경 권한을 확대하지 않는다.
 
 HiGodot은 Scene·Node·Resource·project settings의 단일 저작 권위다. 이 repair에서는 다음을 수행하지 않는다.
 
@@ -81,8 +98,6 @@ authority_state: PARTIAL_VALIDATED_EXPORT_GATE_OPEN
 export_exclusion: BLOCKED_PENDING_HIGODOT_L1
 formal_adoption_claim: NOT_COMPLETE
 ```
-
-이는 실패 은폐가 아니라 v4.3의 저작 권위와 제품 export Gate를 지키는 fail-closed 판정이다.
 
 ## 6. 변경 금지와 Claim Ceiling
 
