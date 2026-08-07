@@ -125,5 +125,6 @@ jobs:
           path: |
             project/build/gut-reconciliation/*.json
             project/build/test-results/gut.xml
+            gut-upstream/addons/gut/source_code_pro.fnt
           if-no-files-found: error
           retention-days: 14
