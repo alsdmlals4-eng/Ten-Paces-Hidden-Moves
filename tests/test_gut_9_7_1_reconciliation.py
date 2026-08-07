@@ -31,15 +31,30 @@ def load_tool():
 
 
 class Gut971ReconciliationTests(unittest.TestCase):
-    def test_scene_normalization_only_removes_load_steps_metadata(self) -> None:
+    def test_text_resource_normalization_only_removes_load_steps_metadata(self) -> None:
         tool = load_tool()
-        upstream = '[gd_scene load_steps=4 format=3 uid="uid://x"]\n\n[node name="A" type="Node"]\n'
-        imported = '[gd_scene format=3 uid="uid://x"]\n\n[node name="A" type="Node"]\n'
-        self.assertEqual(tool.normalize_godot_scene(upstream), tool.normalize_godot_scene(imported))
-        changed = '[gd_scene format=3 uid="uid://x"]\n\n[node name="B" type="Node"]\n'
-        self.assertNotEqual(tool.normalize_godot_scene(upstream), tool.normalize_godot_scene(changed))
+        fixtures = (
+            (
+                '[gd_scene load_steps=4 format=3 uid="uid://x"]\n\n[node name="A" type="Node"]\n',
+                '[gd_scene format=3 uid="uid://x"]\n\n[node name="A" type="Node"]\n',
+            ),
+            (
+                '[gd_resource type="Theme" load_steps=2 format=3 uid="uid://x"]\n\n[resource]\n',
+                '[gd_resource type="Theme" format=3 uid="uid://x"]\n\n[resource]\n',
+            ),
+        )
+        for upstream, imported in fixtures:
+            self.assertEqual(
+                tool.normalize_godot_text_resource(upstream),
+                tool.normalize_godot_text_resource(imported),
+            )
+        changed = '[gd_resource type="Theme" format=3 uid="uid://x"]\n\n[resource]\nvalue = 1\n'
+        self.assertNotEqual(
+            tool.normalize_godot_text_resource(fixtures[1][0]),
+            tool.normalize_godot_text_resource(changed),
+        )
 
-    def test_tree_comparison_accepts_only_the_two_observed_scene_normalizations(self) -> None:
+    def test_tree_comparison_accepts_only_observed_text_resource_normalizations(self) -> None:
         tool = load_tool()
         with tempfile.TemporaryDirectory() as temp:
             temp_root = Path(temp)
@@ -58,11 +73,21 @@ class Gut971ReconciliationTests(unittest.TestCase):
                     '[gd_scene format=3 uid="uid://x"]\n\n[node name="A" type="Node"]\n',
                     encoding="utf-8",
                 )
+            (upstream / "gui").mkdir()
+            (project / "gui").mkdir()
+            (upstream / "gui/GutSceneTheme.tres").write_text(
+                '[gd_resource type="Theme" load_steps=2 format=3 uid="uid://x"]\n\n[resource]\n',
+                encoding="utf-8",
+            )
+            (project / "gui/GutSceneTheme.tres").write_text(
+                '[gd_resource type="Theme" format=3 uid="uid://x"]\n\n[resource]\n',
+                encoding="utf-8",
+            )
             report = tool.compare_addon_trees(project, upstream)
             self.assertEqual(report["exact_match_count"], 1)
             self.assertEqual(
                 report["normalized_scene_matches"],
-                ["GutScene.tscn", "UserFileViewer.tscn"],
+                ["GutScene.tscn", "UserFileViewer.tscn", "gui/GutSceneTheme.tres"],
             )
             self.assertEqual(report["unexpected_mismatches"], [])
             self.assertEqual(report["missing_from_project"], [])
@@ -83,6 +108,21 @@ class Gut971ReconciliationTests(unittest.TestCase):
             with self.assertRaisesRegex(tool.ReconciliationError, "unexpected addon difference"):
                 tool.require_acceptable_tree(report)
 
+    def test_tree_comparison_keeps_binary_differences_fail_closed(self) -> None:
+        tool = load_tool()
+        with tempfile.TemporaryDirectory() as temp:
+            temp_root = Path(temp)
+            upstream = temp_root / "upstream"
+            project = temp_root / "project"
+            upstream.mkdir()
+            project.mkdir()
+            (upstream / "source_code_pro.fnt").write_bytes(b"RSRC\x00official")
+            (project / "source_code_pro.fnt").write_bytes(b"RSRC\x00project!")
+            report = tool.compare_addon_trees(project, upstream)
+            self.assertEqual(report["unexpected_mismatches"], ["source_code_pro.fnt"])
+            with self.assertRaisesRegex(tool.ReconciliationError, "unexpected addon difference"):
+                tool.require_acceptable_tree(report, expected_normalized=set())
+
     def test_contract_records_verified_source_and_partial_authority(self) -> None:
         payload = json.loads(CONTRACT.read_text(encoding="utf-8"))
         self.assertEqual(payload["decision_id"], DECISION_ID)
@@ -92,7 +132,7 @@ class Gut971ReconciliationTests(unittest.TestCase):
         self.assertEqual(payload["initial_project_addon_tree"], INITIAL_PROJECT_TREE)
         self.assertEqual(
             payload["expected_normalized_scene_variances"],
-            ["GutScene.tscn", "UserFileViewer.tscn"],
+            ["GutScene.tscn", "UserFileViewer.tscn", "gui/GutSceneTheme.tres"],
         )
         self.assertEqual(payload["authority_state"], "PARTIAL_VALIDATED_EXPORT_GATE_OPEN")
         self.assertEqual(payload["export_exclusion"], "BLOCKED_PENDING_HIGODOT_L1")
@@ -149,6 +189,7 @@ class Gut971ReconciliationTests(unittest.TestCase):
             "PRODUCT_IMPLEMENTATION_EFFECT_NONE",
         ):
             self.assertIn(marker, decision_text)
+        self.assertIn("GODOT_TEXT_RESOURCE_LOAD_STEPS_METADATA_ONLY", decision_text)
         self.assertIn(OFFICIAL_COMMIT, validator_text)
         self.assertIn(OFFICIAL_TREE, validator_text)
         self.assertIn(INITIAL_PROJECT_TREE, validator_text)
