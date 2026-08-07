@@ -8,6 +8,7 @@
 - 상태: `CURRENT_APPROVED_RECONCILIATION_REPAIR_IN_REVIEW`
 - 계약: `docs/planning-data/approved_20260807_gut_9_7_1_reconciliation.json`
 - BUILD 승인: `docs/implementation/BUILD_APPROVAL_2026-08-08.md`
+- 정규화 variance marker: `GUT_TREE_NORMALIZATION_VARIANCE`
 
 ## 1. 목적
 
