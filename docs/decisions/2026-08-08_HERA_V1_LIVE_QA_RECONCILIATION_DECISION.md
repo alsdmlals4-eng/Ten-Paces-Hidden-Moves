@@ -3,7 +3,8 @@
 - Decision ID: `TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01`
 - 승인일: 2026-08-08
 - 상태: `CURRENT_APPROVED_RECONCILIATION`
-- 기준 main: `8e06c3ed4b572d211aeb9447d5d0b1491b1b8467`
+- 조사 기준 main: `8e06c3ed4b572d211aeb9447d5d0b1491b1b8467`
+- PR #110 병합 직후 main: `102bd7010316edc10fa0709dfe336040d33082df`
 - 계약: `docs/planning-data/approved_20260808_hera_v1_live_qa_reconciliation.json`
 - Base 역할 정본: `docs/knowledge/godot/HIGODOT_SINGLE_AUTHORITY_AND_SAFE_OPERATION.md`
 
@@ -14,7 +15,8 @@
 ## 2. 확인된 현재 사실
 
 ```yaml
-project_main: 8e06c3ed4b572d211aeb9447d5d0b1491b1b8467
+investigation_main: 8e06c3ed4b572d211aeb9447d5d0b1491b1b8467
+pr110_merge_main: 102bd7010316edc10fa0709dfe336040d33082df
 installation_commit: b6a7a96778d7420c67829bb6ffa59b32d959dae2
 project_addon_tree: 6cb87ac8ba768de1d924447f385fba6d80bcde68
 official_source: NotNull92/hera-agent-godot
@@ -98,7 +100,7 @@ adoption_status: PRESENT_DISABLED_PAIR_UNVERIFIED
 
 ## 6. PR #109와 현재 main의 관계
 
-Draft PR #109는 base/merge-base가 `956dc9b86ea99176ffc35568530137fbf9007736`이며 현재 main `8e06c3ed4b572d211aeb9447d5d0b1491b1b8467`보다 2 commit 뒤다. 따라서 PR #109는 최신 main을 반영하고 새 exact HEAD 검증을 통과하기 전 병합하지 않는다.
+PR #110 병합 직후 main `102bd7010316edc10fa0709dfe336040d33082df` 기준 Draft PR #109는 merge-base `956dc9b86ea99176ffc35568530137fbf9007736`, current main 대비 ahead 8 / behind 3으로 diverged다. 따라서 최신 main을 반영하고 새 exact HEAD GUT/JUnit 검증을 통과하기 전 병합하지 않는다. 이후 main이 다시 이동하면 PR #109 병합 전 최신 상태를 재조회한다.
 
 Hera 정합화는 PR #109의 GUT tree repair와 다른 Goal이므로 별도 변경으로 유지한다.
 
@@ -117,8 +119,7 @@ windows_android_adapter_implementation: BLOCKED_BY_ENTRY_GATE
 
 ## 8. 다음 단계
 
-1. GitHub·Sheet의 current main/Base SHA drift를 정정한다.
-2. 이 Decision ID를 Sheet 결정 원장·감사·변경 이력에 동기화한다.
-3. PR #109를 최신 main 기준으로 재정합화하고 exact-head GUT/JUnit 검증을 다시 실행한다.
-4. 로컬 Windows에서 Hera CLI/addon pair와 live QA canary를 검증한다.
-5. 위 Gate와 Visual Requirement Gate를 다시 읽은 뒤 `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE` 진입 여부를 재판정한다.
+1. PR #109를 최신 main 기준으로 재정합화하고 exact-head GUT/JUnit 검증을 다시 실행한다.
+2. 로컬 Windows에서 Hera CLI/addon v1 pair·`hera status`·bounded smoke·source-delta canary를 검증한다.
+3. `TEN-IMG-001` Visual Requirement 검수를 완료한다.
+4. 위 Gate를 다시 읽고 `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE` 진입 여부를 재판정한다.
