@@ -2,7 +2,7 @@
 
 - Decision ID: `TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01`
 - 승인일: 2026-08-08
-- 상태: `CURRENT_APPROVED_RECONCILIATION_DRAFT`
+- 상태: `CURRENT_APPROVED_RECONCILIATION`
 - 기준 main: `8e06c3ed4b572d211aeb9447d5d0b1491b1b8467`
 - 계약: `docs/planning-data/approved_20260808_hera_v1_live_qa_reconciliation.json`
 - Base 역할 정본: `docs/knowledge/godot/HIGODOT_SINGLE_AUTHORITY_AND_SAFE_OPERATION.md`
