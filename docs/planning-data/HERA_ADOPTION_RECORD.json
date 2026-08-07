@@ -2,6 +2,7 @@
   "schema_version": 1,
   "tool": "Hera Agent Godot",
   "decision_id": "TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01",
+  "snapshot_semantics": "POST_PR110_MERGE_CLOSEOUT",
   "canonical_source_repository": "NotNull92/hera-agent-godot",
   "exact_addon_version": "1.0.0",
   "official_tag": "v1.0.0",
@@ -23,5 +24,5 @@
     "SHARED_TOKEN_CHECK_IF_ADOPTED",
     "TRACKED_SOURCE_DELTA_NONE_CANARY"
   ],
-  "last_verified_main": "8e06c3ed4b572d211aeb9447d5d0b1491b1b8467"
+  "last_verified_main": "102bd7010316edc10fa0709dfe336040d33082df"
 }

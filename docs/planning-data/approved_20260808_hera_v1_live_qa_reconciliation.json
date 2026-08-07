@@ -2,6 +2,7 @@
   "schema_version": 1,
   "decision_id": "TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01",
   "authority_status": "CURRENT_APPROVED_RECONCILIATION",
+  "snapshot_semantics": "POST_PR110_MERGE_CLOSEOUT",
   "approved_at": "2026-08-08T07:50:00+09:00",
   "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
   "branch": "chore/hera-v1-reconciliation",
@@ -47,9 +48,10 @@
   "open_pr_reconciliation": {
     "pr": 109,
     "merge_base": "956dc9b86ea99176ffc35568530137fbf9007736",
-    "current_main": "8e06c3ed4b572d211aeb9447d5d0b1491b1b8467",
-    "behind_current_main_by": 2,
-    "merge_before_rebase_and_fresh_exact_head_validation": false
+    "current_main": "102bd7010316edc10fa0709dfe336040d33082df",
+    "behind_current_main_by": 3,
+    "merge_before_rebase_and_fresh_exact_head_validation": false,
+    "revalidate_before_pr109_merge": true
   },
   "product_implementation_effect": "NONE",
   "visual_audio_disposition": "NO_NEW_VISUAL_OR_AUDIO_ASSET_REQUIRED",
