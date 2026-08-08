@@ -2,23 +2,41 @@
   "schema_version": 1,
   "authority": "ENTRY_GATE_SNAPSHOT",
   "decision_id": "TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01",
-  "snapshot_semantics": "POST_PR110_MERGE_CLOSEOUT",
-  "observed_main": "102bd7010316edc10fa0709dfe336040d33082df",
+  "related_decision_ids": [
+    "TEN-DEC-20260807-GUT-9-7-1-RECONCILIATION-01"
+  ],
+  "snapshot_semantics": "POST_GUT_PR109_AND_CLOSEOUT_PR112_SOURCE_MAIN_RECHECK",
+  "observed_main_before_snapshot_commit": "2bab6968d2e72965d78de9b75da77aa6ce4054d6",
   "observed_base_main": "fa69a77a14f923a756064f6ae151d34cadb374f7",
   "decision_ledger_readback": "PASS",
   "unresolved_audit_readback": "PASS",
-  "image_review_readback": "PASS",
-  "github_sheet_sync": "SYNCED_TO_MAIN_PR110_MERGED",
+  "github_sheet_sync": "SYNCED_THROUGH_GUT_PR112_CLOSEOUT_PENDING_ENTRY_SNAPSHOT",
+  "gut_pr109": "CLOSED_MERGED_HOSTED_VALIDATED",
+  "gut_exact_head": "b648161dfe39ce8dbc1d7a363da835cc9dadaecc",
+  "gut_merge_main": "a06f0171df4b0585ab35772349ecec7affde0cb7",
+  "gut_closeout_main": "2bab6968d2e72965d78de9b75da77aa6ce4054d6",
+  "gut_hosted_validation": {
+    "gut_reconciliation": "PASS_RUN_31228560420",
+    "full_validation": "PASS_RUN_31228560398",
+    "base_v9": "PASS_RUN_31228560404",
+    "pr_validation": "PASS_RUN_31228560529",
+    "product_gate": "PASS_RUN_31228560427"
+  },
   "hera_addon_provenance": "VERIFIED_EXACT_V1_0_0",
   "hera_active_adoption": "BLOCKED_CLI_PAIR_AND_LOCAL_CANARY_UNVERIFIED",
-  "open_pr_109": "DIVERGED_BEHIND_MAIN_3_COMMITS",
+  "higodot_l1_export_exclusion": "BLOCKED_NOT_RUN_LOCAL",
   "ten_img_001": "PLANNED_IN_REVIEW_NOT_RUN",
   "local_windows_checkout": "BLOCKED_UNVERIFIED",
+  "local_android_device": "BLOCKED_UNVERIFIED",
+  "human_validation": "BLOCKED_NOT_RUN",
+  "windows_android_adapter_implementation_gate": "BLOCKED_BY_ENTRY_GATE",
   "decision": "BLOCK",
   "allowed_next_actions": [
-    "REBASE_OR_MERGE_LATEST_MAIN_INTO_PR109_AND_RERUN_EXACT_HEAD_GUT_JUNIT",
     "VERIFY_LOCAL_HERA_CLI_ADDON_EXACT_PAIR_AND_CANARY",
-    "COMPLETE_VISUAL_REQUIREMENT_REVIEW_FOR_PRODUCT_VISIBLE_UI",
+    "RUN_HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION",
+    "COMPLETE_TEN_IMG_001_VISUAL_REQUIREMENT_REVIEW",
+    "VERIFY_LOCAL_WINDOWS_ANDROID_DEVICE_AND_HUMAN_GATES",
     "RECHECK_WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE"
-  ]
+  ],
+  "product_implementation_authorized": false
 }
