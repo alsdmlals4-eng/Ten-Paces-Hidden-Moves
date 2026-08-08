@@ -15,6 +15,21 @@ INITIAL_PROJECT_TREE = "09d040309bbed0e07420ad72c4aa69cbd0e58190"
 EXPECTED_NORMALIZED_SCENE_VARIANCES = {
     "GutScene.tscn",
     "UserFileViewer.tscn",
+    "gui/GutControl.tscn",
+    "gui/GutLogo.tscn",
+    "gui/GutRunner.tscn",
+    "gui/GutSceneTheme.tres",
+    "gui/MinGui.tscn",
+    "gui/NormalGui.tscn",
+    "gui/OutputText.tscn",
+    "gui/ResizeHandle.tscn",
+    "gui/RunAtCursor.tscn",
+    "gui/RunExternally.tscn",
+    "gui/RunResults.tscn",
+    "gui/ShellOutOptions.tscn",
+    "gui/ShortcutButton.tscn",
+    "gui/run_from_editor.tscn",
+    "gut_loader_the_scene.tscn",
 }
 PRODUCTION_ROOTS = (
     "src",
@@ -31,14 +46,19 @@ class ReconciliationError(RuntimeError):
     pass
 
 
-def normalize_godot_scene(text: str) -> str:
-    """Normalize only Godot's optional gd_scene load_steps metadata."""
+def normalize_godot_text_resource(text: str) -> str:
+    """Normalize only optional first-line load_steps metadata in Godot text resources."""
     lines = text.splitlines(keepends=True)
     if not lines:
         return text
-    if lines[0].startswith("[gd_scene "):
+    if lines[0].startswith(("[gd_scene ", "[gd_resource ")):
         lines[0] = re.sub(r"\sload_steps=\d+", "", lines[0], count=1)
     return "".join(lines)
+
+
+def normalize_godot_scene(text: str) -> str:
+    """Backward-compatible alias for the bounded Godot text-resource normalizer."""
+    return normalize_godot_text_resource(text)
 
 
 def _files(root: Path) -> dict[str, Path]:
@@ -69,14 +89,14 @@ def compare_addon_trees(project_addon: Path, upstream_addon: Path) -> dict[str, 
         if project_bytes == upstream_bytes:
             exact_matches.append(name)
             continue
-        if name.endswith(".tscn"):
+        if name.endswith((".tscn", ".tres")):
             try:
                 project_text = project_bytes.decode("utf-8")
                 upstream_text = upstream_bytes.decode("utf-8")
             except UnicodeDecodeError:
                 unexpected_mismatches.append(name)
                 continue
-            if normalize_godot_scene(project_text) == normalize_godot_scene(upstream_text):
+            if normalize_godot_text_resource(project_text) == normalize_godot_text_resource(upstream_text):
                 normalized_scene_matches.append(name)
                 continue
         unexpected_mismatches.append(name)
@@ -92,7 +112,7 @@ def compare_addon_trees(project_addon: Path, upstream_addon: Path) -> dict[str, 
         "unexpected_mismatches": unexpected_mismatches,
         "missing_from_project": missing,
         "extra_in_project": extra,
-        "accepted_variance_policy": "GODOT_GD_SCENE_LOAD_STEPS_METADATA_ONLY",
+        "accepted_variance_policy": "GODOT_TEXT_RESOURCE_LOAD_STEPS_METADATA_ONLY",
     }
 
 
@@ -111,7 +131,7 @@ def require_acceptable_tree(
     actual = set(report.get("normalized_scene_matches", []))
     if actual != expected_normalized:
         raise ReconciliationError(
-            "normalized scene variance differs: "
+            "normalized text resource variance differs: "
             f"expected={sorted(expected_normalized)} actual={sorted(actual)}"
         )
 
@@ -184,7 +204,7 @@ def command_compare_tree(args: argparse.Namespace) -> None:
     print(
         "GUT tree reconciliation: PASS "
         f"({report['exact_match_count']} exact, "
-        f"{len(report['normalized_scene_matches'])} normalized scene variances)"
+        f"{len(report['normalized_scene_matches'])} normalized text resource variances)"
     )
 
 

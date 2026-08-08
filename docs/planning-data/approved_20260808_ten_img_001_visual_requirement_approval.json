@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260808-TEN-IMG-001-VISUAL-REQUIREMENT-APPROVAL-01",
+  "approval_date": "2026-08-08",
+  "approval_source": "권장안대로 승인",
+  "authority_status": "CURRENT_APPROVED_PLANNING_VISUAL_REQUIREMENT",
+  "implementation_authority": "PLANNING_VISUALIZATION_ONLY",
+  "requirement_id": "TEN-VIS-REQ-001",
+  "image_id": "TEN-IMG-001",
+  "decision": "APPROVE",
+  "approved_disposition": "GENERATE_EXPLORATION",
+  "generation_exploration_authorized": true,
+  "product_asset_use_authorized": false,
+  "runtime_integration_authorized": false,
+  "source_decision_ids": [
+    "TEN-DEC-20260808-COMBAT-PLANNING-UI-CARD-TIMELINE-01"
+  ],
+  "base_main_at_approval": "a912cc001ff4d4e3415fb4b4931723c49eb08d9a",
+  "project_main_at_approval": "58209a59e2fab7f77b73d3316303efb5cc710c2a",
+  "required_generation_log": [
+    "MODEL_OR_TOOL",
+    "PROMPT_OR_GENERATION_BRIEF",
+    "DATE_AND_VERSION",
+    "RIGHTS_PROVENANCE_NOTE"
+  ],
+  "required_post_generation_review": [
+    "PLANNING_MATCH",
+    "READABILITY",
+    "IMPLEMENTATION_FEASIBILITY",
+    "CONSISTENCY",
+    "RIGHTS_SIMILARITY",
+    "WINDOWS_16_9_AND_ANDROID_RESPONSIVE"
+  ],
+  "claim_ceiling": [
+    "NO_PRODUCT_ASSET_APPROVAL",
+    "NO_RUNTIME_INTEGRATION",
+    "NO_GODOT_IMPLEMENTATION",
+    "NO_WINDOWS_ANDROID_DEVICE_VALIDATION",
+    "NO_HUMAN_UX_VALIDATION",
+    "PRODUCT_ENTRY_GATE_REMAINS_BLOCKED"
+  ]
+}

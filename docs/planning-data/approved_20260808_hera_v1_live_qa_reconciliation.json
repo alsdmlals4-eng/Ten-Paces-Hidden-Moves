@@ -2,11 +2,12 @@
   "schema_version": 1,
   "decision_id": "TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01",
   "authority_status": "CURRENT_APPROVED_RECONCILIATION",
-  "snapshot_semantics": "POST_PR110_MERGE_CLOSEOUT",
+  "snapshot_semantics": "POST_PR115_REMOTE_CLI_PREFLIGHT_PLUS_LOCAL_AUTHORITY_SEQUENCE_CORRECTION",
   "approved_at": "2026-08-08T07:50:00+09:00",
+  "remote_cli_preflight_at": "2026-08-08T19:12:00+09:00",
+  "authority_sequence_corrected_at": "2026-08-08T19:24:00+09:00",
   "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
-  "branch": "chore/hera-v1-reconciliation",
-  "base_main": "8e06c3ed4b572d211aeb9447d5d0b1491b1b8467",
+  "base_main": "e3c7a3cc0705f7a20dcf7810788ce86633b9b186",
   "installation_commit": "b6a7a96778d7420c67829bb6ffa59b32d959dae2",
   "official_source": {
     "repository": "NotNull92/hera-agent-godot",
@@ -15,22 +16,43 @@
     "project_addon_tree": "6cb87ac8ba768de1d924447f385fba6d80bcde68",
     "tree_match": "EXACT",
     "plugin_version": "1.0.0",
-    "license": "MIT"
+    "license": "MIT",
+    "addon_release_asset": "hera-agent-godot-addon.zip",
+    "addon_release_sha256": "0a71000f0c4192043e72e9b18f4de3bac720035d9d7c95c9634648a7b5c54d9f",
+    "windows_amd64_cli_asset": "hera-windows-amd64.zip",
+    "windows_amd64_cli_sha256": "9ae181741c2e8a3f57bbb2a2e4c61ac2c9c7c844fad21c88ae3890c55a5cc66b",
+    "expected_cli_version": "1.0.0"
+  },
+  "remote_cli_preflight": {
+    "state": "PASS_CONTENT_ADDRESSED_OFFICIAL_RELEASE",
+    "verified_release": "v1.0.0",
+    "required_commands": [
+      "hera version",
+      "hera status",
+      "hera smoke --skip-game"
+    ],
+    "full_editor_restart_required": true,
+    "proves_local_installation": false
   },
   "authority": {
     "role": "LIVE_QA_AND_OBSERVABILITY_ONLY",
     "persistent_source_mutation": "FORBIDDEN",
     "transport": "LOCALHOST_ONLY",
     "acceptance_source_delta": "NONE",
-    "persistent_godot_authoring_authority": "HIGODOT_ONLY"
+    "persistent_godot_authoring_authority": "HIGODOT_ONLY",
+    "project_setting_mutation_risk_class": "HIGODOT_L2"
   },
   "project_state": {
     "addon_present": true,
     "enabled_in_project_godot": false,
-    "enabled_plugin": "res://addons/godot_ai/plugin.cfg",
-    "exact_cli_version": "BLOCKED_UNVERIFIED_LOCAL_ACCESS",
+    "currently_enabled_plugin": "res://addons/godot_ai/plugin.cfg",
+    "expected_cli_version": "1.0.0",
+    "expected_windows_amd64_cli_sha256": "9ae181741c2e8a3f57bbb2a2e4c61ac2c9c7c844fad21c88ae3890c55a5cc66b",
+    "exact_local_cli_version": "BLOCKED_UNVERIFIED_LOCAL_ACCESS",
     "cli_addon_pair": "HERA_CLI_ADDON_PAIR_UNVERIFIED",
+    "higodot_plugin_enable_authoring": "NOT_RUN_REQUIRED_L2",
     "live_editor_connection": "NOT_RUN",
+    "full_editor_restart": "NOT_RUN",
     "status_check": "NOT_RUN",
     "smoke_skip_game": "NOT_RUN",
     "shared_token_configuration": "NOT_RUN",
@@ -38,25 +60,37 @@
     "adoption_status": "PRESENT_DISABLED_PAIR_UNVERIFIED"
   },
   "activation_gate": [
-    "VERIFY_HERA_CLI_EXACT_V1_PAIR",
+    "VERIFY_WINDOWS_AMD64_CLI_ARTIFACT_SHA256",
+    "VERIFY_HERA_CLI_EXACT_V1_WITH_HERA_VERSION",
+    "HIGODOT_L0_OBSERVE_TARGET_PROJECT_AND_PLUGIN_STATE",
+    "HIGODOT_L2_ENABLE_HERA_PLUGIN_IF_ADOPTION_CONTINUES",
     "FULL_EDITOR_RESTART",
+    "LOCALHOST_AND_SHARED_TOKEN_CHECK_WITH_SECRET_REDACTION",
     "HERA_STATUS_TARGET_PROJECT",
+    "TRACKED_SOURCE_PRE_HERA_SNAPSHOT_AFTER_INTENDED_HIGODOT_DELTA",
     "HERA_SMOKE_SKIP_GAME",
-    "LOCALHOST_AND_SHARED_TOKEN_CHECK_IF_ADOPTED",
-    "TRACKED_SOURCE_PRE_POST_DELTA_NONE"
+    "TRACKED_SOURCE_POST_HERA_DELTA_NONE"
   ],
-  "open_pr_reconciliation": {
-    "pr": 109,
-    "merge_base": "956dc9b86ea99176ffc35568530137fbf9007736",
-    "current_main": "102bd7010316edc10fa0709dfe336040d33082df",
-    "behind_current_main_by": 3,
-    "merge_before_rebase_and_fresh_exact_head_validation": false,
-    "revalidate_before_pr109_merge": true
+  "export_gate": {
+    "observed_main": "e3c7a3cc0705f7a20dcf7810788ce86633b9b186",
+    "export_filter": "all_resources",
+    "exclude_filter": "",
+    "legacy_validation_gate_label": "HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION",
+    "persistent_authoring_required": true,
+    "persistent_authoring_risk_class": "HIGODOT_L2",
+    "state": "BLOCKED_REQUIRES_HIGODOT_L2_AUTHORING_THEN_L1_VALIDATION",
+    "do_not_guess_exclusions_for_runtime_required_addons": true
+  },
+  "historical_pr109_reconciliation": {
+    "initial_state": "DIVERGED_DURING_PR110_INVESTIGATION",
+    "current_state": "CLOSED_MERGED_HOSTED_VALIDATED",
+    "current_authority": "TEN-DEC-20260807-GUT-9-7-1-RECONCILIATION-01"
   },
   "product_implementation_effect": "NONE",
   "visual_audio_disposition": "NO_NEW_VISUAL_OR_AUDIO_ASSET_REQUIRED",
   "claim_ceiling": {
     "hera_addon_provenance": "VERIFIED_EXACT_V1_0_0",
+    "hera_official_windows_cli_pin": "VERIFIED_REMOTE_V1_0_0",
     "hera_active_adoption": "NOT_COMPLETE",
     "local_windows": "NOT_RUN",
     "local_higodot": "NOT_RUN",
@@ -64,5 +98,5 @@
     "human": "NOT_RUN",
     "windows_android_adapter_implementation": "BLOCKED_BY_ENTRY_GATE"
   },
-  "next_gate": "HERA_LOCAL_PAIR_CANARY_AND_WORK_ENTRY_RECHECK"
+  "next_gate": "LOCAL_CLI_SHA_VERSION_THEN_HIGODOT_L2_PLUGIN_ENABLE_AND_EXPORT_AUTHORING_THEN_HERA_CANARY"
 }

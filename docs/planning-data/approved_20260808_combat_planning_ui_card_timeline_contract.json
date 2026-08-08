@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260808-COMBAT-PLANNING-UI-CARD-TIMELINE-01",
+  "approval_date": "2026-08-08",
+  "approval_source": "권장안대로 승인",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "PLANNING_ONLY",
+  "runtime_changed": false,
+  "base_main_at_work_start": "eee98a9381c455e2725d86799fef990c5c5b367e",
+  "project_main_at_branch_start": "245bcdccdfb23f03df3df74a48c196edbc624b16",
+  "parent_decisions": [
+    "TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01",
+    "TEN-DEC-20260802-BASIC-ACTIONS-PALM-CLASH-01",
+    "TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01",
+    "TEN-DEC-20260804-EXISTING-ACTIONS-REPRICE-01",
+    "TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01",
+    "TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01"
+  ],
+  "timeline": {
+    "moves_per_round": 10,
+    "bundles": [
+      3,
+      3,
+      4
+    ],
+    "editable_scope": "CURRENT_BUNDLE_ONLY",
+    "empty_slot": "WAIT",
+    "commit_locks_current_bundle": true,
+    "multi_move_action_connected_block_required": true,
+    "multi_move_action_may_cross_bundle": false,
+    "responsive_viewport": {
+      "wide_all_ten_visible_allowed": true,
+      "compact_subset_visible_allowed": true,
+      "full_ten_logical_awareness_required": true,
+      "bundle_boundaries_always_identifiable": true,
+      "completed_moves_slide_left_allowed": true,
+      "upcoming_moves_enter_right_allowed": true
+    }
+  },
+  "bundle_transition_recovery": {
+    "first_bundle_start_recovery": false,
+    "stamina_gain": 1,
+    "internal_gain": 0,
+    "ultimate_momentum_gain": 1,
+    "caps_apply": true
+  },
+  "card_fields": {
+    "separate_cost_dimensions": true,
+    "fields": [
+      "slot_count",
+      "range",
+      "stamina_cost",
+      "internal_cost",
+      "ultimate_momentum_cost_or_reservation_if_applicable",
+      "core_effect",
+      "multi_move_phase_structure_if_applicable"
+    ],
+    "internal_balance_ticks_player_facing": false,
+    "invent_unresolved_values": false
+  },
+  "confirmed_examples": {
+    "basic_palm": {
+      "display_name": "장풍",
+      "slots": 2,
+      "internal_cost": 1,
+      "range_min": 1,
+      "range_max": 3,
+      "phases": [
+        "전조",
+        "실행"
+      ],
+      "damage_formula": "floor(3 + 내공 * 0.75)",
+      "damage_at_internal_power_4": 6
+    },
+    "basic_heavy_attack": {
+      "display_name": "강공",
+      "slots": 2,
+      "stamina_cost": 1,
+      "internal_cost": 2
+    },
+    "basic_observe": {
+      "display_name": "관찰",
+      "slots": 1,
+      "player_only": true,
+      "observation_gain": 1,
+      "current_base_cost": "NONE_UNLESS_SUPERSEDED_BY_FUTURE_DECISION"
+    }
+  },
+  "action_sources": {
+    "tabs": [
+      "기초",
+      "무공",
+      "절초"
+    ],
+    "basic_actions": [
+      "이동",
+      "보법",
+      "막기",
+      "회피",
+      "속공",
+      "강공",
+      "관찰",
+      "명상",
+      "준비",
+      "장풍"
+    ],
+    "prelude_is_basic_action": false,
+    "prepare_is_independent_basic_action": true,
+    "runtime_basic_actions_claim": "LEGACY_8_VS_APPROVED_PLANNING_10"
+  },
+  "manual_growth": {
+    "star3": "TECHNIQUE_1",
+    "star5": "TECHNIQUE_1_UPGRADE_OVERLAY",
+    "star7": "TECHNIQUE_2",
+    "star9": "TECHNIQUE_2_COMPLETION_UPGRADE_OVERLAY",
+    "star10": "ULTIMATE",
+    "star5_is_separate_card": false,
+    "star9_is_separate_card": false
+  },
+  "manuals": [
+    {
+      "faction": "화산파",
+      "manual": "매화검결",
+      "primary": "신법",
+      "secondary": "외공",
+      "star10": "이십사수매화검법"
+    },
+    {
+      "faction": "소림사",
+      "manual": "나한금강공",
+      "primary": "외공",
+      "secondary": "내공",
+      "star10": "여래신장"
+    },
+    {
+      "faction": "무당파",
+      "manual": "태극검결",
+      "primary": "심안",
+      "secondary": "내공",
+      "star10": "태극혜검"
+    },
+    {
+      "faction": "양가",
+      "manual": "양가창결",
+      "primary": "외공",
+      "secondary": "신법",
+      "star10": "회마창"
+    },
+    {
+      "faction": "화산파",
+      "manual": "자하심법",
+      "primary": "내공",
+      "secondary": "근골",
+      "star10": "자하신공"
+    },
+    {
+      "faction": "소요파",
+      "manual": "소요보결",
+      "primary": "신법",
+      "secondary": "심안",
+      "star10": "능파미보"
+    },
+    {
+      "faction": "개방",
+      "manual": "강룡장결",
+      "primary": "내공",
+      "secondary": "근골",
+      "star10": "항룡십팔장"
+    },
+    {
+      "faction": "사천당문",
+      "manual": "천기암기록",
+      "primary": "심안",
+      "secondary": "신법",
+      "star10": "만천화우"
+    },
+    {
+      "faction": "하북팽가",
+      "manual": "팽가도결",
+      "primary": "근골",
+      "secondary": "외공",
+      "star10": "오호단문도"
+    },
+    {
+      "faction": "남궁세가",
+      "manual": "창궁무애검법",
+      "primary": "내공",
+      "secondary": "심안",
+      "star10": "제왕검형"
+    }
+  ],
+  "derived_resource_caps": {
+    "max_hp": "26 + 근골",
+    "max_stamina": "4 + floor(신법 / 4)",
+    "max_internal": "3 + floor(내공 / 4)",
+    "ultimate_momentum_min": 0,
+    "ultimate_momentum_max": 5,
+    "base_stat_4_example": {
+      "hp": 30,
+      "stamina": 5,
+      "internal": 4
+    },
+    "max_increase_refills_current": false
+  },
+  "battlefield": {
+    "cells": 10,
+    "cell_ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "show_positions": true,
+    "show_distance": true,
+    "ally_zone_label_forbidden": true,
+    "enemy_zone_label_forbidden": true
+  },
+  "accessibility_and_responsive": {
+    "windows_android_semantic_equivalence": true,
+    "color_only_meaning_forbidden": true,
+    "hover_only_forbidden": true,
+    "drag_only_forbidden": true,
+    "compact_current_move_bundle_total_position_required": true
+  },
+  "known_canon_drift": [
+    {
+      "surface": "docs/02_COMBAT_RULES.md",
+      "field": "bundle_transition_recovery.internal",
+      "stale_value": 1,
+      "current_value": 0,
+      "current_authority": "TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01"
+    },
+    {
+      "surface": "docs/02_COMBAT_RULES.md",
+      "field": "basic_heavy_attack.internal_cost",
+      "stale_value": 1,
+      "current_value": 2,
+      "current_authority": "TEN-DEC-20260804-EXISTING-ACTIONS-REPRICE-01"
+    },
+    {
+      "surface": "Google Sheet 00_프로젝트_허브",
+      "field": "Base SHA / GitHub tracking text",
+      "state": "STALE_AT_APPROVAL_READBACK",
+      "observed_base_main": "eee98a9381c455e2725d86799fef990c5c5b367e",
+      "observed_project_main": "245bcdccdfb23f03df3df74a48c196edbc624b16"
+    }
+  ],
+  "forbidden_claims": [
+    "RUNTIME_BASIC_ACTIONS_10_COMPLETE",
+    "GODOT_UI_IMPLEMENTED_BY_THIS_DECISION",
+    "WINDOWS_VALIDATED_BY_THIS_DECISION",
+    "ANDROID_VALIDATED_BY_THIS_DECISION",
+    "HUMAN_UX_VALIDATED_BY_THIS_DECISION",
+    "VISUAL_ASSET_GENERATION_APPROVED_BY_THIS_DECISION"
+  ],
+  "product_entry_gate": "REMAINS_FAIL_CLOSED"
+}

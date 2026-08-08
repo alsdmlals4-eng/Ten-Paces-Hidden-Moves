@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "requirement_id": "TEN-VIS-REQ-001",
+  "linked_image_id": "TEN-IMG-001",
+  "status": "APPROVED_GENERATION_EXPLORATION_AUTHORIZED",
+  "stage": "PLANNING_VISUALIZATION",
+  "approval": {
+    "decision_id": "TEN-DEC-20260808-TEN-IMG-001-VISUAL-REQUIREMENT-APPROVAL-01",
+    "decision": "APPROVE",
+    "approval_date": "2026-08-08",
+    "approval_source": "권장안대로 승인",
+    "project_main_at_approval": "58209a59e2fab7f77b73d3316303efb5cc710c2a",
+    "base_main_at_approval": "a912cc001ff4d4e3415fb4b4931723c49eb08d9a",
+    "generation_exploration_authorized": true,
+    "product_asset_use_authorized": false,
+    "runtime_integration_authorized": false
+  },
+  "source_decision_ids": [
+    "TEN-DEC-20260808-COMBAT-PLANNING-UI-CARD-TIMELINE-01"
+  ],
+  "surface_or_flow": "COMBAT_PLANNING_BOARD",
+  "player_question": "현재 거리·밀착 상태와 3/3/4 계획 슬롯을 한눈에 읽고 이번 10칸 결투에서 무엇을 배치하고 어떤 결과를 예상해야 하는가?",
+  "element_type": "TACTICAL_UI_PLANNING_VISUALIZATION",
+  "role": "INFORMATION_HIERARCHY_AND_READABILITY_VALIDATION",
+  "why_needed": "제품 UI 구현 전에 10칸 전장, 거리·밀착, 3/3/4 계획 슬롯, 카드·자원·예상 결과의 위계를 한 프레임에서 검토해 겹침·가독성·정보 우선순위 문제를 조기에 드러내기 위해 필요하다.",
+  "delete_test": "이 시각화를 제거하면 리뷰어가 10칸 전장 상태와 3/3/4 계획 슬롯·카드·자원·예상 결과의 동시 정보 위계를 한 화면에서 비교할 수 없고, Windows 16:9와 Android responsive UI에서 발생할 수 있는 겹침·축소 가독성 문제를 prose만으로 판단해야 한다.",
+  "consumer": [
+    "PRODUCT_UI_REVIEW",
+    "VERTICAL_SLICE_PLANNING_REVIEW",
+    "RESPONSIVE_UI_FEASIBILITY_REVIEW"
+  ],
+  "priority": "P0_BLOCKER",
+  "reuse_candidate": {
+    "type": "PROJECT_STRUCTURE_ONLY",
+    "source": "res://scenes/combat/combat_board_preview.tscn",
+    "reuse_scope": "전장 구조와 기존 정보 계약을 참고하되 현행 화면을 승인된 시각 자산으로 간주하지 않는다.",
+    "asset_reuse_verified": false
+  },
+  "disposition": "GENERATE_EXPLORATION",
+  "disposition_status": "APPROVED",
+  "required_states": [
+    "PLANNING_PHASE_3_3_4_SLOT_HIERARCHY",
+    "TEN_SPACE_DISTANCE_AND_ADJACENCY_READABILITY",
+    "CARD_RESOURCE_AND_PREDICTED_RESULT_HIERARCHY",
+    "WINDOWS_16_9_REFERENCE",
+    "ANDROID_RESPONSIVE_STRESS_CASE"
+  ],
+  "accessibility_equivalent": {
+    "color_only_meaning_forbidden": true,
+    "required_non_color_signals": [
+      "TEXT_OR_ICON_LABEL",
+      "SHAPE_OR_BORDER_STATE",
+      "FOCUS_OR_SELECTION_INDICATOR"
+    ],
+    "generated_text_is_authoritative": false,
+    "product_text_must_remain_editable": true
+  },
+  "platform_and_input": {
+    "design_platforms": [
+      "WINDOWS",
+      "ANDROID"
+    ],
+    "reference_canvas": "1920x1080_16_9",
+    "windows_inputs": [
+      "MOUSE",
+      "KEYBOARD"
+    ],
+    "android_inputs": [
+      "TOUCH"
+    ],
+    "responsive_requirement": "핵심 정보 위계가 좁은 화면에서도 의미 손실 없이 재배치 가능한지 검토한다."
+  },
+  "localization": {
+    "baked_meaningful_text_in_generated_image": false,
+    "text_policy": "생성 이미지의 문자는 레이아웃 자리표시자로만 사용하고 실제 제품 의미 텍스트는 편집 가능한 UI 레이어로 유지한다."
+  },
+  "production_cost": "MEDIUM",
+  "performance_risk": "NONE_RUNTIME_PLANNING_ONLY",
+  "rights_or_provenance": {
+    "state": "GENERATION_LOG_REQUIRED",
+    "third_party_logo_or_character_copy": "FORBIDDEN",
+    "reference_policy": "특정 작품의 고유 캐릭터·로고·UI를 복제하지 않고 무협 전술 UI의 일반 원리만 참고한다."
+  },
+  "generation_brief": {
+    "aspect_ratio": "16:9",
+    "candidate_resolution": "1920x1080",
+    "must_preserve": [
+      "TEN_SPACE_FIELD",
+      "MARTIAL_ARTS_TACTICAL_TONE",
+      "CORRECT_INFORMATION_RELATIONSHIPS",
+      "TEN_MOVE_3_3_4_LOGIC",
+      "CURRENT_MOVE_AND_BUNDLE_AWARENESS"
+    ],
+    "allowed_variation_axes": [
+      "HUD_LAYOUT",
+      "CARD_SCALE",
+      "COMBAT_LOG_POSITION"
+    ],
+    "must_not_do": [
+      "BAKE_FINAL_LOCALIZED_TEXT",
+      "INVENT_COMBAT_RULES",
+      "CHANGE_3_3_4_STRUCTURE",
+      "TREAT_OUTPUT_AS_FINAL_PRODUCT_ASSET"
+    ]
+  },
+  "validation": {
+    "planning_match": "VERIFY_TEN_SPACE_DISTANCE_ADJACENCY_AND_3_3_4_INFORMATION_RELATIONSHIPS",
+    "readability": "VERIFY_BOARD_CARD_RESOURCE_AND_PREDICTION_HIERARCHY_AT_REFERENCE_AND_REDUCED_VIEW",
+    "feasibility": "VERIFY_LAYOUT_CAN_BE_RECONSTRUCTED_WITH_EDITABLE_GODOT_UI_COMPONENTS",
+    "consistency": "VERIFY_MARTIAL_TACTICAL_TONE_WITHOUT_OVERRIDING_INFORMATION_CLARITY",
+    "rights_similarity": "VERIFY_NO_UNACCEPTABLE_LOGO_CHARACTER_OR_DISTINCTIVE_UI_COPY",
+    "platform": "VERIFY_WINDOWS_16_9_AND_ANDROID_RESPONSIVE_RECOMPOSITION",
+    "approval_required_before_generation": true,
+    "generation_approval_fulfilled": true,
+    "approval_required_before_product_asset_use": true,
+    "product_asset_approval_fulfilled": false
+  },
+  "handoff": {
+    "current_action": "GENERATE_TEN_IMG_001_EXPLORATION_AND_LOG_MODEL_PROMPT_PROVENANCE",
+    "next_after_generation": "REVIEW_GENERATED_EXPLORATION_AGAINST_VALIDATION_CRITERIA",
+    "product_asset_status": "NOT_AN_ASSET",
+    "runtime_integration": "FORBIDDEN_AT_THIS_STAGE"
+  }
+}
