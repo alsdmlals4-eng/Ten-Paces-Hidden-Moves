@@ -5,9 +5,9 @@
   "related_decision_ids": [
     "TEN-DEC-20260807-GUT-9-7-1-RECONCILIATION-01"
   ],
-  "snapshot_semantics": "POST_PR115_REMOTE_PREFLIGHT_LOCAL_AUTHORITY_SEQUENCE_RECHECK_SELF_REFERENCE_EXCLUDED",
+  "snapshot_semantics": "POST_PR116_TOOLING_SEQUENCE_PLUS_TEN_IMG_001_REQUIREMENT_REVIEW_SELF_REFERENCE_EXCLUDED",
   "snapshot_commit_self_reference_excluded": true,
-  "observed_main_before_snapshot_commit": "e3c7a3cc0705f7a20dcf7810788ce86633b9b186",
+  "observed_main_before_snapshot_commit": "c6044494430ec42728de511f0997f2dab2db5044",
   "observed_base_main": "fa69a77a14f923a756064f6ae151d34cadb374f7",
   "decision_ledger_readback": "PASS",
   "unresolved_audit_readback": "PASS",
@@ -33,7 +33,16 @@
   },
   "higodot_l2_export_authoring": "REQUIRED_NOT_RUN_LOCAL",
   "higodot_l1_export_exclusion": "BLOCKED_UNTIL_L2_AUTHORING_THEN_LOCAL_VALIDATION",
-  "ten_img_001": "PLANNED_IN_REVIEW_NOT_RUN_VISUAL_REQUIREMENT_FIELDS_INCOMPLETE",
+  "ten_img_001": "VISUAL_REQUIREMENT_REVIEW_READY_NOT_APPROVED_GENERATION_NOT_RUN",
+  "ten_img_001_requirement": {
+    "requirement_id": "TEN-VIS-REQ-001",
+    "record": "docs/planning-data/ten_img_001_visual_requirement.json",
+    "priority": "P0_BLOCKER",
+    "disposition": "GENERATE_EXPLORATION_PROPOSED",
+    "approval": "NOT_APPROVED",
+    "generation": "NOT_RUN",
+    "product_asset": "NOT_AN_ASSET"
+  },
   "local_windows_checkout": "BLOCKED_UNVERIFIED",
   "local_android_device": "BLOCKED_UNVERIFIED",
   "human_validation": "BLOCKED_NOT_RUN",
@@ -48,7 +57,7 @@
     "VERIFY_LOCALHOST_SHARED_TOKEN_WITH_SECRET_REDACTION_AND_HERA_STATUS",
     "RUN_HERA_SMOKE_SKIP_GAME_AND_REQUIRE_HERA_PHASE_DELTA_NONE",
     "HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION_WITH_EXPORT_REGRESSION",
-    "COMPLETE_TEN_IMG_001_VISUAL_REQUIREMENT_RECORD_AND_REVIEW",
+    "REVIEW_TEN_VIS_REQ_001_AND_APPROVE_REVISE_OR_DEFER_BEFORE_IMAGE_GENERATION",
     "VERIFY_LOCAL_WINDOWS_ANDROID_DEVICE_AND_HUMAN_GATES",
     "RECHECK_WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE"
   ],
