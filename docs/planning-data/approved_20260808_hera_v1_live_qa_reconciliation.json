@@ -26,7 +26,11 @@
   "remote_cli_preflight": {
     "state": "PASS_CONTENT_ADDRESSED_OFFICIAL_RELEASE",
     "verified_release": "v1.0.0",
-    "required_commands": ["hera version", "hera status", "hera smoke --skip-game"],
+    "required_commands": [
+      "hera version",
+      "hera status",
+      "hera smoke --skip-game"
+    ],
     "full_editor_restart_required": true,
     "proves_local_installation": false
   },
