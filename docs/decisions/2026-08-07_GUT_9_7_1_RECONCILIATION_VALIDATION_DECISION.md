@@ -79,22 +79,7 @@ review_threads_unresolved: 0
 result: PASS_EXACT_HEAD_HOSTED
 ```
 
-GUT Reconciliation #21에서 다음 단계가 모두 성공했다.
-
-1. 프로젝트 exact HEAD checkout.
-2. 공식 GUT `v9.7.1` checkout.
-3. reconciliation contract 및 observed-variance manifest unit tests.
-4. addon tree 파일 단위 비교와 제한된 text-resource 정규화 검사.
-5. Godot 4.7.1 import.
-6. import 후 tracked tree clean 확인.
-7. production scope hash 기록.
-8. GUT CLI 실행.
-9. JUnit 파일 확인.
-10. GUT 실행 후 production scope hash 동일성 확인.
-11. GUT 후 tracked tree clean 확인.
-12. reconciliation JSON과 JUnit artifact 업로드.
-
-Full Validation #1059, Base v9 adoption #1013, PR Validation #1930, Ten Manual Product Gate #212와 해당 exact HEAD에서 반환된 나머지 프로젝트 검증 workflow도 모두 `SUCCESS`였다.
+GUT Reconciliation #21에서 프로젝트/공식 tag checkout, contract tests, addon tree 비교, Godot 4.7.1 import, clean-tree, production hash, GUT CLI, JUnit, hash 불변, artifact upload가 모두 성공했다. Full Validation #1059, Base v9 adoption #1013, PR Validation #1930, Ten Manual Product Gate #212와 해당 exact HEAD에서 반환된 나머지 프로젝트 검증 workflow도 모두 `SUCCESS`였다.
 
 PR #107 전용 예산 fallback은 이력으로만 보존하며 PR #109의 성공 증거로 재사용하지 않았다.
 
@@ -104,11 +89,7 @@ Production scope는 `src`, `scenes`, `data`, `assets`, `project.godot`, `export_
 
 Base adversarial gate는 `addons/` binary 변경을 보호 경로로 취급하므로, 공식 GUT 폰트 복원은 같은 diff의 `docs/implementation/BUILD_APPROVAL_2026-08-08.md`에 사용자 승인 출처와 정확한 tooling-only 범위를 기록했다. 이 승인으로 제품 런타임 기능·Scene·Resource·플랫폼 adapter 변경 권한을 확대하지 않는다.
 
-HiGodot은 Scene·Node·Resource·project settings의 단일 저작 권위다. 이 repair에서는 다음을 수행하지 않았다.
-
-- vendored GUT `.tscn`·`.tres`의 raw upstream 재저장.
-- `project.godot` 변경.
-- `export_presets.cfg`의 GUT 제외 규칙 변경.
+HiGodot은 Scene·Node·Resource·project settings와 관련 persistent Godot 저작의 단일 권위다. 이 repair에서는 vendored GUT `.tscn`·`.tres` 재저장, `project.godot`, `export_presets.cfg`의 GUT 제외 규칙 변경을 수행하지 않았다.
 
 따라서 hosted GUT/JUnit 검증이 완료됐어도 권위 상태는 다음으로 제한한다.
 
@@ -118,7 +99,30 @@ export_exclusion: BLOCKED_PENDING_HIGODOT_L1
 formal_adoption_claim: NOT_COMPLETE
 ```
 
-## 6. 변경 금지와 Claim Ceiling
+`BLOCKED_PENDING_HIGODOT_L1`은 기존 검증 Gate marker로 보존한다. 다만 Base 위험도 정본을 재대조한 결과, **현재 export 설정에 실제 persistent 변경이 필요하면 그 저작 행위는 HiGodot L2**다. L1은 이미 존재하는 결과를 재관찰·검증하는 단계로만 사용한다.
+
+## 6. 현재 export readback과 보정된 Gate
+
+main `e3c7a3cc0705f7a20dcf7810788ce86633b9b186`의 `export_presets.cfg` readback은 다음과 같다.
+
+```yaml
+export_filter: all_resources
+exclude_filter: ""
+observed_tooling_exclusion: NOT_IMPLEMENTED_IN_PRESET
+legacy_gate_marker: BLOCKED_PENDING_HIGODOT_L1
+authoring_required: true
+authoring_authority: HIGODOT_ONLY
+authoring_risk_class: L2_PERSISTENT_FILE_OR_PROJECT_SETTING_WRITE
+verification_after_authoring: HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION
+```
+
+따라서 현재 상태에서 `HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION`을 실행해 PASS라고 주장할 수 없다. 먼저 기존 승인 범위의 GUT/test tooling exclusion 요구를 HiGodot L2로 저작하고, 그 후 L1/L0 재관찰과 실제 export regression으로 검증해야 한다.
+
+- `addons/gut/**`, `tests/**`, `.gutconfig.json`의 product export exclusion은 기존 GUT/HiGodot 채택 의도에 따라 검증 대상이다.
+- 다른 addon은 추측으로 제외하지 않는다. 예를 들어 현재 `addons/godot_ai/runtime/game_helper.gd`는 autoload 소비 경로가 있으므로 dependency/readback 없이 디렉터리 전체를 제외하면 안 된다.
+- Hera addon의 product export disposition 역시 별도 dependency/readback과 같은 HiGodot authoring/validation 경계를 통과하기 전 자동 승인하지 않는다.
+
+## 7. 변경 금지와 Claim Ceiling
 
 - 제품 GDScript·Scene·Resource·전투 데이터·save·`project.godot` 변경 금지.
 - GUT `.tscn`·`.tres` 직접 저작 금지.
@@ -130,6 +134,6 @@ formal_adoption_claim: NOT_COMPLETE
 - Ten Manual Product Gate의 GitHub-hosted Windows export 증거는 local Windows/device/human 검증을 대체하지 않는다.
 - 제품 구현은 기존 Work Entry Completeness Gate에 따라 계속 차단한다.
 
-## 7. 다음 Gate
+## 8. 다음 Gate
 
-GUT/JUnit hosted reconciliation Gate는 닫혔다. 다음 GUT 채택 Gate는 `HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION`이다. 별도로 Hera CLI/addon pair·live QA canary, `TEN-IMG-001`, local Windows/Android/device/human Gate가 모두 닫히기 전에는 Windows/Android Adapter 제품 구현 Entry Gate를 열지 않는다.
+GUT/JUnit hosted reconciliation Gate는 닫혔다. 다음 GUT 채택 경로는 **HiGodot L2로 필요한 product export exclusion을 저작한 뒤 기존 `HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION`에서 결과를 검증**하는 것이다. 별도로 Hera CLI/addon local pair·HiGodot-authorized plugin enable·live QA canary, `TEN-IMG-001`, local Windows/Android/device/human Gate가 모두 닫히기 전에는 Windows/Android Adapter 제품 구현 Entry Gate를 열지 않는다.
