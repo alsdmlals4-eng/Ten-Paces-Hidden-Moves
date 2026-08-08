@@ -62,6 +62,10 @@ jobs:
       - name: Run governance regression tests
         run: python -m unittest discover -s tests -p 'test_project_governance.py'
 
+      - name: Run local Godot evidence collector contract tests
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python -m unittest tests.test_local_godot_evidence_collector_contract -v
+
       - name: Run post-merge canon lifecycle regression tests
         run: python -m unittest tests.test_postmerge_canon_lifecycle -v
 
@@ -160,7 +164,8 @@ jobs:
             "tools/run_combat_board.ps1",
             "tools/verify_repeat_poc_a1.ps1",
             "tools/verify_repeat_poc_a2.ps1",
-            "tools/verify_repeat_poc_a3.ps1"
+            "tools/verify_repeat_poc_a3.ps1",
+            "tools/collect_godot_live_evidence.ps1"
           )
           foreach ($path in $paths) {
             $tokens = $null
