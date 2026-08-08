@@ -173,7 +173,8 @@ if ($section.Success) { foreach ($x in [regex]::Matches($section.Value, '"(res:/
 $autoloads = @()
 $section = [regex]::Match($projectText, '(?ms)^\[autoload\]\s*(.*?)(?=^\[|\z)')
 if ($section.Success) { foreach ($line in ($section.Groups[1].Value -split "`r?`n")) { if ($line.Trim()) { $autoloads += $line.Trim() } } }
-$project = [ordered]@{ exists = (Test-Path -LiteralPath $projectFile); main_scene = $mainScene; editor_plugins = $enabledPlugins; autoload_entries = $autoloads }
+$projectExists = Test-Path -LiteralPath $projectFile -PathType Leaf
+$project = [ordered]@{ status = $(if ($projectExists) { "PASS" } else { "PROJECT_GODOT_NOT_FOUND" }); exists = $projectExists; main_scene = $mainScene; editor_plugins = $enabledPlugins; autoload_entries = $autoloads }
 $plugins = [ordered]@{
     godot_ai = Plugin $Root "addons/godot_ai/plugin.cfg" $enabledPlugins
     gut = Plugin $Root "addons/gut/plugin.cfg" $enabledPlugins
@@ -185,7 +186,11 @@ $godot = [ordered]@{ executable = $godotExe; status = "GODOT_EXECUTABLE_UNRESOLV
 if ($godotExe) {
     $r = Invoke-Capture $godotExe @("--version") $Root (Join-Path $OutputDir "godot-version.txt")
     $godot.version = $r.output.Trim(); $godot.status = $(if ($r.exit_code -eq 0) { "PASS" } else { "GODOT_VERSION_COMMAND_FAILED" })
-    if (-not $SkipGodotChecks) {
+    if ($git.available -and -not $git.working_tree_clean) {
+        $godot.import_parse = "NOT_RUN_DIRTY_WORKTREE_SAFETY"
+        Write-EvidenceText (Join-Path $OutputDir "godot-import-parse.txt") $godot.import_parse
+    }
+    elseif (-not $SkipGodotChecks) {
         $r = Invoke-Capture $godotExe @("--headless", "--editor", "--path", $Root, "--quit") $Root (Join-Path $OutputDir "godot-import-parse.txt")
         $godot.import_parse_exit_code = $r.exit_code; $godot.import_parse = $(if ($r.exit_code -eq 0) { "PASS" } else { "FAIL" })
     } else { $godot.import_parse = "NOT_RUN_SKIP_REQUESTED" }
@@ -195,7 +200,8 @@ if ($godotExe) {
 }
 
 $gut = [ordered]@{ status = "NOT_RUN"; plugin_version = $plugins.gut.version; exit_code = $null; junit_path = "build/test-results/gut.xml" }
-if ($SkipGut) { $gut.status = "NOT_RUN_SKIP_REQUESTED" }
+if ($git.available -and -not $git.working_tree_clean) { $gut.status = "NOT_RUN_DIRTY_WORKTREE_SAFETY" }
+elseif ($SkipGut) { $gut.status = "NOT_RUN_SKIP_REQUESTED" }
 elseif (-not $plugins.gut.present) { $gut.status = "GUT_ADDON_NOT_FOUND" }
 elseif (-not $godotExe) { $gut.status = "GUT_RUN_BLOCKED_GODOT_EXECUTABLE_UNRESOLVED" }
 else {
@@ -215,7 +221,12 @@ if ($heraExe) {
     $hera.version_exit_code = $r.exit_code; $hera.cli_version = $r.output.Trim(); $hera.status = $(if ($r.exit_code -eq 0) { "PASS" } else { "HERA_VERSION_COMMAND_FAILED" })
     $r = Invoke-Capture $heraExe @("status") $Root (Join-Path $OutputDir "hera-status.txt")
     $hera.live_status_exit_code = $r.exit_code; $hera.live_status = $(if ($r.exit_code -eq 0) { "PASS" } else { "FAIL_OR_EDITOR_UNAVAILABLE" })
-    if (-not $SkipHeraSmoke) {
+    if ($git.available -and -not $git.working_tree_clean) {
+        $hera.smoke = "NOT_RUN_DIRTY_WORKTREE_SAFETY"
+        $hera.tracked_source_delta = "NOT_RUN_DIRTY_WORKTREE_SAFETY"
+        Write-EvidenceText (Join-Path $OutputDir "hera-smoke.txt") $hera.smoke
+    }
+    elseif (-not $SkipHeraSmoke) {
         $pre = Tracked-Fingerprint $Root
         $r = Invoke-Capture $heraExe @("smoke", "--skip-game") $Root (Join-Path $OutputDir "hera-smoke.txt")
         $post = Tracked-Fingerprint $Root
@@ -234,11 +245,13 @@ $finalGit = $git
 if ($git.available) {
     $s = Git-Read @("status", "--short", "--branch") $Root
     Write-EvidenceText (Join-Path $OutputDir "git-status-after.txt") $s.output
-    $finalGit = $git.Clone(); $finalGit.short_status = $s.output
+    $finalGit = [ordered]@{}
+    foreach ($key in $git.Keys) { $finalGit[$key] = $git[$key] }
+    $finalGit.short_status = $s.output
 }
 
 $blocking = @()
-foreach ($v in @($git.sync_status, $godot.status, $gut.status, $hera.status, $hera.live_status, $hera.smoke, $hera.tracked_source_delta)) {
+foreach ($v in @($git.sync_status, $project.status, $godot.status, $gut.status, $hera.status, $hera.live_status, $hera.smoke, $hera.tracked_source_delta)) {
     if ($null -ne $v -and ([string]$v) -match 'BLOCKED|UNRESOLVED|FAIL|NOT_FOUND') { $blocking += [string]$v }
 }
 $blocking = @($blocking | Select-Object -Unique)
