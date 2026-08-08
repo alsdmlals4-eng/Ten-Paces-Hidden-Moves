@@ -78,7 +78,15 @@
     "unresolved_review_threads": 0
   },
   "build_approval_record": "docs/implementation/BUILD_APPROVAL_2026-08-08.md",
-  "production_hash_scope": ["src/**", "scenes/**", "data/**", "assets/**", "addons/** except addons/gut/**", "project.godot", "export_presets.cfg"],
+  "production_hash_scope": [
+    "src/**",
+    "scenes/**",
+    "data/**",
+    "assets/**",
+    "addons/** except addons/gut/**",
+    "project.godot",
+    "export_presets.cfg"
+  ],
   "higodot_boundary": {
     "authority": "SINGLE_GODOT_SCENE_NODE_RESOURCE_PROJECT_SETTINGS_AUTHOR",
     "addon_scene_or_resource_rewrite_in_pr109": false,
@@ -96,7 +104,11 @@
     "persistent_authoring_risk_class": "L2_PERSISTENT_FILE_OR_PROJECT_SETTING_WRITE",
     "legacy_validation_gate": "HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION",
     "required_sequence": "HIGODOT_L2_AUTHOR_EXCLUSION_THEN_HIGODOT_L1_VALIDATE_AND_EXPORT_REGRESSION",
-    "approved_exclusion_validation_targets": ["addons/gut/**", "tests/**", ".gutconfig.json"],
+    "approved_exclusion_validation_targets": [
+      "addons/gut/**",
+      "tests/**",
+      ".gutconfig.json"
+    ],
     "do_not_guess_other_addon_exclusions": true
   },
   "authority_state": "PARTIAL_VALIDATED_EXPORT_GATE_OPEN",
