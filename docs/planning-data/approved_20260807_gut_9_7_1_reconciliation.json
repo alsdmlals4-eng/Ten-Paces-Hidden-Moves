@@ -78,22 +78,27 @@
     "unresolved_review_threads": 0
   },
   "build_approval_record": "docs/implementation/BUILD_APPROVAL_2026-08-08.md",
-  "production_hash_scope": [
-    "src/**",
-    "scenes/**",
-    "data/**",
-    "assets/**",
-    "addons/** except addons/gut/**",
-    "project.godot",
-    "export_presets.cfg"
-  ],
+  "production_hash_scope": ["src/**", "scenes/**", "data/**", "assets/**", "addons/** except addons/gut/**", "project.godot", "export_presets.cfg"],
   "higodot_boundary": {
     "authority": "SINGLE_GODOT_SCENE_NODE_RESOURCE_PROJECT_SETTINGS_AUTHOR",
     "addon_scene_or_resource_rewrite_in_pr109": false,
     "export_setting_mutation_in_pr109": false,
-    "local_l0_l1": "NOT_RUN_NO_LOCAL_ACCESS"
+    "local_l0_l1_l2": "NOT_RUN_NO_LOCAL_ACCESS"
   },
   "export_exclusion": "BLOCKED_PENDING_HIGODOT_L1",
+  "export_exclusion_observation": {
+    "observed_main": "e3c7a3cc0705f7a20dcf7810788ce86633b9b186",
+    "export_filter": "all_resources",
+    "exclude_filter": "",
+    "observed_result": "NOT_IMPLEMENTED_IN_PRESET",
+    "persistent_authoring_required": true,
+    "persistent_authoring_authority": "HIGODOT_ONLY",
+    "persistent_authoring_risk_class": "L2_PERSISTENT_FILE_OR_PROJECT_SETTING_WRITE",
+    "legacy_validation_gate": "HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION",
+    "required_sequence": "HIGODOT_L2_AUTHOR_EXCLUSION_THEN_HIGODOT_L1_VALIDATE_AND_EXPORT_REGRESSION",
+    "approved_exclusion_validation_targets": ["addons/gut/**", "tests/**", ".gutconfig.json"],
+    "do_not_guess_other_addon_exclusions": true
+  },
   "authority_state": "PARTIAL_VALIDATED_EXPORT_GATE_OPEN",
   "formal_adoption_claim": "NOT_COMPLETE",
   "product_implementation_effect": "NONE",
@@ -111,5 +116,5 @@
     "product_implementation": "BLOCKED_BY_WORK_ENTRY_COMPLETENESS_GATE",
     "production_readiness": false
   },
-  "next_gate": "HIGODOT_L1_EXPORT_EXCLUSION"
+  "next_gate": "HIGODOT_L2_AUTHOR_PRODUCT_EXPORT_EXCLUSION_THEN_HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION"
 }
