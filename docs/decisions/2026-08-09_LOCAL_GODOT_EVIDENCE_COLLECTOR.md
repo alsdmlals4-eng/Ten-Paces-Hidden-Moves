@@ -1,7 +1,7 @@
 # Local Godot Evidence Collector Decision
 
 - Decision ID: `TEN-DEC-20260809-LOCAL-GODOT-EVIDENCE-COLLECTOR-01`
-- Status: `APPROVED_IMPLEMENTATION_IN_PROGRESS`
+- Status: `APPROVED_COLLECTOR_CONTRACT`
 - Approval: 사용자 `그렇게하자.`
 - Scope: 로컬 Windows checkout의 Godot/HiGodot(Godot AI)/GUT/Hera/Git 상태를 한 번의 PowerShell 실행으로 수집하는 **증거 전용 진단기**
 - Product/runtime feature change: `NONE`
