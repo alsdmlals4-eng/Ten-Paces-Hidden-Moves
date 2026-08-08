@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "record_id": "TEN-GEN-20260808-TEN-IMG-001-01",
+  "image_id": "TEN-IMG-001",
+  "requirement_id": "TEN-VIS-REQ-001",
+  "approval_decision_id": "TEN-DEC-20260808-TEN-IMG-001-VISUAL-REQUIREMENT-APPROVAL-01",
+  "source_ui_decision_id": "TEN-DEC-20260808-COMBAT-PLANNING-UI-CARD-TIMELINE-01",
+  "status": "INVOCATION_PREPARED",
+  "prepared_at": "2026-08-08T22:06:00+09:00",
+  "tool_provider": "OpenAI",
+  "tool": "image_gen",
+  "output_stage": "PLANNING_VISUALIZATION_EXPLORATION_ONLY",
+  "output_asset_status": "NOT_AN_ASSET",
+  "reference_inputs": [
+    {
+      "reference": "USER_REFERENCE_IMAGE_1_IN_CURRENT_CHAT",
+      "use": "STYLE_FEEL_ONLY",
+      "constraint": "흡사한 고유 캐릭터·로고·식별 가능한 작품 요소를 복제하지 않고 붓질·질감·무협 분위기의 일반적 느낌만 참고한다."
+    },
+    {
+      "reference": "USER_REFERENCE_IMAGE_2_IN_CURRENT_CHAT",
+      "use": "UX_SPATIAL_STRUCTURE_ONLY",
+      "constraint": "레이아웃 정보 위계와 화면 구조만 참고하고 편집 흔적·고유 UI 장식·진영 표기는 복제하지 않는다."
+    }
+  ],
+  "generation_brief": {
+    "canvas": "16:9 tactical duel planning screen; 1920x1080 planning reference composition",
+    "style": "사용자 1번 레퍼런스의 회화적 무협 일러스트 느낌, 먹과 붓질의 질감, 절제된 색과 강한 명암, 인물과 UI가 한 장면에 자연스럽게 통합된 게임 컨셉 아트형 화면",
+    "ux_structure": "사용자 2번 레퍼런스의 전투 화면 정보 구조를 기반으로 중앙 결투 전장 + 행동계획 타임라인 + 카드 선택 영역 + 자원/예상결과/로그 정보 위계로 재구성",
+    "battlefield": [
+      "중립적인 일자형 1~10 전장",
+      "두 무인의 위치와 거리 관계를 즉시 읽을 수 있게 표현",
+      "아군 진영·적군 진영 같은 구획 또는 문구 금지"
+    ],
+    "timeline": [
+      "전체 논리 범위 10수",
+      "3|3|4 묶음 경계를 선·간격·형태로 식별",
+      "현재 묶음만 편집 가능한 느낌",
+      "완료된 수는 좌측으로 밀려나고 다음 수 슬롯은 우측에서 자연스럽게 들어오는 수평 슬라이드/스크롤 구조",
+      "현재 수·현재 묶음·전체 10수 중 위치를 잃지 않음"
+    ],
+    "cards": [
+      "카드마다 행동 슬롯 수·사거리·기력·내력·절초기세(해당 시)·핵심 효과를 서로 다른 필드로 시각화",
+      "생성형 텍스트 왜곡 위험을 줄이기 위해 아이콘·아라비아 숫자·짧은 자리표시자를 우선",
+      "정본 확인 예시만 사용: 장풍=2수/내력1/사거리1~3/[전조]→[실행], 강공=2수/기력1/내력2, 관찰=1수/기본 비용 없음/관찰량1",
+      "기초·무공·절초의 세 계층은 구분하되 무공서를 직접 수 슬롯에 놓거나 덱·드로우 카드게임처럼 표현하지 않음"
+    ],
+    "resources_and_prediction": [
+      "체력·기력·내력·절초기세는 서로 다른 자원으로 구분",
+      "예상 결과와 짧은 전투 로그 영역을 보조 정보로 배치",
+      "정본이 아닌 임의 고정 최대치나 미확정 비용을 발명하지 않음"
+    ],
+    "accessibility_and_text": [
+      "색만으로 상태를 전달하지 않고 테두리·아이콘·형태·간격을 함께 사용",
+      "의미 있는 한국어/영어 문장을 이미지에 굽지 않고 최소 자리표시자만 사용",
+      "제품 최종 텍스트는 향후 편집 가능한 Godot UI 레이어로 구현될 전제"
+    ],
+    "must_not_do": [
+      "아군 진영 또는 적군 진영 표기",
+      "새 전투 규칙·새 비용·가상 무공명을 정본처럼 발명",
+      "특정 외부 작품의 고유 캐릭터·로고·식별 가능한 UI 복제",
+      "생성 결과를 최종 제품 자산처럼 표현"
+    ]
+  },
+  "rights_or_provenance": {
+    "reference_policy": "사용자 제공 이미지 2장은 방향 참고 전용이며 특정 작품의 고유 요소를 제품 자산으로 복제하지 않는다.",
+    "third_party_logo_or_character_copy": "FORBIDDEN",
+    "promotion_requires_separate_review": true
+  },
+  "post_generation_review_required": [
+    "PLANNING_MATCH",
+    "READABILITY",
+    "IMPLEMENTATION_FEASIBILITY",
+    "STYLE_CONSISTENCY",
+    "RIGHTS_SIMILARITY",
+    "WINDOWS_ANDROID_RESPONSIVE_FEASIBILITY"
+  ]
+}
