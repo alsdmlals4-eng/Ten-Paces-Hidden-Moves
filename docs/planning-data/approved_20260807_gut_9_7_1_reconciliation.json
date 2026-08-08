@@ -2,11 +2,13 @@
   "schema_version": 1,
   "decision_id": "TEN-DEC-20260807-GUT-9-7-1-RECONCILIATION-01",
   "parent_decision_id": "TEN-DEC-20260806-GUT-HIGODOT-TEST-AUTHORITY-01",
-  "authority_status": "CURRENT_APPROVED_RECONCILIATION_REPAIR_IN_REVIEW",
+  "authority_status": "CURRENT_APPROVED_RECONCILIATION_MERGED_HOSTED_VALIDATED",
   "approved_at": "2026-08-07T00:49:00+09:00",
   "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
-  "branch": "fix/gut-9-7-1-tree-reconciliation",
-  "base_main": "8315fde182f4c26669a983c8da71b2174655a823",
+  "validated_pr": 109,
+  "validated_exact_head": "b648161dfe39ce8dbc1d7a363da835cc9dadaecc",
+  "premerge_main": "8315fde182f4c26669a983c8da71b2174655a823",
+  "merge_main": "a06f0171df4b0585ab35772349ecec7affde0cb7",
   "official_source": {
     "repository": "bitwes/Gut",
     "tag": "v9.7.1",
@@ -22,7 +24,8 @@
     "accepted_variance_policy": "GODOT_TEXT_RESOURCE_LOAD_STEPS_METADATA_ONLY",
     "unexpected_difference_result": "BLOCKED_UNEXPECTED_ADDON_DIFFERENCE",
     "fresh_red_run": 31227143260,
-    "fresh_red_actual_normalized_variance_count": 17
+    "fresh_red_actual_normalized_variance_count": 17,
+    "validated_result": "PASS_NORMALIZED_EQUIVALENCE"
   },
   "expected_normalized_scene_variances": [
     "GutScene.tscn",
@@ -64,7 +67,15 @@
     "github_actions": "STANDARD_GITHUB_HOSTED_RUNNER_REQUIRED",
     "fallback_decision_id": "TEN-DEC-20260807-ACTIONS-BUDGET-MANUAL-VALIDATION-FALLBACK-01",
     "fallback_status": "HISTORICAL_PR107_ONLY_SUPERSEDED_FOR_FUTURE_HEADS",
-    "state": "EXACT_HEAD_HOSTED_VALIDATION_REQUIRED"
+    "state": "PASS_EXACT_HEAD_HOSTED_PR109",
+    "runs": {
+      "gut_reconciliation": 31228560420,
+      "full_validation": 31228560398,
+      "base_v9_adoption": 31228560404,
+      "pr_validation": 31228560529,
+      "ten_manual_product_gate": 31228560427
+    },
+    "unresolved_review_threads": 0
   },
   "build_approval_record": "docs/implementation/BUILD_APPROVAL_2026-08-08.md",
   "production_hash_scope": [
@@ -78,8 +89,8 @@
   ],
   "higodot_boundary": {
     "authority": "SINGLE_GODOT_SCENE_NODE_RESOURCE_PROJECT_SETTINGS_AUTHOR",
-    "addon_scene_or_resource_rewrite_in_this_pr": false,
-    "export_setting_mutation_in_this_pr": false,
+    "addon_scene_or_resource_rewrite_in_pr109": false,
+    "export_setting_mutation_in_pr109": false,
     "local_l0_l1": "NOT_RUN_NO_LOCAL_ACCESS"
   },
   "export_exclusion": "BLOCKED_PENDING_HIGODOT_L1",
@@ -88,9 +99,10 @@
   "product_implementation_effect": "NONE",
   "visual_audio_disposition": "NO_NEW_VISUAL_OR_AUDIO_ASSET_REQUIRED",
   "claim_ceiling": {
-    "current_head_godot": "PENDING_EXACT_HEAD_HOSTED_VALIDATION",
-    "current_head_gut": "PENDING_EXACT_HEAD_HOSTED_VALIDATION",
-    "current_head_junit": "PENDING_EXACT_HEAD_HOSTED_VALIDATION",
+    "pr109_godot": "PASS_EXACT_HEAD_HOSTED_PR109",
+    "pr109_gut": "PASS_EXACT_HEAD_HOSTED_PR109",
+    "pr109_junit": "PASS_EXACT_HEAD_HOSTED_PR109",
+    "github_hosted_windows_export_evidence": "PASS_TEN_MANUAL_PRODUCT_GATE_212",
     "local_higodot": "NOT_RUN",
     "local_godot": "NOT_RUN",
     "local_windows": "NOT_RUN",
@@ -99,5 +111,5 @@
     "product_implementation": "BLOCKED_BY_WORK_ENTRY_COMPLETENESS_GATE",
     "production_readiness": false
   },
-  "next_gate": "EXACT_HEAD_GUT_RECONCILIATION_HOSTED_ACTIONS_THEN_HIGODOT_L1_EXPORT_EXCLUSION"
+  "next_gate": "HIGODOT_L1_EXPORT_EXCLUSION"
 }
