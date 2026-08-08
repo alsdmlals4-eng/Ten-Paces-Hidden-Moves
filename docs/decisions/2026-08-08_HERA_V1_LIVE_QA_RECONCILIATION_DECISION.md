@@ -5,7 +5,7 @@
 - 상태: `CURRENT_APPROVED_RECONCILIATION`
 - 조사 기준 main: `8e06c3ed4b572d211aeb9447d5d0b1491b1b8467`
 - PR #110 병합 직후 main: `102bd7010316edc10fa0709dfe336040d33082df`
-- 원격 CLI preflight 기준 main: `6b995ec49761110ac2d8b2f944d041b1921e6bb9`
+- 원격 CLI preflight 병합 main: `e3c7a3cc0705f7a20dcf7810788ce86633b9b186`
 - 계약: `docs/planning-data/approved_20260808_hera_v1_live_qa_reconciliation.json`
 - Base 역할 정본: `docs/knowledge/godot/HIGODOT_SINGLE_AUTHORITY_AND_SAFE_OPERATION.md`
 
@@ -18,7 +18,7 @@
 ```yaml
 investigation_main: 8e06c3ed4b572d211aeb9447d5d0b1491b1b8467
 pr110_merge_main: 102bd7010316edc10fa0709dfe336040d33082df
-remote_cli_preflight_main: 6b995ec49761110ac2d8b2f944d041b1921e6bb9
+remote_cli_preflight_merge_main: e3c7a3cc0705f7a20dcf7810788ce86633b9b186
 installation_commit: b6a7a96778d7420c67829bb6ffa59b32d959dae2
 project_addon_tree: 6cb87ac8ba768de1d924447f385fba6d80bcde68
 official_source: NotNull92/hera-agent-godot
@@ -86,8 +86,9 @@ expected_windows_amd64_cli_sha256: 9ae181741c2e8a3f57bbb2a2e4c61ac2c9c7c844fad21
 remote_cli_release_preflight: PASS_CONTENT_ADDRESSED_OFFICIAL_RELEASE
 exact_local_cli_version: BLOCKED_UNVERIFIED_LOCAL_ACCESS
 cli_addon_pair: HERA_CLI_ADDON_PAIR_UNVERIFIED
+higodot_plugin_enable_authoring: NOT_RUN_REQUIRED_L2
 live_editor_connection: NOT_RUN
-full_editor_restart_after_pair_validation: NOT_RUN
+full_editor_restart_after_enable: NOT_RUN
 status_check: NOT_RUN
 smoke_skip_game: NOT_RUN
 shared_token_configuration: NOT_RUN
@@ -97,30 +98,53 @@ adoption_status: PRESENT_DISABLED_PAIR_UNVERIFIED
 
 파일이 존재한다는 사실이나 원격 release pin만으로 `ADOPTED_ACTIVE` 또는 acceptance QA 가능 상태로 승격하지 않는다.
 
-## 5. 활성화 전 Gate
+## 5. 활성화 Gate와 권위 순서
 
-공식 v1 migration contract에 따라 로컬 Windows 환경에서 다음을 모두 확인해야 한다.
+공식 v1 migration contract는 CLI/addon 같은 release pair, Godot 완전 재시작, `hera status`, `hera smoke --skip-game`을 요구한다. Base 현행 정본은 동시에 `project.godot` 등 persistent project-setting mutation을 HiGodot 단일 권위로 제한한다.
 
-1. companion `hera` CLI가 exact `v1.0.0`인지 `hera version`으로 확인한다.
-2. Windows x64 binary를 사용할 경우 설치 artifact가 `hera-windows-amd64.zip` SHA-256 `9ae181741c2e8a3f57bbb2a2e4c61ac2c9c7c844fad21c88ae3890c55a5cc66b`와 일치하는지 확인한다.
-3. addon과 CLI를 함께 v1.0.0 pair로 고정한다.
-4. Godot Editor를 **완전히 종료 후 재시작**한다. plugin toggle만으로 preloaded addon script가 모두 reload된다고 간주하지 않는다.
-5. `hera status`가 대상 프로젝트 instance를 정확히 가리키는지 확인한다.
-6. `hera smoke --skip-game` bounded canary를 통과한다.
-7. 채택 시 localhost-only와 shared token을 확인하고 secret을 로그에 남기지 않는다.
-8. acceptance QA 전후 tracked source snapshot을 비교해 `Hera phase delta NONE`을 확인한다.
+현재 `project.godot`에는 Hera plugin이 비활성이다. 따라서 `hera status/smoke`를 위해 plugin을 활성화해야 한다면 **그 활성화 자체는 Hera가 하거나 raw text edit로 우회해서는 안 된다.** HiGodot L2 persistent authoring 단계에서 의도된 `project.godot` delta로 먼저 수행하고, 그 의도된 delta를 기준으로 Hera phase 전 snapshot을 잡는다.
 
-현재 세션에서는 사용자 Windows checkout과 CLI 실행 경로에 접근할 수 없으므로 1~8의 로컬 실행 결과를 PASS로 주장하지 않는다.
+로컬 Windows 순서는 다음으로 고정한다.
 
-## 6. PR #109 관계의 현재 해석
+1. `hera-windows-amd64.zip` SHA-256이 `9ae181741c2e8a3f57bbb2a2e4c61ac2c9c7c844fad21c88ae3890c55a5cc66b`인지 확인한다.
+2. `hera version`으로 companion CLI가 exact `v1.0.0`인지 확인한다. 이 단계는 plugin 활성화 전에 수행할 수 있다.
+3. HiGodot L0로 현재 Editor/project와 plugin enabled 상태를 관찰한다.
+4. Hera live QA 채택을 계속할 경우 HiGodot L2에서 `res://addons/hera_agent_godot/plugin.cfg` 활성화를 bounded project-setting write로 수행한다. 변경 전 Git status와 rollback 지점을 기록하고, 예상 delta 외 파일이 생기면 중단한다.
+5. Godot Editor를 **완전히 종료 후 재시작**한다. plugin toggle만으로 preloaded addon script가 모두 reload된다고 간주하지 않는다.
+6. localhost-only와 shared token 구성을 확인하되 secret 원문은 저장소·prompt·log·evidence에 남기지 않는다.
+7. `hera status`가 대상 프로젝트 instance를 정확히 가리키는지 확인한다.
+8. **의도된 HiGodot plugin-enable delta가 반영된 뒤** tracked source pre-Hera snapshot을 기록한다.
+9. `hera smoke --skip-game` bounded canary를 통과한다.
+10. tracked source post-Hera snapshot과 비교해 **Hera phase 추가 delta가 `NONE`**인지 확인한다.
+11. 실패 시 Hera로 rollback하지 않고 HiGodot/Git rollback 경로를 사용한다.
+
+현재 세션에서는 사용자 Windows checkout·HiGodot 세션·CLI 실행 경로에 접근할 수 없으므로 1~11의 로컬 실행 결과를 PASS로 주장하지 않는다.
+
+## 6. Export Gate와의 관계
+
+현재 `export_presets.cfg`는 `export_filter="all_resources"`, `exclude_filter=""` 상태다. 따라서 tooling export exclusion은 단순 관찰만으로 PASS할 수 없다.
+
+- 기존 Gate label `HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION`은 검증 단계 이름으로 보존한다.
+- 실제 제외 규칙의 persistent write가 필요하면 Base 위험도에 따라 **HiGodot L2 authoring**으로 수행한다.
+- L2 저작 뒤 L1/L0 재관찰과 export regression으로 제외가 실제 product export에 반영됐는지 검증한다.
+- runtime-required `addons/godot_ai/**` 등 다른 addon을 추측으로 제외하지 않는다. 실제 참조·autoload·export 소비 경로를 먼저 확인한다.
+- Hera addon의 product export disposition도 dependency/readback 없이 자동 PASS하지 않는다.
+
+```yaml
+current_export_filter: all_resources
+current_exclude_filter: empty
+export_exclusion_state: BLOCKED_REQUIRES_HIGODOT_L2_AUTHORING_THEN_VALIDATION
+```
+
+## 7. PR #109 관계의 현재 해석
 
 초기 Hera 조사 당시 PR #109는 current main에 뒤처져 있었고, 이 사실은 역사적 조사 근거로 보존한다. 이후 PR #109의 GUT/JUnit exact-head 검증과 병합, post-merge closeout은 `TEN-DEC-20260807-GUT-9-7-1-RECONCILIATION-01`과 `docs/planning-data/current_entry_gate_20260808.json`에서 별도로 닫혔다. 따라서 PR #109 stale-base는 더 이상 Hera 활성화 Gate의 현재 blocker가 아니다.
 
 Hera 정합화와 GUT tree repair는 서로 다른 Goal·증거 체계를 유지한다.
 
-## 7. 제품 구현 Gate
+## 8. 제품 구현 Gate
 
-이 Decision은 플레이어 기능·Scene·Resource·전투 데이터·`project.godot`을 변경하지 않는다.
+이 Decision 정합화는 플레이어 기능·Scene·Resource·전투 데이터·`project.godot`을 변경하지 않는다.
 
 ```yaml
 product_visible_diff: NONE
@@ -129,11 +153,12 @@ new_visual_asset_required: false
 windows_android_adapter_implementation: BLOCKED_BY_ENTRY_GATE
 ```
 
-`TEN-IMG-001`의 실제 이미지 검수 미완, 로컬 Hera pair/canary·HiGodot L1·Windows/Android/device/human 검증 미실행이 남아 있으므로 Windows·Android Adapter 제품 구현은 아직 시작하지 않는다.
+`TEN-IMG-001`의 Visual Requirement/이미지 검수 미완, 로컬 Hera pair/HiGodot-authorized enable/canary·tooling export exclusion·Windows/Android/device/human 검증 미실행이 남아 있으므로 Windows·Android Adapter 제품 구현은 아직 시작하지 않는다.
 
-## 8. 다음 단계
+## 9. 다음 단계
 
-1. 로컬 Windows에서 exact v1.0.0 Hera CLI/addon pair·`hera version`·`hera status`·`hera smoke --skip-game`·source-delta canary를 검증한다.
-2. `HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION`을 로컬 HiGodot에서 실행한다.
-3. `TEN-IMG-001` Visual Requirement 검수를 완료한다.
-4. 로컬 Windows/Android/device/human 검증 후 `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE` 진입 여부를 재판정한다.
+1. 로컬 Windows에서 Hera CLI archive SHA와 `hera version`을 먼저 검증한다.
+2. HiGodot L0 관찰 후 필요한 Hera plugin 활성화와 tooling export exclusion persistent 설정을 각각 승인 범위의 HiGodot L2 write로 수행한다.
+3. Godot 완전 재시작 후 `hera status`·`hera smoke --skip-game`·Hera-phase source delta NONE을 검증한다.
+4. `HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION`에서 L2 결과를 재관찰하고 실제 export regression으로 검증한다.
+5. `TEN-IMG-001` Visual Requirement 검수와 로컬 Windows/Android/device/human 검증 후 `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE` 진입 여부를 재판정한다.
