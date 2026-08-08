@@ -5,16 +5,18 @@
   "related_decision_ids": [
     "TEN-DEC-20260807-GUT-9-7-1-RECONCILIATION-01"
   ],
-  "snapshot_semantics": "POST_GUT_PR109_AND_CLOSEOUT_PR112_SOURCE_MAIN_RECHECK",
-  "observed_main_before_snapshot_commit": "2bab6968d2e72965d78de9b75da77aa6ce4054d6",
+  "snapshot_semantics": "POST_GUT_CLOSEOUT_GATE_RECHECK_SOURCE_MAIN_SNAPSHOT_SELF_REFERENCE_EXCLUDED",
+  "snapshot_commit_self_reference_excluded": true,
+  "observed_main_before_snapshot_commit": "1f5fb0422d7c5cc55e9671bb99a3b4907c9545e1",
   "observed_base_main": "fa69a77a14f923a756064f6ae151d34cadb374f7",
   "decision_ledger_readback": "PASS",
   "unresolved_audit_readback": "PASS",
-  "github_sheet_sync": "SYNCED_THROUGH_GUT_PR112_CLOSEOUT_PENDING_ENTRY_SNAPSHOT",
+  "github_sheet_sync_rule": "AFTER_SNAPSHOT_MERGE_SYNC_SAME_DECISION_IDS_AND_GATE_RESULT; DO_NOT_REQUIRE_SNAPSHOT_TO_SELF_REFERENCE_ITS_OWN_MERGE_SHA",
   "gut_pr109": "CLOSED_MERGED_HOSTED_VALIDATED",
   "gut_exact_head": "b648161dfe39ce8dbc1d7a363da835cc9dadaecc",
   "gut_merge_main": "a06f0171df4b0585ab35772349ecec7affde0cb7",
   "gut_closeout_main": "2bab6968d2e72965d78de9b75da77aa6ce4054d6",
+  "entry_gate_refresh_main": "1f5fb0422d7c5cc55e9671bb99a3b4907c9545e1",
   "gut_hosted_validation": {
     "gut_reconciliation": "PASS_RUN_31228560420",
     "full_validation": "PASS_RUN_31228560398",
