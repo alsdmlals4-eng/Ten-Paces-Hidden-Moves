@@ -2,8 +2,22 @@
   "schema_version": 1,
   "requirement_id": "TEN-VIS-REQ-001",
   "linked_image_id": "TEN-IMG-001",
-  "status": "REVIEW_READY_NOT_APPROVED",
+  "status": "APPROVED_GENERATION_EXPLORATION_AUTHORIZED",
   "stage": "PLANNING_VISUALIZATION",
+  "approval": {
+    "decision_id": "TEN-DEC-20260808-TEN-IMG-001-VISUAL-REQUIREMENT-APPROVAL-01",
+    "decision": "APPROVE",
+    "approval_date": "2026-08-08",
+    "approval_source": "권장안대로 승인",
+    "project_main_at_approval": "58209a59e2fab7f77b73d3316303efb5cc710c2a",
+    "base_main_at_approval": "a912cc001ff4d4e3415fb4b4931723c49eb08d9a",
+    "generation_exploration_authorized": true,
+    "product_asset_use_authorized": false,
+    "runtime_integration_authorized": false
+  },
+  "source_decision_ids": [
+    "TEN-DEC-20260808-COMBAT-PLANNING-UI-CARD-TIMELINE-01"
+  ],
   "surface_or_flow": "COMBAT_PLANNING_BOARD",
   "player_question": "현재 거리·밀착 상태와 3/3/4 계획 슬롯을 한눈에 읽고 이번 10칸 결투에서 무엇을 배치하고 어떤 결과를 예상해야 하는가?",
   "element_type": "TACTICAL_UI_PLANNING_VISUALIZATION",
@@ -23,7 +37,7 @@
     "asset_reuse_verified": false
   },
   "disposition": "GENERATE_EXPLORATION",
-  "disposition_status": "PROPOSED_REQUIRES_REVIEW",
+  "disposition_status": "APPROVED",
   "required_states": [
     "PLANNING_PHASE_3_3_4_SLOT_HIERARCHY",
     "TEN_SPACE_DISTANCE_AND_ADJACENCY_READABILITY",
@@ -63,7 +77,7 @@
   "production_cost": "MEDIUM",
   "performance_risk": "NONE_RUNTIME_PLANNING_ONLY",
   "rights_or_provenance": {
-    "state": "REQUIRES_GENERATION_LOG_IF_APPROVED",
+    "state": "GENERATION_LOG_REQUIRED",
     "third_party_logo_or_character_copy": "FORBIDDEN",
     "reference_policy": "특정 작품의 고유 캐릭터·로고·UI를 복제하지 않고 무협 전술 UI의 일반 원리만 참고한다."
   },
@@ -73,7 +87,9 @@
     "must_preserve": [
       "TEN_SPACE_FIELD",
       "MARTIAL_ARTS_TACTICAL_TONE",
-      "CORRECT_INFORMATION_RELATIONSHIPS"
+      "CORRECT_INFORMATION_RELATIONSHIPS",
+      "TEN_MOVE_3_3_4_LOGIC",
+      "CURRENT_MOVE_AND_BUNDLE_AWARENESS"
     ],
     "allowed_variation_axes": [
       "HUD_LAYOUT",
@@ -95,12 +111,13 @@
     "rights_similarity": "VERIFY_NO_UNACCEPTABLE_LOGO_CHARACTER_OR_DISTINCTIVE_UI_COPY",
     "platform": "VERIFY_WINDOWS_16_9_AND_ANDROID_RESPONSIVE_RECOMPOSITION",
     "approval_required_before_generation": true,
-    "approval_required_before_product_asset_use": true
+    "generation_approval_fulfilled": true,
+    "approval_required_before_product_asset_use": true,
+    "product_asset_approval_fulfilled": false
   },
   "handoff": {
-    "current_action": "REVIEW_REQUIREMENT_RECORD_ONLY",
-    "next_if_approved": "GENERATE_TEN_IMG_001_EXPLORATION_AND_LOG_MODEL_PROMPT_PROVENANCE",
-    "next_if_rejected": "REVISE_OR_DEFER_REQUIREMENT",
+    "current_action": "GENERATE_TEN_IMG_001_EXPLORATION_AND_LOG_MODEL_PROMPT_PROVENANCE",
+    "next_after_generation": "REVIEW_GENERATED_EXPLORATION_AGAINST_VALIDATION_CRITERIA",
     "product_asset_status": "NOT_AN_ASSET",
     "runtime_integration": "FORBIDDEN_AT_THIS_STAGE"
   }
