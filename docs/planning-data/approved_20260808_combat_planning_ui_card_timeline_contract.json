@@ -18,7 +18,11 @@
   ],
   "timeline": {
     "moves_per_round": 10,
-    "bundles": [3, 3, 4],
+    "bundles": [
+      3,
+      3,
+      4
+    ],
     "editable_scope": "CURRENT_BUNDLE_ONLY",
     "empty_slot": "WAIT",
     "commit_locks_current_bundle": true,
@@ -61,7 +65,10 @@
       "internal_cost": 1,
       "range_min": 1,
       "range_max": 3,
-      "phases": ["전조", "실행"],
+      "phases": [
+        "전조",
+        "실행"
+      ],
       "damage_formula": "floor(3 + 내공 * 0.75)",
       "damage_at_internal_power_4": 6
     },
@@ -80,7 +87,11 @@
     }
   },
   "action_sources": {
-    "tabs": ["기초", "무공", "절초"],
+    "tabs": [
+      "기초",
+      "무공",
+      "절초"
+    ],
     "basic_actions": [
       "이동",
       "보법",
@@ -107,16 +118,76 @@
     "star9_is_separate_card": false
   },
   "manuals": [
-    {"faction":"화산파","manual":"매화검결","primary":"신법","secondary":"외공","star10":"이십사수매화검법"},
-    {"faction":"소림사","manual":"나한금강공","primary":"외공","secondary":"내공","star10":"여래신장"},
-    {"faction":"무당파","manual":"태극검결","primary":"심안","secondary":"내공","star10":"태극혜검"},
-    {"faction":"양가","manual":"양가창결","primary":"외공","secondary":"신법","star10":"회마창"},
-    {"faction":"화산파","manual":"자하심법","primary":"내공","secondary":"근골","star10":"자하신공"},
-    {"faction":"소요파","manual":"소요보결","primary":"신법","secondary":"심안","star10":"능파미보"},
-    {"faction":"개방","manual":"강룡장결","primary":"내공","secondary":"근골","star10":"항룡십팔장"},
-    {"faction":"사천당문","manual":"천기암기록","primary":"심안","secondary":"신법","star10":"만천화우"},
-    {"faction":"하북팽가","manual":"팽가도결","primary":"근골","secondary":"외공","star10":"오호단문도"},
-    {"faction":"남궁세가","manual":"창궁무애검법","primary":"내공","secondary":"심안","star10":"제왕검형"}
+    {
+      "faction": "화산파",
+      "manual": "매화검결",
+      "primary": "신법",
+      "secondary": "외공",
+      "star10": "이십사수매화검법"
+    },
+    {
+      "faction": "소림사",
+      "manual": "나한금강공",
+      "primary": "외공",
+      "secondary": "내공",
+      "star10": "여래신장"
+    },
+    {
+      "faction": "무당파",
+      "manual": "태극검결",
+      "primary": "심안",
+      "secondary": "내공",
+      "star10": "태극혜검"
+    },
+    {
+      "faction": "양가",
+      "manual": "양가창결",
+      "primary": "외공",
+      "secondary": "신법",
+      "star10": "회마창"
+    },
+    {
+      "faction": "화산파",
+      "manual": "자하심법",
+      "primary": "내공",
+      "secondary": "근골",
+      "star10": "자하신공"
+    },
+    {
+      "faction": "소요파",
+      "manual": "소요보결",
+      "primary": "신법",
+      "secondary": "심안",
+      "star10": "능파미보"
+    },
+    {
+      "faction": "개방",
+      "manual": "강룡장결",
+      "primary": "내공",
+      "secondary": "근골",
+      "star10": "항룡십팔장"
+    },
+    {
+      "faction": "사천당문",
+      "manual": "천기암기록",
+      "primary": "심안",
+      "secondary": "신법",
+      "star10": "만천화우"
+    },
+    {
+      "faction": "하북팽가",
+      "manual": "팽가도결",
+      "primary": "근골",
+      "secondary": "외공",
+      "star10": "오호단문도"
+    },
+    {
+      "faction": "남궁세가",
+      "manual": "창궁무애검법",
+      "primary": "내공",
+      "secondary": "심안",
+      "star10": "제왕검형"
+    }
   ],
   "derived_resource_caps": {
     "max_hp": "26 + 근골",
@@ -124,12 +195,27 @@
     "max_internal": "3 + floor(내공 / 4)",
     "ultimate_momentum_min": 0,
     "ultimate_momentum_max": 5,
-    "base_stat_4_example": {"hp":30,"stamina":5,"internal":4},
+    "base_stat_4_example": {
+      "hp": 30,
+      "stamina": 5,
+      "internal": 4
+    },
     "max_increase_refills_current": false
   },
   "battlefield": {
     "cells": 10,
-    "cell_ids": [1,2,3,4,5,6,7,8,9,10],
+    "cell_ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
     "show_positions": true,
     "show_distance": true,
     "ally_zone_label_forbidden": true,
