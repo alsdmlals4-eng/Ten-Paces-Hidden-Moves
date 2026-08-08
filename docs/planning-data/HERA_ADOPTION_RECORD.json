@@ -36,7 +36,11 @@
     "HERA_SMOKE_SKIP_GAME",
     "TRACKED_SOURCE_POST_HERA_DELTA_NONE"
   ],
-  "required_commands": ["hera version", "hera status", "hera smoke --skip-game"],
+  "required_commands": [
+    "hera version",
+    "hera status",
+    "hera smoke --skip-game"
+  ],
   "export_gate": {
     "observed_export_filter": "all_resources",
     "observed_exclude_filter": "",
