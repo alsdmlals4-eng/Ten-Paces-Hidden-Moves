@@ -2,7 +2,7 @@
   "schema_version": 1,
   "tool": "Hera Agent Godot",
   "decision_id": "TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01",
-  "snapshot_semantics": "POST_PR110_MERGE_PLUS_REMOTE_CLI_PREFLIGHT",
+  "snapshot_semantics": "POST_PR115_REMOTE_CLI_PREFLIGHT_PLUS_LOCAL_AUTHORITY_SEQUENCE_CORRECTION",
   "canonical_source_repository": "NotNull92/hera-agent-godot",
   "exact_addon_version": "1.0.0",
   "official_tag": "v1.0.0",
@@ -21,22 +21,27 @@
   "transport": "LOCALHOST_ONLY",
   "acceptance_source_delta": "NONE",
   "enabled_in_project_godot": false,
+  "plugin_enable_authority": "HIGODOT_ONLY",
+  "plugin_enable_risk_class": "L2_PROJECT_SETTING_MUTATION",
   "adoption_status": "PRESENT_DISABLED_PAIR_UNVERIFIED",
   "required_before_active": [
-    "VERIFY_EXACT_LOCAL_CLI_V1_PAIR",
-    "VERIFY_WINDOWS_AMD64_CLI_ARTIFACT_SHA256_IF_BINARY_INSTALL",
+    "VERIFY_WINDOWS_AMD64_CLI_ARTIFACT_SHA256",
+    "HERA_VERSION_EXACT_V1_0_0",
+    "HIGODOT_L0_OBSERVE_TARGET_PROJECT_AND_PLUGIN_STATE",
+    "HIGODOT_L2_ENABLE_HERA_PLUGIN_IF_ADOPTION_CONTINUES",
     "FULL_EDITOR_RESTART",
-    "HERA_VERSION",
+    "LOCALHOST_AND_SHARED_TOKEN_CHECK_WITH_SECRET_REDACTION",
     "HERA_STATUS_TARGET_PROJECT",
+    "TRACKED_SOURCE_PRE_HERA_SNAPSHOT_AFTER_INTENDED_HIGODOT_DELTA",
     "HERA_SMOKE_SKIP_GAME",
-    "SHARED_TOKEN_CHECK_IF_ADOPTED",
-    "TRACKED_SOURCE_DELTA_NONE_CANARY"
+    "TRACKED_SOURCE_POST_HERA_DELTA_NONE"
   ],
-  "required_commands": [
-    "hera version",
-    "hera status",
-    "hera smoke --skip-game"
-  ],
-  "remote_preflight_main": "6b995ec49761110ac2d8b2f944d041b1921e6bb9",
+  "required_commands": ["hera version", "hera status", "hera smoke --skip-game"],
+  "export_gate": {
+    "observed_export_filter": "all_resources",
+    "observed_exclude_filter": "",
+    "state": "BLOCKED_REQUIRES_HIGODOT_L2_AUTHORING_THEN_L1_VALIDATION"
+  },
+  "remote_preflight_main": "e3c7a3cc0705f7a20dcf7810788ce86633b9b186",
   "last_local_pair_verification": "NOT_RUN_LOCAL_ACCESS_UNAVAILABLE"
 }
