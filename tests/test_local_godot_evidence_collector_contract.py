@@ -21,6 +21,7 @@ class LocalGodotEvidenceCollectorContractTests(unittest.TestCase):
             "LOCAL_SYNC_BLOCKED_DIVERGED_MAIN",
             "LOCAL_SYNC_READY_FAST_FORWARD",
             "PROJECT_MUTATION_ATTEMPTED_FALSE",
+            "NOT_RUN_DIRTY_WORKTREE_SAFETY",
         ]:
             self.assertIn(token, self.text)
 
