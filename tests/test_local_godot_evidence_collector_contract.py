@@ -82,6 +82,17 @@ class LocalGodotEvidenceCollectorContractTests(unittest.TestCase):
         self.assertIn('GUT_RUN_BLOCKED_POST_GODOT_DIRTY_WORKTREE', self.text)
         self.assertIn('NOT_RUN_POSTCHECK_DIRTY_WORKTREE_SAFETY', self.text)
 
+    def test_gut_junit_is_prepared_required_and_copied_into_evidence(self) -> None:
+        for token in [
+            '$gutJunitDir = Join-Path $Root "build/test-results"',
+            'New-Item -ItemType Directory -Force -Path $gutJunitDir',
+            '-gconfig=res://.gutconfig.json',
+            '$gut.junit_status',
+            'GUT_JUNIT_EXPORT_NOT_FOUND',
+            'Copy-Item -LiteralPath $gutJunitPath -Destination',
+        ]:
+            self.assertIn(token, self.text)
+
     def test_import_parse_failure_is_a_blocker(self) -> None:
         blocker_loop = re.search(
             r"foreach\s*\(\$v\s+in\s+@\((.*?)\)\)\s*\{",
