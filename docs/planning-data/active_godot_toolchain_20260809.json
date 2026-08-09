@@ -17,7 +17,7 @@
     "persistent_authoring": false,
     "enabled": true,
     "hosted_reconciliation": "PASS_PRIOR_DECISION",
-    "local_clean_checkout": "NOT_RUN"
+    "local_clean_checkout": "PASS_USER_LOCAL_COMMAND_READBACK"
   },
   "hera": {
     "version": "1.0.0",
@@ -47,15 +47,30 @@
     "project_path": "C:/Users/user/AppData/Local/Temp/ten-paces-higodot-recovery/",
     "persistent_write": "NONE"
   },
+  "local_clean_collector_console": {
+    "evidence_level": "USER_LOCAL_COMMAND_READBACK",
+    "checkout_path": "C:/Users/user/AppData/Local/Temp/ten-paces-live-validation-20260809-213134",
+    "head": "f0d85bd81981e608a43979ed0e5dc7a8763bd15f",
+    "origin_main": "f0d85bd81981e608a43979ed0e5dc7a8763bd15f",
+    "git_sync_status": "LOCAL_SYNC_CURRENT",
+    "working_tree_clean": true,
+    "collector_status": "COMPLETE_WITH_BLOCKERS",
+    "godot_status": "PASS",
+    "godot_import_parse": "FAIL",
+    "gut_status": "PASS",
+    "hera_status": "HERA_CLI_NOT_FOUND_OR_PATH_UNSET",
+    "fresh_json_artifact": "NOT_AVAILABLE_STALE_UPLOAD_DETECTED"
+  },
   "remaining_gates": {
     "hera_cli_pair": "HERA_CLI_ADDON_PAIR_UNVERIFIED",
     "exact_local_hera_cli_version": "NOT_RUN",
     "hera_status": "NOT_RUN",
     "hera_smoke_skip_game": "NOT_RUN",
     "hera_phase_source_delta": "NOT_RUN",
-    "local_gut_clean_checkout": "NOT_RUN",
+    "local_gut_clean_checkout": "PASS_USER_LOCAL_COMMAND_READBACK",
+    "godot_import_parse": "FAIL_USER_LOCAL_COMMAND_READBACK_ROOT_CAUSE_PENDING",
     "tooling_export_exclusion": "BLOCKED_REQUIRES_HIGODOT_L2_AUTHORING_THEN_L1_VALIDATION",
-    "local_windows": "BLOCKED_UNVERIFIED",
+    "local_windows": "BLOCKED_GODOT_IMPORT_PARSE_FAIL_HERA_CLI_UNRESOLVED",
     "local_android_device": "BLOCKED_UNVERIFIED",
     "human_validation": "BLOCKED_NOT_RUN"
   },
