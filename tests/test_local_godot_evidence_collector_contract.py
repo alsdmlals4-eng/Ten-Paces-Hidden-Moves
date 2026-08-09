@@ -63,14 +63,23 @@ class LocalGodotEvidenceCollectorContractTests(unittest.TestCase):
         self.assertIn('GODOT_VERSION_MISMATCH_EXPECTED_4_7_1', self.text)
 
     def test_recomputes_final_git_cleanliness_after_runtime_checks(self) -> None:
-        self.assertIn('$finalPorcelain', self.text)
         self.assertIn('$finalGit.working_tree_clean', self.text)
         self.assertIn('LOCAL_POSTCHECK_DIRTY_WORKTREE', self.text)
 
+    def test_runtime_cleanliness_uses_content_state_not_stat_only_status(self) -> None:
+        for token in [
+            'function Tracked-ContentState',
+            '@("diff", "--quiet"',
+            '@("diff", "--cached", "--quiet"',
+            '@("ls-files", "--others", "--exclude-standard"',
+            '$postGodotContent = Tracked-ContentState $Root',
+            '$runtimeContent = Tracked-ContentState $Root',
+            '$finalContent = Tracked-ContentState $Root',
+        ]:
+            self.assertIn(token, self.text)
+
     def test_runtime_steps_stop_after_tracked_changes(self) -> None:
-        self.assertIn('$postGodotPorcelain', self.text)
         self.assertIn('GUT_RUN_BLOCKED_POST_GODOT_DIRTY_WORKTREE', self.text)
-        self.assertIn('$runtimePorcelain', self.text)
         self.assertIn('NOT_RUN_POSTCHECK_DIRTY_WORKTREE_SAFETY', self.text)
 
     def test_import_parse_failure_is_a_blocker(self) -> None:
