@@ -32,6 +32,22 @@ class LocalGodotEvidenceCollectorContractTests(unittest.TestCase):
         for pattern in forbidden_patterns:
             self.assertIsNone(re.search(pattern, self.text), pattern)
 
+    def test_native_command_argument_capture_does_not_shadow_args_automatic_variable(self) -> None:
+        self.assertNotRegex(
+            self.text,
+            r"function\s+Invoke-Capture\([^\n]*\[string\[\]\]\$Args\b",
+        )
+        self.assertNotRegex(
+            self.text,
+            r"function\s+Git-Read\([^\n]*\[string\[\]\]\$Args\b",
+        )
+        self.assertIn("$CommandArgs", self.text)
+        self.assertIn("@CommandArgs", self.text)
+
+    def test_runtime_checks_fail_closed_when_git_state_is_unavailable(self) -> None:
+        self.assertIn("NOT_RUN_GIT_UNAVAILABLE_SAFETY", self.text)
+        self.assertGreaterEqual(self.text.count("NOT_RUN_GIT_UNAVAILABLE_SAFETY"), 4)
+
     def test_collects_required_tool_and_project_evidence(self) -> None:
         for token in [
             "ProjectPath",
