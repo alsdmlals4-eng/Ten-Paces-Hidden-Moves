@@ -11,6 +11,7 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
+$GODOT_EXPECTED_VERSION_PREFIX = "4.7.1."
 
 # READ_ONLY_EVIDENCE_COLLECTOR
 # PROJECT_MUTATION_ATTEMPTED_FALSE
@@ -30,8 +31,12 @@ function Write-EvidenceText([string]$Path, [AllowNull()][string]$Text) {
 
 function Invoke-Capture([string]$File, [string[]]$CommandArgs, [string]$Cwd, [string]$Log = "") {
     $old = Get-Location
+    $oldErrorActionPreference = $ErrorActionPreference
     try {
         Set-Location -LiteralPath $Cwd
+        # Windows PowerShell 5.1 can surface native stderr as NativeCommandError.
+        # Keep stderr captured as evidence and use the real process exit code.
+        $ErrorActionPreference = "Continue"
         $global:LASTEXITCODE = 0
         $text = & $File @CommandArgs 2>&1 | Out-String
         $code = $LASTEXITCODE
@@ -45,7 +50,10 @@ function Invoke-Capture([string]$File, [string[]]$CommandArgs, [string]$Cwd, [st
         if ($Log) { Write-EvidenceText $Log $text }
         return [ordered]@{ exit_code = -1; output = $text }
     }
-    finally { Set-Location -LiteralPath $old.Path }
+    finally {
+        $ErrorActionPreference = $oldErrorActionPreference
+        Set-Location -LiteralPath $old.Path
+    }
 }
 
 function Git-Read([string[]]$CommandArgs, [string]$Root) {
@@ -70,19 +78,24 @@ function Tracked-Fingerprint([string]$Root) {
 function Resolve-Godot([string]$Explicit) {
     if ($Explicit) { if (Test-Path -LiteralPath $Explicit -PathType Leaf) { return (Resolve-Path -LiteralPath $Explicit).Path }; return $null }
     if ($env:GODOT_BIN -and (Test-Path -LiteralPath $env:GODOT_BIN -PathType Leaf)) { return (Resolve-Path $env:GODOT_BIN).Path }
-    foreach ($name in @("godot4", "godot", "Godot_v4.7.1-stable_win64", "Godot_v4.7.1-stable_win64_console")) {
+    foreach ($name in @("Godot_v4.7.1-stable_win64", "Godot_v4.7.1-stable_win64_console", "godot4", "godot")) {
         $cmd = Get-Command $name -ErrorAction SilentlyContinue
         if ($null -ne $cmd) { return $cmd.Source }
     }
     foreach ($p in @(
-        "$env:LOCALAPPDATA\Microsoft\WinGet\Links\godot.exe",
-        "$env:USERPROFILE\scoop\shims\godot.exe",
         "$env:LOCALAPPDATA\Programs\Godot\Godot_v4.7.1-stable_win64.exe",
         "$env:ProgramFiles\Godot\Godot_v4.7.1-stable_win64.exe",
         "C:\Godot\Godot_v4.7.1-stable_win64.exe",
         "$env:USERPROFILE\Downloads\Godot_v4.7.1-stable_win64.exe",
-        "$env:USERPROFILE\Desktop\Godot_v4.7.1-stable_win64.exe"
+        "$env:USERPROFILE\Desktop\Godot_v4.7.1-stable_win64.exe",
+        "$env:LOCALAPPDATA\Microsoft\WinGet\Links\godot.exe",
+        "$env:USERPROFILE\scoop\shims\godot.exe"
     )) { if ($p -and (Test-Path -LiteralPath $p -PathType Leaf)) { return (Resolve-Path $p).Path } }
+    foreach ($root in @("$env:USERPROFILE\Downloads", "$env:USERPROFILE\Desktop")) {
+        if (-not $root -or -not (Test-Path -LiteralPath $root -PathType Container)) { continue }
+        $exactHit = Get-ChildItem -LiteralPath $root -Filter "Godot_v4.7.1-stable_win64.exe" -File -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($null -ne $exactHit) { return $exactHit.FullName }
+    }
     foreach ($root in @("$env:USERPROFILE\Downloads", "$env:USERPROFILE\Desktop")) {
         if (-not $root -or -not (Test-Path -LiteralPath $root -PathType Container)) { continue }
         $hit = Get-ChildItem -LiteralPath $root -Filter "Godot_v4.7*.exe" -File -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
@@ -182,16 +195,24 @@ $plugins = [ordered]@{
 }
 
 $godotExe = Resolve-Godot $GodotPath
-$godot = [ordered]@{ executable = $godotExe; status = "GODOT_EXECUTABLE_UNRESOLVED"; version = $null; import_parse = "NOT_RUN"; import_parse_exit_code = $null }
+$godot = [ordered]@{ executable = $godotExe; status = "GODOT_EXECUTABLE_UNRESOLVED"; version = $null; expected_version_prefix = $GODOT_EXPECTED_VERSION_PREFIX; import_parse = "NOT_RUN"; import_parse_exit_code = $null }
 if ($godotExe) {
     $r = Invoke-Capture $godotExe @("--version") $Root (Join-Path $OutputDir "godot-version.txt")
-    $godot.version = $r.output.Trim(); $godot.status = $(if ($r.exit_code -eq 0) { "PASS" } else { "GODOT_VERSION_COMMAND_FAILED" })
+    $godot.version = $r.output.Trim()
+    if ($r.exit_code -ne 0) { $godot.status = "GODOT_VERSION_COMMAND_FAILED" }
+    elseif (-not $godot.version.StartsWith($GODOT_EXPECTED_VERSION_PREFIX)) { $godot.status = "GODOT_VERSION_MISMATCH_EXPECTED_4_7_1" }
+    else { $godot.status = "PASS" }
+
     if (-not $git.available) {
         $godot.import_parse = "NOT_RUN_GIT_UNAVAILABLE_SAFETY"
         Write-EvidenceText (Join-Path $OutputDir "godot-import-parse.txt") $godot.import_parse
     }
     elseif (-not $git.working_tree_clean) {
         $godot.import_parse = "NOT_RUN_DIRTY_WORKTREE_SAFETY"
+        Write-EvidenceText (Join-Path $OutputDir "godot-import-parse.txt") $godot.import_parse
+    }
+    elseif ($godot.status -eq "GODOT_VERSION_MISMATCH_EXPECTED_4_7_1") {
+        $godot.import_parse = "NOT_RUN_GODOT_VERSION_MISMATCH_SAFETY"
         Write-EvidenceText (Join-Path $OutputDir "godot-import-parse.txt") $godot.import_parse
     }
     elseif (-not $SkipGodotChecks) {
@@ -203,12 +224,21 @@ if ($godotExe) {
     Write-EvidenceText (Join-Path $OutputDir "godot-import-parse.txt") "GODOT_EXECUTABLE_UNRESOLVED"
 }
 
+$postGodotPorcelain = $null
+$postGodotClean = $git.working_tree_clean
+if ($git.available) {
+    $postGodotPorcelain = Git-Read @("status", "--porcelain=v1") $Root
+    $postGodotClean = ($postGodotPorcelain.exit_code -eq 0 -and -not $postGodotPorcelain.output)
+}
+
 $gut = [ordered]@{ status = "NOT_RUN"; plugin_version = $plugins.gut.version; exit_code = $null; junit_path = "build/test-results/gut.xml" }
 if (-not $git.available) { $gut.status = "NOT_RUN_GIT_UNAVAILABLE_SAFETY" }
 elseif (-not $git.working_tree_clean) { $gut.status = "NOT_RUN_DIRTY_WORKTREE_SAFETY" }
+elseif (-not $postGodotClean) { $gut.status = "GUT_RUN_BLOCKED_POST_GODOT_DIRTY_WORKTREE" }
 elseif ($SkipGut) { $gut.status = "NOT_RUN_SKIP_REQUESTED" }
 elseif (-not $plugins.gut.present) { $gut.status = "GUT_ADDON_NOT_FOUND" }
 elseif (-not $godotExe) { $gut.status = "GUT_RUN_BLOCKED_GODOT_EXECUTABLE_UNRESOLVED" }
+elseif ($godot.status -eq "GODOT_VERSION_MISMATCH_EXPECTED_4_7_1") { $gut.status = "GUT_RUN_BLOCKED_GODOT_VERSION_MISMATCH" }
 else {
     $r = Invoke-Capture $godotExe @("--headless", "--path", $Root, "--script", "res://addons/gut/gut_cmdln.gd") $Root (Join-Path $OutputDir "gut.txt")
     $gut.exit_code = $r.exit_code; $gut.status = $(if ($r.exit_code -eq 0) { "PASS" } else { "FAIL" })
@@ -226,14 +256,22 @@ if ($heraExe) {
     $hera.version_exit_code = $r.exit_code; $hera.cli_version = $r.output.Trim(); $hera.status = $(if ($r.exit_code -eq 0) { "PASS" } else { "HERA_VERSION_COMMAND_FAILED" })
     $r = Invoke-Capture $heraExe @("status") $Root (Join-Path $OutputDir "hera-status.txt")
     $hera.live_status_exit_code = $r.exit_code; $hera.live_status = $(if ($r.exit_code -eq 0) { "PASS" } else { "FAIL_OR_EDITOR_UNAVAILABLE" })
+
+    $runtimePorcelain = $null
+    $runtimeClean = $git.working_tree_clean
+    if ($git.available) {
+        $runtimePorcelain = Git-Read @("status", "--porcelain=v1") $Root
+        $runtimeClean = ($runtimePorcelain.exit_code -eq 0 -and -not $runtimePorcelain.output)
+    }
+
     if (-not $git.available) {
         $hera.smoke = "NOT_RUN_GIT_UNAVAILABLE_SAFETY"
         $hera.tracked_source_delta = "NOT_RUN_GIT_UNAVAILABLE_SAFETY"
         Write-EvidenceText (Join-Path $OutputDir "hera-smoke.txt") $hera.smoke
     }
-    elseif (-not $git.working_tree_clean) {
-        $hera.smoke = "NOT_RUN_DIRTY_WORKTREE_SAFETY"
-        $hera.tracked_source_delta = "NOT_RUN_DIRTY_WORKTREE_SAFETY"
+    elseif (-not $runtimeClean) {
+        $hera.smoke = "NOT_RUN_POSTCHECK_DIRTY_WORKTREE_SAFETY"
+        $hera.tracked_source_delta = "NOT_RUN_POSTCHECK_DIRTY_WORKTREE_SAFETY"
         Write-EvidenceText (Join-Path $OutputDir "hera-smoke.txt") $hera.smoke
     }
     elseif (-not $SkipHeraSmoke) {
@@ -254,22 +292,32 @@ if ($heraExe) {
 $finalGit = $git
 if ($git.available) {
     $s = Git-Read @("status", "--short", "--branch") $Root
+    $finalPorcelain = Git-Read @("status", "--porcelain=v1") $Root
     Write-EvidenceText (Join-Path $OutputDir "git-status-after.txt") $s.output
     $finalGit = [ordered]@{}
     foreach ($key in $git.Keys) { $finalGit[$key] = $git[$key] }
     $finalGit.short_status = $s.output
+    $finalGit.working_tree_clean = ($finalPorcelain.exit_code -eq 0 -and -not $finalPorcelain.output)
+    if ($finalPorcelain.exit_code -ne 0) { $finalGit.sync_status = "LOCAL_POSTCHECK_GIT_UNVERIFIED" }
+    elseif (-not $finalGit.working_tree_clean) { $finalGit.sync_status = "LOCAL_POSTCHECK_DIRTY_WORKTREE" }
 }
 
 $blocking = @()
-foreach ($v in @($git.sync_status, $project.status, $godot.status, $gut.status, $hera.status, $hera.live_status, $hera.smoke, $hera.tracked_source_delta)) {
-    if ($null -ne $v -and ([string]$v) -match 'BLOCKED|UNRESOLVED|FAIL|NOT_FOUND') { $blocking += [string]$v }
+foreach ($v in @($finalGit.sync_status, $project.status, $godot.status, $godot.import_parse, $gut.status, $hera.status, $hera.live_status, $hera.smoke, $hera.tracked_source_delta)) {
+    if ($null -ne $v -and ([string]$v) -match 'BLOCKED|UNRESOLVED|FAIL|NOT_FOUND|MISMATCH|POSTCHECK_DIRTY') { $blocking += [string]$v }
 }
 $blocking = @($blocking | Select-Object -Unique)
 $status = $(if ($blocking.Count -gt 0) { "COMPLETE_WITH_BLOCKERS" } else { "COMPLETE" })
 $evidence = [ordered]@{
     schema_version = 1; collector_id = "TEN-LOCAL-GODOT-LIVE-EVIDENCE"; collector_mode = "READ_ONLY_EVIDENCE_COLLECTOR"
     collected_at_utc = (Get-Date).ToUniversalTime().ToString("o"); project_path = $Root; output_dir = $OutputDir
-    safety = [ordered]@{ persistent_project_mutation = "PROJECT_MUTATION_ATTEMPTED_FALSE"; repository_sync_performed = $false; destructive_git_operation_performed = $false; secret_redaction = "ENABLED" }
+    safety = [ordered]@{
+        persistent_project_mutation = "PROJECT_MUTATION_ATTEMPTED_FALSE"
+        repository_sync_performed = $false
+        destructive_git_operation_performed = $false
+        tracked_postcheck_clean = $(if ($git.available) { $finalGit.working_tree_clean } else { $null })
+        secret_redaction = "ENABLED"
+    }
     git = $git; project = $project; plugins = $plugins; godot = $godot; gut = $gut; hera = $hera; final_git = $finalGit
     blocking_statuses = $blocking; collector_status = $status
 }
@@ -277,7 +325,7 @@ $jsonPath = Join-Path $OutputDir "godot-live-evidence.json"
 Write-EvidenceText $jsonPath ($evidence | ConvertTo-Json -Depth 12)
 Write-Host "Local Godot evidence collection complete." -ForegroundColor Green
 Write-Host "Collector status: $status"
-Write-Host "Git sync status: $($git.sync_status)"
+Write-Host "Git sync status: $($finalGit.sync_status)"
 Write-Host "Godot: $($godot.status) / import-parse: $($godot.import_parse)"
 Write-Host "GUT: $($gut.status)"
 Write-Host "Hera: $($hera.status) / status: $($hera.live_status) / smoke: $($hera.smoke) / delta: $($hera.tracked_source_delta)"
