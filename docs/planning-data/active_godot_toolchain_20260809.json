@@ -29,7 +29,8 @@
     "role": "LIVE_QA_AND_OBSERVABILITY_ONLY",
     "persistent_mutation": "FORBIDDEN",
     "enabled": true,
-    "acceptance_source_delta": "NONE_REQUIRED"
+    "acceptance_source_delta": "NONE_REQUIRED",
+    "local_live_qa": "PASS_HERA_V1_0_0_EXACT_PAIR_LIVE_QA_SOURCE_DELTA_NONE"
   },
   "project_godot": {
     "desired_state": "APPROVED_ACTIVE_PROTECTED_STATE",
@@ -78,19 +79,40 @@
     "post_run_porcelain_clean": false,
     "stat_only_status_possible": true,
     "collector_status": "COMPLETE_WITH_BLOCKERS",
-    "remaining_blocker_scope": "HERA_UNVERIFIED"
+    "remaining_blocker_scope": "HERA_AT_TIME_OF_RUN_NOW_SUPERSEDED_BY_LOCAL_HERA_ACCEPTANCE"
+  },
+  "local_hera_v1_live_qa_acceptance": {
+    "evidence_record": "docs/planning-data/local_hera_v1_live_qa_acceptance_20260810.json",
+    "evidence_level": "USER_UPLOADED_RECOVERY_EVIDENCE_ZIP",
+    "checkout_path": "C:/Users/user/AppData/Local/Temp/ten-paces-hera-v1-20260810-005834/project",
+    "head": "ce81eeba1af293061c17e4547fdd2364ec33f8c9",
+    "origin_main": "ce81eeba1af293061c17e4547fdd2364ec33f8c9",
+    "actual_godot_version": "4.7.1.stable.official.a13da4feb",
+    "cli_version": "v1.0.0",
+    "addon_version": "1.0.0",
+    "windows_archive_sha256": "9ae181741c2e8a3f57bbb2a2e4c61ac2c9c7c844fad21c88ae3890c55a5cc66b",
+    "localhost_only": true,
+    "token_auth_enforced": true,
+    "status_exit_code": 0,
+    "status_exact_target": true,
+    "wrong_token_exit_code": 1,
+    "smoke_skip_game_exit_code": 0,
+    "pre_content_clean": true,
+    "post_content_clean": true,
+    "tracked_source_delta": "HERA_SOURCE_DELTA_NONE",
+    "verdict": "PASS_HERA_V1_0_0_EXACT_PAIR_LIVE_QA_SOURCE_DELTA_NONE"
   },
   "remaining_gates": {
-    "hera_cli_pair": "HERA_CLI_ADDON_PAIR_UNVERIFIED",
-    "exact_local_hera_cli_version": "NOT_RUN",
-    "hera_status": "NOT_RUN",
-    "hera_smoke_skip_game": "NOT_RUN",
-    "hera_phase_source_delta": "NOT_RUN",
+    "hera_cli_pair": "PASS_EXACT_V1_0_0_USER_LOCAL_EVIDENCE",
+    "exact_local_hera_cli_version": "v1.0.0",
+    "hera_status": "PASS_EXACT_TARGET",
+    "hera_smoke_skip_game": "PASS",
+    "hera_phase_source_delta": "HERA_SOURCE_DELTA_NONE",
     "local_gut_clean_checkout": "PASS_EXACT_GODOT_4_7_1_GUT_9_7_1_JUNIT_USER_LOCAL_COMMAND_TRANSCRIPT",
     "godot_import_parse": "PASS_EXACT_GODOT_4_7_1_USER_LOCAL_COMMAND_TRANSCRIPT",
     "collector_postcheck_hardening": "PR130_MERGED_LOCAL_RERUN_PASS",
     "tooling_export_exclusion": "BLOCKED_REQUIRES_HIGODOT_L2_AUTHORING_THEN_L1_VALIDATION",
-    "local_windows": "PARTIAL_PASS_GODOT_GUT_CORE_HERA_EXPORT_ANDROID_DEVICE_HUMAN_REMAIN",
+    "local_windows": "PARTIAL_PASS_GODOT_GUT_HERA_CORE_EXPORT_ANDROID_DEVICE_HUMAN_REMAIN",
     "local_android_device": "BLOCKED_UNVERIFIED",
     "human_validation": "BLOCKED_NOT_RUN"
   },
