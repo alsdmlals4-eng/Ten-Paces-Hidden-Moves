@@ -204,7 +204,7 @@ $section = [regex]::Match($projectText, '(?ms)^\[editor_plugins\]\s*(.*?)(?=^\[|
 if ($section.Success) { foreach ($x in [regex]::Matches($section.Value, '"(res://addons/[^"]+/plugin\.cfg)"')) { $enabledPlugins += $x.Groups[1].Value } }
 $autoloads = @()
 $section = [regex]::Match($projectText, '(?ms)^\[autoload\]\s*(.*?)(?=^\[|\z)')
-if ($section.Success) { foreach ($line in ($section.Groups[1].Value -split "`r?`n")) { if ($line.Trim()) { $autoloads += $line.Trim() } }
+if ($section.Success) { foreach ($line in ($section.Groups[1].Value -split "`r?`n")) { if ($line.Trim()) { $autoloads += $line.Trim() } } }
 $projectExists = Test-Path -LiteralPath $projectFile -PathType Leaf
 $project = [ordered]@{ status = $(if ($projectExists) { "PASS" } else { "PROJECT_GODOT_NOT_FOUND" }); exists = $projectExists; main_scene = $mainScene; editor_plugins = $enabledPlugins; autoload_entries = $autoloads }
 $plugins = [ordered]@{
