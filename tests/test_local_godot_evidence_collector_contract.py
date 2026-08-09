@@ -67,7 +67,9 @@ class LocalGodotEvidenceCollectorContractTests(unittest.TestCase):
         self.assertIn('$finalGit.working_tree_clean', self.text)
         self.assertIn('LOCAL_POSTCHECK_DIRTY_WORKTREE', self.text)
 
-    def test_hera_smoke_rechecks_runtime_git_cleanliness(self) -> None:
+    def test_runtime_steps_stop_after_tracked_changes(self) -> None:
+        self.assertIn('$postGodotPorcelain', self.text)
+        self.assertIn('GUT_RUN_BLOCKED_POST_GODOT_DIRTY_WORKTREE', self.text)
         self.assertIn('$runtimePorcelain', self.text)
         self.assertIn('NOT_RUN_POSTCHECK_DIRTY_WORKTREE_SAFETY', self.text)
 
