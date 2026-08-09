@@ -57,6 +57,7 @@ class ActiveGodotToolchainReconciliationTests(unittest.TestCase):
             "LIVE_QA_AND_OBSERVABILITY_ONLY",
             "ten-paces-higodot-recovery@b62b",
             "HERA_CLI_ADDON_PAIR_UNVERIFIED",
+            "PASS_USER_LOCAL_COMMAND_READBACK",
             "SUPERSEDED_DO_NOT_EXECUTE",
         ):
             self.assertIn(token, decision)
@@ -67,6 +68,7 @@ class ActiveGodotToolchainReconciliationTests(unittest.TestCase):
         self.assertEqual("SOLE_PERSISTENT_GODOT_AUTHORING_AUTHORITY", contract["godot_ai"]["role"])
         self.assertEqual("9.7.1", contract["gut"]["version"])
         self.assertEqual("DETERMINISTIC_GDSCRIPT_TEST_AUTHORITY", contract["gut"]["role"])
+        self.assertEqual("PASS_USER_LOCAL_COMMAND_READBACK", contract["gut"]["local_clean_checkout"])
         self.assertEqual("1.0.0", contract["hera"]["version"])
         self.assertEqual("LIVE_QA_AND_OBSERVABILITY_ONLY", contract["hera"]["role"])
         self.assertEqual("FORBIDDEN", contract["hera"]["persistent_mutation"])
@@ -75,7 +77,29 @@ class ActiveGodotToolchainReconciliationTests(unittest.TestCase):
         self.assertEqual("HERA_CLI_ADDON_PAIR_UNVERIFIED", contract["remaining_gates"]["hera_cli_pair"])
         self.assertEqual("NOT_RUN", contract["remaining_gates"]["hera_status"])
         self.assertEqual("NOT_RUN", contract["remaining_gates"]["hera_smoke_skip_game"])
-        self.assertEqual("NOT_RUN", contract["remaining_gates"]["local_gut_clean_checkout"])
+        self.assertEqual(
+            "PASS_USER_LOCAL_COMMAND_READBACK",
+            contract["remaining_gates"]["local_gut_clean_checkout"],
+        )
+        self.assertEqual(
+            "FAIL_USER_LOCAL_COMMAND_READBACK_ROOT_CAUSE_PENDING",
+            contract["remaining_gates"]["godot_import_parse"],
+        )
+        self.assertEqual(
+            "BLOCKED_GODOT_IMPORT_PARSE_FAIL_HERA_CLI_UNRESOLVED",
+            contract["remaining_gates"]["local_windows"],
+        )
+
+        local = contract["local_clean_collector_console"]
+        self.assertEqual("USER_LOCAL_COMMAND_READBACK", local["evidence_level"])
+        self.assertEqual("f0d85bd81981e608a43979ed0e5dc7a8763bd15f", local["head"])
+        self.assertEqual(local["head"], local["origin_main"])
+        self.assertTrue(local["working_tree_clean"])
+        self.assertEqual("LOCAL_SYNC_CURRENT", local["git_sync_status"])
+        self.assertEqual("PASS", local["gut_status"])
+        self.assertEqual("FAIL", local["godot_import_parse"])
+        self.assertEqual("HERA_CLI_NOT_FOUND_OR_PATH_UNSET", local["hera_status"])
+        self.assertEqual("NOT_AVAILABLE_STALE_UPLOAD_DETECTED", local["fresh_json_artifact"])
 
     def test_hera_record_separates_enabled_plugin_from_unverified_live_qa(self) -> None:
         record = json.loads(HERA_RECORD.read_text(encoding="utf-8"))
@@ -110,6 +134,16 @@ class ActiveGodotToolchainReconciliationTests(unittest.TestCase):
         self.assertEqual("HERA_CLI_ADDON_PAIR_UNVERIFIED", gate["hera_cli_pair"])
         self.assertEqual("NOT_RUN", gate["hera_status"])
         self.assertEqual("NOT_RUN", gate["hera_smoke_skip_game"])
+        self.assertEqual("PASS_USER_LOCAL_COMMAND_READBACK", gate["local_gut_clean_checkout"])
+        self.assertEqual("FAIL_USER_LOCAL_COMMAND_READBACK_ROOT_CAUSE_PENDING", gate["godot_import_parse"])
+        self.assertEqual(
+            "BLOCKED_GODOT_IMPORT_PARSE_FAIL_HERA_CLI_UNRESOLVED",
+            gate["local_windows_checkout"],
+        )
+        self.assertIn(
+            "CAPTURE_FRESH_GODOT_VERSION_AND_IMPORT_PARSE_LOGS_FROM_CLEAN_COLLECTOR_RUN",
+            gate["allowed_next_actions"],
+        )
         self.assertNotIn(
             "HIGODOT_L2_ENABLE_HERA_PLUGIN_IF_ADOPTION_CONTINUES",
             gate["allowed_next_actions"],
