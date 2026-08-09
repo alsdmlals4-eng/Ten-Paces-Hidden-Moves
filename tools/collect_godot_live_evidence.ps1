@@ -28,12 +28,12 @@ function Write-EvidenceText([string]$Path, [AllowNull()][string]$Text) {
     [IO.File]::WriteAllText($Path, (Protect-SecretText $Text), $utf8NoBom)
 }
 
-function Invoke-Capture([string]$File, [string[]]$Args, [string]$Cwd, [string]$Log = "") {
+function Invoke-Capture([string]$File, [string[]]$CommandArgs, [string]$Cwd, [string]$Log = "") {
     $old = Get-Location
     try {
         Set-Location -LiteralPath $Cwd
         $global:LASTEXITCODE = 0
-        $text = & $File @Args 2>&1 | Out-String
+        $text = & $File @CommandArgs 2>&1 | Out-String
         $code = $LASTEXITCODE
         if ($null -eq $code) { $code = 0 }
         $text = Protect-SecretText $text
@@ -48,8 +48,8 @@ function Invoke-Capture([string]$File, [string[]]$Args, [string]$Cwd, [string]$L
     finally { Set-Location -LiteralPath $old.Path }
 }
 
-function Git-Read([string[]]$Args, [string]$Root) {
-    return Invoke-Capture -File "git" -Args $Args -Cwd $Root
+function Git-Read([string[]]$CommandArgs, [string]$Root) {
+    return Invoke-Capture -File "git" -CommandArgs $CommandArgs -Cwd $Root
 }
 
 function Text-Sha256([string]$Text) {
@@ -186,7 +186,11 @@ $godot = [ordered]@{ executable = $godotExe; status = "GODOT_EXECUTABLE_UNRESOLV
 if ($godotExe) {
     $r = Invoke-Capture $godotExe @("--version") $Root (Join-Path $OutputDir "godot-version.txt")
     $godot.version = $r.output.Trim(); $godot.status = $(if ($r.exit_code -eq 0) { "PASS" } else { "GODOT_VERSION_COMMAND_FAILED" })
-    if ($git.available -and -not $git.working_tree_clean) {
+    if (-not $git.available) {
+        $godot.import_parse = "NOT_RUN_GIT_UNAVAILABLE_SAFETY"
+        Write-EvidenceText (Join-Path $OutputDir "godot-import-parse.txt") $godot.import_parse
+    }
+    elseif (-not $git.working_tree_clean) {
         $godot.import_parse = "NOT_RUN_DIRTY_WORKTREE_SAFETY"
         Write-EvidenceText (Join-Path $OutputDir "godot-import-parse.txt") $godot.import_parse
     }
@@ -200,7 +204,8 @@ if ($godotExe) {
 }
 
 $gut = [ordered]@{ status = "NOT_RUN"; plugin_version = $plugins.gut.version; exit_code = $null; junit_path = "build/test-results/gut.xml" }
-if ($git.available -and -not $git.working_tree_clean) { $gut.status = "NOT_RUN_DIRTY_WORKTREE_SAFETY" }
+if (-not $git.available) { $gut.status = "NOT_RUN_GIT_UNAVAILABLE_SAFETY" }
+elseif (-not $git.working_tree_clean) { $gut.status = "NOT_RUN_DIRTY_WORKTREE_SAFETY" }
 elseif ($SkipGut) { $gut.status = "NOT_RUN_SKIP_REQUESTED" }
 elseif (-not $plugins.gut.present) { $gut.status = "GUT_ADDON_NOT_FOUND" }
 elseif (-not $godotExe) { $gut.status = "GUT_RUN_BLOCKED_GODOT_EXECUTABLE_UNRESOLVED" }
@@ -221,7 +226,12 @@ if ($heraExe) {
     $hera.version_exit_code = $r.exit_code; $hera.cli_version = $r.output.Trim(); $hera.status = $(if ($r.exit_code -eq 0) { "PASS" } else { "HERA_VERSION_COMMAND_FAILED" })
     $r = Invoke-Capture $heraExe @("status") $Root (Join-Path $OutputDir "hera-status.txt")
     $hera.live_status_exit_code = $r.exit_code; $hera.live_status = $(if ($r.exit_code -eq 0) { "PASS" } else { "FAIL_OR_EDITOR_UNAVAILABLE" })
-    if ($git.available -and -not $git.working_tree_clean) {
+    if (-not $git.available) {
+        $hera.smoke = "NOT_RUN_GIT_UNAVAILABLE_SAFETY"
+        $hera.tracked_source_delta = "NOT_RUN_GIT_UNAVAILABLE_SAFETY"
+        Write-EvidenceText (Join-Path $OutputDir "hera-smoke.txt") $hera.smoke
+    }
+    elseif (-not $git.working_tree_clean) {
         $hera.smoke = "NOT_RUN_DIRTY_WORKTREE_SAFETY"
         $hera.tracked_source_delta = "NOT_RUN_DIRTY_WORKTREE_SAFETY"
         Write-EvidenceText (Join-Path $OutputDir "hera-smoke.txt") $hera.smoke
