@@ -60,11 +60,14 @@
     "human_validation": "BLOCKED_NOT_RUN"
   },
   "protected_approval": {
+    "status": "HISTORICAL_MERGED",
     "protected_base_commit": "a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90",
+    "promoted_protected_baseline": "00a5502f1e40db77dce9495a57292b77bf4e3a5a",
     "validator_detected_paths": [
       "project.godot"
     ],
-    "one_time_manifest": "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json",
+    "historical_record": "docs/operations/2026-08-09_ACTIVE_TOOLCHAIN_PROTECTED_CHANGE_APPROVAL_RECORD.md",
+    "active_manifest_present": false,
     "external_label": "approved-protected-change"
   },
   "product_implementation_authorized": false

@@ -12,7 +12,8 @@ DECISION = ROOT / "docs/decisions/2026-08-09_GODOT_AI313_GUT971_HERA100_ACTIVE_T
 CONTRACT = ROOT / "docs/planning-data/active_godot_toolchain_20260809.json"
 HERA_RECORD = ROOT / "docs/planning-data/HERA_ADOPTION_RECORD.json"
 ENTRY_GATE = ROOT / "docs/planning-data/current_entry_gate_20260808.json"
-APPROVAL = ROOT / "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
+ACTIVE_APPROVAL = ROOT / "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
+ARCHIVED_APPROVAL = ROOT / "docs/operations/2026-08-09_ACTIVE_TOOLCHAIN_PROTECTED_CHANGE_APPROVAL_RECORD.md"
 
 
 def plugin_version(relative: str) -> str:
@@ -115,16 +116,34 @@ class ActiveGodotToolchainReconciliationTests(unittest.TestCase):
         )
         self.assertFalse(gate["product_implementation_authorized"])
 
-    def test_one_time_protected_approval_is_exact_and_bounded(self) -> None:
-        self.assertTrue(APPROVAL.is_file(), "one-time protected approval manifest must exist pre-merge")
-        approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
-        self.assertEqual(1, approval["schema_version"])
-        self.assertEqual("PROJECT_PROTECTED_CHANGE_APPROVAL", approval["artifact_role"])
-        self.assertEqual("APPROVED", approval["status"])
-        self.assertEqual("a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90", approval["protected_base_commit"])
-        self.assertEqual([DECISION_ID], approval["decision_ids"])
-        self.assertEqual(["project.godot"], approval["approved_paths"])
-        self.assertIn("KEEP_GUT_HERA", approval["approval_source"])
+    def test_one_time_protected_approval_is_archived_after_merge(self) -> None:
+        self.assertFalse(
+            ACTIVE_APPROVAL.exists(),
+            "merged one-time active-toolchain protected approval must not authorize later PRs",
+        )
+        self.assertTrue(ARCHIVED_APPROVAL.is_file(), "merged protected approval audit record must exist")
+        record = ARCHIVED_APPROVAL.read_text(encoding="utf-8")
+        for token in (
+            "status: HISTORICAL_MERGED",
+            "product_pr: 123",
+            "product_head: 6029bf5e8f7801ba894552ad61dd0193684626a9",
+            "product_merge_commit: 00a5502f1e40db77dce9495a57292b77bf4e3a5a",
+            "protected_base_commit: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90",
+            "approved_paths: [project.godot]",
+            f"decision_ids: [{DECISION_ID}]",
+            "approval_source: USER_EXPLICIT_KEEP_GUT_HERA_AND_CONTINUOUS_WORK_2026-08-09",
+            "external_approval: GITHUB_PR_LABEL_APPROVED_PROTECTED_CHANGE",
+        ):
+            self.assertIn(token, record)
+
+        contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
+        approval = contract["protected_approval"]
+        self.assertEqual("HISTORICAL_MERGED", approval["status"])
+        self.assertEqual(
+            "docs/operations/2026-08-09_ACTIVE_TOOLCHAIN_PROTECTED_CHANGE_APPROVAL_RECORD.md",
+            approval["historical_record"],
+        )
+        self.assertFalse(approval["active_manifest_present"])
 
 
 if __name__ == "__main__":
