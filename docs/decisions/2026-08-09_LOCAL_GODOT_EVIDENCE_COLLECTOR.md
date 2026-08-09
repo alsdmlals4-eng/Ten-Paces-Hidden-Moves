@@ -1,7 +1,7 @@
 # Local Godot Evidence Collector Decision
 
 - Decision ID: `TEN-DEC-20260809-LOCAL-GODOT-EVIDENCE-COLLECTOR-01`
-- Status: `APPROVED_COLLECTOR_CONTRACT_PR127_HARDENED_EXACT_471_RERUN_PENDING`
+- Status: `APPROVED_COLLECTOR_CONTRACT_PR130_EXACT_471_GUT_JUNIT_LOCAL_ACCEPTED_HERA_PENDING`
 - Approval: 사용자 `그렇게하자.`
 - Scope: 로컬 Windows checkout의 Godot/HiGodot(Godot AI)/GUT/Hera/Git 상태를 한 번의 PowerShell 실행으로 수집하는 **증거 전용 진단기**
 - Product/runtime feature change: `NONE`
@@ -19,10 +19,12 @@
 - secret/token/authorization/api-key/password 및 URL credential을 redaction한다.
 - 시작 worktree가 dirty면 Godot import/GUT/Hera smoke를 실행하지 않는다.
 - Git 상태를 신뢰할 수 없으면 mutation-capable runtime checks를 fail-closed한다.
-- **runtime 단계 뒤에도 tracked Git 상태를 다시 확인**하고 dirty가 생기면 이후 GUT/Hera smoke를 fail-closed한다.
-- blocker가 있어도 JSON은 남기되 PASS로 승격하지 않는다.
+- runtime 단계 뒤에도 tracked Git 상태를 다시 확인하고 실제 content change가 생기면 이후 GUT/Hera smoke를 fail-closed한다.
+- Windows/Godot stat-only metadata touch와 실제 content change를 분리한다.
+- GUT는 process exit 0만으로 PASS하지 않으며 canonical `build/test-results/gut.xml`이 새로 생성되어야 `gut.status=PASS`, `gut.junit_status=PASS`가 된다.
+- blocker가 있어도 JSON은 남기되 해당 blocker를 PASS로 승격하지 않는다.
 
-## Windows collector 결함 이력
+## Windows collector 결함·보강 이력
 
 ### PR #122 — native argument / Git fail-open
 
@@ -34,27 +36,16 @@ merge_main: 6bee030f00f994aedab0782f490cd93eeb7dfc5a
 result: MERGED_WINDOWS_SAFE_ARGUMENT_FIX
 ```
 
-### clean current-main run and uploaded fresh evidence
+### Historical wrong-version run
 
-사용자가 새 isolated checkout에서 collector를 실행했고 초기 콘솔은 clean/current Git, GUT PASS, Godot import FAIL, Hera CLI unresolved를 보고했다. 이후 실제 산출물 3개를 업로드해 다음이 확정됐다.
+사용자가 isolated checkout에서 collector를 실행했으나 실제 executable은 exact 4.7.1이 아니라 Godot `4.7.stable.official.5b4e0cb0f`였다. 이 실행은 GUT exit 0 이력을 남겼지만 exact-4.7.1 acceptance에는 사용하지 않았다. 또한 native stderr warning과 final Git-state 해석 결함을 노출했다.
 
 ```yaml
-checkout: C:/Users/user/AppData/Local/Temp/ten-paces-live-validation-20260809-213134
-head: f0d85bd81981e608a43979ed0e5dc7a8763bd15f
-initial_git: CLEAN_CURRENT
-actual_godot_executable: C:/Users/user/Downloads/Godot_v4.7-stable_win64.exe/Godot_v4.7-stable_win64.exe
 actual_godot_version: 4.7.stable.official.5b4e0cb0f
 expected_local_acceptance_version: 4.7.1
-import_log: WARNING_45_OBJECTDB_INSTANCES_LEAKED_AT_EXIT_ONLY
-collector_import_exit_code: -1
 gut_exit_code: 0
-post_run_tracked_state: DIRTY_TRACKED_IMPORT_METADATA
-hera_cli: NOT_FOUND
+acceptance: HISTORICAL_NON_ACCEPTANCE_VERSION
 ```
-
-업로드된 `godot-import-parse.txt`에는 fatal parse/import error가 아니라 ObjectDB leak warning 한 줄만 있었다. 따라서 기존 `import FAIL`은 프로젝트 결함으로 확정하지 않는다.
-
-또 JSON은 final short status에 다수의 tracked `.import` 수정이 있는데 `final_git.working_tree_clean=true`를 유지하고 있었다. 이 모순은 collector가 초기 clean 값을 복사한 뒤 final clean을 재계산하지 않은 결함이다.
 
 ### PR #127 — exact 4.7.1 / native stderr / post-runtime safety
 
@@ -64,51 +55,108 @@ PR #127은 TDD로 다음을 수정했다.
 - local acceptance target prefix를 `4.7.1.`로 명시하고 mismatch는 fail-closed한다.
 - Windows PowerShell native stderr는 `$ErrorActionPreference="Continue"` 구간에서 수집하고 실제 `$LASTEXITCODE`로 성공/실패를 판정한다.
 - Godot 단계 후 tracked Git 상태를 재검사한다.
-- Godot가 tracked files를 dirty하게 만들면 GUT을 `GUT_RUN_BLOCKED_POST_GODOT_DIRTY_WORKTREE`로 막는다.
+- Godot가 실제 tracked content를 dirty하게 만들면 GUT을 `GUT_RUN_BLOCKED_POST_GODOT_DIRTY_WORKTREE`로 막는다.
 - Hera smoke 직전에도 runtime Git clean 상태를 재검사한다.
-- final Git cleanliness를 실제 porcelain 결과로 재계산한다.
 - `godot.import_parse`를 blocker 목록에 포함한다.
 
 ```yaml
 pr: 127
 validated_exact_head: 38e849dcd3eab610618b798597c0b62a80e16a62
 merge_main: 0f34d5543ee946a06bd2ad0bb9e86f7b4e3920c5
-changed_files:
-  - tools/collect_godot_live_evidence.ps1
-  - tests/test_local_godot_evidence_collector_contract.py
 result: MERGED_EXACT_471_POSTCHECK_HARDENING
-local_hardened_rerun: NOT_RUN
 ```
 
-Ready 재검증에서 PR Validation, collector contract tests, PowerShell parser, Project Base Adapter, Full Validation, Active Toolchain, Windows Product Gate의 Godot 4.7.1 import/export/product validation이 모두 성공했다.
+### PR #129 — stat-only metadata vs actual content
+
+Exact 4.7.1 import가 Windows/Godot의 stat-only `.import` touch를 만들 수 있으나 `git diff`상 실제 내용 변화가 없다는 로컬 증거를 기준으로, collector는 porcelain/stat 표시와 실제 tracked/staged/untracked content state를 분리한다. 실제 content change는 계속 fail-closed한다.
+
+```yaml
+pr: 129
+merge_main: 5233ec87a5aa5ef5d64280b8abe8d26c4c16c5e2
+result: MERGED_CONTENT_CLEAN_STAT_ONLY_RECONCILIATION
+```
+
+### PR #130 — GUT JUnit acceptance gate
+
+사용자 exact 4.7.1 실행에서 GUT 2/2 tests, 10 assertions, exit 0이었지만 `Could not create export file res://build/test-results/gut.xml` 경고와 XML 부재를 발견했다. canonical hosted GUT workflow는 JUnit directory 준비와 `gut.xml` 존재를 필수로 요구하므로 local collector도 같은 기준으로 TDD 보강했다.
+
+PR #130은:
+
+- `build/test-results`를 실행 전에 준비한다.
+- stale ignored `gut.xml`을 제거한다.
+- `-gconfig=res://.gutconfig.json`을 명시한다.
+- test execution과 JUnit status를 분리한다.
+- XML이 없으면 `GUT_JUNIT_EXPORT_NOT_FOUND`로 fail-closed한다.
+- 성공한 `gut.xml`을 timestamped evidence directory로 복사한다.
+
+```yaml
+pr: 130
+validated_exact_head: 79e1c0171df4a1733c46b2e150c303dc9251b499
+merge_main: 1ecfb77eca6df0731c74f89ffe6d5dd16c6466d6
+result: MERGED_GUT_JUNIT_ACCEPTANCE_GATE
+```
+
+## 2026-08-10 exact 4.7.1 local rerun — accepted
+
+사용자가 PR #130 merged main을 fresh isolated checkout으로 clone하고 exact Godot 4.7.1을 명시해 collector를 재실행한 전체 PowerShell transcript를 제공했다.
+
+Canonical evidence record:
+
+`docs/planning-data/local_godot_471_gut_junit_acceptance_20260810.json`
+
+```yaml
+checkout: C:/Users/user/AppData/Local/Temp/ten-paces-pr130-gut-junit-20260810-002755
+head: 1ecfb77eca6df0731c74f89ffe6d5dd16c6466d6
+origin_main: 1ecfb77eca6df0731c74f89ffe6d5dd16c6466d6
+initial_worktree: CLEAN
+sync_status: LOCAL_SYNC_CURRENT
+godot_version: 4.7.1.stable.official.a13da4feb
+godot_status: PASS
+godot_import_parse: PASS
+gut_version: 9.7.1
+gut_status: PASS
+gut_test_execution_status: PASS
+gut_junit_status: PASS
+canonical_gut_xml_exists: true
+evidence_gut_xml_exists: true
+final_working_tree_content_clean: true
+final_porcelain_clean: false
+stat_only_status_possible: true
+hera_cli: HERA_CLI_NOT_FOUND_OR_PATH_UNSET
+collector_status: COMPLETE_WITH_BLOCKERS
+core_result: PASS
+```
+
+PowerShell transcript에 보인 두 번의 `else` 오류는 사용자가 interactive paste에서 `if { ... }`를 먼저 실행한 뒤 `else`를 별도 명령으로 입력해 발생한 표시용 wrapper 오류다. 그 전에 collector 자체가 완료되었고, JSON-derived Godot/GUT/JUnit 결과와 `gut.xml` existence가 모두 PASS/True로 출력되었으므로 core acceptance를 낮추지 않는다.
 
 ## 현재 claim ceiling
 
-이전 GUT exit 0은 실제 실행 이력으로 보존하지만 Godot 4.7 stable에서 수행됐다. 따라서 exact 4.7.1 local acceptance PASS로 사용하지 않는다.
-
 ```yaml
-collector_pr127_merged: true
-hardened_collector_local_rerun: NOT_RUN
-local_git_initial_clean_current_historical: PASS_USER_LOCAL_FILE_READBACK
-local_godot_4_7_execution: HISTORICAL_NON_ACCEPTANCE_VERSION
-local_godot_4_7_1_import_parse: NOT_RUN
-local_gut_exit0_under_4_7: HISTORICAL_PASS_GODOT_4_7_REVALIDATION_REQUIRED
-local_gut_acceptance_under_4_7_1: BLOCKED_REQUIRES_EXACT_GODOT_4_7_1_RERUN
+collector_pr130_merged: true
+hardened_collector_local_rerun: PASS
+local_git_initial_clean_current: PASS_USER_LOCAL_COMMAND_TRANSCRIPT
+local_godot_4_7_1_import_parse: PASS_USER_LOCAL_COMMAND_TRANSCRIPT
+local_gut_9_7_1_test_execution_under_4_7_1: PASS_USER_LOCAL_COMMAND_TRANSCRIPT
+local_gut_9_7_1_junit_under_4_7_1: PASS_USER_LOCAL_COMMAND_TRANSCRIPT
+local_gut_evidence_xml_present: PASS_USER_LOCAL_COMMAND_TRANSCRIPT
+local_content_clean_after_runtime: PASS_USER_LOCAL_COMMAND_TRANSCRIPT
 hera_cli_pair: HERA_CLI_ADDON_PAIR_UNVERIFIED
 hera_status: NOT_RUN
 hera_smoke_skip_game: NOT_RUN
 hera_phase_source_delta: NOT_RUN
 ```
 
+Exact Godot 4.7.1 import/parse + GUT/JUnit 로컬 gate는 닫혔다. `collector_status=COMPLETE_WITH_BLOCKERS`는 Hera CLI가 아직 없기 때문이며 Godot/GUT/JUnit core PASS를 무효화하지 않는다.
+
 ## 다음 실제 Gate
 
-1. **새 fresh clean clone**에서 merged PR #127 collector를 사용한다.
-2. exact Godot 4.7.1 executable을 명시하거나 collector exact discovery로 확인한다.
-3. `godot-version.txt`가 `4.7.1.` prefix인지 확인한다.
-4. import/parse 결과와 post-runtime Git cleanliness를 확인한다.
-5. post-Godot clean일 때만 GUT 9.7.1 결과를 acceptance evidence로 사용한다.
-6. 그 다음 Hera exact v1.0.0 CLI SHA/version → status → pre snapshot → smoke `--skip-game` → post delta `NONE` 순서로 검증한다.
-7. 실제 실행한 PASS만 GitHub/Sheet에 승격한다.
+1. Hera official Windows v1.0.0 CLI archive SHA-256을 검증한다.
+2. `hera version`이 exact `1.0.0`인지 확인한다.
+3. exact Ten Paces editor target, localhost/shared-token을 secret redaction 조건으로 확인한다.
+4. tracked source pre-Hera snapshot을 기록한다.
+5. `hera status`와 `hera smoke --skip-game`을 수행한다.
+6. post-Hera tracked source delta가 `NONE`인지 확인한다.
+7. Hera acceptance 완료 전에는 Hera live-QA PASS를 주장하지 않는다.
 
 ## Active toolchain 관계
 
@@ -118,4 +166,4 @@ hera_phase_source_delta: NOT_RUN
 - GUT `9.7.1`: `DETERMINISTIC_GDSCRIPT_TEST_AUTHORITY`
 - Hera Agent Godot `1.0.0`: `LIVE_QA_AND_OBSERVABILITY_ONLY`, persistent mutation `FORBIDDEN`
 
-collector hardening은 이 역할을 변경하지 않는다.
+collector acceptance는 이 역할을 변경하지 않으며 product implementation authorization도 부여하지 않는다.
