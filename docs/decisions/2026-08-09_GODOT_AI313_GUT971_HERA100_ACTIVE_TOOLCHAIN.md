@@ -1,7 +1,7 @@
 # Godot AI 3.1.3 + GUT 9.7.1 + Hera 1.0.0 Active Toolchain Reconciliation
 
 - Decision ID: `TEN-DEC-20260809-GODOT-AI313-GUT971-HERA100-ACTIVE-TOOLCHAIN-01`
-- Status: `CURRENT_APPROVED_RECONCILIATION_EXACT_471_LOCAL_RERUN_PENDING`
+- Status: `CURRENT_APPROVED_RECONCILIATION_EXACT_471_GUT_JUNIT_LOCAL_ACCEPTED_HERA_PENDING`
 - Approval source: user correction `헤라랑 gut 써야지 왜 없애` followed by `[연속작업] 진행해`
 - Fresh Base main at reconciliation: `2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b`
 - Product/runtime feature change: `NONE`
@@ -54,6 +54,55 @@ local_higodot_l0: PASS_OBSERVED_EXISTING_STATE
 persistent_write_during_observation: NONE
 ```
 
+## 2026-08-10 exact Godot 4.7.1 + GUT/JUnit local acceptance
+
+The user reran the PR #130 merged collector from a fresh isolated checkout and supplied the complete PowerShell transcript. The collector implementation requires a successful GUT process and an actually-created `build/test-results/gut.xml` before setting `gut.status=PASS` and `gut.junit_status=PASS`, and copies the XML into the timestamped evidence directory.
+
+Canonical evidence record:
+
+`docs/planning-data/local_godot_471_gut_junit_acceptance_20260810.json`
+
+Observed transcript facts:
+
+```yaml
+checkout: C:/Users/user/AppData/Local/Temp/ten-paces-pr130-gut-junit-20260810-002755
+head: 1ecfb77eca6df0731c74f89ffe6d5dd16c6466d6
+origin_main: 1ecfb77eca6df0731c74f89ffe6d5dd16c6466d6
+initial_worktree: CLEAN
+sync_status: LOCAL_SYNC_CURRENT
+godot_executable: C:/Users/user/Downloads/Godot_v4.7.1-stable_win64.exe/Godot_v4.7.1-stable_win64.exe
+godot_version: 4.7.1.stable.official.a13da4feb
+godot_status: PASS
+godot_import_parse: PASS
+gut_version: 9.7.1
+gut_status: PASS
+gut_test_execution_status: PASS
+gut_junit_status: PASS
+canonical_gut_xml_exists: true
+evidence_gut_xml_exists: true
+final_content_clean: true
+final_porcelain_clean: false
+stat_only_status_possible: true
+hera_cli: HERA_CLI_NOT_FOUND_OR_PATH_UNSET
+collector_status: COMPLETE_WITH_BLOCKERS
+core_result: PASS
+```
+
+The `porcelain_clean=false` / `stat_only_status_possible=true` combination does not lower this acceptance because the hardened collector separately checks actual tracked/staged/untracked content and reported `working_tree_clean=true`. The earlier stat-only `.import` observation was already reconciled by PR #129.
+
+Therefore the exact-4.7.1 local claims are promoted to:
+
+```yaml
+local_godot_import_acceptance_471: PASS_USER_LOCAL_COMMAND_TRANSCRIPT
+local_gut_acceptance_471: PASS_USER_LOCAL_COMMAND_TRANSCRIPT
+local_gut_test_execution_471: PASS
+local_gut_junit_471: PASS
+local_gut_evidence_xml_present: PASS
+local_godot_gut_core_windows_gate: PASS
+```
+
+This promotion is limited to Godot 4.7.1 import/parse and GUT 9.7.1 deterministic test/JUnit evidence. It does not imply Hera acceptance, export-exclusion acceptance, Android/device acceptance, or human acceptance.
+
 ## Hera claim ceiling
 
 Plugin enablement is not live-QA acceptance completion.
@@ -70,60 +119,32 @@ Before Hera acceptance QA can be claimed, require the exact Windows CLI archive 
 
 ## GUT and local Windows evidence history
 
-The user ran the merged collector in isolated checkout:
+### Historical Godot 4.7 run — not acceptance
 
-`C:/Users/user/AppData/Local/Temp/ten-paces-live-validation-20260809-213134`
-
-Initial console evidence showed HEAD == origin/main, initial clean worktree, `LOCAL_SYNC_CURRENT`, GUT exit 0, Godot import recorded FAIL, and Hera CLI unresolved. PR #126 originally promoted the GUT observation to `PASS_USER_LOCAL_COMMAND_READBACK` while keeping the whole Windows gate blocked.
-
-### 2026-08-09 uploaded-file correction — supersedes the local acceptance promotion
-
-The subsequently uploaded fresh evidence files establish facts that the earlier console summary did not expose:
-
-```yaml
-actual_godot_executable: C:/Users/user/Downloads/Godot_v4.7-stable_win64.exe/Godot_v4.7-stable_win64.exe
-actual_godot_version: 4.7.stable.official.5b4e0cb0f
-project_windows_ci_target: 4.7.1
-import_log: WARNING_45_OBJECTDB_INSTANCES_LEAKED_AT_EXIT_ONLY
-collector_recorded_import_exit: -1
-post_run_tracked_state: DIRTY_TRACKED_IMPORT_METADATA
-gut_exit: 0
-hera_cli: NOT_FOUND
-```
-
-Therefore the previous local acceptance promotion is corrected without erasing the historical run:
+The first isolated collector run used Godot `4.7.stable.official.5b4e0cb0f`, not the exact 4.7.1 target. It also exposed Windows native-stderr and final Git-state defects in the collector. That run remains historical evidence only.
 
 ```yaml
 local_gut_historical_execution: PASS_EXIT_0_UNDER_GODOT_4_7
-local_gut_clean_checkout: HISTORICAL_PASS_GODOT_4_7_REVALIDATION_REQUIRED
-local_gut_acceptance_471: BLOCKED_REQUIRES_EXACT_GODOT_4_7_1_RERUN
-local_godot_import_acceptance_471: NOT_RUN_EXACT_GODOT_4_7_1_RERUN_REQUIRED
-local_windows: BLOCKED_GODOT_4_7_1_RERUN_HERA_CLI_UNRESOLVED
+local_gut_clean_checkout: HISTORICAL_PASS_GODOT_4_7_REVALIDATED_BY_EXACT_471_RUN
+historical_import_claim: SUPERSEDED_BY_EXACT_471_ACCEPTANCE
 ```
 
-The GUT 9.7.1 authority/adoption is not revoked. Only the **local exact-4.7.1 acceptance claim** is lowered until rerun.
+### Collector hardening lineage
 
-## Collector PR #127 consequence
+PR #127 fixed exact 4.7.1 preference, real native `$LASTEXITCODE`, post-runtime Git rechecks, fail-closed runtime sequencing, and import status blocking.
 
-The uploaded files also proved collector defects rather than a confirmed project import failure:
+PR #129 separated actual content cleanliness from Windows/Godot stat-only `.import` touches while continuing to fail closed on real tracked, staged, or untracked content changes.
 
-- broad discovery selected Godot `4.7` before exact `4.7.1`;
-- Windows PowerShell native stderr warning could be caught as a failure under `$ErrorActionPreference="Stop"` and yield artificial exit `-1`;
-- runtime-generated tracked `.import` modifications were visible in final short status but `final_git.working_tree_clean` retained the initial `true` value;
-- `godot.import_parse=FAIL` was omitted from `blocking_statuses`;
-- GUT/Hera runtime phases could continue using only the initial clean check.
-
-PR #127 fixed these by preferring exact Godot 4.7.1, using real native `$LASTEXITCODE`, rechecking Git state after runtime phases, blocking later mutation-capable checks after tracked changes, and including import status in blockers.
+PR #130 aligned local GUT validation with the canonical hosted GUT/JUnit gate by preparing `build/test-results`, using explicit `-gconfig=res://.gutconfig.json`, requiring a newly-created `gut.xml`, exposing separate test/JUnit statuses, and copying successful XML into the evidence directory.
 
 ```yaml
-collector_pr: 127
-collector_exact_head: 38e849dcd3eab610618b798597c0b62a80e16a62
-collector_merge_main: 0f34d5543ee946a06bd2ad0bb9e86f7b4e3920c5
-collector_hardening: MERGED
-local_hardened_rerun: NOT_RUN
+collector_pr127_merge: 0f34d5543ee946a06bd2ad0bb9e86f7b4e3920c5
+collector_pr129_merge: 5233ec87a5aa5ef5d64280b8abe8d26c4c16c5e2
+collector_pr130_merge: 1ecfb77eca6df0731c74f89ffe6d5dd16c6466d6
+collector_exact_471_gut_junit_local_rerun: PASS
 ```
 
-No `project.godot`, addon, Scene, Resource, product script, gameplay, combat data, or product asset was changed by PR #127.
+No collector hardening PR changed `project.godot`, addon source, Scene, Resource, product script, gameplay, combat data, or product asset.
 
 ## Protected change governance
 
@@ -131,14 +152,20 @@ The active-toolchain protected-state approval is historical and archived. The on
 
 ## Entry Gate effect
 
-This Decision keeps Godot AI 3.1.3 + GUT 9.7.1 + Hera 1.0.0 active, but does **not** open product implementation. Remaining gates include:
+The exact Godot 4.7.1 + GUT/JUnit local rerun gates are now closed. This Decision still does **not** open product implementation.
 
-- exact Godot 4.7.1 hardened collector rerun;
-- local GUT acceptance rerun under exact 4.7.1;
-- Hera CLI/status/smoke/source-delta;
+Remaining gates include:
+
+- Hera exact v1.0.0 Windows CLI archive SHA/version and CLI/addon pair verification;
+- Hera target/status, localhost/shared-token, smoke `--skip-game`, and Hera-phase tracked source delta `NONE`;
 - tooling export exclusion HiGodot authoring/validation;
-- local Windows/Android/device/human gates.
+- Android/device/human validation gates;
+- any other current product-specific Work Entry Completeness Gate blockers.
 
 ```yaml
+exact_godot_471_local_gate: PASS
+local_gut_971_junit_gate: PASS
+hera_live_qa_gate: BLOCKED_UNVERIFIED
+full_local_platform_acceptance: BLOCKED_REMAINING_GATES
 product_implementation_authorized_by_this_decision: false
 ```
