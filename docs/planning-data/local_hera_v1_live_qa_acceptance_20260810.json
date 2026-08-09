@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "authority": "USER_LOCAL_HERA_V1_LIVE_QA_ACCEPTANCE_EVIDENCE",
+  "decision_ids": [
+    "TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01",
+    "TEN-DEC-20260809-GODOT-AI313-GUT971-HERA100-ACTIVE-TOOLCHAIN-01"
+  ],
+  "evidence_level": "USER_UPLOADED_RECOVERY_EVIDENCE_ZIP",
+  "source_archive_name": "UPLOAD_THIS_HERA_V1_RECOVERY_EVIDENCE.zip",
+  "project": {
+    "head": "ce81eeba1af293061c17e4547fdd2364ec33f8c9",
+    "origin_main": "ce81eeba1af293061c17e4547fdd2364ec33f8c9",
+    "required_canon": "ce81eeba1af293061c17e4547fdd2364ec33f8c9",
+    "checkout": "C:/Users/user/AppData/Local/Temp/ten-paces-hera-v1-20260810-005834/project"
+  },
+  "godot": {
+    "version": "4.7.1.stable.official.a13da4feb"
+  },
+  "hera": {
+    "release": "v1.0.0",
+    "cli_version": "v1.0.0",
+    "addon_version": "1.0.0",
+    "windows_archive_asset": "hera-windows-amd64.zip",
+    "windows_archive_sha256": "9ae181741c2e8a3f57bbb2a2e4c61ac2c9c7c844fad21c88ae3890c55a5cc66b",
+    "editor_pid": 25444,
+    "port": 8770,
+    "localhost_only": true,
+    "token_value": "[REDACTED]",
+    "normal_status_exit": 0,
+    "exact_target": true,
+    "status_project_name": "십보강호: 전투 POC",
+    "status_project_path": "C:/Users/user/AppData/Local/Temp/ten-paces-hera-v1-20260810-005834/project/",
+    "status_scene": "res://scenes/combat/combat_board_preview.tscn",
+    "wrong_token_exit": 1,
+    "wrong_token_result": "UNAUTHORIZED_EXPECTED",
+    "token_auth_enforced": true,
+    "smoke_skip_game_exit": 0,
+    "smoke_ok": true,
+    "smoke_step_count": 3,
+    "smoke_steps": [
+      "status",
+      "diagnostics",
+      "scene"
+    ],
+    "pre_content_clean": true,
+    "post_content_clean": true,
+    "tracked_source_delta": "HERA_SOURCE_DELTA_NONE"
+  },
+  "porcelain_observation": {
+    "status_after_has_import_and_project_godot_m_markers": true,
+    "classification": "STAT_ONLY_POSSIBLE_ALREADY_RECONCILED_BY_PR129",
+    "acceptance_basis": "ACTUAL_TRACKED_STAGED_UNTRACKED_CONTENT_CLEAN_PRE_AND_POST"
+  },
+  "verdict": "PASS_HERA_V1_0_0_EXACT_PAIR_LIVE_QA_SOURCE_DELTA_NONE",
+  "claim_ceiling": {
+    "hera_live_qa_acceptance": "PASS",
+    "persistent_godot_authoring_authority": "HIGODOT_ONLY",
+    "hera_persistent_mutation": "FORBIDDEN",
+    "tooling_export_exclusion": "BLOCKED_REQUIRES_HIGODOT_L2_AUTHORING_THEN_L1_VALIDATION",
+    "local_android_device": "BLOCKED_UNVERIFIED",
+    "human_validation": "BLOCKED_NOT_RUN",
+    "product_implementation_authorized_by_this_evidence": false
+  }
+}
