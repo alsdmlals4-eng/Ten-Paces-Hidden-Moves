@@ -69,9 +69,9 @@ class LocalGodotEvidenceCollectorContractTests(unittest.TestCase):
     def test_runtime_cleanliness_uses_content_state_not_stat_only_status(self) -> None:
         for token in [
             'function Tracked-ContentState',
-            'diff", "--quiet",
-            'diff", "--cached", "--quiet",
-            'ls-files", "--others", "--exclude-standard",
+            '@("diff", "--quiet"',
+            '@("diff", "--cached", "--quiet"',
+            '@("ls-files", "--others", "--exclude-standard"',
             '$postGodotContent = Tracked-ContentState $Root',
             '$runtimeContent = Tracked-ContentState $Root',
             '$finalContent = Tracked-ContentState $Root',
