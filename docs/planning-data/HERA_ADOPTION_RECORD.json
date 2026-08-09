@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "tool": "Hera Agent Godot",
-  "decision_id": "TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01",
-  "snapshot_semantics": "POST_PR115_REMOTE_CLI_PREFLIGHT_PLUS_LOCAL_AUTHORITY_SEQUENCE_CORRECTION",
+  "decision_id": "TEN-DEC-20260809-GODOT-AI313-GUT971-HERA100-ACTIVE-TOOLCHAIN-01",
+  "snapshot_semantics": "ACTIVE_PLUGIN_L0_OBSERVED_CLI_PAIR_UNVERIFIED",
   "canonical_source_repository": "NotNull92/hera-agent-godot",
   "exact_addon_version": "1.0.0",
   "official_tag": "v1.0.0",
@@ -10,7 +10,7 @@
   "project_addon_tree": "6cb87ac8ba768de1d924447f385fba6d80bcde68",
   "addon_tree_match": "EXACT",
   "expected_cli_version": "1.0.0",
-  "expected_windows_amd64_cli_asset": "hera-windows-amd64.zip",
+  "official_windows_amd64_cli_asset": "hera-windows-amd64.zip",
   "expected_windows_amd64_cli_sha256": "9ae181741c2e8a3f57bbb2a2e4c61ac2c9c7c844fad21c88ae3890c55a5cc66b",
   "official_addon_release_asset": "hera-agent-godot-addon.zip",
   "official_addon_release_sha256": "0a71000f0c4192043e72e9b18f4de3bac720035d9d7c95c9634648a7b5c54d9f",
@@ -20,15 +20,16 @@
   "persistent_source_mutation": "FORBIDDEN",
   "transport": "LOCALHOST_ONLY",
   "acceptance_source_delta": "NONE",
-  "enabled_in_project_godot": false,
+  "enabled_in_project_godot": true,
+  "enablement_evidence": "LOCAL_HIGODOT_L0_OBSERVED_EXISTING_ENABLED_STATE",
+  "enablement_session": "ten-paces-higodot-recovery@b62b",
+  "enablement_project_path": "C:/Users/user/AppData/Local/Temp/ten-paces-higodot-recovery/",
   "plugin_enable_authority": "HIGODOT_ONLY",
   "plugin_enable_risk_class": "L2_PROJECT_SETTING_MUTATION",
-  "adoption_status": "PRESENT_DISABLED_PAIR_UNVERIFIED",
+  "adoption_status": "PLUGIN_ENABLED_L0_OBSERVED_CLI_PAIR_UNVERIFIED",
   "required_before_active": [
     "VERIFY_WINDOWS_AMD64_CLI_ARTIFACT_SHA256",
     "HERA_VERSION_EXACT_V1_0_0",
-    "HIGODOT_L0_OBSERVE_TARGET_PROJECT_AND_PLUGIN_STATE",
-    "HIGODOT_L2_ENABLE_HERA_PLUGIN_IF_ADOPTION_CONTINUES",
     "FULL_EDITOR_RESTART",
     "LOCALHOST_AND_SHARED_TOKEN_CHECK_WITH_SECRET_REDACTION",
     "HERA_STATUS_TARGET_PROJECT",
@@ -47,5 +48,5 @@
     "state": "BLOCKED_REQUIRES_HIGODOT_L2_AUTHORING_THEN_L1_VALIDATION"
   },
   "remote_preflight_main": "e3c7a3cc0705f7a20dcf7810788ce86633b9b186",
-  "last_local_pair_verification": "NOT_RUN_LOCAL_ACCESS_UNAVAILABLE"
+  "last_local_pair_verification": "NOT_RUN_LOCAL_CLI_UNVERIFIED"
 }

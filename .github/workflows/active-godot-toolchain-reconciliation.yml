@@ -1,0 +1,24 @@
+name: Validate Active Godot Toolchain Reconciliation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  active-toolchain-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate active Godot toolchain reconciliation
+        run: python -m unittest tests.test_active_godot_toolchain_reconciliation -v
