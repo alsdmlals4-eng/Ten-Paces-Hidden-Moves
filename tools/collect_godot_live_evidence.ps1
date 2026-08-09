@@ -251,7 +251,14 @@ if ($git.available) {
     $postGodotClean = ($postGodotContent.ok -and $postGodotContent.clean)
 }
 
-$gut = [ordered]@{ status = "NOT_RUN"; plugin_version = $plugins.gut.version; exit_code = $null; junit_path = "build/test-results/gut.xml" }
+$gut = [ordered]@{
+    status = "NOT_RUN"
+    test_execution_status = "NOT_RUN"
+    plugin_version = $plugins.gut.version
+    exit_code = $null
+    junit_path = "build/test-results/gut.xml"
+    junit_status = "NOT_RUN"
+}
 if (-not $git.available) { $gut.status = "NOT_RUN_GIT_UNAVAILABLE_SAFETY" }
 elseif (-not $git.working_tree_clean) { $gut.status = "NOT_RUN_DIRTY_WORKTREE_SAFETY" }
 elseif (-not $postGodotClean) { $gut.status = "GUT_RUN_BLOCKED_POST_GODOT_DIRTY_WORKTREE" }
@@ -260,9 +267,28 @@ elseif (-not $plugins.gut.present) { $gut.status = "GUT_ADDON_NOT_FOUND" }
 elseif (-not $godotExe) { $gut.status = "GUT_RUN_BLOCKED_GODOT_EXECUTABLE_UNRESOLVED" }
 elseif ($godot.status -eq "GODOT_VERSION_MISMATCH_EXPECTED_4_7_1") { $gut.status = "GUT_RUN_BLOCKED_GODOT_VERSION_MISMATCH" }
 else {
-    $r = Invoke-Capture $godotExe @("--headless", "--path", $Root, "--script", "res://addons/gut/gut_cmdln.gd") $Root (Join-Path $OutputDir "gut.txt")
+    $gutJunitDir = Join-Path $Root "build/test-results"
+    $gutJunitPath = Join-Path $gutJunitDir "gut.xml"
+    New-Item -ItemType Directory -Force -Path $gutJunitDir | Out-Null
+    if (Test-Path -LiteralPath $gutJunitPath -PathType Leaf) { Remove-Item -LiteralPath $gutJunitPath -Force }
+
+    $r = Invoke-Capture $godotExe @("--headless", "--path", $Root, "--script", "res://addons/gut/gut_cmdln.gd", "-gconfig=res://.gutconfig.json") $Root (Join-Path $OutputDir "gut.txt")
     $gut.exit_code = $r.exit_code
-    $gut.status = $(if ($r.exit_code -eq 0) { "PASS" } else { "FAIL" })
+    $gut.test_execution_status = $(if ($r.exit_code -eq 0) { "PASS" } else { "FAIL" })
+
+    if ($r.exit_code -ne 0) {
+        $gut.status = "FAIL"
+        $gut.junit_status = "NOT_EVALUATED_TEST_FAILURE"
+    }
+    elseif (-not (Test-Path -LiteralPath $gutJunitPath -PathType Leaf)) {
+        $gut.status = "GUT_JUNIT_EXPORT_NOT_FOUND"
+        $gut.junit_status = "GUT_JUNIT_EXPORT_NOT_FOUND"
+    }
+    else {
+        $gut.status = "PASS"
+        $gut.junit_status = "PASS"
+        Copy-Item -LiteralPath $gutJunitPath -Destination (Join-Path $OutputDir "gut.xml") -Force
+    }
 }
 if (-not (Test-Path (Join-Path $OutputDir "gut.txt"))) { Write-EvidenceText (Join-Path $OutputDir "gut.txt") $gut.status }
 
@@ -358,7 +384,7 @@ Write-Host "Local Godot evidence collection complete." -ForegroundColor Green
 Write-Host "Collector status: $status"
 Write-Host "Git sync status: $($finalGit.sync_status)"
 Write-Host "Godot: $($godot.status) / import-parse: $($godot.import_parse)"
-Write-Host "GUT: $($gut.status)"
+Write-Host "GUT: $($gut.status) / tests: $($gut.test_execution_status) / junit: $($gut.junit_status)"
 Write-Host "Hera: $($hera.status) / status: $($hera.live_status) / smoke: $($hera.smoke) / delta: $($hera.tracked_source_delta)"
 Write-Host "Evidence JSON: $jsonPath"
 exit 0
