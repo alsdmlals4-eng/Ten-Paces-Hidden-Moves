@@ -75,6 +75,25 @@ function Tracked-Fingerprint([string]$Root) {
     return [ordered]@{ sha256 = Text-Sha256 $payload; ok = ($diff.exit_code -eq 0 -and $status.exit_code -eq 0) }
 }
 
+function Tracked-ContentState([string]$Root) {
+    $worktree = Git-Read @("diff", "--quiet", "--no-ext-diff", "--ignore-submodules", "--") $Root
+    $staged = Git-Read @("diff", "--cached", "--quiet", "--no-ext-diff", "--ignore-submodules", "--") $Root
+    $untracked = Git-Read @("ls-files", "--others", "--exclude-standard") $Root
+
+    $worktreeOk = ($worktree.exit_code -eq 0 -or $worktree.exit_code -eq 1)
+    $stagedOk = ($staged.exit_code -eq 0 -or $staged.exit_code -eq 1)
+    $ok = ($worktreeOk -and $stagedOk -and $untracked.exit_code -eq 0)
+    $clean = ($ok -and $worktree.exit_code -eq 0 -and $staged.exit_code -eq 0 -and -not $untracked.output)
+
+    return [ordered]@{
+        ok = $ok
+        clean = $clean
+        worktree_content_changed = ($worktree.exit_code -eq 1)
+        staged_content_changed = ($staged.exit_code -eq 1)
+        untracked_nonignored = $(if ($untracked.exit_code -eq 0 -and $untracked.output) { @($untracked.output -split "`r?`n" | Where-Object { $_ }) } else { @() })
+    }
+}
+
 function Resolve-Godot([string]$Explicit) {
     if ($Explicit) { if (Test-Path -LiteralPath $Explicit -PathType Leaf) { return (Resolve-Path -LiteralPath $Explicit).Path }; return $null }
     if ($env:GODOT_BIN -and (Test-Path -LiteralPath $env:GODOT_BIN -PathType Leaf)) { return (Resolve-Path $env:GODOT_BIN).Path }
@@ -185,7 +204,7 @@ $section = [regex]::Match($projectText, '(?ms)^\[editor_plugins\]\s*(.*?)(?=^\[|
 if ($section.Success) { foreach ($x in [regex]::Matches($section.Value, '"(res://addons/[^"]+/plugin\.cfg)"')) { $enabledPlugins += $x.Groups[1].Value } }
 $autoloads = @()
 $section = [regex]::Match($projectText, '(?ms)^\[autoload\]\s*(.*?)(?=^\[|\z)')
-if ($section.Success) { foreach ($line in ($section.Groups[1].Value -split "`r?`n")) { if ($line.Trim()) { $autoloads += $line.Trim() } } }
+if ($section.Success) { foreach ($line in ($section.Groups[1].Value -split "`r?`n")) { if ($line.Trim()) { $autoloads += $line.Trim() } }
 $projectExists = Test-Path -LiteralPath $projectFile -PathType Leaf
 $project = [ordered]@{ status = $(if ($projectExists) { "PASS" } else { "PROJECT_GODOT_NOT_FOUND" }); exists = $projectExists; main_scene = $mainScene; editor_plugins = $enabledPlugins; autoload_entries = $autoloads }
 $plugins = [ordered]@{
@@ -217,18 +236,19 @@ if ($godotExe) {
     }
     elseif (-not $SkipGodotChecks) {
         $r = Invoke-Capture $godotExe @("--headless", "--editor", "--path", $Root, "--quit") $Root (Join-Path $OutputDir "godot-import-parse.txt")
-        $godot.import_parse_exit_code = $r.exit_code; $godot.import_parse = $(if ($r.exit_code -eq 0) { "PASS" } else { "FAIL" })
+        $godot.import_parse_exit_code = $r.exit_code
+        $godot.import_parse = $(if ($r.exit_code -eq 0) { "PASS" } else { "FAIL" })
     } else { $godot.import_parse = "NOT_RUN_SKIP_REQUESTED" }
 } else {
     Write-EvidenceText (Join-Path $OutputDir "godot-version.txt") "GODOT_EXECUTABLE_UNRESOLVED"
     Write-EvidenceText (Join-Path $OutputDir "godot-import-parse.txt") "GODOT_EXECUTABLE_UNRESOLVED"
 }
 
-$postGodotPorcelain = $null
+$postGodotContent = $null
 $postGodotClean = $git.working_tree_clean
 if ($git.available) {
-    $postGodotPorcelain = Git-Read @("status", "--porcelain=v1") $Root
-    $postGodotClean = ($postGodotPorcelain.exit_code -eq 0 -and -not $postGodotPorcelain.output)
+    $postGodotContent = Tracked-ContentState $Root
+    $postGodotClean = ($postGodotContent.ok -and $postGodotContent.clean)
 }
 
 $gut = [ordered]@{ status = "NOT_RUN"; plugin_version = $plugins.gut.version; exit_code = $null; junit_path = "build/test-results/gut.xml" }
@@ -241,7 +261,8 @@ elseif (-not $godotExe) { $gut.status = "GUT_RUN_BLOCKED_GODOT_EXECUTABLE_UNRESO
 elseif ($godot.status -eq "GODOT_VERSION_MISMATCH_EXPECTED_4_7_1") { $gut.status = "GUT_RUN_BLOCKED_GODOT_VERSION_MISMATCH" }
 else {
     $r = Invoke-Capture $godotExe @("--headless", "--path", $Root, "--script", "res://addons/gut/gut_cmdln.gd") $Root (Join-Path $OutputDir "gut.txt")
-    $gut.exit_code = $r.exit_code; $gut.status = $(if ($r.exit_code -eq 0) { "PASS" } else { "FAIL" })
+    $gut.exit_code = $r.exit_code
+    $gut.status = $(if ($r.exit_code -eq 0) { "PASS" } else { "FAIL" })
 }
 if (-not (Test-Path (Join-Path $OutputDir "gut.txt"))) { Write-EvidenceText (Join-Path $OutputDir "gut.txt") $gut.status }
 
@@ -253,15 +274,18 @@ $hera = [ordered]@{
 }
 if ($heraExe) {
     $r = Invoke-Capture $heraExe @("version") $Root (Join-Path $OutputDir "hera-version.txt")
-    $hera.version_exit_code = $r.exit_code; $hera.cli_version = $r.output.Trim(); $hera.status = $(if ($r.exit_code -eq 0) { "PASS" } else { "HERA_VERSION_COMMAND_FAILED" })
+    $hera.version_exit_code = $r.exit_code
+    $hera.cli_version = $r.output.Trim()
+    $hera.status = $(if ($r.exit_code -eq 0) { "PASS" } else { "HERA_VERSION_COMMAND_FAILED" })
     $r = Invoke-Capture $heraExe @("status") $Root (Join-Path $OutputDir "hera-status.txt")
-    $hera.live_status_exit_code = $r.exit_code; $hera.live_status = $(if ($r.exit_code -eq 0) { "PASS" } else { "FAIL_OR_EDITOR_UNAVAILABLE" })
+    $hera.live_status_exit_code = $r.exit_code
+    $hera.live_status = $(if ($r.exit_code -eq 0) { "PASS" } else { "FAIL_OR_EDITOR_UNAVAILABLE" })
 
-    $runtimePorcelain = $null
+    $runtimeContent = $null
     $runtimeClean = $git.working_tree_clean
     if ($git.available) {
-        $runtimePorcelain = Git-Read @("status", "--porcelain=v1") $Root
-        $runtimeClean = ($runtimePorcelain.exit_code -eq 0 -and -not $runtimePorcelain.output)
+        $runtimeContent = Tracked-ContentState $Root
+        $runtimeClean = ($runtimeContent.ok -and $runtimeContent.clean)
     }
 
     if (-not $git.available) {
@@ -278,11 +302,15 @@ if ($heraExe) {
         $pre = Tracked-Fingerprint $Root
         $r = Invoke-Capture $heraExe @("smoke", "--skip-game") $Root (Join-Path $OutputDir "hera-smoke.txt")
         $post = Tracked-Fingerprint $Root
-        $hera.smoke_exit_code = $r.exit_code; $hera.smoke = $(if ($r.exit_code -eq 0) { "PASS" } else { "FAIL" })
+        $hera.smoke_exit_code = $r.exit_code
+        $hera.smoke = $(if ($r.exit_code -eq 0) { "PASS" } else { "FAIL" })
         if ($pre.ok -and $post.ok -and $pre.sha256 -eq $post.sha256) { $hera.tracked_source_delta = "HERA_SOURCE_DELTA_NONE" }
         elseif (-not $pre.ok -or -not $post.ok) { $hera.tracked_source_delta = "HERA_SOURCE_DELTA_BLOCKED_GIT_UNVERIFIED" }
         else { $hera.tracked_source_delta = "HERA_SOURCE_DELTA_DETECTED_FAIL" }
-    } else { $hera.smoke = "NOT_RUN_SKIP_REQUESTED"; $hera.tracked_source_delta = "NOT_RUN_SKIP_REQUESTED" }
+    } else {
+        $hera.smoke = "NOT_RUN_SKIP_REQUESTED"
+        $hera.tracked_source_delta = "NOT_RUN_SKIP_REQUESTED"
+    }
 } else {
     Write-EvidenceText (Join-Path $OutputDir "hera-version.txt") "HERA_CLI_NOT_FOUND_OR_PATH_UNSET"
     Write-EvidenceText (Join-Path $OutputDir "hera-status.txt") "HERA_CLI_NOT_FOUND_OR_PATH_UNSET"
@@ -293,12 +321,15 @@ $finalGit = $git
 if ($git.available) {
     $s = Git-Read @("status", "--short", "--branch") $Root
     $finalPorcelain = Git-Read @("status", "--porcelain=v1") $Root
+    $finalContent = Tracked-ContentState $Root
     Write-EvidenceText (Join-Path $OutputDir "git-status-after.txt") $s.output
     $finalGit = [ordered]@{}
     foreach ($key in $git.Keys) { $finalGit[$key] = $git[$key] }
     $finalGit.short_status = $s.output
-    $finalGit.working_tree_clean = ($finalPorcelain.exit_code -eq 0 -and -not $finalPorcelain.output)
-    if ($finalPorcelain.exit_code -ne 0) { $finalGit.sync_status = "LOCAL_POSTCHECK_GIT_UNVERIFIED" }
+    $finalGit.porcelain_clean = ($finalPorcelain.exit_code -eq 0 -and -not $finalPorcelain.output)
+    $finalGit.working_tree_clean = ($finalContent.ok -and $finalContent.clean)
+    $finalGit.stat_only_status_possible = ($finalGit.working_tree_clean -and -not $finalGit.porcelain_clean)
+    if (-not $finalContent.ok) { $finalGit.sync_status = "LOCAL_POSTCHECK_GIT_UNVERIFIED" }
     elseif (-not $finalGit.working_tree_clean) { $finalGit.sync_status = "LOCAL_POSTCHECK_DIRTY_WORKTREE" }
 }
 
