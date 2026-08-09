@@ -1,18 +1,19 @@
 # Godot AI 3.1.3 + GUT 9.7.1 + Hera 1.0.0 Active Toolchain Reconciliation
 
 - Decision ID: `TEN-DEC-20260809-GODOT-AI313-GUT971-HERA100-ACTIVE-TOOLCHAIN-01`
-- Status: `CURRENT_APPROVED_RECONCILIATION`
+- Status: `CURRENT_APPROVED_RECONCILIATION_EXACT_471_LOCAL_RERUN_PENDING`
 - Approval source: user correction `헤라랑 gut 써야지 왜 없애` followed by `[연속작업] 진행해`
-- Fresh Base main: `2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b`
-- Project main before reconciliation PR: `e8c7b96d99ec327a58edfb8d7054b982cd2d62f2`
+- Fresh Base main at reconciliation: `2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b`
 - Product/runtime feature change: `NONE`
 
 ## Decision
 
-Keep and canonically adopt the currently observed active Godot toolchain state:
+Keep and canonically adopt the active Godot toolchain:
 
 ```yaml
-godot: 4.7.x
+godot:
+  family: 4.7.x
+  local_acceptance_target: 4.7.1
 godot_ai_higodot:
   version: 3.1.3
   role: SOLE_PERSISTENT_GODOT_AUTHORING_AUTHORITY
@@ -26,63 +27,36 @@ hera:
   persistent_mutation: FORBIDDEN
 ```
 
-GUT and Hera are retained and enabled. The earlier proposal to restore `project.godot` to an old state with GUT/Hera disabled is incorrect for the user's intended toolchain and is `SUPERSEDED_DO_NOT_EXECUTE`.
+GUT and Hera remain enabled. The earlier rollback proposal that disabled GUT/Hera is `SUPERSEDED_DO_NOT_EXECUTE`.
 
-## Current desired protected `project.godot` state
+## Approved protected `project.godot` state
 
-The desired state keeps these autoloads:
+Keep these autoloads:
 
 - `TenManualProductValidationBootstrap`
 - `HeraGameInspector`
 - `_mcp_game_helper`
 
-The desired state keeps these editor plugins enabled:
+Keep these editor plugins enabled:
 
 - `res://addons/godot_ai/plugin.cfg`
 - `res://addons/gut/plugin.cfg`
 - `res://addons/hera_agent_godot/plugin.cfg`
 
-This Decision reconciles governance to an already-existing desired state. This PR does not pretend to perform a new HiGodot L2 write and must not rewrite `project.godot` merely to create authoring evidence.
+HiGodot remains the sole persistent Godot authoring authority. GUT tests and Hera live QA do not gain persistent authoring authority.
 
 ## Local HiGodot L0 evidence
 
-The user opened an isolated recovery checkout and used Codex + Godot AI/HiGodot read-only operations with explicit session:
-
-`ten-paces-higodot-recovery@b62b`
-
-Observed project:
-
-`C:/Users/user/AppData/Local/Temp/ten-paces-higodot-recovery/`
-
-Observed without persistent mutation:
-
-- Godot `4.7-stable (official)`
-- current scene `res://scenes/combat/combat_board_preview.tscn`
-- all three expected autoloads present
-- Godot AI, GUT, Hera editor plugins enabled
-
-Evidence state:
+The user used Codex + Godot AI/HiGodot read-only operations against explicit session `ten-paces-higodot-recovery@b62b` and observed the correct Ten Paces project, the three expected autoloads, and Godot AI/GUT/Hera enabled. No persistent write occurred during that observation.
 
 ```yaml
 local_higodot_l0: PASS_OBSERVED_EXISTING_STATE
 persistent_write_during_observation: NONE
 ```
 
-## Superseded fields, not erased history
-
-This Decision supersedes only stale configuration/status fields in earlier records:
-
-- older HiGodot/Godot AI `3.1.2` current-version references;
-- `enabled_in_project_godot: false` for Hera;
-- `PRESENT_DISABLED_PAIR_UNVERIFIED` as the current Hera plugin state;
-- future action `HIGODOT_L2_ENABLE_HERA_PLUGIN_IF_ADOPTION_CONTINUES`;
-- rollback-oriented audit/handoff text that treated GUT/Hera enablement itself as an unwanted state.
-
-Historical Decisions remain historical evidence and are not deleted.
-
 ## Hera claim ceiling
 
-Plugin enablement is not equivalent to live-QA adoption completion.
+Plugin enablement is not live-QA acceptance completion.
 
 ```yaml
 hera_cli_pair: HERA_CLI_ADDON_PAIR_UNVERIFIED
@@ -92,73 +66,78 @@ hera_smoke_skip_game: NOT_RUN
 hera_phase_source_delta: NOT_RUN
 ```
 
-Before Hera acceptance QA can be claimed, still require:
+Before Hera acceptance QA can be claimed, require the exact Windows CLI archive SHA/version, exact Ten Paces editor target, localhost/shared-token verification with secret redaction, tracked source pre-snapshot, `hera smoke --skip-game`, and post-snapshot delta `NONE`.
 
-1. exact Windows CLI archive SHA/version verification;
-2. full Editor restart as required for exact-pair validation;
-3. localhost/shared-token verification with secret redaction;
-4. `hera status` targeting the exact Ten Paces project;
-5. tracked source pre-Hera snapshot;
-6. `hera smoke --skip-game`;
-7. tracked source post-Hera snapshot with Hera-phase delta `NONE`.
+## GUT and local Windows evidence history
 
-Hera never gains persistent authoring authority from this Decision.
+The user ran the merged collector in isolated checkout:
 
-## GUT claim ceiling
+`C:/Users/user/AppData/Local/Temp/ten-paces-live-validation-20260809-213134`
 
-Hosted GUT 9.7.1 reconciliation evidence remains valid from its prior Decision.
+Initial console evidence showed HEAD == origin/main, initial clean worktree, `LOCAL_SYNC_CURRENT`, GUT exit 0, Godot import recorded FAIL, and Hera CLI unresolved. PR #126 originally promoted the GUT observation to `PASS_USER_LOCAL_COMMAND_READBACK` while keeping the whole Windows gate blocked.
 
-On 2026-08-09, the user ran the merged Windows-safe collector in a newly cloned isolated checkout at exact current main `f0d85bd81981e608a43979ed0e5dc7a8763bd15f`. The console showed:
+### 2026-08-09 uploaded-file correction — supersedes the local acceptance promotion
+
+The subsequently uploaded fresh evidence files establish facts that the earlier console summary did not expose:
 
 ```yaml
-checkout: C:/Users/user/AppData/Local/Temp/ten-paces-live-validation-20260809-213134
-head: f0d85bd81981e608a43979ed0e5dc7a8763bd15f
-origin_main: f0d85bd81981e608a43979ed0e5dc7a8763bd15f
-working_tree: CLEAN
-collector_git_sync: LOCAL_SYNC_CURRENT
-gut: PASS
-evidence_level: USER_LOCAL_COMMAND_READBACK
+actual_godot_executable: C:/Users/user/Downloads/Godot_v4.7-stable_win64.exe/Godot_v4.7-stable_win64.exe
+actual_godot_version: 4.7.stable.official.5b4e0cb0f
+project_windows_ci_target: 4.7.1
+import_log: WARNING_45_OBJECTDB_INSTANCES_LEAKED_AT_EXIT_ONLY
+collector_recorded_import_exit: -1
+post_run_tracked_state: DIRTY_TRACKED_IMPORT_METADATA
+gut_exit: 0
+hera_cli: NOT_FOUND
 ```
 
-Therefore the local clean-checkout GUT gate is promoted only to the evidence level actually observed:
+Therefore the previous local acceptance promotion is corrected without erasing the historical run:
 
 ```yaml
-local_gut_clean_checkout: PASS_USER_LOCAL_COMMAND_READBACK
+local_gut_historical_execution: PASS_EXIT_0_UNDER_GODOT_4_7
+local_gut_clean_checkout: HISTORICAL_PASS_GODOT_4_7_REVALIDATION_REQUIRED
+local_gut_acceptance_471: BLOCKED_REQUIRES_EXACT_GODOT_4_7_1_RERUN
+local_godot_import_acceptance_471: NOT_RUN_EXACT_GODOT_4_7_1_RERUN_REQUIRED
+local_windows: BLOCKED_GODOT_4_7_1_RERUN_HERA_CLI_UNRESOLVED
 ```
 
-This does not promote the whole Windows gate. The same collector run reported `Godot: PASS / import-parse: FAIL` and `Hera: HERA_CLI_NOT_FOUND_OR_PATH_UNSET`, so local Windows remains blocked pending root-cause evidence for import and Hera CLI verification.
+The GUT 9.7.1 authority/adoption is not revoked. Only the **local exact-4.7.1 acceptance claim** is lowered until rerun.
 
-The uploaded `godot-live-evidence.json` accompanying this console run was inspected and identified as an older artifact from the original dirty project checkout: its embedded project path, collection time, `git.available=false`, and `GUT FAIL` do not match the clean rerun. That stale JSON is retained as historical evidence only and is not used to upgrade new-run claims.
+## Collector PR #127 consequence
+
+The uploaded files also proved collector defects rather than a confirmed project import failure:
+
+- broad discovery selected Godot `4.7` before exact `4.7.1`;
+- Windows PowerShell native stderr warning could be caught as a failure under `$ErrorActionPreference="Stop"` and yield artificial exit `-1`;
+- runtime-generated tracked `.import` modifications were visible in final short status but `final_git.working_tree_clean` retained the initial `true` value;
+- `godot.import_parse=FAIL` was omitted from `blocking_statuses`;
+- GUT/Hera runtime phases could continue using only the initial clean check.
+
+PR #127 fixed these by preferring exact Godot 4.7.1, using real native `$LASTEXITCODE`, rechecking Git state after runtime phases, blocking later mutation-capable checks after tracked changes, and including import status in blockers.
+
+```yaml
+collector_pr: 127
+collector_exact_head: 38e849dcd3eab610618b798597c0b62a80e16a62
+collector_merge_main: 0f34d5543ee946a06bd2ad0bb9e86f7b4e3920c5
+collector_hardening: MERGED
+local_hardened_rerun: NOT_RUN
+```
+
+No `project.godot`, addon, Scene, Resource, product script, gameplay, combat data, or product asset was changed by PR #127.
 
 ## Protected change governance
 
-Current Project Base Adapter compares protected paths to trusted baseline:
-
-`a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90`
-
-The pinned validator detects `project.godot` as the protected changed path. The reconciliation PR therefore uses the existing one-time external-approval mechanism:
-
-- `docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json`
-- `approved_paths: [project.godot]`
-- GitHub PR label `approved-protected-change`
-- this same Decision ID.
-
-The one-time approval must be archived/removed after merge so it cannot authorize unrelated future PRs.
-
-The known Base trailing-slash matcher blind spot for nested `addons/`, `src/`, and `tests/` is not treated as approval. Nested-tool/version state is instead pinned by a dedicated reconciliation contract and regression test; Base matcher repair remains a separate shared-Base task.
+The active-toolchain protected-state approval is historical and archived. The one-time manifest is not active. The promoted protected baseline remains the PR #123 merge state recorded in `docs/operations/2026-08-09_ACTIVE_TOOLCHAIN_PROTECTED_CHANGE_APPROVAL_RECORD.md`.
 
 ## Entry Gate effect
 
-This Decision closes only the stale "Hera plugin is disabled / must later be enabled" status conflict and now also records a clean current-main local GUT PASS at `USER_LOCAL_COMMAND_READBACK` evidence level.
+This Decision keeps Godot AI 3.1.3 + GUT 9.7.1 + Hera 1.0.0 active, but does **not** open product implementation. Remaining gates include:
 
-It does **not** authorize product implementation or close:
-
-- Hera CLI/status/smoke/source-delta gates;
-- Godot local import/parse root-cause gate;
-- GUT/export exclusion authoring and validation;
-- local Windows/Android/device/human gates;
-- product asset promotion;
-- gameplay/card/martial-effect implementation.
+- exact Godot 4.7.1 hardened collector rerun;
+- local GUT acceptance rerun under exact 4.7.1;
+- Hera CLI/status/smoke/source-delta;
+- tooling export exclusion HiGodot authoring/validation;
+- local Windows/Android/device/human gates.
 
 ```yaml
 product_implementation_authorized_by_this_decision: false
