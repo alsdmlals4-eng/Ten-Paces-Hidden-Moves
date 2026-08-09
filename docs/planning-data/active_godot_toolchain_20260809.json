@@ -5,8 +5,9 @@
   "godot": {
     "version_family": "4.7.x",
     "local_acceptance_target": "4.7.1",
-    "observed_local_editor": "4.7-stable (official)",
-    "uploaded_collector_actual_version": "4.7.stable.official.5b4e0cb0f"
+    "observed_local_editor_historical": "4.7-stable (official)",
+    "accepted_local_version": "4.7.1.stable.official.a13da4feb",
+    "local_import_parse": "PASS_USER_LOCAL_COMMAND_TRANSCRIPT"
   },
   "godot_ai": {
     "version": "3.1.3",
@@ -19,7 +20,9 @@
     "persistent_authoring": false,
     "enabled": true,
     "hosted_reconciliation": "PASS_PRIOR_DECISION",
-    "local_clean_checkout": "HISTORICAL_PASS_GODOT_4_7_REVALIDATION_REQUIRED"
+    "local_clean_checkout": "PASS_EXACT_GODOT_4_7_1_GUT_9_7_1_JUNIT_USER_LOCAL_COMMAND_TRANSCRIPT",
+    "local_test_execution": "PASS",
+    "local_junit": "PASS"
   },
   "hera": {
     "version": "1.0.0",
@@ -49,23 +52,33 @@
     "project_path": "C:/Users/user/AppData/Local/Temp/ten-paces-higodot-recovery/",
     "persistent_write": "NONE"
   },
-  "local_clean_collector_console": {
+  "historical_local_collector_run": {
     "evidence_level": "USER_LOCAL_FILE_READBACK",
     "checkout_path": "C:/Users/user/AppData/Local/Temp/ten-paces-live-validation-20260809-213134",
-    "head": "f0d85bd81981e608a43979ed0e5dc7a8763bd15f",
-    "origin_main": "f0d85bd81981e608a43979ed0e5dc7a8763bd15f",
+    "actual_godot_version": "4.7.stable.official.5b4e0cb0f",
+    "gut_status": "PASS_HISTORICAL_WRONG_GODOT_VERSION",
+    "acceptance": "SUPERSEDED_BY_EXACT_471_RERUN"
+  },
+  "local_exact_471_gut_junit_acceptance": {
+    "evidence_record": "docs/planning-data/local_godot_471_gut_junit_acceptance_20260810.json",
+    "evidence_level": "USER_LOCAL_COMMAND_TRANSCRIPT",
+    "checkout_path": "C:/Users/user/AppData/Local/Temp/ten-paces-pr130-gut-junit-20260810-002755",
+    "head": "1ecfb77eca6df0731c74f89ffe6d5dd16c6466d6",
+    "origin_main": "1ecfb77eca6df0731c74f89ffe6d5dd16c6466d6",
     "initial_git_sync_status": "LOCAL_SYNC_CURRENT",
     "initial_working_tree_clean": true,
-    "actual_godot_executable": "C:/Users/user/Downloads/Godot_v4.7-stable_win64.exe/Godot_v4.7-stable_win64.exe",
-    "actual_godot_version": "4.7.stable.official.5b4e0cb0f",
-    "import_parse_recorded": "FAIL_EXIT_MINUS_1",
-    "import_parse_log": "WARNING_45_OBJECTDB_INSTANCES_LEAKED_AT_EXIT_ONLY",
-    "import_parse_diagnosis": "WARNING_ONLY_NATIVE_STDERR_FALSE_FAIL",
-    "post_run_worktree_clean": false,
-    "post_run_tracked_changes": "TRACKED_IMPORT_METADATA_MODIFIED",
-    "gut_status": "PASS_HISTORICAL_WRONG_GODOT_VERSION",
-    "hera_status": "HERA_CLI_NOT_FOUND_OR_PATH_UNSET",
-    "collector_hardening": "PR127_MERGED_RERUN_NOT_RUN"
+    "actual_godot_version": "4.7.1.stable.official.a13da4feb",
+    "godot_import_parse": "PASS",
+    "gut_status": "PASS",
+    "gut_test_execution": "PASS",
+    "gut_junit": "PASS",
+    "canonical_gut_xml_exists": true,
+    "evidence_gut_xml_exists": true,
+    "post_run_content_clean": true,
+    "post_run_porcelain_clean": false,
+    "stat_only_status_possible": true,
+    "collector_status": "COMPLETE_WITH_BLOCKERS",
+    "remaining_blocker_scope": "HERA_UNVERIFIED"
   },
   "remaining_gates": {
     "hera_cli_pair": "HERA_CLI_ADDON_PAIR_UNVERIFIED",
@@ -73,11 +86,11 @@
     "hera_status": "NOT_RUN",
     "hera_smoke_skip_game": "NOT_RUN",
     "hera_phase_source_delta": "NOT_RUN",
-    "local_gut_clean_checkout": "BLOCKED_REQUIRES_EXACT_GODOT_4_7_1_RERUN",
-    "godot_import_parse": "NOT_RUN_EXACT_GODOT_4_7_1_RERUN_REQUIRED",
-    "collector_postcheck_hardening": "PR127_MERGED_LOCAL_RERUN_NOT_RUN",
+    "local_gut_clean_checkout": "PASS_EXACT_GODOT_4_7_1_GUT_9_7_1_JUNIT_USER_LOCAL_COMMAND_TRANSCRIPT",
+    "godot_import_parse": "PASS_EXACT_GODOT_4_7_1_USER_LOCAL_COMMAND_TRANSCRIPT",
+    "collector_postcheck_hardening": "PR130_MERGED_LOCAL_RERUN_PASS",
     "tooling_export_exclusion": "BLOCKED_REQUIRES_HIGODOT_L2_AUTHORING_THEN_L1_VALIDATION",
-    "local_windows": "BLOCKED_GODOT_4_7_1_RERUN_HERA_CLI_UNRESOLVED",
+    "local_windows": "PARTIAL_PASS_GODOT_GUT_CORE_HERA_EXPORT_ANDROID_DEVICE_HUMAN_REMAIN",
     "local_android_device": "BLOCKED_UNVERIFIED",
     "human_validation": "BLOCKED_NOT_RUN"
   },
