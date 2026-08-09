@@ -48,6 +48,29 @@ class LocalGodotEvidenceCollectorContractTests(unittest.TestCase):
         self.assertIn("NOT_RUN_GIT_UNAVAILABLE_SAFETY", self.text)
         self.assertGreaterEqual(self.text.count("NOT_RUN_GIT_UNAVAILABLE_SAFETY"), 4)
 
+    def test_prefers_exact_godot_471_before_broad_47_discovery(self) -> None:
+        exact = self.text.find('Godot_v4.7.1-stable_win64.exe')
+        broad = self.text.find('Godot_v4.7*.exe')
+        self.assertGreaterEqual(exact, 0)
+        self.assertGreaterEqual(broad, 0)
+        self.assertLess(exact, broad)
+        self.assertIn('GODOT_EXPECTED_VERSION_PREFIX', self.text)
+        self.assertIn('GODOT_VERSION_MISMATCH_EXPECTED_4_7_1', self.text)
+
+    def test_recomputes_final_git_cleanliness_after_runtime_checks(self) -> None:
+        self.assertIn('$finalPorcelain', self.text)
+        self.assertIn('$finalGit.working_tree_clean', self.text)
+        self.assertIn('LOCAL_POSTCHECK_DIRTY_WORKTREE', self.text)
+
+    def test_import_parse_failure_is_a_blocker(self) -> None:
+        blocker_loop = re.search(
+            r"foreach\s*\(\$v\s+in\s+@\((.*?)\)\)\s*\{",
+            self.text,
+            re.S,
+        )
+        self.assertIsNotNone(blocker_loop)
+        self.assertIn('$godot.import_parse', blocker_loop.group(1))
+
     def test_collects_required_tool_and_project_evidence(self) -> None:
         for token in [
             "ProjectPath",
