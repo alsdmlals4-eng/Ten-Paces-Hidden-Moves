@@ -2,28 +2,26 @@
 
 - Decision ID: `TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01`
 - 승인일: 2026-08-08
-- 상태: `CURRENT_APPROVED_RECONCILIATION`
+- 상태: `CURRENT_APPROVED_RECONCILIATION_LOCAL_LIVE_QA_ACCEPTED`
 - 조사 기준 main: `8e06c3ed4b572d211aeb9447d5d0b1491b1b8467`
 - PR #110 병합 직후 main: `102bd7010316edc10fa0709dfe336040d33082df`
 - 원격 CLI preflight 병합 main: `e3c7a3cc0705f7a20dcf7810788ce86633b9b186`
+- 로컬 live-QA acceptance 기준 main: `ce81eeba1af293061c17e4547fdd2364ec33f8c9`
 - 계약: `docs/planning-data/approved_20260808_hera_v1_live_qa_reconciliation.json`
+- 로컬 acceptance evidence: `docs/planning-data/local_hera_v1_live_qa_acceptance_20260810.json`
 - Base 역할 정본: `docs/knowledge/godot/HIGODOT_SINGLE_AUTHORITY_AND_SAFE_OPERATION.md`
 
 ## 1. 목적
 
-`main`에 PR·Decision 계보 없이 추가된 `addons/hera_agent_godot/**`를 삭제하거나 활성 채택으로 간주하지 않고, 공식 upstream과 실제 프로젝트 상태를 대조해 역할·권위·남은 검증 Gate를 fail-closed로 정합화한다.
+`addons/hera_agent_godot/**`를 삭제하거나 무제한 authoring 도구로 취급하지 않고, 공식 upstream v1.0.0과 실제 프로젝트 상태를 대조해 Hera의 역할을 **live QA / observability only**로 정합화한다. Persistent Godot authoring 권위는 계속 HiGodot 하나만 가진다.
 
-## 2. 확인된 현재 사실
+## 2. 공식 provenance와 exact pair
 
 ```yaml
-investigation_main: 8e06c3ed4b572d211aeb9447d5d0b1491b1b8467
-pr110_merge_main: 102bd7010316edc10fa0709dfe336040d33082df
-remote_cli_preflight_merge_main: e3c7a3cc0705f7a20dcf7810788ce86633b9b186
-installation_commit: b6a7a96778d7420c67829bb6ffa59b32d959dae2
-project_addon_tree: 6cb87ac8ba768de1d924447f385fba6d80bcde68
 official_source: NotNull92/hera-agent-godot
 official_tag: v1.0.0
 official_addon_tree: 6cb87ac8ba768de1d924447f385fba6d80bcde68
+project_addon_tree: 6cb87ac8ba768de1d924447f385fba6d80bcde68
 addon_tree_match: EXACT
 plugin_manifest_version: 1.0.0
 official_addon_release_asset: hera-agent-godot-addon.zip
@@ -32,133 +30,117 @@ official_windows_amd64_cli_asset: hera-windows-amd64.zip
 official_windows_amd64_cli_sha256: 9ae181741c2e8a3f57bbb2a2e4c61ac2c9c7c844fad21c88ae3890c55a5cc66b
 expected_cli_version: 1.0.0
 remote_expected_cli_pin: VERIFIED_OFFICIAL_V1_0_0_RELEASE
-license: MIT
-project_godot_enabled_plugins:
-  - res://addons/godot_ai/plugin.cfg
-hera_enabled_in_project_godot: false
 ```
 
-공식 v1.0.0 tag의 addon tree와 프로젝트 addon tree가 같은 Git tree SHA를 사용하므로 vendored addon 파일 자체는 exact v1.0.0으로 확인한다. 공식 v1.0.0 Release의 Windows x64 CLI 자산은 `hera-windows-amd64.zip`이고 release digest는 `sha256:9ae181741c2e8a3f57bbb2a2e4c61ac2c9c7c844fad21c88ae3890c55a5cc66b`이다. 같은 Release의 addon ZIP digest는 `sha256:0a71000f0c4192043e72e9b18f4de3bac720035d9d7c95c9634648a7b5c54d9f`이다.
-
-이 content-addressed pin은 **로컬 Windows에 실제로 설치된 CLI가 이 파일·버전과 일치한다는 증거가 아니다.** 현재 세션에는 사용자 Windows checkout과 Hera CLI artifact가 마운트되어 있지 않으므로 local pair 검증은 계속 차단한다.
-
-`addons/hera_agent_godot/README.md`의 `v0.9.0 baseline` 문구는 프로젝트 혼합 오류가 아니라 공식 v1.0.0 tag에도 존재하는 upstream 문구이므로 별도 drift로 판정하지 않는다.
-
 ## 3. 권위와 허용 역할
-
-Hera는 다음 역할만 허용한다.
 
 ```yaml
 role: LIVE_QA_AND_OBSERVABILITY_ONLY
 persistent_source_mutation: FORBIDDEN
 transport: LOCALHOST_ONLY
 acceptance_source_delta: NONE
+persistent_godot_authoring_authority: HIGODOT_ONLY
 ```
 
-허용 범위:
+허용 범위는 status/instance, run/stop, runtime tree/UI inspect, input/click/input-log, assert, output/diagnostics, screenshot capture/diff, bounded smoke와 QA 관찰이다.
 
-- editor/runtime status·instance 확인
-- run/stop
-- runtime tree·UI inspect
-- input/click/input-log
-- assert
-- output/diagnostics
-- screenshot capture/diff
-- bounded smoke 및 game QA diagnose
+Persistent Scene/Node/Script/Resource/Theme write, `project.godot` 변경, main-scene 변경, filesystem persistent mutation은 Hera acceptance 범위에서 금지한다. 필요 persistent authoring은 HiGodot 위험도 분류와 권위 순서를 따른다.
 
-금지 범위:
+## 4. 활성 plugin 상태의 역사적 정정
 
-- persistent Scene/Node/Script/Resource/Theme write
-- `project.godot` persistent mutation
-- main scene 변경
-- filesystem persistent mutation
-- editor-state mutation을 acceptance evidence로 사용하는 행위
+초기 Decision은 과거 `project.godot` 관찰을 기준으로 Hera가 disabled라고 기록했다. 이후 active-toolchain Decision `TEN-DEC-20260809-GODOT-AI313-GUT971-HERA100-ACTIVE-TOOLCHAIN-01`과 로컬 HiGodot L0 readback에서 Hera plugin이 이미 승인된 desired state로 enabled임이 확인됐다.
 
-Godot persistent authoring 권위는 계속 HiGodot 하나만 가진다.
+따라서 과거 `addon_enabled: false`, `PRESENT_DISABLED_PAIR_UNVERIFIED`, `HIGODOT_L2_ENABLE_HERA_PLUGIN_IF_ADOPTION_CONTINUES`는 **현재 상태 권위로는 superseded**다. 실제 acceptance 과정에서는 새 plugin-enable persistent write를 수행하지 않았다.
 
-## 4. 현재 채택 상태
+## 5. 2026-08-10 로컬 Hera v1.0.0 live-QA acceptance
+
+사용자가 `UPLOAD_THIS_HERA_V1_RECOVERY_EVIDENCE.zip`을 제출했고, archive 내 JSON/status/smoke/wrong-token 로그를 readback했다.
+
+확인된 사실:
+
+```yaml
+checkout: C:/Users/user/AppData/Local/Temp/ten-paces-hera-v1-20260810-005834/project
+head: ce81eeba1af293061c17e4547fdd2364ec33f8c9
+origin_main: ce81eeba1af293061c17e4547fdd2364ec33f8c9
+godot_version: 4.7.1.stable.official.a13da4feb
+hera_cli_version: v1.0.0
+hera_addon_version: 1.0.0
+windows_cli_sha256: 9ae181741c2e8a3f57bbb2a2e4c61ac2c9c7c844fad21c88ae3890c55a5cc66b
+localhost_only: true
+shared_token_value: REDACTED
+shared_token_auth_enforced: true
+normal_status_exit: 0
+status_exact_target: true
+wrong_token_exit: 1
+wrong_token_result: UNAUTHORIZED_EXPECTED
+smoke_skip_game_exit: 0
+smoke_steps:
+  - status: PASS
+  - diagnostics: PASS
+  - scene: PASS
+pre_content_clean: true
+post_content_clean: true
+source_delta_canary: HERA_SOURCE_DELTA_NONE
+verdict: PASS_HERA_V1_0_0_EXACT_PAIR_LIVE_QA_SOURCE_DELTA_NONE
+```
+
+`hera status`는 exact fresh Ten Paces checkout과 `res://scenes/combat/combat_board_preview.tscn`을 가리켰다. Shared-token 검증은 정상 token status PASS 뒤 의도적으로 잘못된 token을 사용해 exit 1 / unauthorized를 확인했다. Secret 원문은 canonical evidence에 저장하지 않는다.
+
+`hera smoke --skip-game`은 `status`, `diagnostics`, `scene` 3단계 모두 `ok:true`로 PASS했다.
+
+Post-run `git status --short`에는 Windows/Godot stat-only `.import`/`project.godot` M 표기가 남았지만, acceptance wrapper는 pre/post 실제 tracked/staged/untracked content를 별도로 확인했고 둘 다 clean이었다. 이 stat-only 현상은 PR #129에서 이미 분리 판정 계약으로 정합화했다. 따라서 Hera phase source delta는 `HERA_SOURCE_DELTA_NONE`으로 승인한다.
+
+## 6. 현재 채택 상태
 
 ```yaml
 addon_provenance: VERIFIED_EXACT_V1_0_0
-addon_enabled: false
-expected_cli_version: 1.0.0
-expected_windows_amd64_cli_sha256: 9ae181741c2e8a3f57bbb2a2e4c61ac2c9c7c844fad21c88ae3890c55a5cc66b
-remote_cli_release_preflight: PASS_CONTENT_ADDRESSED_OFFICIAL_RELEASE
-exact_local_cli_version: BLOCKED_UNVERIFIED_LOCAL_ACCESS
-cli_addon_pair: HERA_CLI_ADDON_PAIR_UNVERIFIED
-higodot_plugin_enable_authoring: NOT_RUN_REQUIRED_L2
-live_editor_connection: NOT_RUN
-full_editor_restart_after_enable: NOT_RUN
-status_check: NOT_RUN
-smoke_skip_game: NOT_RUN
-shared_token_configuration: NOT_RUN
-source_delta_canary: NOT_RUN
-adoption_status: PRESENT_DISABLED_PAIR_UNVERIFIED
+addon_enabled: true
+exact_local_cli_version: v1.0.0
+cli_addon_pair: PASS_EXACT_V1_0_0_USER_LOCAL_EVIDENCE
+live_editor_connection: PASS_EXACT_TARGET
+full_editor_restart_after_enable: PASS_FRESH_EXACT_EDITOR_PROCESS
+status_check: PASS_EXACT_TARGET
+smoke_skip_game: PASS
+shared_token_configuration: PASS_ENFORCED_REDACTED
+source_delta_canary: HERA_SOURCE_DELTA_NONE
+adoption_status: LOCAL_LIVE_QA_ACCEPTED
+persistent_source_mutation: FORBIDDEN
 ```
 
-파일이 존재한다는 사실이나 원격 release pin만으로 `ADOPTED_ACTIVE` 또는 acceptance QA 가능 상태로 승격하지 않는다.
+Hera acceptance는 authoring 권한 승격이 아니다. Persistent Godot authoring 권위는 계속 HiGodot 하나다.
 
-## 5. 활성화 Gate와 권위 순서
+## 7. Export Gate와의 관계
 
-공식 v1 migration contract는 CLI/addon 같은 release pair, Godot 완전 재시작, `hera status`, `hera smoke --skip-game`을 요구한다. Base 현행 정본은 동시에 `project.godot` 등 persistent project-setting mutation을 HiGodot 단일 권위로 제한한다.
+현재 `export_presets.cfg` 관찰은 `export_filter="all_resources"`, `exclude_filter=""`다. 따라서 tooling export exclusion은 여전히 별도 blocker다.
 
-현재 `project.godot`에는 Hera plugin이 비활성이다. 따라서 `hera status/smoke`를 위해 plugin을 활성화해야 한다면 **그 활성화 자체는 Hera가 하거나 raw text edit로 우회해서는 안 된다.** HiGodot L2 persistent authoring 단계에서 의도된 `project.godot` delta로 먼저 수행하고, 그 의도된 delta를 기준으로 Hera phase 전 snapshot을 잡는다.
-
-로컬 Windows 순서는 다음으로 고정한다.
-
-1. `hera-windows-amd64.zip` SHA-256이 `9ae181741c2e8a3f57bbb2a2e4c61ac2c9c7c844fad21c88ae3890c55a5cc66b`인지 확인한다.
-2. `hera version`으로 companion CLI가 exact `v1.0.0`인지 확인한다. 이 단계는 plugin 활성화 전에 수행할 수 있다.
-3. HiGodot L0로 현재 Editor/project와 plugin enabled 상태를 관찰한다.
-4. Hera live QA 채택을 계속할 경우 HiGodot L2에서 `res://addons/hera_agent_godot/plugin.cfg` 활성화를 bounded project-setting write로 수행한다. 변경 전 Git status와 rollback 지점을 기록하고, 예상 delta 외 파일이 생기면 중단한다.
-5. Godot Editor를 **완전히 종료 후 재시작**한다. plugin toggle만으로 preloaded addon script가 모두 reload된다고 간주하지 않는다.
-6. localhost-only와 shared token 구성을 확인하되 secret 원문은 저장소·prompt·log·evidence에 남기지 않는다.
-7. `hera status`가 대상 프로젝트 instance를 정확히 가리키는지 확인한다.
-8. **의도된 HiGodot plugin-enable delta가 반영된 뒤** tracked source pre-Hera snapshot을 기록한다.
-9. `hera smoke --skip-game` bounded canary를 통과한다.
-10. tracked source post-Hera snapshot과 비교해 **Hera phase 추가 delta가 `NONE`**인지 확인한다.
-11. 실패 시 Hera로 rollback하지 않고 HiGodot/Git rollback 경로를 사용한다.
-
-현재 세션에서는 사용자 Windows checkout·HiGodot 세션·CLI 실행 경로에 접근할 수 없으므로 1~11의 로컬 실행 결과를 PASS로 주장하지 않는다.
-
-## 6. Export Gate와의 관계
-
-현재 `export_presets.cfg`는 `export_filter="all_resources"`, `exclude_filter=""` 상태다. 따라서 tooling export exclusion은 단순 관찰만으로 PASS할 수 없다.
-
-- 기존 Gate label `HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION`은 검증 단계 이름으로 보존한다.
-- 실제 제외 규칙의 persistent write가 필요하면 Base 위험도에 따라 **HiGodot L2 authoring**으로 수행한다.
-- L2 저작 뒤 L1/L0 재관찰과 export regression으로 제외가 실제 product export에 반영됐는지 검증한다.
-- runtime-required `addons/godot_ai/**` 등 다른 addon을 추측으로 제외하지 않는다. 실제 참조·autoload·export 소비 경로를 먼저 확인한다.
-- Hera addon의 product export disposition도 dependency/readback 없이 자동 PASS하지 않는다.
+- 필요한 exclusion persistent write는 HiGodot L2 authoring으로 수행한다.
+- 이후 L1/L0 재관찰과 실제 export regression으로 검증한다.
+- runtime-required addon을 추측으로 제외하지 않는다.
+- Hera live-QA PASS가 export-exclusion PASS를 의미하지 않는다.
 
 ```yaml
-current_export_filter: all_resources
-current_exclude_filter: empty
-export_exclusion_state: BLOCKED_REQUIRES_HIGODOT_L2_AUTHORING_THEN_VALIDATION
+export_exclusion_state: BLOCKED_REQUIRES_HIGODOT_L2_AUTHORING_THEN_L1_VALIDATION
 ```
-
-## 7. PR #109 관계의 현재 해석
-
-초기 Hera 조사 당시 PR #109는 current main에 뒤처져 있었고, 이 사실은 역사적 조사 근거로 보존한다. 이후 PR #109의 GUT/JUnit exact-head 검증과 병합, post-merge closeout은 `TEN-DEC-20260807-GUT-9-7-1-RECONCILIATION-01`과 `docs/planning-data/current_entry_gate_20260808.json`에서 별도로 닫혔다. 따라서 PR #109 stale-base는 더 이상 Hera 활성화 Gate의 현재 blocker가 아니다.
-
-Hera 정합화와 GUT tree repair는 서로 다른 Goal·증거 체계를 유지한다.
 
 ## 8. 제품 구현 Gate
 
-이 Decision 정합화는 플레이어 기능·Scene·Resource·전투 데이터·`project.godot`을 변경하지 않는다.
+이번 Decision 승격은 governance/evidence 정합화이며 제품 visible/runtime diff는 없다.
 
 ```yaml
+hera_live_qa_gate: PASS_HERA_V1_0_0_EXACT_PAIR_LIVE_QA_SOURCE_DELTA_NONE
 product_visible_diff: NONE
 product_runtime_change: NONE
 new_visual_asset_required: false
+local_android_device: BLOCKED_UNVERIFIED
+human_validation: BLOCKED_NOT_RUN
 windows_android_adapter_implementation: BLOCKED_BY_ENTRY_GATE
 ```
 
-`TEN-IMG-001`의 Visual Requirement/이미지 검수 미완, 로컬 Hera pair/HiGodot-authorized enable/canary·tooling export exclusion·Windows/Android/device/human 검증 미실행이 남아 있으므로 Windows·Android Adapter 제품 구현은 아직 시작하지 않는다.
+Hera gate는 닫혔지만 tooling export exclusion, Android/device, human validation과 기타 현행 Entry Gate blocker가 남아 있으므로 제품 구현은 이 Decision만으로 시작하지 않는다.
 
 ## 9. 다음 단계
 
-1. 로컬 Windows에서 Hera CLI archive SHA와 `hera version`을 먼저 검증한다.
-2. HiGodot L0 관찰 후 필요한 Hera plugin 활성화와 tooling export exclusion persistent 설정을 각각 승인 범위의 HiGodot L2 write로 수행한다.
-3. Godot 완전 재시작 후 `hera status`·`hera smoke --skip-game`·Hera-phase source delta NONE을 검증한다.
-4. `HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION`에서 L2 결과를 재관찰하고 실제 export regression으로 검증한다.
-5. `TEN-IMG-001` Visual Requirement 검수와 로컬 Windows/Android/device/human 검증 후 `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE` 진입 여부를 재판정한다.
+1. `HIGODOT_L2_AUTHOR_APPROVED_GUT_TEST_PRODUCT_EXPORT_EXCLUSION` 범위에서 tooling export exclusion을 저작한다.
+2. `HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION_WITH_EXPORT_REGRESSION`으로 실제 export 결과를 검증한다.
+3. 로컬 Windows/Android/device/human gate를 검증한다.
+4. 모든 current Work Entry Completeness Gate를 다시 읽고 제품 구현 진입 여부를 재판정한다.
