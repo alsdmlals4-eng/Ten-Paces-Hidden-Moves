@@ -106,11 +106,29 @@ Hera never gains persistent authoring authority from this Decision.
 
 ## GUT claim ceiling
 
-Hosted GUT 9.7.1 reconciliation evidence remains valid from its prior Decision. This Decision does not claim a new local clean-checkout GUT run:
+Hosted GUT 9.7.1 reconciliation evidence remains valid from its prior Decision.
+
+On 2026-08-09, the user ran the merged Windows-safe collector in a newly cloned isolated checkout at exact current main `f0d85bd81981e608a43979ed0e5dc7a8763bd15f`. The console showed:
 
 ```yaml
-local_gut_clean_checkout: NOT_RUN
+checkout: C:/Users/user/AppData/Local/Temp/ten-paces-live-validation-20260809-213134
+head: f0d85bd81981e608a43979ed0e5dc7a8763bd15f
+origin_main: f0d85bd81981e608a43979ed0e5dc7a8763bd15f
+working_tree: CLEAN
+collector_git_sync: LOCAL_SYNC_CURRENT
+gut: PASS
+evidence_level: USER_LOCAL_COMMAND_READBACK
 ```
+
+Therefore the local clean-checkout GUT gate is promoted only to the evidence level actually observed:
+
+```yaml
+local_gut_clean_checkout: PASS_USER_LOCAL_COMMAND_READBACK
+```
+
+This does not promote the whole Windows gate. The same collector run reported `Godot: PASS / import-parse: FAIL` and `Hera: HERA_CLI_NOT_FOUND_OR_PATH_UNSET`, so local Windows remains blocked pending root-cause evidence for import and Hera CLI verification.
+
+The uploaded `godot-live-evidence.json` accompanying this console run was inspected and identified as an older artifact from the original dirty project checkout: its embedded project path, collection time, `git.available=false`, and `GUT FAIL` do not match the clean rerun. That stale JSON is retained as historical evidence only and is not used to upgrade new-run claims.
 
 ## Protected change governance
 
@@ -131,11 +149,12 @@ The known Base trailing-slash matcher blind spot for nested `addons/`, `src/`, a
 
 ## Entry Gate effect
 
-This Decision closes only the stale "Hera plugin is disabled / must later be enabled" status conflict.
+This Decision closes only the stale "Hera plugin is disabled / must later be enabled" status conflict and now also records a clean current-main local GUT PASS at `USER_LOCAL_COMMAND_READBACK` evidence level.
 
 It does **not** authorize product implementation or close:
 
 - Hera CLI/status/smoke/source-delta gates;
+- Godot local import/parse root-cause gate;
 - GUT/export exclusion authoring and validation;
 - local Windows/Android/device/human gates;
 - product asset promotion;
