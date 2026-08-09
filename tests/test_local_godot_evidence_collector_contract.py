@@ -44,6 +44,11 @@ class LocalGodotEvidenceCollectorContractTests(unittest.TestCase):
         self.assertIn("$CommandArgs", self.text)
         self.assertIn("@CommandArgs", self.text)
 
+    def test_native_stderr_warning_uses_real_process_exit_code(self) -> None:
+        self.assertIn("$oldErrorActionPreference", self.text)
+        self.assertRegex(self.text, r'\$ErrorActionPreference\s*=\s*"Continue"')
+        self.assertIn("$LASTEXITCODE", self.text)
+
     def test_runtime_checks_fail_closed_when_git_state_is_unavailable(self) -> None:
         self.assertIn("NOT_RUN_GIT_UNAVAILABLE_SAFETY", self.text)
         self.assertGreaterEqual(self.text.count("NOT_RUN_GIT_UNAVAILABLE_SAFETY"), 4)
@@ -61,6 +66,10 @@ class LocalGodotEvidenceCollectorContractTests(unittest.TestCase):
         self.assertIn('$finalPorcelain', self.text)
         self.assertIn('$finalGit.working_tree_clean', self.text)
         self.assertIn('LOCAL_POSTCHECK_DIRTY_WORKTREE', self.text)
+
+    def test_hera_smoke_rechecks_runtime_git_cleanliness(self) -> None:
+        self.assertIn('$runtimePorcelain', self.text)
+        self.assertIn('NOT_RUN_POSTCHECK_DIRTY_WORKTREE_SAFETY', self.text)
 
     def test_import_parse_failure_is_a_blocker(self) -> None:
         blocker_loop = re.search(
