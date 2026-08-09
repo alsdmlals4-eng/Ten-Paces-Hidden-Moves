@@ -1,7 +1,7 @@
 # Local Godot Evidence Collector Decision
 
 - Decision ID: `TEN-DEC-20260809-LOCAL-GODOT-EVIDENCE-COLLECTOR-01`
-- Status: `APPROVED_COLLECTOR_CONTRACT_WINDOWS_SAFE_FIX_MERGED_LOCAL_REEVIDENCE_PENDING`
+- Status: `APPROVED_COLLECTOR_CONTRACT_WINDOWS_SAFE_FIX_MERGED_LOCAL_CLEAN_GUT_PASS_IMPORT_FAIL_HERA_PENDING`
 - Approval: 사용자 `그렇게하자.`
 - Scope: 로컬 Windows checkout의 Godot/HiGodot(Godot AI)/GUT/Hera/Git 상태를 한 번의 PowerShell 실행으로 수집하는 **증거 전용 진단기**
 - Product/runtime feature change: `NONE`
@@ -99,6 +99,42 @@ result: MERGED_WINDOWS_SAFE_FIX
 
 PR Validation에서 `Run local Godot evidence collector contract tests`와 `Parse PowerShell automations for code changes`가 모두 성공했다. merged main에서 collector/test blob을 다시 읽어 post-merge readback을 완료했다.
 
+## 2026-08-09 clean current-main 재실행 console evidence
+
+사용자가 새 isolated clone에서 merged fixed collector를 다시 실행했다.
+
+```yaml
+checkout: C:/Users/user/AppData/Local/Temp/ten-paces-live-validation-20260809-213134
+head: f0d85bd81981e608a43979ed0e5dc7a8763bd15f
+origin_main: f0d85bd81981e608a43979ed0e5dc7a8763bd15f
+git_status: CLEAN
+collector_status: COMPLETE_WITH_BLOCKERS
+git_sync_status: LOCAL_SYNC_CURRENT
+godot_status: PASS
+godot_import_parse: FAIL
+gut_status: PASS
+hera_status: HERA_CLI_NOT_FOUND_OR_PATH_UNSET
+hera_smoke: NOT_RUN
+hera_delta: NOT_RUN
+evidence_level: USER_LOCAL_COMMAND_READBACK
+```
+
+이 실행으로 다음은 승격한다.
+
+- clean current-main checkout: `PASS_USER_LOCAL_COMMAND_READBACK`
+- Git sync: `LOCAL_SYNC_CURRENT`
+- GUT 9.7.1 local clean-checkout: `PASS_USER_LOCAL_COMMAND_READBACK`
+
+다음은 승격하지 않는다.
+
+- Godot local import/parse: `FAIL_USER_LOCAL_COMMAND_READBACK_ROOT_CAUSE_PENDING`
+- Hera exact CLI pair/status/smoke/source delta: 계속 `NOT_RUN` / `HERA_CLI_ADDON_PAIR_UNVERIFIED`
+- 전체 local Windows gate: 계속 BLOCKED
+
+사용자가 함께 업로드한 `godot-live-evidence.json`은 이 clean 재실행 산출물이 아니다. 파일 내부 `project_path`가 원래 작업 checkout을 가리키고, collection 시각이 이전이며, `git.available=false` / `GUT FAIL`을 담아 방금 콘솔의 clean/current + GUT PASS와 불일치한다. 따라서 그 JSON은 최초 결함 조사 당시의 historical artifact로만 유지하며 clean rerun 승격 근거로 사용하지 않는다.
+
+Godot import 실패의 root cause는 아직 미확정이다. 다음 진단에서는 새 clean run의 `godot-version.txt`, `godot-import-parse.txt`, 올바른 `godot-live-evidence.json`을 먼저 읽고 나서만 수정 가설을 세운다.
+
 ## Active toolchain과의 관계
 
 현행 toolchain 정본은 `TEN-DEC-20260809-GODOT-AI313-GUT971-HERA100-ACTIVE-TOOLCHAIN-01`이다.
@@ -111,13 +147,13 @@ collector 수정은 이 활성 상태를 바꾸지 않는다. 이전의 GUT/Hera
 
 ## 현재 claim ceiling과 다음 실제 Gate
 
-PR #122 merge는 collector 구현의 hosted 검증 완료이지 로컬 Godot/GUT/Hera PASS가 아니다.
-
 ```yaml
 fixed_collector_merged: true
-local_fixed_collector_rerun: NOT_RUN
-local_godot_import_parse: NOT_RUN
-local_gut_clean_checkout: NOT_RUN
+local_fixed_collector_rerun: PASS_USER_LOCAL_COMMAND_READBACK
+local_git_current_clean: PASS_USER_LOCAL_COMMAND_READBACK
+local_godot_version_command: PASS_USER_LOCAL_COMMAND_READBACK
+local_godot_import_parse: FAIL_USER_LOCAL_COMMAND_READBACK_ROOT_CAUSE_PENDING
+local_gut_clean_checkout: PASS_USER_LOCAL_COMMAND_READBACK
 hera_cli_pair: HERA_CLI_ADDON_PAIR_UNVERIFIED
 hera_status: NOT_RUN
 hera_smoke_skip_game: NOT_RUN
@@ -126,9 +162,9 @@ hera_phase_source_delta: NOT_RUN
 
 다음 로컬 순서:
 
-1. clean isolated current-main checkout에서 fixed collector를 실행한다.
-2. Git `available/current/clean`을 먼저 확인한 뒤에만 Godot import/parse와 GUT을 실행한다.
-3. Hera Windows CLI archive SHA-256과 `hera version`으로 exact v1.0.0 pair를 검증한다.
+1. 새 clean run의 `godot-version.txt`, `godot-import-parse.txt`, 올바른 `godot-live-evidence.json`을 확보한다.
+2. import 실패 root cause를 로그에서 특정한다. 로그 전에 수정하지 않는다.
+3. Hera Windows CLI archive SHA-256 `9ae181741c2e8a3f57bbb2a2e4c61ac2c9c7c844fad21c88ae3890c55a5cc66b`와 `hera version`으로 exact v1.0.0 pair를 검증한다.
 4. `hera status`가 정확한 Ten Paces 프로젝트를 가리키는지 확인한다.
 5. tracked source pre-Hera snapshot을 기록한다.
 6. `hera smoke --skip-game`을 실행한다.
