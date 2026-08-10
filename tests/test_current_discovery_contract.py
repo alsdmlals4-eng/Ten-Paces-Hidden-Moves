@@ -120,6 +120,16 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertIn("Issue #140", text)
 
+    def test_temporary_pin_exception_self_retires_when_current_pin_arrives(self) -> None:
+        workflow_path = ".github/workflows/validate-godot-live-editor-pilot.yml"
+        for action, current_ref in CURRENT_ACTION_PINS.items():
+            if action not in TEMPORARY_PIN_EXCEPTIONS[workflow_path]:
+                continue
+            self.assertTrue(
+                is_reconciled_action_pin_allowed(workflow_path, action, current_ref),
+                f"{action} must be allowed to leave its temporary exception without changing this contract first",
+            )
+
     def test_active_workflows_use_immutable_reconciled_action_pins(self) -> None:
         violations: list[str] = []
         seen_actions: set[str] = set()
