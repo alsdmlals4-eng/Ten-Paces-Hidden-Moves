@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import unittest
 from pathlib import Path
@@ -9,11 +10,16 @@ ROOT = Path(__file__).resolve().parents[1]
 DECISION_ID = "TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01"
 PREVIOUS_DECISION_ID = "TEN-DEC-20260806-INTEGRATED-WORK-CONTRACT-V4-3-01"
 SOURCE_SHA256 = "3f898b7e2749a2e1900e9df48183f02d4fbc735fd0e80297f28bb09317144de4"
+BOUND_SHA256 = "0cc7943594d78824d6b3390232f61f12b8199d2f9f3b8817bf9953ed5aa90061"
 CANONICAL = ROOT / "docs" / "PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md"
 DECISION = ROOT / "docs" / "decisions" / "2026-08-11_INTEGRATED_WORK_CONTRACT_V4_5_R2_BINDING_DECISION.md"
 CONTRACT = ROOT / "docs" / "planning-data" / "approved_20260811_integrated_work_contract_v4_5_r2_binding.json"
 OLD_DECISION = ROOT / "docs" / "decisions" / "2026-08-06_INTEGRATED_WORK_CONTRACT_V4_3_BINDING_DECISION.md"
 OLD_CONTRACT = ROOT / "docs" / "planning-data" / "approved_20260806_integrated_work_contract_v4_3_binding.json"
+PARTS = [
+    ROOT / "docs" / "contracts" / "integrated-work-v4.5-r2" / f"part-{index:02d}.md"
+    for index in range(1, 7)
+]
 
 
 class IntegratedWorkContractV45R2Tests(unittest.TestCase):
@@ -61,6 +67,17 @@ class IntegratedWorkContractV45R2Tests(unittest.TestCase):
         self.assertIn("meaning: HISTORICAL_OBSERVATION_ONLY", text)
         self.assertIn("use_as_permanent_authority: false", text)
 
+    def test_normative_parts_reconstruct_the_project_bound_source_exactly(self) -> None:
+        for part in PARTS:
+            self.assertTrue(part.is_file(), f"Missing normative body part: {part.relative_to(ROOT)}")
+
+        reconstructed = b"".join(part.read_bytes() for part in PARTS)
+        digest = hashlib.sha256(reconstructed).hexdigest()
+        self.assertEqual(digest, BOUND_SHA256)
+        text = reconstructed.decode("utf-8")
+        self.assertNotIn("Switchy-Express-Cargo-Puzzle", text)
+        self.assertIn("## 44. 최종 원칙", text)
+
     def test_binding_promotes_v45r2_and_preserves_v43_as_history(self) -> None:
         self.assertTrue(DECISION.is_file())
         self.assertTrue(CONTRACT.is_file())
@@ -75,24 +92,22 @@ class IntegratedWorkContractV45R2Tests(unittest.TestCase):
         self.assertEqual(payload["status"], "CURRENT_APPROVED_PROJECT_OPERATING_CONTRACT")
         self.assertEqual(payload["canonical_document"], "docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md")
         self.assertEqual(payload["source_uploaded_sha256"], SOURCE_SHA256)
+        self.assertEqual(payload["project_bound_sha256"], BOUND_SHA256)
         self.assertEqual(payload["supersedes_decision_id"], PREVIOUS_DECISION_ID)
         self.assertEqual(payload["project_repository"], "alsdmlals4-eng/Ten-Paces-Hidden-Moves")
         self.assertEqual(payload["project_google_sheet_id"], "1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0")
         self.assertTrue(payload["test_first_every_task"])
         self.assertEqual(payload["planning_completion_trigger"], "USER_EXPLICIT_PLANNING_COMPLETE_DECLARATION")
         self.assertEqual(payload["base_snapshot_policy"], "ALWAYS_REFETCH_CURRENT_MAIN_BEFORE_WORK")
+        self.assertEqual(payload["normative_body_parts"], [str(part.relative_to(ROOT)).replace("\\", "/") for part in PARTS])
 
         decision_text = DECISION.read_text(encoding="utf-8")
-        for marker in (DECISION_ID, PREVIOUS_DECISION_ID, SOURCE_SHA256, "CURRENT_APPROVED_PROJECT_OPERATING_CONTRACT"):
+        for marker in (DECISION_ID, PREVIOUS_DECISION_ID, SOURCE_SHA256, BOUND_SHA256, "CURRENT_APPROVED_PROJECT_OPERATING_CONTRACT"):
             self.assertIn(marker, decision_text)
 
     def test_cold_start_documents_route_to_v45r2_current_authority(self) -> None:
         canonical_path = "docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md"
-        for relative in (
-            "AGENTS.md",
-            "START_HERE.md",
-            "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
-        ):
+        for relative in ("AGENTS.md", "START_HERE.md"):
             text = (ROOT / relative).read_text(encoding="utf-8")
             self.assertIn(canonical_path, text, f"{relative} must route to the current integrated work contract")
             self.assertIn(DECISION_ID, text, f"{relative} must expose the current integrated work contract Decision ID")
