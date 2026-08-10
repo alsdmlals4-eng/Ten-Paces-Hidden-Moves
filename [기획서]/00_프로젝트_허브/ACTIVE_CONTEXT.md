@@ -35,8 +35,11 @@ windows_validation: CI_EXPORT_RUNTIME_PASS_LOCAL_NOT_RUN
 android_validation: NOT_RUN
 engine: Godot 4.7
 runtime_implementation: TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92
+latest_combat_planning_runtime: PRODUCT_VALIDATION_AUTOMATED
 automated_validation: PASS
 human_validation: NOT_RUN
+accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
+performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 product_implementation_authorized: false
 next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
 next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
@@ -54,6 +57,7 @@ base_remote_observation: BCP_2026_011_IMPLEMENTED_NO_AUTOMATIC_PROJECT_ADOPTION
 - 행동 선택 UX: `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`.
 - 상황 화면 구조: `TEN-DEC-20260801-SITUATION-SCREEN-01`.
 - 관찰 정답 누출 방지: `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`.
+- 초기 무공서 런타임 기반 권위: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`.
 - 초기 무공서 UI·AI 채택 권위: `TEN_MANUAL_UI_AI_ADOPTION_GATE`.
 - 초기 무공서 자동 제품 검증 권위: `TEN_MANUAL_PRODUCT_VALIDATION_GATE`.
 - GUT 9.7.1 reconciliation/export boundary: `TEN-DEC-20260807-GUT-9-7-1-RECONCILIATION-01`.
@@ -71,6 +75,14 @@ base_remote_observation: BCP_2026_011_IMPLEMENTED_NO_AUTOMATIC_PROJECT_ADOPTION
 - V6 원장: `2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
 
 위 표식은 PR #65 앱 흐름 기반의 역사·호환 근거이며 현재 구현 권위는 상단 YAML의 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`다.
+
+## 제품 연결·성장 보호 표식
+
+- 적 AI는 자기 명시적 loadout과 공개 상태만 사용하며 **플레이어 비공개 계획·미확정 배치·포인터는 참조하지 않는다**.
+- 능력치별 무공서 권수·균등 분포·최소/최대 쿼터는 사용하지 않는다.
+- 무공서·무학 사용자-facing 동기화는 Sheet `03_무공서_무학`과 해당 GitHub 권위 문서의 Decision ID를 대조한다.
+
+이 세 표식은 후속 플랫폼·handoff 정리로 제품 권위가 사라졌다고 오인하지 않기 위한 discovery contract다.
 
 ## 자동 제품 검증 권위
 
