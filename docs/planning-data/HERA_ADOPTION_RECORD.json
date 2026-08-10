@@ -3,7 +3,7 @@
   "tool": "Hera Agent Godot",
   "decision_id": "TEN-DEC-20260809-GODOT-AI313-GUT971-HERA100-ACTIVE-TOOLCHAIN-01",
   "related_decision_id": "TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01",
-  "snapshot_semantics": "ACTIVE_PLUGIN_EXACT_V1_PAIR_LOCAL_LIVE_QA_ACCEPTED",
+  "snapshot_semantics": "ACTIVE_PLUGIN_EXACT_V1_PAIR_LOCAL_LIVE_QA_AND_EXPORT_BOUNDARY_ACCEPTED",
   "canonical_source_repository": "NotNull92/hera-agent-godot",
   "exact_addon_version": "1.0.0",
   "official_tag": "v1.0.0",
@@ -53,9 +53,15 @@
     "hera smoke --skip-game"
   ],
   "export_gate": {
+    "observed_main": "ffe45f57606812bed38458e9ce1d3cce4c92dcb5",
     "observed_export_filter": "all_resources",
-    "observed_exclude_filter": "",
-    "state": "BLOCKED_REQUIRES_HIGODOT_L2_AUTHORING_THEN_L1_VALIDATION"
+    "observed_include_filter": "",
+    "observed_exclude_filter": "addons/gut/**,tests/**,.gutconfig.json",
+    "state": "PASS_HIGODOT_L2_AUTHORING_AND_L1_EXPORT_REGRESSION",
+    "evidence_record": "docs/planning-data/local_gut_product_export_exclusion_acceptance_20260810.json",
+    "publication_pr": 133,
+    "hera_directory_excluded": false,
+    "persistent_source_mutation_authority_unchanged": true
   },
   "remote_preflight_main": "e3c7a3cc0705f7a20dcf7810788ce86633b9b186",
   "last_local_pair_verification": "PASS_USER_LOCAL_HERA_V1_RECOVERY_EVIDENCE_20260810",

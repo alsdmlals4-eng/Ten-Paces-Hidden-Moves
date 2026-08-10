@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "authority": "LOCAL_GUT_PRODUCT_EXPORT_EXCLUSION_ACCEPTANCE",
+  "decision_id": "TEN-DEC-20260807-GUT-9-7-1-RECONCILIATION-01",
+  "related_decision_ids": [
+    "TEN-DEC-20260809-GODOT-AI313-GUT971-HERA100-ACTIVE-TOOLCHAIN-01",
+    "TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01"
+  ],
+  "accepted_at": "2026-08-10T10:59:45+09:00",
+  "evidence_level": "USER_UPLOADED_LOCAL_POWERSHELL_AND_JSON",
+  "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
+  "project_base_main": "771ffe7d7ebe01a119a2bf8f0d91c37ef3fb2249",
+  "publication": {
+    "pr_number": 133,
+    "pr_exact_head": "f355b1f9ef9376ee28ddc9b3c8473c97389a7bd9",
+    "merge_main": "ffe45f57606812bed38458e9ce1d3cce4c92dcb5",
+    "changed_files": [
+      "export_presets.cfg"
+    ]
+  },
+  "godot": {
+    "version": "4.7.1.stable.official.a13da4feb",
+    "console_binary": "Godot_v4.7.1-stable_win64_console.exe",
+    "windows_release_template": "4.7.1.stable/windows_release_x86_64.exe"
+  },
+  "authoring": {
+    "authority": "HIGODOT_ONLY",
+    "risk_class": "L2_PERSISTENT_FILE_OR_PROJECT_SETTING_WRITE",
+    "target_file": "export_presets.cfg",
+    "preset": "Windows Desktop Product Validation",
+    "result": "PASS_HIGODOT_L2_AUTHORED_AND_L1_READBACK"
+  },
+  "export_preset": {
+    "export_filter": "all_resources",
+    "include_filter": "",
+    "exclude_filter": "addons/gut/**,tests/**,.gutconfig.json",
+    "approved_exclusion_targets": [
+      "addons/gut/**",
+      "tests/**",
+      ".gutconfig.json"
+    ],
+    "other_addon_family_excluded": false,
+    "godot_ai_runtime_preserved": true
+  },
+  "local_export_regression": {
+    "windows_export_exit_code": 0,
+    "pck_probe_exit_code": 0,
+    "windows_exe_bytes": 109212160,
+    "windows_exe_sha256": "76269a403bb832599edeee4432a5b7a7e88c018eb5c9c798dfd8289359b0ec07",
+    "pck_bytes": 14074560,
+    "pck_sha256": "3f4be2e9b5b9d417e54b2ed31fea86dd635357aad653375fcb2229202c119d7c",
+    "gut_tree_excluded": true,
+    "tests_tree_excluded": true,
+    "gutconfig_excluded": true,
+    "required_runtime_path": "res://addons/godot_ai/runtime/game_helper.gd",
+    "required_runtime_present": true,
+    "final_tracked_content_delta": [
+      "export_presets.cfg"
+    ],
+    "verdict": "PASS_HIGODOT_L2_AUTHORING_AND_EXPORT_REGRESSION"
+  },
+  "github_exact_head_validation": {
+    "pr_number": 133,
+    "exact_head": "f355b1f9ef9376ee28ddc9b3c8473c97389a7bd9",
+    "mergeable_before_merge": true,
+    "review_threads_unresolved": 0,
+    "runs": {
+      "full_validation": 31348734266,
+      "pr_validation": 31348734212,
+      "active_godot_toolchain": 31348734236,
+      "ten_manual_product_gate": 31348734244
+    },
+    "pr_validation": "PASS",
+    "active_toolchain_validation": "PASS",
+    "hosted_windows_product_export_and_run": "PASS",
+    "result": "PASS_EXACT_HEAD_HOSTED_AND_LOCAL_EXPORT_REGRESSION"
+  },
+  "claim_ceiling": {
+    "gut_product_export_boundary": "PASS",
+    "local_windows_product_export_regression": "PASS",
+    "android_device": "BLOCKED_UNVERIFIED",
+    "human_validation": "BLOCKED_NOT_RUN",
+    "product_implementation_authorized_by_this_evidence": false,
+    "production_readiness": false
+  }
+}
