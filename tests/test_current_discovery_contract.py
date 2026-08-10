@@ -53,6 +53,25 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertNotIn("속공21/20틱, 강공54/50틱, 장풍48/50틱", text)
 
+    def test_combat_rules_use_current_bundle_transition_internal_recovery(self) -> None:
+        text = (ROOT / "docs" / "02_COMBAT_RULES.md").read_text(encoding="utf-8")
+
+        self.assertIn(
+            "docs/decisions/2026-08-04_RESOURCE_SATURATION_INTERNAL_RECOVERY_DECISION.md",
+            text,
+        )
+        self.assertIn("approved_20260804_resource_saturation_internal_recovery_contract.json", text)
+        self.assertIn("생존한 양측 기력 +1·절초기세 +1(각 최대치 적용)", text)
+        self.assertIn(
+            "모든 묶음 전환은 생존한 양측에 기력 +1·절초기세 +1",
+            text,
+        )
+        self.assertNotIn("생존한 양측 기력 +1·내력 +1·절초기세 +1", text)
+        self.assertIn(
+            "묶음 전환·라운드 시작에는 별도 내력 자동 회복이 없다.",
+            text,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
