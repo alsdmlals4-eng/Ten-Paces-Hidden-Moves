@@ -6,6 +6,7 @@
 최신 사용자 지시
 → AGENTS.md
 → docs/BASE_RULES_VERSION.md
+→ docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md
 → [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
 → [기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md
 → skills/SKILL_REGISTRY.json
@@ -15,7 +16,7 @@
 → 실제 코드·데이터·Scene·테스트·PR
 ```
 
-백업·보류·과거 계획·닫힌 PR·전체 Skill 폴더를 기본 로드하지 않는다. `skills/SKILL_REGISTRY.json`은 현재 프로젝트 고유 Skill 권한이며 `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`은 호환 진입점이다.
+현행 통합 작업계약은 `TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01` / `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`다. 백업·보류·과거 계획·닫힌 PR·전체 Skill 폴더를 기본 로드하지 않는다. `skills/SKILL_REGISTRY.json`은 현재 프로젝트 고유 Skill 권한이며 `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`은 호환 진입점이다.
 
 ## 현재 기준
 
@@ -39,6 +40,7 @@ base_release_pinned: 9.4.3
 
 ## 현재 책임 원본
 
+- 통합 작업계약: `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` / `TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01`.
 - 현재 상태: `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`.
 - 문서 지도: `[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md`.
 - Base 버전: `docs/BASE_RULES_VERSION.md`.
@@ -95,6 +97,7 @@ ACTIVE_CONTEXT의 다음 기획 Decision
 - PR #65는 ActionSelectionDock과 화면 구조 통합 이력이다.
 - PR #68은 Base v9.4 운영 계약 적용 이력이다.
 - PR #72와 PR #80은 이후 전투·성장 기획 체크포인트 이력이다.
+- `TEN-DEC-20260806-INTEGRATED-WORK-CONTRACT-V4-3-01`은 역사적 작업계약 바인딩이며 current authority는 v4.5 r2다.
 - 현재 공용 Skill 권한은 `skills/PROJECT_BASE_ADAPTER.json`의 Base v9.4.3 pin이다.
 
 자동·정적 검증은 Windows 실제 Godot, 실물 게임패드, 화면 읽기 도구, 성능, 사람 플레이를 증명하지 않는다. 실행하지 않은 항목은 `NOT_RUN`이다.
