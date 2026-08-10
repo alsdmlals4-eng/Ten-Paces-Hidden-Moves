@@ -7,6 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DECISION_ID = "TEN-DEC-20260809-GODOT-AI313-GUT971-HERA100-ACTIVE-TOOLCHAIN-01"
+GUT_DECISION_ID = "TEN-DEC-20260807-GUT-9-7-1-RECONCILIATION-01"
 HERA_DECISION_ID = "TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01"
 COLLECTOR_DECISION_ID = "TEN-DEC-20260809-LOCAL-GODOT-EVIDENCE-COLLECTOR-01"
 DECISION = ROOT / "docs/decisions/2026-08-09_GODOT_AI313_GUT971_HERA100_ACTIVE_TOOLCHAIN.md"
@@ -15,6 +16,7 @@ CONTRACT = ROOT / "docs/planning-data/active_godot_toolchain_20260809.json"
 HERA_CONTRACT = ROOT / "docs/planning-data/approved_20260808_hera_v1_live_qa_reconciliation.json"
 LOCAL_ACCEPTANCE = ROOT / "docs/planning-data/local_godot_471_gut_junit_acceptance_20260810.json"
 HERA_ACCEPTANCE = ROOT / "docs/planning-data/local_hera_v1_live_qa_acceptance_20260810.json"
+EXPORT_ACCEPTANCE = ROOT / "docs/planning-data/local_gut_product_export_exclusion_acceptance_20260810.json"
 HERA_RECORD = ROOT / "docs/planning-data/HERA_ADOPTION_RECORD.json"
 ENTRY_GATE = ROOT / "docs/planning-data/current_entry_gate_20260808.json"
 ACTIVE_APPROVAL = ROOT / "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
@@ -96,7 +98,11 @@ class ActiveGodotToolchainReconciliationTests(unittest.TestCase):
             contract["remaining_gates"]["godot_import_parse"],
         )
         self.assertEqual(
-            "PARTIAL_PASS_GODOT_GUT_HERA_CORE_EXPORT_ANDROID_DEVICE_HUMAN_REMAIN",
+            "PASS_HIGODOT_L2_AUTHORING_AND_L1_EXPORT_REGRESSION",
+            contract["remaining_gates"]["tooling_export_exclusion"],
+        )
+        self.assertEqual(
+            "PASS_GODOT_GUT_HERA_EXPORT_CORE_ANDROID_DEVICE_HUMAN_REMAIN",
             contract["remaining_gates"]["local_windows"],
         )
 
@@ -126,6 +132,19 @@ class ActiveGodotToolchainReconciliationTests(unittest.TestCase):
         self.assertTrue(hera["post_content_clean"])
         self.assertEqual("HERA_SOURCE_DELTA_NONE", hera["tracked_source_delta"])
 
+        export_acceptance = contract["local_gut_product_export_exclusion_acceptance"]
+        self.assertEqual(
+            "docs/planning-data/local_gut_product_export_exclusion_acceptance_20260810.json",
+            export_acceptance["evidence_record"],
+        )
+        self.assertEqual("4.7.1.stable.official.a13da4feb", export_acceptance["godot_version"])
+        self.assertEqual(0, export_acceptance["windows_export_exit_code"])
+        self.assertEqual(0, export_acceptance["pck_probe_exit_code"])
+        self.assertEqual(
+            "PASS_HIGODOT_L2_AUTHORING_AND_EXPORT_REGRESSION",
+            export_acceptance["verdict"],
+        )
+
     def test_local_acceptance_evidence_is_bounded_and_keeps_product_gate_closed(self) -> None:
         evidence = json.loads(LOCAL_ACCEPTANCE.read_text(encoding="utf-8"))
         self.assertEqual(COLLECTOR_DECISION_ID, evidence["decision_id"])
@@ -140,6 +159,25 @@ class ActiveGodotToolchainReconciliationTests(unittest.TestCase):
         self.assertTrue(evidence["gut"]["evidence_junit_exists"])
         self.assertTrue(evidence["final_git"]["working_tree_content_clean"])
         self.assertFalse(evidence["claim_ceiling"]["product_implementation_authorized_by_this_evidence"])
+
+    def test_export_acceptance_evidence_is_bounded_and_keeps_product_gate_closed(self) -> None:
+        evidence = json.loads(EXPORT_ACCEPTANCE.read_text(encoding="utf-8"))
+        self.assertEqual(GUT_DECISION_ID, evidence["decision_id"])
+        self.assertEqual(133, evidence["publication"]["pr_number"])
+        self.assertEqual(
+            "ffe45f57606812bed38458e9ce1d3cce4c92dcb5",
+            evidence["publication"]["merge_main"],
+        )
+        regression = evidence["local_export_regression"]
+        self.assertEqual(0, regression["windows_export_exit_code"])
+        self.assertEqual(0, regression["pck_probe_exit_code"])
+        self.assertTrue(regression["gut_tree_excluded"])
+        self.assertTrue(regression["tests_tree_excluded"])
+        self.assertTrue(regression["gutconfig_excluded"])
+        self.assertTrue(regression["required_runtime_present"])
+        self.assertFalse(
+            evidence["claim_ceiling"]["product_implementation_authorized_by_this_evidence"]
+        )
 
     def test_hera_original_decision_contract_and_evidence_are_promoted_together(self) -> None:
         decision = HERA_DECISION.read_text(encoding="utf-8")
@@ -159,6 +197,10 @@ class ActiveGodotToolchainReconciliationTests(unittest.TestCase):
         self.assertEqual("PASS_ENFORCED_REDACTED", state["shared_token_configuration"])
         self.assertEqual("HERA_SOURCE_DELTA_NONE", state["source_delta_canary"])
         self.assertEqual("LOCAL_LIVE_QA_ACCEPTED", state["adoption_status"])
+        self.assertEqual(
+            "PASS_HIGODOT_L2_AUTHORING_AND_L1_EXPORT_REGRESSION",
+            contract["export_gate"]["state"],
+        )
 
         evidence = json.loads(HERA_ACCEPTANCE.read_text(encoding="utf-8"))
         self.assertIn(HERA_DECISION_ID, evidence["decision_ids"])
@@ -193,8 +235,12 @@ class ActiveGodotToolchainReconciliationTests(unittest.TestCase):
         self.assertEqual("HERA_SOURCE_DELTA_NONE", record["source_delta_canary"])
         self.assertEqual("FORBIDDEN", record["persistent_source_mutation"])
         self.assertEqual("LIVE_QA_AND_OBSERVABILITY_ONLY", record["role"])
+        self.assertEqual(
+            "PASS_HIGODOT_L2_AUTHORING_AND_L1_EXPORT_REGRESSION",
+            record["export_gate"]["state"],
+        )
 
-    def test_entry_gate_closes_hera_without_opening_product_gate(self) -> None:
+    def test_entry_gate_closes_export_without_opening_product_gate(self) -> None:
         gate = json.loads(ENTRY_GATE.read_text(encoding="utf-8"))
         self.assertEqual(DECISION_ID, gate["decision_id"])
         self.assertTrue(gate["hera_plugin_currently_enabled"])
@@ -212,19 +258,27 @@ class ActiveGodotToolchainReconciliationTests(unittest.TestCase):
             gate["godot_import_parse"],
         )
         self.assertEqual(
-            "PARTIAL_PASS_GODOT_GUT_HERA_CORE_EXPORT_ANDROID_DEVICE_HUMAN_REMAIN",
+            "PASS_GODOT_GUT_HERA_EXPORT_CORE_ANDROID_DEVICE_HUMAN_REMAIN",
             gate["local_windows_checkout"],
         )
+        self.assertEqual(
+            "PASS_HIGODOT_L2_AUTHORING_AND_L1_EXPORT_REGRESSION",
+            gate["higodot_l2_export_authoring"],
+        )
+        self.assertEqual(
+            "PASS_HIGODOT_L2_AUTHORING_AND_L1_EXPORT_REGRESSION",
+            gate["higodot_l1_export_exclusion"],
+        )
         self.assertNotIn(
-            "VERIFY_LOCAL_HERA_WINDOWS_CLI_ARCHIVE_SHA256_AND_HERA_VERSION",
+            "HIGODOT_L2_AUTHOR_APPROVED_GUT_TEST_PRODUCT_EXPORT_EXCLUSION",
             gate["allowed_next_actions"],
         )
         self.assertNotIn(
-            "RUN_HERA_STATUS_AND_SMOKE_SKIP_GAME_AND_REQUIRE_HERA_PHASE_DELTA_NONE",
+            "HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION_WITH_EXPORT_REGRESSION",
             gate["allowed_next_actions"],
         )
         self.assertIn(
-            "HIGODOT_L2_AUTHOR_APPROVED_GUT_TEST_PRODUCT_EXPORT_EXCLUSION",
+            "VERIFY_LOCAL_WINDOWS_ANDROID_DEVICE_AND_HUMAN_GATES",
             gate["allowed_next_actions"],
         )
         self.assertFalse(gate["product_implementation_authorized"])
