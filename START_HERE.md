@@ -28,8 +28,8 @@ runtime_integration_pr: 65
 planning_work_mode: PLAN
 runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65
 latest_combat_planning_runtime: NOT_STARTED
-primary_platform: PC
-future_platform: MOBILE_CONSIDERATION_ONLY
+design_platforms: WINDOWS_ANDROID
+platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
 next_package: VERTICAL_SLICE_APP_FLOW_SHELL
 human_validation: NOT_RUN
 base_release_pinned: 9.4.3
@@ -45,7 +45,7 @@ base_release_pinned: 9.4.3
 - 전투 규칙: `docs/02_COMBAT_RULES.md`.
 - 행동 선택: `docs/decisions/2026-08-01_MARTIAL_MANUAL_TECHNIQUE_TIMELINE_UX_DECISION.md`.
 - 화면 구조: `docs/decisions/2026-08-01_SITUATION_SCREEN_ARCHITECTURE_DECISION.md`.
-- 플랫폼 범위: `docs/decisions/2026-08-02_PLATFORM_SCOPE_DECISION.md`.
+- 플랫폼 범위: `docs/decisions/2026-08-02_PLATFORM_SCOPE_DECISION.md`와 현재 승인된 Windows+Android Decision.
 - 최근 병합 성장 체크포인트: PR #80과 `d9f38e6f3cacaf170d4b290e95b3645114639aff`.
 - 현재 활성 기획 배치: `ACTIVE_CONTEXT.md`와 GitHub PR metadata.
 - 구현 종료: `docs/implementation/2026-08-01_ACTION_SELECTION_DOCK_CLOSEOUT.md`.
@@ -64,10 +64,10 @@ base_release_pinned: 9.4.3
 
 ## 플랫폼 경계
 
-- 현재 주 플랫폼은 `PC`다.
-- 모바일은 `CONSIDERATION_ONLY`이며 현재 구현·출시·검증 권한이 없다.
-- PC App Flow Shell·Windows 실행·저장·성능·STEP 14 검증 뒤 별도 Decision으로 재평가한다.
-- 모바일 가능성을 이유로 현재 전투 코어·UI 정보 구조·콘텐츠 범위를 선행 변경하지 않는다.
+- 현재 대상 플랫폼은 `Windows`와 `Android`다.
+- 두 플랫폼은 단일 게임 로직·데이터 코어를 공유한다.
+- 플랫폼 차이는 입력·UI 반응형 레이아웃·플랫폼 통합·export/delivery·성능 프로파일 어댑터로 제한한다.
+- 플랫폼 세부 구현·검증 상태는 `AGENTS.md`, `ACTIVE_CONTEXT.md`, 현재 승인 Decision을 다시 읽고 판단하며 이 문서의 과거 상태 문자열을 구현 권한으로 사용하지 않는다.
 
 ## 현재 작업
 
