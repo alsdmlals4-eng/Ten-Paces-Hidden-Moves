@@ -1,10 +1,18 @@
 from __future__ import annotations
 
+import re
 import unittest
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+FULL_SHA = re.compile(r"^[0-9a-f]{40}$")
+USES = re.compile(r"^\s*(?:-\s*)?uses:\s*([^\s#]+)", re.MULTILINE)
+BASE_CURRENT_ACTION_PINS = {
+    "actions/checkout": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+    "actions/setup-python": "5fda3b95a4ea91299a34e894583c3862153e4b97",
+    "actions/upload-artifact": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+}
 
 
 class CurrentDiscoveryContractTests(unittest.TestCase):
@@ -100,6 +108,48 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             text,
         )
         self.assertIn("Issue #140", text)
+
+    def test_active_workflows_use_immutable_base_reconciled_action_pins(self) -> None:
+        violations: list[str] = []
+        seen_base_actions: set[str] = set()
+        workflows = ROOT / ".github" / "workflows"
+
+        for workflow in sorted(workflows.glob("*.y*ml")):
+            text = workflow.read_text(encoding="utf-8")
+            for target in USES.findall(text):
+                if target.startswith("./"):
+                    continue
+                if target.startswith("docker://"):
+                    violations.append(
+                        f"{workflow.relative_to(ROOT)}: docker use requires explicit digest governance: {target}"
+                    )
+                    continue
+                if "@" not in target:
+                    violations.append(
+                        f"{workflow.relative_to(ROOT)}: remote use has no ref: {target}"
+                    )
+                    continue
+
+                action, ref = target.rsplit("@", 1)
+                if not FULL_SHA.fullmatch(ref):
+                    violations.append(
+                        f"{workflow.relative_to(ROOT)}: mutable remote ref {target}"
+                    )
+                    continue
+
+                if action in BASE_CURRENT_ACTION_PINS:
+                    seen_base_actions.add(action)
+                    expected = BASE_CURRENT_ACTION_PINS[action]
+                    if ref != expected:
+                        violations.append(
+                            f"{workflow.relative_to(ROOT)}: {action} pin {ref} != Base current {expected}"
+                        )
+
+        self.assertEqual(set(BASE_CURRENT_ACTION_PINS), seen_base_actions)
+        self.assertFalse(
+            violations,
+            "Mutable/stale remote action refs found:\n" + "\n".join(violations),
+        )
 
 
 if __name__ == "__main__":
