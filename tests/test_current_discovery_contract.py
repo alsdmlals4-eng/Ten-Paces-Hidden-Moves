@@ -14,6 +14,16 @@ CURRENT_ACTION_PINS = {
     "actions/upload-artifact": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",  # Base current / v7.0.1
     "chickensoft-games/setup-godot": "f166999204a4f2722c6fe042fbaa3b3ea0d9c789",  # upstream v2.4.1
 }
+TEMPORARY_PIN_EXCEPTIONS = {
+    # The Live-Editor adoption contract intentionally rejects broad diffs. Its workflow
+    # is migrated in a dedicated follow-up PR so that its four-file boundary remains
+    # meaningful during this fleet-wide supply-chain patch. These refs are immutable;
+    # the exception is only for Base-current freshness and must be removed after that PR.
+    ".github/workflows/validate-godot-live-editor-pilot.yml": {
+        "actions/checkout": "11bd71901bbe5b1630ceea73d27597364c9af683",
+        "actions/setup-python": "a26af69be951a213d495a4c3e4e4022e16d87065",
+    }
+}
 
 
 class CurrentDiscoveryContractTests(unittest.TestCase):
@@ -113,22 +123,22 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
     def test_active_workflows_use_immutable_reconciled_action_pins(self) -> None:
         violations: list[str] = []
         seen_actions: set[str] = set()
+        seen_exceptions: set[tuple[str, str]] = set()
         workflows = ROOT / ".github" / "workflows"
 
         for workflow in sorted(workflows.glob("*.y*ml")):
+            workflow_path = workflow.relative_to(ROOT).as_posix()
             text = workflow.read_text(encoding="utf-8")
             for target in USES.findall(text):
                 if target.startswith("./"):
                     continue
                 if target.startswith("docker://"):
                     violations.append(
-                        f"{workflow.relative_to(ROOT)}: docker use requires explicit digest governance: {target}"
+                        f"{workflow_path}: docker use requires explicit digest governance: {target}"
                     )
                     continue
                 if "@" not in target:
-                    violations.append(
-                        f"{workflow.relative_to(ROOT)}: remote use has no ref: {target}"
-                    )
+                    violations.append(f"{workflow_path}: remote use has no ref: {target}")
                     continue
 
                 action, ref = target.rsplit("@", 1)
@@ -136,19 +146,26 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
                     seen_actions.add(action)
 
                 if not FULL_SHA.fullmatch(ref):
-                    violations.append(
-                        f"{workflow.relative_to(ROOT)}: mutable remote ref {target}"
-                    )
+                    violations.append(f"{workflow_path}: mutable remote ref {target}")
                     continue
 
                 if action in CURRENT_ACTION_PINS:
                     expected = CURRENT_ACTION_PINS[action]
-                    if ref != expected:
+                    exception = TEMPORARY_PIN_EXCEPTIONS.get(workflow_path, {}).get(action)
+                    if ref == exception:
+                        seen_exceptions.add((workflow_path, action))
+                    elif ref != expected:
                         violations.append(
-                            f"{workflow.relative_to(ROOT)}: {action} pin {ref} != reconciled current {expected}"
+                            f"{workflow_path}: {action} pin {ref} != reconciled current {expected}"
                         )
 
         self.assertEqual(set(CURRENT_ACTION_PINS), seen_actions)
+        expected_exceptions = {
+            (workflow_path, action)
+            for workflow_path, actions in TEMPORARY_PIN_EXCEPTIONS.items()
+            for action in actions
+        }
+        self.assertEqual(expected_exceptions, seen_exceptions)
         self.assertFalse(
             violations,
             "Mutable/stale remote action refs found:\n" + "\n".join(violations),
