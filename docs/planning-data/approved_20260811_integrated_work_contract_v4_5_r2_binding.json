@@ -15,6 +15,7 @@
     "docs/contracts/integrated-work-v4.5-r2/part-05.md",
     "docs/contracts/integrated-work-v4.5-r2/part-06.md"
   ],
+  "normative_body_reconstruction": "JOIN_PART_BYTES_WITH_SINGLE_LF_SEPARATOR",
   "source_uploaded_filename": "PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION_v4.5_r2.md",
   "source_uploaded_sha256": "3f898b7e2749a2e1900e9df48183f02d4fbc735fd0e80297f28bb09317144de4",
   "project_bound_sha256": "0cc7943594d78824d6b3390232f61f12b8199d2f9f3b8817bf9953ed5aa90061",
