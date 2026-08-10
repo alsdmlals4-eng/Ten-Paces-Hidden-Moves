@@ -6,7 +6,7 @@
 
 1. 사용자의 최신 확정 지시.
 2. 보안·플랫폼 제약과 이 문서.
-3. Active Context와 승인된 작업 계약.
+3. 현행 통합 작업계약 `TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01`과 Active Context.
 4. 최신 날짜의 Decision과 등록된 분야 책임 원본.
 5. 실제 코드·데이터·Scene·자산·테스트.
 6. 프로젝트 Adapter에 고정된 Base 기준.
@@ -21,6 +21,7 @@
 최신 사용자 지시
 → AGENTS.md
 → docs/BASE_RULES_VERSION.md
+→ docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md
 → [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
 → [기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md
 → 최신 관련 Decision
@@ -28,6 +29,7 @@
 → 실제 파일·테스트·PR
 ```
 
+- 현행 통합 작업계약: `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` / `TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01`.
 - Base Adapter: `skills/PROJECT_BASE_ADAPTER.json`.
 - 프로젝트 Skill Registry: `skills/SKILL_REGISTRY.json`.
 - Base 버전 정본: `docs/BASE_RULES_VERSION.md`.
@@ -119,6 +121,7 @@ Decision: `TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`.
 ## 9. 정본·Sheet
 
 - 한 질문에는 현재 책임 원본 하나만 둔다.
+- 현행 전체 작업 방식·검증·병합·전달 계약은 `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`가 책임진다.
 - 승인 Decision은 같은 ID로 Decision 문서, 분야 정본, planning JSON, Google Sheets에 연결한다.
 - Google Sheets는 `USER_FACING_GDD_WORKSPACE`이며 GitHub 정본·실제 구현을 대체하지 않는다.
 - Sheet 전용 변경은 `PROPOSED_SHEET_CHANGE`로 보존한다.
@@ -178,6 +181,7 @@ App Root
 - PR #7과 Issue #13은 T0 `STEP 0~13` 구현 계보다.
 - PR #45는 v6 계획 통합 이력이다.
 - PR #92는 초기 10권 런타임·UI/AI·자동 제품 검증의 main 병합 계보다.
+- `TEN-DEC-20260806-INTEGRATED-WORK-CONTRACT-V4-3-01`은 GUT 채택 당시의 역사적 통합 작업계약 증거이며 현행 작업계약은 v4.5 r2다.
 - 과거 Base SHA `c987647d01ad2baa028a16e03d85ddfc1572a727`은 역사 회귀 증거다.
 - 현재 Base 권한은 `skills/PROJECT_BASE_ADAPTER.json`의 Base v9.4.3 payload/evidence/finalization pin이다.
 - Base release Commit은 운영 감사 증거이며 프로젝트 코어·제품 구현 권한을 변경하지 않는다.
