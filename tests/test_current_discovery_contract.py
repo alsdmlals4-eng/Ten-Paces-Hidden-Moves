@@ -147,6 +147,12 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
                 self.assertNotEqual(ref, CURRENT_ACTION_PINS[action])
                 self.assertTrue(is_reconciled_action_pin_allowed(workflow_path, action, ref))
 
+    def test_no_temporary_pin_exceptions_remain_after_live_editor_migration(self) -> None:
+        self.assertFalse(
+            TEMPORARY_PIN_EXCEPTIONS,
+            "All active workflows now use reconciled current pins; temporary exceptions must be removed.",
+        )
+
     def test_active_workflows_use_immutable_reconciled_action_pins(self) -> None:
         violations: list[str] = []
         seen_actions: set[str] = set()
