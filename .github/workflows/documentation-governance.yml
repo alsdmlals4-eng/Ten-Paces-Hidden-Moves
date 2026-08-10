@@ -60,7 +60,9 @@ jobs:
         run: python -m unittest tests.test_archive_retention_governance -v
 
       - name: Run governance regression tests
-        run: python -m unittest discover -s tests -p 'test_project_governance.py'
+        run: |
+          python -m unittest discover -s tests -p 'test_project_governance.py'
+          python -m unittest tests.test_current_discovery_contract -v
 
       - name: Run local Godot evidence collector contract tests
         if: steps.scope.outputs.code_changed == 'true'
