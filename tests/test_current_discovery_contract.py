@@ -28,9 +28,14 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
                 f"START_HERE.md still exposes stale platform authority: {token}",
             )
 
-    def test_combat_rules_use_current_strong_attack_reprice_authority(self) -> None:
+    def test_combat_rules_use_current_basic_attack_reprice_authority(self) -> None:
         text = (ROOT / "docs" / "02_COMBAT_RULES.md").read_text(encoding="utf-8")
 
+        self.assertIn(
+            "docs/decisions/2026-08-04_EXISTING_APPROVED_ACTIONS_REPRICE_DECISION.md",
+            text,
+        )
+        self.assertIn("approved_20260804_existing_action_reprice_contract.json", text)
         self.assertIn(
             "| 강공 | 2 | 기력 1·내력 2 |",
             text,
@@ -41,6 +46,12 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             text,
             "Combat canon still exposes the superseded pre-reprice strong-attack cost.",
         )
+        self.assertIn(
+            "속공25/24틱, 강공70/68틱, 장풍60/57틱",
+            text,
+            "Combat canon must expose the approved repriced basic-attack ledger.",
+        )
+        self.assertNotIn("속공21/20틱, 강공54/50틱, 장풍48/50틱", text)
 
 
 if __name__ == "__main__":
