@@ -1,19 +1,19 @@
 # 십보강호 활성 컨텍스트
 
 > 전투 규칙 책임 원본: `docs/02_COMBAT_RULES.md`
-> 이 문서는 **변동 상태의 단독 책임 원본**이다. 제품 규칙 전문을 복제하지 않고 현재 checkpoint, 검증 상태, 미완료 Gate, 다음 실행 순서를 연결한다. 후속 Decision 뒤에도 회귀가 찾아야 하는 제품·플랫폼·관찰 권위의 발견 표식은 별도 섹션으로 보존한다.
+> 이 문서는 **변동 상태의 단독 책임 원본**이다. 제품 규칙 전문을 복제하지 않고 현재 상태, 검증 상태, 미완료 Gate, 다음 실행 순서를 연결한다. 후속 Decision 뒤에도 회귀가 찾아야 하는 제품·플랫폼·관찰 권위의 발견 표식은 별도 섹션으로 보존한다.
 > 핵심 결투 타이밍 discovery locator: `3/3/4`. 세부 전투 규칙은 `docs/02_COMBAT_RULES.md`가 책임진다.
+> live 상태 판단은 저장된 SHA를 current authority로 재사용하지 않고 매 resume/post-merge마다 GitHub `main` + Google Sheet current truth를 다시 읽는다.
 
 ## 현재 기준
 
 ```yaml
 project: 십보강호: 숨은 수의 비무
 repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
-project_main_checkpoint: 43841d3cc6667d821c10df75272b239f314f3df0
-merged_planning_checkpoint: 023385d372d127044d48afcb50e6f232ab9ffaa1
-merged_pr_lineage: 84,86,87,88,89,91,92,100,101,102
-product_implementation_merge_commit: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90
-merged_product_pr: 92
+current_truth_source: GITHUB_MAIN_PLUS_SHEET_LIVE_READ
+current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN
+base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
+live_exact_sha_authority: NONE_REFETCH_REQUIRED
 active_project_pr: NONE
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 runtime_work_mode: REVIEW
@@ -25,11 +25,8 @@ active_approval_count: 1/10
 active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED
 source_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
 product_gate: PARTIAL_AUTOMATED_COMPLETE
-evidence_source_head: 0a8bf577b936ddac5cb7130a0cc58e519ea6eff6
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
 platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
-platform_adapter_merge_commit: 023385d372d127044d48afcb50e6f232ab9ffaa1
-merged_platform_adapter_pr: 102
 design_platforms: WINDOWS_ANDROID
 platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
 windows_validation: CI_EXPORT_RUNTIME_PASS_LOCAL_NOT_RUN
@@ -44,12 +41,38 @@ performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 product_implementation_authorized: false
 next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
 next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
+planning_visual_next: TEN_IMG_001_GENERATE_EXPLORATION
+planning_visual_review: TEN_IMG_001_EXPLORATION_REVIEW
+planning_visual_authority: TEN-DEC-20260808-TEN-IMG-001-VISUAL-REQUIREMENT-APPROVAL-01
+ci_supply_chain_followup: ISSUE_140
 base_release_pinned: 9.4.3
-base_remote_main_observed: 637dad32c773c56a27d44d847518580848dee493
-base_remote_observation: BCP_2026_011_IMPLEMENTED_NO_AUTOMATIC_PROJECT_ADOPTION
+base_remote_observation: CURRENT_REMOTE_REQUIRES_LIVE_REFETCH_NO_AUTOMATIC_PROJECT_ADOPTION
 ```
 
-현재 project main은 PR #133의 HiGodot export exclusion 병합과 PR #134의 canon closeout을 포함한다. 이 문서의 `project_main_checkpoint`는 이 handoff 작업을 시작할 때의 기준 SHA이며, 이 문서 자체가 병합되면 다음 세션은 반드시 GitHub `main`을 다시 읽어 새 SHA를 우선한다.
+`next_package`와 `next_planning_decision`은 플랫폼 구현 Gate의 기존 operating-state 키다. 현재 Entry Gate가 이를 계속 차단하므로 제품 구현 권한을 뜻하지 않는다. 별도 승인된 Phase A 기획 시각화 흐름의 실제 다음 작업은 `planning_visual_next`의 TEN-IMG-001 exploration 생성과 `planning_visual_review` 검수다.
+
+이 live block에는 현재 SHA를 저장하지 않는다. 새 세션·post-merge에서는 GitHub `main`, 열린 PR, Sheet `00·02·04·99`, current operating/entry gate를 다시 읽고 의미 상태만 판정한다. exact SHA/run ID는 아래의 명시적 역사·관측 증거로만 취급한다.
+
+## 관측 증거 스냅샷
+
+다음 값은 당시 확인된 **역사/관측 증거**이며 live current authority가 아니다.
+
+```yaml
+historical_project_main_at_handoff: 43841d3cc6667d821c10df75272b239f314f3df0
+historical_base_main_at_handoff: 637dad32c773c56a27d44d847518580848dee493
+merged_planning_checkpoint: 023385d372d127044d48afcb50e6f232ab9ffaa1
+merged_pr_lineage: 84,86,87,88,89,91,92,100,101,102
+product_implementation_merge_commit: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90
+merged_product_pr: 92
+evidence_source_head: 0a8bf577b936ddac5cb7130a0cc58e519ea6eff6
+platform_adapter_merge_commit: 023385d372d127044d48afcb50e6f232ab9ffaa1
+merged_platform_adapter_pr: 102
+observed_project_main_2026_08_11: 0a9e74b09816be891b3fb1cccca5e700a9ead064
+observed_base_main_2026_08_11: 315c66eea9614c284b9c11c4d522141065dfa4b0
+observed_recent_canon_reconciliation_prs: 137,138,139
+```
+
+위 `observed_*` 값도 다음 merge 뒤 자동 current가 되지 않는다. current 여부는 항상 live refetch로 다시 판정한다.
 
 ## 현재 권위와 보호 결정
 
@@ -64,6 +87,7 @@ base_remote_observation: BCP_2026_011_IMPLEMENTED_NO_AUTOMATIC_PROJECT_ADOPTION
 - GUT 9.7.1 reconciliation/export boundary: `TEN-DEC-20260807-GUT-9-7-1-RECONCILIATION-01`.
 - Hera v1 live QA: `TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01`.
 - 활성 Godot toolchain: `TEN-DEC-20260809-GODOT-AI313-GUT971-HERA100-ACTIVE-TOOLCHAIN-01`.
+- TEN-IMG-001 exploration 권한: `TEN-DEC-20260808-TEN-IMG-001-VISUAL-REQUIREMENT-APPROVAL-01`; 생성 결과는 별도 검수 전 `NOT_AN_ASSET`이다.
 - 과거 v6 인덱스는 `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`이며 최신 Decision보다 높은 권한을 갖지 않는다.
 
 제품 코어·전투 규칙·성장·UI·저장 의미는 해당 분야 책임 원본을 따른다. 이 문서는 그 전문을 대체하지 않는다.
@@ -127,7 +151,7 @@ Windows CI 기준 runtime은 약 2344.67ms, peak working set은 188571648 bytes,
 - 제품 병합 전 상태: `active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED`.
 - 제품 병합 전 다음 Gate: `next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE`.
 
-현행 운영 값은 문서 상단 YAML의 `active_planning_pr: NONE`, `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED`, `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE`를 사용한다. 제품 병합 권위는 별도 `merged_product_pr: 92`, `product_implementation_merge_commit`, `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`로 유지한다.
+현행 운영 값은 문서 상단 YAML의 `active_planning_pr: NONE`, `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED`, `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE`를 사용한다. 제품 병합 권위는 별도 역사 증거인 `merged_product_pr: 92`, `product_implementation_merge_commit`, `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`로 유지한다.
 
 ## 완료·검증됨
 
@@ -142,6 +166,9 @@ completed_verified:
   pck_tooling_exclusion_probe: PASS
   pr_133_export_preset_merge: PASS
   pr_134_canon_closeout_merge: PASS
+  pr_137_platform_cold_start_canon: PASS
+  pr_138_combat_reprice_canon: PASS
+  pr_139_internal_recovery_canon: PASS
 ```
 
 승인된 product export exclusion은 다음 셋뿐이다.
@@ -169,11 +196,11 @@ allowed_next_actions:
   - RECHECK_WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 ```
 
-Android 완료, 실제 기기 완료, 사람 검증 완료를 아직 주장하면 안 된다.
+이 Entry Gate는 제품/플랫폼 구현 경계다. 별도 `PLANNING_VISUALIZATION_ONLY`로 승인된 TEN-IMG-001 exploration 생성·검수를 금지하지 않는다. Android 완료, 실제 기기 완료, 사람 검증 완료를 아직 주장하면 안 된다.
 
 ## 이번 세션의 플랫폼 preflight 중단 상태
 
-사용자가 2026-08-10에 `VERIFY_LOCAL_WINDOWS_ANDROID_DEVICE_AND_HUMAN_GATES` 작업을 **나중에 다시 수행하기로 명시적으로 연기**하고 인수인계를 우선하도록 지시했다.
+사용자가 2026-08-10에 `VERIFY_LOCAL_WINDOWS_ANDROID_DEVICE_AND_HUMAN_GATES` 작업을 나중에 다시 수행하기로 연기하고 인수인계를 우선했다. 이 이력은 역사 증거로 보존하며 현재 사용자 지시가 새로 들어오면 다시 current truth를 읽고 재판정한다.
 
 가장 최근 로컬 collector 시도에서 확인된 사실:
 
@@ -194,7 +221,7 @@ human_validation: NOT_RUN
 user_disposition: DEFERRED_BY_USER
 ```
 
-이 실패는 Android 제품 실패가 아니다. `GODOT_DISCOVERY`에서 collector 구현이 중단됐으므로 플랫폼 결과는 `BLOCKED_UNVERIFIED / NOT_RUN`으로 유지한다.
+이 실패는 Android 제품 실패가 아니다. `GODOT_DISCOVERY`에서 collector 구현이 중단됐으므로 플랫폼 결과는 `BLOCKED_UNVERIFIED / NOT_RUN`으로 유지한다. 위 `expected_project_head`도 당시 collector의 역사 입력값일 뿐 current authority가 아니다.
 
 ## 다음 재개 절차
 
@@ -205,7 +232,7 @@ user_disposition: DEFERRED_BY_USER
 2. Project 최신 main/open PR/관련 Decision 재조회
 3. Google Sheet 00·02·04·99 재조회
 4. current_entry_gate와 current_operating_state 재조회
-5. main/Sheet/Handoff stale 여부 교정
+5. live context 의미 상태와 fresh truth 차이 교정
 6. V2 collector 구현은 재사용하지 않음
 7. Windows PowerShell native process는 Start-Process -Wait -PassThru + stdout/stderr 분리 방식으로 null-safe 수집
 8. Windows local automated runtime + Android SDK/ADB/device preflight 실행
@@ -225,9 +252,9 @@ user_disposition: DEFERRED_BY_USER
 
 ## Base 관찰
 
-Base remote `main`은 이 handoff 준비 중 `637dad32c773c56a27d44d847518580848dee493`까지 전진했고 BCP-2026-011 게임 기능 L2 상세 Spec 계층 lifecycle이 `IMPLEMENTED`로 닫혔다.
+Base remote `main`의 exact SHA는 이 live router에 current 값으로 저장하지 않는다. 매 resume/post-merge마다 `ALWAYS_REFETCH_CURRENT_MAIN`으로 다시 읽고, 프로젝트의 Base 적용 권위는 `docs/BASE_RULES_VERSION.md`와 `skills/PROJECT_BASE_ADAPTER.json`의 pin을 우선한다. 새 Base 기능은 별도 current-contract 검토 없이 자동 채택하지 않는다.
 
-이 변화는 현재 프로젝트의 handoff owner나 Android/device/human Gate를 자동 변경하지 않는다. 프로젝트 운영 권위는 `docs/BASE_RULES_VERSION.md`와 `skills/PROJECT_BASE_ADAPTER.json`의 pin을 우선하며, 새 Base 기능의 프로젝트 적용은 별도 current-contract 검토 없이 추정하지 않는다.
+과거 handoff에서 관측한 Base SHA는 위 `historical_base_main_at_handoff`에 증거 스냅샷으로 보존한다.
 
 ## 먼저 읽을 것
 
@@ -237,7 +264,8 @@ Base remote `main`은 이 handoff 준비 중 `637dad32c773c56a27d44d847518580848
 4. `[기획서]/00_프로젝트_허브/HANDOFF.md`.
 5. `docs/planning-data/current_operating_state.json`.
 6. `docs/planning-data/current_entry_gate_20260808.json`.
-7. 질문별 분야 책임 원본과 실제 코드·테스트·GitHub PR metadata.
+7. Sheet `00_프로젝트_허브`, `02_현재_확정결정`, `04_누락_충돌_감사`, `99_변경이력`.
+8. 질문별 분야 책임 원본과 실제 코드·테스트·GitHub PR metadata.
 
 ## 현재 위험·미검증
 
@@ -245,13 +273,17 @@ Base remote `main`은 이 handoff 준비 중 `637dad32c773c56a27d44d847518580848
 - Android 실제 기기·터치·back·safe area·lifecycle·저장·성능 증거는 `NOT_RUN / BLOCKED_UNVERIFIED`다.
 - Windows visible local render·실물 입력·접근성 사용자·Release 성능은 자동 제품 검증과 별개다.
 - STEP 14 사람 검증은 `NOT_RUN`이다.
-- `TEN-IMG-001` generation은 별도 미실행 상태다.
+- `TEN-IMG-001`은 exploration 생성 권한과 provenance 준비까지만 완료됐고 실제 generation/review는 `NOT_RUN`이다.
+- CI 공급망의 mutable GitHub Action refs/Node 세대 정합화는 Issue #140 후속이다.
 - `OBSERVATION_ANSWER_LEAK_RISK`는 직접 공개를 바꾸지 않은 채 사람 측정을 기다린다.
 - `product_implementation_authorized: false`를 유지한다.
 
 ## 상태 표현 규칙
 
 - 완료 증거가 없으면 `PASS`로 쓰지 않는다.
-- 과거 PR/branch/Handoff가 GitHub current truth와 충돌하면 current GitHub + 현재 책임 원본을 우선하고 stale 기록을 교정한다.
+- live current state는 exact SHA를 내장하지 않고 GitHub + Sheet를 다시 읽어 판정한다.
+- exact SHA/run ID는 `관측 증거 스냅샷`, Decision, evidence 문서처럼 역사·관측 역할이 명확한 곳에만 둔다.
+- 과거 PR/branch/Handoff가 GitHub current truth와 충돌하면 current GitHub + 현재 책임 원본을 우선하고 live router만 교정한다.
+- HANDOFF는 명시적 session snapshot이므로 자동 current화하지 않는다.
 - PR #82와 그 SHA는 역사 자료이지 현재 active planning PR이 아니다.
 - 사용자 최신 지시로 중단된 작업은 실패로 승격하지 않고 `DEFERRED_BY_USER`와 실제 검증 ceiling을 함께 기록한다.
