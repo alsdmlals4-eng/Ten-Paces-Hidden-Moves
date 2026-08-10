@@ -8,12 +8,12 @@
     "TEN-DEC-20260808-TEN-IMG-001-VISUAL-REQUIREMENT-APPROVAL-01",
     "TEN-DEC-20260809-LOCAL-GODOT-EVIDENCE-COLLECTOR-01"
   ],
-  "snapshot_semantics": "ACTIVE_GODOT_TOOLCHAIN_EXACT_471_GUT_JUNIT_AND_HERA_LOCAL_ACCEPTED_EXPORT_ANDROID_DEVICE_HUMAN_GATES_PENDING",
+  "snapshot_semantics": "ACTIVE_GODOT_TOOLCHAIN_EXACT_471_GUT_JUNIT_HERA_AND_EXPORT_BOUNDARY_LOCAL_ACCEPTED_ANDROID_DEVICE_HUMAN_GATES_PENDING",
   "snapshot_commit_self_reference_excluded": true,
-  "observed_main_before_snapshot_commit": "ce81eeba1af293061c17e4547fdd2364ec33f8c9",
+  "observed_main_before_snapshot_commit": "ffe45f57606812bed38458e9ce1d3cce4c92dcb5",
   "observed_base_main": "2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b",
   "decision_ledger_readback": "PASS",
-  "unresolved_audit_readback": "EXPORT_ANDROID_DEVICE_HUMAN_GATES_REMAIN",
+  "unresolved_audit_readback": "ANDROID_DEVICE_HUMAN_GATES_REMAIN",
   "github_sheet_sync_rule": "AFTER_SNAPSHOT_MERGE_SYNC_SAME_DECISION_IDS_AND_GATE_RESULT; DO_NOT_REQUIRE_SNAPSHOT_TO_SELF_REFERENCE_ITS_OWN_MERGE_SHA",
   "gut_pr109": "CLOSED_MERGED_HOSTED_VALIDATED",
   "gut_hosted_validation": {
@@ -78,13 +78,28 @@
   "hera_status": "PASS_EXACT_TARGET",
   "hera_smoke_skip_game": "PASS",
   "hera_phase_source_delta": "HERA_SOURCE_DELTA_NONE",
+  "local_gut_product_export_exclusion_acceptance": {
+    "evidence_record": "docs/planning-data/local_gut_product_export_exclusion_acceptance_20260810.json",
+    "evidence_level": "USER_UPLOADED_LOCAL_POWERSHELL_AND_JSON",
+    "decision_id": "TEN-DEC-20260807-GUT-9-7-1-RECONCILIATION-01",
+    "project_base_main": "771ffe7d7ebe01a119a2bf8f0d91c37ef3fb2249",
+    "publication_pr": 133,
+    "publication_exact_head": "f355b1f9ef9376ee28ddc9b3c8473c97389a7bd9",
+    "publication_merge_main": "ffe45f57606812bed38458e9ce1d3cce4c92dcb5",
+    "godot_version": "4.7.1.stable.official.a13da4feb",
+    "windows_export_exit_code": 0,
+    "pck_probe_exit_code": 0,
+    "godot_ai_runtime_preserved": true,
+    "verdict": "PASS_HIGODOT_L2_AUTHORING_AND_EXPORT_REGRESSION"
+  },
   "export_preset_observation": {
     "export_filter": "all_resources",
-    "exclude_filter": "",
-    "tooling_exclusion": "NOT_IMPLEMENTED_IN_PRESET"
+    "include_filter": "",
+    "exclude_filter": "addons/gut/**,tests/**,.gutconfig.json",
+    "tooling_exclusion": "IMPLEMENTED_AND_EXPORT_REGRESSION_VALIDATED"
   },
-  "higodot_l2_export_authoring": "REQUIRED_NOT_RUN_LOCAL",
-  "higodot_l1_export_exclusion": "BLOCKED_UNTIL_L2_AUTHORING_THEN_LOCAL_VALIDATION",
+  "higodot_l2_export_authoring": "PASS_HIGODOT_L2_AUTHORING_AND_L1_EXPORT_REGRESSION",
+  "higodot_l1_export_exclusion": "PASS_HIGODOT_L2_AUTHORING_AND_L1_EXPORT_REGRESSION",
   "ten_img_001": "VISUAL_REQUIREMENT_APPROVED_GENERATION_EXPLORATION_AUTHORIZED_NOT_RUN",
   "ten_img_001_requirement": {
     "requirement_id": "TEN-VIS-REQ-001",
@@ -96,14 +111,12 @@
     "generation": "NOT_RUN",
     "product_asset": "NOT_AN_ASSET"
   },
-  "local_windows_checkout": "PARTIAL_PASS_GODOT_GUT_HERA_CORE_EXPORT_ANDROID_DEVICE_HUMAN_REMAIN",
+  "local_windows_checkout": "PASS_GODOT_GUT_HERA_EXPORT_CORE_ANDROID_DEVICE_HUMAN_REMAIN",
   "local_android_device": "BLOCKED_UNVERIFIED",
   "human_validation": "BLOCKED_NOT_RUN",
   "windows_android_adapter_implementation_gate": "BLOCKED_BY_ENTRY_GATE",
   "decision": "BLOCK",
   "allowed_next_actions": [
-    "HIGODOT_L2_AUTHOR_APPROVED_GUT_TEST_PRODUCT_EXPORT_EXCLUSION",
-    "HIGODOT_L1_VALIDATE_PRODUCT_EXPORT_EXCLUSION_WITH_EXPORT_REGRESSION",
     "VERIFY_LOCAL_WINDOWS_ANDROID_DEVICE_AND_HUMAN_GATES",
     "RECHECK_WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE"
   ],
