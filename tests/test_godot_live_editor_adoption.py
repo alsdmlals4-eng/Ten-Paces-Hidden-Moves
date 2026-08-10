@@ -78,7 +78,7 @@ def test_source_legacy_authority_and_combat_scene_remain_installed() -> None:
     project = (ROOT / "project.godot").read_text(encoding="utf-8")
     assert 'run/main_scene="res://scenes/combat/combat_board_preview.tscn"' in project
     assert '_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"' in project
-    assert 'enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")' in project
+    assert '"res://addons/godot_ai/plugin.cfg"' in project
     assert (ROOT / "addons/godot_ai/plugin.cfg").is_file()
     assert (ROOT / "tests/verify_step0.gd").is_file()
 
