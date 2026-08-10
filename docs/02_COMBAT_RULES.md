@@ -6,13 +6,14 @@
 > 기초 행동·장풍·합 결정: `docs/decisions/2026-08-02_BASIC_ACTIONS_PALM_CLASH_DECISION.md`  
 > 기초 공격 공식: `docs/decisions/2026-08-02_BASIC_ATTACK_FORMULAS_SLOT_BUDGET_DECISION.md`, `docs/decisions/2026-08-02_BASIC_PALM_DAMAGE_GROWTH_DECISION.md`  
 > 현재 이동·사거리·자원 예산·중단·묶음 회복 결정: `docs/decisions/2026-08-04_COMBAT_PRICING_INTERRUPTION_RECOVERY_DECISION.md` (`TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01`)  
+> 내력 자동 회복 현행 오버레이: `docs/decisions/2026-08-04_RESOURCE_SATURATION_INTERNAL_RECOVERY_DECISION.md` (`TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`)  
 > 기존 승인 행동 유효 비용·슬롯 오버레이: `docs/decisions/2026-08-04_EXISTING_APPROVED_ACTIONS_REPRICE_DECISION.md` (`TEN-DEC-20260804-EXISTING-ACTIONS-REPRICE-01`)  
 > 구형 사거리 가격(대체됨): `docs/decisions/2026-08-02_RANGE_PRICE_BANDS_DECISION.md`  
 > 시작 빌드·성장 요구치: `docs/decisions/2026-08-02_STARTING_STAT_TOTAL20_MANUAL_BONUS_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_PRIMARY_STAT4_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_SOFT_GUARANTEE_DECISION.md`, `docs/decisions/2026-08-02_EVEN_STAR_STAT_ESCALATION_DECISION.md`, `docs/decisions/2026-08-03_STAR7_TECHNIQUE_PRIMARY_STAT8_DECISION.md`  
 > 핵심 스테이터스 정책: `docs/decisions/2026-08-03_UNCAPPED_CORE_STATS_DECISION.md`  
 > 기술 작성 결정: `docs/decisions/2026-08-02_TECHNIQUE_AUTHORING_TAG_FIXED_STAT_DECISION.md`  
 > 능력치 배수 가격: `docs/decisions/2026-08-02_STAT_REFERENCE_PRICE_BASE4_DECISION.md`  
-> 중앙 편집 데이터: `docs/planning-data/poc_balance_budget.json`, `docs/planning-data/approved_20260804_combat_pricing_interruption_recovery_contract.json`, `docs/planning-data/approved_20260804_existing_action_reprice_contract.json`  
+> 중앙 편집 데이터: `docs/planning-data/poc_balance_budget.json`, `docs/planning-data/approved_20260804_combat_pricing_interruption_recovery_contract.json`, `docs/planning-data/approved_20260804_resource_saturation_internal_recovery_contract.json`, `docs/planning-data/approved_20260804_existing_action_reprice_contract.json`  
 > 현재 구현 기준: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`  
 > 상태: `CURRENT_APPROVED_PLANNING`; main 런타임은 일부 `IMPLEMENTED_LEGACY`
 
@@ -48,7 +49,7 @@
 
 ```text
 직전 묶음 종료 상태·전투불능 정산
-→ 생존한 양측 기력 +1·내력 +1·절초기세 +1(각 최대치 적용)
+→ 생존한 양측 기력 +1·절초기세 +1(각 최대치 적용)
 → 적 AI가 회복된 현재 공개 상태로 이번 묶음 계획 확정
 → 적 계획 잠금
 → 축적 관찰량으로 앞 수 행동 종류 공개
@@ -58,6 +59,7 @@
 
 - 전투 최초 1묶음 시작에는 전환 회복을 적용하지 않는다.
 - `1묶음→2묶음`, `2묶음→3묶음`, `3묶음→다음 라운드 1묶음`에 동일한 회복을 적용한다.
+- 묶음 전환·라운드 시작에는 별도 내력 자동 회복이 없다. 내력은 준비된 명상·청심조식·운수회신 등 승인된 명시 경로로만 회복한다.
 
 - 적은 이번 묶음만 계획하고 미래 묶음을 미리 만들지 않는다.
 - 적은 플레이어의 미확정 슬롯·대상·방향을 읽지 않는다.
@@ -266,7 +268,8 @@ A도 체력 피해 0이고 양측 공격이 유지됨
 - 합 승리는 공격 행동당 최대 +1을 제공한다.
 - 실제 회피 성공은 회피 사건당 절초기세 +1을 제공한다.
 - 준비된 명상은 기력 +1·내력 +1·절초기세 +1을 제공한다.
-- 모든 묶음 전환은 생존한 양측에 기력 +1·내력 +1·절초기세 +1을 제공하며 각 최대치를 적용한다.
+- 모든 묶음 전환은 생존한 양측에 기력 +1·절초기세 +1을 제공하며 각 최대치를 적용한다.
+- 묶음 전환·라운드 시작에는 별도 내력 자동 회복이 없다.
 - 기본 절초와 무공서 10성 절초는 각자의 슬롯·기력·내력·절초기세 비용과 해금 조건을 따른다.
 - 절초를 포함한 모든 다중 자원 비용은 첫 슬롯에서 전액 선지불한다.
 - 계획 확정 전 행동 제거 시 예약 비용을 환불한다.
@@ -361,7 +364,7 @@ A도 체력 피해 0이고 양측 공격이 유지됨
 - 절대 원공격력 기술 표본: 최신 고정치+능력치 참조 공식을 미반영.
 - 최신 시작 총합20·소프트 해금 추천·짝수 성 신규 지급·7성 주8 요구 런타임 미반영.
 - 전체 주요 비무 5전·경로·성장·결과 등급 런타임: 미구현.
-- 최신 전조 전체 중단, 준비 무비용, 묶음별 기력·내력·절초기세 +1, 회피 성공 기세, 이동·사거리 15틱 통합 가격은 제품 런타임 미반영.
+- 최신 전조 전체 중단, 준비 무비용, 묶음별 기력·절초기세 +1(내력 자동 회복 없음), 회피 성공 기세, 이동·사거리 15틱 통합 가격은 제품 런타임 미반영.
 
 필수 증거를 분리한다.
 
