@@ -14,25 +14,15 @@ CURRENT_ACTION_PINS = {
     "actions/upload-artifact": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",  # Base current / v7.0.1
     "chickensoft-games/setup-godot": "f166999204a4f2722c6fe042fbaa3b3ea0d9c789",  # upstream v2.4.1
 }
-TEMPORARY_PIN_EXCEPTIONS = {
-    # The Live-Editor adoption contract intentionally rejects broad diffs. Its workflow
-    # is migrated in a dedicated follow-up PR so that its four-file boundary remains
-    # meaningful during this fleet-wide supply-chain patch. These refs are immutable;
-    # the exception is only for Base-current freshness and must be removed after that PR.
-    ".github/workflows/validate-godot-live-editor-pilot.yml": {
-        "actions/checkout": "11bd71901bbe5b1630ceea73d27597364c9af683",
-        "actions/setup-python": "a26af69be951a213d495a4c3e4e4022e16d87065",
-    }
-}
+TEMPORARY_PIN_EXCEPTIONS: dict[str, dict[str, str]] = {}
 
 
 def is_reconciled_action_pin_allowed(workflow_path: str, action: str, ref: str) -> bool:
+    del workflow_path
     expected = CURRENT_ACTION_PINS.get(action)
     if expected is None:
         return bool(FULL_SHA.fullmatch(ref))
-    if ref == expected:
-        return True
-    return ref == TEMPORARY_PIN_EXCEPTIONS.get(workflow_path, {}).get(action)
+    return ref == expected
 
 
 class CurrentDiscoveryContractTests(unittest.TestCase):
@@ -128,24 +118,6 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             text,
         )
         self.assertIn("Issue #140", text)
-
-    def test_temporary_pin_exception_self_retires_when_current_pin_arrives(self) -> None:
-        workflow_path = ".github/workflows/validate-godot-live-editor-pilot.yml"
-        for action, current_ref in CURRENT_ACTION_PINS.items():
-            if action not in TEMPORARY_PIN_EXCEPTIONS[workflow_path]:
-                continue
-            self.assertTrue(
-                is_reconciled_action_pin_allowed(workflow_path, action, current_ref),
-                f"{action} must be allowed to leave its temporary exception without changing this contract first",
-            )
-
-    def test_temporary_pin_exceptions_are_exact_immutable_noncurrent_refs(self) -> None:
-        for workflow_path, actions in TEMPORARY_PIN_EXCEPTIONS.items():
-            for action, ref in actions.items():
-                self.assertRegex(ref, FULL_SHA, f"{workflow_path}: exception must be a full SHA")
-                self.assertIn(action, CURRENT_ACTION_PINS)
-                self.assertNotEqual(ref, CURRENT_ACTION_PINS[action])
-                self.assertTrue(is_reconciled_action_pin_allowed(workflow_path, action, ref))
 
     def test_no_temporary_pin_exceptions_remain_after_live_editor_migration(self) -> None:
         self.assertFalse(
