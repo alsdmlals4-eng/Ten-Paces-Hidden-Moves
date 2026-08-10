@@ -8,10 +8,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 FULL_SHA = re.compile(r"^[0-9a-f]{40}$")
 USES = re.compile(r"^\s*(?:-\s*)?uses:\s*([^\s#]+)", re.MULTILINE)
-BASE_CURRENT_ACTION_PINS = {
-    "actions/checkout": "3d3c42e5aac5ba805825da76410c181273ba90b1",
-    "actions/setup-python": "5fda3b95a4ea91299a34e894583c3862153e4b97",
-    "actions/upload-artifact": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+CURRENT_ACTION_PINS = {
+    "actions/checkout": "3d3c42e5aac5ba805825da76410c181273ba90b1",  # Base current / v7.0.1
+    "actions/setup-python": "5fda3b95a4ea91299a34e894583c3862153e4b97",  # Base current / v7.0.0
+    "actions/upload-artifact": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",  # Base current / v7.0.1
+    "chickensoft-games/setup-godot": "f166999204a4f2722c6fe042fbaa3b3ea0d9c789",  # upstream v2.4.1
 }
 
 
@@ -109,9 +110,9 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertIn("Issue #140", text)
 
-    def test_active_workflows_use_immutable_base_reconciled_action_pins(self) -> None:
+    def test_active_workflows_use_immutable_reconciled_action_pins(self) -> None:
         violations: list[str] = []
-        seen_base_actions: set[str] = set()
+        seen_actions: set[str] = set()
         workflows = ROOT / ".github" / "workflows"
 
         for workflow in sorted(workflows.glob("*.y*ml")):
@@ -131,8 +132,8 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
                     continue
 
                 action, ref = target.rsplit("@", 1)
-                if action in BASE_CURRENT_ACTION_PINS:
-                    seen_base_actions.add(action)
+                if action in CURRENT_ACTION_PINS:
+                    seen_actions.add(action)
 
                 if not FULL_SHA.fullmatch(ref):
                     violations.append(
@@ -140,14 +141,14 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
                     )
                     continue
 
-                if action in BASE_CURRENT_ACTION_PINS:
-                    expected = BASE_CURRENT_ACTION_PINS[action]
+                if action in CURRENT_ACTION_PINS:
+                    expected = CURRENT_ACTION_PINS[action]
                     if ref != expected:
                         violations.append(
-                            f"{workflow.relative_to(ROOT)}: {action} pin {ref} != Base current {expected}"
+                            f"{workflow.relative_to(ROOT)}: {action} pin {ref} != reconciled current {expected}"
                         )
 
-        self.assertEqual(set(BASE_CURRENT_ACTION_PINS), seen_base_actions)
+        self.assertEqual(set(CURRENT_ACTION_PINS), seen_actions)
         self.assertFalse(
             violations,
             "Mutable/stale remote action refs found:\n" + "\n".join(violations),
