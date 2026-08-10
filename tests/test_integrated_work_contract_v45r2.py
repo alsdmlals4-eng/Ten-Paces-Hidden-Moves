@@ -11,6 +11,7 @@ DECISION_ID = "TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01"
 PREVIOUS_DECISION_ID = "TEN-DEC-20260806-INTEGRATED-WORK-CONTRACT-V4-3-01"
 SOURCE_SHA256 = "3f898b7e2749a2e1900e9df48183f02d4fbc735fd0e80297f28bb09317144de4"
 BOUND_SHA256 = "0cc7943594d78824d6b3390232f61f12b8199d2f9f3b8817bf9953ed5aa90061"
+RECONSTRUCTION = "JOIN_PART_BYTES_WITH_SINGLE_LF_SEPARATOR"
 CANONICAL = ROOT / "docs" / "PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md"
 DECISION = ROOT / "docs" / "decisions" / "2026-08-11_INTEGRATED_WORK_CONTRACT_V4_5_R2_BINDING_DECISION.md"
 CONTRACT = ROOT / "docs" / "planning-data" / "approved_20260811_integrated_work_contract_v4_5_r2_binding.json"
@@ -20,12 +21,12 @@ PARTS = [
     ROOT / "docs" / "contracts" / "integrated-work-v4.5-r2" / f"part-{index:02d}.md"
     for index in range(1, 7)
 ]
-EXPECTED_PARTS = [
-    (18910, "8315fbc4c04393ade374fddfc7a0b41729ff0d88d57d609e5eb08ec42f760c42"),
-    (10536, "843b944dda94a419827ceff7eb406d9b2dcfbbae4187a54a26a45ce70998219e"),
-    (10235, "434462813923d8867853d2bda08552cc5e84429263ddbe78811c12c9f6817f7a"),
-    (12082, "4881dc3582d0b842f78f7aa3f5fef48f52da6d36f129b154f70099b02d59a505"),
-    (11852, "5ad96cc272edf956de3f2bf71e3f8ac7381a0ed11d1a10593ebffb10e5bd5fed"),
+STORED_PARTS = [
+    (18909, "14836db5ac172e2fb6fdcf9ac78a86f2f0b452199f728ba88e386e174100dd3d"),
+    (10535, "2d8478ac1efe7c8f9fea1b39c94f9b765036d9fe33b275b9bc6dc088a77aaa07"),
+    (10234, "6169bfaeba5db007fd9d71470c0135fa8675cfcc33ac7bd8a319a3e7155c4662"),
+    (12081, "e430dd1e7919597807a9560c499a8713d2b8907e74b4a14dd714cbad9c5e188c"),
+    (11851, "56a2035ed9e1a5dce72ea0e9691202231ca27759453be1260ef7e123f7b79c4c"),
     (14988, "3103f7e874a96a5c80f677d7ca9cf35c0838fe5f5215cff6ad16bf24018188e2"),
 ]
 
@@ -43,6 +44,7 @@ class IntegratedWorkContractV45R2Tests(unittest.TestCase):
             "revision: '2026-08-11-r2'",
             "status: ACTIVE_BASE_CURRENT_MAIN_THIN_ADAPTER_GODOT_DELIVERY_CONTRACT",
             "base_snapshot_policy: ALWAYS_REFETCH_CURRENT_MAIN_BEFORE_WORK",
+            f"normative_body_reconstruction: {RECONSTRUCTION}",
             'project_repository: "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves"',
             'project_local_path: "C:/Users/user/Documents/GitHub/Ninza/Ten-Paces-Hidden-Moves"',
             'canonical_local_checkout: "C:/Users/user/Documents/GitHub/Ninza/Ten-Paces-Hidden-Moves"',
@@ -77,7 +79,7 @@ class IntegratedWorkContractV45R2Tests(unittest.TestCase):
 
     def test_normative_parts_reconstruct_the_project_bound_source_exactly(self) -> None:
         actual_parts: list[bytes] = []
-        for index, (part, expected) in enumerate(zip(PARTS, EXPECTED_PARTS), start=1):
+        for index, (part, expected) in enumerate(zip(PARTS, STORED_PARTS), start=1):
             self.assertTrue(part.is_file(), f"Missing normative body part: {part.relative_to(ROOT)}")
             data = part.read_bytes()
             actual_parts.append(data)
@@ -90,9 +92,10 @@ class IntegratedWorkContractV45R2Tests(unittest.TestCase):
                     f"part-{index:02d} content drift",
                 )
 
-        reconstructed = b"".join(actual_parts)
+        reconstructed = b"\n".join(actual_parts)
         digest = hashlib.sha256(reconstructed).hexdigest()
         self.assertEqual(digest, BOUND_SHA256)
+        self.assertEqual(len(reconstructed), 78603)
         text = reconstructed.decode("utf-8")
         self.assertNotIn("Switchy-Express-Cargo-Puzzle", text)
         self.assertIn("## 44. 최종 원칙", text)
@@ -112,6 +115,7 @@ class IntegratedWorkContractV45R2Tests(unittest.TestCase):
         self.assertEqual(payload["canonical_document"], "docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md")
         self.assertEqual(payload["source_uploaded_sha256"], SOURCE_SHA256)
         self.assertEqual(payload["project_bound_sha256"], BOUND_SHA256)
+        self.assertEqual(payload["normative_body_reconstruction"], RECONSTRUCTION)
         self.assertEqual(payload["supersedes_decision_id"], PREVIOUS_DECISION_ID)
         self.assertEqual(payload["project_repository"], "alsdmlals4-eng/Ten-Paces-Hidden-Moves")
         self.assertEqual(payload["project_google_sheet_id"], "1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0")
@@ -121,7 +125,7 @@ class IntegratedWorkContractV45R2Tests(unittest.TestCase):
         self.assertEqual(payload["normative_body_parts"], [str(part.relative_to(ROOT)).replace("\\", "/") for part in PARTS])
 
         decision_text = DECISION.read_text(encoding="utf-8")
-        for marker in (DECISION_ID, PREVIOUS_DECISION_ID, SOURCE_SHA256, BOUND_SHA256, "CURRENT_APPROVED_PROJECT_OPERATING_CONTRACT"):
+        for marker in (DECISION_ID, PREVIOUS_DECISION_ID, SOURCE_SHA256, BOUND_SHA256, RECONSTRUCTION, "CURRENT_APPROVED_PROJECT_OPERATING_CONTRACT"):
             self.assertIn(marker, decision_text)
 
     def test_cold_start_documents_route_to_v45r2_current_authority(self) -> None:
