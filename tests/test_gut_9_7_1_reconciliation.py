@@ -121,7 +121,7 @@ class Gut971ReconciliationTests(unittest.TestCase):
             (upstream / "source_code_pro.fnt").write_bytes(b"RSRC\x00official")
             (project / "source_code_pro.fnt").write_bytes(b"RSRC\x00project!")
             report = tool.compare_addon_trees(project, upstream)
-            self.assertEqual(report["unexpected_mismatches"], ["test.gd"] if False else ["source_code_pro.fnt"])
+            self.assertEqual(report["unexpected_mismatches"], ["source_code_pro.fnt"])
             with self.assertRaisesRegex(tool.ReconciliationError, "unexpected addon difference"):
                 tool.require_acceptable_tree(report, expected_normalized=set())
 
