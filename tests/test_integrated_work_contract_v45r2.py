@@ -20,6 +20,14 @@ PARTS = [
     ROOT / "docs" / "contracts" / "integrated-work-v4.5-r2" / f"part-{index:02d}.md"
     for index in range(1, 7)
 ]
+EXPECTED_PARTS = [
+    (18910, "8315fbc4c04393ade374fddfc7a0b41729ff0d88d57d609e5eb08ec42f760c42"),
+    (10536, "843b944dda94a419827ceff7eb406d9b2dcfbbae4187a54a26a45ce70998219e"),
+    (10235, "434462813923d8867853d2bda08552cc5e84429263ddbe78811c12c9f6817f7a"),
+    (12082, "4881dc3582d0b842f78f7aa3f5fef48f52da6d36f129b154f70099b02d59a505"),
+    (11852, "5ad96cc272edf956de3f2bf71e3f8ac7381a0ed11d1a10593ebffb10e5bd5fed"),
+    (14988, "3103f7e874a96a5c80f677d7ca9cf35c0838fe5f5215cff6ad16bf24018188e2"),
+]
 
 
 class IntegratedWorkContractV45R2Tests(unittest.TestCase):
@@ -68,10 +76,21 @@ class IntegratedWorkContractV45R2Tests(unittest.TestCase):
         self.assertIn("use_as_permanent_authority: false", text)
 
     def test_normative_parts_reconstruct_the_project_bound_source_exactly(self) -> None:
-        for part in PARTS:
+        actual_parts: list[bytes] = []
+        for index, (part, expected) in enumerate(zip(PARTS, EXPECTED_PARTS), start=1):
             self.assertTrue(part.is_file(), f"Missing normative body part: {part.relative_to(ROOT)}")
+            data = part.read_bytes()
+            actual_parts.append(data)
+            expected_size, expected_hash = expected
+            with self.subTest(part=index):
+                self.assertEqual(len(data), expected_size, f"part-{index:02d} byte-size drift")
+                self.assertEqual(
+                    hashlib.sha256(data).hexdigest(),
+                    expected_hash,
+                    f"part-{index:02d} content drift",
+                )
 
-        reconstructed = b"".join(part.read_bytes() for part in PARTS)
+        reconstructed = b"".join(actual_parts)
         digest = hashlib.sha256(reconstructed).hexdigest()
         self.assertEqual(digest, BOUND_SHA256)
         text = reconstructed.decode("utf-8")
