@@ -7,6 +7,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE_C0_SHA = "2b595570bd237174b2b962a1eb54588b5ecc508d"
+CURRENT_CHECKOUT_SHA = "3d3c42e5aac5ba805825da76410c181273ba90b1"
+CURRENT_SETUP_PYTHON_SHA = "5fda3b95a4ea91299a34e894583c3862153e4b97"
+OLD_CHECKOUT_SHA = "11bd71901bbe5b1630ceea73d27597364c9af683"
+OLD_SETUP_PYTHON_SHA = "a26af69be951a213d495a4c3e4e4022e16d87065"
 GODOT_ARCHIVE_SHA256 = "c7ff14fd28472c8d4f193043de30278dcf7e5241a1dcf7566b02e27addaa33ba"
 DESCRIPTOR = ROOT / ".godot-live-editor/project-pilot.json"
 ADOPTION_DOC = ROOT / "docs/GODOT_LIVE_EDITOR_ADOPTION.md"
@@ -128,6 +132,14 @@ def test_workflow_uses_one_immutable_base_pin() -> None:
     assert "python -m pytest tests/test_godot_live_editor_adoption.py -q" in text
     assert "@main" not in text
     assert text.count(BASE_C0_SHA) == 2
+
+
+def test_workflow_uses_current_base_reconciled_common_action_pins() -> None:
+    text = _required_text(WORKFLOW)
+    assert f"actions/checkout@{CURRENT_CHECKOUT_SHA}" in text
+    assert f"actions/setup-python@{CURRENT_SETUP_PYTHON_SHA}" in text
+    assert OLD_CHECKOUT_SHA not in text
+    assert OLD_SETUP_PYTHON_SHA not in text
 
 
 def test_pull_request_trigger_is_scoped_to_adoption_surface() -> None:
