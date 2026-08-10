@@ -21,6 +21,7 @@ unresolved_items_source: "04_누락_충돌_감사"
 image_review_sheet_tab_or_range: "72_이미지검수_승인로그"
 source_uploaded_sha256: 3f898b7e2749a2e1900e9df48183f02d4fbc735fd0e80297f28bb09317144de4
 project_bound_body_sha256: 0cc7943594d78824d6b3390232f61f12b8199d2f9f3b8817bf9953ed5aa90061
+normative_body_reconstruction: JOIN_PART_BYTES_WITH_SINGLE_LF_SEPARATOR
 core_gates:
   - EXTERNAL_PROCESS_OVERLAY_AUTHORITY_BOUNDARY
   - PLAYER_EXPERIENCE_EVIDENCE_GATE
@@ -45,7 +46,7 @@ normative_body_parts:
 
 업로드된 `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION_v4.5_r2.md`의 정책 본문은 프로젝트 식별자·로컬/Godot 경로·Google Sheet 라우팅·GitHub 조회 정책만 십보강호에 바인딩했다. 템플릿의 다른 프로젝트 식별자는 current authority가 아니다.
 
-전체 normative body는 위 `normative_body_parts` 6개를 **목록 순서대로 바이트 결합한 내용**이다. 결합 SHA-256은 `0cc7943594d78824d6b3390232f61f12b8199d2f9f3b8817bf9953ed5aa90061`이어야 한다. 이 해시가 맞지 않으면 `CANON_CONFLICT / BLOCKED_UNVERIFIED`로 처리한다. 이 진입 파일과 body part가 충돌하면 body part 재조립 해시와 binding Decision을 함께 검토하며 임의 해석하지 않는다.
+전체 normative body는 위 `normative_body_parts` 6개의 저장 바이트를 **목록 순서대로 두고 각 part 사이에 단일 LF(`0x0A`) 1바이트를 삽입하여 재조립**한다. 이 방식은 원문의 분할 경계 빈 줄을 복원한다. 재조립 SHA-256은 `0cc7943594d78824d6b3390232f61f12b8199d2f9f3b8817bf9953ed5aa90061`이어야 한다. 이 해시가 맞지 않으면 `CANON_CONFLICT / BLOCKED_UNVERIFIED`로 처리한다. 이 진입 파일과 body part가 충돌하면 재조립 해시와 binding Decision을 함께 검토하며 임의 해석하지 않는다.
 
 ## 현재 프로젝트 바인딩
 
