@@ -9,6 +9,7 @@ canonical_document: docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INST
 source_uploaded_file: PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION_v4.5_r2.md
 source_uploaded_sha256: 3f898b7e2749a2e1900e9df48183f02d4fbc735fd0e80297f28bb09317144de4
 project_bound_body_sha256: 0cc7943594d78824d6b3390232f61f12b8199d2f9f3b8817bf9953ed5aa90061
+normative_body_reconstruction: JOIN_PART_BYTES_WITH_SINGLE_LF_SEPARATOR
 project_repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
 project_default_branch: main
 project_local_path: C:/Users/user/Documents/GitHub/Ninza/Ten-Paces-Hidden-Moves
@@ -22,7 +23,7 @@ product_implementation_authorized: false
 
 사용자의 명시 지시 `작업지시문 v4.5 r2 로 깃허브 정본도 교체해`를 승인 근거로, 프로젝트 통합 작업계약의 current authority를 **v4.5 r2**로 승격한다.
 
-GitHub stable-path 정본 진입점은 `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`다. 전체 normative body는 `docs/contracts/integrated-work-v4.5-r2/part-01.md`부터 `part-06.md`까지를 목록 순서대로 결합한 내용이며, 결합 SHA-256 `0cc7943594d78824d6b3390232f61f12b8199d2f9f3b8817bf9953ed5aa90061`로 원문 바인딩 무결성을 검증한다.
+GitHub stable-path 정본 진입점은 `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`다. 전체 normative body는 `docs/contracts/integrated-work-v4.5-r2/part-01.md`부터 `part-06.md`까지의 저장 바이트를 목록 순서대로 두고 **각 part 사이에 단일 LF(`0x0A`)를 삽입하여 재조립**한다. 이는 분할 과정에서 파일 경계로 치환된 원문의 빈 줄을 복원하는 규칙이다. 재조립 SHA-256 `0cc7943594d78824d6b3390232f61f12b8199d2f9f3b8817bf9953ed5aa90061`로 원문 바인딩 무결성을 검증한다.
 
 ## Project binding correction
 
