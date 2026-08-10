@@ -6,12 +6,13 @@
 > 기초 행동·장풍·합 결정: `docs/decisions/2026-08-02_BASIC_ACTIONS_PALM_CLASH_DECISION.md`  
 > 기초 공격 공식: `docs/decisions/2026-08-02_BASIC_ATTACK_FORMULAS_SLOT_BUDGET_DECISION.md`, `docs/decisions/2026-08-02_BASIC_PALM_DAMAGE_GROWTH_DECISION.md`  
 > 현재 이동·사거리·자원 예산·중단·묶음 회복 결정: `docs/decisions/2026-08-04_COMBAT_PRICING_INTERRUPTION_RECOVERY_DECISION.md` (`TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01`)  
+> 기존 승인 행동 유효 비용·슬롯 오버레이: `docs/decisions/2026-08-04_EXISTING_APPROVED_ACTIONS_REPRICE_DECISION.md` (`TEN-DEC-20260804-EXISTING-ACTIONS-REPRICE-01`)  
 > 구형 사거리 가격(대체됨): `docs/decisions/2026-08-02_RANGE_PRICE_BANDS_DECISION.md`  
 > 시작 빌드·성장 요구치: `docs/decisions/2026-08-02_STARTING_STAT_TOTAL20_MANUAL_BONUS_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_PRIMARY_STAT4_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_SOFT_GUARANTEE_DECISION.md`, `docs/decisions/2026-08-02_EVEN_STAR_STAT_ESCALATION_DECISION.md`, `docs/decisions/2026-08-03_STAR7_TECHNIQUE_PRIMARY_STAT8_DECISION.md`  
 > 핵심 스테이터스 정책: `docs/decisions/2026-08-03_UNCAPPED_CORE_STATS_DECISION.md`  
 > 기술 작성 결정: `docs/decisions/2026-08-02_TECHNIQUE_AUTHORING_TAG_FIXED_STAT_DECISION.md`  
 > 능력치 배수 가격: `docs/decisions/2026-08-02_STAT_REFERENCE_PRICE_BASE4_DECISION.md`  
-> 중앙 편집 데이터: `docs/planning-data/poc_balance_budget.json`, `docs/planning-data/approved_20260804_combat_pricing_interruption_recovery_contract.json`  
+> 중앙 편집 데이터: `docs/planning-data/poc_balance_budget.json`, `docs/planning-data/approved_20260804_combat_pricing_interruption_recovery_contract.json`, `docs/planning-data/approved_20260804_existing_action_reprice_contract.json`  
 > 현재 구현 기준: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`  
 > 상태: `CURRENT_APPROVED_PLANNING`; main 런타임은 일부 `IMPLEMENTED_LEGACY`
 
@@ -94,13 +95,13 @@
 | 막기 | 1 | 기력 1 | 고정 기본 방어도 + 근골 참조 |
 | 회피 | 1 | 기력 1 | 고정 회피 횟수 1 |
 | 속공 | 1 | 기력 1 | 사거리 1; `floor(3 + 외공 × 0.50)` |
-| 강공 | 2 | 기력 1·내력 1 | `[전조]→[실행]`; 사거리 1~2; `floor(7 + 외공 × 1.00)` |
+| 강공 | 2 | 기력 1·내력 2 | `[전조]→[실행]`; 사거리 1~2; `floor(7 + 외공 × 1.00)` |
 | 관찰 | 1 | 없음 | 플레이어 전용; 고정 관찰량 1 획득 |
 | 명상 | 1 | 없음 | 고정 기력 +1·내력 +1 |
 | 준비 | 1 | 없음 | 슬롯 1수를 소비해 다음 비이동 행동까지 고정 강화 상태 부여 |
 | 장풍 | 2 | 내력 1 | `[전조]→[실행]`; 사거리 1~3; `floor(3 + 내공 × 0.75)`; 밀치기 없음 |
 
-기준 스테이터스4의 기술 점수 ledger는 속공21/20틱, 강공54/50틱, 장풍48/50틱으로 모두 기본 허용 편차 `±5틱` 안이다. 장풍이 동일 능력치의 속공보다 반드시 낮아야 한다는 구형 제약은 폐기되었다.
+기준 스테이터스4의 현재 유효 기술 점수 ledger는 속공25/24틱, 강공70/68틱, 장풍60/57틱으로 모두 기본 허용 편차 `±5틱` 안이다. 장풍이 동일 능력치의 속공보다 반드시 낮아야 한다는 구형 제약은 폐기되었다.
 
 ## 6. `[준비]`와 `[강화]`
 
