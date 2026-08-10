@@ -131,6 +131,9 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
                     continue
 
                 action, ref = target.rsplit("@", 1)
+                if action in BASE_CURRENT_ACTION_PINS:
+                    seen_base_actions.add(action)
+
                 if not FULL_SHA.fullmatch(ref):
                     violations.append(
                         f"{workflow.relative_to(ROOT)}: mutable remote ref {target}"
@@ -138,7 +141,6 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
                     continue
 
                 if action in BASE_CURRENT_ACTION_PINS:
-                    seen_base_actions.add(action)
                     expected = BASE_CURRENT_ACTION_PINS[action]
                     if ref != expected:
                         violations.append(
