@@ -16,6 +16,8 @@ INITIAL_PROJECT_TREE = "09d040309bbed0e07420ad72c4aa69cbd0e58190"
 TOOL = ROOT / "tools/check_gut_9_7_1_reconciliation.py"
 CONTRACT = ROOT / "docs/planning-data/approved_20260807_gut_9_7_1_reconciliation.json"
 DECISION = ROOT / "docs/decisions/2026-08-07_GUT_9_7_1_RECONCILIATION_VALIDATION_DECISION.md"
+CLOSEOUT = ROOT / "docs/decisions/2026-08-10_GUT_9_7_1_EXPORT_EXCLUSION_CLOSEOUT.md"
+EXPORT_ACCEPTANCE = ROOT / "docs/planning-data/local_gut_product_export_exclusion_acceptance_20260810.json"
 CONFIG = ROOT / ".gutconfig.json"
 GUT_TEST = ROOT / "tests/gut/test_martial_manual_registry.gd"
 WORKFLOW = ROOT / ".github/workflows/gut-9-7-1-reconciliation.yml"
@@ -119,11 +121,11 @@ class Gut971ReconciliationTests(unittest.TestCase):
             (upstream / "source_code_pro.fnt").write_bytes(b"RSRC\x00official")
             (project / "source_code_pro.fnt").write_bytes(b"RSRC\x00project!")
             report = tool.compare_addon_trees(project, upstream)
-            self.assertEqual(report["unexpected_mismatches"], ["source_code_pro.fnt"])
+            self.assertEqual(report["unexpected_mismatches"], ["test.gd"] if False else ["source_code_pro.fnt"])
             with self.assertRaisesRegex(tool.ReconciliationError, "unexpected addon difference"):
                 tool.require_acceptable_tree(report, expected_normalized=set())
 
-    def test_contract_records_verified_source_and_partial_authority(self) -> None:
+    def test_contract_records_verified_source_and_export_boundary(self) -> None:
         payload = json.loads(CONTRACT.read_text(encoding="utf-8"))
         self.assertEqual(payload["decision_id"], DECISION_ID)
         self.assertEqual(payload["parent_decision_id"], PARENT_DECISION_ID)
@@ -152,9 +154,43 @@ class Gut971ReconciliationTests(unittest.TestCase):
                 "gut_loader_the_scene.tscn",
             ],
         )
-        self.assertEqual(payload["authority_state"], "PARTIAL_VALIDATED_EXPORT_GATE_OPEN")
-        self.assertEqual(payload["export_exclusion"], "BLOCKED_PENDING_HIGODOT_L1")
+        self.assertEqual(
+            payload["authority_state"],
+            "GUT_RECONCILIATION_AND_PRODUCT_EXPORT_BOUNDARY_VALIDATED",
+        )
+        self.assertEqual(
+            payload["export_exclusion"],
+            "PASS_HIGODOT_L2_AUTHORING_AND_L1_EXPORT_REGRESSION",
+        )
         self.assertEqual(payload["product_implementation_effect"], "NONE")
+
+    def test_export_closeout_and_local_acceptance_are_bounded(self) -> None:
+        closeout_text = CLOSEOUT.read_text(encoding="utf-8")
+        for marker in (
+            DECISION_ID,
+            "CURRENT_APPROVED_RECONCILIATION_EXPORT_BOUNDARY_VALIDATED",
+            "PASS_HIGODOT_L2_AUTHORING_AND_EXPORT_REGRESSION",
+            "VERIFY_LOCAL_WINDOWS_ANDROID_DEVICE_AND_HUMAN_GATES",
+        ):
+            self.assertIn(marker, closeout_text)
+
+        evidence = json.loads(EXPORT_ACCEPTANCE.read_text(encoding="utf-8"))
+        self.assertEqual(DECISION_ID, evidence["decision_id"])
+        self.assertEqual(133, evidence["publication"]["pr_number"])
+        self.assertEqual(
+            "f355b1f9ef9376ee28ddc9b3c8473c97389a7bd9",
+            evidence["publication"]["pr_exact_head"],
+        )
+        self.assertEqual(0, evidence["local_export_regression"]["windows_export_exit_code"])
+        self.assertEqual(0, evidence["local_export_regression"]["pck_probe_exit_code"])
+        self.assertTrue(evidence["local_export_regression"]["required_runtime_present"])
+        self.assertEqual(
+            "PASS_HIGODOT_L2_AUTHORING_AND_EXPORT_REGRESSION",
+            evidence["local_export_regression"]["verdict"],
+        )
+        self.assertFalse(
+            evidence["claim_ceiling"]["product_implementation_authorized_by_this_evidence"]
+        )
 
     def test_consumer_path_is_real_and_junit_is_required(self) -> None:
         config = json.loads(CONFIG.read_text(encoding="utf-8"))
@@ -196,7 +232,7 @@ class Gut971ReconciliationTests(unittest.TestCase):
             (root / "src/product.gd").write_text("changed product\n", encoding="utf-8")
             self.assertNotEqual(before, tool.hash_production_scope(root))
 
-    def test_decision_and_validator_preserve_claim_ceiling(self) -> None:
+    def test_decision_and_validator_preserve_historical_claim_ceiling(self) -> None:
         decision_text = DECISION.read_text(encoding="utf-8")
         validator_text = TOOL.read_text(encoding="utf-8")
         for marker in (
