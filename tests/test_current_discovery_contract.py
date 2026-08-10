@@ -26,6 +26,15 @@ TEMPORARY_PIN_EXCEPTIONS = {
 }
 
 
+def is_reconciled_action_pin_allowed(workflow_path: str, action: str, ref: str) -> bool:
+    expected = CURRENT_ACTION_PINS.get(action)
+    if expected is None:
+        return bool(FULL_SHA.fullmatch(ref))
+    if ref == expected:
+        return True
+    return ref == TEMPORARY_PIN_EXCEPTIONS.get(workflow_path, {}).get(action)
+
+
 class CurrentDiscoveryContractTests(unittest.TestCase):
     def test_root_start_here_uses_current_windows_android_platform_authority(self) -> None:
         text = (ROOT / "START_HERE.md").read_text(encoding="utf-8")
@@ -130,10 +139,17 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
                 f"{action} must be allowed to leave its temporary exception without changing this contract first",
             )
 
+    def test_temporary_pin_exceptions_are_exact_immutable_noncurrent_refs(self) -> None:
+        for workflow_path, actions in TEMPORARY_PIN_EXCEPTIONS.items():
+            for action, ref in actions.items():
+                self.assertRegex(ref, FULL_SHA, f"{workflow_path}: exception must be a full SHA")
+                self.assertIn(action, CURRENT_ACTION_PINS)
+                self.assertNotEqual(ref, CURRENT_ACTION_PINS[action])
+                self.assertTrue(is_reconciled_action_pin_allowed(workflow_path, action, ref))
+
     def test_active_workflows_use_immutable_reconciled_action_pins(self) -> None:
         violations: list[str] = []
         seen_actions: set[str] = set()
-        seen_exceptions: set[tuple[str, str]] = set()
         workflows = ROOT / ".github" / "workflows"
 
         for workflow in sorted(workflows.glob("*.y*ml")):
@@ -159,23 +175,13 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
                     violations.append(f"{workflow_path}: mutable remote ref {target}")
                     continue
 
-                if action in CURRENT_ACTION_PINS:
-                    expected = CURRENT_ACTION_PINS[action]
-                    exception = TEMPORARY_PIN_EXCEPTIONS.get(workflow_path, {}).get(action)
-                    if ref == exception:
-                        seen_exceptions.add((workflow_path, action))
-                    elif ref != expected:
-                        violations.append(
-                            f"{workflow_path}: {action} pin {ref} != reconciled current {expected}"
-                        )
+                if not is_reconciled_action_pin_allowed(workflow_path, action, ref):
+                    expected = CURRENT_ACTION_PINS.get(action, "full immutable SHA")
+                    violations.append(
+                        f"{workflow_path}: {action} pin {ref} != reconciled current {expected}"
+                    )
 
         self.assertEqual(set(CURRENT_ACTION_PINS), seen_actions)
-        expected_exceptions = {
-            (workflow_path, action)
-            for workflow_path, actions in TEMPORARY_PIN_EXCEPTIONS.items()
-            for action in actions
-        }
-        self.assertEqual(expected_exceptions, seen_exceptions)
         self.assertFalse(
             violations,
             "Mutable/stale remote action refs found:\n" + "\n".join(violations),
