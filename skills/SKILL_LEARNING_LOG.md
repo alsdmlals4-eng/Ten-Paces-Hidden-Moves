@@ -142,6 +142,69 @@ skill_change: APPLIED
 next_review_trigger: 로컬 Skill 증가, 발행 정책 승격, stale path 재등장, Base SHA 변경
 ```
 
+## 2026-08-12 — 전용 로컬 executor 복구·인수인계
+
+```yaml
+date: 2026-08-12
+work_item: TEN-DEC-20260811-LOCAL-EXECUTOR-BOOTSTRAP-01
+work_mode: PLAN → BUILD → REVIEW
+skill_id: ten-paces-verification
+skill_mode: local-executor-readiness
+selection: user-directed
+trigger: dedicated-godot, higodot, hera, codex-home, handoff
+reason: 새 PowerShell마다 전용 Godot→HiGodot→Hera→CODEX_HOME→Codex를 정확한 십보강호 대상으로 복구하고, 실패 원인을 다음 세션에 재사용 가능하게 남겨야 했다.
+work_performed:
+  - LRN-TEN-LOCAL-001: standalone --script/recovery-mode editor-context 실패를 재현하고 temporary headless editor + @tool scene 방식으로 교체
+  - LRN-TEN-LOCAL-002: Windows PowerShell 5.1 NativeCommandError가 native stderr를 실패처럼 포장해도 process exit code와 semantic status를 분리하도록 Codex login 분기 교정
+  - LRN-TEN-LOCAL-003: reused Hera editor가 fresh shell의 예상 token과 다를 때 exact-project PID를 먼저 고정하고 inherited_env → project_token → shared_token → no_token 지원 후보를 secret 출력 없이 검증
+  - LRN-TEN-LOCAL-004: 대화 중 생성한 launcher를 tools/start_ten_paces_local_executor.ps1 + regression contract로 저장소 정본화
+result:
+  - v5 Windows parser/install PASS
+  - Godot 4.7.1 + Godot AI 3.1.4 HTTP 8003 / WS 9503 관측
+  - HERA_AUTH_SOURCE=shared_token, exact-project Hera readiness 관측
+  - 전용 CODEX_HOME login 뒤 Codex가 exact project에서 Sandbox ready까지 진입
+  - in-Codex fresh MCP/Hera readiness 및 fresh-PowerShell repeat-run은 NOT_RUN
+  - 새 broad Skill은 만들지 않고 기존 ten-paces-verification owner에 local-executor-readiness mode 흡수
+evidence:
+  - tools/start_ten_paces_local_executor.ps1
+  - tests/test_local_executor_bootstrap_contract.py
+  - tests/test_local_executor_handoff_contract.py
+  - docs/decisions/2026-08-11_LOCAL_EXECUTOR_BOOTSTRAP_DECISION.md
+verification_status: PARTIAL
+exceptions:
+  - historical PID/port/session은 current authority가 아님
+  - token 원문은 evidence에 저장하지 않음
+  - 제품 구현은 in-Codex fresh readiness + repeat-run Gate 이전에 재개하지 않음
+learning_state: PATTERN
+skill_change: APPLIED
+next_review_trigger: IN_CODEX_FRESH_READINESS_GATE 또는 launcher/HiGodot/Hera/Codex 버전 변경
+```
+
+### Local executor lesson closure
+
+```yaml
+LRN-TEN-LOCAL-001:
+  classification: SPLIT
+  project_application: APPLIED
+  project_verification: STATIC_GREEN_RUNTIME_OBSERVED_EDITOR_TOOL_CONTEXT
+  base_candidate: ABSORB_INTO_EXISTING_LOCAL_EXECUTOR_OWNER
+LRN-TEN-LOCAL-002:
+  classification: BASE_CANDIDATE
+  project_application: APPLIED
+  project_verification: STATIC_GREEN_AND_WINDOWS_LOGIN_BRANCH_OBSERVED
+  base_candidate: ABSORB_INTO_EXISTING_LOCAL_EXECUTOR_OWNER
+LRN-TEN-LOCAL-003:
+  classification: SPLIT
+  project_application: APPLIED
+  project_verification: STATIC_GREEN_AND_SHARED_TOKEN_RUNTIME_OBSERVED
+  base_candidate: ABSORB_INTO_EXISTING_LOCAL_EXECUTOR_OWNER
+LRN-TEN-LOCAL-004:
+  classification: PROJECT_ONLY
+  project_application: APPLIED
+  project_verification: REPOSITORY_FILE_PLUS_CONTRACT
+  base_candidate: REUSE_EXISTING_ONE_SHOT_OWNER
+```
+
 ## 현재 교훈
 
 - Base 공용 절차를 로컬 Skill로 복제하지 않는다.
@@ -151,3 +214,6 @@ next_review_trigger: 로컬 Skill 증가, 발행 정책 승격, stale path 재�
 - 삭제는 기능 승계·Legacy Alias·복구·자동 재등장 차단을 함께 제공한다.
 - changed 파일뿐 아니라 untouched 소비자와 Entry Point를 검사한다.
 - Workflow 존재·Actions 성공·Godot 런타임·Required Check는 독립 상태다.
+- launcher/process/port 존재와 exact-project live readiness는 별도 증거다.
+- reused live tool의 인증은 fresh shell의 단일 추측이 아니라 exact instance + 지원 auth source probe로 복구하되 secret을 기록하지 않는다.
+- native stderr 텍스트와 process 실패를 동일시하지 않고 exit code·semantic payload·실제 후속 상태를 함께 판정한다.
