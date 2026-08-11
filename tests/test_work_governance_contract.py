@@ -60,6 +60,11 @@ class WorkGovernanceContractTests(unittest.TestCase):
         with self.assertRaisesRegex(validator.WorkGovernanceContractError, "benchmark"):
             validator.validate(broken)
 
+    def test_benchmarking_is_required_before_every_project_task(self):
+        benchmark = self.load_contract()["benchmark_policy"]
+        self.assertTrue(benchmark.get("required_before_every_project_task"))
+        self.assertEqual(benchmark.get("research_depth"), "PROPORTIONAL_TO_TASK_RISK_AND_SCOPE")
+
     def test_benchmarking_must_happen_before_planning_or_mutation(self):
         benchmark = self.load_contract()["benchmark_policy"]
         self.assertEqual(benchmark.get("timing"), "PRE_WORK_BEFORE_PLAN_OR_MUTATION")
