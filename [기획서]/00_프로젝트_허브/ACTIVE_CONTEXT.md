@@ -41,15 +41,16 @@ performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 product_implementation_authorized: false
 next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
 next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
-planning_visual_next: TEN_IMG_001_GENERATE_EXPLORATION
-planning_visual_review: TEN_IMG_001_EXPLORATION_REVIEW
+planning_visual_next: TEN_IMG_001_PAUSED_BY_USER_TEXTUAL_CANON_REVIEW
+planning_visual_review: TEN_IMG_001_CHAT_EXPLORATIONS_REVIEWED_NOT_AN_ASSET
 planning_visual_authority: TEN-DEC-20260808-TEN-IMG-001-VISUAL-REQUIREMENT-APPROVAL-01
-ci_supply_chain_followup: ISSUE_140
+planning_visual_overlay: TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01
+ci_supply_chain_followup: RESOLVED_ISSUE_140
 base_release_pinned: 9.4.3
 base_remote_observation: CURRENT_REMOTE_REQUIRES_LIVE_REFETCH_NO_AUTOMATIC_PROJECT_ADOPTION
 ```
 
-`next_package`와 `next_planning_decision`은 플랫폼 구현 Gate의 기존 operating-state 키다. 현재 Entry Gate가 이를 계속 차단하므로 제품 구현 권한을 뜻하지 않는다. 별도 승인된 Phase A 기획 시각화 흐름의 실제 다음 작업은 `planning_visual_next`의 TEN-IMG-001 exploration 생성과 `planning_visual_review` 검수다.
+`next_package`와 `next_planning_decision`은 플랫폼 구현 Gate의 기존 operating-state 키다. 현재 Entry Gate가 이를 계속 차단하므로 제품 구현 권한을 뜻하지 않는다. TEN-IMG-001은 chat exploration 뒤 사용자 지시로 추가 생성이 중단됐고 현재 실제 다음 시각화 작업은 **텍스트 정본 검토**다. 새 이미지 생성은 사용자가 다시 요청하기 전까지 진행하지 않으며 기존 생성 결과는 `NOT_AN_ASSET`이다.
 
 이 live block에는 현재 SHA를 저장하지 않는다. 새 세션·post-merge에서는 GitHub `main`, 열린 PR, Sheet `00·02·04·99`, current operating/entry gate를 다시 읽고 의미 상태만 판정한다. exact SHA/run ID는 아래의 명시적 역사·관측 증거로만 취급한다.
 
@@ -80,6 +81,7 @@ observed_recent_canon_reconciliation_prs: 137,138,139
 - 플랫폼 Adapter 아키텍처: `TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01`.
 - 행동 선택 UX: `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`.
 - 상황 화면 구조: `TEN-DEC-20260801-SITUATION-SCREEN-01`.
+- 전투 UI 정보 위계·거리·관찰 표시 오버레이: `TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01`.
 - 관찰 정답 누출 방지: `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`.
 - 초기 무공서 런타임 기반 권위: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`.
 - 초기 무공서 UI·AI 채택 권위: `TEN_MANUAL_UI_AI_ADOPTION_GATE`.
@@ -87,7 +89,8 @@ observed_recent_canon_reconciliation_prs: 137,138,139
 - GUT 9.7.1 reconciliation/export boundary: `TEN-DEC-20260807-GUT-9-7-1-RECONCILIATION-01`.
 - Hera v1 live QA: `TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01`.
 - 활성 Godot toolchain: `TEN-DEC-20260809-GODOT-AI313-GUT971-HERA100-ACTIVE-TOOLCHAIN-01`.
-- TEN-IMG-001 exploration 권한: `TEN-DEC-20260808-TEN-IMG-001-VISUAL-REQUIREMENT-APPROVAL-01`; 생성 결과는 별도 검수 전 `NOT_AN_ASSET`이다.
+- TEN-IMG-001 exploration 권한: `TEN-DEC-20260808-TEN-IMG-001-VISUAL-REQUIREMENT-APPROVAL-01`; chat exploration은 수행됐지만 제품 자산 승격 없이 `NOT_AN_ASSET`, 추가 생성은 `PAUSED_BY_USER`다.
+- CI 공급망 follow-up: Issue #140은 `RESOLVED / CLOSED_COMPLETED`이며 active 후속 작업이 아니다.
 - 과거 v6 인덱스는 `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`이며 최신 Decision보다 높은 권한을 갖지 않는다.
 
 제품 코어·전투 규칙·성장·UI·저장 의미는 해당 분야 책임 원본을 따른다. 이 문서는 그 전문을 대체하지 않는다.
@@ -196,7 +199,7 @@ allowed_next_actions:
   - RECHECK_WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 ```
 
-이 Entry Gate는 제품/플랫폼 구현 경계다. 별도 `PLANNING_VISUALIZATION_ONLY`로 승인된 TEN-IMG-001 exploration 생성·검수를 금지하지 않는다. Android 완료, 실제 기기 완료, 사람 검증 완료를 아직 주장하면 안 된다.
+이 Entry Gate는 제품/플랫폼 구현 경계다. 해당 snapshot의 `PLANNING_VISUALIZATION_ONLY` 허용은 제품 구현 권한이 아니며, 후속 사용자 지시인 TEN-IMG-001 추가 생성 `PAUSED_BY_USER`를 덮어쓰지 않는다. Android 완료, 실제 기기 완료, 사람 검증 완료를 아직 주장하면 안 된다.
 
 ## 이번 세션의 플랫폼 preflight 중단 상태
 
@@ -273,8 +276,8 @@ Base remote `main`의 exact SHA는 이 live router에 current 값으로 저장�
 - Android 실제 기기·터치·back·safe area·lifecycle·저장·성능 증거는 `NOT_RUN / BLOCKED_UNVERIFIED`다.
 - Windows visible local render·실물 입력·접근성 사용자·Release 성능은 자동 제품 검증과 별개다.
 - STEP 14 사람 검증은 `NOT_RUN`이다.
-- `TEN-IMG-001`은 exploration 생성 권한과 provenance 준비까지만 완료됐고 실제 generation/review는 `NOT_RUN`이다.
-- CI 공급망의 mutable GitHub Action refs/Node 세대 정합화는 Issue #140 후속이다.
+- `TEN-IMG-001`은 chat exploration까지 수행·검토했으나 제품 자산이 아니며 추가 생성은 사용자 지시로 `PAUSED_BY_USER`; 현재는 텍스트 정본 검토를 우선한다.
+- CI 공급망 mutable/stale action-pin 후속은 Issue #140에서 `RESOLVED / CLOSED_COMPLETED`; 현재 미해결 위험이 아니다.
 - `OBSERVATION_ANSWER_LEAK_RISK`는 직접 공개를 바꾸지 않은 채 사람 측정을 기다린다.
 - `product_implementation_authorized: false`를 유지한다.
 
