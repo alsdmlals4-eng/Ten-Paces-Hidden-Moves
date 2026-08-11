@@ -29,31 +29,38 @@ class LocalExecutorBootstrapContractTests(unittest.TestCase):
         self.assertRegex(self.text, r"(?i)--path")
         self.assertIn("MULTIPLE_EXACT_TEN_PACES_GODOT_EDITORS", self.text)
 
-    def test_project_tooling_sections_are_prebound_before_editor_start(self) -> None:
-        self.assertIn("Get-ProjectSectionText", self.text)
-        self.assertIn("[editor_plugins]", self.text)
-        self.assertIn("[autoload]", self.text)
-        self.assertIn("REQUIRED_TOOLING_AUTOLOAD_NOT_PREBOUND_BOOTSTRAP_WOULD_MUTATE_PROJECT", self.text)
-        self.assertIn("HeraGameInspector", self.text)
-        self.assertIn("_mcp_game_helper", self.text)
-        self.assertIn("res://addons/gut/plugin.cfg", self.text)
-        self.assertIn("GUT_VERSION_MISMATCH_EXPECTED_9_7_1", self.text)
-        self.assertIn("GUT_VERSION=", self.text)
+    def test_project_tooling_is_prebound_before_editor_start(self) -> None:
+        for token in (
+            "Get-ProjectSectionText",
+            "[editor_plugins]",
+            "[autoload]",
+            "REQUIRED_TOOLING_AUTOLOAD_NOT_PREBOUND_BOOTSTRAP_WOULD_MUTATE_PROJECT",
+            "HeraGameInspector",
+            "_mcp_game_helper",
+            r"res://addons/gut/plugin.cfg",
+            "GUT_VERSION_MISMATCH_EXPECTED_9_7_1",
+            "GUT_VERSION=",
+        ):
+            self.assertIn(token, self.text)
 
-    def test_self_contained_and_editor_settings_are_programmatic(self) -> None:
-        self.assertIn("_sc_", self.text)
-        self.assertIn("--recovery-mode", self.text)
-        self.assertIn("EditorInterface.get_editor_settings()", self.text)
-        self.assertIn("godot_ai/http_port", self.text)
-        self.assertIn("godot_ai/ws_port", self.text)
-        self.assertIn("godot_ai/keep_server_on_exit", self.text)
-        self.assertIn('settings.has_setting("godot_ai/http_port")', self.text)
-        self.assertIn('settings.has_setting("godot_ai/ws_port")', self.text)
-        self.assertIn('settings.has_setting("godot_ai/keep_server_on_exit")', self.text)
-        self.assertNotRegex(self.text, r'get_setting\("godot_ai/(?:http_port|ws_port|keep_server_on_exit)",')
+    def test_editor_settings_use_verified_headless_editor_tool_context(self) -> None:
+        for token in (
+            "_sc_",
+            "Invoke-HeadlessEditorTool",
+            "@tool",
+            "bootstrap.tscn",
+            "EditorInterface.get_editor_settings()",
+            "godot_ai/http_port",
+            "godot_ai/ws_port",
+            "godot_ai/keep_server_on_exit",
+        ):
+            self.assertIn(token, self.text)
+        self.assertRegex(self.text, r"(?m)get_tree\(\)\.quit\(|\bquit\(")
+        self.assertNotIn("--recovery-mode", self.text)
+        self.assertNotRegex(self.text, r"(?i)['\"]--script['\"]")
         self.assertNotRegex(self.text, r"(?i)editor_settings-4\.tres.*-replace")
 
-    def test_hera_is_exact_project_dynamic_port_tooling(self) -> None:
+    def test_hera_exact_project_auth_recovery_is_supported_and_secret_safe(self) -> None:
         for token in (
             ".hera-agent-godot",
             "instances",
@@ -61,12 +68,18 @@ class LocalExecutorBootstrapContractTests(unittest.TestCase):
             "8770",
             "8785",
             "HERA_AGENT_GODOT_TOKEN",
-            "hera",
-            "status",
+            "$HeraTokenFile = Join-Path $TargetGodot '.hera-token'",
+            "$HeraSharedTokenFile = Join-Path $HeraHome 'token'",
+            "Resolve-HeraAuthForExactInstance",
+            "inherited_env",
+            "project_token",
+            "shared_token",
+            "no_token",
+            "HERA_AUTH_SOURCE=",
+            "HERA_EXACT_PROJECT_READY",
         ):
             self.assertIn(token, self.text)
-        self.assertIn("$HeraTokenFile = Join-Path $TargetGodot '.hera-token'", self.text)
-        self.assertNotIn("Join-Path $HeraHome 'token'", self.text)
+        self.assertNotRegex(self.text, r"(?i)Write-Host[^\\n]*\$CandidateToken")
         self.assertNotRegex(self.text, r"(?i)Hera.*FORBIDDEN")
 
     def test_codex_mcp_config_uses_project_godot_ai_configurator(self) -> None:
@@ -75,15 +88,19 @@ class LocalExecutorBootstrapContractTests(unittest.TestCase):
         self.assertIn("CODEX_GODOT_AI_CONFIGURE_FAILED", self.text)
         self.assertNotRegex(self.text, r"(?i)codex(?:\.cmd)?\s+mcp\s+add")
 
-    def test_dedicated_codex_home_auth_uses_official_login_flow(self) -> None:
-        self.assertIn("CODEX_DEDICATED_HOME_LOGIN_REQUIRED", self.text)
-        self.assertIn("CODEX_LOGIN_STATUS_UNSUPPORTED", self.text)
-        self.assertIn("CODEX_LOGIN_READY", self.text)
-        self.assertRegex(self.text, r"Invoke-Capture\s+\$CodexExe\s+@\('login',\s*'status'\)")
+    def test_codex_native_stderr_login_state_is_semantically_classified(self) -> None:
+        for token in (
+            "CODEX_DEDICATED_HOME_LOGIN_REQUIRED",
+            "CODEX_LOGIN_STATUS_UNSUPPORTED",
+            "CODEX_LOGIN_READY",
+            "Not logged in",
+            "Invoke-Capture $CodexExe @('login', 'status')",
+        ):
+            self.assertIn(token, self.text)
         self.assertRegex(self.text, r"&\s+\$CodexExe\s+login\b")
         self.assertNotRegex(self.text, r"(?i)Copy-Item[^\n]*\\\.codex\\auth\.json")
 
-    def test_ports_fail_closed_without_process_kill_or_auto_switch(self) -> None:
+    def test_ports_fail_closed_without_unrelated_process_kill_or_auto_switch(self) -> None:
         self.assertIn("FOREIGN_OR_AMBIGUOUS_PORT_OWNER", self.text)
         self.assertIn("HIGODOT_EXPECTED_PORT_NOT_READY", self.text)
         forbidden = (
@@ -100,20 +117,21 @@ class LocalExecutorBootstrapContractTests(unittest.TestCase):
         self.assertNotIn("8004", self.text)
         self.assertNotIn("9504", self.text)
 
-    def test_codex_help_preflight_precedes_launch_call(self) -> None:
+    def test_codex_help_preflight_precedes_launch(self) -> None:
         help_marker = self.text.find("CODEX_HELP_PREFLIGHT_COMPLETE")
         launch_call = self.text.rfind("Start-Codex -CodexExe")
         self.assertGreaterEqual(help_marker, 0)
         self.assertGreater(launch_call, help_marker)
-        self.assertIn("workspace-write", self.text)
-        self.assertIn("never", self.text)
-        self.assertIn("--ask-for-approval", self.text)
-        self.assertIn("--sandbox", self.text)
+        for token in ("workspace-write", "never", "--ask-for-approval", "--sandbox"):
+            self.assertIn(token, self.text)
 
-    def test_bootstrap_distinguishes_launch_from_readiness(self) -> None:
-        self.assertIn("BOOTSTRAP_READY_FOR_CODEX", self.text)
-        self.assertIn("LIVE_READINESS_MUST_BE_RECHECKED_IN_CODEX", self.text)
-        self.assertIn("HERA_EXACT_PROJECT_READY", self.text)
+    def test_bootstrap_does_not_claim_live_readiness(self) -> None:
+        for token in (
+            "BOOTSTRAP_READY_FOR_CODEX",
+            "LIVE_READINESS_MUST_BE_RECHECKED_IN_CODEX",
+            "HERA_EXACT_PROJECT_READY",
+        ):
+            self.assertIn(token, self.text)
 
 
 if __name__ == "__main__":
