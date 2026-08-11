@@ -1,0 +1,244 @@
+{
+  "schema_version": "1.0",
+  "phase": "FINAL_PLANNING_REVIEW",
+  "user_planning_complete_declared": true,
+  "review_complete": false,
+  "product_implementation_authorized": false,
+  "image_generation_allowed": false,
+  "image_generation_gate": "REVIEW_COMPLETE_THEN_APPROVED_VISUAL_REQUIREMENT_PRODUCTION",
+  "fresh_authority": {
+    "project_main_sha": "b9a9db62f4fd860131561a11d2ddebf3d496f39a",
+    "base_main_sha": "7ce96181d0a97930300fcc6d383dacc75ad08f6a",
+    "project_open_prs_at_start": [],
+    "base_open_prs_at_start": [],
+    "sheet_reread": true,
+    "sheet_tabs_reread": [
+      "00_프로젝트_허브",
+      "01_작업순서",
+      "02_현재_확정결정",
+      "03_무공서_무학",
+      "03_근거_라이브러리",
+      "04_누락_충돌_감사",
+      "05_GDD_요약",
+      "10_제품방향",
+      "11_세계관",
+      "12_핵심루프",
+      "13_주요인물",
+      "14_조연_세력_관계",
+      "15_조작_게임규칙",
+      "20_코어경험_데모목표",
+      "30_데모범위_품질기준_제작기반",
+      "40_핵심시스템_메인콘텐츠",
+      "41_성장_경제",
+      "50_메인콘텐츠",
+      "60_UX_UI_접근성",
+      "70_아트_오디오_에셋",
+      "71_이미지기획_생성목록",
+      "72_이미지검수_승인로그",
+      "80_데모_버티컬슬라이스_플레이테스트",
+      "90_본제작_출시_사업",
+      "98_Base_반영후보",
+      "99_변경이력"
+    ]
+  },
+  "base_recovery": {
+    "recursive_inventory_completed": true,
+    "active_skill_count": 30,
+    "selected_work_mode": "REVIEW",
+    "selected_primary_skill": "running-adversarial-review-and-refinement",
+    "supporting_skills": [
+      "managing-project-intake-and-work-contract",
+      "managing-game-project-operating-system",
+      "analyzing-and-refining-game-concepts",
+      "auditing-canonical-reference-freshness",
+      "reviewing-and-validating-project-changes",
+      "auditing-and-refining-ui-art",
+      "designing-art-prompts-and-technique-cards",
+      "evaluating-godot-assets-and-plugins-before-creation"
+    ],
+    "canonical_owner_sources": [
+      "START_HERE.md",
+      "AGENTS.md",
+      "docs/OPERATING_MODEL.md",
+      "docs/WORK_MODE_AND_SKILL_ROUTING.md",
+      "docs/DOCUMENTATION_MAP.md",
+      "skills/SKILL_REGISTRY.json",
+      "docs/generated/BASE_ACTIVE_SKILLS.md",
+      "docs/CAPABILITY_COMPOSITION_MAP.md",
+      "docs/knowledge/game-development/ART_DIRECTION_AND_ASSET_PLANNING_GUIDE.md",
+      "docs/GPT_IMAGE_GENERATION_AND_REVIEW_POLICY.md"
+    ]
+  },
+  "external_process_overlay": {
+    "authority": "EXECUTION_PROCESS_ONLY",
+    "actually_executed": [
+      "superpowers/brainstorming",
+      "superpowers/test-driven-development",
+      "superpowers/systematic-debugging",
+      "base/running-adversarial-review-and-refinement"
+    ],
+    "approval_state": "NEW_APPROVAL_REQUIRED_FOR_ART_PROGRAM_ONLY",
+    "conflict_state": "NONE"
+  },
+  "benchmark_summary": {
+    "source_fact_patterns": [
+      "Into the Breach presents enemy actions before resolution and makes consequences inspectable.",
+      "Frozen Synapse separates planning/preview from commit/resolve.",
+      "Godot Control/Container and multiple-resolution guidance support layout rules rather than baked UI text in background art.",
+      "Android accessibility guidance uses 48dp as a minimum interactive touch-target reference.",
+      "Historical ink painting references demonstrate negative space, value grouping, brush economy, and mist/wash separation useful for duel-distance readability."
+    ],
+    "project_recommendation": "Use an ink-wash tactical art layer for gameplay with crisp editable UI above it; reserve denser cinematic color for key art only. Borrow intent/readability patterns, not deck/hand semantics, exact UI layouts, named-artist styles, or foreign game rules.",
+    "do_not_copy": [
+      "deck/hand/draw semantics",
+      "enemy exact answer recommendation",
+      "probability or hit-rate UI",
+      "numbered battlefield foothold strip",
+      "named contemporary artist style",
+      "competitor-specific UI composition"
+    ]
+  },
+  "sheet_reconciliation": {
+    "fixed_current_state": [
+      "00 hub current Base/project/Phase-B state",
+      "02 Godot AI 3.1.4 freshness overlay and image-work resume state",
+      "12 observation display and bundle recovery consumers",
+      "15 observation and bundle recovery consumers",
+      "40 combat resource and observation consumers",
+      "41 current range pricing / uncapped stat consumers",
+      "05 GDD platform/workflow derivatives",
+      "20 core-experience dual-target derivative",
+      "90 production milestone platform derivative",
+      "71/72 TEN-IMG-001 resumed-but-not-an-asset review state"
+    ],
+    "readback_verified": true
+  },
+  "findings": [
+    {
+      "id": "TEN-FPR-001",
+      "severity": "P1",
+      "surface": "sheet_current_state",
+      "claim": "Hub/toolchain/image-work current-state rows were stale after PR #161 and the user's new planning-complete/image-work request.",
+      "status": "FIXED_SHEET_READBACK"
+    },
+    {
+      "id": "TEN-FPR-002",
+      "severity": "P1",
+      "surface": "platform_derivatives",
+      "claim": "05/20/90 still presented the superseded PC-first/mobile-later platform model as current.",
+      "status": "FIXED_SHEET_READBACK_CURRENT_WINDOWS_ANDROID"
+    },
+    {
+      "id": "TEN-FPR-003",
+      "severity": "P1",
+      "surface": "combat_resource_derivatives",
+      "claim": "12/15/40 retained parent bundle recovery +1/+1/+1 instead of current +1/+0/+1.",
+      "status": "FIXED_SHEET_READBACK_CURRENT_RESOURCE_OVERLAY"
+    },
+    {
+      "id": "TEN-FPR-004",
+      "severity": "P1",
+      "surface": "observation_ui_derivatives",
+      "claim": "Current Sheet consumers compressed multiple revealed action types into a synthetic [이동+공격] token that conflicts with slot-level current UI semantics.",
+      "status": "FIXED_SHEET_READBACK_SLOT_LEVEL_ACTUAL_TYPES"
+    },
+    {
+      "id": "TEN-FPR-005",
+      "severity": "P1",
+      "surface": "growth_and_authoring_derivatives",
+      "claim": "41 still exposed historical 0/10/25/40 range pricing and unresolved stat-cap wording as current authoring guidance.",
+      "status": "FIXED_SHEET_READBACK_HISTORY_SEPARATED_FROM_CURRENT"
+    },
+    {
+      "id": "TEN-FPR-006",
+      "severity": "P2",
+      "surface": "vertical_slice_opponent_content",
+      "claim": "Slot 4/5 full opponent candidate pools are not yet authored.",
+      "status": "DEFERRED_NON_BLOCKING_FOR_IMAGE_PROGRAM_BLOCKING_BEFORE_FULL_5_DUEL_CONTENT_BUILD"
+    },
+    {
+      "id": "TEN-FPR-007",
+      "severity": "P2",
+      "surface": "app_flow_product_values",
+      "claim": "Exact save-slot count and retry-cost/recovery product values are not current approved values.",
+      "status": "DEFERRED_NON_BLOCKING_FOR_IMAGES_BLOCKING_BEFORE_APP_FLOW_BUILD_DOR"
+    },
+    {
+      "id": "TEN-FPR-008",
+      "severity": "P1",
+      "surface": "art_program",
+      "claim": "The expanded image-production list and coherent art-direction system require one explicit user choice before they become project visual canon.",
+      "status": "USER_DECISION_REQUIRED_ART_PROGRAM"
+    },
+    {
+      "id": "TEN-FPR-009",
+      "severity": "P2",
+      "surface": "active_context_router",
+      "claim": "ACTIVE_CONTEXT still contains stale visual-pause/toolchain-parent semantic pointers even though current authorities exist elsewhere.",
+      "status": "OPEN_NON_PRODUCT_CANON_FRESHNESS_FIX_BEFORE_REVIEW_COMPLETE"
+    },
+    {
+      "id": "TEN-FPR-010",
+      "severity": "P2",
+      "surface": "evidence_boundary",
+      "claim": "Human usability, player experience, Android physical-device, and local Windows visible evidence are not run.",
+      "status": "EVIDENCE_PENDING_NON_PLANNING"
+    }
+  ],
+  "art_direction_options": [
+    {
+      "id": "A",
+      "name": "담묵 전술화 / Ink Tactical Layer",
+      "summary": "Low-to-mid saturation ink-wash duel art with strong silhouettes and negative space, overlaid by crisp editable tactical UI.",
+      "fit": "RECOMMENDED"
+    },
+    {
+      "id": "B",
+      "name": "목판·인장 그래픽 전술화",
+      "summary": "High-contrast blockprint/seal language optimized for small screens and icon consistency.",
+      "fit": "ALTERNATIVE_READABILITY_FIRST"
+    },
+    {
+      "id": "C",
+      "name": "시네마틱 채색 무협 회화",
+      "summary": "Dense full-color painterly wuxia presentation with stronger marketing drama but higher UI-noise and production cost.",
+      "fit": "KEY_ART_INTENSITY_ONLY_RECOMMENDED"
+    }
+  ],
+  "recommended_art_system": {
+    "core_gameplay": "A",
+    "marketing_key_art": "A_WITH_CONTROLLED_C_LITE_INTENSITY",
+    "pillars": [
+      "거리의 긴장: negative space keeps duel distance readable",
+      "먹선으로 읽는 무공: pose/weapon/brush direction before decoration",
+      "종이 위의 전술: martial-manual/seal texture under crisp digital information",
+      "절제된 색의 의미: ink/off-white/brown base with restrained cinnabar/gold accents, never color-only",
+      "정본 텍스트는 editable UI layer: generated text is never authoritative"
+    ]
+  },
+  "proposed_visual_production_order": [
+    "TEN-IMG-001 Master Combat Planning Screen reference",
+    "TEN-IMG-002 Combat Card + Detail Component Sheet",
+    "TEN-IMG-004 Responsive Combat Layout Sheet",
+    "TEN-IMG-005 Plan / Resolve / Review State Sheet",
+    "TEN-IMG-006 Core Combat Icon / VFX Language Sheet",
+    "TEN-IMG-007 Main / Run Setup UI reference",
+    "TEN-IMG-008 Route / Node / Briefing reference",
+    "TEN-IMG-009 Duel Result / Review / Reward / Retry reference",
+    "TEN-IMG-010 Martial Manual / Faction Visual Language Sheet",
+    "TEN-IMG-011 Opponent Silhouette / Stance Production Sheet",
+    "TEN-IMG-003 Key Art / Steam capsule family after visual-system stabilization",
+    "TEN-IMG-012 Optional hero combat splash only after Delete Test"
+  ],
+  "evidence_boundaries": {
+    "tech": "AUTOMATED_AND_CANON_EVIDENCE_EXISTS_BUT_NOT_REEVALUATED_AS_PRODUCT_BUILD",
+    "ui": "PLANNING_SPEC_AND_PRIOR_AUTOMATED_EVIDENCE_ONLY",
+    "human_usability": "NOT_RUN",
+    "player_experience": "NOT_RUN",
+    "android_physical_device": "NOT_RUN",
+    "local_windows_visible": "NOT_RUN"
+  },
+  "next_gate": "USER_APPROVE_ART_DIRECTION_AND_VISUAL_PRODUCTION_ORDER",
+  "blocking_p0_count": 0,
+  "blocking_p1_count": 1
+}
