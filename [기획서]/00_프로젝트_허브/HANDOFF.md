@@ -159,11 +159,11 @@ collector는 repository 내용을 수정하면 안 된다.
 
 ## Base 상태
 
-이 handoff 준비 중 Base remote `main`은 `637dad32c773c56a27d44d847518580848dee493`까지 전진했고 BCP-2026-011의 게임 기능 L2 상세 Spec 계층이 `IMPLEMENTED` 상태로 닫혔다.
+이 handoff의 상단 `base_remote_main_observed: 637dad32...`와 과거 BCP 상태는 당시 스냅샷일 뿐 current Base authority가 아니다. 새 세션은 항상 Base latest `main`, Registry, open proposal PR을 다시 읽는다.
 
-현재 프로젝트의 Base authority는 프로젝트 `docs/BASE_RULES_VERSION.md`와 `skills/PROJECT_BASE_ADAPTER.json` pin이 우선한다. remote Base의 새 기능을 이 handoff에서 자동 채택하거나 프로젝트 Gate를 변경하지 않는다.
+현재 프로젝트의 Base authority는 프로젝트 `docs/BASE_RULES_VERSION.md`와 `skills/PROJECT_BASE_ADAPTER.json` pin이 우선한다. remote Base의 새 기능을 자동 채택하거나 프로젝트 Gate를 바꾸지 않는다.
 
-Base에는 이미 `maintaining-project-context-and-handoff`와 `maintaining-long-running-task-continuity` owner가 있으므로 이번 작업에서 새 Handoff/Progress Skill이나 Base Change Proposal을 만들지 않는다.
+Base에는 이미 one-shot/dedicated local executor와 external runtime recovery owner가 있으므로 새 broad Handoff/Progress/local-executor Skill을 만들지 않았다. 대신 이 세션에서 프로젝트에 실제 적용·검증된 retained live-instance auth/config recovery와 native stderr semantic-result classification gap만 Base proposal-only `BCP-2026-023-local-executor-retained-instance-recovery`로 저장했다. Base active 구현은 이 단계에서 승인되지 않았고 수행하지 않았다. 상세 최종 locator는 문서 끝의 `BASE_PROPOSAL_CLOSURE`를 사용한다.
 
 ## 보호 범위
 
@@ -182,19 +182,24 @@ Base에는 이미 `maintaining-project-context-and-handoff`와 `maintaining-long
 - 과거 HANDOFF의 `APPROVED_PENDING_MERGE`, `active_planning_pr: 82`, `289378c...`는 역사 상태다.
 - 일부 discovery/history 문서에 과거 PR #80/#82 체크포인트가 남아 있어도 **변동 상태 판단은 GitHub metadata + `ACTIVE_CONTEXT.md` + current planning JSON**을 우선한다.
 - `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`는 역사 승인 인덱스다.
+- Draft PR #162의 Phase-B 본문은 이후 사용자 지시보다 오래된 별도 planning review 스냅샷이며 local-executor/BCP closeout의 현재 상태로 사용하지 않는다.
 
 ## 완료 후 다음 상태
 
-이 handoff PR이 exact-head 검증과 병합을 통과하면 Google Sheet 허브와 변경이력을 post-merge main SHA로 동기화한다. 그 뒤 세션을 종료해도 새 작업자는 위 읽기 순서만으로 플랫폼 preflight를 다시 시작할 수 있어야 한다.
+Project PR #163은 exact-head 검증 뒤 squash merge되어 repository-owned v5 launcher, project verification mode, learning log, Decision, Active Context/Handoff를 main에 반영했다. 이어서 Base proposal-only PR #298도 검증·병합됐다. 이 최종 Handoff sync는 Base proposal locator와 구현 비승인 경계를 current project state에 남기기 위한 동일 승인 범위의 closure다.
+
+이 closure PR이 exact-head 검증과 병합을 통과하면 Google Sheet를 최종 project new-main + Base BCP locator로 동기화한다. **closure PR 자신의 merge SHA만 이 파일에 다시 쓰기 위한 추가 PR은 만들지 않는다.** 새 세션은 언제나 GitHub latest main을 다시 읽는다.
 
 ## LOCAL_EXECUTOR_HANDOFF_CHECKPOINT — 2026-08-12
 
-현재 local-executor 인수인계의 Decision은 `TEN-DEC-20260811-LOCAL-EXECUTOR-BOOTSTRAP-01`이다. 실행 정본은 `tools/start_ten_paces_local_executor.ps1`이며, 사용자 지시로 local readiness를 여기서 잠시 멈추고 프로젝트 인수인계/BCP closeout을 우선한다.
+현재 local-executor 인수인계의 Decision은 `TEN-DEC-20260811-LOCAL-EXECUTOR-BOOTSTRAP-01`이다. 실행 정본은 `tools/start_ten_paces_local_executor.ps1`이며, 사용자 지시로 local readiness를 여기서 잠시 멈추고 프로젝트 인수인계/BCP closeout을 우선했다.
 
 ```yaml
 launcher: tools/start_ten_paces_local_executor.ps1
 launcher_generation: v5
 launcher_sha256_observed: db7717ad7fda58a43aaf42c930d6c27a2b70d8862db894208c3ae2a861f9db7c
+project_closeout_pr: 163
+project_closeout_main: 78acceab5a0689767aec9ce816e1225aa7d1f573
 windows_parser_install: PASS
 dedicated_godot_4_7_1: RUNTIME_OBSERVED
 godot_ai_3_1_4_http_8003_ws_9503: RUNTIME_OBSERVED
@@ -233,3 +238,35 @@ fresh Base/project/Sheet readback
 ### Base 동시 작업 안전
 
 `BASE_PROPOSAL_CONCURRENCY_REFETCH_REQUIRED`: 다른 채팅/프로젝트가 Base BCP를 동시에 처리할 수 있다. Base proposal 작업을 재개할 때는 저장된 BCP 번호나 Registry snapshot을 신뢰하지 않고 반드시 latest Base `main` + `[수정제안서]/PROPOSAL_REGISTRY.json` + 모든 open proposal-only PR + same-goal BCP를 다시 읽는다. 다른 프로젝트의 branch/BCP/Registry entry는 수정·되돌림·재번호화하지 않고 자기 proposal delta만 처리한다.
+
+## BASE_PROPOSAL_CLOSURE — 2026-08-12
+
+```yaml
+base_proposal:
+  id: BCP-2026-023-local-executor-retained-instance-recovery
+  title: Local executor retained-instance recovery
+  source_project: alsdmlals4-eng/Ten-Paces-Hidden-Moves
+  source_commit: 78acceab5a0689767aec9ce816e1225aa7d1f573
+  source_project_pr: 163
+  proposal_pr: https://github.com/alsdmlals4-eng/Base/pull/298
+  proposal_merge_commit: 596e60f501a6907f3f1ff02f05038202f8da0851
+  merged_to_base_main: true
+  proposal_status: SUBMITTED
+  existing_solution_verdict: ABSORB
+  proposal_storage_merge_authority: GRANTED_BY_THIS_INSTRUCTION
+  base_implementation_authority: NOT_GRANTED_IN_THIS_STAGE
+  implementation_status: NOT_STARTED_IN_THIS_STAGE
+  implementation_boundary: SEPARATE_FOLLOWUP_STAGE
+  next_action: separate future Base implementation authority or additional cross-project evidence
+base_concurrency:
+  base_main_seen_after_merge: 596e60f501a6907f3f1ff02f05038202f8da0851
+  proposal_id: BCP-2026-023-local-executor-retained-instance-recovery
+  proposal_pr: 298
+  same_goal_state: MATERIAL_EXTENSION_ABSORB
+  other_project_registry_entries_preserved: true
+  preserved_concurrent_ids: BCP-2026-021,BCP-2026-022,BCP-2026-024
+  final_premerge_branch_behind: 0
+  final_proposal_validation: PASS
+```
+
+BCP-023의 Base main 병합은 **제안 저장 완료**일 뿐 Base active 구현 승인이 아니다. 다음 세션은 BCP-023을 current Base owner의 후속 구현 권한으로 오인하지 않는다. local product work의 실제 다음 evidence는 여전히 `IN_CODEX_FRESH_READINESS_GATE`와 `FRESH_POWERSHELL_REPEAT_RUN_GATE`다.
