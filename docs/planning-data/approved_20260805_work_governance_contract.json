@@ -40,6 +40,8 @@
   },
   "benchmark_policy": {
     "required_for_material_questions_and_tasks": true,
+    "required_before_every_project_task": true,
+    "research_depth": "PROPORTIONAL_TO_TASK_RISK_AND_SCOPE",
     "timing": "PRE_WORK_BEFORE_PLAN_OR_MUTATION",
     "research_packet_required_before_task": true,
     "required_prework_sequence": [
