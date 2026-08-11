@@ -40,7 +40,7 @@ AGENTS.md
 | 행동 선택 | `docs/decisions/2026-08-01_MARTIAL_MANUAL_TECHNIQUE_TIMELINE_UX_DECISION.md` |
 | 무공서·무학 사용자 facing 표 | Google Sheet `03_무공서_무학` + 해당 Decision ID의 GitHub 정본 |
 
-구조화 planning JSON은 각 Decision·분야 정본의 **검증 가능한 계약/ledger**다. 어떤 JSON이 현재 활성인지 여부는 Decision 연결과 `docs/planning-data/CANON_LIFECYCLE_REGISTRY.md`를 통해 판정한다. 과거 PR·branch·merge SHA는 현재 책임 원본 목록에 넣지 않고 역사·증거 문서에서만 읽는다.
+구조화 planning JSON은 각 Decision·분야 정본의 **검증 가능한 계약/ledger**다. 어떤 JSON이 현재 활성인지 여부는 Decision 연결과 `docs/CANON_LIFECYCLE_REGISTRY.md`를 통해 판정한다. 과거 PR·branch·merge SHA는 현재 책임 원본 목록에 넣지 않고 역사·증거 문서에서만 읽는다.
 
 ## 최신 활성 Decision
 
@@ -49,7 +49,7 @@ AGENTS.md
 ```text
 현재 사용자 승인
 → [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md의 보호 결정/현재 권위
-→ docs/planning-data/CANON_LIFECYCLE_REGISTRY.md
+→ docs/CANON_LIFECYCLE_REGISTRY.md
 → 관련 Decision 문서
 → 분야 책임 원본·planning JSON
 → Sheet 02_현재_확정결정
