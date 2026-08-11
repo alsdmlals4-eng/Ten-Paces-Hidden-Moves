@@ -7,6 +7,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 JSON_PATH = ROOT / "docs/planning-data/planning_completion_inventory_20260811.json"
 MD_PATH = ROOT / "docs/reviews/2026-08-11_PLANNING_COMPLETION_INVENTORY.md"
+FINAL_REVIEW_JSON = ROOT / "docs/planning-data/final_planning_adversarial_review_20260811.json"
+FINAL_REVIEW_MD = ROOT / "docs/reviews/2026-08-11_FINAL_PLANNING_ADVERSARIAL_REVIEW.md"
 
 REQUIRED_DOMAINS = {
     "project_product_direction_core_promise",
@@ -109,6 +111,15 @@ class PlanningCompletionInventoryTests(unittest.TestCase):
             "DEFERRED_NON_BLOCKING",
         ):
             self.assertIn(marker, self.report)
+
+    def test_user_planning_complete_requires_phase_b_review_artifacts(self) -> None:
+        self.assertTrue(FINAL_REVIEW_JSON.is_file(), f"missing Phase B JSON: {FINAL_REVIEW_JSON}")
+        self.assertTrue(FINAL_REVIEW_MD.is_file(), f"missing Phase B report: {FINAL_REVIEW_MD}")
+        final = json.loads(FINAL_REVIEW_JSON.read_text(encoding="utf-8"))
+        self.assertTrue(final["user_planning_complete_declared"])
+        self.assertEqual("FINAL_PLANNING_REVIEW", final["phase"])
+        self.assertFalse(final["product_implementation_authorized"])
+        self.assertFalse(final["image_generation_allowed"])
 
 
 if __name__ == "__main__":
