@@ -62,6 +62,8 @@ def validate(contract: dict[str, Any]) -> None:
 
     benchmark = contract.get("benchmark_policy", {})
     _require(benchmark.get("required_for_material_questions_and_tasks") is True, "benchmarking is required for material work")
+    _require(benchmark.get("required_before_every_project_task") is True, "benchmarking and industry research are required before every project task")
+    _require(benchmark.get("research_depth") == "PROPORTIONAL_TO_TASK_RISK_AND_SCOPE", "benchmark research depth policy differs")
     _require(benchmark.get("timing") == "PRE_WORK_BEFORE_PLAN_OR_MUTATION", "benchmarking must happen before planning or mutation")
     _require(benchmark.get("research_packet_required_before_task") is True, "benchmark research packet is required before material work")
     _require(benchmark.get("required_prework_sequence") == EXPECTED_PREWORK_SEQUENCE, "benchmark pre-work sequence differs")
