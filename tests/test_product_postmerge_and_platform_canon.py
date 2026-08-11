@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ACTIVE = ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
 ROADMAP = ROOT / "docs/04_ROADMAP.md"
 README = ROOT / "README.md"
+START_HERE = ROOT / "START_HERE.md"
 CURRENT_STATE = ROOT / "docs/planning-data/current_operating_state.json"
 PLATFORM = ROOT / "docs/decisions/2026-08-06_WINDOWS_ANDROID_DUAL_TARGET_DECISION.md"
 PRODUCT_MERGE = "a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90"
@@ -111,6 +112,43 @@ class ProductPostMergeAndPlatformCanonTests(unittest.TestCase):
             "모바일은 PC 버티컬 슬라이스와 전투 코어 검증 뒤 재평가할 미래 후보",
         ):
             self.assertNotIn(stale, readme)
+
+    def test_root_start_here_is_stable_router_not_mutable_state_snapshot(self) -> None:
+        text = START_HERE.read_text(encoding="utf-8")
+        current = text.split("## 현재 기준", 1)[1].split("## 현재 책임 원본", 1)[0]
+        owners = text.split("## 현재 책임 원본", 1)[1].split("## 프로젝트 코어", 1)[0]
+        work = text.split("## 현재 작업", 1)[1].split("## Work Mode", 1)[0]
+
+        self.assertIn("current_state_owner: ACTIVE_CONTEXT", current)
+        self.assertIn("current_pr_authority: GITHUB_PR_METADATA", current)
+        self.assertIn("product_build_requires_user_planning_complete: true", current)
+        self.assertIn("design_platforms: WINDOWS_ANDROID", current)
+        self.assertIn("platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS", current)
+
+        for mutable_key in (
+            "runtime_integration_pr:",
+            "planning_work_mode:",
+            "runtime_implementation:",
+            "latest_combat_planning_runtime:",
+            "next_package:",
+            "human_validation:",
+        ):
+            self.assertNotIn(mutable_key, current)
+
+        self.assertIn(
+            "docs/decisions/2026-08-06_WINDOWS_ANDROID_DUAL_TARGET_DECISION.md",
+            owners,
+        )
+        self.assertNotIn("docs/decisions/2026-08-02_PLATFORM_SCOPE_DECISION.md", owners)
+        self.assertNotIn("최근 병합 성장 체크포인트", owners)
+        self.assertNotIn("구현 종료:", owners)
+
+        self.assertIn("시작 공개 거리 2", text)
+        self.assertIn("`거리 N`", text)
+        self.assertIn("사용자 명시 `기획 완료`", work)
+        self.assertIn("ACTIVE_CONTEXT의 current next action", work)
+        self.assertNotIn("필요한 이미지·애니메이션·HX 생성·검수·승인", work)
+        self.assertNotIn("VERTICAL_SLICE_APP_FLOW_SHELL Codex 구현 인계", work)
 
 
 if __name__ == "__main__":

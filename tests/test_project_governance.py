@@ -77,9 +77,8 @@ class ProjectGovernanceTests(unittest.TestCase):
                 self.assertIn(token, text, f"{relative} is missing fixture boundary {token!r}")
 
     def test_active_app_flow_operating_state_is_synchronized(self) -> None:
-        stable_discovery_docs = [
+        stable_snapshot_docs = [
             "AGENTS.md",
-            "START_HERE.md",
             "README.md",
             "[기획서]/00_프로젝트_허브/START_HERE.md",
             "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
@@ -93,7 +92,7 @@ class ProjectGovernanceTests(unittest.TestCase):
             "phase: BUILD_IN_PROGRESS",
             "implementation_authorization: GRANTED",
         ]
-        for relative in stable_discovery_docs:
+        for relative in stable_snapshot_docs:
             text = (ROOT / relative).read_text(encoding="utf-8")
             self.assertIn(
                 "VERTICAL_SLICE_APP_FLOW_PLANNING",
@@ -126,6 +125,32 @@ class ProjectGovernanceTests(unittest.TestCase):
             for token in superseded_active_tokens:
                 self.assertNotIn(token, text, f"{relative} still grants superseded state {token!r}")
 
+        start_here_relative = "START_HERE.md"
+        start_here_text = (ROOT / start_here_relative).read_text(encoding="utf-8")
+        for token in (
+            "current_state_owner: ACTIVE_CONTEXT",
+            "current_pr_authority: GITHUB_PR_METADATA",
+            "current_sheet_authority: GOOGLE_SHEET_00_02_04_99",
+            "product_build_requires_user_planning_complete: true",
+            "ACTIVE_CONTEXT.md",
+        ):
+            self.assertIn(token, start_here_text, f"{start_here_relative} is missing stable router token {token!r}")
+        for mutable_key in (
+            "runtime_integration_pr:",
+            "planning_work_mode:",
+            "runtime_implementation:",
+            "latest_combat_planning_runtime:",
+            "next_package:",
+            "human_validation:",
+        ):
+            self.assertNotIn(
+                mutable_key,
+                start_here_text,
+                f"{start_here_relative} must not duplicate mutable state {mutable_key!r}",
+            )
+        for token in superseded_active_tokens:
+            self.assertNotIn(token, start_here_text, f"{start_here_relative} still grants superseded state {token!r}")
+
         active_relative = "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
         active_text = (ROOT / active_relative).read_text(encoding="utf-8")
         current_state = json.loads(
@@ -151,7 +176,7 @@ class ProjectGovernanceTests(unittest.TestCase):
         for token in [
             "TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01",
             "TEN-DEC-20260801-SITUATION-SCREEN-01",
-            "runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65",
+            "runtime_implementation: TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92",
             "automated_validation: PASS",
             "human_validation: NOT_RUN",
             "2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md",
