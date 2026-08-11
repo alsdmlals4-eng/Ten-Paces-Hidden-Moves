@@ -2,7 +2,7 @@
 
 ## Status
 
-`USER_APPROVED_DESIGN / SPEC_REVIEW_PENDING / IMPLEMENTATION_NOT_STARTED`
+`USER_APPROVED_REVISED_SPEC / IMPLEMENTATION_PLAN_READY / IMPLEMENTATION_NOT_STARTED`
 
 ## Decision
 
@@ -57,6 +57,12 @@ Hera's current addon does not require one globally fixed port. It binds the firs
 
 `docs/superpowers/specs/2026-08-11-local-executor-bootstrap-design.md`
 
+## Implementation Plan
+
+`docs/superpowers/plans/2026-08-11-local-executor-bootstrap.md`
+
+The implementation plan uses TDD and an adversarial review loop before the launcher is handed to the user. Its persistent source will be `tools/start_ten_paces_local_executor.ps1`; the chat handoff must present the full current script as one copy/paste PowerShell block.
+
 ## Next Gate
 
-User reviews the revised written design spec. After explicit review approval, create the implementation plan and then produce/validate the one-shot PowerShell launcher before first local execution.
+Execute the approved implementation plan on the current branch: RED contract → launcher GREEN → PowerShell syntax check → adversarial P0/P1=0 review → user-local first run and repeat-run evidence. The first local run remains required before any new Godot AI 3.1.4 local acceptance claim.
