@@ -2,7 +2,7 @@
 
 ## Status
 
-`USER_APPROVED / WINDOWS_RUNTIME_PARTIAL_PASS / HERA_AUTH_RECOVERY_V5_PENDING / CODEX_DEDICATED_HOME_LOGIN_PENDING`
+`USER_APPROVED / WINDOWS_BOOTSTRAP_TO_CODEX_SESSION_PASS / IN_CODEX_FRESH_READINESS_PENDING / REPEAT_RUN_PENDING`
 
 ## Decision
 
@@ -37,11 +37,12 @@ hera_shared_token_file: C:\Users\user\.hera-agent-godot\token
 codex_home: C:\Users\user\.codex-ten-paces
 codex_sandbox: workspace-write
 codex_approval: never
+project_launcher: tools/start_ten_paces_local_executor.ps1
 ```
 
 ## Corrected Editor-Context Mechanism
 
-Observed Windows/Godot 4.7.1 evidence supersedes the original `--recovery-mode + --script` implementation-plan mechanism. The working mechanism is a temporary `%TEMP%` Godot project whose root scene carries an `@tool` script, launched as a headless editor. The script self-terminates with `SceneTree.quit()` after EditorSettings or Godot-AI Codex configuration work. No bootstrap files are placed in the product repository.
+Observed Windows/Godot 4.7.1 evidence supersedes the original `--recovery-mode + --script` editor-context mechanism. The working mechanism is a temporary `%TEMP%` Godot project whose root scene carries an `@tool` script, launched as a headless editor. The script self-terminates with `SceneTree.quit()` after EditorSettings or Godot-AI Codex configuration work. No bootstrap files are placed in the product repository.
 
 Observed probe:
 
@@ -53,38 +54,51 @@ EDITOR_SETTINGS=AVAILABLE
 HEADLESS_EDITOR_TOOL_CONTEXT=PASS
 ```
 
+The failed standalone `--script` path is historical debugging evidence only and is not a current execution instruction.
+
 ## Windows Runtime Evidence — 2026-08-12 KST
 
-v3 reached the persistent dedicated environment and established:
+Earlier v3 evidence established the dedicated Godot/Godot-AI/Hera path. Subsequent v4/v5 runs repaired Codex login and reused-editor Hera authentication without weakening the exact-project boundary.
+
+Latest observed v5 checkpoint:
 
 ```yaml
+launcher_v5_sha256: db7717ad7fda58a43aaf42c930d6c27a2b70d8862db894208c3ae2a861f9db7c
+windows_powershell_download_hash: PASS
+windows_powershell_install_hash: PASS
 windows_powershell_parser: PASS
 godot: 4.7.1.stable.official.a13da4feb
-godot_self_contained_editor: STARTED
 higodot_godot_ai: 3.1.4
 higodot_http: 8003
 higodot_ws: 9503
-higodot_server_pid_observed: 21664
+hera_auth_source_observed: shared_token
 hera_exact_project: PASS
-hera_pid_observed: 27640
-hera_port_observed: 8772
+hera_pid_observed_historical: 29804
+hera_port_observed_historical: 8773
 hera_token_raw_value_saved_to_evidence: false
-codex_dedicated_home_login: NOT_LOGGED_IN
-codex_launch: NOT_REACHED
+codex_dedicated_home_login: PASS_TO_INTERACTIVE_SESSION
+codex_cli_observed: 0.147.0
+codex_exact_project_directory: PASS
+codex_sandbox_ready: PASS
+in_codex_fresh_readiness: NOT_RUN
+fresh_powershell_repeat_run: NOT_RUN
 ```
 
-v4 fixed the Windows PowerShell 5.1 `codex.cmd : Not logged in` wrapper by treating semantic `Not logged in` as the expected first-use authentication branch. On the next fresh-shell run v4 then failed earlier at Hera authentication while reusing the already-running exact Ten Paces editor:
+The observed PID and dynamic Hera port are historical evidence only. They must never be reused as current runtime authority in a later session.
 
-```text
-HERA_AUTH_MISMATCH_CLOSE_TEN_PACES_EDITOR_AND_RERUN
-status: unauthorized: missing or wrong X-Hera-Token
-```
+## Recovery Lessons Incorporated in v5
 
-This is not a port/project-identity failure. Hera's addon and CLI resolve authentication identically: non-empty `HERA_AGENT_GODOT_TOKEN` first, then `~/.hera-agent-godot/token`; the addon reads the token once at plugin start while the CLI re-reads on each invocation. Therefore a reused long-lived editor may legitimately retain a different supported token source from a later fresh PowerShell's first assumption.
+### Editor context
 
-## v5 Candidate
+Standalone `--script` did not execute the required editor context. Current code uses a real headless editor plus `@tool` scene and self-termination.
 
-v5 keeps the project token for a newly launched Ten Paces editor, but when reusing an exact already-running editor it no longer assumes one auth source. After exact-project heartbeat/PID selection it probes known sources against that exact instance only, without printing secret values:
+### Windows native stderr
+
+Windows PowerShell 5.1 can wrap native stderr in a `NativeCommandError` record even when the text represents a normal semantic state. Codex login therefore classifies process exit status and semantic `Not logged in` content rather than treating the wrapper itself as the root failure.
+
+### Reused Hera editor authentication
+
+Hera reads its token at plugin start. A fresh shell reusing that editor may not share the same first auth assumption. v5 first selects the exact-project heartbeat/PID and then tries only supported auth sources against that exact instance:
 
 ```text
 current process env token
@@ -93,33 +107,41 @@ current process env token
 → no-token only when no token candidates exist
 ```
 
-The first successful candidate becomes the current shell's `HERA_AGENT_GODOT_TOKEN`. Unauthorized candidates are skipped; non-auth Hera failures stop immediately; if no known token source authenticates, the launcher fails closed and asks for the exact Ten Paces editor to be closed/restarted. No token value is written to evidence.
+Only the source label may enter evidence; secret token values do not.
 
-```yaml
-launcher_v5_sha256: db7717ad7fda58a43aaf42c930d6c27a2b70d8862db894208c3ae2a861f9db7c
-v5_targeted_red: 3/3 FAIL against v4 as expected
-v5_targeted_green: 3/3 PASS
-v5_static_adversarial_checks: 25/25 PASS
-v5_windows_parser: NOT_RUN
-v5_windows_runtime: NOT_RUN
-```
+## Repository Persistence
+
+The v5 launcher is now project-owned at `tools/start_ten_paces_local_executor.ps1` and protected by `tests/test_local_executor_bootstrap_contract.py`. Local live readiness is routed through the existing `ten-paces-verification` owner via `local-executor-readiness`; no duplicate broad Skill is created.
 
 ## Authority Snapshot
 
-- Base default branch: `main`; fresh latest commit: `1d6cc79ae95ffb67ba4de618f010a6540fc6e02c`.
-- Base open PRs: 0 at this refresh.
-- Project default branch: `main`; current main: `b9a9db62f4fd860131561a11d2ddebf3d496f39a`.
-- Project open PR: draft #162, whose Phase-B blocking prose is stale relative to the user's later explicit Plan-C implementation authorization.
+- Project default branch at this closeout baseline: `main@b9a9db62f4fd860131561a11d2ddebf3d496f39a`.
+- Project open PR #162 remains read-only/reference for this goal; its Phase-B prose is stale relative to later user instructions and its changed files do not overlap the local-executor closeout.
+- Base must always be freshly refetched because other project/BCP work may run concurrently.
 - Same Decision ID is tracked in the project Google Sheet.
 
 ## Safety / Evidence Boundary
 
-Bootstrap orchestration does not itself prove live authoring readiness and does not authorize unrelated product changes, destructive Git cleanup, unrelated process termination, automatic port fallback, or token disclosure. Fresh exact-project HiGodot + Hera readiness remains required before persistent product mutation.
+Bootstrap orchestration and a Codex window do not themselves prove live authoring readiness. Persistent product mutation must not be justified by this Decision until the in-Codex exact-project readiness gate is actually run and passes. No destructive Git cleanup, unrelated process termination, automatic port fallback, or token disclosure is authorized by this bootstrap.
 
-## Current Conflict Note
+## Current Handoff Gate
 
-`docs/superpowers/plans/2026-08-11-local-executor-bootstrap.md` still contains the superseded `--recovery-mode + --script` seed description. This Decision is the current authority for the verified `@tool` headless-editor mechanism; the implementation plan must be reconciled before merge/finalization.
+The user explicitly paused local readiness work to perform handoff/BCP closeout. Therefore the remaining local gates are persisted rather than fabricated as PASS:
 
-## Next Gate
+```text
+IN_CODEX_FRESH_READINESS_GATE
+→ PROJECT_IDENTITY + CODEX_HOME
+→ exact dedicated Godot
+→ Godot AI 3.1.4 / HTTP 8003 / WS 9503
+→ smallest read-only GODOT_AI_MCP_LIVE call
+→ Hera v1.0.0 exact-project authenticated read-only status
+→ GUT 9.7.1
+→ REPO_NO_NEW_MUTATION
+→ OVERALL PASS
 
-Run v5 from a brand-new Windows PowerShell while reusing the currently running exact Ten Paces editor if possible. Require `HERA_AUTH_SOURCE=...` followed by `HERA_EXACT_PROJECT_READY`. Then complete the project-specific Codex login if requested, require `CODEX_LOGIN_READY`, launch Codex, and fresh-check exact project + Godot AI 3.1.4 on 8003/9503 + Hera exact-project readiness. A second brand-new PowerShell repeat run proves idempotency before final promotion.
+then
+
+FRESH_POWERSHELL_REPEAT_RUN_GATE
+```
+
+Only after both gates are observed may a later session promote this local-executor contract beyond the current checkpoint.
