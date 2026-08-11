@@ -7,12 +7,15 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DECISION_ID = "TEN-DEC-20260809-GODOT-AI313-GUT971-HERA100-ACTIVE-TOOLCHAIN-01"
+TOOLCHAIN_OVERLAY_ID = "TEN-DEC-20260811-GODOT-AI314-ACTIVE-TOOLCHAIN-FRESHNESS-01"
 GUT_DECISION_ID = "TEN-DEC-20260807-GUT-9-7-1-RECONCILIATION-01"
 HERA_DECISION_ID = "TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01"
 COLLECTOR_DECISION_ID = "TEN-DEC-20260809-LOCAL-GODOT-EVIDENCE-COLLECTOR-01"
 DECISION = ROOT / "docs/decisions/2026-08-09_GODOT_AI313_GUT971_HERA100_ACTIVE_TOOLCHAIN.md"
+TOOLCHAIN_OVERLAY_DECISION = ROOT / "docs/decisions/2026-08-11_GODOT_AI314_ACTIVE_TOOLCHAIN_FRESHNESS.md"
 HERA_DECISION = ROOT / "docs/decisions/2026-08-08_HERA_V1_LIVE_QA_RECONCILIATION_DECISION.md"
 CONTRACT = ROOT / "docs/planning-data/active_godot_toolchain_20260809.json"
+TOOLCHAIN_OVERLAY_CONTRACT = ROOT / "docs/planning-data/active_godot_toolchain_overlay_20260811.json"
 HERA_CONTRACT = ROOT / "docs/planning-data/approved_20260808_hera_v1_live_qa_reconciliation.json"
 LOCAL_ACCEPTANCE = ROOT / "docs/planning-data/local_godot_471_gut_junit_acceptance_20260810.json"
 HERA_ACCEPTANCE = ROOT / "docs/planning-data/local_hera_v1_live_qa_acceptance_20260810.json"
@@ -33,7 +36,7 @@ def plugin_version(relative: str) -> str:
 
 class ActiveGodotToolchainReconciliationTests(unittest.TestCase):
     def test_active_tool_versions_and_project_state_are_preserved(self) -> None:
-        self.assertEqual("3.1.3", plugin_version("addons/godot_ai/plugin.cfg"))
+        self.assertEqual("3.1.4", plugin_version("addons/godot_ai/plugin.cfg"))
         self.assertEqual("9.7.1", plugin_version("addons/gut/plugin.cfg"))
         self.assertEqual("1.0.0", plugin_version("addons/hera_agent_godot/plugin.cfg"))
         project = (ROOT / "project.godot").read_text(encoding="utf-8")
@@ -47,6 +50,43 @@ class ActiveGodotToolchainReconciliationTests(unittest.TestCase):
             'enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/hera_agent_godot/plugin.cfg")',
             project,
         )
+
+    def test_godot_ai_314_freshness_overlay_preserves_claim_ceiling(self) -> None:
+        decision = TOOLCHAIN_OVERLAY_DECISION.read_text(encoding="utf-8")
+        for token in (
+            TOOLCHAIN_OVERLAY_ID,
+            DECISION_ID,
+            "3.1.4",
+            "3.1.3",
+            "SOLE_PERSISTENT_GODOT_AUTHORING_AUTHORITY",
+            "DETERMINISTIC_GDSCRIPT_TEST_AUTHORITY",
+            "LIVE_QA_AND_OBSERVABILITY_ONLY",
+            "local_editor_acceptance_for_3_1_4: NOT_RUN",
+            "product_implementation_authorized: false",
+        ):
+            self.assertIn(token, decision)
+
+        overlay = json.loads(TOOLCHAIN_OVERLAY_CONTRACT.read_text(encoding="utf-8"))
+        self.assertEqual(TOOLCHAIN_OVERLAY_ID, overlay["decision_id"])
+        self.assertEqual(DECISION_ID, overlay["parent_decision_id"])
+        self.assertEqual("3.1.4", overlay["effective_toolchain"]["godot_ai"])
+        self.assertEqual("3.1.3", overlay["godot_ai"]["previous_version"])
+        self.assertEqual("3.1.4", overlay["godot_ai"]["current_repo_version"])
+        self.assertEqual(
+            "SOLE_PERSISTENT_GODOT_AUTHORING_AUTHORITY",
+            overlay["godot_ai"]["role"],
+        )
+        self.assertEqual("v3.1.4", overlay["godot_ai"]["upstream_release"])
+        self.assertEqual(
+            "77d5bc7f8e0062f88aef08f3471cc6e4546a0d71d18813752781689ab6ce4848",
+            overlay["godot_ai"]["upstream_plugin_zip_sha256"],
+        )
+        self.assertEqual("NOT_VERIFIED", overlay["godot_ai"]["current_repo_copy_exact_release_archive_integrity"])
+        self.assertEqual("NOT_RUN", overlay["godot_ai"]["local_editor_acceptance_for_3_1_4"])
+        self.assertEqual("9.7.1", overlay["effective_toolchain"]["gut"])
+        self.assertEqual("1.0.0", overlay["effective_toolchain"]["hera"])
+        self.assertEqual("NOT_RUN", overlay["claim_ceiling"]["local_godot_ai_3_1_4_acceptance"])
+        self.assertFalse(overlay["claim_ceiling"]["product_implementation_authorized"])
 
     def test_decision_and_contract_define_authority_and_promoted_local_claim_ceiling(self) -> None:
         decision = DECISION.read_text(encoding="utf-8")
