@@ -8,12 +8,13 @@
 > 현재 이동·사거리·자원 예산·중단·묶음 회복 결정: `docs/decisions/2026-08-04_COMBAT_PRICING_INTERRUPTION_RECOVERY_DECISION.md` (`TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01`)  
 > 내력 자동 회복 현행 오버레이: `docs/decisions/2026-08-04_RESOURCE_SATURATION_INTERNAL_RECOVERY_DECISION.md` (`TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`)  
 > 기존 승인 행동 유효 비용·슬롯 오버레이: `docs/decisions/2026-08-04_EXISTING_APPROVED_ACTIONS_REPRICE_DECISION.md` (`TEN-DEC-20260804-EXISTING-ACTIONS-REPRICE-01`)  
+> 현재 전투 UI 정보 위계 오버레이: `docs/decisions/2026-08-11_COMBAT_UI_INFORMATION_HIERARCHY_DECISION.md` (`TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01`)  
 > 구형 사거리 가격(대체됨): `docs/decisions/2026-08-02_RANGE_PRICE_BANDS_DECISION.md`  
 > 시작 빌드·성장 요구치: `docs/decisions/2026-08-02_STARTING_STAT_TOTAL20_MANUAL_BONUS_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_PRIMARY_STAT4_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_SOFT_GUARANTEE_DECISION.md`, `docs/decisions/2026-08-02_EVEN_STAR_STAT_ESCALATION_DECISION.md`, `docs/decisions/2026-08-03_STAR7_TECHNIQUE_PRIMARY_STAT8_DECISION.md`  
 > 핵심 스테이터스 정책: `docs/decisions/2026-08-03_UNCAPPED_CORE_STATS_DECISION.md`  
 > 기술 작성 결정: `docs/decisions/2026-08-02_TECHNIQUE_AUTHORING_TAG_FIXED_STAT_DECISION.md`  
 > 능력치 배수 가격: `docs/decisions/2026-08-02_STAT_REFERENCE_PRICE_BASE4_DECISION.md`  
-> 중앙 편집 데이터: `docs/planning-data/poc_balance_budget.json`, `docs/planning-data/approved_20260804_combat_pricing_interruption_recovery_contract.json`, `docs/planning-data/approved_20260804_resource_saturation_internal_recovery_contract.json`, `docs/planning-data/approved_20260804_existing_action_reprice_contract.json`  
+> 중앙 편집 데이터: `docs/planning-data/poc_balance_budget.json`, `docs/planning-data/approved_20260804_combat_pricing_interruption_recovery_contract.json`, `docs/planning-data/approved_20260804_resource_saturation_internal_recovery_contract.json`, `docs/planning-data/approved_20260804_existing_action_reprice_contract.json`, `docs/planning-data/approved_20260811_combat_ui_information_hierarchy_contract.json`  
 > 현재 구현 기준: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`  
 > 상태: `CURRENT_APPROVED_PLANNING`; main 런타임은 일부 `IMPLEMENTED_LEGACY`
 
@@ -22,24 +23,37 @@
 - 최신 사용자 승인 Decision과 approved planning JSON이 최우선이다.
 - 본 문서는 활성 전투 책임 원본이다.
 - 현재 런타임은 관찰·장풍이 없는 기초 행동 8종과 절대 원공격력 표본을 사용하므로 최신 기획과 다른 부분은 `IMPLEMENTED_LEGACY`다.
+- 현재 런타임의 시작 좌표 플레이어4/상대7도 새 공개 시작 거리2 기획과 다른 `IMPLEMENTED_LEGACY`다.
 - UI·VFX·오디오는 계산을 다시 만들지 않고 판정 이벤트만 표현한다.
 - 제품 코드·런타임 데이터는 별도 Build 승인 전 변경하지 않는다.
 
 ## 2. 전장과 거리
 
-- 전장은 1~10의 일자형 10칸이다.
-- 플레이어는 4번, 상대는 7번에서 시작하며 시작 거리는 `abs(4 - 7) = 3`이다.
+- 전장은 논리적으로 1~10의 일자형 10칸이다.
+- 플레이어에게 노출하는 전투 시작 공개 거리는 `2`다.
+- 기본 전투 UI는 절대 칸 번호 발판을 상시 표시하지 않고 두 전투원의 상대적 간격과 `거리 N`을 표시한다.
+- 새 절대 시작 좌표는 이번 기획에서 임의 확정하지 않으며 `IMPLEMENTATION_BINDING_PENDING`이다.
+- 현재 Godot 런타임의 플레이어4/상대7 시작 좌표는 `IMPLEMENTED_LEGACY` 증거로 보존한다.
 - 같은 타일의 거리는 0이며 `[밀착]`이다.
 - 같은 빈 목적지와 정지 상대 칸 진입을 허용한다.
 - 자리 교환·상대 통과·전장 밖 이동은 금지한다.
 - 방향성 공격은 방향과 사거리를 모두 만족해야 실제 적중한다.
 
+예시:
+
+```text
+검객 A ───── 거리 2 ───── 검객 B
+거리 0 = [밀착]
+```
+
 ## 3. 라운드와 계획 확정
 
 - 한 라운드는 `3수 → 3수 → 4수`의 세 묶음이다.
-- 플레이어는 현재 묶음만 편집하며 `[진행]` 뒤 잠근다.
+- 플레이어는 현재 묶음만 편집하며 `행동계획 잠금`으로 확정한다.
+- `행동계획 잠금` 뒤 해당 묶음의 제거·재배치·대상/방향 편집은 불가하다.
 - 2수 행동은 첫 수 `[전조]`, 둘째 수 `[실행]`이다.
 - 3수 행동은 앞 두 수 `[전조]`, 마지막 수 `[실행]`이다.
+- 계획판에서 실행 수는 실제 행동 종류를 표시한다. 예: 2슬롯 공격은 `1수 [전조] → 2수 [공격] 기술명`.
 - `[전조]`는 실행 전 점유·표시 단계이며 독립적인 강화 효과가 없다.
 - 다중 수 행동의 모든 전조·실행 슬롯은 하나의 `action_instance_id`로 연결한다.
 - 전조 중 실제 체력 피해를 받고 `[강건]`으로 중단을 막지 못하면 연결된 남은 전조와 실행 슬롯을 전부 취소한다.
@@ -53,14 +67,13 @@
 → 적 AI가 회복된 현재 공개 상태로 이번 묶음 계획 확정
 → 적 계획 잠금
 → 축적 관찰량으로 앞 수 행동 종류 공개
-→ 플레이어 계획·확정
+→ 플레이어 계획·행동계획 잠금
 → 묶음 실행
 ```
 
 - 전투 최초 1묶음 시작에는 전환 회복을 적용하지 않는다.
 - `1묶음→2묶음`, `2묶음→3묶음`, `3묶음→다음 라운드 1묶음`에 동일한 회복을 적용한다.
 - 묶음 전환·라운드 시작에는 별도 내력 자동 회복이 없다. 내력은 준비된 명상·청심조식·운수회신 등 승인된 명시 경로로만 회복한다.
-
 - 적은 이번 묶음만 계획하고 미래 묶음을 미리 만들지 않는다.
 - 적은 플레이어의 미확정 슬롯·대상·방향을 읽지 않는다.
 - 공개 뒤 적 계획을 더 유리한 행동으로 교체하지 않는다.
@@ -140,11 +153,23 @@ AI 가중치·선호 행동·실제 현재 계획·정답 파훼법은 공개하
 - `[관찰]`
 
 - 기본 관찰 1회는 관찰량 1을 고정 획득한다.
+- 적은 먼저 현재 적용 대상 묶음을 확정·잠그고, 그 뒤 축적 관찰량만큼 앞 수부터 행동 종류를 공개한다.
 - 저장·획득 상한은 없다.
 - 남은 관찰량은 묶음·라운드 경계를 넘어 이월한다.
 - 복합 기술은 `[이동+공격]`처럼 실제 구성 종류를 모두 표시한다.
 - 기술명·무공서명·정확한 비용·방향·거리·피해·사거리·대상·AI 가중치는 공개하지 않는다.
 - 적 AI는 관찰 행동을 사용하지 않는다.
+
+예:
+
+```text
+상대 실제 잠금: 비연검(2슬롯) → 이동
+관찰량1: [전조] / ? / ?
+관찰량2: [전조] / [공격] / ?
+관찰량3: [전조] / [공격] / [이동]
+```
+
+`비연검`은 표기 예시용 이름이며 제품 콘텐츠 승인이 아니다.
 
 ## 8. 판정 파이프라인
 
@@ -258,9 +283,10 @@ A도 체력 피해 0이고 양측 공격이 유지됨
 - `ON_HEALTH_DAMAGE`: 실제 체력이 1 이상 감소할 때만 발생한다.
 - 기본 트리거 범위는 공격 효과당 1회다. 피해 단위마다 발동하려면 `PER_DAMAGE_PACKET`을 명시한다.
 - `[밀치기 N]`, `[추격 N]`, `[후퇴 N]`은 각 태그의 적중·방향·경계 규칙을 따른다.
-
 - 공간 부족 잔여 이동은 피해·절초기세·다른 효과로 변환하지 않는다.
 - 같은 공격 효과에 여러 이동 부가효과가 있으면 작성된 종속 효과 순서가 필수다.
+
+`적중`은 결정론적 사건 이름이다. `예상 명중률` 또는 `% 명중률` 시스템은 존재하지 않는다.
 
 ## 12. 자원과 절초
 
@@ -365,6 +391,7 @@ A도 체력 피해 0이고 양측 공격이 유지됨
 - 최신 시작 총합20·소프트 해금 추천·짝수 성 신규 지급·7성 주8 요구 런타임 미반영.
 - 전체 주요 비무 5전·경로·성장·결과 등급 런타임: 미구현.
 - 최신 전조 전체 중단, 준비 무비용, 묶음별 기력·절초기세 +1(내력 자동 회복 없음), 회피 성공 기세, 이동·사거리 15틱 통합 가격은 제품 런타임 미반영.
+- 공개 시작 거리2와 거리 중심 UI는 제품 런타임 미반영이며 현재 4/7 좌표는 `IMPLEMENTED_LEGACY`.
 
 필수 증거를 분리한다.
 

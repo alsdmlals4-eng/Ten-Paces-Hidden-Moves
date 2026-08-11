@@ -152,6 +152,20 @@ def verify_structured_contract() -> None:
         assert hud[side]["momentum"] == [0, 5]
         assert hud[side]["attack_power"] == 8
 
+    overlay = data("docs/planning-data/approved_20260811_combat_ui_information_hierarchy_contract.json")
+    assert overlay["decision_id"] == "TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01"
+    assert overlay["battlefield_ui"]["public_start_distance"] == 2
+    assert overlay["battlefield_ui"]["numbered_floor_cells_visible"] is False
+    assert overlay["battlefield_ui"]["distance_badge_required"] is True
+    assert overlay["card_body"]["range_visibility"] == "ATTACK_ACTIONS_ONLY"
+    assert overlay["card_body"]["omit_absent_fields"] is True
+    assert overlay["observation"]["reveals_action_type_only"] is True
+    assert overlay["observation"]["technique_name_hidden"] is True
+    assert overlay["multi_slot"]["two_slot_phases"] == ["전조", "실행"]
+    assert overlay["plan_lock"]["player_facing_label"] == "행동계획 잠금"
+    assert "[기절]" in overlay["forbidden_ui_tokens"]
+    assert "예상 명중률" in overlay["forbidden_ui_tokens"]
+
 
 def verify_documents() -> None:
     docs = {key: text(path) for key, path in DOCS.items()}
@@ -172,7 +186,50 @@ def verify_documents() -> None:
     for key in ("readme", "game", "rules", "poc", "hub"):
         all_tokens(docs[key], ("4", "7", "합", "공개 상태", "AI"), key)
 
-    all_tokens(docs["rules"], ("abs(4 - 7) = 3", "같은 타일의 거리는 0", "방어도 차감", "필중", "CombatAiPlanner", "결전 다시 시작"), "rules")
+    all_tokens(
+        docs["rules"],
+        (
+            "시작 공개 거리는 `2`",
+            "같은 타일의 거리는 0",
+            "방어도 차감",
+            "필중",
+            "CombatAiPlanner",
+            "결전 다시 시작",
+        ),
+        "rules",
+    )
+    assert "abs(4 - 7) = 3" not in docs["rules"], "rules still exposes superseded start distance 3"
+
+    all_tokens(
+        docs["ui"],
+        (
+            "행동계획 잠금",
+            "공격 행동에만 `사거리`",
+            "비공격 행동에는 `사거리` 항목 자체를 만들지 않는다",
+            "[관찰] 1",
+            "1수 `[전조]` → 2수 `[공격] 비연검",
+            "[기절]",
+            "예상 명중률",
+        ),
+        "ui hierarchy overlay",
+    )
+
+    decision = text("docs/decisions/2026-08-11_COMBAT_UI_INFORMATION_HIERARCHY_DECISION.md")
+    all_tokens(
+        decision,
+        (
+            "TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01",
+            "거리 2",
+            "행동계획 잠금",
+            "ATTACK_ACTIONS_ONLY",
+            "[관찰]",
+            "[전조]",
+            "[기절]",
+            "예상 명중률",
+        ),
+        "combat ui information hierarchy decision",
+    )
+
     all_tokens(docs["poc"], ("STEP 14", "NOT_RUN", "공개 상태"), "poc")
     all_tokens(docs["qa"], ("BOARD-002", "CLASH-001", "AI-001", "RESTART-001", "STEP 14 사람 플레이"), "qa")
     all_tokens(docs["content"], ("CURRENT_T0", "PLANNED_T1", "HYPOTHESIS_T2_PLUS", "HOLD"), "content")
