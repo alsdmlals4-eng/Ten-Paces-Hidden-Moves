@@ -45,10 +45,19 @@ class LocalExecutorBootstrapContractTests(unittest.TestCase):
             "status",
         ):
             self.assertIn(token, self.text)
+        self.assertIn("$HeraTokenFile = Join-Path $TargetGodot '.hera-token'", self.text)
+        self.assertNotIn("Join-Path $HeraHome 'token'", self.text)
         self.assertNotRegex(self.text, r"(?i)Hera.*FORBIDDEN")
+
+    def test_codex_mcp_config_uses_project_godot_ai_configurator(self) -> None:
+        self.assertIn('preload("res://addons/godot_ai/client_configurator.gd")', self.text)
+        self.assertIn('Configurator.configure("codex", "http://127.0.0.1:8003/mcp", context)', self.text)
+        self.assertIn("CODEX_GODOT_AI_CONFIGURE_FAILED", self.text)
+        self.assertNotRegex(self.text, r"(?i)codex(?:\.cmd)?\s+mcp\s+add")
 
     def test_ports_fail_closed_without_process_kill_or_auto_switch(self) -> None:
         self.assertIn("FOREIGN_OR_AMBIGUOUS_PORT_OWNER", self.text)
+        self.assertIn("HIGODOT_EXPECTED_PORT_NOT_READY", self.text)
         forbidden = (
             r"Stop-Process\s+.*-Force",
             r"taskkill\b",
