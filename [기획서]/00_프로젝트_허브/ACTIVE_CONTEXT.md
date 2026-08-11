@@ -290,3 +290,24 @@ Base remote `main`의 exact SHA는 이 live router에 current 값으로 저장�
 - HANDOFF는 명시적 session snapshot이므로 자동 current화하지 않는다.
 - PR #82와 그 SHA는 역사 자료이지 현재 active planning PR이 아니다.
 - 사용자 최신 지시로 중단된 작업은 실패로 승격하지 않고 `DEFERRED_BY_USER`와 실제 검증 ceiling을 함께 기록한다.
+
+## LOCAL_EXECUTOR_HANDOFF_CHECKPOINT — 2026-08-12
+
+`TEN-DEC-20260811-LOCAL-EXECUTOR-BOOTSTRAP-01`의 로컬 실행환경 작업은 사용자의 인수인계 우선 지시로 현재 checkpoint에서 멈춘다. 실행 정본은 `tools/start_ten_paces_local_executor.ps1`이며, 이 checkpoint는 제품 구현 완료를 의미하지 않는다.
+
+```yaml
+local_executor_launcher: tools/start_ten_paces_local_executor.ps1
+launcher_generation: v5
+launcher_sha256_observed: db7717ad7fda58a43aaf42c930d6c27a2b70d8862db894208c3ae2a861f9db7c
+windows_powershell_parser_install: PASS
+dedicated_godot_4_7_1: RUNTIME_OBSERVED
+higodot_godot_ai_3_1_4_http_8003_ws_9503: RUNTIME_OBSERVED
+hera_exact_project_auth: RUNTIME_OBSERVED_SHARED_TOKEN_NO_SECRET_SAVED
+codex_project_specific_home_login: COMPLETED_TO_INTERACTIVE_SESSION
+codex_exact_project_sandbox_ready: RUNTIME_OBSERVED
+IN_CODEX_FRESH_READINESS: NOT_RUN
+FRESH_POWERSHELL_REPEAT_RUN: NOT_RUN
+product_mutation_after_checkpoint: NOT_AUTHORIZED_BY_READINESS_EVIDENCE
+```
+
+historical PID/port/session 값은 이 문서에서 current authority로 사용하지 않는다. 새 세션은 GitHub/Sheet를 먼저 다시 읽은 뒤 `IN_CODEX_FRESH_READINESS_GATE`를 수행하고, 그 Gate가 PASS일 때만 `FRESH_POWERSHELL_REPEAT_RUN_GATE`로 진행한다. 두 Gate가 끝날 때까지 launcher/process/listening-port 존재를 live readiness PASS로 승격하지 않는다.

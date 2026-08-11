@@ -186,3 +186,50 @@ Base에는 이미 `maintaining-project-context-and-handoff`와 `maintaining-long
 ## 완료 후 다음 상태
 
 이 handoff PR이 exact-head 검증과 병합을 통과하면 Google Sheet 허브와 변경이력을 post-merge main SHA로 동기화한다. 그 뒤 세션을 종료해도 새 작업자는 위 읽기 순서만으로 플랫폼 preflight를 다시 시작할 수 있어야 한다.
+
+## LOCAL_EXECUTOR_HANDOFF_CHECKPOINT — 2026-08-12
+
+현재 local-executor 인수인계의 Decision은 `TEN-DEC-20260811-LOCAL-EXECUTOR-BOOTSTRAP-01`이다. 실행 정본은 `tools/start_ten_paces_local_executor.ps1`이며, 사용자 지시로 local readiness를 여기서 잠시 멈추고 프로젝트 인수인계/BCP closeout을 우선한다.
+
+```yaml
+launcher: tools/start_ten_paces_local_executor.ps1
+launcher_generation: v5
+launcher_sha256_observed: db7717ad7fda58a43aaf42c930d6c27a2b70d8862db894208c3ae2a861f9db7c
+windows_parser_install: PASS
+dedicated_godot_4_7_1: RUNTIME_OBSERVED
+godot_ai_3_1_4_http_8003_ws_9503: RUNTIME_OBSERVED
+hera_auth_source_observed: shared_token
+hera_exact_project: RUNTIME_OBSERVED_NO_SECRET_SAVED
+codex_dedicated_home_login: COMPLETED_TO_INTERACTIVE_SESSION
+codex_exact_project_sandbox_ready: RUNTIME_OBSERVED
+in_codex_fresh_readiness: NOT_RUN
+fresh_powershell_repeat_run: NOT_RUN
+```
+
+historical PID/port/session은 current target 증거로 재사용하지 않는다. launcher 자체는 orchestration evidence이며 live readiness PASS가 아니다.
+
+### 다음 실행 순서
+
+```text
+fresh Base/project/Sheet readback
+→ IN_CODEX_FRESH_READINESS_GATE
+→ exact project/CODEX_HOME/dedicated Godot/Godot AI 3.1.4 HTTP 8003 WS 9503
+→ smallest read-only Godot AI MCP live call
+→ Hera v1.0.0 exact-project read-only status
+→ GUT 9.7.1 + pre/post repo no-new-mutation
+→ OVERALL PASS일 때만 FRESH_POWERSHELL_REPEAT_RUN_GATE
+→ repeat-run PASS 뒤 승인된 제품 작업 재개 여부를 current user/Entry Gate/Decision과 함께 판정
+```
+
+`IN_CODEX_FRESH_READINESS_GATE`와 `FRESH_POWERSHELL_REPEAT_RUN_GATE`는 아직 실행하지 않았으므로 `NOT_RUN` 상태를 유지한다.
+
+### Recent applicable troubleshooting lessons
+
+- `LRN-TEN-LOCAL-001`: editor API가 필요한 bootstrap은 standalone `--script`가 아니라 실제 headless editor의 `@tool` context를 사용한다. 상세 owner: `skills/SKILL_LEARNING_LOG.md`.
+- `LRN-TEN-LOCAL-002`: Windows PowerShell 5.1의 `NativeCommandError` 포장은 native stderr의 의미와 process exit code를 분리해 판정한다.
+- `LRN-TEN-LOCAL-003`: reused Hera editor 인증 불일치 시 exact-project PID를 먼저 고정하고 지원 auth source를 secret 출력 없이 검증한다.
+- `LRN-TEN-LOCAL-004`: 실행 launcher는 대화 임시 산출물에 머무르지 않고 repository executable + regression contract로 저장한다.
+
+### Base 동시 작업 안전
+
+`BASE_PROPOSAL_CONCURRENCY_REFETCH_REQUIRED`: 다른 채팅/프로젝트가 Base BCP를 동시에 처리할 수 있다. Base proposal 작업을 재개할 때는 저장된 BCP 번호나 Registry snapshot을 신뢰하지 않고 반드시 latest Base `main` + `[수정제안서]/PROPOSAL_REGISTRY.json` + 모든 open proposal-only PR + same-goal BCP를 다시 읽는다. 다른 프로젝트의 branch/BCP/Registry entry는 수정·되돌림·재번호화하지 않고 자기 proposal delta만 처리한다.

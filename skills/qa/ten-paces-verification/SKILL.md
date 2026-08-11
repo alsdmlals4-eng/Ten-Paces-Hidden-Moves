@@ -1,19 +1,20 @@
 ---
 name: ten-paces-verification
-description: Use when Ten Paces design, implementation, UI, data, save, build, publication, accessibility, performance, or player-understanding claims require project-specific observable evidence.
+description: Use when Ten Paces design, implementation, UI, data, save, build, publication, accessibility, performance, player-understanding, or dedicated local-executor claims require project-specific observable evidence.
 ---
 
 # 십보강호 검증
 
 ## 책임
 
-십보강호 고유 규칙·데이터·Godot·UI·빌드·플레이어 이해 주장을 재현 가능한 증거로 판정한다. 일반 변경 검증·정본 최신성 방법은 Base Skill을 사용하고, 이 Skill은 프로젝트 고유 반례와 증거 기준을 제공한다.
+십보강호 고유 규칙·데이터·Godot·UI·빌드·플레이어 이해 주장과 프로젝트 전용 로컬 실행환경 주장을 재현 가능한 증거로 판정한다. 일반 변경 검증·정본 최신성 방법은 Base Skill을 사용하고, 이 Skill은 프로젝트 고유 반례와 증거 기준을 제공한다.
 
 ## Skill Modes
 
 - `contract-check`: 승인 계약·정본·실제 diff 대조.
 - `static-validation`: 형식·경로·Registry·전투 계약.
 - `runtime-validation`: Godot 파싱·headless·에디터·Windows 실행.
+- `local-executor-readiness`: 전용 Godot/HiGodot/Hera/CODEX_HOME/Codex가 정확한 십보강호 프로젝트와 같은 관측창에서 live-ready인지 판정.
 - `accessibility-review`: 실제 정보·입력·탐색·모션·음향 장벽.
 - `performance-profile`: 목표 플랫폼 예산·baseline 비교.
 - `regression`: 정상·실패·경계·반례·기존 동작.
@@ -26,12 +27,14 @@ description: Use when Ten Paces design, implementation, UI, data, save, build, p
 - 전투·AI·UI·데이터·저장·빌드의 완료 주장을 검증한다.
 - 정본 변경 뒤 프로젝트 고유 소비자 누락을 확인한다.
 - 사람 플레이·접근성·성능의 증거 상태를 판정한다.
+- `TEN-DEC-20260811-LOCAL-EXECUTOR-BOOTSTRAP-01`의 dedicated local executor가 실제 live authoring/QA 준비 상태인지 판정한다.
 
 사용하지 않는다.
 
 - 변경이 없는 아이디어 비교다.
 - 일반 저장소 구조 감사만 필요하다.
 - 같은 입력의 검사 결과를 실행 없이 다시 주장한다.
+- launcher 실행·프로세스 존재·LISTEN 포트 존재만으로 live readiness를 통과시키려 한다.
 
 ## 책임 원본
 
@@ -41,6 +44,7 @@ description: Use when Ten Paces design, implementation, UI, data, save, build, p
 - UI·접근성: `docs/07_COMBAT_UI_SPEC.md`.
 - 아키텍처: `docs/09_COMBAT_SYSTEM_ARCHITECTURE.md`.
 - 작업 게이트: `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`.
+- 로컬 executor: `tools/start_ten_paces_local_executor.ps1` + `docs/decisions/2026-08-11_LOCAL_EXECUTOR_BOOTSTRAP_DECISION.md`.
 - 실제 증거: `data/`, `scenes/`, `src/`, `assets/`, `tests/`, Actions, Godot, Windows, 사람 관찰.
 
 ## 검증 순서
@@ -72,6 +76,32 @@ claim and failure condition
 8. 기준 SHA 대비 보호 경로 변경을 검사한다.
 9. 통과·실패·미실행·환경 차이를 분리 보고한다.
 
+## `local-executor-readiness` 계약
+
+`BOOTSTRAP_ORCHESTRATION_IS_NOT_READINESS_PASS`: launcher가 전용 editor를 열었거나 HTTP `8003`/WS `9503`이 LISTEN 중이라는 사실만으로 구현 Gate를 통과시키지 않는다. 같은 세션에서 다음을 fresh-read한다.
+
+```yaml
+PROJECT_IDENTITY: exact cwd/worktree/origin
+CODEX_HOME: C:\Users\user\.codex-ten-paces
+DEDICATED_GODOT: exact executable + explicit --path + exactly one exact-project editor
+GODOT_AI_3_1_4: addon source/readback
+HIGODOT_HTTP_8003: unique live owner tied to exact editor
+HIGODOT_WS_9503: unique live owner tied to exact editor
+GODOT_AI_MCP_LIVE: smallest read-only MCP call returns current Ten Paces editor/project
+HERA_1_0_0: addon/CLI exact version
+HERA_EXACT_PROJECT: fresh heartbeat project_path + live PID + port 8770..8785 + authenticated read-only status
+GUT_9_7_1: project addon manifest/source
+REPO_NO_NEW_MUTATION: pre/post `git status --porcelain=v1` byte-equivalent for the readiness check
+```
+
+추가 원칙:
+
+- historical PID/port/session은 locator일 뿐 current authority가 아니다.
+- Hera token 원문은 출력·로그·증거에 저장하지 않는다. 지원되는 auth source를 exact-project instance에 대해 선택한 결과명만 기록할 수 있다.
+- read-only readiness 중 scene/resource 저장, 제품 파일 변경, 프로세스 재시작, port 변경을 하지 않는다.
+- 어느 한 항목이라도 실제 호출/조회가 되지 않으면 `NOT_RUN` 또는 `BLOCKED`이며 `PASS`로 승격하지 않는다.
+- 최종 `OVERALL=PASS` 뒤에도 fresh-PowerShell repeat-run/idempotency Gate가 별도 요구되면 그 결과를 독립 상태로 보존한다.
+
 ## 프로젝트 고유 계약군
 
 - 전장 10칸·4/7·거리 3·밀착·점유·교환/통과.
@@ -97,6 +127,8 @@ claim and failure condition
 - UI·VFX·오디오가 피해·기세·승패를 재계산한다.
 - 재시작 뒤 상태·신호·로그·연출·오디오가 누적된다.
 - 기준 SHA 대비 사용자/Codex 제품 파일이 의도 없이 삭제·변경됐다.
+- local executor에서 다른 프로젝트 editor/port/heartbeat를 십보강호 readiness로 오인한다.
+- `GODOT_AI_MCP_LIVE` 또는 `HERA_EXACT_PROJECT` 실제 read-only 호출 없이 process/port만으로 readiness PASS를 주장한다.
 
 과거 Git 이력·닫힌 PR·Change Log의 당시 사실은 활성 참조와 분리해 허용한다.
 
@@ -136,6 +168,8 @@ result: PASS | PARTIAL | FAIL | NOT_RUN | BLOCKED
 remaining_risks:
 ```
 
+`local-executor-readiness`에서는 필요하면 위 일반 출력 뒤에 `PROJECT_IDENTITY`, `CODEX_HOME`, `DEDICATED_GODOT`, `GODOT_AI_3_1_4`, `HIGODOT_HTTP_8003`, `HIGODOT_WS_9503`, `GODOT_AI_MCP_LIVE`, `HERA_1_0_0`, `HERA_EXACT_PROJECT`, `GUT_9_7_1`, `REPO_NO_NEW_MUTATION`, `OVERALL`을 명시한다.
+
 ## 완료 기준
 
 - 각 완료 주장에 재현 가능한 증거가 있다.
@@ -143,3 +177,4 @@ remaining_risks:
 - 실패와 미검증이 다음 작업으로 연결된다.
 - 기준 전후 결과와 파일을 비교할 수 있다.
 - 사람 이해와 자동 테스트를 분리한다.
+- local executor는 orchestration evidence와 live readiness evidence를 분리한다.
