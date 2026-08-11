@@ -65,6 +65,7 @@ jobs:
           python -m unittest tests.test_current_discovery_contract -v
           python -m unittest tests.test_integrated_work_contract_v45r2 -v
           python -m unittest tests.test_combat_ui_top_level_authority -v
+          python -m unittest tests.test_planning_completion_inventory -v
 
       - name: Run local Godot evidence collector contract tests
         if: steps.scope.outputs.code_changed == 'true'
