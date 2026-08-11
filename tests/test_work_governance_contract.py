@@ -60,6 +60,20 @@ class WorkGovernanceContractTests(unittest.TestCase):
         with self.assertRaisesRegex(validator.WorkGovernanceContractError, "benchmark"):
             validator.validate(broken)
 
+    def test_benchmarking_must_happen_before_planning_or_mutation(self):
+        benchmark = self.load_contract()["benchmark_policy"]
+        self.assertEqual(benchmark.get("timing"), "PRE_WORK_BEFORE_PLAN_OR_MUTATION")
+        self.assertTrue(benchmark.get("research_packet_required_before_task"))
+        self.assertEqual(
+            benchmark.get("required_prework_sequence"),
+            [
+                "FRESH_PROJECT_AUTHORITY_READ",
+                "BENCHMARK_AND_INDUSTRY_RESEARCH",
+                "PROJECT_FIT_RECOMMENDATION",
+                "PLAN_TDD_OR_MUTATION",
+            ],
+        )
+
     def test_benchmark_recommendation_and_source_quality_are_required(self):
         validator = load_validator()
         broken_recommendation = copy.deepcopy(self.load_contract())
