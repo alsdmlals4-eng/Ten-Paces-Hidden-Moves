@@ -40,6 +40,14 @@
   },
   "benchmark_policy": {
     "required_for_material_questions_and_tasks": true,
+    "timing": "PRE_WORK_BEFORE_PLAN_OR_MUTATION",
+    "research_packet_required_before_task": true,
+    "required_prework_sequence": [
+      "FRESH_PROJECT_AUTHORITY_READ",
+      "BENCHMARK_AND_INDUSTRY_RESEARCH",
+      "PROJECT_FIT_RECOMMENDATION",
+      "PLAN_TDD_OR_MUTATION"
+    ],
     "material_scope": [
       "GAME_DESIGN",
       "SYSTEM_DESIGN",
