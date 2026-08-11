@@ -10,6 +10,12 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 CONTRACT_PATH = ROOT / "docs" / "planning-data" / "approved_20260805_work_governance_contract.json"
 EXPECTED_CHECKPOINT_TRIGGERS = {"HIGH_RISK_CONFLICT", "SESSION_END", "LARGE_CANON_IMPACT"}
 EXPECTED_TDD_SEQUENCE = ["RED", "GREEN", "REFACTOR", "VERIFY_EXACT_HEAD"]
+EXPECTED_PREWORK_SEQUENCE = [
+    "FRESH_PROJECT_AUTHORITY_READ",
+    "BENCHMARK_AND_INDUSTRY_RESEARCH",
+    "PROJECT_FIT_RECOMMENDATION",
+    "PLAN_TDD_OR_MUTATION",
+]
 REQUIRED_SOURCE_ORDER_PREFIX = [
     "OFFICIAL_DOCUMENTATION_OR_STANDARD",
     "PRIMARY_RESEARCH_OR_FIRST_PARTY_TECHNICAL_PAPER",
@@ -56,6 +62,9 @@ def validate(contract: dict[str, Any]) -> None:
 
     benchmark = contract.get("benchmark_policy", {})
     _require(benchmark.get("required_for_material_questions_and_tasks") is True, "benchmarking is required for material work")
+    _require(benchmark.get("timing") == "PRE_WORK_BEFORE_PLAN_OR_MUTATION", "benchmarking must happen before planning or mutation")
+    _require(benchmark.get("research_packet_required_before_task") is True, "benchmark research packet is required before material work")
+    _require(benchmark.get("required_prework_sequence") == EXPECTED_PREWORK_SEQUENCE, "benchmark pre-work sequence differs")
     _require(benchmark.get("compare_current_or_proposed_approach") is True, "benchmark comparison is required")
     _require(benchmark.get("industry_comparison_required") is True, "industry benchmark comparison is required")
     _require(benchmark.get("recommendation_required") is True, "benchmark recommendation is required")
