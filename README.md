@@ -17,7 +17,7 @@
 - [테스트 체크리스트](docs/08_TEST_CHECKLIST.md)
 - [행동 선택 Decision](docs/decisions/2026-08-01_MARTIAL_MANUAL_TECHNIQUE_TIMELINE_UX_DECISION.md)
 - [화면 구조 Decision](docs/decisions/2026-08-01_SITUATION_SCREEN_ARCHITECTURE_DECISION.md)
-- [플랫폼 범위 Decision](docs/decisions/2026-08-02_PLATFORM_SCOPE_DECISION.md)
+- [플랫폼 범위 Decision](docs/decisions/2026-08-06_WINDOWS_ANDROID_DUAL_TARGET_DECISION.md)
 - [ActionSelectionDock 종료 기록](docs/implementation/2026-08-01_ACTION_SELECTION_DOCK_CLOSEOUT.md)
 - [PR #65 정본·Sheet 동기화](docs/implementation/2026-08-01_PR65_CANON_SHEET_SYNC.md)
 - [2026-08-01 Base·프로젝트·Sheet 적대적 감사](docs/reviews/2026-08-01_BASE_PROJECT_SHEET_ADVERSARIAL_AUDIT.md)
@@ -35,16 +35,20 @@
 - 제품 단계: `VERTICAL_SLICE_APP_FLOW_PLANNING`
 - 런타임 기준선: PR #65 `ACTION_SELECTION_DOCK_IMPLEMENTED`
 - 최신 전투 기획 런타임: `NOT_STARTED`
-- 플랫폼: PC 우선, 모바일 고려만
+- 플랫폼: Windows·Android 기본 설계 / 단일 공유 코어·플랫폼 Adapter
 - Base: v9.4.3
-- Windows 실제 Godot·사람·접근성·성능 검증: `NOT_RUN`
+- Windows hosted CI export/runtime 증거는 있으나 로컬 실제 렌더·사람·접근성·성능 검증: `NOT_RUN`
+- Android 실제 기기 검증: `NOT_RUN`
 
 ## 플랫폼 범위
 
-- 현재 기획·구현·검증·배포 기준은 `PC`입니다.
-- 모바일은 PC 버티컬 슬라이스와 전투 코어 검증 뒤 재평가할 미래 후보이며 현재 구현 범위가 아닙니다.
-- 터치 UI, Android·iOS 빌드, 모바일 성능·스토어·크로스 세이브는 별도 Decision 전까지 `NOT_STARTED`입니다.
-- 모바일 가능성을 이유로 현재 전투 코어·3/3/4·정보 구조·콘텐츠 범위를 선행 변경하지 않습니다.
+- Windows와 Android를 기본 설계 대상으로 유지합니다.
+- 전투 규칙·AI·콘텐츠·ID·수치·저장 Schema는 단일 공유 코어를 사용합니다.
+- 플랫폼 차이는 입력, 반응형 UI·안전영역, 앱 생명주기·뒤로가기, 플랫폼 서비스, 품질·성능·export Adapter에 한정합니다.
+- Android는 기본 설계 대상이지만 실제 설치·실행·터치·뒤로가기·safe-area·pause/resume·suspend/restore·저장·성능의 실기기 증거가 아직 없으므로 런타임 지원 완료를 주장하지 않습니다.
+- Windows와 Android의 핵심 규칙·데이터·저장 의미는 동등하게 유지하되 픽셀 동일 UI나 동시 출시를 요구하지 않습니다.
+- iOS·추가 플랫폼은 별도 승인 전까지 현재 기본 설계 대상이 아닙니다.
+- 플랫폼 차이를 이유로 전투 코어·3/3/4·비공개 계획·순차 해결·복기 의미를 분기하지 않습니다.
 
 ## 프로젝트 코어와 핵심 재미
 
@@ -142,7 +146,7 @@ App Root
 - 16개 개별 절초 설계
 - 주요 비무 6~10 런타임
 - 천하제일인·비동기 기능
-- 모바일 포팅·스토어·크로스 세이브
+- iOS·미승인 추가 플랫폼·추가 스토어·크로스 세이브
 - 최종 아트·오디오 폴리싱
 
-정적 검사·Actions 성공은 Windows 실제 Godot, 실물 게임패드, 접근성 보조기술, 성능, 실제 플레이 재미를 증명하지 않습니다. 실행하지 않은 항목은 `NOT_RUN`입니다.
+정적 검사·Actions 성공은 Windows 실제 Godot, 실물 게임패드, Android 실제 기기, 접근성 보조기술, 성능, 실제 플레이 재미를 증명하지 않습니다. 실행하지 않은 항목은 `NOT_RUN`입니다.

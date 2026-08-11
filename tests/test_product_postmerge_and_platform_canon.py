@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 ACTIVE = ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
 ROADMAP = ROOT / "docs/04_ROADMAP.md"
+README = ROOT / "README.md"
 CURRENT_STATE = ROOT / "docs/planning-data/current_operating_state.json"
 PLATFORM = ROOT / "docs/decisions/2026-08-06_WINDOWS_ANDROID_DUAL_TARGET_DECISION.md"
 PRODUCT_MERGE = "a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90"
@@ -80,6 +81,7 @@ class ProductPostMergeAndPlatformCanonTests(unittest.TestCase):
         decision = PLATFORM.read_text(encoding="utf-8")
         active = ACTIVE.read_text(encoding="utf-8")
         roadmap = ROADMAP.read_text(encoding="utf-8")
+        readme = README.read_text(encoding="utf-8")
         required_decision = (
             PLATFORM_DECISION,
             "status: APPROVED_PLANNING",
@@ -98,6 +100,17 @@ class ProductPostMergeAndPlatformCanonTests(unittest.TestCase):
             self.assertIn("platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS", text)
             self.assertIn("android_validation: NOT_RUN", text)
             self.assertNotIn("future_platform: MOBILE_CONSIDERATION_ONLY", text)
+
+        self.assertIn("[플랫폼 범위 Decision](docs/decisions/2026-08-06_WINDOWS_ANDROID_DUAL_TARGET_DECISION.md)", readme)
+        self.assertIn("Windows·Android 기본 설계", readme)
+        self.assertIn("단일 공유 코어·플랫폼 Adapter", readme)
+        self.assertIn("Android 실제 기기 검증: `NOT_RUN`", readme)
+        for stale in (
+            "PC 우선, 모바일 고려만",
+            "현재 기획·구현·검증·배포 기준은 `PC`입니다.",
+            "모바일은 PC 버티컬 슬라이스와 전투 코어 검증 뒤 재평가할 미래 후보",
+        ):
+            self.assertNotIn(stale, readme)
 
 
 if __name__ == "__main__":
