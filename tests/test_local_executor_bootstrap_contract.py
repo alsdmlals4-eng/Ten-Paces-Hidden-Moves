@@ -44,6 +44,10 @@ class LocalExecutorBootstrapContractTests(unittest.TestCase):
         self.assertIn("godot_ai/http_port", self.text)
         self.assertIn("godot_ai/ws_port", self.text)
         self.assertIn("godot_ai/keep_server_on_exit", self.text)
+        self.assertIn('settings.has_setting("godot_ai/http_port")', self.text)
+        self.assertIn('settings.has_setting("godot_ai/ws_port")', self.text)
+        self.assertIn('settings.has_setting("godot_ai/keep_server_on_exit")', self.text)
+        self.assertNotRegex(self.text, r'get_setting\("godot_ai/(?:http_port|ws_port|keep_server_on_exit)",')
         self.assertNotRegex(self.text, r"(?i)editor_settings-4\.tres.*-replace")
 
     def test_hera_is_exact_project_dynamic_port_tooling(self) -> None:
