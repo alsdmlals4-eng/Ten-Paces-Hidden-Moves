@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01",
+  "approval_date": "2026-08-11",
+  "approval_source": "user chat approval: 좋아 그렇게 하자 / 좋아 진행해",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "PLANNING_ONLY",
+  "runtime_changed": false,
+  "partially_supersedes": {
+    "decision_id": "TEN-DEC-20260808-COMBAT-PLANNING-UI-CARD-TIMELINE-01",
+    "fields": [
+      "battlefield_player_facing_position_display",
+      "card_range_field_visibility",
+      "player_facing_plan_commit_label"
+    ],
+    "preserved": [
+      "10_move_logical_round",
+      "3_3_4_bundles",
+      "current_bundle_edit_scope",
+      "connected_multi_slot_action_block",
+      "separate_resource_cost_dimensions",
+      "basic_martial_ultimate_source_hierarchy"
+    ]
+  },
+  "battlefield_ui": {
+    "logical_field_cells": 10,
+    "numbered_floor_cells_visible": false,
+    "show_absolute_positions_player_facing": false,
+    "distance_badge_required": true,
+    "distance_badge_format": "거리 N",
+    "public_start_distance": 2,
+    "contact_distance": 0,
+    "contact_label": "[밀착]",
+    "absolute_start_coordinates_status": "IMPLEMENTATION_BINDING_PENDING",
+    "current_runtime_coordinates": {
+      "player": 4,
+      "enemy": 7,
+      "status": "IMPLEMENTED_LEGACY",
+      "runtime_change_authorized": false
+    }
+  },
+  "plan_lock": {
+    "player_facing_label": "행동계획 잠금",
+    "editable_scope": "CURRENT_BUNDLE_ONLY",
+    "lock_requires_valid_current_bundle": true,
+    "lock_freezes_reposition_remove_and_target_edit": true,
+    "enemy_plan_locked_before_observation_reveal": true
+  },
+  "card_body": {
+    "always_visible": [
+      "display_name",
+      "source_and_action_type",
+      "slot_count",
+      "actual_resource_cost_or_none",
+      "core_effect"
+    ],
+    "range_visibility": "ATTACK_ACTIONS_ONLY",
+    "condition_visibility": "ONLY_WHEN_PRESENT",
+    "omit_absent_fields": true,
+    "internal_balance_ticks_player_facing": false,
+    "resolved_value_may_be_primary": true,
+    "fixed_effect_notation": {
+      "move": "[이동] 1",
+      "footwork": "[이동] 1~2",
+      "evade": "[회피] 1",
+      "observe": "[관찰] 1"
+    }
+  },
+  "detail_panel": {
+    "range_visibility": "ATTACK_ACTIONS_ONLY",
+    "show_formula_and_stat_reference_when_applicable": true,
+    "show_target_and_direction_when_applicable": true,
+    "show_full_effect_text": true,
+    "show_trigger_and_scope_when_applicable": true,
+    "show_multi_hit_and_phase_details_when_applicable": true,
+    "show_interruption_rules_when_applicable": true,
+    "show_condition_only_when_present": true
+  },
+  "observation": {
+    "player_only": true,
+    "base_gain": 1,
+    "enemy_plan_locked_before_reveal": true,
+    "reveals_action_type_only": true,
+    "reveal_order": "FRONT_TO_BACK",
+    "technique_name_hidden": true,
+    "manual_name_hidden": true,
+    "exact_cost_hidden": true,
+    "direction_hidden": true,
+    "movement_distance_hidden": true,
+    "attack_range_hidden": true,
+    "damage_hidden": true,
+    "target_hidden": true,
+    "ai_weights_hidden": true,
+    "overflow_carries_forward": true
+  },
+  "multi_slot": {
+    "connected_action_block_required": true,
+    "two_slot_phases": [
+      "전조",
+      "실행"
+    ],
+    "three_slot_phases": [
+      "전조",
+      "전조",
+      "실행"
+    ],
+    "execution_slot_displays_actual_action_type": true,
+    "example_two_slot_attack": "1수 [전조] → 2수 [공격] 비연검",
+    "example_name_status": "DISPLAY_FORMAT_EXAMPLE_NOT_PRODUCT_CONTENT"
+  },
+  "determinism": {
+    "hit_probability_system": false,
+    "predicted_hit_rate_ui": false,
+    "deterministic_hit_event_term_remains_valid": true,
+    "preview_meaning": "CURRENT_KNOWN_DETERMINISTIC_CONSEQUENCE_ONLY"
+  },
+  "forbidden_ui_tokens": [
+    "[기절]",
+    "예상 명중률",
+    "% 명중률"
+  ],
+  "forbidden_invented_basic_card_names": [
+    "연결",
+    "기합"
+  ],
+  "examples": {
+    "move_card_body": "[기초] [이동] / 1수 / 비용 없음 / [이동] 1",
+    "evade_card_body": "[기초] [회피] / 1수 / 기력 1 / [회피] 1",
+    "observe_card_body": "[기초] [관찰] / 1수 / 비용 없음 / [관찰] 1",
+    "quick_attack_at_external_4": {
+      "card_body": "[기초] [공격] / 1수 / 기력 1 / 사거리 1 / 공격 5",
+      "detail_formula": "floor(3 + 외공 * 0.50)"
+    },
+    "observation_two_against_two_slot_attack_then_move": [
+      "[전조]",
+      "[공격]",
+      "?"
+    ]
+  },
+  "evidence_boundary": {
+    "godot_runtime": "NOT_CHANGED",
+    "windows_validation": "NOT_RUN_FOR_THIS_PLANNING_DECISION",
+    "android_validation": "NOT_RUN_FOR_THIS_PLANNING_DECISION",
+    "human_ux_validation": "NOT_RUN",
+    "product_asset_status": "NOT_AN_ASSET",
+    "product_implementation_authorized": false
+  }
+}
