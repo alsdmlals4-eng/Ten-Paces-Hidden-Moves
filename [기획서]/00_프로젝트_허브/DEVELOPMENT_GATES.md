@@ -50,6 +50,8 @@ base_remote_policy: LIVE_REFETCH_NO_AUTOMATIC_PROJECT_ADOPTION
 
 ## 4. G1 — ActionSelectionDock 런타임 기준선
 
+역사 구현 계보: **PR #65**는 ActionSelectionDock/App Flow 기반의 안정된 과거 runtime evidence다. 이는 current PR·current runtime status를 뜻하지 않으며 현재 여부는 `ACTIVE_CONTEXT.md`와 live evidence에서 다시 판단한다.
+
 제품 구현·회귀에서 보호해야 할 조건:
 
 - `[기초] [무공] [절초]` 출처와 무공서→해금 기술 계약을 보존한다.
