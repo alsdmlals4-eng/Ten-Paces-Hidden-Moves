@@ -46,6 +46,46 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
                 f"START_HERE.md still exposes stale platform authority: {token}",
             )
 
+    def test_documentation_map_routes_current_state_without_mutable_snapshot(self) -> None:
+        text = (
+            ROOT / "[기획서]" / "00_프로젝트_허브" / "DOCUMENTATION_MAP.md"
+        ).read_text(encoding="utf-8")
+        owner_section = text.split("## 질문별 현재 책임 원본", 1)[1].split(
+            "## 최신 활성 Decision", 1
+        )[0]
+        current_section = text.split("## 현재 상태", 1)[1].split(
+            "## 구형·오해 표현 차단", 1
+        )[0]
+        next_section = text.split("## 현재 다음 작업", 1)[1]
+
+        self.assertIn("현재 단계·권한·다음 작업", owner_section)
+        self.assertIn("ACTIVE_CONTEXT.md", owner_section)
+        self.assertIn("전투 UI 정보 위계", owner_section)
+        self.assertIn("2026-08-11_COMBAT_UI_INFORMATION_HIERARCHY_DECISION.md", owner_section)
+        self.assertNotIn("최근 병합 체크포인트", owner_section)
+        self.assertNotIn("PR #80", owner_section)
+
+        self.assertIn("current_state_owner: ACTIVE_CONTEXT", current_section)
+        self.assertIn("current_pr_authority: GITHUB_PR_METADATA", current_section)
+        self.assertIn("current_sheet_authority: GOOGLE_SHEET_00_02_04_99", current_section)
+        for mutable_key in (
+            "product_stage:",
+            "runtime_work_mode:",
+            "planning_work_mode:",
+            "runtime_implementation:",
+            "latest_combat_planning_runtime:",
+            "next_package:",
+            "human_validation:",
+        ):
+            self.assertNotIn(mutable_key, current_section)
+
+        self.assertNotIn("현재 핵심 권위에는 다음이 포함된다", text)
+        self.assertIn("CANON_LIFECYCLE_REGISTRY.md", text)
+        self.assertIn("ACTIVE_CONTEXT의 current next action", next_section)
+        self.assertIn("사용자 명시 `기획 완료`", next_section)
+        self.assertNotIn("필요한 이미지·애니메이션·HX를 생성·검수", next_section)
+        self.assertNotIn("VERTICAL_SLICE_APP_FLOW_SHELL` Codex 구현", next_section)
+
     def test_combat_rules_use_current_basic_attack_reprice_authority(self) -> None:
         text = (ROOT / "docs" / "02_COMBAT_RULES.md").read_text(encoding="utf-8")
 
