@@ -24,6 +24,19 @@ class LocalExecutorBootstrapContractTests(unittest.TestCase):
         for token in required:
             self.assertIn(token, self.text)
 
+    def test_exact_editor_requires_explicit_path_argument(self) -> None:
+        self.assertIn("EXACT_GODOT_REQUIRES_PATH_ARGUMENT", self.text)
+        self.assertRegex(self.text, r"(?i)--path")
+        self.assertIn("MULTIPLE_EXACT_TEN_PACES_GODOT_EDITORS", self.text)
+
+    def test_project_tooling_sections_are_prebound_before_editor_start(self) -> None:
+        self.assertIn("Get-ProjectSectionText", self.text)
+        self.assertIn("[editor_plugins]", self.text)
+        self.assertIn("[autoload]", self.text)
+        self.assertIn("REQUIRED_TOOLING_AUTOLOAD_NOT_PREBOUND_BOOTSTRAP_WOULD_MUTATE_PROJECT", self.text)
+        self.assertIn("HeraGameInspector", self.text)
+        self.assertIn("_mcp_game_helper", self.text)
+
     def test_self_contained_and_editor_settings_are_programmatic(self) -> None:
         self.assertIn("_sc_", self.text)
         self.assertIn("--recovery-mode", self.text)
@@ -54,6 +67,14 @@ class LocalExecutorBootstrapContractTests(unittest.TestCase):
         self.assertIn('Configurator.configure("codex", "http://127.0.0.1:8003/mcp", context)', self.text)
         self.assertIn("CODEX_GODOT_AI_CONFIGURE_FAILED", self.text)
         self.assertNotRegex(self.text, r"(?i)codex(?:\.cmd)?\s+mcp\s+add")
+
+    def test_dedicated_codex_home_auth_uses_official_login_flow(self) -> None:
+        self.assertIn("CODEX_DEDICATED_HOME_LOGIN_REQUIRED", self.text)
+        self.assertIn("CODEX_LOGIN_STATUS_UNSUPPORTED", self.text)
+        self.assertIn("CODEX_LOGIN_READY", self.text)
+        self.assertRegex(self.text, r"Invoke-Capture\s+\$CodexExe\s+@\('login',\s*'status'\)")
+        self.assertRegex(self.text, r"&\s+\$CodexExe\s+login\b")
+        self.assertNotRegex(self.text, r"(?i)Copy-Item[^\n]*\\\.codex\\auth\.json")
 
     def test_ports_fail_closed_without_process_kill_or_auto_switch(self) -> None:
         self.assertIn("FOREIGN_OR_AMBIGUOUS_PORT_OWNER", self.text)
