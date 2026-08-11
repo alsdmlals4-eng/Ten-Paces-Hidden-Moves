@@ -104,9 +104,24 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
 
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
-        self.assertIn("planning_visual_next: TEN_IMG_001_GENERATE_EXPLORATION", current_section)
-        self.assertIn("planning_visual_review: TEN_IMG_001_EXPLORATION_REVIEW", current_section)
+        self.assertIn(
+            "planning_visual_next: TEN_IMG_001_PAUSED_BY_USER_TEXTUAL_CANON_REVIEW",
+            current_section,
+        )
+        self.assertIn(
+            "planning_visual_review: TEN_IMG_001_CHAT_EXPLORATIONS_REVIEWED_NOT_AN_ASSET",
+            current_section,
+        )
+        self.assertIn(
+            "planning_visual_overlay: TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01",
+            current_section,
+        )
+        self.assertIn("ci_supply_chain_followup: RESOLVED_ISSUE_140", current_section)
         self.assertIn("product_implementation_authorized: false", current_section)
+
+        self.assertNotIn("planning_visual_next: TEN_IMG_001_GENERATE_EXPLORATION", current_section)
+        self.assertNotIn("planning_visual_review: TEN_IMG_001_EXPLORATION_REVIEW", current_section)
+        self.assertNotIn("ci_supply_chain_followup: ISSUE_140", current_section)
 
         self.assertIn("## 관측 증거 스냅샷", text)
         self.assertIn(
