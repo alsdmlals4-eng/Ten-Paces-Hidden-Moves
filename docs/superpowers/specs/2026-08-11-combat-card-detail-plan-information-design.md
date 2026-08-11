@@ -1,7 +1,7 @@
 # 전투 카드 본체·상세창·계획판 정보 설계
 
 - 작성일: 2026-08-11
-- 상태: `USER_APPROVED_DIRECTION / WRITTEN_SPEC_FOR_REVIEW`
+- 상태: `USER_APPROVED_SPEC / PLANNING_COMPLETION_REVIEW_READY`
 - 현재 권위 Decision: `TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01`
 - 부모 Decision: `TEN-DEC-20260808-COMBAT-PLANNING-UI-CARD-TIMELINE-01`
 - 제품 구현 권한: 없음 (`PLANNING_ONLY`)
@@ -357,7 +357,7 @@ Android compact:
 ## 12. 구현 경계
 
 ```yaml
-planning: WRITTEN_SPEC_FOR_REVIEW
+planning: USER_APPROVED_SPEC_PLANNING_COMPLETION_REVIEW_READY
 product_code_change: NO
 runtime_change: NO
 godot_scene_change: NO
@@ -368,7 +368,7 @@ human_usability_validation: NOT_RUN
 product_implementation_authorized: false
 ```
 
-사용자 서면 spec 검토 승인 뒤에만 구현 계획 단계로 넘어간다.
+사용자 spec 승인은 완료됐다. 다음 단계는 `docs/superpowers/plans/2026-08-11-planning-completion-review.md`에 따라 전체 기획완료 후보를 만들고, 사용자 명시 `기획 완료` 뒤 적대적 검수를 완료한 후에만 이미지 생성을 재개하는 것이다.
 
 ## 13. spec self-review
 
