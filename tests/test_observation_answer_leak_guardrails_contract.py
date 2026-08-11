@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "docs/planning-data/approved_20260805_observation_answer_leak_guardrails_contract.json"
 CHECKER = ROOT / "tools/check_observation_answer_leak_guardrails_contract.py"
+OBSERVATION_DECISION = ROOT / "docs/decisions/2026-08-02_OBSERVATION_STATS_MASTERY_DECISION.md"
 
 STABLE_ENTRYPOINTS = [
     ROOT / "AGENTS.md",
@@ -78,6 +79,15 @@ class ObservationAnswerLeakGuardrailsContractTest(unittest.TestCase):
         self.assertTrue(fairness["enemy_bundle_locked_before_reveal"])
         self.assertFalse(fairness["enemy_may_replan_after_reveal"])
         self.assertFalse(fairness["enemy_may_read_uncommitted_player_plan"])
+
+    def test_current_observation_decision_uses_prepare_action_type(self):
+        decision = OBSERVATION_DECISION.read_text(encoding="utf-8")
+        section = decision.split("관찰 분류의 기본 집합:", 1)[1].split(
+            "복합 기술은", 1
+        )[0]
+        self.assertIn("- `[준비]`", section)
+        self.assertNotIn("- `[태세]`", section)
+        self.assertIn("사용자 표시 용어 `[태세]`는 사용하지 않는다", decision)
 
     def test_rejects_weakening_direct_reveal(self):
         self.assert_mutation_rejected(
