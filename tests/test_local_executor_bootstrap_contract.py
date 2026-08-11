@@ -36,6 +36,9 @@ class LocalExecutorBootstrapContractTests(unittest.TestCase):
         self.assertIn("REQUIRED_TOOLING_AUTOLOAD_NOT_PREBOUND_BOOTSTRAP_WOULD_MUTATE_PROJECT", self.text)
         self.assertIn("HeraGameInspector", self.text)
         self.assertIn("_mcp_game_helper", self.text)
+        self.assertIn("res://addons/gut/plugin.cfg", self.text)
+        self.assertIn("GUT_VERSION_MISMATCH_EXPECTED_9_7_1", self.text)
+        self.assertIn("GUT_VERSION=", self.text)
 
     def test_self_contained_and_editor_settings_are_programmatic(self) -> None:
         self.assertIn("_sc_", self.text)
