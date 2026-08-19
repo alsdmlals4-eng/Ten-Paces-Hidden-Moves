@@ -14,16 +14,16 @@ current_truth_source: GITHUB_MAIN_PLUS_EXACT_PROJECT_NOTION_LIVE_READ
 current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN
 base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
 live_exact_sha_authority: NONE_REFETCH_REQUIRED
-active_project_pr: 165
+active_project_pr: NONE
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
-active_planning_work_mode: PLAN
-active_planning_pr: 165
+active_planning_work_mode: REVIEW
+active_planning_pr: NONE
 active_planning_parent_pr: NONE
 active_approval_count: 1/10
-active_decision_state: JIANGHU_JOURNEY_VERTICAL_SLICE_APPROVED
-source_decision: TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01
+active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED
+source_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
 platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
@@ -39,8 +39,13 @@ human_validation: NOT_RUN
 accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
 performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 product_implementation_authorized: false
-next_package: VERTICAL_SLICE_TEXTUAL_UX_AND_CONTENT_AUTHORING
-next_planning_decision: VERTICAL_SLICE_OPPONENT_ROUTE_CONTENT_DETAIL_GATE
+next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
+next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
+user_directed_planning_work_mode: PLAN
+user_directed_planning_decision: TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01
+user_directed_planning_next_package: VERTICAL_SLICE_TEXTUAL_UX_AND_CONTENT_AUTHORING
+user_directed_planning_next_decision: VERTICAL_SLICE_OPPONENT_ROUTE_CONTENT_DETAIL_GATE
+user_directed_planning_pr_authority: GITHUB_PR_METADATA
 planning_visual_next: PAUSED_UNTIL_USER_EXPLICIT_IMAGE_REQUEST
 planning_visual_review: TEN_IMG_001_CHAT_EXPLORATIONS_REVIEWED_NOT_AN_ASSET
 planning_visual_authority: TEN-DEC-20260808-TEN-IMG-001-VISUAL-REQUIREMENT-APPROVAL-01
@@ -50,9 +55,11 @@ base_release_pinned: 9.4.3
 base_remote_observation: CURRENT_REMOTE_REQUIRES_LIVE_REFETCH_NO_AUTOMATIC_PROJECT_ADOPTION
 ```
 
-플랫폼 Adapter 구현 Gate는 여전히 제품 구현 경계로 유효하지만, 최신 사용자 지시와 `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01`에 따라 **현재 활성 작업은 구현이 아니라 Vertical Slice 텍스트 기획**이다. `product_implementation_authorized: false`를 유지한다. TEN-IMG-001은 chat exploration 뒤 사용자 지시로 추가 생성이 중단됐고 새 이미지 생성은 사용자가 다시 명시적으로 요청하기 전까지 진행하지 않는다.
+`active_planning_*`, `active_decision_state`, `next_package`, `next_planning_decision`은 `docs/planning-data/current_operating_state.json`이 소유하는 플랫폼 운영 상태와 동기화한다. 최신 사용자 지시로 진행 중인 Vertical Slice 텍스트 기획은 별도 `user_directed_planning_*` overlay가 소유하며 기존 플랫폼 운영 계약을 덮어쓰지 않는다.
 
-이 live block에는 current main SHA를 저장하지 않는다. 새 세션·post-merge에서는 GitHub `main`, 열린 PR, exact Project Notion, current operating/entry gate를 다시 읽고 의미 상태만 판정한다. exact SHA/run ID는 아래의 명시적 역사·관측 증거로만 취급한다.
+플랫폼 Adapter 구현 Gate는 여전히 제품 구현 경계로 유효하지만, 최신 사용자 지시와 `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01`에 따라 **현재 수행하는 작업은 구현이 아니라 Vertical Slice 텍스트 기획**이다. `product_implementation_authorized: false`를 유지한다. TEN-IMG-001은 chat exploration 뒤 사용자 지시로 추가 생성이 중단됐고 새 이미지 생성은 사용자가 다시 명시적으로 요청하기 전까지 진행하지 않는다.
+
+이 live block에는 current main SHA나 열린 PR 번호를 저장하지 않는다. 새 세션·post-merge에서는 GitHub `main`, 열린 PR, exact Project Notion, current operating/entry gate를 다시 읽고 의미 상태만 판정한다. exact SHA/run ID·PR 번호는 아래의 명시적 역사·관측 증거로만 취급한다.
 
 ## 관측 증거 스냅샷
 
@@ -100,7 +107,7 @@ planning_pr_2026_08_20_base: 0e9955afe791c43255176a4e89d89cf58be9b76a
 
 ## 선행 UX·앱 흐름 권위
 
-- `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01` — Main→시작 6중4→비무행 도입→Briefing→Combat→Result/Review/Reward→Route 2노드→다음 비무→5전 완주.
+- `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01` — Main→시작 6중4→비무행 도입→Briefing→Combat Review Overlay→Duel Result/Reward 별도 Scene→Route 2노드→다음 비무→5전 완주.
 - `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`.
 - `TEN-DEC-20260801-SITUATION-SCREEN-01`.
 - 역사 구현 표식: `runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65`.
@@ -159,7 +166,7 @@ Windows CI 기준 runtime은 약 2344.67ms, peak working set은 188571648 bytes,
 - 제품 병합 전 다음 Gate: `next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE`.
 - 플랫폼 전용 operating-state 표식: `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED`, `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE`.
 
-현행 운영 값은 문서 상단 YAML의 `active_planning_pr`, `active_decision_state`, `next_planning_decision`을 사용한다. 제품 병합 권위는 별도 역사 증거인 `merged_product_pr: 92`, `product_implementation_merge_commit`, `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`로 유지한다.
+현행 플랫폼 운영 값은 문서 상단 YAML의 `active_planning_pr`, `active_decision_state`, `next_planning_decision`을 사용한다. 현재 사용자 기획 진행은 `user_directed_planning_*` overlay를 사용한다. 제품 병합 권위는 별도 역사 증거인 `merged_product_pr: 92`, `product_implementation_merge_commit`, `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`로 유지한다.
 
 ## 완료·검증됨
 
@@ -294,8 +301,8 @@ Google Sheets는 신규 기획 입력 경로로 사용하지 않으며 migration
 ## 상태 표현 규칙
 
 - 완료 증거가 없으면 `PASS`로 쓰지 않는다.
-- live current state는 exact SHA를 내장하지 않고 GitHub + exact Project Notion을 다시 읽어 판정한다.
-- exact SHA/run ID는 `관측 증거 스냅샷`, Decision, evidence 문서처럼 역사·관측 역할이 명확한 곳에만 둔다.
+- live current state는 exact SHA나 열린 PR 번호를 내장하지 않고 GitHub + exact Project Notion을 다시 읽어 판정한다.
+- exact SHA/run ID/PR 번호는 `관측 증거 스냅샷`, Decision, evidence 문서처럼 역사·관측 역할이 명확한 곳에만 둔다.
 - 과거 PR/branch/Handoff가 GitHub current truth와 충돌하면 current GitHub + 현재 책임 원본을 우선하고 live router만 교정한다.
 - HANDOFF는 명시적 session snapshot이므로 자동 current화하지 않는다.
 - PR #82와 그 SHA는 역사 자료이지 현재 active planning PR이 아니다.
