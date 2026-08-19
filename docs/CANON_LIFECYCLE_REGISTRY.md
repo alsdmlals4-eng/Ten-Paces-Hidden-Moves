@@ -1,13 +1,14 @@
 # 십보강호 정본 생명주기 등록부
 
 - 기반 권위: `TEN-DEC-20260804-POSTMERGE-CANON-ADVERSARIAL-AUDIT-01`
+- 현행 강호 비무행·Vertical Slice 권위: `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01`
 - 현행 성장 권위: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`
 - 현행 런타임 기반 권위: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`
 - 현행 UI·AI 채택 권위: `TEN_MANUAL_UI_AI_ADOPTION_GATE`
 - 현행 자동 제품 검증 권위: `TEN_MANUAL_PRODUCT_VALIDATION_GATE`
 - 7성·9성 예산 부모: `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01`
 - 작업 운영: `TEN-DEC-20260805-WORK-GOVERNANCE-01`
-- 기준 main: `bbed0fd4d278ca0e0d52f4e6d9083aafa1997318`
+- 역사 기준 main: `bbed0fd4d278ca0e0d52f4e6d9083aafa1997318`; current main은 `ACTIVE_CONTEXT` 규칙대로 live refetch한다.
 
 ## 상태 정의
 
@@ -23,6 +24,7 @@
 | 분야 | 권위 |
 |---|---|
 | 활성 상태 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` |
+| 세계·플레이어 역할·강호 비무행·5전 감정곡선·비전투 App Flow | `docs/12_VERTICAL_SLICE_JIANGHU_JOURNEY.md`, `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01` |
 | 로드맵 | `docs/04_ROADMAP.md` |
 | 전투 부모 | `docs/02_COMBAT_RULES.md` |
 | 초기 10권 전투 해결 개정 | `docs/02_COMBAT_RULES_TEN_RECOGNIZABLE_MARTIAL_MANUALS_AMENDMENT.md` |
@@ -53,6 +55,7 @@
 
 현행 contracts:
 
+- `approved_20260820_jianghu_journey_vertical_slice_contract.json`
 - `approved_20260804_existing_action_reprice_contract.json`
 - `approved_20260804_technique1_conditional_rework_star5_contract.json`
 - `approved_20260805_star7_star9_mastery_bonus_contract.json`
@@ -67,7 +70,7 @@
 
 ## 제품 연결 권위 경계
 
-현재 상태는 `PRODUCT_VALIDATION_AUTOMATED / PARTIAL_AUTOMATED_COMPLETE`다.
+현재 상태는 `PRODUCT_VALIDATION_AUTOMATED / PARTIAL_AUTOMATED_COMPLETE`다. 2026-08-20 강호 비무행 Decision은 **기획 권위**이며 아래 기존 제품 구현 상태를 자동 갱신하지 않는다.
 
 보장:
 
@@ -84,6 +87,7 @@
 
 아직 권위가 없는 범위:
 
+- 강호 비무행 App Flow의 제품 구현 완료 주장.
 - 최종 loadout 획득·교체 경제.
 - 적별 최종 무공 배치와 난이도 곡선.
 - 최종 밸런스·연출·아트·음향.
@@ -112,6 +116,7 @@
 | PR #90과 비최종 condition branch | PR #91 | 오류 추적만 |
 | 런타임 미구현 상태 | `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE` | 과거 체크포인트만 |
 | UI·AI 미채택 상태 | `TEN_MANUAL_UI_AI_ADOPTION_GATE` | 과거 런타임 기반 체크포인트만 |
+| Google Sheets를 신규 사용자-facing GDD 입력으로 취급하는 운영 | v4.7 Notion-first + Sheets migration-only | 과거/migration 확인만 |
 
 ## `[보류]`
 
@@ -123,6 +128,8 @@
 | 적별 최종 loadout·난이도 | 공개 상태 경계만 구현 | 사람 측정과 난이도 Decision |
 | 최종 등급 가중치·컷 | 사람 표본 전 보류 | 별도 Decision |
 | 등급 기반 경제 보상 | 사람 검증 전 금지 | 30승·5상대·표본 집중40% 이하와 새 Decision |
+| 주요 비무 6~10·천하제일인 | 첫 Vertical Slice 밖 | 첫 5전 release-near 증거 뒤 재검토 |
+| 반복 또래 무인의 정확한 이름·성별·외형·소속·대전 시점 | `REVERSIBLE_CONTENT_DETAIL` | 캐릭터/시각 상세 기획 |
 
 ## `[폐기]`
 
@@ -142,6 +149,8 @@
 | #92 | Draft·부모 #91·초기 10권 성장·런타임 기반·UI·AI 채택·현재 배치10/10 |
 | #85 | `[보류]` HTML PoC |
 
+이 표는 역사 계보다. current open/merged 상태는 GitHub live metadata와 `ACTIVE_CONTEXT.md`에서 읽고 새 PR을 수동 고정하지 않는다.
+
 ## `CANON_CONFLICT`
 
 - 능력치별 무공서 권수·균등 분포·최소/최대 쿼터를 강제함.
@@ -156,13 +165,29 @@
 - UI에 선택 가능한 무공 카드가 실제 `effect_steps`를 실행하지 않음.
 - 기본 행동·공용 절초·준비·자동 배치 ID나 동작을 삭제·변경함.
 - 숨은 계획 접근·자동 정답·자동 합 승리를 추가함.
+- 정보 노드나 반복 인물이 현재/미래 적 잠금 계획·정답 대응·AI 가중치를 공개함.
+- 주요 비무 1~5의 기계 학습 역할, 슬롯당 후보 3명, 비무 사이 정확히 2노드 구조를 별도 Decision 없이 변경함.
+- 첫 Vertical Slice에 고정 출신 문파·복수극을 강제하여 시작 무공 6중4 선택 의미를 훼손함.
 - 사람 검증 없이 최종 밸런스·T1 완료를 주장함.
 - PR #92를 PR #91보다 먼저 독립 병합하거나 Draft 해제함.
 - `[대체됨]`·`[보류]` 자료를 현행 제품 권위로 사용함.
 
 ## 다음 Gate
 
-`TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`, `TEN_MANUAL_UI_AI_ADOPTION_GATE`, `TEN_MANUAL_PRODUCT_VALIDATION_GATE`의 자동 범위는 완료됐다. 현재 승인 배치는 `10/10`이다.
+최신 사용자 지시 기준 활성 경로:
+
+```text
+VERTICAL_SLICE_TEXTUAL_UX_AND_CONTENT_AUTHORING
+→ opponent 15 후보의 슬롯별 최소 차별화
+→ route 8노드의 선택·정보·보상 상세
+→ Briefing / Result·Review·Reward / 완주 요약 텍스트 UX 상세
+→ 전체 기획 정합성·비용·재플레이 적대적 검토
+→ 사용자 명시 [기획 완료]
+→ 최신 Base·Project main/open PR·exact Project Notion·Entry Gate 재조회
+→ 승인된 구현 package만 BUILD
+```
+
+기존 제품/플랫폼 검증 Gate는 폐기하지 않고 구현 재개 시 이어진다.
 
 ```text
 TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE
@@ -174,4 +199,4 @@ TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE
 → FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
 ```
 
-자동 검증만으로 Windows·접근성·성능·사람·밸런스 완료를 주장하면 안 된다.
+자동 검증만으로 Windows·접근성·성능·사람·밸런스 완료를 주장하면 안 된다. 기획 Decision의 존재만으로 제품 구현 권한을 만들지 않는다.
