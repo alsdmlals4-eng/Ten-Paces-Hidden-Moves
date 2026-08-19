@@ -3,27 +3,27 @@
 > 전투 규칙 책임 원본: `docs/02_COMBAT_RULES.md`
 > 이 문서는 **변동 상태의 단독 책임 원본**이다. 제품 규칙 전문을 복제하지 않고 현재 상태, 검증 상태, 미완료 Gate, 다음 실행 순서를 연결한다. 후속 Decision 뒤에도 회귀가 찾아야 하는 제품·플랫폼·관찰 권위의 발견 표식은 별도 섹션으로 보존한다.
 > 핵심 결투 타이밍 discovery locator: `3/3/4`. 세부 전투 규칙은 `docs/02_COMBAT_RULES.md`가 책임진다.
-> live 상태 판단은 저장된 SHA를 current authority로 재사용하지 않고 매 resume/post-merge마다 GitHub `main` + Google Sheet current truth를 다시 읽는다.
+> live 상태 판단은 저장된 SHA를 current authority로 재사용하지 않고 매 resume/post-merge마다 GitHub `main` + exact Project Notion current truth를 다시 읽는다. Google Sheets는 2026-08-20 v4.7 사용자 작업계약에 따라 신규 기획 입력이 아니라 migration-only다.
 
 ## 현재 기준
 
 ```yaml
 project: 십보강호: 숨은 수의 비무
 repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
-current_truth_source: GITHUB_MAIN_PLUS_SHEET_LIVE_READ
+current_truth_source: GITHUB_MAIN_PLUS_EXACT_PROJECT_NOTION_LIVE_READ
 current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN
 base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
 live_exact_sha_authority: NONE_REFETCH_REQUIRED
-active_project_pr: NONE
+active_project_pr: 165
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
-active_planning_work_mode: REVIEW
-active_planning_pr: NONE
+active_planning_work_mode: PLAN
+active_planning_pr: 165
 active_planning_parent_pr: NONE
 active_approval_count: 1/10
-active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED
-source_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
+active_decision_state: JIANGHU_JOURNEY_VERTICAL_SLICE_APPROVED
+source_decision: TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
 platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
@@ -39,9 +39,9 @@ human_validation: NOT_RUN
 accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
 performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 product_implementation_authorized: false
-next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
-next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
-planning_visual_next: TEN_IMG_001_PAUSED_BY_USER_TEXTUAL_CANON_REVIEW
+next_package: VERTICAL_SLICE_TEXTUAL_UX_AND_CONTENT_AUTHORING
+next_planning_decision: VERTICAL_SLICE_OPPONENT_ROUTE_CONTENT_DETAIL_GATE
+planning_visual_next: PAUSED_UNTIL_USER_EXPLICIT_IMAGE_REQUEST
 planning_visual_review: TEN_IMG_001_CHAT_EXPLORATIONS_REVIEWED_NOT_AN_ASSET
 planning_visual_authority: TEN-DEC-20260808-TEN-IMG-001-VISUAL-REQUIREMENT-APPROVAL-01
 planning_visual_overlay: TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01
@@ -50,9 +50,9 @@ base_release_pinned: 9.4.3
 base_remote_observation: CURRENT_REMOTE_REQUIRES_LIVE_REFETCH_NO_AUTOMATIC_PROJECT_ADOPTION
 ```
 
-`next_package`와 `next_planning_decision`은 플랫폼 구현 Gate의 기존 operating-state 키다. 현재 Entry Gate가 이를 계속 차단하므로 제품 구현 권한을 뜻하지 않는다. TEN-IMG-001은 chat exploration 뒤 사용자 지시로 추가 생성이 중단됐고 현재 실제 다음 시각화 작업은 **텍스트 정본 검토**다. 새 이미지 생성은 사용자가 다시 요청하기 전까지 진행하지 않으며 기존 생성 결과는 `NOT_AN_ASSET`이다.
+플랫폼 Adapter 구현 Gate는 여전히 제품 구현 경계로 유효하지만, 최신 사용자 지시와 `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01`에 따라 **현재 활성 작업은 구현이 아니라 Vertical Slice 텍스트 기획**이다. `product_implementation_authorized: false`를 유지한다. TEN-IMG-001은 chat exploration 뒤 사용자 지시로 추가 생성이 중단됐고 새 이미지 생성은 사용자가 다시 명시적으로 요청하기 전까지 진행하지 않는다.
 
-이 live block에는 현재 SHA를 저장하지 않는다. 새 세션·post-merge에서는 GitHub `main`, 열린 PR, Sheet `00·02·04·99`, current operating/entry gate를 다시 읽고 의미 상태만 판정한다. exact SHA/run ID는 아래의 명시적 역사·관측 증거로만 취급한다.
+이 live block에는 current main SHA를 저장하지 않는다. 새 세션·post-merge에서는 GitHub `main`, 열린 PR, exact Project Notion, current operating/entry gate를 다시 읽고 의미 상태만 판정한다. exact SHA/run ID는 아래의 명시적 역사·관측 증거로만 취급한다.
 
 ## 관측 증거 스냅샷
 
@@ -71,12 +71,15 @@ merged_platform_adapter_pr: 102
 observed_project_main_2026_08_11: 0a9e74b09816be891b3fb1cccca5e700a9ead064
 observed_base_main_2026_08_11: 315c66eea9614c284b9c11c4d522141065dfa4b0
 observed_recent_canon_reconciliation_prs: 137,138,139
+planning_pr_2026_08_20: 165
+planning_pr_2026_08_20_base: 0e9955afe791c43255176a4e89d89cf58be9b76a
 ```
 
-위 `observed_*` 값도 다음 merge 뒤 자동 current가 되지 않는다. current 여부는 항상 live refetch로 다시 판정한다.
+위 `observed_*` 값과 planning PR base도 다음 merge 뒤 자동 current가 되지 않는다. current 여부는 항상 live refetch로 다시 판정한다.
 
 ## 현재 권위와 보호 결정
 
+- 강호 비무행·플레이어 역할·5전 감정곡선·비전투 App Flow: `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01`, `docs/12_VERTICAL_SLICE_JIANGHU_JOURNEY.md`.
 - 플랫폼 범위: `TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`.
 - 플랫폼 Adapter 아키텍처: `TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01`.
 - 행동 선택 UX: `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`.
@@ -97,18 +100,19 @@ observed_recent_canon_reconciliation_prs: 137,138,139
 
 ## 선행 UX·앱 흐름 권위
 
+- `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01` — Main→시작 6중4→비무행 도입→Briefing→Combat→Result/Review/Reward→Route 2노드→다음 비무→5전 완주.
 - `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`.
 - `TEN-DEC-20260801-SITUATION-SCREEN-01`.
 - 역사 구현 표식: `runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65`.
 - V6 원장: `2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
 
-위 표식은 PR #65 앱 흐름 기반의 역사·호환 근거이며 현재 구현 권위는 상단 YAML의 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`다.
+위 신규 App Flow는 계획 권위이며 제품 구현을 허가하지 않는다. PR #65 앱 흐름 기반은 역사·호환 근거이고 현재 구현 권위는 상단 YAML의 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`다.
 
 ## 제품 연결·성장 보호 표식
 
 - 적 AI는 자기 명시적 loadout과 공개 상태만 사용하며 **플레이어 비공개 계획·미확정 배치·포인터는 참조하지 않는다**.
 - 능력치별 무공서 권수·균등 분포·최소/최대 쿼터는 사용하지 않는다.
-- 무공서·무학 사용자-facing 동기화는 Sheet `03_무공서_무학`과 해당 GitHub 권위 문서의 Decision ID를 대조한다.
+- 무공서·무학 사용자-facing 동기화는 exact Project Notion의 확정 기획 작업면과 해당 GitHub 권위 문서의 Decision ID를 대조한다. Google Sheets는 신규 입력이 아니라 migration-only다.
 
 이 세 표식은 후속 플랫폼·handoff 정리로 제품 권위가 사라졌다고 오인하지 않기 위한 discovery contract다.
 
@@ -134,7 +138,7 @@ Windows CI 기준 runtime은 약 2344.67ms, peak working set은 188571648 bytes,
 
 ## 관찰 권위
 
-`TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`은 후속 무공·런타임·UI·AI Decision 뒤에도 유지된다.
+`TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`은 후속 무공·런타임·UI·AI·강호행로 Decision 뒤에도 유지된다.
 
 관찰은 행동1수→관찰량1→적 선잠금 뒤 앞 슬롯 실제 행동 종류 직접 공개를 유지한다.
 
@@ -153,8 +157,9 @@ Windows CI 기준 runtime은 약 2344.67ms, peak working set은 188571648 bytes,
 - PR #92 병합 전 관찰 승인 스냅샷: `active_planning_pr: 92`.
 - 제품 병합 전 상태: `active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED`.
 - 제품 병합 전 다음 Gate: `next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE`.
+- 플랫폼 전용 operating-state 표식: `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED`, `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE`.
 
-현행 운영 값은 문서 상단 YAML의 `active_planning_pr: NONE`, `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED`, `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE`를 사용한다. 제품 병합 권위는 별도 역사 증거인 `merged_product_pr: 92`, `product_implementation_merge_commit`, `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`로 유지한다.
+현행 운영 값은 문서 상단 YAML의 `active_planning_pr`, `active_decision_state`, `next_planning_decision`을 사용한다. 제품 병합 권위는 별도 역사 증거인 `merged_product_pr: 92`, `product_implementation_merge_commit`, `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`로 유지한다.
 
 ## 완료·검증됨
 
@@ -195,11 +200,12 @@ human_validation: BLOCKED_NOT_RUN
 windows_android_adapter_implementation_gate: BLOCKED_BY_ENTRY_GATE
 product_implementation_authorized: false
 allowed_next_actions:
-  - VERIFY_LOCAL_WINDOWS_ANDROID_DEVICE_AND_HUMAN_GATES
-  - RECHECK_WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
+  - CONTINUE_VERTICAL_SLICE_PLANNING_UNDER_LATEST_USER_DIRECTION
+  - VERIFY_LOCAL_WINDOWS_ANDROID_DEVICE_AND_HUMAN_GATES_WHEN_REAUTHORIZED
+  - RECHECK_WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE_AFTER_PLANNING_COMPLETE
 ```
 
-이 Entry Gate는 제품/플랫폼 구현 경계다. 해당 snapshot의 `PLANNING_VISUALIZATION_ONLY` 허용은 제품 구현 권한이 아니며, 후속 사용자 지시인 TEN-IMG-001 추가 생성 `PAUSED_BY_USER`를 덮어쓰지 않는다. Android 완료, 실제 기기 완료, 사람 검증 완료를 아직 주장하면 안 된다.
+이 Entry Gate는 제품/플랫폼 구현 경계다. 기획 작업은 현재 사용자 지시 범위에서 계속할 수 있지만 제품 구현 권한은 아니다. TEN-IMG-001 추가 생성 `PAUSED_BY_USER`를 덮어쓰지 않는다. Android 완료, 실제 기기 완료, 사람 검증 완료를 아직 주장하면 안 된다.
 
 ## 이번 세션의 플랫폼 preflight 중단 상태
 
@@ -233,7 +239,7 @@ user_disposition: DEFERRED_BY_USER
 ```text
 1. Base 최신 main/root/open PR 재조회
 2. Project 최신 main/open PR/관련 Decision 재조회
-3. Google Sheet 00·02·04·99 재조회
+3. exact Project Notion Home·Work·Flow·Core System 재조회
 4. current_entry_gate와 current_operating_state 재조회
 5. live context 의미 상태와 fresh truth 차이 교정
 6. V2 collector 구현은 재사용하지 않음
@@ -267,11 +273,15 @@ Base remote `main`의 exact SHA는 이 live router에 current 값으로 저장�
 4. `[기획서]/00_프로젝트_허브/HANDOFF.md`.
 5. `docs/planning-data/current_operating_state.json`.
 6. `docs/planning-data/current_entry_gate_20260808.json`.
-7. Sheet `00_프로젝트_허브`, `02_현재_확정결정`, `04_누락_충돌_감사`, `99_변경이력`.
+7. exact Project Notion의 `Project Home`, `01 · 프로젝트 전체 작업계획`, `03 · UI · 전투 Flow Map`, `08 · 핵심 시스템 · 상세`와 현재 Decision 페이지.
 8. 질문별 분야 책임 원본과 실제 코드·테스트·GitHub PR metadata.
+
+Google Sheets는 신규 기획 입력 경로로 사용하지 않으며 migration 잔존 정보를 확인해야 할 때만 보조 증거로 읽는다.
 
 ## 현재 위험·미검증
 
+- 강호 비무행 세계·5전 감정곡선·App Flow는 `CURRENT_APPROVED_PLANNING`; 제품 구현과 사람 재미 증거는 아직 없다.
+- 반복 또래 무인의 정확한 이름·성별·외형·소속·향후 대전 시점은 `REVERSIBLE_CONTENT_DETAIL`이다.
 - Android export preset 및 제품 Adapter 구현은 current Entry Gate가 허용하기 전 완료로 승격하지 않는다.
 - Android 실제 기기·터치·back·safe area·lifecycle·저장·성능 증거는 `NOT_RUN / BLOCKED_UNVERIFIED`다.
 - Windows visible local render·실물 입력·접근성 사용자·Release 성능은 자동 제품 검증과 별개다.
@@ -284,7 +294,7 @@ Base remote `main`의 exact SHA는 이 live router에 current 값으로 저장�
 ## 상태 표현 규칙
 
 - 완료 증거가 없으면 `PASS`로 쓰지 않는다.
-- live current state는 exact SHA를 내장하지 않고 GitHub + Sheet를 다시 읽어 판정한다.
+- live current state는 exact SHA를 내장하지 않고 GitHub + exact Project Notion을 다시 읽어 판정한다.
 - exact SHA/run ID는 `관측 증거 스냅샷`, Decision, evidence 문서처럼 역사·관측 역할이 명확한 곳에만 둔다.
 - 과거 PR/branch/Handoff가 GitHub current truth와 충돌하면 current GitHub + 현재 책임 원본을 우선하고 live router만 교정한다.
 - HANDOFF는 명시적 session snapshot이므로 자동 current화하지 않는다.
@@ -310,4 +320,4 @@ FRESH_POWERSHELL_REPEAT_RUN: NOT_RUN
 product_mutation_after_checkpoint: NOT_AUTHORIZED_BY_READINESS_EVIDENCE
 ```
 
-historical PID/port/session 값은 이 문서에서 current authority로 사용하지 않는다. 새 세션은 GitHub/Sheet를 먼저 다시 읽은 뒤 `IN_CODEX_FRESH_READINESS_GATE`를 수행하고, 그 Gate가 PASS일 때만 `FRESH_POWERSHELL_REPEAT_RUN_GATE`로 진행한다. 두 Gate가 끝날 때까지 launcher/process/listening-port 존재를 live readiness PASS로 승격하지 않는다.
+historical PID/port/session 값은 이 문서에서 current authority로 사용하지 않는다. 새 세션은 GitHub/exact Project Notion을 먼저 다시 읽은 뒤 `IN_CODEX_FRESH_READINESS_GATE`를 수행하고, 그 Gate가 PASS일 때만 `FRESH_POWERSHELL_REPEAT_RUN_GATE`로 진행한다. 두 Gate가 끝날 때까지 launcher/process/listening-port 존재를 live readiness PASS로 승격하지 않는다.
