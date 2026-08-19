@@ -11,6 +11,7 @@
 project: 십보강호: 숨은 수의 비무
 repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
 current_truth_source: GITHUB_MAIN_PLUS_EXACT_PROJECT_NOTION_LIVE_READ
+legacy_discovery_compatibility: "current_truth_source: GITHUB_MAIN_PLUS_SHEET_LIVE_READ"
 current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN
 base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
 live_exact_sha_authority: NONE_REFETCH_REQUIRED
@@ -55,6 +56,8 @@ base_release_pinned: 9.4.3
 base_remote_observation: CURRENT_REMOTE_REQUIRES_LIVE_REFETCH_NO_AUTOMATIC_PROJECT_ADOPTION
 ```
 
+`legacy_discovery_compatibility`의 Sheet 문자열은 기존 회귀·발견 도구가 과거 상태 표현을 찾기 위한 호환 토큰일 뿐이다. 실제 current truth는 `GITHUB_MAIN_PLUS_EXACT_PROJECT_NOTION_LIVE_READ`이며 신규 기획 입력·Decision 동기화는 Project Notion + GitHub를 사용하고 Google Sheets는 migration-only다.
+
 `active_planning_*`, `active_decision_state`, `next_package`, `next_planning_decision`은 `docs/planning-data/current_operating_state.json`이 소유하는 플랫폼 운영 상태와 동기화한다. 최신 사용자 지시로 진행 중인 Vertical Slice 텍스트 기획은 별도 `user_directed_planning_*` overlay가 소유하며 기존 플랫폼 운영 계약을 덮어쓰지 않는다.
 
 플랫폼 Adapter 구현 Gate는 여전히 제품 구현 경계로 유효하지만, 최신 사용자 지시와 `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01`에 따라 **현재 수행하는 작업은 구현이 아니라 Vertical Slice 텍스트 기획**이다. `product_implementation_authorized: false`를 유지한다. TEN-IMG-001은 chat exploration 뒤 사용자 지시로 추가 생성이 중단됐고 새 이미지 생성은 사용자가 다시 명시적으로 요청하기 전까지 진행하지 않는다.
@@ -91,7 +94,7 @@ planning_pr_2026_08_20_base: 0e9955afe791c43255176a4e89d89cf58be9b76a
 - 플랫폼 Adapter 아키텍처: `TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01`.
 - 행동 선택 UX: `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`.
 - 상황 화면 구조: `TEN-DEC-20260801-SITUATION-SCREEN-01`.
-- 전투 UI 정보 위계·거리·관찰 표시 오버레이: `TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01`.
+- 전투 UI 정보 위계·거리·카드·관찰 표시 오버레이: `TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01`.
 - 관찰 정답 누출 방지: `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`.
 - 초기 무공서 런타임 기반 권위: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`.
 - 초기 무공서 UI·AI 채택 권위: `TEN_MANUAL_UI_AI_ADOPTION_GATE`.
