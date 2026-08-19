@@ -20,7 +20,7 @@ AGENTS.md
 | 질문 | 현재 책임 원본 |
 |---|---|
 | 현행 전체 작업 방식·검증·병합·전달 계약 | `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` / `TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01` |
-| 현재 단계·권한·다음 작업 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` + GitHub current metadata + Sheet `00·02·04·99` |
+| 현재 단계·권한·다음 작업 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` + GitHub current metadata + exact Project Notion |
 | 프로젝트가 채택한 Base release·payload/evidence/finalization pin | `docs/BASE_RULES_VERSION.md`, `skills/PROJECT_BASE_ADAPTER.json` |
 | 프로젝트 고유 Skill | `skills/SKILL_REGISTRY.json`, `skills/*/SKILL.md` |
 | 게임 정체성·핵심 재미 | `docs/01_GAME_DESIGN.md` |
@@ -39,7 +39,7 @@ AGENTS.md
 | 플랫폼 Adapter 구조 | `docs/decisions/2026-08-06_WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_DECISION.md` |
 | 화면 구조 | `docs/decisions/2026-08-01_SITUATION_SCREEN_ARCHITECTURE_DECISION.md` |
 | 행동 선택 | `docs/decisions/2026-08-01_MARTIAL_MANUAL_TECHNIQUE_TIMELINE_UX_DECISION.md` |
-| 무공서·무학 사용자 facing 표 | Google Sheet `03_무공서_무학` + 해당 Decision ID의 GitHub 정본 |
+| 무공서·무학 과거 사용자-facing 표 | Google Sheet `03_무공서_무학` + 해당 Decision ID의 GitHub 정본 — migration 확인 전용 |
 
 구조화 planning JSON은 각 Decision·분야 정본의 **검증 가능한 계약/ledger**다. 어떤 JSON이 현재 활성인지 여부는 Decision 연결과 `docs/CANON_LIFECYCLE_REGISTRY.md`를 통해 판정한다. 과거 PR·branch·merge SHA는 현재 책임 원본 목록에 넣지 않고 역사·증거 문서에서만 읽는다.
 
@@ -68,9 +68,12 @@ Decision이 추가·대체·부분 overlay되면 위 권위 사슬을 갱신하�
 current_state_owner: ACTIVE_CONTEXT
 current_pr_authority: GITHUB_PR_METADATA
 current_notion_authority: EXACT_PROJECT_NOTION
+legacy_discovery_compatibility: "current_sheet_authority: GOOGLE_SHEET_00_02_04_99"
 current_decision_authority: ACTIVE_CONTEXT_PLUS_CANON_LIFECYCLE_REGISTRY
 product_build_authority: CURRENT_WORK_CONTRACT_PLUS_USER_PLANNING_COMPLETE_PLUS_CURRENT_GATE
 ```
+
+`legacy_discovery_compatibility`의 Sheet 문자열은 기존 회귀·발견 도구가 과거 구조를 찾기 위한 호환 토큰일 뿐이다. 신규 기획 입력·Decision 동기화·현재 사용자 작업 권위는 Project Notion + GitHub이며 Google Sheets는 migration-only다.
 
 새 세션·post-merge에서는 저장된 SHA나 과거 PR 번호를 current로 재사용하지 않는다. `ACTIVE_CONTEXT.md`, GitHub main/open PR, exact Project Notion, current operating/entry gate를 fresh-read해 현재 상태를 판정한다.
 
