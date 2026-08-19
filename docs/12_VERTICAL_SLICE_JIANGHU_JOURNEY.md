@@ -237,8 +237,8 @@ Duel 1
 
 좋은 예:
 
-- `설하는 거리를 벌린 뒤 장풍 계통을 자주 사용한다고 알려져 있다.`
-- `청허의 무공에는 회피 후 반격 조건이 존재한다.`
+- `슬롯3의 한 후보는 거리를 벌린 뒤 장풍 계통을 선호한다고 알려져 있다.`
+- `슬롯4의 한 후보 무공에는 회피 후 반격 조건이 존재한다.`
 
 나쁜 예:
 
@@ -283,19 +283,13 @@ Combat 자체는 `docs/02_COMBAT_RULES.md`와 전투 UI Decision의 권위다.
 
 비전투 서사가 Combat 판정에 숨은 보정치를 넣지 않는다.
 
-## 10. Result · Review · Reward 계약
+## 10. Combat Review · Duel Result · Reward 계약
 
-별도 화면을 무한히 늘리지 않고 하나의 Scene/흐름으로 묶는 것을 기본 UX로 한다.
+**기존 Scene 경계를 보존한다.** `Combat Review`는 Combat Scene 위의 Overlay이고, `Duel Result`는 별도 Scene이다. 이 문서에서 `Review → Result + Reward`를 묶어 말할 때는 **연속된 사용자 경험 흐름**이라는 뜻이지 하나의 Scene이라는 뜻이 아니다.
 
-### Layer 1 · 결과
+### 10.1 Combat Review Overlay
 
-- 승/패
-- 핵심 전투 종료 상태
-- 현재 승인된 등급 표시가 있다면 그 결과
-
-### Layer 2 · 복기
-
-가장 결정적인 1~3개 사건을 우선한다.
+Combat 종료 직후 가장 결정적인 1~3개 실제 사건을 우선한다.
 
 가능한 사건 예:
 
@@ -307,7 +301,13 @@ Combat 자체는 `docs/02_COMBAT_RULES.md`와 전투 UI Decision의 권위다.
 
 숨은 정답·미선택 미래 결과를 보여 주지 않는다.
 
-### Layer 3 · 보상
+### 10.2 Duel Result 별도 Scene
+
+- 승/패
+- 핵심 전투 종료 상태
+- 현재 승인된 등급 표시가 있다면 그 결과
+- 승인된 보상 선택
+- 다음 이동: 1~4전이면 Route, 5전이면 완주 요약
 
 보상은 `다음 Route 선택에 무엇이 달라지는가`가 읽혀야 한다. 사람 검증 전 전투 종료 등급을 경제 증폭기에 연결하지 않는 기존 보호를 유지한다.
 
@@ -341,13 +341,14 @@ flowchart TD
     C --> D["짧은 강호 비무행 도입"]
     D --> E["Duel Briefing"]
     E --> F["Combat · 3/3/4"]
-    F --> G["Result + Review + Reward"]
-    G --> H{"5번째 비무 완료?"}
-    H -- "아니오" --> I["Route Node 1 · 회복/성장"]
-    I --> J["Route Node 2 · 정보/대비"]
-    J --> E
-    H -- "예" --> K["비무행 완주 요약"]
-    K --> L["Main / 기록"]
+    F --> G["Combat Review Overlay"]
+    G --> H["Duel Result + Reward · 별도 Scene"]
+    H --> I{"5번째 비무 완료?"}
+    I -- "아니오" --> J["Route Node 1 · 회복/성장"]
+    J --> K["Route Node 2 · 정보/대비"]
+    K --> E
+    I -- "예" --> L["비무행 완주 요약"]
+    L --> M["Main / 기록"]
 ```
 
 ## 13. 비전투 UX 예산
@@ -358,7 +359,7 @@ flowchart TD
 |---|---:|
 | 첫 도입 | 45~60초 이하 |
 | Briefing 1회 | 15~30초 |
-| Result/Review/Reward 1회 | 20~45초 |
+| Combat Review + Duel Result/Reward 합산 | 20~45초 |
 | Route Node 1회 | 20~40초 |
 | 첫 회차 비전투 비중 | 약 35~40% 이하 |
 | 반복 회차 비전투 비중 | 약 25~30% 이하 |
@@ -367,7 +368,7 @@ flowchart TD
 
 - 플레이어가 읽는 시간 때문에 전투 계획 시간이 압축되면 서사량부터 줄인다.
 - 반복 회차에서는 이미 읽은 도입·대사·설명을 빠르게 넘길 수 있어야 한다.
-- 화면 전환이 많아 체감 흐름이 끊기면 Scene 수보다 기능 통합을 우선한다.
+- 화면 전환이 많아 체감 흐름이 끊기면 새 Scene을 추가하기보다 기존 Overlay/Scene 안에서 정보 위계를 정리한다.
 
 ## 14. 첫 Vertical Slice 콘텐츠 예산
 
@@ -378,7 +379,8 @@ flowchart TD
 - 반복 인물 1명
 - 8개 실제 방문 Route 노드
 - Briefing
-- Result/Review/Reward
+- Combat Review Overlay
+- Duel Result + Reward 별도 Scene
 - 완주 요약
 
 ### 필수가 아님
@@ -403,7 +405,8 @@ planning_acceptance:
   recurring_character_function_defined: true
   route_two_nodes_per_gap_preserved: true
   briefing_information_boundary_defined: true
-  result_review_reward_flow_defined: true
+  combat_review_overlay_boundary_preserved: true
+  duel_result_separate_scene_boundary_preserved: true
   observation_answer_leak_guardrail_preserved: true
   app_flow_main_to_run_complete_defined: true
   non_combat_time_budget_defined_as_tunable: true
@@ -421,5 +424,6 @@ planning_acceptance:
 - Route 정보가 정답을 누출하지 않으면서 다음 계획을 실제로 바꾸는가.
 - 비전투 시간이 3/3/4 전투의 집중을 침범하지 않는가.
 - 패배 복기가 `왜 졌는지`를 설명하지만 다음 정답을 대신 선택하지 않는가.
+- Combat Review Overlay와 Duel Result Scene이 연속으로 느껴지되 역할이 혼동되지 않는가.
 
 실행하지 않은 Godot/Windows/Android/Human 검증은 `NOT_RUN`이다.
