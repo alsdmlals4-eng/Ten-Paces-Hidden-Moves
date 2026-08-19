@@ -111,6 +111,8 @@ Vertical Slice에서 다음은 고정하지 않는다.
 
 ## 6. Vertical Slice App Flow
 
+기존 화면 구조 Decision을 보존한다. 특히 **Combat Review는 Combat Overlay이고 Duel Result는 별도 Scene**이다. 아래의 `Review → Result + Reward`는 하나의 사용자 경험 흐름을 뜻하며 하나의 Scene으로 합친다는 뜻이 아니다.
+
 ```text
 Main
 → 새 비무행 / 이어하기
@@ -118,13 +120,15 @@ Main
 → 짧은 비무행 도입
 → 비무 Briefing
 → Combat
-→ Result + Review + Reward
+→ Combat Review Overlay
+→ Duel Result + Reward Scene
 → Route Node 1
 → Route Node 2
 → 다음 비무 Briefing
 → Combat
 → ...
-→ 5번째 비무 Result + Review + Reward
+→ 5번째 비무 Combat Review Overlay
+→ Duel Result + Reward Scene
 → 비무행 완주 요약
 → Main / 기록
 ```
@@ -148,19 +152,18 @@ Main
 - 정답 파훼법
 - 확률형 예상 명중률
 
-### 6.2 Result + Review + Reward
+### 6.2 Combat Review Overlay → Duel Result + Reward
 
-화면 수를 늘리지 않기 위해 결과·복기·보상은 하나의 흐름으로 묶는다.
+화면 구조는 기존 계약을 따른다.
 
-순서:
-
-1. 승패·결정적 사건
-2. `왜 그렇게 됐는가`를 판정 이력으로 설명
-3. 플레이어가 다음에 바꿔 볼 수 있는 관찰 가능한 사실을 남김
-4. 승인된 보상 선택
-5. 강호행로로 이동
+1. Combat 종료 뒤 **Combat Review Overlay**에서 실제 판정 이력과 결정적 원인을 먼저 확인한다.
+2. Overlay를 닫고 **Duel Result 별도 Scene**으로 이동한다.
+3. Duel Result에서 승패·등급·승인된 보상 선택과 다음 이동을 처리한다.
+4. 1~4전이면 강호행로, 5전이면 완주 요약으로 이동한다.
 
 복기는 숨은 정답을 공개하지 않는다. `사거리 실패`, `합 패배`, `전조 중단`, `회피 소진`, `자원 부족`처럼 이미 발생한 인과를 명료하게 보여 준다.
+
+이 Decision은 `Combat Review = Combat Overlay`, `Duel Result = separate Scene`, `Route = separate Scene`을 변경하지 않는다.
 
 ### 6.3 완주 화면
 
@@ -180,7 +183,7 @@ Main
 
 - 첫 도입: `45~60초 이하`
 - 비무 Briefing: 기본 `15~30초`
-- Result/Review/Reward: `20~45초`
+- Combat Review + Duel Result/Reward 합산: `20~45초`
 - 중간 노드 1회: `20~40초`
 - 첫 회차 비전투 비중: 대략 `35~40% 이하`를 목표
 - 반복 회차 비전투 비중: 대략 `25~30% 이하`를 목표
@@ -203,6 +206,9 @@ Main
 - 주요 비무 슬롯 1~5의 기계 학습 역할
 - 슬롯당 후보 3명 / 총 후보 15명 구조
 - 비무 사이 정확히 2노드
+- `Combat Review = Combat Overlay`
+- `Duel Result = 별도 Scene`
+- `Route = 별도 Scene`
 - Windows·Android 공유 코어 원칙
 
 ### 이번 Decision에서 추가하지 않음
@@ -233,8 +239,17 @@ A는 장기적으로 B를 특정 지역/대회 챕터로, C를 사건 Route로 �
 
 - `Yomi`: 비공개 동시 선택과 상대 읽기의 원리를 **채택**하되 카드/손패 구조는 제외한다.
 - `Phantom Brigade`: 계획→커밋→실행의 긴장과 결과 가독성을 **변형 채택**한다.
-- `Into the Breach`: 결과 인과가 명료해야 한다는 원리를 **복기 화면에 채택**하되 적 행동 완전 공개는 제외한다.
+- `Into the Breach`: 결과 인과가 명료해야 한다는 원리를 **복기 Overlay에 채택**하되 적 행동 완전 공개는 제외한다.
 - 전술 코어와 맞지 않는 과도한 서사 기대를 줄이는 실무 사례를 반영해, 첫 Vertical Slice의 내러티브는 전투·Route를 지지하는 밀도로 제한한다.
+
+공식 비교 출처:
+
+- Sirlin Games, `Yomi`: https://www.sirlingames.com/yomi
+- Brace Yourself Games, `Phantom Brigade` press kit: https://braceyourselfgames.com/press/phantom-brigade/
+- Brace Yourself Games, `October Development Update`, 2025-10-09: https://braceyourselfgames.com/2025/10/09/october-development-update/
+- Subset Games, `Into the Breach`: https://subsetgames.com/itb.html
+
+외부 사례는 설계 원리 비교에만 사용하며 프로젝트 정본과 충돌하면 프로젝트 Decision이 우선한다.
 
 ## 11. 전체 적대적 검토 5회
 
@@ -242,7 +257,7 @@ A는 장기적으로 B를 특정 지역/대회 챕터로, C를 사건 Route로 �
 
 공격: 스토리·NPC가 3/3/4보다 더 많은 시간과 주의를 먹을 수 있다.
 
-수정: 반복 인물 1명, 짧은 대사, 대화 트리 없음, Result/Review/Reward 통합, 비전투 시간 예산을 둔다.
+수정: 반복 인물 1명, 짧은 대사, 대화 트리 없음, Review→Result/Reward를 짧은 연속 흐름으로 두고 비전투 시간 예산을 둔다.
 
 재검사: 전투가 여전히 모든 서사·Route의 원인과 결과 중심이다. `PASS`.
 
@@ -280,9 +295,10 @@ A는 장기적으로 B를 특정 지역/대회 챕터로, C를 사건 Route로 �
 
 ### Clean Exit 추가 재공격
 
-- 화면 파편화: Result/Review/Reward 통합으로 완화.
+- 화면 파편화: Review와 Result/Reward는 연속 경험으로 묶되 기존 `Combat Review Overlay → Duel Result separate Scene` 구조를 보존한다.
 - 제목/세계 설정 과결정: 광역 정치사와 제목 유래를 이번 Decision에서 고정하지 않음.
 - 패배 흐름: 복기 필요성만 고정하고 회차 리셋·재시도 경제의 상세 정책은 기존/후속 책임 원본에 남김.
+- 정본 회귀: 최초 초안의 `한 Scene` 해석 가능성을 기존 화면 구조와 충돌로 판정하고 제거했다.
 
 `MUST_FIX_REMAINING: 0`.
 
