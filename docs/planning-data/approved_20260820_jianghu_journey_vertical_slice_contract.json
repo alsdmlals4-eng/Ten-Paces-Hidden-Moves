@@ -161,11 +161,26 @@
     "completion_summary_uses_fact_based_run_history": true
   },
   "tuning_starting_points": {
-    "existing_demo_target_minutes": [15, 22],
-    "opening_seconds_max": [45, 60],
-    "briefing_seconds": [15, 30],
-    "combat_review_plus_result_reward_seconds": [20, 45],
-    "route_node_seconds": [20, 40],
+    "existing_demo_target_minutes": [
+      15,
+      22
+    ],
+    "opening_seconds_max": [
+      45,
+      60
+    ],
+    "briefing_seconds": [
+      15,
+      30
+    ],
+    "combat_review_plus_result_reward_seconds": [
+      20,
+      45
+    ],
+    "route_node_seconds": [
+      20,
+      40
+    ],
     "first_run_noncombat_share_target_max": 0.4,
     "repeat_run_noncombat_share_target_max": 0.3,
     "status": "REVERSIBLE_MEASUREMENT_TARGETS"
