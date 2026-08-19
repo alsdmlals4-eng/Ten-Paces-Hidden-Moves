@@ -27,6 +27,9 @@
     "FIVE_DUEL_SLOT_MECHANICAL_ROLES",
     "THREE_CANDIDATES_PER_DUEL_SLOT",
     "TWO_ROUTE_NODES_BETWEEN_DUELS",
+    "COMBAT_REVIEW_IS_COMBAT_OVERLAY",
+    "DUEL_RESULT_IS_SEPARATE_SCENE",
+    "ROUTE_IS_SEPARATE_SCENE",
     "WINDOWS_ANDROID_SINGLE_SHARED_CORE"
   ],
   "recurring_character_axis": {
@@ -113,14 +116,23 @@
     "SHORT_JOURNEY_OPENING",
     "DUEL_BRIEFING",
     "COMBAT",
-    "RESULT_REVIEW_REWARD",
+    "COMBAT_REVIEW_OVERLAY",
+    "DUEL_RESULT_REWARD_SEPARATE_SCENE",
     "ROUTE_NODE_1",
     "ROUTE_NODE_2",
     "NEXT_DUEL_BRIEFING_LOOP",
-    "DUEL_5_RESULT_REVIEW_REWARD",
+    "DUEL_5_COMBAT_REVIEW_OVERLAY",
+    "DUEL_5_RESULT_REWARD_SEPARATE_SCENE",
     "RUN_COMPLETION_SUMMARY",
     "MAIN_OR_RECORDS"
   ],
+  "scene_architecture": {
+    "combat_review_surface": "COMBAT_OVERLAY",
+    "duel_result_surface": "SEPARATE_SCENE",
+    "route_surface": "SEPARATE_SCENE",
+    "review_result_reward_combination_meaning": "CONTIGUOUS_USER_FLOW_NOT_SINGLE_SCENE",
+    "supersedes_existing_scene_architecture": false
+  },
   "briefing_information_boundary": {
     "allowed": [
       "OPPONENT_NAME_AND_EPITHET",
@@ -139,7 +151,10 @@
     ]
   },
   "result_review_reward": {
-    "combined_flow": true,
+    "combined_user_flow": true,
+    "single_scene": false,
+    "combat_review_overlay_first": true,
+    "duel_result_reward_scene_second": true,
     "review_uses_actual_resolved_events_only": true,
     "review_reveals_hidden_answer": false,
     "grade_economy_amplification_before_human_validation": false,
@@ -149,7 +164,7 @@
     "existing_demo_target_minutes": [15, 22],
     "opening_seconds_max": [45, 60],
     "briefing_seconds": [15, 30],
-    "result_review_reward_seconds": [20, 45],
+    "combat_review_plus_result_reward_seconds": [20, 45],
     "route_node_seconds": [20, 40],
     "first_run_noncombat_share_target_max": 0.4,
     "repeat_run_noncombat_share_target_max": 0.3,
@@ -178,7 +193,8 @@
       "ANSWER_LEAK_TO_PUBLIC_FACTS_PLUS_HABIT_AND_AMBIGUITY",
       "CONTENT_EXPLOSION_TO_SLOT_ARCHETYPE_REUSE",
       "REPLAY_CONFLICT_TO_SLOT_AND_RUN_FACT_MODULAR_BEATS",
-      "PLAYER_IDENTITY_CONFLICT_TO_UNBOUND_ORIGIN_FACTION"
+      "PLAYER_IDENTITY_CONFLICT_TO_UNBOUND_ORIGIN_FACTION",
+      "SCENE_ARCHITECTURE_CONFLICT_TO_COMBAT_REVIEW_OVERLAY_THEN_DUEL_RESULT_SCENE"
     ]
   },
   "revisit_conditions": [
