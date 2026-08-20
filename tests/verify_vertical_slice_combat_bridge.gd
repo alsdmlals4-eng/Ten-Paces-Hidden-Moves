@@ -1,6 +1,12 @@
 extends SceneTree
 
 const SHELL_SCENE_PATH := "res://scenes/run/vertical_slice_shell.tscn"
+const DEFAULT_STARTERS := [
+    "mount_hua_plum_blossom_sword",
+    "shaolin_arhat_vajra_art",
+    "wudang_taiji_sword",
+    "yang_family_spear"
+]
 
 var failures: Array[String] = []
 
@@ -25,7 +31,8 @@ func _run() -> void:
         await process_frame
 
     _expect_true(shell.start_new_run(), "Shell must start a new run.")
-    _expect_true(shell.advance_noncombat(), "SETUP must advance to INTRO.")
+    _select_default_setup(shell)
+    _expect_true(shell.advance_noncombat(), "SETUP with four selected manuals must advance to INTRO.")
     _expect_true(shell.advance_noncombat(), "INTRO must advance to BRIEFING.")
     _expect_true(shell.advance_noncombat(), "BRIEFING must advance to COMBAT.")
     for _index in range(4):
@@ -44,6 +51,7 @@ func _run() -> void:
     _expect_true(bool(bridge.get_meta("vertical_slice_bridge", false)), "Combat view must identify itself as the Vertical Slice bridge.")
     _expect_true(bridge.has_signal("terminal_review_ready"), "Bridge must expose terminal_review_ready.")
     _expect_true(bridge.has_signal("terminal_review_confirmed"), "Bridge must expose terminal_review_confirmed.")
+    _expect_true(bool(bridge.get_meta("vertical_slice_runtime_loadout_bound", false)), "Bridge must bind the Setup/current-opponent runtime loadouts.")
 
     var state: Dictionary = bridge.get("combat_state")
     var player: Dictionary = (state.get("player", {}) as Dictionary).duplicate(true)
@@ -96,6 +104,7 @@ func _run() -> void:
     if shell.combat_host.get_child_count() == 1:
         var duel_two_bridge = shell.combat_host.get_child(0)
         _expect_true(duel_two_bridge.get_instance_id() != duel_one_instance_id, "Duel 2 must not reuse the terminal Duel 1 combat instance.")
+        _expect_true(bool(duel_two_bridge.get_meta("vertical_slice_runtime_loadout_bound", false)), "Duel 2 must rebind its locked opponent loadout.")
         var duel_two_state: Dictionary = duel_two_bridge.get("combat_state")
         var duel_two_enemy: Dictionary = duel_two_state.get("enemy", {})
         var duel_two_enemy_health = duel_two_enemy.get("health", [0, 0])
@@ -104,6 +113,11 @@ func _run() -> void:
     shell.queue_free()
     await process_frame
     _finish()
+
+
+func _select_default_setup(shell) -> void:
+    for manual_id in DEFAULT_STARTERS:
+        _expect_true(shell.toggle_setup_manual(manual_id), "Default starter selection must succeed: %s" % manual_id)
 
 
 func _expect_true(value: bool, message: String) -> void:
