@@ -260,7 +260,7 @@ func _refresh_setup_selection_ui() -> void:
     if run_state.get_current_screen() != VerticalSliceRunState.SCREEN_SETUP:
         return
     var count := _setup_selected_manual_ids.size()
-    description_label.text = "강호에 들고 갈 무공 4권을 고릅니다. 선택 %d/4\n각 무공은 3성 기술 하나로 시작하며, 무공은 손패가 아니라 이번 비무행의 전투 정체성입니다." % count
+    description_label.text = "강호에 들고 갈 무공 4권을 고릅니다. 선택 %d/4\n각 무공은 3성 기술 하나로 시작하며, 선택한 네 권이 이번 비무행의 전투 정체성이 됩니다." % count
     primary_button.disabled = count != VerticalSliceRunState.STARTER_SELECTION_COUNT
 
 
