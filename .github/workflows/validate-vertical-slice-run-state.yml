@@ -7,6 +7,7 @@ on:
       - "scenes/run/**"
       - "tests/verify_vertical_slice_run_state.gd"
       - "tests/verify_vertical_slice_shell.gd"
+      - "tests/verify_vertical_slice_combat_bridge.gd"
       - "docs/implementation/BUILD_APPROVAL_2026-08-20.md"
       - ".github/workflows/validate-vertical-slice-run-state.yml"
   workflow_dispatch:
@@ -34,3 +35,5 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_vertical_slice_run_state.gd
       - name: Verify Vertical Slice shell
         run: godot --headless --path . --script res://tests/verify_vertical_slice_shell.gd
+      - name: Verify terminal combat bridge
+        run: godot --headless --path . --script res://tests/verify_vertical_slice_combat_bridge.gd

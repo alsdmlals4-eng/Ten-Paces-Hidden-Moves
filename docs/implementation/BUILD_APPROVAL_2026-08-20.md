@@ -19,6 +19,19 @@ This build may implement Phase I of `docs/16_VERTICAL_SLICE_IMPLEMENTATION_HANDO
 6. automated headless verification for the new flow;
 7. later Phase-I UI shell work may use structured text/frames and existing approved assets while final visual reference remains pending.
 
+### Phase I bridge extension · PR #178 scope
+
+The same user-approved Phase I authority explicitly covers the next bounded bridge increment:
+
+- subclass the existing ten-manual CombatBoardPreview only to surface terminal Review events to the run shell;
+- preserve the resolved terminal combat state while Combat Review is shown;
+- route terminal Review confirmation to the separate RunState `RESULT` instead of restarting the POC combat;
+- instantiate a fresh existing-combat-derived view only when the next duel actually enters `COMBAT`;
+- carry only terminal outcome/health/review-summary data across the bridge;
+- do not alter combat resolution formulas, AI decision information, manual effects, balance, hidden-plan rules, or the default project main scene.
+
+This approval extension is included in the same runtime-changing PR so the Base adversarial BUILD gate can verify explicit scope locally rather than relying on a historical approval file from an earlier merge.
+
 ## Protected invariants
 
 - logical 10-cell battlefield;
@@ -42,6 +55,8 @@ This build may implement Phase I of `docs/16_VERTICAL_SLICE_IMPLEMENTATION_HANDO
 ## Evidence ceiling
 
 - new RunState headless verification: required;
+- shell integration headless verification: required;
+- terminal Combat Review → Result bridge headless verification: required;
 - existing PR / Full / Product Gate validation: required once runtime files are introduced;
 - Windows visible local usability: `NOT_RUN`;
 - Android physical device: `BLOCKED_UNVERIFIED`;
