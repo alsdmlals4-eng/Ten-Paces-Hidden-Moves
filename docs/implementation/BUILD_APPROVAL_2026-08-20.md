@@ -1,27 +1,28 @@
-# First Five-Duel Vertical Slice · Phase I Build Approval
+# First Five-Duel Vertical Slice · Phase I/II Build Approval
 
 - Gate: `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`
 - Planning Complete: `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`
 - Visual/UX: `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01`
 - Approved on: `2026-08-20 KST`
 - Approval source: user instruction `이미지 생성 외 작업을 진행하자`
-- Authority level: `SCOPED_PC_FIRST_VERTICAL_SLICE_PHASE_I`
+- Authority level: `SCOPED_PC_FIRST_VERTICAL_SLICE_PHASE_I_II`
 
 ## Approved scope
 
-This build may implement Phase I of `docs/16_VERTICAL_SLICE_IMPLEMENTATION_HANDOFF_PLAN.md`:
+This build may implement the first bounded runtime phases of `docs/16_VERTICAL_SLICE_IMPLEMENTATION_HANDOFF_PLAN.md`:
 
-1. a data-independent RunState/flow controller for `Main → Setup → Intro → Briefing → Combat → Review → Result → Route → next Briefing → Completion`;
+1. a RunState/flow controller for `Main → Setup → Intro → Briefing → Combat → Review → Result → Route → next Briefing → Completion`;
 2. exactly five duel visits and exactly eight inter-duel Route visits;
 3. Review and Result as separate states;
 4. no Route after Duel 5;
 5. a shell/bridge around the existing CombatBoardPreview without rewriting combat resolution rules;
 6. automated headless verification for the new flow;
-7. later Phase-I UI shell work may use structured text/frames and existing approved assets while final visual reference remains pending.
+7. structured text/frames and existing approved assets while final visual reference remains pending;
+8. the approved fifteen-opponent first-slice catalog and reversible runtime selection/lock binding described below.
 
 ### Phase I bridge extension · PR #178 scope
 
-The same user-approved Phase I authority explicitly covers the next bounded bridge increment:
+The same user-approved Phase I authority covers the bounded terminal bridge increment:
 
 - subclass the existing ten-manual CombatBoardPreview only to surface terminal Review events to the run shell;
 - preserve the resolved terminal combat state while Combat Review is shown;
@@ -30,7 +31,25 @@ The same user-approved Phase I authority explicitly covers the next bounded brid
 - carry only terminal outcome/health/review-summary data across the bridge;
 - do not alter combat resolution formulas, AI decision information, manual effects, balance, hidden-plan rules, or the default project main scene.
 
-This approval extension is included in the same runtime-changing PR so the Base adversarial BUILD gate can verify explicit scope locally rather than relying on a historical approval file from an earlier merge.
+### Phase II opponent catalog / Route lock extension · PR #179 scope
+
+The same user instruction explicitly authorizes the next data-binding layer without reopening protected combat rules:
+
+- encode exactly `5 duel slots × 3 candidates = 15` working candidates from the approved planning canon;
+- reference current runtime `manual_id`, unlocked manual-card IDs, and basic-action IDs rather than inventing duplicate combat content;
+- preserve slot difficulty seeds `20/22/24/26/28` and mastery seeds `3/7/7/7/9`, with `slot3_biyeon` capped at mastery `4` and Tang star3 only so enemy `[관찰]` authority is never introduced;
+- keep exact permanent-stat distributions and exact AI numeric weights absent/deferred;
+- mark the temporary deterministic candidate selector as `REVERSIBLE_SELECTION_BINDING`, not final save/RNG canon;
+- bind the validated opponent catalog into the technical Vertical Slice shell with a fixed technical seed used only for deterministic CI/runtime scaffolding;
+- lock Duel 1 before its Briefing;
+- keep the next opponent unavailable through unresolved Result presentation, then lock it exactly once when Result is confirmed and the run enters the first Route node;
+- preserve the same locked candidate through Growth/Recovery and Information/Preparation Route nodes;
+- promote that locked candidate to the next Briefing without Route reroll;
+- treat candidate IDs as stable internal identifiers with no whitespace; working names/appearance/faction/personality remain reversible content detail.
+
+The fixed technical seed is not a final player-facing randomization or save/retry policy. A later save-state/data-binding phase may replace it while preserving deterministic reproduction and the no-reroll Route contract.
+
+This approval extension is included in the same runtime/data-changing PR so the Base adversarial BUILD gate can verify explicit scope locally instead of relying only on an earlier merged approval file.
 
 ## Protected invariants
 
@@ -41,11 +60,16 @@ This approval extension is included in the same runtime-changing PR so the Base 
 - distance / clash / response / interruption / review;
 - player-only `[관찰]` authority;
 - existing ten martial manuals;
-- Combat Review overlay / Duel Result separate Scene / Route separate Scene boundary.
+- Combat Review overlay / Duel Result separate Scene / Route separate Scene boundary;
+- exactly two Route nodes between Duels 1-4;
+- next-opponent information changes knowledge only and may not reroll the locked candidate.
 
 ## Explicitly not authorized by this build
 
-- changing combat formulas, AI hidden-information access, manual effects, balance seeds, or save semantics beyond the new run shell;
+- changing combat formulas, hidden-information access, manual effects, or combat balance formulas;
+- adding an eleventh manual or enemy-only combat rule;
+- committing exact AI numeric weights or exact permanent-stat distributions as final balance;
+- making the temporary deterministic candidate selector the final save/RNG policy;
 - Windows/Android Adapter implementation;
 - Android physical-device completion;
 - Human fun/readability PASS;
@@ -54,10 +78,13 @@ This approval extension is included in the same runtime-changing PR so the Base 
 
 ## Evidence ceiling
 
-- new RunState headless verification: required;
+- RunState headless verification: required;
 - shell integration headless verification: required;
 - terminal Combat Review → Result bridge headless verification: required;
-- existing PR / Full / Product Gate validation: required once runtime files are introduced;
+- 15-candidate catalog/runtime-ID legality verification: required;
+- candidate-ID hygiene verification: required;
+- shell catalog binding + Result→Route lock/no-reroll verification: required;
+- existing PR / Full / Product Gate validation: required for runtime/data changes;
 - Windows visible local usability: `NOT_RUN`;
 - Android physical device: `BLOCKED_UNVERIFIED`;
 - Human validation: `NOT_RUN`;
