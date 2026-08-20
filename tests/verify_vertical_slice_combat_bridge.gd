@@ -40,6 +40,7 @@ func _run() -> void:
         return
 
     var bridge = shell.combat_host.get_child(0)
+    var duel_one_instance_id := bridge.get_instance_id()
     _expect_true(bool(bridge.get_meta("vertical_slice_bridge", false)), "Combat view must identify itself as the Vertical Slice bridge.")
     _expect_true(bridge.has_signal("terminal_review_ready"), "Bridge must expose terminal_review_ready.")
     _expect_true(bridge.has_signal("terminal_review_confirmed"), "Bridge must expose terminal_review_confirmed.")
@@ -82,6 +83,23 @@ func _run() -> void:
     var final_enemy: Dictionary = final_state.get("enemy", {})
     var final_enemy_health = final_enemy.get("health", [999, 999])
     _expect_eq(int((final_enemy_health as Array)[0]), 0, "Terminal confirmation must preserve the resolved combat state rather than restart it.")
+
+    _expect_true(shell.advance_noncombat(), "RESULT must advance to Growth/Recovery.")
+    _expect_true(shell.advance_noncombat(), "Growth/Recovery must advance to Info/Preparation.")
+    _expect_true(shell.advance_noncombat(), "Info/Preparation must advance to Duel 2 Briefing.")
+    _expect_true(shell.advance_noncombat(), "Duel 2 Briefing must enter a new COMBAT.")
+    for _index in range(4):
+        await process_frame
+
+    _expect_eq(shell.run_state.duel_index, 2, "The new combat instance must belong to Duel 2.")
+    _expect_eq(shell.combat_host.get_child_count(), 1, "Next duel must still host exactly one combat instance.")
+    if shell.combat_host.get_child_count() == 1:
+        var duel_two_bridge = shell.combat_host.get_child(0)
+        _expect_true(duel_two_bridge.get_instance_id() != duel_one_instance_id, "Duel 2 must not reuse the terminal Duel 1 combat instance.")
+        var duel_two_state: Dictionary = duel_two_bridge.get("combat_state")
+        var duel_two_enemy: Dictionary = duel_two_state.get("enemy", {})
+        var duel_two_enemy_health = duel_two_enemy.get("health", [0, 0])
+        _expect_true(int((duel_two_enemy_health as Array)[0]) > 0, "A fresh Duel 2 combat instance must begin with living enemy health.")
 
     shell.queue_free()
     await process_frame
