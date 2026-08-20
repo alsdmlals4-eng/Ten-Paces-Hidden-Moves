@@ -103,7 +103,7 @@ func _verify_run_lock_flow(catalog) -> void:
     _expect_true(run.select_growth_route("free_training"), "Growth Route must accept one legal choice.")
     _expect_true(run.advance(), "Growth Route → Info Route")
     _expect_eq(str(run.get_route_target_opponent().get("candidate_id", "")), locked_id, "Growth Route may not reroll locked opponent.")
-    var options := run.get_info_route_options()
+    var options: Array = run.get_info_route_options()
     _expect_eq(options.size(), 3, "Info Route must expose three choices.")
     if options.size() == 3:
         _expect_true(run.select_info_route(str((options[0] as Dictionary).get("category", ""))), "Info Route must accept one legal public clue.")
