@@ -67,7 +67,7 @@ func _run() -> void:
             _expect_true(run.advance(), "Confirmed Growth/Recovery must advance to Information/Preparation.")
             _expect_eq(run.get_current_screen(), "ROUTE_INFO", "The second Route node must be Information/Preparation.")
             _expect_false(run.advance(), "Information/Preparation may not advance before one public-info choice is selected.")
-            var info_options := run.get_info_route_options()
+            var info_options: Array = run.get_info_route_options()
             _expect_eq(info_options.size(), 3, "Each Info Route must expose exactly three choices.")
             if info_options.size() == 3:
                 _expect_true(run.select_info_route(str((info_options[0] as Dictionary).get("category", ""))), "Full-run regression must select one legal public-info category.")
