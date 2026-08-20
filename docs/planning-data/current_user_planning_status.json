@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "project": "TEN_PACES",
+  "updated_date": "2026-08-20",
+  "user_directed_planning_status": "PLANNING_COMPLETE",
+  "decision_id": "TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01",
+  "approval_source": "user explicit: 기획완료",
+  "completed_scope": "FIRST_FIVE_DUEL_VERTICAL_SLICE_TEXTUAL_PLANNING",
+  "next_phase": "VISUAL_UX_REQUIREMENT_AND_REFERENCE_REVIEW",
+  "next_image_generation": "USER_EXPLICIT_REQUEST_REQUIRED",
+  "product_implementation_authorized": false,
+  "implementation_gate": "FOLLOWUP_IMPLEMENTATION_CONTRACT_PLUS_CURRENT_ENTRY_GATE",
+  "evidence_ceiling": {
+    "balance_simulation": "NOT_RUN",
+    "human_fun_readability": "NOT_RUN",
+    "windows_visible_local_usability": "NOT_RUN",
+    "android_physical_device": "NOT_RUN_BLOCKED_UNVERIFIED",
+    "release_performance": "NOT_RUN"
+  },
+  "reopen_conditions": [
+    "explicit_user_change_request",
+    "visual_ux_review_core_conflict",
+    "balance_simulation_dominant_or_blocked_build",
+    "human_play_core_experience_failure",
+    "aggregate_noncombat_time_over_8m30_repeatedly",
+    "information_route_answer_leak"
+  ]
+}
