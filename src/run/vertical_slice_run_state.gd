@@ -35,6 +35,7 @@ var _player_manual_loadout: Array[String] = []
 var _player_mastery_by_manual: Dictionary = {}
 var _pending_result_reward: Dictionary = {}
 var _reward_history: Array[Dictionary] = []
+var _duel_history: Array[Dictionary] = []
 var _progression: VerticalSliceProgressionState
 var _route_model: VerticalSliceRouteModel
 var _pending_growth_route: Dictionary = {}
@@ -121,6 +122,13 @@ func get_player_run_resources() -> Dictionary:
 
 func get_progression_snapshot() -> Dictionary:
     return _progression.get_snapshot() if _progression != null else {}
+
+
+func get_duel_history() -> Array:
+    var result: Array = []
+    for receipt in _duel_history:
+        result.append(receipt.duplicate(true))
+    return result
 
 
 func has_pending_growth_route() -> bool:
@@ -258,6 +266,7 @@ func start_new_run() -> bool:
     _player_mastery_by_manual.clear()
     _pending_result_reward.clear()
     _reward_history.clear()
+    _duel_history.clear()
     _pending_growth_route.clear()
     _pending_route_intel.clear()
     _route_history.clear()
@@ -325,6 +334,7 @@ func mark_combat_finished(result: Dictionary) -> bool:
     var resources = result.get("player_resources", null)
     if typeof(resources) == TYPE_DICTIONARY:
         _progression.set_player_resources(resources as Dictionary)
+    _duel_history.append(_build_duel_history_row(result))
     _pending_result_reward.clear()
     completed_duels += 1
     return _transition_to(SCREEN_REVIEW)
@@ -332,6 +342,32 @@ func mark_combat_finished(result: Dictionary) -> bool:
 
 func is_complete() -> bool:
     return _current_screen == SCREEN_COMPLETION and completed_duels == MAX_DUELS
+
+
+func _build_duel_history_row(result: Dictionary) -> Dictionary:
+    var opponent := get_current_opponent()
+    var review_source = result.get("review_summary", {})
+    var review: Dictionary = review_source if typeof(review_source) == TYPE_DICTIONARY else {}
+    var metrics_source = result.get("battle_metrics", {})
+    var metrics: Dictionary = metrics_source if typeof(metrics_source) == TYPE_DICTIONARY else {}
+    return {
+        "duel_index": duel_index,
+        "opponent_candidate_id": _current_opponent_id,
+        "opponent_working_name": str(opponent.get("working_name", "")),
+        "outcome": str(result.get("outcome", "draw")),
+        "review_summary": {
+            "cause_code": str(review.get("cause_code", "")),
+            "cause_label": str(review.get("cause_label", "")),
+            "review_focus": str(review.get("review_focus", ""))
+        },
+        "battle_metrics": {
+            "successful_dodges": maxi(0, int(metrics.get("successful_dodges", 0))),
+            "clash_wins": maxi(0, int(metrics.get("clash_wins", 0))),
+            "player_health_lost": maxi(0, int(metrics.get("player_health_lost", 0))),
+            "rounds_elapsed": maxi(0, int(metrics.get("rounds_elapsed", 0))),
+            "ultimate_uses": maxi(0, int(metrics.get("ultimate_uses", 0)))
+        }
+    }
 
 
 func _confirm_pending_result_reward() -> bool:
