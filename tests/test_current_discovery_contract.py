@@ -145,7 +145,11 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "planning_visual_next: TEN_IMG_001_PAUSED_BY_USER_TEXTUAL_CANON_REVIEW",
+            "planning_visual_next: AWAITING_EXPLICIT_ASSET_OR_IMPLEMENTATION_REQUEST",
+            current_section,
+        )
+        self.assertIn(
+            "planning_visual_authority: TEN-DEC-20260820-VISUAL-UX-SYSTEM-01",
             current_section,
         )
         self.assertIn(
