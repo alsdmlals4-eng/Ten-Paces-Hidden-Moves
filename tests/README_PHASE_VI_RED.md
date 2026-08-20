@@ -1,0 +1,1 @@
+Phase VI RED intentionally expects `res://src/run/vertical_slice_completion_model.gd`, `VerticalSliceRunState.get_duel_history()`, and shell completion-snapshot binding to be absent before production implementation.
