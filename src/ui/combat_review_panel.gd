@@ -106,8 +106,8 @@ func _refresh() -> void:
         "검토 관점 · %s" % review_focus
     ])
     _content.text = "\n\n".join(lines)
-    _continue_button.text = "결과 확인" if _terminal else "다음 묶음"
-    _continue_button.accessibility_description = "이 비무의 결과 화면으로 이동합니다." if _terminal else "복기를 닫고 다음 행동 묶음 계획으로 이동합니다."
+    _continue_button.text = "결전 다시 시작" if _terminal else "다음 묶음"
+    _continue_button.accessibility_description = "복기를 닫고 결전을 다시 시작합니다." if _terminal else "복기를 닫고 다음 행동 묶음 계획으로 이동합니다."
     set_meta("terminal", _terminal)
     set_meta("cause_code", str(_summary.get("cause_code", "order")))
 
