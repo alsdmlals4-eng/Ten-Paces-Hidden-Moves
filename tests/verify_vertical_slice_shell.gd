@@ -66,9 +66,16 @@ func _run() -> void:
 
     _expect_true(shell.advance_noncombat(), "Reward-confirmed RESULT must advance to Growth/Recovery Route.")
     _expect_eq(shell.run_state.get_current_screen(), "ROUTE_GROWTH", "First Route state must be Growth/Recovery.")
-    _expect_true(shell.advance_noncombat(), "Growth/Recovery must advance to Info/Preparation.")
+    _expect_false(shell.advance_noncombat(), "Growth Route must wait for one explicit choice.")
+    _expect_true(shell.select_growth_route("free_training"), "Shell regression must select one legal Growth Route choice.")
+    _expect_true(shell.advance_noncombat(), "Confirmed Growth/Recovery must advance to Info/Preparation.")
     _expect_eq(shell.run_state.get_current_screen(), "ROUTE_INFO", "Second Route state must be Info/Preparation.")
-    _expect_true(shell.advance_noncombat(), "Info/Preparation must advance to the next Briefing.")
+    _expect_false(shell.advance_noncombat(), "Info Route must wait for one explicit clue category.")
+    var info_options := shell.run_state.get_info_route_options()
+    _expect_eq(info_options.size(), 3, "Info Route must expose exactly three options.")
+    if info_options.size() == 3:
+        _expect_true(shell.select_info_route(str((info_options[0] as Dictionary).get("category", ""))), "Shell regression must select one legal Info Route category.")
+    _expect_true(shell.advance_noncombat(), "Confirmed Info/Preparation must advance to the next Briefing.")
     _expect_eq(shell.run_state.get_current_screen(), "BRIEFING", "Two Route nodes must return to next Briefing.")
     _expect_eq(shell.run_state.duel_index, 2, "Shell flow must reach Duel 2 without recreating RunState.")
 
