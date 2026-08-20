@@ -16,7 +16,7 @@ func _ready() -> void:
     _battle_metrics_helper = BATTLE_METRICS_SCRIPT.new()
     super._ready()
     set_meta("vertical_slice_bridge", true)
-    set_meta("bridge_scope", "TERMINAL_REVIEW_TO_RUN_RESULT_RUNTIME_LOADOUT_AND_RAW_METRICS")
+    set_meta("bridge_scope", "TERMINAL_REVIEW_RESULT_LOADOUT_RAW_METRICS_AND_RUN_RESOURCE_PERSISTENCE")
 
 
 func configure_vertical_slice_loadouts(
@@ -40,7 +40,7 @@ func configure_vertical_slice_loadouts(
             return false
 
     _ten_manual_loadout_data = {
-        "authority": "VERTICAL_SLICE_PHASE_IV_RUNTIME_LOADOUT_AND_RAW_METRICS",
+        "authority": "VERTICAL_SLICE_PHASE_V_RUNTIME_LOADOUT_METRICS_AND_RESOURCE_PERSISTENCE",
         "player": {
             "loadout": player_ids.duplicate(),
             "mastery_by_manual": player_mastery_by_manual.duplicate(true)
@@ -79,7 +79,29 @@ func configure_vertical_slice_loadouts(
     set_meta("vertical_slice_runtime_loadout_bound", true)
     set_meta("vertical_slice_enemy_candidate_id", enemy_candidate_id)
     set_meta("vertical_slice_battle_metrics_bound", true)
+    set_meta("vertical_slice_run_resources_bound", true)
     return true
+
+
+func apply_vertical_slice_player_resources(resources: Dictionary) -> bool:
+    if not _valid_resource_pairs(resources):
+        return false
+    var player: Dictionary = (combat_state.get("player", {}) as Dictionary).duplicate(true)
+    for key in ["health", "stamina", "internal"]:
+        var pair: Array = (resources.get(key, []) as Array).duplicate()
+        var maximum := maxi(0, int(pair[1]))
+        var current := clampi(int(pair[0]), 0, maximum)
+        player[key] = [current, maximum]
+    combat_state["player"] = player
+    _sync_runtime_context()
+    _apply_combat_state_to_view()
+    _refresh_ultimate_menu()
+    _sync_action_selection_dock()
+    return true
+
+
+func get_vertical_slice_player_resources() -> Dictionary:
+    return _player_resource_snapshot()
 
 
 func get_vertical_slice_loadout_snapshot() -> Dictionary:
@@ -128,10 +150,33 @@ func _build_vertical_slice_terminal_result() -> Dictionary:
         "outcome": outcome,
         "player_health": player_health,
         "enemy_health": enemy_health,
+        "player_resources": _player_resource_snapshot(),
         "battle_metrics": metrics.duplicate(true),
         "review_summary": _last_review_summary.duplicate(true),
         "presentation_state": _presentation_state
     }
+
+
+func _player_resource_snapshot() -> Dictionary:
+    var player: Dictionary = combat_state.get("player", {})
+    var result := {}
+    for key in ["health", "stamina", "internal"]:
+        var pair = player.get(key, [0, 0])
+        if typeof(pair) == TYPE_ARRAY and pair.size() >= 2:
+            result[key] = [int(pair[0]), int(pair[1])]
+        elif typeof(pair) == TYPE_PACKED_INT32_ARRAY and pair.size() >= 2:
+            result[key] = [int(pair[0]), int(pair[1])]
+        else:
+            result[key] = [0, 0]
+    return result
+
+
+func _valid_resource_pairs(resources: Dictionary) -> bool:
+    for key in ["health", "stamina", "internal"]:
+        var pair = resources.get(key, null)
+        if typeof(pair) != TYPE_ARRAY or pair.size() < 2:
+            return false
+    return true
 
 
 func _current_health(actor_key: String) -> int:
