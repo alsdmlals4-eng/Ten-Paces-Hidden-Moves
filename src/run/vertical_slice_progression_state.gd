@@ -50,7 +50,7 @@ func initialize_from_setup(loadout, setup_mastery: Dictionary) -> bool:
             return false
         owned_manual_ids.append(manual_id)
         mastery_by_manual[manual_id] = mastery
-        training_by_manual[manual_id] = 0
+        training_by_manual[manual_id] = _minimum_training_for_mastery(mastery)
     player_resources = _normalize_resources(DEFAULT_RESOURCES)
     return not owned_manual_ids.is_empty()
 
@@ -82,7 +82,7 @@ func apply_reward_receipt(receipt: Dictionary) -> Dictionary:
             else:
                 owned_manual_ids.append(manual_id)
                 mastery_by_manual[manual_id] = clampi(mastery, STARTER_MASTERY, MAX_MASTERY)
-                training_by_manual[manual_id] = 0
+                training_by_manual[manual_id] = _minimum_training_for_mastery(int(mastery_by_manual[manual_id]))
                 result["application_status"] = "APPLIED"
         _:
             return {}
@@ -144,16 +144,11 @@ func get_snapshot() -> Dictionary:
 func _add_training(manual_id: String, amount: int) -> void:
     var invested := maxi(0, int(training_by_manual.get(manual_id, 0))) + amount
     training_by_manual[manual_id] = invested
-    var starting_mastery := STARTER_MASTERY
-    var current_mastery := int(mastery_by_manual.get(manual_id, STARTER_MASTERY))
-    if current_mastery > STARTER_MASTERY:
-        starting_mastery = current_mastery
-        invested = amount
-    mastery_by_manual[manual_id] = _mastery_after_training(starting_mastery, invested)
+    mastery_by_manual[manual_id] = _mastery_after_total_training(invested)
 
 
-func _mastery_after_training(starting_mastery: int, points: int) -> int:
-    var mastery := clampi(starting_mastery, STARTER_MASTERY, MAX_MASTERY)
+func _mastery_after_total_training(points: int) -> int:
+    var mastery := STARTER_MASTERY
     var remaining := maxi(0, points)
     while mastery < MAX_MASTERY:
         var next_mastery := mastery + 1
@@ -163,6 +158,13 @@ func _mastery_after_training(starting_mastery: int, points: int) -> int:
         remaining -= cost
         mastery = next_mastery
     return mastery
+
+
+func _minimum_training_for_mastery(mastery: int) -> int:
+    var total := 0
+    for target in range(STARTER_MASTERY + 1, clampi(mastery, STARTER_MASTERY, MAX_MASTERY) + 1):
+        total += int(NEXT_STAR_COSTS.get(target, 0))
+    return total
 
 
 func _has_resource_pairs(resources: Dictionary) -> bool:
