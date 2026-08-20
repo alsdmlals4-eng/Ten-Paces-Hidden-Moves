@@ -139,7 +139,9 @@ The same PC-first authority now covers the first complete inter-duel progression
 
 ## Provisional visual-reference intake note
 
-The user supplied multiple example screens on 2026-08-20. They are **reference examples only, not approval**. Shared tendencies that may inform later visual work without constraining Phase V logic are:
+Reference scope is limited to the Ten Paces martial-arts example screens explicitly supplied for this project. Any unrelated images supplied in chat are out of scope and must not be recorded, compared, or promoted as Ten Paces reference material.
+
+The in-scope examples are **reference examples only, not approval**. Shared tendencies that may inform later visual work without constraining Phase V logic are:
 
 - ink-wash / aged-paper visual language;
 - dark charcoal-black surfaces with restrained gold framing and highlights;
@@ -148,4 +150,4 @@ The user supplied multiple example screens on 2026-08-20. They are **reference e
 - strong hierarchy between battlefield, current bundle/timeline, resources, and detail panels;
 - result/training and pre-duel preparation screens that reuse the same frame language.
 
-The examples contain both non-pixel ink illustration and pixel-like/hybrid combat rendering. Therefore renderer treatment, character render style, exact palette, typography, density, and final layout remain `NOT_APPROVED` and must not be inferred as final canon.
+The in-scope examples contain both non-pixel ink illustration and pixel-like/hybrid combat rendering. Therefore renderer treatment, character render style, exact palette, typography, density, and final layout remain `NOT_APPROVED` and must not be inferred as final canon.
