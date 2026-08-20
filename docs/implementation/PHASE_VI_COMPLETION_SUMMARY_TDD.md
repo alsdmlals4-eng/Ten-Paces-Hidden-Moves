@@ -3,7 +3,7 @@
 - Base main: `b9d2939ae953daa3bdf3ae8897b2641295cc4db3`
 - Handoff phase: `Phase VI · Completion Summary`
 - User continuation approval: `진행해`
-- Status: `TDD_RED_PENDING_CI`
+- Status: `RED_OBSERVED_GREEN_IMPLEMENTED_FINAL_GATES_PENDING`
 
 ## Required behavior
 
@@ -27,10 +27,27 @@ The Completion summary must not:
 - change combat formulas, Route balance, reward values, or AI information authority;
 - claim Human fun/readability/final visual PASS.
 
+## TDD evidence
+
+### RED
+
+The dedicated Completion verifier was introduced before production Completion code. The first run reached all existing Phase I–V checks and then failed because `res://src/run/vertical_slice_completion_model.gd` did not exist. This established the intended missing Completion behavior before implementation.
+
+### GREEN implementation
+
+The minimum production slice now consists of:
+
+- retained five-Duel player-visible history in `VerticalSliceRunState`;
+- read-only `VerticalSliceCompletionModel` aggregation;
+- `VerticalSliceCompletionShell` rendering through the existing run shell;
+- no changes to combat formulas, AI hidden-information authority, Route/reward values, mastery costs, or final-grade math.
+
+A dedicated Phase I–VI run has passed all 14 steps after implementation. The final merge gate still requires the latest-head Base v9, Full Validation, Product Gate, and complete PR workflow set to pass together.
+
 ## TDD order
 
-1. Add `tests/verify_vertical_slice_completion_summary.gd` and CI step.
-2. Observe RED because five-Duel history / Completion model / Completion shell binding do not yet exist.
-3. Implement the minimum retained Duel history and read-only Completion model/UI needed for the test.
-4. Re-run the dedicated Vertical Slice workflow, Base v9 gate, Full Validation, and Product Gate.
+1. Add `tests/verify_vertical_slice_completion_summary.gd` and CI step. **DONE**
+2. Observe RED because five-Duel history / Completion model / Completion shell binding do not yet exist. **DONE**
+3. Implement the minimum retained Duel history and read-only Completion model/UI needed for the test. **DONE**
+4. Re-run the dedicated Vertical Slice workflow, Base v9 gate, Full Validation, and Product Gate. **IN FINAL RECHECK**
 5. Only after fresh GREEN evidence may Phase VI be merged.
