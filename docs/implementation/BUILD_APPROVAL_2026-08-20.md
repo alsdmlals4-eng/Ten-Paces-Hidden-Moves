@@ -1,11 +1,11 @@
-# First Five-Duel Vertical Slice · Phase I/II/III/IV/V Build Approval
+# First Five-Duel Vertical Slice · Phase I/II/III/IV/V/VI Build Approval
 
 - Gate: `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`
 - Planning Complete: `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`
 - Visual/UX: `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01`
 - Approved on: `2026-08-20 KST`
 - Approval source: user instruction `이미지 생성 외 작업을 진행하자` followed by continued implementation approval `진행해`
-- Authority level: `SCOPED_PC_FIRST_VERTICAL_SLICE_PHASE_I_II_III_IV_V`
+- Authority level: `SCOPED_PC_FIRST_VERTICAL_SLICE_PHASE_I_II_III_IV_V_VI`
 
 ## Approved scope
 
@@ -21,7 +21,8 @@ This build may implement the first bounded runtime phases of `docs/16_VERTICAL_S
 8. the approved fifteen-opponent first-slice catalog and reversible runtime selection/lock binding;
 9. the approved current-name six-manual starter selection, four-manual RunState persistence, public Briefing data binding, and runtime combat-loadout handoff;
 10. neutral causal Review wording, raw five-metric Result evidence, a grade-formula-pending Result state, and one-of-three Duel reward receipt selection;
-11. Phase V run progression ownership for reward application, inter-duel resources, Growth/Recovery Route choices, Info/Preparation clues, Route history, and next-duel resource restoration.
+11. Phase V run progression ownership for reward application, inter-duel resources, Growth/Recovery Route choices, Info/Preparation clues, Route history, and next-duel resource restoration;
+12. Phase VI retained five-Duel public history plus a read-only structured Completion summary of outcomes/opponents, Review causes, growth, rewards, Route choices, and the approved brief recurring-peer ending beat.
 
 ### Phase I bridge extension · PR #178 scope
 
@@ -72,7 +73,7 @@ The same PC-first authority covers the next bounded handoff-plan slice:
 
 ### Phase V Route / run progression extension · PR #182 scope
 
-The same PC-first authority now covers the first complete inter-duel progression loop:
+The same PC-first authority covers the first complete inter-duel progression loop:
 
 - introduce a dedicated progression state owned by RunState for current owned manuals, mastery, per-manual accumulated training, unallocated free-training pool, persistent player resources, and unresolved duplicate faction-transfer receipts;
 - use the approved mastery costs from 3★ upward: `4★=2 / 5★=3 / 6★=4 / 7★=5 / 8★=6 / 9★=8 / 10★=10`, recalculating mastery from total accumulated training rather than discarding residual points;
@@ -89,6 +90,19 @@ The same PC-first authority now covers the first complete inter-duel progression
 - keep the locked next opponent invariant through both Route nodes and promote that exact candidate to Briefing without reroll;
 - record exactly one Route-history receipt for each of the eight Route visits;
 - keep the Route shell as `STRUCTURED_FUNCTIONAL_UI_NOT_FINAL_VISUAL`.
+
+### Phase VI Completion Summary extension · PR #183 scope
+
+The same PC-first authority covers only the final first-slice completion review:
+
+- retain exactly five completed Duel history rows with Duel number, actual opponent identity, outcome, resolved Review cause summary, and only the five already-approved raw Battle Grade metrics;
+- keep Completion history player-visible and read-only; do not retain current hidden plans, AI numeric weights, selector seed, internal behavior keys, or answer-card information for summary display;
+- build a structured Completion snapshot from five Duel rows, five confirmed reward receipts, eight Route receipts, and the existing progression snapshot;
+- summarize only the top `2–3` observed Review cause codes with actual occurrence counts;
+- show only `1–2` most-grown manuals from actual accumulated training/mastery state;
+- include the approved brief recurring-peer closing beat without turning it into a diagnosis or tutorial answer;
+- expose the snapshot through the existing run shell using `STRUCTURED_FUNCTIONAL_UI_NOT_FINAL_VISUAL` status;
+- do not alter combat formulas, opponent selection, Route values, reward values, mastery costs, AI information authority, or final-grade math.
 
 ## Protected invariants
 
@@ -114,6 +128,8 @@ The same PC-first authority now covers the first complete inter-duel progression
 - inventing duplicate `문파 전수` conversion/refund value before a separate planning decision;
 - spending the free-training pool automatically or inventing an unapproved free-point allocation UX;
 - treating the reversible 25% HP integer rounding policy as final balance canon;
+- labeling the player as an attack/defense/personality type from Completion history;
+- recommending a correct build, next-run answer, or deterministic counter from Completion history;
 - Windows/Android Adapter implementation;
 - Android physical-device completion;
 - Human fun/readability PASS;
@@ -131,6 +147,7 @@ The same PC-first authority now covers the first complete inter-duel progression
 - six-current-starter / exact-four Setup / Briefing public-info / combat runtime-loadout binding verification: required;
 - neutral Review / raw five-metric / formula-pending Result / reward-receipt gating verification: required;
 - persistent resource / progression / R1-R8 Route choice / Route intel / next-Combat restoration verification: required;
+- five-Duel retained history / Completion snapshot / Completion shell binding verification: required;
 - existing PR / Full / Product Gate validation: required for runtime changes;
 - Windows visible local usability: `NOT_RUN`;
 - Android physical device: `BLOCKED_UNVERIFIED`;
@@ -141,7 +158,7 @@ The same PC-first authority now covers the first complete inter-duel progression
 
 Reference scope is limited to the Ten Paces martial-arts example screens explicitly supplied for this project. Any unrelated images supplied in chat are out of scope and must not be recorded, compared, or promoted as Ten Paces reference material.
 
-The in-scope examples are **reference examples only, not approval**. Shared tendencies that may inform later visual work without constraining Phase V logic are:
+The in-scope examples are **reference examples only, not approval**. Shared tendencies that may inform later visual work without constraining Phase VI logic are:
 
 - ink-wash / aged-paper visual language;
 - dark charcoal-black surfaces with restrained gold framing and highlights;
