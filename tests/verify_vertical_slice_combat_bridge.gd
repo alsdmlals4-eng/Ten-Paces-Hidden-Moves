@@ -53,12 +53,15 @@ func _run() -> void:
     _expect_true(bridge.has_signal("terminal_review_confirmed"), "Bridge must expose terminal_review_confirmed.")
     _expect_true(bool(bridge.get_meta("vertical_slice_runtime_loadout_bound", false)), "Bridge must bind the Setup/current-opponent runtime loadouts.")
     _expect_true(bool(bridge.get_meta("vertical_slice_battle_metrics_bound", false)), "Bridge must bind raw battle metric tracking.")
+    _expect_true(bool(bridge.get_meta("vertical_slice_run_resources_bound", false)), "Bridge must support run-resource persistence.")
 
     var state: Dictionary = bridge.get("combat_state")
     var player: Dictionary = (state.get("player", {}) as Dictionary).duplicate(true)
     var enemy: Dictionary = (state.get("enemy", {}) as Dictionary).duplicate(true)
-    player["health"] = [10, 10]
-    enemy["health"] = [0, 10]
+    player["health"] = [10, 30]
+    player["stamina"] = [2, 5]
+    player["internal"] = [1, 4]
+    enemy["health"] = [0, 30]
     state["player"] = player
     state["enemy"] = enemy
     bridge.set("combat_state", state)
@@ -81,6 +84,10 @@ func _run() -> void:
     _expect_true(typeof(review_summary) == TYPE_DICTIONARY, "Terminal result must retain the review summary as structured data.")
     if typeof(review_summary) == TYPE_DICTIONARY:
         _expect_eq(str((review_summary as Dictionary).get("headline", "")), "테스트 복기", "Review summary must survive the bridge.")
+    var persisted_resources: Dictionary = shell.run_state.last_combat_result.get("player_resources", {})
+    _expect_eq(persisted_resources.get("health", []), [10, 30], "Terminal bridge must carry player health current/max pair.")
+    _expect_eq(persisted_resources.get("stamina", []), [2, 5], "Terminal bridge must carry player stamina current/max pair.")
+    _expect_eq(persisted_resources.get("internal", []), [1, 4], "Terminal bridge must carry player internal current/max pair.")
 
     bridge.call("_on_review_continue_requested")
     await process_frame
@@ -97,8 +104,17 @@ func _run() -> void:
     _expect_false(shell.advance_noncombat(), "RESULT must not leave until a reward is selected.")
     _expect_true(shell.select_result_reward("free_training"), "Bridge flow must select one Result reward before Route.")
     _expect_true(shell.advance_noncombat(), "Reward-confirmed RESULT must advance to Growth/Recovery.")
-    _expect_true(shell.advance_noncombat(), "Growth/Recovery must advance to Info/Preparation.")
-    _expect_true(shell.advance_noncombat(), "Info/Preparation must advance to Duel 2 Briefing.")
+    _expect_eq(shell.run_state.get_current_screen(), "ROUTE_GROWTH", "Bridge flow must enter Growth/Recovery before Info/Preparation.")
+    _expect_false(shell.advance_noncombat(), "Growth/Recovery may not be skipped without an explicit Route choice.")
+    _expect_true(shell.select_growth_route("recovery"), "Bridge flow must be able to select the legal recovery Route choice.")
+    _expect_true(shell.advance_noncombat(), "Confirmed Growth/Recovery must advance to Info/Preparation.")
+    _expect_eq(shell.run_state.get_current_screen(), "ROUTE_INFO", "Bridge flow must enter Info/Preparation after Growth/Recovery.")
+    _expect_false(shell.advance_noncombat(), "Info/Preparation may not be skipped without an explicit public clue choice.")
+    var info_options: Array = shell.run_state.get_info_route_options()
+    _expect_eq(info_options.size(), 3, "Info/Preparation must expose exactly three public clue options.")
+    if info_options.size() == 3:
+        _expect_true(shell.select_info_route(str((info_options[0] as Dictionary).get("category", ""))), "Bridge flow must select one legal Info/Preparation clue.")
+    _expect_true(shell.advance_noncombat(), "Confirmed Info/Preparation must advance to Duel 2 Briefing.")
     _expect_true(shell.advance_noncombat(), "Duel 2 Briefing must enter a new COMBAT.")
     for _index in range(4):
         await process_frame
@@ -113,6 +129,10 @@ func _run() -> void:
         var duel_two_enemy: Dictionary = duel_two_state.get("enemy", {})
         var duel_two_enemy_health = duel_two_enemy.get("health", [0, 0])
         _expect_true(int((duel_two_enemy_health as Array)[0]) > 0, "A fresh Duel 2 combat instance must begin with living enemy health.")
+        var duel_two_resources: Dictionary = duel_two_bridge.call("get_vertical_slice_player_resources")
+        _expect_eq(duel_two_resources.get("health", []), [18, 30], "Recovery must persist 25% max HP using the reversible nearest-integer policy: +8 on max 30.")
+        _expect_eq(duel_two_resources.get("stamina", []), [3, 5], "Recovered stamina must persist into Duel 2.")
+        _expect_eq(duel_two_resources.get("internal", []), [2, 4], "Recovered internal must persist into Duel 2.")
 
     shell.queue_free()
     await process_frame
