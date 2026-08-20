@@ -14,6 +14,8 @@ const SCREEN_ROUTE_GROWTH := "ROUTE_GROWTH"
 const SCREEN_ROUTE_INFO := "ROUTE_INFO"
 const SCREEN_COMPLETION := "COMPLETION"
 const MAX_DUELS := 5
+const STARTER_SELECTION_COUNT := 4
+const STARTER_MASTERY := 3
 
 var duel_index: int = 1
 var completed_duels: int = 0
@@ -26,6 +28,8 @@ var _opponent_catalog = null
 var _run_seed: int = 0
 var _current_opponent_id: String = ""
 var _next_opponent_id: String = ""
+var _player_manual_loadout: Array[String] = []
+var _player_mastery_by_manual: Dictionary = {}
 
 
 func get_current_screen() -> String:
@@ -60,6 +64,36 @@ func get_route_target_opponent() -> Dictionary:
     return _opponent_catalog.get_candidate(_next_opponent_id)
 
 
+func confirm_setup_loadout(loadout, mastery_by_manual: Dictionary) -> bool:
+    if _current_screen != SCREEN_SETUP:
+        return false
+    if typeof(loadout) != TYPE_ARRAY and typeof(loadout) != TYPE_PACKED_STRING_ARRAY:
+        return false
+    if loadout.size() != STARTER_SELECTION_COUNT:
+        return false
+    var next_loadout: Array[String] = []
+    var seen := {}
+    for value in loadout:
+        var manual_id := str(value)
+        if manual_id.is_empty() or seen.has(manual_id):
+            return false
+        if int(mastery_by_manual.get(manual_id, 0)) != STARTER_MASTERY:
+            return false
+        seen[manual_id] = true
+        next_loadout.append(manual_id)
+    _player_manual_loadout = next_loadout
+    _player_mastery_by_manual = mastery_by_manual.duplicate(true)
+    return true
+
+
+func get_player_manual_loadout() -> Array:
+    return _player_manual_loadout.duplicate()
+
+
+func get_player_mastery_by_manual() -> Dictionary:
+    return _player_mastery_by_manual.duplicate(true)
+
+
 func start_new_run() -> bool:
     if _current_screen != SCREEN_MAIN:
         return false
@@ -70,6 +104,8 @@ func start_new_run() -> bool:
     _flow_history = [SCREEN_MAIN]
     _current_opponent_id = ""
     _next_opponent_id = ""
+    _player_manual_loadout.clear()
+    _player_mastery_by_manual.clear()
     if _opponent_catalog != null:
         _current_opponent_id = str(_opponent_catalog.select_candidate_id(1, _run_seed))
         if _current_opponent_id.is_empty():

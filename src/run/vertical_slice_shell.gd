@@ -6,14 +6,19 @@ const TECHNICAL_RUN_SEED := 20260820
 
 var run_state: VerticalSliceRunState
 var opponent_catalog: VerticalSliceOpponentCatalog
+var starter_manual_catalog: VerticalSliceStarterManualCatalog
+var manual_registry: MartialManualRegistry
 var content_panel: PanelContainer
 var combat_host: Control
 var title_label: Label
 var description_label: Label
 var primary_button: Button
+var setup_options_container: VBoxContainer
 
 var _combat_view: Control
 var _combat_view_duel_index: int = 0
+var _setup_buttons: Dictionary = {}
+var _setup_selected_manual_ids: Array[String] = []
 
 
 func _ready() -> void:
@@ -21,8 +26,12 @@ func _ready() -> void:
     set_meta("final_visual_reference_pending", true)
     set_meta("visual_evidence_ceiling", "TECHNICAL_SHELL_NOT_HUMAN_VISUAL_PASS")
     set_meta("run_seed_policy", "PHASE_II_TECHNICAL_FIXED_SEED_REPLACE_WITH_SAVE_STATE_LATER")
+    set_meta("setup_visual_status", "STRUCTURED_FUNCTIONAL_UI_NOT_FINAL_VISUAL")
+    set_meta("briefing_visual_status", "STRUCTURED_FUNCTIONAL_UI_NOT_FINAL_VISUAL")
 
     opponent_catalog = VerticalSliceOpponentCatalog.new()
+    starter_manual_catalog = VerticalSliceStarterManualCatalog.new()
+    manual_registry = MartialManualRegistry.new()
     run_state = VerticalSliceRunState.new()
     var catalog_bound := false
     if opponent_catalog.is_valid():
@@ -31,13 +40,17 @@ func _ready() -> void:
         push_error("Vertical Slice opponent catalog is invalid: %s" % str(opponent_catalog.load_errors))
     set_meta("opponent_catalog_bound", catalog_bound)
     set_meta("opponent_selection_binding", opponent_catalog.get_selection_binding_status())
+    set_meta("starter_manual_catalog_valid", starter_manual_catalog.is_valid())
 
     run_state.screen_changed.connect(_on_screen_changed)
     _build_shell()
+    _build_setup_options()
     _render_current_screen()
 
 
 func start_new_run() -> bool:
+    _setup_selected_manual_ids.clear()
+    _refresh_setup_selection_ui()
     return run_state.start_new_run()
 
 
@@ -45,6 +58,12 @@ func advance_noncombat() -> bool:
     var screen := run_state.get_current_screen()
     if screen == VerticalSliceRunState.SCREEN_COMBAT or screen == VerticalSliceRunState.SCREEN_REVIEW:
         return false
+    if screen == VerticalSliceRunState.SCREEN_SETUP:
+        if starter_manual_catalog == null or not starter_manual_catalog.validate_selection(_setup_selected_manual_ids):
+            return false
+        var mastery := starter_manual_catalog.build_mastery(_setup_selected_manual_ids)
+        if not run_state.confirm_setup_loadout(_setup_selected_manual_ids, mastery):
+            return false
     return run_state.advance()
 
 
@@ -56,6 +75,31 @@ func complete_review_for_runtime() -> bool:
     if run_state.get_current_screen() != VerticalSliceRunState.SCREEN_REVIEW:
         return false
     return run_state.advance()
+
+
+func get_setup_option_button_count() -> int:
+    return _setup_buttons.size()
+
+
+func get_setup_selected_manual_ids() -> Array:
+    return _setup_selected_manual_ids.duplicate()
+
+
+func toggle_setup_manual(manual_id: String) -> bool:
+    if run_state == null or run_state.get_current_screen() != VerticalSliceRunState.SCREEN_SETUP:
+        return false
+    if not _setup_buttons.has(manual_id):
+        return false
+    var should_select := not manual_id in _setup_selected_manual_ids
+    return _set_setup_manual_selected(manual_id, should_select)
+
+
+func get_active_combat_loadout_snapshot() -> Dictionary:
+    if _combat_view == null or not is_instance_valid(_combat_view):
+        return {}
+    if not _combat_view.has_method("get_vertical_slice_loadout_snapshot"):
+        return {}
+    return _combat_view.call("get_vertical_slice_loadout_snapshot") as Dictionary
 
 
 func _build_shell() -> void:
@@ -75,10 +119,10 @@ func _build_shell() -> void:
 
     content_panel = PanelContainer.new()
     content_panel.name = "ContentPanel"
-    content_panel.anchor_left = 0.18
-    content_panel.anchor_top = 0.16
-    content_panel.anchor_right = 0.82
-    content_panel.anchor_bottom = 0.84
+    content_panel.anchor_left = 0.14
+    content_panel.anchor_top = 0.08
+    content_panel.anchor_right = 0.86
+    content_panel.anchor_bottom = 0.92
     content_panel.offset_left = 0.0
     content_panel.offset_top = 0.0
     content_panel.offset_right = 0.0
@@ -94,37 +138,43 @@ func _build_shell() -> void:
 
     var margin := MarginContainer.new()
     margin.add_theme_constant_override("margin_left", 40)
-    margin.add_theme_constant_override("margin_top", 36)
+    margin.add_theme_constant_override("margin_top", 30)
     margin.add_theme_constant_override("margin_right", 40)
-    margin.add_theme_constant_override("margin_bottom", 36)
+    margin.add_theme_constant_override("margin_bottom", 30)
     content_panel.add_child(margin)
 
     var stack := VBoxContainer.new()
     stack.alignment = BoxContainer.ALIGNMENT_CENTER
-    stack.add_theme_constant_override("separation", 20)
+    stack.add_theme_constant_override("separation", 14)
     margin.add_child(stack)
 
     var technical_label := Label.new()
-    technical_label.text = "PC-FIRST VERTICAL SLICE · TECHNICAL SHELL"
+    technical_label.text = "PC-FIRST VERTICAL SLICE · FUNCTIONAL UI"
     technical_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     technical_label.add_theme_color_override("font_color", Color("b99254"))
-    technical_label.add_theme_font_size_override("font_size", 16)
+    technical_label.add_theme_font_size_override("font_size", 15)
     stack.add_child(technical_label)
 
     title_label = Label.new()
     title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     title_label.add_theme_color_override("font_color", Color("eadfc9"))
-    title_label.add_theme_font_size_override("font_size", 34)
+    title_label.add_theme_font_size_override("font_size", 30)
     stack.add_child(title_label)
 
     description_label = Label.new()
     description_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     description_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
     description_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    description_label.custom_minimum_size = Vector2(0.0, 110.0)
+    description_label.custom_minimum_size = Vector2(0.0, 100.0)
     description_label.add_theme_color_override("font_color", Color("c9bca8"))
-    description_label.add_theme_font_size_override("font_size", 18)
+    description_label.add_theme_font_size_override("font_size", 17)
     stack.add_child(description_label)
+
+    setup_options_container = VBoxContainer.new()
+    setup_options_container.name = "SetupManualOptions"
+    setup_options_container.add_theme_constant_override("separation", 6)
+    setup_options_container.visible = false
+    stack.add_child(setup_options_container)
 
     primary_button = Button.new()
     primary_button.custom_minimum_size = Vector2(260.0, 52.0)
@@ -133,11 +183,38 @@ func _build_shell() -> void:
     stack.add_child(primary_button)
 
     var pending_label := Label.new()
-    pending_label.text = "최종 시각 레퍼런스 대기 중 · 현재 화면은 기능 검증용 구조화 shell"
+    pending_label.text = "최종 시각 레퍼런스 대기 중 · 현재 UI는 기능/정보 위계 검증용"
     pending_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     pending_label.add_theme_color_override("font_color", Color("8d8375"))
     pending_label.add_theme_font_size_override("font_size", 13)
     stack.add_child(pending_label)
+
+
+func _build_setup_options() -> void:
+    _setup_buttons.clear()
+    if setup_options_container == null or starter_manual_catalog == null or not starter_manual_catalog.is_valid():
+        return
+    for option_value in starter_manual_catalog.get_options():
+        if typeof(option_value) != TYPE_DICTIONARY:
+            continue
+        var option := option_value as Dictionary
+        var manual_id := str(option.get("manual_id", ""))
+        var button := Button.new()
+        button.name = "Starter_%s" % manual_id
+        button.toggle_mode = true
+        button.custom_minimum_size = Vector2(680.0, 40.0)
+        button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+        button.text = "[%s] %s · 3성 %s · %s/%s" % [
+            str(option.get("faction", "")),
+            str(option.get("manual_name", "")),
+            str(option.get("star3_card_name", "")),
+            str(option.get("primary_stat", "")),
+            str(option.get("secondary_stat", ""))
+        ]
+        button.set_meta("manual_id", manual_id)
+        button.toggled.connect(_on_setup_manual_toggled.bind(manual_id))
+        setup_options_container.add_child(button)
+        _setup_buttons[manual_id] = button
 
 
 func _on_primary_button_pressed() -> void:
@@ -145,6 +222,46 @@ func _on_primary_button_pressed() -> void:
         start_new_run()
         return
     advance_noncombat()
+
+
+func _on_setup_manual_toggled(pressed: bool, manual_id: String) -> void:
+    if not _set_setup_manual_selected(manual_id, pressed):
+        var button: Button = _setup_buttons.get(manual_id)
+        if button != null:
+            button.set_pressed_no_signal(manual_id in _setup_selected_manual_ids)
+
+
+func _set_setup_manual_selected(manual_id: String, selected: bool) -> bool:
+    if not _setup_buttons.has(manual_id):
+        return false
+    var already_selected := manual_id in _setup_selected_manual_ids
+    if selected == already_selected:
+        _refresh_setup_selection_ui()
+        return true
+    if selected:
+        if _setup_selected_manual_ids.size() >= VerticalSliceRunState.STARTER_SELECTION_COUNT:
+            _refresh_setup_selection_ui()
+            return false
+        _setup_selected_manual_ids.append(manual_id)
+    else:
+        _setup_selected_manual_ids.erase(manual_id)
+    _refresh_setup_selection_ui()
+    return true
+
+
+func _refresh_setup_selection_ui() -> void:
+    for manual_id_value in _setup_buttons.keys():
+        var manual_id := str(manual_id_value)
+        var button: Button = _setup_buttons.get(manual_id)
+        if button != null:
+            button.set_pressed_no_signal(manual_id in _setup_selected_manual_ids)
+    if run_state == null or primary_button == null or description_label == null:
+        return
+    if run_state.get_current_screen() != VerticalSliceRunState.SCREEN_SETUP:
+        return
+    var count := _setup_selected_manual_ids.size()
+    description_label.text = "강호에 들고 갈 무공 4권을 고릅니다. 선택 %d/4\n각 무공은 3성 기술 하나로 시작하며, 선택한 네 권이 이번 비무행의 전투 정체성이 됩니다." % count
+    primary_button.disabled = count != VerticalSliceRunState.STARTER_SELECTION_COUNT
 
 
 func _on_screen_changed(_previous_screen: String, _current_screen: String) -> void:
@@ -163,6 +280,8 @@ func _render_current_screen() -> void:
 
     combat_host.visible = keeps_combat_visible
     content_panel.visible = not keeps_combat_visible
+    if setup_options_container != null:
+        setup_options_container.visible = screen == VerticalSliceRunState.SCREEN_SETUP
 
     if keeps_combat_visible:
         _ensure_combat_view()
@@ -172,27 +291,24 @@ func _render_current_screen() -> void:
         VerticalSliceRunState.SCREEN_MAIN:
             _set_content(
                 "십보강호: 숨은 수의 비무",
-                "첫 5전 Vertical Slice의 PC-first 기술 shell입니다.\n전투 코어는 기존 CombatBoardPreview를 그대로 재사용합니다.",
+                "첫 5전 Vertical Slice의 PC-first 기능 UI입니다.\n전투 코어는 기존 CombatBoardPreview를 그대로 재사용합니다.",
                 "새 비무행"
             )
         VerticalSliceRunState.SCREEN_SETUP:
             _set_content(
-                "시작 설정 · 무공 6중4",
-                "Phase I에서는 화면 경계와 RunState를 연결했고, Phase II에서는 상대 후보 15명과 선잠금을 연결합니다.\n실제 6중4 선택 UI는 후속 Phase에서 붙입니다.",
-                "설정 완료"
+                "시작 설정 · 나의 무공 6중4",
+                "강호에 들고 갈 무공 4권을 고릅니다. 선택 0/4\n각 무공은 3성 기술 하나로 시작하며, 선택은 이번 비무행의 전투 정체성을 정합니다.",
+                "이 네 권으로 출발"
             )
+            _refresh_setup_selection_ui()
         VerticalSliceRunState.SCREEN_INTRO:
             _set_content(
                 "강호 비무행",
-                "첫 여정을 시작합니다. 긴 설명보다 첫 상대와 수읽기로 빠르게 진입합니다.",
+                "첫 여정을 시작합니다. 긴 설명보다 첫 상대와 수읽기로 빠르게 진입합니다.\n나의 시작 무공: %s" % _player_manual_names_text(),
                 "첫 상대 확인"
             )
         VerticalSliceRunState.SCREEN_BRIEFING:
-            _set_content(
-                "비무 %d · 상대 파악" % run_state.duel_index,
-                "현재 상대는 Briefing 전에 이미 잠겨 있습니다. 공개 정보와 현재 상태만 보여 주며 숨은 계획·AI 가중치·정답 대응은 공개하지 않습니다.",
-                "비무 시작"
-            )
+            _render_briefing()
         VerticalSliceRunState.SCREEN_RESULT:
             var next_label := "완주 정리" if run_state.completed_duels >= VerticalSliceRunState.MAX_DUELS else "강호행로로"
             _set_content(
@@ -223,6 +339,41 @@ func _render_current_screen() -> void:
             _set_content("Unknown", screen, "계속")
 
 
+func _render_briefing() -> void:
+    var opponent: Dictionary = run_state.get_current_opponent()
+    if opponent.is_empty():
+        _set_content("비무 %d · 상대 정보 없음" % run_state.duel_index, "잠긴 상대 데이터를 찾을 수 없습니다.", "비무 시작")
+        return
+    var manual_id := str(opponent.get("signature_manual_id", ""))
+    var manual: Dictionary = manual_registry.get_manual(manual_id) if manual_registry != null else {}
+    var manual_label := "[%s] %s" % [str(manual.get("faction", "")), str(manual.get("manual_name", ""))]
+    var description := "무인상 · %s\n공개 무공 · %s\n알려진 습관 · %s\n의심할 점 · %s\n최근 평 · %s\n\n알 수 없음 · 현재 계획 / AI 가중치 / 내부 선택 seed\n나의 무공 · %s" % [
+        str(opponent.get("martial_identity", "")),
+        manual_label,
+        str(opponent.get("readable_habit", "")),
+        str(opponent.get("ambiguity_or_counterexample", "")),
+        str(opponent.get("public_briefing_hook", "")),
+        _player_manual_names_text()
+    ]
+    _set_content(
+        "비무 %d · %s" % [run_state.duel_index, str(opponent.get("working_name", ""))],
+        description,
+        "비무 시작"
+    )
+
+
+func _player_manual_names_text() -> String:
+    var names: Array[String] = []
+    if manual_registry == null:
+        return "미확정"
+    for manual_id_value in run_state.get_player_manual_loadout():
+        var manual: Dictionary = manual_registry.get_manual(str(manual_id_value))
+        var name := str(manual.get("manual_name", ""))
+        if not name.is_empty():
+            names.append(name)
+    return " · ".join(names) if not names.is_empty() else "미확정"
+
+
 func _set_content(title: String, description: String, button_text: String) -> void:
     title_label.text = title
     description_label.text = description
@@ -243,6 +394,25 @@ func _ensure_combat_view() -> void:
     _combat_view_duel_index = run_state.duel_index
     _combat_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     combat_host.add_child(_combat_view)
+
+    var opponent: Dictionary = run_state.get_current_opponent()
+    var signature_manual_id := str(opponent.get("signature_manual_id", ""))
+    var enemy_mastery := {}
+    if not signature_manual_id.is_empty():
+        enemy_mastery[signature_manual_id] = int(opponent.get("signature_star_seed", 0))
+    var runtime_loadout_bound := false
+    if _combat_view.has_method("configure_vertical_slice_loadouts"):
+        runtime_loadout_bound = bool(_combat_view.call(
+            "configure_vertical_slice_loadouts",
+            run_state.get_player_manual_loadout(),
+            run_state.get_player_mastery_by_manual(),
+            [signature_manual_id],
+            enemy_mastery,
+            str(opponent.get("candidate_id", ""))
+        ))
+    _combat_view.set_meta("vertical_slice_runtime_loadout_bound_from_shell", runtime_loadout_bound)
+    if not runtime_loadout_bound:
+        push_error("Vertical Slice shell could not bind Setup/opponent loadouts to combat.")
 
     if _combat_view.has_signal("terminal_review_ready"):
         _combat_view.connect("terminal_review_ready", Callable(self, "_on_terminal_review_ready"))

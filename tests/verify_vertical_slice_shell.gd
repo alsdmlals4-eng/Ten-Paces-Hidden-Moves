@@ -1,6 +1,12 @@
 extends SceneTree
 
 const SHELL_SCENE_PATH := "res://scenes/run/vertical_slice_shell.tscn"
+const DEFAULT_STARTERS := [
+    "mount_hua_plum_blossom_sword",
+    "shaolin_arhat_vajra_art",
+    "wudang_taiji_sword",
+    "yang_family_spear"
+]
 
 var failures: Array[String] = []
 
@@ -32,7 +38,8 @@ func _run() -> void:
 
     _expect_true(shell.start_new_run(), "Shell must start a new run.")
     _expect_eq(shell.run_state.get_current_screen(), "SETUP", "New run must enter SETUP.")
-    _expect_true(shell.advance_noncombat(), "SETUP must advance.")
+    _select_default_setup(shell)
+    _expect_true(shell.advance_noncombat(), "SETUP with four selected manuals must advance.")
     _expect_true(shell.advance_noncombat(), "INTRO must advance.")
     _expect_eq(shell.run_state.get_current_screen(), "BRIEFING", "Intro must lead to briefing.")
     _expect_true(shell.advance_noncombat(), "BRIEFING must enter COMBAT.")
@@ -66,6 +73,11 @@ func _run() -> void:
     shell.queue_free()
     await process_frame
     _finish()
+
+
+func _select_default_setup(shell) -> void:
+    for manual_id in DEFAULT_STARTERS:
+        _expect_true(shell.toggle_setup_manual(manual_id), "Default starter selection must succeed: %s" % manual_id)
 
 
 func _expect_true(value: bool, message: String) -> void:

@@ -1,11 +1,11 @@
-# First Five-Duel Vertical Slice · Phase I/II Build Approval
+# First Five-Duel Vertical Slice · Phase I/II/III Build Approval
 
 - Gate: `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`
 - Planning Complete: `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`
 - Visual/UX: `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01`
 - Approved on: `2026-08-20 KST`
 - Approval source: user instruction `이미지 생성 외 작업을 진행하자`
-- Authority level: `SCOPED_PC_FIRST_VERTICAL_SLICE_PHASE_I_II`
+- Authority level: `SCOPED_PC_FIRST_VERTICAL_SLICE_PHASE_I_II_III`
 
 ## Approved scope
 
@@ -18,7 +18,8 @@ This build may implement the first bounded runtime phases of `docs/16_VERTICAL_S
 5. a shell/bridge around the existing CombatBoardPreview without rewriting combat resolution rules;
 6. automated headless verification for the new flow;
 7. structured text/frames and existing approved assets while final visual reference remains pending;
-8. the approved fifteen-opponent first-slice catalog and reversible runtime selection/lock binding described below.
+8. the approved fifteen-opponent first-slice catalog and reversible runtime selection/lock binding;
+9. the approved current-name six-manual starter selection, four-manual RunState persistence, public Briefing data binding, and runtime combat-loadout handoff described below.
 
 ### Phase I bridge extension · PR #178 scope
 
@@ -49,7 +50,22 @@ The same user instruction explicitly authorizes the next data-binding layer with
 
 The fixed technical seed is not a final player-facing randomization or save/retry policy. A later save-state/data-binding phase may replace it while preserving deterministic reproduction and the no-reroll Route contract.
 
-This approval extension is included in the same runtime/data-changing PR so the Base adversarial BUILD gate can verify explicit scope locally instead of relying only on an earlier merged approval file.
+### Phase III Setup / Briefing / runtime loadout extension · PR #180 scope
+
+The same scoped PC-first implementation authority covers the next approved handoff-plan slice:
+
+- map the historical starter-six concept to the six **current** player-facing manuals: `매화검결 / 나한금강공 / 태극검결 / 양가창결 / 자하심법 / 소요보결`;
+- obtain faction/name/stat/star3 technique metadata from the current `MartialManualRegistry`, not duplicated legacy display strings;
+- require exactly four unique starter manuals before the Setup CTA can advance;
+- start each selected starter manual at mastery `3` and persist the four IDs/mastery map in RunState;
+- reject a fifth simultaneous selection and avoid deck/hand/draw vocabulary in player-facing Setup copy;
+- render Briefing from the already-locked opponent's approved public fields: working name, martial identity, current signature-manual display name, readable habit, ambiguity/counterexample, and public briefing hook;
+- explicitly preserve `현재 계획`, AI numeric weights, internal candidate IDs/behavior keys, and selector seed as hidden/non-player-facing information;
+- rebind the existing ten-manual combat bridge at duel entry so the player uses the selected four manuals and the enemy uses only the locked candidate's approved signature manual/mastery seed instead of the legacy fixed PoC loadout;
+- keep the inherited combat resolution engine, formulas, hidden-information boundaries, basic actions, and manual effects unchanged;
+- mark Setup/Briefing presentation as structured functional UI only, not final visual or Human evidence.
+
+This Phase III approval is recorded in the same runtime-changing PR so Base v9 BUILD governance can verify scope from the local diff.
 
 ## Protected invariants
 
@@ -60,6 +76,7 @@ This approval extension is included in the same runtime/data-changing PR so the 
 - distance / clash / response / interruption / review;
 - player-only `[관찰]` authority;
 - existing ten martial manuals;
+- cards remain an action catalogue, not deck/hand/draw gameplay;
 - Combat Review overlay / Duel Result separate Scene / Route separate Scene boundary;
 - exactly two Route nodes between Duels 1-4;
 - next-opponent information changes knowledge only and may not reroll the locked candidate.
@@ -70,6 +87,7 @@ This approval extension is included in the same runtime/data-changing PR so the 
 - adding an eleventh manual or enemy-only combat rule;
 - committing exact AI numeric weights or exact permanent-stat distributions as final balance;
 - making the temporary deterministic candidate selector the final save/RNG policy;
+- implementing Route rewards/recovery/info choice effects beyond the already-approved state boundary;
 - Windows/Android Adapter implementation;
 - Android physical-device completion;
 - Human fun/readability PASS;
@@ -84,6 +102,7 @@ This approval extension is included in the same runtime/data-changing PR so the 
 - 15-candidate catalog/runtime-ID legality verification: required;
 - candidate-ID hygiene verification: required;
 - shell catalog binding + Result→Route lock/no-reroll verification: required;
+- six-current-starter / exact-four Setup / Briefing public-info / combat runtime-loadout binding verification: required;
 - existing PR / Full / Product Gate validation: required for runtime/data changes;
 - Windows visible local usability: `NOT_RUN`;
 - Android physical device: `BLOCKED_UNVERIFIED`;

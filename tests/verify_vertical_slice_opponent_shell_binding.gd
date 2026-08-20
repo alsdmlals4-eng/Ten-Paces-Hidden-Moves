@@ -1,6 +1,12 @@
 extends SceneTree
 
 const SHELL_SCENE_PATH := "res://scenes/run/vertical_slice_shell.tscn"
+const DEFAULT_STARTERS := [
+    "mount_hua_plum_blossom_sword",
+    "shaolin_arhat_vajra_art",
+    "wudang_taiji_sword",
+    "yang_family_spear"
+]
 
 var failures: Array[String] = []
 
@@ -33,6 +39,8 @@ func _run() -> void:
     _expect_true(not current.is_empty(), "Runtime shell must lock a Duel 1 candidate at run start.")
     _expect_eq(int(current.get("duel_slot", 0)), 1, "Runtime shell Duel 1 candidate must belong to Slot 1.")
 
+    for manual_id in DEFAULT_STARTERS:
+        _expect_true(shell.toggle_setup_manual(manual_id), "Starter selection must succeed before leaving Setup: %s" % manual_id)
     _expect_true(shell.advance_noncombat(), "SETUP → INTRO")
     _expect_true(shell.advance_noncombat(), "INTRO → BRIEFING")
     _expect_eq(str(shell.run_state.get_current_opponent().get("candidate_id", "")), str(current.get("candidate_id", "")), "Briefing must use the opponent already locked at run start.")
