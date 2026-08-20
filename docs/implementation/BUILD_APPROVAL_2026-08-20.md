@@ -1,11 +1,11 @@
-# First Five-Duel Vertical Slice · Phase I/II/III/IV Build Approval
+# First Five-Duel Vertical Slice · Phase I/II/III/IV/V Build Approval
 
 - Gate: `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`
 - Planning Complete: `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`
 - Visual/UX: `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01`
 - Approved on: `2026-08-20 KST`
-- Approval source: user instruction `이미지 생성 외 작업을 진행하자`
-- Authority level: `SCOPED_PC_FIRST_VERTICAL_SLICE_PHASE_I_II_III_IV`
+- Approval source: user instruction `이미지 생성 외 작업을 진행하자` followed by continued implementation approval `진행해`
+- Authority level: `SCOPED_PC_FIRST_VERTICAL_SLICE_PHASE_I_II_III_IV_V`
 
 ## Approved scope
 
@@ -20,7 +20,8 @@ This build may implement the first bounded runtime phases of `docs/16_VERTICAL_S
 7. structured text/frames and existing approved assets while final visual reference remains pending;
 8. the approved fifteen-opponent first-slice catalog and reversible runtime selection/lock binding;
 9. the approved current-name six-manual starter selection, four-manual RunState persistence, public Briefing data binding, and runtime combat-loadout handoff;
-10. neutral causal Review wording, raw five-metric Result evidence, a grade-formula-pending Result state, and one-of-three Duel reward receipt selection without applying progression effects.
+10. neutral causal Review wording, raw five-metric Result evidence, a grade-formula-pending Result state, and one-of-three Duel reward receipt selection;
+11. Phase V run progression ownership for reward application, inter-duel resources, Growth/Recovery Route choices, Info/Preparation clues, Route history, and next-duel resource restoration.
 
 ### Phase I bridge extension · PR #178 scope
 
@@ -62,13 +63,32 @@ The same PC-first authority covers the next bounded handoff-plan slice:
 - carry those raw metrics in the terminal Result payload;
 - render Result with `grade_status = FORMULA_PENDING` and `final_grade = ""` while S/A/B/C weights, normalization and thresholds remain TBD;
 - do not revive legacy `S85/A70/B55/C0` thresholds or invent replacement grade math;
-- expose exactly three approved Duel reward types as deferred receipts: `자유 수련 +6`, `집중 수련 지정 무공 +5 + 자유 +3`, `문파 전수 상대 시그니처 무공 3성`;
+- expose exactly three approved Duel reward types as receipts: `자유 수련 +6`, `집중 수련 지정 무공 +5 + 자유 +3`, `문파 전수 상대 시그니처 무공 3성`;
 - require a valid reward receipt before Result can leave for Route or Completion;
 - require focused-training target to be one of the player's current manuals;
 - record exactly one confirmed reward receipt per Duel in RunState history;
-- keep reward application itself deferred to Phase V; this Phase must not mutate training points, mastery, owned manuals, HP/resources, or Route effects;
 - lock the next opponent only after a valid reward exists and the confirmed Result actually leaves for Growth/Recovery Route, preserving the existing no-reroll contract;
 - mark Result UI as structured functional UI only, not final visual or Human evidence.
+
+### Phase V Route / run progression extension · PR #182 scope
+
+The same PC-first authority now covers the first complete inter-duel progression loop:
+
+- introduce a dedicated progression state owned by RunState for current owned manuals, mastery, per-manual accumulated training, unallocated free-training pool, persistent player resources, and unresolved duplicate faction-transfer receipts;
+- use the approved mastery costs from 3★ upward: `4★=2 / 5★=3 / 6★=4 / 7★=5 / 8★=6 / 9★=8 / 10★=10`, recalculating mastery from total accumulated training rather than discarding residual points;
+- apply a confirmed Result receipt exactly once as Result leaves for Route: free-training receipts increase the free pool; focused-training receipts apply `+5` to the chosen owned manual and `+3` to the free pool; non-duplicate faction transfers add the opponent signature manual at 3★;
+- do not invent a value conversion when a faction-transfer manual is already owned: record that receipt as `PENDING_DUPLICATE_POLICY` until a separate canon decision exists;
+- persist terminal player `health / stamina / internal` current/max pairs from Combat into RunState and inject those pairs into the newly instantiated next-duel combat bridge;
+- expose exactly three logical Growth/Recovery choices per R1/R3/R5/R7 node: recovery, focused training, free training;
+- use reversible Route seeds `R1/R3 focus +1 / free +3`, `R5/R7 focus +2 / free +4`;
+- recovery applies `25% max HP + stamina 1 + internal 1`, capped at each maximum; integer HP recovery uses the explicitly reversible temporary policy `REVERSIBLE_NEAREST_INTEGER` until balance validation revisits it;
+- require one Growth/Recovery choice before transition to the paired Info/Preparation node;
+- expose exactly three public-info categories per R2/R4/R6/R8 for the already-locked next opponent;
+- require exactly one Info/Preparation choice, record it against that candidate, and append the resulting public clue to the next Briefing;
+- keep internal behavior keys, AI numeric weights, selector seed, current hidden plan, and answer-card information out of Route intel;
+- keep the locked next opponent invariant through both Route nodes and promote that exact candidate to Briefing without reroll;
+- record exactly one Route-history receipt for each of the eight Route visits;
+- keep the Route shell as `STRUCTURED_FUNCTIONAL_UI_NOT_FINAL_VISUAL`.
 
 ## Protected invariants
 
@@ -91,13 +111,14 @@ The same PC-first authority covers the next bounded handoff-plan slice:
 - committing exact AI numeric weights or exact permanent-stat distributions as final balance;
 - making the temporary deterministic candidate selector the final save/RNG policy;
 - defining S/A/B/C Battle Grade weights, normalization, thresholds, or any final grade formula;
-- applying Duel reward receipts to training points, mastery, owned manuals or stats;
-- implementing Growth/Recovery or Info/Preparation Route effects;
+- inventing duplicate `문파 전수` conversion/refund value before a separate planning decision;
+- spending the free-training pool automatically or inventing an unapproved free-point allocation UX;
+- treating the reversible 25% HP integer rounding policy as final balance canon;
 - Windows/Android Adapter implementation;
 - Android physical-device completion;
 - Human fun/readability PASS;
 - release readiness claims;
-- new image generation or promotion of the current generated concept to product asset.
+- new image generation or promotion of any supplied/generated example image to approved product asset.
 
 ## Evidence ceiling
 
@@ -109,8 +130,22 @@ The same PC-first authority covers the next bounded handoff-plan slice:
 - shell catalog binding + Result→Route lock/no-reroll verification: required;
 - six-current-starter / exact-four Setup / Briefing public-info / combat runtime-loadout binding verification: required;
 - neutral Review / raw five-metric / formula-pending Result / reward-receipt gating verification: required;
+- persistent resource / progression / R1-R8 Route choice / Route intel / next-Combat restoration verification: required;
 - existing PR / Full / Product Gate validation: required for runtime changes;
 - Windows visible local usability: `NOT_RUN`;
 - Android physical device: `BLOCKED_UNVERIFIED`;
 - Human validation: `NOT_RUN`;
-- final visual approval: `USER_REFERENCE_PENDING`.
+- final visual approval: `USER_REFERENCE_EXAMPLES_RECEIVED_NOT_APPROVED`.
+
+## Provisional visual-reference intake note
+
+The user supplied multiple example screens on 2026-08-20. They are **reference examples only, not approval**. Shared tendencies that may inform later visual work without constraining Phase V logic are:
+
+- ink-wash / aged-paper visual language;
+- dark charcoal-black surfaces with restrained gold framing and highlights;
+- character portraits integrated into tactical information panels;
+- card/action-driven combat planning UI;
+- strong hierarchy between battlefield, current bundle/timeline, resources, and detail panels;
+- result/training and pre-duel preparation screens that reuse the same frame language.
+
+The examples contain both non-pixel ink illustration and pixel-like/hybrid combat rendering. Therefore renderer treatment, character render style, exact palette, typography, density, and final layout remain `NOT_APPROVED` and must not be inferred as final canon.
