@@ -1,6 +1,13 @@
 extends SceneTree
 
 const RUN_STATE_PATH := "res://src/run/vertical_slice_run_state.gd"
+const OPPONENT_CATALOG_SCRIPT := preload("res://src/run/vertical_slice_opponent_catalog.gd")
+const STARTERS := [
+    "mount_hua_plum_blossom_sword",
+    "shaolin_arhat_vajra_art",
+    "wudang_taiji_sword",
+    "yang_family_spear"
+]
 
 var failures: Array[String] = []
 
@@ -17,11 +24,15 @@ func _run() -> void:
         return
 
     var run = script.new()
+    var opponent_catalog = OPPONENT_CATALOG_SCRIPT.new()
+    _expect_true(opponent_catalog.is_valid(), "Opponent catalog must be valid for the full run flow.")
+    _expect_true(run.configure_opponents(opponent_catalog, 20260820), "Full run flow must configure deterministic opponent locks.")
     _expect_eq(run.get_current_screen(), "MAIN", "A new run state must begin at MAIN.")
     _expect_eq(run.duel_index, 1, "The first duel slot must be active before a new run starts.")
 
     _expect_true(run.start_new_run(), "MAIN must enter SETUP through start_new_run().")
     _expect_eq(run.get_current_screen(), "SETUP", "New run must enter SETUP.")
+    _expect_true(run.confirm_setup_loadout(STARTERS, _starter_mastery()), "SETUP must accept exactly four starter manuals at mastery 3.")
     _expect_true(run.advance(), "SETUP must advance to INTRO.")
     _expect_eq(run.get_current_screen(), "INTRO", "SETUP must lead to INTRO.")
     _expect_true(run.advance(), "INTRO must advance to BRIEFING.")
@@ -51,9 +62,16 @@ func _run() -> void:
         if expected_duel < 5:
             _expect_true(run.advance(), "Reward-confirmed RESULT must advance to the first Route node before the next duel.")
             _expect_eq(run.get_current_screen(), "ROUTE_GROWTH", "The first Route node must be Growth/Recovery.")
-            _expect_true(run.advance(), "Growth/Recovery must advance to Information/Preparation.")
+            _expect_false(run.advance(), "Growth/Recovery may not advance before one route choice is selected.")
+            _expect_true(run.select_growth_route("free_training"), "Full-run regression uses the legal free-training Route option.")
+            _expect_true(run.advance(), "Confirmed Growth/Recovery must advance to Information/Preparation.")
             _expect_eq(run.get_current_screen(), "ROUTE_INFO", "The second Route node must be Information/Preparation.")
-            _expect_true(run.advance(), "Information/Preparation must advance to the next BRIEFING.")
+            _expect_false(run.advance(), "Information/Preparation may not advance before one public-info choice is selected.")
+            var info_options := run.get_info_route_options()
+            _expect_eq(info_options.size(), 3, "Each Info Route must expose exactly three choices.")
+            if info_options.size() == 3:
+                _expect_true(run.select_info_route(str((info_options[0] as Dictionary).get("category", ""))), "Full-run regression must select one legal public-info category.")
+            _expect_true(run.advance(), "Confirmed Information/Preparation must advance to the next BRIEFING.")
             _expect_eq(run.get_current_screen(), "BRIEFING", "Route completion must return to BRIEFING.")
             _expect_eq(run.duel_index, expected_duel + 1, "Route completion must increment the duel slot exactly once.")
         else:
@@ -64,6 +82,7 @@ func _run() -> void:
     _expect_eq(run.route_visits, 8, "Four inter-duel intervals must create exactly eight Route visits.")
     _expect_eq(run.completed_duels, 5, "The run must record exactly five completed duels.")
     _expect_eq(run.get_reward_history().size(), 5, "Each duel must confirm exactly one reward receipt.")
+    _expect_eq(run.get_route_history().size(), 8, "Each Route node must confirm exactly one route receipt.")
 
     var history: Array = run.get_flow_history()
     _expect_eq(history.count("REVIEW"), 5, "Each duel must visit REVIEW exactly once.")
@@ -73,6 +92,13 @@ func _run() -> void:
     _expect_eq(history[history.size() - 1], "COMPLETION", "The full run must terminate at COMPLETION.")
 
     _finish()
+
+
+func _starter_mastery() -> Dictionary:
+    var result := {}
+    for manual_id in STARTERS:
+        result[manual_id] = 3
+    return result
 
 
 func _expect_true(value: bool, message: String) -> void:
