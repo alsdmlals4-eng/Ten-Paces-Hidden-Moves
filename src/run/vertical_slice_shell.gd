@@ -1,7 +1,7 @@
 class_name VerticalSliceShell
 extends Control
 
-const COMBAT_SCENE := preload("res://scenes/combat/combat_board_preview.tscn")
+const COMBAT_SCENE := preload("res://scenes/run/vertical_slice_combat_bridge.tscn")
 
 var run_state: VerticalSliceRunState
 var content_panel: PanelContainer
@@ -11,6 +11,7 @@ var description_label: Label
 var primary_button: Button
 
 var _combat_view: Control
+var _combat_view_duel_index: int = 0
 
 
 func _ready() -> void:
@@ -219,10 +220,45 @@ func _set_content(title: String, description: String, button_text: String) -> vo
 
 func _ensure_combat_view() -> void:
     if _combat_view != null and is_instance_valid(_combat_view):
-        return
+        if _combat_view_duel_index == run_state.duel_index:
+            return
+        _discard_combat_view()
+
     _combat_view = COMBAT_SCENE.instantiate() as Control
     if _combat_view == null:
-        push_error("Vertical Slice shell could not instantiate CombatBoardPreview.")
+        push_error("Vertical Slice shell could not instantiate the combat bridge.")
         return
+    _combat_view_duel_index = run_state.duel_index
     _combat_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     combat_host.add_child(_combat_view)
+
+    if _combat_view.has_signal("terminal_review_ready"):
+        _combat_view.connect("terminal_review_ready", Callable(self, "_on_terminal_review_ready"))
+    if _combat_view.has_signal("terminal_review_confirmed"):
+        _combat_view.connect("terminal_review_confirmed", Callable(self, "_on_terminal_review_confirmed"))
+
+
+func _discard_combat_view() -> void:
+    if _combat_view == null or not is_instance_valid(_combat_view):
+        _combat_view = null
+        _combat_view_duel_index = 0
+        return
+    if _combat_view.get_parent() == combat_host:
+        combat_host.remove_child(_combat_view)
+    _combat_view.queue_free()
+    _combat_view = null
+    _combat_view_duel_index = 0
+
+
+func _on_terminal_review_ready(result: Dictionary) -> void:
+    if run_state.get_current_screen() != VerticalSliceRunState.SCREEN_COMBAT:
+        return
+    var run_result := result.duplicate(true)
+    run_result["duel_index"] = run_state.duel_index
+    complete_combat_for_runtime(run_result)
+
+
+func _on_terminal_review_confirmed(_result: Dictionary) -> void:
+    if run_state.get_current_screen() != VerticalSliceRunState.SCREEN_REVIEW:
+        return
+    complete_review_for_runtime()
