@@ -1,1 +1,0 @@
-Phase VI is limited to retaining resolved five-duel history and rendering a read-only completion summary. It does not authorize new combat, Route, reward, AI, balance, visual-asset, Android, or Human-validation behavior.
