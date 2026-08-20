@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import unittest
 from pathlib import Path
 
@@ -55,6 +56,28 @@ class DevelopmentGatesStableContractTests(unittest.TestCase):
         ):
             self.assertNotIn(token, self.text)
         self.assertIn("historical_evidence_snapshot: TEN_MANUAL_AUTOMATED_PRODUCT_VALIDATION", self.text)
+
+    def test_base_reuse_adoption_manifest_is_planning_only(self) -> None:
+        manifest = json.loads((ROOT / "docs/base-reuse-adoption.json").read_text(encoding="utf-8"))
+        self.assertEqual(
+            {
+                "schema_version": 1,
+                "base_source_commit": "8553678f70e22f193a2336b591f677dcfa5a8965",
+                "modules": {
+                    "RM-TOOL-001": {"state": "planned"},
+                    "RM-SYS-001": {"state": "not_applicable"},
+                    "RM-SYS-003": {"state": "not_applicable"},
+                    "RM-VIS-001": {"state": "planned"},
+                    "RM-VIS-002": {"state": "planned"},
+                },
+            },
+            manifest,
+        )
+        adapter = json.loads((ROOT / "skills/PROJECT_BASE_ADAPTER.json").read_text(encoding="utf-8"))
+        self.assertEqual(
+            ["data/", "src/", "scenes/", "assets/", "addons/", "project.godot"],
+            adapter["protected_paths"],
+        )
 
 
 if __name__ == "__main__":
