@@ -40,7 +40,7 @@ func _run() -> void:
         return
 
     var bridge = shell.combat_host.get_child(0)
-    var duel_one_instance_id := bridge.get_instance_id()
+    var duel_one_instance_id: int = int(bridge.get_instance_id())
     _expect_true(bool(bridge.get_meta("vertical_slice_bridge", false)), "Combat view must identify itself as the Vertical Slice bridge.")
     _expect_true(bridge.has_signal("terminal_review_ready"), "Bridge must expose terminal_review_ready.")
     _expect_true(bridge.has_signal("terminal_review_confirmed"), "Bridge must expose terminal_review_confirmed.")
