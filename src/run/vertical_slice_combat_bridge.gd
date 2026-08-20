@@ -1,16 +1,85 @@
 class_name VerticalSliceCombatBridge
 extends "res://src/combat/combat_board_preview_ten_manuals_auto.gd"
 
+const VERTICAL_SLICE_ENGINE_SCRIPT := preload("res://src/combat/combat_resolution_engine_ten_manuals.gd")
+
 signal terminal_review_ready(result: Dictionary)
 signal terminal_review_confirmed(result: Dictionary)
 
 var _vertical_slice_terminal_result: Dictionary = {}
+var _vertical_slice_loadout_snapshot: Dictionary = {}
 
 
 func _ready() -> void:
     super._ready()
     set_meta("vertical_slice_bridge", true)
-    set_meta("bridge_scope", "TERMINAL_REVIEW_TO_RUN_RESULT")
+    set_meta("bridge_scope", "TERMINAL_REVIEW_TO_RUN_RESULT_AND_RUNTIME_LOADOUT_BINDING")
+
+
+func configure_vertical_slice_loadouts(
+    player_loadout,
+    player_mastery_by_manual: Dictionary,
+    enemy_loadout,
+    enemy_mastery_by_manual: Dictionary,
+    enemy_candidate_id: String
+) -> bool:
+    var player_ids := _string_values(player_loadout)
+    var enemy_ids := _string_values(enemy_loadout)
+    if player_ids.size() != 4 or enemy_ids.size() != 1 or enemy_candidate_id.is_empty():
+        return false
+    for manual_id_value in player_ids:
+        var manual_id := str(manual_id_value)
+        if int(player_mastery_by_manual.get(manual_id, 0)) <= 0:
+            return false
+    for manual_id_value in enemy_ids:
+        var manual_id := str(manual_id_value)
+        if int(enemy_mastery_by_manual.get(manual_id, 0)) <= 0:
+            return false
+
+    _ten_manual_loadout_data = {
+        "authority": "VERTICAL_SLICE_PHASE_III_RUNTIME_LOADOUT_BINDING",
+        "player": {
+            "loadout": player_ids.duplicate(),
+            "mastery_by_manual": player_mastery_by_manual.duplicate(true)
+        },
+        "enemy": {
+            "loadout": enemy_ids.duplicate(),
+            "mastery_by_manual": enemy_mastery_by_manual.duplicate(true),
+            "candidate_id": enemy_candidate_id
+        }
+    }
+
+    var engine: TenManualCombatResolutionEngine = VERTICAL_SLICE_ENGINE_SCRIPT.new()
+    engine.configure_martial_loadouts(
+        player_ids,
+        player_mastery_by_manual.duplicate(true),
+        enemy_ids,
+        enemy_mastery_by_manual.duplicate(true)
+    )
+    resolution_engine = engine
+    combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
+    combat_state["ai_enabled"] = true
+    _configure_ultimate_menu()
+    _sync_action_placement_controller_state()
+    _sync_runtime_context()
+    _apply_combat_state_to_view()
+    _refresh_ultimate_menu()
+    _sync_action_selection_dock()
+
+    _vertical_slice_loadout_snapshot = {
+        "player_loadout": player_ids.duplicate(),
+        "player_mastery_by_manual": player_mastery_by_manual.duplicate(true),
+        "enemy_candidate_id": enemy_candidate_id,
+        "enemy_loadout": enemy_ids.duplicate(),
+        "enemy_mastery_by_manual": enemy_mastery_by_manual.duplicate(true)
+    }
+    set_meta("vertical_slice_runtime_loadout_bound", true)
+    set_meta("vertical_slice_enemy_candidate_id", enemy_candidate_id)
+    return true
+
+
+func get_vertical_slice_loadout_snapshot() -> Dictionary:
+    return _vertical_slice_loadout_snapshot.duplicate(true)
 
 
 func _show_review_panel(terminal: bool) -> void:
