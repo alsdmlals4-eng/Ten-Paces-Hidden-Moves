@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import re
 import unittest
 from pathlib import Path
@@ -177,6 +178,14 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             text,
         )
         self.assertIn("Issue #140", text)
+
+    def test_pc_first_vertical_slice_gate_is_discoverable(self) -> None:
+        gate_path = ROOT / "docs/planning-data/current_vertical_slice_implementation_gate_20260820.json"
+        gate = json.loads(gate_path.read_text(encoding="utf-8"))
+        self.assertEqual("AUTHORIZED", gate["pc_first_vertical_slice_implementation"])
+        self.assertEqual("BLOCKED_UNVERIFIED", gate["android_physical_device"])
+        self.assertEqual("NOT_RUN", gate["human_validation"])
+        self.assertFalse(gate["image_generation_authorized"])
 
     def test_no_temporary_pin_exceptions_remain_after_live_editor_migration(self) -> None:
         self.assertFalse(
