@@ -23,15 +23,15 @@ const CAUSE_LABELS := {
     "order": "행동 순서와 실행 시점이 결과를 결정했다."
 }
 
-const REVIEW_DIMENSIONS := {
-    "clash": "다음 묶음에서는 같은 수에 맞부딪힐 공격의 원공격력을 비교한다.",
-    "interrupted": "다음 묶음에서는 피해를 받는 수와 보호할 실행 수를 분리한다.",
-    "defense": "다음 묶음에서는 막기·회피·필중의 적용 수를 먼저 확인한다.",
-    "direction": "다음 묶음에서는 실행 순간 상대 방향을 다시 확인한다.",
-    "range": "다음 묶음에서는 앞선 이동 뒤 실제 거리를 기준으로 계획한다.",
-    "resource": "다음 묶음에서는 실행 순서대로 기력·내력 잔량을 확인한다.",
-    "position": "다음 묶음에서는 전후 거리와 공동 이동 가능성을 먼저 본다.",
-    "order": "다음 묶음에서는 대응·속공·이동·일반 공격 순서를 기준으로 배치한다."
+const REVIEW_FOCUS := {
+    "clash": "같은 수에서 양측 원공격력 차이와 최종 피해의 관계",
+    "interrupted": "첫 피해 시점과 같은 수에 남아 있던 미실행 행동",
+    "defense": "막기·회피·필중이 같은 수의 최종 피해에 적용된 방식",
+    "direction": "실행 순간 상대 위치와 공격 방향의 관계",
+    "range": "실행 순간 실제 거리와 기술 사거리의 관계",
+    "resource": "실행 시점 기력·내력 잔량과 행동 비용의 관계",
+    "position": "이동 전후 거리 변화가 뒤 판정에 미친 영향",
+    "order": "대응·속공·이동·일반 공격의 실제 해결 순서"
 }
 
 func build_summary(result_value: Dictionary, player_plan_value: Array, hypothesis_value: Dictionary, state_before_value: Dictionary) -> Dictionary:
@@ -46,6 +46,7 @@ func build_summary(result_value: Dictionary, player_plan_value: Array, hypothesi
     var cause_code := _select_cause(events, distance_before, distance_after)
     var decisive_event := _decisive_event(events, cause_code)
     var decisive_timing := int(decisive_event.get("timing", 0)) if not decisive_event.is_empty() else 0
+    var review_focus := str(REVIEW_FOCUS.get(cause_code, REVIEW_FOCUS["order"]))
     return {
         "hypothesis": hypothesis,
         "opponent_actual": _opponent_actual(events),
@@ -54,7 +55,8 @@ func build_summary(result_value: Dictionary, player_plan_value: Array, hypothesi
         "decisive_timing": decisive_timing,
         "distance_before": distance_before,
         "distance_after": distance_after,
-        "review_dimension": str(REVIEW_DIMENSIONS.get(cause_code, REVIEW_DIMENSIONS["order"])),
+        "review_focus": review_focus,
+        "review_dimension": review_focus,
         "player_plan_count": player_plan.size()
     }
 
