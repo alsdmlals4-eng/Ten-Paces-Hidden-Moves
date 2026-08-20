@@ -43,7 +43,7 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_vertical_slice_combat_bridge.gd
       - name: Verify opponent catalog and route lock
         run: godot --headless --path . --script res://tests/verify_vertical_slice_opponent_catalog.gd
-      - name: Verify shell opponent catalog binding
-        run: godot --headless --path . --script res://tests/verify_vertical_slice_opponent_shell_binding.gd
       - name: Verify candidate ID hygiene
         run: godot --headless --path . --script res://tests/verify_vertical_slice_candidate_ids.gd
+      - name: Verify shell opponent catalog binding
+        run: godot --headless --path . --script res://tests/verify_vertical_slice_opponent_shell_binding.gd
