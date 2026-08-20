@@ -22,6 +22,10 @@ var last_combat_result: Dictionary = {}
 
 var _current_screen: String = SCREEN_MAIN
 var _flow_history: Array[String] = [SCREEN_MAIN]
+var _opponent_catalog = null
+var _run_seed: int = 0
+var _current_opponent_id: String = ""
+var _next_opponent_id: String = ""
 
 
 func get_current_screen() -> String:
@@ -32,6 +36,30 @@ func get_flow_history() -> Array[String]:
     return _flow_history.duplicate()
 
 
+func configure_opponents(catalog, run_seed: int) -> bool:
+    if _current_screen != SCREEN_MAIN:
+        return false
+    if catalog == null or not catalog.has_method("is_valid") or not catalog.is_valid():
+        return false
+    _opponent_catalog = catalog
+    _run_seed = run_seed
+    _current_opponent_id = ""
+    _next_opponent_id = ""
+    return true
+
+
+func get_current_opponent() -> Dictionary:
+    if _opponent_catalog == null or _current_opponent_id.is_empty():
+        return {}
+    return _opponent_catalog.get_candidate(_current_opponent_id)
+
+
+func get_route_target_opponent() -> Dictionary:
+    if _opponent_catalog == null or _next_opponent_id.is_empty():
+        return {}
+    return _opponent_catalog.get_candidate(_next_opponent_id)
+
+
 func start_new_run() -> bool:
     if _current_screen != SCREEN_MAIN:
         return false
@@ -40,6 +68,12 @@ func start_new_run() -> bool:
     route_visits = 0
     last_combat_result.clear()
     _flow_history = [SCREEN_MAIN]
+    _current_opponent_id = ""
+    _next_opponent_id = ""
+    if _opponent_catalog != null:
+        _current_opponent_id = str(_opponent_catalog.select_candidate_id(1, _run_seed))
+        if _current_opponent_id.is_empty():
+            return false
     return _transition_to(SCREEN_SETUP)
 
 
@@ -58,11 +92,14 @@ func advance() -> bool:
         SCREEN_RESULT:
             if completed_duels >= MAX_DUELS:
                 return _transition_to(SCREEN_COMPLETION)
+            if not _lock_next_opponent_if_configured():
+                return false
             return _transition_to(SCREEN_ROUTE_GROWTH)
         SCREEN_ROUTE_GROWTH:
             return _transition_to(SCREEN_ROUTE_INFO)
         SCREEN_ROUTE_INFO:
             duel_index += 1
+            _promote_next_opponent_if_configured()
             return _transition_to(SCREEN_BRIEFING)
         _:
             return false
@@ -80,6 +117,25 @@ func mark_combat_finished(result: Dictionary) -> bool:
 
 func is_complete() -> bool:
     return _current_screen == SCREEN_COMPLETION and completed_duels == MAX_DUELS
+
+
+func _lock_next_opponent_if_configured() -> bool:
+    if _opponent_catalog == null:
+        return true
+    if not _next_opponent_id.is_empty():
+        return true
+    var next_slot := duel_index + 1
+    if next_slot > MAX_DUELS:
+        return true
+    _next_opponent_id = str(_opponent_catalog.select_candidate_id(next_slot, _run_seed))
+    return not _next_opponent_id.is_empty()
+
+
+func _promote_next_opponent_if_configured() -> void:
+    if _opponent_catalog == null:
+        return
+    _current_opponent_id = _next_opponent_id
+    _next_opponent_id = ""
 
 
 func _transition_to(next_screen: String) -> bool:
