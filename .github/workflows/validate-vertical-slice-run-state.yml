@@ -17,6 +17,7 @@ on:
       - "tests/verify_vertical_slice_setup_briefing.gd"
       - "tests/verify_vertical_slice_review_result.gd"
       - "tests/verify_vertical_slice_route_state.gd"
+      - "tests/verify_vertical_slice_completion_summary.gd"
       - "docs/implementation/BUILD_APPROVAL_2026-08-20.md"
       - ".github/workflows/validate-vertical-slice-run-state.yml"
   workflow_dispatch:
@@ -58,3 +59,5 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_vertical_slice_review_result.gd
       - name: Verify Route persistence and intel binding
         run: godot --headless --path . --script res://tests/verify_vertical_slice_route_state.gd
+      - name: Verify Completion Summary binding
+        run: godot --headless --path . --script res://tests/verify_vertical_slice_completion_summary.gd
