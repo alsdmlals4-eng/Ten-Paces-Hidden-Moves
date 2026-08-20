@@ -1,0 +1,32 @@
+name: Validate Vertical Slice Run State
+
+on:
+  pull_request:
+    paths:
+      - "src/run/**"
+      - "tests/verify_vertical_slice_run_state.gd"
+      - "docs/implementation/BUILD_APPROVAL_2026-08-20.md"
+      - ".github/workflows/validate-vertical-slice-run-state.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  vertical-slice-run-state:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          show-progress: false
+      - name: Set up Godot 4.7.1
+        uses: chickensoft-games/setup-godot@f166999204a4f2722c6fe042fbaa3b3ea0d9c789
+        with:
+          version: 4.7.1
+          use-dotnet: false
+          include-templates: false
+      - name: Import and parse project
+        run: godot --headless --editor --path . --quit
+      - name: Verify first five-duel run state
+        run: godot --headless --path . --script res://tests/verify_vertical_slice_run_state.gd
