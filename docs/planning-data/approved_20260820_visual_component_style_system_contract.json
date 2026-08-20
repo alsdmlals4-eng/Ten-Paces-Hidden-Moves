@@ -16,9 +16,18 @@
     "THUMBNAIL"
   ],
   "design_viewport": {
-    "logical": [1440, 900],
-    "current_window_override": [1280, 800],
-    "compact_regression": [1280, 720]
+    "logical": [
+      1440,
+      900
+    ],
+    "current_window_override": [
+      1280,
+      800
+    ],
+    "compact_regression": [
+      1280,
+      720
+    ]
   },
   "responsive_profiles": {
     "WIDE": "WIDTH_GTE_1200_AND_HEIGHT_GTE_720",
@@ -26,7 +35,16 @@
     "NARROW": "WIDTH_LT_800_OR_SAFE_WIDTH_LT_720"
   },
   "android_orientation_status": "NOT_CANONICALLY_FIXED_USE_DIMENSION_BASED_RELAYOUT",
-  "spacing_tokens": [4, 8, 12, 16, 24, 32, 48, 64],
+  "spacing_tokens": [
+    4,
+    8,
+    12,
+    16,
+    24,
+    32,
+    48,
+    64
+  ],
   "typography_tokens": {
     "H1": 32,
     "H2": 24,
