@@ -44,7 +44,9 @@ func _run() -> void:
     _expect(state_input == state_copy, "Summary builder mutated state input.")
     _expect(str(summary.get("opponent_actual", "")) == "속공", "Enemy actual action must use authoritative event name.")
     _expect(int(summary.get("player_plan_count", -1)) == 1, "Player plan snapshot count changed.")
-    _expect(str(summary.get("review_dimension", "")).length() > 0, "Review dimension must be readable.")
+    _expect(str(summary.get("review_focus", "")).length() > 0, "Review focus must be readable.")
+    _expect(not str(summary.get("review_focus", "")).contains("다음 묶음에서는"), "Review focus must not prescribe the next bundle.")
+    _expect(str(summary.get("review_dimension", "")) == str(summary.get("review_focus", "")), "Legacy review_dimension compatibility must mirror neutral review_focus.")
 
     if failures.is_empty():
         print("COMBAT_REVIEW_SUMMARY_VERIFY_OK")
