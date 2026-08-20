@@ -61,8 +61,10 @@ func _run() -> void:
     _expect_eq(shell.run_state.get_current_screen(), "RESULT", "Review completion must enter separate RESULT state.")
     _expect_false(shell.combat_host.visible, "RESULT must leave the combat scene.")
     _expect_true(shell.content_panel.visible, "RESULT must use the non-combat shell panel.")
+    _expect_false(shell.advance_noncombat(), "RESULT must wait for one reward choice.")
+    _expect_true(shell.select_result_reward("free_training"), "A valid Result reward must be selectable.")
 
-    _expect_true(shell.advance_noncombat(), "RESULT must advance to Growth/Recovery Route.")
+    _expect_true(shell.advance_noncombat(), "Reward-confirmed RESULT must advance to Growth/Recovery Route.")
     _expect_eq(shell.run_state.get_current_screen(), "ROUTE_GROWTH", "First Route state must be Growth/Recovery.")
     _expect_true(shell.advance_noncombat(), "Growth/Recovery must advance to Info/Preparation.")
     _expect_eq(shell.run_state.get_current_screen(), "ROUTE_INFO", "Second Route state must be Info/Preparation.")
