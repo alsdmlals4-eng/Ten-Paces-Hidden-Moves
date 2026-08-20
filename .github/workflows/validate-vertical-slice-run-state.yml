@@ -41,7 +41,10 @@ jobs:
       - name: Import and parse project
         run: godot --headless --editor --path . --quit
       - name: Verify first five-duel run state
-        run: godot --headless --path . --script res://tests/verify_vertical_slice_run_state.gd
+        shell: bash
+        run: |
+          set -o pipefail
+          godot --headless --path . --script res://tests/verify_vertical_slice_run_state.gd 2>&1 | tail -n 120
       - name: Verify Vertical Slice shell
         run: godot --headless --path . --script res://tests/verify_vertical_slice_shell.gd
       - name: Verify terminal combat bridge
