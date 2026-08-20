@@ -3,6 +3,9 @@ extends RefCounted
 
 signal screen_changed(previous_screen: String, current_screen: String)
 
+const PROGRESSION_SCRIPT := preload("res://src/run/vertical_slice_progression_state.gd")
+const ROUTE_MODEL_SCRIPT := preload("res://src/run/vertical_slice_route_model.gd")
+
 const SCREEN_MAIN := "MAIN"
 const SCREEN_SETUP := "SETUP"
 const SCREEN_INTRO := "INTRO"
@@ -32,6 +35,18 @@ var _player_manual_loadout: Array[String] = []
 var _player_mastery_by_manual: Dictionary = {}
 var _pending_result_reward: Dictionary = {}
 var _reward_history: Array[Dictionary] = []
+var _progression: VerticalSliceProgressionState
+var _route_model: VerticalSliceRouteModel
+var _pending_growth_route: Dictionary = {}
+var _pending_route_intel: Dictionary = {}
+var _route_history: Array[Dictionary] = []
+var _intel_by_candidate: Dictionary = {}
+
+
+func _init() -> void:
+    _progression = PROGRESSION_SCRIPT.new()
+    _progression.reset()
+    _route_model = ROUTE_MODEL_SCRIPT.new()
 
 
 func get_current_screen() -> String:
@@ -83,6 +98,8 @@ func confirm_setup_loadout(loadout, mastery_by_manual: Dictionary) -> bool:
             return false
         seen[manual_id] = true
         next_loadout.append(manual_id)
+    if not _progression.initialize_from_setup(next_loadout, mastery_by_manual):
+        return false
     _player_manual_loadout = next_loadout
     _player_mastery_by_manual = mastery_by_manual.duplicate(true)
     return true
@@ -93,7 +110,113 @@ func get_player_manual_loadout() -> Array:
 
 
 func get_player_mastery_by_manual() -> Dictionary:
+    if _progression != null:
+        return (_progression.get_snapshot().get("mastery_by_manual", {}) as Dictionary).duplicate(true)
     return _player_mastery_by_manual.duplicate(true)
+
+
+func get_player_run_resources() -> Dictionary:
+    return _progression.get_player_resources() if _progression != null else {}
+
+
+func get_progression_snapshot() -> Dictionary:
+    return _progression.get_snapshot() if _progression != null else {}
+
+
+func get_growth_route_options() -> Array:
+    if _current_screen != SCREEN_ROUTE_GROWTH or _route_model == null or _progression == null:
+        return []
+    var node_id := _route_model.growth_node_id(completed_duels)
+    return _route_model.get_growth_options(node_id, _progression.owned_manual_ids)
+
+
+func get_info_route_options() -> Array:
+    if _current_screen != SCREEN_ROUTE_INFO or _route_model == null:
+        return []
+    var node_id := _route_model.info_node_id(completed_duels)
+    return _route_model.get_info_options(node_id, get_route_target_opponent())
+
+
+func select_growth_route(choice_type: String, target_manual_id: String = "") -> bool:
+    if _current_screen != SCREEN_ROUTE_GROWTH or _progression == null or _route_model == null:
+        return false
+    if not _pending_growth_route.is_empty():
+        return false
+    var node_id := _route_model.growth_node_id(completed_duels)
+    var options := _route_model.get_growth_options(node_id, _progression.owned_manual_ids)
+    var selected: Dictionary = {}
+    for value in options:
+        if typeof(value) == TYPE_DICTIONARY and str((value as Dictionary).get("choice_type", "")) == choice_type:
+            selected = (value as Dictionary).duplicate(true)
+            break
+    if selected.is_empty():
+        return false
+    match choice_type:
+        "recovery":
+            _progression.apply_recovery(
+                float(selected.get("health_fraction", 0.0)),
+                int(selected.get("stamina", 0)),
+                int(selected.get("internal", 0))
+            )
+        "focused_training":
+            if target_manual_id.is_empty() or not _progression.add_focused_training(target_manual_id, int(selected.get("focused_training", 0))):
+                return false
+            selected["target_manual_id"] = target_manual_id
+        "free_training":
+            if not _progression.add_free_training(int(selected.get("free_training", 0))):
+                return false
+        _:
+            return false
+    selected["node_id"] = node_id
+    selected["route_type"] = "growth"
+    _pending_growth_route = selected
+    return true
+
+
+func select_info_route(category: String) -> bool:
+    if _current_screen != SCREEN_ROUTE_INFO or _route_model == null:
+        return false
+    if not _pending_route_intel.is_empty():
+        return false
+    var candidate := get_route_target_opponent()
+    if candidate.is_empty():
+        return false
+    var node_id := _route_model.info_node_id(completed_duels)
+    var valid := false
+    for value in _route_model.get_info_options(node_id, candidate):
+        if typeof(value) == TYPE_DICTIONARY and str((value as Dictionary).get("category", "")) == category:
+            valid = true
+            break
+    if not valid:
+        return false
+    var text := _route_model.build_public_intel(category, candidate)
+    if text.is_empty():
+        return false
+    _pending_route_intel = {
+        "node_id": node_id,
+        "route_type": "info",
+        "candidate_id": str(candidate.get("candidate_id", "")),
+        "category": category,
+        "text": text
+    }
+    return true
+
+
+func get_pending_route_intel() -> Dictionary:
+    return _pending_route_intel.duplicate(true)
+
+
+func get_current_opponent_intel() -> Dictionary:
+    if _current_opponent_id.is_empty() or not _intel_by_candidate.has(_current_opponent_id):
+        return {}
+    return (_intel_by_candidate[_current_opponent_id] as Dictionary).duplicate(true)
+
+
+func get_route_history() -> Array:
+    var result: Array = []
+    for receipt in _route_history:
+        result.append(receipt.duplicate(true))
+    return result
 
 
 func set_pending_result_reward(receipt: Dictionary) -> bool:
@@ -131,6 +254,11 @@ func start_new_run() -> bool:
     _player_mastery_by_manual.clear()
     _pending_result_reward.clear()
     _reward_history.clear()
+    _pending_growth_route.clear()
+    _pending_route_intel.clear()
+    _route_history.clear()
+    _intel_by_candidate.clear()
+    _progression.reset()
     if _opponent_catalog != null:
         _current_opponent_id = str(_opponent_catalog.select_candidate_id(1, _run_seed))
         if _current_opponent_id.is_empty():
@@ -154,15 +282,29 @@ func advance() -> bool:
             if _pending_result_reward.is_empty():
                 return false
             if completed_duels >= MAX_DUELS:
-                _confirm_pending_result_reward()
+                if not _confirm_pending_result_reward():
+                    return false
                 return _transition_to(SCREEN_COMPLETION)
             if not _lock_next_opponent_if_configured():
                 return false
-            _confirm_pending_result_reward()
+            if not _confirm_pending_result_reward():
+                return false
+            _pending_growth_route.clear()
+            _pending_route_intel.clear()
             return _transition_to(SCREEN_ROUTE_GROWTH)
         SCREEN_ROUTE_GROWTH:
+            if _pending_growth_route.is_empty():
+                return false
+            _route_history.append(_pending_growth_route.duplicate(true))
+            _pending_growth_route.clear()
             return _transition_to(SCREEN_ROUTE_INFO)
         SCREEN_ROUTE_INFO:
+            if _pending_route_intel.is_empty():
+                return false
+            var intel_receipt := _pending_route_intel.duplicate(true)
+            _route_history.append(intel_receipt)
+            _intel_by_candidate[str(intel_receipt.get("candidate_id", ""))] = intel_receipt.duplicate(true)
+            _pending_route_intel.clear()
             duel_index += 1
             _promote_next_opponent_if_configured()
             return _transition_to(SCREEN_BRIEFING)
@@ -176,6 +318,9 @@ func mark_combat_finished(result: Dictionary) -> bool:
     if completed_duels >= MAX_DUELS:
         return false
     last_combat_result = result.duplicate(true)
+    var resources = result.get("player_resources", null)
+    if typeof(resources) == TYPE_DICTIONARY:
+        _progression.set_player_resources(resources as Dictionary)
     _pending_result_reward.clear()
     completed_duels += 1
     return _transition_to(SCREEN_REVIEW)
@@ -185,14 +330,18 @@ func is_complete() -> bool:
     return _current_screen == SCREEN_COMPLETION and completed_duels == MAX_DUELS
 
 
-func _confirm_pending_result_reward() -> void:
-    if _pending_result_reward.is_empty():
-        return
+func _confirm_pending_result_reward() -> bool:
+    if _pending_result_reward.is_empty() or _progression == null:
+        return false
     var receipt := _pending_result_reward.duplicate(true)
-    receipt["duel_index"] = completed_duels
-    receipt["opponent_candidate_id"] = _current_opponent_id
-    _reward_history.append(receipt)
+    var applied := _progression.apply_reward_receipt(receipt)
+    if applied.is_empty():
+        return false
+    applied["duel_index"] = completed_duels
+    applied["opponent_candidate_id"] = _current_opponent_id
+    _reward_history.append(applied)
     _pending_result_reward.clear()
+    return true
 
 
 func _lock_next_opponent_if_configured() -> bool:
