@@ -166,8 +166,11 @@ func _verify_run_lock_flow(catalog) -> void:
     _expect_true(run.advance(), "REVIEW → RESULT")
     _expect_eq(run.get_current_screen(), "RESULT", "Run must be at RESULT before next-opponent lock transition.")
     _expect_true(run.get_route_target_opponent().is_empty(), "Next opponent must not be route-visible before Result is confirmed/left.")
+    _expect_false(run.advance(), "Result without a reward receipt may not lock or reveal the next opponent.")
+    _expect_true(run.get_route_target_opponent().is_empty(), "Blocked Result advance must not pre-lock the next opponent.")
+    _expect_true(run.set_pending_result_reward({"reward_type": "free_training", "free_training": 6}), "Result must accept one valid reward receipt before Route.")
 
-    _expect_true(run.advance(), "RESULT → ROUTE_GROWTH must lock next opponent first.")
+    _expect_true(run.advance(), "Reward-confirmed RESULT → ROUTE_GROWTH must lock next opponent first.")
     _expect_eq(run.get_current_screen(), "ROUTE_GROWTH", "Result must enter Growth/Recovery Route.")
     var locked_next: Dictionary = run.get_route_target_opponent()
     var locked_id := str(locked_next.get("candidate_id", ""))

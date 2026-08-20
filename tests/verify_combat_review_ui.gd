@@ -31,13 +31,15 @@ func _verify_panel() -> void:
     _expect(panel.get_display_text().contains("속공"), "Review must show opponent actual action.")
     _expect(panel.get_display_text().contains("[합]"), "Review must show decisive cause.")
     _expect(panel.get_display_text().contains("3 → 1"), "Review must show before and after distance.")
+    _expect(panel.get_display_text().contains("검토 관점"), "Review must expose a neutral inspection focus.")
+    _expect(not panel.get_display_text().contains("다음 묶음에서는"), "Review must not prescribe the next bundle action.")
     _expect(panel.get_continue_button().text == "다음 묶음", "Non-terminal review must continue to next bundle.")
     _expect(not panel.get_detail_button().accessibility_name.is_empty(), "Detail button needs accessibility name.")
     _expect(not panel.get_continue_button().accessibility_description.is_empty(), "Continue button needs accessibility description.")
     summary["opponent_actual"] = "mutated"
     _expect(not panel.get_display_text().contains("mutated"), "Panel must detach from caller summary.")
     panel.show_summary(_summary(), true)
-    _expect(panel.get_continue_button().text == "결전 다시 시작", "Terminal review must offer restart.")
+    _expect(panel.get_continue_button().text == "결전 다시 시작", "Legacy terminal review outside the Vertical Slice bridge must still offer restart.")
     panel.hide_review()
     _expect(not panel.visible, "hide_review must hide panel.")
     panel.queue_free()
@@ -84,7 +86,8 @@ func _summary() -> Dictionary:
         "decisive_timing": 2,
         "distance_before": 3,
         "distance_after": 1,
-        "review_dimension": "다음 묶음에서는 같은 수 공격력을 비교한다.",
+        "review_focus": "같은 수에서 양측 원공격력 차이와 최종 피해의 관계",
+        "review_dimension": "같은 수에서 양측 원공격력 차이와 최종 피해의 관계",
         "player_plan_count": 3
     }
 

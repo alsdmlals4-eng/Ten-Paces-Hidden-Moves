@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - "src/run/**"
+      - "src/combat/combat_review_summary_builder.gd"
+      - "src/ui/combat_review_panel.gd"
       - "scenes/run/**"
       - "data/run/**"
       - "tests/verify_vertical_slice_run_state.gd"
@@ -13,6 +15,7 @@ on:
       - "tests/verify_vertical_slice_opponent_shell_binding.gd"
       - "tests/verify_vertical_slice_candidate_ids.gd"
       - "tests/verify_vertical_slice_setup_briefing.gd"
+      - "tests/verify_vertical_slice_review_result.gd"
       - "docs/implementation/BUILD_APPROVAL_2026-08-20.md"
       - ".github/workflows/validate-vertical-slice-run-state.yml"
   workflow_dispatch:
@@ -50,3 +53,5 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_vertical_slice_opponent_shell_binding.gd
       - name: Verify Setup and Briefing runtime binding
         run: godot --headless --path . --script res://tests/verify_vertical_slice_setup_briefing.gd
+      - name: Verify Review and Result runtime binding
+        run: godot --headless --path . --script res://tests/verify_vertical_slice_review_result.gd

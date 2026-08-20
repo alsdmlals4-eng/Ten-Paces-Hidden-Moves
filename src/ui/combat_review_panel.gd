@@ -42,7 +42,7 @@ func _build() -> void:
     _content.add_theme_font_size_override("normal_font_size", 16)
     _content.add_theme_color_override("default_color", PAPER)
     _content.accessibility_name = "결정적 복기 내용"
-    _content.accessibility_description = "내 가설, 상대 실제 행동, 결정적 원인, 전후 거리와 다음 검토 내용을 읽습니다."
+    _content.accessibility_description = "내 가설, 상대 실제 행동, 결정적 원인, 전후 거리와 검토 관점을 읽습니다."
     add_child(_content)
 
     _detail_button = Button.new()
@@ -63,7 +63,7 @@ func _build() -> void:
 
     set_meta("read_only_summary", true)
     set_meta("recalculates_combat", false)
-    set_meta("review_hierarchy", "내 가설|상대 실제 행동|결정적 원인|전후 거리|다음 검토")
+    set_meta("review_hierarchy", "내 가설|상대 실제 행동|결정적 원인|전후 거리|검토 관점")
 
 func show_summary(summary_value: Dictionary, terminal: bool) -> void:
     _summary = summary_value.duplicate(true)
@@ -97,16 +97,17 @@ func _refresh() -> void:
         hypothesis_text = "기록한 가설 없음"
     var timing := int(_summary.get("decisive_timing", 0))
     var timing_text := "%d수" % timing if timing > 0 else "수 정보 없음"
+    var review_focus := str(_summary.get("review_focus", _summary.get("review_dimension", "실제 해결 순서와 결과의 관계")))
     var lines := PackedStringArray([
         "내 가설 · %s" % hypothesis_text,
         "상대 실제 행동 · %s" % str(_summary.get("opponent_actual", "행동 정보 없음")),
         "결정적 원인 · %s · %s" % [timing_text, str(_summary.get("cause_label", "행동 순서와 실행 시점이 결과를 결정했다."))],
         "전후 거리 · %d → %d" % [int(_summary.get("distance_before", 0)), int(_summary.get("distance_after", 0))],
-        "다음 검토 · %s" % str(_summary.get("review_dimension", "다음 묶음의 실행 순서를 다시 확인한다."))
+        "검토 관점 · %s" % review_focus
     ])
     _content.text = "\n\n".join(lines)
     _continue_button.text = "결전 다시 시작" if _terminal else "다음 묶음"
-    _continue_button.accessibility_description = "결전을 초기 상태로 다시 시작합니다." if _terminal else "복기를 닫고 다음 행동 묶음 계획으로 이동합니다."
+    _continue_button.accessibility_description = "복기를 닫고 결전을 다시 시작합니다." if _terminal else "복기를 닫고 다음 행동 묶음 계획으로 이동합니다."
     set_meta("terminal", _terminal)
     set_meta("cause_code", str(_summary.get("cause_code", "order")))
 

@@ -34,10 +34,12 @@ def main() -> None:
         "상대 실제 행동",
         "결정적 원인",
         "전후 거리",
-        "다음 검토",
+        "검토 관점",
         "accessibility_name",
     ):
         assert token in panel, f"review panel missing token: {token}"
+    assert "다음 검토" not in panel, "review panel must not restore prescriptive next-review heading"
+    assert "다음 묶음에서는" not in panel, "review panel must not prescribe the player's next bundle"
     assert "resolve_bundle(" not in panel
     assert "CombatResolutionEngine" not in panel
     assert "damage" not in panel.lower()

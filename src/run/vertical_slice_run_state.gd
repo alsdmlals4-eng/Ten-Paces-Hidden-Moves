@@ -30,6 +30,8 @@ var _current_opponent_id: String = ""
 var _next_opponent_id: String = ""
 var _player_manual_loadout: Array[String] = []
 var _player_mastery_by_manual: Dictionary = {}
+var _pending_result_reward: Dictionary = {}
+var _reward_history: Array[Dictionary] = []
 
 
 func get_current_screen() -> String:
@@ -94,6 +96,27 @@ func get_player_mastery_by_manual() -> Dictionary:
     return _player_mastery_by_manual.duplicate(true)
 
 
+func set_pending_result_reward(receipt: Dictionary) -> bool:
+    if _current_screen != SCREEN_RESULT or receipt.is_empty():
+        return false
+    var reward_type := str(receipt.get("reward_type", ""))
+    if reward_type not in ["free_training", "focused_training", "faction_transfer"]:
+        return false
+    _pending_result_reward = receipt.duplicate(true)
+    return true
+
+
+func get_pending_result_reward() -> Dictionary:
+    return _pending_result_reward.duplicate(true)
+
+
+func get_reward_history() -> Array:
+    var result: Array = []
+    for receipt in _reward_history:
+        result.append(receipt.duplicate(true))
+    return result
+
+
 func start_new_run() -> bool:
     if _current_screen != SCREEN_MAIN:
         return false
@@ -106,6 +129,8 @@ func start_new_run() -> bool:
     _next_opponent_id = ""
     _player_manual_loadout.clear()
     _player_mastery_by_manual.clear()
+    _pending_result_reward.clear()
+    _reward_history.clear()
     if _opponent_catalog != null:
         _current_opponent_id = str(_opponent_catalog.select_candidate_id(1, _run_seed))
         if _current_opponent_id.is_empty():
@@ -126,10 +151,14 @@ func advance() -> bool:
         SCREEN_REVIEW:
             return _transition_to(SCREEN_RESULT)
         SCREEN_RESULT:
+            if _pending_result_reward.is_empty():
+                return false
             if completed_duels >= MAX_DUELS:
+                _confirm_pending_result_reward()
                 return _transition_to(SCREEN_COMPLETION)
             if not _lock_next_opponent_if_configured():
                 return false
+            _confirm_pending_result_reward()
             return _transition_to(SCREEN_ROUTE_GROWTH)
         SCREEN_ROUTE_GROWTH:
             return _transition_to(SCREEN_ROUTE_INFO)
@@ -147,12 +176,23 @@ func mark_combat_finished(result: Dictionary) -> bool:
     if completed_duels >= MAX_DUELS:
         return false
     last_combat_result = result.duplicate(true)
+    _pending_result_reward.clear()
     completed_duels += 1
     return _transition_to(SCREEN_REVIEW)
 
 
 func is_complete() -> bool:
     return _current_screen == SCREEN_COMPLETION and completed_duels == MAX_DUELS
+
+
+func _confirm_pending_result_reward() -> void:
+    if _pending_result_reward.is_empty():
+        return
+    var receipt := _pending_result_reward.duplicate(true)
+    receipt["duel_index"] = completed_duels
+    receipt["opponent_candidate_id"] = _current_opponent_id
+    _reward_history.append(receipt)
+    _pending_result_reward.clear()
 
 
 func _lock_next_opponent_if_configured() -> bool:
