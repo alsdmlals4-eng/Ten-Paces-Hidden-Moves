@@ -17,7 +17,7 @@ current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN
 base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
 live_exact_sha_authority: NONE_REFETCH_REQUIRED
 active_project_pr: NONE
-product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
+product_stage: VERTICAL_SLICE_PLANNING_REVIEW_READY
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
@@ -43,10 +43,11 @@ performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 product_implementation_authorized: false
 next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
 next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
-user_directed_planning_work_mode: PLAN
-user_directed_planning_decision: TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01
-user_directed_planning_next_package: VERTICAL_SLICE_TEXTUAL_UX_AND_CONTENT_AUTHORING
-user_directed_planning_next_decision: VERTICAL_SLICE_OPPONENT_ROUTE_CONTENT_DETAIL_GATE
+user_directed_planning_work_mode: REVIEW
+user_directed_planning_decision: TEN-DEC-20260820-VERTICAL-SLICE-REVIEW-READY-01
+user_directed_planning_next_package: USER_EXPLICIT_PLANNING_COMPLETE_OR_REOPEN_GATE
+user_directed_planning_next_decision: EXPLICIT_USER_PLANNING_COMPLETE_OR_REOPEN
+user_directed_planning_status: PLANNING_REVIEW_READY_NOT_USER_COMPLETE
 user_directed_planning_pr_authority: GITHUB_PR_METADATA
 planning_visual_next: TEN_IMG_001_PAUSED_BY_USER_TEXTUAL_CANON_REVIEW
 planning_visual_review: TEN_IMG_001_CHAT_EXPLORATIONS_REVIEWED_NOT_AN_ASSET
@@ -59,9 +60,9 @@ base_remote_observation: CURRENT_REMOTE_REQUIRES_LIVE_REFETCH_NO_AUTOMATIC_PROJE
 
 `legacy_discovery_compatibility`와 `legacy_sheet_migration_locator`의 Sheet 문자열은 기존 회귀·발견 도구가 과거 상태·콘텐츠 표를 찾기 위한 호환 토큰일 뿐이다. 실제 current truth는 `GITHUB_MAIN_PLUS_EXACT_PROJECT_NOTION_LIVE_READ`이며 신규 기획 입력·Decision 동기화는 Project Notion + GitHub를 사용하고 Google Sheets는 migration-only다.
 
-`active_planning_*`, `active_decision_state`, `next_package`, `next_planning_decision`은 `docs/planning-data/current_operating_state.json`이 소유하는 플랫폼 운영 상태와 동기화한다. 최신 사용자 지시로 진행 중인 Vertical Slice 텍스트 기획은 별도 `user_directed_planning_*` overlay가 소유하며 기존 플랫폼 운영 계약을 덮어쓰지 않는다.
+`active_planning_*`, `active_decision_state`, `next_package`, `next_planning_decision`은 `docs/planning-data/current_operating_state.json`이 소유하는 플랫폼 운영 상태와 동기화한다. 최신 사용자 지시로 진행한 Vertical Slice 텍스트 기획은 별도 `user_directed_planning_*` overlay가 소유하며 기존 플랫폼 운영 계약을 덮어쓰지 않는다.
 
-플랫폼 Adapter 구현 Gate는 여전히 제품 구현 경계로 유효하지만, 최신 사용자 지시와 `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01`에 따라 **현재 수행하는 작업은 구현이 아니라 Vertical Slice 텍스트 기획**이다. `product_implementation_authorized: false`를 유지한다. TEN-IMG-001은 chat exploration 뒤 사용자 지시로 추가 생성이 중단됐고 새 이미지 생성은 사용자가 다시 명시적으로 요청하기 전까지 진행하지 않는다.
+플랫폼 Adapter 구현 Gate는 여전히 제품 구현 경계로 유효하다. 현재 Vertical Slice 텍스트 기획은 `TEN-DEC-20260820-VERTICAL-SLICE-REVIEW-READY-01` 기준 **최종 사용자 검토 준비 상태**이며 `product_implementation_authorized: false`를 유지한다. 사용자가 명시적으로 `기획 완료`를 선언하거나 기획을 다시 열기 전에는 구현으로 넘어가지 않는다. TEN-IMG-001은 chat exploration 뒤 사용자 지시로 추가 생성이 중단됐고 새 이미지 생성은 사용자가 다시 명시적으로 요청하기 전까지 진행하지 않는다.
 
 이 live block에는 current main SHA나 열린 PR 번호를 저장하지 않는다. 새 세션·post-merge에서는 GitHub `main`, 열린 PR, exact Project Notion, current operating/entry gate를 다시 읽고 의미 상태만 판정한다. exact SHA/run ID·PR 번호는 아래의 명시적 역사·관측 증거로만 취급한다.
 
@@ -83,6 +84,7 @@ observed_project_main_2026_08_11: 0a9e74b09816be891b3fb1cccca5e700a9ead064
 observed_base_main_2026_08_11: 315c66eea9614c284b9c11c4d522141065dfa4b0
 observed_recent_canon_reconciliation_prs: 137,138,139
 planning_pr_2026_08_20: 165
+planning_detail_prs_2026_08_20: 166,168,170
 planning_pr_2026_08_20_base: 0e9955afe791c43255176a4e89d89cf58be9b76a
 ```
 
@@ -91,6 +93,9 @@ planning_pr_2026_08_20_base: 0e9955afe791c43255176a4e89d89cf58be9b76a
 ## 현재 권위와 보호 결정
 
 - 강호 비무행·플레이어 역할·5전 감정곡선·비전투 App Flow: `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01`, `docs/12_VERTICAL_SLICE_JIANGHU_JOURNEY.md`.
+- 15명 후보·8개 Route·Briefing/Review/Result 텍스트 UX: `TEN-DEC-20260820-VERTICAL-SLICE-CONTENT-DETAIL-01`, `docs/13_VERTICAL_SLICE_OPPONENT_ROUTE_TEXT_UX.md`.
+- 후보 무공 배정·Route Seed·비전투 Wire: `TEN-DEC-20260820-VERTICAL-SLICE-LOADOUT-ROUTE-WIRE-01`, `docs/14_VERTICAL_SLICE_LOADOUT_ROUTE_BUDGET_WIREFRAME.md`.
+- 난이도 Seed·AI 공정성·검증 계약·aggregate 시간 예산·Planning Review Ready: `TEN-DEC-20260820-VERTICAL-SLICE-REVIEW-READY-01`, `docs/15_VERTICAL_SLICE_REVIEW_READY_CONTRACT.md`.
 - 플랫폼 범위: `TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`.
 - 플랫폼 Adapter 아키텍처: `TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01`.
 - 행동 선택 UX: `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`.
@@ -112,12 +117,15 @@ planning_pr_2026_08_20_base: 0e9955afe791c43255176a4e89d89cf58be9b76a
 ## 선행 UX·앱 흐름 권위
 
 - `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01` — Main→시작 6중4→비무행 도입→Briefing→Combat Review Overlay→Duel Result/Reward 별도 Scene→Route 2노드→다음 비무→5전 완주.
+- `TEN-DEC-20260820-VERTICAL-SLICE-CONTENT-DETAIL-01` — 후보 15명·8개 Route·텍스트 UX.
+- `TEN-DEC-20260820-VERTICAL-SLICE-LOADOUT-ROUTE-WIRE-01` — 기존 10권 재사용·다음 후보 선잠금·Route 수치 Seed·비전투 Wire.
+- `TEN-DEC-20260820-VERTICAL-SLICE-REVIEW-READY-01` — 난이도/AI/검증/시간 예산과 최종 기획 검토 준비.
 - `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`.
 - `TEN-DEC-20260801-SITUATION-SCREEN-01`.
 - 역사 구현 표식: `runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65`.
 - V6 원장: `2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
 
-위 신규 App Flow는 계획 권위이며 제품 구현을 허가하지 않는다. PR #65 앱 흐름 기반은 역사·호환 근거이고 현재 구현 권위는 상단 YAML의 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`다.
+위 신규 App Flow와 상세 계약은 계획 권위이며 제품 구현을 허가하지 않는다. PR #65 앱 흐름 기반은 역사·호환 근거이고 현재 구현 권위는 상단 YAML의 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`다.
 
 ## 제품 연결·성장 보호 표식
 
@@ -211,12 +219,12 @@ human_validation: BLOCKED_NOT_RUN
 windows_android_adapter_implementation_gate: BLOCKED_BY_ENTRY_GATE
 product_implementation_authorized: false
 allowed_next_actions:
-  - CONTINUE_VERTICAL_SLICE_PLANNING_UNDER_LATEST_USER_DIRECTION
+  - REVIEW_OR_REOPEN_VERTICAL_SLICE_PLANNING_UNDER_LATEST_USER_DIRECTION
   - VERIFY_LOCAL_WINDOWS_ANDROID_DEVICE_AND_HUMAN_GATES_WHEN_REAUTHORIZED
-  - RECHECK_WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE_AFTER_PLANNING_COMPLETE
+  - RECHECK_WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE_AFTER_EXPLICIT_PLANNING_COMPLETE
 ```
 
-이 Entry Gate는 제품/플랫폼 구현 경계다. 기획 작업은 현재 사용자 지시 범위에서 계속할 수 있지만 제품 구현 권한은 아니다. TEN-IMG-001 추가 생성 `PAUSED_BY_USER`를 덮어쓰지 않는다. Android 완료, 실제 기기 완료, 사람 검증 완료를 아직 주장하면 안 된다.
+이 Entry Gate는 제품/플랫폼 구현 경계다. 텍스트 기획은 `PLANNING_REVIEW_READY_NOT_USER_COMPLETE`이며 사용자의 최종 검토 또는 재개 지시를 기다린다. 제품 구현 권한은 아니다. TEN-IMG-001 추가 생성 `PAUSED_BY_USER`를 덮어쓰지 않는다. Android 완료, 실제 기기 완료, 사람 검증 완료를 아직 주장하면 안 된다.
 
 ## 이번 세션의 플랫폼 preflight 중단 상태
 
@@ -284,15 +292,18 @@ Base remote `main`의 exact SHA는 이 live router에 current 값으로 저장�
 4. `[기획서]/00_프로젝트_허브/HANDOFF.md`.
 5. `docs/planning-data/current_operating_state.json`.
 6. `docs/planning-data/current_entry_gate_20260808.json`.
-7. exact Project Notion의 `Project Home`, `01 · 프로젝트 전체 작업계획`, `03 · UI · 전투 Flow Map`, `08 · 핵심 시스템 · 상세`와 현재 Decision 페이지.
+7. exact Project Notion의 `Project Home`, `09 · 세계관 · 강호 비무행 · Vertical Slice`, `10 · 상대 15명 · 강호행로 8노드 · 텍스트 UX`, `11 · 상대 무공 배정 · Route 예산 · 비전투 Wire`, `12 · Vertical Slice · 최종 기획 검토 준비`와 현재 Decision 페이지.
 8. 질문별 분야 책임 원본과 실제 코드·테스트·GitHub PR metadata.
 
 Google Sheets는 신규 기획 입력 경로로 사용하지 않으며 migration 잔존 정보를 확인해야 할 때만 보조 증거로 읽는다.
 
 ## 현재 위험·미검증
 
-- 강호 비무행 세계·5전 감정곡선·App Flow는 `CURRENT_APPROVED_PLANNING`; 제품 구현과 사람 재미 증거는 아직 없다.
-- 반복 또래 무인의 정확한 이름·성별·외형·소속·향후 대전 시점은 `REVERSIBLE_CONTENT_DETAIL`이다.
+- 첫 5전 Vertical Slice 텍스트 기획은 `PLANNING_REVIEW_READY_NOT_USER_COMPLETE`; 사용자 명시 `기획 완료` 전 구현 권한은 없다.
+- 후보 영구 스테이터스 총량 `20/22/24/26/28`, 성급 `3/7/7/7/9`, Route 회복 `최대 체력25% + 기력1 + 내력1`은 `REVERSIBLE_*_SEED`이며 실제 밸런스 PASS가 아니다.
+- 대량 밸런스 시뮬레이션은 계약만 있고 `NOT_RUN`이다.
+- 반복 또래 무인과 후보 15명의 정확한 이름·성별·외형·세부 소속·말투는 `REVERSIBLE_CONTENT_DETAIL`이다.
+- aggregate 비전투 예산은 기획상 교정됐지만 실제 15~22분/가독성/몰입 Human 증거는 `NOT_RUN`이다.
 - Android export preset 및 제품 Adapter 구현은 current Entry Gate가 허용하기 전 완료로 승격하지 않는다.
 - Android 실제 기기·터치·back·safe area·lifecycle·저장·성능 증거는 `NOT_RUN / BLOCKED_UNVERIFIED`다.
 - Windows visible local render·실물 입력·접근성 사용자·Release 성능은 자동 제품 검증과 별개다.
