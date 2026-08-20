@@ -1,19 +1,22 @@
 class_name VerticalSliceCombatBridge
 extends "res://src/combat/combat_board_preview_ten_manuals_auto.gd"
 
-const VERTICAL_SLICE_ENGINE_SCRIPT := preload("res://src/combat/combat_resolution_engine_ten_manuals.gd")
+const VERTICAL_SLICE_ENGINE_SCRIPT := preload("res://src/run/vertical_slice_metrics_combat_resolution_engine.gd")
+const BATTLE_METRICS_SCRIPT := preload("res://src/run/vertical_slice_battle_metrics.gd")
 
 signal terminal_review_ready(result: Dictionary)
 signal terminal_review_confirmed(result: Dictionary)
 
 var _vertical_slice_terminal_result: Dictionary = {}
 var _vertical_slice_loadout_snapshot: Dictionary = {}
+var _battle_metrics_helper: VerticalSliceBattleMetrics
 
 
 func _ready() -> void:
+    _battle_metrics_helper = BATTLE_METRICS_SCRIPT.new()
     super._ready()
     set_meta("vertical_slice_bridge", true)
-    set_meta("bridge_scope", "TERMINAL_REVIEW_TO_RUN_RESULT_AND_RUNTIME_LOADOUT_BINDING")
+    set_meta("bridge_scope", "TERMINAL_REVIEW_TO_RUN_RESULT_RUNTIME_LOADOUT_AND_RAW_METRICS")
 
 
 func configure_vertical_slice_loadouts(
@@ -37,7 +40,7 @@ func configure_vertical_slice_loadouts(
             return false
 
     _ten_manual_loadout_data = {
-        "authority": "VERTICAL_SLICE_PHASE_III_RUNTIME_LOADOUT_BINDING",
+        "authority": "VERTICAL_SLICE_PHASE_IV_RUNTIME_LOADOUT_AND_RAW_METRICS",
         "player": {
             "loadout": player_ids.duplicate(),
             "mastery_by_manual": player_mastery_by_manual.duplicate(true)
@@ -49,7 +52,7 @@ func configure_vertical_slice_loadouts(
         }
     }
 
-    var engine: TenManualCombatResolutionEngine = VERTICAL_SLICE_ENGINE_SCRIPT.new()
+    var engine: VerticalSliceMetricsCombatResolutionEngine = VERTICAL_SLICE_ENGINE_SCRIPT.new()
     engine.configure_martial_loadouts(
         player_ids,
         player_mastery_by_manual.duplicate(true),
@@ -75,6 +78,7 @@ func configure_vertical_slice_loadouts(
     }
     set_meta("vertical_slice_runtime_loadout_bound", true)
     set_meta("vertical_slice_enemy_candidate_id", enemy_candidate_id)
+    set_meta("vertical_slice_battle_metrics_bound", true)
     return true
 
 
@@ -110,11 +114,16 @@ func _build_vertical_slice_terminal_result() -> Dictionary:
     elif player_health <= 0 and enemy_health > 0:
         outcome = "loss"
 
+    var metrics := _battle_metrics_helper.make_initial_metrics() if _battle_metrics_helper != null else {}
+    if combat_state.has("battle_metrics") and typeof(combat_state.get("battle_metrics")) == TYPE_DICTIONARY:
+        metrics = _battle_metrics_helper.normalize(combat_state.get("battle_metrics", {})) if _battle_metrics_helper != null else (combat_state.get("battle_metrics", {}) as Dictionary).duplicate(true)
+
     return {
         "terminal": true,
         "outcome": outcome,
         "player_health": player_health,
         "enemy_health": enemy_health,
+        "battle_metrics": metrics.duplicate(true),
         "review_summary": _last_review_summary.duplicate(true),
         "presentation_state": _presentation_state
     }
