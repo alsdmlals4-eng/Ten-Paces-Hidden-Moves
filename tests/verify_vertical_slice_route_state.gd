@@ -61,7 +61,7 @@ func _run() -> void:
     await process_frame
 
     _expect_eq(shell.run_state.get_current_screen(), "ROUTE_GROWTH", "Run must enter Growth/Recovery Route first.")
-    var progression := shell.run_state.get_progression_snapshot()
+    var progression: Dictionary = shell.run_state.get_progression_snapshot()
     _expect_eq(int(progression.get("free_training_pool", -1)), 3, "Focused Duel reward must apply +3 free training before Route renders.")
     _expect_eq(int((progression.get("training_by_manual", {}) as Dictionary).get(DEFAULT_STARTERS[0], -1)), 5, "Focused Duel reward must apply +5 to its selected manual exactly once.")
     _expect_eq(int((progression.get("mastery_by_manual", {}) as Dictionary).get(DEFAULT_STARTERS[0], -1)), 5, "Five invested points from mastery 3 must cross 4★(2) and 5★(+3).")
@@ -69,7 +69,7 @@ func _run() -> void:
     _expect_false(shell.primary_button.disabled == false, "Growth Route CTA must remain disabled until one route choice is selected.")
 
     _expect_true(shell.select_growth_route("recovery"), "R1 recovery option must be selectable.")
-    var recovered := shell.run_state.get_player_run_resources()
+    var recovered: Dictionary = shell.run_state.get_player_run_resources()
     _expect_eq(recovered.get("health", []), [22, 40], "25% of max 40 must restore 10 health without exceeding max.")
     _expect_eq(recovered.get("stamina", []), [3, 5], "Recovery must restore stamina +1 with cap.")
     _expect_eq(recovered.get("internal", []), [2, 4], "Recovery must restore internal +1 with cap.")
