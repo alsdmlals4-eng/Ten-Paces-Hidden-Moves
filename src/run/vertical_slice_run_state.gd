@@ -123,6 +123,10 @@ func get_progression_snapshot() -> Dictionary:
     return _progression.get_snapshot() if _progression != null else {}
 
 
+func has_pending_growth_route() -> bool:
+    return not _pending_growth_route.is_empty()
+
+
 func get_growth_route_options() -> Array:
     if _current_screen != SCREEN_ROUTE_GROWTH or _route_model == null or _progression == null:
         return []
