@@ -52,6 +52,7 @@ func _run() -> void:
     _expect_true(bridge.has_signal("terminal_review_ready"), "Bridge must expose terminal_review_ready.")
     _expect_true(bridge.has_signal("terminal_review_confirmed"), "Bridge must expose terminal_review_confirmed.")
     _expect_true(bool(bridge.get_meta("vertical_slice_runtime_loadout_bound", false)), "Bridge must bind the Setup/current-opponent runtime loadouts.")
+    _expect_true(bool(bridge.get_meta("vertical_slice_battle_metrics_bound", false)), "Bridge must bind raw battle metric tracking.")
 
     var state: Dictionary = bridge.get("combat_state")
     var player: Dictionary = (state.get("player", {}) as Dictionary).duplicate(true)
@@ -75,6 +76,7 @@ func _run() -> void:
     _expect_eq(str(shell.run_state.last_combat_result.get("outcome", "")), "win", "Enemy health zero must map to a win result.")
     _expect_eq(int(shell.run_state.last_combat_result.get("duel_index", 0)), 1, "Shell must attach the current duel index to the terminal result.")
     _expect_true(bool(shell.run_state.last_combat_result.get("terminal", false)), "Runtime result must be explicitly terminal.")
+    _expect_true(typeof(shell.run_state.last_combat_result.get("battle_metrics", {})) == TYPE_DICTIONARY, "Terminal result must retain raw battle metrics.")
     var review_summary = shell.run_state.last_combat_result.get("review_summary", {})
     _expect_true(typeof(review_summary) == TYPE_DICTIONARY, "Terminal result must retain the review summary as structured data.")
     if typeof(review_summary) == TYPE_DICTIONARY:
@@ -92,7 +94,9 @@ func _run() -> void:
     var final_enemy_health = final_enemy.get("health", [999, 999])
     _expect_eq(int((final_enemy_health as Array)[0]), 0, "Terminal confirmation must preserve the resolved combat state rather than restart it.")
 
-    _expect_true(shell.advance_noncombat(), "RESULT must advance to Growth/Recovery.")
+    _expect_false(shell.advance_noncombat(), "RESULT must not leave until a reward is selected.")
+    _expect_true(shell.select_result_reward("free_training"), "Bridge flow must select one Result reward before Route.")
+    _expect_true(shell.advance_noncombat(), "Reward-confirmed RESULT must advance to Growth/Recovery.")
     _expect_true(shell.advance_noncombat(), "Growth/Recovery must advance to Info/Preparation.")
     _expect_true(shell.advance_noncombat(), "Info/Preparation must advance to Duel 2 Briefing.")
     _expect_true(shell.advance_noncombat(), "Duel 2 Briefing must enter a new COMBAT.")
