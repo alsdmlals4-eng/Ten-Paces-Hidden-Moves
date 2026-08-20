@@ -65,7 +65,7 @@ func _run() -> void:
     _expect_true(shell.advance_noncombat(), "RESULT → Growth Route")
     _expect_true(shell.select_growth_route("recovery"), "Recovery Route must be selectable.")
     _expect_true(shell.advance_noncombat(), "Growth Route → Info Route")
-    var info_options := shell.run_state.get_info_route_options()
+    var info_options: Array = shell.run_state.get_info_route_options()
     _expect_eq(info_options.size(), 3, "Info Route must expose three options.")
     if info_options.size() == 3:
         _expect_true(shell.select_info_route(str((info_options[0] as Dictionary).get("category", ""))), "One Info Route option must be selected.")
