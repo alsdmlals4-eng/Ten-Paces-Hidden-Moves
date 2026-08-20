@@ -45,9 +45,11 @@ func _run() -> void:
 
         _expect_true(run.advance(), "REVIEW must advance to RESULT.")
         _expect_eq(run.get_current_screen(), "RESULT", "REVIEW and RESULT must be distinct states.")
+        _expect_false(run.advance(), "RESULT may not advance before one reward receipt is selected.")
+        _expect_true(run.set_pending_result_reward({"reward_type": "free_training", "free_training": 6}), "RESULT must accept one valid reward receipt.")
 
         if expected_duel < 5:
-            _expect_true(run.advance(), "RESULT must advance to the first Route node before the next duel.")
+            _expect_true(run.advance(), "Reward-confirmed RESULT must advance to the first Route node before the next duel.")
             _expect_eq(run.get_current_screen(), "ROUTE_GROWTH", "The first Route node must be Growth/Recovery.")
             _expect_true(run.advance(), "Growth/Recovery must advance to Information/Preparation.")
             _expect_eq(run.get_current_screen(), "ROUTE_INFO", "The second Route node must be Information/Preparation.")
@@ -55,12 +57,13 @@ func _run() -> void:
             _expect_eq(run.get_current_screen(), "BRIEFING", "Route completion must return to BRIEFING.")
             _expect_eq(run.duel_index, expected_duel + 1, "Route completion must increment the duel slot exactly once.")
         else:
-            _expect_true(run.advance(), "The fifth RESULT must advance directly to COMPLETION.")
+            _expect_true(run.advance(), "The fifth reward-confirmed RESULT must advance directly to COMPLETION.")
             _expect_eq(run.get_current_screen(), "COMPLETION", "No Route nodes may occur after Duel 5.")
 
     _expect_true(run.is_complete(), "Five completed duels must mark the run complete.")
     _expect_eq(run.route_visits, 8, "Four inter-duel intervals must create exactly eight Route visits.")
     _expect_eq(run.completed_duels, 5, "The run must record exactly five completed duels.")
+    _expect_eq(run.get_reward_history().size(), 5, "Each duel must confirm exactly one reward receipt.")
 
     var history: Array = run.get_flow_history()
     _expect_eq(history.count("REVIEW"), 5, "Each duel must visit REVIEW exactly once.")
