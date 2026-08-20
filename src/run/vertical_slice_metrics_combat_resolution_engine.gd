@@ -17,10 +17,10 @@ func make_initial_state(hud_data: Dictionary, player_tile: int, enemy_tile: int)
     return state
 
 
-func resolve_bundle(state_value: Dictionary, bundle_index: int, player_actions: Array) -> Dictionary:
+func resolve_bundle(player_placements: Array, context: Dictionary, state_value: Dictionary) -> Dictionary:
     var before := state_value.duplicate(true)
     var current: Dictionary = state_value.get("battle_metrics", battle_metrics.make_initial_metrics())
-    var result := super.resolve_bundle(state_value, bundle_index, player_actions)
+    var result := super.resolve_bundle(player_placements, context, state_value)
     var next_metrics := battle_metrics.accumulate(current, before, result)
     var next_state: Dictionary = result.get("state", {})
     next_state["battle_metrics"] = next_metrics.duplicate(true)
