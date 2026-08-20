@@ -90,6 +90,11 @@ func _show_review_panel(terminal: bool) -> void:
     super._show_review_panel(terminal)
     if not terminal:
         return
+    if combat_review_panel != null:
+        var continue_button := combat_review_panel.get_continue_button()
+        if continue_button != null:
+            continue_button.text = "결과 확인"
+            continue_button.accessibility_description = "복기를 확인하고 별도 비무 결과 화면으로 이동합니다."
     _vertical_slice_terminal_result = _build_vertical_slice_terminal_result()
     terminal_review_ready.emit(_vertical_slice_terminal_result.duplicate(true))
 
