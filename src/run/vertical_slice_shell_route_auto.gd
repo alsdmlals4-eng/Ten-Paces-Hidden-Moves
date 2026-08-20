@@ -131,7 +131,7 @@ func _render_growth_route() -> void:
                 continue
         route_options_container.add_child(button)
 
-    var selected := _has_pending_growth_selection()
+    var selected := run_state.has_pending_growth_route()
     primary_button.disabled = not selected
     if selected:
         description_label.text += "\n선택 확정됨 · 계속하면 다음 정보/대비 노드로 이동합니다."
@@ -156,13 +156,17 @@ func _render_info_route() -> void:
         var button := Button.new()
         button.text = "%s · %s" % [_info_category_label(category), str(option.get("text", ""))]
         button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-        button.pressed.connect(func() -> void: select_info_route(category))
+        button.pressed.connect(_on_info_option_pressed.bind(category))
         route_options_container.add_child(button)
 
     var intel := run_state.get_pending_route_intel()
     primary_button.disabled = intel.is_empty()
     if not intel.is_empty():
         description_label.text += "\n\n선택한 단서 · %s" % str(intel.get("text", ""))
+
+
+func _on_info_option_pressed(category: String) -> void:
+    select_info_route(category)
 
 
 func _ensure_combat_view() -> void:
@@ -196,25 +200,6 @@ func _selected_focus_target_manual_id() -> String:
     if index < 0:
         return ""
     return str(route_focus_target.get_item_metadata(index))
-
-
-func _has_pending_growth_selection() -> bool:
-    if run_state == null:
-        return false
-    var history_size := run_state.get_route_history().size()
-    var before_info := run_state.get_current_screen() == VerticalSliceRunState.SCREEN_ROUTE_GROWTH
-    if not before_info:
-        return false
-    var probe := run_state.get_progression_snapshot()
-    return bool(probe.get("route_growth_selected", false)) if probe.has("route_growth_selected") else _growth_selection_inferred()
-
-
-func _growth_selection_inferred() -> bool:
-    if primary_button == null or run_state == null:
-        return false
-    # RunState advance() is the authority; UI selection state is inferred from a private-free public contract:
-    # a second selection attempt fails once a choice is locked. Use no mutation here; expose a RunState helper later if needed.
-    return run_state.has_method("has_pending_growth_route") and bool(run_state.call("has_pending_growth_route"))
 
 
 func _info_category_label(category: String) -> String:
