@@ -71,7 +71,7 @@ func _run() -> void:
     _expect_true(shell.advance_noncombat(), "Confirmed Growth/Recovery must advance to Info/Preparation.")
     _expect_eq(shell.run_state.get_current_screen(), "ROUTE_INFO", "Second Route state must be Info/Preparation.")
     _expect_false(shell.advance_noncombat(), "Info Route must wait for one explicit clue category.")
-    var info_options := shell.run_state.get_info_route_options()
+    var info_options: Array = shell.run_state.get_info_route_options()
     _expect_eq(info_options.size(), 3, "Info Route must expose exactly three options.")
     if info_options.size() == 3:
         _expect_true(shell.select_info_route(str((info_options[0] as Dictionary).get("category", ""))), "Shell regression must select one legal Info Route category.")
