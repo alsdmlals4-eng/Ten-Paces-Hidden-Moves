@@ -5,9 +5,13 @@ on:
     paths:
       - "src/run/**"
       - "scenes/run/**"
+      - "data/run/**"
       - "tests/verify_vertical_slice_run_state.gd"
       - "tests/verify_vertical_slice_shell.gd"
       - "tests/verify_vertical_slice_combat_bridge.gd"
+      - "tests/verify_vertical_slice_opponent_catalog.gd"
+      - "tests/verify_vertical_slice_opponent_shell_binding.gd"
+      - "tests/verify_vertical_slice_candidate_ids.gd"
       - "docs/implementation/BUILD_APPROVAL_2026-08-20.md"
       - ".github/workflows/validate-vertical-slice-run-state.yml"
   workflow_dispatch:
@@ -37,3 +41,9 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_vertical_slice_shell.gd
       - name: Verify terminal combat bridge
         run: godot --headless --path . --script res://tests/verify_vertical_slice_combat_bridge.gd
+      - name: Verify opponent catalog and route lock
+        run: godot --headless --path . --script res://tests/verify_vertical_slice_opponent_catalog.gd
+      - name: Verify candidate ID hygiene
+        run: godot --headless --path . --script res://tests/verify_vertical_slice_candidate_ids.gd
+      - name: Verify shell opponent catalog binding
+        run: godot --headless --path . --script res://tests/verify_vertical_slice_opponent_shell_binding.gd

@@ -2,8 +2,10 @@ class_name VerticalSliceShell
 extends Control
 
 const COMBAT_SCENE := preload("res://scenes/run/vertical_slice_combat_bridge.tscn")
+const TECHNICAL_RUN_SEED := 20260820
 
 var run_state: VerticalSliceRunState
+var opponent_catalog: VerticalSliceOpponentCatalog
 var content_panel: PanelContainer
 var combat_host: Control
 var title_label: Label
@@ -18,8 +20,18 @@ func _ready() -> void:
     set_meta("technical_shell", true)
     set_meta("final_visual_reference_pending", true)
     set_meta("visual_evidence_ceiling", "TECHNICAL_SHELL_NOT_HUMAN_VISUAL_PASS")
+    set_meta("run_seed_policy", "PHASE_II_TECHNICAL_FIXED_SEED_REPLACE_WITH_SAVE_STATE_LATER")
 
+    opponent_catalog = VerticalSliceOpponentCatalog.new()
     run_state = VerticalSliceRunState.new()
+    var catalog_bound := false
+    if opponent_catalog.is_valid():
+        catalog_bound = run_state.configure_opponents(opponent_catalog, TECHNICAL_RUN_SEED)
+    else:
+        push_error("Vertical Slice opponent catalog is invalid: %s" % str(opponent_catalog.load_errors))
+    set_meta("opponent_catalog_bound", catalog_bound)
+    set_meta("opponent_selection_binding", opponent_catalog.get_selection_binding_status())
+
     run_state.screen_changed.connect(_on_screen_changed)
     _build_shell()
     _render_current_screen()
@@ -166,7 +178,7 @@ func _render_current_screen() -> void:
         VerticalSliceRunState.SCREEN_SETUP:
             _set_content(
                 "시작 설정 · 무공 6중4",
-                "Phase I에서는 화면 경계와 RunState만 연결합니다.\n실제 6중4 선택 UI와 데이터 바인딩은 후속 Phase에서 붙입니다.",
+                "Phase I에서는 화면 경계와 RunState를 연결했고, Phase II에서는 상대 후보 15명과 선잠금을 연결합니다.\n실제 6중4 선택 UI는 후속 Phase에서 붙입니다.",
                 "설정 완료"
             )
         VerticalSliceRunState.SCREEN_INTRO:
@@ -178,26 +190,26 @@ func _render_current_screen() -> void:
         VerticalSliceRunState.SCREEN_BRIEFING:
             _set_content(
                 "비무 %d · 상대 파악" % run_state.duel_index,
-                "공개 정보와 현재 상태만 확인합니다. 숨은 계획·AI 가중치·정답 대응은 보여 주지 않습니다.",
+                "현재 상대는 Briefing 전에 이미 잠겨 있습니다. 공개 정보와 현재 상태만 보여 주며 숨은 계획·AI 가중치·정답 대응은 공개하지 않습니다.",
                 "비무 시작"
             )
         VerticalSliceRunState.SCREEN_RESULT:
             var next_label := "완주 정리" if run_state.completed_duels >= VerticalSliceRunState.MAX_DUELS else "강호행로로"
             _set_content(
                 "비무 %d 결과" % run_state.completed_duels,
-                "Review와 분리된 결과 화면입니다. 승패·보상·다음 상대 선잠금은 후속 데이터 Phase에서 연결합니다.",
+                "Review와 분리된 결과 화면입니다. 다음 상대는 이 결과를 확정하고 Route로 이동할 때 한 번 잠깁니다.",
                 next_label
             )
         VerticalSliceRunState.SCREEN_ROUTE_GROWTH:
             _set_content(
                 "강호행로 · 성장/회복",
-                "비무 사이 첫 번째 Route 노드입니다. 실제 수치 선택은 기존 승인 Seed를 후속 Phase에서 연결합니다.",
+                "다음 상대가 이미 잠긴 상태의 첫 번째 Route 노드입니다. Route 선택으로 상대를 다시 뽑지 않습니다.",
                 "선택 확정"
             )
         VerticalSliceRunState.SCREEN_ROUTE_INFO:
             _set_content(
                 "강호행로 · 정보/대비",
-                "잠긴 다음 상대에 대해 어떤 공개 정보를 얻을지 선택하는 두 번째 Route 노드입니다.",
+                "잠긴 다음 상대에 대해 어떤 공개 정보를 얻을지 선택하는 두 번째 Route 노드입니다. 상대 ID는 이 화면에서도 바뀌지 않습니다.",
                 "정보 확정"
             )
         VerticalSliceRunState.SCREEN_COMPLETION:
