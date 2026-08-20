@@ -11,6 +11,7 @@ on:
       - "tests/verify_vertical_slice_combat_bridge.gd"
       - "tests/verify_vertical_slice_opponent_catalog.gd"
       - "tests/verify_vertical_slice_opponent_shell_binding.gd"
+      - "tests/verify_vertical_slice_candidate_ids.gd"
       - "docs/implementation/BUILD_APPROVAL_2026-08-20.md"
       - ".github/workflows/validate-vertical-slice-run-state.yml"
   workflow_dispatch:
@@ -44,3 +45,5 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_vertical_slice_opponent_catalog.gd
       - name: Verify shell opponent catalog binding
         run: godot --headless --path . --script res://tests/verify_vertical_slice_opponent_shell_binding.gd
+      - name: Verify candidate ID hygiene
+        run: godot --headless --path . --script res://tests/verify_vertical_slice_candidate_ids.gd
