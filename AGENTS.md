@@ -44,6 +44,7 @@
 ```yaml
 product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
 runtime_work_mode: REVIEW
+runtime_integration_pr: 65
 planning_work_mode: PLAN
 runtime_implementation: TEN_MANUAL_PRODUCT_VALIDATION_MERGED
 latest_combat_planning_runtime: PRODUCT_VALIDATION_AUTOMATED
