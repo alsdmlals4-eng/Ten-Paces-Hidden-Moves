@@ -56,7 +56,7 @@ android_runtime_evidence: NOT_RUN
 base_release_pinned: 9.4.3
 ```
 
-활성 기획 상태는 Active Context와 GitHub PR metadata를 함께 읽는다. Branch의 승인이나 PR 통과는 main 병합 완료가 아니며, 병합 후 main·Sheet 재조회 전에는 `SYNCED_TO_MAIN`으로 표시하지 않는다.
+활성 기획 상태는 Active Context와 GitHub PR metadata를 함께 읽는다. Branch의 승인이나 PR 통과는 main 병합 완료가 아니며, 병합 후 main과 필요한 Notion/repository destination을 다시 읽기 전에는 `SYNCED_TO_MAIN`으로 표시하지 않는다.
 
 ## 4. Work Mode·Skill Mode
 
@@ -120,13 +120,15 @@ Decision: `TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`.
 - Android export·설치·실기기·터치·뒤로가기·pause/resume·suspend/restore·저장·성능 증거가 없으면 Android 런타임 지원 완료를 주장하지 않는다.
 - 플랫폼 편의를 이유로 10칸·3/3/4·비공개 계획·순차 해결·복기 코어를 분기하지 않는다.
 
-## 9. 정본·Sheet
+## 9. 정본·Notion·legacy Sheet
 
 - 한 질문에는 현재 책임 원본 하나만 둔다.
 - 현행 전체 작업 방식·검증·병합·전달 계약은 `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`가 책임진다.
-- 승인 Decision은 같은 ID로 Decision 문서, 분야 정본, planning JSON, Google Sheets에 연결한다.
-- Google Sheets는 `USER_FACING_GDD_WORKSPACE`이며 GitHub 정본·실제 구현을 대체하지 않는다.
-- Sheet 전용 변경은 `PROPOSED_SHEET_CHANGE`로 보존한다.
+- `NOTION_HUMAN_FACING_CANON`: 사람용 Project Home·Visual/Flow·비교표·에셋/Reference와 사람이 수정하는 전체 그림을 책임진다.
+- `REPOSITORY_STRUCTURED_CANON` / `REPOSITORY_RUNTIME_TRUTH`: Decision 문서·분야 정본·planning JSON·코드·데이터·Scene·tests와 실제 runtime evidence를 책임진다.
+- 승인 Decision은 같은 ID/근거가 필요한 Notion human-facing owner와 repository structured owner에 동기화하고 destination readback을 확인한다.
+- Google Sheets는 unique 미이관 자료가 남은 경우의 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility source다. 신규 GDD·승인·상태의 기본 작업공간이나 runtime 증거가 아니다.
+- Sheet에만 남은 변경은 current canon으로 자동 승격하지 않고 `PROPOSED_SHEET_CHANGE` 또는 migration candidate로 분리한다.
 - `docs/planning-data/*.json`은 직접 런타임 입력이 아니다.
 
 ## 10. 구현·검증
@@ -161,7 +163,7 @@ review-scope-map
 → decision-report
 ```
 
-변경 파일뿐 아니라 정본, 활성 소비자, 인접 시스템, untouched 파일, 테스트, Sheet, 파생본을 확인한다.
+변경 파일뿐 아니라 정본, 활성 소비자, 인접 시스템, untouched 파일, 테스트, Notion/repository destination, 관련 legacy migration source와 파생본을 확인한다.
 
 ## 12. 다음 패키지
 
