@@ -137,12 +137,20 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         current_section = text.split("## 현재 기준", 1)[1].split("## 관측 증거 스냅샷", 1)[0]
 
-        self.assertIn("current_truth_source: GITHUB_MAIN_PLUS_SHEET_LIVE_READ", current_section)
+        self.assertIn(
+            "current_truth_source: GITHUB_MAIN_PLUS_EXACT_PROJECT_NOTION_LIVE_READ",
+            current_section,
+        )
         self.assertIn("current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN", current_section)
         self.assertIn("base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN", current_section)
         self.assertNotIn("project_main_checkpoint:", current_section)
         self.assertNotIn("base_remote_main_observed:", current_section)
 
+        self.assertIn("product_stage: FIRST_FIVE_DUEL_PHASE_I_VI_IMPLEMENTED", current_section)
+        self.assertIn("phase_i_vi_implementation: AUTHORIZED_AND_MERGED", current_section)
+        self.assertIn("future_product_mutation_authorized: false", current_section)
+        self.assertIn("human_validation: NOT_RUN", current_section)
+        self.assertIn("android_validation: NOT_RUN", current_section)
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
@@ -162,8 +170,12 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn("ci_supply_chain_followup: RESOLVED_ISSUE_140", current_section)
-        self.assertIn("product_implementation_authorized: false", current_section)
 
+        self.assertNotIn("product_implementation_authorized: false", current_section)
+        self.assertNotIn(
+            "product_stage: VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_COMPLETE_HANDOFF_READY",
+            current_section,
+        )
         self.assertNotIn("planning_visual_next: TEN_IMG_001_GENERATE_EXPLORATION", current_section)
         self.assertNotIn("planning_visual_review: TEN_IMG_001_EXPLORATION_REVIEW", current_section)
         self.assertNotIn("ci_supply_chain_followup: ISSUE_140", current_section)
@@ -177,6 +189,11 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             "historical_base_main_at_handoff: 637dad32c773c56a27d44d847518580848dee493",
             text,
         )
+        self.assertIn(
+            "historical_pre_phase_i_vi_product_stage: VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_COMPLETE_HANDOFF_READY",
+            text,
+        )
+        self.assertIn("historical_pre_phase_i_vi_product_implementation_authorized: false", text)
         self.assertIn("Issue #140", text)
 
     def test_pc_first_vertical_slice_gate_is_discoverable(self) -> None:
