@@ -194,6 +194,22 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             text,
         )
         self.assertIn("historical_pre_phase_i_vi_product_implementation_authorized: false", text)
+
+        self.assertNotIn("## 현재 Entry Gate", text)
+        self.assertIn("## 역사 Entry Gate · 2026-08-08", text)
+        self.assertIn("current_vertical_slice_implementation_gate_20260820.json", text)
+        historical_entry = text.split("## 역사 Entry Gate · 2026-08-08", 1)[1].split(
+            "## 이번 세션의 플랫폼 preflight 중단 상태", 1
+        )[0]
+        self.assertIn("SUPERSEDED_FOR_PHASE_I_VI_IMPLEMENTATION", historical_entry)
+        self.assertIn("product_implementation_authorized: false", historical_entry)
+
+        current_risk = text.split("## 현재 위험·미검증", 1)[1].split(
+            "## 상태 표현 규칙", 1
+        )[0]
+        self.assertIn("Phase I–VI", current_risk)
+        self.assertIn("future_product_mutation_authorized: false", current_risk)
+        self.assertNotIn("product_implementation_authorized: false", current_risk)
         self.assertIn("Issue #140", text)
 
     def test_pc_first_vertical_slice_gate_is_discoverable(self) -> None:
