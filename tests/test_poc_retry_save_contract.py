@@ -54,6 +54,16 @@ class PocRetrySaveContractTests(unittest.TestCase):
         ):
             self.assertIn(source, compatibility["canonical_source_files"])
 
+    def test_save_catalog_digest_has_unambiguous_canonical_byte_stream(self) -> None:
+        compatibility = self.run_state["save_compatibility"]
+        self.assertEqual("RFC8785_JCS", compatibility["canonicalization_standard"])
+        self.assertEqual("RECURSIVE_KEY_NAME", compatibility["excluded_field_scope"])
+        self.assertEqual("CANONICAL_SOURCE_FILES_LIST_ORDER", compatibility["source_order"])
+        self.assertEqual(
+            "UTF8_FILENAME_NUL_CANONICAL_JSON_NUL_PER_SOURCE",
+            compatibility["catalog_digest_stream"],
+        )
+
     def test_grade_rounding_owner_and_implementation_plan_agree(self) -> None:
         calculation = self.map_data["performance_grade"]["calculation"]
         self.assertEqual("ROUND_HALF_UP_PER_DIMENSION", calculation["rounding"])
