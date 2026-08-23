@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "data_role": "NON_RUNTIME_POC_PLANNING",
   "status": "APPROVED_PLANNING",
   "editable": true,
@@ -88,12 +88,48 @@
     ],
     "cost_cap": 3,
     "counter_reset": "WHEN_ENTERING_DIFFERENT_BATTLE",
+    "counter_reset_value": 0,
     "charge_order": "CHECK_BALANCE_THEN_CHARGE_THEN_RESTORE",
+    "cost_basis": "PRE_RETRY_COUNTER",
+    "cost_formula": "MIN(PRE_RETRY_COUNTER_PLUS_ONE,COST_CAP)",
+    "cost_examples_by_pre_retry_counter": {
+      "0": 1,
+      "1": 2,
+      "2": 3,
+      "3": 3
+    },
+    "counter_value_source": "READ_BEFORE_CHARGE_AND_RESTORE",
+    "transition_order": "READ_COUNTER_COMPUTE_COST_CHECK_BALANCE_CHARGE_RESTORE_INCREMENT_COUNTER_PERSIST",
+    "counter_update": "PREVIOUS_PLUS_ONE_AFTER_RESTORE",
     "insufficient_currency": [
       "ABANDON_RUN",
       "RETURN_TO_TITLE"
     ],
     "paid_currency_is_not_rolled_back": true
+  },
+  "save_compatibility": {
+    "save_field": "runtime_catalog_digest",
+    "digest_algorithm": "SHA256_CANONICAL_JSON",
+    "digest_subject": "GENERATED_RUNTIME_CATALOG",
+    "runtime_catalog_path": "data/runtime/poc_runtime_catalog.json",
+    "canonicalization_standard": "RFC8785_JCS",
+    "excluded_field_scope": "GENERATED_RUNTIME_CATALOG_RECURSIVE_KEY_NAME",
+    "catalog_digest_stream": "RFC8785_JCS_UTF8_GENERATED_RUNTIME_CATALOG",
+    "planning_source_files_role": "PROVENANCE_ONLY_NOT_DIGEST_INPUT",
+    "planning_provenance_source_files": [
+      "poc_martial_arts.json",
+      "poc_enemy_duels.json",
+      "poc_map_rewards.json",
+      "poc_balance_budget.json",
+      "poc_run_state_contract.json"
+    ],
+    "excluded_nondeterministic_fields": [
+      "generated_at",
+      "created_at"
+    ],
+    "mismatch_result": "INCOMPATIBLE_SAVE_CATALOG",
+    "implicit_repair_on_mismatch": false,
+    "runtime_implementation": "NOT_STARTED"
   },
   "debug_restart_boundary": {
     "legacy_t0_restart_is_not_paid_run_retry": true,

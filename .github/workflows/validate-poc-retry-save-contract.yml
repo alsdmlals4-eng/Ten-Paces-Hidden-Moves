@@ -1,0 +1,40 @@
+name: Validate PoC Retry Save Contract
+
+on:
+  pull_request:
+    paths:
+      - 'docs/planning-data/poc_run_state_contract.json'
+      - 'docs/planning-data/poc_map_rewards.json'
+      - 'docs/planning-data/poc_verification_contract.json'
+      - 'docs/superpowers/plans/2026-07-26-poc-campaign-progression-implementation-plan.md'
+      - 'tools/check_poc_planning_data.py'
+      - 'tests/test_poc_retry_save_contract.py'
+      - '.github/workflows/validate-poc-retry-save-contract.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'docs/planning-data/poc_run_state_contract.json'
+      - 'docs/planning-data/poc_map_rewards.json'
+      - 'docs/planning-data/poc_verification_contract.json'
+      - 'docs/superpowers/plans/2026-07-26-poc-campaign-progression-implementation-plan.md'
+      - 'tools/check_poc_planning_data.py'
+      - 'tests/test_poc_retry_save_contract.py'
+      - '.github/workflows/validate-poc-retry-save-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  retry-save-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+      - name: Run focused retry/save regression
+        run: python -m unittest tests.test_poc_retry_save_contract -v
+      - name: Run existing planning regression
+        run: python -m unittest tests.test_poc_planning_data -v
