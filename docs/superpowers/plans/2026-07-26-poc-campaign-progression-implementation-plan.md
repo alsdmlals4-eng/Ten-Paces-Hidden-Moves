@@ -155,9 +155,14 @@
 **Interfaces:**
 - `serialize(run_state: Dictionary) -> String`.
 - `deserialize(payload: String) -> Dictionary`.
+- `runtime_catalog_digest` is required in every save payload and binds the save to `data/runtime/poc_runtime_catalog.json`.
+- Compute the digest from the generated runtime semantic catalog, not raw planning-file bytes: remove the contract-declared nondeterministic fields, canonicalize with `RFC8785_JCS`, then SHA-256 the canonical UTF-8 bytes.
+- On load, recompute the current catalog digest before accepting state. A mismatch returns `INCOMPATIBLE_SAVE_CATALOG`; do not perform implicit repair or silently migrate the payload.
 - Include `schema_version`; reject unknown future versions.
 
-- [ ] Test deterministic round-trip for run seed, route IDs, health, manuals/mastery, currency, permanent currency, retry count, reward ledger, and current battle snapshot metadata.
+- [ ] Test deterministic round-trip for run seed, route IDs, health, manuals/mastery, currency, permanent currency, retry count, reward ledger, current battle snapshot metadata, and `runtime_catalog_digest`.
+- [ ] Test same generated runtime catalog produces the same digest, changed runtime semantics change the digest, and non-runtime planning metadata is not itself a digest input.
+- [ ] Test catalog mismatch returns `INCOMPATIBLE_SAVE_CATALOG` before state restoration and leaves the current run/profile unmodified.
 - [ ] Do not implement migration beyond current schema; return an explicit unsupported-version error.
 - [ ] Commit as `feat: serialize PoC run state contract`.
 
