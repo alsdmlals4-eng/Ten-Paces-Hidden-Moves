@@ -1,0 +1,50 @@
+name: One-shot Active Context Phase I-VI Router
+
+on:
+  push:
+    branches:
+      - fix/current-phase-i-vi-router-20260823
+    paths:
+      - .github/workflows/one-shot-active-context-router-20260823.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-verify:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out correction branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+
+      - name: Apply fail-closed bounded patch
+        run: python tools/one_shot_patch_active_context_20260823.py
+
+      - name: Verify focused current discovery contract
+        run: python -m unittest tests.test_current_discovery_contract.CurrentDiscoveryContractTests.test_active_context_separates_live_state_from_observed_snapshots -v
+
+      - name: Verify full current discovery contract
+        run: python -m unittest tests.test_current_discovery_contract -v
+
+      - name: Confirm bounded diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff -- '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md' tests/test_current_discovery_contract.py
+          git diff --check
+
+      - name: Remove one-shot helpers and commit GREEN state
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f tools/one_shot_patch_active_context_20260823.py
+          rm -f .github/workflows/one-shot-active-context-router-20260823.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md' tests/test_current_discovery_contract.py docs/superpowers/plans/2026-08-23-current-phase-i-vi-router.md tools/one_shot_patch_active_context_20260823.py .github/workflows/one-shot-active-context-router-20260823.yml
+          git diff --cached --check
+          git commit -m 'fix: reconcile Phase I-VI current-state router'
+          git push origin "HEAD:${GITHUB_REF_NAME}"
