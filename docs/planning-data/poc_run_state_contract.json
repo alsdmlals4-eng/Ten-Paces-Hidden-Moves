@@ -110,11 +110,13 @@
   "save_compatibility": {
     "save_field": "runtime_catalog_digest",
     "digest_algorithm": "SHA256_CANONICAL_JSON",
+    "digest_subject": "GENERATED_RUNTIME_CATALOG",
+    "runtime_catalog_path": "data/runtime/poc_runtime_catalog.json",
     "canonicalization_standard": "RFC8785_JCS",
-    "excluded_field_scope": "RECURSIVE_KEY_NAME",
-    "source_order": "CANONICAL_SOURCE_FILES_LIST_ORDER",
-    "catalog_digest_stream": "UTF8_FILENAME_NUL_CANONICAL_JSON_NUL_PER_SOURCE",
-    "canonical_source_files": [
+    "excluded_field_scope": "GENERATED_RUNTIME_CATALOG_RECURSIVE_KEY_NAME",
+    "catalog_digest_stream": "RFC8785_JCS_UTF8_GENERATED_RUNTIME_CATALOG",
+    "planning_source_files_role": "PROVENANCE_ONLY_NOT_DIGEST_INPUT",
+    "planning_provenance_source_files": [
       "poc_martial_arts.json",
       "poc_enemy_duels.json",
       "poc_map_rewards.json",
