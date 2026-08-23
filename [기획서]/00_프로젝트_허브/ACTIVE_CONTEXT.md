@@ -17,7 +17,7 @@ current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN
 base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
 live_exact_sha_authority: NONE_REFETCH_REQUIRED
 active_project_pr: NONE
-product_stage: VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_COMPLETE_HANDOFF_READY
+product_stage: FIRST_FIVE_DUEL_PHASE_I_VI_IMPLEMENTED
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
@@ -40,7 +40,8 @@ automated_validation: PASS
 human_validation: NOT_RUN
 accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
 performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
-product_implementation_authorized: false
+phase_i_vi_implementation: AUTHORIZED_AND_MERGED
+future_product_mutation_authorized: false
 next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
 next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 user_directed_planning_work_mode: COMPLETE
@@ -64,7 +65,7 @@ base_remote_observation: CURRENT_REMOTE_REQUIRES_LIVE_REFETCH_NO_AUTOMATIC_PROJE
 
 `active_planning_*`, `active_decision_state`, `next_package`, `next_planning_decision`은 `docs/planning-data/current_operating_state.json`이 소유하는 플랫폼 운영 상태와 동기화한다. 완료된 Vertical Slice 기획/Visual UX 상태는 `docs/planning-data/current_user_planning_status.json`과 `user_directed_planning_*`·`planning_visual_*` overlay가 소유하며 기존 플랫폼 운영 계약을 덮어쓰지 않는다.
 
-플랫폼 Adapter 구현 Gate는 여전히 제품 구현 경계로 유효하다. 사용자는 2026-08-20 `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01` 기준 첫 5전 Vertical Slice 텍스트 기획을 완료 승인했고, 이어 `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01`로 Visual/UX Requirement & Reference Review까지 완료 승인했다. 그러나 어느 승인도 제품 구현 요청 또는 새 이미지 생성 요청과 동일하지 않으므로 `product_implementation_authorized: false`, `planning_visual_generation: USER_EXPLICIT_REQUEST_REQUIRED`를 유지한다. 현재 자동 다음 작업은 없으며 **이미지 자산 제작 또는 제품 구현의 사용자 명시 요청을 대기**한다. 제품 mutation은 별도 구현 요청과 fresh Entry Gate 재검증 뒤에만 허용한다.
+플랫폼 Adapter 구현 Gate는 향후 플랫폼 확장 경계로 계속 유효하다. 2026-08-20 `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`과 `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01` 자체는 제품 구현 권한이 아니었지만, 후속 `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`이 첫 5전 PC-first Vertical Slice Phase I–VI 구현을 명시적으로 허용했고 해당 범위는 현재 `main`에 병합됐다. 따라서 현재 상태는 `phase_i_vi_implementation: AUTHORIZED_AND_MERGED`이며, **추가 제품 mutation**만 `future_product_mutation_authorized: false`로 새 명시 요청 + fresh Gate를 요구한다. 새 이미지 생성도 계속 `planning_visual_generation: USER_EXPLICIT_REQUEST_REQUIRED`다.
 
 이 live block에는 current main SHA나 열린 PR 번호를 저장하지 않는다. 새 세션·post-merge에서는 GitHub `main`, 열린 PR, exact Project Notion, current operating/entry gate를 다시 읽고 의미 상태만 판정한다. exact SHA/run ID·PR 번호는 아래의 명시적 역사·관측 증거로만 취급한다.
 
@@ -90,6 +91,12 @@ planning_detail_prs_2026_08_20: 166,168,170
 planning_review_ready_sync_pr_2026_08_20: 171
 planning_complete_prs_2026_08_20: 172,173
 planning_pr_2026_08_20_base: 0e9955afe791c43255176a4e89d89cf58be9b76a
+historical_pre_phase_i_vi_product_stage: VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_COMPLETE_HANDOFF_READY
+historical_pre_phase_i_vi_product_implementation_authorized: false
+phase_i_vi_completion_pr: 183
+phase_i_vi_completion_merge_commit: dfe25dec47f02229ecc5c92cdad7b6e1929525c8
+authority_bootstrap_pr: 186
+authority_bootstrap_merge_commit: 43a6e625c57c6f3e50b562e494fec074be553457
 ```
 
 위 `observed_*` 값과 planning PR base도 다음 merge 뒤 자동 current가 되지 않는다. current 여부는 항상 live refetch로 다시 판정한다.
@@ -98,6 +105,8 @@ planning_pr_2026_08_20_base: 0e9955afe791c43255176a4e89d89cf58be9b76a
 
 - 첫 5전 Vertical Slice 기획 완료 승인: `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`, `docs/planning-data/current_user_planning_status.json`.
 - Visual/UX Requirement 승인: `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01`, `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md`, `docs/planning-data/approved_20260820_vertical_slice_visual_ux_contract.json`.
+- 구현 Gate: `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`, `docs/planning-data/current_vertical_slice_implementation_gate_20260820.json`.
+- Phase I–VI 상태: `AUTHORIZED_AND_MERGED`; exact PR/SHA는 위 관측 증거 스냅샷에서만 역사 증거로 보존한다.
 - 구현 Handoff: `docs/16_VERTICAL_SLICE_IMPLEMENTATION_HANDOFF_PLAN.md`.
 - 강호 비무행·플레이어 역할·5전 감정곡선·비전투 App Flow: `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01`, `docs/12_VERTICAL_SLICE_JIANGHU_JOURNEY.md`.
 - 15명 후보·8개 Route·Briefing/Review/Result 텍스트 UX: `TEN-DEC-20260820-VERTICAL-SLICE-CONTENT-DETAIL-01`, `docs/13_VERTICAL_SLICE_OPPONENT_ROUTE_TEXT_UX.md`.
@@ -134,7 +143,7 @@ planning_pr_2026_08_20_base: 0e9955afe791c43255176a4e89d89cf58be9b76a
 - 역사 구현 표식: `runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65`.
 - V6 원장: `2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
 
-위 App Flow·상세 계약·Visual/UX 요구사항은 계획 권위다. 사용자 `기획완료`와 후속 Visual/UX 승인은 다음 제작 단계의 기준선을 닫지만 그 자체로 제품 mutation이나 이미지 생성을 허가하지 않는다. PR #65 앱 흐름 기반은 역사·호환 근거이고 현재 구현 권위는 상단 YAML의 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`다.
+위 App Flow·상세 계약·Visual/UX 요구사항은 계획 권위다. 사용자 `기획완료`와 후속 Visual/UX 승인 자체는 제품 mutation 권한이 아니었고, 이후 `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`이 첫 5전 Phase I–VI bounded implementation을 별도로 승인했다. PR #65와 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`는 선행 런타임/자동검증 계보로 보존하고, 현재 전체 Phase I–VI 구현 상태는 상단 `phase_i_vi_implementation: AUTHORIZED_AND_MERGED`가 라우팅한다. 새 이미지 또는 추가 제품 mutation은 다시 명시적 요청과 fresh Gate가 필요하다.
 
 ## 제품 연결·성장 보호 표식
 
@@ -217,11 +226,12 @@ tests/**
 
 `addons/godot_ai/runtime/game_helper.gd`를 포함한 Godot AI runtime은 export에 보존됐다. 다른 addon family exclusion은 승인되지 않았다.
 
-## 현재 Entry Gate
+## 역사 Entry Gate · 2026-08-08
 
-`docs/planning-data/current_entry_gate_20260808.json`의 현재 의미는 다음과 같다.
+`docs/planning-data/current_entry_gate_20260808.json`은 Phase I–VI 구현 승인 이전의 플랫폼/제품 pre-implementation Gate다. 후속 `docs/planning-data/current_vertical_slice_implementation_gate_20260820.json`이 첫 5전 Phase I–VI 범위의 current implementation authority를 소유하므로, 이 8월 8일 Gate를 현재 구현 미승인 근거로 재사용하지 않는다. Android/device/Human readiness의 역사 evidence ceiling은 계속 보존한다.
 
 ```yaml
+status: SUPERSEDED_FOR_PHASE_I_VI_IMPLEMENTATION
 local_windows_core: PASS_GODOT_GUT_HERA_EXPORT_CORE
 local_android_device: BLOCKED_UNVERIFIED
 human_validation: BLOCKED_NOT_RUN
@@ -234,7 +244,7 @@ allowed_next_actions:
   - VERIFY_LOCAL_WINDOWS_ANDROID_DEVICE_AND_HUMAN_GATES_WHEN_REAUTHORIZED
 ```
 
-이 Entry Gate는 제품/플랫폼 구현 경계다. 첫 5전 Vertical Slice 텍스트 기획과 Visual/UX Requirement Review는 완료됐지만 제품 구현 권한은 아니다. 위 `REVIEW_VISUAL_UX...`는 허용 가능한 비제품 작업을 열어 둔 기존 Entry Gate 항목이며 현재 사용자-directed Visual review 자체는 이미 완료 상태다. 새 이미지 생성은 사용자 명시 요청이 필요하고, 제품 mutation은 사용자의 별도 구현 요청과 fresh Gate 확인 뒤에만 허용한다. Android 완료, 실제 기기 완료, 사람 검증 완료를 아직 주장하면 안 된다.
+이 2026-08-08 Entry Gate는 당시 제품/플랫폼 구현 경계를 기록한 역사 증거다. 이후 2026-08-20 PC-first Vertical Slice 구현 Gate가 Phase I–VI를 별도로 승인했고 해당 bounded 구현은 병합되었다. 따라서 여기의 `product_implementation_authorized: false`는 **당시 pre-implementation 상태**로만 읽는다. 새 이미지 생성과 향후 추가 제품 mutation은 여전히 별도 명시 요청/fresh Gate가 필요하며, Android 실제 기기·Windows visible Human·사람 검증은 실제 실행 전 PASS로 승격하지 않는다.
 
 ## 이번 세션의 플랫폼 preflight 중단 상태
 
@@ -269,7 +279,7 @@ user_disposition: DEFERRED_BY_USER
 1. Base 최신 main/root/open PR 재조회
 2. Project 최신 main/open PR/관련 Decision 재조회
 3. exact Project Notion Home·Work·Flow·Core System 재조회
-4. current_user_planning_status, current_entry_gate, current_operating_state 재조회
+4. current_user_planning_status, current_vertical_slice_implementation_gate_20260820, current_operating_state 재조회; 플랫폼/device 재인가 작업일 때만 current_entry_gate_20260808을 역사 비교 근거로 추가 확인
 5. live context 의미 상태와 fresh truth 차이 교정
 6. 자산 제작 요청이면 docs/17 Visual/UX 요구와 Notion 비주얼 바이블·Flow·에셋 라이브러리를 먼저 읽고 승인 자산 1장 단위 루프로 진행
 7. 제품 구현 요청이면 docs/16_VERTICAL_SLICE_IMPLEMENTATION_HANDOFF_PLAN.md + docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md의 fresh-read Gate부터 수행
@@ -302,29 +312,30 @@ Base remote `main`의 exact SHA는 이 live router에 current 값으로 저장�
 4. `[기획서]/00_프로젝트_허브/HANDOFF.md`.
 5. `docs/planning-data/current_user_planning_status.json`.
 6. `docs/planning-data/current_operating_state.json`.
-7. `docs/planning-data/current_entry_gate_20260808.json`.
-8. exact Project Notion의 `Project Home`, `02 · 비주얼 바이블`, `03 · UI · 전투 Flow Map`, `04 · 에셋 라이브러리`, `09 · 세계관 · 강호 비무행 · Vertical Slice`, `10 · 상대 15명 · 강호행로 8노드 · 텍스트 UX`, `11 · 상대 무공 배정 · Route 예산 · 비전투 Wire`, `12 · Vertical Slice · 기획 완료 기준선`, `13 · 기획 완료 · Visual/구현 Handoff`와 현재 Decision 페이지.
-9. `docs/16_VERTICAL_SLICE_IMPLEMENTATION_HANDOFF_PLAN.md`와 `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md`.
-10. 질문별 분야 책임 원본과 실제 코드·테스트·GitHub PR metadata.
+7. `docs/planning-data/current_vertical_slice_implementation_gate_20260820.json`.
+8. `docs/planning-data/current_entry_gate_20260808.json` — 플랫폼/device 과거 pre-implementation Gate 비교가 실제로 필요할 때만 역사 근거로 읽는다.
+9. exact Project Notion의 `Project Home`, `02 · 비주얼 바이블`, `03 · UI · 전투 Flow Map`, `04 · 에셋 라이브러리`, `09 · 세계관 · 강호 비무행 · Vertical Slice`, `10 · 상대 15명 · 강호행로 8노드 · 텍스트 UX`, `11 · 상대 무공 배정 · Route 예산 · 비전투 Wire`, `12 · Vertical Slice · 기획 완료 기준선`, `13 · 기획 완료 · Visual/구현 Handoff`와 현재 Decision 페이지.
+10. `docs/16_VERTICAL_SLICE_IMPLEMENTATION_HANDOFF_PLAN.md`와 `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md`.
+11. 질문별 분야 책임 원본과 실제 코드·테스트·GitHub PR metadata.
 
 Google Sheets는 신규 기획 입력 경로로 사용하지 않으며 migration 잔존 정보를 확인해야 할 때만 보조 증거로 읽는다.
 
 ## 현재 위험·미검증
 
-- 첫 5전 Vertical Slice 텍스트 기획과 Visual/UX Requirement는 완료됐지만 제품 구현은 별도 요청과 fresh Gate 전 `NOT_AUTHORIZED`다.
+- 첫 5전 PC-first Vertical Slice Phase I–VI는 승인 범위가 구현·병합됐다. 다만 Windows visible Human usability, Android 실기기, Human 재미·가독성·몰입, 최종 Visual/VFX/Audio는 계속 `NOT_RUN`이며 완료로 승격하지 않는다.
 - `TEN-VIS-A01~A06`은 요구사항만 승인됐고 `NOT_GENERATED`; Human 최종 Visual 승인도 `NOT_RUN`이다.
 - 후보 영구 스테이터스 총량 `20/22/24/26/28`, 성급 `3/7/7/7/9`, Route 회복 `최대 체력25% + 기력1 + 내력1`은 `REVERSIBLE_*_SEED`이며 실제 밸런스 PASS가 아니다.
 - 대량 밸런스 시뮬레이션은 계약만 있고 `NOT_RUN`이다.
 - 반복 또래 무인과 후보 15명의 정확한 이름·성별·외형·세부 소속·말투는 `REVERSIBLE_CONTENT_DETAIL`이다.
 - aggregate 비전투 예산은 기획상 교정됐지만 실제 15~22분/가독성/몰입 Human 증거는 `NOT_RUN`이다.
-- Android export preset 및 제품 Adapter 구현은 current Entry Gate가 허용하기 전 완료로 승격하지 않는다.
+- Android export preset 및 제품 Adapter 구현은 별도의 fresh platform Entry Gate가 허용하고 실제 검증하기 전 완료로 승격하지 않는다.
 - Android 실제 기기·터치·back·safe area·lifecycle·저장·성능 증거는 `NOT_RUN / BLOCKED_UNVERIFIED`다.
 - Windows visible local render·실물 입력·접근성 사용자·Release 성능은 자동 제품 검증과 별개다.
 - STEP 14 사람 검증은 `NOT_RUN`이다.
 - `TEN-IMG-001`은 chat exploration까지 수행·검토했으나 제품 자산이 아니며 새 이미지 생성은 사용자 명시 요청이 필요하다.
 - CI 공급망 mutable/stale action-pin 후속은 Issue #140에서 `RESOLVED / CLOSED_COMPLETED`; 현재 미해결 위험이 아니다.
 - `OBSERVATION_ANSWER_LEAK_RISK`는 직접 공개를 바꾸지 않은 채 사람 측정을 기다린다.
-- `product_implementation_authorized: false`를 유지한다.
+- `future_product_mutation_authorized: false`를 유지한다. 이는 이미 병합된 Phase I–VI를 부정하지 않고 **새 추가 mutation**만 차단한다.
 
 ## 상태 표현 규칙
 
