@@ -13,17 +13,18 @@ CAMPAIGN_PLAN = ROOT / "docs" / "superpowers" / "plans" / "2026-07-26-poc-campai
 class PocRetrySaveContractTests(unittest.TestCase):
     def setUp(self) -> None:
         self.run_state = json.loads((PLANNING / "poc_run_state_contract.json").read_text(encoding="utf-8"))
+        self.verification = json.loads((PLANNING / "poc_verification_contract.json").read_text(encoding="utf-8"))
         self.map_data = json.loads((PLANNING / "poc_map_rewards.json").read_text(encoding="utf-8"))
         self.plan = CAMPAIGN_PLAN.read_text(encoding="utf-8")
 
-    def test_retry_counter_is_not_rolled_back_by_pre_battle_snapshot(self) -> None:
+    def test_retry_counter_is_reapplied_after_snapshot_restore(self) -> None:
         snapshot = self.run_state["pre_battle_snapshot"]
         retry = self.run_state["defeat_retry"]
-        self.assertFalse(snapshot["includes_all_run_state_fields"])
-        self.assertIn("same_battle_retry_count", snapshot["excluded_run_state_fields"])
+        self.assertTrue(snapshot["includes_all_run_state_fields"])
         self.assertEqual("PRE_RETRY_COUNTER", retry["cost_basis"])
+        self.assertEqual("READ_BEFORE_CHARGE_AND_RESTORE", retry["counter_value_source"])
         self.assertEqual(
-            "READ_COUNTER_COMPUTE_COST_CHECK_BALANCE_CHARGE_RESTORE_ROLLBACK_FIELDS_INCREMENT_COUNTER_PERSIST",
+            "READ_COUNTER_COMPUTE_COST_CHECK_BALANCE_CHARGE_RESTORE_INCREMENT_COUNTER_PERSIST",
             retry["transition_order"],
         )
         self.assertEqual("PREVIOUS_PLUS_ONE_AFTER_RESTORE", retry["counter_update"])
@@ -52,10 +53,17 @@ class PocRetrySaveContractTests(unittest.TestCase):
         self.assertIn("54.5 / 69.5 / 84.5", self.plan)
 
     def test_route_verification_budget_is_fail_closed_at_1024_seeds(self) -> None:
-        generation = self.map_data["generation_contract"]
-        self.assertEqual(1024, generation["minimum_property_test_seed_count"])
+        route = self.verification["route_generation"]
+        self.assertEqual(1024, route["minimum_property_test_seed_count"])
+        self.assertEqual("NOT_RUN_UNTIL_RUNTIME_GENERATOR_EXISTS", route["current_runtime_evidence"])
         self.assertIn("1,024", self.plan)
         self.assertNotIn("at least ten seeds", self.plan)
+
+    def test_new_planning_contracts_are_canonically_pretty_printed(self) -> None:
+        for name in ("poc_run_state_contract.json", "poc_verification_contract.json"):
+            path = PLANNING / name
+            value = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(json.dumps(value, ensure_ascii=False, indent=2) + "\n", path.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":
