@@ -76,6 +76,16 @@ class PocRetrySaveContractTests(unittest.TestCase):
         self.assertNotIn("source_order", compatibility)
         self.assertNotIn("canonical_source_files", compatibility)
 
+    def test_save_implementation_plan_consumes_catalog_digest_contract(self) -> None:
+        for token in (
+            "runtime_catalog_digest",
+            "data/runtime/poc_runtime_catalog.json",
+            "RFC8785_JCS",
+            "INCOMPATIBLE_SAVE_CATALOG",
+            "implicit repair",
+        ):
+            self.assertIn(token, self.plan)
+
     def test_grade_rounding_owner_and_implementation_plan_agree(self) -> None:
         calculation = self.map_data["performance_grade"]["calculation"]
         self.assertEqual("ROUND_HALF_UP_PER_DIMENSION", calculation["rounding"])
