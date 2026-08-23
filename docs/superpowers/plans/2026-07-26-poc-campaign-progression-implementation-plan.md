@@ -108,9 +108,11 @@
 - Dimensions: five 0–100 scores.
 - Weights: 30/25/15/15/15.
 - Thresholds: S≥85, A≥70, B≥55, C≥0.
+- Rounding owner: `ROUND_HALF_UP_PER_DIMENSION`, matching `poc_map_rewards.json`; do not replace it with language/runtime-default rounding.
+- Boundary fixtures: `54.5 / 69.5 / 84.5` must be covered explicitly so half-step behavior cannot drift between the JSON owner, implementation, and tests.
 - `calculate(dimensions: Dictionary) -> Dictionary` returns rounded weighted score, clamped 0–100, and grade.
 
-- [ ] Test boundary values 84/85, 69/70, 54/55 and invalid negative/over-100 dimensions.
+- [ ] Test boundary values 84/85, 69/70, 54/55 plus `54.5 / 69.5 / 84.5`, and invalid negative/over-100 dimensions.
 - [ ] Test no direct round, stalemate, or hidden-plan penalty.
 - [ ] Implement and commit as `feat: calculate explainable duel grades`.
 
@@ -168,6 +170,6 @@
 
 - [ ] Run runtime catalog, retry, campaign catalog, flow, manual, reward, grade, growth, recovery, and serialization verifiers.
 - [ ] Run all runtime foundation and legacy combat regressions.
-- [ ] Execute a headless deterministic run from manual selection through duel 5 for at least ten seeds.
+- [ ] Execute a headless deterministic run from manual selection through duel 5 for at least `1,024` deterministic seeds when the runtime route generator exists; until then record `NOT_RUN`, never a static PASS.
 - [ ] Assert every run has 13–17 visits and every focused route reaches 38 before duel 5.
 - [ ] Record PASS/FAIL/NOT_RUN and return to REVIEW before presentation integration.
