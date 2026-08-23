@@ -110,6 +110,10 @@
   "save_compatibility": {
     "save_field": "runtime_catalog_digest",
     "digest_algorithm": "SHA256_CANONICAL_JSON",
+    "canonicalization_standard": "RFC8785_JCS",
+    "excluded_field_scope": "RECURSIVE_KEY_NAME",
+    "source_order": "CANONICAL_SOURCE_FILES_LIST_ORDER",
+    "catalog_digest_stream": "UTF8_FILENAME_NUL_CANONICAL_JSON_NUL_PER_SOURCE",
     "canonical_source_files": [
       "poc_martial_arts.json",
       "poc_enemy_duels.json",
