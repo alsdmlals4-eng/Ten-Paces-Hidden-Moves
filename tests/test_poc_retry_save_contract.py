@@ -17,6 +17,14 @@ class PocRetrySaveContractTests(unittest.TestCase):
         self.map_data = json.loads((PLANNING / "poc_map_rewards.json").read_text(encoding="utf-8"))
         self.plan = CAMPAIGN_PLAN.read_text(encoding="utf-8")
 
+    def test_retry_cost_schedule_is_explicit_from_zero_counter(self) -> None:
+        retry = self.run_state["defeat_retry"]
+        self.assertEqual(0, retry["counter_reset_value"])
+        self.assertEqual("MIN(PRE_RETRY_COUNTER_PLUS_ONE,COST_CAP)", retry["cost_formula"])
+        self.assertEqual([1, 2, 3], retry["permanent_currency_costs_same_battle"])
+        self.assertEqual(3, retry["cost_cap"])
+        self.assertEqual({"0": 1, "1": 2, "2": 3, "3": 3}, retry["cost_examples_by_pre_retry_counter"])
+
     def test_retry_counter_is_reapplied_after_snapshot_restore(self) -> None:
         snapshot = self.run_state["pre_battle_snapshot"]
         retry = self.run_state["defeat_retry"]
