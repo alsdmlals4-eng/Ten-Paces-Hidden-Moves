@@ -54,17 +54,27 @@ class PocRetrySaveContractTests(unittest.TestCase):
             "poc_balance_budget.json",
             "poc_run_state_contract.json",
         ):
-            self.assertIn(source, compatibility["canonical_source_files"])
+            self.assertIn(source, compatibility["planning_provenance_source_files"])
 
-    def test_save_catalog_digest_has_unambiguous_canonical_byte_stream(self) -> None:
+    def test_save_catalog_digest_targets_generated_runtime_semantics(self) -> None:
         compatibility = self.run_state["save_compatibility"]
-        self.assertEqual("RFC8785_JCS", compatibility["canonicalization_standard"])
-        self.assertEqual("RECURSIVE_KEY_NAME", compatibility["excluded_field_scope"])
-        self.assertEqual("CANONICAL_SOURCE_FILES_LIST_ORDER", compatibility["source_order"])
+        self.assertEqual("GENERATED_RUNTIME_CATALOG", compatibility["digest_subject"])
+        self.assertEqual("data/runtime/poc_runtime_catalog.json", compatibility["runtime_catalog_path"])
         self.assertEqual(
-            "UTF8_FILENAME_NUL_CANONICAL_JSON_NUL_PER_SOURCE",
+            "PROVENANCE_ONLY_NOT_DIGEST_INPUT",
+            compatibility["planning_source_files_role"],
+        )
+        self.assertEqual("RFC8785_JCS", compatibility["canonicalization_standard"])
+        self.assertEqual(
+            "GENERATED_RUNTIME_CATALOG_RECURSIVE_KEY_NAME",
+            compatibility["excluded_field_scope"],
+        )
+        self.assertEqual(
+            "RFC8785_JCS_UTF8_GENERATED_RUNTIME_CATALOG",
             compatibility["catalog_digest_stream"],
         )
+        self.assertNotIn("source_order", compatibility)
+        self.assertNotIn("canonical_source_files", compatibility)
 
     def test_grade_rounding_owner_and_implementation_plan_agree(self) -> None:
         calculation = self.map_data["performance_grade"]["calculation"]
