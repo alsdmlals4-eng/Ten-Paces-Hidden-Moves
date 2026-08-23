@@ -88,8 +88,16 @@
     ],
     "cost_cap": 3,
     "counter_reset": "WHEN_ENTERING_DIFFERENT_BATTLE",
+    "counter_reset_value": 0,
     "charge_order": "CHECK_BALANCE_THEN_CHARGE_THEN_RESTORE",
     "cost_basis": "PRE_RETRY_COUNTER",
+    "cost_formula": "MIN(PRE_RETRY_COUNTER_PLUS_ONE,COST_CAP)",
+    "cost_examples_by_pre_retry_counter": {
+      "0": 1,
+      "1": 2,
+      "2": 3,
+      "3": 3
+    },
     "counter_value_source": "READ_BEFORE_CHARGE_AND_RESTORE",
     "transition_order": "READ_COUNTER_COMPUTE_COST_CHECK_BALANCE_CHARGE_RESTORE_INCREMENT_COUNTER_PERSIST",
     "counter_update": "PREVIOUS_PLUS_ONE_AFTER_RESTORE",
