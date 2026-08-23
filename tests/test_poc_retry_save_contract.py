@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PLANNING = ROOT / "docs" / "planning-data"
 CAMPAIGN_PLAN = ROOT / "docs" / "superpowers" / "plans" / "2026-07-26-poc-campaign-progression-implementation-plan.md"
+WORKFLOW = ROOT / ".github" / "workflows" / "validate-poc-retry-save-contract.yml"
 
 
 class PocRetrySaveContractTests(unittest.TestCase):
@@ -16,6 +17,7 @@ class PocRetrySaveContractTests(unittest.TestCase):
         self.verification = json.loads((PLANNING / "poc_verification_contract.json").read_text(encoding="utf-8"))
         self.map_data = json.loads((PLANNING / "poc_map_rewards.json").read_text(encoding="utf-8"))
         self.plan = CAMPAIGN_PLAN.read_text(encoding="utf-8")
+        self.workflow = WORKFLOW.read_text(encoding="utf-8")
 
     def test_retry_cost_schedule_is_explicit_from_zero_counter(self) -> None:
         retry = self.run_state["defeat_retry"]
@@ -76,6 +78,16 @@ class PocRetrySaveContractTests(unittest.TestCase):
         self.assertEqual("NOT_RUN_UNTIL_RUNTIME_GENERATOR_EXISTS", route["current_runtime_evidence"])
         self.assertIn("1,024", self.plan)
         self.assertNotIn("at least ten seeds", self.plan)
+
+    def test_focused_workflow_watches_every_contract_consumed_by_the_test(self) -> None:
+        for path in (
+            "docs/planning-data/poc_run_state_contract.json",
+            "docs/planning-data/poc_map_rewards.json",
+            "docs/planning-data/poc_verification_contract.json",
+            "docs/superpowers/plans/2026-07-26-poc-campaign-progression-implementation-plan.md",
+            "tests/test_poc_retry_save_contract.py",
+        ):
+            self.assertGreaterEqual(self.workflow.count(path), 2, path)
 
     def test_new_planning_contracts_are_canonically_pretty_printed(self) -> None:
         for name in ("poc_run_state_contract.json", "poc_verification_contract.json"):
