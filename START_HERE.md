@@ -6,6 +6,7 @@
 최신 사용자 지시
 → 최신 Base completed main / Base root AGENTS.md
 → AGENTS.md
+→ docs/BASE_RULES_VERSION.md
 → docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md
 → [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
 → [기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md
@@ -16,7 +17,7 @@
 → exact Project Notion when human-facing planning/visual/state is relevant
 ```
 
-현행 통합 작업계약은 `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01` / `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`다.
+현행 통합 작업계약은 `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01` / `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`다. `docs/BASE_RULES_VERSION.md`는 Base v9.4.3 채택 pin을 current Base remote truth와 구분하기 위한 compatibility/adoption evidence entrypoint다.
 
 `skills/SKILL_REGISTRY.json`이 현재 프로젝트 고유 Skill authority다. `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`은 legacy compatibility reference이며 기본 cold-start에서 로드하지 않는다.
 
