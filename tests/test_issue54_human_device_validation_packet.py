@@ -54,6 +54,27 @@ class Issue54HumanDeviceValidationPacketTests(unittest.TestCase):
         ):
             self.assertIn(token, text)
 
+    def test_fresh_runtime_artifact_gate_is_explicit_and_fail_closed(self):
+        text = PACKET.read_text(encoding="utf-8")
+        for token in (
+            "FRESH_RUNTIME_ARTIFACT_GATE",
+            "PRIOR_ARTIFACT_EXISTENCE_IS_NOT_FRESH_EVIDENCE",
+            "STALE_ARTIFACT_FALSE_PASS",
+            "exact build/commit + run identity",
+            "artifact path + bytes/hash + run/build identity",
+            "INCONCLUSIVE_NOT_PASS",
+        ):
+            self.assertIn(token, text)
+
+        payload = json.loads(CONTRACT.read_text(encoding="utf-8"))
+        freshness = payload["runtime_artifact_freshness"]
+        self.assertEqual(freshness["gate"], "FRESH_RUNTIME_ARTIFACT_GATE")
+        self.assertEqual(freshness["status"], "REQUIRED_AT_EXECUTION")
+        self.assertFalse(freshness["prior_artifact_existence_is_fresh_evidence"])
+        self.assertTrue(freshness["require_exact_build_commit_and_run_identity"])
+        self.assertTrue(freshness["require_path_bytes_hash_and_run_build_identity"])
+        self.assertEqual(freshness["fresh_artifact_missing_result"], "INCONCLUSIVE_NOT_PASS")
+
     def test_structured_contract_is_machine_readable_and_non_promotional(self):
         payload = json.loads(CONTRACT.read_text(encoding="utf-8"))
         self.assertEqual(payload["issue_number"], 54)
