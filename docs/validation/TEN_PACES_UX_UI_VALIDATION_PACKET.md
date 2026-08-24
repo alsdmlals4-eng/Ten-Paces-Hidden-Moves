@@ -99,6 +99,16 @@ exact build/commit + run identity 고정
 
 오래된 branch SHA, PR merge-preview SHA, 과거 artifact를 current Human/device evidence로 재사용하지 않는다.
 
+### Exact-main Product Gate route
+
+`Validate Ten Manual Product Gate`의 exact-main route는 **PR #195**에서 병합됐다. route 설치 merge는 `020b5cabf3f5d8d950b089dfefdd9bd148333b8a`이며, 제품/runtime/export/evidence producer 관련 변경이 `main`에 들어오면 path-scoped `push` 실행 대상이 된다.
+
+확인된 최신 fresh CI 증거는 PR exact head `869b9cd54c778848638ac87721c1d1eb349d97cd`, run `32714634940`, Windows artifact `9515454613`, digest `sha256:a72a46df70005c6f5def8e05457a57957e3fd5b1af73969377700666cca080ae`다. 이 증거는 PR-head 검증이며 exact-main merge SHA의 push-run PASS와 동일하지 않다.
+
+현재 연결은 pull-request-triggered Actions run만 조회할 수 있어 route 설치 merge SHA의 실제 push-run 결과는 `UNVERIFIED_CONNECTOR_LIMIT`이다. 이후 실행에서는 Actions/Check evidence를 다시 조회하고 exact-main run identity와 fresh artifact가 실제 확인될 때만 PASS로 승격한다. 관측할 수 없거나 fresh output이 없으면 `UNVERIFIED_CONNECTOR_LIMIT` 또는 `INCONCLUSIVE_NOT_PASS`를 유지하며 **push-run PASS로 승격하지 않는다**.
+
+이 route의 CI 성공 여부는 자동 제품 증거 범위일 뿐 `Windows visible local`, `physical gamepad`, `Android actual device`, `accessibility user`, Human 이해·재미·가독성·몰입을 대신하지 않는다.
+
 ## 5. Windows visible local developer-owner pass
 
 실제 화면에서 최소 다음 경로를 완주한다.
