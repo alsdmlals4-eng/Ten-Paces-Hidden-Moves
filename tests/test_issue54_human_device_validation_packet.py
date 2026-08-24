@@ -44,6 +44,7 @@ class Issue54HumanDeviceValidationPacketTests(unittest.TestCase):
             "accessibility user",
             "Human fun/readability/immersion",
             "5명 중 4명 이상",
+            "15명 상대 식별성",
             "focused",
             "selected",
             "[합]",
@@ -65,10 +66,18 @@ class Issue54HumanDeviceValidationPacketTests(unittest.TestCase):
         self.assertEqual(payload["android_physical_device"], "NOT_RUN")
         self.assertEqual(payload["accessibility_user"], "NOT_RUN")
         self.assertEqual(payload["human_fun_readability_immersion"], "NOT_RUN")
+        self.assertEqual(payload["fifteen_opponent_identifiability"], "NOT_RUN")
         self.assertEqual(payload["release_performance"], "NOT_RUN")
         self.assertEqual(payload["shared_player_ai_martial_pool"]["enemy_exclusive_manuals_allowed"], False)
         self.assertEqual(payload["shared_player_ai_martial_pool"]["enemy_exclusive_techniques_allowed"], False)
         self.assertEqual(payload["shared_player_ai_martial_pool"]["remaining_four_acquisition_paths"], "NOT_ASSERTED_IMPLEMENTED")
+
+        close_requirements = payload["close_issue_only_when"]
+        self.assertIn("physical_gamepad_has_real_evidence", close_requirements)
+        self.assertIn("accessibility_user_has_real_evidence", close_requirements)
+        self.assertIn("fifteen_opponent_identifiability_has_real_evidence", close_requirements)
+        self.assertFalse(any("declared_shipping" in item for item in close_requirements))
+        self.assertFalse(any("explicit_release_scope_decision" in item for item in close_requirements))
 
 
 if __name__ == "__main__":
