@@ -125,6 +125,19 @@ function Write-JsonUtf8([string]$Path, [object]$Payload) {
     [IO.File]::WriteAllText($Path, $json + "`n", $utf8NoBom)
 }
 
+function Stop-ChildProcessSafely([object]$Process, [string]$Reason) {
+    if ($null -eq $Process) { return }
+    try {
+        if (-not $Process.HasExited) {
+            $Process.Kill()
+            $Process.WaitForExit(3000) | Out-Null
+        }
+    }
+    catch {
+        Write-Warning "$Reason cleanup warning: $($_.Exception.Message)"
+    }
+}
+
 $projectRoot = Resolve-Root (Join-Path $PSScriptRoot "..") "ProjectRoot"
 $projectHead = Assert-ExactRemoteMain $projectRoot "LOCAL_HEAD_MUST_EQUAL_REMOTE_MAIN"
 $baseRootResolved = Resolve-Base $BaseRoot $projectRoot
@@ -211,16 +224,34 @@ if (-not (Test-Path -LiteralPath $qaPython -PathType Leaf)) {
     if ($LASTEXITCODE -ne 0) { throw "QA_STUDIO_VENV_CREATE_FAILED" }
 }
 
-$baseMarker = Join-Path $venvRoot "installed-base-main-sha.txt"
-$installedBase = ""
-if (Test-Path -LiteralPath $baseMarker -PathType Leaf) {
-    $installedBase = (Get-Content -LiteralPath $baseMarker -Raw).Trim()
+$baseIdentityMarker = Join-Path $venvRoot "installed-base-identity.json"
+$installedBaseIdentity = $null
+if (Test-Path -LiteralPath $baseIdentityMarker -PathType Leaf) {
+    try {
+        $installedBaseIdentity = Get-Content -LiteralPath $baseIdentityMarker -Raw | ConvertFrom-Json
+    }
+    catch {
+        $installedBaseIdentity = $null
+    }
 }
-if ($installedBase -ne $baseHead) {
+$baseInstallMatches = $false
+if ($null -ne $installedBaseIdentity) {
+    $sameRoot = [string]::Equals(
+        [string]$installedBaseIdentity.base_root,
+        $baseRootResolved,
+        [StringComparison]::OrdinalIgnoreCase
+    )
+    $sameCommit = ([string]$installedBaseIdentity.base_main_commit -eq $baseHead)
+    $baseInstallMatches = ($sameRoot -and $sameCommit)
+}
+if (-not $baseInstallMatches) {
     $qaPackage = Join-Path $baseRootResolved "tools\qa-evidence-studio"
     & $qaPython -m pip install --disable-pip-version-check -e $qaPackage
     if ($LASTEXITCODE -ne 0) { throw "QA_EVIDENCE_STUDIO_INSTALL_FAILED" }
-    [IO.File]::WriteAllText($baseMarker, $baseHead + "`n", (New-Object System.Text.UTF8Encoding $false))
+    Write-JsonUtf8 $baseIdentityMarker ([ordered]@{
+        base_root = $baseRootResolved
+        base_main_commit = $baseHead
+    })
 }
 
 $startupFile = Join-Path $runRoot "qa-startup.json"
@@ -251,17 +282,30 @@ for ($i = 0; $i -lt 100; $i++) {
     Start-Sleep -Milliseconds 100
 }
 if ($null -eq $startup) {
-    try { if (-not $qaProcess.HasExited) { $qaProcess.Kill() } } catch { }
+    Stop-ChildProcessSafely $qaProcess "QA_EVIDENCE_STUDIO_STARTUP_TIMEOUT"
     throw "QA_EVIDENCE_STUDIO_STARTUP_TIMEOUT"
 }
 $qaUrl = "http://127.0.0.1:$($startup.port)"
 
 $gameProcess = $null
-if (-not $SkipGameLaunch) {
-    $gameProcess = Start-Process -FilePath $exePath -WorkingDirectory $productDir -PassThru
+try {
+    if (-not $SkipGameLaunch) {
+        $gameProcess = Start-Process -FilePath $exePath -WorkingDirectory $productDir -PassThru
+    }
 }
+catch {
+    Write-Warning "QA_PROCESS_CLEANUP_AFTER_GAME_LAUNCH_FAILURE"
+    Stop-ChildProcessSafely $qaProcess "QA_PROCESS_CLEANUP_AFTER_GAME_LAUNCH_FAILURE"
+    throw
+}
+
 if (-not $SkipBrowser) {
-    Start-Process $qaUrl | Out-Null
+    try {
+        Start-Process $qaUrl | Out-Null
+    }
+    catch {
+        Write-Warning "BROWSER_OPEN_FAILED: $($_.Exception.Message)"
+    }
 }
 
 $manifestPath = Join-Path $runRoot "issue54-human-validation-launch.json"
@@ -289,6 +333,8 @@ $manifest = [ordered]@{
         url = $qaUrl
         process_id = $qaProcess.Id
         startup_file = $startupFile
+        base_root = $baseRootResolved
+        base_main_commit = $baseHead
     }
     game_process_id = $(if ($gameProcess) { $gameProcess.Id } else { $null })
     result = "HUMAN_DEVICE_STATUS_REMAINS_NOT_RUN_UNTIL_REVIEW"
