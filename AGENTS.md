@@ -7,6 +7,7 @@
 ```text
 사용자의 최신 명시 지시
 → 보안·플랫폼 제약 + 이 AGENTS.md
+→ docs/BASE_RULES_VERSION.md
 → docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md
    / TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01
 → [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
@@ -18,7 +19,7 @@
 → 검증된 외부 근거 → 추론 → 역사 자료
 ```
 
-실제 구현과 승인 정본이 다르면 자동으로 한쪽을 진실로 만들지 않고 `CANON_CONFLICT`로 판정한다.
+`docs/BASE_RULES_VERSION.md`는 Base v9.4.3 채택 pin과 current Base remote owner를 구분하는 compatibility/adoption evidence entrypoint다. 실제 구현과 승인 정본이 다르면 자동으로 한쪽을 진실로 만들지 않고 `CANON_CONFLICT`로 판정한다.
 
 ## 2. DOMAIN SPLIT
 
