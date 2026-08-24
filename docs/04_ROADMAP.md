@@ -30,9 +30,11 @@ product_implementation_merge_commit: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90
 merged_product_pr: 92
 product_validation_authority: TEN_MANUAL_PRODUCT_VALIDATION_GATE
 product_validation_result: PARTIAL_AUTOMATED_COMPLETE
+platform_adapter_merge_commit: 023385d372d127044d48afcb50e6f232ab9ffaa1
+merged_platform_adapter_pr: 102
 ```
 
-첫 5전 Vertical Slice Phase I–VI의 최신 구현 상태와 이후 제품 mutation 권한은 Active Context/current user planning status에서 읽는다. 기존 구현 완료를 향후 Android/UX/경제/저장/콘텐츠 변경의 자동 승인으로 재사용하지 않는다.
+PR #92와 PR #102는 재현 가능한 병합 계보이며 현재 active PR이 아니다. 첫 5전 Vertical Slice Phase I–VI의 최신 구현 상태와 이후 제품 mutation 권한은 Active Context/current user planning status에서 읽는다. 기존 구현 완료를 향후 Android/UX/경제/저장/콘텐츠 변경의 자동 승인으로 재사용하지 않는다.
 
 ## 2. 프로젝트 코어 확정
 
