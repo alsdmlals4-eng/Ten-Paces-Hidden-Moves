@@ -2,6 +2,8 @@ extends SceneTree
 
 const CATALOG_SCRIPT_PATH := "res://src/run/vertical_slice_opponent_catalog.gd"
 const DATA_PATH := "res://data/run/vertical_slice_opponents.json"
+const MANUAL_MANIFEST_PATH := "res://data/cards/martial_manual_cards.json"
+const SHARED_POOL_CONTRACT_PATH := "res://docs/planning-data/approved_20260824_shared_player_ai_martial_pool_contract.json"
 const MANUAL_REGISTRY_SCRIPT := preload("res://src/combat/martial_manual_registry.gd")
 const RUN_STATE_SCRIPT := preload("res://src/run/vertical_slice_run_state.gd")
 const BASIC_CARDS_PATH := "res://data/cards/basic_cards.json"
@@ -27,6 +29,7 @@ func _run() -> void:
     var catalog = catalog_script.new()
     _expect_true(catalog.is_valid(), "Opponent catalog must load without errors: %s" % str(catalog.load_errors))
     _verify_catalog_shape(catalog)
+    _verify_shared_player_ai_martial_pool(catalog)
     _verify_runtime_ids(catalog)
     _verify_selection_binding(catalog)
     _verify_run_lock_flow(catalog)
@@ -89,6 +92,76 @@ func _verify_catalog_shape(catalog) -> void:
         _expect_true((candidate.get("basic_action_focus_ids", []) as Array).size() >= 1, "Candidate must reference at least one existing basic action: %s" % candidate_id)
 
     _expect_eq(manual_ids.size(), 10, "The 15-candidate slice must reuse all ten existing manual IDs at least once.")
+
+
+func _verify_shared_player_ai_martial_pool(catalog) -> void:
+    var manifest_file := FileAccess.open(MANUAL_MANIFEST_PATH, FileAccess.READ)
+    _expect_true(manifest_file != null, "Martial manual runtime manifest must be readable for shared-pool validation.")
+    if manifest_file == null:
+        return
+    var manifest_parsed = JSON.parse_string(manifest_file.get_as_text())
+    _expect_true(typeof(manifest_parsed) == TYPE_DICTIONARY, "Martial manual runtime manifest must parse as a Dictionary.")
+    if typeof(manifest_parsed) != TYPE_DICTIONARY:
+        return
+    var manifest := manifest_parsed as Dictionary
+
+    var contract_file := FileAccess.open(SHARED_POOL_CONTRACT_PATH, FileAccess.READ)
+    _expect_true(contract_file != null, "Shared player/AI martial-pool contract must be readable.")
+    if contract_file == null:
+        return
+    var contract_parsed = JSON.parse_string(contract_file.get_as_text())
+    _expect_true(typeof(contract_parsed) == TYPE_DICTIONARY, "Shared player/AI martial-pool contract must parse as a Dictionary.")
+    if typeof(contract_parsed) != TYPE_DICTIONARY:
+        return
+    var contract := contract_parsed as Dictionary
+
+    _expect_eq(str(contract.get("decision_id", "")), "TEN-DEC-20260824-SHARED-PLAYER-AI-MARTIAL-POOL-01", "Shared martial-pool Decision authority must stay fixed.")
+    _expect_eq(str(contract.get("availability_policy", "")), "PLAYER_LEARNABLE_SHARED_WITH_AI", "Martial manuals must be a player-learnable shared pool rather than an enemy-only pool.")
+    _expect_false(bool(contract.get("enemy_exclusive_manuals_allowed", true)), "Enemy-exclusive martial manuals are forbidden.")
+    _expect_false(bool(contract.get("enemy_exclusive_techniques_allowed", true)), "Enemy-exclusive martial techniques are forbidden.")
+    _expect_true(bool(contract.get("same_manual_same_mastery_same_card_ids_and_effects", false)), "Player and AI must share the same card IDs/effects for the same manual and mastery.")
+    _expect_eq(str(contract.get("unlock_authority", "")), "MartialManualRegistry.build_unlocked_cards(manual_id, mastery)", "Player and AI must use the same martial unlock authority.")
+
+    var files_value = manifest.get("manual_files", {})
+    _expect_true(typeof(files_value) == TYPE_DICTIONARY, "Martial manual manifest manual_files must be a Dictionary.")
+    if typeof(files_value) != TYPE_DICTIONARY:
+        return
+    var manual_files := files_value as Dictionary
+
+    var learnable_value = contract.get("player_learnable_manual_ids", [])
+    _expect_true(typeof(learnable_value) == TYPE_ARRAY, "player_learnable_manual_ids must be an Array.")
+    if typeof(learnable_value) != TYPE_ARRAY:
+        return
+    var learnable_ids := {}
+    for manual_id_value in learnable_value as Array:
+        var manual_id := str(manual_id_value)
+        _expect_false(manual_id.is_empty(), "Player-learnable manual ID may not be empty.")
+        _expect_false(learnable_ids.has(manual_id), "Player-learnable manual IDs must be unique: %s" % manual_id)
+        learnable_ids[manual_id] = true
+
+    _expect_eq(learnable_ids.size(), manual_files.size(), "Every current martial manual must remain player-learnable when acquired.")
+    for manual_key in manual_files.keys():
+        var manual_id := str(manual_key)
+        _expect_true(learnable_ids.has(manual_id), "Current martial manual must be player-learnable: %s" % manual_id)
+    for learnable_key in learnable_ids.keys():
+        _expect_true(manual_files.has(str(learnable_key)), "Player-learnable martial pool may not invent a manual outside the runtime registry: %s" % str(learnable_key))
+
+    var starter_value = contract.get("current_vertical_slice_starter_manual_ids", [])
+    _expect_true(typeof(starter_value) == TYPE_ARRAY, "Current starter manual IDs must be an Array.")
+    if typeof(starter_value) == TYPE_ARRAY:
+        var starter_ids := starter_value as Array
+        _expect_eq(starter_ids.size(), 6, "Current Vertical Slice starter selection must remain six manuals.")
+        for starter_id_value in starter_ids:
+            _expect_true(learnable_ids.has(str(starter_id_value)), "Every starter manual must be in the player-learnable shared pool: %s" % str(starter_id_value))
+
+    var acquisition = contract.get("acquisition_evidence_ceiling", {}) as Dictionary
+    _expect_eq(str(acquisition.get("remaining_four_player_acquisition_paths", "")), "NOT_ASSERTED_IMPLEMENTED", "Shared-pool eligibility must not overclaim the remaining four acquisition paths.")
+
+    for value in catalog.get_all_candidates():
+        var candidate := value as Dictionary
+        var candidate_id := str(candidate.get("candidate_id", ""))
+        var manual_id := str(candidate.get("signature_manual_id", ""))
+        _expect_true(learnable_ids.has(manual_id), "Opponent may only use a player-learnable faction manual: %s -> %s" % [candidate_id, manual_id])
 
 
 func _verify_runtime_ids(catalog) -> void:
@@ -165,7 +238,7 @@ func _verify_run_lock_flow(catalog) -> void:
     _expect_true(run.mark_combat_finished({"outcome": "win", "duel_index": 1}), "Duel 1 terminal result must enter REVIEW.")
     _expect_true(run.advance(), "REVIEW → RESULT")
     _expect_eq(run.get_current_screen(), "RESULT", "Run must be at RESULT before next-opponent lock transition.")
-    _expect_true(run.get_route_target_opponent().is_empty(), "Next opponent must not be route-visible before Result is confirmed/left.")
+    _expect_true(run.get_route_target_opponent().is_empty(), "Next opponent must not be route-visible before Duel 1 result settlement.")
     _expect_false(run.advance(), "Result without a reward receipt may not lock or reveal the next opponent.")
     _expect_true(run.get_route_target_opponent().is_empty(), "Blocked Result advance must not pre-lock the next opponent.")
     _expect_true(run.set_pending_result_reward({"reward_type": "free_training", "free_training": 6}), "Result must accept one valid reward receipt before Route.")
