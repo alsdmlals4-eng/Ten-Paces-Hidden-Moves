@@ -8,7 +8,7 @@
 
 이 문서는 **장기 로드맵·제품 증거 계보·다음 Gate의 순서**를 소유한다. 활성 PR, exact HEAD, 현재 Work Mode, 승인 수, 현재 stage, 다음 package/Decision 같은 mutable operating checkpoint는 복제하지 않는다. 작업 재개 시 Active Context/current JSON/GitHub live metadata/exact Project Notion을 fresh-read한다.
 
-## 1. 상태 읽기와 보존된 구현 계보
+## 1. 현재 단계 — 상태 읽기와 보존된 구현 계보
 
 현재 상태는 이 문서 안의 스냅샷으로 판정하지 않는다.
 
