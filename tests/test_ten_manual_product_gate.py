@@ -117,7 +117,7 @@ class TenManualProductGateTests(unittest.TestCase):
             ROOT / ".github/workflows/validate-ten-manual-product-gate.yml"
         ).read_text(encoding="utf-8")
         self.assertIn("on:\n  push:\n    branches: [main]", workflow)
-        for path in (
+        required_paths = (
             "project.godot",
             "export_presets.cfg",
             "data/**",
@@ -127,10 +127,18 @@ class TenManualProductGateTests(unittest.TestCase):
             "addons/**",
             "scripts/windows/**",
             "tools/validate_ten_manual_product_gate.py",
-            "tests/**",
+            "tests/test_ten_manual_product_gate.py",
+            "tests/verify_ten_manual_product_gate.gd",
+            "tests/verify_ten_manual_product_viewports.gd",
+            "tests/verify_combat_keyboard_accessibility.gd",
+            "tests/verify_combat_focus_order.gd",
+            "tests/verify_combat_layout_accessibility.gd",
+            "tests/verify_combat_action_selection_integration.gd",
             ".github/workflows/validate-ten-manual-product-gate.yml",
-        ):
+        )
+        for path in required_paths:
             self.assertIn(f'      - "{path}"', workflow)
+        self.assertNotIn('      - "tests/**"', workflow)
         self.assertIn("workflow_dispatch:", workflow)
         self.assertIn(
             "PR_NUMBER: ${{ github.event.pull_request.number || 0 }}",
