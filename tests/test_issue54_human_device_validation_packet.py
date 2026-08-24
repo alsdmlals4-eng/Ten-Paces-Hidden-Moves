@@ -75,6 +75,41 @@ class Issue54HumanDeviceValidationPacketTests(unittest.TestCase):
         self.assertTrue(freshness["require_path_bytes_hash_and_run_build_identity"])
         self.assertEqual(freshness["fresh_artifact_missing_result"], "INCONCLUSIVE_NOT_PASS")
 
+    def test_exact_main_product_evidence_route_is_structured_and_non_promotional(self):
+        text = PACKET.read_text(encoding="utf-8")
+        for token in (
+            "Validate Ten Manual Product Gate",
+            "PR #195",
+            "UNVERIFIED_CONNECTOR_LIMIT",
+            "push-run PASS로 승격하지 않는다",
+        ):
+            self.assertIn(token, text)
+
+        payload = json.loads(CONTRACT.read_text(encoding="utf-8"))
+        route = payload["exact_main_product_evidence_route"]
+        self.assertEqual(route["status"], "ACTIVE")
+        self.assertEqual(
+            route["workflow"],
+            ".github/workflows/validate-ten-manual-product-gate.yml",
+        )
+        self.assertEqual(route["route_merge_pr"], 195)
+        self.assertEqual(
+            route["route_merge_sha"],
+            "020b5cabf3f5d8d950b089dfefdd9bd148333b8a",
+        )
+        self.assertEqual(route["last_exact_main_push_observation"], "UNVERIFIED_CONNECTOR_LIMIT")
+        self.assertEqual(
+            route["latest_verified_pr_head"],
+            "869b9cd54c778848638ac87721c1d1eb349d97cd",
+        )
+        self.assertEqual(route["latest_verified_pr_run_id"], 32714634940)
+        self.assertEqual(route["latest_verified_windows_artifact_id"], 9515454613)
+        self.assertEqual(
+            route["latest_verified_windows_artifact_digest"],
+            "sha256:a72a46df70005c6f5def8e05457a57957e3fd5b1af73969377700666cca080ae",
+        )
+        self.assertFalse(route["push_observation_promotes_human_or_device_pass"])
+
     def test_structured_contract_is_machine_readable_and_non_promotional(self):
         payload = json.loads(CONTRACT.read_text(encoding="utf-8"))
         self.assertEqual(payload["issue_number"], 54)
