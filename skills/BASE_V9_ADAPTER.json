@@ -18,7 +18,7 @@
     "version": "9.4.3"
   },
   "canonical_source": "skills/PROJECT_BASE_ADAPTER.json",
-  "canonical_source_sha256": "5b599197004de414236f7226e76de63f361ba880c5e3f3c46dc39873efaa8236",
+  "canonical_source_sha256": "8a3fec9795a635554f5e06e953d0050baac34d36cfbbce62f15c419a400d2477",
   "generated": true,
   "hash_definition": "RAW_FILE_BYTES_SHA256",
   "legacy_source": "docs/archive/base-v9-legacy-inputs/BASE_V9_ADAPTER.json",
@@ -31,6 +31,7 @@
   },
   "project": {
     "engine": "Godot 4.7",
+    "project_id": "ten-paces-hidden-moves",
     "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
     "root": "."
   },
