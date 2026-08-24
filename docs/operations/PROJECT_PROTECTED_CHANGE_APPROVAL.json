@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "b35112592e608cd974411bafe07ef5e37ab866b2",
+  "decision_ids": [
+    "TEN-DEC-20260824-SHARED-PLAYER-AI-MARTIAL-POOL-01"
+  ],
+  "approved_paths": [
+    "data/cards/martial_manual_cards.json"
+  ],
+  "approval_source": "User explicit approval in ChatGPT on 2026-08-24: '좋아 진행해' and 'Ai들은 새로운 무공을 쓰는게 아니라 사용자도 배우면 사용가능한 문파의 무공서의 기술을 쓰는 것 잊지말고'",
+  "approval_time": "2026-08-24T08:51:55Z",
+  "scope_summary": "Declare the existing ten martial manuals as a player-learnable pool shared with AI and forbid enemy-exclusive manuals/techniques; no card IDs, effects, opponent assignments, mastery seeds, AI planner logic, or balance values change."
+}
