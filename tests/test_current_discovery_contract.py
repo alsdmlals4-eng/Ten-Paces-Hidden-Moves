@@ -5,6 +5,8 @@ import re
 import unittest
 from pathlib import Path
 
+from tests.test_issue54_human_device_validation_packet import Issue54HumanDeviceValidationPacketTests
+
 
 ROOT = Path(__file__).resolve().parents[1]
 FULL_SHA = re.compile(r"^[0-9a-f]{40}$")

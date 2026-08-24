@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "issue_number": 54,
+  "status": "READY_FOR_HUMAN_DEVICE_EXECUTION",
+  "runtime_mutation_authorized": false,
+  "prepared_from_main": "b24a312de158672e66844bd75cc764f9edef8545",
+  "owners": {
+    "fixture_catalog": "docs/validation/TEN_PACES_UX_UI_FIXTURE_CATALOG.md",
+    "execution_packet": "docs/validation/TEN_PACES_UX_UI_VALIDATION_PACKET.md",
+    "local_automated_receipt": "tools/collect_godot_live_evidence.ps1",
+    "windows_human_evidence": "Base/tools/qa-evidence-studio"
+  },
+  "evidence_rule": "AUTOMATED_EVIDENCE_DOES_NOT_PROMOTE_HUMAN_OR_DEVICE_PASS",
+  "runtime_artifact_freshness": {
+    "gate": "FRESH_RUNTIME_ARTIFACT_GATE",
+    "status": "REQUIRED_AT_EXECUTION",
+    "prior_artifact_existence_is_fresh_evidence": false,
+    "require_exact_build_commit_and_run_identity": true,
+    "require_path_bytes_hash_and_run_build_identity": true,
+    "fresh_artifact_missing_result": "INCONCLUSIVE_NOT_PASS",
+    "execution_rule": "REFETCH_CURRENT_BASE_AND_REGENERATE_REPRODUCIBLE_TRANSIENT_ARTIFACTS_FOR_THE_EXACT_TEST_RUN"
+  },
+  "human_validation": {
+    "target_participants": 5,
+    "pass_threshold": 4,
+    "status": "NOT_RUN",
+    "required_understanding": [
+      "cost_range_target_or_slot_failure_reason",
+      "focused_selected_cancel_distinction",
+      "clash_cause_result_next_plan_link"
+    ]
+  },
+  "windows_visible_local_usability": "NOT_RUN",
+  "physical_gamepad": "NOT_RUN",
+  "android_physical_device": "NOT_RUN",
+  "android_readiness": "BLOCKED_ANDROID_EXPORT_PRESET_NOT_PRESENT",
+  "accessibility_user": "NOT_RUN",
+  "human_fun_readability_immersion": "NOT_RUN",
+  "fifteen_opponent_identifiability": "NOT_RUN",
+  "release_performance": "NOT_RUN",
+  "final_visual_vfx_audio_acceptance": "NOT_RUN",
+  "current_export_preset_observation": {
+    "source": "export_presets.cfg",
+    "windows_desktop_preset_present": true,
+    "android_preset_present": false,
+    "observation_rule": "REFETCH_EXACT_CURRENT_MAIN_BEFORE_DEVICE_EXECUTION"
+  },
+  "shared_player_ai_martial_pool": {
+    "decision_id": "TEN-DEC-20260824-SHARED-PLAYER-AI-MARTIAL-POOL-01",
+    "availability_policy": "PLAYER_LEARNABLE_SHARED_WITH_AI",
+    "enemy_exclusive_manuals_allowed": false,
+    "enemy_exclusive_techniques_allowed": false,
+    "remaining_four_acquisition_paths": "NOT_ASSERTED_IMPLEMENTED",
+    "human_failure_code": "BAD_CONTENT_ASYMMETRY"
+  },
+  "fixture_ids": [
+    "VALID_SELECTION",
+    "RANGE_INSUFFICIENT",
+    "RESOURCE_INSUFFICIENT",
+    "INVALID_TARGET",
+    "SLOT_COLLISION",
+    "PLAN_ORDER_CHANGES_RESULT",
+    "CLASH_CAUSAL_CHAIN",
+    "LONG_KOREAN_TEXT",
+    "CONFIRMED_VS_UNCERTAIN_INTENT",
+    "SHARED_PLAYER_AI_MARTIAL_POOL"
+  ],
+  "close_issue_only_when": [
+    "windows_visible_local_required_checks_have_real_evidence",
+    "mouse_keyboard_core_path_has_real_evidence",
+    "physical_gamepad_has_real_evidence",
+    "human_core_understanding_threshold_is_met",
+    "accessibility_user_has_real_evidence",
+    "android_target_has_actual_device_evidence_after_an_authorized_android_artifact_exists",
+    "fifteen_opponent_identifiability_has_real_evidence",
+    "critical_information_or_content_asymmetry_defects_are_zero",
+    "final_visual_vfx_audio_acceptance_is_resolved",
+    "release_performance_is_resolved_at_release_gate"
+  ]
+}
