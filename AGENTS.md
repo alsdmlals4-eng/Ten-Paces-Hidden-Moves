@@ -12,6 +12,7 @@
    / TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01
 → [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
 → current planning JSON + GitHub live metadata + exact Project Notion
+→ skills/SKILL_REGISTRY.json
 → 최신 관련 Decision + 질문별 책임 원본
 → 실제 code/data/scene/resource/asset/test/runtime
 → 프로젝트 compatibility/adoption pin
@@ -19,7 +20,7 @@
 → 검증된 외부 근거 → 추론 → 역사 자료
 ```
 
-`docs/BASE_RULES_VERSION.md`는 Base v9.4.3 채택 pin과 current Base remote owner를 구분하는 compatibility/adoption evidence entrypoint다. 실제 구현과 승인 정본이 다르면 자동으로 한쪽을 진실로 만들지 않고 `CANON_CONFLICT`로 판정한다.
+`docs/BASE_RULES_VERSION.md`는 Base v9.4.3 채택 pin과 current Base remote owner를 구분하는 compatibility/adoption evidence entrypoint다. `skills/SKILL_REGISTRY.json`이 현재 project-local Skill authority이며 legacy registry는 기본 자동 discovery 대상이 아니다. 실제 구현과 승인 정본이 다르면 자동으로 한쪽을 진실로 만들지 않고 `CANON_CONFLICT`로 판정한다.
 
 ## 2. DOMAIN SPLIT
 
@@ -36,7 +37,7 @@
 - `PLAN`: 요구·근거·대안·설계·Decision.
 - `BUILD`: 승인된 범위의 구현.
 - `REVIEW`: 정본·실제 변경·untouched consumer·test·readback을 적대적으로 검토.
-- Registry trigger로 필요한 최소 Skill과 **Skill Mode**만 사용한다.
+- `skills/SKILL_REGISTRY.json` trigger로 필요한 최소 Skill과 **Skill Mode**만 사용한다.
 - L1 이상 작업은 `기준 SHA / Work Mode / Skill / Skill Mode / 수행 / 결과 / 증거 / 미검증`을 `execution-report`에 남긴다.
 - 경로·ID·Schema·정본 변경은 `reference-freshness`로 활성 consumer와 파생본을 확인한다.
 - `진행해`/`계속해`는 이미 승인된 같은 계약의 continuation이며 새 코어·범위·비용 권한을 만들지 않는다.
