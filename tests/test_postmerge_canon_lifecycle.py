@@ -34,6 +34,15 @@ TARGETS = [
     "docs/research/STEP14_REPEAT_POC_RESULTS_TEMPLATE.md",
     "docs/planning-data/current_operating_state.json",
 ]
+OPERATING_KEYS = (
+    "active_planning_work_mode",
+    "active_planning_pr",
+    "active_planning_parent_pr",
+    "active_approval_count",
+    "active_decision_state",
+    "next_package",
+    "next_planning_decision",
+)
 
 
 def load_validator():
@@ -69,8 +78,8 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
         validator = load_validator()
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); copy_fixture(root)
-            for relative in TARGETS[:2]:
-                p = root / relative; p.write_text(replace_scalar(p.read_text(encoding="utf-8"), "active_planning_pr", "87"), encoding="utf-8")
+            p = root / TARGETS[0]
+            p.write_text(replace_scalar(p.read_text(encoding="utf-8"), "active_planning_pr", "87"), encoding="utf-8")
             with self.assertRaisesRegex(validator.CanonLifecycleError, "active planning PR"):
                 validator.validate(root)
 
@@ -85,20 +94,20 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
             with self.assertRaisesRegex(validator.CanonLifecycleError, "active planning PR"):
                 validator.validate(root)
 
-    def test_active_context_and_roadmap_must_share_checkpoint(self) -> None:
-        validator = load_validator()
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory); copy_fixture(root)
-            p = root / TARGETS[1]; p.write_text(replace_scalar(p.read_text(encoding="utf-8"), "active_planning_parent_pr", "999"), encoding="utf-8")
-            with self.assertRaisesRegex(validator.CanonLifecycleError, "operating checkpoint mismatch"):
-                validator.validate(root)
+    def test_roadmap_does_not_duplicate_mutable_operating_checkpoint(self) -> None:
+        roadmap = (ROOT / TARGETS[1]).read_text(encoding="utf-8")
+        for key in OPERATING_KEYS:
+            self.assertIsNone(
+                re.search(rf"(?m)^{re.escape(key)}:\s*", roadmap),
+                f"roadmap duplicates mutable operating checkpoint: {key}",
+            )
 
     def test_product_validation_state_cannot_revert_to_ui_ai(self) -> None:
         validator = load_validator()
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); copy_fixture(root)
-            for relative in TARGETS[:2]:
-                p = root / relative; p.write_text(replace_scalar(p.read_text(encoding="utf-8"), "active_decision_state", "TEN_MANUAL_UI_AI_ADOPTED"), encoding="utf-8")
+            p = root / TARGETS[0]
+            p.write_text(replace_scalar(p.read_text(encoding="utf-8"), "active_decision_state", "TEN_MANUAL_UI_AI_ADOPTED"), encoding="utf-8")
             with self.assertRaisesRegex(validator.CanonLifecycleError, "active decision state"):
                 validator.validate(root)
 
