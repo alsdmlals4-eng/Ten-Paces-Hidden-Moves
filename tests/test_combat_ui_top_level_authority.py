@@ -7,24 +7,34 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class CombatUiTopLevelAuthorityTests(unittest.TestCase):
-    def test_agents_core_uses_current_public_start_distance_and_labels_legacy_coordinates(self) -> None:
+    def test_agents_core_uses_public_distance_without_runtime_snapshot_duplication(self) -> None:
         text = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
-        core = text.split("## 5. 프로젝트 코어", 1)[1].split("## 6. 행동 선택 계약", 1)[0]
-
-        self.assertIn("시작 공개 거리 2", core)
-        self.assertIn("4/7 시작 좌표는 `IMPLEMENTED_LEGACY`", core)
-        self.assertNotIn("플레이어 4번·상대 7번 시작.", core)
-
-    def test_base_rules_project_contract_uses_public_distance_and_labels_runtime_legacy(self) -> None:
-        text = (ROOT / "docs/BASE_RULES_VERSION.md").read_text(encoding="utf-8")
-        core = text.split("## 6. 프로젝트 고유 계약", 1)[1].split(
-            "## 7. 현재 프로젝트 상태와 검증", 1
+        core = text.split("## 5. 프로젝트 코어", 1)[1].split(
+            "## 6. 행동 선택·화면·플랫폼 보호", 1
         )[0]
 
         self.assertIn("시작 공개 거리 2", core)
-        self.assertIn("4/7 시작 좌표는 `IMPLEMENTED_LEGACY`", core)
-        self.assertIn("새 절대 시작 좌표는 `IMPLEMENTATION_BINDING_PENDING`", core)
-        self.assertNotIn("플레이어 4번·상대 7번 시작과 거리 0 `[밀착]`.", core)
+        self.assertNotIn("플레이어 4번·상대 7번", core)
+        self.assertNotIn("플레이어4/상대7", core)
+        self.assertNotIn("IMPLEMENTED_LEGACY", core)
+
+    def test_base_rules_routes_runtime_legacy_coordinates_to_combat_canon(self) -> None:
+        base_rules = (ROOT / "docs/BASE_RULES_VERSION.md").read_text(encoding="utf-8")
+        project_contract = base_rules.split("## 5. 프로젝트 고유 계약", 1)[1].split(
+            "## 6. 과거 Base baseline", 1
+        )[0]
+
+        self.assertIn("시작 공개 거리 2", project_contract)
+        self.assertIn("domain canon + actual runtime", project_contract)
+        self.assertNotIn("4/7 시작 좌표", project_contract)
+        self.assertNotIn("플레이어4/상대7", project_contract)
+
+        combat_rules = (ROOT / "docs/02_COMBAT_RULES.md").read_text(encoding="utf-8")
+        self.assertIn("시작 좌표 플레이어4/상대7", combat_rules)
+        self.assertIn("`IMPLEMENTED_LEGACY`", combat_rules)
+        self.assertIn("새 절대 시작 좌표", combat_rules)
+        self.assertIn("`IMPLEMENTATION_BINDING_PENDING`", combat_rules)
+        self.assertNotIn("플레이어 4번·상대 7번 시작과 거리 0 `[밀착]`.", project_contract)
 
     def test_user_approved_card_detail_plan_spec_is_completion_review_ready(self) -> None:
         text = (
