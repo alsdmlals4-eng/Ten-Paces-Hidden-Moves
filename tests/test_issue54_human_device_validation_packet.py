@@ -129,6 +129,8 @@ class Issue54HumanDeviceValidationPacketTests(unittest.TestCase):
             "installed-base-identity.json",
             "base_root",
             "base_main_commit",
+            'Assert-TrackedClean $baseRootResolved "QA_STUDIO_INSTALL"',
+            'Assert-TrackedClean $baseRootResolved "LAUNCH_READY"',
             "QA_PROCESS_CLEANUP_AFTER_GAME_LAUNCH_FAILURE",
             "BROWSER_OPEN_FAILED",
             "HUMAN_DEVICE_STATUS_REMAINS_NOT_RUN_UNTIL_REVIEW",
