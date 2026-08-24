@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import unittest
 from pathlib import Path
 
@@ -17,6 +18,15 @@ EVIDENCE_HEAD = "0a8bf577b936ddac5cb7130a0cc58e519ea6eff6"
 PLATFORM_DECISION = "TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01"
 ADAPTER_DECISION = "TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01"
 CURRENT_WORK_CONTRACT = "TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01"
+MUTABLE_KEYS = (
+    "active_planning_work_mode",
+    "active_planning_pr",
+    "active_planning_parent_pr",
+    "active_approval_count",
+    "active_decision_state",
+    "next_package",
+    "next_planning_decision",
+)
 
 
 class ProductPostMergeAndPlatformCanonTests(unittest.TestCase):
@@ -33,15 +43,7 @@ class ProductPostMergeAndPlatformCanonTests(unittest.TestCase):
             self.assertIn(token, text)
 
         current = json.loads(CURRENT_STATE.read_text(encoding="utf-8"))
-        for key in (
-            "active_planning_work_mode",
-            "active_planning_pr",
-            "active_planning_parent_pr",
-            "active_approval_count",
-            "active_decision_state",
-            "next_package",
-            "next_planning_decision",
-        ):
+        for key in MUTABLE_KEYS:
             self.assertIn(f"{key}: {current[key]}", text)
         self.assertIn(f"platform_adapter_decision: {ADAPTER_DECISION}", text)
 
@@ -52,26 +54,23 @@ class ProductPostMergeAndPlatformCanonTests(unittest.TestCase):
         for token in forbidden:
             self.assertNotIn(token, text)
 
-    def test_roadmap_preserves_final_product_evidence_and_tracks_new_batch(self) -> None:
+    def test_roadmap_preserves_final_product_evidence_without_mutable_checkpoint(self) -> None:
         text = ROADMAP.read_text(encoding="utf-8")
         required = (
             f"product_implementation_merge_commit: {PRODUCT_MERGE}",
             "merged_product_pr: 92",
             f"증거: `{EVIDENCE_HEAD}` / workflow `31074079068` / artifact `8956790279`",
+            "current_state_owner: ACTIVE_CONTEXT_PLUS_CURRENT_JSON",
+            "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE",
+            "MIGRATION_ONLY_UNTIL_REMOVAL",
         )
         for token in required:
             self.assertIn(token, text)
-        current = json.loads(CURRENT_STATE.read_text(encoding="utf-8"))
-        for key in (
-            "active_planning_work_mode",
-            "active_planning_pr",
-            "active_planning_parent_pr",
-            "active_approval_count",
-            "active_decision_state",
-            "next_package",
-            "next_planning_decision",
-        ):
-            self.assertIn(f"{key}: {current[key]}", text)
+        for key in MUTABLE_KEYS:
+            self.assertIsNone(
+                re.search(rf"(?m)^{re.escape(key)}:\s*", text),
+                f"roadmap duplicates mutable operating state: {key}",
+            )
         for stale in (
             "7494f50c48573168542781e007eeab6af11dda7d",
             "31068098197",
@@ -95,12 +94,20 @@ class ProductPostMergeAndPlatformCanonTests(unittest.TestCase):
         )
         for token in required_decision:
             self.assertIn(token, decision)
+
+        for token in (
+            f"platform_decision: {PLATFORM_DECISION}",
+            f"platform_adapter_decision: {ADAPTER_DECISION}",
+            "design_platforms: WINDOWS_ANDROID",
+            "platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS",
+        ):
+            self.assertIn(token, active)
+            self.assertIn(token, roadmap)
+        self.assertIn("android_validation: NOT_RUN", active)
+        self.assertIsNone(re.search(r"(?m)^android_validation:\s*", roadmap))
+        self.assertIn("실제 Android", roadmap)
+        self.assertIn("NOT_RUN / UNVERIFIED", roadmap)
         for text in (active, roadmap):
-            self.assertIn(f"platform_decision: {PLATFORM_DECISION}", text)
-            self.assertIn(f"platform_adapter_decision: {ADAPTER_DECISION}", text)
-            self.assertIn("design_platforms: WINDOWS_ANDROID", text)
-            self.assertIn("platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS", text)
-            self.assertIn("android_validation: NOT_RUN", text)
             self.assertNotIn("future_platform: MOBILE_CONSIDERATION_ONLY", text)
 
         self.assertIn("[플랫폼 범위 Decision](docs/decisions/2026-08-06_WINDOWS_ANDROID_DUAL_TARGET_DECISION.md)", readme)
