@@ -5,10 +5,11 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+CURRENT_CONTRACT = ROOT / "docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md"
 
 
 class BaseV9AdoptionTests(unittest.TestCase):
-    def test_compatibility_adapter_preserves_release_pin_and_current_boundary(self) -> None:
+    def test_compatibility_adapter_preserves_release_pin_and_v2_boundary(self) -> None:
         data = json.loads((ROOT / "skills/PROJECT_BASE_ADAPTER.json").read_text(encoding="utf-8"))
         health = json.loads((ROOT / "docs/PROJECT_OPERATING_HEALTH.json").read_text(encoding="utf-8"))
         release = data["base_release"]
@@ -16,11 +17,12 @@ class BaseV9AdoptionTests(unittest.TestCase):
         self.assertEqual("7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8", release["release_commit"])
         self.assertEqual("da33a350d61b8adc52df97fccc7001708a933370", release["release_evidence_commit"])
         self.assertEqual("0b7c94f38d959efc0fc9442274c60b2e268a3c97", release["finalization_commit"])
-        self.assertEqual("4.8", data["current_operating_contract"]["version"])
-        self.assertEqual(
-            "TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01",
-            data["current_operating_contract"]["decision_id"],
-        )
+        self.assertEqual(2, data["schema_version"])
+        self.assertEqual("ten-paces-hidden-moves", data["project"]["project_id"])
+        self.assertNotIn("current_operating_contract", data)
+        current = CURRENT_CONTRACT.read_text(encoding="utf-8")
+        self.assertIn("contract_version: '4.8'", current)
+        self.assertIn("TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01", current)
         intake = data["shared_overrides"]["managing-project-intake-and-work-contract"]
         planning = intake["planning_first_governance"]
         first_prompt = intake["first_prompt_governance"]
@@ -29,8 +31,9 @@ class BaseV9AdoptionTests(unittest.TestCase):
         self.assertEqual("NOT_RUN", planning["actual_project_batch_execution"])
         self.assertEqual("AWAITING_USER_CONFIRMATION", first_prompt["unconfirmed_state"])
         self.assertEqual("NOT_RUN", first_prompt["actual_project_instruction_execution"])
-        self.assertEqual("COMPATIBILITY_ONLY", data["gdd_sheet"]["sync_status"])
-        self.assertEqual("MIGRATION_ONLY_UNTIL_REMOVAL", data["gdd_sheet"]["role"])
+        self.assertEqual("GOOGLE_SHEETS_LEGACY_MIGRATION_SOURCE", data["gdd_sheet"]["role"])
+        self.assertEqual("MIGRATION_COMPATIBILITY_SURFACE", data["gdd_sheet"]["workspace_status"])
+        self.assertEqual("STALE", data["gdd_sheet"]["sync_status"])
         self.assertFalse(data["gdd_sheet"]["current_authority"])
         self.assertEqual("OM-L0", health["operating_maturity"])
         self.assertEqual("PE-0", health["product_evidence_maturity"])
