@@ -3,11 +3,12 @@
 ```yaml
 status: USER_DIRECTED_ADAPTATION
 work_mode: PLAN_REVIEW
-runtime_mutation: SHARED_MARTIAL_POOL_METADATA_ONLY
+runtime_mutation: NONE
 source_base_merge: dff09d83c3892a70ba5fee86a59d36086889a6c5
 core: hidden simultaneous planning + 3/3/4 resolve + public-information inference
 runtime_ai: BOUNDED_EXISTING_AI_ONLY
 martial_content_policy: PLAYER_LEARNABLE_SHARED_WITH_AI
+shared_martial_pool_contract: docs/planning-data/approved_20260824_shared_player_ai_martial_pool_contract.json
 human_validation: NOT_RUN
 ```
 
@@ -62,6 +63,7 @@ opponent martial techniques
 ```
 
 - 현행 10권 무공서는 `PLAYER_LEARNABLE_SHARED_WITH_AI` 공용 풀이다.
+- 구조화 책임 원본은 `docs/planning-data/approved_20260824_shared_player_ai_martial_pool_contract.json`이며, 이 계약을 현재 runtime manifest와 교차 검증한다.
 - 플레이어가 같은 무공서를 습득하고 같은 성급·해금 조건을 만족하면 AI가 사용하는 같은 기술을 사용할 수 있어야 한다.
 - `enemy_exclusive_manuals_allowed = false`.
 - `enemy_exclusive_techniques_allowed = false`.
@@ -128,10 +130,11 @@ AI는 복기 설명을 도울 수 있어도 숨은 reasoning/canon을 새로 만
 1. opponent AI input surface를 machine-auditable allowlist로 검사.
 2. 미확정 plan mutation/read 접근 회귀 테스트.
 3. opponent `signature_manual_id`가 `player_learnable_manual_ids`에 속하는지 검사.
-4. opponent card ID가 동일 `MartialManualRegistry.build_unlocked_cards(manual_id, mastery)`에서 해금되는지 검사.
-5. replay packet에 public-information snapshot과 action provenance 보존.
-6. Human duel에서 GOOD_READ/BAD_OPACITY/BAD_CONTENT_ASYMMETRY 구분 기록.
-7. runtime generative AI는 별도 Player Value 증거 없이는 도입하지 않음.
+4. `player_learnable_manual_ids`와 runtime manifest의 현재 manual ID 집합이 정확히 일치하는지 검사.
+5. opponent card ID가 동일 `MartialManualRegistry.build_unlocked_cards(manual_id, mastery)`에서 해금되는지 검사.
+6. replay packet에 public-information snapshot과 action provenance 보존.
+7. Human duel에서 GOOD_READ/BAD_OPACITY/BAD_CONTENT_ASYMMETRY 구분 기록.
+8. runtime generative AI는 별도 Player Value 증거 없이는 도입하지 않음.
 
 ## IRG
 
@@ -144,7 +147,7 @@ AI는 복기 설명을 도울 수 있어도 숨은 reasoning/canon을 새로 만
 1. RNG 기능 억지 추가 없음: PASS.
 2. hidden-plan secrecy 보존: PASS.
 3. AI 전용 무공서·기술·숨은 효과 추가 없음: PASS.
-4. replay를 사실 기반으로 제한: PASS.
+4. runtime data mutation 없이 공용 pool 계약을 별도 구조화 정본으로 유지: PASS.
 5. Human·획득 경로 evidence 과장 없음: PASS.
 
 `CLEAN_REVIEW_EXIT`.
