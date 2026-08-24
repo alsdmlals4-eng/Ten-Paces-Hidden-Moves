@@ -132,6 +132,17 @@ class TenManualProductGateTests(unittest.TestCase):
         ):
             self.assertIn(f'      - "{path}"', workflow)
         self.assertIn("workflow_dispatch:", workflow)
+        self.assertIn(
+            "PR_NUMBER: ${{ github.event.pull_request.number || 0 }}",
+            workflow,
+        )
+        self.assertNotIn("github.event.pull_request.number || 92", workflow)
+
+        producer = (
+            ROOT / "scripts/windows/run_ten_manual_product_validation.ps1"
+        ).read_text(encoding="utf-8")
+        self.assertIn("else { 0 }", producer)
+        self.assertNotIn("else { 92 }", producer)
 
     def test_canonical_product_evidence_matches_latest_verified_artifact(self) -> None:
         canonical_paths = (
