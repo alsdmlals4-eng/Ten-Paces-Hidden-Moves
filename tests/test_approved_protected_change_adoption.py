@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github/workflows/validate-project-base-adapter.yml"
 ACTIVE_APPROVAL = ROOT / "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
 MERGED_RECORD = ROOT / "docs/operations/2026-08-06_PR92_PROTECTED_CHANGE_APPROVAL_RECORD.md"
-BASE_GATE_COMMIT = "4ec410e611152294f3f2685570fca6019c7abcfa"
+BASE_GATE_COMMIT = "2828a74f60c1ed09546171040f4178c8848ea686"
 
 
 class ApprovedProtectedChangeAdoptionTests(unittest.TestCase):
@@ -30,7 +30,7 @@ class ApprovedProtectedChangeAdoptionTests(unittest.TestCase):
         for token in required:
             self.assertIn(token, record)
 
-    def test_adapter_workflow_pins_merged_base_gate_and_external_approval(self) -> None:
+    def test_adapter_workflow_pins_current_base_gate_and_external_approval(self) -> None:
         workflow = WORKFLOW.read_text(encoding="utf-8")
         required = (
             f"ref: {BASE_GATE_COMMIT}",
@@ -43,6 +43,7 @@ class ApprovedProtectedChangeAdoptionTests(unittest.TestCase):
         )
         for token in required:
             self.assertIn(token, workflow)
+        self.assertNotIn("ref: 4ec410e611152294f3f2685570fca6019c7abcfa", workflow)
         self.assertNotIn("ref: bfdc9e44d4a6920dc085eaa3f9d19d31b1acd2a1", workflow)
 
 
