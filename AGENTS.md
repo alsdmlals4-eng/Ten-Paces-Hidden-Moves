@@ -87,11 +87,21 @@ project.godot
 - 다른 채팅/작업자의 PR·branch·path를 takeover하지 않는다.
 - current-task PR만 latest-main reconciliation → exact HEAD → required checks → review/thread/ruleset → safe merge → postmerge main readback까지 현재 승인 범위에서 진행할 수 있다.
 
-## 9. 시각 자산
+## 9. 출시·자산 권리 owner
+
+출시, 외부 자산, reference 기반 제작, 스토어 제출을 다루는 작업은 다음 프로젝트 owner를 추가로 읽는다.
+
+- `docs/PLATFORM_RELEASE_AND_ASSET_RIGHTS_PROFILE.md`
+- `docs/ASSET_RIGHTS_AND_PROVENANCE_RECORD.md`
+- `docs/GAME_RELEASE_COMPLIANCE_EVIDENCE_PACK.md`
+
+실제 build/store/trailer/questionnaire와 자산 권리 증거가 일치하지 않으면 release 완료를 주장하지 않는다. 외부 reference 또는 AI 변환 결과가 보인다는 사실만으로 독립 shipping asset 권리를 만들지 않는다.
+
+## 10. 시각 자산
 
 새 이미지 생성·스타일 변경은 `canon review → text brief → 사용자 명시 승인 → 정확히 1개 결과 → 사용자 검토` 순서다. reference-only/chat exploration을 승인 자산으로 승격하지 않는다. 승인 Visual의 Notion 전달은 실제 attach + destination readback이 필요하다.
 
-## 10. 역사·호환
+## 11. 역사·호환
 
 - PR #7과 Issue #13은 T0 `STEP 0~13` 구현 계보다.
 - PR #45는 v6 계획 통합 이력이다.
