@@ -16,6 +16,7 @@ PRODUCT_MERGE = "a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90"
 EVIDENCE_HEAD = "0a8bf577b936ddac5cb7130a0cc58e519ea6eff6"
 PLATFORM_DECISION = "TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01"
 ADAPTER_DECISION = "TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01"
+CURRENT_WORK_CONTRACT = "TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01"
 
 
 class ProductPostMergeAndPlatformCanonTests(unittest.TestCase):
@@ -105,7 +106,8 @@ class ProductPostMergeAndPlatformCanonTests(unittest.TestCase):
         self.assertIn("[플랫폼 범위 Decision](docs/decisions/2026-08-06_WINDOWS_ANDROID_DUAL_TARGET_DECISION.md)", readme)
         self.assertIn("Windows·Android 기본 설계", readme)
         self.assertIn("단일 공유 코어·플랫폼 Adapter", readme)
-        self.assertIn("Android 실제 기기 검증: `NOT_RUN`", readme)
+        self.assertIn("현재 정확한 검증 상태는 Active Context에서 읽습니다", readme)
+        self.assertNotIn("Android 실제 기기 검증: `NOT_RUN`", readme)
         for stale in (
             "PC 우선, 모바일 고려만",
             "현재 기획·구현·검증·배포 기준은 `PC`입니다.",
@@ -115,15 +117,16 @@ class ProductPostMergeAndPlatformCanonTests(unittest.TestCase):
 
     def test_root_start_here_is_stable_router_not_mutable_state_snapshot(self) -> None:
         text = START_HERE.read_text(encoding="utf-8")
-        current = text.split("## 현재 기준", 1)[1].split("## 현재 책임 원본", 1)[0]
-        owners = text.split("## 현재 책임 원본", 1)[1].split("## 프로젝트 코어", 1)[0]
-        work = text.split("## 현재 작업", 1)[1].split("## Work Mode", 1)[0]
+        authority = text.split("## 안정 authority", 1)[1].split("## DOMAIN SPLIT", 1)[0]
 
-        self.assertIn("current_state_owner: ACTIVE_CONTEXT", current)
-        self.assertIn("current_pr_authority: GITHUB_PR_METADATA", current)
-        self.assertIn("product_build_requires_user_planning_complete: true", current)
-        self.assertIn("design_platforms: WINDOWS_ANDROID", current)
-        self.assertIn("platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS", current)
+        self.assertIn("current_state_owner: ACTIVE_CONTEXT", authority)
+        self.assertIn("current_pr_authority: GITHUB_PR_METADATA", authority)
+        self.assertIn("current_human_workspace: NOTION_DEFAULT_PROJECT_WORKSPACE", authority)
+        self.assertIn("current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME", authority)
+        self.assertIn("google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL", authority)
+        self.assertIn(f"current_work_contract: {CURRENT_WORK_CONTRACT}", authority)
+        self.assertIn("design_platforms: WINDOWS_ANDROID", authority)
+        self.assertIn("platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS", authority)
 
         for mutable_key in (
             "runtime_integration_pr:",
@@ -132,23 +135,15 @@ class ProductPostMergeAndPlatformCanonTests(unittest.TestCase):
             "latest_combat_planning_runtime:",
             "next_package:",
             "human_validation:",
+            "current_sheet_authority:",
         ):
-            self.assertNotIn(mutable_key, current)
-
-        self.assertIn(
-            "docs/decisions/2026-08-06_WINDOWS_ANDROID_DUAL_TARGET_DECISION.md",
-            owners,
-        )
-        self.assertNotIn("docs/decisions/2026-08-02_PLATFORM_SCOPE_DECISION.md", owners)
-        self.assertNotIn("최근 병합 성장 체크포인트", owners)
-        self.assertNotIn("구현 종료:", owners)
+            self.assertNotIn(mutable_key, authority)
 
         self.assertIn("시작 공개 거리 2", text)
         self.assertIn("`거리 N`", text)
-        self.assertIn("사용자 명시 `기획 완료`", work)
-        self.assertIn("ACTIVE_CONTEXT의 current next action", work)
-        self.assertNotIn("필요한 이미지·애니메이션·HX 생성·검수·승인", work)
-        self.assertNotIn("VERTICAL_SLICE_APP_FLOW_SHELL Codex 구현 인계", work)
+        self.assertIn("실제 current Work Mode와 다음 작업은 `ACTIVE_CONTEXT.md`가 소유한다", text)
+        self.assertNotIn("필요한 이미지·애니메이션·HX 생성·검수·승인", text)
+        self.assertNotIn("VERTICAL_SLICE_APP_FLOW_SHELL Codex 구현 인계", text)
 
 
 if __name__ == "__main__":
