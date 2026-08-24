@@ -18,24 +18,20 @@
       "skills/PROJECT_BASE_SKILL_ADAPTER.json"
     ]
   },
-  "current_operating_contract": {
-    "decision_id": "TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01",
-    "path": "docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md",
-    "version": "4.8",
-    "base_policy": "LATEST_COMPLETED_BASE_OWNER_PROGRESSIVE_LOAD"
-  },
   "gdd_sheet": {
-    "declared_sync_status": "MIGRATION_COMPATIBILITY_ONLY",
-    "id": "1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0",
-    "role": "MIGRATION_ONLY_UNTIL_REMOVAL",
-    "sheet_only_change_policy": "PROPOSED_SHEET_CHANGE",
-    "sync_status": "COMPATIBILITY_ONLY",
-    "write_policy": "NO_NEW_CANON_INPUT",
     "current_authority": false,
-    "destination_policy": "NOTION_HUMAN_FACING_PLUS_REPOSITORY_STRUCTURED_RUNTIME"
+    "declared_sync_status": "MIGRATION_COMPATIBILITY_ONLY",
+    "destination_policy": "NOTION_HUMAN_FACING_PLUS_REPOSITORY_STRUCTURED_RUNTIME",
+    "id": "1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0",
+    "role": "GOOGLE_SHEETS_LEGACY_MIGRATION_SOURCE",
+    "sheet_only_change_policy": "PROPOSED_SHEET_CHANGE",
+    "sync_status": "STALE",
+    "workspace_status": "MIGRATION_COMPATIBILITY_SURFACE",
+    "write_policy": "NO_NEW_CANON_INPUT"
   },
   "project": {
     "engine": "Godot 4.7",
+    "project_id": "ten-paces-hidden-moves",
     "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
     "root": "."
   },
@@ -97,7 +93,7 @@
       {"route_id": "ten-paces-verification", "skill_id": "ten-paces-verification", "status": "ACTIVE"}
     ]
   },
-  "schema_version": 1,
+  "schema_version": 2,
   "shared_overrides": {
     "analyzing-and-refining-game-concepts": {},
     "auditing-and-refining-ui-art": {},
