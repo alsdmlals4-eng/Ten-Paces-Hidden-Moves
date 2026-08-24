@@ -1,6 +1,7 @@
 {
   "schema_version": 1,
   "decision_id": "TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01",
+  "availability_decision_id": "TEN-DEC-20260824-SHARED-PLAYER-AI-MARTIAL-POOL-01",
   "runtime_gate": "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE",
   "runtime_status": "RUNTIME_FOUNDATION",
   "stat_assignment_policy": "FACTION_MARTIAL_ACTION_FIT_ONLY",
