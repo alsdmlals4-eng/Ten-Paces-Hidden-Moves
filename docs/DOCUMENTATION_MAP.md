@@ -2,155 +2,115 @@
 
 > 최상위 운영 지도: [`[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md`](../%5B기획서%5D/00_%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8_%ED%97%88%EB%B8%8C/DOCUMENTATION_MAP.md)
 
+이 파일은 제품 도메인 문서의 **안정적인 찾기 지도**다. active PR·exact SHA·승인 수·제품 stage·next package 같은 mutable state는 여기에 저장하지 않는다.
+
 ## 1. 최초 진입
 
 ```text
 ../START_HERE.md
 → ../AGENTS.md
-→ ../docs/BASE_RULES_VERSION.md
+→ PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md
 → ../[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
+→ ../[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md
 → 00_TAG_STATUS_REGISTRY.md
-→ 01_GAME_DESIGN.md
-→ 질문별 책임 원본
-→ 실제 data/scenes/src/tests/PR
+→ 질문별 제품 owner
+→ actual data/scenes/src/tests/GitHub metadata
+→ exact Project Notion when human-facing context is required
 ```
 
-최신 사용자 승인 Decision과 approved planning JSON이 과거 Ledger·백업·구형 구현보다 우선한다. 실제 구현이 다르면 `IMPLEMENTED_LEGACY`로 기록한다. 병합된 main 체크포인트와 활성 Draft PR의 승인 상태를 한 축으로 혼합하지 않는다.
+최신 사용자 승인 Decision과 current owner가 과거 Ledger·백업·구형 구현보다 우선한다. 실제 구현이 planning과 다르면 `IMPLEMENTED_LEGACY` 등 명시 상태로 구분한다.
 
 ## 2. 제품 문서 읽기 순서
 
 1. `00_TAG_STATUS_REGISTRY.md` — 제품 태그·전투 키워드·상태 어휘.
 2. `01_GAME_DESIGN.md` — 정체성·핵심 루프·제품 범위.
-3. `02_COMBAT_RULES.md` — 기초 행동10종·관찰·순차 피해 단위 합·연격·능력치 배수·종료 등급.
-4. `03_CONTENT_CATALOG.md` — 데모·정식 후반·천하제일인·온라인·HOLD.
-5. `04_ROADMAP.md` — 다음 기획·검토·이미지·구현·검증 Gate.
-6. `05_COMBAT_POC_SPEC.md` — 첫 데모 계약.
-7. `06_STARTING_FACTION_MASTERY_DATA.md` — 무공서1~10성·기술 성장.
+3. `02_COMBAT_RULES.md` — 전투 판정·자원·AI·관찰·3/3/4.
+4. `03_CONTENT_CATALOG.md` — 데모·전체판·HOLD 콘텐츠.
+5. `04_ROADMAP.md` — 제품 장기 단계와 evidence checkpoint.
+6. `05_COMBAT_POC_SPEC.md` — PoC/구현 경계.
+7. `06_STARTING_FACTION_MASTERY_DATA.md` — 무공서·기술 성장.
 8. `07_COMBAT_UI_SPEC.md` — HUD·입력·접근성.
-9. `08_TEST_CHECKLIST.md` — 완료 증거·미검증 경계.
+9. `08_TEST_CHECKLIST.md` — 완료 evidence와 미검증 경계.
 10. `09_COMBAT_SYSTEM_ARCHITECTURE.md` — 상태·이벤트·저장·AI.
-11. `10_COMBAT_PRESENTATION_PLAN.md` — 판정 사건 연출.
-12. `11_BASE_ADOPTION_AND_LEARNING_LOG.md` — Base 채택·제안·검증.
+11. `10_COMBAT_PRESENTATION_PLAN.md` — 판정 사건 연출·복기 표현.
+12. `11_BASE_ADOPTION_AND_LEARNING_LOG.md` — Base 채택·제안·검증 역사.
+13. `12_VERTICAL_SLICE_JIANGHU_JOURNEY.md` 이후 Vertical Slice 문서 — 승인된 5전 세계/콘텐츠/UX 구조.
 
-## 3. 현재 필수 Decision
+사람이 한눈에 이해·비교·수정할 전체 Flow·Visual·핵심 표는 exact Project Notion을 함께 읽는다.
 
-기존 제품 기준:
+## 3. Current Decision 찾기
 
-- `TEN-DEC-20260802-PLATFORM-SCOPE-01`
-- `TEN-DEC-20260802-OBSERVATION-STATS-MASTERY-01`
-- `TEN-DEC-20260802-FULLRUN-CHAMPION-RANKED-01`
-- `TEN-DEC-20260802-RANKED-OBSERVATION-CONVERSION-01`
+Decision 목록을 이 파일에 고정하지 않는다.
 
-PR #72 전투 체크포인트:
+```text
+ACTIVE_CONTEXT.md
+→ CANON_LIFECYCLE_REGISTRY.md
+→ 관련 docs/decisions/*.md
+→ related planning JSON
+→ domain owner
+→ exact Project Notion projection when required
+```
 
-- `TEN-DEC-20260802-BASIC-ACTIONS-PALM-CLASH-01`
-- `TEN-DEC-20260802-OUT-OF-RANGE-CLASH-REWARD-01`
-- `TEN-DEC-20260802-OUT-OF-RANGE-CLASH-GRADE-01`
-- `TEN-DEC-20260802-CLASH-THREAT-ATTENUATION-01` — 현 등급 산식 HOLD
-- `TEN-DEC-20260802-THREAT-ID-ACTION-01` — 로그·복기 ID
-- `TEN-DEC-20260802-MULTIHIT-COMPLETE-PARRY-01`
-- `TEN-DEC-20260802-COMPLETE-PARRY-HP-ONLY-01`
-- `TEN-DEC-20260802-BATTLE-GRADE-FIVE-METRICS-01`
-- `TEN-DEC-20260802-TECHNIQUE-AUTHORING-TAG-FIXED-STAT-01`
-- `TEN-DEC-20260802-STAT-REFERENCE-PRICE-BASE4-01`
+과거 PR #72/#80/#82 등의 당시 Decision 상태는 역사 evidence이며 current 승인 상태가 아니다.
 
-PR #80 성장 체크포인트:
+## 4. 고정 제품 계약
 
-- `TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01`
-- `TEN-DEC-20260802-RANGE-PRICE-BANDS-01`
-- `TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01`
-- `TEN-DEC-20260802-STARTING-STAT-TOTAL20-MANUAL-BONUS-01`
-- `TEN-DEC-20260802-STARTING-TECHNIQUE-PRIMARY-STAT4-01`
-- `TEN-DEC-20260802-STARTING-TECHNIQUE-SOFT-GUARANTEE-01`
-- `TEN-DEC-20260802-EVEN-STAR-STAT-ESCALATION-01`
-- `TEN-DEC-20260803-UNCAPPED-CORE-STATS-01`
-- `TEN-DEC-20260803-STAR7-TECHNIQUE-PRIMARY-STAT8-01`
+- 1대1 10칸 논리 전장.
+- 플레이어-facing 시작 기준은 공개 거리 2이며, 실제 runtime의 4/7 좌표 계보는 구현 binding으로 별도 구분한다.
+- 거리 0 `[밀착]`.
+- `3수 → 해결 → 3수 → 해결 → 4수 → 해결`.
+- 공개 정보와 해결 이력으로 상대를 추론하며 AI는 미확정 플레이어 계획을 읽지 않는다.
+- 현재 해금 기술을 수에 배치하고 무공서를 직접 배치하지 않는다.
+- `[합]`, 방어도, 회피, 중단, 강건, 복기를 사용한다.
+- Windows·Android를 기본 설계 대상으로 하며 단일 공유 전투/AI/데이터/저장 코어 + platform adapters를 사용한다.
+- Google Sheets는 `MIGRATION_ONLY_UNTIL_REMOVAL`; 신규 current GDD workspace가 아니다.
 
-PR #82 활성 승인 `APPROVED_PENDING_MERGE`:
-
-- `TEN-DEC-20260803-STAR10-ULTIMATE-PRIMARY-STAT12-01`
-- `TEN-DEC-20260803-STARTING-MARTIAL-SECONDARY-STATS-01`
-
-## 4. 현재 고정 제품 계약
-
-- 1대1 10칸, 시작4/7, 거리0 `[밀착]`.
-- `3수→3수→4수` 비공개 계획.
-- 적 묶음 계획 잠금→관찰 공개→플레이어 계획.
-- 기초 행동10종, 사용자 표시 `준비`, 강화 없는 `전조`.
-- 연격 대 연격은 현재 순번 피해 단위끼리 합하고, 양측 공격이 유지되면 다음 순번 합을 반복한다.
-- 합 패배·동점은 현재 피해 단위만 취소·상쇄한다.
-- 체력 피해 중단은 피격측 후속 피해 단위를 취소하며, 강건은 공격을 유지시킬 수 있다.
-- 한쪽 피해 단위가 끝나면 상대 잔여타는 단독으로 해결한다.
-- 비소모 방어도·피해 단위 회피·필중·중단·강건.
-- 능력치 배수 기준4·작성 단위0.25·합산 후 한 번 내림.
-- 시작3성 기술 주 능력치4, 7성 기술8, 10성 절초12.
-- 전투 종료 원자료: 회피·합·잃은 체력·라운드·절초 사용.
-- 데모 주요 비무5×후보3, 노드8개.
-- 정식 주요 비무10×후보3, 노드18개, 이후 천하제일인전.
-- 챔피언 배틀은 `FUTURE_ONLINE`, 별도 승인 전 구현 차단.
-- PC 우선, 모바일 후속 고려.
+정확한 세부 수치·상태는 각 분야 owner와 actual runtime을 읽는다.
 
 ## 5. 작업별 최소 읽기
 
-| 작업 | 최소 문서 |
+| 작업 | 최소 owner |
 |---|---|
-| 방향·인수 | Active Context, 00, 01, 04, 활성 PR |
-| 전투 규칙·밸런스 | 00, 01, 02, 05, 08, 최신 Decision·contract |
-| 기술 작성·능력치 | 02, 05, 06, `poc_balance_budget.json`, authoring·성장 Decision |
-| 무공·성장 | 01, 02, 03, 05, 06, 08, PR #80·#82 |
-| 콘텐츠·경로 | 01, 03, 04, 05, planning JSON |
-| UI·접근성 | 02, 07, 08, 09, 10, 실제 Scene |
-| App Flow 구현 | Active Context, 04, 05, 08, 09, 승인 이미지·실제 파일 |
-| 천하제일인·챔피언 | 01, 03, 04, Champion Decision |
-| 검수 | 00, 08, 감사 문서, PR diff·CI·실제 실행 |
-| Base 업데이트 | Base lock·Adapter·11·최신 Base 원본 |
+| 방향·인수 | Active Context, hub Documentation Map, 01, current GitHub metadata, exact Notion |
+| 전투 규칙·밸런스 | 01, 02, 05, 08, 최신 Decision/contract, actual combat data/code |
+| 기술 작성·능력치 | 02, 05, 06, current budget JSON, 관련 Decision |
+| 무공·성장 | 01, 02, 03, 05, 06, 08, current planning/runtime data |
+| 콘텐츠·경로 | 01, 03, 04, Vertical Slice owner, planning JSON, exact Notion |
+| UI·접근성 | 02, 07, 08, 09, 10, actual Scene/runtime, exact Notion Visual/Flow |
+| 제품 구현 | Active Context, current operating contract, current implementation Gate, relevant owner/test |
+| 검수 | 08, current diff, exact-head CI, actual runtime evidence, affected Notion/repository destination |
+| Base compatibility | Base latest owner + `BASE_RULES_VERSION.md` + `skills/PROJECT_BASE_ADAPTER.json` |
 
 ## 6. 구형·오해 표현 차단
 
-활성 정본에서 사용하지 않는다.
+활성 정본에서 current authority로 사용하지 않는다.
 
-- 사용자 표시 `태세`.
-- 기초 행동8종 또는9종을 최신 전체 목록으로 표현.
-- `첫 피해 단위만 합에 참여한다`는 표현.
-- `첫 합 실패 시 공격 행동의 후속타가 전부 취소된다`는 표현.
-- `후속 피해 단위는 다시 합하지 않는다`는 표현.
-- 체력 피해·중단 정산과 무관하게 모든 피해 단위를 무조건 끝까지 합한다는 표현.
-- 위협 대응30과 100→50→0 감쇠를 현 등급 산식으로 표현.
-- 스테이터스 배수 가격 `MISSING_TBD`.
-- 중간 노드2~3·PoC 방문13~17을 최신 범위로 표현.
-- 범용 공격력·방어력 중심 성장과 공개 성향.
-- 천하제일인 후보6명 고정·사전 예고.
-- Base 9.4.1·PR #72·승인 0/10을 현재 활성 상태로 표현.
-- PR #80의 병합된 10/10을 현재 병합 대기 상태로 표현.
-
-정확한 표현은 `현재 순번 합 → 피해·중단 정산 → 양측 공격 유지 및 다음 피해 단위 존재 시 다음 순번 합`이다.
+- `PC 우선 / 모바일 후속 고려` → Windows·Android dual-target으로 대체.
+- `PR #82 active approval` 같은 과거 PR snapshot.
+- `PR #65`를 current runtime 전체 상태로 사용.
+- `플레이어4/상대7`을 current player-facing 시작거리 정의로 사용.
+- Google Sheets를 current user-facing GDD workspace로 사용.
+- v4.5 r2를 current project operating contract로 사용.
+- 이미지 생성이 모든 BUILD의 무조건 선행조건이라는 해석.
 
 ## 7. 현재 상태
 
+현재 상태는 이 문서가 소유하지 않는다.
+
 ```yaml
-main_state_sync_commit: 6d8237e00168e45a7d3c001a0f6b3587b57147b7
-last_planning_checkpoint_merge: d9f38e6f3cacaf170d4b290e95b3645114639aff
-runtime_work_mode: REVIEW
-runtime_integration_pr: 65
-active_planning_work_mode: PLAN
-active_planning_pr: 82
-active_planning_head: 289378c214702223dc0d1e149134438c3e761ba0
-active_approvals: 2/10
-active_decision_state: APPROVED_PENDING_MERGE
-base_release: 9.4.3
-product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING
-runtime_latest_combat_contract: NOT_STARTED
-next_package: VERTICAL_SLICE_APP_FLOW_SHELL
-next_planning_decision: INTERMEDIATE_NODE_PERMANENT_STAT_REWARDS
+current_state_owner: ../[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
+current_pr_authority: GITHUB_PR_METADATA
+current_human_workspace: EXACT_PROJECT_NOTION
+current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME
+google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL
+current_work_contract: TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01
 ```
 
 ## 8. 갱신 규칙
 
-- 새 규칙·태그·제품 의미는 GrillMe 승인 Decision이 필요하다.
-- 명칭 정규화·구형 참조 제거는 유지보수로 처리한다.
-- 책임 경로가 바뀌면 두 문서 지도·Active Context·Sheet를 함께 갱신한다.
-- 승인 Decision은 Branch·planning data·Sheet에 같은 ID로 즉시 기록하고 병합 전 `APPROVED_PENDING_MERGE`로 표시한다.
-- 최대 10건 또는 허용된 조기 체크포인트에서 exact-head CI·적대적 검토·threads0·P0/P1 0을 확인한다.
-- 기획 완료→검토 완료→이미지·애니메이션·HX 승인→Codex BUILD 순서를 지킨다.
-- `v2`, `final`, `latest` 복제본 대신 Git 이력을 사용한다.
-- 자동·Godot·Windows·접근성·네트워크·사람 검증을 분리한다.
+- 새 규칙·태그·제품 의미는 current Decision/승인 계약을 따른다.
+- 명칭 정규화·구형 current 참조 제거는 정본 영향과 테스트를 함께 본다.
+- 책임 경로가 바뀌면 hub Documentation Map, active consumer, tests, 필요한 Notion projection을 함께 갱신한다.
+- mutable state는 이 지도에 복제하지 않는다.
+- `v2`, `final`, `latest` 복제본보다 Git 이력과 explicit historical status를 사용한다.
+- 자동·Godot·Windows·Android·접근성·성능·사람 evidence를 분리한다.
