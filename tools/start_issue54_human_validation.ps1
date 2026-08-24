@@ -152,14 +152,16 @@ New-Item -ItemType Directory -Force -Path $runRoot | Out-Null
 
 $preflightDir = Join-Path $runRoot "preflight"
 $collector = Join-Path $projectRoot "tools\collect_godot_live_evidence.ps1"
-$collectorArgs = @(
-    "-ProjectPath", $projectRoot,
-    "-GodotPath", $godot.path,
-    "-OutputDir", $preflightDir
-)
-if ($HeraPath) { $collectorArgs += @("-HeraPath", $HeraPath) }
+$collectorParams = @{
+    ProjectPath = $projectRoot
+    GodotPath = $godot.path
+    OutputDir = $preflightDir
+}
+if ($HeraPath) {
+    $collectorParams["HeraPath"] = $HeraPath
+}
 
-& $collector @collectorArgs
+& $collector @collectorParams
 if ($LASTEXITCODE -ne 0) {
     throw "LOCAL_EVIDENCE_COLLECTOR_PROCESS_FAILED: exit=$LASTEXITCODE"
 }

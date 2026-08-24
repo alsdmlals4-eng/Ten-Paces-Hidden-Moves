@@ -156,6 +156,20 @@ class Issue54HumanDeviceValidationPacketTests(unittest.TestCase):
         workflow = PR_VALIDATION.read_text(encoding="utf-8")
         self.assertIn('"tools/start_issue54_human_validation.ps1"', workflow)
 
+    def test_one_shot_launcher_uses_named_hashtable_splat_for_collector(self):
+        text = LAUNCHER.read_text(encoding="utf-8")
+        for token in (
+            "$collectorParams = @{",
+            "ProjectPath = $projectRoot",
+            "GodotPath = $godot.path",
+            "OutputDir = $preflightDir",
+            "$collectorParams[\"HeraPath\"] = $HeraPath",
+            "& $collector @collectorParams",
+        ):
+            self.assertIn(token, text)
+        self.assertNotIn("$collectorArgs = @(", text)
+        self.assertNotIn("& $collector @collectorArgs", text)
+
     def test_structured_contract_is_machine_readable_and_non_promotional(self):
         payload = json.loads(CONTRACT.read_text(encoding="utf-8"))
         self.assertEqual(payload["issue_number"], 54)
