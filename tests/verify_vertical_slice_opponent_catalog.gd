@@ -3,6 +3,7 @@ extends SceneTree
 const CATALOG_SCRIPT_PATH := "res://src/run/vertical_slice_opponent_catalog.gd"
 const DATA_PATH := "res://data/run/vertical_slice_opponents.json"
 const MANUAL_MANIFEST_PATH := "res://data/cards/martial_manual_cards.json"
+const SHARED_POOL_CONTRACT_PATH := "res://docs/planning-data/approved_20260824_shared_player_ai_martial_pool_contract.json"
 const MANUAL_REGISTRY_SCRIPT := preload("res://src/combat/martial_manual_registry.gd")
 const RUN_STATE_SCRIPT := preload("res://src/run/vertical_slice_run_state.gd")
 const BASIC_CARDS_PATH := "res://data/cards/basic_cards.json"
@@ -95,18 +96,31 @@ func _verify_catalog_shape(catalog) -> void:
 
 func _verify_shared_player_ai_martial_pool(catalog) -> void:
     var manifest_file := FileAccess.open(MANUAL_MANIFEST_PATH, FileAccess.READ)
-    _expect_true(manifest_file != null, "Martial manual manifest must be readable for player/AI pool validation.")
+    _expect_true(manifest_file != null, "Martial manual runtime manifest must be readable for shared-pool validation.")
     if manifest_file == null:
         return
-    var parsed = JSON.parse_string(manifest_file.get_as_text())
-    _expect_true(typeof(parsed) == TYPE_DICTIONARY, "Martial manual manifest must parse as a Dictionary.")
-    if typeof(parsed) != TYPE_DICTIONARY:
+    var manifest_parsed = JSON.parse_string(manifest_file.get_as_text())
+    _expect_true(typeof(manifest_parsed) == TYPE_DICTIONARY, "Martial manual runtime manifest must parse as a Dictionary.")
+    if typeof(manifest_parsed) != TYPE_DICTIONARY:
         return
-    var manifest := parsed as Dictionary
+    var manifest := manifest_parsed as Dictionary
 
-    _expect_eq(str(manifest.get("availability_policy", "")), "PLAYER_LEARNABLE_SHARED_WITH_AI", "Martial manuals must be a player-learnable shared pool rather than an enemy-only pool.")
-    _expect_false(bool(manifest.get("enemy_exclusive_manuals_allowed", true)), "Enemy-exclusive martial manuals are forbidden.")
-    _expect_false(bool(manifest.get("enemy_exclusive_techniques_allowed", true)), "Enemy-exclusive martial techniques are forbidden.")
+    var contract_file := FileAccess.open(SHARED_POOL_CONTRACT_PATH, FileAccess.READ)
+    _expect_true(contract_file != null, "Shared player/AI martial-pool contract must be readable.")
+    if contract_file == null:
+        return
+    var contract_parsed = JSON.parse_string(contract_file.get_as_text())
+    _expect_true(typeof(contract_parsed) == TYPE_DICTIONARY, "Shared player/AI martial-pool contract must parse as a Dictionary.")
+    if typeof(contract_parsed) != TYPE_DICTIONARY:
+        return
+    var contract := contract_parsed as Dictionary
+
+    _expect_eq(str(contract.get("decision_id", "")), "TEN-DEC-20260824-SHARED-PLAYER-AI-MARTIAL-POOL-01", "Shared martial-pool Decision authority must stay fixed.")
+    _expect_eq(str(contract.get("availability_policy", "")), "PLAYER_LEARNABLE_SHARED_WITH_AI", "Martial manuals must be a player-learnable shared pool rather than an enemy-only pool.")
+    _expect_false(bool(contract.get("enemy_exclusive_manuals_allowed", true)), "Enemy-exclusive martial manuals are forbidden.")
+    _expect_false(bool(contract.get("enemy_exclusive_techniques_allowed", true)), "Enemy-exclusive martial techniques are forbidden.")
+    _expect_true(bool(contract.get("same_manual_same_mastery_same_card_ids_and_effects", false)), "Player and AI must share the same card IDs/effects for the same manual and mastery.")
+    _expect_eq(str(contract.get("unlock_authority", "")), "MartialManualRegistry.build_unlocked_cards(manual_id, mastery)", "Player and AI must use the same martial unlock authority.")
 
     var files_value = manifest.get("manual_files", {})
     _expect_true(typeof(files_value) == TYPE_DICTIONARY, "Martial manual manifest manual_files must be a Dictionary.")
@@ -114,7 +128,7 @@ func _verify_shared_player_ai_martial_pool(catalog) -> void:
         return
     var manual_files := files_value as Dictionary
 
-    var learnable_value = manifest.get("player_learnable_manual_ids", [])
+    var learnable_value = contract.get("player_learnable_manual_ids", [])
     _expect_true(typeof(learnable_value) == TYPE_ARRAY, "player_learnable_manual_ids must be an Array.")
     if typeof(learnable_value) != TYPE_ARRAY:
         return
@@ -125,10 +139,23 @@ func _verify_shared_player_ai_martial_pool(catalog) -> void:
         _expect_false(learnable_ids.has(manual_id), "Player-learnable manual IDs must be unique: %s" % manual_id)
         learnable_ids[manual_id] = true
 
-    _expect_eq(learnable_ids.size(), manual_files.size(), "Every current martial manual must be player-learnable when acquired.")
+    _expect_eq(learnable_ids.size(), manual_files.size(), "Every current martial manual must remain player-learnable when acquired.")
     for manual_key in manual_files.keys():
         var manual_id := str(manual_key)
         _expect_true(learnable_ids.has(manual_id), "Current martial manual must be player-learnable: %s" % manual_id)
+    for learnable_key in learnable_ids.keys():
+        _expect_true(manual_files.has(str(learnable_key)), "Player-learnable martial pool may not invent a manual outside the runtime registry: %s" % str(learnable_key))
+
+    var starter_value = contract.get("current_vertical_slice_starter_manual_ids", [])
+    _expect_true(typeof(starter_value) == TYPE_ARRAY, "Current starter manual IDs must be an Array.")
+    if typeof(starter_value) == TYPE_ARRAY:
+        var starter_ids := starter_value as Array
+        _expect_eq(starter_ids.size(), 6, "Current Vertical Slice starter selection must remain six manuals.")
+        for starter_id_value in starter_ids:
+            _expect_true(learnable_ids.has(str(starter_id_value)), "Every starter manual must be in the player-learnable shared pool: %s" % str(starter_id_value))
+
+    var acquisition = contract.get("acquisition_evidence_ceiling", {}) as Dictionary
+    _expect_eq(str(acquisition.get("remaining_four_player_acquisition_paths", "")), "NOT_ASSERTED_IMPLEMENTED", "Shared-pool eligibility must not overclaim the remaining four acquisition paths.")
 
     for value in catalog.get_all_candidates():
         var candidate := value as Dictionary
