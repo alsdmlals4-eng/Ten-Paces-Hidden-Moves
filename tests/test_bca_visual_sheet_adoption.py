@@ -27,12 +27,14 @@ class BCAAdoptionHistoryTests(unittest.TestCase):
             self.assertIn(token, sheet)
         self.assertNotIn("workbook_role: USER_FACING_GDD_WORKSPACE", sheet)
 
-    def test_current_project_adapter_does_not_promote_sheet_authority(self) -> None:
+    def test_current_project_adapter_uses_official_legacy_migration_schema(self) -> None:
         adapter = json.loads((ROOT / "skills/PROJECT_BASE_ADAPTER.json").read_text(encoding="utf-8"))
         sheet = adapter["gdd_sheet"]
+        self.assertEqual(2, adapter["schema_version"])
         self.assertEqual(SHEET_ID, sheet["id"])
-        self.assertEqual("MIGRATION_ONLY_UNTIL_REMOVAL", sheet["role"])
-        self.assertEqual("COMPATIBILITY_ONLY", sheet["sync_status"])
+        self.assertEqual("GOOGLE_SHEETS_LEGACY_MIGRATION_SOURCE", sheet["role"])
+        self.assertEqual("MIGRATION_COMPATIBILITY_SURFACE", sheet["workspace_status"])
+        self.assertEqual("STALE", sheet["sync_status"])
         self.assertFalse(sheet["current_authority"])
 
     def test_legacy_registry_is_not_current_skill_authority(self) -> None:
