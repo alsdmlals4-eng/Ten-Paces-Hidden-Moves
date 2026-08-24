@@ -126,10 +126,16 @@ class Issue54HumanDeviceValidationPacketTests(unittest.TestCase):
             "Get-FileHash",
             "qa_evidence_studio.app",
             "ten-paces-hidden-moves",
+            "installed-base-identity.json",
+            "base_root",
+            "base_main_commit",
+            "QA_PROCESS_CLEANUP_AFTER_GAME_LAUNCH_FAILURE",
+            "BROWSER_OPEN_FAILED",
             "HUMAN_DEVICE_STATUS_REMAINS_NOT_RUN_UNTIL_REVIEW",
         ):
             self.assertIn(token, text)
         for forbidden in (
+            "installed-base-main-sha.txt",
             "git reset --hard",
             "git clean -fd",
             "git pull",
