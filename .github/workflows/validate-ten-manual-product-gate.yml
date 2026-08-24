@@ -13,7 +13,13 @@ on:
       - "addons/**"
       - "scripts/windows/**"
       - "tools/validate_ten_manual_product_gate.py"
-      - "tests/**"
+      - "tests/test_ten_manual_product_gate.py"
+      - "tests/verify_ten_manual_product_gate.gd"
+      - "tests/verify_ten_manual_product_viewports.gd"
+      - "tests/verify_combat_keyboard_accessibility.gd"
+      - "tests/verify_combat_focus_order.gd"
+      - "tests/verify_combat_layout_accessibility.gd"
+      - "tests/verify_combat_action_selection_integration.gd"
       - ".github/workflows/validate-ten-manual-product-gate.yml"
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
