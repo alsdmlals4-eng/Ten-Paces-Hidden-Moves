@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -140,22 +141,33 @@ class ProjectGovernanceTests(unittest.TestCase):
         current_state = json.loads(
             (ROOT / "docs/planning-data/current_operating_state.json").read_text(encoding="utf-8")
         )
-        current_mutable_tokens = [
-            f"active_planning_pr: {current_state['active_planning_pr']}",
-            f"active_approval_count: {current_state['active_approval_count']}",
-            f"active_decision_state: {current_state['active_decision_state']}",
-            f"next_package: {current_state['next_package']}",
-            f"next_planning_decision: {current_state['next_planning_decision']}",
-            current_state["source_decision"],
-        ]
-        for token in current_mutable_tokens:
+        mutable_keys = (
+            "active_planning_work_mode",
+            "active_planning_pr",
+            "active_planning_parent_pr",
+            "active_approval_count",
+            "active_decision_state",
+            "next_package",
+            "next_planning_decision",
+        )
+        for key in mutable_keys:
+            token = f"{key}: {current_state[key]}"
             self.assertIn(token, active_text, f"{active_relative} is missing mutable state {token!r}")
+        self.assertIn(current_state["source_decision"], active_text)
 
-        hub_roadmap = (
-            ROOT / "[기획서]/00_프로젝트_허브/ROADMAP.md"
-        ).read_text(encoding="utf-8")
-        for token in current_mutable_tokens:
-            self.assertIn(token, hub_roadmap, f"hub roadmap is missing mutable state {token!r}")
+        for roadmap_relative in (
+            "docs/04_ROADMAP.md",
+            "[기획서]/00_프로젝트_허브/ROADMAP.md",
+        ):
+            roadmap_text = (ROOT / roadmap_relative).read_text(encoding="utf-8")
+            self.assertIn("ACTIVE_CONTEXT", roadmap_text)
+            self.assertIn("current_state_owner: ACTIVE_CONTEXT_PLUS_CURRENT_JSON", roadmap_text)
+            self.assertIn(current_state["source_decision"], roadmap_text)
+            for key in mutable_keys:
+                self.assertIsNone(
+                    re.search(rf"(?m)^{re.escape(key)}:\s*", roadmap_text),
+                    f"{roadmap_relative} duplicates mutable operating state: {key}",
+                )
 
         for token in [
             "TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01",

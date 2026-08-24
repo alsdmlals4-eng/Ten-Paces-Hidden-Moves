@@ -39,36 +39,46 @@ PRODUCT_WINDOWS_ARTIFACT = "8956790279"
 PRODUCT_MERGE_COMMIT = "a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90"
 PLATFORM_DECISION_ID = "TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01"
 
+
 class CanonLifecycleError(ValueError):
     pass
+
 
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise CanonLifecycleError(message)
+
 
 def read_text(root: pathlib.Path, relative: pathlib.Path) -> str:
     target = root / relative
     require(target.is_file(), f"missing canon lifecycle file: {relative.as_posix()}")
     return target.read_text(encoding="utf-8")
 
+
 def read_json(root: pathlib.Path, relative: pathlib.Path) -> dict[str, Any]:
     value = json.loads(read_text(root, relative))
     require(isinstance(value, dict), f"{relative.as_posix()} must contain a JSON object")
     return value
+
 
 def yaml_scalar(text: str, key: str) -> str:
     values = re.findall(rf"(?m)^{re.escape(key)}:\s*([^\s#]+)\s*(?:#.*)?$", text)
     require(len(values) == 1, f"operating checkpoint key must appear exactly once: {key}")
     return values[0]
 
+
 def require_tokens(text: str, tokens: list[str], label: str) -> None:
     for token in tokens:
         require(token in text, f"{label} missing token: {token}")
 
+
 def validate_operating_state(active: str, roadmap: str, current_state: dict[str, Any]) -> None:
     active_state = {key: yaml_scalar(active, key) for key in OPERATING_KEYS}
-    roadmap_state = {key: yaml_scalar(roadmap, key) for key in OPERATING_KEYS}
-    require(active_state == roadmap_state, "operating checkpoint mismatch between active context and roadmap")
+    for key in OPERATING_KEYS:
+        require(
+            re.search(rf"(?m)^{re.escape(key)}:\s*", roadmap) is None,
+            f"roadmap duplicates mutable operating checkpoint: {key}",
+        )
 
     require(current_state.get("schema_version") == 1, "current operating state schema differs")
     require(current_state.get("authority") == "CURRENT_OPERATING_STATE", "current operating state authority differs")
@@ -118,7 +128,9 @@ def validate_operating_state(active: str, roadmap: str, current_state: dict[str,
         "TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01",
         "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", "LOCAL_WINDOWS_ANDROID_DEVICE_ACCESSIBILITY_PERFORMANCE_GATE",
         "NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT",
+        "MIGRATION_ONLY_UNTIL_REMOVAL",
     ], "roadmap")
+
 
 def validate_platform_authority(agents: str, old_decision: str, decision: str) -> None:
     require("# [대체됨]" in old_decision and "상태: `SUPERSEDED`" in old_decision, "old platform Decision must be SUPERSEDED")
@@ -142,6 +154,7 @@ def validate_platform_authority(agents: str, old_decision: str, decision: str) -
         "전투 규칙·AI·콘텐츠·ID·수치·저장 Schema는 하나의 공유 코어",
     ], "AGENTS platform contract")
 
+
 def validate_runtime_authority(runtime_decision: str, build_approval: str, manifest: dict[str, Any]) -> None:
     require_tokens(runtime_decision, ["TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE", "APPROVED_RUNTIME_FOUNDATION", "RUNTIME_FOUNDATION", "PR #92", "PR #91"], "runtime Decision")
     require_tokens(build_approval, ["registry + ordered effect pipeline + explicit engine loadout integration", "human validation: NOT_RUN", "balance validation: NOT_RUN"], "runtime build approval")
@@ -153,11 +166,13 @@ def validate_runtime_authority(runtime_decision: str, build_approval: str, manif
     require(isinstance(compatibility, dict) and compatibility.get("legacy_default_behavior_unchanged") is True, "legacy default behavior must remain unchanged")
     require(compatibility.get("explicit_loadout_required") is True, "martial cards must require an explicit loadout")
 
+
 def validate_ui_ai_authority(ui_ai_decision: str, loadout: dict[str, Any]) -> None:
     require_tokens(ui_ai_decision, ["TEN_MANUAL_UI_AI_ADOPTION_GATE", "APPROVED_AND_IMPLEMENTED", "TEN_MANUAL_PRODUCT_VALIDATION_GATE", "martial_loadout", "martial_mastery_by_manual", "플레이어 비공개 계획", "MartialEffectPipeline", "31053963064", "03_무공서_무학"], "UI AI Decision")
     require(loadout.get("authority") == "TEN_MANUAL_UI_AI_ADOPTION_GATE", "ten-manual loadout authority differs")
     require(isinstance(loadout.get("player"), dict) and isinstance(loadout.get("enemy"), dict), "player and enemy loadouts must be separate")
     require(bool(loadout["player"].get("loadout")) and bool(loadout["enemy"].get("loadout")), "player and enemy loadouts must be explicit")
+
 
 def validate_product_authority(decision: str, contract: dict[str, Any], evidence: str, protocol: str, results: str) -> None:
     require_tokens(decision, [
@@ -192,17 +207,21 @@ def validate_product_authority(decision: str, contract: dict[str, Any], evidence
     require_tokens(protocol, ["REACTIVATED_BY_USER", "participant_count: 0", "human_step14: NOT_RUN", PRODUCT_EVIDENCE_HEAD, PRODUCT_WORKFLOW_RUN, PRODUCT_WINDOWS_ARTIFACT], "STEP14 protocol")
     require_tokens(results, ["participant_count: 0", "human_step14: NOT_RUN", "P05 | NOT_RUN", "t1_greenlight: NOT_GRANTED"], "STEP14 results")
 
+
 def validate_superseded_authority(range_decision: str, old_decision: str, old_contract: dict[str, Any]) -> None:
     require("# [대체됨]" in range_decision and "상태: `SUPERSEDED`" in range_decision, "range Decision lifecycle label [대체됨] missing")
     require("# [대체됨]" in old_decision and "상태: `SUPERSEDED`" in old_decision, "Technique1 Decision must be SUPERSEDED")
     require(old_contract.get("authority_status") == "SUPERSEDED_HISTORICAL_EVIDENCE", "superseded Technique1 contract cannot claim current authority")
     require(old_contract.get("lifecycle_label_ko") == "[대체됨]", "superseded Technique1 contract Korean lifecycle label missing")
 
+
 def validate_registry(registry: str) -> None:
     require_tokens(registry, ["[현행]", "[대체됨]", "[보류]", "[폐기]", "PR #85 HTML Technique1 PoC", "닫힘·병합 금지·제품 권위 없음", "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE", "TEN_MANUAL_UI_AI_ADOPTION_GATE", "TEN_MANUAL_PRODUCT_VALIDATION_GATE", "PRODUCT_VALIDATION_AUTOMATED", "approved_20260806_ten_manual_product_validation_gate_contract.json", "능력치별 무공서 권수·균등 분포·최소/최대 쿼터"], "canon lifecycle registry")
 
+
 def validate_mastery(mastery: str) -> None:
     require_tokens(mastery, ["active_batch: 10/10", "implementation_authority: RUNTIME_FOUNDATION", "TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE", "TEN_MANUAL_UI_AI_ADOPTION_GATE", "현재 Windows·접근성·성능·사람·밸런스 검증은 `NOT_RUN`이다"], "growth authority")
+
 
 def validate_historical_audit(data: dict[str, Any]) -> None:
     require(set(data.get("adversarial_risks", {})) == EXPECTED_RISKS, "adversarial risk coverage differs")
@@ -210,6 +229,7 @@ def validate_historical_audit(data: dict[str, Any]) -> None:
     require(isinstance(held, list) and len(held) == 1 and held[0].get("merge_allowed") is False, "held HTML PR cannot be mergeable authority")
     order = data.get("next_planning_order")
     require(isinstance(order, list) and order and order[0] == "STAR9_PUBLIC_READ_BRANCH_TEMPLATE", "9-star template must precede individual branches")
+
 
 def validate(root: pathlib.Path = ROOT) -> None:
     active = read_text(root, ACTIVE_PATH)
@@ -225,6 +245,7 @@ def validate(root: pathlib.Path = ROOT) -> None:
     validate_registry(registry)
     validate_mastery(mastery)
     validate_historical_audit(read_json(root, AUDIT_CONTRACT_PATH))
+
 
 if __name__ == "__main__":
     try:

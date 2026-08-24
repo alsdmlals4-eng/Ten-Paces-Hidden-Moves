@@ -1,4 +1,5 @@
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -18,6 +19,16 @@ EXPECTED = {
     "returning_qi_meridian": (61, 71, 24, 95),
     "ten_paces_position_reversal": (96, 106, 31, 137),
 }
+
+MUTABLE_KEYS = (
+    "active_planning_work_mode",
+    "active_planning_pr",
+    "active_planning_parent_pr",
+    "active_approval_count",
+    "active_decision_state",
+    "next_package",
+    "next_planning_decision",
+)
 
 
 class Star7Star9MasteryBonusContractTest(unittest.TestCase):
@@ -155,9 +166,14 @@ class Star7Star9MasteryBonusContractTest(unittest.TestCase):
             self.assertIn("TEN_MANUAL_PRODUCT_VALIDATION_GATE", current)
             self.assertIn("merged_product_pr: 92", current)
             self.assertIn("product_implementation_merge_commit: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90", current)
-            self.assertIn(f"active_approval_count: {current_state['active_approval_count']}", current)
-            self.assertIn(f"active_decision_state: {current_state['active_decision_state']}", current)
-            self.assertIn(f"next_planning_decision: {current_state['next_planning_decision']}", current)
+
+        for key in MUTABLE_KEYS:
+            self.assertIn(f"{key}: {current_state[key]}", active)
+            self.assertIsNone(
+                re.search(rf"(?m)^{re.escape(key)}:\s*", roadmap),
+                f"roadmap duplicates mutable operating state: {key}",
+            )
+        self.assertIn("current_state_owner: ACTIVE_CONTEXT_PLUS_CURRENT_JSON", roadmap)
 
         self.assertIn("runtime_implementation: TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92", active)
         self.assertIn("product_gate: PARTIAL_AUTOMATED_COMPLETE", active)

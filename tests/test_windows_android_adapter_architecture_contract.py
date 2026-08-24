@@ -111,9 +111,13 @@ class WindowsAndroidAdapterArchitectureContractTest(unittest.TestCase):
         roadmap = ROADMAP.read_text(encoding="utf-8")
         for key in OPERATING_KEYS:
             self.assertEqual(str(current[key]), yaml_scalar(active, key), key)
-            self.assertEqual(str(current[key]), yaml_scalar(roadmap, key), key)
+            self.assertIsNone(
+                re.search(rf"(?m)^{re.escape(key)}:\s*", roadmap),
+                f"roadmap duplicates mutable operating state: {key}",
+            )
         self.assertIn(current["source_decision"], active)
         self.assertIn(current["source_decision"], roadmap)
+        self.assertIn("current_state_owner: ACTIVE_CONTEXT_PLUS_CURRENT_JSON", roadmap)
 
     def test_shared_core_and_adapter_set_are_fixed(self):
         data = self.load_contract()
