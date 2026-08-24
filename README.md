@@ -17,6 +17,7 @@
 - [콘텐츠 카탈로그](docs/03_CONTENT_CATALOG.md)
 - [로드맵](docs/04_ROADMAP.md)
 - [테스트 체크리스트](docs/08_TEST_CHECKLIST.md)
+- [플랫폼 범위 Decision](docs/decisions/2026-08-06_WINDOWS_ANDROID_DUAL_TARGET_DECISION.md)
 
 ## 현재 상태 읽는 법
 
@@ -55,10 +56,10 @@ ACTIVE_CONTEXT.md
 
 ## 플랫폼 범위
 
-- Windows와 Android를 기본 설계 대상으로 유지합니다.
-- 전투 규칙·AI·콘텐츠·ID·수치·저장 Schema는 단일 공유 코어를 사용합니다.
+- Windows·Android 기본 설계를 유지합니다.
+- 전투 규칙·AI·콘텐츠·ID·수치·저장 Schema는 **단일 공유 코어·플랫폼 Adapter** 구조를 사용합니다.
 - 플랫폼 차이는 입력, 반응형 UI·안전영역, 앱 생명주기·뒤로가기, 플랫폼 서비스, 품질·성능·export Adapter에 한정합니다.
-- Android 실제 설치·실행·터치·뒤로가기·safe-area·pause/resume·저장·성능은 실제 evidence 전에는 완료로 주장하지 않습니다.
+- Android 실제 설치·실행·터치·뒤로가기·safe-area·pause/resume·저장·성능은 실제 evidence 전에는 완료로 주장하지 않습니다. 현재 정확한 검증 상태는 Active Context에서 읽습니다.
 
 ## Vertical Slice
 
