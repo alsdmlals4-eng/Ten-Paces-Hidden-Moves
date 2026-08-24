@@ -6,6 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ADAPTER_PATH = ROOT / "skills/PROJECT_BASE_ADAPTER.json"
+CURRENT_CONTRACT_PATH = ROOT / "docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md"
 CURRENT_PAYLOAD = "7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8"
 CURRENT_EVIDENCE = "da33a350d61b8adc52df97fccc7001708a933370"
 CURRENT_FINALIZATION = "0b7c94f38d959efc0fc9442274c60b2e268a3c97"
@@ -27,12 +28,24 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertEqual(CURRENT_FINALIZATION, release["finalization_commit"])
         self.assertEqual(REGISTRY, adapter["skill_registry"]["base"]["sha256"])
 
-    def test_current_operating_contract_is_v48_not_the_old_base_pin(self) -> None:
+    def test_current_operating_contract_is_owned_by_v48_canonical_entrypoint(self) -> None:
         adapter = load_adapter()
-        contract = adapter["current_operating_contract"]
-        self.assertEqual(CURRENT_WORK_CONTRACT, contract["decision_id"])
-        self.assertEqual("4.8", contract["version"])
-        self.assertEqual("LATEST_COMPLETED_BASE_OWNER_PROGRESSIVE_LOAD", contract["base_policy"])
+        self.assertNotIn("current_operating_contract", adapter)
+        text = CURRENT_CONTRACT_PATH.read_text(encoding="utf-8")
+        self.assertIn("contract_version: '4.8'", text)
+        self.assertIn(f"current_binding_decision: {CURRENT_WORK_CONTRACT}", text)
+        self.assertIn("base_snapshot_policy: ALWAYS_REFETCH_CURRENT_COMPLETED_MAIN", text)
+
+    def test_adapter_uses_current_v2_identity_and_migration_schema(self) -> None:
+        adapter = load_adapter()
+        self.assertEqual(2, adapter["schema_version"])
+        self.assertEqual("ten-paces-hidden-moves", adapter["project"]["project_id"])
+        sheet = adapter["gdd_sheet"]
+        self.assertEqual("GOOGLE_SHEETS_LEGACY_MIGRATION_SOURCE", sheet["role"])
+        self.assertEqual("MIGRATION_COMPATIBILITY_SURFACE", sheet["workspace_status"])
+        self.assertEqual("STALE", sheet["sync_status"])
+        self.assertEqual("NO_NEW_CANON_INPUT", sheet["write_policy"])
+        self.assertFalse(sheet["current_authority"])
 
     def test_intake_route_preserves_planning_first_governance_without_sheet_authority(self) -> None:
         adapter = load_adapter()
@@ -63,19 +76,6 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertEqual("ADOPTED_FROM_BASE_V9_4_1", policy["base_validator_adoption"])
         self.assertEqual("base-v9.4.1.lock.json", policy["base_release_lock"])
         self.assertEqual("NOT_RUN", policy["actual_external_ai_worktree_execution"])
-
-    def test_sheet_is_migration_compatibility_not_current_canon(self) -> None:
-        adapter = load_adapter()
-        sheet = adapter["gdd_sheet"]
-        self.assertEqual("MIGRATION_COMPATIBILITY_ONLY", sheet["declared_sync_status"])
-        self.assertEqual("COMPATIBILITY_ONLY", sheet["sync_status"])
-        self.assertEqual("MIGRATION_ONLY_UNTIL_REMOVAL", sheet["role"])
-        self.assertEqual("NO_NEW_CANON_INPUT", sheet["write_policy"])
-        self.assertFalse(sheet["current_authority"])
-        self.assertEqual(
-            ["data/", "src/", "scenes/", "assets/", "addons/", "project.godot"],
-            adapter["protected_paths"],
-        )
 
 
 if __name__ == "__main__":
