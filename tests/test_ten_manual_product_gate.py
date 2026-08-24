@@ -112,6 +112,27 @@ class TenManualProductGateTests(unittest.TestCase):
         )
         self.assertEqual([], errors)
 
+    def test_product_gate_generates_exact_main_evidence_after_relevant_merges(self) -> None:
+        workflow = (
+            ROOT / ".github/workflows/validate-ten-manual-product-gate.yml"
+        ).read_text(encoding="utf-8")
+        self.assertIn("on:\n  push:\n    branches: [main]", workflow)
+        for path in (
+            "project.godot",
+            "export_presets.cfg",
+            "data/**",
+            "src/**",
+            "scenes/**",
+            "assets/**",
+            "addons/**",
+            "scripts/windows/**",
+            "tools/validate_ten_manual_product_gate.py",
+            "tests/**",
+            ".github/workflows/validate-ten-manual-product-gate.yml",
+        ):
+            self.assertIn(f'      - "{path}"', workflow)
+        self.assertIn("workflow_dispatch:", workflow)
+
     def test_canonical_product_evidence_matches_latest_verified_artifact(self) -> None:
         canonical_paths = (
             ROOT / "docs/decisions/2026-08-06_TEN_MANUAL_PRODUCT_VALIDATION_GATE.md",
