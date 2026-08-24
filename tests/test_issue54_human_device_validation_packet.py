@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "docs/validation/TEN_PACES_UX_UI_FIXTURE_CATALOG.md"
 PACKET = ROOT / "docs/validation/TEN_PACES_UX_UI_VALIDATION_PACKET.md"
 CONTRACT = ROOT / "docs/planning-data/current_issue54_human_device_validation_packet.json"
+LAUNCHER = ROOT / "tools/start_issue54_human_validation.ps1"
 
 
 class Issue54HumanDeviceValidationPacketTests(unittest.TestCase):
@@ -109,6 +110,40 @@ class Issue54HumanDeviceValidationPacketTests(unittest.TestCase):
             "sha256:a72a46df70005c6f5def8e05457a57957e3fd5b1af73969377700666cca080ae",
         )
         self.assertFalse(route["push_observation_promotes_human_or_device_pass"])
+
+    def test_one_shot_launcher_reuses_existing_evidence_owners_and_stays_fail_closed(self):
+        self.assertTrue(LAUNCHER.is_file(), "Issue #54 one-shot launcher must exist")
+        text = LAUNCHER.read_text(encoding="utf-8")
+        for token in (
+            "ISSUE54_HUMAN_VALIDATION_LAUNCHER",
+            "FRESH_RUNTIME_ARTIFACT_GATE",
+            "git ls-remote origin refs/heads/main",
+            "LOCAL_HEAD_MUST_EQUAL_REMOTE_MAIN",
+            "BASE_HEAD_MUST_EQUAL_REMOTE_MAIN",
+            "collect_godot_live_evidence.ps1",
+            "Windows Desktop Product Validation",
+            "Get-FileHash",
+            "qa_evidence_studio.app",
+            "ten-paces-hidden-moves",
+            "HUMAN_DEVICE_STATUS_REMAINS_NOT_RUN_UNTIL_REVIEW",
+        ):
+            self.assertIn(token, text)
+        for forbidden in (
+            "git reset --hard",
+            "git clean -fd",
+            "git pull",
+            "windows_visible_local_usability = 'PASS'",
+            "human_step14 = 'PASS'",
+        ):
+            self.assertNotIn(forbidden, text)
+
+        packet = PACKET.read_text(encoding="utf-8")
+        self.assertIn("tools/start_issue54_human_validation.ps1", packet)
+        payload = json.loads(CONTRACT.read_text(encoding="utf-8"))
+        self.assertEqual(
+            payload["owners"]["human_validation_launcher"],
+            "tools/start_issue54_human_validation.ps1",
+        )
 
     def test_structured_contract_is_machine_readable_and_non_promotional(self):
         payload = json.loads(CONTRACT.read_text(encoding="utf-8"))
