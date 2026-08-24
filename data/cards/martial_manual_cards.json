@@ -5,6 +5,21 @@
   "runtime_status": "RUNTIME_FOUNDATION",
   "stat_assignment_policy": "FACTION_MARTIAL_ACTION_FIT_ONLY",
   "stat_quota_rules_enabled": false,
+  "availability_policy": "PLAYER_LEARNABLE_SHARED_WITH_AI",
+  "enemy_exclusive_manuals_allowed": false,
+  "enemy_exclusive_techniques_allowed": false,
+  "player_learnable_manual_ids": [
+    "mount_hua_plum_blossom_sword",
+    "shaolin_arhat_vajra_art",
+    "wudang_taiji_sword",
+    "yang_family_spear",
+    "mount_hua_purple_mist_art",
+    "xiaoyao_lingbo_footwork",
+    "beggars_dragon_subduing_palm",
+    "sichuan_tang_hidden_weapons",
+    "hebei_peng_five_tigers_saber",
+    "nangong_boundless_sky_sword"
+  ],
   "compatibility": {
     "legacy_default_behavior_unchanged": true,
     "preserved_card_ids": [
