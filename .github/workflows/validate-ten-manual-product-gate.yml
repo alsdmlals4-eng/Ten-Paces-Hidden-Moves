@@ -1,6 +1,27 @@
 name: Validate Ten Manual Product Gate
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "project.godot"
+      - "export_presets.cfg"
+      - "data/**"
+      - "src/**"
+      - "scenes/**"
+      - "assets/**"
+      - "addons/**"
+      - "scripts/windows/run_ten_manual_product_validation.ps1"
+      - "tools/validate_ten_manual_product_gate.py"
+      - "docs/planning-data/approved_20260806_ten_manual_product_validation_gate_contract.json"
+      - "tests/test_ten_manual_product_gate.py"
+      - "tests/verify_ten_manual_product_gate.gd"
+      - "tests/verify_ten_manual_product_viewports.gd"
+      - "tests/verify_combat_keyboard_accessibility.gd"
+      - "tests/verify_combat_focus_order.gd"
+      - "tests/verify_combat_layout_accessibility.gd"
+      - "tests/verify_combat_action_selection_integration.gd"
+      - ".github/workflows/validate-ten-manual-product-gate.yml"
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
@@ -72,7 +93,7 @@ jobs:
     timeout-minutes: 15
     env:
       HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-      PR_NUMBER: ${{ github.event.pull_request.number || 92 }}
+      PR_NUMBER: ${{ github.event.pull_request.number || 0 }}
       TEN_MANUAL_EVIDENCE_DIR: ${{ github.workspace }}\artifacts\ten-manual-product-validation
     steps:
       - name: Check out repository

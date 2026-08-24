@@ -112,6 +112,48 @@ class TenManualProductGateTests(unittest.TestCase):
         )
         self.assertEqual([], errors)
 
+    def test_product_gate_generates_exact_main_evidence_after_relevant_merges(self) -> None:
+        workflow = (
+            ROOT / ".github/workflows/validate-ten-manual-product-gate.yml"
+        ).read_text(encoding="utf-8")
+        self.assertIn("on:\n  push:\n    branches: [main]", workflow)
+        required_paths = (
+            "project.godot",
+            "export_presets.cfg",
+            "data/**",
+            "src/**",
+            "scenes/**",
+            "assets/**",
+            "addons/**",
+            "scripts/windows/run_ten_manual_product_validation.ps1",
+            "tools/validate_ten_manual_product_gate.py",
+            "docs/planning-data/approved_20260806_ten_manual_product_validation_gate_contract.json",
+            "tests/test_ten_manual_product_gate.py",
+            "tests/verify_ten_manual_product_gate.gd",
+            "tests/verify_ten_manual_product_viewports.gd",
+            "tests/verify_combat_keyboard_accessibility.gd",
+            "tests/verify_combat_focus_order.gd",
+            "tests/verify_combat_layout_accessibility.gd",
+            "tests/verify_combat_action_selection_integration.gd",
+            ".github/workflows/validate-ten-manual-product-gate.yml",
+        )
+        for path in required_paths:
+            self.assertIn(f'      - "{path}"', workflow)
+        self.assertNotIn('      - "tests/**"', workflow)
+        self.assertNotIn('      - "scripts/windows/**"', workflow)
+        self.assertIn("workflow_dispatch:", workflow)
+        self.assertIn(
+            "PR_NUMBER: ${{ github.event.pull_request.number || 0 }}",
+            workflow,
+        )
+        self.assertNotIn("github.event.pull_request.number || 92", workflow)
+
+        producer = (
+            ROOT / "scripts/windows/run_ten_manual_product_validation.ps1"
+        ).read_text(encoding="utf-8")
+        self.assertIn("else { 0 }", producer)
+        self.assertNotIn("else { 92 }", producer)
+
     def test_canonical_product_evidence_matches_latest_verified_artifact(self) -> None:
         canonical_paths = (
             ROOT / "docs/decisions/2026-08-06_TEN_MANUAL_PRODUCT_VALIDATION_GATE.md",

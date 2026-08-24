@@ -78,7 +78,7 @@ if (Test-Path -LiteralPath $pckPath) {
 
 $repository = if ($env:GITHUB_REPOSITORY) { $env:GITHUB_REPOSITORY } else { 'alsdmlals4-eng/Ten-Paces-Hidden-Moves' }
 $runId = if ($env:GITHUB_RUN_ID) { $env:GITHUB_RUN_ID } else { 'LOCAL_NOT_CI' }
-$prNumber = if ($env:PR_NUMBER) { [int]$env:PR_NUMBER } else { 92 }
+$prNumber = if ($env:PR_NUMBER) { [int]$env:PR_NUMBER } else { 0 }
 $artifactName = "ten-manual-product-validation-$HeadSha"
 
 $evidence = [ordered]@{
