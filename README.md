@@ -11,6 +11,7 @@
 - [현재 상태]([기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md)
 - [문서 지도]([기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md)
 - [현행 통합 작업계약](docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md)
+- [Base 적용·호환 기준](docs/BASE_RULES_VERSION.md)
 - [게임 기획](docs/01_GAME_DESIGN.md)
 - [전투 규칙](docs/02_COMBAT_RULES.md)
 - [콘텐츠 카탈로그](docs/03_CONTENT_CATALOG.md)
