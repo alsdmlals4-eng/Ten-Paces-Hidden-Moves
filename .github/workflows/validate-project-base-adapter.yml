@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: alsdmlals4-eng/Base
-          ref: 4ec410e611152294f3f2685570fca6019c7abcfa
+          ref: 2828a74f60c1ed09546171040f4178c8848ea686
           path: .base-contract
           fetch-depth: 0
 
