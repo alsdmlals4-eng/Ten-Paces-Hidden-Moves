@@ -2,6 +2,7 @@ extends SceneTree
 
 const CATALOG_SCRIPT_PATH := "res://src/run/vertical_slice_opponent_catalog.gd"
 const DATA_PATH := "res://data/run/vertical_slice_opponents.json"
+const MANUAL_MANIFEST_PATH := "res://data/cards/martial_manual_cards.json"
 const MANUAL_REGISTRY_SCRIPT := preload("res://src/combat/martial_manual_registry.gd")
 const RUN_STATE_SCRIPT := preload("res://src/run/vertical_slice_run_state.gd")
 const BASIC_CARDS_PATH := "res://data/cards/basic_cards.json"
@@ -27,6 +28,7 @@ func _run() -> void:
     var catalog = catalog_script.new()
     _expect_true(catalog.is_valid(), "Opponent catalog must load without errors: %s" % str(catalog.load_errors))
     _verify_catalog_shape(catalog)
+    _verify_shared_player_ai_martial_pool(catalog)
     _verify_runtime_ids(catalog)
     _verify_selection_binding(catalog)
     _verify_run_lock_flow(catalog)
@@ -89,6 +91,50 @@ func _verify_catalog_shape(catalog) -> void:
         _expect_true((candidate.get("basic_action_focus_ids", []) as Array).size() >= 1, "Candidate must reference at least one existing basic action: %s" % candidate_id)
 
     _expect_eq(manual_ids.size(), 10, "The 15-candidate slice must reuse all ten existing manual IDs at least once.")
+
+
+func _verify_shared_player_ai_martial_pool(catalog) -> void:
+    var manifest_file := FileAccess.open(MANUAL_MANIFEST_PATH, FileAccess.READ)
+    _expect_true(manifest_file != null, "Martial manual manifest must be readable for player/AI pool validation.")
+    if manifest_file == null:
+        return
+    var parsed = JSON.parse_string(manifest_file.get_as_text())
+    _expect_true(typeof(parsed) == TYPE_DICTIONARY, "Martial manual manifest must parse as a Dictionary.")
+    if typeof(parsed) != TYPE_DICTIONARY:
+        return
+    var manifest := parsed as Dictionary
+
+    _expect_eq(str(manifest.get("availability_policy", "")), "PLAYER_LEARNABLE_SHARED_WITH_AI", "Martial manuals must be a player-learnable shared pool rather than an enemy-only pool.")
+    _expect_false(bool(manifest.get("enemy_exclusive_manuals_allowed", true)), "Enemy-exclusive martial manuals are forbidden.")
+    _expect_false(bool(manifest.get("enemy_exclusive_techniques_allowed", true)), "Enemy-exclusive martial techniques are forbidden.")
+
+    var files_value = manifest.get("manual_files", {})
+    _expect_true(typeof(files_value) == TYPE_DICTIONARY, "Martial manual manifest manual_files must be a Dictionary.")
+    if typeof(files_value) != TYPE_DICTIONARY:
+        return
+    var manual_files := files_value as Dictionary
+
+    var learnable_value = manifest.get("player_learnable_manual_ids", [])
+    _expect_true(typeof(learnable_value) == TYPE_ARRAY, "player_learnable_manual_ids must be an Array.")
+    if typeof(learnable_value) != TYPE_ARRAY:
+        return
+    var learnable_ids := {}
+    for manual_id_value in learnable_value as Array:
+        var manual_id := str(manual_id_value)
+        _expect_false(manual_id.is_empty(), "Player-learnable manual ID may not be empty.")
+        _expect_false(learnable_ids.has(manual_id), "Player-learnable manual IDs must be unique: %s" % manual_id)
+        learnable_ids[manual_id] = true
+
+    _expect_eq(learnable_ids.size(), manual_files.size(), "Every current martial manual must be player-learnable when acquired.")
+    for manual_key in manual_files.keys():
+        var manual_id := str(manual_key)
+        _expect_true(learnable_ids.has(manual_id), "Current martial manual must be player-learnable: %s" % manual_id)
+
+    for value in catalog.get_all_candidates():
+        var candidate := value as Dictionary
+        var candidate_id := str(candidate.get("candidate_id", ""))
+        var manual_id := str(candidate.get("signature_manual_id", ""))
+        _expect_true(learnable_ids.has(manual_id), "Opponent may only use a player-learnable faction manual: %s -> %s" % [candidate_id, manual_id])
 
 
 func _verify_runtime_ids(catalog) -> void:
@@ -165,7 +211,7 @@ func _verify_run_lock_flow(catalog) -> void:
     _expect_true(run.mark_combat_finished({"outcome": "win", "duel_index": 1}), "Duel 1 terminal result must enter REVIEW.")
     _expect_true(run.advance(), "REVIEW → RESULT")
     _expect_eq(run.get_current_screen(), "RESULT", "Run must be at RESULT before next-opponent lock transition.")
-    _expect_true(run.get_route_target_opponent().is_empty(), "Next opponent must not be route-visible before Result is confirmed/left.")
+    _expect_true(run.get_route_target_opponent().is_empty(), "Next opponent must not be route-visible before Duel 1 result settlement.")
     _expect_false(run.advance(), "Result without a reward receipt may not lock or reveal the next opponent.")
     _expect_true(run.get_route_target_opponent().is_empty(), "Blocked Result advance must not pre-lock the next opponent.")
     _expect_true(run.set_pending_result_reward({"reward_type": "free_training", "free_training": 6}), "Result must accept one valid reward receipt before Route.")
