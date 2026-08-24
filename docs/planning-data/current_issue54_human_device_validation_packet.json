@@ -8,7 +8,8 @@
     "fixture_catalog": "docs/validation/TEN_PACES_UX_UI_FIXTURE_CATALOG.md",
     "execution_packet": "docs/validation/TEN_PACES_UX_UI_VALIDATION_PACKET.md",
     "local_automated_receipt": "tools/collect_godot_live_evidence.ps1",
-    "windows_human_evidence": "Base/tools/qa-evidence-studio"
+    "windows_human_evidence": "Base/tools/qa-evidence-studio",
+    "human_validation_launcher": "tools/start_issue54_human_validation.ps1"
   },
   "evidence_rule": "AUTOMATED_EVIDENCE_DOES_NOT_PROMOTE_HUMAN_OR_DEVICE_PASS",
   "runtime_artifact_freshness": {

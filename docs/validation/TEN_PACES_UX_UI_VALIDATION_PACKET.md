@@ -63,6 +63,18 @@ Base의 **QA Evidence Studio**를 재사용한다.
 - `.asset-vault/` 등 ignored local evidence는 제품 정본이 아니다.
 - screenshot/log를 자동 Git commit하지 않는다.
 
+### One-shot Windows launcher
+
+수동 명령 조합 실수를 줄이기 위해 얇은 orchestration wrapper를 제공한다.
+
+```powershell
+pwsh -File tools/start_issue54_human_validation.ps1
+```
+
+필요하면 `-BaseRoot`, `-GodotPath`, `-HeraPath`를 명시한다. launcher는 Project/Base가 각각 exact remote `main`과 일치하고 worktree가 깨끗한지 확인한 뒤 기존 `collect_godot_live_evidence.ps1`를 실행하고, exact commit 전용 `build/issue54-human-validation/<sha>/`를 새로 만들고, fresh Windows export의 EXE/PCK bytes·SHA-256을 기록한다. 이후 Base QA Evidence Studio를 localhost random port로 열고 fresh Windows 제품을 실행한다.
+
+launcher 성공은 **검증 환경 준비 성공**일 뿐 Human/device PASS가 아니다. 실제 checklist 판정과 screenshot은 QA Evidence Studio에서 사람이 기록하며 `Windows visible local`, `physical gamepad`, Human Step 14 등은 그 실제 검토 전까지 `NOT_RUN`이다.
+
 ## 3. FRESH_RUNTIME_ARTIFACT_GATE
 
 Base의 최신 `FRESH_RUNTIME_ARTIFACT_GATE`를 Issue #54 실행에도 적용한다.
