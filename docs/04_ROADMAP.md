@@ -1,46 +1,38 @@
 # 십보강호 구현 로드맵과 검증 기준
 
-> 현재 상태: `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
-> 전투 규칙 책임 원본: `docs/02_COMBAT_RULES.md`
-> 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`
-> 플랫폼 Decision: `TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`
-> 플랫폼 Adapter Decision: `TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01`
-> 성장 Decision: `TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01`
-> 런타임 기반 Decision: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`
-> UI·AI 채택 Decision: `TEN_MANUAL_UI_AI_ADOPTION_GATE`
-> 자동 제품 검증 Decision: `TEN_MANUAL_PRODUCT_VALIDATION_GATE`
+> 현재 상태 단독 책임 원본: `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` + `docs/planning-data/current_operating_state.json` + `docs/planning-data/current_user_planning_status.json`  
+> 전투 규칙 책임 원본: `docs/02_COMBAT_RULES.md`  
+> 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`  
+> 사람용 Project Home·Flow·Visual: exact Project Notion  
+> 현행 작업계약: `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`
 
-## 1. 현재 단계
+이 문서는 **장기 로드맵·제품 증거 계보·다음 Gate의 순서**를 소유한다. 활성 PR, exact HEAD, 현재 Work Mode, 승인 수, 현재 stage, 다음 package/Decision 같은 mutable operating checkpoint는 복제하지 않는다. 작업 재개 시 Active Context/current JSON/GitHub live metadata/exact Project Notion을 fresh-read한다.
+
+## 1. 상태 읽기와 보존된 구현 계보
+
+현재 상태는 이 문서 안의 스냅샷으로 판정하지 않는다.
 
 ```yaml
-merged_planning_checkpoint: 023385d372d127044d48afcb50e6f232ab9ffaa1
-merged_pr_lineage: 84,86,87,88,89,91,92,100,101,102
-product_implementation_merge_commit: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90
-merged_product_pr: 92
-runtime_work_mode: REVIEW
-runtime_integration_pr: 65
-active_planning_work_mode: REVIEW
-active_planning_pr: NONE
-active_planning_parent_pr: NONE
-active_approval_count: 1/10
-active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED
-phase: VERTICAL_SLICE_APP_FLOW_PLANNING
-project_core: CORE_CONFIRMED
+current_state_owner: ACTIVE_CONTEXT_PLUS_CURRENT_JSON
+current_human_workspace: EXACT_PROJECT_NOTION
+current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME
+google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
 platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
-platform_adapter_merge_commit: 023385d372d127044d48afcb50e6f232ab9ffaa1
-merged_platform_adapter_pr: 102
 design_platforms: WINDOWS_ANDROID
 platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
-windows_validation: CI_EXPORT_RUNTIME_PASS_LOCAL_NOT_RUN
-android_validation: NOT_RUN
-base_release: 9.4.3
-next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
-next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
-t1_greenlight: NOT_GRANTED
 ```
 
-PR #89·#91·#92 제품 계보, PR #101 post-merge 플랫폼 정본, PR #102 Adapter Architecture는 main에 병합됐다. PR #102 병합 Commit은 `023385d372d127044d48afcb50e6f232ab9ffaa1`다. 제품 구현 병합 Commit은 `a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90`이며, PR #90은 `[대체됨]`, PR #85는 `[보류]`다.
+다음 값은 현재 상태가 아니라 **병합된 제품 구현·자동 검증 계보**다.
+
+```yaml
+product_implementation_merge_commit: a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90
+merged_product_pr: 92
+product_validation_authority: TEN_MANUAL_PRODUCT_VALIDATION_GATE
+product_validation_result: PARTIAL_AUTOMATED_COMPLETE
+```
+
+첫 5전 Vertical Slice Phase I–VI의 최신 구현 상태와 이후 제품 mutation 권한은 Active Context/current user planning status에서 읽는다. 기존 구현 완료를 향후 Android/UX/경제/저장/콘텐츠 변경의 자동 승인으로 재사용하지 않는다.
 
 ## 2. 프로젝트 코어 확정
 
@@ -63,7 +55,7 @@ PR #89·#91·#92 제품 계보, PR #101 post-merge 플랫폼 정본, PR #102 Ada
 - [x] RED→GREEN과 exact-head 자동 검증.
 - [x] PR #92 main 병합과 보호 경로 승인 Gate.
 
-UI·AI 채택과 자동 제품 검증은 완료됐지만 로컬 Windows 렌더·실물 입력·접근성 사용자·Release 성능·사람·실제 Android·밸런스 승인은 완료되지 않았다.
+자동 제품 증거가 존재해도 로컬 Windows visible, 실물 입력, 접근성 사용자, 실제 Android, Release 성능, 신규 플레이어, 최종 밸런스는 별도 evidence layer다.
 
 ## 3. 핵심 재미·시스템 정렬
 
@@ -86,9 +78,9 @@ UI·AI 채택과 자동 제품 검증은 완료됐지만 로컬 Windows 렌더·
 - 불투명한 적 loadout이나 숨은 AI 정보로 공정성을 훼손하지 않는다.
 - 메타 성장과 콘텐츠 제작량이 복기·적응보다 중심이 되지 않는다.
 
-## 4. 현재 작업
+## 4. 현재 작업 계보와 자동 제품 검증
 
-완료된 제품 배치는 `10/10`이며 PR #92로 main에 병합됐다.
+완료된 초기 10권 제품 배치는 `10/10`이며 PR #92 계보로 main에 병합됐다.
 
 ```text
 TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE — 완료·병합
@@ -120,47 +112,33 @@ TEN_MANUAL_PRODUCT_VALIDATION_GATE — 자동 증거 완료·병합
 - [x] 키보드·마우스 합성 입력과 포커스·레이아웃 자동 접근성.
 - [x] 성능 baseline 캡처.
 - [x] SHA·artifact·사람 상태 과장 validator.
-- [ ] 로컬 Windows 렌더와 실물 입력.
+- [ ] 로컬 Windows visible과 실물 입력.
 - [ ] 실제 Android export·설치·실기기·터치·앱 생명주기.
 - [ ] 접근성 사용자 검증.
 - [ ] Release 성능 검증.
 - [ ] STEP 14 신규 플레이어 5명.
 
-증거: `0a8bf577b936ddac5cb7130a0cc58e519ea6eff6` / workflow `31074079068` / artifact `8956790279`. 현재 판정은 `PARTIAL_AUTOMATED_COMPLETE`다.
+증거: `0a8bf577b936ddac5cb7130a0cc58e519ea6eff6` / workflow `31074079068` / artifact `8956790279`. 현재 자동 증거 판정은 `PARTIAL_AUTOMATED_COMPLETE`다.
 
-## 5. Windows·Android 기본 대상
+## 5. Windows·Android 기본 대상과 다음 Gate 순서
 
-`TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`에 따라 두 플랫폼을 기본 설계 대상으로 유지한다.
+`TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`과 `TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01`에 따라 Windows·Android는 같은 전투·AI·콘텐츠·ID·수치·저장 의미를 공유한다.
 
 공유 단일 코어:
 
-- 전투 규칙·AI·콘텐츠·ID·수치·seed.
-- 저장 Schema·버전·마이그레이션 의미.
+- 전투 규칙·AI·콘텐츠 ID·수치·seed.
+- 저장 Schema·버전·migration 의미.
 - 결과·복기·보상·진행 도메인 규칙.
 
-분리 adapter:
+플랫폼 adapter:
 
-- 장치 중립 입력 의도와 키보드·마우스·게임패드·터치 변환.
-- 반응형 UI·안전영역·밀도·포커스·터치 표적.
-- 뒤로가기·pause/resume·background/foreground·suspend/restore.
-- 스토어·업적·클라우드·권한 같은 선택적 플랫폼 서비스.
-- export·그래픽 품질·메모리·프레임·발열·배터리 예산.
-
-동일 규칙·데이터·저장 의미는 필수지만 픽셀 동일 UI와 동시 출시는 필수가 아니다. 실제 Android 증거가 없으므로 `android_validation: NOT_RUN`이다.
-
-### Adapter Architecture 계약 승인
-
-`TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01`에서 다음을 고정했다.
-
-- 전투·AI·콘텐츠 ID·수치·저장 Schema·결정적 해결은 단일 공유 코어.
-- device-neutral logical command와 InputMap 소비 경계.
+- device-neutral logical command와 키보드·마우스·게임패드·터치 변환.
 - compact `≤899`, standard `≤1439`, wide `≥1440` logical px.
-- 핵심 touch target `48dp`, landscape primary, safe area·cutout·Android back 처리.
-- 묶음 commit/resolve·노드 선택·결과 진입 checkpoint와 atomic save·backup·migration.
-- Compatibility renderer 공통 기준선과 Windows EXE+PCK / Android AAB·APK export 경계.
-- 실제 Android·로컬 Windows·실물 gamepad·사용자 접근성·Release 성능은 `NOT_RUN`.
+- 핵심 touch target `48dp`, landscape primary, safe area·cutout·Android back.
+- pause/resume·background/foreground·suspend/restore.
+- Windows EXE+PCK / Android AAB·APK export와 품질·성능 예산.
 
-다음 작업:
+후속 후보 순서:
 
 ```text
 WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
@@ -170,6 +148,8 @@ WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 → NON_STAT_NODE_EXPECTED_VALUE_AND_WEIGHT
 → FULL_CORE_FUN_CANON_ADVERSARIAL_REVIEW
 ```
+
+이 순서는 **후보 Gate의 의존 관계**일 뿐 현재 Build 승인이나 next package 값을 저장하지 않는다. 실제 진입은 최신 사용자 요청과 current Gate를 다시 확인한다.
 
 ## 6. 제품 연결 범위
 
@@ -183,7 +163,7 @@ WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 - 자하신공 사용권·나한금강공 강건·회마창 사거리 재검사·능파미보 이동 전 반격·만천화우 독립 4회.
 - 기존 기본 행동·공용 절초·준비·자동 배치 동작 보존.
 
-현재 범위 밖:
+현재 범위 밖 또는 별도 evidence가 필요한 항목:
 
 - 최종 loadout 획득·교체 경제.
 - 적별 최종 무공 배치와 난이도 곡선.
@@ -196,7 +176,7 @@ WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 | 위험 | 상태 | 다음 조치 |
 |---|---|---|
 | `RUNTIME_AUTHORITY_GAP` | `MITIGATED_UI_AI_ADOPTED` | 로컬·실기기 검증 |
-| `ANDROID_ADAPTER_GAP` | `PLANNING_APPROVED_IMPLEMENTATION_NOT_RUN` | adapter 계약·실기기 Gate |
+| `ANDROID_ADAPTER_GAP` | `PLANNING_APPROVED_IMPLEMENTATION_NOT_RUN` | 명시 Build 승인 후 adapter/실기기 Gate |
 | `AI_LOADOUT_FAIRNESS_RISK` | `MITIGATED_PUBLIC_STATE_ONLY` | 적별 사람 측정 |
 | `MASTERY_ROLE_REPLACEMENT_RISK` | `PENDING_HUMAN_MEASUREMENT` | 기술1/2 선택률·대체율 |
 | `RESOURCE_SATURATION_RISK` | `PENDING_HUMAN_MEASUREMENT` | 회복 세금·고갈 |
@@ -214,14 +194,14 @@ WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 → REFACTOR
 → exact-head CI
 → Godot headless
-→ Windows runtime·render
+→ Windows runtime·visible
 → Android export·device·lifecycle
 → 접근성·성능
 → 사람 플레이
-→ 정본·Sheet 동기화
+→ repository/Notion destination readback
 ```
 
-실행하지 않은 검증은 `NOT_RUN`으로 남긴다.
+Google Sheets는 신규 정본 sync 단계가 아니다. 고유 미이관 자료를 확인하는 migration 질문에서만 `MIGRATION_ONLY_UNTIL_REMOVAL` source로 읽는다. 실행하지 않은 검증은 `NOT_RUN / UNVERIFIED`로 남긴다.
 
 ## 9. STEP 14
 
@@ -235,11 +215,11 @@ WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 - 자하신공 사용권·강건·회마창 사거리 실패 이해도 기록.
 - 원시/유효 등급 사건과 자원 포화 측정.
 
-현재 `human_validation: NOT_RUN`이다.
+현재 Human evidence 여부는 Active Context/current user planning status에서 읽으며 자동 CI로 승격하지 않는다.
 
 ## 10. T1 — 최소 세로 슬라이스
 
-T1 진입에는 기획·검토·이미지 완료, 로컬 Windows·실제 Android·접근성·성능 검증, 신규 플레이어 5명 STEP 14가 필요하다. 현재 `t1_greenlight: NOT_GRANTED`다.
+`T1`은 과거부터 이어지는 사람 증거 기반 승격 Gate 이름이다. 현재 first-five-duel Phase I–VI 구현 완료와 같은 뜻이 아니다. 진입 여부는 로컬/기기/접근성/사람 evidence와 최신 Decision을 다시 읽어 판정하며, 과거 `t1_greenlight` 값을 이 Roadmap에 current scalar로 저장하지 않는다.
 
 ## 11. 중단·축소 조건
 
@@ -259,12 +239,14 @@ T1 진입에는 기획·검토·이미지 완료, 로컬 Windows·실제 Android
 
 ## 12. 역사적 회귀 호환 표식
 
-다음 문자열은 PR #92 병합 전 회귀의 발견용 표식일 뿐 현행 상태가 아니다.
+다음 문자열은 과거 회귀 테스트·문서 이력을 찾기 위한 표식일 뿐 현행 상태가 아니다.
 
 - `active_decision_state: TEN_MANUAL_PRODUCT_VALIDATION_AUTOMATED`.
 - `next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE`.
+- PR #92는 초기 10권 제품 검증 계보이며 현재 active PR이 아니다.
+- 과거 PC-first 구현 Gate 이름은 첫 구현 범위를 설명하는 역사 용어이며 현재 플랫폼 권위는 Windows·Android dual-target Decision이다.
 
-현행 값은 상단 YAML의 `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED`와 `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE`다. 제품 병합 권위는 `merged_product_pr: 92`와 제품 구현 병합 Commit으로 별도 보존한다.
+현재 Work Mode·PR·승인 수·제품 stage·다음 package/Decision은 Active Context/current JSON/GitHub metadata에서만 읽는다.
 
 ## 13. 정본 생명주기
 
@@ -277,4 +259,4 @@ T1 진입에는 기획·검토·이미지 완료, 로컬 Windows·실제 Android
 - `DEFER`: 최종 loadout 경제, 최종 연출, 비스탯 노드 경제, 온라인·크로스 세이브·과금.
 - `RETEST`: 자원 포화·기술 대체·AI 공정성·관찰·등급 파밍·Android 생명주기·성능 위험.
 
-병합 전후 Active Context·Roadmap·Lifecycle·Sheet는 같은 Decision ID와 exact SHA를 사용한다.
+병합 전후에는 repository owner와 필요한 exact Project Notion destination을 같은 의미로 동기화하고 readback한다. Google Sheets는 migration-only compatibility source이며 current Decision/state sync surface가 아니다.
