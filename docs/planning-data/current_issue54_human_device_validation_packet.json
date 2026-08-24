@@ -20,6 +20,19 @@
     "fresh_artifact_missing_result": "INCONCLUSIVE_NOT_PASS",
     "execution_rule": "REFETCH_CURRENT_BASE_AND_REGENERATE_REPRODUCIBLE_TRANSIENT_ARTIFACTS_FOR_THE_EXACT_TEST_RUN"
   },
+  "exact_main_product_evidence_route": {
+    "status": "ACTIVE",
+    "workflow": ".github/workflows/validate-ten-manual-product-gate.yml",
+    "route_merge_pr": 195,
+    "route_merge_sha": "020b5cabf3f5d8d950b089dfefdd9bd148333b8a",
+    "last_exact_main_push_observation": "UNVERIFIED_CONNECTOR_LIMIT",
+    "latest_verified_pr_head": "869b9cd54c778848638ac87721c1d1eb349d97cd",
+    "latest_verified_pr_run_id": 32714634940,
+    "latest_verified_windows_artifact_id": 9515454613,
+    "latest_verified_windows_artifact_digest": "sha256:a72a46df70005c6f5def8e05457a57957e3fd5b1af73969377700666cca080ae",
+    "push_observation_promotes_human_or_device_pass": false,
+    "observation_rule": "REFETCH_CURRENT_MAIN_AND_ACTIONS_EVIDENCE_BEFORE_PROMOTING_ANY_EXACT_MAIN_RUN"
+  },
   "human_validation": {
     "target_participants": 5,
     "pass_threshold": 4,
