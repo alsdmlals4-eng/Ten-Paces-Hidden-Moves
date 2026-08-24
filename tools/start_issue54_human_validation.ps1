@@ -253,6 +253,7 @@ if (-not $baseInstallMatches) {
         base_main_commit = $baseHead
     })
 }
+Assert-TrackedClean $baseRootResolved "QA_STUDIO_INSTALL"
 
 $startupFile = Join-Path $runRoot "qa-startup.json"
 $nonce = [Guid]::NewGuid().ToString("N")
@@ -286,6 +287,15 @@ if ($null -eq $startup) {
     throw "QA_EVIDENCE_STUDIO_STARTUP_TIMEOUT"
 }
 $qaUrl = "http://127.0.0.1:$($startup.port)"
+
+try {
+    Assert-TrackedClean $projectRoot "LAUNCH_READY"
+    Assert-TrackedClean $baseRootResolved "LAUNCH_READY"
+}
+catch {
+    Stop-ChildProcessSafely $qaProcess "QA_PROCESS_CLEANUP_AFTER_LAUNCH_READY_FAILURE"
+    throw
+}
 
 $gameProcess = $null
 try {
@@ -340,7 +350,6 @@ $manifest = [ordered]@{
     result = "HUMAN_DEVICE_STATUS_REMAINS_NOT_RUN_UNTIL_REVIEW"
 }
 Write-JsonUtf8 $manifestPath $manifest
-Assert-TrackedClean $projectRoot "LAUNCH_READY"
 
 Write-Host "Issue #54 Human validation environment is ready." -ForegroundColor Green
 Write-Host "Exact project main: $projectHead"
