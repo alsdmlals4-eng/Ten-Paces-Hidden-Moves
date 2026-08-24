@@ -8,6 +8,7 @@ FIXTURE = ROOT / "docs/validation/TEN_PACES_UX_UI_FIXTURE_CATALOG.md"
 PACKET = ROOT / "docs/validation/TEN_PACES_UX_UI_VALIDATION_PACKET.md"
 CONTRACT = ROOT / "docs/planning-data/current_issue54_human_device_validation_packet.json"
 LAUNCHER = ROOT / "tools/start_issue54_human_validation.ps1"
+PR_VALIDATION = ROOT / ".github/workflows/documentation-governance.yml"
 
 
 class Issue54HumanDeviceValidationPacketTests(unittest.TestCase):
@@ -144,6 +145,8 @@ class Issue54HumanDeviceValidationPacketTests(unittest.TestCase):
             payload["owners"]["human_validation_launcher"],
             "tools/start_issue54_human_validation.ps1",
         )
+        workflow = PR_VALIDATION.read_text(encoding="utf-8")
+        self.assertIn('"tools/start_issue54_human_validation.ps1"', workflow)
 
     def test_structured_contract_is_machine_readable_and_non_promotional(self):
         payload = json.loads(CONTRACT.read_text(encoding="utf-8"))
