@@ -18,6 +18,8 @@ latest user instruction
 
 `skills/PROJECT_BASE_ADAPTER.json`의 Base v9.4.3 pin은 **프로젝트가 과거 어떤 Base payload를 채택·검증했는지 재현하기 위한 compatibility/adoption evidence**다. 현재 Base remote main을 고정하거나 최신 Base owner 조회를 막는 권위가 아니다.
 
+Base 동기화·채택 이력의 프로젝트 감사 진입점은 `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`다. 이 감사의 과거 SHA나 pin을 current Base remote truth로 승격하지 않는다.
+
 ## 2. 보존된 Base v9.4.3 채택 증거
 
 ```yaml
