@@ -19,22 +19,26 @@
     ]
   },
   "gdd_sheet": {
-    "declared_sync_status": "SHEET_GITHUB_CONFLICT",
+    "current_authority": false,
+    "declared_sync_status": "MIGRATION_COMPATIBILITY_ONLY",
+    "destination_policy": "NOTION_HUMAN_FACING_PLUS_REPOSITORY_STRUCTURED_RUNTIME",
     "id": "1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0",
-    "role": "USER_FACING_GDD_WORKSPACE",
+    "role": "GOOGLE_SHEETS_LEGACY_MIGRATION_SOURCE",
     "sheet_only_change_policy": "PROPOSED_SHEET_CHANGE",
-    "sync_status": "BLOCKED",
-    "write_policy": "NO_AUTOMATIC_OVERWRITE"
+    "sync_status": "STALE",
+    "workspace_status": "MIGRATION_COMPATIBILITY_SURFACE",
+    "write_policy": "NO_NEW_CANON_INPUT"
   },
   "project": {
     "engine": "Godot 4.7",
+    "project_id": "ten-paces-hidden-moves",
     "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
     "root": "."
   },
   "protected_baseline": {
     "authority_kind": "REMOTE_TRACKING_REF",
     "authority_ref": "refs/remotes/origin/main",
-    "commit": "00a5502f1e40db77dce9495a57292b77bf4e3a5a",
+    "commit": "b35112592e608cd974411bafe07ef5e37ab866b2",
     "policy_sha256": "ed848e62f3292d704f602e2976737005b77100c476c6947e57ff0bcb5a3b6e52",
     "policy_source_path": "skills/PROJECT_BASE_SKILL_ADAPTER.json",
     "policy_source_type": "FIRST_MIGRATION_LEGACY_SOURCE",
@@ -89,7 +93,7 @@
       {"route_id": "ten-paces-verification", "skill_id": "ten-paces-verification", "status": "ACTIVE"}
     ]
   },
-  "schema_version": 1,
+  "schema_version": 2,
   "shared_overrides": {
     "analyzing-and-refining-game-concepts": {},
     "auditing-and-refining-ui-art": {},
@@ -127,8 +131,10 @@
         "max_approved_decisions_per_batch": 10,
         "numeric_default_state": "RECOMMENDED_DEFAULT",
         "planning_conflict_state": "GRILL_ME_REQUIRED",
-        "post_merge_sheet_state": "SYNCED_TO_MAIN",
-        "pre_merge_sheet_state": "APPROVED_PENDING_MERGE"
+        "decision_sync_surface": "NOTION_AND_REPOSITORY",
+        "pre_merge_sync_state": "APPROVED_PENDING_MERGE",
+        "post_merge_sync_state": "DESTINATION_READBACK_REQUIRED",
+        "legacy_sheet_state": "MIGRATION_ONLY_UNTIL_REMOVAL"
       },
       "first_prompt_governance": {
         "actual_project_instruction_execution": "NOT_RUN",

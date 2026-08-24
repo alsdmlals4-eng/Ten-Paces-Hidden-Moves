@@ -77,64 +77,49 @@ class ProjectGovernanceTests(unittest.TestCase):
                 self.assertIn(token, text, f"{relative} is missing fixture boundary {token!r}")
 
     def test_active_app_flow_operating_state_is_synchronized(self) -> None:
-        stable_snapshot_docs = [
+        stable_router_docs = [
             "AGENTS.md",
             "README.md",
+            "START_HERE.md",
             "[기획서]/00_프로젝트_허브/START_HERE.md",
             "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
-            "[기획서]/00_프로젝트_허브/ROADMAP.md",
-            "[기획서]/00_프로젝트_허브/HANDOFF.md",
         ]
-        superseded_active_tokens = [
+        forbidden_mutable_snapshots = [
+            "product_stage: VERTICAL_SLICE_APP_FLOW_PLANNING",
+            "runtime_integration_pr: 65",
+            "next_package: VERTICAL_SLICE_APP_FLOW_SHELL",
+            "current_sheet_authority: GOOGLE_SHEET_00_02_04_99",
             "product_stage: CONCEPT_APPROVAL",
             "execution_profile: PLANNING_ONLY_PROFILE",
             "runtime_implementation: PROHIBITED_UNTIL_NEW_APPROVAL",
             "phase: BUILD_IN_PROGRESS",
             "implementation_authorization: GRANTED",
         ]
-        for relative in stable_snapshot_docs:
+        for relative in stable_router_docs:
             text = (ROOT / relative).read_text(encoding="utf-8")
             self.assertIn(
-                "VERTICAL_SLICE_APP_FLOW_PLANNING",
+                "ACTIVE_CONTEXT.md",
                 text,
-                f"{relative} is missing the current product stage",
+                f"{relative} cannot discover the mutable state authority",
             )
-            self.assertTrue(
-                any(
-                    token in text
-                    for token in (
-                        "work_mode: REVIEW",
-                        "runtime_work_mode: REVIEW",
-                        "런타임 운영 기준은 `REVIEW`",
-                        "런타임 기준선",
-                    )
-                ),
-                f"{relative} is missing stable REVIEW runtime evidence",
-            )
-            self.assertTrue(
-                any(
-                    token in text
-                    for token in (
-                        "integration_pr: 65",
-                        "runtime_integration_pr: 65",
-                        "PR #65",
-                    )
-                ),
-                f"{relative} is missing stable PR #65 runtime evidence",
-            )
-            for token in superseded_active_tokens:
-                self.assertNotIn(token, text, f"{relative} still grants superseded state {token!r}")
+            for token in forbidden_mutable_snapshots:
+                self.assertNotIn(
+                    token,
+                    text,
+                    f"{relative} must not duplicate mutable/current snapshot {token!r}",
+                )
 
-        start_here_relative = "START_HERE.md"
-        start_here_text = (ROOT / start_here_relative).read_text(encoding="utf-8")
+        start_here_text = (ROOT / "START_HERE.md").read_text(encoding="utf-8")
         for token in (
             "current_state_owner: ACTIVE_CONTEXT",
             "current_pr_authority: GITHUB_PR_METADATA",
-            "current_sheet_authority: GOOGLE_SHEET_00_02_04_99",
-            "product_build_requires_user_planning_complete: true",
+            "current_human_workspace: NOTION_DEFAULT_PROJECT_WORKSPACE",
+            "current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME",
+            "google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL",
+            "current_work_contract: TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01",
             "ACTIVE_CONTEXT.md",
         ):
-            self.assertIn(token, start_here_text, f"{start_here_relative} is missing stable router token {token!r}")
+            self.assertIn(token, start_here_text, f"START_HERE.md is missing stable router token {token!r}")
         for mutable_key in (
             "runtime_integration_pr:",
             "planning_work_mode:",
@@ -142,14 +127,13 @@ class ProjectGovernanceTests(unittest.TestCase):
             "latest_combat_planning_runtime:",
             "next_package:",
             "human_validation:",
+            "current_sheet_authority:",
         ):
             self.assertNotIn(
                 mutable_key,
                 start_here_text,
-                f"{start_here_relative} must not duplicate mutable state {mutable_key!r}",
+                f"START_HERE.md must not duplicate mutable state {mutable_key!r}",
             )
-        for token in superseded_active_tokens:
-            self.assertNotIn(token, start_here_text, f"{start_here_relative} still grants superseded state {token!r}")
 
         active_relative = "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
         active_text = (ROOT / active_relative).read_text(encoding="utf-8")

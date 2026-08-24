@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: alsdmlals4-eng/Base
-          ref: 4ec410e611152294f3f2685570fca6019c7abcfa
+          ref: 2828a74f60c1ed09546171040f4178c8848ea686
           path: .base-contract
           fetch-depth: 0
 
@@ -69,6 +69,33 @@ jobs:
             --external-approval "$EXTERNAL_APPROVAL" \
             "${APPROVAL_ARGS[@]}" \
             --check
+
+      - name: Diagnose generated view drift
+        if: failure()
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, str(Path('.base-contract/tools').resolve()))
+          import project_operating_contract as contract
+          from base_release_index import install_release_lock_paths
+          install_release_lock_paths(contract)
+          root = Path('.').resolve()
+          base = Path('.base-contract').resolve()
+          artifacts = contract.build_artifacts(root, base, prevalidated=True)
+          for path, content in artifacts.items():
+              if not path.is_file() or path.read_bytes() != content:
+                  path.parent.mkdir(parents=True, exist_ok=True)
+                  path.write_bytes(content)
+          PY
+          sha256sum skills/PROJECT_BASE_ADAPTER.json
+          git diff -- \
+            skills/PROJECT_SKILL_SNAPSHOT.json \
+            docs/PROJECT_OPERATING_DASHBOARD.html \
+            skills/BASE_V9_ADAPTER.json \
+            skills/PROJECT_BASE_SKILL_ADAPTER.json \
+            .agents/skills/ten-paces-hidden-moves-workflow-router/SKILL.md
 
       - name: Run workflow adoption regression test
         run: python -m unittest tests.test_approved_protected_change_workflow -v

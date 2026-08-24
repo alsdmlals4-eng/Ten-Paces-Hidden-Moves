@@ -33,18 +33,22 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("design_platforms: WINDOWS_ANDROID", text)
         self.assertIn("platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS", text)
         self.assertIn("현재 대상 플랫폼은 `Windows`와 `Android`다.", text)
+        self.assertIn("NOTION_DEFAULT_PROJECT_WORKSPACE", text)
+        self.assertIn("MIGRATION_ONLY_UNTIL_REMOVAL", text)
+        self.assertIn("TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01", text)
 
         stale_tokens = [
             "primary_platform: PC",
             "future_platform: MOBILE_CONSIDERATION_ONLY",
             "현재 주 플랫폼은 `PC`다.",
             "모바일은 `CONSIDERATION_ONLY`",
+            "current_sheet_authority: GOOGLE_SHEET_00_02_04_99",
         ]
         for token in stale_tokens:
             self.assertNotIn(
                 token,
                 text,
-                f"START_HERE.md still exposes stale platform authority: {token}",
+                f"START_HERE.md still exposes stale authority: {token}",
             )
 
     def test_documentation_map_routes_current_state_without_mutable_snapshot(self) -> None:
@@ -61,14 +65,20 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
 
         self.assertIn("현재 단계·권한·다음 작업", owner_section)
         self.assertIn("ACTIVE_CONTEXT.md", owner_section)
+        self.assertIn("TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01", owner_section)
         self.assertIn("전투 UI 정보 위계", owner_section)
         self.assertIn("2026-08-11_COMBAT_UI_INFORMATION_HIERARCHY_DECISION.md", owner_section)
+        self.assertIn("NOTION_HUMAN_FACING_CANON", owner_section)
+        self.assertIn("REPOSITORY_RUNTIME_TRUTH", owner_section)
         self.assertNotIn("최근 병합 체크포인트", owner_section)
         self.assertNotIn("PR #80", owner_section)
 
         self.assertIn("current_state_owner: ACTIVE_CONTEXT", current_section)
         self.assertIn("current_pr_authority: GITHUB_PR_METADATA", current_section)
-        self.assertIn("current_sheet_authority: GOOGLE_SHEET_00_02_04_99", current_section)
+        self.assertIn("current_notion_authority: EXACT_PROJECT_NOTION", current_section)
+        self.assertIn("current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME", current_section)
+        self.assertIn("google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL", current_section)
+        self.assertNotIn("current_sheet_authority", current_section)
         for mutable_key in (
             "product_stage:",
             "runtime_work_mode:",
@@ -83,7 +93,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertNotIn("현재 핵심 권위에는 다음이 포함된다", text)
         self.assertIn("CANON_LIFECYCLE_REGISTRY.md", text)
         self.assertIn("ACTIVE_CONTEXT의 current next action", next_section)
-        self.assertIn("사용자 명시 `기획 완료`", next_section)
+        self.assertIn("exact Project Notion", next_section)
         self.assertNotIn("필요한 이미지·애니메이션·HX를 생성·검수", next_section)
         self.assertNotIn("VERTICAL_SLICE_APP_FLOW_SHELL` Codex 구현", next_section)
 
