@@ -9,7 +9,8 @@ latest user instruction
 → AGENTS.md
 → docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md
    / TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01
-→ ACTIVE_CONTEXT + current planning JSON + GitHub live metadata + exact Project Notion
+→ [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
+   + current planning JSON + GitHub live metadata + exact Project Notion
 → current Decisions / domain owners / actual implementation
 → skills/PROJECT_BASE_ADAPTER.json compatibility/adoption evidence
 → latest completed Base main owner when progressive-load is required
