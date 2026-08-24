@@ -27,6 +27,7 @@
   "android_readiness": "BLOCKED_ANDROID_EXPORT_PRESET_NOT_PRESENT",
   "accessibility_user": "NOT_RUN",
   "human_fun_readability_immersion": "NOT_RUN",
+  "fifteen_opponent_identifiability": "NOT_RUN",
   "release_performance": "NOT_RUN",
   "final_visual_vfx_audio_acceptance": "NOT_RUN",
   "current_export_preset_observation": {
@@ -58,10 +59,11 @@
   "close_issue_only_when": [
     "windows_visible_local_required_checks_have_real_evidence",
     "mouse_keyboard_core_path_has_real_evidence",
-    "declared_shipping_physical_gamepad_has_real_evidence",
+    "physical_gamepad_has_real_evidence",
     "human_core_understanding_threshold_is_met",
-    "accessibility_user_scope_is_resolved_with_real_evidence_or_explicit_release_scope_decision",
+    "accessibility_user_has_real_evidence",
     "android_target_has_actual_device_evidence_after_an_authorized_android_artifact_exists",
+    "fifteen_opponent_identifiability_has_real_evidence",
     "critical_information_or_content_asymmetry_defects_are_zero",
     "final_visual_vfx_audio_acceptance_is_resolved",
     "release_performance_is_resolved_at_release_gate"
