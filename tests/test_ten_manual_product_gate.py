@@ -125,8 +125,9 @@ class TenManualProductGateTests(unittest.TestCase):
             "scenes/**",
             "assets/**",
             "addons/**",
-            "scripts/windows/**",
+            "scripts/windows/run_ten_manual_product_validation.ps1",
             "tools/validate_ten_manual_product_gate.py",
+            "docs/planning-data/approved_20260806_ten_manual_product_validation_gate_contract.json",
             "tests/test_ten_manual_product_gate.py",
             "tests/verify_ten_manual_product_gate.gd",
             "tests/verify_ten_manual_product_viewports.gd",
@@ -139,6 +140,7 @@ class TenManualProductGateTests(unittest.TestCase):
         for path in required_paths:
             self.assertIn(f'      - "{path}"', workflow)
         self.assertNotIn('      - "tests/**"', workflow)
+        self.assertNotIn('      - "scripts/windows/**"', workflow)
         self.assertIn("workflow_dispatch:", workflow)
         self.assertIn(
             "PR_NUMBER: ${{ github.event.pull_request.number || 0 }}",
