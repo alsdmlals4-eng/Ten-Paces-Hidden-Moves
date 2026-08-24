@@ -59,9 +59,16 @@
 
 ## 6. 행동 선택·화면·플랫폼 보호
 
+```yaml
+platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
+design_platforms: WINDOWS_ANDROID
+platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
+android_runtime_evidence: NOT_RUN
+```
+
 - 행동 선택 Decision: `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`.
 - 화면 구조 Decision: `TEN-DEC-20260801-SITUATION-SCREEN-01`.
-- 플랫폼: `TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01` + 단일 공유 코어/플랫폼 Adapter.
+- 전투 규칙·AI·콘텐츠·ID·수치·저장 Schema는 하나의 공유 코어를 사용하고, 플랫폼 차이는 Adapter에 한정한다.
 - Android 실제 export·설치·실기기·터치·back·safe-area·lifecycle·저장·성능 evidence가 없으면 Android 런타임 지원 완료를 주장하지 않는다.
 - UI는 전투·보상·저장 규칙을 재계산하지 않는다.
 
