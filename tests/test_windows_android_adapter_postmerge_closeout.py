@@ -11,6 +11,15 @@ HUB_ROADMAP = ROOT / "[기획서]/00_프로젝트_허브/ROADMAP.md"
 
 ARCHITECTURE_DECISION = "TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01"
 ARCHITECTURE_MERGE = "023385d372d127044d48afcb50e6f232ab9ffaa1"
+MUTABLE_KEYS = (
+    "active_planning_work_mode",
+    "active_planning_pr",
+    "active_planning_parent_pr",
+    "active_approval_count",
+    "active_decision_state",
+    "next_package",
+    "next_planning_decision",
+)
 
 
 def yaml_scalar(text: str, key: str) -> str:
@@ -35,15 +44,19 @@ class WindowsAndroidAdapterPostMergeCloseoutTest(unittest.TestCase):
         self.assertEqual(yaml_scalar(text, "merged_platform_adapter_pr"), "102")
         self.assertIn("merged_pr_lineage: 84,86,87,88,89,91,92,100,101,102", text)
 
-    def test_roadmaps_record_merge_and_next_gate(self):
+    def test_roadmaps_preserve_merge_lineage_without_live_checkpoint(self):
         for path in [ROADMAP, HUB_ROADMAP]:
             text = path.read_text(encoding="utf-8")
-            self.assertNotEqual(yaml_scalar(text, "active_planning_pr"), "102")
-            self.assertNotEqual(yaml_scalar(text, "active_decision_state"), "WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_APPROVED")
-            self.assertEqual(yaml_scalar(text, "platform_adapter_merge_commit"), ARCHITECTURE_MERGE)
-            self.assertEqual(yaml_scalar(text, "merged_platform_adapter_pr"), "102")
-            self.assertEqual(yaml_scalar(text, "next_planning_decision"), "WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE")
+            self.assertIn(ARCHITECTURE_DECISION, text)
+            self.assertIn(f"platform_adapter_merge_commit: {ARCHITECTURE_MERGE}", text)
+            self.assertIn("merged_platform_adapter_pr: 102", text)
+            self.assertIn("WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", text)
             self.assertIn("PR #102", text)
+            for key in MUTABLE_KEYS:
+                self.assertIsNone(
+                    re.search(rf"(?m)^{re.escape(key)}:\s*", text),
+                    f"{path} duplicates mutable operating state: {key}",
+                )
 
     def test_product_authority_remains_separate(self):
         text = ACTIVE.read_text(encoding="utf-8")
