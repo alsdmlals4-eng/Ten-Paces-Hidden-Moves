@@ -178,7 +178,8 @@ jobs:
             "tools/verify_repeat_poc_a2.ps1",
             "tools/verify_repeat_poc_a3.ps1",
             "tools/collect_godot_live_evidence.ps1",
-            "tools/start_ten_paces_local_executor.ps1"
+            "tools/start_ten_paces_local_executor.ps1",
+            "tools/start_issue54_human_validation.ps1"
           )
           foreach ($path in $paths) {
             $tokens = $null
