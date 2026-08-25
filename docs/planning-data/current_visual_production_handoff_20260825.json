@@ -15,28 +15,24 @@
       "id": "TEN-IMG-001",
       "role": "COMBAT_SCREEN_REPRESENTATIVE_REFERENCE",
       "status": "USER_APPROVED_REFERENCE_NOT_RUNTIME_ASSET",
-      "repository_path": "docs/reference/visual/2026-08-25/approved_combat_screen_v1.png",
       "notion_owner": "십보강호 · Home / 04 · 에셋 라이브러리"
     },
     {
       "id": "TEN-VIS-CHAR-MASTER-001",
       "role": "CHARACTER_MASTER_REFERENCE",
       "status": "USER_APPROVED_REFERENCE_NOT_RUNTIME_ASSET",
-      "repository_path": "docs/reference/visual/2026-08-25/approved_character_master_v1.png",
       "notion_owner": "04 · 에셋 라이브러리"
     },
     {
       "id": "TEN-VIS-A07-CANDIDATE",
       "role": "BASIC_ACTION_ILLUSTRATION_STYLE_REFERENCE",
       "status": "USER_APPROVED_REFERENCE_ID_PROMOTION_PENDING",
-      "repository_path": "docs/reference/visual/2026-08-25/approved_basic_action_illustration_sheet_v1.png",
       "notion_owner": "04 · 에셋 라이브러리"
     },
     {
       "id": "TEN-VIS-A01",
       "role": "COMMON_INK_CLEAN_PLATE_REFERENCE",
       "status": "A01_FIRST_PLATE_USER_APPROVED_REFERENCE",
-      "repository_path": "docs/reference/visual/2026-08-25/approved_common_ink_clean_plate_v1.png",
       "notion_owner": "04 · 에셋 라이브러리"
     }
   ],
@@ -81,7 +77,8 @@
     "approved_combat_reference_visible_on_home": true,
     "four_reference_blocks_visible_in_asset_library": true,
     "attachment_content_check": "PASS_NON_EMPTY_SVG_WITH_EMBEDDED_JPEG_DATA",
-    "preview_is_source_master": false
+    "preview_is_source_master": false,
+    "human_review_quality": "SUFFICIENT_FOR_VISUAL_STYLE_CONTINUATION"
   },
   "sheet_compatibility": {
     "mode": "MIGRATION_ONLY_UNTIL_REMOVAL",
@@ -120,7 +117,8 @@
   "evidence_ceiling": {
     "user_reference_approval": "PASS_2026_08_25",
     "notion_delivery": "PASS",
-    "repository_reference_source_preservation": "PENDING_THIS_HANDOFF_PR",
+    "github_visual_handoff_and_provenance": "CURRENT_HANDOFF_PR",
+    "runtime_source_master_promotion": "NOT_RUN",
     "runtime_art_integration": "NOT_RUN",
     "windows_visible_local_usability": "NOT_RUN",
     "android_actual_device": "NOT_RUN",
@@ -132,7 +130,7 @@
     "REFETCH_PROJECT_MAIN_AND_OPEN_PRS",
     "REFETCH_BASE_MAIN",
     "READ_CURRENT_PROJECT_NOTION",
-    "READ_THIS_HANDOFF_AND_APPROVED_REFERENCE_FILES",
+    "READ_THIS_HANDOFF_AND_NOTION_APPROVED_REFERENCE_SET",
     "DO_NOT_USE_MIGRATION_SHEET_AS_CURRENT_AUTHORITY",
     "SHOW_OR_CONFIRM_NEXT_BATCH_BRIEF",
     "WAIT_FOR_EXPLICIT_USER_GENERATION_COMMAND_IF_NOT_ALREADY_PRESENT"
