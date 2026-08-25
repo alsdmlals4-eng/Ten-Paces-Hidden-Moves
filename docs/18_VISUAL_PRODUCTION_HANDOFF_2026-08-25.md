@@ -8,6 +8,8 @@
 
 이 문서는 기존 `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md`를 대체하지 않는다. 17은 요구사항/Visual North Star, 본 문서는 **2026-08-25 실제 사용자 승인 Reference와 다음 제작 순서**를 소유한다.
 
+시각 Reference의 human-facing 원본은 현재 DOMAIN_SPLIT에 따라 **Notion Asset Library / Home**가 소유한다. GitHub는 승인 상태·구조·brief·다음 작업·문제/교훈·runtime 경계를 소유하며, 채팅에서 생성된 원본 PNG를 runtime `assets/`에 자동 승격하지 않는다.
+
 ---
 
 ## 1. 새 세션 시작 순서
@@ -34,11 +36,15 @@
 
 사용자가 다음 4개 이미지를 명시적으로 승인했다. 이들은 **후속 이미지 제작의 시각 기준**이며 아직 Godot runtime shipping asset PASS는 아니다.
 
+Human-facing image source:
+
+- Home: `https://app.notion.com/p/3c41b237eb1c8105a254d860f3c21638`
+- Visual Bible: `https://app.notion.com/p/3c01b237eb1c814f80d4c6140fddebd4`
+- Asset Library: `https://app.notion.com/p/3c01b237eb1c8172a16dc7713b75fcc5`
+
 ### 2.1 대표 전투 화면 · `TEN-IMG-001`
 
-Repository reference:
-
-`docs/reference/visual/2026-08-25/approved_combat_screen_v1.png`
+Notion owner: `십보강호 · Home` + `04 · 에셋 라이브러리`.
 
 보호할 내용:
 
@@ -60,9 +66,7 @@ Repository reference:
 
 ### 2.2 Character Master Reference
 
-Repository reference:
-
-`docs/reference/visual/2026-08-25/approved_character_master_v1.png`
+Notion owner: `04 · 에셋 라이브러리`의 `TEN-VIS-CHAR-MASTER-001`.
 
 Style lock:
 
@@ -79,9 +83,7 @@ Style lock:
 
 ### 2.3 기초 행동 10종 삽화 Reference
 
-Repository reference:
-
-`docs/reference/visual/2026-08-25/approved_basic_action_illustration_sheet_v1.png`
+Notion owner: `04 · 에셋 라이브러리`의 `TEN-VIS-A07-CANDIDATE`.
 
 보호할 내용:
 
@@ -94,9 +96,7 @@ Repository reference:
 
 ### 2.4 공통 수묵 Clean Plate · `TEN-VIS-A01`
 
-Repository reference:
-
-`docs/reference/visual/2026-08-25/approved_common_ink_clean_plate_v1.png`
+Notion owner: `04 · 에셋 라이브러리`의 `TEN-VIS-A01`.
 
 보호할 내용:
 
@@ -239,8 +239,8 @@ Human-facing canon:
 
 주의:
 
-- Notion 첨부는 검토/비교용 압축 preview다.
-- 실제 source master는 위 repository PNG reference를 사용한다.
+- Notion 첨부는 human review/비교용 압축 preview다. 현재 전달 검증은 “승인 시각 방향을 다음 세션에서 판독 가능한가”를 증명한다.
+- 원본 생성 PNG를 자동으로 repository runtime `assets/`에 넣지 않았다. shipping source master/promotion은 별도 asset-provenance/runtime 작업이다.
 - Notion preview 존재를 Godot runtime integration 또는 release asset PASS로 해석하지 않는다.
 
 ---
@@ -270,7 +270,7 @@ Human-facing canon:
 - Android actual device PASS.
 - 15명 전체 식별성 PASS.
 - 최종 VFX/audio PASS.
-- 승인 PNG의 Godot runtime integration PASS.
+- 승인 Reference의 Godot runtime integration PASS.
 - Human fun/readability/immersion PASS.
 
 ---
@@ -325,4 +325,4 @@ Human-facing canon:
 
 ## 12. Resume 한 줄
 
-> **새 채팅에서는 GitHub/Notion을 fresh-read한 뒤 이 handoff의 4종 승인 Reference를 기준으로 `Opponent Character Master #01 + Martial Technique Illustration Sheet #01 + Route Icon Sheet #01` 세 장 묶음부터 재개한다. 자동으로 다음 묶음까지 생성하지 않는다.**
+> **새 채팅에서는 GitHub/Notion을 fresh-read한 뒤 Notion의 4종 승인 Reference와 이 handoff를 기준으로 `Opponent Character Master #01 + Martial Technique Illustration Sheet #01 + Route Icon Sheet #01` 세 장 묶음부터 재개한다. 자동으로 다음 묶음까지 생성하지 않는다.**
