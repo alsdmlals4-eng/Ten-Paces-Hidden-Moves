@@ -1,11 +1,11 @@
 {
   "artifact_role": "PROJECT_BASE_ADAPTER",
   "base_release": {
-    "finalization_commit": "0b7c94f38d959efc0fc9442274c60b2e268a3c97",
-    "release_commit": "7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8",
-    "release_evidence_commit": "da33a350d61b8adc52df97fccc7001708a933370",
+    "finalization_commit": "5adc196c0185951f50e49ab5e51586eff8d60886",
+    "release_commit": "210ec78292fa12ed7563ba743b322dd36103ae4a",
+    "release_evidence_commit": "bb61e68dc3028421b60c11b87ba2abd297ee6f78",
     "repository": "alsdmlals4-eng/Base",
-    "version": "9.4.3"
+    "version": "9.4.4"
   },
   "compatibility": {
     "cycle": "ONE_CYCLE",
@@ -38,10 +38,10 @@
   "protected_baseline": {
     "authority_kind": "REMOTE_TRACKING_REF",
     "authority_ref": "refs/remotes/origin/main",
-    "commit": "b35112592e608cd974411bafe07ef5e37ab866b2",
+    "commit": "11b72d236809515b4c68a4650fb99c106139e9f9",
     "policy_sha256": "ed848e62f3292d704f602e2976737005b77100c476c6947e57ff0bcb5a3b6e52",
-    "policy_source_path": "skills/PROJECT_BASE_SKILL_ADAPTER.json",
-    "policy_source_type": "FIRST_MIGRATION_LEGACY_SOURCE",
+    "policy_source_path": "skills/PROJECT_BASE_ADAPTER.json",
+    "policy_source_type": "CANONICAL_ADAPTER_SOURCE",
     "protected_paths_pointer": "/protected_paths"
   },
   "protected_paths": [
@@ -125,8 +125,8 @@
       "planning_first_governance": {
         "actual_project_batch_execution": "NOT_RUN",
         "base_contract_source": "docs/PLANNING_FIRST_GRILL_ME_BATCH_POLICY.md",
-        "base_release_finalization_commit": "0b7c94f38d959efc0fc9442274c60b2e268a3c97",
-        "base_release_lock": "base-v9.4.3.lock.json",
+        "base_release_finalization_commit": "5adc196c0185951f50e49ab5e51586eff8d60886",
+        "base_release_lock": "base-v9.4.4.lock.json",
         "checkpoint_template": "templates/project-operations/GRILL_ME_BATCH_CHECKPOINT.md",
         "max_approved_decisions_per_batch": 10,
         "numeric_default_state": "RECOMMENDED_DEFAULT",
@@ -140,12 +140,20 @@
         "actual_project_instruction_execution": "NOT_RUN",
         "approval_reuse": "REUSE_EXACT_APPROVAL_REFERENCE",
         "base_contract_source": "skills/managing-project-intake-and-work-contract/SKILL.md",
-        "base_release_finalization_commit": "0b7c94f38d959efc0fc9442274c60b2e268a3c97",
-        "base_release_lock": "base-v9.4.3.lock.json",
+        "base_release_finalization_commit": "5adc196c0185951f50e49ab5e51586eff8d60886",
+        "base_release_lock": "base-v9.4.4.lock.json",
         "direction_anchor_reference": "skills/managing-project-intake-and-work-contract/references/first-prompt-direction-anchoring.md",
         "instruction_flow": ["route", "first-prompt", "contract", "clarify"],
         "l0_exceptions": ["TYPO", "OBVIOUS_FORMAT", "IDENTICAL_VALIDATION_RERUN"],
         "unconfirmed_state": "AWAITING_USER_CONFIRMATION"
+      },
+      "reuse_first_governance": {
+        "actual_project_execution": "NOT_RUN",
+        "base_contract_source": "skills/managing-project-intake-and-work-contract/SKILL.md",
+        "base_release_finalization_commit": "5adc196c0185951f50e49ab5e51586eff8d60886",
+        "base_release_lock": "base-v9.4.4.lock.json",
+        "handoff_source": "docs/knowledge/game-development/reuse/adoption/PROJECT_WORK_REUSE_HANDOFF.json",
+        "required_gates": ["REUSE_FIRST_PREFLIGHT_REQUIRED", "REUSE_LEARNING_HANDOFF_REQUIRED"]
       }
     },
     "orchestrating-deepseek-worktrees": {
@@ -175,7 +183,7 @@
     "base": {
       "hash_definition": "RAW_FILE_BYTES_SHA256",
       "path": "skills/SKILL_REGISTRY.json",
-      "sha256": "693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59"
+      "sha256": "08f882d0c77339e8f7ff187c35b79501e0a2958ab1ff1c7aaa1c0ef8dbee45d6"
     },
     "project": {
       "hash_definition": "RAW_FILE_BYTES_SHA256",
@@ -191,6 +199,6 @@
     "python tests/test_base_v942_planning_first_adoption.py",
     "manual: Godot project parse/runtime check",
     "manual: changed-file baseline diff",
-    "python tests/test_base_v943_first_prompt_adoption.py"
+    "python tests/test_base_v944_reuse_first_adoption.py"
   ]
 }

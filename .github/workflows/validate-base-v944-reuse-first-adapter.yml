@@ -1,11 +1,12 @@
-name: Validate Base v9.4.3 First Prompt Adapter
+name: Validate Base v9.4.4 Reuse First Adapter
 
 on:
   pull_request:
     paths:
       - "skills/PROJECT_BASE_ADAPTER.json"
-      - "tests/test_base_v943_first_prompt_adoption.py"
-      - ".github/workflows/validate-base-v943-first-prompt-adapter.yml"
+      - "tests/test_base_v944_reuse_first_adoption.py"
+      - ".github/workflows/validate-base-v944-reuse-first-adapter.yml"
+      - ".github/workflows/validate-project-base-adapter.yml"
 
 permissions:
   contents: read
@@ -18,5 +19,5 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           python-version: "3.12"
-      - name: Run Base v9.4.3 first-prompt adapter contract
-        run: python tests/test_base_v943_first_prompt_adoption.py
+      - name: Run Base v9.4.4 reuse-first adapter contract
+        run: python tests/test_base_v944_reuse_first_adoption.py

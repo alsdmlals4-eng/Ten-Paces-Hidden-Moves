@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github/workflows/validate-project-base-adapter.yml"
-BASE_GATE_COMMIT = "2828a74f60c1ed09546171040f4178c8848ea686"
+BASE_GATE_COMMIT = "31e13c7142695f57a5b7b29102307d1d2c02efac"
 
 
 class ApprovedProtectedChangeWorkflowTests(unittest.TestCase):
@@ -23,6 +23,7 @@ class ApprovedProtectedChangeWorkflowTests(unittest.TestCase):
         )
         for token in required:
             self.assertIn(token, workflow)
+        self.assertNotIn("ref: 2828a74f60c1ed09546171040f4178c8848ea686", workflow)
         self.assertNotIn("ref: 4ec410e611152294f3f2685570fca6019c7abcfa", workflow)
         self.assertNotIn("ref: bfdc9e44d4a6920dc085eaa3f9d19d31b1acd2a1", workflow)
 
