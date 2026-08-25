@@ -7,8 +7,15 @@
   "human_facing_owner": "NOTION_HOME_VISUAL_BIBLE_ASSET_LIBRARY",
   "repository_handoff": "docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md",
   "fresh_read_required": true,
-  "observed_project_main": "11b72d236809515b4c68a4650fb99c106139e9f9",
-  "observed_base_main": "af013a311dd2dadd991080e92bacb0572f0c2f69",
+  "observed_project_main": "95267e150582bfc04d466bda89d1321aa194377d",
+  "visual_handoff_merged_main": "95267e150582bfc04d466bda89d1321aa194377d",
+  "observed_base_main": "4c49c8b79b52483713247ae22bd39f1bd60c733c",
+  "base_promotion_proposal": {
+    "proposal_id": "BCP-2026-032-visual-reference-batch-delivery-readback",
+    "pull_request": 678,
+    "status": "SUBMITTED_PR_OPEN_AUTO_MERGE_ENABLED",
+    "implementation_authority": "NONE"
+  },
   "preexisting_open_prs_read_only": [
     199
   ],
@@ -127,7 +134,7 @@
   "evidence_ceiling": {
     "user_reference_approval": "PASS_2026_08_25",
     "notion_delivery": "PASS",
-    "github_visual_handoff_and_provenance": "CURRENT_HANDOFF_PR",
+    "github_visual_handoff_and_provenance": "MERGED_MAIN_95267e150582bfc04d466bda89d1321aa194377d",
     "runtime_source_master_promotion": "NOT_RUN",
     "runtime_art_integration": "NOT_RUN",
     "windows_visible_local_usability": "NOT_RUN",
