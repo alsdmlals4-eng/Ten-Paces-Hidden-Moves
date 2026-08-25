@@ -1,0 +1,87 @@
+name: Temporary Regenerate v9.4.4 Adapter Views
+
+on:
+  push:
+    branches:
+      - chore/base-v944-reuse-first-adoption
+    paths:
+      - ".github/workflows/tmp-regenerate-v944-adapter-views.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out project branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          ref: chore/base-v944-reuse-first-adoption
+
+      - name: Check out exact Base generator
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: alsdmlals4-eng/Base
+          ref: 31e13c7142695f57a5b7b29102307d1d2c02efac
+          path: .base-contract
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.12"
+
+      - name: Install generator dependencies
+        run: python -m pip install -r .base-contract/.github/validation-requirements.txt
+
+      - name: Regenerate deterministic adapter views
+        run: |
+          python - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, str(Path('.base-contract/tools').resolve()))
+          import project_operating_contract as contract
+          from base_release_index import install_release_lock_paths
+          install_release_lock_paths(contract)
+          root = Path('.').resolve()
+          base = Path('.base-contract').resolve()
+          artifacts = contract.build_artifacts(root, base, prevalidated=True)
+          allowed = {
+              Path('skills/PROJECT_SKILL_SNAPSHOT.json'),
+              Path('docs/PROJECT_OPERATING_DASHBOARD.html'),
+              Path('skills/BASE_V9_ADAPTER.json'),
+              Path('skills/PROJECT_BASE_SKILL_ADAPTER.json'),
+          }
+          changed = []
+          for path, content in artifacts.items():
+              rel = path.relative_to(root)
+              if rel not in allowed:
+                  continue
+              if not path.is_file() or path.read_bytes() != content:
+                  path.parent.mkdir(parents=True, exist_ok=True)
+                  path.write_bytes(content)
+                  changed.append(rel.as_posix())
+          print('generated:', *changed)
+          unexpected = [p for p in allowed if not (root / p).is_file()]
+          if unexpected:
+              raise SystemExit(f'missing generated views: {unexpected}')
+          PY
+
+      - name: Commit only generated views
+        run: |
+          set -euo pipefail
+          git add -- \
+            skills/PROJECT_SKILL_SNAPSHOT.json \
+            docs/PROJECT_OPERATING_DASHBOARD.html \
+            skills/BASE_V9_ADAPTER.json \
+            skills/PROJECT_BASE_SKILL_ADAPTER.json
+          if git diff --cached --quiet; then
+            echo "No generated drift"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: regenerate Base v9.4.4 adapter views"
+          git push origin HEAD:chore/base-v944-reuse-first-adoption
