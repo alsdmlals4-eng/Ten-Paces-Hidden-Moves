@@ -9,7 +9,9 @@
   "fresh_read_required": true,
   "observed_project_main": "11b72d236809515b4c68a4650fb99c106139e9f9",
   "observed_base_main": "af013a311dd2dadd991080e92bacb0572f0c2f69",
-  "preexisting_open_prs_read_only": [199],
+  "preexisting_open_prs_read_only": [
+    199
+  ],
   "approved_reference_set": [
     {
       "id": "TEN-IMG-001",
@@ -49,8 +51,16 @@
     "distance_n_primary": true,
     "absolute_floor_numbers_primary": false,
     "current_bundle_visible": true,
-    "round_sequence": [3, 3, 4],
-    "action_sources": ["기초", "무공", "절초"],
+    "round_sequence": [
+      3,
+      3,
+      4
+    ],
+    "action_sources": [
+      "기초",
+      "무공",
+      "절초"
+    ],
     "action_grid_max_columns": 5,
     "action_grid_max_rows": 2,
     "action_grid_max_items": 10,
