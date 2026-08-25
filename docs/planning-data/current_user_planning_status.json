@@ -20,12 +20,11 @@
   "generated_visual_concept_status": "USER_APPROVED_REFERENCE_SET_NOT_RUNTIME_ASSET",
   "visual_reference_handoff": "docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md",
   "visual_reference_state": "docs/planning-data/current_visual_production_handoff_20260825.json",
-  "approved_reference_repository_paths": [
-    "docs/reference/visual/2026-08-25/approved_combat_screen_v1.png",
-    "docs/reference/visual/2026-08-25/approved_character_master_v1.png",
-    "docs/reference/visual/2026-08-25/approved_basic_action_illustration_sheet_v1.png",
-    "docs/reference/visual/2026-08-25/approved_common_ink_clean_plate_v1.png"
-  ],
+  "approved_reference_notion": {
+    "home": "https://app.notion.com/p/3c41b237eb1c8105a254d860f3c21638",
+    "visual_bible": "https://app.notion.com/p/3c01b237eb1c814f80d4c6140fddebd4",
+    "asset_library": "https://app.notion.com/p/3c01b237eb1c8172a16dc7713b75fcc5"
+  },
   "notion_visual_delivery_status": "PASS_HOME_VISUAL_BIBLE_ASSET_LIBRARY_DESTINATION_AND_ATTACHMENT_READBACK",
   "visual_generation_batch_policy": "USER_EXPLICIT_MAX_3_PER_BATCH_REVIEW_AFTER_BATCH_NO_AUTOMATIC_NEXT_BATCH",
   "implementation_request_source": "USER_EXPLICIT_NON_IMAGE_WORK_REQUEST",
@@ -43,8 +42,8 @@
     "TEN_VIS_A04_ROUTE_ICON_SHEET_01"
   ],
   "current_work_order": [
-    "MERGE_OR_READBACK_20260825_VISUAL_HANDOFF_REFERENCE_SOURCES",
-    "PRODUCE_NEXT_EXPLICIT_MAX_3_IMAGE_BATCH_FROM_APPROVED_REFERENCE_SET",
+    "MERGE_OR_READBACK_20260825_VISUAL_HANDOFF_DOCS",
+    "PRODUCE_NEXT_EXPLICIT_MAX_3_IMAGE_BATCH_FROM_NOTION_APPROVED_REFERENCE_SET",
     "CONTINUE_TEN_VIS_A02_A03_A04_A05_A06_AND_A07_CANDIDATE_WITH_BATCH_REVIEW",
     "DECIDE_PROGRESS_LABEL_VS_ACTION_PLAN_LOCK_SEMANTICS_BEFORE_RUNTIME_UI_RENAME",
     "WINDOWS_VISIBLE_AND_HUMAN_MICROTUNING",
@@ -56,7 +55,8 @@
     "human_fun_readability": "NOT_RUN",
     "human_visual_approval": "USER_APPROVED_REFERENCE_SET_20260825_NOT_RUNTIME_VISUAL_PASS",
     "notion_visual_delivery": "PASS",
-    "repository_reference_source_preservation": "PENDING_CURRENT_HANDOFF_PR",
+    "github_visual_handoff_and_provenance": "PENDING_CURRENT_HANDOFF_PR",
+    "runtime_source_master_promotion": "NOT_RUN",
     "runtime_art_integration": "NOT_RUN",
     "windows_visible_local_usability": "NOT_RUN",
     "android_physical_device": "NOT_RUN_BLOCKED_UNVERIFIED",
