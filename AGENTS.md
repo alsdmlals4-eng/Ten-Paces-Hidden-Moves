@@ -32,6 +32,8 @@
 
 활성 PR·exact HEAD·현재 Work Mode·제품 단계·구현 상태·승인 수·다음 package/Decision·device/Human evidence는 `ACTIVE_CONTEXT.md`, current structured JSON, GitHub metadata, exact Project Notion에서 fresh-read한다. 이 AGENTS에 mutable snapshot을 고정하지 않는다.
 
+사람·기기·접근성·최종 Visual/VFX/Audio 검증을 수행하거나 판정할 때는 `docs/planning-data/current_issue54_human_device_validation_packet.json`을 추가로 읽는다. 이 패킷의 `READY_FOR_HUMAN_DEVICE_EXECUTION`은 검증 준비 상태이지 제품 mutation·Human/Device PASS 권한이 아니다.
+
 ## 4. Work Mode·Skill
 
 - `PLAN`: 요구·근거·대안·설계·Decision.

@@ -29,9 +29,14 @@ current_human_workspace: NOTION_DEFAULT_PROJECT_WORKSPACE
 current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME
 google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL
 current_work_contract: TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01
+current_human_device_validation_packet: docs/planning-data/current_issue54_human_device_validation_packet.json
 ```
 
 활성 PR·exact head·현재 Work Mode·제품 단계·구현 상태·승인 수·다음 package/Decision·device/Human evidence는 `ACTIVE_CONTEXT.md`, current JSON, GitHub live metadata, exact Project Notion을 fresh-read해 판정한다.
+
+## Human/Device validation router
+
+사람·기기·접근성·최종 Visual/VFX/Audio 검증은 `docs/planning-data/current_issue54_human_device_validation_packet.json`을 추가로 읽는다. `READY_FOR_HUMAN_DEVICE_EXECUTION`은 exact artifact를 다시 확인한 뒤 검증을 시작할 수 있다는 뜻이며, runtime mutation이나 Human/Device PASS를 허용하거나 선언하지 않는다.
 
 ## 허브 책임
 

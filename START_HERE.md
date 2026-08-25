@@ -33,9 +33,14 @@ current_work_contract: TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01
 design_platforms: WINDOWS_ANDROID
 platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
 base_authority: LATEST_COMPLETED_BASE_OWNER_PLUS_PROJECT_COMPATIBILITY_PIN
+current_human_device_validation_packet: docs/planning-data/current_issue54_human_device_validation_packet.json
 ```
 
 활성 PR·exact SHA·현재 Work Mode·제품 단계·현재 구현 상태·승인 수·다음 package/Decision·device/Human evidence는 이 파일에 복제하지 않는다. 작업 재개 시 `ACTIVE_CONTEXT.md`, current planning JSON, GitHub live metadata, exact Project Notion을 fresh-read한다.
+
+## Human/Device validation router
+
+사람·기기·접근성·최종 Visual/VFX/Audio 검증은 `docs/planning-data/current_issue54_human_device_validation_packet.json`이 현재 라우터다. 이 packet은 exact artifact freshness, Windows visible/local input, gamepad, Android, 접근성 사용자, 5인 이해도, 최종 visual/VFX/audio를 분리해 기록한다. `READY_FOR_HUMAN_DEVICE_EXECUTION`은 검증 준비 상태이며 runtime mutation이나 Human/Device PASS를 뜻하지 않는다.
 
 ## DOMAIN SPLIT
 
