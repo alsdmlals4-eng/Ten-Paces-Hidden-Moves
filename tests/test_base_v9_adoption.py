@@ -13,10 +13,10 @@ class BaseV9AdoptionTests(unittest.TestCase):
         data = json.loads((ROOT / "skills/PROJECT_BASE_ADAPTER.json").read_text(encoding="utf-8"))
         health = json.loads((ROOT / "docs/PROJECT_OPERATING_HEALTH.json").read_text(encoding="utf-8"))
         release = data["base_release"]
-        self.assertEqual("9.4.3", release["version"])
-        self.assertEqual("7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8", release["release_commit"])
-        self.assertEqual("da33a350d61b8adc52df97fccc7001708a933370", release["release_evidence_commit"])
-        self.assertEqual("0b7c94f38d959efc0fc9442274c60b2e268a3c97", release["finalization_commit"])
+        self.assertEqual("9.4.4", release["version"])
+        self.assertEqual("210ec78292fa12ed7563ba743b322dd36103ae4a", release["release_commit"])
+        self.assertEqual("bb61e68dc3028421b60c11b87ba2abd297ee6f78", release["release_evidence_commit"])
+        self.assertEqual("5adc196c0185951f50e49ab5e51586eff8d60886", release["finalization_commit"])
         self.assertEqual(2, data["schema_version"])
         self.assertEqual("ten-paces-hidden-moves", data["project"]["project_id"])
         self.assertNotIn("current_operating_contract", data)
@@ -26,11 +26,17 @@ class BaseV9AdoptionTests(unittest.TestCase):
         intake = data["shared_overrides"]["managing-project-intake-and-work-contract"]
         planning = intake["planning_first_governance"]
         first_prompt = intake["first_prompt_governance"]
+        reuse_first = intake["reuse_first_governance"]
         self.assertEqual(10, planning["max_approved_decisions_per_batch"])
         self.assertEqual("GRILL_ME_REQUIRED", planning["planning_conflict_state"])
         self.assertEqual("NOT_RUN", planning["actual_project_batch_execution"])
         self.assertEqual("AWAITING_USER_CONFIRMATION", first_prompt["unconfirmed_state"])
         self.assertEqual("NOT_RUN", first_prompt["actual_project_instruction_execution"])
+        self.assertEqual(
+            ["REUSE_FIRST_PREFLIGHT_REQUIRED", "REUSE_LEARNING_HANDOFF_REQUIRED"],
+            reuse_first["required_gates"],
+        )
+        self.assertEqual("NOT_RUN", reuse_first["actual_project_execution"])
         self.assertEqual("GOOGLE_SHEETS_LEGACY_MIGRATION_SOURCE", data["gdd_sheet"]["role"])
         self.assertEqual("MIGRATION_COMPATIBILITY_SURFACE", data["gdd_sheet"]["workspace_status"])
         self.assertEqual("STALE", data["gdd_sheet"]["sync_status"])
