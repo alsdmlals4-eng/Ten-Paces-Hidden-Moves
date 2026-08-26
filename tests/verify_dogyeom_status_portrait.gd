@@ -8,7 +8,7 @@ const GENERIC_ENEMY_PORTRAIT_PATH := "res://assets/portraits/enemy_masked_ink_v1
 var failures: Array[String] = []
 
 
-func _init() -> void:
+func _initialize() -> void:
 	call_deferred("_run")
 
 
