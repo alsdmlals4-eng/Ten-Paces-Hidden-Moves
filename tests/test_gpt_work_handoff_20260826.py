@@ -12,6 +12,7 @@ HANDOFF = ROOT / "docs" / "handoffs" / "2026-08-26_GPT_WORK_HANDOFF.md"
 DECISION = ROOT / "docs" / "decisions" / "2026-08-26_VISUAL_CONSUMER_ASSET_PRODUCTION_DECISION.md"
 BASE_WORK = "templates/project-operations/CHATGPT_WORK_PROJECT_EXECUTION_INSTRUCTION_v4.9.md"
 BASE_WORK_COMPAT = "templates/project-operations/CHATGPT_WORK_PROJECT_EXECUTION_INSTRUCTION_v4.9_COMPATIBILITY_APPENDIX.md"
+HANDOFF_MERGED_MAIN = "111f97d7a713a82d61d8e97e262ccbfc800e0868"
 
 
 class GptWorkHandoff20260826Tests(unittest.TestCase):
@@ -41,6 +42,14 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
         self.assertEqual("GPT_WORK_RESUME_REQUIRED", visual["next_result"]["generation_status"])
         self.assertEqual(["DOGYEOM_STATUS_PORTRAIT_01"], planning["next_visual_batch"])
         self.assertEqual("GPT_WORK", planning["next_execution_surface"])
+        self.assertEqual(
+            f"MERGED_MAIN_{HANDOFF_MERGED_MAIN}",
+            planning["evidence_ceiling"]["github_visual_handoff_and_provenance"],
+        )
+        self.assertNotIn(
+            "PENDING_TASK_PR_MERGE",
+            planning["evidence_ceiling"]["github_visual_handoff_and_provenance"],
+        )
 
     def test_handoff_document_preserves_evidence_ceiling(self) -> None:
         self.assertTrue(HANDOFF.is_file())
