@@ -20,7 +20,10 @@
     "notion_handoff_url": "https://app.notion.com/p/3c81b237eb1c81539c1bd4afa75e4b9a",
     "snapshot_observed_project_main": "b6d76410e3aa0edd7a2e698270742187cc471fd9",
     "snapshot_observed_base_main": "06669fe9c6a3ccd6f3b0d19c5757540bfdcc0623",
-    "open_project_prs_read_only_by_default": [199, 200]
+    "open_project_prs_read_only_by_default": [
+      199,
+      200
+    ]
   },
   "approved_reference_set_preserved": [
     "TEN-IMG-001",
@@ -68,8 +71,16 @@
     "distance_n_primary": true,
     "absolute_floor_numbers_primary": false,
     "current_bundle_visible": true,
-    "round_sequence": [3, 3, 4],
-    "action_sources": ["기초", "무공", "절초"],
+    "round_sequence": [
+      3,
+      3,
+      4
+    ],
+    "action_sources": [
+      "기초",
+      "무공",
+      "절초"
+    ],
     "action_grid_max_columns": 5,
     "action_grid_max_rows": 2,
     "action_grid_max_items": 10,
