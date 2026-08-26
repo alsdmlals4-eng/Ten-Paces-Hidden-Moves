@@ -19,8 +19,10 @@
   "visual_asset_requirement_status": "REFERENCE_SET_PARTIALLY_APPROVED_PRODUCTION_IN_PROGRESS",
   "final_visual_reference_status": "USER_APPROVED_COMBAT_REFERENCE_AND_REFERENCE_SET_20260825",
   "generated_visual_concept_status": "USER_APPROVED_REFERENCE_SET_NOT_RUNTIME_ASSET",
-  "visual_reference_handoff": "docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md",
-  "visual_reference_state": "docs/planning-data/current_visual_production_handoff_20260825.json",
+  "visual_reference_handoff": "docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md",
+  "visual_reference_state": "docs/planning-data/current_visual_production_handoff_20260826.json",
+  "historical_visual_reference_handoff": "docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md",
+  "historical_visual_reference_state": "docs/planning-data/current_visual_production_handoff_20260825.json",
   "visual_handoff_merged_main": "95267e150582bfc04d466bda89d1321aa194377d",
   "approved_reference_notion": {
     "home": "https://app.notion.com/p/3c41b237eb1c8105a254d860f3c21638",
