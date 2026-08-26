@@ -17,6 +17,7 @@ VISUAL = ROOT / "docs" / "planning-data" / "current_visual_production_handoff_20
 HISTORICAL_VISUAL = "docs/planning-data/current_visual_production_handoff_20260825.json"
 PLANNING = ROOT / "docs" / "planning-data" / "current_user_planning_status.json"
 VERIFY_SKILL = ROOT / "skills" / "qa" / "ten-paces-verification" / "SKILL.md"
+PR_VALIDATION = ROOT / ".github" / "workflows" / "documentation-governance.yml"
 
 
 class IntegratedWorkContractV48R54Tests(unittest.TestCase):
@@ -128,6 +129,12 @@ class IntegratedWorkContractV48R54Tests(unittest.TestCase):
             "기초 행동 8종·절초 3종",
         ):
             self.assertNotIn(stale_current_marker, text)
+
+    def test_retired_local_codex_launcher_is_not_an_active_ci_consumer(self) -> None:
+        workflow = PR_VALIDATION.read_text(encoding="utf-8")
+        self.assertNotIn("tests.test_local_executor_bootstrap_contract", workflow)
+        self.assertNotIn('"tools/start_ten_paces_local_executor.ps1"', workflow)
+        self.assertIn("tests.test_local_executor_handoff_contract", workflow)
 
     def test_current_visual_production_is_exactly_one(self) -> None:
         visual = json.loads(VISUAL.read_text(encoding="utf-8"))
