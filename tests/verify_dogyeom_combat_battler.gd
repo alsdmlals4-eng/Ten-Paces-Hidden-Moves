@@ -13,19 +13,20 @@ func _init() -> void:
 
 
 func _run() -> void:
-	_require_enemy_art("slot1_dogyeom", DOGYEOM_BATTLER_PATH, "Dogyeom must use the approved combat battler.")
-	_require_enemy_art("slot1_yeongyo", GENERIC_ENEMY_BATTLER_PATH, "Other enemies must retain the generic combat battler.")
-	_require_enemy_art("", GENERIC_ENEMY_BATTLER_PATH, "Enemies without a candidate ID must retain the generic combat battler.")
+	_require_enemy_art("slot1_dogyeom", DOGYEOM_BATTLER_PATH, true, "Dogyeom must use the approved combat battler and face the player.")
+	_require_enemy_art("slot1_yeongyo", GENERIC_ENEMY_BATTLER_PATH, false, "Other enemies must retain the generic combat battler.")
+	_require_enemy_art("", GENERIC_ENEMY_BATTLER_PATH, false, "Enemies without a candidate ID must retain the generic combat battler.")
 	_finish()
 
 
-func _require_enemy_art(candidate_id: String, expected_path: String, message: String) -> void:
+func _require_enemy_art(candidate_id: String, expected_path: String, expected_mirror: bool, message: String) -> void:
 	var character = CHARACTER_SCENE.instantiate() as CombatCharacterPlaceholder
 	root.add_child(character)
 	character.configure("enemy", -1, 7, 100.0, 1.5, 0.72, candidate_id)
 	var texture := character.get_render_texture()
 	var actual_path := texture.resource_path if texture != null else ""
 	_expect_eq(actual_path, expected_path, message)
+	_expect_eq(character.is_character_art_horizontally_mirrored(), expected_mirror, "Enemy-facing must be preserved for %s." % candidate_id)
 	_expect_eq(character.get_foot_anchor_local(), Vector2(character.size.x * 0.5, character.size.y), "Battler routing must preserve the local foot anchor.")
 	character.queue_free()
 

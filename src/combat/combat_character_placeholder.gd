@@ -58,6 +58,12 @@ func get_render_texture() -> Texture2D:
     _load_character_art()
     return character_sprite
 
+
+func is_character_art_horizontally_mirrored() -> bool:
+    _load_character_art()
+    return role == "enemy" and facing < 0 and _character_art_path == DOGYEOM_ART_PATH
+
+
 func _load_character_art() -> void:
     var next_path := PLAYER_ART_PATH if role == "player" else _enemy_art_path()
     if _character_art_path == next_path and character_sprite != null:
@@ -73,6 +79,7 @@ func _load_character_art() -> void:
                 _sprite_foot_ratio = clampf(float(used.position.y + used.size.y) / float(image.get_height()), 0.70, 1.0)
     set_meta("character_art_path", _character_art_path)
     set_meta("character_art_loaded", character_sprite != null)
+    set_meta("character_art_horizontally_mirrored", is_character_art_horizontally_mirrored())
 
 
 func _enemy_art_path() -> String:
@@ -137,7 +144,6 @@ func _notification(what: int) -> void:
         queue_redraw()
 
 func _draw() -> void:
-    draw_set_transform(visual_offset, 0.0, Vector2.ONE * visual_scale)
     var fill := PLAYER_COLOR if role == "player" else ENEMY_COLOR
     var outline := PLAYER_OUTLINE if role == "player" else ENEMY_OUTLINE
     var width := size.x
@@ -146,6 +152,12 @@ func _draw() -> void:
 
     var sprite := get_render_texture()
     if sprite != null:
+        var draw_offset := visual_offset
+        var draw_scale := Vector2.ONE * visual_scale
+        if is_character_art_horizontally_mirrored():
+            draw_offset += Vector2(width * visual_scale, 0.0)
+            draw_scale.x *= -1.0
+        draw_set_transform(draw_offset, 0.0, draw_scale)
         var sprite_height := height * 1.08
         var sprite_rect := Rect2(
             Vector2((width - sprite_height) * 0.5, height - sprite_height * _sprite_foot_ratio),
@@ -158,6 +170,8 @@ func _draw() -> void:
         draw_line(sprite_anchor + Vector2(0.0, -10.0), sprite_anchor + Vector2(0.0, 2.0), GOLD, 2.0)
         draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
         return
+
+    draw_set_transform(visual_offset, 0.0, Vector2.ONE * visual_scale)
 
     var head_center := Vector2(width * 0.5, height * 0.18)
     var head_radius := width * 0.13
