@@ -52,6 +52,14 @@ jobs:
           git merge-base --is-ancestor "$PROTECTED_BASE_SHA" "$PR_BASE_SHA"
           printf 'PROTECTED_BASE_SHA=%s\n' "$PROTECTED_BASE_SHA" >> "$GITHUB_ENV"
 
+      - name: Enforce one-time protected approval lifecycle
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python tools/check_one_time_protected_change_lifecycle.py \
+            --project-root . \
+            --base-sha "$PR_BASE_SHA"
+
       - name: Validate adapter and exact protected change approval
         env:
           EXTERNAL_APPROVAL: ${{ contains(github.event.pull_request.labels.*.name, 'approved-protected-change') }}
