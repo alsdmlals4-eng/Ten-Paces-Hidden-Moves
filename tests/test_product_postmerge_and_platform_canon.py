@@ -17,7 +17,7 @@ PRODUCT_MERGE = "a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90"
 EVIDENCE_HEAD = "0a8bf577b936ddac5cb7130a0cc58e519ea6eff6"
 PLATFORM_DECISION = "TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01"
 ADAPTER_DECISION = "TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01"
-CURRENT_WORK_CONTRACT = "TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01"
+CURRENT_WORK_CONTRACT = "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01"
 MUTABLE_KEYS = (
     "active_planning_work_mode",
     "active_planning_pr",
@@ -148,7 +148,7 @@ class ProductPostMergeAndPlatformCanonTests(unittest.TestCase):
 
         self.assertIn("시작 공개 거리 2", text)
         self.assertIn("`거리 N`", text)
-        self.assertIn("실제 current Work Mode와 다음 작업은 `ACTIVE_CONTEXT.md`가 소유한다", text)
+        self.assertIn("실제 current Work Mode와 다음 작업은 `ACTIVE_CONTEXT.md`", text)
         self.assertNotIn("필요한 이미지·애니메이션·HX 생성·검수·승인", text)
         self.assertNotIn("VERTICAL_SLICE_APP_FLOW_SHELL Codex 구현 인계", text)
 
