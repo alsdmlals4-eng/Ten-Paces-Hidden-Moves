@@ -40,6 +40,47 @@ class IntegratedWorkContractV48R54Tests(unittest.TestCase):
             self.assertIn(marker, text)
         self.assertNotIn(f"current_binding_decision: {R2_DECISION_ID}", text)
 
+    def test_r54_superset_invariants_are_preserved_without_copying_base_procedures(self) -> None:
+        text = CANONICAL.read_text(encoding="utf-8")
+        for marker in (
+            "work_structure_flexibility_policy: FIX_ONLY_TRUE_INVARIANTS_KEEP_COUNTS_TOOLS_AND_MODES_DYNAMIC",
+            "legacy_surface_retirement_policy: ABSORB_UNIQUE_VERIFY_DESTINATION_ZERO_ACTIVE_REFERENCES_THEN_SUPERSEDE_HOLD_ARCHIVE_OR_REMOVE",
+            "approved_unit_closeout_policy: ADVERSARIAL_REVIEW_GITHUB_NOTION_SYNC_PR_CHECK_MERGE_POSTMERGE_READBACK",
+            "primary_work_goal: BEST_LONG_TERM_EFFICIENT_METHOD",
+            "world_core_storyline_policy: REQUIRED_WHEN_PROJECT_HAS_WORLD_OR_NARRATIVE",
+            "narrative_event_origin_policy: MESSAGE_OR_QUESTION_AND_CHARACTER_BEFORE_EVENT_PRESSURE",
+            "entry_state_reconciliation_policy: REQUIRED_BEFORE_MATERIAL_MUTATION",
+            "whole_project_audit_policy: REQUIRED_FOR_NEW_PROJECT_MAJOR_GATE_AND_RESTRUCTURE",
+            "decision_checkpoint_policy: BOUNDED_DECISION_BATCH_AND_EARLY_CANON_SYNC",
+            "decision_screen_comprehension_policy: REQUIRED_FOR_DECISION_BEARING_UI",
+            "slice_delivery_policy: PLAYABLE_MEANINGFUL_SLICE_INCREMENTAL_DELIVERY",
+            "slice_canonical_reflection_policy: AFTER_PLAY_VERIFICATION_GITHUB_STRUCTURED_AND_NOTION_HUMAN_READBACK",
+            "audio_visual_poc_policy: RUNTIME_FEEDBACK_ALIGNMENT_EVIDENCE_REQUIRED_WHEN_PLAYER_PROMISE_DEPENDS_ON_IT",
+            "progress_measurement_policy: PLAYABLE_PROGRESS_NOT_DOCUMENT_VOLUME",
+            "asset_provenance_policy: SOURCE_RIGHTS_VERSION_TECHNICAL_FIT_APPROVAL_RUNTIME_CONSUMER",
+            "shared_audio_reference_policy: REUSE_FIRST_PROVENANCE_AND_PROJECT_OWNED_CONSUMPTION_COPY",
+            "one_click_play_policy: RUNNABLE_BY_USER_WHEN_PLAYER_OR_HUMAN_VALIDATION_IS_REQUIRED",
+            "ci_supply_chain_policy: CURRENT_REPOSITORY_REQUIRED_CHECKS_AND_IMMUTABLE_ACTION_PINNING_WHEN_APPLICABLE",
+            "remote_ci_cost_policy: EXISTING_ZERO_INCREMENTAL_COST_ROUTE_FIRST",
+            "skill_absorption_policy: PARTIAL_ABSORPTION_WITH_FUNCTION_LEVEL_VALIDITY_CLASSIFICATION",
+            "skill_coverage_policy: CURRENT_REGISTRY_FULL_INVENTORY_TRIGGERED_PROGRESSIVE_LOAD_WITH_EXECUTION_RECEIPT",
+            "unreviewed_floating_latest_policy: FORBIDDEN",
+            "per_project_dedicated_port_policy: NOT_DEFAULT_EXCEPTION_ONLY",
+            "local_godot_editor_policy: OPEN_OR_REUSE_EXACT_EDITOR_BEFORE_GODOT_AUTHORING_RUNTIME",
+        ):
+            self.assertIn(marker, text)
+        for invariant in (
+            "WHOLE_PROJECT_AUDIT_FIRST",
+            "PLAYABLE_SLICE_BOUNDARY",
+            "CANONICAL_REFLECTION_AFTER_PLAY",
+            "AUDIO_VISUAL_POC_EVIDENCE",
+            "DECISION_SCREEN_COMPREHENSION_GATE",
+            "FUNCTION_LEVEL_VALIDITY_CLASSIFICATION",
+            "ASSET_PROVENANCE_AND_GODOT_IMPORT_GATE",
+            "RUNNABLE_BY_USER_ONE_CLICK_PROJECT_PLAY_GATE",
+        ):
+            self.assertIn(invariant, text)
+
     def test_binding_record_preserves_evidence_ceiling_and_history(self) -> None:
         self.assertTrue(DECISION.is_file())
         payload = json.loads(CONTRACT.read_text(encoding="utf-8"))
