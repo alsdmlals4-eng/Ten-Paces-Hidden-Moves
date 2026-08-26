@@ -2,9 +2,11 @@
   "schema_version": 1,
   "project": "TEN_PACES",
   "updated_at": "2026-08-26",
-  "status": "R5_4_EXACTLY_ONE_VISUAL_GATE_NEXT_RESULT_READY",
+  "status": "R5_4_CONSUMER_FIRST_NEXT_RESULT_READY",
   "authority_role": "CURRENT_VISUAL_PRODUCTION_HANDOFF",
   "current_execution_contract": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
+  "current_visual_production_decision": "TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01",
+  "consumer_first_asset_policy": "ACTUAL_GAME_CONSUMER_REQUIRED",
   "human_facing_owner": "NOTION_HOME_VISUAL_BIBLE_ASSET_LIBRARY",
   "repository_handoff": "docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md",
   "historical_visual_handoff": "docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md",
@@ -16,6 +18,18 @@
     "TEN-VIS-A07-CANDIDATE",
     "TEN-VIS-A01"
   ],
+  "approved_results": {
+    "OPPONENT_CHARACTER_MASTER_01": {
+      "working_character": "도겸",
+      "status": "USER_APPROVED_2026_08_26",
+      "approval_source": "user explicit: 승인",
+      "generation_id": "0d895036-38e6-420e-990f-823353373366",
+      "source_png_sha256": "efe88bf4aaf7d1773916f151d518cf52508f18a670760f817c4226feb7564f42",
+      "notion_delivery": "PASS",
+      "runtime_asset": false,
+      "role": "REUSABLE_CHARACTER_SOURCE_MASTER"
+    }
+  },
   "style_lock": {
     "world_background": "LOW_CONTRAST_INK_WASH_SEPIA_NEGATIVE_SPACE",
     "character": "TALL_SEMI_REALISTIC_WUXIA_INK_LINE_WITH_LIMITED_DITHERING",
@@ -59,33 +73,47 @@
     "visual_bible_url": "https://app.notion.com/p/3c01b237eb1c814f80d4c6140fddebd4",
     "asset_library_url": "https://app.notion.com/p/3c01b237eb1c8172a16dc7713b75fcc5",
     "approved_reference_set_readback": "PASS_20260825",
-    "new_r5_4_result_delivery": "NOT_RUN"
+    "opponent_character_master_01_delivery": "PASS_20260826",
+    "consumer_first_policy_readback": "PASS_20260826"
   },
   "next_result": {
-    "name": "Opponent Character Master #01",
-    "id": "OPPONENT_CHARACTER_MASTER_01",
-    "purpose": "validate opponent silhouette differentiation using approved character master grammar",
+    "name": "Dogyeom Combat Battler #01",
+    "id": "DOGYEOM_COMBAT_BATTLER_01",
+    "purpose": "produce a battlefield-consumed full-body battler derivative from the approved Dogyeom Character Master",
+    "consumer": "src/combat/combat_character_placeholder.gd",
+    "current_consumer_asset": "res://assets/characters/enemy_masked_battler_rgba_v1.png",
+    "intended_runtime_role": "enemy battlefield full-body battler",
+    "source_master": "OPPONENT_CHARACTER_MASTER_01",
+    "output_contract": "TRANSPARENT_RGBA_FULL_BODY_ENEMY_FACING_LEFT_FOOT_ANCHOR_SAFE",
     "generation_status": "WAITING_EXPLICIT_USER_GENERATION_APPROVAL"
   },
   "deferred_queue_after_result_review": [
     {
-      "name": "Martial Technique Illustration Sheet #01",
-      "purpose": "validate martial-technique illustration language distinct from basic actions"
+      "name": "Dogyeom Status Portrait #01",
+      "id": "DOGYEOM_STATUS_PORTRAIT_01",
+      "consumer": "src/ui/combatant_status_panel.gd",
+      "current_consumer_asset": "res://assets/portraits/enemy_masked_ink_v1.png",
+      "source_master": "OPPONENT_CHARACTER_MASTER_01"
     },
     {
-      "name": "Route Icon Sheet #01",
-      "asset_id": "TEN-VIS-A04",
-      "purpose": "validate eight route-node icons readable without color dependence"
+      "name": "Individual Martial/Ultimate Card Illustration",
+      "policy": "EXACT_CARD_ID_AND_CARDVIEW_ILLUSTRATION_CONSUMER_REQUIRED",
+      "consumer": "src/ui/card_view.gd",
+      "current_proof": "data/cards/basic_cards.json + assets/ui/cards/basic_illustrations_atlas.svg"
+    },
+    {
+      "name": "Route/Result/Background production assets",
+      "policy": "DEFER_UNTIL_ACTUAL_GAME_CONSUMER_IS_VERIFIED"
     }
   ],
   "remaining_asset_inventory": {
-    "TEN-VIS-A01": "FIRST_PLATE_APPROVED_OPTIONAL_SECOND_VARIANT",
-    "TEN-VIS-A02": "15_OPPONENT_PORTRAITS_NOT_PRODUCED_CHARACTER_MASTER_APPROVED",
-    "TEN-VIS-A03": "15_COMBAT_BATTLERS_NOT_PRODUCED_CHARACTER_MASTER_APPROVED",
-    "TEN-VIS-A04": "ROUTE_8_ICON_SET_NOT_PRODUCED_DEFERRED_QUEUE",
-    "TEN-VIS-A05": "RESULT_COMPLETION_MARK_SET_NOT_PRODUCED",
-    "TEN-VIS-A06": "2_TO_3_BATTLE_BACKGROUND_VARIANTS_NOT_PRODUCED",
-    "TEN-VIS-A07_CANDIDATE": "BASIC_ACTION_STYLE_APPROVED_MARTIAL_AND_ULTIMATE_EXPANSION_NOT_PRODUCED"
+    "TEN-VIS-A01": "FIRST_PLATE_APPROVED_OPTIONAL_SECOND_VARIANT_ONLY_IF_CONSUMER_REQUIRES",
+    "TEN-VIS-A02": "15_OPPONENT_PORTRAITS_NOT_PRODUCED_USE_CHARACTER_MASTER_DERIVATIVES_AND_VERIFIED_PORTRAIT_CONSUMERS",
+    "TEN-VIS-A03": "15_COMBAT_BATTLERS_NOT_PRODUCED_NEXT_DOGYEOM_ACTUAL_BATTLEFIELD_CONSUMER",
+    "TEN-VIS-A04": "ROUTE_8_ICON_SET_NOT_PRODUCED_REQUIRE_GAME_CONSUMER_VERIFICATION_BEFORE_GENERATION",
+    "TEN-VIS-A05": "RESULT_COMPLETION_MARK_SET_NOT_PRODUCED_REQUIRE_GAME_CONSUMER_VERIFICATION_BEFORE_GENERATION",
+    "TEN-VIS-A06": "2_TO_3_BATTLE_BACKGROUND_VARIANTS_NOT_PRODUCED_REQUIRE_GAME_CONSUMER_NEED_BEFORE_GENERATION",
+    "TEN-VIS-A07_CANDIDATE": "BASIC_ACTION_STYLE_APPROVED_FUTURE_MARTIAL_AND_ULTIMATE_ART_MUST_MAP_TO_REAL_CARD_IDS_AND_CARDVIEW_CONSUMER"
   },
   "sheet_compatibility": {
     "mode": "MIGRATION_ONLY_UNTIL_REMOVAL",
@@ -94,8 +122,9 @@
   },
   "evidence_ceiling": {
     "user_reference_approval": "PASS_2026_08_25",
-    "notion_reference_delivery": "PASS_2026_08_25",
-    "r5_4_single_result_generation": "NOT_RUN",
+    "r5_4_single_result_generation": "PASS_EXACTLY_ONE_2026_08_26",
+    "opponent_character_master_01_user_approval": "PASS_2026_08_26",
+    "opponent_character_master_01_notion_delivery": "PASS_2026_08_26",
     "runtime_source_master_promotion": "NOT_RUN",
     "runtime_art_integration": "NOT_RUN",
     "windows_visible_local_usability": "NOT_RUN",
@@ -111,7 +140,8 @@
     "READ_CURRENT_R5_4_PROJECT_CONTRACT",
     "READ_THIS_HANDOFF_AND_APPROVED_REFERENCE_SET",
     "DO_NOT_USE_MIGRATION_SHEET_AS_CURRENT_AUTHORITY",
-    "SHOW_TEXT_BRIEF_FOR_OPPONENT_CHARACTER_MASTER_01",
+    "REQUIRE_ACTUAL_GAME_CONSUMER_FOR_EACH_NEW_IMAGE",
+    "SHOW_TEXT_BRIEF_FOR_DOGYEOM_COMBAT_BATTLER_01",
     "WAIT_FOR_EXPLICIT_USER_GENERATION_APPROVAL",
     "GENERATE_EXACTLY_ONE_RESULT",
     "STOP_FOR_USER_REVIEW"

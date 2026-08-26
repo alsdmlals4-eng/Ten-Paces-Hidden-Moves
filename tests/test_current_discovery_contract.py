@@ -19,6 +19,7 @@ CURRENT_ACTION_PINS = {
 }
 TEMPORARY_PIN_EXCEPTIONS: dict[str, dict[str, str]] = {}
 CURRENT_WORK_CONTRACT = "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01"
+CURRENT_VISUAL_PRODUCTION_DECISION = "TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01"
 
 
 def is_reconciled_action_pin_allowed(workflow_path: str, action: str, ref: str) -> bool:
@@ -172,13 +173,17 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             "user_directed_planning_status: PLANNING_COMPLETE_VISUAL_PRODUCTION_ACTIVE",
             current_section,
         )
-        self.assertIn("planning_visual_next: OPPONENT_CHARACTER_MASTER_01", current_section)
+        self.assertIn("planning_visual_next: DOGYEOM_COMBAT_BATTLER_01", current_section)
         self.assertIn(
             "planning_visual_generation: USER_EXPLICIT_EXACTLY_ONE_RESULT_REQUIRED",
             current_section,
         )
         self.assertIn(
-            "planning_visual_review: USER_APPROVED_REFERENCE_SET_20260825_NOT_RUNTIME_VISUAL_PASS",
+            "planning_visual_review: USER_APPROVED_REFERENCE_SET_20260825_AND_OPPONENT_CHARACTER_MASTER_01_20260826_NOT_RUNTIME_VISUAL_PASS",
+            current_section,
+        )
+        self.assertIn(
+            f"planning_visual_production_decision: {CURRENT_VISUAL_PRODUCTION_DECISION}",
             current_section,
         )
         self.assertIn(
@@ -199,7 +204,9 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             "user_directed_planning_next_package: AWAITING_EXPLICIT_ASSET_OR_IMPLEMENTATION_REQUEST",
             "user_directed_planning_status: PLANNING_COMPLETE_USER_APPROVED",
             "planning_visual_next: AWAITING_EXPLICIT_ASSET_OR_IMPLEMENTATION_REQUEST",
+            "planning_visual_next: OPPONENT_CHARACTER_MASTER_01",
             "planning_visual_review: TEN_IMG_001_CHAT_EXPLORATIONS_REVIEWED_NOT_AN_ASSET",
+            "planning_visual_review: USER_APPROVED_REFERENCE_SET_20260825_NOT_RUNTIME_VISUAL_PASS",
             "product_implementation_authorized: false",
             "product_stage: VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_COMPLETE_HANDOFF_READY",
             "planning_visual_next: TEN_IMG_001_GENERATE_EXPLORATION",
@@ -237,6 +244,8 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )[0]
         self.assertIn("Phase I–VI", current_risk)
         self.assertIn("OPPONENT_CHARACTER_MASTER_01", current_risk)
+        self.assertIn("DOGYEOM_COMBAT_BATTLER_01", current_risk)
+        self.assertIn("USER_APPROVED_2026_08_26", current_risk)
         self.assertIn("WAITING_EXPLICIT_USER_GENERATION_APPROVAL", current_risk)
         self.assertIn("future_product_mutation_authorized: false", current_risk)
         self.assertNotIn("product_implementation_authorized: false", current_risk)
