@@ -18,19 +18,58 @@ google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL
 open_pr_policy: OPEN_PR_READ_ONLY_BY_DEFAULT
 current_task_pr_policy: CURRENT_TASK_CONTINUATION_AUTHORIZES_READY_MERGE
 force_and_ruleset_bypass_policy: FORBIDDEN
+work_structure_flexibility_policy: FIX_ONLY_TRUE_INVARIANTS_KEEP_COUNTS_TOOLS_AND_MODES_DYNAMIC
+legacy_surface_retirement_policy: ABSORB_UNIQUE_VERIFY_DESTINATION_ZERO_ACTIVE_REFERENCES_THEN_SUPERSEDE_HOLD_ARCHIVE_OR_REMOVE
+approved_unit_closeout_policy: ADVERSARIAL_REVIEW_GITHUB_NOTION_SYNC_PR_CHECK_MERGE_POSTMERGE_READBACK
+primary_work_goal: BEST_LONG_TERM_EFFICIENT_METHOD
 quality_priority: QUALITY_OVER_RESPONSE_SPEED
 minimum_viable_alternatives: 3
+better_alternative_search: REQUIRED_WHEN_NEW_EVIDENCE_OR_FINDING_APPEARS
+long_term_fit_and_revisit_conditions: REQUIRED
+market_success_failure_comparison: REQUIRED_WHEN_DECISION_RELEVANT
 adversarial_full_loop_minimum: 5
 implementation_reality_gate: REQUIRED
+case_lookup_before_retry: REQUIRED_FOR_MATERIAL_FAILURES_AND_REPEATABLE_PROBLEMS
+incident_solution_lesson_loop: REQUIRED_FOR_MATERIAL_FAILURES
+multi_route_recovery_ladder: REQUIRED_FOR_FAILURE_PRONE_L1_PLUS_EXTERNAL_CAPABILITY_WORK
+fallback_evidence_policy: EVIDENCE_EQUIVALENT_FALLBACK_ONLY
 visual_generation_policy: TEXT_BRIEF_THEN_EXPLICIT_USER_APPROVAL_THEN_EXACTLY_ONE_RESULT
+notion_image_delivery_policy: CONNECTOR_NATIVE_FIRST_OFFICIAL_TYPED_FILE_UPLOAD_FALLBACK_THEN_MANUAL_LAST
+notion_image_readback_policy: DURABLE_DESTINATION_READBACK_REQUIRED
+human_visible_image_claim_policy: CLIENT_OBSERVATION_REQUIRED_WHEN_RENDERING_IS_PART_OF_CLAIM
 local_codex_policy: RETIRED_NOT_USED
 gpt_local_codex_orchestration_policy: RETIRED
 codex_execution_policy: INDEPENDENT_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF_ONLY
 powershell_policy: LOCAL_GODOT_OR_VALIDATION_ONLY_NOT_CODEX_LAUNCHER
 fresh_read_bootstrap_policy: PROJECT_GITHUB_NOTION_ONLY_RECONSTRUCTION_REQUIRED
 past_conversation_dependency_policy: NOT_REQUIRED_FOR_NEW_CHAT_RESUME
+entry_state_reconciliation_policy: REQUIRED_BEFORE_MATERIAL_MUTATION
+whole_project_audit_policy: REQUIRED_FOR_NEW_PROJECT_MAJOR_GATE_AND_RESTRUCTURE
+requirement_traceability_policy: REQUIREMENT_TO_OWNER_IMPLEMENTATION_EVIDENCE_COMPLETION_REQUIRED
+decision_checkpoint_policy: BOUNDED_DECISION_BATCH_AND_EARLY_CANON_SYNC
+visual_requirement_delete_test_policy: REQUIRED_BEFORE_ASSET_PRODUCTION
+decision_screen_comprehension_policy: REQUIRED_FOR_DECISION_BEARING_UI
+world_core_storyline_policy: REQUIRED_WHEN_PROJECT_HAS_WORLD_OR_NARRATIVE
+narrative_event_origin_policy: MESSAGE_OR_QUESTION_AND_CHARACTER_BEFORE_EVENT_PRESSURE
+multi_platform_shared_core_policy: SHARED_RULE_DATA_SAVE_ECONOMY_CORE_SEMANTICS
+slice_delivery_policy: PLAYABLE_MEANINGFUL_SLICE_INCREMENTAL_DELIVERY
+slice_benchmark_and_adversarial_policy: ONE_SUBSTANTIVE_RESEARCH_PACKAGE_PER_SLICE_WITH_FIVE_PLUS_FULL_LOOPS
+slice_canonical_reflection_policy: AFTER_PLAY_VERIFICATION_GITHUB_STRUCTURED_AND_NOTION_HUMAN_READBACK
+audio_visual_poc_policy: RUNTIME_FEEDBACK_ALIGNMENT_EVIDENCE_REQUIRED_WHEN_PLAYER_PROMISE_DEPENDS_ON_IT
+progress_measurement_policy: PLAYABLE_PROGRESS_NOT_DOCUMENT_VOLUME
+base_promotion_evidence_policy: REPEATED_SLICE_OR_CROSS_PROJECT_EVIDENCE_BEFORE_GENERALIZATION
+asset_provenance_policy: SOURCE_RIGHTS_VERSION_TECHNICAL_FIT_APPROVAL_RUNTIME_CONSUMER
+shared_audio_reference_policy: REUSE_FIRST_PROVENANCE_AND_PROJECT_OWNED_CONSUMPTION_COPY
+one_click_play_policy: RUNNABLE_BY_USER_WHEN_PLAYER_OR_HUMAN_VALIDATION_IS_REQUIRED
+ci_supply_chain_policy: CURRENT_REPOSITORY_REQUIRED_CHECKS_AND_IMMUTABLE_ACTION_PINNING_WHEN_APPLICABLE
+remote_ci_cost_policy: EXISTING_ZERO_INCREMENTAL_COST_ROUTE_FIRST
+skill_absorption_policy: PARTIAL_ABSORPTION_WITH_FUNCTION_LEVEL_VALIDITY_CLASSIFICATION
+skill_coverage_policy: CURRENT_REGISTRY_FULL_INVENTORY_TRIGGERED_PROGRESSIVE_LOAD_WITH_EXECUTION_RECEIPT
+unreviewed_floating_latest_policy: FORBIDDEN
 shared_godot_runtime_policy: SHARED_APPROVED_EXACT_PIN_DEFAULT_NO_PER_PROJECT_DUPLICATE_BINARY
 shared_godot_ai_port_policy: FIXED_DEFAULT_PORTS_WITH_EXACT_SESSION_ROUTING
+per_project_dedicated_port_policy: NOT_DEFAULT_EXCEPTION_ONLY
+local_godot_editor_policy: OPEN_OR_REUSE_EXACT_EDITOR_BEFORE_GODOT_AUTHORING_RUNTIME
 minimum_localization_targets: [ko, en, ja, zh-*]
 chinese_locale_variant: UNKNOWN_UNVERIFIED_USER_DECISION_REQUIRED_BEFORE_LOCALIZATION_LOCK
 responsive_target_profiles: [pc_standard, pc_wide_or_ultrawide, mobile_landscape]
@@ -72,6 +111,7 @@ historical_contracts:
 - GitHub와 Notion 의미가 다르면 mutation 전에 `CONTEXT_DRIFT_RECHECK_REQUIRED`다.
 - Google Sheets는 고유 미이관 자료를 찾는 `MIGRATION_ONLY_UNTIL_REMOVAL` source이며 신규 기획·승인·current state 작업면이 아니다.
 - Base v9.4.3 등 프로젝트가 보존한 release pin은 compatibility/adoption evidence이지 current Base remote truth가 아니다.
+- `LEGACY_ABSORB_VERIFY_REMOVE`: 퇴역 surface는 UNIQUE만 현행 owner로 이관하고 destination readback + active reference 0을 확인한 뒤 `[대체됨]`·`[보류]`·Archive·remove로 닫는다.
 
 ## 2. DOMAIN SPLIT
 
@@ -94,6 +134,8 @@ historical_contracts:
 
 코어·Core Loop·주요 UX·경제/보상·서사 의미·저장 호환성을 바꾸는 변경은 새 Decision이 필요하다.
 
+세계관·서사가 현재 Goal에 관여하면 `WORLD_CORE_STORYLINE_REQUIRED_WHEN_APPLICABLE`로 Core Arc와 시스템·성장·보상·Visual 연결을 먼저 복원한다. 사건 설계는 필요할 때 `MESSAGE_OR_QUESTION → CHARACTER_VALUES_WANTS_RELATIONSHIPS → EVENT_PRESSURE → CHOICE_OR_ACTION → CONSEQUENCE`를 heuristic으로 사용하며, emergent/systemic narrative에는 강제하지 않는다.
+
 ## 4. Work Mode·Skill·Evidence
 
 - `skills/SKILL_REGISTRY.json`이 프로젝트-local Skill authority다.
@@ -102,6 +144,23 @@ historical_contracts:
 - Windows visible, 실물 입력, Android actual device, accessibility user, release performance, Human/player experience를 실행하지 않았으면 `NOT_RUN` 또는 `BLOCKED_UNVERIFIED`다.
 - 중요 요구는 `requirement → owner → implementation/canon → evidence → completion`으로 추적한다.
 - 완료 후보는 최소 5회 full-scope adversarial loop와 clean exit 뒤에만 완료로 승격한다.
+- 활성 Skill·Work Mode·PR·CI·provider 개수는 영구 숫자로 고정하지 않는다. true invariant만 고정하고 current Registry/repository에서 유동적으로 발견한다.
+
+### 4.1 r5.4 작업구조 비퇴행 locator
+
+Base의 상세 절차를 여기 복제하지 않지만 다음 **프로젝트 실행 불변식**은 무음으로 약화하지 않는다.
+
+- `WHOLE_PROJECT_AUDIT_FIRST`: 새 프로젝트/새 채팅의 첫 material 작업, major gate·구조 변경·전수 검토·major closeout에서는 단일 파일 수정 전에 GitHub/Notion/open workstream/실제 구현·검증·보호 범위를 함께 감사한다.
+- `BOUNDED_DECISION_BATCH_AND_EARLY_CANON_SYNC`: 승인 결정을 과도하게 쌓지 않고 current Base intake owner가 정한 bounded 단위로 GitHub structured canon + Notion human canon을 조기 동기화한다.
+- `PLAYABLE_SLICE_BOUNDARY`: 진행률은 문서/commit 수가 아니라 플레이 의미가 있는 작은 Slice로 측정한다.
+- `CANONICAL_REFLECTION_AFTER_PLAY`: play/test 결과로 실제 finding이 생기면 교정 후 repository structured truth와 Notion human-facing truth를 함께 readback한다.
+- `DECISION_SCREEN_COMPREHENSION_GATE`: 의사결정 화면은 상황·선택지·비용/위험·결과·다음 행동을 사람이 이해하는지 분리 검증하며 screenshot/자동 UI test만으로 Human PASS를 주장하지 않는다.
+- `AUDIO_VISUAL_POC_EVIDENCE`: player promise가 시각/음향 feedback에 의존하면 runtime feedback alignment 없이 player-experience PASS를 주장하지 않는다.
+- `FUNCTION_LEVEL_VALIDITY_CLASSIFICATION`: 외부 Skill/모듈/도구는 통째 채택보다 기능별 `REUSE / ABSORB / ADAPT / REJECT`를 우선하고 불필요한 권한·복잡성을 들여오지 않는다.
+- `ASSET_PROVENANCE_AND_GODOT_IMPORT_GATE`: 외부 Asset/Audio/Reference는 source·rights·version/identity·technical fit·project approval·project-owned consumption record/copy·runtime consumer를 분리 확인한다.
+- `RUNNABLE_BY_USER_ONE_CLICK_PROJECT_PLAY_GATE`: Human/Player 검증이 acceptance에 필요하면 가능한 범위에서 one action/one block으로 현재 검증 대상을 실행할 수 있는 route와 성공 표식을 제공한다.
+- CI는 live required checks와 current Base supply-chain owner를 읽고 immutable pin 요구를 지키며, 기존 zero-incremental-cost route를 먼저 사용한다. 비용 절감은 required regression 삭제가 아니라 실행 계층 선택으로 해결한다.
+- material failure는 관련 Project/Base Case/Learning을 먼저 찾고, 재사용 가치가 있으면 Incident → Solution → Lesson → recurrence guard로 닫는다.
 
 ## 5. Godot·Codex·PowerShell 현재 역할
 
@@ -131,7 +190,7 @@ GPT
 
 PowerShell은 사용자 PC의 **Godot 실행·검증·환경 확인이 실제 필요할 때만** 사용하며 Codex launcher가 아니다.
 
-호환 가능한 host에서는 프로젝트별 동일 Godot binary/port를 증식하지 않고 **검증된 shared exact Godot pin + Godot AI 기본 포트 + exact project/editor/session identity**를 기본으로 한다. 프로젝트 정본의 engine compatibility가 shared pin과 맞지 않으면 자동으로 열지 않고 compatibility Gate를 다시 판정한다.
+호환 가능한 host에서는 프로젝트별 동일 Godot binary/port를 증식하지 않고 **검증된 shared exact Godot pin + Godot AI 기본 포트 + exact project/editor/session identity**를 기본으로 한다. 프로젝트 정본의 engine compatibility가 shared pin과 맞지 않으면 자동으로 열지 않고 compatibility Gate를 다시 판정한다. Godot authoring/runtime 작업에서는 exact Editor를 open/reuse하고 current Godot AI session identity를 readback한다. alternate port는 실제 충돌이 확인된 예외 recovery일 때만 사용한다.
 
 ## 6. Visual·UI·Localization
 
@@ -153,6 +212,8 @@ canon review
 UI/구조는 최소 `ko / en / ja / zh-*`를 수용할 localization-ready 구조로 계획한다. 중국어 variant는 이 계약에서 추정하지 않으며 프로젝트 Decision으로 `zh-Hans / zh-Hant / both` 중 하나를 확정하기 전 `UNKNOWN_UNVERIFIED`다.
 
 반응형 최소 계획은 `pc_standard / pc_wide_or_ultrawide / mobile_landscape`이며 pixel-identical이 아니라 동일 정보 위계·행동 의미·상태 의미·피드백 의미를 보호한다.
+
+승인 Visual의 Notion delivery는 connector-native typed upload/attach를 우선하고, 실제 target destination readback까지 완료해야 한다. 서버 readback은 client/human-visible 렌더 PASS가 아니다.
 
 ## 7. 현재 제품·시각 상태 해석
 
@@ -176,6 +237,7 @@ UI/구조는 최소 `ko / en / ja / zh-*`를 수용할 localization-ready 구조
 - direct main push, force push, admin/ruleset bypass는 금지한다.
 - CI check 이름과 required 상태는 live repository/ruleset에서 발견한다.
 - `REQUIRED_WORK_REMAINING: 0`은 completion candidate이며 correction rescan + 최소 5회 adversarial loop + postmerge GitHub/Notion readback 뒤에만 종료한다.
+- 승인된 작업 단위 closeout은 `GitHub + Notion 의미 동기화 → adversarial review → exact-head PR/CI/review/thread Gate → safe merge → new main + Notion destination readback`까지 같은 승인 범위에서 닫는다.
 
 ## 9. r2 → r5.4 migration/non-regression
 
@@ -183,6 +245,7 @@ UI/구조는 최소 `ko / en / ja / zh-*`를 수용할 localization-ready 구조
 
 - Notion human canon / repository runtime canon / Sheet migration-only: **PRESERVED**.
 - Base progressive-load / open PR read-only / IRG / 5회 adversarial review: **PRESERVED**.
+- Whole-project audit / requirement traceability / bounded early checkpoint / playable Slice / decision-screen comprehension / Audio·Visual POC / Asset·Audio provenance / user-runnable play / CI supply-chain·cost / partial Skill absorption: **RESTORED/IMPROVED r5.4 project invariants**.
 - Fresh-Read GitHub+Notion cold-start: **IMPROVED**.
 - Visual exactly-one approval loop: **CURRENT r5.4 OVERRIDE**.
 - GPT→PowerShell→local Codex, project CODEX_HOME, dedicated port readiness: **INTENTIONALLY SUPERSEDED** by independent Codex Godot product handoff + local Godot validation-only PowerShell.
