@@ -2,16 +2,31 @@
   "schema_version": 1,
   "project": "TEN_PACES",
   "updated_at": "2026-08-26",
-  "status": "R5_4_CONSUMER_FIRST_NEXT_RESULT_READY",
+  "status": "HANDOFF_READY_GPT_WORK",
   "authority_role": "CURRENT_VISUAL_PRODUCTION_HANDOFF",
   "current_execution_contract": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
   "current_visual_production_decision": "TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01",
   "consumer_first_asset_policy": "ACTUAL_GAME_CONSUMER_REQUIRED",
   "human_facing_owner": "NOTION_HOME_VISUAL_BIBLE_ASSET_LIBRARY",
   "repository_handoff": "docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md",
+  "work_handoff": "docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md",
   "historical_visual_handoff": "docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md",
   "historical_visual_state": "docs/planning-data/current_visual_production_handoff_20260825.json",
   "fresh_read_required": true,
+  "handoff": {
+    "next_surface": "GPT_WORK",
+    "fresh_read_required": true,
+    "past_chat_is_current_authority": false,
+    "notion_handoff_url": "https://app.notion.com/p/3c81b237eb1c81539c1bd4afa75e4b9a",
+    "snapshot_observed_project_main": "b6d76410e3aa0edd7a2e698270742187cc471fd9",
+    "snapshot_observed_base_main": "43b3ffb2c5b026e3d4a38dab2338585894d36f61",
+    "base_work_adapter": "templates/project-operations/CHATGPT_WORK_PROJECT_EXECUTION_INSTRUCTION_v4.9.md",
+    "base_work_compatibility_appendix": "templates/project-operations/CHATGPT_WORK_PROJECT_EXECUTION_INSTRUCTION_v4.9_COMPATIBILITY_APPENDIX.md",
+    "open_project_prs_read_only_by_default": [
+      199,
+      200
+    ]
+  },
   "approved_reference_set_preserved": [
     "TEN-IMG-001",
     "TEN-VIS-CHAR-MASTER-001",
@@ -28,6 +43,21 @@
       "notion_delivery": "PASS",
       "runtime_asset": false,
       "role": "REUSABLE_CHARACTER_SOURCE_MASTER"
+    },
+    "DOGYEOM_COMBAT_BATTLER_01": {
+      "working_character": "도겸",
+      "status": "USER_APPROVED_2026_08_26",
+      "approval_source": "user explicit: 좋아 승인",
+      "generation_id": "79ae965f-6048-48c5-b667-6e9b7a55b68f",
+      "source_png_sha256": "064a8772406c743bbe6b252c138b4333c88b00b90a0ba905cce9ea18773539c9",
+      "notion_delivery": "PASS",
+      "runtime_asset": false,
+      "role": "APPROVED_BATTLEFIELD_BATTLER_SOURCE",
+      "consumer": "src/combat/combat_character_placeholder.gd",
+      "current_consumer_asset": "res://assets/characters/enemy_masked_battler_rgba_v1.png",
+      "opponent_specific_routing": "NOT_RUN",
+      "source_master": "OPPONENT_CHARACTER_MASTER_01",
+      "output_contract": "TRANSPARENT_RGBA_FULL_BODY_ENEMY_FACING_LEFT_FOOT_ANCHOR_SAFE"
     }
   },
   "style_lock": {
@@ -72,34 +102,34 @@
     "home_url": "https://app.notion.com/p/3c41b237eb1c8105a254d860f3c21638",
     "visual_bible_url": "https://app.notion.com/p/3c01b237eb1c814f80d4c6140fddebd4",
     "asset_library_url": "https://app.notion.com/p/3c01b237eb1c8172a16dc7713b75fcc5",
+    "work_handoff_url": "https://app.notion.com/p/3c81b237eb1c81539c1bd4afa75e4b9a",
     "approved_reference_set_readback": "PASS_20260825",
     "opponent_character_master_01_delivery": "PASS_20260826",
-    "consumer_first_policy_readback": "PASS_20260826"
+    "dogyeom_combat_battler_01_delivery": "PASS_20260826",
+    "consumer_first_policy_readback": "PASS_20260826",
+    "gpt_work_handoff_readback": "PASS_20260826"
   },
   "next_result": {
-    "name": "Dogyeom Combat Battler #01",
-    "id": "DOGYEOM_COMBAT_BATTLER_01",
-    "purpose": "produce a battlefield-consumed full-body battler derivative from the approved Dogyeom Character Master",
-    "consumer": "src/combat/combat_character_placeholder.gd",
-    "current_consumer_asset": "res://assets/characters/enemy_masked_battler_rgba_v1.png",
-    "intended_runtime_role": "enemy battlefield full-body battler",
+    "name": "Dogyeom Status Portrait #01",
+    "id": "DOGYEOM_STATUS_PORTRAIT_01",
+    "purpose": "derive the approved Dogyeom identity into the existing combat status portrait consumer",
+    "consumer": "src/ui/combatant_status_panel.gd",
+    "current_consumer_asset": "res://assets/portraits/enemy_masked_ink_v1.png",
+    "intended_runtime_role": "enemy combat status portrait",
     "source_master": "OPPONENT_CHARACTER_MASTER_01",
-    "output_contract": "TRANSPARENT_RGBA_FULL_BODY_ENEMY_FACING_LEFT_FOOT_ANCHOR_SAFE",
-    "generation_status": "WAITING_EXPLICIT_USER_GENERATION_APPROVAL"
+    "derivation_policy": "PREFER_NON_GENERATIVE_CROP_FROM_APPROVED_MASTER",
+    "generation_status": "GPT_WORK_RESUME_REQUIRED"
   },
   "deferred_queue_after_result_review": [
-    {
-      "name": "Dogyeom Status Portrait #01",
-      "id": "DOGYEOM_STATUS_PORTRAIT_01",
-      "consumer": "src/ui/combatant_status_panel.gd",
-      "current_consumer_asset": "res://assets/portraits/enemy_masked_ink_v1.png",
-      "source_master": "OPPONENT_CHARACTER_MASTER_01"
-    },
     {
       "name": "Individual Martial/Ultimate Card Illustration",
       "policy": "EXACT_CARD_ID_AND_CARDVIEW_ILLUSTRATION_CONSUMER_REQUIRED",
       "consumer": "src/ui/card_view.gd",
       "current_proof": "data/cards/basic_cards.json + assets/ui/cards/basic_illustrations_atlas.svg"
+    },
+    {
+      "name": "Remaining opponent portraits and battlers",
+      "policy": "CHARACTER_MASTER_DERIVATIVE_PLUS_ACTUAL_CONSUMER_REQUIRED"
     },
     {
       "name": "Route/Result/Background production assets",
@@ -108,8 +138,8 @@
   ],
   "remaining_asset_inventory": {
     "TEN-VIS-A01": "FIRST_PLATE_APPROVED_OPTIONAL_SECOND_VARIANT_ONLY_IF_CONSUMER_REQUIRES",
-    "TEN-VIS-A02": "15_OPPONENT_PORTRAITS_NOT_PRODUCED_USE_CHARACTER_MASTER_DERIVATIVES_AND_VERIFIED_PORTRAIT_CONSUMERS",
-    "TEN-VIS-A03": "15_COMBAT_BATTLERS_NOT_PRODUCED_NEXT_DOGYEOM_ACTUAL_BATTLEFIELD_CONSUMER",
+    "TEN-VIS-A02": "DOGYEOM_STATUS_PORTRAIT_NEXT_14_OTHER_OPPONENT_PORTRAITS_NOT_PRODUCED",
+    "TEN-VIS-A03": "DOGYEOM_BATTLER_SOURCE_USER_APPROVED_RUNTIME_ROUTING_NOT_RUN_14_OTHER_BATTLERS_NOT_PRODUCED",
     "TEN-VIS-A04": "ROUTE_8_ICON_SET_NOT_PRODUCED_REQUIRE_GAME_CONSUMER_VERIFICATION_BEFORE_GENERATION",
     "TEN-VIS-A05": "RESULT_COMPLETION_MARK_SET_NOT_PRODUCED_REQUIRE_GAME_CONSUMER_VERIFICATION_BEFORE_GENERATION",
     "TEN-VIS-A06": "2_TO_3_BATTLE_BACKGROUND_VARIANTS_NOT_PRODUCED_REQUIRE_GAME_CONSUMER_NEED_BEFORE_GENERATION",
@@ -118,14 +148,18 @@
   "sheet_compatibility": {
     "mode": "MIGRATION_ONLY_UNTIL_REMOVAL",
     "drift_vs_current_notion_and_github": true,
+    "observed_handoff_sheet_state": "2026_08_11_PHASE_B_OLD_SHA_OLD_DECISION",
     "action": "REPORT_ONLY_DO_NOT_REPROMOTE_SHEET_TO_CURRENT_AUTHORITY"
   },
   "evidence_ceiling": {
     "user_reference_approval": "PASS_2026_08_25",
-    "r5_4_single_result_generation": "PASS_EXACTLY_ONE_2026_08_26",
     "opponent_character_master_01_user_approval": "PASS_2026_08_26",
     "opponent_character_master_01_notion_delivery": "PASS_2026_08_26",
+    "dogyeom_combat_battler_01_generation": "PASS_EXACTLY_ONE_2026_08_26",
+    "dogyeom_combat_battler_01_user_approval": "PASS_2026_08_26",
+    "dogyeom_combat_battler_01_notion_delivery": "PASS_2026_08_26",
     "runtime_source_master_promotion": "NOT_RUN",
+    "opponent_specific_dogyeom_routing": "NOT_RUN",
     "runtime_art_integration": "NOT_RUN",
     "windows_visible_local_usability": "NOT_RUN",
     "android_actual_device": "NOT_RUN",
@@ -134,16 +168,19 @@
     "final_vfx_audio": "NOT_RUN"
   },
   "resume_gate": [
+    "RUN_IN_GPT_WORK",
     "REFETCH_PROJECT_MAIN_AND_OPEN_PRS",
     "REFETCH_BASE_MAIN",
-    "READ_CURRENT_PROJECT_NOTION",
+    "READ_CURRENT_BASE_WORK_V4_9_BUNDLE",
+    "READ_CURRENT_PROJECT_NOTION_HOME_VISUAL_BIBLE_ASSET_LIBRARY_AND_WORK_HANDOFF",
     "READ_CURRENT_R5_4_PROJECT_CONTRACT",
-    "READ_THIS_HANDOFF_AND_APPROVED_REFERENCE_SET",
+    "READ_THIS_HANDOFF_AND_APPROVED_RESULTS",
     "DO_NOT_USE_MIGRATION_SHEET_AS_CURRENT_AUTHORITY",
     "REQUIRE_ACTUAL_GAME_CONSUMER_FOR_EACH_NEW_IMAGE",
-    "SHOW_TEXT_BRIEF_FOR_DOGYEOM_COMBAT_BATTLER_01",
-    "WAIT_FOR_EXPLICIT_USER_GENERATION_APPROVAL",
-    "GENERATE_EXACTLY_ONE_RESULT",
+    "RESUME_WITH_DOGYEOM_STATUS_PORTRAIT_01",
+    "PREFER_NON_GENERATIVE_CROP_FROM_APPROVED_MASTER",
+    "IF_GENERATIVE_IMAGE_WORK_IS_NEEDED_SHOW_TEXT_BRIEF_AND_WAIT_FOR_EXPLICIT_APPROVAL",
+    "GENERATE_EXACTLY_ONE_RESULT_IF_APPROVED",
     "STOP_FOR_USER_REVIEW"
   ]
 }

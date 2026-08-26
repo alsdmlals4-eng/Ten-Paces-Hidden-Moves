@@ -66,6 +66,8 @@ jobs:
           python -m unittest tests.test_integrated_work_contract_v45r2 -v
           python -m unittest tests.test_integrated_work_contract_v48r2 -v
           python -m unittest tests.test_integrated_work_contract_v48r54 -v
+          python -m unittest tests.test_visual_consumer_asset_production_policy -v
+          python -m unittest tests.test_gpt_work_handoff_20260826 -v
           python -m unittest tests.test_combat_ui_top_level_authority -v
           python -m unittest tests.test_planning_completion_inventory -v
           python -m unittest tests.test_development_gates_stable_contract -v

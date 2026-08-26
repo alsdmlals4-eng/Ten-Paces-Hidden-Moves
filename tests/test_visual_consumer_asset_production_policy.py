@@ -23,17 +23,28 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
         self.assertEqual("USER_APPROVED_2026_08_26", visual["approved_results"]["OPPONENT_CHARACTER_MASTER_01"]["status"])
         self.assertEqual("PASS", visual["approved_results"]["OPPONENT_CHARACTER_MASTER_01"]["notion_delivery"])
 
-        self.assertEqual("DOGYEOM_COMBAT_BATTLER_01", visual["next_result"]["id"])
-        self.assertEqual("src/combat/combat_character_placeholder.gd", visual["next_result"]["consumer"])
-        self.assertEqual("WAITING_EXPLICIT_USER_GENERATION_APPROVAL", visual["next_result"]["generation_status"])
-        self.assertEqual(["DOGYEOM_COMBAT_BATTLER_01"], planning["next_visual_batch"])
+        battler = visual["approved_results"]["DOGYEOM_COMBAT_BATTLER_01"]
+        self.assertEqual("USER_APPROVED_2026_08_26", battler["status"])
+        self.assertEqual("PASS", battler["notion_delivery"])
+        self.assertFalse(battler["runtime_asset"])
+        self.assertEqual("src/combat/combat_character_placeholder.gd", battler["consumer"])
+        self.assertEqual("NOT_RUN", battler["opponent_specific_routing"])
+
+        self.assertEqual("DOGYEOM_STATUS_PORTRAIT_01", visual["next_result"]["id"])
+        self.assertEqual("src/ui/combatant_status_panel.gd", visual["next_result"]["consumer"])
+        self.assertEqual("PREFER_NON_GENERATIVE_CROP_FROM_APPROVED_MASTER", visual["next_result"]["derivation_policy"])
+        self.assertEqual("GPT_WORK_RESUME_REQUIRED", visual["next_result"]["generation_status"])
+        self.assertEqual(["DOGYEOM_STATUS_PORTRAIT_01"], planning["next_visual_batch"])
+        self.assertEqual("GPT_WORK", planning["next_execution_surface"])
 
         serialized_queue = json.dumps(visual.get("deferred_queue_after_result_review", []), ensure_ascii=False)
         self.assertNotIn("MARTIAL_TECHNIQUE_ILLUSTRATION_SHEET_01", serialized_queue)
         self.assertIn("실제 게임 소비처", gate)
         self.assertIn("DOGYEOM_COMBAT_BATTLER_01", gate)
+        self.assertIn("DOGYEOM_STATUS_PORTRAIT_01", gate)
         self.assertIn("src/ui/combatant_status_panel.gd", gate)
         self.assertIn("CardView.illustration", gate)
+        self.assertIn("GPT Work", gate)
 
 
 if __name__ == "__main__":

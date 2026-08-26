@@ -38,6 +38,17 @@ A merely planned future slot is not enough. If the current consumer is still gen
 - Notion Asset Library delivery/readback: `PASS`.
 - This master is a reusable source, not yet a runtime-consumed product asset.
 
+### Approved combat battler derivative
+
+- `DOGYEOM_COMBAT_BATTLER_01` · transparent RGBA full-body Dogyeom battlefield battler source.
+- User approval: `USER_APPROVED_2026_08_26`.
+- Generation ID: `79ae965f-6048-48c5-b667-6e9b7a55b68f`.
+- Source PNG SHA-256: `064a8772406c743bbe6b252c138b4333c88b00b90a0ba905cce9ea18773539c9`.
+- Notion Asset Library delivery/readback: `PASS`.
+- Existing consumer slot: `src/combat/combat_character_placeholder.gd` → generic enemy battler texture `res://assets/characters/enemy_masked_battler_rgba_v1.png`.
+- Opponent-specific Dogyeom routing: `NOT_RUN`.
+- Runtime art integration: `NOT_RUN`.
+
 ### Verified game consumers
 
 - Combat full-body battler: `src/combat/combat_character_placeholder.gd` currently loads an enemy battler texture from `res://assets/characters/enemy_masked_battler_rgba_v1.png`.
@@ -46,10 +57,12 @@ A merely planned future slot is not enough. If the current consumer is still gen
 
 ## Next production order
 
-1. `DOGYEOM_COMBAT_BATTLER_01` — transparent RGBA full-body derivative of the approved Dogyeom master for the **existing generic enemy battlefield battler slot**. Opponent-specific Dogyeom routing remains `NOT_RUN` until product implementation.
-2. `DOGYEOM_STATUS_PORTRAIT_01` — portrait derivative of the same master for the **existing generic enemy status/portrait slot**. Opponent-specific routing remains `NOT_RUN` until product implementation.
-3. Individual martial/ultimate card illustrations only when each image is mapped to an actual card ID and `CardView.illustration` consumer path. Do not generate `MARTIAL_TECHNIQUE_ILLUSTRATION_SHEET_01` as an explanatory style sheet.
+1. `DOGYEOM_STATUS_PORTRAIT_01` — portrait derivative of the approved Dogyeom master for the **existing generic enemy status/portrait slot**. Prefer crop/mask/resample from the approved master rather than a new generative image. Opponent-specific routing remains `NOT_RUN` until product implementation.
+2. Individual martial/ultimate card illustrations only when each image is mapped to an actual card ID and `CardView.illustration` consumer path. Do not generate `MARTIAL_TECHNIQUE_ILLUSTRATION_SHEET_01` as an explanatory style sheet.
+3. Remaining opponent portrait/battler assets only when their source master/identity and actual consumer contract are identified.
 4. Route/result/background visual assets only after their actual in-game consumer is identified. If the game consumes a production atlas, that atlas may be generated/assembled as the deliverable.
+
+The user then directed that future work continue in **GPT Work**. This changes the execution surface, not project authority: the next Work session must fresh-read Project GitHub + exact Project Notion before continuing this queue.
 
 ## Alternatives considered
 
@@ -59,7 +72,8 @@ A merely planned future slot is not enough. If the current consumer is still gen
 
 ## Guardrails
 
-- Current r5.4 cadence remains: `text brief → explicit user approval → exactly one result → user review`.
+- Current r5.4 cadence remains: `text brief → explicit user approval → exactly one result → user review` whenever generative image work is used.
+- Deterministic crop/mask/resample from an approved master is preferred when it satisfies the consumer without a new generated image.
 - No automatic next generation.
 - No runtime/Godot integration claim until Codex independently implements the approved asset and runtime evidence exists.
 - No text, numbers, card rules, or UI baked into illustration pixels unless the consumer explicitly requires image-encoded content.

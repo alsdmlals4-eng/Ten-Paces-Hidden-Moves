@@ -2,10 +2,11 @@
 
 > Current execution contract: `TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01`  
 > Current visual production decision: `TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01`  
-> Human-facing owner: exact Project Notion Home / `02 · 비주얼 바이블` / `04 · 에셋 라이브러리`  
-> Structured current state: `docs/planning-data/current_visual_production_handoff_20260826.json`
+> Human-facing owner: exact Project Notion Home / `02 · 비주얼 바이블` / `04 · 에셋 라이브러리` / `2026-08-26 · GPT Work 인수인계`  
+> Structured current state: `docs/planning-data/current_visual_production_handoff_20260826.json`  
+> Work handoff: `docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md`
 
-이 문서는 `docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md`의 승인 Reference Set과 당시 사용자 피드백을 삭제하거나 다시 쓰지 않는다. 8월 25일 문서는 historical visual handoff이고 이 문서는 8월 26일 r5.4 current execution gate다.
+이 문서는 `docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md`의 승인 Reference Set과 당시 사용자 피드백을 삭제하거나 다시 쓰지 않는다. 8월 25일 문서는 historical visual handoff이고 이 문서는 8월 26일 r5.4 current execution gate다. 사용자는 이후 작업 surface를 **GPT Work**로 지정했다. Work도 memory나 과거 대화를 current truth로 사용하지 않고 Project GitHub + exact Project Notion을 fresh-read한다.
 
 ## 1. 보존되는 승인 Reference
 
@@ -28,6 +29,19 @@
 - 역할: `Character Master → Portrait Crop → Combat Full Body → Result Crop → Silhouette → Thumbnail` 파생용 source master.
 - runtime source master promotion / Godot integration: `NOT_RUN`.
 
+### `DOGYEOM_COMBAT_BATTLER_01` · 도겸 전장용 Battler
+
+상태: `USER_APPROVED_2026_08_26`.
+
+- generation id: `79ae965f-6048-48c5-b667-6e9b7a55b68f`.
+- source PNG SHA-256: `064a8772406c743bbe6b252c138b4333c88b00b90a0ba905cce9ea18773539c9`.
+- Notion `04 · 에셋 라이브러리` preview delivery/readback: `PASS`.
+- 실제 consumer slot: `src/combat/combat_character_placeholder.gd`.
+- 현재 generic runtime asset: `res://assets/characters/enemy_masked_battler_rgba_v1.png`.
+- 승인 source contract: transparent RGBA full body / enemy left-facing / foot-anchor safe.
+- opponent-specific Dogyeom routing: `NOT_RUN`.
+- runtime art integration: `NOT_RUN`.
+
 ## 3. Current visual language
 
 > **세계는 저대비 수묵화, 인물은 수묵 선화 × 제한 디더링, 정보는 독립적이고 정제된 전술 UI.**
@@ -48,7 +62,7 @@
 
 ## 4. 이미지 생성 cadence
 
-2026-08-26 r5.4 current execution contract는 다음 Gate를 적용한다.
+생성형 이미지 작업이 필요한 경우 2026-08-26 r5.4 current execution contract의 Gate를 그대로 적용한다.
 
 ```text
 canon + actual game consumer review
@@ -59,7 +73,7 @@ canon + actual game consumer review
 → 다음 결과를 자동 생성하지 않음
 ```
 
-2026-08-25의 max-three는 historical cadence이며 current automatic batch 권한이 아니다.
+2026-08-25의 max-three는 historical cadence이며 current automatic batch 권한이 아니다. 다만 승인 원본의 deterministic crop/mask/resample처럼 **새 생성이 아닌 파생 작업**이 실제 소비처를 충족하면 이를 우선한다.
 
 ## 5. Consumer-first 제작 원칙
 
@@ -78,47 +92,61 @@ canon + actual game consumer review
 2. **상태 패널 Portrait** — `src/ui/combatant_status_panel.gd`; 현재 enemy portrait는 `res://assets/portraits/enemy_masked_ink_v1.png`.
 3. **카드 중앙 삽화** — `src/ui/card_view.gd`의 `CardView.illustration`; `data/cards/basic_cards.json`이 실제 illustration atlas region 소비 계약을 보유한다.
 
-## 6. 다음 정확한 1개 결과
+## 6. GPT Work에서 재개할 다음 실제 소비처 자산
 
-### `DOGYEOM_COMBAT_BATTLER_01` · 도겸 전장용 Battler
+### `DOGYEOM_STATUS_PORTRAIT_01` · 도겸 상태 패널 Portrait
 
-**실제 게임 소비처:** `src/combat/combat_character_placeholder.gd`.
+**실제 게임 소비처:** `src/ui/combatant_status_panel.gd`.
+
+**현재 generic consumer asset:** `res://assets/portraits/enemy_masked_ink_v1.png`.
 
 **source master:** 사용자 승인 `OPPONENT_CHARACTER_MASTER_01`.
 
-목적:
+제작 원칙:
 
-- 승인된 도겸 디자인을 전장에서 실제로 소비 가능한 전신 자산 계약으로 파생한다.
-- 현재 generic enemy battler가 사용하는 전장 크기·발 위치·facing 계보를 따른다.
-- 이후 Codex 구현 시 opponent-specific asset routing 대상으로 사용할 수 있는 source를 준비한다.
+- 승인 Master의 얼굴·머리·권객 정체성·복식 질량을 유지한다.
+- 현재 status panel crop에서 얼굴/상체가 작은 크기로 명확히 읽혀야 한다.
+- **가능하면 승인 Master에서 deterministic crop/mask/resample로 파생**하고 새 생성은 하지 않는다.
+- 생성형 편집/새 이미지가 필요한 경우에만 text brief → 사용자 명시 승인 → 정확히 1개 → 검토를 적용한다.
+- UI/text/수치/프레임을 원화에 굽지 않는다.
+- opponent-specific Dogyeom routing은 Codex 구현과 runtime evidence 전까지 `NOT_RUN`이다.
 
-출력 계약:
+현재 상태: `GPT_WORK_RESUME_REQUIRED`.
 
-- 전신, 머리/손/발 crop 없음.
-- enemy 기준 화면 왼쪽을 향하는 방향성에 적합.
-- 투명 RGBA background.
-- 발 anchor가 안정적으로 잡히는 여백과 바닥 접점.
-- 승인 Master의 얼굴/머리, 권객 실루엣, 손목 보호대, 의상 큰 덩어리를 보존.
-- UI/text/VFX/무기 추가 없음.
+## 7. 다음 후보 — Portrait 검토 후에만
 
-현재 상태: `WAITING_EXPLICIT_USER_GENERATION_APPROVAL`.
-
-## 7. 다음 후보 — 현재 결과 검토 후에만
-
-1. `DOGYEOM_STATUS_PORTRAIT_01` — 동일 Master에서 파생, 실제 소비처 `src/ui/combatant_status_panel.gd`.
-2. 개별 무공/절초 카드 삽화 — 반드시 **exact card ID**와 `CardView.illustration` 소비가 확인된 이미지 단위로 제작.
+1. 개별 무공/절초 카드 삽화 — 반드시 **exact card ID**와 `CardView.illustration` 소비가 확인된 이미지 단위로 제작.
+2. 나머지 상대 Portrait/Battler — 승인 source identity + 실제 consumer 계약을 확인한 뒤 제작.
 3. Route/Result/Background 계열 — 실제 소비 컴포넌트가 확인된 뒤 제작. 게임이 atlas를 소비하는 경우 production atlas는 허용.
 
-## 8. Evidence ceiling
+## 8. GPT Work handoff
+
+새 GPT Work 세션은 다음을 먼저 읽는다.
+
+- Project GitHub `main` + 열린 PR.
+- Base 최신 completed `main`.
+- exact Project Notion Home / Visual Bible / Asset Library / `2026-08-26 · GPT Work 인수인계`.
+- `docs/planning-data/current_user_planning_status.json`.
+- `docs/planning-data/current_visual_production_handoff_20260826.json`.
+- `docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md`.
+
+Google Sheet는 `MIGRATION_ONLY_UNTIL_REMOVAL`이며 current visual authority가 아니다.
+
+## 9. Evidence ceiling
 
 ```yaml
 approved_reference_set: PASS_2026_08_25
 opponent_character_master_01_generation: PASS_EXACTLY_ONE_2026_08_26
 opponent_character_master_01_user_approval: PASS_2026_08_26
 opponent_character_master_01_notion_delivery: PASS_2026_08_26
+dogyeom_combat_battler_01_generation: PASS_EXACTLY_ONE_2026_08_26
+dogyeom_combat_battler_01_user_approval: PASS_2026_08_26
+dogyeom_combat_battler_01_notion_delivery: PASS_2026_08_26
 consumer_first_visual_policy: USER_APPROVED_2026_08_26
-next_result_generation: NOT_RUN
+next_result: DOGYEOM_STATUS_PORTRAIT_01
+next_result_state: GPT_WORK_RESUME_REQUIRED
 runtime_source_master_promotion: NOT_RUN
+opponent_specific_dogyeom_routing: NOT_RUN
 runtime_art_integration: NOT_RUN
 windows_visible_human_usability: NOT_RUN
 android_actual_device: NOT_RUN

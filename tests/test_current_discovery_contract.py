@@ -173,13 +173,15 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             "user_directed_planning_status: PLANNING_COMPLETE_VISUAL_PRODUCTION_ACTIVE",
             current_section,
         )
-        self.assertIn("planning_visual_next: DOGYEOM_COMBAT_BATTLER_01", current_section)
+        self.assertIn("planning_execution_surface: GPT_WORK", current_section)
+        self.assertIn("planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md", current_section)
+        self.assertIn("planning_visual_next: DOGYEOM_STATUS_PORTRAIT_01", current_section)
         self.assertIn(
-            "planning_visual_generation: USER_EXPLICIT_EXACTLY_ONE_RESULT_REQUIRED",
+            "planning_visual_generation: GPT_WORK_RESUME_PREFER_NON_GENERATIVE_CROP_EXACTLY_ONE_IF_GENERATIVE",
             current_section,
         )
         self.assertIn(
-            "planning_visual_review: USER_APPROVED_REFERENCE_SET_20260825_AND_OPPONENT_CHARACTER_MASTER_01_20260826_NOT_RUNTIME_VISUAL_PASS",
+            "planning_visual_review: USER_APPROVED_REFERENCE_SET_20260825_CHARACTER_MASTER_AND_DOGYEOM_COMBAT_BATTLER_20260826_NOT_RUNTIME_VISUAL_PASS",
             current_section,
         )
         self.assertIn(
@@ -205,8 +207,10 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             "user_directed_planning_status: PLANNING_COMPLETE_USER_APPROVED",
             "planning_visual_next: AWAITING_EXPLICIT_ASSET_OR_IMPLEMENTATION_REQUEST",
             "planning_visual_next: OPPONENT_CHARACTER_MASTER_01",
+            "planning_visual_next: DOGYEOM_COMBAT_BATTLER_01",
             "planning_visual_review: TEN_IMG_001_CHAT_EXPLORATIONS_REVIEWED_NOT_AN_ASSET",
             "planning_visual_review: USER_APPROVED_REFERENCE_SET_20260825_NOT_RUNTIME_VISUAL_PASS",
+            "planning_visual_review: USER_APPROVED_REFERENCE_SET_20260825_AND_OPPONENT_CHARACTER_MASTER_01_20260826_NOT_RUNTIME_VISUAL_PASS",
             "product_implementation_authorized: false",
             "product_stage: VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_COMPLETE_HANDOFF_READY",
             "planning_visual_next: TEN_IMG_001_GENERATE_EXPLORATION",
@@ -245,8 +249,10 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("Phase I–VI", current_risk)
         self.assertIn("OPPONENT_CHARACTER_MASTER_01", current_risk)
         self.assertIn("DOGYEOM_COMBAT_BATTLER_01", current_risk)
+        self.assertIn("DOGYEOM_STATUS_PORTRAIT_01", current_risk)
         self.assertIn("USER_APPROVED_2026_08_26", current_risk)
-        self.assertIn("WAITING_EXPLICIT_USER_GENERATION_APPROVAL", current_risk)
+        self.assertIn("GPT_WORK_RESUME_REQUIRED", current_risk)
+        self.assertIn("runtime art integration", current_risk)
         self.assertIn("future_product_mutation_authorized: false", current_risk)
         self.assertNotIn("product_implementation_authorized: false", current_risk)
         self.assertIn("Issue #140", text)
