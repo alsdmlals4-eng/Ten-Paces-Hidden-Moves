@@ -9,6 +9,8 @@
 
 이 문서는 과거 채팅 전문을 복제하지 않는다. 새 GPT Work 세션이 **현재 Project GitHub + exact Project Notion을 fresh-read**해 현재 품질, 보호 범위, 다음 안전 작업, evidence ceiling을 복원하기 위한 bounded handoff다.
 
+> 2026-08-26 구현 갱신: `DOGYEOM_STATUS_PORTRAIT_01`은 승인 PNG를 runtime asset으로 등록하고 `slot1_dogyeom` 상태 패널 라우팅까지 구현했다. focused Godot 검증과 Vertical Slice bridge 회귀는 `PASS`; Windows visible human usability와 Android device는 여전히 `NOT_RUN`이다. 세부 증거는 `docs/handoffs/2026-08-26_DOGYEOM_STATUS_PORTRAIT_CODEX_EXECUTION_REPORT.md`를 따른다.
+
 Base v4.9 Work adapter는 프로젝트의 r5.4 계약을 대체하는 새 프로젝트 정본이 아니다. `WORK_IS_EXECUTION_SURFACE_NOT_CANON`으로 Work 실행면을 제공하면서 r5.4 capability와 Project current canon을 보존한다.
 
 ## 1. 새 GPT Work 세션 시작 순서
@@ -94,21 +96,21 @@ runtime_asset: false
 
 승인된 Battler는 투명 RGBA 전신, enemy left-facing, foot-anchor-safe source다. 사용자 승인은 실제 Godot consumer routing이나 runtime art integration을 뜻하지 않는다.
 
-## 5. 다음 안전 작업
+## 5. 완료된 안전 작업
 
-### 1순위 · `DOGYEOM_STATUS_PORTRAIT_01`
+### `DOGYEOM_STATUS_PORTRAIT_01`
 
 실제 consumer:
 
 - `src/ui/combatant_status_panel.gd`
 - 현재 generic enemy portrait: `res://assets/portraits/enemy_masked_ink_v1.png`
 
-제작 원칙:
+완료 결과:
 
-1. `OPPONENT_CHARACTER_MASTER_01`의 얼굴·머리·복식 정체성을 유지한다.
-2. **가능하면 새 생성 없이 crop/mask/resample로 파생**한다.
-3. generative edit/image generation이 실제로 필요할 때만 text brief를 제시하고 사용자 명시 승인 뒤 정확히 1개 결과를 만든다.
-4. 결과가 승인돼도 opponent-specific runtime routing은 Codex 구현과 runtime evidence 전까지 `NOT_RUN`이다.
+1. 승인 PNG를 `res://assets/portraits/dogyeom_status_portrait_01_v1.png`로 저장하고 asset manifest에 등록했다.
+2. `VerticalSliceCombatBridge`가 잠긴 opponent `candidate_id`를 `combat_state.enemy`에 보존한다.
+3. `CombatantStatusPanel`은 `slot1_dogyeom`에만 승인 초상을 표시하고, 기타 상대 및 ID 누락 상대는 기존 generic portrait를 유지한다.
+4. `opponent-specific Dogyeom routing`과 `runtime art integration`은 `AUTOMATED_GODOT_PASS_20260826`이다. Windows visible human usability는 별도 `NOT_RUN`이다.
 
 ### 다음 후보
 
@@ -144,8 +146,8 @@ dogyeom_combat_battler_generation: PASS_EXACTLY_ONE
 dogyeom_combat_battler_user_approval: PASS
 dogyeom_combat_battler_notion_delivery: PASS
 runtime source promotion: NOT_RUN
-opponent-specific Dogyeom routing: NOT_RUN
-runtime art integration: NOT_RUN
+opponent-specific Dogyeom routing: AUTOMATED_GODOT_PASS_20260826
+runtime art integration: AUTOMATED_GODOT_PASS_20260826
 windows visible human usability: NOT_RUN
 android actual device: NOT_RUN
 fifteen opponent identifiability: NOT_RUN

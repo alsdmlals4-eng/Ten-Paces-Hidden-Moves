@@ -4,6 +4,9 @@ on:
   pull_request:
     paths:
       - "src/run/**"
+      - "src/ui/combatant_status_panel.gd"
+      - "assets/portraits/**"
+      - "assets/ASSET_MANIFEST.json"
       - "src/combat/combat_review_summary_builder.gd"
       - "src/ui/combat_review_panel.gd"
       - "scenes/run/**"
@@ -11,6 +14,7 @@ on:
       - "tests/verify_vertical_slice_run_state.gd"
       - "tests/verify_vertical_slice_shell.gd"
       - "tests/verify_vertical_slice_combat_bridge.gd"
+      - "tests/verify_dogyeom_status_portrait.gd"
       - "tests/verify_vertical_slice_opponent_catalog.gd"
       - "tests/verify_vertical_slice_opponent_shell_binding.gd"
       - "tests/verify_vertical_slice_candidate_ids.gd"
@@ -47,6 +51,8 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_vertical_slice_shell.gd
       - name: Verify terminal combat bridge
         run: godot --headless --path . --script res://tests/verify_vertical_slice_combat_bridge.gd
+      - name: Verify Dogyeom status portrait routing
+        run: godot --headless --path . --script res://tests/verify_dogyeom_status_portrait.gd
       - name: Verify opponent catalog and route lock
         run: godot --headless --path . --script res://tests/verify_vertical_slice_opponent_catalog.gd
       - name: Verify candidate ID hygiene

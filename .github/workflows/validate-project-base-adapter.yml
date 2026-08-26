@@ -38,8 +38,13 @@ jobs:
         run: |
           set -euo pipefail
           ADAPTER_PATH="skills/PROJECT_BASE_ADAPTER.json"
+          APPROVAL_PATH="docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
           ADAPTER_CHANGES="$(git diff --name-only "$PR_BASE_SHA"...HEAD -- "$ADAPTER_PATH")"
-          if printf '%s\n' "$ADAPTER_CHANGES" | grep -Fxq "$ADAPTER_PATH"; then
+          ACTIVE_APPROVAL_NEW_IN_PR=false
+          if [ -f "$APPROVAL_PATH" ] && ! git cat-file -e "$PR_BASE_SHA:$APPROVAL_PATH" 2>/dev/null; then
+            ACTIVE_APPROVAL_NEW_IN_PR=true
+          fi
+          if [ "$ADAPTER_CHANGES" != "" ] || [ "$ACTIVE_APPROVAL_NEW_IN_PR" = true ]; then
             PROTECTED_BASE_SHA="$PR_BASE_SHA"
           else
             PROTECTED_BASE_SHA="$(
@@ -51,6 +56,14 @@ jobs:
           git cat-file -e "$PROTECTED_BASE_SHA^{commit}"
           git merge-base --is-ancestor "$PROTECTED_BASE_SHA" "$PR_BASE_SHA"
           printf 'PROTECTED_BASE_SHA=%s\n' "$PROTECTED_BASE_SHA" >> "$GITHUB_ENV"
+
+      - name: Enforce one-time protected approval lifecycle
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python tools/check_one_time_protected_change_lifecycle.py \
+            --project-root . \
+            --base-sha "$PR_BASE_SHA"
 
       - name: Validate adapter and exact protected change approval
         env:

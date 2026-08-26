@@ -30,11 +30,14 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
         self.assertEqual("src/combat/combat_character_placeholder.gd", battler["consumer"])
         self.assertEqual("NOT_RUN", battler["opponent_specific_routing"])
 
-        self.assertEqual("DOGYEOM_STATUS_PORTRAIT_01", visual["next_result"]["id"])
-        self.assertEqual("src/ui/combatant_status_panel.gd", visual["next_result"]["consumer"])
-        self.assertEqual("PREFER_NON_GENERATIVE_CROP_FROM_APPROVED_MASTER", visual["next_result"]["derivation_policy"])
-        self.assertEqual("GPT_WORK_RESUME_REQUIRED", visual["next_result"]["generation_status"])
-        self.assertEqual(["DOGYEOM_STATUS_PORTRAIT_01"], planning["next_visual_batch"])
+        portrait = visual["approved_results"]["DOGYEOM_STATUS_PORTRAIT_01"]
+        self.assertEqual("USER_APPROVED_AND_IMPLEMENTED_2026_08_26", portrait["status"])
+        self.assertEqual("src/ui/combatant_status_panel.gd", portrait["consumer"])
+        self.assertEqual("res://assets/portraits/dogyeom_status_portrait_01_v1.png", portrait["runtime_asset"])
+        self.assertEqual("AUTOMATED_GODOT_PASS_20260826", portrait["opponent_specific_routing"])
+        self.assertEqual("USER_DECISION_REQUIRED", visual["next_result"]["id"])
+        self.assertEqual("NO_AUTOMATIC_NEXT_RESULT", visual["next_result"]["generation_status"])
+        self.assertEqual([], planning["next_visual_batch"])
         self.assertEqual("GPT_WORK", planning["next_execution_surface"])
 
         serialized_queue = json.dumps(visual.get("deferred_queue_after_result_review", []), ensure_ascii=False)

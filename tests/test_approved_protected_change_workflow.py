@@ -18,6 +18,10 @@ class ApprovedProtectedChangeWorkflowTests(unittest.TestCase):
             "PROJECT_PROTECTED_CHANGE_APPROVAL.json",
             "approved-protected-change",
             "--external-approval \"$EXTERNAL_APPROVAL\"",
+            "check_one_time_protected_change_lifecycle.py",
+            "--base-sha \"$PR_BASE_SHA\"",
+            "ACTIVE_APPROVAL_NEW_IN_PR=true",
+            "if [ \"$ADAPTER_CHANGES\" != \"\" ] || [ \"$ACTIVE_APPROVAL_NEW_IN_PR\" = true ]; then",
             "labeled",
             "unlabeled",
         )

@@ -61,6 +61,9 @@ func configure_vertical_slice_loadouts(
     )
     resolution_engine = engine
     combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
+    var enemy_state: Dictionary = (combat_state.get("enemy", {}) as Dictionary).duplicate(true)
+    enemy_state["candidate_id"] = enemy_candidate_id
+    combat_state["enemy"] = enemy_state
     combat_state["ai_enabled"] = true
     _configure_ultimate_menu()
     _sync_action_placement_controller_state()

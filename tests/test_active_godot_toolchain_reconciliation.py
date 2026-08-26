@@ -327,8 +327,7 @@ class ActiveGodotToolchainReconciliationTests(unittest.TestCase):
         )
         self.assertFalse(gate["product_implementation_authorized"])
 
-    def test_one_time_protected_approval_is_archived_after_merge(self) -> None:
-        self.assertFalse(ACTIVE_APPROVAL.exists())
+    def test_one_time_protected_approval_historical_record_is_preserved(self) -> None:
         self.assertTrue(ARCHIVED_APPROVAL.is_file())
         contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
         approval = contract["protected_approval"]
