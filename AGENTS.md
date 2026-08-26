@@ -41,7 +41,7 @@
 - `REVIEW`: 정본·실제 변경·untouched consumer·test·readback을 적대적으로 검토.
 - `skills/SKILL_REGISTRY.json` trigger로 필요한 최소 Skill과 **Skill Mode**만 사용한다.
 - L1 이상 작업은 `기준 SHA / Work Mode / Skill / Skill Mode / 수행 / 결과 / 증거 / 미검증`을 `execution-report`에 남긴다.
-- 경로·ID·Schema·정본 변경은 reference freshness로 활성 consumer와 파생본을 확인한다.
+- 경로·ID·Schema·정본 변경은 `reference-freshness`로 활성 consumer와 파생본을 확인한다.
 - `진행해`/`계속해`는 이미 승인된 같은 계약의 continuation이며 새 코어·범위·비용 권한을 만들지 않는다.
 
 ## 5. 프로젝트 코어
