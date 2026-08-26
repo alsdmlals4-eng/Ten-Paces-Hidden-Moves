@@ -9,7 +9,7 @@
 → 보안·플랫폼 제약 + 이 AGENTS.md
 → docs/BASE_RULES_VERSION.md
 → docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md
-   / TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01
+   / TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01
 → [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
 → current planning JSON + GitHub live metadata + exact Project Notion
 → skills/SKILL_REGISTRY.json
@@ -20,7 +20,9 @@
 → 검증된 외부 근거 → 추론 → 역사 자료
 ```
 
-`docs/BASE_RULES_VERSION.md`는 Base v9.4.3 채택 pin과 current Base remote owner를 구분하는 compatibility/adoption evidence entrypoint다. `skills/SKILL_REGISTRY.json`이 현재 project-local Skill authority이며 legacy registry는 기본 자동 discovery 대상이 아니다. 실제 구현과 승인 정본이 다르면 자동으로 한쪽을 진실로 만들지 않고 `CANON_CONFLICT`로 판정한다.
+`docs/BASE_RULES_VERSION.md`는 Base의 과거 프로젝트 채택 pin과 current Base remote owner를 구분하는 compatibility/adoption evidence entrypoint다. `skills/SKILL_REGISTRY.json`이 현재 project-local Skill authority이며 legacy registry는 기본 자동 discovery 대상이 아니다. 실제 구현과 승인 정본이 다르면 자동으로 한쪽을 진실로 만들지 않고 `CANON_CONFLICT`로 판정한다.
+
+새 채팅은 과거 대화를 current truth로 요구하지 않는다. Project GitHub + exact Project Notion을 fresh-read해 현재 품질·보호 범위·다음 안전 작업·evidence ceiling을 재구성한다. GitHub↔Notion 의미가 다르면 mutation 전에 `CONTEXT_DRIFT_RECHECK_REQUIRED`다.
 
 ## 2. DOMAIN SPLIT
 
@@ -38,8 +40,8 @@
 - `BUILD`: 승인된 범위의 구현.
 - `REVIEW`: 정본·실제 변경·untouched consumer·test·readback을 적대적으로 검토.
 - `skills/SKILL_REGISTRY.json` trigger로 필요한 최소 Skill과 **Skill Mode**만 사용한다.
-- L1 이상 작업은 `기준 SHA / Work Mode / Skill / Skill Mode / 수행 / 결과 / 증거 / 미검증`을 `execution-report`에 남긴다.
-- 경로·ID·Schema·정본 변경은 `reference-freshness`로 활성 consumer와 파생본을 확인한다.
+- L1 이상 작업은 `기준 SHA / Work Mode / Skill / Skill Mode / 수행 / 결과 / 증거 / 미검증`을 execution report에 남긴다.
+- 경로·ID·Schema·정본 변경은 reference freshness로 활성 consumer와 파생본을 확인한다.
 - `진행해`/`계속해`는 이미 승인된 같은 계약의 continuation이며 새 코어·범위·비용 권한을 만들지 않는다.
 
 ## 5. 프로젝트 코어
@@ -71,6 +73,8 @@ android_runtime_evidence: NOT_RUN
 - 전투 규칙·AI·콘텐츠·ID·수치·저장 Schema는 하나의 공유 코어를 사용하고, 플랫폼 차이는 Adapter에 한정한다.
 - Android 실제 export·설치·실기기·터치·back·safe-area·lifecycle·저장·성능 evidence가 없으면 Android 런타임 지원 완료를 주장하지 않는다.
 - UI는 전투·보상·저장 규칙을 재계산하지 않는다.
+- localization-ready 최소 계획은 `ko / en / ja / zh-*`이며 중국어 variant는 별도 프로젝트 Decision 전 `UNKNOWN_UNVERIFIED`다.
+- responsive 최소 계획은 `pc_standard / pc_wide_or_ultrawide / mobile_landscape`이며 동일 정보 위계·행동·상태·피드백 의미를 보호한다.
 
 ## 7. 구현·검증
 
@@ -90,6 +94,14 @@ project.godot
 - 자동 검증은 로컬 Windows visible, 실물 게임패드, 실제 Android 기기, 접근성 사용자, Release 성능, 사람 플레이를 대체하지 않는다.
 - 실행하지 않은 검증은 `NOT_RUN` 또는 `BLOCKED_UNVERIFIED`다.
 
+### Godot·Codex 역할 경계
+
+- GPT는 기획·조사·검수·Base·Notion·문서·Visual을 담당한다.
+- 실제 Godot 제품 구현이 필요하면 `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF` 뒤 Codex가 Project GitHub + Notion을 독립 fresh-read해 자신의 구현환경에서 수행한다.
+- GPT→PowerShell→local Codex launcher, 프로젝트 필수 `CODEX_HOME`, 과거 dedicated port readiness는 current 실행 경로가 아니다.
+- PowerShell은 사용자 PC에서 Godot 실행·검증이 실제 필요할 때만 사용하며 Codex launcher가 아니다.
+- 호환 가능한 host에서는 shared approved exact Godot pin + Godot AI 기본 포트 + exact project/editor/session identity를 기본으로 한다.
+
 ## 8. Open PR·동시성
 
 - pre-existing open/draft/ready PR은 `READ_ONLY`가 기본이다.
@@ -108,7 +120,9 @@ project.godot
 
 ## 10. 시각 자산
 
-새 이미지 생성·스타일 변경은 `canon review → text brief → 사용자 명시 승인 → 정확히 1개 결과 → 사용자 검토` 순서다. reference-only/chat exploration을 승인 자산으로 승격하지 않는다. 승인 Visual의 Notion 전달은 실제 attach + destination readback이 필요하다.
+새 이미지 생성·스타일 변경은 current r5.4 계약에서 `canon review → text brief → 사용자 명시 승인 → 정확히 1개 결과 → 사용자 검토` 순서다. reference-only/chat exploration을 승인 자산으로 승격하지 않는다. 승인 Visual의 Notion 전달은 실제 attach + destination readback이 필요하다.
+
+2026-08-25의 `한번에 최대 3장`은 당시 Visual-production history로 보존하지만 current 실행 approval로 사용하지 않는다.
 
 ## 11. 역사·호환
 
@@ -116,7 +130,9 @@ project.godot
 - PR #45는 v6 계획 통합 이력이다.
 - PR #65는 ActionSelectionDock/화면 구조 구현 이력이다.
 - PR #92는 초기 10권 무공 런타임·UI/AI·자동 제품 검증 이력이다.
+- `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`은 `SUPERSEDED_HISTORICAL_EVIDENCE`다.
 - `TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01`은 `SUPERSEDED_HISTORICAL_EVIDENCE`다.
-- Base v9.4.3 payload/evidence/finalization pin은 과거 프로젝트 채택·회귀 증거이며 current Base remote truth가 아니다.
+- Base release pin은 프로젝트 채택·회귀 증거이며 current Base remote truth가 아니다.
+- `TEN-DEC-20260811-LOCAL-EXECUTOR-BOOTSTRAP-01`의 CODEX_HOME·dedicated Godot/port checkpoint는 당시 역사 evidence이며 current 실행 route가 아니다.
 
 과거 Decision·review·snapshot의 당시 사실은 보존하되 current authority로 재사용하지 않는다.
