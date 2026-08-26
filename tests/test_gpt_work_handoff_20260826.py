@@ -22,7 +22,7 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
 
         self.assertEqual("GPT_WORK", visual["handoff"]["next_surface"])
         self.assertTrue(visual["handoff"]["fresh_read_required"])
-        self.assertEqual("DOGYEOM_STATUS_PORTRAIT_IMPLEMENTED_AUTOMATED_VERIFIED", visual["status"])
+        self.assertEqual("DOGYEOM_STATUS_PORTRAIT_AND_COMBAT_BATTLER_IMPLEMENTED_AUTOMATED_VERIFIED", visual["status"])
         self.assertEqual("43b3ffb2c5b026e3d4a38dab2338585894d36f61", visual["handoff"]["snapshot_observed_base_main"])
         self.assertEqual(BASE_WORK, visual["handoff"]["base_work_adapter"])
         self.assertEqual(BASE_WORK_COMPAT, visual["handoff"]["base_work_compatibility_appendix"])
@@ -35,7 +35,8 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
             battler["source_png_sha256"],
         )
         self.assertEqual("PASS", battler["notion_delivery"])
-        self.assertFalse(battler["runtime_asset"])
+        self.assertEqual("res://assets/characters/dogyeom_combat_battler_01_v1.png", battler["runtime_asset"])
+        self.assertEqual("AUTOMATED_GODOT_PASS_20260827", battler["opponent_specific_routing"])
 
         portrait = visual["approved_results"]["DOGYEOM_STATUS_PORTRAIT_01"]
         self.assertEqual("AUTOMATED_GODOT_PASS_20260826", portrait["opponent_specific_routing"])

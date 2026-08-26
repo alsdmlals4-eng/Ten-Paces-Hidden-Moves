@@ -145,13 +145,14 @@ class IntegratedWorkContractV48R54Tests(unittest.TestCase):
         self.assertEqual(CURRENT_VISUAL_PRODUCTION_DECISION_ID, visual["current_visual_production_decision"])
         self.assertEqual("ACTUAL_GAME_CONSUMER_REQUIRED", visual["consumer_first_asset_policy"])
         master = visual["approved_results"]["OPPONENT_CHARACTER_MASTER_01"]
-        self.assertEqual("USER_APPROVED_2026_08_26", master["status"])
+        self.assertEqual("USER_APPROVED_AND_IMPLEMENTED_2026_08_27", master["status"])
         self.assertEqual("PASS", master["notion_delivery"])
         self.assertFalse(master["runtime_asset"])
         battler = visual["approved_results"]["DOGYEOM_COMBAT_BATTLER_01"]
         self.assertEqual("USER_APPROVED_2026_08_26", battler["status"])
         self.assertEqual("PASS", battler["notion_delivery"])
-        self.assertFalse(battler["runtime_asset"])
+        self.assertEqual("res://assets/characters/dogyeom_combat_battler_01_v1.png", battler["runtime_asset"])
+        self.assertEqual("AUTOMATED_GODOT_PASS_20260827", battler["opponent_specific_routing"])
         portrait = visual["approved_results"]["DOGYEOM_STATUS_PORTRAIT_01"]
         self.assertEqual("USER_APPROVED_AND_IMPLEMENTED_2026_08_26", portrait["status"])
         self.assertEqual("res://assets/portraits/dogyeom_status_portrait_01_v1.png", portrait["runtime_asset"])

@@ -13,7 +13,7 @@
     "version": "9.4.3"
   },
   "canonical_source": "skills/PROJECT_BASE_ADAPTER.json",
-  "canonical_source_sha256": "4df40489062aaec66244cd2e0456f79eba0c7d24b608ffe3eca70c17f51104e9",
+  "canonical_source_sha256": "74ede1ac05e8fef9097a7d182d307aaca421f657a7c81e4621404d0766fffa85",
   "canonical_sources": [
     "docs/01_GAME_DESIGN.md",
     "docs/02_COMBAT_RULES.md",
@@ -33,7 +33,7 @@
   "generated": true,
   "hash_definition": "RAW_FILE_BYTES_SHA256",
   "legacy_source": "docs/archive/base-v9-legacy-inputs/PROJECT_BASE_SKILL_ADAPTER.json",
-  "legacy_source_sha256": "b3ce70e117032e53e83ca433e6f060f3a6f620d27b5039ec039dabbf23410c3a",
+  "legacy_source_sha256": "af3d44382bd7f440c2d5d7662924e4a8d9053cfa1bcd44df88fd930ff87c4c6f",
   "license_record": "docs/technical/THIRD_PARTY_LICENSES.md",
   "lifecycle": "ONE_CYCLE",
   "project": {

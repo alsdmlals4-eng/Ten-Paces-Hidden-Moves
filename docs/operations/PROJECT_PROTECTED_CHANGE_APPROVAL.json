@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "56581a01111d5109c4121029394aa02ac94765e6",
+  "decision_ids": [
+    "TEN-DEC-20260827-DEFAULT-VERTICAL-SLICE-ENTRY-01"
+  ],
+  "approved_paths": [
+    "project.godot"
+  ],
+  "approval_source": "USER_EXPLICIT_MINIMAL_PLAYABLE_SLICE_AUTOMATIC_EXECUTION_CONTRACT_2026-08-27",
+  "approval_time": "2026-08-27T00:00:00+09:00",
+  "scope_summary": "One-time approval for the existing VerticalSliceShell default entry and matching application title only."
+}
