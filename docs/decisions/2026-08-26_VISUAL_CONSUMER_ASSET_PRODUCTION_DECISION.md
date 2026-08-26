@@ -20,12 +20,12 @@ This decision supersedes any current queue item whose only purpose is style demo
 Before a new image is generated, the brief must identify:
 
 1. the exact player-visible asset role,
-2. the current or planned game consumer component/data field,
+2. an **existing verified game consumer component/data field in the current repository**,
 3. the reusable source/master relationship,
 4. the intended runtime asset form,
 5. the evidence ceiling if runtime integration has not happened yet.
 
-A production atlas or sprite sheet is allowed only when the game itself consumes that atlas/sheet. An explanatory sheet made only to compare style is not a production target.
+A merely planned future slot is not enough. If the current consumer is still generic rather than opponent-specific, the brief must name the existing slot it can consume through and explicitly keep opponent-specific routing as `NOT_RUN` until implementation. A production atlas or sprite sheet is allowed only when the game itself consumes that atlas/sheet. An explanatory sheet made only to compare style is not a production target.
 
 ## Current evidence
 
@@ -46,8 +46,8 @@ A production atlas or sprite sheet is allowed only when the game itself consumes
 
 ## Next production order
 
-1. `DOGYEOM_COMBAT_BATTLER_01` — transparent RGBA full-body derivative of the approved Dogyeom master for the battlefield battler consumer contract.
-2. `DOGYEOM_STATUS_PORTRAIT_01` — portrait derivative of the same master for the combatant status/portrait consumer contract.
+1. `DOGYEOM_COMBAT_BATTLER_01` — transparent RGBA full-body derivative of the approved Dogyeom master for the **existing generic enemy battlefield battler slot**. Opponent-specific Dogyeom routing remains `NOT_RUN` until product implementation.
+2. `DOGYEOM_STATUS_PORTRAIT_01` — portrait derivative of the same master for the **existing generic enemy status/portrait slot**. Opponent-specific routing remains `NOT_RUN` until product implementation.
 3. Individual martial/ultimate card illustrations only when each image is mapped to an actual card ID and `CardView.illustration` consumer path. Do not generate `MARTIAL_TECHNIQUE_ILLUSTRATION_SHEET_01` as an explanatory style sheet.
 4. Route/result/background visual assets only after their actual in-game consumer is identified. If the game consumes a production atlas, that atlas may be generated/assembled as the deliverable.
 
@@ -55,7 +55,7 @@ A production atlas or sprite sheet is allowed only when the game itself consumes
 
 1. Continue with `MARTIAL_TECHNIQUE_ILLUSTRATION_SHEET_01` as a style sheet — rejected; it creates review material rather than a directly consumed game asset.
 2. Generate several unrelated assets to explore the style — rejected; violates the current exactly-one approval cadence and increases orphan-asset risk.
-3. Consumer-first derivative pipeline from an approved master — adopted; it minimizes duplicated art work, preserves style consistency, and gives each produced image a concrete runtime destination.
+3. Consumer-first derivative pipeline from an approved master — adopted; it minimizes duplicated art work, preserves style consistency, and gives each produced image a concrete existing runtime destination.
 
 ## Guardrails
 
