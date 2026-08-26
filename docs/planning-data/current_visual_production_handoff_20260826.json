@@ -28,14 +28,18 @@
     "full_pixel_conversion": false,
     "gold_usage": "RESTRAINED_DECISION_CONFIRM_ULTIMATE_ONLY"
   },
-  "image_production_policy": {
-    "cadence": "TEXT_BRIEF_THEN_EXPLICIT_USER_APPROVAL_THEN_EXACTLY_ONE_RESULT",
+  "image_production_cadence": {
+    "current_policy": "TEXT_BRIEF_THEN_EXPLICIT_USER_APPROVAL_THEN_EXACTLY_ONE_RESULT",
     "max_results_per_explicit_approval": 1,
     "automatic_next_result_forbidden": true,
     "review_after_result_required": true,
-    "generation_unit_basis": "ACTUAL_GAME_RUNTIME_CONSUMER_ASSET",
+    "historical_20260825_policy": "MAX_3_PER_BATCH_SUPERSEDED_FOR_CURRENT_EXECUTION"
+  },
+  "generation_unit_policy": {
+    "basis": "ACTUAL_GAME_RUNTIME_CONSUMER_ASSET",
     "explanation_sheet_as_generation_unit": "FORBIDDEN_UNLESS_RUNTIME_CONSUMES_THE_SHEET",
-    "source_master_role": "ALLOWED_FOR_DERIVATION_AND_CONSISTENCY_NOT_COUNTED_AS_RUNTIME_ASSET_PASS"
+    "source_master_role": "ALLOWED_FOR_DERIVATION_AND_CONSISTENCY_NOT_COUNTED_AS_RUNTIME_ASSET_PASS",
+    "decision_id": "TEN-DEC-20260826-RUNTIME-CONSUMER-FIRST-VISUAL-ASSET-01"
   },
   "runtime_consumer_evidence": [
     {
