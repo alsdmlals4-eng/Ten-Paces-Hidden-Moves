@@ -1,3 +1,4 @@
+## 도겸 상태 패널 초상 라우팅과 일반 적군 fallback을 검증한다.
 extends SceneTree
 
 const STATUS_PANEL_SCRIPT := preload("res://src/ui/combatant_status_panel.gd")

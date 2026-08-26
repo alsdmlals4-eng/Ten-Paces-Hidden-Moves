@@ -14,7 +14,7 @@ class OneTimeProtectedChangeLifecycleTests(unittest.TestCase):
         errors = lifecycle_errors(
             base_has_manifest=False,
             head_has_manifest=True,
-            archive_record_changed=False,
+            archive_record_added=False,
             adapter_changed=False,
             adapter_baseline="",
             base_sha="a" * 40,
@@ -25,18 +25,29 @@ class OneTimeProtectedChangeLifecycleTests(unittest.TestCase):
         errors = lifecycle_errors(
             base_has_manifest=True,
             head_has_manifest=True,
-            archive_record_changed=False,
+            archive_record_added=False,
             adapter_changed=False,
             adapter_baseline="",
             base_sha="a" * 40,
         )
         self.assertEqual(["Active protected approval manifest was carried from the PR base; archive it before unrelated work."], errors)
 
-    def test_cleanup_requires_audit_record_and_baseline_promotion(self) -> None:
+    def test_no_manifest_pr_remains_unaffected(self) -> None:
+        errors = lifecycle_errors(
+            base_has_manifest=False,
+            head_has_manifest=False,
+            archive_record_added=False,
+            adapter_changed=False,
+            adapter_baseline="",
+            base_sha="a" * 40,
+        )
+        self.assertEqual([], errors)
+
+    def test_cleanup_requires_new_audit_record_and_baseline_promotion(self) -> None:
         errors = lifecycle_errors(
             base_has_manifest=True,
             head_has_manifest=False,
-            archive_record_changed=False,
+            archive_record_added=False,
             adapter_changed=True,
             adapter_baseline="b" * 40,
             base_sha="a" * 40,
@@ -48,6 +59,29 @@ class OneTimeProtectedChangeLifecycleTests(unittest.TestCase):
             ],
             errors,
         )
+
+    def test_cli_rejects_cleanup_that_modifies_an_existing_audit_record(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            repository = Path(temporary)
+            self._git(repository, "init")
+            self._git(repository, "config", "user.email", "test@example.com")
+            self._git(repository, "config", "user.name", "Lifecycle Test")
+            self._write(repository / "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json", "{}\n")
+            self._write(repository / "docs/operations/2026-08-01_PR1_PROTECTED_CHANGE_APPROVAL_RECORD.md", "status: HISTORICAL_MERGED\n")
+            self._write_json(repository / "skills/PROJECT_BASE_ADAPTER.json", {"protected_baseline": {"commit": "0" * 40}})
+            self._git(repository, "add", ".")
+            self._git(repository, "commit", "-m", "base")
+            base_sha = self._git(repository, "rev-parse", "HEAD").strip()
+
+            (repository / "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json").unlink()
+            self._write(repository / "docs/operations/2026-08-01_PR1_PROTECTED_CHANGE_APPROVAL_RECORD.md", "status: altered\n")
+            self._write_json(repository / "skills/PROJECT_BASE_ADAPTER.json", {"protected_baseline": {"commit": base_sha}})
+            self._git(repository, "add", "-A")
+            self._git(repository, "commit", "-m", "invalid cleanup")
+
+            result = self._run_checker(repository, base_sha)
+            self.assertNotEqual(0, result.returncode)
+            self.assertIn("must add an immutable audit record", result.stderr)
 
     def test_cli_accepts_complete_cleanup_transition(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -67,19 +101,7 @@ class OneTimeProtectedChangeLifecycleTests(unittest.TestCase):
             self._git(repository, "add", "-A")
             self._git(repository, "commit", "-m", "cleanup")
 
-            result = subprocess.run(
-                [
-                    "python",
-                    str(Path(__file__).resolve().parents[1] / "tools/check_one_time_protected_change_lifecycle.py"),
-                    "--project-root",
-                    str(repository),
-                    "--base-sha",
-                    base_sha,
-                ],
-                capture_output=True,
-                text=True,
-                check=False,
-            )
+            result = self._run_checker(repository, base_sha)
             self.assertEqual(0, result.returncode, result.stderr)
             self.assertIn("passed", result.stdout.lower())
 
@@ -92,6 +114,22 @@ class OneTimeProtectedChangeLifecycleTests(unittest.TestCase):
             check=True,
         )
         return result.stdout
+
+    @staticmethod
+    def _run_checker(repository: Path, base_sha: str) -> subprocess.CompletedProcess[str]:
+        return subprocess.run(
+            [
+                "python",
+                str(Path(__file__).resolve().parents[1] / "tools/check_one_time_protected_change_lifecycle.py"),
+                "--project-root",
+                str(repository),
+                "--base-sha",
+                base_sha,
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
 
     @staticmethod
     def _write(path: Path, content: str) -> None:
