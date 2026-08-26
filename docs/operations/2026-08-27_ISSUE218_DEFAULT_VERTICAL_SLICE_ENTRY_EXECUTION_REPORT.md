@@ -17,6 +17,8 @@ The first-five-duel Vertical Slice already had a real `VerticalSliceShell` (`Mai
 2. Against the pre-change entry point, the test failed because the combat POC did not expose `start_new_run` or the existing Vertical Slice shell boundary.
 3. Changed only the application title and `run/main_scene` to reuse `res://scenes/run/vertical_slice_shell.tscn`.
 4. Ran Godot editor import/parse before focused scripts because this fresh worktree required Godot's global class cache. This produced local `.import` refreshes only; they are not part of the intended change.
+5. Reconciled three governance regressions that still expected the pre-PR #213 Battler state. They now protect the actual merged state: the original master remains a non-runtime source, while `DOGYEOM_COMBAT_BATTLER_01` is runtime-routed for `slot1_dogyeom` with automated 2026-08-27 evidence.
+6. Added the one-time protected-change manifest, BUILD approval, Decision, and regenerated operating views required for the `project.godot` change. This manifest must be archived in the immediate post-merge cleanup PR.
 
 ## Automated verification
 
@@ -26,6 +28,8 @@ Godot `4.7.1.stable.official.a13da4feb`:
 - `res://tests/verify_vertical_slice_shell.gd` → `VERTICAL_SLICE_SHELL_VERIFY_OK`
 - `res://tests/verify_vertical_slice_combat_bridge.gd` → `VERTICAL_SLICE_COMBAT_BRIDGE_VERIFY_OK`
 - `Godot_v4.7.1-stable_win64_console.exe --headless --path . --quit-after 12` → exit `0` while running the configured default main scene.
+- `tests.test_integrated_work_contract_v48r54`, `tests.test_gpt_work_handoff_20260826`, `tests.test_visual_consumer_asset_production_policy`, and `tests.test_one_time_protected_change_lifecycle` → 16 tests passed.
+- approved Base operating contract validation with the exact one-time approval and lifecycle check → passed.
 
 Known pre-existing warning remains at `src/ui/action_timing_panel_auto.gd:228`: non-equal opposite anchors can override control size after `_ready()`. It did not fail the focused verification and is outside Issue #218 scope.
 
