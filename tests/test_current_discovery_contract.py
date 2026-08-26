@@ -154,8 +154,10 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             "current_truth_source: GITHUB_MAIN_PLUS_EXACT_PROJECT_NOTION_LIVE_READ",
             current_section,
         )
+        self.assertIn(f"current_work_contract: {CURRENT_WORK_CONTRACT}", current_section)
         self.assertIn("current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN", current_section)
         self.assertIn("base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN", current_section)
+        self.assertIn("active_project_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED", current_section)
         self.assertNotIn("project_main_checkpoint:", current_section)
         self.assertNotIn("base_remote_main_observed:", current_section)
 
@@ -167,15 +169,24 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "planning_visual_next: AWAITING_EXPLICIT_ASSET_OR_IMPLEMENTATION_REQUEST",
+            "user_directed_planning_status: PLANNING_COMPLETE_VISUAL_PRODUCTION_ACTIVE",
+            current_section,
+        )
+        self.assertIn("planning_visual_next: OPPONENT_CHARACTER_MASTER_01", current_section)
+        self.assertIn(
+            "planning_visual_generation: USER_EXPLICIT_EXACTLY_ONE_RESULT_REQUIRED",
+            current_section,
+        )
+        self.assertIn(
+            "planning_visual_review: USER_APPROVED_REFERENCE_SET_20260825_NOT_RUNTIME_VISUAL_PASS",
+            current_section,
+        )
+        self.assertIn(
+            "planning_visual_state: docs/planning-data/current_visual_production_handoff_20260826.json",
             current_section,
         )
         self.assertIn(
             "planning_visual_authority: TEN-DEC-20260820-VISUAL-UX-SYSTEM-01",
-            current_section,
-        )
-        self.assertIn(
-            "planning_visual_review: TEN_IMG_001_CHAT_EXPLORATIONS_REVIEWED_NOT_AN_ASSET",
             current_section,
         )
         self.assertIn(
@@ -184,14 +195,18 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertIn("ci_supply_chain_followup: RESOLVED_ISSUE_140", current_section)
 
-        self.assertNotIn("product_implementation_authorized: false", current_section)
-        self.assertNotIn(
+        for stale_live_token in (
+            "user_directed_planning_next_package: AWAITING_EXPLICIT_ASSET_OR_IMPLEMENTATION_REQUEST",
+            "user_directed_planning_status: PLANNING_COMPLETE_USER_APPROVED",
+            "planning_visual_next: AWAITING_EXPLICIT_ASSET_OR_IMPLEMENTATION_REQUEST",
+            "planning_visual_review: TEN_IMG_001_CHAT_EXPLORATIONS_REVIEWED_NOT_AN_ASSET",
+            "product_implementation_authorized: false",
             "product_stage: VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_COMPLETE_HANDOFF_READY",
-            current_section,
-        )
-        self.assertNotIn("planning_visual_next: TEN_IMG_001_GENERATE_EXPLORATION", current_section)
-        self.assertNotIn("planning_visual_review: TEN_IMG_001_EXPLORATION_REVIEW", current_section)
-        self.assertNotIn("ci_supply_chain_followup: ISSUE_140", current_section)
+            "planning_visual_next: TEN_IMG_001_GENERATE_EXPLORATION",
+            "planning_visual_review: TEN_IMG_001_EXPLORATION_REVIEW",
+            "ci_supply_chain_followup: ISSUE_140",
+        ):
+            self.assertNotIn(stale_live_token, current_section)
 
         self.assertIn("## 관측 증거 스냅샷", text)
         self.assertIn(
@@ -212,7 +227,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("## 역사 Entry Gate · 2026-08-08", text)
         self.assertIn("current_vertical_slice_implementation_gate_20260820.json", text)
         historical_entry = text.split("## 역사 Entry Gate · 2026-08-08", 1)[1].split(
-            "## 이번 세션의 플랫폼 preflight 중단 상태", 1
+            "## 역사 플랫폼 preflight 중단 상태 · 2026-08-10", 1
         )[0]
         self.assertIn("SUPERSEDED_FOR_PHASE_I_VI_IMPLEMENTATION", historical_entry)
         self.assertIn("product_implementation_authorized: false", historical_entry)
@@ -221,9 +236,20 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             "## 상태 표현 규칙", 1
         )[0]
         self.assertIn("Phase I–VI", current_risk)
+        self.assertIn("OPPONENT_CHARACTER_MASTER_01", current_risk)
+        self.assertIn("WAITING_EXPLICIT_USER_GENERATION_APPROVAL", current_risk)
         self.assertIn("future_product_mutation_authorized: false", current_risk)
         self.assertNotIn("product_implementation_authorized: false", current_risk)
         self.assertIn("Issue #140", text)
+
+        local_history = text.split(
+            "## 역사 LOCAL_EXECUTOR_HANDOFF_CHECKPOINT — 2026-08-12 · CURRENT EXECUTION SUPERSEDED",
+            1,
+        )[1]
+        self.assertIn("IN_CODEX_FRESH_READINESS: NOT_RUN", local_history)
+        self.assertIn("FRESH_POWERSHELL_REPEAT_RUN: NOT_RUN", local_history)
+        self.assertIn("CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF", local_history)
+        self.assertIn("current readiness 선행조건이 아니다", local_history)
 
     def test_pc_first_vertical_slice_gate_is_discoverable(self) -> None:
         gate_path = ROOT / "docs/planning-data/current_vertical_slice_implementation_gate_20260820.json"
