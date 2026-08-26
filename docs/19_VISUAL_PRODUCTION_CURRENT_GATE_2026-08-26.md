@@ -100,13 +100,17 @@ canon + actual game consumer review
 
 **현재 generic consumer asset:** `res://assets/portraits/enemy_masked_ink_v1.png`.
 
-**승인 결과:** 사용자 승인 `DOGYEOM_STATUS_PORTRAIT_01_v1`.
+**승인 결과:** 사용자 명시 승인 후 생성한 `DOGYEOM_STATUS_PORTRAIT_01_v1`.
+
+**source local asset:** `docs/visual-assets/approved/DOGYEOM_STATUS_PORTRAIT_01_v1.png`.
 
 **runtime asset:** `res://assets/portraits/dogyeom_status_portrait_01_v1.png`.
 
 제작 원칙:
 
-- 사용자 승인 결과의 얼굴·머리·복식 정체성을 유지한다.
+- 사용자 승인 도겸 전신·캐릭터 시트를 정체성·화풍 참고로 사용한다.
+- 현재 status panel crop에서 얼굴/상체가 작은 크기로 명확히 읽혀야 한다.
+- 승인 Master PNG를 fresh-read로 복구하지 못해, 사용자의 새 원화 명시 승인에 따라 text brief → 명시 승인 → 정확히 1개 → 검토를 완료했다.
 - UI/text/수치/프레임을 원화에 굽지 않는다.
 - `VerticalSliceCombatBridge`는 잠긴 상대의 `candidate_id`를 `combat_state.enemy`에 보존한다.
 - `CombatantStatusPanel`은 `slot1_dogyeom`일 때만 이 asset을 선택하며, 다른 상대 및 ID 누락 상대는 기존 `enemy_masked_ink_v1.png`를 유지한다.
@@ -147,6 +151,9 @@ dogyeom_status_portrait_01_user_approval: PASS_2026_08_26
 dogyeom_status_portrait_01_notion_binary_delivery: PASS_20260826_READBACK
 dogyeom_status_portrait_01_runtime_asset: res://assets/portraits/dogyeom_status_portrait_01_v1.png
 consumer_first_visual_policy: USER_APPROVED_2026_08_26
+dogyeom_status_portrait_01: USER_APPROVED_2026_08_26
+dogyeom_status_portrait_01_local_asset: docs/visual-assets/approved/DOGYEOM_STATUS_PORTRAIT_01_v1.png
+dogyeom_status_portrait_01_notion_binary_attachment: PASS_20260826_READBACK
 next_safe_action: USER_DECISION_REQUIRED_FOR_NEXT_CONSUMER_ASSET
 runtime_source_master_promotion: NOT_RUN
 opponent_specific_dogyeom_routing: AUTOMATED_GODOT_PASS_20260826

@@ -63,10 +63,14 @@
       "working_character": "도겸",
       "status": "USER_APPROVED_AND_IMPLEMENTED_2026_08_26",
       "approval_source": "user explicit: 승인",
+      "generation_mode": "ONE_NEW_ORIGINAL_AFTER_EXPLICIT_APPROVAL",
       "source_png_sha256": "0672dfb9938c65f88ade27b90f3bc558a0a3588ccf19a70f5412fc74dd11143c",
+      "local_asset": "docs/visual-assets/approved/DOGYEOM_STATUS_PORTRAIT_01_v1.png",
+      "notion_record": "https://app.notion.com/p/3c81b237eb1c8134b203cc7a0a46d52d",
       "notion_binary_delivery": "PASS_20260826_READBACK",
       "runtime_asset": "res://assets/portraits/dogyeom_status_portrait_01_v1.png",
       "consumer": "src/ui/combatant_status_panel.gd",
+      "current_consumer_asset": "res://assets/portraits/enemy_masked_ink_v1.png",
       "routing_key": "candidate_id == slot1_dogyeom",
       "generic_fallback_asset": "res://assets/portraits/enemy_masked_ink_v1.png",
       "opponent_specific_routing": "AUTOMATED_GODOT_PASS_20260826",
@@ -121,7 +125,8 @@
     "opponent_character_master_01_delivery": "PASS_20260826",
     "dogyeom_combat_battler_01_delivery": "PASS_20260826",
     "consumer_first_policy_readback": "PASS_20260826",
-    "gpt_work_handoff_readback": "PASS_20260826"
+    "gpt_work_handoff_readback": "PASS_20260826",
+    "dogyeom_status_portrait_01_notion_binary_delivery": "PASS_20260826_READBACK"
   },
   "next_result": {
     "name": "Next consumer-backed visual asset",
@@ -168,6 +173,9 @@
     "dogyeom_combat_battler_01_user_approval": "PASS_2026_08_26",
     "dogyeom_combat_battler_01_notion_delivery": "PASS_2026_08_26",
     "runtime_source_master_promotion": "NOT_RUN",
+    "dogyeom_status_portrait_01_generation": "PASS_EXACTLY_ONE_2026_08_26",
+    "dogyeom_status_portrait_01_user_approval": "PASS_2026_08_26",
+    "dogyeom_status_portrait_01_notion_binary_delivery": "PASS_20260826_READBACK",
     "opponent_specific_dogyeom_routing": "AUTOMATED_GODOT_PASS_20260826",
     "runtime_art_integration": "AUTOMATED_GODOT_PASS_20260826",
     "windows_visible_local_usability": "NOT_RUN",
@@ -186,6 +194,7 @@
     "READ_THIS_HANDOFF_AND_APPROVED_RESULTS",
     "DO_NOT_USE_MIGRATION_SHEET_AS_CURRENT_AUTHORITY",
     "REQUIRE_ACTUAL_GAME_CONSUMER_FOR_EACH_NEW_IMAGE",
+    "NOTION_DESTINATION_READBACK_PASS_20260826",
     "DOGYEOM_STATUS_PORTRAIT_01_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_20260826",
     "REQUIRE_USER_DECISION_BEFORE_NEXT_CONSUMER_ASSET"
   ]
