@@ -48,7 +48,7 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
             "DOGYEOM_STATUS_PORTRAIT_01",
             "MIGRATION_ONLY_UNTIL_REMOVAL",
             "CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF",
-            "runtime art integration: `NOT_RUN`",
+            "runtime art integration: NOT_RUN",
         ):
             self.assertIn(marker, text)
 
