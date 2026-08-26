@@ -7,6 +7,7 @@ LEARNING_LOG = ROOT / "skills" / "SKILL_LEARNING_LOG.md"
 ACTIVE_CONTEXT = ROOT / "[기획서]" / "00_프로젝트_허브" / "ACTIVE_CONTEXT.md"
 HANDOFF = ROOT / "[기획서]" / "00_프로젝트_허브" / "HANDOFF.md"
 LAUNCHER = ROOT / "tools" / "start_ten_paces_local_executor.ps1"
+CURRENT_CONTRACT = ROOT / "docs" / "PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md"
 
 
 class LocalExecutorHandoffContractTests(unittest.TestCase):
@@ -14,19 +15,23 @@ class LocalExecutorHandoffContractTests(unittest.TestCase):
         self.assertTrue(path.exists(), f"missing required handoff artifact: {path}")
         return path.read_text(encoding="utf-8")
 
-    def test_existing_verification_owner_absorbs_local_executor_readiness(self) -> None:
+    def test_current_verification_owner_retires_local_codex_readiness_route(self) -> None:
         text = self.read(VERIFY_SKILL)
-        for token in (
+        contract = self.read(CURRENT_CONTRACT)
+        self.assertIn("local-godot-validation-readiness", text)
+        self.assertIn("CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF", text)
+        self.assertIn("local_codex_policy: RETIRED_NOT_USED", contract)
+        self.assertIn("gpt_local_codex_orchestration_policy: RETIRED", contract)
+        for stale_current_token in (
             "local-executor-readiness",
             "GODOT_AI_MCP_LIVE",
             "HERA_EXACT_PROJECT",
             "REPO_NO_NEW_MUTATION",
             "BOOTSTRAP_ORCHESTRATION_IS_NOT_READINESS_PASS",
-            "8003",
-            "9503",
-            "CODEX_HOME",
+            "HIGODOT_HTTP_8003",
+            "HIGODOT_WS_9503",
         ):
-            self.assertIn(token, text)
+            self.assertNotIn(stale_current_token, text)
 
     def test_learning_log_closes_four_local_executor_lessons(self) -> None:
         text = self.read(LEARNING_LOG)
@@ -42,7 +47,7 @@ class LocalExecutorHandoffContractTests(unittest.TestCase):
         ):
             self.assertIn(token, text)
 
-    def test_active_context_marks_local_gate_without_promoting_not_run(self) -> None:
+    def test_active_context_preserves_local_executor_checkpoint_as_history(self) -> None:
         text = self.read(ACTIVE_CONTEXT)
         for token in (
             "TEN-DEC-20260811-LOCAL-EXECUTOR-BOOTSTRAP-01",
@@ -53,7 +58,7 @@ class LocalExecutorHandoffContractTests(unittest.TestCase):
         ):
             self.assertIn(token, text)
 
-    def test_handoff_has_exact_resume_order_and_concurrency_warning(self) -> None:
+    def test_handoff_preserves_historical_resume_evidence(self) -> None:
         text = self.read(HANDOFF)
         for token in (
             "TEN-DEC-20260811-LOCAL-EXECUTOR-BOOTSTRAP-01",
@@ -65,11 +70,14 @@ class LocalExecutorHandoffContractTests(unittest.TestCase):
         ):
             self.assertIn(token, text)
 
-    def test_persisted_launcher_matches_v5_identity_marker(self) -> None:
+    def test_persisted_launcher_remains_historical_artifact(self) -> None:
         text = self.read(LAUNCHER)
         self.assertIn("# Ten Paces Local Executor Launcher v5", text)
         self.assertIn("HERA_AUTH_SOURCE=", text)
         self.assertIn("LIVE_READINESS_MUST_BE_RECHECKED_IN_CODEX", text)
+        current = self.read(CURRENT_CONTRACT)
+        self.assertIn("GPT → PowerShell → local Codex one-shot launcher", current)
+        self.assertIn("금지한다", current)
 
 
 if __name__ == "__main__":

@@ -6,7 +6,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CURRENT_DECISION_ID = "TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01"
+R2_DECISION_ID = "TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01"
+CURRENT_DECISION_ID = "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01"
 PREVIOUS_DECISION_ID = "TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01"
 SOURCE_SHA256 = "6f0541048e084746f6777223521361d0339dbfb2e223c70947f694f1c050f508"
 CANONICAL = ROOT / "docs" / "PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md"
@@ -15,28 +16,16 @@ CONTRACT = ROOT / "docs" / "planning-data" / "approved_20260824_integrated_work_
 
 
 class IntegratedWorkContractV48R2Tests(unittest.TestCase):
-    def test_v48r2_is_current_project_operating_contract(self) -> None:
-        text = CANONICAL.read_text(encoding="utf-8")
-        for marker in (
-            "contract_version: '4.8'",
-            "revision: '2026-08-24-r2'",
-            f"current_binding_decision: {CURRENT_DECISION_ID}",
-            f"source_uploaded_sha256: {SOURCE_SHA256}",
-            "adapter_policy: THIN_ADAPTER_DO_NOT_DUPLICATE_BASE_CANON",
-            "human_workspace: NOTION_DEFAULT_PROJECT_WORKSPACE",
-            "runtime_structured_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME",
-            "google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL",
-            "open_pr_policy: OPEN_PR_READ_ONLY_BY_DEFAULT",
-        ):
-            self.assertIn(marker, text)
-        self.assertNotIn("current_sheet_authority: GOOGLE_SHEET_00_02_04_99", text)
-        self.assertNotIn("workbook_role: USER_FACING_GDD_WORKSPACE", text)
-
-    def test_v48_binding_supersedes_v45_without_deleting_history(self) -> None:
+    def test_v48r2_is_preserved_as_historical_evidence(self) -> None:
         self.assertTrue(DECISION.is_file())
         self.assertTrue(CONTRACT.is_file())
+        decision_text = DECISION.read_text(encoding="utf-8")
+        self.assertIn(R2_DECISION_ID, decision_text)
+        self.assertIn("SUPERSEDED_HISTORICAL_EVIDENCE", decision_text)
+        self.assertIn(CURRENT_DECISION_ID, decision_text)
+
         payload = json.loads(CONTRACT.read_text(encoding="utf-8"))
-        self.assertEqual(CURRENT_DECISION_ID, payload["decision_id"])
+        self.assertEqual(R2_DECISION_ID, payload["decision_id"])
         self.assertEqual(PREVIOUS_DECISION_ID, payload["supersedes_decision_id"])
         self.assertEqual("4.8", payload["contract_version"])
         self.assertEqual("2026-08-24-r2", payload["revision"])
@@ -44,9 +33,14 @@ class IntegratedWorkContractV48R2Tests(unittest.TestCase):
         self.assertEqual("NOTION_HUMAN_FACING_CANON", payload["authority"]["human_workspace"])
         self.assertEqual("REPOSITORY_STRUCTURED_CANON_AND_RUNTIME_TRUTH", payload["authority"]["repository"])
         self.assertEqual("MIGRATION_ONLY_UNTIL_REMOVAL", payload["authority"]["google_sheets"])
-        historical = ROOT / "docs" / "decisions" / "2026-08-11_INTEGRATED_WORK_CONTRACT_V4_5_R2_BINDING_DECISION.md"
-        self.assertTrue(historical.is_file())
-        self.assertIn(PREVIOUS_DECISION_ID, historical.read_text(encoding="utf-8"))
+
+    def test_current_adapter_no_longer_claims_r2_is_current(self) -> None:
+        text = CANONICAL.read_text(encoding="utf-8")
+        self.assertIn(f"current_binding_decision: {CURRENT_DECISION_ID}", text)
+        self.assertIn("revision: '2026-08-26-r5.4-superset-final'", text)
+        self.assertIn(f"decision: {R2_DECISION_ID}", text)
+        self.assertIn("status: SUPERSEDED_HISTORICAL_EVIDENCE", text)
+        self.assertNotIn(f"current_binding_decision: {R2_DECISION_ID}", text)
 
     def test_default_cold_start_routes_to_notion_and_repository_not_sheet(self) -> None:
         for relative in (

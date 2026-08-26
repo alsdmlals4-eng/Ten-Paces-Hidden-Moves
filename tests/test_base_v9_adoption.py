@@ -6,6 +6,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CURRENT_CONTRACT = ROOT / "docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md"
+CURRENT_WORK_DECISION = "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01"
+HISTORICAL_R2_DECISION = "TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01"
 
 
 class BaseV9AdoptionTests(unittest.TestCase):
@@ -22,7 +24,9 @@ class BaseV9AdoptionTests(unittest.TestCase):
         self.assertNotIn("current_operating_contract", data)
         current = CURRENT_CONTRACT.read_text(encoding="utf-8")
         self.assertIn("contract_version: '4.8'", current)
-        self.assertIn("TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01", current)
+        self.assertIn(CURRENT_WORK_DECISION, current)
+        self.assertIn(HISTORICAL_R2_DECISION, current)
+        self.assertIn("SUPERSEDED_HISTORICAL_EVIDENCE", current)
         intake = data["shared_overrides"]["managing-project-intake-and-work-contract"]
         planning = intake["planning_first_governance"]
         first_prompt = intake["first_prompt_governance"]

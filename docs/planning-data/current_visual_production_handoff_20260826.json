@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "project": "TEN_PACES",
+  "updated_at": "2026-08-26",
+  "status": "R5_4_EXACTLY_ONE_VISUAL_GATE_NEXT_RESULT_READY",
+  "authority_role": "CURRENT_VISUAL_PRODUCTION_HANDOFF",
+  "current_execution_contract": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
+  "human_facing_owner": "NOTION_HOME_VISUAL_BIBLE_ASSET_LIBRARY",
+  "repository_handoff": "docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md",
+  "historical_visual_handoff": "docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md",
+  "historical_visual_state": "docs/planning-data/current_visual_production_handoff_20260825.json",
+  "fresh_read_required": true,
+  "approved_reference_set_preserved": [
+    "TEN-IMG-001",
+    "TEN-VIS-CHAR-MASTER-001",
+    "TEN-VIS-A07-CANDIDATE",
+    "TEN-VIS-A01"
+  ],
+  "style_lock": {
+    "world_background": "LOW_CONTRAST_INK_WASH_SEPIA_NEGATIVE_SPACE",
+    "character": "TALL_SEMI_REALISTIC_WUXIA_INK_LINE_WITH_LIMITED_DITHERING",
+    "ui": "SEPARATE_REFINED_INFORMATION_FIRST_UI",
+    "pixel_scope": "LIMITED_CHARACTER_EDGE_AND_SMALL_CARD_READABILITY_ONLY",
+    "full_pixel_conversion": false,
+    "gold_usage": "RESTRAINED_DECISION_CONFIRM_ULTIMATE_ONLY"
+  },
+  "combat_reference_contract": {
+    "battlefield_is_primary_visual_mass": true,
+    "distance_n_primary": true,
+    "absolute_floor_numbers_primary": false,
+    "current_bundle_visible": true,
+    "round_sequence": [
+      3,
+      3,
+      4
+    ],
+    "action_sources": [
+      "기초",
+      "무공",
+      "절초"
+    ],
+    "action_grid_max_columns": 5,
+    "action_grid_max_rows": 2,
+    "action_grid_max_items": 10,
+    "card_illustration_required": true,
+    "long_effect_text_to_detail_panel": true,
+    "visual_cta_label": "진행",
+    "semantic_cta_authority": "PENDING_DECISION_VS_행동계획_잠금"
+  },
+  "image_production_cadence": {
+    "current_policy": "TEXT_BRIEF_THEN_EXPLICIT_USER_APPROVAL_THEN_EXACTLY_ONE_RESULT",
+    "max_results_per_explicit_approval": 1,
+    "automatic_next_result_forbidden": true,
+    "review_after_result_required": true,
+    "historical_20260825_policy": "MAX_3_PER_BATCH_SUPERSEDED_FOR_CURRENT_EXECUTION"
+  },
+  "notion_delivery_verification": {
+    "home_url": "https://app.notion.com/p/3c41b237eb1c8105a254d860f3c21638",
+    "visual_bible_url": "https://app.notion.com/p/3c01b237eb1c814f80d4c6140fddebd4",
+    "asset_library_url": "https://app.notion.com/p/3c01b237eb1c8172a16dc7713b75fcc5",
+    "approved_reference_set_readback": "PASS_20260825",
+    "new_r5_4_result_delivery": "NOT_RUN"
+  },
+  "next_result": {
+    "name": "Opponent Character Master #01",
+    "id": "OPPONENT_CHARACTER_MASTER_01",
+    "purpose": "validate opponent silhouette differentiation using approved character master grammar",
+    "generation_status": "WAITING_EXPLICIT_USER_GENERATION_APPROVAL"
+  },
+  "deferred_queue_after_result_review": [
+    {
+      "name": "Martial Technique Illustration Sheet #01",
+      "purpose": "validate martial-technique illustration language distinct from basic actions"
+    },
+    {
+      "name": "Route Icon Sheet #01",
+      "asset_id": "TEN-VIS-A04",
+      "purpose": "validate eight route-node icons readable without color dependence"
+    }
+  ],
+  "remaining_asset_inventory": {
+    "TEN-VIS-A01": "FIRST_PLATE_APPROVED_OPTIONAL_SECOND_VARIANT",
+    "TEN-VIS-A02": "15_OPPONENT_PORTRAITS_NOT_PRODUCED_CHARACTER_MASTER_APPROVED",
+    "TEN-VIS-A03": "15_COMBAT_BATTLERS_NOT_PRODUCED_CHARACTER_MASTER_APPROVED",
+    "TEN-VIS-A04": "ROUTE_8_ICON_SET_NOT_PRODUCED_DEFERRED_QUEUE",
+    "TEN-VIS-A05": "RESULT_COMPLETION_MARK_SET_NOT_PRODUCED",
+    "TEN-VIS-A06": "2_TO_3_BATTLE_BACKGROUND_VARIANTS_NOT_PRODUCED",
+    "TEN-VIS-A07_CANDIDATE": "BASIC_ACTION_STYLE_APPROVED_MARTIAL_AND_ULTIMATE_EXPANSION_NOT_PRODUCED"
+  },
+  "sheet_compatibility": {
+    "mode": "MIGRATION_ONLY_UNTIL_REMOVAL",
+    "drift_vs_current_notion_and_github": true,
+    "action": "REPORT_ONLY_DO_NOT_REPROMOTE_SHEET_TO_CURRENT_AUTHORITY"
+  },
+  "evidence_ceiling": {
+    "user_reference_approval": "PASS_2026_08_25",
+    "notion_reference_delivery": "PASS_2026_08_25",
+    "r5_4_single_result_generation": "NOT_RUN",
+    "runtime_source_master_promotion": "NOT_RUN",
+    "runtime_art_integration": "NOT_RUN",
+    "windows_visible_local_usability": "NOT_RUN",
+    "android_actual_device": "NOT_RUN",
+    "fifteen_opponent_identifiability": "NOT_RUN",
+    "human_fun_readability_immersion": "NOT_RUN",
+    "final_vfx_audio": "NOT_RUN"
+  },
+  "resume_gate": [
+    "REFETCH_PROJECT_MAIN_AND_OPEN_PRS",
+    "REFETCH_BASE_MAIN",
+    "READ_CURRENT_PROJECT_NOTION",
+    "READ_CURRENT_R5_4_PROJECT_CONTRACT",
+    "READ_THIS_HANDOFF_AND_APPROVED_REFERENCE_SET",
+    "DO_NOT_USE_MIGRATION_SHEET_AS_CURRENT_AUTHORITY",
+    "SHOW_TEXT_BRIEF_FOR_OPPONENT_CHARACTER_MASTER_01",
+    "WAIT_FOR_EXPLICIT_USER_GENERATION_APPROVAL",
+    "GENERATE_EXACTLY_ONE_RESULT",
+    "STOP_FOR_USER_REVIEW"
+  ]
+}

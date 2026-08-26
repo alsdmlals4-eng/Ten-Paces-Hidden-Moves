@@ -3,20 +3,21 @@
 > 전투 규칙 책임 원본: `docs/02_COMBAT_RULES.md`
 > 이 문서는 **변동 상태의 단독 책임 원본**이다. 제품 규칙 전문을 복제하지 않고 현재 상태, 검증 상태, 미완료 Gate, 다음 실행 순서를 연결한다. 후속 Decision 뒤에도 회귀가 찾아야 하는 제품·플랫폼·관찰 권위의 발견 표식은 별도 섹션으로 보존한다.
 > 핵심 결투 타이밍 discovery locator: `3/3/4`. 세부 전투 규칙은 `docs/02_COMBAT_RULES.md`가 책임진다.
-> live 상태 판단은 저장된 SHA를 current authority로 재사용하지 않고 매 resume/post-merge마다 GitHub `main` + exact Project Notion current truth를 다시 읽는다. Google Sheets는 2026-08-20 v4.7 사용자 작업계약에 따라 신규 기획 입력이 아니라 migration-only다.
+> live 상태 판단은 저장된 SHA를 current authority로 재사용하지 않고 매 resume/post-merge마다 GitHub `main` + exact Project Notion current truth를 다시 읽는다. Google Sheets는 current r5.4 계약에 따라 신규 기획 입력이 아닌 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility source다.
 
 ## 현재 기준
 
 ```yaml
 project: 십보강호: 숨은 수의 비무
 repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
+current_work_contract: TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01
 current_truth_source: GITHUB_MAIN_PLUS_EXACT_PROJECT_NOTION_LIVE_READ
 legacy_discovery_compatibility: "current_truth_source: GITHUB_MAIN_PLUS_SHEET_LIVE_READ"
 legacy_sheet_migration_locator: "03_무공서_무학"
 current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN
 base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
 live_exact_sha_authority: NONE_REFETCH_REQUIRED
-active_project_pr: NONE
+active_project_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
 product_stage: FIRST_FIVE_DUEL_PHASE_I_VI_IMPLEMENTED
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
@@ -46,13 +47,15 @@ next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
 next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 user_directed_planning_work_mode: COMPLETE
 user_directed_planning_decision: TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01
-user_directed_planning_next_package: AWAITING_EXPLICIT_ASSET_OR_IMPLEMENTATION_REQUEST
-user_directed_planning_next_decision: EXPLICIT_ASSET_OR_IMPLEMENTATION_REQUEST_GATE
-user_directed_planning_status: PLANNING_COMPLETE_USER_APPROVED
+user_directed_planning_next_package: CONTINUE_APPROVED_VISUAL_ASSET_PRODUCTION_THEN_HUMAN_VALIDATION
+user_directed_planning_next_decision: EXPLICIT_SINGLE_IMAGE_GENERATION_APPROVAL_GATE
+user_directed_planning_status: PLANNING_COMPLETE_VISUAL_PRODUCTION_ACTIVE
 user_directed_planning_pr_authority: GITHUB_PR_METADATA
-planning_visual_next: AWAITING_EXPLICIT_ASSET_OR_IMPLEMENTATION_REQUEST
-planning_visual_generation: USER_EXPLICIT_REQUEST_REQUIRED
-planning_visual_review: TEN_IMG_001_CHAT_EXPLORATIONS_REVIEWED_NOT_AN_ASSET
+planning_visual_next: OPPONENT_CHARACTER_MASTER_01
+planning_visual_generation: USER_EXPLICIT_EXACTLY_ONE_RESULT_REQUIRED
+planning_visual_review: USER_APPROVED_REFERENCE_SET_20260825_NOT_RUNTIME_VISUAL_PASS
+planning_visual_state: docs/planning-data/current_visual_production_handoff_20260826.json
+planning_visual_historical_state: docs/planning-data/current_visual_production_handoff_20260825.json
 planning_visual_authority: TEN-DEC-20260820-VISUAL-UX-SYSTEM-01
 planning_visual_requirement_status: COMPLETE
 planning_visual_overlay: TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01
@@ -63,11 +66,11 @@ base_remote_observation: CURRENT_REMOTE_REQUIRES_LIVE_REFETCH_NO_AUTOMATIC_PROJE
 
 `legacy_discovery_compatibility`와 `legacy_sheet_migration_locator`의 Sheet 문자열은 기존 회귀·발견 도구가 과거 상태·콘텐츠 표를 찾기 위한 호환 토큰일 뿐이다. 실제 current truth는 `GITHUB_MAIN_PLUS_EXACT_PROJECT_NOTION_LIVE_READ`이며 신규 기획 입력·Decision 동기화는 Project Notion + GitHub를 사용하고 Google Sheets는 migration-only다.
 
-`active_planning_*`, `active_decision_state`, `next_package`, `next_planning_decision`은 `docs/planning-data/current_operating_state.json`이 소유하는 플랫폼 운영 상태와 동기화한다. 완료된 Vertical Slice 기획/Visual UX 상태는 `docs/planning-data/current_user_planning_status.json`과 `user_directed_planning_*`·`planning_visual_*` overlay가 소유하며 기존 플랫폼 운영 계약을 덮어쓰지 않는다.
+`active_planning_*`, `active_decision_state`, `next_package`, `next_planning_decision`은 `docs/planning-data/current_operating_state.json`이 소유하는 플랫폼 운영 상태와 동기화한다. 완료된 Vertical Slice 기획/Visual production 상태는 `docs/planning-data/current_user_planning_status.json`, `docs/planning-data/current_visual_production_handoff_20260826.json`, `user_directed_planning_*`·`planning_visual_*` overlay가 소유하며 기존 플랫폼 운영 계약을 덮어쓰지 않는다.
 
-플랫폼 Adapter 구현 Gate는 향후 플랫폼 확장 경계로 계속 유효하다. 2026-08-20 `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`과 `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01` 자체는 제품 구현 권한이 아니었지만, 후속 `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`이 첫 5전 PC-first Vertical Slice Phase I–VI 구현을 명시적으로 허용했고 해당 범위는 현재 `main`에 병합됐다. 따라서 현재 상태는 `phase_i_vi_implementation: AUTHORIZED_AND_MERGED`이며, **추가 제품 mutation**만 `future_product_mutation_authorized: false`로 새 명시 요청 + fresh Gate를 요구한다. 새 이미지 생성도 계속 `planning_visual_generation: USER_EXPLICIT_REQUEST_REQUIRED`다.
+플랫폼 Adapter 구현 Gate는 향후 플랫폼 확장 경계로 계속 유효하다. 2026-08-20 `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`과 `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01` 자체는 제품 구현 권한이 아니었지만, 후속 `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`이 첫 5전 PC-first Vertical Slice Phase I–VI 구현을 명시적으로 허용했고 해당 범위는 현재 `main`에 병합됐다. 따라서 현재 상태는 `phase_i_vi_implementation: AUTHORIZED_AND_MERGED`이며, **추가 제품 mutation**만 `future_product_mutation_authorized: false`로 새 명시 요청 + fresh Gate를 요구한다. 현재 Visual production은 r5.4의 `text brief → explicit approval → exactly one result → review` 경계를 사용한다.
 
-이 live block에는 current main SHA나 열린 PR 번호를 저장하지 않는다. 새 세션·post-merge에서는 GitHub `main`, 열린 PR, exact Project Notion, current operating/entry gate를 다시 읽고 의미 상태만 판정한다. exact SHA/run ID·PR 번호는 아래의 명시적 역사·관측 증거로만 취급한다.
+이 live block에는 current main SHA나 열린 PR 번호를 저장하지 않는다. 새 세션·post-merge에서는 GitHub `main`, 열린 PR, exact Project Notion, current operating/visual/entry gate를 다시 읽고 의미 상태만 판정한다. exact SHA/run ID·PR 번호는 아래의 명시적 역사·관측 증거로만 취급한다.
 
 ## 관측 증거 스냅샷
 
@@ -103,8 +106,11 @@ authority_bootstrap_merge_commit: 43a6e625c57c6f3e50b562e494fec074be553457
 
 ## 현재 권위와 보호 결정
 
+- 현행 프로젝트 실행 계약: `TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01`, `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`.
 - 첫 5전 Vertical Slice 기획 완료 승인: `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`, `docs/planning-data/current_user_planning_status.json`.
 - Visual/UX Requirement 승인: `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01`, `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md`, `docs/planning-data/approved_20260820_vertical_slice_visual_ux_contract.json`.
+- 현재 Visual production Gate: `docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md`, `docs/planning-data/current_visual_production_handoff_20260826.json`.
+- 2026-08-25 승인 Reference Set: `docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md`, `docs/planning-data/current_visual_production_handoff_20260825.json` — 승인 Reference와 당시 max-three cadence의 역사 evidence이며 current execution owner가 아니다.
 - 구현 Gate: `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`, `docs/planning-data/current_vertical_slice_implementation_gate_20260820.json`.
 - Phase I–VI 상태: `AUTHORIZED_AND_MERGED`; exact PR/SHA는 위 관측 증거 스냅샷에서만 역사 증거로 보존한다.
 - 구현 Handoff: `docs/16_VERTICAL_SLICE_IMPLEMENTATION_HANDOFF_PLAN.md`.
@@ -124,7 +130,7 @@ authority_bootstrap_merge_commit: 43a6e625c57c6f3e50b562e494fec074be553457
 - GUT 9.7.1 reconciliation/export boundary: `TEN-DEC-20260807-GUT-9-7-1-RECONCILIATION-01`.
 - Hera v1 live QA: `TEN-DEC-20260808-HERA-V1-LIVE-QA-RECONCILIATION-01`.
 - 활성 Godot toolchain: `TEN-DEC-20260809-GODOT-AI313-GUT971-HERA100-ACTIVE-TOOLCHAIN-01`.
-- TEN-IMG-001 exploration 권한: `TEN-DEC-20260808-TEN-IMG-001-VISUAL-REQUIREMENT-APPROVAL-01`; chat exploration은 수행됐지만 제품 자산 승격 없이 `NOT_AN_ASSET`이며 새 이미지 생성은 사용자 명시 요청이 필요하다.
+- TEN-IMG-001 exploration 권한: `TEN-DEC-20260808-TEN-IMG-001-VISUAL-REQUIREMENT-APPROVAL-01`; chat exploration은 수행됐지만 제품 자산 승격 없이 `NOT_AN_ASSET`이며 현재 새 이미지 생성은 r5.4 exactly-one Gate를 따른다.
 - CI 공급망 follow-up: Issue #140은 `RESOLVED / CLOSED_COMPLETED`이며 active 후속 작업이 아니다.
 - 과거 v6 인덱스는 `docs/decisions/2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`이며 최신 Decision보다 높은 권한을 갖지 않는다.
 
@@ -133,7 +139,7 @@ authority_bootstrap_merge_commit: 43a6e625c57c6f3e50b562e494fec074be553457
 ## 선행 UX·앱 흐름 권위
 
 - `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01` — 아래 첫 5전 Vertical Slice 기획 계보를 사용자 완료 승인한다.
-- `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01` — 통합 수묵 전술 화폭, 화면별 정보 위계, 재사용 컴포넌트, 최소 신규 자산 요구사항을 승인하고 명시적 자산/구현 요청 대기로 전환한다.
+- `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01` — 통합 수묵 전술 화폭, 화면별 정보 위계, 재사용 컴포넌트, 최소 신규 자산 요구사항을 승인하고 당시 명시적 자산/구현 요청 대기로 전환했다. 이후 2026-08-25 사용자가 Visual 작업을 명시 재개했고, 2026-08-26 r5.4 current Gate가 승인당 정확히 1개 결과 cadence를 소유한다.
 - `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01` — Main→시작 6중4→비무행 도입→Briefing→Combat Review Overlay→Duel Result/Reward 별도 Scene→Route 2노드→다음 비무→5전 완주.
 - `TEN-DEC-20260820-VERTICAL-SLICE-CONTENT-DETAIL-01` — 후보 15명·8개 Route·텍스트 UX.
 - `TEN-DEC-20260820-VERTICAL-SLICE-LOADOUT-ROUTE-WIRE-01` — 기존 10권 재사용·다음 후보 선잠금·Route 수치 Seed·비전투 Wire.
@@ -143,7 +149,7 @@ authority_bootstrap_merge_commit: 43a6e625c57c6f3e50b562e494fec074be553457
 - 역사 구현 표식: `runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65`.
 - V6 원장: `2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
 
-위 App Flow·상세 계약·Visual/UX 요구사항은 계획 권위다. 사용자 `기획완료`와 후속 Visual/UX 승인 자체는 제품 mutation 권한이 아니었고, 이후 `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`이 첫 5전 Phase I–VI bounded implementation을 별도로 승인했다. PR #65와 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`는 선행 런타임/자동검증 계보로 보존하고, 현재 전체 Phase I–VI 구현 상태는 상단 `phase_i_vi_implementation: AUTHORIZED_AND_MERGED`가 라우팅한다. 새 이미지 또는 추가 제품 mutation은 다시 명시적 요청과 fresh Gate가 필요하다.
+위 App Flow·상세 계약·Visual/UX 요구사항은 계획 권위다. 사용자 `기획완료`와 후속 Visual/UX 승인 자체는 제품 mutation 권한이 아니었고, 이후 `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`이 첫 5전 Phase I–VI bounded implementation을 별도로 승인했다. PR #65와 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`는 선행 런타임/자동검증 계보로 보존하고, 현재 전체 Phase I–VI 구현 상태는 상단 `phase_i_vi_implementation: AUTHORIZED_AND_MERGED`가 라우팅한다. 현재 Visual은 `OPPONENT_CHARACTER_MASTER_01` 한 장의 명시적 생성 승인 대기이며, 추가 제품 mutation은 별도 fresh Gate가 필요하다.
 
 ## 제품 연결·성장 보호 표식
 
@@ -196,7 +202,7 @@ Windows CI 기준 runtime은 약 2344.67ms, peak working set은 188571648 bytes,
 - 제품 병합 전 다음 Gate: `next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE`.
 - 플랫폼 전용 operating-state 표식: `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED`, `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE`.
 
-현행 플랫폼 운영 값은 문서 상단 YAML의 `active_planning_pr`, `active_decision_state`, `next_planning_decision`을 사용한다. 사용자 Vertical Slice 기획/Visual UX 완료 상태는 `docs/planning-data/current_user_planning_status.json`, `docs/planning-data/approved_20260820_vertical_slice_visual_ux_contract.json`과 `user_directed_planning_*`·`planning_visual_*` overlay를 사용한다. 제품 병합 권위는 별도 역사 증거인 `merged_product_pr: 92`, `product_implementation_merge_commit`, `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`로 유지한다.
+현행 플랫폼 운영 값은 문서 상단 YAML의 `active_planning_pr`, `active_decision_state`, `next_planning_decision`을 사용한다. 사용자 Vertical Slice 기획/Visual production 상태는 `docs/planning-data/current_user_planning_status.json`, `docs/planning-data/current_visual_production_handoff_20260826.json`, `docs/planning-data/approved_20260820_vertical_slice_visual_ux_contract.json`과 `user_directed_planning_*`·`planning_visual_*` overlay를 사용한다. 제품 병합 권위는 별도 역사 증거인 `merged_product_pr: 92`, `product_implementation_merge_commit`, `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`로 유지한다.
 
 ## 완료·검증됨
 
@@ -246,7 +252,7 @@ allowed_next_actions:
 
 이 2026-08-08 Entry Gate는 당시 제품/플랫폼 구현 경계를 기록한 역사 증거다. 이후 2026-08-20 PC-first Vertical Slice 구현 Gate가 Phase I–VI를 별도로 승인했고 해당 bounded 구현은 병합되었다. 따라서 여기의 `product_implementation_authorized: false`는 **당시 pre-implementation 상태**로만 읽는다. 새 이미지 생성과 향후 추가 제품 mutation은 여전히 별도 명시 요청/fresh Gate가 필요하며, Android 실제 기기·Windows visible Human·사람 검증은 실제 실행 전 PASS로 승격하지 않는다.
 
-## 이번 세션의 플랫폼 preflight 중단 상태
+## 역사 플랫폼 preflight 중단 상태 · 2026-08-10
 
 사용자가 2026-08-10에 `VERIFY_LOCAL_WINDOWS_ANDROID_DEVICE_AND_HUMAN_GATES` 작업을 나중에 다시 수행하기로 연기하고 인수인계를 우선했다. 이 이력은 역사 증거로 보존하며 현재 사용자 지시가 새로 들어오면 다시 current truth를 읽고 재판정한다.
 
@@ -273,22 +279,22 @@ user_disposition: DEFERRED_BY_USER
 
 ## 다음 재개 절차
 
-제품 구현 또는 플랫폼 작업을 다시 시작할 때 과거 채팅의 SHA·스크립트를 그대로 신뢰하지 않는다.
+새 채팅·제품 구현·플랫폼·Visual 작업을 다시 시작할 때 과거 채팅의 SHA·스크립트를 current truth로 사용하지 않는다.
 
 ```text
-1. Base 최신 main/root/open PR 재조회
+1. Base 최신 main/root/Registry/open PR 재조회
 2. Project 최신 main/open PR/관련 Decision 재조회
-3. exact Project Notion Home·Work·Flow·Core System 재조회
-4. current_user_planning_status, current_vertical_slice_implementation_gate_20260820, current_operating_state 재조회; 플랫폼/device 재인가 작업일 때만 current_entry_gate_20260808을 역사 비교 근거로 추가 확인
-5. live context 의미 상태와 fresh truth 차이 교정
-6. 자산 제작 요청이면 docs/17 Visual/UX 요구와 Notion 비주얼 바이블·Flow·에셋 라이브러리를 먼저 읽고 승인 자산 1장 단위 루프로 진행
-7. 제품 구현 요청이면 docs/16_VERTICAL_SLICE_IMPLEMENTATION_HANDOFF_PLAN.md + docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md의 fresh-read Gate부터 수행
-8. 플랫폼 collector 재개 시 V2 collector 구현은 재사용하지 않음
-9. 실제 결과 분류
-10. 허용된 다음 Gate만 진행
+3. current r5.4 project contract + exact Project Notion Home/관련 Domain 재조회
+4. current_user_planning_status + current_visual_production_handoff_20260826 + current_operating_state + current_vertical_slice_implementation_gate_20260820 재조회
+5. 플랫폼/device 재인가 작업일 때만 current_entry_gate_20260808을 역사 비교 근거로 추가 확인
+6. live context 의미 상태와 fresh truth 차이 교정
+7. Visual 요청이면 docs/17 + docs/19 + Notion Visual Bible/Asset Library를 읽고 brief → explicit approval → exactly one result → review
+8. 실제 Godot 제품 구현 요청이면 r5.4 `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF`로 전환하고 Codex가 Project GitHub + Notion을 독립 fresh-read
+9. PowerShell은 Godot local 실행·검증이 실제 필요할 때만 사용하며 local Codex launcher로 사용하지 않음
+10. 실제 결과와 evidence ceiling을 분류하고 허용된 다음 Gate만 진행
 ```
 
-다음 collector에서 자동화되지 않는 항목은 계속 `NOT_RUN`으로 남긴다.
+자동화되지 않는 항목은 계속 `NOT_RUN`으로 남긴다.
 
 - Windows visible local render.
 - physical keyboard/mouse usability observation.
@@ -300,30 +306,32 @@ user_disposition: DEFERRED_BY_USER
 
 ## Base 관찰
 
-Base remote `main`의 exact SHA는 이 live router에 current 값으로 저장하지 않는다. 매 resume/post-merge마다 `ALWAYS_REFETCH_CURRENT_MAIN`으로 다시 읽고, 프로젝트의 Base 적용 권위는 `docs/BASE_RULES_VERSION.md`와 `skills/PROJECT_BASE_ADAPTER.json`의 pin을 우선한다. 새 Base 기능은 별도 current-contract 검토 없이 자동 채택하지 않는다.
+Base remote `main`의 exact SHA는 이 live router에 current 값으로 저장하지 않는다. 매 resume/post-merge마다 `ALWAYS_REFETCH_CURRENT_MAIN`으로 다시 읽고, 프로젝트의 Base 적용 권위는 current r5.4 project contract와 `docs/BASE_RULES_VERSION.md`·`skills/PROJECT_BASE_ADAPTER.json`의 compatibility pin을 구분한다. 새 Base 기능은 별도 current-contract 검토 없이 자동 채택하지 않는다.
 
 과거 handoff에서 관측한 Base SHA는 위 `historical_base_main_at_handoff`에 증거 스냅샷으로 보존한다.
 
 ## 먼저 읽을 것
 
 1. `AGENTS.md`.
-2. `docs/BASE_RULES_VERSION.md`와 `skills/PROJECT_BASE_ADAPTER.json`.
-3. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`.
-4. `[기획서]/00_프로젝트_허브/HANDOFF.md`.
+2. `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` / `TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01`.
+3. `docs/BASE_RULES_VERSION.md`와 `skills/PROJECT_BASE_ADAPTER.json`.
+4. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`.
 5. `docs/planning-data/current_user_planning_status.json`.
-6. `docs/planning-data/current_operating_state.json`.
-7. `docs/planning-data/current_vertical_slice_implementation_gate_20260820.json`.
-8. `docs/planning-data/current_entry_gate_20260808.json` — 플랫폼/device 과거 pre-implementation Gate 비교가 실제로 필요할 때만 역사 근거로 읽는다.
+6. `docs/planning-data/current_visual_production_handoff_20260826.json`.
+7. `docs/planning-data/current_operating_state.json`.
+8. `docs/planning-data/current_vertical_slice_implementation_gate_20260820.json`.
 9. exact Project Notion의 `Project Home`, `02 · 비주얼 바이블`, `03 · UI · 전투 Flow Map`, `04 · 에셋 라이브러리`, `09 · 세계관 · 강호 비무행 · Vertical Slice`, `10 · 상대 15명 · 강호행로 8노드 · 텍스트 UX`, `11 · 상대 무공 배정 · Route 예산 · 비전투 Wire`, `12 · Vertical Slice · 기획 완료 기준선`, `13 · 기획 완료 · Visual/구현 Handoff`와 현재 Decision 페이지.
-10. `docs/16_VERTICAL_SLICE_IMPLEMENTATION_HANDOFF_PLAN.md`와 `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md`.
+10. `docs/16_VERTICAL_SLICE_IMPLEMENTATION_HANDOFF_PLAN.md`, `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md`, `docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md`.
 11. 질문별 분야 책임 원본과 실제 코드·테스트·GitHub PR metadata.
+12. `[기획서]/00_프로젝트_허브/HANDOFF.md`와 `docs/planning-data/current_entry_gate_20260808.json`은 필요한 역사/플랫폼 비교 범위에서만 읽는다.
 
 Google Sheets는 신규 기획 입력 경로로 사용하지 않으며 migration 잔존 정보를 확인해야 할 때만 보조 증거로 읽는다.
 
 ## 현재 위험·미검증
 
 - 첫 5전 PC-first Vertical Slice Phase I–VI는 승인 범위가 구현·병합됐다. 다만 Windows visible Human usability, Android 실기기, Human 재미·가독성·몰입, 최종 Visual/VFX/Audio는 계속 `NOT_RUN`이며 완료로 승격하지 않는다.
-- `TEN-VIS-A01~A06`은 요구사항만 승인됐고 `NOT_GENERATED`; Human 최종 Visual 승인도 `NOT_RUN`이다.
+- 2026-08-25 승인 Reference Set(`TEN-IMG-001`, `TEN-VIS-CHAR-MASTER-001`, `TEN-VIS-A07-CANDIDATE`, `TEN-VIS-A01`)은 Visual continuation 기준으로 승인됐지만 runtime/shipping asset PASS가 아니다. `OPPONENT_CHARACTER_MASTER_01`은 current r5.4 다음 단일 결과이며 아직 `NOT_RUN / WAITING_EXPLICIT_USER_GENERATION_APPROVAL`이다.
+- `TEN-VIS-A02` 15인 초상, `TEN-VIS-A03` 전투 전신, `TEN-VIS-A04` Route 8아이콘, `TEN-VIS-A05` Result/Completion 표식, `TEN-VIS-A06` 추가 전투 배경은 아직 최종 제작/승격되지 않았다.
 - 후보 영구 스테이터스 총량 `20/22/24/26/28`, 성급 `3/7/7/7/9`, Route 회복 `최대 체력25% + 기력1 + 내력1`은 `REVERSIBLE_*_SEED`이며 실제 밸런스 PASS가 아니다.
 - 대량 밸런스 시뮬레이션은 계약만 있고 `NOT_RUN`이다.
 - 반복 또래 무인과 후보 15명의 정확한 이름·성별·외형·세부 소속·말투는 `REVERSIBLE_CONTENT_DETAIL`이다.
@@ -332,7 +340,6 @@ Google Sheets는 신규 기획 입력 경로로 사용하지 않으며 migration
 - Android 실제 기기·터치·back·safe area·lifecycle·저장·성능 증거는 `NOT_RUN / BLOCKED_UNVERIFIED`다.
 - Windows visible local render·실물 입력·접근성 사용자·Release 성능은 자동 제품 검증과 별개다.
 - STEP 14 사람 검증은 `NOT_RUN`이다.
-- `TEN-IMG-001`은 chat exploration까지 수행·검토했으나 제품 자산이 아니며 새 이미지 생성은 사용자 명시 요청이 필요하다.
 - CI 공급망 mutable/stale action-pin 후속은 Issue #140에서 `RESOLVED / CLOSED_COMPLETED`; 현재 미해결 위험이 아니다.
 - `OBSERVATION_ANSWER_LEAK_RISK`는 직접 공개를 바꾸지 않은 채 사람 측정을 기다린다.
 - `future_product_mutation_authorized: false`를 유지한다. 이는 이미 병합된 Phase I–VI를 부정하지 않고 **새 추가 mutation**만 차단한다.
@@ -347,9 +354,9 @@ Google Sheets는 신규 기획 입력 경로로 사용하지 않으며 migration
 - PR #82와 그 SHA는 역사 자료이지 현재 active planning PR이 아니다.
 - 사용자 최신 지시로 중단된 작업은 실패로 승격하지 않고 `DEFERRED_BY_USER`와 실제 검증 ceiling을 함께 기록한다.
 
-## LOCAL_EXECUTOR_HANDOFF_CHECKPOINT — 2026-08-12
+## 역사 LOCAL_EXECUTOR_HANDOFF_CHECKPOINT — 2026-08-12 · CURRENT EXECUTION SUPERSEDED
 
-`TEN-DEC-20260811-LOCAL-EXECUTOR-BOOTSTRAP-01`의 로컬 실행환경 작업은 사용자의 인수인계 우선 지시로 현재 checkpoint에서 멈춘다. 실행 정본은 `tools/start_ten_paces_local_executor.ps1`이며, 이 checkpoint는 제품 구현 완료를 의미하지 않는다.
+`TEN-DEC-20260811-LOCAL-EXECUTOR-BOOTSTRAP-01`의 로컬 실행환경 작업은 당시 사용자의 인수인계 우선 지시로 checkpoint에서 멈췄다. 실행 산출물은 `tools/start_ten_paces_local_executor.ps1`이며, 아래 값은 당시 환경/학습/회귀를 보존하는 역사 evidence다. r5.4 current execution route가 아니다.
 
 ```yaml
 local_executor_launcher: tools/start_ten_paces_local_executor.ps1
@@ -366,4 +373,4 @@ FRESH_POWERSHELL_REPEAT_RUN: NOT_RUN
 product_mutation_after_checkpoint: NOT_AUTHORIZED_BY_READINESS_EVIDENCE
 ```
 
-historical PID/port/session 값은 이 문서에서 current authority로 사용하지 않는다. 새 세션은 GitHub/exact Project Notion을 먼저 다시 읽은 뒤 `IN_CODEX_FRESH_READINESS_GATE`를 수행하고, 그 Gate가 PASS일 때만 `FRESH_POWERSHELL_REPEAT_RUN_GATE`로 진행한다. 두 Gate가 끝날 때까지 launcher/process/listening-port 존재를 live readiness PASS로 승격하지 않는다.
+historical PID/port/session, `IN_CODEX_FRESH_READINESS_GATE`, `FRESH_POWERSHELL_REPEAT_RUN_GATE`, project-specific `CODEX_HOME`, dedicated 8003/9503 port route는 current readiness 선행조건이 아니다. 현재는 r5.4에 따라 local Godot 실행·검증이 실제 필요할 때만 PowerShell을 사용하고, 실제 Godot 제품 구현은 `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF` 뒤 Codex가 Project GitHub + Notion을 독립 fresh-read해 자신의 구현환경에서 수행한다. 과거 launcher/process/listening-port 존재를 current readiness PASS로 승격하지 않는다.
