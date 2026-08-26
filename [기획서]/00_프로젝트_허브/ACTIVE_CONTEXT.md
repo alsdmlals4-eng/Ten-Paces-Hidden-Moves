@@ -47,13 +47,15 @@ next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
 next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 user_directed_planning_work_mode: COMPLETE
 user_directed_planning_decision: TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01
-user_directed_planning_next_package: CONTINUE_CONSUMER_FIRST_VISUAL_ASSET_PRODUCTION_THEN_HUMAN_VALIDATION
-user_directed_planning_next_decision: EXPLICIT_SINGLE_IMAGE_GENERATION_APPROVAL_GATE
+user_directed_planning_next_package: CONTINUE_CONSUMER_FIRST_VISUAL_ASSET_PRODUCTION_IN_GPT_WORK_THEN_HUMAN_VALIDATION
+user_directed_planning_next_decision: GPT_WORK_FRESH_READ_AND_CONSUMER_ASSET_DERIVATION_GATE
 user_directed_planning_status: PLANNING_COMPLETE_VISUAL_PRODUCTION_ACTIVE
 user_directed_planning_pr_authority: GITHUB_PR_METADATA
-planning_visual_next: DOGYEOM_COMBAT_BATTLER_01
-planning_visual_generation: USER_EXPLICIT_EXACTLY_ONE_RESULT_REQUIRED
-planning_visual_review: USER_APPROVED_REFERENCE_SET_20260825_AND_OPPONENT_CHARACTER_MASTER_01_20260826_NOT_RUNTIME_VISUAL_PASS
+planning_execution_surface: GPT_WORK
+planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md
+planning_visual_next: DOGYEOM_STATUS_PORTRAIT_01
+planning_visual_generation: GPT_WORK_RESUME_PREFER_NON_GENERATIVE_CROP_EXACTLY_ONE_IF_GENERATIVE
+planning_visual_review: USER_APPROVED_REFERENCE_SET_20260825_CHARACTER_MASTER_AND_DOGYEOM_COMBAT_BATTLER_20260826_NOT_RUNTIME_VISUAL_PASS
 planning_visual_state: docs/planning-data/current_visual_production_handoff_20260826.json
 planning_visual_historical_state: docs/planning-data/current_visual_production_handoff_20260825.json
 planning_visual_authority: TEN-DEC-20260820-VISUAL-UX-SYSTEM-01
@@ -69,7 +71,7 @@ base_remote_observation: CURRENT_REMOTE_REQUIRES_LIVE_REFETCH_NO_AUTOMATIC_PROJE
 
 `active_planning_*`, `active_decision_state`, `next_package`, `next_planning_decision`은 `docs/planning-data/current_operating_state.json`이 소유하는 플랫폼 운영 상태와 동기화한다. 완료된 Vertical Slice 기획/Visual production 상태는 `docs/planning-data/current_user_planning_status.json`, `docs/planning-data/current_visual_production_handoff_20260826.json`, `user_directed_planning_*`·`planning_visual_*` overlay가 소유하며 기존 플랫폼 운영 계약을 덮어쓰지 않는다.
 
-플랫폼 Adapter 구현 Gate는 향후 플랫폼 확장 경계로 계속 유효하다. 2026-08-20 `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`과 `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01` 자체는 제품 구현 권한이 아니었지만, 후속 `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`이 첫 5전 PC-first Vertical Slice Phase I–VI 구현을 명시적으로 허용했고 해당 범위는 현재 `main`에 병합됐다. 따라서 현재 상태는 `phase_i_vi_implementation: AUTHORIZED_AND_MERGED`이며, **추가 제품 mutation**만 `future_product_mutation_authorized: false`로 새 명시 요청 + fresh Gate를 요구한다. 현재 Visual production은 r5.4의 `text brief → explicit approval → exactly one result → review` 경계와 `TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01`의 **actual game consumer required** 원칙을 함께 사용한다.
+플랫폼 Adapter 구현 Gate는 향후 플랫폼 확장 경계로 계속 유효하다. 2026-08-20 `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`과 `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01` 자체는 제품 구현 권한이 아니었지만, 후속 `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`이 첫 5전 PC-first Vertical Slice Phase I–VI 구현을 명시적으로 허용했고 해당 범위는 현재 `main`에 병합됐다. 따라서 현재 상태는 `phase_i_vi_implementation: AUTHORIZED_AND_MERGED`이며, **추가 제품 mutation**만 `future_product_mutation_authorized: false`로 새 명시 요청 + fresh Gate를 요구한다. 현재 Visual production은 r5.4의 `text brief → explicit approval → exactly one result → review` 경계와 `TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01`의 **actual game consumer required** 원칙을 함께 사용한다. 사용자는 이후 작업 surface를 **GPT Work**로 지정했으며, Work에서도 Project GitHub + exact Project Notion fresh-read가 current authority보다 우선하는 memory 대체물이 아니다.
 
 이 live block에는 current main SHA나 열린 PR 번호를 저장하지 않는다. 새 세션·post-merge에서는 GitHub `main`, 열린 PR, exact Project Notion, current operating/visual/entry gate를 다시 읽고 의미 상태만 판정한다. exact SHA/run ID·PR 번호는 아래의 명시적 역사·관측 증거로만 취급한다.
 
@@ -112,6 +114,7 @@ authority_bootstrap_merge_commit: 43a6e625c57c6f3e50b562e494fec074be553457
 - Visual/UX Requirement 승인: `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01`, `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md`, `docs/planning-data/approved_20260820_vertical_slice_visual_ux_contract.json`.
 - Consumer-first Visual production 승인: `TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01`, `docs/decisions/2026-08-26_VISUAL_CONSUMER_ASSET_PRODUCTION_DECISION.md`.
 - 현재 Visual production Gate: `docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md`, `docs/planning-data/current_visual_production_handoff_20260826.json`.
+- GPT Work 인수인계: `docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md` + exact Project Notion `2026-08-26 · GPT Work 인수인계`.
 - 2026-08-25 승인 Reference Set: `docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md`, `docs/planning-data/current_visual_production_handoff_20260825.json` — 승인 Reference와 당시 max-three cadence의 역사 evidence이며 current execution owner가 아니다.
 - 구현 Gate: `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`, `docs/planning-data/current_vertical_slice_implementation_gate_20260820.json`.
 - Phase I–VI 상태: `AUTHORIZED_AND_MERGED`; exact PR/SHA는 위 관측 증거 스냅샷에서만 역사 증거로 보존한다.
@@ -142,7 +145,7 @@ authority_bootstrap_merge_commit: 43a6e625c57c6f3e50b562e494fec074be553457
 
 - `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01` — 아래 첫 5전 Vertical Slice 기획 계보를 사용자 완료 승인한다.
 - `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01` — 통합 수묵 전술 화폭, 화면별 정보 위계, 재사용 컴포넌트, 최소 신규 자산 요구사항을 승인하고 당시 명시적 자산/구현 요청 대기로 전환했다. 이후 2026-08-25 사용자가 Visual 작업을 명시 재개했고, 2026-08-26 r5.4 current Gate가 승인당 정확히 1개 결과 cadence를 소유한다.
-- `TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01` — 설명용/스타일 검증용 이미지를 current production 대상으로 만들지 않고 실제 게임 소비처가 확인된 자산만 생성한다. 승인 도겸 Master의 다음 대상은 전장 battler, 이후 상태 패널 portrait와 exact card ID의 `CardView.illustration`이다.
+- `TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01` — 설명용/스타일 검증용 이미지를 current production 대상으로 만들지 않고 실제 게임 소비처가 확인된 자산만 생성한다. 도겸 Character Master와 실제 전장 consumer용 `DOGYEOM_COMBAT_BATTLER_01`은 사용자 승인 완료이며, 다음은 상태 패널 consumer용 `DOGYEOM_STATUS_PORTRAIT_01`, 이후 exact card ID의 `CardView.illustration`이다.
 - `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01` — Main→시작 6중4→비무행 도입→Briefing→Combat Review Overlay→Duel Result/Reward 별도 Scene→Route 2노드→다음 비무→5전 완주.
 - `TEN-DEC-20260820-VERTICAL-SLICE-CONTENT-DETAIL-01` — 후보 15명·8개 Route·텍스트 UX.
 - `TEN-DEC-20260820-VERTICAL-SLICE-LOADOUT-ROUTE-WIRE-01` — 기존 10권 재사용·다음 후보 선잠금·Route 수치 Seed·비전투 Wire.
@@ -152,7 +155,7 @@ authority_bootstrap_merge_commit: 43a6e625c57c6f3e50b562e494fec074be553457
 - 역사 구현 표식: `runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65`.
 - V6 원장: `2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
 
-위 App Flow·상세 계약·Visual/UX 요구사항은 계획 권위다. 사용자 `기획완료`와 후속 Visual/UX 승인 자체는 제품 mutation 권한이 아니었고, 이후 `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`이 첫 5전 Phase I–VI bounded implementation을 별도로 승인했다. PR #65와 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`는 선행 런타임/자동검증 계보로 보존하고, 현재 전체 Phase I–VI 구현 상태는 상단 `phase_i_vi_implementation: AUTHORIZED_AND_MERGED`가 라우팅한다. 현재 Visual은 사용자 승인 `OPPONENT_CHARACTER_MASTER_01`을 source master로 사용해 **실제 전장 소비처용 `DOGYEOM_COMBAT_BATTLER_01` 한 장의 명시적 생성 승인**을 기다린다. 추가 제품 mutation은 별도 fresh Gate가 필요하다.
+위 App Flow·상세 계약·Visual/UX 요구사항은 계획 권위다. 사용자 `기획완료`와 후속 Visual/UX 승인 자체는 제품 mutation 권한이 아니었고, 이후 `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`이 첫 5전 Phase I–VI bounded implementation을 별도로 승인했다. PR #65와 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`는 선행 런타임/자동검증 계보로 보존하고, 현재 전체 Phase I–VI 구현 상태는 상단 `phase_i_vi_implementation: AUTHORIZED_AND_MERGED`가 라우팅한다. 현재 Visual은 사용자 승인 `OPPONENT_CHARACTER_MASTER_01`과 `DOGYEOM_COMBAT_BATTLER_01`을 보존한 채, **GPT Work에서 실제 상태 패널 소비처용 `DOGYEOM_STATUS_PORTRAIT_01` 파생부터 재개**한다. 가능하면 승인 Master의 비생성 crop/mask/resample을 우선하며, 생성형 작업이 필요하면 r5.4 exact-one 승인 Gate를 다시 적용한다. 추가 제품 mutation은 별도 fresh Gate가 필요하다.
 
 ## 제품 연결·성장 보호 표식
 
@@ -282,19 +285,20 @@ user_disposition: DEFERRED_BY_USER
 
 ## 다음 재개 절차
 
-새 채팅·제품 구현·플랫폼·Visual 작업을 다시 시작할 때 과거 채팅의 SHA·스크립트를 current truth로 사용하지 않는다.
+새 채팅·제품 구현·플랫폼·Visual 작업을 다시 시작할 때 과거 채팅의 SHA·스크립트를 current truth로 사용하지 않는다. 현재 사용자 지시로 Visual continuation의 기본 실행 surface는 GPT Work다.
 
 ```text
-1. Base 최신 main/root/Registry/open PR 재조회
-2. Project 최신 main/open PR/관련 Decision 재조회
-3. current r5.4 project contract + exact Project Notion Home/관련 Domain 재조회
-4. current_user_planning_status + current_visual_production_handoff_20260826 + current_operating_state + current_vertical_slice_implementation_gate_20260820 재조회
-5. 플랫폼/device 재인가 작업일 때만 current_entry_gate_20260808을 역사 비교 근거로 추가 확인
-6. live context 의미 상태와 fresh truth 차이 교정
-7. Visual 요청이면 docs/17 + docs/19 + Notion Visual Bible/Asset Library를 읽고 실제 게임 소비처 확인 → brief → explicit approval → exactly one result → review
-8. 실제 Godot 제품 구현 요청이면 r5.4 `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF`로 전환하고 Codex가 Project GitHub + Notion을 독립 fresh-read
-9. PowerShell은 Godot local 실행·검증이 실제 필요할 때만 사용하며 local Codex launcher로 사용하지 않음
-10. 실제 결과와 evidence ceiling을 분류하고 허용된 다음 Gate만 진행
+1. GPT Work에서 새 세션 시작
+2. Base 최신 main/root/Registry/open PR 재조회
+3. Project 최신 main/open PR/관련 Decision 재조회
+4. current r5.4 project contract + exact Project Notion Home/Visual Bible/Asset Library/GPT Work 인수인계 재조회
+5. current_user_planning_status + current_visual_production_handoff_20260826 + docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md + current_operating_state + current_vertical_slice_implementation_gate_20260820 재조회
+6. 플랫폼/device 재인가 작업일 때만 current_entry_gate_20260808을 역사 비교 근거로 추가 확인
+7. live context 의미 상태와 fresh truth 차이 교정
+8. Visual 요청이면 실제 게임 소비처 확인 후 `DOGYEOM_STATUS_PORTRAIT_01`은 승인 Master의 비생성 crop/mask/resample을 우선; 생성형 작업이 필요하면 brief → explicit approval → exactly one result → review
+9. 실제 Godot 제품 구현 요청이면 r5.4 `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF`로 전환하고 Codex가 Project GitHub + Notion을 독립 fresh-read
+10. PowerShell은 Godot local 실행·검증이 실제 필요할 때만 사용하며 local Codex launcher로 사용하지 않음
+11. 실제 결과와 evidence ceiling을 분류하고 허용된 다음 Gate만 진행
 ```
 
 자동화되지 않는 항목은 계속 `NOT_RUN`으로 남긴다.
@@ -321,20 +325,21 @@ Base remote `main`의 exact SHA는 이 live router에 current 값으로 저장�
 4. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`.
 5. `docs/planning-data/current_user_planning_status.json`.
 6. `docs/planning-data/current_visual_production_handoff_20260826.json`.
-7. `docs/planning-data/current_operating_state.json`.
-8. `docs/planning-data/current_vertical_slice_implementation_gate_20260820.json`.
-9. exact Project Notion의 `Project Home`, `02 · 비주얼 바이블`, `03 · UI · 전투 Flow Map`, `04 · 에셋 라이브러리`, `09 · 세계관 · 강호 비무행 · Vertical Slice`, `10 · 상대 15명 · 강호행로 8노드 · 텍스트 UX`, `11 · 상대 무공 배정 · Route 예산 · 비전투 Wire`, `12 · Vertical Slice · 기획 완료 기준선`, `13 · 기획 완료 · Visual/구현 Handoff`와 현재 Decision 페이지.
-10. `docs/16_VERTICAL_SLICE_IMPLEMENTATION_HANDOFF_PLAN.md`, `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md`, `docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md`.
-11. 질문별 분야 책임 원본과 실제 코드·테스트·GitHub PR metadata.
-12. `[기획서]/00_프로젝트_허브/HANDOFF.md`와 `docs/planning-data/current_entry_gate_20260808.json`은 필요한 역사/플랫폼 비교 범위에서만 읽는다.
+7. `docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md`.
+8. `docs/planning-data/current_operating_state.json`.
+9. `docs/planning-data/current_vertical_slice_implementation_gate_20260820.json`.
+10. exact Project Notion의 `Project Home`, `02 · 비주얼 바이블`, `03 · UI · 전투 Flow Map`, `04 · 에셋 라이브러리`, `2026-08-26 · GPT Work 인수인계`, `09 · 세계관 · 강호 비무행 · Vertical Slice`, `10 · 상대 15명 · 강호행로 8노드 · 텍스트 UX`, `11 · 상대 무공 배정 · Route 예산 · 비전투 Wire`, `12 · Vertical Slice · 기획 완료 기준선`, `13 · 기획 완료 · Visual/구현 Handoff`와 현재 Decision 페이지.
+11. `docs/16_VERTICAL_SLICE_IMPLEMENTATION_HANDOFF_PLAN.md`, `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md`, `docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md`.
+12. 질문별 분야 책임 원본과 실제 코드·테스트·GitHub PR metadata.
+13. `[기획서]/00_프로젝트_허브/HANDOFF.md`와 `docs/planning-data/current_entry_gate_20260808.json`은 필요한 역사/플랫폼 비교 범위에서만 읽는다.
 
 Google Sheets는 신규 기획 입력 경로로 사용하지 않으며 migration 잔존 정보를 확인해야 할 때만 보조 증거로 읽는다.
 
 ## 현재 위험·미검증
 
 - 첫 5전 PC-first Vertical Slice Phase I–VI는 승인 범위가 구현·병합됐다. 다만 Windows visible Human usability, Android 실기기, Human 재미·가독성·몰입, 최종 Visual/VFX/Audio는 계속 `NOT_RUN`이며 완료로 승격하지 않는다.
-- 2026-08-25 승인 Reference Set(`TEN-IMG-001`, `TEN-VIS-CHAR-MASTER-001`, `TEN-VIS-A07-CANDIDATE`, `TEN-VIS-A01`)은 Visual continuation 기준으로 승인됐지만 runtime/shipping asset PASS가 아니다. `OPPONENT_CHARACTER_MASTER_01` · 도겸은 `USER_APPROVED_2026_08_26` source master이고 Notion Asset Library delivery가 완료됐다. 다음 단일 결과 `DOGYEOM_COMBAT_BATTLER_01`은 실제 전장 소비처 계약용이며 아직 `NOT_RUN / WAITING_EXPLICIT_USER_GENERATION_APPROVAL`이다.
-- `TEN-VIS-A02` 15인 초상, `TEN-VIS-A03` 전투 전신, `TEN-VIS-A04` Route 8아이콘, `TEN-VIS-A05` Result/Completion 표식, `TEN-VIS-A06` 추가 전투 배경은 아직 최종 제작/승격되지 않았다. 신규 생성은 각 실제 게임 소비처를 먼저 확인한다.
+- 2026-08-25 승인 Reference Set(`TEN-IMG-001`, `TEN-VIS-CHAR-MASTER-001`, `TEN-VIS-A07-CANDIDATE`, `TEN-VIS-A01`)은 Visual continuation 기준으로 승인됐지만 runtime/shipping asset PASS가 아니다. `OPPONENT_CHARACTER_MASTER_01` · 도겸과 `DOGYEOM_COMBAT_BATTLER_01`은 `USER_APPROVED_2026_08_26`이며 Notion Asset Library delivery가 완료됐다. Battler의 opponent-specific runtime routing과 runtime art integration은 `NOT_RUN`이다. 다음 Visual은 GPT Work에서 `DOGYEOM_STATUS_PORTRAIT_01`을 실제 `CombatantStatusPanel` 소비처 기준으로 파생하는 작업이며 현재 `GPT_WORK_RESUME_REQUIRED`다.
+- `TEN-VIS-A02`는 도겸 상태 초상을 다음으로 두고 나머지 상대 14인의 초상이 미제작이다. `TEN-VIS-A03`은 도겸 Battler source 승인까지 완료됐지만 나머지 14인과 runtime routing이 미완료다. `TEN-VIS-A04` Route 8아이콘, `TEN-VIS-A05` Result/Completion 표식, `TEN-VIS-A06` 추가 전투 배경도 실제 consumer 확인 뒤에만 제작한다.
 - 후보 영구 스테이터스 총량 `20/22/24/26/28`, 성급 `3/7/7/7/9`, Route 회복 `최대 체력25% + 기력1 + 내력1`은 `REVERSIBLE_*_SEED`이며 실제 밸런스 PASS가 아니다.
 - 대량 밸런스 시뮬레이션은 계약만 있고 `NOT_RUN`이다.
 - 반복 또래 무인과 후보 15명의 정확한 이름·성별·외형·세부 소속·말투는 `REVERSIBLE_CONTENT_DETAIL`이다.
