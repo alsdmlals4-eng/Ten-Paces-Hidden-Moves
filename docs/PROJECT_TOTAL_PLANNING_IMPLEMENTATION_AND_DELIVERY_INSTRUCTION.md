@@ -2,10 +2,11 @@
 contract_name: PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION
 contract_version: '4.8'
 status: ACTIVE_BASE_CURRENT_MAIN_THIN_ADAPTER_PROJECT_EXECUTION_CONTRACT
-revision: '2026-08-24-r2'
-current_binding_decision: TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01
-source_uploaded_sha256: 6f0541048e084746f6777223521361d0339dbfb2e223c70947f694f1c050f508
+revision: '2026-08-26-r5.4-superset-final'
+current_binding_decision: TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01
+source_uploaded_sha256: fdf238c202cfac6d3a824aae49b8ac525fba023e31bba7df6ece64a2790365a0
 base_repository: https://github.com/alsdmlals4-eng/Base
+base_snapshot_observed_at_binding: edb3b3376603c9f6b00d64af3126304f8c9946bf
 base_snapshot_policy: ALWAYS_REFETCH_CURRENT_COMPLETED_MAIN
 adapter_policy: THIN_ADAPTER_DO_NOT_DUPLICATE_BASE_CANON
 project_fact_policy: PROJECT_CANON_AND_ACTUAL_IMPLEMENTATION_FIRST
@@ -22,6 +23,17 @@ minimum_viable_alternatives: 3
 adversarial_full_loop_minimum: 5
 implementation_reality_gate: REQUIRED
 visual_generation_policy: TEXT_BRIEF_THEN_EXPLICIT_USER_APPROVAL_THEN_EXACTLY_ONE_RESULT
+local_codex_policy: RETIRED_NOT_USED
+gpt_local_codex_orchestration_policy: RETIRED
+codex_execution_policy: INDEPENDENT_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF_ONLY
+powershell_policy: LOCAL_GODOT_OR_VALIDATION_ONLY_NOT_CODEX_LAUNCHER
+fresh_read_bootstrap_policy: PROJECT_GITHUB_NOTION_ONLY_RECONSTRUCTION_REQUIRED
+past_conversation_dependency_policy: NOT_REQUIRED_FOR_NEW_CHAT_RESUME
+shared_godot_runtime_policy: SHARED_APPROVED_EXACT_PIN_DEFAULT_NO_PER_PROJECT_DUPLICATE_BINARY
+shared_godot_ai_port_policy: FIXED_DEFAULT_PORTS_WITH_EXACT_SESSION_ROUTING
+minimum_localization_targets: [ko, en, ja, zh-*]
+chinese_locale_variant: UNKNOWN_UNVERIFIED_USER_DECISION_REQUIRED_BEFORE_LOCALIZATION_LOCK
+responsive_target_profiles: [pc_standard, pc_wide_or_ultrawide, mobile_landscape]
 execution_scope_guard: PROJECT_WORK_ONLY_WHEN_CURRENT_USER_REQUEST_AUTHORIZES_EXECUTION
 protected_product_paths:
   - data/
@@ -30,133 +42,148 @@ protected_product_paths:
   - assets/
   - addons/
   - project.godot
-historical_contract:
-  decision: TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01
-  status: SUPERSEDED_HISTORICAL_EVIDENCE
-  body_root: docs/contracts/integrated-work-v4.5-r2/
+historical_contracts:
+  - decision: TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01
+    status: SUPERSEDED_HISTORICAL_EVIDENCE
+    structured_record: docs/planning-data/approved_20260824_integrated_work_contract_v4_8_r2_binding.json
+  - decision: TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01
+    status: SUPERSEDED_HISTORICAL_EVIDENCE
+    body_root: docs/contracts/integrated-work-v4.5-r2/
 ---
 
-# 프로젝트 총기획·시각화·구현·검증·병합 통합 작업지시문 v4.8 — 십보강호
+# 프로젝트 총기획·시각화·구현·검증·병합 통합 작업지시문 v4.8 r5.4 — 십보강호 Thin Adapter
 
-이 문서는 십보강호의 **현재 프로젝트 실행 계약 진입점**이다. Base의 상세 playbook을 프로젝트에 복제하지 않고, 십보강호가 계속 보존해야 하는 프로젝트 불변식·authority·증거 경계만 소유한다.
+이 문서는 Base 공용 절차의 복사본이 아니다. 십보강호에서 새 채팅·새 담당자가 **현재 GitHub + 현재 Notion만 fresh-read하여 동일한 실행 경계**를 복원하도록 프로젝트 고유 불변식과 최신 계약 locator만 유지한다. 세부 Work Mode·Skill·CI·review·completion 절차는 실행 시점의 최신 Base owner를 progressive-load한다.
 
-## 1. 시작 순서
+## 1. 시작·권위
 
 ```text
 최신 사용자 지시
 → 최신 Base completed main + Base root AGENTS.md
-→ 이 프로젝트 AGENTS.md
-→ 이 v4.8 project adapter
+→ 프로젝트 AGENTS.md
+→ 이 r5.4 thin adapter
 → [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
 → current planning JSON + GitHub live metadata + exact Project Notion
-→ 최신 관련 Decision / 질문별 owner
+→ 최신 Decision / 질문별 owner
 → 실제 code/data/scene/resource/asset/test/runtime
 ```
 
-Base 원격 최신 규칙은 progressive-load로 사용하며, 과거 Base snapshot이나 release pin을 current remote truth로 재사용하지 않는다. 프로젝트의 과거 Base v9.4.3 pin은 채택 이력·호환 증거이며 최신 사용자 지시와 이 계약을 덮어쓰지 않는다.
+- 과거 채팅·Handoff·저장된 SHA를 current truth로 자동 승격하지 않는다.
+- GitHub와 Notion 의미가 다르면 mutation 전에 `CONTEXT_DRIFT_RECHECK_REQUIRED`다.
+- Google Sheets는 고유 미이관 자료를 찾는 `MIGRATION_ONLY_UNTIL_REMOVAL` source이며 신규 기획·승인·current state 작업면이 아니다.
+- Base v9.4.3 등 프로젝트가 보존한 release pin은 compatibility/adoption evidence이지 current Base remote truth가 아니다.
 
-## 2. 권위와 DOMAIN SPLIT
+## 2. DOMAIN SPLIT
 
-```text
-사용자의 최신 명시 지시
-→ project AGENTS / 보안 / 엔진 / 데이터 규칙
-→ Active Context + 승인 계약
-→ current Decision + 분야 정본
-→ actual code/data/scene/resource/asset/test/runtime
-→ 프로젝트가 채택한 호환 adapter/lock
-→ Base latest completed main owner
-→ 검증된 외부 근거
-→ 추론 / 과거 대화 / 역사 문서
-```
+**Notion**은 사람용 Project Home, Flow/Storyboard, 세계관·캐릭터·핵심 시스템 설명, 승인 Visual, 사람이 직접 비교·수정하는 핵심 표를 소유한다.
 
-### Notion — `NOTION_HUMAN_FACING_CANON`
+**GitHub repository**는 Markdown/JSON structured canon, game data, code, Scene/Resource, tracked asset, tests, CI, runtime evidence를 소유한다.
 
-- 사람용 Project Home.
-- 전체 Flow / Storyboard.
-- 세계관·캐릭터·핵심 시스템 설명.
-- 승인 Visual.
-- 사람이 비교·수정하는 핵심 표와 전체 그림.
-- Benchmark/Reference의 human-facing 요약.
+승인된 의미 변경은 같은 Decision/Requirement identity로 올바른 양쪽 owner에 반영하고 destination readback한다. 한쪽의 보기 좋은 설명이 다른 쪽의 실제 구현 사실을 덮어쓰지 않는다.
 
-### Repository — `REPOSITORY_STRUCTURED_CANON` + `REPOSITORY_RUNTIME_TRUTH`
-
-- Markdown / JSON structured canon.
-- game data / code / Scene / Resource / tracked asset.
-- tests / CI / build·runtime evidence.
-
-### Google Sheets — `MIGRATION_ONLY_UNTIL_REMOVAL`
-
-기존 workbook은 고유 미이관 자료를 찾기 위한 compatibility source다. 신규 기획·승인·상태 관리의 기본 작업면이 아니다. Sheet-only 변경은 current canon으로 자동 승격하지 않는다.
-
-## 3. 십보강호 보호 코어
+## 3. 프로젝트 코어·보호 범위
 
 - 1대1 10칸 일자형 논리 전장.
-- 시작 공개 거리 2, 거리 0 `[밀착]`.
-- 플레이어 화면은 절대 발판 번호보다 `거리 N` 중심.
+- 시작 공개 거리 2, 거리 0 `[밀착]`; 플레이어 화면은 절대 번호보다 `거리 N` 중심.
 - `3수 → 해결 → 3수 → 해결 → 4수 → 해결`.
-- 공개 상태·해결 이력 기반 상대 추론.
-- AI는 플레이어의 미확정 계획·숨은 기술 배치·UI 의도 신호를 읽지 않는다.
-- 덱·손패·드로우·장착 기술 제한 없음.
-- 무공서가 아니라 현재 해금 기술을 수에 배치.
+- 공개 상태·해결 이력 기반 상대 추론; AI의 미확정 플레이어 계획·숨은 배치·UI 의도 신호 열람 금지.
+- 덱·손패·드로우·장착 기술 제한 없이 현재 해금 기술을 수에 배치.
 - 순차 `[합]`, 방어도, 회피, 중단, 강건, 복기.
 - 성장은 판단을 대체하지 않고 파훼 선택지를 확장한다.
+- Windows·Android는 전투 규칙·AI·콘텐츠·ID·수치·저장 의미의 공유 코어를 사용하고 플랫폼 차이는 adapter에 한정한다.
 
-정확한 전투 수치·현재 구현 binding은 `docs/02_COMBAT_RULES.md`, 최신 Decision, 실제 runtime을 따른다.
+코어·Core Loop·주요 UX·경제/보상·서사 의미·저장 호환성을 바꾸는 변경은 새 Decision이 필요하다.
 
-## 4. Mutable state 단일 owner
+## 4. Work Mode·Skill·Evidence
 
-다음 값은 stable router나 README에 current snapshot으로 복제하지 않는다.
+- `skills/SKILL_REGISTRY.json`이 프로젝트-local Skill authority다.
+- 최신 Base `skills/SKILL_REGISTRY.json`과 generated active map을 inventory하고 trigger가 맞는 Base Skill만 progressive-load한다.
+- 파일 존재·tool discovery·CI success를 runtime/Human/player PASS로 승격하지 않는다.
+- Windows visible, 실물 입력, Android actual device, accessibility user, release performance, Human/player experience를 실행하지 않았으면 `NOT_RUN` 또는 `BLOCKED_UNVERIFIED`다.
+- 중요 요구는 `requirement → owner → implementation/canon → evidence → completion`으로 추적한다.
+- 완료 후보는 최소 5회 full-scope adversarial loop와 clean exit 뒤에만 완료로 승격한다.
 
-```text
-current main SHA
-active PR / exact HEAD
-current Work Mode
-product stage
-next package / next Decision
-human/device validation state
-```
+## 5. Godot·Codex·PowerShell 현재 역할
 
-변동 상태는 `ACTIVE_CONTEXT.md` + current structured JSON + GitHub live metadata + exact Project Notion을 fresh-read해 판정한다.
-
-## 5. PLAN / BUILD / REVIEW
-
-- `PLAN`: 의도·근거·대안·설계·Decision 확정.
-- `BUILD`: 승인 범위만 구현. 코드·정책·계약 변경은 RED→GREEN을 사용한다.
-- `REVIEW`: 전체 영향범위·untouched consumer·정본·test·Notion/repository readback을 적대적으로 검토한다.
-
-`진행해`, `계속해`, `남은 작업 진행`은 이미 승인된 같은 계약의 continuation이다. 새 코어·범위·비용·파괴적 migration 권한을 자동으로 만들지 않는다.
-
-## 6. Open PR / GitHub 안전
-
-- 모든 pre-existing open/draft/ready PR은 기본 `READ_ONLY`다.
-- 현재 승인 계약에서 latest completed main으로부터 만든 단 하나의 current-task PR만 exact HEAD·required checks·review/thread/ruleset 확인 후 merge할 수 있다.
-- force push, direct main push, admin/ruleset bypass는 금지한다.
-- merge 뒤 새 main을 다시 읽기 전에는 완료로 승격하지 않는다.
-
-## 7. 이미지·Visual
-
-새 이미지 생성/스타일 변경은 `canon review → text brief → 사용자 명시 승인 → 정확히 1개 결과 → 사용자 검토` 순서다. 승인 Visual만 exact Notion destination에 attach하고 readback한다. 현재 reference-only 또는 미승인 시안을 제품 자산으로 승격하지 않는다.
-
-## 8. Implementation Reality Gate
+현재 실행 경계는 다음이다.
 
 ```text
-DISCOVERY
-→ CALLABLE / IMPLEMENTED
-→ ACTUAL INVOCATION / EXECUTION
-→ DURABLE EFFECT / READBACK
-→ RUNTIME / CLIENT / HUMAN OBSERVATION when required
+GPT
+→ 기획 / 조사 / 검수 / Base / Notion / 문서 / Visual
+
+실제 Godot 제품 구현 없음
+→ GPT가 정본 readback 후 닫음
+
+실제 Godot 제품 구현 있음
+→ CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
+→ Codex가 프로젝트 GitHub + Notion을 독립 fresh-read
+→ Codex 자신의 구현환경에서 Godot 제품 구현/test/runtime evidence
+→ READY_FOR_GPT_REVIEW
+→ GPT 최종 검수/정본/PR closeout
 ```
 
-파일 존재·CI 성공·Notion readback만으로 재미, 실제 기기, 접근성 사용자, 인간 이해를 PASS 처리하지 않는다.
+현재 실행 경로에서 금지한다.
 
-## 9. 검증·완료
+- GPT → PowerShell → local Codex one-shot launcher.
+- 프로젝트별 `CODEX_HOME`을 필수 준비조건으로 사용.
+- 과거 dedicated Godot binary/HTTP 8003/WS 9503 같은 checkpoint를 current readiness로 재사용.
+- process/port 존재만으로 exact project/session readiness PASS 주장.
 
-- 중요한 결정은 현재 상태 조사 + 최소 3개 실질 대안 + 장기 총비용/위험/되돌리기 비교를 거친다.
-- 적대적 검토는 최소 5회 full loop이며, 5회 이후에도 새 blocking finding이 있으면 계속한다.
-- `REQUIRED_WORK_REMAINING: 0`은 completion candidate일 뿐이다.
-- implementation/canon/test/consumer/PR/sync/readback correction rescan과 final clean review 뒤에만 완료한다.
-- 실행하지 않은 Windows visible, Android physical device, Human usability/player experience, release performance는 `NOT_RUN`으로 유지한다.
+PowerShell은 사용자 PC의 **Godot 실행·검증·환경 확인이 실제 필요할 때만** 사용하며 Codex launcher가 아니다.
 
-## 10. v4.5 r2 역사 보존
+호환 가능한 host에서는 프로젝트별 동일 Godot binary/port를 증식하지 않고 **검증된 shared exact Godot pin + Godot AI 기본 포트 + exact project/editor/session identity**를 기본으로 한다. 프로젝트 정본의 engine compatibility가 shared pin과 맞지 않으면 자동으로 열지 않고 compatibility Gate를 다시 판정한다.
 
-`TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01`, `docs/planning-data/approved_20260811_integrated_work_contract_v4_5_r2_binding.json`, `docs/contracts/integrated-work-v4.5-r2/`는 재현·감사·rollback을 위한 **역사 증거**다. 삭제하거나 현재 작업계약으로 다시 승격하지 않는다.
+## 6. Visual·UI·Localization
+
+Visual 제작 전 current Notion Visual Bible/Asset Library와 repository Visual requirement/inventory를 읽고 `VISUAL_REQUIREMENT_DELETE_TEST`, asset coverage, Art Style Lock을 확인한다.
+
+새 이미지 생성/생성형 편집은 현재 계약에서:
+
+```text
+canon review
+→ text brief
+→ 사용자 명시 승인
+→ 정확히 1개 결과 생성
+→ 사용자 결과 검토
+→ 승인 뒤에만 Notion/repository asset lifecycle 진행
+```
+
+과거 2026-08-25의 `한번에 최대 3장` 작업 메모는 역사 승인 맥락으로 보존하되, 2026-08-26 r5.4 current execution에서는 자동 batch 권한으로 사용하지 않는다.
+
+UI/구조는 최소 `ko / en / ja / zh-*`를 수용할 localization-ready 구조로 계획한다. 중국어 variant는 이 계약에서 추정하지 않으며 프로젝트 Decision으로 `zh-Hans / zh-Hant / both` 중 하나를 확정하기 전 `UNKNOWN_UNVERIFIED`다.
+
+반응형 최소 계획은 `pc_standard / pc_wide_or_ultrawide / mobile_landscape`이며 pixel-identical이 아니라 동일 정보 위계·행동 의미·상태 의미·피드백 의미를 보호한다.
+
+## 7. 현재 제품·시각 상태 해석
+
+현재 제품 단계·Visual 승인·다음 작업은 이 문서에 snapshot으로 고정하지 않는다. 다음 current owner를 fresh-read한다.
+
+- `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
+- `docs/planning-data/current_user_planning_status.json`
+- `docs/planning-data/current_visual_production_handoff_20260825.json`
+- `docs/planning-data/current_operating_state.json`
+- exact Project Notion Home / Visual Bible / Asset Library
+- GitHub live main/open PR/recent commits
+
+이미 병합된 첫 5전 PC-first Vertical Slice Phase I–VI를 이 계약 교체만으로 되돌리지 않는다. 추가 제품 mutation은 current Gate와 사용자 요청을 다시 확인한다.
+
+## 8. Open PR·CI·완료
+
+- 모든 pre-existing open/draft/ready PR은 `READ_ONLY`가 기본이다.
+- current-task continuation이 latest completed main에서 직접 만든 하나의 명확한 PR만 exact HEAD·required checks·review/thread/ruleset Gate 뒤 safe merge할 수 있다.
+- direct main push, force push, admin/ruleset bypass는 금지한다.
+- CI check 이름과 required 상태는 live repository/ruleset에서 발견한다.
+- `REQUIRED_WORK_REMAINING: 0`은 completion candidate이며 correction rescan + 최소 5회 adversarial loop + postmerge GitHub/Notion readback 뒤에만 종료한다.
+
+## 9. r2 → r5.4 migration/non-regression
+
+`TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`의 프로젝트 고유 의미는 삭제하지 않는다.
+
+- Notion human canon / repository runtime canon / Sheet migration-only: **PRESERVED**.
+- Base progressive-load / open PR read-only / IRG / 5회 adversarial review: **PRESERVED**.
+- Fresh-Read GitHub+Notion cold-start: **IMPROVED**.
+- Visual exactly-one approval loop: **CURRENT r5.4 OVERRIDE**.
+- GPT→PowerShell→local Codex, project CODEX_HOME, dedicated port readiness: **INTENTIONALLY SUPERSEDED** by independent Codex Godot product handoff + local Godot validation-only PowerShell.
+- dated/fixed Skill·PR·CI/tool counts: **INTENTIONALLY SUPERSEDED** by live discovery.
+
+r2 Decision과 structured record는 historical evidence로 보존한다. 이 r5.4 adapter 변경 자체는 제품 코드·Scene·Resource·Asset·전투 규칙을 변경하지 않는다.
