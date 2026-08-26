@@ -10,6 +10,8 @@ VISUAL = ROOT / "docs" / "planning-data" / "current_visual_production_handoff_20
 PLANNING = ROOT / "docs" / "planning-data" / "current_user_planning_status.json"
 HANDOFF = ROOT / "docs" / "handoffs" / "2026-08-26_GPT_WORK_HANDOFF.md"
 DECISION = ROOT / "docs" / "decisions" / "2026-08-26_VISUAL_CONSUMER_ASSET_PRODUCTION_DECISION.md"
+BASE_WORK = "templates/project-operations/CHATGPT_WORK_PROJECT_EXECUTION_INSTRUCTION_v4.9.md"
+BASE_WORK_COMPAT = "templates/project-operations/CHATGPT_WORK_PROJECT_EXECUTION_INSTRUCTION_v4.9_COMPATIBILITY_APPENDIX.md"
 
 
 class GptWorkHandoff20260826Tests(unittest.TestCase):
@@ -20,6 +22,9 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
         self.assertEqual("GPT_WORK", visual["handoff"]["next_surface"])
         self.assertTrue(visual["handoff"]["fresh_read_required"])
         self.assertEqual("HANDOFF_READY_GPT_WORK", visual["status"])
+        self.assertEqual("43b3ffb2c5b026e3d4a38dab2338585894d36f61", visual["handoff"]["snapshot_observed_base_main"])
+        self.assertEqual(BASE_WORK, visual["handoff"]["base_work_adapter"])
+        self.assertEqual(BASE_WORK_COMPAT, visual["handoff"]["base_work_compatibility_appendix"])
 
         battler = visual["approved_results"]["DOGYEOM_COMBAT_BATTLER_01"]
         self.assertEqual("USER_APPROVED_2026_08_26", battler["status"])
@@ -43,7 +48,10 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
         for marker in (
             "GPT Work",
             "b6d76410e3aa0edd7a2e698270742187cc471fd9",
-            "06669fe9c6a3ccd6f3b0d19c5757540bfdcc0623",
+            "43b3ffb2c5b026e3d4a38dab2338585894d36f61",
+            BASE_WORK,
+            BASE_WORK_COMPAT,
+            "WORK_IS_EXECUTION_SURFACE_NOT_CANON",
             "DOGYEOM_COMBAT_BATTLER_01",
             "DOGYEOM_STATUS_PORTRAIT_01",
             "MIGRATION_ONLY_UNTIL_REMOVAL",
