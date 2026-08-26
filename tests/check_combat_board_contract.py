@@ -178,13 +178,14 @@ def main() -> None:
         "player_wanderer_ink_v1",
         "enemy_masked_ink_v1",
         "dogyeom_status_portrait_01_v1",
+        "dogyeom_combat_battler_01_v1",
         "player_wanderer_battler_rgba_v1",
         "enemy_masked_battler_rgba_v1",
         "ultimate_ink_gold_sprite_sheet_rgba",
     }
     for asset in active_assets:
         assert res_file(asset["path"]).exists(), asset["path"]
-        assert asset["prompt"]
+        assert asset.get("prompt") or asset.get("source_png_sha256"), asset["id"]
         assert asset.get("license", asset_manifest.get("license", ""))
     ultimate_vfx = next(asset for asset in active_assets if asset["id"] == "ultimate_ink_gold_sprite_sheet_rgba")
     assert ultimate_vfx["transparency_audit"]["has_alpha"] is True
