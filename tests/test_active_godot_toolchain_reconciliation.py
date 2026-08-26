@@ -36,7 +36,9 @@ def plugin_version(relative: str) -> str:
 
 class ActiveGodotToolchainReconciliationTests(unittest.TestCase):
     def test_active_tool_versions_and_project_state_are_preserved(self) -> None:
-        self.assertEqual("3.1.4", plugin_version("addons/godot_ai/plugin.cfg"))
+        # Godot AI source version is mutable repository truth and must be fresh-read.
+        # The 3.1.4 overlay below is historical acceptance evidence, not a current pin.
+        self.assertRegex(plugin_version("addons/godot_ai/plugin.cfg"), r"^\d+\.\d+\.\d+$")
         self.assertEqual("9.7.1", plugin_version("addons/gut/plugin.cfg"))
         self.assertEqual("1.0.0", plugin_version("addons/hera_agent_godot/plugin.cfg"))
         project = (ROOT / "project.godot").read_text(encoding="utf-8")
@@ -87,6 +89,8 @@ class ActiveGodotToolchainReconciliationTests(unittest.TestCase):
         self.assertEqual("1.0.0", overlay["effective_toolchain"]["hera"])
         self.assertEqual("NOT_RUN", overlay["claim_ceiling"]["local_godot_ai_3_1_4_acceptance"])
         self.assertFalse(overlay["claim_ceiling"]["product_implementation_authorized"])
+        if plugin_version("addons/godot_ai/plugin.cfg") != overlay["godot_ai"]["current_repo_version"]:
+            self.assertEqual("NOT_RUN", overlay["claim_ceiling"]["local_godot_ai_3_1_4_acceptance"])
 
     def test_decision_and_contract_define_authority_and_promoted_local_claim_ceiling(self) -> None:
         decision = DECISION.read_text(encoding="utf-8")
