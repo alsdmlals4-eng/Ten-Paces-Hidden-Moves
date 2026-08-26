@@ -2,33 +2,18 @@
   "schema_version": 1,
   "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
   "status": "APPROVED",
-  "protected_base_commit": "b35112592e608cd974411bafe07ef5e37ab866b2",
+  "protected_base_commit": "4f3b580bb9de16feb3833e0360f4b7644b082ae4",
   "decision_ids": [
     "TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01"
   ],
   "approved_paths": [
-    "addons/godot_ai/plugin.cfg",
     "assets/ASSET_MANIFEST.json",
     "assets/portraits/dogyeom_status_portrait_01_v1.png",
     "assets/portraits/dogyeom_status_portrait_01_v1.png.import",
-    "src/run/vertical_slice_battle_metrics.gd.uid",
     "src/run/vertical_slice_combat_bridge.gd",
-    "src/run/vertical_slice_combat_bridge.gd.uid",
-    "src/run/vertical_slice_completion_model.gd.uid",
-    "src/run/vertical_slice_metrics_combat_resolution_engine.gd.uid",
-    "src/run/vertical_slice_opponent_catalog.gd.uid",
-    "src/run/vertical_slice_progression_state.gd.uid",
-    "src/run/vertical_slice_result_model.gd.uid",
-    "src/run/vertical_slice_route_model.gd.uid",
-    "src/run/vertical_slice_run_state.gd.uid",
-    "src/run/vertical_slice_shell.gd.uid",
-    "src/run/vertical_slice_shell_completion_auto.gd.uid",
-    "src/run/vertical_slice_shell_result_auto.gd.uid",
-    "src/run/vertical_slice_shell_route_auto.gd.uid",
-    "src/run/vertical_slice_starter_manual_catalog.gd.uid",
     "src/ui/combatant_status_panel.gd"
   ],
   "approval_source": "USER_EXPLICIT_DOGYEOM_STATUS_PORTRAIT_AND_LIFECYCLE_APPROVAL_2026-08-26",
   "approval_time": "2026-08-26T23:30:00+09:00",
-  "scope_summary": "Approve the exact protected-path delta against the active protected baseline for DOGYEOM_STATUS_PORTRAIT_01 runtime binding. The approved task changes only the Dogyeom asset, its manifest entry, candidate-ID bridge propagation, and status-panel routing; the listed Godot AI plugin and UID files are inherited baseline-to-main deltas and are not modified by this task. The manifest is PR #209-only and will be archived with protected-baseline promotion immediately after merge."
+  "scope_summary": "Approve the exact protected-path delta from PR #209 base 4f3b580bb9de16feb3833e0360f4b7644b082ae4 for DOGYEOM_STATUS_PORTRAIT_01 runtime binding. The approved task changes only the Dogyeom asset, its manifest entry, candidate-ID bridge propagation, and status-panel routing. The manifest is PR #209-only and will be archived with protected-baseline promotion immediately after merge."
 }

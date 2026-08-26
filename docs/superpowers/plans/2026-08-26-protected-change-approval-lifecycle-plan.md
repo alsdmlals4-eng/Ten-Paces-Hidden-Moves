@@ -13,6 +13,7 @@
 ## Global Constraints
 
 - Preserve the Base exact manifest and `approved-protected-change` label gates.
+- The originating manifest PR pins `skills/PROJECT_BASE_ADAPTER.json` `protected_baseline.commit` to its exact PR base SHA and regenerates its derived views.
 - A carried active manifest must fail before Base validation.
 - Cleanup requires an audit record and baseline promotion to the exact PR base SHA.
 - No Godot product behavior changes.
@@ -54,12 +55,13 @@
 **Files:**
 - Create: `docs/implementation/BUILD_APPROVAL_2026-08-26.md`
 - Create: `docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json`
+- Modify: `skills/PROJECT_BASE_ADAPTER.json` and its generated views
 
 **Interfaces:**
 - Consumes: lifecycle checker and existing Base validator.
 - Produces: the exact approved protected-path receipt for PR #209.
 
-- [ ] **Step 1: Add the manifest and BUILD record** with the exact detected paths and user approval source.
+- [ ] **Step 1: Add the manifest and BUILD record** with the exact PR-base detected paths and user approval source; pin the adapter baseline to that PR base and regenerate its derived views.
 - [ ] **Step 2: Run lifecycle, affected Python, Godot, and diff checks**.
 - [ ] **Step 3: Apply the GitHub label and confirm CI is green.**
 
