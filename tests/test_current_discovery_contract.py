@@ -18,6 +18,7 @@ CURRENT_ACTION_PINS = {
     "chickensoft-games/setup-godot": "f166999204a4f2722c6fe042fbaa3b3ea0d9c789",  # upstream v2.4.1
 }
 TEMPORARY_PIN_EXCEPTIONS: dict[str, dict[str, str]] = {}
+CURRENT_WORK_CONTRACT = "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01"
 
 
 def is_reconciled_action_pin_allowed(workflow_path: str, action: str, ref: str) -> bool:
@@ -37,7 +38,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("현재 대상 플랫폼은 `Windows`와 `Android`다.", text)
         self.assertIn("NOTION_DEFAULT_PROJECT_WORKSPACE", text)
         self.assertIn("MIGRATION_ONLY_UNTIL_REMOVAL", text)
-        self.assertIn("TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01", text)
+        self.assertIn(CURRENT_WORK_CONTRACT, text)
 
         stale_tokens = [
             "primary_platform: PC",
@@ -67,7 +68,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
 
         self.assertIn("현재 단계·권한·다음 작업", owner_section)
         self.assertIn("ACTIVE_CONTEXT.md", owner_section)
-        self.assertIn("TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01", owner_section)
+        self.assertIn(CURRENT_WORK_CONTRACT, owner_section)
         self.assertIn("전투 UI 정보 위계", owner_section)
         self.assertIn("2026-08-11_COMBAT_UI_INFORMATION_HIERARCHY_DECISION.md", owner_section)
         self.assertIn("NOTION_HUMAN_FACING_CANON", owner_section)
@@ -94,7 +95,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
 
         self.assertNotIn("현재 핵심 권위에는 다음이 포함된다", text)
         self.assertIn("CANON_LIFECYCLE_REGISTRY.md", text)
-        self.assertIn("ACTIVE_CONTEXT의 current next action", next_section)
+        self.assertIn("current planning JSON", next_section)
         self.assertIn("exact Project Notion", next_section)
         self.assertNotIn("필요한 이미지·애니메이션·HX를 생성·검수", next_section)
         self.assertNotIn("VERTICAL_SLICE_APP_FLOW_SHELL` Codex 구현", next_section)
