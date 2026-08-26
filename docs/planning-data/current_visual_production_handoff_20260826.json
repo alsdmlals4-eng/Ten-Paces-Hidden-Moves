@@ -29,8 +29,16 @@
     "distance_n_primary": true,
     "absolute_floor_numbers_primary": false,
     "current_bundle_visible": true,
-    "round_sequence": [3, 3, 4],
-    "action_sources": ["기초", "무공", "절초"],
+    "round_sequence": [
+      3,
+      3,
+      4
+    ],
+    "action_sources": [
+      "기초",
+      "무공",
+      "절초"
+    ],
     "action_grid_max_columns": 5,
     "action_grid_max_rows": 2,
     "action_grid_max_items": 10,
