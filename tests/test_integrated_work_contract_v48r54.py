@@ -7,6 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CURRENT_DECISION_ID = "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01"
+CURRENT_VISUAL_PRODUCTION_DECISION_ID = "TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01"
 R2_DECISION_ID = "TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01"
 SOURCE_SHA256 = "fdf238c202cfac6d3a824aae49b8ac525fba023e31bba7df6ece64a2790365a0"
 BASE_OBSERVED = "edb3b3376603c9f6b00d64af3126304f8c9946bf"
@@ -141,10 +142,20 @@ class IntegratedWorkContractV48R54Tests(unittest.TestCase):
         planning = json.loads(PLANNING.read_text(encoding="utf-8"))
         self.assertEqual(1, visual["image_production_cadence"]["max_results_per_explicit_approval"])
         self.assertTrue(visual["image_production_cadence"]["automatic_next_result_forbidden"])
+        self.assertEqual(CURRENT_VISUAL_PRODUCTION_DECISION_ID, visual["current_visual_production_decision"])
+        self.assertEqual("ACTUAL_GAME_CONSUMER_REQUIRED", visual["consumer_first_asset_policy"])
+        approved = visual["approved_results"]["OPPONENT_CHARACTER_MASTER_01"]
+        self.assertEqual("USER_APPROVED_2026_08_26", approved["status"])
+        self.assertEqual("PASS", approved["notion_delivery"])
+        self.assertFalse(approved["runtime_asset"])
+        self.assertEqual("DOGYEOM_COMBAT_BATTLER_01", visual["next_result"]["id"])
+        self.assertEqual("src/combat/combat_character_placeholder.gd", visual["next_result"]["consumer"])
         self.assertEqual("WAITING_EXPLICIT_USER_GENERATION_APPROVAL", visual["next_result"]["generation_status"])
         self.assertEqual([visual["next_result"]["id"]], planning["next_visual_batch"])
         self.assertEqual("READY_FOR_EXPLICIT_SINGLE_IMAGE", planning["next_image_generation"])
         self.assertEqual("docs/planning-data/current_visual_production_handoff_20260826.json", planning["visual_reference_state"])
+        serialized_queue = json.dumps(visual.get("deferred_queue_after_result_review", []), ensure_ascii=False)
+        self.assertNotIn("MARTIAL_TECHNIQUE_ILLUSTRATION_SHEET_01", serialized_queue)
 
 
 if __name__ == "__main__":
