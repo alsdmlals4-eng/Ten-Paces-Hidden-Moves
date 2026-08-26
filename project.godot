@@ -14,8 +14,8 @@ general/accessibility_support=1
 
 [application]
 
-config/name="십보강호: 전투 POC"
-run/main_scene="res://scenes/combat/combat_board_preview.tscn"
+config/name="십보강호: 첫 5전 Vertical Slice"
+run/main_scene="res://scenes/run/vertical_slice_shell.tscn"
 config/features=PackedStringArray("4.7")
 
 [autoload]
