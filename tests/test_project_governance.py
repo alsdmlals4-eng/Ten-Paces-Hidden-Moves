@@ -117,7 +117,7 @@ class ProjectGovernanceTests(unittest.TestCase):
             "current_human_workspace: NOTION_DEFAULT_PROJECT_WORKSPACE",
             "current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME",
             "google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL",
-            "current_work_contract: TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01",
+            "current_work_contract: TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
             "ACTIVE_CONTEXT.md",
         ):
             self.assertIn(token, start_here_text, f"START_HERE.md is missing stable router token {token!r}")
