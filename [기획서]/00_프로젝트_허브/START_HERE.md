@@ -13,7 +13,8 @@
 → exact Project Notion when human-facing information is relevant
 ```
 
-- 현행 작업계약: `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`.
+- 현행 작업계약: `TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01`.
+- 이전 `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`은 `SUPERSEDED_HISTORICAL_EVIDENCE`다.
 - 프로젝트 Skill authority: `../../../skills/SKILL_REGISTRY.json`.
 - 이 디렉터리의 `SKILL_REGISTRY.json`은 legacy compatibility reference이며 기본 자동 discovery 대상이 아니다.
 - Base 동기화/채택의 과거 증거는 `BASE_MAIN_SYNC_AUDIT.md`, `../../../docs/BASE_RULES_VERSION.md`에서 필요할 때만 읽는다.
@@ -28,7 +29,7 @@ current_pr_authority: GITHUB_PR_METADATA
 current_human_workspace: NOTION_DEFAULT_PROJECT_WORKSPACE
 current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME
 google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL
-current_work_contract: TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01
+current_work_contract: TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01
 ```
 
 활성 PR·exact head·현재 Work Mode·제품 단계·구현 상태·승인 수·다음 package/Decision·device/Human evidence는 `ACTIVE_CONTEXT.md`, current JSON, GitHub live metadata, exact Project Notion을 fresh-read해 판정한다.
@@ -44,11 +45,12 @@ current_work_contract: TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01
 
 ## 핵심 프로젝트 경계
 
-- 10칸·3/3/4·공개 정보 추론·거리·합·대응·중단·복기가 핵심이다.
+- 10칸·시작 공개 거리2·3/3/4·공개 정보 추론·거리·합·대응·중단·복기가 핵심이다.
 - AI의 미확정 플레이어 계획 열람은 금지한다.
 - Windows/Android는 단일 게임 코어 + platform adapters를 사용한다.
 - 사람용 전체 Flow/Visual/핵심 표는 Notion, 구현/런타임 사실은 repository가 소유한다.
 - Google Sheets는 신규 GDD 작업면이 아니라 고유 미이관 자료의 migration compatibility source다.
+- 새 이미지 생성은 current r5.4의 explicit approval + exactly-one 결과 경계를 따른다.
 
 ## 역사·보류
 
@@ -56,7 +58,7 @@ current_work_contract: TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01
 - PR #45: v6 재설계 이력.
 - PR #65: ActionSelectionDock 구현 이력.
 - PR #92: 초기 10권 제품 검증 계보.
-- v4.5 r2 integrated contract: `SUPERSEDED_HISTORICAL_EVIDENCE`.
+- v4.8 r2와 v4.5 r2 integrated contract는 `SUPERSEDED_HISTORICAL_EVIDENCE`다.
 - 16권 절초 개별 설계, 주요 비무 6~10 런타임, 천하제일인·비동기 기능, 최종 아트/오디오 폴리싱은 별도 current Decision 없이는 자동 실행하지 않는다.
 
 자동 검증은 Windows visible Godot, 실제 Android, 접근성 사용자, Release 성능, 사람 플레이를 증명하지 않는다.
