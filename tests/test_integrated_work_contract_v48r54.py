@@ -14,6 +14,7 @@ CANONICAL = ROOT / "docs" / "PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_
 DECISION = ROOT / "docs" / "decisions" / "2026-08-26_INTEGRATED_WORK_CONTRACT_V4_8_R5_4_BINDING_DECISION.md"
 CONTRACT = ROOT / "docs" / "planning-data" / "approved_20260826_integrated_work_contract_v4_8_r5_4_binding.json"
 VISUAL = ROOT / "docs" / "planning-data" / "current_visual_production_handoff_20260826.json"
+HISTORICAL_VISUAL = "docs/planning-data/current_visual_production_handoff_20260825.json"
 PLANNING = ROOT / "docs" / "planning-data" / "current_user_planning_status.json"
 VERIFY_SKILL = ROOT / "skills" / "qa" / "ten-paces-verification" / "SKILL.md"
 
@@ -61,7 +62,15 @@ class IntegratedWorkContractV48R54Tests(unittest.TestCase):
             text = (ROOT / relative).read_text(encoding="utf-8")
             self.assertIn(CURRENT_DECISION_ID, text, relative)
             self.assertIn("MIGRATION_ONLY_UNTIL_REMOVAL", text, relative)
-        self.assertIn("current_work_contract: " + CURRENT_DECISION_ID, (ROOT / "START_HERE.md").read_text(encoding="utf-8"))
+        root_start = (ROOT / "START_HERE.md").read_text(encoding="utf-8")
+        self.assertIn("current_work_contract: " + CURRENT_DECISION_ID, root_start)
+        self.assertIn("docs/planning-data/current_visual_production_handoff_20260826.json", root_start)
+        self.assertIn(HISTORICAL_VISUAL + "`은", root_start)
+        current_visual_sentence = root_start.split("현재 승인 Visual과 다음 제작 대상은", 1)[1].split("## Work Mode", 1)[0]
+        self.assertNotIn(
+            f"`{HISTORICAL_VISUAL}`, exact Project Notion",
+            current_visual_sentence,
+        )
 
     def test_active_verification_skill_does_not_restore_retired_local_codex_route(self) -> None:
         text = VERIFY_SKILL.read_text(encoding="utf-8")
