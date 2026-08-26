@@ -21,7 +21,7 @@
 
 | 질문 | 현재 책임 원본 |
 |---|---|
-| 현행 전체 작업 방식·검증·병합·전달 계약 | `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` / `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01` |
+| 현행 전체 작업 방식·검증·병합·전달 계약 | `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` / `TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01` |
 | 현재 단계·권한·다음 작업 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` + current planning JSON + GitHub current metadata + exact Project Notion |
 | 사람용 Project Home·전체 Flow·Visual·사람이 수정하는 핵심 표 | exact Project Notion (`NOTION_HUMAN_FACING_CANON`) |
 | 구조화 정본·실제 구현·런타임 증거 | repository (`REPOSITORY_STRUCTURED_CANON` + `REPOSITORY_RUNTIME_TRUTH`) |
@@ -44,6 +44,8 @@
 | 플랫폼 Adapter 구조 | `docs/decisions/2026-08-06_WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_DECISION.md` |
 | 화면 구조 | `docs/decisions/2026-08-01_SITUATION_SCREEN_ARCHITECTURE_DECISION.md` |
 | 행동 선택 | `docs/decisions/2026-08-01_MARTIAL_MANUAL_TECHNIQUE_TIMELINE_UX_DECISION.md` |
+| 현재 Visual production Gate | `docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md` + `docs/planning-data/current_visual_production_handoff_20260826.json` + exact Project Notion |
+| 2026-08-25 Visual Reference/handoff history | `docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md` + `docs/planning-data/current_visual_production_handoff_20260825.json` |
 | 무공서·무학 과거 사용자-facing 표 | legacy Sheet `03_무공서_무학` + 해당 Decision ID의 GitHub/Notion destination — migration 확인 전용 |
 
 구조화 planning JSON은 각 Decision·분야 정본의 검증 가능한 계약/ledger다. 어떤 JSON이 현재 활성인지 여부는 Decision 연결과 `docs/CANON_LIFECYCLE_REGISTRY.md`를 통해 판정한다. 과거 PR·branch·merge SHA는 현재 책임 원본 목록에 넣지 않고 역사·증거 문서에서만 읽는다.
@@ -97,14 +99,16 @@ Google Sheet locator는 기존 자료의 unique/duplicate/obsolete 분류와 mig
 - `PR #65 또는 PR #80이 현재 active planning truth` → 역사·구현 계보이며 current 상태는 fresh-read.
 - `Image generation을 거쳐야만 모든 Build 가능` → 최신 사용자 지시와 current visual/asset gate에서 판정.
 - `Google Sheets 신규 입력이 현재 GDD 작업 기본 경로` → `MIGRATION_ONLY_UNTIL_REMOVAL`로 대체됨.
-- `TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01`이 current 작업계약 → v4.8 r2 binding으로 대체됨.
+- `TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01`이 current 작업계약 → 역사 evidence.
+- `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`이 current 작업계약 → r5.4 binding으로 대체됨.
+- `2026-08-25 max-three image batch`가 current 자동 생성 권한 → r5.4 exactly-one explicit approval Gate가 current.
 
 ## 현재 다음 작업
 
 이 지도는 다음 package를 고정하지 않는다.
 
 ```text
-ACTIVE_CONTEXT의 current next action
+ACTIVE_CONTEXT + current planning JSON의 current next action
 → 최신 사용자 지시·current Gate 안에서 PLAN/BUILD/REVIEW 판정
 → Base·Project main/open PR·exact Project Notion·Entry Gate 재조회
 → 현재 승인과 Gate가 허용하는 package만 실행
@@ -121,6 +125,7 @@ ACTIVE_CONTEXT의 current next action
 - PR #68: Base v9.4 운영 계약 적용 이력.
 - PR #72·#80: 이후 전투·성장 planning checkpoint 이력.
 - PR #92: 초기 10권 무공 런타임·UI/AI·자동 제품 검증 계보.
+- `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`: `SUPERSEDED_HISTORICAL_EVIDENCE`.
 - `TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01`: `SUPERSEDED_HISTORICAL_EVIDENCE`.
 - 과거 Base SHA와 당시 workflow/run은 역사 회귀 증거이며 current Base remote main이 아니다.
 
