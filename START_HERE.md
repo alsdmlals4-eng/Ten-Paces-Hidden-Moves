@@ -88,7 +88,7 @@ GPT → 최종 검수/정본/PR closeout
 
 새 이미지 생성·생성형 편집은 current r5.4에서 `text brief → explicit user approval → exactly one result → review`다. 2026-08-25의 최대 3장 묶음은 history이며 current 자동 batch 권한이 아니다.
 
-현재 승인 Visual과 다음 제작 대상은 `docs/planning-data/current_user_planning_status.json`, `docs/planning-data/current_visual_production_handoff_20260825.json`, exact Project Notion Home/Visual Bible/Asset Library에서 fresh-read한다.
+현재 승인 Visual과 다음 제작 대상은 `docs/planning-data/current_user_planning_status.json`, `docs/planning-data/current_visual_production_handoff_20260826.json`, exact Project Notion Home/Visual Bible/Asset Library에서 fresh-read한다. `docs/planning-data/current_visual_production_handoff_20260825.json`은 승인 Reference Set과 당시 max-three cadence의 역사 evidence다.
 
 ## Work Mode
 
