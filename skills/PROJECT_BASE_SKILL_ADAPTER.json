@@ -33,7 +33,7 @@
   "generated": true,
   "hash_definition": "RAW_FILE_BYTES_SHA256",
   "legacy_source": "docs/archive/base-v9-legacy-inputs/PROJECT_BASE_SKILL_ADAPTER.json",
-  "legacy_source_sha256": "b3ce70e117032e53e83ca433e6f060f3a6f620d27b5039ec039dabbf23410c3a",
+  "legacy_source_sha256": "af3d44382bd7f440c2d5d7662924e4a8d9053cfa1bcd44df88fd930ff87c4c6f",
   "license_record": "docs/technical/THIRD_PARTY_LICENSES.md",
   "lifecycle": "ONE_CYCLE",
   "project": {

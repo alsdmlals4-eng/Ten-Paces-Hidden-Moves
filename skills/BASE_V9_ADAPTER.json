@@ -22,7 +22,7 @@
   "generated": true,
   "hash_definition": "RAW_FILE_BYTES_SHA256",
   "legacy_source": "docs/archive/base-v9-legacy-inputs/BASE_V9_ADAPTER.json",
-  "legacy_source_sha256": "49f4b947dde2c09699b04727de70349831344493e69ffce761178eddda04bfa6",
+  "legacy_source_sha256": "36f635bab709f8b8f7b906d945a0a259bfc4d45f2434d15d1308db8bd99a522e",
   "lifecycle": "ONE_CYCLE",
   "maturity": {
     "level": 2,
