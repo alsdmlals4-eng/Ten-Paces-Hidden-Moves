@@ -117,6 +117,26 @@
       "active": false
     },
     {
+      "id": "dogyeom_combat_battler_01_v1",
+      "path": "res://assets/characters/dogyeom_combat_battler_01_v1.png",
+      "role": "도겸 전장 전신 Battler",
+      "generator": "user-approved original result",
+      "source_png_sha256": "064a8772406c743bbe6b252c138b4333c88b00b90a0ba905cce9ea18773539c9",
+      "reference_usage": "Approved Dogyeom master informs identity only; this user-approved full-body result is routed only for slot1_dogyeom.",
+      "license": "User-approved project visual asset; retain approval, provenance, and destination record.",
+      "transparency_required": true,
+      "transparency_audit": {
+        "mode": "RGBA",
+        "has_alpha": true,
+        "alpha_extrema": [0, 255],
+        "transparent_pixels": 1021220,
+        "partially_transparent_pixels": 550720,
+        "corner_alpha": [0, 0, 0, 0],
+        "status": "APPROVED_ACTIVE"
+      },
+      "active": true
+    },
+    {
       "id": "ultimate_ink_gold_sprite_sheet_rgba",
       "path": "res://assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png",
       "role": "절초 수묵·금빛 VFX 스프라이트 시트",

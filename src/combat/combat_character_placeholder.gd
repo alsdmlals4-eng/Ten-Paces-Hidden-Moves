@@ -10,10 +10,12 @@ const PAPER := Color("d8c9aa")
 const GOLD := Color("b99254")
 const PLAYER_ART_PATH := "res://assets/characters/player_wanderer_battler_rgba_v1.png"
 const ENEMY_ART_PATH := "res://assets/characters/enemy_masked_battler_rgba_v1.png"
+const DOGYEOM_ART_PATH := "res://assets/characters/dogyeom_combat_battler_01_v1.png"
 
 var role: String = "player"
 var facing: int = 1
 var tile_index: int = 1
+var candidate_id := ""
 var character_height_ratio: float = 1.5
 var character_body_width_ratio: float = 0.72
 var motion_state := "idle"
@@ -35,15 +37,18 @@ func configure(
     value_tile_index: int,
     tile_width: float,
     height_ratio: float,
-    body_width_ratio: float
+    body_width_ratio: float,
+    value_candidate_id: String = ""
 ) -> void:
     role = value_role
     facing = 1 if value_facing >= 0 else -1
     tile_index = value_tile_index
+    candidate_id = value_candidate_id
     character_height_ratio = height_ratio
     character_body_width_ratio = body_width_ratio
     set_meta("role", role)
     set_meta("tile_index", tile_index)
+    set_meta("candidate_id", candidate_id)
     set_meta("character_height_ratio", character_height_ratio)
     set_meta("character_body_width_ratio", character_body_width_ratio)
     _load_character_art()
@@ -54,7 +59,7 @@ func get_render_texture() -> Texture2D:
     return character_sprite
 
 func _load_character_art() -> void:
-    var next_path := PLAYER_ART_PATH if role == "player" else ENEMY_ART_PATH
+    var next_path := PLAYER_ART_PATH if role == "player" else _enemy_art_path()
     if _character_art_path == next_path and character_sprite != null:
         return
     _character_art_path = next_path
@@ -68,6 +73,10 @@ func _load_character_art() -> void:
                 _sprite_foot_ratio = clampf(float(used.position.y + used.size.y) / float(image.get_height()), 0.70, 1.0)
     set_meta("character_art_path", _character_art_path)
     set_meta("character_art_loaded", character_sprite != null)
+
+
+func _enemy_art_path() -> String:
+    return DOGYEOM_ART_PATH if candidate_id == "slot1_dogyeom" else ENEMY_ART_PATH
 
 func set_dimensions(tile_width: float) -> void:
     var new_size := Vector2(

@@ -471,7 +471,8 @@ func _layout_board() -> void:
 	var height_ratio := float(contract.get("character_height_to_tile_width", 1.5))
 	var body_width_ratio := float(contract.get("character_body_width_to_tile_width", 0.72))
 	player_character.configure("player", 1, _player_tile, _tile_width, height_ratio, body_width_ratio)
-	enemy_character.configure("enemy", -1, _enemy_tile, _tile_width, height_ratio, body_width_ratio)
+	var enemy_state: Dictionary = combat_state.get("enemy", {}) as Dictionary
+	enemy_character.configure("enemy", -1, _enemy_tile, _tile_width, height_ratio, body_width_ratio, str(enemy_state.get("candidate_id", "")))
 	var player_foot := get_tile_foot_anchor(_player_tile)
 	var enemy_foot := get_tile_foot_anchor(_enemy_tile)
 	if _player_tile == _enemy_tile:
