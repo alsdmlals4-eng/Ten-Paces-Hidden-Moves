@@ -64,7 +64,7 @@ def main() -> None:
         assert res_file(atlas["path"]).exists() and atlas["regions"]
 
     project_text = (ROOT / "project.godot").read_text(encoding="utf-8")
-    assert 'run/main_scene="res://scenes/combat/combat_board_preview.tscn"' in project_text
+    assert 'run/main_scene="res://scenes/run/vertical_slice_shell.tscn"' in project_text
     for path in (
         "scenes/ui/card_view.tscn",
         "scenes/ui/card_detail_panel.tscn",
