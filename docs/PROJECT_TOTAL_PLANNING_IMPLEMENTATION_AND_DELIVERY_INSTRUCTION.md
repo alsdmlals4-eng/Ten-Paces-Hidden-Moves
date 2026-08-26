@@ -160,10 +160,12 @@ UI/구조는 최소 `ko / en / ja / zh-*`를 수용할 localization-ready 구조
 
 - `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
 - `docs/planning-data/current_user_planning_status.json`
-- `docs/planning-data/current_visual_production_handoff_20260825.json`
+- `docs/planning-data/current_visual_production_handoff_20260826.json`
 - `docs/planning-data/current_operating_state.json`
 - exact Project Notion Home / Visual Bible / Asset Library
 - GitHub live main/open PR/recent commits
+
+`docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md`와 `docs/planning-data/current_visual_production_handoff_20260825.json`은 승인 Reference Set과 당시 max-three cadence의 역사 evidence다. current visual execution owner로 사용하지 않는다.
 
 이미 병합된 첫 5전 PC-first Vertical Slice Phase I–VI를 이 계약 교체만으로 되돌리지 않는다. 추가 제품 mutation은 current Gate와 사용자 요청을 다시 확인한다.
 
