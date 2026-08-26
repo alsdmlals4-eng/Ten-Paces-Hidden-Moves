@@ -19,7 +19,9 @@
     "past_chat_is_current_authority": false,
     "notion_handoff_url": "https://app.notion.com/p/3c81b237eb1c81539c1bd4afa75e4b9a",
     "snapshot_observed_project_main": "b6d76410e3aa0edd7a2e698270742187cc471fd9",
-    "snapshot_observed_base_main": "06669fe9c6a3ccd6f3b0d19c5757540bfdcc0623",
+    "snapshot_observed_base_main": "43b3ffb2c5b026e3d4a38dab2338585894d36f61",
+    "base_work_adapter": "templates/project-operations/CHATGPT_WORK_PROJECT_EXECUTION_INSTRUCTION_v4.9.md",
+    "base_work_compatibility_appendix": "templates/project-operations/CHATGPT_WORK_PROJECT_EXECUTION_INSTRUCTION_v4.9_COMPATIBILITY_APPENDIX.md",
     "open_project_prs_read_only_by_default": [
       199,
       200
@@ -169,6 +171,7 @@
     "RUN_IN_GPT_WORK",
     "REFETCH_PROJECT_MAIN_AND_OPEN_PRS",
     "REFETCH_BASE_MAIN",
+    "READ_CURRENT_BASE_WORK_V4_9_BUNDLE",
     "READ_CURRENT_PROJECT_NOTION_HOME_VISUAL_BIBLE_ASSET_LIBRARY_AND_WORK_HANDOFF",
     "READ_CURRENT_R5_4_PROJECT_CONTRACT",
     "READ_THIS_HANDOFF_AND_APPROVED_RESULTS",
