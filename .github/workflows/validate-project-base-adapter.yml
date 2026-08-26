@@ -38,8 +38,13 @@ jobs:
         run: |
           set -euo pipefail
           ADAPTER_PATH="skills/PROJECT_BASE_ADAPTER.json"
+          APPROVAL_PATH="docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
           ADAPTER_CHANGES="$(git diff --name-only "$PR_BASE_SHA"...HEAD -- "$ADAPTER_PATH")"
-          if printf '%s\n' "$ADAPTER_CHANGES" | grep -Fxq "$ADAPTER_PATH"; then
+          ACTIVE_APPROVAL_NEW_IN_PR=false
+          if [ -f "$APPROVAL_PATH" ] && ! git cat-file -e "$PR_BASE_SHA:$APPROVAL_PATH" 2>/dev/null; then
+            ACTIVE_APPROVAL_NEW_IN_PR=true
+          fi
+          if [ "$ADAPTER_CHANGES" != "" ] || [ "$ACTIVE_APPROVAL_NEW_IN_PR" = true ]; then
             PROTECTED_BASE_SHA="$PR_BASE_SHA"
           else
             PROTECTED_BASE_SHA="$(

@@ -20,6 +20,8 @@ class ApprovedProtectedChangeWorkflowTests(unittest.TestCase):
             "--external-approval \"$EXTERNAL_APPROVAL\"",
             "check_one_time_protected_change_lifecycle.py",
             "--base-sha \"$PR_BASE_SHA\"",
+            "ACTIVE_APPROVAL_NEW_IN_PR=true",
+            "if [ \"$ADAPTER_CHANGES\" != \"\" ] || [ \"$ACTIVE_APPROVAL_NEW_IN_PR\" = true ]; then",
             "labeled",
             "unlabeled",
         )

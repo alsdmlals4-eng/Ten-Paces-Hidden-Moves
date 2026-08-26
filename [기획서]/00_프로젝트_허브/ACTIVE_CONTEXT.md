@@ -54,7 +54,7 @@ user_directed_planning_pr_authority: GITHUB_PR_METADATA
 planning_execution_surface: GPT_WORK
 planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md
 planning_visual_next: USER_DECISION_REQUIRED_FOR_NEXT_CONSUMER_ASSET
-planning_visual_generation: USER_APPROVED_NEW_ORIGINAL_EXACTLY_ONE_20260826_NO_AUTOMATIC_NEXT_RESULT
+planning_visual_generation: NO_AUTOMATIC_NEXT_RESULT
 planning_visual_review: DOGYEOM_STATUS_PORTRAIT_01_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_20260826_WINDOWS_HUMAN_VISUAL_NOT_RUN
 planning_visual_state: docs/planning-data/current_visual_production_handoff_20260826.json
 planning_visual_historical_state: docs/planning-data/current_visual_production_handoff_20260825.json
@@ -339,7 +339,7 @@ Google Sheets는 신규 기획 입력 경로로 사용하지 않으며 migration
 ## 현재 위험·미검증
 
 - 첫 5전 PC-first Vertical Slice Phase I–VI는 승인 범위가 구현·병합됐다. 다만 Windows visible Human usability, Android 실기기, Human 재미·가독성·몰입, 최종 Visual/VFX/Audio는 계속 `NOT_RUN`이며 완료로 승격하지 않는다.
-- 2026-08-25 승인 Reference Set(`TEN-IMG-001`, `TEN-VIS-CHAR-MASTER-001`, `TEN-VIS-A07-CANDIDATE`, `TEN-VIS-A01`)은 Visual continuation 기준으로 승인됐지만 runtime/shipping asset PASS가 아니다. `OPPONENT_CHARACTER_MASTER_01`은 도겸 정체성 reference로 보존한다. `DOGYEOM_STATUS_PORTRAIT_01`은 사용자 명시 승인으로 정확히 1장의 새 원화를 생성·승인했고 로컬 정본은 `docs/visual-assets/approved/DOGYEOM_STATUS_PORTRAIT_01_v1.png`이며, Asset Library 레코드의 실제 Notion PNG 첨부와 destination readback은 `PASS_20260826`이다. 이 PNG는 `res://assets/portraits/dogyeom_status_portrait_01_v1.png`로 저장되어 `CombatantStatusPanel`에 구현됐다. `slot1_dogyeom` runtime routing 및 runtime art integration은 `AUTOMATED_GODOT_PASS_20260826`이지만 Windows human usability와 Android 실기기 evidence는 `NOT_RUN`이다. `DOGYEOM_COMBAT_BATTLER_01` routing은 여전히 `NOT_RUN`이다.
+- 2026-08-25 승인 Reference Set(`TEN-IMG-001`, `TEN-VIS-CHAR-MASTER-001`, `TEN-VIS-A07-CANDIDATE`, `TEN-VIS-A01`)은 Visual continuation 기준으로 승인됐지만 runtime/shipping asset PASS가 아니다. `OPPONENT_CHARACTER_MASTER_01`은 도겸 정체성 reference로 보존한다. `DOGYEOM_STATUS_PORTRAIT_01`은 `USER_APPROVED_2026_08_26` 상태로 사용자 명시 승인 후 정확히 1장의 새 원화를 생성·승인했고 로컬 정본은 `docs/visual-assets/approved/DOGYEOM_STATUS_PORTRAIT_01_v1.png`이며, Asset Library 레코드의 실제 Notion PNG 첨부와 destination readback은 `PASS_20260826`이다. 이 PNG는 `res://assets/portraits/dogyeom_status_portrait_01_v1.png`로 저장되어 `CombatantStatusPanel`에 구현됐다. `slot1_dogyeom` runtime routing 및 runtime art integration은 `AUTOMATED_GODOT_PASS_20260826`이지만 Windows human usability와 Android 실기기 evidence는 `NOT_RUN`이다. `DOGYEOM_COMBAT_BATTLER_01` routing은 여전히 `NOT_RUN`이다.
 - `TEN-VIS-A02`는 도겸 상태 초상을 다음으로 두고 나머지 상대 14인의 초상이 미제작이다. `TEN-VIS-A03`은 도겸 Battler source 승인까지 완료됐지만 나머지 14인과 runtime routing이 미완료다. `TEN-VIS-A04` Route 8아이콘, `TEN-VIS-A05` Result/Completion 표식, `TEN-VIS-A06` 추가 전투 배경도 실제 consumer 확인 뒤에만 제작한다.
 - 후보 영구 스테이터스 총량 `20/22/24/26/28`, 성급 `3/7/7/7/9`, Route 회복 `최대 체력25% + 기력1 + 내력1`은 `REVERSIBLE_*_SEED`이며 실제 밸런스 PASS가 아니다.
 - 대량 밸런스 시뮬레이션은 계약만 있고 `NOT_RUN`이다.
