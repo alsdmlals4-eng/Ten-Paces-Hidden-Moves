@@ -30,6 +30,7 @@ func _run() -> void:
     for _index in range(4):
         await process_frame
 
+    shell.run_state.set("_run_seed", 2)
     _expect_true(shell.start_new_run(), "Shell must start a new run.")
     _select_default_setup(shell)
     _expect_true(shell.advance_noncombat(), "SETUP with four selected manuals must advance to INTRO.")
@@ -63,6 +64,7 @@ func _run() -> void:
     var portrait := bridge.top_hud.enemy_panel.get_node_or_null("CombatantInkPortrait") as TextureRect
     if str(enemy.get("candidate_id", "")) == "slot1_dogyeom":
         _expect_true(portrait != null and portrait.texture != null and portrait.texture.resource_path == "res://assets/portraits/dogyeom_status_portrait_01_v1.png", "Dogyeom runtime bridge must route the approved status portrait.")
+        _expect_true(bridge.enemy_character != null and str(bridge.enemy_character.get_meta("character_art_path", "")) == "res://assets/characters/dogyeom_combat_battler_01_v1.png", "Dogyeom runtime bridge must route the approved combat battler.")
     else:
         _expect_true(portrait != null and portrait.texture != null and portrait.texture.resource_path == "res://assets/portraits/enemy_masked_ink_v1.png", "Non-Dogyeom runtime bridge must retain the generic enemy portrait.")
     player["health"] = [10, 30]

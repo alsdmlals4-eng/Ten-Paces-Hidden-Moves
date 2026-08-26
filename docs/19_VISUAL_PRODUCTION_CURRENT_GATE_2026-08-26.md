@@ -21,7 +21,7 @@
 
 ### `OPPONENT_CHARACTER_MASTER_01` · 도겸
 
-상태: `USER_APPROVED_2026_08_26`.
+상태: `USER_APPROVED_AND_IMPLEMENTED_2026_08_27`.
 
 - generation id: `0d895036-38e6-420e-990f-823353373366`.
 - source PNG SHA-256: `efe88bf4aaf7d1773916f151d518cf52508f18a670760f817c4226feb7564f42`.
@@ -38,9 +38,12 @@
 - Notion `04 · 에셋 라이브러리` preview delivery/readback: `PASS`.
 - 실제 consumer slot: `src/combat/combat_character_placeholder.gd`.
 - 현재 generic runtime asset: `res://assets/characters/enemy_masked_battler_rgba_v1.png`.
+- runtime asset: `res://assets/characters/dogyeom_combat_battler_01_v1.png`.
 - 승인 source contract: transparent RGBA full body / enemy left-facing / foot-anchor safe.
-- opponent-specific Dogyeom routing: `NOT_RUN`.
-- runtime art integration: `NOT_RUN`.
+- `slot1_dogyeom`만 전용 Battler를 선택하고, 다른 상대 및 ID 누락 상대는 generic fallback을 유지한다.
+- opponent-specific Dogyeom routing: `AUTOMATED_GODOT_PASS_20260827`.
+- runtime art integration: `AUTOMATED_GODOT_PASS_20260827`.
+- Windows visible human usability / Android device: `NOT_RUN`.
 
 ## 3. Current visual language
 
@@ -118,6 +121,14 @@ canon + actual game consumer review
 
 현재 상태: `IMPLEMENTED · AUTOMATED_GODOT_VERIFIED_20260826 · WINDOWS_HUMAN_VISUAL_REVIEW_NOT_RUN`.
 
+### `DOGYEOM_COMBAT_BATTLER_01` · 도겸 전장 Battler
+
+**실제 게임 소비처:** `src/combat/combat_character_placeholder.gd`.
+
+승인된 투명 RGBA 전신 PNG를 `res://assets/characters/dogyeom_combat_battler_01_v1.png`로 등록했다. 전투판은 `combat_state.enemy.candidate_id == "slot1_dogyeom"`일 때만 이 Battler를 선택하며, 다른 상대와 ID 누락 상대는 기존 `enemy_masked_battler_rgba_v1.png`를 유지한다. 기존 enemy-facing, 발 앵커, 이동·공격 모션, 전투 규칙은 변경하지 않았다.
+
+현재 상태: `IMPLEMENTED · AUTOMATED_GODOT_VERIFIED_20260827 · WINDOWS_HUMAN_VISUAL_REVIEW_NOT_RUN`.
+
 ## 7. 다음 후보 — Portrait 검토 후에만
 
 1. 개별 무공/절초 카드 삽화 — 반드시 **exact card ID**와 `CardView.illustration` 소비가 확인된 이미지 단위로 제작.
@@ -156,8 +167,8 @@ dogyeom_status_portrait_01_local_asset: docs/visual-assets/approved/DOGYEOM_STAT
 dogyeom_status_portrait_01_notion_binary_attachment: PASS_20260826_READBACK
 next_safe_action: USER_DECISION_REQUIRED_FOR_NEXT_CONSUMER_ASSET
 runtime_source_master_promotion: NOT_RUN
-opponent_specific_dogyeom_routing: AUTOMATED_GODOT_PASS_20260826
-runtime_art_integration: AUTOMATED_GODOT_PASS_20260826
+opponent_specific_dogyeom_routing: AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER
+runtime_art_integration: AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER
 windows_visible_human_usability: NOT_RUN
 android_actual_device: NOT_RUN
 fifteen_opponent_identifiability: NOT_RUN
