@@ -22,7 +22,7 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
 
         self.assertEqual("GPT_WORK", visual["handoff"]["next_surface"])
         self.assertTrue(visual["handoff"]["fresh_read_required"])
-        self.assertEqual("HANDOFF_READY_GPT_WORK", visual["status"])
+        self.assertEqual("DOGYEOM_STATUS_PORTRAIT_IMPLEMENTED_AUTOMATED_VERIFIED", visual["status"])
         self.assertEqual("43b3ffb2c5b026e3d4a38dab2338585894d36f61", visual["handoff"]["snapshot_observed_base_main"])
         self.assertEqual(BASE_WORK, visual["handoff"]["base_work_adapter"])
         self.assertEqual(BASE_WORK_COMPAT, visual["handoff"]["base_work_compatibility_appendix"])
@@ -37,10 +37,10 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
         self.assertEqual("PASS", battler["notion_delivery"])
         self.assertFalse(battler["runtime_asset"])
 
-        self.assertEqual("DOGYEOM_STATUS_PORTRAIT_01", visual["next_result"]["id"])
-        self.assertEqual("src/ui/combatant_status_panel.gd", visual["next_result"]["consumer"])
-        self.assertEqual("GPT_WORK_RESUME_REQUIRED", visual["next_result"]["generation_status"])
-        self.assertEqual(["DOGYEOM_STATUS_PORTRAIT_01"], planning["next_visual_batch"])
+        portrait = visual["approved_results"]["DOGYEOM_STATUS_PORTRAIT_01"]
+        self.assertEqual("AUTOMATED_GODOT_PASS_20260826", portrait["opponent_specific_routing"])
+        self.assertEqual("USER_DECISION_REQUIRED", visual["next_result"]["id"])
+        self.assertEqual([], planning["next_visual_batch"])
         self.assertEqual("GPT_WORK", planning["next_execution_surface"])
         self.assertEqual(
             f"MERGED_MAIN_{HANDOFF_MERGED_MAIN}",
@@ -65,7 +65,7 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
             "DOGYEOM_STATUS_PORTRAIT_01",
             "MIGRATION_ONLY_UNTIL_REMOVAL",
             "CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF",
-            "runtime art integration: NOT_RUN",
+            "runtime art integration: AUTOMATED_GODOT_PASS_20260826",
         ):
             self.assertIn(marker, text)
 

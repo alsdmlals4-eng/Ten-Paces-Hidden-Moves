@@ -58,6 +58,13 @@ func _run() -> void:
     var state: Dictionary = bridge.get("combat_state")
     var player: Dictionary = (state.get("player", {}) as Dictionary).duplicate(true)
     var enemy: Dictionary = (state.get("enemy", {}) as Dictionary).duplicate(true)
+    var current_opponent: Dictionary = shell.run_state.get_current_opponent()
+    _expect_eq(str(enemy.get("candidate_id", "")), str(current_opponent.get("candidate_id", "")), "Combat state must preserve the locked opponent candidate ID for status-panel routing.")
+    var portrait := bridge.top_hud.enemy_panel.get_node_or_null("CombatantInkPortrait") as TextureRect
+    if str(enemy.get("candidate_id", "")) == "slot1_dogyeom":
+        _expect_true(portrait != null and portrait.texture != null and portrait.texture.resource_path == "res://assets/portraits/dogyeom_status_portrait_01_v1.png", "Dogyeom runtime bridge must route the approved status portrait.")
+    else:
+        _expect_true(portrait != null and portrait.texture != null and portrait.texture.resource_path == "res://assets/portraits/enemy_masked_ink_v1.png", "Non-Dogyeom runtime bridge must retain the generic enemy portrait.")
     player["health"] = [10, 30]
     player["stamina"] = [2, 5]
     player["internal"] = [1, 4]

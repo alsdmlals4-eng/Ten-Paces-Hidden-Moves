@@ -35,6 +35,18 @@
       "active": true
     },
     {
+      "id": "dogyeom_status_portrait_01_v1",
+      "path": "res://assets/portraits/dogyeom_status_portrait_01_v1.png",
+      "role": "도겸 상태 패널 초상",
+      "generator": "user-approved original result after explicit approval",
+      "source_png_sha256": "0672dfb9938c65f88ade27b90f3bc558a0a3588ccf19a70f5412fc74dd11143c",
+      "prompt": "Dogyeom status portrait for the existing combat panel: face, hair, shoulders, and upper chest readable at small size; no text, UI, new weapon, or combat-plan information.",
+      "reference_usage": "Approved Dogyeom master informs identity only; this user-approved portrait result remains a distinct project asset.",
+      "license": "User-approved project visual asset; retain approval, provenance, and destination record.",
+      "transparency_required": false,
+      "active": true
+    },
+    {
       "id": "player_wanderer_battler_rgba_v1",
       "path": "res://assets/characters/player_wanderer_battler_rgba_v1.png",
       "role": "강호낭인 전장 전신 원화",

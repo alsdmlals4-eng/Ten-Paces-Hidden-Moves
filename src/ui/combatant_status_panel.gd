@@ -11,6 +11,8 @@ const STAMINA_COLOR := Color("4c9a91")
 const INTERNAL_COLOR := Color("8a63a9")
 const PLAYER_PORTRAIT := preload("res://assets/portraits/player_wanderer_ink_v1.png")
 const ENEMY_PORTRAIT := preload("res://assets/portraits/enemy_masked_ink_v1.png")
+const DOGYEOM_STATUS_PORTRAIT := preload("res://assets/portraits/dogyeom_status_portrait_01_v1.png")
+const DOGYEOM_CANDIDATE_ID := "slot1_dogyeom"
 
 var side: String = "player"
 var combatant: Dictionary = {}
@@ -69,7 +71,7 @@ func _refresh() -> void:
     _internal_label.text = _format_resource("내력", "internal")
 
     if is_instance_valid(_portrait):
-        _portrait.texture = PLAYER_PORTRAIT if side == "player" else ENEMY_PORTRAIT
+        _portrait.texture = _portrait_for_current_combatant()
 
     for label in _status_labels:
         label.queue_free()
@@ -92,6 +94,13 @@ func _refresh() -> void:
             chip.accessibility_name = "%s 상태" % chip.text
             chip.accessibility_description = chip.tooltip_text
             _status_labels.append(chip)
+
+func _portrait_for_current_combatant() -> Texture2D:
+    if side == "player":
+        return PLAYER_PORTRAIT
+    if str(combatant.get("candidate_id", "")) == DOGYEOM_CANDIDATE_ID:
+        return DOGYEOM_STATUS_PORTRAIT
+    return ENEMY_PORTRAIT
 
 func _format_resource(label: String, key: String) -> String:
     var pair := _resource_pair(key)

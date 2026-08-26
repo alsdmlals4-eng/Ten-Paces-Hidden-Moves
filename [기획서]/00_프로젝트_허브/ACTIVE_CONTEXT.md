@@ -53,9 +53,9 @@ user_directed_planning_status: PLANNING_COMPLETE_VISUAL_PRODUCTION_ACTIVE
 user_directed_planning_pr_authority: GITHUB_PR_METADATA
 planning_execution_surface: GPT_WORK
 planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md
-planning_visual_next: DOGYEOM_STATUS_PORTRAIT_01
-planning_visual_generation: GPT_WORK_RESUME_PREFER_NON_GENERATIVE_CROP_EXACTLY_ONE_IF_GENERATIVE
-planning_visual_review: USER_APPROVED_REFERENCE_SET_20260825_CHARACTER_MASTER_AND_DOGYEOM_COMBAT_BATTLER_20260826_NOT_RUNTIME_VISUAL_PASS
+planning_visual_next: USER_DECISION_REQUIRED_FOR_NEXT_CONSUMER_ASSET
+planning_visual_generation: NO_AUTOMATIC_NEXT_RESULT
+planning_visual_review: DOGYEOM_STATUS_PORTRAIT_01_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_20260826_WINDOWS_HUMAN_VISUAL_NOT_RUN
 planning_visual_state: docs/planning-data/current_visual_production_handoff_20260826.json
 planning_visual_historical_state: docs/planning-data/current_visual_production_handoff_20260825.json
 planning_visual_authority: TEN-DEC-20260820-VISUAL-UX-SYSTEM-01
@@ -145,7 +145,7 @@ authority_bootstrap_merge_commit: 43a6e625c57c6f3e50b562e494fec074be553457
 
 - `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01` — 아래 첫 5전 Vertical Slice 기획 계보를 사용자 완료 승인한다.
 - `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01` — 통합 수묵 전술 화폭, 화면별 정보 위계, 재사용 컴포넌트, 최소 신규 자산 요구사항을 승인하고 당시 명시적 자산/구현 요청 대기로 전환했다. 이후 2026-08-25 사용자가 Visual 작업을 명시 재개했고, 2026-08-26 r5.4 current Gate가 승인당 정확히 1개 결과 cadence를 소유한다.
-- `TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01` — 설명용/스타일 검증용 이미지를 current production 대상으로 만들지 않고 실제 게임 소비처가 확인된 자산만 생성한다. 도겸 Character Master와 실제 전장 consumer용 `DOGYEOM_COMBAT_BATTLER_01`은 사용자 승인 완료이며, 다음은 상태 패널 consumer용 `DOGYEOM_STATUS_PORTRAIT_01`, 이후 exact card ID의 `CardView.illustration`이다.
+- `TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01` — 설명용/스타일 검증용 이미지를 current production 대상으로 만들지 않고 실제 게임 소비처가 확인된 자산만 생성한다. `DOGYEOM_STATUS_PORTRAIT_01`은 사용자 승인·Notion binary readback 후 상태 패널에 구현됐고, 도겸 ID만 승인 초상으로 라우팅하며 다른 상대는 generic fallback을 유지한다. 다음 Visual은 자동 시작하지 않고 concrete consumer와 사용자 결정을 요구한다.
 - `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01` — Main→시작 6중4→비무행 도입→Briefing→Combat Review Overlay→Duel Result/Reward 별도 Scene→Route 2노드→다음 비무→5전 완주.
 - `TEN-DEC-20260820-VERTICAL-SLICE-CONTENT-DETAIL-01` — 후보 15명·8개 Route·텍스트 UX.
 - `TEN-DEC-20260820-VERTICAL-SLICE-LOADOUT-ROUTE-WIRE-01` — 기존 10권 재사용·다음 후보 선잠금·Route 수치 Seed·비전투 Wire.
@@ -155,7 +155,7 @@ authority_bootstrap_merge_commit: 43a6e625c57c6f3e50b562e494fec074be553457
 - 역사 구현 표식: `runtime_implementation: ACTION_SELECTION_DOCK_IMPLEMENTED_PR65`.
 - V6 원장: `2026-07-28_V6_DECISION_AUTHORITY_LEDGER.md`.
 
-위 App Flow·상세 계약·Visual/UX 요구사항은 계획 권위다. 사용자 `기획완료`와 후속 Visual/UX 승인 자체는 제품 mutation 권한이 아니었고, 이후 `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`이 첫 5전 Phase I–VI bounded implementation을 별도로 승인했다. PR #65와 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`는 선행 런타임/자동검증 계보로 보존하고, 현재 전체 Phase I–VI 구현 상태는 상단 `phase_i_vi_implementation: AUTHORIZED_AND_MERGED`가 라우팅한다. 현재 Visual은 사용자 승인 `OPPONENT_CHARACTER_MASTER_01`과 `DOGYEOM_COMBAT_BATTLER_01`을 보존한 채, **GPT Work에서 실제 상태 패널 소비처용 `DOGYEOM_STATUS_PORTRAIT_01` 파생부터 재개**한다. 가능하면 승인 Master의 비생성 crop/mask/resample을 우선하며, 생성형 작업이 필요하면 r5.4 exact-one 승인 Gate를 다시 적용한다. 추가 제품 mutation은 별도 fresh Gate가 필요하다.
+위 App Flow·상세 계약·Visual/UX 요구사항은 계획 권위다. 사용자 `기획완료`와 후속 Visual/UX 승인 자체는 제품 mutation 권한이 아니었고, 이후 `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`이 첫 5전 Phase I–VI bounded implementation을 별도로 승인했다. PR #65와 `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`는 선행 런타임/자동검증 계보로 보존하고, 현재 전체 Phase I–VI 구현 상태는 상단 `phase_i_vi_implementation: AUTHORIZED_AND_MERGED`가 라우팅한다. `DOGYEOM_STATUS_PORTRAIT_01`은 승인 결과를 실제 상태 패널 소비처에 연결했고, focused Godot 자동 검증과 Vertical Slice bridge 회귀가 통과했다. Windows human visual review와 Android evidence는 여전히 별도다.
 
 ## 제품 연결·성장 보호 표식
 
@@ -295,7 +295,7 @@ user_disposition: DEFERRED_BY_USER
 5. current_user_planning_status + current_visual_production_handoff_20260826 + docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md + current_operating_state + current_vertical_slice_implementation_gate_20260820 재조회
 6. 플랫폼/device 재인가 작업일 때만 current_entry_gate_20260808을 역사 비교 근거로 추가 확인
 7. live context 의미 상태와 fresh truth 차이 교정
-8. Visual 요청이면 실제 게임 소비처 확인 후 `DOGYEOM_STATUS_PORTRAIT_01`은 승인 Master의 비생성 crop/mask/resample을 우선; 생성형 작업이 필요하면 brief → explicit approval → exactly one result → review
+8. 다음 Visual 요청이면 실제 게임 소비처와 사용자 결정을 먼저 확인한다. `DOGYEOM_STATUS_PORTRAIT_01`은 구현·자동 검증 완료 상태로 재생성하지 않는다.
 9. 실제 Godot 제품 구현 요청이면 r5.4 `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF`로 전환하고 Codex가 Project GitHub + Notion을 독립 fresh-read
 10. PowerShell은 Godot local 실행·검증이 실제 필요할 때만 사용하며 local Codex launcher로 사용하지 않음
 11. 실제 결과와 evidence ceiling을 분류하고 허용된 다음 Gate만 진행
@@ -338,7 +338,7 @@ Google Sheets는 신규 기획 입력 경로로 사용하지 않으며 migration
 ## 현재 위험·미검증
 
 - 첫 5전 PC-first Vertical Slice Phase I–VI는 승인 범위가 구현·병합됐다. 다만 Windows visible Human usability, Android 실기기, Human 재미·가독성·몰입, 최종 Visual/VFX/Audio는 계속 `NOT_RUN`이며 완료로 승격하지 않는다.
-- 2026-08-25 승인 Reference Set(`TEN-IMG-001`, `TEN-VIS-CHAR-MASTER-001`, `TEN-VIS-A07-CANDIDATE`, `TEN-VIS-A01`)은 Visual continuation 기준으로 승인됐지만 runtime/shipping asset PASS가 아니다. `OPPONENT_CHARACTER_MASTER_01` · 도겸과 `DOGYEOM_COMBAT_BATTLER_01`은 `USER_APPROVED_2026_08_26`이며 Notion Asset Library delivery가 완료됐다. Battler의 opponent-specific runtime routing과 runtime art integration은 `NOT_RUN`이다. 다음 Visual은 GPT Work에서 `DOGYEOM_STATUS_PORTRAIT_01`을 실제 `CombatantStatusPanel` 소비처 기준으로 파생하는 작업이며 현재 `GPT_WORK_RESUME_REQUIRED`다.
+- 2026-08-25 승인 Reference Set(`TEN-IMG-001`, `TEN-VIS-CHAR-MASTER-001`, `TEN-VIS-A07-CANDIDATE`, `TEN-VIS-A01`)은 Visual continuation 기준으로 승인됐지만 runtime/shipping asset PASS가 아니다. `OPPONENT_CHARACTER_MASTER_01`은 도겸 정체성 reference로 보존한다. `DOGYEOM_STATUS_PORTRAIT_01`은 `USER_APPROVED_2026_08_26` PNG를 `res://assets/portraits/dogyeom_status_portrait_01_v1.png`로 저장하고 `CombatantStatusPanel`에 구현했다. `slot1_dogyeom` runtime routing 및 runtime art integration은 `AUTOMATED_GODOT_PASS_20260826`이지만 Windows human usability와 Android 실기기 evidence는 `NOT_RUN`이다. `DOGYEOM_COMBAT_BATTLER_01` routing은 여전히 `NOT_RUN`이다.
 - `TEN-VIS-A02`는 도겸 상태 초상을 다음으로 두고 나머지 상대 14인의 초상이 미제작이다. `TEN-VIS-A03`은 도겸 Battler source 승인까지 완료됐지만 나머지 14인과 runtime routing이 미완료다. `TEN-VIS-A04` Route 8아이콘, `TEN-VIS-A05` Result/Completion 표식, `TEN-VIS-A06` 추가 전투 배경도 실제 consumer 확인 뒤에만 제작한다.
 - 후보 영구 스테이터스 총량 `20/22/24/26/28`, 성급 `3/7/7/7/9`, Route 회복 `최대 체력25% + 기력1 + 내력1`은 `REVERSIBLE_*_SEED`이며 실제 밸런스 PASS가 아니다.
 - 대량 밸런스 시뮬레이션은 계약만 있고 `NOT_RUN`이다.

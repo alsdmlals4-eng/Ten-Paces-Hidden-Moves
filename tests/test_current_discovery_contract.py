@@ -175,13 +175,13 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertIn("planning_execution_surface: GPT_WORK", current_section)
         self.assertIn("planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md", current_section)
-        self.assertIn("planning_visual_next: DOGYEOM_STATUS_PORTRAIT_01", current_section)
+        self.assertIn("planning_visual_next: USER_DECISION_REQUIRED_FOR_NEXT_CONSUMER_ASSET", current_section)
         self.assertIn(
-            "planning_visual_generation: GPT_WORK_RESUME_PREFER_NON_GENERATIVE_CROP_EXACTLY_ONE_IF_GENERATIVE",
+            "planning_visual_generation: NO_AUTOMATIC_NEXT_RESULT",
             current_section,
         )
         self.assertIn(
-            "planning_visual_review: USER_APPROVED_REFERENCE_SET_20260825_CHARACTER_MASTER_AND_DOGYEOM_COMBAT_BATTLER_20260826_NOT_RUNTIME_VISUAL_PASS",
+            "planning_visual_review: DOGYEOM_STATUS_PORTRAIT_01_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_20260826_WINDOWS_HUMAN_VISUAL_NOT_RUN",
             current_section,
         )
         self.assertIn(
@@ -251,7 +251,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("DOGYEOM_COMBAT_BATTLER_01", current_risk)
         self.assertIn("DOGYEOM_STATUS_PORTRAIT_01", current_risk)
         self.assertIn("USER_APPROVED_2026_08_26", current_risk)
-        self.assertIn("GPT_WORK_RESUME_REQUIRED", current_risk)
+        self.assertIn("AUTOMATED_GODOT_PASS_20260826", current_risk)
         self.assertIn("runtime art integration", current_risk)
         self.assertIn("future_product_mutation_authorized: false", current_risk)
         self.assertNotIn("product_implementation_authorized: false", current_risk)

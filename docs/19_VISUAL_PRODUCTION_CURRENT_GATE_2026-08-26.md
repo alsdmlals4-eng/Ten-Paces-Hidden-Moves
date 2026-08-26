@@ -92,7 +92,7 @@ canon + actual game consumer review
 2. **상태 패널 Portrait** — `src/ui/combatant_status_panel.gd`; 현재 enemy portrait는 `res://assets/portraits/enemy_masked_ink_v1.png`.
 3. **카드 중앙 삽화** — `src/ui/card_view.gd`의 `CardView.illustration`; `data/cards/basic_cards.json`이 실제 illustration atlas region 소비 계약을 보유한다.
 
-## 6. GPT Work에서 재개할 다음 실제 소비처 자산
+## 6. 구현 완료 실제 소비처 자산
 
 ### `DOGYEOM_STATUS_PORTRAIT_01` · 도겸 상태 패널 Portrait
 
@@ -100,18 +100,19 @@ canon + actual game consumer review
 
 **현재 generic consumer asset:** `res://assets/portraits/enemy_masked_ink_v1.png`.
 
-**source master:** 사용자 승인 `OPPONENT_CHARACTER_MASTER_01`.
+**승인 결과:** 사용자 승인 `DOGYEOM_STATUS_PORTRAIT_01_v1`.
+
+**runtime asset:** `res://assets/portraits/dogyeom_status_portrait_01_v1.png`.
 
 제작 원칙:
 
-- 승인 Master의 얼굴·머리·권객 정체성·복식 질량을 유지한다.
-- 현재 status panel crop에서 얼굴/상체가 작은 크기로 명확히 읽혀야 한다.
-- **가능하면 승인 Master에서 deterministic crop/mask/resample로 파생**하고 새 생성은 하지 않는다.
-- 생성형 편집/새 이미지가 필요한 경우에만 text brief → 사용자 명시 승인 → 정확히 1개 → 검토를 적용한다.
+- 사용자 승인 결과의 얼굴·머리·복식 정체성을 유지한다.
 - UI/text/수치/프레임을 원화에 굽지 않는다.
-- opponent-specific Dogyeom routing은 Codex 구현과 runtime evidence 전까지 `NOT_RUN`이다.
+- `VerticalSliceCombatBridge`는 잠긴 상대의 `candidate_id`를 `combat_state.enemy`에 보존한다.
+- `CombatantStatusPanel`은 `slot1_dogyeom`일 때만 이 asset을 선택하며, 다른 상대 및 ID 누락 상대는 기존 `enemy_masked_ink_v1.png`를 유지한다.
+- 기존 `STRETCH_KEEP_ASPECT_COVERED` 표시 계약은 유지한다.
 
-현재 상태: `GPT_WORK_RESUME_REQUIRED`.
+현재 상태: `IMPLEMENTED · AUTOMATED_GODOT_VERIFIED_20260826 · WINDOWS_HUMAN_VISUAL_REVIEW_NOT_RUN`.
 
 ## 7. 다음 후보 — Portrait 검토 후에만
 
@@ -142,12 +143,14 @@ opponent_character_master_01_notion_delivery: PASS_2026_08_26
 dogyeom_combat_battler_01_generation: PASS_EXACTLY_ONE_2026_08_26
 dogyeom_combat_battler_01_user_approval: PASS_2026_08_26
 dogyeom_combat_battler_01_notion_delivery: PASS_2026_08_26
+dogyeom_status_portrait_01_user_approval: PASS_2026_08_26
+dogyeom_status_portrait_01_notion_binary_delivery: PASS_20260826_READBACK
+dogyeom_status_portrait_01_runtime_asset: res://assets/portraits/dogyeom_status_portrait_01_v1.png
 consumer_first_visual_policy: USER_APPROVED_2026_08_26
-next_result: DOGYEOM_STATUS_PORTRAIT_01
-next_result_state: GPT_WORK_RESUME_REQUIRED
+next_safe_action: USER_DECISION_REQUIRED_FOR_NEXT_CONSUMER_ASSET
 runtime_source_master_promotion: NOT_RUN
-opponent_specific_dogyeom_routing: NOT_RUN
-runtime_art_integration: NOT_RUN
+opponent_specific_dogyeom_routing: AUTOMATED_GODOT_PASS_20260826
+runtime_art_integration: AUTOMATED_GODOT_PASS_20260826
 windows_visible_human_usability: NOT_RUN
 android_actual_device: NOT_RUN
 fifteen_opponent_identifiability: NOT_RUN

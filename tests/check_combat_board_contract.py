@@ -177,6 +177,7 @@ def main() -> None:
         "twilight_ink_duel_v1",
         "player_wanderer_ink_v1",
         "enemy_masked_ink_v1",
+        "dogyeom_status_portrait_01_v1",
         "player_wanderer_battler_rgba_v1",
         "enemy_masked_battler_rgba_v1",
         "ultimate_ink_gold_sprite_sheet_rgba",

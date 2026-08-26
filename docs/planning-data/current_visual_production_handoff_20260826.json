@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project": "TEN_PACES",
   "updated_at": "2026-08-26",
-  "status": "HANDOFF_READY_GPT_WORK",
+  "status": "DOGYEOM_STATUS_PORTRAIT_IMPLEMENTED_AUTOMATED_VERIFIED",
   "authority_role": "CURRENT_VISUAL_PRODUCTION_HANDOFF",
   "current_execution_contract": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
   "current_visual_production_decision": "TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01",
@@ -58,6 +58,20 @@
       "opponent_specific_routing": "NOT_RUN",
       "source_master": "OPPONENT_CHARACTER_MASTER_01",
       "output_contract": "TRANSPARENT_RGBA_FULL_BODY_ENEMY_FACING_LEFT_FOOT_ANCHOR_SAFE"
+    },
+    "DOGYEOM_STATUS_PORTRAIT_01": {
+      "working_character": "도겸",
+      "status": "USER_APPROVED_AND_IMPLEMENTED_2026_08_26",
+      "approval_source": "user explicit: 승인",
+      "source_png_sha256": "0672dfb9938c65f88ade27b90f3bc558a0a3588ccf19a70f5412fc74dd11143c",
+      "notion_binary_delivery": "PASS_20260826_READBACK",
+      "runtime_asset": "res://assets/portraits/dogyeom_status_portrait_01_v1.png",
+      "consumer": "src/ui/combatant_status_panel.gd",
+      "routing_key": "candidate_id == slot1_dogyeom",
+      "generic_fallback_asset": "res://assets/portraits/enemy_masked_ink_v1.png",
+      "opponent_specific_routing": "AUTOMATED_GODOT_PASS_20260826",
+      "runtime_art_integration": "AUTOMATED_GODOT_PASS_20260826",
+      "windows_visible_human_usability": "NOT_RUN"
     }
   },
   "style_lock": {
@@ -110,15 +124,10 @@
     "gpt_work_handoff_readback": "PASS_20260826"
   },
   "next_result": {
-    "name": "Dogyeom Status Portrait #01",
-    "id": "DOGYEOM_STATUS_PORTRAIT_01",
-    "purpose": "derive the approved Dogyeom identity into the existing combat status portrait consumer",
-    "consumer": "src/ui/combatant_status_panel.gd",
-    "current_consumer_asset": "res://assets/portraits/enemy_masked_ink_v1.png",
-    "intended_runtime_role": "enemy combat status portrait",
-    "source_master": "OPPONENT_CHARACTER_MASTER_01",
-    "derivation_policy": "PREFER_NON_GENERATIVE_CROP_FROM_APPROVED_MASTER",
-    "generation_status": "GPT_WORK_RESUME_REQUIRED"
+    "name": "Next consumer-backed visual asset",
+    "id": "USER_DECISION_REQUIRED",
+    "purpose": "Do not generate or implement another asset until a concrete consumer-backed request is approved.",
+    "generation_status": "NO_AUTOMATIC_NEXT_RESULT"
   },
   "deferred_queue_after_result_review": [
     {
@@ -138,7 +147,7 @@
   ],
   "remaining_asset_inventory": {
     "TEN-VIS-A01": "FIRST_PLATE_APPROVED_OPTIONAL_SECOND_VARIANT_ONLY_IF_CONSUMER_REQUIRES",
-    "TEN-VIS-A02": "DOGYEOM_STATUS_PORTRAIT_NEXT_14_OTHER_OPPONENT_PORTRAITS_NOT_PRODUCED",
+    "TEN-VIS-A02": "DOGYEOM_STATUS_PORTRAIT_IMPLEMENTED_14_OTHER_OPPONENT_PORTRAITS_NOT_PRODUCED",
     "TEN-VIS-A03": "DOGYEOM_BATTLER_SOURCE_USER_APPROVED_RUNTIME_ROUTING_NOT_RUN_14_OTHER_BATTLERS_NOT_PRODUCED",
     "TEN-VIS-A04": "ROUTE_8_ICON_SET_NOT_PRODUCED_REQUIRE_GAME_CONSUMER_VERIFICATION_BEFORE_GENERATION",
     "TEN-VIS-A05": "RESULT_COMPLETION_MARK_SET_NOT_PRODUCED_REQUIRE_GAME_CONSUMER_VERIFICATION_BEFORE_GENERATION",
@@ -159,8 +168,8 @@
     "dogyeom_combat_battler_01_user_approval": "PASS_2026_08_26",
     "dogyeom_combat_battler_01_notion_delivery": "PASS_2026_08_26",
     "runtime_source_master_promotion": "NOT_RUN",
-    "opponent_specific_dogyeom_routing": "NOT_RUN",
-    "runtime_art_integration": "NOT_RUN",
+    "opponent_specific_dogyeom_routing": "AUTOMATED_GODOT_PASS_20260826",
+    "runtime_art_integration": "AUTOMATED_GODOT_PASS_20260826",
     "windows_visible_local_usability": "NOT_RUN",
     "android_actual_device": "NOT_RUN",
     "fifteen_opponent_identifiability": "NOT_RUN",
@@ -177,10 +186,7 @@
     "READ_THIS_HANDOFF_AND_APPROVED_RESULTS",
     "DO_NOT_USE_MIGRATION_SHEET_AS_CURRENT_AUTHORITY",
     "REQUIRE_ACTUAL_GAME_CONSUMER_FOR_EACH_NEW_IMAGE",
-    "RESUME_WITH_DOGYEOM_STATUS_PORTRAIT_01",
-    "PREFER_NON_GENERATIVE_CROP_FROM_APPROVED_MASTER",
-    "IF_GENERATIVE_IMAGE_WORK_IS_NEEDED_SHOW_TEXT_BRIEF_AND_WAIT_FOR_EXPLICIT_APPROVAL",
-    "GENERATE_EXACTLY_ONE_RESULT_IF_APPROVED",
-    "STOP_FOR_USER_REVIEW"
+    "DOGYEOM_STATUS_PORTRAIT_01_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_20260826",
+    "REQUIRE_USER_DECISION_BEFORE_NEXT_CONSUMER_ASSET"
   ]
 }

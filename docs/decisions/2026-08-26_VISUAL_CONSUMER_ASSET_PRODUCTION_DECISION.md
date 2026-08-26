@@ -57,9 +57,9 @@ A merely planned future slot is not enough. If the current consumer is still gen
 
 ## Next production order
 
-1. `DOGYEOM_STATUS_PORTRAIT_01` — portrait derivative of the approved Dogyeom master for the **existing generic enemy status/portrait slot**. Prefer crop/mask/resample from the approved master rather than a new generative image. Opponent-specific routing remains `NOT_RUN` until product implementation.
-2. Individual martial/ultimate card illustrations only when each image is mapped to an actual card ID and `CardView.illustration` consumer path. Do not generate `MARTIAL_TECHNIQUE_ILLUSTRATION_SHEET_01` as an explanatory style sheet.
-3. Remaining opponent portrait/battler assets only when their source master/identity and actual consumer contract are identified.
+1. `DOGYEOM_STATUS_PORTRAIT_01` — completed for the **existing generic enemy status/portrait slot**. `slot1_dogyeom` routing and generic fallback passed automated Godot verification; Windows human visual and Android device evidence remain separate.
+2. Individual martial/ultimate card illustrations only when each image is mapped to an actual card ID and `CardView.illustration` consumer path, and a user explicitly selects the concrete asset. Do not generate `MARTIAL_TECHNIQUE_ILLUSTRATION_SHEET_01` as an explanatory style sheet.
+3. Remaining opponent portrait/battler assets only when their source master/identity and actual consumer contract are identified, and a user explicitly selects the concrete asset.
 4. Route/result/background visual assets only after their actual in-game consumer is identified. If the game consumes a production atlas, that atlas may be generated/assembled as the deliverable.
 
 The user then directed that future work continue in **GPT Work**. This changes the execution surface, not project authority: the next Work session must fresh-read Project GitHub + exact Project Notion before continuing this queue.
