@@ -100,18 +100,17 @@ canon + actual game consumer review
 
 **현재 generic consumer asset:** `res://assets/portraits/enemy_masked_ink_v1.png`.
 
-**source master:** 사용자 승인 `OPPONENT_CHARACTER_MASTER_01`.
+**승인 결과:** 사용자 명시 승인 후 생성한 `DOGYEOM_STATUS_PORTRAIT_01_v1`.
 
 제작 원칙:
 
-- 승인 Master의 얼굴·머리·권객 정체성·복식 질량을 유지한다.
+- 사용자 승인 도겸 전신·캐릭터 시트를 정체성·화풍 참고로 사용한다.
 - 현재 status panel crop에서 얼굴/상체가 작은 크기로 명확히 읽혀야 한다.
-- **가능하면 승인 Master에서 deterministic crop/mask/resample로 파생**하고 새 생성은 하지 않는다.
-- 생성형 편집/새 이미지가 필요한 경우에만 text brief → 사용자 명시 승인 → 정확히 1개 → 검토를 적용한다.
+- 승인 Master PNG를 fresh-read로 복구하지 못해, 사용자의 새 원화 명시 승인에 따라 text brief → 명시 승인 → 정확히 1개 → 검토를 완료했다.
 - UI/text/수치/프레임을 원화에 굽지 않는다.
 - opponent-specific Dogyeom routing은 Codex 구현과 runtime evidence 전까지 `NOT_RUN`이다.
 
-현재 상태: `GPT_WORK_RESUME_REQUIRED`.
+현재 상태: `USER_APPROVED · NOTION_BINARY_ATTACHMENT_AND_READBACK_PASS · CODEX_GODOT_HANDOFF_REQUIRED`.
 
 ## 7. 다음 후보 — Portrait 검토 후에만
 
@@ -143,8 +142,10 @@ dogyeom_combat_battler_01_generation: PASS_EXACTLY_ONE_2026_08_26
 dogyeom_combat_battler_01_user_approval: PASS_2026_08_26
 dogyeom_combat_battler_01_notion_delivery: PASS_2026_08_26
 consumer_first_visual_policy: USER_APPROVED_2026_08_26
-next_result: DOGYEOM_STATUS_PORTRAIT_01
-next_result_state: GPT_WORK_RESUME_REQUIRED
+dogyeom_status_portrait_01: USER_APPROVED_2026_08_26
+dogyeom_status_portrait_01_local_asset: docs/visual-assets/approved/DOGYEOM_STATUS_PORTRAIT_01_v1.png
+dogyeom_status_portrait_01_notion_binary_attachment: PASS_20260826_READBACK
+next_safe_action: CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
 runtime_source_master_promotion: NOT_RUN
 opponent_specific_dogyeom_routing: NOT_RUN
 runtime_art_integration: NOT_RUN

@@ -1,0 +1,12 @@
+# DOGYEOM_STATUS_PORTRAIT_01 v1
+
+- Status: `USER_APPROVED_2026-08-26`
+- Asset: `DOGYEOM_STATUS_PORTRAIT_01_v1.png`
+- SHA-256: `0672dfb9938c65f88ade27b90f3bc558a0a3588ccf19a70f5412fc74dd11143c`
+- Dimensions: `1146 × 1373` PNG (near 5:6 vertical)
+- Creation: one user-approved, newly generated status-panel portrait; no generative edits after review.
+- References: user-approved full-body Dogyeom source and character-sheet reference from the 2026-08-26 source set.
+- Use: preparation asset for the existing enemy status-portrait slot only.
+- Runtime: `NOT_RUN` — no opponent-specific routing, game integration, Windows, Android, or human-readability validation is claimed.
+- Rights: `UNKNOWN / RELEASE_BLOCKED_UNVERIFIED`.
+- Notion: Asset Library record and binary attachment destination readback `PASS_20260826`.

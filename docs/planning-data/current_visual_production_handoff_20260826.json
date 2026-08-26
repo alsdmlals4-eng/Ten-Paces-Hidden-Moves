@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project": "TEN_PACES",
   "updated_at": "2026-08-26",
-  "status": "HANDOFF_READY_GPT_WORK",
+  "status": "APPROVED_STATUS_PORTRAIT_READY_FOR_CODEX_GODOT_HANDOFF",
   "authority_role": "CURRENT_VISUAL_PRODUCTION_HANDOFF",
   "current_execution_contract": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
   "current_visual_production_decision": "TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01",
@@ -58,6 +58,20 @@
       "opponent_specific_routing": "NOT_RUN",
       "source_master": "OPPONENT_CHARACTER_MASTER_01",
       "output_contract": "TRANSPARENT_RGBA_FULL_BODY_ENEMY_FACING_LEFT_FOOT_ANCHOR_SAFE"
+    },
+    "DOGYEOM_STATUS_PORTRAIT_01": {
+      "working_character": "도겸",
+      "status": "USER_APPROVED_2026_08_26",
+      "approval_source": "user explicit: 승인",
+      "generation_mode": "ONE_NEW_ORIGINAL_AFTER_EXPLICIT_APPROVAL",
+      "source_png_sha256": "0672dfb9938c65f88ade27b90f3bc558a0a3588ccf19a70f5412fc74dd11143c",
+      "local_asset": "docs/visual-assets/approved/DOGYEOM_STATUS_PORTRAIT_01_v1.png",
+      "notion_record": "https://app.notion.com/p/3c81b237eb1c8134b203cc7a0a46d52d",
+      "notion_binary_delivery": "PASS_20260826_READBACK",
+      "runtime_asset": false,
+      "consumer": "src/ui/combatant_status_panel.gd",
+      "current_consumer_asset": "res://assets/portraits/enemy_masked_ink_v1.png",
+      "opponent_specific_routing": "NOT_RUN"
     }
   },
   "style_lock": {
@@ -107,18 +121,19 @@
     "opponent_character_master_01_delivery": "PASS_20260826",
     "dogyeom_combat_battler_01_delivery": "PASS_20260826",
     "consumer_first_policy_readback": "PASS_20260826",
-    "gpt_work_handoff_readback": "PASS_20260826"
+    "gpt_work_handoff_readback": "PASS_20260826",
+    "dogyeom_status_portrait_01_notion_binary_delivery": "PASS_20260826_READBACK"
   },
   "next_result": {
-    "name": "Dogyeom Status Portrait #01",
-    "id": "DOGYEOM_STATUS_PORTRAIT_01",
-    "purpose": "derive the approved Dogyeom identity into the existing combat status portrait consumer",
+    "name": "Dogyeom Status Portrait Runtime Integration Handoff",
+    "id": "DOGYEOM_STATUS_PORTRAIT_01_CODEX_GODOT_HANDOFF",
+    "purpose": "prepare the bounded Codex Godot implementation handoff for identity-aware portrait routing and generic fallback",
     "consumer": "src/ui/combatant_status_panel.gd",
     "current_consumer_asset": "res://assets/portraits/enemy_masked_ink_v1.png",
     "intended_runtime_role": "enemy combat status portrait",
-    "source_master": "OPPONENT_CHARACTER_MASTER_01",
-    "derivation_policy": "PREFER_NON_GENERATIVE_CROP_FROM_APPROVED_MASTER",
-    "generation_status": "GPT_WORK_RESUME_REQUIRED"
+    "approved_local_asset": "docs/visual-assets/approved/DOGYEOM_STATUS_PORTRAIT_01_v1.png",
+    "generation_status": "USER_APPROVED_EXACTLY_ONE_RESULT",
+    "completion_gate": "CODEX_GODOT_PRODUCT_HANDOFF_REQUIRED_BEFORE_RUNTIME_CHANGE"
   },
   "deferred_queue_after_result_review": [
     {
@@ -159,6 +174,9 @@
     "dogyeom_combat_battler_01_user_approval": "PASS_2026_08_26",
     "dogyeom_combat_battler_01_notion_delivery": "PASS_2026_08_26",
     "runtime_source_master_promotion": "NOT_RUN",
+    "dogyeom_status_portrait_01_generation": "PASS_EXACTLY_ONE_2026_08_26",
+    "dogyeom_status_portrait_01_user_approval": "PASS_2026_08_26",
+    "dogyeom_status_portrait_01_notion_binary_delivery": "PASS_20260826_READBACK",
     "opponent_specific_dogyeom_routing": "NOT_RUN",
     "runtime_art_integration": "NOT_RUN",
     "windows_visible_local_usability": "NOT_RUN",
@@ -177,10 +195,7 @@
     "READ_THIS_HANDOFF_AND_APPROVED_RESULTS",
     "DO_NOT_USE_MIGRATION_SHEET_AS_CURRENT_AUTHORITY",
     "REQUIRE_ACTUAL_GAME_CONSUMER_FOR_EACH_NEW_IMAGE",
-    "RESUME_WITH_DOGYEOM_STATUS_PORTRAIT_01",
-    "PREFER_NON_GENERATIVE_CROP_FROM_APPROVED_MASTER",
-    "IF_GENERATIVE_IMAGE_WORK_IS_NEEDED_SHOW_TEXT_BRIEF_AND_WAIT_FOR_EXPLICIT_APPROVAL",
-    "GENERATE_EXACTLY_ONE_RESULT_IF_APPROVED",
-    "STOP_FOR_USER_REVIEW"
+    "NOTION_DESTINATION_READBACK_PASS_20260826",
+    "REQUEST_CODEX_MODE_FOR_DOGYEOM_STATUS_PORTRAIT_RUNTIME_IMPLEMENTATION"
   ]
 }
