@@ -4,33 +4,41 @@
 > User direction: 앞으로 작업 surface는 `GPT Work`  
 > Current execution contract: `TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01`  
 > Current visual production decision: `TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01`  
+> Shared Work adapter: Base `CHATGPT_WORK_PROJECT_EXECUTION_INSTRUCTION_v4.9` + compatibility appendix  
 > Product/runtime mutation authority from this handoff: `false`
 
 이 문서는 과거 채팅 전문을 복제하지 않는다. 새 GPT Work 세션이 **현재 Project GitHub + exact Project Notion을 fresh-read**해 현재 품질, 보호 범위, 다음 안전 작업, evidence ceiling을 복원하기 위한 bounded handoff다.
 
+Base v4.9 Work adapter는 프로젝트의 r5.4 계약을 대체하는 새 프로젝트 정본이 아니다. `WORK_IS_EXECUTION_SURFACE_NOT_CANON`으로 Work 실행면을 제공하면서 r5.4 capability와 Project current canon을 보존한다.
+
 ## 1. 새 GPT Work 세션 시작 순서
 
 1. `alsdmlals4-eng/Ten-Paces-Hidden-Moves`의 기본 브랜치, 최신 `main`, 열린 PR을 다시 조회한다.
-2. `alsdmlals4-eng/Base`의 최신 completed `main`, root `AGENTS.md`, 현재 작업에 필요한 owner/Skill만 progressive-load한다.
-3. Project Notion의 `십보강호 · Home` → `02 · 비주얼 바이블` → `04 · 에셋 라이브러리` → `2026-08-26 · GPT Work 인수인계`를 다시 읽는다.
-4. repository의 다음 current state를 다시 읽는다.
+2. `alsdmlals4-eng/Base`의 최신 completed `main`, root `AGENTS.md`, 현재 작업에 필요한 owner/Skill을 progressive-load한다.
+3. Base current Work bundle을 확인한다.
+   - `templates/project-operations/CHATGPT_WORK_PROJECT_EXECUTION_INSTRUCTION_v4.9.md`
+   - `templates/project-operations/CHATGPT_WORK_PROJECT_EXECUTION_INSTRUCTION_v4.9_COMPATIBILITY_APPENDIX.md`
+4. Project Notion의 `십보강호 · Home` → `02 · 비주얼 바이블` → `04 · 에셋 라이브러리` → `2026-08-26 · GPT Work 인수인계`를 다시 읽는다.
+5. repository의 다음 current state를 다시 읽는다.
    - `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`
    - `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
    - `docs/planning-data/current_user_planning_status.json`
    - `docs/planning-data/current_visual_production_handoff_20260826.json`
    - `docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md`
-5. 과거 대화, 이 문서의 observed SHA, Google Sheet를 current truth로 자동 승격하지 않는다.
-6. GitHub↔Notion 의미가 다르면 mutation 전에 `CONTEXT_DRIFT_RECHECK_REQUIRED`로 멈춘다.
+6. 과거 대화, Default memory, 이 문서의 observed SHA, Google Sheet를 current truth로 자동 승격하지 않는다.
+7. GitHub↔Notion 의미가 다르면 mutation 전에 `CONTEXT_DRIFT_RECHECK_REQUIRED`로 멈춘다.
 
 ## 2. Handoff 시점 관측 snapshot
 
-아래 값은 **2026-08-26 handoff 시점 관측 증거**이며 다음 세션의 live authority가 아니다.
+아래 값은 **2026-08-26 handoff 과정에서 관측한 증거**이며 다음 세션의 live authority가 아니다.
 
 ```yaml
-observed_project_main: b6d76410e3aa0edd7a2e698270742187cc471fd9
+observed_project_main_before_handoff_merge: b6d76410e3aa0edd7a2e698270742187cc471fd9
 observed_project_main_message: docs: bind visual production to actual game consumers (#205)
-observed_base_main: 06669fe9c6a3ccd6f3b0d19c5757540bfdcc0623
-observed_base_main_message: docs: default ChatGPT project memory for Work and reuse (#724)
+observed_base_main_latest_during_handoff: 43b3ffb2c5b026e3d4a38dab2338585894d36f61
+observed_base_main_message: feat: add Work-native project execution instruction (#726)
+observed_base_work_adapter: templates/project-operations/CHATGPT_WORK_PROJECT_EXECUTION_INSTRUCTION_v4.9.md
+observed_base_work_compatibility_appendix: templates/project-operations/CHATGPT_WORK_PROJECT_EXECUTION_INSTRUCTION_v4.9_COMPATIBILITY_APPENDIX.md
 observed_open_project_prs:
   - 199: DRAFT_READ_ONLY_BY_DEFAULT_CONFLICTING_WITH_NEW_MAIN
   - 200: DRAFT_READ_ONLY_BY_DEFAULT_CONFLICTING_WITH_NEW_MAIN
@@ -160,8 +168,8 @@ Handoff 직전 Google Sheet `00_프로젝트_허브`는 아직 다음 과거 상
 
 ## 9. GPT Work 재개용 첫 요청
 
-새 GPT Work 세션에서는 다음 한 문장으로 시작할 수 있다.
+Base v4.9 Work adapter 기준으로 별도 Goal을 매번 반복할 필요는 없다. 프로젝트명 + Work 공용 지시문만으로 current Project canon에서 다음 안전 작업을 복원할 수 있다. 이번 handoff를 명시적으로 이어가려면 다음 문장을 사용할 수 있다.
 
-> 십보강호 현재 GitHub main·열린 PR·Base main과 Project Notion Home/Visual Bible/Asset Library/GPT Work 인수인계를 fresh-read하고, 과거 채팅을 current truth로 쓰지 말고 `DOGYEOM_STATUS_PORTRAIT_01`의 실제 소비처 기준 다음 작업부터 재개해.
+> 십보강호 현재 GitHub main·열린 PR·Base main과 Project Notion Home/Visual Bible/Asset Library/GPT Work 인수인계를 fresh-read하고, 과거 채팅이나 memory를 current truth로 쓰지 말고 `DOGYEOM_STATUS_PORTRAIT_01`의 실제 소비처 기준 다음 작업부터 재개해.
 
 첫 응답에서는 바로 이미지 생성하지 말고 fresh-read 결과, 권위 충돌 여부, 현재 next safe action을 먼저 확인한다.
