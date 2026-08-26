@@ -141,10 +141,14 @@ class IntegratedWorkContractV48R54Tests(unittest.TestCase):
         planning = json.loads(PLANNING.read_text(encoding="utf-8"))
         self.assertEqual(1, visual["image_production_cadence"]["max_results_per_explicit_approval"])
         self.assertTrue(visual["image_production_cadence"]["automatic_next_result_forbidden"])
-        self.assertEqual("OPPONENT_CHARACTER_MASTER_01", visual["next_result"]["id"])
+        self.assertEqual("ACTUAL_GAME_RUNTIME_CONSUMER_ASSET", visual["generation_unit_policy"]["basis"])
+        self.assertEqual("USER_APPROVED_SOURCE_MASTER", visual["latest_approved_result"]["status"])
+        self.assertEqual("OPPONENT_CHARACTER_MASTER_01", visual["latest_approved_result"]["id"])
+        self.assertEqual("TEN-VIS-A03-SLOT1-DOGYEOM-BATTLER-01", visual["next_result"]["id"])
+        self.assertEqual("COMBAT_BATTLER_RGBA", visual["next_result"]["target_role"])
         self.assertEqual("WAITING_EXPLICIT_USER_GENERATION_APPROVAL", visual["next_result"]["generation_status"])
-        self.assertEqual(["OPPONENT_CHARACTER_MASTER_01"], planning["next_visual_batch"])
-        self.assertEqual("READY_FOR_EXPLICIT_SINGLE_IMAGE", planning["next_image_generation"])
+        self.assertEqual(["TEN-VIS-A03-SLOT1-DOGYEOM-BATTLER-01"], planning["next_visual_batch"])
+        self.assertEqual("READY_FOR_EXPLICIT_SINGLE_RUNTIME_CONSUMER_IMAGE", planning["next_image_generation"])
         self.assertEqual("docs/planning-data/current_visual_production_handoff_20260826.json", planning["visual_reference_state"])
 
 
