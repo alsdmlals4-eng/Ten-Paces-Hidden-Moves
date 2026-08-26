@@ -74,11 +74,9 @@ jobs:
         if: steps.scope.outputs.code_changed == 'true'
         run: python -m unittest tests.test_local_godot_evidence_collector_contract -v
 
-      - name: Run local executor bootstrap and handoff contract tests
+      - name: Run local executor handoff retirement contract tests
         if: steps.scope.outputs.code_changed == 'true'
-        run: |
-          python -m unittest tests.test_local_executor_bootstrap_contract -v
-          python -m unittest tests.test_local_executor_handoff_contract -v
+        run: python -m unittest tests.test_local_executor_handoff_contract -v
 
       - name: Run post-merge canon lifecycle regression tests
         run: python -m unittest tests.test_postmerge_canon_lifecycle -v
@@ -180,7 +178,6 @@ jobs:
             "tools/verify_repeat_poc_a2.ps1",
             "tools/verify_repeat_poc_a3.ps1",
             "tools/collect_godot_live_evidence.ps1",
-            "tools/start_ten_paces_local_executor.ps1",
             "tools/start_issue54_human_validation.ps1"
           )
           foreach ($path in $paths) {
