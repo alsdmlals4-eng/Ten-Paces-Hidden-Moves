@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
+  "status": "CURRENT_APPROVED_PROJECT_EXECUTION_CONTRACT",
+  "contract_version": "4.8",
+  "revision": "2026-08-26-r5.4-superset-final",
+  "source_uploaded_sha256": "fdf238c202cfac6d3a824aae49b8ac525fba023e31bba7df6ece64a2790365a0",
+  "base_observed_main": "edb3b3376603c9f6b00d64af3126304f8c9946bf",
+  "supersedes_decision_id": "TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01",
+  "adapter_policy": "THIN_ADAPTER_DO_NOT_DUPLICATE_BASE_CANON",
+  "authority": {
+    "human_workspace": "NOTION_HUMAN_FACING_CANON",
+    "repository": "REPOSITORY_STRUCTURED_CANON_AND_RUNTIME_TRUTH",
+    "google_sheets": "MIGRATION_ONLY_UNTIL_REMOVAL"
+  },
+  "fresh_read": {
+    "bootstrap": "PROJECT_GITHUB_NOTION_ONLY_RECONSTRUCTION_REQUIRED",
+    "past_conversation_required": false,
+    "github_notion_conflict": "CONTEXT_DRIFT_RECHECK_REQUIRED"
+  },
+  "execution_role_boundary": {
+    "gpt": "PLANNING_RESEARCH_REVIEW_BASE_NOTION_DOCUMENT_VISUAL",
+    "codex": "INDEPENDENT_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF_ONLY",
+    "local_codex_orchestration": "RETIRED_NOT_USED",
+    "project_specific_codex_home_required": false,
+    "powershell": "LOCAL_GODOT_OR_VALIDATION_ONLY_NOT_CODEX_LAUNCHER"
+  },
+  "shared_godot_host_default": {
+    "policy": "SHARED_APPROVED_EXACT_PIN_DEFAULT_NO_PER_PROJECT_DUPLICATE_BINARY",
+    "godot_ai_ports": "FIXED_DEFAULT_PORTS_WITH_EXACT_SESSION_ROUTING",
+    "project_isolation": "EXACT_PROJECT_PATH_EDITOR_SESSION_IDENTITY",
+    "historical_dedicated_port_checkpoint_is_current": false
+  },
+  "visual_generation": {
+    "policy": "TEXT_BRIEF_THEN_EXPLICIT_USER_APPROVAL_THEN_EXACTLY_ONE_RESULT",
+    "max_results_per_approval": 1,
+    "automatic_next_result": false,
+    "approved_20260825_reference_set_preserved": true
+  },
+  "localization": {
+    "minimum_targets": [
+      "ko",
+      "en",
+      "ja",
+      "zh-*"
+    ],
+    "chinese_variant": "UNKNOWN_UNVERIFIED_USER_DECISION_REQUIRED_BEFORE_LOCALIZATION_LOCK"
+  },
+  "responsive": {
+    "target_profiles": [
+      "pc_standard",
+      "pc_wide_or_ultrawide",
+      "mobile_landscape"
+    ],
+    "semantic_parity": true
+  },
+  "protected_product_paths": [
+    "data/",
+    "src/",
+    "scenes/",
+    "assets/",
+    "addons/",
+    "project.godot"
+  ],
+  "product_runtime_change": false,
+  "evidence_ceiling": {
+    "contract_and_cold_start": "TARGETED_RECONCILIATION_IN_PROGRESS",
+    "product_runtime": "NOT_CHANGED_BY_THIS_DECISION",
+    "windows_visible_human": "NOT_RUN",
+    "android_actual_device": "NOT_RUN_BLOCKED_UNVERIFIED",
+    "player_experience": "NOT_RUN",
+    "release_performance": "NOT_RUN"
+  }
+}
