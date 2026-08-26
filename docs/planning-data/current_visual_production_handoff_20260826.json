@@ -1,20 +1,24 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project": "TEN_PACES",
   "updated_at": "2026-08-26",
-  "status": "R5_4_EXACTLY_ONE_VISUAL_GATE_NEXT_RESULT_READY",
+  "status": "R5_4_RUNTIME_CONSUMER_FIRST_NEXT_RESULT_READY",
   "authority_role": "CURRENT_VISUAL_PRODUCTION_HANDOFF",
   "current_execution_contract": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
+  "current_visual_decisions": [
+    "TEN-DEC-20260826-OPPONENT-CHARACTER-MASTER-01-APPROVAL-01",
+    "TEN-DEC-20260826-RUNTIME-CONSUMER-FIRST-VISUAL-ASSET-01"
+  ],
   "human_facing_owner": "NOTION_HOME_VISUAL_BIBLE_ASSET_LIBRARY",
   "repository_handoff": "docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md",
   "historical_visual_handoff": "docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md",
-  "historical_visual_state": "docs/planning-data/current_visual_production_handoff_20260825.json",
   "fresh_read_required": true,
   "approved_reference_set_preserved": [
     "TEN-IMG-001",
     "TEN-VIS-CHAR-MASTER-001",
     "TEN-VIS-A07-CANDIDATE",
-    "TEN-VIS-A01"
+    "TEN-VIS-A01",
+    "OPPONENT_CHARACTER_MASTER_01"
   ],
   "style_lock": {
     "world_background": "LOW_CONTRAST_INK_WASH_SEPIA_NEGATIVE_SPACE",
@@ -24,68 +28,75 @@
     "full_pixel_conversion": false,
     "gold_usage": "RESTRAINED_DECISION_CONFIRM_ULTIMATE_ONLY"
   },
-  "combat_reference_contract": {
-    "battlefield_is_primary_visual_mass": true,
-    "distance_n_primary": true,
-    "absolute_floor_numbers_primary": false,
-    "current_bundle_visible": true,
-    "round_sequence": [
-      3,
-      3,
-      4
-    ],
-    "action_sources": [
-      "기초",
-      "무공",
-      "절초"
-    ],
-    "action_grid_max_columns": 5,
-    "action_grid_max_rows": 2,
-    "action_grid_max_items": 10,
-    "card_illustration_required": true,
-    "long_effect_text_to_detail_panel": true,
-    "visual_cta_label": "진행",
-    "semantic_cta_authority": "PENDING_DECISION_VS_행동계획_잠금"
-  },
-  "image_production_cadence": {
-    "current_policy": "TEXT_BRIEF_THEN_EXPLICIT_USER_APPROVAL_THEN_EXACTLY_ONE_RESULT",
+  "image_production_policy": {
+    "cadence": "TEXT_BRIEF_THEN_EXPLICIT_USER_APPROVAL_THEN_EXACTLY_ONE_RESULT",
     "max_results_per_explicit_approval": 1,
     "automatic_next_result_forbidden": true,
     "review_after_result_required": true,
-    "historical_20260825_policy": "MAX_3_PER_BATCH_SUPERSEDED_FOR_CURRENT_EXECUTION"
+    "generation_unit_basis": "ACTUAL_GAME_RUNTIME_CONSUMER_ASSET",
+    "explanation_sheet_as_generation_unit": "FORBIDDEN_UNLESS_RUNTIME_CONSUMES_THE_SHEET",
+    "source_master_role": "ALLOWED_FOR_DERIVATION_AND_CONSISTENCY_NOT_COUNTED_AS_RUNTIME_ASSET_PASS"
   },
-  "notion_delivery_verification": {
-    "home_url": "https://app.notion.com/p/3c41b237eb1c8105a254d860f3c21638",
-    "visual_bible_url": "https://app.notion.com/p/3c01b237eb1c814f80d4c6140fddebd4",
-    "asset_library_url": "https://app.notion.com/p/3c01b237eb1c8172a16dc7713b75fcc5",
-    "approved_reference_set_readback": "PASS_20260825",
-    "new_r5_4_result_delivery": "NOT_RUN"
-  },
-  "next_result": {
+  "runtime_consumer_evidence": [
+    {
+      "consumer": "src/combat/combat_character_placeholder.gd",
+      "asset_role": "COMBAT_BATTLER_PNG"
+    },
+    {
+      "consumer": "src/ui/combatant_status_panel.gd",
+      "asset_role": "STATUS_PANEL_PORTRAIT_PNG"
+    },
+    {
+      "consumer": "src/ui/card_view.gd",
+      "asset_role": "CARD_ILLUSTRATION_ATLAS_REGION",
+      "current_region_example": "240x270"
+    }
+  ],
+  "latest_approved_result": {
     "name": "Opponent Character Master #01",
     "id": "OPPONENT_CHARACTER_MASTER_01",
-    "purpose": "validate opponent silhouette differentiation using approved character master grammar",
+    "working_character_id": "slot1_dogyeom",
+    "working_name": "도겸",
+    "status": "USER_APPROVED_SOURCE_MASTER",
+    "decision_id": "TEN-DEC-20260826-OPPONENT-CHARACTER-MASTER-01-APPROVAL-01",
+    "preview_path": "docs/visual-reference/OPPONENT_CHARACTER_MASTER_01_APPROVED_PREVIEW.svg",
+    "runtime_asset_pass": false
+  },
+  "next_result": {
+    "name": "Dogyeom Combat Battler #01",
+    "id": "TEN-VIS-A03-SLOT1-DOGYEOM-BATTLER-01",
+    "source_master": "OPPONENT_CHARACTER_MASTER_01",
+    "purpose": "produce a real combat battler image for the Godot battlefield character consumer",
+    "target_consumer": "src/combat/combat_character_placeholder.gd / future slot1_dogyeom asset binding",
+    "target_role": "COMBAT_BATTLER_RGBA",
     "generation_status": "WAITING_EXPLICIT_USER_GENERATION_APPROVAL"
   },
   "deferred_queue_after_result_review": [
     {
-      "name": "Martial Technique Illustration Sheet #01",
-      "purpose": "validate martial-technique illustration language distinct from basic actions"
+      "name": "Dogyeom Status Portrait #01",
+      "id": "TEN-VIS-A02-SLOT1-DOGYEOM-PORTRAIT-01",
+      "target_consumer": "src/ui/combatant_status_panel.gd / future slot1_dogyeom asset binding"
     },
     {
-      "name": "Route Icon Sheet #01",
-      "asset_id": "TEN-VIS-A04",
-      "purpose": "validate eight route-node icons readable without color dependence"
+      "name": "견룡재전 Card Illustration #01",
+      "id": "TEN-VIS-A07-BEGGARS-DRAGON-SUBDUING-PALM-STAR3-ILLUSTRATION-01",
+      "card_id": "beggars_dragon_subduing_palm_star3",
+      "target_consumer": "src/ui/card_view.gd illustration atlas region"
     }
   ],
+  "retired_generation_unit_names": [
+    "MARTIAL_TECHNIQUE_ILLUSTRATION_SHEET_01",
+    "TEN_VIS_A04_ROUTE_ICON_SHEET_01"
+  ],
+  "retired_generation_unit_note": "Underlying martial-art and route-icon asset requirements remain. Only explanation-sheet generation units are retired; future assets must bind to concrete runtime consumers.",
   "remaining_asset_inventory": {
-    "TEN-VIS-A01": "FIRST_PLATE_APPROVED_OPTIONAL_SECOND_VARIANT",
-    "TEN-VIS-A02": "15_OPPONENT_PORTRAITS_NOT_PRODUCED_CHARACTER_MASTER_APPROVED",
-    "TEN-VIS-A03": "15_COMBAT_BATTLERS_NOT_PRODUCED_CHARACTER_MASTER_APPROVED",
-    "TEN-VIS-A04": "ROUTE_8_ICON_SET_NOT_PRODUCED_DEFERRED_QUEUE",
-    "TEN-VIS-A05": "RESULT_COMPLETION_MARK_SET_NOT_PRODUCED",
-    "TEN-VIS-A06": "2_TO_3_BATTLE_BACKGROUND_VARIANTS_NOT_PRODUCED",
-    "TEN-VIS-A07_CANDIDATE": "BASIC_ACTION_STYLE_APPROVED_MARTIAL_AND_ULTIMATE_EXPANSION_NOT_PRODUCED"
+    "TEN-VIS-A01": "FIRST_PLATE_APPROVED_OPTIONAL_SECOND_VARIANT_ONLY_IF_RUNTIME_CONSUMER_REQUIRES",
+    "TEN-VIS-A02": "15_OPPONENT_PORTRAIT_CONSUMER_ASSETS_NOT_PRODUCED",
+    "TEN-VIS-A03": "15_COMBAT_BATTLER_CONSUMER_ASSETS_NOT_PRODUCED",
+    "TEN-VIS-A04": "ROUTE_ICON_REQUIREMENT_REQUIRES_CONCRETE_RUNTIME_CONSUMER_BINDING_BEFORE_GENERATION",
+    "TEN-VIS-A05": "RESULT_COMPLETION_MARK_REQUIREMENT_REQUIRES_CONCRETE_RUNTIME_CONSUMER_BINDING_BEFORE_GENERATION",
+    "TEN-VIS-A06": "2_TO_3_BATTLE_BACKGROUND_VARIANTS_ONLY_AS_RUNTIME_BACKGROUND_CONSUMERS",
+    "TEN-VIS-A07": "CARD_ILLUSTRATIONS_MUST_BIND_TO_CONCRETE_CARD_IDS_AND_CARDVIEW_CONSUMER"
   },
   "sheet_compatibility": {
     "mode": "MIGRATION_ONLY_UNTIL_REMOVAL",
@@ -94,8 +105,8 @@
   },
   "evidence_ceiling": {
     "user_reference_approval": "PASS_2026_08_25",
-    "notion_reference_delivery": "PASS_2026_08_25",
-    "r5_4_single_result_generation": "NOT_RUN",
+    "opponent_character_master_01_user_approval": "PASS_2026_08_26_SOURCE_MASTER_ONLY",
+    "opponent_character_master_01_notion_delivery": "PENDING_POSTMERGE_READBACK",
     "runtime_source_master_promotion": "NOT_RUN",
     "runtime_art_integration": "NOT_RUN",
     "windows_visible_local_usability": "NOT_RUN",
@@ -111,7 +122,8 @@
     "READ_CURRENT_R5_4_PROJECT_CONTRACT",
     "READ_THIS_HANDOFF_AND_APPROVED_REFERENCE_SET",
     "DO_NOT_USE_MIGRATION_SHEET_AS_CURRENT_AUTHORITY",
-    "SHOW_TEXT_BRIEF_FOR_OPPONENT_CHARACTER_MASTER_01",
+    "ONLY_PROPOSE_IMAGES_WITH_CONCRETE_GAME_CONSUMERS",
+    "SHOW_TEXT_BRIEF_FOR_TEN-VIS-A03-SLOT1-DOGYEOM-BATTLER-01",
     "WAIT_FOR_EXPLICIT_USER_GENERATION_APPROVAL",
     "GENERATE_EXACTLY_ONE_RESULT",
     "STOP_FOR_USER_REVIEW"
