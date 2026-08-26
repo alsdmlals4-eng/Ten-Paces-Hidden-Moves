@@ -29,6 +29,7 @@
     "policy": "SHARED_APPROVED_EXACT_PIN_DEFAULT_NO_PER_PROJECT_DUPLICATE_BINARY",
     "godot_ai_ports": "FIXED_DEFAULT_PORTS_WITH_EXACT_SESSION_ROUTING",
     "project_isolation": "EXACT_PROJECT_PATH_EDITOR_SESSION_IDENTITY",
+    "per_project_dedicated_port_policy": "NOT_DEFAULT_EXCEPTION_ONLY",
     "historical_dedicated_port_checkpoint_is_current": false
   },
   "visual_generation": {
@@ -54,6 +55,32 @@
     ],
     "semantic_parity": true
   },
+  "superset_project_invariants": {
+    "work_structure_flexibility": "FIX_ONLY_TRUE_INVARIANTS_KEEP_COUNTS_TOOLS_AND_MODES_DYNAMIC",
+    "legacy_surface_retirement": "ABSORB_UNIQUE_VERIFY_DESTINATION_ZERO_ACTIVE_REFERENCES_THEN_SUPERSEDE_HOLD_ARCHIVE_OR_REMOVE",
+    "approved_unit_closeout": "ADVERSARIAL_REVIEW_GITHUB_NOTION_SYNC_PR_CHECK_MERGE_POSTMERGE_READBACK",
+    "primary_work_goal": "BEST_LONG_TERM_EFFICIENT_METHOD",
+    "entry_state_reconciliation": "REQUIRED_BEFORE_MATERIAL_MUTATION",
+    "whole_project_audit": "REQUIRED_FOR_NEW_PROJECT_MAJOR_GATE_AND_RESTRUCTURE",
+    "requirement_traceability": "REQUIREMENT_TO_OWNER_IMPLEMENTATION_EVIDENCE_COMPLETION_REQUIRED",
+    "decision_checkpoint": "BOUNDED_DECISION_BATCH_AND_EARLY_CANON_SYNC",
+    "world_core_storyline": "REQUIRED_WHEN_PROJECT_HAS_WORLD_OR_NARRATIVE",
+    "narrative_event_origin": "MESSAGE_OR_QUESTION_AND_CHARACTER_BEFORE_EVENT_PRESSURE",
+    "decision_screen_comprehension": "REQUIRED_FOR_DECISION_BEARING_UI",
+    "multi_platform_shared_core": "SHARED_RULE_DATA_SAVE_ECONOMY_CORE_SEMANTICS",
+    "slice_delivery": "PLAYABLE_MEANINGFUL_SLICE_INCREMENTAL_DELIVERY",
+    "slice_canonical_reflection": "AFTER_PLAY_VERIFICATION_GITHUB_STRUCTURED_AND_NOTION_HUMAN_READBACK",
+    "audio_visual_poc": "RUNTIME_FEEDBACK_ALIGNMENT_EVIDENCE_REQUIRED_WHEN_PLAYER_PROMISE_DEPENDS_ON_IT",
+    "progress_measurement": "PLAYABLE_PROGRESS_NOT_DOCUMENT_VOLUME",
+    "asset_provenance": "SOURCE_RIGHTS_VERSION_TECHNICAL_FIT_APPROVAL_RUNTIME_CONSUMER",
+    "shared_audio_reference": "REUSE_FIRST_PROVENANCE_AND_PROJECT_OWNED_CONSUMPTION_COPY",
+    "one_click_play": "RUNNABLE_BY_USER_WHEN_PLAYER_OR_HUMAN_VALIDATION_IS_REQUIRED",
+    "ci_supply_chain": "CURRENT_REPOSITORY_REQUIRED_CHECKS_AND_IMMUTABLE_ACTION_PINNING_WHEN_APPLICABLE",
+    "remote_ci_cost": "EXISTING_ZERO_INCREMENTAL_COST_ROUTE_FIRST",
+    "skill_absorption": "PARTIAL_ABSORPTION_WITH_FUNCTION_LEVEL_VALIDITY_CLASSIFICATION",
+    "skill_coverage": "CURRENT_REGISTRY_FULL_INVENTORY_TRIGGERED_PROGRESSIVE_LOAD_WITH_EXECUTION_RECEIPT",
+    "unreviewed_floating_latest": "FORBIDDEN"
+  },
   "protected_product_paths": [
     "data/",
     "src/",
@@ -64,7 +91,7 @@
   ],
   "product_runtime_change": false,
   "evidence_ceiling": {
-    "contract_and_cold_start": "TARGETED_RECONCILIATION_IN_PROGRESS",
+    "contract_and_cold_start": "REPOSITORY_BINDING_RECORDED_NOT_RUNTIME_OR_HUMAN_PROOF",
     "product_runtime": "NOT_CHANGED_BY_THIS_DECISION",
     "windows_visible_human": "NOT_RUN",
     "android_actual_device": "NOT_RUN_BLOCKED_UNVERIFIED",
