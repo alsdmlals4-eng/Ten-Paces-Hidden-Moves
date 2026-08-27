@@ -225,7 +225,6 @@ func _layout_linked_blocks() -> void:
     if not is_instance_valid(_linked_block_layer):
         return
     _linked_block_layer.position = Vector2.ZERO
-    _linked_block_layer.size = size
     for anchor_value in linked_blocks.keys():
         var anchor_index := int(anchor_value)
         var block := get_linked_block(anchor_index)
