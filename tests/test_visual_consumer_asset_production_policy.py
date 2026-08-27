@@ -15,6 +15,7 @@ WARM_DUSK_DECISION = ROOT / "docs" / "decisions" / "2026-08-27_WARM_DUSK_TEN_STE
 WARM_DUSK_CANDIDATE = ROOT / "docs" / "visual-assets" / "candidates" / "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID.png"
 WARM_DUSK_RECORD = ROOT / "docs" / "visual-assets" / "candidates" / "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID.md"
 SCREEN_AUDIT_OWNER = ROOT / "docs" / "17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md"
+SCREEN_VISUAL_INVENTORY = ROOT / "docs" / "planning-data" / "current_screen_visual_coverage_inventory_20260828.json"
 
 
 class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
@@ -111,6 +112,48 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
         self.assertNotIn("VerticalSliceShellCompletionAuto", audit)
         self.assertIn("src/ui/basic_card_tray.gd → src/ui/basic_card_tray_item.gd", audit)
         self.assertIn("tests/verify_vertical_slice_shell.gd", audit)
+
+    def test_current_screen_inventory_maps_actual_consumers_before_production(self) -> None:
+        inventory = json.loads(SCREEN_VISUAL_INVENTORY.read_text(encoding="utf-8"))
+        visual = json.loads(VISUAL.read_text(encoding="utf-8"))
+
+        self.assertEqual("ACTUAL_GAME_CONSUMER_FIRST", inventory["asset_production_policy"])
+        self.assertFalse(inventory["automatic_image_generation_from_inventory_gaps"])
+        self.assertEqual(0, inventory["current_p0_runtime_blocking_image_gaps"])
+        self.assertEqual("ISSUE_240_MERGED_MAIN_D9AE822", inventory["superseded_handoff_correction"]["status"])
+        self.assertEqual("ISSUE_240_MERGED_MAIN_D9AE822", visual["screen_surface_asset_audit_20260827"]["bounded_codex_handoff_status"])
+        self.assertEqual(SCREEN_VISUAL_INVENTORY.relative_to(ROOT).as_posix(), visual["screen_surface_asset_audit_20260827"]["canonical_repository_owner"])
+
+        p0_expectations = {
+            "SCREEN_MAIN": ("src/run/vertical_slice_shell.gd:VerticalSliceShell._render_current_screen", "COVERED_BY_CODE_RENDERING"),
+            "SCREEN_SETUP": ("src/run/vertical_slice_shell.gd:VerticalSliceShell._build_setup_options", "COVERED_BY_CODE_RENDERING"),
+            "SCREEN_INTRO": ("src/run/vertical_slice_shell.gd:VerticalSliceShell._render_current_screen", "COVERED_BY_CODE_RENDERING"),
+            "SCREEN_BRIEFING": ("src/run/vertical_slice_shell.gd:VerticalSliceShell._render_briefing", "COVERED_BY_CODE_RENDERING"),
+            "SCREEN_COMBAT": ("src/combat/combat_board_preview.gd", "COVERED_BY_EXISTING_RUNTIME_ASSETS"),
+            "OVERLAY_REVIEW": ("src/ui/combat_review_panel.gd via src/run/vertical_slice_combat_bridge.gd", "COVERED_BY_REUSE"),
+            "SCREEN_RESULT": ("src/run/vertical_slice_shell_result_auto.gd:VerticalSliceResultShell", "COVERED_BY_CODE_RENDERING"),
+            "SCREEN_ROUTE_GROWTH": ("src/run/vertical_slice_shell_route_auto.gd:VerticalSliceRouteShell", "COVERED_BY_CODE_RENDERING"),
+            "SCREEN_ROUTE_INFO": ("src/run/vertical_slice_shell_route_auto.gd:VerticalSliceRouteShell", "COVERED_BY_CODE_RENDERING"),
+            "SCREEN_COMPLETION": ("src/run/vertical_slice_shell_completion_auto.gd:VerticalSliceCompletionShell", "COVERED_BY_CODE_RENDERING"),
+        }
+        p0_rows = [row for row in inventory["screen_inventory"] if row["priority"] == "P0"]
+        self.assertEqual(set(p0_expectations), {row["screen_id"] for row in p0_rows})
+        self.assertEqual(len(p0_rows), len({row["screen_id"] for row in p0_rows}))
+        for row in p0_rows:
+            self.assertEqual(p0_expectations[row["screen_id"]], (row["actual_consumer"], row["status"]))
+
+        combat = next(row for row in inventory["screen_inventory"] if row["screen_id"] == "SCREEN_COMBAT")
+        self.assertEqual("src/combat/combat_board_preview.gd", combat["actual_consumer"])
+        self.assertIn("COMBAT_BACKGROUND_01", combat["runtime_asset_families"])
+        self.assertIn("CARD_ICON_ILLUSTRATION", combat["runtime_asset_families"])
+
+        main = next(row for row in inventory["screen_inventory"] if row["screen_id"] == "SCREEN_MAIN")
+        self.assertEqual("NO_RUNTIME_IMAGE_REQUIRED", main["image_requirement"])
+        self.assertEqual("COVERED_BY_CODE_RENDERING", main["status"])
+
+        release = next(row for row in inventory["screen_inventory"] if row["screen_id"] == "SCREEN_RELEASE_LOADING_ERROR")
+        self.assertEqual("NOT_APPLICABLE_CURRENT_VERTICAL_SLICE", release["status"])
+        self.assertEqual("RELEASE_BLOCKED_UNVERIFIED", release["release_evidence"])
 
 
 if __name__ == "__main__":
