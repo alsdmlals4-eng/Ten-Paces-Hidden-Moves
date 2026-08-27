@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project": "TEN_PACES",
   "updated_at": "2026-08-28",
-  "status": "WARM_DUSK_VISUAL_DIRECTION_SELECTED_V2_NO_FLOOR_GRID_ANCHOR_CANDIDATE_IN_REVIEW_DOGYEOM_ASSETS_PRESERVED",
+  "status": "WARM_DUSK_V2_USER_APPROVED_PLANNING_ANCHOR_ONLY_NON_RUNTIME_DOGYEOM_ASSETS_PRESERVED",
   "authority_role": "CURRENT_VISUAL_PRODUCTION_HANDOFF",
   "current_execution_contract": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
   "current_visual_production_decision": "TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01",
@@ -92,7 +92,48 @@
     "gold_usage": "RESTRAINED_DISTANCE_AND_DECISION_EMPHASIS_ONLY",
     "previous_20260826_lock": "PRESERVED_AS_HISTORICAL_NOT_RETROACTIVELY_REWRITTEN",
     "candidate": "docs/visual-assets/candidates/WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID.png",
-    "candidate_status": "GENERATED_EXPLORATION_IN_REVIEW"
+    "candidate_status": "USER_APPROVED_PLANNING_ANCHOR_ONLY_NON_RUNTIME",
+    "planning_anchor_decision": "TEN-DEC-20260828-WARM-DUSK-V2-PLANNING-ANCHOR-01",
+    "planning_anchor_issue": 249,
+    "visual_direction_lock_packet": {
+      "selected_candidate": "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID",
+      "approved_use": "PLANNING_VISUALIZATION_ANCHOR_ONLY",
+      "runtime_asset_status": "NOT_APPROVED",
+      "adopted_elements": [
+        "WARM_DUSK_CHARCOAL_INK_PAPER",
+        "HORIZONTAL_DUEL_AND_BATTLEFIELD_PRIMARY_MASS",
+        "LOGICAL_TEN_STEP_WITHOUT_FLOOR_GRID",
+        "DARK_TACTICAL_UI_PAPER_READING_PLANE_RESTRAINED_GOLD",
+        "PLAN_EXECUTION_TO_COMBAT_RESOLUTION_FLOW"
+      ],
+      "rejected_elements": [
+        "GOLD_FLOOR_GRID_OR_NUMBERED_FLOOR",
+        "BAKED_UI_TEXT_NUMBERS_OR_BUTTONS",
+        "HIDDEN_PLAN_OR_ANSWER_LEAKAGE",
+        "CINEMATIC_SYMMETRY_AS_GAMEPLAY_READABILITY_PROOF"
+      ],
+      "global_style_anchor": "WARM_DUSK_CHARCOAL_INK_PAPER_RESTRAINED_ANTIQUE_GOLD",
+      "character_anchor": "SEMI_REALISTIC_WUXIA_7_TO_7_5_HEADS_CLEAR_WEAPON_POSE_COSTUME_SILHOUETTE",
+      "environment_anchor": "LOW_VIEW_CONTINUOUS_STONE_COURT_LOW_CONTRAST_DISTANCE_DEPTH",
+      "ui_anchor": "DARK_INK_TACTICAL_SURFACE_PAPER_INFORMATION_PLANE_GODOT_TEXT_AND_DATA",
+      "vfx_anchor": "INK_MOTION_WITH_SHORT_RESTRAINED_GOLD_DECISIVE_LINE",
+      "flow_screen_anchor": "PLAN_EDITING_TO_ACTION_PLAN_EXECUTION_TO_COMBAT_RESOLUTION_ANIMATION_TO_REVIEW",
+      "mood_and_emotion": "WARM_DUSK_TENSION_OWNED_RISK_AND_READABLE_CAUSAL_RELIEF",
+      "palette_value_material_lighting": "CHARCOAL_AMBER_SEPIA_PAPER_WEAR_LOW_CONTRAST_WORLD_RESTRAINED_GOLD",
+      "shape_silhouette_proportion": "HORIZONTAL_DUEL_CLEAR_LEFT_RIGHT_SILHOUETTES_NO_CARD_HAND_OR_DECK_LANGUAGE",
+      "camera_framing_density": "HORIZONTAL_DUEL_DISTANCE_FIRST_UI_OVERLAY_SAFE_AREA_NO_LOGICAL_FLOOR_GRID",
+      "keep": "BATTLEFIELD_PRIMARY_MASS_PUBLIC_INFORMATION_UNCERTAINTY_POST_RESOLVE_CAUSAL_CLARITY",
+      "avoid": "OVERSATURATED_ORANGE_EXCESS_GOLD_GLOSSY_3D_MODERN_OBJECTS_MAGIC_GLOW",
+      "do_not_drift": "NO_LOGICAL_GRID_NO_HIDDEN_PLAN_LEAK_NO_NEW_RULES_NO_FOREIGN_PIXEL_OR_3D_FAMILY",
+      "allowed_variation": "REGION_FACTION_STATE_AND_TIME_CAN_CHANGE_TEMPERATURE_DEPTH_AND_DECORATION_WITHOUT_CHANGING_UI_HIERARCHY_OR_CAMERA_MEANING",
+      "superseded_references": [
+        "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v1_GOLD_FLOOR_GRID_REVISION_REQUIRED"
+      ],
+      "provenance_and_rights": "SOURCE_CANDIDATE_RECORDED_RELEASE_RIGHTS_UNKNOWN_RELEASE_BLOCKED_UNVERIFIED",
+      "repository_destination": "docs/decisions/2026-08-28_WARM_DUSK_V2_PLANNING_ANCHOR_DECISION.md",
+      "notion_destination": "https://app.notion.com/p/3c01b237eb1c814f80d4c6140fddebd4",
+      "notion_attachment_readback": "PASS_20260828"
+    }
   },
   "combat_reference_contract": {
     "battlefield_is_primary_visual_mass": true,
@@ -147,13 +188,14 @@
     "dogyeom_combat_battler_01_delivery": "PASS_20260826",
     "consumer_first_policy_readback": "PASS_20260826",
     "gpt_work_handoff_readback": "PASS_20260826",
-    "dogyeom_status_portrait_01_notion_binary_delivery": "PASS_20260826_READBACK"
+    "dogyeom_status_portrait_01_notion_binary_delivery": "PASS_20260826_READBACK",
+    "warm_dusk_v2_planning_anchor_visual_bible_attachment": "PASS_20260828"
   },
   "next_result": {
-    "name": "Warm dusk direction-anchor review",
-    "id": "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01",
-    "purpose": "Review the one direction candidate before any asset replacement, Notion attachment, or additional generation.",
-    "generation_status": "USER_DIRECTED_SINGLE_CORRECTION_GENERATED_EXPLORATION_IN_REVIEW"
+    "name": "Project core scene visual board",
+    "id": "PROJECT_CORE_SCENE_VISUAL_BOARD",
+    "purpose": "One planning visualization that verifies main entry, plan execution, combat resolution, review, route choice, and the locked visual grammar without claiming runtime implementation.",
+    "generation_status": "TEXT_BRIEF_AND_EXPLICIT_USER_APPROVAL_REQUIRED"
   },
   "deferred_queue_after_result_review": [
     {
@@ -206,7 +248,7 @@
     ],
     "p0_blocking_gap": 0,
     "noncombat_implementation_mode": "GODOT_UI_TEXT_LAYER_NO_NEW_IMAGE_FILE_REQUIRED",
-    "candidate_protection": "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_V2_REMAINS_GENERATED_EXPLORATION_IN_REVIEW",
+    "candidate_protection": "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_V2_USER_APPROVED_PLANNING_ANCHOR_ONLY_NON_RUNTIME",
     "automatic_image_generation_from_gaps": false,
     "bounded_codex_handoff": "CODEX_UI_COPY_CORRECTION_REQUIRED",
     "bounded_codex_handoff_status": "ISSUE_240_MERGED_MAIN_D9AE822",
@@ -238,6 +280,8 @@
     "final_vfx_audio": "NOT_RUN",
     "warm_dusk_direction_user_selection": "PASS_20260827",
     "warm_dusk_direction_anchor_generation": "PASS_EXACTLY_ONE_INITIAL_AND_ONE_USER_DIRECTED_CORRECTION_20260827",
+    "warm_dusk_v2_planning_anchor_user_approval": "PASS_20260828",
+    "warm_dusk_v2_planning_anchor_notion_attachment": "PASS_20260828",
     "warm_dusk_direction_anchor_notion_delivery": "NOT_RUN",
     "warm_dusk_direction_anchor_runtime_integration": "NOT_RUN"
   },

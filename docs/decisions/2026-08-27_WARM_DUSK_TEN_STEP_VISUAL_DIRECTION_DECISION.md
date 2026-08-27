@@ -13,7 +13,7 @@
 
 - 관련 실제 surface: `src/combat/combat_board_preview.gd`의 전투판과 `scenes/combat/battle_background.tscn`의 배경 표현.
 - 기존 runtime background `res://assets/backgrounds/twilight_ink_duel_v1.png`와 모든 초상/Battler route는 이 결정만으로 교체하지 않는다.
-- v1은 바닥의 금색 칸 표시에 대해 `REVISION_REQUIRED`가 됐다. 사용자가 명시적으로 요청한 단일 교정 결과 `WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID`는 현재 `GENERATED_EXPLORATION · IN_REVIEW`다. 어느 결과도 `PROJECT_ASSET_APPROVED`, Notion attachment, runtime route, Windows/Android/human verification이 아니다.
+- v1은 바닥의 금색 칸 표시에 대해 `REVISION_REQUIRED`가 됐다. 사용자가 명시적으로 요청한 단일 교정 결과 `WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID`는 2026-08-28 `TEN-DEC-20260828-WARM-DUSK-V2-PLANNING-ANCHOR-01`로 `USER_APPROVED_PLANNING_ANCHOR_ONLY_NON_RUNTIME`가 됐다. 이는 planning visual anchor이며 `PROJECT_ASSET_APPROVED`, runtime route, Windows/Android/human verification은 아니다.
 
 ## Keep / Avoid / Do Not Drift
 
@@ -47,6 +47,6 @@
 
 ## 검증·후속
 
-- `WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID`을 위 네 reference와 비교한다.
-- 다음 asset 생성, Notion attachment, runtime replacement는 이 후보 검토와 별도 consumer/implementation task가 필요하다.
+- v2는 `PROJECT_CORE_SCENE_VISUAL_BOARD`의 planning anchor로 사용한다. board 생성은 별도 text brief와 명시 사용자 승인 뒤 정확히 1장만 허용한다.
+- 다음 runtime asset 생성·runtime replacement는 별도 consumer/implementation task가 필요하다.
 - 신규 visual family를 project-wide runtime style PASS로 주장하지 않는다.

@@ -37,7 +37,7 @@
 
 - Pause/Settings, Failure/Retry, Codex/Help: 현재 Slice에 screen state·Scene·consumer가 없어 `NOT_APPLICABLE_CURRENT_VERTICAL_SLICE`.
 - Boot/Loading/Error/Credits/Store assets: release scope와 권리·플랫폼 증거가 없어 `RELEASE_BLOCKED_UNVERIFIED`.
-- Warm-dusk 후보: `GENERATED_EXPLORATION · IN_REVIEW`이며 runtime/Notion attachment로 승격하지 않음.
+- Warm-dusk v2: `USER_APPROVED_PLANNING_ANCHOR_ONLY_NON_RUNTIME`이며 runtime asset으로 승격하지 않음.
 
 ## 교정
 
