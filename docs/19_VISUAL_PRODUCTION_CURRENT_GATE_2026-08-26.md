@@ -63,7 +63,7 @@
 - 제한 금색은 선택·확정·절초·결정적 결과에만 사용.
 - 상대의 숨은 계획/정답을 색·포즈·연출로 누설하지 않음.
 
-`진행` CTA는 현재 대표 시안의 visual label이다. 기존 전투 의미 계약 `행동계획 잠금`을 바꾸는 runtime semantic Decision은 아직 별도다.
+2026-08-28 사용자 Decision `TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01`은 현재 묶음 CTA를 `행동계획 실행`으로 고정했다. 이는 유효한 3/3/4 슬롯 묶음을 commit한 뒤 전투·해결 애니메이션으로 전환하는 행위다. 과거 대표 시안과 POC의 `진행`은 historical/implementation copy이며, 별도 Codex handoff에서 copy와 전환을 함께 교정할 때까지 runtime current truth가 아니다.
 
 ## 4. 이미지 생성 cadence
 
