@@ -137,10 +137,16 @@ class IntegratedWorkContractV48R54Tests(unittest.TestCase):
         self.assertNotIn('"tools/start_ten_paces_local_executor.ps1"', workflow)
         self.assertIn("tests.test_local_executor_handoff_contract", workflow)
 
-    def test_current_visual_production_is_exactly_one(self) -> None:
+    def test_current_visual_production_is_scoped_generation_then_final_lock(self) -> None:
         visual = json.loads(VISUAL.read_text(encoding="utf-8"))
         planning = json.loads(PLANNING.read_text(encoding="utf-8"))
-        self.assertEqual(1, visual["image_production_cadence"]["max_results_per_explicit_approval"])
+        self.assertEqual(
+            "SCOPED_BRIEF_THEN_SINGLE_GENERATION_PASS_THEN_FINAL_USER_LOCK",
+            visual["image_production_cadence"]["current_policy"],
+        )
+        self.assertFalse(visual["image_production_cadence"]["pre_generation_user_approval_required"])
+        self.assertEqual(1, visual["image_production_cadence"]["max_initial_candidates_per_scoped_task"])
+        self.assertTrue(visual["image_production_cadence"]["final_user_lock_required"])
         self.assertTrue(visual["image_production_cadence"]["automatic_next_result_forbidden"])
         self.assertEqual(CURRENT_VISUAL_PRODUCTION_DECISION_ID, visual["current_visual_production_decision"])
         self.assertEqual("ACTUAL_GAME_CONSUMER_REQUIRED", visual["consumer_first_asset_policy"])
@@ -158,9 +164,10 @@ class IntegratedWorkContractV48R54Tests(unittest.TestCase):
         self.assertEqual("res://assets/portraits/dogyeom_status_portrait_01_v1.png", portrait["runtime_asset"])
         self.assertEqual("AUTOMATED_GODOT_PASS_20260826", portrait["opponent_specific_routing"])
         self.assertEqual("PROJECT_CORE_SCENE_VISUAL_BOARD", visual["next_result"]["id"])
-        self.assertEqual("TEXT_BRIEF_AND_EXPLICIT_USER_APPROVAL_REQUIRED", visual["next_result"]["generation_status"])
+        self.assertEqual("GENERATED_AWAITING_FINAL_LOCK_REVIEW", visual["next_result"]["generation_status"])
+        self.assertEqual("PENDING_USER_FINAL_LOCK", visual["next_result"]["final_lock_status"])
         self.assertEqual([], planning["next_visual_batch"])
-        self.assertEqual("PROJECT_CORE_SCENE_VISUAL_BOARD_TEXT_BRIEF_AND_EXPLICIT_USER_APPROVAL_REQUIRED", planning["next_image_generation"])
+        self.assertEqual("NONE_CURRENT_BOARD_GENERATED_AWAITING_FINAL_LOCK", planning["next_image_generation"])
         self.assertEqual("GPT_WORK", planning["next_execution_surface"])
         self.assertEqual("docs/planning-data/current_visual_production_handoff_20260826.json", planning["visual_reference_state"])
         serialized_queue = json.dumps(visual.get("deferred_queue_after_result_review", []), ensure_ascii=False)

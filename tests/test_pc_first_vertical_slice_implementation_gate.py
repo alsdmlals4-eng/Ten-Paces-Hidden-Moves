@@ -27,7 +27,7 @@ class PcFirstVerticalSliceImplementationGateTests(unittest.TestCase):
         status_path = ROOT / "docs" / "planning-data" / "current_user_planning_status.json"
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
-        self.assertEqual("REVIEW_NEXT_CONCRETE_CONSUMER_ASSET", status["next_phase"])
+        self.assertEqual("PROJECT_CORE_SCENE_VISUAL_BOARD_R2_AWAITING_USER_FINAL_LOCK", status["next_phase"])
         self.assertTrue(status["vertical_slice_pc_implementation_authorized"])
         self.assertFalse(status["windows_android_adapter_implementation_authorized"])
         self.assertEqual("USER_EXPLICIT_NON_IMAGE_WORK_REQUEST", status["implementation_request_source"])
