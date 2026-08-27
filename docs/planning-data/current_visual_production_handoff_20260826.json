@@ -193,6 +193,7 @@
     "candidate_protection": "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_V2_REMAINS_GENERATED_EXPLORATION_IN_REVIEW",
     "automatic_image_generation_from_gaps": false,
     "bounded_codex_handoff": "CODEX_UI_COPY_CORRECTION_REQUIRED",
+    "bounded_codex_handoff_status": "ISSUE_240_IMPLEMENTED_FOCUSED_GODOT_PASS_PENDING_PR_MERGE",
     "runtime_validation_for_audit": "STATIC_CONSUMER_READBACK; GODOT_NOT_LAUNCHED"
   },
   "sheet_compatibility": {
