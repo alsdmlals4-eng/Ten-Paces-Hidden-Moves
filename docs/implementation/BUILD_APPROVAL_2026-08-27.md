@@ -37,3 +37,23 @@ The combat core, hidden-plan boundary, AI information limits, route rules, save 
 ### Exclusions
 
 Combat rules, action-plan semantics, asset production and routing, platform support, and human/device claims remain unchanged.
+
+---
+
+## Supplement: Linked-action layer layout correction
+
+- Decision: `TEN-DEC-20260827-LINKED-ACTION-LAYER-LAYOUT-01`
+- Approved on: `2026-08-27 KST`
+- Approval source: user instruction to continue work with standing approval for ordinary scoped changes
+- Issue: `#224`
+- Authority level: `SCOPED_LINKED_ACTION_LAYER_LAYOUT_CORRECTION_ONLY`
+
+### Approved scope
+
+1. Remove the duplicate manual size assignment from the full-rect linked-action layer.
+2. Add focused regression coverage for the one-owner anchor layout rule.
+3. Preserve linked-action placement, drag/drop, movement, and accessibility behavior.
+
+### Exclusions
+
+Combat rules, visual assets, runtime routing, platform support, and human/device claims remain unchanged.
