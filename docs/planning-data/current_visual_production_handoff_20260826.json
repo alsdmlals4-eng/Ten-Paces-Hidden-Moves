@@ -165,6 +165,36 @@
     "TEN-VIS-A06": "2_TO_3_BATTLE_BACKGROUND_VARIANTS_NOT_PRODUCED_REQUIRE_GAME_CONSUMER_NEED_BEFORE_GENERATION",
     "TEN-VIS-A07_CANDIDATE": "BASIC_ACTION_STYLE_APPROVED_FUTURE_MARTIAL_AND_ULTIMATE_ART_MUST_MAP_TO_REAL_CARD_IDS_AND_CARDVIEW_CONSUMER"
   },
+  "screen_surface_asset_audit_20260827": {
+    "issue": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/238",
+    "canonical_repository_owner": "docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md#16",
+    "notion_projection_surfaces": [
+      "Home",
+      "03 · UI · 전투 Flow Map",
+      "02 · 비주얼 바이블",
+      "04 · 에셋 라이브러리",
+      "2026-08-26 · GPT Work 인수인계"
+    ],
+    "target_build": "FIRST_FIVE_DUEL_PC_FIRST_VERTICAL_SLICE",
+    "p0_screens": [
+      "MAIN",
+      "SETUP",
+      "INTRO",
+      "BRIEFING",
+      "COMBAT",
+      "REVIEW",
+      "RESULT",
+      "ROUTE_GROWTH",
+      "ROUTE_INFO",
+      "COMPLETION"
+    ],
+    "p0_blocking_gap": 0,
+    "noncombat_implementation_mode": "GODOT_UI_TEXT_LAYER_NO_NEW_IMAGE_FILE_REQUIRED",
+    "candidate_protection": "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_V2_REMAINS_GENERATED_EXPLORATION_IN_REVIEW",
+    "automatic_image_generation_from_gaps": false,
+    "bounded_codex_handoff": "CODEX_UI_COPY_CORRECTION_REQUIRED",
+    "runtime_validation_for_audit": "STATIC_CONSUMER_READBACK; GODOT_NOT_LAUNCHED"
+  },
   "sheet_compatibility": {
     "mode": "MIGRATION_ONLY_UNTIL_REMOVAL",
     "drift_vs_current_notion_and_github": true,

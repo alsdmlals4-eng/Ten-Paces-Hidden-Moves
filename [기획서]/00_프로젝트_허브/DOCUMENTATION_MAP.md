@@ -45,6 +45,7 @@
 | 화면 구조 | `docs/decisions/2026-08-01_SITUATION_SCREEN_ARCHITECTURE_DECISION.md` |
 | 행동 선택 | `docs/decisions/2026-08-01_MARTIAL_MANUAL_TECHNIQUE_TIMELINE_UX_DECISION.md` |
 | 현재 Visual production Gate | `docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md` + `docs/planning-data/current_visual_production_handoff_20260826.json` + exact Project Notion |
+| 현재 목표 Build의 실제 화면·screen-to-asset coverage·제작 방식·Codex handoff | `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md` §16 + actual `scenes/run/vertical_slice_shell.tscn` / `src/run/vertical_slice_run_state.gd` + exact Project Notion Flow/Visual/Asset projections |
 | 2026-08-25 Visual Reference/handoff history | `docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md` + `docs/planning-data/current_visual_production_handoff_20260825.json` |
 | 무공서·무학 과거 사용자-facing 표 | legacy Sheet `03_무공서_무학` + 해당 Decision ID의 GitHub/Notion destination — migration 확인 전용 |
 

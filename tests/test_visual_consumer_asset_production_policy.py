@@ -14,6 +14,7 @@ DECISION_ID = "TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01"
 WARM_DUSK_DECISION = ROOT / "docs" / "decisions" / "2026-08-27_WARM_DUSK_TEN_STEP_VISUAL_DIRECTION_DECISION.md"
 WARM_DUSK_CANDIDATE = ROOT / "docs" / "visual-assets" / "candidates" / "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID.png"
 WARM_DUSK_RECORD = ROOT / "docs" / "visual-assets" / "candidates" / "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID.md"
+SCREEN_AUDIT_OWNER = ROOT / "docs" / "17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md"
 
 
 class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
@@ -74,6 +75,42 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
             "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01",
             visual["next_result"]["id"],
         )
+
+    def test_screen_first_audit_keeps_p0_coverage_separate_from_image_generation(self) -> None:
+        visual = json.loads(VISUAL.read_text(encoding="utf-8"))
+        audit = SCREEN_AUDIT_OWNER.read_text(encoding="utf-8")
+
+        self.assertEqual(0, visual["screen_surface_asset_audit_20260827"]["p0_blocking_gap"])
+        self.assertFalse(visual["screen_surface_asset_audit_20260827"]["automatic_image_generation_from_gaps"])
+        self.assertEqual(
+            "GODOT_UI_TEXT_LAYER_NO_NEW_IMAGE_FILE_REQUIRED",
+            visual["screen_surface_asset_audit_20260827"]["noncombat_implementation_mode"],
+        )
+        for screen_id in [
+            "SCREEN_MAIN",
+            "SCREEN_SETUP",
+            "SCREEN_INTRO",
+            "SCREEN_BRIEFING",
+            "SCREEN_COMBAT",
+            "OVERLAY_REVIEW",
+            "SCREEN_RESULT",
+            "SCREEN_ROUTE_GROWTH",
+            "SCREEN_ROUTE_INFO",
+            "SCREEN_COMPLETION",
+        ]:
+            self.assertIn(screen_id, audit)
+        self.assertIn("SCREEN_PAUSE_SETTINGS", audit)
+        self.assertIn("NOT_APPLICABLE", audit)
+        self.assertIn("CODEX_UI_COPY_CORRECTION_REQUIRED", audit)
+        self.assertIn("WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID", audit)
+        self.assertIn("VerticalSliceResultShell", audit)
+        self.assertIn("VerticalSliceRouteShell", audit)
+        self.assertIn("VerticalSliceCompletionShell", audit)
+        self.assertNotIn("VerticalSliceShellResultAuto", audit)
+        self.assertNotIn("VerticalSliceShellRouteAuto", audit)
+        self.assertNotIn("VerticalSliceShellCompletionAuto", audit)
+        self.assertIn("src/ui/basic_card_tray.gd → src/ui/basic_card_tray_item.gd", audit)
+        self.assertIn("tests/verify_vertical_slice_shell.gd", audit)
 
 
 if __name__ == "__main__":
