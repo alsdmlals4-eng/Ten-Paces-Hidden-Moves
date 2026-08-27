@@ -162,6 +162,8 @@ def verify_structured_contract() -> None:
     assert overlay["observation"]["reveals_action_type_only"] is True
     assert overlay["observation"]["technique_name_hidden"] is True
     assert overlay["multi_slot"]["two_slot_phases"] == ["전조", "실행"]
+    # This 2026-08-11 overlay is historical evidence. The current CTA owner is
+    # TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01 and has its own regression.
     assert overlay["plan_lock"]["player_facing_label"] == "행동계획 잠금"
     assert "[기절]" in overlay["forbidden_ui_tokens"]
     assert "예상 명중률" in overlay["forbidden_ui_tokens"]
@@ -203,7 +205,7 @@ def verify_documents() -> None:
     all_tokens(
         docs["ui"],
         (
-            "행동계획 잠금",
+            "행동계획 실행",
             "공격 행동에만 `사거리`",
             "비공격 행동에는 `사거리` 항목 자체를 만들지 않는다",
             "[관찰] 1",

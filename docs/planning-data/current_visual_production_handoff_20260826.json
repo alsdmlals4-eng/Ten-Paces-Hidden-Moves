@@ -6,6 +6,8 @@
   "authority_role": "CURRENT_VISUAL_PRODUCTION_HANDOFF",
   "current_execution_contract": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
   "current_visual_production_decision": "TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01",
+  "current_plan_execution_cta_decision": "TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01",
+  "current_plan_execution_cta_issue": 247,
   "consumer_first_asset_policy": "ACTUAL_GAME_CONSUMER_REQUIRED",
   "human_facing_owner": "NOTION_HOME_VISUAL_BIBLE_ASSET_LIBRARY",
   "repository_handoff": "docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md",
@@ -112,8 +114,21 @@
     "action_grid_max_items": 10,
     "card_illustration_required": true,
     "long_effect_text_to_detail_panel": true,
-    "visual_cta_label": "진행",
-    "semantic_cta_authority": "PENDING_DECISION_VS_행동계획_잠금"
+    "visual_cta_label": "행동계획 실행",
+    "semantic_cta_authority": "TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01",
+    "bundle_slot_counts": [
+      3,
+      3,
+      4
+    ],
+    "three_moves_mean_three_slots": true,
+    "two_slot_action_phases": [
+      "전조",
+      "실행"
+    ],
+    "execution_transition": "PLAN_EDITING_TO_COMBAT_RESOLUTION_ANIMATION",
+    "runtime_poc_label": "진행",
+    "runtime_poc_label_status": "CONFLICT_REQUIRES_SCOPED_CODEX_UI_COPY_AND_TRANSITION_HANDOFF"
   },
   "image_production_cadence": {
     "current_policy": "TEXT_BRIEF_THEN_EXPLICIT_USER_APPROVAL_THEN_EXACTLY_ONE_RESULT",
