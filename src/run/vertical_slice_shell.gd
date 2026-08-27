@@ -23,7 +23,7 @@ var _setup_selected_manual_ids: Array[String] = []
 
 func _ready() -> void:
     set_meta("technical_shell", true)
-    set_meta("final_visual_reference_pending", true)
+    set_meta("final_visual_reference_pending", false)
     set_meta("visual_evidence_ceiling", "TECHNICAL_SHELL_NOT_HUMAN_VISUAL_PASS")
     set_meta("run_seed_policy", "PHASE_II_TECHNICAL_FIXED_SEED_REPLACE_WITH_SAVE_STATE_LATER")
     set_meta("setup_visual_status", "STRUCTURED_FUNCTIONAL_UI_NOT_FINAL_VISUAL")
@@ -183,7 +183,8 @@ func _build_shell() -> void:
     stack.add_child(primary_button)
 
     var pending_label := Label.new()
-    pending_label.text = "최종 시각 레퍼런스 대기 중 · 현재 UI는 기능/정보 위계 검증용"
+    pending_label.name = "VisualReferenceStatus"
+    pending_label.text = "승인 전투 레퍼런스 반영 전 · 현재 UI는 기능/정보 위계 검증용"
     pending_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     pending_label.add_theme_color_override("font_color", Color("8d8375"))
     pending_label.add_theme_font_size_override("font_size", 13)
