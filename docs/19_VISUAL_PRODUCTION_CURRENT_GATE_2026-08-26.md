@@ -6,6 +6,8 @@
 > Structured current state: `docs/planning-data/current_visual_production_handoff_20260826.json`  
 > Work handoff: `docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md`
 
+> 2026-08-27 current-direction override: `TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01` selected a warm-dusk, charcoal-ink, restrained-gold 10-step combat direction. Its single anchor is `GENERATED_EXPLORATION` only; this 2026-08-26 gate and all approved runtime assets remain historical/current implementation evidence until a separate asset-promotion task is approved and verified.
+
 이 문서는 `docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md`의 승인 Reference Set과 당시 사용자 피드백을 삭제하거나 다시 쓰지 않는다. 8월 25일 문서는 historical visual handoff이고 이 문서는 8월 26일 r5.4 current execution gate다. 사용자는 이후 작업 surface를 **GPT Work**로 지정했다. Work도 memory나 과거 대화를 current truth로 사용하지 않고 Project GitHub + exact Project Notion을 fresh-read한다.
 
 ## 1. 보존되는 승인 Reference

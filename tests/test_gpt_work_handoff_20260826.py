@@ -22,7 +22,7 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
 
         self.assertEqual("GPT_WORK", visual["handoff"]["next_surface"])
         self.assertTrue(visual["handoff"]["fresh_read_required"])
-        self.assertEqual("DOGYEOM_STATUS_PORTRAIT_AND_COMBAT_BATTLER_IMPLEMENTED_AUTOMATED_VERIFIED", visual["status"])
+        self.assertEqual("WARM_DUSK_VISUAL_DIRECTION_SELECTED_V2_NO_FLOOR_GRID_ANCHOR_CANDIDATE_IN_REVIEW_DOGYEOM_ASSETS_PRESERVED", visual["status"])
         self.assertEqual("43b3ffb2c5b026e3d4a38dab2338585894d36f61", visual["handoff"]["snapshot_observed_base_main"])
         self.assertEqual(BASE_WORK, visual["handoff"]["base_work_adapter"])
         self.assertEqual(BASE_WORK_COMPAT, visual["handoff"]["base_work_compatibility_appendix"])
@@ -40,7 +40,8 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
 
         portrait = visual["approved_results"]["DOGYEOM_STATUS_PORTRAIT_01"]
         self.assertEqual("AUTOMATED_GODOT_PASS_20260826", portrait["opponent_specific_routing"])
-        self.assertEqual("USER_DECISION_REQUIRED", visual["next_result"]["id"])
+        self.assertEqual("WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01", visual["next_result"]["id"])
+        self.assertEqual("USER_DIRECTED_SINGLE_CORRECTION_GENERATED_EXPLORATION_IN_REVIEW", visual["next_result"]["generation_status"])
         self.assertEqual([], planning["next_visual_batch"])
         self.assertEqual("GPT_WORK", planning["next_execution_surface"])
         self.assertEqual(
