@@ -6,7 +6,7 @@
 > Structured current state: `docs/planning-data/current_visual_production_handoff_20260826.json`  
 > Work handoff: `docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md`
 
-> 2026-08-27 current-direction override: `TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01` selected a warm-dusk, charcoal-ink, restrained-gold 10-step combat direction. Its single anchor is `GENERATED_EXPLORATION` only; this 2026-08-26 gate and all approved runtime assets remain historical/current implementation evidence until a separate asset-promotion task is approved and verified.
+> 2026-08-28 planning-anchor override: `TEN-DEC-20260828-WARM-DUSK-V2-PLANNING-ANCHOR-01` locks the warm-dusk, charcoal-ink, restrained-gold v2 as a `USER_APPROVED_PLANNING_ANCHOR_ONLY_NON_RUNTIME` source for `PROJECT_CORE_SCENE_VISUAL_BOARD`. All approved runtime assets remain separate evidence until a consumer-specific asset-promotion task is approved and verified.
 
 이 문서는 `docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md`의 승인 Reference Set과 당시 사용자 피드백을 삭제하거나 다시 쓰지 않는다. 8월 25일 문서는 historical visual handoff이고 이 문서는 8월 26일 r5.4 current execution gate다. 사용자는 이후 작업 surface를 **GPT Work**로 지정했다. Work도 memory나 과거 대화를 current truth로 사용하지 않고 Project GitHub + exact Project Notion을 fresh-read한다.
 
@@ -199,9 +199,9 @@ actual_p0_surfaces:
   - COMPLETION
 p0_blocking_gap: 0
 noncombat_runtime_mode: GODOT_UI_TEXT_LAYER_NO_NEW_IMAGE_FILE_REQUIRED
-candidate_guardrail: WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_V2_REMAINS_GENERATED_EXPLORATION_IN_REVIEW
+candidate_guardrail: WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_V2_USER_APPROVED_PLANNING_ANCHOR_ONLY_NON_RUNTIME
 new_image_from_audit: FORBIDDEN
 bounded_codex_handoff: CODEX_UI_COPY_CORRECTION_REQUIRED
 ```
 
-This audit changes neither asset approval nor runtime promotion. In particular, `WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID` is still not attached to Notion, not connected to `BattleBackground`, and not evidence of Windows/Android/Human visual quality. The 14 remaining opponent portraits/battlers, route icons, result marks, and extra backgrounds remain `GAP_NONBLOCKING` only when their exact future screen/component consumer is selected; they are not an automatic creation list.
+This planning-anchor decision changes neither runtime asset approval nor runtime promotion. `WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID` is not connected to `BattleBackground` and is not evidence of Windows/Android/Human visual quality. The 14 remaining opponent portraits/battlers, route icons, result marks, and extra backgrounds remain `GAP_NONBLOCKING` only when their exact future screen/component consumer is selected; they are not an automatic creation list.

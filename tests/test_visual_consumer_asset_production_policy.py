@@ -12,6 +12,7 @@ PLANNING = ROOT / "docs" / "planning-data" / "current_user_planning_status.json"
 GATE = ROOT / "docs" / "19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md"
 DECISION_ID = "TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01"
 WARM_DUSK_DECISION = ROOT / "docs" / "decisions" / "2026-08-27_WARM_DUSK_TEN_STEP_VISUAL_DIRECTION_DECISION.md"
+WARM_DUSK_PLANNING_ANCHOR_DECISION = ROOT / "docs" / "decisions" / "2026-08-28_WARM_DUSK_V2_PLANNING_ANCHOR_DECISION.md"
 WARM_DUSK_CANDIDATE = ROOT / "docs" / "visual-assets" / "candidates" / "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID.png"
 WARM_DUSK_RECORD = ROOT / "docs" / "visual-assets" / "candidates" / "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID.md"
 SCREEN_AUDIT_OWNER = ROOT / "docs" / "17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md"
@@ -41,8 +42,8 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
         self.assertEqual("src/ui/combatant_status_panel.gd", portrait["consumer"])
         self.assertEqual("res://assets/portraits/dogyeom_status_portrait_01_v1.png", portrait["runtime_asset"])
         self.assertEqual("AUTOMATED_GODOT_PASS_20260826", portrait["opponent_specific_routing"])
-        self.assertEqual("WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01", visual["next_result"]["id"])
-        self.assertEqual("USER_DIRECTED_SINGLE_CORRECTION_GENERATED_EXPLORATION_IN_REVIEW", visual["next_result"]["generation_status"])
+        self.assertEqual("PROJECT_CORE_SCENE_VISUAL_BOARD", visual["next_result"]["id"])
+        self.assertEqual("TEXT_BRIEF_AND_EXPLICIT_USER_APPROVAL_REQUIRED", visual["next_result"]["generation_status"])
         self.assertEqual([], planning["next_visual_batch"])
         self.assertEqual("GPT_WORK", planning["next_execution_surface"])
 
@@ -55,9 +56,10 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
         self.assertIn("CardView.illustration", gate)
         self.assertIn("GPT Work", gate)
 
-    def test_warm_dusk_anchor_is_candidate_only_with_local_provenance(self) -> None:
+    def test_warm_dusk_anchor_is_planning_only_with_local_provenance(self) -> None:
         visual = json.loads(VISUAL.read_text(encoding="utf-8"))
         self.assertTrue(WARM_DUSK_DECISION.is_file())
+        self.assertTrue(WARM_DUSK_PLANNING_ANCHOR_DECISION.is_file())
         self.assertTrue(WARM_DUSK_CANDIDATE.is_file())
         self.assertTrue(WARM_DUSK_RECORD.is_file())
         self.assertEqual(
@@ -66,14 +68,15 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
         )
         record = WARM_DUSK_RECORD.read_text(encoding="utf-8")
         decision = WARM_DUSK_DECISION.read_text(encoding="utf-8")
-        self.assertIn("GENERATED_EXPLORATION · IN_REVIEW", record)
-        self.assertIn("Notion delivery: `NOT_RUN`", record)
+        self.assertIn("USER_APPROVED_PLANNING_ANCHOR_ONLY_NON_RUNTIME", record)
+        self.assertIn("Notion delivery: `PASS_20260828_VISUAL_BIBLE_PLANNING_ANCHOR_ATTACHMENT_READBACK`", record)
         self.assertIn("Runtime: `NOT_RUN`", record)
         self.assertIn("`src/combat/combat_board_preview.gd`", record)
         self.assertIn("logical ten-space field is not rendered as floor cells", record)
         self.assertIn(DECISION_ID, decision)
+        self.assertIn("TEN-DEC-20260828-WARM-DUSK-V2-PLANNING-ANCHOR-01", WARM_DUSK_PLANNING_ANCHOR_DECISION.read_text(encoding="utf-8"))
         self.assertEqual(
-            "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01",
+            "PROJECT_CORE_SCENE_VISUAL_BOARD",
             visual["next_result"]["id"],
         )
 
