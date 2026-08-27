@@ -47,6 +47,7 @@
 | 기술1 효과·조건·5성 | `TEN-DEC-20260804-TECHNIQUE1-CONDITIONAL-REWORK-STAR5-01` |
 | 7성·9성 예산 부모 | `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01` |
 | 자원 회복 | `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01` |
+| 자원 회복 세부 개정 | `docs/02_COMBAT_RULES_RESOURCE_RECOVERY_AMENDMENT.md`, `docs/04_ROADMAP_RESOURCE_RISK_AMENDMENT.md` |
 | 조건 측정·재분류 | `TEN-DEC-20260805-CONDITION-CALIBRATION-01` |
 | 파생 수치·오판 구제 | `TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01` |
 | 관찰 직접 공개 | `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01` |
@@ -107,7 +108,7 @@
 
 | 대상 | 대체 권위 | 허용 사용 |
 |---|---|---|
-| 부모 묶음 내력 자동회복1 | 자원 포화 Decision | 과거 재현만 |
+| `bundle_transition_recovery.internal=1` | `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01` | 과거 재현만 |
 | `docs/decisions/2026-08-02_RANGE_PRICE_BANDS_DECISION.md` | 전투 가격 Decision | 과거 ledger만 |
 | 2026-08-03 기술1 효과 Decision·contract | 2026-08-04 기술1 Decision | 역사·migration만 |
 | 역사 기술2 계약의 구형 예산 | repricing + 7/9성 숙련 Decision | 기본 효과 근거만 |

@@ -88,14 +88,14 @@ class ResourceSaturationInternalRecoveryContractTests(unittest.TestCase):
         validator = load_validator()
         validator.validate_canon_documents(validator.load_canon_documents())
 
-    def test_validator_rejects_stale_next_risk_pointer(self):
+    def test_validator_rejects_stale_live_pr_pointer(self):
         validator = load_validator()
         broken = copy.deepcopy(validator.load_canon_documents())
         broken["active_context"] = broken["active_context"].replace(
-            "next_planning_decision: CONDITION_CALIBRATION_RISK",
-            "next_planning_decision: STAR9_PUBLIC_READ_BRANCH_TEMPLATE",
+            "active_project_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED",
+            "active_project_pr: 89",
         )
-        with self.assertRaisesRegex(validator.ResourceSaturationContractError, "next risk"):
+        with self.assertRaisesRegex(validator.ResourceSaturationContractError, "live PR"):
             validator.validate_canon_documents(broken)
 
     def test_validator_rejects_missing_field_level_superseded_marker(self):
