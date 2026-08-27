@@ -331,7 +331,7 @@ android_physical_layout_validation: NOT_RUN
 
 ## 16. 현재 목표 Build 화면 인벤토리·시각 커버리지 감사 · 2026-08-27
 
-> Issue: [#238](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/238)
+> Issue: [#238](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/238) · detail inventory: [#243](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/243)
 > 범위: 기본 진입 `res://scenes/run/vertical_slice_shell.tscn`의 첫 5전 Vertical Slice. 이 절은 이 문서의 화면별 Visual/UX 계약을 **actual runtime consumer와 coverage 상태로 읽기 위한 current projection**이다. Asset Manifest·승인 lifecycle·runtime PASS의 독립 정본이 아니다.
 
 ### 16.1 목표 Build와 화면 family 판정
@@ -421,7 +421,7 @@ image_generation_policy: NO_AUTOMATIC_IMAGE_GENERATION_FROM_GAPS
 ```yaml
 scope: one non-core copy correction only
 issue: https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/240
-implementation_status: FOCUSED_GODOT_PASS_PENDING_PR_MERGE
+implementation_status: MERGED_MAIN_D9AE822
 read_first:
   - docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md#16
   - src/run/vertical_slice_shell.gd
@@ -439,7 +439,7 @@ acceptance:
   - update the exact `VisualReferenceStatus` expectation in `tests/verify_vertical_slice_shell.gd`
   - shell and default-entry regressions pass
   - Windows/Android/human evidence remains unchanged
-godot_validation: run the focused default-entry/shell verification; close any Godot process started for it
+godot_validation: focused default-entry/shell verification passed before PR #241 merge; Windows/Android/Human remains NOT_RUN
 ```
 
 ### 16.7 Audit exit and remaining gaps
@@ -458,4 +458,4 @@ runtime_player_validation:
   - human readability/fun: NOT_RUN
 ```
 
-Five adversarial checks completed for this audit: screen completeness (all current state constants/overlays listed), player decision clarity (one question/entry/exit per P0 row), state-family coverage (selected/disabled/focus and combat feedback assigned to actual consumer), overproduction (noncombat uses Godot UI/text; no automatic raster queue), and canon/runtime alignment (Notion/manifest/runtime consumers compared; stale copy isolated to a bounded handoff).
+Five adversarial checks completed for this audit: screen completeness (all current state constants/overlays listed), player decision clarity (one question/entry/exit per P0 row), state-family coverage (selected/disabled/focus and combat feedback assigned to actual consumer), overproduction (noncombat uses Godot UI/text; no automatic raster queue), and canon/runtime alignment (Notion/manifest/runtime consumers compared; the bounded copy correction is merged). The current structured Screen × Object × State × Variant detail owner is `docs/planning-data/current_screen_visual_coverage_inventory_20260828.json`; its concise human projection is `docs/20_SCREEN_VISUAL_COVERAGE_INVENTORY_20260828.md`.

@@ -1,0 +1,420 @@
+{
+  "schema_version": 1,
+  "project": "TEN_PACES",
+  "updated_at": "2026-08-28",
+  "issue": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/243",
+  "basis_main": "44386b2019aa45d48c11f5e8e59c9c505648d575",
+  "target_build": "FIRST_FIVE_DUEL_PC_FIRST_VERTICAL_SLICE",
+  "runtime_entry": "res://scenes/run/vertical_slice_shell.tscn",
+  "asset_production_policy": "ACTUAL_GAME_CONSUMER_FIRST",
+  "automatic_image_generation_from_inventory_gaps": false,
+  "image_lifecycle": "CANON_REVIEW_THEN_TEXT_BRIEF_THEN_EXPLICIT_USER_APPROVAL_THEN_EXACTLY_ONE_RESULT_THEN_REVIEW",
+  "current_p0_runtime_blocking_image_gaps": 0,
+  "superseded_handoff_correction": {
+    "source": "docs/planning-data/current_visual_production_handoff_20260826.json#screen_surface_asset_audit_20260827",
+    "issue": 240,
+    "status": "ISSUE_240_MERGED_MAIN_D9AE822",
+    "verification": "FOCUSED_GODOT_AND_PYTHON_PASS_RECORDED_IN_PR_241"
+  },
+  "screen_inventory": [
+    {
+      "screen_id": "SCREEN_MAIN",
+      "family": "START_SYSTEM_ENTRY",
+      "priority": "P0",
+      "entry_exit": "application entry → SCREEN_SETUP",
+      "player_goal_or_question": "첫 비무행을 시작할까?",
+      "surface_kind": "RUNTIME_UI",
+      "actual_consumer": "src/run/vertical_slice_shell.gd:VerticalSliceShell._render_current_screen",
+      "runtime_asset_families": [],
+      "state_variants": [
+        "normal",
+        "primary_cta"
+      ],
+      "image_requirement": "NO_RUNTIME_IMAGE_REQUIRED",
+      "evidence": "Godot ContentPanel, Label, Button rendering",
+      "status": "COVERED_BY_CODE_RENDERING",
+      "repository_destination": "src/run/vertical_slice_shell.gd",
+      "notion_destination": "Project Home / 03 · UI · 전투 Flow Map",
+      "blockers": []
+    },
+    {
+      "screen_id": "SCREEN_SETUP",
+      "family": "START_CONFIGURATION",
+      "priority": "P0",
+      "entry_exit": "SCREEN_MAIN → SCREEN_INTRO",
+      "player_goal_or_question": "어떤 네 권의 무공으로 시작할까?",
+      "surface_kind": "RUNTIME_UI",
+      "actual_consumer": "src/run/vertical_slice_shell.gd:VerticalSliceShell._build_setup_options",
+      "runtime_asset_families": [],
+      "state_variants": [
+        "unselected",
+        "selected",
+        "disabled_until_four_selected"
+      ],
+      "image_requirement": "NO_RUNTIME_IMAGE_REQUIRED",
+      "evidence": "Godot Toggle Button and text states",
+      "status": "COVERED_BY_CODE_RENDERING",
+      "repository_destination": "src/run/vertical_slice_shell.gd",
+      "notion_destination": "Project Home / 03 · UI · 전투 Flow Map",
+      "blockers": []
+    },
+    {
+      "screen_id": "SCREEN_INTRO",
+      "family": "START_NARRATIVE_ENTRY",
+      "priority": "P0",
+      "entry_exit": "SCREEN_SETUP → SCREEN_BRIEFING",
+      "player_goal_or_question": "첫 비무행의 목적과 준비는 무엇인가?",
+      "surface_kind": "RUNTIME_UI",
+      "actual_consumer": "src/run/vertical_slice_shell.gd:VerticalSliceShell._render_current_screen",
+      "runtime_asset_families": [],
+      "state_variants": [
+        "normal",
+        "primary_cta"
+      ],
+      "image_requirement": "NO_RUNTIME_IMAGE_REQUIRED",
+      "evidence": "Godot panel and text rendering",
+      "status": "COVERED_BY_CODE_RENDERING",
+      "repository_destination": "src/run/vertical_slice_shell.gd",
+      "notion_destination": "Project Home / 03 · UI · 전투 Flow Map",
+      "blockers": []
+    },
+    {
+      "screen_id": "SCREEN_BRIEFING",
+      "family": "DUEL_PREPARATION",
+      "priority": "P0",
+      "entry_exit": "SCREEN_INTRO or SCREEN_ROUTE_INFO → SCREEN_COMBAT",
+      "player_goal_or_question": "상대의 공개 정보 중 무엇을 믿고 의심할까?",
+      "surface_kind": "RUNTIME_UI",
+      "actual_consumer": "src/run/vertical_slice_shell.gd:VerticalSliceShell._render_briefing",
+      "runtime_asset_families": [],
+      "state_variants": [
+        "public_manual",
+        "habit",
+        "counterexample",
+        "start_ready"
+      ],
+      "image_requirement": "NO_RUNTIME_IMAGE_REQUIRED",
+      "evidence": "Godot text panel; hidden plan excluded by runtime copy",
+      "status": "COVERED_BY_CODE_RENDERING",
+      "repository_destination": "src/run/vertical_slice_shell.gd",
+      "notion_destination": "03 · UI · 전투 Flow Map",
+      "blockers": [
+        "Opponent-specific portrait requires an exact future briefing consumer before production"
+      ]
+    },
+    {
+      "screen_id": "SCREEN_COMBAT",
+      "family": "CORE_GAMEPLAY",
+      "priority": "P0",
+      "entry_exit": "SCREEN_BRIEFING → OVERLAY_REVIEW",
+      "player_goal_or_question": "어떤 3/3/4 계획을 잠글까?",
+      "surface_kind": "RUNTIME_GAMEPLAY",
+      "actual_consumer": "src/combat/combat_board_preview.gd",
+      "runtime_asset_families": [
+        "COMBAT_BACKGROUND_01",
+        "COMBAT_CHARACTER_BATTLERS",
+        "STATUS_PORTRAITS",
+        "CARD_ICON_ILLUSTRATION",
+        "ULTIMATE_VFX"
+      ],
+      "state_variants": [
+        "distance",
+        "action_selected",
+        "action_locked",
+        "resolve",
+        "ultimate_vfx"
+      ],
+      "image_requirement": "EXISTING_RUNTIME_ASSETS_REQUIRED",
+      "evidence": "battle_background.gd, combat_character_placeholder.gd, combatant_status_panel.gd, basic_card_tray_item.gd and combat_board_preview.gd preloads",
+      "status": "COVERED_BY_EXISTING_RUNTIME_ASSETS",
+      "repository_destination": "assets/backgrounds, assets/characters, assets/portraits, assets/ui/cards, assets/vfx",
+      "notion_destination": "02 · 비주얼 바이블 / 04 · 에셋 라이브러리",
+      "blockers": [
+        "Warm-dusk anchor is candidate-only and cannot replace the active background without its own approved implementation package"
+      ]
+    },
+    {
+      "screen_id": "OVERLAY_REVIEW",
+      "family": "COMBAT_RESOLUTION",
+      "priority": "P0",
+      "entry_exit": "terminal SCREEN_COMBAT → SCREEN_RESULT",
+      "player_goal_or_question": "왜 이 결과가 발생했나?",
+      "surface_kind": "RUNTIME_GAMEPLAY_OVERLAY",
+      "actual_consumer": "src/ui/combat_review_panel.gd via src/run/vertical_slice_combat_bridge.gd",
+      "runtime_asset_families": [
+        "COMBAT_BACKGROUND_01",
+        "COMBAT_CHARACTER_BATTLERS"
+      ],
+      "state_variants": [
+        "event_one",
+        "event_two",
+        "event_three",
+        "continue"
+      ],
+      "image_requirement": "REUSES_COMBAT_RUNTIME_ASSETS",
+      "evidence": "combat-on-screen overlay composition",
+      "status": "COVERED_BY_REUSE",
+      "repository_destination": "src/ui/combat_review_panel.gd",
+      "notion_destination": "03 · UI · 전투 Flow Map",
+      "blockers": []
+    },
+    {
+      "screen_id": "SCREEN_RESULT",
+      "family": "RESULT_REWARD",
+      "priority": "P0",
+      "entry_exit": "OVERLAY_REVIEW → SCREEN_ROUTE_GROWTH or SCREEN_COMPLETION",
+      "player_goal_or_question": "무엇을 얻고 다음에 무엇을 준비할까?",
+      "surface_kind": "RUNTIME_UI",
+      "actual_consumer": "src/run/vertical_slice_shell_result_auto.gd:VerticalSliceResultShell",
+      "runtime_asset_families": [],
+      "state_variants": [
+        "reward_visible",
+        "choice_selected",
+        "continue"
+      ],
+      "image_requirement": "NO_RUNTIME_IMAGE_REQUIRED",
+      "evidence": "Godot result options and text",
+      "status": "COVERED_BY_CODE_RENDERING",
+      "repository_destination": "src/run/vertical_slice_shell_result_auto.gd",
+      "notion_destination": "Project Home / 03 · UI · 전투 Flow Map",
+      "blockers": [
+        "A result mark asset needs an exact component consumer before production"
+      ]
+    },
+    {
+      "screen_id": "SCREEN_ROUTE_GROWTH",
+      "family": "RUN_ROUTE",
+      "priority": "P0",
+      "entry_exit": "SCREEN_RESULT → SCREEN_ROUTE_INFO",
+      "player_goal_or_question": "무엇을 회복하거나 성장시킬까?",
+      "surface_kind": "RUNTIME_UI",
+      "actual_consumer": "src/run/vertical_slice_shell_route_auto.gd:VerticalSliceRouteShell",
+      "runtime_asset_families": [],
+      "state_variants": [
+        "option_available",
+        "option_selected",
+        "continue"
+      ],
+      "image_requirement": "NO_RUNTIME_IMAGE_REQUIRED",
+      "evidence": "Godot route controls and structured text",
+      "status": "COVERED_BY_CODE_RENDERING",
+      "repository_destination": "src/run/vertical_slice_shell_route_auto.gd",
+      "notion_destination": "03 · UI · 전투 Flow Map",
+      "blockers": [
+        "Route icon family has no current exact runtime consumer"
+      ]
+    },
+    {
+      "screen_id": "SCREEN_ROUTE_INFO",
+      "family": "RUN_ROUTE",
+      "priority": "P0",
+      "entry_exit": "SCREEN_ROUTE_GROWTH → SCREEN_BRIEFING",
+      "player_goal_or_question": "다음 상대에 관해 무엇을 더 알까?",
+      "surface_kind": "RUNTIME_UI",
+      "actual_consumer": "src/run/vertical_slice_shell_route_auto.gd:VerticalSliceRouteShell",
+      "runtime_asset_families": [],
+      "state_variants": [
+        "option_available",
+        "option_selected",
+        "continue"
+      ],
+      "image_requirement": "NO_RUNTIME_IMAGE_REQUIRED",
+      "evidence": "Godot route controls and structured text",
+      "status": "COVERED_BY_CODE_RENDERING",
+      "repository_destination": "src/run/vertical_slice_shell_route_auto.gd",
+      "notion_destination": "03 · UI · 전투 Flow Map",
+      "blockers": []
+    },
+    {
+      "screen_id": "SCREEN_COMPLETION",
+      "family": "RUN_COMPLETION",
+      "priority": "P0",
+      "entry_exit": "fifth SCREEN_RESULT → terminal",
+      "player_goal_or_question": "첫 비무행에서 무엇이 달라졌나?",
+      "surface_kind": "RUNTIME_UI",
+      "actual_consumer": "src/run/vertical_slice_shell_completion_auto.gd:VerticalSliceCompletionShell",
+      "runtime_asset_families": [],
+      "state_variants": [
+        "summary",
+        "history",
+        "return"
+      ],
+      "image_requirement": "NO_RUNTIME_IMAGE_REQUIRED",
+      "evidence": "Godot completion summary cards and text",
+      "status": "COVERED_BY_CODE_RENDERING",
+      "repository_destination": "src/run/vertical_slice_shell_completion_auto.gd",
+      "notion_destination": "Project Home / 03 · UI · 전투 Flow Map",
+      "blockers": [
+        "Completion marks require an exact component consumer before production"
+      ]
+    },
+    {
+      "screen_id": "SCREEN_PAUSE_SETTINGS",
+      "family": "SYSTEM_UTILITY",
+      "priority": "P1",
+      "entry_exit": "not implemented in current build",
+      "player_goal_or_question": "중단·설정·복귀를 어떻게 할까?",
+      "surface_kind": "FUTURE_RUNTIME_SCOPE",
+      "actual_consumer": "none",
+      "runtime_asset_families": [],
+      "state_variants": [],
+      "image_requirement": "DO_NOT_GENERATE",
+      "evidence": "No pause/settings state or scene in the current Slice",
+      "status": "NOT_APPLICABLE_CURRENT_VERTICAL_SLICE",
+      "repository_destination": "undecided",
+      "notion_destination": "future Flow Map requirement",
+      "blockers": [
+        "A screen requirement and runtime consumer do not exist"
+      ]
+    },
+    {
+      "screen_id": "SCREEN_FAILURE_RETRY",
+      "family": "FAILURE_LOOP",
+      "priority": "P1",
+      "entry_exit": "not implemented in current build",
+      "player_goal_or_question": "패배 이유를 이해하고 재도전할까?",
+      "surface_kind": "FUTURE_RUNTIME_SCOPE",
+      "actual_consumer": "none",
+      "runtime_asset_families": [],
+      "state_variants": [],
+      "image_requirement": "DO_NOT_GENERATE",
+      "evidence": "No game-over/retry model in the current Slice",
+      "status": "NOT_APPLICABLE_CURRENT_VERTICAL_SLICE",
+      "repository_destination": "undecided",
+      "notion_destination": "future Flow Map requirement",
+      "blockers": [
+        "Failure flow is not yet product scope"
+      ]
+    },
+    {
+      "screen_id": "SCREEN_CODEX_HELP",
+      "family": "CODEX_HELP_RECORDS",
+      "priority": "P2",
+      "entry_exit": "not implemented in current build",
+      "player_goal_or_question": "규칙과 기록을 어디서 확인할까?",
+      "surface_kind": "FUTURE_RUNTIME_SCOPE",
+      "actual_consumer": "none",
+      "runtime_asset_families": [],
+      "state_variants": [],
+      "image_requirement": "DO_NOT_GENERATE",
+      "evidence": "No codex/help/records runtime surface",
+      "status": "NOT_APPLICABLE_CURRENT_VERTICAL_SLICE",
+      "repository_destination": "undecided",
+      "notion_destination": "future Flow Map requirement",
+      "blockers": [
+        "No screen requirement or consumer exists"
+      ]
+    },
+    {
+      "screen_id": "SCREEN_RELEASE_LOADING_ERROR",
+      "family": "RELEASE_MARKETING_SYSTEM",
+      "priority": "P2",
+      "entry_exit": "not implemented in current build",
+      "player_goal_or_question": "부팅·오류·크레딧·상점 페이지를 어떻게 안내할까?",
+      "surface_kind": "RELEASE_PLANNING",
+      "actual_consumer": "none",
+      "runtime_asset_families": [],
+      "state_variants": [],
+      "image_requirement": "DO_NOT_GENERATE",
+      "evidence": "docs/PLATFORM_RELEASE_AND_ASSET_RIGHTS_PROFILE.md states platform submission and release evidence are NOT_RUN",
+      "status": "NOT_APPLICABLE_CURRENT_VERTICAL_SLICE",
+      "release_evidence": "RELEASE_BLOCKED_UNVERIFIED",
+      "repository_destination": "docs/ASSET_RIGHTS_AND_PROVENANCE_RECORD.md when release work is scoped",
+      "notion_destination": "future release workspace",
+      "blockers": [
+        "No shipping build, release surface, provenance record, or platform submission scope"
+      ]
+    }
+  ],
+  "asset_family_inventory": [
+    {
+      "asset_family_id": "COMBAT_BACKGROUND_01",
+      "classification": "RUNTIME_IMAGE",
+      "actual_consumer": "src/combat/battle_background.gd",
+      "active_asset": "res://assets/backgrounds/twilight_ink_duel_v1.png",
+      "states": [
+        "normal",
+        "STRETCH_KEEP_ASPECT_COVERED"
+      ],
+      "status": "COVERED_EXISTING_RUNTIME",
+      "production_rule": "candidate replacement needs separate brief, approval, implementation package, and runtime verification"
+    },
+    {
+      "asset_family_id": "COMBAT_CHARACTER_BATTLERS",
+      "classification": "RUNTIME_IMAGE",
+      "actual_consumer": "src/combat/combat_character_placeholder.gd",
+      "active_asset": "res://assets/characters/player_wanderer_battler_rgba_v1.png; res://assets/characters/enemy_masked_battler_rgba_v1.png; res://assets/characters/dogyeom_combat_battler_01_v1.png for slot1_dogyeom",
+      "states": [
+        "player",
+        "generic_enemy",
+        "slot1_dogyeom"
+      ],
+      "status": "COVERED_EXISTING_RUNTIME",
+      "production_rule": "remaining opponents require exact opponent routing and identity source"
+    },
+    {
+      "asset_family_id": "STATUS_PORTRAITS",
+      "classification": "RUNTIME_IMAGE",
+      "actual_consumer": "src/ui/combatant_status_panel.gd",
+      "active_asset": "res://assets/portraits/player_wanderer_ink_v1.png; res://assets/portraits/enemy_masked_ink_v1.png; res://assets/portraits/dogyeom_status_portrait_01_v1.png for slot1_dogyeom",
+      "states": [
+        "player",
+        "generic_enemy",
+        "slot1_dogyeom"
+      ],
+      "status": "COVERED_EXISTING_RUNTIME",
+      "production_rule": "a portrait is not produced solely because an opponent count exists"
+    },
+    {
+      "asset_family_id": "CARD_ICON_ILLUSTRATION",
+      "classification": "RUNTIME_IMAGE",
+      "actual_consumer": "src/ui/basic_card_tray.gd → src/ui/basic_card_tray_item.gd; src/ui/card_view.gd",
+      "active_asset": "res://assets/ui/cards/basic_illustrations_atlas.svg; res://assets/ui/cards/cost_icon_atlas.svg",
+      "states": [
+        "basic_category",
+        "cost",
+        "selected",
+        "disabled"
+      ],
+      "status": "COVERED_EXISTING_RUNTIME",
+      "production_rule": "new art must name an exact card ID and CardView consumer"
+    },
+    {
+      "asset_family_id": "ULTIMATE_VFX",
+      "classification": "RUNTIME_IMAGE",
+      "actual_consumer": "src/combat/combat_board_preview.gd",
+      "active_asset": "res://assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png",
+      "states": [
+        "staged_ultimate_effect"
+      ],
+      "status": "COVERED_EXISTING_RUNTIME",
+      "production_rule": "human readability remains NOT_RUN; no change from this inventory"
+    },
+    {
+      "asset_family_id": "APPROVED_PRODUCTION_REFERENCES",
+      "classification": "PRODUCTION_PLANNING_VISUAL",
+      "actual_consumer": "Project Notion Visual Bible and Asset Library; docs/visual-assets",
+      "active_asset": "TEN-IMG-001, OPPONENT_CHARACTER_MASTER_01, TEN-VIS-A01, WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01 candidate",
+      "states": [
+        "approved_reference",
+        "candidate_in_review"
+      ],
+      "status": "NOT_RUNTIME_BY_DEFAULT",
+      "production_rule": "not promoted to game build without a separate runtime consumer and implementation package"
+    },
+    {
+      "asset_family_id": "RELEASE_MARKETING_DELIVERABLES",
+      "classification": "RELEASE_MARKETING",
+      "actual_consumer": "none in current Slice",
+      "active_asset": "none",
+      "states": [
+        "store_capsule",
+        "screenshot",
+        "trailer",
+        "press_kit"
+      ],
+      "status": "RELEASE_BLOCKED_UNVERIFIED",
+      "production_rule": "requires release scope plus rights/provenance and platform evidence"
+    }
+  ]
+}
