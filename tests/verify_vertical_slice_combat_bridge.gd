@@ -61,6 +61,8 @@ func _run() -> void:
     var enemy: Dictionary = (state.get("enemy", {}) as Dictionary).duplicate(true)
     var current_opponent: Dictionary = shell.run_state.get_current_opponent()
     _expect_eq(str(enemy.get("candidate_id", "")), str(current_opponent.get("candidate_id", "")), "Combat state must preserve the locked opponent candidate ID for status-panel routing.")
+    _expect_eq(str(enemy.get("name", "")), str(current_opponent.get("working_name", "")), "Combat status must show the locked opponent working name instead of the default HUD enemy name.")
+    _expect_eq(str(enemy.get("epithet", "")), str(current_opponent.get("martial_identity", "")), "Combat status must show the locked opponent martial identity instead of the default HUD epithet.")
     var portrait := bridge.top_hud.enemy_panel.get_node_or_null("CombatantInkPortrait") as TextureRect
     if str(enemy.get("candidate_id", "")) == "slot1_dogyeom":
         _expect_true(portrait != null and portrait.texture != null and portrait.texture.resource_path == "res://assets/portraits/dogyeom_status_portrait_01_v1.png", "Dogyeom runtime bridge must route the approved status portrait.")

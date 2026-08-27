@@ -57,3 +57,23 @@ Combat rules, action-plan semantics, asset production and routing, platform supp
 ### Exclusions
 
 Combat rules, visual assets, runtime routing, platform support, and human/device claims remain unchanged.
+
+---
+
+## Supplement: Vertical Slice opponent identity display correction
+
+- Decision: `TEN-DEC-20260827-VERTICAL-SLICE-OPPONENT-IDENTITY-01`
+- Approved on: `2026-08-27 KST`
+- Approval source: user instruction to continue work with standing approval for ordinary scoped corrections
+- Issue: `#227`
+- Authority level: `SCOPED_VERTICAL_SLICE_OPPONENT_DISPLAY_CORRECTION_ONLY`
+
+### Approved scope
+
+1. Carry the locked opponent working name and martial identity from the Vertical Slice shell into the combat status state.
+2. Preserve candidate-ID asset routing and all generic fallbacks.
+3. Add a focused Shell-to-Bridge-to-HUD regression and complete the one-time protected-change lifecycle.
+
+### Exclusions
+
+Combat rules, AI, loadouts, generic HUD defaults, visual production, platform support, and human/device claims remain unchanged.
