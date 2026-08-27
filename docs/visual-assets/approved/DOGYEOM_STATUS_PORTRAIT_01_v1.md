@@ -6,7 +6,7 @@
 - Dimensions: `1146 × 1373` PNG (near 5:6 vertical)
 - Creation: one user-approved, newly generated status-panel portrait; no generative edits after review.
 - References: user-approved full-body Dogyeom source and character-sheet reference from the 2026-08-26 source set.
-- Use: preparation asset for the existing enemy status-portrait slot only.
-- Runtime: `NOT_RUN` — no opponent-specific routing, game integration, Windows, Android, or human-readability validation is claimed.
+- Use: `slot1_dogyeom` uses this asset in the existing enemy status-portrait slot; other and missing candidate IDs retain the generic portrait.
+- Runtime: `AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER` — focused status-portrait, Battler, bridge, and default-entry Godot checks pass. Windows visible usability, Android device, 15-opponent identification, and human readability remain `NOT_RUN`.
 - Rights: `UNKNOWN / RELEASE_BLOCKED_UNVERIFIED`.
 - Notion: Asset Library record and binary attachment destination readback `PASS_20260826`.
