@@ -116,9 +116,16 @@
     "long_effect_text_to_detail_panel": true,
     "visual_cta_label": "행동계획 실행",
     "semantic_cta_authority": "TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01",
-    "bundle_slot_counts": [3, 3, 4],
+    "bundle_slot_counts": [
+      3,
+      3,
+      4
+    ],
     "three_moves_mean_three_slots": true,
-    "two_slot_action_phases": ["전조", "실행"],
+    "two_slot_action_phases": [
+      "전조",
+      "실행"
+    ],
     "execution_transition": "PLAN_EDITING_TO_COMBAT_RESOLUTION_ANIMATION",
     "runtime_poc_label": "진행",
     "runtime_poc_label_status": "CONFLICT_REQUIRES_SCOPED_CODEX_UI_COPY_AND_TRANSITION_HANDOFF"
