@@ -2,7 +2,7 @@
   "schema_version": 1,
   "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
   "status": "APPROVED",
-  "protected_base_commit": "b3bcafabc6284858af2c8cb76a023bfb426401ea",
+  "protected_base_commit": "c403d76f20f5cd3a2a2e204eb143909ae563f0c1",
   "decision_ids": [
     "TEN-DEC-20260827-DEFAULT-SHELL-VISUAL-REFERENCE-STATUS-01"
   ],
