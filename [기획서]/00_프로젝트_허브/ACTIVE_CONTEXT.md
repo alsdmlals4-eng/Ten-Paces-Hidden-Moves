@@ -53,13 +53,13 @@ user_directed_planning_status: PLANNING_COMPLETE_VISUAL_PRODUCTION_ACTIVE
 user_directed_planning_pr_authority: GITHUB_PR_METADATA
 planning_execution_surface: GPT_WORK
 planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md
-planning_visual_next: USER_DECISION_REQUIRED_FOR_NEXT_CONSUMER_ASSET
-planning_visual_generation: NO_AUTOMATIC_NEXT_RESULT
-planning_visual_review: DOGYEOM_STATUS_PORTRAIT_01_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_20260826_WINDOWS_HUMAN_VISUAL_NOT_RUN
+planning_visual_next: WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_V2_NO_FLOOR_GRID_REVIEW
+planning_visual_generation: INITIAL_ONE_PLUS_USER_DIRECTED_SINGLE_CORRECTION_20260827_NO_AUTO_FOLLOWUP
+planning_visual_review: WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_V2_NO_FLOOR_GRID_IN_REVIEW_DOGYEOM_RUNTIME_ASSETS_PRESERVED
 planning_visual_state: docs/planning-data/current_visual_production_handoff_20260826.json
 planning_visual_historical_state: docs/planning-data/current_visual_production_handoff_20260825.json
 planning_visual_authority: TEN-DEC-20260820-VISUAL-UX-SYSTEM-01
-planning_visual_production_decision: TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01
+planning_visual_production_decision: TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01
 planning_visual_requirement_status: COMPLETE
 planning_visual_overlay: TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01
 ci_supply_chain_followup: RESOLVED_ISSUE_140
@@ -71,7 +71,7 @@ base_remote_observation: CURRENT_REMOTE_REQUIRES_LIVE_REFETCH_NO_AUTOMATIC_PROJE
 
 `active_planning_*`, `active_decision_state`, `next_package`, `next_planning_decision`은 `docs/planning-data/current_operating_state.json`이 소유하는 플랫폼 운영 상태와 동기화한다. 완료된 Vertical Slice 기획/Visual production 상태는 `docs/planning-data/current_user_planning_status.json`, `docs/planning-data/current_visual_production_handoff_20260826.json`, `user_directed_planning_*`·`planning_visual_*` overlay가 소유하며 기존 플랫폼 운영 계약을 덮어쓰지 않는다.
 
-플랫폼 Adapter 구현 Gate는 향후 플랫폼 확장 경계로 계속 유효하다. 2026-08-20 `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`과 `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01` 자체는 제품 구현 권한이 아니었지만, 후속 `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`이 첫 5전 PC-first Vertical Slice Phase I–VI 구현을 명시적으로 허용했고 해당 범위는 현재 `main`에 병합됐다. 따라서 현재 상태는 `phase_i_vi_implementation: AUTHORIZED_AND_MERGED`이며, **추가 제품 mutation**만 `future_product_mutation_authorized: false`로 새 명시 요청 + fresh Gate를 요구한다. 현재 Visual production은 r5.4의 `text brief → explicit approval → exactly one result → review` 경계와 `TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01`의 **actual game consumer required** 원칙을 함께 사용한다. 사용자는 이후 작업 surface를 **GPT Work**로 지정했으며, Work에서도 Project GitHub + exact Project Notion fresh-read가 current authority보다 우선하는 memory 대체물이 아니다.
+플랫폼 Adapter 구현 Gate는 향후 플랫폼 확장 경계로 계속 유효하다. 2026-08-20 `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`과 `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01` 자체는 제품 구현 권한이 아니었지만, 후속 `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`이 첫 5전 PC-first Vertical Slice Phase I–VI 구현을 명시적으로 허용했고 해당 범위는 현재 `main`에 병합됐다. 따라서 현재 상태는 `phase_i_vi_implementation: AUTHORIZED_AND_MERGED`이며, **추가 제품 mutation**만 `future_product_mutation_authorized: false`로 새 명시 요청 + fresh Gate를 요구한다. 현재 Visual production은 r5.4의 `text brief → explicit approval → exactly one result → review` 경계와 consumer-first 원칙을 유지하면서, 최신 `TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01`의 석양·charcoal ink·절제된 gold 방향을 `GENERATED_EXPLORATION` anchor로 검토 중이다. 기존 승인 runtime asset은 아직 교체하지 않는다. 사용자는 이후 작업 surface를 **GPT Work**로 지정했으며, Work에서도 Project GitHub + exact Project Notion fresh-read가 current authority보다 우선하는 memory 대체물이 아니다.
 
 이 live block에는 current main SHA나 열린 PR 번호를 저장하지 않는다. 새 세션·post-merge에서는 GitHub `main`, 열린 PR, exact Project Notion, current operating/visual/entry gate를 다시 읽고 의미 상태만 판정한다. exact SHA/run ID·PR 번호는 아래의 명시적 역사·관측 증거로만 취급한다.
 

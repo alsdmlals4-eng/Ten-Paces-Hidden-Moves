@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "project": "TEN_PACES",
-  "updated_at": "2026-08-26",
-  "status": "DOGYEOM_STATUS_PORTRAIT_AND_COMBAT_BATTLER_IMPLEMENTED_AUTOMATED_VERIFIED",
+  "updated_at": "2026-08-27",
+  "status": "WARM_DUSK_VISUAL_DIRECTION_SELECTED_V2_NO_FLOOR_GRID_ANCHOR_CANDIDATE_IN_REVIEW_DOGYEOM_ASSETS_PRESERVED",
   "authority_role": "CURRENT_VISUAL_PRODUCTION_HANDOFF",
   "current_execution_contract": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
-  "current_visual_production_decision": "TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01",
+  "current_visual_production_decision": "TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01",
   "consumer_first_asset_policy": "ACTUAL_GAME_CONSUMER_REQUIRED",
   "human_facing_owner": "NOTION_HOME_VISUAL_BIBLE_ASSET_LIBRARY",
   "repository_handoff": "docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md",
@@ -82,12 +82,15 @@
     }
   },
   "style_lock": {
-    "world_background": "LOW_CONTRAST_INK_WASH_SEPIA_NEGATIVE_SPACE",
-    "character": "TALL_SEMI_REALISTIC_WUXIA_INK_LINE_WITH_LIMITED_DITHERING",
-    "ui": "SEPARATE_REFINED_INFORMATION_FIRST_UI",
-    "pixel_scope": "LIMITED_CHARACTER_EDGE_AND_SMALL_CARD_READABILITY_ONLY",
-    "full_pixel_conversion": false,
-    "gold_usage": "RESTRAINED_DECISION_CONFIRM_ULTIMATE_ONLY"
+    "decision": "TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01",
+    "world_background": "WARM_DUSK_STONE_COURT_CHARCOAL_INK_PAPER_TEXTURE",
+    "character": "SEMI_REALISTIC_WUXIA_CHARCOAL_INK_LINE_AND_CONTROLLED_BRUSHWORK",
+    "ui": "DARK_TACTICAL_SURFACE_WITH_RESTRAINED_ANTIQUE_GOLD_EMPHASIS",
+    "combat_composition": "HORIZONTAL_DUEL_DISTANCE_READS_FIRST_LOGICAL_TEN_STEP_WITHOUT_FLOOR_GRID",
+    "gold_usage": "RESTRAINED_DISTANCE_AND_DECISION_EMPHASIS_ONLY",
+    "previous_20260826_lock": "PRESERVED_AS_HISTORICAL_NOT_RETROACTIVELY_REWRITTEN",
+    "candidate": "docs/visual-assets/candidates/WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID.png",
+    "candidate_status": "GENERATED_EXPLORATION_IN_REVIEW"
   },
   "combat_reference_contract": {
     "battlefield_is_primary_visual_mass": true,
@@ -132,10 +135,10 @@
     "dogyeom_status_portrait_01_notion_binary_delivery": "PASS_20260826_READBACK"
   },
   "next_result": {
-    "name": "Next consumer-backed visual asset",
-    "id": "USER_DECISION_REQUIRED",
-    "purpose": "Do not generate or implement another asset until a concrete consumer-backed request is approved.",
-    "generation_status": "NO_AUTOMATIC_NEXT_RESULT"
+    "name": "Warm dusk direction-anchor review",
+    "id": "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01",
+    "purpose": "Review the one direction candidate before any asset replacement, Notion attachment, or additional generation.",
+    "generation_status": "USER_DIRECTED_SINGLE_CORRECTION_GENERATED_EXPLORATION_IN_REVIEW"
   },
   "deferred_queue_after_result_review": [
     {
@@ -185,7 +188,11 @@
     "android_actual_device": "NOT_RUN",
     "fifteen_opponent_identifiability": "NOT_RUN",
     "human_fun_readability_immersion": "NOT_RUN",
-    "final_vfx_audio": "NOT_RUN"
+    "final_vfx_audio": "NOT_RUN",
+    "warm_dusk_direction_user_selection": "PASS_20260827",
+    "warm_dusk_direction_anchor_generation": "PASS_EXACTLY_ONE_INITIAL_AND_ONE_USER_DIRECTED_CORRECTION_20260827",
+    "warm_dusk_direction_anchor_notion_delivery": "NOT_RUN",
+    "warm_dusk_direction_anchor_runtime_integration": "NOT_RUN"
   },
   "resume_gate": [
     "RUN_IN_GPT_WORK",

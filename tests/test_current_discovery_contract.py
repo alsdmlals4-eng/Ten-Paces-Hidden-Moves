@@ -19,7 +19,7 @@ CURRENT_ACTION_PINS = {
 }
 TEMPORARY_PIN_EXCEPTIONS: dict[str, dict[str, str]] = {}
 CURRENT_WORK_CONTRACT = "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01"
-CURRENT_VISUAL_PRODUCTION_DECISION = "TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01"
+CURRENT_VISUAL_PRODUCTION_DECISION = "TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01"
 
 
 def is_reconciled_action_pin_allowed(workflow_path: str, action: str, ref: str) -> bool:
@@ -175,13 +175,13 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertIn("planning_execution_surface: GPT_WORK", current_section)
         self.assertIn("planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md", current_section)
-        self.assertIn("planning_visual_next: USER_DECISION_REQUIRED_FOR_NEXT_CONSUMER_ASSET", current_section)
+        self.assertIn("planning_visual_next: WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_V2_NO_FLOOR_GRID_REVIEW", current_section)
         self.assertIn(
-            "planning_visual_generation: NO_AUTOMATIC_NEXT_RESULT",
+            "planning_visual_generation: INITIAL_ONE_PLUS_USER_DIRECTED_SINGLE_CORRECTION_20260827_NO_AUTO_FOLLOWUP",
             current_section,
         )
         self.assertIn(
-            "planning_visual_review: DOGYEOM_STATUS_PORTRAIT_01_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_20260826_WINDOWS_HUMAN_VISUAL_NOT_RUN",
+            "planning_visual_review: WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_V2_NO_FLOOR_GRID_IN_REVIEW_DOGYEOM_RUNTIME_ASSETS_PRESERVED",
             current_section,
         )
         self.assertIn(

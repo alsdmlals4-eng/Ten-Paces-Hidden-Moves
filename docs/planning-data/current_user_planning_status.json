@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "TEN_PACES",
-  "updated_date": "2026-08-26",
+  "updated_date": "2026-08-27",
   "user_directed_planning_status": "PLANNING_COMPLETE_DOGYEOM_STATUS_PORTRAIT_AND_COMBAT_BATTLER_IMPLEMENTED",
   "decision_id": "TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01",
   "approval_source": "user explicit: 기획완료",
@@ -17,7 +17,9 @@
   "visual_component_style_decision_id": "TEN-DEC-20260820-VISUAL-COMPONENT-STYLE-SYSTEM-02",
   "visual_component_style_approval_source": "user explicit: 좋아 권장안대로 진행하자 + 2026-08-25 approved reference set",
   "visual_component_style_repo_status": "MERGED_MAIN_BASELINE_AND_VISUAL_HANDOFF_95267E",
-  "visual_art_style": "LOW_CONTRAST_INK_WORLD_TALL_SEMI_REALISTIC_CHARACTER_LIMITED_DITHERING_SEPARATE_REFINED_UI",
+  "visual_art_style": "WARM_DUSK_CHARCOAL_INK_PAPER_SEMI_REALISTIC_WUXIA_DARK_TACTICAL_UI_RESTRAINED_GOLD_TEN_STEP_LANE",
+  "current_visual_direction_decision": "TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01",
+  "current_visual_direction_status": "USER_SELECTED_DIRECTION_V2_NO_FLOOR_GRID_GENERATED_EXPLORATION_IN_REVIEW",
   "visual_component_family_count": 12,
   "visual_asset_requirement_status": "CONSUMER_FIRST_DOGYEOM_STATUS_PORTRAIT_IMPLEMENTED_AUTOMATED_VERIFIED",
   "visual_asset_eligibility_policy": "ACTUAL_GAME_CONSUMER_REQUIRED",
@@ -46,7 +48,7 @@
   "product_implementation_authorized": false,
   "implementation_gate": "SCOPED_PC_FIRST_VERTICAL_SLICE_GATE_PLUS_EXISTING_PLATFORM_EVIDENCE_CEILINGS",
   "next_phase": "REVIEW_NEXT_CONCRETE_CONSUMER_ASSET",
-  "next_image_generation": "USER_DECISION_REQUIRED",
+  "next_image_generation": "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_V2_NO_FLOOR_GRID_IN_REVIEW_NO_AUTO_FOLLOWUP",
   "next_visual_batch": [],
   "deferred_visual_queue_after_current_result_review": [
     "INDIVIDUAL_CARD_ILLUSTRATION_WITH_EXACT_CARD_ID_AND_CARDVIEW_CONSUMER",

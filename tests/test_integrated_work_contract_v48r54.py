@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CURRENT_DECISION_ID = "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01"
-CURRENT_VISUAL_PRODUCTION_DECISION_ID = "TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01"
+CURRENT_VISUAL_PRODUCTION_DECISION_ID = "TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01"
 R2_DECISION_ID = "TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01"
 SOURCE_SHA256 = "fdf238c202cfac6d3a824aae49b8ac525fba023e31bba7df6ece64a2790365a0"
 BASE_OBSERVED = "edb3b3376603c9f6b00d64af3126304f8c9946bf"
@@ -157,10 +157,10 @@ class IntegratedWorkContractV48R54Tests(unittest.TestCase):
         self.assertEqual("USER_APPROVED_AND_IMPLEMENTED_2026_08_26", portrait["status"])
         self.assertEqual("res://assets/portraits/dogyeom_status_portrait_01_v1.png", portrait["runtime_asset"])
         self.assertEqual("AUTOMATED_GODOT_PASS_20260826", portrait["opponent_specific_routing"])
-        self.assertEqual("USER_DECISION_REQUIRED", visual["next_result"]["id"])
-        self.assertEqual("NO_AUTOMATIC_NEXT_RESULT", visual["next_result"]["generation_status"])
+        self.assertEqual("WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01", visual["next_result"]["id"])
+        self.assertEqual("USER_DIRECTED_SINGLE_CORRECTION_GENERATED_EXPLORATION_IN_REVIEW", visual["next_result"]["generation_status"])
         self.assertEqual([], planning["next_visual_batch"])
-        self.assertEqual("USER_DECISION_REQUIRED", planning["next_image_generation"])
+        self.assertEqual("WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_V2_NO_FLOOR_GRID_IN_REVIEW_NO_AUTO_FOLLOWUP", planning["next_image_generation"])
         self.assertEqual("GPT_WORK", planning["next_execution_surface"])
         self.assertEqual("docs/planning-data/current_visual_production_handoff_20260826.json", planning["visual_reference_state"])
         serialized_queue = json.dumps(visual.get("deferred_queue_after_result_review", []), ensure_ascii=False)
