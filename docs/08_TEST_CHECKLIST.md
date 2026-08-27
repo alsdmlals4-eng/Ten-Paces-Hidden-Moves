@@ -5,7 +5,7 @@
 > 규칙 원본: `docs/02_COMBAT_RULES.md`  
 > PoC 범위: `docs/05_COMBAT_POC_SPEC.md`  
 > 성장 원본: `docs/06_STARTING_FACTION_MASTERY_DATA.md`  
-> 자동 제품 검증의 최신 상태는 GitHub `main`과 실제 검증 결과를 fresh-read한다. `7494f50c48573168542781e007eeab6af11dda7d`는 기존 자동 제품 검증의 역사 기준이며, 최신 첫 5전 Vertical Slice 증거를 뜻하지 않는다.
+> 자동 제품 검증 증거 기준: 최신 상태는 GitHub `main`과 실제 검증 결과를 fresh-read한다. `7494f50c48573168542781e007eeab6af11dda7d`는 기존 자동 제품 검증의 역사 기준이며, 최신 첫 5전 Vertical Slice 증거를 뜻하지 않는다.
 
 ## 1. 판정 상태
 
