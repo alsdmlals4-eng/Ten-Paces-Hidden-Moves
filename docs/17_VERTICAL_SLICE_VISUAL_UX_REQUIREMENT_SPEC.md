@@ -326,3 +326,133 @@ android_physical_layout_validation: NOT_RUN
 2. **제품 구현 요청** → `docs/16_VERTICAL_SLICE_IMPLEMENTATION_HANDOFF_PLAN.md`와 이 문서를 함께 fresh-read하고 current Entry Gate를 확인한 뒤 구현 작업 계약을 작성.
 
 두 요청이 모두 없으면 `AWAITING_EXPLICIT_ASSET_OR_IMPLEMENTATION_REQUEST`로 유지한다.
+
+---
+
+## 16. 현재 목표 Build 화면 인벤토리·시각 커버리지 감사 · 2026-08-27
+
+> Issue: [#238](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/238)
+> 범위: 기본 진입 `res://scenes/run/vertical_slice_shell.tscn`의 첫 5전 Vertical Slice. 이 절은 이 문서의 화면별 Visual/UX 계약을 **actual runtime consumer와 coverage 상태로 읽기 위한 current projection**이다. Asset Manifest·승인 lifecycle·runtime PASS의 독립 정본이 아니다.
+
+### 16.1 목표 Build와 화면 family 판정
+
+```yaml
+target_build: FIRST_FIVE_DUEL_PC_FIRST_VERTICAL_SLICE
+must_play_flow: MAIN → SETUP → INTRO → BRIEFING → COMBAT → REVIEW → RESULT → ROUTE_GROWTH → ROUTE_INFO → BRIEFING → ... → COMPLETION
+runtime_entry: res://scenes/run/vertical_slice_shell.tscn
+runtime_state_owner: src/run/vertical_slice_run_state.gd
+screen_design_reference_owner: this document + exact Project Notion `03 · UI · 전투 Flow Map` / `02 · 비주얼 바이블`
+runtime_asset_owner: assets/ASSET_MANIFEST.json + actual preload/data consumer
+image_generation_policy: NO_AUTOMATIC_IMAGE_GENERATION_FROM_GAPS
+```
+
+| Family | 판정 | 이유 |
+|---|---|---|
+| A 시작·시스템 진입 | 적용 | `MAIN`은 현재 기본 실행 경로의 단일 진입 화면이다. Boot/splash/loading, save slot, profile, continue/load는 현재 Slice에 없다. |
+| B 시작 구성·선택 | 적용 | `SETUP`에서 6개 시작 무공 중 정확히 4개를 고른다. 별도 캐릭터/직업/장비 화면은 없다. |
+| C 허브·지도·행로 | 부분 적용 | 허브·월드맵은 없고, `ROUTE_GROWTH`와 `ROUTE_INFO` 두 순차 선택 surface만 있다. |
+| D 핵심 gameplay | 적용 | 10칸 논리 전장과 3/3/4 계획의 `COMBAT` 및 그 Overlay `REVIEW`가 핵심 gameplay다. 대화/탐색/건설은 없다. |
+| E 준비·전투 | 적용 | `BRIEFING`, `COMBAT`, `REVIEW`가 실제 Scene/Overlay 경계를 이룬다. 별도 조준/QTE/보스 phase surface는 없다. |
+| F 결과·반복 성장 | 적용 | `RESULT`, 두 Route surface, `COMPLETION`이 보상·성장·완주 흐름을 담당한다. Game-over/retry는 아직 없다. |
+| G 기록·도움 | 미적용 | 도감, 튜토리얼, 검색, 기록 보관소는 현재 Slice runtime에 구현/소비처가 없다. |
+| H 일시정지·설정 | 미적용 | pause, settings, language, save/load, input remap은 현재 Slice runtime에 구현/소비처가 없다. |
+| I 실패·종료·예외 | 부분 적용 | `COMPLETION`은 정상 완주만 제공한다. failure/game-over, credits, loading/error/reconnect는 현재 Slice에 구현/소비처가 없다. |
+
+### 16.2 Target Screen Inventory
+
+`P0`는 현 목표 Build의 첫 완주 흐름을 막는 surface, `P1`은 반복·명료성·후속 polish, `P2`는 현재 Slice 밖의 production/release surface다. `coverage_status`는 승인 자산 lifecycle이나 Human/runtime PASS를 뜻하지 않는다.
+
+| screen_id | priority | entry → exit | 플레이어 질문 / 첫 시선 | runtime consumer | composition evidence | coverage_status |
+|---|---|---|---|---|---|---|
+| `SCREEN_MAIN` | P0 | app entry → 새 비무행 | 이번 비무행을 시작할까? / 제목·단일 CTA | `VerticalSliceShell._render_current_screen` | functional `ContentPanel`, 전면 `TechnicalBackground` | `COVERED_EXISTING` |
+| `SCREEN_SETUP` | P0 | Main → Intro | 어떤 4권으로 나를 정의할까? / 선택 수·무공 목록 | `VerticalSliceShell._build_setup_options` | Godot toggle buttons·text | `COVERED_EXISTING` |
+| `SCREEN_INTRO` | P0 | Setup → Briefing | 왜 첫 비무행을 걷는가? / 짧은 목적·선택 무공 | `VerticalSliceShell._render_current_screen` | Godot text/panel | `COVERED_EXISTING` |
+| `SCREEN_BRIEFING` | P0 | Intro/Route Info → Combat | 무엇을 믿고 의심할까? / 상대·공개 무공·습관 | `VerticalSliceShell._render_briefing` | Godot text/panel; hidden-plan exclusion in code text | `COVERED_EXISTING` |
+| `SCREEN_COMBAT` | P0 | Briefing → Review | 어떤 3/3/4 계획을 잠글까? / 전장·거리·현재 묶음 | `VerticalSliceCombatBridge` → `CombatBoardPreview` | existing combat runtime; focused Godot evidence | `COVERED_EXISTING` |
+| `OVERLAY_REVIEW` | P0 | terminal Combat → Result | 왜 방금 결과가 났나? / 실제 사건 1~3개 | `CombatReviewPanel` via `VerticalSliceCombatBridge` | combat-on-screen overlay | `COVERED_EXISTING` |
+| `SCREEN_RESULT` | P0 | Review → Route/Completion | 무엇을 얻고 다음에 무엇을 준비할까? / 결과·보상 선택 | `VerticalSliceShellResultAuto` | Godot result options/text | `COVERED_EXISTING` |
+| `SCREEN_ROUTE_GROWTH` | P0 | Result → Route Info | 지금 무엇을 회복/성장시킬까? / locked opponent 맥락·3개 선택 | `VerticalSliceShellRouteAuto` | Godot option controls/text | `COVERED_EXISTING` |
+| `SCREEN_ROUTE_INFO` | P0 | Route Growth → Briefing | 다음 상대에 대해 무엇을 더 알까? / 공개 정보 선택 | `VerticalSliceShellRouteAuto` | Godot option controls/text | `COVERED_EXISTING` |
+| `SCREEN_COMPLETION` | P0 | Duel 5 Result → terminal | 첫 비무행에서 무엇이 달라졌나? / run history | `VerticalSliceShellCompletionAuto` | Godot summary cards/text | `COVERED_EXISTING` |
+| `SCREEN_PAUSE_SETTINGS` | P1 | N/A | 설정/중단/복귀 | 없음 | `NOT_APPLICABLE` for current Slice; future support flow | `NOT_APPLICABLE` |
+| `SCREEN_FAILURE_RETRY` | P1 | N/A | 패배 이유·재시도 | 없음 | `NOT_APPLICABLE` for current Slice; no game-over model | `NOT_APPLICABLE` |
+| `SCREEN_CODEX_HELP` | P2 | N/A | 도감·튜토리얼·검색 | 없음 | `NOT_APPLICABLE` for current Slice | `NOT_APPLICABLE` |
+| `SCREEN_RELEASE_LOADING_ERROR` | P2 | N/A | boot/loading/error/credits/store | 없음 | `NOT_APPLICABLE` for current Slice | `NOT_APPLICABLE` |
+
+### 16.3 Screen → Asset Coverage Matrix
+
+| screen scope | composition / identity | world·character | UI·text·state | feedback / technical consumer | implementation mode | coverage / gap treatment |
+|---|---|---|---|---|---|---|
+| Main / Setup / Intro | existing `InkSurface` direction, not a baked screen bitmap | no mandatory character image | `ContentPanel`, `Button`, `Label`, toggle state | primary CTA; disabled until 4 selections | `GODOT_UI + TEXT_LAYER + NO_NEW_IMAGE_FILE_REQUIRED` | P0 covered by functional UI; whole-screen visual polish is P1 `SCREEN_DESIGN_REFERENCE` queue |
+| Briefing | panel hierarchy protects uncertainty | opponent identity is structured text; portrait is optional | public manual/habit/counterexample; hidden plan excluded | start CTA | `GODOT_UI + TEXT_LAYER + REUSE_PROJECT` | P0 covered; portrait/result crop is not required until an exact opponent consumer is selected |
+| Combat / Review | battle background remains largest mass | `twilight_ink_duel_v1`, player/enemy battlers, Dogyeom routing for `slot1_dogyeom` | HUD, timeline, cards, focus/selected/disabled state | range/target/resolve/review; `ultimate_ink_gold_sprite_sheet_rgba` | `EXISTING_APPROVED + REUSE_PROJECT + GODOT_UI + SVG_VECTOR + SPRITE_SHEET` | P0 covered by actual preloads and Godot regressions; warm-dusk candidate remains `GENERATED_EXPLORATION · IN_REVIEW`, never a runtime asset |
+| Result / Route / Completion | functional panel composition, not a full-screen raster | no mandatory new background/portrait | result choices, locked opponent context, route options, run summary | reward receipt / selected route / completion summary | `GODOT_UI + TEXT_LAYER + PROCEDURAL_DRAW + NO_NEW_IMAGE_FILE_REQUIRED` | P0 covered; result mark/route icon/background variant remain P1 `GAP_NONBLOCKING` only when exact component consumer is specified |
+| Pause / Failure / Codex / Release system | no current consumer | none | none | none | `DO_NOT_GENERATE` | `NOT_APPLICABLE` for this Slice; future scope must create a screen requirement before assets |
+
+### 16.4 Screen Design Reference Queue
+
+| screen_id | reference_needed | existing anchor | required fidelity / validation | priority |
+|---|---|---|---|---|
+| `SCREEN_COMBAT` / `OVERLAY_REVIEW` | no new reference before current candidate review | `TEN-IMG-001`; `WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID` is candidate-only | existing focused Godot regression; Windows visible/human comparison remains `NOT_RUN` | P1 |
+| `SCREEN_MAIN` / `SCREEN_SETUP` / `SCREEN_INTRO` | composition only, no raster requirement | Visual Bible Component System + `TEN-VIS-A01` approved clean-plate reference | target-resolution wireframe or runtime capture after a separately approved implementation package | P1 |
+| `SCREEN_BRIEFING` / `SCREEN_RESULT` / `SCREEN_ROUTE_*` / `SCREEN_COMPLETION` | composition only, no raster requirement | existing Visual/UX Flow + reusable panel/character-slot rules | runtime capture after a separately approved implementation package | P1 |
+
+### 16.5 Runtime Asset Family Queue
+
+| asset_family_id | screen_ids | actual runtime consumer | states / variants | production mode | status |
+|---|---|---|---|---|---|
+| `COMBAT_BACKGROUND_01` | Combat, Review | `src/combat/battle_background.gd` | normal backdrop | `EXISTING_APPROVED` | `COVERED_EXISTING`; candidate replacement is not approved |
+| `COMBAT_CHARACTER_BATTLERS` | Combat, Review | `src/combat/combat_character_placeholder.gd` | player, generic enemy, `slot1_dogyeom` | `REUSE_PROJECT` | `COVERED_EXISTING`; remaining opponents require exact consumer + identity source |
+| `STATUS_PORTRAITS` | Combat | `src/ui/combatant_status_panel.gd` | player, generic enemy, `slot1_dogyeom` | `EXISTING_APPROVED` | `COVERED_EXISTING`; 14 portraits are not an automatic queue |
+| `CARD_ICON_ILLUSTRATION` | Combat | `src/ui/card_view.gd`, `data/cards/basic_cards.json` | source/category/cost/selected/disabled | `SVG_VECTOR + TEXT_LAYER + REUSE_PROJECT` | `COVERED_EXISTING`; a new raster is allowed only for an exact card ID |
+| `ULTIMATE_VFX` | Combat | `src/combat/combat_board_preview.gd` | staged effect | `SPRITE_SHEET` | `COVERED_EXISTING` for current VFX; Human readability `NOT_RUN` |
+| `NONCOMBAT_UI_COMPONENTS` | Main/Setup/Intro/Briefing/Result/Route/Completion | `src/run/vertical_slice_shell*.gd` | normal/focus/selected/disabled | `GODOT_UI + TEXT_LAYER` | `COVERED_EXISTING`; no image file required |
+
+### 16.6 교정 로그와 Codex handoff
+
+| 현행 | 문제 | 교정 | 실제 사용 예 | 기대효과 | evidence |
+|---|---|---|---|---|---|
+| historical A01~A06 asset-family list | asset category만으로 화면 completeness를 판단할 위험 | 이 절에서 actual screen-first rows, consumer, mode, `NOT_APPLICABLE` reasons를 추가 | Route는 별도 월드맵 asset이 아니라 두 Godot choice surface | 불필요한 image backlog 방지 | `VerticalSliceRunState` screen constants + shell routes |
+| `STRUCTURED_FUNCTIONAL_UI_NOT_FINAL_VISUAL` metadata | 기능적 P0 flow와 final visual polish를 혼동할 위험 | P0 functional coverage와 P1 screen-reference polish를 분리 | Main/Result/Route/Completion are functional panels, not missing image screens | coverage gap이 자동 생성으로 번지지 않음 | actual run shell metadata |
+| `VisualReferenceStatus` 표시 문구 | `final_visual_reference_pending=false`와 달리 승인 Reference가 아직 반영 전처럼 읽힘 | code mutation은 이 audit 범위 밖이므로 `CODEX_UI_COPY_CORRECTION_REQUIRED`로 handoff | `src/run/vertical_slice_shell.gd` pending label | 사용자-facing 상태 표기의 정합성 회복 | static source comparison; runtime recheck `NOT_RUN` |
+
+**Codex handoff — `CODEX_UI_COPY_CORRECTION_REQUIRED`**
+
+```yaml
+scope: one non-core copy correction only
+read_first:
+  - docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md#16
+  - src/run/vertical_slice_shell.gd
+  - tests/verify_default_vertical_slice_entry.gd
+exact_consumer: VerticalSliceShell/VisualReferenceStatus
+change: replace the stale “승인 전투 레퍼런스 반영 전” wording with a statement that the approved reference exists while this shell remains functional/visual-hierarchy evidence only
+non_goals:
+  - no visual asset promotion
+  - no layout, combat rule, or flow change
+  - no generated image
+acceptance:
+  - `final_visual_reference_pending` remains false
+  - the label does not say approval is pending
+  - default-entry regression passes
+  - Windows/Android/human evidence remains unchanged
+godot_validation: run the focused default-entry/shell verification; close any Godot process started for it
+```
+
+### 16.7 Audit exit and remaining gaps
+
+```yaml
+p0_blocking_gap: 0
+p1_nonblocking:
+  - screen-level composition comparison for noncombat functional UI
+  - stale VisualReferenceStatus copy requires the bounded Codex handoff above
+  - warm-dusk candidate review; no Notion attach, runtime integration, or extra generation
+p2_deferred:
+  - pause/settings, failure/retry, codex/help, boot/loading/error/release surfaces
+image_brief_approval_required: none_from_this_audit
+runtime_player_validation:
+  - windows visible human usability: NOT_RUN
+  - android device: NOT_RUN
+  - human readability/fun: NOT_RUN
+```
+
+Five adversarial checks completed for this audit: screen completeness (all current state constants/overlays listed), player decision clarity (one question/entry/exit per P0 row), state-family coverage (selected/disabled/focus and combat feedback assigned to actual consumer), overproduction (noncombat uses Godot UI/text; no automatic raster queue), and canon/runtime alignment (Notion/manifest/runtime consumers compared; stale copy isolated to a bounded handoff).

@@ -177,3 +177,31 @@ fifteen_opponent_identifiability: NOT_RUN
 human_fun_readability_immersion: NOT_RUN
 final_vfx_audio: NOT_RUN
 ```
+
+---
+
+## 10. Screen-first coverage readback · 2026-08-27
+
+Issue [#238](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/238)은 `VerticalSliceShell`의 actual screen state와 asset consumer를 fresh-read했다. 상세 Target Screen Inventory, Screen→Asset Coverage Matrix, Design Reference Queue, Runtime Asset Family Queue, correction log, bounded Codex handoff는 `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md`의 **§16**이 단독으로 소유한다. 이 Gate에 같은 matrix를 복제하지 않는다.
+
+```yaml
+target_build: FIRST_FIVE_DUEL_PC_FIRST_VERTICAL_SLICE
+actual_p0_surfaces:
+  - MAIN
+  - SETUP
+  - INTRO
+  - BRIEFING
+  - COMBAT
+  - REVIEW_OVERLAY
+  - RESULT
+  - ROUTE_GROWTH
+  - ROUTE_INFO
+  - COMPLETION
+p0_blocking_gap: 0
+noncombat_runtime_mode: GODOT_UI_TEXT_LAYER_NO_NEW_IMAGE_FILE_REQUIRED
+candidate_guardrail: WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_V2_REMAINS_GENERATED_EXPLORATION_IN_REVIEW
+new_image_from_audit: FORBIDDEN
+bounded_codex_handoff: CODEX_UI_COPY_CORRECTION_REQUIRED
+```
+
+This audit changes neither asset approval nor runtime promotion. In particular, `WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID` is still not attached to Notion, not connected to `BattleBackground`, and not evidence of Windows/Android/Human visual quality. The 14 remaining opponent portraits/battlers, route icons, result marks, and extra backgrounds remain `GAP_NONBLOCKING` only when their exact future screen/component consumer is selected; they are not an automatic creation list.
