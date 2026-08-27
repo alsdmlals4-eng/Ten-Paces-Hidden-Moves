@@ -409,7 +409,11 @@ func _ensure_combat_view() -> void:
             run_state.get_player_mastery_by_manual(),
             [signature_manual_id],
             enemy_mastery,
-            str(opponent.get("candidate_id", ""))
+            str(opponent.get("candidate_id", "")),
+            {
+                "name": str(opponent.get("working_name", "")),
+                "epithet": str(opponent.get("martial_identity", ""))
+            }
         ))
     _combat_view.set_meta("vertical_slice_runtime_loadout_bound_from_shell", runtime_loadout_bound)
     if not runtime_loadout_bound:

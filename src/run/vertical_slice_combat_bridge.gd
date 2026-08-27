@@ -24,7 +24,8 @@ func configure_vertical_slice_loadouts(
     player_mastery_by_manual: Dictionary,
     enemy_loadout,
     enemy_mastery_by_manual: Dictionary,
-    enemy_candidate_id: String
+    enemy_candidate_id: String,
+    enemy_identity: Dictionary = {}
 ) -> bool:
     var player_ids := _string_values(player_loadout)
     var enemy_ids := _string_values(enemy_loadout)
@@ -63,6 +64,12 @@ func configure_vertical_slice_loadouts(
     combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
     var enemy_state: Dictionary = (combat_state.get("enemy", {}) as Dictionary).duplicate(true)
     enemy_state["candidate_id"] = enemy_candidate_id
+    var enemy_name := str(enemy_identity.get("name", ""))
+    if not enemy_name.is_empty():
+        enemy_state["name"] = enemy_name
+    var enemy_epithet := str(enemy_identity.get("epithet", ""))
+    if not enemy_epithet.is_empty():
+        enemy_state["epithet"] = enemy_epithet
     combat_state["enemy"] = enemy_state
     combat_state["ai_enabled"] = true
     _configure_ultimate_menu()
