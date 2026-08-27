@@ -49,6 +49,10 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
         self.assertEqual("SCOPED_BRIEF_THEN_SINGLE_GENERATION_PASS_THEN_FINAL_USER_LOCK", visual["image_production_cadence"]["current_policy"])
         self.assertFalse(visual["image_production_cadence"]["pre_generation_user_approval_required"])
         self.assertTrue(visual["image_production_cadence"]["final_user_lock_required"])
+        self.assertEqual(
+            "PASS_20260828_VISUAL_BIBLE_READBACK_PREVIEW_STATUS_ONLY",
+            visual["notion_delivery_verification"]["project_core_scene_visual_board_status_sync"],
+        )
         self.assertEqual([], planning["next_visual_batch"])
         self.assertEqual("GPT_WORK", planning["next_execution_surface"])
 
