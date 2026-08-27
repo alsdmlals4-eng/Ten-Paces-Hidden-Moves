@@ -184,7 +184,7 @@ func _build_shell() -> void:
 
     var pending_label := Label.new()
     pending_label.name = "VisualReferenceStatus"
-    pending_label.text = "승인 전투 레퍼런스 반영 전 · 현재 UI는 기능/정보 위계 검증용"
+    pending_label.text = "승인 전투 레퍼런스 확인됨 · 현재 UI는 기능/정보 위계 검증용"
     pending_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     pending_label.add_theme_color_override("font_color", Color("8d8375"))
     pending_label.add_theme_font_size_override("font_size", 13)

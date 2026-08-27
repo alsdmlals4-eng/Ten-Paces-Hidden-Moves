@@ -414,12 +414,14 @@ image_generation_policy: NO_AUTOMATIC_IMAGE_GENERATION_FROM_GAPS
 |---|---|---|---|---|---|
 | historical A01~A06 asset-family list | asset category만으로 화면 completeness를 판단할 위험 | 이 절에서 actual screen-first rows, consumer, mode, `NOT_APPLICABLE` reasons를 추가 | Route는 별도 월드맵 asset이 아니라 두 Godot choice surface | 불필요한 image backlog 방지 | `VerticalSliceRunState` screen constants + shell routes |
 | `STRUCTURED_FUNCTIONAL_UI_NOT_FINAL_VISUAL` metadata | 기능적 P0 flow와 final visual polish를 혼동할 위험 | P0 functional coverage와 P1 screen-reference polish를 분리 | Main/Result/Route/Completion are functional panels, not missing image screens | coverage gap이 자동 생성으로 번지지 않음 | actual run shell metadata |
-| `VisualReferenceStatus` 표시 문구 | `final_visual_reference_pending=false`와 달리 승인 Reference가 아직 반영 전처럼 읽힘 | code mutation은 이 audit 범위 밖이므로 `CODEX_UI_COPY_CORRECTION_REQUIRED`로 handoff | `src/run/vertical_slice_shell.gd` pending label | 사용자-facing 상태 표기의 정합성 회복 | static source comparison; runtime recheck `NOT_RUN` |
+| `VisualReferenceStatus` 표시 문구 | `final_visual_reference_pending=false`와 달리 승인 Reference가 아직 반영 전처럼 읽힘 | Issue #240에서 문구를 `승인 전투 레퍼런스 확인됨`으로 교정하고 기존 shell regression을 갱신 | `src/run/vertical_slice_shell.gd` pending label | 사용자-facing 상태 표기의 정합성 회복 | focused Godot shell regression `PASS`; Windows/Android/Human `NOT_RUN` |
 
-**Codex handoff — `CODEX_UI_COPY_CORRECTION_REQUIRED`**
+**Codex implementation record — `CODEX_UI_COPY_CORRECTION_REQUIRED`**
 
 ```yaml
 scope: one non-core copy correction only
+issue: https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/240
+implementation_status: FOCUSED_GODOT_PASS_PENDING_PR_MERGE
 read_first:
   - docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md#16
   - src/run/vertical_slice_shell.gd
@@ -446,7 +448,6 @@ godot_validation: run the focused default-entry/shell verification; close any Go
 p0_blocking_gap: 0
 p1_nonblocking:
   - screen-level composition comparison for noncombat functional UI
-  - stale VisualReferenceStatus copy requires the bounded Codex handoff above
   - warm-dusk candidate review; no Notion attach, runtime integration, or extra generation
 p2_deferred:
   - pause/settings, failure/retry, codex/help, boot/loading/error/release surfaces

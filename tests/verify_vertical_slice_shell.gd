@@ -38,7 +38,7 @@ func _run() -> void:
     var visual_reference_status := shell.find_child("VisualReferenceStatus", true, false) as Label
     _expect_true(visual_reference_status != null, "MAIN must expose visual-reference status copy.")
     if visual_reference_status != null:
-        _expect_eq(visual_reference_status.text, "승인 전투 레퍼런스 반영 전 · 현재 UI는 기능/정보 위계 검증용", "MAIN must distinguish approved reference from pending visual integration.")
+        _expect_eq(visual_reference_status.text, "승인 전투 레퍼런스 확인됨 · 현재 UI는 기능/정보 위계 검증용", "MAIN must state that the approved reference exists while the shell remains functional visual-hierarchy evidence.")
 
     _expect_true(shell.start_new_run(), "Shell must start a new run.")
     _expect_eq(shell.run_state.get_current_screen(), "SETUP", "New run must enter SETUP.")
