@@ -74,7 +74,7 @@ PR `#199`, `#200`은 이 handoff가 소유하지 않는다. 새 Work 세션에�
 ### `OPPONENT_CHARACTER_MASTER_01` · 도겸 Source Master
 
 ```yaml
-status: USER_APPROVED_2026_08_26
+status: USER_APPROVED_AND_IMPLEMENTED_2026_08_27
 generation_id: 0d895036-38e6-420e-990f-823353373366
 source_png_sha256: efe88bf4aaf7d1773916f151d518cf52508f18a670760f817c4226feb7564f42
 notion_delivery: PASS
@@ -90,11 +90,12 @@ source_png_sha256: 064a8772406c743bbe6b252c138b4333c88b00b90a0ba905cce9ea1877353
 notion_delivery: PASS
 consumer: src/combat/combat_character_placeholder.gd
 current_generic_consumer_asset: res://assets/characters/enemy_masked_battler_rgba_v1.png
-opponent_specific_routing: NOT_RUN
-runtime_asset: false
+opponent_specific_routing: AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER
+runtime_art_integration: AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER
+runtime_asset: res://assets/characters/dogyeom_combat_battler_01_v1.png
 ```
 
-승인된 Battler는 투명 RGBA 전신, enemy left-facing, foot-anchor-safe source다. 사용자 승인은 실제 Godot consumer routing이나 runtime art integration을 뜻하지 않는다.
+승인된 Battler는 투명 RGBA 전신, enemy left-facing, foot-anchor-safe source다. 사용자 승인은 그 자체로 runtime claim이 아니었으며, 이후 `slot1_dogyeom` consumer routing과 draw-stage left-facing mirror가 자동 Godot 검증으로 별도 확인됐다. Windows human usability와 Android 실기기 evidence는 계속 `NOT_RUN`이다.
 
 ## 5. 완료된 안전 작업
 
