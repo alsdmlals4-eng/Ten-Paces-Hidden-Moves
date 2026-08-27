@@ -8,7 +8,7 @@
 > 기초 행동·합 결정: `docs/decisions/2026-08-02_BASIC_ACTIONS_PALM_CLASH_DECISION.md`  
 > 공격 공식·성장 요구치: `docs/decisions/2026-08-02_BASIC_ATTACK_FORMULAS_SLOT_BUDGET_DECISION.md`, `docs/decisions/2026-08-02_BASIC_PALM_DAMAGE_GROWTH_DECISION.md`, `docs/decisions/2026-08-03_STAR7_TECHNIQUE_PRIMARY_STAT8_DECISION.md`  
 > 기술 작성·가격 결정: `docs/decisions/2026-08-02_TECHNIQUE_AUTHORING_TAG_FIXED_STAT_DECISION.md`, `docs/decisions/2026-08-02_STAT_REFERENCE_PRICE_BASE4_DECISION.md`  
-> 현재 구현 기준: `659c57e7ffa588ad6a6471ed9b5394985b159eaf`
+> 현재 구현 기준: GitHub `main`과 실제 소스를 fresh-read한다. `659c57e7ffa588ad6a6471ed9b5394985b159eaf`는 기존 T0 자동 검증의 역사 기준이며, 최신 첫 5전 Vertical Slice 상태를 뜻하지 않는다.
 
 ## 1. 목적
 
@@ -30,7 +30,10 @@ current_t0:
 next_demo:
   scope_status: POC_PRIMARY
   authority_status: CURRENT_APPROVED_PLANNING
-  implementation_status: NOT_STARTED
+  implementation_status: FIRST_FIVE_DUEL_PHASE_I_VI_MERGED_AUTOMATED_GREEN
+  automated_validation: PASS
+  godot_validation: PASS
+  windows_visible_human_validation: NOT_RUN
 step14:
   mechanical_step14: NOT_STARTED_FOR_NEW_CONTRACT
   human_step14: NOT_RUN
@@ -274,11 +277,11 @@ T0 유지 기준:
 ```yaml
 planning_contract: CURRENT_APPROVED_PLANNING
 current_t0_implementation: IMPLEMENTED_LEGACY
-next_demo_implementation: NOT_STARTED
-static_validation: REQUIRED
-automated_validation: NOT_RUN_FOR_NEW_CONTRACT
-godot_validation: NOT_RUN
-windows_validation: NOT_RUN
+next_demo_implementation: FIRST_FIVE_DUEL_PHASE_I_VI_MERGED_AUTOMATED_GREEN
+static_validation: PASS
+automated_validation: PASS
+godot_validation: PASS
+windows_validation: CI_EXPORT_RUNTIME_PASS_LOCAL_VISIBLE_NOT_RUN
 accessibility_validation: NOT_RUN
 human_validation: NOT_RUN
 t1_greenlight: NOT_GRANTED
