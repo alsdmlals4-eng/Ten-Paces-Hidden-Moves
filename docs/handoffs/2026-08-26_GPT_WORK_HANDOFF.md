@@ -60,7 +60,7 @@ PR `#199`, `#200`은 이 handoff가 소유하지 않는다. 새 Work 세션에�
 - 설명용/스타일 검증만을 위한 별도 sheet는 production target이 아니다.
 - 실제 게임이 atlas/sprite sheet를 소비할 때만 production atlas/sheet를 허용한다.
 - source master는 파생 제품 자산을 위한 재사용 원본으로 허용하지만 runtime integration PASS가 아니다.
-- 이미지 생성/생성형 편집 cadence는 `text brief → explicit user approval → exactly one result → user review`다.
+- 이 handoff 당시의 이미지 생성 cadence는 `text brief → explicit user approval → exactly one result → user review`였다. 이는 `TEN-DEC-20260828-CORE-SCENE-VISUAL-BOARD-FINAL-LOCK-CADENCE-01`로 supersede되었으며, current project cadence는 scoped single-result generation 뒤 user final-lock review다.
 
 ## 4. 사용자 승인 Visual 상태
 

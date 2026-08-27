@@ -49,4 +49,4 @@
 - rights/provenance는 source candidate 기록까지만 확인됐으며 release asset 권리는 `UNKNOWN / RELEASE_BLOCKED_UNVERIFIED`다.
 - Repository destination: this Decision and `docs/planning-data/current_visual_production_handoff_20260826.json`.
 - Notion destination: `02 · 비주얼 바이블`; planning-anchor source attachment and page readback are `PASS_20260828`.
-- 다음 시각 결과는 `PROJECT_CORE_SCENE_VISUAL_BOARD` 1장뿐이며, text brief와 별도 명시 사용자 승인 전에는 생성하지 않는다.
+- 이 결정 시점의 다음 시각 결과는 `PROJECT_CORE_SCENE_VISUAL_BOARD` 1장이었다. 당시의 별도 명시 사용자 생성 승인 문장은 `TEN-DEC-20260828-CORE-SCENE-VISUAL-BOARD-FINAL-LOCK-CADENCE-01`로 supersede되었으며, board preview의 final lock 상태는 해당 Decision과 current visual handoff가 소유한다.

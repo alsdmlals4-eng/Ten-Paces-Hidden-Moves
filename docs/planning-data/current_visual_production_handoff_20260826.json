@@ -2,10 +2,11 @@
   "schema_version": 1,
   "project": "TEN_PACES",
   "updated_at": "2026-08-28",
-  "status": "WARM_DUSK_V2_USER_APPROVED_PLANNING_ANCHOR_ONLY_NON_RUNTIME_DOGYEOM_ASSETS_PRESERVED",
+  "status": "WARM_DUSK_V2_USER_APPROVED_PLANNING_ANCHOR_ONLY_CORE_SCENE_BOARD_GENERATED_AWAITING_FINAL_LOCK_DOGYEOM_ASSETS_PRESERVED",
   "authority_role": "CURRENT_VISUAL_PRODUCTION_HANDOFF",
   "current_execution_contract": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
   "current_visual_production_decision": "TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01",
+  "current_visual_generation_cadence_decision": "TEN-DEC-20260828-CORE-SCENE-VISUAL-BOARD-FINAL-LOCK-CADENCE-01",
   "current_plan_execution_cta_decision": "TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01",
   "current_plan_execution_cta_issue": 247,
   "consumer_first_asset_policy": "ACTUAL_GAME_CONSUMER_REQUIRED",
@@ -172,9 +173,13 @@
     "runtime_poc_label_status": "CONFLICT_REQUIRES_SCOPED_CODEX_UI_COPY_AND_TRANSITION_HANDOFF"
   },
   "image_production_cadence": {
-    "current_policy": "TEXT_BRIEF_THEN_EXPLICIT_USER_APPROVAL_THEN_EXACTLY_ONE_RESULT",
-    "max_results_per_explicit_approval": 1,
+    "current_policy": "SCOPED_BRIEF_THEN_SINGLE_GENERATION_PASS_THEN_FINAL_USER_LOCK",
+    "user_instruction": "2026-08-28: do not request image-generation approval; generate the scoped result and request approval only to lock it",
+    "pre_generation_user_approval_required": false,
+    "max_initial_candidates_per_scoped_task": 1,
+    "localized_defect_successor_rule": "ONE_DOCUMENTED_NON_DIRECTIONAL_CORRECTION_PASS_ONLY_AFTER_ADVERSARIAL_REVIEW; predecessor remains SUPERSEDED_GENERATED_EXPLORATION",
     "automatic_next_result_forbidden": true,
+    "final_user_lock_required": true,
     "review_after_result_required": true,
     "historical_20260825_policy": "MAX_3_PER_BATCH_SUPERSEDED_FOR_CURRENT_EXECUTION"
   },
@@ -189,13 +194,43 @@
     "consumer_first_policy_readback": "PASS_20260826",
     "gpt_work_handoff_readback": "PASS_20260826",
     "dogyeom_status_portrait_01_notion_binary_delivery": "PASS_20260826_READBACK",
-    "warm_dusk_v2_planning_anchor_visual_bible_attachment": "PASS_20260828"
+    "warm_dusk_v2_planning_anchor_visual_bible_attachment": "PASS_20260828",
+    "project_core_scene_visual_board_delivery": "PENDING_USER_FINAL_LOCK_THEN_VISUAL_BIBLE_ATTACHMENT_AND_READBACK"
   },
   "next_result": {
     "name": "Project core scene visual board",
     "id": "PROJECT_CORE_SCENE_VISUAL_BOARD",
     "purpose": "One planning visualization that verifies main entry, plan execution, combat resolution, review, route choice, and the locked visual grammar without claiming runtime implementation.",
-    "generation_status": "TEXT_BRIEF_AND_EXPLICIT_USER_APPROVAL_REQUIRED"
+    "generation_status": "GENERATED_AWAITING_FINAL_LOCK_REVIEW",
+    "final_lock_status": "PENDING_USER_FINAL_LOCK",
+    "current_preview": {
+      "id": "PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2",
+      "kind": "GENERATED_PLANNING_PREVIEW_ONLY",
+      "local_generated_path": "C:/Users/user/.codex/generated_images/01a04555-ef8d-7811-8812-c1c2494003b3/exec-7c67237e-b6fe-4ca3-8771-c30866d9a356.png",
+      "sha256": "24fdd3a827ea36ead0364ed35c2a03689c969b4a1444823fa2e5ad94ac93ea33",
+      "dimensions": "1672x941",
+      "provenance": "BUILT_IN_IMAGEGEN_20260828",
+      "repository_asset_status": "NOT_CREATED_PENDING_FINAL_LOCK",
+      "notion_attachment_status": "NOT_ATTACHED_PENDING_FINAL_LOCK",
+      "runtime_asset_status": "NOT_A_RUNTIME_ASSET",
+      "godot_implementation_status": "NOT_IMPLEMENTED",
+      "human_usability_or_player_experience_status": "NOT_RUN"
+    },
+    "generated_preview_history": [
+      {
+        "id": "PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R1",
+        "status": "SUPERSEDED_GENERATED_EXPLORATION",
+        "local_generated_path": "C:/Users/user/.codex/generated_images/01a04555-ef8d-7811-8812-c1c2494003b3/exec-068406aa-07f5-43b2-ae5f-5b2c77d5e047.png",
+        "sha256": "302a11b0fcd47dc2ad58ab489ea846a8b74a56e6db44e38545b36b2f08aa1dba",
+        "dimensions": "1536x1024",
+        "disposition_reason": "PANEL_NUMERALS_VIOLATED_NO_READABLE_TEXT_AND_3_SLOT_TWO_SLOT_SEQUENCE_READ_WAS_PARTIAL"
+      },
+      {
+        "id": "PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2",
+        "status": "CURRENT_GENERATED_PLANNING_PREVIEW_AWAITING_FINAL_LOCK",
+        "disposition_reason": "PANEL_NUMERALS_REMOVED_AND_FIRST_TWO_OF_THREE_SLOTS_VISUALLY_JOINED_AS_PRELUDE_TO_EXECUTION"
+      }
+    ]
   },
   "deferred_queue_after_result_review": [
     {

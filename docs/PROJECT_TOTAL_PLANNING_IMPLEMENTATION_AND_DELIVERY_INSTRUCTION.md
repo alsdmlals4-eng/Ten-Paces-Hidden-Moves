@@ -196,16 +196,18 @@ PowerShell은 사용자 PC의 **Godot 실행·검증·환경 확인이 실제 �
 
 Visual 제작 전 current Notion Visual Bible/Asset Library와 repository Visual requirement/inventory를 읽고 `VISUAL_REQUIREMENT_DELETE_TEST`, asset coverage, Art Style Lock을 확인한다.
 
-새 이미지 생성/생성형 편집은 현재 계약에서:
+새 이미지 생성/생성형 편집의 Base r5.4 기본은 historical compatibility로 보존한다. 십보강호의 current project override는 `TEN-DEC-20260828-CORE-SCENE-VISUAL-BOARD-FINAL-LOCK-CADENCE-01` 및 `docs/planning-data/current_visual_production_handoff_20260826.json`가 소유한다.
 
 ```text
 canon review
 → text brief
-→ 사용자 명시 승인
-→ 정확히 1개 결과 생성
-→ 사용자 결과 검토
+→ scoped single generation pass
+→ adversarial result review
+→ user final-lock review
 → 승인 뒤에만 Notion/repository asset lifecycle 진행
 ```
+
+즉, 이미 범위가 정해진 십보강호 시각 작업은 사전 생성 승인 요청 없이 한 결과를 생성하고, 사용자는 **최종 확정(lock)** 에만 승인한다. 유효한 국소 결함이 적대 검토에서 확인되면 방향을 바꾸지 않는 한 번의 보정 successor만 허용하며 이전 결과는 `SUPERSEDED_GENERATED_EXPLORATION`으로 남긴다. 이 예외는 자동 다음 작업·asset batch·runtime promotion 권한을 만들지 않으며, 공용 Base 규칙의 소유권도 바꾸지 않는다.
 
 과거 2026-08-25의 `한번에 최대 3장` 작업 메모는 역사 승인 맥락으로 보존하되, 2026-08-26 r5.4 current execution에서는 자동 batch 권한으로 사용하지 않는다.
 
