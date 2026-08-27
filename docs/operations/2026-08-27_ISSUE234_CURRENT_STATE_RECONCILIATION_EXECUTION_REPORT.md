@@ -25,7 +25,15 @@ Godot 4.7.1의 깨끗한 checkout은 개별 `--script` verifier 전에 `--headle
 
 ### 해결과 재발 방지
 
-기존 CI/collector와 같은 import·parse 선행 단계를 적용한 뒤 default-entry, 도겸 상태 초상, 도겸 Battler, Vertical Slice combat bridge verifier를 실행했다. 네 verifier가 모두 PASS했고, Hera 런타임도 1280×800 기본 화면에서 오류·경고·clipping 없이 확인됐다.
+기존 CI/collector와 같은 import·parse 선행 단계를 적용한 뒤 default-entry, 도겸 상태 초상, 도겸 Battler, Vertical Slice combat bridge verifier를 실행했다.
+
+### 재현 가능한 로컬 증거 (범위 한정)
+
+- 대상: 위 기준 SHA의 깨끗한 worktree, Godot `4.7.1-stable`.
+- 선행 명령: `Godot_v4.7.1-stable_win64_console.exe --headless --editor --path <clean-worktree> --quit`.
+- verifier: `tests/verify_default_vertical_slice_entry.gd`, `tests/verify_dogyeom_status_portrait.gd`, `tests/verify_dogyeom_combat_battler.gd`, `tests/verify_vertical_slice_combat_bridge.gd`를 각각 `--headless --path <clean-worktree> --script`로 실행했고 모두 exit code `0`과 `VERIFY_OK`를 반환했다.
+- Hera 세션: project path가 위 worktree인 Godot editor PID `29336`에서 기본 entry를 실행했다. `game ui tree`, `screenshot --runtime --analyze`, `diagnostics` 결과는 각각 1440×900 shell, 1280×800 screenshot, error `0`/warning `0`/clipping 미탐지였다.
+- screenshot 경로 `C:/Users/user/AppData/Roaming/Godot/app_userdata/십보강호- 첫 5전 Vertical Slice/hera_game_screenshots/latest.png`는 호스트의 일시 산출물이다. 따라서 이 Hera 관측은 **LOCAL_EPHEMERAL_MACHINE_OBSERVATION**이며, 추적된 CI 산출물·Windows 사람 가독성·Android·접근성·사람 플레이 증거로 승격하지 않는다.
 
 ### Base 승격 판정
 
