@@ -103,6 +103,14 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
         self.assertIn("NOT_APPLICABLE", audit)
         self.assertIn("CODEX_UI_COPY_CORRECTION_REQUIRED", audit)
         self.assertIn("WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID", audit)
+        self.assertIn("VerticalSliceResultShell", audit)
+        self.assertIn("VerticalSliceRouteShell", audit)
+        self.assertIn("VerticalSliceCompletionShell", audit)
+        self.assertNotIn("VerticalSliceShellResultAuto", audit)
+        self.assertNotIn("VerticalSliceShellRouteAuto", audit)
+        self.assertNotIn("VerticalSliceShellCompletionAuto", audit)
+        self.assertIn("src/ui/basic_card_tray.gd → src/ui/basic_card_tray_item.gd", audit)
+        self.assertIn("tests/verify_vertical_slice_shell.gd", audit)
 
 
 if __name__ == "__main__":

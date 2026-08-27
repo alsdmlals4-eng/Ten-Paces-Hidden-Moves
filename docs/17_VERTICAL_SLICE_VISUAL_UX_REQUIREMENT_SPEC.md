@@ -370,10 +370,10 @@ image_generation_policy: NO_AUTOMATIC_IMAGE_GENERATION_FROM_GAPS
 | `SCREEN_BRIEFING` | P0 | Intro/Route Info → Combat | 무엇을 믿고 의심할까? / 상대·공개 무공·습관 | `VerticalSliceShell._render_briefing` | Godot text/panel; hidden-plan exclusion in code text | `COVERED_EXISTING` |
 | `SCREEN_COMBAT` | P0 | Briefing → Review | 어떤 3/3/4 계획을 잠글까? / 전장·거리·현재 묶음 | `VerticalSliceCombatBridge` → `CombatBoardPreview` | existing combat runtime; focused Godot evidence | `COVERED_EXISTING` |
 | `OVERLAY_REVIEW` | P0 | terminal Combat → Result | 왜 방금 결과가 났나? / 실제 사건 1~3개 | `CombatReviewPanel` via `VerticalSliceCombatBridge` | combat-on-screen overlay | `COVERED_EXISTING` |
-| `SCREEN_RESULT` | P0 | Review → Route/Completion | 무엇을 얻고 다음에 무엇을 준비할까? / 결과·보상 선택 | `VerticalSliceShellResultAuto` | Godot result options/text | `COVERED_EXISTING` |
-| `SCREEN_ROUTE_GROWTH` | P0 | Result → Route Info | 지금 무엇을 회복/성장시킬까? / locked opponent 맥락·3개 선택 | `VerticalSliceShellRouteAuto` | Godot option controls/text | `COVERED_EXISTING` |
-| `SCREEN_ROUTE_INFO` | P0 | Route Growth → Briefing | 다음 상대에 대해 무엇을 더 알까? / 공개 정보 선택 | `VerticalSliceShellRouteAuto` | Godot option controls/text | `COVERED_EXISTING` |
-| `SCREEN_COMPLETION` | P0 | Duel 5 Result → terminal | 첫 비무행에서 무엇이 달라졌나? / run history | `VerticalSliceShellCompletionAuto` | Godot summary cards/text | `COVERED_EXISTING` |
+| `SCREEN_RESULT` | P0 | Review → Route/Completion | 무엇을 얻고 다음에 무엇을 준비할까? / 결과·보상 선택 | `VerticalSliceResultShell` (`src/run/vertical_slice_shell_result_auto.gd`) | Godot result options/text | `COVERED_EXISTING` |
+| `SCREEN_ROUTE_GROWTH` | P0 | Result → Route Info | 지금 무엇을 회복/성장시킬까? / locked opponent 맥락·3개 선택 | `VerticalSliceRouteShell` (`src/run/vertical_slice_shell_route_auto.gd`) | Godot option controls/text | `COVERED_EXISTING` |
+| `SCREEN_ROUTE_INFO` | P0 | Route Growth → Briefing | 다음 상대에 대해 무엇을 더 알까? / 공개 정보 선택 | `VerticalSliceRouteShell` (`src/run/vertical_slice_shell_route_auto.gd`) | Godot option controls/text | `COVERED_EXISTING` |
+| `SCREEN_COMPLETION` | P0 | Duel 5 Result → terminal | 첫 비무행에서 무엇이 달라졌나? / run history | `VerticalSliceCompletionShell` (`src/run/vertical_slice_shell_completion_auto.gd`) | Godot summary cards/text | `COVERED_EXISTING` |
 | `SCREEN_PAUSE_SETTINGS` | P1 | N/A | 설정/중단/복귀 | 없음 | `NOT_APPLICABLE` for current Slice; future support flow | `NOT_APPLICABLE` |
 | `SCREEN_FAILURE_RETRY` | P1 | N/A | 패배 이유·재시도 | 없음 | `NOT_APPLICABLE` for current Slice; no game-over model | `NOT_APPLICABLE` |
 | `SCREEN_CODEX_HELP` | P2 | N/A | 도감·튜토리얼·검색 | 없음 | `NOT_APPLICABLE` for current Slice | `NOT_APPLICABLE` |
@@ -404,7 +404,7 @@ image_generation_policy: NO_AUTOMATIC_IMAGE_GENERATION_FROM_GAPS
 | `COMBAT_BACKGROUND_01` | Combat, Review | `src/combat/battle_background.gd` | normal backdrop | `EXISTING_APPROVED` | `COVERED_EXISTING`; candidate replacement is not approved |
 | `COMBAT_CHARACTER_BATTLERS` | Combat, Review | `src/combat/combat_character_placeholder.gd` | player, generic enemy, `slot1_dogyeom` | `REUSE_PROJECT` | `COVERED_EXISTING`; remaining opponents require exact consumer + identity source |
 | `STATUS_PORTRAITS` | Combat | `src/ui/combatant_status_panel.gd` | player, generic enemy, `slot1_dogyeom` | `EXISTING_APPROVED` | `COVERED_EXISTING`; 14 portraits are not an automatic queue |
-| `CARD_ICON_ILLUSTRATION` | Combat | `src/ui/card_view.gd`, `data/cards/basic_cards.json` | source/category/cost/selected/disabled | `SVG_VECTOR + TEXT_LAYER + REUSE_PROJECT` | `COVERED_EXISTING`; a new raster is allowed only for an exact card ID |
+| `CARD_ICON_ILLUSTRATION` | Combat | `src/ui/basic_card_tray.gd → src/ui/basic_card_tray_item.gd`, `data/cards/basic_cards.json` | source/category/cost/selected/disabled | `SVG_VECTOR + TEXT_LAYER + REUSE_PROJECT` | `COVERED_EXISTING`; a new raster is allowed only for an exact card ID |
 | `ULTIMATE_VFX` | Combat | `src/combat/combat_board_preview.gd` | staged effect | `SPRITE_SHEET` | `COVERED_EXISTING` for current VFX; Human readability `NOT_RUN` |
 | `NONCOMBAT_UI_COMPONENTS` | Main/Setup/Intro/Briefing/Result/Route/Completion | `src/run/vertical_slice_shell*.gd` | normal/focus/selected/disabled | `GODOT_UI + TEXT_LAYER` | `COVERED_EXISTING`; no image file required |
 
@@ -423,6 +423,7 @@ scope: one non-core copy correction only
 read_first:
   - docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md#16
   - src/run/vertical_slice_shell.gd
+  - tests/verify_vertical_slice_shell.gd
   - tests/verify_default_vertical_slice_entry.gd
 exact_consumer: VerticalSliceShell/VisualReferenceStatus
 change: replace the stale “승인 전투 레퍼런스 반영 전” wording with a statement that the approved reference exists while this shell remains functional/visual-hierarchy evidence only
@@ -433,7 +434,8 @@ non_goals:
 acceptance:
   - `final_visual_reference_pending` remains false
   - the label does not say approval is pending
-  - default-entry regression passes
+  - update the exact `VisualReferenceStatus` expectation in `tests/verify_vertical_slice_shell.gd`
+  - shell and default-entry regressions pass
   - Windows/Android/human evidence remains unchanged
 godot_validation: run the focused default-entry/shell verification; close any Godot process started for it
 ```
