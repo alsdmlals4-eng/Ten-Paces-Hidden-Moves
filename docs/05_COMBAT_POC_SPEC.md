@@ -30,7 +30,10 @@ current_t0:
 next_demo:
   scope_status: POC_PRIMARY
   authority_status: CURRENT_APPROVED_PLANNING
-  implementation_status: NOT_STARTED
+  implementation_status: FIRST_FIVE_DUEL_PHASE_I_VI_MERGED_AUTOMATED_GREEN
+  automated_validation: PASS
+  godot_validation: PASS
+  windows_visible_human_validation: NOT_RUN
 step14:
   mechanical_step14: NOT_STARTED_FOR_NEW_CONTRACT
   human_step14: NOT_RUN
@@ -274,11 +277,11 @@ T0 유지 기준:
 ```yaml
 planning_contract: CURRENT_APPROVED_PLANNING
 current_t0_implementation: IMPLEMENTED_LEGACY
-next_demo_implementation: NOT_STARTED
-static_validation: REQUIRED
-automated_validation: NOT_RUN_FOR_NEW_CONTRACT
-godot_validation: NOT_RUN
-windows_validation: NOT_RUN
+next_demo_implementation: FIRST_FIVE_DUEL_PHASE_I_VI_MERGED_AUTOMATED_GREEN
+static_validation: PASS
+automated_validation: PASS
+godot_validation: PASS
+windows_validation: CI_EXPORT_RUNTIME_PASS_LOCAL_VISIBLE_NOT_RUN
 accessibility_validation: NOT_RUN
 human_validation: NOT_RUN
 t1_greenlight: NOT_GRANTED

@@ -19,14 +19,19 @@ legacy_t0_runtime:
   automated_validation: PASS
 latest_planning_contract:
   authority_status: CURRENT_APPROVED_PLANNING
-  implementation_status: NOT_STARTED
+  implementation_status: FIRST_FIVE_DUEL_PHASE_I_VI_MERGED_AUTOMATED_GREEN
+  automated_validation: PASS
+  godot_validation: PASS
 action_selection_dock:
   implementation_status: IMPLEMENTED_CURRENT
   automated_validation: PASS
   windows_validation: NOT_RUN
   human_validation: NOT_RUN
 app_flow_shell:
-  implementation_status: NOT_STARTED
+  implementation_status: FIRST_FIVE_DUEL_PHASE_I_VI_MERGED_AUTOMATED_GREEN
+  automated_validation: PASS
+  godot_validation: PASS
+  windows_visible_human_validation: NOT_RUN
 ranked_online:
   scope_status: FUTURE_ONLINE
   implementation_status: BLOCKED_NOT_AUTHORIZED
