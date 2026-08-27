@@ -38,7 +38,7 @@
   "protected_baseline": {
     "authority_kind": "REMOTE_TRACKING_REF",
     "authority_ref": "refs/remotes/origin/main",
-    "commit": "cd44796c74d4958dbd96c213ecac5b7dbbf18afe",
+    "commit": "d9ae822d09da5c0b505c1deba34591a861a25f97",
     "policy_sha256": "ed848e62f3292d704f602e2976737005b77100c476c6947e57ff0bcb5a3b6e52",
     "policy_source_path": "skills/PROJECT_BASE_SKILL_ADAPTER.json",
     "policy_source_type": "FIRST_MIGRATION_LEGACY_SOURCE",
