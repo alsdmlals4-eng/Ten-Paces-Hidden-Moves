@@ -27,11 +27,14 @@ class PcFirstVerticalSliceImplementationGateTests(unittest.TestCase):
         status_path = ROOT / "docs" / "planning-data" / "current_user_planning_status.json"
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
-        self.assertEqual("PC_FIRST_VERTICAL_SLICE_IMPLEMENTATION", status["next_phase"])
+        self.assertEqual("REVIEW_NEXT_CONCRETE_CONSUMER_ASSET", status["next_phase"])
         self.assertTrue(status["vertical_slice_pc_implementation_authorized"])
         self.assertFalse(status["windows_android_adapter_implementation_authorized"])
         self.assertEqual("USER_EXPLICIT_NON_IMAGE_WORK_REQUEST", status["implementation_request_source"])
-        self.assertEqual("USER_REFERENCE_PENDING", status["final_visual_reference_status"])
+        self.assertEqual(
+            "USER_APPROVED_COMBAT_REFERENCE_REFERENCE_SET_20260825_OPPONENT_CHARACTER_MASTER_DOGYEOM_COMBAT_BATTLER_AND_DOGYEOM_STATUS_PORTRAIT_01_20260826",
+            status["final_visual_reference_status"],
+        )
 
 
 if __name__ == "__main__":
