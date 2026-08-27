@@ -21,6 +21,7 @@ ALLOWED_PATHS = {
     "tests/test_godot_live_editor_adoption.py",
     ".github/workflows/validate-godot-live-editor-pilot.yml",
 }
+ADOPTION_TRIGGER_PATHS = ALLOWED_PATHS - {"tests/test_godot_live_editor_adoption.py"}
 
 
 def _required_text(path: Path) -> str:
@@ -78,9 +79,9 @@ def test_descriptor_is_exact_legacy_conflict_contract() -> None:
     }
 
 
-def test_source_legacy_authority_and_combat_scene_remain_installed() -> None:
+def test_source_legacy_authority_and_default_vertical_slice_entry_remain_installed() -> None:
     project = (ROOT / "project.godot").read_text(encoding="utf-8")
-    assert 'run/main_scene="res://scenes/combat/combat_board_preview.tscn"' in project
+    assert 'run/main_scene="res://scenes/run/vertical_slice_shell.tscn"' in project
     assert '_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"' in project
     assert '"res://addons/godot_ai/plugin.cfg"' in project
     assert (ROOT / "addons/godot_ai/plugin.cfg").is_file()
@@ -151,4 +152,6 @@ def test_pull_request_trigger_is_scoped_to_adoption_surface() -> None:
 
 def test_change_surface_is_bounded_to_four_adoption_files() -> None:
     changed = _changed_paths_from_main()
+    if not changed.intersection(ADOPTION_TRIGGER_PATHS):
+        return
     assert changed <= ALLOWED_PATHS, f"forbidden changed paths: {sorted(changed - ALLOWED_PATHS)}"

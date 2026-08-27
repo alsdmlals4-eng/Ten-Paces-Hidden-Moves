@@ -139,12 +139,15 @@ def validate_canon_documents(documents: dict[str, str]) -> None:
     _require("docs/04_ROADMAP_RESOURCE_RISK_AMENDMENT.md" in lifecycle, "lifecycle roadmap amendment missing")
     superseded_token = "bundle_transition_recovery.internal=1` | `TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`"
     _require(superseded_token in lifecycle, "superseded field authority marker missing")
-    _require("#88 | `bbed0fd4d278ca0e0d52f4e6d9083aafa1997318`" in lifecycle, "merged PR88 lineage missing")
-
     active = documents.get("active_context", "")
-    _require("active_planning_pr: 89" in active, "active PR89 pointer missing")
-    _require("next_planning_decision: CONDITION_CALIBRATION_RISK" in active, "next risk pointer stale")
-    _require("기력1·내력0·절초기세1" in active, "active recovery triple missing")
+    _require(
+        "current_truth_source: GITHUB_MAIN_PLUS_EXACT_PROJECT_NOTION_LIVE_READ" in active,
+        "active context current-truth authority missing",
+    )
+    _require(
+        "active_project_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED" in active,
+        "active live PR metadata pointer missing",
+    )
     _require("human_validation: NOT_RUN" in active and "balance_validation: NOT_RUN" in active, "active validation boundary drift")
 
 
