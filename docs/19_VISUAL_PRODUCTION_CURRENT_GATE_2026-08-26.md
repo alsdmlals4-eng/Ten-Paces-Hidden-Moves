@@ -1,8 +1,8 @@
 # 십보강호 · Visual Production Current Gate · 2026-08-26
 
-> Current execution contract: `TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01`  
+> Current workspace contract: `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01` (product safety baseline: r5.4)
 > Current visual production decision: `TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01`  
-> Human-facing owner: exact Project Notion Home / `02 · 비주얼 바이블` / `04 · 에셋 라이브러리` / `2026-08-26 · GPT Work 인수인계`  
+> Human-facing owner: repository Visual/asset owners; Notion is historical migration input only
 > Structured current state: `docs/planning-data/current_visual_production_handoff_20260826.json`  
 > Work handoff: `docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md`
 
@@ -10,9 +10,9 @@
 
 > 2026-08-28 cadence override: `TEN-DEC-20260828-CORE-SCENE-VISUAL-BOARD-FINAL-LOCK-CADENCE-01` replaces pre-generation approval with scoped single-result generation and **user final-lock review only**. It neither starts an automatic asset queue nor promotes a planning preview to a runtime asset.
 
-> 2026-08-28 final lock: `PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2` is now `USER_FINAL_LOCKED_PLANNING_ARTIFACT_ONLY`, stored at `docs/visual-assets/planning/PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2.png` and attached to exact Project Notion Visual Bible with readback. It remains non-runtime and does not authorize automatic next image work.
+> 2026-08-28 final lock: `PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2` is now `USER_FINAL_LOCKED_PLANNING_ARTIFACT_ONLY`, stored at `docs/visual-assets/planning/PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2.png`. Historical Notion attachment/readback does not create a current owner. It remains non-runtime and does not authorize automatic next image work.
 
-이 문서는 `docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md`의 승인 Reference Set과 당시 사용자 피드백을 삭제하거나 다시 쓰지 않는다. 8월 25일 문서는 historical visual handoff이고 이 문서는 8월 26일 r5.4 current execution gate다. 사용자는 이후 작업 surface를 **GPT Work**로 지정했다. Work도 memory나 과거 대화를 current truth로 사용하지 않고 Project GitHub + exact Project Notion을 fresh-read한다.
+이 문서는 `docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md`의 승인 Reference Set과 당시 사용자 피드백을 삭제하거나 다시 쓰지 않는다. 8월 25일 문서는 historical visual handoff이고 이 문서는 r5.4 product safety baseline을 사용한다. Work도 memory나 과거 대화를 current truth로 사용하지 않고 Project GitHub + repository visual owners를 fresh-read한다.
 
 ## 1. 보존되는 승인 Reference
 
@@ -31,7 +31,7 @@
 
 - generation id: `0d895036-38e6-420e-990f-823353373366`.
 - source PNG SHA-256: `efe88bf4aaf7d1773916f151d518cf52508f18a670760f817c4226feb7564f42`.
-- Notion `04 · 에셋 라이브러리` preview delivery/readback: `PASS`.
+- historical Notion `04 · 에셋 라이브러리` preview delivery/readback evidence: `PASS`.
 - 역할: `Character Master → Portrait Crop → Combat Full Body → Result Crop → Silhouette → Thumbnail` 파생용 source master.
 - runtime source master promotion / Godot integration: `NOT_RUN`.
 
@@ -41,7 +41,7 @@
 
 - generation id: `79ae965f-6048-48c5-b667-6e9b7a55b68f`.
 - source PNG SHA-256: `064a8772406c743bbe6b252c138b4333c88b00b90a0ba905cce9ea18773539c9`.
-- Notion `04 · 에셋 라이브러리` preview delivery/readback: `PASS`.
+- historical Notion `04 · 에셋 라이브러리` preview delivery/readback evidence: `PASS`.
 - 실제 consumer slot: `src/combat/combat_character_placeholder.gd`.
 - 현재 generic runtime asset: `res://assets/characters/enemy_masked_battler_rgba_v1.png`.
 - runtime asset: `res://assets/characters/dogyeom_combat_battler_01_v1.png`.
@@ -147,7 +147,7 @@ canon + actual game consumer review
 
 - Project GitHub `main` + 열린 PR.
 - Base 최신 completed `main`.
-- exact Project Notion Home / Visual Bible / Asset Library / `2026-08-26 · GPT Work 인수인계`.
+- repository Visual Bible / Asset Library / GPT Work handoff owner.
 - `docs/planning-data/current_user_planning_status.json`.
 - `docs/planning-data/current_visual_production_handoff_20260826.json`.
 - `docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md`.
@@ -160,17 +160,17 @@ Google Sheet는 `MIGRATION_ONLY_UNTIL_REMOVAL`이며 current visual authority가
 approved_reference_set: PASS_2026_08_25
 opponent_character_master_01_generation: PASS_EXACTLY_ONE_2026_08_26
 opponent_character_master_01_user_approval: PASS_2026_08_26
-opponent_character_master_01_notion_delivery: PASS_2026_08_26
+opponent_character_master_01_historical_notion_delivery: PASS_2026_08_26
 dogyeom_combat_battler_01_generation: PASS_EXACTLY_ONE_2026_08_26
 dogyeom_combat_battler_01_user_approval: PASS_2026_08_26
-dogyeom_combat_battler_01_notion_delivery: PASS_2026_08_26
+dogyeom_combat_battler_01_historical_notion_delivery: PASS_2026_08_26
 dogyeom_status_portrait_01_user_approval: PASS_2026_08_26
-dogyeom_status_portrait_01_notion_binary_delivery: PASS_20260826_READBACK
+dogyeom_status_portrait_01_historical_notion_binary_delivery: PASS_20260826_READBACK
 dogyeom_status_portrait_01_runtime_asset: res://assets/portraits/dogyeom_status_portrait_01_v1.png
 consumer_first_visual_policy: USER_APPROVED_2026_08_26
 dogyeom_status_portrait_01: USER_APPROVED_2026_08_26
 dogyeom_status_portrait_01_local_asset: docs/visual-assets/approved/DOGYEOM_STATUS_PORTRAIT_01_v1.png
-dogyeom_status_portrait_01_notion_binary_attachment: PASS_20260826_READBACK
+dogyeom_status_portrait_01_historical_notion_binary_attachment: PASS_20260826_READBACK
 next_safe_action: FOLLOW_CURRENT_PHASE1_REVIEW_AND_SCOPED_CONSUMER_POLICY_NO_AUTOMATIC_IMAGE_WORK
 runtime_source_master_promotion: NOT_RUN
 opponent_specific_dogyeom_routing: AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER

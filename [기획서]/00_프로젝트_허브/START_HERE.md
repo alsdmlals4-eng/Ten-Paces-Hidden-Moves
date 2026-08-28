@@ -10,7 +10,7 @@
 → 최신 관련 Decision
 → 질문별 책임 원본
 → 실제 파일·테스트·GitHub metadata
-→ exact Project Notion when human-facing information is relevant
+→ repository human-facing owner when human-facing information is relevant
 ```
 
 - 현행 작업계약: `TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01`.
@@ -26,13 +26,13 @@
 ```yaml
 current_state_owner: ACTIVE_CONTEXT
 current_pr_authority: GITHUB_PR_METADATA
-current_human_workspace: NOTION_DEFAULT_PROJECT_WORKSPACE
+current_human_workspace: REPOSITORY_HUMAN_FACING_CANON
 current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME
 google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL
-current_work_contract: TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01
+current_work_contract: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
 ```
 
-활성 PR·exact head·현재 Work Mode·제품 단계·구현 상태·승인 수·다음 package/Decision·device/Human evidence는 `ACTIVE_CONTEXT.md`, current JSON, GitHub live metadata, exact Project Notion을 fresh-read해 판정한다.
+활성 PR·exact head·현재 Work Mode·제품 단계·구현 상태·승인 수·다음 package/Decision·device/Human evidence는 `ACTIVE_CONTEXT.md`, current JSON, GitHub live metadata, repository human-facing owners를 fresh-read해 판정한다. Notion은 migration/history input이다.
 
 ## 허브 책임
 
@@ -48,9 +48,9 @@ current_work_contract: TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01
 - 10칸·시작 공개 거리2·3/3/4·공개 정보 추론·거리·합·대응·중단·복기가 핵심이다.
 - AI의 미확정 플레이어 계획 열람은 금지한다.
 - Windows/Android는 단일 게임 코어 + platform adapters를 사용한다.
-- 사람용 전체 Flow/Visual/핵심 표는 Notion, 구현/런타임 사실은 repository가 소유한다.
+- 사람용 전체 Flow/Visual/핵심 표와 구현/런타임 사실은 repository가 소유한다.
 - Google Sheets는 신규 GDD 작업면이 아니라 고유 미이관 자료의 migration compatibility source다.
-- 새 이미지 생성은 current r5.4의 explicit approval + exactly-one 결과 경계를 따른다.
+- 새 이미지 생성은 scoped single generation 후 user final lock 경계를 따른다.
 
 ## 역사·보류
 

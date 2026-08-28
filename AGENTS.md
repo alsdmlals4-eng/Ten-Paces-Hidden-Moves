@@ -11,7 +11,7 @@
 → docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md
    / TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01
 → [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
-→ current planning JSON + GitHub live metadata + exact Project Notion
+→ current planning JSON + GitHub live metadata + repository human-facing owners
 → skills/SKILL_REGISTRY.json
 → 최신 관련 Decision + 질문별 책임 원본
 → 실제 code/data/scene/resource/asset/test/runtime
@@ -22,17 +22,17 @@
 
 `docs/BASE_RULES_VERSION.md`는 Base의 과거 프로젝트 채택 pin과 current Base remote owner를 구분하는 compatibility/adoption evidence entrypoint다. `skills/SKILL_REGISTRY.json`이 현재 project-local Skill authority이며 legacy registry는 기본 자동 discovery 대상이 아니다. 실제 구현과 승인 정본이 다르면 자동으로 한쪽을 진실로 만들지 않고 `CANON_CONFLICT`로 판정한다.
 
-새 채팅은 과거 대화를 current truth로 요구하지 않는다. Project GitHub + exact Project Notion을 fresh-read해 현재 품질·보호 범위·다음 안전 작업·evidence ceiling을 재구성한다. GitHub↔Notion 의미가 다르면 mutation 전에 `CONTEXT_DRIFT_RECHECK_REQUIRED`다.
+새 채팅은 과거 대화를 current truth로 요구하지 않는다. Project GitHub + repository human-facing owner를 fresh-read해 현재 품질·보호 범위·다음 안전 작업·evidence ceiling을 재구성한다. `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`에 따라 Notion은 migration/history input일 뿐 current conflict surface가 아니다.
 
 ## 2. DOMAIN SPLIT
 
-- `NOTION_DEFAULT_PROJECT_WORKSPACE` / `NOTION_HUMAN_FACING_CANON`: 사람이 읽고 비교·수정하는 Project Home, Flow/Storyboard, Visual, 세계관·캐릭터·핵심 시스템 설명, 핵심 표.
+- `REPOSITORY_HUMAN_FACING_CANON`: 사람이 읽고 비교·수정하는 Project Home equivalent, Flow/Storyboard, Visual, 세계관·캐릭터·핵심 시스템 설명, 핵심 표.
 - `REPOSITORY_STRUCTURED_CANON` / `REPOSITORY_RUNTIME_TRUTH`: Markdown, JSON, game data, code, Scene, Resource, tracked asset, tests, CI, runtime evidence.
 - Google Sheets: `MIGRATION_ONLY_UNTIL_REMOVAL`. 고유 미이관 자료를 찾는 compatibility source이며 신규 기획·승인·current state 작업면이 아니다.
 
 ## 3. Mutable state
 
-활성 PR·exact HEAD·현재 Work Mode·제품 단계·구현 상태·승인 수·다음 package/Decision·device/Human evidence는 `ACTIVE_CONTEXT.md`, current structured JSON, GitHub metadata, exact Project Notion에서 fresh-read한다. 이 AGENTS에 mutable snapshot을 고정하지 않는다.
+활성 PR·exact HEAD·현재 Work Mode·제품 단계·구현 상태·승인 수·다음 package/Decision·device/Human evidence는 `ACTIVE_CONTEXT.md`, current structured JSON, GitHub metadata, repository human-facing owners에서 fresh-read한다. 이 AGENTS에 mutable snapshot을 고정하지 않는다.
 
 ## 4. Work Mode·Skill
 
@@ -96,8 +96,8 @@ project.godot
 
 ### Godot·Codex 역할 경계
 
-- GPT는 기획·조사·검수·Base·Notion·문서·Visual을 담당한다.
-- 실제 Godot 제품 구현이 필요하면 `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF` 뒤 Codex가 Project GitHub + Notion을 독립 fresh-read해 자신의 구현환경에서 수행한다.
+- GPT는 기획·조사·검수·Base·repository 문서·Visual을 담당한다.
+- 실제 Godot 제품 구현이 필요하면 `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF` 뒤 Codex가 Project GitHub + repository owners를 독립 fresh-read해 자신의 구현환경에서 수행한다.
 - GPT→PowerShell→local Codex launcher, 프로젝트 필수 `CODEX_HOME`, 과거 dedicated port readiness는 current 실행 경로가 아니다.
 - PowerShell은 사용자 PC에서 Godot 실행·검증이 실제 필요할 때만 사용하며 Codex launcher가 아니다.
 - 호환 가능한 host에서는 shared approved exact Godot pin + Godot AI 기본 포트 + exact project/editor/session identity를 기본으로 한다.
@@ -120,7 +120,7 @@ project.godot
 
 ## 10. 시각 자산
 
-새 이미지 생성·스타일 변경은 current r5.4 계약에서 `canon review → text brief → 사용자 명시 승인 → 정확히 1개 결과 → 사용자 검토` 순서다. reference-only/chat exploration을 승인 자산으로 승격하지 않는다. 승인 Visual의 Notion 전달은 실제 attach + destination readback이 필요하다.
+새 이미지 생성·스타일 변경은 current r5.4 계약에서 `canon review → text brief → scoped single generation → 사용자 final lock → repository destination readback` 순서다. reference-only/chat exploration을 승인 자산으로 승격하지 않는다. 사용자 최신 지시에 따라 생성 전 별도 이미지 승인요청은 하지 않고, 생성 후 최종 확정만 요청한다. 승인 Visual의 Notion 전달은 요구하지 않는다.
 
 2026-08-25의 `한번에 최대 3장`은 당시 Visual-production history로 보존하지만 current 실행 approval로 사용하지 않는다.
 

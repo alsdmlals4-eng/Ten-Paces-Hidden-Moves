@@ -114,10 +114,10 @@ class ProjectGovernanceTests(unittest.TestCase):
         for token in (
             "current_state_owner: ACTIVE_CONTEXT",
             "current_pr_authority: GITHUB_PR_METADATA",
-            "current_human_workspace: NOTION_DEFAULT_PROJECT_WORKSPACE",
+            "current_human_workspace: REPOSITORY_HUMAN_FACING_CANON",
             "current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME",
             "google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL",
-            "current_work_contract: TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
+            "current_work_contract: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01",
             "ACTIVE_CONTEXT.md",
         ):
             self.assertIn(token, start_here_text, f"START_HERE.md is missing stable router token {token!r}")

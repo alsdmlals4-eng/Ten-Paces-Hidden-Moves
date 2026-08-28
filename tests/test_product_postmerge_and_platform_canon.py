@@ -17,7 +17,7 @@ PRODUCT_MERGE = "a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90"
 EVIDENCE_HEAD = "0a8bf577b936ddac5cb7130a0cc58e519ea6eff6"
 PLATFORM_DECISION = "TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01"
 ADAPTER_DECISION = "TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01"
-CURRENT_WORK_CONTRACT = "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01"
+CURRENT_WORK_CONTRACT = "TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01"
 MUTABLE_KEYS = (
     "active_planning_work_mode",
     "active_planning_pr",
@@ -128,7 +128,7 @@ class ProductPostMergeAndPlatformCanonTests(unittest.TestCase):
 
         self.assertIn("current_state_owner: ACTIVE_CONTEXT", authority)
         self.assertIn("current_pr_authority: GITHUB_PR_METADATA", authority)
-        self.assertIn("current_human_workspace: NOTION_DEFAULT_PROJECT_WORKSPACE", authority)
+        self.assertIn("current_human_workspace: REPOSITORY_HUMAN_FACING_CANON", authority)
         self.assertIn("current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME", authority)
         self.assertIn("google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL", authority)
         self.assertIn(f"current_work_contract: {CURRENT_WORK_CONTRACT}", authority)

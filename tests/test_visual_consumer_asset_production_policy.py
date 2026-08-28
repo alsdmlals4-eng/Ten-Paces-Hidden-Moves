@@ -30,11 +30,14 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
         self.assertEqual(DECISION_ID, visual["current_visual_production_decision"])
         self.assertEqual("ACTUAL_GAME_CONSUMER_REQUIRED", visual["consumer_first_asset_policy"])
         self.assertEqual("USER_APPROVED_AND_IMPLEMENTED_2026_08_27", visual["approved_results"]["OPPONENT_CHARACTER_MASTER_01"]["status"])
-        self.assertEqual("PASS", visual["approved_results"]["OPPONENT_CHARACTER_MASTER_01"]["notion_delivery"])
+        self.assertEqual(
+            "PASS_20260826",
+            visual["approved_results"]["OPPONENT_CHARACTER_MASTER_01"]["historical_notion_delivery_evidence"],
+        )
 
         battler = visual["approved_results"]["DOGYEOM_COMBAT_BATTLER_01"]
         self.assertEqual("USER_APPROVED_2026_08_26", battler["status"])
-        self.assertEqual("PASS", battler["notion_delivery"])
+        self.assertEqual("PASS_20260826", battler["historical_notion_delivery_evidence"])
         self.assertEqual("res://assets/characters/dogyeom_combat_battler_01_v1.png", battler["runtime_asset"])
         self.assertEqual("src/combat/combat_character_placeholder.gd", battler["consumer"])
         self.assertEqual("AUTOMATED_GODOT_PASS_20260827", battler["opponent_specific_routing"])
@@ -52,10 +55,10 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
         self.assertTrue(visual["image_production_cadence"]["final_user_lock_required"])
         self.assertEqual(
             "PASS_20260828_VISUAL_BIBLE_ATTACHMENT_AND_FINAL_LOCK_READBACK",
-            visual["notion_delivery_verification"]["project_core_scene_visual_board_delivery"],
+            visual["historical_notion_delivery_evidence"]["project_core_scene_visual_board_delivery"],
         )
         self.assertEqual([], planning["next_visual_batch"])
-        self.assertEqual("GPT_WORK", planning["next_execution_surface"])
+        self.assertEqual("REPOSITORY_ONLY_GPT_WORK", planning["next_execution_surface"])
 
         serialized_queue = json.dumps(visual.get("deferred_queue_after_result_review", []), ensure_ascii=False)
         self.assertNotIn("MARTIAL_TECHNIQUE_ILLUSTRATION_SHEET_01", serialized_queue)

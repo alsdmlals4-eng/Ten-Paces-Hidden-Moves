@@ -14,10 +14,10 @@
 → 최신 관련 Decision
 → 질문별 책임 원본
 → 실제 코드·데이터·Scene·테스트·GitHub metadata
-→ exact Project Notion when human-facing planning/visual/state is relevant
+→ repository human-facing owner when planning/visual/state is relevant
 ```
 
-현행 통합 작업계약은 `TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01` / `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`다. `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`은 `SUPERSEDED_HISTORICAL_EVIDENCE`다. `docs/BASE_RULES_VERSION.md`는 과거 Base release 채택 pin을 current Base remote truth와 구분하기 위한 compatibility/adoption evidence entrypoint다.
+현행 실행 workspace 계약은 `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`이며, r5.4는 product-safety baseline으로 유지한다. `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`은 `SUPERSEDED_HISTORICAL_EVIDENCE`다. `docs/BASE_RULES_VERSION.md`는 과거 Base release 채택 pin을 current Base remote truth와 구분하기 위한 compatibility/adoption evidence entrypoint다.
 
 `skills/SKILL_REGISTRY.json`이 현재 프로젝트 고유 Skill authority다. `[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json`은 legacy compatibility reference이며 기본 cold-start에서 로드하지 않는다.
 
@@ -26,26 +26,29 @@
 ```yaml
 current_state_owner: ACTIVE_CONTEXT
 current_pr_authority: GITHUB_PR_METADATA
-current_human_workspace: NOTION_DEFAULT_PROJECT_WORKSPACE
+current_human_workspace: REPOSITORY_HUMAN_FACING_CANON
 current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME
 google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL
-current_work_contract: TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01
+current_work_contract: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
+product_safety_contract_baseline: TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01
 design_platforms: WINDOWS_ANDROID
 platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
 base_authority: LATEST_COMPLETED_BASE_OWNER_PLUS_PROJECT_COMPATIBILITY_PIN
-fresh_read_bootstrap: PROJECT_GITHUB_NOTION_ONLY_RECONSTRUCTION_REQUIRED
+fresh_read_bootstrap: PROJECT_GITHUB_REPOSITORY_OWNER_RECONSTRUCTION_REQUIRED
 past_conversation_required: false
 ```
 
-활성 PR·exact SHA·현재 Work Mode·제품 단계·현재 구현 상태·승인 수·다음 package/Decision·device/Human evidence는 이 파일에 복제하지 않는다. 작업 재개 시 `ACTIVE_CONTEXT.md`, current planning JSON, GitHub live metadata, exact Project Notion을 fresh-read한다.
+활성 PR·exact SHA·현재 Work Mode·제품 단계·현재 구현 상태·승인 수·다음 package/Decision·device/Human evidence는 이 파일에 복제하지 않는다. 작업 재개 시 `ACTIVE_CONTEXT.md`, current planning JSON, GitHub live metadata, repository human-facing/structured owner를 fresh-read한다.
 
-GitHub↔Notion current meaning이 다르면 과거 대화·Handoff로 추정하지 않고 `CONTEXT_DRIFT_RECHECK_REQUIRED`다.
+repository owner와 actual implementation/current GitHub metadata의 의미가 다르면 과거 대화·Handoff로 추정하지 않고 `CONTEXT_DRIFT_RECHECK_REQUIRED`다.
 
 ## DOMAIN SPLIT
 
-- `NOTION_DEFAULT_PROJECT_WORKSPACE`: 사람이 읽고 비교·수정하는 Project Home, Flow, Visual, 핵심 표와 전체 그림.
-- repository: Markdown/JSON, game data, code, Scene, Resource, tests, tracked asset, CI, runtime truth.
+- `REPOSITORY_HUMAN_FACING_CANON`: 사람이 읽고 비교·수정하는 Project Home equivalent, Flow, Visual, 핵심 표와 전체 그림.
+- `REPOSITORY_STRUCTURED_CANON` / `REPOSITORY_RUNTIME_TRUTH`: Markdown/JSON, game data, code, Scene, Resource, tests, tracked asset, CI, runtime truth.
 - Google Sheets: 고유 미이관 자료가 남은 경우의 `MIGRATION_ONLY_UNTIL_REMOVAL` source. 신규 current GDD 입력면이 아니다.
+
+Notion은 historical migration input이며 새 output·attachment·sync·destination readback 대상이 아니다.
 
 ## 프로젝트 코어
 
@@ -73,9 +76,9 @@ GitHub↔Notion current meaning이 다르면 과거 대화·Handoff로 추정하
 ## Godot·Codex 현재 실행 경계
 
 ```text
-GPT → 기획 / 조사 / 검수 / Base / Notion / 문서 / Visual
+GPT → 기획 / 조사 / 검수 / Base / repository 문서 / Visual
 실제 Godot 제품 구현 필요 → CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
-Codex → Project GitHub + Notion 독립 fresh-read → 자신의 구현환경에서 구현/test/runtime evidence
+Codex → Project GitHub + repository owner 독립 fresh-read → 자신의 구현환경에서 구현/test/runtime evidence
 GPT → 최종 검수/정본/PR closeout
 ```
 
@@ -86,9 +89,9 @@ GPT → 최종 검수/정본/PR closeout
 
 ## Visual 현재 실행 경계
 
-새 이미지 생성·생성형 편집은 current r5.4에서 `text brief → explicit user approval → exactly one result → review`다. 2026-08-25의 최대 3장 묶음은 history이며 current 자동 batch 권한이 아니다.
+새 이미지 생성·생성형 편집은 current r5.4 product-safety baseline과 최신 사용자 지시에 따라 `text brief → scoped single generation → user final lock → review`다. 2026-08-25의 최대 3장 묶음은 history이며 current 자동 batch 권한이 아니다.
 
-현재 승인 Visual과 다음 제작 대상은 `docs/planning-data/current_user_planning_status.json`, `docs/planning-data/current_visual_production_handoff_20260826.json`, exact Project Notion Home/Visual Bible/Asset Library에서 fresh-read한다. `docs/planning-data/current_visual_production_handoff_20260825.json`은 승인 Reference Set과 당시 max-three cadence의 역사 evidence다.
+현재 승인 Visual과 다음 제작 대상은 `docs/planning-data/current_user_planning_status.json`, `docs/planning-data/current_visual_production_handoff_20260826.json`, repository Visual/asset owner에서 fresh-read한다. `docs/planning-data/current_visual_production_handoff_20260825.json`은 승인 Reference Set과 당시 max-three cadence의 역사 evidence다.
 
 ## Work Mode
 

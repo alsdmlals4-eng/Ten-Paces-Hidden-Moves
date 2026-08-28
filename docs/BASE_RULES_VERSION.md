@@ -8,9 +8,10 @@
 latest user instruction
 → AGENTS.md
 → docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md
-   / TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01
+   / TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
+   (product safety baseline: TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01)
 → [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
-   + current planning JSON + GitHub live metadata + exact Project Notion
+   + current planning JSON + GitHub live metadata + repository human-facing owners
 → current Decisions / domain owners / actual implementation
 → skills/PROJECT_BASE_ADAPTER.json compatibility/adoption evidence
 → latest completed Base main owner when progressive-load is required
@@ -34,17 +35,17 @@ project_local_skills: 4
 publication_policy: source_only
 ```
 
-이 pin을 이유로 최신 Base의 운영 owner, Fresh-Read, Notion/repository domain split, Sheets migration-only 정책을 무시하지 않는다. 2026-08-26 r5.4 binding에서 관찰한 Base main `edb3b3376603c9f6b00d64af3126304f8c9946bf`도 **binding 시점 관측 증거**이며 다음 작업의 permanent current SHA가 아니다.
+이 pin을 이유로 최신 Base의 운영 owner, Fresh-Read, repository-only domain split, Sheets migration-only 정책을 무시하지 않는다. 2026-08-26 r5.4 binding에서 관찰한 Base main `edb3b3376603c9f6b00d64af3126304f8c9946bf`도 **binding 시점 관측 증거**이며 다음 작업의 permanent current SHA가 아니다.
 
 ## 3. Current workspace boundary
 
-- 사람용 Project Home·Flow·Visual·사람이 수정하는 핵심 표: `NOTION_HUMAN_FACING_CANON`.
+- 사람용 Project Home equivalent·Flow·Visual·사람이 수정하는 핵심 표: `REPOSITORY_HUMAN_FACING_CANON`.
 - Markdown·JSON·game data·code·Scene·Resource·tests·runtime evidence: `REPOSITORY_STRUCTURED_CANON` / `REPOSITORY_RUNTIME_TRUTH`.
 - Google Sheets: `MIGRATION_ONLY_UNTIL_REMOVAL`. 신규 GDD 입력·승인·current state authority가 아니다.
 
-승인 Decision은 필요한 의미를 Notion human-facing owner와 repository structured owner에 연결하고 destination readback한다. 과거 Sheet-only 값은 migration candidate 또는 history로만 취급한다.
+승인 Decision은 repository human-facing owner와 repository structured owner에 연결하고 destination readback한다. Notion/Sheet-only 값은 migration candidate 또는 history로만 취급한다.
 
-새 채팅은 과거 대화를 필수 입력으로 요구하지 않고 Project GitHub + exact Project Notion에서 current state를 재구성한다. 두 surface가 충돌하면 `CONTEXT_DRIFT_RECHECK_REQUIRED`다.
+새 채팅은 과거 대화를 필수 입력으로 요구하지 않고 Project GitHub + repository owners에서 current state를 재구성한다. Notion은 `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`에 따라 migration/history input이다.
 
 ## 4. Skill 구조
 
@@ -79,22 +80,23 @@ Base가 아니라 십보강호가 소유한다.
 ## 6. r5.4 실행 경계
 
 ```yaml
-current_project_contract: TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01
+current_project_contract: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
+product_contract_baseline: TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01
 previous_project_contract: TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01
 previous_project_contract_status: SUPERSEDED_HISTORICAL_EVIDENCE
 local_codex_orchestration: RETIRED_NOT_USED
 codex_product_implementation: INDEPENDENT_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF_ONLY
 powershell: LOCAL_GODOT_OR_VALIDATION_ONLY_NOT_CODEX_LAUNCHER
-visual_generation: TEXT_BRIEF_THEN_EXPLICIT_USER_APPROVAL_THEN_EXACTLY_ONE_RESULT
+visual_generation: TEXT_BRIEF_THEN_SCOPED_SINGLE_GENERATION_THEN_USER_FINAL_LOCK
 localization_minimum: [ko, en, ja, zh-*]
 chinese_variant: UNKNOWN_UNVERIFIED
 responsive_minimum: [pc_standard, pc_wide_or_ultrawide, mobile_landscape]
 ```
 
-- 실제 Godot 제품 구현은 `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF` 뒤 Codex가 Project GitHub + Notion을 독립 fresh-read한다.
+- 실제 Godot 제품 구현은 `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF` 뒤 Codex가 Project GitHub + repository owners를 독립 fresh-read한다.
 - GPT→PowerShell→local Codex, project-specific CODEX_HOME, 과거 dedicated port checkpoint를 current readiness로 사용하지 않는다.
 - 호환 가능한 host에서는 shared approved exact Godot pin + Godot AI 기본 포트 + exact project/editor/session identity를 기본으로 한다.
-- 새 이미지 생성은 current r5.4에서 exactly one result per explicit approval이다. 2026-08-25 max-three 메모는 history다.
+- 새 이미지 생성은 scoped single generation 뒤 user final lock이다. 2026-08-25 max-three 메모와 pre-generation approval은 history다.
 
 ## 7. 과거 Base baseline
 
@@ -124,4 +126,4 @@ Base release·Registry·route·Adapter schema가 바뀌거나, 프로젝트 curr
 - `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`은 `SUPERSEDED_HISTORICAL_EVIDENCE`다.
 - `TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01`은 `SUPERSEDED_HISTORICAL_EVIDENCE`다.
 - 과거 Decision/JSON/normative body는 삭제하지 않고 재현·감사·rollback evidence로 보존한다.
-- current project operating contract는 v4.8 r5.4다.
+- r5.4의 product safety boundary는 유지하되, current workspace authority는 `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`이다.

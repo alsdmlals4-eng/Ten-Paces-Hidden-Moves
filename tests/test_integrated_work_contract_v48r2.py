@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 R2_DECISION_ID = "TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01"
 CURRENT_DECISION_ID = "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01"
+CURRENT_EXECUTION_DECISION_ID = "TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01"
 PREVIOUS_DECISION_ID = "TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01"
 SOURCE_SHA256 = "6f0541048e084746f6777223521361d0339dbfb2e223c70947f694f1c050f508"
 CANONICAL = ROOT / "docs" / "PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md"
@@ -36,13 +37,14 @@ class IntegratedWorkContractV48R2Tests(unittest.TestCase):
 
     def test_current_adapter_no_longer_claims_r2_is_current(self) -> None:
         text = CANONICAL.read_text(encoding="utf-8")
-        self.assertIn(f"current_binding_decision: {CURRENT_DECISION_ID}", text)
+        self.assertIn(f"current_binding_decision: {CURRENT_EXECUTION_DECISION_ID}", text)
+        self.assertIn(f"product_safety_baseline: {CURRENT_DECISION_ID}", text)
         self.assertIn("revision: '2026-08-26-r5.4-superset-final'", text)
         self.assertIn(f"decision: {R2_DECISION_ID}", text)
         self.assertIn("status: SUPERSEDED_HISTORICAL_EVIDENCE", text)
         self.assertNotIn(f"current_binding_decision: {R2_DECISION_ID}", text)
 
-    def test_default_cold_start_routes_to_notion_and_repository_not_sheet(self) -> None:
+    def test_default_cold_start_routes_to_repository_not_sheet(self) -> None:
         for relative in (
             "AGENTS.md",
             "START_HERE.md",
@@ -53,7 +55,7 @@ class IntegratedWorkContractV48R2Tests(unittest.TestCase):
             self.assertIn("ACTIVE_CONTEXT.md", text, relative)
             self.assertNotIn("current_sheet_authority: GOOGLE_SHEET_00_02_04_99", text, relative)
             self.assertNotIn("GitHub `main`·열린 PR과 Google Sheet", text, relative)
-        self.assertIn("NOTION_DEFAULT_PROJECT_WORKSPACE", (ROOT / "START_HERE.md").read_text(encoding="utf-8"))
+        self.assertIn("REPOSITORY_HUMAN_FACING_CANON", (ROOT / "START_HERE.md").read_text(encoding="utf-8"))
         self.assertIn("MIGRATION_ONLY_UNTIL_REMOVAL", (ROOT / "docs" / "PROJECT_GOOGLE_SHEET_WORKBOOK.md").read_text(encoding="utf-8"))
 
     def test_stable_routers_do_not_duplicate_mutable_state(self) -> None:

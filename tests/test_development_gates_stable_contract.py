@@ -15,7 +15,7 @@ class DevelopmentGatesStableContractTests(unittest.TestCase):
         section = self.text.split("## 2. 현재 게이트", 1)[1].split("## 3. G0", 1)[0]
         self.assertIn("current_state_owner: ACTIVE_CONTEXT", section)
         self.assertIn("current_pr_authority: GITHUB_PR_METADATA", section)
-        self.assertIn("current_human_workspace: EXACT_PROJECT_NOTION", section)
+        self.assertIn("current_human_workspace: REPOSITORY_HUMAN_FACING_CANON", section)
         self.assertIn("current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME", section)
         self.assertIn("google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL", section)
         self.assertIn("gate_document_semantics: CONDITIONS_ONLY", section)
