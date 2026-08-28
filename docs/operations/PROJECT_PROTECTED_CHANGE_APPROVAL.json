@@ -21,7 +21,8 @@
     "src/run/vertical_slice_run_state.gd",
     "src/run/vertical_slice_shell.gd",
     "src/ui/action_selection/action_view_model_adapter.gd",
-    "src/ui/combat_progress_button.gd"
+    "src/ui/combat_progress_button.gd",
+    "skills/PROJECT_BASE_ADAPTER.json"
   ],
   "approval_source": "USER_EXPLICIT_ISSUE_258_AND_CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF_2026-08-28",
   "approval_time": "2026-08-28T10:00:00Z",
