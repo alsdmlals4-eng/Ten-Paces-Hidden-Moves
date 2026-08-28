@@ -62,6 +62,12 @@ notion_mutation: NOT_PERFORMED_UNTIL_SAFE_MERGE_AND_MAIN_READBACK
 
 **Lesson:** 콘텐츠 개수 변경은 data contract뿐 아니라 UI view-model의 legacy smoke expectation까지 consumer inventory에 포함한다.
 
+**Incident:** 5결투 completion 회귀가 세 번째 패배 뒤 곧바로 Result/보상으로 진행한다고 가정하여, #258의 Review → 1회 무료 재도전 경계에서 duel history를 읽기 전에 비어 있는 배열에 접근했다.
+
+**Solution:** 동일 회귀에 첫 패배의 `FAILURE_RETRY` 및 같은 전투 재시도 승리 흐름을 넣고, 승리 시에만 duel history가 정확히 한 번 기록되는 것을 검증하도록 수정했다.
+
+**Lesson:** 실패 흐름의 새 중간 화면은 completion 시나리오처럼 기존 happy-path를 재사용하는 종단 간 회귀에도 명시적으로 모델링해야 한다.
+
 **Base promotion:** `NO_BASE_PROMOTION` — 이번 정합성은 기존 Base lifecycle을 프로젝트 PR에 적용한 것이며, Base policy 또는 validator 변경을 요구하는 재사용 가능한 결함은 확인되지 않았다.
 
 ## 남은 위험과 rollback
