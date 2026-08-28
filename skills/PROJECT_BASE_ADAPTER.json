@@ -131,9 +131,9 @@
         "max_approved_decisions_per_batch": 10,
         "numeric_default_state": "RECOMMENDED_DEFAULT",
         "planning_conflict_state": "GRILL_ME_REQUIRED",
-        "decision_sync_surface": "NOTION_AND_REPOSITORY",
+        "decision_sync_surface": "REPOSITORY_ONLY",
         "pre_merge_sync_state": "APPROVED_PENDING_MERGE",
-        "post_merge_sync_state": "DESTINATION_READBACK_REQUIRED",
+        "post_merge_sync_state": "REPOSITORY_DESTINATION_READBACK_REQUIRED",
         "legacy_sheet_state": "MIGRATION_ONLY_UNTIL_REMOVAL"
       },
       "first_prompt_governance": {

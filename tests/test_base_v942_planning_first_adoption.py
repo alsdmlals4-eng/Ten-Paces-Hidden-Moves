@@ -11,7 +11,8 @@ CURRENT_PAYLOAD = "7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8"
 CURRENT_EVIDENCE = "da33a350d61b8adc52df97fccc7001708a933370"
 CURRENT_FINALIZATION = "0b7c94f38d959efc0fc9442274c60b2e268a3c97"
 REGISTRY = "693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59"
-CURRENT_WORK_CONTRACT = "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01"
+CURRENT_EXECUTION_DECISION = "TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01"
+PRODUCT_SAFETY_BASELINE = "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01"
 
 
 def load_adapter() -> dict:
@@ -28,12 +29,13 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertEqual(CURRENT_FINALIZATION, release["finalization_commit"])
         self.assertEqual(REGISTRY, adapter["skill_registry"]["base"]["sha256"])
 
-    def test_current_operating_contract_is_owned_by_v48_canonical_entrypoint(self) -> None:
+    def test_current_operating_contract_uses_repository_only_execution_decision(self) -> None:
         adapter = load_adapter()
         self.assertNotIn("current_operating_contract", adapter)
         text = CURRENT_CONTRACT_PATH.read_text(encoding="utf-8")
         self.assertIn("contract_version: '4.8'", text)
-        self.assertIn(f"current_binding_decision: {CURRENT_WORK_CONTRACT}", text)
+        self.assertIn(f"current_binding_decision: {CURRENT_EXECUTION_DECISION}", text)
+        self.assertIn(f"product_safety_baseline: {PRODUCT_SAFETY_BASELINE}", text)
         self.assertIn("base_snapshot_policy: ALWAYS_REFETCH_CURRENT_COMPLETED_MAIN", text)
 
     def test_adapter_uses_current_v2_identity_and_migration_schema(self) -> None:
@@ -63,9 +65,9 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertEqual(10, policy["max_approved_decisions_per_batch"])
         self.assertEqual("RECOMMENDED_DEFAULT", policy["numeric_default_state"])
         self.assertEqual("GRILL_ME_REQUIRED", policy["planning_conflict_state"])
-        self.assertEqual("NOTION_AND_REPOSITORY", policy["decision_sync_surface"])
+        self.assertEqual("REPOSITORY_ONLY", policy["decision_sync_surface"])
         self.assertEqual("APPROVED_PENDING_MERGE", policy["pre_merge_sync_state"])
-        self.assertEqual("DESTINATION_READBACK_REQUIRED", policy["post_merge_sync_state"])
+        self.assertEqual("REPOSITORY_DESTINATION_READBACK_REQUIRED", policy["post_merge_sync_state"])
         self.assertEqual("MIGRATION_ONLY_UNTIL_REMOVAL", policy["legacy_sheet_state"])
         self.assertNotIn("pre_merge_sheet_state", policy)
         self.assertNotIn("post_merge_sheet_state", policy)
