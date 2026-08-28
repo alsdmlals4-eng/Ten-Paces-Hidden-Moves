@@ -43,24 +43,24 @@ human_validation: NOT_RUN
 accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
 performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 phase_i_vi_implementation: AUTHORIZED_AND_MERGED
-future_product_mutation_authorized: true_FOR_ISSUE_258_ONLY
+future_product_mutation_authorized: false_NO_NEW_PRODUCT_MUTATION_APPROVED
 next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
 next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
-user_directed_planning_work_mode: BUILD
-user_directed_planning_decision: TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01
-user_directed_planning_next_package: ISSUE_258_CODEX_GODOT_PRODUCT_IMPLEMENTATION_IN_PROGRESS
-user_directed_planning_next_decision: NONE_FINAL_CONTRACT_USER_APPROVED
-user_directed_planning_status: PHASE_2_BUILD_IN_PROGRESS_ISSUE_258_CODEX_HANDOFF_ISSUED
-user_directed_planning_current_direction: APPROVED_SINGLE_CONSOLIDATED_IMPLEMENTATION_CONTRACT_ISSUE_258_IN_PROGRESS
+user_directed_planning_work_mode: REVIEW
+user_directed_planning_decision: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
+user_directed_planning_next_package: REPOSITORY_ONLY_CANON_SYNC_THEN_HUMAN_WINDOWS_PLAYTEST
+user_directed_planning_next_decision: NONE_HUMAN_EVIDENCE_REQUIRED
+user_directed_planning_status: REPOSITORY_ONLY_CANON_SYNC_COMPLETED_HUMAN_WINDOWS_PLAYTEST_NEXT
+user_directed_planning_current_direction: APPROVED_REPOSITORY_ONLY_GDD_AND_PRIOR_NOTION_WORK_MIGRATION
 user_directed_planning_latest_decision: TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01
-user_directed_planning_opening_distance: PUBLIC_DISTANCE_2_RUNTIME_BINDING_USER_APPROVED_IMPLEMENTATION_REQUIRED
-user_directed_planning_failure_retry: ONE_FREE_SAME_SEED_RETRY_PER_DUEL_THEN_END_RUN_USER_APPROVED_IMPLEMENTATION_REQUIRED
-user_directed_planning_pending_material_decision: NONE_CONTRACT_APPROVED_ISSUE_258_HANDOFF_ISSUED
+user_directed_planning_opening_distance: PUBLIC_DISTANCE_2_RUNTIME_BINDING_IMPLEMENTED_MERGED_MAIN_PR_261
+user_directed_planning_failure_retry: ONE_FREE_SAME_SEED_RETRY_PER_DUEL_THEN_END_RUN_IMPLEMENTED_MERGED_MAIN_PR_261
+user_directed_planning_pending_material_decision: NONE_HUMAN_EVIDENCE_REQUIRED
 user_directed_planning_unified_implementation_contract: TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01
-user_directed_planning_unified_implementation_contract_status: USER_APPROVED_ISSUE_258_CODEX_HANDOFF_ISSUED
+user_directed_planning_unified_implementation_contract_status: IMPLEMENTED_MERGED_MAIN_PR_261
 user_directed_planning_unified_implementation_issue: 258
 user_directed_planning_pr_authority: GITHUB_PR_METADATA
-planning_execution_surface: GPT_WORK
+planning_execution_surface: REPOSITORY_ONLY_GPT_WORK
 planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md
 planning_visual_next: NONE_BOARD_R2_USER_FINAL_LOCKED_NO_AUTOMATIC_NEXT
 planning_visual_generation: SCOPED_SINGLE_RESULT_FINAL_USER_LOCK_R2_COMPLETE
@@ -363,7 +363,7 @@ Google Sheets는 신규 기획 입력 경로로 사용하지 않으며 migration
 - STEP 14 사람 검증은 `NOT_RUN`이다.
 - CI 공급망 mutable/stale action-pin 후속은 Issue #140에서 `RESOLVED / CLOSED_COMPLETED`; 현재 미해결 위험이 아니다.
 - `OBSERVATION_ANSWER_LEAK_RISK`는 직접 공개를 바꾸지 않은 채 사람 측정을 기다린다.
-- `future_product_mutation_authorized: true_FOR_ISSUE_258_ONLY`는 승인된 Issue #258 범위만 연다. 다른 제품 mutation은 계속 새 명시 요청과 fresh Gate가 필요하다.
+- `future_product_mutation_authorized: false_NO_NEW_PRODUCT_MUTATION_APPROVED`다. Issue #258은 PR #261으로 종료됐으며, 다른 제품 mutation은 새 명시 요청과 fresh Gate가 필요하다.
 - Issue #258 구현은 PR #261로 병합됐다. 공개 거리2, 10개 기초 행동, 행동계획 실행 CTA, 공개 상태 AI·관찰 가드, 첫 패배 동일 시드 1회 재시도 경계의 post-merge 자동 회귀가 2026-08-28 통과했다. Windows visible, Human, 접근성 사용자, Android 실기기, Release 성능은 `NOT_RUN`이다. 현재 후속은 repository-only canon sync와 Human evidence다.
 
 ## 상태 표현 규칙

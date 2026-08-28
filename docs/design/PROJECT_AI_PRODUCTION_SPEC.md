@@ -40,8 +40,8 @@
 | GitHub PR #261 | merged, checks success | Phase 2 정본 reconciliation | CURRENT |
 | GitHub PR #200, #199 | open draft | 미병합 후보, READ_ONLY | CURRENT_METADATA |
 | `AGENTS.md` | repo root | 작업 경계·코어 불변식 | CURRENT |
-| `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` | Phase 2 merge 전 문구 포함 | mutable context | CONFLICT |
-| `docs/planning-data/current_user_planning_status.json` | merge pending 문구 포함 | structured mutable state | CONFLICT |
+| `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` | #261 병합·repository-only current-state sync readback | mutable context | CURRENT_AFTER_SYNC |
+| `docs/planning-data/current_user_planning_status.json` | #261 병합·human-test next readback | structured mutable state | CURRENT_AFTER_SYNC |
 | Notion Project Home / Flow | 2026-08-28 10:18Z readback | historical migration input; Phase 2 pre-merge content migrated below | HISTORICAL_INPUT_ONLY |
 | Notion Visual Bible / Asset Library | 2026-08-28 00:17Z readback | historical visual/asset migration input | HISTORICAL_INPUT_ONLY |
 | `docs/01_GAME_DESIGN.md` 등 분야별 owner | repository | game rules, content, architecture, test owners | CURRENT/PARTIAL (각 항목 참조) |
@@ -51,7 +51,7 @@
 
 ### 01.1 Notion migration gap
 
-Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상태는 Notion Home/Flow의 10:18Z 읽기 시점보다 늦으므로, Phase 2를 “handoff issued / merge pending”으로 표기한 부분은 이 문서의 기준 SHA와 충돌했다. 그 고유 Flow/Visual/asset 상태는 이 문서 §03·§12와 repository owners로 흡수했고, `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`에 따라 Notion 신규 출력은 만들지 않았으며 앞으로 current authority로 사용하지 않는다.
+Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상태는 Notion Home/Flow의 10:18Z 읽기 시점보다 늦으므로, Phase 2를 “handoff issued / merge pending”으로 표기한 부분은 이 문서의 기준 SHA와 충돌했다. 그 고유 Flow/Visual/asset 상태는 이 문서 §03·§12와 repository owners로 흡수했다. 이어서 Active Context·current planning JSON·Documentation Map·entry router를 repository-only current state로 동기화하고 readback했다. `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`에 따라 Notion 신규 출력은 만들지 않았으며 앞으로 current authority로 사용하지 않는다.
 
 ## 02. CURRENT PROJECT STATE
 
@@ -72,7 +72,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 | CNT-MANUAL-001 | 덱·손패·드로우·장착 제한 없이 해금 기술을 슬롯에 배치 | CURRENT | CONFIRMED / IMPLEMENTED |
 | AST-VIS-001 | WARM DUSK v2 | CURRENT | planning anchor only; runtime asset 승인 아님 |
 | DEC-OPS-001 | repository-only canonical workspace | CURRENT | user confirmed; Notion is historical migration input only |
-| DEC-STALE-001 | Phase 2 merge 전 Active Context/JSON/Notion 상태 | CONFLICT | #261 merge 후 stale; post-GDD sync 필요 |
+| DEC-STALE-001 | Phase 2 merge 전 Active Context/JSON/Notion 상태 | RESOLVED | repository owner sync·governance regression·readback 완료 |
 | DEC-HIST-001 | `행동계획 잠금`, 4/7 슬롯 등 과거 표기 | SUPERSEDED | current CTA/3-3-4 계약으로 대체 |
 | QA-HUMAN-001 | 사람 플레이·가독성·감정 evidence | UNKNOWN_UNVERIFIED | NOT_RUN |
 
@@ -449,7 +449,7 @@ Current contract protects retry snapshot and exactly-once progression commit. Pe
 
 | risk | class | evidence | disposition | next validation |
 |---|---|---|---|---|
-| stale mutable docs after #261 merge | internal / VERIFIED | Active Context, planning JSON, Notion timestamp vs main | FIX_NOW (post-GDD canonical sync) | owner readback after update |
+| stale mutable docs after #261 merge | internal / VERIFIED | Active Context, planning JSON, historical Notion timestamp vs main | FIXED | repository owner readback + governance regression |
 | 2-slot telegraph unclear at actual scale | UX / NOT_RUN | no human evidence | TEST | five-player moderated session |
 | review may explain too much/too little | design / NOT_RUN | no comprehension evidence | TEST | ask player to predict changed plan |
 | 15-opponent / art production cost | production / INFERENCE | content/asset scope | MITIGATE | template + asset consumer estimate |
@@ -467,13 +467,11 @@ No new product-meaning decision is required to use this document as a GDD snapsh
 
 ## 26. IMPLEMENTATION QUEUE
 
-1. `DEC-STALE-001`: synchronize Active Context, planning JSON, Documentation Map from `origin/main@6baf817`; read back exact repository owners.
-2. Run the exact Phase 2 automated checks on the current post-merge main and retain logs.
-3. Execute visible Windows player test for 5/15 minute comprehension; do not tune rules until results exist.
-4. Create a single Phase 2 implementation contract only from approved human-test findings; then build in isolated PR.
-5. Perform Android, keyboard/focus, accessibility and performance gates before release scope expands.
+1. Execute visible Windows player test for 5/15 minute comprehension; do not tune rules until results exist.
+2. Create a single Phase 2 implementation contract only from approved human-test findings; then build in isolated PR.
+3. Perform Android, keyboard/focus, accessibility and performance gates before release scope expands.
 
-Priority formula: dependency first (stale state) → player-value risk (comprehension) → technical/platform risk → content/art production.
+Priority formula: player-value risk (comprehension) → technical/platform risk → content/art production.
 
 ## 27. CHANGE LOG
 
@@ -482,6 +480,7 @@ Priority formula: dependency first (stale state) → player-value risk (comprehe
 | 2026-08-28 | First two-artifact GDD snapshot created from `origin/main@6baf817` | this document / matching PDF |
 | 2026-08-28 | Phase 2 code reconciled through #261 before snapshot | merged PR #261 |
 | 2026-08-28 | identified post-merge stale mutable owner records | DEC-STALE-001 |
+| 2026-08-28 | resolved DEC-STALE-001 and retired the carried one-time protected approval | repository owner readback / lifecycle validator |
 
 ## Appendix A. Evidence-based SWOT
 
@@ -490,7 +489,7 @@ Priority formula: dependency first (stale state) → player-value risk (comprehe
 | Public-only AI boundary is executable and covered by a dedicated regression | STRENGTH | planner, fixture, observation test | VERIFIED | fair inference game | reusable opponent template | PROTECT | current-main test run |
 | 3-slot/2-slot telegraph ties power to a legible timing sacrifice | STRENGTH | rules, engine span/timing | PARTIAL | meaningful commitment | low system reuse cost | TEST | comprehension playtest |
 | 5-duel arc gives a teachable sequence of counters | STRENGTH | game/POC docs | PARTIAL | learning-shaped first session | templateable content | TEST | full 30 min session |
-| Current mutable state is stale after merge | WEAKNESS | Active Context/JSON/Notion vs #261 | VERIFIED | indirect confusion | wrong handoff risk | IMPROVE | exact owner readback |
+| Current mutable state was stale after merge | WEAKNESS | Active Context/JSON/historical Notion vs #261 | VERIFIED | indirect confusion | wrong handoff risk | IMPROVED | repository owner readback + governance regression |
 | No human readability, audio, or device evidence exists | WEAKNESS | test/status audit | NOT_RUN | fun/clarity unknown | late rework risk | TEST | Windows+Android sessions |
 | 15-opponent visual/content demand can outrun shared template | THREAT | vertical-slice content scope | INFERENCE | repetition or thin identity | budget/schedule risk | MITIGATE | per-template cost estimate |
 | A compact wuxia inference duel has a clear category explanation | OPPORTUNITY | design synthesis, comparable mechanics | INFERENCE | memorable pitch | focused marketing surface | TEST | pitch/playtest response |

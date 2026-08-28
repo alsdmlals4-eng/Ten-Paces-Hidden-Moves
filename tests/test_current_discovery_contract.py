@@ -18,7 +18,7 @@ CURRENT_ACTION_PINS = {
     "chickensoft-games/setup-godot": "f166999204a4f2722c6fe042fbaa3b3ea0d9c789",  # upstream v2.4.1
 }
 TEMPORARY_PIN_EXCEPTIONS: dict[str, dict[str, str]] = {}
-CURRENT_WORK_CONTRACT = "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01"
+CURRENT_WORK_CONTRACT = "TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01"
 CURRENT_VISUAL_PRODUCTION_DECISION = "TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01"
 
 
@@ -37,7 +37,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("design_platforms: WINDOWS_ANDROID", text)
         self.assertIn("platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS", text)
         self.assertIn("현재 대상 플랫폼은 `Windows`와 `Android`다.", text)
-        self.assertIn("NOTION_DEFAULT_PROJECT_WORKSPACE", text)
+        self.assertIn("REPOSITORY_HUMAN_FACING_CANON", text)
         self.assertIn("MIGRATION_ONLY_UNTIL_REMOVAL", text)
         self.assertIn(CURRENT_WORK_CONTRACT, text)
 
@@ -72,14 +72,14 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn(CURRENT_WORK_CONTRACT, owner_section)
         self.assertIn("전투 UI 정보 위계", owner_section)
         self.assertIn("2026-08-11_COMBAT_UI_INFORMATION_HIERARCHY_DECISION.md", owner_section)
-        self.assertIn("NOTION_HUMAN_FACING_CANON", owner_section)
+        self.assertIn("REPOSITORY_HUMAN_FACING_CANON", owner_section)
         self.assertIn("REPOSITORY_RUNTIME_TRUTH", owner_section)
         self.assertNotIn("최근 병합 체크포인트", owner_section)
         self.assertNotIn("PR #80", owner_section)
 
         self.assertIn("current_state_owner: ACTIVE_CONTEXT", current_section)
         self.assertIn("current_pr_authority: GITHUB_PR_METADATA", current_section)
-        self.assertIn("current_notion_authority: EXACT_PROJECT_NOTION", current_section)
+        self.assertIn("current_human_facing_authority: REPOSITORY_HUMAN_FACING_CANON", current_section)
         self.assertIn("current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME", current_section)
         self.assertIn("google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL", current_section)
         self.assertNotIn("current_sheet_authority", current_section)
@@ -97,7 +97,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertNotIn("현재 핵심 권위에는 다음이 포함된다", text)
         self.assertIn("CANON_LIFECYCLE_REGISTRY.md", text)
         self.assertIn("current planning JSON", next_section)
-        self.assertIn("exact Project Notion", next_section)
+        self.assertIn("repository human-facing/structured owners", next_section)
         self.assertNotIn("필요한 이미지·애니메이션·HX를 생성·검수", next_section)
         self.assertNotIn("VERTICAL_SLICE_APP_FLOW_SHELL` Codex 구현", next_section)
 
@@ -179,7 +179,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         current_section = text.split("## 현재 기준", 1)[1].split("## 관측 증거 스냅샷", 1)[0]
 
         self.assertIn(
-            "current_truth_source: GITHUB_MAIN_PLUS_EXACT_PROJECT_NOTION_LIVE_READ",
+            "current_truth_source: GITHUB_MAIN_PLUS_REPOSITORY_HUMAN_STRUCTURED_RUNTIME_OWNERS_LIVE_READ",
             current_section,
         )
         self.assertIn(f"current_work_contract: {CURRENT_WORK_CONTRACT}", current_section)
@@ -192,7 +192,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("product_stage: FIRST_FIVE_DUEL_PHASE_I_VI_IMPLEMENTED", current_section)
         self.assertIn("phase_i_vi_implementation: AUTHORIZED_AND_MERGED", current_section)
         self.assertIn(
-            "future_product_mutation_authorized: true_FOR_ISSUE_258_ONLY",
+            "future_product_mutation_authorized: false_NO_NEW_PRODUCT_MUTATION_APPROVED",
             current_section,
         )
         self.assertIn("human_validation: NOT_RUN", current_section)
@@ -200,7 +200,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "user_directed_planning_status: PHASE_2_BUILD_IN_PROGRESS_ISSUE_258_CODEX_HANDOFF_ISSUED",
+            "user_directed_planning_status: REPOSITORY_ONLY_CANON_SYNC_COMPLETED_HUMAN_WINDOWS_PLAYTEST_NEXT",
             current_section,
         )
         self.assertIn(
@@ -208,18 +208,18 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_failure_retry: ONE_FREE_SAME_SEED_RETRY_PER_DUEL_THEN_END_RUN_USER_APPROVED_IMPLEMENTATION_REQUIRED",
+            "user_directed_planning_failure_retry: ONE_FREE_SAME_SEED_RETRY_PER_DUEL_THEN_END_RUN_IMPLEMENTED_MERGED_MAIN_PR_261",
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_pending_material_decision: NONE_CONTRACT_APPROVED_ISSUE_258_HANDOFF_ISSUED",
+            "user_directed_planning_pending_material_decision: NONE_HUMAN_EVIDENCE_REQUIRED",
             current_section,
         )
         self.assertIn(
             "user_directed_planning_unified_implementation_contract: TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01",
             current_section,
         )
-        self.assertIn("planning_execution_surface: GPT_WORK", current_section)
+        self.assertIn("planning_execution_surface: REPOSITORY_ONLY_GPT_WORK", current_section)
         self.assertIn("planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md", current_section)
         self.assertIn("planning_visual_next: NONE_BOARD_R2_USER_FINAL_LOCKED_NO_AUTOMATIC_NEXT", current_section)
         self.assertIn(
@@ -265,7 +265,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             "planning_visual_review: TEN_IMG_001_CHAT_EXPLORATIONS_REVIEWED_NOT_AN_ASSET",
             "planning_visual_review: USER_APPROVED_REFERENCE_SET_20260825_NOT_RUNTIME_VISUAL_PASS",
             "planning_visual_review: USER_APPROVED_REFERENCE_SET_20260825_AND_OPPONENT_CHARACTER_MASTER_01_20260826_NOT_RUNTIME_VISUAL_PASS",
-            "future_product_mutation_authorized: false",
+            "future_product_mutation_authorized: true_FOR_ISSUE_258_ONLY",
             "product_stage: VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_COMPLETE_HANDOFF_READY",
             "planning_visual_next: TEN_IMG_001_GENERATE_EXPLORATION",
             "planning_visual_review: TEN_IMG_001_EXPLORATION_REVIEW",
@@ -308,7 +308,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("AUTOMATED_GODOT_PASS_20260826", current_risk)
         self.assertIn("runtime art integration", current_risk)
         self.assertIn(
-            "future_product_mutation_authorized: true_FOR_ISSUE_258_ONLY",
+            "future_product_mutation_authorized: false_NO_NEW_PRODUCT_MUTATION_APPROVED",
             current_risk,
         )
         self.assertNotIn("product_implementation_authorized: false", current_risk)
@@ -336,11 +336,11 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "PHASE_2_BUILD_IMPLEMENTED_BRANCH_VALIDATION_PENDING_ISSUE_258",
+            "REPOSITORY_ONLY_CANON_SYNC_COMPLETED_HUMAN_WINDOWS_PLAYTEST_NEXT",
             status["user_directed_planning_status"],
         )
         self.assertEqual(
-            "PHASE_2_CODEX_GODOT_IMPLEMENTATION_ISSUE_258_IN_PROGRESS",
+            "REPOSITORY_ONLY_CANON_SYNC_THEN_HUMAN_WINDOWS_PLAYTEST",
             status["next_phase"],
         )
         self.assertTrue(status["product_implementation_authorized"])
@@ -349,22 +349,22 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["unified_implementation_contract_id"],
         )
         self.assertEqual(
-            "IMPLEMENTED_ISSUE_258_BRANCH_VALIDATION_PENDING",
+            "IMPLEMENTED_MERGED_MAIN_PR_261",
             status["unified_implementation_contract_status"],
         )
         self.assertEqual(258, status["unified_implementation_contract_issue"])
         self.assertEqual(
-            "CODEX_IMPLEMENTATION_BRANCH_VALIDATION_PENDING",
+            "CODEX_IMPLEMENTATION_COMPLETE_MERGED_PR_261_AUTOMATED_REVIEW_PASS_HUMAN_EVIDENCE_NEXT",
             status["implementation_handoff_status"],
         )
-        self.assertIn("ISSUE_258_CODEX_HANDOFF_ISSUED", status["current_work_order"])
+        self.assertIn("PHASE_2_MERGED_MAIN_PR_261", status["current_work_order"])
         self.assertEqual(
             "TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01",
             status["current_opening_distance_runtime_mapping_decision"],
         )
         self.assertEqual(2, status["canonical_public_opening_distance"])
         self.assertEqual(
-            "IMPLEMENTED_ISSUE_258_BRANCH_MERGE_PENDING",
+            "IMPLEMENTED_MERGED_MAIN_PR_261",
             status["opening_distance_runtime_mapping_status"],
         )
         self.assertEqual(
