@@ -8,7 +8,7 @@ const CombatAiPlannerScript := preload("res://src/combat/combat_ai_planner.gd")
 
 var rules: Dictionary = {}
 var cards_by_id: Dictionary = {}
-var ai_planner: CombatAiPlanner
+var ai_planner: RefCounted
 
 func _init() -> void:
     ai_planner = CombatAiPlannerScript.new()
@@ -70,7 +70,15 @@ func _prepare_combatant_start(source_value) -> Dictionary:
         var pair := _resource_pair(actor, resource_key)
         var penalty := maxi(0, int(penalties.get(resource_key, 0)))
         _set_resource(actor, resource_key, maxi(0, pair.y - penalty), pair.y)
+    _normalize_combatant_stats(actor)
     return actor
+
+func _normalize_combatant_stats(actor: Dictionary) -> void:
+    var source_stats: Dictionary = actor.get("stats", {}) if typeof(actor.get("stats", {})) == TYPE_DICTIONARY else {}
+    var stats := {}
+    for stat_key in ["external", "constitution", "agility", "internal_power", "insight"]:
+        stats[stat_key] = int(source_stats.get(stat_key, 4))
+    actor["stats"] = stats
 
 func preview_player_plan(state_value: Dictionary, placements: Array) -> Dictionary:
     var state := state_value.duplicate(true)
@@ -451,16 +459,14 @@ func _execute_attack_phase(state: Dictionary, actions: Array, _defenses: Diction
             resolved_actions.append(_resolved_record(action, timing, "miss_direction"))
             continue
 
-        var attack_range := maxi(0, int(str(definition.get("range_text", "0"))))
+        var attack_range := _attack_range(definition)
         var distance := absi(actor_tile - target_tile)
-        if distance > attack_range:
+        if distance < attack_range.x or distance > attack_range.y:
             logs.append("[%d수 · %s] %s의 %s은(는) 사거리가 닿지 않았다." % [timing, phase_label, _actor_name(actor), str(definition.get("name", "공격"))])
             resolved_actions.append(_resolved_record(action, timing, "miss_range"))
             continue
 
-        var damage := maxi(0, int(str(definition.get("damage", "0"))))
-        if str(definition.get("source", "")) == "ultimate":
-            damage += int(floor(float(actor.get("attack_power", 0)) * float(definition.get("attack_power_coefficient", 0.0))))
+        var damage := _calculate_attack_damage(definition, actor)
         var bonus := int(actor.get("next_attack_bonus", 0))
         damage += bonus
         actor["next_attack_bonus"] = 0
@@ -713,9 +719,13 @@ func _execute_utility(state: Dictionary, action: Dictionary, logs: Array[String]
     if card_id == "basic_meditate":
         var stamina := _resource_pair(actor, "stamina")
         var internal := _resource_pair(actor, "internal")
-        _set_resource(actor, "stamina", mini(stamina.y, stamina.x + int(rules.get("meditate_stamina_restore", 2))), stamina.y)
-        _set_resource(actor, "internal", mini(internal.y, internal.x + int(rules.get("meditate_internal_restore", 1))), internal.y)
+        var restore: Dictionary = definition.get("restore", {}) if typeof(definition.get("restore", {})) == TYPE_DICTIONARY else {}
+        _set_resource(actor, "stamina", mini(stamina.y, stamina.x + int(restore.get("stamina", rules.get("meditate_stamina_restore", 1)))), stamina.y)
+        _set_resource(actor, "internal", mini(internal.y, internal.x + int(restore.get("internal", rules.get("meditate_internal_restore", 1)))), internal.y)
         logs.append("[%d수 · 일반] %s이(가) 명상해 기력과 내력을 회복했다." % [timing, _actor_name(actor)])
+    elif card_id == "basic_observe" and actor_key == "player":
+        actor["observation_points"] = int(actor.get("observation_points", 0)) + int(definition.get("observation_points", 1))
+        logs.append("[%d수 · 관찰] 잠긴 적 행동 유형 하나를 읽을 관찰점 1을 얻었다." % timing)
     elif card_id == "basic_stance":
         actor["next_attack_bonus"] = int(actor.get("next_attack_bonus", 0)) + int(rules.get("stance_attack_bonus", 2))
         actor["fortitude_next_attack"] = true
@@ -724,6 +734,50 @@ func _execute_utility(state: Dictionary, action: Dictionary, logs: Array[String]
     else:
         logs.append("[%d수 · 일반] %s이(가) %s을(를) 실행했다." % [timing, _actor_name(actor), str(definition.get("name", "행동"))])
     state[actor_key] = actor
+
+func reveal_next_locked_enemy_action_types(state_value: Dictionary, locked_enemy_actions: Array) -> Dictionary:
+    var state := state_value.duplicate(true)
+    var player: Dictionary = state.get("player", {})
+    if int(player.get("observation_points", 0)) <= 0 or locked_enemy_actions.is_empty():
+        return {"valid": false, "state": state, "payload": {}}
+    var reveal_index := maxi(0, int(player.get("observation_reveal_index", 0)))
+    if reveal_index >= locked_enemy_actions.size() or typeof(locked_enemy_actions[reveal_index]) != TYPE_DICTIONARY:
+        return {"valid": false, "state": state, "payload": {}}
+    var action: Dictionary = locked_enemy_actions[reveal_index]
+    var action_types: Array = []
+    if typeof(action.get("action_types", [])) == TYPE_ARRAY:
+        for action_type in action.get("action_types", []):
+            action_types.append(str(action_type))
+    if action_types.is_empty():
+        action_types.append(str(action.get("category_label", action.get("category", "행동"))))
+    player["observation_points"] = int(player.get("observation_points", 0)) - 1
+    player["observation_reveal_index"] = reveal_index + 1
+    var history: Array = player.get("observation_reveals", []) if typeof(player.get("observation_reveals", [])) == TYPE_ARRAY else []
+    history.append(action_types.duplicate())
+    player["observation_reveals"] = history
+    state["player"] = player
+    return {"valid": true, "state": state, "payload": {"action_types": action_types, "reveal_index": reveal_index}}
+
+func _attack_range(definition: Dictionary) -> Vector2i:
+    var range_value = definition.get("range", {})
+    if typeof(range_value) == TYPE_DICTIONARY:
+        var structured: Dictionary = range_value
+        var minimum := maxi(0, int(structured.get("min", 0)))
+        return Vector2i(minimum, maxi(minimum, int(structured.get("max", minimum))))
+    var legacy_range := maxi(0, int(str(definition.get("range_text", "0"))))
+    return Vector2i(0, legacy_range)
+
+func _calculate_attack_damage(definition: Dictionary, actor: Dictionary) -> int:
+    var formula_value = definition.get("damage_formula", {})
+    if typeof(formula_value) == TYPE_DICTIONARY:
+        var formula: Dictionary = formula_value
+        var stats: Dictionary = actor.get("stats", {}) if typeof(actor.get("stats", {})) == TYPE_DICTIONARY else {}
+        var stat_key := str(formula.get("stat_key", ""))
+        return maxi(0, int(formula.get("base", 0)) + int(floor(float(stats.get(stat_key, 0)) * float(formula.get("coefficient", 0.0)))))
+    var damage := maxi(0, int(str(definition.get("damage", "0"))))
+    if str(definition.get("source", "")) == "ultimate":
+        damage += int(floor(float(actor.get("attack_power", 0)) * float(definition.get("attack_power_coefficient", 0.0))))
+    return damage
 
 func _base_card_id(definition: Dictionary) -> String:
     return str(definition.get("base_card_id", definition.get("id", "")))

@@ -428,3 +428,7 @@ planning_acceptance:
 - Combat Review Overlay와 Duel Result Scene이 연속으로 느껴지되 역할이 혼동되지 않는가.
 
 실행하지 않은 Godot/Windows/Android/Human 검증은 `NOT_RUN`이다.
+
+## 17. Issue #258 패배 학습 루프 구현 상태 (병합 전)
+
+첫 패배는 Review의 실제 원인 1~3개를 가진 Failure Result로 이동하고, 전투 전 snapshot의 동일 시드·상대·자원으로 무료 재시도 1회를 제공한다. 재시도 승리는 결과/보상/Route를 한 번만 커밋하며 두 번째 패배는 보상·Route·재시도 없이 Main으로 끝난다. 이는 자동 도메인 회귀로만 검증됐고 실제 Windows/Human 흐름은 `NOT_RUN`이다.

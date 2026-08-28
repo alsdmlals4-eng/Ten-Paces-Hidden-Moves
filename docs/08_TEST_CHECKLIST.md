@@ -329,3 +329,13 @@ remaining_gaps:
 ```
 
 체크박스 존재를 실행 증거로 사용하지 않는다. Demo Ready는 Godot·Windows·접근성·성능·사람 검증 전까지 `NO`다.
+
+## 23. Issue #258 Phase 2 자동 검증 (병합 전)
+
+- [x] `4/6 → 거리2`, 3/3/4, 10종 기초 행동, 구조화 사거리/오능력치 피해 공식.
+- [x] `행동계획 실행` CTA와 실행 중 계획 편집 불가.
+- [x] 공개 상태 AI의 장풍 후보 및 관찰 제외.
+- [x] 관찰점·행동 유형만 공개·비공개 필드 누출 금지.
+- [x] 첫 패배의 실제 복기 원인·동일 시드 1회 재시도·승리 1회 커밋·두 번째 패배 무보상 종료.
+- [ ] Windows visible 마우스/키보드/게임패드, 긴 한국어, reduced motion 실제 검증 (`NOT_RUN`).
+- [ ] 접근성 사용자, Android 실기기, Human Player Experience, Release 성능 (`NOT_RUN`).

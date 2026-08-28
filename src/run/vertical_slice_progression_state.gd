@@ -141,6 +141,41 @@ func get_snapshot() -> Dictionary:
     }
 
 
+func restore_snapshot(snapshot: Dictionary) -> bool:
+    if snapshot.is_empty() or not _has_resource_pairs(snapshot.get("player_resources", {})):
+        return false
+    var next_owned = snapshot.get("owned_manual_ids", [])
+    var next_mastery = snapshot.get("mastery_by_manual", {})
+    var next_training = snapshot.get("training_by_manual", {})
+    var next_pending = snapshot.get("pending_duplicate_transfers", [])
+    if typeof(next_owned) != TYPE_ARRAY or typeof(next_mastery) != TYPE_DICTIONARY or typeof(next_training) != TYPE_DICTIONARY or typeof(next_pending) != TYPE_ARRAY:
+        return false
+    var next_owned_ids: Array[String] = []
+    var next_seen := {}
+    for value in next_owned:
+        var manual_id := str(value)
+        if manual_id.is_empty() or next_seen.has(manual_id):
+            return false
+        next_seen[manual_id] = true
+        next_owned_ids.append(manual_id)
+    for manual_id in next_owned_ids:
+        if not next_mastery.has(manual_id) or not next_training.has(manual_id):
+            return false
+        var mastery := int(next_mastery.get(manual_id, 0))
+        if mastery < STARTER_MASTERY or mastery > MAX_MASTERY or int(next_training.get(manual_id, -1)) < 0:
+            return false
+    var next_resources := _normalize_resources(snapshot.get("player_resources", {}))
+    var next_free_training := maxi(0, int(snapshot.get("free_training_pool", 0)))
+    # All values above have been validated before replacing any live run state.
+    owned_manual_ids = next_owned_ids
+    mastery_by_manual = (next_mastery as Dictionary).duplicate(true)
+    training_by_manual = (next_training as Dictionary).duplicate(true)
+    free_training_pool = next_free_training
+    player_resources = next_resources
+    pending_duplicate_transfers = (next_pending as Array).duplicate(true)
+    return true
+
+
 func _add_training(manual_id: String, amount: int) -> void:
     var invested := maxi(0, int(training_by_manual.get(manual_id, 0))) + amount
     training_by_manual[manual_id] = invested

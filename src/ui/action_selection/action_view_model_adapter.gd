@@ -199,7 +199,7 @@ func _normalize_action(definition: Dictionary, source_kind: String, source_id: S
     normalized["tags"] = _string_array(definition.get("tags", []))
     normalized["detail"] = {
         "target": str(definition.get("target", "")),
-        "damage": str(definition.get("damage", "없음")),
+        "damage": _damage_text(definition),
         "condition": str(definition.get("condition", "없음")),
         "effect_text": str(definition.get("effect_text", _effect_step_summary(definition.get("effect_steps", [])))),
         "flavor": str(definition.get("flavor", "")),
@@ -217,6 +217,16 @@ func _range_text(definition: Dictionary) -> String:
     var minimum := int(range_data.get("min", 0))
     var maximum := int(range_data.get("max", minimum))
     return str(minimum) if minimum == maximum else "%d~%d" % [minimum, maximum]
+
+func _damage_text(definition: Dictionary) -> String:
+    var formula_value = definition.get("damage_formula", {})
+    if typeof(formula_value) != TYPE_DICTIONARY:
+        return str(definition.get("damage", "없음"))
+    var formula: Dictionary = formula_value
+    var base := int(formula.get("base", 0))
+    var stat_label: String = str({"external": "외공", "internal_power": "내공"}.get(str(formula.get("stat_key", "")), "능력치"))
+    var coefficient := float(formula.get("coefficient", 0.0))
+    return "floor(%d + %s × %.2f)" % [base, stat_label, coefficient]
 
 func _effect_step_summary(values) -> String:
     if typeof(values) != TYPE_ARRAY:

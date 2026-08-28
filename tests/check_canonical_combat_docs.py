@@ -36,7 +36,7 @@ RUNTIME = {
 
 BASIC_IDS = [
     "basic_move", "basic_footwork", "basic_guard", "basic_evade",
-    "basic_quick_attack", "basic_heavy_attack", "basic_meditate", "basic_stance",
+    "basic_quick_attack", "basic_heavy_attack", "basic_observe", "basic_meditate", "basic_stance", "basic_palm",
 ]
 ULTIMATE_IDS = [
     "ultimate_ten_paces_wave", "ultimate_cleave_peak", "ultimate_void_sword_qi",
@@ -95,7 +95,7 @@ def verify_structured_contract() -> None:
     ultimates = data("data/cards/ultimate_cards.json")
 
     assert (board["schema_version"], board["tile_count"]) == (17, 10)
-    assert (board["player_start_tile"], board["enemy_start_tile"]) == (4, 7)
+    assert (board["player_start_tile"], board["enemy_start_tile"]) == (4, 6)
     assert timing["timing_sequence"] == [3, 3, 4]
     assert timing["total_timings"] == 10
     assert resolution["resolution_order"] == ["response", "quick_attack", "move", "general"]
@@ -164,7 +164,7 @@ def verify_structured_contract() -> None:
     assert overlay["multi_slot"]["two_slot_phases"] == ["전조", "실행"]
     # This 2026-08-11 overlay is historical evidence. The current CTA owner is
     # TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01 and has its own regression.
-    assert overlay["plan_lock"]["player_facing_label"] == "행동계획 잠금"
+    assert overlay["plan_lock"]["player_facing_label"] == "행동계획 잠금"  # historical overlay
     assert "[기절]" in overlay["forbidden_ui_tokens"]
     assert "예상 명중률" in overlay["forbidden_ui_tokens"]
 
@@ -250,9 +250,9 @@ def verify_documents() -> None:
     assert "## 제품 계약" not in docs["legacy"]
     assert "## 현재 상태" not in docs["legacy"]
 
-    all_tokens(runtime["board"], ("var _player_tile := 4", "var _enemy_tile := 7", "resolution_engine.resolve_bundle", "await _apply_timing_snapshot"), "board")
-    all_tokens(runtime["board_test"], ("EXPECTED_PLAYER_TILE := 4", "EXPECTED_ENEMY_TILE := 7"), "board test")
-    all_tokens(runtime["response_test"], ("PLAYER_START_TILE := 4", "ENEMY_START_TILE := 7"), "response test")
+    all_tokens(runtime["board"], ("var _player_tile := 4", "var _enemy_tile := 6", "resolution_engine.resolve_bundle", "await _apply_timing_snapshot"), "board")
+    all_tokens(runtime["board_test"], ("EXPECTED_PLAYER_TILE := 4", "EXPECTED_ENEMY_TILE := 6"), "board test")
+    all_tokens(runtime["response_test"], ("PLAYER_START_TILE := 4", "ENEMY_START_TILE := 6"), "response test")
     all_tokens(runtime["ai"], ("class_name CombatAiPlanner", "get_last_trace", "public_snapshot", "candidate_ids", "ai_decision_seed"), "AI")
     all_tokens(runtime["rival_test"], ("AI_RIVAL_TENDENCY_VERIFY_OK", "TRACE_KEYS", "SNAPSHOT_KEYS"), "rival test")
     all_tokens(runtime["engine"], ('"timing_results"', '"presentation_events"', "_build_presentation_events"), "engine")

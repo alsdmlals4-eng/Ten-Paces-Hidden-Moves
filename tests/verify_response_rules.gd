@@ -2,7 +2,8 @@ extends SceneTree
 
 const HUD_PATH := "res://data/combat/combat_hud_preview.json"
 const PLAYER_START_TILE := 4
-const ENEMY_START_TILE := 7
+const ENEMY_START_TILE := 6
+const DEFENSE_SCENARIO_ENEMY_TILE := 5
 
 var failures: Array[String] = []
 
@@ -52,7 +53,7 @@ func _verify_stance_response_combos(hud: Dictionary) -> void:
 func _resolve_defense_case(hud: Dictionary, response_id: String, combo: bool, response_timing: int, attack_timing: int) -> int:
     var engine := CombatResolutionEngine.new()
     var attack_definition: Dictionary = (engine.cards_by_id.get("basic_quick_attack", {}) as Dictionary).duplicate(true)
-    attack_definition["damage"] = "12"
+    attack_definition["damage_formula"] = {"base": 12, "stat_key": "external", "coefficient": 0.0}
     engine.cards_by_id["basic_quick_attack"] = attack_definition
     engine.rules["enemy_bundles"] = {
         "1": [
@@ -70,7 +71,7 @@ func _resolve_defense_case(hud: Dictionary, response_id: String, combo: bool, re
         response["stamina_cost"] = int(response.get("stamina_cost", 0)) + int(stance.get("stamina_cost", 0))
         response["internal_cost"] = int(response.get("internal_cost", 0)) + int(stance.get("internal_cost", 0))
 
-    var state := engine.make_initial_state(hud, PLAYER_START_TILE, PLAYER_START_TILE + 1)
+    var state := engine.make_initial_state(hud, PLAYER_START_TILE, DEFENSE_SCENARIO_ENEMY_TILE)
     var placement := _placement(response, response_timing)
     var result := engine.resolve_bundle([placement], {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, state)
     var player: Dictionary = (result.get("state", {}) as Dictionary).get("player", {})
@@ -136,10 +137,10 @@ func _load_json(path: String) -> Dictionary:
 
 func _finish() -> void:
     if failures.is_empty():
-        print("RESPONSE_RULES_10_6_START_4_7_VERIFY_OK")
+        print("RESPONSE_RULES_10_6_CURRENT_START_4_6_VERIFY_OK")
         quit(0)
         return
     for failure in failures:
         push_error(failure)
-    print("RESPONSE_RULES_10_6_START_4_7_VERIFY_FAILED count=%d" % failures.size())
+    print("RESPONSE_RULES_10_6_CURRENT_START_4_6_VERIFY_FAILED count=%d" % failures.size())
     quit(1)

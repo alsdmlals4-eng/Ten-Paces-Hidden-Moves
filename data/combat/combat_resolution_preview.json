@@ -18,7 +18,7 @@
   "evade_same_timing_full": true,
   "stance_response_bundle_extension": true,
   "stance_response_defense_multiplier": 1.5,
-  "meditate_stamina_restore": 2,
+  "meditate_stamina_restore": 1,
   "meditate_internal_restore": 1,
   "stance_attack_bonus": 2,
   "prepare_meditate_momentum": 1,

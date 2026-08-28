@@ -135,3 +135,5 @@
 ## 13. 현재 상태
 
 현행 연출에는 `timing_results`와 `presentation_events` 기반 기술 증거가 있으나 최신 조건부 순차 합 이벤트는 미구현이다. 실제 에셋 스토어 검색·취득·생성·audio bus 통합도 `NOT_STARTED`다. `HUMAN_NOT_RUN`, 실제 읽기성·피로도·사운드 선호는 `UNVERIFIED`다.
+
+Issue #258 branch에서는 `행동계획 실행` 뒤의 입력 비활성화와 Review 전환의 자동 회귀만 확보했다. 새 이미지·오디오·연출 자산은 추가하지 않았으며 Windows visible/Human 검증은 `NOT_RUN`이다.

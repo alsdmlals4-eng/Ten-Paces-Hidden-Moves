@@ -58,7 +58,7 @@ var _tile_height := 0.0
 var _tile_gap := 0.0
 var _board_top := 0.0
 var _player_tile := 4
-var _enemy_tile := 7
+var _enemy_tile := 6
 var _detail_pinned := false
 var _pinned_card_id := ""
 var _selected_action_definition: Dictionary = {}
@@ -89,7 +89,7 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_PASS
 	contract = _load_contract()
 	_player_tile = int(contract.get("player_start_tile", 4))
-	_enemy_tile = int(contract.get("enemy_start_tile", 7))
+	_enemy_tile = int(contract.get("enemy_start_tile", 6))
 	_build_structure()
 	resolution_engine = CombatResolutionEngine.new()
 	review_summary_builder = REVIEW_SUMMARY_BUILDER_SCRIPT.new() as CombatReviewSummaryBuilder
@@ -766,7 +766,8 @@ func _begin_targeting_for_anchor(anchor_index: int) -> bool:
 			combat_log_panel.append_entry("[이동 칸 선택] %s · 출발 %d번 · 최대 %d칸 내 녹색 칸을 선택하세요." % [str(placement.get("card_name", "이동")), _targeting_origin_tile, movement_steps], "system")
 	elif mode == "attack_direction":
 		var definition: Dictionary = placement.get("definition", {})
-		var attack_range := maxi(1, int(str(definition.get("range_text", "1"))))
+		var range_data: Dictionary = definition.get("range", {}) if typeof(definition.get("range", {})) == TYPE_DICTIONARY else {}
+		var attack_range := maxi(1, int(range_data.get("max", int(str(definition.get("range_text", "1"))))) )
 		for direction in [-1, 1]:
 			for step in range(1, attack_range + 1):
 				var target_index: int = _targeting_origin_tile + int(direction) * int(step)
@@ -1175,7 +1176,7 @@ func restart_combat() -> void:
 	_apply_combat_state_to_view()
 	_sync_progress_availability()
 	if is_instance_valid(combat_log_panel):
-		combat_log_panel.append_entry("[재시작] 4번과 7번에서 새 결전을 시작합니다.", "system")
+		combat_log_panel.append_entry("[재시작] 공개 거리 2의 초기 상태에서 새 결전을 시작합니다.", "system")
 
 func _toggle_reduced_motion() -> void:
 	_reduced_motion = not _reduced_motion
@@ -1275,11 +1276,11 @@ func _configure_accessibility_semantics() -> void:
 		if is_instance_valid(tile):
 			_set_accessibility_semantics(tile, "%d번 전장 타일" % tile.tile_index, "이동 또는 공격의 대상 타일입니다.")
 	if is_instance_valid(combat_progress_button) and is_instance_valid(combat_progress_button._button):
-		_set_accessibility_semantics(combat_progress_button._button, "행동 묶음 진행", "현재 행동 묶음을 확정하고 대응부터 순서대로 판정합니다.")
+		_set_accessibility_semantics(combat_progress_button._button, "행동계획 실행", "현재 행동계획을 실행해 대응부터 순서대로 판정합니다. 실행 뒤에는 복기까지 계획을 바꿀 수 없습니다.")
 	_set_accessibility_semantics(fast_replay_button, "빠른 재생", "전투 연출의 재생 시간을 짧게 전환합니다.")
 	_set_accessibility_semantics(skip_presentation_button, "즉시 완료", "진행 중인 전투 연출을 즉시 끝내고 확정 결과를 유지합니다.")
 	_set_accessibility_semantics(reduced_motion_button, "모션 감소", "이동과 공격 모션을 줄이고 결과 텍스트와 로그를 유지합니다.")
-	_set_accessibility_semantics(restart_combat_button, "결전 다시 시작", "끝난 전투를 4번과 7번의 초기 상태로 다시 시작합니다.")
+	_set_accessibility_semantics(restart_combat_button, "결전 다시 시작", "끝난 전투를 공개 거리 2의 초기 상태로 다시 시작합니다.")
 	_set_accessibility_semantics(sound_toggle_button, "소리 켜기 또는 끄기", "전투 효과음 재생을 전환합니다.")
 	_set_accessibility_semantics(sound_volume_slider, "효과음 음량", "왼쪽과 오른쪽 화살표로 전투 효과음의 크기를 조절합니다.")
 	set_meta("accessibility_semantics", "cards|ultimate_list|timings|tiles|progress|presentation_controls")

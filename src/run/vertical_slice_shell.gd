@@ -13,6 +13,7 @@ var combat_host: Control
 var title_label: Label
 var description_label: Label
 var primary_button: Button
+var failure_end_button: Button
 var setup_options_container: VBoxContainer
 
 var _combat_view: Control
@@ -65,6 +66,20 @@ func advance_noncombat() -> bool:
         if not run_state.confirm_setup_loadout(_setup_selected_manual_ids, mastery):
             return false
     return run_state.advance()
+
+
+func retry_failed_combat() -> bool:
+    if run_state == null or run_state.get_current_screen() != VerticalSliceRunState.SCREEN_FAILURE_RETRY:
+        return false
+    _discard_combat_view()
+    return run_state.retry_failed_duel()
+
+
+func end_failed_run() -> bool:
+    if run_state == null:
+        return false
+    _discard_combat_view()
+    return run_state.end_failed_run()
 
 
 func complete_combat_for_runtime(result: Dictionary) -> bool:
@@ -182,6 +197,15 @@ func _build_shell() -> void:
     primary_button.pressed.connect(_on_primary_button_pressed)
     stack.add_child(primary_button)
 
+    failure_end_button = Button.new()
+    failure_end_button.name = "FailureEndRunButton"
+    failure_end_button.custom_minimum_size = Vector2(260.0, 42.0)
+    failure_end_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+    failure_end_button.text = "비무행 끝내기"
+    failure_end_button.visible = false
+    failure_end_button.pressed.connect(end_failed_run)
+    stack.add_child(failure_end_button)
+
     var pending_label := Label.new()
     pending_label.name = "VisualReferenceStatus"
     pending_label.text = "승인 전투 레퍼런스 확인됨 · 현재 UI는 기능/정보 위계 검증용"
@@ -221,6 +245,12 @@ func _build_setup_options() -> void:
 func _on_primary_button_pressed() -> void:
     if run_state.get_current_screen() == VerticalSliceRunState.SCREEN_MAIN:
         start_new_run()
+        return
+    if run_state.get_current_screen() == VerticalSliceRunState.SCREEN_FAILURE_RETRY:
+        if run_state.get_retry_remaining() > 0:
+            retry_failed_combat()
+        else:
+            end_failed_run()
         return
     advance_noncombat()
 
@@ -283,6 +313,8 @@ func _render_current_screen() -> void:
     content_panel.visible = not keeps_combat_visible
     if setup_options_container != null:
         setup_options_container.visible = screen == VerticalSliceRunState.SCREEN_SETUP
+    if failure_end_button != null:
+        failure_end_button.visible = screen == VerticalSliceRunState.SCREEN_FAILURE_RETRY and run_state.get_retry_remaining() > 0
 
     if keeps_combat_visible:
         _ensure_combat_view()
@@ -316,6 +348,22 @@ func _render_current_screen() -> void:
                 "비무 %d 결과" % run_state.completed_duels,
                 "Review와 분리된 결과 화면입니다. 다음 상대는 이 결과를 확정하고 Route로 이동할 때 한 번 잠깁니다.",
                 next_label
+            )
+        VerticalSliceRunState.SCREEN_FAILURE_RETRY:
+            var failure := run_state.get_failure_receipt()
+            var causes: Array = failure.get("review_causes", []) if typeof(failure.get("review_causes", [])) == TYPE_ARRAY else []
+            var cause_lines: Array[String] = []
+            for cause_value in causes:
+                if typeof(cause_value) == TYPE_DICTIONARY:
+                    var cause: Dictionary = cause_value
+                    cause_lines.append("- %s" % str(cause.get("label", cause.get("event", "전투 기록"))))
+            if cause_lines.is_empty():
+                cause_lines.append("- 확인 가능한 전투 원인을 찾지 못했습니다.")
+            var remaining := run_state.get_retry_remaining()
+            _set_content(
+                "비무 %d 패배 복기" % run_state.duel_index,
+                "실제 전투 기록\n%s\n\n무료 동일 조건 재도전 · %d/1\n보상과 강호행로는 패배에 적용되지 않습니다." % ["\n".join(cause_lines), 1 - remaining],
+                "같은 조건으로 다시 비무" if remaining > 0 else "제목으로 돌아가기"
             )
         VerticalSliceRunState.SCREEN_ROUTE_GROWTH:
             _set_content(

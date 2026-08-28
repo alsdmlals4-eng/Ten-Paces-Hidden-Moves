@@ -12,6 +12,7 @@ const SCREEN_INTRO := "INTRO"
 const SCREEN_BRIEFING := "BRIEFING"
 const SCREEN_COMBAT := "COMBAT"
 const SCREEN_REVIEW := "REVIEW"
+const SCREEN_FAILURE_RETRY := "FAILURE_RETRY"
 const SCREEN_RESULT := "RESULT"
 const SCREEN_ROUTE_GROWTH := "ROUTE_GROWTH"
 const SCREEN_ROUTE_INFO := "ROUTE_INFO"
@@ -36,12 +37,16 @@ var _player_mastery_by_manual: Dictionary = {}
 var _pending_result_reward: Dictionary = {}
 var _reward_history: Array[Dictionary] = []
 var _duel_history: Array[Dictionary] = []
-var _progression: VerticalSliceProgressionState
-var _route_model: VerticalSliceRouteModel
+var _progression: RefCounted
+var _route_model: RefCounted
 var _pending_growth_route: Dictionary = {}
 var _pending_route_intel: Dictionary = {}
 var _route_history: Array[Dictionary] = []
 var _intel_by_candidate: Dictionary = {}
+var _pre_battle_snapshot: Dictionary = {}
+var _retry_count: int = 0
+var _attempt_id: int = 0
+var _failure_receipt: Dictionary = {}
 
 
 func _init() -> void:
@@ -52,6 +57,18 @@ func _init() -> void:
 
 func get_current_screen() -> String:
     return _current_screen
+
+
+func get_run_seed() -> int:
+    return _run_seed
+
+
+func get_retry_remaining() -> int:
+    return 1 if _retry_count == 0 and not _pre_battle_snapshot.is_empty() else 0
+
+
+func get_failure_receipt() -> Dictionary:
+    return _failure_receipt.duplicate(true)
 
 
 func get_flow_history() -> Array[String]:
@@ -138,14 +155,14 @@ func has_pending_growth_route() -> bool:
 func get_growth_route_options() -> Array:
     if _current_screen != SCREEN_ROUTE_GROWTH or _route_model == null or _progression == null:
         return []
-    var node_id := _route_model.growth_node_id(completed_duels)
+    var node_id: String = _route_model.growth_node_id(completed_duels)
     return _route_model.get_growth_options(node_id, _progression.owned_manual_ids)
 
 
 func get_info_route_options() -> Array:
     if _current_screen != SCREEN_ROUTE_INFO or _route_model == null:
         return []
-    var node_id := _route_model.info_node_id(completed_duels)
+    var node_id: String = _route_model.info_node_id(completed_duels)
     return _route_model.get_info_options(node_id, get_route_target_opponent())
 
 
@@ -154,8 +171,8 @@ func select_growth_route(choice_type: String, target_manual_id: String = "") -> 
         return false
     if not _pending_growth_route.is_empty():
         return false
-    var node_id := _route_model.growth_node_id(completed_duels)
-    var options := _route_model.get_growth_options(node_id, _progression.owned_manual_ids)
+    var node_id: String = _route_model.growth_node_id(completed_duels)
+    var options: Array = _route_model.get_growth_options(node_id, _progression.owned_manual_ids)
     var selected: Dictionary = {}
     for value in options:
         if typeof(value) == TYPE_DICTIONARY and str((value as Dictionary).get("choice_type", "")) == choice_type:
@@ -193,7 +210,7 @@ func select_info_route(category: String) -> bool:
     var candidate := get_route_target_opponent()
     if candidate.is_empty():
         return false
-    var node_id := _route_model.info_node_id(completed_duels)
+    var node_id: String = _route_model.info_node_id(completed_duels)
     var valid := false
     for value in _route_model.get_info_options(node_id, candidate):
         if typeof(value) == TYPE_DICTIONARY and str((value as Dictionary).get("category", "")) == category:
@@ -201,7 +218,7 @@ func select_info_route(category: String) -> bool:
             break
     if not valid:
         return false
-    var text := _route_model.build_public_intel(category, candidate)
+    var text: String = _route_model.build_public_intel(category, candidate)
     if text.is_empty():
         return false
     _pending_route_intel = {
@@ -271,6 +288,10 @@ func start_new_run() -> bool:
     _pending_route_intel.clear()
     _route_history.clear()
     _intel_by_candidate.clear()
+    _pre_battle_snapshot.clear()
+    _failure_receipt.clear()
+    _retry_count = 0
+    _attempt_id = 0
     _progression.reset()
     if _opponent_catalog != null:
         _current_opponent_id = str(_opponent_catalog.select_candidate_id(1, _run_seed))
@@ -286,10 +307,13 @@ func advance() -> bool:
         SCREEN_INTRO:
             return _transition_to(SCREEN_BRIEFING)
         SCREEN_BRIEFING:
+            _capture_pre_battle_snapshot_if_needed()
             return _transition_to(SCREEN_COMBAT)
         SCREEN_COMBAT:
             return false
         SCREEN_REVIEW:
+            if str(last_combat_result.get("outcome", "")) == "loss":
+                return _transition_to(SCREEN_FAILURE_RETRY)
             return _transition_to(SCREEN_RESULT)
         SCREEN_RESULT:
             if _pending_result_reward.is_empty():
@@ -304,6 +328,7 @@ func advance() -> bool:
                 return false
             _pending_growth_route.clear()
             _pending_route_intel.clear()
+            _pre_battle_snapshot.clear()
             return _transition_to(SCREEN_ROUTE_GROWTH)
         SCREEN_ROUTE_GROWTH:
             if _pending_growth_route.is_empty():
@@ -320,6 +345,9 @@ func advance() -> bool:
             _pending_route_intel.clear()
             duel_index += 1
             _promote_next_opponent_if_configured()
+            _pre_battle_snapshot.clear()
+            _retry_count = 0
+            _attempt_id = 0
             return _transition_to(SCREEN_BRIEFING)
         _:
             return false
@@ -331,6 +359,16 @@ func mark_combat_finished(result: Dictionary) -> bool:
     if completed_duels >= MAX_DUELS:
         return false
     last_combat_result = result.duplicate(true)
+    last_combat_result["attempt_id"] = _attempt_id
+    if str(result.get("outcome", "")) == "loss":
+        _failure_receipt = {
+            "duel_index": duel_index,
+            "attempt_id": _attempt_id,
+            "retry_count": _retry_count,
+            "review_causes": _extract_review_causes(result)
+        }
+        last_combat_result["review_causes"] = _failure_receipt["review_causes"]
+        return _transition_to(SCREEN_REVIEW)
     var resources = result.get("player_resources", null)
     if typeof(resources) == TYPE_DICTIONARY:
         _progression.set_player_resources(resources as Dictionary)
@@ -338,6 +376,89 @@ func mark_combat_finished(result: Dictionary) -> bool:
     _pending_result_reward.clear()
     completed_duels += 1
     return _transition_to(SCREEN_REVIEW)
+
+
+func retry_failed_duel() -> bool:
+    if _current_screen != SCREEN_FAILURE_RETRY or _retry_count != 0 or _pre_battle_snapshot.is_empty():
+        return false
+    var snapshot := _pre_battle_snapshot.duplicate(true)
+    if not _restore_pre_battle_snapshot(snapshot):
+        return false
+    _retry_count = 1
+    _attempt_id += 1
+    _failure_receipt.clear()
+    last_combat_result.clear()
+    return _transition_to(SCREEN_COMBAT)
+
+
+func end_failed_run() -> bool:
+    if _current_screen != SCREEN_FAILURE_RETRY:
+        return false
+    last_combat_result.clear()
+    _failure_receipt.clear()
+    _pre_battle_snapshot.clear()
+    _pending_result_reward.clear()
+    _pending_growth_route.clear()
+    _pending_route_intel.clear()
+    _current_opponent_id = ""
+    _next_opponent_id = ""
+    _retry_count = 0
+    _attempt_id = 0
+    _progression.reset()
+    return _transition_to(SCREEN_MAIN)
+
+
+func _capture_pre_battle_snapshot_if_needed() -> void:
+    if not _pre_battle_snapshot.is_empty():
+        return
+    _pre_battle_snapshot = {
+        "run_seed": _run_seed,
+        "duel_index": duel_index,
+        "completed_duels": completed_duels,
+        "route_visits": route_visits,
+        "current_opponent_id": _current_opponent_id,
+        "next_opponent_id": _next_opponent_id,
+        "progression": _progression.get_snapshot(),
+        "duel_history": _duel_history.duplicate(true),
+        "reward_history": _reward_history.duplicate(true),
+        "route_history": _route_history.duplicate(true),
+        "intel_by_candidate": _intel_by_candidate.duplicate(true)
+    }
+
+
+func _restore_pre_battle_snapshot(snapshot: Dictionary) -> bool:
+    if snapshot.is_empty() or typeof(snapshot.get("progression", {})) != TYPE_DICTIONARY:
+        return false
+    var progression_snapshot: Dictionary = snapshot.get("progression", {})
+    if not _progression.restore_snapshot(progression_snapshot):
+        return false
+    _run_seed = int(snapshot.get("run_seed", _run_seed))
+    duel_index = int(snapshot.get("duel_index", duel_index))
+    completed_duels = int(snapshot.get("completed_duels", completed_duels))
+    route_visits = int(snapshot.get("route_visits", route_visits))
+    _current_opponent_id = str(snapshot.get("current_opponent_id", ""))
+    _next_opponent_id = str(snapshot.get("next_opponent_id", ""))
+    _duel_history = (snapshot.get("duel_history", []) as Array).duplicate(true)
+    _reward_history = (snapshot.get("reward_history", []) as Array).duplicate(true)
+    _route_history = (snapshot.get("route_history", []) as Array).duplicate(true)
+    _intel_by_candidate = (snapshot.get("intel_by_candidate", {}) as Dictionary).duplicate(true)
+    _pending_result_reward.clear()
+    _pending_growth_route.clear()
+    _pending_route_intel.clear()
+    return true
+
+
+func _extract_review_causes(result: Dictionary) -> Array:
+    var causes: Array = []
+    if typeof(result.get("review_causes", [])) == TYPE_ARRAY:
+        for value in result.get("review_causes", []):
+            if typeof(value) == TYPE_DICTIONARY:
+                causes.append((value as Dictionary).duplicate(true))
+            if causes.size() >= 3:
+                break
+    if causes.is_empty():
+        causes.append({"event": "combat_loss", "label": "전투에서 패배했습니다."})
+    return causes
 
 
 func is_complete() -> bool:
@@ -374,7 +495,7 @@ func _confirm_pending_result_reward() -> bool:
     if _pending_result_reward.is_empty() or _progression == null:
         return false
     var receipt := _pending_result_reward.duplicate(true)
-    var applied := _progression.apply_reward_receipt(receipt)
+    var applied: Dictionary = _progression.apply_reward_receipt(receipt)
     if applied.is_empty():
         return false
     applied["duel_index"] = completed_duels
