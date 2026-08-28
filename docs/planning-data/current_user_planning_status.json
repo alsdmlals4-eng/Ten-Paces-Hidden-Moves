@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "project": "TEN_PACES",
-  "updated_date": "2026-08-28",
-  "user_directed_planning_status": "REPOSITORY_ONLY_CANON_SYNC_COMPLETED_HUMAN_WINDOWS_PLAYTEST_NEXT",
-  "current_user_direction": "APPROVED_REPOSITORY_ONLY_GDD_AND_PRIOR_NOTION_WORK_MIGRATION",
+  "updated_date": "2026-08-29",
+  "user_directed_planning_status": "REPOSITORY_ONLY_CANON_SYNC_COMPLETED_HUMAN_PLAYTEST_DEFERRED_BY_USER_RUNTIME_PERSONALITY_BINDING_REVIEW_NEXT",
+  "current_user_direction": "APPROVED_REPOSITORY_ONLY_GDD_AND_PRIOR_NOTION_WORK_MIGRATION_HUMAN_PLAYTEST_DEFERRED_FOR_CURRENT_STAGE",
   "decision_id": "TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01",
   "approval_source": "user explicit: 기획완료",
   "current_execution_contract": "TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01",
@@ -29,7 +29,8 @@
   "unified_implementation_contract_status": "IMPLEMENTED_MERGED_MAIN_PR_261",
   "unified_implementation_contract_approval_source": "user explicit: 승인",
   "unified_implementation_contract_issue": 258,
-  "implementation_handoff_status": "CODEX_IMPLEMENTATION_COMPLETE_MERGED_PR_261_AUTOMATED_REVIEW_PASS_HUMAN_EVIDENCE_NEXT",
+  "unified_implementation_issue_status": "CLOSED_POSTMERGE_READBACK_20260829",
+  "implementation_handoff_status": "CODEX_IMPLEMENTATION_COMPLETE_MERGED_PR_261_AUTOMATED_REVIEW_PASS_HUMAN_EVIDENCE_DEFERRED_BY_USER_FOR_CURRENT_STAGE",
   "next_execution_surface": "REPOSITORY_ONLY_GPT_WORK",
   "handoff_status": "PROJECT_CORE_SCENE_VISUAL_BOARD_R2_USER_FINAL_LOCKED_PLANNING_ONLY",
   "completed_scope": "FIRST_FIVE_DUEL_VERTICAL_SLICE_PLANNING_VISUAL_COMPONENT_BASELINE_PHASE_I_VI_AUTOMATED_IMPLEMENTATION_20260825_APPROVED_VISUAL_REFERENCE_SET_20260826_APPROVED_OPPONENT_CHARACTER_MASTER_DOGYEOM_STATUS_PORTRAIT_AND_DOGYEOM_COMBAT_BATTLER_RUNTIME_ROUTING",
@@ -74,7 +75,7 @@
   "windows_android_adapter_implementation_authorized": false,
   "product_implementation_authorized": true,
   "implementation_gate": "SCOPED_PC_FIRST_VERTICAL_SLICE_GATE_PLUS_EXISTING_PLATFORM_EVIDENCE_CEILINGS",
-  "next_phase": "REPOSITORY_ONLY_CANON_SYNC_THEN_HUMAN_WINDOWS_PLAYTEST",
+  "next_phase": "OPPONENT_RUNTIME_PERSONALITY_BINDING_SCOPE_DECISION_THEN_BALANCE_INSTRUMENTATION_CONTRACT",
   "current_screen_visual_coverage_inventory": "docs/planning-data/current_screen_visual_coverage_inventory_20260828.json",
   "next_image_generation": "NONE_CURRENT_BOARD_USER_FINAL_LOCKED_NO_AUTOMATIC_NEXT",
   "next_visual_batch": [],
@@ -87,7 +88,10 @@
     "PHASE_2_MERGED_MAIN_PR_261",
     "REPOSITORY_ONLY_CANON_SYNC",
     "POST_MERGE_AUTOMATED_MAIN_READBACK",
-    "WINDOWS_HUMAN_PLAYTEST",
+    "POSTMERGE_RUNTIME_REALITY_REVIEW",
+    "OPPONENT_RUNTIME_PERSONALITY_BINDING_SCOPE_DECISION",
+    "BALANCE_INSTRUMENTATION_CONTRACT",
+    "WINDOWS_HUMAN_PLAYTEST_DEFERRED_BY_USER_FOR_CURRENT_STAGE",
     "ANDROID_AND_ACCESSIBILITY_EVIDENCE"
   ],
   "resolved_material_decisions": [
@@ -95,11 +99,13 @@
     "TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01",
     "TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01"
   ],
-  "pending_material_decisions": [],
+  "pending_material_decisions": [
+    "OPPONENT_RUNTIME_PERSONALITY_BINDING_SCOPE_DECISION_REQUIRED"
+  ],
   "sheet_compatibility_note": "Google Sheet still exposes 2026-08-11 Phase-B old SHA/Decision state at handoff; Sheet is MIGRATION_ONLY_UNTIL_REMOVAL and is not current visual authority",
   "evidence_ceiling": {
-    "balance_simulation": "NOT_RUN",
-    "human_fun_readability": "NOT_RUN",
+    "balance_simulation": "BLOCKED_UNTIL_OPPONENT_BEHAVIOR_AND_STAT_SEEDS_HAVE_RUNTIME_CONSUMERS",
+    "human_fun_readability": "NOT_RUN_DEFERRED_BY_USER_FOR_CURRENT_STAGE",
     "human_visual_approval": "USER_APPROVED_REFERENCE_SET_CHARACTER_MASTER_DOGYEOM_BATTLER_AND_DOGYEOM_STATUS_PORTRAIT_20260826_NOT_WINDOWS_HUMAN_VISUAL_PASS",
     "historical_notion_visual_delivery": "HISTORICAL_ONLY_NOT_CURRENT_CANON",
     "github_visual_handoff_and_provenance": "MERGED_MAIN_111f97d7a713a82d61d8e97e262ccbfc800e0868",
@@ -109,6 +115,7 @@
     "windows_visible_local_usability": "NOT_RUN",
     "android_physical_device": "NOT_RUN_BLOCKED_UNVERIFIED",
     "fifteen_opponent_identifiability": "NOT_RUN",
+    "opponent_behavior_runtime_binding": "PARTIAL_SIGNATURE_MANUAL_AND_STAR_CONSUMED_BEHAVIOR_FOCUS_BASIC_ACTION_FOCUS_AND_FINAL_STAT_TOTAL_NOT_CONSUMED",
     "final_vfx_audio": "NOT_RUN",
     "release_performance": "NOT_RUN"
   },
