@@ -2,8 +2,8 @@
 
 ```yaml
 contract_id: TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01
-status: USER_APPROVED_ISSUE_258_CODEX_HANDOFF_PENDING
-work_mode: BUILD_HANDOFF
+status: USER_APPROVED_ISSUE_258_CODEX_HANDOFF_ISSUED
+work_mode: BUILD
 approval_source: "user explicit: 승인"
 implementation_issue: 258
 authored_against:
@@ -196,4 +196,4 @@ release_performance: NOT_RUN_UNTIL_EXECUTED
 
 ## 10. Approval and handoff boundary
 
-The user explicitly approved this exact contract. GitHub Issue `#258` is the one implementation owner. This record now authorizes only the next `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF`; it does not claim that Godot runtime work, Windows-visible usability, Human Player Experience, accessibility-user, Android-device, or release evidence has happened. Codex must independently fresh-read current GitHub, exact Project Notion, and the actual runtime before beginning the isolated Issue branch.
+The user explicitly approved this exact contract. GitHub Issue `#258` is the one implementation owner, and its isolated `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF` is issued. This status does not claim that Godot runtime work, Windows-visible usability, Human Player Experience, accessibility-user, Android-device, or release evidence has happened. Codex must independently fresh-read current GitHub, exact Project Notion, and the actual runtime before mutation on the isolated Issue branch.

@@ -42,21 +42,21 @@ human_validation: NOT_RUN
 accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
 performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 phase_i_vi_implementation: AUTHORIZED_AND_MERGED
-future_product_mutation_authorized: true_FOR_ISSUE_258_AFTER_CODEX_HANDOFF
+future_product_mutation_authorized: true_FOR_ISSUE_258_ONLY
 next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
 next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
-user_directed_planning_work_mode: BUILD_HANDOFF
+user_directed_planning_work_mode: BUILD
 user_directed_planning_decision: TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01
-user_directed_planning_next_package: ISSUE_258_CODEX_GODOT_PRODUCT_IMPLEMENTATION_AFTER_HANDOFF
+user_directed_planning_next_package: ISSUE_258_CODEX_GODOT_PRODUCT_IMPLEMENTATION_IN_PROGRESS
 user_directed_planning_next_decision: NONE_FINAL_CONTRACT_USER_APPROVED
-user_directed_planning_status: PHASE_2_BUILD_AUTHORIZED_ISSUE_258_CODEX_HANDOFF_PENDING
-user_directed_planning_current_direction: APPROVED_SINGLE_CONSOLIDATED_IMPLEMENTATION_CONTRACT_ISSUE_258
+user_directed_planning_status: PHASE_2_BUILD_IN_PROGRESS_ISSUE_258_CODEX_HANDOFF_ISSUED
+user_directed_planning_current_direction: APPROVED_SINGLE_CONSOLIDATED_IMPLEMENTATION_CONTRACT_ISSUE_258_IN_PROGRESS
 user_directed_planning_latest_decision: TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01
 user_directed_planning_opening_distance: PUBLIC_DISTANCE_2_RUNTIME_BINDING_USER_APPROVED_IMPLEMENTATION_REQUIRED
 user_directed_planning_failure_retry: ONE_FREE_SAME_SEED_RETRY_PER_DUEL_THEN_END_RUN_USER_APPROVED_IMPLEMENTATION_REQUIRED
-user_directed_planning_pending_material_decision: NONE_CONTRACT_APPROVED_ISSUE_258_CODEX_HANDOFF_PENDING
+user_directed_planning_pending_material_decision: NONE_CONTRACT_APPROVED_ISSUE_258_HANDOFF_ISSUED
 user_directed_planning_unified_implementation_contract: TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01
-user_directed_planning_unified_implementation_contract_status: USER_APPROVED_ISSUE_258_CODEX_HANDOFF_PENDING
+user_directed_planning_unified_implementation_contract_status: USER_APPROVED_ISSUE_258_CODEX_HANDOFF_ISSUED
 user_directed_planning_unified_implementation_issue: 258
 user_directed_planning_pr_authority: GITHUB_PR_METADATA
 planning_execution_surface: GPT_WORK
@@ -81,7 +81,7 @@ base_remote_observation: CURRENT_REMOTE_REQUIRES_LIVE_REFETCH_NO_AUTOMATIC_PROJE
 
 `active_planning_*`, `active_decision_state`, `next_package`, `next_planning_decision`은 `docs/planning-data/current_operating_state.json`이 소유하는 플랫폼 운영 상태와 동기화한다. 완료된 Vertical Slice 기획/Visual production 상태는 `docs/planning-data/current_user_planning_status.json`, `docs/planning-data/current_visual_production_handoff_20260826.json`, `user_directed_planning_*`·`planning_visual_*` overlay가 소유하며 기존 플랫폼 운영 계약을 덮어쓰지 않는다.
 
-플랫폼 Adapter 구현 Gate는 향후 플랫폼 확장 경계로 계속 유효하다. 2026-08-20 `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`과 `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01` 자체는 제품 구현 권한이 아니었지만, 후속 `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`이 첫 5전 PC-first Vertical Slice Phase I–VI 구현을 명시적으로 허용했고 해당 범위는 현재 `main`에 병합됐다. 이제 사용자는 `TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01`을 명시 승인했고 Issue `#258`이 생성됐다. 따라서 `future_product_mutation_authorized: true_FOR_ISSUE_258_AFTER_CODEX_HANDOFF`는 이 한 계약·한 Issue·격리 branch에만 적용된다. `WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID`와 `PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2`는 각각 planning anchor와 planning-only board로 사용자 최종 고정됐으며, 둘 다 기존 runtime asset을 교체하지 않는다. Codex는 handoff 후에도 Project GitHub + exact Project Notion fresh-read를 current authority로 사용한다.
+플랫폼 Adapter 구현 Gate는 향후 플랫폼 확장 경계로 계속 유효하다. 2026-08-20 `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`과 `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01` 자체는 제품 구현 권한이 아니었지만, 후속 `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`이 첫 5전 PC-first Vertical Slice Phase I–VI 구현을 명시적으로 허용했고 해당 범위는 현재 `main`에 병합됐다. 이제 사용자는 `TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01`을 명시 승인했고 Issue `#258`의 격리 `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF`가 발행됐다. 따라서 `future_product_mutation_authorized: true_FOR_ISSUE_258_ONLY`는 이 한 계약·한 Issue·격리 branch에만 적용된다. `WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID`와 `PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2`는 각각 planning anchor와 planning-only board로 사용자 최종 고정됐으며, 둘 다 기존 runtime asset을 교체하지 않는다. Codex는 GitHub + exact Project Notion fresh-read를 current authority로 사용한다.
 
 이 live block에는 current main SHA나 열린 PR 번호를 저장하지 않는다. 새 세션·post-merge에서는 GitHub `main`, 열린 PR, exact Project Notion, current operating/visual/entry gate를 다시 읽고 의미 상태만 판정한다. exact SHA/run ID·PR 번호는 아래의 명시적 역사·관측 증거로만 취급한다.
 
@@ -362,7 +362,7 @@ Google Sheets는 신규 기획 입력 경로로 사용하지 않으며 migration
 - STEP 14 사람 검증은 `NOT_RUN`이다.
 - CI 공급망 mutable/stale action-pin 후속은 Issue #140에서 `RESOLVED / CLOSED_COMPLETED`; 현재 미해결 위험이 아니다.
 - `OBSERVATION_ANSWER_LEAK_RISK`는 직접 공개를 바꾸지 않은 채 사람 측정을 기다린다.
-- `future_product_mutation_authorized: true_FOR_ISSUE_258_AFTER_CODEX_HANDOFF`는 승인된 Issue #258 범위만 연다. 다른 제품 mutation은 계속 새 명시 요청과 fresh Gate가 필요하다.
+- `future_product_mutation_authorized: true_FOR_ISSUE_258_ONLY`는 승인된 Issue #258 범위만 연다. 다른 제품 mutation은 계속 새 명시 요청과 fresh Gate가 필요하다.
 
 ## 상태 표현 규칙
 

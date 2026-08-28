@@ -323,3 +323,17 @@ The user approved the one reconciled Phase 2 contract after the canonical review
 This approval does not turn the planning record into runtime evidence. The next mandatory step is `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF`; Codex must fresh-read GitHub, exact Project Notion, and the actual runtime on an isolated Issue branch, then follow the test-first contract. Paid retries, permanent currency/profile, new assets, and all Human/device/release claims remain out of scope or `NOT_RUN`.
 
 `NO_BASE_PROMOTION`: Issue #258's exact combat/retry content is project-specific. The reusable rule—separate final scope approval, Issue ownership, isolated implementation, and evidence ceilings—is already Base policy.
+
+## Update 10 · Issue #258 Codex handoff issued
+
+```yaml
+implementation_issue: 258
+handoff: CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
+status: ISSUED_ISOLATED_WORKTREE
+repository_main_before_implementation: 23277192175100fc784bb5c4010bbac7e9480388
+runtime_evidence: NOT_RUN
+```
+
+The isolated Codex implementation task is dispatched from Issue #258 after the approval record merged. Its required first action is an independent fresh-read of current GitHub, exact Project Notion, and actual Godot runtime; it must not use this record or earlier chat as runtime truth. The live issue comment carries the dispatch evidence. No Phase 2 runtime, Human, accessibility, Android, or release evidence is implied by issuance.
+
+`NO_BASE_PROMOTION`: the handoff target and combat contract are project-specific. Base already governs isolated implementation and evidence separation.
