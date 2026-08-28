@@ -192,7 +192,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("product_stage: FIRST_FIVE_DUEL_PHASE_I_VI_IMPLEMENTED", current_section)
         self.assertIn("phase_i_vi_implementation: AUTHORIZED_AND_MERGED", current_section)
         self.assertIn(
-            "future_product_mutation_authorized: true_FOR_ISSUE_258_AFTER_CODEX_HANDOFF",
+            "future_product_mutation_authorized: true_FOR_ISSUE_258_ONLY",
             current_section,
         )
         self.assertIn("human_validation: NOT_RUN", current_section)
@@ -200,7 +200,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "user_directed_planning_status: PHASE_2_BUILD_AUTHORIZED_ISSUE_258_CODEX_HANDOFF_PENDING",
+            "user_directed_planning_status: PHASE_2_BUILD_IN_PROGRESS_ISSUE_258_CODEX_HANDOFF_ISSUED",
             current_section,
         )
         self.assertIn(
@@ -212,7 +212,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_pending_material_decision: NONE_CONTRACT_APPROVED_ISSUE_258_CODEX_HANDOFF_PENDING",
+            "user_directed_planning_pending_material_decision: NONE_CONTRACT_APPROVED_ISSUE_258_HANDOFF_ISSUED",
             current_section,
         )
         self.assertIn(
@@ -308,7 +308,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("AUTOMATED_GODOT_PASS_20260826", current_risk)
         self.assertIn("runtime art integration", current_risk)
         self.assertIn(
-            "future_product_mutation_authorized: true_FOR_ISSUE_258_AFTER_CODEX_HANDOFF",
+            "future_product_mutation_authorized: true_FOR_ISSUE_258_ONLY",
             current_risk,
         )
         self.assertNotIn("product_implementation_authorized: false", current_risk)
@@ -331,16 +331,16 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertEqual("NOT_RUN", gate["human_validation"])
         self.assertFalse(gate["image_generation_authorized"])
 
-    def test_current_user_planning_status_records_the_approved_contract_and_issue_before_handoff(self) -> None:
+    def test_current_user_planning_status_records_the_issued_contract_and_issue(self) -> None:
         status_path = ROOT / "docs/planning-data/current_user_planning_status.json"
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "PHASE_2_BUILD_AUTHORIZED_ISSUE_258_CODEX_HANDOFF_PENDING",
+            "PHASE_2_BUILD_IN_PROGRESS_ISSUE_258_CODEX_HANDOFF_ISSUED",
             status["user_directed_planning_status"],
         )
         self.assertEqual(
-            "PHASE_2_CODEX_GODOT_IMPLEMENTATION_ISSUE_258_AFTER_HANDOFF",
+            "PHASE_2_CODEX_GODOT_IMPLEMENTATION_ISSUE_258_IN_PROGRESS",
             status["next_phase"],
         )
         self.assertTrue(status["product_implementation_authorized"])
@@ -349,15 +349,15 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["unified_implementation_contract_id"],
         )
         self.assertEqual(
-            "USER_APPROVED_ISSUE_258_CODEX_HANDOFF_PENDING",
+            "USER_APPROVED_ISSUE_258_CODEX_HANDOFF_ISSUED",
             status["unified_implementation_contract_status"],
         )
         self.assertEqual(258, status["unified_implementation_contract_issue"])
         self.assertEqual(
-            "CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF_PENDING",
+            "CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF_ISSUED",
             status["implementation_handoff_status"],
         )
-        self.assertIn("ISSUE_258_CODEX_HANDOFF", status["current_work_order"])
+        self.assertIn("ISSUE_258_CODEX_HANDOFF_ISSUED", status["current_work_order"])
         self.assertEqual(
             "TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01",
             status["current_opening_distance_runtime_mapping_decision"],
