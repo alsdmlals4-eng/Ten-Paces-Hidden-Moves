@@ -300,6 +300,10 @@ func _build_enemy_actions(bundle_index: int, state: Dictionary = {}) -> Array:
             continue
         var anchor := int(entry.get("timing", 1))
         var span := maxi(1, int(definition.get("action_slots", 1)))
+        var action_types: Array = []
+        if typeof(entry.get("action_types", [])) == TYPE_ARRAY:
+            for action_type in entry.get("action_types", []):
+                action_types.append(str(action_type))
         if str(definition.get("source", "")) == "ultimate":
             var enemy: Dictionary = state.get("enemy", {})
             var momentum := _resource_pair(enemy, "momentum")
@@ -319,7 +323,8 @@ func _build_enemy_actions(bundle_index: int, state: Dictionary = {}) -> Array:
             "direction": clampi(int(entry.get("direction", -1)), -1, 1),
             "origin_tile": 0,
             "ai_reason": str(entry.get("ai_reason", "fixture")),
-            "ai_seed": int(entry.get("ai_seed", state.get("ai_decision_seed", 0)))
+            "ai_seed": int(entry.get("ai_seed", state.get("ai_decision_seed", 0))),
+            "action_types": action_types
         })
     return result
 
@@ -802,9 +807,15 @@ func get_locked_enemy_action_type_entries(state_value: Dictionary, bundle_index:
     for action_value in _get_locked_enemy_actions(state_value, bundle_index):
         if typeof(action_value) != TYPE_DICTIONARY:
             continue
-        var definition: Dictionary = (action_value as Dictionary).get("definition", {})
-        var action_type := str(definition.get("category_label", definition.get("category", "행동")))
-        entries.append({"action_types": [action_type]})
+        var action: Dictionary = action_value
+        var action_types: Array = []
+        if typeof(action.get("action_types", [])) == TYPE_ARRAY:
+            for action_type in action.get("action_types", []):
+                action_types.append(str(action_type))
+        if action_types.is_empty():
+            var definition: Dictionary = action.get("definition", {})
+            action_types.append(str(definition.get("category_label", definition.get("category", "행동"))))
+        entries.append({"action_types": action_types})
     return entries
 
 func _attack_range(definition: Dictionary) -> Vector2i:

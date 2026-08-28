@@ -74,17 +74,19 @@ func _expect_locked_enemy_plan_is_reused(engine, hud: Dictionary) -> void:
     var state: Dictionary = engine.make_initial_state(hud, 4, 6)
     state["ai_enabled"] = true
     engine.rules["enemy_bundles"] = {
-        "1": [{"card_id": "basic_quick_attack", "timing": 2, "direction": -1}]
+        "1": [{"card_id": "basic_quick_attack", "timing": 2, "direction": -1, "action_types": ["이동", "공격"]}]
     }
     var locked_types: Array = engine.get_locked_enemy_action_type_entries(state, 1)
-    if locked_types != [{"action_types": ["공격"]}]:
-        failures.append("A planning bundle must lock its initial public enemy action types.")
+    if locked_types != [{"action_types": ["이동", "공격"]}]:
+        failures.append("A planning bundle must preserve compound enemy action types front-to-back when it locks the plan.")
     var player: Dictionary = (state.get("player", {}) as Dictionary).duplicate(true)
     player["observation_points"] = 1
     state["player"] = player
     var reveal: Dictionary = engine.reveal_next_locked_enemy_action_types(state, locked_types)
     if not bool(reveal.get("valid", false)):
         failures.append("The locked plan must remain available for an explicit observation request.")
+    if (reveal.get("payload", {}) as Dictionary).get("action_types", []) != ["이동", "공격"]:
+        failures.append("The engine lock-to-reveal path must expose compound action types front-to-back.")
     var uncommitted_player_placement := [{"definition": engine.cards_by_id.get("basic_meditate", {}), "anchor_index": 1, "span": 1}]
     engine.preview_player_plan(state, uncommitted_player_placement)
     engine.rules["enemy_bundles"] = {
