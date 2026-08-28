@@ -1,7 +1,7 @@
 # First-Five Opponent Runtime Personality Binding Design
 
 ```yaml
-status: DRAFT_FOR_USER_REVIEW
+status: USER_APPROVED_IMPLEMENTATION_HANDOFF_READY
 issue: 267
 decision: TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01
 baseline_main: c1fb43d92956e2bf7d104f59039728713a8e74af
@@ -10,7 +10,7 @@ skill_modes:
   - ten-paces-game-design / poc-contract
   - combat-implementation-handoff / implementation-contract
   - ten-paces-verification / contract-check
-user_direction: "좋아 권장안대로 진행하자"
+user_direction: "좋아 권장안대로 진행하자; exact contract user approval: 승인"
 human_playtest: NOT_RUN_DEFERRED_BY_USER_FOR_CURRENT_STAGE
 runtime_mutation_in_this_spec: NONE
 ```
@@ -128,7 +128,7 @@ At total `20`, the weights are the exact result. At higher slot totals the same 
 
 ### Public history
 
-After a bundle resolves, `CombatResolutionEngine` appends up to six newest records to `combat_state.public_resolution_history`. Each record contains only:
+After a bundle resolves, `CombatResolutionEngine` appends up to six newest **execution-stage** records to `combat_state.public_resolution_history`. Preparation-stage records are excluded. Each record contains only:
 
 ```yaml
 round_number:
@@ -195,7 +195,7 @@ func set_runtime_binding(archetype_id: String, ai_profile: Dictionary, basic_act
 func clear_runtime_binding() -> void
 ```
 
-Its trace adds `runtime_archetype_id`, `basic_action_focus_ids`, and the bounded public-history count. It does not serialize hidden weight values to player-facing consumers.
+Its trace adds `runtime_archetype_id`, the bounded public-history count, and the scheduled public card IDs. It does **not** serialize `basic_action_focus_ids`, hidden weight values, or any private/UI-only field. Dedicated binding regressions prove that focus-order bonuses alter candidate scoring without exposing the hidden list through trace, Briefing, HUD, Review, logs, or accessibility copy.
 
 ## 10. Implementation surface
 
@@ -238,8 +238,8 @@ Godot's JSON API converts parsed objects to `Dictionary` values and exposes type
 
 Godot supports headless execution with `--script`, which fits the repository's existing GDScript verification pattern for deterministic binding tests. This supports automated contract evidence only; it does not replace visible Windows or human-play evidence. [Godot command-line documentation](https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html)
 
-## 14. Review request
+## 14. Approval receipt and next boundary
 
-This is the full design contract for the user-approved A direction. It intentionally makes the hidden implementation gaps explicit: current single-action AI cannot honestly enact Slot 5 sequence habits, current approach-only movement cannot enact Slot 3 range habits, and current state lacks resolved-history input for Slot 4. The proposed common boundaries address those gaps without inventing candidate-specific rules.
+The user approved this exact contract with `승인` on 2026-08-29 KST. It intentionally makes the hidden implementation gaps explicit: current single-action AI cannot honestly enact Slot 5 sequence habits, current approach-only movement cannot enact Slot 3 range habits, and current state lacks resolved-history input for Slot 4. The proposed common boundaries address those gaps without inventing candidate-specific rules.
 
-After the user approves this document, the next artifact is a task-by-task implementation plan and a single Codex/Godot implementation handoff for Issue #267. No product implementation starts from this draft.
+The next artifacts are a task-by-task implementation plan and one `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF` for Issue #267. Product implementation begins only on Codex's isolated Issue branch after it independently fresh-reads the merged current Project GitHub/repository owners and actual runtime.

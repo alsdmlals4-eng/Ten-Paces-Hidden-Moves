@@ -2,9 +2,9 @@
 
 ```yaml
 decision_id: TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01
-status: USER_APPROVED_ARCHITECTURE_CONTRACT_REVIEW_REQUIRED
+status: USER_APPROVED_CODEX_GODOT_IMPLEMENTATION_HANDOFF_AUTHORIZED
 decision_date: 2026-08-29
-approval_source: "user explicit: 좋아 권장안대로 진행하자"
+approval_source: "user explicit: 좋아 권장안대로 진행하자; exact contract approval: 승인"
 implementation_issue: 267
 scope: FIRST_FIVE_DUEL_OPPONENT_RUNTIME_PERSONALITY_AND_STAT_BINDING
 canonical_rule_owners:
@@ -13,7 +13,7 @@ canonical_rule_owners:
   - docs/13_VERTICAL_SLICE_OPPONENT_ROUTE_TEXT_UX.md
   - data/run/vertical_slice_opponents.json
 design_spec: docs/superpowers/specs/2026-08-29-opponent-runtime-personality-binding-design.md
-runtime_mutation: NONE_IN_THIS_DECISION
+runtime_mutation: AUTHORIZED_FOR_ISOLATED_ISSUE267_CODEX_HANDOFF_NOT_STARTED
 automated_evidence: NOT_RUN
 godot_runtime_evidence: NOT_RUN
 windows_visible_evidence: NOT_RUN
@@ -26,7 +26,7 @@ human_player_evidence: NOT_RUN_DEFERRED_BY_USER_FOR_CURRENT_STAGE
 
 이 binding은 후보가 잠긴 뒤부터 그 결투가 끝날 때까지 해당 전투 엔진 인스턴스에만 존재한다. 일반 Combat Preview의 기존 기본 라이벌 프로필은 유지하며, 후보가 전역 AI 설정을 바꾸거나 다음 결투로 누출되지 않는다.
 
-상세 자료 구조, 다섯 원형, 후보 매핑, 공개 이력의 범위, 테스트 기준은 [설계 명세](../superpowers/specs/2026-08-29-opponent-runtime-personality-binding-design.md)가 소유한다. 이 Decision은 A안의 제품 방향을 승인하지만, 명세의 정확한 수치·파일 경계는 사용자 검토와 단일 구현계약 전까지 runtime truth가 아니다.
+상세 자료 구조, 다섯 원형, 후보 매핑, 공개 이력의 범위, 테스트 기준은 [설계 명세](../superpowers/specs/2026-08-29-opponent-runtime-personality-binding-design.md)가 소유한다. 이 Decision과 명세는 사용자 승인 완료 상태이며, 단일 구현계약과 `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF`만 Issue #267의 격리 구현을 허용한다. 구현·테스트 증거가 생기기 전에는 runtime truth가 아니다.
 
 ## 플레이어 약속
 
@@ -68,7 +68,7 @@ Briefing의 습관 단서
 
 ## 적대적 검토 기록
 
-- **가짜 개성:** 이름만 후보별이고 행동은 하나의 global profile이면 실패다. `runtime_archetype_id`, focus, stat allocation을 bridge snapshot과 planner trace에서 테스트한다.
+- **가짜 개성:** 이름만 후보별이고 행동은 하나의 global profile이면 실패다. `runtime_archetype_id`와 stat allocation은 bridge snapshot에서, focus 효과는 내부 목록을 노출하지 않는 통제 planner score 회귀에서 테스트한다.
 - **AI 치팅:** public-history 기능이 현재 결투의 플레이어 계획을 포함하면 실패다. 이력은 해결 완료 뒤 resolver가 append한 기록만 허용한다.
 - **거리 원형 무효화:** 기존 AI 이동이 항상 접근 방향이면 거리 유지/후퇴 후보는 거짓이다. 공용 movement policy가 target direction을 결정해야 한다.
 - **연계 원형 무효화:** 기존 planner가 action 하나만 반환하면 Slot 5의 순차 습관을 보장할 수 없다. 슬롯 예산을 소비하는 공용 bundle builder가 필요하다.
@@ -76,4 +76,4 @@ Briefing의 습관 단서
 
 ## 다음 경계
 
-Issue #267의 구현 계약은 이 Decision의 상세 명세를 사용자 검토 후에만 작성한다. 구현 완료 뒤에도 후보별 밸런스·난이도·재미는 자동 결정성 증거와 사람 플레이 증거를 분리해 다룬다.
+Issue #267의 구현 계약과 Codex/Godot handoff는 이 Decision의 상세 명세를 따른다. 구현 완료 뒤에도 후보별 밸런스·난이도·재미는 자동 결정성 증거와 사람 플레이 증거를 분리해 다룬다.

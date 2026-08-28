@@ -11,7 +11,7 @@ skill_modes:
 decision: TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01
 issue: 267
 product_mutation: NONE
-result: DRAFT_CONTRACT_REVIEW_REQUIRED
+result: USER_APPROVED_IMPLEMENTATION_PLAN_AND_HANDOFF_REQUIRED
 human_playtest: NOT_RUN_DEFERRED_BY_USER_FOR_CURRENT_STAGE
 ```
 
@@ -47,6 +47,7 @@ human_playtest: NOT_RUN_DEFERRED_BY_USER_FOR_CURRENT_STAGE
 3. **False range/sequence test:** rejected a five-profile label set without retreat movement or multi-action scheduling because it would not enact Slot 3/5 promises.
 4. **Global leakage test:** rejected changing `active_rival_id` per candidate. The selected binding is per combat engine and must be cleared/isolated across combat instances.
 5. **False balance/pass test:** rejected balance simulation before binding, and rejected the use of automated headless success as Human fun, Windows-visible, accessibility, Android, or performance evidence.
+6. **Hidden-trace exposure test:** corrected the draft's proposal to include `basic_action_focus_ids` in the AI trace because the existing privacy regression treats `focus` fields as forbidden. Focus influence is tested by controlled scoring outcomes, while the trace carries only archetype identity, public-history count, and scheduled public card IDs.
 
 ## Feasibility and research
 
@@ -64,4 +65,10 @@ The repository already loads JSON to Godot Dictionaries and creates an independe
 
 ## Evidence ceiling and next action
 
-The design is user-approved at the reusable-archetype level, but its exact contract is `DRAFT_FOR_USER_REVIEW`. No product files or assets changed and no new runtime, balance, Windows-visible, accessibility-user, Android-device, release-performance, or Human-play claim was made. The next action is user review of `docs/superpowers/specs/2026-08-29-opponent-runtime-personality-binding-design.md`; only then may a task-by-task implementation plan and Codex/Godot handoff be written.
+The user approved the exact contract with `승인` on 2026-08-29 KST. No product files or assets changed and no new runtime, balance, Windows-visible, accessibility-user, Android-device, release-performance, or Human-play claim was made. The next action is the task-by-task implementation plan and one `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF` for Issue #267; only the Codex executor's isolated implementation and evidence can change runtime status.
+
+## Approval-plan validation and residual suite boundary
+
+- The approval-plan package passed the current discovery, adversarial-research, integrated-work, project-governance, canonical-combat, operating-system, reference-freshness, skill-integrity, JSON, plan-placeholder, and diff checks. The revised PC-first state regression also passed after its stale `next_phase` expectation was synchronized to the approved Issue #267 handoff.
+- A full `python -m unittest discover -s tests -p 'test_*.py' -v` run executed 410 tests and remained non-green with nine failures and one error outside this change's diff: the Actions budget fallback test expects an older GitHub Actions state, the v4.5-r2 history checksum test no longer matches its preserved source, and the resource-saturation validator still requires a retired Project-Notion current-truth token. These files were untouched by this planning branch; their failures are `PREEXISTING_UNRELATED_FULL_SUITE_DEBT`, not evidence for Issue #267 implementation.
+- The Issue #267 executor must run its focused/adjacent tests and exact required PR checks. It must not report a repository-wide all-green suite unless the above independent debt has separately been reconciled.
