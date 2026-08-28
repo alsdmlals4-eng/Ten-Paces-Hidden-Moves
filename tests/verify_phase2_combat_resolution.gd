@@ -16,6 +16,7 @@ func _run() -> void:
     _expect_damage(hud, "basic_heavy_attack", 6, 11)
     _expect_damage(hud, "basic_palm", 7, 6)
     _expect_range_miss(hud, "basic_heavy_attack", 7)
+    _expect_meditate_preview_matches_resolution(hud)
     if failures.is_empty():
         print("PHASE2_COMBAT_RESOLUTION_VERIFY_OK")
         quit(0)
@@ -53,6 +54,31 @@ func _expect_damage_with_legacy_attack_power(hud: Dictionary, card_id: String, e
     player["attack_power"] = attack_power
     altered_hud["player"] = player
     _expect_damage(altered_hud, card_id, enemy_tile, expected_damage)
+
+func _expect_meditate_preview_matches_resolution(hud: Dictionary) -> void:
+    var engine := CombatResolutionEngineScript.new()
+    engine.rules["enemy_bundles"] = {}
+    engine.rules["meditate_stamina_restore"] = 2
+    var definition: Dictionary = (engine.cards_by_id.get("basic_meditate", {}) as Dictionary).duplicate(true)
+    var state := engine.make_initial_state(hud, 4, 6)
+    var player: Dictionary = (state.get("player", {}) as Dictionary).duplicate(true)
+    player["stamina"] = [0, int((player.get("stamina", [0, 0]) as Array)[1])]
+    player["internal"] = [0, int((player.get("internal", [0, 0]) as Array)[1])]
+    state["player"] = player
+    var preview := engine.preview_player_plan(state, [_placement(definition)])
+    var resolved := engine.resolve_bundle([_placement(definition)], {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, state)
+    var preview_player: Dictionary = (preview.get("state", {}) as Dictionary).get("player", {})
+    var resolved_player: Dictionary = (resolved.get("state", {}) as Dictionary).get("player", {})
+    var preview_stamina := int((preview_player.get("stamina", [0, 0]) as Array)[0])
+    var preview_internal := int((preview_player.get("internal", [0, 0]) as Array)[0])
+    var resolved_stamina := int((resolved_player.get("stamina", [0, 0]) as Array)[0])
+    var resolved_internal := int((resolved_player.get("internal", [0, 0]) as Array)[0])
+    if preview_stamina != 1 or preview_internal != 1:
+        failures.append("Meditation preview must restore stamina and internal by +1/+1; actual=%d/%d" % [preview_stamina, preview_internal])
+    if resolved_stamina != 1 or resolved_internal != 1:
+        failures.append("Meditation resolution must restore stamina and internal by +1/+1; actual=%d/%d" % [resolved_stamina, resolved_internal])
+    if preview_stamina != resolved_stamina or preview_internal != resolved_internal:
+        failures.append("Meditation preview and resolution must match; preview=%d/%d resolved=%d/%d" % [preview_stamina, preview_internal, resolved_stamina, resolved_internal])
 
 func _placement(definition: Dictionary) -> Dictionary:
     return {

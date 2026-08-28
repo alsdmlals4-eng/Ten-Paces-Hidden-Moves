@@ -109,8 +109,9 @@ func preview_player_plan(state_value: Dictionary, placements: Array) -> Dictiona
         if _base_card_id(definition) == "basic_meditate":
             var stamina_after := _resource_pair(actor, "stamina")
             var internal_after := _resource_pair(actor, "internal")
-            _set_resource(actor, "stamina", mini(stamina_after.y, stamina_after.x + int(rules.get("meditate_stamina_restore", 2))), stamina_after.y)
-            _set_resource(actor, "internal", mini(internal_after.y, internal_after.x + int(rules.get("meditate_internal_restore", 1))), internal_after.y)
+            var restore: Dictionary = definition.get("restore", {}) if typeof(definition.get("restore", {})) == TYPE_DICTIONARY else {}
+            _set_resource(actor, "stamina", mini(stamina_after.y, stamina_after.x + int(restore.get("stamina", rules.get("meditate_stamina_restore", 1)))), stamina_after.y)
+            _set_resource(actor, "internal", mini(internal_after.y, internal_after.x + int(restore.get("internal", rules.get("meditate_internal_restore", 1)))), internal_after.y)
         resource_events.append({
             "timing": timing,
             "anchor_index": anchor,
@@ -758,6 +759,16 @@ func reveal_next_locked_enemy_action_types(state_value: Dictionary, locked_enemy
     player["observation_reveals"] = history
     state["player"] = player
     return {"valid": true, "state": state, "payload": {"action_types": action_types, "reveal_index": reveal_index}}
+
+func get_locked_enemy_action_type_entries(state_value: Dictionary, bundle_index: int) -> Array:
+    var entries: Array = []
+    for action_value in _build_enemy_actions(bundle_index, state_value.duplicate(true)):
+        if typeof(action_value) != TYPE_DICTIONARY:
+            continue
+        var definition: Dictionary = (action_value as Dictionary).get("definition", {})
+        var action_type := str(definition.get("category_label", definition.get("category", "행동")))
+        entries.append({"action_types": [action_type]})
+    return entries
 
 func _attack_range(definition: Dictionary) -> Vector2i:
     if definition.has("range") and typeof(definition.get("range")) == TYPE_DICTIONARY:

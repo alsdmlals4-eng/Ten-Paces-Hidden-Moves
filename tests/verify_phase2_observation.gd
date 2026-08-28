@@ -3,6 +3,7 @@ extends SceneTree
 
 const HUD_PATH := "res://data/combat/combat_hud_preview.json"
 const CombatResolutionEngineScript := preload("res://src/combat/combat_resolution_engine.gd")
+const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
 
 var failures: Array[String] = []
 
@@ -35,6 +36,7 @@ func _run() -> void:
     var after_reveal: Dictionary = reveal.get("state", {})
     if int((after_reveal.get("player", {}) as Dictionary).get("observation_points", 0)) != 0:
         failures.append("Observation must consume exactly one stored point.")
+    await _expect_board_reveal_request()
     if failures.is_empty():
         print("PHASE2_OBSERVATION_VERIFY_OK")
         quit(0)
@@ -42,6 +44,30 @@ func _run() -> void:
     for failure in failures:
         push_error(failure)
     quit(1)
+
+func _expect_board_reveal_request() -> void:
+    var packed := load(BOARD_SCENE_PATH) as PackedScene
+    var board := packed.instantiate() as CombatBoardPreview if packed != null else null
+    if board == null:
+        failures.append("Observation request requires the combat board runtime.")
+        return
+    root.add_child(board)
+    await process_frame
+    var player: Dictionary = (board.combat_state.get("player", {}) as Dictionary).duplicate(true)
+    player["observation_points"] = 1
+    board.combat_state["player"] = player
+    board._apply_combat_state_to_view()
+    board.request_locked_enemy_action_type_reveal()
+    var payload: Dictionary = board.get_meta("observation_reveal_payload", {})
+    if not payload.has("action_types") or (payload.get("action_types", []) as Array).is_empty():
+        failures.append("The board must render an explicit observation request result for a locked enemy bundle.")
+    for forbidden_key in ["name", "target_tile", "damage", "ai_reason", "ai_seed"]:
+        if payload.has(forbidden_key):
+            failures.append("Board observation UI leaked %s." % forbidden_key)
+    if board.observation_reveal_status == null or not board.observation_reveal_status.text.begins_with("관찰 기록 · "):
+        failures.append("The board must render accessible observation history/status text.")
+    board.queue_free()
+    await process_frame
 
 func _load_json(path: String) -> Dictionary:
     var file := FileAccess.open(path, FileAccess.READ)
