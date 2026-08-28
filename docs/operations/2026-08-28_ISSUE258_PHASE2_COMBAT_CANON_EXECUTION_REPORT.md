@@ -6,9 +6,18 @@ baseline_main: 18eea743a941a2669222708917ba4756a6301ef9
 branch: codex/issue-258-phase2-combat-canon
 work_mode: BUILD
 skill_mode: CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF + combat UX/accessibility + verification
-status: BRANCH_VALIDATION_PENDING
-notion_mutation: NOT_PERFORMED_UNTIL_SAFE_MERGE_AND_MAIN_READBACK
+status: IMPLEMENTED_MERGED_PR_261_POSTMERGE_MAIN_READBACK
+implementation_pr: 261
+implementation_merge_commit: 6baf817b5f86baa3fe7df193832bd4f7bc4b2abf
+postmerge_main_readback: 2026-08-29
+notion_mutation: SUPERSEDED_BY_REPOSITORY_ONLY_CANONICAL_WORKSPACE
 ```
+
+## Post-merge closeout
+
+- The isolated implementation merged as PR #261 at `6baf817b5f86baa3fe7df193832bd4f7bc4b2abf`; its required checks reported success.
+- The current repository-only workspace records mutable completion/evidence in `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` and `docs/planning-data/current_user_planning_status.json`. This report preserves the implementation-time branch evidence rather than acting as a live handoff.
+- The later repository-only workspace decision retires the original Notion delivery sentence. Notion remains migration/history input only; no current Notion mutation or readback is required.
 
 ## 수행과 결과
 
@@ -79,5 +88,5 @@ notion_mutation: NOT_PERFORMED_UNTIL_SAFE_MERGE_AND_MAIN_READBACK
 ## 남은 위험과 rollback
 
 - preview 명상 회복은 이제 실행과 동일하게 카드 `restore`를 사용하며, 적 계획은 각 planning 묶음 시작에 public-AI/fixture로 한 번만 고정한다. 관찰과 해결은 이 저장 계획을 같이 소비하고, 복합 행동 유형과 누적 공개 기록은 앞→뒤 순서를 보존한다. 관찰 UI payload에는 행동 유형만 기록하며, 기술명·ID·타이밍·대상·피해·AI 사유/시드는 포함하지 않는다.
-- 관찰 공개와 재시도 흐름의 실제 Windows 입력·가독성은 아직 사람 검증이 필요하다.
+- 관찰 공개와 재시도 흐름의 실제 Windows 입력·가독성은 `NOT_RUN`이다. 사용자는 2026-08-29 현재 단계의 사람 플레이 검수를 명시적으로 보류했으며, 이 보류는 Human PASS 주장이 아니다.
 - rollback은 이 branch/PR의 단일 commit revert로 하며, data·runtime·tests·docs를 함께 되돌린다.

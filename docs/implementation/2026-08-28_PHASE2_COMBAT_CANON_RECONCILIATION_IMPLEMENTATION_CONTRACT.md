@@ -2,7 +2,7 @@
 
 ```yaml
 contract_id: TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01
-status: USER_APPROVED_ISSUE_258_CODEX_HANDOFF_ISSUED
+status: IMPLEMENTED_MERGED_PR_261_POSTMERGE_MAIN_READBACK
 work_mode: BUILD
 approval_source: "user explicit: 승인"
 implementation_issue: 258
@@ -10,14 +10,20 @@ authored_against:
   main: 2b47ec7521b974a26b89256ac44611b80b61a59c
   planning_branch_head: c94c978babc67e41cf44ff923a68260fd673d8f3
 current_task_pr: 256
-implementation_agent: Codex after CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
-runtime_mutation_in_this_contract: NONE
-runtime_evidence: NOT_RUN
+implementation_agent: Codex via completed CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
+implementation_pr: 261
+implementation_merge_commit: 6baf817b5f86baa3fe7df193832bd4f7bc4b2abf
+runtime_mutation_in_this_contract: IMPLEMENTED_IN_MERGED_PR_261
+runtime_evidence: AUTOMATED_GODOT_MAIN_PASS_20260828
 windows_visible_evidence: NOT_RUN
 human_player_evidence: NOT_RUN
 accessibility_user_evidence: NOT_RUN
 android_actual_device_evidence: NOT_RUN
+postmerge_status_owner: docs/planning-data/current_user_planning_status.json
+historical_specification_boundary: "Sections 1–8 preserve the approved implementation contract; mutable completion and evidence state is owned by the post-merge status documents and execution report."
 ```
+
+> **Post-merge closeout (2026-08-29):** PR #261 implemented this contract and merged it into project `main` at `6baf817b5f86baa3fe7df193832bd4f7bc4b2abf`. The contract remains the frozen scope/specification record; it is no longer a live handoff. Automated Godot evidence exists, but Windows-visible play, Human Player Experience, accessibility-user, Android-device, and release-performance evidence remain unrun.
 
 ## 1. Goal and player-visible promise
 
@@ -188,12 +194,12 @@ release_performance: NOT_RUN_UNTIL_EXECUTED
 
 ## 9. Git/Notion delivery boundary
 
-1. After final user approval, create one GitHub Issue that quotes this contract’s scope, exclusions, acceptance tests, and evidence ceiling.
-2. Start `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF` from that Issue; Codex independently fresh-reads GitHub, exact Project Notion, and runtime.
-3. Use an isolated task branch/PR. Existing PRs #199/#200 remain read-only. Do not direct-push main, force-push, reset/clean/rebase, or bypass rulesets.
-4. After exact-head checks, review, safe squash merge, and post-merge main readback, update Project Notion Home and `03 · UI · 전투 Flow Map` with the exact merge SHA and separated automated/runtime/Human evidence. Read back both destinations.
-5. Record implementation-time material divergences as Project Incident / Solution / Lesson. Promote to Base only if the lesson is project-independent; otherwise record `NO_BASE_PROMOTION` with the project-specific reason.
+1. GitHub Issue `#258` was the implementation owner. Its scoped handoff produced PR `#261`; the Issue is closed after this post-merge readback.
+2. Codex performed the isolated implementation and the post-merge execution report records actual divergences and the automated evidence.
+3. Existing PRs #199/#200 remain read-only. No direct main push, force push, reset/clean/rebase, or ruleset bypass was used.
+4. The current workspace is repository-only under `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`; Notion is migration/history input and has no current delivery/readback obligation. Mutable completion/evidence lives in the repository owners named above.
+5. Implementation-time material divergences are retained as Project Incident / Solution / Lesson in the execution report. Its Base disposition remains `NO_BASE_PROMOTION`.
 
 ## 10. Approval and handoff boundary
 
-The user explicitly approved this exact contract. GitHub Issue `#258` is the one implementation owner, and its isolated `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF` is issued. This status does not claim that Godot runtime work, Windows-visible usability, Human Player Experience, accessibility-user, Android-device, or release evidence has happened. Codex must independently fresh-read current GitHub, exact Project Notion, and the actual runtime before mutation on the isolated Issue branch.
+The user explicitly approved this exact contract. GitHub Issue `#258` was the implementation owner, and its isolated `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF` completed in merged PR `#261`. Automated Godot/runtime evidence is recorded; this does not claim Windows-visible usability, Human Player Experience, accessibility-user, Android-device, or release evidence. A future product mutation must receive a new scoped contract and fresh-read current GitHub/repository owners and actual runtime; Notion is historical migration input only.

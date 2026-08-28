@@ -200,7 +200,15 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "user_directed_planning_status: REPOSITORY_ONLY_CANON_SYNC_COMPLETED_HUMAN_WINDOWS_PLAYTEST_NEXT",
+            "user_directed_planning_next_package: OPPONENT_RUNTIME_PERSONALITY_BINDING_REVIEW_THEN_BALANCE_INSTRUMENTATION_CONTRACT",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_next_decision: OPPONENT_RUNTIME_PERSONALITY_BINDING_SCOPE_DECISION_REQUIRED",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_status: REPOSITORY_ONLY_CANON_SYNC_COMPLETED_HUMAN_PLAYTEST_DEFERRED_BY_USER_RUNTIME_PERSONALITY_BINDING_REVIEW_NEXT",
             current_section,
         )
         self.assertIn(
@@ -212,7 +220,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_pending_material_decision: NONE_HUMAN_EVIDENCE_REQUIRED",
+            "user_directed_planning_pending_material_decision: OPPONENT_RUNTIME_PERSONALITY_BINDING_SCOPE_DECISION_REQUIRED",
             current_section,
         )
         self.assertIn(
@@ -331,16 +339,16 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertEqual("NOT_RUN", gate["human_validation"])
         self.assertFalse(gate["image_generation_authorized"])
 
-    def test_current_user_planning_status_records_the_issued_contract_and_issue(self) -> None:
+    def test_current_user_planning_status_records_deferred_human_gate_and_runtime_gap(self) -> None:
         status_path = ROOT / "docs/planning-data/current_user_planning_status.json"
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "REPOSITORY_ONLY_CANON_SYNC_COMPLETED_HUMAN_WINDOWS_PLAYTEST_NEXT",
+            "REPOSITORY_ONLY_CANON_SYNC_COMPLETED_HUMAN_PLAYTEST_DEFERRED_BY_USER_RUNTIME_PERSONALITY_BINDING_REVIEW_NEXT",
             status["user_directed_planning_status"],
         )
         self.assertEqual(
-            "REPOSITORY_ONLY_CANON_SYNC_THEN_HUMAN_WINDOWS_PLAYTEST",
+            "OPPONENT_RUNTIME_PERSONALITY_BINDING_SCOPE_DECISION_THEN_BALANCE_INSTRUMENTATION_CONTRACT",
             status["next_phase"],
         )
         self.assertTrue(status["product_implementation_authorized"])
@@ -354,7 +362,11 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertEqual(258, status["unified_implementation_contract_issue"])
         self.assertEqual(
-            "CODEX_IMPLEMENTATION_COMPLETE_MERGED_PR_261_AUTOMATED_REVIEW_PASS_HUMAN_EVIDENCE_NEXT",
+            "CLOSED_POSTMERGE_READBACK_20260829",
+            status["unified_implementation_issue_status"],
+        )
+        self.assertEqual(
+            "CODEX_IMPLEMENTATION_COMPLETE_MERGED_PR_261_AUTOMATED_REVIEW_PASS_HUMAN_EVIDENCE_DEFERRED_BY_USER_FOR_CURRENT_STAGE",
             status["implementation_handoff_status"],
         )
         self.assertIn("PHASE_2_MERGED_MAIN_PR_261", status["current_work_order"])
@@ -375,7 +387,22 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             "ONE_FREE_SAME_SEED_RETRY_PER_DUEL_THEN_END_RUN",
             status["first_five_defeat_retry_scope"],
         )
-        self.assertEqual([], status["pending_material_decisions"])
+        self.assertEqual(
+            ["OPPONENT_RUNTIME_PERSONALITY_BINDING_SCOPE_DECISION_REQUIRED"],
+            status["pending_material_decisions"],
+        )
+        self.assertEqual(
+            "BLOCKED_UNTIL_OPPONENT_BEHAVIOR_AND_STAT_SEEDS_HAVE_RUNTIME_CONSUMERS",
+            status["evidence_ceiling"]["balance_simulation"],
+        )
+        self.assertEqual(
+            "NOT_RUN_DEFERRED_BY_USER_FOR_CURRENT_STAGE",
+            status["evidence_ceiling"]["human_fun_readability"],
+        )
+        self.assertEqual(
+            "PARTIAL_SIGNATURE_MANUAL_AND_STAR_CONSUMED_BEHAVIOR_FOCUS_BASIC_ACTION_FOCUS_AND_FINAL_STAT_TOTAL_NOT_CONSUMED",
+            status["evidence_ceiling"]["opponent_behavior_runtime_binding"],
+        )
         self.assertIn(
             "TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01",
             status["resolved_material_decisions"],
