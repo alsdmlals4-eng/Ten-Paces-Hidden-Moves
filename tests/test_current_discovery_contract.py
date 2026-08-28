@@ -188,7 +188,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "user_directed_planning_status: PHASE_1_REMAINING_PLANNING_AND_ADVERSARIAL_REVIEW_IN_PROGRESS",
+            "user_directed_planning_status: PHASE_1_CANONICAL_REVIEW_COMPLETE_UNIFIED_IMPLEMENTATION_CONTRACT_DRAFT_READY",
             current_section,
         )
         self.assertIn(
@@ -200,7 +200,11 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_pending_material_decision: NONE_DECISIONS_RESOLVED_FINAL_REVIEW_THEN_SINGLE_CONSOLIDATED_IMPLEMENTATION_CONTRACT",
+            "user_directed_planning_pending_material_decision: NONE_DECISIONS_RESOLVED_FINAL_USER_APPROVAL_OF_SINGLE_CONSOLIDATED_IMPLEMENTATION_CONTRACT",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_unified_implementation_contract: TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01",
             current_section,
         )
         self.assertIn("planning_execution_surface: GPT_WORK", current_section)
@@ -312,12 +316,12 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertEqual("NOT_RUN", gate["human_validation"])
         self.assertFalse(gate["image_generation_authorized"])
 
-    def test_current_user_planning_status_keeps_phase1_review_before_one_contract(self) -> None:
+    def test_current_user_planning_status_records_the_single_contract_draft_before_handoff(self) -> None:
         status_path = ROOT / "docs/planning-data/current_user_planning_status.json"
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "PHASE_1_REMAINING_PLANNING_AND_ADVERSARIAL_REVIEW_IN_PROGRESS",
+            "PHASE_1_CANONICAL_REVIEW_COMPLETE_UNIFIED_IMPLEMENTATION_CONTRACT_DRAFT_READY",
             status["user_directed_planning_status"],
         )
         self.assertEqual(
@@ -325,6 +329,14 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["next_phase"],
         )
         self.assertFalse(status["product_implementation_authorized"])
+        self.assertEqual(
+            "TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01",
+            status["unified_implementation_contract_id"],
+        )
+        self.assertEqual(
+            "DRAFT_FINAL_USER_APPROVAL_AND_CODEX_HANDOFF_REQUIRED",
+            status["unified_implementation_contract_status"],
+        )
         self.assertIn("CORE_RULE_AND_RUNTIME_DRIFT_REVIEW", status["current_work_order"])
         self.assertIn("GRILL_ME_ONE_MATERIAL_DECISION_AT_A_TIME", status["current_work_order"])
         self.assertIn("SINGLE_CONSOLIDATED_IMPLEMENTATION_CONTRACT_AFTER_USER_DECISIONS", status["current_work_order"])

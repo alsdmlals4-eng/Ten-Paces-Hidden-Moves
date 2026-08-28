@@ -236,3 +236,50 @@ For the first-five slice, the player receives one free retry from the pre-battle
 ### Base promotion decision
 
 `NO_BASE_PROMOTION`: the retry limit, same-seed policy, 5-duel slice, and deferred currency model are 십보강호-specific. Base already owns the general discipline of separating player-facing learning loops from unvalidated progression economies.
+
+## Update 6 · Failure/Retry visual coverage stale projection corrected
+
+```yaml
+source_decision: TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01
+classification: STALE_PROJECTION_CORRECTED
+runtime_mutation: NONE
+runtime_evidence: NOT_RUN
+human_visual_evidence: NOT_RUN
+```
+
+### Finding and correction
+
+The structured Screen Visual Inventory and its human projections still said `SCREEN_FAILURE_RETRY` was outside the current Slice. That was true before Update 5, but conflicts with the now-approved P0 implementation scope. The projection now says `APPROVED_P0_IMPLEMENTATION_REQUIRED`: it owns no new runtime image, has no actual consumer yet, reuses the Review presentation grammar, and must provide actual cause 1–3, `0/1`, one same-seed retry, then terminal Main return without reward or Route.
+
+### Guardrail
+
+This is a canon correction, not a claim that a Failure Scene, UI, or player evidence already exists. The inventory preserves the separate states: approved scope, implementation required, runtime not run, Human not run.
+
+### Base promotion
+
+`NO_BASE_PROMOTION`: the screen ID, retry count, same-seed semantics, and no-reward route boundary are project-specific. Base already owns the general rule that planning coverage and runtime evidence must not be conflated.
+
+## Update 7 · One consolidated implementation contract drafted
+
+```yaml
+contract_id: TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01
+repository_destination: docs/implementation/2026-08-28_PHASE2_COMBAT_CANON_RECONCILIATION_IMPLEMENTATION_CONTRACT.md
+execution_plan_destination: docs/superpowers/plans/2026-08-28-phase2-combat-canon-reconciliation.md
+status: DRAFT_FINAL_USER_APPROVAL_AND_CODEX_HANDOFF_REQUIRED
+runtime_mutation: NONE
+runtime_evidence: NOT_RUN
+```
+
+### Reconciled implementation boundary
+
+The one contract binds the three approved 2026-08-28 decisions to their actual consumers: public opening distance two (`4/6` technical mapping), `행동계획 실행` after the current three-slot plan, and the first-five one-free same-seed retry. It also closes two pre-existing runtime drift requirements needed to implement those decisions honestly: the legacy eight basic cards must become the current ten, and new basic damage must use the approved five-stat formulas rather than the historical `attack_power` field.
+
+The contract fixes the scope boundary before any product work: observation remains a one-slot player-only direct action-type reveal after the enemy bundle is locked; no hidden plan, exact technique, target, direction, damage, AI weight, correct counter, paid retry, permanent currency, profile persistence, or new asset enters the task.
+
+### Handoff gate
+
+This record does not authorize Godot changes. A final user approval of the contract and then a `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF` from one GitHub Issue are required. Existing Visual Board R2 remains a planning-only anchor; Failure Retry needs no new runtime image.
+
+### Base promotion
+
+`NO_BASE_PROMOTION`: the coordinate binding, exact basic action values, observation wording, and first-five retry boundary are game-specific. The reusable principle—reconcile data, state, AI, UI, and evidence as one contract before implementation—is already governed by Base.

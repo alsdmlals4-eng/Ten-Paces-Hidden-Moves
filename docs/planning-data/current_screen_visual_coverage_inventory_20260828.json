@@ -270,20 +270,26 @@
     {
       "screen_id": "SCREEN_FAILURE_RETRY",
       "family": "FAILURE_LOOP",
-      "priority": "P1",
-      "entry_exit": "not implemented in current build",
+      "priority": "P0_IMPLEMENTATION_CONTRACT",
+      "entry_exit": "OVERLAY_REVIEW (loss) → SCREEN_FAILURE_RETRY → same-duel SCREEN_COMBAT (one free retry) | SCREEN_MAIN (retry exhausted)",
       "player_goal_or_question": "패배 이유를 이해하고 재도전할까?",
-      "surface_kind": "FUTURE_RUNTIME_SCOPE",
-      "actual_consumer": "none",
+      "surface_kind": "APPROVED_RUNTIME_SCOPE_IMPLEMENTATION_REQUIRED",
+      "actual_consumer": "planned: src/run/vertical_slice_run_state.gd + src/run/vertical_slice_shell.gd + src/run/vertical_slice_shell_result_auto.gd",
       "runtime_asset_families": [],
-      "state_variants": [],
-      "image_requirement": "DO_NOT_GENERATE",
-      "evidence": "No game-over/retry model in the current Slice",
-      "status": "NOT_APPLICABLE_CURRENT_VERTICAL_SLICE",
-      "repository_destination": "undecided",
-      "notion_destination": "future Flow Map requirement",
+      "state_variants": [
+        "first_loss_reviewed_retry_0_of_1",
+        "same_seed_pre_battle_restore",
+        "second_loss_retry_exhausted",
+        "return_to_title"
+      ],
+      "image_requirement": "NO_RUNTIME_IMAGE_REQUIRED",
+      "evidence": "TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01; actual runtime consumer and product evidence are NOT_RUN",
+      "status": "APPROVED_P0_IMPLEMENTATION_REQUIRED",
+      "repository_destination": "src/run/vertical_slice_run_state.gd; src/run/vertical_slice_shell.gd; src/run/vertical_slice_shell_result_auto.gd",
+      "notion_destination": "Project Home / 03 · UI · 전투 Flow Map after merged runtime evidence",
       "blockers": [
-        "Failure flow is not yet product scope"
+        "single consolidated implementation contract and CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF are required before runtime work",
+        "Windows visible, Human Player Experience, accessibility, and Android evidence remain NOT_RUN"
       ]
     },
     {

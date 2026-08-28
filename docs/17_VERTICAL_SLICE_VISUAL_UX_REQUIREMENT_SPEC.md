@@ -8,7 +8,7 @@
 
 이 문서는 첫 5전 Vertical Slice의 텍스트 기획을 다시 열지 않고, 기존 수묵 전투 자산·Combat UI·비전투 Flow를 하나의 시각/UX 언어로 묶는 **Visual/UX 구현 입력 계약**이다.
 
-핵심 방향은 **통합 수묵 전술 화폭**이다. 화면마다 별도 미술 체계를 만들지 않고 현재 전투의 수묵·세피아·먹+금 계보를 `Main → Setup → Intro → Briefing → Combat → Review → Result → Route → Completion` 전체로 확장한다.
+핵심 방향은 **통합 수묵 전술 화폭**이다. 화면마다 별도 미술 체계를 만들지 않고 현재 전투의 수묵·세피아·먹+금 계보를 `Main → Setup → Intro → Briefing → Combat → Review → (Victory Result → Route → Completion | Failure Result → same-duel Retry 또는 Main)` 전체로 확장한다.
 
 ---
 
@@ -23,9 +23,10 @@
 - 거리·합·대응·중단·복기.
 - 시작 무공 6중4.
 - 5개 주요 비무 슬롯 × 후보 3명.
-- 비무 사이 정확히 `회복/성장 1노드 + 정보/대비 1노드`.
+- 승리한 비무 사이 정확히 `회복/성장 1노드 + 정보/대비 1노드`.
 - 다음 상대는 Result 뒤 Route 전에 선확정.
-- Combat Review는 Combat Overlay, Duel Result는 별도 Scene.
+- Combat Review는 Combat Overlay, 승리 Result와 패배 Result는 별도 runtime state.
+- 첫 패배는 Review 뒤 `0/1` 무료 동일-seed 재도전 또는 종료를 제공하고, 두 번째 패배는 보상·Route 없이 Main으로 끝난다.
 - `[관찰]`은 공개 가능한 행동 종류만 보여 주고 정답을 누설하지 않는다.
 - 기존 10권 무공과 현행 카드/행동 UI를 재사용한다.
 
@@ -228,6 +229,7 @@ Review는 게임 해설이 아니라 **판정 복기**다.
 - Combat 우선순위는 `거리 → 자원 → 현재 3/3/4 → 실행 가능/해결 중 상태`다.
 - Briefing 우선순위는 `상대 → 공개 무공 → 습관 → 반례`다.
 - Route 우선순위는 `선택 결과 → 현재 상태 → 다음 상대 맥락`이다.
+- 패배 Result 우선순위는 `실제 원인 1~3개 → 재도전 횟수 0/1 또는 소진 → 명확한 CTA`다. 재도전 화면은 다음 수의 정답이나 적의 숨은 계획을 보여 주지 않는다.
 - 포커스·키보드·게임패드·터치에서 Primary CTA와 선택 상태가 명확해야 한다.
 - 모션 감소/빠른 재생/즉시 완료에서도 판정 순서와 원인이 텍스트로 남아야 한다.
 
@@ -339,7 +341,7 @@ android_physical_layout_validation: NOT_RUN
 
 ```yaml
 target_build: FIRST_FIVE_DUEL_PC_FIRST_VERTICAL_SLICE
-must_play_flow: MAIN → SETUP → INTRO → BRIEFING → COMBAT → REVIEW → RESULT → ROUTE_GROWTH → ROUTE_INFO → BRIEFING → ... → COMPLETION
+must_play_flow: MAIN → SETUP → INTRO → BRIEFING → COMBAT → REVIEW → (victory RESULT → ROUTE_GROWTH → ROUTE_INFO → BRIEFING → ... → COMPLETION | first loss FAILURE_RETRY → same-duel COMBAT | second loss MAIN)
 runtime_entry: res://scenes/run/vertical_slice_shell.tscn
 runtime_state_owner: src/run/vertical_slice_run_state.gd
 screen_design_reference_owner: this document + exact Project Notion `03 · UI · 전투 Flow Map` / `02 · 비주얼 바이블`
@@ -354,10 +356,10 @@ image_generation_policy: NO_AUTOMATIC_IMAGE_GENERATION_FROM_GAPS
 | C 허브·지도·행로 | 부분 적용 | 허브·월드맵은 없고, `ROUTE_GROWTH`와 `ROUTE_INFO` 두 순차 선택 surface만 있다. |
 | D 핵심 gameplay | 적용 | 10칸 논리 전장과 3/3/4 계획의 `COMBAT` 및 그 Overlay `REVIEW`가 핵심 gameplay다. 대화/탐색/건설은 없다. |
 | E 준비·전투 | 적용 | `BRIEFING`, `COMBAT`, `REVIEW`가 실제 Scene/Overlay 경계를 이룬다. 별도 조준/QTE/보스 phase surface는 없다. |
-| F 결과·반복 성장 | 적용 | `RESULT`, 두 Route surface, `COMPLETION`이 보상·성장·완주 흐름을 담당한다. Game-over/retry는 아직 없다. |
+| F 결과·반복 성장 | 적용 | 승리 `RESULT`, 두 Route surface, `COMPLETION`이 보상·성장·완주 흐름을 담당한다. 첫 패배는 `FAILURE_RETRY`로 한 번 같은 비무를 재시도하고, 두 번째 패배는 보상·Route 없이 Main으로 돌아간다. Runtime 구현·검증은 아직 없다. |
 | G 기록·도움 | 미적용 | 도감, 튜토리얼, 검색, 기록 보관소는 현재 Slice runtime에 구현/소비처가 없다. |
 | H 일시정지·설정 | 미적용 | pause, settings, language, save/load, input remap은 현재 Slice runtime에 구현/소비처가 없다. |
-| I 실패·종료·예외 | 부분 적용 | `COMPLETION`은 정상 완주만 제공한다. failure/game-over, credits, loading/error/reconnect는 현재 Slice에 구현/소비처가 없다. |
+| I 실패·종료·예외 | 부분 적용 | `FAILURE_RETRY`는 첫 5전 P0 구현 계약에 승인됐지만 actual Scene/consumer/runtime evidence는 아직 없다. credits, loading/error/reconnect는 현재 Slice에 구현/소비처가 없다. |
 
 ### 16.2 Target Screen Inventory
 
@@ -376,7 +378,7 @@ image_generation_policy: NO_AUTOMATIC_IMAGE_GENERATION_FROM_GAPS
 | `SCREEN_ROUTE_INFO` | P0 | Route Growth → Briefing | 다음 상대에 대해 무엇을 더 알까? / 공개 정보 선택 | `VerticalSliceRouteShell` (`src/run/vertical_slice_shell_route_auto.gd`) | Godot option controls/text | `COVERED_EXISTING` |
 | `SCREEN_COMPLETION` | P0 | Duel 5 Result → terminal | 첫 비무행에서 무엇이 달라졌나? / run history | `VerticalSliceCompletionShell` (`src/run/vertical_slice_shell_completion_auto.gd`) | Godot summary cards/text | `COVERED_EXISTING` |
 | `SCREEN_PAUSE_SETTINGS` | P1 | N/A | 설정/중단/복귀 | 없음 | `NOT_APPLICABLE` for current Slice; future support flow | `NOT_APPLICABLE` |
-| `SCREEN_FAILURE_RETRY` | P1 | N/A | 패배 이유·재시도 | 없음 | `NOT_APPLICABLE` for current Slice; no game-over model | `NOT_APPLICABLE` |
+| `SCREEN_FAILURE_RETRY` | P0 contract | loss Review → same-duel Combat (one retry) or Main (exhausted) | 실제 패배 원인·재시도 여부 / 0/1 또는 종료 | planned `VerticalSliceRunState` + `VerticalSliceShell`/Result surface | text/panel; Review asset 재사용, new image 없음 | `APPROVED_P0_IMPLEMENTATION_REQUIRED`; runtime/Human evidence `NOT_RUN` |
 | `SCREEN_CODEX_HELP` | P2 | N/A | 도감·튜토리얼·검색 | 없음 | `NOT_APPLICABLE` for current Slice | `NOT_APPLICABLE` |
 | `SCREEN_RELEASE_LOADING_ERROR` | P2 | N/A | boot/loading/error/credits/store | 없음 | `NOT_APPLICABLE` for current Slice | `NOT_APPLICABLE` |
 
@@ -387,8 +389,9 @@ image_generation_policy: NO_AUTOMATIC_IMAGE_GENERATION_FROM_GAPS
 | Main / Setup / Intro | existing `InkSurface` direction, not a baked screen bitmap | no mandatory character image | `ContentPanel`, `Button`, `Label`, toggle state | primary CTA; disabled until 4 selections | `GODOT_UI + TEXT_LAYER + NO_NEW_IMAGE_FILE_REQUIRED` | P0 covered by functional UI; whole-screen visual polish is P1 `SCREEN_DESIGN_REFERENCE` queue |
 | Briefing | panel hierarchy protects uncertainty | opponent identity is structured text; portrait is optional | public manual/habit/counterexample; hidden plan excluded | start CTA | `GODOT_UI + TEXT_LAYER + REUSE_PROJECT` | P0 covered; portrait/result crop is not required until an exact opponent consumer is selected |
 | Combat / Review | battle background remains largest mass | `twilight_ink_duel_v1`, player/enemy battlers, Dogyeom routing for `slot1_dogyeom` | HUD, timeline, cards, focus/selected/disabled state | range/target/resolve/review; `ultimate_ink_gold_sprite_sheet_rgba` | `EXISTING_APPROVED + REUSE_PROJECT + GODOT_UI + SVG_VECTOR + SPRITE_SHEET` | P0 covered by actual preloads and Godot regressions; warm-dusk v2 is planning-anchor-only, never a runtime asset |
-| Result / Route / Completion | functional panel composition, not a full-screen raster | no mandatory new background/portrait | result choices, locked opponent context, route options, run summary | reward receipt / selected route / completion summary | `GODOT_UI + TEXT_LAYER + PROCEDURAL_DRAW + NO_NEW_IMAGE_FILE_REQUIRED` | P0 covered; result mark/route icon/background variant remain P1 `GAP_NONBLOCKING` only when exact component consumer is specified |
-| Pause / Failure / Codex / Release system | no current consumer | none | none | none | `DO_NOT_GENERATE` | `NOT_APPLICABLE` for this Slice; future scope must create a screen requirement before assets |
+| Victory Result / Route / Completion | functional panel composition, not a full-screen raster | no mandatory new background/portrait | result choices, locked opponent context, route options, run summary | reward receipt / selected route / completion summary | `GODOT_UI + TEXT_LAYER + PROCEDURAL_DRAW + NO_NEW_IMAGE_FILE_REQUIRED` | P0 covered; result mark/route icon/background variant remain P1 `GAP_NONBLOCKING` only when exact component consumer is specified |
+| Failure Retry | Review assets are reused; no full-screen raster | no mandatory new background/portrait | actual causes 1~3, `0/1`, retry or title CTA | same-seed snapshot restore or terminal title return | `GODOT_UI + TEXT_LAYER + REUSE_COMBAT_RUNTIME_ASSETS + NO_NEW_IMAGE_FILE_REQUIRED` | `APPROVED_P0_IMPLEMENTATION_REQUIRED`; actual consumer, runtime, and Human evidence remain `NOT_RUN` |
+| Pause / Codex / Release system | no current consumer | none | none | none | `DO_NOT_GENERATE` | `NOT_APPLICABLE` for this Slice; future scope must create a screen requirement before assets |
 
 ### 16.4 Screen Design Reference Queue
 
@@ -451,7 +454,9 @@ p1_nonblocking:
   - screen-level composition comparison for noncombat functional UI
   - warm-dusk candidate review; no Notion attach, runtime integration, or extra generation
 p2_deferred:
-  - pause/settings, failure/retry, codex/help, boot/loading/error/release surfaces
+  - pause/settings, codex/help, boot/loading/error/release surfaces
+approved_p0_implementation_required:
+  - first-loss review → failure result → one free same-seed retry; second loss → title, no reward/Route
 image_brief_approval_required: none_from_this_audit
 runtime_player_validation:
   - windows visible human usability: NOT_RUN

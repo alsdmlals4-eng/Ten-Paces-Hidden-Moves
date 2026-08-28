@@ -181,6 +181,13 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
         self.assertEqual("NOT_APPLICABLE_CURRENT_VERTICAL_SLICE", release["status"])
         self.assertEqual("RELEASE_BLOCKED_UNVERIFIED", release["release_evidence"])
 
+        failure_retry = next(row for row in inventory["screen_inventory"] if row["screen_id"] == "SCREEN_FAILURE_RETRY")
+        self.assertEqual("P0_IMPLEMENTATION_CONTRACT", failure_retry["priority"])
+        self.assertEqual("APPROVED_P0_IMPLEMENTATION_REQUIRED", failure_retry["status"])
+        self.assertEqual("NO_RUNTIME_IMAGE_REQUIRED", failure_retry["image_requirement"])
+        self.assertIn("TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01", failure_retry["evidence"])
+        self.assertIn("same-duel SCREEN_COMBAT", failure_retry["entry_exit"])
+
 
 if __name__ == "__main__":
     unittest.main()
