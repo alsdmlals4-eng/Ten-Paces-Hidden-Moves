@@ -2,7 +2,7 @@
 
 ```yaml
 issue: 258
-baseline_main: 23277192175100fc784bb5c4010bbac7e9480388
+baseline_main: 18eea743a941a2669222708917ba4756a6301ef9
 branch: codex/issue-258-phase2-combat-canon
 work_mode: BUILD
 skill_mode: CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF + combat UX/accessibility + verification
@@ -32,7 +32,13 @@ notion_mutation: NOT_PERFORMED_UNTIL_SAFE_MERGE_AND_MAIN_READBACK
 
 **Lesson:** Godot headless 검증 뒤에는 asset/import status를 별도 분류하고, 제품 코드 PR에는 명시 path staging만 사용한다.
 
-**Base promotion:** `NO_BASE_PROMOTION` — 이 현상은 이 저장소의 tracked Godot import 정책과 Windows checkout 줄바꿈 상태에 묶인 프로젝트별 운영 문제다.
+**Incident:** Issue #258의 manifest가 PR base `18eea743…`을 보호 기준으로 사용하도록 Base lifecycle을 활성화했지만, 기존 Adapter baseline은 과거 `d9ae822…`를 유지해 exact-head validator가 같은 실행에서 서로 다른 기준 SHA를 요구했다.
+
+**Solution:** 사용자가 명시 승인한 required governance reconciliation으로 Adapter의 `protected_baseline.commit`을 PR base `18eea743a941a2669222708917ba4756a6301ef9`로 갱신하고, 고정 Base validator(`2828a74…`)가 생성한 네 파생 뷰를 재생성·readback했다. manifest의 `approved_paths`는 제품 보호 경로 15개만 유지하며 Adapter 자체는 포함하지 않는다.
+
+**Lesson:** 새 one-time protected approval manifest가 PR에 추가되는 경우, Adapter baseline·manifest protected base·workflow-selected PR base의 세 SHA를 exact-head CI 전에 함께 대조해야 한다.
+
+**Base promotion:** `NO_BASE_PROMOTION` — 이번 정합성은 기존 Base lifecycle을 프로젝트 PR에 적용한 것이며, Base policy 또는 validator 변경을 요구하는 재사용 가능한 결함은 확인되지 않았다.
 
 ## 남은 위험과 rollback
 
