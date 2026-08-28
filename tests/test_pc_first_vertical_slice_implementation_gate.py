@@ -23,11 +23,14 @@ class PcFirstVerticalSliceImplementationGateTests(unittest.TestCase):
         self.assertEqual("BLOCKED_BY_EXISTING_PLATFORM_GATE", gate["windows_android_adapter_implementation"])
         self.assertFalse(gate["image_generation_authorized"])
 
-    def test_current_user_status_records_scoped_implementation_request(self) -> None:
+    def test_current_user_status_preserves_pc_slice_history_and_current_phase1_order(self) -> None:
         status_path = ROOT / "docs" / "planning-data" / "current_user_planning_status.json"
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
-        self.assertEqual("PROJECT_CORE_SCENE_VISUAL_BOARD_R2_USER_FINAL_LOCKED_AWAITING_NEXT_SCOPED_DECISION", status["next_phase"])
+        self.assertEqual(
+            "PHASE_1_REMAINING_PLANNING_REVIEW_THEN_SINGLE_IMPLEMENTATION_CONTRACT",
+            status["next_phase"],
+        )
         self.assertTrue(status["vertical_slice_pc_implementation_authorized"])
         self.assertFalse(status["windows_android_adapter_implementation_authorized"])
         self.assertEqual("USER_EXPLICIT_NON_IMAGE_WORK_REQUEST", status["implementation_request_source"])

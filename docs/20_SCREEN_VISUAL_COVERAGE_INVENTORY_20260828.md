@@ -9,7 +9,9 @@
 
 현재 P0 흐름에서 새 이미지가 없어서 막힌 화면은 **0개**다. Main·Setup·Intro·Briefing·Result·Route·Completion은 Godot UI와 텍스트를 실제 소비처로 쓰며, 전투와 Review는 이미 연결된 배경·배틀러·상태 초상·카드 atlas·VFX를 쓴다.
 
-따라서 이 인벤토리는 미래 이미지 목록을 자동 제작 대기열로 만들지 않는다. 새 결과물은 반드시 `실제 소비처 → text brief → 명시 승인 → 정확히 1개 → 검토`를 통과한다.
+이는 이미지 소비처의 coverage 판정일 뿐 최신 전투 규칙 반영이나 Windows visible/Human Player Experience PASS가 아니다.
+
+따라서 이 인벤토리는 미래 이미지 목록을 자동 제작 대기열로 만들지 않는다. 새 결과물은 `실제 소비처 → scoped brief → 정확히 1개 생성 → adversarial review → 사용자 final lock`을 통과한다. pre-generation 승인은 현행 cadence가 아니다.
 
 ## 구분
 
