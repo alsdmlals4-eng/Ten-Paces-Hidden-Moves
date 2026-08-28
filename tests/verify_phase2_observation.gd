@@ -3,6 +3,9 @@ extends SceneTree
 
 const HUD_PATH := "res://data/combat/combat_hud_preview.json"
 const CombatResolutionEngineScript := preload("res://src/combat/combat_resolution_engine.gd")
+const CombatResolutionEnginePrepareScript := preload("res://src/combat/combat_resolution_engine_prepare.gd")
+const TenManualCombatResolutionEngineScript := preload("res://src/combat/combat_resolution_engine_ten_manuals.gd")
+const VerticalSliceMetricsCombatResolutionEngineScript := preload("res://src/run/vertical_slice_metrics_combat_resolution_engine.gd")
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
 
 var failures: Array[String] = []
@@ -37,6 +40,7 @@ func _run() -> void:
     if int((after_reveal.get("player", {}) as Dictionary).get("observation_points", 0)) != 0:
         failures.append("Observation must consume exactly one stored point.")
     _expect_locked_enemy_plan_is_reused(engine, hud)
+    _expect_inherited_enemy_plan_types(hud)
     await _expect_board_reveal_request()
     if failures.is_empty():
         print("PHASE2_OBSERVATION_VERIFY_OK")
@@ -54,10 +58,19 @@ func _expect_board_reveal_request() -> void:
         return
     root.add_child(board)
     await process_frame
+    board.resolution_engine.rules["enemy_bundles"] = {
+        "1": [
+            {"card_id": "basic_quick_attack", "timing": 2, "direction": -1, "action_types": ["이동", "공격"]},
+            {"card_id": "basic_quick_attack", "timing": 3, "direction": -1, "action_types": ["공격"]}
+        ]
+    }
+    board.resolution_engine.clear_locked_enemy_bundle()
+    board.resolution_engine.lock_enemy_bundle(board.combat_state, 1)
     var player: Dictionary = (board.combat_state.get("player", {}) as Dictionary).duplicate(true)
-    player["observation_points"] = 1
+    player["observation_points"] = 2
     board.combat_state["player"] = player
     board._apply_combat_state_to_view()
+    board.request_locked_enemy_action_type_reveal()
     board.request_locked_enemy_action_type_reveal()
     var payload: Dictionary = board.get_meta("observation_reveal_payload", {})
     if not payload.has("action_types") or (payload.get("action_types", []) as Array).is_empty():
@@ -65,8 +78,8 @@ func _expect_board_reveal_request() -> void:
     for forbidden_key in ["name", "target_tile", "damage", "ai_reason", "ai_seed"]:
         if payload.has(forbidden_key):
             failures.append("Board observation UI leaked %s." % forbidden_key)
-    if board.observation_reveal_status == null or not board.observation_reveal_status.text.begins_with("관찰 기록 · "):
-        failures.append("The board must render accessible observation history/status text.")
+    if board.observation_reveal_status == null or board.observation_reveal_status.text != "관찰 기록 · [이동→공격] / [공격]":
+        failures.append("The board must render every observation reveal in accessible front-to-back history order.")
     board.queue_free()
     await process_frame
 
@@ -103,6 +116,18 @@ func _expect_locked_enemy_plan_is_reused(engine, hud: Dictionary) -> void:
     for forbidden_key in ["card_id", "timing", "name", "target_tile", "damage", "ai_reason", "ai_seed"]:
         if payload.has(forbidden_key):
             failures.append("Locked-plan observation leaked %s." % forbidden_key)
+
+func _expect_inherited_enemy_plan_types(hud: Dictionary) -> void:
+    for engine_script in [CombatResolutionEnginePrepareScript, TenManualCombatResolutionEngineScript, VerticalSliceMetricsCombatResolutionEngineScript]:
+        var engine = engine_script.new()
+        var state: Dictionary = engine.make_initial_state(hud, 4, 6)
+        state["ai_enabled"] = true
+        engine.rules["enemy_bundles"] = {
+            "1": [{"card_id": "basic_quick_attack", "timing": 2, "direction": -1, "action_types": ["이동", "공격"]}]
+        }
+        engine.lock_enemy_bundle(state, 1)
+        if engine.get_locked_enemy_action_type_entries(state, 1) != [{"action_types": ["이동", "공격"]}]:
+            failures.append("%s must preserve compound action types in its locked enemy plan." % str(engine_script.resource_path))
 
 func _load_json(path: String) -> Dictionary:
     var file := FileAccess.open(path, FileAccess.READ)

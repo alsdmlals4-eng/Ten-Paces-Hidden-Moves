@@ -1408,19 +1408,31 @@ func request_locked_enemy_action_type_reveal() -> void:
 	combat_state = (reveal.get("state", combat_state) as Dictionary).duplicate(true)
 	var payload: Dictionary = reveal.get("payload", {})
 	var action_types: Array = payload.get("action_types", [])
-	var visible_types := ", ".join(PackedStringArray(action_types))
-	if is_instance_valid(observation_reveal_status):
-		observation_reveal_status.text = "관찰 기록 · %s" % visible_types
 	set_meta("observation_reveal_payload", {"action_types": action_types.duplicate(), "reveal_index": int(payload.get("reveal_index", 0))})
 	_apply_combat_state_to_view()
 
 func _refresh_observation_reveal() -> void:
+	var player: Dictionary = combat_state.get("player", {})
+	if is_instance_valid(observation_reveal_status):
+		observation_reveal_status.text = _format_observation_reveal_history(player)
 	if not is_instance_valid(observation_reveal_button):
 		return
-	var player: Dictionary = combat_state.get("player", {})
 	var available := not _inputs_locked() and int(player.get("observation_points", 0)) > 0
 	observation_reveal_button.visible = available
 	observation_reveal_button.disabled = not available
+
+func _format_observation_reveal_history(player: Dictionary) -> String:
+	var history: Array = player.get("observation_reveals", []) if typeof(player.get("observation_reveals", [])) == TYPE_ARRAY else []
+	var records := PackedStringArray()
+	for revealed_value in history:
+		if typeof(revealed_value) != TYPE_ARRAY:
+			continue
+		var action_types := PackedStringArray()
+		for action_type in revealed_value:
+			action_types.append(str(action_type))
+		if not action_types.is_empty():
+			records.append("[%s]" % "→".join(action_types))
+	return "관찰 기록 · 없음" if records.is_empty() else "관찰 기록 · %s" % " / ".join(records)
 
 func _clear_action_selection() -> void:
 	_selected_action_definition.clear()

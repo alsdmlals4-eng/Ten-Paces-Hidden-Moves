@@ -77,6 +77,10 @@ func _build_enemy_actions(bundle_index: int, state: Dictionary = {}) -> Array:
             continue
         var anchor := int(entry.get("timing", 1))
         var span := maxi(1, int(definition.get("action_slots", 1)))
+        var action_types: Array = []
+        if typeof(entry.get("action_types", [])) == TYPE_ARRAY:
+            for action_type in entry.get("action_types", []):
+                action_types.append(str(action_type))
         if str(definition.get("source", "")) == "ultimate" or str(definition.get("source_kind", "")) == "ultimate":
             var enemy: Dictionary = state.get("enemy", {})
             var momentum := _resource_pair(enemy, "momentum")
@@ -96,7 +100,8 @@ func _build_enemy_actions(bundle_index: int, state: Dictionary = {}) -> Array:
             "direction": clampi(int(entry.get("direction", -1)), -1, 1),
             "origin_tile": 0,
             "ai_reason": str(entry.get("ai_reason", "fixture")),
-            "ai_seed": int(entry.get("ai_seed", state.get("ai_decision_seed", 0)))
+            "ai_seed": int(entry.get("ai_seed", state.get("ai_decision_seed", 0))),
+            "action_types": action_types
         })
     return result
 
