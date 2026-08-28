@@ -7,6 +7,8 @@
   "decision_id": "TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01",
   "approval_source": "user explicit: 기획완료",
   "current_execution_contract": "TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01",
+  "current_adversarial_research_feasibility_gate": "TEN-DEC-20260828-ADVERSARIAL-RESEARCH-FEASIBILITY-GATE-01",
+  "adversarial_research_feasibility_gate_status": "REQUIRED_EVERY_TASK_WITH_EVIDENCE_SCALED_RECORD",
   "product_safety_contract_baseline": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
   "current_visual_production_decision": "TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01",
   "current_visual_generation_cadence_decision": "TEN-DEC-20260828-CORE-SCENE-VISUAL-BOARD-FINAL-LOCK-CADENCE-01",

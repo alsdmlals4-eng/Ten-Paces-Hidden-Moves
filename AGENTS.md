@@ -42,6 +42,9 @@
 - `skills/SKILL_REGISTRY.json` trigger로 필요한 최소 Skill과 **Skill Mode**만 사용한다.
 - L1 이상 작업은 `기준 SHA / Work Mode / Skill / Skill Mode / 수행 / 결과 / 증거 / 미검증`을 `execution-report`에 남긴다.
 - 경로·ID·Schema·정본 변경은 `reference-freshness`로 활성 consumer와 파생본을 확인한다.
+- `TEN-DEC-20260828-ADVERSARIAL-RESEARCH-FEASIBILITY-GATE-01`: 모든 작업은 시작 전에 `CURRENT_SOURCE_RELEVANCE_CHECK`를 수행한다. 최신 외부 근거가 판단을 바꿀 수 있으면 공식/1차 자료를 조사하고 source·freshness·relevance·한계를 기록한다. 관련 외부 근거가 없을 때만 이유와 함께 `NOT_APPLICABLE`로 남기며, 검색하지 않은 사실이나 검색 snippet을 정본 증거로 발명하지 않는다.
+- `EVERY_TASK_BASE_LOOP`: 모든 작업·권장안·retained change는 최소 한 번의 전체 적대 검토를 거친다. material 계획·구현·문서·PR 변경은 `running-adversarial-review-and-refinement`의 최소 5회 full-scope loop와 clean exit까지 수행한다. 각 loop는 정본·실제 diff·untouched consumer·실행 증거·비용·장기 적합성을 함께 공격하며 가짜 finding/loop로 횟수를 채우지 않는다.
+- material mutation 전에는 repository 실제 경로·의존성·테스트 환경과 최신 외부 근거를 교차 대조해 `FEASIBLE / PARTIAL / BLOCKED_UNVERIFIED`로 구현 가능성을 판정한다. 자동 검증 가능성은 Human·실기기·접근성·출시 증거를 대체하지 않는다.
 - `진행해`/`계속해`는 이미 승인된 같은 계약의 continuation이며 새 코어·범위·비용 권한을 만들지 않는다.
 
 ## 5. 프로젝트 코어
