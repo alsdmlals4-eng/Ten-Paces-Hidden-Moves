@@ -151,8 +151,8 @@ func get_request_context() -> Dictionary:
 func _refresh() -> void:
     if _button == null:
         return
-    _caption_label.text = str(progress_data.get("caption", "행동 묶음 판정"))
-    _button.text = str(progress_data.get("button_text", "진행"))
+    _caption_label.text = str(progress_data.get("caption", "현재 행동계획을 실행합니다"))
+    _button.text = str(progress_data.get("button_text", "행동계획 실행"))
     _button.disabled = not progress_enabled
     if resolution_applied:
         _status_label.text = str(progress_data.get("requested_text", "판정 완료"))
@@ -184,7 +184,7 @@ func get_progress_snapshot() -> Dictionary:
         "runtime_step": int(progress_data.get("runtime_step", 10)),
         "placement_gate_step": int(progress_data.get("placement_gate_step", 9)),
         "layout_role": "bottom_upper_right",
-        "button_text": str(progress_data.get("button_text", "진행")),
+        "button_text": str(progress_data.get("button_text", "행동계획 실행")),
         "enabled": progress_enabled,
         "request_count": request_count,
         "request_mode": str(progress_data.get("request_mode", "resolve_bundle")),

@@ -4,7 +4,7 @@ const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
 const BACKGROUND_ASSET_PATH := "res://assets/backgrounds/twilight_ink_duel_v1.png"
 const EXPECTED_TILE_COUNT := 10
 const EXPECTED_PLAYER_TILE := 4
-const EXPECTED_ENEMY_TILE := 7
+const EXPECTED_ENEMY_TILE := 6
 const EXPECTED_HEIGHT_RATIO := 1.5
 const EXPECTED_MOMENTUM_SEGMENTS := 5
 const EXPECTED_TIMING_SEQUENCE := [3, 3, 4]
@@ -15,8 +15,10 @@ const EXPECTED_CARD_IDS := [
     "basic_evade",
     "basic_quick_attack",
     "basic_heavy_attack",
+    "basic_observe",
     "basic_meditate",
-    "basic_stance"
+    "basic_stance",
+    "basic_palm"
 ]
 const POSITION_TOLERANCE := 0.75
 const SIZE_TOLERANCE := 0.01
@@ -205,8 +207,9 @@ func _verify_step9_placement(board: CombatBoardPreview) -> void:
     if heavy.is_empty():
         failures.append("Heavy attack definition was not found.")
         return
-    if str(heavy.get("range_text", "")) != "2" or int(heavy.get("internal_cost", 0)) != 1:
-        failures.append("Heavy attack must have range 2 and cost one internal energy.")
+    var heavy_range: Dictionary = heavy.get("range", {})
+    if int(heavy_range.get("min", 0)) != 1 or int(heavy_range.get("max", 0)) != 2 or int(heavy.get("internal_cost", 0)) != 2:
+        failures.append("Heavy attack must have structured range 1–2 and cost two internal energy.")
     if not board.action_timing_panel.place_card(heavy, 1):
         failures.append("STEP 9 must place a two-slot card at timings 1 and 2.")
         return
@@ -272,8 +275,8 @@ func _verify_rule_resolution(board: CombatBoardPreview) -> void:
     var heavy_enemy: Dictionary = heavy_state_after.get("enemy", {})
     var heavy_internal: Array = heavy_player.get("internal", [])
     var heavy_health: Array = heavy_enemy.get("health", [])
-    if heavy_internal.size() < 2 or int(heavy_internal[0]) != int(heavy_internal[1]) - 1:
-        failures.append("Heavy attack must consume exactly one internal energy.")
+    if heavy_internal.size() < 2 or int(heavy_internal[0]) != int(heavy_internal[1]) - 2:
+        failures.append("Heavy attack must consume exactly two internal energy.")
     if heavy_health.size() < 2 or int(heavy_health[0]) >= int(heavy_health[1]):
         failures.append("Heavy attack must hit an enemy at distance two in the selected direction.")
 
@@ -367,7 +370,7 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
     if int(player_before.get("tile", 0)) != EXPECTED_PLAYER_TILE or int(player_after.get("tile", 0)) != 5:
         failures.append("Explicit move target must update the player tile from 4 to 5.")
     if int(enemy_before.get("tile", 0)) != EXPECTED_ENEMY_TILE or int(enemy_after.get("tile", 0)) != 6:
-        failures.append("Fixed enemy move direction must update the tile from 7 to 6.")
+        failures.append("Enemy runtime state must remain on tile 6 for this fixed-plan scenario.")
     var player_stamina: Array = player_after.get("stamina", [])
     if player_stamina.is_empty() or int(player_stamina[0]) != 4:
         failures.append("Meditate and quick attack must produce the expected player stamina value 4.")
@@ -487,10 +490,10 @@ func _verify_character_anchors(board: CombatBoardPreview, snapshot: Dictionary) 
 
 func _finish() -> void:
     if failures.is_empty():
-        print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_TARGETING_10_5_START_4_7_VERIFY_OK")
+        print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_TARGETING_10_5_START_4_6_VERIFY_OK")
         quit(0)
         return
     for failure in failures:
         push_error(failure)
-    print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_TARGETING_10_5_START_4_7_VERIFY_FAILED count=%d" % failures.size())
+    print("COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_TARGETING_10_5_START_4_6_VERIFY_FAILED count=%d" % failures.size())
     quit(1)

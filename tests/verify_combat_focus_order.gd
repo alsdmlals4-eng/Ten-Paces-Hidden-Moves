@@ -42,8 +42,8 @@ func _run() -> void:
 
     _require_next(basic_tab, martial_tab, "basic source tab")
     _require_next(martial_tab, ultimate_tab, "martial source tab")
-    if basic_buttons.size() != 8:
-        failures.append("Product basic source must expose exactly eight focusable actions.")
+    if basic_buttons.size() != 10:
+        failures.append("Product basic source must expose exactly ten focusable actions.")
     else:
         _require_next(ultimate_tab, basic_buttons[0], "ultimate source tab")
         for index in range(basic_buttons.size() - 1):

@@ -30,6 +30,8 @@ var card_detail_panel: CardDetailPanel
 var combat_log_panel: CombatLogPanel
 var opponent_hypothesis_panel: OpponentHypothesisPanel
 var combat_review_panel: CombatReviewPanel
+var observation_reveal_button: Button
+var observation_reveal_status: Label
 var ultimate_menu: MenuButton
 var ultimate_list_panel: PanelContainer
 var ultimate_list_title: Label
@@ -58,7 +60,7 @@ var _tile_height := 0.0
 var _tile_gap := 0.0
 var _board_top := 0.0
 var _player_tile := 4
-var _enemy_tile := 7
+var _enemy_tile := 6
 var _detail_pinned := false
 var _pinned_card_id := ""
 var _selected_action_definition: Dictionary = {}
@@ -89,7 +91,7 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_PASS
 	contract = _load_contract()
 	_player_tile = int(contract.get("player_start_tile", 4))
-	_enemy_tile = int(contract.get("enemy_start_tile", 7))
+	_enemy_tile = int(contract.get("enemy_start_tile", 6))
 	_build_structure()
 	resolution_engine = CombatResolutionEngine.new()
 	review_summary_builder = REVIEW_SUMMARY_BUILDER_SCRIPT.new() as CombatReviewSummaryBuilder
@@ -97,6 +99,7 @@ func _ready() -> void:
 	_configure_ultimate_menu()
 	combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
 	combat_state["ai_enabled"] = true
+	resolution_engine.lock_enemy_bundle(combat_state, int(combat_state.get("bundle_index", 1)))
 	_sync_runtime_context()
 	_apply_combat_state_to_view()
 	resized.connect(_layout_board)
@@ -189,6 +192,18 @@ func _build_structure() -> void:
 	opponent_hypothesis_panel = OPPONENT_HYPOTHESIS_SCENE.instantiate() as OpponentHypothesisPanel
 	opponent_hypothesis_panel.name = "OpponentHypothesisPanel"
 	add_child(opponent_hypothesis_panel)
+	observation_reveal_button = Button.new()
+	observation_reveal_button.name = "ObservationRevealButton"
+	observation_reveal_button.text = "관찰점 사용 · 잠긴 적 행동 유형"
+	observation_reveal_button.tooltip_text = "관찰점 1을 사용해 잠긴 적 행동의 유형만 확인합니다. 기술명·목표·피해는 공개하지 않습니다."
+	observation_reveal_button.pressed.connect(request_locked_enemy_action_type_reveal)
+	_apply_keyboard_focus_ring(observation_reveal_button)
+	add_child(observation_reveal_button)
+	observation_reveal_status = Label.new()
+	observation_reveal_status.name = "ObservationRevealStatus"
+	observation_reveal_status.text = "관찰 기록 · 없음"
+	observation_reveal_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	add_child(observation_reveal_status)
 
 	combat_review_panel = COMBAT_REVIEW_SCENE.instantiate() as CombatReviewPanel
 	combat_review_panel.name = "CombatReviewPanel"
@@ -433,6 +448,12 @@ func _layout_board() -> void:
 	if is_instance_valid(opponent_hypothesis_panel):
 		opponent_hypothesis_panel.position = Vector2(overlay_margin, presentation_y + 34.0)
 		opponent_hypothesis_panel.size = Vector2(clampf(size.x * 0.22, 280.0, 320.0), 112.0)
+	if is_instance_valid(observation_reveal_button):
+		observation_reveal_button.position = Vector2(overlay_margin, presentation_y + 152.0)
+		observation_reveal_button.size = Vector2(clampf(size.x * 0.22, 280.0, 320.0), 30.0)
+	if is_instance_valid(observation_reveal_status):
+		observation_reveal_status.position = Vector2(overlay_margin, presentation_y + 184.0)
+		observation_reveal_status.size = Vector2(clampf(size.x * 0.22, 280.0, 320.0), 40.0)
 
 	if is_instance_valid(combat_review_panel):
 		var review_size := Vector2(clampf(size.x * 0.52, 460.0, 620.0), clampf(size.y * 0.48, 320.0, 430.0))
@@ -766,7 +787,8 @@ func _begin_targeting_for_anchor(anchor_index: int) -> bool:
 			combat_log_panel.append_entry("[이동 칸 선택] %s · 출발 %d번 · 최대 %d칸 내 녹색 칸을 선택하세요." % [str(placement.get("card_name", "이동")), _targeting_origin_tile, movement_steps], "system")
 	elif mode == "attack_direction":
 		var definition: Dictionary = placement.get("definition", {})
-		var attack_range := maxi(1, int(str(definition.get("range_text", "1"))))
+		var range_data: Dictionary = definition.get("range", {}) if typeof(definition.get("range", {})) == TYPE_DICTIONARY else {}
+		var attack_range := maxi(1, int(range_data.get("max", int(str(definition.get("range_text", "1"))))) )
 		for direction in [-1, 1]:
 			for step in range(1, attack_range + 1):
 				var target_index: int = _targeting_origin_tile + int(direction) * int(step)
@@ -953,6 +975,7 @@ func _on_review_continue_requested() -> void:
 	var advanced := action_timing_panel.advance_after_resolution()
 	combat_state["round_number"] = int(advanced.get("round_number", combat_state.get("round_number", 1)))
 	combat_state["bundle_index"] = int(advanced.get("current_bundle", combat_state.get("bundle_index", 1)))
+	resolution_engine.lock_enemy_bundle(combat_state, int(combat_state.get("bundle_index", 1)))
 	_sync_runtime_context()
 	combat_progress_button.mark_resolution_applied()
 	_apply_combat_state_to_view()
@@ -1170,12 +1193,13 @@ func restart_combat() -> void:
 		opponent_hypothesis_panel.reset_to_initial()
 	combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
 	combat_state["ai_enabled"] = true
+	resolution_engine.lock_enemy_bundle(combat_state, int(combat_state.get("bundle_index", 1)))
 	_set_presentation_state("planning")
 	_sync_runtime_context()
 	_apply_combat_state_to_view()
 	_sync_progress_availability()
 	if is_instance_valid(combat_log_panel):
-		combat_log_panel.append_entry("[재시작] 4번과 7번에서 새 결전을 시작합니다.", "system")
+		combat_log_panel.append_entry("[재시작] 공개 거리 2의 초기 상태에서 새 결전을 시작합니다.", "system")
 
 func _toggle_reduced_motion() -> void:
 	_reduced_motion = not _reduced_motion
@@ -1218,6 +1242,8 @@ func _configure_keyboard_focus_order() -> void:
 			var hypothesis_focus := opponent_hypothesis_panel.get_focus_control()
 			if is_instance_valid(hypothesis_focus):
 				sequence.append(hypothesis_focus)
+		if is_instance_valid(observation_reveal_button) and observation_reveal_button.visible:
+			sequence.append(observation_reveal_button)
 		if is_instance_valid(basic_card_tray):
 			for card_value in basic_card_tray.cards:
 				if card_value is Control:
@@ -1254,6 +1280,8 @@ func _configure_accessibility_semantics() -> void:
 	if is_instance_valid(opponent_hypothesis_panel):
 		var hypothesis_focus := opponent_hypothesis_panel.get_focus_control()
 		_set_accessibility_semantics(hypothesis_focus, "상대 의도 가설 선택", "현재 묶음에서 예상하는 상대 의도를 직접 기록합니다. 기록하지 않음을 선택할 수 있습니다.")
+	_set_accessibility_semantics(observation_reveal_button, "관찰점 사용", "관찰점 1을 써서 잠긴 적 행동의 유형만 확인합니다. 기술명, 목표, 피해는 공개하지 않습니다.")
+	_set_accessibility_semantics(observation_reveal_status, "관찰 기록", "관찰점으로 공개된 적 행동 유형 기록입니다.")
 	if is_instance_valid(basic_card_tray):
 		for card_value in basic_card_tray.cards:
 			if card_value is BasicCardTrayItem:
@@ -1275,11 +1303,11 @@ func _configure_accessibility_semantics() -> void:
 		if is_instance_valid(tile):
 			_set_accessibility_semantics(tile, "%d번 전장 타일" % tile.tile_index, "이동 또는 공격의 대상 타일입니다.")
 	if is_instance_valid(combat_progress_button) and is_instance_valid(combat_progress_button._button):
-		_set_accessibility_semantics(combat_progress_button._button, "행동 묶음 진행", "현재 행동 묶음을 확정하고 대응부터 순서대로 판정합니다.")
+		_set_accessibility_semantics(combat_progress_button._button, "행동계획 실행", "현재 행동계획을 실행해 대응부터 순서대로 판정합니다. 실행 뒤에는 복기까지 계획을 바꿀 수 없습니다.")
 	_set_accessibility_semantics(fast_replay_button, "빠른 재생", "전투 연출의 재생 시간을 짧게 전환합니다.")
 	_set_accessibility_semantics(skip_presentation_button, "즉시 완료", "진행 중인 전투 연출을 즉시 끝내고 확정 결과를 유지합니다.")
 	_set_accessibility_semantics(reduced_motion_button, "모션 감소", "이동과 공격 모션을 줄이고 결과 텍스트와 로그를 유지합니다.")
-	_set_accessibility_semantics(restart_combat_button, "결전 다시 시작", "끝난 전투를 4번과 7번의 초기 상태로 다시 시작합니다.")
+	_set_accessibility_semantics(restart_combat_button, "결전 다시 시작", "끝난 전투를 공개 거리 2의 초기 상태로 다시 시작합니다.")
 	_set_accessibility_semantics(sound_toggle_button, "소리 켜기 또는 끄기", "전투 효과음 재생을 전환합니다.")
 	_set_accessibility_semantics(sound_volume_slider, "효과음 음량", "왼쪽과 오른쪽 화살표로 전투 효과음의 크기를 조절합니다.")
 	set_meta("accessibility_semantics", "cards|ultimate_list|timings|tiles|progress|presentation_controls")
@@ -1367,7 +1395,44 @@ func _apply_combat_state_to_view() -> void:
 	set_meta("player_tile", _player_tile)
 	set_meta("enemy_tile", _enemy_tile)
 	_refresh_ultimate_menu()
+	_refresh_observation_reveal()
 	call_deferred("_layout_board")
+
+func request_locked_enemy_action_type_reveal() -> void:
+	if _inputs_locked() or resolution_engine == null:
+		return
+	var locked := resolution_engine.get_locked_enemy_action_type_entries(combat_state, int(combat_state.get("bundle_index", 1)))
+	var reveal := resolution_engine.reveal_next_locked_enemy_action_types(combat_state, locked)
+	if not bool(reveal.get("valid", false)):
+		return
+	combat_state = (reveal.get("state", combat_state) as Dictionary).duplicate(true)
+	var payload: Dictionary = reveal.get("payload", {})
+	var action_types: Array = payload.get("action_types", [])
+	set_meta("observation_reveal_payload", {"action_types": action_types.duplicate(), "reveal_index": int(payload.get("reveal_index", 0))})
+	_apply_combat_state_to_view()
+
+func _refresh_observation_reveal() -> void:
+	var player: Dictionary = combat_state.get("player", {})
+	if is_instance_valid(observation_reveal_status):
+		observation_reveal_status.text = _format_observation_reveal_history(player)
+	if not is_instance_valid(observation_reveal_button):
+		return
+	var available := not _inputs_locked() and int(player.get("observation_points", 0)) > 0
+	observation_reveal_button.visible = available
+	observation_reveal_button.disabled = not available
+
+func _format_observation_reveal_history(player: Dictionary) -> String:
+	var history: Array = player.get("observation_reveals", []) if typeof(player.get("observation_reveals", [])) == TYPE_ARRAY else []
+	var records := PackedStringArray()
+	for revealed_value in history:
+		if typeof(revealed_value) != TYPE_ARRAY:
+			continue
+		var action_types := PackedStringArray()
+		for action_type in revealed_value:
+			action_types.append(str(action_type))
+		if not action_types.is_empty():
+			records.append("[%s]" % "→".join(action_types))
+	return "관찰 기록 · 없음" if records.is_empty() else "관찰 기록 · %s" % " / ".join(records)
 
 func _clear_action_selection() -> void:
 	_selected_action_definition.clear()

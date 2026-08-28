@@ -15,8 +15,8 @@ def main() -> None:
     prepare = next(card for card in cards if card["id"] == "basic_stance")
     assert prepare["name"] == "준비"
     assert "준비" in prepare["effect_text"]
-    assert "명상" in prepare["effect_text"]
-    assert "절초 기세" in prepare["effect_text"]
+    assert "다음" in prepare["effect_text"]
+    assert "이동" in prepare["effect_text"]
 
     timing = read("src/ui/action_timing_panel_auto.gd")
     assert "func find_earliest_open_anchor(span: int) -> int:" in timing

@@ -13,7 +13,7 @@ func _run() -> void:
     await process_frame
 
     var snapshot: Dictionary = panel.get_panel_snapshot()
-    assert(int(snapshot.get("action_count", 0)) == 8)
+    assert(int(snapshot.get("action_count", 0)) == 10)
     assert(int(snapshot.get("columns", 0)) == 4)
     assert(snapshot.get("action_ids", []) == [
         "basic_move",
@@ -22,8 +22,10 @@ func _run() -> void:
         "basic_evade",
         "basic_quick_attack",
         "basic_heavy_attack",
+        "basic_observe",
         "basic_meditate",
-        "basic_stance"
+        "basic_stance",
+        "basic_palm"
     ])
     assert(not bool(snapshot.get("scrolling_enabled", true)))
 

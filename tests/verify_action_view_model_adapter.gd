@@ -6,7 +6,7 @@ func _init() -> void:
     var adapter = adapter_script.new()
 
     var basics: Array = adapter.build_basic_actions()
-    assert(basics.size() == 8)
+    assert(basics.size() == 10)
     assert(str((basics[0] as Dictionary).get("source_kind", "")) == "basic")
 
     var manuals: Array = adapter.build_owned_manuals()

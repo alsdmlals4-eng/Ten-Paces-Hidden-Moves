@@ -308,8 +308,10 @@ UI·UX는 에셋을 먼저 고르고 화면을 맞추지 않는다.
 
 - 새 정보 위계: `CURRENT_APPROVED_PLANNING`.
 - Godot 제품 UI 반영: `NOT_RUN / NOT_AUTHORIZED`.
-- 현재 런타임 4/7 좌표: `IMPLEMENTED_LEGACY`.
-- 시작 공개 거리2 런타임 매핑: `USER_APPROVED_IMPLEMENTATION_BINDING_REQUIRED`; 제품 반영: `NOT_RUN`.
+- 현재 런타임 내부 시작 좌표: `4/6`; 플레이어-facing 공개 시작 거리는 `2`.
+- 이전 4/7 표기는 `SUPERSEDED_HISTORICAL_EVIDENCE`이며 좌표는 플레이어 화면에 노출하지 않는다.
+- 진행 CTA는 `행동계획 실행`이다. 실행 시작부터 판정·연출·복기까지 행동 편집 입력은 사용할 수 없다.
+- 자동 UI/판정 회귀는 Issue #258 branch에서 실행했고 Windows 실제 가독성·입력·접근성 사용자 검증은 `NOT_RUN`이다.
 - Windows 실제 가독성: 이 Decision에 대해 `NOT_RUN`.
 - Android 실제 가독성: `NOT_RUN`.
 - 접근성 사용자 검증: `UNVERIFIED`.

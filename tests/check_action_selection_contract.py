@@ -89,7 +89,7 @@ def main() -> None:
     assert "docs/planning-data" not in combat
 
     basic_catalog = json.loads(read("data/cards/basic_cards.json"))
-    assert len(basic_catalog["cards"]) == 8
+    assert len(basic_catalog["cards"]) == 10
     ultimate_catalog = json.loads(read("data/cards/ultimate_cards.json"))
     assert {card["id"] for card in ultimate_catalog["cards"]} == {
         "ultimate_ten_paces_wave",

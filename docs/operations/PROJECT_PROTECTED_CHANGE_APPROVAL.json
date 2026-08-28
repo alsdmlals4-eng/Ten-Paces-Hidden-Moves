@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "18eea743a941a2669222708917ba4756a6301ef9",
+  "decision_ids": [
+    "TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01"
+  ],
+  "approved_paths": [
+    "data/cards/basic_cards.json",
+    "data/combat/combat_board_poc.json",
+    "data/combat/combat_hud_preview.json",
+    "data/combat/combat_progress_preview.json",
+    "data/combat/combat_resolution_preview.json",
+    "src/combat/combat_ai_planner.gd",
+    "src/combat/combat_board_preview.gd",
+    "src/combat/combat_board_preview_auto.gd",
+    "src/combat/combat_board_preview_ten_manuals_auto.gd",
+    "src/combat/combat_resolution_engine.gd",
+    "src/combat/combat_resolution_engine_ten_manuals.gd",
+    "src/run/vertical_slice_progression_state.gd",
+    "src/run/vertical_slice_route_model.gd",
+    "src/run/vertical_slice_run_state.gd",
+    "src/run/vertical_slice_shell.gd",
+    "src/ui/action_selection/action_view_model_adapter.gd",
+    "src/ui/combat_progress_button.gd"
+  ],
+  "approval_source": "USER_EXPLICIT_ISSUE_258_AND_CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF_2026-08-28",
+  "approval_time": "2026-08-28T10:00:00Z",
+  "scope_summary": "Approve only Issue #258 Phase 2 combat canon reconciliation: public distance2 runtime mapping, ten basic actions, structured formulas, public-only AI, observation guardrails, execution CTA, and first-five same-seed retry boundary."
+}

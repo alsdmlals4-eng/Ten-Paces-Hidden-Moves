@@ -336,7 +336,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "PHASE_2_BUILD_IN_PROGRESS_ISSUE_258_CODEX_HANDOFF_ISSUED",
+            "PHASE_2_BUILD_IMPLEMENTED_BRANCH_VALIDATION_PENDING_ISSUE_258",
             status["user_directed_planning_status"],
         )
         self.assertEqual(
@@ -349,12 +349,12 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["unified_implementation_contract_id"],
         )
         self.assertEqual(
-            "USER_APPROVED_ISSUE_258_CODEX_HANDOFF_ISSUED",
+            "IMPLEMENTED_ISSUE_258_BRANCH_VALIDATION_PENDING",
             status["unified_implementation_contract_status"],
         )
         self.assertEqual(258, status["unified_implementation_contract_issue"])
         self.assertEqual(
-            "CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF_ISSUED",
+            "CODEX_IMPLEMENTATION_BRANCH_VALIDATION_PENDING",
             status["implementation_handoff_status"],
         )
         self.assertIn("ISSUE_258_CODEX_HANDOFF_ISSUED", status["current_work_order"])
@@ -364,7 +364,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertEqual(2, status["canonical_public_opening_distance"])
         self.assertEqual(
-            "USER_APPROVED_IMPLEMENTATION_BINDING_REQUIRED",
+            "IMPLEMENTED_ISSUE_258_BRANCH_MERGE_PENDING",
             status["opening_distance_runtime_mapping_status"],
         )
         self.assertEqual(

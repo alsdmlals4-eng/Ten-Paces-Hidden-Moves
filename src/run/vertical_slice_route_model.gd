@@ -16,7 +16,7 @@ const INFO_CATEGORIES := {
     "R8": ["CHAIN_TRACE", "INTERRUPTION_CASE", "FOLLOWUP_RUMOR"]
 }
 
-var manual_registry: MartialManualRegistry
+var manual_registry: RefCounted
 
 
 func _init() -> void:
@@ -87,7 +87,7 @@ func build_public_intel(category: String, candidate: Dictionary) -> String:
     var identity := str(candidate.get("martial_identity", ""))
     var hook := str(candidate.get("public_briefing_hook", ""))
     var mastery := int(candidate.get("signature_star_seed", 0))
-    var unlocked := manual_registry.build_unlocked_cards(manual_id, mastery) if manual_registry != null else []
+    var unlocked: Array = manual_registry.build_unlocked_cards(manual_id, mastery) if manual_registry != null else []
     var technique_names: Array[String] = []
     var range_fragments: Array[String] = []
     var chain_fragments: Array[String] = []

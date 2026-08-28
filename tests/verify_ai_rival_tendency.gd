@@ -4,6 +4,7 @@ extends SceneTree
 const DATA_PATH := "res://data/combat/combat_rival_tendency_poc.json"
 const BASIC_PATH := "res://data/cards/basic_cards.json"
 const ULTIMATE_PATH := "res://data/cards/ultimate_cards.json"
+const CombatAiPlannerScript := preload("res://src/combat/combat_ai_planner.gd")
 const TRACE_KEYS := [
     "public_snapshot",
     "rival_id",
@@ -51,6 +52,7 @@ func _run() -> void:
     var cards_by_id := _load_cards()
     _verify_data_contract(tendency)
     _verify_seeded_policy(tendency, cards_by_id)
+    _verify_phase2_basic_candidate_boundary(cards_by_id)
     if failures.is_empty():
         print("AI_RIVAL_TENDENCY_VERIFY_OK")
         quit(0)
@@ -79,7 +81,7 @@ func _verify_data_contract(tendency: Dictionary) -> void:
         failures.append("Public rival clue ids changed unexpectedly.")
 
 func _verify_seeded_policy(tendency: Dictionary, cards_by_id: Dictionary) -> void:
-    var planner := CombatAiPlanner.new()
+    var planner := CombatAiPlannerScript.new()
     var base_state := _public_state(0)
     var first := planner.build_bundle_actions(base_state, 1, cards_by_id)
     var first_trace := planner.get_last_trace()
@@ -140,6 +142,20 @@ func _verify_seeded_policy(tendency: Dictionary, cards_by_id: Dictionary) -> voi
     var recover_actions := planner.build_bundle_actions(recover_state, 1, cards_by_id)
     if recover_actions.is_empty() or str((recover_actions[0] as Dictionary).get("card_id", "")) != "basic_meditate":
         failures.append("A resource-starved rival must keep meditation as the seed-zero top choice.")
+
+func _verify_phase2_basic_candidate_boundary(cards_by_id: Dictionary) -> void:
+    var planner := CombatAiPlannerScript.new()
+    var state := _public_state(0)
+    var enemy: Dictionary = (state.get("enemy", {}) as Dictionary).duplicate(true)
+    enemy["internal"] = [1, 4]
+    state["enemy"] = enemy
+    planner.build_bundle_actions(state, 1, cards_by_id)
+    var trace := planner.get_last_trace()
+    var candidate_ids: Array = trace.get("candidate_ids", [])
+    if "basic_palm" not in candidate_ids:
+        failures.append("A public distance-three rival with two slots and internal 1 must consider palm.")
+    if "basic_observe" in candidate_ids:
+        failures.append("Player-only observation must never enter enemy candidates.")
 
 func _verify_trace_shape(trace: Dictionary) -> void:
     var trace_keys: Array[String] = []

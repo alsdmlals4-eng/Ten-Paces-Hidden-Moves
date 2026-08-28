@@ -20,6 +20,7 @@ func _ready() -> void:
     resolution_engine = engine
     combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
     combat_state["ai_enabled"] = true
+    resolution_engine.lock_enemy_bundle(combat_state, int(combat_state.get("bundle_index", 1)))
     _configure_ultimate_menu()
     _sync_action_placement_controller_state()
     _sync_runtime_context()

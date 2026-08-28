@@ -272,7 +272,7 @@
     "data/combat/combat_board_poc.json": [
       "\"schema_version\": 17",
       "\"player_start_tile\": 4",
-      "\"enemy_start_tile\": 7",
+      "\"enemy_start_tile\": 6",
       "\"same_tile_allowed\": true",
       "\"clash_same_timing_attacks\": true"
     ],
@@ -318,14 +318,14 @@
     ],
     "tests/verify_combat_board.gd": [
       "EXPECTED_PLAYER_TILE := 4",
-      "EXPECTED_ENEMY_TILE := 7",
+      "EXPECTED_ENEMY_TILE := 6",
       "from 4 to 5",
-      "from 7 to 6"
+      "remain on tile 6"
     ],
     "tests/verify_response_rules.gd": [
       "PLAYER_START_TILE := 4",
-      "ENEMY_START_TILE := 7",
-      "RESPONSE_RULES_10_6_START_4_7_VERIFY_OK"
+      "ENEMY_START_TILE := 6",
+      "RESPONSE_RULES_10_6_CURRENT_START_4_6_VERIFY_OK"
     ],
     "tools/verify_and_commit_combat_foundation.ps1": [
       "start tiles 4/7",

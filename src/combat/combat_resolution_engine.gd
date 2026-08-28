@@ -8,7 +8,9 @@ const CombatAiPlannerScript := preload("res://src/combat/combat_ai_planner.gd")
 
 var rules: Dictionary = {}
 var cards_by_id: Dictionary = {}
-var ai_planner: CombatAiPlanner
+var ai_planner: RefCounted
+var _locked_enemy_bundle_key := ""
+var _locked_enemy_actions: Array = []
 
 func _init() -> void:
     ai_planner = CombatAiPlannerScript.new()
@@ -41,6 +43,7 @@ func _load_json(path: String, label: String) -> Dictionary:
     return parsed
 
 func make_initial_state(hud_data: Dictionary, player_tile: int, enemy_tile: int) -> Dictionary:
+    clear_locked_enemy_bundle()
     var player := _prepare_combatant_start(hud_data.get("player", {}))
     var enemy := _prepare_combatant_start(hud_data.get("enemy", {}))
     player["tile"] = player_tile
@@ -70,7 +73,15 @@ func _prepare_combatant_start(source_value) -> Dictionary:
         var pair := _resource_pair(actor, resource_key)
         var penalty := maxi(0, int(penalties.get(resource_key, 0)))
         _set_resource(actor, resource_key, maxi(0, pair.y - penalty), pair.y)
+    _normalize_combatant_stats(actor)
     return actor
+
+func _normalize_combatant_stats(actor: Dictionary) -> void:
+    var source_stats: Dictionary = actor.get("stats", {}) if typeof(actor.get("stats", {})) == TYPE_DICTIONARY else {}
+    var stats := {}
+    for stat_key in ["external", "constitution", "agility", "internal_power", "insight"]:
+        stats[stat_key] = int(source_stats.get(stat_key, 4))
+    actor["stats"] = stats
 
 func preview_player_plan(state_value: Dictionary, placements: Array) -> Dictionary:
     var state := state_value.duplicate(true)
@@ -101,8 +112,9 @@ func preview_player_plan(state_value: Dictionary, placements: Array) -> Dictiona
         if _base_card_id(definition) == "basic_meditate":
             var stamina_after := _resource_pair(actor, "stamina")
             var internal_after := _resource_pair(actor, "internal")
-            _set_resource(actor, "stamina", mini(stamina_after.y, stamina_after.x + int(rules.get("meditate_stamina_restore", 2))), stamina_after.y)
-            _set_resource(actor, "internal", mini(internal_after.y, internal_after.x + int(rules.get("meditate_internal_restore", 1))), internal_after.y)
+            var restore: Dictionary = definition.get("restore", {}) if typeof(definition.get("restore", {})) == TYPE_DICTIONARY else {}
+            _set_resource(actor, "stamina", mini(stamina_after.y, stamina_after.x + int(restore.get("stamina", rules.get("meditate_stamina_restore", 1)))), stamina_after.y)
+            _set_resource(actor, "internal", mini(internal_after.y, internal_after.x + int(restore.get("internal", rules.get("meditate_internal_restore", 1)))), internal_after.y)
         resource_events.append({
             "timing": timing,
             "anchor_index": anchor,
@@ -139,7 +151,9 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
     logs.append("판정 순서: %s" % str(rules.get("resolution_order_label", "대응 → 속공 → 이동 → 일반 공격")))
 
     var actions := _build_player_actions(player_placements)
-    actions.append_array(_build_enemy_actions(bundle_index, state))
+    var locked_enemy_actions := _get_locked_enemy_actions(state, bundle_index)
+    _reserve_locked_enemy_ultimate_momentum(state, locked_enemy_actions)
+    actions.append_array(locked_enemy_actions)
     var state_before_response := state.duplicate(true)
     var response_action_start := resolved_actions.size()
     var response_log_start := logs.size()
@@ -286,6 +300,10 @@ func _build_enemy_actions(bundle_index: int, state: Dictionary = {}) -> Array:
             continue
         var anchor := int(entry.get("timing", 1))
         var span := maxi(1, int(definition.get("action_slots", 1)))
+        var action_types: Array = []
+        if typeof(entry.get("action_types", [])) == TYPE_ARRAY:
+            for action_type in entry.get("action_types", []):
+                action_types.append(str(action_type))
         if str(definition.get("source", "")) == "ultimate":
             var enemy: Dictionary = state.get("enemy", {})
             var momentum := _resource_pair(enemy, "momentum")
@@ -305,9 +323,42 @@ func _build_enemy_actions(bundle_index: int, state: Dictionary = {}) -> Array:
             "direction": clampi(int(entry.get("direction", -1)), -1, 1),
             "origin_tile": 0,
             "ai_reason": str(entry.get("ai_reason", "fixture")),
-            "ai_seed": int(entry.get("ai_seed", state.get("ai_decision_seed", 0)))
+            "ai_seed": int(entry.get("ai_seed", state.get("ai_decision_seed", 0))),
+            "action_types": action_types
         })
     return result
+
+func lock_enemy_bundle(state_value: Dictionary, bundle_index: int) -> void:
+    var bundle_key := _enemy_bundle_key(state_value, bundle_index)
+    if bundle_key == _locked_enemy_bundle_key:
+        return
+    _locked_enemy_bundle_key = bundle_key
+    _locked_enemy_actions = _build_enemy_actions(bundle_index, state_value.duplicate(true)).duplicate(true)
+
+func clear_locked_enemy_bundle() -> void:
+    _locked_enemy_bundle_key = ""
+    _locked_enemy_actions.clear()
+
+func _get_locked_enemy_actions(state_value: Dictionary, bundle_index: int) -> Array:
+    lock_enemy_bundle(state_value, bundle_index)
+    return _locked_enemy_actions.duplicate(true)
+
+func _enemy_bundle_key(state_value: Dictionary, bundle_index: int) -> String:
+    return "%d:%d" % [int(state_value.get("round_number", 1)), bundle_index]
+
+func _reserve_locked_enemy_ultimate_momentum(state: Dictionary, actions: Array) -> void:
+    for action_value in actions:
+        if typeof(action_value) != TYPE_DICTIONARY:
+            continue
+        var definition: Dictionary = (action_value as Dictionary).get("definition", {})
+        if str(definition.get("source", "")) != "ultimate":
+            continue
+        var enemy: Dictionary = state.get("enemy", {})
+        var momentum := _resource_pair(enemy, "momentum")
+        if momentum.x == momentum.y:
+            _set_resource(enemy, "momentum", 0, momentum.y)
+            state["enemy"] = enemy
+        return
 
 func _actions_for_timing(actions: Array, timing: int) -> Array:
     var result: Array = []
@@ -451,16 +502,15 @@ func _execute_attack_phase(state: Dictionary, actions: Array, _defenses: Diction
             resolved_actions.append(_resolved_record(action, timing, "miss_direction"))
             continue
 
-        var attack_range := maxi(0, int(str(definition.get("range_text", "0"))))
+        var attack_range := _attack_range(definition)
         var distance := absi(actor_tile - target_tile)
-        if distance > attack_range:
+        var below_minimum := distance != 0 and distance < attack_range.x
+        if below_minimum or distance > attack_range.y:
             logs.append("[%d수 · %s] %s의 %s은(는) 사거리가 닿지 않았다." % [timing, phase_label, _actor_name(actor), str(definition.get("name", "공격"))])
             resolved_actions.append(_resolved_record(action, timing, "miss_range"))
             continue
 
-        var damage := maxi(0, int(str(definition.get("damage", "0"))))
-        if str(definition.get("source", "")) == "ultimate":
-            damage += int(floor(float(actor.get("attack_power", 0)) * float(definition.get("attack_power_coefficient", 0.0))))
+        var damage := _calculate_attack_damage(definition, actor)
         var bonus := int(actor.get("next_attack_bonus", 0))
         damage += bonus
         actor["next_attack_bonus"] = 0
@@ -713,9 +763,13 @@ func _execute_utility(state: Dictionary, action: Dictionary, logs: Array[String]
     if card_id == "basic_meditate":
         var stamina := _resource_pair(actor, "stamina")
         var internal := _resource_pair(actor, "internal")
-        _set_resource(actor, "stamina", mini(stamina.y, stamina.x + int(rules.get("meditate_stamina_restore", 2))), stamina.y)
-        _set_resource(actor, "internal", mini(internal.y, internal.x + int(rules.get("meditate_internal_restore", 1))), internal.y)
+        var restore: Dictionary = definition.get("restore", {}) if typeof(definition.get("restore", {})) == TYPE_DICTIONARY else {}
+        _set_resource(actor, "stamina", mini(stamina.y, stamina.x + int(restore.get("stamina", rules.get("meditate_stamina_restore", 1)))), stamina.y)
+        _set_resource(actor, "internal", mini(internal.y, internal.x + int(restore.get("internal", rules.get("meditate_internal_restore", 1)))), internal.y)
         logs.append("[%d수 · 일반] %s이(가) 명상해 기력과 내력을 회복했다." % [timing, _actor_name(actor)])
+    elif card_id == "basic_observe" and actor_key == "player":
+        actor["observation_points"] = int(actor.get("observation_points", 0)) + int(definition.get("observation_points", 1))
+        logs.append("[%d수 · 관찰] 잠긴 적 행동 유형 하나를 읽을 관찰점 1을 얻었다." % timing)
     elif card_id == "basic_stance":
         actor["next_attack_bonus"] = int(actor.get("next_attack_bonus", 0)) + int(rules.get("stance_attack_bonus", 2))
         actor["fortitude_next_attack"] = true
@@ -724,6 +778,66 @@ func _execute_utility(state: Dictionary, action: Dictionary, logs: Array[String]
     else:
         logs.append("[%d수 · 일반] %s이(가) %s을(를) 실행했다." % [timing, _actor_name(actor), str(definition.get("name", "행동"))])
     state[actor_key] = actor
+
+func reveal_next_locked_enemy_action_types(state_value: Dictionary, locked_enemy_actions: Array) -> Dictionary:
+    var state := state_value.duplicate(true)
+    var player: Dictionary = state.get("player", {})
+    if int(player.get("observation_points", 0)) <= 0 or locked_enemy_actions.is_empty():
+        return {"valid": false, "state": state, "payload": {}}
+    var reveal_index := maxi(0, int(player.get("observation_reveal_index", 0)))
+    if reveal_index >= locked_enemy_actions.size() or typeof(locked_enemy_actions[reveal_index]) != TYPE_DICTIONARY:
+        return {"valid": false, "state": state, "payload": {}}
+    var action: Dictionary = locked_enemy_actions[reveal_index]
+    var action_types: Array = []
+    if typeof(action.get("action_types", [])) == TYPE_ARRAY:
+        for action_type in action.get("action_types", []):
+            action_types.append(str(action_type))
+    if action_types.is_empty():
+        action_types.append(str(action.get("category_label", action.get("category", "행동"))))
+    player["observation_points"] = int(player.get("observation_points", 0)) - 1
+    player["observation_reveal_index"] = reveal_index + 1
+    var history: Array = player.get("observation_reveals", []) if typeof(player.get("observation_reveals", [])) == TYPE_ARRAY else []
+    history.append(action_types.duplicate())
+    player["observation_reveals"] = history
+    state["player"] = player
+    return {"valid": true, "state": state, "payload": {"action_types": action_types, "reveal_index": reveal_index}}
+
+func get_locked_enemy_action_type_entries(state_value: Dictionary, bundle_index: int) -> Array:
+    var entries: Array = []
+    for action_value in _get_locked_enemy_actions(state_value, bundle_index):
+        if typeof(action_value) != TYPE_DICTIONARY:
+            continue
+        var action: Dictionary = action_value
+        var action_types: Array = []
+        if typeof(action.get("action_types", [])) == TYPE_ARRAY:
+            for action_type in action.get("action_types", []):
+                action_types.append(str(action_type))
+        if action_types.is_empty():
+            var definition: Dictionary = action.get("definition", {})
+            action_types.append(str(definition.get("category_label", definition.get("category", "행동"))))
+        entries.append({"action_types": action_types})
+    return entries
+
+func _attack_range(definition: Dictionary) -> Vector2i:
+    if definition.has("range") and typeof(definition.get("range")) == TYPE_DICTIONARY:
+        var range_value = definition.get("range")
+        var structured: Dictionary = range_value
+        var minimum := maxi(0, int(structured.get("min", 0)))
+        return Vector2i(minimum, maxi(minimum, int(structured.get("max", minimum))))
+    var legacy_range := maxi(0, int(str(definition.get("range_text", "0"))))
+    return Vector2i(0, legacy_range)
+
+func _calculate_attack_damage(definition: Dictionary, actor: Dictionary) -> int:
+    if definition.has("damage_formula") and typeof(definition.get("damage_formula")) == TYPE_DICTIONARY:
+        var formula_value = definition.get("damage_formula")
+        var formula: Dictionary = formula_value
+        var stats: Dictionary = actor.get("stats", {}) if typeof(actor.get("stats", {})) == TYPE_DICTIONARY else {}
+        var stat_key := str(formula.get("stat_key", ""))
+        return maxi(0, int(formula.get("base", 0)) + int(floor(float(stats.get(stat_key, 0)) * float(formula.get("coefficient", 0.0)))))
+    var damage := maxi(0, int(str(definition.get("damage", "0"))))
+    if str(definition.get("source", "")) == "ultimate":
+        damage += int(floor(float(actor.get("attack_power", 0)) * float(definition.get("attack_power_coefficient", 0.0))))
+    return damage
 
 func _base_card_id(definition: Dictionary) -> String:
     return str(definition.get("base_card_id", definition.get("id", "")))

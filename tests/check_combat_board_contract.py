@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TEXT_SUFFIXES = {".gd", ".tscn", ".py", ".ps1", ".cmd", ".md", ".json", ".yml", ".yaml", ".godot"}
 EXPECTED_PLAYER_TILE = 4
-EXPECTED_ENEMY_TILE = 7
+EXPECTED_ENEMY_TILE = 6
 EXPECTED_CARD_IDS = [
     "basic_move",
     "basic_footwork",
@@ -14,8 +14,10 @@ EXPECTED_CARD_IDS = [
     "basic_evade",
     "basic_quick_attack",
     "basic_heavy_attack",
+    "basic_observe",
     "basic_meditate",
     "basic_stance",
+    "basic_palm",
 ]
 
 
@@ -109,7 +111,7 @@ def main() -> None:
     assert progress["request_mode"] == "resolve_bundle"
     assert progress["advances_state"] is True
 
-    assert contract["basic_card_tray"]["card_count"] == 8
+    assert contract["basic_card_tray"]["card_count"] == 10
     assert contract["basic_card_tray"]["card_ids"] == EXPECTED_CARD_IDS
     assert contract["basic_card_tray"]["stance_response_combo_enabled"] is True
     assert [card["id"] for card in cards["cards"]] == EXPECTED_CARD_IDS
@@ -123,11 +125,13 @@ def main() -> None:
     assert by_id["basic_move"]["move_range"] == 1
     assert by_id["basic_footwork"]["move_range"] == 2
     assert by_id["basic_footwork"]["internal_cost"] == 1
-    assert by_id["basic_heavy_attack"]["range_text"] == "2"
-    assert by_id["basic_heavy_attack"]["internal_cost"] == 1
+    assert by_id["basic_heavy_attack"]["range"] == {"min": 1, "max": 2}
+    assert by_id["basic_heavy_attack"]["internal_cost"] == 2
+    assert by_id["basic_observe"]["player_only"] is True
+    assert by_id["basic_palm"]["range"] == {"min": 1, "max": 3}
     assert "50%" in by_id["basic_guard"]["effect_text"]
     assert "완전히 회피" in by_id["basic_evade"]["effect_text"]
-    assert "대응" in by_id["basic_stance"]["effect_text"]
+    assert "다음" in by_id["basic_stance"]["effect_text"]
 
     targeting = contract["action_targeting"]
     assert targeting["patch"] == "10.5"
@@ -329,9 +333,9 @@ def main() -> None:
         "targeting_enabled",
         "move_range",
         "var _player_tile := 4",
-        "var _enemy_tile := 7",
+        "var _enemy_tile := 6",
         'contract.get("player_start_tile", 4)',
-        'contract.get("enemy_start_tile", 7)',
+        'contract.get("enemy_start_tile", 6)',
         "UltimateMenu",
         "_refund_ultimate_reservation",
         "presentation_state",
@@ -347,19 +351,19 @@ def main() -> None:
     assert "_wait_for_presentation_delay" in controller
     assert "_configure_keyboard_focus_order" in controller
     assert "_configure_accessibility_semantics" in controller
-    assert all(token in verifier for token in ("TARGETING_10_5", "_on_board_tile_clicked", "miss_direction", "basic_footwork", "EXPECTED_PLAYER_TILE := 4", "EXPECTED_ENEMY_TILE := 7"))
+    assert all(token in verifier for token in ("TARGETING_10_5", "_on_board_tile_clicked", "miss_direction", "basic_footwork", "EXPECTED_PLAYER_TILE := 4", "EXPECTED_ENEMY_TILE := 6"))
     assert all(token in response_verifier for token in ("Same-timing guard", "Stance+guard", "Stance+evade", "preview_player_plan", "invalid_anchors"))
     assert "res://tests/verify_response_rules.gd" in powershell
     assert "res://tests/verify_combat_pointer_lock.gd" in powershell
     assert "res://tests/verify_combat_presentation_controls.gd" in powershell
     assert "res://tests/verify_combat_focus_order.gd" in powershell
     assert "res://tests/verify_combat_assistive_labels.gd" in powershell
-    assert "플레이어 4번 / 상대 7번" in reference_svg
+    assert "플레이어 4번 / 상대 7번" in reference_svg  # historical visual reference; not runtime authority
     assert "플레이어 · 4번 칸" in reference_svg
     assert "상대 · 7번 칸" in reference_svg
     assert "플레이어 3번 / 상대 8번" not in reference_svg
 
-    print("combat board STEP 1-10.6 contract with start tiles 4 and 7: PASS")
+    print("combat board STEP 1-10.6 contract with current start tiles 4 and 6: PASS")
 
 
 if __name__ == "__main__":

@@ -87,7 +87,7 @@ func _selection_candidates(rational_candidates: Array, cards_by_id: Dictionary) 
 func _build_public_snapshot(state: Dictionary, bundle_index: int) -> Dictionary:
     var enemy: Dictionary = state.get("enemy", {})
     var player: Dictionary = state.get("player", {})
-    var enemy_tile := int(enemy.get("tile", 7))
+    var enemy_tile := int(enemy.get("tile", 6))
     var player_tile := int(player.get("tile", 4))
     var bounds := _bundle_bounds(bundle_index)
     return {
@@ -141,6 +141,9 @@ func _build_candidates(snapshot: Dictionary, profile: Dictionary, cards_by_id: D
 
     if distance <= 2 and slots >= 2 and stamina >= 1 and internal >= 1:
         _append_candidate(candidates, "basic_heavy_attack", 6.5 + float(weights.get("heavy_prepare", 0.0)), ["safe_heavy_prepare"], cards_by_id)
+
+    if distance <= 3 and slots >= 2 and internal >= 1:
+        _append_candidate(candidates, "basic_palm", 6.4 + float(weights.get("heavy_prepare", 0.0)), ["safe_heavy_prepare"], cards_by_id)
 
     if distance > 1:
         _append_candidate(candidates, "basic_move", 6.0 + float(weights.get("approach", 0.0)), ["midrange_pressure"], cards_by_id)
@@ -221,6 +224,9 @@ func _martial_range_profile(definition: Dictionary, distance: int) -> Vector3i:
 func _append_candidate(candidates: Array, card_id: String, score: float, reason_codes: Array, cards_by_id: Dictionary, definition: Dictionary = {}) -> void:
     if not cards_by_id.has(card_id):
         return
+    var card_definition: Dictionary = cards_by_id.get(card_id, {})
+    if bool(card_definition.get("player_only", false)):
+        return
     for value in candidates:
         if str((value as Dictionary).get("card_id", "")) == card_id:
             return
@@ -243,7 +249,7 @@ func _candidate_before(a: Dictionary, b: Dictionary) -> bool:
 func _build_action(candidate: Dictionary, snapshot: Dictionary) -> Dictionary:
     var card_id := str(candidate.get("card_id", ""))
     var definition: Dictionary = candidate.get("definition", {})
-    var enemy_tile := int(snapshot.get("enemy_tile", 7))
+    var enemy_tile := int(snapshot.get("enemy_tile", 6))
     var player_tile := int(snapshot.get("player_tile", 4))
     var direction := signi(player_tile - enemy_tile)
     var targeting_mode := str(definition.get("targeting_mode", ""))

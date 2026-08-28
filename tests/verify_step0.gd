@@ -9,8 +9,8 @@ const REQUIRED_FIELDS := [
     "action_slots", "stamina_cost", "internal_cost", "flavor"
 ]
 const FORBIDDEN_FIELDS := ["action_point_cost", "guard_reduction"]
-const REQUIRED_CATEGORIES := ["move", "attack", "response", "recovery", "strengthen"]
-const EXPECTED_CARD_COUNT := 8
+const REQUIRED_CATEGORIES := ["move", "attack", "response", "observation", "recovery", "strengthen"]
+const EXPECTED_CARD_COUNT := 10
 
 var failures: Array[String] = []
 
@@ -105,8 +105,9 @@ func _verify_catalog() -> void:
     if footwork.is_empty() or int(footwork.get("move_range", 0)) != 2 or int(footwork.get("internal_cost", 0)) != 1:
         failures.append("보법은 내력 1을 소모하고 최대 2칸 이동해야 합니다.")
     var heavy: Dictionary = by_id.get("basic_heavy_attack", {})
-    if heavy.is_empty() or str(heavy.get("range_text", "")) != "2" or int(heavy.get("internal_cost", 0)) != 1:
-        failures.append("강공은 사거리 2와 내력 1 비용을 가져야 합니다.")
+    var heavy_range: Dictionary = heavy.get("range", {})
+    if heavy.is_empty() or int(heavy_range.get("max", 0)) != 2 or int(heavy.get("internal_cost", 0)) != 2:
+        failures.append("강공은 구조화 사거리 1~2와 내력 2 비용을 가져야 합니다.")
 
 func _verify_preview_scene() -> void:
     if not ResourceLoader.exists(PREVIEW_SCENE_PATH):

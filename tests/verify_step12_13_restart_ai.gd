@@ -63,8 +63,8 @@ func _verify_restart() -> void:
     board.restart_combat()
     var reset_player: Dictionary = board.combat_state.get("player", {})
     var reset_enemy: Dictionary = board.combat_state.get("enemy", {})
-    if int(reset_player.get("tile", 0)) != 4 or int(reset_enemy.get("tile", 0)) != 7 or int((reset_player.get("health", [0, 0]) as Array)[0]) != 30:
-        failures.append("Restart must restore the 4/7 and 30 health combat baseline.")
+    if int(reset_player.get("tile", 0)) != 4 or int(reset_enemy.get("tile", 0)) != 6 or int((reset_player.get("health", [0, 0]) as Array)[0]) != 30:
+        failures.append("Restart must restore the 4/6 and 30 health combat baseline.")
     if str(board.get_meta("presentation_state", "")) != "planning" or board._inputs_locked() or not bool(board.combat_state.get("ai_enabled", false)):
         failures.append("Restart must return to unlocked planning state.")
     board.queue_free()

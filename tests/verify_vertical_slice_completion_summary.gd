@@ -53,7 +53,16 @@ func _run() -> void:
             }
         }
         _expect_true(run.mark_combat_finished(result), "Duel %d terminal result must enter Review." % duel)
-        _expect_true(run.advance(), "Duel %d Review → Result." % duel)
+        _expect_true(run.advance(), "Duel %d Review must advance." % duel)
+        if duel == 3:
+            _expect_eq(run.get_current_screen(), "FAILURE_RETRY", "The first loss must offer its free retry before Result.")
+            _expect_true(run.retry_failed_duel(), "Completion history must retry the first loss from the same pre-battle state.")
+            var retry_result := result.duplicate(true)
+            retry_result["outcome"] = "win"
+            _expect_true(run.mark_combat_finished(retry_result), "Retry win must enter Review and commit the duel once.")
+            _expect_true(run.advance(), "Retry Review → Result.")
+        else:
+            _expect_eq(run.get_current_screen(), "RESULT", "Winning Review must advance to Result.")
 
         if duel == 1 or duel == 4:
             _expect_true(run.set_pending_result_reward({

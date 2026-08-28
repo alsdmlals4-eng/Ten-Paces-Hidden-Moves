@@ -363,6 +363,7 @@ Google Sheets는 신규 기획 입력 경로로 사용하지 않으며 migration
 - CI 공급망 mutable/stale action-pin 후속은 Issue #140에서 `RESOLVED / CLOSED_COMPLETED`; 현재 미해결 위험이 아니다.
 - `OBSERVATION_ANSWER_LEAK_RISK`는 직접 공개를 바꾸지 않은 채 사람 측정을 기다린다.
 - `future_product_mutation_authorized: true_FOR_ISSUE_258_ONLY`는 승인된 Issue #258 범위만 연다. 다른 제품 mutation은 계속 새 명시 요청과 fresh Gate가 필요하다.
+- Issue #258 구현 branch에서는 4/6 공개 거리2, 10개 기초 행동, 행동계획 실행 CTA, 공개 상태 AI·관찰 가드, 첫 패배 동일 시드 1회 재시도 경계를 자동 회귀로 검증했다. 병합 전이며 Windows visible, Human, 접근성 사용자, Android 실기기, Release 성능은 `NOT_RUN`이다. Notion Home/Flow는 safe merge와 main readback 전 수정하지 않는다.
 
 ## 상태 표현 규칙
 

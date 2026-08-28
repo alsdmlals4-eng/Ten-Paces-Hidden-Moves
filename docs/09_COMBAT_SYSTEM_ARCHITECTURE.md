@@ -194,3 +194,9 @@ godot_full_validation: PENDING
 windows_validation: NOT_RUN
 human_validation: NOT_RUN
 ```
+
+### 10.6 Issue #258 reconciliation (병합 전)
+
+공용 `CombatResolutionEngine`은 4/6 시작 state, 구조화 `range`와 `damage_formula`, 관찰점과 적 잠금 행동 유형 공개를 소유한다. `CombatAiPlanner`는 공개 snapshot만 읽고 관찰을 후보에 넣지 않는다. `VerticalSliceRunState`와 `VerticalSliceProgressionState`는 전투 전 snapshot 검증·복원 및 1회 동일 시드 재시도 경계를 소유한다. UI는 계산·보상·재시도 규칙을 만들지 않는다.
+
+자동 Godot 회귀는 branch에서 실행했지만 Windows visible, Human, 접근성 사용자, Android 실기기, Release 성능은 `NOT_RUN`이다.

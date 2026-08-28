@@ -31,7 +31,7 @@ func _ready() -> void:
 
 func restart_combat() -> void:
     _player_tile = int(contract.get("player_start_tile", 4))
-    _enemy_tile = int(contract.get("enemy_start_tile", 7))
+    _enemy_tile = int(contract.get("enemy_start_tile", 6))
     super.restart_combat()
     if is_instance_valid(action_selection_dock):
         action_selection_dock.set_interaction_state("new_combat")
