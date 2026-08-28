@@ -170,18 +170,18 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "user_directed_planning_status: PLANNING_COMPLETE_VISUAL_PRODUCTION_ACTIVE",
+            "user_directed_planning_status: PHASE_1_REMAINING_PLANNING_REVIEW_IN_PROGRESS",
             current_section,
         )
         self.assertIn("planning_execution_surface: GPT_WORK", current_section)
         self.assertIn("planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md", current_section)
-        self.assertIn("planning_visual_next: WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_V2_NO_FLOOR_GRID_REVIEW", current_section)
+        self.assertIn("planning_visual_next: NONE_BOARD_R2_USER_FINAL_LOCKED_NO_AUTOMATIC_NEXT", current_section)
         self.assertIn(
-            "planning_visual_generation: INITIAL_ONE_PLUS_USER_DIRECTED_SINGLE_CORRECTION_20260827_NO_AUTO_FOLLOWUP",
+            "planning_visual_generation: SCOPED_SINGLE_RESULT_FINAL_USER_LOCK_R2_COMPLETE",
             current_section,
         )
         self.assertIn(
-            "planning_visual_review: WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_V2_NO_FLOOR_GRID_IN_REVIEW_DOGYEOM_RUNTIME_ASSETS_PRESERVED",
+            "planning_visual_review: PROJECT_CORE_SCENE_VISUAL_BOARD_R2_USER_FINAL_LOCKED_PLANNING_ONLY_DOGYEOM_RUNTIME_ASSETS_PRESERVED",
             current_section,
         )
         self.assertIn(
@@ -194,6 +194,14 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertIn(
             "planning_visual_authority: TEN-DEC-20260820-VISUAL-UX-SYSTEM-01",
+            current_section,
+        )
+        self.assertIn(
+            "planning_visual_planning_anchor_decision: TEN-DEC-20260828-WARM-DUSK-V2-PLANNING-ANCHOR-01",
+            current_section,
+        )
+        self.assertIn(
+            "planning_visual_cadence_decision: TEN-DEC-20260828-CORE-SCENE-VISUAL-BOARD-FINAL-LOCK-CADENCE-01",
             current_section,
         )
         self.assertIn(
