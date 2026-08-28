@@ -3,6 +3,7 @@
 > 상태: APPROVED_PLANNING_DETAIL  
 > 상위 Decision: `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01`  
 > 상세 Decision: `TEN-DEC-20260820-VERTICAL-SLICE-CONTENT-DETAIL-01`  
+> 첫 5전 패배·재도전 scope: `TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01`
 > 상위 정본: `docs/12_VERTICAL_SLICE_JIANGHU_JOURNEY.md`  
 > 전투 규칙: `docs/02_COMBAT_RULES.md`  
 > 콘텐츠 슬롯: `docs/03_CONTENT_CATALOG.md`  
@@ -309,11 +310,12 @@ Review는 `왜 일어났는가`만 설명한다.
 Review와 역할을 섞지 않는다.
 
 표시 순서:
-1. 승/패 결과
-2. 승인된 전투 등급/핵심 지표
-3. 보상 선택
-4. 상대의 짧은 반응 1~2줄
-5. 다음 Route로 이동
+1. 승/패 결과와 실제 핵심 지표
+2. 승리면 승인된 보상 선택 → 상대의 짧은 반응 1~2줄 → 다음 Route로 이동
+3. 첫 패배면 원인 요약 → 무료 동일-seed 재도전 `1회` 또는 회차 종료
+4. 재도전 뒤 패배면 원인 요약 → 회차 종료·타이틀 복귀만
+
+첫 5전 패배 결과에는 보상 선택·Route 이동·`[영구재화]` 비용·잔액을 표시하지 않는다. 유료 재도전은 후속 확장으로 보류한다.
 
 상대 대사는 공략법이 아니라 **플레이어 변화의 거울**이어야 한다.
 

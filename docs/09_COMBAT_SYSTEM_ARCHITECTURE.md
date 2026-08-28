@@ -44,7 +44,7 @@ planning budget/manual/duel/map/run-state JSON
 
 ## 4. 현재 `CombatState`와 `RunState`
 
-`RunState`는 회차 생존과 진행을 소유한다: run ID/seed, 현재·방문 노드, 이월 체력, 금전, 무공별 성급, 해금 기술, `[의료]`, 현재 전투 ID, 같은 전투 재도전 횟수. `[영구재화]`는 `RunState` 밖의 permanent profile이 소유한다.
+`RunState`는 회차 생존과 진행을 소유한다: run ID/seed, 현재·방문 노드, 이월 체력, 금전, 무공별 성급, 해금 기술, `[의료]`, 현재 전투 ID, 같은 전투 재도전 횟수. `[영구재화]`는 `RunState` 밖의 permanent profile이 소유하지만, 첫 5전 Slice에는 노출·결제·저장을 하지 않는다. 첫 5전 패배 scope의 현행 권위는 `TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01`이다.
 
 `CombatState`는 한 전투의 판정만 소유한다: round/bundle, 위치, 체력, 기력, 내력, 기세, 누적 방어도, 회피 스택, 필중 스택, 강건 스택, 임시 상태, 확정 행동·타격 진행·효과 소비 기록.
 
@@ -53,10 +53,11 @@ RunState + BattleDefinition
 → PRE_BATTLE_RUN_STATE snapshot
 → CombatState 생성
 → 승리: 체력·회복·보상·노드 진행을 RunState에 1회 commit
-→ 패배 재도전: 영구재화 결제 후 snapshot 복원·동일 seed 재생성
+→ 첫 패배: Review → Failure Result → 1회 무료 동일-seed snapshot 복원
+→ 재도전 뒤 패배: 보상·Route 없이 회차 종료·타이틀 복귀
 ```
 
-전투 진입 시 기력·내력은 최대, 기세0, 임시 상태 clear, 위치는 battle definition을 사용한다. 패배 전투의 피해·임시 자원·미획득 보상은 롤백하지만 영구재화 결제는 permanent profile에 남는다.
+전투 진입 시 기력·내력은 최대, 기세0, 임시 상태 clear, 위치는 battle definition을 사용한다. 첫 5전 무료 재도전에서는 패배 전투의 피해·임시 자원·임시 상태·미획득 보상·노드 진행을 롤백한다. 영구재화 결제는 이 Slice에 없으며, 기존 유료 1/2/3 모델은 후속 확장으로 보류한다.
 
 ## 5. 공개 상태 라이벌 후보 AI 경계
 
@@ -98,9 +99,11 @@ attack_action_finished | non_attack_action_resolved
 
 `planning → committed → resolving → presenting_result → next_bundle_ready | combat_ended`. 빠른 재생·즉시 완료는 큐 대기만 줄이고 결과를 바꾸지 않는다.
 
-## 8. 종료·재시작과 유료 재도전
+## 8. 종료·재시작과 첫 5전 재도전
 
-현행 `restart_combat()`은 T0 개발용 완전 초기화로 유지한다. PoC 회차에서는 노출하지 않고 `RunState` retry service가 전투 직전 snapshot·영구재화 1/2/3 결제·동일 seed 복원을 담당한다. 반복 재도전에서 보상·노드 진행·signal·로그·효과 소비가 중복되거나 영구재화가 롤백되면 실패다.
+현행 `restart_combat()`은 T0 개발용 완전 초기화로 유지한다. 첫 5전 제품 흐름은 이를 노출하지 않고 `RunState` retry service가 첫 패배 뒤 한 번만 전투 직전 snapshot과 동일 seed를 복원한다. 두 번째 패배는 보상·노드 진행 없이 회차 종료·타이틀 복귀다. 재도전에서 보상·노드 진행·signal·로그·효과 소비가 중복되면 실패다.
+
+`[영구재화]` 1/2/3 결제, permanent profile 비롤백, 잔액 부족은 `DEFERRED_POST_SLICE_EXTENSION`이다. 재화 source·profile/save·결제 복구·실제 실패 경험이 함께 승인되기 전에는 첫 5전 제품 흐름이나 테스트의 요구사항으로 사용하지 않는다.
 
 ## 9. 검증 경계
 
@@ -110,8 +113,9 @@ attack_action_finished | non_attack_action_resolved
 - 기본 절초 시작 가용성과 무공 10성 절초의 성급 기반 해금.
 - `timing_results`와 `presentation_events` 순서 일치.
 - AI 비공개 입력 부재.
-- 유료 재도전 snapshot 복원·영구재화 비롤백·보상 1회 commit.
-- T0 개발용 재시작과 PoC 회차 재도전 분리.
+- 첫 패배의 무료 동일-seed snapshot 복원·보상 1회 commit.
+- 두 번째 패배의 재도전 차단·회차 종료/타이틀 복귀.
+- T0 개발용 재시작과 첫 5전 제품 재도전 분리.
 
 첫 5전 PC-first App Flow/RunState/후보·Route/Review·Result 구조는 Phase I–VI로 main에 병합되고 자동 검증 GREEN이다. 그러나 최신 전투 규칙·시작 거리·기초 행동10종을 현재 T0 전투 코어에 반영하는 작업과 Windows visible/Human 검증은 별도 후속 범위다. 아래 Dock 경계는 현 T0 구현 계보를 설명한다.
 

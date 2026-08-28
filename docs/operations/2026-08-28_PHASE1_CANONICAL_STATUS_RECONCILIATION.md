@@ -202,3 +202,37 @@ The current-task documentation PR cannot yet be safely squash-merged because the
 ### Lesson and Base promotion
 
 `NO_BASE_PROMOTION`: this is an external GitHub Actions capacity condition, not a reusable project-specific design or implementation lesson. The Base already requires exact-head checks and prohibits bypassing them.
+
+## Update 5 · First-five defeat/retry scope approved
+
+```yaml
+decision_id: TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01
+status: APPROVED_CURRENT_IMPLEMENTATION_BINDING_REQUIRED
+approval_source: "user explicit: 권장안대로 진행"
+selected_option: A
+first_five_policy: ONE_FREE_SAME_SEED_RETRY_PER_DUEL_THEN_END_RUN
+paid_retry_policy: DEFERRED_POST_SLICE_EXTENSION_REQUIRES_NEW_APPROVAL
+runtime_mutation: NONE
+runtime_evidence: NOT_RUN
+human_player_evidence: NOT_RUN
+```
+
+### Resolved conflict
+
+The canonical architecture/UI/planning contract required a paid permanent-currency retry `1/2/3`, while the actual first-five shell only has a victory-tested Result path and its screen inventory marked failure/retry `NOT_APPLICABLE`. The two states could not prove the intended `failure → review → revised plan` loop.
+
+### Resolution
+
+For the first-five slice, the player receives one free retry from the pre-battle snapshot against the same seed after the first failure. A second loss ends the run and returns to title; it grants no reward and cannot advance a Route. Permanent currency, balance, paid retry, profile persistence, and payment recovery remain deferred. This preserves the learning loop while avoiding an unproven economy/save expansion before Human fun evidence.
+
+### Required later validation
+
+- exactly-one retry and retry-exhausted result;
+- same opponent/seed and full pre-battle rollback;
+- no duplicate reward, Route advancement, signal, or log consumption;
+- no permanent-currency or paid-retry surface in the first-five slice;
+- Windows visible/Human, accessibility, Android, and Player Experience evidence remain separate `NOT_RUN` gates.
+
+### Base promotion decision
+
+`NO_BASE_PROMOTION`: the retry limit, same-seed policy, 5-duel slice, and deferred currency model are 십보강호-specific. Base already owns the general discipline of separating player-facing learning loops from unvalidated progression economies.

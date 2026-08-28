@@ -191,6 +191,18 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             "user_directed_planning_status: PHASE_1_REMAINING_PLANNING_AND_ADVERSARIAL_REVIEW_IN_PROGRESS",
             current_section,
         )
+        self.assertIn(
+            "user_directed_planning_latest_decision: TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_failure_retry: ONE_FREE_SAME_SEED_RETRY_PER_DUEL_THEN_END_RUN_USER_APPROVED_IMPLEMENTATION_REQUIRED",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_pending_material_decision: NONE_DECISIONS_RESOLVED_FINAL_REVIEW_THEN_SINGLE_CONSOLIDATED_IMPLEMENTATION_CONTRACT",
+            current_section,
+        )
         self.assertIn("planning_execution_surface: GPT_WORK", current_section)
         self.assertIn("planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md", current_section)
         self.assertIn("planning_visual_next: NONE_BOARD_R2_USER_FINAL_LOCKED_NO_AUTOMATIC_NEXT", current_section)
@@ -325,9 +337,49 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             "USER_APPROVED_IMPLEMENTATION_BINDING_REQUIRED",
             status["opening_distance_runtime_mapping_status"],
         )
+        self.assertEqual(
+            "TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01",
+            status["current_first_five_defeat_retry_scope_decision"],
+        )
+        self.assertEqual(
+            "ONE_FREE_SAME_SEED_RETRY_PER_DUEL_THEN_END_RUN",
+            status["first_five_defeat_retry_scope"],
+        )
+        self.assertEqual([], status["pending_material_decisions"])
         self.assertIn(
-            "FAILURE_RETRY_PLAYER_JOURNEY_SCOPE_DECISION",
-            status["pending_material_decisions"],
+            "TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01",
+            status["resolved_material_decisions"],
+        )
+
+    def test_first_five_defeat_retry_decision_keeps_paid_retry_out_of_scope(self) -> None:
+        decision_id = "TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01"
+        decision_text = (
+            ROOT
+            / "docs"
+            / "decisions"
+            / "2026-08-28_FIRST_FIVE_DEFEAT_RETRY_SCOPE_DECISION.md"
+        ).read_text(encoding="utf-8")
+        run_state_contract = json.loads(
+            (ROOT / "docs" / "planning-data" / "poc_run_state_contract.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        ui_text = (ROOT / "docs" / "07_COMBAT_UI_SPEC.md").read_text(encoding="utf-8")
+        lifecycle_text = (ROOT / "docs" / "CANON_LIFECYCLE_REGISTRY.md").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("1회 무료 동일-seed 재도전", decision_text)
+        self.assertIn("영구재화", decision_text)
+        self.assertIn(decision_id, lifecycle_text)
+        self.assertIn("1회 무료 동일-seed 재도전", ui_text)
+        self.assertEqual(
+            "ONE_FREE_SAME_SEED_RETRY_PER_DUEL_THEN_END_RUN",
+            run_state_contract["first_five_slice_defeat_retry"]["policy"],
+        )
+        self.assertEqual(
+            "OUT_OF_SCOPE_FOR_FIRST_FIVE_SLICE",
+            run_state_contract["defeat_retry"]["first_five_slice_status"],
         )
 
     def test_no_temporary_pin_exceptions_remain_after_live_editor_migration(self) -> None:
