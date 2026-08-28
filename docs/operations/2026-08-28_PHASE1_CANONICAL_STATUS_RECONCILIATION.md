@@ -177,3 +177,28 @@ human_evidence: NOT_RUN
 ```
 
 This closes the opening-distance `USER_DECISION_REQUIRED` finding without changing `data/`, `src/`, `scenes/`, assets, or runtime tests. The legacy `4/7` / distance `3` product path remains `IMPLEMENTED_LEGACY` until the later implementation contract is approved and executed. The next material design question is the player-facing failure/retry journey scope.
+
+## Update 4 · GitHub Actions queue incident
+
+> Classification: `EXTERNAL_VALIDATION_BLOCKED`; no product or canonical-rule failure has been found.
+
+### Statement
+
+The current-task documentation PR cannot yet be safely squash-merged because the exact-head remote check `Validate Approved Protected Change Workflow / contract` remains queued. Its local equivalent passes; all other reported exact-head checks pass.
+
+### Evidence
+
+- Current-task PR: `#256`, head `76b2917a13b16dfd59feec2c221edce44cc150c7`.
+- Local exact workflow command: `python -m unittest tests.test_approved_protected_change_workflow -v` → `PASS` (1 test).
+- Remote exact-head checks: all reported checks other than the queued workflow completed `SUCCESS`.
+- GitHub queue readback: the same repository has unrelated queued runs older than 41 hours. Those branches and runs remain read-only under the open-PR concurrency rule.
+
+### Disposition and next validation
+
+- Do not cancel, restart, merge around, bypass, or modify another PR's run.
+- Do not write the user-facing Notion projection before the repository change is accepted on `main`.
+- After the queued check completes successfully: re-read the exact PR head/check result, perform the allowed current-task squash merge, re-read `main`, then update and read back Project Notion Home.
+
+### Lesson and Base promotion
+
+`NO_BASE_PROMOTION`: this is an external GitHub Actions capacity condition, not a reusable project-specific design or implementation lesson. The Base already requires exact-head checks and prohibits bypassing them.
