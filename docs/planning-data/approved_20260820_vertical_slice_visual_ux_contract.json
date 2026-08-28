@@ -7,7 +7,9 @@
   "core_sentence": "UNCERTAINTY_BEFORE_COMMIT_CLARITY_AFTER_RESOLUTION",
   "product_implementation_authorized": false,
   "image_generation_authorized": false,
-  "image_generation_gate": "USER_EXPLICIT_REQUEST_REQUIRED",
+  "historical_image_generation_gate": "USER_EXPLICIT_REQUEST_REQUIRED",
+  "image_generation_gate": "ACTUAL_GAME_CONSUMER_AND_SCOPED_BRIEF_REQUIRED_PRE_GENERATION_USER_APPROVAL_NOT_REQUIRED_FINAL_USER_LOCK_REQUIRED",
+  "current_visual_cadence_authority": "docs/planning-data/current_visual_production_handoff_20260826.json#image_production_cadence",
   "screen_flow": [
     "MAIN",
     "SETUP_6_CHOOSE_4",
@@ -76,5 +78,5 @@
     "REVIEW_BECOMES_AUTOMATIC_COACHING",
     "ROUTE_BECOMES_LARGER_META_GAME_THAN_COMBAT"
   ],
-  "next_state": "AWAITING_EXPLICIT_ASSET_OR_IMPLEMENTATION_REQUEST"
+  "next_state": "PHASE_1_REMAINING_PLANNING_REVIEW_THEN_SINGLE_IMPLEMENTATION_CONTRACT"
 }

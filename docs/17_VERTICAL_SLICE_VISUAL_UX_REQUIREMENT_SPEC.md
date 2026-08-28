@@ -4,7 +4,7 @@
 > 상태: `APPROVED_VISUAL_UX_REQUIREMENT`  
 > 상위 기획 완료 Decision: `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`  
 > 제품 구현 권한: `false`  
-> 새 이미지 생성 권한: `USER_EXPLICIT_REQUEST_REQUIRED`
+> 새 이미지 생성 Gate: `ACTUAL_GAME_CONSUMER_AND_SCOPED_BRIEF_REQUIRED / PRE_GENERATION_USER_APPROVAL_NOT_REQUIRED / FINAL_USER_LOCK_REQUIRED`
 
 이 문서는 첫 5전 Vertical Slice의 텍스트 기획을 다시 열지 않고, 기존 수묵 전투 자산·Combat UI·비전투 Flow를 하나의 시각/UX 언어로 묶는 **Visual/UX 구현 입력 계약**이다.
 
@@ -65,7 +65,7 @@ Visual/UX는 이 규칙을 더 잘 읽게 해야지 새 판정·새 자원·새 
 | Setup | 어떤 4권으로 나를 정의할까? | 선택한 4권 | 무공을 플레이어 정체성으로 보이게 | 덱/손패/드로우 문법 |
 | Intro | 왜 이 비무행을 걷는가? | 플레이어 + 목적 | 짧은 무협 화폭으로 첫 비무에 연결 | 장문 세계관 설명 |
 | Briefing | 이 상대의 무엇을 믿고 무엇을 의심할까? | 상대 → 공개 무공 → 습관/반례 | 정답이 아니라 가설 형성 | 잠금 계획·AI 가중치·정답 대응 공개 |
-| Combat | 어떤 3/3/4 계획을 잠글까? | 전장 + 거리 + 현재 묶음 | 기존 Combat UI가 주인공 | 초상/연출이 전장 가림 |
+| Combat | 어떤 3/3/4 계획을 실행할까? | 전장 + 거리 + 현재 묶음 | 기존 Combat UI가 주인공 | 초상/연출이 전장 가림 |
 | Review | 왜 방금 결과가 났나? | 사건 1~3개 | 원인 → 결과 순서 명료화 | 다음 수 자동 코칭 |
 | Result | 무엇을 얻었고 다음 상대는 누구인가? | 승패/등급 → 보상 → 다음 상대 | 긴장 해소 + 다음 긴장 생성 | Route 선택까지 압축 |
 | Route 1 | 지금 회복/성장 중 무엇이 필요한가? | 2개 선택 | 현재 상태와 선택 결과 직접 비교 | 거대 월드맵 |
@@ -225,7 +225,7 @@ Review는 게임 해설이 아니라 **판정 복기**다.
 - Windows와 Android는 동일한 핵심 정보 필드를 유지한다.
 - 플랫폼 차이는 정보 삭제가 아니라 배치 재구성으로 해결한다.
 - 모바일 축소에서 장식/풍경/보조 설명을 먼저 접거나 줄인다.
-- Combat 우선순위는 `거리 → 자원 → 현재 3/3/4 → 잠금 상태`다.
+- Combat 우선순위는 `거리 → 자원 → 현재 3/3/4 → 실행 가능/해결 중 상태`다.
 - Briefing 우선순위는 `상대 → 공개 무공 → 습관 → 반례`다.
 - Route 우선순위는 `선택 결과 → 현재 상태 → 다음 상대 맥락`이다.
 - 포커스·키보드·게임패드·터치에서 Primary CTA와 선택 상태가 명확해야 한다.
@@ -288,7 +288,7 @@ Review는 게임 해설이 아니라 **판정 복기**다.
 위험: PC UI 단순 축소.  
 대응: 핵심 정보 필드를 유지하면서 상세/장식만 접는 반응형 계층을 사용한다.
 
-현재 검토 결과: **코어 기획 Reopen 필요 없음**.
+2026-08-28 현재 판정: Visual Direction과 Board R2는 planning-only lock을 유지한다. 다만 공개 시작 거리·기초 행동 수·CTA/runtime 의미를 맞추기 위한 Phase 1 정본/구현계 review는 reopen 상태이며, 이는 이 문서의 Visual Direction을 자동 변경하지 않는다.
 
 ---
 
@@ -307,25 +307,24 @@ Review는 게임 해설이 아니라 **판정 복기**다.
 
 ## 15. 다음 Gate
 
-Visual/UX 요구사항 검토는 완료했다.
+Visual/UX 요구사항의 기본 방향은 완료·보호 상태다. 현재 Phase 1은 이를 다시 발명하지 않고 실제 runtime과의 정합성·플레이어 경험 검토를 수행한다.
 
 현재 상태:
 
 ```yaml
 visual_ux_requirement: COMPLETE
-visual_asset_generation: NOT_REQUESTED
+visual_direction_planning_anchor: USER_APPROVED_PLANNING_ONLY
+core_scene_visual_board: USER_FINAL_LOCKED_PLANNING_ARTIFACT_ONLY
+visual_asset_generation: NO_AUTOMATIC_NEXT_GENERATION
+pre_generation_user_approval: NOT_REQUIRED_FOR_SCOPED_CONSUMER_WORK
+final_user_lock: REQUIRED
 product_implementation_authorized: false
 human_visual_approval: NOT_RUN
 windows_visible_layout_validation: NOT_RUN
 android_physical_layout_validation: NOT_RUN
 ```
 
-다음은 사용자 명시 요청에 따라 둘 중 하나다.
-
-1. **이미지 제작 요청** → `TEN-VIS-A01`부터 정확히 1장씩 생성·승인·구조화 루프.
-2. **제품 구현 요청** → `docs/16_VERTICAL_SLICE_IMPLEMENTATION_HANDOFF_PLAN.md`와 이 문서를 함께 fresh-read하고 current Entry Gate를 확인한 뒤 구현 작업 계약을 작성.
-
-두 요청이 모두 없으면 `AWAITING_EXPLICIT_ASSET_OR_IMPLEMENTATION_REQUEST`로 유지한다.
+현재 순서는 남은 Phase 1 기획·적대 검토 → Grill Me 핵심 결정 → 단일 통합 구현 계약이다. 새 소비처가 확정된 이미지 작업은 scoped brief 뒤 pre-generation 승인 없이 한 결과를 생성하고, adversarial review 후 사용자의 final lock만 받는다. 제품 구현은 그 단일 계약과 별도 Codex Godot handoff 뒤에만 시작한다.
 
 ---
 
@@ -333,6 +332,8 @@ android_physical_layout_validation: NOT_RUN
 
 > Issue: [#238](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/238) · detail inventory: [#243](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/243)
 > 범위: 기본 진입 `res://scenes/run/vertical_slice_shell.tscn`의 첫 5전 Vertical Slice. 이 절은 이 문서의 화면별 Visual/UX 계약을 **actual runtime consumer와 coverage 상태로 읽기 위한 current projection**이다. Asset Manifest·승인 lifecycle·runtime PASS의 독립 정본이 아니다.
+
+이 coverage는 현재 화면 연결을 뜻할 뿐, 전투 코어가 최신 공개 시작 거리2·기초 행동10종·`행동계획 실행` copy까지 반영됐다는 뜻은 아니다. 그 runtime delta와 Human evidence는 Phase 1 단일 구현 계약 입력으로 별도 관리한다.
 
 ### 16.1 목표 Build와 화면 family 판정
 
@@ -368,7 +369,7 @@ image_generation_policy: NO_AUTOMATIC_IMAGE_GENERATION_FROM_GAPS
 | `SCREEN_SETUP` | P0 | Main → Intro | 어떤 4권으로 나를 정의할까? / 선택 수·무공 목록 | `VerticalSliceShell._build_setup_options` | Godot toggle buttons·text | `COVERED_EXISTING` |
 | `SCREEN_INTRO` | P0 | Setup → Briefing | 왜 첫 비무행을 걷는가? / 짧은 목적·선택 무공 | `VerticalSliceShell._render_current_screen` | Godot text/panel | `COVERED_EXISTING` |
 | `SCREEN_BRIEFING` | P0 | Intro/Route Info → Combat | 무엇을 믿고 의심할까? / 상대·공개 무공·습관 | `VerticalSliceShell._render_briefing` | Godot text/panel; hidden-plan exclusion in code text | `COVERED_EXISTING` |
-| `SCREEN_COMBAT` | P0 | Briefing → Review | 어떤 3/3/4 계획을 잠글까? / 전장·거리·현재 묶음 | `VerticalSliceCombatBridge` → `CombatBoardPreview` | existing combat runtime; focused Godot evidence | `COVERED_EXISTING` |
+| `SCREEN_COMBAT` | P0 | Briefing → Review | 어떤 3/3/4 계획을 실행할까? / 전장·거리·현재 묶음 | `VerticalSliceCombatBridge` → `CombatBoardPreview` | existing combat runtime; focused Godot evidence | `COVERED_EXISTING` |
 | `OVERLAY_REVIEW` | P0 | terminal Combat → Result | 왜 방금 결과가 났나? / 실제 사건 1~3개 | `CombatReviewPanel` via `VerticalSliceCombatBridge` | combat-on-screen overlay | `COVERED_EXISTING` |
 | `SCREEN_RESULT` | P0 | Review → Route/Completion | 무엇을 얻고 다음에 무엇을 준비할까? / 결과·보상 선택 | `VerticalSliceResultShell` (`src/run/vertical_slice_shell_result_auto.gd`) | Godot result options/text | `COVERED_EXISTING` |
 | `SCREEN_ROUTE_GROWTH` | P0 | Result → Route Info | 지금 무엇을 회복/성장시킬까? / locked opponent 맥락·3개 선택 | `VerticalSliceRouteShell` (`src/run/vertical_slice_shell_route_auto.gd`) | Godot option controls/text | `COVERED_EXISTING` |

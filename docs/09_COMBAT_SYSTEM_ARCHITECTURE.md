@@ -6,7 +6,7 @@
 
 ## 1. 아키텍처 원칙
 
-10칸·4/7 시작 위치와 비공개 3/3/4 계획 구조를 공용 엔진 계약으로 유지한다.
+10칸과 비공개 3/3/4 계획 구조를 공용 엔진 계약으로 유지한다. 현재 T0 구현의 4/7 시작 좌표는 `IMPLEMENTED_LEGACY`; 최신 제품 정본의 공개 시작 거리는2이며 플레이어-facing 표기는 `거리 N`이다. 두 상태를 같은 시작 규칙으로 취급하지 않는다.
 
 ```text
 런타임 JSON·입력
@@ -113,7 +113,7 @@ attack_action_finished | non_attack_action_resolved
 - 유료 재도전 snapshot 복원·영구재화 비롤백·보상 1회 commit.
 - T0 개발용 재시작과 PoC 회차 재도전 분리.
 
-전체 다음 PoC 아키텍처는 아직 `AUTHORED_NOT_IMPLEMENTED`다. 단, 행동 선택·수 배치 제품 UX는 아래 범위로 PR #66에서 구현 중이다.
+첫 5전 PC-first App Flow/RunState/후보·Route/Review·Result 구조는 Phase I–VI로 main에 병합되고 자동 검증 GREEN이다. 그러나 최신 전투 규칙·시작 거리·기초 행동10종을 현재 T0 전투 코어에 반영하는 작업과 Windows visible/Human 검증은 별도 후속 범위다. 아래 Dock 경계는 현 T0 구현 계보를 설명한다.
 
 ## 10. 행동 선택 Dock 구현 경계
 

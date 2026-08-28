@@ -1,12 +1,12 @@
 # 십보강호 · Visual Production Handoff · 2026-08-25
 
 > 목적: 새 ChatGPT/Codex 세션이 과거 채팅 기억에 의존하지 않고 현재 승인 Visual 품질과 작업 순서를 그대로 재개하기 위한 인수인계 원본.  
-> 상태: `USER_APPROVED_REFERENCE_SET / NEXT_BATCH_READY / RUNTIME_ART_INTEGRATION_NOT_RUN`  
+> 상태: `SUPERSEDED_HISTORICAL_HANDOFF / USER_APPROVED_REFERENCE_SET_PRESERVED`
 > 프로젝트: `alsdmlals4-eng/Ten-Paces-Hidden-Moves`  
 > 작성 기준 관측 main: `11b72d236809515b4c68a4650fb99c106139e9f9` — 다음 세션은 반드시 live main을 다시 읽을 것.  
 > 작성 기준 Base main: `af013a311dd2dadd991080e92bacb0572f0c2f69` — 프로젝트 Base pin과 current remote truth를 혼동하지 말 것.
 
-이 문서는 기존 `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md`를 대체하지 않는다. 17은 요구사항/Visual North Star, 본 문서는 **2026-08-25 실제 사용자 승인 Reference와 다음 제작 순서**를 소유한다.
+이 문서는 기존 `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md`를 대체하지 않는다. 17은 요구사항/Visual North Star, 본 문서는 **2026-08-25 실제 사용자 승인 Reference와 당시 제작 순서**를 보존한다. 현행 실행 cadence와 다음 작업은 `docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md` 및 `docs/planning-data/current_visual_production_handoff_20260826.json`을 따른다.
 
 시각 Reference의 human-facing 원본은 현재 DOMAIN_SPLIT에 따라 **Notion Asset Library / Home**가 소유한다. GitHub는 승인 상태·구조·brief·다음 작업·문제/교훈·runtime 경계를 소유하며, 채팅에서 생성된 원본 PNG를 runtime `assets/`에 자동 승격하지 않는다.
 
@@ -245,14 +245,14 @@ Human-facing canon:
 
 ---
 
-## 8. 현재 충돌·미해결 사항
+## 8. 당시 충돌·미해결 사항
 
-### `진행` vs `행동계획 잠금`
+### 역사 상태 · `진행` vs `행동계획 잠금`
 
 - Visual Reference: `진행` CTA 승인.
 - 전투 규칙 정본: `행동계획 잠금` 의미 계약 유지.
-- 상태: `SEMANTIC_RENAME_DECISION_PENDING`.
-- 새 채팅에서 시각 작업을 계속하는 데는 blocker가 아니지만 runtime UI 문구 변경 전에는 Decision 필요.
+- 당시 상태: `SEMANTIC_RENAME_DECISION_PENDING`.
+- 후속 `TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01`이 이 충돌을 `행동계획 실행`과 계획→전투·해결 애니메이션 전환으로 확정했다. 아래 설명은 당시 evidence로만 보존하며, 현행 CTA/시각 cadence는 `docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md`와 current visual handoff를 따른다.
 
 ### Google Sheet historical drift
 

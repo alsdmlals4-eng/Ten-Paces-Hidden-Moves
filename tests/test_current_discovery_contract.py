@@ -170,7 +170,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "user_directed_planning_status: PHASE_1_REMAINING_PLANNING_REVIEW_IN_PROGRESS",
+            "user_directed_planning_status: PHASE_1_REMAINING_PLANNING_AND_ADVERSARIAL_REVIEW_IN_PROGRESS",
             current_section,
         )
         self.assertIn("planning_execution_surface: GPT_WORK", current_section)
@@ -281,6 +281,23 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertEqual("BLOCKED_UNVERIFIED", gate["android_physical_device"])
         self.assertEqual("NOT_RUN", gate["human_validation"])
         self.assertFalse(gate["image_generation_authorized"])
+
+    def test_current_user_planning_status_keeps_phase1_review_before_one_contract(self) -> None:
+        status_path = ROOT / "docs/planning-data/current_user_planning_status.json"
+        status = json.loads(status_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(
+            "PHASE_1_REMAINING_PLANNING_AND_ADVERSARIAL_REVIEW_IN_PROGRESS",
+            status["user_directed_planning_status"],
+        )
+        self.assertEqual(
+            "PHASE_1_REMAINING_PLANNING_REVIEW_THEN_SINGLE_IMPLEMENTATION_CONTRACT",
+            status["next_phase"],
+        )
+        self.assertFalse(status["product_implementation_authorized"])
+        self.assertIn("CORE_RULE_AND_RUNTIME_DRIFT_REVIEW", status["current_work_order"])
+        self.assertIn("GRILL_ME_ONE_MATERIAL_DECISION_AT_A_TIME", status["current_work_order"])
+        self.assertIn("SINGLE_CONSOLIDATED_IMPLEMENTATION_CONTRACT_AFTER_USER_DECISIONS", status["current_work_order"])
 
     def test_no_temporary_pin_exceptions_remain_after_live_editor_migration(self) -> None:
         self.assertFalse(

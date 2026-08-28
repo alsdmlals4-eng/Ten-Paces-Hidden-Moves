@@ -44,7 +44,7 @@ t1:
 
 `STEP_0_TO_13_IMPLEMENTED`는 기존 T0 기술 PoC의 구현·자동 회귀 증거를 뜻한다. `mechanical_step14`와 `human_step14`는 최신 5전 계약의 사람 검증을 대신하지 않는다.
 
-현재 런타임은 기술 PoC로서 작동하지만 관찰·장풍·최신 스테이터스 배수·시작 빌드·짝수 성 성장·7성 기술 요구치·5전 회차·새 전투 종료 등급을 구현한 상태가 아니다.
+현재 런타임은 기술 PoC와 첫 5전 PC-first App Flow를 모두 가진다. 다만 전투 코어는 관찰·장풍·최신 스테이터스 배수·공개 시작 거리2·최신 시작 빌드·짝수 성 성장·7성 기술 요구치·새 전투 종료 등급을 아직 구현한 상태가 아니다. Phase I–VI 자동 GREEN은 이 최신 전투 의미의 구현·Windows visible·Human 검증을 대신하지 않는다.
 
 ## 3. 현행 T0 계약
 
@@ -63,7 +63,7 @@ T0와 최신 계획의 차이:
 - 최신 연격은 현재 순번 합→피해·중단→조건부 다음 순번 합을 사용한다.
 - 최신 시작 빌드는 총합20·3성 주4·7성 주8·짝수 성 신규 지급을 사용한다.
 - 최신 전투 종료 등급은 5개 원자료를 사용한다.
-- App Flow Shell·5전 경로·성장·결과 transaction은 미구현이다.
+- App Flow Shell·5전 경로·성장·결과 transaction은 PC-first 기능 흐름으로 구현되어 자동 검증 GREEN이다. 다만 해당 흐름이 소비하는 전투 코어는 위의 `IMPLEMENTED_LEGACY` 경계를 유지한다.
 
 ## 4. 다음 PoC·첫 데모 범위
 
@@ -275,7 +275,7 @@ T0 유지 기준:
 ## 14. 현재 판정
 
 ```yaml
-planning_contract: CURRENT_APPROVED_PLANNING
+planning_contract: CURRENT_APPROVED_PLANNING_PLUS_PHASE1_REVIEW
 current_t0_implementation: IMPLEMENTED_LEGACY
 next_demo_implementation: FIRST_FIVE_DUEL_PHASE_I_VI_MERGED_AUTOMATED_GREEN
 static_validation: PASS
@@ -288,4 +288,4 @@ t1_greenlight: NOT_GRANTED
 demo_ready: NO
 ```
 
-ActionSelectionDock의 기존 자동 검증 통과는 전체5전 PoC 구현 완료를 뜻하지 않는다. 최신 체크리스트는 `docs/08_TEST_CHECKLIST.md`가 소유한다.
+ActionSelectionDock 단독 자동 검증은 전체5전 Player Experience 완료를 뜻하지 않는다. 첫 5전 PC-first 기능 흐름은 별도 자동 검증 GREEN이지만, 최신 전투 규칙 반영·Windows visible·접근성·Human 플레이 증거는 아직 완료가 아니다. 최신 체크리스트는 `docs/08_TEST_CHECKLIST.md`가 소유한다.

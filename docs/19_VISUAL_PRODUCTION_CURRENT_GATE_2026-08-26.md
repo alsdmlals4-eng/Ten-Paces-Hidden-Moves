@@ -71,14 +71,14 @@
 
 ## 4. 이미지 생성 cadence
 
-생성형 이미지 작업이 필요한 경우 2026-08-26 r5.4 current execution contract의 Gate를 그대로 적용한다.
+생성형 이미지 작업은 actual consumer-first boundary를 유지하되, 2026-08-28 사용자 지시와 `TEN-DEC-20260828-CORE-SCENE-VISUAL-BOARD-FINAL-LOCK-CADENCE-01`의 현행 cadence를 적용한다.
 
 ```text
 canon + actual game consumer review
-→ text brief
-→ 사용자 명시 승인
+→ scoped text brief
 → 정확히 1개 결과 생성
-→ 사용자 결과 검토
+→ adversarial review
+→ 사용자 final lock
 → 다음 결과를 자동 생성하지 않음
 ```
 
@@ -171,7 +171,7 @@ consumer_first_visual_policy: USER_APPROVED_2026_08_26
 dogyeom_status_portrait_01: USER_APPROVED_2026_08_26
 dogyeom_status_portrait_01_local_asset: docs/visual-assets/approved/DOGYEOM_STATUS_PORTRAIT_01_v1.png
 dogyeom_status_portrait_01_notion_binary_attachment: PASS_20260826_READBACK
-next_safe_action: NEXT_SCOPED_PROJECT_DECISION_REQUIRED_NO_AUTOMATIC_IMAGE_WORK
+next_safe_action: FOLLOW_CURRENT_PHASE1_REVIEW_AND_SCOPED_CONSUMER_POLICY_NO_AUTOMATIC_IMAGE_WORK
 runtime_source_master_promotion: NOT_RUN
 opponent_specific_dogyeom_routing: AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER
 runtime_art_integration: AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER

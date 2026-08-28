@@ -8,7 +8,7 @@
   "runtime_entry": "res://scenes/run/vertical_slice_shell.tscn",
   "asset_production_policy": "ACTUAL_GAME_CONSUMER_FIRST",
   "automatic_image_generation_from_inventory_gaps": false,
-  "image_lifecycle": "CANON_REVIEW_THEN_TEXT_BRIEF_THEN_EXPLICIT_USER_APPROVAL_THEN_EXACTLY_ONE_RESULT_THEN_REVIEW",
+  "image_lifecycle": "CANON_REVIEW_THEN_SCOPED_TEXT_BRIEF_THEN_ONE_GENERATION_PASS_THEN_ADVERSARIAL_REVIEW_THEN_USER_FINAL_LOCK",
   "current_p0_runtime_blocking_image_gaps": 0,
   "superseded_handoff_correction": {
     "source": "docs/planning-data/current_visual_production_handoff_20260826.json#screen_surface_asset_audit_20260827",
@@ -107,7 +107,7 @@
       "family": "CORE_GAMEPLAY",
       "priority": "P0",
       "entry_exit": "SCREEN_BRIEFING → OVERLAY_REVIEW",
-      "player_goal_or_question": "어떤 3/3/4 계획을 잠글까?",
+      "player_goal_or_question": "어떤 3/3/4 계획을 실행할까?",
       "surface_kind": "RUNTIME_GAMEPLAY",
       "actual_consumer": "src/combat/combat_board_preview.gd",
       "runtime_asset_families": [
@@ -120,8 +120,8 @@
       "state_variants": [
         "distance",
         "action_selected",
-        "action_locked",
-        "resolve",
+        "canonical_action_plan_execution",
+        "runtime_committed_then_resolving",
         "ultimate_vfx"
       ],
       "image_requirement": "EXISTING_RUNTIME_ASSETS_REQUIRED",
@@ -130,7 +130,7 @@
       "repository_destination": "assets/backgrounds, assets/characters, assets/portraits, assets/ui/cards, assets/vfx",
       "notion_destination": "02 · 비주얼 바이블 / 04 · 에셋 라이브러리",
       "blockers": [
-        "Warm-dusk anchor is candidate-only and cannot replace the active background without its own approved implementation package"
+        "Warm-dusk v2 is a user-approved planning anchor only and cannot replace the active background without its own approved implementation package"
       ]
     },
     {
@@ -394,10 +394,11 @@
       "asset_family_id": "APPROVED_PRODUCTION_REFERENCES",
       "classification": "PRODUCTION_PLANNING_VISUAL",
       "actual_consumer": "Project Notion Visual Bible and Asset Library; docs/visual-assets",
-      "active_asset": "TEN-IMG-001, OPPONENT_CHARACTER_MASTER_01, TEN-VIS-A01, WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01 candidate",
+      "active_asset": "TEN-IMG-001, OPPONENT_CHARACTER_MASTER_01, TEN-VIS-A01, WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2 planning anchor, PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2 planning artifact",
       "states": [
         "approved_reference",
-        "candidate_in_review"
+        "user_approved_planning_anchor",
+        "user_final_locked_planning_artifact"
       ],
       "status": "NOT_RUNTIME_BY_DEFAULT",
       "production_rule": "not promoted to game build without a separate runtime consumer and implementation package"

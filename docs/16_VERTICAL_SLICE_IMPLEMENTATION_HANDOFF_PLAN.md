@@ -2,11 +2,11 @@
 
 > Planning Complete Decision: `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`  
 > Visual/UX Decision: `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01`  
-> 상태: `PLANNING_COMPLETE_USER_APPROVED`  
+> 상태: `SUPERSEDED_HISTORICAL_PHASE_I_VI_IMPLEMENTATION_HANDOFF`
 > Visual/UX 상태: `REQUIREMENT_COMPLETE`  
-> 구현 권한: `false` — 사용자의 별도 구현 요청 + current Entry Gate 확인 전 변경 금지
+> 역사 구현 권한: `false` — 이 문서 작성 당시의 Gate. 현재 추가 제품 구현은 남은 Phase 1 검토와 단일 통합 구현 계약 뒤에만 판단한다.
 
-이 문서는 **기획 완료 뒤 구현을 시작할 때 무엇을 다시 읽고 어떤 순서로 묶을지**를 정리하는 handoff다. 제품 코드·Scene·runtime data 자체를 변경하지 않는다.
+이 문서는 첫 5전 Phase I–VI 구현 전에 작성한 handoff다. 해당 bounded flow는 이후 main에 병합됐으며, 이 문서는 그 당시 범위·근거를 보존한다. 다음 구현은 이 문서를 현재 계약으로 재사용하지 않고, 남은 Phase 1 검토와 사용자 승인 뒤 작성될 단일 통합 구현 계약을 따른다.
 
 ## 1. 구현 전 fresh-read Gate
 
@@ -19,7 +19,7 @@
 5. 진행 중인 다른 PR/브랜치는 수정하지 않는다.
 6. 구현 권한과 플랫폼 검증 ceiling을 fresh truth 기준으로 다시 판정한다.
 
-`current_user_planning_status.json`과 최신 Planning/Visual Decision은 2026-08-20 사용자 지시의 최신 user-directed planning overlay다. 오래된 Review Ready/Visual Review Pending 문구가 남아 있으면 이 최신 Decision/Notion current truth와 대조해 live router를 교정한다.
+`current_user_planning_status.json`과 최신 Planning/Visual Decision은 이 문서의 2026-08-20 계획 상태보다 우선한다. 오래된 Review Ready/Visual Review Pending/implementation-pending 문구가 남아 있으면 current GitHub·Notion·runtime truth와 대조해 live router를 교정한다.
 
 ## 2. 구현 기준선
 
@@ -182,7 +182,4 @@ Planning/Visual Requirement 완료 이후에도 다음은 현재 PASS가 아니�
 
 ## 10. 다음 실행
 
-현재 상태는 `AWAITING_EXPLICIT_ASSET_OR_IMPLEMENTATION_REQUEST`다.
-
-- 사용자가 **이미지 제작을 요청**하면 `TEN-VIS-A01`부터 1장씩 생성 → 사용자 승인/수정/기각 → 승인 자산만 구조화/등록한다.
-- 사용자가 **제품 구현을 요청**하면 이 handoff, `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md`, current GitHub/Notion/Entry Gate를 fresh-read하고 **구현 작업 계약/계획**을 작성한 뒤 승인 범위에서만 제품 변경을 시작한다.
+역사 종료 상태는 `AWAITING_EXPLICIT_ASSET_OR_IMPLEMENTATION_REQUEST`였다. 현재 상태는 `docs/planning-data/current_user_planning_status.json`과 Active Context가 소유하며, 남은 Phase 1 검토와 사용자 핵심 결정을 닫은 뒤 하나의 통합 구현 계약만 작성한다.
