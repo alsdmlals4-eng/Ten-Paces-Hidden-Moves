@@ -72,6 +72,6 @@ notion_mutation: NOT_PERFORMED_UNTIL_SAFE_MERGE_AND_MAIN_READBACK
 
 ## 남은 위험과 rollback
 
-- preview 명상 회복은 이제 실행과 동일하게 카드 `restore`를 사용하며, 관찰점은 전투판의 명시적 요청으로 잠긴 적 행동 유형만 기록한다. 기술명·대상·피해·AI 사유/시드는 UI payload에 포함하지 않는다.
+- preview 명상 회복은 이제 실행과 동일하게 카드 `restore`를 사용하며, 적 계획은 각 planning 묶음 시작에 public-AI/fixture로 한 번만 고정한다. 관찰과 해결은 이 저장 계획을 같이 소비하고, 관찰 UI payload에는 행동 유형만 기록한다. 기술명·ID·타이밍·대상·피해·AI 사유/시드는 포함하지 않는다.
 - 관찰 공개와 재시도 흐름의 실제 Windows 입력·가독성은 아직 사람 검증이 필요하다.
 - rollback은 이 branch/PR의 단일 commit revert로 하며, data·runtime·tests·docs를 함께 되돌린다.

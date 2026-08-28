@@ -36,6 +36,7 @@ func _run() -> void:
     var after_reveal: Dictionary = reveal.get("state", {})
     if int((after_reveal.get("player", {}) as Dictionary).get("observation_points", 0)) != 0:
         failures.append("Observation must consume exactly one stored point.")
+    _expect_locked_enemy_plan_is_reused(engine, hud)
     await _expect_board_reveal_request()
     if failures.is_empty():
         print("PHASE2_OBSERVATION_VERIFY_OK")
@@ -68,6 +69,38 @@ func _expect_board_reveal_request() -> void:
         failures.append("The board must render accessible observation history/status text.")
     board.queue_free()
     await process_frame
+
+func _expect_locked_enemy_plan_is_reused(engine, hud: Dictionary) -> void:
+    var state: Dictionary = engine.make_initial_state(hud, 4, 6)
+    state["ai_enabled"] = true
+    engine.rules["enemy_bundles"] = {
+        "1": [{"card_id": "basic_quick_attack", "timing": 2, "direction": -1}]
+    }
+    var locked_types: Array = engine.get_locked_enemy_action_type_entries(state, 1)
+    if locked_types != [{"action_types": ["공격"]}]:
+        failures.append("A planning bundle must lock its initial public enemy action types.")
+    var player: Dictionary = (state.get("player", {}) as Dictionary).duplicate(true)
+    player["observation_points"] = 1
+    state["player"] = player
+    var reveal: Dictionary = engine.reveal_next_locked_enemy_action_types(state, locked_types)
+    if not bool(reveal.get("valid", false)):
+        failures.append("The locked plan must remain available for an explicit observation request.")
+    var uncommitted_player_placement := [{"definition": engine.cards_by_id.get("basic_meditate", {}), "anchor_index": 1, "span": 1}]
+    engine.preview_player_plan(state, uncommitted_player_placement)
+    engine.rules["enemy_bundles"] = {
+        "1": [{"card_id": "basic_move", "timing": 1, "direction": -1}]
+    }
+    var result: Dictionary = engine.resolve_bundle(uncommitted_player_placement, {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, state)
+    var enemy_actions: Array = []
+    for action_value in result.get("resolved_actions", []):
+        if typeof(action_value) == TYPE_DICTIONARY and str((action_value as Dictionary).get("actor", "")) == "enemy":
+            enemy_actions.append({"card_id": str((action_value as Dictionary).get("card_id", "")), "timing": int((action_value as Dictionary).get("timing", 0))})
+    if enemy_actions.is_empty() or enemy_actions[0] != {"card_id": "basic_quick_attack", "timing": 2}:
+        failures.append("Observation reveal and resolution must consume the same locked enemy action ID and timing after uncommitted player changes.")
+    var payload: Dictionary = reveal.get("payload", {})
+    for forbidden_key in ["card_id", "timing", "name", "target_tile", "damage", "ai_reason", "ai_seed"]:
+        if payload.has(forbidden_key):
+            failures.append("Locked-plan observation leaked %s." % forbidden_key)
 
 func _load_json(path: String) -> Dictionary:
     var file := FileAccess.open(path, FileAccess.READ)

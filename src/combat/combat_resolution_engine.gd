@@ -9,6 +9,8 @@ const CombatAiPlannerScript := preload("res://src/combat/combat_ai_planner.gd")
 var rules: Dictionary = {}
 var cards_by_id: Dictionary = {}
 var ai_planner: RefCounted
+var _locked_enemy_bundle_key := ""
+var _locked_enemy_actions: Array = []
 
 func _init() -> void:
     ai_planner = CombatAiPlannerScript.new()
@@ -41,6 +43,7 @@ func _load_json(path: String, label: String) -> Dictionary:
     return parsed
 
 func make_initial_state(hud_data: Dictionary, player_tile: int, enemy_tile: int) -> Dictionary:
+    clear_locked_enemy_bundle()
     var player := _prepare_combatant_start(hud_data.get("player", {}))
     var enemy := _prepare_combatant_start(hud_data.get("enemy", {}))
     player["tile"] = player_tile
@@ -148,7 +151,9 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
     logs.append("판정 순서: %s" % str(rules.get("resolution_order_label", "대응 → 속공 → 이동 → 일반 공격")))
 
     var actions := _build_player_actions(player_placements)
-    actions.append_array(_build_enemy_actions(bundle_index, state))
+    var locked_enemy_actions := _get_locked_enemy_actions(state, bundle_index)
+    _reserve_locked_enemy_ultimate_momentum(state, locked_enemy_actions)
+    actions.append_array(locked_enemy_actions)
     var state_before_response := state.duplicate(true)
     var response_action_start := resolved_actions.size()
     var response_log_start := logs.size()
@@ -317,6 +322,38 @@ func _build_enemy_actions(bundle_index: int, state: Dictionary = {}) -> Array:
             "ai_seed": int(entry.get("ai_seed", state.get("ai_decision_seed", 0)))
         })
     return result
+
+func lock_enemy_bundle(state_value: Dictionary, bundle_index: int) -> void:
+    var bundle_key := _enemy_bundle_key(state_value, bundle_index)
+    if bundle_key == _locked_enemy_bundle_key:
+        return
+    _locked_enemy_bundle_key = bundle_key
+    _locked_enemy_actions = _build_enemy_actions(bundle_index, state_value.duplicate(true)).duplicate(true)
+
+func clear_locked_enemy_bundle() -> void:
+    _locked_enemy_bundle_key = ""
+    _locked_enemy_actions.clear()
+
+func _get_locked_enemy_actions(state_value: Dictionary, bundle_index: int) -> Array:
+    lock_enemy_bundle(state_value, bundle_index)
+    return _locked_enemy_actions.duplicate(true)
+
+func _enemy_bundle_key(state_value: Dictionary, bundle_index: int) -> String:
+    return "%d:%d" % [int(state_value.get("round_number", 1)), bundle_index]
+
+func _reserve_locked_enemy_ultimate_momentum(state: Dictionary, actions: Array) -> void:
+    for action_value in actions:
+        if typeof(action_value) != TYPE_DICTIONARY:
+            continue
+        var definition: Dictionary = (action_value as Dictionary).get("definition", {})
+        if str(definition.get("source", "")) != "ultimate":
+            continue
+        var enemy: Dictionary = state.get("enemy", {})
+        var momentum := _resource_pair(enemy, "momentum")
+        if momentum.x == momentum.y:
+            _set_resource(enemy, "momentum", 0, momentum.y)
+            state["enemy"] = enemy
+        return
 
 func _actions_for_timing(actions: Array, timing: int) -> Array:
     var result: Array = []
@@ -762,7 +799,7 @@ func reveal_next_locked_enemy_action_types(state_value: Dictionary, locked_enemy
 
 func get_locked_enemy_action_type_entries(state_value: Dictionary, bundle_index: int) -> Array:
     var entries: Array = []
-    for action_value in _build_enemy_actions(bundle_index, state_value.duplicate(true)):
+    for action_value in _get_locked_enemy_actions(state_value, bundle_index):
         if typeof(action_value) != TYPE_DICTIONARY:
             continue
         var definition: Dictionary = (action_value as Dictionary).get("definition", {})

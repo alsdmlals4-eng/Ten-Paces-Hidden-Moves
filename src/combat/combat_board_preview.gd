@@ -99,6 +99,7 @@ func _ready() -> void:
 	_configure_ultimate_menu()
 	combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
 	combat_state["ai_enabled"] = true
+	resolution_engine.lock_enemy_bundle(combat_state, int(combat_state.get("bundle_index", 1)))
 	_sync_runtime_context()
 	_apply_combat_state_to_view()
 	resized.connect(_layout_board)
@@ -974,6 +975,7 @@ func _on_review_continue_requested() -> void:
 	var advanced := action_timing_panel.advance_after_resolution()
 	combat_state["round_number"] = int(advanced.get("round_number", combat_state.get("round_number", 1)))
 	combat_state["bundle_index"] = int(advanced.get("current_bundle", combat_state.get("bundle_index", 1)))
+	resolution_engine.lock_enemy_bundle(combat_state, int(combat_state.get("bundle_index", 1)))
 	_sync_runtime_context()
 	combat_progress_button.mark_resolution_applied()
 	_apply_combat_state_to_view()
@@ -1191,6 +1193,7 @@ func restart_combat() -> void:
 		opponent_hypothesis_panel.reset_to_initial()
 	combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
 	combat_state["ai_enabled"] = true
+	resolution_engine.lock_enemy_bundle(combat_state, int(combat_state.get("bundle_index", 1)))
 	_set_presentation_state("planning")
 	_sync_runtime_context()
 	_apply_combat_state_to_view()
