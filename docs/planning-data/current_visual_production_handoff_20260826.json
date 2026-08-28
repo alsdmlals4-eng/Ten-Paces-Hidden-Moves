@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project": "TEN_PACES",
   "updated_at": "2026-08-28",
-  "status": "WARM_DUSK_V2_USER_APPROVED_PLANNING_ANCHOR_ONLY_CORE_SCENE_BOARD_GENERATED_AWAITING_FINAL_LOCK_DOGYEOM_ASSETS_PRESERVED",
+  "status": "WARM_DUSK_V2_USER_APPROVED_PLANNING_ANCHOR_ONLY_CORE_SCENE_BOARD_USER_FINAL_LOCKED_PLANNING_ONLY_DOGYEOM_ASSETS_PRESERVED",
   "authority_role": "CURRENT_VISUAL_PRODUCTION_HANDOFF",
   "current_execution_contract": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
   "current_visual_production_decision": "TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01",
@@ -195,24 +195,25 @@
     "gpt_work_handoff_readback": "PASS_20260826",
     "dogyeom_status_portrait_01_notion_binary_delivery": "PASS_20260826_READBACK",
     "warm_dusk_v2_planning_anchor_visual_bible_attachment": "PASS_20260828",
-    "project_core_scene_visual_board_status_sync": "PASS_20260828_VISUAL_BIBLE_READBACK_PREVIEW_STATUS_ONLY",
-    "project_core_scene_visual_board_delivery": "PENDING_USER_FINAL_LOCK_THEN_VISUAL_BIBLE_ATTACHMENT_AND_READBACK"
+    "project_core_scene_visual_board_status_sync": "PASS_20260828_VISUAL_BIBLE_FINAL_LOCK_STATUS_READBACK",
+    "project_core_scene_visual_board_delivery": "PASS_20260828_VISUAL_BIBLE_ATTACHMENT_AND_FINAL_LOCK_READBACK"
   },
   "next_result": {
     "name": "Project core scene visual board",
     "id": "PROJECT_CORE_SCENE_VISUAL_BOARD",
     "purpose": "One planning visualization that verifies main entry, plan execution, combat resolution, review, route choice, and the locked visual grammar without claiming runtime implementation.",
-    "generation_status": "GENERATED_AWAITING_FINAL_LOCK_REVIEW",
-    "final_lock_status": "PENDING_USER_FINAL_LOCK",
+    "generation_status": "USER_FINAL_LOCKED_PLANNING_ONLY",
+    "final_lock_status": "USER_APPROVED_FINAL_LOCKED",
     "current_preview": {
       "id": "PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2",
-      "kind": "GENERATED_PLANNING_PREVIEW_ONLY",
-      "local_generated_path": "C:/Users/user/.codex/generated_images/01a04555-ef8d-7811-8812-c1c2494003b3/exec-7c67237e-b6fe-4ca3-8771-c30866d9a356.png",
+      "kind": "USER_FINAL_LOCKED_PLANNING_ARTIFACT_ONLY",
+      "local_generated_provenance_path": "C:/Users/user/.codex/generated_images/01a04555-ef8d-7811-8812-c1c2494003b3/exec-7c67237e-b6fe-4ca3-8771-c30866d9a356.png",
+      "repository_planning_artifact": "docs/visual-assets/planning/PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2.png",
       "sha256": "24fdd3a827ea36ead0364ed35c2a03689c969b4a1444823fa2e5ad94ac93ea33",
       "dimensions": "1672x941",
       "provenance": "BUILT_IN_IMAGEGEN_20260828",
-      "repository_asset_status": "NOT_CREATED_PENDING_FINAL_LOCK",
-      "notion_attachment_status": "NOT_ATTACHED_PENDING_FINAL_LOCK",
+      "repository_asset_status": "USER_FINAL_LOCKED_TRACKED_PLANNING_ARTIFACT_ONLY",
+      "notion_attachment_status": "PASS_20260828_VISUAL_BIBLE_ATTACHMENT_AND_FINAL_LOCK_READBACK",
       "runtime_asset_status": "NOT_A_RUNTIME_ASSET",
       "godot_implementation_status": "NOT_IMPLEMENTED",
       "human_usability_or_player_experience_status": "NOT_RUN"
@@ -228,8 +229,8 @@
       },
       {
         "id": "PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2",
-        "status": "CURRENT_GENERATED_PLANNING_PREVIEW_AWAITING_FINAL_LOCK",
-        "disposition_reason": "PANEL_NUMERALS_REMOVED_AND_FIRST_TWO_OF_THREE_SLOTS_VISUALLY_JOINED_AS_PRELUDE_TO_EXECUTION"
+        "status": "USER_FINAL_LOCKED_PLANNING_ARTIFACT_ONLY",
+        "disposition_reason": "PANEL_NUMERALS_REMOVED_AND_FIRST_TWO_OF_THREE_SLOTS_VISUALLY_JOINED_AS_PRELUDE_TO_EXECUTION; USER_FINAL_LOCK_20260828"
       }
     ]
   },

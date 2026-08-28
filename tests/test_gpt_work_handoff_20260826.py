@@ -23,7 +23,7 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
         self.assertEqual("GPT_WORK", visual["handoff"]["next_surface"])
         self.assertTrue(visual["handoff"]["fresh_read_required"])
         self.assertEqual(
-            "WARM_DUSK_V2_USER_APPROVED_PLANNING_ANCHOR_ONLY_CORE_SCENE_BOARD_GENERATED_AWAITING_FINAL_LOCK_DOGYEOM_ASSETS_PRESERVED",
+            "WARM_DUSK_V2_USER_APPROVED_PLANNING_ANCHOR_ONLY_CORE_SCENE_BOARD_USER_FINAL_LOCKED_PLANNING_ONLY_DOGYEOM_ASSETS_PRESERVED",
             visual["status"],
         )
         self.assertEqual("43b3ffb2c5b026e3d4a38dab2338585894d36f61", visual["handoff"]["snapshot_observed_base_main"])
@@ -44,8 +44,8 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
         portrait = visual["approved_results"]["DOGYEOM_STATUS_PORTRAIT_01"]
         self.assertEqual("AUTOMATED_GODOT_PASS_20260826", portrait["opponent_specific_routing"])
         self.assertEqual("PROJECT_CORE_SCENE_VISUAL_BOARD", visual["next_result"]["id"])
-        self.assertEqual("GENERATED_AWAITING_FINAL_LOCK_REVIEW", visual["next_result"]["generation_status"])
-        self.assertEqual("PENDING_USER_FINAL_LOCK", visual["next_result"]["final_lock_status"])
+        self.assertEqual("USER_FINAL_LOCKED_PLANNING_ONLY", visual["next_result"]["generation_status"])
+        self.assertEqual("USER_APPROVED_FINAL_LOCKED", visual["next_result"]["final_lock_status"])
         self.assertEqual([], planning["next_visual_batch"])
         self.assertEqual("GPT_WORK", planning["next_execution_surface"])
         self.assertEqual(
