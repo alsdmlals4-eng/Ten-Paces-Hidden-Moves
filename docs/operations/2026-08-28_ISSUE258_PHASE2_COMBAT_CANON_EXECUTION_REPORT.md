@@ -56,6 +56,12 @@ notion_mutation: NOT_PERFORMED_UNTIL_SAFE_MERGE_AND_MAIN_READBACK
 
 **Lesson:** 기본 행동 수치 변경은 해당 행동을 간접적으로 사용하는 legacy 상태·보너스 회귀의 절대값도 함께 audit한다.
 
+**Incident:** action view model·기초 행동 패널 회귀가 #258 전의 기초 행동 8종을 고정 기대하여, 정본상 10종을 제공하는 UI 소비자에서 assertion이 실패했다.
+
+**Solution:** UI 동작은 변경하지 않고, 회귀의 기초 행동 수와 ID 순서 기대값을 10종 정본으로 갱신했다.
+
+**Lesson:** 콘텐츠 개수 변경은 data contract뿐 아니라 UI view-model의 legacy smoke expectation까지 consumer inventory에 포함한다.
+
 **Base promotion:** `NO_BASE_PROMOTION` — 이번 정합성은 기존 Base lifecycle을 프로젝트 PR에 적용한 것이며, Base policy 또는 validator 변경을 요구하는 재사용 가능한 결함은 확인되지 않았다.
 
 ## 남은 위험과 rollback
