@@ -192,7 +192,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("product_stage: FIRST_FIVE_DUEL_PHASE_I_VI_IMPLEMENTED", current_section)
         self.assertIn("phase_i_vi_implementation: AUTHORIZED_AND_MERGED", current_section)
         self.assertIn(
-            "future_product_mutation_authorized: false_NO_NEW_PRODUCT_MUTATION_APPROVED",
+            "future_product_mutation_authorized: true_ISSUE267_CODEX_GODOT_HANDOFF_ONLY_ON_FRESH_ISOLATED_BRANCH",
             current_section,
         )
         self.assertIn("human_validation: NOT_RUN", current_section)
@@ -200,19 +200,19 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "user_directed_planning_next_package: OPPONENT_RUNTIME_PERSONALITY_BINDING_REVIEW_THEN_BALANCE_INSTRUMENTATION_CONTRACT",
+            "user_directed_planning_next_package: CODEX_GODOT_PRODUCT_IMPLEMENTATION_ISSUE267",
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_next_decision: OPPONENT_RUNTIME_PERSONALITY_BINDING_SCOPE_DECISION_REQUIRED",
+            "user_directed_planning_next_decision: NONE_SCOPE_APPROVED_AWAITING_IMPLEMENTATION_EVIDENCE",
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_status: REPOSITORY_ONLY_CANON_SYNC_COMPLETED_HUMAN_PLAYTEST_DEFERRED_BY_USER_RUNTIME_PERSONALITY_BINDING_REVIEW_NEXT",
+            "user_directed_planning_status: OPPONENT_RUNTIME_PERSONALITY_IMPLEMENTATION_CONTRACT_USER_APPROVED_CODEX_GODOT_HANDOFF_READY_HUMAN_PLAYTEST_DEFERRED",
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_latest_decision: TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01",
+            "user_directed_planning_latest_decision: TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01",
             current_section,
         )
         self.assertIn(
@@ -220,7 +220,28 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_pending_material_decision: OPPONENT_RUNTIME_PERSONALITY_BINDING_SCOPE_DECISION_REQUIRED",
+            "user_directed_planning_pending_material_decision: BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_RUNTIME_BINDING",
+            current_section,
+        )
+        self.assertIn("user_directed_planning_opponent_runtime_personality_issue: 267", current_section)
+        self.assertIn(
+            "user_directed_planning_opponent_runtime_personality_design_spec: docs/superpowers/specs/2026-08-29-opponent-runtime-personality-binding-design.md",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_opponent_runtime_personality_implementation_contract: docs/implementation/2026-08-29_OPPONENT_RUNTIME_PERSONALITY_BINDING_IMPLEMENTATION_CONTRACT.md",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_opponent_runtime_personality_implementation_plan: docs/superpowers/plans/2026-08-29-opponent-runtime-personality-binding.md",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_opponent_runtime_personality_handoff: docs/handoffs/2026-08-29_OPPONENT_RUNTIME_PERSONALITY_CODEX_GODOT_IMPLEMENTATION_HANDOFF.md",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_opponent_runtime_personality_status: USER_APPROVED_CODEX_GODOT_HANDOFF_READY_RUNTIME_NOT_RUN",
             current_section,
         )
         self.assertIn(
@@ -344,11 +365,11 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "REPOSITORY_ONLY_CANON_SYNC_COMPLETED_HUMAN_PLAYTEST_DEFERRED_BY_USER_RUNTIME_PERSONALITY_BINDING_REVIEW_NEXT",
+            "OPPONENT_RUNTIME_PERSONALITY_IMPLEMENTATION_CONTRACT_USER_APPROVED_CODEX_GODOT_HANDOFF_READY_HUMAN_PLAYTEST_DEFERRED",
             status["user_directed_planning_status"],
         )
         self.assertEqual(
-            "OPPONENT_RUNTIME_PERSONALITY_BINDING_SCOPE_DECISION_THEN_BALANCE_INSTRUMENTATION_CONTRACT",
+            "CODEX_GODOT_IMPLEMENTATION_ISSUE267_THEN_BALANCE_INSTRUMENTATION_CONTRACT",
             status["next_phase"],
         )
         self.assertTrue(status["product_implementation_authorized"])
@@ -366,7 +387,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["unified_implementation_issue_status"],
         )
         self.assertEqual(
-            "CODEX_IMPLEMENTATION_COMPLETE_MERGED_PR_261_AUTOMATED_REVIEW_PASS_HUMAN_EVIDENCE_DEFERRED_BY_USER_FOR_CURRENT_STAGE",
+            "ISSUE267_CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF_READY_PHASE2_MERGED_MAIN_HUMAN_EVIDENCE_DEFERRED_BY_USER_FOR_CURRENT_STAGE",
             status["implementation_handoff_status"],
         )
         self.assertIn("PHASE_2_MERGED_MAIN_PR_261", status["current_work_order"])
@@ -388,8 +409,33 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["first_five_defeat_retry_scope"],
         )
         self.assertEqual(
-            ["OPPONENT_RUNTIME_PERSONALITY_BINDING_SCOPE_DECISION_REQUIRED"],
+            ["BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_RUNTIME_BINDING"],
             status["pending_material_decisions"],
+        )
+        self.assertEqual(
+            "TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01",
+            status["opponent_runtime_personality_binding_decision"],
+        )
+        self.assertEqual(267, status["opponent_runtime_personality_binding_issue"])
+        self.assertEqual(
+            "docs/superpowers/specs/2026-08-29-opponent-runtime-personality-binding-design.md",
+            status["opponent_runtime_personality_binding_design_spec"],
+        )
+        self.assertEqual(
+            "docs/implementation/2026-08-29_OPPONENT_RUNTIME_PERSONALITY_BINDING_IMPLEMENTATION_CONTRACT.md",
+            status["opponent_runtime_personality_binding_implementation_contract"],
+        )
+        self.assertEqual(
+            "docs/superpowers/plans/2026-08-29-opponent-runtime-personality-binding.md",
+            status["opponent_runtime_personality_binding_implementation_plan"],
+        )
+        self.assertEqual(
+            "docs/handoffs/2026-08-29_OPPONENT_RUNTIME_PERSONALITY_CODEX_GODOT_IMPLEMENTATION_HANDOFF.md",
+            status["opponent_runtime_personality_binding_handoff"],
+        )
+        self.assertEqual(
+            "USER_APPROVED_CODEX_GODOT_HANDOFF_READY_RUNTIME_NOT_RUN",
+            status["opponent_runtime_personality_binding_status"],
         )
         self.assertEqual(
             "BLOCKED_UNTIL_OPPONENT_BEHAVIOR_AND_STAT_SEEDS_HAVE_RUNTIME_CONSUMERS",
@@ -400,11 +446,15 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["evidence_ceiling"]["human_fun_readability"],
         )
         self.assertEqual(
-            "PARTIAL_SIGNATURE_MANUAL_AND_STAR_CONSUMED_BEHAVIOR_FOCUS_BASIC_ACTION_FOCUS_AND_FINAL_STAT_TOTAL_NOT_CONSUMED",
+            "USER_APPROVED_CODEX_GODOT_HANDOFF_READY_SIGNATURE_MANUAL_AND_STAR_CONSUMED_BEHAVIOR_FOCUS_BASIC_ACTION_FOCUS_AND_FINAL_STAT_TOTAL_NOT_CONSUMED",
             status["evidence_ceiling"]["opponent_behavior_runtime_binding"],
         )
         self.assertIn(
             "TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01",
+            status["resolved_material_decisions"],
+        )
+        self.assertIn(
+            "TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01",
             status["resolved_material_decisions"],
         )
 

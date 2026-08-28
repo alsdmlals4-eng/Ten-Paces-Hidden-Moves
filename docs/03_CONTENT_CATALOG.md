@@ -9,7 +9,7 @@
 
 ## 1. 상태 구분
 
-- `CURRENT_T0 / IMPLEMENTED_LEGACY`: 현재 main에서 실행되는 단일 결투·기초 행동·절초 3종·공개 상태 기반 최소 AI.
+- `CURRENT_T0 / IMPLEMENTED_LEGACY_COMPATIBILITY_ONLY`: 역사 단일 결투 fixture·기초 행동·절초 3종·공개 상태 기반 최소 AI. 현행 첫 5전 제품 경로의 runtime truth는 아니다.
 - `POC_PRIMARY`: 다음 구현 후보인 주요 비무 1~5, 즉 전체 정식 회차 전반부 데모.
 - `PLANNED_T1`: 실제 사람 PoC 통과 뒤 검토할 최소 세로 슬라이스.
 - `POC_EXPANSION`: 정식판 주요 비무 6~10과 후반 숙련 검증.
@@ -20,11 +20,11 @@
 
 ## 2. CURRENT_T0
 
-- `[강호낭인]` 대 `[배외검객]`, 10칸·4/7·거리3.
+- `[강호낭인]` 대 `[배외검객]`, 10칸·4/7·거리3의 역사 compatibility fixture.
 - 3수→3수→4수, 현재 런타임 기초 행동 8종, 절초 3종.
 - 합·방어·회피·필중·중단·강건·공개 상태 기반 최소 AI·복기.
 - 최신 승인 기초 행동은 10종이며 `[관찰]`과 `[장풍]`이 현재 런타임에 없다.
-- 현재 수치는 최신 기획과 다르며 `docs/02_COMBAT_RULES.md`와 최신 Decision의 구현 차이 표를 따른다.
+- 이 fixture의 수치는 현행 첫 5전 제품 규칙이 아니다. 현행 규칙과 구현 증거는 `docs/02_COMBAT_RULES.md`와 최신 Decision을 따르며, 후보 성향·기초 행동 선호·스테이터스의 runtime binding은 별도 계약 검토 상태다.
 
 ## 3. POC_PRIMARY — 데모 주요 비무 1~5
 
