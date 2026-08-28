@@ -283,3 +283,24 @@ This record does not authorize Godot changes. A final user approval of the contr
 ### Base promotion
 
 `NO_BASE_PROMOTION`: the coordinate binding, exact basic action values, observation wording, and first-five retry boundary are game-specific. The reusable principle—reconcile data, state, AI, UI, and evidence as one contract before implementation—is already governed by Base.
+
+## Update 8 · 장풍 피해 비교 제약 stale 정본 교정
+
+```yaml
+source_decision: TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01
+classification: STALE_CANON_CLEARED
+affected_owners:
+  - docs/00_TAG_STATUS_REGISTRY.md
+  - docs/08_TEST_CHECKLIST.md
+  - tests/test_current_discovery_contract.py
+runtime_mutation: NONE
+runtime_evidence: NOT_RUN
+```
+
+### Finding · Solution · Lesson
+
+`docs/02_COMBAT_RULES.md`와 Phase 2 draft contract are current: 장풍은 2수, 내력 1, 사거리 1~3, 밀치기 없음, `floor(3 + 내공 × 0.75)`이다. 반면 Tag Status Registry와 Test Checklist still described it as necessarily lower damage than quick attack and left the values undecided. Those current-facing statements conflicted with the approved current decision and could drive an incorrect implementation test.
+
+The registry and checklist now cite the exact formula and explicitly retire the old same-stat lower-than-quick constraint. The discovery-contract regression rejects the stale constraint and requires the approved formula anchors. Historical decision records remain unchanged.
+
+`NO_BASE_PROMOTION`: the palm formula and comparison rule are game-specific; Base already requires current authority to override superseded constraints without rewriting historical evidence.

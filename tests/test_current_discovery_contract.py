@@ -126,6 +126,15 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertNotIn("속공21/20틱, 강공54/50틱, 장풍48/50틱", text)
 
+        tag_registry = (ROOT / "docs" / "00_TAG_STATUS_REGISTRY.md").read_text(
+            encoding="utf-8"
+        )
+        checklist = (ROOT / "docs" / "08_TEST_CHECKLIST.md").read_text(encoding="utf-8")
+        self.assertIn("floor(3 + 내공 × 0.75)", tag_registry)
+        self.assertNotIn("동일 조건의 속공보다 피해가 낮다", tag_registry)
+        self.assertIn("동일 능력치에서 속공보다 반드시 낮아야 한다는 구형 제약은 없다", checklist)
+        self.assertIn("강공 `floor(7 + 외공 × 1.00)`", checklist)
+
     def test_opening_distance_mapping_decision_has_one_public_distance_authority(self) -> None:
         decision_id = "TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01"
         rule_text = (ROOT / "docs" / "02_COMBAT_RULES.md").read_text(encoding="utf-8")
