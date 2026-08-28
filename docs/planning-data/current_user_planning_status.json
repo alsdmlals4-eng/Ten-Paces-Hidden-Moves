@@ -3,7 +3,7 @@
   "project": "TEN_PACES",
   "updated_date": "2026-08-28",
   "user_directed_planning_status": "PHASE_2_BUILD_IMPLEMENTED_BRANCH_VALIDATION_PENDING_ISSUE_258",
-  "current_user_direction": "APPROVED_SINGLE_CONSOLIDATED_IMPLEMENTATION_CONTRACT_ISSUE_258",
+  "current_user_direction": "APPROVED_SINGLE_CONSOLIDATED_IMPLEMENTATION_CONTRACT_ISSUE_258_IN_PROGRESS",
   "decision_id": "TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01",
   "approval_source": "user explicit: 기획완료",
   "current_execution_contract": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
@@ -70,7 +70,7 @@
   "windows_android_adapter_implementation_authorized": false,
   "product_implementation_authorized": true,
   "implementation_gate": "SCOPED_PC_FIRST_VERTICAL_SLICE_GATE_PLUS_EXISTING_PLATFORM_EVIDENCE_CEILINGS",
-  "next_phase": "PHASE_2_CODEX_GODOT_IMPLEMENTATION_ISSUE_258_AFTER_HANDOFF",
+  "next_phase": "PHASE_2_CODEX_GODOT_IMPLEMENTATION_ISSUE_258_IN_PROGRESS",
   "current_screen_visual_coverage_inventory": "docs/planning-data/current_screen_visual_coverage_inventory_20260828.json",
   "next_image_generation": "NONE_CURRENT_BOARD_USER_FINAL_LOCKED_NO_AUTOMATIC_NEXT",
   "next_visual_batch": [],
@@ -80,8 +80,8 @@
     "OTHER_VISUAL_ONLY_AFTER_ACTUAL_GAME_CONSUMER_VERIFICATION"
   ],
   "current_work_order": [
-    "ISSUE_258_CODEX_HANDOFF",
-    "CODEX_FRESH_READ_AND_TEST_FIRST_IMPLEMENTATION",
+    "ISSUE_258_CODEX_HANDOFF_ISSUED",
+    "CODEX_FRESH_READ_AND_TEST_FIRST_IMPLEMENTATION_IN_PROGRESS",
     "EXACT_HEAD_CHECKS_AND_REVIEW",
     "SAFE_SQUASH_MERGE_AND_POSTMERGE_READBACK",
     "NOTION_HOME_FLOW_EVIDENCE_PROJECTION"
