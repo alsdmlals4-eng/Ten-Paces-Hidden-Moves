@@ -161,3 +161,125 @@ base_promotion: NO_BASE_PROMOTION — findings are tied to this project’s rule
 - `test_integrated_work_contract_v45r2`: all six historical contract parts differ from the stored byte hashes/sizes; the parts and test are unchanged from `origin/main`.
 
 The relevant tests and inputs were verified unchanged from `origin/main`; no historical contract hash, reconciliation value, or test was silently rewritten here. The Phase 1 scoped suite (25 tests), canonical combat impact map, operating-system validator, and canonical-reference freshness check pass. Disposition: `FOLLOW_UP_OUT_OF_SCOPE_HISTORICAL_TEST_RECONCILIATION`; it does not lower Human/Player/runtime evidence and is not treated as a Phase 1 product regression.
+
+## Update 3 · Opening-distance runtime mapping approved
+
+```yaml
+decision_id: TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01
+status: APPROVED_CURRENT_IMPLEMENTATION_BINDING_REQUIRED
+approval_source: "user explicit: A.권장안대로 진행"
+selected_option: A
+product_rule: "The public opening distance is 2."
+implementation_direction: "Runtime start state, distance calculation, AI input, HUD, accessibility label, and combat log share that one public meaning."
+not_decided_here: "The internal coordinate pair; it is a technical binding chosen only with boundary, occupancy, and regression evidence in the consolidated implementation contract."
+runtime_evidence: NOT_RUN
+human_evidence: NOT_RUN
+```
+
+This closes the opening-distance `USER_DECISION_REQUIRED` finding without changing `data/`, `src/`, `scenes/`, assets, or runtime tests. The legacy `4/7` / distance `3` product path remains `IMPLEMENTED_LEGACY` until the later implementation contract is approved and executed. The next material design question is the player-facing failure/retry journey scope.
+
+## Update 4 · GitHub Actions queue incident
+
+> Classification: `EXTERNAL_VALIDATION_BLOCKED`; no product or canonical-rule failure has been found.
+
+### Statement
+
+The current-task documentation PR cannot yet be safely squash-merged because the exact-head remote check `Validate Approved Protected Change Workflow / contract` remains queued. Its local equivalent passes; all other reported exact-head checks pass.
+
+### Evidence
+
+- Current-task PR: `#256`, head `76b2917a13b16dfd59feec2c221edce44cc150c7`.
+- Local exact workflow command: `python -m unittest tests.test_approved_protected_change_workflow -v` → `PASS` (1 test).
+- Remote exact-head checks: all reported checks other than the queued workflow completed `SUCCESS`.
+- GitHub queue readback: the same repository has unrelated queued runs older than 41 hours. Those branches and runs remain read-only under the open-PR concurrency rule.
+
+### Disposition and next validation
+
+- Do not cancel, restart, merge around, bypass, or modify another PR's run.
+- Do not write the user-facing Notion projection before the repository change is accepted on `main`.
+- After the queued check completes successfully: re-read the exact PR head/check result, perform the allowed current-task squash merge, re-read `main`, then update and read back Project Notion Home.
+
+### Lesson and Base promotion
+
+`NO_BASE_PROMOTION`: this is an external GitHub Actions capacity condition, not a reusable project-specific design or implementation lesson. The Base already requires exact-head checks and prohibits bypassing them.
+
+## Update 5 · First-five defeat/retry scope approved
+
+```yaml
+decision_id: TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01
+status: APPROVED_CURRENT_IMPLEMENTATION_BINDING_REQUIRED
+approval_source: "user explicit: 권장안대로 진행"
+selected_option: A
+first_five_policy: ONE_FREE_SAME_SEED_RETRY_PER_DUEL_THEN_END_RUN
+paid_retry_policy: DEFERRED_POST_SLICE_EXTENSION_REQUIRES_NEW_APPROVAL
+runtime_mutation: NONE
+runtime_evidence: NOT_RUN
+human_player_evidence: NOT_RUN
+```
+
+### Resolved conflict
+
+The canonical architecture/UI/planning contract required a paid permanent-currency retry `1/2/3`, while the actual first-five shell only has a victory-tested Result path and its screen inventory marked failure/retry `NOT_APPLICABLE`. The two states could not prove the intended `failure → review → revised plan` loop.
+
+### Resolution
+
+For the first-five slice, the player receives one free retry from the pre-battle snapshot against the same seed after the first failure. A second loss ends the run and returns to title; it grants no reward and cannot advance a Route. Permanent currency, balance, paid retry, profile persistence, and payment recovery remain deferred. This preserves the learning loop while avoiding an unproven economy/save expansion before Human fun evidence.
+
+### Required later validation
+
+- exactly-one retry and retry-exhausted result;
+- same opponent/seed and full pre-battle rollback;
+- no duplicate reward, Route advancement, signal, or log consumption;
+- no permanent-currency or paid-retry surface in the first-five slice;
+- Windows visible/Human, accessibility, Android, and Player Experience evidence remain separate `NOT_RUN` gates.
+
+### Base promotion decision
+
+`NO_BASE_PROMOTION`: the retry limit, same-seed policy, 5-duel slice, and deferred currency model are 십보강호-specific. Base already owns the general discipline of separating player-facing learning loops from unvalidated progression economies.
+
+## Update 6 · Failure/Retry visual coverage stale projection corrected
+
+```yaml
+source_decision: TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01
+classification: STALE_PROJECTION_CORRECTED
+runtime_mutation: NONE
+runtime_evidence: NOT_RUN
+human_visual_evidence: NOT_RUN
+```
+
+### Finding and correction
+
+The structured Screen Visual Inventory and its human projections still said `SCREEN_FAILURE_RETRY` was outside the current Slice. That was true before Update 5, but conflicts with the now-approved P0 implementation scope. The projection now says `APPROVED_P0_IMPLEMENTATION_REQUIRED`: it owns no new runtime image, has no actual consumer yet, reuses the Review presentation grammar, and must provide actual cause 1–3, `0/1`, one same-seed retry, then terminal Main return without reward or Route.
+
+### Guardrail
+
+This is a canon correction, not a claim that a Failure Scene, UI, or player evidence already exists. The inventory preserves the separate states: approved scope, implementation required, runtime not run, Human not run.
+
+### Base promotion
+
+`NO_BASE_PROMOTION`: the screen ID, retry count, same-seed semantics, and no-reward route boundary are project-specific. Base already owns the general rule that planning coverage and runtime evidence must not be conflated.
+
+## Update 7 · One consolidated implementation contract drafted
+
+```yaml
+contract_id: TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01
+repository_destination: docs/implementation/2026-08-28_PHASE2_COMBAT_CANON_RECONCILIATION_IMPLEMENTATION_CONTRACT.md
+execution_plan_destination: docs/superpowers/plans/2026-08-28-phase2-combat-canon-reconciliation.md
+status: DRAFT_FINAL_USER_APPROVAL_AND_CODEX_HANDOFF_REQUIRED
+runtime_mutation: NONE
+runtime_evidence: NOT_RUN
+```
+
+### Reconciled implementation boundary
+
+The one contract binds the three approved 2026-08-28 decisions to their actual consumers: public opening distance two (`4/6` technical mapping), `행동계획 실행` after the current three-slot plan, and the first-five one-free same-seed retry. It also closes two pre-existing runtime drift requirements needed to implement those decisions honestly: the legacy eight basic cards must become the current ten, and new basic damage must use the approved five-stat formulas rather than the historical `attack_power` field.
+
+The contract fixes the scope boundary before any product work: observation remains a one-slot player-only direct action-type reveal after the enemy bundle is locked; no hidden plan, exact technique, target, direction, damage, AI weight, correct counter, paid retry, permanent currency, profile persistence, or new asset enters the task.
+
+### Handoff gate
+
+This record does not authorize Godot changes. A final user approval of the contract and then a `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF` from one GitHub Issue are required. Existing Visual Board R2 remains a planning-only anchor; Failure Retry needs no new runtime image.
+
+### Base promotion
+
+`NO_BASE_PROMOTION`: the coordinate binding, exact basic action values, observation wording, and first-five retry boundary are game-specific. The reusable principle—reconcile data, state, AI, UI, and evidence as one contract before implementation—is already governed by Base.

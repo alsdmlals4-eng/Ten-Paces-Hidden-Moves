@@ -126,6 +126,24 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertNotIn("속공21/20틱, 강공54/50틱, 장풍48/50틱", text)
 
+    def test_opening_distance_mapping_decision_has_one_public_distance_authority(self) -> None:
+        decision_id = "TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01"
+        rule_text = (ROOT / "docs" / "02_COMBAT_RULES.md").read_text(encoding="utf-8")
+        decision_text = (
+            ROOT
+            / "docs"
+            / "decisions"
+            / "2026-08-28_OPENING_DISTANCE_RUNTIME_MAPPING_DECISION.md"
+        ).read_text(encoding="utf-8")
+        lifecycle_text = (ROOT / "docs" / "CANON_LIFECYCLE_REGISTRY.md").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn(decision_id, rule_text)
+        self.assertIn("공개 시작 거리는 `2`", decision_text)
+        self.assertIn("두 번째 거리 규칙", decision_text)
+        self.assertIn(decision_id, lifecycle_text)
+
     def test_combat_rules_use_current_bundle_transition_internal_recovery(self) -> None:
         text = (ROOT / "docs" / "02_COMBAT_RULES.md").read_text(encoding="utf-8")
 
@@ -170,7 +188,23 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "user_directed_planning_status: PHASE_1_REMAINING_PLANNING_AND_ADVERSARIAL_REVIEW_IN_PROGRESS",
+            "user_directed_planning_status: PHASE_1_CANONICAL_REVIEW_COMPLETE_UNIFIED_IMPLEMENTATION_CONTRACT_DRAFT_READY",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_latest_decision: TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_failure_retry: ONE_FREE_SAME_SEED_RETRY_PER_DUEL_THEN_END_RUN_USER_APPROVED_IMPLEMENTATION_REQUIRED",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_pending_material_decision: NONE_DECISIONS_RESOLVED_FINAL_USER_APPROVAL_OF_SINGLE_CONSOLIDATED_IMPLEMENTATION_CONTRACT",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_unified_implementation_contract: TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01",
             current_section,
         )
         self.assertIn("planning_execution_surface: GPT_WORK", current_section)
@@ -282,12 +316,12 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertEqual("NOT_RUN", gate["human_validation"])
         self.assertFalse(gate["image_generation_authorized"])
 
-    def test_current_user_planning_status_keeps_phase1_review_before_one_contract(self) -> None:
+    def test_current_user_planning_status_records_the_single_contract_draft_before_handoff(self) -> None:
         status_path = ROOT / "docs/planning-data/current_user_planning_status.json"
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "PHASE_1_REMAINING_PLANNING_AND_ADVERSARIAL_REVIEW_IN_PROGRESS",
+            "PHASE_1_CANONICAL_REVIEW_COMPLETE_UNIFIED_IMPLEMENTATION_CONTRACT_DRAFT_READY",
             status["user_directed_planning_status"],
         )
         self.assertEqual(
@@ -295,9 +329,70 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["next_phase"],
         )
         self.assertFalse(status["product_implementation_authorized"])
+        self.assertEqual(
+            "TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01",
+            status["unified_implementation_contract_id"],
+        )
+        self.assertEqual(
+            "DRAFT_FINAL_USER_APPROVAL_AND_CODEX_HANDOFF_REQUIRED",
+            status["unified_implementation_contract_status"],
+        )
         self.assertIn("CORE_RULE_AND_RUNTIME_DRIFT_REVIEW", status["current_work_order"])
         self.assertIn("GRILL_ME_ONE_MATERIAL_DECISION_AT_A_TIME", status["current_work_order"])
         self.assertIn("SINGLE_CONSOLIDATED_IMPLEMENTATION_CONTRACT_AFTER_USER_DECISIONS", status["current_work_order"])
+        self.assertEqual(
+            "TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01",
+            status["current_opening_distance_runtime_mapping_decision"],
+        )
+        self.assertEqual(2, status["canonical_public_opening_distance"])
+        self.assertEqual(
+            "USER_APPROVED_IMPLEMENTATION_BINDING_REQUIRED",
+            status["opening_distance_runtime_mapping_status"],
+        )
+        self.assertEqual(
+            "TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01",
+            status["current_first_five_defeat_retry_scope_decision"],
+        )
+        self.assertEqual(
+            "ONE_FREE_SAME_SEED_RETRY_PER_DUEL_THEN_END_RUN",
+            status["first_five_defeat_retry_scope"],
+        )
+        self.assertEqual([], status["pending_material_decisions"])
+        self.assertIn(
+            "TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01",
+            status["resolved_material_decisions"],
+        )
+
+    def test_first_five_defeat_retry_decision_keeps_paid_retry_out_of_scope(self) -> None:
+        decision_id = "TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01"
+        decision_text = (
+            ROOT
+            / "docs"
+            / "decisions"
+            / "2026-08-28_FIRST_FIVE_DEFEAT_RETRY_SCOPE_DECISION.md"
+        ).read_text(encoding="utf-8")
+        run_state_contract = json.loads(
+            (ROOT / "docs" / "planning-data" / "poc_run_state_contract.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        ui_text = (ROOT / "docs" / "07_COMBAT_UI_SPEC.md").read_text(encoding="utf-8")
+        lifecycle_text = (ROOT / "docs" / "CANON_LIFECYCLE_REGISTRY.md").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("1회 무료 동일-seed 재도전", decision_text)
+        self.assertIn("영구재화", decision_text)
+        self.assertIn(decision_id, lifecycle_text)
+        self.assertIn("1회 무료 동일-seed 재도전", ui_text)
+        self.assertEqual(
+            "ONE_FREE_SAME_SEED_RETRY_PER_DUEL_THEN_END_RUN",
+            run_state_contract["first_five_slice_defeat_retry"]["policy"],
+        )
+        self.assertEqual(
+            "OUT_OF_SCOPE_FOR_FIRST_FIVE_SLICE",
+            run_state_contract["defeat_retry"]["first_five_slice_status"],
+        )
 
     def test_no_temporary_pin_exceptions_remain_after_live_editor_migration(self) -> None:
         self.assertFalse(

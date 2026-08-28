@@ -3,6 +3,8 @@
 > 책임: 최신 전투 규칙의 입력·예상·결과·복기·접근성 표현  
 > 판정 원본: `docs/02_COMBAT_RULES.md`  
 > 현재 정보 위계 Decision: `docs/decisions/2026-08-11_COMBAT_UI_INFORMATION_HIERARCHY_DECISION.md` (`TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01`)  
+> 시작 거리 런타임 매핑: `docs/decisions/2026-08-28_OPENING_DISTANCE_RUNTIME_MAPPING_DECISION.md` (`TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01`)
+> 첫 5전 패배·재도전 scope: `docs/decisions/2026-08-28_FIRST_FIVE_DEFEAT_RETRY_SCOPE_DECISION.md` (`TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01`)
 > 구조화 계약: `docs/planning-data/approved_20260811_combat_ui_information_hierarchy_contract.json`
 
 ## 1. UI 목표
@@ -36,7 +38,7 @@
 거리 0 → [밀착]
 ```
 
-현재 Godot 런타임의 플레이어4/상대7 시작 좌표는 `IMPLEMENTED_LEGACY`이며 이 기획 승인으로 제품 코드를 변경하지 않는다. 새 절대 좌표는 Build 승인 뒤 별도 implementation binding에서 확정한다.
+현재 Godot 런타임의 플레이어4/상대7 시작 좌표는 `IMPLEMENTED_LEGACY`다. 확정된 구현 방향은 HUD·접근성 이름·전투 기록까지 시작 공개 거리 `2`를 도메인 상태와 동일하게 표현하는 것이다. 새 절대 좌표는 Build 승인 뒤 단일 implementation binding에서 경계·점유·회귀 검증과 함께 확정한다.
 
 ## 3. 시각 자산
 
@@ -265,9 +267,10 @@ A 2·3타 → 단독 잔여타
 ## 11.1 보상·재도전 UI
 
 - 주요 비무 보상 선택 화면은 `자유6`, `지정5+자유3`, `문파 무공3성`의 총량과 제한 범위를 비교한다.
-- 패배 화면은 전투 직전 복원 범위, 같은 전투 재도전 횟수, 다음 `[영구재화]` 비용1/2/3, 보유 잔액을 표시한다.
-- 재도전 결제 후 피해·임시 자원은 복원되고 영구재화만 감소했음을 설명한다.
-- 잔액 부족 시 비활성 재도전과 회차 포기·타이틀 복귀를 제공한다.
+- 첫 5전 패배 화면은 실제 원인 1~3개, 전투 직전 복원 범위, 남은 **1회 무료 동일-seed 재도전** `0/1`을 표시한다. CTA는 `다시 비무하기`이며, 첫 패배에서만 활성화한다.
+- 무료 재도전 뒤에는 같은 상대·같은 seed·전투 직전 RunState로 돌아가며, 피해·임시 자원·임시 상태·미획득 보상·노드 진행이 복원됨을 설명한다.
+- 두 번째 패배에는 재도전 CTA를 비활성화하고 `회차 종료`와 `타이틀로`만 제공한다. 패배 Result에는 보상 선택·Route 이동이 없다.
+- `[영구재화]` 비용1/2/3, 잔액, 결제, 잔액 부족은 첫 5전 UI 범위 밖의 `DEFERRED_POST_SLICE_EXTENSION`이다. 이를 현재 Slice의 버튼·텍스트·접근성 이름으로 만들지 않는다.
 
 ## 12. UI·UX 에셋 제작 순서
 
@@ -306,7 +309,7 @@ UI·UX는 에셋을 먼저 고르고 화면을 맞추지 않는다.
 - 새 정보 위계: `CURRENT_APPROVED_PLANNING`.
 - Godot 제품 UI 반영: `NOT_RUN / NOT_AUTHORIZED`.
 - 현재 런타임 4/7 좌표: `IMPLEMENTED_LEGACY`.
-- 시작 공개 거리2 제품 반영: `NOT_RUN`.
+- 시작 공개 거리2 런타임 매핑: `USER_APPROVED_IMPLEMENTATION_BINDING_REQUIRED`; 제품 반영: `NOT_RUN`.
 - Windows 실제 가독성: 이 Decision에 대해 `NOT_RUN`.
 - Android 실제 가독성: `NOT_RUN`.
 - 접근성 사용자 검증: `UNVERIFIED`.

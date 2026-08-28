@@ -71,7 +71,28 @@
     "advance_node_once": true,
     "reset_retry_counter_when_next_battle_differs": true
   },
+  "first_five_slice_defeat_retry": {
+    "decision_id": "TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01",
+    "status": "APPROVED_CURRENT_IMPLEMENTATION_BINDING_REQUIRED",
+    "policy": "ONE_FREE_SAME_SEED_RETRY_PER_DUEL_THEN_END_RUN",
+    "retry_limit_per_duel": 1,
+    "restore_snapshot": "PRE_BATTLE_RUN_STATE",
+    "same_seed": true,
+    "first_defeat_result": "REVIEW_THEN_FAILURE_RESULT_THEN_FREE_RETRY_OR_END_RUN",
+    "retry_exhausted_result": "END_RUN_AND_RETURN_TO_TITLE",
+    "rollback": [
+      "battle_damage",
+      "battle_resource_changes",
+      "temporary_statuses",
+      "unearned_rewards",
+      "node_advance"
+    ],
+    "permanent_currency": "OUT_OF_SCOPE_FOR_FIRST_FIVE_SLICE",
+    "reward_and_route_on_defeat": "NOT_ALLOWED"
+  },
   "defeat_retry": {
+    "first_five_slice_status": "OUT_OF_SCOPE_FOR_FIRST_FIVE_SLICE",
+    "extension_status": "DEFERRED_POST_SLICE_EXTENSION_REQUIRES_NEW_APPROVAL",
     "restore_snapshot": "PRE_BATTLE_RUN_STATE",
     "same_seed": true,
     "rollback": [

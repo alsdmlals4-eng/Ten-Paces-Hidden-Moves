@@ -29,15 +29,17 @@
 | Briefing | `VerticalSliceShell._render_briefing` | 필요 없음 | `COVERED_BY_CODE_RENDERING` |
 | Combat | `src/combat/combat_board_preview.gd` | 기존 배경·배틀러·초상·카드·VFX | `COVERED_BY_EXISTING_RUNTIME_ASSETS` |
 | Review | `src/ui/combat_review_panel.gd` | Combat asset 재사용 | `COVERED_BY_REUSE` |
-| Result | `src/run/vertical_slice_shell_result_auto.gd` | 필요 없음 | `COVERED_BY_CODE_RENDERING` |
+| Result (승리) | `src/run/vertical_slice_shell_result_auto.gd` | 필요 없음 | `COVERED_BY_CODE_RENDERING` |
 | Route Growth / Info | `src/run/vertical_slice_shell_route_auto.gd` | 필요 없음 | `COVERED_BY_CODE_RENDERING` |
 | Completion | `src/run/vertical_slice_shell_completion_auto.gd` | 필요 없음 | `COVERED_BY_CODE_RENDERING` |
+| Failure Retry | planned `VerticalSliceRunState` + `VerticalSliceShell`/Result surface | 필요 없음; Review asset 재사용 | `APPROVED_P0_IMPLEMENTATION_REQUIRED`; runtime/Human evidence `NOT_RUN` |
 
 `DOGYEOM_STATUS_PORTRAIT_01`는 `src/ui/combatant_status_panel.gd`에서, 도겸 배틀러는 `src/combat/combat_character_placeholder.gd`에서 `slot1_dogyeom`으로 실제 라우팅된다. 다른 적은 승인된 일반 fallback을 계속 사용한다. 그 자체가 14개 신규 자산을 자동 요구하지 않는다.
 
 ## 의도적으로 제작하지 않은 항목
 
-- Pause/Settings, Failure/Retry, Codex/Help: 현재 Slice에 screen state·Scene·consumer가 없어 `NOT_APPLICABLE_CURRENT_VERTICAL_SLICE`.
+- Pause/Settings, Codex/Help: 현재 Slice에 screen state·Scene·consumer가 없어 `NOT_APPLICABLE_CURRENT_VERTICAL_SLICE`.
+- Failure/Retry: `TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01`로 첫 5전 P0 구현 범위가 됐다. 첫 패배는 Review 뒤 원인 1~3개와 `0/1` 무료 동일-seed 재도전을 보이고, 두 번째 패배는 보상·Route 없이 Main으로 끝난다. 실제 consumer·runtime·Human evidence는 아직 없다.
 - Boot/Loading/Error/Credits/Store assets: release scope와 권리·플랫폼 증거가 없어 `RELEASE_BLOCKED_UNVERIFIED`.
 - Warm-dusk v2: `USER_APPROVED_PLANNING_ANCHOR_ONLY_NON_RUNTIME`이며 runtime asset으로 승격하지 않음.
 
