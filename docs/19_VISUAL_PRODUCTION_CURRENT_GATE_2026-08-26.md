@@ -10,6 +10,8 @@
 
 > 2026-08-28 cadence override: `TEN-DEC-20260828-CORE-SCENE-VISUAL-BOARD-FINAL-LOCK-CADENCE-01` replaces pre-generation approval with scoped single-result generation and **user final-lock review only**. It neither starts an automatic asset queue nor promotes a planning preview to a runtime asset.
 
+> 2026-08-28 final lock: `PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2` is now `USER_FINAL_LOCKED_PLANNING_ARTIFACT_ONLY`, stored at `docs/visual-assets/planning/PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2.png` and attached to exact Project Notion Visual Bible with readback. It remains non-runtime and does not authorize automatic next image work.
+
 이 문서는 `docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md`의 승인 Reference Set과 당시 사용자 피드백을 삭제하거나 다시 쓰지 않는다. 8월 25일 문서는 historical visual handoff이고 이 문서는 8월 26일 r5.4 current execution gate다. 사용자는 이후 작업 surface를 **GPT Work**로 지정했다. Work도 memory나 과거 대화를 current truth로 사용하지 않고 Project GitHub + exact Project Notion을 fresh-read한다.
 
 ## 1. 보존되는 승인 Reference
@@ -169,7 +171,7 @@ consumer_first_visual_policy: USER_APPROVED_2026_08_26
 dogyeom_status_portrait_01: USER_APPROVED_2026_08_26
 dogyeom_status_portrait_01_local_asset: docs/visual-assets/approved/DOGYEOM_STATUS_PORTRAIT_01_v1.png
 dogyeom_status_portrait_01_notion_binary_attachment: PASS_20260826_READBACK
-next_safe_action: USER_FINAL_LOCK_REVIEW_FOR_PROJECT_CORE_SCENE_VISUAL_BOARD_R2
+next_safe_action: NEXT_SCOPED_PROJECT_DECISION_REQUIRED_NO_AUTOMATIC_IMAGE_WORK
 runtime_source_master_promotion: NOT_RUN
 opponent_specific_dogyeom_routing: AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER
 runtime_art_integration: AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER

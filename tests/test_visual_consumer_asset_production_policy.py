@@ -14,6 +14,7 @@ DECISION_ID = "TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01"
 WARM_DUSK_DECISION = ROOT / "docs" / "decisions" / "2026-08-27_WARM_DUSK_TEN_STEP_VISUAL_DIRECTION_DECISION.md"
 WARM_DUSK_PLANNING_ANCHOR_DECISION = ROOT / "docs" / "decisions" / "2026-08-28_WARM_DUSK_V2_PLANNING_ANCHOR_DECISION.md"
 CORE_SCENE_BOARD_DECISION = ROOT / "docs" / "decisions" / "2026-08-28_CORE_SCENE_VISUAL_BOARD_FINAL_LOCK_CADENCE_DECISION.md"
+CORE_SCENE_BOARD_ARTIFACT = ROOT / "docs" / "visual-assets" / "planning" / "PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2.png"
 WARM_DUSK_CANDIDATE = ROOT / "docs" / "visual-assets" / "candidates" / "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID.png"
 WARM_DUSK_RECORD = ROOT / "docs" / "visual-assets" / "candidates" / "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID.md"
 SCREEN_AUDIT_OWNER = ROOT / "docs" / "17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md"
@@ -44,14 +45,14 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
         self.assertEqual("res://assets/portraits/dogyeom_status_portrait_01_v1.png", portrait["runtime_asset"])
         self.assertEqual("AUTOMATED_GODOT_PASS_20260826", portrait["opponent_specific_routing"])
         self.assertEqual("PROJECT_CORE_SCENE_VISUAL_BOARD", visual["next_result"]["id"])
-        self.assertEqual("GENERATED_AWAITING_FINAL_LOCK_REVIEW", visual["next_result"]["generation_status"])
-        self.assertEqual("PENDING_USER_FINAL_LOCK", visual["next_result"]["final_lock_status"])
+        self.assertEqual("USER_FINAL_LOCKED_PLANNING_ONLY", visual["next_result"]["generation_status"])
+        self.assertEqual("USER_APPROVED_FINAL_LOCKED", visual["next_result"]["final_lock_status"])
         self.assertEqual("SCOPED_BRIEF_THEN_SINGLE_GENERATION_PASS_THEN_FINAL_USER_LOCK", visual["image_production_cadence"]["current_policy"])
         self.assertFalse(visual["image_production_cadence"]["pre_generation_user_approval_required"])
         self.assertTrue(visual["image_production_cadence"]["final_user_lock_required"])
         self.assertEqual(
-            "PASS_20260828_VISUAL_BIBLE_READBACK_PREVIEW_STATUS_ONLY",
-            visual["notion_delivery_verification"]["project_core_scene_visual_board_status_sync"],
+            "PASS_20260828_VISUAL_BIBLE_ATTACHMENT_AND_FINAL_LOCK_READBACK",
+            visual["notion_delivery_verification"]["project_core_scene_visual_board_delivery"],
         )
         self.assertEqual([], planning["next_visual_batch"])
         self.assertEqual("GPT_WORK", planning["next_execution_surface"])
@@ -95,6 +96,12 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
         )
         self.assertIn("PLANNING_ONLY", CORE_SCENE_BOARD_DECISION.read_text(encoding="utf-8"))
         self.assertIn("NOT_A_RUNTIME_ASSET", CORE_SCENE_BOARD_DECISION.read_text(encoding="utf-8"))
+        self.assertIn("USER_FINAL_LOCKED_PLANNING_ONLY", CORE_SCENE_BOARD_DECISION.read_text(encoding="utf-8"))
+        self.assertTrue(CORE_SCENE_BOARD_ARTIFACT.is_file())
+        self.assertEqual(
+            "24fdd3a827ea36ead0364ed35c2a03689c969b4a1444823fa2e5ad94ac93ea33",
+            sha256(CORE_SCENE_BOARD_ARTIFACT.read_bytes()).hexdigest(),
+        )
 
     def test_screen_first_audit_keeps_p0_coverage_separate_from_image_generation(self) -> None:
         visual = json.loads(VISUAL.read_text(encoding="utf-8"))

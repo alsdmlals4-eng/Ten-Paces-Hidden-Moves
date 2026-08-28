@@ -28,7 +28,7 @@ def test_warm_dusk_v2_is_locked_as_a_non_runtime_planning_anchor() -> None:
     assert packet["approved_use"] == "PLANNING_VISUALIZATION_ANCHOR_ONLY"
     assert packet["runtime_asset_status"] == "NOT_APPROVED"
     assert handoff["next_result"]["id"] == "PROJECT_CORE_SCENE_VISUAL_BOARD"
-    assert handoff["next_result"]["generation_status"] == "GENERATED_AWAITING_FINAL_LOCK_REVIEW"
-    assert handoff["next_result"]["final_lock_status"] == "PENDING_USER_FINAL_LOCK"
+    assert handoff["next_result"]["generation_status"] == "USER_FINAL_LOCKED_PLANNING_ONLY"
+    assert handoff["next_result"]["final_lock_status"] == "USER_APPROVED_FINAL_LOCKED"
     assert handoff["image_production_cadence"]["pre_generation_user_approval_required"] is False
     assert handoff["image_production_cadence"]["final_user_lock_required"] is True
