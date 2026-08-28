@@ -89,7 +89,7 @@ func _verify_prepare_attack(hud: Dictionary) -> void:
     for value in resolved:
         if typeof(value) == TYPE_DICTIONARY and str((value as Dictionary).get("card_id", "")) == "basic_quick_attack":
             attack_damage = int((value as Dictionary).get("raw_damage", -1))
-    if attack_damage != 8:
+    if attack_damage != 7:
         failures.append("Prepare must add the existing +2 bonus to the next attack after movement. actual=%d" % attack_damage)
     var player: Dictionary = (result.get("state", {}) as Dictionary).get("player", {})
     if bool(player.get("prepare_active", true)) or int(player.get("next_attack_bonus", -1)) != 0 or bool(player.get("fortitude_next_attack", true)):

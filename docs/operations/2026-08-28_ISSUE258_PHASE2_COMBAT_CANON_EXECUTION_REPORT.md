@@ -50,6 +50,12 @@ notion_mutation: NOT_PERFORMED_UNTIL_SAFE_MERGE_AND_MAIN_READBACK
 
 **Lesson:** 공개 거리 변경은 초기 전투뿐 아니라 terminal restart·retry 등 초기 state를 복원하는 모든 소비자 회귀에서 함께 검증한다.
 
+**Incident:** 준비 후 속공 회귀가 #258 이전의 속공 기본 피해 6에 준비 보너스 2를 더한 8을 기대하여, 새 기본 피해 5 기준의 실제 결과 7과 달라 Ubuntu Godot headless가 실패했다.
+
+**Solution:** 준비 보너스 `+2` 동작은 유지하고, 회귀 기대값만 #258의 기본 행동 재가격에 맞춘 7로 갱신했다.
+
+**Lesson:** 기본 행동 수치 변경은 해당 행동을 간접적으로 사용하는 legacy 상태·보너스 회귀의 절대값도 함께 audit한다.
+
 **Base promotion:** `NO_BASE_PROMOTION` — 이번 정합성은 기존 Base lifecycle을 프로젝트 PR에 적용한 것이며, Base policy 또는 validator 변경을 요구하는 재사용 가능한 결함은 확인되지 않았다.
 
 ## 남은 위험과 rollback
