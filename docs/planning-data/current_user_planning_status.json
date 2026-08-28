@@ -2,8 +2,8 @@
   "schema_version": 1,
   "project": "TEN_PACES",
   "updated_date": "2026-08-29",
-  "user_directed_planning_status": "REPOSITORY_ONLY_CANON_SYNC_COMPLETED_HUMAN_PLAYTEST_DEFERRED_BY_USER_RUNTIME_PERSONALITY_BINDING_REVIEW_NEXT",
-  "current_user_direction": "APPROVED_REPOSITORY_ONLY_GDD_AND_PRIOR_NOTION_WORK_MIGRATION_HUMAN_PLAYTEST_DEFERRED_FOR_CURRENT_STAGE",
+  "user_directed_planning_status": "OPPONENT_RUNTIME_PERSONALITY_ARCHITECTURE_USER_APPROVED_CONTRACT_REVIEW_REQUIRED_HUMAN_PLAYTEST_DEFERRED",
+  "current_user_direction": "APPROVED_REUSABLE_OPPONENT_ARCHETYPE_BINDING_AWAITING_EXACT_IMPLEMENTATION_CONTRACT_REVIEW_REPOSITORY_ONLY_HUMAN_PLAYTEST_DEFERRED_FOR_CURRENT_STAGE",
   "decision_id": "TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01",
   "approval_source": "user explicit: 기획완료",
   "current_execution_contract": "TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01",
@@ -30,6 +30,11 @@
   "unified_implementation_contract_approval_source": "user explicit: 승인",
   "unified_implementation_contract_issue": 258,
   "unified_implementation_issue_status": "CLOSED_POSTMERGE_READBACK_20260829",
+  "opponent_runtime_personality_binding_decision": "TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01",
+  "opponent_runtime_personality_binding_approval_source": "user explicit: 좋아 권장안대로 진행하자",
+  "opponent_runtime_personality_binding_issue": 267,
+  "opponent_runtime_personality_binding_design_spec": "docs/superpowers/specs/2026-08-29-opponent-runtime-personality-binding-design.md",
+  "opponent_runtime_personality_binding_status": "USER_APPROVED_ARCHITECTURE_CONTRACT_REVIEW_REQUIRED_RUNTIME_NOT_RUN",
   "implementation_handoff_status": "CODEX_IMPLEMENTATION_COMPLETE_MERGED_PR_261_AUTOMATED_REVIEW_PASS_HUMAN_EVIDENCE_DEFERRED_BY_USER_FOR_CURRENT_STAGE",
   "next_execution_surface": "REPOSITORY_ONLY_GPT_WORK",
   "handoff_status": "PROJECT_CORE_SCENE_VISUAL_BOARD_R2_USER_FINAL_LOCKED_PLANNING_ONLY",
@@ -75,7 +80,7 @@
   "windows_android_adapter_implementation_authorized": false,
   "product_implementation_authorized": true,
   "implementation_gate": "SCOPED_PC_FIRST_VERTICAL_SLICE_GATE_PLUS_EXISTING_PLATFORM_EVIDENCE_CEILINGS",
-  "next_phase": "OPPONENT_RUNTIME_PERSONALITY_BINDING_SCOPE_DECISION_THEN_BALANCE_INSTRUMENTATION_CONTRACT",
+  "next_phase": "OPPONENT_RUNTIME_PERSONALITY_BINDING_CONTRACT_REVIEW_THEN_SINGLE_IMPLEMENTATION_HANDOFF_THEN_BALANCE_INSTRUMENTATION_CONTRACT",
   "current_screen_visual_coverage_inventory": "docs/planning-data/current_screen_visual_coverage_inventory_20260828.json",
   "next_image_generation": "NONE_CURRENT_BOARD_USER_FINAL_LOCKED_NO_AUTOMATIC_NEXT",
   "next_visual_batch": [],
@@ -89,7 +94,8 @@
     "REPOSITORY_ONLY_CANON_SYNC",
     "POST_MERGE_AUTOMATED_MAIN_READBACK",
     "POSTMERGE_RUNTIME_REALITY_REVIEW",
-    "OPPONENT_RUNTIME_PERSONALITY_BINDING_SCOPE_DECISION",
+    "OPPONENT_RUNTIME_PERSONALITY_BINDING_ARCHITECTURE_APPROVED",
+    "OPPONENT_RUNTIME_PERSONALITY_BINDING_CONTRACT_REVIEW",
     "BALANCE_INSTRUMENTATION_CONTRACT",
     "WINDOWS_HUMAN_PLAYTEST_DEFERRED_BY_USER_FOR_CURRENT_STAGE",
     "ANDROID_AND_ACCESSIBILITY_EVIDENCE"
@@ -97,10 +103,11 @@
   "resolved_material_decisions": [
     "TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01",
     "TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01",
-    "TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01"
+    "TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01",
+    "TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01"
   ],
   "pending_material_decisions": [
-    "OPPONENT_RUNTIME_PERSONALITY_BINDING_SCOPE_DECISION_REQUIRED"
+    "OPPONENT_RUNTIME_PERSONALITY_BINDING_CONTRACT_REVIEW_REQUIRED"
   ],
   "sheet_compatibility_note": "Google Sheet still exposes 2026-08-11 Phase-B old SHA/Decision state at handoff; Sheet is MIGRATION_ONLY_UNTIL_REMOVAL and is not current visual authority",
   "evidence_ceiling": {
@@ -115,7 +122,7 @@
     "windows_visible_local_usability": "NOT_RUN",
     "android_physical_device": "NOT_RUN_BLOCKED_UNVERIFIED",
     "fifteen_opponent_identifiability": "NOT_RUN",
-    "opponent_behavior_runtime_binding": "PARTIAL_SIGNATURE_MANUAL_AND_STAR_CONSUMED_BEHAVIOR_FOCUS_BASIC_ACTION_FOCUS_AND_FINAL_STAT_TOTAL_NOT_CONSUMED",
+    "opponent_behavior_runtime_binding": "ARCHITECTURE_APPROVED_CONTRACT_REVIEW_REQUIRED_SIGNATURE_MANUAL_AND_STAR_CONSUMED_BEHAVIOR_FOCUS_BASIC_ACTION_FOCUS_AND_FINAL_STAT_TOTAL_NOT_CONSUMED",
     "final_vfx_audio": "NOT_RUN",
     "release_performance": "NOT_RUN"
   },

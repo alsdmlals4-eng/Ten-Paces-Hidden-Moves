@@ -383,7 +383,9 @@ A도 체력 피해 0이고 양측 공격이 유지됨
 - 기술은 스테이터스 1·4·15와 현재 콘텐츠의 최대 합법 도달값에서 sanity 검사한다.
 - 중앙 가격 변경은 기존 기술을 자동 수정하지 않는다.
 
-## 17. T0 검증 기준
+## 17. T0 검증 기준 — Pre-Phase 2 스냅샷 (`SUPERSEDED_HISTORICAL_EVIDENCE`)
+
+> 이 절은 Phase 2 병합 전 T0 차이를 보존하는 역사 스냅샷이다. 현재 첫 5전 제품 경로의 시작 state, 행동 수, CTA, 관찰, 동일-seed 재도전은 `TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01`의 병합 후 상태와 `docs/planning-data/current_user_planning_status.json`을 따른다. 아래 항목을 현행 구현 부족으로 다시 사용하지 않는다.
 
 현재 main 구현 차이:
 
@@ -409,11 +411,11 @@ human_validation: NOT_RUN
 demo_ready: NO
 ```
 
-### 17.1 Issue #258 Phase 2 구현 상태 (병합 전)
+### 17.1 Issue #258 Phase 2 구현 상태 (`IMPLEMENTED_MERGED_PR_261`)
 
 - 시작 state는 내부 좌표 `4/6`, 플레이어 표기는 `거리 2`로 구현했다. 이전 `4/7`·거리3 표기는 역사 증거다.
 - 기초 행동은 관찰·장풍을 포함한 10종이며, 속공/강공/장풍은 오능력치 구조화 공식만 사용한다. 호환 `attack_power`는 새 기초 공식에 더하지 않는다.
 - 강공과 장풍은 두 연속 슬롯의 `[전조] → [실행]`이고, 강공 비용은 기력1·내력2다. 명상은 기력·내력 각각 1을 회복한다.
-- 자동 데이터·판정·AI·관찰·재시도 회귀는 이 Issue branch에서 실행했다. Windows visible, Human, 접근성 사용자, Android 실기기, Release 성능 증거는 `NOT_RUN`이다.
+- 자동 데이터·판정·AI·관찰·재시도 회귀는 병합된 main 기준으로 확인됐다. Windows visible, Human, 접근성 사용자, Android 실기기, Release 성능 증거는 `NOT_RUN`이다.
 
 T0 자동 회귀 통과는 사람 플레이 또는 출시 준비 완료를 뜻하지 않는다.
