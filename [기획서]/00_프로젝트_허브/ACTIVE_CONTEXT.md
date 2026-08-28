@@ -22,7 +22,7 @@ active_project_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
 product_stage: FIRST_FIVE_DUEL_PHASE_I_VI_IMPLEMENTED
 runtime_work_mode: REVIEW
 runtime_integration_pr: 65
-active_planning_work_mode: REVIEW_REPOSITORY_ONLY_CANON_SYNC
+active_planning_work_mode: REVIEW
 active_planning_pr: NONE
 active_planning_parent_pr: NONE
 active_approval_count: 1/10
