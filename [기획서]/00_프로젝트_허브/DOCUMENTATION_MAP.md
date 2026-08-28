@@ -14,21 +14,22 @@
 → 최신 관련 Decision
 → 질문별 책임 원본
 → 실제 코드·데이터·Scene·Resource·테스트·GitHub metadata
-→ exact Project Notion when human-facing planning/visual/state is relevant
+→ repository human-facing owner when planning/visual/state is relevant
 ```
 
 ## 질문별 현재 책임 원본
 
 | 질문 | 현재 책임 원본 |
 |---|---|
-| 현행 전체 작업 방식·검증·병합·전달 계약 | `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` / `TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01` |
-| 현재 단계·권한·다음 작업 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` + current planning JSON + GitHub current metadata + exact Project Notion |
-| 사람용 Project Home·전체 Flow·Visual·사람이 수정하는 핵심 표 | exact Project Notion (`NOTION_HUMAN_FACING_CANON`) |
+| 현행 전체 작업 방식·검증·병합·전달 계약 | `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` / `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01` |
+| 현재 단계·권한·다음 작업 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` + current planning JSON + GitHub current metadata + repository owners |
+| 사람용 Project Home·전체 Flow·Visual·사람이 수정하는 핵심 표 | repository (`REPOSITORY_HUMAN_FACING_CANON`) |
 | 구조화 정본·실제 구현·런타임 증거 | repository (`REPOSITORY_STRUCTURED_CANON` + `REPOSITORY_RUNTIME_TRUTH`) |
 | Google Sheets 과거 고유 자료 | `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md`에 등록된 legacy workbook — `MIGRATION_ONLY_UNTIL_REMOVAL` |
 | 프로젝트의 과거 Base release·payload/evidence/finalization pin | `docs/BASE_RULES_VERSION.md`, `skills/PROJECT_BASE_ADAPTER.json` — compatibility/adoption evidence |
 | 프로젝트 고유 Skill | `skills/SKILL_REGISTRY.json`, `skills/*/SKILL.md` |
 | 게임 정체성·핵심 재미 | `docs/01_GAME_DESIGN.md` |
+| 통합 기획·AI 실행 명세·Notion 이관표 | `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` (사람용 전달 PDF: `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf`) |
 | 세계·플레이어 역할·강호 비무행·5전 감정곡선·비전투 App Flow | `docs/12_VERTICAL_SLICE_JIANGHU_JOURNEY.md`, `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01` |
 | 전투 규칙·판정·자원·AI·관찰 | `docs/02_COMBAT_RULES.md` |
 | 전투 UI 정보 위계·거리·카드·관찰 표시 | `docs/decisions/2026-08-11_COMBAT_UI_INFORMATION_HIERARCHY_DECISION.md`, `docs/07_COMBAT_UI_SPEC.md` |
@@ -44,10 +45,10 @@
 | 플랫폼 Adapter 구조 | `docs/decisions/2026-08-06_WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_DECISION.md` |
 | 화면 구조 | `docs/decisions/2026-08-01_SITUATION_SCREEN_ARCHITECTURE_DECISION.md` |
 | 행동 선택 | `docs/decisions/2026-08-01_MARTIAL_MANUAL_TECHNIQUE_TIMELINE_UX_DECISION.md` |
-| 현재 Visual production Gate | `docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md` + `docs/planning-data/current_visual_production_handoff_20260826.json` + exact Project Notion |
-| 현재 목표 Build의 실제 화면·screen-to-asset coverage·제작 방식·Codex handoff | `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md` §16 + actual `scenes/run/vertical_slice_shell.tscn` / `src/run/vertical_slice_run_state.gd` + exact Project Notion Flow/Visual/Asset projections |
+| 현재 Visual production Gate | `docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md` + `docs/planning-data/current_visual_production_handoff_20260826.json` + repository Visual/asset records |
+| 현재 목표 Build의 실제 화면·screen-to-asset coverage·제작 방식·Codex handoff | `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md` §16 + actual `scenes/run/vertical_slice_shell.tscn` / `src/run/vertical_slice_run_state.gd` + repository Flow/Visual/Asset owners |
 | 2026-08-25 Visual Reference/handoff history | `docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md` + `docs/planning-data/current_visual_production_handoff_20260825.json` |
-| 무공서·무학 과거 사용자-facing 표 | legacy Sheet `03_무공서_무학` + 해당 Decision ID의 GitHub/Notion destination — migration 확인 전용 |
+| 무공서·무학 과거 사용자-facing 표 | legacy Sheet `03_무공서_무학` + 해당 Decision ID의 repository destination — migration 확인 전용 |
 
 구조화 planning JSON은 각 Decision·분야 정본의 검증 가능한 계약/ledger다. 어떤 JSON이 현재 활성인지 여부는 Decision 연결과 `docs/CANON_LIFECYCLE_REGISTRY.md`를 통해 판정한다. 과거 PR·branch·merge SHA는 현재 책임 원본 목록에 넣지 않고 역사·증거 문서에서만 읽는다.
 
@@ -61,7 +62,7 @@
 → docs/CANON_LIFECYCLE_REGISTRY.md
 → 관련 Decision 문서
 → 분야 책임 원본·planning JSON
-→ exact Project Notion when human-facing projection is required
+→ repository human-facing owner when human-facing projection is required
 ```
 
 Decision이 추가·대체·부분 overlay되면 위 권위 사슬을 갱신하고, 이 지도에는 **새 질문 종류 또는 책임 원본이 생길 때만** 경로를 추가한다.
@@ -73,7 +74,7 @@ Decision이 추가·대체·부분 overlay되면 위 권위 사슬을 갱신하�
 ```yaml
 current_state_owner: ACTIVE_CONTEXT
 current_pr_authority: GITHUB_PR_METADATA
-current_notion_authority: EXACT_PROJECT_NOTION
+current_human_facing_authority: REPOSITORY_HUMAN_FACING_CANON
 current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME
 google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL
 legacy_sheet_migration_locator: GOOGLE_SHEET_00_02_04_99
@@ -81,9 +82,9 @@ current_decision_authority: ACTIVE_CONTEXT_PLUS_CANON_LIFECYCLE_REGISTRY
 product_build_authority: CURRENT_WORK_CONTRACT_PLUS_CURRENT_USER_APPROVAL_PLUS_CURRENT_GATE
 ```
 
-Google Sheet locator는 기존 자료의 unique/duplicate/obsolete 분류와 migration readback을 위한 compatibility token일 뿐이다. 신규 기획 입력·Decision 동기화·현재 사용자 작업 권위는 Project Notion + GitHub를 사용한다.
+Google Sheet/Notion locator는 기존 자료의 unique/duplicate/obsolete 분류와 migration readback을 위한 compatibility token일 뿐이다. 신규 기획 입력·Decision 동기화·현재 사용자 작업 권위는 repository를 사용한다.
 
-새 세션·post-merge에서는 저장된 SHA나 과거 PR 번호를 current로 재사용하지 않는다. `ACTIVE_CONTEXT.md`, current planning JSON, GitHub main/open PR, exact Project Notion, current operating/entry gate를 fresh-read해 현재 상태를 판정한다.
+새 세션·post-merge에서는 저장된 SHA나 과거 PR 번호를 current로 재사용하지 않는다. `ACTIVE_CONTEXT.md`, current planning JSON, GitHub main/open PR, repository human-facing/structured owner, current operating/entry gate를 fresh-read해 현재 상태를 판정한다.
 
 안정적인 게임 코어·플랫폼·UI 의미는 해당 분야 책임 원본이 소유하며, 이 지도는 그 내용을 재서술하지 않는다.
 
@@ -101,8 +102,9 @@ Google Sheet locator는 기존 자료의 unique/duplicate/obsolete 분류와 mig
 - `Image generation을 거쳐야만 모든 Build 가능` → 최신 사용자 지시와 current visual/asset gate에서 판정.
 - `Google Sheets 신규 입력이 현재 GDD 작업 기본 경로` → `MIGRATION_ONLY_UNTIL_REMOVAL`로 대체됨.
 - `TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01`이 current 작업계약 → 역사 evidence.
-- `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`이 current 작업계약 → r5.4 binding으로 대체됨.
-- `2026-08-25 max-three image batch`가 current 자동 생성 권한 → r5.4 exactly-one explicit approval Gate가 current.
+- `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`이 current 작업계약 → r5.4 product-safety baseline과 `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`로 대체됨.
+- `2026-08-25 max-three image batch`가 current 자동 생성 권한 → 폐기된 당시 cadence.
+- 이미지 생성 전 사용자 승인 필수 → 최신 사용자 지시에 따라 필요한 단일 시각자료는 생성 후 최종 방향 lock만 사용자 승인으로 받는다.
 
 ## 현재 다음 작업
 
@@ -111,7 +113,7 @@ Google Sheet locator는 기존 자료의 unique/duplicate/obsolete 분류와 mig
 ```text
 ACTIVE_CONTEXT + current planning JSON의 current next action
 → 최신 사용자 지시·current Gate 안에서 PLAN/BUILD/REVIEW 판정
-→ Base·Project main/open PR·exact Project Notion·Entry Gate 재조회
+→ Base·Project main/open PR·repository human-facing/structured owners·Entry Gate 재조회
 → 현재 승인과 Gate가 허용하는 package만 실행
 → evidence/readback 뒤 다음 current state를 다시 계산
 ```

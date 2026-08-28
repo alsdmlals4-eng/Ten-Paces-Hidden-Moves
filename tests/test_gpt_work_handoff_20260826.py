@@ -20,7 +20,7 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
         visual = json.loads(VISUAL.read_text(encoding="utf-8"))
         planning = json.loads(PLANNING.read_text(encoding="utf-8"))
 
-        self.assertEqual("GPT_WORK", visual["handoff"]["next_surface"])
+        self.assertEqual("REPOSITORY_ONLY_GPT_WORK", visual["handoff"]["next_surface"])
         self.assertTrue(visual["handoff"]["fresh_read_required"])
         self.assertEqual(
             "WARM_DUSK_V2_USER_APPROVED_PLANNING_ANCHOR_ONLY_CORE_SCENE_BOARD_USER_FINAL_LOCKED_PLANNING_ONLY_DOGYEOM_ASSETS_PRESERVED",
@@ -37,7 +37,7 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
             "064a8772406c743bbe6b252c138b4333c88b00b90a0ba905cce9ea18773539c9",
             battler["source_png_sha256"],
         )
-        self.assertEqual("PASS", battler["notion_delivery"])
+        self.assertEqual("PASS_20260826", battler["historical_notion_delivery_evidence"])
         self.assertEqual("res://assets/characters/dogyeom_combat_battler_01_v1.png", battler["runtime_asset"])
         self.assertEqual("AUTOMATED_GODOT_PASS_20260827", battler["opponent_specific_routing"])
 
@@ -47,7 +47,7 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
         self.assertEqual("USER_FINAL_LOCKED_PLANNING_ONLY", visual["next_result"]["generation_status"])
         self.assertEqual("USER_APPROVED_FINAL_LOCKED", visual["next_result"]["final_lock_status"])
         self.assertEqual([], planning["next_visual_batch"])
-        self.assertEqual("GPT_WORK", planning["next_execution_surface"])
+        self.assertEqual("REPOSITORY_ONLY_GPT_WORK", planning["next_execution_surface"])
         self.assertEqual(
             f"MERGED_MAIN_{HANDOFF_MERGED_MAIN}",
             planning["evidence_ceiling"]["github_visual_handoff_and_provenance"],

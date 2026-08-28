@@ -3,7 +3,8 @@ contract_name: PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION
 contract_version: '4.8'
 status: ACTIVE_BASE_CURRENT_MAIN_THIN_ADAPTER_PROJECT_EXECUTION_CONTRACT
 revision: '2026-08-26-r5.4-superset-final'
-current_binding_decision: TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01
+current_binding_decision: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
+product_safety_baseline: TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01
 source_uploaded_sha256: fdf238c202cfac6d3a824aae49b8ac525fba023e31bba7df6ece64a2790365a0
 base_repository: https://github.com/alsdmlals4-eng/Base
 base_snapshot_observed_at_binding: edb3b3376603c9f6b00d64af3126304f8c9946bf
@@ -12,7 +13,7 @@ adapter_policy: THIN_ADAPTER_DO_NOT_DUPLICATE_BASE_CANON
 project_fact_policy: PROJECT_CANON_AND_ACTUAL_IMPLEMENTATION_FIRST
 project_repository: https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves
 project_default_branch: main
-human_workspace: NOTION_DEFAULT_PROJECT_WORKSPACE
+human_workspace: REPOSITORY_HUMAN_FACING_CANON
 runtime_structured_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME
 google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL
 open_pr_policy: OPEN_PR_READ_ONLY_BY_DEFAULT
@@ -20,7 +21,7 @@ current_task_pr_policy: CURRENT_TASK_CONTINUATION_AUTHORIZES_READY_MERGE
 force_and_ruleset_bypass_policy: FORBIDDEN
 work_structure_flexibility_policy: FIX_ONLY_TRUE_INVARIANTS_KEEP_COUNTS_TOOLS_AND_MODES_DYNAMIC
 legacy_surface_retirement_policy: ABSORB_UNIQUE_VERIFY_DESTINATION_ZERO_ACTIVE_REFERENCES_THEN_SUPERSEDE_HOLD_ARCHIVE_OR_REMOVE
-approved_unit_closeout_policy: ADVERSARIAL_REVIEW_GITHUB_NOTION_SYNC_PR_CHECK_MERGE_POSTMERGE_READBACK
+approved_unit_closeout_policy: ADVERSARIAL_REVIEW_REPOSITORY_SYNC_PR_CHECK_MERGE_POSTMERGE_READBACK
 primary_work_goal: BEST_LONG_TERM_EFFICIENT_METHOD
 quality_priority: QUALITY_OVER_RESPONSE_SPEED
 minimum_viable_alternatives: 3
@@ -33,15 +34,15 @@ case_lookup_before_retry: REQUIRED_FOR_MATERIAL_FAILURES_AND_REPEATABLE_PROBLEMS
 incident_solution_lesson_loop: REQUIRED_FOR_MATERIAL_FAILURES
 multi_route_recovery_ladder: REQUIRED_FOR_FAILURE_PRONE_L1_PLUS_EXTERNAL_CAPABILITY_WORK
 fallback_evidence_policy: EVIDENCE_EQUIVALENT_FALLBACK_ONLY
-visual_generation_policy: TEXT_BRIEF_THEN_EXPLICIT_USER_APPROVAL_THEN_EXACTLY_ONE_RESULT
-notion_image_delivery_policy: CONNECTOR_NATIVE_FIRST_OFFICIAL_TYPED_FILE_UPLOAD_FALLBACK_THEN_MANUAL_LAST
-notion_image_readback_policy: DURABLE_DESTINATION_READBACK_REQUIRED
+visual_generation_policy: TEXT_BRIEF_THEN_SCOPED_SINGLE_GENERATION_THEN_USER_FINAL_LOCK
+notion_image_delivery_policy: RETIRED_MIGRATION_HISTORY_ONLY
+notion_image_readback_policy: NOT_REQUIRED_FOR_CURRENT_EXECUTION
 human_visible_image_claim_policy: CLIENT_OBSERVATION_REQUIRED_WHEN_RENDERING_IS_PART_OF_CLAIM
 local_codex_policy: RETIRED_NOT_USED
 gpt_local_codex_orchestration_policy: RETIRED
 codex_execution_policy: INDEPENDENT_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF_ONLY
 powershell_policy: LOCAL_GODOT_OR_VALIDATION_ONLY_NOT_CODEX_LAUNCHER
-fresh_read_bootstrap_policy: PROJECT_GITHUB_NOTION_ONLY_RECONSTRUCTION_REQUIRED
+fresh_read_bootstrap_policy: PROJECT_GITHUB_REPOSITORY_OWNER_RECONSTRUCTION_REQUIRED
 past_conversation_dependency_policy: NOT_REQUIRED_FOR_NEW_CHAT_RESUME
 entry_state_reconciliation_policy: REQUIRED_BEFORE_MATERIAL_MUTATION
 whole_project_audit_policy: REQUIRED_FOR_NEW_PROJECT_MAJOR_GATE_AND_RESTRUCTURE
@@ -54,7 +55,7 @@ narrative_event_origin_policy: MESSAGE_OR_QUESTION_AND_CHARACTER_BEFORE_EVENT_PR
 multi_platform_shared_core_policy: SHARED_RULE_DATA_SAVE_ECONOMY_CORE_SEMANTICS
 slice_delivery_policy: PLAYABLE_MEANINGFUL_SLICE_INCREMENTAL_DELIVERY
 slice_benchmark_and_adversarial_policy: ONE_SUBSTANTIVE_RESEARCH_PACKAGE_PER_SLICE_WITH_FIVE_PLUS_FULL_LOOPS
-slice_canonical_reflection_policy: AFTER_PLAY_VERIFICATION_GITHUB_STRUCTURED_AND_NOTION_HUMAN_READBACK
+slice_canonical_reflection_policy: AFTER_PLAY_VERIFICATION_REPOSITORY_STRUCTURED_AND_HUMAN_READBACK
 audio_visual_poc_policy: RUNTIME_FEEDBACK_ALIGNMENT_EVIDENCE_REQUIRED_WHEN_PLAYER_PROMISE_DEPENDS_ON_IT
 progress_measurement_policy: PLAYABLE_PROGRESS_NOT_DOCUMENT_VOLUME
 base_promotion_evidence_policy: REPEATED_SLICE_OR_CROSS_PROJECT_EVIDENCE_BEFORE_GENERALIZATION
@@ -92,7 +93,7 @@ historical_contracts:
 
 # 프로젝트 총기획·시각화·구현·검증·병합 통합 작업지시문 v4.8 r5.4 — 십보강호 Thin Adapter
 
-이 문서는 Base 공용 절차의 복사본이 아니다. 십보강호에서 새 채팅·새 담당자가 **현재 GitHub + 현재 Notion만 fresh-read하여 동일한 실행 경계**를 복원하도록 프로젝트 고유 불변식과 최신 계약 locator만 유지한다. 세부 Work Mode·Skill·CI·review·completion 절차는 실행 시점의 최신 Base owner를 progressive-load한다.
+이 문서는 Base 공용 절차의 복사본이 아니다. 십보강호에서 새 채팅·새 담당자가 **현재 GitHub + repository owner만 fresh-read하여 동일한 실행 경계**를 복원하도록 프로젝트 고유 불변식과 최신 계약 locator만 유지한다. `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`은 r5.4의 Notion workspace 조항을 대체하며, 나머지 제품 안전 경계는 유지한다.
 
 ## 1. 시작·권위
 
@@ -100,26 +101,24 @@ historical_contracts:
 최신 사용자 지시
 → 최신 Base completed main + Base root AGENTS.md
 → 프로젝트 AGENTS.md
-→ 이 r5.4 thin adapter
+→ 이 thin adapter + repository-only workspace decision
 → [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
-→ current planning JSON + GitHub live metadata + exact Project Notion
+→ current planning JSON + GitHub live metadata + repository human-facing owner
 → 최신 Decision / 질문별 owner
 → 실제 code/data/scene/resource/asset/test/runtime
 ```
 
 - 과거 채팅·Handoff·저장된 SHA를 current truth로 자동 승격하지 않는다.
-- GitHub와 Notion 의미가 다르면 mutation 전에 `CONTEXT_DRIFT_RECHECK_REQUIRED`다.
+- Notion은 migration/history input일 뿐 current conflict surface가 아니다.
 - Google Sheets는 고유 미이관 자료를 찾는 `MIGRATION_ONLY_UNTIL_REMOVAL` source이며 신규 기획·승인·current state 작업면이 아니다.
 - Base v9.4.3 등 프로젝트가 보존한 release pin은 compatibility/adoption evidence이지 current Base remote truth가 아니다.
 - `LEGACY_ABSORB_VERIFY_REMOVE`: 퇴역 surface는 UNIQUE만 현행 owner로 이관하고 destination readback + active reference 0을 확인한 뒤 `[대체됨]`·`[보류]`·Archive·remove로 닫는다.
 
 ## 2. DOMAIN SPLIT
 
-**Notion**은 사람용 Project Home, Flow/Storyboard, 세계관·캐릭터·핵심 시스템 설명, 승인 Visual, 사람이 직접 비교·수정하는 핵심 표를 소유한다.
+**GitHub repository**는 Markdown/JSON human-facing 및 structured canon, game data, code, Scene/Resource, tracked asset, tests, CI, runtime evidence를 소유한다.
 
-**GitHub repository**는 Markdown/JSON structured canon, game data, code, Scene/Resource, tracked asset, tests, CI, runtime evidence를 소유한다.
-
-승인된 의미 변경은 같은 Decision/Requirement identity로 올바른 양쪽 owner에 반영하고 destination readback한다. 한쪽의 보기 좋은 설명이 다른 쪽의 실제 구현 사실을 덮어쓰지 않는다.
+승인된 의미 변경은 같은 Decision/Requirement identity로 repository human-facing/structured owner에 반영하고 destination readback한다. Notion은 신규 output·sync·attachment 대상이 아니며 historical migration input으로만 보존한다.
 
 ## 3. 프로젝트 코어·보호 범위
 
@@ -150,10 +149,10 @@ historical_contracts:
 
 Base의 상세 절차를 여기 복제하지 않지만 다음 **프로젝트 실행 불변식**은 무음으로 약화하지 않는다.
 
-- `WHOLE_PROJECT_AUDIT_FIRST`: 새 프로젝트/새 채팅의 첫 material 작업, major gate·구조 변경·전수 검토·major closeout에서는 단일 파일 수정 전에 GitHub/Notion/open workstream/실제 구현·검증·보호 범위를 함께 감사한다.
-- `BOUNDED_DECISION_BATCH_AND_EARLY_CANON_SYNC`: 승인 결정을 과도하게 쌓지 않고 current Base intake owner가 정한 bounded 단위로 GitHub structured canon + Notion human canon을 조기 동기화한다.
+- `WHOLE_PROJECT_AUDIT_FIRST`: 새 프로젝트/새 채팅의 첫 material 작업, major gate·구조 변경·전수 검토·major closeout에서는 단일 파일 수정 전에 GitHub/repository owners/open workstream/실제 구현·검증·보호 범위를 함께 감사한다.
+- `BOUNDED_DECISION_BATCH_AND_EARLY_CANON_SYNC`: 승인 결정을 과도하게 쌓지 않고 current Base intake owner가 정한 bounded 단위로 repository structured + human-facing canon을 조기 동기화한다.
 - `PLAYABLE_SLICE_BOUNDARY`: 진행률은 문서/commit 수가 아니라 플레이 의미가 있는 작은 Slice로 측정한다.
-- `CANONICAL_REFLECTION_AFTER_PLAY`: play/test 결과로 실제 finding이 생기면 교정 후 repository structured truth와 Notion human-facing truth를 함께 readback한다.
+- `CANONICAL_REFLECTION_AFTER_PLAY`: play/test 결과로 실제 finding이 생기면 교정 후 repository structured/human-facing truth를 readback한다.
 - `DECISION_SCREEN_COMPREHENSION_GATE`: 의사결정 화면은 상황·선택지·비용/위험·결과·다음 행동을 사람이 이해하는지 분리 검증하며 screenshot/자동 UI test만으로 Human PASS를 주장하지 않는다.
 - `AUDIO_VISUAL_POC_EVIDENCE`: player promise가 시각/음향 feedback에 의존하면 runtime feedback alignment 없이 player-experience PASS를 주장하지 않는다.
 - `FUNCTION_LEVEL_VALIDITY_CLASSIFICATION`: 외부 Skill/모듈/도구는 통째 채택보다 기능별 `REUSE / ABSORB / ADAPT / REJECT`를 우선하고 불필요한 권한·복잡성을 들여오지 않는다.
@@ -168,14 +167,14 @@ Base의 상세 절차를 여기 복제하지 않지만 다음 **프로젝트 실
 
 ```text
 GPT
-→ 기획 / 조사 / 검수 / Base / Notion / 문서 / Visual
+→ 기획 / 조사 / 검수 / Base / repository 문서 / Visual
 
 실제 Godot 제품 구현 없음
 → GPT가 정본 readback 후 닫음
 
 실제 Godot 제품 구현 있음
 → CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
-→ Codex가 프로젝트 GitHub + Notion을 독립 fresh-read
+→ Codex가 프로젝트 GitHub + repository owners를 독립 fresh-read
 → Codex 자신의 구현환경에서 Godot 제품 구현/test/runtime evidence
 → READY_FOR_GPT_REVIEW
 → GPT 최종 검수/정본/PR closeout
@@ -194,7 +193,7 @@ PowerShell은 사용자 PC의 **Godot 실행·검증·환경 확인이 실제 �
 
 ## 6. Visual·UI·Localization
 
-Visual 제작 전 current Notion Visual Bible/Asset Library와 repository Visual requirement/inventory를 읽고 `VISUAL_REQUIREMENT_DELETE_TEST`, asset coverage, Art Style Lock을 확인한다.
+Visual 제작 전 repository Visual Bible/asset record/requirement/inventory를 읽고 `VISUAL_REQUIREMENT_DELETE_TEST`, asset coverage, Art Style Lock을 확인한다.
 
 새 이미지 생성/생성형 편집의 Base r5.4 기본은 historical compatibility로 보존한다. 십보강호의 current project override는 `TEN-DEC-20260828-CORE-SCENE-VISUAL-BOARD-FINAL-LOCK-CADENCE-01` 및 `docs/planning-data/current_visual_production_handoff_20260826.json`가 소유한다.
 
@@ -204,7 +203,7 @@ canon review
 → scoped single generation pass
 → adversarial result review
 → user final-lock review
-→ 승인 뒤에만 Notion/repository asset lifecycle 진행
+→ 승인 뒤 repository asset lifecycle 및 destination readback
 ```
 
 즉, 이미 범위가 정해진 십보강호 시각 작업은 사전 생성 승인 요청 없이 한 결과를 생성하고, 사용자는 **최종 확정(lock)** 에만 승인한다. 유효한 국소 결함이 적대 검토에서 확인되면 방향을 바꾸지 않는 한 번의 보정 successor만 허용하며 이전 결과는 `SUPERSEDED_GENERATED_EXPLORATION`으로 남긴다. 이 예외는 자동 다음 작업·asset batch·runtime promotion 권한을 만들지 않으며, 공용 Base 규칙의 소유권도 바꾸지 않는다.
@@ -215,7 +214,7 @@ UI/구조는 최소 `ko / en / ja / zh-*`를 수용할 localization-ready 구조
 
 반응형 최소 계획은 `pc_standard / pc_wide_or_ultrawide / mobile_landscape`이며 pixel-identical이 아니라 동일 정보 위계·행동 의미·상태 의미·피드백 의미를 보호한다.
 
-승인 Visual의 Notion delivery는 connector-native typed upload/attach를 우선하고, 실제 target destination readback까지 완료해야 한다. 서버 readback은 client/human-visible 렌더 PASS가 아니다.
+승인 Visual은 repository source/provenance/consumer record에 반영하고 exact destination readback한다. historical Notion attachment는 runtime/release evidence가 아니다.
 
 ## 7. 현재 제품·시각 상태 해석
 
@@ -225,7 +224,7 @@ UI/구조는 최소 `ko / en / ja / zh-*`를 수용할 localization-ready 구조
 - `docs/planning-data/current_user_planning_status.json`
 - `docs/planning-data/current_visual_production_handoff_20260826.json`
 - `docs/planning-data/current_operating_state.json`
-- exact Project Notion Home / Visual Bible / Asset Library
+- repository Visual Bible / asset provenance / Flow owner
 - GitHub live main/open PR/recent commits
 
 `docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md`와 `docs/planning-data/current_visual_production_handoff_20260825.json`은 승인 Reference Set과 당시 max-three cadence의 역사 evidence다. current visual execution owner로 사용하지 않는다.
@@ -238,17 +237,17 @@ UI/구조는 최소 `ko / en / ja / zh-*`를 수용할 localization-ready 구조
 - current-task continuation이 latest completed main에서 직접 만든 하나의 명확한 PR만 exact HEAD·required checks·review/thread/ruleset Gate 뒤 safe merge할 수 있다.
 - direct main push, force push, admin/ruleset bypass는 금지한다.
 - CI check 이름과 required 상태는 live repository/ruleset에서 발견한다.
-- `REQUIRED_WORK_REMAINING: 0`은 completion candidate이며 correction rescan + 최소 5회 adversarial loop + postmerge GitHub/Notion readback 뒤에만 종료한다.
-- 승인된 작업 단위 closeout은 `GitHub + Notion 의미 동기화 → adversarial review → exact-head PR/CI/review/thread Gate → safe merge → new main + Notion destination readback`까지 같은 승인 범위에서 닫는다.
+- `REQUIRED_WORK_REMAINING: 0`은 completion candidate이며 correction rescan + 최소 5회 adversarial loop + postmerge repository readback 뒤에만 종료한다.
+- 승인된 작업 단위 closeout은 `repository 의미 동기화 → adversarial review → exact-head PR/CI/review/thread Gate → safe merge → new main + repository destination readback`까지 같은 승인 범위에서 닫는다.
 
 ## 9. r2 → r5.4 migration/non-regression
 
 `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`의 프로젝트 고유 의미는 삭제하지 않는다.
 
-- Notion human canon / repository runtime canon / Sheet migration-only: **PRESERVED**.
+- Notion human canon은 `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`로 **SUPERSEDED_FOR_CURRENT_EXECUTION**; repository human/runtime canon / Sheet migration-only: **CURRENT**.
 - Base progressive-load / open PR read-only / IRG / 5회 adversarial review: **PRESERVED**.
 - Whole-project audit / requirement traceability / bounded early checkpoint / playable Slice / decision-screen comprehension / Audio·Visual POC / Asset·Audio provenance / user-runnable play / CI supply-chain·cost / partial Skill absorption: **RESTORED/IMPROVED r5.4 project invariants**.
-- Fresh-Read GitHub+Notion cold-start: **IMPROVED**.
+- Fresh-Read GitHub+repository owner cold-start: **CURRENT**.
 - Visual exactly-one approval loop: **CURRENT r5.4 OVERRIDE**.
 - GPT→PowerShell→local Codex, project CODEX_HOME, dedicated port readiness: **INTENTIONALLY SUPERSEDED** by independent Codex Godot product handoff + local Godot validation-only PowerShell.
 - dated/fixed Skill·PR·CI/tool counts: **INTENTIONALLY SUPERSEDED** by live discovery.

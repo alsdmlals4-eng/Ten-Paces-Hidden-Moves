@@ -3,10 +3,10 @@
 > 현재 상태 단독 책임 원본: `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` + `docs/planning-data/current_operating_state.json` + `docs/planning-data/current_user_planning_status.json`  
 > 전투 규칙 책임 원본: `docs/02_COMBAT_RULES.md`  
 > 생명주기: `docs/CANON_LIFECYCLE_REGISTRY.md`  
-> 사람용 Project Home·Flow·Visual: exact Project Notion  
-> 현행 작업계약: `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`
+> 사람용 Project Home·Flow·Visual: repository human-facing owners
+> 현행 workspace 계약: `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01` (product safety baseline: r5.4)
 
-이 문서는 **장기 로드맵·제품 증거 계보·다음 Gate의 순서**를 소유한다. 활성 PR, exact HEAD, 현재 Work Mode, 승인 수, 현재 stage, 다음 package/Decision 같은 mutable operating checkpoint는 복제하지 않는다. 작업 재개 시 Active Context/current JSON/GitHub live metadata/exact Project Notion을 fresh-read한다.
+이 문서는 **장기 로드맵·제품 증거 계보·다음 Gate의 순서**를 소유한다. 활성 PR, exact HEAD, 현재 Work Mode, 승인 수, 현재 stage, 다음 package/Decision 같은 mutable operating checkpoint는 복제하지 않는다. 작업 재개 시 Active Context/current JSON/GitHub live metadata/repository owners를 fresh-read한다.
 
 ## 1. 현재 단계 — 상태 읽기와 보존된 구현 계보
 
@@ -14,7 +14,7 @@
 
 ```yaml
 current_state_owner: ACTIVE_CONTEXT_PLUS_CURRENT_JSON
-current_human_workspace: EXACT_PROJECT_NOTION
+current_human_workspace: REPOSITORY_HUMAN_FACING_CANON
 current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME
 google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
@@ -200,7 +200,7 @@ WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 → Android export·device·lifecycle
 → 접근성·성능
 → 사람 플레이
-→ repository/Notion destination readback
+→ repository destination readback
 ```
 
 Google Sheets는 신규 정본 sync 단계가 아니다. 고유 미이관 자료를 확인하는 migration 질문에서만 `MIGRATION_ONLY_UNTIL_REMOVAL` source로 읽는다. 실행하지 않은 검증은 `NOT_RUN / UNVERIFIED`로 남긴다.
@@ -261,4 +261,4 @@ Google Sheets는 신규 정본 sync 단계가 아니다. 고유 미이관 자료
 - `DEFER`: 최종 loadout 경제, 최종 연출, 비스탯 노드 경제, 온라인·크로스 세이브·과금.
 - `RETEST`: 자원 포화·기술 대체·AI 공정성·관찰·등급 파밍·Android 생명주기·성능 위험.
 
-병합 전후에는 repository owner와 필요한 exact Project Notion destination을 같은 의미로 동기화하고 readback한다. Google Sheets는 migration-only compatibility source이며 current Decision/state sync surface가 아니다.
+병합 전후에는 repository owner를 같은 의미로 동기화하고 readback한다. Google Sheets와 historical Notion은 migration-only compatibility source이며 current Decision/state sync surface가 아니다.

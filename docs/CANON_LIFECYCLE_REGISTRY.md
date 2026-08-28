@@ -24,6 +24,7 @@
 | 분야 | 권위 |
 |---|---|
 | 활성 상태 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` |
+| 현재 human-facing workspace | `docs/decisions/2026-08-28_REPOSITORY_ONLY_CANONICAL_WORKSPACE_DECISION.md`, `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01` |
 | 세계·플레이어 역할·강호 비무행·5전 감정곡선·비전투 App Flow | `docs/12_VERTICAL_SLICE_JIANGHU_JOURNEY.md`, `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01` |
 | 로드맵 | `docs/04_ROADMAP.md` |
 | 전투 부모 | `docs/02_COMBAT_RULES.md` |
@@ -186,7 +187,7 @@ VERTICAL_SLICE_TEXTUAL_UX_AND_CONTENT_AUTHORING
 → Briefing / Result·Review·Reward / 완주 요약 텍스트 UX 상세
 → 전체 기획 정합성·비용·재플레이 적대적 검토
 → 사용자 명시 [기획 완료]
-→ 최신 Base·Project main/open PR·exact Project Notion·Entry Gate 재조회
+→ 최신 Base·Project main/open PR·repository owner·Entry Gate 재조회
 → 승인된 구현 package만 BUILD
 ```
 

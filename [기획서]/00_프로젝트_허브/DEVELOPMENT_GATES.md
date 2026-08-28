@@ -2,7 +2,7 @@
 
 > 현재 상태 책임 원본: `ACTIVE_CONTEXT.md`  
 > 현재 GitHub 상태: GitHub main / PR metadata / exact-head Actions  
-> 사람용 프로젝트 상태·Flow·Visual: exact Project Notion  
+> 사람용 프로젝트 상태·Flow·Visual: repository human-facing owners
 > legacy Google Sheet: `MIGRATION_ONLY_UNTIL_REMOVAL`  
 > 현재 상세 로드맵: `../../../docs/04_ROADMAP.md`
 
@@ -26,23 +26,23 @@ implementation: IMPLEMENTED | PARTIALLY_IMPLEMENTED | PLANNED | PROPOSED_ONLY | 
 current_state_owner: ACTIVE_CONTEXT
 current_pr_authority: GITHUB_PR_METADATA
 current_exact_head_evidence: GITHUB_ACTIONS
-current_human_workspace: EXACT_PROJECT_NOTION
+current_human_workspace: REPOSITORY_HUMAN_FACING_CANON
 current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME
 google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL
 gate_document_semantics: CONDITIONS_ONLY
 base_remote_policy: LATEST_COMPLETED_MAIN_PROGRESSIVE_LOAD
 ```
 
-새 작업과 post-merge 판정은 latest Base/project main, current PR metadata, Active Context/current JSON, exact Project Notion을 fresh-read한 뒤 이 Gate 조건에 대입한다. legacy Sheet는 migration 질문에서만 필요한 locator를 읽는다. 과거 exact SHA나 PR 번호를 current verdict로 재사용하지 않는다.
+새 작업과 post-merge 판정은 latest Base/project main, current PR metadata, Active Context/current JSON, repository human-facing owners를 fresh-read한 뒤 이 Gate 조건에 대입한다. Notion/legacy Sheet는 migration 질문에서만 필요한 locator를 읽는다. 과거 exact SHA나 PR 번호를 current verdict로 재사용하지 않는다.
 
 ## 3. G0 — 권한·기준선
 
 진입 조건:
 
 - 최신 사용자 지시와 프로젝트 코어를 확인한다.
-- latest Base owner, project main/open PR, current structured state, exact Project Notion을 fresh-read한다.
-- 현행 project operating contract `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`을 사용한다.
-- 사람용 설명/Flow/Visual은 Notion, structured/runtime truth는 repository를 우선한다.
+- latest Base owner, project main/open PR, current structured state, repository human-facing owners를 fresh-read한다.
+- 현행 workspace contract `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`을 사용한다.
+- 사람용 설명/Flow/Visual과 structured/runtime truth는 repository를 우선한다.
 - Google Sheets는 신규 Decision/현재 상태의 sync surface가 아니라 migration compatibility source다.
 - project Base v9.4.3 pin과 Base remote current를 구분한다.
 - branch/head 상태와 main 상태를 별도 축으로 기록한다.
@@ -67,9 +67,9 @@ base_remote_policy: LATEST_COMPLETED_MAIN_PROGRESSIVE_LOAD
 필수 조건:
 
 - 병합 main과 active PR state를 분리한다.
-- 승인 Decision을 repository Decision/planning JSON/domain owner와 필요한 Notion human-facing owner에 동일 의미로 연결한다.
+- 승인 Decision을 repository Decision/planning JSON/domain owner에 동일 의미로 연결한다.
 - destination readback 전에는 cross-surface sync 완료를 주장하지 않는다.
-- mutable current state는 Active Context/current JSON/GitHub metadata/exact Notion에서 읽는다.
+- mutable current state는 Active Context/current JSON/GitHub metadata/repository owners에서 읽는다.
 - legacy Sheet ID/tab은 migration locator로만 사용한다.
 - 변경이 검증 가능한 동작/계약이면 RED→GREEN과 exact-head evidence를 갖는다.
 
@@ -80,7 +80,7 @@ base_remote_policy: LATEST_COMPLETED_MAIN_PROGRESSIVE_LOAD
 1. Vertical Slice/App Flow 범위가 승인 Decision과 owner로 추적 가능하다.
 2. 제품 의미·수치 충돌은 기존 승인 또는 사용자 명시 결정으로 해결된다.
 3. 핵심 재미를 수치 성장·관찰 정답화·등급 파밍이 대체하지 않는다.
-4. current Decision·분야 정본·planning JSON·필요한 Notion human-facing projection이 충돌하지 않는다.
+4. current Decision·분야 정본·planning JSON·필요한 repository human-facing projection이 충돌하지 않는다.
 5. current-scope P0/P1이 해결되거나 명시적 blocker로 분리된다.
 6. 실행하지 않은 Human/device evidence를 기획 완료와 혼합하지 않는다.
 7. 이미지 생성물 자체는 기획 완료의 필수 선행조건이 아니다.
@@ -90,7 +90,7 @@ base_remote_policy: LATEST_COMPLETED_MAIN_PROGRESSIVE_LOAD
 `REVIEW_COMPLETE` 조건:
 
 - current 승인 범위와 actual implementation을 다시 대조한다.
-- 변경 파일뿐 아니라 untouched owner·active consumer·derived JSON·cold-start router·test·Notion/repository destination을 공격 검토한다.
+- 변경 파일뿐 아니라 untouched owner·active consumer·derived JSON·cold-start router·test·repository destination을 공격 검토한다.
 - 핵심 시스템·보조 시스템·핵심 재미·목표 정렬을 검증한다.
 - normal·failure·edge·counterexample·regression·information-leak·accessibility/responsive/save/commit 경계를 적용 범위만큼 검토한다.
 - minimum 5 full adversarial loops 뒤 새 blocking finding이 0이어야 한다.
@@ -106,11 +106,11 @@ image_generation_requires_explicit_user_request: true
 visual_gate_result: APPROVED_ASSET_OR_NO_NEW_ASSET_REQUIRED
 ```
 
-- 새 이미지 생성/스타일 변경은 `canon review → text brief → 사용자 명시 승인 → 정확히 1개 결과 → 사용자 결과 검토` 순서다.
+- 새 이미지 생성/스타일 변경은 `canon review → text brief → scoped single generation → 사용자 final lock → repository readback` 순서다.
 - `NO_NEW_ASSET_REQUIRED`이면 새 이미지를 만들지 않는다.
 - chat exploration/reference-only 결과는 별도 승인 전 제품 자산이 아니다.
 - 전장·HUD·무공 카드·합/복기 등 플레이어 판단 가독성이 장식보다 우선한다.
-- 승인 Visual의 Notion 전달은 실제 attach + destination readback이 필요하다.
+- 승인 Visual은 repository source/provenance/consumer owner에 기록하고 destination readback한다.
 
 ## 9. G6 — 후속 제품 BUILD
 
@@ -148,7 +148,7 @@ PR #65, PR #92, 과거 Windows CI run, 과거 Sheet sync, v4.5 r2 integrated con
 ## 12. 검증 순서
 
 ```text
-latest Base / Project / current state / exact Notion fresh-read
+latest Base / Project / current state / repository owner fresh-read
 → current scope + authority
 → benchmark/trade study when decision-relevant
 → RED contract when executable
@@ -159,7 +159,7 @@ latest Base / Project / current state / exact Notion fresh-read
 → exact-head PR checks + threads 0
 → merge
 → new main readback
-→ exact Notion destination readback when affected
+→ exact repository destination readback when affected
 → remaining-work recalculation
 → final adversarial clean exit
 ```

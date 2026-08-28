@@ -4,23 +4,25 @@
   "updated_at": "2026-08-28",
   "status": "WARM_DUSK_V2_USER_APPROVED_PLANNING_ANCHOR_ONLY_CORE_SCENE_BOARD_USER_FINAL_LOCKED_PLANNING_ONLY_DOGYEOM_ASSETS_PRESERVED",
   "authority_role": "CURRENT_VISUAL_PRODUCTION_HANDOFF",
-  "current_execution_contract": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
+  "current_execution_contract": "TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01",
+  "product_safety_contract_baseline": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
   "current_visual_production_decision": "TEN-DEC-20260827-WARM-DUSK-TEN-STEP-VISUAL-DIRECTION-01",
   "current_visual_generation_cadence_decision": "TEN-DEC-20260828-CORE-SCENE-VISUAL-BOARD-FINAL-LOCK-CADENCE-01",
   "current_plan_execution_cta_decision": "TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01",
   "current_plan_execution_cta_issue": 247,
   "consumer_first_asset_policy": "ACTUAL_GAME_CONSUMER_REQUIRED",
-  "human_facing_owner": "NOTION_HOME_VISUAL_BIBLE_ASSET_LIBRARY",
+  "human_facing_owner": "REPOSITORY_VISUAL_BIBLE_ASSET_PROVENANCE_AND_HANDOFF",
   "repository_handoff": "docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md",
   "work_handoff": "docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md",
   "historical_visual_handoff": "docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md",
   "historical_visual_state": "docs/planning-data/current_visual_production_handoff_20260825.json",
   "fresh_read_required": true,
   "handoff": {
-    "next_surface": "GPT_WORK",
+    "next_surface": "REPOSITORY_ONLY_GPT_WORK",
     "fresh_read_required": true,
     "past_chat_is_current_authority": false,
-    "notion_handoff_url": "https://app.notion.com/p/3c81b237eb1c81539c1bd4afa75e4b9a",
+    "historical_notion_handoff_url": "https://app.notion.com/p/3c81b237eb1c81539c1bd4afa75e4b9a",
+    "notion_policy": "MIGRATION_HISTORY_INPUT_ONLY_NO_NEW_OUTPUT_OR_READBACK",
     "snapshot_observed_project_main": "b6d76410e3aa0edd7a2e698270742187cc471fd9",
     "snapshot_observed_base_main": "43b3ffb2c5b026e3d4a38dab2338585894d36f61",
     "base_work_adapter": "templates/project-operations/CHATGPT_WORK_PROJECT_EXECUTION_INSTRUCTION_v4.9.md",
@@ -43,7 +45,7 @@
       "approval_source": "user explicit: 승인",
       "generation_id": "0d895036-38e6-420e-990f-823353373366",
       "source_png_sha256": "efe88bf4aaf7d1773916f151d518cf52508f18a670760f817c4226feb7564f42",
-      "notion_delivery": "PASS",
+      "historical_notion_delivery_evidence": "PASS_20260826",
       "runtime_asset": false,
       "role": "REUSABLE_CHARACTER_SOURCE_MASTER"
     },
@@ -53,7 +55,7 @@
       "approval_source": "user explicit: 좋아 승인",
       "generation_id": "79ae965f-6048-48c5-b667-6e9b7a55b68f",
       "source_png_sha256": "064a8772406c743bbe6b252c138b4333c88b00b90a0ba905cce9ea18773539c9",
-      "notion_delivery": "PASS",
+      "historical_notion_delivery_evidence": "PASS_20260826",
       "runtime_asset": "res://assets/characters/dogyeom_combat_battler_01_v1.png",
       "role": "APPROVED_BATTLEFIELD_BATTLER_RUNTIME_ASSET",
       "consumer": "src/combat/combat_character_placeholder.gd",
@@ -72,8 +74,8 @@
       "generation_mode": "ONE_NEW_ORIGINAL_AFTER_EXPLICIT_APPROVAL",
       "source_png_sha256": "0672dfb9938c65f88ade27b90f3bc558a0a3588ccf19a70f5412fc74dd11143c",
       "local_asset": "docs/visual-assets/approved/DOGYEOM_STATUS_PORTRAIT_01_v1.png",
-      "notion_record": "https://app.notion.com/p/3c81b237eb1c8134b203cc7a0a46d52d",
-      "notion_binary_delivery": "PASS_20260826_READBACK",
+      "historical_notion_record": "https://app.notion.com/p/3c81b237eb1c8134b203cc7a0a46d52d",
+      "historical_notion_binary_delivery_evidence": "PASS_20260826_READBACK",
       "runtime_asset": "res://assets/portraits/dogyeom_status_portrait_01_v1.png",
       "consumer": "src/ui/combatant_status_panel.gd",
       "current_consumer_asset": "res://assets/portraits/enemy_masked_ink_v1.png",
@@ -132,8 +134,8 @@
       ],
       "provenance_and_rights": "SOURCE_CANDIDATE_RECORDED_RELEASE_RIGHTS_UNKNOWN_RELEASE_BLOCKED_UNVERIFIED",
       "repository_destination": "docs/decisions/2026-08-28_WARM_DUSK_V2_PLANNING_ANCHOR_DECISION.md",
-      "notion_destination": "https://app.notion.com/p/3c01b237eb1c814f80d4c6140fddebd4",
-      "notion_attachment_readback": "PASS_20260828"
+      "historical_notion_destination": "https://app.notion.com/p/3c01b237eb1c814f80d4c6140fddebd4",
+      "historical_notion_attachment_readback": "PASS_20260828"
     }
   },
   "combat_reference_contract": {
@@ -183,7 +185,7 @@
     "review_after_result_required": true,
     "historical_20260825_policy": "MAX_3_PER_BATCH_SUPERSEDED_FOR_CURRENT_EXECUTION"
   },
-  "notion_delivery_verification": {
+  "historical_notion_delivery_evidence": {
     "home_url": "https://app.notion.com/p/3c41b237eb1c8105a254d860f3c21638",
     "visual_bible_url": "https://app.notion.com/p/3c01b237eb1c814f80d4c6140fddebd4",
     "asset_library_url": "https://app.notion.com/p/3c01b237eb1c8172a16dc7713b75fcc5",
@@ -193,7 +195,7 @@
     "dogyeom_combat_battler_01_delivery": "PASS_20260826",
     "consumer_first_policy_readback": "PASS_20260826",
     "gpt_work_handoff_readback": "PASS_20260826",
-    "dogyeom_status_portrait_01_notion_binary_delivery": "PASS_20260826_READBACK",
+    "dogyeom_status_portrait_01_historical_notion_binary_delivery": "PASS_20260826_READBACK",
     "warm_dusk_v2_planning_anchor_visual_bible_attachment": "PASS_20260828",
     "project_core_scene_visual_board_status_sync": "PASS_20260828_VISUAL_BIBLE_FINAL_LOCK_STATUS_READBACK",
     "project_core_scene_visual_board_delivery": "PASS_20260828_VISUAL_BIBLE_ATTACHMENT_AND_FINAL_LOCK_READBACK"
@@ -213,7 +215,7 @@
       "dimensions": "1672x941",
       "provenance": "BUILT_IN_IMAGEGEN_20260828",
       "repository_asset_status": "USER_FINAL_LOCKED_TRACKED_PLANNING_ARTIFACT_ONLY",
-      "notion_attachment_status": "PASS_20260828_VISUAL_BIBLE_ATTACHMENT_AND_FINAL_LOCK_READBACK",
+      "historical_notion_attachment_status": "PASS_20260828_VISUAL_BIBLE_ATTACHMENT_AND_FINAL_LOCK_READBACK",
       "runtime_asset_status": "NOT_A_RUNTIME_ASSET",
       "godot_implementation_status": "NOT_IMPLEMENTED",
       "human_usability_or_player_experience_status": "NOT_RUN"
@@ -263,7 +265,7 @@
     "issue": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/238",
     "canonical_repository_owner": "docs/planning-data/current_screen_visual_coverage_inventory_20260828.json",
     "human_summary_owner": "docs/20_SCREEN_VISUAL_COVERAGE_INVENTORY_20260828.md",
-    "notion_projection_surfaces": [
+    "historical_notion_projection_surfaces": [
       "Home",
       "03 · UI · 전투 Flow Map",
       "02 · 비주얼 바이블",
@@ -293,21 +295,21 @@
   },
   "sheet_compatibility": {
     "mode": "MIGRATION_ONLY_UNTIL_REMOVAL",
-    "drift_vs_current_notion_and_github": true,
+    "drift_vs_historical_notion_and_current_github": true,
     "observed_handoff_sheet_state": "2026_08_11_PHASE_B_OLD_SHA_OLD_DECISION",
     "action": "REPORT_ONLY_DO_NOT_REPROMOTE_SHEET_TO_CURRENT_AUTHORITY"
   },
   "evidence_ceiling": {
     "user_reference_approval": "PASS_2026_08_25",
     "opponent_character_master_01_user_approval": "PASS_2026_08_26",
-    "opponent_character_master_01_notion_delivery": "PASS_2026_08_26",
+    "opponent_character_master_01_historical_notion_delivery": "PASS_2026_08_26",
     "dogyeom_combat_battler_01_generation": "PASS_EXACTLY_ONE_2026_08_26",
     "dogyeom_combat_battler_01_user_approval": "PASS_2026_08_26",
-    "dogyeom_combat_battler_01_notion_delivery": "PASS_2026_08_26",
+    "dogyeom_combat_battler_01_historical_notion_delivery": "PASS_2026_08_26",
     "runtime_source_master_promotion": "NOT_RUN",
     "dogyeom_status_portrait_01_generation": "PASS_EXACTLY_ONE_2026_08_26",
     "dogyeom_status_portrait_01_user_approval": "PASS_2026_08_26",
-    "dogyeom_status_portrait_01_notion_binary_delivery": "PASS_20260826_READBACK",
+    "dogyeom_status_portrait_01_historical_notion_binary_delivery": "PASS_20260826_READBACK",
     "opponent_specific_dogyeom_routing": "AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER",
     "runtime_art_integration": "AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER",
     "windows_visible_local_usability": "NOT_RUN",
@@ -318,8 +320,8 @@
     "warm_dusk_direction_user_selection": "PASS_20260827",
     "warm_dusk_direction_anchor_generation": "PASS_EXACTLY_ONE_INITIAL_AND_ONE_USER_DIRECTED_CORRECTION_20260827",
     "warm_dusk_v2_planning_anchor_user_approval": "PASS_20260828",
-    "warm_dusk_v2_planning_anchor_notion_attachment": "PASS_20260828",
-    "warm_dusk_direction_anchor_notion_delivery": "NOT_RUN",
+    "warm_dusk_v2_planning_anchor_historical_notion_attachment": "PASS_20260828",
+    "warm_dusk_direction_anchor_historical_notion_delivery": "NOT_RUN",
     "warm_dusk_direction_anchor_runtime_integration": "NOT_RUN"
   },
   "resume_gate": [
@@ -327,12 +329,12 @@
     "REFETCH_PROJECT_MAIN_AND_OPEN_PRS",
     "REFETCH_BASE_MAIN",
     "READ_CURRENT_BASE_WORK_V4_9_BUNDLE",
-    "READ_CURRENT_PROJECT_NOTION_HOME_VISUAL_BIBLE_ASSET_LIBRARY_AND_WORK_HANDOFF",
+    "READ_REPOSITORY_VISUAL_BIBLE_ASSET_PROVENANCE_AND_HANDOFF",
     "READ_CURRENT_R5_4_PROJECT_CONTRACT",
     "READ_THIS_HANDOFF_AND_APPROVED_RESULTS",
     "DO_NOT_USE_MIGRATION_SHEET_AS_CURRENT_AUTHORITY",
     "REQUIRE_ACTUAL_GAME_CONSUMER_FOR_EACH_NEW_IMAGE",
-    "NOTION_DESTINATION_READBACK_PASS_20260826",
+    "USE_HISTORICAL_NOTION_DELIVERY_EVIDENCE_ONLY_IF_MIGRATION_GAP_REQUIRES_IT",
     "DOGYEOM_STATUS_PORTRAIT_01_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_20260826",
     "REQUIRE_USER_DECISION_BEFORE_NEXT_CONSUMER_ASSET"
   ]
