@@ -304,3 +304,22 @@ runtime_evidence: NOT_RUN
 The registry and checklist now cite the exact formula and explicitly retire the old same-stat lower-than-quick constraint. The discovery-contract regression rejects the stale constraint and requires the approved formula anchors. Historical decision records remain unchanged.
 
 `NO_BASE_PROMOTION`: the palm formula and comparison rule are game-specific; Base already requires current authority to override superseded constraints without rewriting historical evidence.
+
+## Update 9 · 통합 구현 계약 최종 승인과 Issue handoff
+
+```yaml
+contract_id: TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01
+approval_source: "user explicit: 승인"
+implementation_issue: 258
+status: USER_APPROVED_ISSUE_258_CODEX_HANDOFF_PENDING
+runtime_mutation: NONE_IN_THIS_APPROVAL_RECORD
+runtime_evidence: NOT_RUN
+```
+
+### Scope and handoff
+
+The user approved the one reconciled Phase 2 contract after the canonical review. GitHub Issue `#258` now owns the bounded Godot build: public distance two via 4/6, three slots with linked two-slot telegraph/execution, `행동계획 실행`, ten basic actions and five-stat formulas, public-only observation/AI, and one free same-seed retry with exactly-once progression commit.
+
+This approval does not turn the planning record into runtime evidence. The next mandatory step is `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF`; Codex must fresh-read GitHub, exact Project Notion, and the actual runtime on an isolated Issue branch, then follow the test-first contract. Paid retries, permanent currency/profile, new assets, and all Human/device/release claims remain out of scope or `NOT_RUN`.
+
+`NO_BASE_PROMOTION`: Issue #258's exact combat/retry content is project-specific. The reusable rule—separate final scope approval, Issue ownership, isolated implementation, and evidence ceilings—is already Base policy.

@@ -2,8 +2,10 @@
 
 ```yaml
 contract_id: TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01
-status: DRAFT_FINAL_USER_APPROVAL_AND_CODEX_HANDOFF_REQUIRED
-work_mode: PLAN
+status: USER_APPROVED_ISSUE_258_CODEX_HANDOFF_PENDING
+work_mode: BUILD_HANDOFF
+approval_source: "user explicit: 승인"
+implementation_issue: 258
 authored_against:
   main: 2b47ec7521b974a26b89256ac44611b80b61a59c
   planning_branch_head: c94c978babc67e41cf44ff923a68260fd673d8f3
@@ -192,6 +194,6 @@ release_performance: NOT_RUN_UNTIL_EXECUTED
 4. After exact-head checks, review, safe squash merge, and post-merge main readback, update Project Notion Home and `03 · UI · 전투 Flow Map` with the exact merge SHA and separated automated/runtime/Human evidence. Read back both destinations.
 5. Record implementation-time material divergences as Project Incident / Solution / Lesson. Promote to Base only if the lesson is project-independent; otherwise record `NO_BASE_PROMOTION` with the project-specific reason.
 
-## 10. Final approval request
+## 10. Approval and handoff boundary
 
-This is a planning/implementation contract only. It does not authorize or claim Godot runtime work. Final user approval of this exact contract is required before the one Issue and `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF` are created.
+The user explicitly approved this exact contract. GitHub Issue `#258` is the one implementation owner. This record now authorizes only the next `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF`; it does not claim that Godot runtime work, Windows-visible usability, Human Player Experience, accessibility-user, Android-device, or release evidence has happened. Codex must independently fresh-read current GitHub, exact Project Notion, and the actual runtime before beginning the isolated Issue branch.

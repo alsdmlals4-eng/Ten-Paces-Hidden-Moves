@@ -191,13 +191,16 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
 
         self.assertIn("product_stage: FIRST_FIVE_DUEL_PHASE_I_VI_IMPLEMENTED", current_section)
         self.assertIn("phase_i_vi_implementation: AUTHORIZED_AND_MERGED", current_section)
-        self.assertIn("future_product_mutation_authorized: false", current_section)
+        self.assertIn(
+            "future_product_mutation_authorized: true_FOR_ISSUE_258_AFTER_CODEX_HANDOFF",
+            current_section,
+        )
         self.assertIn("human_validation: NOT_RUN", current_section)
         self.assertIn("android_validation: NOT_RUN", current_section)
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "user_directed_planning_status: PHASE_1_CANONICAL_REVIEW_COMPLETE_UNIFIED_IMPLEMENTATION_CONTRACT_DRAFT_READY",
+            "user_directed_planning_status: PHASE_2_BUILD_AUTHORIZED_ISSUE_258_CODEX_HANDOFF_PENDING",
             current_section,
         )
         self.assertIn(
@@ -209,7 +212,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_pending_material_decision: NONE_DECISIONS_RESOLVED_FINAL_USER_APPROVAL_OF_SINGLE_CONSOLIDATED_IMPLEMENTATION_CONTRACT",
+            "user_directed_planning_pending_material_decision: NONE_CONTRACT_APPROVED_ISSUE_258_CODEX_HANDOFF_PENDING",
             current_section,
         )
         self.assertIn(
@@ -262,7 +265,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             "planning_visual_review: TEN_IMG_001_CHAT_EXPLORATIONS_REVIEWED_NOT_AN_ASSET",
             "planning_visual_review: USER_APPROVED_REFERENCE_SET_20260825_NOT_RUNTIME_VISUAL_PASS",
             "planning_visual_review: USER_APPROVED_REFERENCE_SET_20260825_AND_OPPONENT_CHARACTER_MASTER_01_20260826_NOT_RUNTIME_VISUAL_PASS",
-            "product_implementation_authorized: false",
+            "future_product_mutation_authorized: false",
             "product_stage: VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_COMPLETE_HANDOFF_READY",
             "planning_visual_next: TEN_IMG_001_GENERATE_EXPLORATION",
             "planning_visual_review: TEN_IMG_001_EXPLORATION_REVIEW",
@@ -304,7 +307,10 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("USER_APPROVED_2026_08_26", current_risk)
         self.assertIn("AUTOMATED_GODOT_PASS_20260826", current_risk)
         self.assertIn("runtime art integration", current_risk)
-        self.assertIn("future_product_mutation_authorized: false", current_risk)
+        self.assertIn(
+            "future_product_mutation_authorized: true_FOR_ISSUE_258_AFTER_CODEX_HANDOFF",
+            current_risk,
+        )
         self.assertNotIn("product_implementation_authorized: false", current_risk)
         self.assertIn("Issue #140", text)
 
@@ -325,30 +331,33 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertEqual("NOT_RUN", gate["human_validation"])
         self.assertFalse(gate["image_generation_authorized"])
 
-    def test_current_user_planning_status_records_the_single_contract_draft_before_handoff(self) -> None:
+    def test_current_user_planning_status_records_the_approved_contract_and_issue_before_handoff(self) -> None:
         status_path = ROOT / "docs/planning-data/current_user_planning_status.json"
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "PHASE_1_CANONICAL_REVIEW_COMPLETE_UNIFIED_IMPLEMENTATION_CONTRACT_DRAFT_READY",
+            "PHASE_2_BUILD_AUTHORIZED_ISSUE_258_CODEX_HANDOFF_PENDING",
             status["user_directed_planning_status"],
         )
         self.assertEqual(
-            "PHASE_1_REMAINING_PLANNING_REVIEW_THEN_SINGLE_IMPLEMENTATION_CONTRACT",
+            "PHASE_2_CODEX_GODOT_IMPLEMENTATION_ISSUE_258_AFTER_HANDOFF",
             status["next_phase"],
         )
-        self.assertFalse(status["product_implementation_authorized"])
+        self.assertTrue(status["product_implementation_authorized"])
         self.assertEqual(
             "TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01",
             status["unified_implementation_contract_id"],
         )
         self.assertEqual(
-            "DRAFT_FINAL_USER_APPROVAL_AND_CODEX_HANDOFF_REQUIRED",
+            "USER_APPROVED_ISSUE_258_CODEX_HANDOFF_PENDING",
             status["unified_implementation_contract_status"],
         )
-        self.assertIn("CORE_RULE_AND_RUNTIME_DRIFT_REVIEW", status["current_work_order"])
-        self.assertIn("GRILL_ME_ONE_MATERIAL_DECISION_AT_A_TIME", status["current_work_order"])
-        self.assertIn("SINGLE_CONSOLIDATED_IMPLEMENTATION_CONTRACT_AFTER_USER_DECISIONS", status["current_work_order"])
+        self.assertEqual(258, status["unified_implementation_contract_issue"])
+        self.assertEqual(
+            "CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF_PENDING",
+            status["implementation_handoff_status"],
+        )
+        self.assertIn("ISSUE_258_CODEX_HANDOFF", status["current_work_order"])
         self.assertEqual(
             "TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01",
             status["current_opening_distance_runtime_mapping_decision"],
