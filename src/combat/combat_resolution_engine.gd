@@ -461,7 +461,8 @@ func _execute_attack_phase(state: Dictionary, actions: Array, _defenses: Diction
 
         var attack_range := _attack_range(definition)
         var distance := absi(actor_tile - target_tile)
-        if distance < attack_range.x or distance > attack_range.y:
+        var below_minimum := distance != 0 and distance < attack_range.x
+        if below_minimum or distance > attack_range.y:
             logs.append("[%d수 · %s] %s의 %s은(는) 사거리가 닿지 않았다." % [timing, phase_label, _actor_name(actor), str(definition.get("name", "공격"))])
             resolved_actions.append(_resolved_record(action, timing, "miss_range"))
             continue
@@ -759,8 +760,8 @@ func reveal_next_locked_enemy_action_types(state_value: Dictionary, locked_enemy
     return {"valid": true, "state": state, "payload": {"action_types": action_types, "reveal_index": reveal_index}}
 
 func _attack_range(definition: Dictionary) -> Vector2i:
-    var range_value = definition.get("range", {})
-    if typeof(range_value) == TYPE_DICTIONARY:
+    if definition.has("range") and typeof(definition.get("range")) == TYPE_DICTIONARY:
+        var range_value = definition.get("range")
         var structured: Dictionary = range_value
         var minimum := maxi(0, int(structured.get("min", 0)))
         return Vector2i(minimum, maxi(minimum, int(structured.get("max", minimum))))
@@ -768,8 +769,8 @@ func _attack_range(definition: Dictionary) -> Vector2i:
     return Vector2i(0, legacy_range)
 
 func _calculate_attack_damage(definition: Dictionary, actor: Dictionary) -> int:
-    var formula_value = definition.get("damage_formula", {})
-    if typeof(formula_value) == TYPE_DICTIONARY:
+    if definition.has("damage_formula") and typeof(definition.get("damage_formula")) == TYPE_DICTIONARY:
+        var formula_value = definition.get("damage_formula")
         var formula: Dictionary = formula_value
         var stats: Dictionary = actor.get("stats", {}) if typeof(actor.get("stats", {})) == TYPE_DICTIONARY else {}
         var stat_key := str(formula.get("stat_key", ""))

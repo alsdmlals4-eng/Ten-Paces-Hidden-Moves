@@ -38,6 +38,12 @@ notion_mutation: NOT_PERFORMED_UNTIL_SAFE_MERGE_AND_MAIN_READBACK
 
 **Lesson:** 새 one-time protected approval manifest가 PR에 추가되는 경우, Adapter baseline·manifest protected base·workflow-selected PR base의 세 SHA를 exact-head CI 전에 함께 대조해야 한다.
 
+**Incident:** 구조화 `range`·`damage_formula`가 없는 기존 절초를 빈 Dictionary fallback으로 해석하면서, #258 공용 resolution path에서 절초 사거리와 피해가 각각 0으로 계산되어 Ubuntu Godot headless 회귀가 실패했다.
+
+**Solution:** 구조화 필드는 key 존재 여부를 먼저 확인하고, 없으면 기존 절초의 `range_text`·`damage`/`attack_power_coefficient` 경로를 사용하도록 최소 수정했다. `[밀착]` 거리0의 기존 공격 가능성도 보존하고, 절초 회귀의 기본 행동 기대값은 #258 정본 피해 공식에 맞췄다.
+
+**Lesson:** 공용 구조화 데이터 migration에서는 선택 필드의 default container와 실제 필드 존재를 구분하는 legacy-consumer regression을 함께 유지한다.
+
 **Base promotion:** `NO_BASE_PROMOTION` — 이번 정합성은 기존 Base lifecycle을 프로젝트 PR에 적용한 것이며, Base policy 또는 validator 변경을 요구하는 재사용 가능한 결함은 확인되지 않았다.
 
 ## 남은 위험과 rollback

@@ -65,13 +65,13 @@ func _verify_interruption_and_fortitude(hud: Dictionary) -> void:
     var result_state: Dictionary = result.get("state", {})
     var player: Dictionary = result_state.get("player", {})
     var enemy: Dictionary = result_state.get("enemy", {})
-    if int((player.get("health", [0, 0]) as Array)[0]) != 24 or int((enemy.get("health", [0, 0]) as Array)[0]) != 28:
-        failures.append("The example sequence must deal only timing-1 hit damage to A and timing-3 clash difference to B.")
+    if int((player.get("health", [0, 0]) as Array)[0]) != 25 or int((enemy.get("health", [0, 0]) as Array)[0]) != 24:
+        failures.append("The example sequence must use canonical quick=5 and heavy=11 damage for the timing-1 hit and timing-3 clash.")
 
     var lethal_engine := CombatResolutionEngine.new()
     var lethal: Dictionary = (lethal_engine.cards_by_id.get("basic_quick_attack", {}) as Dictionary).duplicate(true)
     lethal["id"] = "lethal_quick"
-    lethal["damage"] = "30"
+    lethal["damage_formula"] = {"base": 30, "stat_key": "external", "coefficient": 0.0}
     lethal_engine.cards_by_id["lethal_quick"] = lethal
     lethal_engine.rules["enemy_bundles"] = {"1": [{"timing": 1, "card_id": "lethal_quick", "direction": -1}]}
     var quick: Dictionary = lethal_engine.cards_by_id.get("basic_quick_attack", {})
@@ -120,7 +120,7 @@ func _verify_engagement_and_movement(hud: Dictionary) -> void:
     var quick: Dictionary = engine.cards_by_id.get("basic_quick_attack", {})
     var engaged_result := engine.resolve_bundle([_placement(quick, 1, 1)], _context(1), state)
     var enemy: Dictionary = (engaged_result.get("state", {}) as Dictionary).get("enemy", {})
-    if int((enemy.get("health", [0, 0]) as Array)[0]) != 24:
+    if int((enemy.get("health", [0, 0]) as Array)[0]) != 25:
         failures.append("Engaged fighters on one tile must be valid range-one attack targets regardless of direction.")
 
     var move: Dictionary = engine.cards_by_id.get("basic_move", {})
