@@ -9,6 +9,7 @@
 > 내력 자동 회복 현행 오버레이: `docs/decisions/2026-08-04_RESOURCE_SATURATION_INTERNAL_RECOVERY_DECISION.md` (`TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01`)  
 > 기존 승인 행동 유효 비용·슬롯 오버레이: `docs/decisions/2026-08-04_EXISTING_APPROVED_ACTIONS_REPRICE_DECISION.md` (`TEN-DEC-20260804-EXISTING-ACTIONS-REPRICE-01`)  
 > 현재 전투 UI 정보 위계 오버레이: `docs/decisions/2026-08-11_COMBAT_UI_INFORMATION_HIERARCHY_DECISION.md` (`TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01`)  
+> 시작 거리 런타임 매핑: `docs/decisions/2026-08-28_OPENING_DISTANCE_RUNTIME_MAPPING_DECISION.md` (`TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01`)
 > 구형 사거리 가격(대체됨): `docs/decisions/2026-08-02_RANGE_PRICE_BANDS_DECISION.md`  
 > 시작 빌드·성장 요구치: `docs/decisions/2026-08-02_STARTING_STAT_TOTAL20_MANUAL_BONUS_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_PRIMARY_STAT4_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_SOFT_GUARANTEE_DECISION.md`, `docs/decisions/2026-08-02_EVEN_STAR_STAT_ESCALATION_DECISION.md`, `docs/decisions/2026-08-03_STAR7_TECHNIQUE_PRIMARY_STAT8_DECISION.md`  
 > 핵심 스테이터스 정책: `docs/decisions/2026-08-03_UNCAPPED_CORE_STATS_DECISION.md`  
@@ -23,7 +24,7 @@
 - 최신 사용자 승인 Decision과 approved planning JSON이 최우선이다.
 - 본 문서는 활성 전투 책임 원본이다.
 - 현재 런타임은 관찰·장풍이 없는 기초 행동 8종과 절대 원공격력 표본을 사용하므로 최신 기획과 다른 부분은 `IMPLEMENTED_LEGACY`다.
-- 현재 런타임의 시작 좌표 플레이어4/상대7도 새 공개 시작 거리2 기획과 다른 `IMPLEMENTED_LEGACY`다.
+- 현재 런타임의 시작 좌표 플레이어4/상대7도 새 공개 시작 거리2 기획과 다른 `IMPLEMENTED_LEGACY`다. `TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01`은 이 충돌을 `USER_APPROVED_IMPLEMENTATION_BINDING_REQUIRED`로 전환했으며, 제품 파일은 아직 변경하지 않았다.
 - UI·VFX·오디오는 계산을 다시 만들지 않고 판정 이벤트만 표현한다.
 - 제품 코드·런타임 데이터는 별도 Build 승인 전 변경하지 않는다.
 
@@ -32,7 +33,8 @@
 - 전장은 논리적으로 1~10의 일자형 10칸이다.
 - 플레이어에게 노출하는 전투 시작 공개 거리는 `2`다.
 - 기본 전투 UI는 절대 칸 번호 발판을 상시 표시하지 않고 두 전투원의 상대적 간격과 `거리 N`을 표시한다.
-- 새 절대 시작 좌표는 이번 기획에서 임의 확정하지 않으며 `IMPLEMENTATION_BINDING_PENDING`이다.
+- 런타임의 시작 상태·거리 계산·AI 입력·HUD·로그는 모두 시작 공개 거리 `2`를 같은 의미로 사용해야 한다. 내부 좌표는 그 계산을 만족하는 구현 세부이며 별도 공개 거리나 두 번째 공간 규칙을 만들지 않는다.
+- 새 절대 시작 좌표는 단일 구현계약에서 경계·점유·회귀 검증과 함께 정하며, 지금은 `IMPLEMENTATION_BINDING_PENDING`이다.
 - 현재 Godot 런타임의 플레이어4/상대7 시작 좌표는 `IMPLEMENTED_LEGACY` 증거로 보존한다.
 - 같은 타일의 거리는 0이며 `[밀착]`이다.
 - 같은 빈 목적지와 정지 상대 칸 진입을 허용한다.
@@ -391,7 +393,7 @@ A도 체력 피해 0이고 양측 공격이 유지됨
 - 최신 시작 총합20·소프트 해금 추천·짝수 성 신규 지급·7성 주8 요구 런타임 미반영.
 - 전체 주요 비무 5전·경로·성장·결과 등급 런타임: 미구현.
 - 최신 전조 전체 중단, 준비 무비용, 묶음별 기력·절초기세 +1(내력 자동 회복 없음), 회피 성공 기세, 이동·사거리 15틱 통합 가격은 제품 런타임 미반영.
-- 공개 시작 거리2와 거리 중심 UI는 제품 런타임 미반영이며 현재 4/7 좌표는 `IMPLEMENTED_LEGACY`.
+- 공개 시작 거리2와 거리 중심 UI는 제품 런타임 미반영이며 현재 4/7 좌표는 `IMPLEMENTED_LEGACY`. 매핑 방향은 사용자 승인됐지만 actual implementation/runtime evidence는 `NOT_RUN`이다.
 
 필수 증거를 분리한다.
 

@@ -126,6 +126,24 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertNotIn("속공21/20틱, 강공54/50틱, 장풍48/50틱", text)
 
+    def test_opening_distance_mapping_decision_has_one_public_distance_authority(self) -> None:
+        decision_id = "TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01"
+        rule_text = (ROOT / "docs" / "02_COMBAT_RULES.md").read_text(encoding="utf-8")
+        decision_text = (
+            ROOT
+            / "docs"
+            / "decisions"
+            / "2026-08-28_OPENING_DISTANCE_RUNTIME_MAPPING_DECISION.md"
+        ).read_text(encoding="utf-8")
+        lifecycle_text = (ROOT / "docs" / "CANON_LIFECYCLE_REGISTRY.md").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn(decision_id, rule_text)
+        self.assertIn("공개 시작 거리는 `2`", decision_text)
+        self.assertIn("두 번째 거리 규칙", decision_text)
+        self.assertIn(decision_id, lifecycle_text)
+
     def test_combat_rules_use_current_bundle_transition_internal_recovery(self) -> None:
         text = (ROOT / "docs" / "02_COMBAT_RULES.md").read_text(encoding="utf-8")
 
@@ -298,6 +316,19 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("CORE_RULE_AND_RUNTIME_DRIFT_REVIEW", status["current_work_order"])
         self.assertIn("GRILL_ME_ONE_MATERIAL_DECISION_AT_A_TIME", status["current_work_order"])
         self.assertIn("SINGLE_CONSOLIDATED_IMPLEMENTATION_CONTRACT_AFTER_USER_DECISIONS", status["current_work_order"])
+        self.assertEqual(
+            "TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01",
+            status["current_opening_distance_runtime_mapping_decision"],
+        )
+        self.assertEqual(2, status["canonical_public_opening_distance"])
+        self.assertEqual(
+            "USER_APPROVED_IMPLEMENTATION_BINDING_REQUIRED",
+            status["opening_distance_runtime_mapping_status"],
+        )
+        self.assertIn(
+            "FAILURE_RETRY_PLAYER_JOURNEY_SCOPE_DECISION",
+            status["pending_material_decisions"],
+        )
 
     def test_no_temporary_pin_exceptions_remain_after_live_editor_migration(self) -> None:
         self.assertFalse(

@@ -161,3 +161,19 @@ base_promotion: NO_BASE_PROMOTION — findings are tied to this project’s rule
 - `test_integrated_work_contract_v45r2`: all six historical contract parts differ from the stored byte hashes/sizes; the parts and test are unchanged from `origin/main`.
 
 The relevant tests and inputs were verified unchanged from `origin/main`; no historical contract hash, reconciliation value, or test was silently rewritten here. The Phase 1 scoped suite (25 tests), canonical combat impact map, operating-system validator, and canonical-reference freshness check pass. Disposition: `FOLLOW_UP_OUT_OF_SCOPE_HISTORICAL_TEST_RECONCILIATION`; it does not lower Human/Player/runtime evidence and is not treated as a Phase 1 product regression.
+
+## Update 3 · Opening-distance runtime mapping approved
+
+```yaml
+decision_id: TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01
+status: APPROVED_CURRENT_IMPLEMENTATION_BINDING_REQUIRED
+approval_source: "user explicit: A.권장안대로 진행"
+selected_option: A
+product_rule: "The public opening distance is 2."
+implementation_direction: "Runtime start state, distance calculation, AI input, HUD, accessibility label, and combat log share that one public meaning."
+not_decided_here: "The internal coordinate pair; it is a technical binding chosen only with boundary, occupancy, and regression evidence in the consolidated implementation contract."
+runtime_evidence: NOT_RUN
+human_evidence: NOT_RUN
+```
+
+This closes the opening-distance `USER_DECISION_REQUIRED` finding without changing `data/`, `src/`, `scenes/`, assets, or runtime tests. The legacy `4/7` / distance `3` product path remains `IMPLEMENTED_LEGACY` until the later implementation contract is approved and executed. The next material design question is the player-facing failure/retry journey scope.

@@ -8,6 +8,7 @@
 > 성장 책임 원본: `docs/06_STARTING_FACTION_MASTERY_DATA.md`  
 > 현재 상태: `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`  
 > 7성·9성 숙련 권위: `TEN-DEC-20260805-STAR7-STAR9-MASTERY-BONUS-01`
+> 시작 거리 런타임 매핑 결정: `TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01`
 
 변동 상태는 Active Context와 GitHub PR metadata가 책임진다. 기획 승인, main 병합, 런타임 구현, 사람 검증은 서로 다른 상태다.
 
@@ -57,7 +58,8 @@ READ 공개 상태·이력
 ### WHAT
 
 - 10칸 논리 전장, 공개 시작 거리2·거리0 `[밀착]`·플레이어-facing `거리 N`.
-- 현재 T0 런타임의 플레이어4·상대7 좌표/거리3은 `IMPLEMENTED_LEGACY`이며, 최신 공개 시작 거리2를 구현한 증거가 아니다.
+- `TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01`은 런타임이 시작 시에도 공개 거리2를 같은 의미로 계산·표시·판정하도록 확정한다. 내부 좌표는 별도 플레이어 규칙을 만들지 않는다.
+- 현재 T0 런타임의 플레이어4·상대7 좌표/거리3은 `IMPLEMENTED_LEGACY`이며, 최신 공개 시작 거리2를 구현한 증거가 아니다. 제품 반영은 단일 구현계약 뒤에만 한다.
 - 라운드별 `3수 → 3수 → 4수` 계획.
 - 기초 행동10종: 이동·보법·막기·회피·속공·강공·관찰·명상·준비·장풍.
 - 비소모 방어도, 피해 단위 회피, 필중, 중단, 강건.

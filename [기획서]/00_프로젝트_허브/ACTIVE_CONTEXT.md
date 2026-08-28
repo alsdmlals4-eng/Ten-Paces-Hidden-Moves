@@ -24,7 +24,7 @@ runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
 active_planning_pr: NONE
 active_planning_parent_pr: NONE
-active_approval_count: 1/10
+  active_approval_count: 2/10
 active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED
 source_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
 product_gate: PARTIAL_AUTOMATED_COMPLETE
@@ -50,7 +50,10 @@ user_directed_planning_decision: TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLE
 user_directed_planning_next_package: PHASE_1_REMAINING_PLANNING_AND_ADVERSARIAL_REVIEW_THEN_SINGLE_IMPLEMENTATION_CONTRACT
 user_directed_planning_next_decision: PHASE_1_CORE_DESIGN_REVIEW_AND_GRILL_ME
 user_directed_planning_status: PHASE_1_REMAINING_PLANNING_AND_ADVERSARIAL_REVIEW_IN_PROGRESS
-user_directed_planning_current_direction: REMAINING_PLANNING_AND_REVIEW_FIRST_THEN_ONE_CONSOLIDATED_IMPLEMENTATION_CONTRACT
+  user_directed_planning_current_direction: REMAINING_PLANNING_AND_REVIEW_FIRST_THEN_ONE_CONSOLIDATED_IMPLEMENTATION_CONTRACT
+  user_directed_planning_latest_decision: TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01
+  user_directed_planning_opening_distance: PUBLIC_DISTANCE_2_RUNTIME_BINDING_USER_APPROVED_IMPLEMENTATION_REQUIRED
+  user_directed_planning_pending_material_decision: FAILURE_RETRY_PLAYER_JOURNEY_SCOPE_DECISION
 user_directed_planning_pr_authority: GITHUB_PR_METADATA
 planning_execution_surface: GPT_WORK
 planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md
@@ -131,6 +134,7 @@ authority_bootstrap_merge_commit: 43a6e625c57c6f3e50b562e494fec074be553457
 - 행동 선택 UX: `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`.
 - 상황 화면 구조: `TEN-DEC-20260801-SITUATION-SCREEN-01`.
 - 전투 UI 정보 위계·거리·카드·관찰 표시 오버레이: `TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01`.
+- 시작 공개 거리 런타임 매핑: `TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01` — 시작 state·거리 계산·AI 입력·HUD·접근성 이름·로그가 공개 거리2를 단일 의미로 사용한다. 내부 좌표는 단일 구현계약의 기술 binding이며 현재 제품 evidence는 `NOT_RUN`.
 - 관찰 정답 누출 방지: `TEN-DEC-20260805-OBSERVATION-ANSWER-LEAK-GUARDRAILS-01`.
 - 초기 무공서 런타임 기반 권위: `TEN_MANUAL_RUNTIME_IMPLEMENTATION_GATE`.
 - 초기 무공서 UI·AI 채택 권위: `TEN_MANUAL_UI_AI_ADOPTION_GATE`.

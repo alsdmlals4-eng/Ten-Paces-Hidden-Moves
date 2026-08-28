@@ -3,6 +3,7 @@
 > 책임: 최신 전투 규칙의 입력·예상·결과·복기·접근성 표현  
 > 판정 원본: `docs/02_COMBAT_RULES.md`  
 > 현재 정보 위계 Decision: `docs/decisions/2026-08-11_COMBAT_UI_INFORMATION_HIERARCHY_DECISION.md` (`TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01`)  
+> 시작 거리 런타임 매핑: `docs/decisions/2026-08-28_OPENING_DISTANCE_RUNTIME_MAPPING_DECISION.md` (`TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01`)
 > 구조화 계약: `docs/planning-data/approved_20260811_combat_ui_information_hierarchy_contract.json`
 
 ## 1. UI 목표
@@ -36,7 +37,7 @@
 거리 0 → [밀착]
 ```
 
-현재 Godot 런타임의 플레이어4/상대7 시작 좌표는 `IMPLEMENTED_LEGACY`이며 이 기획 승인으로 제품 코드를 변경하지 않는다. 새 절대 좌표는 Build 승인 뒤 별도 implementation binding에서 확정한다.
+현재 Godot 런타임의 플레이어4/상대7 시작 좌표는 `IMPLEMENTED_LEGACY`다. 확정된 구현 방향은 HUD·접근성 이름·전투 기록까지 시작 공개 거리 `2`를 도메인 상태와 동일하게 표현하는 것이다. 새 절대 좌표는 Build 승인 뒤 단일 implementation binding에서 경계·점유·회귀 검증과 함께 확정한다.
 
 ## 3. 시각 자산
 
@@ -306,7 +307,7 @@ UI·UX는 에셋을 먼저 고르고 화면을 맞추지 않는다.
 - 새 정보 위계: `CURRENT_APPROVED_PLANNING`.
 - Godot 제품 UI 반영: `NOT_RUN / NOT_AUTHORIZED`.
 - 현재 런타임 4/7 좌표: `IMPLEMENTED_LEGACY`.
-- 시작 공개 거리2 제품 반영: `NOT_RUN`.
+- 시작 공개 거리2 런타임 매핑: `USER_APPROVED_IMPLEMENTATION_BINDING_REQUIRED`; 제품 반영: `NOT_RUN`.
 - Windows 실제 가독성: 이 Decision에 대해 `NOT_RUN`.
 - Android 실제 가독성: `NOT_RUN`.
 - 접근성 사용자 검증: `UNVERIFIED`.
