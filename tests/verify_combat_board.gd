@@ -370,7 +370,7 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
     if int(player_before.get("tile", 0)) != EXPECTED_PLAYER_TILE or int(player_after.get("tile", 0)) != 5:
         failures.append("Explicit move target must update the player tile from 4 to 5.")
     if int(enemy_before.get("tile", 0)) != EXPECTED_ENEMY_TILE or int(enemy_after.get("tile", 0)) != 6:
-        failures.append("Fixed enemy move direction must update the tile from 7 to 6.")
+        failures.append("Enemy runtime state must remain on tile 6 for this fixed-plan scenario.")
     var player_stamina: Array = player_after.get("stamina", [])
     if player_stamina.is_empty() or int(player_stamina[0]) != 4:
         failures.append("Meditate and quick attack must produce the expected player stamina value 4.")
