@@ -44,6 +44,12 @@ notion_mutation: NOT_PERFORMED_UNTIL_SAFE_MERGE_AND_MAIN_READBACK
 
 **Lesson:** 공용 구조화 데이터 migration에서는 선택 필드의 default container와 실제 필드 존재를 구분하는 legacy-consumer regression을 함께 유지한다.
 
+**Incident:** terminal presentation의 기존 재시작 회귀가 과거 `4/7` 시작 타일을 기대하여, #258의 기술 매핑 `4/6`·공개 거리 2 정본과 충돌해 Ubuntu Godot headless가 실패했다.
+
+**Solution:** 실패를 먼저 로컬 Godot headless에서 재현한 뒤, 런타임의 `4/6` 초기화는 유지하고 회귀 기대값만 public 거리 2에 맞게 수정했다.
+
+**Lesson:** 공개 거리 변경은 초기 전투뿐 아니라 terminal restart·retry 등 초기 state를 복원하는 모든 소비자 회귀에서 함께 검증한다.
+
 **Base promotion:** `NO_BASE_PROMOTION` — 이번 정합성은 기존 Base lifecycle을 프로젝트 PR에 적용한 것이며, Base policy 또는 validator 변경을 요구하는 재사용 가능한 결함은 확인되지 않았다.
 
 ## 남은 위험과 rollback
