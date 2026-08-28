@@ -68,10 +68,16 @@ notion_mutation: NOT_PERFORMED_UNTIL_SAFE_MERGE_AND_MAIN_READBACK
 
 **Lesson:** 실패 흐름의 새 중간 화면은 completion 시나리오처럼 기존 happy-path를 재사용하는 종단 간 회귀에도 명시적으로 모델링해야 한다.
 
+**Incident:** base 전투 엔진의 잠긴 관찰 계획 보정이 실제 `TenManualCombatResolutionEngine` override와 TenManual 전투판의 교체된 engine 초기화 경로까지 닿지 않아, 복합 행동 유형이 단일 카테고리로 축약되고 planning 시작 잠금도 base-only 상태가 되었다. 이 consumer drift는 protected approval manifest의 감지 경로와도 불일치를 만들었다.
+
+**Solution:** TenManual override에 동일한 `action_types` 보존을 추가하고, TenManual engine 생성 직후 planning bundle을 잠갔다. 관찰 UI는 누적 공개 기록을 앞→뒤로 표시하며, approval manifest에는 실제 보호 consumer 두 경로를 정확히 추가했다. base·Prepare·TenManual·VerticalSliceMetrics와 실제 전투판 2회 관찰 회귀를 실행했다.
+
+**Lesson:** protected runtime 규칙을 base class에 추가할 때는 실제 subclass override·engine 교체 scene·vertical consumer를 함께 inventory하고, approval manifest는 exact protected diff와 동기화해야 한다.
+
 **Base promotion:** `NO_BASE_PROMOTION` — 이번 정합성은 기존 Base lifecycle을 프로젝트 PR에 적용한 것이며, Base policy 또는 validator 변경을 요구하는 재사용 가능한 결함은 확인되지 않았다.
 
 ## 남은 위험과 rollback
 
-- preview 명상 회복은 이제 실행과 동일하게 카드 `restore`를 사용하며, 적 계획은 각 planning 묶음 시작에 public-AI/fixture로 한 번만 고정한다. 관찰과 해결은 이 저장 계획을 같이 소비하고, 관찰 UI payload에는 행동 유형만 기록한다. 기술명·ID·타이밍·대상·피해·AI 사유/시드는 포함하지 않는다.
+- preview 명상 회복은 이제 실행과 동일하게 카드 `restore`를 사용하며, 적 계획은 각 planning 묶음 시작에 public-AI/fixture로 한 번만 고정한다. 관찰과 해결은 이 저장 계획을 같이 소비하고, 복합 행동 유형과 누적 공개 기록은 앞→뒤 순서를 보존한다. 관찰 UI payload에는 행동 유형만 기록하며, 기술명·ID·타이밍·대상·피해·AI 사유/시드는 포함하지 않는다.
 - 관찰 공개와 재시도 흐름의 실제 Windows 입력·가독성은 아직 사람 검증이 필요하다.
 - rollback은 이 branch/PR의 단일 commit revert로 하며, data·runtime·tests·docs를 함께 되돌린다.
