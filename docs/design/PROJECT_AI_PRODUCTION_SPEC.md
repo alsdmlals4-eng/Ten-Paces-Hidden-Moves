@@ -8,10 +8,10 @@
 |---|---|
 | 프로젝트 | Ten Paces: Hidden Moves / 십보강호 |
 | source branch | `origin/main` |
-| 기준 commit | `6baf817b5f86baa3fe7df193832bd4f7bc4b2abf` |
+| 기준 commit | `768cc67e369ae992d9f92ef51024c677fa217cb6` (Issue #264 문서 개정 시작 기준) |
 | 기준일 | 2026-08-28 (KST) |
-| 기준 PR | #261 `feat: reconcile Phase 2 combat canon`, squash-merged |
-| 현재 작업 성격 | 문서 정본화·REVIEW. 제품 구현 계약을 새로 승인하지 않음. |
+| 기준 PR | #261 `feat: reconcile Phase 2 combat canon`, #263 `docs: require adversarial research feasibility gate`, squash-merged |
+| 현재 작업 성격 | Issue #264 문서 정본화·REVIEW. 제품 구현 계약을 새로 승인하지 않음. |
 | 플랫폼 | Windows + Android, 공유 코어/플랫폼 adapter (`TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`) |
 | 엔진 | Godot 4.7, `scenes/run/vertical_slice_shell.tscn` |
 | 문서 상태 표기 | `DOCUMENTED / CONFIRMED / IMPLEMENTED / AUTOMATED_TEST_PASS / RUNTIME_VERIFIED / UX_VERIFIED / RELEASE_READY` |
@@ -36,8 +36,8 @@
 
 | source | identity / readback | 역할 | 상태 |
 |---|---|---|---|
-| Repository | `origin/main@6baf817` | 코드·데이터·Scene·test runtime truth | CURRENT |
-| GitHub PR #261 | merged, checks success | Phase 2 정본 reconciliation | CURRENT |
+| Repository | `origin/main@768cc67` | 코드·데이터·Scene·test runtime truth | CURRENT |
+| GitHub PR #261 / #263 | merged, checks success | Phase 2 정본 reconciliation / every-task adversarial-research gate | CURRENT |
 | GitHub PR #200, #199 | open draft | 미병합 후보, READ_ONLY | CURRENT_METADATA |
 | `AGENTS.md` | repo root | 작업 경계·코어 불변식 | CURRENT |
 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` | #261 병합·repository-only current-state sync readback | mutable context | CURRENT_AFTER_SYNC |
@@ -57,7 +57,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 
 ### 02.1 프로젝트 한 문장
 
-**십보강호는 공개된 거리·해결 이력만으로 상대의 다음 수를 가설화하고, 3개의 수(슬롯)에 1수 또는 2수 `[전조] → [행동]`을 비공개 배치한 뒤 실행·복기로 가설을 검증하는 1대1 무협 심리전이다.**
+**십보강호는 공개된 거리·해결 이력만으로 상대의 다음 수를 가설화하고, 3개의 수(슬롯)에 1수 또는 2수 `[전조] → [실행]`을 비공개 배치한 뒤 실행·복기로 가설을 검증하는 1대1 무협 심리전이다.**
 
 ### 02.2 Current / historical / conflict 분류
 
@@ -65,7 +65,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 |---|---|---|---|
 | DEC-CORE-001 | 10칸 직선 전장, 공개 시작 거리 2, 거리 중심 HUD | CURRENT | CONFIRMED / IMPLEMENTED |
 | SYS-PLAN-001 | `3수 → 해결 → 3수 → 해결 → 4수 → 해결` | CURRENT | CONFIRMED / IMPLEMENTED |
-| SYS-PLAN-002 | 3수 = 3슬롯, 2슬롯 행동은 `[전조] → [행동]`으로 2수를 소모 | CURRENT | CONFIRMED / IMPLEMENTED |
+| SYS-PLAN-002 | 3수 = 3슬롯, 2슬롯 행동은 `[전조] → [실행]`으로 2수를 소모 | CURRENT | CONFIRMED / IMPLEMENTED |
 | UI-COMBAT-001 | CTA `행동계획 실행`; 실행 뒤 전투 표현으로 전환 | CURRENT | CONFIRMED / IMPLEMENTED |
 | SYS-AI-001 | AI는 공개 상태·해결 이력만 사용, 미확정 계획/UI 의도를 읽지 않음 | CURRENT | CONFIRMED / IMPLEMENTED |
 | UX-RETRY-001 | 첫 패배 후 실제 원인 복기·동일 seed 1회 무료 재도전 | CURRENT | CONFIRMED / IMPLEMENTED |
@@ -152,8 +152,10 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 | SYS-AI-001 | 공개 상태 AI | 공정하게 읽히는 상대 적응 | `combat_ai_planner.gd` | IMPLEMENTED |
 | SYS-REVIEW-001 | 복기 | 실패가 다음 행동으로 이어짐 | `combat_review_panel.gd` | IMPLEMENTED |
 | SYS-RETRY-001 | 동일 seed 재도전 | 학습을 반복 기회로 전환 | `vertical_slice_run_state.gd` | IMPLEMENTED |
+| SYS-TAG-001 | 행동 태그와 인과 | 전조·관찰·강건·합을 같은 언어로 읽음 | `02_COMBAT_RULES.md`, action data, resolver events | CONFIRMED / IMPLEMENTED |
 | SYS-GROWTH-001 | 무공 성장 | 파훼 폭을 확장 | `06_STARTING_FACTION_MASTERY_DATA.md` | DOCUMENTED / NOT_BALANCE_VALIDATED |
 | SYS-ROUTE-001 | route 선택 | 정보/회복/성장 사이의 장기 선택 | `vertical_slice_route*.gd` | PARTIAL |
+| SYS-MARTIAL-001 | 무공·절초 계층 | 기술 선택의 정체성과 결정적 순간의 보상 | martial-manual data, CardView, ultimate VFX | PARTIAL / UX_NOT_RUN |
 
 ## 08. SYSTEM SPECIFICATIONS
 
@@ -161,7 +163,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 
 **WHY.** 계획을 숨기는 이유는 상대가 내 UI·미확정 계획을 읽는 즉시 심리전이 사라지기 때문이다. 3수의 제한은 “무엇을 할까”를 “어떤 타이밍을 포기할까”로 바꾼다.
 
-**HOW.** 사용자는 해금된 기술에서 행동을 선택하고 현재 bundle의 빈 슬롯에 배치한다. 1수 행동은 한 슬롯, 2수 행동은 `[전조]`와 `[행동]`의 연속 두 슬롯을 차지한다. 배치가 끝난 뒤 `행동계획 실행`을 누르면 편집이 중단되고 Combat Presentation으로 전환한다. 취소/재배치는 실행 전만 가능하다.
+**HOW.** 사용자는 해금된 기술에서 행동을 선택하고 현재 bundle의 빈 슬롯에 배치한다. 1수 행동은 한 슬롯, 2수 행동은 `[전조]`와 `[실행]`의 연속 두 슬롯을 차지한다. 배치가 끝난 뒤 `행동계획 실행`을 누르면 편집이 중단되고 Combat Presentation으로 전환한다. 취소/재배치는 실행 전만 가능하다.
 
 | 상태 | entry | player input | output / guard |
 |---|---|---|---|
@@ -186,6 +188,29 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 
 **COMPLETE WHEN.** 3/3/4 슬롯, 2수 span, 실행 후 편집 불가, resolver로의 단일 execute 흐름, plan leak 없음, Phase 2 tests pass. Human이 2수 전조 비용을 이해하는지는 `QA-HUMAN-001`으로 남는다.
 
+### SYS-PLAN-002 — 행동묶음과 2슬롯 비용
+
+**PLAYER QUESTION.** `이번 묶음의 세 칸을 지금 안전하게 쓸 것인가, 두 칸을 미리 내어 강한 한 수를 끝까지 살릴 것인가?`
+
+한 라운드는 `3수 → 해결 → 3수 → 해결 → 4수 → 해결`이다. 여기서 **3수는 행동을 세 번 누른다는 뜻이 아니라, 계획판의 슬롯이 정확히 3개라는 뜻**이다. 각 묶음에서는 1슬롯 행동 셋, 또는 1슬롯 행동 하나와 2슬롯 행동 하나처럼 합계가 슬롯 수를 넘지 않는 조합만 계획할 수 있다. 덱·손패·드로우·장착 제한은 이 희소성을 만드는 장치가 아니다.
+
+```text
+공개 거리·자원·해결 이력 확인
+  → 현재 묶음의 3칸(마지막 묶음은 4칸)에 행동 배치
+  → 행동계획 실행
+  → 양측의 잠긴 계획을 동시 해결·표현
+  → 공개 이력과 자원 갱신
+```
+
+| 배치 | 슬롯 표기 | 플레이어가 감수하는 것 | 판정 경계 |
+|---|---|---|---|
+| 1슬롯 행동 | 해당 수에 행동명 | 다음 수의 유연성은 남긴다 | 행동 종류별 거리·자원·대응 규칙 |
+| 2슬롯 행동 | 첫 수 `[전조]` → 둘째 수 `[실행]` | 전조부터 실행까지 두 슬롯을 점유한다 | 첫 전조에 비용 전액 선지불, 확정 뒤 환불 없음 |
+| 전조 중 피격 | 연결 슬롯은 같은 `action_instance_id` | 강한 수를 준비한 만큼 중단 위험이 생긴다 | 실제 체력 피해가 나면 `[강건]`이 없을 때 남은 전조·실행을 취소 |
+| 실행 요청 | `행동계획 실행` | 되돌릴 수 있는 계획 단계를 끝낸다 | 입력은 비활성화되고 resolver event로 전환 |
+
+`[전조]`는 별도의 강화 보너스가 아니라 **실행 전 점유와 읽을 수 있는 위험**을 뜻한다. 따라서 2슬롯 강공·장풍의 전조를 본 상대는 대응·이동·관찰을 고민할 여지를 얻지만, 상대 AI는 플레이어가 아직 실행하지 않은 슬롯·방향·대상을 볼 수 없다.
+
 ### SYS-RESOLVE-001 — 동시 해결과 인과
 
 **WHY.** 플레이어가 “게임이 나를 속였다”가 아니라 “내 가설이 이 조건에서 틀렸다”고 읽어야 다음 수를 바꾼다.
@@ -200,6 +225,25 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 | result | engine | run state / result model | 승패·보상·재시도 가능성 |
 
 **COMPLETE WHEN.** 같은 입력은 동일한 result event sequence, 실패 원인이 Review로 전달, UI가 규칙을 재계산하지 않음, `verify_phase2_combat_resolution.gd` pass. animation timing·사람의 납득은 별도 evidence다.
+
+### SYS-TAG-001 — 전투 태그를 읽는 법
+
+태그는 장식용 키워드가 아니라, **계획할 때 보이는 위험과 해결 뒤 복기가 설명해야 하는 원인**이다. 아래 표는 규칙 원본을 요약한 안내이며, 수치·예외·데이터 스키마는 `docs/02_COMBAT_RULES.md`와 action JSON이 소유한다.
+
+| 태그/용어 | 계획에서 보이는 의미 | 해결·복기에서 확인할 결과 | 오해하면 안 되는 경계 |
+|---|---|---|---|
+| `[전조] → [실행]` | 한 행동이 연속 슬롯 둘을 차지한다 | 전조 뒤 실제 행동이 실행되거나 중단된다 | 전조만으로 강화·피해가 발생하지 않는다 |
+| `[관찰]` | 1슬롯을 당장의 피해 대신 정보에 쓴다 | 적이 먼저 묶음을 잠근 뒤, 앞 수부터 행동 **유형**을 관찰량만큼 공개한다 | 기술명·무공서·비용·방향·거리·피해·AI 가중치·정답은 공개하지 않는다 |
+| `[준비]` | 다음 비이동 행동을 위해 지금 한 슬롯을 쓴다 | 다음 공격은 원공격력 +2와 `[강건]`, 다음 명상은 기력·내력·절초기세 +1을 얻는다 | `[준비]`는 행동이고 `[강화]`는 그 결과 상태다. 이동·보법은 준비를 소비하지 않는다 |
+| `[강건]` | 중단될 수 있는 큰 수를 한 번 버티게 할 수 있다 | 유효 중단 1회를 막아 연결 행동/다음 피해 단위를 유지할 수 있다 | 받은 피해·상태·KO를 되돌리거나 무적이 되지는 않는다 |
+| `[합]` | 같은 수에 양쪽 공격이 겹칠 가능성을 읽는다 | 현재 피해 단위끼리 비교하고, 높은 쪽은 차이만큼 원피해를 남긴다 | 사거리 밖이어도 비교와 합 승리는 일어날 수 있으나 체력 피해·적중은 별도 조건이다 |
+| `[연격 N]` | 한 공격이 여러 피해 단위로 이어질 수 있다 | 체력 피해 없이 공격이 유지되면 다음 단위도 다시 `[합]`; 한쪽이 중단되면 남은 단위는 취소/단독 타격으로 갈린다 | 연격은 최종 총피해를 N개 단위로 나누는 판정 언어이지 별도 행동 묶음이 아니다 |
+| `[중단]` | 전조와 후속타가 끊길 위험이다 | 실제 체력 피해 뒤 현재 `action_instance_id`의 미실행 슬롯·피해 단위가 취소된다 | 방어로 피해가 0이면 중단이 아니다. `[강건]`은 한 번만 막는다 |
+| `[필중]` | 회피에 의존한 대응을 흔드는 조건이다 | 유효한 공격은 회피를 무시한다 | `[합]`·방어·거리·방향·중단·KO까지 무시하지 않는다 |
+
+**관찰 예시.** 적의 2슬롯 공격과 이동이 잠겨 있고 관찰량이 2라면, 플레이어는 `[전조] / [공격] / ?`처럼 행동 종류만 본다. 이 정보는 다음 계획의 가설 재료이지, 상대의 기술명이나 정답 대응표가 아니다.
+
+**합 예시.** 두 연격의 첫 피해 단위가 부딪쳐 한쪽이 방어로 체력 피해를 0으로 막으면, 살아남은 양쪽의 다음 피해 단위가 다시 `[합]`한다. 반대로 실제 체력 피해가 나서 중단되면, 중단된 쪽의 남은 연격과 전조 후속 실행은 사라지고 유지된 쪽의 잔여타만 순서대로 해결될 수 있다. 이 인과는 전투 표현과 Review가 같은 사건 기록으로 보여 주어야 한다.
 
 ### SYS-AI-001 — 공개 상태 AI
 
@@ -228,15 +272,48 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 
 `src/run/vertical_slice_run_state.gd`가 run 상태와 commit boundary를, `src/ui/combat_review_panel.gd`가 인과 설명을 소유한다. 완료 자동 증거: `tests/verify_vertical_slice_failure_retry.gd`.
 
-### SYS-GROWTH-001 / SYS-ROUTE-001 — 성장과 route
+### SYS-ROUTE-001 — 강호행: 비무 사이의 두 노드
 
-성장은 특정 수치를 고정 정답으로 만들지 않고 새로운 대응 가능한 기술 조합을 연다. 현 계획에 10권 무공, 3→10 성장, 총 비용 38의 seed가 기록되어 있으나, 실제 사람 플레이 밸런스 증거는 없다. route는 성장/회복과 정보/준비를 결합하되, macro map 또는 덱 보상으로 확장하지 않는다.
+**PLAYER PROMISE.** 강호행은 전투를 하나 더 붙이는 맵이 아니라, `방금 무엇을 배웠고 다음 상대에게 무엇을 알고 들어갈 것인가`를 고르는 **비전투 선택 구간**이다. 첫 Vertical Slice에서 방문 수는 고정이다.
+
+```text
+Duel 1 → 성장/회복 노드 → 정보/준비 노드 → Duel 2
+       → 성장/회복 노드 → 정보/준비 노드 → Duel 3
+       → 성장/회복 노드 → 정보/준비 노드 → Duel 4
+       → 성장/회복 노드 → 정보/준비 노드 → Duel 5
+```
+
+주요 비무 1~4 사이에는 **정확히 두 노드**, 전체에는 성장/회복 4개와 정보/준비 4개, 총 8개의 비전투 노드가 있다. 화면이 일직선 지도일 필요는 없지만, 일반 전투·랜덤 전투·덱 보상·탐험 서브시스템으로 확장하지 않는다.
+
+| 순서 | 노드가 던지는 질문 | 선택의 이득과 포기 | 다음 화면에 남기는 것 |
+|---|---|---|---|
+| 1. 성장/회복 | `지난 비무에서 드러난 문제를 지금 안정시킬까, 이후 대응 폭을 키울까?` | 회복은 당장 생존을, 집중 수련은 특정 무공의 성장, 자유 수련은 후속 선택 폭을 준다. 한 선택으로 모두 최대화하지 않는다 | 체력·자원 또는 무공 성장 상태 |
+| 2. 정보/준비 | `다음 상대에 대해 어떤 가설 재료를 확보할까?` | 공개 스테이터스·방어/전조 경향·사거리/무공 계통 중 한 축을 깊게 본다. 다른 축은 포기한다 | Briefing에 추가되는 공개 단서 |
+| Briefing | `내가 아는 것과 모르는 것은 어디까지인가?` | 상대 이름/전투 인상/공개 상태/조사된 기술 범위를 확인한다 | Combat으로 넘길 공개 정보 경계 |
+
+다음 상대 후보는 Duel Result 뒤 run seed로 먼저 확정되고, Route의 정보 선택이 후보를 다시 뽑지 않는다. 정보 노드는 AI의 현재 계획·확률·가중치·정답 수순을 제공하지 않는다. 따라서 강호행의 보상은 숨은 보정이나 정답이 아니라, **다음 3슬롯 계획을 더 좋은 가설로 시작할 근거**다.
+
+**STATUS.** 5대련과 8노드의 질문·텍스트·가역 수치 seed는 `DOCUMENTED`; `vertical_slice_route*.gd`의 소비처는 `PARTIAL`; Windows 사람 플레이에서 이 선택이 명료하고 재미있는지는 `UX_NOT_RUN`이다.
+
+### SYS-GROWTH-001 / SYS-MARTIAL-001 — 무공 성장·절초·시각 계층
+
+**WHY.** 무공은 “더 높은 숫자”가 아니라 거리·순서·대응의 새 조합을 여는 언어여야 한다. 절초는 그 조합을 무시하는 만능 버튼이 아니라, 전투에서 축적한 기세를 결정적 순간에 쓰는 선택이다.
+
+| 계층 | 플레이어가 읽는 역할 | 현재 정본의 규칙 | 시각 언어와 evidence 경계 |
+|---|---|---|---|
+| 기초 행동 | 누구나 쓰는 거리·대응·자원 문법 | 10종 행동으로 이동·보법·막기·회피·속공·강공·관찰·명상·준비·장풍을 제공한다 | 실제 카드 아틀라스와 `CardView.illustration` 소비처가 있다. 작은 삽화·출처 배지·태그·비용은 읽기 우선이며, 긴 텍스트를 원화에 굽지 않는다 |
+| 무공서 기술 | 어떤 방식으로 거리를 만들고, 공격/대응을 연결하는지의 정체성 | 초기 10권, 성취 3→10과 기술 해금이 대응 폭을 넓힌다. 덱·손패·드로우·장착 제한은 없다 | 무공서명·기술·태그·비용·사거리는 UI/data binding이 소유한다. 개별 무공 삽화는 exact card ID와 실제 `CardView.illustration` 소비처가 확정될 때까지 자동 제작하지 않는다 |
+| 절초 | 축적한 기세를 비용과 함께 결단하는 정점 | 절초기세 0~5; 묶음 전환, 실제 회피, 준비된 명상, 합 승리로 얻으며 기본 절초와 10성 절초는 각 슬롯·자원·기세·해금 조건을 지킨다 | 제한된 고색은 절초·선택 확정·결정적 결과에만 쓴다. `ultimate_ink_gold_sprite_sheet_rgba`는 tracked consumer가 있으나 Human 가독성·최종 VFX 품질은 `NOT_RUN` |
+
+무공의 시각적 구분은 같은 게임 안에서 세 출처가 다르게 읽히게 하는 것이지, 새 전장 배경·캐릭터·카드 배치를 자동 생산하는 권한이 아니다. 현재 전체 문법은 **WARM DUSK: 저채도 종이·먹선·절제된 고색·비격자 논리 전장**이다. 이 문법은 거리 N, 슬롯 점유, 전조, 합, 중단의 인과를 먼저 보이게 해야 하며, 숨은 계획을 포즈·색·연출로 누설해서는 안 된다.
 
 | data / owner | status | validation |
 |---|---|---|
 | `docs/06_STARTING_FACTION_MASTERY_DATA.md` | DOCUMENTED | tuning table / fixture 필요 |
 | `data/cards/martial_manual_cards.json`, `data/cards/martial_manuals/*.json` | IMPLEMENTED adoption data | UI/AI adoption test |
 | `src/run/vertical_slice_route*.gd` | PARTIAL runtime consumer | visible Godot / human choice test |
+| `src/ui/card_view.gd`, `data/cards/basic_cards.json` | IMPLEMENTED basic-card illustration consumer | gameplay-size readability / Human test |
+| `src/combat/combat_board_preview.gd`, ultimate VFX sprite sheet | PARTIAL visual consumer | Windows visible / Human VFX clarity |
 
 ## 09. CONTENT REGISTRY
 
@@ -261,7 +338,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 | 강공 | 2 | 전조를 감수한 타격 | `floor(7 + external*1)` |
 | 관찰 | 1 | 정보 우위 | player only, 관찰점 1 |
 | 명상 | 1 | resource 전환 | stamina+1, internal+1 |
-| 준비 | 1 | 후속 행동 준비 | current data owner 확인 |
+| 준비 | 1 | 후속 비이동 행동 준비 | 다음 공격은 +2 피해와 `[강건]`, 다음 명상은 자원·절초기세를 강화 |
 | 장풍 | 2 | 거리 있는 내력 공격 | internal 1, range 1–3, `floor(3 + internal*0.75)` |
 
 ## 10. CONTENT SPECIFICATIONS
@@ -313,6 +390,18 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 | AST-VIS-001 | WARM DUSK v2 / Core Scene Board R2 | planning reference | PLANNING_ONLY | not runtime asset / not rights proof |
 
 **Visual grammar.** Warm dusk, charcoal ink, paper, restrained antique gold; non-grid logical board; semi-real 2D ink outlines, low-saturation wash, restrained dot/dither. Keep: clear distance/causality hierarchy. Avoid: baked UI text, hard floor grid, plan leakage, deck/hand visual language. Do not drift: unrelated project style or asset identity. Exact planning palette: `INK_900 #171411`, `PAPER100 #EADFC9`, `SEPIA500 #7F6847`, `GOLD500 #B99254`, `DANGER500 #965148`, `BLUEGRAY500 #687783`.
+
+### 12.1 무공·절초 시각 의미 계약
+
+| 화면 요소 | 반드시 전달할 의미 | 허용된 표현 | 금지/미검증 경계 |
+|---|---|---|---|
+| 기초 행동 카드 | 출처·행동 유형·슬롯·비용·태그 | 작은 수묵 삽화, 기초 배지, UI가 소유한 텍스트/숫자 | 삽화 속 pseudo-text, 카드가 규칙을 재계산하는 표현 |
+| 무공서 기술 카드 | 어느 무공서의 어떤 기술이 어떤 대응 폭을 여는가 | 무공서 identity, 기술명, 태그, 사거리·비용의 data-bound UI | 소비처 없는 개별 기술 원화의 자동 생성·runtime 승격 |
+| 2슬롯 전조 | 한 행동이 다음 슬롯까지 예약되어 있고 끊길 수 있음 | 타임라인 span, 절제된 선행 모션/기세, `[전조]` 표기 | 전조만으로 피해·강화가 난 것처럼 보이기, 숨은 적 계획 노출 |
+| `[합]`·중단·강건 | 어느 피해 단위가 살아남고 무엇이 끊겼는가 | 먹선 충돌, 짧은 타격 강조, 결과 log/Review와 같은 사건 순서 | 화려함 때문에 거리·피해·중단 원인을 가리는 연출 |
+| 절초 | 기세를 쌓아 지불한 결정적 선택 | 제한된 고색, seal/ink burst, existing sprite-sheet consumer | 모든 강한 행동에 금색 사용, final VFX/Human 품질 통과 주장 |
+
+이 표는 visual brief와 runtime consumer의 경계를 설명할 뿐이다. `PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2`는 planning artifact이고 runtime asset·Scene 구현·Human usability PASS가 아니다.
 
 ## 13. AUDIO CONSUMER MATRIX
 
@@ -481,6 +570,14 @@ Priority formula: player-value risk (comprehension) → technical/platform risk 
 | 2026-08-28 | Phase 2 code reconciled through #261 before snapshot | merged PR #261 |
 | 2026-08-28 | identified post-merge stale mutable owner records | DEC-STALE-001 |
 | 2026-08-28 | resolved DEC-STALE-001 and retired the carried one-time protected approval | repository owner readback / lifecycle validator |
+| 2026-08-28 | Issue #264: expanded Jianghu Journey, action-bundle/tag, martial/ultimate and visual-consumer explanations without changing product rules | user approval, `docs/02`, `docs/12`, `docs/17`, `docs/19`, actual data/consumer readback |
+
+### 27.1 Project Incident / Solution / Lesson — Issue #264
+
+- **Incident.** 시스템 등록표와 단락형 요약만으로는 강호행의 비전투 선택, 3슬롯·2슬롯의 실제 기회비용, 관찰·강건·합·중단의 인과, 무공/절초의 시각 소비 경계를 한 흐름으로 이해하기 어려웠다. 이는 규칙 자체의 충돌이 아니라 **설명 밀도 부족으로 인한 정본 오독 위험**이다.
+- **Solution.** §08과 §12에 player question, 선택의 이득/포기, 태그 glossary, `[합]`/중단 예시, 8노드 강호행, 기초/무공서/절초 시각 계층을 추가했다. 모든 새 설명은 기존 규칙 owner를 참조하고 `IMPLEMENTED`, `PARTIAL`, `UX_NOT_RUN` 경계를 유지한다.
+- **Lesson.** 통합 GDD는 시스템 이름과 소유자만 나열하지 말고 `플레이어가 보는 정보 → 선택·대가 → 해결 결과 → 복기·다음 행동`을 최소 한 번 연결해야 한다. 다만 그 설명은 데이터·Scene·자산 소비처의 실제 상태를 앞질러서는 안 된다.
+- **Base promotion.** `NO_BASE_PROMOTION`: 강호행 8노드, 3/3/4, 태그 뜻, 무공/절초의 visual grammar는 십보강호 고유이다. Base는 이미 설명-근거-상태 분리와 적대적 문서 검토 원칙을 소유한다.
 
 ## Appendix A. Evidence-based SWOT
 
