@@ -94,15 +94,19 @@ class ActionsBudgetManualValidationFallbackTests(unittest.TestCase):
         self.assertEqual(validation["fallback_decision_id"], FALLBACK_DECISION_ID)
         self.assertEqual(
             validation["github_actions"],
-            "NOT_RUN_BUDGET_UNAVAILABLE",
+            "STANDARD_GITHUB_HOSTED_RUNNER_REQUIRED",
         )
         self.assertEqual(
-            validation["fallback_route"],
-            "CONTENT_ADDRESSED_EXACT_HEAD_STATIC_PLUS_RUNTIME_CLOSURE_EQUIVALENCE",
+            validation["fallback_status"],
+            "HISTORICAL_PR107_ONLY_SUPERSEDED_FOR_FUTURE_HEADS",
+        )
+        self.assertEqual(
+            validation["validation_route_decision_id"],
+            "TEN-DEC-20260807-PUBLIC-REPO-FREE-GITHUB-HOSTED-ACTIONS-01",
         )
         self.assertEqual(
             validation["state"],
-            "FALLBACK_ROUTE_AUTHORIZED_PER_HEAD_EVIDENCE_REQUIRED",
+            "PASS_EXACT_HEAD_HOSTED_PR109",
         )
 
         decision_text = FALLBACK_DECISION.read_text(encoding="utf-8")
@@ -115,6 +119,12 @@ class ActionsBudgetManualValidationFallbackTests(unittest.TestCase):
             "BLOCKED_PENDING_HIGODOT_L1",
         ):
             self.assertIn(marker, decision_text)
+        for marker in (
+            FALLBACK_DECISION_ID,
+            "TEN-DEC-20260807-PUBLIC-REPO-FREE-GITHUB-HOSTED-ACTIONS-01",
+            "SUPERSEDED_FOR_FUTURE_HEADS",
+            "PASS_EXACT_HEAD_HOSTED_PR109",
+        ):
             self.assertIn(marker, reconciliation_text)
 
 

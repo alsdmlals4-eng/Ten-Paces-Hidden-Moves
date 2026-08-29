@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 import unittest
 from pathlib import Path
 
@@ -30,6 +31,17 @@ STORED_PARTS = [
 
 
 class IntegratedWorkContractV45R2HistoryTests(unittest.TestCase):
+    def git_blob_bytes(self, part: Path) -> bytes:
+        relative = part.relative_to(ROOT).as_posix()
+        result = subprocess.run(
+            ["git", "show", f"HEAD:{relative}"],
+            cwd=ROOT,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(0, result.returncode, result.stderr.decode("utf-8", errors="replace"))
+        return result.stdout
+
     def test_v45r2_binding_is_retained_as_historical_evidence(self) -> None:
         self.assertTrue(DECISION.is_file())
         self.assertTrue(CONTRACT.is_file())
@@ -46,7 +58,7 @@ class IntegratedWorkContractV45R2HistoryTests(unittest.TestCase):
         actual_parts: list[bytes] = []
         for index, (part, expected) in enumerate(zip(PARTS, STORED_PARTS), start=1):
             self.assertTrue(part.is_file(), f"Missing historical normative body part: {part.relative_to(ROOT)}")
-            data = part.read_bytes()
+            data = self.git_blob_bytes(part)
             actual_parts.append(data)
             expected_size, expected_hash = expected
             with self.subTest(part=index):

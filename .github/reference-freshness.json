@@ -28,6 +28,10 @@
     "**/__pycache__/**"
   ],
   "legacy_aliases_path": "skills/LEGACY_SKILL_ALIASES.md",
+  "allowed_legacy_globs": [
+    ".github/reference-freshness.json",
+    "docs/operations/2026-08-28_ADVERSARIAL_RESEARCH_FEASIBILITY_GATE_EXECUTION_REPORT.md"
+  ],
   "skill_registry_path": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
   "board_contract_path": "data/combat/combat_board_poc.json",
   "expected_board_schema_version": 17,

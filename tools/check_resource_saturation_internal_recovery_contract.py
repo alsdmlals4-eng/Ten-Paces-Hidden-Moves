@@ -141,7 +141,7 @@ def validate_canon_documents(documents: dict[str, str]) -> None:
     _require(superseded_token in lifecycle, "superseded field authority marker missing")
     active = documents.get("active_context", "")
     _require(
-        "current_truth_source: GITHUB_MAIN_PLUS_EXACT_PROJECT_NOTION_LIVE_READ" in active,
+        "current_truth_source: GITHUB_MAIN_PLUS_REPOSITORY_HUMAN_STRUCTURED_RUNTIME_OWNERS_LIVE_READ" in active,
         "active context current-truth authority missing",
     )
     _require(

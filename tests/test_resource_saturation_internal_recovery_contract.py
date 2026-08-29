@@ -14,6 +14,7 @@ EXPECTED_EFFECTIVE_RECOVERY = {
     "internal": 0,
     "ultimate_momentum": 1,
 }
+CURRENT_TRUTH_SOURCE = "GITHUB_MAIN_PLUS_REPOSITORY_HUMAN_STRUCTURED_RUNTIME_OWNERS_LIVE_READ"
 
 
 def load_validator():
@@ -86,7 +87,18 @@ class ResourceSaturationInternalRecoveryContractTests(unittest.TestCase):
 
     def test_canon_documents_are_synchronized(self):
         validator = load_validator()
+        self.assertIn(CURRENT_TRUTH_SOURCE, validator.load_canon_documents()["active_context"])
         validator.validate_canon_documents(validator.load_canon_documents())
+
+    def test_validator_rejects_retired_notion_current_truth_source(self):
+        validator = load_validator()
+        broken = copy.deepcopy(validator.load_canon_documents())
+        broken["active_context"] = broken["active_context"].replace(
+            CURRENT_TRUTH_SOURCE,
+            "GITHUB_MAIN_PLUS_EXACT_PROJECT_NOTION_LIVE_READ",
+        )
+        with self.assertRaisesRegex(validator.ResourceSaturationContractError, "current-truth authority"):
+            validator.validate_canon_documents(broken)
 
     def test_validator_rejects_stale_live_pr_pointer(self):
         validator = load_validator()
