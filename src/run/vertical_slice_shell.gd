@@ -2,6 +2,7 @@ class_name VerticalSliceShell
 extends Control
 
 const COMBAT_SCENE := preload("res://scenes/run/vertical_slice_combat_bridge.tscn")
+const OpponentRuntimeBindingScript := preload("res://src/run/vertical_slice_opponent_runtime_binding.gd")
 const TECHNICAL_RUN_SEED := 20260820
 
 var run_state: VerticalSliceRunState
@@ -445,6 +446,8 @@ func _ensure_combat_view() -> void:
     combat_host.add_child(_combat_view)
 
     var opponent: Dictionary = run_state.get_current_opponent()
+    var runtime_binding_adapter = OpponentRuntimeBindingScript.new()
+    var enemy_runtime_binding: Dictionary = runtime_binding_adapter.build(opponent) if runtime_binding_adapter.is_valid() else {"valid": false}
     var signature_manual_id := str(opponent.get("signature_manual_id", ""))
     var enemy_mastery := {}
     if not signature_manual_id.is_empty():
@@ -458,6 +461,7 @@ func _ensure_combat_view() -> void:
             [signature_manual_id],
             enemy_mastery,
             str(opponent.get("candidate_id", "")),
+            enemy_runtime_binding,
             {
                 "name": str(opponent.get("working_name", "")),
                 "epithet": str(opponent.get("martial_identity", ""))

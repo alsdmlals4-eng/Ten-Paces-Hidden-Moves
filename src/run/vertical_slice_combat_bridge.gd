@@ -25,11 +25,12 @@ func configure_vertical_slice_loadouts(
     enemy_loadout,
     enemy_mastery_by_manual: Dictionary,
     enemy_candidate_id: String,
+    enemy_runtime_binding: Dictionary,
     enemy_identity: Dictionary = {}
 ) -> bool:
     var player_ids := _string_values(player_loadout)
     var enemy_ids := _string_values(enemy_loadout)
-    if player_ids.size() != 4 or enemy_ids.size() != 1 or enemy_candidate_id.is_empty():
+    if player_ids.size() != 4 or enemy_ids.size() != 1 or enemy_candidate_id.is_empty() or not _is_valid_enemy_runtime_binding(enemy_runtime_binding, enemy_candidate_id):
         return false
     for manual_id_value in player_ids:
         var manual_id := str(manual_id_value)
@@ -54,6 +55,8 @@ func configure_vertical_slice_loadouts(
     }
 
     var engine: VerticalSliceMetricsCombatResolutionEngine = VERTICAL_SLICE_ENGINE_SCRIPT.new()
+    if not engine.configure_enemy_runtime_binding(enemy_runtime_binding):
+        return false
     engine.configure_martial_loadouts(
         player_ids,
         player_mastery_by_manual.duplicate(true),
@@ -84,13 +87,32 @@ func configure_vertical_slice_loadouts(
         "player_mastery_by_manual": player_mastery_by_manual.duplicate(true),
         "enemy_candidate_id": enemy_candidate_id,
         "enemy_loadout": enemy_ids.duplicate(),
-        "enemy_mastery_by_manual": enemy_mastery_by_manual.duplicate(true)
+        "enemy_mastery_by_manual": enemy_mastery_by_manual.duplicate(true),
+        "enemy_runtime_binding": enemy_runtime_binding.duplicate(true)
     }
     set_meta("vertical_slice_runtime_loadout_bound", true)
     set_meta("vertical_slice_enemy_candidate_id", enemy_candidate_id)
     set_meta("vertical_slice_battle_metrics_bound", true)
     set_meta("vertical_slice_run_resources_bound", true)
     return true
+
+
+func _is_valid_enemy_runtime_binding(binding: Dictionary, enemy_candidate_id: String) -> bool:
+    if not bool(binding.get("valid", false)) or str(binding.get("candidate_id", "")) != enemy_candidate_id:
+        return false
+    if str(binding.get("archetype_id", "")).is_empty() or typeof(binding.get("ai_profile", {})) != TYPE_DICTIONARY:
+        return false
+    if typeof(binding.get("basic_action_focus_ids", [])) != TYPE_ARRAY:
+        return false
+    var stats = binding.get("stats", {})
+    if typeof(stats) != TYPE_DICTIONARY:
+        return false
+    var stat_total := 0
+    for stat_id in ["external", "constitution", "agility", "internal_power", "insight"]:
+        if int((stats as Dictionary).get(stat_id, 0)) < 1:
+            return false
+        stat_total += int((stats as Dictionary).get(stat_id, 0))
+    return stat_total == int(binding.get("final_stat_total_seed", 0))
 
 
 func apply_vertical_slice_player_resources(resources: Dictionary) -> bool:
