@@ -15,6 +15,17 @@ func _init() -> void:
 func configure_enemy_runtime_binding(binding: Dictionary) -> bool:
     if not _is_valid_enemy_runtime_binding(binding):
         return false
+    if ai_planner == null or not ai_planner.has_method("set_runtime_binding"):
+        return false
+    var focus_ids: Array[String] = []
+    for focus_value in binding.get("basic_action_focus_ids", []):
+        focus_ids.append(str(focus_value))
+    if not ai_planner.set_runtime_binding(
+        str(binding.get("archetype_id", "")),
+        (binding.get("ai_profile", {}) as Dictionary).duplicate(true),
+        focus_ids
+    ):
+        return false
     _enemy_runtime_binding = binding.duplicate(true)
     return true
 
