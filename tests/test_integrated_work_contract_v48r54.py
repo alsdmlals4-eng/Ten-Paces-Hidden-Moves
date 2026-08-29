@@ -170,7 +170,7 @@ class IntegratedWorkContractV48R54Tests(unittest.TestCase):
         self.assertEqual([], planning["next_visual_batch"])
         self.assertEqual("NONE_CURRENT_BOARD_USER_FINAL_LOCKED_NO_AUTOMATIC_NEXT", planning["next_image_generation"])
         self.assertEqual(
-            "GITHUB_ISSUE267_PR_EXACT_HEAD_CI_REVIEW_MERGE_READBACK",
+            "REPOSITORY_ONLY_GPT_WORK",
             planning["next_execution_surface"],
         )
         self.assertEqual("docs/planning-data/current_visual_production_handoff_20260826.json", planning["visual_reference_state"])

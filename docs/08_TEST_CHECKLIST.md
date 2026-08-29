@@ -33,7 +33,7 @@ app_flow_shell:
   godot_validation: PASS
   windows_visible_human_validation: NOT_RUN
 opponent_runtime_personality_binding:
-  implementation_status: IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_AWAITING_ISSUE267_PR
+  implementation_status: IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK
   automated_validation: PASS
   godot_validation: PASS
   windows_visible_human_validation: NOT_RUN
@@ -278,7 +278,7 @@ human_step14: NOT_RUN
 - [ ] 성장 비용·도달 경로·임계 효과 재계산.
 - [ ] false-pass 회귀 차단.
 - [ ] PR exact-head에서 Full Validation·PR Validation·Base Adoption을 확인한다.
-- [x] Issue #267 local exact implementation head `e5631e8b0e324020fa82c36aac04882f1b250f5d`에서 static checks, Python 419, affected Godot 19 scripts, headless editor parse를 수행했다. PR CI/review/merge/readback은 아직 수행 전이다.
+- [x] Issue #267 local exact implementation head `e5631e8b0e324020fa82c36aac04882f1b250f5d`에서 static checks, Python 419, affected Godot 19 scripts, headless editor parse를 수행했고, PR #273은 remote CI 전체 통과 뒤 `main` commit `48b20da2948e6be7d3543c43814e865b975436a5`로 병합·readback했다. Windows-visible, Human, Android, release evidence는 수행 전이다.
 
 ## 19A. 초기 10권 자동 제품 검증
 

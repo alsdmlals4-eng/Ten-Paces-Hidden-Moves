@@ -17,7 +17,7 @@ skill_mode:
   - running-adversarial-review-and-refinement / full-scope
   - reviewing-and-validating-project-changes / validation
   - hera-godot:live-editor / headless-editor-check
-status: IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_AWAITING_ISSUE267_PR
+status: IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK
 ```
 
 ## 작업 전 문제
@@ -85,12 +85,18 @@ locked opponent candidate
 4. **fairness/privacy**: execution-only 6-record projection, counter의 newest two player records, private plan/UI/observation mutation 불변성을 검증했다.
 5. **rules/long-term fit**: range retreat, legal current card pool, two-slot preparation anchor, 3/3/4 non-overlap, unbound default trace를 검증했다. 기존 clash test failure는 pre-existing baseline으로 분리했다.
 
-`MUST_FIX_REMAINING: 0` for the authorized Issue #267 implementation scope. 다음 안전 작업은 Issue #267 PR의 exact-head CI/review/merge/readback이며, 그 뒤에는 별도 승인된 balance instrumentation contract다.
+`MUST_FIX_REMAINING: 0` for the authorized Issue #267 implementation scope. PR #273은 remote CI 전체 통과 뒤 `main` commit `48b20da2948e6be7d3543c43814e865b975436a5`로 병합됐고 post-merge readback을 마쳤다. 다음 제품 안전 작업은 별도 `BALANCE_INSTRUMENTATION_CONTRACT`이며, 구현 전에는 새 Decision·계약·fresh Gate가 필요하다.
 
 ## 자동화·학습 반영
 
 - full and scoped CI workflows now invoke the binding contract and integration verifier.
 - Godot editor parse가 tracked `.import` artefact를 대량 변경하는 환경이라 exact-head parse는 disposable worktree에서 실행하고, 검증 후 agent-created temporary worktree를 제거한다.
 - evidence 기록 후 final full regression에서 `runtime_work_mode: BUILD`와 Issue #267 PR readback 단계는 실제 Current Context와 일치하지만, post-merge lifecycle validator와 네 개의 current-status consumer test가 과거 `REVIEW` / `REPOSITORY_ONLY_GPT_WORK` / handoff 문자열을 고정값으로 요구한 것을 발견했다. 새 BUILD 허용과 unknown mode 거절을 먼저 RED로 확인한 뒤, validator를 project work-mode enum(`PLAN` / `BUILD` / `REVIEW`)으로 좁히고 stale expectation을 현재 owner 값으로만 갱신했다. final branch validation은 Python `421 PASS`, operating-system/reference/skill/binding/combat-doc checks `PASS`, 핵심 binding/catalog/setup/AI/resolver Godot verifier `5 PASS`다.
-- PR #273의 첫 remote CI readback에서 runtime path 변경에 필요한 당일 BUILD 승인 record와 one-time protected approval manifest/label이 빠진 것을 fail-closed로 확인했다. `BUILD_APPROVAL_2026-08-30.md`, exact 10-path manifest, PR-base baseline pin 및 Base-generated views로 복구했고, Base `2828a74…` contract validator를 `external-approval=true`로 재현해 GREEN을 확인했다. 이 manifest는 해당 PR 한 번에만 유효하므로 merge 뒤 별도 cleanup PR에서 immutable archive와 baseline promotion을 수행해야 한다.
+- PR #273의 첫 remote CI readback에서 runtime path 변경에 필요한 당일 BUILD 승인 record와 one-time protected approval manifest/label이 빠진 것을 fail-closed로 확인했다. `BUILD_APPROVAL_2026-08-30.md`, exact 10-path manifest, PR-base baseline pin 및 Base-generated views로 복구했고, Base `2828a74…` contract validator를 `external-approval=true`로 재현해 GREEN을 확인했다. PR #273은 이후 모든 remote CI를 통과해 병합됐으며, 이 manifest는 one-time record이므로 후속 cleanup PR이 immutable archive와 merged-main baseline promotion을 수행한다.
+
+## PR #273 병합 readback
+
+- GitHub merge commit: `48b20da2948e6be7d3543c43814e865b975436a5`.
+- PR 상태: `MERGED`; merge 직전 exact head는 `0bb7444d`였고 Base v9 gate, Project Base Adapter, full validation, Windows/Ubuntu product evidence, Godot 및 Vertical Slice run-state check가 모두 통과했다.
+- 이 병합 증거는 automated/CI 범위다. Windows-visible, human play, accessibility-user, Android device, release performance, deterministic balance simulation은 여전히 `NOT_RUN`이다.
 - Base promotion disposition remains `NO_BASE_PROMOTION`.
