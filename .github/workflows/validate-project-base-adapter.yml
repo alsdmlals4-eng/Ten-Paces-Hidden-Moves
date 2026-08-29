@@ -39,18 +39,22 @@ jobs:
           set -euo pipefail
           ADAPTER_PATH="skills/PROJECT_BASE_ADAPTER.json"
           APPROVAL_PATH="docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
-          ADAPTER_CHANGES="$(git diff --name-only "$PR_BASE_SHA"...HEAD -- "$ADAPTER_PATH")"
+          PR_BASELINE_SHA="$(
+            git show "$PR_BASE_SHA:$ADAPTER_PATH" |
+              python -c 'import json, sys; payload = json.load(sys.stdin); print(payload["protected_baseline"]["commit"])'
+          )"
+          HEAD_BASELINE_SHA="$(
+            git show "HEAD:$ADAPTER_PATH" |
+              python -c 'import json, sys; payload = json.load(sys.stdin); print(payload["protected_baseline"]["commit"])'
+          )"
           ACTIVE_APPROVAL_NEW_IN_PR=false
           if [ -f "$APPROVAL_PATH" ] && ! git cat-file -e "$PR_BASE_SHA:$APPROVAL_PATH" 2>/dev/null; then
             ACTIVE_APPROVAL_NEW_IN_PR=true
           fi
-          if [ "$ADAPTER_CHANGES" != "" ] || [ "$ACTIVE_APPROVAL_NEW_IN_PR" = true ]; then
+          if [ "$ACTIVE_APPROVAL_NEW_IN_PR" = true ] || [ "$HEAD_BASELINE_SHA" != "$PR_BASELINE_SHA" ]; then
             PROTECTED_BASE_SHA="$PR_BASE_SHA"
           else
-            PROTECTED_BASE_SHA="$(
-              git show "$PR_BASE_SHA:$ADAPTER_PATH" |
-                python -c 'import json, sys; payload = json.load(sys.stdin); print(payload["protected_baseline"]["commit"])'
-            )"
+            PROTECTED_BASE_SHA="$PR_BASELINE_SHA"
           fi
           python -c 'import re, sys; value = sys.argv[1]; raise SystemExit(0 if re.fullmatch(r"[0-9a-f]{40}", value) else 1)' "$PROTECTED_BASE_SHA"
           git cat-file -e "$PROTECTED_BASE_SHA^{commit}"

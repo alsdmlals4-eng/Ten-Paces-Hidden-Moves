@@ -42,6 +42,7 @@ incremental_cost: ZERO
 - `skills/PROJECT_BASE_ADAPTER.json`의 보호 정책 source를 정본 `skills/PROJECT_BASE_ADAPTER.json`과 `CANONICAL_ADAPTER_SOURCE`로 승격했다.
 - 최신 Base `build_project_operating_artifacts.py --write`로 `BASE_V9_ADAPTER`, `PROJECT_BASE_SKILL_ADAPTER`, `PROJECT_SKILL_SNAPSHOT`, Dashboard를 재생성했다.
 - 같은 source downgrade 또는 생성 뷰 해시 누락을 막는 `tests/test_canonical_adapter_protected_baseline_authority.py`를 추가했다.
+- CI workflow는 이제 Adapter 파일의 변경 여부가 아니라 실제 `protected_baseline.commit`의 변경 여부로 PR base와 historical baseline을 구분한다. 이를 `tests/test_approved_protected_change_workflow.py`가 회귀 검사한다.
 - `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot`와 모든 전투 규칙·저장·GDD·자산은 변경하지 않았다.
 
 ## TDD와 검증 증거
@@ -53,7 +54,16 @@ incremental_cost: ZERO
 | GREEN | `python tests/test_canonical_adapter_protected_baseline_authority.py` | PASS. |
 | 원래 실패 반례 | `python Base/tools/check_project_operating_contract.py --project-root . --base-repository Base --check`의 동등한 절대 경로 실행 | PASS. |
 | 파생본 | `python Base/tools/build_project_operating_artifacts.py --project-root . --base-repository Base --check`의 동등한 절대 경로 실행 | PASS. |
+| 고정 CI validator | workflow와 같은 Base `2828a74f...`의 `check_approved_project_operating_contract.py --protected-base afa152b... --check` | PASS. metadata-only Adapter migration은 PR base가 아닌 historical baseline을 선택함을 실제 실행으로 확인. |
 | 인접 회귀 | 프로젝트 운영 계약·Base shared adapter·v9.4.3 adoption 및 Base protected-baseline authority tests | PASS. |
+
+`check_canonical_reference_freshness.py --base cde527a9... --head ce222a1...`는 `REFERENCE FRESHNESS CHECK: FAIL`을 반환했다. 비교 결과 두 문자열은 모두 baseline `cde527a9...`에 이미 있었고 이번 diff에는 없다.
+
+- `.github/reference-freshness.json`의 `forbidden_active_paths`는 삭제된 Skill 경로를 **탐지하기 위해** 그 literal을 보유한다.
+- `docs/operations/2026-08-28_ADVERSARIAL_RESEARCH_FEASIBILITY_GATE_EXECUTION_REPORT.md`는 같은 false positive를 historical incident로 보존한다.
+- 판정: `ALLOWED_LEGACY / BASE_FOLLOW_UP_CANDIDATE`. checker 또는 project 규칙을 약화하지 않았고, 이번 recovery의 활성 consumer 누락은 별도 검색과 generated-artifact check로 닫았다.
+
+프로젝트 root에는 `tools/run_local_validation.py`가 없다. Base의 동명 도구는 Base repository 전용이며, 현재 Python 환경은 그 도구가 요구하는 `PIL`, `markdown_it`, `docx`, `pypdf`를 모두 갖추지 않아 `LOCAL_VALIDATION_DEPENDENCY_MISSING`으로 중단됐다. 패키지를 전역 설치하거나 이 결과를 PASS로 바꾸지 않았으며, 이번 범위의 실제 project-focused validators는 모두 별도로 실행했다.
 
 ## 다섯 번의 전체 적대 검토
 
@@ -65,7 +75,8 @@ incremental_cost: ZERO
 | 2 | source만 바꾸면 호환 뷰·snapshot·dashboard 해시가 stale일 수 있다 | Base 생성기가 4개 파생본을 갱신했고 check mode가 일치성을 확인한다. | generated artifacts를 재생성. |
 | 3 | 조상 허용이 보호 경로 변경을 숨길 수 있다 | 최신 Base authority test가 historical baseline부터 protected-path diff를 계속 탐지함을 검증한다. | 기존 fail-closed 보호 강도 보존. |
 | 4 | 새 표기가 future regression 없이 다시 legacy로 내려갈 수 있다 | project-local RED→GREEN regression이 source type/path와 두 compatibility view hash를 고정한다. | 회귀 테스트 추가. |
-| 5 | 더 작은 workaround 또는 Base 수정이 장기적으로 더 나은가 | 반복 pin bump는 자기 실패를 재생산하고, Base 우회는 책임 경계를 침범한다. | canonical ancestry가 최소·저비용·되돌릴 수 있는 선택으로 유지. |
+| 5 | CI가 Adapter 파일 변경 자체를 protected-baseline promotion으로 오인하지 않는가 | 기존 workflow는 PR base를 선택해 고정 validator의 exact override와 `afa152b...`가 충돌했다. | `MUST_FIX`: baseline commit 변경 여부로 선택 기준을 좁히고 RED→GREEN workflow regression을 추가. |
+| 6 | workflow 보정이 신규 승인 manifest나 실제 baseline promotion을 약화하지 않는가 | 새 approval은 여전히 PR base를 선택하고, baseline commit이 바뀌면 PR base를 선택한다. metadata-only migration은 historical baseline을 선택하며 고정 validator 실행도 통과한다. | `CLEAN_REVIEW_EXIT_CANDIDATE`: 새 유효 finding 없음. |
 
 ## 롤백·미검증·다음 안전 작업
 
