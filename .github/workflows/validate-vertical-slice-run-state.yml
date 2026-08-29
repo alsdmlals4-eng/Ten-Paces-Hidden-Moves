@@ -16,6 +16,8 @@ on:
       - "tests/verify_vertical_slice_combat_bridge.gd"
       - "tests/verify_dogyeom_status_portrait.gd"
       - "tests/verify_vertical_slice_opponent_catalog.gd"
+      - "tests/verify_vertical_slice_opponent_runtime_binding.gd"
+      - "tests/check_vertical_slice_opponent_runtime_binding_contract.py"
       - "tests/verify_vertical_slice_opponent_shell_binding.gd"
       - "tests/verify_vertical_slice_candidate_ids.gd"
       - "tests/verify_vertical_slice_setup_briefing.gd"
@@ -55,6 +57,8 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_dogyeom_status_portrait.gd
       - name: Verify opponent catalog and route lock
         run: godot --headless --path . --script res://tests/verify_vertical_slice_opponent_catalog.gd
+      - name: Verify opponent runtime personality binding
+        run: godot --headless --path . --script res://tests/verify_vertical_slice_opponent_runtime_binding.gd
       - name: Verify candidate ID hygiene
         run: godot --headless --path . --script res://tests/verify_vertical_slice_candidate_ids.gd
       - name: Verify shell opponent catalog binding
