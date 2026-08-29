@@ -264,7 +264,7 @@ def verify_documents() -> None:
 def verify_registry() -> None:
     registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
     documents = registry.get("documents", [])
-    assert len(documents) == 11
+    assert len(documents) == 12
     seen: set[Path] = set()
     for entry in documents:
         assert entry.get("status") == "ACTIVE"

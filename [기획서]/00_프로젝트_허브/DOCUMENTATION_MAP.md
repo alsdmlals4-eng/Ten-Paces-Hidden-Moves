@@ -29,7 +29,8 @@
 | 프로젝트의 과거 Base release·payload/evidence/finalization pin | `docs/BASE_RULES_VERSION.md`, `skills/PROJECT_BASE_ADAPTER.json` — compatibility/adoption evidence |
 | 프로젝트 고유 Skill | `skills/SKILL_REGISTRY.json`, `skills/*/SKILL.md` |
 | 게임 정체성·핵심 재미 | `docs/01_GAME_DESIGN.md` |
-| 통합 기획·AI 실행 명세·Notion 이관표 | `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` (사람용 전달 PDF: `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf`; source SHA `afa152b`) |
+| 통합 기획·AI 실행 명세·Notion 이관표 | `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` — active project-wide machine-searchable narrative source; paired source snapshot `afa152b`, delivery lineage `18d647c` |
+| 현재 사람용 master GDD publication | `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` — pair `ten-paces-hidden-moves-20260829-afa152b`, `CURRENT_PAIRED_DERIVED_PUBLICATION`; source owner 또는 latest-repository-commit 판정자 아님 |
 | 세계·플레이어 역할·강호 비무행·5전 감정곡선·비전투 App Flow | `docs/12_VERTICAL_SLICE_JIANGHU_JOURNEY.md`, `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01` |
 | 전투 규칙·판정·자원·AI·관찰 | `docs/02_COMBAT_RULES.md` |
 | 전투 UI 정보 위계·거리·카드·관찰 표시 | `docs/decisions/2026-08-11_COMBAT_UI_INFORMATION_HIERARCHY_DECISION.md`, `docs/07_COMBAT_UI_SPEC.md` |
@@ -51,6 +52,40 @@
 | 무공서·무학 과거 사용자-facing 표 | legacy Sheet `03_무공서_무학` + 해당 Decision ID의 repository destination — migration 확인 전용 |
 
 구조화 planning JSON은 각 Decision·분야 정본의 검증 가능한 계약/ledger다. 어떤 JSON이 현재 활성인지 여부는 Decision 연결과 `docs/CANON_LIFECYCLE_REGISTRY.md`를 통해 판정한다. 과거 PR·branch·merge SHA는 현재 책임 원본 목록에 넣지 않고 역사·증거 문서에서만 읽는다.
+
+## Human Game Blueprint layered route
+
+`HUMAN_GAME_BLUEPRINT_GDD_LAYERED_PROFILE`
+
+`NO_SEPARATE_BLUEPRINT_ARTIFACT`
+
+Blueprint는 세 번째 문서가 아니다. AI spec이 layered route를 선언하고, 수정하지 않은 20260829 paired PDF가 current human master publication으로 연결된다. master role은 `AI_PRODUCTION_SPEC_MARKDOWN`과 `HUMAN_MASTER_GDD_PDF` 정확히 둘이며, mutable state나 rules를 이 지도에 복사하지 않는다.
+
+| layer | 책임 질문 | current route |
+|---|---|---|
+| `PROJECT_PLAYER_LAYER` | 게임·player promise·first 5/15/30 | AI spec §02–§06 |
+| `SYSTEM_LAYER` | core flow/system/rules/state | AI spec §07–§08, §18–§20 |
+| `CONTENT_UX_PRESENTATION_LAYER` | content/UI/input/visual/audio consumer | AI spec §09–§13 |
+| `PRODUCTION_EVIDENCE_LAYER` | implementation owner/test/runtime/UX evidence | AI spec §14–§17, §21–§27 |
+
+```text
+3-MINUTE PROJECT / PLAYER READ
+-> 10-MINUTE SYSTEM + CONTENT / UX / PRESENTATION READ
+-> DETAIL READ
+-> IMPLEMENTATION READ
+-> VERIFICATION READ
+```
+
+`exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf`만 `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`다. current 20260829 PDF는 current paired derived publication이지만 repository owner보다 높은 source가 아니다.
+
+## Prospective package lifecycle
+
+`PLAN -> REQUIRED_IMAGE_AND_MATERIAL_PREPARATION -> BLUEPRINT_REVIEW_PUBLICATION -> USER_FINAL_REVIEW_APPROVAL -> IMPLEMENTATION_START`
+
+- `NO_POST_ADOPTION_IMPLEMENTATION_PACKAGE_BEFORE_USER_FINAL_APPROVAL`: profile 채택 뒤 새 package는 exact reviewed revision에 대한 명시적 `USER_FINAL_APPROVAL` 전 시작하지 않는다.
+- `ISSUE267_EXISTING_APPROVED_PACKAGE_GRANDFATHERED_NON_RETROACTIVE`: Issue #267의 기존 Decision/contract/exact scope는 이미 사용자 구현 승인을 받았으므로 새 approval 없이 시작할 수 있다. scope 확대나 successor package는 포함하지 않는다.
+- `LATER_PACKAGES_REQUIRE_BLUEPRINT_REVIEW_AND_USER_FINAL_APPROVAL`: Issue #267 evidence 뒤 첫 balance instrumentation과 이후 package는 새 lifecycle과 명시적 final approval이 필요하다.
+- `EXISTING_MERGED_RUNTIME_FACTS_NO_ROLLBACK`: 이 prospective gate는 기존 merged code/data/Scene/test와 과거 runtime evidence를 취소하지 않는다.
 
 ## 최신 활성 Decision
 
@@ -114,6 +149,7 @@ Google Sheet/Notion locator는 기존 자료의 unique/duplicate/obsolete 분류
 ACTIVE_CONTEXT + current planning JSON의 current next action
 → 최신 사용자 지시·current Gate 안에서 PLAN/BUILD/REVIEW 판정
 → Base·Project main/open PR·repository human-facing/structured owners·Entry Gate 재조회
+→ Issue #267 exact scope이면 기존 승인 readback, 그 외 새 package이면 Blueprint review와 USER_FINAL_REVIEW_APPROVAL readback
 → 현재 승인과 Gate가 허용하는 package만 실행
 → evidence/readback 뒤 다음 current state를 다시 계산
 ```
@@ -130,6 +166,7 @@ ACTIVE_CONTEXT + current planning JSON의 current next action
 - PR #92: 초기 10권 무공 런타임·UI/AI·자동 제품 검증 계보.
 - `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`: `SUPERSEDED_HISTORICAL_EVIDENCE`.
 - `TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01`: `SUPERSEDED_HISTORICAL_EVIDENCE`.
+- `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf`: `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`; current master role 없음.
 - 과거 Base SHA와 당시 workflow/run은 역사 회귀 증거이며 current Base remote main이 아니다.
 
 자동·정적·CI 검증은 로컬 Windows 실제 렌더, 실물 입력, Android 실제 기기, 접근성 사용자, Release 성능, 사람 플레이를 증명하지 않는다. 실행하지 않은 검증은 `NOT_RUN`이다.

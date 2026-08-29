@@ -9,6 +9,24 @@
   "available_responsibility_catalog": ["설정·내러티브", "게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "테크니컬 아트·파이프라인", "아트", "사운드", "QA", "프로덕션·PM", "분석·유저리서치", "통합검수"],
   "documents": [
     {
+      "document_id": "project-ai-production-spec",
+      "title": "PROJECT AI PRODUCTION SPEC — 십보강호",
+      "discipline": "통합검수",
+      "responsibility_coverage": ["프로젝트 전체", "게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA", "프로덕션·PM", "통합검수"],
+      "status": "ACTIVE",
+      "source_path": "../docs/design/PROJECT_AI_PRODUCTION_SPEC.md",
+      "source_format": "markdown",
+      "source_role": "narrative_spec",
+      "publication_policy": "source_only",
+      "output_pdf": null,
+      "output_docx": null,
+      "asset_dir": null,
+      "diagram_policy": "none",
+      "publication_manifest": null,
+      "generator": null,
+      "required_sections": ["CANON SNAPSHOT", "SOURCE REGISTRY", "CURRENT PROJECT STATE", "PLAYER EXPERIENCE CONTRACT", "SYSTEM REGISTRY", "UI/UX AND INPUT CONTRACT", "TECHNICAL ARCHITECTURE", "TEST AND QA CONTRACT", "RISKS AND BLOCKERS", "IMPLEMENTATION QUEUE", "CHANGE LOG"]
+    },
+    {
       "document_id": "project-game-design",
       "title": "십보강호 게임 기획서",
       "discipline": "게임 디자인",
