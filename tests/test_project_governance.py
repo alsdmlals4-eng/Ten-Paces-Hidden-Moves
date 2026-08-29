@@ -32,6 +32,19 @@ class ProjectGovernanceTests(unittest.TestCase):
     def test_current_reference_freshness(self) -> None:
         FRESHNESS.run(ROOT, ROOT / ".github/reference-freshness.json")
 
+    def test_external_reference_freshness_allowlist_is_historical_and_scoped(self) -> None:
+        config = json.loads(
+            (ROOT / ".github/reference-freshness.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(
+            [
+                ".github/reference-freshness.json",
+                "docs/operations/2026-08-28_ADVERSARIAL_RESEARCH_FEASIBILITY_GATE_EXECUTION_REPORT.md",
+            ],
+            config.get("allowed_legacy_globs"),
+            "Only the checker configuration and its preserved 2026-08-28 evidence may retain the retired skill path.",
+        )
+
     def test_current_skill_integrity(self) -> None:
         SKILLS.run(ROOT)
 
