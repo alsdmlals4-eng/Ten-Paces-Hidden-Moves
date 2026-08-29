@@ -233,6 +233,7 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
         })
 
     _award_bundle_momentum(state, logs)
+    _append_public_resolution_history(state, resolved_actions, round_number, bundle_index)
     var result := {
         "state": state,
         "logs": logs,
@@ -865,12 +866,34 @@ func _resolved_record(action: Dictionary, timing: int, outcome: String) -> Dicti
         "card_id": str(definition.get("id", "")),
         "base_card_id": _base_card_id(definition),
         "card_name": str(definition.get("name", "")),
+        "category": str(definition.get("category", "")),
         "outcome": outcome,
         "action_stage": "execution",
         "direction": int(action.get("direction", 0)),
         "target_tile": int(action.get("target_tile", 0)),
         "ai_reason": str(action.get("ai_reason", ""))
     }
+
+
+func _append_public_resolution_history(state: Dictionary, resolved_actions: Array, round_number: int, bundle_index: int) -> void:
+    var history: Array = (state.get("public_resolution_history", []) as Array).duplicate(true)
+    for action_value in resolved_actions:
+        if typeof(action_value) != TYPE_DICTIONARY:
+            continue
+        var action: Dictionary = action_value
+        if str(action.get("action_stage", "execution")) != "execution":
+            continue
+        history.append({
+            "round_number": round_number,
+            "bundle_index": bundle_index,
+            "actor": str(action.get("actor", "")),
+            "card_id": str(action.get("card_id", "")),
+            "category": str(action.get("category", "")),
+            "outcome": str(action.get("outcome", ""))
+        })
+    while history.size() > 6:
+        history.pop_front()
+    state["public_resolution_history"] = history
 
 func _build_presentation_events(state_before: Dictionary, state_after: Dictionary, resolved_actions: Array, logs: Array[String], append_state: bool = true) -> Array:
     var events: Array = []

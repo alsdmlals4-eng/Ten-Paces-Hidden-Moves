@@ -17,6 +17,7 @@ func _run() -> void:
     _expect_damage(hud, "basic_palm", 7, 6)
     _expect_range_miss(hud, "basic_heavy_attack", 7)
     _expect_meditate_preview_matches_resolution(hud)
+    _expect_resolved_public_history(hud)
     if failures.is_empty():
         print("PHASE2_COMBAT_RESOLUTION_VERIFY_OK")
         quit(0)
@@ -79,6 +80,55 @@ func _expect_meditate_preview_matches_resolution(hud: Dictionary) -> void:
         failures.append("Meditation resolution must restore stamina and internal by +1/+1; actual=%d/%d" % [resolved_stamina, resolved_internal])
     if preview_stamina != resolved_stamina or preview_internal != resolved_internal:
         failures.append("Meditation preview and resolution must match; preview=%d/%d resolved=%d/%d" % [preview_stamina, preview_internal, resolved_stamina, resolved_internal])
+
+
+func _expect_resolved_public_history(hud: Dictionary) -> void:
+    var engine := CombatResolutionEngineScript.new()
+    engine.rules["enemy_bundles"] = {}
+    var state := engine.make_initial_state(hud, 4, 6)
+    if state.has("public_resolution_history"):
+        failures.append("No future or locked-bundle history may exist at combat start.")
+
+    var heavy: Dictionary = (engine.cards_by_id.get("basic_heavy_attack", {}) as Dictionary).duplicate(true)
+    var first := engine.resolve_bundle([_placement(heavy)], {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, state)
+    state = first.get("state", {})
+    var first_history: Array = state.get("public_resolution_history", [])
+    if first_history.size() != 1:
+        failures.append("A two-slot action must append exactly one execution-stage public record; actual=%d" % first_history.size())
+    elif typeof(first_history[0]) == TYPE_DICTIONARY:
+        var first_record: Dictionary = first_history[0]
+        _expect_public_history_shape(first_record)
+        if str(first_record.get("card_id", "")) != "basic_heavy_attack" or str(first_record.get("category", "")) != "attack":
+            failures.append("Resolved public history must preserve only the execution card and category.")
+        if first_record.has("target_tile") or first_record.has("direction") or first_record.has("action_stage"):
+            failures.append("Resolved public history must exclude targeting, direction, and preparation metadata.")
+
+    var meditate: Dictionary = (engine.cards_by_id.get("basic_meditate", {}) as Dictionary).duplicate(true)
+    for round_number in range(2, 8):
+        var result := engine.resolve_bundle([_placement(meditate)], {"round_number": round_number, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, state)
+        state = result.get("state", {})
+    var history: Array = state.get("public_resolution_history", [])
+    if history.size() != 6:
+        failures.append("Resolved public history must retain at most six newest records; actual=%d" % history.size())
+    elif typeof(history[0]) == TYPE_DICTIONARY and typeof(history[history.size() - 1]) == TYPE_DICTIONARY:
+        var oldest: Dictionary = history[0]
+        var newest: Dictionary = history[history.size() - 1]
+        if int(oldest.get("round_number", 0)) != 2 or int(newest.get("round_number", 0)) != 7:
+            failures.append("Resolved public history must trim only the oldest records.")
+        for record_value in history:
+            if typeof(record_value) == TYPE_DICTIONARY:
+                _expect_public_history_shape(record_value as Dictionary)
+
+
+func _expect_public_history_shape(record: Dictionary) -> void:
+    var keys: Array[String] = []
+    for key_value in record.keys():
+        keys.append(str(key_value))
+    keys.sort()
+    var expected := ["round_number", "bundle_index", "actor", "card_id", "category", "outcome"]
+    expected.sort()
+    if keys != expected:
+        failures.append("Resolved public history must expose exactly the approved six public fields.")
 
 func _placement(definition: Dictionary) -> Dictionary:
     return {
