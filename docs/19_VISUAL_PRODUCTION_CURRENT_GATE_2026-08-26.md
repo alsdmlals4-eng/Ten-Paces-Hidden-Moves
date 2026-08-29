@@ -49,6 +49,7 @@
 - `slot1_dogyeom`만 전용 Battler를 선택하고, 다른 상대 및 ID 누락 상대는 generic fallback을 유지한다.
 - opponent-specific Dogyeom routing: `AUTOMATED_GODOT_PASS_20260827`.
 - runtime art integration: `AUTOMATED_GODOT_PASS_20260827`.
+- Windows visible local machine runtime smoke: `PASS_20260830_GODOT_4_7_1_START_TO_SLOT1_DOGYEOM_COMBAT_SCREEN`; 이는 Codex가 실제 화면을 시작부터 도겸 전투까지 통과시킨 증거이며, Human usability/player approval는 아니다. 상세는 `docs/operations/2026-08-30_WINDOWS_VISIBLE_GODOT_RUNTIME_SMOKE_EXECUTION_REPORT.md`가 소유한다.
 - Windows visible human usability / Android device: `NOT_RUN`.
 
 ## 3. Current visual language
@@ -175,6 +176,8 @@ next_safe_action: FOLLOW_CURRENT_PHASE1_REVIEW_AND_SCOPED_CONSUMER_POLICY_NO_AUT
 runtime_source_master_promotion: NOT_RUN
 opponent_specific_dogyeom_routing: AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER
 runtime_art_integration: AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER
+windows_visible_local_machine_runtime_smoke: PASS_20260830_GODOT_4_7_1_START_TO_SLOT1_DOGYEOM_COMBAT_SCREEN_NOT_HUMAN_USABILITY
+windows_visible_local_machine_runtime_smoke_report: docs/operations/2026-08-30_WINDOWS_VISIBLE_GODOT_RUNTIME_SMOKE_EXECUTION_REPORT.md
 windows_visible_human_usability: NOT_RUN
 android_actual_device: NOT_RUN
 fifteen_opponent_identifiability: NOT_RUN
