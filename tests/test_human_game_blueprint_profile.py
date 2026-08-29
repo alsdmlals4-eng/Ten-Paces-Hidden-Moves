@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SPEC_PATH = ROOT / "docs/design/PROJECT_AI_PRODUCTION_SPEC.md"
 MAP_PATH = ROOT / "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md"
 REGISTRY_PATH = ROOT / "[기획서]/DESIGN_DOCUMENT_REGISTRY.json"
+GOVERNANCE_PATH = ROOT / ".github/documentation-governance.json"
 
 PROJECT_SOURCE_SHA = "afa152b985975a3f8e6292ca0298d22a95c03872"
 DELIVERY_BASELINE_SHA = "18d647c34ae8544d58d79e870f82dde1ef1d0c55"
@@ -28,6 +29,7 @@ class HumanGameBlueprintProfileContract(unittest.TestCase):
         cls.spec = read(SPEC_PATH)
         cls.doc_map = read(MAP_PATH)
         cls.registry = json.loads(read(REGISTRY_PATH))
+        cls.governance = json.loads(read(GOVERNANCE_PATH))
 
     def test_exactly_two_current_master_roles_and_snapshot_lineage(self) -> None:
         match = re.search(
@@ -128,6 +130,17 @@ class HumanGameBlueprintProfileContract(unittest.TestCase):
         self.assertNotIn(CURRENT_PDF, serialized)
         self.assertNotIn(HISTORICAL_PDF, serialized)
         self.assertNotIn("BLUEPRINT", serialized.upper())
+
+    def test_governance_required_sources_exactly_match_registry_sources(self) -> None:
+        registry_sources = {
+            (REGISTRY_PATH.parent / entry["source_path"])
+            .resolve()
+            .relative_to(ROOT)
+            .as_posix()
+            for entry in self.registry["documents"]
+        }
+        configured_sources = set(self.governance["required_design_sources"])
+        self.assertEqual(configured_sources, registry_sources)
 
 
 if __name__ == "__main__":
