@@ -291,7 +291,7 @@
     "automatic_image_generation_from_gaps": false,
     "bounded_codex_handoff": "CODEX_UI_COPY_CORRECTION_REQUIRED",
     "bounded_codex_handoff_status": "ISSUE_240_MERGED_MAIN_D9AE822",
-    "runtime_validation_for_audit": "STATIC_CONSUMER_READBACK; GODOT_NOT_LAUNCHED"
+    "runtime_validation_for_audit": "STATIC_CONSUMER_READBACK; WINDOWS_VISIBLE_LOCAL_MACHINE_RUNTIME_SMOKE_PASS_20260830_GODOT_4_7_1; HUMAN_DEVICE_EVIDENCE_NOT_RUN"
   },
   "sheet_compatibility": {
     "mode": "MIGRATION_ONLY_UNTIL_REMOVAL",
@@ -312,6 +312,8 @@
     "dogyeom_status_portrait_01_historical_notion_binary_delivery": "PASS_20260826_READBACK",
     "opponent_specific_dogyeom_routing": "AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER",
     "runtime_art_integration": "AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER",
+    "windows_visible_local_machine_runtime_smoke": "PASS_20260830_GODOT_4_7_1_START_TO_SLOT1_DOGYEOM_COMBAT_SCREEN_NOT_HUMAN_USABILITY",
+    "windows_visible_local_machine_runtime_smoke_report": "docs/operations/2026-08-30_WINDOWS_VISIBLE_GODOT_RUNTIME_SMOKE_EXECUTION_REPORT.md",
     "windows_visible_local_usability": "NOT_RUN",
     "android_actual_device": "NOT_RUN",
     "fifteen_opponent_identifiability": "NOT_RUN",

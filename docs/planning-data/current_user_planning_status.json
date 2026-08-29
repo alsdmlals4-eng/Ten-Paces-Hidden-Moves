@@ -125,6 +125,8 @@
     "runtime_source_master_promotion": "NOT_RUN",
     "opponent_specific_dogyeom_routing": "AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER",
     "runtime_art_integration": "AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER",
+    "windows_visible_local_machine_runtime_smoke": "PASS_20260830_GODOT_4_7_1_START_TO_SLOT1_DOGYEOM_COMBAT_SCREEN_NOT_HUMAN_USABILITY",
+    "windows_visible_local_machine_runtime_smoke_report": "docs/operations/2026-08-30_WINDOWS_VISIBLE_GODOT_RUNTIME_SMOKE_EXECUTION_REPORT.md",
     "windows_visible_local_usability": "NOT_RUN",
     "android_physical_device": "NOT_RUN_BLOCKED_UNVERIFIED",
     "fifteen_opponent_identifiability": "NOT_RUN",
