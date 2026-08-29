@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "2d42ffbb2572c66e3eb317e129fbf00036bbcdd7",
+  "decision_ids": [
+    "TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01"
+  ],
+  "approved_paths": [
+    "data/run/vertical_slice_opponent_archetypes.json",
+    "data/run/vertical_slice_opponents.json",
+    "src/combat/combat_ai_planner.gd",
+    "src/combat/combat_resolution_engine.gd",
+    "src/run/vertical_slice_combat_bridge.gd",
+    "src/run/vertical_slice_metrics_combat_resolution_engine.gd",
+    "src/run/vertical_slice_opponent_catalog.gd",
+    "src/run/vertical_slice_opponent_runtime_binding.gd",
+    "src/run/vertical_slice_opponent_runtime_binding.gd.uid",
+    "src/run/vertical_slice_shell.gd"
+  ],
+  "approval_source": "USER_EXPLICIT_ALL_REQUIRED_APPROVALS_AND_AUTO_RECOVERY_2026-08-30",
+  "approval_time": "2026-08-30T00:00:00+09:00",
+  "scope_summary": "Approve only Issue #267 reusable opponent runtime personality binding: five approved archetypes, 15 candidate mappings, deterministic stats, bounded public history, and public-information-only legal AI scheduling."
+}
