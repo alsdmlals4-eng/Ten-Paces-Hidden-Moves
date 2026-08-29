@@ -370,7 +370,7 @@ Google Sheets는 신규 기획 입력 경로로 사용하지 않으며 migration
 - STEP 14 사람 검증은 `NOT_RUN`이며 사용자가 2026-08-29 현재 단계에서 명시적으로 보류했다. 이는 Human PASS, fun/readability PASS 또는 release gate 통과를 뜻하지 않는다.
 - CI 공급망 mutable/stale action-pin 후속은 Issue #140에서 `RESOLVED / CLOSED_COMPLETED`; 현재 미해결 위험이 아니다.
 - `OBSERVATION_ANSWER_LEAK_RISK`는 직접 공개를 바꾸지 않은 채 사람 측정을 기다린다.
-- Issue #258 구현은 PR #261로 병합됐다. Issue #267 구현은 PR #273으로 `main`에 병합됐고 local automated/Godot 및 remote CI readback을 마쳤다. PR #273의 one-time protected-change manifest는 별도 cleanup PR에서 archive·baseline promotion을 완료할 때까지 진행 중이며, 그 외 제품 mutation은 새 명시 요청과 fresh Gate가 필요하다.
+- Issue #258 구현은 PR #261로 병합됐다. Issue #267 구현은 PR #273으로 `main`에 병합됐고 local automated/Godot 및 remote CI readback을 마쳤다. PR #273의 one-time protected-change manifest는 PR #274에서 archive·merged-main baseline promotion·post-merge lifecycle readback까지 완료됐다. 그 외 제품 mutation은 새 명시 요청과 fresh Gate가 필요하다.
 - 공개 거리2, 10개 기초 행동, 행동계획 실행 CTA, 공개 상태 AI·관찰 가드, 첫 패배 동일 시드 1회 재시도 경계는 기존 자동 회귀로 보호된다. Issue #267은 그 위에 candidate personality/stat binding을 추가했을 뿐 Windows visible, Human, 접근성 사용자, Android 실기기, Release 성능 evidence를 대체하지 않는다.
 
 ## 상태 표현 규칙

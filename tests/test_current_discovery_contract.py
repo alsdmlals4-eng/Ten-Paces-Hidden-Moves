@@ -341,6 +341,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("runtime art integration", current_risk)
         self.assertIn("Issue #267", current_risk)
         self.assertIn("PR #273", current_risk)
+        self.assertIn("PR #274", current_risk)
         self.assertIn("remote CI readback", current_risk)
         self.assertNotIn("PR CI/review/merge/readback을 기다린다", current_risk)
         self.assertNotIn("product_implementation_authorized: false", current_risk)
