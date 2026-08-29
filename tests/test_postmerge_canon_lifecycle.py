@@ -74,6 +74,29 @@ class PostMergeCanonLifecycleTests(unittest.TestCase):
     def test_current_repository_passes(self) -> None:
         load_validator().validate(ROOT)
 
+    def test_runtime_work_mode_accepts_current_build_state(self) -> None:
+        validator = load_validator()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); copy_fixture(root)
+            p = root / TARGETS[0]
+            p.write_text(
+                replace_scalar(p.read_text(encoding="utf-8"), "runtime_work_mode", "BUILD"),
+                encoding="utf-8",
+            )
+            validator.validate(root)
+
+    def test_runtime_work_mode_rejects_unknown_state(self) -> None:
+        validator = load_validator()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); copy_fixture(root)
+            p = root / TARGETS[0]
+            p.write_text(
+                replace_scalar(p.read_text(encoding="utf-8"), "runtime_work_mode", "UNBOUNDED"),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(validator.CanonLifecycleError, "runtime work mode"):
+                validator.validate(root)
+
     def test_stale_active_pr_state_is_rejected(self) -> None:
         validator = load_validator()
         with tempfile.TemporaryDirectory() as directory:

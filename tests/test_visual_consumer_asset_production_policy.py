@@ -58,7 +58,10 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
             visual["historical_notion_delivery_evidence"]["project_core_scene_visual_board_delivery"],
         )
         self.assertEqual([], planning["next_visual_batch"])
-        self.assertEqual("REPOSITORY_ONLY_GPT_WORK", planning["next_execution_surface"])
+        self.assertEqual(
+            "GITHUB_ISSUE267_PR_EXACT_HEAD_CI_REVIEW_MERGE_READBACK",
+            planning["next_execution_surface"],
+        )
 
         serialized_queue = json.dumps(visual.get("deferred_queue_after_result_review", []), ensure_ascii=False)
         self.assertNotIn("MARTIAL_TECHNIQUE_ILLUSTRATION_SHEET_01", serialized_queue)

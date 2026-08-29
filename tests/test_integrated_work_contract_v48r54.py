@@ -169,7 +169,10 @@ class IntegratedWorkContractV48R54Tests(unittest.TestCase):
         self.assertEqual("USER_APPROVED_FINAL_LOCKED", visual["next_result"]["final_lock_status"])
         self.assertEqual([], planning["next_visual_batch"])
         self.assertEqual("NONE_CURRENT_BOARD_USER_FINAL_LOCKED_NO_AUTOMATIC_NEXT", planning["next_image_generation"])
-        self.assertEqual("REPOSITORY_ONLY_GPT_WORK", planning["next_execution_surface"])
+        self.assertEqual(
+            "GITHUB_ISSUE267_PR_EXACT_HEAD_CI_REVIEW_MERGE_READBACK",
+            planning["next_execution_surface"],
+        )
         self.assertEqual("docs/planning-data/current_visual_production_handoff_20260826.json", planning["visual_reference_state"])
         serialized_queue = json.dumps(visual.get("deferred_queue_after_result_review", []), ensure_ascii=False)
         self.assertNotIn("MARTIAL_TECHNIQUE_ILLUSTRATION_SHEET_01", serialized_queue)

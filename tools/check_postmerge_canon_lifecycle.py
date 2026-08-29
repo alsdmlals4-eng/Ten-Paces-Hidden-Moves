@@ -33,6 +33,7 @@ AUDIT_CONTRACT_PATH = pathlib.Path("docs/planning-data/approved_20260804_postmer
 
 EXPECTED_RISKS = {"RESOURCE_SATURATION_RISK", "CONDITION_CALIBRATION_RISK", "WRONG_PLAN_RESCUE_RISK", "OBSERVATION_ANSWER_LEAK_RISK", "GRADE_FARMING_RISK", "RUNTIME_AUTHORITY_GAP"}
 OPERATING_KEYS = ("active_planning_work_mode", "active_planning_pr", "active_planning_parent_pr", "active_approval_count", "active_decision_state", "next_package", "next_planning_decision")
+ALLOWED_RUNTIME_WORK_MODES = {"PLAN", "BUILD", "REVIEW"}
 PRODUCT_EVIDENCE_HEAD = "0a8bf577b936ddac5cb7130a0cc58e519ea6eff6"
 PRODUCT_WORKFLOW_RUN = "31074079068"
 PRODUCT_WINDOWS_ARTIFACT = "8956790279"
@@ -74,6 +75,11 @@ def require_tokens(text: str, tokens: list[str], label: str) -> None:
 
 def validate_operating_state(active: str, roadmap: str, current_state: dict[str, Any]) -> None:
     active_state = {key: yaml_scalar(active, key) for key in OPERATING_KEYS}
+    runtime_work_mode = yaml_scalar(active, "runtime_work_mode")
+    require(
+        runtime_work_mode in ALLOWED_RUNTIME_WORK_MODES,
+        "runtime work mode must be PLAN, BUILD, or REVIEW",
+    )
     for key in OPERATING_KEYS:
         require(
             re.search(rf"(?m)^{re.escape(key)}:\s*", roadmap) is None,
@@ -99,7 +105,7 @@ def validate_operating_state(active: str, roadmap: str, current_state: dict[str,
     require_tokens(active, [
         f"product_implementation_merge_commit: {PRODUCT_MERGE_COMMIT}",
         "merged_product_pr: 92",
-        "runtime_work_mode: REVIEW", "runtime_integration_pr: 65",
+        "runtime_integration_pr: 65",
         "runtime_implementation: TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92",
         "latest_combat_planning_runtime: PRODUCT_VALIDATION_AUTOMATED",
         "windows_validation: CI_EXPORT_RUNTIME_PASS_LOCAL_NOT_RUN",
