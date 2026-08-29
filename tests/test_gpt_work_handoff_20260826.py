@@ -48,7 +48,7 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
         self.assertEqual("USER_APPROVED_FINAL_LOCKED", visual["next_result"]["final_lock_status"])
         self.assertEqual([], planning["next_visual_batch"])
         self.assertEqual(
-            "GITHUB_ISSUE267_PR_EXACT_HEAD_CI_REVIEW_MERGE_READBACK",
+            "REPOSITORY_ONLY_GPT_WORK",
             planning["next_execution_surface"],
         )
         self.assertEqual(

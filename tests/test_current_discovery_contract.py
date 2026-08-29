@@ -192,7 +192,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("product_stage: FIRST_FIVE_DUEL_PHASE_I_VI_IMPLEMENTED", current_section)
         self.assertIn("phase_i_vi_implementation: AUTHORIZED_AND_MERGED", current_section)
         self.assertIn(
-            "future_product_mutation_authorized: true_ISSUE267_CODEX_GODOT_HANDOFF_ONLY_ON_FRESH_ISOLATED_BRANCH",
+            "future_product_mutation_authorized: false_NEW_PRODUCT_MUTATION_REQUIRES_FRESH_APPROVED_CONTRACT",
             current_section,
         )
         self.assertIn("human_validation: NOT_RUN", current_section)
@@ -200,15 +200,15 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "user_directed_planning_next_package: ISSUE267_PR_REVIEW_MERGE_READBACK_THEN_BALANCE_INSTRUMENTATION_CONTRACT",
+            "user_directed_planning_next_package: BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_ISSUE267_MERGED_MAIN_READBACK",
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_next_decision: BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_ISSUE267_PR_READBACK",
+            "user_directed_planning_next_decision: BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_ISSUE267_MERGED_MAIN_READBACK",
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_status: OPPONENT_RUNTIME_PERSONALITY_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_AWAITING_ISSUE267_PR_HUMAN_PLAYTEST_DEFERRED",
+            "user_directed_planning_status: OPPONENT_RUNTIME_PERSONALITY_IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK_HUMAN_PLAYTEST_DEFERRED",
             current_section,
         )
         self.assertIn(
@@ -220,7 +220,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_pending_material_decision: BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_RUNTIME_BINDING",
+            "user_directed_planning_pending_material_decision: BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_ISSUE267_MERGED_MAIN_READBACK",
             current_section,
         )
         self.assertIn("user_directed_planning_opponent_runtime_personality_issue: 267", current_section)
@@ -241,7 +241,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_opponent_runtime_personality_status: IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_AWAITING_ISSUE267_PR",
+            "user_directed_planning_opponent_runtime_personality_status: IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK",
             current_section,
         )
         self.assertIn(
@@ -249,7 +249,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "planning_execution_surface: GITHUB_ISSUE267_PR_EXACT_HEAD_CI_REVIEW_MERGE_READBACK",
+            "planning_execution_surface: REPOSITORY_ONLY_GPT_WORK",
             current_section,
         )
         self.assertIn("planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md", current_section)
@@ -340,7 +340,9 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("AUTOMATED_GODOT_PASS_20260826", current_risk)
         self.assertIn("runtime art integration", current_risk)
         self.assertIn("Issue #267", current_risk)
-        self.assertIn("PR CI/review/merge/readback", current_risk)
+        self.assertIn("PR #273", current_risk)
+        self.assertIn("remote CI readback", current_risk)
+        self.assertNotIn("PR CI/review/merge/readback을 기다린다", current_risk)
         self.assertNotIn("product_implementation_authorized: false", current_risk)
         self.assertIn("Issue #140", text)
 
@@ -366,11 +368,11 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "OPPONENT_RUNTIME_PERSONALITY_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_AWAITING_ISSUE267_PR_HUMAN_PLAYTEST_DEFERRED",
+            "OPPONENT_RUNTIME_PERSONALITY_IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK_HUMAN_PLAYTEST_DEFERRED",
             status["user_directed_planning_status"],
         )
         self.assertEqual(
-            "ISSUE267_PR_REVIEW_MERGE_READBACK_THEN_BALANCE_INSTRUMENTATION_CONTRACT",
+            "BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_ISSUE267_MERGED_MAIN_READBACK",
             status["next_phase"],
         )
         self.assertTrue(status["product_implementation_authorized"])
@@ -388,7 +390,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["unified_implementation_issue_status"],
         )
         self.assertEqual(
-            "ISSUE267_CODEX_GODOT_PRODUCT_IMPLEMENTATION_COMPLETED_LOCAL_EVIDENCE_PR_CI_REVIEW_MERGE_READBACK_PENDING_HUMAN_EVIDENCE_DEFERRED_BY_USER_FOR_CURRENT_STAGE",
+            "ISSUE267_CODEX_GODOT_PRODUCT_IMPLEMENTATION_MERGED_MAIN_PR273_POSTMERGE_READBACK_HUMAN_EVIDENCE_DEFERRED_BY_USER_FOR_CURRENT_STAGE",
             status["implementation_handoff_status"],
         )
         self.assertIn("PHASE_2_MERGED_MAIN_PR_261", status["current_work_order"])
@@ -410,7 +412,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["first_five_defeat_retry_scope"],
         )
         self.assertEqual(
-            ["BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_ISSUE267_PR_READBACK"],
+            ["BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_ISSUE267_MERGED_MAIN_READBACK"],
             status["pending_material_decisions"],
         )
         self.assertEqual(
@@ -435,7 +437,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["opponent_runtime_personality_binding_handoff"],
         )
         self.assertEqual(
-            "IMPLEMENTED_LOCAL_AUTOMATED_GODOT_VERIFIED_AWAITING_ISSUE267_PR",
+            "IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK",
             status["opponent_runtime_personality_binding_status"],
         )
         self.assertEqual(
@@ -447,7 +449,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["evidence_ceiling"]["human_fun_readability"],
         )
         self.assertEqual(
-            "IMPLEMENTED_LOCAL_AUTOMATED_GODOT_VERIFIED_15_TO_5_PROFILE_BINDING_DERIVED_STATS_PUBLIC_HISTORY_AND_PLANNER_ISOLATION_PR_READBACK_PENDING",
+            "IMPLEMENTED_MERGED_MAIN_PR273_AUTOMATED_GODOT_REMOTE_CI_VERIFIED_15_TO_5_PROFILE_BINDING_DERIVED_STATS_PUBLIC_HISTORY_AND_PLANNER_ISOLATION_HUMAN_EVIDENCE_PENDING",
             status["evidence_ceiling"]["opponent_behavior_runtime_binding"],
         )
         self.assertIn(
