@@ -7,7 +7,7 @@ baseline_main: 48b20da2948e6be7d3543c43814e865b975436a5
 scope: REMOVE_ONE_TIME_ACTIVE_MANIFEST_ARCHIVE_APPROVAL_AND_PROMOTE_PROTECTED_BASELINE
 source_pr: 273
 source_decision: TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01
-status: LOCAL_VALIDATION_AND_POST_COMMIT_LIFECYCLE_PASSED_SEPARATE_PR_PENDING
+status: LOCAL_VALIDATION_REMOTE_CI_AND_POSTMERGE_LIFECYCLE_PASSED
 ```
 
 ## 작업 전 문제
@@ -26,5 +26,6 @@ PR #273은 병합됐지만, 그 PR의 one-time protected-change approval manifes
 - 정리 기준은 PR #273 merged-main commit `48b20da2948e6be7d3543c43814e865b975436a5`다.
 - local regression: Python `421 PASS`; current discovery, lifecycle unit, Base adapter and visual/current-status consumer tests를 포함한다.
 - static/generated: project operating system, canonical reference freshness, skill package integrity, Base generated-artifact check, Base approved-project-contract check가 모두 `PASS`다.
-- one-time lifecycle validator는 `base...HEAD` commit diff를 검사하므로 archive·baseline 변경을 커밋한 직후 실행했고 `PASS`했다. PR CI와 post-merge readback도 별도 증거로 유지한다.
+- one-time lifecycle validator는 `base...HEAD` commit diff를 검사하므로 archive·baseline 변경을 커밋한 직후 실행했고 `PASS`했다.
+- PR #274는 remote check 25개를 모두 통과했고 merge commit `7f973d949346a53e30e458bc4329bcf3d67052ac`으로 병합됐다. 그 commit에서 active manifest 부재, immutable archive 존재, protected baseline의 `48b20da2948e6be7d3543c43814e865b975436a5` 승격, Python `421 PASS`, 정본/파생/Base contract/lifecycle validator `PASS`를 다시 읽었다.
 - 이 정리는 runtime behavior를 바꾸지 않는다. Windows-visible, Human, accessibility-user, Android device, release performance와 balance simulation은 계속 `NOT_RUN`이다.

@@ -32,4 +32,4 @@ PR #273에서만 유효했던 active manifest를 이 기록으로 보존한다. 
 
 승인은 첫 5전의 reusable opponent runtime personality binding으로 한정됐다: 다섯 archetype, 15 candidate mapping, deterministic derived stat, bounded public resolution history, public-information-only legal AI scheduling. deck, save schema, economy, Route, Scene, asset, Android 및 범위 밖 리팩터링은 승인하지 않았다.
 
-PR #273은 remote CI를 통과한 뒤 `48b20da2948e6be7d3543c43814e865b975436a5`로 병합됐다. 이 cleanup change는 active manifest를 제거하고 `skills/PROJECT_BASE_ADAPTER.json`의 protected baseline을 해당 merged-main commit으로 승격한다. Windows-visible, Human, accessibility-user, Android device, release performance와 balance simulation evidence는 이 archive로 승격되지 않는다.
+PR #273은 remote CI를 통과한 뒤 `48b20da2948e6be7d3543c43814e865b975436a5`로 병합됐다. PR #274의 merge commit `7f973d949346a53e30e458bc4329bcf3d67052ac`은 active manifest를 제거하고 `skills/PROJECT_BASE_ADAPTER.json`의 protected baseline을 해당 merged-main commit으로 승격했으며, post-merge lifecycle readback도 통과했다. Windows-visible, Human, accessibility-user, Android device, release performance와 balance simulation evidence는 이 archive로 승격되지 않는다.
