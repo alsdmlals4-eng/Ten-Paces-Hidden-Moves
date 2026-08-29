@@ -433,7 +433,7 @@ Review와 역할을 섞지 않는다.
 
 남은 P1:
 - 실제 보상 수치·회복량·수련량은 기존 밸런스 owner와 대조 필요.
-- 15명의 무공서 배정은 현재 데이터에 있으나, 성향·기초 행동 선호·스테이터스 runtime binding은 `TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01`의 사용자 승인 아키텍처와 구현 계약 검토 단계다. 밸런스 수치 검증은 그 binding 이후의 별도 단계다.
+- 15명의 무공서 배정과 성향·기초 행동 focus·스테이터스 seed의 runtime binding은 `TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01` 범위에서 구현되고 automated/Godot verifier를 통과했다. 다만 후보 총량·profile weight의 실제 밸런스 수치 검증은 별도 instrumentation contract 전까지 `NOT_RUN`이다.
 - 실제 문장 가독성·시간 예산·캐릭터 호감도는 release-near Vertical Slice 사람 플레이 전에는 PASS 주장 금지.
 
 `MUST_FIX_REMAINING: 0` for this planning-detail scope.

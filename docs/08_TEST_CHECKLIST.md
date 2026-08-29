@@ -32,6 +32,13 @@ app_flow_shell:
   automated_validation: PASS
   godot_validation: PASS
   windows_visible_human_validation: NOT_RUN
+opponent_runtime_personality_binding:
+  implementation_status: IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_AWAITING_ISSUE267_PR
+  automated_validation: PASS
+  godot_validation: PASS
+  windows_visible_human_validation: NOT_RUN
+  human_validation: NOT_RUN
+  android_device_validation: NOT_RUN
 ranked_online:
   scope_status: FUTURE_ONLINE
   implementation_status: BLOCKED_NOT_AUTHORIZED
@@ -157,6 +164,11 @@ human_step14: NOT_RUN
 - [ ] 관찰 공개 뒤 잠긴 묶음을 교체하지 않는다.
 - [ ] AI 가중치·선호 행동·정답 파훼법을 자동 공개하지 않는다.
 - [ ] 고정 bundle fixture는 AI 비활성 테스트 경로에서만 허용한다.
+- [x] 15 candidate→5 reusable profile mapping, deterministic total-preserving stats, invalid binding fail-closed (`verify_vertical_slice_opponent_runtime_binding.gd`, static contract).
+- [x] resolver public history가 execution-only approved six fields만 oldest-to-newest 최대 6개 보존하고, counter profile이 최신 player record 둘만 읽는다 (`verify_phase2_combat_resolution.gd`, AI/binding verifiers).
+- [x] bound AI의 legal focus bonus, range retreat/approach, 3/3/4 non-overlap sequence, unbound default regression, private plan/UI/observation input exclusion.
+- [x] retry rebuild와 second combat engine 사이 candidate/stats/planner trace 격리.
+- [ ] Windows-visible behavior readability, accessibility-user fairness, Android device, Human Player Experience, release performance, balance simulation.
 
 ## 12. 적중·중단·강건
 
@@ -266,6 +278,7 @@ human_step14: NOT_RUN
 - [ ] 성장 비용·도달 경로·임계 효과 재계산.
 - [ ] false-pass 회귀 차단.
 - [ ] PR exact-head에서 Full Validation·PR Validation·Base Adoption을 확인한다.
+- [x] Issue #267 local exact implementation head `e5631e8b0e324020fa82c36aac04882f1b250f5d`에서 static checks, Python 419, affected Godot 19 scripts, headless editor parse를 수행했다. PR CI/review/merge/readback은 아직 수행 전이다.
 
 ## 19A. 초기 10권 자동 제품 검증
 

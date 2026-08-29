@@ -20,7 +20,7 @@ base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
 live_exact_sha_authority: NONE_REFETCH_REQUIRED
 active_project_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
 product_stage: FIRST_FIVE_DUEL_PHASE_I_VI_IMPLEMENTED
-runtime_work_mode: REVIEW
+runtime_work_mode: BUILD
 runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
 active_planning_pr: NONE
@@ -46,11 +46,11 @@ phase_i_vi_implementation: AUTHORIZED_AND_MERGED
 future_product_mutation_authorized: true_ISSUE267_CODEX_GODOT_HANDOFF_ONLY_ON_FRESH_ISOLATED_BRANCH
 next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
 next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
-user_directed_planning_work_mode: BUILD_HANDOFF
+user_directed_planning_work_mode: BUILD_EVIDENCE_RECORDED_AWAITING_PR
 user_directed_planning_decision: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
-user_directed_planning_next_package: CODEX_GODOT_PRODUCT_IMPLEMENTATION_ISSUE267
-user_directed_planning_next_decision: NONE_SCOPE_APPROVED_AWAITING_IMPLEMENTATION_EVIDENCE
-user_directed_planning_status: OPPONENT_RUNTIME_PERSONALITY_IMPLEMENTATION_CONTRACT_USER_APPROVED_CODEX_GODOT_HANDOFF_READY_HUMAN_PLAYTEST_DEFERRED
+user_directed_planning_next_package: ISSUE267_PR_REVIEW_MERGE_READBACK_THEN_BALANCE_INSTRUMENTATION_CONTRACT
+user_directed_planning_next_decision: BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_ISSUE267_PR_READBACK
+user_directed_planning_status: OPPONENT_RUNTIME_PERSONALITY_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_AWAITING_ISSUE267_PR_HUMAN_PLAYTEST_DEFERRED
 user_directed_planning_current_direction: APPROVED_REUSABLE_OPPONENT_ARCHETYPE_BINDING_EXACT_CONTRACT_AND_ISSUE267_CODEX_GODOT_HANDOFF_REPOSITORY_ONLY_HUMAN_PLAYTEST_DEFERRED_FOR_CURRENT_STAGE
 user_directed_planning_latest_decision: TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01
 user_directed_planning_opening_distance: PUBLIC_DISTANCE_2_RUNTIME_BINDING_IMPLEMENTED_MERGED_MAIN_PR_261
@@ -61,13 +61,13 @@ user_directed_planning_opponent_runtime_personality_design_spec: docs/superpower
 user_directed_planning_opponent_runtime_personality_implementation_contract: docs/implementation/2026-08-29_OPPONENT_RUNTIME_PERSONALITY_BINDING_IMPLEMENTATION_CONTRACT.md
 user_directed_planning_opponent_runtime_personality_implementation_plan: docs/superpowers/plans/2026-08-29-opponent-runtime-personality-binding.md
 user_directed_planning_opponent_runtime_personality_handoff: docs/handoffs/2026-08-29_OPPONENT_RUNTIME_PERSONALITY_CODEX_GODOT_IMPLEMENTATION_HANDOFF.md
-user_directed_planning_opponent_runtime_personality_status: USER_APPROVED_CODEX_GODOT_HANDOFF_READY_RUNTIME_NOT_RUN
+user_directed_planning_opponent_runtime_personality_status: IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_AWAITING_ISSUE267_PR
 user_directed_planning_unified_implementation_contract: TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01
 user_directed_planning_unified_implementation_contract_status: IMPLEMENTED_MERGED_MAIN_PR_261
 user_directed_planning_unified_implementation_issue: 258
 user_directed_planning_unified_implementation_issue_status: CLOSED_POSTMERGE_READBACK_20260829
 user_directed_planning_pr_authority: GITHUB_PR_METADATA
-planning_execution_surface: REPOSITORY_ONLY_GPT_WORK
+planning_execution_surface: GITHUB_ISSUE267_PR_EXACT_HEAD_CI_REVIEW_MERGE_READBACK
 planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md
 planning_visual_next: NONE_BOARD_R2_USER_FINAL_LOCKED_NO_AUTOMATIC_NEXT
 planning_visual_generation: SCOPED_SINGLE_RESULT_FINAL_USER_LOCK_R2_COMPLETE
@@ -361,7 +361,7 @@ Google Sheets는 신규 기획 입력 경로로 사용하지 않으며 migration
 - 2026-08-25 승인 Reference Set(`TEN-IMG-001`, `TEN-VIS-CHAR-MASTER-001`, `TEN-VIS-A07-CANDIDATE`, `TEN-VIS-A01`)은 Visual continuation 기준으로 승인됐지만 runtime/shipping asset PASS가 아니다. `OPPONENT_CHARACTER_MASTER_01`은 도겸 정체성 reference로 보존한다. `DOGYEOM_STATUS_PORTRAIT_01`은 `USER_APPROVED_2026_08_26` 상태로 사용자 명시 승인 후 정확히 1장의 새 원화를 생성·승인했고 로컬 정본은 `docs/visual-assets/approved/DOGYEOM_STATUS_PORTRAIT_01_v1.png`이며, Asset Library record의 historical Notion PNG attachment/destination readback은 `PASS_20260826`이다. 이 PNG는 `res://assets/portraits/dogyeom_status_portrait_01_v1.png`로 저장되어 `CombatantStatusPanel`에 구현됐고 상태 초상 routing의 기존 증거는 `AUTOMATED_GODOT_PASS_20260826`이다. `DOGYEOM_COMBAT_BATTLER_01`의 `slot1_dogyeom` 상태 초상·전신 Battler routing 및 runtime art integration은 `AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER`이다. Windows human usability와 Android 실기기 evidence는 계속 `NOT_RUN`이다.
 - `TEN-VIS-A02`는 도겸 상태 초상을 다음으로 두고 나머지 상대 14인의 초상이 미제작이다. `TEN-VIS-A03`은 도겸 Battler source와 `slot1_dogyeom` runtime routing까지 완료됐지만, 나머지 14인 Battler는 미제작·미라우팅이다. `TEN-VIS-A04` Route 8아이콘, `TEN-VIS-A05` Result/Completion 표식, `TEN-VIS-A06` 추가 전투 배경도 실제 consumer 확인 뒤에만 제작한다.
 - 후보 영구 스테이터스 총량 `20/22/24/26/28`, 성급 `3/7/7/7/9`, Route 회복 `최대 체력25% + 기력1 + 내력1`은 `REVERSIBLE_*_SEED`이며 실제 밸런스 PASS가 아니다.
-- 대량 밸런스 시뮬레이션은 아직 실행하지 않았다. 2026-08-29 runtime reality review에서 후보 `signature_manual_id`/`signature_star_seed`만 전투에 소비되고 `behavior_focus`·`basic_action_focus_ids`·`final_stat_total_seed`는 runtime 소비자가 없음을 확인했다. 이 상태에서 후보별 밸런스 결과를 만들면 허수 증거가 되므로, 해당 binding 범위를 먼저 결정한 뒤 deterministic instrumentation을 계약한다.
+- 대량 밸런스 시뮬레이션은 아직 실행하지 않았다. Issue #267 implementation은 candidate `runtime_archetype_id`·`basic_action_focus_ids`·`final_stat_total_seed`를 per-combat runtime binding으로 소비하고 execution-only public history/AI trace까지 automated/Godot으로 검증했다. profile weight와 20/22/24/26/28 total의 실제 난이도·승률은 별도 deterministic instrumentation contract 전까지 `NOT_RUN`이다.
 - 반복 또래 무인과 후보 15명의 정확한 이름·성별·외형·세부 소속·말투는 `REVERSIBLE_CONTENT_DETAIL`이다.
 - aggregate 비전투 예산은 기획상 교정됐지만 실제 15~22분/가독성/몰입 Human 증거는 `NOT_RUN`이다.
 - Android export preset 및 제품 Adapter 구현은 별도의 fresh platform Entry Gate가 허용하고 실제 검증하기 전 완료로 승격하지 않는다.
@@ -370,8 +370,8 @@ Google Sheets는 신규 기획 입력 경로로 사용하지 않으며 migration
 - STEP 14 사람 검증은 `NOT_RUN`이며 사용자가 2026-08-29 현재 단계에서 명시적으로 보류했다. 이는 Human PASS, fun/readability PASS 또는 release gate 통과를 뜻하지 않는다.
 - CI 공급망 mutable/stale action-pin 후속은 Issue #140에서 `RESOLVED / CLOSED_COMPLETED`; 현재 미해결 위험이 아니다.
 - `OBSERVATION_ANSWER_LEAK_RISK`는 직접 공개를 바꾸지 않은 채 사람 측정을 기다린다.
-- `future_product_mutation_authorized: false_NO_NEW_PRODUCT_MUTATION_APPROVED`다. Issue #258은 PR #261으로 종료됐으며, 다른 제품 mutation은 새 명시 요청과 fresh Gate가 필요하다.
-- Issue #258 구현은 PR #261로 병합됐다. 공개 거리2, 10개 기초 행동, 행동계획 실행 CTA, 공개 상태 AI·관찰 가드, 첫 패배 동일 시드 1회 재시도 경계의 post-merge 자동 회귀가 2026-08-28 통과했다. Windows visible, Human, 접근성 사용자, Android 실기기, Release 성능은 `NOT_RUN`이다. 2026-08-29 user direction은 Human evidence를 현재 단계에서 보류하고, 다음 안전 작업을 후보 성향·스탯 seed의 실제 runtime binding 범위 결정과 그 뒤의 balance instrumentation contract로 바꿨다.
+- Issue #258 구현은 PR #261로 병합됐다. Issue #267은 fresh isolated branch에서 구현·local automated/Godot evidence를 마쳤고 PR CI/review/merge/readback을 기다린다. 이 외 제품 mutation은 새 명시 요청과 fresh Gate가 필요하다.
+- 공개 거리2, 10개 기초 행동, 행동계획 실행 CTA, 공개 상태 AI·관찰 가드, 첫 패배 동일 시드 1회 재시도 경계는 기존 자동 회귀로 보호된다. Issue #267은 그 위에 candidate personality/stat binding을 추가했을 뿐 Windows visible, Human, 접근성 사용자, Android 실기기, Release 성능 evidence를 대체하지 않는다.
 
 ## 상태 표현 규칙
 
