@@ -53,7 +53,8 @@
     "docs/08_TEST_CHECKLIST.md",
     "docs/09_COMBAT_SYSTEM_ARCHITECTURE.md",
     "docs/10_COMBAT_PRESENTATION_PLAN.md",
-    "docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md"
+    "docs/11_BASE_ADOPTION_AND_LEARNING_LOG.md",
+    "docs/design/PROJECT_AI_PRODUCTION_SPEC.md"
   ],
   "forbidden_active_name_patterns": ["(?i)(^|[_-])(v[0-9]+|final|latest|copy|new)([_-]|\\.)"],
   "design_document_registry": "[기획서]/DESIGN_DOCUMENT_REGISTRY.json",
