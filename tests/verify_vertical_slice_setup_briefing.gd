@@ -2,6 +2,7 @@ extends SceneTree
 
 const STARTER_CATALOG_PATH := "res://src/run/vertical_slice_starter_manual_catalog.gd"
 const SHELL_SCENE_PATH := "res://scenes/run/vertical_slice_shell.tscn"
+const BindingScript := preload("res://src/run/vertical_slice_opponent_runtime_binding.gd")
 
 const EXPECTED_STARTER_IDS := [
     "mount_hua_plum_blossom_sword",
@@ -105,6 +106,7 @@ func _run() -> void:
     _expect_true(briefing_text.contains(str(opponent.get("readable_habit", ""))), "Briefing must expose the readable habit as a hypothesis input.")
     _expect_true(briefing_text.contains(str(opponent.get("ambiguity_or_counterexample", ""))), "Briefing must expose the counterexample/ambiguity instead of an answer key.")
     _expect_false(briefing_text.contains(str(opponent.get("candidate_id", ""))), "Briefing must not expose internal candidate IDs.")
+    _expect_false(briefing_text.contains(str(opponent.get("runtime_archetype_id", ""))), "Briefing must not expose internal runtime archetype IDs.")
     _expect_false(briefing_text.contains(str(opponent.get("behavior_focus", ""))), "Briefing must not expose internal behavior-focus keys.")
     _expect_true(briefing_text.contains("현재 계획"), "Briefing must explicitly mark the current hidden plan as unknown rather than reveal it.")
 
@@ -116,6 +118,29 @@ func _run() -> void:
     _expect_eq(loadout_snapshot.get("enemy_candidate_id", ""), str(opponent.get("candidate_id", "")), "Combat bridge must bind the locked opponent candidate.")
     _expect_eq(loadout_snapshot.get("enemy_loadout", []), [str(opponent.get("signature_manual_id", ""))], "Combat bridge must use the candidate signature manual rather than the legacy PoC enemy loadout.")
     _expect_eq(int((loadout_snapshot.get("enemy_mastery_by_manual", {}) as Dictionary).get(str(opponent.get("signature_manual_id", "")), 0)), int(opponent.get("signature_star_seed", 0)), "Combat bridge must use the candidate-approved signature mastery seed.")
+    var binding = BindingScript.new()
+    var expected_binding: Dictionary = binding.build(opponent)
+    _expect_true(bool(expected_binding.get("valid", false)), "The locked opponent must produce a valid per-combat runtime binding.")
+    var bound_runtime: Dictionary = loadout_snapshot.get("enemy_runtime_binding", {})
+    _expect_eq(str(bound_runtime.get("archetype_id", "")), str(expected_binding.get("archetype_id", "")), "Bridge snapshot must retain the locked runtime archetype ID.")
+    _expect_eq(bound_runtime.get("stats", {}), expected_binding.get("stats", {}), "Bridge snapshot must retain only the derived enemy stats for test readback.")
+    var bridge = shell.combat_host.get_child(0)
+    var combat_state: Dictionary = bridge.get("combat_state")
+    _expect_eq((combat_state.get("enemy", {}) as Dictionary).get("stats", {}), expected_binding.get("stats", {}), "Initial enemy state must use the locked candidate's derived stats.")
+    var snapshot_before_invalid: Dictionary = bridge.call("get_vertical_slice_loadout_snapshot")
+    var state_before_invalid: Dictionary = combat_state.duplicate(true)
+    var invalid_result = bridge.call(
+        "configure_vertical_slice_loadouts",
+        selected_before_advance,
+        shell.run_state.get_player_mastery_by_manual(),
+        [str(opponent.get("signature_manual_id", ""))],
+        {str(opponent.get("signature_manual_id", "")): int(opponent.get("signature_star_seed", 0))},
+        str(opponent.get("candidate_id", "")),
+        {"valid": false}
+    )
+    _expect_false(bool(invalid_result), "Invalid runtime binding must fail before bridge state mutates.")
+    _expect_eq(bridge.call("get_vertical_slice_loadout_snapshot"), snapshot_before_invalid, "Invalid runtime binding must leave the bridge snapshot unchanged.")
+    _expect_eq(bridge.get("combat_state"), state_before_invalid, "Invalid runtime binding must leave the combat state unchanged.")
 
     shell.queue_free()
     _finish()

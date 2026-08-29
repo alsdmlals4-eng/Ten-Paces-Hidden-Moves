@@ -27,6 +27,7 @@
       "signature_manual_id": "mount_hua_plum_blossom_sword",
       "available_manual_card_ids": ["mount_hua_plum_blossom_sword_star3"],
       "basic_action_focus_ids": ["basic_quick_attack", "basic_guard", "basic_move"],
+      "runtime_archetype_id": "initiative_exchange",
       "behavior_focus": "direct_proactive_with_defensive_counterexample",
       "final_stat_total_seed": 20,
       "signature_star_seed": 3
@@ -44,6 +45,7 @@
       "signature_manual_id": "beggars_dragon_subduing_palm",
       "available_manual_card_ids": ["beggars_dragon_subduing_palm_star3"],
       "basic_action_focus_ids": ["basic_quick_attack", "basic_guard", "basic_stance"],
+      "runtime_archetype_id": "stabilize_then_pressure",
       "behavior_focus": "post_attack_stabilize_then_pressure_when_behind",
       "final_stat_total_seed": 20,
       "signature_star_seed": 3
@@ -61,6 +63,7 @@
       "signature_manual_id": "nangong_boundless_sky_sword",
       "available_manual_card_ids": ["nangong_boundless_sky_sword_star3"],
       "basic_action_focus_ids": ["basic_move", "basic_quick_attack", "basic_evade"],
+      "runtime_archetype_id": "initiative_exchange",
       "behavior_focus": "meet_forward_movement_or_break_waiting_distance",
       "final_stat_total_seed": 20,
       "signature_star_seed": 3
@@ -78,6 +81,7 @@
       "signature_manual_id": "shaolin_arhat_vajra_art",
       "available_manual_card_ids": ["shaolin_arhat_vajra_art_star3", "shaolin_arhat_vajra_art_star7"],
       "basic_action_focus_ids": ["basic_guard", "basic_stance", "basic_heavy_attack"],
+      "runtime_archetype_id": "stabilize_then_pressure",
       "behavior_focus": "defense_resource_then_heavy_telegraph",
       "final_stat_total_seed": 22,
       "signature_star_seed": 7
@@ -95,6 +99,7 @@
       "signature_manual_id": "hebei_peng_five_tigers_saber",
       "available_manual_card_ids": ["hebei_peng_five_tigers_saber_star3", "hebei_peng_five_tigers_saber_star7"],
       "basic_action_focus_ids": ["basic_guard", "basic_stance", "basic_heavy_attack"],
+      "runtime_archetype_id": "stabilize_then_pressure",
       "behavior_focus": "endure_long_telegraph_then_pressure_short_repetition",
       "final_stat_total_seed": 22,
       "signature_star_seed": 7
@@ -112,6 +117,7 @@
       "signature_manual_id": "mount_hua_purple_mist_art",
       "available_manual_card_ids": ["mount_hua_purple_mist_art_star3", "mount_hua_purple_mist_art_star7"],
       "basic_action_focus_ids": ["basic_guard", "basic_meditate", "basic_quick_attack"],
+      "runtime_archetype_id": "stabilize_then_pressure",
       "behavior_focus": "preserve_defense_resource_then_turn_aggressive",
       "final_stat_total_seed": 22,
       "signature_star_seed": 7
@@ -128,7 +134,8 @@
       "review_tags": ["range", "position"],
       "signature_manual_id": "beggars_dragon_subduing_palm",
       "available_manual_card_ids": ["beggars_dragon_subduing_palm_star3", "beggars_dragon_subduing_palm_star7"],
-      "basic_action_focus_ids": ["basic_move", "basic_footwork"],
+      "basic_action_focus_ids": ["basic_move", "basic_footwork", "basic_palm"],
+      "runtime_archetype_id": "range_control",
       "behavior_focus": "maintain_signature_range_with_close_counterexample",
       "final_stat_total_seed": 24,
       "signature_star_seed": 7
@@ -146,6 +153,7 @@
       "signature_manual_id": "yang_family_spear",
       "available_manual_card_ids": ["yang_family_spear_star3", "yang_family_spear_star7"],
       "basic_action_focus_ids": ["basic_move", "basic_footwork", "basic_guard"],
+      "runtime_archetype_id": "range_control",
       "behavior_focus": "spear_tip_range_with_trade_counterexample",
       "final_stat_total_seed": 24,
       "signature_star_seed": 7
@@ -163,6 +171,7 @@
       "signature_manual_id": "sichuan_tang_hidden_weapons",
       "available_manual_card_ids": ["sichuan_tang_hidden_weapons_star3"],
       "basic_action_focus_ids": ["basic_move", "basic_footwork", "basic_evade"],
+      "runtime_archetype_id": "range_control",
       "behavior_focus": "leave_attack_range_then_reverse_enter_on_chase_expectation",
       "final_stat_total_seed": 24,
       "signature_star_seed": 4
@@ -180,6 +189,7 @@
       "signature_manual_id": "wudang_taiji_sword",
       "available_manual_card_ids": ["wudang_taiji_sword_star3", "wudang_taiji_sword_star7"],
       "basic_action_focus_ids": ["basic_evade", "basic_stance", "basic_guard"],
+      "runtime_archetype_id": "public_history_counter",
       "behavior_focus": "adapt_to_resolved_repetition_only",
       "final_stat_total_seed": 26,
       "signature_star_seed": 7
@@ -197,6 +207,7 @@
       "signature_manual_id": "xiaoyao_lingbo_footwork",
       "available_manual_card_ids": ["xiaoyao_lingbo_footwork_star3", "xiaoyao_lingbo_footwork_star7"],
       "basic_action_focus_ids": ["basic_evade", "basic_footwork", "basic_quick_attack"],
+      "runtime_archetype_id": "public_history_counter",
       "behavior_focus": "second_mover_counter_then_pressure_excessive_waiting",
       "final_stat_total_seed": 26,
       "signature_star_seed": 7
@@ -214,6 +225,7 @@
       "signature_manual_id": "nangong_boundless_sky_sword",
       "available_manual_card_ids": ["nangong_boundless_sky_sword_star3", "nangong_boundless_sky_sword_star7"],
       "basic_action_focus_ids": ["basic_stance", "basic_move", "basic_heavy_attack"],
+      "runtime_archetype_id": "public_history_counter",
       "behavior_focus": "repeat_visible_bait_then_immediate_attack_counterexample",
       "final_stat_total_seed": 26,
       "signature_star_seed": 7
@@ -231,6 +243,7 @@
       "signature_manual_id": "mount_hua_plum_blossom_sword",
       "available_manual_card_ids": ["mount_hua_plum_blossom_sword_star3", "mount_hua_plum_blossom_sword_star7"],
       "basic_action_focus_ids": ["basic_move", "basic_stance", "basic_evade"],
+      "runtime_archetype_id": "sequence_pressure",
       "behavior_focus": "linked_pressure_then_conservative_followup_after_bad_first_action",
       "final_stat_total_seed": 28,
       "signature_star_seed": 9
@@ -248,6 +261,7 @@
       "signature_manual_id": "hebei_peng_five_tigers_saber",
       "available_manual_card_ids": ["hebei_peng_five_tigers_saber_star3", "hebei_peng_five_tigers_saber_star7"],
       "basic_action_focus_ids": ["basic_guard", "basic_stance", "basic_quick_attack"],
+      "runtime_archetype_id": "sequence_pressure",
       "behavior_focus": "rhythm_change_with_safe_single_action_counterexample",
       "final_stat_total_seed": 28,
       "signature_star_seed": 9
@@ -265,6 +279,7 @@
       "signature_manual_id": "yang_family_spear",
       "available_manual_card_ids": ["yang_family_spear_star3", "yang_family_spear_star7"],
       "basic_action_focus_ids": ["basic_move", "basic_footwork", "basic_guard"],
+      "runtime_archetype_id": "sequence_pressure",
       "behavior_focus": "movement_attack_sequence_then_safe_conversion_when_blocked",
       "final_stat_total_seed": 28,
       "signature_star_seed": 9

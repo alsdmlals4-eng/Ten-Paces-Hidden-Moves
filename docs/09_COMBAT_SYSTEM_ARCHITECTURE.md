@@ -23,8 +23,10 @@
 
 - `data/cards/basic_cards.json`, `ultimate_cards.json`: 현재 구형 런타임 행동.
 - `data/combat/*.json`: 전장·HUD·판정·AI preview 계약.
+- `data/run/vertical_slice_opponents.json`, `vertical_slice_opponent_archetypes.json`: 첫 5전 candidate identity/focus/seed와 reusable runtime personality profile.
 - `src/combat/combat_resolution_engine.gd`: 상태·비용·합·피해·중단·기세·이벤트.
-- `src/combat/combat_ai_planner.gd`: `CombatAiPlanner` 공개 snapshot·후보·seed·trace.
+- `src/combat/combat_ai_planner.gd`: `CombatAiPlanner` 공개 snapshot·후보·seed·trace와 optional per-combat binding.
+- `src/run/vertical_slice_opponent_runtime_binding.gd`, `vertical_slice_combat_bridge.gd`, `vertical_slice_metrics_combat_resolution_engine.gd`: candidate 검증/derived stats/bridge atomicity/one-engine planner ownership.
 - `src/combat/combat_board_preview.gd`: 씬·입력·순차 표현·`restart_combat()`.
 - `src/ui/`: 슬롯·HUD·로그·포커스.
 - `tests/`: 현재 구현 회귀.
@@ -46,7 +48,7 @@ planning budget/manual/duel/map/run-state JSON
 
 `RunState`는 회차 생존과 진행을 소유한다: run ID/seed, 현재·방문 노드, 이월 체력, 금전, 무공별 성급, 해금 기술, `[의료]`, 현재 전투 ID, 같은 전투 재도전 횟수. `[영구재화]`는 `RunState` 밖의 permanent profile이 소유하지만, 첫 5전 Slice에는 노출·결제·저장을 하지 않는다. 첫 5전 패배 scope의 현행 권위는 `TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01`이다.
 
-`CombatState`는 한 전투의 판정만 소유한다: round/bundle, 위치, 체력, 기력, 내력, 기세, 누적 방어도, 회피 스택, 필중 스택, 강건 스택, 임시 상태, 확정 행동·타격 진행·효과 소비 기록.
+`CombatState`는 한 전투의 판정만 소유한다: round/bundle, 위치, 체력, 기력, 내력, 기세, 누적 방어도, 회피 스택, 필중 스택, 강건 스택, 임시 상태, 확정 행동·타격 진행·효과 소비 기록, 그리고 해결 뒤에만 생기는 bounded `public_resolution_history`다. 후자는 정확히 `round_number`, `bundle_index`, `actor`, `card_id`, `category`, `outcome`만 저장하며 최대 6개다.
 
 ```text
 RunState + BattleDefinition
@@ -61,7 +63,7 @@ RunState + BattleDefinition
 
 ## 5. 공개 상태 라이벌 후보 AI 경계
 
-현재 시그니처 `CombatAiPlanner.build_bundle_actions(...)`와 결정적 seed 원칙을 유지한다. 입력 whitelist만 사용하고 미확정 계획을 금지한다. 적 데이터의 public_tells·phase_change·candidate_actions를 runtime profile로 변환한다.
+현재 시그니처 `CombatAiPlanner.build_bundle_actions(...)`와 결정적 seed 원칙을 유지한다. 입력 whitelist만 사용하고 미확정 계획을 금지한다. 첫 5전 engine은 `VerticalSliceOpponentRuntimeBinding`의 validated deep-copy를 받아 candidate-specific code 없이 다섯 reusable profile 중 하나를 planner instance에 설정한다.
 
 현행 운영 토큰: `enemy_plan_source=public_state_ai`. `enemy_bundles` fixture는 `ai_enabled == false`인 명시적 테스트 경로에서만 허용한다.
 
@@ -69,7 +71,7 @@ RunState + BattleDefinition
 
 무공 행동 adapter는 `category`, `resolution_phase`, `targeting_mode`, `attack.damage_model/raw_powers/range`, `movement.timing/mode/max_tiles`를 필수 입력으로 받는다. 중앙 `price_id × quantity` ledger를 다시 계산해 위조된 tick을 거부한다.
 
-AI profile은 숫자 score window·weights·조건 modifier·정확히 3수인 bundle template·timing/targeting·fallback을 소유한다. 현행 한 행동 반환 구현은 새 adapter에서 template 전체를 action 배열로 변환해야 하며 미확정 플레이어 계획을 읽지 않는다.
+AI profile은 숫자 score window·weights·조건 modifier·timing/targeting·fallback을 소유한다. bound sequence profile은 첫 legal action의 실제 slot span을 예약한 뒤 최대 한 개의 non-duplicate legal action을 같은 3/3/4 bundle에만 더한다. profile이 `public_history_counter`일 때만 newest two resolved player records를 받으며, unbound planner는 기존 global single-action behavior를 유지한다.
 
 ## 6. 묶음 판정과 반환 구조
 

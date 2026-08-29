@@ -10,6 +10,7 @@
 > 기존 승인 행동 유효 비용·슬롯 오버레이: `docs/decisions/2026-08-04_EXISTING_APPROVED_ACTIONS_REPRICE_DECISION.md` (`TEN-DEC-20260804-EXISTING-ACTIONS-REPRICE-01`)  
 > 현재 전투 UI 정보 위계 오버레이: `docs/decisions/2026-08-11_COMBAT_UI_INFORMATION_HIERARCHY_DECISION.md` (`TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01`)  
 > 시작 거리 런타임 매핑: `docs/decisions/2026-08-28_OPENING_DISTANCE_RUNTIME_MAPPING_DECISION.md` (`TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01`)
+> 첫 5전 상대 runtime binding: `docs/decisions/2026-08-29_OPPONENT_RUNTIME_PERSONALITY_BINDING_DECISION.md` (`TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01`)
 > 구형 사거리 가격(대체됨): `docs/decisions/2026-08-02_RANGE_PRICE_BANDS_DECISION.md`  
 > 시작 빌드·성장 요구치: `docs/decisions/2026-08-02_STARTING_STAT_TOTAL20_MANUAL_BONUS_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_PRIMARY_STAT4_DECISION.md`, `docs/decisions/2026-08-02_STARTING_TECHNIQUE_SOFT_GUARANTEE_DECISION.md`, `docs/decisions/2026-08-02_EVEN_STAR_STAT_ESCALATION_DECISION.md`, `docs/decisions/2026-08-03_STAR7_TECHNIQUE_PRIMARY_STAT8_DECISION.md`  
 > 핵심 스테이터스 정책: `docs/decisions/2026-08-03_UNCAPPED_CORE_STATS_DECISION.md`  
@@ -313,6 +314,11 @@ A도 체력 피해 0이고 양측 공격이 유지됨
 - 관찰 공개 뒤 잠긴 묶음을 교체하지 않는다.
 - 테스트용 고정 bundle fixture는 `enemy_bundles`를 사용하더라도 `ai_enabled == false`인 명시적 테스트 경로에서만 허용한다.
 - AI 가중치·선호 행동·정답 파훼법은 플레이어에게 자동 공개하지 않는다.
+- 첫 5전 locked candidate는 reusable `runtime_archetype_id`와 legal 기초 행동 focus 순서, `final_stat_total_seed`를 하나의 전투별 binding으로 변환한다. 다섯 성향은 후보별 코드 분기가 아닌 `data/run/vertical_slice_opponent_archetypes.json`의 data profile이 소유한다.
+- binding은 새 combat engine에만 deep-copy되어 candidate ID·derived five stats·planner profile을 설정한다. 거절된 binding은 bridge snapshot이나 이미 시작한 combat state를 변경하지 않으며, 다음 combat/retry는 새 engine으로 다시 만든다.
+- stat 배분은 canonical five-stat order에서 `floor(total × weight / 20)` 뒤 largest remainder와 canonical order tie-break를 사용한다. 모든 결과는 positive이며 locked total과 같아야 한다.
+- resolver는 묶음 해결 뒤 `[실행]` record만 `round_number`, `bundle_index`, `actor`, `card_id`, `category`, `outcome`으로 투영해 oldest-to-newest 최대 6개를 `public_resolution_history`에 남긴다. 전조·target·direction·UI·미확정 계획은 남기지 않는다.
+- bound profile만 public distance 이동, legal focus bonus `+1.20 / +0.60 / +0.30`, 그리고 sequence의 최대 두 행동을 사용한다. 두 번째 행동은 첫 행동의 실제 slot span 뒤 같은 3/3/4 묶음에 들어갈 때만 배치한다. unbound consumer는 기존 global rival profile과 single-action 정책을 유지한다.
 
 ## 14. 전투 종료와 재시작 — 결전 다시 시작
 

@@ -28,11 +28,11 @@ class PcFirstVerticalSliceImplementationGateTests(unittest.TestCase):
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "CODEX_GODOT_IMPLEMENTATION_ISSUE267_THEN_BALANCE_INSTRUMENTATION_CONTRACT",
+            "ISSUE267_PR_REVIEW_MERGE_READBACK_THEN_BALANCE_INSTRUMENTATION_CONTRACT",
             status["next_phase"],
         )
         self.assertEqual(
-            "CODEX_GODOT_PRODUCT_IMPLEMENTATION_ISSUE267",
+            "BALANCE_INSTRUMENTATION_CONTRACT_AFTER_ISSUE267_PR_READBACK",
             status["next_product_execution_surface"],
         )
         self.assertTrue(status["vertical_slice_pc_implementation_authorized"])

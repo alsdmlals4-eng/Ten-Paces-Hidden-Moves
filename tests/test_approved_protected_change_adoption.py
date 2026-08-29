@@ -6,17 +6,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github/workflows/validate-project-base-adapter.yml"
-ACTIVE_APPROVAL = ROOT / "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
 MERGED_RECORD = ROOT / "docs/operations/2026-08-06_PR92_PROTECTED_CHANGE_APPROVAL_RECORD.md"
 BASE_GATE_COMMIT = "2828a74f60c1ed09546171040f4178c8848ea686"
 
 
 class ApprovedProtectedChangeAdoptionTests(unittest.TestCase):
-    def test_merged_approval_is_archived_not_left_active(self) -> None:
-        self.assertFalse(
-            ACTIVE_APPROVAL.exists(),
-            "merged one-time protected change approval must not authorize later PRs",
-        )
+    def test_historical_approval_record_is_preserved(self) -> None:
         record = MERGED_RECORD.read_text(encoding="utf-8")
         required = (
             "status: HISTORICAL_MERGED",

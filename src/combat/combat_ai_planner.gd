@@ -6,6 +6,7 @@ const RIVAL_PATH := "res://data/combat/combat_rival_tendency_poc.json"
 
 var _rival_data: Dictionary = {}
 var _last_trace: Dictionary = {}
+var _runtime_binding: Dictionary = {}
 
 func _init() -> void:
     _rival_data = _load_json(RIVAL_PATH)
@@ -14,6 +15,24 @@ func get_last_trace() -> Dictionary:
     return _last_trace.duplicate(true)
 
 func build_bundle_actions(state: Dictionary, bundle_index: int, cards_by_id: Dictionary) -> Array:
+    if _runtime_binding.is_empty():
+        return _build_unbound_bundle_actions(state, bundle_index, cards_by_id)
+    return _build_bound_bundle_actions(state, bundle_index, cards_by_id)
+
+func set_runtime_binding(archetype_id: String, ai_profile: Dictionary, basic_action_focus_ids: Array[String]) -> bool:
+    if not _is_valid_runtime_profile(archetype_id, ai_profile, basic_action_focus_ids):
+        return false
+    _runtime_binding = {
+        "archetype_id": archetype_id,
+        "ai_profile": ai_profile.duplicate(true),
+        "basic_action_focus_ids": basic_action_focus_ids.duplicate()
+    }
+    return true
+
+func clear_runtime_binding() -> void:
+    _runtime_binding = {}
+
+func _build_unbound_bundle_actions(state: Dictionary, bundle_index: int, cards_by_id: Dictionary) -> Array:
     var snapshot := _build_public_snapshot(state, bundle_index)
     var profile := _active_profile()
     var candidates := _build_candidates(snapshot, profile, cards_by_id)
@@ -65,6 +84,160 @@ func build_bundle_actions(state: Dictionary, bundle_index: int, cards_by_id: Dic
     }
     return [_build_action(selected, snapshot)]
 
+func _build_bound_bundle_actions(state: Dictionary, bundle_index: int, cards_by_id: Dictionary) -> Array:
+    var snapshot := _build_public_snapshot(state, bundle_index)
+    var profile := _active_profile()
+    var public_history := _newest_player_public_history(state, profile)
+    var candidates := _build_candidates(snapshot, profile, cards_by_id, public_history)
+    _apply_focus_bonuses(candidates, _runtime_binding.get("basic_action_focus_ids", []))
+    _apply_public_history_counter(candidates, profile, public_history)
+    if candidates.is_empty():
+        _last_trace = _bound_trace(snapshot, profile, [], {}, "", _scoped_seed(snapshot), [], public_history.size())
+        return []
+
+    candidates.sort_custom(_candidate_before)
+    var top_score := float((candidates[0] as Dictionary).get("score", 0.0))
+    var score_window := float(_rival_data.get("score_window", 2.0))
+    var max_candidates := maxi(1, int(_rival_data.get("max_candidates", 3)))
+    var rational_candidates: Array = []
+    for value in candidates:
+        var candidate: Dictionary = value
+        if float(candidate.get("score", 0.0)) < top_score - score_window:
+            continue
+        rational_candidates.append(candidate)
+        if rational_candidates.size() >= max_candidates:
+            break
+
+    var selection_candidates := _selection_candidates(rational_candidates, cards_by_id)
+    var seed := _scoped_seed(snapshot)
+    var selected_index := absi(seed) % selection_candidates.size()
+    var selected: Dictionary = selection_candidates[selected_index]
+    var candidate_ids: Array[String] = []
+    var candidate_scores: Dictionary = {}
+    for value in rational_candidates:
+        var candidate: Dictionary = value
+        var card_id := str(candidate.get("card_id", ""))
+        candidate_ids.append(card_id)
+        candidate_scores[card_id] = float(candidate.get("score", 0.0))
+
+    var scheduled := _schedule_bound_actions(selected, rational_candidates, snapshot, profile, cards_by_id)
+    var scheduled_card_ids: Array[String] = []
+    for action_value in scheduled:
+        if typeof(action_value) == TYPE_DICTIONARY:
+            scheduled_card_ids.append(str((action_value as Dictionary).get("card_id", "")))
+    _last_trace = _bound_trace(
+        snapshot,
+        profile,
+        candidate_ids,
+        candidate_scores,
+        str(selected.get("card_id", "")),
+        seed,
+        scheduled_card_ids,
+        public_history.size(),
+        selected.get("reason_codes", [])
+    )
+    return scheduled
+
+func _bound_trace(snapshot: Dictionary, profile: Dictionary, candidate_ids: Array, candidate_scores: Dictionary, selected_card_id: String, seed: int, scheduled_card_ids: Array, public_history_count: int, reason_codes: Array = []) -> Dictionary:
+    return {
+        "public_snapshot": snapshot.duplicate(true),
+        "rival_id": str(profile.get("id", "")),
+        "candidate_ids": candidate_ids.duplicate(true),
+        "candidate_scores": candidate_scores.duplicate(true),
+        "selected_card_id": selected_card_id,
+        "seed": seed,
+        "reason_codes": reason_codes.duplicate(true),
+        "runtime_archetype_id": str(_runtime_binding.get("archetype_id", "")),
+        "public_history_count": public_history_count,
+        "scheduled_card_ids": scheduled_card_ids.duplicate(true)
+    }
+
+func _schedule_bound_actions(selected: Dictionary, rational_candidates: Array, snapshot: Dictionary, profile: Dictionary, cards_by_id: Dictionary) -> Array:
+    var result: Array = []
+    var bounds := _bundle_bounds(int(snapshot.get("bundle_index", 1)))
+    var first_definition := _candidate_definition(selected, cards_by_id)
+    var first_span := maxi(1, int(first_definition.get("action_slots", 1)))
+    if bounds.x + first_span - 1 > bounds.y:
+        return result
+    result.append(_build_action(selected, snapshot, first_definition, profile.get("movement_policy", {}), bounds.x))
+    if int(profile.get("max_actions_per_bundle", 1)) < 2:
+        return result
+    var next_anchor := bounds.x + first_span
+    for value in rational_candidates:
+        var candidate: Dictionary = value
+        if str(candidate.get("card_id", "")) == str(selected.get("card_id", "")):
+            continue
+        var definition := _candidate_definition(candidate, cards_by_id)
+        var span := maxi(1, int(definition.get("action_slots", 1)))
+        if next_anchor + span - 1 > bounds.y:
+            continue
+        result.append(_build_action(candidate, snapshot, definition, profile.get("movement_policy", {}), next_anchor))
+        break
+    return result
+
+func _candidate_definition(candidate: Dictionary, cards_by_id: Dictionary) -> Dictionary:
+    var definition = candidate.get("definition", {})
+    if typeof(definition) == TYPE_DICTIONARY and not (definition as Dictionary).is_empty():
+        return (definition as Dictionary).duplicate(true)
+    var card_id := str(candidate.get("card_id", ""))
+    var card = cards_by_id.get(card_id, {})
+    return (card as Dictionary).duplicate(true) if typeof(card) == TYPE_DICTIONARY else {}
+
+func _apply_focus_bonuses(candidates: Array, focus_value) -> void:
+    if typeof(focus_value) != TYPE_ARRAY:
+        return
+    var bonuses := [1.20, 0.60, 0.30]
+    for index in range(mini((focus_value as Array).size(), bonuses.size())):
+        var focus_id := str((focus_value as Array)[index])
+        for value in candidates:
+            var candidate: Dictionary = value
+            if str(candidate.get("card_id", "")) == focus_id:
+                candidate["score"] = float(candidate.get("score", 0.0)) + float(bonuses[index])
+                break
+
+func _newest_player_public_history(state: Dictionary, profile: Dictionary) -> Array:
+    var policy: Dictionary = profile.get("history_policy", {})
+    if str(policy.get("mode", "none")) != "last_two_player_resolved_cards":
+        return []
+    var records: Array = []
+    var history_value = state.get("public_resolution_history", [])
+    if typeof(history_value) != TYPE_ARRAY:
+        return records
+    for value in history_value:
+        if typeof(value) != TYPE_DICTIONARY:
+            continue
+        var record: Dictionary = value
+        if str(record.get("actor", "")) != "player":
+            continue
+        records.append({
+            "round_number": int(record.get("round_number", 0)),
+            "bundle_index": int(record.get("bundle_index", 0)),
+            "actor": "player",
+            "card_id": str(record.get("card_id", "")),
+            "category": str(record.get("category", "")),
+            "outcome": str(record.get("outcome", ""))
+        })
+    if records.size() <= 2:
+        return records
+    return records.slice(records.size() - 2, records.size(), 1, true)
+
+func _apply_public_history_counter(candidates: Array, profile: Dictionary, public_history: Array) -> void:
+    if str(profile.get("id", "")) != "public_history_counter" or public_history.size() != 2:
+        return
+    for record_value in public_history:
+        var record: Dictionary = record_value
+        if str(record.get("category", "")) != "attack":
+            return
+    var weights: Dictionary = profile.get("score_weights", {})
+    var response_bonus := float(weights.get("response_low_health", 0.0))
+    for value in candidates:
+        var candidate: Dictionary = value
+        if str(candidate.get("card_id", "")) in ["basic_guard", "basic_evade"]:
+            candidate["score"] = float(candidate.get("score", 0.0)) + response_bonus
+            var reasons: Array = candidate.get("reason_codes", [])
+            reasons.append("public_history_counter")
+            candidate["reason_codes"] = reasons
+
 func _selection_candidates(rational_candidates: Array, cards_by_id: Dictionary) -> Array:
     var legacy_candidates: Array = []
     var martial_candidates: Array = []
@@ -108,9 +281,9 @@ func _build_public_snapshot(state: Dictionary, bundle_index: int) -> Dictionary:
         "ai_decision_seed": int(state.get("ai_decision_seed", 0))
     }
 
-func _build_candidates(snapshot: Dictionary, profile: Dictionary, cards_by_id: Dictionary) -> Array:
+func _build_candidates(snapshot: Dictionary, profile: Dictionary, cards_by_id: Dictionary, _public_history: Array = []) -> Array:
     var candidates: Array = []
-    var weights: Dictionary = profile.get("weights", {})
+    var weights: Dictionary = profile.get("score_weights", profile.get("weights", {}))
     var distance := int(snapshot.get("distance", 0))
     var slots := int(snapshot.get("bundle_slots", 1))
     var stamina := int(snapshot.get("enemy_stamina", 0))
@@ -246,15 +419,19 @@ func _candidate_before(a: Dictionary, b: Dictionary) -> bool:
         return a_score > b_score
     return str(a.get("card_id", "")) < str(b.get("card_id", ""))
 
-func _build_action(candidate: Dictionary, snapshot: Dictionary) -> Dictionary:
+func _build_action(candidate: Dictionary, snapshot: Dictionary, supplied_definition: Dictionary = {}, movement_policy: Dictionary = {}, timing: int = -1) -> Dictionary:
     var card_id := str(candidate.get("card_id", ""))
-    var definition: Dictionary = candidate.get("definition", {})
+    var definition := supplied_definition.duplicate(true)
+    if definition.is_empty():
+        var candidate_definition = candidate.get("definition", {})
+        definition = (candidate_definition as Dictionary).duplicate(true) if typeof(candidate_definition) == TYPE_DICTIONARY else {}
     var enemy_tile := int(snapshot.get("enemy_tile", 6))
     var player_tile := int(snapshot.get("player_tile", 4))
-    var direction := signi(player_tile - enemy_tile)
+    var direction := _movement_direction(snapshot, movement_policy)
     var targeting_mode := str(definition.get("targeting_mode", ""))
     var is_move := card_id in ["basic_move", "basic_footwork"] or targeting_mode == "move_tile"
-    var step := 2 if card_id == "basic_footwork" and int(snapshot.get("distance", 0)) >= 3 else 1
+    var move_range := maxi(1, int(definition.get("move_range", 1)))
+    var step := mini(move_range, 2) if card_id == "basic_footwork" and int(snapshot.get("distance", 0)) >= 3 else 1
     var reason_codes := _join_reason_codes(candidate.get("reason_codes", []))
     var reason := "public_distance_%d" % int(snapshot.get("distance", 0))
     if not reason_codes.is_empty():
@@ -262,14 +439,31 @@ func _build_action(candidate: Dictionary, snapshot: Dictionary) -> Dictionary:
     if targeting_mode.is_empty():
         targeting_mode = "move_tile" if is_move else ("none" if card_id in ["basic_meditate", "basic_guard", "basic_evade"] else "attack_direction")
     return {
-        "timing": int(snapshot.get("bundle_start", 1)),
+        "timing": int(snapshot.get("bundle_start", 1)) if timing < 0 else timing,
         "card_id": card_id,
         "targeting_mode": targeting_mode,
         "target_tile": clampi(enemy_tile + direction * step, 1, 10) if is_move else 0,
-        "direction": direction,
-        "ai_seed": int(_last_trace.get("seed", snapshot.get("ai_decision_seed", 0))),
+        "direction": direction if is_move else signi(player_tile - enemy_tile),
+        "ai_seed": _scoped_seed(snapshot),
         "ai_reason": reason
     }
+
+func _movement_direction(snapshot: Dictionary, movement_policy: Dictionary) -> int:
+    var enemy_tile := int(snapshot.get("enemy_tile", 6))
+    var player_tile := int(snapshot.get("player_tile", 4))
+    var approach_direction := signi(player_tile - enemy_tile)
+    var mode := str(movement_policy.get("mode", "approach"))
+    var distance := int(snapshot.get("distance", absi(player_tile - enemy_tile)))
+    if mode == "preferred_distance":
+        var preferred := maxi(0, int(movement_policy.get("distance", 3)))
+        if distance < preferred:
+            return -approach_direction
+        if distance > preferred:
+            return approach_direction
+        return 0
+    if mode == "hold_or_approach":
+        return approach_direction if distance > 3 else 0
+    return approach_direction
 
 func _join_reason_codes(value) -> String:
     var codes := PackedStringArray()
@@ -278,7 +472,35 @@ func _join_reason_codes(value) -> String:
             codes.append(str(entry))
     return "+".join(codes)
 
+func _is_valid_runtime_profile(archetype_id: String, ai_profile: Dictionary, basic_action_focus_ids: Array[String]) -> bool:
+    if archetype_id.is_empty() or str(ai_profile.get("id", "")) != archetype_id:
+        return false
+    var score_weights = ai_profile.get("score_weights", {})
+    var movement_policy = ai_profile.get("movement_policy", {})
+    var history_policy = ai_profile.get("history_policy", {})
+    if typeof(score_weights) != TYPE_DICTIONARY or typeof(movement_policy) != TYPE_DICTIONARY or typeof(history_policy) != TYPE_DICTIONARY:
+        return false
+    for score_id in ["approach", "quick_pressure", "heavy_prepare", "response_low_health", "recover_low_resource", "ultimate_ready"]:
+        if not (score_weights as Dictionary).has(score_id):
+            return false
+    if int(ai_profile.get("max_actions_per_bundle", 0)) < 1 or int(ai_profile.get("max_actions_per_bundle", 0)) > 2:
+        return false
+    if str((movement_policy as Dictionary).get("mode", "")) not in ["approach", "preferred_distance", "hold_or_approach"]:
+        return false
+    if str((history_policy as Dictionary).get("mode", "")) not in ["none", "last_two_player_resolved_cards", "own_planned_cards_only"]:
+        return false
+    if basic_action_focus_ids.size() > 3:
+        return false
+    var seen: Dictionary = {}
+    for card_id in basic_action_focus_ids:
+        if card_id.is_empty() or seen.has(card_id):
+            return false
+        seen[card_id] = true
+    return true
+
 func _active_profile() -> Dictionary:
+    if not _runtime_binding.is_empty():
+        return (_runtime_binding.get("ai_profile", {}) as Dictionary).duplicate(true)
     var active_id := str(_rival_data.get("active_rival_id", ""))
     var profiles: Array = _rival_data.get("profiles", [])
     for value in profiles:
