@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "stat_order": ["external", "constitution", "agility", "internal_power", "insight"],
+  "stat_weight_total": 20,
+  "profiles": [
+    {
+      "id": "initiative_exchange",
+      "score_weights": {
+        "approach": 1.0,
+        "quick_pressure": 1.5,
+        "heavy_prepare": 0.4,
+        "response_low_health": 1.0,
+        "recover_low_resource": 0.6,
+        "ultimate_ready": 1.0
+      },
+      "max_actions_per_bundle": 1,
+      "movement_policy": {"mode": "approach"},
+      "history_policy": {"mode": "none"},
+      "stat_weights": {
+        "external": 5,
+        "constitution": 4,
+        "agility": 5,
+        "internal_power": 3,
+        "insight": 3
+      }
+    },
+    {
+      "id": "stabilize_then_pressure",
+      "score_weights": {
+        "approach": 0.4,
+        "quick_pressure": 0.5,
+        "heavy_prepare": 1.2,
+        "response_low_health": 2.0,
+        "recover_low_resource": 1.8,
+        "ultimate_ready": 1.2
+      },
+      "max_actions_per_bundle": 1,
+      "movement_policy": {"mode": "approach"},
+      "history_policy": {"mode": "none"},
+      "stat_weights": {
+        "external": 4,
+        "constitution": 6,
+        "agility": 3,
+        "internal_power": 4,
+        "insight": 3
+      }
+    },
+    {
+      "id": "range_control",
+      "score_weights": {
+        "approach": 0.8,
+        "quick_pressure": 0.4,
+        "heavy_prepare": 1.0,
+        "response_low_health": 1.0,
+        "recover_low_resource": 1.0,
+        "ultimate_ready": 1.0
+      },
+      "max_actions_per_bundle": 1,
+      "movement_policy": {"mode": "preferred_distance", "distance": 3},
+      "history_policy": {"mode": "none"},
+      "stat_weights": {
+        "external": 3,
+        "constitution": 3,
+        "agility": 6,
+        "internal_power": 5,
+        "insight": 3
+      }
+    },
+    {
+      "id": "public_history_counter",
+      "score_weights": {
+        "approach": 0.4,
+        "quick_pressure": 0.6,
+        "heavy_prepare": 0.5,
+        "response_low_health": 1.7,
+        "recover_low_resource": 1.2,
+        "ultimate_ready": 1.0
+      },
+      "max_actions_per_bundle": 1,
+      "movement_policy": {"mode": "hold_or_approach"},
+      "history_policy": {"mode": "last_two_player_resolved_cards"},
+      "stat_weights": {
+        "external": 3,
+        "constitution": 3,
+        "agility": 4,
+        "internal_power": 4,
+        "insight": 6
+      }
+    },
+    {
+      "id": "sequence_pressure",
+      "score_weights": {
+        "approach": 1.0,
+        "quick_pressure": 1.1,
+        "heavy_prepare": 1.0,
+        "response_low_health": 0.6,
+        "recover_low_resource": 0.8,
+        "ultimate_ready": 1.4
+      },
+      "max_actions_per_bundle": 2,
+      "movement_policy": {"mode": "approach"},
+      "history_policy": {"mode": "own_planned_cards_only"},
+      "stat_weights": {
+        "external": 5,
+        "constitution": 3,
+        "agility": 4,
+        "internal_power": 5,
+        "insight": 3
+      }
+    }
+  ]
+}

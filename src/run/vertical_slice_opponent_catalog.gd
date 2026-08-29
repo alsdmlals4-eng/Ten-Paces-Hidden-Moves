@@ -2,6 +2,7 @@ class_name VerticalSliceOpponentCatalog
 extends RefCounted
 
 const DATA_PATH := "res://data/run/vertical_slice_opponents.json"
+const RuntimeBindingScript := preload("res://src/run/vertical_slice_opponent_runtime_binding.gd")
 
 var load_errors := PackedStringArray()
 
@@ -89,6 +90,12 @@ func _load(data_path: String) -> void:
         load_errors.append("candidates must be an Array")
         return
 
+    var runtime_binding = RuntimeBindingScript.new()
+    if not runtime_binding.is_valid():
+        for binding_error in runtime_binding.get_load_errors():
+            load_errors.append("runtime binding data: %s" % str(binding_error))
+        return
+
     for value in raw_candidates:
         if typeof(value) != TYPE_DICTIONARY:
             load_errors.append("candidate entry must be a Dictionary")
@@ -104,6 +111,12 @@ func _load(data_path: String) -> void:
             continue
         if duel_slot < 1 or duel_slot > 5:
             load_errors.append("invalid duel_slot for %s: %d" % [candidate_id, duel_slot])
+            continue
+        if str(candidate.get("runtime_archetype_id", "")).is_empty():
+            load_errors.append("missing runtime_archetype_id for %s" % candidate_id)
+            continue
+        if not bool(runtime_binding.build(candidate).get("valid", false)):
+            load_errors.append("invalid runtime binding candidate: %s" % candidate_id)
             continue
 
         _candidates.append(candidate)

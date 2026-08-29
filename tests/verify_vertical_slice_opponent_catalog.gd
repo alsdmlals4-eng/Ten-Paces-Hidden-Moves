@@ -7,6 +7,23 @@ const SHARED_POOL_CONTRACT_PATH := "res://docs/planning-data/approved_20260824_s
 const MANUAL_REGISTRY_SCRIPT := preload("res://src/combat/martial_manual_registry.gd")
 const RUN_STATE_SCRIPT := preload("res://src/run/vertical_slice_run_state.gd")
 const BASIC_CARDS_PATH := "res://data/cards/basic_cards.json"
+const EXPECTED_RUNTIME_ARCHETYPES := {
+    "slot1_yeongyo": "initiative_exchange",
+    "slot1_dogyeom": "stabilize_then_pressure",
+    "slot1_chaeryeong": "initiative_exchange",
+    "slot2_mukjin": "stabilize_then_pressure",
+    "slot2_seokmu": "stabilize_then_pressure",
+    "slot2_danso": "stabilize_then_pressure",
+    "slot3_seolha": "range_control",
+    "slot3_uram": "range_control",
+    "slot3_biyeon": "range_control",
+    "slot4_cheongheo": "public_history_counter",
+    "slot4_damwol": "public_history_counter",
+    "slot4_jinryeo": "public_history_counter",
+    "slot5_jeogu": "sequence_pressure",
+    "slot5_pungmok": "sequence_pressure",
+    "slot5_rajin": "sequence_pressure"
+}
 
 var failures: Array[String] = []
 
@@ -57,6 +74,7 @@ func _verify_catalog_shape(catalog) -> void:
         "signature_manual_id",
         "available_manual_card_ids",
         "basic_action_focus_ids",
+        "runtime_archetype_id",
         "behavior_focus",
         "final_stat_total_seed",
         "signature_star_seed"
@@ -89,7 +107,8 @@ func _verify_catalog_shape(catalog) -> void:
         manual_ids[str(candidate.get("signature_manual_id", ""))] = true
         _expect_true((candidate.get("review_tags", []) as Array).size() >= 1, "Candidate must have at least one implementation review tag: %s" % candidate_id)
         _expect_true((candidate.get("available_manual_card_ids", []) as Array).size() >= 1, "Candidate must expose at least one existing manual card: %s" % candidate_id)
-        _expect_true((candidate.get("basic_action_focus_ids", []) as Array).size() >= 1, "Candidate must reference at least one existing basic action: %s" % candidate_id)
+        _expect_eq(str(candidate.get("runtime_archetype_id", "")), str(EXPECTED_RUNTIME_ARCHETYPES.get(candidate_id, "")), "Candidate must use the approved reusable runtime archetype: %s" % candidate_id)
+        _expect_true((candidate.get("basic_action_focus_ids", []) as Array).size() == 3, "Candidate must expose three ordered basic-action focuses: %s" % candidate_id)
 
     _expect_eq(manual_ids.size(), 10, "The 15-candidate slice must reuse all ten existing manual IDs at least once.")
 
