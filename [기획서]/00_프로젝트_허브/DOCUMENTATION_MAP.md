@@ -29,7 +29,7 @@
 | 프로젝트의 과거 Base release·payload/evidence/finalization pin | `docs/BASE_RULES_VERSION.md`, `skills/PROJECT_BASE_ADAPTER.json` — compatibility/adoption evidence |
 | 프로젝트 고유 Skill | `skills/SKILL_REGISTRY.json`, `skills/*/SKILL.md` |
 | 게임 정체성·핵심 재미 | `docs/01_GAME_DESIGN.md` |
-| 통합 기획·AI 실행 명세·Notion 이관표 | `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` (사람용 전달 PDF: `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf`) |
+| 통합 기획·AI 실행 명세·Notion 이관표 | `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` (사람용 전달 PDF: `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf`; source SHA `afa152b`) |
 | 세계·플레이어 역할·강호 비무행·5전 감정곡선·비전투 App Flow | `docs/12_VERTICAL_SLICE_JIANGHU_JOURNEY.md`, `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01` |
 | 전투 규칙·판정·자원·AI·관찰 | `docs/02_COMBAT_RULES.md` |
 | 전투 UI 정보 위계·거리·카드·관찰 표시 | `docs/decisions/2026-08-11_COMBAT_UI_INFORMATION_HIERARCHY_DECISION.md`, `docs/07_COMBAT_UI_SPEC.md` |

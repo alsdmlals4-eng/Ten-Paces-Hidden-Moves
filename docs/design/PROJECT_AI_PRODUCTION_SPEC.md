@@ -1,5 +1,23 @@
 # PROJECT AI PRODUCTION SPEC — 십보강호
 
+```yaml
+artifact_role: AI_MASTER_GDD
+pair_id: ten-paces-hidden-moves-20260829-afa152b
+project_repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves
+project_source_branch: origin/main
+project_sha: afa152b985975a3f8e6292ca0298d22a95c03872
+base_repository: alsdmlals4-eng/Base
+base_sha: 2e6fa14a93ffba177b22fd7ff21e2f654ea15bb0
+generated_at_utc: 2026-08-29T00:59:49Z
+document_version: 1.1.0
+scope: vertical-slice production snapshot; documentation and delivery only
+canonical_path: docs/design/PROJECT_AI_PRODUCTION_SPEC.md
+human_pdf_path: exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf
+source_priority: latest user direction > repository owners/Decisions > actual code/data/scene/tests > derived views > historical migration inputs > example PDF
+overall_status: DOCUMENTED_CURRENT_SNAPSHOT / PRODUCT_RUNTIME_PARTIAL
+known_stale_points: opponent runtime personality is user-approved but not implemented; human, Android, accessibility, audio and release evidence are NOT_RUN
+```
+
 > 목적: 이 문서는 GPT/Codex가 후속 기획·구현·검증을 안전하게 이어가기 위한 **검색 가능한 통합 생산 명세**다. 실제 코드·Scene·Resource·JSON·테스트 및 각 분야의 책임 원본을 대체하지 않는다. 새 규칙을 승인하거나 기존 owner를 하나로 병합하지 않으며, 충돌과 미검증은 그대로 표시한다.
 
 ## 00. CANON SNAPSHOT
@@ -8,10 +26,10 @@
 |---|---|
 | 프로젝트 | Ten Paces: Hidden Moves / 십보강호 |
 | source branch | `origin/main` |
-| 기준 commit | `768cc67e369ae992d9f92ef51024c677fa217cb6` (Issue #264 문서 개정 시작 기준) |
-| 기준일 | 2026-08-28 (KST) |
-| 기준 PR | #261 `feat: reconcile Phase 2 combat canon`, #263 `docs: require adversarial research feasibility gate`, squash-merged |
-| 현재 작업 성격 | Issue #264 문서 정본화·REVIEW. 제품 구현 계약을 새로 승인하지 않음. |
+| 기준 commit | `afa152b985975a3f8e6292ca0298d22a95c03872` (`origin/main`, 2026-08-29 최신 변경 기준) |
+| 기준일 | 2026-08-29 (KST) |
+| 기준 PR / Issue | #261·#263 historical product/governance evidence, #268 opponent runtime personality binding Decision, Issue #267 isolated product handoff approved but not started, Issue #269 this delivery |
+| 현재 작업 성격 | Issue #269 문서·PDF 정본화 + stale operating-baseline reconciliation. 제품 구현·런타임 실행은 하지 않음. |
 | 플랫폼 | Windows + Android, 공유 코어/플랫폼 adapter (`TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`) |
 | 엔진 | Godot 4.7, `scenes/run/vertical_slice_shell.tscn` |
 | 문서 상태 표기 | `DOCUMENTED / CONFIRMED / IMPLEMENTED / AUTOMATED_TEST_PASS / RUNTIME_VERIFIED / UX_VERIFIED / RELEASE_READY` |
@@ -25,7 +43,7 @@
 | 구분 | 판정 | 근거 |
 |---|---|---|
 | core combat / Phase 2 | `IMPLEMENTED + AUTOMATED_TEST_PASS` | #261과 `src/combat/`, `src/ui/`, `tests/` |
-| Godot headless runtime | `RUNTIME_VERIFIED`는 이 문서 생성 시 재검증 대상으로 둔다 | 실제 창·사람 입력의 대체 아님 |
+| Godot headless runtime | historical automated evidence exists; this document change did not rerun Godot | actual-window/person-input의 대체 아님 |
 | Human usability / player fun | `NOT_RUN` | 사람이 플레이한 관찰·설문·영상 없음 |
 | Android | `NOT_RUN` | export, 설치, touch, back, safe area, lifecycle 증거 없음 |
 | Visual runtime | `PARTIAL` | 일부 배틀러·초상·카드 atlas·VFX consumer 있음; 전체 캐릭터/표현 검증 없음 |
@@ -36,14 +54,16 @@
 
 | source | identity / readback | 역할 | 상태 |
 |---|---|---|---|
-| Repository | `origin/main@768cc67` | 코드·데이터·Scene·test runtime truth | CURRENT |
-| GitHub PR #261 / #263 | merged, checks success | Phase 2 정본 reconciliation / every-task adversarial-research gate | CURRENT |
+| Repository | `origin/main@afa152b` | 코드·데이터·Scene·test runtime truth | CURRENT |
+| GitHub PR #261 / #263 | merged, checks success | Phase 2 정본 reconciliation / every-task adversarial-research gate | HISTORICAL_AUTOMATED_EVIDENCE |
+| GitHub PR #268 / Issue #267 | latest merged Decision / isolated implementation handoff | opponent runtime personality binding contract; implementation not started | CURRENT_DECISION / RUNTIME_NOT_RUN |
 | GitHub PR #200, #199 | open draft | 미병합 후보, READ_ONLY | CURRENT_METADATA |
 | `AGENTS.md` | repo root | 작업 경계·코어 불변식 | CURRENT |
-| `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` | #261 병합·repository-only current-state sync readback | mutable context | CURRENT_AFTER_SYNC |
-| `docs/planning-data/current_user_planning_status.json` | #261 병합·human-test next readback | structured mutable state | CURRENT_AFTER_SYNC |
-| Notion Project Home / Flow | 2026-08-28 10:18Z readback | historical migration input; Phase 2 pre-merge content migrated below | HISTORICAL_INPUT_ONLY |
-| Notion Visual Bible / Asset Library | 2026-08-28 00:17Z readback | historical visual/asset migration input | HISTORICAL_INPUT_ONLY |
+| `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` | 2026-08-29 approved personality-binding handoff state | mutable context | CURRENT |
+| `docs/planning-data/current_user_planning_status.json` | current structured mutable state | structured mutable state | CURRENT |
+| `docs/decisions/2026-08-29_OPPONENT_RUNTIME_PERSONALITY_BINDING_DECISION.md` | five archetypes, public boundary, candidate binding acceptance criteria | current Decision | USER_APPROVED / IMPLEMENTATION_NOT_STARTED |
+| `docs/operations/2026-08-29_POSTMERGE_CANON_AND_RUNTIME_REALITY_REVIEW.md` | catalog-vs-runtime gap; feasibility limits | current adversarial review | CURRENT_REVIEW |
+| Notion / Google Sheet | repository-only migration inputs | no current authority | HISTORICAL_INPUT_ONLY |
 | `docs/01_GAME_DESIGN.md` 등 분야별 owner | repository | game rules, content, architecture, test owners | CURRENT/PARTIAL (각 항목 참조) |
 | `docs/decisions/*2026-08-28*` | repository | opening distance, retry, CTA, Phase 2 decisions | CURRENT |
 | `docs/visual-assets/approved/...` | repository | approved source-set locator | CURRENT |
@@ -52,6 +72,10 @@
 ### 01.1 Notion migration gap
 
 Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상태는 Notion Home/Flow의 10:18Z 읽기 시점보다 늦으므로, Phase 2를 “handoff issued / merge pending”으로 표기한 부분은 이 문서의 기준 SHA와 충돌했다. 그 고유 Flow/Visual/asset 상태는 이 문서 §03·§12와 repository owners로 흡수했다. 이어서 Active Context·current planning JSON·Documentation Map·entry router를 repository-only current state로 동기화하고 readback했다. `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`에 따라 Notion 신규 출력은 만들지 않았으며 앞으로 current authority로 사용하지 않는다.
+
+### 01.2 CURRENT_SOURCE_RELEVANCE_CHECK — 2026-08-29
+
+**APPLICABLE.** 이 GDD는 UI 입력·접근성 및 비교 게임의 설계 해석을 포함하므로, 최신 1차 자료를 다시 확인했다. [Godot GUI navigation](https://docs.godotengine.org/en/stable/tutorials/ui/gui_navigation.html)은 명시적 focus 순서와 초기 focus가 필요하다는 플랫폼 제약을, [Android accessibility guidance](https://developer.android.com/guide/topics/ui/accessibility/views/apps-views)은 충분한 터치 영역과 고유한 조작 설명의 원칙을 뒷받침한다. [Into the Breach](https://subsetgames.com/itb.html), [YOMI Hustle](https://ivysly.itch.io/your-only-move-is-hustle), [Shogun Showdown](https://store.steampowered.com/app/2084000/Shogun_Showdown/), [Hellish Quart](https://www.hellishquart.com/)의 공식 페이지는 각각 읽을 수 있는 적 의도, 계획 후 관찰, 위치·타이밍, 결투 거리라는 **비교 출발점**만 제공한다. 이 자료는 우리 게임의 fun·밸런스·런타임 구현을 증명하지 않는다. 외부 source freshness는 terminology/constraint에만 쓰고, 제품 현재 truth는 위의 repository register가 소유한다.
 
 ## 02. CURRENT PROJECT STATE
 
@@ -73,6 +97,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 | AST-VIS-001 | WARM DUSK v2 | CURRENT | planning anchor only; runtime asset 승인 아님 |
 | DEC-OPS-001 | repository-only canonical workspace | CURRENT | user confirmed; Notion is historical migration input only |
 | DEC-STALE-001 | Phase 2 merge 전 Active Context/JSON/Notion 상태 | RESOLVED | repository owner sync·governance regression·readback 완료 |
+| DEC-OPPONENT-001 | 15 candidate의 runtime personality binding | CURRENT_DECISION | USER_APPROVED / IMPLEMENTATION_NOT_STARTED / RUNTIME_NOT_RUN |
 | DEC-HIST-001 | `행동계획 잠금`, 4/7 슬롯 등 과거 표기 | SUPERSEDED | current CTA/3-3-4 계약으로 대체 |
 | QA-HUMAN-001 | 사람 플레이·가독성·감정 evidence | UNKNOWN_UNVERIFIED | NOT_RUN |
 
@@ -93,6 +118,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 | DEC-VIS-001 | WARM DUSK v2 planning visual direction | visual decision + Visual Bible | future visual briefs, not runtime proof |
 | DEC-PLATFORM-001 | Windows/Android dual target, one core with adapters | AGENTS platform decision | input/layout/test matrix |
 | DEC-OPS-001 | repository-only human-facing and structured canon | `2026-08-28_REPOSITORY-ONLY-CANONICAL-WORKSPACE_DECISION.md` | no future Notion write/readback |
+| DEC-OPPONENT-001 | candidate별 archetype·기본 행동 선호·결정적 stat allocation을 runtime에 bind하되, AI의 public-only 관찰 경계를 보존 | `TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01` | Issue #267에만 격리 구현 승인; 현재 data/runtime 변경 없음 |
 
 ## 04. DESIGN PILLARS
 
@@ -150,6 +176,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 | SYS-PLAN-001 | 행동 계획 | 3수 제한 안의 예측·배치 | `action_placement_controller.gd` | IMPLEMENTED |
 | SYS-RESOLVE-001 | 동시 해결 | 내 예측의 판결과 관찰 가능한 인과 | `combat_resolution_engine.gd` | IMPLEMENTED |
 | SYS-AI-001 | 공개 상태 AI | 공정하게 읽히는 상대 적응 | `combat_ai_planner.gd` | IMPLEMENTED |
+| SYS-OPPONENT-001 | 상대 runtime personality binding | 상대의 공개 경향을 관찰하고 파훼하는 기대 | Decision + Issue #267 handoff | USER_APPROVED / NOT_IMPLEMENTED |
 | SYS-REVIEW-001 | 복기 | 실패가 다음 행동으로 이어짐 | `combat_review_panel.gd` | IMPLEMENTED |
 | SYS-RETRY-001 | 동일 seed 재도전 | 학습을 반복 기회로 전환 | `vertical_slice_run_state.gd` | IMPLEMENTED |
 | SYS-TAG-001 | 행동 태그와 인과 | 전조·관찰·강건·합을 같은 언어로 읽음 | `02_COMBAT_RULES.md`, action data, resolver events | CONFIRMED / IMPLEMENTED |
@@ -259,6 +286,23 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 
 **COMPLETE WHEN.** planner snapshot에서 제외 필드가 없고, enemy plan은 bundle resolve 전에 lock되며, 관찰은 action type의 해결 뒤 노출된다.
 
+### SYS-OPPONENT-001 — 상대 runtime personality binding
+
+**PLAYER QUESTION.** `Briefing과 해결 이력에서 본 이 상대의 습관을 다음 3슬롯 가설에 어떻게 반영할까?`
+
+**CURRENT FACT.** `data/run/vertical_slice_opponents.json`에는 15 후보의 이름·signature manual/card·focus ID·행동 설명·`final_stat_total_seed`가 있다. 그러나 이들은 현재 catalog/Briefing 및 관련 fixture의 설명 값이다. `CombatAiPlanner`는 data-driven weight boundary를 가지지만, 현재 대련별 `runtime_archetype_id` 선택과 후보별 최종 stat allocation을 combat runtime으로 연결하지 않는다. 그러므로 **후보 개성은 현재 runtime에서 구현됐다고 말할 수 없다.**
+
+| state | owned by | player-visible meaning | evidence boundary |
+|---|---|---|---|
+| candidate catalog | `data/run/vertical_slice_opponents.json` | 상대 소개와 학습용 가설 재료 | DOCUMENTED / catalog consumer only |
+| binding design | `TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01` | 같은 이름만 다른 상대가 되지 않게 하는 승인된 방향 | USER_APPROVED |
+| runtime bridge | future Issue #267 isolated implementation | 한 candidate → 한 archetype, 결정적 stat 합계 | NOT_IMPLEMENTED |
+| actual combat behavior | `CombatAiPlanner` / combatant stats | 전투에서 확인되는 선택 경향과 수치 | RUNTIME_NOT_RUN |
+
+**AUTHORIZED FUTURE CONTRACT (NOT CURRENT IMPLEMENTATION).** 각 candidate는 하나의 runtime archetype에 bind되고, 행동 선호는 공개 상태와 해결 이력만으로 계산한다. stat allocation은 `final_stat_total_seed` 합계를 보존하는 결정적 결과여야 한다. brief/Review는 관찰 가능한 경향만 표현하고, 플레이어의 아직 확정되지 않은 계획·숨은 기술 배치·UI 의도·AI 가중치·정답 수순을 누설하지 않는다.
+
+**failure / recovery example.** 후보 이름과 카드가 달라도 모두 같은 global profile로 행동하면 “가짜 개성” 실패다. Issue #267은 bridge snapshot에서 archetype/stat 합계를, controlled planner score regression에서 focus 효과를 분리해 증명해야 한다. Human playtest는 그 다음에만 난이도·재미를 평가하며, 현재 이 증거는 없다.
+
 ### SYS-REVIEW-001 / SYS-RETRY-001 — 복기와 동일 조건 재도전
 
 **WHY.** 첫 패배를 루프 종료가 아닌 반증된 가설의 학습으로 만든다.
@@ -326,7 +370,8 @@ Duel 1 → 성장/회복 노드 → 정보/준비 노드 → Duel 2
 | CNT-DUEL-005 | 5대련: 순차 해결·합·중단 | 통합 시험 | DOCUMENTED |
 | CNT-ACTION-001 | 기본 10행동 | 슬롯·거리·자원 문법 | IMPLEMENTED |
 | CNT-MANUAL-001 | 초기 10권 무공 | 대응 폭 성장 | IMPLEMENTED data / UX_NOT_RUN |
-| CNT-OPPONENT-001 | vertical slice opponents | 5대련의 행동 archetype | PARTIAL |
+| CNT-OPPONENT-001 | vertical slice opponents | 5대련의 소개·학습 후보 catalog | DOCUMENTED / PARTIAL consumer |
+| CNT-OPPONENT-RUNTIME-001 | candidate runtime personality | 후보 개성을 실제 공개 경향으로 만들기 | USER_APPROVED / NOT_IMPLEMENTED |
 
 ### CNT-ACTION-001 — 기본 행동 계약
 
@@ -446,7 +491,7 @@ vertical_slice_shell.tscn
 | DAT-RESOLVE-001 | `combat_resolution_preview.json` | board 10 cells, starting positions, public AI source, action fixture | combat fixture |
 | DAT-PLAN-001 | `action_selection_poc.json` | placement UI fixture / slot capacity | action selection |
 | DAT-MANUAL-001 | `martial_manual_cards.json`, `martial_manuals/*.json` | manual ID, unlock/adoption data | content data |
-| DAT-RUN-001 | `vertical_slice_opponents.json` | opponent/run seed data | run content |
+| DAT-RUN-001 | `vertical_slice_opponents.json` | candidate catalog, focus IDs, `final_stat_total_seed`; runtime binding fields are absent | run content / NOT_RUNTIME_BOUND |
 
 Schema changes must preserve data/fallback/fixture/consumer/test compatibility. UI may display but must not recalculate combat rule truth.
 
@@ -467,6 +512,7 @@ Unknown scene paths are intentionally not fabricated. Inspect exact `.tscn` befo
 |---|---|---|
 | `combat_resolution_engine.gd` | action spans, resolution events, state transitions | UI layout/visual-only totals |
 | `combat_ai_planner.gd` | public snapshot decision | pending player plan/UI inspection |
+| future `vertical_slice_opponent_runtime_binding` resource/adapter | candidate→archetype/stat binding | silently changing UI copy, reading player pending plan, or inventing combat rules |
 | `combat_board_preview*.gd` | board state projection/presentation lifecycle | changing authoritative rules |
 | `action_placement_controller.gd` | placement legality, lock behavior | hidden opponent reasoning |
 | `combat_progress_button.gd` | execute request, disabled feedback | independently resolving combat |
@@ -508,6 +554,7 @@ Current contract protects retry snapshot and exactly-once progression commit. Pe
 | 가설을 3수에 배치 | SYS-PLAN-001 / CNT-ACTION-001 | UI-PLAN-001 | placement controller + action data | Phase 2 resolution/UI tests |
 | 전조 비용을 보고 판단 | SYS-PLAN-002 | UI-COMBAT-001 | engine span/timing + CTA | phase2 combat test; human clarity NOT_RUN |
 | 공정한 상대 읽기 | SYS-AI-001 | Review/history | AI public snapshot | `verify_phase2_observation.gd` |
+| 상대의 관찰 가능한 습관을 파훼 | SYS-OPPONENT-001 / CNT-OPPONENT-RUNTIME-001 | Briefing / Review | Issue #267 future binding bridge | USER_APPROVED; implementation and runtime evidence NOT_RUN |
 | 실패에서 재도전 | SYS-REVIEW-001/SYS-RETRY-001 | UI-REVIEW-001 | run state / review panel | `verify_vertical_slice_failure_retry.gd` |
 | 무공 선택으로 대응 폭 확장 | SYS-GROWTH-001/CNT-MANUAL-001 | selection / route | manual JSON + adoption UI/AI | `verify_ten_manual_ui_ai_adoption.gd`; UX NOT_RUN |
 
@@ -521,6 +568,7 @@ Current contract protects retry snapshot and exactly-once progression commit. Pe
 | QA-MANUAL-001 | `tests/verify_ten_manual_ui_ai_adoption.gd` | manual data/UI/AI adoption | automated result required per exact SHA |
 | QA-BRIDGE-001 | `tests/verify_vertical_slice_combat_bridge.gd` | shell/bridge integration | automated result required per exact SHA |
 | QA-DATA-001 | `pytest tests/test_phase2_combat_canon_data.py -q` | phase2 fixture/data coherence | automated result required per exact SHA |
+| QA-OPPONENT-001 | Issue #267 static + Godot scenario harness | candidate archetype, deterministic stat sum, focus score, public-only boundary | PLANNED / NOT_RUN |
 | QA-HUMAN-001 | visible Windows playthrough | readability, understanding, delight | NOT_RUN |
 | QA-ANDROID-001 | device install/touch/back/safe-area/lifecycle | Android runtime | NOT_RUN |
 | QA-A11Y-001 | keyboard focus/touch/accessibility session | inclusive input / contrast | NOT_RUN |
@@ -545,10 +593,11 @@ Current contract protects retry snapshot and exactly-once progression commit. Pe
 | deck-like card UI mispositions game | positioning / INFERENCE | explicit no-deck rule vs card visual | MITIGATE | usability and store-page concept test |
 | Android usability | technical / NOT_RUN | no device evidence | TEST | target device matrix |
 | visual board treated as shipping asset | rights/release / VERIFIED risk | planning-only decision | PROTECT | provenance and consumer check before adoption |
+| candidate personality is only a label | design/runtime / CURRENT | catalog fields have no current runtime planner/stat consumer | BLOCKED_BY_IMPLEMENTATION | Issue #267 bridge + scenario tests, then human playtest |
 
 ## 25. USER DECISION REQUIRED
 
-No new product-meaning decision is required to use this document as a GDD snapshot. The following cannot be silently decided:
+No new product-meaning decision is required to use this document as a GDD snapshot. `DEC-OPPONENT-001` is already user-approved **only for Issue #267's isolated implementation contract**; this document does not convert that approval into implementation evidence. The following cannot be silently decided:
 
 1. **Human test threshold and audience:** number/profile/definition of understanding pass for first 5–15 minutes.
 2. **Production art scope:** whether to fund character/animation/VFX batch after a visual implementation contract; WARM DUSK planning anchor is not a shipping asset lock.
@@ -556,8 +605,8 @@ No new product-meaning decision is required to use this document as a GDD snapsh
 
 ## 26. IMPLEMENTATION QUEUE
 
-1. Execute visible Windows player test for 5/15 minute comprehension; do not tune rules until results exist.
-2. Create a single Phase 2 implementation contract only from approved human-test findings; then build in isolated PR.
+1. Execute Issue #267 in its own fresh isolated Codex/Godot handoff: bind the approved candidate data to runtime archetype/stat allocation, preserve public-only AI, and report only actual evidence.
+2. After that branch has merged and exact-main tests have passed, run visible Windows player tests for 5/15 minute comprehension; do not tune personality or rules until results exist.
 3. Perform Android, keyboard/focus, accessibility and performance gates before release scope expands.
 
 Priority formula: player-value risk (comprehension) → technical/platform risk → content/art production.
@@ -571,6 +620,7 @@ Priority formula: player-value risk (comprehension) → technical/platform risk 
 | 2026-08-28 | identified post-merge stale mutable owner records | DEC-STALE-001 |
 | 2026-08-28 | resolved DEC-STALE-001 and retired the carried one-time protected approval | repository owner readback / lifecycle validator |
 | 2026-08-28 | Issue #264: expanded Jianghu Journey, action-bundle/tag, martial/ultimate and visual-consumer explanations without changing product rules | user approval, `docs/02`, `docs/12`, `docs/17`, `docs/19`, actual data/consumer readback |
+| 2026-08-29 | Issue #269: refreshed paired GDD from `origin/main@afa152b`, reconciled stale operating baseline, and separated approved opponent runtime binding from current runtime evidence | current source register, Decision `TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01`, matching 20260829 PDF |
 
 ### 27.1 Project Incident / Solution / Lesson — Issue #264
 
@@ -592,18 +642,18 @@ Priority formula: player-value risk (comprehension) → technical/platform risk 
 | A compact wuxia inference duel has a clear category explanation | OPPORTUNITY | design synthesis, comparable mechanics | INFERENCE | memorable pitch | focused marketing surface | TEST | pitch/playtest response |
 | Card-like presentation can be mistaken for a deckbuilder | THREAT | no-deck rule and card consumer | INFERENCE | wrong expectation | rework/store risk | MITIGATE | first-impression test |
 
-## Appendix B. Benchmarks (research date 2026-08-28)
+## Appendix B. Benchmarks (primary-source recheck 2026-08-29)
 
 | reference | category | observation | decision | adapt / reject | validation |
 |---|---|---|---|---|---|
-| Into the Breach | direct tactical readability | enemy intent and board state make causality inspectable | ADAPT | show why a result happened; reject full enemy plan telegraph | can players predict one counter? |
+| Into the Breach | direct tactical readability | 공식 소개가 적 공격을 미리 읽고 counter를 찾는 구조를 제시한다 | ADAPT | 결과 원인을 보이되, 우리 AI의 전체 계획 공개는 거절 | can players predict one counter? |
 | Your Only Move Is HUSTLE | direct commit→watch loop | committed sequence produces an inspectable playback | ADAPT | plan→presentation pacing; reject frame-sim/PvP scope | execution pacing test |
 | Fights in Tight Spaces | direct spatial tactic | compact arenas make position/action consequences legible | ADAPT | spatial readability; reject deck/hand/draw grammar | distance comprehension |
-| Shogun Showdown | direct timing-position tactic | turn timing and placement form compact combos | ADAPT | timing/position teaching; reject roguelike deck surface | duel template test |
+| Shogun Showdown | direct timing-position tactic | 공식 소개가 position·attack timing·tile combo의 선택을 강조한다 | ADAPT | timing/position teaching; reject roguelike deck surface | duel template test |
 | Hellish Quart | direct duel fantasy | distance and attack timing carry tension | ADAPT | dueling impact language; reject physics/contact-sim cost | action readability |
 | Wandering Sword | direct wuxia identity | martial fantasy supports tactical anticipation | ADAPT | wuxia tone/skill identity; reject open-world/dual-mode scope | pitch test |
 | Slay the Spire | adjacent route clarity | small visible route choices can clarify long-term tradeoffs | ADAPT | information-first route choice; REJECT deck system | route decision test |
-| Godot GUI navigation + Android accessibility guidance | adjacent platform practice | focus order and accessible touch targets require explicit design | ADOPT | focus/touch/contrast gate | device/a11y test |
+| Godot GUI navigation + Android accessibility guidance | adjacent platform practice | focus neighbor/initial focus, 충분한 touch target과 고유 조작 설명이 명시적으로 필요하다 | ADOPT | focus/touch/contrast gate | device/a11y test |
 
 Sources: [Into the Breach](https://subsetgames.com/itb.html); [YOMI Hustle](https://ivysly.itch.io/your-only-move-is-hustle); [Fights in Tight Spaces](https://store.steampowered.com/app/1265820/Fights_in_Tight_Spaces/); [Shogun Showdown](https://store.steampowered.com/app/2084000/Shogun_Showdown/); [Hellish Quart](https://www.hellishquart.com/); [Wandering Sword](https://store.steampowered.com/app/1876890/Wandering_Sword/); [Slay the Spire](https://www.megacrit.com/); [Godot GUI navigation](https://docs.godotengine.org/en/stable/tutorials/ui/gui_navigation.html); [Android accessibility](https://developer.android.com/guide/topics/ui/accessibility/views/apps-views).
 
