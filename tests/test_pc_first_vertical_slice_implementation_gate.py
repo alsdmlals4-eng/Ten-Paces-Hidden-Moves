@@ -23,7 +23,7 @@ class PcFirstVerticalSliceImplementationGateTests(unittest.TestCase):
         self.assertEqual("BLOCKED_BY_EXISTING_PLATFORM_GATE", gate["windows_android_adapter_implementation"])
         self.assertFalse(gate["image_generation_authorized"])
 
-    def test_current_user_status_preserves_pc_slice_history_and_current_issue267_handoff(self) -> None:
+    def test_current_user_status_preserves_pc_slice_history_and_current_visual_readback(self) -> None:
         status_path = ROOT / "docs" / "planning-data" / "current_user_planning_status.json"
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
@@ -39,11 +39,11 @@ class PcFirstVerticalSliceImplementationGateTests(unittest.TestCase):
         self.assertFalse(status["windows_android_adapter_implementation_authorized"])
         self.assertEqual("USER_EXPLICIT_NON_IMAGE_WORK_REQUEST", status["implementation_request_source"])
         self.assertEqual(
-            "USER_APPROVED_COMBAT_REFERENCE_REFERENCE_SET_20260825_OPPONENT_CHARACTER_MASTER_DOGYEOM_COMBAT_BATTLER_AND_DOGYEOM_STATUS_PORTRAIT_01_20260826_PLUS_INK_MIST_VALLEY_DUEL_01_USER_FINAL_LOCKED_MACHINE_RUNTIME_VERIFIED_20260830",
+            "USER_APPROVED_COMBAT_REFERENCE_REFERENCE_SET_20260825_OPPONENT_CHARACTER_MASTER_DOGYEOM_COMBAT_BATTLER_AND_DOGYEOM_STATUS_PORTRAIT_01_20260826_PLUS_INK_MIST_VALLEY_DUEL_01_COMBAT_DIAGONAL_DUEL_CHARACTER_PAIR_01_AND_TEN_BASIC_TECHNIQUE_INK_ATLAS_01_USER_FINAL_LOCKED_MACHINE_RUNTIME_VERIFIED_20260830",
             status["final_visual_reference_status"],
         )
         self.assertEqual(
-            "CONSUMER_FIRST_DOGYEOM_STATUS_PORTRAIT_IMPLEMENTED_AUTOMATED_VERIFIED_PLUS_INK_MIST_VALLEY_DUEL_01_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260830",
+            "CONSUMER_FIRST_DOGYEOM_STATUS_PORTRAIT_IMPLEMENTED_AUTOMATED_VERIFIED_PLUS_INK_MIST_VALLEY_DUEL_01_AND_COMBAT_DIAGONAL_DUEL_CHARACTER_PAIR_01_TEN_BASIC_TECHNIQUE_INK_ATLAS_01_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260830",
             status["visual_asset_requirement_status"],
         )
 

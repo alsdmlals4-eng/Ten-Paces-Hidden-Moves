@@ -208,7 +208,15 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_status: OPPONENT_RUNTIME_PERSONALITY_IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK_HUMAN_PLAYTEST_DEFERRED",
+            "user_directed_planning_status: INK_PAPER_DIAGONAL_DUEL_PRESENTATION_IMPLEMENTED_MERGED_MAIN_PR277_PROTECTED_APPROVAL_ARCHIVED_PR278_MACHINE_RUNTIME_VERIFIED_HUMAN_PLAYTEST_DEFERRED",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_diagonal_duel_presentation_status: USER_FINAL_LOCKED_IMPLEMENTED_MERGED_MAIN_PR277_MACHINE_RUNTIME_AND_REMOTE_CI_VERIFIED",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_diagonal_duel_approval_archive: docs/operations/2026-08-30_PR277_PROTECTED_CHANGE_APPROVAL_RECORD.md",
             current_section,
         )
         self.assertIn(
@@ -259,7 +267,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "planning_visual_review: PROJECT_CORE_SCENE_VISUAL_BOARD_R2_USER_FINAL_LOCKED_PLANNING_ONLY_DOGYEOM_RUNTIME_ASSETS_PRESERVED",
+            "planning_visual_review: PROJECT_CORE_SCENE_VISUAL_BOARD_R2_USER_FINAL_LOCKED_PLANNING_ONLY_PLUS_DIAGONAL_DUEL_PAIR_5X2_BASIC_ATLAS_AND_PER_TIMING_VS_REVEAL_IMPLEMENTED_PR277",
             current_section,
         )
         self.assertIn(
@@ -369,8 +377,24 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "OPPONENT_RUNTIME_PERSONALITY_IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK_HUMAN_PLAYTEST_DEFERRED",
+            "INK_PAPER_DIAGONAL_DUEL_PRESENTATION_IMPLEMENTED_MERGED_MAIN_PR277_PROTECTED_APPROVAL_ARCHIVED_PR278_MACHINE_RUNTIME_VERIFIED_HUMAN_PLAYTEST_DEFERRED",
             status["user_directed_planning_status"],
+        )
+        self.assertIn(
+            "COMBAT_DIAGONAL_DUEL_CHARACTER_PAIR_01",
+            status["completed_scope"],
+        )
+        self.assertIn(
+            "TEN_BASIC_TECHNIQUE_INK_ATLAS_01",
+            status["completed_scope"],
+        )
+        self.assertEqual(
+            "IMPLEMENTED_MERGED_MAIN_PR277_AUTOMATED_GODOT_VISIBLE_RUNTIME_AND_REMOTE_CI_VERIFIED_HUMAN_READABILITY_NOT_RUN",
+            status["evidence_ceiling"]["ink_paper_diagonal_duel_presentation"],
+        )
+        self.assertEqual(
+            "ACTIVE_MANIFEST_ARCHIVED_PR278_BASELINE_PROMOTED_MAIN_READBACK_PASS",
+            status["evidence_ceiling"]["pr277_protected_approval_lifecycle"],
         )
         self.assertEqual(
             "BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_ISSUE267_MERGED_MAIN_READBACK",
