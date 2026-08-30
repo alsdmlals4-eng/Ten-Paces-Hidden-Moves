@@ -3,7 +3,7 @@
 ~~~yaml
 report_id: TEN-EXEC-20260830-BALANCE-MEASUREMENT-REPRESENTATIVE-POLICY-COVERAGE-01
 decision: TEN-DEC-20260830-BALANCE-MEASUREMENT-REPRESENTATIVE-POLICY-COVERAGE-01
-status: IMPLEMENTED_MERGED_MAIN_PR292_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_CLEANUP_PENDING_PR
+status: IMPLEMENTED_MERGED_MAIN_PR292_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR293_POSTMERGE_READBACK
 baseline_origin_main: e1aad779fced8ac54da52e03686fe51abb7fb34d
 merged_main_commit: 3575e0405001514b7b3bdfb5b1c23f9caa34eca0
 merged_pull_request: 292
@@ -77,7 +77,7 @@ The exact aggregate totals are attack `10,722`, move `690`, guard `9,324`, evade
 | 4 | Resolver/determinism | static policy labels could pass without runtime action | Two whole current-resolver reports are byte-identical and category counts are derived from actual placements |
 | 5 | Scope/evidence ceiling | warning trigger could be misreported as a balance fix | Preserved numerical decision as `NOT_DECIDED`; no combat/card/profile/UI/asset/save/platform diff |
 
-`CLEAN_REVIEW_EXIT`: no unresolved scope, public-information, report-shape, deterministic-run, or stated acceptance-criterion issue remains locally. PR #292 remote checks passed and the product change is merged in `main`; one-time approval archive cleanup and post-merge state readback remain open. All non-machine evidence is still open.
+`CLEAN_REVIEW_EXIT`: no unresolved scope, public-information, report-shape, deterministic-run, or stated acceptance-criterion issue remains locally. PR #292 remote checks passed and the product change is merged in `main`; PR #293 archived the one-time approval, promoted the exact protected baseline, and has an exact-main readback. All non-machine evidence is still open.
 
 ## 자동화·학습 반영
 
@@ -85,6 +85,6 @@ The checker now rejects a report that merely lists six policies but fails to exe
 
 ## 미검증·남은 위험
 
-1. PR #292 merged with remote CI PASS. The active protected manifest is being converted to its immutable archive and the protected baseline is being promoted on this cleanup branch; this cleanup PR and its exact-main readback are still pending.
+1. PR #292 merged with remote CI PASS. PR #293 converted the active protected manifest to its immutable archive, promoted the protected baseline, and completed exact-main readback. The evidence remains machine-only.
 2. `opening_no_route` remains a single-duel input. Route/reward/growth/campaign/retry difficulty is not measured.
 3. Windows-visible usability, Human/player fun/fairness/readability, Android device, accessibility user, release performance, and numerical balance remain `NOT_RUN` / `NOT_DECIDED`.

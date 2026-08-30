@@ -87,8 +87,8 @@ class HumanGameBlueprintProfileContract(unittest.TestCase):
             "derived stat total, player/loadout/policy/seed outcome distribution | schema 2 4,500-row coverage "
             "is merged historical machine evidence. Successor `TEN-DEC-20260830-BALANCE-MEASUREMENT-REPRESENTATIVE-"
             "POLICY-COVERAGE-01` is merged in PR #292 with remote CI PASS and schema 3 six-archetype 6,750-row "
-            "byte-identical machine evidence; protected-approval archive cleanup is pending, and it is not a "
-            "numerical balance decision."
+            "byte-identical machine evidence; PR #293 archived the one-time approval and has exact-main readback, "
+            "and it is not a numerical balance decision."
         )
         self.assertIn(positive, self.spec)
         self.assertIn(negative, self.spec)
