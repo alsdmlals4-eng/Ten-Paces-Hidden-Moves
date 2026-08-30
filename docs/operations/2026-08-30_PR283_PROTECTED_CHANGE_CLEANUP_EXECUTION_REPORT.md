@@ -47,6 +47,10 @@ PR #283이 remote CI 전체 통과 후 병합됐지만, 해당 PR 전용 active 
 | protected product consumer | PASS | 이 cleanup diff에는 `src/`, `data/`, `scenes/`, `assets/`, `addons/`, `project.godot` 변경이 없다. |
 | Godot visible/Human/Android/release | NOT_RUN | 문서·운영 lifecycle cleanup은 이 증거들을 생성하거나 대체하지 않는다. |
 
+### Commit readback 결과
+
+`9296f1fb` commit 뒤 `check_one_time_protected_change_lifecycle.py --base-sha 944cd8194152b3d2e31647b25dacd1bad90b7876`는 PASS했다. 같은 committed tree에서 Base operating contract, Base generated artifact `--check`, canonical reference freshness, project operating system 및 archive governance도 모두 PASS했다. 전체 Python unit suite는 `421 tests / 25.150s / OK`였다. `944cd819..HEAD` 경로 목록에는 product-protected 경로가 없고 whitespace error도 없었다.
+
 ## 다섯 차례 적대 검토 결과
 
 1. **권위와 범위 — PASS:** exact `origin/main` 병합 commit과 archive의 source SHA·한정 경로를 대조했고, 새 protected-product 권한이 생기지 않음을 확인했다.
