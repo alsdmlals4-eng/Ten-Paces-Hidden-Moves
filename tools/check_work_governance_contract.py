@@ -21,6 +21,15 @@ REQUIRED_SOURCE_ORDER_PREFIX = [
     "PRIMARY_RESEARCH_OR_FIRST_PARTY_TECHNICAL_PAPER",
     "FIRST_PARTY_CASE_STUDY_OR_POSTMORTEM",
 ]
+REQUIRED_COMPARABLE_FIELDS = [
+    "OFFICIAL_PRODUCT_FACT_SOURCE",
+    "PLAYER_RESPONSE_SIGNAL_OR_DISCLOSED_GAP",
+    "MECHANISM",
+    "TRANSFER_PRINCIPLE",
+    "DO_NOT_COPY_BOUNDARY",
+    "ADOPT_ADAPT_AVOID_OR_TEST_DISPOSITION",
+]
+PREWORK_BENCHMARK_GATE_DECISION = "TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01"
 REQUIRED_ADVERSARIAL_CHECKS = {
     "CORE_FUN_ALIGNMENT", "CANON_CONFLICT", "MISSING_REQUIREMENT",
     "EXPLOIT_OR_ABUSE_PATH", "LEGACY_REFERENCE_DRIFT", "VALIDATION_OVERCLAIM",
@@ -61,6 +70,10 @@ def validate(contract: dict[str, Any]) -> None:
     _require(tdd.get("failure_must_be_relevant") is True, "TDD RED failure must be relevant")
 
     benchmark = contract.get("benchmark_policy", {})
+    _require(
+        benchmark.get("prework_benchmark_reverse_engineering_gate_decision") == PREWORK_BENCHMARK_GATE_DECISION,
+        "benchmark reverse-engineering gate decision differs",
+    )
     _require(benchmark.get("required_for_material_questions_and_tasks") is True, "benchmarking is required for material work")
     _require(benchmark.get("required_before_every_project_task") is True, "benchmarking and industry research are required before every project task")
     _require(benchmark.get("research_depth") == "PROPORTIONAL_TO_TASK_RISK_AND_SCOPE", "benchmark research depth policy differs")
@@ -73,6 +86,16 @@ def validate(contract: dict[str, Any]) -> None:
     source_order = benchmark.get("preferred_source_order", [])
     _require(source_order[:3] == REQUIRED_SOURCE_ORDER_PREFIX, "benchmark source order must prefer official and primary evidence")
     _require(benchmark.get("minimum_reliable_comparables_when_available") >= 2, "benchmark comparable coverage is insufficient")
+    _require(benchmark.get("minimum_unique_game_comparables_for_new_l1_plus_package") == 10, "new L1+ work must retain the approved 10-game minimum")
+    _require(benchmark.get("minimum_direct_comparables") == 3, "benchmark direct-comparable coverage differs")
+    _require(benchmark.get("minimum_adjacent_system_comparables") == 3, "benchmark adjacent-system coverage differs")
+    _require(benchmark.get("minimum_negative_or_mixed_case") == 1, "benchmark negative-or-mixed coverage differs")
+    _require(benchmark.get("per_comparable_required_fields") == REQUIRED_COMPARABLE_FIELDS, "benchmark per-comparable evidence fields differ")
+    _require(
+        benchmark.get("reuse_or_refresh_rule")
+        == "NO_SILENT_BYPASS_REUSE_ONLY_WHEN_DECISION_DIMENSION_AND_CURRENT_PROJECT_STATE_MATCH",
+        "benchmark reuse or refresh rule differs",
+    )
     _require(benchmark.get("when_no_reliable_comparable") == "DISCLOSE_GAP_AND_USE_EXPLICIT_INTERNAL_ASSUMPTIONS", "no reliable comparable must be disclosed rather than invented")
     _require(benchmark.get("current_verification_required_when_fact_may_have_changed") is True, "current benchmark verification is required")
     _require(benchmark.get("benchmark_must_not_override_project_core") is True, "benchmark cannot override project core")

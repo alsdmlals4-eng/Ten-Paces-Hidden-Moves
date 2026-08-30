@@ -39,6 +39,7 @@
     "failure_must_be_relevant": true
   },
   "benchmark_policy": {
+    "prework_benchmark_reverse_engineering_gate_decision": "TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01",
     "required_for_material_questions_and_tasks": true,
     "required_before_every_project_task": true,
     "research_depth": "PROPORTIONAL_TO_TASK_RISK_AND_SCOPE",
@@ -69,6 +70,19 @@
       "REPUTABLE_SECONDARY_SYNTHESIS"
     ],
     "minimum_reliable_comparables_when_available": 2,
+    "minimum_unique_game_comparables_for_new_l1_plus_package": 10,
+    "minimum_direct_comparables": 3,
+    "minimum_adjacent_system_comparables": 3,
+    "minimum_negative_or_mixed_case": 1,
+    "per_comparable_required_fields": [
+      "OFFICIAL_PRODUCT_FACT_SOURCE",
+      "PLAYER_RESPONSE_SIGNAL_OR_DISCLOSED_GAP",
+      "MECHANISM",
+      "TRANSFER_PRINCIPLE",
+      "DO_NOT_COPY_BOUNDARY",
+      "ADOPT_ADAPT_AVOID_OR_TEST_DISPOSITION"
+    ],
+    "reuse_or_refresh_rule": "NO_SILENT_BYPASS_REUSE_ONLY_WHEN_DECISION_DIMENSION_AND_CURRENT_PROJECT_STATE_MATCH",
     "when_no_reliable_comparable": "DISCLOSE_GAP_AND_USE_EXPLICIT_INTERNAL_ASSUMPTIONS",
     "current_verification_required_when_fact_may_have_changed": true,
     "benchmark_must_not_override_project_core": true
