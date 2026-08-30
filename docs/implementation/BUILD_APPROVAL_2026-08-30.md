@@ -56,3 +56,22 @@ No combat numbers or timing rules, AI/private-plan information boundary, public-
 ## Exclusions and evidence ceiling
 
 No combat values, timing rules, hidden-plan/AI privacy boundary, save schema, UI/Scene, asset, audio, route/campaign, external telemetry, Android, release, or unrelated refactor is authorized. The two 3,375-row headless reports prove deterministic instrumentation only. Windows-visible usability, human gameplay fairness/fun/readability, accessibility-user, Android-device, release-performance, and balance PASS remain `NOT_RUN`.
+
+---
+
+# PR #283 Public Approach-Pressure Policy Recovery BUILD Approval Addendum
+
+- Decision / contract: `TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01`
+- Approved on: `2026-08-30 KST`
+- Approval source: user instruction `승인` and continuing in-scope recovery authorization.
+- Issue / PR: implementation continuation / `#283`
+- Authority level: `VALIDATION_ONLY_POLICY_SEMANTIC_RECOVERY`
+
+## Approved scope
+
+1. Restore the already-approved `public_approach_pressure` meaning: where no legal, affordable public attack reaches the opponent and distance is greater than zero, use the existing legal public movement fallback that closes distance.
+2. Add the focused Godot regression for the formerly empty-plan state, and only the Decision/result-review/temporary exact protected-change approval evidence for this one recovery PR.
+
+## Required invariants and evidence ceiling
+
+This is a validation policy recovery, not a combat-value, card-data, resolver, AI-knowledge, Scene, UI, asset, platform, save-schema, or release change. The policy reads only existing public state, retains reachable public attack priority, and uses existing legality/resource checks; it cannot create a new movement rule. Focused Godot RED→GREEN, existing instrumentation/privacy/resolver regressions, and two byte-identical 3,375-scenario reports are required. Remote PR checks and exact protected-change approval validation are required. Windows-visible, human-player, accessibility-user, Android-device, and release-performance validation remain `NOT_RUN`.

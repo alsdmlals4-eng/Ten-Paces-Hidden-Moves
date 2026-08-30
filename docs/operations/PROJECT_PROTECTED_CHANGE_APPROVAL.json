@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "83ad48a7b4388e249e5b40e19ad25f77a817d1a2",
+  "decision_ids": [
+    "TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01"
+  ],
+  "approved_paths": [
+    "src/validation/vertical_slice_balance_public_policy.gd"
+  ],
+  "approval_source": "USER_EXPLICIT_IN_SCOPE_RECOVERY_APPROVAL_2026-08-30_KST_\uC2B9\uC778",
+  "approval_time": "2026-08-30T18:14:46+09:00",
+  "scope_summary": "One PR only: restore the approved public approach-pressure policy semantics when no legal public attack reaches the enemy. The change is validation-only and does not alter combat values, player-facing behavior, save schema, assets, scenes, platform, or release scope."
+}

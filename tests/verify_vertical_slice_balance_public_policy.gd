@@ -59,6 +59,30 @@ func _run() -> void:
         _expect_true(bool(preview.get("valid", false)), "%s placements must pass the real engine legality boundary: %s" % [policy_id, str(preview)])
         _expect_bundle_bounds(placements, 1, [3, 3, 4], policy_id)
 
+    var out_of_range_state := {
+        "player": {"tile": 4, "stamina": [0, 1], "internal": [0, 1]},
+        "enemy": {"tile": 6},
+        "public_resolution_history": []
+    }
+    var out_of_range_cards := {
+        "basic_move": {"id": "basic_move", "category": "move", "action_slots": 1, "stamina_cost": 0, "internal_cost": 0, "move_range": 1},
+        "basic_footwork": {"id": "basic_footwork", "category": "move", "action_slots": 1, "stamina_cost": 0, "internal_cost": 1, "move_range": 2},
+        "basic_palm": {"id": "basic_palm", "category": "attack", "action_slots": 1, "stamina_cost": 0, "internal_cost": 0, "range": {"min": 1, "max": 1}},
+        "test_close_attack": {"id": "test_close_attack", "category": "attack", "action_slots": 1, "stamina_cost": 0, "internal_cost": 0, "range": {"min": 1, "max": 1}}
+    }
+    var out_of_range_placements: Array = PolicyScript.build_placements(
+        "public_approach_pressure",
+        out_of_range_state,
+        out_of_range_cards,
+        PackedStringArray(["test_close_attack"]),
+        1,
+        [3, 3, 4]
+    )
+    _expect_true(not out_of_range_placements.is_empty(), "Approach pressure must close distance when no legal attack currently reaches the enemy.")
+    if not out_of_range_placements.is_empty():
+        _expect_eq(str((out_of_range_placements[0] as Dictionary).get("card_id", "")), "basic_move", "Approach pressure must choose the affordable public movement option when attacks are out of range.")
+        _expect_eq(int((out_of_range_placements[0] as Dictionary).get("target_tile", 0)), 5, "Approach pressure must move one tile toward the public enemy tile.")
+
     _expect_true(
         PolicyScript.build_placements("unknown_policy", state, engine.cards_by_id, engine.get_player_martial_card_ids(), 1, [3, 3, 4]).is_empty(),
         "Unknown policies must fail closed without a fallback placement."

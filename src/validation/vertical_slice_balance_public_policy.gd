@@ -50,6 +50,10 @@ static func _approach_pressure(snapshot: Dictionary, cards_by_id: Dictionary, ma
         var definition: Dictionary = (cards_by_id.get(card_id, {}) as Dictionary).duplicate(true)
         if _is_reachable_attack(snapshot, definition, bounds) and _can_afford(snapshot, definition):
             return [_placement(definition, snapshot, bounds.x, direction)]
+    if distance > 0:
+        var move_after_attack_check := _choose_move(snapshot, cards_by_id)
+        if not move_after_attack_check.is_empty():
+            return [_placement(move_after_attack_check, snapshot, bounds.x, direction)]
     return []
 
 
