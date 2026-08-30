@@ -6,6 +6,8 @@ signal detail_requested(definition: Dictionary, pinned: bool)
 signal detail_cleared()
 
 const ADAPTER_SCRIPT := preload("res://src/ui/action_selection/action_view_model_adapter.gd")
+const ACTION_CHOICE_CARD_SCRIPT := preload("res://src/ui/action_selection/action_choice_card.gd")
+const ACTION_COLUMNS := 3
 const PAPER_SURFACE := Color("d9ccb1")
 const PAPER_HOVER := Color("eee2c9")
 const CHARCOAL_INK := Color("211c17")
@@ -13,7 +15,7 @@ const RESTRAINED_GOLD := Color("b99254")
 
 @onready var momentum_label: Label = %MomentumLabel
 @onready var segment_row: HBoxContainer = %SegmentRow
-@onready var action_list: VBoxContainer = %ActionList
+@onready var action_list: GridContainer = %ActionList
 
 var momentum_current := 0
 var momentum_maximum := 5
@@ -104,7 +106,10 @@ func get_panel_snapshot() -> Dictionary:
         "interaction_enabled": interaction_enabled,
         "martial_loadout": martial_loadout.duplicate(),
         "martial_mastery_by_manual": martial_mastery_by_manual.duplicate(true),
-        "presentation_surface": str(get_meta("presentation_surface", ""))
+        "presentation_surface": str(get_meta("presentation_surface", "")),
+        "card_surface": "shared_action_card_grid",
+        "illustration_policy": "forbidden",
+        "action_columns": ACTION_COLUMNS
     }
 
 func _rebuild_segments() -> void:
@@ -128,16 +133,11 @@ func _rebuild_actions() -> void:
     for child in action_list.get_children():
         child.queue_free()
     action_buttons.clear()
+    action_list.columns = ACTION_COLUMNS
     for action in actions:
         var action_id := str(action.get("id", ""))
-        var button := Button.new()
-        button.custom_minimum_size = Vector2(0.0, 50.0)
-        button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-        button.focus_mode = Control.FOCUS_ALL
-        button.text = _action_button_text(action)
-        button.tooltip_text = _action_tooltip(action)
-        button.accessibility_name = _action_accessibility_name(action)
-        _apply_ultimate_paper_style(button, bool(action.get("locked", false)))
+        var button := ACTION_CHOICE_CARD_SCRIPT.new() as ActionChoiceCard
+        button.configure_action(action, "forbidden", _action_status(action))
         button.set_meta("action_id", action_id)
         button.set_meta("locked", bool(action.get("locked", false)))
         button.set_meta("reserved", _is_reserved(action_id))
@@ -150,6 +150,16 @@ func _rebuild_actions() -> void:
         action_list.add_child(button)
         action_buttons.append(button)
     set_interaction_enabled(interaction_enabled)
+    set_meta("card_surface", "shared_action_card_grid")
+    set_meta("illustration_policy", "forbidden")
+
+func _action_status(action: Dictionary) -> String:
+    var reservation := _get_reservation(str(action.get("id", "")))
+    if not reservation.is_empty():
+        return "%d~%d수 예약" % [int(reservation.get("start_timing", 0)), int(reservation.get("end_timing", 0))]
+    if bool(action.get("locked", false)):
+        return str(action.get("lock_reason", "잠김"))
+    return "사용 가능"
 
 func _apply_ultimate_paper_style(button: Button, locked: bool) -> void:
     var normal := StyleBoxFlat.new()

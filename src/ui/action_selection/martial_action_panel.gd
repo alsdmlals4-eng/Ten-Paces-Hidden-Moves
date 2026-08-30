@@ -7,6 +7,8 @@ signal detail_requested(definition: Dictionary, pinned: bool)
 signal detail_cleared()
 
 const ADAPTER_SCRIPT := preload("res://src/ui/action_selection/action_view_model_adapter.gd")
+const ACTION_CHOICE_CARD_SCRIPT := preload("res://src/ui/action_selection/action_choice_card.gd")
+const TECHNIQUE_COLUMNS := 3
 const PAPER_SURFACE := Color("d9ccb1")
 const PAPER_HOVER := Color("eee2c9")
 const CHARCOAL_INK := Color("211c17")
@@ -15,7 +17,7 @@ const RESTRAINED_GOLD := Color("b99254")
 @onready var title_label: Label = $PanelColumn/Title
 @onready var manual_row: HBoxContainer = %ManualRow
 @onready var selected_manual_title: Label = %SelectedManualTitle
-@onready var technique_list: VBoxContainer = %TechniqueList
+@onready var technique_list: GridContainer = %TechniqueList
 
 var manuals: Array[Dictionary] = []
 var manual_buttons: Array[Button] = []
@@ -96,8 +98,11 @@ func get_panel_snapshot() -> Dictionary:
         "unlocked_technique_count": unlocked_count,
         "locked_technique_count": locked_count,
         "interaction_enabled": interaction_enabled,
-        "layout": "manual_row_then_techniques",
-        "presentation_surface": str(get_meta("presentation_surface", ""))
+        "layout": "manual_row_then_card_grid",
+        "presentation_surface": str(get_meta("presentation_surface", "")),
+        "card_surface": "shared_action_card_grid",
+        "illustration_policy": "forbidden",
+        "technique_columns": TECHNIQUE_COLUMNS
     }
 
 func _rebuild_manuals() -> void:
@@ -133,6 +138,7 @@ func _rebuild_techniques() -> void:
     for child in technique_list.get_children():
         child.queue_free()
     technique_buttons.clear()
+    technique_list.columns = TECHNIQUE_COLUMNS
     var manual := _selected_manual()
     selected_manual_title.text = "선택 무공서 없음" if manual.is_empty() else "%s · %d성" % [
         str(manual.get("name", "")),
@@ -140,17 +146,11 @@ func _rebuild_techniques() -> void:
     ]
     for technique in _ordered_selected_techniques():
         var locked := bool(technique.get("locked", false))
-        var button := Button.new()
-        button.custom_minimum_size = Vector2(0.0, 48.0)
-        button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-        button.focus_mode = Control.FOCUS_ALL
-        button.text = _locked_technique_text(technique) if locked else _unlocked_technique_text(technique)
-        button.tooltip_text = _technique_tooltip(technique)
-        button.accessibility_name = _technique_accessibility_name(technique)
+        var button := ACTION_CHOICE_CARD_SCRIPT.new() as ActionChoiceCard
+        button.configure_action(technique, "forbidden", _locked_technique_text(technique) if locked else "사용 가능")
         button.disabled = locked or not interaction_enabled
         button.set_meta("technique_id", str(technique.get("id", "")))
         button.set_meta("locked", locked)
-        _apply_technique_paper_style(button, locked)
         button.pressed.connect(_on_technique_pressed.bind(str(technique.get("id", ""))))
         button.mouse_entered.connect(_on_technique_focused.bind(technique))
         button.focus_entered.connect(_on_technique_focused.bind(technique))
@@ -160,6 +160,8 @@ func _rebuild_techniques() -> void:
         technique_buttons.append(button)
     set_meta("selected_manual_id", selected_manual_id)
     set_meta("technique_count", technique_buttons.size())
+    set_meta("card_surface", "shared_action_card_grid")
+    set_meta("illustration_policy", "forbidden")
 
 func _refresh_manual_selection() -> void:
     for button in manual_buttons:

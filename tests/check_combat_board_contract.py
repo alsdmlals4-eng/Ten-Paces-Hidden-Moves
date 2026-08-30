@@ -112,9 +112,11 @@ def main() -> None:
     assert progress["request_mode"] == "resolve_bundle"
     assert progress["advances_state"] is True
 
-    assert contract["basic_card_tray"]["card_count"] == 10
-    assert contract["basic_card_tray"]["card_ids"] == EXPECTED_CARD_IDS
-    assert contract["basic_card_tray"]["stance_response_combo_enabled"] is True
+    assert contract["basic_action_cards"]["card_count"] == 10
+    assert contract["basic_action_cards"]["card_ids"] == EXPECTED_CARD_IDS
+    assert contract["basic_action_cards"]["stance_response_combo_enabled"] is True
+    assert contract["basic_action_cards"]["card_surface"] == "shared_action_card_grid"
+    assert contract["basic_action_cards"]["illustration_policy"] == "basic_atlas_only"
     assert [card["id"] for card in cards["cards"]] == EXPECTED_CARD_IDS
     assert cards["forbidden_fields"] == ["action_point_cost", "guard_reduction"]
     by_id = {card["id"]: card for card in cards["cards"]}
@@ -135,19 +137,24 @@ def main() -> None:
     assert "다음" in by_id["basic_stance"]["effect_text"]
 
     targeting = contract["action_targeting"]
-    assert targeting["patch"] == "10.5"
-    assert targeting["move_mode"] == "select_destination_board_tile"
+    assert targeting["patch"] == "10.7"
+    assert targeting["surface"] == "semantic_intent_cards"
+    assert targeting["move_mode"] == "semantic_intent_cards"
     assert targeting["move_range_source"] == "card.move_range"
     assert targeting["basic_move_range"] == 1
     assert targeting["footwork_move_range"] == 2
     assert targeting["footwork_distance_choice"] == [1, 2]
-    assert targeting["attack_mode"] == "select_left_or_right_direction"
+    assert targeting["move_intents"] == ["approach", "retreat"]
+    assert targeting["attack_mode"] == "semantic_aim_cards"
+    assert targeting["attack_intents"] == ["aim_opponent", "predict_away"]
     assert targeting["heavy_attack_range"] == 2
     assert targeting["heavy_attack_hits_distances"] == [1, 2]
-    assert targeting["tile_states"] == ["default", "movable", "attackable", "selected", "disabled"]
+    assert targeting["attack_range_tiles_are_clickable"] is False
+    assert targeting["logical_board_visible_during_selection"] is False
+    assert targeting["tile_states"] == ["hidden"]
     assert targeting["shape_and_text_fallback"] is True
     assert targeting["unresolved_target_blocks_progress"] is True
-    assert targeting["resolution_uses_explicit_target"] is True
+    assert targeting["resolution_uses_semantic_intent"] is True
 
     response = contract["response_rules"]
     assert response["patch"] == "10.6"
@@ -239,8 +246,8 @@ def main() -> None:
     resolution_contract = contract["resolution_engine"]
     assert resolution_contract["resolution_order"] == ["response", "quick_attack", "move", "general"]
     assert resolution_contract["same_phase_attacks"] == "simultaneous_damage"
-    assert resolution_contract["uses_explicit_move_target"] is True
-    assert resolution_contract["uses_explicit_attack_direction"] is True
+    assert resolution_contract["uses_semantic_move_intent"] is True
+    assert resolution_contract["uses_semantic_aim_intent"] is True
     assert resolution_contract["uses_card_specific_move_range"] is True
     assert resolution_contract["uses_guard_bundle_profiles"] is True
     assert resolution_contract["uses_stance_response_combo"] is True
@@ -266,8 +273,8 @@ def main() -> None:
     assert resolution["stance_response_bundle_extension"] is True
     assert resolution["stance_response_defense_multiplier"] == 1.5
     assert resolution["placement_resource_preview"] is True
-    assert resolution["explicit_player_move_target"] is True
-    assert resolution["explicit_player_attack_direction"] is True
+    assert resolution["semantic_player_move_intent"] is True
+    assert resolution["semantic_player_aim_intent"] is True
     assert resolution["damage_interrupts_current_timing_actions"] is True
     assert resolution["bundle_momentum_gain"] == 1
     assert resolution["guard_success_momentum_gain"] == 1
@@ -278,11 +285,11 @@ def main() -> None:
     assert resolution["same_tile_max_combatants"] == 2
     assert resolution["enemy_plan_source"] == "public_state_ai"
     assert resolution["enemy_bundles"] == {}
-    assert contract["ultimate_skills"]["selection_trigger"] == "momentum_gauge_below_list"
+    assert contract["ultimate_skills"]["selection_trigger"] == "action_source_tab"
     assert contract["ultimate_skills"]["list_visible_during_planning"] is True
 
     scope = set(contract["presentation_scope"])
-    assert {"action_targeting", "action_placement", "response_rules", "resolution_engine"} <= scope
+    assert {"basic_action_cards", "action_targeting", "action_placement", "response_rules", "resolution_engine", "distance_readout"} <= scope
     excluded = set(contract["excluded_until_later_steps"])
     assert "combat_ai" not in excluded and "combat_end_restart" not in excluded
 
@@ -375,7 +382,7 @@ def main() -> None:
     assert "_configure_keyboard_focus_order" in controller
     assert "_configure_accessibility_semantics" in controller
     assert all(token in action_reveal_script for token in ("show_timing", "future_action_visible", "_actor_events", "VS"))
-    assert all(token in verifier for token in ("TARGETING_10_5", "_on_board_tile_clicked", "miss_direction", "basic_footwork", "EXPECTED_PLAYER_TILE := 4", "EXPECTED_ENEMY_TILE := 6"))
+    assert all(token in verifier for token in ("TARGETING_10_5", "_on_product_intent_selected", "miss_direction", "basic_footwork", "EXPECTED_PLAYER_TILE := 4", "EXPECTED_ENEMY_TILE := 6"))
     assert all(token in response_verifier for token in ("Same-timing guard", "Stance+guard", "Stance+evade", "preview_player_plan", "invalid_anchors"))
     assert "res://tests/verify_response_rules.gd" in powershell
     assert "res://tests/verify_combat_pointer_lock.gd" in powershell

@@ -429,7 +429,7 @@ func _build_action(candidate: Dictionary, snapshot: Dictionary, supplied_definit
     var player_tile := int(snapshot.get("player_tile", 4))
     var direction := _movement_direction(snapshot, movement_policy)
     var targeting_mode := str(definition.get("targeting_mode", ""))
-    var is_move := card_id in ["basic_move", "basic_footwork"] or targeting_mode == "move_tile"
+    var is_move := card_id in ["basic_move", "basic_footwork"] or targeting_mode == "move_intent"
     var move_range := maxi(1, int(definition.get("move_range", 1)))
     var step := mini(move_range, 2) if card_id == "basic_footwork" and int(snapshot.get("distance", 0)) >= 3 else 1
     var reason_codes := _join_reason_codes(candidate.get("reason_codes", []))
@@ -437,7 +437,7 @@ func _build_action(candidate: Dictionary, snapshot: Dictionary, supplied_definit
     if not reason_codes.is_empty():
         reason += "_" + reason_codes
     if targeting_mode.is_empty():
-        targeting_mode = "move_tile" if is_move else ("none" if card_id in ["basic_meditate", "basic_guard", "basic_evade"] else "attack_direction")
+        targeting_mode = "move_intent" if is_move else ("none" if card_id in ["basic_meditate", "basic_guard", "basic_evade"] else "aim_intent")
     return {
         "timing": int(snapshot.get("bundle_start", 1)) if timing < 0 else timing,
         "card_id": card_id,

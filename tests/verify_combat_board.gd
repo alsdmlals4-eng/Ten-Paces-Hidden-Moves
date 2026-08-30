@@ -174,9 +174,9 @@ func _verify_cards_and_overlays(board: CombatBoardPreview, snapshot: Dictionary)
         failures.append("Progress button must start disabled before placements.")
 
 func _card_definition(board: CombatBoardPreview, card_id: String) -> Dictionary:
-    for card in board.basic_card_tray.cards:
-        if str(card.definition.get("id", "")) == card_id:
-            return card.definition.duplicate(true)
+    for definition in board.action_selection_dock.basic_panel.actions:
+        if str(definition.get("id", "")) == card_id:
+            return definition.duplicate(true)
     return {}
 
 func _verify_footwork_targeting(board: CombatBoardPreview) -> void:
@@ -190,16 +190,20 @@ func _verify_footwork_targeting(board: CombatBoardPreview) -> void:
         failures.append("Footwork must place at timing 1.")
         return
     if not board._begin_targeting_for_anchor(1):
-        failures.append("Footwork must enter board-tile targeting mode.")
+        failures.append("Footwork must enter semantic movement-intent targeting mode.")
         board.action_timing_panel.remove_at(1)
         return
-    if board.get_tile(5).interaction_state != "movable" or board.get_tile(6).interaction_state != "movable":
-        failures.append("Footwork must allow choosing either one tile or two tiles to the right from tile 4.")
-    board._on_board_tile_clicked(6)
+    if board._targeting_mode != "move_intent" or board.action_selection_dock.action_intent_panel.intent_buttons.size() != 4:
+        failures.append("Footwork must offer four semantic approach/retreat intent cards.")
+    for tile in board.tiles:
+        if tile.visible:
+            failures.append("Footwork intent selection must keep logical board tiles hidden.")
+            break
+    board._on_product_intent_selected(_intent_by_id(board, "approach_2"))
     await process_frame
     var placement := board.action_timing_panel.get_placement(1)
     if int(placement.get("target_tile", 0)) != 6:
-        failures.append("Footwork must store the selected two-tile destination from tile 4 to tile 6.")
+        failures.append("Footwork approach-two intent must resolve to the projected destination tile 6.")
     board.action_timing_panel.remove_at(1)
     board._clear_targeting()
     await process_frame
@@ -218,11 +222,11 @@ func _verify_step9_placement(board: CombatBoardPreview) -> void:
     if not board.action_timing_panel.has_assignment_at(1) or not board.action_timing_panel.has_assignment_at(2):
         failures.append("Two-slot placement must occupy consecutive timings.")
     if board.action_timing_panel.is_current_bundle_complete():
-        failures.append("An attack without a selected direction must not complete the bundle.")
+        failures.append("An attack without a selected aim intent must not complete the bundle.")
     if not board._begin_targeting_for_anchor(1):
-        failures.append("Heavy attack must enter attack-direction targeting mode.")
-    elif board.get_tile(5).interaction_state != "attackable" or board.get_tile(6).interaction_state != "attackable":
-        failures.append("Heavy attack must expose distance 1 and distance 2 to the right from tile 4.")
+        failures.append("Heavy attack must enter semantic aim targeting mode.")
+    elif board._targeting_mode != "aim_intent" or board.action_selection_dock.action_intent_panel.intent_buttons.size() != 2:
+        failures.append("Heavy attack must expose the two semantic aim cards.")
     board._clear_targeting()
     var removed := board.action_timing_panel.remove_at(2)
     if str(removed.get("card_id", "")) != "basic_heavy_attack":
@@ -243,7 +247,7 @@ func _verify_rule_resolution(board: CombatBoardPreview) -> void:
         "anchor_index": 1,
         "span": 1,
         "indices": PackedInt32Array([1]),
-        "targeting_mode": "move_tile",
+        "targeting_mode": "move_intent",
         "target_ready": true,
         "target_tile": 6,
         "direction": 1,
@@ -265,7 +269,7 @@ func _verify_rule_resolution(board: CombatBoardPreview) -> void:
         "anchor_index": 1,
         "span": 2,
         "indices": PackedInt32Array([1, 2]),
-        "targeting_mode": "attack_direction",
+        "targeting_mode": "aim_intent",
         "target_ready": true,
         "target_tile": 6,
         "direction": 1,
@@ -301,36 +305,38 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
     if board.action_timing_panel.is_current_bundle_complete():
         failures.append("Move and attack placements must require targets before progress enables.")
     if board.combat_progress_button.progress_enabled:
-        failures.append("Progress must remain disabled while a movement tile or attack direction is unresolved.")
+        failures.append("Progress must remain disabled while a movement or attack intent is unresolved.")
     if board.action_timing_panel.get_pending_target_anchor() != 1:
         failures.append("Move at timing 1 must be the first pending target.")
 
     if not board._begin_targeting_for_anchor(1):
-        failures.append("Move placement must enter board-tile targeting mode.")
+        failures.append("Move placement must enter semantic movement-intent targeting mode.")
         return
-    if board.get_tile(5).interaction_state != "movable":
-        failures.append("Tile 5 must be marked movable from player tile 4.")
-    if board.get_tile(6).interaction_state == "movable":
-        failures.append("Basic movement targeting must not exceed one tile.")
-    board._on_board_tile_clicked(5)
+    if board._targeting_mode != "move_intent" or board.action_selection_dock.action_intent_panel.intent_buttons.size() != 2:
+        failures.append("Basic movement must expose only approach-one and retreat-one intent cards.")
+    for tile in board.tiles:
+        if tile.visible:
+            failures.append("Movement intent selection must not reveal the logical tile board.")
+            break
+    board._on_product_intent_selected(_intent_by_id(board, "approach_1"))
     await process_frame
 
     var move_placement := board.action_timing_panel.get_placement(1)
     if not bool(move_placement.get("target_ready", false)) or int(move_placement.get("target_tile", 0)) != 5:
-        failures.append("Move targeting must store destination tile 5.")
+        failures.append("Move approach intent must store the projected destination tile 5.")
     if int(move_placement.get("direction", 0)) != 1:
-        failures.append("Move targeting must store the rightward direction.")
+        failures.append("Move intent must preserve its resolver direction internally.")
 
     if int(board.get_meta("targeting_anchor", 0)) != 3:
         failures.append("After movement targeting, the pending quick attack must become active.")
-    if board.get_tile(6).interaction_state != "attackable":
-        failures.append("Projected attack origin tile 5 must expose tile 6 as the right attack direction.")
-    board._on_board_tile_clicked(6)
+    if board._targeting_mode != "aim_intent":
+        failures.append("Projected quick attack must activate semantic aim selection.")
+    board._on_product_intent_selected(_intent_by_id(board, "aim_opponent"))
     await process_frame
 
     var quick_placement := board.action_timing_panel.get_placement(3)
     if not bool(quick_placement.get("target_ready", false)) or int(quick_placement.get("direction", 0)) != 1:
-        failures.append("Attack targeting must store the selected right direction.")
+        failures.append("Attack aim intent must store the chosen resolver direction internally.")
     if not board.action_timing_panel.is_current_bundle_complete():
         failures.append("The first bundle must complete after all slots and targets are set.")
     if not board.combat_progress_button.progress_enabled:
@@ -375,7 +381,7 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
     var player_after: Dictionary = after_state.get("player", {})
     var enemy_after: Dictionary = after_state.get("enemy", {})
     if int(player_before.get("tile", 0)) != EXPECTED_PLAYER_TILE or int(player_after.get("tile", 0)) != 5:
-        failures.append("Explicit move target must update the player tile from 4 to 5.")
+        failures.append("Semantic move intent must update the player tile from 4 to 5.")
     if int(enemy_before.get("tile", 0)) != EXPECTED_ENEMY_TILE or int(enemy_after.get("tile", 0)) != 6:
         failures.append("Enemy runtime state must remain on tile 6 for this fixed-plan scenario.")
     var player_stamina: Array = player_after.get("stamina", [])
@@ -411,7 +417,7 @@ func _verify_second_bundle_returns_to_planning(board: CombatBoardPreview) -> voi
     if not board._begin_targeting_for_anchor(4):
         failures.append("Quick attack at timing 4 must enter target selection.")
         return
-    board._on_board_tile_clicked(6)
+    board._on_product_intent_selected(_intent_by_id(board, "aim_opponent"))
     if not board.action_timing_panel.place_card(meditate, 5) or not board.action_timing_panel.place_card(meditate, 6):
         failures.append("Second bundle must accept non-targeted follow-up actions.")
         return
@@ -450,7 +456,7 @@ func _verify_wrong_attack_direction(board: CombatBoardPreview) -> void:
         "anchor_index": 1,
         "span": 1,
         "indices": PackedInt32Array([1]),
-        "targeting_mode": "attack_direction",
+        "targeting_mode": "aim_intent",
         "target_ready": true,
         "target_tile": 3,
         "direction": -1,
@@ -464,6 +470,13 @@ func _verify_wrong_attack_direction(board: CombatBoardPreview) -> void:
             found_miss_direction = true
     if not found_miss_direction:
         failures.append("An attack aimed away from an adjacent enemy must resolve as miss_direction.")
+
+func _intent_by_id(board: CombatBoardPreview, intent_id: String) -> Dictionary:
+    for value in board.action_selection_dock.action_intent_panel.intents:
+        if str(value.get("id", "")) == intent_id:
+            return value.duplicate(true)
+    failures.append("Expected semantic intent card was not found: %s" % intent_id)
+    return {}
 
 func _verify_layout(board: CombatBoardPreview, snapshot: Dictionary) -> void:
     var board_bottom := float(snapshot.get("board_bottom", 0.0))

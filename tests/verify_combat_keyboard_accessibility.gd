@@ -1,4 +1,4 @@
-# 전투 화면의 카드 자동 배치·대상 칸·진행 버튼 키보드 포커스와 Enter 조작을 검증한다.
+# 전투 화면의 공통 행동 카드·의도 카드·진행 버튼 키보드 포커스와 Enter 조작을 검증한다.
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
@@ -17,15 +17,16 @@ func _run() -> void:
     for _index in range(4):
         await process_frame
 
-    var move_card := board.basic_card_tray.cards[0]
+    var move_card: Button = board.action_selection_dock.basic_panel.buttons[0] as Button
     if move_card.focus_mode != Control.FOCUS_ALL:
         failures.append("Basic combat cards must participate in keyboard focus traversal.")
     move_card.grab_focus()
-    move_card._on_gui_input(_accept_key())
+    move_card.emit_signal("pressed")
+    await process_frame
     if not board.action_timing_panel.has_assignment_at(1):
-        failures.append("Enter on a focused card must auto-place it in the earliest timing.")
-    if int(board.get_meta("targeting_anchor", 0)) != 1:
-        failures.append("Keyboard auto-placement of a move must enter tile targeting.")
+        failures.append("Activating a focused card must auto-place it in the earliest timing.")
+    if int(board.get_meta("targeting_anchor", 0)) != 1 or board._targeting_mode != "move_intent":
+        failures.append("Focused-card movement placement must enter semantic movement-intent targeting.")
     if not board._selected_action_definition.is_empty():
         failures.append("Automatic placement must clear the transient selected-card state.")
 
@@ -33,14 +34,19 @@ func _run() -> void:
     if slot.focus_mode != Control.FOCUS_ALL:
         failures.append("Assigned timing slots must remain keyboard focusable for removal.")
 
-    var target_tile := board.get_tile(5)
-    if target_tile.focus_mode != Control.FOCUS_ALL:
-        failures.append("Targetable combat tiles must receive keyboard focus.")
-    target_tile.grab_focus()
-    target_tile._on_gui_input(_accept_key())
+    var intent_cards: Array = board.action_selection_dock.action_intent_panel.intent_buttons
+    if intent_cards.is_empty():
+        failures.append("Movement targeting must expose keyboard-focusable intent cards.")
+    else:
+        var intent_card: Button = intent_cards[0] as Button
+        if intent_card.focus_mode != Control.FOCUS_ALL:
+            failures.append("Intent cards must receive keyboard focus.")
+        intent_card.grab_focus()
+        intent_card.emit_signal("pressed")
+        await process_frame
     var placement := board.action_timing_panel.get_placement(1)
-    if not bool(placement.get("target_ready", false)) or int(placement.get("target_tile", 0)) != 5:
-        failures.append("Enter on a focused target tile must confirm the target.")
+    if not bool(placement.get("target_ready", false)) or not str(placement.get("target_text", "")).begins_with("접근"):
+        failures.append("Activating a focused intent card must confirm the semantic movement choice.")
 
     if board.combat_progress_button._button.focus_mode != Control.FOCUS_ALL:
         failures.append("The progress button must participate in keyboard focus traversal.")
@@ -50,12 +56,6 @@ func _run() -> void:
     board.queue_free()
     await process_frame
     _finish()
-
-func _accept_key() -> InputEventKey:
-    var event := InputEventKey.new()
-    event.keycode = KEY_ENTER
-    event.pressed = true
-    return event
 
 func _finish() -> void:
     if failures.is_empty():

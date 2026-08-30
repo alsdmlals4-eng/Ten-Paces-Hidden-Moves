@@ -33,8 +33,8 @@
   "same_tile_range_auto_hit": true,
   "position_swap_forbidden": true,
   "placement_resource_preview": true,
-  "explicit_player_move_target": true,
-  "explicit_player_attack_direction": true,
+  "semantic_player_move_intent": true,
+  "semantic_player_aim_intent": true,
   "enemy_plan_source": "public_state_ai",
   "enemy_bundles": {}
 }

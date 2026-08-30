@@ -296,9 +296,9 @@ static func _placement(definition: Dictionary, snapshot: Dictionary, anchor_inde
     if category == "move":
         var move_range := maxi(1, int(definition.get("move_range", 1)))
         target_tile = clampi(player_tile + direction * move_range, 1, 10)
-        targeting_mode = "move_tile"
+        targeting_mode = "move_intent"
     elif category == "attack":
-        targeting_mode = "attack_direction"
+        targeting_mode = "aim_intent"
     return {
         "card_id": str(definition.get("id", "")),
         "definition": definition.duplicate(true),

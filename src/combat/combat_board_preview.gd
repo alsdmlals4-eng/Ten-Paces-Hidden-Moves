@@ -1222,7 +1222,7 @@ func _presentation_summary_for_event(event: Dictionary, fallback: String) -> Str
 	if outcome == "interrupted":
 		return "중단 · 이 수 행동 취소"
 	if outcome == "miss_direction":
-		return "방향 실패"
+		return "예측 빗나감"
 	if outcome == "miss_range":
 		return "사거리 실패"
 	if str(event.get("defense_outcome", "")) == "block":

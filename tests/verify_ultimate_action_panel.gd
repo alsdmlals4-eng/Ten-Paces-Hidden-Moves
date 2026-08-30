@@ -45,7 +45,8 @@ func _run() -> void:
     var reserved_button: Button = panel.get_action_button("ultimate_cleave_peak")
     _check(is_instance_valid(reserved_button), "Reserved ultimate button must exist.")
     if is_instance_valid(reserved_button):
-        _check("5~6수 예약" in reserved_button.text, "Reserved ultimate must display its timing range.")
+        var reserved_status := reserved_button.find_child("CardStatus", false, false) as Label
+        _check(is_instance_valid(reserved_status) and "5~6수 예약" in reserved_status.text, "Reserved ultimate must display its timing range.")
 
     panel.ultimate_selected.connect(_on_ultimate_selected)
     _check(panel.activate_ultimate("ultimate_flowing_cloud_true_intent") == false, "Locked mastery ultimate must not activate.")

@@ -6,6 +6,7 @@ signal detail_requested(definition: Dictionary, pinned: bool)
 signal detail_cleared()
 
 const ADAPTER_SCRIPT := preload("res://src/ui/action_selection/action_view_model_adapter.gd")
+const ACTION_CHOICE_CARD_SCRIPT := preload("res://src/ui/action_selection/action_choice_card.gd")
 const COLUMNS := 5
 const PAPER_SURFACE := Color("d9ccb1")
 const PAPER_HOVER := Color("eee2c9")
@@ -42,7 +43,9 @@ func get_panel_snapshot() -> Dictionary:
         "columns": COLUMNS,
         "action_ids": ids,
         "scrolling_enabled": false,
-        "interaction_enabled": interaction_enabled
+        "interaction_enabled": interaction_enabled,
+        "card_surface": "shared_action_card_grid",
+        "illustration_policy": "basic_atlas_only"
     }
 
 func _rebuild() -> void:
@@ -51,15 +54,8 @@ func _rebuild() -> void:
     buttons.clear()
 
     for definition in actions:
-        var button := Button.new()
-        button.custom_minimum_size = Vector2(0.0, 96.0)
-        button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-        button.focus_mode = Control.FOCUS_ALL
-        button.text = ""
-        button.tooltip_text = _tooltip_text(definition)
-        button.accessibility_name = _accessibility_name(definition)
-        _apply_ink_paper_style(button, str(definition.get("category", "")))
-        _add_card_content(button, definition)
+        var button := ACTION_CHOICE_CARD_SCRIPT.new() as ActionChoiceCard
+        button.configure_action(definition, "basic_atlas_only")
         button.mouse_entered.connect(_on_action_hovered.bind(definition))
         button.mouse_exited.connect(_on_action_unhovered)
         button.focus_entered.connect(_on_action_hovered.bind(definition))
@@ -72,6 +68,8 @@ func _rebuild() -> void:
     set_meta("layout", "grid_5_by_2")
     set_meta("action_count", actions.size())
     set_meta("card_art_enabled", true)
+    set_meta("card_surface", "shared_action_card_grid")
+    set_meta("illustration_policy", "basic_atlas_only")
     set_meta("presentation_surface", "paper_ink_r1")
 
 func _add_card_content(button: Button, definition: Dictionary) -> void:

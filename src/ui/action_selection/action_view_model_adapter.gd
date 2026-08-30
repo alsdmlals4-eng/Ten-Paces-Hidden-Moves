@@ -4,7 +4,6 @@ extends RefCounted
 const BASIC_PATH := "res://data/cards/basic_cards.json"
 const ULTIMATE_PATH := "res://data/cards/ultimate_cards.json"
 const MASTERY_ULTIMATE_PATH := "res://data/combat/mastery_ultimate_poc.json"
-const ACTION_SELECTION_PATH := "res://data/combat/action_selection_poc.json"
 const MARTIAL_REGISTRY_SCRIPT := preload("res://src/combat/martial_manual_registry.gd")
 
 func build_basic_actions() -> Array[Dictionary]:
@@ -19,7 +18,7 @@ func build_basic_actions() -> Array[Dictionary]:
 
 func build_owned_manuals(loadout: Array = [], mastery_by_manual: Dictionary = {}) -> Array[Dictionary]:
     if loadout.is_empty() and mastery_by_manual.is_empty():
-        return _build_legacy_owned_manuals()
+        return []
     var registry: MartialManualRegistry = MARTIAL_REGISTRY_SCRIPT.new()
     var result: Array[Dictionary] = []
     for manual_value in loadout:
@@ -88,38 +87,6 @@ func build_ultimate_actions(momentum: int, loadout: Array = [], mastery_by_manua
         action["ultimate_origin"] = "mastery" if int(action.get("unlock_mastery", 0)) > 0 else "basic"
         result.append(action)
     result.append_array(_build_martial_ultimates(momentum, required_momentum, loadout, mastery_by_manual))
-    return result
-
-func _build_legacy_owned_manuals() -> Array[Dictionary]:
-    var root := _load_dictionary(ACTION_SELECTION_PATH)
-    var result: Array[Dictionary] = []
-    for value in root.get("owned_manuals", []):
-        if typeof(value) != TYPE_DICTIONARY:
-            continue
-        var source: Dictionary = value
-        var manual_id := str(source.get("manual_id", ""))
-        var manual_name := str(source.get("name", ""))
-        var mastery := maxi(0, int(source.get("mastery", 0)))
-        var techniques: Array[Dictionary] = []
-        for technique_value in source.get("techniques", []):
-            if typeof(technique_value) != TYPE_DICTIONARY:
-                continue
-            var technique_source: Dictionary = technique_value
-            var technique := _normalize_action(technique_source, "martial", manual_id, manual_name)
-            var unlock_mastery := maxi(0, int(technique_source.get("unlock_mastery", 0)))
-            technique["unlock_mastery"] = unlock_mastery
-            technique["current_mastery"] = mastery
-            technique["locked"] = mastery < unlock_mastery
-            technique["lock_reason"] = "%d성 해금 · 현재 %d성" % [unlock_mastery, mastery] if bool(technique["locked"]) else ""
-            techniques.append(technique)
-        result.append({
-            "manual_id": manual_id,
-            "name": manual_name,
-            "mastery": mastery,
-            "role_tags": _string_array(source.get("role_tags", [])),
-            "ultimate_unlocked": bool(source.get("ultimate_unlocked", false)),
-            "techniques": techniques
-        })
     return result
 
 func _build_martial_ultimates(momentum: int, required_momentum: int, loadout: Array, mastery_by_manual: Dictionary) -> Array[Dictionary]:
@@ -191,7 +158,7 @@ func _normalize_action(definition: Dictionary, source_kind: String, source_id: S
     normalized["internal_cost"] = maxi(0, int(definition.get("internal_cost", 0)))
     normalized["momentum_cost"] = maxi(0, int(definition.get("momentum_cost", 0)))
     normalized["range_text"] = _range_text(definition)
-    normalized["targeting_mode"] = str(definition.get("targeting_mode", "none"))
+    normalized["targeting_mode"] = _semantic_targeting_mode(definition)
     normalized["telegraph_count"] = maxi(0, action_slots - 1)
     normalized["execution_count"] = 1
     normalized["locked"] = bool(definition.get("locked", false))
@@ -206,6 +173,15 @@ func _normalize_action(definition: Dictionary, source_kind: String, source_id: S
         "hits": _hit_count(definition.get("hits", _independent_attack_count(definition.get("effect_steps", []))))
     }
     return normalized
+
+func _semantic_targeting_mode(definition: Dictionary) -> String:
+    match str(definition.get("category", "")):
+        "move":
+            return "move_intent"
+        "attack":
+            return "aim_intent"
+        _:
+            return "none"
 
 func _range_text(definition: Dictionary) -> String:
     if definition.has("range_text"):
@@ -232,9 +208,27 @@ func _effect_step_summary(values) -> String:
     if typeof(values) != TYPE_ARRAY:
         return ""
     var operations := PackedStringArray()
+    var attack_count := 0
     for value in values:
-        if typeof(value) == TYPE_DICTIONARY:
-            operations.append(str((value as Dictionary).get("op", "")))
+        if typeof(value) != TYPE_DICTIONARY:
+            continue
+        match str((value as Dictionary).get("op", "")):
+            "ATTACK", "INDEPENDENT_ATTACK":
+                attack_count += 1
+            "MOVE_TOWARD":
+                operations.append("접근")
+            "MOVE_AWAY":
+                operations.append("후퇴")
+            "RECHECK_RANGE":
+                operations.append("거리 재확인")
+            "SPECIAL_CLASH":
+                operations.append("특수 합")
+            "GAIN_RESOURCE":
+                operations.append("자원 획득")
+            "GAIN_STATUS":
+                operations.append("상태 획득")
+    if attack_count > 0:
+        operations.append("연속 공격 %d회" % attack_count if attack_count > 1 else "공격")
     return " → ".join(operations)
 
 func _independent_attack_count(values) -> int:

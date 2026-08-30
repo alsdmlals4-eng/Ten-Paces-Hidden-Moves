@@ -197,9 +197,9 @@ func place_card(definition: Dictionary, start_index: int) -> bool:
 func _targeting_mode_for_definition(definition: Dictionary) -> String:
     var category := str(definition.get("category", ""))
     if category == "move":
-        return "move_tile"
+        return "move_intent"
     if category == "attack":
-        return "attack_direction"
+        return "aim_intent"
     return "none"
 
 func set_placement_target(anchor_index: int, target_data: Dictionary) -> bool:
@@ -210,16 +210,17 @@ func set_placement_target(anchor_index: int, target_data: Dictionary) -> bool:
     if mode == "none":
         return false
 
-    var direction := clampi(int(target_data.get("direction", 0)), -1, 1)
+    var direction := clampi(int(target_data.get("resolver_direction", target_data.get("direction", 0))), -1, 1)
     var target_tile := int(target_data.get("target_tile", 0))
     if direction == 0:
         return false
-    if mode == "move_tile" and target_tile <= 0:
+    if mode == "move_intent" and target_tile <= 0:
         return false
 
     placement["direction"] = direction
     placement["target_tile"] = target_tile
     placement["origin_tile"] = int(target_data.get("origin_tile", 0))
+    placement["intent"] = str(target_data.get("intent", ""))
     placement["target_text"] = str(target_data.get("target_text", _format_target_text(mode, direction, target_tile)))
     placement["target_ready"] = true
     placements[anchor_index] = placement
@@ -228,10 +229,11 @@ func set_placement_target(anchor_index: int, target_data: Dictionary) -> bool:
     return true
 
 func _format_target_text(mode: String, direction: int, target_tile: int) -> String:
-    var arrow := "→" if direction > 0 else "←"
-    if mode == "move_tile":
-        return "%s %d번" % [arrow, target_tile]
-    return "%s 공격" % arrow
+    if mode == "move_intent":
+        return "이동 의도 · %d칸" % absi(target_tile)
+    if mode == "aim_intent":
+        return "공격 의도 선택"
+    return "의도 선택"
 
 func _sync_placement_slots(placement: Dictionary) -> void:
     var indices: PackedInt32Array = placement.get("indices", PackedInt32Array())
