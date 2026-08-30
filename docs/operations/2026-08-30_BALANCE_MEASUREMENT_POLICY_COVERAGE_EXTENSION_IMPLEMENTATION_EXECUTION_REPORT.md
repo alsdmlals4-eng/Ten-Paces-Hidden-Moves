@@ -16,6 +16,7 @@ skill_modes:
   - systematic-debugging: diagnose-before-fix
   - running-adversarial-review-and-refinement: five-full-scope-loops
 protected_change_manifest: docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json
+build_approval_record: docs/implementation/BUILD_APPROVAL_2026-08-30.md
 protected_base_commit: 944cd8194152b3d2e31647b25dacd1bad90b7876
 product_mutation: NONE
 asset_mutation: NONE
@@ -63,6 +64,7 @@ v1 계측은 실제 resolver 3,375 결투를 실행했지만, 세 공개 정책�
 - full Python suite: `428 tests` PASS.
 - current operating system, canonical reference freshness, approved protected contract(정확한 manifest + pinned Base)과 focused governance/current-owner 회귀가 PASS했다.
 - `git diff --check` PASS. 생성 `.import` 캐시는 staging하지 않았고 implementation commit에는 포함되지 않았다.
+- PR #289 첫 원격 CI readback은 active `BUILD_APPROVAL_2026-08-30.md`에 이전 package addendum만 있고 이번 runtime-adjacent validation scope가 같은 PR diff에 없다는 delivery-gate 누락을 fail-closed로 찾았다. 사용자 승인과 이번 Decision에 맞는 PR #289 addendum을 추가해 재실행한다.
 
 ## 다섯 번의 전체 적대 검토
 
