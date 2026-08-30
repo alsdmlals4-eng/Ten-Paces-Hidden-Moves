@@ -10,8 +10,10 @@ const EXPECTED_METRIC_KEYS := [
     "ultimate_uses"
 ]
 const EXPECTED_POLICY_SELECTION_KEYS := [
+    "attack",
     "evade",
     "guard",
+    "move",
     "recovery",
     "ultimate"
 ]
@@ -40,10 +42,10 @@ func _run() -> void:
     _expect_true(bool(contract.get("valid", false)), "Current balance matrix must validate: %s" % str(contract.get("errors", [])))
     _expect_eq(int(contract.get("candidate_count", -1)), 15, "All 15 current candidates must be covered.")
     _expect_eq(int(contract.get("starter_loadout_count", -1)), 15, "Every legal current 4-of-6 starter selection must be covered.")
-    _expect_eq(int(contract.get("scenario_count", -1)), 4500, "The coverage-extension matrix must contain 15 candidates × 15 loadouts × 4 public policies × 5 AI seeds.")
+    _expect_eq(int(contract.get("scenario_count", -1)), 6750, "Representative coverage must contain 15 candidates × 15 loadouts × 6 public policies × 5 AI seeds.")
 
     var scenarios: Array = instrumentation.build_scenarios()
-    _expect_eq(scenarios.size(), 4500, "Every coverage-extension matrix scenario must materialize from current source data.")
+    _expect_eq(scenarios.size(), 6750, "Every representative-policy matrix scenario must materialize from current source data.")
     if not scenarios.is_empty():
         var first: Dictionary = scenarios[0]
         var first_again: Dictionary = first.duplicate(true)

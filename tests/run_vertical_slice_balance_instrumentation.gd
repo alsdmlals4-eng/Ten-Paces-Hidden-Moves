@@ -2,7 +2,7 @@ extends SceneTree
 
 const InstrumentationScript := preload("res://src/validation/vertical_slice_balance_instrumentation.gd")
 const ReportRunnerScript := preload("res://src/validation/vertical_slice_balance_report_runner.gd")
-const EXPECTED_SCENARIO_COUNT := 4500
+const EXPECTED_SCENARIO_COUNT := 6750
 
 
 func _initialize() -> void:

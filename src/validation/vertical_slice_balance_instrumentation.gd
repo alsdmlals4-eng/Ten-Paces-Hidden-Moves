@@ -4,13 +4,13 @@ extends RefCounted
 # approved balance measurement matrix: current candidates x legal starter selections x public policies x fixed AI seeds.
 const MATRIX_PATH := "res://data/validation/vertical_slice_balance_instrumentation_matrix.json"
 const HUD_PATH := "res://data/combat/combat_hud_preview.json"
-const CONTRACT_ID := "TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01"
-const EXPECTED_SCHEMA_VERSION := 1
+const CONTRACT_ID := "TEN-DEC-20260830-BALANCE-MEASUREMENT-REPRESENTATIVE-POLICY-COVERAGE-01"
+const EXPECTED_SCHEMA_VERSION := 2
 const EXPECTED_ROUTE_CONTEXT_ID := "opening_no_route"
 const EXPECTED_TIMING_SEQUENCE := [3, 3, 4]
 const EXPECTED_CANDIDATE_COUNT := 15
 const EXPECTED_STARTER_LOADOUT_COUNT := 15
-const EXPECTED_SCENARIO_COUNT := 4500
+const EXPECTED_SCENARIO_COUNT := 6750
 
 const CatalogScript := preload("res://src/run/vertical_slice_opponent_catalog.gd")
 const BindingScript := preload("res://src/run/vertical_slice_opponent_runtime_binding.gd")
@@ -64,7 +64,7 @@ func build_matrix_contract() -> Dictionary:
     if loadouts.size() != EXPECTED_STARTER_LOADOUT_COUNT or loadouts.size() != int(matrix.get("expected_starter_loadout_count", -1)):
         errors.append("matrix must cover exactly every legal 4-of-6 starter selection")
     if calculated_count != EXPECTED_SCENARIO_COUNT or calculated_count != int(matrix.get("expected_scenario_count", -1)):
-        errors.append("matrix must contain exactly 4,500 deterministic duels")
+        errors.append("matrix must contain exactly 6,750 deterministic duels")
 
     return _contract_result(errors, candidates.size(), loadouts.size(), calculated_count)
 
@@ -226,6 +226,8 @@ func _build_public_row(scenario: Dictionary, outcome: String, bundles_resolved: 
 
 func _empty_policy_selection_counts() -> Dictionary:
     return {
+        "attack": 0,
+        "move": 0,
         "guard": 0,
         "evade": 0,
         "recovery": 0,
@@ -239,14 +241,18 @@ func _record_policy_selection_counts(counts: Dictionary, placements: Array) -> v
             continue
         var definition: Dictionary = (placement_value as Dictionary).get("definition", {}) as Dictionary
         var card_id := str(definition.get("id", ""))
-        if card_id == "basic_guard":
+        if str(definition.get("source", "")) == "ultimate":
+            counts["ultimate"] = int(counts.get("ultimate", 0)) + 1
+        elif card_id == "basic_guard":
             counts["guard"] = int(counts.get("guard", 0)) + 1
         elif card_id == "basic_evade":
             counts["evade"] = int(counts.get("evade", 0)) + 1
         elif str(definition.get("category", "")) == "recovery":
             counts["recovery"] = int(counts.get("recovery", 0)) + 1
-        elif str(definition.get("source", "")) == "ultimate":
-            counts["ultimate"] = int(counts.get("ultimate", 0)) + 1
+        elif str(definition.get("category", "")) == "attack":
+            counts["attack"] = int(counts.get("attack", 0)) + 1
+        elif str(definition.get("category", "")) == "move":
+            counts["move"] = int(counts.get("move", 0)) + 1
 
 
 func _terminal_outcome(state: Dictionary) -> String:

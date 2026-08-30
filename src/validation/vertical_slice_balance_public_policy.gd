@@ -5,7 +5,9 @@ const POLICY_IDS: Array[String] = [
     "public_approach_pressure",
     "public_guarded_exchange",
     "public_recovery_range",
-    "public_evade_then_ultimate"
+    "public_evade_then_ultimate",
+    "public_distance_control",
+    "public_mixed_exchange"
 ]
 
 
@@ -36,6 +38,10 @@ static func build_placements(
             return _recovery_range(snapshot, cards_by_id, player_martial_card_ids, bounds)
         "public_evade_then_ultimate":
             return _evade_then_ultimate(snapshot, cards_by_id, player_martial_card_ids, bounds)
+        "public_distance_control":
+            return _distance_control(snapshot, cards_by_id, player_martial_card_ids, bounds)
+        "public_mixed_exchange":
+            return _mixed_exchange(snapshot, cards_by_id, player_martial_card_ids, bounds)
     return []
 
 
@@ -102,6 +108,45 @@ static func _evade_then_ultimate(snapshot: Dictionary, cards_by_id: Dictionary, 
     return _recovery_range(snapshot, cards_by_id, martial_ids, bounds)
 
 
+static func _distance_control(snapshot: Dictionary, cards_by_id: Dictionary, martial_ids: PackedStringArray, bounds: Vector2i) -> Array[Dictionary]:
+    var direction := int(snapshot.get("direction_to_enemy", 1))
+    var martial := _longest_reachable_attack(snapshot, cards_by_id, martial_ids, bounds)
+    if not martial.is_empty():
+        return [_placement(martial, snapshot, bounds.x, direction)]
+    var basic := _longest_reachable_attack(snapshot, cards_by_id, PackedStringArray(["basic_heavy_attack", "basic_quick_attack", "basic_palm"]), bounds)
+    if not basic.is_empty():
+        return [_placement(basic, snapshot, bounds.x, direction)]
+    if int(snapshot.get("distance", 0)) > 0:
+        var move := _choose_move(snapshot, cards_by_id)
+        if not move.is_empty():
+            return [_placement(move, snapshot, bounds.x, direction)]
+    return _guard_fallback(snapshot, cards_by_id, bounds)
+
+
+static func _mixed_exchange(snapshot: Dictionary, cards_by_id: Dictionary, martial_ids: PackedStringArray, bounds: Vector2i) -> Array[Dictionary]:
+    var direction := int(snapshot.get("direction_to_enemy", 1))
+    if _momentum_is_full(snapshot):
+        var ultimate := _first_reachable_ultimate(snapshot, cards_by_id, bounds)
+        if not ultimate.is_empty():
+            return [_placement(ultimate, snapshot, bounds.x, direction)]
+    if _resources_below_maximum(snapshot) and not (snapshot.get("public_resolution_history", []) as Array).is_empty():
+        var recovery := _first_reachable_recovery(snapshot, cards_by_id, martial_ids, bounds)
+        if not recovery.is_empty():
+            return [_placement(recovery, snapshot, bounds.x, direction)]
+    var martial := _first_reachable_martial_attack(snapshot, cards_by_id, martial_ids, bounds)
+    if not martial.is_empty():
+        return [_placement(martial, snapshot, bounds.x, direction)]
+    for card_id in ["basic_heavy_attack", "basic_quick_attack", "basic_palm"]:
+        var definition: Dictionary = (cards_by_id.get(card_id, {}) as Dictionary).duplicate(true)
+        if _is_reachable_attack(snapshot, definition, bounds) and _can_afford(snapshot, definition):
+            return [_placement(definition, snapshot, bounds.x, direction)]
+    if int(snapshot.get("distance", 0)) > 0:
+        var move := _choose_move(snapshot, cards_by_id)
+        if not move.is_empty():
+            return [_placement(move, snapshot, bounds.x, direction)]
+    return _guard_fallback(snapshot, cards_by_id, bounds)
+
+
 static func _first_reachable_martial_attack(snapshot: Dictionary, cards_by_id: Dictionary, martial_ids: PackedStringArray, bounds: Vector2i) -> Dictionary:
     var sorted_ids: Array[String] = []
     for card_id_value in martial_ids:
@@ -112,6 +157,46 @@ static func _first_reachable_martial_attack(snapshot: Dictionary, cards_by_id: D
         if _is_reachable_attack(snapshot, definition, bounds) and _can_afford(snapshot, definition):
             return definition
     return {}
+
+
+static func _longest_reachable_attack(snapshot: Dictionary, cards_by_id: Dictionary, card_ids: PackedStringArray, bounds: Vector2i) -> Dictionary:
+    var candidates: Array[Dictionary] = []
+    for card_id_value in card_ids:
+        var definition: Dictionary = (cards_by_id.get(str(card_id_value), {}) as Dictionary).duplicate(true)
+        if _is_reachable_attack(snapshot, definition, bounds) and _can_afford(snapshot, definition):
+            candidates.append(definition)
+    candidates.sort_custom(_longer_range_then_id)
+    return candidates[0].duplicate(true) if not candidates.is_empty() else {}
+
+
+static func _longer_range_then_id(left: Dictionary, right: Dictionary) -> bool:
+    var left_range: Dictionary = left.get("range", {}) as Dictionary
+    var right_range: Dictionary = right.get("range", {}) as Dictionary
+    var left_max := int(left_range.get("max", -1))
+    var right_max := int(right_range.get("max", -1))
+    if left_max != right_max:
+        return left_max > right_max
+    return str(left.get("id", "")) < str(right.get("id", ""))
+
+
+static func _first_reachable_recovery(snapshot: Dictionary, cards_by_id: Dictionary, martial_ids: PackedStringArray, bounds: Vector2i) -> Dictionary:
+    var sorted_ids: Array[String] = []
+    for card_id_value in martial_ids:
+        sorted_ids.append(str(card_id_value))
+    sorted_ids.sort()
+    for card_id in sorted_ids:
+        var recovery: Dictionary = (cards_by_id.get(card_id, {}) as Dictionary).duplicate(true)
+        if str(recovery.get("category", "")) == "recovery" and _fits_bundle(recovery, bounds) and _can_afford(snapshot, recovery):
+            return recovery
+    var meditate: Dictionary = (cards_by_id.get("basic_meditate", {}) as Dictionary).duplicate(true)
+    return meditate if not meditate.is_empty() and _fits_bundle(meditate, bounds) and _can_afford(snapshot, meditate) else {}
+
+
+static func _guard_fallback(snapshot: Dictionary, cards_by_id: Dictionary, bounds: Vector2i) -> Array[Dictionary]:
+    var guard: Dictionary = (cards_by_id.get("basic_guard", {}) as Dictionary).duplicate(true)
+    if not guard.is_empty() and _fits_bundle(guard, bounds) and _can_afford(snapshot, guard):
+        return [_placement(guard, snapshot, bounds.x, int(snapshot.get("direction_to_enemy", 1)))]
+    return []
 
 
 static func _first_reachable_ultimate(snapshot: Dictionary, cards_by_id: Dictionary, bounds: Vector2i) -> Dictionary:

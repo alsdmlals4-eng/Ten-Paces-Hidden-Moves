@@ -377,7 +377,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 | consumer classification | exact fields | current evidence |
 |---|---|---|
 | CURRENT_RUNTIME_CONSUMED_FIELDS | `signature_manual_id`, `signature_star_seed`, `runtime_archetype_id`, `basic_action_focus_ids`, `final_stat_total_seed` | current loadout/route/result plus Issue #267 per-combat binding, derived stats, and planner consumer |
-| MEASURED_BY_VALIDATION_ONLY_INSTRUMENTATION_NOT_NUMERICALLY_DECIDED | profile weights, derived stat total, player/loadout/policy/seed outcome distribution | schema 1 v1 result review completed; successor Decision `TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01` adds schema 2 public-policy coverage. It is local-branch machine evidence pending PR, not a numerical balance decision. |
+| MEASURED_BY_VALIDATION_ONLY_INSTRUMENTATION_NOT_NUMERICALLY_DECIDED | profile weights, derived stat total, player/loadout/policy/seed outcome distribution | schema 2 4,500-row coverage is merged historical machine evidence. Successor `TEN-DEC-20260830-BALANCE-MEASUREMENT-REPRESENTATIVE-POLICY-COVERAGE-01` has local schema 3 six-archetype 6,750-row byte-identical machine evidence pending PR; it is not a numerical balance decision. |
 
 | state | owned by | player-visible meaning | evidence boundary |
 |---|---|---|---|

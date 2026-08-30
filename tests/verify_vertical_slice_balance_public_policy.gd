@@ -22,8 +22,10 @@ func _run() -> void:
         "public_approach_pressure",
         "public_guarded_exchange",
         "public_recovery_range",
-        "public_evade_then_ultimate"
-    ], "The coverage extension must retain the three v1 policies and add one public evade-to-ultimate policy.")
+        "public_evade_then_ultimate",
+        "public_distance_control",
+        "public_mixed_exchange"
+    ], "Representative coverage must retain the four schema-2 policies and add public distance-control and mixed-exchange policies.")
 
     var engine = EngineScript.new()
     var mastery := {}
@@ -111,6 +113,46 @@ func _run() -> void:
     _expect_true(not ultimate_placements.is_empty(), "Maximum public momentum must produce a legal ultimate placement when the current bundle fits one.")
     if not ultimate_placements.is_empty():
         _expect_eq(str((ultimate_placements[0] as Dictionary).get("card_id", "")), "ultimate_cleave_peak", "At public distance two, the policy must select the legal two-slot range-two ultimate.")
+
+    var distance_control_cards := {
+        "basic_move": {"id": "basic_move", "category": "move", "action_slots": 1, "stamina_cost": 0, "internal_cost": 0, "move_range": 1},
+        "basic_guard": {"id": "basic_guard", "category": "response", "action_slots": 1, "stamina_cost": 0, "internal_cost": 0},
+        "test_close_attack": {"id": "test_close_attack", "category": "attack", "action_slots": 1, "stamina_cost": 0, "internal_cost": 0, "range": {"min": 1, "max": 1}},
+        "test_long_attack": {"id": "test_long_attack", "category": "attack", "action_slots": 1, "stamina_cost": 0, "internal_cost": 0, "range": {"min": 1, "max": 3}}
+    }
+    var distance_control_placements: Array = PolicyScript.build_placements(
+        "public_distance_control",
+        state,
+        distance_control_cards,
+        PackedStringArray(["test_close_attack", "test_long_attack"]),
+        1,
+        [3, 3, 4]
+    )
+    _expect_true(not distance_control_placements.is_empty(), "Distance control must make a legal public placement.")
+    if not distance_control_placements.is_empty():
+        _expect_eq(str((distance_control_placements[0] as Dictionary).get("card_id", "")), "test_long_attack", "Distance control must prefer the reachable public attack with the greatest maximum range.")
+
+    var mixed_recovery_state := {
+        "player": {"tile": 4, "stamina": [1, 5], "internal": [1, 4], "momentum": [0, 5]},
+        "enemy": {"tile": 6},
+        "public_resolution_history": [{"outcome": "resolved"}]
+    }
+    var mixed_cards := {
+        "basic_move": {"id": "basic_move", "category": "move", "action_slots": 1, "stamina_cost": 0, "internal_cost": 0, "move_range": 1},
+        "basic_guard": {"id": "basic_guard", "category": "response", "action_slots": 1, "stamina_cost": 0, "internal_cost": 0},
+        "test_recovery": {"id": "test_recovery", "category": "recovery", "action_slots": 1, "stamina_cost": 0, "internal_cost": 0}
+    }
+    var mixed_placements: Array = PolicyScript.build_placements(
+        "public_mixed_exchange",
+        mixed_recovery_state,
+        mixed_cards,
+        PackedStringArray(["test_recovery"]),
+        1,
+        [3, 3, 4]
+    )
+    _expect_true(not mixed_placements.is_empty(), "Mixed exchange must make a legal public placement.")
+    if not mixed_placements.is_empty():
+        _expect_eq(str((mixed_placements[0] as Dictionary).get("card_id", "")), "test_recovery", "Mixed exchange must recover from public resource deficit after a public completed exchange.")
 
     _expect_true(
         PolicyScript.build_placements("unknown_policy", state, engine.cards_by_id, engine.get_player_martial_card_ids(), 1, [3, 3, 4]).is_empty(),

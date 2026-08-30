@@ -95,3 +95,23 @@ This is a validation policy recovery, not a combat-value, card-data, resolver, A
 ## Exclusions and evidence ceiling
 
 No combat formula or card/profile value, timing rule, AI/private-plan information boundary, save schema, player UI/Scene, asset/audio/localization, route/campaign, external telemetry, automatic balance tuning, Android, release, or unrelated refactor is authorized. Two byte-identical 4,500-scenario reports prove deterministic machine coverage only. Windows-visible usability, human gameplay fairness/fun/readability, accessibility-user, Android-device, release-performance, numerical balance, and release PASS remain `NOT_RUN`.
+
+---
+
+# PR #292 Representative Balance Measurement-Policy Coverage BUILD Approval Addendum
+
+- Decision / contract: `TEN-DEC-20260830-BALANCE-MEASUREMENT-REPRESENTATIVE-POLICY-COVERAGE-01`
+- Approved on: `2026-08-30 KST`
+- Approval source: the user's explicit `좋아 진행해`, the retained recommended-plan continuation, and standing approval to recover required in-scope work and approvals.
+- Issue / PR: implementation continuation / `#292`
+- Authority level: `VALIDATION_ONLY_REPRESENTATIVE_PUBLIC_POLICY_COVERAGE`
+
+## Approved scope
+
+1. Retain the four merged public measurement policies and add exactly two deterministic public-only validation inputs: distance control and mixed exchange.
+2. Expand the existing current-resolver opening-no-route matrix from 4,500 to 6,750 scenarios and add schema 3 fixed safe aggregate selection counts for attack, move, guard, evade, recovery, and ultimate coverage.
+3. Add only the exact validation data/scripts, focused and repository regressions, current-state/evidence records, and one-time protected-change approval artefacts required for PR #292.
+
+## Exclusions and evidence ceiling
+
+No combat formula or card/profile value, timing rule, shared resolver behavior, AI/private-plan information boundary, save schema, player UI/Scene, asset/audio/localization, route/campaign, external telemetry, automatic balance tuning, Android, release, or unrelated refactor is authorized. Two byte-identical 6,750-scenario reports prove deterministic machine coverage only. Windows-visible usability, human gameplay fairness/fun/readability, accessibility-user, Android-device, release-performance, numerical balance, and release PASS remain `NOT_RUN`.

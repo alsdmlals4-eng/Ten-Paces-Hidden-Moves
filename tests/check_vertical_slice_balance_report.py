@@ -8,8 +8,8 @@ from pathlib import Path
 from typing import Any
 
 
-CONTRACT_ID = "TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01"
-EXPECTED_SCENARIOS = 4500
+CONTRACT_ID = "TEN-DEC-20260830-BALANCE-MEASUREMENT-REPRESENTATIVE-POLICY-COVERAGE-01"
+EXPECTED_SCENARIOS = 6750
 EXPECTED_ROUTE_CONTEXT = "opening_no_route"
 EXPECTED_ROW_KEYS = {
     "scenario_id",
@@ -35,8 +35,10 @@ EXPECTED_POLICIES = {
     "public_guarded_exchange",
     "public_recovery_range",
     "public_evade_then_ultimate",
+    "public_distance_control",
+    "public_mixed_exchange",
 }
-EXPECTED_POLICY_SELECTION_KEYS = {"guard", "evade", "recovery", "ultimate"}
+EXPECTED_POLICY_SELECTION_KEYS = {"attack", "move", "guard", "evade", "recovery", "ultimate"}
 EXPECTED_SEEDS = {0, 1, 17, 101, 1009}
 FORBIDDEN_TOKENS = (
     "ai_profile",
@@ -71,7 +73,7 @@ def _assert_no_forbidden(value: Any) -> None:
 
 
 def _validate(report: dict[str, Any]) -> None:
-    assert report["schema_version"] == 2
+    assert report["schema_version"] == 3
     assert report["contract_id"] == CONTRACT_ID
     assert report["route_context_id"] == EXPECTED_ROUTE_CONTEXT
     assert report["scenario_count_expected"] == EXPECTED_SCENARIOS
@@ -131,6 +133,12 @@ def _validate(report: dict[str, Any]) -> None:
     assert policy_selection_totals["public_evade_then_ultimate"]["evade"] > 0
     assert policy_selection_totals["public_recovery_range"]["recovery"] > 0
     assert policy_selection_totals["public_evade_then_ultimate"]["ultimate"] > 0
+    assert policy_selection_totals["public_distance_control"]["attack"] > 0
+    assert policy_selection_totals["public_distance_control"]["move"] > 0
+    assert policy_selection_totals["public_mixed_exchange"]["attack"] > 0
+    assert policy_selection_totals["public_mixed_exchange"]["guard"] > 0
+    assert policy_selection_totals["public_mixed_exchange"]["recovery"] > 0
+    assert policy_selection_totals["public_mixed_exchange"]["ultimate"] > 0
     assert policy_metric_totals["public_evade_then_ultimate"]["successful_dodges"] > 0
     assert policy_metric_totals["public_evade_then_ultimate"]["ultimate_uses"] > 0
     _assert_no_forbidden(report)
