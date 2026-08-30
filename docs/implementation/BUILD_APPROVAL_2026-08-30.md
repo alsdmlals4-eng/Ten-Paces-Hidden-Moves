@@ -16,3 +16,23 @@
 ## Exclusions and evidence ceiling
 
 No deck, hand, draw, enemy-only skill, save/schema expansion, economy, Route, Scene redesign, asset generation, Android work, or unrelated refactor is authorized. Windows-visible usability, human play, accessibility-user, Android device, release-performance, and balance-simulation evidence remain `NOT_RUN`.
+
+---
+
+# PR #277 Ink-Paper Diagonal Duel Presentation BUILD Approval Addendum
+
+- Decision / contract: `TEN-DEC-20260801-SITUATION-SCREEN-01`, `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`, and `TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01`
+- Approved on: `2026-08-30 KST`
+- Approval source: the user’s explicit `확정` final lock for the diagonal pair, 5×2 technique atlas, and one-action-at-a-time `VS` reveal; earlier user authorization to automatically proceed and approve necessary recovery/approvals.
+- Issue / PR: implementation continuation / `#277`
+- Authority level: `SCOPED_INK_PAPER_DIAGONAL_DUEL_PRESENTATION_ONLY`
+
+## Approved scope
+
+1. Promote the final-locked ink-paper background, player/Dogyeom diagonal Battler pair, and ten-technique atlas into their documented runtime consumers while retaining generic-opponent fallback and inactive rollback assets.
+2. Preserve the existing 5×2 action dock and present the already-resolved current timing only: each side’s action, `VS`, and outcome appear before that timing’s view snapshot is applied.
+3. Add only the display-safe resolver event fields, Godot presentation/UI work, asset provenance, regression checks, current-state evidence, and this one-time protected-change approval required for the exact PR path set.
+
+## Exclusions and evidence ceiling
+
+No combat numbers or timing rules, AI/private-plan information boundary, public-history shape, save schema, platform adapter, Android work, release claim, additional image queue, or unrelated refactor is authorized. Machine and visible local Godot runtime evidence remain distinct from human gameplay readability, accessibility-user, Android-device, release-performance, and store/release evidence, which remain `NOT_RUN`.
