@@ -17,8 +17,19 @@ func _run() -> void:
     for _index in range(4):
         await process_frame
 
-    _require_focus_ring(board.ultimate_menu, "ultimate menu")
-    _require_focus_ring(board.ultimate_list_buttons[0], "ultimate list")
+    _require_focus_ring(board.action_selection_dock.ultimate_tab, "ultimate source tab")
+    var player: Dictionary = board.combat_state.get("player", {})
+    player["momentum"] = [5, 5]
+    board.combat_state["player"] = player
+    board._sync_action_selection_dock()
+    board.action_selection_dock.set_active_source("ultimate")
+    await process_frame
+    var available_ultimate: Button = null
+    for button in board.action_selection_dock.ultimate_panel.action_buttons:
+        if not bool(button.get_meta("locked", true)):
+            available_ultimate = button
+            break
+    _require_focus_ring(available_ultimate, "available ultimate action")
     _require_focus_ring(board.fast_replay_button, "fast playback")
     _require_focus_ring(board.skip_presentation_button, "skip playback")
     _require_focus_ring(board.reduced_motion_button, "reduced motion")

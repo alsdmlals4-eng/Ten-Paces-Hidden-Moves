@@ -6,7 +6,7 @@ signal detail_requested(definition: Dictionary, pinned: bool)
 signal detail_cleared()
 
 const ADAPTER_SCRIPT := preload("res://src/ui/action_selection/action_view_model_adapter.gd")
-const COLUMNS := 4
+const COLUMNS := 5
 const PAPER_SURFACE := Color("d9ccb1")
 const PAPER_HOVER := Color("eee2c9")
 const CHARCOAL_INK := Color("211c17")
@@ -52,13 +52,14 @@ func _rebuild() -> void:
 
     for definition in actions:
         var button := Button.new()
-        button.custom_minimum_size = Vector2(136.0, 58.0)
+        button.custom_minimum_size = Vector2(0.0, 96.0)
         button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
         button.focus_mode = Control.FOCUS_ALL
-        button.text = _button_text(definition)
+        button.text = ""
         button.tooltip_text = _tooltip_text(definition)
         button.accessibility_name = _accessibility_name(definition)
         _apply_ink_paper_style(button, str(definition.get("category", "")))
+        _add_card_content(button, definition)
         button.mouse_entered.connect(_on_action_hovered.bind(definition))
         button.mouse_exited.connect(_on_action_unhovered)
         button.focus_entered.connect(_on_action_hovered.bind(definition))
@@ -68,9 +69,79 @@ func _rebuild() -> void:
         buttons.append(button)
 
     set_interaction_enabled(interaction_enabled)
-    set_meta("layout", "grid_4_by_2")
+    set_meta("layout", "grid_5_by_2")
     set_meta("action_count", actions.size())
+    set_meta("card_art_enabled", true)
     set_meta("presentation_surface", "paper_ink_r1")
+
+func _add_card_content(button: Button, definition: Dictionary) -> void:
+    var illustration := TextureRect.new()
+    illustration.name = "CardIllustration"
+    illustration.texture = _texture_from_spec(definition.get("illustration", {}))
+    illustration.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+    illustration.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+    illustration.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    illustration.modulate = Color(0.30, 0.27, 0.23, 0.94)
+    illustration.set_anchors_preset(Control.PRESET_TOP_WIDE)
+    illustration.offset_left = 7.0
+    illustration.offset_top = 5.0
+    illustration.offset_right = -7.0
+    illustration.offset_bottom = 62.0
+    button.add_child(illustration)
+
+    var name_label := Label.new()
+    name_label.name = "CardName"
+    name_label.text = "%s  %d수" % [str(definition.get("name", "")), int(definition.get("action_slots", 1))]
+    name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+    name_label.clip_text = true
+    name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    name_label.add_theme_font_size_override("font_size", 14)
+    name_label.add_theme_color_override("font_color", CHARCOAL_INK)
+    name_label.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+    name_label.offset_left = 5.0
+    name_label.offset_top = -31.0
+    name_label.offset_right = -5.0
+    name_label.offset_bottom = -15.0
+    button.add_child(name_label)
+
+    var facts_label := Label.new()
+    facts_label.name = "CardFacts"
+    facts_label.text = _compact_card_facts(definition)
+    facts_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    facts_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+    facts_label.clip_text = true
+    facts_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    facts_label.add_theme_font_size_override("font_size", 10)
+    facts_label.add_theme_color_override("font_color", Color("4d4032"))
+    facts_label.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+    facts_label.offset_left = 5.0
+    facts_label.offset_top = -16.0
+    facts_label.offset_right = -5.0
+    facts_label.offset_bottom = -2.0
+    button.add_child(facts_label)
+
+func _compact_card_facts(definition: Dictionary) -> String:
+    var costs := PackedStringArray()
+    var stamina := int(definition.get("stamina_cost", 0))
+    var internal := int(definition.get("internal_cost", 0))
+    if stamina > 0:
+        costs.append("기%d" % stamina)
+    if internal > 0:
+        costs.append("내%d" % internal)
+    if costs.is_empty():
+        costs.append("비용 없음")
+    return "%s · 거리 %s" % [" ".join(costs), str(definition.get("range_text", "-"))]
+
+func _texture_from_spec(spec: Dictionary) -> Texture2D:
+    var path := str(spec.get("atlas", ""))
+    var region: Array = spec.get("region", [])
+    if path.is_empty() or region.size() != 4 or not ResourceLoader.exists(path):
+        return null
+    var texture := AtlasTexture.new()
+    texture.atlas = load(path) as Texture2D
+    texture.region = Rect2(float(region[0]), float(region[1]), float(region[2]), float(region[3]))
+    return texture
 
 func _apply_ink_paper_style(button: Button, category: String) -> void:
     var accent := _category_accent(category)
@@ -133,23 +204,6 @@ func _on_action_pressed(definition: Dictionary) -> void:
         return
     detail_requested.emit(definition.duplicate(true), true)
     action_selected.emit(definition.duplicate(true))
-
-func _button_text(definition: Dictionary) -> String:
-    var resource_parts := PackedStringArray()
-    var stamina := int(definition.get("stamina_cost", 0))
-    var internal := int(definition.get("internal_cost", 0))
-    if stamina > 0:
-        resource_parts.append("기력 %d" % stamina)
-    if internal > 0:
-        resource_parts.append("내력 %d" % internal)
-    if resource_parts.is_empty():
-        resource_parts.append("비용 없음")
-    return "%s  ·  %d수\n%s  ·  거리 %s" % [
-        str(definition.get("name", "")),
-        int(definition.get("action_slots", 1)),
-        " / ".join(resource_parts),
-        str(definition.get("range_text", "-"))
-    ]
 
 func _tooltip_text(definition: Dictionary) -> String:
     return "%s · %s · %d수" % [

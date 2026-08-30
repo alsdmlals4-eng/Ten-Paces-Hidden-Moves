@@ -113,3 +113,101 @@ The later explicit final lock, `확정하자`, was handled in the separate bound
 - visual UI 작업도 실제 hidden/visible consumer를 먼저 찾아 적용하도록 execution evidence를 남겼다.
 - focused test가 theme token과 real child hierarchy를 읽도록 해, 단순 문서/이미지 주장만으로 presentation 완료를 표시하지 않는다.
 - initial Godot worktree import scan 뒤 exact project session을 활성화해 runtime test를 수행했다. unrelated `.import` cache artefact는 source commit에 포함하지 않는다.
+
+---
+
+## 보정 계속 작업 · 거리 중심 대각선 전투와 기본기 카드 읽기성
+
+```yaml
+report_id: TEN-OPS-20260830-INK-PAPER-COMBAT-PRESENTATION-02
+date: 2026-08-30
+work_mode: BUILD
+baseline_origin_main: 06378d3b56cd49de35f6234c9b01d3ba69f13621
+implementation_branch: codex/ink-paper-combat-presentation-design-20260830
+source_head_before_correction: baa2c53357c826d23d27b5e5674e2a8e0bc0ace7
+scope: user-directed combat-screen composition and basic-action-card readability correction; no combat-rule, AI, save-schema, card-rule-data, or platform change
+status: MACHINE_VERIFIED_AND_WINDOWS_VISIBLE_RUNTIME_VERIFIED
+```
+
+### 작업 전 문제
+
+사용자는 실제 실행 화면에서 세 가지 불일치를 확인했다.
+
+1. 휴지 상태에서도 하단의 논리 전투판이 보이는 것처럼 읽혔다.
+2. 양쪽 battler가 전경/후경 대각선이 아니라 평면적인 수평 대치로 읽혔다.
+3. 기초 행동은 5×2 카드 배열이어도 삽화가 약 25px 높이로 잘려, 제공된 수묵 전술 카드 Reference의 행동 판독성을 충족하지 못했다.
+
+`scenes/combat/combat_board_preview.tscn`은 보정 중 PNG 바이트로 오염되어 Godot parse error(`Expected '['`)를 냈다. 이 파일은 이 package의 source 변경 대상이 아니며 branch `HEAD` object `a5866a1b543d65372a4ad9e0f34a5ef4bddfd638`과 worktree object가 다름을 확인했다. 사용자에게 허용된 자동 복구 범위에서 그 **한 파일만** `HEAD` byte로 복원했고, object equality 및 scene header readback을 확인했다.
+
+### 조사·비교 결과
+
+- **Repository contract:** 기본 전투 화면은 1~10 절대 타일을 상시 표시하지 않고 `거리 N`을 기본 판독값으로 사용한다. 타일은 targeting/focus에서만 문맥적으로 드러나야 한다.
+- **Actual consumer:** `combat_board_preview_auto.gd`가 product board를 실제 구성하며, legacy `BasicCardTray`가 아니라 `ActionSelectionDock → BasicActionPanel`이 하단 기본기 UI를 소비한다.
+- **Technical relevance: ADOPT.** Godot 공식 `Control` anchor/offset 및 `CanvasItem` visibility/z-order 문서를 확인했다. logical lane을 삭제하지 않고 parent target layer의 visibility를 resting/targeting 상태에 맞춰 분리하고, same live Control consumer의 anchors로 대각선 구성을 적용하는 방식이 현재 엔진 구현과 맞는다.
+- **Feasibility: FEASIBLE.** layout, targeting, action placement, timing, keyboard focus, existing basic-card atlas consumer를 cross-read했다. 새 전투 규칙이나 save migration은 필요하지 않았다.
+
+### 채택한 구조와 이유
+
+1. **논리 10칸과 보이는 전장 분리:** resting state에서 `TileLayer`와 foot-anchor guide를 숨기고, targetable tile만 실제 target phase에 다시 보인다. 타일 인덱스·타격·이동·AI·저장 state는 그대로다.
+2. **대각선 duel composition:** player는 좌하단의 더 큰 전경, enemy는 우상단의 더 작은 후경으로 고정한다. 중앙 `거리 N`은 두 캐릭터 사이의 살아 있는 combat state를 계속 표시한다.
+3. **기초기술 카드:** 10개의 current basic action을 5×2 native card grid로 유지하되, 카드 최소 높이를 96px로 올리고 기존 `basic_illustrations_atlas.svg` region을 58px 이상의 상단 주 시각 영역으로 확장한다. 이름·행동 수·비용·사거리는 image가 아니라 localized Godot label이다.
+4. **검증도 current consumer로 교정:** legacy equal-size/tile-foot-anchor/ultimate-menu focus assertions를 현재 product ActionSelectionDock와 distance-first diagonal contract로 교체했다. 논리 tile identity와 action-selection/keyboard routes는 별도 regression으로 보존했다.
+
+### 실제 구현 또는 준비 결과
+
+- `src/combat/combat_board_preview_auto.gd`
+  - resting target layer/anchor guide hide, target phase reveal을 추가했다.
+  - player-left foreground / enemy-right background / central distance composition, relative scale 및 z-order를 actual board layout에 적용했다.
+- `src/ui/action_selection/basic_action_panel.gd`
+  - 5×2 basic card grid의 각 native `Button`에 existing atlas `CardIllustration`, `CardName`, `CardFacts` child를 붙이고 illustration-dominant 96px card로 확장했다.
+- `tests/verify_ink_paper_combat_presentation.gd`, `verify_basic_action_panel.gd`, `verify_combat_board.gd`, `verify_combat_character_art.gd`, `verify_combat_focus_visuals.gd`
+  - resting hidden logical board, contextual target labels, diagonal foreground/background, full illustrated card height, actual ActionSelectionDock ultimate focus, and logical tile identity를 회귀 대상으로 갱신했다.
+
+### TDD와 검증 증거
+
+| 층 | 수행 | 결과 |
+|---|---|---|
+| Focused RED 1 | resting tile layer, flat battlers, equal scale, 4-column/text-only card expectation을 새 verifier로 실행 | 예상 6개 실패 확인 |
+| Focused GREEN 1 | `verify_ink_paper_combat_presentation.gd` | PASS |
+| Focused RED 2 | `verify_basic_action_panel.gd`에 full-card height / dominant illustration expectation 추가 | 예상 2개 실패 확인 |
+| Focused GREEN 2 | existing atlas를 96px card / 58px+ illustration region으로 확장 | PASS |
+| Legacy-contract correction | board/character/focus visual test가 old equal scale, old tile foot anchor, hidden ultimate menu를 요구함을 재현 | current consumer assertion으로 교체 후 PASS |
+| Product Godot regression | ink-paper, combat board, basic panel, action dock, action-selection integration, layout accessibility, keyboard accessibility, character art, focus order, focus visuals | 각 script PASS |
+| Contract/static | `python tests/check_action_selection_contract.py` | PASS |
+| Python suite | `python -m unittest discover -s tests -p 'test_*.py'` | 421 tests PASS |
+| Windows visible runtime | isolated worktree에서 `combat_board_preview.tscn`을 visible Godot window로 시작, screen inspection | 1282×832 actual frame: central `거리 2`, no persistent 1–10 lane, player lower-left/larger, enemy upper-right/smaller, 5×2 illustrated basic cards 확인 |
+
+Godot multi-script batch runner는 pass를 낸 basic-panel/keyboard helper process를 남기는 환경 동작을 보였다. command line, worktree, script를 exact-match하여 current-task helper만 종료했고 다른 project process는 변경하지 않았다.
+
+### 기술 이미지 후보 상태
+
+```yaml
+candidate_id: TEN-BASIC-TECHNIQUE-INK-ATLAS-01
+state: GENERATED_CANDIDATE
+generator: built-in image model
+candidate_path: C:\Users\user\.codex\generated_images\01a04af4-16f3-7153-96fc-823b2094d386\exec-f2059649-fecd-4456-9557-fc0dbafd6667.png
+planned_consumer: ActionSelectionDock → BasicActionPanel, current 10 basic action ids
+content: 5×2 coherent full-body ink-wash action poses; no UI text, rules, numbers, logos, or watermark
+runtime_integration: NOT_RUN
+canon_registration: NOT_RUN
+reason: user final lock required before repository copy, SHA-256/provenance record, card-id region map, and runtime reference change
+```
+
+현재 runtime에는 기존 canonical basic illustration atlas만 사용된다. 새 후보를 card data나 asset manifest에 아직 쓰지 않았으므로, generated candidate와 approved/canonical/runtime state는 명확히 분리된다.
+
+### 적대적 검토와 clean exit
+
+1. **Core preservation:** `data/`, resolution, AI, save, action IDs/values에 source diff가 없는지 확인했다.
+2. **Targeting/input:** resting parent layer hide와 `_begin_targeting_for_anchor` reveal, `verify_combat_board.gd`의 movement/attack targeting flow를 함께 확인했다.
+3. **Keyboard/accessibility:** tile label/focus, source tabs, full-momentum available ultimate action의 actual dock focus ring을 regression으로 확인했다.
+4. **Visual/layout:** 1440×900 deterministic layout and 1282×832 visible Windows frame 모두에서 central distance, diagonal placement, 5×2 card structure를 readback했다.
+5. **Asset/provenance:** existing atlas only runtime; new image stays outside repository as `GENERATED_CANDIDATE`, no false canon promotion.
+6. **Diff/cache/recovery:** `.import`, `project.godot`, test logs and unrelated generated cache noise는 source commit에서 제외한다. corrupted scene has been restored byte-for-byte to HEAD before final verification.
+
+`CLEAN_REVIEW_EXIT` for the code/test correction is **conditional**: code scope has no must-fix remaining; new generated technique art waits only for user final lock and then has a separate provenance/integration package.
+
+### 미검증·남은 위험
+
+- **NOT_RUN:** independent human usability/player judgement, accessibility-user review, Android actual-device/touch/back/safe-area/lifecycle, ultrawide and mobile-landscape visual QA, release-performance/release approval.
+- The Windows visible frame is a machine runtime observation, not human UX approval.
+- The newly shown basic-technique atlas is a candidate, not a shipping asset. It must not be copied or mapped to `data/cards/basic_cards.json` until final lock.

@@ -24,6 +24,14 @@ func _run() -> void:
 	_expect(is_instance_valid(board.range_readout_label), "Combat must create a live player-facing range readout.")
 	_expect(is_instance_valid(board.range_engagement_label), "Combat must create a live engaged-state label.")
 	_expect(board.get_layout_snapshot().get("background_path", "") == APPROVED_BACKGROUND_PATH, "Ink-paper presentation must expose the final-locked background asset.")
+	_expect(not board._tile_layer.visible, "Resting combat view must hide the logical ten-tile board; distance is the default spatial readout.")
+	_expect(not board._anchor_line.visible, "Resting combat view must not expose a horizontal foot-anchor guide.")
+	var player_foot := board.get_character_foot_anchor("player")
+	var enemy_foot := board.get_character_foot_anchor("enemy")
+	_expect(player_foot.x < board.size.x * 0.48, "Player battler must occupy the left foreground of the diagonal duel composition.")
+	_expect(enemy_foot.x > board.size.x * 0.52, "Enemy battler must occupy the right side of the diagonal duel composition.")
+	_expect(player_foot.y > enemy_foot.y + board.size.y * 0.035, "Player and enemy battlers must use a readable diagonal, not a flat horizontal line.")
+	_expect(board.player_character.size.y > board.enemy_character.size.y, "Player battler must remain the foreground scale in the diagonal composition.")
 	if is_instance_valid(board.range_readout_label):
 		_expect(board.range_readout_label.text == "거리 2", "Initial player-facing range must be 거리 2.")
 	if is_instance_valid(board.range_engagement_label):
@@ -70,6 +78,15 @@ func _run() -> void:
 		var dock: ActionSelectionDock = board.action_selection_dock as ActionSelectionDock
 		_expect(dock.get_dock_snapshot().get("active_source", "") == "basic", "Actual product dock must begin on the basic-action source.")
 		_expect(int(dock.basic_panel.get_panel_snapshot().get("action_count", 0)) == 10, "Actual product dock must retain all ten registered basic actions.")
+		_expect(int(dock.basic_panel.get_panel_snapshot().get("columns", 0)) == 5, "Basic action source must use the five-column paper-card grid from the combat reference.")
+		_expect(dock.basic_panel.buttons.size() == 10, "Basic action source must expose all ten current basic actions as cards.")
+		if not dock.basic_panel.buttons.is_empty():
+			var first_basic_card := dock.basic_panel.buttons[0]
+			_expect(first_basic_card.custom_minimum_size.y >= 88.0, "Basic action cards must reserve a full illustrated-card height rather than collapse into thin list rows.")
+			var card_illustration := first_basic_card.get_node_or_null("CardIllustration") as TextureRect
+			_expect(is_instance_valid(card_illustration), "Basic action cards must consume their existing illustration atlas rather than render as text-only buttons.")
+			if is_instance_valid(card_illustration):
+				_expect(card_illustration.offset_bottom - card_illustration.offset_top >= 50.0, "Basic action card illustrations must occupy the dominant upper card area.")
 		var tab_style := dock.basic_tab.get_theme_stylebox("normal") as StyleBoxFlat
 		_expect(tab_style != null and tab_style.bg_color.is_equal_approx(Color("d9ccb1")), "Selected basic source tab must render as a warm paper surface.")
 		var action_style := dock.basic_panel.buttons[0].get_theme_stylebox("normal") as StyleBoxFlat

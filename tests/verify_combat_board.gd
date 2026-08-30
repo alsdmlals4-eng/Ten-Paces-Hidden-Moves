@@ -476,19 +476,23 @@ func _verify_layout(board: CombatBoardPreview, snapshot: Dictionary) -> void:
 func _verify_character_anchors(board: CombatBoardPreview, snapshot: Dictionary) -> void:
     var player_size: Vector2 = snapshot.get("player_size", Vector2.ZERO)
     var enemy_size: Vector2 = snapshot.get("enemy_size", Vector2.ZERO)
-    if player_size.distance_to(enemy_size) > SIZE_TOLERANCE:
-        failures.append("Player and enemy placeholders must use identical scale.")
     var tile_width := float(snapshot.get("tile_width", 0.0))
-    if tile_width > 0.0 and absf(player_size.y / tile_width - EXPECTED_HEIGHT_RATIO) > SIZE_TOLERANCE:
-        failures.append("Character height ratio must remain 1.5.")
+    if player_size.y <= enemy_size.y + SIZE_TOLERANCE:
+        failures.append("Combat presentation must keep the player as the larger foreground battler.")
+    var player_height_ratio := board.player_character.character_height_ratio if is_instance_valid(board.player_character) else 0.0
+    var enemy_height_ratio := board.enemy_character.character_height_ratio if is_instance_valid(board.enemy_character) else 0.0
+    if tile_width > 0.0 and absf(player_size.y / tile_width - player_height_ratio * 1.30) > SIZE_TOLERANCE:
+        failures.append("Player foreground height must retain the approved 1.30 visual scale multiplier.")
+    if tile_width > 0.0 and absf(enemy_size.y / tile_width - enemy_height_ratio * 0.92) > SIZE_TOLERANCE:
+        failures.append("Enemy background height must retain the approved 0.92 visual scale multiplier.")
     var player_foot: Vector2 = snapshot.get("player_foot", Vector2.ZERO)
-    var player_anchor: Vector2 = snapshot.get("player_tile_anchor", Vector2.ZERO)
     var enemy_foot: Vector2 = snapshot.get("enemy_foot", Vector2.ZERO)
-    var enemy_anchor: Vector2 = snapshot.get("enemy_tile_anchor", Vector2.ZERO)
-    if player_foot.distance_to(player_anchor) > POSITION_TOLERANCE:
-        failures.append("Player foot anchor must match the runtime player tile.")
-    if enemy_foot.distance_to(enemy_anchor) > POSITION_TOLERANCE:
-        failures.append("Enemy foot anchor must match the runtime enemy tile.")
+    if player_foot.x >= enemy_foot.x - POSITION_TOLERANCE:
+        failures.append("Combat presentation must keep the player left of the enemy in the duel composition.")
+    if player_foot.y <= enemy_foot.y + board.size.y * 0.035:
+        failures.append("Combat presentation must keep a readable player-foreground/enemy-background diagonal.")
+    if str(board.get_meta("duel_composition", "")) != "player_left_foreground|enemy_right_background|distance_center":
+        failures.append("Combat presentation must report the approved distance-first diagonal duel composition.")
 
 func _finish() -> void:
     if failures.is_empty():

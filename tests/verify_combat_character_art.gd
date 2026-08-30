@@ -1,4 +1,4 @@
-# 전투판 전신 원화가 양측 역할에 맞게 로드되고 발 앵커를 보존하는지 검증한다.
+# 전투판 전신 원화가 양측 역할에 맞게 로드되고 거리 중심 대각선 연출을 보존하는지 검증한다.
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
@@ -39,10 +39,20 @@ func _require_role_art(character: CombatCharacterPlaceholder, role: String, expe
 
 func _require_anchor(board: CombatBoardPreview, role: String) -> void:
     var actor: Dictionary = board.combat_state.get(role, {})
-    var expected := board.get_tile_foot_anchor(int(actor.get("tile", 0)))
+    var character: CombatCharacterPlaceholder = board.player_character if role == "player" else board.enemy_character
+    if character == null:
+        failures.append("%s combatant must remain available for visual composition." % role)
+        return
+    if character.tile_index != int(actor.get("tile", 0)):
+        failures.append("%s full-body art must preserve its logical combat tile identity." % role)
+        return
     var actual := board.get_character_foot_anchor(role)
-    if actual.distance_to(expected) > 0.1:
-        failures.append("%s full-body art must retain the tile foot anchor." % role)
+    var opposing := board.get_character_foot_anchor("enemy" if role == "player" else "player")
+    if role == "player":
+        if actual.x >= opposing.x or actual.y <= opposing.y + board.size.y * 0.035:
+            failures.append("Player full-body art must hold the left foreground position in the approved diagonal duel composition.")
+    elif actual.x <= opposing.x or actual.y >= opposing.y - board.size.y * 0.035:
+        failures.append("Enemy full-body art must hold the right background position in the approved diagonal duel composition.")
 
 func _require_art_motion(character: CombatCharacterPlaceholder, role: String) -> void:
     var foot_before := character.get_foot_anchor_global()
@@ -52,7 +62,7 @@ func _require_art_motion(character: CombatCharacterPlaceholder, role: String) ->
         failures.append("%s full-body art must retain the short attack lunge motion." % role)
     await create_timer(0.14).timeout
     if character.motion_state != "idle" or character.get_foot_anchor_global().distance_to(foot_before) > 0.1:
-        failures.append("%s attack motion must return to the original tile foot anchor." % role)
+        failures.append("%s attack motion must return to the original visual foot anchor." % role)
 
 func _finish() -> void:
     if failures.is_empty():
