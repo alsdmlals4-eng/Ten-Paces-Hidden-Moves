@@ -69,3 +69,5 @@ human_player_evidence: NOT_RUN_DEFERRED_BY_USER_FOR_CURRENT_STAGE
 후속 결과 검토는 `docs/operations/2026-08-30_BALANCE_INSTRUMENTATION_RESULT_REVIEW.md`가 소유한다. 검토는 `public_approach_pressure`가 현재 공개 공격이 모두 사거리 밖인 거리 1~2에서 빈 계획을 반환할 수 있음을 발견했다. 이는 approved policy의 “사거리 밖이면 접근” 의미를 구현하지 못한 validation-only 결함이므로, 같은 Decision 범위 안에서 이동 fallback과 Godot RED/GREEN 회귀로 복구한다.
 
 이 복구는 후보·카드·공유 resolver 수치 변경이 아니며, 교정 후 두 3,375행 report의 승패·체력량은 교정 전과 동일했다. 따라서 이 결과만으로 별도 numerical balance Decision을 만들지 않는다. 방어/회복/필살기 행동 coverage 확장은 현재 v1의 수치 조정이 아닌 새 measurement-policy Decision이 필요하다.
+
+그 후속 범위는 `TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01`이 소유한다. v1의 3,375행 기준은 historical machine evidence로 보존하고, 새 policy coverage와 schema 2 report는 후속 Decision의 별도 machine evidence로 다룬다.

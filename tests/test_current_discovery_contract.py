@@ -200,11 +200,11 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "user_directed_planning_next_package: BALANCE_INSTRUMENTATION_RESULT_REVIEW_SEPARATE_DECISION_IF_NUMERICAL_CHANGE",
+            "user_directed_planning_next_package: BALANCE_MEASUREMENT_POLICY_COVERAGE_RESULT_REVIEW_SEPARATE_NUMERICAL_DECISION_IF_EVIDENCE_REQUIRES_CHANGE",
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_next_decision: TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01",
+            "user_directed_planning_next_decision: TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01",
             current_section,
         )
         self.assertIn(
@@ -220,7 +220,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_latest_decision: TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01",
+            "user_directed_planning_latest_decision: TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01",
             current_section,
         )
         self.assertIn(
@@ -228,7 +228,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_pending_material_decision: NONE_BALANCE_INSTRUMENTATION_RESULT_REVIEW_MAY_REQUIRE_SEPARATE_NUMERICAL_DECISION",
+            "user_directed_planning_pending_material_decision: NONE_MEASUREMENT_POLICY_COVERAGE_RESULT_REVIEW_MAY_REQUIRE_SEPARATE_NUMERICAL_DECISION",
             current_section,
         )
         self.assertIn(
@@ -405,11 +405,11 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["evidence_ceiling"]["pr277_protected_approval_lifecycle"],
         )
         self.assertEqual(
-            "BALANCE_INSTRUMENTATION_RESULT_REVIEW_SEPARATE_DECISION_IF_NUMERICAL_CHANGE",
+            "BALANCE_MEASUREMENT_POLICY_COVERAGE_RESULT_REVIEW_SEPARATE_NUMERICAL_DECISION_IF_EVIDENCE_REQUIRES_CHANGE",
             status["next_phase"],
         )
         self.assertEqual(
-            "BALANCE_INSTRUMENTATION_RESULT_REVIEW_SEPARATE_DECISION_IF_NUMERICAL_CHANGE",
+            "BALANCE_MEASUREMENT_POLICY_COVERAGE_RESULT_REVIEW_SEPARATE_NUMERICAL_DECISION_IF_EVIDENCE_REQUIRES_CHANGE",
             status["next_product_execution_surface"],
         )
         self.assertEqual(
@@ -423,6 +423,14 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertEqual(
             "IMPLEMENTED_MERGED_MAIN_PR280_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR281_POSTMERGE_READBACK",
             status["balance_instrumentation_status"],
+        )
+        self.assertEqual(
+            "TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01",
+            status["balance_measurement_policy_coverage_extension_decision"],
+        )
+        self.assertEqual(
+            "IMPLEMENTED_LOCAL_BRANCH_MACHINE_VERIFIED_4500_SCENARIOS_TWO_BYTE_IDENTICAL_REPORTS_PENDING_PR_REMOTE_CI_MERGE_READBACK",
+            status["balance_measurement_policy_coverage_extension_status"],
         )
         self.assertTrue(status["product_implementation_authorized"])
         self.assertEqual(
@@ -511,6 +519,10 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertIn(
             "TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01",
+            status["resolved_material_decisions"],
+        )
+        self.assertIn(
+            "TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01",
             status["resolved_material_decisions"],
         )
 
