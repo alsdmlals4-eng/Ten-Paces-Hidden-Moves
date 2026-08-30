@@ -385,7 +385,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "INK_PAPER_DIAGONAL_DUEL_PRESENTATION_IMPLEMENTED_MERGED_MAIN_PR277_PROTECTED_APPROVAL_ARCHIVED_PR278_MACHINE_RUNTIME_VERIFIED_HUMAN_PLAYTEST_DEFERRED_PLUS_BALANCE_INSTRUMENTATION_IMPLEMENTED_MERGED_MAIN_PR280_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR281_POSTMERGE_READBACK_PLUS_BALANCE_MEASUREMENT_POLICY_COVERAGE_EXTENSION_IMPLEMENTED_MERGED_MAIN_PR289_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_CLEANUP_PENDING_PR",
+            "INK_PAPER_DIAGONAL_DUEL_PRESENTATION_IMPLEMENTED_MERGED_MAIN_PR277_PROTECTED_APPROVAL_ARCHIVED_PR278_MACHINE_RUNTIME_VERIFIED_HUMAN_PLAYTEST_DEFERRED_PLUS_BALANCE_INSTRUMENTATION_IMPLEMENTED_MERGED_MAIN_PR280_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR281_POSTMERGE_READBACK_PLUS_BALANCE_MEASUREMENT_POLICY_COVERAGE_EXTENSION_IMPLEMENTED_MERGED_MAIN_PR289_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR290_POSTMERGE_READBACK",
             status["user_directed_planning_status"],
         )
         self.assertIn(
@@ -429,7 +429,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["balance_measurement_policy_coverage_extension_decision"],
         )
         self.assertEqual(
-            "IMPLEMENTED_MERGED_MAIN_PR289_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_CLEANUP_PENDING_PR_4500_SCENARIOS_TWO_BYTE_IDENTICAL_REPORTS",
+            "IMPLEMENTED_MERGED_MAIN_PR289_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR290_POSTMERGE_READBACK_4500_SCENARIOS_TWO_BYTE_IDENTICAL_REPORTS",
             status["balance_measurement_policy_coverage_extension_status"],
         )
         self.assertEqual(
@@ -439,6 +439,10 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertEqual(
             "docs/operations/2026-08-30_PR289_PROTECTED_CHANGE_APPROVAL_RECORD.md",
             status["balance_measurement_policy_coverage_extension_approval_archive"],
+        )
+        self.assertEqual(
+            "docs/operations/2026-08-30_PR290_BALANCE_MEASUREMENT_POLICY_COVERAGE_POSTMERGE_READBACK.md",
+            status["balance_measurement_policy_coverage_extension_postmerge_readback"],
         )
         self.assertTrue(status["product_implementation_authorized"])
         self.assertEqual(
@@ -506,7 +510,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["opponent_runtime_personality_binding_status"],
         )
         self.assertEqual(
-            "IMPLEMENTED_MERGED_MAIN_PR289_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_CLEANUP_PENDING_PR_HEADLESS_FULL_MATRIX_MACHINE_VERIFIED_4500_ROWS_TWO_BYTE_IDENTICAL_REPORTS_WINDOWS_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN",
+            "IMPLEMENTED_MERGED_MAIN_PR289_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR290_POSTMERGE_READBACK_HEADLESS_FULL_MATRIX_MACHINE_VERIFIED_4500_ROWS_TWO_BYTE_IDENTICAL_REPORTS_WINDOWS_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN",
             status["evidence_ceiling"]["balance_simulation"],
         )
         self.assertEqual(

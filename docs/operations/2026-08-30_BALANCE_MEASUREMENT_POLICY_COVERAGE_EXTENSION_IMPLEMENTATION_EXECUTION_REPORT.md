@@ -2,7 +2,7 @@
 
 ~~~yaml
 report_id: TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01-IMPLEMENTATION
-status: IMPLEMENTED_MERGED_MAIN_PR289_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_CLEANUP_PENDING_PR
+status: IMPLEMENTED_MERGED_MAIN_PR289_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR290_POSTMERGE_READBACK
 baseline_origin_main: 65fc68a299e0b62a187baadb798d0ca82388b580
 implementation_commit: cc267852210b3bfde7d0dd5df784e501c64011d4
 work_mode: BUILD
@@ -84,6 +84,6 @@ v1 계측은 실제 resolver 3,375 결투를 실행했지만, 세 공개 정책�
 
 ## 미검증·남은 위험
 
-- PR #289은 `7072c3b49130434d1bf213d2275004c4f91a789e`로 병합됐고 remote CI 전체 PASS 및 exact `origin/main` readback을 확인했다. active manifest는 이 cleanup branch에서 immutable archive로 전환 중이며, cleanup PR의 CI·merge·post-merge main readback은 아직 없다.
+- PR #289은 `7072c3b49130434d1bf213d2275004c4f91a789e`로 병합됐고 remote CI 전체 PASS를 확인했다. PR #290은 active manifest를 immutable archive로 전환하고 adapter baseline을 승격한 뒤 `97961e87d93720d94a6a7862753d0af2c9592cd7`로 병합됐다. exact `origin/main` readback은 manifest 부재, archive 존재, adapter baseline `7072c3b4…`를 확인했다.
 - Windows-visible UX, 사람 플레이, Android 기기, 접근성 사용자, release 성능은 이번 validation-only 변경에 대해 `NOT_RUN`이다.
 - 보고서 표본은 수치 밸런스, 공정성, 재미 또는 출시 준비 완료를 뜻하지 않는다. card/profile/recovery/stat 값을 바꾸려면 결과 검토와 별도 numerical balance Decision이 필요하다.
