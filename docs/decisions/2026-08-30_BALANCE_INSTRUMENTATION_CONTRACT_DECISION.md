@@ -2,9 +2,9 @@
 
 ~~~yaml
 decision_id: TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01
-status: USER_APPROVED_WRITTEN_SPEC_REVIEW_PENDING
+status: IMPLEMENTED_BRANCH_MACHINE_VERIFIED_HEADLESS_FULL_MATRIX_PR_PENDING
 decision_date: 2026-08-30
-approval_source: "user explicit: 권장안대로 진행해; godot에 기획안들 전부 다 구현될 때까지 멈추지마"
+approval_source: "user explicit: 권장안대로 진행해; godot에 기획안들 전부 다 구현될 때까지 멈추지마; written-spec approval: 승인"
 scope: FIRST_FIVE_DETERMINISTIC_SINGLE_DUEL_BALANCE_INSTRUMENTATION_V1
 canonical_rule_owners:
   - docs/02_COMBAT_RULES.md
@@ -13,9 +13,9 @@ canonical_rule_owners:
   - data/run/vertical_slice_opponents.json
   - src/run/vertical_slice_metrics_combat_resolution_engine.gd
 design_spec: docs/superpowers/specs/2026-08-30-balance-instrumentation-design.md
-runtime_mutation: NOT_AUTHORIZED_UNTIL_WRITTEN_SPEC_REVIEW_AND_IMPLEMENTATION_PLAN
-automated_evidence: NOT_RUN
-godot_runtime_evidence: NOT_RUN
+runtime_mutation: AUTHORIZED_AND_IMPLEMENTED_VALIDATION_ONLY_BRANCH_SCOPE
+automated_evidence: HEADLESS_FULL_MATRIX_MACHINE_VERIFIED_3375_ROWS_TWO_BYTE_IDENTICAL_REPORTS
+godot_runtime_evidence: HEADLESS_GODOT_4_7_1_FULL_MATRIX_PASS
 windows_visible_evidence: NOT_RUN
 human_player_evidence: NOT_RUN_DEFERRED_BY_USER_FOR_CURRENT_STAGE
 ~~~
@@ -62,4 +62,4 @@ human_player_evidence: NOT_RUN_DEFERRED_BY_USER_FOR_CURRENT_STAGE
 
 ## 다음 경계
 
-이 승인에는 작성 명세의 사용자 검토와 구현 계획이 선행한다. 그 이후에만 isolated Codex/Godot handoff가 validation-only harness를 구현할 수 있다. 측정 결과가 실제 수치 변경을 권하면, 그 변경은 별도의 balance Decision과 데이터 회귀를 필요로 한다.
+사용자는 작성 명세를 `승인`했고, validation-only harness는 isolated branch에서 구현됐다. 현 브랜치의 headless full matrix와 byte-identical report는 기계 증거이지만 아직 `main` 통합·Windows visible·Human/player·Android·accessibility·release·balance PASS는 아니다. 측정 결과가 실제 수치 변경을 권하면, 그 변경은 별도의 balance Decision과 데이터 회귀를 필요로 한다.

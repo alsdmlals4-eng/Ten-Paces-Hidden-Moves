@@ -200,7 +200,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "user_directed_planning_next_package: BALANCE_INSTRUMENTATION_WRITTEN_SPEC_REVIEW_THEN_CODEX_GODOT_HANDOFF",
+            "user_directed_planning_next_package: BALANCE_INSTRUMENTATION_ADVERSARIAL_REVIEW_PR_INTEGRATION",
             current_section,
         )
         self.assertIn(
@@ -228,7 +228,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_pending_material_decision: NONE_USER_APPROVED_BALANCE_INSTRUMENTATION_WRITTEN_SPEC_REVIEW_PENDING",
+            "user_directed_planning_pending_material_decision: NONE_IMPLEMENTED_BRANCH_MACHINE_VERIFIED_HEADLESS_FULL_MATRIX_PR_PENDING",
             current_section,
         )
         self.assertIn(
@@ -405,11 +405,11 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["evidence_ceiling"]["pr277_protected_approval_lifecycle"],
         )
         self.assertEqual(
-            "BALANCE_INSTRUMENTATION_WRITTEN_SPEC_REVIEW_THEN_CODEX_GODOT_HANDOFF",
+            "BALANCE_INSTRUMENTATION_ADVERSARIAL_REVIEW_PR_INTEGRATION",
             status["next_phase"],
         )
         self.assertEqual(
-            "BALANCE_INSTRUMENTATION_WRITTEN_SPEC_REVIEW_THEN_CODEX_GODOT_HANDOFF",
+            "BALANCE_INSTRUMENTATION_ADVERSARIAL_REVIEW_PR_INTEGRATION",
             status["next_product_execution_surface"],
         )
         self.assertEqual(
@@ -421,7 +421,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["balance_instrumentation_design_spec"],
         )
         self.assertEqual(
-            "USER_APPROVED_WRITTEN_SPEC_REVIEW_PENDING",
+            "IMPLEMENTED_BRANCH_MACHINE_VERIFIED_HEADLESS_FULL_MATRIX_PR_PENDING",
             status["balance_instrumentation_status"],
         )
         self.assertTrue(status["product_implementation_authorized"])
@@ -490,7 +490,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["opponent_runtime_personality_binding_status"],
         )
         self.assertEqual(
-            "NOT_RUN_USER_APPROVED_ENGINE_DIRECT_INSTRUMENTATION_V1_WRITTEN_SPEC_REVIEW_PENDING",
+            "IMPLEMENTED_BRANCH_HEADLESS_FULL_MATRIX_MACHINE_VERIFIED_3375_ROWS_TWO_BYTE_IDENTICAL_REPORTS_WINDOWS_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN",
             status["evidence_ceiling"]["balance_simulation"],
         )
         self.assertEqual(
