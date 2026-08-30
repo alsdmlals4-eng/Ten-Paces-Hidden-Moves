@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "contract_id": "TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01",
+  "contract_id": "TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01",
   "route_context_id": "opening_no_route",
   "player_tile": 4,
   "enemy_tile": 6,
@@ -10,9 +10,10 @@
   "player_policy_ids": [
     "public_approach_pressure",
     "public_guarded_exchange",
-    "public_recovery_range"
+    "public_recovery_range",
+    "public_evade_then_ultimate"
   ],
   "expected_candidate_count": 15,
   "expected_starter_loadout_count": 15,
-  "expected_scenario_count": 3375
+  "expected_scenario_count": 4500
 }

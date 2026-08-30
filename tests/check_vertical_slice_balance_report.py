@@ -8,8 +8,8 @@ from pathlib import Path
 from typing import Any
 
 
-CONTRACT_ID = "TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01"
-EXPECTED_SCENARIOS = 3375
+CONTRACT_ID = "TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01"
+EXPECTED_SCENARIOS = 4500
 EXPECTED_ROUTE_CONTEXT = "opening_no_route"
 EXPECTED_ROW_KEYS = {
     "scenario_id",
@@ -21,6 +21,7 @@ EXPECTED_ROW_KEYS = {
     "outcome",
     "bundles_resolved",
     "battle_metrics",
+    "policy_selection_counts",
 }
 EXPECTED_METRIC_KEYS = {
     "successful_dodges",
@@ -33,7 +34,9 @@ EXPECTED_POLICIES = {
     "public_approach_pressure",
     "public_guarded_exchange",
     "public_recovery_range",
+    "public_evade_then_ultimate",
 }
+EXPECTED_POLICY_SELECTION_KEYS = {"guard", "evade", "recovery", "ultimate"}
 EXPECTED_SEEDS = {0, 1, 17, 101, 1009}
 FORBIDDEN_TOKENS = (
     "ai_profile",
@@ -68,7 +71,7 @@ def _assert_no_forbidden(value: Any) -> None:
 
 
 def _validate(report: dict[str, Any]) -> None:
-    assert report["schema_version"] == 1
+    assert report["schema_version"] == 2
     assert report["contract_id"] == CONTRACT_ID
     assert report["route_context_id"] == EXPECTED_ROUTE_CONTEXT
     assert report["scenario_count_expected"] == EXPECTED_SCENARIOS
@@ -84,6 +87,14 @@ def _validate(report: dict[str, Any]) -> None:
     starter_loadout_ids = set()
     policy_ids = set()
     seeds = set()
+    policy_selection_totals = {
+        policy_id: {key: 0 for key in EXPECTED_POLICY_SELECTION_KEYS}
+        for policy_id in EXPECTED_POLICIES
+    }
+    policy_metric_totals = {
+        policy_id: {"successful_dodges": 0, "ultimate_uses": 0}
+        for policy_id in EXPECTED_POLICIES
+    }
     for row in rows:
         assert isinstance(row, dict)
         assert set(row) == EXPECTED_ROW_KEYS
@@ -97,14 +108,31 @@ def _validate(report: dict[str, Any]) -> None:
         for metric in metrics.values():
             assert isinstance(metric, int)
             assert metric >= 0
+        selections = row["policy_selection_counts"]
+        assert isinstance(selections, dict)
+        assert set(selections) == EXPECTED_POLICY_SELECTION_KEYS
+        for count in selections.values():
+            assert isinstance(count, int)
+            assert count >= 0
+        policy_id = row["player_policy_id"]
+        for key, count in selections.items():
+            policy_selection_totals[policy_id][key] += count
+        policy_metric_totals[policy_id]["successful_dodges"] += metrics["successful_dodges"]
+        policy_metric_totals[policy_id]["ultimate_uses"] += metrics["ultimate_uses"]
         candidate_ids.add(row["candidate_id"])
         starter_loadout_ids.add(row["starter_loadout_id"])
-        policy_ids.add(row["player_policy_id"])
+        policy_ids.add(policy_id)
         seeds.add(row["ai_decision_seed"])
     assert len(candidate_ids) == 15
     assert len(starter_loadout_ids) == 15
     assert policy_ids == EXPECTED_POLICIES
     assert seeds == EXPECTED_SEEDS
+    assert policy_selection_totals["public_guarded_exchange"]["guard"] > 0
+    assert policy_selection_totals["public_evade_then_ultimate"]["evade"] > 0
+    assert policy_selection_totals["public_recovery_range"]["recovery"] > 0
+    assert policy_selection_totals["public_evade_then_ultimate"]["ultimate"] > 0
+    assert policy_metric_totals["public_evade_then_ultimate"]["successful_dodges"] > 0
+    assert policy_metric_totals["public_evade_then_ultimate"]["ultimate_uses"] > 0
     _assert_no_forbidden(report)
 
 

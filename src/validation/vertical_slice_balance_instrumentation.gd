@@ -4,13 +4,13 @@ extends RefCounted
 # approved balance measurement matrix: current candidates x legal starter selections x public policies x fixed AI seeds.
 const MATRIX_PATH := "res://data/validation/vertical_slice_balance_instrumentation_matrix.json"
 const HUD_PATH := "res://data/combat/combat_hud_preview.json"
-const CONTRACT_ID := "TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01"
+const CONTRACT_ID := "TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01"
 const EXPECTED_SCHEMA_VERSION := 1
 const EXPECTED_ROUTE_CONTEXT_ID := "opening_no_route"
 const EXPECTED_TIMING_SEQUENCE := [3, 3, 4]
 const EXPECTED_CANDIDATE_COUNT := 15
 const EXPECTED_STARTER_LOADOUT_COUNT := 15
-const EXPECTED_SCENARIO_COUNT := 3375
+const EXPECTED_SCENARIO_COUNT := 4500
 
 const CatalogScript := preload("res://src/run/vertical_slice_opponent_catalog.gd")
 const BindingScript := preload("res://src/run/vertical_slice_opponent_runtime_binding.gd")
@@ -64,7 +64,7 @@ func build_matrix_contract() -> Dictionary:
     if loadouts.size() != EXPECTED_STARTER_LOADOUT_COUNT or loadouts.size() != int(matrix.get("expected_starter_loadout_count", -1)):
         errors.append("matrix must cover exactly every legal 4-of-6 starter selection")
     if calculated_count != EXPECTED_SCENARIO_COUNT or calculated_count != int(matrix.get("expected_scenario_count", -1)):
-        errors.append("matrix must contain exactly 3,375 deterministic duels")
+        errors.append("matrix must contain exactly 4,500 deterministic duels")
 
     return _contract_result(errors, candidates.size(), loadouts.size(), calculated_count)
 
@@ -152,6 +152,7 @@ func run_scenario(scenario_value: Dictionary) -> Dictionary:
     var timing_sequence: Array = scenario.get("timing_sequence", []) as Array
     var maximum_rounds := int(scenario.get("maximum_rounds", 0))
     var bundles_resolved := 0
+    var policy_selection_counts := _empty_policy_selection_counts()
     var outcome := "timeout"
     for round_number in range(1, maximum_rounds + 1):
         for bundle_index in range(1, timing_sequence.size() + 1):
@@ -166,6 +167,7 @@ func run_scenario(scenario_value: Dictionary) -> Dictionary:
             var preview := engine.preview_player_plan(state, placements)
             if not bool(preview.get("valid", false)):
                 return {"valid": false, "row": {}, "errors": ["public policy produced an unaffordable placement at round %d bundle %d" % [round_number, bundle_index]]}
+            _record_policy_selection_counts(policy_selection_counts, placements)
             var result := engine.resolve_bundle(placements, {
                 "round_number": round_number,
                 "bundle_index": bundle_index,
@@ -175,8 +177,8 @@ func run_scenario(scenario_value: Dictionary) -> Dictionary:
             bundles_resolved += 1
             outcome = _terminal_outcome(state)
             if outcome != "":
-                return {"valid": true, "row": _build_public_row(scenario, outcome, bundles_resolved, state), "errors": []}
-    return {"valid": true, "row": _build_public_row(scenario, outcome, bundles_resolved, state), "errors": []}
+                return {"valid": true, "row": _build_public_row(scenario, outcome, bundles_resolved, state, policy_selection_counts), "errors": []}
+    return {"valid": true, "row": _build_public_row(scenario, outcome, bundles_resolved, state, policy_selection_counts), "errors": []}
 
 
 func _validate_scenario(scenario: Dictionary, matrix: Dictionary, errors: Array[String]) -> void:
@@ -206,7 +208,7 @@ func _validate_scenario(scenario: Dictionary, matrix: Dictionary, errors: Array[
         errors.append("scenario maximum_rounds must match the immutable v1 matrix")
 
 
-func _build_public_row(scenario: Dictionary, outcome: String, bundles_resolved: int, state: Dictionary) -> Dictionary:
+func _build_public_row(scenario: Dictionary, outcome: String, bundles_resolved: int, state: Dictionary, policy_selection_counts: Dictionary) -> Dictionary:
     var metrics: Dictionary = (state.get("battle_metrics", {}) as Dictionary).duplicate(true)
     return {
         "scenario_id": str(scenario.get("scenario_id", "")),
@@ -217,8 +219,34 @@ func _build_public_row(scenario: Dictionary, outcome: String, bundles_resolved: 
         "route_context_id": str(scenario.get("route_context_id", "")),
         "outcome": outcome if outcome in ["win", "loss", "draw", "timeout"] else "timeout",
         "bundles_resolved": maxi(0, bundles_resolved),
-        "battle_metrics": _normalized_metrics(metrics)
+        "battle_metrics": _normalized_metrics(metrics),
+        "policy_selection_counts": policy_selection_counts.duplicate(true)
     }
+
+
+func _empty_policy_selection_counts() -> Dictionary:
+    return {
+        "guard": 0,
+        "evade": 0,
+        "recovery": 0,
+        "ultimate": 0
+    }
+
+
+func _record_policy_selection_counts(counts: Dictionary, placements: Array) -> void:
+    for placement_value in placements:
+        if typeof(placement_value) != TYPE_DICTIONARY:
+            continue
+        var definition: Dictionary = (placement_value as Dictionary).get("definition", {}) as Dictionary
+        var card_id := str(definition.get("id", ""))
+        if card_id == "basic_guard":
+            counts["guard"] = int(counts.get("guard", 0)) + 1
+        elif card_id == "basic_evade":
+            counts["evade"] = int(counts.get("evade", 0)) + 1
+        elif str(definition.get("category", "")) == "recovery":
+            counts["recovery"] = int(counts.get("recovery", 0)) + 1
+        elif str(definition.get("source", "")) == "ultimate":
+            counts["ultimate"] = int(counts.get("ultimate", 0)) + 1
 
 
 func _terminal_outcome(state: Dictionary) -> String:

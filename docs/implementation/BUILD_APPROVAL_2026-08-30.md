@@ -75,3 +75,23 @@ No combat values, timing rules, hidden-plan/AI privacy boundary, save schema, UI
 ## Required invariants and evidence ceiling
 
 This is a validation policy recovery, not a combat-value, card-data, resolver, AI-knowledge, Scene, UI, asset, platform, save-schema, or release change. The policy reads only existing public state, retains reachable public attack priority, and uses existing legality/resource checks; it cannot create a new movement rule. Focused Godot RED→GREEN, existing instrumentation/privacy/resolver regressions, and two byte-identical 3,375-scenario reports are required. Remote PR checks and exact protected-change approval validation are required. Windows-visible, human-player, accessibility-user, Android-device, and release-performance validation remain `NOT_RUN`.
+
+---
+
+# PR #289 Balance Measurement-Policy Coverage Extension BUILD Approval Addendum
+
+- Decision / contract: `TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01`
+- Approved on: `2026-08-30 KST`
+- Approval source: the user’s explicit `좋아 진행해`, the retained instruction to proceed by the recommended in-scope plan, and standing approval to recover required in-scope work and approvals.
+- Issue / PR: implementation continuation / `#289`
+- Authority level: `VALIDATION_ONLY_PUBLIC_POLICY_COVERAGE_EXTENSION`
+
+## Approved scope
+
+1. Retain the v1 public policies and add exactly one validation-only public evade-then-ultimate policy that reads only public distance, the player’s public resources/momentum, public card definitions, and public resolution history.
+2. Expand the existing resolver-backed opening-no-route measurement matrix from 3,375 to 4,500 scenarios and add schema 2 fixed aggregate selection counts for guard, evade, recovery, and ultimate coverage.
+3. Add only the required validation data/scripts, regression checks, current-state/evidence records, and one-time exact protected-change approval artefacts for the PR #289 path set.
+
+## Exclusions and evidence ceiling
+
+No combat formula or card/profile value, timing rule, AI/private-plan information boundary, save schema, player UI/Scene, asset/audio/localization, route/campaign, external telemetry, automatic balance tuning, Android, release, or unrelated refactor is authorized. Two byte-identical 4,500-scenario reports prove deterministic machine coverage only. Windows-visible usability, human gameplay fairness/fun/readability, accessibility-user, Android-device, release-performance, numerical balance, and release PASS remain `NOT_RUN`.

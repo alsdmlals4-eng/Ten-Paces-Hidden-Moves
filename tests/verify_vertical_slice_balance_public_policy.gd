@@ -21,8 +21,9 @@ func _run() -> void:
     _expect_eq(PolicyScript.get_policy_ids(), [
         "public_approach_pressure",
         "public_guarded_exchange",
-        "public_recovery_range"
-    ], "Only the three approved public policies may run.")
+        "public_recovery_range",
+        "public_evade_then_ultimate"
+    ], "The coverage extension must retain the three v1 policies and add one public evade-to-ultimate policy.")
 
     var engine = EngineScript.new()
     var mastery := {}
@@ -82,6 +83,34 @@ func _run() -> void:
     if not out_of_range_placements.is_empty():
         _expect_eq(str((out_of_range_placements[0] as Dictionary).get("card_id", "")), "basic_move", "Approach pressure must choose the affordable public movement option when attacks are out of range.")
         _expect_eq(int((out_of_range_placements[0] as Dictionary).get("target_tile", 0)), 5, "Approach pressure must move one tile toward the public enemy tile.")
+
+    var evade_placements: Array = PolicyScript.build_placements(
+        "public_evade_then_ultimate",
+        state,
+        engine.cards_by_id,
+        engine.get_player_martial_card_ids(),
+        1,
+        [3, 3, 4]
+    )
+    _expect_true(not evade_placements.is_empty(), "The evade-to-ultimate policy must make a legal public opening response placement.")
+    if not evade_placements.is_empty():
+        _expect_eq(str((evade_placements[0] as Dictionary).get("card_id", "")), "basic_evade", "Before maximum momentum, the coverage policy must select evade rather than inspect hidden enemy intent.")
+
+    var momentum_ready_state := state.duplicate(true)
+    var momentum_ready_player: Dictionary = (momentum_ready_state.get("player", {}) as Dictionary).duplicate(true)
+    momentum_ready_player["momentum"] = [5, 5]
+    momentum_ready_state["player"] = momentum_ready_player
+    var ultimate_placements: Array = PolicyScript.build_placements(
+        "public_evade_then_ultimate",
+        momentum_ready_state,
+        engine.cards_by_id,
+        engine.get_player_martial_card_ids(),
+        3,
+        [3, 3, 4]
+    )
+    _expect_true(not ultimate_placements.is_empty(), "Maximum public momentum must produce a legal ultimate placement when the current bundle fits one.")
+    if not ultimate_placements.is_empty():
+        _expect_eq(str((ultimate_placements[0] as Dictionary).get("card_id", "")), "ultimate_cleave_peak", "At public distance two, the policy must select the legal two-slot range-two ultimate.")
 
     _expect_true(
         PolicyScript.build_placements("unknown_policy", state, engine.cards_by_id, engine.get_player_martial_card_ids(), 1, [3, 3, 4]).is_empty(),

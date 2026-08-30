@@ -83,9 +83,11 @@ class HumanGameBlueprintProfileContract(unittest.TestCase):
             "current loadout/route/result plus Issue #267 per-combat binding, derived stats, and planner consumer"
         )
         negative = (
-            "NOT_YET_MEASURED_BY_BALANCE_INSTRUMENTATION | profile weights, derived stat total, "
-            "player/loadout/policy/seed outcome distribution | successor Decision "
-            "`TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01`; no balance result yet"
+            "MEASURED_BY_VALIDATION_ONLY_INSTRUMENTATION_NOT_NUMERICALLY_DECIDED | profile weights, "
+            "derived stat total, player/loadout/policy/seed outcome distribution | schema 1 v1 result "
+            "review completed; successor Decision `TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01` "
+            "adds schema 2 public-policy coverage. It is local-branch machine evidence pending PR, not a "
+            "numerical balance decision."
         )
         self.assertIn(positive, self.spec)
         self.assertIn(negative, self.spec)

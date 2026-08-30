@@ -9,6 +9,12 @@ const EXPECTED_METRIC_KEYS := [
     "successful_dodges",
     "ultimate_uses"
 ]
+const EXPECTED_POLICY_SELECTION_KEYS := [
+    "evade",
+    "guard",
+    "recovery",
+    "ultimate"
+]
 const FORBIDDEN_TOKENS := [
     "ai_profile",
     "weight",
@@ -34,10 +40,10 @@ func _run() -> void:
     _expect_true(bool(contract.get("valid", false)), "Current balance matrix must validate: %s" % str(contract.get("errors", [])))
     _expect_eq(int(contract.get("candidate_count", -1)), 15, "All 15 current candidates must be covered.")
     _expect_eq(int(contract.get("starter_loadout_count", -1)), 15, "Every legal current 4-of-6 starter selection must be covered.")
-    _expect_eq(int(contract.get("scenario_count", -1)), 3375, "The first balance matrix must contain exactly 3,375 duels.")
+    _expect_eq(int(contract.get("scenario_count", -1)), 4500, "The coverage-extension matrix must contain 15 candidates × 15 loadouts × 4 public policies × 5 AI seeds.")
 
     var scenarios: Array = instrumentation.build_scenarios()
-    _expect_eq(scenarios.size(), 3375, "Every matrix scenario must materialize from current source data.")
+    _expect_eq(scenarios.size(), 4500, "Every coverage-extension matrix scenario must materialize from current source data.")
     if not scenarios.is_empty():
         var first: Dictionary = scenarios[0]
         var first_again: Dictionary = first.duplicate(true)
@@ -82,6 +88,14 @@ func _verify_public_row(value) -> void:
         metric_keys.append(str(key_value))
     metric_keys.sort()
     _expect_eq(metric_keys, EXPECTED_METRIC_KEYS, "Rows must preserve exactly the existing five battle metrics.")
+    var selections: Dictionary = row.get("policy_selection_counts", {})
+    var selection_keys: Array[String] = []
+    for key_value in selections.keys():
+        selection_keys.append(str(key_value))
+    selection_keys.sort()
+    _expect_eq(selection_keys, EXPECTED_POLICY_SELECTION_KEYS, "Rows must expose only fixed aggregate policy-selection coverage, never card IDs or targets.")
+    for selection_value in selections.values():
+        _expect_true(typeof(selection_value) == TYPE_INT and int(selection_value) >= 0, "Policy-selection coverage values must be nonnegative integers.")
     _expect_false(_contains_forbidden_data(row), "Normalized report rows must exclude private planner, placement, UI, and observation data.")
 
 
