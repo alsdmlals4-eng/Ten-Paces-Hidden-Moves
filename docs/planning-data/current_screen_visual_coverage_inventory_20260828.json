@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "TEN_PACES",
-  "updated_at": "2026-08-28",
+  "updated_at": "2026-08-30",
   "issue": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/243",
   "basis_main": "44386b2019aa45d48c11f5e8e59c9c505648d575",
   "target_build": "FIRST_FIVE_DUEL_PC_FIRST_VERTICAL_SLICE",
@@ -337,13 +337,13 @@
       "asset_family_id": "COMBAT_BACKGROUND_01",
       "classification": "RUNTIME_IMAGE",
       "actual_consumer": "src/combat/battle_background.gd",
-      "active_asset": "res://assets/backgrounds/twilight_ink_duel_v1.png",
+      "active_asset": "res://assets/backgrounds/ink_mist_valley_duel_01_v1.png",
       "states": [
         "normal",
         "STRETCH_KEEP_ASPECT_COVERED"
       ],
-      "status": "COVERED_EXISTING_RUNTIME",
-      "production_rule": "candidate replacement needs separate brief, approval, implementation package, and runtime verification"
+      "status": "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260830",
+      "production_rule": "The 2026-08-30 candidate completed separate brief, user final lock, manifest/provenance registration, consumer integration, focused contracts, and an actual Godot 4.7.1 new-run-to-Dogyeom-combat screenshot/node/log readback. This is machine-runtime evidence, not human/device/release approval."
     },
     {
       "asset_family_id": "COMBAT_CHARACTER_BATTLERS",

@@ -14,6 +14,7 @@ const COMBAT_REVIEW_SCENE := preload("res://scenes/ui/combat_review_panel.tscn")
 const REVIEW_SUMMARY_BUILDER_SCRIPT := preload("res://src/combat/combat_review_summary_builder.gd")
 const TILE_SCENE := preload("res://scenes/combat/combat_board_tile.tscn")
 const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placeholder.tscn")
+const ACTION_REVEAL_OVERLAY_SCRIPT := preload("res://src/ui/combat_action_reveal_overlay.gd")
 const ULTIMATE_VFX_PATH := "res://assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png"
 
 const CANVAS_COLOR := Color("171411")
@@ -36,8 +37,12 @@ var ultimate_menu: MenuButton
 var ultimate_list_panel: PanelContainer
 var ultimate_list_title: Label
 var ultimate_list_buttons: Array[Button] = []
+var range_readout_panel: PanelContainer
+var range_readout_label: Label
+var range_engagement_label: Label
 var presentation_label: Label
 var presentation_vfx: TextureRect
+var action_reveal_overlay
 var fast_replay_button: Button
 var skip_presentation_button: Button
 var restart_combat_button: Button
@@ -157,6 +162,49 @@ func _build_structure() -> void:
 	_character_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(_character_layer)
 
+	range_readout_panel = PanelContainer.new()
+	range_readout_panel.name = "RangeReadoutPanel"
+	range_readout_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var range_style := StyleBoxFlat.new()
+	range_style.bg_color = Color(0.78, 0.72, 0.61, 0.92)
+	range_style.border_color = Color("3d3328")
+	range_style.set_border_width_all(2)
+	range_style.set_corner_radius_all(7)
+	range_style.shadow_color = Color(0.0, 0.0, 0.0, 0.46)
+	range_style.shadow_size = 6
+	range_style.content_margin_left = 10.0
+	range_style.content_margin_right = 10.0
+	range_style.content_margin_top = 4.0
+	range_style.content_margin_bottom = 4.0
+	range_readout_panel.add_theme_stylebox_override("panel", range_style)
+	var range_column := VBoxContainer.new()
+	range_column.name = "RangeReadoutContent"
+	range_column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	range_column.add_theme_constant_override("separation", 0)
+	range_readout_panel.add_child(range_column)
+	range_readout_label = Label.new()
+	range_readout_label.name = "RangeReadoutLabel"
+	range_readout_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	range_readout_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	range_readout_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	range_readout_label.add_theme_font_size_override("font_size", 25)
+	range_readout_label.add_theme_color_override("font_color", Color("201a14"))
+	range_readout_label.add_theme_color_override("font_shadow_color", Color(0.95, 0.89, 0.74, 0.55))
+	range_readout_label.add_theme_constant_override("shadow_offset_x", 1)
+	range_readout_label.add_theme_constant_override("shadow_offset_y", 1)
+	range_readout_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	range_column.add_child(range_readout_label)
+	range_engagement_label = Label.new()
+	range_engagement_label.name = "RangeEngagementLabel"
+	range_engagement_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	range_engagement_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	range_engagement_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	range_engagement_label.add_theme_font_size_override("font_size", 15)
+	range_engagement_label.add_theme_color_override("font_color", Color("7e2f28"))
+	range_engagement_label.visible = false
+	range_column.add_child(range_engagement_label)
+	add_child(range_readout_panel)
+
 	action_timing_panel = ACTION_TIMING_SCENE.instantiate() as ActionTimingPanel
 	action_timing_panel.name = "ActionTimingPanel"
 	action_timing_panel.slot_clicked.connect(_on_timing_slot_clicked)
@@ -263,17 +311,24 @@ func _build_structure() -> void:
 	presentation_vfx.visible = false
 	add_child(presentation_vfx)
 
+	action_reveal_overlay = ACTION_REVEAL_OVERLAY_SCRIPT.new()
+	action_reveal_overlay.name = "CombatActionRevealOverlay"
+	action_reveal_overlay.z_index = 30
+	add_child(action_reveal_overlay)
+
 	fast_replay_button = Button.new()
 	fast_replay_button.name = "FastReplayButton"
 	fast_replay_button.text = "빠르게: 끔"
 	_apply_keyboard_focus_ring(fast_replay_button)
 	fast_replay_button.pressed.connect(_toggle_fast_replay)
+	fast_replay_button.z_index = 40
 	add_child(fast_replay_button)
 	skip_presentation_button = Button.new()
 	skip_presentation_button.name = "SkipPresentationButton"
 	skip_presentation_button.text = "즉시 완료"
 	_apply_keyboard_focus_ring(skip_presentation_button)
 	skip_presentation_button.pressed.connect(_skip_presentation)
+	skip_presentation_button.z_index = 40
 	add_child(skip_presentation_button)
 	restart_combat_button = Button.new()
 	restart_combat_button.name = "RestartCombatButton"
@@ -287,6 +342,7 @@ func _build_structure() -> void:
 	reduced_motion_button.text = "모션 감소: 끔"
 	_apply_keyboard_focus_ring(reduced_motion_button)
 	reduced_motion_button.pressed.connect(_toggle_reduced_motion)
+	reduced_motion_button.z_index = 40
 	add_child(reduced_motion_button)
 	sound_toggle_button = Button.new()
 	sound_toggle_button.name = "SoundToggleButton"
@@ -328,7 +384,7 @@ func _build_structure() -> void:
 	set_meta("step", 10)
 	set_meta("targeting_patch", "10.5")
 	set_meta("background_component", "BattleBackground")
-	set_meta("background_asset", "res://assets/backgrounds/twilight_ink_duel_v1.png")
+	set_meta("background_asset", "res://assets/backgrounds/ink_mist_valley_duel_01_v1.png")
 	set_meta("hud_component", "TopCombatHud")
 	set_meta("hud_layout", "player_status|player_momentum|round|enemy_momentum|enemy_status")
 	set_meta("action_timing_component", "ActionTimingPanel")
@@ -415,6 +471,9 @@ func _layout_board() -> void:
 	if is_instance_valid(presentation_vfx):
 		presentation_vfx.position = Vector2(size.x * 0.20, presentation_y + 60.0)
 		presentation_vfx.size = Vector2(size.x * 0.60, clampf(size.y * 0.22, 150.0, 210.0))
+	if is_instance_valid(action_reveal_overlay):
+		action_reveal_overlay.position = Vector2.ZERO
+		action_reveal_overlay.size = size
 	var playback_x := maxf(lower_margin, size.x - 420.0)
 	for button_value in [fast_replay_button, skip_presentation_button, reduced_motion_button, restart_combat_button]:
 		if is_instance_valid(button_value):
@@ -475,6 +534,12 @@ func _layout_board() -> void:
 	var maximum_top := maxf(150.0, timing_row_y - _tile_height - 48.0)
 	var minimum_top := minf(220.0, maximum_top)
 	_board_top = clampf(desired_top, minimum_top, maximum_top)
+	if is_instance_valid(range_readout_panel):
+		var range_size := Vector2(clampf(size.x * 0.16, 152.0, 220.0), 72.0)
+		var range_y := clampf(_board_top + _tile_height * 0.16, presentation_y + 36.0, timing_row_y - range_size.y - 12.0)
+		range_readout_panel.position = Vector2((size.x - range_size.x) * 0.5, range_y)
+		range_readout_panel.size = range_size
+		_refresh_range_readout()
 
 	for index in range(tile_count):
 		var tile := tiles[index]
@@ -922,9 +987,13 @@ func _resolve_and_present(context: Dictionary) -> void:
 		if typeof(timing_value) != TYPE_DICTIONARY:
 			continue
 		var timing_result: Dictionary = timing_value
-		await _apply_timing_snapshot(timing_result.get("state", combat_state))
 		set_meta("presentation_timing", int(timing_result.get("timing", 0)))
-		await _present_authoritative_events(timing_result.get("events", []), int(timing_result.get("timing", 0)))
+		await _present_timing_duel(
+			timing_result.get("events", []),
+			int(timing_result.get("timing", 0)),
+			str(timing_result.get("phase", "timing"))
+		)
+		await _apply_timing_snapshot(timing_result.get("state", combat_state))
 
 	var state_before_bundle_rewards := combat_state.duplicate(true)
 	combat_state = (result.get("state", combat_state) as Dictionary).duplicate(true)
@@ -947,6 +1016,46 @@ func _resolve_and_present(context: Dictionary) -> void:
 		if is_instance_valid(combat_log_panel):
 			combat_log_panel.append_entry("[전투 불능] 체력이 0이 되어 결전이 끝났습니다.", "system")
 	_show_review_panel(terminal)
+
+func _present_timing_duel(events_value: Array, timing: int, phase: String) -> void:
+	_set_presentation_state("presenting_result")
+	_set_resolution_surface_visible(false)
+	if is_instance_valid(presentation_label):
+		presentation_label.visible = false
+	if is_instance_valid(action_reveal_overlay):
+		action_reveal_overlay.show_timing(timing, phase, events_value, _reduced_motion)
+	set_meta("action_reveal_snapshot", action_reveal_overlay.get_snapshot() if is_instance_valid(action_reveal_overlay) else {})
+	for value in events_value:
+		if typeof(value) != TYPE_DICTIONARY:
+			continue
+		var event: Dictionary = value
+		if str(event.get("type", "")) not in ["action_result", "clash"]:
+			continue
+		_show_ultimate_vfx(event)
+		_play_character_action_motion(event)
+		_play_event_sfx(event)
+	if not _presentation_skip_requested:
+		var duration := _timing_reveal_duration(events_value)
+		if _fast_replay:
+			duration = minf(duration, 0.16)
+		elif _reduced_motion:
+			duration = 0.0
+		if duration > 0.0:
+			await _wait_for_presentation_delay(duration)
+	if is_instance_valid(presentation_vfx):
+		presentation_vfx.visible = false
+	if is_instance_valid(action_reveal_overlay):
+		action_reveal_overlay.hide_reveal()
+
+func _timing_reveal_duration(events_value: Array) -> float:
+	var duration := 0.82
+	for value in events_value:
+		if typeof(value) != TYPE_DICTIONARY:
+			continue
+		var event: Dictionary = value
+		if str(event.get("type", "")) in ["action_result", "clash"]:
+			duration = maxf(duration, _event_presentation_duration(event) + 0.24)
+	return duration
 
 func _show_review_panel(terminal: bool) -> void:
 	_review_terminal = terminal
@@ -985,6 +1094,7 @@ func _on_review_continue_requested() -> void:
 	if is_instance_valid(combat_log_panel):
 		combat_log_panel.append_entry("[복기 완료] 다음 행동 묶음을 준비합니다.", "system")
 	_review_terminal = false
+	_set_resolution_surface_visible(true)
 	_set_presentation_state("next_bundle_ready")
 	_configure_keyboard_focus_order()
 	_sync_progress_availability()
@@ -1022,6 +1132,11 @@ func _set_presentation_state(value: String) -> void:
 	set_meta("presentation_state", value)
 	set_meta("presentation_state_history", _presentation_state_history)
 	set_meta("inputs_locked", _inputs_locked())
+
+func _set_resolution_surface_visible(value: bool) -> void:
+	for control_value in [action_timing_panel, combat_progress_button, basic_card_tray]:
+		if is_instance_valid(control_value):
+			(control_value as Control).visible = value
 
 func _inputs_locked() -> bool:
 	return _presentation_state not in ["planning", "next_bundle_ready"]
@@ -1087,7 +1202,7 @@ func _play_character_action_motion(event: Dictionary) -> void:
 	if _reduced_motion:
 		return
 	var card_id := str(event.get("card_id", ""))
-	var is_attack := card_id.begins_with("ultimate_") or card_id.contains("attack")
+	var is_attack := card_id.begins_with("ultimate_") or card_id.contains("attack") or str(event.get("category", "")) == "attack"
 	if not is_attack:
 		return
 	var actor := str(event.get("actor", ""))
@@ -1159,6 +1274,8 @@ func _skip_presentation() -> void:
 		presentation_label.visible = false
 	if is_instance_valid(presentation_vfx):
 		presentation_vfx.visible = false
+	if is_instance_valid(action_reveal_overlay):
+		action_reveal_overlay.hide_reveal()
 	set_meta("presentation_skipped", true)
 
 func restart_combat() -> void:
@@ -1182,6 +1299,9 @@ func restart_combat() -> void:
 		presentation_vfx.visible = false
 	if is_instance_valid(presentation_label):
 		presentation_label.visible = false
+	if is_instance_valid(action_reveal_overlay):
+		action_reveal_overlay.hide_reveal()
+	_set_resolution_surface_visible(true)
 	if is_instance_valid(restart_combat_button):
 		restart_combat_button.visible = false
 	if is_instance_valid(combat_review_panel):
@@ -1302,6 +1422,7 @@ func _configure_accessibility_semantics() -> void:
 	for tile in tiles:
 		if is_instance_valid(tile):
 			_set_accessibility_semantics(tile, "%d번 전장 타일" % tile.tile_index, "이동 또는 공격의 대상 타일입니다.")
+	_set_accessibility_semantics(range_readout_panel, "현재 거리", "두 인물의 공개 거리입니다. 거리 0에서는 밀착 상태입니다.")
 	if is_instance_valid(combat_progress_button) and is_instance_valid(combat_progress_button._button):
 		_set_accessibility_semantics(combat_progress_button._button, "행동계획 실행", "현재 행동계획을 실행해 대응부터 순서대로 판정합니다. 실행 뒤에는 복기까지 계획을 바꿀 수 없습니다.")
 	_set_accessibility_semantics(fast_replay_button, "빠른 재생", "전투 연출의 재생 시간을 짧게 전환합니다.")
@@ -1394,9 +1515,20 @@ func _apply_combat_state_to_view() -> void:
 		top_hud.apply_combat_state(combat_state, action_timing_panel.timing_data.get("timing_sequence", [3, 3, 4]))
 	set_meta("player_tile", _player_tile)
 	set_meta("enemy_tile", _enemy_tile)
+	_refresh_range_readout()
 	_refresh_ultimate_menu()
 	_refresh_observation_reveal()
 	call_deferred("_layout_board")
+
+func _refresh_range_readout() -> void:
+	if not is_instance_valid(range_readout_label) or not is_instance_valid(range_engagement_label):
+		return
+	var distance := absi(_enemy_tile - _player_tile)
+	range_readout_label.text = "거리 %d" % distance
+	range_engagement_label.text = "[밀착]"
+	range_engagement_label.visible = distance == 0
+	set_meta("player_facing_distance", distance)
+	set_meta("player_facing_engaged", distance == 0)
 
 func request_locked_enemy_action_type_reveal() -> void:
 	if _inputs_locked() or resolution_engine == null:
@@ -1505,9 +1637,16 @@ func get_layout_snapshot() -> Dictionary:
 	return {
 		"layout_ready": _layout_ready,
 		"background_ready": is_instance_valid(battle_background) and battle_background.texture != null,
-		"background_path": "res://assets/backgrounds/twilight_ink_duel_v1.png",
+		"background_path": "res://assets/backgrounds/ink_mist_valley_duel_01_v1.png",
 		"hud_ready": is_instance_valid(top_hud),
 		"hud_snapshot": hud_snapshot,
+		"range_readout": {
+			"ready": is_instance_valid(range_readout_panel) and is_instance_valid(range_readout_label) and is_instance_valid(range_engagement_label),
+			"text": range_readout_label.text if is_instance_valid(range_readout_label) else "",
+			"engaged": range_engagement_label.visible if is_instance_valid(range_engagement_label) else false,
+			"engagement_text": range_engagement_label.text if is_instance_valid(range_engagement_label) else "",
+			"rect": Rect2(range_readout_panel.position, range_readout_panel.size) if is_instance_valid(range_readout_panel) else Rect2()
+		},
 		"action_timing_ready": is_instance_valid(action_timing_panel),
 		"action_timing_snapshot": timing_snapshot,
 		"action_timing_top": action_timing_panel.position.y if is_instance_valid(action_timing_panel) else 0.0,
@@ -1531,6 +1670,7 @@ func get_layout_snapshot() -> Dictionary:
 		"ultimate_menu_ready": is_instance_valid(ultimate_menu),
 		"ultimate_vfx_ready": is_instance_valid(presentation_vfx) and _ultimate_vfx_sheet != null,
 		"ultimate_vfx_active": presentation_vfx.visible if is_instance_valid(presentation_vfx) else false,
+		"action_reveal_snapshot": action_reveal_overlay.get_snapshot() if is_instance_valid(action_reveal_overlay) else {},
 		"ultimate_menu_text": ultimate_menu.text if is_instance_valid(ultimate_menu) else "",
 		"ultimate_available": bool(get_meta("ultimate_available", false)),
 		"ultimate_momentum": int(get_meta("ultimate_momentum", 0)),

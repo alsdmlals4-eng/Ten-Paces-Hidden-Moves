@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -178,23 +179,35 @@ def main() -> None:
     assert res_file(ultimate["asset_manifest"]).exists()
     active_assets = [asset for asset in asset_manifest["assets"] if asset["active"]]
     assert {asset["id"] for asset in active_assets} == {
-        "twilight_ink_duel_v1",
+        "ink_mist_valley_duel_01_v1",
         "player_wanderer_ink_v1",
         "enemy_masked_ink_v1",
         "dogyeom_status_portrait_01_v1",
-        "dogyeom_combat_battler_01_v1",
-        "player_wanderer_battler_rgba_v1",
         "enemy_masked_battler_rgba_v1",
+        "player_diagonal_duel_battler_01_v1",
+        "dogyeom_diagonal_duel_battler_01_v1",
+        "basic_technique_ink_atlas_01_v1",
         "ultimate_ink_gold_sprite_sheet_rgba",
     }
     for asset in active_assets:
         assert res_file(asset["path"]).exists(), asset["path"]
         assert asset.get("prompt") or asset.get("source_png_sha256"), asset["id"]
         assert asset.get("license", asset_manifest.get("license", ""))
+    battle_background = next(asset for asset in active_assets if asset["id"] == "ink_mist_valley_duel_01_v1")
+    assert battle_background["source_asset"] == "docs/visual-assets/approved/INK_MIST_VALLEY_DUEL_01_v1.png"
+    assert battle_background["runtime_consumer"] == "src/combat/battle_background.gd"
+    assert battle_background["replaces_active_asset"] == "twilight_ink_duel_v1"
+    canonical_source = ROOT / battle_background["source_asset"]
+    assert canonical_source.exists()
+    assert hashlib.sha256(canonical_source.read_bytes()).hexdigest() == battle_background["source_png_sha256"]
+    assert hashlib.sha256(res_file(battle_background["path"]).read_bytes()).hexdigest() == battle_background["source_png_sha256"]
+    previous_background = next(asset for asset in asset_manifest["assets"] if asset["id"] == "twilight_ink_duel_v1")
+    assert previous_background["active"] is False
+    assert previous_background["superseded_by"] == battle_background["id"]
     ultimate_vfx = next(asset for asset in active_assets if asset["id"] == "ultimate_ink_gold_sprite_sheet_rgba")
     assert ultimate_vfx["transparency_audit"]["has_alpha"] is True
     assert ultimate_vfx["transparency_audit"]["status"] == "APPROVED_ACTIVE"
-    for asset_id in ("player_wanderer_battler_rgba_v1", "enemy_masked_battler_rgba_v1"):
+    for asset_id in ("player_diagonal_duel_battler_01_v1", "dogyeom_diagonal_duel_battler_01_v1", "enemy_masked_battler_rgba_v1"):
         character_art = next(asset for asset in active_assets if asset["id"] == asset_id)
         audit = character_art["transparency_audit"]
         assert character_art["source_asset"]
@@ -274,9 +287,11 @@ def main() -> None:
     assert "combat_ai" not in excluded and "combat_end_restart" not in excluded
 
     required_files = [
-        "assets/backgrounds/twilight_ink_duel_v1.png",
-        "assets/characters/player_wanderer_battler_rgba_v1.png",
+        "assets/backgrounds/ink_mist_valley_duel_01_v1.png",
+        "assets/characters/player_diagonal_duel_battler_01_v1.png",
+        "assets/characters/dogyeom_diagonal_duel_battler_01_v1.png",
         "assets/characters/enemy_masked_battler_rgba_v1.png",
+        "assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
         "assets/reference/step_02_character_scale_and_tile_placement.svg",
         "scenes/combat/combat_board_preview.tscn",
         "scenes/combat/combat_board_tile.tscn",
@@ -286,6 +301,7 @@ def main() -> None:
         "src/combat/combat_board_tile.gd",
         "src/combat/combat_resolution_engine.gd",
         "src/combat/combat_ai_planner.gd",
+        "src/ui/combat_action_reveal_overlay.gd",
         "src/ui/action_timing_panel.gd",
         "src/ui/action_timing_slot.gd",
         "src/ui/basic_card_tray.gd",
@@ -301,6 +317,8 @@ def main() -> None:
         "tests/verify_combat_assistive_labels.gd",
         "tests/verify_combat_pointer_lock.gd",
         "tests/verify_combat_presentation_controls.gd",
+        "tests/verify_diagonal_duel_assets.gd",
+        "tests/verify_diagonal_duel_action_reveal.gd",
         "tests/verify_combat_keyboard_accessibility.gd",
         "tests/verify_combat_layout_accessibility.gd",
         "tests/verify_combat_performance_headless.gd",
@@ -316,6 +334,7 @@ def main() -> None:
     engine_script = (ROOT / "src/combat/combat_resolution_engine.gd").read_text(encoding="utf-8")
     controller = (ROOT / "src/combat/combat_board_preview.gd").read_text(encoding="utf-8")
     character_script = (ROOT / "src/combat/combat_character_placeholder.gd").read_text(encoding="utf-8")
+    action_reveal_script = (ROOT / "src/ui/combat_action_reveal_overlay.gd").read_text(encoding="utf-8")
     verifier = (ROOT / "tests/verify_combat_board.gd").read_text(encoding="utf-8")
     response_verifier = (ROOT / "tests/verify_response_rules.gd").read_text(encoding="utf-8")
     powershell = (ROOT / "tools/verify_and_commit_combat_foundation.ps1").read_text(encoding="utf-8")
@@ -339,9 +358,13 @@ def main() -> None:
         "UltimateMenu",
         "_refund_ultimate_reservation",
         "presentation_state",
+        "CombatActionRevealOverlay",
+        "_present_timing_duel",
+        "action_reveal_snapshot",
     ))
     assert all(token in character_script for token in (
-        "player_wanderer_battler_rgba_v1.png",
+        "player_diagonal_duel_battler_01_v1.png",
+        "dogyeom_diagonal_duel_battler_01_v1.png",
         "enemy_masked_battler_rgba_v1.png",
         "get_render_texture",
         "character_art_path",
@@ -351,6 +374,7 @@ def main() -> None:
     assert "_wait_for_presentation_delay" in controller
     assert "_configure_keyboard_focus_order" in controller
     assert "_configure_accessibility_semantics" in controller
+    assert all(token in action_reveal_script for token in ("show_timing", "future_action_visible", "_actor_events", "VS"))
     assert all(token in verifier for token in ("TARGETING_10_5", "_on_board_tile_clicked", "miss_direction", "basic_footwork", "EXPECTED_PLAYER_TILE := 4", "EXPECTED_ENEMY_TILE := 6"))
     assert all(token in response_verifier for token in ("Same-timing guard", "Stance+guard", "Stance+evade", "preview_player_plan", "invalid_anchors"))
     assert "res://tests/verify_response_rules.gd" in powershell

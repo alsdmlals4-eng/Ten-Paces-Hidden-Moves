@@ -111,14 +111,15 @@ func _notification(what: int) -> void:
         _refresh_visuals()
 
 func _draw() -> void:
+    var resting := interaction_state == "default" and occupied_roles.is_empty() and not _hovered and not has_focus()
     var center := Vector2(size.x * 0.5, size.y * 0.39)
     var radius := minf(size.x, size.y) * 0.24
-    draw_circle(center, radius, Color(0.12, 0.10, 0.08, 0.18))
-    draw_arc(center, radius, 0.0, TAU, 48, Color(0.20, 0.17, 0.14, 0.72), 2.0)
+    draw_circle(center, radius, Color(0.12, 0.10, 0.08, 0.06 if resting else 0.18))
+    draw_arc(center, radius, 0.0, TAU, 48, Color(0.20, 0.17, 0.14, 0.22 if resting else 0.72), 1.0 if resting else 2.0)
 
     var anchor := get_foot_anchor_local()
-    draw_line(anchor + Vector2(-8.0, 0.0), anchor + Vector2(8.0, 0.0), GOLD, 2.0)
-    draw_line(anchor + Vector2(0.0, -8.0), anchor + Vector2(0.0, 8.0), GOLD, 2.0)
+    draw_line(anchor + Vector2(-8.0, 0.0), anchor + Vector2(8.0, 0.0), Color(GOLD, 0.18 if resting else 1.0), 1.0 if resting else 2.0)
+    draw_line(anchor + Vector2(0.0, -8.0), anchor + Vector2(0.0, 8.0), Color(GOLD, 0.18 if resting else 1.0), 1.0 if resting else 2.0)
 
     if occupied_roles.size() == 2:
         draw_string(ThemeDB.fallback_font, Vector2(10.0, 24.0), "밀착", HORIZONTAL_ALIGNMENT_LEFT, -1.0, 16, GOLD)
@@ -147,10 +148,15 @@ func _draw() -> void:
 func _refresh_visuals() -> void:
     if is_instance_valid(_number_label):
         _number_label.text = str(tile_index)
+        _number_label.visible = is_targetable() or _hovered or has_focus()
 
     var fill_color := DEFAULT_FILL
     var border_color := DEFAULT_BORDER
     var border_width := 3
+    if interaction_state == "default" and occupied_roles.is_empty():
+        fill_color = Color(DEFAULT_FILL, 0.15)
+        border_color = Color(DEFAULT_BORDER, 0.28)
+        border_width = 1
     if occupied_roles.size() == 2:
         border_color = GOLD
         border_width = 6

@@ -4,10 +4,10 @@ extends Control
 signal progress_requested(context: Dictionary)
 
 const DATA_PATH := "res://data/combat/combat_progress_preview.json"
-const PANEL := Color(0.055, 0.045, 0.035, 0.98)
-const GOLD := Color("c79a50")
-const PAPER := Color("e0cfaa")
-const MUTED := Color("9b8c76")
+const PANEL := Color("d9ccb1")
+const GOLD := Color("b99254")
+const PAPER := Color("211c17")
+const MUTED := Color("665b4b")
 
 var progress_data: Dictionary = {}
 var runtime_context: Dictionary = {}
@@ -69,9 +69,11 @@ func _build() -> void:
     _apply_keyboard_focus_ring()
     _button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
     _button.add_theme_font_size_override("font_size", 24)
-    _button.add_theme_color_override("font_color", Color("f2dfb0"))
-    _button.add_theme_color_override("font_hover_color", Color.WHITE)
-    _button.add_theme_color_override("font_pressed_color", Color("fff1c9"))
+    _button.add_theme_color_override("font_color", Color("211c17"))
+    _button.add_theme_color_override("font_hover_color", Color("211c17"))
+    _button.add_theme_color_override("font_pressed_color", Color("211c17"))
+    _button.add_theme_color_override("font_disabled_color", Color("d2c6ab"))
+    _apply_ink_paper_button_style()
     _button.pressed.connect(request_progress)
     add_child(_button)
 
@@ -108,6 +110,31 @@ func _apply_keyboard_focus_ring() -> void:
     focus_style.content_margin_bottom = 2.0
     _button.add_theme_stylebox_override("focus", focus_style)
     _button.set_meta("keyboard_focus_ring", true)
+
+func _apply_ink_paper_button_style() -> void:
+    if _button == null:
+        return
+    var normal := StyleBoxFlat.new()
+    normal.bg_color = GOLD
+    normal.border_color = Color("211c17")
+    normal.set_border_width_all(2)
+    normal.set_corner_radius_all(4)
+    normal.content_margin_left = 8.0
+    normal.content_margin_right = 8.0
+    var hover := normal.duplicate() as StyleBoxFlat
+    hover.bg_color = Color("d3b878")
+    hover.border_color = Color.WHITE
+    hover.set_border_width_all(3)
+    var pressed := normal.duplicate() as StyleBoxFlat
+    pressed.bg_color = Color("9d7640")
+    pressed.border_color = Color("211c17")
+    var disabled := normal.duplicate() as StyleBoxFlat
+    disabled.bg_color = Color("665b4b")
+    disabled.border_color = Color("4b4035")
+    _button.add_theme_stylebox_override("normal", normal)
+    _button.add_theme_stylebox_override("hover", hover)
+    _button.add_theme_stylebox_override("pressed", pressed)
+    _button.add_theme_stylebox_override("disabled", disabled)
 
 func set_runtime_context(value: Dictionary) -> void:
     runtime_context = value.duplicate(true)
@@ -203,5 +230,6 @@ func _notification(what: int) -> void:
 
 func _draw() -> void:
     draw_rect(Rect2(Vector2.ZERO, size), PANEL, true)
-    draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color(GOLD, 0.84 if progress_enabled else 0.42), false, 2.0)
-    draw_line(Vector2(8.0, 28.0), Vector2(maxf(8.0, size.x - 8.0), 28.0), Color(GOLD, 0.30), 1.0)
+    draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color("211c17"), false, 2.0)
+    draw_rect(Rect2(Vector2(4.0, 4.0), size - Vector2(8.0, 8.0)), Color(GOLD, 0.72 if progress_enabled else 0.34), false, 1.0)
+    draw_line(Vector2(8.0, 28.0), Vector2(maxf(8.0, size.x - 8.0), 28.0), Color("211c17", 0.42), 1.0)

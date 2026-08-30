@@ -39,8 +39,12 @@ class PcFirstVerticalSliceImplementationGateTests(unittest.TestCase):
         self.assertFalse(status["windows_android_adapter_implementation_authorized"])
         self.assertEqual("USER_EXPLICIT_NON_IMAGE_WORK_REQUEST", status["implementation_request_source"])
         self.assertEqual(
-            "USER_APPROVED_COMBAT_REFERENCE_REFERENCE_SET_20260825_OPPONENT_CHARACTER_MASTER_DOGYEOM_COMBAT_BATTLER_AND_DOGYEOM_STATUS_PORTRAIT_01_20260826",
+            "USER_APPROVED_COMBAT_REFERENCE_REFERENCE_SET_20260825_OPPONENT_CHARACTER_MASTER_DOGYEOM_COMBAT_BATTLER_AND_DOGYEOM_STATUS_PORTRAIT_01_20260826_PLUS_INK_MIST_VALLEY_DUEL_01_USER_FINAL_LOCKED_MACHINE_RUNTIME_VERIFIED_20260830",
             status["final_visual_reference_status"],
+        )
+        self.assertEqual(
+            "CONSUMER_FIRST_DOGYEOM_STATUS_PORTRAIT_IMPLEMENTED_AUTOMATED_VERIFIED_PLUS_INK_MIST_VALLEY_DUEL_01_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260830",
+            status["visual_asset_requirement_status"],
         )
 
 

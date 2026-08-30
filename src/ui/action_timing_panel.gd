@@ -8,10 +8,10 @@ signal bundle_advanced(snapshot: Dictionary)
 const DATA_PATH := "res://data/combat/combat_action_timing_preview.json"
 const SLOT_SCENE := preload("res://scenes/ui/action_timing_slot.tscn")
 
-const PANEL := Color(0.055, 0.045, 0.035, 0.97)
-const PAPER := Color("e0cfaa")
+const PANEL := Color("d9ccb1")
+const PAPER := Color("211c17")
 const GOLD := Color("c79a50")
-const MUTED := Color("948875")
+const MUTED := Color("665b4b")
 
 var timing_data: Dictionary = {}
 var slots: Array[ActionTimingSlot] = []
@@ -547,7 +547,8 @@ func _notification(what: int) -> void:
 
 func _draw() -> void:
     draw_rect(Rect2(Vector2.ZERO, size), PANEL, true)
-    draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color(GOLD, 0.72), false, 2.0)
-    draw_line(Vector2(12.0, 31.0), Vector2(maxf(12.0, size.x - 12.0), 31.0), Color(GOLD, 0.30), 1.0)
+    draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color("211c17"), false, 2.0)
+    draw_rect(Rect2(Vector2(4.0, 4.0), size - Vector2(8.0, 8.0)), Color(GOLD, 0.62), false, 1.0)
+    draw_line(Vector2(12.0, 31.0), Vector2(maxf(12.0, size.x - 12.0), 31.0), Color("211c17", 0.42), 1.0)
     for separator in _separator_x:
-        draw_line(Vector2(separator, 31.0), Vector2(separator, maxf(31.0, size.y - 8.0)), Color(GOLD, 0.38), 2.0)
+        draw_line(Vector2(separator, 31.0), Vector2(separator, maxf(31.0, size.y - 8.0)), Color("211c17", 0.42), 2.0)
