@@ -51,6 +51,8 @@ The first test command exposed two non-product execution defects: `godot` was no
 
 The final regression pass also surfaced three pre-existing current-contract drifts. `check_combat_board_contract.py` still declared the superseded player/Dogyeom art as the active asset set; it now validates the new derivatives, atlas, and reveal consumer. `verify_clash_guard_sure_hit.gd` was already RED at the exact pre-change `1aa97da0` baseline because its intended 6-versus-8 fixture left formula damage active; the test now freezes those two intended raw values without changing production combat rules. `verify_combat_pointer_lock.gd` clicked the retired basic tray even though production has already switched to automatic placement via `ActionSelectionDock`; it now invokes the actual basic-panel button and verifies a locked state cannot add or alter a reservation. Each was RED before the targeted repair and green afterward.
 
+Initial remote validation also found a delivery-contract defect rather than a gameplay defect: the package lacked its required active protected-change approval record and GitHub label. The approved record now enumerates the exact protected paths against the project adapter baseline `48b20da2948e6be7d3543c43814e865b975436a5`, and the required `approved-protected-change` label was applied. That exposed a second, self-invalidating CI selector: any newly added approval made the workflow pass the PR base (`06378d3…`) to a Base validator that requires the adapter baseline (`48b20da…`). The selector now changes to the PR base **only when the adapter baseline itself changes**; a new approval alone retains the adapter baseline. A focused workflow regression was RED before that correction and green afterward. A clean disposable checkout then passed the exact pinned Base validator with the active approval; the remote re-run remains a separate evidence gate.
+
 ## Machine and actual-runtime verification
 
 | Layer | Evidence | Status |
@@ -65,6 +67,8 @@ The final regression pass also surfaced three pre-existing current-contract drif
 | Resolver / rules regressions | `verify_combat_board.gd`, `verify_response_rules.gd`, `verify_clash_guard_sure_hit.gd`, `verify_step12_13_restart_ai.gd`, `verify_ultimate_ui.gd`, `verify_ultimate_interrupt_engagement.gd` | `PASS` |
 | Input, focus, layout, and headless performance | `verify_combat_pointer_lock.gd`, `verify_combat_keyboard_accessibility.gd`, `verify_combat_assistive_labels.gd`, `verify_combat_focus_visuals.gd`, `verify_combat_focus_order.gd`, `verify_combat_layout_accessibility.gd`, `verify_combat_performance_headless.gd` | `PASS` |
 | Python repository suite | `python -m unittest discover -s tests -p "test_*.py"` — 421 tests | `PASS` |
+| Protected-change lifecycle | `test_approved_protected_change_workflow.py`, `test_approved_protected_change_adoption.py`, `check_one_time_protected_change_lifecycle.py` | `PASS` |
+| Exact pinned Base approval validation | Base `2828a74f60c1ed09546171040f4178c8848ea686`, clean checkout, adapter baseline `48b20da2948e6be7d3543c43814e865b975436a5` | `PASS` |
 | Actual Godot run | Godot `4.7.1.stable.official.a13da4feb`, exact isolated worktree, current-frame capture | `PASS` |
 
 Actual game progression used the live Godot runtime: `새 비무행 → four starter manuals → setup → intro → briefing → slot1_dogyeom combat`. The live frame showed the new lower-left foreground player, smaller upper-right Dogyeom, `거리 2`, a hidden tile layer outside targeting, the active 5×2 technique dock, and no launch errors. A live bundle with `이동 → 명상 → 명상` was then executed. During timing 1, the screenshot/readback showed `1번째 행동 공개`, player `이동`, enemy `강공`, `VS`, only current-time events, and the hidden planning dock. `action_reveal_snapshot` read `timing: 1`, `future_action_visible: false`, and both action-card counts. The later review was reached only after ordered state application; the resolver count stayed one.
@@ -82,6 +86,7 @@ Actual game progression used the live Godot runtime: `새 비무행 → four sta
 ## Evidence ceiling and remaining work
 
 - **Machine / visible local Godot runtime:** `PASS_20260830` for the exact isolated worktree only.
+- **Remote PR validation / merge:** CI recovery is locally verified, but the GitHub re-run and merge readback are `NOT_RUN` at this report point.
 - **Human gameplay readability and final visual acceptance of the compact crop treatment:** `NOT_RUN`.
 - **Accessibility-user testing, Android device, release performance, store/release clearance:** `NOT_RUN`.
 - **Test-process hygiene observation:** `verify_ultimate_ui.gd` passed but Godot emitted a two-instance `ObjectDB` teardown warning. This package does not introduce its execution path and no functional failure was reproduced; it remains a low-priority test-harness follow-up, not a product PASS claim.

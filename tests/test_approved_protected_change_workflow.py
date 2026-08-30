@@ -20,10 +20,10 @@ class ApprovedProtectedChangeWorkflowTests(unittest.TestCase):
             "--external-approval \"$EXTERNAL_APPROVAL\"",
             "check_one_time_protected_change_lifecycle.py",
             "--base-sha \"$PR_BASE_SHA\"",
-            "ACTIVE_APPROVAL_NEW_IN_PR=true",
             "PR_BASELINE_SHA=\"$(",
             "HEAD_BASELINE_SHA=\"$(",
-            "if [ \"$ACTIVE_APPROVAL_NEW_IN_PR\" = true ] || [ \"$HEAD_BASELINE_SHA\" != \"$PR_BASELINE_SHA\" ]; then",
+            "if [ \"$HEAD_BASELINE_SHA\" != \"$PR_BASELINE_SHA\" ]; then",
+            "PROTECTED_BASE_SHA=\"$PR_BASE_SHA\"",
             "PROTECTED_BASE_SHA=\"$PR_BASELINE_SHA\"",
             "labeled",
             "unlabeled",
@@ -36,6 +36,7 @@ class ApprovedProtectedChangeWorkflowTests(unittest.TestCase):
             "if [ \"$ADAPTER_CHANGES\" != \"\" ] || [ \"$ACTIVE_APPROVAL_NEW_IN_PR\" = true ]; then",
             workflow,
         )
+        self.assertNotIn("ACTIVE_APPROVAL_NEW_IN_PR", workflow)
 
 
 if __name__ == "__main__":

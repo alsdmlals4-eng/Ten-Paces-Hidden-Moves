@@ -38,7 +38,6 @@ jobs:
         run: |
           set -euo pipefail
           ADAPTER_PATH="skills/PROJECT_BASE_ADAPTER.json"
-          APPROVAL_PATH="docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
           PR_BASELINE_SHA="$(
             git show "$PR_BASE_SHA:$ADAPTER_PATH" |
               python -c 'import json, sys; payload = json.load(sys.stdin); print(payload["protected_baseline"]["commit"])'
@@ -47,11 +46,7 @@ jobs:
             git show "HEAD:$ADAPTER_PATH" |
               python -c 'import json, sys; payload = json.load(sys.stdin); print(payload["protected_baseline"]["commit"])'
           )"
-          ACTIVE_APPROVAL_NEW_IN_PR=false
-          if [ -f "$APPROVAL_PATH" ] && ! git cat-file -e "$PR_BASE_SHA:$APPROVAL_PATH" 2>/dev/null; then
-            ACTIVE_APPROVAL_NEW_IN_PR=true
-          fi
-          if [ "$ACTIVE_APPROVAL_NEW_IN_PR" = true ] || [ "$HEAD_BASELINE_SHA" != "$PR_BASELINE_SHA" ]; then
+          if [ "$HEAD_BASELINE_SHA" != "$PR_BASELINE_SHA" ]; then
             PROTECTED_BASE_SHA="$PR_BASE_SHA"
           else
             PROTECTED_BASE_SHA="$PR_BASELINE_SHA"
