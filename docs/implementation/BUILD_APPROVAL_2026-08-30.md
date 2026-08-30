@@ -36,3 +36,23 @@ No deck, hand, draw, enemy-only skill, save/schema expansion, economy, Route, Sc
 ## Exclusions and evidence ceiling
 
 No combat numbers or timing rules, AI/private-plan information boundary, public-history shape, save schema, platform adapter, Android work, release claim, additional image queue, or unrelated refactor is authorized. Machine and visible local Godot runtime evidence remain distinct from human gameplay readability, accessibility-user, Android-device, release-performance, and store/release evidence, which remain `NOT_RUN`.
+
+---
+
+# Deterministic Balance Instrumentation v1 BUILD Approval Addendum
+
+- Decision / contract: `TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01`
+- Approved on: `2026-08-30 KST`
+- Approval source: the user’s explicit `승인`, following the approved recommendation and the standing instruction to automatically recover necessary in-scope work and approvals.
+- Issue / PR: implementation continuation / `#280`
+- Authority level: `SCOPED_FIRST_FIVE_DETERMINISTIC_SINGLE_DUEL_BALANCE_INSTRUMENTATION_ONLY`
+
+## Approved scope
+
+1. Add a validation-only matrix contract and Godot headless harness that feeds the existing first-five candidate bindings, legal starter loadouts, public-only player policies, and explicit AI decision seeds through the current shared resolver.
+2. Add only the public policy, deterministic report runner, regression checks, CI fast checks, current-state evidence, and one-time protected-change approval artefacts required for the exact PR #280 path set.
+3. Preserve the existing combat rules and record the result as machine evidence only; no automatic stat adjustment or player-facing recommendation is authorized.
+
+## Exclusions and evidence ceiling
+
+No combat values, timing rules, hidden-plan/AI privacy boundary, save schema, UI/Scene, asset, audio, route/campaign, external telemetry, Android, release, or unrelated refactor is authorized. The two 3,375-row headless reports prove deterministic instrumentation only. Windows-visible usability, human gameplay fairness/fun/readability, accessibility-user, Android-device, release-performance, and balance PASS remain `NOT_RUN`.

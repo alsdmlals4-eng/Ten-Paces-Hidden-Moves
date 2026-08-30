@@ -91,9 +91,13 @@ current catalogs + matrix JSON
 
 `CLEAN_REVIEW_EXIT`은 이 validation-only branch package에 한정해 reached했다. PR 통합 전에는 branch machine evidence이고, 통합 후에는 exact `origin/main` readback과 CI required checks가 별도로 필요하다.
 
+## PR delivery-contract recovery
+
+첫 원격 PR 검증은 gameplay 또는 report 결함이 아니라 delivery-contract 누락을 발견했다. 새 `data/validation/` 및 `src/validation/` 경로는 제품 변경이 아닌 검증 전용이지만 Project Base Adapter에서는 보호 경로다. 따라서 사용자의 명시 `승인`을 근거로, adapter baseline `f1d0a33203b7e80d538481f5d23b56afc1dd5d98`에 대해 validator가 감지한 정확한 일곱 경로만 `PROJECT_PROTECTED_CHANGE_APPROVAL.json`에 기록했다. 이 manifest는 PR #280 한 번에만 유효하며, 병합 후 archive와 protected baseline promotion이 별도 lifecycle 작업으로 필요하다. PR에도 `approved-protected-change` 메타데이터를 연결해 Base validator의 외부-승인 확인 경로를 충족한다.
+
 ## 미검증·남은 위험
 
 1. 이 결과는 headless machine evidence다. Windows visible 화면, human/player fun·fairness·readability, Android physical device, accessibility, release performance는 아직 `NOT_RUN`이다.
 2. `timeout`·win/loss 분포는 후보 수치 변경 권고가 아니다. 수치 변경은 별도 balance Decision, data change, regression, human/player 검증이 필요하다.
-3. 현재 증거는 isolated branch의 exact implementation commit에 대한 것이다. PR review, required checks, merge, post-merge `origin/main` readback은 아직 수행 전이다.
+3. 현재 증거는 isolated branch의 exact implementation commit에 대한 것이다. approval manifest/label을 보강한 뒤 PR required checks, merge, post-merge `origin/main` readback은 별도로 수행한다.
 4. Matrix는 명시적으로 `opening_no_route` single duel만 다룬다. Route/보상/성장/캠페인과 retry UX는 범위 밖이다.
