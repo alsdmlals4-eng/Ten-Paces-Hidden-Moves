@@ -7,7 +7,7 @@ baseline_main: 83ad48a7b4388e249e5b40e19ad25f77a817d1a2
 scope: REMOVE_ONE_TIME_ACTIVE_MANIFEST_ARCHIVE_APPROVAL_AND_PROMOTE_PROTECTED_BASELINE
 source_pr: 280
 source_decision: TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01
-status: LOCAL_VALIDATION_PENDING
+status: LOCAL_VALIDATION_PASSED_REMOTE_PR_PENDING
 current_source_relevance_check: NOT_APPLICABLE_NO_EXTERNAL_PRODUCT_OR_POLICY_DECISION
 ```
 
@@ -26,6 +26,22 @@ PR #280은 remote CI 전체 통과 후 병합됐지만, 해당 PR에만 유효�
 
 변경 전 `python tools/check_one_time_protected_change_lifecycle.py --project-root . --base-sha 83ad48a7b4388e249e5b40e19ad25f77a817d1a2`는 active manifest가 PR base에서 carry되었다고 의도대로 실패했다. 이 cleanup은 runtime behavior, combat rule, AI, save, asset bytes를 바꾸지 않는다. Windows-visible, Human, accessibility-user, Android device, release performance 및 balance PASS는 `NOT_RUN`이다.
 
-## 검증 및 적대 검토
+## 실제 local 검증
 
-최종 validator, generated-artifact check, lifecycle GREEN, current-owner consumer test, exact diff 및 remote CI 결과는 변경 후 이 보고서에 기록한다. 다섯 검토 loop는 권위·수명주기·정본/파생물·consumer·배포 위생을 각각 공격하며, 실제 결과 없는 PASS를 기록하지 않는다.
+- 변경 전 lifecycle validator는 carried active manifest를 정확히 거부하는 `RED`를 재현했다.
+- archive·manifest removal·baseline promotion commit 뒤, 같은 lifecycle validator는 `PASS`했다.
+- Base `check_approved_project_operating_contract.py`는 active approval 및 external approval 없이 `protected-base=83ad48a7b4388e249e5b40e19ad25f77a817d1a2`로 `PASS`했다.
+- Base `build_project_operating_artifacts.py --check`는 regenerated Dashboard 및 세 generated adapter view가 current라고 확인했다.
+- `python -m unittest discover -s tests -p 'test_*.py'`는 `421 PASS`였다.
+- canonical combat docs, canonical reference freshness, project operating system과 `git diff --check 83ad48a7...HEAD`도 `PASS`였다.
+- diff는 current owner, generated views, archive/lifecycle, 상태 소비자 회귀만 포함하며 `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot` 변경은 없다.
+
+## 다섯 차례 적대 검토
+
+1. **권위와 범위:** exact merged `origin/main` readback, PR #280 merge commit, manifest blob SHA-256 및 사용자 승인 범위를 대조했다.
+2. **수명주기:** cleanup 전 carry-manifest `RED`를 재현하고, archive 추가·active 삭제·adapter baseline promotion의 commit-diff `GREEN`을 확인했다.
+3. **정본과 파생물:** canonical adapter의 commit 한 개만 변경하고 Base generator가 만든 Dashboard 및 세 skill view의 hash readback을 확인했다.
+4. **consumer:** current planning owner의 merged-main 상태가 old PR-pending expectation과 충돌하는 것을 regression `RED`로 확인한 뒤 최소 expectation 갱신 후 `421 PASS`로 교정했다.
+5. **배포 위생:** Base contract, generated artifact, canonical checks, whitespace, no-product-path diff와 worktree cleanliness를 확인했다.
+
+`CLEAN_REVIEW_EXIT`: local must-fix는 0개다. 이 cleanup PR의 remote CI, merge 및 post-merge `origin/main` readback은 아직 별도 증거 게이트다.
