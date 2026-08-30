@@ -2,7 +2,7 @@
 
 ~~~yaml
 decision_id: TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01
-status: USER_CONTINUATION_APPROVED_IMPLEMENTED_LOCAL_MACHINE_VERIFIED_PENDING_PR
+status: USER_CONTINUATION_APPROVED_IMPLEMENTED_MERGED_MAIN_PR289_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_CLEANUP_PENDING_PR
 baseline_origin_main: 65fc68a299e0b62a187baadb798d0ca82388b580
 work_mode: BUILD
 approval_source: "user explicit: 좋아 진행해; existing long-horizon direction: 권장안대로 진행해 / godot에 기획안들 전부 다 구현될 때까지 멈추지마"
