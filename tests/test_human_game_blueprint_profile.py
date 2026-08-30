@@ -78,12 +78,14 @@ class HumanGameBlueprintProfileContract(unittest.TestCase):
 
     def test_current_consumers_are_not_inverted(self) -> None:
         positive = (
-            "CURRENT_RUNTIME_CONSUMED_FIELDS | `signature_manual_id`, `signature_star_seed` | "
-            "current loadout, route, and result consumers"
+            "CURRENT_RUNTIME_CONSUMED_FIELDS | `signature_manual_id`, `signature_star_seed`, "
+            "`runtime_archetype_id`, `basic_action_focus_ids`, `final_stat_total_seed` | "
+            "current loadout/route/result plus Issue #267 per-combat binding, derived stats, and planner consumer"
         )
         negative = (
-            "NOT_CONSUMED_BY_COMBAT_PERSONALITY_OR_STATS | `behavior_focus`, "
-            "`basic_action_focus_ids`, `final_stat_total_seed` | Issue #267 future binding"
+            "NOT_YET_MEASURED_BY_BALANCE_INSTRUMENTATION | profile weights, derived stat total, "
+            "player/loadout/policy/seed outcome distribution | successor Decision "
+            "`TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01`; no balance result yet"
         )
         self.assertIn(positive, self.spec)
         self.assertIn(negative, self.spec)
@@ -95,7 +97,13 @@ class HumanGameBlueprintProfileContract(unittest.TestCase):
             "NOT_CONSUMED_BY_COMBAT_PERSONALITY_OR_STATS | `signature_manual_id`, `signature_star_seed`",
             self.spec,
         )
-        self.assertIn("USER_APPROVED_CODEX_GODOT_HANDOFF_READY / RUNTIME_NOT_RUN", self.spec)
+        self.assertNotIn(
+            "NOT_CONSUMED_BY_COMBAT_PERSONALITY_OR_STATS | `behavior_focus`, "
+            "`basic_action_focus_ids`, `final_stat_total_seed` | Issue #267 future binding",
+            self.spec,
+        )
+        self.assertIn("IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK", self.spec)
+        self.assertIn("MACHINE_RUNTIME_VERIFIED_FOR_BINDING; BALANCE_SIMULATION_NOT_RUN", self.spec)
 
     def test_prospective_gate_grandfathers_only_issue_267(self) -> None:
         lifecycle = (

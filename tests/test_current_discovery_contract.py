@@ -200,11 +200,11 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "user_directed_planning_next_package: BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_ISSUE267_MERGED_MAIN_READBACK",
+            "user_directed_planning_next_package: BALANCE_INSTRUMENTATION_WRITTEN_SPEC_REVIEW_THEN_CODEX_GODOT_HANDOFF",
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_next_decision: BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_ISSUE267_MERGED_MAIN_READBACK",
+            "user_directed_planning_next_decision: TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01",
             current_section,
         )
         self.assertIn(
@@ -220,7 +220,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_latest_decision: TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01",
+            "user_directed_planning_latest_decision: TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01",
             current_section,
         )
         self.assertIn(
@@ -228,7 +228,15 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_pending_material_decision: BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_ISSUE267_MERGED_MAIN_READBACK",
+            "user_directed_planning_pending_material_decision: NONE_USER_APPROVED_BALANCE_INSTRUMENTATION_WRITTEN_SPEC_REVIEW_PENDING",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_balance_instrumentation_decision: docs/decisions/2026-08-30_BALANCE_INSTRUMENTATION_CONTRACT_DECISION.md",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_balance_instrumentation_design_spec: docs/superpowers/specs/2026-08-30-balance-instrumentation-design.md",
             current_section,
         )
         self.assertIn("user_directed_planning_opponent_runtime_personality_issue: 267", current_section)
@@ -397,8 +405,24 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["evidence_ceiling"]["pr277_protected_approval_lifecycle"],
         )
         self.assertEqual(
-            "BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_ISSUE267_MERGED_MAIN_READBACK",
+            "BALANCE_INSTRUMENTATION_WRITTEN_SPEC_REVIEW_THEN_CODEX_GODOT_HANDOFF",
             status["next_phase"],
+        )
+        self.assertEqual(
+            "BALANCE_INSTRUMENTATION_WRITTEN_SPEC_REVIEW_THEN_CODEX_GODOT_HANDOFF",
+            status["next_product_execution_surface"],
+        )
+        self.assertEqual(
+            "TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01",
+            status["balance_instrumentation_decision"],
+        )
+        self.assertEqual(
+            "docs/superpowers/specs/2026-08-30-balance-instrumentation-design.md",
+            status["balance_instrumentation_design_spec"],
+        )
+        self.assertEqual(
+            "USER_APPROVED_WRITTEN_SPEC_REVIEW_PENDING",
+            status["balance_instrumentation_status"],
         )
         self.assertTrue(status["product_implementation_authorized"])
         self.assertEqual(
@@ -437,7 +461,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["first_five_defeat_retry_scope"],
         )
         self.assertEqual(
-            ["BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_ISSUE267_MERGED_MAIN_READBACK"],
+            [],
             status["pending_material_decisions"],
         )
         self.assertEqual(
@@ -466,7 +490,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["opponent_runtime_personality_binding_status"],
         )
         self.assertEqual(
-            "NOT_RUN_RUNTIME_CONSUMERS_IMPLEMENTED_INSTRUMENTATION_CONTRACT_REQUIRED",
+            "NOT_RUN_USER_APPROVED_ENGINE_DIRECT_INSTRUMENTATION_V1_WRITTEN_SPEC_REVIEW_PENDING",
             status["evidence_ceiling"]["balance_simulation"],
         )
         self.assertEqual(
@@ -483,6 +507,10 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertIn(
             "TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01",
+            status["resolved_material_decisions"],
+        )
+        self.assertIn(
+            "TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01",
             status["resolved_material_decisions"],
         )
 
