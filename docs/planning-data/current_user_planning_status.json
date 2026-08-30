@@ -13,7 +13,7 @@
   "current_visual_production_decision": "TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01",
   "martial_manual_presentation_decision": "TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01",
   "martial_manual_presentation_approval_source": "user explicit: 무공 기술서에 삽화는 넣지않는 쪽으로가자",
-  "martial_manual_presentation_status": "TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION_EXISTING_RUNTIME_CONTRACT_LOCAL_HEADLESS_GODOT_VERIFIED_20260830_AWAITING_PR_CI_AND_POSTMERGE_READBACK",
+  "martial_manual_presentation_status": "TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION_IMPLEMENTED_MERGED_MAIN_PR285_REMOTE_CI_PASS_EXACT_MAIN_POSTMERGE_READBACK",
   "martial_manual_presentation_scope": "MartialActionPanel owned-manual and martial-technique list only; basic CardView, battlers/background, UltimateActionPanel, VFX, combat rules, AI, save are unchanged",
   "current_visual_generation_cadence_decision": "TEN-DEC-20260828-CORE-SCENE-VISUAL-BOARD-FINAL-LOCK-CADENCE-01",
   "current_plan_execution_cta_decision": "TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01",

@@ -36,7 +36,15 @@
       "UltimateActionPanel",
       "ultimate_vfx_and_action_reveal_overlay"
     ],
-    "implementation_status": "EXISTING_MARTIAL_ACTION_PANEL_TEXT_BUTTON_CONTRACT_LOCAL_HEADLESS_GODOT_VERIFIED_20260830_AWAITING_PR_CI_AND_POSTMERGE_READBACK"
+    "implementation_status": "TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION_IMPLEMENTED_MERGED_MAIN_PR285_REMOTE_CI_PASS_EXACT_MAIN_POSTMERGE_READBACK",
+    "postmerge_readback": {
+      "source_pr": 285,
+      "merged_main": "c36f8cb8bc7a9ee205b6fba71f1216dfd9514883",
+      "remote_ci": "ALL_REQUIRED_CHECKS_SUCCESS_20260830",
+      "local_machine_runtime": "GODOT_4_7_1_HEADLESS_UI_AI_AND_THREE_VIEWPORTS_PASS_AFTER_FRESH_IMPORT_CACHE",
+      "human_visible_usability": "NOT_RUN",
+      "android_actual_device": "NOT_RUN"
+    }
   },
   "human_facing_owner": "REPOSITORY_VISUAL_BIBLE_ASSET_PROVENANCE_AND_HANDOFF",
   "repository_handoff": "docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md",
