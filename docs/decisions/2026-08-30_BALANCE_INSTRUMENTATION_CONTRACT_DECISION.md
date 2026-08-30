@@ -63,3 +63,9 @@ human_player_evidence: NOT_RUN_DEFERRED_BY_USER_FOR_CURRENT_STAGE
 ## 다음 경계
 
 사용자는 작성 명세를 `승인`했고, validation-only harness는 PR #280으로 병합되어 remote CI까지 통과했다. active protected approval은 PR #281에서 archive되고 post-merge lifecycle readback까지 완료됐다. headless full matrix와 byte-identical report는 여전히 기계 증거일 뿐 Windows visible·Human/player·Android·accessibility·release·balance PASS는 아니다. 측정 결과가 실제 수치 변경을 권하면 별도의 balance Decision과 데이터 회귀가 필요하다.
+
+## 결과 검토 추가 기록 · 2026-08-30
+
+후속 결과 검토는 `docs/operations/2026-08-30_BALANCE_INSTRUMENTATION_RESULT_REVIEW.md`가 소유한다. 검토는 `public_approach_pressure`가 현재 공개 공격이 모두 사거리 밖인 거리 1~2에서 빈 계획을 반환할 수 있음을 발견했다. 이는 approved policy의 “사거리 밖이면 접근” 의미를 구현하지 못한 validation-only 결함이므로, 같은 Decision 범위 안에서 이동 fallback과 Godot RED/GREEN 회귀로 복구한다.
+
+이 복구는 후보·카드·공유 resolver 수치 변경이 아니며, 교정 후 두 3,375행 report의 승패·체력량은 교정 전과 동일했다. 따라서 이 결과만으로 별도 numerical balance Decision을 만들지 않는다. 방어/회복/필살기 행동 coverage 확장은 현재 v1의 수치 조정이 아닌 새 measurement-policy Decision이 필요하다.
