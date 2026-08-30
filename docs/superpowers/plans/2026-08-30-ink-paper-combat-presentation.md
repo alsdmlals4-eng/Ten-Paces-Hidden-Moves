@@ -32,7 +32,7 @@
 | src/combat/combat_board_tile.gd | Makes absolute tile numerals contextual: hidden at rest, shown when targetable, hovered, or focused; keeps target input intact. |
 | src/ui/top_combat_hud.gd and src/ui/combatant_status_panel.gd | Retune status framing only; preserve current data sources, portraits, and status values. |
 | src/ui/action_timing_panel.gd and src/ui/combat_progress_button.gd | Retune the existing live plan strip and confirmation CTA only; preserve placement/progress state. |
-| src/ui/basic_card_tray.gd and src/ui/basic_card_tray_item.gd | Retune the existing native card-dock surfaces only; preserve card order, selection, keyboard activation, and signals. |
+| src/ui/action_selection/action_selection_dock.gd, basic_action_panel.gd, martial_action_panel.gd, and ultimate_action_panel.gd | Retune the actual product card-dock surfaces; preserve source tabs, action order, selection, keyboard activation, and signals. |
 | Current execution-report/status owner | Record evidence after it exists; do not mark unrun evidence as PASS. |
 
 Untouched in this package: resolution, AI planning, game/save schema, action data, background-asset binding, opponent catalog, portrait/battler registrations, and the planning-only warm-dusk candidate.
@@ -156,10 +156,10 @@ git add tests/verify_ink_paper_combat_presentation.gd src/combat/combat_board_pr
 git commit -m "feat: present combat range as ink-paper duel"
 ~~~
 
-### Task 3: Retune existing native HUD, plan, CTA, and card-dock surfaces
+### Task 3: Retune actual product HUD, plan, CTA, and action-dock surfaces
 
 **Files:**
-- Modify: src/ui/top_combat_hud.gd, src/ui/combatant_status_panel.gd, src/ui/action_timing_panel.gd, src/ui/combat_progress_button.gd, src/ui/basic_card_tray.gd, src/ui/basic_card_tray_item.gd.
+- Modify: src/ui/top_combat_hud.gd, src/ui/combatant_status_panel.gd, src/ui/action_timing_panel.gd, src/ui/combat_progress_button.gd, src/ui/action_selection/action_selection_dock.gd, src/ui/action_selection/basic_action_panel.gd, src/ui/action_selection/martial_action_panel.gd, and src/ui/action_selection/ultimate_action_panel.gd.
 - Test: tests/verify_ink_paper_combat_presentation.gd plus existing UI/card regressions.
 
 **Interfaces:**
@@ -172,7 +172,8 @@ git commit -m "feat: present combat range as ink-paper duel"
 _expect(board.top_hud.get_hud_snapshot().get("round_number", 0) == 1, "Ink-paper HUD must retain the live opening round.")
 _expect(board.action_timing_panel.get_timing_snapshot().get("timing_sequence", []) == [3, 3, 4], "Ink-paper plan strip must retain 3/3/4.")
 _expect(not board.combat_progress_button.progress_enabled, "Ink-paper CTA must remain disabled before placement.")
-_expect(board.basic_card_tray.get_tray_snapshot().get("card_count", 0) == 10, "Ink-paper dock must retain the registered card set.")
+_expect(is_instance_valid(board.action_selection_dock) and board.action_selection_dock.visible, "Ink-paper dock must use the actual visible product action-selection consumer.")
+_expect(board.action_selection_dock.basic_panel.get_panel_snapshot().get("action_count", 0) == 10, "Ink-paper dock must retain the registered basic action set.")
 ~~~
 
 - [ ] **Step 2: Verify RED for a new observable presentation-surface snapshot**
@@ -204,7 +205,7 @@ godot --headless --path . --script res://tests/verify_combat_layout_accessibilit
 - [ ] **Step 5: Commit the tested native-surface retune**
 
 ~~~powershell
-git add src/ui/top_combat_hud.gd src/ui/combatant_status_panel.gd src/ui/action_timing_panel.gd src/ui/combat_progress_button.gd src/ui/basic_card_tray.gd src/ui/basic_card_tray_item.gd tests/verify_ink_paper_combat_presentation.gd
+git add src/ui/top_combat_hud.gd src/ui/combatant_status_panel.gd src/ui/action_timing_panel.gd src/ui/combat_progress_button.gd src/ui/action_selection/action_selection_dock.gd src/ui/action_selection/basic_action_panel.gd src/ui/action_selection/martial_action_panel.gd src/ui/action_selection/ultimate_action_panel.gd tests/verify_ink_paper_combat_presentation.gd
 git commit -m "feat: style combat controls as ink-paper surfaces"
 ~~~
 

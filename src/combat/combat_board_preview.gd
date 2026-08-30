@@ -36,6 +36,9 @@ var ultimate_menu: MenuButton
 var ultimate_list_panel: PanelContainer
 var ultimate_list_title: Label
 var ultimate_list_buttons: Array[Button] = []
+var range_readout_panel: PanelContainer
+var range_readout_label: Label
+var range_engagement_label: Label
 var presentation_label: Label
 var presentation_vfx: TextureRect
 var fast_replay_button: Button
@@ -156,6 +159,49 @@ func _build_structure() -> void:
 	_character_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_character_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(_character_layer)
+
+	range_readout_panel = PanelContainer.new()
+	range_readout_panel.name = "RangeReadoutPanel"
+	range_readout_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var range_style := StyleBoxFlat.new()
+	range_style.bg_color = Color(0.78, 0.72, 0.61, 0.92)
+	range_style.border_color = Color("3d3328")
+	range_style.set_border_width_all(2)
+	range_style.set_corner_radius_all(7)
+	range_style.shadow_color = Color(0.0, 0.0, 0.0, 0.46)
+	range_style.shadow_size = 6
+	range_style.content_margin_left = 10.0
+	range_style.content_margin_right = 10.0
+	range_style.content_margin_top = 4.0
+	range_style.content_margin_bottom = 4.0
+	range_readout_panel.add_theme_stylebox_override("panel", range_style)
+	var range_column := VBoxContainer.new()
+	range_column.name = "RangeReadoutContent"
+	range_column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	range_column.add_theme_constant_override("separation", 0)
+	range_readout_panel.add_child(range_column)
+	range_readout_label = Label.new()
+	range_readout_label.name = "RangeReadoutLabel"
+	range_readout_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	range_readout_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	range_readout_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	range_readout_label.add_theme_font_size_override("font_size", 25)
+	range_readout_label.add_theme_color_override("font_color", Color("201a14"))
+	range_readout_label.add_theme_color_override("font_shadow_color", Color(0.95, 0.89, 0.74, 0.55))
+	range_readout_label.add_theme_constant_override("shadow_offset_x", 1)
+	range_readout_label.add_theme_constant_override("shadow_offset_y", 1)
+	range_readout_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	range_column.add_child(range_readout_label)
+	range_engagement_label = Label.new()
+	range_engagement_label.name = "RangeEngagementLabel"
+	range_engagement_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	range_engagement_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	range_engagement_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	range_engagement_label.add_theme_font_size_override("font_size", 15)
+	range_engagement_label.add_theme_color_override("font_color", Color("7e2f28"))
+	range_engagement_label.visible = false
+	range_column.add_child(range_engagement_label)
+	add_child(range_readout_panel)
 
 	action_timing_panel = ACTION_TIMING_SCENE.instantiate() as ActionTimingPanel
 	action_timing_panel.name = "ActionTimingPanel"
@@ -475,6 +521,12 @@ func _layout_board() -> void:
 	var maximum_top := maxf(150.0, timing_row_y - _tile_height - 48.0)
 	var minimum_top := minf(220.0, maximum_top)
 	_board_top = clampf(desired_top, minimum_top, maximum_top)
+	if is_instance_valid(range_readout_panel):
+		var range_size := Vector2(clampf(size.x * 0.16, 152.0, 220.0), 72.0)
+		var range_y := clampf(_board_top + _tile_height * 0.16, presentation_y + 36.0, timing_row_y - range_size.y - 12.0)
+		range_readout_panel.position = Vector2((size.x - range_size.x) * 0.5, range_y)
+		range_readout_panel.size = range_size
+		_refresh_range_readout()
 
 	for index in range(tile_count):
 		var tile := tiles[index]
@@ -1302,6 +1354,7 @@ func _configure_accessibility_semantics() -> void:
 	for tile in tiles:
 		if is_instance_valid(tile):
 			_set_accessibility_semantics(tile, "%d번 전장 타일" % tile.tile_index, "이동 또는 공격의 대상 타일입니다.")
+	_set_accessibility_semantics(range_readout_panel, "현재 거리", "두 인물의 공개 거리입니다. 거리 0에서는 밀착 상태입니다.")
 	if is_instance_valid(combat_progress_button) and is_instance_valid(combat_progress_button._button):
 		_set_accessibility_semantics(combat_progress_button._button, "행동계획 실행", "현재 행동계획을 실행해 대응부터 순서대로 판정합니다. 실행 뒤에는 복기까지 계획을 바꿀 수 없습니다.")
 	_set_accessibility_semantics(fast_replay_button, "빠른 재생", "전투 연출의 재생 시간을 짧게 전환합니다.")
@@ -1394,9 +1447,20 @@ func _apply_combat_state_to_view() -> void:
 		top_hud.apply_combat_state(combat_state, action_timing_panel.timing_data.get("timing_sequence", [3, 3, 4]))
 	set_meta("player_tile", _player_tile)
 	set_meta("enemy_tile", _enemy_tile)
+	_refresh_range_readout()
 	_refresh_ultimate_menu()
 	_refresh_observation_reveal()
 	call_deferred("_layout_board")
+
+func _refresh_range_readout() -> void:
+	if not is_instance_valid(range_readout_label) or not is_instance_valid(range_engagement_label):
+		return
+	var distance := absi(_enemy_tile - _player_tile)
+	range_readout_label.text = "거리 %d" % distance
+	range_engagement_label.text = "[밀착]"
+	range_engagement_label.visible = distance == 0
+	set_meta("player_facing_distance", distance)
+	set_meta("player_facing_engaged", distance == 0)
 
 func request_locked_enemy_action_type_reveal() -> void:
 	if _inputs_locked() or resolution_engine == null:
@@ -1508,6 +1572,13 @@ func get_layout_snapshot() -> Dictionary:
 		"background_path": "res://assets/backgrounds/twilight_ink_duel_v1.png",
 		"hud_ready": is_instance_valid(top_hud),
 		"hud_snapshot": hud_snapshot,
+		"range_readout": {
+			"ready": is_instance_valid(range_readout_panel) and is_instance_valid(range_readout_label) and is_instance_valid(range_engagement_label),
+			"text": range_readout_label.text if is_instance_valid(range_readout_label) else "",
+			"engaged": range_engagement_label.visible if is_instance_valid(range_engagement_label) else false,
+			"engagement_text": range_engagement_label.text if is_instance_valid(range_engagement_label) else "",
+			"rect": Rect2(range_readout_panel.position, range_readout_panel.size) if is_instance_valid(range_readout_panel) else Rect2()
+		},
 		"action_timing_ready": is_instance_valid(action_timing_panel),
 		"action_timing_snapshot": timing_snapshot,
 		"action_timing_top": action_timing_panel.position.y if is_instance_valid(action_timing_panel) else 0.0,

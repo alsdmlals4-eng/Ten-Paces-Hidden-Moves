@@ -7,7 +7,12 @@ signal detail_cleared()
 
 const ADAPTER_SCRIPT := preload("res://src/ui/action_selection/action_view_model_adapter.gd")
 const COLUMNS := 4
+const PAPER_SURFACE := Color("d9ccb1")
+const PAPER_HOVER := Color("eee2c9")
+const CHARCOAL_INK := Color("211c17")
+const RESTRAINED_GOLD := Color("b99254")
 
+@onready var title_label: Label = $PanelColumn/Title
 @onready var action_grid: GridContainer = %ActionGrid
 
 var actions: Array[Dictionary] = []
@@ -16,8 +21,11 @@ var interaction_enabled := true
 
 func _ready() -> void:
     action_grid.columns = COLUMNS
+    title_label.add_theme_color_override("font_color", Color("ead8b4"))
+    title_label.add_theme_font_size_override("font_size", 15)
     actions = ADAPTER_SCRIPT.new().build_basic_actions()
     _rebuild()
+    set_meta("presentation_surface", "paper_ink_r1")
 
 func set_interaction_enabled(enabled: bool) -> void:
     interaction_enabled = enabled
@@ -50,6 +58,7 @@ func _rebuild() -> void:
         button.text = _button_text(definition)
         button.tooltip_text = _tooltip_text(definition)
         button.accessibility_name = _accessibility_name(definition)
+        _apply_ink_paper_style(button, str(definition.get("category", "")))
         button.mouse_entered.connect(_on_action_hovered.bind(definition))
         button.mouse_exited.connect(_on_action_unhovered)
         button.focus_entered.connect(_on_action_hovered.bind(definition))
@@ -61,6 +70,57 @@ func _rebuild() -> void:
     set_interaction_enabled(interaction_enabled)
     set_meta("layout", "grid_4_by_2")
     set_meta("action_count", actions.size())
+    set_meta("presentation_surface", "paper_ink_r1")
+
+func _apply_ink_paper_style(button: Button, category: String) -> void:
+    var accent := _category_accent(category)
+    var normal := StyleBoxFlat.new()
+    normal.bg_color = PAPER_SURFACE
+    normal.border_color = accent
+    normal.set_border_width_all(2)
+    normal.set_corner_radius_all(3)
+    normal.content_margin_left = 8.0
+    normal.content_margin_right = 8.0
+    var hover := normal.duplicate() as StyleBoxFlat
+    hover.bg_color = PAPER_HOVER
+    hover.border_color = RESTRAINED_GOLD
+    hover.set_border_width_all(3)
+    var pressed := normal.duplicate() as StyleBoxFlat
+    pressed.bg_color = Color("c8b68f")
+    pressed.border_color = CHARCOAL_INK
+    var disabled := normal.duplicate() as StyleBoxFlat
+    disabled.bg_color = Color("777064")
+    disabled.border_color = Color("5d5448")
+    var focus := StyleBoxFlat.new()
+    focus.bg_color = Color(1.0, 1.0, 1.0, 0.08)
+    focus.border_color = Color.WHITE
+    focus.set_border_width_all(2)
+    focus.set_corner_radius_all(3)
+    button.add_theme_stylebox_override("normal", normal)
+    button.add_theme_stylebox_override("hover", hover)
+    button.add_theme_stylebox_override("pressed", pressed)
+    button.add_theme_stylebox_override("disabled", disabled)
+    button.add_theme_stylebox_override("focus", focus)
+    button.add_theme_color_override("font_color", CHARCOAL_INK)
+    button.add_theme_color_override("font_hover_color", CHARCOAL_INK)
+    button.add_theme_color_override("font_pressed_color", CHARCOAL_INK)
+    button.add_theme_color_override("font_disabled_color", Color("d2c6ab"))
+    button.set_meta("keyboard_focus_ring", true)
+
+func _category_accent(category: String) -> Color:
+    match category:
+        "move":
+            return Color("3f7f5b")
+        "attack":
+            return Color("9a443d")
+        "response":
+            return Color("3f668d")
+        "recovery":
+            return Color("a37a32")
+        "strengthen":
+            return Color("705184")
+        _:
+            return RESTRAINED_GOLD
 
 func _on_action_hovered(definition: Dictionary) -> void:
     detail_requested.emit(definition.duplicate(true), false)

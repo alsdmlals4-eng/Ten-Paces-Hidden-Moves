@@ -7,7 +7,12 @@ signal detail_requested(definition: Dictionary, pinned: bool)
 signal detail_cleared()
 
 const ADAPTER_SCRIPT := preload("res://src/ui/action_selection/action_view_model_adapter.gd")
+const PAPER_SURFACE := Color("d9ccb1")
+const PAPER_HOVER := Color("eee2c9")
+const CHARCOAL_INK := Color("211c17")
+const RESTRAINED_GOLD := Color("b99254")
 
+@onready var title_label: Label = $PanelColumn/Title
 @onready var manual_row: HBoxContainer = %ManualRow
 @onready var selected_manual_title: Label = %SelectedManualTitle
 @onready var technique_list: VBoxContainer = %TechniqueList
@@ -19,7 +24,12 @@ var selected_manual_id := ""
 var interaction_enabled := true
 
 func _ready() -> void:
+    title_label.add_theme_color_override("font_color", Color("ead8b4"))
+    title_label.add_theme_font_size_override("font_size", 15)
+    selected_manual_title.add_theme_color_override("font_color", Color("d6b36c"))
+    selected_manual_title.add_theme_font_size_override("font_size", 14)
     set_manuals(ADAPTER_SCRIPT.new().build_owned_manuals())
+    set_meta("presentation_surface", "paper_ink_r1")
 
 func set_manuals(values: Array[Dictionary]) -> void:
     manuals.clear()
@@ -86,7 +96,8 @@ func get_panel_snapshot() -> Dictionary:
         "unlocked_technique_count": unlocked_count,
         "locked_technique_count": locked_count,
         "interaction_enabled": interaction_enabled,
-        "layout": "manual_row_then_techniques"
+        "layout": "manual_row_then_techniques",
+        "presentation_surface": str(get_meta("presentation_surface", ""))
     }
 
 func _rebuild_manuals() -> void:
@@ -104,6 +115,7 @@ func _rebuild_manuals() -> void:
         button.text = _manual_button_text(manual)
         button.tooltip_text = _manual_tooltip(manual)
         button.accessibility_name = _manual_accessibility_name(manual)
+        _apply_manual_paper_style(button, false)
         button.set_meta("manual_id", str(manual.get("manual_id", "")))
         button.pressed.connect(_on_manual_pressed.bind(str(manual.get("manual_id", ""))))
         button.mouse_entered.connect(_on_manual_focused.bind(manual))
@@ -138,6 +150,7 @@ func _rebuild_techniques() -> void:
         button.disabled = locked or not interaction_enabled
         button.set_meta("technique_id", str(technique.get("id", "")))
         button.set_meta("locked", locked)
+        _apply_technique_paper_style(button, locked)
         button.pressed.connect(_on_technique_pressed.bind(str(technique.get("id", ""))))
         button.mouse_entered.connect(_on_technique_focused.bind(technique))
         button.focus_entered.connect(_on_technique_focused.bind(technique))
@@ -153,6 +166,64 @@ func _refresh_manual_selection() -> void:
         var selected := str(button.get_meta("manual_id", "")) == selected_manual_id
         button.button_pressed = selected
         button.text = ("● " if selected else "○ ") + _manual_button_text(_find_manual(str(button.get_meta("manual_id", ""))))
+        _apply_manual_paper_style(button, selected)
+
+func _apply_manual_paper_style(button: Button, selected: bool) -> void:
+    var normal := StyleBoxFlat.new()
+    normal.bg_color = PAPER_SURFACE
+    normal.border_color = RESTRAINED_GOLD if selected else CHARCOAL_INK
+    normal.set_border_width_all(3 if selected else 2)
+    normal.set_corner_radius_all(3)
+    normal.content_margin_left = 8.0
+    normal.content_margin_right = 8.0
+    var hover := normal.duplicate() as StyleBoxFlat
+    hover.bg_color = PAPER_HOVER
+    hover.border_color = RESTRAINED_GOLD
+    hover.set_border_width_all(3)
+    var pressed := normal.duplicate() as StyleBoxFlat
+    pressed.bg_color = Color("c8b68f")
+    pressed.border_color = CHARCOAL_INK
+    var disabled := normal.duplicate() as StyleBoxFlat
+    disabled.bg_color = Color("777064")
+    disabled.border_color = Color("5d5448")
+    _apply_button_theme(button, normal, hover, pressed, disabled)
+
+func _apply_technique_paper_style(button: Button, locked: bool) -> void:
+    var normal := StyleBoxFlat.new()
+    normal.bg_color = PAPER_SURFACE if not locked else Color("777064")
+    normal.border_color = Color("3f668d") if not locked else Color("5d5448")
+    normal.set_border_width_all(2)
+    normal.set_corner_radius_all(3)
+    normal.content_margin_left = 10.0
+    normal.content_margin_right = 10.0
+    var hover := normal.duplicate() as StyleBoxFlat
+    hover.bg_color = PAPER_HOVER
+    hover.border_color = RESTRAINED_GOLD
+    hover.set_border_width_all(3)
+    var pressed := normal.duplicate() as StyleBoxFlat
+    pressed.bg_color = Color("c8b68f")
+    pressed.border_color = CHARCOAL_INK
+    var disabled := normal.duplicate() as StyleBoxFlat
+    disabled.bg_color = Color("777064")
+    disabled.border_color = Color("5d5448")
+    _apply_button_theme(button, normal, hover, pressed, disabled)
+
+func _apply_button_theme(button: Button, normal: StyleBoxFlat, hover: StyleBoxFlat, pressed: StyleBoxFlat, disabled: StyleBoxFlat) -> void:
+    var focus := StyleBoxFlat.new()
+    focus.bg_color = Color(1.0, 1.0, 1.0, 0.08)
+    focus.border_color = Color.WHITE
+    focus.set_border_width_all(2)
+    focus.set_corner_radius_all(3)
+    button.add_theme_stylebox_override("normal", normal)
+    button.add_theme_stylebox_override("hover", hover)
+    button.add_theme_stylebox_override("pressed", pressed)
+    button.add_theme_stylebox_override("disabled", disabled)
+    button.add_theme_stylebox_override("focus", focus)
+    button.add_theme_color_override("font_color", CHARCOAL_INK)
+    button.add_theme_color_override("font_hover_color", CHARCOAL_INK)
+    button.add_theme_color_override("font_pressed_color", CHARCOAL_INK)
+    button.add_theme_color_override("font_disabled_color", Color("d2c6ab"))
+    button.set_meta("keyboard_focus_ring", true)
 
 func _on_manual_pressed(manual_id: String) -> void:
     select_manual(manual_id)

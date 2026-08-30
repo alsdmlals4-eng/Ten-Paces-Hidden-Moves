@@ -6,6 +6,10 @@ signal detail_requested(definition: Dictionary, pinned: bool)
 signal detail_cleared()
 
 const ADAPTER_SCRIPT := preload("res://src/ui/action_selection/action_view_model_adapter.gd")
+const PAPER_SURFACE := Color("d9ccb1")
+const PAPER_HOVER := Color("eee2c9")
+const CHARCOAL_INK := Color("211c17")
+const RESTRAINED_GOLD := Color("b99254")
 
 @onready var momentum_label: Label = %MomentumLabel
 @onready var segment_row: HBoxContainer = %SegmentRow
@@ -21,7 +25,10 @@ var action_buttons: Array[Button] = []
 var interaction_enabled := true
 
 func _ready() -> void:
+    momentum_label.add_theme_color_override("font_color", Color("ead8b4"))
+    momentum_label.add_theme_font_size_override("font_size", 15)
     set_momentum(momentum_current, momentum_maximum)
+    set_meta("presentation_surface", "paper_ink_r1")
 
 func set_martial_context(loadout: Array, mastery_by_manual: Dictionary) -> void:
     martial_loadout.clear()
@@ -96,7 +103,8 @@ func get_panel_snapshot() -> Dictionary:
         "reservation_count": reservations.size(),
         "interaction_enabled": interaction_enabled,
         "martial_loadout": martial_loadout.duplicate(),
-        "martial_mastery_by_manual": martial_mastery_by_manual.duplicate(true)
+        "martial_mastery_by_manual": martial_mastery_by_manual.duplicate(true),
+        "presentation_surface": str(get_meta("presentation_surface", ""))
     }
 
 func _rebuild_segments() -> void:
@@ -109,6 +117,8 @@ func _rebuild_segments() -> void:
         var segment := Label.new()
         segment.text = "●" if index < momentum_current else "○"
         segment.accessibility_name = "절초기세 %d번째, %s" % [index + 1, "충전" if index < momentum_current else "비어 있음"]
+        segment.add_theme_font_size_override("font_size", 18)
+        segment.add_theme_color_override("font_color", RESTRAINED_GOLD if index < momentum_current else Color("817461"))
         segment_row.add_child(segment)
     set_meta("momentum", [momentum_current, momentum_maximum])
 
@@ -127,6 +137,7 @@ func _rebuild_actions() -> void:
         button.text = _action_button_text(action)
         button.tooltip_text = _action_tooltip(action)
         button.accessibility_name = _action_accessibility_name(action)
+        _apply_ultimate_paper_style(button, bool(action.get("locked", false)))
         button.set_meta("action_id", action_id)
         button.set_meta("locked", bool(action.get("locked", false)))
         button.set_meta("reserved", _is_reserved(action_id))
@@ -139,6 +150,40 @@ func _rebuild_actions() -> void:
         action_list.add_child(button)
         action_buttons.append(button)
     set_interaction_enabled(interaction_enabled)
+
+func _apply_ultimate_paper_style(button: Button, locked: bool) -> void:
+    var normal := StyleBoxFlat.new()
+    normal.bg_color = PAPER_SURFACE if not locked else Color("777064")
+    normal.border_color = RESTRAINED_GOLD if not locked else Color("5d5448")
+    normal.set_border_width_all(2)
+    normal.set_corner_radius_all(3)
+    normal.content_margin_left = 10.0
+    normal.content_margin_right = 10.0
+    var hover := normal.duplicate() as StyleBoxFlat
+    hover.bg_color = PAPER_HOVER
+    hover.border_color = Color("7e2f28")
+    hover.set_border_width_all(3)
+    var pressed := normal.duplicate() as StyleBoxFlat
+    pressed.bg_color = Color("c8b68f")
+    pressed.border_color = CHARCOAL_INK
+    var disabled := normal.duplicate() as StyleBoxFlat
+    disabled.bg_color = Color("777064")
+    disabled.border_color = Color("5d5448")
+    var focus := StyleBoxFlat.new()
+    focus.bg_color = Color(1.0, 1.0, 1.0, 0.08)
+    focus.border_color = Color.WHITE
+    focus.set_border_width_all(2)
+    focus.set_corner_radius_all(3)
+    button.add_theme_stylebox_override("normal", normal)
+    button.add_theme_stylebox_override("hover", hover)
+    button.add_theme_stylebox_override("pressed", pressed)
+    button.add_theme_stylebox_override("disabled", disabled)
+    button.add_theme_stylebox_override("focus", focus)
+    button.add_theme_color_override("font_color", CHARCOAL_INK)
+    button.add_theme_color_override("font_hover_color", CHARCOAL_INK)
+    button.add_theme_color_override("font_pressed_color", CHARCOAL_INK)
+    button.add_theme_color_override("font_disabled_color", Color("d2c6ab"))
+    button.set_meta("keyboard_focus_ring", true)
 
 func _on_action_pressed(action_id: String) -> void:
     activate_ultimate(action_id)

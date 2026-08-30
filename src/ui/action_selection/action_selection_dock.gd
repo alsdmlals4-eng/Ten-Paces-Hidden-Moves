@@ -13,6 +13,11 @@ const MARTIAL_PANEL_SCENE := preload("res://scenes/ui/action_selection/martial_a
 const ULTIMATE_PANEL_SCENE := preload("res://scenes/ui/action_selection/ultimate_action_panel.tscn")
 const DETAIL_PANEL_SCENE := preload("res://scenes/ui/action_selection/action_detail_panel.tscn")
 const ADAPTER_SCRIPT := preload("res://src/ui/action_selection/action_view_model_adapter.gd")
+const PAPER_SURFACE := Color("d9ccb1")
+const PAPER_HOVER := Color("eee2c9")
+const CHARCOAL_INK := Color("211c17")
+const CHARCOAL_SOFT := Color("382f27")
+const RESTRAINED_GOLD := Color("b99254")
 
 @onready var basic_tab: Button = %BasicTab
 @onready var martial_tab: Button = %MartialTab
@@ -30,14 +35,17 @@ var ultimate_panel: UltimateActionPanel
 var action_detail_panel: ActionDetailPanel
 
 func _ready() -> void:
+    mouse_filter = Control.MOUSE_FILTER_PASS
     basic_tab.pressed.connect(func(): set_active_source("basic"))
     martial_tab.pressed.connect(func(): set_active_source("martial"))
     ultimate_tab.pressed.connect(func(): set_active_source("ultimate"))
     _build_source_panels()
     _build_detail_panel()
     _apply_state()
+    resized.connect(queue_redraw)
     set_meta("manual_is_not_directly_placeable", true)
     set_meta("virtual_combo_enabled", false)
+    set_meta("presentation_surface", "paper_ink_r1")
 
 func set_active_source(source: String) -> void:
     if not switching_enabled or source not in SOURCES or source == active_source:
@@ -121,6 +129,7 @@ func get_dock_snapshot() -> Dictionary:
         "martial_panel_ready": is_instance_valid(martial_panel),
         "ultimate_panel_ready": is_instance_valid(ultimate_panel),
         "action_detail_panel_ready": is_instance_valid(action_detail_panel),
+        "presentation_surface": str(get_meta("presentation_surface", "")),
         "selected_manual_id": martial_panel.get_selected_manual_id() if is_instance_valid(martial_panel) else "",
         "martial_snapshot": martial_panel.get_panel_snapshot() if is_instance_valid(martial_panel) else {},
         "ultimate_snapshot": ultimate_panel.get_panel_snapshot() if is_instance_valid(ultimate_panel) else {},
@@ -205,3 +214,48 @@ func _set_tab_state(button: Button, source: String, label: String) -> void:
     button.button_pressed = selected
     button.text = ("● " if selected else "○ ") + label
     button.accessibility_name = "%s 탭%s" % [label, " 선택됨" if selected else ""]
+    _apply_tab_presentation(button, selected)
+
+func _apply_tab_presentation(button: Button, selected: bool) -> void:
+    var normal := StyleBoxFlat.new()
+    normal.bg_color = PAPER_SURFACE if selected else CHARCOAL_SOFT
+    normal.border_color = CHARCOAL_INK if selected else Color(RESTRAINED_GOLD, 0.68)
+    normal.set_border_width_all(2)
+    normal.set_corner_radius_all(4)
+    normal.content_margin_left = 12.0
+    normal.content_margin_right = 12.0
+    var hover := normal.duplicate() as StyleBoxFlat
+    hover.bg_color = PAPER_HOVER if selected else Color("4a3c2f")
+    hover.border_color = RESTRAINED_GOLD
+    hover.set_border_width_all(3)
+    var pressed := normal.duplicate() as StyleBoxFlat
+    pressed.bg_color = Color("c9b78f") if selected else Color("2b241d")
+    pressed.border_color = RESTRAINED_GOLD
+    var disabled := normal.duplicate() as StyleBoxFlat
+    disabled.bg_color = Color("4a4238")
+    disabled.border_color = Color("82745f")
+    var focus := StyleBoxFlat.new()
+    focus.bg_color = Color(1.0, 1.0, 1.0, 0.07)
+    focus.border_color = Color.WHITE
+    focus.set_border_width_all(2)
+    focus.set_corner_radius_all(4)
+    button.add_theme_stylebox_override("normal", normal)
+    button.add_theme_stylebox_override("hover", hover)
+    button.add_theme_stylebox_override("pressed", pressed)
+    button.add_theme_stylebox_override("disabled", disabled)
+    button.add_theme_stylebox_override("focus", focus)
+    button.add_theme_color_override("font_color", CHARCOAL_INK if selected else Color("e7d9bc"))
+    button.add_theme_color_override("font_hover_color", CHARCOAL_INK if selected else Color.WHITE)
+    button.add_theme_color_override("font_pressed_color", CHARCOAL_INK if selected else Color("f4e7c7"))
+    button.add_theme_color_override("font_disabled_color", Color("a99d89"))
+    button.set_meta("keyboard_focus_ring", true)
+
+func _notification(what: int) -> void:
+    if what == NOTIFICATION_RESIZED:
+        queue_redraw()
+
+func _draw() -> void:
+    draw_rect(Rect2(Vector2.ZERO, size), Color(CHARCOAL_INK, 0.97), true)
+    draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color(RESTRAINED_GOLD, 0.78), false, 2.0)
+    draw_line(Vector2(12.0, 45.0), Vector2(maxf(12.0, size.x - 12.0), 45.0), Color(RESTRAINED_GOLD, 0.38), 1.0)
+    draw_line(Vector2(12.0, size.y - 8.0), Vector2(maxf(12.0, size.x - 12.0), size.y - 8.0), Color(PAPER_SURFACE, 0.22), 1.0)
