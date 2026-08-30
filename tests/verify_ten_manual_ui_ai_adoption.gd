@@ -58,9 +58,14 @@ func _verify_ui_registry_adoption() -> void:
     var hua_star3: Dictionary = _find_by_key(hua_manual.get("techniques", []), "id", HUA_STAR3)
     var hua_star7: Dictionary = _find_by_key(hua_manual.get("techniques", []), "id", HUA_STAR7)
     _expect(not bool(hua_star3.get("locked", true)), "Star3 must be unlocked at mastery 5.")
+    _expect(not hua_star3.has("illustration"), "Martial techniques must not carry an illustration field.")
     _expect("낙매유향" in hua_star3.get("applied_overlays", []), "Star5 overlay must be visible on the Star3 technique.")
     _expect(bool(hua_star7.get("locked", false)), "Star7 must remain locked at mastery 5.")
     _expect(int(hua_star7.get("unlock_mastery", 0)) == 7, "Star7 lock threshold must be visible.")
+    _expect(
+        dock.martial_panel.find_children("*", "TextureRect", true, false).is_empty(),
+        "Martial manual presentation must remain text, tags, and numeric information without illustration nodes."
+    )
 
     var tang_ultimate: Dictionary = dock.ultimate_panel.get_action(TANG_STAR10)
     _expect(not tang_ultimate.is_empty(), "Tang Star10 ultimate must appear in the ultimate tab.")

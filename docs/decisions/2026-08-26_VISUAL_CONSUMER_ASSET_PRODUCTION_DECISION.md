@@ -4,6 +4,7 @@
 > Status: `USER_APPROVED_CURRENT`  
 > Scope: Visual production order and asset eligibility only  
 > Product/runtime mutation authority: `false`
+> Partial supersession: `TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01` excludes `MartialActionPanel` martial-technique illustrations from this document's future image queue.
 
 ## User decision
 
@@ -58,7 +59,7 @@ A merely planned future slot is not enough. If the current consumer is still gen
 ## Next production order
 
 1. `DOGYEOM_STATUS_PORTRAIT_01` — completed for the **existing generic enemy status/portrait slot**. `slot1_dogyeom` routing and generic fallback passed automated Godot verification; Windows human visual and Android device evidence remain separate.
-2. Individual martial/ultimate card illustrations only when each image is mapped to an actual card ID and `CardView.illustration` consumer path, and a user explicitly selects the concrete asset. Do not generate `MARTIAL_TECHNIQUE_ILLUSTRATION_SHEET_01` as an explanatory style sheet.
+2. Individual **ultimate** card illustrations only when each image is mapped to an actual card ID and `CardView.illustration` consumer path, and a user explicitly selects the concrete asset. `MartialActionPanel`의 무공 기술 행은 `TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01`에 따라 삽화 후보에서 제외한다. Do not generate `MARTIAL_TECHNIQUE_ILLUSTRATION_SHEET_01` as an explanatory style sheet.
 3. Remaining opponent portrait/battler assets only when their source master/identity and actual consumer contract are identified, and a user explicitly selects the concrete asset.
 4. Route/result/background visual assets only after their actual in-game consumer is identified. If the game consumes a production atlas, that atlas may be generated/assembled as the deliverable.
 

@@ -11,6 +11,33 @@
   "current_plan_execution_cta_decision": "TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01",
   "current_plan_execution_cta_issue": 247,
   "consumer_first_asset_policy": "ACTUAL_GAME_CONSUMER_REQUIRED",
+  "martial_manual_presentation": {
+    "decision_id": "TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01",
+    "policy": "TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION",
+    "approval_source": "USER_EXPLICIT_20260830_무공_기술서에_삽화는_넣지않는_쪽으로가자",
+    "applies_to": "MartialActionPanel source=martial_manual source_kind=martial",
+    "always_visible": [
+      "manual_name_and_mastery",
+      "technique_name",
+      "action_slots",
+      "stamina_and_internal_cost",
+      "unlock_state",
+      "category_and_effect_tags"
+    ],
+    "conditional_information": [
+      "attack_range",
+      "actual_condition_and_detail_effect"
+    ],
+    "forbidden_runtime_contract": "NO_ILLUSTRATION_FIELD_OR_TEXTURE_RECT_IN_MARTIAL_TECHNIQUE_LIST",
+    "asset_generation_status": "NOT_NEEDED_BY_USER_DECISION_NO_GENERATION",
+    "excluded_surfaces": [
+      "basic_CardView_illustration",
+      "battle_background_and_battlers",
+      "UltimateActionPanel",
+      "ultimate_vfx_and_action_reveal_overlay"
+    ],
+    "implementation_status": "EXISTING_MARTIAL_ACTION_PANEL_TEXT_BUTTON_CONTRACT_LOCAL_HEADLESS_GODOT_VERIFIED_20260830_AWAITING_PR_CI_AND_POSTMERGE_READBACK"
+  },
   "human_facing_owner": "REPOSITORY_VISUAL_BIBLE_ASSET_PROVENANCE_AND_HANDOFF",
   "repository_handoff": "docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md",
   "work_handoff": "docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md",
@@ -174,6 +201,9 @@
     "action_grid_max_rows": 2,
     "action_grid_max_items": 10,
     "card_illustration_required": true,
+    "basic_card_illustration_required": true,
+    "martial_manual_technique_illustration_required": false,
+    "martial_manual_technique_presentation": "TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION",
     "long_effect_text_to_detail_panel": true,
     "visual_cta_label": "행동계획 실행",
     "semantic_cta_authority": "TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01",
@@ -255,10 +285,11 @@
   },
   "deferred_queue_after_result_review": [
     {
-      "name": "Individual Martial/Ultimate Card Illustration",
+      "name": "Individual Ultimate Card Illustration",
       "policy": "EXACT_CARD_ID_AND_CARDVIEW_ILLUSTRATION_CONSUMER_REQUIRED",
       "consumer": "src/ui/card_view.gd",
-      "current_proof": "data/cards/basic_cards.json + assets/ui/cards/basic_illustrations_atlas.svg"
+      "current_proof": "data/cards/basic_cards.json + assets/ui/cards/basic_illustrations_atlas.svg",
+      "excludes": "MartialActionPanel martial techniques are TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION by TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01"
     },
     {
       "name": "Remaining opponent portraits and battlers",
@@ -276,7 +307,7 @@
     "TEN-VIS-A04": "ROUTE_8_ICON_SET_NOT_PRODUCED_REQUIRE_GAME_CONSUMER_VERIFICATION_BEFORE_GENERATION",
     "TEN-VIS-A05": "RESULT_COMPLETION_MARK_SET_NOT_PRODUCED_REQUIRE_GAME_CONSUMER_VERIFICATION_BEFORE_GENERATION",
     "TEN-VIS-A06": "INK_MIST_VALLEY_DUEL_01_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260830; NO_ADDITIONAL_BACKGROUND_VARIANT_WITHOUT_A_NEW_EXACT_CONSUMER",
-    "TEN-VIS-A07_CANDIDATE": "BASIC_ACTION_STYLE_APPROVED_FUTURE_MARTIAL_AND_ULTIMATE_ART_MUST_MAP_TO_REAL_CARD_IDS_AND_CARDVIEW_CONSUMER"
+    "TEN-VIS-A07_CANDIDATE": "BASIC_ACTION_STYLE_APPROVED_IMPLEMENTED; MARTIAL_MANUAL_TECHNIQUES_TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION_BY_USER_DECISION_20260830; ANY_FUTURE_ULTIMATE_ART_REQUIRES_REAL_CARD_ID_AND_CARDVIEW_CONSUMER"
   },
   "screen_surface_asset_audit_20260827": {
     "issue": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/238",

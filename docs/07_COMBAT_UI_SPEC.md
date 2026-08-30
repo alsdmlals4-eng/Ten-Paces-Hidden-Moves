@@ -111,6 +111,16 @@
 - 내부 밸런스 틱은 표시하지 않는다.
 - 적용되지 않는 필드를 `-`로 채워 카드 높이를 낭비하지 않는다.
 
+### 6.3 무공 기술서 — `TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION`
+
+`TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01`에 따라 보유 무공서와 선택된 무공 기술 목록은 삽화 카드가 아니라 전술 정보 목록이다. 이 범위는 `MartialActionPanel`의 `source: martial_manual`, `source_kind: martial` 기술 선택에만 적용한다.
+
+- 무공서명·현재 성수, 기술명, 행동 수, 기력/내력 비용, 잠금/해금 성수, 행동 종류/효과 태그를 우선 표시한다.
+- 공격일 때만 사거리, 실제 조건이 있을 때만 조건/상세 효과를 표시한다.
+- 기술 행 중앙 삽화, 무공 기술의 `illustration` data field, `TextureRect` 삽화 consumer를 두지 않는다.
+- 선택·hover·keyboard focus·잠금은 종이 면·테두리·텍스트·accessibility name으로 구분하며 색만으로 전달하지 않는다.
+- 기초 카드의 승인 `CardView.illustration`, 전장/대치 인물, `UltimateActionPanel`, 필살기 연출은 이 규칙의 대상이 아니다.
+
 #### 예시 — 이동
 
 ```text
