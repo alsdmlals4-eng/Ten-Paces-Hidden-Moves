@@ -16,6 +16,7 @@ REPORT_PATH = ROOT / "docs" / "reviews" / "2026-08-30_TEN_PACES_BENCHMARK_REVERS
 EXECUTION_REPORT_PATH = ROOT / "docs" / "operations" / "2026-08-30_PREWORK_BENCHMARK_REVERSE_ENGINEERING_GATE_EXECUTION_REPORT.md"
 
 DECISION_ID = "TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01"
+MERGED_MAIN = "ba4fed201f4c2e37f9ed5fbc32027344ccb9a56d"
 EXPECTED_GAMES = {
     "YOUR_ONLY_MOVE_IS_HUSTLE",
     "TORIBASH",
@@ -78,6 +79,12 @@ class PreworkBenchmarkReverseEngineeringGateTests(unittest.TestCase):
         self.assertEqual(DECISION_ID, planning["prework_benchmark_gate_decision"])
         self.assertEqual(12, planning["prework_benchmark_initial_unique_game_count"])
         self.assertEqual(str(REPORT_PATH.relative_to(ROOT)).replace("\\", "/"), planning["prework_benchmark_current_report"])
+        self.assertEqual(287, planning["prework_benchmark_gate_pr"])
+        self.assertEqual(MERGED_MAIN, planning["prework_benchmark_gate_merge_commit"])
+        self.assertEqual(
+            "IMPLEMENTED_MERGED_MAIN_PR287_REMOTE_CI_PASS_EXACT_MAIN_POSTMERGE_READBACK",
+            planning["prework_benchmark_gate_status"],
+        )
         self.assertEqual(
             "DESK_RESEARCH_SYNTHESIZED_NO_TEN_PACES_HUMAN_PLAYTEST_OR_RUNTIME_CHANGE",
             planning["prework_benchmark_evidence_ceiling"],
@@ -96,6 +103,8 @@ class PreworkBenchmarkReverseEngineeringGateTests(unittest.TestCase):
         self.assertIn("Human/player", execution)
         self.assertIn("NOT_RUN", execution)
         self.assertIn("CLEAN_REVIEW_EXIT", execution)
+        self.assertIn(MERGED_MAIN, execution)
+        self.assertIn("REMOTE_CI_PASS_EXACT_MAIN_POSTMERGE_READBACK", execution)
 
     def test_initial_reverse_engineering_report_has_twelve_officially_sourced_cases_and_non_copy_dispositions(self) -> None:
         report = REPORT_PATH.read_text(encoding="utf-8")
