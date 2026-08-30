@@ -7,7 +7,7 @@ baseline_main: 83ad48a7b4388e249e5b40e19ad25f77a817d1a2
 scope: REMOVE_ONE_TIME_ACTIVE_MANIFEST_ARCHIVE_APPROVAL_AND_PROMOTE_PROTECTED_BASELINE
 source_pr: 280
 source_decision: TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01
-status: LOCAL_VALIDATION_PASSED_REMOTE_PR_PENDING
+status: LOCAL_VALIDATION_REMOTE_CI_AND_POSTMERGE_LIFECYCLE_PASSED
 current_source_relevance_check: NOT_APPLICABLE_NO_EXTERNAL_PRODUCT_OR_POLICY_DECISION
 ```
 
@@ -35,6 +35,7 @@ PR #280은 remote CI 전체 통과 후 병합됐지만, 해당 PR에만 유효�
 - `python -m unittest discover -s tests -p 'test_*.py'`는 `421 PASS`였다.
 - canonical combat docs, canonical reference freshness, project operating system과 `git diff --check 83ad48a7...HEAD`도 `PASS`였다.
 - diff는 current owner, generated views, archive/lifecycle, 상태 소비자 회귀만 포함하며 `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot` 변경은 없다.
+- PR #281은 remote checks 전체 통과 후 `8d941de9c19ef529ae8b3e21cc810446c654c123`로 병합됐다. exact `origin/main` readback에서 active manifest 부재, archive 원문 hash, baseline `83ad48a7b4388e249e5b40e19ad25f77a817d1a2`, standard Base contract 및 lifecycle validator `PASS`를 확인했다.
 
 ## 다섯 차례 적대 검토
 
@@ -44,4 +45,4 @@ PR #280은 remote CI 전체 통과 후 병합됐지만, 해당 PR에만 유효�
 4. **consumer:** current planning owner의 merged-main 상태가 old PR-pending expectation과 충돌하는 것을 regression `RED`로 확인한 뒤 최소 expectation 갱신 후 `421 PASS`로 교정했다.
 5. **배포 위생:** Base contract, generated artifact, canonical checks, whitespace, no-product-path diff와 worktree cleanliness를 확인했다.
 
-`CLEAN_REVIEW_EXIT`: local must-fix는 0개다. 이 cleanup PR의 remote CI, merge 및 post-merge `origin/main` readback은 아직 별도 증거 게이트다.
+`CLEAN_REVIEW_EXIT`: local must-fix는 0개이며, remote CI·merge·post-merge `origin/main` readback도 완료했다.

@@ -2,7 +2,7 @@
 
 ~~~yaml
 decision_id: TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01
-status: IMPLEMENTED_MERGED_MAIN_PR280_REMOTE_CI_PASS_PROTECTED_APPROVAL_CLEANUP_PR_PENDING
+status: IMPLEMENTED_MERGED_MAIN_PR280_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR281_POSTMERGE_READBACK
 decision_date: 2026-08-30
 approval_source: "user explicit: 권장안대로 진행해; godot에 기획안들 전부 다 구현될 때까지 멈추지마; written-spec approval: 승인"
 scope: FIRST_FIVE_DETERMINISTIC_SINGLE_DUEL_BALANCE_INSTRUMENTATION_V1
@@ -62,4 +62,4 @@ human_player_evidence: NOT_RUN_DEFERRED_BY_USER_FOR_CURRENT_STAGE
 
 ## 다음 경계
 
-사용자는 작성 명세를 `승인`했고, validation-only harness는 PR #280으로 병합되어 remote CI까지 통과했다. headless full matrix와 byte-identical report는 여전히 기계 증거일 뿐 Windows visible·Human/player·Android·accessibility·release·balance PASS는 아니다. PR #280의 active protected approval은 별도 lifecycle cleanup PR에서 archive되어야 하며, 그 정리가 끝난 뒤에도 측정 결과가 실제 수치 변경을 권하면 별도의 balance Decision과 데이터 회귀가 필요하다.
+사용자는 작성 명세를 `승인`했고, validation-only harness는 PR #280으로 병합되어 remote CI까지 통과했다. active protected approval은 PR #281에서 archive되고 post-merge lifecycle readback까지 완료됐다. headless full matrix와 byte-identical report는 여전히 기계 증거일 뿐 Windows visible·Human/player·Android·accessibility·release·balance PASS는 아니다. 측정 결과가 실제 수치 변경을 권하면 별도의 balance Decision과 데이터 회귀가 필요하다.
