@@ -19,10 +19,12 @@ func _run() -> void:
     mouse_click.button_index = MOUSE_BUTTON_LEFT
     mouse_click.pressed = true
 
-    var move_card := board.basic_card_tray.cards[0]
-    move_card._on_gui_input(mouse_click)
-    if str(board._selected_action_definition.get("id", "")) != "basic_move":
-        failures.append("Pointer card input must select a planning action before the lock.")
+    var basic_panel: BasicActionPanel = board.action_selection_dock.basic_panel
+    var meditate_button: Button = basic_panel.buttons[7]
+    meditate_button.emit_signal("pressed")
+    var initial_placement := board.action_timing_panel.get_placement(1)
+    if str(initial_placement.get("card_id", "")) != "basic_meditate":
+        failures.append("Pointer card input must auto-place the selected planning action before the lock.")
 
     var player: Dictionary = (board.combat_state.get("player", {}) as Dictionary).duplicate(true)
     player["momentum"] = [5, 5]
@@ -32,14 +34,16 @@ func _run() -> void:
     var momentum_before := int((board.combat_state.get("player", {}) as Dictionary).get("momentum", [0, 5])[0])
     board._set_presentation_state("resolving")
 
-    move_card._on_gui_input(mouse_click)
-    if str(board._selected_action_definition.get("id", "")) != "basic_move":
-        failures.append("Pointer card input during resolving must not alter the existing selection.")
+    var guard_button: Button = basic_panel.buttons[2]
+    guard_button.emit_signal("pressed")
+    if board.action_timing_panel.has_assignment_at(2):
+        failures.append("Pointer card input during resolving must not auto-place another action.")
 
     var first_slot := board.action_timing_panel.get_slot(1)
     first_slot._on_gui_input(mouse_click)
-    if board.action_timing_panel.has_assignment_at(1):
-        failures.append("Pointer timing-slot input during resolving must not create a reservation.")
+    var locked_placement := board.action_timing_panel.get_placement(1)
+    if str(locked_placement.get("card_id", "")) != "basic_meditate":
+        failures.append("Pointer timing-slot input during resolving must not alter an existing reservation.")
 
     first_ultimate.emit_signal("pressed")
     var momentum_after := int((board.combat_state.get("player", {}) as Dictionary).get("momentum", [0, 5])[0])

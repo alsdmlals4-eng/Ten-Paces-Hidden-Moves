@@ -345,10 +345,15 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
         failures.append("Committed-to-presentation resolution must lock combat planning inputs.")
     if str(presenting_snapshot.get("presentation_state", "")) not in ["resolving", "presenting_result"]:
         failures.append("Resolution must enter resolving or presenting_result before the next bundle is ready.")
-    await create_timer(2.3).timeout
-
-    if str(board.get_meta("presentation_state", "")) != "review_ready":
+    var review_ready := false
+    for _attempt in range(100):
+        if str(board.get_meta("presentation_state", "")) == "review_ready":
+            review_ready = true
+            break
+        await create_timer(0.05).timeout
+    if not review_ready:
         failures.append("Resolved bundle must stop at review_ready before advancing.")
+        return
     if not bool(board.get_meta("inputs_locked", false)):
         failures.append("Review must keep planning inputs locked.")
     if board.combat_review_panel == null or not board.combat_review_panel.visible:

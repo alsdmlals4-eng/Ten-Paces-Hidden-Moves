@@ -14,6 +14,7 @@ const COMBAT_REVIEW_SCENE := preload("res://scenes/ui/combat_review_panel.tscn")
 const REVIEW_SUMMARY_BUILDER_SCRIPT := preload("res://src/combat/combat_review_summary_builder.gd")
 const TILE_SCENE := preload("res://scenes/combat/combat_board_tile.tscn")
 const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placeholder.tscn")
+const ACTION_REVEAL_OVERLAY_SCRIPT := preload("res://src/ui/combat_action_reveal_overlay.gd")
 const ULTIMATE_VFX_PATH := "res://assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png"
 
 const CANVAS_COLOR := Color("171411")
@@ -41,6 +42,7 @@ var range_readout_label: Label
 var range_engagement_label: Label
 var presentation_label: Label
 var presentation_vfx: TextureRect
+var action_reveal_overlay
 var fast_replay_button: Button
 var skip_presentation_button: Button
 var restart_combat_button: Button
@@ -309,17 +311,24 @@ func _build_structure() -> void:
 	presentation_vfx.visible = false
 	add_child(presentation_vfx)
 
+	action_reveal_overlay = ACTION_REVEAL_OVERLAY_SCRIPT.new()
+	action_reveal_overlay.name = "CombatActionRevealOverlay"
+	action_reveal_overlay.z_index = 30
+	add_child(action_reveal_overlay)
+
 	fast_replay_button = Button.new()
 	fast_replay_button.name = "FastReplayButton"
 	fast_replay_button.text = "빠르게: 끔"
 	_apply_keyboard_focus_ring(fast_replay_button)
 	fast_replay_button.pressed.connect(_toggle_fast_replay)
+	fast_replay_button.z_index = 40
 	add_child(fast_replay_button)
 	skip_presentation_button = Button.new()
 	skip_presentation_button.name = "SkipPresentationButton"
 	skip_presentation_button.text = "즉시 완료"
 	_apply_keyboard_focus_ring(skip_presentation_button)
 	skip_presentation_button.pressed.connect(_skip_presentation)
+	skip_presentation_button.z_index = 40
 	add_child(skip_presentation_button)
 	restart_combat_button = Button.new()
 	restart_combat_button.name = "RestartCombatButton"
@@ -333,6 +342,7 @@ func _build_structure() -> void:
 	reduced_motion_button.text = "모션 감소: 끔"
 	_apply_keyboard_focus_ring(reduced_motion_button)
 	reduced_motion_button.pressed.connect(_toggle_reduced_motion)
+	reduced_motion_button.z_index = 40
 	add_child(reduced_motion_button)
 	sound_toggle_button = Button.new()
 	sound_toggle_button.name = "SoundToggleButton"
@@ -461,6 +471,9 @@ func _layout_board() -> void:
 	if is_instance_valid(presentation_vfx):
 		presentation_vfx.position = Vector2(size.x * 0.20, presentation_y + 60.0)
 		presentation_vfx.size = Vector2(size.x * 0.60, clampf(size.y * 0.22, 150.0, 210.0))
+	if is_instance_valid(action_reveal_overlay):
+		action_reveal_overlay.position = Vector2.ZERO
+		action_reveal_overlay.size = size
 	var playback_x := maxf(lower_margin, size.x - 420.0)
 	for button_value in [fast_replay_button, skip_presentation_button, reduced_motion_button, restart_combat_button]:
 		if is_instance_valid(button_value):
@@ -974,9 +987,13 @@ func _resolve_and_present(context: Dictionary) -> void:
 		if typeof(timing_value) != TYPE_DICTIONARY:
 			continue
 		var timing_result: Dictionary = timing_value
-		await _apply_timing_snapshot(timing_result.get("state", combat_state))
 		set_meta("presentation_timing", int(timing_result.get("timing", 0)))
-		await _present_authoritative_events(timing_result.get("events", []), int(timing_result.get("timing", 0)))
+		await _present_timing_duel(
+			timing_result.get("events", []),
+			int(timing_result.get("timing", 0)),
+			str(timing_result.get("phase", "timing"))
+		)
+		await _apply_timing_snapshot(timing_result.get("state", combat_state))
 
 	var state_before_bundle_rewards := combat_state.duplicate(true)
 	combat_state = (result.get("state", combat_state) as Dictionary).duplicate(true)
@@ -999,6 +1016,46 @@ func _resolve_and_present(context: Dictionary) -> void:
 		if is_instance_valid(combat_log_panel):
 			combat_log_panel.append_entry("[전투 불능] 체력이 0이 되어 결전이 끝났습니다.", "system")
 	_show_review_panel(terminal)
+
+func _present_timing_duel(events_value: Array, timing: int, phase: String) -> void:
+	_set_presentation_state("presenting_result")
+	_set_resolution_surface_visible(false)
+	if is_instance_valid(presentation_label):
+		presentation_label.visible = false
+	if is_instance_valid(action_reveal_overlay):
+		action_reveal_overlay.show_timing(timing, phase, events_value, _reduced_motion)
+	set_meta("action_reveal_snapshot", action_reveal_overlay.get_snapshot() if is_instance_valid(action_reveal_overlay) else {})
+	for value in events_value:
+		if typeof(value) != TYPE_DICTIONARY:
+			continue
+		var event: Dictionary = value
+		if str(event.get("type", "")) not in ["action_result", "clash"]:
+			continue
+		_show_ultimate_vfx(event)
+		_play_character_action_motion(event)
+		_play_event_sfx(event)
+	if not _presentation_skip_requested:
+		var duration := _timing_reveal_duration(events_value)
+		if _fast_replay:
+			duration = minf(duration, 0.16)
+		elif _reduced_motion:
+			duration = 0.0
+		if duration > 0.0:
+			await _wait_for_presentation_delay(duration)
+	if is_instance_valid(presentation_vfx):
+		presentation_vfx.visible = false
+	if is_instance_valid(action_reveal_overlay):
+		action_reveal_overlay.hide_reveal()
+
+func _timing_reveal_duration(events_value: Array) -> float:
+	var duration := 0.82
+	for value in events_value:
+		if typeof(value) != TYPE_DICTIONARY:
+			continue
+		var event: Dictionary = value
+		if str(event.get("type", "")) in ["action_result", "clash"]:
+			duration = maxf(duration, _event_presentation_duration(event) + 0.24)
+	return duration
 
 func _show_review_panel(terminal: bool) -> void:
 	_review_terminal = terminal
@@ -1037,6 +1094,7 @@ func _on_review_continue_requested() -> void:
 	if is_instance_valid(combat_log_panel):
 		combat_log_panel.append_entry("[복기 완료] 다음 행동 묶음을 준비합니다.", "system")
 	_review_terminal = false
+	_set_resolution_surface_visible(true)
 	_set_presentation_state("next_bundle_ready")
 	_configure_keyboard_focus_order()
 	_sync_progress_availability()
@@ -1074,6 +1132,11 @@ func _set_presentation_state(value: String) -> void:
 	set_meta("presentation_state", value)
 	set_meta("presentation_state_history", _presentation_state_history)
 	set_meta("inputs_locked", _inputs_locked())
+
+func _set_resolution_surface_visible(value: bool) -> void:
+	for control_value in [action_timing_panel, combat_progress_button, basic_card_tray]:
+		if is_instance_valid(control_value):
+			(control_value as Control).visible = value
 
 func _inputs_locked() -> bool:
 	return _presentation_state not in ["planning", "next_bundle_ready"]
@@ -1139,7 +1202,7 @@ func _play_character_action_motion(event: Dictionary) -> void:
 	if _reduced_motion:
 		return
 	var card_id := str(event.get("card_id", ""))
-	var is_attack := card_id.begins_with("ultimate_") or card_id.contains("attack")
+	var is_attack := card_id.begins_with("ultimate_") or card_id.contains("attack") or str(event.get("category", "")) == "attack"
 	if not is_attack:
 		return
 	var actor := str(event.get("actor", ""))
@@ -1211,6 +1274,8 @@ func _skip_presentation() -> void:
 		presentation_label.visible = false
 	if is_instance_valid(presentation_vfx):
 		presentation_vfx.visible = false
+	if is_instance_valid(action_reveal_overlay):
+		action_reveal_overlay.hide_reveal()
 	set_meta("presentation_skipped", true)
 
 func restart_combat() -> void:
@@ -1234,6 +1299,9 @@ func restart_combat() -> void:
 		presentation_vfx.visible = false
 	if is_instance_valid(presentation_label):
 		presentation_label.visible = false
+	if is_instance_valid(action_reveal_overlay):
+		action_reveal_overlay.hide_reveal()
+	_set_resolution_surface_visible(true)
 	if is_instance_valid(restart_combat_button):
 		restart_combat_button.visible = false
 	if is_instance_valid(combat_review_panel):
@@ -1602,6 +1670,7 @@ func get_layout_snapshot() -> Dictionary:
 		"ultimate_menu_ready": is_instance_valid(ultimate_menu),
 		"ultimate_vfx_ready": is_instance_valid(presentation_vfx) and _ultimate_vfx_sheet != null,
 		"ultimate_vfx_active": presentation_vfx.visible if is_instance_valid(presentation_vfx) else false,
+		"action_reveal_snapshot": action_reveal_overlay.get_snapshot() if is_instance_valid(action_reveal_overlay) else {},
 		"ultimate_menu_text": ultimate_menu.text if is_instance_valid(ultimate_menu) else "",
 		"ultimate_available": bool(get_meta("ultimate_available", false)),
 		"ultimate_momentum": int(get_meta("ultimate_momentum", 0)),

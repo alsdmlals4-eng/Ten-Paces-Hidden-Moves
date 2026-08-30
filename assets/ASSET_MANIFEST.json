@@ -83,9 +83,10 @@
         "transparent_pixels": 1168818,
         "partially_transparent_pixels": 8764,
         "corner_alpha": [0, 0, 0, 0],
-        "status": "APPROVED_ACTIVE"
+        "status": "APPROVED_ROLLBACK"
       },
-      "active": true
+      "active": false,
+      "superseded_by": "player_diagonal_duel_battler_01_v1"
     },
     {
       "id": "player_wanderer_battler_chroma_v1",
@@ -152,8 +153,73 @@
         "transparent_pixels": 1021220,
         "partially_transparent_pixels": 550720,
         "corner_alpha": [0, 0, 0, 0],
-        "status": "APPROVED_ACTIVE"
+        "status": "APPROVED_ROLLBACK"
       },
+      "active": false,
+      "superseded_by": "dogyeom_diagonal_duel_battler_01_v1"
+    },
+    {
+      "id": "combat_diagonal_duel_character_pair_01_v1",
+      "path": "res://assets/characters/combat_diagonal_duel_character_pair_01_v1.png",
+      "role": "최종 확정 대각선 수묵 결투 2인 원본; 플레이어·도겸 전신 파생본의 canonical master",
+      "generator": "OpenAI built-in image generation",
+      "generation_output_id": "exec-4e154749-1c4b-46a5-89b9-1afcb0f57651",
+      "source_png_sha256": "7572a0e6393893ef977e195a00291ed04cc293afb0a86e8d76b045d9e8343c03",
+      "dimensions": "1672x941",
+      "prompt": "Original Korean wuxia diagonal duel character pair only: larger cloaked player at lower left facing inward right, smaller masked swordsman at upper right facing inward left, quiet ready stances, aged hanji and charcoal ink wash, transparent RGBA background, no text, UI, logos, or watermark.",
+      "reference_usage": "User-provided combat reference informed only left/right scale hierarchy, inward-facing diagonal staging, and warm ink-paper mood; no reference pixels, UI, text, or identifiable third-party expression were included.",
+      "license": "User final-locked AI-generated project asset; retain generation output id, source hash, prompt scope, and independent similarity review.",
+      "rights_review": "CONDITIONAL_RELEASE_RIGHTS: user is responsible for input rights and final use; output similarity is not guaranteed unique; no third-party source material was used in the runtime file.",
+      "approval": "user explicit: 확정 (2026-08-30)",
+      "source_asset": "docs/visual-assets/approved/COMBAT_DIAGONAL_DUEL_CHARACTER_PAIR_01_v1.png",
+      "runtime_consumer": "Source for player_diagonal_duel_battler_01_v1 and dogyeom_diagonal_duel_battler_01_v1 only",
+      "transparency_required": true,
+      "active": false
+    },
+    {
+      "id": "player_diagonal_duel_battler_01_v1",
+      "path": "res://assets/characters/player_diagonal_duel_battler_01_v1.png",
+      "role": "강호낭인 대각선 결투 전장 전신 Battler",
+      "generator": "deterministic transparent crop from combat_diagonal_duel_character_pair_01_v1",
+      "source_asset": "combat_diagonal_duel_character_pair_01_v1",
+      "source_png_sha256": "837f14b2a8d4c2cd6b6ee6618c3b65966250a7b569db8b4080fb33e609441e79",
+      "crop_rect": [0, 0, 920, 941],
+      "reference_usage": "No additional reference material; deterministic crop preserves the user-final-locked left foreground character.",
+      "transparency_required": true,
+      "transparency_audit": {"mode":"RGBA","has_alpha":true,"alpha_extrema":[0,255],"corner_alpha":[0,0,0,0],"status":"APPROVED_ACTIVE"},
+      "runtime_consumer": "src/combat/combat_character_placeholder.gd PLAYER_ART_PATH",
+      "active": true
+    },
+    {
+      "id": "dogyeom_diagonal_duel_battler_01_v1",
+      "path": "res://assets/characters/dogyeom_diagonal_duel_battler_01_v1.png",
+      "role": "도겸 대각선 결투 전장 전신 Battler; slot1_dogyeom 전용",
+      "generator": "deterministic transparent crop from combat_diagonal_duel_character_pair_01_v1",
+      "source_asset": "combat_diagonal_duel_character_pair_01_v1",
+      "source_png_sha256": "3878aea5a9f8754b27f3a8d8456aa1fa92f66d4379b956ccf8a88ab8c9f32cf5",
+      "crop_rect": [752, 0, 920, 941],
+      "reference_usage": "No additional reference material; deterministic crop preserves the user-final-locked right background character.",
+      "transparency_required": true,
+      "transparency_audit": {"mode":"RGBA","has_alpha":true,"alpha_extrema":[0,255],"corner_alpha":[0,0,0,0],"status":"APPROVED_ACTIVE"},
+      "runtime_consumer": "src/combat/combat_character_placeholder.gd DOGYEOM_ART_PATH for slot1_dogyeom",
+      "active": true
+    },
+    {
+      "id": "basic_technique_ink_atlas_01_v1",
+      "path": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+      "role": "기초 기술 10종의 한지·수묵 카드 일러스트 atlas",
+      "generator": "OpenAI built-in image generation",
+      "generation_output_id": "exec-f2059649-fecd-4456-9557-fc0dbafd6667",
+      "source_png_sha256": "a047a81c92d51cfa3c0b0d81ac2edf53b9a15e262420753a08bc2ed473ed7998",
+      "dimensions": "1536x1024",
+      "prompt": "Original ten-cell Korean wuxia basic-technique atlas: five columns by two rows, distinct movement, guard, evasion, attack, observation, meditation, stance, and palm-strike poses on warm hanji paper; no text, UI, logos, or watermark.",
+      "reference_usage": "User-provided combat reference informed general ink-paper mood only; no reference pixels, UI, text, or character likeness were included.",
+      "license": "User final-locked AI-generated project asset; retain generation output id, source hash, prompt scope, and independent similarity review.",
+      "rights_review": "CONDITIONAL_RELEASE_RIGHTS: user is responsible for input rights and final use; output similarity is not guaranteed unique; no third-party source material was used in the runtime file.",
+      "approval": "user explicit: 확정 (2026-08-30)",
+      "source_asset": "docs/visual-assets/approved/TEN_BASIC_TECHNIQUE_INK_ATLAS_01_v1.png",
+      "runtime_consumer": "data/cards/basic_cards.json and BasicActionPanel",
+      "transparency_required": false,
       "active": true
     },
     {

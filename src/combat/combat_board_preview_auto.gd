@@ -188,6 +188,11 @@ func _set_presentation_state(value: String) -> void:
     _sync_action_placement_controller_state()
     _sync_action_selection_dock()
 
+func _set_resolution_surface_visible(value: bool) -> void:
+    super._set_resolution_surface_visible(value)
+    if is_instance_valid(action_selection_dock):
+        action_selection_dock.visible = value
+
 func _refresh_ultimate_menu() -> void:
     super._refresh_ultimate_menu()
     _hide_legacy_action_ui()

@@ -11,7 +11,7 @@ const DEFAULT_STARTERS := [
 var failures: Array[String] = []
 
 
-func _initialize() -> void:
+func _init() -> void:
     call_deferred("_run")
 
 
@@ -66,7 +66,7 @@ func _run() -> void:
     var portrait := bridge.top_hud.enemy_panel.get_node_or_null("CombatantInkPortrait") as TextureRect
     if str(enemy.get("candidate_id", "")) == "slot1_dogyeom":
         _expect_true(portrait != null and portrait.texture != null and portrait.texture.resource_path == "res://assets/portraits/dogyeom_status_portrait_01_v1.png", "Dogyeom runtime bridge must route the approved status portrait.")
-        _expect_true(bridge.enemy_character != null and str(bridge.enemy_character.get_meta("character_art_path", "")) == "res://assets/characters/dogyeom_combat_battler_01_v1.png", "Dogyeom runtime bridge must route the approved combat battler.")
+        _expect_true(bridge.enemy_character != null and str(bridge.enemy_character.get_meta("character_art_path", "")) == "res://assets/characters/dogyeom_diagonal_duel_battler_01_v1.png", "Dogyeom runtime bridge must route the approved diagonal-duel battler.")
     else:
         _expect_true(portrait != null and portrait.texture != null and portrait.texture.resource_path == "res://assets/portraits/enemy_masked_ink_v1.png", "Non-Dogyeom runtime bridge must retain the generic enemy portrait.")
     player["health"] = [10, 30]

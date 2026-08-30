@@ -19,10 +19,12 @@ func _verify_clash_difference(hud: Dictionary) -> void:
     var enemy_attack: Dictionary = (engine.cards_by_id.get("basic_heavy_attack", {}) as Dictionary).duplicate(true)
     enemy_attack["id"] = "enemy_clash_attack"
     enemy_attack["action_slots"] = 1
+    enemy_attack.erase("damage_formula")
     enemy_attack["damage"] = "8"
     engine.cards_by_id["enemy_clash_attack"] = enemy_attack
     engine.rules["enemy_bundles"] = {"1": [{"timing": 1, "card_id": "enemy_clash_attack", "direction": -1}]}
-    var quick: Dictionary = engine.cards_by_id.get("basic_quick_attack", {})
+    var quick: Dictionary = (engine.cards_by_id.get("basic_quick_attack", {}) as Dictionary).duplicate(true)
+    quick["damage_formula"] = {"base": 6, "stat_key": "external", "coefficient": 0.0}
     var result := engine.resolve_bundle([_placement(quick, 1, 1)], _context(), engine.make_initial_state(hud, 4, 5))
     var player: Dictionary = (result.get("state", {}) as Dictionary).get("player", {})
     if int((player.get("health", [0, 0]) as Array)[0]) != 28:

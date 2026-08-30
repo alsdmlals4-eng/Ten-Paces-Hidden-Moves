@@ -867,6 +867,13 @@ func _resolved_record(action: Dictionary, timing: int, outcome: String) -> Dicti
         "base_card_id": _base_card_id(definition),
         "card_name": str(definition.get("name", "")),
         "category": str(definition.get("category", "")),
+        "category_label": str(definition.get("category_label", definition.get("category", "행동"))),
+        "source_label": str(definition.get("source_label", "")),
+        "range_text": str(definition.get("range_text", "-")),
+        "action_slots": int(definition.get("action_slots", 1)),
+        "stamina_cost": int(definition.get("stamina_cost", 0)),
+        "internal_cost": int(definition.get("internal_cost", 0)),
+        "illustration": (definition.get("illustration", {}) as Dictionary).duplicate(true),
         "outcome": outcome,
         "action_stage": "execution",
         "direction": int(action.get("direction", 0)),
@@ -922,7 +929,7 @@ func _build_presentation_events(state_before: Dictionary, state_after: Dictionar
             "target_tile": int(action.get("target_tile", 0)),
             "positions_before_bundle": before_positions.duplicate(true)
         }
-        for key in ["target", "raw_damage", "damage", "damage_after_block", "defense_outcome", "actor_tile_after_action", "target_tile_at_action", "clash", "clash_opponent_raw_damage", "clash_difference", "sure_hit"]:
+        for key in ["category", "category_label", "source_label", "range_text", "action_slots", "stamina_cost", "internal_cost", "illustration", "target", "raw_damage", "damage", "damage_after_block", "defense_outcome", "actor_tile_after_action", "target_tile_at_action", "clash", "clash_opponent_raw_damage", "clash_difference", "sure_hit"]:
             if action.has(key):
                 event[key] = action[key]
         events.append(event)

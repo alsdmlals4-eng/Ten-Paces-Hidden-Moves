@@ -154,6 +154,36 @@ canon + actual game consumer review
 
 현재 상태: `USER_FINAL_LOCKED · CANON_REGISTERED · IMPLEMENTED · MACHINE_RUNTIME_VERIFIED_20260830`. Godot 4.7.1 isolated-worktree runtime에서 `새 비무행 → 4권 선택 → 도겸 → 전투`를 실제로 통과했고, `BattleBackground` node가 `1672×941` final-locked runtime texture와 below-board contrast metadata를 가진 것을 readback했다. Windows human usability, Android actual device, accessibility-user, and release-performance remain `NOT_RUN` until separately evidenced.
 
+### `COMBAT_DIAGONAL_DUEL_CHARACTER_PAIR_01` · 대각선 전투 Battler Pair
+
+**실제 게임 소비처:** `src/combat/combat_character_placeholder.gd`.
+
+2026-08-30의 사용자 explicit `확정`에 따라 한 개의 transparent pair master를 canonical source와 runtime master로 등록했다. `player_diagonal_duel_battler_01_v1.png`은 left foreground crop으로 모든 player Battler에, `dogyeom_diagonal_duel_battler_01_v1.png`은 right background crop으로 `slot1_dogyeom`에만 연결된다. non-Dogyeom 상대와 ID 누락 상대는 `enemy_masked_battler_rgba_v1.png` generic fallback을 유지한다. status portrait, 전투 타일 논리, AI 정보 경계, 저장 schema는 바꾸지 않는다.
+
+- canonical/runtime master SHA-256: `7572a0e6393893ef977e195a00291ed04cc293afb0a86e8d76b045d9e8343c03`.
+- `920×941` player/right-opponent deterministic RGBA crop들의 hash·crop rectangle·rollback은 `COMBAT_DIAGONAL_DUEL_CHARACTER_PAIR_01_v1.md`와 `assets/ASSET_MANIFEST.json`이 소유한다.
+- actual Godot 4.7.1 current-frame readback은 larger lower-left player, smaller upper-right Dogyeom, inward-facing silhouettes, hidden logical tiles outside targeting, and `거리 2` native UI를 확인했다.
+
+현재 상태: `USER_FINAL_LOCKED · CANON_REGISTERED · IMPLEMENTED · MACHINE_RUNTIME_VERIFIED_20260830`. Human usability/player approval, accessibility-user, Android device, release clearance는 `NOT_RUN`이다.
+
+### `TEN_BASIC_TECHNIQUE_INK_ATLAS_01` · 기초 기술 5×2 Card Atlas
+
+**실제 게임 소비처:** `data/cards/basic_cards.json` → `BasicActionPanel` / card detail / `CombatActionRevealOverlay`.
+
+동일 final lock으로 1장의 `1536×1024` basic-technique atlas를 등록하고, 10개 기초 card ID 각각을 measured region으로 연결했다. Action grid는 최대 5×2와 card-data text ownership을 유지한다. compact horizontal slot에서는 pose readability를 위해 native `TextureRect.STRETCH_KEEP_ASPECT_COVERED`를 쓰고, 이미지 안에 card name, cost, range, result text를 굽지 않는다.
+
+- canonical/runtime SHA-256: `a047a81c92d51cfa3c0b0d81ac2edf53b9a15e262420753a08bc2ed473ed7998`.
+- region map, consumer, source/rights ceiling은 `TEN_BASIC_TECHNIQUE_INK_ATLAS_01_v1.md`와 `assets/ui/cards/card_asset_manifest.json`이 소유한다.
+- 2026-08-30 actual Godot current-frame readback은 10 physical card images in the active 5×2 dock를 확인했다.
+
+### `COMBAT_ACTION_REVEAL_OVERLAY` · 한 수씩 공개하는 대결 연출
+
+**실제 게임 소비처:** `src/combat/combat_board_preview.gd` → `CombatActionRevealOverlay`.
+
+`CombatResolutionEngine.resolve_bundle()`은 기존처럼 bundle 당 정확히 한 번만 authoritative resolution을 수행한다. 화면은 `timing_results` 중 현재 timing의 authoritative post-resolution event만 전달받아 양측 card·`VS`·결과를 먼저 표시하고, 그 뒤에만 해당 timing snapshot을 적용한다. planning dock/timing/progress는 overlay 동안 숨기고, skip은 미래 행동을 공개하지 않은 채 ordered snapshot을 끝까지 적용해 review로 이동한다. `public_resolution_history`의 field는 확장하지 않았고 AI/private plan boundary도 바꾸지 않았다.
+
+현재 상태: `IMPLEMENTED · MACHINE_RUNTIME_VERIFIED_20260830`; exact runtime screenshot and snapshot confirm timing 1 only, `future_action_visible: false`, hidden action-selection dock, and visible player/enemy cards with `VS`. Human comprehension/readability remains `NOT_RUN`.
+
 ## 7. 다음 후보 — 자동 생성 없음
 
 1. 개별 무공/절초 카드 삽화 — 반드시 **exact card ID**와 `CardView.illustration` 소비가 확인된 이미지 단위로 제작.
@@ -199,6 +229,14 @@ ink_mist_valley_duel_01_canon_copy_sha256_readback: PASS_20260830
 ink_mist_valley_duel_01_runtime_asset: res://assets/backgrounds/ink_mist_valley_duel_01_v1.png
 ink_mist_valley_duel_01_runtime_integration: MACHINE_RUNTIME_VERIFIED_20260830_GODOT_4_7_1_NEW_RUN_TO_DOGYEOM_COMBAT_SCREEN
 ink_mist_valley_duel_01_human_usability: NOT_RUN
+combat_diagonal_duel_character_pair_01_user_final_lock: PASS_20260830
+combat_diagonal_duel_character_pair_01_canon_runtime_readback: PASS_20260830
+combat_diagonal_duel_character_pair_01_runtime_integration: MACHINE_RUNTIME_VERIFIED_20260830_GODOT_4_7_1_SLOT1_DOGYEOM_COMBAT_SCREEN
+ten_basic_technique_ink_atlas_01_user_final_lock: PASS_20260830
+ten_basic_technique_ink_atlas_01_canon_runtime_readback: PASS_20260830
+ten_basic_technique_ink_atlas_01_runtime_integration: MACHINE_RUNTIME_VERIFIED_20260830_GODOT_4_7_1_ACTIVE_5X2_DOCK
+combat_action_reveal_overlay_runtime_integration: MACHINE_RUNTIME_VERIFIED_20260830_GODOT_4_7_1_TIMING_1_ONLY_VS_RESULT
+combat_action_reveal_overlay_human_comprehension: NOT_RUN
 windows_visible_local_machine_runtime_smoke: PASS_20260830_GODOT_4_7_1_START_TO_SLOT1_DOGYEOM_COMBAT_SCREEN_NOT_HUMAN_USABILITY
 windows_visible_local_machine_runtime_smoke_report: docs/operations/2026-08-30_WINDOWS_VISIBLE_GODOT_RUNTIME_SMOKE_EXECUTION_REPORT.md
 windows_visible_human_usability: NOT_RUN
