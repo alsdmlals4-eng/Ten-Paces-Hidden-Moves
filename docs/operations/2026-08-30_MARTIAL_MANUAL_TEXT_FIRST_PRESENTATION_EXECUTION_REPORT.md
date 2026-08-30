@@ -9,7 +9,7 @@ skill_mode: UI_PRESENTATION_AND_REGRESSION
 decision: TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01
 current_source_relevance_check: NOT_APPLICABLE_USER_PRODUCT_PRESENTATION_DECISION
 feasibility: FEASIBLE_EXISTING_MARTIAL_ACTION_PANEL_HAS_NO_ILLUSTRATION_CONSUMER
-status: LOCAL_FULL_VERIFICATION_PASS_AWAITING_PR_CI_AND_POSTMERGE_READBACK
+status: IMPLEMENTED_MERGED_MAIN_PR285_REMOTE_CI_PASS_EXACT_MAIN_POSTMERGE_READBACK
 ```
 
 ## 작업 전 문제
@@ -52,6 +52,14 @@ Human readability, accessibility-user, Android device와 release performance는 
 2. **범위 — PASS:** diff에는 `src/`, `data/`, `scenes/`, `assets/`, `addons/`, `project.godot` product path가 없으며 기본 CardView·전장·인물·UltimateActionPanel/VFX 계약은 문서와 test에서 명시적으로 제외했다.
 3. **정보 위계 — PASS:** `MartialActionPanel`의 Button text/tooltip/accessibility path가 이름·수·비용·잠금·태그·조건부 정보만 소유함을 source readback했고, `TextureRect`는 없다.
 4. **machine/runtime — PASS:** Godot 4.7.1 headless UI/AI adoption 및 3개 viewport product verification이 모두 통과했다.
-5. **delivery — PASS (remote 대기):** full Python suite `422 tests / 16.790s / OK`, approved operating contract, generated artifact check, reference freshness, operating system, archive governance와 whitespace check가 통과했다. PR CI와 safe merge 및 exact-main readback만 남았다.
+5. **delivery — PASS:** full Python suite `422 tests / 21.968s / OK`, approved operating contract, generated artifact check, reference freshness, operating system, archive governance와 whitespace check가 통과했다. PR #285의 required remote CI 전체 통과, safe squash merge와 exact-main readback까지 완료했다.
 
-`CLEAN_REVIEW_EXIT`는 remote CI, safe merge, exact main readback까지 완료된 뒤에만 기록한다.
+## 원격 PR 및 exact-main readback
+
+- PR #285 `docs: lock martial manual text-first presentation`은 `2026-08-30T10:05:56Z`에 squash merge됐다.
+- 병합 커밋과 `origin/main`, local `main`은 모두 `c36f8cb8bc7a9ee205b6fba71f1216dfd9514883`으로 일치한다.
+- 원격 required check는 `automated-product-evidence`, `windows-product-evidence`, `godot-runtime`, `godot-ui-ai-adoption`를 포함해 SUCCESS다. Full Validation의 범위 비대상 job은 SKIPPED이며 실패가 아니다.
+- fresh local Godot import cache를 만든 뒤 exact `main`에서 Godot 4.7.1 headless UI/AI adoption과 3개 viewport 검증을 다시 실행했다. 각각 `TEN_MANUAL_UI_AI_ADOPTION_VERIFY_OK`, `TEN_MANUAL_PRODUCT_VIEWPORTS_OK`를 출력했고 `ERROR:` 출력은 없었다.
+- postmerge owner status regression은 parent exact main에서 의도한 RED를 확인한 뒤, PR 번호와 merge SHA를 assertions로 고정해 focused suite `5 tests / OK`로 GREEN을 확인했다.
+
+`CLEAN_REVIEW_EXIT`: PASS. 이는 machine/remote CI 및 exact-main evidence이며, Human/visible usability, Android device, accessibility-user, release performance는 여전히 `NOT_RUN`이다.

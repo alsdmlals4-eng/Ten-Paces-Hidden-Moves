@@ -213,6 +213,18 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
             "NOT_NEEDED_BY_USER_DECISION_NO_GENERATION",
             visual["martial_manual_presentation"]["asset_generation_status"],
         )
+        self.assertEqual(
+            "TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION_IMPLEMENTED_MERGED_MAIN_PR285_REMOTE_CI_PASS_EXACT_MAIN_POSTMERGE_READBACK",
+            visual["martial_manual_presentation"]["implementation_status"],
+        )
+        self.assertEqual(
+            285,
+            visual["martial_manual_presentation"]["postmerge_readback"]["source_pr"],
+        )
+        self.assertEqual(
+            "c36f8cb8bc7a9ee205b6fba71f1216dfd9514883",
+            visual["martial_manual_presentation"]["postmerge_readback"]["merged_main"],
+        )
         self.assertIn("무공 기술서", gate)
         self.assertIn("TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION", gate)
         self.assertIn("TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01", gate)
