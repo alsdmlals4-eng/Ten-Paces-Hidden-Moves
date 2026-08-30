@@ -50,8 +50,8 @@ user_directed_planning_work_mode: REVIEW_POSTMERGE_READBACK
 user_directed_planning_decision: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
 user_directed_planning_next_package: BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_ISSUE267_MERGED_MAIN_READBACK
 user_directed_planning_next_decision: BALANCE_INSTRUMENTATION_CONTRACT_REQUIRED_AFTER_ISSUE267_MERGED_MAIN_READBACK
-user_directed_planning_status: OPPONENT_RUNTIME_PERSONALITY_IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK_HUMAN_PLAYTEST_DEFERRED
-user_directed_planning_current_direction: APPROVED_REUSABLE_OPPONENT_ARCHETYPE_BINDING_IMPLEMENTED_MERGED_MAIN_PR273_AUTOMATED_GODOT_AND_REMOTE_CI_EVIDENCE_HUMAN_PLAYTEST_DEFERRED_FOR_CURRENT_STAGE
+user_directed_planning_status: INK_PAPER_DIAGONAL_DUEL_PRESENTATION_IMPLEMENTED_MERGED_MAIN_PR277_PROTECTED_APPROVAL_ARCHIVED_PR278_MACHINE_RUNTIME_VERIFIED_HUMAN_PLAYTEST_DEFERRED
+user_directed_planning_current_direction: FINAL_LOCKED_DIAGONAL_PAIR_5X2_BASIC_ATLAS_AND_PER_TIMING_VS_REVEAL_IMPLEMENTED_MERGED_MAIN_PR277_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR278_HUMAN_PLAYTEST_DEFERRED_FOR_CURRENT_STAGE
 user_directed_planning_latest_decision: TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01
 user_directed_planning_opening_distance: PUBLIC_DISTANCE_2_RUNTIME_BINDING_IMPLEMENTED_MERGED_MAIN_PR_261
 user_directed_planning_failure_retry: ONE_FREE_SAME_SEED_RETRY_PER_DUEL_THEN_END_RUN_IMPLEMENTED_MERGED_MAIN_PR_261
@@ -62,6 +62,10 @@ user_directed_planning_opponent_runtime_personality_implementation_contract: doc
 user_directed_planning_opponent_runtime_personality_implementation_plan: docs/superpowers/plans/2026-08-29-opponent-runtime-personality-binding.md
 user_directed_planning_opponent_runtime_personality_handoff: docs/handoffs/2026-08-29_OPPONENT_RUNTIME_PERSONALITY_CODEX_GODOT_IMPLEMENTATION_HANDOFF.md
 user_directed_planning_opponent_runtime_personality_status: IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK
+user_directed_planning_diagonal_duel_presentation_decisions: TEN-DEC-20260801-SITUATION-SCREEN-01,TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01,TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01
+user_directed_planning_diagonal_duel_presentation_status: USER_FINAL_LOCKED_IMPLEMENTED_MERGED_MAIN_PR277_MACHINE_RUNTIME_AND_REMOTE_CI_VERIFIED
+user_directed_planning_diagonal_duel_presentation_execution_report: docs/operations/2026-08-30_DIAGONAL_DUEL_ACTION_REVEAL_EXECUTION_REPORT.md
+user_directed_planning_diagonal_duel_approval_archive: docs/operations/2026-08-30_PR277_PROTECTED_CHANGE_APPROVAL_RECORD.md
 user_directed_planning_unified_implementation_contract: TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01
 user_directed_planning_unified_implementation_contract_status: IMPLEMENTED_MERGED_MAIN_PR_261
 user_directed_planning_unified_implementation_issue: 258
@@ -71,7 +75,7 @@ planning_execution_surface: REPOSITORY_ONLY_GPT_WORK
 planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md
 planning_visual_next: NONE_BOARD_R2_USER_FINAL_LOCKED_NO_AUTOMATIC_NEXT
 planning_visual_generation: SCOPED_SINGLE_RESULT_FINAL_USER_LOCK_R2_COMPLETE
-planning_visual_review: PROJECT_CORE_SCENE_VISUAL_BOARD_R2_USER_FINAL_LOCKED_PLANNING_ONLY_DOGYEOM_RUNTIME_ASSETS_PRESERVED
+planning_visual_review: PROJECT_CORE_SCENE_VISUAL_BOARD_R2_USER_FINAL_LOCKED_PLANNING_ONLY_PLUS_DIAGONAL_DUEL_PAIR_5X2_BASIC_ATLAS_AND_PER_TIMING_VS_REVEAL_IMPLEMENTED_PR277
 planning_visual_state: docs/planning-data/current_visual_production_handoff_20260826.json
 planning_visual_historical_state: docs/planning-data/current_visual_production_handoff_20260825.json
 planning_visual_authority: TEN-DEC-20260820-VISUAL-UX-SYSTEM-01
@@ -89,7 +93,7 @@ base_remote_observation: CURRENT_REMOTE_REQUIRES_LIVE_REFETCH_NO_AUTOMATIC_PROJE
 
 `active_planning_*`, `active_decision_state`, `next_package`, `next_planning_decision`은 `docs/planning-data/current_operating_state.json`이 소유하는 플랫폼 운영 상태와 동기화한다. 완료된 Vertical Slice 기획/Visual production 상태는 `docs/planning-data/current_user_planning_status.json`, `docs/planning-data/current_visual_production_handoff_20260826.json`, `user_directed_planning_*`·`planning_visual_*` overlay가 소유하며 기존 플랫폼 운영 계약을 덮어쓰지 않는다.
 
-플랫폼 Adapter 구현 Gate는 향후 플랫폼 확장 경계로 계속 유효하다. 첫 5전 PC-first Vertical Slice Phase I–VI와 `TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01`은 현재 `main`에 병합됐다(PR #261). `WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID`와 `PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2`는 각각 planning anchor와 planning-only board로 사용자 최종 고정됐으며, 둘 다 기존 runtime asset을 교체하지 않는다. Codex는 GitHub + repository owners fresh-read를 current authority로 사용한다.
+플랫폼 Adapter 구현 Gate는 향후 플랫폼 확장 경계로 계속 유효하다. 첫 5전 PC-first Vertical Slice Phase I–VI와 `TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01`은 현재 `main`에 병합됐다(PR #261). `WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID`와 `PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2`는 각각 planning anchor와 planning-only board로 사용자 최종 고정됐으며, 둘 다 기존 runtime asset을 교체하지 않는다. 이후 사용자 final lock으로 `COMBAT_DIAGONAL_DUEL_CHARACTER_PAIR_01`, `TEN_BASIC_TECHNIQUE_INK_ATLAS_01`, 그리고 current-timing-only `VS` 공개 overlay가 PR #277에서 실제 consumer에 구현·원격 CI 통과·병합됐다. 그 PR에만 유효했던 active protected approval은 PR #278에서 immutable archive로 옮기고 baseline을 승격했다. Codex는 GitHub + repository owners fresh-read를 current authority로 사용한다.
 
 이 live block에는 current main SHA나 열린 PR 번호를 저장하지 않는다. 새 세션·post-merge에서는 GitHub `main`, 열린 PR, repository current operating/visual/entry owner를 다시 읽고 의미 상태만 판정한다. exact SHA/run ID·PR 번호는 아래의 명시적 역사·관측 증거로만 취급한다.
 
