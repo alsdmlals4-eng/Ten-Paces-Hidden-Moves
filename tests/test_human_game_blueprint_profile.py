@@ -84,10 +84,10 @@ class HumanGameBlueprintProfileContract(unittest.TestCase):
         )
         negative = (
             "MEASURED_BY_VALIDATION_ONLY_INSTRUMENTATION_NOT_NUMERICALLY_DECIDED | profile weights, "
-            "derived stat total, player/loadout/policy/seed outcome distribution | schema 1 v1 result "
-            "review completed; successor Decision `TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01` "
-            "adds schema 2 public-policy coverage. It is local-branch machine evidence pending PR, not a "
-            "numerical balance decision."
+            "derived stat total, player/loadout/policy/seed outcome distribution | schema 2 4,500-row coverage "
+            "is merged historical machine evidence. Successor `TEN-DEC-20260830-BALANCE-MEASUREMENT-REPRESENTATIVE-"
+            "POLICY-COVERAGE-01` has local schema 3 six-archetype 6,750-row byte-identical machine evidence pending "
+            "PR; it is not a numerical balance decision."
         )
         self.assertIn(positive, self.spec)
         self.assertIn(negative, self.spec)

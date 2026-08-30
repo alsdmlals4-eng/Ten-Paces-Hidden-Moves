@@ -62,6 +62,7 @@ The exact aggregate totals are attack `10,722`, move `690`, guard `9,324`, evade
 - **TDD GREEN:** `verify_vertical_slice_balance_public_policy.gd`, `verify_vertical_slice_balance_instrumentation.gd`, and `verify_vertical_slice_balance_report_runner.gd` passed under Godot `4.7.1.stable.official.a13da4feb`.
 - **Two full runs:** two independent headless `run_vertical_slice_balance_instrumentation.gd` runs each emitted 6,750 current-resolver rows with the same SHA-256 `A0669A0727C9608B6A240910CE529263C1982C510E4B3C376BD58D8AB5F66558`.
 - **Public report checker:** two reports passed byte equality, schema 3, all candidate/loadout/policy/seed coverage, fixed selection-key shape, non-negative metrics, category coverage, sorted scenario IDs, and forbidden private-field rejection.
+- **Repository regression:** the first complete Python suite exposed two stale exact-string assertions: they still named the schema 1/schema 2 predecessor state and predecessor `next_phase`. Updating those assertions to the current schema 3/PR-lifecycle owner made the complete suite pass: `428 tests in 16.145s`.
 
 ## 다섯 번의 전체 적대 검토
 
@@ -77,7 +78,7 @@ The exact aggregate totals are attack `10,722`, move `690`, guard `9,324`, evade
 
 ## 자동화·학습 반영
 
-The checker now rejects a report that merely lists six policies but fails to exercise attack/move/guard/evade/recovery/ultimate in the actual full matrix. It also distinguishes a per-policy expectation from the approved suite-level coverage claim, so future policy changes cannot silently pass because of an impossible sub-policy assertion.
+The checker now rejects a report that merely lists six policies but fails to exercise attack/move/guard/evade/recovery/ultimate in the actual full matrix. It also distinguishes a per-policy expectation from the approved suite-level coverage claim, so future policy changes cannot silently pass because of an impossible sub-policy assertion. The two repository-facing state tests now also make predecessor schema/status wording fail rather than silently accepting an outdated measurement evidence ceiling.
 
 ## 미검증·남은 위험
 
