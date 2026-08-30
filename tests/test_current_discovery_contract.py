@@ -432,6 +432,10 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             "IMPLEMENTED_LOCAL_BRANCH_MACHINE_VERIFIED_4500_SCENARIOS_TWO_BYTE_IDENTICAL_REPORTS_PENDING_PR_REMOTE_CI_MERGE_READBACK",
             status["balance_measurement_policy_coverage_extension_status"],
         )
+        self.assertEqual(
+            "docs/operations/2026-08-30_BALANCE_MEASUREMENT_POLICY_COVERAGE_EXTENSION_IMPLEMENTATION_EXECUTION_REPORT.md",
+            status["balance_measurement_policy_coverage_extension_execution_report"],
+        )
         self.assertTrue(status["product_implementation_authorized"])
         self.assertEqual(
             "TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01",
