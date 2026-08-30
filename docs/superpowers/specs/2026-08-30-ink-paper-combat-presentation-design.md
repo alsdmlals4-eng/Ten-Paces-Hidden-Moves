@@ -8,7 +8,7 @@
 - **Work mode:** `PLAN`
 - **Scope owner:** the current repository visual contract and the user's 2026-08-30 request to carry the approved ink-paper direction into the actual game.
 - **User reference:** `docs/visual-assets/approved/TEN-USER-VISUAL-SOURCE-SET-20260826/ChatGPT Image 2026년 8월 26일 오전 08_35_55.png` (`428ae939f2ef79efb947aa3e56a15029ed6aadb3`). It is a style and hierarchy reference, not a UI screenshot to place on top of the game and not an automatic new runtime asset.
-- **Existing runtime visual basis:** `assets/backgrounds/twilight_ink_duel_v1.png`, Dogyeom's runtime status portrait and combat battler, action-card/icon/VFX assets already registered by the repository.
+- **Existing runtime visual basis at design start:** `assets/backgrounds/twilight_ink_duel_v1.png`, Dogyeom's runtime status portrait and combat battler, action-card/icon/VFX assets already registered by the repository. On 2026-08-30 the user supplied the separate required final lock; the one scoped landscape candidate can therefore be promoted in the post-lock implementation package as `ink_mist_valley_duel_01_v1`, with the former background retained as rollback.
 
 ## 1. Decision and source relevance
 

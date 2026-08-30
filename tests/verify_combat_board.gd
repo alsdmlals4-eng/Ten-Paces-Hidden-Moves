@@ -1,7 +1,7 @@
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
-const BACKGROUND_ASSET_PATH := "res://assets/backgrounds/twilight_ink_duel_v1.png"
+const BACKGROUND_ASSET_PATH := "res://assets/backgrounds/ink_mist_valley_duel_01_v1.png"
 const EXPECTED_TILE_COUNT := 10
 const EXPECTED_PLAYER_TILE := 4
 const EXPECTED_ENEMY_TILE := 6
@@ -88,8 +88,10 @@ func _verify_foundation(board: CombatBoardPreview, snapshot: Dictionary) -> void
         failures.append("Board metadata must expose enemy start tile %d." % EXPECTED_ENEMY_TILE)
     if board.get_child_count() == 0 or board.get_child(0) != board.battle_background:
         failures.append("Battle background must render behind the board.")
-    if str(board.battle_background.get_meta("source_mode", "")) != "project_original_raster_png":
-        failures.append("Battle background must use the approved original raster asset.")
+    if str(board.battle_background.get_meta("source_mode", "")) != "user_final_locked_ai_generated_project_raster_png":
+        failures.append("Battle background must use the user-final-locked project raster asset.")
+    if str(snapshot.get("background_path", "")) != BACKGROUND_ASSET_PATH:
+        failures.append("Combat board snapshot must expose the approved ink-mist background asset.")
     for tile in board.tiles:
         if not tile.has_signal("tile_clicked"):
             failures.append("Every board tile must expose a tile_clicked signal for TARGETING_10_5.")

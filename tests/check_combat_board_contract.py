@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -178,7 +179,7 @@ def main() -> None:
     assert res_file(ultimate["asset_manifest"]).exists()
     active_assets = [asset for asset in asset_manifest["assets"] if asset["active"]]
     assert {asset["id"] for asset in active_assets} == {
-        "twilight_ink_duel_v1",
+        "ink_mist_valley_duel_01_v1",
         "player_wanderer_ink_v1",
         "enemy_masked_ink_v1",
         "dogyeom_status_portrait_01_v1",
@@ -191,6 +192,17 @@ def main() -> None:
         assert res_file(asset["path"]).exists(), asset["path"]
         assert asset.get("prompt") or asset.get("source_png_sha256"), asset["id"]
         assert asset.get("license", asset_manifest.get("license", ""))
+    battle_background = next(asset for asset in active_assets if asset["id"] == "ink_mist_valley_duel_01_v1")
+    assert battle_background["source_asset"] == "docs/visual-assets/approved/INK_MIST_VALLEY_DUEL_01_v1.png"
+    assert battle_background["runtime_consumer"] == "src/combat/battle_background.gd"
+    assert battle_background["replaces_active_asset"] == "twilight_ink_duel_v1"
+    canonical_source = ROOT / battle_background["source_asset"]
+    assert canonical_source.exists()
+    assert hashlib.sha256(canonical_source.read_bytes()).hexdigest() == battle_background["source_png_sha256"]
+    assert hashlib.sha256(res_file(battle_background["path"]).read_bytes()).hexdigest() == battle_background["source_png_sha256"]
+    previous_background = next(asset for asset in asset_manifest["assets"] if asset["id"] == "twilight_ink_duel_v1")
+    assert previous_background["active"] is False
+    assert previous_background["superseded_by"] == battle_background["id"]
     ultimate_vfx = next(asset for asset in active_assets if asset["id"] == "ultimate_ink_gold_sprite_sheet_rgba")
     assert ultimate_vfx["transparency_audit"]["has_alpha"] is True
     assert ultimate_vfx["transparency_audit"]["status"] == "APPROVED_ACTIVE"
@@ -274,7 +286,7 @@ def main() -> None:
     assert "combat_ai" not in excluded and "combat_end_restart" not in excluded
 
     required_files = [
-        "assets/backgrounds/twilight_ink_duel_v1.png",
+        "assets/backgrounds/ink_mist_valley_duel_01_v1.png",
         "assets/characters/player_wanderer_battler_rgba_v1.png",
         "assets/characters/enemy_masked_battler_rgba_v1.png",
         "assets/reference/step_02_character_scale_and_tile_placement.svg",

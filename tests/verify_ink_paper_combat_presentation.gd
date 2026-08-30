@@ -2,6 +2,7 @@ extends SceneTree
 
 const BOARD_SCENE := preload("res://scenes/combat/combat_board_preview.tscn")
 const VIEWPORT_SIZE := Vector2(1440.0, 900.0)
+const APPROVED_BACKGROUND_PATH := "res://assets/backgrounds/ink_mist_valley_duel_01_v1.png"
 
 var failures: Array[String] = []
 
@@ -22,6 +23,7 @@ func _run() -> void:
 
 	_expect(is_instance_valid(board.range_readout_label), "Combat must create a live player-facing range readout.")
 	_expect(is_instance_valid(board.range_engagement_label), "Combat must create a live engaged-state label.")
+	_expect(board.get_layout_snapshot().get("background_path", "") == APPROVED_BACKGROUND_PATH, "Ink-paper presentation must expose the final-locked background asset.")
 	if is_instance_valid(board.range_readout_label):
 		_expect(board.range_readout_label.text == "거리 2", "Initial player-facing range must be 거리 2.")
 	if is_instance_valid(board.range_engagement_label):

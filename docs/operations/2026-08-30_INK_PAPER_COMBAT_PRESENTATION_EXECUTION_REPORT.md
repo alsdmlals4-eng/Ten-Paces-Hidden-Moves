@@ -104,6 +104,10 @@ reason: user final lock has not yet been given
 - 새 배경 이미지는 `GENERATED_CANDIDATE`다. 사용자의 final lock 뒤에만 provenance, SHA-256, asset manifest, repository destination readback, real runtime replacement을 별도 수행할 수 있다.
 - legacy focus visual verifier failure는 baseline issue이며 ActionSelectionDock의 keyboard navigation과 별도다. 더 넓은 accessibility correction은 fresh scoped package가 필요하다.
 
+### Postscript · 2026-08-30 user final lock
+
+The later explicit final lock, `확정하자`, was handled in the separate bounded record `2026-08-30_INK_MIST_VALLEY_BACKGROUND_PROMOTION_EXECUTION_REPORT.md`. It records the candidate's canon promotion, active runtime replacement, actual Godot combat-screen evidence, and the retained evidence ceiling without rewriting the pre-lock facts above.
+
 ## 자동화·학습 반영
 
 - visual UI 작업도 실제 hidden/visible consumer를 먼저 찾아 적용하도록 execution evidence를 남겼다.

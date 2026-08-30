@@ -231,6 +231,10 @@ Report only GENERATED_CANDIDATE, its planned BattleBackground consumer, and that
 
 Do not write assets/, manifest/provenance, battle_background.gd, or release records. Existing twilight_ink_duel_v1.png remains the runtime background during this wait.
 
+### Post-lock continuation · 2026-08-30
+
+The user supplied the required explicit final lock, `확정하자`, on 2026-08-30. The prior stop gate was satisfied without changing its historical meaning. The bounded continuation promotes only the generated landscape candidate to `INK_MIST_VALLEY_DUEL_01_v1`, records its provenance and SHA-256, copies the same reviewed bytes to the canonical and runtime paths, makes `BattleBackground` consume the registered runtime path, retains `twilight_ink_duel_v1.png` as inactive rollback, and runs the existing focused/runtime verification route. It does not authorize a broader reskin, new art queue, game-rule change, or release claim.
+
 ### Task 5: Runtime verification, evidence, and delivery
 
 **Files:**
@@ -252,7 +256,10 @@ godot --headless --path . --script res://tests/verify_combat_keyboard_accessibil
 godot --headless --path . --script res://tests/verify_combat_focus_order.gd
 godot --headless --path . --script res://tests/verify_combat_focus_visuals.gd
 godot --headless --path . --script res://tests/verify_action_detail_panel.gd
-godot --headless --path . --script res://tests/verify_vertical_slice_combat_bridge.gd
+godot --headless --path . --script res://tests/verify_basic_action_panel.gd
+godot --headless --path . --script res://tests/verify_martial_action_panel.gd
+godot --headless --path . --script res://tests/verify_ultimate_action_panel.gd
+godot --headless --path . --script res://tests/verify_combat_action_selection_integration.gd
 ~~~
 
 - [ ] **Step 2: Use the live-editor workflow for visible runtime evidence**

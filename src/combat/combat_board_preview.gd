@@ -374,7 +374,7 @@ func _build_structure() -> void:
 	set_meta("step", 10)
 	set_meta("targeting_patch", "10.5")
 	set_meta("background_component", "BattleBackground")
-	set_meta("background_asset", "res://assets/backgrounds/twilight_ink_duel_v1.png")
+	set_meta("background_asset", "res://assets/backgrounds/ink_mist_valley_duel_01_v1.png")
 	set_meta("hud_component", "TopCombatHud")
 	set_meta("hud_layout", "player_status|player_momentum|round|enemy_momentum|enemy_status")
 	set_meta("action_timing_component", "ActionTimingPanel")
@@ -1569,7 +1569,7 @@ func get_layout_snapshot() -> Dictionary:
 	return {
 		"layout_ready": _layout_ready,
 		"background_ready": is_instance_valid(battle_background) and battle_background.texture != null,
-		"background_path": "res://assets/backgrounds/twilight_ink_duel_v1.png",
+		"background_path": "res://assets/backgrounds/ink_mist_valley_duel_01_v1.png",
 		"hud_ready": is_instance_valid(top_hud),
 		"hud_snapshot": hud_snapshot,
 		"range_readout": {

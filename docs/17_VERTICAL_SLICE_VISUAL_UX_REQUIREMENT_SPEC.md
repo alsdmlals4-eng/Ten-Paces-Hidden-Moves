@@ -388,7 +388,7 @@ image_generation_policy: NO_AUTOMATIC_IMAGE_GENERATION_FROM_GAPS
 |---|---|---|---|---|---|---|
 | Main / Setup / Intro | existing `InkSurface` direction, not a baked screen bitmap | no mandatory character image | `ContentPanel`, `Button`, `Label`, toggle state | primary CTA; disabled until 4 selections | `GODOT_UI + TEXT_LAYER + NO_NEW_IMAGE_FILE_REQUIRED` | P0 covered by functional UI; whole-screen visual polish is P1 `SCREEN_DESIGN_REFERENCE` queue |
 | Briefing | panel hierarchy protects uncertainty | opponent identity is structured text; portrait is optional | public manual/habit/counterexample; hidden plan excluded | start CTA | `GODOT_UI + TEXT_LAYER + REUSE_PROJECT` | P0 covered; portrait/result crop is not required until an exact opponent consumer is selected |
-| Combat / Review | battle background remains largest mass | `twilight_ink_duel_v1`, player/enemy battlers, Dogyeom routing for `slot1_dogyeom` | HUD, timeline, cards, focus/selected/disabled state | range/target/resolve/review; `ultimate_ink_gold_sprite_sheet_rgba` | `EXISTING_APPROVED + REUSE_PROJECT + GODOT_UI + SVG_VECTOR + SPRITE_SHEET` | P0 covered by actual preloads and Godot regressions; warm-dusk v2 is planning-anchor-only, never a runtime asset |
+| Combat / Review | battle background remains largest mass | `ink_mist_valley_duel_01_v1`, player/enemy battlers, Dogyeom routing for `slot1_dogyeom` | HUD, timeline, cards, focus/selected/disabled state | range/target/resolve/review; `ultimate_ink_gold_sprite_sheet_rgba` | `USER_FINAL_LOCKED_RUNTIME_IMAGE + REUSE_PROJECT + GODOT_UI + SVG_VECTOR + SPRITE_SHEET` | P0 uses the user-final-locked 2026-08-30 background after source/consumer/runtime verification; warm-dusk v2 remains planning-anchor-only and is never a runtime asset |
 | Victory Result / Route / Completion | functional panel composition, not a full-screen raster | no mandatory new background/portrait | result choices, locked opponent context, route options, run summary | reward receipt / selected route / completion summary | `GODOT_UI + TEXT_LAYER + PROCEDURAL_DRAW + NO_NEW_IMAGE_FILE_REQUIRED` | P0 covered; result mark/route icon/background variant remain P1 `GAP_NONBLOCKING` only when exact component consumer is specified |
 | Failure Retry | Review assets are reused; no full-screen raster | no mandatory new background/portrait | actual causes 1~3, `0/1`, retry or title CTA | same-seed snapshot restore or terminal title return | `GODOT_UI + TEXT_LAYER + REUSE_COMBAT_RUNTIME_ASSETS + NO_NEW_IMAGE_FILE_REQUIRED` | `APPROVED_P0_IMPLEMENTATION_REQUIRED`; actual consumer, runtime, and Human evidence remain `NOT_RUN` |
 | Pause / Codex / Release system | no current consumer | none | none | none | `DO_NOT_GENERATE` | `NOT_APPLICABLE` for this Slice; future scope must create a screen requirement before assets |
@@ -397,7 +397,7 @@ image_generation_policy: NO_AUTOMATIC_IMAGE_GENERATION_FROM_GAPS
 
 | screen_id | reference_needed | existing anchor | required fidelity / validation | priority |
 |---|---|---|---|---|
-| `SCREEN_COMBAT` / `OVERLAY_REVIEW` | `PROJECT_CORE_SCENE_VISUAL_BOARD` requires a separate text brief and explicit approval | `TEN-IMG-001`; `WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID` is planning-anchor-only | existing focused Godot regression; Windows visible/human comparison remains `NOT_RUN` | P1 |
+| `SCREEN_COMBAT` / `OVERLAY_REVIEW` | `INK_MIST_VALLEY_DUEL_01_v1` completed its separate brief and explicit final lock for `BattleBackground`; the warm-dusk planning anchor remains planning-only | `TEN-IMG-001`; `WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID` is planning-anchor-only; `INK_MIST_VALLEY_DUEL_01_v1` is the distinct runtime background | focused Godot regression plus Godot 4.7.1 actual combat screenshot/node/log readback; Windows human comparison remains `NOT_RUN` | P1 |
 | `SCREEN_MAIN` / `SCREEN_SETUP` / `SCREEN_INTRO` | composition only, no raster requirement | Visual Bible Component System + `TEN-VIS-A01` approved clean-plate reference | target-resolution wireframe or runtime capture after a separately approved implementation package | P1 |
 | `SCREEN_BRIEFING` / `SCREEN_RESULT` / `SCREEN_ROUTE_*` / `SCREEN_COMPLETION` | composition only, no raster requirement | existing Visual/UX Flow + reusable panel/character-slot rules | runtime capture after a separately approved implementation package | P1 |
 
@@ -405,7 +405,7 @@ image_generation_policy: NO_AUTOMATIC_IMAGE_GENERATION_FROM_GAPS
 
 | asset_family_id | screen_ids | actual runtime consumer | states / variants | production mode | status |
 |---|---|---|---|---|---|
-| `COMBAT_BACKGROUND_01` | Combat, Review | `src/combat/battle_background.gd` | normal backdrop | `EXISTING_APPROVED` | `COVERED_EXISTING`; candidate replacement is not approved |
+| `COMBAT_BACKGROUND_01` | Combat, Review | `src/combat/battle_background.gd` | normal backdrop | `INK_MIST_VALLEY_DUEL_01_v1` | `USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260830`; former twilight background retained inactive for rollback |
 | `COMBAT_CHARACTER_BATTLERS` | Combat, Review | `src/combat/combat_character_placeholder.gd` | player, generic enemy, `slot1_dogyeom` | `REUSE_PROJECT` | `COVERED_EXISTING`; remaining opponents require exact consumer + identity source |
 | `STATUS_PORTRAITS` | Combat | `src/ui/combatant_status_panel.gd` | player, generic enemy, `slot1_dogyeom` | `EXISTING_APPROVED` | `COVERED_EXISTING`; 14 portraits are not an automatic queue |
 | `CARD_ICON_ILLUSTRATION` | Combat | `src/ui/basic_card_tray.gd → src/ui/basic_card_tray_item.gd`, `data/cards/basic_cards.json` | source/category/cost/selected/disabled | `SVG_VECTOR + TEXT_LAYER + REUSE_PROJECT` | `COVERED_EXISTING`; a new raster is allowed only for an exact card ID |
@@ -452,7 +452,7 @@ godot_validation: focused default-entry/shell verification passed before PR #241
 p0_blocking_gap: 0
 p1_nonblocking:
   - screen-level composition comparison for noncombat functional UI
-  - warm-dusk candidate review; no Notion attach, runtime integration, or extra generation
+  - no additional background variant without a new exact consumer, scoped brief, and separate user final lock
 p2_deferred:
   - pause/settings, codex/help, boot/loading/error/release surfaces
 approved_p0_implementation_required:
