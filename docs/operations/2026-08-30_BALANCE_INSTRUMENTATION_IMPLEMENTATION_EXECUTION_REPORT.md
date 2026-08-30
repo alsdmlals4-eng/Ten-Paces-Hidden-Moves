@@ -7,7 +7,7 @@ baseline_origin_main: 75168849691e3965e7d665dcb1af97485756e6cf
 implementation_commit: e2666380fdf335bee71703973bb0389ce90f4358
 branch: codex/balance-instrumentation-contract-20260830
 work_mode: BUILD
-implementation_status: IMPLEMENTED_BRANCH_MACHINE_VERIFIED_HEADLESS_FULL_MATRIX_PR_PENDING
+implementation_status: IMPLEMENTED_MERGED_MAIN_PR280_REMOTE_CI_PASS_PROTECTED_APPROVAL_CLEANUP_PR_PENDING
 execution_date: 2026-08-30
 approval_source: "user explicit: 승인"
 scope: ENGINE_DIRECT_NON_SHIPPING_DETERMINISTIC_SINGLE_DUEL_V1
@@ -89,7 +89,7 @@ current catalogs + matrix JSON
 | 4 | actual full-run behavior and scenario isolation | full runner가 `Array[Dictionary]` 반환 경계를 너무 좁게 선언한 runtime type error를 드러냈다. invalid run은 폐기하고, generic Array 경계로 교정한 뒤 표본과 3,375행 독립 두 run을 다시 수행했다. | MUST_FIX 해결 |
 | 5 | diff, consumer scope, cost, rollback | baseline 대비 예상 밖 경로 0, protected runtime data/scene/project/assets 변경 0을 확인했다. 한글 path quote가 allowlist false finding을 만들었으나 `core.quotePath=false` readback으로 해결했다. 두 full run은 약 150/157초, report는 temp-only다. | clean |
 
-`CLEAN_REVIEW_EXIT`은 이 validation-only branch package에 한정해 reached했다. PR 통합 전에는 branch machine evidence이고, 통합 후에는 exact `origin/main` readback과 CI required checks가 별도로 필요하다.
+`CLEAN_REVIEW_EXIT`은 이 validation-only package에 한정해 reached했다. PR #280은 remote CI 전체 통과 후 `83ad48a7b4388e249e5b40e19ad25f77a817d1a2`로 병합됐고, `origin/main` readback도 같은 commit을 확인했다. active protected approval archive와 protected baseline promotion은 별도 lifecycle cleanup PR에서 수행 중이다.
 
 ## PR delivery-contract recovery
 
@@ -99,5 +99,5 @@ current catalogs + matrix JSON
 
 1. 이 결과는 headless machine evidence다. Windows visible 화면, human/player fun·fairness·readability, Android physical device, accessibility, release performance는 아직 `NOT_RUN`이다.
 2. `timeout`·win/loss 분포는 후보 수치 변경 권고가 아니다. 수치 변경은 별도 balance Decision, data change, regression, human/player 검증이 필요하다.
-3. 현재 증거는 isolated branch의 exact implementation commit에 대한 것이다. approval manifest/label을 보강한 뒤 PR required checks, merge, post-merge `origin/main` readback은 별도로 수행한다.
+3. PR #280 merge와 post-merge `origin/main` readback은 완료했지만, active approval manifest의 archive와 protected baseline promotion cleanup은 별도 PR 증거가 필요하다.
 4. Matrix는 명시적으로 `opening_no_route` single duel만 다룬다. Route/보상/성장/캠페인과 retry UX는 범위 밖이다.

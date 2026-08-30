@@ -28,11 +28,11 @@ class PcFirstVerticalSliceImplementationGateTests(unittest.TestCase):
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "BALANCE_INSTRUMENTATION_ADVERSARIAL_REVIEW_PR_INTEGRATION",
+            "BALANCE_INSTRUMENTATION_PROTECTED_APPROVAL_ARCHIVE_AND_BASELINE_PROMOTION",
             status["next_phase"],
         )
         self.assertEqual(
-            "BALANCE_INSTRUMENTATION_ADVERSARIAL_REVIEW_PR_INTEGRATION",
+            "BALANCE_INSTRUMENTATION_PROTECTED_APPROVAL_ARCHIVE_AND_BASELINE_PROMOTION",
             status["next_product_execution_surface"],
         )
         self.assertTrue(status["vertical_slice_pc_implementation_authorized"])
