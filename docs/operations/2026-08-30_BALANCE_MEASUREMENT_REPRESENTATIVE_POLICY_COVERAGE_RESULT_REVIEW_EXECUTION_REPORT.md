@@ -3,13 +3,14 @@
 ~~~yaml
 report_id: TEN-OPS-20260830-BALANCE-MEASUREMENT-REPRESENTATIVE-POLICY-COVERAGE-RESULT-REVIEW-EXECUTION-01
 base_sha: 8e6ace1205e44fb6f0b83b281fb0862ce009a528
+postmerge_main_sha: 1b4680a5c64da0566b25f3ab88a12cf2da27d146
 work_mode: REVIEW
 skill: ten-paces-verification
 skill_mode: RESULT_REVIEW
 scope: SCHEMA_3_REPORT_READBACK_AND_NUMERICAL_MUTATION_DECISION_BOUNDARY
 product_mutation: NONE
 user_authority: "좋아 진행해; in-scope continuation"
-status: LOCAL_REVIEW_COMPLETE_PENDING_PR
+status: MERGED_MAIN_PR295_REMOTE_CI_PASS_POSTMERGE_READBACK
 ~~~
 
 ## 수행
@@ -30,7 +31,7 @@ status: LOCAL_REVIEW_COMPLETE_PENDING_PR
 | protected lifecycle | PASS | `python tools/check_one_time_protected_change_lifecycle.py --project-root . --base-sha 3575e0405001514b7b3bdfb5b1c23f9caa34eca0` |
 | Python regression | PASS | `python -m unittest discover -s tests -p 'test_*.py' -v` — 428 tests |
 | product-path postmerge diff | PASS | PR #294 postmerge docs did not modify `data/`, `src/`, `scenes/`, `assets/`, `addons/`, or `project.godot` |
-| PR #294 CI | PASS | all completed checks successful; intentionally classified skipped jobs remain skipped |
+| PR #295 CI | PASS | all completed checks successful; intentionally classified skipped jobs remain skipped |
 
 ## 미검증
 
