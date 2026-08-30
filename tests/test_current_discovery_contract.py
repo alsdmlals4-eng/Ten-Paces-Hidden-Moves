@@ -200,15 +200,15 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "user_directed_planning_next_package: BALANCE_MEASUREMENT_POLICY_COVERAGE_RESULT_REVIEW_SEPARATE_NUMERICAL_DECISION_IF_EVIDENCE_REQUIRES_CHANGE",
+            "user_directed_planning_next_package: BALANCE_MEASUREMENT_REPRESENTATIVE_POLICY_COVERAGE_PR_CI_PROTECTED_APPROVAL_LIFECYCLE_AND_POSTMERGE_READBACK",
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_next_decision: TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01",
+            "user_directed_planning_next_decision: TEN-DEC-20260830-BALANCE-MEASUREMENT-REPRESENTATIVE-POLICY-COVERAGE-01",
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_status: INK_PAPER_DIAGONAL_DUEL_PRESENTATION_IMPLEMENTED_MERGED_MAIN_PR277_PROTECTED_APPROVAL_ARCHIVED_PR278_MACHINE_RUNTIME_VERIFIED_HUMAN_PLAYTEST_DEFERRED_PLUS_BALANCE_INSTRUMENTATION_IMPLEMENTED_MERGED_MAIN_PR280_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR281_POSTMERGE_READBACK",
+            "user_directed_planning_status: INK_PAPER_DIAGONAL_DUEL_PRESENTATION_IMPLEMENTED_MERGED_MAIN_PR277_PROTECTED_APPROVAL_ARCHIVED_PR278_MACHINE_RUNTIME_VERIFIED_HUMAN_PLAYTEST_DEFERRED_PLUS_BALANCE_INSTRUMENTATION_IMPLEMENTED_MERGED_MAIN_PR280_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR281_POSTMERGE_READBACK_PLUS_BALANCE_MEASUREMENT_POLICY_COVERAGE_EXTENSION_IMPLEMENTED_MERGED_MAIN_PR289_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR290_POSTMERGE_READBACK_PLUS_BALANCE_MEASUREMENT_REPRESENTATIVE_POLICY_COVERAGE_IMPLEMENTED_LOCAL_MACHINE_VERIFIED_PR_PENDING",
             current_section,
         )
         self.assertIn(
@@ -220,7 +220,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_latest_decision: TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01",
+            "user_directed_planning_latest_decision: TEN-DEC-20260830-BALANCE-MEASUREMENT-REPRESENTATIVE-POLICY-COVERAGE-01",
             current_section,
         )
         self.assertIn(
@@ -228,7 +228,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_pending_material_decision: NONE_MEASUREMENT_POLICY_COVERAGE_RESULT_REVIEW_MAY_REQUIRE_SEPARATE_NUMERICAL_DECISION",
+            "user_directed_planning_pending_material_decision: NONE_REPRESENTATIVE_POLICY_COVERAGE_IS_VALIDATION_ONLY_NUMERICAL_DECISION_STILL_REQUIRES_SEPARATE_EVIDENCE",
             current_section,
         )
         self.assertIn(
@@ -385,7 +385,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "INK_PAPER_DIAGONAL_DUEL_PRESENTATION_IMPLEMENTED_MERGED_MAIN_PR277_PROTECTED_APPROVAL_ARCHIVED_PR278_MACHINE_RUNTIME_VERIFIED_HUMAN_PLAYTEST_DEFERRED_PLUS_BALANCE_INSTRUMENTATION_IMPLEMENTED_MERGED_MAIN_PR280_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR281_POSTMERGE_READBACK_PLUS_BALANCE_MEASUREMENT_POLICY_COVERAGE_EXTENSION_IMPLEMENTED_MERGED_MAIN_PR289_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR290_POSTMERGE_READBACK",
+            "INK_PAPER_DIAGONAL_DUEL_PRESENTATION_IMPLEMENTED_MERGED_MAIN_PR277_PROTECTED_APPROVAL_ARCHIVED_PR278_MACHINE_RUNTIME_VERIFIED_HUMAN_PLAYTEST_DEFERRED_PLUS_BALANCE_INSTRUMENTATION_IMPLEMENTED_MERGED_MAIN_PR280_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR281_POSTMERGE_READBACK_PLUS_BALANCE_MEASUREMENT_POLICY_COVERAGE_EXTENSION_IMPLEMENTED_MERGED_MAIN_PR289_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR290_POSTMERGE_READBACK_PLUS_BALANCE_MEASUREMENT_REPRESENTATIVE_POLICY_COVERAGE_IMPLEMENTED_LOCAL_MACHINE_VERIFIED_PR_PENDING",
             status["user_directed_planning_status"],
         )
         self.assertIn(
@@ -405,11 +405,11 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["evidence_ceiling"]["pr277_protected_approval_lifecycle"],
         )
         self.assertEqual(
-            "BALANCE_MEASUREMENT_POLICY_COVERAGE_RESULT_REVIEW_SEPARATE_NUMERICAL_DECISION_IF_EVIDENCE_REQUIRES_CHANGE",
+            "BALANCE_MEASUREMENT_REPRESENTATIVE_POLICY_COVERAGE_PR_CI_PROTECTED_APPROVAL_LIFECYCLE_AND_POSTMERGE_READBACK",
             status["next_phase"],
         )
         self.assertEqual(
-            "BALANCE_MEASUREMENT_POLICY_COVERAGE_RESULT_REVIEW_SEPARATE_NUMERICAL_DECISION_IF_EVIDENCE_REQUIRES_CHANGE",
+            "BALANCE_MEASUREMENT_REPRESENTATIVE_POLICY_COVERAGE_PR_CI_PROTECTED_APPROVAL_LIFECYCLE_AND_POSTMERGE_READBACK",
             status["next_product_execution_surface"],
         )
         self.assertEqual(
@@ -510,7 +510,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["opponent_runtime_personality_binding_status"],
         )
         self.assertEqual(
-            "IMPLEMENTED_MERGED_MAIN_PR289_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR290_POSTMERGE_READBACK_HEADLESS_FULL_MATRIX_MACHINE_VERIFIED_4500_ROWS_TWO_BYTE_IDENTICAL_REPORTS_WINDOWS_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN",
+            "SCHEMA_3_REPRESENTATIVE_POLICY_COVERAGE_IMPLEMENTED_LOCAL_MACHINE_VERIFIED_PR_PENDING_HEADLESS_FULL_MATRIX_6750_ROWS_TWO_BYTE_IDENTICAL_REPORTS_WINDOWS_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN",
             status["evidence_ceiling"]["balance_simulation"],
         )
         self.assertEqual(
@@ -535,6 +535,22 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertIn(
             "TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01",
+            status["resolved_material_decisions"],
+        )
+        self.assertEqual(
+            "TEN-DEC-20260830-BALANCE-MEASUREMENT-REPRESENTATIVE-POLICY-COVERAGE-01",
+            status["balance_measurement_representative_policy_coverage_decision"],
+        )
+        self.assertEqual(
+            "IMPLEMENTED_LOCAL_MACHINE_VERIFIED_PR_PENDING_6750_SCENARIOS_TWO_BYTE_IDENTICAL_REPORTS_SCHEMA_3",
+            status["balance_measurement_representative_policy_coverage_status"],
+        )
+        self.assertEqual(
+            "A0669A0727C9608B6A240910CE529263C1982C510E4B3C376BD58D8AB5F66558",
+            status["balance_measurement_representative_policy_coverage_report_sha256"],
+        )
+        self.assertIn(
+            "TEN-DEC-20260830-BALANCE-MEASUREMENT-REPRESENTATIVE-POLICY-COVERAGE-01",
             status["resolved_material_decisions"],
         )
 

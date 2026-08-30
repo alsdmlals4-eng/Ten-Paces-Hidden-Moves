@@ -1,8 +1,8 @@
 class_name VerticalSliceBalanceReportRunner
 extends RefCounted
 
-const REPORT_SCHEMA_VERSION := 2
-const CONTRACT_ID := "TEN-DEC-20260830-BALANCE-MEASUREMENT-POLICY-COVERAGE-EXTENSION-01"
+const REPORT_SCHEMA_VERSION := 3
+const CONTRACT_ID := "TEN-DEC-20260830-BALANCE-MEASUREMENT-REPRESENTATIVE-POLICY-COVERAGE-01"
 
 
 func build_full_report(instrumentation) -> Dictionary:
