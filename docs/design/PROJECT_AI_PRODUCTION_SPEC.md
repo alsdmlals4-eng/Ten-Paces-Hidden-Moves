@@ -16,7 +16,7 @@ canonical_path: docs/design/PROJECT_AI_PRODUCTION_SPEC.md
 human_pdf_path: exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf
 source_priority: latest user direction > repository owners/Decisions > actual code/data/scene/tests > derived views > historical migration inputs > example PDF
 overall_status: DOCUMENTED_CURRENT_SNAPSHOT / PRODUCT_RUNTIME_PARTIAL
-known_stale_points: opponent runtime personality is user-approved but not implemented; human, Android, accessibility, audio and release evidence are NOT_RUN
+known_stale_points: opponent runtime personality binding is implemented; deterministic balance instrumentation, human, Android, accessibility, audio and release evidence are NOT_RUN
 ```
 
 > 목적: 이 문서는 GPT/Codex가 후속 기획·구현·검증을 안전하게 이어가기 위한 **검색 가능한 통합 생산 명세**다. 실제 코드·Scene·Resource·JSON·테스트 및 각 분야의 책임 원본을 대체하지 않는다. 새 규칙을 승인하거나 기존 owner를 하나로 병합하지 않으며, 충돌과 미검증은 그대로 표시한다.
@@ -30,8 +30,8 @@ known_stale_points: opponent runtime personality is user-approved but not implem
 | paired source snapshot | `afa152b985975a3f8e6292ca0298d22a95c03872` (`origin/main` at publication capture; not a claim about the repository's latest commit) |
 | delivery lineage | `18d647c34ae8544d58d79e870f82dde1ef1d0c55` landed this complete spec/current PDF pair after the captured source snapshot |
 | 기준일 | 2026-08-29 (KST) |
-| 기준 PR / Issue | #261·#263 historical product/governance evidence, #268 opponent runtime personality binding Decision, Issue #267 isolated product handoff approved but not started, Issue #269 this delivery |
-| 현재 작업 성격 | Issue #269 문서·PDF 정본화 + stale operating-baseline reconciliation. 제품 구현·런타임 실행은 하지 않음. |
+| 기준 PR / Issue | #261·#263 historical product/governance evidence; #273 opponent runtime personality binding implementation and #277 presentation are later verified successor facts; `TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01` begins the balance-instrumentation written-spec review |
+| 현재 작업 성격 | repository current-state reconciliation + user-approved balance-instrumentation written-spec review. 이 문서 자체는 새 제품 런타임을 구현하지 않음. |
 | 플랫폼 | Windows + Android, 공유 코어/플랫폼 adapter (`TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01`) |
 | 엔진 | Godot 4.7, `scenes/run/vertical_slice_shell.tscn` |
 | 문서 상태 표기 | `DOCUMENTED / CONFIRMED / IMPLEMENTED / AUTOMATED_TEST_PASS / RUNTIME_VERIFIED / UX_VERIFIED / RELEASE_READY` |
@@ -119,12 +119,13 @@ known_stale_points: opponent runtime personality is user-approved but not implem
 | `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` | same pair, 36 pages | current human-facing derived publication; read-only in this reconciliation | CURRENT_PAIRED_DERIVED_PUBLICATION |
 | `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf` | earlier pair | historical derived publication only | HISTORICAL_DERIVED_NOT_CURRENT_SOURCE |
 | GitHub PR #261 / #263 | merged, checks success | Phase 2 정본 reconciliation / every-task adversarial-research gate | HISTORICAL_AUTOMATED_EVIDENCE |
-| GitHub PR #268 / Issue #267 | merged Decision / isolated implementation handoff | opponent runtime personality binding contract; approved package not started | USER_APPROVED_CODEX_GODOT_HANDOFF_READY / RUNTIME_NOT_RUN |
+| GitHub PR #273 / Issue #267 | merged isolated implementation and post-merge readback | opponent runtime personality binding implemented; balance instrumentation remains separate | IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK / BALANCE_SIMULATION_NOT_RUN |
 | GitHub PR #200, #199 | open draft | 미병합 후보, READ_ONLY | CURRENT_METADATA |
 | `AGENTS.md` | repo root | 작업 경계·코어 불변식 | CURRENT |
-| `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` | 2026-08-29 approved personality-binding handoff state | mutable context | CURRENT |
+| `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` | 2026-08-30 approved balance-instrumentation written-spec review state | mutable context | CURRENT |
 | `docs/planning-data/current_user_planning_status.json` | current structured mutable state | structured mutable state | CURRENT |
-| `docs/decisions/2026-08-29_OPPONENT_RUNTIME_PERSONALITY_BINDING_DECISION.md` | five archetypes, public boundary, candidate binding acceptance criteria | current Decision | USER_APPROVED / IMPLEMENTATION_NOT_STARTED |
+| `docs/decisions/2026-08-29_OPPONENT_RUNTIME_PERSONALITY_BINDING_DECISION.md` | five archetypes, public boundary, candidate binding acceptance criteria | historical approval Decision; implementation evidence lives in the execution report | IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK |
+| `docs/decisions/2026-08-30_BALANCE_INSTRUMENTATION_CONTRACT_DECISION.md` | engine-direct deterministic single-duel measurement boundary | current successor Decision | USER_APPROVED_WRITTEN_SPEC_REVIEW_PENDING |
 | `docs/operations/2026-08-29_POSTMERGE_CANON_AND_RUNTIME_REALITY_REVIEW.md` | catalog-vs-runtime gap; feasibility limits | current adversarial review | CURRENT_REVIEW |
 | Notion / Google Sheet | repository-only migration inputs | no current authority | HISTORICAL_INPUT_ONLY |
 | `docs/01_GAME_DESIGN.md` 등 분야별 owner | repository | game rules, content, architecture, test owners | CURRENT/PARTIAL (각 항목 참조) |
@@ -160,7 +161,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 | AST-VIS-001 | WARM DUSK v2 | CURRENT | planning anchor only; runtime asset 승인 아님 |
 | DEC-OPS-001 | repository-only canonical workspace | CURRENT | user confirmed; Notion is historical migration input only |
 | DEC-STALE-001 | Phase 2 merge 전 Active Context/JSON/Notion 상태 | RESOLVED | repository owner sync·governance regression·readback 완료 |
-| DEC-OPPONENT-001 | 15 candidate의 runtime personality binding | CURRENT_DECISION | USER_APPROVED_CODEX_GODOT_HANDOFF_READY / RUNTIME_NOT_RUN |
+| DEC-OPPONENT-001 | 15 candidate의 runtime personality binding | CURRENT_DECISION | IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK / BALANCE_SIMULATION_NOT_RUN |
 | DEC-HIST-001 | `행동계획 잠금`, 4/7 슬롯 등 과거 표기 | SUPERSEDED | current CTA/3-3-4 계약으로 대체 |
 | QA-HUMAN-001 | 사람 플레이·가독성·감정 evidence | UNKNOWN_UNVERIFIED | NOT_RUN |
 
@@ -181,7 +182,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 | DEC-VIS-001 | WARM DUSK v2 planning visual direction | visual decision + Visual Bible | future visual briefs, not runtime proof |
 | DEC-PLATFORM-001 | Windows/Android dual target, one core with adapters | AGENTS platform decision | input/layout/test matrix |
 | DEC-OPS-001 | repository-only human-facing and structured canon | `2026-08-28_REPOSITORY-ONLY-CANONICAL-WORKSPACE_DECISION.md` | no future Notion write/readback |
-| DEC-OPPONENT-001 | candidate별 archetype·기본 행동 선호·결정적 stat allocation을 runtime에 bind하되, AI의 public-only 관찰 경계를 보존 | `TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01` | Issue #267에만 격리 구현 승인; 현재 data/runtime 변경 없음 |
+| DEC-OPPONENT-001 | candidate별 archetype·기본 행동 선호·결정적 stat allocation을 runtime에 bind하되, AI의 public-only 관찰 경계를 보존 | `TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01` | Issue #267 격리 구현은 PR #273으로 병합·readback됨; successor 계측은 `TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01` |
 
 ## 04. DESIGN PILLARS
 
@@ -239,7 +240,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 | SYS-PLAN-001 | 행동 계획 | 3수 제한 안의 예측·배치 | `action_placement_controller.gd` | IMPLEMENTED |
 | SYS-RESOLVE-001 | 동시 해결 | 내 예측의 판결과 관찰 가능한 인과 | `combat_resolution_engine.gd` | IMPLEMENTED |
 | SYS-AI-001 | 공개 상태 AI | 공정하게 읽히는 상대 적응 | `combat_ai_planner.gd` | IMPLEMENTED |
-| SYS-OPPONENT-001 | 상대 runtime personality binding | 상대의 공개 경향을 관찰하고 파훼하는 기대 | Decision + Issue #267 grandfathered handoff | USER_APPROVED_CODEX_GODOT_HANDOFF_READY / RUNTIME_NOT_RUN |
+| SYS-OPPONENT-001 | 상대 runtime personality binding | 상대의 공개 경향을 관찰하고 파훼하는 기대 | Decision + PR #273 execution/readback | IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK / BALANCE_SIMULATION_NOT_RUN |
 | SYS-REVIEW-001 | 복기 | 실패가 다음 행동으로 이어짐 | `combat_review_panel.gd` | IMPLEMENTED |
 | SYS-RETRY-001 | 동일 seed 재도전 | 학습을 반복 기회로 전환 | `vertical_slice_run_state.gd` | IMPLEMENTED |
 | SYS-TAG-001 | 행동 태그와 인과 | 전조·관찰·강건·합을 같은 언어로 읽음 | `02_COMBAT_RULES.md`, action data, resolver events | CONFIRMED / IMPLEMENTED |
@@ -371,23 +372,23 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 
 **PLAYER QUESTION.** `Briefing과 해결 이력에서 본 이 상대의 습관을 다음 3슬롯 가설에 어떻게 반영할까?`
 
-**CURRENT FACT.** `data/run/vertical_slice_opponents.json`에는 15 후보의 이름·signature manual/card·focus ID·행동 설명·`final_stat_total_seed`가 있다. 현재 runtime은 `signature_manual_id`와 `signature_star_seed`를 loadout, route, result consumer에서 사용한다. 반면 `behavior_focus`, `basic_action_focus_ids`, `final_stat_total_seed`는 combat personality 또는 combatant stats를 아직 구동하지 않는다. `CombatAiPlanner`는 data-driven weight boundary를 가지지만, 현재 대련별 `runtime_archetype_id` 선택과 후보별 최종 stat allocation을 combat runtime으로 연결하지 않는다. 그러므로 **후보 개성은 현재 runtime에서 구현됐다고 말할 수 없다.**
+**CURRENT FACT.** `data/run/vertical_slice_opponents.json`의 15 후보는 하나의 `runtime_archetype_id`, ordered `basic_action_focus_ids`, `final_stat_total_seed`를 가진다. Issue #267 구현은 이를 per-combat runtime binding으로 검증해 `VerticalSliceMetricsCombatResolutionEngine`의 candidate stats와 독립 planner instance에 연결했다. `CombatAiPlanner`는 공개 상태와 해결 완료 public history만 사용하며, 후보별 weight/total의 **실제 난이도·승률**은 아직 측정하지 않았다. 따라서 후보 개성 binding은 구현됐지만, 밸런스 PASS는 아니다.
 
 | consumer classification | exact fields | current evidence |
 |---|---|---|
-| CURRENT_RUNTIME_CONSUMED_FIELDS | `signature_manual_id`, `signature_star_seed` | current loadout, route, and result consumers; personality/stat binding evidence 아님 |
-| NOT_CONSUMED_BY_COMBAT_PERSONALITY_OR_STATS | `behavior_focus`, `basic_action_focus_ids`, `final_stat_total_seed` | Issue #267 future binding; current combat personality/stats consumer 없음 |
+| CURRENT_RUNTIME_CONSUMED_FIELDS | `signature_manual_id`, `signature_star_seed`, `runtime_archetype_id`, `basic_action_focus_ids`, `final_stat_total_seed` | current loadout/route/result plus Issue #267 per-combat binding, derived stats, and planner consumer |
+| NOT_YET_MEASURED_BY_BALANCE_INSTRUMENTATION | profile weights, derived stat total, player/loadout/policy/seed outcome distribution | successor Decision `TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01`; no balance result yet |
 
 | state | owned by | player-visible meaning | evidence boundary |
 |---|---|---|---|
 | candidate catalog | `data/run/vertical_slice_opponents.json` | 상대 소개와 학습용 가설 재료 | DOCUMENTED / catalog consumer only |
-| binding design | `TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01` | 같은 이름만 다른 상대가 되지 않게 하는 승인된 방향 | USER_APPROVED_CODEX_GODOT_HANDOFF_READY |
-| runtime bridge | grandfathered Issue #267 isolated implementation | 한 candidate → 한 archetype, 결정적 stat 합계 | RUNTIME_NOT_RUN |
-| actual combat behavior | `CombatAiPlanner` / combatant stats | 전투에서 확인되는 선택 경향과 수치 | RUNTIME_NOT_RUN |
+| binding decision | `TEN-DEC-20260829-OPPONENT-RUNTIME-PERSONALITY-BINDING-01` | 같은 이름만 다른 상대가 되지 않게 하는 승인된 방향 | IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK |
+| runtime bridge | Issue #267 isolated implementation | 한 candidate → 한 archetype, 결정적 stat 합계 | AUTOMATED_GODOT_AND_REMOTE_CI_VERIFIED |
+| actual combat behavior | `CombatAiPlanner` / combatant stats | 전투에서 확인되는 선택 경향과 수치 | MACHINE_RUNTIME_VERIFIED_FOR_BINDING; BALANCE_SIMULATION_NOT_RUN |
 
-**AUTHORIZED FUTURE CONTRACT (NOT CURRENT IMPLEMENTATION).** 각 candidate는 하나의 runtime archetype에 bind되고, 행동 선호는 공개 상태와 해결 이력만으로 계산한다. stat allocation은 `final_stat_total_seed` 합계를 보존하는 결정적 결과여야 한다. brief/Review는 관찰 가능한 경향만 표현하고, 플레이어의 아직 확정되지 않은 계획·숨은 기술 배치·UI 의도·AI 가중치·정답 수순을 누설하지 않는다.
+**CURRENT BINDING / AUTHORIZED SUCCESSOR MEASUREMENT.** 각 candidate는 하나의 runtime archetype에 bind되고, 행동 선호는 공개 상태와 해결 이력만으로 계산한다. stat allocation은 `final_stat_total_seed` 합계를 보존하는 결정적 결과다. Brief/Review는 관찰 가능한 경향만 표현하고, 플레이어의 아직 확정되지 않은 계획·숨은 기술 배치·UI 의도·AI 가중치·정답 수순을 누설하지 않는다. 후속 `TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01`은 이 구현을 실제 engine-direct single-duel matrix로 측정하지만, 수치 변경과 Human balance PASS를 자동 승인하지 않는다.
 
-**failure / recovery example.** 후보 이름과 카드가 달라도 모두 같은 global profile로 행동하면 “가짜 개성” 실패다. Issue #267은 bridge snapshot에서 archetype/stat 합계를, controlled planner score regression에서 focus 효과를 분리해 증명해야 한다. Human playtest는 그 다음에만 난이도·재미를 평가하며, 현재 이 증거는 없다.
+**failure / recovery example.** 후보 이름과 카드가 달라도 모두 같은 global profile로 행동하면 “가짜 개성” 실패다. Issue #267은 bridge snapshot의 archetype/stat 합계와 controlled planner score regression의 focus 효과를 automated/Godot으로 증명했다. 후속 계측은 그 구현을 실제 candidate/loadout/policy/seed 행렬에서 재현하고, Human playtest는 여전히 별도로 난이도·재미를 평가한다.
 
 ### SYS-REVIEW-001 / SYS-RETRY-001 — 복기와 동일 조건 재도전
 
@@ -640,7 +641,7 @@ Current contract protects retry snapshot and exactly-once progression commit. Pe
 | 가설을 3수에 배치 | SYS-PLAN-001 / CNT-ACTION-001 | UI-PLAN-001 | placement controller + action data | Phase 2 resolution/UI tests |
 | 전조 비용을 보고 판단 | SYS-PLAN-002 | UI-COMBAT-001 | engine span/timing + CTA | phase2 combat test; human clarity NOT_RUN |
 | 공정한 상대 읽기 | SYS-AI-001 | Review/history | AI public snapshot | `verify_phase2_observation.gd` |
-| 상대의 관찰 가능한 습관을 파훼 | SYS-OPPONENT-001 / CNT-OPPONENT-RUNTIME-001 | Briefing / Review | grandfathered Issue #267 binding bridge | USER_APPROVED_CODEX_GODOT_HANDOFF_READY; runtime evidence NOT_RUN |
+| 상대의 관찰 가능한 습관을 파훼 | SYS-OPPONENT-001 / CNT-OPPONENT-RUNTIME-001 | Briefing / Review | PR #273 binding bridge | MACHINE_RUNTIME_VERIFIED_FOR_BINDING; balance simulation NOT_RUN |
 | 실패에서 재도전 | SYS-REVIEW-001/SYS-RETRY-001 | UI-REVIEW-001 | run state / review panel | `verify_vertical_slice_failure_retry.gd` |
 | 무공 선택으로 대응 폭 확장 | SYS-GROWTH-001/CNT-MANUAL-001 | selection / route | manual JSON + adoption UI/AI | `verify_ten_manual_ui_ai_adoption.gd`; UX NOT_RUN |
 
@@ -685,7 +686,7 @@ Current contract protects retry snapshot and exactly-once progression commit. Pe
 
 ## 25. USER DECISION REQUIRED
 
-No new product-meaning decision is required to use this document as a GDD snapshot. `DEC-OPPONENT-001` is already user-approved **only for Issue #267's isolated implementation contract** and is grandfathered without reapproval; this document does not convert that approval into implementation evidence. Balance instrumentation, scope expansion, and successor packages are new packages and cannot reuse that approval. The following cannot be silently decided:
+No new product-meaning decision is required to use this document as a GDD snapshot. `DEC-OPPONENT-001` is implemented as the approved Issue #267 isolated contract and has merged-main readback; that does not itself prove balance across the candidate/loadout/policy/seed matrix. `TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01` is user-approved for a written-spec review and still requires its design-review gate before implementation. Scope expansion and successor packages cannot reuse this approval. The following cannot be silently decided:
 
 1. **Human test threshold and audience:** number/profile/definition of understanding pass for first 5–15 minutes.
 2. **Production art scope:** whether to fund character/animation/VFX batch after a visual implementation contract; WARM DUSK planning anchor is not a shipping asset lock.
