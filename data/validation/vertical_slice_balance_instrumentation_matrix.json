@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "contract_id": "TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01",
+  "route_context_id": "opening_no_route",
+  "player_tile": 4,
+  "enemy_tile": 6,
+  "timing_sequence": [3, 3, 4],
+  "maximum_rounds": 12,
+  "ai_decision_seeds": [0, 1, 17, 101, 1009],
+  "player_policy_ids": [
+    "public_approach_pressure",
+    "public_guarded_exchange",
+    "public_recovery_range"
+  ],
+  "expected_candidate_count": 15,
+  "expected_starter_loadout_count": 15,
+  "expected_scenario_count": 3375
+}
