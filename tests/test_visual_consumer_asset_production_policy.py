@@ -19,6 +19,8 @@ WARM_DUSK_CANDIDATE = ROOT / "docs" / "visual-assets" / "candidates" / "WARM_DUS
 WARM_DUSK_RECORD = ROOT / "docs" / "visual-assets" / "candidates" / "WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID.md"
 SCREEN_AUDIT_OWNER = ROOT / "docs" / "17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md"
 SCREEN_VISUAL_INVENTORY = ROOT / "docs" / "planning-data" / "current_screen_visual_coverage_inventory_20260828.json"
+MARTIAL_MANUAL_PRESENTATION_DECISION = ROOT / "docs" / "decisions" / "2026-08-30_MARTIAL_MANUAL_TEXT_FIRST_PRESENTATION_DECISION.md"
+MARTIAL_MANUAL_DATA = ROOT / "data" / "cards" / "martial_manuals"
 
 
 class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
@@ -193,6 +195,39 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
         self.assertEqual("NO_RUNTIME_IMAGE_REQUIRED", failure_retry["image_requirement"])
         self.assertIn("TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01", failure_retry["evidence"])
         self.assertIn("same-duel SCREEN_COMBAT", failure_retry["entry_exit"])
+
+    def test_martial_manual_techniques_are_locked_to_text_tag_numeric_presentation(self) -> None:
+        visual = json.loads(VISUAL.read_text(encoding="utf-8"))
+        gate = GATE.read_text(encoding="utf-8")
+
+        self.assertTrue(MARTIAL_MANUAL_PRESENTATION_DECISION.is_file())
+        self.assertEqual(
+            "TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01",
+            visual["martial_manual_presentation"]["decision_id"],
+        )
+        self.assertEqual(
+            "TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION",
+            visual["martial_manual_presentation"]["policy"],
+        )
+        self.assertEqual(
+            "NOT_NEEDED_BY_USER_DECISION_NO_GENERATION",
+            visual["martial_manual_presentation"]["asset_generation_status"],
+        )
+        self.assertIn("무공 기술서", gate)
+        self.assertIn("TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION", gate)
+        self.assertIn("TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01", gate)
+        decision = MARTIAL_MANUAL_PRESENTATION_DECISION.read_text(encoding="utf-8")
+        self.assertIn("USER_EXPLICIT_20260830", decision)
+        self.assertIn("CardView.illustration", decision)
+        self.assertIn("필살기 연출", decision)
+        for manual_path in sorted(MARTIAL_MANUAL_DATA.glob("*.json")):
+            manual = json.loads(manual_path.read_text(encoding="utf-8"))
+            for technique in manual["cards"].values():
+                self.assertNotIn(
+                    "illustration",
+                    technique,
+                    f"{manual_path.name}:{technique['id']} must remain without illustration data.",
+                )
 
 
 if __name__ == "__main__":

@@ -63,12 +63,18 @@
 - `거리 N` 중심, 3/3/4 계획 의미 보존.
 - `기초 / 무공 / 절초` 출처 분리.
 - Action grid 최대 5×2, 최대 10개 수용.
-- 행동/무공 카드에는 실제 카드 소비용 작은 삽화 사용.
+- 기초 행동 카드에는 실제 카드 소비용 작은 삽화 사용. 무공 기술서는 `TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION`으로 표현한다.
 - 텍스트·비용·사거리·효과 숫자는 원화가 아니라 Godot UI/data binding이 소유.
 - 제한 금색은 선택·확정·절초·결정적 결과에만 사용.
 - 상대의 숨은 계획/정답을 색·포즈·연출로 누설하지 않음.
 
 2026-08-28 사용자 Decision `TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01`은 현재 묶음 CTA를 `행동계획 실행`으로 고정했다. 이는 유효한 3/3/4 슬롯 묶음을 commit한 뒤 전투·해결 애니메이션으로 전환하는 행위다. 과거 대표 시안과 POC의 `진행`은 historical/implementation copy이며, 별도 Codex handoff에서 copy와 전환을 함께 교정할 때까지 runtime current truth가 아니다.
+
+### 무공 기술서 — 무삽화 정보면
+
+2026-08-30 사용자 Decision `TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01`에 따라 `MartialActionPanel`의 보유 무공서와 선택 기술 목록은 `TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION`이다. 무공서명·성수, 기술명, 행동 수, 기력/내력 비용, 잠금/해금, 태그, 조건부 사거리와 효과를 UI/data binding으로 보이며 기술 행 중앙의 삽화, `TextureRect`, 무공 기술 data의 `illustration` 소비를 만들지 않는다.
+
+이 규칙은 기초 카드의 `CardView.illustration`, 전장과 대결 캐릭터, 무공 유래 절초를 포함한 `UltimateActionPanel`, 필살기 연출과 `VS` 공개 overlay를 바꾸지 않는다. 새 무공 기술 삽화 생성은 `NOT_NEEDED_BY_USER_DECISION_NO_GENERATION`이다.
 
 ## 4. 이미지 생성 cadence
 
@@ -186,7 +192,7 @@ canon + actual game consumer review
 
 ## 7. 다음 후보 — 자동 생성 없음
 
-1. 개별 무공/절초 카드 삽화 — 반드시 **exact card ID**와 `CardView.illustration` 소비가 확인된 이미지 단위로 제작.
+1. 개별 절초 카드 삽화 — 반드시 **exact card ID**와 `CardView.illustration` 소비가 확인된 이미지 단위로 제작. 무공 기술서의 기술 행 삽화는 `TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01`에 따라 제작 대상이 아니다.
 2. 나머지 상대 Portrait/Battler — 승인 source identity + 실제 consumer 계약을 확인한 뒤 제작.
 3. Route/Result 계열 — 실제 소비 컴포넌트가 확인된 뒤 제작. 추가 Background variant도 새 exact consumer와 별도 scoped brief가 있을 때만 제작.
 

@@ -72,6 +72,9 @@ user_directed_planning_diagonal_duel_presentation_decisions: TEN-DEC-20260801-SI
 user_directed_planning_diagonal_duel_presentation_status: USER_FINAL_LOCKED_IMPLEMENTED_MERGED_MAIN_PR277_MACHINE_RUNTIME_AND_REMOTE_CI_VERIFIED
 user_directed_planning_diagonal_duel_presentation_execution_report: docs/operations/2026-08-30_DIAGONAL_DUEL_ACTION_REVEAL_EXECUTION_REPORT.md
 user_directed_planning_diagonal_duel_approval_archive: docs/operations/2026-08-30_PR277_PROTECTED_CHANGE_APPROVAL_RECORD.md
+user_directed_planning_martial_manual_presentation_decision: TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01
+user_directed_planning_martial_manual_presentation_status: TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION_EXISTING_RUNTIME_CONTRACT_LOCAL_HEADLESS_GODOT_VERIFIED_20260830_AWAITING_PR_CI_AND_POSTMERGE_READBACK
+user_directed_planning_martial_manual_presentation_execution_report: docs/operations/2026-08-30_MARTIAL_MANUAL_TEXT_FIRST_PRESENTATION_EXECUTION_REPORT.md
 user_directed_planning_unified_implementation_contract: TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01
 user_directed_planning_unified_implementation_contract_status: IMPLEMENTED_MERGED_MAIN_PR_261
 user_directed_planning_unified_implementation_issue: 258
@@ -82,6 +85,7 @@ planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md
 planning_visual_next: NONE_BOARD_R2_USER_FINAL_LOCKED_NO_AUTOMATIC_NEXT
 planning_visual_generation: SCOPED_SINGLE_RESULT_FINAL_USER_LOCK_R2_COMPLETE
 planning_visual_review: PROJECT_CORE_SCENE_VISUAL_BOARD_R2_USER_FINAL_LOCKED_PLANNING_ONLY_PLUS_DIAGONAL_DUEL_PAIR_5X2_BASIC_ATLAS_AND_PER_TIMING_VS_REVEAL_IMPLEMENTED_PR277
+planning_visual_martial_manual_presentation: TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION_TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01
 planning_visual_state: docs/planning-data/current_visual_production_handoff_20260826.json
 planning_visual_historical_state: docs/planning-data/current_visual_production_handoff_20260825.json
 planning_visual_authority: TEN-DEC-20260820-VISUAL-UX-SYSTEM-01
@@ -141,6 +145,7 @@ authority_bootstrap_merge_commit: 43a6e625c57c6f3e50b562e494fec074be553457
 - 첫 5전 Vertical Slice 기획 완료 승인: `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01`, `docs/planning-data/current_user_planning_status.json`.
 - Visual/UX Requirement 승인: `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01`, `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md`, `docs/planning-data/approved_20260820_vertical_slice_visual_ux_contract.json`.
 - Consumer-first Visual production 승인: `TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01`, `docs/decisions/2026-08-26_VISUAL_CONSUMER_ASSET_PRODUCTION_DECISION.md`.
+- 무공 기술서 표현 승인: `TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01` — `MartialActionPanel`의 무공 기술은 삽화 없이 텍스트·태그·수치로 표현하며 기초 카드/전장/절초 연출은 유지한다.
 - 현재 Visual production Gate: `docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md`, `docs/planning-data/current_visual_production_handoff_20260826.json`.
 - GPT Work 인수인계: `docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md`; historical Notion handoff는 migration/history input이다.
 - 2026-08-25 승인 Reference Set: `docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md`, `docs/planning-data/current_visual_production_handoff_20260825.json` — 승인 Reference와 당시 max-three cadence의 역사 evidence이며 current execution owner가 아니다.
