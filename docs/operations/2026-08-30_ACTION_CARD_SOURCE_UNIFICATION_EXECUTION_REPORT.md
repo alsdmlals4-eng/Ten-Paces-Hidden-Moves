@@ -10,7 +10,8 @@ skill: ten-paces-hidden-moves-workflow-router, combat UX/accessibility, Godot li
 skill_mode: CURRENT_SOURCE_RELEVANCE_CHECK + CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF + MACHINE_RUNTIME_OBSERVATION
 decision: TEN-DEC-20260830-ACTION-CARD-SOURCE-UNIFICATION-01
 feasibility: FEASIBLE
-status: IMPLEMENTED_LOCAL_MACHINE_RUNTIME_OBSERVED_READY_TO_COMMIT
+status: COMMITTED_LOCAL_MACHINE_RUNTIME_OBSERVED_PENDING_PR
+commit: 478aa03b0c49ace079d1b80a224b250fd03779de
 ```
 
 ## 작업 전 문제
@@ -88,6 +89,6 @@ Visible runtime inspection 뒤 임시 runtime captures와 untracked Godot import
 
 ## 미검증·남은 위험
 
-- branch commit/PR/remote CI/exact-main readback은 아직 수행하지 않았다. 이 보고서는 local branch evidence만 소유하며, 그 단계를 완료한 것처럼 쓰지 않는다.
+- 격리 branch commit `478aa03b0c49ace079d1b80a224b250fd03779de`은 수행했다. PR/remote CI/exact-main readback은 아직 수행하지 않았으며, 이 보고서는 local branch evidence만 소유한다.
 - Human player comparison, physical keyboard/mouse usability, gamepad, accessibility-user, Android install/touch/back/safe-area/lifecycle, release performance는 `NOT_RUN`이다.
 - base `CombatBoardPreview`에는 engine/test compatibility용 historical tile handlers가 남아 있다. active `CombatBoardPreviewAuto` player flow, active data, focused product sources는 이를 선택 surface로 소비하지 않는다.

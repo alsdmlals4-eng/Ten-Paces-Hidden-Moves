@@ -30,7 +30,7 @@
   "action_card_source_unification_plan": "docs/superpowers/plans/2026-08-30-action-card-source-unification.md",
   "action_card_source_unification_handoff": "docs/handoffs/2026-08-30_ACTION_CARD_SOURCE_UNIFICATION_CODEX_GODOT_IMPLEMENTATION_HANDOFF.md",
   "action_card_source_unification_execution_report": "docs/operations/2026-08-30_ACTION_CARD_SOURCE_UNIFICATION_EXECUTION_REPORT.md",
-  "action_card_source_unification_status": "USER_APPROVED_IMPLEMENTED_LOCAL_MACHINE_RUNTIME_OBSERVED_INDEPENDENT_REVIEW_CLOSED_READY_TO_COMMIT",
+  "action_card_source_unification_status": "USER_APPROVED_IMPLEMENTED_LOCAL_MACHINE_RUNTIME_OBSERVED_INDEPENDENT_REVIEW_CLOSED_COMMITTED_478AA03B_PENDING_PR",
   "action_card_source_unification_scope": "ActionSelectionDock common card surface; basic atlas only; martial and ultimate text cards; semantic move/aim intent cards; active POC data retirement; logical tiles hidden from player selection",
   "action_card_source_unification_evidence_ceiling": "LOCAL_AUTOMATED_AND_WINDOWS_VISIBLE_MACHINE_RUNTIME_OBSERVED_ONLY_HUMAN_ANDROID_ACCESSIBILITY_USER_RELEASE_NOT_RUN",
   "current_visual_generation_cadence_decision": "TEN-DEC-20260828-CORE-SCENE-VISUAL-BOARD-FINAL-LOCK-CADENCE-01",
