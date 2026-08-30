@@ -200,7 +200,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "user_directed_planning_next_package: HUMAN_PLAYER_AND_WINDOWS_VISIBLE_BALANCE_REVIEW_BEFORE_SEPARATE_NUMERICAL_DECISION",
+            "user_directed_planning_next_package: MACHINE_ONLY_RUNTIME_EVIDENCE_CONTINUES_HUMAN_PLAYER_COMPARISON_DEFERRED_BEFORE_SEPARATE_NUMERICAL_DECISION",
             current_section,
         )
         self.assertIn(
@@ -228,7 +228,11 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_pending_material_decision: HUMAN_PLAYER_AND_WINDOWS_VISIBLE_BALANCE_EVIDENCE_REQUIRED_BEFORE_SEPARATE_NUMERICAL_DECISION",
+            "user_directed_planning_pending_material_decision: HUMAN_PLAYER_COMPARISON_DEFERRED_MACHINE_EVIDENCE_INSUFFICIENT_FOR_SEPARATE_NUMERICAL_DECISION",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_machine_runtime_readback_execution_report: docs/operations/2026-08-30_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_COMPARISON_DEFERRED_EXECUTION_REPORT.md",
             current_section,
         )
         self.assertIn(
@@ -405,12 +409,24 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["evidence_ceiling"]["pr277_protected_approval_lifecycle"],
         )
         self.assertEqual(
-            "HUMAN_PLAYER_AND_WINDOWS_VISIBLE_BALANCE_REVIEW_BEFORE_SEPARATE_NUMERICAL_DECISION",
+            "MACHINE_ONLY_RUNTIME_EVIDENCE_CONTINUES_HUMAN_PLAYER_COMPARISON_DEFERRED_BEFORE_SEPARATE_NUMERICAL_DECISION",
             status["next_phase"],
         )
         self.assertEqual(
-            "HUMAN_PLAYER_AND_WINDOWS_VISIBLE_BALANCE_REVIEW_BEFORE_SEPARATE_NUMERICAL_DECISION",
+            "MACHINE_ONLY_RUNTIME_EVIDENCE_CONTINUES_HUMAN_PLAYER_COMPARISON_DEFERRED_BEFORE_SEPARATE_NUMERICAL_DECISION",
             status["next_product_execution_surface"],
+        )
+        self.assertEqual(
+            "docs/operations/2026-08-30_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_COMPARISON_DEFERRED_EXECUTION_REPORT.md",
+            status["machine_runtime_readback_execution_report"],
+        )
+        self.assertEqual(
+            "PARTIAL_CURRENT_MAIN_GODOT_4_7_1_VISIBLE_COMBAT_SCREEN_AND_6750_ROW_REPORT_SHA_MATCHED_HUMAN_PLAYER_COMPARISON_DEFERRED",
+            status["machine_runtime_readback_status"],
+        )
+        self.assertEqual(
+            "A0669A0727C9608B6A240910CE529263C1982C510E4B3C376BD58D8AB5F66558",
+            status["machine_runtime_readback_report_sha256"],
         )
         self.assertEqual(
             "TEN-DEC-20260830-BALANCE-INSTRUMENTATION-CONTRACT-01",
