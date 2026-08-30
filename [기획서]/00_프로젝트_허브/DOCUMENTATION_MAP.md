@@ -22,6 +22,7 @@
 | 질문 | 현재 책임 원본 |
 |---|---|
 | 현행 전체 작업 방식·검증·병합·전달 계약 | `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` / `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01` |
+| 새 L1+ package의 10종 이상 사전 벤치마크·역공학 | `TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01`, `docs/planning-data/approved_20260805_work_governance_contract.json`, `docs/reviews/2026-08-30_TEN_PACES_BENCHMARK_REVERSE_ENGINEERING.md` |
 | 현재 단계·권한·다음 작업 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` + current planning JSON + GitHub current metadata + repository owners |
 | 사람용 Project Home·전체 Flow·Visual·사람이 수정하는 핵심 표 | repository (`REPOSITORY_HUMAN_FACING_CANON`) |
 | 구조화 정본·실제 구현·런타임 증거 | repository (`REPOSITORY_STRUCTURED_CANON` + `REPOSITORY_RUNTIME_TRUTH`) |

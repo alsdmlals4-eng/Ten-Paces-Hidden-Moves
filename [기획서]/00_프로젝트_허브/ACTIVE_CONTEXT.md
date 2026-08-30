@@ -61,6 +61,10 @@ user_directed_planning_balance_instrumentation_design_spec: docs/superpowers/spe
 user_directed_planning_balance_instrumentation_design_execution_report: docs/operations/2026-08-30_BALANCE_INSTRUMENTATION_DESIGN_EXECUTION_REPORT.md
 user_directed_planning_balance_instrumentation_execution_report: docs/operations/2026-08-30_BALANCE_INSTRUMENTATION_IMPLEMENTATION_EXECUTION_REPORT.md
 user_directed_planning_balance_instrumentation_status: IMPLEMENTED_MERGED_MAIN_PR280_REMOTE_CI_PASS_PROTECTED_APPROVAL_ARCHIVED_PR281_POSTMERGE_READBACK
+user_directed_planning_prework_benchmark_gate: TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01
+user_directed_planning_prework_benchmark_status: INITIAL_12_GAME_REVERSE_ENGINEERING_PACKET_SYNTHESIZED_REQUIRED_BEFORE_NEW_L1_PLUS_PACKAGE
+user_directed_planning_prework_benchmark_report: docs/reviews/2026-08-30_TEN_PACES_BENCHMARK_REVERSE_ENGINEERING.md
+user_directed_planning_prework_benchmark_evidence_ceiling: DESK_RESEARCH_ONLY_NO_TEN_PACES_RUNTIME_HUMAN_PLAYER_VALIDATION
 user_directed_planning_long_horizon_direction: IMPLEMENT_GDD_BY_APPROVED_VERIFIED_GODOT_PACKAGES_WITHOUT_SILENT_CORE_SCOPE_EXPANSION
 user_directed_planning_opponent_runtime_personality_issue: 267
 user_directed_planning_opponent_runtime_personality_design_spec: docs/superpowers/specs/2026-08-29-opponent-runtime-personality-binding-design.md
@@ -146,6 +150,7 @@ authority_bootstrap_merge_commit: 43a6e625c57c6f3e50b562e494fec074be553457
 - Visual/UX Requirement 승인: `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01`, `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md`, `docs/planning-data/approved_20260820_vertical_slice_visual_ux_contract.json`.
 - Consumer-first Visual production 승인: `TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01`, `docs/decisions/2026-08-26_VISUAL_CONSUMER_ASSET_PRODUCTION_DECISION.md`.
 - 무공 기술서 표현 승인: `TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01` — `MartialActionPanel`의 무공 기술은 삽화 없이 텍스트·태그·수치로 표현하며 기초 카드/전장/절초 연출은 유지한다.
+- 새 L1+ package 사전 벤치마크: `TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01` — 사용자 지시에 따라 plan/mutation 전에 10개 이상 유사·인접 게임을 공식 제품 사실과 `DO_NOT_COPY` 경계로 역공학한다. 초기 12개 packet은 `docs/reviews/2026-08-30_TEN_PACES_BENCHMARK_REVERSE_ENGINEERING.md`이며, 이는 제품/사람 플레이 검증이나 core 변경이 아니다.
 - 현재 Visual production Gate: `docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md`, `docs/planning-data/current_visual_production_handoff_20260826.json`.
 - GPT Work 인수인계: `docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md`; historical Notion handoff는 migration/history input이다.
 - 2026-08-25 승인 Reference Set: `docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md`, `docs/planning-data/current_visual_production_handoff_20260825.json` — 승인 Reference와 당시 max-three cadence의 역사 evidence이며 current execution owner가 아니다.

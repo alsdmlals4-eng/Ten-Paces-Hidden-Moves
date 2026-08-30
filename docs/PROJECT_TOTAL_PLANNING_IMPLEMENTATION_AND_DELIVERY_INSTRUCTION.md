@@ -31,6 +31,8 @@ market_success_failure_comparison: REQUIRED_WHEN_DECISION_RELEVANT
 adversarial_full_loop_minimum: 5
 adversarial_review_policy: EVERY_TASK_BASE_LOOP_PLUS_MINIMUM_FIVE_FULL_SCOPE_LOOPS_FOR_MATERIAL_CHANGE
 external_research_policy: REQUIRED_EVERY_TASK_CURRENT_SOURCE_RELEVANCE_CHECK
+prework_benchmark_reverse_engineering_gate: TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01
+prework_benchmark_minimum_game_comparables_for_new_l1_plus_package: 10
 implementation_feasibility_policy: REQUIRED_BEFORE_MATERIAL_MUTATION
 current_adversarial_research_feasibility_decision: TEN-DEC-20260828-ADVERSARIAL-RESEARCH-FEASIBILITY-GATE-01
 implementation_reality_gate: REQUIRED
@@ -165,6 +167,7 @@ Base의 상세 절차를 여기 복제하지 않지만 다음 **프로젝트 실
 - CI는 live required checks와 current Base supply-chain owner를 읽고 immutable pin 요구를 지키며, 기존 zero-incremental-cost route를 먼저 사용한다. 비용 절감은 required regression 삭제가 아니라 실행 계층 선택으로 해결한다.
 - material failure는 관련 Project/Base Case/Learning을 먼저 찾고, 재사용 가치가 있으면 Incident → Solution → Lesson → recurrence guard로 닫는다.
 - `TEN-DEC-20260828-ADVERSARIAL-RESEARCH-FEASIBILITY-GATE-01`에 따라 모든 작업은 `CURRENT_SOURCE_RELEVANCE_CHECK`를 먼저 남긴다. 최신 외부 사실·기술·플랫폼·권리·시장·접근성 근거가 판단을 바꿀 수 있으면 공식/1차 자료를 조사하고 source·freshness·relevance·한계를 기록한다. 관련 근거가 없으면 조사하지 않은 내용을 사실처럼 쓰지 않고 이유 있는 `NOT_APPLICABLE`로 남긴다.
+- `TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01`은 이 연구 게이트를 새 L1+ player-facing 또는 implementation package에 구체화한다. 새 package는 plan/mutation 전에 10개 이상의 유사·인접 게임을 포함한 역공학 packet을 남기며, 직접 비교 3개·인접 시스템 3개·부정/혼합 사례 1개 이상과 공식 제품 사실, 제한된 플레이어 반응 신호/공개된 공백, mechanism, transfer principle, `DO_NOT_COPY`, `ADOPT/ADAPT/AVOID/TEST`를 분리한다. 같은 decision dimension·current project state·source freshness가 모두 일치하는 bounded continuation만 packet을 재사용할 수 있고 `no silent bypass`다. 이 gate는 user approval이나 project core/공개-비공개 정보 경계·deck/hand/draw 금지를 대체하지 않는다.
 - 모든 작업·권장안·retained change는 적어도 한 번 전체 적대 검토를 거친다. material 계획·구현·문서·PR 변경은 Base `running-adversarial-review-and-refinement`의 최소 5회 full-scope loop, better-alternative search, long-term-fit recheck와 `CLEAN_REVIEW_EXIT`를 닫는다. 각 loop는 정본·actual implementation/diff·untouched consumer·실행 증거·비용·장기 유지성을 함께 공격하며, 가짜 finding/loop로 횟수를 채우지 않는다.
 - material mutation 전 `implementation feasibility record`는 project의 실제 경로·의존성·테스트/CI·target environment와 최신 외부 근거를 교차 대조해 `FEASIBLE / PARTIAL / BLOCKED_UNVERIFIED`로 판정한다. 검색 결과·snippet·모델 자신감은 구현 또는 Human/device/accessibility/release PASS가 아니다.
 
