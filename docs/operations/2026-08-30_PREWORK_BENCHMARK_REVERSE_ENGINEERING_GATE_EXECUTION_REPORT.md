@@ -5,6 +5,8 @@ report_id: TEN-EXEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01
 decision: TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01
 baseline_origin_main: a28462b54677c725693b139f68cf50f2b2d5ea53
 branch: codex/benchmark-gate-recovery-20260830
+merged_pr: 287
+postmerge_origin_main: ba4fed201f4c2e37f9ed5fbc32027344ccb9a56d
 work_mode: PLAN
 skill: ten-paces-hidden-moves-workflow-router, governing-game-user-research-coverage, analyzing-and-refining-game-concepts, ten-paces-game-design, combat-ux-and-accessibility
 skill_mode: CURRENT_SOURCE_RELEVANCE_CHECK_AND_BENCHMARK_REVERSE_ENGINEERING
@@ -12,7 +14,7 @@ user_direction: "비슷한 장르,류의 게임 10개 이상 벤치마킹해서 
 feasibility: FEASIBLE_REPOSITORY_ONLY_POLICY_AND_CANON_CHANGE
 product_paths_changed: []
 evidence_ceiling: DESK_RESEARCH_AND_CONTRACT_VALIDATION_ONLY
-status: MACHINE_VERIFIED_LOCAL_PR_PENDING
+status: IMPLEMENTED_MERGED_MAIN_PR287_REMOTE_CI_PASS_EXACT_MAIN_POSTMERGE_READBACK
 ```
 
 ## 작업 전 문제
@@ -48,7 +50,7 @@ status: MACHINE_VERIFIED_LOCAL_PR_PENDING
 | 4 | scope/consumer | policy 작업에 Godot scene, asset, data 또는 runtime evidence를 섞으면 false implementation claim이 된다. product path diff를 금지하고 current planning/Active Context/contract만 연결한다. | RESOLVED |
 | 5 | long-term reuse | 같은 12개를 모든 미래 작업에 그대로 붙이면 stale/irrelevant research가 된다. decision dimension·project state·freshness 일치 시에만 reuse하고 아니면 refresh하도록 고정한다. | RESOLVED |
 
-`CLEAN_REVIEW_EXIT`의 **local document-policy 범위**는 PASS다. focused GREEN, contract validator, project operating-system check, generated-artifact freshness, full Python regression, reference-owner readback, diff review에서 남은 finding이 없다. remote CI, safe merge, exact-main readback은 PR 단계의 별도 증거로만 갱신한다. Human/player, Windows visible, Android device, accessibility-user, release performance는 독립적으로 `NOT_RUN`이다.
+`CLEAN_REVIEW_EXIT`: PASS. local document-policy 검토 후 PR #287의 원격 required checks가 모두 성공했고, 2026-08-30에 squash merge됐다. `origin/main`의 `ba4fed201f4c2e37f9ed5fbc32027344ccb9a56d`을 fresh fetch/readback했고, 검증 worktree의 content가 exact `origin/main`과 동일함을 확인한 뒤 generated-artifact freshness, project operating-system check, full Python regression을 다시 실행했다. Human/player, Windows visible, Android device, accessibility-user, release performance는 독립적으로 `NOT_RUN`이다.
 
 ## 검증 예정과 한계
 
@@ -58,6 +60,8 @@ status: MACHINE_VERIFIED_LOCAL_PR_PENDING
 | work governance validator | PASS | structured policy fields and required per-comparable records |
 | operating contract / generated-artifact freshness | PASS | project owner consistency; Base operating view is current |
 | full Python regression | PASS, 428 tests | existing repository contracts remain valid with the new gate |
+| PR #287 remote CI | PASS | required checks에 failure/cancelled/timed-out 결과 없음; Godot/Windows jobs도 성공 |
+| postmerge exact-main readback | PASS | squash commit `ba4fed201f4c2e37f9ed5fbc32027344ccb9a56d` = fresh `origin/main`; local validation content와 diff 없음 |
 | Godot runtime | NOT_RUN_NOT_REQUIRED_FOR_NO_PRODUCT_PATH_DIFF | `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot` diff가 없어 gameplay runtime change를 주장하지 않는다 |
 | Human/player and device validation | NOT_RUN | external desk research와 자동 test가 대체할 수 없음 |
 
