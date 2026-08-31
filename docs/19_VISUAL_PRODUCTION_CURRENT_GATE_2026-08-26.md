@@ -74,7 +74,7 @@
 
 사용자 최신 지시와 `TEN-DEC-20260831-ACTION-CARD-ILLUSTRATION-EXTENSION-01`에 따라 기본 행동·무공 기술·절초는 동일한 `ActionChoiceCard` 위계와 상단 삽화 영역을 공유하는 방향으로 확장한다. 이름, 행동 수, 기력/내력/기세 비용, 잠금 상태, 행동 종류, 사거리, 효과, 키보드 포커스와 접근성 텍스트는 계속 UI/data binding이 소유한다. 삽화는 보조 정보이며 유일한 규칙 전달 수단이 아니다.
 
-`MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png`은 현재 `GENERATED_CANDIDATE_AWAITING_USER_FINAL_LOCK`이다. 따라서 runtime `MartialActionPanel`과 `UltimateActionPanel`에는 아직 이 후보의 `TextureRect` 또는 데이터 연결을 추가하지 않는다. 최종 확정 뒤에만 exact-byte 승격·manifest 등록·semantic mapping·Godot UI/runtime 검증을 순서대로 수행한다. 이전 무삽화 결정은 역사 기록으로 보존하되 current 방향에서는 superseded다.
+`MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png`은 사용자 `삽화 확정`(2026-08-31)으로 `USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED`가 됐다. 후보→approved→runtime PNG는 같은 SHA-256으로 exact-byte 승격됐고, manifest 등록 뒤 `ActionViewModelAdapter`가 source-kind semantic region을 `ActionChoiceCard`에 전달한다. 따라서 `MartialActionPanel`과 `UltimateActionPanel`은 별도 삽화 레이아웃 없이 같은 renderer에서 `TextureRect`를 만든다. 이전 무삽화 결정은 역사 기록으로 보존하되 current 방향에서는 superseded다. Human/accessibility/Android/release evidence는 별도 Gate다.
 
 ## 4. 이미지 생성 cadence
 
@@ -239,6 +239,9 @@ superseded_ink_mist_and_diagonal_runtime_binaries: REMOVED_FROM_CURRENT_TREE_REC
 ten_basic_technique_ink_atlas_01_user_final_lock: PASS_20260830
 ten_basic_technique_ink_atlas_01_canon_runtime_readback: PASS_20260830
 ten_basic_technique_ink_atlas_01_runtime_integration: MACHINE_RUNTIME_VERIFIED_20260830_GODOT_4_7_1_ACTIVE_5X2_DOCK
+martial_ultimate_card_illustration_atlas_01_user_final_lock: PASS_20260831
+martial_ultimate_card_illustration_atlas_01_canon_runtime_readback: PASS_20260831
+martial_ultimate_card_illustration_atlas_01_runtime_integration: MACHINE_RUNTIME_VERIFIED_20260831_GODOT_4_7_1_SHARED_ACTIONCHOICECARD
 combat_action_reveal_overlay_runtime_integration: MACHINE_RUNTIME_VERIFIED_20260830_GODOT_4_7_1_TIMING_1_ONLY_VS_RESULT
 combat_action_reveal_overlay_human_comprehension: NOT_RUN
 windows_visible_local_machine_runtime_smoke: PASS_20260830_GODOT_4_7_1_START_TO_SLOT1_DOGYEOM_COMBAT_SCREEN_NOT_HUMAN_USABILITY

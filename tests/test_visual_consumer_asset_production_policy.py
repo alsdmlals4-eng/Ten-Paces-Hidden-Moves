@@ -23,6 +23,9 @@ MARTIAL_MANUAL_PRESENTATION_DECISION = ROOT / "docs" / "decisions" / "2026-08-30
 ACTION_CARD_ILLUSTRATION_EXTENSION_DECISION = ROOT / "docs" / "decisions" / "2026-08-31_ACTION_CARD_ILLUSTRATION_EXTENSION_DECISION.md"
 MARTIAL_ULTIMATE_ATLAS_CANDIDATE = ROOT / "docs" / "visual-assets" / "candidates" / "MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png"
 MARTIAL_ULTIMATE_ATLAS_RECORD = ROOT / "docs" / "visual-assets" / "candidates" / "MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.md"
+MARTIAL_ULTIMATE_ATLAS_APPROVED = ROOT / "docs" / "visual-assets" / "approved" / "MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png"
+MARTIAL_ULTIMATE_ATLAS_RUNTIME = ROOT / "assets" / "ui" / "cards" / "martial_ultimate_card_illustration_atlas_01_v1.png"
+ASSET_MANIFEST = ROOT / "assets" / "ASSET_MANIFEST.json"
 MARTIAL_MANUAL_DATA = ROOT / "data" / "cards" / "martial_manuals"
 
 
@@ -200,7 +203,7 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
         self.assertIn("TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01", failure_retry["evidence"])
         self.assertIn("same-duel SCREEN_COMBAT", failure_retry["entry_exit"])
 
-    def test_martial_and_ultimate_card_illustration_candidate_is_final_lock_gated(self) -> None:
+    def test_martial_and_ultimate_card_illustration_is_final_locked_and_runtime_routed(self) -> None:
         visual = json.loads(VISUAL.read_text(encoding="utf-8"))
         gate = GATE.read_text(encoding="utf-8")
 
@@ -208,6 +211,16 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
         self.assertTrue(ACTION_CARD_ILLUSTRATION_EXTENSION_DECISION.is_file())
         self.assertTrue(MARTIAL_ULTIMATE_ATLAS_CANDIDATE.is_file())
         self.assertTrue(MARTIAL_ULTIMATE_ATLAS_RECORD.is_file())
+        self.assertTrue(MARTIAL_ULTIMATE_ATLAS_APPROVED.is_file())
+        self.assertTrue(MARTIAL_ULTIMATE_ATLAS_RUNTIME.is_file())
+        self.assertEqual(
+            sha256(MARTIAL_ULTIMATE_ATLAS_CANDIDATE.read_bytes()).hexdigest(),
+            sha256(MARTIAL_ULTIMATE_ATLAS_APPROVED.read_bytes()).hexdigest(),
+        )
+        self.assertEqual(
+            sha256(MARTIAL_ULTIMATE_ATLAS_CANDIDATE.read_bytes()).hexdigest(),
+            sha256(MARTIAL_ULTIMATE_ATLAS_RUNTIME.read_bytes()).hexdigest(),
+        )
         self.assertEqual(
             "TEN-DEC-20260831-ACTION-CARD-ILLUSTRATION-EXTENSION-01",
             visual["martial_manual_presentation"]["decision_id"],
@@ -217,42 +230,45 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
             visual["martial_manual_presentation"]["supersedes_decision_id"],
         )
         self.assertEqual(
-            "SHARED_SEMANTIC_CARD_ILLUSTRATION_CANDIDATE_AWAITING_FINAL_LOCK",
+            "SHARED_SEMANTIC_CARD_ILLUSTRATION_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_RUNTIME_VERIFIED",
             visual["martial_manual_presentation"]["policy"],
         )
         self.assertEqual(
-            "GENERATED_CANDIDATE_AWAITING_USER_FINAL_LOCK",
+            "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_RUNTIME_VERIFIED",
             visual["martial_manual_presentation"]["asset_generation_status"],
         )
         self.assertEqual(
-            "CANDIDATE_GENERATED_RUNTIME_UNCHANGED_AWAITING_USER_FINAL_LOCK",
+            "SEMANTIC_ATLAS_MAPPING_IMPLEMENTED_AND_VISIBLE_GODOT_4_7_1_RUNTIME_VERIFIED_20260831",
             visual["martial_manual_presentation"]["implementation_status"],
         )
         self.assertEqual(
             "docs/visual-assets/candidates/MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png",
-            visual["martial_manual_presentation"]["asset_candidate"]["path"],
+            visual["martial_manual_presentation"]["asset_candidate"]["candidate_path"],
         )
         self.assertEqual(
-            "CANDIDATE_ONLY_NO_MARTIAL_OR_ULTIMATE_RUNTIME_ILLUSTRATION_UNTIL_SEPARATE_USER_FINAL_LOCK",
+            "res://assets/ui/cards/martial_ultimate_card_illustration_atlas_01_v1.png",
+            visual["martial_manual_presentation"]["asset_candidate"]["runtime_path"],
+        )
+        self.assertEqual(
+            "USER_FINAL_LOCK_20260831_BYTE_PROMOTION_MANIFEST_MAPPING_AND_RUNTIME_VERIFICATION_COMPLETE",
             visual["martial_manual_presentation"]["runtime_gate"],
         )
         self.assertIn("공용 삽화 후보 gate", gate)
         self.assertIn("TEN-DEC-20260831-ACTION-CARD-ILLUSTRATION-EXTENSION-01", gate)
-        self.assertIn("GENERATED_CANDIDATE_AWAITING_USER_FINAL_LOCK", gate)
+        self.assertIn("USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED", gate)
         decision = ACTION_CARD_ILLUSTRATION_EXTENSION_DECISION.read_text(encoding="utf-8")
         self.assertIn("ActionChoiceCard", decision)
-        self.assertIn("separate explicit final lock", decision)
+        self.assertIn("User final lock", decision)
         record = MARTIAL_ULTIMATE_ATLAS_RECORD.read_text(encoding="utf-8")
-        self.assertIn("GENERATED_CANDIDATE_AWAITING_USER_FINAL_LOCK", record)
-        self.assertIn("not in `assets/`", record)
-        for manual_path in sorted(MARTIAL_MANUAL_DATA.glob("*.json")):
-            manual = json.loads(manual_path.read_text(encoding="utf-8"))
-            for technique in manual["cards"].values():
-                self.assertNotIn(
-                    "illustration",
-                    technique,
-                    f"{manual_path.name}:{technique['id']} remains unmodified until the candidate is final-locked.",
-                )
+        self.assertIn("USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_RUNTIME_VERIFIED", record)
+        self.assertIn("ActionViewModelAdapter", record)
+        self.assertIn("assets/ui/cards/martial_ultimate_card_illustration_atlas_01_v1.png", record)
+        manifest = json.loads(ASSET_MANIFEST.read_text(encoding="utf-8"))
+        entry = next(asset for asset in manifest["assets"] if asset["id"] == "martial_ultimate_card_illustration_atlas_01_v1")
+        self.assertEqual("res://assets/ui/cards/martial_ultimate_card_illustration_atlas_01_v1.png", entry["path"])
+        self.assertEqual(sha256(MARTIAL_ULTIMATE_ATLAS_RUNTIME.read_bytes()).hexdigest(), entry["source_png_sha256"])
+        self.assertTrue(entry["active"])
+        self.assertIn("ActionViewModelAdapter", entry["runtime_consumer"])
 
     def test_user_final_lock_routes_martial_and_ultimate_cards_through_the_semantic_atlas(self) -> None:
         """The final user lock supersedes the former text-only martial-card policy."""

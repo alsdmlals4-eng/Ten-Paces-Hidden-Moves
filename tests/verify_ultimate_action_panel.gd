@@ -24,7 +24,10 @@ func _run() -> void:
     _check(int(locked_snapshot.get("momentum_maximum", -1)) == 5, "Momentum maximum must be 5.")
     _check(int(locked_snapshot.get("enabled_count", -1)) == 0, "No ultimate may be enabled below five momentum.")
     _check(int(locked_snapshot.get("action_count", 0)) >= 4, "Base and mastery ultimates must both be represented.")
+    _check(str(locked_snapshot.get("illustration_policy", "")) == "semantic_atlas", "Ultimate cards must publish the semantic-atlas policy.")
     _check(str(panel.get_action("ultimate_ten_paces_wave").get("lock_reason", "")) == "기세 4/5", "Momentum lock reason must show 4/5.")
+    var locked_button: Button = panel.get_action_button("ultimate_ten_paces_wave")
+    _check(is_instance_valid(locked_button) and is_instance_valid(locked_button.find_child("CardIllustration", false, false)), "Locked ultimates must retain their semantic illustration.")
 
     panel.set_momentum(5, 5)
     await process_frame

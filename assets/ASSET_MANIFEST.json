@@ -165,6 +165,26 @@
       "active": true
     },
     {
+      "id": "martial_ultimate_card_illustration_atlas_01_v1",
+      "path": "res://assets/ui/cards/martial_ultimate_card_illustration_atlas_01_v1.png",
+      "role": "무공 기술과 절초의 공유 ActionChoiceCard 상단 영역용 4×2 의미 기반 한지·수묵 카드 일러스트 atlas",
+      "generator": "OpenAI built-in image generation",
+      "generation_output_id": "exec-42629f32-87fa-457f-a6a5-5454b002c500",
+      "source_png_sha256": "227a0492399d287fec073d7bccb36dc84eae1dd0c6d11247302e24ca87c3750e",
+      "dimensions": "1536x1024",
+      "prompt": "Original 4×2 Korean wuxia card illustration atlas: compact anonymous sumi-ink silhouettes and motifs for sword, saber, palm/internal force, spear/staff, meditation, guard, footwork, and a restrained gold ultimate burst on warm hanji paper; no text, numeral, UI, logo, watermark, franchise character identity, or copied reference composition.",
+      "reference_usage": "User-provided combat references informed only the general warm hanji-and-ink direction and card-scale readability. No reference pixels, UI, text, composition, or character likeness were included.",
+      "license": "User final-locked AI-generated project asset; retain generation output id, source hash, prompt scope, and independent similarity review.",
+      "rights_review": "CONDITIONAL_RELEASE_RIGHTS: user is responsible for input rights and final use; output similarity is not guaranteed unique; no third-party source material was used in the runtime file.",
+      "approval": "user explicit: 삽화 확정 (2026-08-31)",
+      "candidate_asset": "docs/visual-assets/candidates/MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png",
+      "source_asset": "docs/visual-assets/approved/MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png",
+      "runtime_consumer": "ActionViewModelAdapter semantic atlas mapping → ActionChoiceCard → MartialActionPanel and UltimateActionPanel",
+      "semantic_regions": "row 1: sword, saber, palm/internal, spear/staff; row 2: meditation, guard, footwork, ultimate",
+      "transparency_required": false,
+      "active": true
+    },
+    {
       "id": "ultimate_ink_gold_sprite_sheet_rgba",
       "path": "res://assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png",
       "role": "절초 수묵·금빛 VFX 스프라이트 시트",

@@ -101,7 +101,7 @@ func get_panel_snapshot() -> Dictionary:
         "layout": "manual_row_then_card_grid",
         "presentation_surface": str(get_meta("presentation_surface", "")),
         "card_surface": "shared_action_card_grid",
-        "illustration_policy": "forbidden",
+        "illustration_policy": "semantic_atlas",
         "technique_columns": TECHNIQUE_COLUMNS
     }
 
@@ -147,7 +147,7 @@ func _rebuild_techniques() -> void:
     for technique in _ordered_selected_techniques():
         var locked := bool(technique.get("locked", false))
         var button := ACTION_CHOICE_CARD_SCRIPT.new() as ActionChoiceCard
-        button.configure_action(technique, "forbidden", _locked_technique_text(technique) if locked else "사용 가능")
+        button.configure_action(technique, "semantic_atlas", _locked_technique_text(technique) if locked else "사용 가능")
         button.disabled = locked or not interaction_enabled
         button.set_meta("technique_id", str(technique.get("id", "")))
         button.set_meta("locked", locked)
@@ -161,7 +161,7 @@ func _rebuild_techniques() -> void:
     set_meta("selected_manual_id", selected_manual_id)
     set_meta("technique_count", technique_buttons.size())
     set_meta("card_surface", "shared_action_card_grid")
-    set_meta("illustration_policy", "forbidden")
+    set_meta("illustration_policy", "semantic_atlas")
 
 func _refresh_manual_selection() -> void:
     for button in manual_buttons:

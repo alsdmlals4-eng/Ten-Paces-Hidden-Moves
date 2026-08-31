@@ -23,7 +23,7 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
         self.assertEqual("REPOSITORY_ONLY_GPT_WORK", visual["handoff"]["next_surface"])
         self.assertTrue(visual["handoff"]["fresh_read_required"])
         self.assertEqual(
-            "FRONTAL_COURTYARD_DUEL_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_CARD_ILLUSTRATION_ATLAS_GENERATED_CANDIDATE_AWAITING_FINAL_LOCK_DOGYEOM_ASSETS_PRESERVED",
+            "FRONTAL_COURTYARD_DUEL_AND_SHARED_MARTIAL_ULTIMATE_CARD_ATLAS_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_DOGYEOM_ASSETS_PRESERVED",
             visual["status"],
         )
         self.assertEqual("43b3ffb2c5b026e3d4a38dab2338585894d36f61", visual["handoff"]["snapshot_observed_base_main"])

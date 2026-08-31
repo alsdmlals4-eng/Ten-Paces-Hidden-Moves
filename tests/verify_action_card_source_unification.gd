@@ -15,9 +15,13 @@ func _run() -> void:
 	var dock := DOCK_SCENE.instantiate() as ActionSelectionDock
 	root.add_child(dock)
 	await process_frame
+	var adapter := ADAPTER_SCRIPT.new() as ActionViewModelAdapter
+	dock.martial_panel.set_manuals(adapter.build_owned_manuals([HUA_MANUAL], {HUA_MANUAL: 3}))
+	dock.ultimate_panel.set_martial_context([HUA_MANUAL], {HUA_MANUAL: 3})
+	await process_frame
 
 	_verify_source_card_surfaces(dock)
-	_verify_martial_and_ultimate_are_text_only(dock)
+	_verify_martial_and_ultimate_are_illustrated(dock)
 	_verify_common_card_information_hierarchy()
 
 	dock.queue_free()
@@ -32,18 +36,18 @@ func _verify_source_card_surfaces(dock: ActionSelectionDock) -> void:
 	_check(basic.get("card_surface", "") == "shared_action_card_grid", "Basic actions must publish the shared card grid surface.")
 	_check(martial.get("card_surface", "") == "shared_action_card_grid", "Martial techniques must publish the shared card grid surface.")
 	_check(ultimate.get("card_surface", "") == "shared_action_card_grid", "Ultimate techniques must publish the shared card grid surface.")
-	_check(basic.get("illustration_policy", "") == "basic_atlas_only", "Only basic action cards may use the approved atlas.")
-	_check(martial.get("illustration_policy", "") == "forbidden", "Martial cards must forbid illustrations.")
-	_check(ultimate.get("illustration_policy", "") == "forbidden", "Ultimate cards must forbid illustrations.")
+	_check(basic.get("illustration_policy", "") == "basic_atlas_only", "Basic action cards must retain their approved atlas.")
+	_check(martial.get("illustration_policy", "") == "semantic_atlas", "Martial cards must use the approved semantic atlas.")
+	_check(ultimate.get("illustration_policy", "") == "semantic_atlas", "Ultimate cards must use the approved semantic atlas.")
 
-func _verify_martial_and_ultimate_are_text_only(dock: ActionSelectionDock) -> void:
+func _verify_martial_and_ultimate_are_illustrated(dock: ActionSelectionDock) -> void:
 	_check(
-		dock.martial_panel.find_children("*", "TextureRect", true, false).is_empty(),
-		"Martial cards must not instantiate illustration nodes."
+		not dock.martial_panel.find_children("*", "TextureRect", true, false).is_empty(),
+		"Martial cards must instantiate semantic illustration nodes."
 	)
 	_check(
-		dock.ultimate_panel.find_children("*", "TextureRect", true, false).is_empty(),
-		"Ultimate cards must not instantiate illustration nodes."
+		not dock.ultimate_panel.find_children("*", "TextureRect", true, false).is_empty(),
+		"Ultimate cards must instantiate semantic illustration nodes."
 	)
 
 func _verify_common_card_information_hierarchy() -> void:
@@ -57,8 +61,8 @@ func _verify_common_card_information_hierarchy() -> void:
 	var ultimate := _find_action(adapter.build_ultimate_actions(5), "ultimate_ten_paces_wave")
 	_verify_card_text_hierarchy(basic_move, "basic_atlas_only", "기초 · 이동", "접근 또는 후퇴", "basic move")
 	_verify_card_text_hierarchy(basic_meditate, "basic_atlas_only", "기초 · 회복", "기력과 내력을", "basic meditate")
-	_verify_card_text_hierarchy(martial, "forbidden", "[화산파] 매화검결 · 공격", "연속", "tagless martial attack")
-	_verify_card_text_hierarchy(ultimate, "forbidden", "기본 절초 · 공격", "절초", "ultimate")
+	_verify_card_text_hierarchy(martial, "semantic_atlas", "[화산파] 매화검결 · 공격", "연속", "tagless martial attack")
+	_verify_card_text_hierarchy(ultimate, "semantic_atlas", "기본 절초 · 공격", "절초", "ultimate")
 
 func _verify_card_text_hierarchy(definition: Dictionary, illustration_policy: String, expected_facts: String, expected_effect: String, label: String) -> void:
 	_check(not definition.is_empty(), "%s definition must exist." % label)
@@ -68,8 +72,10 @@ func _verify_card_text_hierarchy(definition: Dictionary, illustration_policy: St
 	card.configure_action(definition, illustration_policy)
 	var facts := card.find_child("CardFacts", false, false) as Label
 	var effect := card.find_child("CardEffectOrTag", false, false) as Label
+	var illustration := card.find_child("CardIllustration", false, false) as TextureRect
 	_check(is_instance_valid(facts) and facts.text.contains(expected_facts), "%s must expose source, Korean category, and cost/range facts." % label)
 	_check(is_instance_valid(effect) and effect.text.contains(expected_effect), "%s must expose its effect text or tag on the common card." % label)
+	_check(is_instance_valid(illustration) == (illustration_policy != "forbidden"), "%s illustration presence must match the card policy." % label)
 	_check(not card.accessibility_name.strip_edges().is_empty(), "%s must expose an accessibility name." % label)
 	_check(not card.accessibility_description.strip_edges().is_empty(), "%s must expose an accessibility description." % label)
 	card.queue_free()

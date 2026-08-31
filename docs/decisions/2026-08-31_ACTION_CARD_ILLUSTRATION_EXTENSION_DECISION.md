@@ -8,7 +8,7 @@ Extend the shared action-card presentation so that **basic actions, martial-manu
 
 - **User direction:** card illustrations are to be included across all card surfaces.
 - **Supersedes for the current direction:** the no-illustration choice in `TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01`.
-- **Does not yet authorize runtime promotion:** the newly generated atlas remains a candidate until a separate explicit final lock. Until then, martial and ultimate cards remain text/tag/numeric at runtime and basic-card rendering stays unchanged.
+- **Historical pre-lock constraint:** the atlas remained a candidate until the separate explicit final lock. That condition is now satisfied by `삽화 확정` (2026-08-31); the implementation outcome below is the current authority.
 
 ## Adopted structure
 
@@ -21,3 +21,10 @@ Extend the shared action-card presentation so that **basic actions, martial-manu
 ## Scope boundary
 
 The candidate contains anonymous, text-free semantic technique vignettes only. It is not a mock-up, does not alter combat rules, does not expose hidden AI information, and does not replace the one-action-at-a-time reveal sequence. Candidate generation, byte readback, and machine visual inspection are not user UX approval, accessibility-user validation, Android-device validation, release approval, or an asset-rights guarantee.
+
+## User final lock and implementation outcome
+
+- **User final lock:** `삽화 확정` (2026-08-31) applies to the reviewed exact candidate `MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1`.
+- **Canonical promotion:** the candidate is copied byte-for-byte to `docs/visual-assets/approved/MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png` and to `res://assets/ui/cards/martial_ultimate_card_illustration_atlas_01_v1.png`.
+- **Runtime route:** `ActionViewModelAdapter` assigns semantic atlas regions to martial-manual actions and the dedicated ultimate region to every ultimate. `ActionChoiceCard` remains the one renderer, with the same text, cost, lock, focus, tooltip, and accessibility information.
+- **Verification required and performed:** exact-byte SHA-256 readback, manifest/readback, focused Godot UI regressions, and a visible Godot runtime review are recorded by the successor execution report. Human UX, accessibility-user, Android-device, release performance, and release/rights clearance remain separate evidence gates.

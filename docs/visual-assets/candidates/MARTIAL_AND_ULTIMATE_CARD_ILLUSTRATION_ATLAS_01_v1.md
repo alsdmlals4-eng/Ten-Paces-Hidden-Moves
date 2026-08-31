@@ -1,8 +1,8 @@
 # MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01 v1
 
-## Candidate identity
+## Candidate provenance
 
-- **Status:** `GENERATED_CANDIDATE_AWAITING_USER_FINAL_LOCK`.
+- **Status:** `USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_RUNTIME_VERIFIED`.
 - **Candidate asset:** `MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png`.
 - **SHA-256:** `227a0492399d287fec073d7bccb36dc84eae1dd0c6d11247302e24ca87c3750e`.
 - **Dimensions:** `1536 × 1024` PNG.
@@ -15,8 +15,13 @@ One original 4×2 semantic atlas supplies compact top-of-card imagery for martia
 
 The atlas is text-free and frame-free: no words, numerals, UI, logos, watermarks, franchise character identity, or copied reference pixels. It uses anonymous ink silhouettes and motifs only. The supplied references informed the general warm hanji-and-ink direction and the need for readable card-scale imagery; no reference UI, text, composition, or character likeness is present.
 
-## Gate
+## Final-lock outcome
 
-This file is intentionally in the repository candidate area only. It is not in `assets/`, not in the asset manifest, and is not consumed by Godot yet. Runtime martial/ultimate cards remain text/tag/numeric until the user reviews this exact image and explicitly final-locks it. Final lock will be followed by canonical registration, exact-byte promotion, semantic mapping, automated UI checks, and visible runtime verification.
+The user explicitly final-locked this exact candidate with `삽화 확정` on 2026-08-31. The original candidate stays here as provenance only. Its SHA-256 was read back before and after exact-byte promotion to the approved and runtime destinations:
 
-Generation and file-hash readback do not establish runtime integration, human UX approval, accessibility-user approval, Android-device verification, release readiness, or final asset-rights clearance.
+- **Approved canonical asset:** `docs/visual-assets/approved/MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png`.
+- **Runtime asset:** `res://assets/ui/cards/martial_ultimate_card_illustration_atlas_01_v1.png`.
+- **Manifest ID:** `martial_ultimate_card_illustration_atlas_01_v1` in `assets/ASSET_MANIFEST.json`.
+- **Runtime route:** `ActionViewModelAdapter` semantic mapping → shared `ActionChoiceCard` → `MartialActionPanel` and `UltimateActionPanel`.
+
+The final lock does not turn generation or a hash into human UX approval, accessibility-user approval, Android-device verification, release readiness, or unconditional asset-rights clearance. Those evidence ceilings remain separate.

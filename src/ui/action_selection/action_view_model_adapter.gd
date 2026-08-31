@@ -4,7 +4,21 @@ extends RefCounted
 const BASIC_PATH := "res://data/cards/basic_cards.json"
 const ULTIMATE_PATH := "res://data/cards/ultimate_cards.json"
 const MASTERY_ULTIMATE_PATH := "res://data/combat/mastery_ultimate_poc.json"
+const MARTIAL_ULTIMATE_ATLAS_PATH := "res://assets/ui/cards/martial_ultimate_card_illustration_atlas_01_v1.png"
 const MARTIAL_REGISTRY_SCRIPT := preload("res://src/combat/martial_manual_registry.gd")
+const MARTIAL_ATLAS_REGIONS := {
+    "mount_hua_plum_blossom_sword": [0, 0, 384, 512],
+    "nangong_boundless_sky_sword": [0, 0, 384, 512],
+    "wudang_taiji_sword": [0, 0, 384, 512],
+    "hebei_peng_five_tigers_saber": [384, 0, 384, 512],
+    "beggars_dragon_subduing_palm": [768, 0, 384, 512],
+    "yang_family_spear": [1152, 0, 384, 512],
+    "sichuan_tang_hidden_weapons": [1152, 0, 384, 512],
+    "mount_hua_purple_mist_art": [0, 512, 384, 512],
+    "shaolin_arhat_vajra_art": [384, 512, 384, 512],
+    "xiaoyao_lingbo_footwork": [768, 512, 384, 512]
+}
+const ULTIMATE_ATLAS_REGION := [1152, 512, 384, 512]
 
 func build_basic_actions() -> Array[Dictionary]:
     var root := _load_dictionary(BASIC_PATH)
@@ -164,6 +178,9 @@ func _normalize_action(definition: Dictionary, source_kind: String, source_id: S
     normalized["locked"] = bool(definition.get("locked", false))
     normalized["lock_reason"] = str(definition.get("lock_reason", ""))
     normalized["tags"] = _string_array(definition.get("tags", []))
+    var semantic_illustration := _semantic_illustration_for(definition, source_kind, source_id)
+    if not semantic_illustration.is_empty():
+        normalized["illustration"] = semantic_illustration
     normalized["detail"] = {
         "target": str(definition.get("target", "")),
         "damage": _damage_text(definition),
@@ -173,6 +190,30 @@ func _normalize_action(definition: Dictionary, source_kind: String, source_id: S
         "hits": _hit_count(definition.get("hits", _independent_attack_count(definition.get("effect_steps", []))))
     }
     return normalized
+
+func _semantic_illustration_for(definition: Dictionary, source_kind: String, source_id: String) -> Dictionary:
+    if source_kind == "ultimate":
+        return _atlas_spec(ULTIMATE_ATLAS_REGION)
+    if source_kind != "martial":
+        return {}
+    var region: Array = MARTIAL_ATLAS_REGIONS.get(source_id, []) as Array
+    if region.is_empty():
+        match str(definition.get("category", "")):
+            "move":
+                region = [768, 512, 384, 512]
+            "response":
+                region = [384, 512, 384, 512]
+            "recovery", "strengthen":
+                region = [0, 512, 384, 512]
+            _:
+                region = [0, 0, 384, 512]
+    return _atlas_spec(region)
+
+func _atlas_spec(region: Array) -> Dictionary:
+    return {
+        "atlas": MARTIAL_ULTIMATE_ATLAS_PATH,
+        "region": region.duplicate()
+    }
 
 func _semantic_targeting_mode(definition: Dictionary) -> String:
     match str(definition.get("category", "")):

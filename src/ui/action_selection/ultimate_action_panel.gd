@@ -108,7 +108,7 @@ func get_panel_snapshot() -> Dictionary:
         "martial_mastery_by_manual": martial_mastery_by_manual.duplicate(true),
         "presentation_surface": str(get_meta("presentation_surface", "")),
         "card_surface": "shared_action_card_grid",
-        "illustration_policy": "forbidden",
+        "illustration_policy": "semantic_atlas",
         "action_columns": ACTION_COLUMNS
     }
 
@@ -137,7 +137,7 @@ func _rebuild_actions() -> void:
     for action in actions:
         var action_id := str(action.get("id", ""))
         var button := ACTION_CHOICE_CARD_SCRIPT.new() as ActionChoiceCard
-        button.configure_action(action, "forbidden", _action_status(action))
+        button.configure_action(action, "semantic_atlas", _action_status(action))
         button.set_meta("action_id", action_id)
         button.set_meta("locked", bool(action.get("locked", false)))
         button.set_meta("reserved", _is_reserved(action_id))
@@ -151,7 +151,7 @@ func _rebuild_actions() -> void:
         action_buttons.append(button)
     set_interaction_enabled(interaction_enabled)
     set_meta("card_surface", "shared_action_card_grid")
-    set_meta("illustration_policy", "forbidden")
+    set_meta("illustration_policy", "semantic_atlas")
 
 func _action_status(action: Dictionary) -> String:
     var reservation := _get_reservation(str(action.get("id", "")))

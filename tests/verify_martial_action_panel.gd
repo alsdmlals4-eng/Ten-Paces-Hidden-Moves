@@ -28,7 +28,7 @@ func _run() -> void:
     assert(int(snapshot.get("unlocked_technique_count", 0)) == 1)
     assert(int(snapshot.get("locked_technique_count", 0)) == 1)
     assert(snapshot.get("card_surface", "") == "shared_action_card_grid")
-    assert(snapshot.get("illustration_policy", "") == "forbidden")
+    assert(snapshot.get("illustration_policy", "") == "semantic_atlas")
 
     assert(panel.manual_buttons.size() == 2)
     assert(panel.technique_buttons.size() == 2)
@@ -44,6 +44,8 @@ func _run() -> void:
 
     assert(is_instance_valid(unlocked_button))
     assert(is_instance_valid(locked_button))
+    assert(is_instance_valid(unlocked_button.find_child("CardIllustration", false, false)))
+    assert(is_instance_valid(locked_button.find_child("CardIllustration", false, false)))
     assert(not unlocked_button.disabled)
     assert(locked_button.disabled)
     assert(locked_button.focus_mode == Control.FOCUS_ALL)

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project": "TEN_PACES",
   "updated_at": "2026-08-31",
-  "status": "FRONTAL_COURTYARD_DUEL_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_CARD_ILLUSTRATION_ATLAS_GENERATED_CANDIDATE_AWAITING_FINAL_LOCK_DOGYEOM_ASSETS_PRESERVED",
+  "status": "FRONTAL_COURTYARD_DUEL_AND_SHARED_MARTIAL_ULTIMATE_CARD_ATLAS_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_DOGYEOM_ASSETS_PRESERVED",
   "authority_role": "CURRENT_VISUAL_PRODUCTION_HANDOFF",
   "current_execution_contract": "TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01",
   "product_safety_contract_baseline": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
@@ -10,12 +10,13 @@
   "current_visual_generation_cadence_decision": "TEN-DEC-20260828-CORE-SCENE-VISUAL-BOARD-FINAL-LOCK-CADENCE-01",
   "current_plan_execution_cta_decision": "TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01",
   "current_plan_execution_cta_issue": 247,
+  "fresh_main_canon_conflict": "CANON_CONFLICT_REMOTE_MAIN_1509317D_REINTRODUCES_DIAGONAL_HYPOTHESIS_AND_TEXT_FIRST_SURFACES_CONTRARY_TO_LATEST_USER_FINAL_LOCK; NO_AUTOMATIC_REBASE_OR_MAIN_MUTATION",
   "consumer_first_asset_policy": "ACTUAL_GAME_CONSUMER_REQUIRED",
   "martial_manual_presentation": {
     "decision_id": "TEN-DEC-20260831-ACTION-CARD-ILLUSTRATION-EXTENSION-01",
     "supersedes_decision_id": "TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01",
-    "policy": "SHARED_SEMANTIC_CARD_ILLUSTRATION_CANDIDATE_AWAITING_FINAL_LOCK",
-    "approval_source": "USER_EXPLICIT_20260830_카드_삽화도_다_넣는걸로_가자",
+    "policy": "SHARED_SEMANTIC_CARD_ILLUSTRATION_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_RUNTIME_VERIFIED",
+    "approval_source": "USER_EXPLICIT_20260830_카드_삽화도_다_넣는걸로_가자_AND_USER_EXPLICIT_20260831_삽화_확정",
     "applies_to": "ActionChoiceCard basic + MartialActionPanel source=martial_manual + UltimateActionPanel",
     "always_visible": [
       "manual_name_and_mastery",
@@ -29,17 +30,19 @@
       "attack_range",
       "actual_condition_and_detail_effect"
     ],
-    "runtime_gate": "CANDIDATE_ONLY_NO_MARTIAL_OR_ULTIMATE_RUNTIME_ILLUSTRATION_UNTIL_SEPARATE_USER_FINAL_LOCK",
-    "asset_generation_status": "GENERATED_CANDIDATE_AWAITING_USER_FINAL_LOCK",
+    "runtime_gate": "USER_FINAL_LOCK_20260831_BYTE_PROMOTION_MANIFEST_MAPPING_AND_RUNTIME_VERIFICATION_COMPLETE",
+    "asset_generation_status": "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_RUNTIME_VERIFIED",
     "asset_candidate": {
       "id": "MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01",
-      "path": "docs/visual-assets/candidates/MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png",
+      "candidate_path": "docs/visual-assets/candidates/MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png",
+      "approved_path": "docs/visual-assets/approved/MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png",
+      "runtime_path": "res://assets/ui/cards/martial_ultimate_card_illustration_atlas_01_v1.png",
       "sha256": "227a0492399d287fec073d7bccb36dc84eae1dd0c6d11247302e24ca87c3750e",
       "generation_output_id": "exec-42629f32-87fa-457f-a6a5-5454b002c500",
       "dimensions": "1536x1024",
-      "runtime_consumer_target": "ActionChoiceCard via ActionViewModelAdapter semantic atlas mapping"
+      "runtime_consumer": "ActionViewModelAdapter semantic atlas mapping → ActionChoiceCard → MartialActionPanel and UltimateActionPanel"
     },
-    "implementation_status": "CANDIDATE_GENERATED_RUNTIME_UNCHANGED_AWAITING_USER_FINAL_LOCK",
+    "implementation_status": "SEMANTIC_ATLAS_MAPPING_IMPLEMENTED_AND_VISIBLE_GODOT_4_7_1_RUNTIME_VERIFIED_20260831",
     "historical_no_illustration_postmerge_readback": {
       "source_pr": 285,
       "merged_main": "c36f8cb8bc7a9ee205b6fba71f1216dfd9514883",
@@ -212,7 +215,7 @@
     "card_illustration_required": true,
     "basic_card_illustration_required": true,
     "martial_manual_technique_illustration_required": true,
-    "martial_manual_technique_presentation": "SHARED_SEMANTIC_CARD_ILLUSTRATION_CANDIDATE_AWAITING_FINAL_LOCK",
+    "martial_manual_technique_presentation": "SHARED_SEMANTIC_CARD_ILLUSTRATION_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED",
     "long_effect_text_to_detail_panel": true,
     "visual_cta_label": "행동계획 실행",
     "semantic_cta_authority": "TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01",
@@ -294,13 +297,6 @@
   },
   "deferred_queue_after_result_review": [
     {
-      "name": "Shared Martial and Ultimate Card Illustration Atlas",
-      "policy": "ONE_SEMANTIC_ATLAS_CANDIDATE_THEN_USER_FINAL_LOCK_THEN_ACTIONCHOICECARD_MAPPING",
-      "consumer": "src/ui/action_selection/action_choice_card.gd via ActionViewModelAdapter",
-      "current_proof": "docs/visual-assets/candidates/MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png",
-      "status": "GENERATED_CANDIDATE_AWAITING_USER_FINAL_LOCK_NO_RUNTIME_CONSUMER_YET"
-    },
-    {
       "name": "Remaining opponent portraits and battlers",
       "policy": "CHARACTER_MASTER_DERIVATIVE_PLUS_ACTUAL_CONSUMER_REQUIRED"
     },
@@ -316,7 +312,7 @@
     "TEN-VIS-A04": "ROUTE_8_ICON_SET_NOT_PRODUCED_REQUIRE_GAME_CONSUMER_VERIFICATION_BEFORE_GENERATION",
     "TEN-VIS-A05": "RESULT_COMPLETION_MARK_SET_NOT_PRODUCED_REQUIRE_GAME_CONSUMER_VERIFICATION_BEFORE_GENERATION",
     "TEN-VIS-A06": "FRONTAL_COURTYARD_DUEL_BACKGROUND_01_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260831; SUPERSEDED_INK_MIST_AND_DIAGONAL_RUNTIME_BINARIES_REMOVED_FROM_CURRENT_TREE",
-    "TEN-VIS-A07_CANDIDATE": "BASIC_ACTION_STYLE_APPROVED_IMPLEMENTED; MARTIAL_AND_ULTIMATE_SHARED_SEMANTIC_ATLAS_GENERATED_CANDIDATE_AWAITING_USER_FINAL_LOCK; NO_RUNTIME_CONSUMER_BEFORE_FINAL_LOCK"
+    "TEN-VIS-A07_CANDIDATE": "BASIC_ACTION_STYLE_APPROVED_IMPLEMENTED; MARTIAL_AND_ULTIMATE_SHARED_SEMANTIC_ATLAS_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260831"
   },
   "screen_surface_asset_audit_20260827": {
     "issue": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/238",

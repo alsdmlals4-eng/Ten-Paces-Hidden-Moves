@@ -25,15 +25,16 @@ func configure_action(definition: Dictionary, illustration_policy: String, statu
 	set_meta("action_id", str(action_definition.get("id", "")))
 	set_meta("locked", bool(action_definition.get("locked", false)))
 	set_meta("keyboard_focus_ring", true)
-	if illustration_policy == "basic_atlas_only":
-		_add_basic_illustration()
-	_add_name_label(illustration_policy == "basic_atlas_only")
-	_add_facts_label(illustration_policy == "basic_atlas_only")
-	_add_effect_or_tag_label(illustration_policy == "basic_atlas_only", not status_text.is_empty())
+	var has_illustration := illustration_policy in ["basic_atlas_only", "semantic_atlas"] and _has_illustration_spec()
+	if has_illustration:
+		_add_illustration()
+	_add_name_label(has_illustration)
+	_add_facts_label(has_illustration)
+	_add_effect_or_tag_label(has_illustration, not status_text.is_empty())
 	if not status_text.is_empty():
 		_add_status_label(status_text)
 
-func _add_basic_illustration() -> void:
+func _add_illustration() -> void:
 	var illustration := TextureRect.new()
 	illustration.name = "CardIllustration"
 	illustration.texture = _texture_from_spec(action_definition.get("illustration", {}))
@@ -215,6 +216,12 @@ func _texture_from_spec(spec: Dictionary) -> Texture2D:
 	texture.atlas = load(path) as Texture2D
 	texture.region = Rect2(float(region[0]), float(region[1]), float(region[2]), float(region[3]))
 	return texture
+
+func _has_illustration_spec() -> bool:
+	var illustration: Dictionary = action_definition.get("illustration", {}) as Dictionary
+	var atlas_path := str(illustration.get("atlas", ""))
+	var region: Array = illustration.get("region", []) as Array
+	return not atlas_path.is_empty() and region.size() == 4 and ResourceLoader.exists(atlas_path)
 
 func _apply_paper_style(category: String, locked: bool) -> void:
 	var normal := StyleBoxFlat.new()
