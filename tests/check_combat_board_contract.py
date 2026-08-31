@@ -195,6 +195,8 @@ def main() -> None:
         "dogyeom_combat_battler_01_v1",
         "basic_technique_ink_atlas_01_v1",
         "martial_ultimate_card_illustration_atlas_01_v1",
+        "ten_paces_hidden_moves_title_logo_01_v1",
+        "attack_clash_ink_gold_atlas_01_v1",
         "ultimate_ink_gold_sprite_sheet_rgba",
     }
     for asset in active_assets:
@@ -220,6 +222,23 @@ def main() -> None:
     ultimate_vfx = next(asset for asset in active_assets if asset["id"] == "ultimate_ink_gold_sprite_sheet_rgba")
     assert ultimate_vfx["transparency_audit"]["has_alpha"] is True
     assert ultimate_vfx["transparency_audit"]["status"] == "APPROVED_ACTIVE"
+    title_logo = next(asset for asset in active_assets if asset["id"] == "ten_paces_hidden_moves_title_logo_01_v1")
+    assert title_logo["source_asset"] == "docs/visual-assets/approved/TEN_PACES_HIDDEN_MOVES_TITLE_LOGO_01_v1.png"
+    assert title_logo["runtime_consumer"] == "MainTitleScreen in src/ui/main_title_screen.gd"
+    assert title_logo["transparency_audit"]["alpha_extrema"] == [0, 255]
+    title_logo_source = ROOT / title_logo["source_asset"]
+    assert title_logo_source.exists()
+    assert hashlib.sha256(title_logo_source.read_bytes()).hexdigest() == title_logo["source_png_sha256"]
+    assert hashlib.sha256(res_file(title_logo["path"]).read_bytes()).hexdigest() == title_logo["source_png_sha256"]
+    attack_clash_vfx = next(asset for asset in active_assets if asset["id"] == "attack_clash_ink_gold_atlas_01_v1")
+    assert attack_clash_vfx["source_asset"] == "docs/visual-assets/approved/ATTACK_CLASH_INK_GOLD_ATLAS_01_v1.png"
+    assert "CombatBoardPreview._show_feedback_vfx" in attack_clash_vfx["runtime_consumer"]
+    assert attack_clash_vfx["source_alpha_audit"]["status"] == "OPAQUE_SOURCE_RUNTIME_MATTE_REQUIRED"
+    assert "ShaderMaterial" in attack_clash_vfx["runtime_matte"]
+    attack_clash_source = ROOT / attack_clash_vfx["source_asset"]
+    assert attack_clash_source.exists()
+    assert hashlib.sha256(attack_clash_source.read_bytes()).hexdigest() == attack_clash_vfx["source_png_sha256"]
+    assert hashlib.sha256(res_file(attack_clash_vfx["path"]).read_bytes()).hexdigest() == attack_clash_vfx["source_png_sha256"]
     for asset_id in ("player_wanderer_battler_rgba_v1", "dogyeom_combat_battler_01_v1", "enemy_masked_battler_rgba_v1"):
         character_art = next(asset for asset in active_assets if asset["id"] == asset_id)
         audit = character_art["transparency_audit"]
