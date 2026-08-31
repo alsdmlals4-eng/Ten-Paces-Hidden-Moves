@@ -114,8 +114,9 @@
 - **운영 계약:** `python -m unittest tests.test_base_v91_operating_contract -v` → `2` tests `OK`; `python tools/check_project_operating_system.py --root . --config .github/documentation-governance.json` → `PASS`.
 - **현재 reference/카드 contract:** `python tools/check_canonical_reference_freshness.py --root . --config .github/reference-freshness.json` 및 `python tests/check_action_selection_contract.py` → `PASS`.
 - **Godot:** exact Godot `4.7.1` headless editor parse exit `0`; `verify_action_card_source_unification.gd`, `verify_martial_action_panel.gd`, `verify_ultimate_action_panel.gd`, `verify_frontal_duel_assets.gd` → 각각 `PASS`.
+- **PR contract remediation:** PR #298의 첫 remote pass는 active semantic atlas를 누락한 combat asset contract와 historical no-illustration Godot assertion을 찾아냈다. 두 regression을 current final lock에 맞게 GREEN으로 갱신했고, one-time protected approval manifest와 `BUILD_APPROVAL_2026-08-31.md`를 same diff에 추가했다. remote re-run 결과는 별도 후속 CI gate다.
 - **증거 한계:** 위 결과는 automated + exact local runtime verification이다. 인간 플레이 비교, UX/human acceptance, 접근성 사용자, Android 실기기, release performance, remote CI/PR/merge/post-merge main readback은 여전히 `NOT_RUN`이다.
 
 ### 재사용·학습 결론
 
-`ActionChoiceCard`, `ActionViewModelAdapter`, approved frontal background와 semantic atlas는 기존 프로젝트 구현을 재사용했다. 새 Base proposal은 `NO_NEW_BASE_PROPOSAL`: 이번 문제의 핵심은 project-specific historical-main recovery와 Godot generated-file hygiene이며, 현재 Base에 중복되는 공용 정책을 새로 만들 근거가 없다. 다만 후속 작업에서도 **runtime import 뒤 exact generated-file readback → target-limited cleanup** 순서를 유지한다.
+`ActionChoiceCard`, `ActionViewModelAdapter`, approved frontal background와 semantic atlas는 기존 프로젝트 구현을 재사용했다. 새 Base proposal은 `NO_NEW_BASE_PROPOSAL`: 이번 문제의 핵심은 project-specific historical-main recovery와 Godot generated-file hygiene이며, 현재 Base에 중복되는 공용 정책을 새로 만들 근거가 없다. 다만 후속 작업에서도 **Godot editor import/parse → focused resource test → exact generated-file readback → target-limited cleanup** 순서를 유지한다. 이 순서를 지키지 않은 direct GDScript 실행은 PNG import cache가 없는 새 worktree에서 resource-loader error를 낼 수 있으나, 이는 runtime asset 소비 결함이나 tracked source diff가 아니다.

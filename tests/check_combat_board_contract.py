@@ -194,6 +194,7 @@ def main() -> None:
         "enemy_masked_battler_rgba_v1",
         "dogyeom_combat_battler_01_v1",
         "basic_technique_ink_atlas_01_v1",
+        "martial_ultimate_card_illustration_atlas_01_v1",
         "ultimate_ink_gold_sprite_sheet_rgba",
     }
     for asset in active_assets:
@@ -209,6 +210,13 @@ def main() -> None:
     assert hashlib.sha256(canonical_source.read_bytes()).hexdigest() == battle_background["source_png_sha256"]
     assert hashlib.sha256(res_file(battle_background["path"]).read_bytes()).hexdigest() == battle_background["source_png_sha256"]
     assert all(asset["id"] not in {"twilight_ink_duel_v1", "ink_mist_valley_duel_01_v1"} for asset in asset_manifest["assets"])
+    semantic_atlas = next(asset for asset in active_assets if asset["id"] == "martial_ultimate_card_illustration_atlas_01_v1")
+    assert semantic_atlas["source_asset"] == "docs/visual-assets/approved/MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png"
+    assert "ActionViewModelAdapter" in semantic_atlas["runtime_consumer"]
+    semantic_atlas_source = ROOT / semantic_atlas["source_asset"]
+    assert semantic_atlas_source.exists()
+    assert hashlib.sha256(semantic_atlas_source.read_bytes()).hexdigest() == semantic_atlas["source_png_sha256"]
+    assert hashlib.sha256(res_file(semantic_atlas["path"]).read_bytes()).hexdigest() == semantic_atlas["source_png_sha256"]
     ultimate_vfx = next(asset for asset in active_assets if asset["id"] == "ultimate_ink_gold_sprite_sheet_rgba")
     assert ultimate_vfx["transparency_audit"]["has_alpha"] is True
     assert ultimate_vfx["transparency_audit"]["status"] == "APPROVED_ACTIVE"
