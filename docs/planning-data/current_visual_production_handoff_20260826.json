@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "TEN_PACES",
-  "updated_at": "2026-08-31",
+  "updated_at": "2026-09-01",
   "status": "FRONTAL_COURTYARD_DUEL_AND_SHARED_MARTIAL_ULTIMATE_CARD_ATLAS_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_DOGYEOM_ASSETS_PRESERVED",
   "authority_role": "CURRENT_VISUAL_PRODUCTION_HANDOFF",
   "current_execution_contract": "TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01",
@@ -52,6 +52,15 @@
   },
   "human_facing_owner": "REPOSITORY_VISUAL_BIBLE_ASSET_PROVENANCE_AND_HANDOFF",
   "repository_handoff": "docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md",
+  "runtime_visual_capture_evidence": {
+    "decision": "TEN-DEC-20260901-RUNTIME-VISUAL-CAPTURE-EVIDENCE-01",
+    "manifest": "docs/evidence/RUNTIME_VISUAL_CAPTURE_MANIFEST.json",
+    "registration_tool": "tools/register_runtime_visual_capture.py",
+    "status": "IMPLEMENTED_INITIAL_MACHINE_RUNTIME_CAPTURE_RECORDED_20260901",
+    "initial_capture_id": "TEN-RVC-20260901-001",
+    "initial_capture_execution_report": "docs/operations/2026-09-01_RUNTIME_VISUAL_CAPTURE_POLICY_EXECUTION_REPORT.md",
+    "human_device_accessibility_release": "NOT_RUN"
+  },
   "work_handoff": "docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md",
   "historical_visual_handoff": "docs/18_VISUAL_PRODUCTION_HANDOFF_2026-08-25.md",
   "historical_visual_state": "docs/planning-data/current_visual_production_handoff_20260825.json",
@@ -404,6 +413,8 @@
     "windows_visible_local_usability": "NOT_RUN",
     "ten_paces_hidden_moves_title_logo_01": "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_AUTOMATED_GODOT_VERIFY_VERTICAL_SLICE_SHELL_20260831_HUMAN_READABILITY_NOT_RUN",
     "attack_clash_ink_gold_atlas_01": "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_AUTOMATED_GODOT_VERIFY_COMBAT_ACTION_REVEAL_20260831_HUMAN_AND_DEVICE_VISUAL_QUALITY_NOT_RUN",
+    "runtime_visual_capture_policy": "IMPLEMENTED_20260901_MACHINE_RUNTIME_CAPTURE_ONLY",
+    "runtime_visual_capture_initial_record": "TEN-RVC-20260901-001_1280X800_SHA256_B31741B119E8D9DDF5890E979F29901E77EE781B42E5B71610E5696C29D07F5B_HUMAN_DEVICE_ACCESSIBILITY_RELEASE_NOT_RUN",
     "android_actual_device": "NOT_RUN",
     "fifteen_opponent_identifiability": "NOT_RUN",
     "human_fun_readability_immersion": "NOT_RUN",
