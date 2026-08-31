@@ -2,7 +2,6 @@
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
-const SKIP_BUDGET_SECONDS := 0.25
 
 var failures: Array[String] = []
 
@@ -22,7 +21,6 @@ func _run() -> void:
     board._sound_muted = true
 
     board.remove_meta("presentation_event_count")
-    var started_usec := Time.get_ticks_usec()
     board.call_deferred("_present_authoritative_events", [{
         "type": "action_result",
         "card_id": "ultimate_void_sword_qi",
@@ -34,19 +32,19 @@ func _run() -> void:
     await process_frame
     await create_timer(0.05).timeout
     board._skip_presentation()
-    for _index in range(20):
+    # 건너뛰기는 현재 프레임에서 표시물과 상태를 즉시 정리해야 한다.
+    # 전체 wall-clock 시간에는 deferred 시작과 엔진 스케줄링이 포함되므로,
+    # 여기서는 실제 계약인 즉시 상태와 다음 프레임의 대기 해제를 검사한다.
+    if not bool(board.get_meta("presentation_skipped", false)):
+        failures.append("Skip must record its state synchronously.")
+    if board.presentation_label.visible or board.presentation_vfx.visible:
+        failures.append("Skip must hide active presentation text and VFX synchronously.")
+    for _index in range(2):
         if board.has_meta("presentation_event_count"):
             break
-        await create_timer(0.05).timeout
-    var elapsed_seconds := float(Time.get_ticks_usec() - started_usec) / 1000000.0
+        await process_frame
     if not board.has_meta("presentation_event_count"):
-        failures.append("Skip playback did not finish within the test timeout.")
-    if elapsed_seconds >= SKIP_BUDGET_SECONDS:
-        failures.append("Skip must cancel an active ultimate wait immediately. elapsed=%.3fs" % elapsed_seconds)
-    if not bool(board.get_meta("presentation_skipped", false)):
-        failures.append("Skip must record that presentation was skipped.")
-    if board.presentation_label.visible or board.presentation_vfx.visible:
-        failures.append("Skip must hide active presentation text and VFX.")
+        failures.append("Skip playback must release the active ultimate wait on the next frame.")
 
     board.queue_free()
     await process_frame
