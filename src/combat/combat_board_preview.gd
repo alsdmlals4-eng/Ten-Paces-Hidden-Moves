@@ -94,6 +94,10 @@ var _reduced_motion := false
 var _presentation_skip_requested := false
 var _ultimate_vfx_sheet: Texture2D
 var _attack_clash_vfx_sheet: Texture2D
+var _presentation_vfx_tween: Tween
+var _presentation_label_tween: Tween
+var _presentation_feedback_phase_history := PackedStringArray()
+var _presentation_feedback_visibility_history: Array = []
 var _sound_muted := false
 var _sound_volume := 0.65
 var _defer_character_snap := false
@@ -1026,8 +1030,9 @@ func _present_timing_duel(events_value: Array, timing: int, phase: String) -> vo
 	set_meta("presentation_future_action_exposed", false)
 	set_meta("presentation_feedback_kind", "")
 	set_meta("presentation_feedback_reduced_motion_safe", _reduced_motion)
-	if is_instance_valid(presentation_label):
-		presentation_label.visible = false
+	_presentation_feedback_phase_history.clear()
+	_presentation_feedback_visibility_history.clear()
+	_clear_presentation_feedback_visuals()
 	if is_instance_valid(action_reveal_overlay):
 		action_reveal_overlay.show_timing(timing, phase, events_value, _reduced_motion)
 	set_meta("action_reveal_snapshot", action_reveal_overlay.get_snapshot() if is_instance_valid(action_reveal_overlay) else {})
@@ -1038,18 +1043,10 @@ func _present_timing_duel(events_value: Array, timing: int, phase: String) -> vo
 		var event: Dictionary = value
 		if str(event.get("type", "")) not in ["action_result", "clash"]:
 			continue
-		_show_presentation_feedback(event)
-		_play_character_action_motion(event)
-		_play_event_sfx(event)
 		presented_event_count += 1
-		if not _presentation_skip_requested:
-			var event_duration := _event_presentation_duration(event)
-			if _fast_replay:
-				event_duration = minf(event_duration, 0.10)
-			elif _reduced_motion:
-				event_duration = 0.0
-			if event_duration > 0.0:
-				await _wait_for_presentation_delay(event_duration)
+		await _present_resolved_event_feedback(event)
+		if _presentation_skip_requested:
+			break
 	if presented_event_count == 0 and not _presentation_skip_requested:
 		var duration := _timing_reveal_duration(events_value)
 		if _fast_replay:
@@ -1058,10 +1055,10 @@ func _present_timing_duel(events_value: Array, timing: int, phase: String) -> vo
 			duration = 0.0
 		if duration > 0.0:
 			await _wait_for_presentation_delay(duration)
-	if is_instance_valid(presentation_vfx):
-		presentation_vfx.visible = false
-	if is_instance_valid(presentation_label):
-		presentation_label.visible = false
+	_clear_presentation_feedback_visuals()
+	if presented_event_count == 0 and not _presentation_skip_requested:
+		_set_presentation_feedback_phase("settled")
+		_record_presentation_feedback_visibility()
 	if is_instance_valid(action_reveal_overlay):
 		action_reveal_overlay.hide_reveal()
 
@@ -1166,6 +1163,9 @@ func _present_authoritative_events(events_value: Array, timing: int) -> void:
 	_set_presentation_state("presenting_result")
 	if not is_instance_valid(presentation_label):
 		return
+	_presentation_feedback_phase_history.clear()
+	_presentation_feedback_visibility_history.clear()
+	_clear_presentation_feedback_visuals()
 	var summary := "판정 완료"
 	for value in events_value:
 		if typeof(value) != TYPE_DICTIONARY:
@@ -1173,28 +1173,18 @@ func _present_authoritative_events(events_value: Array, timing: int) -> void:
 		var event: Dictionary = value
 		if str(event.get("type", "")) not in ["action_result", "clash"]:
 			continue
-		var outcome := str(event.get("outcome", ""))
 		summary = _presentation_summary_for_event(event, summary)
-		presentation_label.text = summary
-		presentation_label.visible = true
-		presentation_label.modulate = Color.WHITE if _reduced_motion else Color(1.0, 0.88, 0.50, 1.0)
-		_show_presentation_feedback(event)
-		_play_character_action_motion(event)
-		_play_event_sfx(event)
-		if not _presentation_skip_requested:
-			var duration := _event_presentation_duration(event)
-			if _fast_replay:
-				duration = minf(duration, 0.10)
-			elif _reduced_motion:
-				duration = 0.0
-			if duration > 0.0:
-				await _wait_for_presentation_delay(duration)
+		await _present_resolved_event_feedback(event)
 		if _presentation_skip_requested:
 			break
 	presentation_label.text = summary
 	presentation_label.visible = not _presentation_skip_requested
-	if is_instance_valid(presentation_vfx):
-		presentation_vfx.visible = false
+	presentation_label.modulate = Color.WHITE if _reduced_motion else Color(1.0, 0.88, 0.50, 1.0)
+	presentation_label.scale = Vector2.ONE
+	_clear_presentation_vfx()
+	if not _presentation_skip_requested:
+		_set_presentation_feedback_phase("settled")
+		_record_presentation_feedback_visibility()
 	set_meta("presentation_event_count", events_value.size())
 
 func _wait_for_presentation_delay(duration: float) -> void:
@@ -1211,18 +1201,79 @@ func _event_presentation_duration(event: Dictionary) -> float:
 		return 0.24
 	return 0.16
 
-func _play_character_action_motion(event: Dictionary) -> void:
+func _effective_event_presentation_duration(event: Dictionary) -> float:
+	var duration := _event_presentation_duration(event)
+	if _fast_replay:
+		return minf(duration, 0.10)
+	if _reduced_motion:
+		return 0.18
+	return duration
+
+func _feedback_windup_duration(event: Dictionary, total_duration: float) -> float:
+	if _reduced_motion:
+		return 0.0
+	if str(event.get("type", "")) == "clash":
+		return total_duration * 0.25
+	var card_id := str(event.get("card_id", ""))
+	var is_attack := card_id.begins_with("ultimate_") or card_id.contains("attack") or str(event.get("category", "")) == "attack"
+	return total_duration * 0.42 if is_attack else 0.0
+
+func _play_character_action_motion(event: Dictionary, duration: float = -1.0) -> void:
 	if _reduced_motion:
 		return
 	var card_id := str(event.get("card_id", ""))
 	var is_attack := card_id.begins_with("ultimate_") or card_id.contains("attack") or str(event.get("category", "")) == "attack"
 	if not is_attack:
 		return
+	var motion_duration := _event_presentation_duration(event) if duration <= 0.0 else duration
 	var actor := str(event.get("actor", ""))
 	if actor == "player" and is_instance_valid(player_character):
-		player_character.play_attack_motion(_event_presentation_duration(event))
+		player_character.play_attack_motion(motion_duration)
 	elif actor == "enemy" and is_instance_valid(enemy_character):
-		enemy_character.play_attack_motion(_event_presentation_duration(event))
+		enemy_character.play_attack_motion(motion_duration)
+
+func _present_resolved_event_feedback(event: Dictionary) -> void:
+	var kind := _prepare_presentation_feedback(event)
+	var duration := _effective_event_presentation_duration(event)
+	if kind.is_empty():
+		if duration > 0.0 and not _presentation_skip_requested:
+			await _wait_for_presentation_delay(duration)
+		if not _presentation_skip_requested:
+			_clear_presentation_feedback_visuals()
+			_set_presentation_feedback_phase("settled")
+			_record_presentation_feedback_visibility()
+		return
+	if _reduced_motion:
+		_set_presentation_feedback_phase("impact")
+		_show_presentation_impact(event, kind, 0.0)
+		_record_presentation_feedback_visibility()
+		_play_event_sfx(event)
+		if duration > 0.0 and not _presentation_skip_requested:
+			await _wait_for_presentation_delay(duration)
+		if not _presentation_skip_requested:
+			_clear_presentation_feedback_visuals()
+			_set_presentation_feedback_phase("settled")
+			_record_presentation_feedback_visibility()
+		return
+	_set_presentation_feedback_phase("windup")
+	_record_presentation_feedback_visibility()
+	_play_character_action_motion(event, duration)
+	var windup_duration := _feedback_windup_duration(event, duration)
+	if windup_duration > 0.0:
+		await _wait_for_presentation_delay(windup_duration)
+	if _presentation_skip_requested:
+		return
+	var recovery_duration := maxf(0.0, duration - windup_duration)
+	_set_presentation_feedback_phase("impact")
+	_show_presentation_impact(event, kind, recovery_duration)
+	_record_presentation_feedback_visibility()
+	_play_event_sfx(event)
+	if recovery_duration > 0.0:
+		await _wait_for_presentation_delay(recovery_duration)
+	if not _presentation_skip_requested:
+		_clear_presentation_feedback_visuals()
+		_set_presentation_feedback_phase("settled")
+		_record_presentation_feedback_visibility()
 
 func _presentation_summary_for_event(event: Dictionary, fallback: String) -> String:
 	var outcome := str(event.get("outcome", ""))
@@ -1248,18 +1299,55 @@ func _presentation_summary_for_event(event: Dictionary, fallback: String) -> Str
 		return "%s · 피해 %d" % [str(event.get("card_name", "공격")), int(event.get("damage", 0))]
 	return fallback
 
-func _show_presentation_feedback(event: Dictionary) -> void:
+func _prepare_presentation_feedback(event: Dictionary) -> String:
 	var kind := _presentation_feedback_kind(event)
 	if kind.is_empty():
-		return
+		return ""
 	set_meta("presentation_feedback_kind", kind)
 	set_meta("presentation_feedback_event", event.duplicate(true))
 	set_meta("presentation_feedback_reduced_motion_safe", _reduced_motion)
 	if is_instance_valid(presentation_label):
 		presentation_label.text = _presentation_summary_for_event(event, str(event.get("card_name", "행동")))
-		presentation_label.modulate = Color.WHITE if _reduced_motion else Color(1.0, 0.88, 0.50, 1.0)
-		presentation_label.visible = true
-	_show_feedback_vfx(event, kind)
+		presentation_label.visible = false
+	return kind
+
+func _show_presentation_feedback(event: Dictionary) -> void:
+	var kind := _prepare_presentation_feedback(event)
+	if kind.is_empty():
+		return
+	_show_presentation_impact(event, kind, 0.0)
+
+func _show_presentation_impact(event: Dictionary, kind: String, recovery_duration: float) -> void:
+	_show_feedback_label(event, recovery_duration)
+	_show_feedback_vfx(event, kind, recovery_duration)
+
+func _show_feedback_label(event: Dictionary, recovery_duration: float) -> void:
+	if not is_instance_valid(presentation_label):
+		return
+	presentation_label.text = _presentation_summary_for_event(event, str(event.get("card_name", "행동")))
+	presentation_label.pivot_offset = presentation_label.size * 0.5
+	presentation_label.visible = true
+	var target_color := Color.WHITE if _reduced_motion else Color(1.0, 0.88, 0.50, 1.0)
+	if _reduced_motion or recovery_duration <= 0.0:
+		presentation_label.modulate = target_color
+		presentation_label.scale = Vector2.ONE
+		return
+	_stop_presentation_label_tween()
+	var enter_duration := minf(0.06, recovery_duration * 0.35)
+	var exit_duration := minf(0.06, recovery_duration * 0.35)
+	var hold_duration := maxf(0.0, recovery_duration - enter_duration - exit_duration)
+	presentation_label.modulate = Color(target_color.r, target_color.g, target_color.b, 0.0)
+	presentation_label.scale = Vector2(0.97, 0.97)
+	_presentation_label_tween = create_tween()
+	_presentation_label_tween.set_parallel()
+	_presentation_label_tween.tween_property(presentation_label, "modulate:a", target_color.a, enter_duration)
+	_presentation_label_tween.tween_property(presentation_label, "scale", Vector2.ONE, enter_duration)
+	_presentation_label_tween.chain()
+	if hold_duration > 0.0:
+		_presentation_label_tween.tween_interval(hold_duration)
+	_presentation_label_tween.set_parallel()
+	_presentation_label_tween.tween_property(presentation_label, "modulate:a", 0.0, exit_duration)
+	_presentation_label_tween.tween_property(presentation_label, "scale", Vector2(0.99, 0.99), exit_duration)
 
 func _presentation_feedback_kind(event: Dictionary) -> String:
 	var outcome := str(event.get("outcome", ""))
@@ -1271,9 +1359,9 @@ func _presentation_feedback_kind(event: Dictionary) -> String:
 		return "attack"
 	return ""
 
-func _show_feedback_vfx(event: Dictionary, kind: String) -> void:
+func _show_feedback_vfx(event: Dictionary, kind: String, recovery_duration: float = 0.0) -> void:
 	if kind == "ultimate":
-		_show_ultimate_vfx(event)
+		_show_ultimate_vfx(event, recovery_duration)
 		return
 	if not is_instance_valid(presentation_vfx) or _attack_clash_vfx_sheet == null:
 		if is_instance_valid(presentation_vfx):
@@ -1285,9 +1373,9 @@ func _show_feedback_vfx(event: Dictionary, kind: String) -> void:
 	var band_index := 1 if kind == "clash" else 0
 	atlas.region = Rect2(0.0, float(band_index) * sheet_size.y / 2.0, sheet_size.x, sheet_size.y / 2.0)
 	presentation_vfx.texture = atlas
-	presentation_vfx.modulate = Color.WHITE if _reduced_motion else Color(1.0, 1.0, 1.0, 0.90)
 	_place_feedback_vfx(event, kind)
 	presentation_vfx.visible = true
+	_animate_feedback_vfx(0.90, recovery_duration, 0.90 if kind == "clash" else 0.94, 1.0)
 
 func _place_feedback_vfx(event: Dictionary, kind: String) -> void:
 	if not is_instance_valid(presentation_vfx):
@@ -1305,7 +1393,7 @@ func _place_feedback_vfx(event: Dictionary, kind: String) -> void:
 	presentation_vfx.position = impact - Vector2(effect_size.x * 0.5, effect_size.y * 0.66)
 	presentation_vfx.pivot_offset = effect_size * 0.5
 
-func _show_ultimate_vfx(event: Dictionary) -> void:
+func _show_ultimate_vfx(event: Dictionary, recovery_duration: float = 0.0) -> void:
 	if not is_instance_valid(presentation_vfx) or _ultimate_vfx_sheet == null:
 		return
 	var card_id := str(event.get("card_id", ""))
@@ -1324,15 +1412,73 @@ func _show_ultimate_vfx(event: Dictionary) -> void:
 	atlas.atlas = _ultimate_vfx_sheet
 	atlas.region = Rect2(0.0, float(band_index) * sheet_size.y / 3.0, sheet_size.x, sheet_size.y / 3.0)
 	presentation_vfx.texture = atlas
-	presentation_vfx.modulate = Color.WHITE if _reduced_motion else Color(1.0, 1.0, 1.0, 0.96)
 	_place_feedback_vfx(event, "ultimate")
 	presentation_vfx.visible = true
 	presentation_vfx.pivot_offset = presentation_vfx.size * 0.5
-	presentation_vfx.scale = Vector2.ONE
-	if not _reduced_motion:
-		var tween := create_tween()
-		tween.tween_property(presentation_vfx, "scale", Vector2(1.06, 1.06), 0.12)
-		tween.tween_property(presentation_vfx, "scale", Vector2.ONE, 0.32)
+	_animate_feedback_vfx(0.96, recovery_duration, 0.90, 1.08)
+
+func _animate_feedback_vfx(max_alpha: float, recovery_duration: float, start_scale: float, peak_scale: float) -> void:
+	if not is_instance_valid(presentation_vfx):
+		return
+	if _reduced_motion or recovery_duration <= 0.0:
+		presentation_vfx.modulate = Color(1.0, 1.0, 1.0, max_alpha)
+		presentation_vfx.scale = Vector2.ONE
+		return
+	_stop_presentation_vfx_tween()
+	var enter_duration := minf(0.07, recovery_duration * 0.35)
+	var exit_duration := minf(0.08, recovery_duration * 0.35)
+	var hold_duration := maxf(0.0, recovery_duration - enter_duration - exit_duration)
+	presentation_vfx.modulate = Color(1.0, 1.0, 1.0, 0.0)
+	presentation_vfx.scale = Vector2.ONE * start_scale
+	_presentation_vfx_tween = create_tween()
+	_presentation_vfx_tween.set_parallel()
+	_presentation_vfx_tween.tween_property(presentation_vfx, "modulate:a", max_alpha, enter_duration)
+	_presentation_vfx_tween.tween_property(presentation_vfx, "scale", Vector2.ONE * peak_scale, enter_duration)
+	_presentation_vfx_tween.chain()
+	if hold_duration > 0.0:
+		_presentation_vfx_tween.tween_interval(hold_duration)
+	_presentation_vfx_tween.set_parallel()
+	_presentation_vfx_tween.tween_property(presentation_vfx, "modulate:a", 0.0, exit_duration)
+	_presentation_vfx_tween.tween_property(presentation_vfx, "scale", Vector2.ONE, exit_duration)
+
+func _set_presentation_feedback_phase(value: String) -> void:
+	set_meta("presentation_feedback_phase", value)
+	_presentation_feedback_phase_history.append(value)
+	set_meta("presentation_feedback_phase_history", _presentation_feedback_phase_history.duplicate())
+
+func _record_presentation_feedback_visibility() -> void:
+	_presentation_feedback_visibility_history.append({
+		"phase": str(get_meta("presentation_feedback_phase", "")),
+		"feedback_kind": str(get_meta("presentation_feedback_kind", "")),
+		"vfx_visible": is_instance_valid(presentation_vfx) and presentation_vfx.visible,
+		"label_visible": is_instance_valid(presentation_label) and presentation_label.visible
+	})
+	set_meta("presentation_feedback_visibility_history", _presentation_feedback_visibility_history.duplicate(true))
+
+func _stop_presentation_vfx_tween() -> void:
+	if _presentation_vfx_tween != null and _presentation_vfx_tween.is_valid():
+		_presentation_vfx_tween.kill()
+	_presentation_vfx_tween = null
+
+func _stop_presentation_label_tween() -> void:
+	if _presentation_label_tween != null and _presentation_label_tween.is_valid():
+		_presentation_label_tween.kill()
+	_presentation_label_tween = null
+
+func _clear_presentation_vfx() -> void:
+	_stop_presentation_vfx_tween()
+	if is_instance_valid(presentation_vfx):
+		presentation_vfx.visible = false
+		presentation_vfx.modulate = Color.WHITE
+		presentation_vfx.scale = Vector2.ONE
+
+func _clear_presentation_feedback_visuals() -> void:
+	_clear_presentation_vfx()
+	_stop_presentation_label_tween()
+	if is_instance_valid(presentation_label):
+		presentation_label.visible = false
+		presentation_label.modulate = Color.WHITE
+		presentation_label.scale = Vector2.ONE
 
 func _toggle_fast_replay() -> void:
 	_fast_replay = not _fast_replay
@@ -1341,12 +1487,11 @@ func _toggle_fast_replay() -> void:
 
 func _skip_presentation() -> void:
 	_presentation_skip_requested = true
-	if is_instance_valid(presentation_label):
-		presentation_label.visible = false
-	if is_instance_valid(presentation_vfx):
-		presentation_vfx.visible = false
+	_clear_presentation_feedback_visuals()
 	if is_instance_valid(action_reveal_overlay):
 		action_reveal_overlay.hide_reveal()
+	_set_presentation_feedback_phase("skipped")
+	_record_presentation_feedback_visibility()
 	set_meta("presentation_skipped", true)
 
 func restart_combat() -> void:
@@ -1365,10 +1510,9 @@ func restart_combat() -> void:
 	_progress_request_count = 0
 	if is_instance_valid(procedural_sfx_player):
 		procedural_sfx_player.stop()
-	if is_instance_valid(presentation_vfx):
-		presentation_vfx.visible = false
-	if is_instance_valid(presentation_label):
-		presentation_label.visible = false
+	_presentation_feedback_phase_history.clear()
+	_presentation_feedback_visibility_history.clear()
+	_clear_presentation_feedback_visuals()
 	if is_instance_valid(action_reveal_overlay):
 		action_reveal_overlay.hide_reveal()
 	_set_resolution_surface_visible(true)
@@ -1737,6 +1881,9 @@ func get_layout_snapshot() -> Dictionary:
 		"presentation_state": _presentation_state,
 		"presentation_state_history": _presentation_state_history.duplicate(),
 		"presentation_event_count": _presentation_events.size(),
+		"presentation_feedback_phase": str(get_meta("presentation_feedback_phase", "")),
+		"presentation_feedback_phase_history": _presentation_feedback_phase_history.duplicate(),
+		"presentation_feedback_visibility_history": _presentation_feedback_visibility_history.duplicate(true),
 		"inputs_locked": _inputs_locked(),
 		"selected_action_card_id": str(_selected_action_definition.get("id", "")),
 		"current_bundle_complete": action_timing_panel.is_current_bundle_complete() if is_instance_valid(action_timing_panel) else false,
