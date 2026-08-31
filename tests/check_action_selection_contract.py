@@ -43,7 +43,7 @@ def main() -> None:
     shared_card = read("src/ui/action_selection/action_choice_card.gd")
     assert 'class_name ActionChoiceCard' in shared_card
     assert 'set_meta("card_surface", "shared_action_card_grid")' in shared_card
-    assert 'illustration_policy == "basic_atlas_only"' in shared_card
+    assert 'illustration_policy in ["basic_atlas_only", "semantic_atlas"]' in shared_card
 
     intent_panel = read("src/ui/action_selection/action_intent_panel.gd")
     assert 'class_name ActionIntentPanel' in intent_panel
@@ -55,11 +55,11 @@ def main() -> None:
     assert 'technique_selected.emit(technique.duplicate(true))' in martial
     assert "technique_selected.emit(manual" not in martial
     assert '"card_surface": "shared_action_card_grid"' in martial
-    assert '"illustration_policy": "forbidden"' in martial
+    assert '"illustration_policy": "semantic_atlas"' in martial
 
     ultimate_panel = read("src/ui/action_selection/ultimate_action_panel.gd")
     assert '"card_surface": "shared_action_card_grid"' in ultimate_panel
-    assert '"illustration_policy": "forbidden"' in ultimate_panel
+    assert '"illustration_policy": "semantic_atlas"' in ultimate_panel
 
     timing_data = json.loads(read("data/combat/combat_action_timing_preview.json"))
     assert timing_data["timing_sequence"] == [3, 3, 4]
