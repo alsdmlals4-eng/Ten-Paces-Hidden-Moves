@@ -118,6 +118,7 @@ func _on_controller_placement_succeeded(result: Dictionary) -> void:
         ], "system")
     _clear_auto_selection_state()
     if not bool(result.get("targeting_started", false)):
+        _clear_targeting()
         _begin_next_pending_target()
     _pending_controller_definition.clear()
     _refresh_ultimate_menu()

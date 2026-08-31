@@ -116,7 +116,7 @@ func _verify_semantic_intent_runtime_surface() -> void:
 	if not heavy.is_empty():
 		board._on_product_action_selected(heavy)
 		await process_frame
-		_check(board._targeting_mode == "none", "Attack must lock against the public opponent without a direction-selection surface.")
+		_check(board._targeting_mode == "" and int(board.get_meta("targeting_anchor", 0)) == 0, "Attack must lock against the public opponent without a direction-selection surface.")
 		_check(not board.action_selection_dock.action_intent_panel.visible, "Attack must not open an intent-card surface.")
 		var heavy_placement := board.action_timing_panel.get_placement(2)
 		_check(bool(heavy_placement.get("target_ready", false)), "Auto-targeted attacks must be immediately ready for current-bundle execution.")

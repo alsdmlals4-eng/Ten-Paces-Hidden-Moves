@@ -37,6 +37,82 @@
         "accessibility_user": "NOT_RUN",
         "release_performance": "NOT_RUN"
       }
+    },
+    {
+      "capture_id": "TEN-RVC-20260901-004",
+      "recorded_at_utc": "2026-08-31T17:03:51.248239+00:00",
+      "work_item_id": "TEN-GROUNDED-DUEL-AUTO-TARGET-OBSERVE-20260901",
+      "source_commit": "6cd0e4489cb5adfe1ad49a150f93911cf9379ed5",
+      "runtime": {
+        "scene_path": "res://scenes/combat/combat_board_preview.tscn",
+        "capture_state": "initial_first_bundle_grounded_compact_execution",
+        "entry_route": "hera_run_scene_direct_no_state_injection",
+        "source_delta": "HERA_SOURCE_DELTA_GENERATED_IMPORT_ONLY_CLEANED"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd",
+        "src/combat/battle_background.gd",
+        "src/combat/combat_character_placeholder.gd",
+        "src/ui/action_timing_panel_auto.gd",
+        "src/ui/combat_progress_button.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 0
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260901-004.png",
+        "sha256": "2454a7cd18e729380aad23dfe1fb0f722eb85a655a9c7e448cf3fdcafa27a2a0",
+        "bytes": 948305,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      }
+    },
+    {
+      "capture_id": "TEN-RVC-20260901-005",
+      "recorded_at_utc": "2026-08-31T17:04:04.424329+00:00",
+      "work_item_id": "TEN-GROUNDED-DUEL-AUTO-TARGET-OBSERVE-20260901",
+      "source_commit": "6cd0e4489cb5adfe1ad49a150f93911cf9379ed5",
+      "runtime": {
+        "scene_path": "res://scenes/combat/combat_board_preview.tscn",
+        "capture_state": "quick_attack_auto_placement_without_direction_picker",
+        "entry_route": "hera_run_scene_direct_no_state_injection",
+        "source_delta": "HERA_SOURCE_DELTA_GENERATED_IMPORT_ONLY_CLEANED"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview_auto.gd",
+        "src/ui/action_timing_panel.gd",
+        "src/ui/action_selection/action_view_model_adapter.gd",
+        "src/ui/action_timing_panel_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 0
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260901-005.png",
+        "sha256": "52f8f39d282d9dba986d3ff9ff6518c08c5c43ef9cc26c92565579e4b6f2d539",
+        "bytes": 949278,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      }
     }
   ]
 }
