@@ -402,6 +402,10 @@ func _sync_action_selection_dock() -> void:
 func _dock_interaction_state() -> String:
     if _targeting_anchor > 0:
         return "targeting"
+    # An ultimate reserves multiple timing slots as one atomic plan.  Keep its
+    # source context stable until the player explicitly removes that plan.
+    if not _ultimate_reservation_anchors.is_empty():
+        return "ultimate_reserved"
     match _presentation_state:
         "review_ready":
             return "review"

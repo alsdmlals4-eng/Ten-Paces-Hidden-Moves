@@ -8,7 +8,7 @@ signal source_changed(source: String)
 signal intent_selected(intent: Dictionary)
 
 const SOURCES := ["basic", "martial", "ultimate"]
-const LOCKED_STATES := ["targeting", "committed", "resolving", "presenting_result", "review"]
+const LOCKED_STATES := ["targeting", "ultimate_reserved", "committed", "resolving", "presenting_result", "review"]
 const BASIC_PANEL_SCENE := preload("res://scenes/ui/action_selection/basic_action_panel.tscn")
 const MARTIAL_PANEL_SCENE := preload("res://scenes/ui/action_selection/martial_action_panel.tscn")
 const ULTIMATE_PANEL_SCENE := preload("res://scenes/ui/action_selection/ultimate_action_panel.tscn")

@@ -29,6 +29,7 @@
     "src/combat/combat_character_placeholder.gd",
     "src/combat/combat_resolution_engine_ten_manuals.gd",
     "src/ui/action_selection/action_placement_controller.gd",
+    "src/ui/action_selection/action_selection_dock.gd",
     "src/ui/action_selection/action_view_model_adapter.gd",
     "src/ui/action_timing_panel.gd",
     "src/ui/action_timing_panel_auto.gd",
@@ -37,5 +38,5 @@
   ],
   "approval_source": "USER_EXPLICIT_GROUNDED_DUEL_AUTO_TARGET_OBSERVATION_CONTINUATION_2026-09-01_KST",
   "approval_time": "2026-09-01T01:55:00+09:00",
-  "scope_summary": "Only the grounded frontal-duel presentation, movement-only player direction selection, non-movement public-opponent auto targeting, timing-slot bounds, compact current-bundle execution control, and type-only locked-enemy observation disclosure may change.  The 10-cell logical core, 3/3/4 cadence, formulas, save schema, public-only AI boundary, approved raster bytes, and platform/release scope remain unchanged."
+  "scope_summary": "Only the grounded frontal-duel presentation, movement-only player direction selection, non-movement public-opponent auto targeting, timing-slot bounds, compact current-bundle execution control, type-only locked-enemy observation disclosure, and the existing atomic ultimate-reservation source lock may change.  The 10-cell logical core, 3/3/4 cadence, formulas, save schema, public-only AI boundary, approved raster bytes, and platform/release scope remain unchanged."
 }

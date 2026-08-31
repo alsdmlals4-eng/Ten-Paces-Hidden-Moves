@@ -12,7 +12,8 @@
 2. Keep explicit player targeting only for movement's `접근 / 후퇴`.  Auto-place every non-movement action against the already public opponent and derive internal relative direction only when resolving.
 3. Constrain linked action blocks to their own timing slots; compact the visible execution control to the current bundle's `N수 실행` without changing commit semantics.
 4. Spend only available observation points after the enemy bundle locks to disclose each locked enemy **action type**.  Keep card name, technique/manual ID, cost, range, target, direction, damage, future bundle, and AI weights hidden.
-5. Update only the exact protected paths in `docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json`, focused regressions, machine runtime evidence, and the execution report required for PR #305.
+5. Keep a multi-slot 절초 reservation atomic: source switching stays locked only while its reservation is active and returns after the player removes the reserved timing slot.
+6. Update only the exact protected paths in `docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json`, focused regressions, machine runtime evidence, and the execution report required for PR #305.
 
 ## Exclusions and evidence ceiling
 
