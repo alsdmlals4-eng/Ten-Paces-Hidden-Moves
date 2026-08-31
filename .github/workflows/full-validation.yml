@@ -209,8 +209,6 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_vertical_slice_balance_instrumentation.gd
       - name: Verify deterministic balance report runner
         run: godot --headless --path . --script res://tests/verify_vertical_slice_balance_report_runner.gd
-      - name: Verify opponent hypothesis
-        run: godot --headless --path . --script res://tests/verify_combat_hypothesis.gd
       - name: Verify review summary
         run: godot --headless --path . --script res://tests/verify_combat_review_summary.gd
       - name: Verify review UI

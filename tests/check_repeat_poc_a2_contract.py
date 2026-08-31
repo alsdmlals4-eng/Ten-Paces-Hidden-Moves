@@ -9,6 +9,8 @@ REQUIRED_PATHS = [
     "tests/verify_combat_review_summary.gd",
 ]
 
+FULL_VALIDATION_WORKFLOW = ".github/workflows/full-validation.yml"
+
 RETIRED_PATHS = [
     "data/combat/combat_hypothesis_poc.json",
     "src/ui/opponent_hypothesis_panel.gd",
@@ -29,6 +31,10 @@ def main() -> None:
 
     for relative in RETIRED_PATHS:
         assert not (ROOT / relative).exists(), f"retired player-intention hypothesis artifact remains: {relative}"
+
+    workflow = read(FULL_VALIDATION_WORKFLOW)
+    assert "verify_combat_hypothesis.gd" not in workflow, "full validation must not execute the retired hypothesis verifier"
+    assert "Verify opponent hypothesis" not in workflow, "full validation must not keep the retired hypothesis step label"
 
     builder = read("src/combat/combat_review_summary_builder.gd")
     for token in (

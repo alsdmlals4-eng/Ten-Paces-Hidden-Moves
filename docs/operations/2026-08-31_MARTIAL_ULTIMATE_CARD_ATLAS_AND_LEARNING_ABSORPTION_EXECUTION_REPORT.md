@@ -114,7 +114,7 @@
 - **운영 계약:** `python -m unittest tests.test_base_v91_operating_contract -v` → `2` tests `OK`; `python tools/check_project_operating_system.py --root . --config .github/documentation-governance.json` → `PASS`.
 - **현재 reference/카드 contract:** `python tools/check_canonical_reference_freshness.py --root . --config .github/reference-freshness.json` 및 `python tests/check_action_selection_contract.py` → `PASS`.
 - **Godot:** exact Godot `4.7.1` headless editor parse exit `0`; `verify_action_card_source_unification.gd`, `verify_martial_action_panel.gd`, `verify_ultimate_action_panel.gd`, `verify_frontal_duel_assets.gd` → 각각 `PASS`.
-- **PR contract remediation:** PR #298의 첫 remote pass는 active semantic atlas를 누락한 combat asset contract와 historical no-illustration Godot assertion을 찾아냈다. 두 regression을 current final lock에 맞게 GREEN으로 갱신했고, one-time protected approval manifest와 `BUILD_APPROVAL_2026-08-31.md`를 same diff에 추가했다. remote re-run 결과는 별도 후속 CI gate다.
+- **PR contract remediation:** PR #298의 첫 remote pass는 active semantic atlas를 누락한 combat asset contract와 historical no-illustration Godot assertion을 찾아냈다. 두 regression을 current final lock에 맞게 GREEN으로 갱신했고, one-time protected approval manifest와 `BUILD_APPROVAL_2026-08-31.md`를 same diff에 추가했다. 이어 full-validation workflow가 삭제된 `verify_combat_hypothesis.gd`를 실행하려는 stale CI reference도 발견하여, A2 retirement contract가 workflow reference까지 금지하도록 RED→GREEN으로 보강했다. remote re-run 결과는 별도 후속 CI gate다.
 - **증거 한계:** 위 결과는 automated + exact local runtime verification이다. 인간 플레이 비교, UX/human acceptance, 접근성 사용자, Android 실기기, release performance, remote CI/PR/merge/post-merge main readback은 여전히 `NOT_RUN`이다.
 
 ### 재사용·학습 결론
