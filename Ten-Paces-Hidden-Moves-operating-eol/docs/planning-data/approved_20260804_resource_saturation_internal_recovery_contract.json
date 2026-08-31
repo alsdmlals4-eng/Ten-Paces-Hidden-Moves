@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260804-RESOURCE-SATURATION-INTERNAL-RECOVERY-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "risk_status": "MITIGATED_PENDING_HUMAN_MEASUREMENT",
+  "parent_decision_id": "TEN-DEC-20260804-COMBAT-PRICING-INTERRUPTION-RECOVERY-01",
+  "superseded_parent_fields": [
+    "bundle_transition_recovery.internal"
+  ],
+  "resource_identities": {
+    "stamina": "BUNDLE_TACTICAL_TEMPO",
+    "internal": "MULTI_BUNDLE_LONG_TERM_RESOURCE",
+    "ultimate_momentum": "BATTLE_PROGRESS_FINISHER_RESOURCE"
+  },
+  "effective_bundle_transition_recovery": {
+    "stamina": 1,
+    "internal": 0,
+    "ultimate_momentum": 1,
+    "caps_apply": true,
+    "before_enemy_plan_lock": true
+  },
+  "round_start_recovery": {
+    "internal": 0
+  },
+  "explicit_internal_recovery_paths": [
+    "PREPARED_MEDITATION",
+    "CLEAR_HEART_BREATH",
+    "APPROVED_CONDITIONAL_INTERNAL_RECOVERY",
+    "FUTURE_SEPARATELY_APPROVED_EFFECT"
+  ],
+  "softlock_guard": {
+    "legal_at_internal_zero": [
+      "FREE_BASIC_ACTION",
+      "MOVE",
+      "PREPARE",
+      "MEDITATE",
+      "CLEAR_HEART_BREATH",
+      "NO_INTERNAL_COST_ACTION"
+    ],
+    "internal_zero_must_not_prevent_legal_bundle": true
+  },
+  "measurement_contract": {
+    "primary_metrics": [
+      "internal_zero_bundle_rate",
+      "internal_constraint_plan_change_rate",
+      "high_internal_action_consecutive_rate"
+    ],
+    "diagnostic_metrics": [
+      "clear_heart_breath_selection_rate",
+      "prepare_to_meditation_completion_rate",
+      "internal_recovery_action_interrupt_rate",
+      "internal_3_action_mean_bundle_interval",
+      "battle_end_internal_remaining"
+    ],
+    "guardrails": [
+      "RECOVERY_TAX_RISK",
+      "RESOURCE_STARVATION_RISK"
+    ],
+    "thresholds": "DEFER_UNTIL_FIRST_HUMAN_MEASUREMENT_BATCH"
+  },
+  "unchanged_scope": {
+    "stamina_auto_recovery": 1,
+    "ultimate_momentum_auto_recovery": 1,
+    "prepared_meditation_internal_gain": 1,
+    "individual_action_costs_changed": false,
+    "resource_caps_changed": false
+  },
+  "runtime_boundary": {
+    "product_code_changed": false,
+    "godot_runtime_changed": false,
+    "html_poc_changed": false,
+    "runtime_data_changed": false
+  },
+  "validation_boundary": {
+    "static_validation": "REQUIRED",
+    "human_validation": "NOT_RUN",
+    "balance_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "accessibility_validation": "NOT_RUN",
+    "performance_validation": "NOT_RUN"
+  }
+}

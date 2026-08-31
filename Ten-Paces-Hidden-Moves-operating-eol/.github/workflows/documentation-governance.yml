@@ -1,0 +1,194 @@
+name: PR Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: scope-aware-validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          show-progress: false
+
+      - name: Classify changed paths
+        id: scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "code_changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" > changed-files.txt
+          if grep -Eq '^(project\.godot|data/|src/|scenes/|assets/|addons/|tests/.*\.(gd|py)$|tools/.*\.(ps1|cmd)$|\.github/workflows/)' changed-files.txt; then
+            echo "code_changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "code_changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.12"
+
+      - name: Validate project operating system
+        run: python tools/check_project_operating_system.py --root . --config .github/documentation-governance.json
+
+      - name: Validate canonical reference freshness
+        run: python tools/check_canonical_reference_freshness.py --root . --config .github/reference-freshness.json
+
+      - name: Validate Skill package integrity
+        run: python tools/check_skill_package_integrity.py
+
+      - name: Validate archive retention governance
+        run: python tools/check_archive_governance.py
+
+      - name: Run archive retention regression tests
+        run: python -m unittest tests.test_archive_retention_governance -v
+
+      - name: Run governance regression tests
+        run: |
+          python -m unittest discover -s tests -p 'test_project_governance.py'
+          python -m unittest tests.test_current_discovery_contract -v
+          python -m unittest tests.test_integrated_work_contract_v45r2 -v
+          python -m unittest tests.test_integrated_work_contract_v48r2 -v
+          python -m unittest tests.test_integrated_work_contract_v48r54 -v
+          python -m unittest tests.test_visual_consumer_asset_production_policy -v
+          python -m unittest tests.test_gpt_work_handoff_20260826 -v
+          python -m unittest tests.test_combat_ui_top_level_authority -v
+          python -m unittest tests.test_planning_completion_inventory -v
+          python -m unittest tests.test_development_gates_stable_contract -v
+
+      - name: Run local Godot evidence collector contract tests
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python -m unittest tests.test_local_godot_evidence_collector_contract -v
+
+      - name: Run local executor handoff retirement contract tests
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python -m unittest tests.test_local_executor_handoff_contract -v
+
+      - name: Run post-merge canon lifecycle regression tests
+        run: python -m unittest tests.test_postmerge_canon_lifecycle -v
+
+      - name: Validate post-merge canon lifecycle
+        run: python tools/check_postmerge_canon_lifecycle.py
+
+      - name: Run condition calibration regression tests
+        run: python -m unittest tests.test_condition_calibration_contract -v
+
+      - name: Validate condition calibration contract
+        run: python tools/check_condition_calibration_contract.py
+
+      - name: Run work governance regression tests
+        run: python -m unittest tests.test_work_governance_contract -v
+
+      - name: Validate work governance contract
+        run: python tools/check_work_governance_contract.py
+
+      - name: Run wrong-plan rescue derived stats regression tests
+        run: python -m unittest tests.test_wrong_plan_rescue_derived_stats_contract -v
+
+      - name: Validate wrong-plan rescue derived stats contract
+        run: python tools/check_wrong_plan_rescue_derived_stats_contract.py
+
+      - name: Run observation guardrail regression tests
+        run: python -m unittest tests.test_observation_answer_leak_guardrails_contract -v
+
+      - name: Validate observation guardrail contract
+        run: python tools/check_observation_answer_leak_guardrails_contract.py
+
+      - name: Run grade-farming guardrail regression tests
+        run: python -m unittest tests.test_grade_farming_guardrails_contract -v
+
+      - name: Validate grade-farming guardrail contract
+        run: python tools/check_grade_farming_guardrails_contract.py
+
+      - name: Run Star7 Star9 mastery bonus regression tests
+        run: python -m unittest tests.test_star7_star9_mastery_bonus_contract -v
+
+      - name: Validate Star7 Star9 mastery bonus contract
+        run: python tools/check_star7_star9_mastery_bonus_contract.py
+
+      - name: Run ten-manual semantic regression tests
+        run: python -m unittest tests.test_ten_recognizable_martial_manuals_contract -v
+
+      - name: Validate ten-manual semantic contract
+        run: python tools/check_ten_recognizable_martial_manuals_contract.py
+
+      - name: Run ten-manual budget regression tests
+        run: python -m unittest tests.test_ten_manual_growth_budget_overlay -v
+
+      - name: Validate ten-manual budget overlay
+        run: python tools/check_ten_manual_growth_budget_overlay.py
+
+      - name: Validate PoC planning data
+        run: python -m unittest tests.test_poc_planning_data -v
+
+      - name: Validate canonical combat impact map
+        run: python tests/check_canonical_combat_docs.py
+
+      - name: Validate card component contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_card_component_contract.py
+
+      - name: Validate combat contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_combat_board_contract.py
+
+      - name: Validate rival tendency contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_rival_tendency_contract.py
+
+      - name: Validate A2 hypothesis and summary contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_repeat_poc_a2_contract.py
+
+      - name: Validate A3 review UI contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_repeat_poc_a3_contract.py
+
+      - name: Validate prepare and auto placement contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_prepare_auto_placement_contract.py
+
+      - name: Validate action selection contract
+        if: steps.scope.outputs.code_changed == 'true'
+        run: python tests/check_action_selection_contract.py
+
+      - name: Parse PowerShell automations for code changes
+        if: steps.scope.outputs.code_changed == 'true'
+        shell: pwsh
+        run: |
+          $paths = @(
+            "tools/verify_and_commit_step0.ps1",
+            "tools/verify_and_commit_combat_foundation.ps1",
+            "tools/run_combat_board.ps1",
+            "tools/verify_repeat_poc_a1.ps1",
+            "tools/verify_repeat_poc_a2.ps1",
+            "tools/verify_repeat_poc_a3.ps1",
+            "tools/collect_godot_live_evidence.ps1",
+            "tools/start_issue54_human_validation.ps1"
+          )
+          foreach ($path in $paths) {
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path), [ref]$tokens, [ref]$errors) | Out-Null
+            if ($errors.Count -gt 0) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }
+          }
+
+      - name: Record deferred runtime boundary
+        if: steps.scope.outputs.code_changed == 'true' && vars.ACTIONS_FULL_VALIDATION_ENABLED != 'true'
+        run: echo "Godot and OS/Python matrix checks require Full Validation evidence."

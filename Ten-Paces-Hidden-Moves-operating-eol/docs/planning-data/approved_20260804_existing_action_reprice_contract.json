@@ -1,0 +1,344 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260804-EXISTING-ACTIONS-REPRICE-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "data_role": "APPROVED_EFFECTIVE_ACTION_OVERRIDE",
+  "supersedes_cost_fields_of": [
+    "TEN-DEC-20260802-BASIC-ATTACK-FORMULAS-SLOT-BUDGET-01",
+    "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-1-BASE-EFFECTS-AND-BUDGETS-01",
+    "TEN-DEC-20260803-STARTING-MARTIAL-TECHNIQUE-2-BASE-EFFECTS-AND-BUDGETS-01"
+  ],
+  "pricing": {
+    "movement_ticks_per_tile": 15,
+    "range_ticks_per_tile_beyond_one": 15,
+    "stamina_allowance_ticks_per_point": 4,
+    "internal_allowance_ticks_per_point": 7,
+    "slot_budget_ticks": {
+      "1": 20,
+      "2": 50,
+      "3": 80
+    },
+    "automatic_tolerance_ticks": 5,
+    "max_stamina": 5,
+    "max_internal": 4
+  },
+  "application_policy": {
+    "historical_contracts_remain_evidence": true,
+    "this_overlay_owns_effective_costs_and_slots": true,
+    "effect_damage_range_movement_tags_conditions_unchanged": true,
+    "implementation_must_apply_overlay_before_runtime_data_generation": true
+  },
+  "exclusions": [
+    "martial_10_star_ultimates_effects_unapproved",
+    "non_attack_basic_actions_not_affected_by_distance_reprice"
+  ],
+  "runtime_boundary": {
+    "html_poc_changed": false,
+    "godot_runtime_changed": false,
+    "human_balance_validation": "NOT_RUN"
+  },
+  "actions": [
+    {
+      "action_id": "quick_attack",
+      "category": "basic_attack",
+      "effective_action_slots": 1,
+      "effective_costs": {
+        "stamina": 1,
+        "internal": 0
+      },
+      "movement_tiles": 0,
+      "max_range": 1,
+      "base_effect_ticks_excluding_distance": 25,
+      "distance_effect_ticks": 0,
+      "effect_cost_ticks": 25,
+      "condition_allowance_ticks": 0,
+      "other_resource_allowance_ticks": 0,
+      "available_budget_ticks": 24,
+      "variance_ticks": 1,
+      "preserve_effect_identity": true,
+      "adjustment": "unchanged"
+    },
+    {
+      "action_id": "heavy_attack",
+      "category": "basic_attack",
+      "effective_action_slots": 2,
+      "effective_costs": {
+        "stamina": 1,
+        "internal": 2
+      },
+      "movement_tiles": 0,
+      "max_range": 2,
+      "base_effect_ticks_excluding_distance": 55,
+      "distance_effect_ticks": 15,
+      "effect_cost_ticks": 70,
+      "condition_allowance_ticks": 0,
+      "other_resource_allowance_ticks": 0,
+      "available_budget_ticks": 68,
+      "variance_ticks": 2,
+      "preserve_effect_identity": true,
+      "adjustment": "internal 1→2"
+    },
+    {
+      "action_id": "basic_palm",
+      "category": "basic_attack",
+      "effective_action_slots": 2,
+      "effective_costs": {
+        "stamina": 0,
+        "internal": 1
+      },
+      "movement_tiles": 0,
+      "max_range": 3,
+      "base_effect_ticks_excluding_distance": 30,
+      "distance_effect_ticks": 30,
+      "effect_cost_ticks": 60,
+      "condition_allowance_ticks": 0,
+      "other_resource_allowance_ticks": 0,
+      "available_budget_ticks": 57,
+      "variance_ticks": 3,
+      "preserve_effect_identity": true,
+      "adjustment": "unchanged"
+    },
+    {
+      "action_id": "flowing_cloud_triple",
+      "category": "technique_1",
+      "effective_action_slots": 2,
+      "effective_costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "movement_tiles": 0,
+      "max_range": 1,
+      "base_effect_ticks_excluding_distance": 58,
+      "distance_effect_ticks": 0,
+      "effect_cost_ticks": 58,
+      "condition_allowance_ticks": 0,
+      "other_resource_allowance_ticks": 0,
+      "available_budget_ticks": 61,
+      "variance_ticks": -3,
+      "preserve_effect_identity": true,
+      "adjustment": "unchanged"
+    },
+    {
+      "action_id": "vajra_guard",
+      "category": "technique_1",
+      "effective_action_slots": 1,
+      "effective_costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "movement_tiles": 0,
+      "max_range": 0,
+      "base_effect_ticks_excluding_distance": 30,
+      "distance_effect_ticks": 0,
+      "effect_cost_ticks": 30,
+      "condition_allowance_ticks": 0,
+      "other_resource_allowance_ticks": 0,
+      "available_budget_ticks": 31,
+      "variance_ticks": -1,
+      "preserve_effect_identity": true,
+      "adjustment": "unchanged"
+    },
+    {
+      "action_id": "cloud_hand_return",
+      "category": "technique_1",
+      "effective_action_slots": 1,
+      "effective_costs": {
+        "stamina": 2,
+        "internal": 1
+      },
+      "movement_tiles": 1,
+      "max_range": 0,
+      "base_effect_ticks_excluding_distance": 27,
+      "distance_effect_ticks": 15,
+      "effect_cost_ticks": 42,
+      "condition_allowance_ticks": 5,
+      "other_resource_allowance_ticks": 0,
+      "available_budget_ticks": 40,
+      "variance_ticks": 2,
+      "preserve_effect_identity": true,
+      "adjustment": "stamina 1→2"
+    },
+    {
+      "action_id": "pursuing_wind_thrust",
+      "category": "technique_1",
+      "effective_action_slots": 1,
+      "effective_costs": {
+        "stamina": 1,
+        "internal": 3
+      },
+      "movement_tiles": 1,
+      "max_range": 2,
+      "base_effect_ticks_excluding_distance": 20,
+      "distance_effect_ticks": 30,
+      "effect_cost_ticks": 50,
+      "condition_allowance_ticks": 0,
+      "other_resource_allowance_ticks": 0,
+      "available_budget_ticks": 45,
+      "variance_ticks": 5,
+      "preserve_effect_identity": true,
+      "adjustment": "internal 1→3"
+    },
+    {
+      "action_id": "clear_heart_breath",
+      "category": "technique_1",
+      "effective_action_slots": 1,
+      "effective_costs": {
+        "stamina": 0,
+        "internal": 0
+      },
+      "movement_tiles": 0,
+      "max_range": 0,
+      "base_effect_ticks_excluding_distance": 23,
+      "distance_effect_ticks": 0,
+      "effect_cost_ticks": 23,
+      "condition_allowance_ticks": 4,
+      "other_resource_allowance_ticks": 0,
+      "available_budget_ticks": 24,
+      "variance_ticks": -1,
+      "preserve_effect_identity": true,
+      "adjustment": "unchanged"
+    },
+    {
+      "action_id": "iron_step_drift",
+      "category": "technique_1",
+      "effective_action_slots": 1,
+      "effective_costs": {
+        "stamina": 3,
+        "internal": 2
+      },
+      "movement_tiles": 2,
+      "max_range": 0,
+      "base_effect_ticks_excluding_distance": 18,
+      "distance_effect_ticks": 30,
+      "effect_cost_ticks": 48,
+      "condition_allowance_ticks": 0,
+      "other_resource_allowance_ticks": 0,
+      "available_budget_ticks": 46,
+      "variance_ticks": 2,
+      "preserve_effect_identity": true,
+      "adjustment": "stamina 1→3; internal 1→2"
+    },
+    {
+      "action_id": "falling_petal_chasing_sword",
+      "category": "technique_2",
+      "effective_action_slots": 2,
+      "effective_costs": {
+        "stamina": 2,
+        "internal": 1
+      },
+      "movement_tiles": 1,
+      "max_range": 2,
+      "base_effect_ticks_excluding_distance": 40,
+      "distance_effect_ticks": 30,
+      "effect_cost_ticks": 70,
+      "condition_allowance_ticks": 0,
+      "other_resource_allowance_ticks": 0,
+      "available_budget_ticks": 65,
+      "variance_ticks": 5,
+      "preserve_effect_identity": true,
+      "adjustment": "stamina 1→2",
+      "historical_action_alias": "falling_petals_pursuit"
+    },
+    {
+      "action_id": "rebounding_vajra_fist",
+      "category": "technique_2",
+      "effective_action_slots": 2,
+      "effective_costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "movement_tiles": 0,
+      "max_range": 1,
+      "base_effect_ticks_excluding_distance": 66,
+      "distance_effect_ticks": 0,
+      "effect_cost_ticks": 66,
+      "condition_allowance_ticks": 4,
+      "other_resource_allowance_ticks": 0,
+      "available_budget_ticks": 65,
+      "variance_ticks": 1,
+      "preserve_effect_identity": true,
+      "adjustment": "unchanged",
+      "historical_action_alias": "rebounding_fist"
+    },
+    {
+      "action_id": "four_ounces_move_thousand_pounds",
+      "category": "technique_2",
+      "effective_action_slots": 2,
+      "effective_costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "movement_tiles": 0,
+      "max_range": 1,
+      "base_effect_ticks_excluding_distance": 68,
+      "distance_effect_ticks": 0,
+      "effect_cost_ticks": 68,
+      "condition_allowance_ticks": 5,
+      "other_resource_allowance_ticks": 0,
+      "available_budget_ticks": 66,
+      "variance_ticks": 2,
+      "preserve_effect_identity": true,
+      "adjustment": "unchanged"
+    },
+    {
+      "action_id": "chained_road_lock",
+      "category": "technique_2",
+      "effective_action_slots": 2,
+      "effective_costs": {
+        "stamina": 1,
+        "internal": 3
+      },
+      "movement_tiles": 1,
+      "max_range": 2,
+      "base_effect_ticks_excluding_distance": 49,
+      "distance_effect_ticks": 30,
+      "effect_cost_ticks": 79,
+      "condition_allowance_ticks": 0,
+      "other_resource_allowance_ticks": 0,
+      "available_budget_ticks": 75,
+      "variance_ticks": 4,
+      "preserve_effect_identity": true,
+      "adjustment": "internal 1→3"
+    },
+    {
+      "action_id": "returning_qi_meridian",
+      "category": "technique_2",
+      "effective_action_slots": 2,
+      "effective_costs": {
+        "stamina": 1,
+        "internal": 0
+      },
+      "movement_tiles": 0,
+      "max_range": 0,
+      "base_effect_ticks_excluding_distance": 60,
+      "distance_effect_ticks": 0,
+      "effect_cost_ticks": 60,
+      "condition_allowance_ticks": 7,
+      "other_resource_allowance_ticks": 0,
+      "available_budget_ticks": 61,
+      "variance_ticks": -1,
+      "preserve_effect_identity": true,
+      "adjustment": "unchanged"
+    },
+    {
+      "action_id": "ten_paces_position_reversal",
+      "category": "technique_2",
+      "effective_action_slots": 3,
+      "effective_costs": {
+        "stamina": 1,
+        "internal": 1
+      },
+      "movement_tiles": 2,
+      "max_range": 2,
+      "base_effect_ticks_excluding_distance": 48,
+      "distance_effect_ticks": 45,
+      "effect_cost_ticks": 93,
+      "condition_allowance_ticks": 5,
+      "other_resource_allowance_ticks": 0,
+      "available_budget_ticks": 96,
+      "variance_ticks": -3,
+      "preserve_effect_identity": true,
+      "adjustment": "slots 2→3"
+    }
+  ]
+}

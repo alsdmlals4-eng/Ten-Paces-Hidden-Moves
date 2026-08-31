@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260802-BASIC-PALM-DAMAGE-GROWTH-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING",
+  "implementation_authority": "PLANNING_ONLY",
+  "grillme_count": "3/10",
+  "supersedes": {
+    "formula": "floor(2 + internal_power * 0.50)",
+    "must_be_lower_than_quick_at_equal_stat": true,
+    "ledger_ticks_at_stat_4": 38,
+    "spare_ticks": 12,
+    "knockback_candidate": true
+  },
+  "formula": {
+    "action_id": "basic_palm",
+    "slots": 2,
+    "telegraph_slots": 1,
+    "max_range": 3,
+    "costs": {
+      "stamina": 0,
+      "internal": 1
+    },
+    "fixed_damage": 3,
+    "stat": "internal_power",
+    "coefficient": 0.75,
+    "runtime_formula": "floor(3 + internal_power * 0.75)",
+    "knockback": 0,
+    "forced_movement": false
+  },
+  "ledger_at_stat_4": {
+    "fixed_damage_ticks": 15,
+    "stat_reference_ticks": 15,
+    "range_ticks": 25,
+    "internal_cost_credit_ticks": -7,
+    "total_ticks": 48,
+    "target_ticks": 50,
+    "variance_ticks": -2,
+    "within_auto_tolerance": true,
+    "spare_ticks": 2
+  },
+  "sanity_checks": {
+    "stat_points": [
+      1,
+      4,
+      15
+    ],
+    "basic_palm_damage": [
+      3,
+      6,
+      14
+    ],
+    "quick_attack_damage": [
+      3,
+      5,
+      10
+    ],
+    "heavy_attack_damage": [
+      8,
+      11,
+      22
+    ],
+    "palm_may_exceed_quick_from_stat_4": true,
+    "palm_stays_below_heavy_at_stat_15": true
+  },
+  "design_constraints": {
+    "identity": "TWO_SLOT_INTERNAL_POWER_RANGED_DAMAGE",
+    "lower_than_quick_constraint": "SUPERSEDED",
+    "add_knockback": false,
+    "add_forced_spacing_loop": false,
+    "range_value_already_priced": true
+  },
+  "legacy_boundary": {
+    "runtime_basic_palm_exists": false,
+    "runtime_status": "NOT_STARTED",
+    "product_code_changed": false
+  },
+  "validation": {
+    "static_validation": "PENDING_DRAFT_PR",
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  }
+}

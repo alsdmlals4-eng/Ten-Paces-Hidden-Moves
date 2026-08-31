@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260731-SLOT3-DISTANCE-01",
+  "status": "APPROVED_PLANNING",
+  "data_role": "NON_RUNTIME_APPROVED_PLANNING",
+  "runtime_authority": "NONE",
+  "slot": {
+    "slot_id": "DUEL_SLOT_03",
+    "lesson_role": "DISTANCE_FOOTWORK_RANGE_FAILURE",
+    "candidate_count": 3,
+    "required_lessons": [
+      "CURRENT_DISTANCE_READING",
+      "EXECUTION_TIME_DISTANCE_PROJECTION",
+      "RANGE_INVALID_ACTION_FAILURE",
+      "MOVE_THEN_ATTACK_VS_ATTACK_THEN_MOVE",
+      "PREFERRED_RANGE_DENIAL",
+      "AVOID_CLASH_BY_DISTANCE_CHANGE"
+    ],
+    "prohibited_new_complexity": [
+      "NEW_COMBAT_RESOURCE",
+      "NEW_STATUS_EFFECT",
+      "TELEPORT",
+      "PASS_THROUGH_OPPONENT",
+      "POSITION_SWAP"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "seolha",
+      "name": "설하",
+      "epithet": "유설검객",
+      "weapon": "장검",
+      "preferred_distance": [
+        2
+      ],
+      "role": "DISTANCE_2_ORTHODOX",
+      "signature_prototype": "설영일섬",
+      "signature_sequence": [
+        "PREPARE",
+        "RANGE_2_THRUST"
+      ]
+    },
+    {
+      "id": "gwak_yeonsan",
+      "name": "곽연산",
+      "epithet": "파진창객",
+      "weapon": "장창",
+      "preferred_distance": [
+        3
+      ],
+      "role": "LONG_RANGE_PRESSURE",
+      "signature_prototype": "관월파진창",
+      "signature_sequence": [
+        "RANGE_3_THRUST"
+      ],
+      "close_range_available": false
+    },
+    {
+      "id": "yeon_bihong",
+      "name": "연비홍",
+      "epithet": "답풍도객",
+      "weapon": "도",
+      "preferred_distance": [
+        1,
+        2
+      ],
+      "role": "DISTANCE_SWITCH_VARIANT",
+      "signature_prototype": "답풍연환도",
+      "signature_sequence": [
+        "APPROACH_1",
+        "RANGE_1_ATTACK"
+      ],
+      "interruptible_during_approach": true
+    }
+  ],
+  "gap_02_to_03": {
+    "eligible_opponents": 3,
+    "offered_opponents": 2,
+    "selection": "DETERMINISTIC_SAMPLE_WITHOUT_REPLACEMENT",
+    "visited_nodes": 2,
+    "layer_1": {
+      "role": [
+        "RECOVERY",
+        "GROWTH",
+        "SHORT_EVENT"
+      ],
+      "candidate_count": [
+        2,
+        3
+      ],
+      "initial_pool": [
+        "mountain_inn",
+        "abandoned_training_ground",
+        "injured_escort"
+      ]
+    },
+    "layer_2": {
+      "role": [
+        "OPPONENT_INFORMATION",
+        "DISTANCE_PREPARATION"
+      ],
+      "candidate_count": [
+        2,
+        3
+      ],
+      "initial_pool": [
+        "scarred_cliff_path",
+        "collapsed_spear_formation",
+        "wind_bamboo_grove",
+        "beggar_sect_rumor"
+      ]
+    },
+    "guarantees": [
+      "BOTH_OFFERED_OPPONENTS_REACHABLE",
+      "AT_LEAST_ONE_RECOVERY_OR_SAFE_GROWTH_ROUTE",
+      "OPPONENT_RELEVANT_INFO_OR_PREP_AVAILABLE",
+      "LOW_HP_RECOVERY_ACCESS",
+      "NO_INFO_NODE_FOR_UNOFFERED_OPPONENT",
+      "NO_DUPLICATE_NODE_OR_EVENT_IN_RUN",
+      "NO_THREE_IDENTICAL_NODE_TYPES_IN_SEQUENCE",
+      "NO_REWARD_THAT_IGNORES_MOVEMENT_OR_RANGE_RULES",
+      "DETERMINISTIC_BY_RUN_SEED_GAP_INDEX_SLOT_ID"
+    ]
+  },
+  "public_challenge": {
+    "primary": {
+      "cause": "RANGE_INVALID",
+      "count": 1
+    },
+    "alternative": {
+      "causes": [
+        "MOVEMENT_INTERRUPTED",
+        "PREFERRED_RANGE_DENIED"
+      ],
+      "count": 1
+    }
+  },
+  "balance_pending": [
+    "SIGNATURE_SKILL_NUMBERS",
+    "ACTION_COSTS",
+    "AI_WEIGHTS",
+    "REWARD_VALUES",
+    "DISTANCE_FAILURE_LOG_CODES"
+  ],
+  "approval_gate": {
+    "planning_complete": false,
+    "review_complete": false,
+    "runtime_changes_allowed": false,
+    "human_validation": "NOT_RUN",
+    "codex_handoff": false
+  }
+}

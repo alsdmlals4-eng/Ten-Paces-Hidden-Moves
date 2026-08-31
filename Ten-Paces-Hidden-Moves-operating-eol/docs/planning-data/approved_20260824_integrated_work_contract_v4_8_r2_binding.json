@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01",
+  "contract_name": "PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION",
+  "contract_version": "4.8",
+  "revision": "2026-08-24-r2",
+  "status": "CURRENT_APPROVED_PROJECT_OPERATING_CONTRACT",
+  "canonical_document": "docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md",
+  "source_uploaded_sha256": "6f0541048e084746f6777223521361d0339dbfb2e223c70947f694f1c050f508",
+  "supersedes_decision_id": "TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01",
+  "project_repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
+  "project_default_branch": "main",
+  "adapter_policy": "THIN_ADAPTER_DO_NOT_DUPLICATE_BASE_CANON",
+  "base_snapshot_policy": "ALWAYS_REFETCH_CURRENT_COMPLETED_MAIN",
+  "authority": {
+    "human_workspace": "NOTION_HUMAN_FACING_CANON",
+    "repository": "REPOSITORY_STRUCTURED_CANON_AND_RUNTIME_TRUTH",
+    "google_sheets": "MIGRATION_ONLY_UNTIL_REMOVAL",
+    "mutable_state": "ACTIVE_CONTEXT_CURRENT_JSON_GITHUB_LIVE_EXACT_PROJECT_NOTION"
+  },
+  "open_pr_policy": "OPEN_PR_READ_ONLY_BY_DEFAULT",
+  "current_task_pr_policy": "CURRENT_TASK_CONTINUATION_AUTHORIZES_READY_MERGE",
+  "force_and_ruleset_bypass_policy": "FORBIDDEN",
+  "visual_generation_policy": "TEXT_BRIEF_THEN_EXPLICIT_USER_APPROVAL_THEN_EXACTLY_ONE_RESULT",
+  "implementation_reality_gate": "REQUIRED",
+  "adversarial_full_loop_minimum": 5,
+  "protected_product_paths": [
+    "data/",
+    "src/",
+    "scenes/",
+    "assets/",
+    "addons/",
+    "project.godot"
+  ],
+  "runtime_mutation_authorized": false,
+  "product_core_mutation_authorized": false,
+  "historical_v45": {
+    "decision_id": "TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01",
+    "binding_json": "docs/planning-data/approved_20260811_integrated_work_contract_v4_5_r2_binding.json",
+    "normative_body_root": "docs/contracts/integrated-work-v4.5-r2/",
+    "status": "SUPERSEDED_HISTORICAL_EVIDENCE",
+    "preserve": true
+  }
+}

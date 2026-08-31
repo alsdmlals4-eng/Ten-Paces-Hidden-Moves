@@ -1,0 +1,25 @@
+{
+  "schema_version": 2,
+  "decision_id": "TEN-DEC-20260802-OUT-OF-RANGE-CLASH-GRADE-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING_WITH_SUPERSEDED_SCORE_CATEGORY",
+  "implementation_authority": "PLANNING_ONLY",
+  "grillme_count": "3/10",
+  "current_battle_grade_decision_id": "TEN-DEC-20260802-BATTLE-GRADE-FIVE-METRICS-01",
+  "current_metric": "clash_wins",
+  "in_range_clash_win_count": 1,
+  "out_of_range_clash_win_count": 1,
+  "out_of_range_damage_or_hit_credit": false,
+  "legacy": {
+    "threat_response_category_active": false,
+    "tactical_execution_double_count_check_active": false,
+    "repeat_attenuation_active": false
+  },
+  "online_season_rating_change": "NONE",
+  "validation": {
+    "static_validation": "PENDING_PR_CHECKPOINT",
+    "runtime_validation": "NOT_RUN",
+    "godot_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  }
+}

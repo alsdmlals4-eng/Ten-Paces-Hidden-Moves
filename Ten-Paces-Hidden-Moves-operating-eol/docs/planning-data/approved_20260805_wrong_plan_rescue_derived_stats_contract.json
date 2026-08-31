@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260805-WRONG-PLAN-RESCUE-DERIVED-STATS-01",
+  "authority_status": "CURRENT_APPROVED_PLANNING_GOVERNANCE",
+  "approved_at": "2026-08-05",
+  "reference_stat": 4,
+  "parent_authorities": [
+    "docs/planning-data/approved_20260803_uncapped_core_stats_contract.json",
+    "docs/planning-data/approved_20260802_stat_reference_price_base4_contract.json",
+    "docs/planning-data/approved_20260802_basic_attack_formulas_slot_budget_contract.json"
+  ],
+  "derived_stats": {
+    "external_power": {
+      "continuous_outputs": [
+        "EXTERNAL_DAMAGE",
+        "DECLARED_DEFENSE_BREAK"
+      ],
+      "formula_shape": "floor(fixed_base_value + external_power * declared_coefficient)"
+    },
+    "constitution": {
+      "continuous_outputs": [
+        "DECLARED_DEFENSE_EFFECT",
+        "MAX_HEALTH"
+      ],
+      "max_health_formula": "26 + constitution",
+      "defense_requires_declared_action_or_effect": true,
+      "passive_global_damage_reduction": false
+    },
+    "agility": {
+      "continuous_outputs": [
+        "DECLARED_AGILITY_NUMERIC_EFFECT"
+      ],
+      "max_stamina_formula": "4 + floor(agility / 4)"
+    },
+    "internal_power": {
+      "continuous_outputs": [
+        "INTERNAL_DAMAGE",
+        "DECLARED_HEAL",
+        "DECLARED_GUARD",
+        "DECLARED_STABILIZATION"
+      ],
+      "max_internal_formula": "3 + floor(internal_power / 4)"
+    },
+    "insight": {
+      "continuous_outputs": [
+        "DECLARED_CLASH_POWER",
+        "DECLARED_PUBLIC_READ_SUCCESS_REWARD"
+      ],
+      "hidden_plan_access": false,
+      "automatic_correct_counter": false
+    }
+  },
+  "reference_outputs": {
+    "max_health": 30,
+    "max_stamina": 5,
+    "max_internal": 4
+  },
+  "sanity_stat_points": [
+    1,
+    4,
+    8,
+    12,
+    15,
+    20
+  ],
+  "sanity_outputs": {
+    "max_health": [
+      27,
+      30,
+      34,
+      38,
+      41,
+      46
+    ],
+    "max_stamina": [
+      4,
+      5,
+      6,
+      7,
+      7,
+      9
+    ],
+    "max_internal": [
+      3,
+      4,
+      5,
+      6,
+      6,
+      8
+    ]
+  },
+  "forbidden_continuous_structural_scaling": [
+    "MOVE_DISTANCE",
+    "ATTACK_RANGE",
+    "ACTION_SLOTS",
+    "HIT_COUNT",
+    "EVADE_COUNT",
+    "TARGETING_PERMISSION",
+    "SURE_HIT",
+    "HIDDEN_PLAN_ACCESS"
+  ],
+  "max_change_policy": {
+    "fill_current_on_max_increase": false,
+    "preserve_missing_or_spent_amount": true,
+    "threshold_step": 4,
+    "thresholds_continue_uncapped": true
+  },
+  "resolution_order": [
+    "LEGALITY",
+    "DISTANCE_ORDER_MOVEMENT_INTERRUPTION",
+    "SUCCESS_GATES",
+    "STAT_NUMERIC_ADJUSTMENT",
+    "COUNTERFACTUAL_REPLAY",
+    "RESCUE_CLASSIFICATION"
+  ],
+  "counterfactual_contract": {
+    "same_player_plan": true,
+    "same_enemy_locked_plan": true,
+    "same_targets_positions_statuses": true,
+    "same_rng_seed_and_consumption_order": true,
+    "reference_all_core_stats": 4,
+    "non_stat_maximum_bonuses_preserved": true
+  },
+  "counterfactual_normalization": {
+    "health": "clamp(reference_max_health - missing_health, 0, reference_max_health)",
+    "stamina": "clamp(reference_max_stamina - spent_stamina, 0, reference_max_stamina)",
+    "internal": "clamp(reference_max_internal - spent_internal, 0, reference_max_internal)"
+  },
+  "wrong_plan_reason_codes": [
+    "PUBLIC_RANGE_MISMATCH",
+    "PUBLIC_RESOURCE_OVERCOMMIT",
+    "PUBLIC_ORDERING_MISMATCH",
+    "MISSING_DEFENSE_RESPONSE",
+    "CONDITION_PUBLICLY_IMPOSSIBLE",
+    "PREDICTION_MISS",
+    "COUNTER_SELECTION_MISS",
+    "POSITION_READ_MISS"
+  ],
+  "rescue_classification": {
+    "outcome_reversal_precedes_major_rescue": true,
+    "allow_double_count": false,
+    "major_health_loss_reduction_ratio": 0.5,
+    "major_severity_step_reduction": 2,
+    "severity_scale": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "classes": [
+      "NO_RESCUE",
+      "MAJOR_RESCUE",
+      "OUTCOME_REVERSAL"
+    ]
+  },
+  "kpis": {
+    "wrong_plan_outcome_reversal_rate": "OUTCOME_REVERSAL / VALID_WRONG_PLAN_EVENTS",
+    "wrong_plan_major_rescue_rate": "MAJOR_RESCUE / VALID_WRONG_PLAN_EVENTS",
+    "correct_plan_amplification_rate": "AMPLIFIED_CORRECT_PLAN_EVENTS / VALID_CORRECT_PLAN_EVENTS"
+  },
+  "legacy_attack_power": {
+    "field": "data/combat/combat_hud_preview.json#player.attack_power",
+    "lifecycle": "SUPERSEDED_HISTORICAL_POC_FIELD",
+    "may_add_to_stat_scaled_actions": false,
+    "conflict_code": "DOUBLE_SCALING_CONFLICT"
+  },
+  "validation_boundary": {
+    "planning_and_validation_only": true,
+    "product_code_changed": false,
+    "godot_runtime_changed": false,
+    "runtime_data_changed": false,
+    "human_validation": "NOT_RUN",
+    "balance_validation": "NOT_RUN",
+    "windows_validation": "NOT_RUN",
+    "accessibility_validation": "NOT_RUN",
+    "performance_validation": "NOT_RUN"
+  },
+  "next_decision": "OBSERVATION_ANSWER_LEAK_RISK"
+}

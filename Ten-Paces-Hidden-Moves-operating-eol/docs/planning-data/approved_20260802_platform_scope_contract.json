@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260802-PLATFORM-SCOPE-01",
+  "status": "APPROVED_PLANNING",
+  "data_role": "NON_RUNTIME_APPROVED_PLANNING",
+  "approval_source": "USER_DIRECT_INSTRUCTION_2026_08_02",
+  "canonical_decision": "docs/decisions/2026-08-02_PLATFORM_SCOPE_DECISION.md",
+  "primary_platform": {
+    "id": "PC",
+    "state": "CURRENT_PRODUCT_BASELINE",
+    "engine": "Godot 4.7",
+    "input_targets": [
+      "KEYBOARD",
+      "MOUSE",
+      "GAMEPAD"
+    ],
+    "display_validation_targets": [
+      "1280x800",
+      "1440x900",
+      "16:9_SAFE_AREA"
+    ]
+  },
+  "future_platform": {
+    "id": "MOBILE",
+    "state": "CONSIDERATION_ONLY",
+    "implementation_authority": "NONE",
+    "release_commitment": false,
+    "simultaneous_launch_commitment": false,
+    "cross_save_commitment": false,
+    "online_service_commitment": false
+  },
+  "current_scope": {
+    "next_package": "VERTICAL_SLICE_APP_FLOW_SHELL",
+    "includes": [
+      "PC_APP_FLOW",
+      "PC_KEYBOARD_MOUSE_GAMEPAD_INPUT",
+      "PC_SAVE_REENTRY_AND_TRANSACTION_VALIDATION",
+      "WINDOWS_RUNTIME_VALIDATION",
+      "PC_ACCESSIBILITY_AND_PERFORMANCE_REVIEW",
+      "STEP_14_HUMAN_VALIDATION"
+    ],
+    "excludes": [
+      "TOUCH_SPECIFIC_INPUT",
+      "ANDROID_BUILD_AND_STORE",
+      "IOS_BUILD_AND_STORE",
+      "MOBILE_SAFE_AREA_AND_NOTCH_OPTIMIZATION",
+      "MOBILE_THERMAL_MEMORY_BATTERY_BUDGET",
+      "PC_MOBILE_CROSS_SAVE",
+      "MOBILE_MONETIZATION_AND_PUSH",
+      "MOBILE_DRIVEN_COMBAT_CORE_CHANGE"
+    ]
+  },
+  "compatibility_guardrails": [
+    "USE_INPUT_ACTIONS_WHERE_REASONABLE",
+    "KEEP_COMBAT_AND_SAVE_CONTRACTS_DEVICE_AGNOSTIC",
+    "DO_NOT_BIND_DOMAIN_RULES_TO_RAW_DEVICE_EVENTS",
+    "KEEP_INFORMATION_REDUNDANT_ACROSS_COLOR_MOTION_AUDIO",
+    "DO_NOT_PREBUILD_MOBILE_ONLY_ABSTRACTIONS",
+    "ESCALATE_CORE_CHANGES_TO_NEW_DECISION"
+  ],
+  "mobile_reconsideration_gate": [
+    "APP_FLOW_SHELL_IMPLEMENTED_AND_AUTOMATED_VALIDATED",
+    "WINDOWS_RUNTIME_DISPLAY_AND_INPUT_VALIDATED",
+    "SAVE_RESTORE_SEED_AND_REWARD_TRANSACTION_STABLE",
+    "STEP_14_HUMAN_VALIDATION_COMPLETED",
+    "REPRESENTATIVE_CONTENT_PIPELINE_AND_PC_PERFORMANCE_VALIDATED",
+    "MOBILE_FEASIBILITY_RESEARCH_COMPLETED",
+    "SEPARATE_USER_APPROVAL_AND_PLATFORM_DECISION"
+  ],
+  "validation": {
+    "canonical_documentation": "IN_PROGRESS",
+    "google_sheet": "IN_PROGRESS",
+    "pc_runtime_change": "NONE",
+    "mobile_runtime": "NOT_STARTED",
+    "mobile_device": "NOT_RUN",
+    "mobile_performance": "NOT_RUN",
+    "store": "NOT_RUN",
+    "human_mobile": "NOT_RUN"
+  }
+}

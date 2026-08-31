@@ -1,0 +1,18 @@
+name: Validate Ten Manual Growth Budget
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.12"
+      - name: Run ten-manual budget tests
+        run: python -m unittest tests.test_ten_manual_growth_budget_overlay -v
+      - name: Run ten-manual budget checker
+        run: python tools/check_ten_manual_growth_budget_overlay.py

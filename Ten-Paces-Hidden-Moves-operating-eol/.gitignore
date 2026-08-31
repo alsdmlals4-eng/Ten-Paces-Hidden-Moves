@@ -1,0 +1,10 @@
+.godot/
+.import/
+build/
+.worktrees/
+*.tmp
+__pycache__/
+*.py[cod]
+
+# Local asset vault
+.asset-vault/

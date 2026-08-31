@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "authority": "ACTIVE_GODOT_TOOLCHAIN_RECONCILIATION",
+  "decision_id": "TEN-DEC-20260809-GODOT-AI313-GUT971-HERA100-ACTIVE-TOOLCHAIN-01",
+  "godot": {
+    "version_family": "4.7.x",
+    "local_acceptance_target": "4.7.1",
+    "observed_local_editor_historical": "4.7-stable (official)",
+    "accepted_local_version": "4.7.1.stable.official.a13da4feb",
+    "local_import_parse": "PASS_USER_LOCAL_COMMAND_TRANSCRIPT"
+  },
+  "godot_ai": {
+    "version": "3.1.3",
+    "role": "SOLE_PERSISTENT_GODOT_AUTHORING_AUTHORITY",
+    "enabled": true
+  },
+  "gut": {
+    "version": "9.7.1",
+    "role": "DETERMINISTIC_GDSCRIPT_TEST_AUTHORITY",
+    "persistent_authoring": false,
+    "enabled": true,
+    "hosted_reconciliation": "PASS_PRIOR_DECISION",
+    "local_clean_checkout": "PASS_EXACT_GODOT_4_7_1_GUT_9_7_1_JUNIT_USER_LOCAL_COMMAND_TRANSCRIPT",
+    "local_test_execution": "PASS",
+    "local_junit": "PASS"
+  },
+  "hera": {
+    "version": "1.0.0",
+    "role": "LIVE_QA_AND_OBSERVABILITY_ONLY",
+    "persistent_mutation": "FORBIDDEN",
+    "enabled": true,
+    "acceptance_source_delta": "NONE_REQUIRED",
+    "local_live_qa": "PASS_HERA_V1_0_0_EXACT_PAIR_LIVE_QA_SOURCE_DELTA_NONE"
+  },
+  "project_godot": {
+    "desired_state": "APPROVED_ACTIVE_PROTECTED_STATE",
+    "autoloads": [
+      "TenManualProductValidationBootstrap",
+      "HeraGameInspector",
+      "_mcp_game_helper"
+    ],
+    "enabled_plugins": [
+      "res://addons/godot_ai/plugin.cfg",
+      "res://addons/gut/plugin.cfg",
+      "res://addons/hera_agent_godot/plugin.cfg"
+    ],
+    "current_main_blob_before_reconciliation": "74dc86274f94c01611970b6027827fc5712bced0",
+    "rollback_to_disabled_baseline": "SUPERSEDED_DO_NOT_EXECUTE"
+  },
+  "local_higodot_l0": {
+    "state": "PASS_OBSERVED_EXISTING_STATE",
+    "session_id": "ten-paces-higodot-recovery@b62b",
+    "project_path": "C:/Users/user/AppData/Local/Temp/ten-paces-higodot-recovery/",
+    "persistent_write": "NONE"
+  },
+  "historical_local_collector_run": {
+    "evidence_level": "USER_LOCAL_FILE_READBACK",
+    "checkout_path": "C:/Users/user/AppData/Local/Temp/ten-paces-live-validation-20260809-213134",
+    "actual_godot_version": "4.7.stable.official.5b4e0cb0f",
+    "gut_status": "PASS_HISTORICAL_WRONG_GODOT_VERSION",
+    "acceptance": "SUPERSEDED_BY_EXACT_471_RERUN"
+  },
+  "local_exact_471_gut_junit_acceptance": {
+    "evidence_record": "docs/planning-data/local_godot_471_gut_junit_acceptance_20260810.json",
+    "evidence_level": "USER_LOCAL_COMMAND_TRANSCRIPT",
+    "checkout_path": "C:/Users/user/AppData/Local/Temp/ten-paces-pr130-gut-junit-20260810-002755",
+    "head": "1ecfb77eca6df0731c74f89ffe6d5dd16c6466d6",
+    "origin_main": "1ecfb77eca6df0731c74f89ffe6d5dd16c6466d6",
+    "initial_git_sync_status": "LOCAL_SYNC_CURRENT",
+    "initial_working_tree_clean": true,
+    "actual_godot_version": "4.7.1.stable.official.a13da4feb",
+    "godot_import_parse": "PASS",
+    "gut_status": "PASS",
+    "gut_test_execution": "PASS",
+    "gut_junit": "PASS",
+    "canonical_gut_xml_exists": true,
+    "evidence_gut_xml_exists": true,
+    "post_run_content_clean": true,
+    "post_run_porcelain_clean": false,
+    "stat_only_status_possible": true,
+    "collector_status": "COMPLETE_WITH_BLOCKERS",
+    "remaining_blocker_scope": "HERA_AT_TIME_OF_RUN_NOW_SUPERSEDED_BY_LOCAL_HERA_ACCEPTANCE"
+  },
+  "local_hera_v1_live_qa_acceptance": {
+    "evidence_record": "docs/planning-data/local_hera_v1_live_qa_acceptance_20260810.json",
+    "evidence_level": "USER_UPLOADED_RECOVERY_EVIDENCE_ZIP",
+    "checkout_path": "C:/Users/user/AppData/Local/Temp/ten-paces-hera-v1-20260810-005834/project",
+    "head": "ce81eeba1af293061c17e4547fdd2364ec33f8c9",
+    "origin_main": "ce81eeba1af293061c17e4547fdd2364ec33f8c9",
+    "actual_godot_version": "4.7.1.stable.official.a13da4feb",
+    "cli_version": "v1.0.0",
+    "addon_version": "1.0.0",
+    "windows_archive_sha256": "9ae181741c2e8a3f57bbb2a2e4c61ac2c9c7c844fad21c88ae3890c55a5cc66b",
+    "localhost_only": true,
+    "token_auth_enforced": true,
+    "status_exit_code": 0,
+    "status_exact_target": true,
+    "wrong_token_exit_code": 1,
+    "smoke_skip_game_exit_code": 0,
+    "pre_content_clean": true,
+    "post_content_clean": true,
+    "tracked_source_delta": "HERA_SOURCE_DELTA_NONE",
+    "verdict": "PASS_HERA_V1_0_0_EXACT_PAIR_LIVE_QA_SOURCE_DELTA_NONE"
+  },
+  "local_gut_product_export_exclusion_acceptance": {
+    "evidence_record": "docs/planning-data/local_gut_product_export_exclusion_acceptance_20260810.json",
+    "evidence_level": "USER_UPLOADED_LOCAL_POWERSHELL_AND_JSON",
+    "decision_id": "TEN-DEC-20260807-GUT-9-7-1-RECONCILIATION-01",
+    "project_base_main": "771ffe7d7ebe01a119a2bf8f0d91c37ef3fb2249",
+    "publication_pr": 133,
+    "publication_exact_head": "f355b1f9ef9376ee28ddc9b3c8473c97389a7bd9",
+    "publication_merge_main": "ffe45f57606812bed38458e9ce1d3cce4c92dcb5",
+    "godot_version": "4.7.1.stable.official.a13da4feb",
+    "export_filter": "all_resources",
+    "include_filter": "",
+    "exclude_filter": "addons/gut/**,tests/**,.gutconfig.json",
+    "windows_export_exit_code": 0,
+    "pck_probe_exit_code": 0,
+    "godot_ai_runtime_preserved": true,
+    "verdict": "PASS_HIGODOT_L2_AUTHORING_AND_EXPORT_REGRESSION"
+  },
+  "remaining_gates": {
+    "hera_cli_pair": "PASS_EXACT_V1_0_0_USER_LOCAL_EVIDENCE",
+    "exact_local_hera_cli_version": "v1.0.0",
+    "hera_status": "PASS_EXACT_TARGET",
+    "hera_smoke_skip_game": "PASS",
+    "hera_phase_source_delta": "HERA_SOURCE_DELTA_NONE",
+    "local_gut_clean_checkout": "PASS_EXACT_GODOT_4_7_1_GUT_9_7_1_JUNIT_USER_LOCAL_COMMAND_TRANSCRIPT",
+    "godot_import_parse": "PASS_EXACT_GODOT_4_7_1_USER_LOCAL_COMMAND_TRANSCRIPT",
+    "collector_postcheck_hardening": "PR130_MERGED_LOCAL_RERUN_PASS",
+    "tooling_export_exclusion": "PASS_HIGODOT_L2_AUTHORING_AND_L1_EXPORT_REGRESSION",
+    "local_windows": "PASS_GODOT_GUT_HERA_EXPORT_CORE_ANDROID_DEVICE_HUMAN_REMAIN",
+    "local_android_device": "BLOCKED_UNVERIFIED",
+    "human_validation": "BLOCKED_NOT_RUN"
+  },
+  "protected_approval": {
+    "status": "HISTORICAL_MERGED",
+    "protected_base_commit": "a839cd724d0d3ca60c8066abe5a1e2a5e0b78e90",
+    "promoted_protected_baseline": "00a5502f1e40db77dce9495a57292b77bf4e3a5a",
+    "validator_detected_paths": [
+      "project.godot"
+    ],
+    "historical_record": "docs/operations/2026-08-09_ACTIVE_TOOLCHAIN_PROTECTED_CHANGE_APPROVAL_RECORD.md",
+    "active_manifest_present": false,
+    "external_label": "approved-protected-change"
+  },
+  "product_implementation_authorized": false
+}

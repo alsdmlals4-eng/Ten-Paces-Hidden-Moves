@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "default_id": "none",
+  "hypotheses": [
+    {
+      "id": "approach",
+      "label": "접근",
+      "recorded": true,
+      "description": "상대가 거리를 줄이려 한다고 본다."
+    },
+    {
+      "id": "quick_attack",
+      "label": "속공",
+      "recorded": true,
+      "description": "상대가 빠른 공격으로 순서를 선점하려 한다고 본다."
+    },
+    {
+      "id": "heavy_prepare",
+      "label": "강공 준비",
+      "recorded": true,
+      "description": "상대가 다중 수를 써 강한 공격을 준비한다고 본다."
+    },
+    {
+      "id": "response_or_recover",
+      "label": "대응·회복",
+      "recorded": true,
+      "description": "상대가 막기·회피·명상으로 버틴다고 본다."
+    },
+    {
+      "id": "ultimate",
+      "label": "절초",
+      "recorded": true,
+      "description": "상대가 기세를 써 절초를 시도한다고 본다."
+    },
+    {
+      "id": "none",
+      "label": "기록한 가설 없음",
+      "recorded": false,
+      "description": "이번 묶음에는 상대 의도를 기록하지 않는다."
+    }
+  ]
+}

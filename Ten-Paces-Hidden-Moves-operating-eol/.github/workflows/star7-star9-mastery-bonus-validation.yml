@@ -1,0 +1,27 @@
+name: Validate Star7 Star9 Mastery Bonus
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-star7-star9-mastery-bonus:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.12"
+
+      - name: Run Star7 Star9 mastery bonus regression tests
+        run: python -m unittest tests.test_star7_star9_mastery_bonus_contract -v
+
+      - name: Validate Star7 Star9 mastery bonus contract
+        run: python tools/check_star7_star9_mastery_bonus_contract.py

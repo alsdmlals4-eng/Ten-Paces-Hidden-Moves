@@ -1,0 +1,29 @@
+name: Validate Wrong-Plan Rescue Derived Stats
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - "docs/planning-data/approved_20260805_wrong_plan_rescue_derived_stats_contract.json"
+      - "tools/check_wrong_plan_rescue_derived_stats_contract.py"
+      - "tests/test_wrong_plan_rescue_derived_stats_contract.py"
+      - "docs/decisions/2026-08-05_WRONG_PLAN_RESCUE_DERIVED_STATS_DECISION.md"
+      - "docs/02_COMBAT_RULES_DERIVED_STATS_AND_RESCUE_AMENDMENT.md"
+      - ".github/workflows/wrong-plan-rescue-derived-stats-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.12"
+      - name: Run wrong-plan rescue derived stats regression tests
+        run: python -m unittest tests.test_wrong_plan_rescue_derived_stats_contract -v
+      - name: Validate wrong-plan rescue derived stats contract
+        run: python tools/check_wrong_plan_rescue_derived_stats_contract.py

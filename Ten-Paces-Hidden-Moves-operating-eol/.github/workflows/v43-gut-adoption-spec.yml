@@ -1,0 +1,43 @@
+name: v4.3 GUT Adoption Spec
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/v43-gut-adoption-spec.yml"
+      - "docs/decisions/2026-08-06_INTEGRATED_WORK_CONTRACT_V4_3_BINDING_DECISION.md"
+      - "docs/decisions/2026-08-06_GUT_9_7_1_ADOPTION_SPEC_DECISION.md"
+      - "docs/planning-data/approved_20260806_integrated_work_contract_v4_3_binding.json"
+      - "docs/planning-data/approved_20260806_gut_9_7_1_adoption_spec.json"
+      - "tests/test_v43_gut_adoption_spec_gate.py"
+      - "tools/check_v43_gut_adoption_spec.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  v43-gut-adoption-spec-exact-head:
+    name: v43-gut-adoption-spec-exact-head
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out exact PR head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          show-progress: false
+
+      - name: Require exact PR head
+        if: github.event_name == 'pull_request'
+        run: test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.12"
+
+      - name: Run v4.3 adoption-spec regression tests
+        run: python -m unittest tests.test_v43_gut_adoption_spec_gate -v
+
+      - name: Validate v4.3 adoption-spec contract
+        run: python tools/check_v43_gut_adoption_spec.py

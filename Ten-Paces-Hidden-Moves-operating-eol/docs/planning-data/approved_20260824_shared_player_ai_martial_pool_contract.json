@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260824-SHARED-PLAYER-AI-MARTIAL-POOL-01",
+  "authority_status": "CURRENT_APPROVED_PLAYER_AI_CONTENT_ELIGIBILITY",
+  "availability_policy": "PLAYER_LEARNABLE_SHARED_WITH_AI",
+  "enemy_exclusive_manuals_allowed": false,
+  "enemy_exclusive_techniques_allowed": false,
+  "runtime_manifest": "data/cards/martial_manual_cards.json",
+  "unlock_authority": "MartialManualRegistry.build_unlocked_cards(manual_id, mastery)",
+  "same_manual_same_mastery_same_card_ids_and_effects": true,
+  "player_learnable_manual_ids": [
+    "mount_hua_plum_blossom_sword",
+    "shaolin_arhat_vajra_art",
+    "wudang_taiji_sword",
+    "yang_family_spear",
+    "mount_hua_purple_mist_art",
+    "xiaoyao_lingbo_footwork",
+    "beggars_dragon_subduing_palm",
+    "sichuan_tang_hidden_weapons",
+    "hebei_peng_five_tigers_saber",
+    "nangong_boundless_sky_sword"
+  ],
+  "current_vertical_slice_starter_manual_ids": [
+    "mount_hua_plum_blossom_sword",
+    "shaolin_arhat_vajra_art",
+    "wudang_taiji_sword",
+    "yang_family_spear",
+    "mount_hua_purple_mist_art",
+    "xiaoyao_lingbo_footwork"
+  ],
+  "opponent_identity_sources": [
+    "manual_loadout",
+    "mastery_seed",
+    "basic_action_mix",
+    "behavior_focus",
+    "public_resolved_history"
+  ],
+  "forbidden_opponent_identity_sources": [
+    "enemy_only_martial_manual",
+    "enemy_only_martial_technique",
+    "unconfirmed_player_plan",
+    "hidden_player_placement",
+    "ui_intent_signal"
+  ],
+  "acquisition_evidence_ceiling": {
+    "starter_six_selection": "IMPLEMENTED_VERTICAL_SLICE_SETUP",
+    "remaining_four_player_acquisition_paths": "NOT_ASSERTED_IMPLEMENTED"
+  },
+  "scope_boundary": {
+    "new_martial_manuals": false,
+    "new_martial_techniques": false,
+    "card_id_changes": false,
+    "effect_changes": false,
+    "opponent_assignment_changes": false,
+    "mastery_seed_changes": false,
+    "ai_planner_changes": false,
+    "balance_changes": false
+  }
+}

@@ -1,0 +1,413 @@
+{
+  "alias_resolutions": {},
+  "aliases": [],
+  "artifact_role": "PROJECT_SKILL_SNAPSHOT",
+  "base_registry": {
+    "hash_definition": "RAW_FILE_BYTES_SHA256",
+    "path": "skills/SKILL_REGISTRY.json",
+    "sha256": "693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59"
+  },
+  "base_routes": [
+    {
+      "route_id": "analyzing-and-refining-game-concepts",
+      "skill_id": "analyzing-and-refining-game-concepts",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "auditing-and-refining-ui-art",
+      "skill_id": "auditing-and-refining-ui-art",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "auditing-canonical-reference-freshness",
+      "skill_id": "auditing-canonical-reference-freshness",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "building-project-visual-dashboards",
+      "skill_id": "building-project-visual-dashboards",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "creating-user-learning-notes",
+      "skill_id": "creating-user-learning-notes",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "designing-art-prompts-and-technique-cards",
+      "skill_id": "designing-art-prompts-and-technique-cards",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "designing-vertical-slices",
+      "skill_id": "designing-vertical-slices",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "diagnosing-game-engine-runtime-failures",
+      "skill_id": "diagnosing-game-engine-runtime-failures",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "establishing-project-core",
+      "skill_id": "establishing-project-core",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "evaluating-godot-assets-and-plugins-before-creation",
+      "skill_id": "evaluating-godot-assets-and-plugins-before-creation",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "evolving-project-discipline-skills",
+      "skill_id": "evolving-project-discipline-skills",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "governing-game-user-research-coverage",
+      "skill_id": "governing-game-user-research-coverage",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "governing-legacy-retention-and-archives",
+      "skill_id": "governing-legacy-retention-and-archives",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "identifying-project-core",
+      "skill_id": "identifying-project-core",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "maintaining-long-running-task-continuity",
+      "skill_id": "maintaining-long-running-task-continuity",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "maintaining-project-context-and-handoff",
+      "skill_id": "maintaining-project-context-and-handoff",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "managing-base-change-proposals",
+      "skill_id": "managing-base-change-proposals",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "managing-design-documents",
+      "skill_id": "managing-design-documents",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "managing-game-project-operating-system",
+      "skill_id": "managing-game-project-operating-system",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "managing-project-intake-and-work-contract",
+      "skill_id": "managing-project-intake-and-work-contract",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "optimizing-ai-model-and-prompt-costs",
+      "skill_id": "optimizing-ai-model-and-prompt-costs",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "orchestrating-deepseek-worktrees",
+      "skill_id": "orchestrating-deepseek-worktrees",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "pruning-stale-and-nonfunctional-material",
+      "skill_id": "pruning-stale-and-nonfunctional-material",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "refactoring-with-contract-preservation",
+      "skill_id": "refactoring-with-contract-preservation",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "reviewing-and-validating-project-changes",
+      "skill_id": "reviewing-and-validating-project-changes",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "running-adversarial-review-and-refinement",
+      "skill_id": "running-adversarial-review-and-refinement",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "simplifying-skill-bodies",
+      "skill_id": "simplifying-skill-bodies",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "synchronizing-local-and-github-state",
+      "skill_id": "synchronizing-local-and-github-state",
+      "status": "ACTIVE"
+    }
+  ],
+  "effective_routes": {
+    "analyzing-and-refining-game-concepts": {
+      "route_id": "analyzing-and-refining-game-concepts",
+      "skill_id": "analyzing-and-refining-game-concepts",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "analyzing-and-refining-game-concepts"
+    },
+    "auditing-and-refining-ui-art": {
+      "route_id": "auditing-and-refining-ui-art",
+      "skill_id": "auditing-and-refining-ui-art",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "auditing-and-refining-ui-art"
+    },
+    "auditing-canonical-reference-freshness": {
+      "route_id": "auditing-canonical-reference-freshness",
+      "skill_id": "auditing-canonical-reference-freshness",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "auditing-canonical-reference-freshness"
+    },
+    "building-project-visual-dashboards": {
+      "route_id": "building-project-visual-dashboards",
+      "skill_id": "building-project-visual-dashboards",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "building-project-visual-dashboards"
+    },
+    "combat-implementation-handoff": {
+      "route_id": "combat-implementation-handoff",
+      "skill_id": "combat-implementation-handoff",
+      "source": "PROJECT_LOCAL",
+      "status": "ACTIVE",
+      "target_route_id": "combat-implementation-handoff"
+    },
+    "combat-ux-and-accessibility": {
+      "route_id": "combat-ux-and-accessibility",
+      "skill_id": "combat-ux-and-accessibility",
+      "source": "PROJECT_LOCAL",
+      "status": "ACTIVE",
+      "target_route_id": "combat-ux-and-accessibility"
+    },
+    "creating-user-learning-notes": {
+      "route_id": "creating-user-learning-notes",
+      "skill_id": "creating-user-learning-notes",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "creating-user-learning-notes"
+    },
+    "designing-art-prompts-and-technique-cards": {
+      "route_id": "designing-art-prompts-and-technique-cards",
+      "skill_id": "designing-art-prompts-and-technique-cards",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "designing-art-prompts-and-technique-cards"
+    },
+    "designing-vertical-slices": {
+      "route_id": "designing-vertical-slices",
+      "skill_id": "designing-vertical-slices",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "designing-vertical-slices"
+    },
+    "diagnosing-game-engine-runtime-failures": {
+      "route_id": "diagnosing-game-engine-runtime-failures",
+      "skill_id": "diagnosing-game-engine-runtime-failures",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "diagnosing-game-engine-runtime-failures"
+    },
+    "establishing-project-core": {
+      "route_id": "establishing-project-core",
+      "skill_id": "establishing-project-core",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "establishing-project-core"
+    },
+    "evaluating-godot-assets-and-plugins-before-creation": {
+      "route_id": "evaluating-godot-assets-and-plugins-before-creation",
+      "skill_id": "evaluating-godot-assets-and-plugins-before-creation",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "evaluating-godot-assets-and-plugins-before-creation"
+    },
+    "evolving-project-discipline-skills": {
+      "route_id": "evolving-project-discipline-skills",
+      "skill_id": "evolving-project-discipline-skills",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "evolving-project-discipline-skills"
+    },
+    "governing-game-user-research-coverage": {
+      "route_id": "governing-game-user-research-coverage",
+      "skill_id": "governing-game-user-research-coverage",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "governing-game-user-research-coverage"
+    },
+    "governing-legacy-retention-and-archives": {
+      "route_id": "governing-legacy-retention-and-archives",
+      "skill_id": "governing-legacy-retention-and-archives",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "governing-legacy-retention-and-archives"
+    },
+    "identifying-project-core": {
+      "route_id": "identifying-project-core",
+      "skill_id": "identifying-project-core",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "identifying-project-core"
+    },
+    "maintaining-long-running-task-continuity": {
+      "route_id": "maintaining-long-running-task-continuity",
+      "skill_id": "maintaining-long-running-task-continuity",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "maintaining-long-running-task-continuity"
+    },
+    "maintaining-project-context-and-handoff": {
+      "route_id": "maintaining-project-context-and-handoff",
+      "skill_id": "maintaining-project-context-and-handoff",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "maintaining-project-context-and-handoff"
+    },
+    "managing-base-change-proposals": {
+      "route_id": "managing-base-change-proposals",
+      "skill_id": "managing-base-change-proposals",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "managing-base-change-proposals"
+    },
+    "managing-design-documents": {
+      "route_id": "managing-design-documents",
+      "skill_id": "managing-design-documents",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "managing-design-documents"
+    },
+    "managing-game-project-operating-system": {
+      "route_id": "managing-game-project-operating-system",
+      "skill_id": "managing-game-project-operating-system",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "managing-game-project-operating-system"
+    },
+    "managing-project-intake-and-work-contract": {
+      "route_id": "managing-project-intake-and-work-contract",
+      "skill_id": "managing-project-intake-and-work-contract",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "managing-project-intake-and-work-contract"
+    },
+    "optimizing-ai-model-and-prompt-costs": {
+      "route_id": "optimizing-ai-model-and-prompt-costs",
+      "skill_id": "optimizing-ai-model-and-prompt-costs",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "optimizing-ai-model-and-prompt-costs"
+    },
+    "orchestrating-deepseek-worktrees": {
+      "route_id": "orchestrating-deepseek-worktrees",
+      "skill_id": "orchestrating-deepseek-worktrees",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "orchestrating-deepseek-worktrees"
+    },
+    "pruning-stale-and-nonfunctional-material": {
+      "route_id": "pruning-stale-and-nonfunctional-material",
+      "skill_id": "pruning-stale-and-nonfunctional-material",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "pruning-stale-and-nonfunctional-material"
+    },
+    "refactoring-with-contract-preservation": {
+      "route_id": "refactoring-with-contract-preservation",
+      "skill_id": "refactoring-with-contract-preservation",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "refactoring-with-contract-preservation"
+    },
+    "reviewing-and-validating-project-changes": {
+      "route_id": "reviewing-and-validating-project-changes",
+      "skill_id": "reviewing-and-validating-project-changes",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "reviewing-and-validating-project-changes"
+    },
+    "running-adversarial-review-and-refinement": {
+      "route_id": "running-adversarial-review-and-refinement",
+      "skill_id": "running-adversarial-review-and-refinement",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "running-adversarial-review-and-refinement"
+    },
+    "simplifying-skill-bodies": {
+      "route_id": "simplifying-skill-bodies",
+      "skill_id": "simplifying-skill-bodies",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "simplifying-skill-bodies"
+    },
+    "synchronizing-local-and-github-state": {
+      "route_id": "synchronizing-local-and-github-state",
+      "skill_id": "synchronizing-local-and-github-state",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "synchronizing-local-and-github-state"
+    },
+    "ten-paces-game-design": {
+      "route_id": "ten-paces-game-design",
+      "skill_id": "ten-paces-game-design",
+      "source": "PROJECT_LOCAL",
+      "status": "ACTIVE",
+      "target_route_id": "ten-paces-game-design"
+    },
+    "ten-paces-verification": {
+      "route_id": "ten-paces-verification",
+      "skill_id": "ten-paces-verification",
+      "source": "PROJECT_LOCAL",
+      "status": "ACTIVE",
+      "target_route_id": "ten-paces-verification"
+    }
+  },
+  "generated": true,
+  "inactive_routes": [],
+  "project_registry": {
+    "hash_definition": "RAW_FILE_BYTES_SHA256",
+    "path": "skills/SKILL_REGISTRY.json",
+    "sha256": "1a0072ff8b0c7c37b5e3e94ef6e12fc410e48406531603d312a73d30f704d7af"
+  },
+  "project_routes": [
+    {
+      "route_id": "combat-implementation-handoff",
+      "skill_id": "combat-implementation-handoff",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "combat-ux-and-accessibility",
+      "skill_id": "combat-ux-and-accessibility",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "ten-paces-game-design",
+      "skill_id": "ten-paces-game-design",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "ten-paces-verification",
+      "skill_id": "ten-paces-verification",
+      "status": "ACTIVE"
+    }
+  ],
+  "schema_version": 1,
+  "source_registry": {
+    "hash_definition": "RAW_FILE_BYTES_SHA256",
+    "path": "skills/PROJECT_BASE_ADAPTER.json",
+    "sha256": "40ed0b40c9e013d88510b8cc44f6d40ec09d6552eb2c0645c4155ae477679540"
+  }
+}

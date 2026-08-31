@@ -1,0 +1,35 @@
+name: Validate BCA Visual Sheet Adoption
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "README.md"
+      - "AGENTS.md"
+      - "docs/BASE_RULES_VERSION.md"
+      - "docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md"
+      - "docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md"
+      - "docs/BCA_VISUAL_SHEET_ADOPTION_AUDIT.md"
+      - "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json"
+      - "skills/ux-ui-accessibility/combat-ux-and-accessibility/SKILL.md"
+      - "tests/test_bca_visual_sheet_adoption.py"
+      - ".github/workflows/validate-bca-visual-sheet-adoption.yml"
+permissions:
+  contents: read
+concurrency:
+  group: ten-paces-bca-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.12"
+      - name: Run contract and stale-reference audit
+        shell: bash
+        run: |
+          python -m py_compile tests/test_bca_visual_sheet_adoption.py
+          python -m unittest tests.test_bca_visual_sheet_adoption -v
+          git grep -n -I -E 'VERTICAL_SLICE_EXECUTION_PROMPT_SHORT_v6|VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v7' -- README.md AGENTS.md docs '[기획서]/00_프로젝트_허브' skills || true
+          git diff --check origin/main...HEAD

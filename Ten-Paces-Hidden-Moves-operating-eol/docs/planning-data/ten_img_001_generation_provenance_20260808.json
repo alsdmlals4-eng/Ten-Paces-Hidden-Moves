@@ -1,0 +1,98 @@
+{
+  "schema_version": 2,
+  "record_id": "TEN-GEN-20260808-TEN-IMG-001-01",
+  "image_id": "TEN-IMG-001",
+  "requirement_id": "TEN-VIS-REQ-001",
+  "approval_decision_id": "TEN-DEC-20260808-TEN-IMG-001-VISUAL-REQUIREMENT-APPROVAL-01",
+  "current_overlay_decision_id": "TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01",
+  "source_ui_decision_id": "TEN-DEC-20260808-COMBAT-PLANNING-UI-CARD-TIMELINE-01",
+  "status": "CHAT_EXPLORATIONS_GENERATED_REVIEWED_PAUSED_NOT_ASSET",
+  "prepared_at": "2026-08-08T22:06:00+09:00",
+  "generation_observed_at": "2026-08-11",
+  "tool_provider": "OpenAI",
+  "tool": "image_gen",
+  "output_stage": "PLANNING_VISUALIZATION_EXPLORATION_ONLY",
+  "output_asset_status": "NOT_AN_ASSET",
+  "repository_binary_promotion": "NOT_PERFORMED",
+  "exploration_runs": [
+    {
+      "generation_id": "d1529de2-0f20-4921-93b9-c7ba68145db6",
+      "review": "REJECT_AND_CORRECT",
+      "observed_problems": [
+        "numbered floor-cell row remained visible",
+        "card effects and labels mixed current planning with incorrect or invented values",
+        "non-attack presentation still implied range-like fields"
+      ]
+    },
+    {
+      "generation_id": "d281983a-5fbb-44ea-bcd2-718b4f07ec18",
+      "review": "DIRECTIONALLY_ACCEPTED_AS_FEEL_ONLY_THEN_TEXT_CORRECTIONS_CONTINUED",
+      "observed_improvements": [
+        "distance badge centered on duel scene",
+        "public start distance shown as 2",
+        "numbered floor-cell row removed",
+        "행동계획 잠금 control present"
+      ],
+      "remaining_corrections": [
+        "non-attack actions must omit range entirely",
+        "observation reveals enemy action type only",
+        "multi-slot final execution shows actual action type",
+        "no predicted hit-rate concept",
+        "no [기절] tag"
+      ]
+    }
+  ],
+  "current_user_instruction": "이미지는 그만 만들고. 채팅으로 하자.",
+  "additional_generation_status": "PAUSED_BY_USER",
+  "resume_requires_new_user_request": true,
+  "reference_inputs": [
+    {
+      "reference": "USER_REFERENCE_COMBAT_UI_IMAGES_IN_CURRENT_CHAT",
+      "use": "STYLE_AND_INFORMATION_HIERARCHY_REFERENCE_ONLY",
+      "constraint": "특정 작품의 고유 캐릭터·로고·식별 가능한 UI를 제품 자산으로 복제하지 않는다."
+    }
+  ],
+  "current_canonical_corrections": {
+    "battlefield": [
+      "logical field remains 10 cells internally",
+      "numbered floor cells are not player-facing",
+      "public start distance is 2",
+      "distance is shown with a central 거리 N badge",
+      "distance 0 is [밀착]"
+    ],
+    "cards": [
+      "range field is ATTACK_ACTIONS_ONLY",
+      "movement uses [이동] 1 or [이동] 1~2",
+      "evade uses [회피] 1",
+      "observe uses [관찰] 1",
+      "absent condition/range rows are omitted"
+    ],
+    "observation": [
+      "enemy plan locks before reveal",
+      "reveal is front-to-back action type only",
+      "technique name/cost/direction/range/damage/target remain hidden"
+    ],
+    "multi_slot": [
+      "2-slot internal phases are [전조] -> [실행]",
+      "player plan final slot displays actual type such as [공격] 비연검"
+    ],
+    "forbidden": [
+      "[기절]",
+      "예상 명중률",
+      "% 명중률"
+    ]
+  },
+  "rights_or_provenance": {
+    "third_party_logo_or_character_copy": "FORBIDDEN",
+    "promotion_requires_separate_review": true,
+    "generated_outputs_not_committed_as_product_assets": true
+  },
+  "post_generation_review": {
+    "planning_match": "PARTIAL_DIRECTION_ONLY",
+    "readability": "TEXTUAL_REVIEW_CONTINUES",
+    "implementation_feasibility": "NOT_VALIDATED",
+    "style_consistency": "DIRECTIONALLY_ACCEPTED",
+    "rights_similarity": "NOT_FORMALLY_REVIEWED",
+    "windows_android_responsive_feasibility": "NOT_RUN"
+  }
+}

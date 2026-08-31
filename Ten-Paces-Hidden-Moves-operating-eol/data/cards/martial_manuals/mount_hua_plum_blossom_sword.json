@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260806-TEN-RECOGNIZABLE-MARTIAL-MANUALS-FULL-GROWTH-01",
+  "manual_id": "mount_hua_plum_blossom_sword",
+  "faction": "화산파",
+  "manual_name": "매화검결",
+  "primary_stat": "신법",
+  "secondary_stat": "외공",
+  "cards": {
+    "star3": {
+      "id": "mount_hua_plum_blossom_sword_star3",
+      "name": "매화삼첩",
+      "manual_id": "mount_hua_plum_blossom_sword",
+      "unlock_star": 3,
+      "source": "martial_manual",
+      "category": "attack",
+      "resolution_phase": "general",
+      "targeting_mode": "attack_direction",
+      "action_slots": 2,
+      "stamina_cost": 1,
+      "internal_cost": 1,
+      "range": {"min": 1, "max": 1},
+      "effect_steps": [
+        {"op": "INDEPENDENT_ATTACK", "power": 4, "min_range": 1, "max_range": 1},
+        {"op": "REQUIRE_ACTUAL_HP_HITS", "count": 1},
+        {"op": "INDEPENDENT_ATTACK", "power": 3, "min_range": 1, "max_range": 1},
+        {"op": "REQUIRE_ACTUAL_HP_HITS", "count": 2},
+        {"op": "INDEPENDENT_ATTACK", "power": 3, "min_range": 1, "max_range": 1}
+      ],
+      "budget_reference": "planning:star3",
+      "balance_status": "PROVISIONAL_WITHIN_APPROVED_BUDGET",
+      "tags": []
+    },
+    "star7": {
+      "id": "mount_hua_plum_blossom_sword_star7",
+      "name": "낙매추영",
+      "manual_id": "mount_hua_plum_blossom_sword",
+      "unlock_star": 7,
+      "source": "martial_manual",
+      "category": "attack",
+      "resolution_phase": "general",
+      "targeting_mode": "attack_direction",
+      "action_slots": 2,
+      "stamina_cost": 1,
+      "internal_cost": 1,
+      "range": {"min": 1, "max": 2},
+      "effect_steps": [
+        {"op": "MOVE_TOWARD", "tiles": 1},
+        {"op": "RECHECK_RANGE", "min": 1, "max": 2},
+        {"op": "SPECIAL_CLASH", "power": 8, "stat": "신법", "coefficient": 1.0}
+      ],
+      "budget_reference": "star7_profiles.mount_hua_plum_blossom_sword",
+      "balance_status": "PROVISIONAL_WITHIN_APPROVED_BUDGET",
+      "tags": []
+    },
+    "star10": {
+      "id": "mount_hua_plum_blossom_sword_star10",
+      "name": "이십사수매화검법",
+      "manual_id": "mount_hua_plum_blossom_sword",
+      "unlock_star": 10,
+      "source": "martial_manual",
+      "category": "attack",
+      "resolution_phase": "general",
+      "targeting_mode": "attack_direction",
+      "action_slots": 3,
+      "stamina_cost": 3,
+      "internal_cost": 3,
+      "range": {"min": 1, "max": 1},
+      "effect_steps": [
+        {"op": "MOVE_TOWARD", "tiles": 1},
+        {"op": "RECHECK_RANGE", "min": 1, "max": 1},
+        {"op": "INDEPENDENT_ATTACK", "power": 5, "min_range": 1, "max_range": 1},
+        {"op": "INDEPENDENT_ATTACK", "power": 5, "min_range": 1, "max_range": 1},
+        {"op": "INDEPENDENT_ATTACK", "power": 5, "min_range": 1, "max_range": 1},
+        {"op": "REQUIRE_ACTUAL_HP_HITS", "count": 2},
+        {"op": "MOVE_TOWARD", "tiles": 1},
+        {"op": "RECHECK_RANGE", "min": 1, "max": 1},
+        {"op": "ATTACK", "power": 8, "min_range": 1, "max_range": 1}
+      ],
+      "budget_reference": "ultimate_profiles.mount_hua_plum_blossom_sword",
+      "balance_status": "PROVISIONAL_WITHIN_APPROVED_BUDGET",
+      "tags": ["절초", "다단"]
+    }
+  },
+  "overlays": {
+    "star5": {
+      "name": "낙매유향",
+      "unlock_star": 5,
+      "target": "star3",
+      "effect_steps": [
+        {"op": "REQUIRE_ACTUAL_HP_HITS", "count": 3},
+        {"op": "MOVE_AWAY", "tiles": 1},
+        {"op": "GAIN_RESOURCE", "resource": "defense", "amount": 2}
+      ]
+    },
+    "star9": {
+      "name": "매화연세",
+      "unlock_star": 9,
+      "target": "star7",
+      "effect_steps": [{"op": "GAIN_STATUS", "status": "prepared", "amount": 1, "condition": "CLASH_WIN"}],
+      "branching_allowed": false,
+      "additional_input_allowed": false,
+      "additional_resource_cost_allowed": false
+    }
+  }
+}

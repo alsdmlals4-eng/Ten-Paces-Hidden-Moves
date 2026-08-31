@@ -1,0 +1,32 @@
+{
+  "schema_version": "1",
+  "project_identity": {
+    "repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
+    "project_id": "ten-paces-hidden-moves"
+  },
+  "base_pilot_commit": "2b595570bd237174b2b962a1eb54588b5ecc508d",
+  "project_state": "EXISTING_GODOT_PROJECT",
+  "godot": {
+    "version": "4.7.1-stable",
+    "archive_sha256": "c7ff14fd28472c8d4f193043de30278dcf7e5241a1dcf7566b02e27addaa33ba"
+  },
+  "project_file": "project.godot",
+  "main_scene_source": "application/run/main_scene",
+  "legacy_editor_plugins": [
+    "res://addons/godot_ai/plugin.cfg"
+  ],
+  "legacy_autoloads": [
+    "_mcp_game_helper"
+  ],
+  "legacy_disable_mode": "TEMPORARY_COPY_ONLY",
+  "source_mutation_policy": "FORBIDDEN",
+  "scratch_scene_path": "res://.godot-live-editor-pilot/scratch.tscn",
+  "behavior_checks": [
+    {
+      "kind": "GODOT_SCRIPT",
+      "target": "res://tests/verify_step0.gd",
+      "timeout_seconds": 60
+    }
+  ],
+  "expected_platform": "PC"
+}

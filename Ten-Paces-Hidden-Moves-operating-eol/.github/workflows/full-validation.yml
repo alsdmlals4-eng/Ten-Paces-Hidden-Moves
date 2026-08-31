@@ -1,0 +1,231 @@
+name: Full Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main]
+  schedule:
+    - cron: "23 18 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  full-validation-scope:
+    name: classify-full-validation-scope
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.scope.outputs.enabled }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          show-progress: false
+      - name: Detect approved runtime build
+        id: scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ "${{ vars.ACTIONS_FULL_VALIDATION_ENABLED }}" == "true" ]]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ "${{ github.event_name }}" != "pull_request" ]]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" > changed-files.txt
+          runtime_changed=false
+          approval_changed=false
+          if grep -Eq '^(project\.godot|data/|src/|scenes/|assets/|addons/)' changed-files.txt; then
+            runtime_changed=true
+          fi
+          if grep -Eq '^docs/implementation/BUILD_APPROVAL_[0-9]{4}-[0-9]{2}-[0-9]{2}\.md$' changed-files.txt; then
+            approval_changed=true
+          fi
+          if [[ "$runtime_changed" == "true" && "$approval_changed" == "true" ]]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  action-selection-godot-smoke:
+    name: action-selection-godot-smoke
+    needs: full-validation-scope
+    if: needs.full-validation-scope.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          show-progress: false
+      - name: Set up Godot 4.7.1
+        uses: chickensoft-games/setup-godot@f166999204a4f2722c6fe042fbaa3b3ea0d9c789
+        with:
+          version: 4.7.1
+          use-dotnet: false
+          include-templates: false
+      - name: Import and parse project
+        run: godot --headless --editor --path . --quit
+      - name: Verify product focus order
+        run: godot --headless --path . --script res://tests/verify_combat_focus_order.gd
+      - name: Upload focus diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: focus-order-report
+          path: focus-order-report.txt
+          if-no-files-found: warn
+          retention-days: 3
+      - name: Verify action view model adapter
+        run: godot --headless --path . --script res://tests/verify_action_view_model_adapter.gd
+      - name: Verify action selection dock
+        run: godot --headless --path . --script res://tests/verify_action_selection_dock.gd
+      - name: Verify basic action panel
+        run: godot --headless --path . --script res://tests/verify_basic_action_panel.gd
+      - name: Verify martial action panel
+        run: godot --headless --path . --script res://tests/verify_martial_action_panel.gd
+      - name: Verify ultimate action panel
+        run: godot --headless --path . --script res://tests/verify_ultimate_action_panel.gd
+      - name: Verify action placement controller
+        run: godot --headless --path . --script res://tests/verify_action_placement_controller.gd
+      - name: Verify linked action blocks
+        run: godot --headless --path . --script res://tests/verify_linked_action_blocks.gd
+      - name: Verify action repositioning
+        run: godot --headless --path . --script res://tests/verify_action_repositioning.gd
+      - name: Verify action detail panel
+        run: godot --headless --path . --script res://tests/verify_action_detail_panel.gd
+      - name: Verify combat action selection integration
+        run: godot --headless --path . --script res://tests/verify_combat_action_selection_integration.gd
+
+  matrix-contracts:
+    name: ${{ matrix.os }}-python-${{ matrix.python }}
+    needs: full-validation-scope
+    if: needs.full-validation-scope.outputs.enabled == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.11", "3.12"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          show-progress: false
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Validate project operating system
+        run: python tools/check_project_operating_system.py --root . --config .github/documentation-governance.json
+      - name: Validate canonical reference freshness
+        run: python tools/check_canonical_reference_freshness.py --root . --config .github/reference-freshness.json
+      - name: Validate Skill package integrity
+        run: python tools/check_skill_package_integrity.py
+      - name: Validate archive retention governance
+        run: python tools/check_archive_governance.py
+      - name: Run archive retention regression tests
+        run: python -m unittest tests.test_archive_retention_governance -v
+      - name: Run governance regression tests
+        run: python -m unittest discover -s tests -p "test_project_governance.py"
+      - name: Validate PoC planning data
+        run: python -m unittest tests.test_poc_planning_data -v
+      - name: Validate card component contract
+        run: python tests/check_card_component_contract.py
+      - name: Validate combat contract
+        run: python tests/check_combat_board_contract.py
+      - name: Validate canonical combat impact map
+        run: python tests/check_canonical_combat_docs.py
+      - name: Validate rival tendency contract
+        run: python tests/check_rival_tendency_contract.py
+      - name: Validate A2 hypothesis and summary contract
+        run: python tests/check_repeat_poc_a2_contract.py
+      - name: Validate A3 review UI contract
+        run: python tests/check_repeat_poc_a3_contract.py
+      - name: Validate prepare and auto placement contract
+        run: python tests/check_prepare_auto_placement_contract.py
+      - name: Validate action selection contract
+        run: python tests/check_action_selection_contract.py
+
+  godot-headless:
+    name: ubuntu-godot-headless
+    needs: full-validation-scope
+    if: needs.full-validation-scope.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          show-progress: false
+      - name: Set up Godot 4.7.1
+        uses: chickensoft-games/setup-godot@f166999204a4f2722c6fe042fbaa3b3ea0d9c789
+        with:
+          version: 4.7.1
+          use-dotnet: false
+          include-templates: false
+      - name: Import and parse project
+        run: godot --headless --editor --path . --quit
+      - name: Verify STEP 0
+        run: godot --headless --path . --script res://tests/verify_step0.gd
+      - name: Verify combat board
+        run: godot --headless --path . --script res://tests/verify_combat_board.gd
+      - name: Verify response rules
+        run: godot --headless --path . --script res://tests/verify_response_rules.gd
+      - name: Verify ultimate interruption engagement
+        run: godot --headless --path . --script res://tests/verify_ultimate_interrupt_engagement.gd
+      - name: Verify ultimate UI
+        run: godot --headless --path . --script res://tests/verify_ultimate_ui.gd
+      - name: Verify presentation liveness
+        run: godot --headless --path . --script res://tests/verify_combat_presentation_liveness.gd
+      - name: Verify terminal presentation
+        run: godot --headless --path . --script res://tests/verify_combat_terminal_presentation.gd
+      - name: Verify focus order
+        run: godot --headless --path . --script res://tests/verify_combat_focus_order.gd
+      - name: Verify keyboard accessibility
+        run: godot --headless --path . --script res://tests/verify_combat_keyboard_accessibility.gd
+      - name: Verify layout accessibility
+        run: godot --headless --path . --script res://tests/verify_combat_layout_accessibility.gd
+      - name: Verify rival tendency
+        run: godot --headless --path . --script res://tests/verify_ai_rival_tendency.gd
+      - name: Verify opponent hypothesis
+        run: godot --headless --path . --script res://tests/verify_combat_hypothesis.gd
+      - name: Verify review summary
+        run: godot --headless --path . --script res://tests/verify_combat_review_summary.gd
+      - name: Verify review UI
+        run: godot --headless --path . --script res://tests/verify_combat_review_ui.gd
+      - name: Verify prepare momentum
+        run: godot --headless --path . --script res://tests/verify_prepare_momentum.gd
+      - name: Verify auto card placement
+        run: godot --headless --path . --script res://tests/verify_auto_card_placement.gd
+      - name: Verify action view model adapter
+        run: godot --headless --path . --script res://tests/verify_action_view_model_adapter.gd
+      - name: Verify action selection dock
+        run: godot --headless --path . --script res://tests/verify_action_selection_dock.gd
+      - name: Verify basic action panel
+        run: godot --headless --path . --script res://tests/verify_basic_action_panel.gd
+      - name: Verify martial action panel
+        run: godot --headless --path . --script res://tests/verify_martial_action_panel.gd
+      - name: Verify ultimate action panel
+        run: godot --headless --path . --script res://tests/verify_ultimate_action_panel.gd
+      - name: Verify action placement controller
+        run: godot --headless --path . --script res://tests/verify_action_placement_controller.gd
+      - name: Verify linked action blocks
+        run: godot --headless --path . --script res://tests/verify_linked_action_blocks.gd
+      - name: Verify action repositioning
+        run: godot --headless --path . --script res://tests/verify_action_repositioning.gd
+      - name: Verify action detail panel
+        run: godot --headless --path . --script res://tests/verify_action_detail_panel.gd
+      - name: Verify combat action selection integration
+        run: godot --headless --path . --script res://tests/verify_combat_action_selection_integration.gd

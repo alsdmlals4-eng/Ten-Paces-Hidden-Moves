@@ -1,0 +1,38 @@
+name: Validate Base v9 adoption
+on: [pull_request]
+jobs:
+  ci-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with: {python-version: '3.12'}
+      - run: python -m unittest tests.test_base_v9_adoption
+  adversarial-gate:
+    needs: ci-gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {fetch-depth: 0}
+      - name: Enforce docs-only or explicitly approved BUILD scope
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.sha }}"
+          git diff --name-only "$BASE_SHA" "$HEAD_SHA" > changed.txt
+
+          runtime_pattern='^(src/|scenes/|data/|assets/|addons/|project\.godot$)'
+          build_approval_pattern='^docs/implementation/BUILD_APPROVAL_[0-9]{4}-[0-9]{2}-[0-9]{2}\.md$'
+
+          if grep -Eq "$runtime_pattern" changed.txt; then
+            if ! grep -Eq "$build_approval_pattern" changed.txt; then
+              echo "Runtime files changed without a BUILD approval record in this pull request."
+              echo "Add docs/implementation/BUILD_APPROVAL_YYYY-MM-DD.md to the same diff."
+              grep -E "$runtime_pattern" changed.txt || true
+              exit 1
+            fi
+            echo "Explicit BUILD approval found; skipping the docs-only runtime prohibition."
+          else
+            echo "No runtime changes detected; applying the docs-only adoption gate."
+          fi
+
+          test -f skills/BASE_V9_ADAPTER.json

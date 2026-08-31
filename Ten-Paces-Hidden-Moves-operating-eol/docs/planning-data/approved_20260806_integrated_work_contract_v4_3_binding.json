@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260806-INTEGRATED-WORK-CONTRACT-V4-3-01",
+  "contract_name": "PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION",
+  "contract_version": "4.3",
+  "status": "ACTIVE_INTEGRATED_AUDIT_IMPLEMENTATION_DELIVERY_CONTRACT",
+  "approved_at": "2026-08-06T23:47:51+09:00",
+  "project_repository": "alsdmlals4-eng/Ten-Paces-Hidden-Moves",
+  "project_default_branch": "main",
+  "project_local_path": "C:/Users/user/Documents/GitHub/Ninza/Ten-Paces-Hidden-Moves",
+  "canonical_local_checkout": "C:/Users/user/Documents/GitHub/Ninza/Ten-Paces-Hidden-Moves",
+  "godot_project_path": "C:/Users/user/Documents/GitHub/Ninza/Ten-Paces-Hidden-Moves",
+  "project_google_sheet_id": "1KzU5M7xsrbz3a3_vG0yEh3hqk736lrYJW3YgPPRloP0",
+  "base_repository": "alsdmlals4-eng/Base",
+  "base_branch": "main",
+  "review_model": "GPT_ROLE_SEPARATED_PLUS_USER_DECISION_AUTHORITY",
+  "external_independent_reviewer": "NOT_PLANNED_SOLO_DEVELOPMENT",
+  "merge_authority": "CURRENT_CONVERSATION_RECOMMENDED_MERGES_AUTO_APPROVED",
+  "merge_authority_scope": "CURRENT_CONVERSATION_ONLY",
+  "branch_protection_external_review_rule": "DO_NOT_BYPASS_REPORT_BLOCKED_REQUIRED_EXTERNAL_REVIEW",
+  "entry_state_reconciliation_required": true,
+  "required_sheet_readbacks": [
+    "02_현재_확정결정",
+    "04_누락_충돌_감사",
+    "71_이미지기획_생성목록",
+    "72_이미지검수_승인로그"
+  ],
+  "tool_authorities": {
+    "higodot": "SINGLE_GODOT_SCENE_NODE_RESOURCE_PROJECT_SETTINGS_AUTHOR",
+    "gut": "FORMAL_TEST_EXECUTION_AND_ASSERTION",
+    "ci": "EXACT_HEAD_TEST_AND_REPORT_ONLY"
+  },
+  "gut_adoption_sequence": [
+    "ADOPTION_SPEC_DRAFT_PR",
+    "SOURCE_LICENSE_COMPATIBILITY_CONSUMER_CI_REMOVAL_REVIEW",
+    "ADOPTION_SPEC_MERGED_TO_MAIN",
+    "FORMAL_INSTALLATION_PR",
+    "GUT_EXACT_HEAD_VALIDATION"
+  ],
+  "shared_audio_vault": {
+    "path": "C:/Users/user/Documents/GitHub/shered audio vault",
+    "access": "READ_ONLY_SOURCE_LIBRARY",
+    "runtime_absolute_reference_forbidden": true,
+    "local_access_status": "BLOCKED_NO_LOCAL_ACCESS"
+  },
+  "target_platforms": [
+    "Windows",
+    "Android"
+  ],
+  "shared_core_policy": "SINGLE_GAME_LOGIC_AND_DATA_CORE",
+  "test_first_every_task": true,
+  "grill_me_approval_batch_max": 10,
+  "local_access": "BLOCKED_NO_LOCAL_ACCESS",
+  "local_sync_state": "LOCAL_SYNC_BLOCKED_NO_LOCAL_ACCESS",
+  "godot_run_state": "GODOT_RUN_BLOCKED_NO_LOCAL_ACCESS",
+  "template_binding_note": "The uploaded v4.3 example paths are template defaults. Project-specific user-provided paths and repository identifiers are authoritative for this project binding."
+}

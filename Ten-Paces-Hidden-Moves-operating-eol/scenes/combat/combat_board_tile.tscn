@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource path="res://src/combat/combat_board_tile.gd" type="Script" id="1"]
+
+[node name="CombatBoardTile" type="PanelContainer"]
+custom_minimum_size = Vector2(112, 152)
+mouse_filter = 2
+script = ExtResource("1")
