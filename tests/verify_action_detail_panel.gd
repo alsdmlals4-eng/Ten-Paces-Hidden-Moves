@@ -1,5 +1,8 @@
 extends SceneTree
 
+const MANUAL_LOADOUT := ["mount_hua_plum_blossom_sword"]
+const MANUAL_MASTERY := {"mount_hua_plum_blossom_sword": 5}
+
 func _init() -> void:
     call_deferred("_run")
 
@@ -25,20 +28,21 @@ func _run() -> void:
     assert("사거리" in basic_snapshot.get("row_keys", []))
     assert("절초기세" not in basic_snapshot.get("row_keys", []))
 
-    var manuals: Array = adapter.build_owned_manuals()
+    assert(adapter.build_owned_manuals().is_empty())
+    var manuals: Array = adapter.build_owned_manuals(MANUAL_LOADOUT, MANUAL_MASTERY)
     var manual: Dictionary = manuals[0]
     var martial: Dictionary = (manual.get("techniques", []) as Array)[0]
     panel.show_action(martial, true)
     var martial_snapshot: Dictionary = panel.get_detail_snapshot()
     assert(bool(martial_snapshot.get("pinned", false)))
-    assert(str((martial_snapshot.get("rows", {}) as Dictionary).get("출처", "")) == "유운검결")
+    assert(str((martial_snapshot.get("rows", {}) as Dictionary).get("출처", "")) == "[화산파] 매화검결")
     assert("전조" in martial_snapshot.get("row_keys", []))
     assert("실행" in martial_snapshot.get("row_keys", []))
     assert("해금 성급" in martial_snapshot.get("row_keys", []))
     assert("현재 성급" in martial_snapshot.get("row_keys", []))
     assert("타격" in martial_snapshot.get("row_keys", []))
 
-    var ultimate: Dictionary = adapter.build_ultimate_actions(5)[0]
+    var ultimate: Dictionary = adapter.build_ultimate_actions(5, MANUAL_LOADOUT, MANUAL_MASTERY)[0]
     ultimate["reserved"] = true
     ultimate["reservation_text"] = "5~6수 예약"
     ultimate["refund_before_commit"] = true
