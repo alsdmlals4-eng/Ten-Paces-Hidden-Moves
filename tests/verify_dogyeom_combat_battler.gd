@@ -2,7 +2,7 @@
 extends SceneTree
 
 const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placeholder.tscn")
-const DOGYEOM_BATTLER_PATH := "res://assets/characters/dogyeom_diagonal_duel_battler_01_v1.png"
+const DOGYEOM_BATTLER_PATH := "res://assets/characters/dogyeom_combat_battler_01_v1.png"
 const GENERIC_ENEMY_BATTLER_PATH := "res://assets/characters/enemy_masked_battler_rgba_v1.png"
 
 var failures: Array[String] = []
@@ -13,7 +13,7 @@ func _init() -> void:
 
 
 func _run() -> void:
-	_require_enemy_art("slot1_dogyeom", DOGYEOM_BATTLER_PATH, true, "Dogyeom must use the approved combat battler and face the player.")
+	_require_enemy_art("slot1_dogyeom", DOGYEOM_BATTLER_PATH, true, "Dogyeom must use the approved frontal combat battler and face the player.")
 	_require_enemy_art("slot1_yeongyo", GENERIC_ENEMY_BATTLER_PATH, false, "Other enemies must retain the generic combat battler.")
 	_require_enemy_art("", GENERIC_ENEMY_BATTLER_PATH, false, "Enemies without a candidate ID must retain the generic combat battler.")
 	_finish()

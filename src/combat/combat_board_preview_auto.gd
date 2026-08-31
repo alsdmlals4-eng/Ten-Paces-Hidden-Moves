@@ -292,7 +292,7 @@ func _refresh_ultimate_menu() -> void:
 func _layout_board() -> void:
     super._layout_board()
     _layout_product_action_dock()
-    _apply_diagonal_duel_composition()
+    _apply_frontal_duel_composition()
 
 func _layout_product_action_dock() -> void:
     if not is_instance_valid(action_selection_dock) or size.x <= 0.0 or size.y <= 0.0:
@@ -314,7 +314,7 @@ func _layout_product_action_dock() -> void:
             combat_log_panel.size.y = maxf(1.0, timing_y - 10.0 - combat_log_panel.position.y)
     _hide_legacy_action_ui()
 
-func _apply_diagonal_duel_composition() -> void:
+func _apply_frontal_duel_composition() -> void:
     if not is_instance_valid(player_character) or not is_instance_valid(enemy_character) or tiles.is_empty():
         return
     _set_tactical_target_layer_visible(false)
@@ -324,19 +324,18 @@ func _apply_diagonal_duel_composition() -> void:
     var timing_top := action_timing_panel.position.y if is_instance_valid(action_timing_panel) else size.y * 0.60
     var hud_bottom := top_hud.position.y + top_hud.size.y if is_instance_valid(top_hud) else size.y * 0.18
     var player_foot_y := clampf(size.y * 0.56, hud_bottom + 154.0, timing_top - 12.0)
-    var enemy_vertical_offset := clampf(size.y * 0.065, 42.0, 64.0)
     var normalized_distance := clampf(float(absi(_enemy_tile - _player_tile)) / 4.0, 0.0, 1.0)
-    var horizontal_separation := lerpf(size.x * 0.115, size.x * 0.205, normalized_distance)
+    var horizontal_separation := lerpf(size.x * 0.13, size.x * 0.205, normalized_distance)
     var tile_center_drift := clampf((float(_player_tile + _enemy_tile) * 0.5 - 5.5) * size.x * 0.014, -size.x * 0.05, size.x * 0.05)
     var duel_center_x := size.x * 0.5 + tile_center_drift
 
-    player_character.set_dimensions(_tile_width * 1.30)
-    enemy_character.set_dimensions(_tile_width * 0.92)
+    player_character.set_dimensions(_tile_width * 1.08)
+    enemy_character.set_dimensions(_tile_width * 1.08)
     player_character.z_index = 4
-    enemy_character.z_index = 3
+    enemy_character.z_index = 4
     if not _defer_character_snap:
         player_character.place_foot_at(Vector2(duel_center_x - horizontal_separation, player_foot_y))
-        enemy_character.place_foot_at(Vector2(duel_center_x + horizontal_separation, player_foot_y - enemy_vertical_offset))
+        enemy_character.place_foot_at(Vector2(duel_center_x + horizontal_separation, player_foot_y))
 
     if is_instance_valid(range_readout_panel):
         var range_size := Vector2(clampf(size.x * 0.15, 152.0, 220.0), 72.0)
@@ -345,7 +344,7 @@ func _apply_diagonal_duel_composition() -> void:
         range_readout_panel.size = range_size
         range_readout_panel.z_index = 6
 
-    set_meta("duel_composition", "player_left_foreground|enemy_right_background|distance_center")
+    set_meta("duel_composition", "player_left|enemy_right|shared_ground|distance_center")
     set_meta("logical_board_default_visibility", "hidden")
 
 func _set_tactical_target_layer_visible(_value: bool) -> void:
@@ -486,15 +485,11 @@ func _configure_keyboard_focus_order() -> void:
 
     if is_instance_valid(combat_progress_button) and is_instance_valid(combat_progress_button._button):
         sequence.append(combat_progress_button._button)
-    for control_value in [fast_replay_button, skip_presentation_button, reduced_motion_button, sound_toggle_button, sound_volume_slider]:
+    for control_value in [fast_replay_button, reduced_motion_button, sound_toggle_button, sound_volume_slider]:
         if is_instance_valid(control_value):
             sequence.append(control_value as Control)
-    if is_instance_valid(opponent_hypothesis_panel):
-        var hypothesis_focus := opponent_hypothesis_panel.get_focus_control()
-        if is_instance_valid(hypothesis_focus):
-            sequence.append(hypothesis_focus)
     _link_product_focus_sequence(sequence)
-    set_meta("product_focus_order", "source_tabs|active_source|timings|targets|progress|playback|hypothesis")
+    set_meta("product_focus_order", "source_tabs|active_source|timings|targets|progress|presentation_controls")
 
 func _link_product_focus_sequence(sequence: Array[Control]) -> void:
     var filtered: Array[Control] = []

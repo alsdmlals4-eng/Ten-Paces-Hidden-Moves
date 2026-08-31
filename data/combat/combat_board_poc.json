@@ -11,10 +11,10 @@
   "camera_mode": "fixed_wide",
   "battle_background": {
     "step": 3,
-    "approval_status": "USER_FINAL_LOCKED_20260830",
-    "style": "ink_mist_valley_hanji_wuxia_duel",
-    "asset": "res://assets/backgrounds/ink_mist_valley_duel_01_v1.png",
-    "supersedes": "res://assets/backgrounds/twilight_ink_duel_v1.png",
+    "approval_status": "USER_FINAL_LOCKED_20260831",
+    "style": "frontal_courtyard_hanji_wuxia_duel",
+    "asset": "res://assets/backgrounds/frontal_courtyard_duel_background_01_v1.png",
+    "supersedes": "ink_mist_valley_duel_01_v1_removed_from_current_tree",
     "scene": "res://scenes/combat/battle_background.tscn",
     "contrast_role": "below_board_and_characters"
   },

@@ -1,26 +1,19 @@
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED_PATHS = [
-    "data/combat/combat_hypothesis_poc.json",
-    "src/ui/opponent_hypothesis_panel.gd",
-    "scenes/ui/opponent_hypothesis_panel.tscn",
     "src/combat/combat_review_summary_builder.gd",
-    "tests/verify_combat_hypothesis.gd",
     "tests/verify_combat_review_summary.gd",
 ]
 
-EXPECTED_IDS = [
-    "approach",
-    "quick_attack",
-    "heavy_prepare",
-    "response_or_recover",
-    "ultimate",
-    "none",
+RETIRED_PATHS = [
+    "data/combat/combat_hypothesis_poc.json",
+    "src/ui/opponent_hypothesis_panel.gd",
+    "scenes/ui/opponent_hypothesis_panel.tscn",
+    "tests/verify_combat_hypothesis.gd",
 ]
 
 
@@ -34,24 +27,8 @@ def main() -> None:
     for relative in REQUIRED_PATHS:
         assert (ROOT / relative).is_file(), f"missing A2 file: {relative}"
 
-    hypothesis = json.loads(read("data/combat/combat_hypothesis_poc.json"))
-    assert hypothesis["schema_version"] == 1
-    assert hypothesis["default_id"] == "none"
-    assert [entry["id"] for entry in hypothesis["hypotheses"]] == EXPECTED_IDS
-    none_entry = hypothesis["hypotheses"][-1]
-    assert none_entry["label"] == "기록한 가설 없음"
-    assert none_entry["recorded"] is False
-
-    panel = read("src/ui/opponent_hypothesis_panel.gd")
-    for token in (
-        "class_name OpponentHypothesisPanel",
-        "select_hypothesis",
-        "get_current_hypothesis_snapshot",
-        "set_locked",
-        "reset_to_initial",
-        '"recorded"',
-    ):
-        assert token in panel, f"hypothesis panel missing token: {token}"
+    for relative in RETIRED_PATHS:
+        assert not (ROOT / relative).exists(), f"retired player-intention hypothesis artifact remains: {relative}"
 
     builder = read("src/combat/combat_review_summary_builder.gd")
     for token in (
@@ -75,16 +52,22 @@ def main() -> None:
 
     board = read("src/combat/combat_board_preview.gd")
     for token in (
-        "OPPONENT_HYPOTHESIS_SCENE",
         "REVIEW_SUMMARY_BUILDER_SCRIPT.new",
-        "_committed_hypothesis_snapshot",
         "_committed_player_plan_snapshot",
         "_last_review_summary",
-        "get_current_hypothesis_snapshot",
     ):
         assert token in board, f"board A2 integration missing token: {token}"
+    for retired_token in (
+        "OPPONENT_HYPOTHESIS_SCENE",
+        "OpponentHypothesisPanel",
+        "_committed_hypothesis_snapshot",
+        "get_current_hypothesis_snapshot",
+        "SkipPresentationButton",
+        "skip_presentation_button",
+    ):
+        assert retired_token not in board, f"retired combat-planning surface remains: {retired_token}"
 
-    print("repeat POC A2 static contract: PASS")
+    print("repeat POC A2 retirement contract: PASS")
 
 
 if __name__ == "__main__":

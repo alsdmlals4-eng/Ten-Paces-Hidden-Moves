@@ -6,7 +6,7 @@
 - Dimensions: `1672 × 941` PNG
 - Purpose: one corrected visual-direction candidate for the existing horizontal combat-board surface; not a game asset replacement.
 - Actual consumer context: `src/combat/combat_board_preview.gd` and `scenes/combat/battle_background.tscn`.
-- Input references: the three 2026-08-27 user-provided visual direction references, `res://assets/backgrounds/twilight_ink_duel_v1.png`, and v1 as the edit target.
+- Input references: the three 2026-08-27 user-provided visual direction references, the former twilight background retained only in Git history, and v1 as the edit target.
 - Creation: exactly one built-in image-edit result after the user explicitly requested removal of the floor-cell grid.
 - Reference fit: `USER_APPROVED_PLANNING_ANCHOR` for warm dusk, ink/paper, charcoal/amber, a continuous stone court, and clear left/right duel framing. The logical ten-space field is not rendered as floor cells.
 - Notion delivery: `PASS_20260828_VISUAL_BIBLE_PLANNING_ANCHOR_ATTACHMENT_READBACK`; it is not attached to Asset Library as an approved runtime asset.

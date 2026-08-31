@@ -34,10 +34,9 @@ const REVIEW_FOCUS := {
     "order": "대응·속공·이동·일반 공격의 실제 해결 순서"
 }
 
-func build_summary(result_value: Dictionary, player_plan_value: Array, hypothesis_value: Dictionary, state_before_value: Dictionary) -> Dictionary:
+func build_summary(result_value: Dictionary, player_plan_value: Array, state_before_value: Dictionary) -> Dictionary:
     var result := result_value.duplicate(true)
     var player_plan := player_plan_value.duplicate(true)
-    var hypothesis := _normalize_hypothesis(hypothesis_value.duplicate(true))
     var state_before := state_before_value.duplicate(true)
     var events := _collect_events(result)
     var state_after: Dictionary = (result.get("state", {}) as Dictionary).duplicate(true)
@@ -48,7 +47,6 @@ func build_summary(result_value: Dictionary, player_plan_value: Array, hypothesi
     var decisive_timing := int(decisive_event.get("timing", 0)) if not decisive_event.is_empty() else 0
     var review_focus := str(REVIEW_FOCUS.get(cause_code, REVIEW_FOCUS["order"]))
     return {
-        "hypothesis": hypothesis,
         "opponent_actual": _opponent_actual(events),
         "cause_code": cause_code,
         "cause_label": str(CAUSE_LABELS.get(cause_code, CAUSE_LABELS["order"])),
@@ -75,17 +73,6 @@ func _collect_events(result: Dictionary) -> Array:
             if typeof(event_value) == TYPE_DICTIONARY and str((event_value as Dictionary).get("type", "")) in ["action_result", "clash"]:
                 collected.append((event_value as Dictionary).duplicate(true))
     return collected
-
-func _normalize_hypothesis(value: Dictionary) -> Dictionary:
-    var id_value := str(value.get("id", "none"))
-    if id_value.is_empty():
-        id_value = "none"
-    var recorded := bool(value.get("recorded", id_value != "none")) and id_value != "none"
-    return {
-        "id": id_value,
-        "label": str(value.get("label", "기록한 가설 없음" if not recorded else id_value)),
-        "recorded": recorded
-    }
 
 func _select_cause(events: Array, distance_before: int, distance_after: int) -> String:
     var found := {

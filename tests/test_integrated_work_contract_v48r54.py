@@ -168,7 +168,10 @@ class IntegratedWorkContractV48R54Tests(unittest.TestCase):
         self.assertEqual("USER_FINAL_LOCKED_PLANNING_ONLY", visual["next_result"]["generation_status"])
         self.assertEqual("USER_APPROVED_FINAL_LOCKED", visual["next_result"]["final_lock_status"])
         self.assertEqual([], planning["next_visual_batch"])
-        self.assertEqual("NONE_CURRENT_BOARD_USER_FINAL_LOCKED_NO_AUTOMATIC_NEXT", planning["next_image_generation"])
+        self.assertEqual(
+            "MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_GENERATED_CANDIDATE_AWAITING_USER_FINAL_LOCK",
+            planning["next_image_generation"],
+        )
         self.assertEqual(
             "REPOSITORY_ONLY_GPT_WORK",
             planning["next_execution_surface"],

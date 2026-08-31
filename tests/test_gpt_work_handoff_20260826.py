@@ -23,7 +23,7 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
         self.assertEqual("REPOSITORY_ONLY_GPT_WORK", visual["handoff"]["next_surface"])
         self.assertTrue(visual["handoff"]["fresh_read_required"])
         self.assertEqual(
-            "WARM_DUSK_V2_USER_APPROVED_PLANNING_ANCHOR_ONLY_CORE_SCENE_BOARD_USER_FINAL_LOCKED_PLANNING_ONLY_INK_MIST_VALLEY_DUEL_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_DOGYEOM_ASSETS_PRESERVED",
+            "FRONTAL_COURTYARD_DUEL_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_CARD_ILLUSTRATION_ATLAS_GENERATED_CANDIDATE_AWAITING_FINAL_LOCK_DOGYEOM_ASSETS_PRESERVED",
             visual["status"],
         )
         self.assertEqual("43b3ffb2c5b026e3d4a38dab2338585894d36f61", visual["handoff"]["snapshot_observed_base_main"])
@@ -43,11 +43,11 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
 
         portrait = visual["approved_results"]["DOGYEOM_STATUS_PORTRAIT_01"]
         self.assertEqual("AUTOMATED_GODOT_PASS_20260826", portrait["opponent_specific_routing"])
-        background = visual["approved_results"]["INK_MIST_VALLEY_DUEL_01"]
-        self.assertEqual("USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_2026_08_30", background["status"])
-        self.assertEqual("res://assets/backgrounds/ink_mist_valley_duel_01_v1.png", background["runtime_asset"])
+        background = visual["approved_results"]["FRONTAL_COURTYARD_DUEL_BACKGROUND_01"]
+        self.assertEqual("USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_2026_08_31", background["status"])
+        self.assertEqual("res://assets/backgrounds/frontal_courtyard_duel_background_01_v1.png", background["runtime_asset"])
         self.assertEqual("src/combat/battle_background.gd", background["consumer"])
-        self.assertEqual("res://assets/backgrounds/twilight_ink_duel_v1.png", background["previous_runtime_asset_retained_as_inactive_rollback"])
+        self.assertEqual("ink_mist_valley_duel_01_v1", background["previous_runtime_asset_removed_from_current_tree_id"])
         self.assertEqual("PROJECT_CORE_SCENE_VISUAL_BOARD", visual["next_result"]["id"])
         self.assertEqual("USER_FINAL_LOCKED_PLANNING_ONLY", visual["next_result"]["generation_status"])
         self.assertEqual("USER_APPROVED_FINAL_LOCKED", visual["next_result"]["final_lock_status"])

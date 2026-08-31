@@ -27,7 +27,8 @@ func _run() -> void:
     _require_label(board.get_tile(1), "combat tile")
     _require_label(board.combat_progress_button._button, "progress button")
     _require_label(board.fast_replay_button, "fast playback")
-    _require_label(board.skip_presentation_button, "skip playback")
+    if is_instance_valid(board.get_node_or_null("SkipPresentationButton")):
+        failures.append("The retired immediate-complete control must not remain exposed to assistive technology.")
     _require_label(board.reduced_motion_button, "reduced motion")
     _require_label(board.sound_toggle_button, "sound toggle")
     _require_label(board.sound_volume_slider, "sound volume")

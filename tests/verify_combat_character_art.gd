@@ -1,4 +1,4 @@
-# 전투판 전신 원화가 양측 역할에 맞게 로드되고 거리 중심 대각선 연출을 보존하는지 검증한다.
+# 전투판 전신 원화가 양측 역할에 맞게 로드되고 거리 중심 정면 결투 연출을 보존하는지 검증한다.
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
@@ -17,7 +17,7 @@ func _run() -> void:
     for _index in range(4):
         await process_frame
 
-    _require_role_art(board.player_character, "player", "res://assets/characters/player_diagonal_duel_battler_01_v1.png")
+    _require_role_art(board.player_character, "player", "res://assets/characters/player_wanderer_battler_rgba_v1.png")
     _require_role_art(board.enemy_character, "enemy", "res://assets/characters/enemy_masked_battler_rgba_v1.png")
     _require_anchor(board, "player")
     _require_anchor(board, "enemy")
@@ -49,10 +49,10 @@ func _require_anchor(board: CombatBoardPreview, role: String) -> void:
     var actual := board.get_character_foot_anchor(role)
     var opposing := board.get_character_foot_anchor("enemy" if role == "player" else "player")
     if role == "player":
-        if actual.x >= opposing.x or actual.y <= opposing.y + board.size.y * 0.035:
-            failures.append("Player full-body art must hold the left foreground position in the approved diagonal duel composition.")
-    elif actual.x <= opposing.x or actual.y >= opposing.y - board.size.y * 0.035:
-        failures.append("Enemy full-body art must hold the right background position in the approved diagonal duel composition.")
+        if actual.x >= opposing.x or absf(actual.y - opposing.y) > board.size.y * 0.01:
+            failures.append("Player full-body art must hold the left position on the shared grounded frontal duel line.")
+    elif actual.x <= opposing.x or absf(actual.y - opposing.y) > board.size.y * 0.01:
+        failures.append("Enemy full-body art must hold the right position on the shared grounded frontal duel line.")
 
 func _require_art_motion(character: CombatCharacterPlaceholder, role: String) -> void:
     var foot_before := character.get_foot_anchor_global()

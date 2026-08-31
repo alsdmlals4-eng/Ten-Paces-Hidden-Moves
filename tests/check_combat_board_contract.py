@@ -186,13 +186,13 @@ def main() -> None:
     assert res_file(ultimate["asset_manifest"]).exists()
     active_assets = [asset for asset in asset_manifest["assets"] if asset["active"]]
     assert {asset["id"] for asset in active_assets} == {
-        "ink_mist_valley_duel_01_v1",
+        "frontal_courtyard_duel_background_01_v1",
         "player_wanderer_ink_v1",
         "enemy_masked_ink_v1",
         "dogyeom_status_portrait_01_v1",
+        "player_wanderer_battler_rgba_v1",
         "enemy_masked_battler_rgba_v1",
-        "player_diagonal_duel_battler_01_v1",
-        "dogyeom_diagonal_duel_battler_01_v1",
+        "dogyeom_combat_battler_01_v1",
         "basic_technique_ink_atlas_01_v1",
         "ultimate_ink_gold_sprite_sheet_rgba",
     }
@@ -200,24 +200,22 @@ def main() -> None:
         assert res_file(asset["path"]).exists(), asset["path"]
         assert asset.get("prompt") or asset.get("source_png_sha256"), asset["id"]
         assert asset.get("license", asset_manifest.get("license", ""))
-    battle_background = next(asset for asset in active_assets if asset["id"] == "ink_mist_valley_duel_01_v1")
-    assert battle_background["source_asset"] == "docs/visual-assets/approved/INK_MIST_VALLEY_DUEL_01_v1.png"
+    battle_background = next(asset for asset in active_assets if asset["id"] == "frontal_courtyard_duel_background_01_v1")
+    assert battle_background["source_asset"] == "docs/visual-assets/approved/FRONTAL_COURTYARD_DUEL_BACKGROUND_01_v1.png"
     assert battle_background["runtime_consumer"] == "src/combat/battle_background.gd"
-    assert battle_background["replaces_active_asset"] == "twilight_ink_duel_v1"
+    assert battle_background["replaces_active_asset"] == "ink_mist_valley_duel_01_v1"
     canonical_source = ROOT / battle_background["source_asset"]
     assert canonical_source.exists()
     assert hashlib.sha256(canonical_source.read_bytes()).hexdigest() == battle_background["source_png_sha256"]
     assert hashlib.sha256(res_file(battle_background["path"]).read_bytes()).hexdigest() == battle_background["source_png_sha256"]
-    previous_background = next(asset for asset in asset_manifest["assets"] if asset["id"] == "twilight_ink_duel_v1")
-    assert previous_background["active"] is False
-    assert previous_background["superseded_by"] == battle_background["id"]
+    assert all(asset["id"] not in {"twilight_ink_duel_v1", "ink_mist_valley_duel_01_v1"} for asset in asset_manifest["assets"])
     ultimate_vfx = next(asset for asset in active_assets if asset["id"] == "ultimate_ink_gold_sprite_sheet_rgba")
     assert ultimate_vfx["transparency_audit"]["has_alpha"] is True
     assert ultimate_vfx["transparency_audit"]["status"] == "APPROVED_ACTIVE"
-    for asset_id in ("player_diagonal_duel_battler_01_v1", "dogyeom_diagonal_duel_battler_01_v1", "enemy_masked_battler_rgba_v1"):
+    for asset_id in ("player_wanderer_battler_rgba_v1", "dogyeom_combat_battler_01_v1", "enemy_masked_battler_rgba_v1"):
         character_art = next(asset for asset in active_assets if asset["id"] == asset_id)
         audit = character_art["transparency_audit"]
-        assert character_art["source_asset"]
+        assert character_art.get("source_asset") or character_art.get("source_png_sha256")
         assert audit["has_alpha"] is True
         assert audit["alpha_extrema"] == [0, 255]
         assert audit["corner_alpha"] == [0, 0, 0, 0]
@@ -294,9 +292,9 @@ def main() -> None:
     assert "combat_ai" not in excluded and "combat_end_restart" not in excluded
 
     required_files = [
-        "assets/backgrounds/ink_mist_valley_duel_01_v1.png",
-        "assets/characters/player_diagonal_duel_battler_01_v1.png",
-        "assets/characters/dogyeom_diagonal_duel_battler_01_v1.png",
+        "assets/backgrounds/frontal_courtyard_duel_background_01_v1.png",
+        "assets/characters/player_wanderer_battler_rgba_v1.png",
+        "assets/characters/dogyeom_combat_battler_01_v1.png",
         "assets/characters/enemy_masked_battler_rgba_v1.png",
         "assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
         "assets/reference/step_02_character_scale_and_tile_placement.svg",
@@ -324,8 +322,8 @@ def main() -> None:
         "tests/verify_combat_assistive_labels.gd",
         "tests/verify_combat_pointer_lock.gd",
         "tests/verify_combat_presentation_controls.gd",
-        "tests/verify_diagonal_duel_assets.gd",
-        "tests/verify_diagonal_duel_action_reveal.gd",
+        "tests/verify_frontal_duel_assets.gd",
+        "tests/verify_combat_action_reveal.gd",
         "tests/verify_combat_keyboard_accessibility.gd",
         "tests/verify_combat_layout_accessibility.gd",
         "tests/verify_combat_performance_headless.gd",
@@ -370,8 +368,8 @@ def main() -> None:
         "action_reveal_snapshot",
     ))
     assert all(token in character_script for token in (
-        "player_diagonal_duel_battler_01_v1.png",
-        "dogyeom_diagonal_duel_battler_01_v1.png",
+        "player_wanderer_battler_rgba_v1.png",
+        "dogyeom_combat_battler_01_v1.png",
         "enemy_masked_battler_rgba_v1.png",
         "get_render_texture",
         "character_art_path",
@@ -389,6 +387,8 @@ def main() -> None:
     assert "res://tests/verify_combat_presentation_controls.gd" in powershell
     assert "res://tests/verify_combat_focus_order.gd" in powershell
     assert "res://tests/verify_combat_assistive_labels.gd" in powershell
+    assert "OpponentHypothesisPanel" not in controller
+    assert "SkipPresentationButton" not in controller
     assert "플레이어 4번 / 상대 7번" in reference_svg  # historical visual reference; not runtime authority
     assert "플레이어 · 4번 칸" in reference_svg
     assert "상대 · 7번 칸" in reference_svg

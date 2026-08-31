@@ -9,7 +9,6 @@ const PROGRESS_BUTTON_SCENE := preload("res://scenes/ui/combat_progress_button.t
 const BASIC_CARD_TRAY_SCENE := preload("res://scenes/ui/basic_card_tray.tscn")
 const CARD_DETAIL_SCENE := preload("res://scenes/ui/card_detail_panel.tscn")
 const COMBAT_LOG_SCENE := preload("res://scenes/ui/combat_log_panel.tscn")
-const OPPONENT_HYPOTHESIS_SCENE := preload("res://scenes/ui/opponent_hypothesis_panel.tscn")
 const COMBAT_REVIEW_SCENE := preload("res://scenes/ui/combat_review_panel.tscn")
 const REVIEW_SUMMARY_BUILDER_SCRIPT := preload("res://src/combat/combat_review_summary_builder.gd")
 const TILE_SCENE := preload("res://scenes/combat/combat_board_tile.tscn")
@@ -29,7 +28,6 @@ var combat_progress_button: CombatProgressButton
 var basic_card_tray: BasicCardTray
 var card_detail_panel: CardDetailPanel
 var combat_log_panel: CombatLogPanel
-var opponent_hypothesis_panel: OpponentHypothesisPanel
 var combat_review_panel: CombatReviewPanel
 var observation_reveal_button: Button
 var observation_reveal_status: Label
@@ -44,7 +42,6 @@ var presentation_label: Label
 var presentation_vfx: TextureRect
 var action_reveal_overlay
 var fast_replay_button: Button
-var skip_presentation_button: Button
 var restart_combat_button: Button
 var reduced_motion_button: Button
 var sound_toggle_button: Button
@@ -86,7 +83,6 @@ var _ultimate_vfx_sheet: Texture2D
 var _sound_muted := false
 var _sound_volume := 0.65
 var _defer_character_snap := false
-var _committed_hypothesis_snapshot: Dictionary = {}
 var _committed_player_plan_snapshot: Array = []
 var _committed_state_before: Dictionary = {}
 var _last_review_summary: Dictionary = {}
@@ -237,9 +233,6 @@ func _build_structure() -> void:
 	combat_log_panel.layout_requested.connect(_layout_board)
 	add_child(combat_log_panel)
 
-	opponent_hypothesis_panel = OPPONENT_HYPOTHESIS_SCENE.instantiate() as OpponentHypothesisPanel
-	opponent_hypothesis_panel.name = "OpponentHypothesisPanel"
-	add_child(opponent_hypothesis_panel)
 	observation_reveal_button = Button.new()
 	observation_reveal_button.name = "ObservationRevealButton"
 	observation_reveal_button.text = "관찰점 사용 · 잠긴 적 행동 유형"
@@ -323,13 +316,6 @@ func _build_structure() -> void:
 	fast_replay_button.pressed.connect(_toggle_fast_replay)
 	fast_replay_button.z_index = 40
 	add_child(fast_replay_button)
-	skip_presentation_button = Button.new()
-	skip_presentation_button.name = "SkipPresentationButton"
-	skip_presentation_button.text = "즉시 완료"
-	_apply_keyboard_focus_ring(skip_presentation_button)
-	skip_presentation_button.pressed.connect(_skip_presentation)
-	skip_presentation_button.z_index = 40
-	add_child(skip_presentation_button)
 	restart_combat_button = Button.new()
 	restart_combat_button.name = "RestartCombatButton"
 	restart_combat_button.text = "결전 다시 시작"
@@ -384,7 +370,7 @@ func _build_structure() -> void:
 	set_meta("step", 10)
 	set_meta("targeting_patch", "10.5")
 	set_meta("background_component", "BattleBackground")
-	set_meta("background_asset", "res://assets/backgrounds/ink_mist_valley_duel_01_v1.png")
+	set_meta("background_asset", "res://assets/backgrounds/frontal_courtyard_duel_background_01_v1.png")
 	set_meta("hud_component", "TopCombatHud")
 	set_meta("hud_layout", "player_status|player_momentum|round|enemy_momentum|enemy_status")
 	set_meta("action_timing_component", "ActionTimingPanel")
@@ -400,10 +386,8 @@ func _build_structure() -> void:
 	set_meta("basic_card_count", 8)
 	set_meta("card_detail_component", "CardDetailPanel")
 	set_meta("combat_log_component", "CombatLogPanel")
-	set_meta("opponent_hypothesis_component", "OpponentHypothesisPanel")
 	set_meta("combat_review_component", "CombatReviewPanel")
 	set_meta("review_requires_explicit_continue", true)
-	set_meta("hypothesis_snapshot_before_commit", true)
 	set_meta("review_summary_recalculates_combat", false)
 	set_meta("information_interactions_enabled", true)
 	set_meta("action_placement_enabled", true)
@@ -475,7 +459,7 @@ func _layout_board() -> void:
 		action_reveal_overlay.position = Vector2.ZERO
 		action_reveal_overlay.size = size
 	var playback_x := maxf(lower_margin, size.x - 420.0)
-	for button_value in [fast_replay_button, skip_presentation_button, reduced_motion_button, restart_combat_button]:
+	for button_value in [fast_replay_button, reduced_motion_button, restart_combat_button]:
 		if is_instance_valid(button_value):
 			var button := button_value as Button
 			button.position = Vector2(playback_x, presentation_y)
@@ -504,9 +488,6 @@ func _layout_board() -> void:
 		combat_log_panel.position = Vector2(size.x - overlay_margin - log_width, overlay_top)
 		combat_log_panel.size = Vector2(log_width, overlay_height)
 
-	if is_instance_valid(opponent_hypothesis_panel):
-		opponent_hypothesis_panel.position = Vector2(overlay_margin, presentation_y + 34.0)
-		opponent_hypothesis_panel.size = Vector2(clampf(size.x * 0.22, 280.0, 320.0), 112.0)
 	if is_instance_valid(observation_reveal_button):
 		observation_reveal_button.position = Vector2(overlay_margin, presentation_y + 152.0)
 		observation_reveal_button.size = Vector2(clampf(size.x * 0.22, 280.0, 320.0), 30.0)
@@ -958,12 +939,8 @@ func _sync_progress_availability() -> void:
 func _on_progress_requested(context: Dictionary) -> void:
 	if _inputs_locked() or not action_timing_panel.is_current_bundle_complete():
 		return
-	_committed_hypothesis_snapshot = opponent_hypothesis_panel.get_current_hypothesis_snapshot() if is_instance_valid(opponent_hypothesis_panel) else {"id": "none", "label": "기록한 가설 없음", "recorded": false}
 	_committed_player_plan_snapshot = action_timing_panel.get_resolution_placements().duplicate(true)
 	_committed_state_before = combat_state.duplicate(true)
-	if is_instance_valid(opponent_hypothesis_panel):
-		opponent_hypothesis_panel.set_locked(true)
-	set_meta("committed_hypothesis_snapshot", _committed_hypothesis_snapshot.duplicate(true))
 	set_meta("committed_player_plan_count", _committed_player_plan_snapshot.size())
 	_clear_targeting()
 	_set_presentation_state("committed")
@@ -999,7 +976,7 @@ func _resolve_and_present(context: Dictionary) -> void:
 	combat_state = (result.get("state", combat_state) as Dictionary).duplicate(true)
 	_play_momentum_gain_sfx(state_before_bundle_rewards, combat_state)
 	if review_summary_builder != null:
-		_last_review_summary = review_summary_builder.build_summary(result, _committed_player_plan_snapshot, _committed_hypothesis_snapshot, _committed_state_before)
+		_last_review_summary = review_summary_builder.build_summary(result, _committed_player_plan_snapshot, _committed_state_before)
 		set_meta("last_review_summary", _last_review_summary.duplicate(true))
 
 	_clear_action_selection()
@@ -1061,8 +1038,6 @@ func _show_review_panel(terminal: bool) -> void:
 	_review_terminal = terminal
 	if is_instance_valid(restart_combat_button):
 		restart_combat_button.visible = false
-	if is_instance_valid(opponent_hypothesis_panel):
-		opponent_hypothesis_panel.set_locked(true)
 	if is_instance_valid(combat_review_panel):
 		combat_review_panel.show_summary(_last_review_summary, terminal)
 	_set_presentation_state("review_ready")
@@ -1088,9 +1063,6 @@ func _on_review_continue_requested() -> void:
 	_sync_runtime_context()
 	combat_progress_button.mark_resolution_applied()
 	_apply_combat_state_to_view()
-	if is_instance_valid(opponent_hypothesis_panel):
-		opponent_hypothesis_panel.reset_to_initial()
-		opponent_hypothesis_panel.set_locked(false)
 	if is_instance_valid(combat_log_panel):
 		combat_log_panel.append_entry("[복기 완료] 다음 행동 묶음을 준비합니다.", "system")
 	_review_terminal = false
@@ -1287,7 +1259,6 @@ func restart_combat() -> void:
 	_targeting_mode = ""
 	_ultimate_reservation_anchors.clear()
 	_resolution_count = 0
-	_committed_hypothesis_snapshot.clear()
 	_committed_player_plan_snapshot.clear()
 	_committed_state_before.clear()
 	_last_review_summary.clear()
@@ -1309,8 +1280,6 @@ func restart_combat() -> void:
 	_configure_keyboard_focus_order()
 	if is_instance_valid(action_timing_panel):
 		action_timing_panel.reset_to_initial()
-	if is_instance_valid(opponent_hypothesis_panel):
-		opponent_hypothesis_panel.reset_to_initial()
 	combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
 	combat_state["ai_enabled"] = true
 	resolution_engine.lock_enemy_bundle(combat_state, int(combat_state.get("bundle_index", 1)))
@@ -1358,10 +1327,6 @@ func _configure_keyboard_focus_order() -> void:
 		sequence.append(combat_review_panel.get_detail_button())
 		sequence.append(combat_review_panel.get_continue_button())
 	else:
-		if is_instance_valid(opponent_hypothesis_panel):
-			var hypothesis_focus := opponent_hypothesis_panel.get_focus_control()
-			if is_instance_valid(hypothesis_focus):
-				sequence.append(hypothesis_focus)
 		if is_instance_valid(observation_reveal_button) and observation_reveal_button.visible:
 			sequence.append(observation_reveal_button)
 		if is_instance_valid(basic_card_tray):
@@ -1381,7 +1346,7 @@ func _configure_keyboard_focus_order() -> void:
 				sequence.append(tile)
 		if is_instance_valid(combat_progress_button) and is_instance_valid(combat_progress_button._button):
 			sequence.append(combat_progress_button._button)
-		for presentation_control in [fast_replay_button, skip_presentation_button, reduced_motion_button, restart_combat_button, sound_toggle_button, sound_volume_slider]:
+		for presentation_control in [fast_replay_button, reduced_motion_button, restart_combat_button, sound_toggle_button, sound_volume_slider]:
 			if is_instance_valid(presentation_control):
 				var control := presentation_control as Control
 				if control.visible:
@@ -1394,12 +1359,9 @@ func _configure_keyboard_focus_order() -> void:
 		var previous := sequence[(index - 1 + sequence.size()) % sequence.size()]
 		current.focus_next = current.get_path_to(next)
 		current.focus_previous = current.get_path_to(previous)
-	set_meta("keyboard_focus_order", "review_detail|review_continue" if is_instance_valid(combat_review_panel) and combat_review_panel.visible else "hypothesis|cards|ultimate_list|timings|tiles|progress|presentation_controls")
+	set_meta("keyboard_focus_order", "review_detail|review_continue" if is_instance_valid(combat_review_panel) and combat_review_panel.visible else "cards|ultimate_list|timings|tiles|progress|presentation_controls")
 
 func _configure_accessibility_semantics() -> void:
-	if is_instance_valid(opponent_hypothesis_panel):
-		var hypothesis_focus := opponent_hypothesis_panel.get_focus_control()
-		_set_accessibility_semantics(hypothesis_focus, "상대 의도 가설 선택", "현재 묶음에서 예상하는 상대 의도를 직접 기록합니다. 기록하지 않음을 선택할 수 있습니다.")
 	_set_accessibility_semantics(observation_reveal_button, "관찰점 사용", "관찰점 1을 써서 잠긴 적 행동의 유형만 확인합니다. 기술명, 목표, 피해는 공개하지 않습니다.")
 	_set_accessibility_semantics(observation_reveal_status, "관찰 기록", "관찰점으로 공개된 적 행동 유형 기록입니다.")
 	if is_instance_valid(basic_card_tray):
@@ -1426,7 +1388,6 @@ func _configure_accessibility_semantics() -> void:
 	if is_instance_valid(combat_progress_button) and is_instance_valid(combat_progress_button._button):
 		_set_accessibility_semantics(combat_progress_button._button, "행동계획 실행", "현재 행동계획을 실행해 대응부터 순서대로 판정합니다. 실행 뒤에는 복기까지 계획을 바꿀 수 없습니다.")
 	_set_accessibility_semantics(fast_replay_button, "빠른 재생", "전투 연출의 재생 시간을 짧게 전환합니다.")
-	_set_accessibility_semantics(skip_presentation_button, "즉시 완료", "진행 중인 전투 연출을 즉시 끝내고 확정 결과를 유지합니다.")
 	_set_accessibility_semantics(reduced_motion_button, "모션 감소", "이동과 공격 모션을 줄이고 결과 텍스트와 로그를 유지합니다.")
 	_set_accessibility_semantics(restart_combat_button, "결전 다시 시작", "끝난 전투를 공개 거리 2의 초기 상태로 다시 시작합니다.")
 	_set_accessibility_semantics(sound_toggle_button, "소리 켜기 또는 끄기", "전투 효과음 재생을 전환합니다.")
@@ -1637,7 +1598,7 @@ func get_layout_snapshot() -> Dictionary:
 	return {
 		"layout_ready": _layout_ready,
 		"background_ready": is_instance_valid(battle_background) and battle_background.texture != null,
-		"background_path": "res://assets/backgrounds/ink_mist_valley_duel_01_v1.png",
+		"background_path": "res://assets/backgrounds/frontal_courtyard_duel_background_01_v1.png",
 		"hud_ready": is_instance_valid(top_hud),
 		"hud_snapshot": hud_snapshot,
 		"range_readout": {

@@ -1,5 +1,7 @@
 # Martial Manual Text-First Presentation Decision · 2026-08-30
 
+> **Historical/superseded for current card-art direction:** `TEN-DEC-20260831-ACTION-CARD-ILLUSTRATION-EXTENSION-01` replaces this decision's no-illustration policy. The pre-existing no-runtime-illustration implementation remains in force only until the new candidate receives an explicit final lock and passes its own implementation and runtime gates.
+
 > Decision ID: `TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01`
 > Status: `USER_APPROVED_CURRENT`
 > Work mode: `BUILD`

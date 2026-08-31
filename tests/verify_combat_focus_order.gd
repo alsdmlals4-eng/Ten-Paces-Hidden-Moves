@@ -38,7 +38,10 @@ func _run() -> void:
     var first_slot: ActionTimingSlot = board.action_timing_panel.get_slot(1)
     var last_slot: ActionTimingSlot = board.action_timing_panel.get_slot(10)
     var progress: Button = board.combat_progress_button._button
-    var hypothesis_focus: Control = board.opponent_hypothesis_panel.get_focus_control()
+    if is_instance_valid(board.get_node_or_null("OpponentHypothesisPanel")):
+        failures.append("The retired opponent-intention hypothesis surface must not remain in focus order.")
+    if is_instance_valid(board.get_node_or_null("SkipPresentationButton")):
+        failures.append("The retired immediate-complete control must not remain in focus order.")
 
     _require_next(basic_tab, martial_tab, "basic source tab")
     _require_next(martial_tab, ultimate_tab, "martial source tab")
@@ -58,12 +61,10 @@ func _run() -> void:
         )
     _require_next(last_slot, progress, "last timing slot")
     _require_next(progress, board.fast_replay_button, "progress button")
-    _require_next(board.fast_replay_button, board.skip_presentation_button, "fast playback")
-    _require_next(board.skip_presentation_button, board.reduced_motion_button, "skip playback")
+    _require_next(board.fast_replay_button, board.reduced_motion_button, "fast playback")
     _require_next(board.reduced_motion_button, board.sound_toggle_button, "reduced motion")
     _require_next(board.sound_toggle_button, board.sound_volume_slider, "sound toggle")
-    _require_next(board.sound_volume_slider, hypothesis_focus, "sound volume")
-    _require_next(hypothesis_focus, basic_tab, "hypothesis selector")
+    _require_next(board.sound_volume_slider, basic_tab, "sound volume")
 
     board.queue_free()
     await process_frame

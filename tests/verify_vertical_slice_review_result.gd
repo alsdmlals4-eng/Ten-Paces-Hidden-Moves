@@ -53,7 +53,6 @@ func _verify_neutral_review_contract() -> void:
             ]
         },
         [],
-        {"id": "quick_attack", "label": "속공", "recorded": true},
         {
             "player": {"tile": 4},
             "enemy": {"tile": 7}
@@ -71,6 +70,7 @@ func _verify_neutral_review_contract() -> void:
     await process_frame
     var display := panel.get_display_text()
     _expect_true(display.contains("검토 관점"), "Review UI must label the neutral inspection field as 검토 관점.")
+    _expect_false(display.contains("내 가설"), "Review UI must not surface the retired player-intention hypothesis.")
     _expect_false(display.contains("다음 검토"), "Review UI must no longer present a direct next-step recommendation heading.")
     _expect_false(display.contains("다음 묶음에서는"), "Review UI must not include prescriptive next-bundle copy.")
     panel.queue_free()

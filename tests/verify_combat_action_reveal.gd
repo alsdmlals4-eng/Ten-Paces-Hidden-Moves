@@ -88,10 +88,10 @@ func _expect(condition: bool, message: String) -> void:
 
 func _finish() -> void:
 	if failures.is_empty():
-		print("DIAGONAL_DUEL_ACTION_REVEAL_VERIFY_OK")
+		print("COMBAT_ACTION_REVEAL_VERIFY_OK")
 		quit(0)
 		return
 	for failure in failures:
 		push_error(failure)
-	print("DIAGONAL_DUEL_ACTION_REVEAL_VERIFY_FAILED count=%d" % failures.size())
+	print("COMBAT_ACTION_REVEAL_VERIFY_FAILED count=%d" % failures.size())
 	quit(1)

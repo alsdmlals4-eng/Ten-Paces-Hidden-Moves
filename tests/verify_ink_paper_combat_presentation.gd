@@ -2,7 +2,7 @@ extends SceneTree
 
 const BOARD_SCENE := preload("res://scenes/combat/combat_board_preview.tscn")
 const VIEWPORT_SIZE := Vector2(1440.0, 900.0)
-const APPROVED_BACKGROUND_PATH := "res://assets/backgrounds/ink_mist_valley_duel_01_v1.png"
+const APPROVED_BACKGROUND_PATH := "res://assets/backgrounds/frontal_courtyard_duel_background_01_v1.png"
 
 var failures: Array[String] = []
 
@@ -28,10 +28,13 @@ func _run() -> void:
 	_expect(not board._anchor_line.visible, "Resting combat view must not expose a horizontal foot-anchor guide.")
 	var player_foot := board.get_character_foot_anchor("player")
 	var enemy_foot := board.get_character_foot_anchor("enemy")
-	_expect(player_foot.x < board.size.x * 0.48, "Player battler must occupy the left foreground of the diagonal duel composition.")
-	_expect(enemy_foot.x > board.size.x * 0.52, "Enemy battler must occupy the right side of the diagonal duel composition.")
-	_expect(player_foot.y > enemy_foot.y + board.size.y * 0.035, "Player and enemy battlers must use a readable diagonal, not a flat horizontal line.")
-	_expect(board.player_character.size.y > board.enemy_character.size.y, "Player battler must remain the foreground scale in the diagonal composition.")
+	_expect(player_foot.x < board.size.x * 0.48, "Player battler must occupy the left side of the frontal duel composition.")
+	_expect(enemy_foot.x > board.size.x * 0.52, "Enemy battler must occupy the right side of the frontal duel composition.")
+	_expect(absf(player_foot.y - enemy_foot.y) <= board.size.y * 0.01, "Both battlers must share one grounded horizontal duel line, not a diagonal depth line.")
+	_expect(absf(board.player_character.size.y - board.enemy_character.size.y) <= board.size.y * 0.03, "Both battlers must use a comparable frontal-composition scale.")
+	_expect(str(board.get_meta("duel_composition", "")) == "player_left|enemy_right|shared_ground|distance_center", "Combat must declare the shared-ground frontal duel composition.")
+	_expect(not is_instance_valid(board.get_node_or_null("OpponentHypothesisPanel")), "Player-facing opponent-intention hypothesis UI must be retired.")
+	_expect(not is_instance_valid(board.get_node_or_null("SkipPresentationButton")), "The visible immediate-complete control must be retired; timing reveals remain sequential.")
 	if is_instance_valid(board.range_readout_label):
 		_expect(board.range_readout_label.text == "거리 2", "Initial player-facing range must be 거리 2.")
 	if is_instance_valid(board.range_engagement_label):

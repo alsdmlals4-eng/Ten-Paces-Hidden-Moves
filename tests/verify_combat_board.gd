@@ -1,7 +1,7 @@
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
-const BACKGROUND_ASSET_PATH := "res://assets/backgrounds/ink_mist_valley_duel_01_v1.png"
+const BACKGROUND_ASSET_PATH := "res://assets/backgrounds/frontal_courtyard_duel_background_01_v1.png"
 const EXPECTED_TILE_COUNT := 10
 const EXPECTED_PLAYER_TILE := 4
 const EXPECTED_ENEMY_TILE := 6
@@ -91,7 +91,7 @@ func _verify_foundation(board: CombatBoardPreview, snapshot: Dictionary) -> void
     if str(board.battle_background.get_meta("source_mode", "")) != "user_final_locked_ai_generated_project_raster_png":
         failures.append("Battle background must use the user-final-locked project raster asset.")
     if str(snapshot.get("background_path", "")) != BACKGROUND_ASSET_PATH:
-        failures.append("Combat board snapshot must expose the approved ink-mist background asset.")
+        failures.append("Combat board snapshot must expose the approved frontal-courtyard background asset.")
     for tile in board.tiles:
         if not tile.has_signal("tile_clicked"):
             failures.append("Every board tile must expose a tile_clicked signal for TARGETING_10_5.")
@@ -495,22 +495,22 @@ func _verify_character_anchors(board: CombatBoardPreview, snapshot: Dictionary) 
     var player_size: Vector2 = snapshot.get("player_size", Vector2.ZERO)
     var enemy_size: Vector2 = snapshot.get("enemy_size", Vector2.ZERO)
     var tile_width := float(snapshot.get("tile_width", 0.0))
-    if player_size.y <= enemy_size.y + SIZE_TOLERANCE:
-        failures.append("Combat presentation must keep the player as the larger foreground battler.")
+    if absf(player_size.y - enemy_size.y) > SIZE_TOLERANCE:
+        failures.append("Combat presentation must keep both battlers at a comparable frontal-duel scale.")
     var player_height_ratio := board.player_character.character_height_ratio if is_instance_valid(board.player_character) else 0.0
     var enemy_height_ratio := board.enemy_character.character_height_ratio if is_instance_valid(board.enemy_character) else 0.0
-    if tile_width > 0.0 and absf(player_size.y / tile_width - player_height_ratio * 1.30) > SIZE_TOLERANCE:
-        failures.append("Player foreground height must retain the approved 1.30 visual scale multiplier.")
-    if tile_width > 0.0 and absf(enemy_size.y / tile_width - enemy_height_ratio * 0.92) > SIZE_TOLERANCE:
-        failures.append("Enemy background height must retain the approved 0.92 visual scale multiplier.")
+    if tile_width > 0.0 and absf(player_size.y / tile_width - player_height_ratio * 1.08) > SIZE_TOLERANCE:
+        failures.append("Player frontal-duel height must retain the approved 1.08 visual scale multiplier.")
+    if tile_width > 0.0 and absf(enemy_size.y / tile_width - enemy_height_ratio * 1.08) > SIZE_TOLERANCE:
+        failures.append("Enemy frontal-duel height must retain the approved 1.08 visual scale multiplier.")
     var player_foot: Vector2 = snapshot.get("player_foot", Vector2.ZERO)
     var enemy_foot: Vector2 = snapshot.get("enemy_foot", Vector2.ZERO)
     if player_foot.x >= enemy_foot.x - POSITION_TOLERANCE:
         failures.append("Combat presentation must keep the player left of the enemy in the duel composition.")
-    if player_foot.y <= enemy_foot.y + board.size.y * 0.035:
-        failures.append("Combat presentation must keep a readable player-foreground/enemy-background diagonal.")
-    if str(board.get_meta("duel_composition", "")) != "player_left_foreground|enemy_right_background|distance_center":
-        failures.append("Combat presentation must report the approved distance-first diagonal duel composition.")
+    if absf(player_foot.y - enemy_foot.y) > board.size.y * 0.01:
+        failures.append("Combat presentation must keep both battlers on one shared grounded frontal duel line.")
+    if str(board.get_meta("duel_composition", "")) != "player_left|enemy_right|shared_ground|distance_center":
+        failures.append("Combat presentation must report the approved shared-ground frontal duel composition.")
 
 func _finish() -> void:
     if failures.is_empty():

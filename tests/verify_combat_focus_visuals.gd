@@ -31,7 +31,8 @@ func _run() -> void:
             break
     _require_focus_ring(available_ultimate, "available ultimate action")
     _require_focus_ring(board.fast_replay_button, "fast playback")
-    _require_focus_ring(board.skip_presentation_button, "skip playback")
+    if is_instance_valid(board.get_node_or_null("SkipPresentationButton")):
+        failures.append("The retired immediate-complete control must not remain in the focusable surface.")
     _require_focus_ring(board.reduced_motion_button, "reduced motion")
     _require_focus_ring(board.sound_toggle_button, "sound toggle")
     _require_focus_ring(board.sound_volume_slider, "sound volume")
