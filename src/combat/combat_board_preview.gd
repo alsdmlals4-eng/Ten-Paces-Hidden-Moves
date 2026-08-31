@@ -16,6 +16,18 @@ const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placehold
 const ACTION_REVEAL_OVERLAY_SCRIPT := preload("res://src/ui/combat_action_reveal_overlay.gd")
 const ULTIMATE_VFX_PATH := "res://assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png"
 const ATTACK_CLASH_VFX_PATH := "res://assets/vfx/attack_clash_ink_gold_atlas_rgba_v1.png"
+const ATTACK_CLASH_MATTE_SHADER := """
+shader_type canvas_item;
+
+void fragment() {
+	vec4 sampled = texture(TEXTURE, UV);
+	float brightest = max(max(sampled.r, sampled.g), sampled.b);
+	float darkest = min(min(sampled.r, sampled.g), sampled.b);
+	float neutralness = 1.0 - smoothstep(0.035, 0.13, brightest - darkest);
+	float light_matte = smoothstep(0.68, 0.94, dot(sampled.rgb, vec3(0.299, 0.587, 0.114)));
+	COLOR = vec4(sampled.rgb, sampled.a * (1.0 - neutralness * light_matte));
+}
+"""
 
 const CANVAS_COLOR := Color("171411")
 const GUIDE_COLOR := Color("b99254")
@@ -308,12 +320,20 @@ func _build_structure() -> void:
 	presentation_vfx.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	presentation_vfx.visible = false
 	presentation_vfx.z_index = 31
+	_apply_attack_clash_vfx_matte()
 	add_child(presentation_vfx)
 
 	action_reveal_overlay = ACTION_REVEAL_OVERLAY_SCRIPT.new()
 	action_reveal_overlay.name = "CombatActionRevealOverlay"
 	action_reveal_overlay.z_index = 30
 	add_child(action_reveal_overlay)
+
+func _apply_attack_clash_vfx_matte() -> void:
+	var shader := Shader.new()
+	shader.code = ATTACK_CLASH_MATTE_SHADER
+	var material := ShaderMaterial.new()
+	material.shader = shader
+	presentation_vfx.material = material
 
 	fast_replay_button = Button.new()
 	fast_replay_button.name = "FastReplayButton"

@@ -6,6 +6,7 @@ signal start_requested
 const BACKGROUND_PATH := "res://assets/backgrounds/frontal_courtyard_duel_background_01_v1.png"
 const PLAYER_PATH := "res://assets/characters/player_wanderer_battler_rgba_v1.png"
 const ENEMY_PATH := "res://assets/characters/enemy_masked_battler_rgba_v1.png"
+const TITLE_LOGO_PATH := "res://assets/ui/logo/ten_paces_hidden_moves_title_logo_01_v1.png"
 const PAPER := Color("eadfc9")
 const INK := Color("211c17")
 const GOLD := Color("b99254")
@@ -47,12 +48,17 @@ func _build_surface() -> void:
 	var eyebrow := _make_label("숨은 수로 겨루는 일대일 비무", 16, Color("e7d9bc"))
 	eyebrow.name = "TitleEyebrow"
 	center.add_child(eyebrow)
-	var title := _make_label("십보강호", 52, PAPER)
-	title.name = "GameTitle"
-	center.add_child(title)
-	var subtitle := _make_label("숨은 수의 비무", 25, GOLD)
-	subtitle.name = "GameSubtitle"
-	center.add_child(subtitle)
+	var title_logo := TextureRect.new()
+	title_logo.name = "GameTitleLogo"
+	title_logo.texture = load(TITLE_LOGO_PATH) as Texture2D
+	title_logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	title_logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	title_logo.custom_minimum_size = Vector2(0.0, 280.0)
+	title_logo.size_flags_horizontal = Control.SIZE_FILL
+	title_logo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	title_logo.accessibility_name = "십보강호: 숨은 수의 비무"
+	title_logo.accessibility_description = "열 걸음 안에서 숨은 수를 읽는 일대일 비무."
+	center.add_child(title_logo)
 	var promise := _make_label("세 수를 고르고, 한 수씩 드러나는 승부를 읽으십시오.", 17, Color("eadfc9"))
 	promise.name = "GamePromise"
 	promise.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

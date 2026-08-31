@@ -208,7 +208,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_status: FRONTAL_COURTYARD_DUEL_PRESENTATION_AND_SHARED_MARTIAL_ULTIMATE_CARD_ATLAS_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260831_HUMAN_PLAYER_COMPARISON_DEFERRED",
+            "user_directed_planning_status: FRONTAL_COURTYARD_DUEL_PRESENTATION_SHARED_MARTIAL_ULTIMATE_CARD_ATLAS_TITLE_LOGO_01_AND_ATTACK_CLASH_ATLAS_01_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_20260831_HUMAN_PLAYER_COMPARISON_DEFERRED",
             current_section,
         )
         self.assertIn(
@@ -273,13 +273,13 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn("planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md", current_section)
-        self.assertIn("planning_visual_next: NONE_CURRENT_CARD_ATLAS_FINAL_LOCKED_IMPLEMENTED_REMAINING_ASSETS_REQUIRE_ACTUAL_CONSUMER_VERIFICATION", current_section)
+        self.assertIn("planning_visual_next: NONE_CURRENT_TITLE_LOGO_AND_ATTACK_CLASH_ATLAS_FINAL_LOCKED_IMPLEMENTED_REMAINING_ASSETS_REQUIRE_ACTUAL_CONSUMER_VERIFICATION", current_section)
         self.assertIn(
             "planning_visual_generation: SCOPED_SINGLE_RESULT_GENERATED_CANDIDATE_SEPARATE_FINAL_USER_LOCK_REQUIRED",
             current_section,
         )
         self.assertIn(
-            "planning_visual_review: FRONTAL_COURTYARD_DUEL_BACKGROUND_01_AND_MARTIAL_ULTIMATE_CARD_ATLAS_USER_FINAL_LOCKED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED",
+            "planning_visual_review: FRONTAL_COURTYARD_DUEL_BACKGROUND_01_MARTIAL_ULTIMATE_CARD_ATLAS_TITLE_LOGO_01_AND_ATTACK_CLASH_ATLAS_01_USER_FINAL_LOCKED_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED",
             current_section,
         )
         self.assertIn(
@@ -389,7 +389,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "FRONTAL_COURTYARD_DUEL_PRESENTATION_AND_SHARED_MARTIAL_ULTIMATE_CARD_ATLAS_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260831_HUMAN_PLAYER_COMPARISON_DEFERRED",
+            "FRONTAL_COURTYARD_DUEL_PRESENTATION_SHARED_MARTIAL_ULTIMATE_CARD_ATLAS_TITLE_LOGO_01_AND_ATTACK_CLASH_ATLAS_01_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_20260831_HUMAN_PLAYER_COMPARISON_DEFERRED",
             status["user_directed_planning_status"],
         )
         self.assertIn(

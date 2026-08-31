@@ -36,8 +36,8 @@
 | `FRONTAL_COURTYARD_DUEL_BACKGROUND_01_v1` | `USER_FINAL_LOCKED → CANON_REGISTERED → IMPLEMENTED` | `BattleBackground` |
 | `MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1` | `USER_FINAL_LOCKED → CANON_REGISTERED → IMPLEMENTED` | `ActionViewModelAdapter → ActionChoiceCard` |
 | `ultimate_ink_gold_sprite_sheet_rgba.png` | `APPROVED_ACTIVE` | `CombatBoardPreview` ultimate feedback |
-| normal-attack / clash two-band transparent VFX | `GENERATED_CANDIDATE` | external candidate `exec-a87618fa-38d4-40a5-abf7-7643951e419b`; no repository copy or consumer before final lock |
-| title-logo candidate `십보강호 / 숨은 수의 비무` | `GENERATED_CANDIDATE` | external candidate `exec-22d2078f-8dc6-40e5-ac6b-0e91b7f5e232`; SHA-256 `5C75EDBBE02770DDB1D41868A1BEB4A55E802BC53295381D3B204238A3842E13`; 1672×941 PNG; four corners alpha `0` |
+| normal-attack / clash two-band VFX | `USER_FINAL_LOCKED → CANON_REGISTERED → IMPLEMENTED → AUTOMATED_GODOT_VERIFIED` | candidate `exec-a87618fa-38d4-40a5-abf7-7643951e419b`, SHA-256 `0859C714728608744B3F016E03C02F7B0E18D86B0B0CED191A2D5EC25CE2553F`; upper/lower atlas bands in `CombatBoardPreview` with a runtime neutral-light matte for its opaque source backdrop |
+| title logo `십보강호 / 숨은 수의 비무` | `USER_FINAL_LOCKED → CANON_REGISTERED → IMPLEMENTED → AUTOMATED_GODOT_VERIFIED` | candidate `exec-22d2078f-8dc6-40e5-ac6b-0e91b7f5e232`, SHA-256 `5C75EDBBE02770DDB1D41868A1BEB4A55E802BC53295381D3B204238A3842E13`; candidate, approved source, and runtime bytes match; `MainTitleScreen` consumer |
 
 ### 정확한 구형 파일 정리 판정
 
@@ -89,9 +89,9 @@
 | 2 | grounded character와 sequential feedback이 10칸/AI privacy를 건드리는지 재공격 | presentation tests + `future_action_visible=false` scan | no valid core regression; `NO_MATERIAL_FOLLOWUP` |
 | 3 | common card facts가 basic-only, clipping, empty formula, accessibility label 회귀를 만드는지 재공격 | card adapter/panel/keyboard tests | empty-formula issue는 이미 minimal fix 후 green; remaining finding 없음 |
 | 4 | MAIN start route, technical copy, imported asset loading 및 recoverability를 재공격 | main-entry test, one Godot import, failing→passing card regression | active import is retained; no new implementation defect |
-| 5 | open PR overlap, stale user-facing controls, static contract, exact working diff, candidate-state overclaim을 재공격 | PR #298 fresh read `OPEN/CLEAN`, retired hypothesis/skip scan, contract test, diff check, HERA sessions list | no duplicate takeover; title/VFX final lock and correct-editor visible screen remain unresolved gates |
+| 5 | open PR overlap, stale user-facing controls, static contract, exact working diff, candidate-state overclaim을 재공격 | PR #298 fresh read `OPEN/CLEAN`, retired hypothesis/skip scan, contract test, diff check, HERA sessions list | no duplicate takeover; title/VFX final lock was subsequently received and canon-registered; correct-editor visible screen remains unresolved |
 
-`FULL_LOOP_COUNT=5`는 충족했다. 그러나 현재 범위의 candidate final lock과 visible-screen evidence가 남아 있으므로 `CLEAN_REVIEW_EXIT=NOT_REACHED`; 이를 machine/UX complete로 바꾸지 않는다.
+`FULL_LOOP_COUNT=5`는 충족했다. candidate final lock은 이후 사용자의 `모두 확정`으로 해소되어 exact bytes를 candidate/approved/runtime에 등록했고 focused Godot checks를 GREEN으로 재실행했다. 하지만 정확한 worktree의 visible-screen evidence가 남아 있으므로 `CLEAN_REVIEW_EXIT=NOT_REACHED`; 이를 machine/UX complete로 바꾸지 않는다.
 
 ### 대안·장기 적합성 비교
 
@@ -103,7 +103,6 @@
 
 ## 미검증·남은 위험·다음 안전 작업
 
-- `USER_FINAL_LOCK_REQUIRED`: normal-attack/clash VFX candidate와 title-logo candidate는 별도 image final lock이 필요하다. 확정 전에는 canonical folder, asset manifest, runtime path, production consumer에 넣지 않는다.
 - `BLOCKED_UNVERIFIED`: 현재 HERA/Godot session list가 비어 있어, 정확한 `tph-r-831` worktree의 visible MAIN/attack/clash/ultimate screenshot 검증은 수행하지 못했다. 다른 Godot project를 열거나 조작하지 않았다.
 - `BLOCKED_UNVERIFIED`: 구형 binary VFX 2개 및 `.import` 2개의 실제 삭제는 실행 환경 차단으로 보류다. 복구 가능한 Git history와 manifest provenance는 유지된다.
 - `NOT_RUN`: Windows human UX, Android device/touch/back/safe-area, accessibility-user, performance release, human play comparison, release/rights final clearance.

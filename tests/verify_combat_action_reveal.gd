@@ -3,6 +3,7 @@ extends SceneTree
 
 const BOARD_SCENE := preload("res://scenes/combat/combat_board_preview.tscn")
 const BASIC_ATLAS_PATH := "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png"
+const ATTACK_CLASH_VFX_PATH := "res://assets/vfx/attack_clash_ink_gold_atlas_rgba_v1.png"
 
 var failures: Array[String] = []
 
@@ -81,6 +82,20 @@ func _verify_public_feedback_surface() -> void:
 	board.size = Vector2(1440.0, 900.0)
 	for _frame in range(4):
 		await process_frame
+	_expect(ResourceLoader.exists(ATTACK_CLASH_VFX_PATH), "Resolved normal attack and clash feedback must ship a final-locked runtime VFX atlas.")
+	board._show_feedback_vfx({}, "attack")
+	var attack_vfx := board.presentation_vfx.texture as AtlasTexture
+	_expect(board.presentation_vfx.visible and attack_vfx != null, "Resolved normal attack must render the attack VFX band.")
+	_expect(board.presentation_vfx.material is ShaderMaterial, "The final-locked opaque VFX source must receive a runtime matte so its light checker background never covers the duel.")
+	if attack_vfx != null:
+		_expect(attack_vfx.atlas.resource_path == ATTACK_CLASH_VFX_PATH, "Normal attack feedback must consume the final-locked attack/clash VFX atlas.")
+		_expect(attack_vfx.region.position.y == 0.0, "Normal attack feedback must consume the upper VFX band.")
+	board._show_feedback_vfx({}, "clash")
+	var clash_vfx := board.presentation_vfx.texture as AtlasTexture
+	_expect(board.presentation_vfx.visible and clash_vfx != null, "Resolved clash must render the clash VFX band.")
+	if clash_vfx != null:
+		_expect(clash_vfx.atlas.resource_path == ATTACK_CLASH_VFX_PATH, "Clash feedback must consume the final-locked attack/clash VFX atlas.")
+		_expect(clash_vfx.region.position.y > 0.0, "Clash feedback must consume the lower VFX band.")
 	await board._present_timing_duel([{
 		"type": "action_result",
 		"card_id": "basic_quick_attack",

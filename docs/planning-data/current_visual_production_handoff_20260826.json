@@ -94,6 +94,35 @@
       "human_usability": "NOT_RUN",
       "android_actual_device": "NOT_RUN"
     },
+    "TEN_PACES_HIDDEN_MOVES_TITLE_LOGO_01": {
+      "status": "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_2026_08_31",
+      "approval_source": "user explicit: 모두 확정 (2026-08-31)",
+      "generation_mode": "ONE_SCOPED_ORIGINAL_AFTER_ACTUAL_CONSUMER_AND_BRIEF_REVIEW",
+      "generation_output_id": "exec-22d2078f-8dc6-40e5-ac6b-0e91b7f5e232",
+      "source_png_sha256": "5c75edbbe02770ddb1d41868a1beb4a55e802bc53295381d3b204238a3842e13",
+      "dimensions": "1672x941",
+      "local_asset": "docs/visual-assets/approved/TEN_PACES_HIDDEN_MOVES_TITLE_LOGO_01_v1.png",
+      "runtime_asset": "res://assets/ui/logo/ten_paces_hidden_moves_title_logo_01_v1.png",
+      "consumer": "src/ui/main_title_screen.gd (MainTitleScreen)",
+      "runtime_art_integration": "IMPLEMENTED_FOCUSED_GODOT_VERIFY_VERTICAL_SLICE_SHELL_20260831",
+      "human_usability": "NOT_RUN",
+      "android_actual_device": "NOT_RUN"
+    },
+    "ATTACK_CLASH_INK_GOLD_ATLAS_01": {
+      "status": "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_2026_08_31",
+      "approval_source": "user explicit: 모두 확정 (2026-08-31)",
+      "generation_mode": "ONE_SCOPED_ORIGINAL_AFTER_ACTUAL_CONSUMER_AND_BRIEF_REVIEW",
+      "generation_output_id": "exec-a87618fa-38d4-40a5-abf7-7643951e419b",
+      "source_png_sha256": "0859c714728608744b3f016e03c02f7b0e18d86b0b0ced191a2d5ec25ce2553f",
+      "dimensions": "1774x887",
+      "local_asset": "docs/visual-assets/approved/ATTACK_CLASH_INK_GOLD_ATLAS_01_v1.png",
+      "runtime_asset": "res://assets/vfx/attack_clash_ink_gold_atlas_rgba_v1.png",
+      "consumer": "src/combat/combat_board_preview.gd (_show_feedback_vfx)",
+      "runtime_matte": "neutral-light ShaderMaterial removes the opaque source checker backdrop without changing the final-locked bytes",
+      "runtime_art_integration": "IMPLEMENTED_FOCUSED_GODOT_VERIFY_COMBAT_ACTION_REVEAL_20260831",
+      "human_usability": "NOT_RUN",
+      "android_actual_device": "NOT_RUN"
+    },
     "OPPONENT_CHARACTER_MASTER_01": {
       "working_character": "도겸",
       "status": "USER_APPROVED_AND_IMPLEMENTED_2026_08_27",
@@ -312,7 +341,8 @@
     "TEN-VIS-A04": "ROUTE_8_ICON_SET_NOT_PRODUCED_REQUIRE_GAME_CONSUMER_VERIFICATION_BEFORE_GENERATION",
     "TEN-VIS-A05": "RESULT_COMPLETION_MARK_SET_NOT_PRODUCED_REQUIRE_GAME_CONSUMER_VERIFICATION_BEFORE_GENERATION",
     "TEN-VIS-A06": "FRONTAL_COURTYARD_DUEL_BACKGROUND_01_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260831; SUPERSEDED_INK_MIST_AND_DIAGONAL_RUNTIME_BINARIES_REMOVED_FROM_CURRENT_TREE",
-    "TEN-VIS-A07_CANDIDATE": "BASIC_ACTION_STYLE_APPROVED_IMPLEMENTED; MARTIAL_AND_ULTIMATE_SHARED_SEMANTIC_ATLAS_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260831"
+    "TEN-VIS-A07_CANDIDATE": "BASIC_ACTION_STYLE_APPROVED_IMPLEMENTED; MARTIAL_AND_ULTIMATE_SHARED_SEMANTIC_ATLAS_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260831",
+    "TEN-VIS-A08_TITLE_AND_FEEDBACK": "TITLE_LOGO_AND_ATTACK_CLASH_ATLAS_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_20260831; HUMAN_AND_DEVICE_VISUAL_QUALITY_NOT_RUN"
   },
   "screen_surface_asset_audit_20260827": {
     "issue": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/238",
@@ -372,6 +402,8 @@
     "windows_visible_local_machine_runtime_smoke": "PASS_20260830_GODOT_4_7_1_START_TO_SLOT1_DOGYEOM_COMBAT_SCREEN_NOT_HUMAN_USABILITY",
     "windows_visible_local_machine_runtime_smoke_report": "docs/operations/2026-08-30_WINDOWS_VISIBLE_GODOT_RUNTIME_SMOKE_EXECUTION_REPORT.md",
     "windows_visible_local_usability": "NOT_RUN",
+    "ten_paces_hidden_moves_title_logo_01": "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_AUTOMATED_GODOT_VERIFY_VERTICAL_SLICE_SHELL_20260831_HUMAN_READABILITY_NOT_RUN",
+    "attack_clash_ink_gold_atlas_01": "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_AUTOMATED_GODOT_VERIFY_COMBAT_ACTION_REVEAL_20260831_HUMAN_AND_DEVICE_VISUAL_QUALITY_NOT_RUN",
     "android_actual_device": "NOT_RUN",
     "fifteen_opponent_identifiability": "NOT_RUN",
     "human_fun_readability_immersion": "NOT_RUN",
