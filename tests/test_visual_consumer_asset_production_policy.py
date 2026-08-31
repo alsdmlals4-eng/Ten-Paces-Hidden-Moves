@@ -241,6 +241,21 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
                     f"{manual_path.name}:{technique['id']} must remain without illustration data.",
                 )
 
+    def test_user_final_lock_routes_martial_and_ultimate_cards_through_the_semantic_atlas(self) -> None:
+        """The final user lock supersedes the former text-only martial-card policy."""
+
+        visual = json.loads(VISUAL.read_text(encoding="utf-8"))
+        runtime_atlas = ROOT / "assets" / "ui" / "cards" / "martial_ultimate_card_illustration_atlas_01_v1.png"
+        renderer = ROOT / "src" / "ui" / "action_selection" / "action_choice_card.gd"
+
+        self.assertEqual(
+            "SHARED_SEMANTIC_CARD_ILLUSTRATION_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_RUNTIME_VERIFIED",
+            visual["martial_manual_presentation"]["policy"],
+        )
+        self.assertTrue(runtime_atlas.is_file())
+        self.assertTrue(renderer.is_file())
+        self.assertIn("semantic_atlas", renderer.read_text(encoding="utf-8"))
+
 
 if __name__ == "__main__":
     unittest.main()
