@@ -77,3 +77,45 @@
 - Human 카드 가독성·미감, 접근성 사용자, Android device, release performance, store/release readiness는 `NOT_RUN`이다.
 - asset rights는 prompt/provenance와 conditional release boundary까지 기록됐으며, 법적 독점성 또는 출시에 대한 무조건 보증이 아니다.
 - current branch는 아직 local worktree이며 PR 생성·remote CI·merge/post-merge readback을 이 보고서가 주장하지 않는다. 특히 remote `main`의 `1509317d` conflict는 별도의 explicit reconciliation decision이 필요하다.
+
+## 2026-08-31 Fresh-read 복구 정합화 부록
+
+### 재개 기준
+
+- **사용자 continuation:** 이후의 `최종확정` 및 `base와 프로젝트를 프레쉬리드하고 작업을 재개하자`는 앞서 확정된 frontal composition, 숨은 논리 전장, 상대 의도 가설/즉시 완료 제거, 그리고 basic·martial·ultimate 공통 카드 및 삽화 방향을 바꾸지 않는 `REUSED_APPROVAL`이다. 새 코어 규칙이나 Base 변경 권한으로 해석하지 않았다.
+- **프로젝트 fresh-read 기준:** `origin/main` / `main` `1509317d59d270087c5ff08b696e8ae9d8e7dfce`.
+- **Base fresh-read 기준:** `origin/main` `48dd501a10913251c4107d723bb677dae3ab9898`. 프로젝트의 채택 pin을 새 Base로 조용히 교체하지 않았고, Base 파일·Registry·proposal은 변경하지 않았다.
+- **복구 branch:** `codex/user-approved-reconciliation-20260831`, 짧은 Windows worktree `C:\Users\user\Documents\GitHub\Ninza\tph-r-831`.
+
+### 발견한 문제와 채택한 복구 구조
+
+| 요소 | 현재 상태 | 요청 이유 | 기대 효과 | 실제 조치 |
+| --- | --- | --- | --- | --- |
+| 중첩 복제 트리 | `1509317d`가 `Ten-Paces-Hidden-Moves-operating-eol/` 아래에 1,505개 tracked blob(약 48,008,076 bytes)을 다시 넣어 Windows 기본 worktree 생성도 긴 경로로 실패 | 현재 실행·소비처가 없는 구형/중복 파일을 남기지 않음 | 저장소 용량·경로 한계·향후 fresh worktree 위험 감소 | 해당 commit만 branch에서 revert(`0bc43709`)했다. 외부 consumer 참조와 submodule이 없음을 먼저 확인했다. |
+| 사용자 final lock과 최신 main의 충돌 | 최신 main은 diagonal/hypothesis/text-only 방향을 재도입하고 `ActionChoiceCard` 소비처를 제거 | 이미 확정한 화면·카드 경험을 유지 | 실제 실행 화면과 승인 정본의 일치 | unrelated open PR은 건드리지 않고, final-lock commit chain만 `REUSE_EXISTING_PROJECT_IMPLEMENTATION`으로 재적용했다. |
+| 회귀 계약 | shared renderer가 `semantic_atlas`를 지원하는데 오래된 static contract는 `basic_atlas_only`만 허용 | 정본과 테스트가 서로 다른 현상을 PASS시키면 안 됨 | 다음 변경에서 card illustration regression을 즉시 검출 | 먼저 final-lock regression을 RED로 확인하고, shared renderer의 두 정책 및 martial/ultimate의 `semantic_atlas` publish를 검증하도록 contract를 최소 갱신했다(`63531e46`). |
+| Godot 생성물 | 실런타임 확인 뒤 `.import`·`.uid` 13개가 untracked로 생성됨 | 필요한 파일만 남기는 사용자 정책 | branch/PR에 engine cache가 섞이지 않음 | 대상 목록을 dry-run/readback한 뒤 정확히 삭제했다. tracked `.import`/`project.godot`은 index bytes로 되돌려 source diff가 없음을 확인했다. |
+
+### 복구 변경 범위와 rollback
+
+복구 chain은 `0bc43709`, `03e68a3b`, `845cc188`, `0699ad88`, `9bff68a7`, `a8eb38f9`, `ad93d0fe`, `63531e46`이다. 전투 규칙, 공개 정보 경계, AI, save schema, core 10-step logical model은 변경하지 않았다. remote `main` push, force-push, merge, Base mutation은 수행하지 않았다. 이 package의 rollback은 이 branch의 복구 commits를 revert하거나 branch를 폐기하는 방식이며, 기존 source branch와 기존 open PR은 보존된다.
+
+### 복구 후 적대 검토 5회와 clean exit
+
+1. **권위/범위 공격:** 프로젝트·Base AGENTS, active owners, project adapter와 최신 main을 교차 read했다. 새 Base adoption이나 신규 game rule로 범위가 넓어지는 시도를 배제했다.
+2. **삭제 안전성 공격:** 중첩 tree가 `1509317d`에서만 추가되었는지, tree 밖의 파일이 참조하지 않는지, `.gitmodules`가 없는지를 검사한 뒤에만 revert했다.
+3. **정본/회귀 공격:** final-lock policy test를 RED로 확인한 뒤 GREEN으로 만들었다. 이어 stale static action-selection contract가 발견되어 semantic atlas policy를 정확히 수용하도록 고쳤다.
+4. **자동/구조 공격:** project operating-system, Base v9.1 operating contract, canonical reference freshness, action-selection contract, full Python test suite, Godot headless parse와 focused Godot scripts를 다시 실행했다.
+5. **실화면/잔존물 공격:** exact recovery worktree의 Godot scene에서 frontal courtyard, equal grounded battlers, hidden `TileLayer`, `거리 2`, martial 2개·ultimate 8개의 visible `CardIllustration` 노드를 확인했다. 진단은 error/warning 0이었고, import/UID 생성물도 정리 후 Git readback 했다.
+
+### 복구 검증 결과와 증거 한계
+
+- **Python full regression:** `python -m unittest discover -s tests -p 'test_*.py' -q` → `432` tests `OK`.
+- **운영 계약:** `python -m unittest tests.test_base_v91_operating_contract -v` → `2` tests `OK`; `python tools/check_project_operating_system.py --root . --config .github/documentation-governance.json` → `PASS`.
+- **현재 reference/카드 contract:** `python tools/check_canonical_reference_freshness.py --root . --config .github/reference-freshness.json` 및 `python tests/check_action_selection_contract.py` → `PASS`.
+- **Godot:** exact Godot `4.7.1` headless editor parse exit `0`; `verify_action_card_source_unification.gd`, `verify_martial_action_panel.gd`, `verify_ultimate_action_panel.gd`, `verify_frontal_duel_assets.gd` → 각각 `PASS`.
+- **증거 한계:** 위 결과는 automated + exact local runtime verification이다. 인간 플레이 비교, UX/human acceptance, 접근성 사용자, Android 실기기, release performance, remote CI/PR/merge/post-merge main readback은 여전히 `NOT_RUN`이다.
+
+### 재사용·학습 결론
+
+`ActionChoiceCard`, `ActionViewModelAdapter`, approved frontal background와 semantic atlas는 기존 프로젝트 구현을 재사용했다. 새 Base proposal은 `NO_NEW_BASE_PROPOSAL`: 이번 문제의 핵심은 project-specific historical-main recovery와 Godot generated-file hygiene이며, 현재 Base에 중복되는 공용 정책을 새로 만들 근거가 없다. 다만 후속 작업에서도 **runtime import 뒤 exact generated-file readback → target-limited cleanup** 순서를 유지한다.
