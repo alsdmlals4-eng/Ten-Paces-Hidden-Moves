@@ -96,36 +96,7 @@ func _verify_public_feedback_surface() -> void:
 	if clash_vfx != null:
 		_expect(clash_vfx.atlas.resource_path == ATTACK_CLASH_VFX_PATH, "Clash feedback must consume the final-locked attack/clash VFX atlas.")
 		_expect(clash_vfx.region.position.y > 0.0, "Clash feedback must consume the lower VFX band.")
-	await board._present_timing_duel([{
-		"type": "action_result",
-		"card_id": "basic_quick_attack",
-		"category": "attack",
-		"card_name": "속공",
-		"actor": "player",
-		"damage": 6,
-		"outcome": "hit"
-	}], 1, "quick_attack")
-	_expect(str(board.get_meta("presentation_feedback_kind", "")) == "attack", "A resolved normal attack must publish normal-attack feedback.")
-	_expect(not bool(board.get_meta("presentation_future_action_exposed", true)), "Normal-attack feedback must not expose a future hidden action.")
-	await board._present_timing_duel([{
-		"type": "clash",
-		"card_id": "basic_guard",
-		"card_name": "막기",
-		"actor": "enemy",
-		"damage": 0,
-		"outcome": "clash_draw"
-	}], 1, "clash")
-	_expect(str(board.get_meta("presentation_feedback_kind", "")) == "clash", "A resolved clash must publish central clash feedback.")
-	await board._present_timing_duel([{
-		"type": "action_result",
-		"card_id": "ultimate_ten_paces_wave",
-		"category": "attack",
-		"card_name": "십보 유파",
-		"actor": "player",
-		"damage": 8,
-		"outcome": "hit"
-	}], 1, "quick_attack")
-	_expect(str(board.get_meta("presentation_feedback_kind", "")) == "ultimate", "A resolved ultimate must publish ultimate feedback.")
+	await _verify_feedback_choreography(board)
 	board._reduced_motion = true
 	await board._present_timing_duel([{
 		"type": "action_result",
@@ -139,6 +110,66 @@ func _verify_public_feedback_surface() -> void:
 	_expect(bool(board.get_meta("presentation_feedback_reduced_motion_safe", false)), "Reduced Motion must retain a static readable action result.")
 	board.queue_free()
 	await process_frame
+
+func _verify_feedback_choreography(board: CombatBoardPreview) -> void:
+	var attack_event := {
+		"type": "action_result",
+		"card_id": "basic_quick_attack",
+		"category": "attack",
+		"card_name": "속공",
+		"actor": "player",
+		"damage": 6,
+		"outcome": "hit"
+	}
+	board.presentation_vfx.visible = false
+	board.presentation_label.visible = false
+	await board._present_timing_duel([attack_event], 1, "quick_attack")
+	var attack_beats: Array = board.get_meta("presentation_feedback_visibility_history", [])
+	_expect(_has_feedback_beat(attack_beats, "windup", false, false, "attack"), "Normal attack must begin with a hidden-feedback windup while the character advances.")
+	_expect(_has_feedback_beat(attack_beats, "impact", true, true, "attack"), "Normal attack must reveal VFX and result copy together at impact.")
+	_expect(not bool(board.get_meta("presentation_future_action_exposed", true)), "Normal-attack feedback must not expose a future hidden action.")
+	_expect(str(board.get_meta("presentation_feedback_phase", "")) == "settled", "Normal attack must settle after its impact feedback.")
+	_expect(not board.presentation_vfx.visible and not board.presentation_label.visible, "Normal attack must clear impact feedback before the next event.")
+
+	var clash_event := {
+		"type": "clash",
+		"card_id": "basic_guard",
+		"card_name": "막기",
+		"actor": "enemy",
+		"damage": 0,
+		"outcome": "clash_draw"
+	}
+	await board._present_timing_duel([clash_event], 1, "clash")
+	var clash_beats: Array = board.get_meta("presentation_feedback_visibility_history", [])
+	_expect(_has_feedback_beat(clash_beats, "windup", false, false, "clash"), "Clash must show a hidden-feedback central tension phase before collision.")
+	_expect(_has_feedback_beat(clash_beats, "impact", true, true, "clash"), "Clash impact must reveal collision VFX and result copy together.")
+	_expect(str(board.get_meta("presentation_feedback_phase", "")) == "settled", "Clash must settle after its collision feedback.")
+	_expect(not board.presentation_vfx.visible and not board.presentation_label.visible, "Clash must clear collision feedback before the next event.")
+
+	var ultimate_event := {
+		"type": "action_result",
+		"card_id": "ultimate_ten_paces_wave",
+		"category": "attack",
+		"card_name": "십보 유파",
+		"actor": "player",
+		"damage": 8,
+		"outcome": "hit"
+	}
+	await board._present_timing_duel([ultimate_event], 1, "quick_attack")
+	var ultimate_beats: Array = board.get_meta("presentation_feedback_visibility_history", [])
+	_expect(_has_feedback_beat(ultimate_beats, "windup", false, false, "ultimate"), "Ultimate must begin with a longer hidden-feedback windup.")
+	_expect(_has_feedback_beat(ultimate_beats, "impact", true, true, "ultimate"), "Ultimate impact must reveal VFX and result copy together.")
+	_expect(str(board.get_meta("presentation_feedback_phase", "")) == "settled", "Ultimate must settle after its impact feedback.")
+	_expect(not board.presentation_vfx.visible and not board.presentation_label.visible, "Ultimate must clear impact feedback before the reveal closes.")
+
+func _has_feedback_beat(beats: Array, phase: String, vfx_visible: bool, label_visible: bool, kind: String) -> bool:
+	for value in beats:
+		if typeof(value) != TYPE_DICTIONARY:
+			continue
+		var beat: Dictionary = value
+		if str(beat.get("phase", "")) == phase and bool(beat.get("vfx_visible", false)) == vfx_visible and bool(beat.get("label_visible", false)) == label_visible and str(beat.get("feedback_kind", "")) == kind:
+			return true
+	return false
 
 func _card(board: CombatBoardPreview, card_id: String) -> Dictionary:
 	for value in board.basic_card_tray.cards:
