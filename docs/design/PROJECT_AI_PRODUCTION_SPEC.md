@@ -291,7 +291,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 | UI shell | `src/ui/action_selection/action_selection_dock.gd` — selection dock |
 | CTA | `src/ui/combat_progress_button.gd` — execute request / disabled state |
 | scene | `scenes/combat/combat_board_preview.tscn`, `scenes/run/vertical_slice_combat_bridge.tscn` |
-| data | `data/combat/action_selection_poc.json`, `data/cards/basic_cards.json` |
+| data | `data/cards/basic_cards.json`, `data/cards/ultimate_cards.json`, `data/combat/mastery_ultimate_poc.json`, `data/cards/martial_manuals/*.json` (registry/loadout), `data/combat/combat_board_poc.json` (semantic intent fixture) |
 
 **PSEUDOCODE.** `if plan.valid and execute_pressed: lock_inputs(); resolve_bundle(); play_resolution_events(); expose_public_history()`.
 
@@ -576,7 +576,7 @@ vertical_slice_shell.tscn
 |---|---|---|---|
 | DAT-ACTION-001 | `basic_cards.json` | `id`, slots/span, resource, range, effect; 2-slot has telegraph/execution meaning | combat data |
 | DAT-RESOLVE-001 | `combat_resolution_preview.json` | board 10 cells, starting positions, public AI source, action fixture | combat fixture |
-| DAT-PLAN-001 | `action_selection_poc.json` | placement UI fixture / slot capacity | action selection |
+| DAT-PLAN-001 | `combat_board_poc.json` | 3/3/4 slot capacity, hidden logical tile layer, semantic `move_intent` / `aim_intent` player-facing planning fixture | action selection |
 | DAT-MANUAL-001 | `martial_manual_cards.json`, `martial_manuals/*.json` | manual ID, unlock/adoption data | content data |
 | DAT-RUN-001 | `vertical_slice_opponents.json` | candidate catalog, focus IDs, `final_stat_total_seed`; runtime binding fields are absent | run content / NOT_RUNTIME_BOUND |
 

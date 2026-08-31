@@ -1,5 +1,11 @@
 extends SceneTree
 
+const ADAPTER_SCRIPT := preload("res://src/ui/action_selection/action_view_model_adapter.gd")
+const HUA := "mount_hua_plum_blossom_sword"
+const TANG := "sichuan_tang_hidden_weapons"
+const HUA_STAR3 := "mount_hua_plum_blossom_sword_star3"
+const HUA_STAR7 := "mount_hua_plum_blossom_sword_star7"
+
 var selected_count := 0
 var selected_id := ""
 
@@ -12,15 +18,19 @@ func _run() -> void:
     var panel = scene.instantiate()
     get_root().add_child(panel)
     await process_frame
+    panel.set_manuals(ADAPTER_SCRIPT.new().build_owned_manuals([HUA, TANG], {HUA: 5, TANG: 10}))
+    await process_frame
 
     var snapshot: Dictionary = panel.get_panel_snapshot()
-    assert(int(snapshot.get("manual_count", 0)) == 4)
-    assert(str(snapshot.get("selected_manual_id", "")) == "manual_flowing_cloud_sword")
-    assert((snapshot.get("manual_ids", []) as Array).size() == 4)
+    assert(int(snapshot.get("manual_count", 0)) == 2)
+    assert(str(snapshot.get("selected_manual_id", "")) == HUA)
+    assert(snapshot.get("manual_ids", []) == [HUA, TANG])
     assert(int(snapshot.get("unlocked_technique_count", 0)) == 1)
     assert(int(snapshot.get("locked_technique_count", 0)) == 1)
+    assert(snapshot.get("card_surface", "") == "shared_action_card_grid")
+    assert(snapshot.get("illustration_policy", "") == "semantic_atlas")
 
-    assert(panel.manual_buttons.size() == 4)
+    assert(panel.manual_buttons.size() == 2)
     assert(panel.technique_buttons.size() == 2)
 
     var unlocked_button: Button
@@ -34,25 +44,29 @@ func _run() -> void:
 
     assert(is_instance_valid(unlocked_button))
     assert(is_instance_valid(locked_button))
+    assert(is_instance_valid(unlocked_button.find_child("CardIllustration", false, false)))
+    assert(is_instance_valid(locked_button.find_child("CardIllustration", false, false)))
     assert(not unlocked_button.disabled)
     assert(locked_button.disabled)
     assert(locked_button.focus_mode == Control.FOCUS_ALL)
-    assert(locked_button.text == "낙영추검 · 7성 해금 · 현재 3성")
+    var locked_status := locked_button.find_child("CardStatus", false, false) as Label
+    assert(is_instance_valid(locked_status))
+    assert(locked_status.text.ends_with("7성 해금 · 현재 5성"))
 
     panel.technique_selected.connect(_on_technique_selected)
 
     panel.manual_buttons[1].emit_signal("pressed")
     await process_frame
     assert(selected_count == 0)
-    assert(panel.get_selected_manual_id() == "manual_vajra_body")
+    assert(panel.get_selected_manual_id() == TANG)
 
-    assert(panel.select_manual("manual_flowing_cloud_sword"))
+    assert(panel.select_manual(HUA))
     await process_frame
-    assert(panel.activate_technique("technique_falling_shadow_pursuit") == false)
+    assert(panel.activate_technique(HUA_STAR7) == false)
     assert(selected_count == 0)
-    assert(panel.activate_technique("technique_flowing_cloud_threefold"))
+    assert(panel.activate_technique(HUA_STAR3))
     assert(selected_count == 1)
-    assert(selected_id == "technique_flowing_cloud_threefold")
+    assert(selected_id == HUA_STAR3)
 
     print("verify_martial_action_panel: PASS")
     quit(0)

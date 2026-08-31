@@ -112,9 +112,11 @@ def main() -> None:
     assert progress["request_mode"] == "resolve_bundle"
     assert progress["advances_state"] is True
 
-    assert contract["basic_card_tray"]["card_count"] == 10
-    assert contract["basic_card_tray"]["card_ids"] == EXPECTED_CARD_IDS
-    assert contract["basic_card_tray"]["stance_response_combo_enabled"] is True
+    assert contract["basic_action_cards"]["card_count"] == 10
+    assert contract["basic_action_cards"]["card_ids"] == EXPECTED_CARD_IDS
+    assert contract["basic_action_cards"]["stance_response_combo_enabled"] is True
+    assert contract["basic_action_cards"]["card_surface"] == "shared_action_card_grid"
+    assert contract["basic_action_cards"]["illustration_policy"] == "basic_atlas_only"
     assert [card["id"] for card in cards["cards"]] == EXPECTED_CARD_IDS
     assert cards["forbidden_fields"] == ["action_point_cost", "guard_reduction"]
     by_id = {card["id"]: card for card in cards["cards"]}
@@ -135,19 +137,24 @@ def main() -> None:
     assert "다음" in by_id["basic_stance"]["effect_text"]
 
     targeting = contract["action_targeting"]
-    assert targeting["patch"] == "10.5"
-    assert targeting["move_mode"] == "select_destination_board_tile"
+    assert targeting["patch"] == "10.7"
+    assert targeting["surface"] == "semantic_intent_cards"
+    assert targeting["move_mode"] == "semantic_intent_cards"
     assert targeting["move_range_source"] == "card.move_range"
     assert targeting["basic_move_range"] == 1
     assert targeting["footwork_move_range"] == 2
     assert targeting["footwork_distance_choice"] == [1, 2]
-    assert targeting["attack_mode"] == "select_left_or_right_direction"
+    assert targeting["move_intents"] == ["approach", "retreat"]
+    assert targeting["attack_mode"] == "semantic_aim_cards"
+    assert targeting["attack_intents"] == ["aim_opponent", "predict_away"]
     assert targeting["heavy_attack_range"] == 2
     assert targeting["heavy_attack_hits_distances"] == [1, 2]
-    assert targeting["tile_states"] == ["default", "movable", "attackable", "selected", "disabled"]
+    assert targeting["attack_range_tiles_are_clickable"] is False
+    assert targeting["logical_board_visible_during_selection"] is False
+    assert targeting["tile_states"] == ["hidden"]
     assert targeting["shape_and_text_fallback"] is True
     assert targeting["unresolved_target_blocks_progress"] is True
-    assert targeting["resolution_uses_explicit_target"] is True
+    assert targeting["resolution_uses_semantic_intent"] is True
 
     response = contract["response_rules"]
     assert response["patch"] == "10.6"
@@ -179,38 +186,63 @@ def main() -> None:
     assert res_file(ultimate["asset_manifest"]).exists()
     active_assets = [asset for asset in asset_manifest["assets"] if asset["active"]]
     assert {asset["id"] for asset in active_assets} == {
-        "ink_mist_valley_duel_01_v1",
+        "frontal_courtyard_duel_background_01_v1",
         "player_wanderer_ink_v1",
         "enemy_masked_ink_v1",
         "dogyeom_status_portrait_01_v1",
+        "player_wanderer_battler_rgba_v1",
         "enemy_masked_battler_rgba_v1",
-        "player_diagonal_duel_battler_01_v1",
-        "dogyeom_diagonal_duel_battler_01_v1",
+        "dogyeom_combat_battler_01_v1",
         "basic_technique_ink_atlas_01_v1",
+        "martial_ultimate_card_illustration_atlas_01_v1",
+        "ten_paces_hidden_moves_title_logo_01_v1",
+        "attack_clash_ink_gold_atlas_01_v1",
         "ultimate_ink_gold_sprite_sheet_rgba",
     }
     for asset in active_assets:
         assert res_file(asset["path"]).exists(), asset["path"]
         assert asset.get("prompt") or asset.get("source_png_sha256"), asset["id"]
         assert asset.get("license", asset_manifest.get("license", ""))
-    battle_background = next(asset for asset in active_assets if asset["id"] == "ink_mist_valley_duel_01_v1")
-    assert battle_background["source_asset"] == "docs/visual-assets/approved/INK_MIST_VALLEY_DUEL_01_v1.png"
+    battle_background = next(asset for asset in active_assets if asset["id"] == "frontal_courtyard_duel_background_01_v1")
+    assert battle_background["source_asset"] == "docs/visual-assets/approved/FRONTAL_COURTYARD_DUEL_BACKGROUND_01_v1.png"
     assert battle_background["runtime_consumer"] == "src/combat/battle_background.gd"
-    assert battle_background["replaces_active_asset"] == "twilight_ink_duel_v1"
+    assert battle_background["replaces_active_asset"] == "ink_mist_valley_duel_01_v1"
     canonical_source = ROOT / battle_background["source_asset"]
     assert canonical_source.exists()
     assert hashlib.sha256(canonical_source.read_bytes()).hexdigest() == battle_background["source_png_sha256"]
     assert hashlib.sha256(res_file(battle_background["path"]).read_bytes()).hexdigest() == battle_background["source_png_sha256"]
-    previous_background = next(asset for asset in asset_manifest["assets"] if asset["id"] == "twilight_ink_duel_v1")
-    assert previous_background["active"] is False
-    assert previous_background["superseded_by"] == battle_background["id"]
+    assert all(asset["id"] not in {"twilight_ink_duel_v1", "ink_mist_valley_duel_01_v1"} for asset in asset_manifest["assets"])
+    semantic_atlas = next(asset for asset in active_assets if asset["id"] == "martial_ultimate_card_illustration_atlas_01_v1")
+    assert semantic_atlas["source_asset"] == "docs/visual-assets/approved/MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png"
+    assert "ActionViewModelAdapter" in semantic_atlas["runtime_consumer"]
+    semantic_atlas_source = ROOT / semantic_atlas["source_asset"]
+    assert semantic_atlas_source.exists()
+    assert hashlib.sha256(semantic_atlas_source.read_bytes()).hexdigest() == semantic_atlas["source_png_sha256"]
+    assert hashlib.sha256(res_file(semantic_atlas["path"]).read_bytes()).hexdigest() == semantic_atlas["source_png_sha256"]
     ultimate_vfx = next(asset for asset in active_assets if asset["id"] == "ultimate_ink_gold_sprite_sheet_rgba")
     assert ultimate_vfx["transparency_audit"]["has_alpha"] is True
     assert ultimate_vfx["transparency_audit"]["status"] == "APPROVED_ACTIVE"
-    for asset_id in ("player_diagonal_duel_battler_01_v1", "dogyeom_diagonal_duel_battler_01_v1", "enemy_masked_battler_rgba_v1"):
+    title_logo = next(asset for asset in active_assets if asset["id"] == "ten_paces_hidden_moves_title_logo_01_v1")
+    assert title_logo["source_asset"] == "docs/visual-assets/approved/TEN_PACES_HIDDEN_MOVES_TITLE_LOGO_01_v1.png"
+    assert title_logo["runtime_consumer"] == "MainTitleScreen in src/ui/main_title_screen.gd"
+    assert title_logo["transparency_audit"]["alpha_extrema"] == [0, 255]
+    title_logo_source = ROOT / title_logo["source_asset"]
+    assert title_logo_source.exists()
+    assert hashlib.sha256(title_logo_source.read_bytes()).hexdigest() == title_logo["source_png_sha256"]
+    assert hashlib.sha256(res_file(title_logo["path"]).read_bytes()).hexdigest() == title_logo["source_png_sha256"]
+    attack_clash_vfx = next(asset for asset in active_assets if asset["id"] == "attack_clash_ink_gold_atlas_01_v1")
+    assert attack_clash_vfx["source_asset"] == "docs/visual-assets/approved/ATTACK_CLASH_INK_GOLD_ATLAS_01_v1.png"
+    assert "CombatBoardPreview._show_feedback_vfx" in attack_clash_vfx["runtime_consumer"]
+    assert attack_clash_vfx["source_alpha_audit"]["status"] == "OPAQUE_SOURCE_RUNTIME_MATTE_REQUIRED"
+    assert "ShaderMaterial" in attack_clash_vfx["runtime_matte"]
+    attack_clash_source = ROOT / attack_clash_vfx["source_asset"]
+    assert attack_clash_source.exists()
+    assert hashlib.sha256(attack_clash_source.read_bytes()).hexdigest() == attack_clash_vfx["source_png_sha256"]
+    assert hashlib.sha256(res_file(attack_clash_vfx["path"]).read_bytes()).hexdigest() == attack_clash_vfx["source_png_sha256"]
+    for asset_id in ("player_wanderer_battler_rgba_v1", "dogyeom_combat_battler_01_v1", "enemy_masked_battler_rgba_v1"):
         character_art = next(asset for asset in active_assets if asset["id"] == asset_id)
         audit = character_art["transparency_audit"]
-        assert character_art["source_asset"]
+        assert character_art.get("source_asset") or character_art.get("source_png_sha256")
         assert audit["has_alpha"] is True
         assert audit["alpha_extrema"] == [0, 255]
         assert audit["corner_alpha"] == [0, 0, 0, 0]
@@ -239,8 +271,8 @@ def main() -> None:
     resolution_contract = contract["resolution_engine"]
     assert resolution_contract["resolution_order"] == ["response", "quick_attack", "move", "general"]
     assert resolution_contract["same_phase_attacks"] == "simultaneous_damage"
-    assert resolution_contract["uses_explicit_move_target"] is True
-    assert resolution_contract["uses_explicit_attack_direction"] is True
+    assert resolution_contract["uses_semantic_move_intent"] is True
+    assert resolution_contract["uses_semantic_aim_intent"] is True
     assert resolution_contract["uses_card_specific_move_range"] is True
     assert resolution_contract["uses_guard_bundle_profiles"] is True
     assert resolution_contract["uses_stance_response_combo"] is True
@@ -266,8 +298,8 @@ def main() -> None:
     assert resolution["stance_response_bundle_extension"] is True
     assert resolution["stance_response_defense_multiplier"] == 1.5
     assert resolution["placement_resource_preview"] is True
-    assert resolution["explicit_player_move_target"] is True
-    assert resolution["explicit_player_attack_direction"] is True
+    assert resolution["semantic_player_move_intent"] is True
+    assert resolution["semantic_player_aim_intent"] is True
     assert resolution["damage_interrupts_current_timing_actions"] is True
     assert resolution["bundle_momentum_gain"] == 1
     assert resolution["guard_success_momentum_gain"] == 1
@@ -278,18 +310,18 @@ def main() -> None:
     assert resolution["same_tile_max_combatants"] == 2
     assert resolution["enemy_plan_source"] == "public_state_ai"
     assert resolution["enemy_bundles"] == {}
-    assert contract["ultimate_skills"]["selection_trigger"] == "momentum_gauge_below_list"
+    assert contract["ultimate_skills"]["selection_trigger"] == "action_source_tab"
     assert contract["ultimate_skills"]["list_visible_during_planning"] is True
 
     scope = set(contract["presentation_scope"])
-    assert {"action_targeting", "action_placement", "response_rules", "resolution_engine"} <= scope
+    assert {"basic_action_cards", "action_targeting", "action_placement", "response_rules", "resolution_engine", "distance_readout"} <= scope
     excluded = set(contract["excluded_until_later_steps"])
     assert "combat_ai" not in excluded and "combat_end_restart" not in excluded
 
     required_files = [
-        "assets/backgrounds/ink_mist_valley_duel_01_v1.png",
-        "assets/characters/player_diagonal_duel_battler_01_v1.png",
-        "assets/characters/dogyeom_diagonal_duel_battler_01_v1.png",
+        "assets/backgrounds/frontal_courtyard_duel_background_01_v1.png",
+        "assets/characters/player_wanderer_battler_rgba_v1.png",
+        "assets/characters/dogyeom_combat_battler_01_v1.png",
         "assets/characters/enemy_masked_battler_rgba_v1.png",
         "assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
         "assets/reference/step_02_character_scale_and_tile_placement.svg",
@@ -317,8 +349,8 @@ def main() -> None:
         "tests/verify_combat_assistive_labels.gd",
         "tests/verify_combat_pointer_lock.gd",
         "tests/verify_combat_presentation_controls.gd",
-        "tests/verify_diagonal_duel_assets.gd",
-        "tests/verify_diagonal_duel_action_reveal.gd",
+        "tests/verify_frontal_duel_assets.gd",
+        "tests/verify_combat_action_reveal.gd",
         "tests/verify_combat_keyboard_accessibility.gd",
         "tests/verify_combat_layout_accessibility.gd",
         "tests/verify_combat_performance_headless.gd",
@@ -363,8 +395,8 @@ def main() -> None:
         "action_reveal_snapshot",
     ))
     assert all(token in character_script for token in (
-        "player_diagonal_duel_battler_01_v1.png",
-        "dogyeom_diagonal_duel_battler_01_v1.png",
+        "player_wanderer_battler_rgba_v1.png",
+        "dogyeom_combat_battler_01_v1.png",
         "enemy_masked_battler_rgba_v1.png",
         "get_render_texture",
         "character_art_path",
@@ -375,13 +407,15 @@ def main() -> None:
     assert "_configure_keyboard_focus_order" in controller
     assert "_configure_accessibility_semantics" in controller
     assert all(token in action_reveal_script for token in ("show_timing", "future_action_visible", "_actor_events", "VS"))
-    assert all(token in verifier for token in ("TARGETING_10_5", "_on_board_tile_clicked", "miss_direction", "basic_footwork", "EXPECTED_PLAYER_TILE := 4", "EXPECTED_ENEMY_TILE := 6"))
+    assert all(token in verifier for token in ("TARGETING_10_5", "_on_product_intent_selected", "miss_direction", "basic_footwork", "EXPECTED_PLAYER_TILE := 4", "EXPECTED_ENEMY_TILE := 6"))
     assert all(token in response_verifier for token in ("Same-timing guard", "Stance+guard", "Stance+evade", "preview_player_plan", "invalid_anchors"))
     assert "res://tests/verify_response_rules.gd" in powershell
     assert "res://tests/verify_combat_pointer_lock.gd" in powershell
     assert "res://tests/verify_combat_presentation_controls.gd" in powershell
     assert "res://tests/verify_combat_focus_order.gd" in powershell
     assert "res://tests/verify_combat_assistive_labels.gd" in powershell
+    assert "OpponentHypothesisPanel" not in controller
+    assert "SkipPresentationButton" not in controller
     assert "플레이어 4번 / 상대 7번" in reference_svg  # historical visual reference; not runtime authority
     assert "플레이어 · 4번 칸" in reference_svg
     assert "상대 · 7번 칸" in reference_svg

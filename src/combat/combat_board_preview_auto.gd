@@ -45,6 +45,7 @@ func _build_product_action_selection_dock() -> void:
     action_selection_dock.name = "ActionSelectionDock"
     action_selection_dock.set_anchors_preset(Control.PRESET_TOP_LEFT)
     action_selection_dock.action_selected.connect(_on_product_action_selected)
+    action_selection_dock.intent_selected.connect(_on_product_intent_selected)
     action_selection_dock.source_changed.connect(_on_product_source_changed)
     add_child(action_selection_dock)
     _hide_legacy_action_ui()
@@ -142,7 +143,7 @@ func _on_controller_placement_failed(code: String, message: String) -> void:
     if is_instance_valid(combat_log_panel):
         match code:
             ActionPlacementController.CODE_TARGETING_IN_PROGRESS:
-                combat_log_panel.append_entry("[대상 선택] 먼저 자동 배치된 행동의 이동 칸 또는 공격 방향을 지정해야 합니다.", "system")
+                combat_log_panel.append_entry("[의도 선택] 먼저 자동 배치된 행동의 이동 또는 공격 의도 카드를 선택해야 합니다.", "system")
             ActionPlacementController.CODE_MOMENTUM_INSUFFICIENT:
                 combat_log_panel.append_entry("[절초 예약 불가] 기세 5와 현재 묶음의 연속된 빈 슬롯이 모두 필요합니다.", "system")
             ActionPlacementController.CODE_NO_CONTIGUOUS_TIMINGS:
@@ -168,13 +169,103 @@ func _clear_auto_selection_state() -> void:
         basic_card_tray.clear_action_selection()
 
 func _begin_targeting_for_anchor(anchor_index: int) -> bool:
-    var started := super._begin_targeting_for_anchor(anchor_index)
-    _set_tactical_target_layer_visible(started)
+    var placement := action_timing_panel.get_placement(anchor_index)
+    if placement.is_empty() or bool(placement.get("target_ready", true)):
+        return false
+    var mode := str(placement.get("targeting_mode", "none"))
+    if mode not in ["move_intent", "aim_intent"]:
+        return false
+    _targeting_anchor = anchor_index
+    _targeting_mode = mode
+    _targeting_origin_tile = _projected_player_tile_before(anchor_index)
+    _clear_tile_interactions()
+    _set_tactical_target_layer_visible(false)
+    if is_instance_valid(action_selection_dock):
+        action_selection_dock.set_interaction_state("targeting")
+        action_selection_dock.set_targeting_intents(_intent_title(placement), _build_semantic_intents(placement))
+    if is_instance_valid(combat_log_panel):
+        combat_log_panel.append_entry("[의도 선택] %s · 전장 칸 대신 의미 카드로 행동 의도를 정합니다." % str(placement.get("card_name", "행동")), "system")
+    set_meta("targeting_anchor", _targeting_anchor)
+    set_meta("targeting_mode", _targeting_mode)
+    set_meta("targeting_origin_tile", _targeting_origin_tile)
+    set_meta("targeting_surface", "semantic_intent_cards")
     _sync_action_selection_dock()
-    return started
+    return true
+
+func _on_product_intent_selected(intent: Dictionary) -> void:
+    if _inputs_locked() or _targeting_anchor <= 0:
+        return
+    var placement := action_timing_panel.get_placement(_targeting_anchor)
+    if placement.is_empty():
+        return
+    var direction := clampi(int(intent.get("resolver_direction", 0)), -1, 1)
+    if direction == 0:
+        return
+    var target_tile := 0
+    if _targeting_mode == "move_intent":
+        target_tile = _targeting_origin_tile + direction * maxi(1, int(intent.get("steps", 1)))
+        if target_tile < 1 or target_tile > tiles.size():
+            return
+    var target_data := {
+        "resolver_direction": direction,
+        "target_tile": target_tile,
+        "origin_tile": _targeting_origin_tile,
+        "intent": str(intent.get("intent", "")),
+        "target_text": str(intent.get("name", "행동 의도"))
+    }
+    if not action_timing_panel.set_placement_target(_targeting_anchor, target_data):
+        return
+    if is_instance_valid(combat_log_panel):
+        combat_log_panel.append_entry("[의도 확정] %s · %s" % [str(placement.get("card_name", "행동")), str(intent.get("name", "행동 의도"))], "system")
+    _clear_targeting()
+    _begin_next_pending_target()
+
+func _intent_title(placement: Dictionary) -> String:
+    var prefix := "이동 의도" if str(placement.get("targeting_mode", "")) == "move_intent" else "공격 의도"
+    return "%s · %s" % [prefix, str(placement.get("card_name", "행동"))]
+
+func _build_semantic_intents(placement: Dictionary) -> Array[Dictionary]:
+    var definition: Dictionary = placement.get("definition", {})
+    var toward_direction := signi(_enemy_tile - _targeting_origin_tile)
+    if toward_direction == 0:
+        toward_direction = 1
+    var result: Array[Dictionary] = []
+    if _targeting_mode == "move_intent":
+        var movement_steps := maxi(1, int(definition.get("move_range", resolution_engine.rules.get("movement_steps", 1))))
+        for steps in range(1, movement_steps + 1):
+            var approach_tile := _targeting_origin_tile + toward_direction * steps
+            if approach_tile >= 1 and approach_tile <= tiles.size():
+                result.append(_make_intent_card("approach_%d" % steps, "접근 %d칸" % steps, "approach", toward_direction, steps, "상대와의 거리를 좁힌다.", "move"))
+            var retreat_tile := _targeting_origin_tile - toward_direction * steps
+            if retreat_tile >= 1 and retreat_tile <= tiles.size():
+                result.append(_make_intent_card("retreat_%d" % steps, "후퇴 %d칸" % steps, "retreat", -toward_direction, steps, "상대와의 거리를 벌린다.", "move"))
+        return result
+    result.append(_make_intent_card("aim_opponent", "상대를 노림", "aim_opponent", toward_direction, 0, "현재 보이는 상대 쪽을 노린다.", "attack"))
+    result.append(_make_intent_card("predict_away", "반대 예측", "predict_away", -toward_direction, 0, "상대가 피할 쪽을 예측해 노린다.", "attack"))
+    return result
+
+func _make_intent_card(intent_id: String, label: String, intent: String, resolver_direction: int, steps: int, summary: String, category: String) -> Dictionary:
+    return {
+        "id": intent_id,
+        "name": label,
+        "source_label": "행동 의도",
+        "category": category,
+        "category_label": "이동 의도" if category == "move" else "공격 의도",
+        "action_slots": 1,
+        "stamina_cost": 0,
+        "internal_cost": 0,
+        "hide_range": true,
+        "intent": intent,
+        "resolver_direction": resolver_direction,
+        "steps": steps,
+        "effect_text": summary,
+        "intent_summary": summary
+    }
 
 func _clear_targeting() -> void:
     super._clear_targeting()
+    if is_instance_valid(action_selection_dock):
+        action_selection_dock.clear_targeting_intents()
     _set_tactical_target_layer_visible(false)
     _sync_action_selection_dock()
 
@@ -201,14 +292,14 @@ func _refresh_ultimate_menu() -> void:
 func _layout_board() -> void:
     super._layout_board()
     _layout_product_action_dock()
-    _apply_diagonal_duel_composition()
+    _apply_frontal_duel_composition()
 
 func _layout_product_action_dock() -> void:
     if not is_instance_valid(action_selection_dock) or size.x <= 0.0 or size.y <= 0.0:
         return
     var lower_margin := maxf(10.0, size.x * 0.014)
     var lower_bottom := maxf(8.0, size.y * 0.012)
-    var dock_height := clampf(size.y * 0.30, 232.0, 270.0)
+    var dock_height := clampf(size.y * 0.39, 332.0, 360.0)
     var dock_y := size.y - dock_height - lower_bottom
     action_selection_dock.position = Vector2(lower_margin, dock_y)
     action_selection_dock.size = Vector2(maxf(1.0, size.x - lower_margin * 2.0), dock_height)
@@ -223,29 +314,28 @@ func _layout_product_action_dock() -> void:
             combat_log_panel.size.y = maxf(1.0, timing_y - 10.0 - combat_log_panel.position.y)
     _hide_legacy_action_ui()
 
-func _apply_diagonal_duel_composition() -> void:
+func _apply_frontal_duel_composition() -> void:
     if not is_instance_valid(player_character) or not is_instance_valid(enemy_character) or tiles.is_empty():
         return
-    _set_tactical_target_layer_visible(_targeting_anchor > 0)
+    _set_tactical_target_layer_visible(false)
     if is_instance_valid(_anchor_line):
         _anchor_line.visible = false
 
     var timing_top := action_timing_panel.position.y if is_instance_valid(action_timing_panel) else size.y * 0.60
     var hud_bottom := top_hud.position.y + top_hud.size.y if is_instance_valid(top_hud) else size.y * 0.18
     var player_foot_y := clampf(size.y * 0.56, hud_bottom + 154.0, timing_top - 12.0)
-    var enemy_vertical_offset := clampf(size.y * 0.065, 42.0, 64.0)
     var normalized_distance := clampf(float(absi(_enemy_tile - _player_tile)) / 4.0, 0.0, 1.0)
-    var horizontal_separation := lerpf(size.x * 0.115, size.x * 0.205, normalized_distance)
+    var horizontal_separation := lerpf(size.x * 0.13, size.x * 0.205, normalized_distance)
     var tile_center_drift := clampf((float(_player_tile + _enemy_tile) * 0.5 - 5.5) * size.x * 0.014, -size.x * 0.05, size.x * 0.05)
     var duel_center_x := size.x * 0.5 + tile_center_drift
 
-    player_character.set_dimensions(_tile_width * 1.30)
-    enemy_character.set_dimensions(_tile_width * 0.92)
+    player_character.set_dimensions(_tile_width * 1.08)
+    enemy_character.set_dimensions(_tile_width * 1.08)
     player_character.z_index = 4
-    enemy_character.z_index = 3
+    enemy_character.z_index = 4
     if not _defer_character_snap:
         player_character.place_foot_at(Vector2(duel_center_x - horizontal_separation, player_foot_y))
-        enemy_character.place_foot_at(Vector2(duel_center_x + horizontal_separation, player_foot_y - enemy_vertical_offset))
+        enemy_character.place_foot_at(Vector2(duel_center_x + horizontal_separation, player_foot_y))
 
     if is_instance_valid(range_readout_panel):
         var range_size := Vector2(clampf(size.x * 0.15, 152.0, 220.0), 72.0)
@@ -254,15 +344,15 @@ func _apply_diagonal_duel_composition() -> void:
         range_readout_panel.size = range_size
         range_readout_panel.z_index = 6
 
-    set_meta("duel_composition", "player_left_foreground|enemy_right_background|distance_center")
+    set_meta("duel_composition", "player_left|enemy_right|shared_ground|distance_center")
     set_meta("logical_board_default_visibility", "hidden")
 
-func _set_tactical_target_layer_visible(value: bool) -> void:
+func _set_tactical_target_layer_visible(_value: bool) -> void:
     if is_instance_valid(_tile_layer):
-        _tile_layer.visible = value
+        _tile_layer.visible = false
     for tile in tiles:
         if is_instance_valid(tile):
-            tile.visible = value and tile.is_targetable()
+            tile.visible = false
 
 func _shift_battlefield_above(maximum_bottom: float) -> void:
     if tiles.is_empty() or _tile_height <= 0.0:
@@ -365,14 +455,17 @@ func _configure_keyboard_focus_order() -> void:
         action_selection_dock.martial_tab,
         action_selection_dock.ultimate_tab
     ]
-    match action_selection_dock.active_source:
-        "martial":
-            sequence.append_array(action_selection_dock.martial_panel.manual_buttons)
-            sequence.append_array(action_selection_dock.martial_panel.technique_buttons)
-        "ultimate":
-            sequence.append_array(action_selection_dock.ultimate_panel.action_buttons)
-        _:
-            sequence.append_array(action_selection_dock.basic_panel.buttons)
+    if action_selection_dock.interaction_state == "targeting" and is_instance_valid(action_selection_dock.action_intent_panel):
+        sequence.append_array(action_selection_dock.action_intent_panel.intent_buttons)
+    else:
+        match action_selection_dock.active_source:
+            "martial":
+                sequence.append_array(action_selection_dock.martial_panel.manual_buttons)
+                sequence.append_array(action_selection_dock.martial_panel.technique_buttons)
+            "ultimate":
+                sequence.append_array(action_selection_dock.ultimate_panel.action_buttons)
+            _:
+                sequence.append_array(action_selection_dock.basic_panel.buttons)
 
     var appended_anchors: Dictionary = {}
     for timing_index in range(1, 11):
@@ -390,20 +483,13 @@ func _configure_keyboard_focus_order() -> void:
         if is_instance_valid(slot):
             sequence.append(slot)
 
-    for tile in tiles:
-        if is_instance_valid(tile):
-            sequence.append(tile)
     if is_instance_valid(combat_progress_button) and is_instance_valid(combat_progress_button._button):
         sequence.append(combat_progress_button._button)
-    for control_value in [fast_replay_button, skip_presentation_button, reduced_motion_button, sound_toggle_button, sound_volume_slider]:
+    for control_value in [fast_replay_button, reduced_motion_button, sound_toggle_button, sound_volume_slider]:
         if is_instance_valid(control_value):
             sequence.append(control_value as Control)
-    if is_instance_valid(opponent_hypothesis_panel):
-        var hypothesis_focus := opponent_hypothesis_panel.get_focus_control()
-        if is_instance_valid(hypothesis_focus):
-            sequence.append(hypothesis_focus)
     _link_product_focus_sequence(sequence)
-    set_meta("product_focus_order", "source_tabs|active_source|timings|targets|progress|playback|hypothesis")
+    set_meta("product_focus_order", "source_tabs|active_source|timings|targets|progress|presentation_controls")
 
 func _link_product_focus_sequence(sequence: Array[Control]) -> void:
     var filtered: Array[Control] = []

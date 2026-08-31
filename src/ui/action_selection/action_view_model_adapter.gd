@@ -4,8 +4,21 @@ extends RefCounted
 const BASIC_PATH := "res://data/cards/basic_cards.json"
 const ULTIMATE_PATH := "res://data/cards/ultimate_cards.json"
 const MASTERY_ULTIMATE_PATH := "res://data/combat/mastery_ultimate_poc.json"
-const ACTION_SELECTION_PATH := "res://data/combat/action_selection_poc.json"
+const MARTIAL_ULTIMATE_ATLAS_PATH := "res://assets/ui/cards/martial_ultimate_card_illustration_atlas_01_v1.png"
 const MARTIAL_REGISTRY_SCRIPT := preload("res://src/combat/martial_manual_registry.gd")
+const MARTIAL_ATLAS_REGIONS := {
+    "mount_hua_plum_blossom_sword": [0, 0, 384, 512],
+    "nangong_boundless_sky_sword": [0, 0, 384, 512],
+    "wudang_taiji_sword": [0, 0, 384, 512],
+    "hebei_peng_five_tigers_saber": [384, 0, 384, 512],
+    "beggars_dragon_subduing_palm": [768, 0, 384, 512],
+    "yang_family_spear": [1152, 0, 384, 512],
+    "sichuan_tang_hidden_weapons": [1152, 0, 384, 512],
+    "mount_hua_purple_mist_art": [0, 512, 384, 512],
+    "shaolin_arhat_vajra_art": [384, 512, 384, 512],
+    "xiaoyao_lingbo_footwork": [768, 512, 384, 512]
+}
+const ULTIMATE_ATLAS_REGION := [1152, 512, 384, 512]
 
 func build_basic_actions() -> Array[Dictionary]:
     var root := _load_dictionary(BASIC_PATH)
@@ -19,7 +32,7 @@ func build_basic_actions() -> Array[Dictionary]:
 
 func build_owned_manuals(loadout: Array = [], mastery_by_manual: Dictionary = {}) -> Array[Dictionary]:
     if loadout.is_empty() and mastery_by_manual.is_empty():
-        return _build_legacy_owned_manuals()
+        return []
     var registry: MartialManualRegistry = MARTIAL_REGISTRY_SCRIPT.new()
     var result: Array[Dictionary] = []
     for manual_value in loadout:
@@ -88,38 +101,6 @@ func build_ultimate_actions(momentum: int, loadout: Array = [], mastery_by_manua
         action["ultimate_origin"] = "mastery" if int(action.get("unlock_mastery", 0)) > 0 else "basic"
         result.append(action)
     result.append_array(_build_martial_ultimates(momentum, required_momentum, loadout, mastery_by_manual))
-    return result
-
-func _build_legacy_owned_manuals() -> Array[Dictionary]:
-    var root := _load_dictionary(ACTION_SELECTION_PATH)
-    var result: Array[Dictionary] = []
-    for value in root.get("owned_manuals", []):
-        if typeof(value) != TYPE_DICTIONARY:
-            continue
-        var source: Dictionary = value
-        var manual_id := str(source.get("manual_id", ""))
-        var manual_name := str(source.get("name", ""))
-        var mastery := maxi(0, int(source.get("mastery", 0)))
-        var techniques: Array[Dictionary] = []
-        for technique_value in source.get("techniques", []):
-            if typeof(technique_value) != TYPE_DICTIONARY:
-                continue
-            var technique_source: Dictionary = technique_value
-            var technique := _normalize_action(technique_source, "martial", manual_id, manual_name)
-            var unlock_mastery := maxi(0, int(technique_source.get("unlock_mastery", 0)))
-            technique["unlock_mastery"] = unlock_mastery
-            technique["current_mastery"] = mastery
-            technique["locked"] = mastery < unlock_mastery
-            technique["lock_reason"] = "%d성 해금 · 현재 %d성" % [unlock_mastery, mastery] if bool(technique["locked"]) else ""
-            techniques.append(technique)
-        result.append({
-            "manual_id": manual_id,
-            "name": manual_name,
-            "mastery": mastery,
-            "role_tags": _string_array(source.get("role_tags", [])),
-            "ultimate_unlocked": bool(source.get("ultimate_unlocked", false)),
-            "techniques": techniques
-        })
     return result
 
 func _build_martial_ultimates(momentum: int, required_momentum: int, loadout: Array, mastery_by_manual: Dictionary) -> Array[Dictionary]:
@@ -191,21 +172,57 @@ func _normalize_action(definition: Dictionary, source_kind: String, source_id: S
     normalized["internal_cost"] = maxi(0, int(definition.get("internal_cost", 0)))
     normalized["momentum_cost"] = maxi(0, int(definition.get("momentum_cost", 0)))
     normalized["range_text"] = _range_text(definition)
-    normalized["targeting_mode"] = str(definition.get("targeting_mode", "none"))
+    normalized["targeting_mode"] = _semantic_targeting_mode(definition)
     normalized["telegraph_count"] = maxi(0, action_slots - 1)
     normalized["execution_count"] = 1
     normalized["locked"] = bool(definition.get("locked", false))
     normalized["lock_reason"] = str(definition.get("lock_reason", ""))
     normalized["tags"] = _string_array(definition.get("tags", []))
+    var semantic_illustration := _semantic_illustration_for(definition, source_kind, source_id)
+    if not semantic_illustration.is_empty():
+        normalized["illustration"] = semantic_illustration
     normalized["detail"] = {
         "target": str(definition.get("target", "")),
         "damage": _damage_text(definition),
         "condition": str(definition.get("condition", "없음")),
-        "effect_text": str(definition.get("effect_text", _effect_step_summary(definition.get("effect_steps", [])))),
+        "effect_text": _effect_text(definition, source_kind),
         "flavor": str(definition.get("flavor", "")),
         "hits": _hit_count(definition.get("hits", _independent_attack_count(definition.get("effect_steps", []))))
     }
     return normalized
+
+func _semantic_illustration_for(definition: Dictionary, source_kind: String, source_id: String) -> Dictionary:
+    if source_kind == "ultimate":
+        return _atlas_spec(ULTIMATE_ATLAS_REGION)
+    if source_kind != "martial":
+        return {}
+    var region: Array = MARTIAL_ATLAS_REGIONS.get(source_id, []) as Array
+    if region.is_empty():
+        match str(definition.get("category", "")):
+            "move":
+                region = [768, 512, 384, 512]
+            "response":
+                region = [384, 512, 384, 512]
+            "recovery", "strengthen":
+                region = [0, 512, 384, 512]
+            _:
+                region = [0, 0, 384, 512]
+    return _atlas_spec(region)
+
+func _atlas_spec(region: Array) -> Dictionary:
+    return {
+        "atlas": MARTIAL_ULTIMATE_ATLAS_PATH,
+        "region": region.duplicate()
+    }
+
+func _semantic_targeting_mode(definition: Dictionary) -> String:
+    match str(definition.get("category", "")):
+        "move":
+            return "move_intent"
+        "attack":
+            return "aim_intent"
+        _:
+            return "none"
 
 func _range_text(definition: Dictionary) -> String:
     if definition.has("range_text"):
@@ -223,6 +240,8 @@ func _damage_text(definition: Dictionary) -> String:
     if typeof(formula_value) != TYPE_DICTIONARY:
         return str(definition.get("damage", "없음"))
     var formula: Dictionary = formula_value
+    if formula.is_empty():
+        return str(definition.get("damage", "없음"))
     var base := int(formula.get("base", 0))
     var stat_label: String = str({"external": "외공", "internal_power": "내공"}.get(str(formula.get("stat_key", "")), "능력치"))
     var coefficient := float(formula.get("coefficient", 0.0))
@@ -232,10 +251,44 @@ func _effect_step_summary(values) -> String:
     if typeof(values) != TYPE_ARRAY:
         return ""
     var operations := PackedStringArray()
+    var attack_count := 0
     for value in values:
-        if typeof(value) == TYPE_DICTIONARY:
-            operations.append(str((value as Dictionary).get("op", "")))
+        if typeof(value) != TYPE_DICTIONARY:
+            continue
+        match str((value as Dictionary).get("op", "")):
+            "ATTACK", "INDEPENDENT_ATTACK":
+                attack_count += 1
+            "MOVE_TOWARD":
+                operations.append("접근")
+            "MOVE_AWAY":
+                operations.append("후퇴")
+            "RECHECK_RANGE":
+                operations.append("거리 재확인")
+            "SPECIAL_CLASH":
+                operations.append("특수 합")
+            "GAIN_RESOURCE":
+                operations.append("자원 획득")
+            "GAIN_STATUS":
+                operations.append("상태 획득")
+    if attack_count > 0:
+        operations.append("연속 공격 %d회" % attack_count if attack_count > 1 else "공격")
     return " → ".join(operations)
+
+func _effect_text(definition: Dictionary, source_kind: String) -> String:
+    var explicit_text := str(definition.get("effect_text", "")).strip_edges()
+    if not explicit_text.is_empty():
+        return explicit_text
+    var step_summary := _effect_step_summary(definition.get("effect_steps", []))
+    if not step_summary.is_empty():
+        return step_summary
+    if source_kind == "ultimate":
+        var parts := PackedStringArray()
+        parts.append("돌진 후 공격" if bool(definition.get("dash_before_attack", false)) else "공격")
+        var damage_text := _damage_text(definition)
+        if not damage_text.is_empty() and damage_text != "없음":
+            parts.append("기본 피해 %s" % damage_text)
+        return " · ".join(parts)
+    return ""
 
 func _independent_attack_count(values) -> int:
     if typeof(values) != TYPE_ARRAY:

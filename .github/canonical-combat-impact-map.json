@@ -8,6 +8,8 @@
       "virtual_prepare_response_combo": false,
       "runtime_consumers": [
         "src/ui/action_selection/action_view_model_adapter.gd",
+        "src/ui/action_selection/action_choice_card.gd",
+        "src/ui/action_selection/action_intent_panel.gd",
         "src/ui/action_selection/action_selection_dock.gd",
         "src/ui/action_selection/action_placement_controller.gd",
         "src/ui/action_selection/linked_action_block.gd",
@@ -21,7 +23,8 @@
         "tests/verify_ultimate_action_panel.gd",
         "tests/verify_linked_action_blocks.gd",
         "tests/verify_action_repositioning.gd",
-        "tests/verify_combat_action_selection_integration.gd"
+        "tests/verify_combat_action_selection_integration.gd",
+        "tests/verify_action_card_source_unification.gd"
       ],
       "authorities": [
         "docs/02_COMBAT_RULES.md",

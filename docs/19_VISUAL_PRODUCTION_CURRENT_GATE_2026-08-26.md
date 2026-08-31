@@ -63,18 +63,18 @@
 - `거리 N` 중심, 3/3/4 계획 의미 보존.
 - `기초 / 무공 / 절초` 출처 분리.
 - Action grid 최대 5×2, 최대 10개 수용.
-- 기초 행동 카드에는 실제 카드 소비용 작은 삽화 사용. 무공 기술서는 `TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION`으로 표현한다.
+- 기초·무공·절초는 하나의 `ActionChoiceCard` 카드 규칙을 공유한다. 무공·절초 공용 삽화 atlas는 생성 후보이며, 별도 사용자 최종 확정 전에는 기초 카드만 실제 삽화를 소비한다.
 - 텍스트·비용·사거리·효과 숫자는 원화가 아니라 Godot UI/data binding이 소유.
 - 제한 금색은 선택·확정·절초·결정적 결과에만 사용.
 - 상대의 숨은 계획/정답을 색·포즈·연출로 누설하지 않음.
 
 2026-08-28 사용자 Decision `TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01`은 현재 묶음 CTA를 `행동계획 실행`으로 고정했다. 이는 유효한 3/3/4 슬롯 묶음을 commit한 뒤 전투·해결 애니메이션으로 전환하는 행위다. 과거 대표 시안과 POC의 `진행`은 historical/implementation copy이며, 별도 Codex handoff에서 copy와 전환을 함께 교정할 때까지 runtime current truth가 아니다.
 
-### 무공 기술서 — 무삽화 정보면
+### 무공·절초 카드 — 공용 삽화 후보 gate
 
-2026-08-30 사용자 Decision `TEN-DEC-20260830-MARTIAL-MANUAL-TEXT-FIRST-PRESENTATION-01`에 따라 `MartialActionPanel`의 보유 무공서와 선택 기술 목록은 `TEXT_TAG_NUMERIC_ONLY_NO_ILLUSTRATION`이다. 무공서명·성수, 기술명, 행동 수, 기력/내력 비용, 잠금/해금, 태그, 조건부 사거리와 효과를 UI/data binding으로 보이며 기술 행 중앙의 삽화, `TextureRect`, 무공 기술 data의 `illustration` 소비를 만들지 않는다.
+사용자 최신 지시와 `TEN-DEC-20260831-ACTION-CARD-ILLUSTRATION-EXTENSION-01`에 따라 기본 행동·무공 기술·절초는 동일한 `ActionChoiceCard` 위계와 상단 삽화 영역을 공유하는 방향으로 확장한다. 이름, 행동 수, 기력/내력/기세 비용, 잠금 상태, 행동 종류, 사거리, 효과, 키보드 포커스와 접근성 텍스트는 계속 UI/data binding이 소유한다. 삽화는 보조 정보이며 유일한 규칙 전달 수단이 아니다.
 
-이 규칙은 기초 카드의 `CardView.illustration`, 전장과 대결 캐릭터, 무공 유래 절초를 포함한 `UltimateActionPanel`, 필살기 연출과 `VS` 공개 overlay를 바꾸지 않는다. 새 무공 기술 삽화 생성은 `NOT_NEEDED_BY_USER_DECISION_NO_GENERATION`이다.
+`MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png`은 사용자 `삽화 확정`(2026-08-31)으로 `USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED`가 됐다. 후보→approved→runtime PNG는 같은 SHA-256으로 exact-byte 승격됐고, manifest 등록 뒤 `ActionViewModelAdapter`가 source-kind semantic region을 `ActionChoiceCard`에 전달한다. 따라서 `MartialActionPanel`과 `UltimateActionPanel`은 별도 삽화 레이아웃 없이 같은 renderer에서 `TextureRect`를 만든다. 이전 무삽화 결정은 역사 기록으로 보존하되 current 방향에서는 superseded다. Human/accessibility/Android/release evidence는 별도 Gate다.
 
 ## 4. 이미지 생성 cadence
 
@@ -142,35 +142,35 @@ canon + actual game consumer review
 
 현재 상태: `IMPLEMENTED · AUTOMATED_GODOT_VERIFIED_20260827 · WINDOWS_HUMAN_VISUAL_REVIEW_NOT_RUN`.
 
-### `INK_MIST_VALLEY_DUEL_01` · 전투 배경
+### `FRONTAL_COURTYARD_DUEL_BACKGROUND_01` · 전투 배경
 
 **실제 게임 소비처:** `src/combat/battle_background.gd`.
 
-사용자가 2026-08-30에 명시적으로 `확정하자`라고 final lock을 주었다. 그에 따라 한 장의 landscape-only 생성 결과를 정식 등록했다.
+사용자가 2026-08-31에 명시적으로 `최종확정`을 주었다. 그에 따라 한 장의 environment-only 정면 결투 마당 결과를 정식 등록했다.
 
-- canonical source asset: `docs/visual-assets/approved/INK_MIST_VALLEY_DUEL_01_v1.png`.
-- runtime asset: `res://assets/backgrounds/ink_mist_valley_duel_01_v1.png`.
-- SHA-256: `3203af421a7ecafd14cd8bb0be0db08dc282f4e9463a372ef593185f3f6cc538` (both repository destinations have the exact same bytes).
+- canonical source asset: `docs/visual-assets/approved/FRONTAL_COURTYARD_DUEL_BACKGROUND_01_v1.png`.
+- runtime asset: `res://assets/backgrounds/frontal_courtyard_duel_background_01_v1.png`.
+- SHA-256: `27778369c3896d7d6237990ec70620c54ad0d636f660c9aa80322b0632262d06` (both repository destinations have the exact same bytes).
 - dimensions: `1672×941`.
-- output id: `exec-ab1363be-f939-480e-9cd5-1e506e167e89`.
-- composition: warm hanji, misty ink mountains, charcoal pine framing, low sun, distant pavilion, and an intentionally open low-contrast centre. It contains no people, weapons, UI, readable/pseudo-readable text, numbers, logos, or watermark.
+- output id: `exec-e3ab08d2-ac38-48de-81b4-de02580ecafc`.
+- composition: warm hanji, centred gate, distant mountains, sunset, and an intentionally visible shared stone ground plane. It contains no people, weapons, UI, readable/pseudo-readable text, numbers, logos, or watermark.
 - user reference handling: the supplied combat screenshot informed only the overall ink-paper mood, world/UI hierarchy, and gameplay-safe composition. Its pixels, characters, UI, and text were not copied into this asset.
-- rollback: `res://assets/backgrounds/twilight_ink_duel_v1.png` remains tracked as an inactive rollback source; it was not deleted.
-- provenance and release-rights ceiling: see `docs/visual-assets/approved/INK_MIST_VALLEY_DUEL_01_v1.md`. This is a user-final-locked project asset, not a blanket shipping-rights or release-pass claim.
+- cleanup: superseded background binaries were removed from the current tree under the user-approved cleanup rule and remain recoverable from Git history.
+- provenance and release-rights ceiling: see `docs/visual-assets/approved/FRONTAL_COURTYARD_DUEL_BACKGROUND_01_v1.md`. This is a user-final-locked project asset, not a blanket shipping-rights or release-pass claim.
 
-현재 상태: `USER_FINAL_LOCKED · CANON_REGISTERED · IMPLEMENTED · MACHINE_RUNTIME_VERIFIED_20260830`. Godot 4.7.1 isolated-worktree runtime에서 `새 비무행 → 4권 선택 → 도겸 → 전투`를 실제로 통과했고, `BattleBackground` node가 `1672×941` final-locked runtime texture와 below-board contrast metadata를 가진 것을 readback했다. Windows human usability, Android actual device, accessibility-user, and release-performance remain `NOT_RUN` until separately evidenced.
+현재 상태: `USER_FINAL_LOCKED · CANON_REGISTERED · IMPLEMENTED · MACHINE_RUNTIME_VERIFIED_20260831`. Godot 4.7.1 visible node/log readback에서 논리 타일/foot guide는 숨김, 두 전투원은 같은 `y=267` 바닥선, 중앙 `거리 2`, diagnostics 오류·경고 0건을 확인했다. 이는 Windows human usability, Android actual device, accessibility-user, release-performance 확정이 아니다.
 
-### `COMBAT_DIAGONAL_DUEL_CHARACTER_PAIR_01` · 대각선 전투 Battler Pair
+### `FRONTAL_COMBATANT_ROUTING_01` · 정면 대치 Battler Routing
 
 **실제 게임 소비처:** `src/combat/combat_character_placeholder.gd`.
 
-2026-08-30의 사용자 explicit `확정`에 따라 한 개의 transparent pair master를 canonical source와 runtime master로 등록했다. `player_diagonal_duel_battler_01_v1.png`은 left foreground crop으로 모든 player Battler에, `dogyeom_diagonal_duel_battler_01_v1.png`은 right background crop으로 `slot1_dogyeom`에만 연결된다. non-Dogyeom 상대와 ID 누락 상대는 `enemy_masked_battler_rgba_v1.png` generic fallback을 유지한다. status portrait, 전투 타일 논리, AI 정보 경계, 저장 schema는 바꾸지 않는다.
+2026-08-31의 사용자 explicit `최종확정`에 따라 정면 대치 공유 지면 구도로 되돌렸다. `player_wanderer_battler_rgba_v1.png`은 left player Battler로, `dogyeom_combat_battler_01_v1.png`은 mirrored `slot1_dogyeom`으로, `enemy_masked_battler_rgba_v1.png`은 generic fallback으로 연결한다. status portrait, 전투 타일 논리, AI 정보 경계, 저장 schema는 바꾸지 않는다.
 
-- canonical/runtime master SHA-256: `7572a0e6393893ef977e195a00291ed04cc293afb0a86e8d76b045d9e8343c03`.
-- `920×941` player/right-opponent deterministic RGBA crop들의 hash·crop rectangle·rollback은 `COMBAT_DIAGONAL_DUEL_CHARACTER_PAIR_01_v1.md`와 `assets/ASSET_MANIFEST.json`이 소유한다.
-- actual Godot 4.7.1 current-frame readback은 larger lower-left player, smaller upper-right Dogyeom, inward-facing silhouettes, hidden logical tiles outside targeting, and `거리 2` native UI를 확인했다.
+- `assets/ASSET_MANIFEST.json`은 현재 player, generic enemy, Dogyeom 전신 원화의 provenance, alpha audit, 정확한 consumer를 소유한다.
+- 대각선 pair binary와 derived crop은 현재 소비처가 없어 사용자 승인 cleanup rule에 따라 현재 트리에서 제거했다. Git history에서만 복구 가능하다.
+- 새 정면 shared-ground composition의 Godot runtime readback은 아직 실행 전이다.
 
-현재 상태: `USER_FINAL_LOCKED · CANON_REGISTERED · IMPLEMENTED · MACHINE_RUNTIME_VERIFIED_20260830`. Human usability/player approval, accessibility-user, Android device, release clearance는 `NOT_RUN`이다.
+현재 상태: `IMPLEMENTED · PENDING_MACHINE_RUNTIME_VERIFICATION_20260831`. Human usability/player approval, accessibility-user, Android device, release clearance는 `NOT_RUN`이다.
 
 ### `TEN_BASIC_TECHNIQUE_INK_ATLAS_01` · 기초 기술 5×2 Card Atlas
 
@@ -230,17 +230,18 @@ next_safe_action: FOLLOW_CURRENT_PHASE1_REVIEW_AND_SCOPED_CONSUMER_POLICY_NO_AUT
 runtime_source_master_promotion: NOT_RUN
 opponent_specific_dogyeom_routing: AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER
 runtime_art_integration: AUTOMATED_GODOT_PASS_20260827_STATUS_PORTRAIT_AND_COMBAT_BATTLER
-ink_mist_valley_duel_01_user_final_lock: PASS_20260830
-ink_mist_valley_duel_01_canon_copy_sha256_readback: PASS_20260830
-ink_mist_valley_duel_01_runtime_asset: res://assets/backgrounds/ink_mist_valley_duel_01_v1.png
-ink_mist_valley_duel_01_runtime_integration: MACHINE_RUNTIME_VERIFIED_20260830_GODOT_4_7_1_NEW_RUN_TO_DOGYEOM_COMBAT_SCREEN
-ink_mist_valley_duel_01_human_usability: NOT_RUN
-combat_diagonal_duel_character_pair_01_user_final_lock: PASS_20260830
-combat_diagonal_duel_character_pair_01_canon_runtime_readback: PASS_20260830
-combat_diagonal_duel_character_pair_01_runtime_integration: MACHINE_RUNTIME_VERIFIED_20260830_GODOT_4_7_1_SLOT1_DOGYEOM_COMBAT_SCREEN
+frontal_courtyard_duel_background_01_user_final_lock: PASS_20260831
+frontal_courtyard_duel_background_01_canon_copy_sha256_readback: PASS_20260831
+frontal_courtyard_duel_background_01_runtime_asset: res://assets/backgrounds/frontal_courtyard_duel_background_01_v1.png
+frontal_courtyard_duel_background_01_runtime_integration: MACHINE_RUNTIME_VERIFIED_20260831_GODOT_4_7_1_VISIBLE_NODE_LOG_READBACK
+frontal_courtyard_duel_background_01_human_usability: NOT_RUN
+superseded_ink_mist_and_diagonal_runtime_binaries: REMOVED_FROM_CURRENT_TREE_RECOVERABLE_GIT_HISTORY
 ten_basic_technique_ink_atlas_01_user_final_lock: PASS_20260830
 ten_basic_technique_ink_atlas_01_canon_runtime_readback: PASS_20260830
 ten_basic_technique_ink_atlas_01_runtime_integration: MACHINE_RUNTIME_VERIFIED_20260830_GODOT_4_7_1_ACTIVE_5X2_DOCK
+martial_ultimate_card_illustration_atlas_01_user_final_lock: PASS_20260831
+martial_ultimate_card_illustration_atlas_01_canon_runtime_readback: PASS_20260831
+martial_ultimate_card_illustration_atlas_01_runtime_integration: MACHINE_RUNTIME_VERIFIED_20260831_GODOT_4_7_1_SHARED_ACTIONCHOICECARD
 combat_action_reveal_overlay_runtime_integration: MACHINE_RUNTIME_VERIFIED_20260830_GODOT_4_7_1_TIMING_1_ONLY_VS_RESULT
 combat_action_reveal_overlay_human_comprehension: NOT_RUN
 windows_visible_local_machine_runtime_smoke: PASS_20260830_GODOT_4_7_1_START_TO_SLOT1_DOGYEOM_COMBAT_SCREEN_NOT_HUMAN_USABILITY

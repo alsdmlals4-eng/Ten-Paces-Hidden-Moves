@@ -27,7 +27,7 @@ func _verify_panel() -> void:
     panel.show_summary(summary, false)
     await process_frame
     _expect(panel.visible, "Review panel must become visible.")
-    _expect(panel.get_display_text().contains("내 가설"), "Review must show hypothesis heading.")
+    _expect(not panel.get_display_text().contains("내 가설"), "Review must not surface the retired player-intention hypothesis.")
     _expect(panel.get_display_text().contains("속공"), "Review must show opponent actual action.")
     _expect(panel.get_display_text().contains("[합]"), "Review must show decisive cause.")
     _expect(panel.get_display_text().contains("3 → 1"), "Review must show before and after distance.")
@@ -79,7 +79,6 @@ func _verify_board_gate() -> void:
 
 func _summary() -> Dictionary:
     return {
-        "hypothesis": {"id": "quick_attack", "label": "속공", "recorded": true},
         "opponent_actual": "속공",
         "cause_code": "clash",
         "cause_label": "[합]에서 공격력 차이가 승부를 갈랐다.",

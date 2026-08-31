@@ -5,6 +5,7 @@ signal action_selected(definition: Dictionary)
 signal detail_requested(definition: Dictionary, pinned: bool)
 signal detail_cleared()
 signal source_changed(source: String)
+signal intent_selected(intent: Dictionary)
 
 const SOURCES := ["basic", "martial", "ultimate"]
 const LOCKED_STATES := ["targeting", "committed", "resolving", "presenting_result", "review"]
@@ -12,6 +13,7 @@ const BASIC_PANEL_SCENE := preload("res://scenes/ui/action_selection/basic_actio
 const MARTIAL_PANEL_SCENE := preload("res://scenes/ui/action_selection/martial_action_panel.tscn")
 const ULTIMATE_PANEL_SCENE := preload("res://scenes/ui/action_selection/ultimate_action_panel.tscn")
 const DETAIL_PANEL_SCENE := preload("res://scenes/ui/action_selection/action_detail_panel.tscn")
+const ACTION_INTENT_PANEL_SCRIPT := preload("res://src/ui/action_selection/action_intent_panel.gd")
 const ADAPTER_SCRIPT := preload("res://src/ui/action_selection/action_view_model_adapter.gd")
 const PAPER_SURFACE := Color("d9ccb1")
 const PAPER_HOVER := Color("eee2c9")
@@ -33,6 +35,7 @@ var basic_panel: BasicActionPanel
 var martial_panel: MartialActionPanel
 var ultimate_panel: UltimateActionPanel
 var action_detail_panel: ActionDetailPanel
+var action_intent_panel: ActionIntentPanel
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_PASS
@@ -96,6 +99,21 @@ func set_runtime_context(context: Dictionary) -> void:
         ultimate_panel.set_reservations(reservation_values)
     set_meta("runtime_context", runtime_context)
 
+func set_targeting_intents(title: String, values: Array[Dictionary]) -> void:
+    if not is_instance_valid(action_intent_panel):
+        return
+    action_intent_panel.set_intents(title, values)
+    action_intent_panel.set_interaction_enabled(interaction_state == "targeting")
+    _refresh_source_content()
+    set_meta("intent_card_count", values.size())
+
+func clear_targeting_intents() -> void:
+    if not is_instance_valid(action_intent_panel):
+        return
+    action_intent_panel.clear_intents()
+    _refresh_source_content()
+    set_meta("intent_card_count", 0)
+
 func request_action(definition: Dictionary) -> void:
     if definition.is_empty() or not switching_enabled:
         return
@@ -128,11 +146,13 @@ func get_dock_snapshot() -> Dictionary:
         "basic_panel_ready": is_instance_valid(basic_panel),
         "martial_panel_ready": is_instance_valid(martial_panel),
         "ultimate_panel_ready": is_instance_valid(ultimate_panel),
+        "intent_panel_ready": is_instance_valid(action_intent_panel),
         "action_detail_panel_ready": is_instance_valid(action_detail_panel),
         "presentation_surface": str(get_meta("presentation_surface", "")),
         "selected_manual_id": martial_panel.get_selected_manual_id() if is_instance_valid(martial_panel) else "",
         "martial_snapshot": martial_panel.get_panel_snapshot() if is_instance_valid(martial_panel) else {},
         "ultimate_snapshot": ultimate_panel.get_panel_snapshot() if is_instance_valid(ultimate_panel) else {},
+        "intent_snapshot": action_intent_panel.get_panel_snapshot() if is_instance_valid(action_intent_panel) else {},
         "detail_snapshot": action_detail_panel.get_detail_snapshot() if is_instance_valid(action_detail_panel) else {},
         "runtime_context": runtime_context.duplicate(true)
     }
@@ -162,6 +182,12 @@ func _build_source_panels() -> void:
     ultimate_panel.detail_requested.connect(request_detail)
     ultimate_panel.detail_cleared.connect(clear_detail)
 
+    action_intent_panel = ACTION_INTENT_PANEL_SCRIPT.new() as ActionIntentPanel
+    action_intent_panel.name = "ActionIntentPanel"
+    _fill_host(action_intent_panel)
+    content_host.add_child(action_intent_panel)
+    action_intent_panel.intent_selected.connect(_on_intent_selected)
+
 func _build_detail_panel() -> void:
     action_detail_panel = DETAIL_PANEL_SCENE.instantiate() as ActionDetailPanel
     action_detail_panel.name = "ActionDetailPanel"
@@ -186,6 +212,8 @@ func _apply_state() -> void:
         martial_panel.set_interaction_enabled(switching_enabled)
     if is_instance_valid(ultimate_panel):
         ultimate_panel.set_interaction_enabled(switching_enabled)
+    if is_instance_valid(action_intent_panel):
+        action_intent_panel.set_interaction_enabled(interaction_state == "targeting")
     _refresh_tabs()
     _refresh_source_content()
     set_meta("active_source", active_source)
@@ -201,13 +229,17 @@ func _refresh_tabs() -> void:
     set_meta("active_source", active_source)
 
 func _refresh_source_content() -> void:
+    var showing_intents := is_instance_valid(action_intent_panel) and action_intent_panel.visible
     if is_instance_valid(basic_panel):
-        basic_panel.visible = active_source == "basic"
+        basic_panel.visible = not showing_intents and active_source == "basic"
     if is_instance_valid(martial_panel):
-        martial_panel.visible = active_source == "martial"
+        martial_panel.visible = not showing_intents and active_source == "martial"
     if is_instance_valid(ultimate_panel):
-        ultimate_panel.visible = active_source == "ultimate"
-    set_meta("visible_source", active_source)
+        ultimate_panel.visible = not showing_intents and active_source == "ultimate"
+    set_meta("visible_source", "intent" if showing_intents else active_source)
+
+func _on_intent_selected(intent: Dictionary) -> void:
+    intent_selected.emit(intent.duplicate(true))
 
 func _set_tab_state(button: Button, source: String, label: String) -> void:
     var selected := active_source == source

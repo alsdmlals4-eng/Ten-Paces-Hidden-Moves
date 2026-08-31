@@ -21,6 +21,8 @@ def main() -> None:
         'MARTIAL_PANEL_SCENE',
         'ULTIMATE_PANEL_SCENE',
         'DETAIL_PANEL_SCENE',
+        'ACTION_INTENT_PANEL_SCRIPT',
+        'signal intent_selected(intent: Dictionary)',
     ):
         assert token in dock, f"ActionSelectionDock contract missing {token}"
 
@@ -28,19 +30,36 @@ def main() -> None:
     for runtime_path in (
         "res://data/cards/basic_cards.json",
         "res://data/cards/ultimate_cards.json",
-        "res://data/combat/action_selection_poc.json",
         "res://data/combat/mastery_ultimate_poc.json",
     ):
         assert runtime_path in adapter
     assert "docs/planning-data" not in adapter
     assert 'normalized["source_kind"] = source_kind' in adapter
     assert 'normalized["source"] = source_kind' in adapter
+    assert "action_selection_poc.json" not in adapter
+    assert 'return "move_intent"' in adapter
+    assert 'return "aim_intent"' in adapter
+
+    shared_card = read("src/ui/action_selection/action_choice_card.gd")
+    assert 'class_name ActionChoiceCard' in shared_card
+    assert 'set_meta("card_surface", "shared_action_card_grid")' in shared_card
+    assert 'illustration_policy in ["basic_atlas_only", "semantic_atlas"]' in shared_card
+
+    intent_panel = read("src/ui/action_selection/action_intent_panel.gd")
+    assert 'class_name ActionIntentPanel' in intent_panel
+    assert '"illustration_policy", "forbidden"' in intent_panel
 
     martial = read("src/ui/action_selection/martial_action_panel.gd")
     assert "func select_manual(manual_id: String) -> bool:" in martial
     assert "func activate_technique(technique_id: String) -> bool:" in martial
     assert 'technique_selected.emit(technique.duplicate(true))' in martial
     assert "technique_selected.emit(manual" not in martial
+    assert '"card_surface": "shared_action_card_grid"' in martial
+    assert '"illustration_policy": "semantic_atlas"' in martial
+
+    ultimate_panel = read("src/ui/action_selection/ultimate_action_panel.gd")
+    assert '"card_surface": "shared_action_card_grid"' in ultimate_panel
+    assert '"illustration_policy": "semantic_atlas"' in ultimate_panel
 
     timing_data = json.loads(read("data/combat/combat_action_timing_preview.json"))
     assert timing_data["timing_sequence"] == [3, 3, 4]
@@ -80,10 +99,13 @@ def main() -> None:
     for token in (
         "ACTION_SELECTION_DOCK_SCENE",
         "_on_product_action_selected",
+        "_on_product_intent_selected",
+        "_build_semantic_intents",
         "action_placement_controller.select_and_place",
         'set_meta("product_action_selection_enabled", true)',
         'set_meta("virtual_combo_enabled", false)',
         "_hide_legacy_action_ui",
+        '"move_intent", "aim_intent"',
     ):
         assert token in combat
     assert "docs/planning-data" not in combat

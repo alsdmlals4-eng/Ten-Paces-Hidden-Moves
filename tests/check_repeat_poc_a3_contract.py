@@ -30,7 +30,6 @@ def main() -> None:
         "hide_review",
         "get_detail_button",
         "get_continue_button",
-        "내 가설",
         "상대 실제 행동",
         "결정적 원인",
         "전후 거리",
@@ -38,6 +37,7 @@ def main() -> None:
         "accessibility_name",
     ):
         assert token in panel, f"review panel missing token: {token}"
+    assert "내 가설" not in panel, "review panel must not restore the retired player-facing opponent-intent hypothesis"
     assert "다음 검토" not in panel, "review panel must not restore prescriptive next-review heading"
     assert "다음 묶음에서는" not in panel, "review panel must not prescribe the player's next bundle"
     assert "resolve_bundle(" not in panel

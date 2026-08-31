@@ -6,7 +6,7 @@
 - Dimensions: `1672 × 941` PNG
 - Purpose: one standalone visual-direction candidate for the existing horizontal combat-board surface; not a game asset replacement.
 - Actual consumer context: `src/combat/combat_board_preview.gd` and `scenes/combat/battle_background.tscn`.
-- Input references: the three 2026-08-27 user-provided visual direction references and `res://assets/backgrounds/twilight_ink_duel_v1.png`.
+- Input references: the three 2026-08-27 user-provided visual direction references and the former twilight background retained only in Git history.
 - Creation: exactly one built-in image-generation result after the user's explicit direction change request.
 - Review result: the user retained the direction but requested removal of the bright floor-cell grid. The corrected successor is `WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID`.
 - Notion delivery: `NOT_RUN` — candidates are not attached to Asset Library as approved assets.

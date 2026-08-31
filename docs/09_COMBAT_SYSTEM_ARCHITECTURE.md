@@ -160,15 +160,19 @@ CombatResolutionEngine
 ```text
 data/cards/basic_cards.json
 + data/cards/ultimate_cards.json
-+ data/combat/action_selection_poc.json
 + data/combat/mastery_ultimate_poc.json
++ data/cards/martial_manuals/*.json (MartialManualRegistry + current loadout/mastery)
 → ActionViewModelAdapter
 → ActionSelectionDock
+
+data/combat/combat_board_poc.json (semantic intent / current planning fixture)
+→ CombatBoardPreviewAuto
 ```
 
 - `docs/planning-data/*.json`은 런타임에서 직접 읽지 않는다.
 - `data/cards/ultimate_cards.json`은 canonical 기본 절초 3종만 유지한다.
 - 무공 10성 절초 UI 검증 자료는 별도 PoC runtime fixture에 둔다.
+- 2026-08-30에 퇴역·삭제된 legacy action-selection fixture는 historical evidence일 뿐, 현행 UI 또는 runtime source가 아니다.
 - UI adapter는 원본 행동 Dictionary를 복제한 뒤 표시 필드를 추가하므로 판정 필드를 제거하지 않는다.
 
 ### 10.3 상태·잠금 경계

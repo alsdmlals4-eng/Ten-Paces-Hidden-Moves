@@ -8,9 +8,9 @@ const ENEMY_OUTLINE := Color("bd6558")
 const INK := Color("1d1a17")
 const PAPER := Color("d8c9aa")
 const GOLD := Color("b99254")
-const PLAYER_ART_PATH := "res://assets/characters/player_diagonal_duel_battler_01_v1.png"
+const PLAYER_ART_PATH := "res://assets/characters/player_wanderer_battler_rgba_v1.png"
 const ENEMY_ART_PATH := "res://assets/characters/enemy_masked_battler_rgba_v1.png"
-const DOGYEOM_ART_PATH := "res://assets/characters/dogyeom_diagonal_duel_battler_01_v1.png"
+const DOGYEOM_ART_PATH := "res://assets/characters/dogyeom_combat_battler_01_v1.png"
 
 var role: String = "player"
 var facing: int = 1
@@ -21,14 +21,13 @@ var character_body_width_ratio: float = 0.72
 var motion_state := "idle"
 var visual_offset := Vector2.ZERO
 var visual_scale := 1.0
-var _idle_time := 0.0
 var character_sprite: Texture2D
 var _character_art_path := ""
 var _sprite_foot_ratio := 0.94
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_IGNORE
-    set_process(true)
+    set_process(false)
     queue_redraw()
 
 func configure(
@@ -100,6 +99,7 @@ func place_foot_at(anchor: Vector2) -> void:
 
 func animate_move_to(anchor: Vector2, duration: float = 0.22) -> void:
     motion_state = "move"
+    set_process(true)
     var target_position := anchor - Vector2(size.x * 0.5, size.y)
     var tween := create_tween()
     tween.set_trans(Tween.TRANS_SINE)
@@ -111,7 +111,8 @@ func animate_move_to(anchor: Vector2, duration: float = 0.22) -> void:
 
 func play_attack_motion(duration: float = 0.28) -> void:
     motion_state = "attack"
-    var lunge := Vector2(size.x * 0.15 * float(facing), -size.y * 0.035)
+    set_process(true)
+    var lunge := Vector2(size.x * 0.15 * float(facing), 0.0)
     var tween := create_tween()
     tween.set_trans(Tween.TRANS_QUAD)
     tween.set_ease(Tween.EASE_OUT)
@@ -126,11 +127,10 @@ func set_idle() -> void:
     motion_state = "idle"
     visual_offset = Vector2.ZERO
     visual_scale = 1.0
+    set_process(false)
+    queue_redraw()
 
-func _process(delta: float) -> void:
-    _idle_time += delta
-    if motion_state == "idle":
-        visual_offset.y = sin(_idle_time * 2.4 + (0.5 if role == "enemy" else 0.0)) * 1.6
+func _process(_delta: float) -> void:
     queue_redraw()
 
 func get_foot_anchor_local() -> Vector2:
@@ -152,6 +152,7 @@ func _draw() -> void:
 
     var sprite := get_render_texture()
     if sprite != null:
+        draw_circle(Vector2(width * 0.5, foot_y + 2.0), width * 0.33, Color(INK, 0.34))
         var draw_offset := visual_offset
         var draw_scale := Vector2.ONE * visual_scale
         if is_character_art_horizontally_mirrored():
@@ -163,14 +164,11 @@ func _draw() -> void:
             Vector2((width - sprite_height) * 0.5, height - sprite_height * _sprite_foot_ratio),
             Vector2(sprite_height, sprite_height)
         )
-        draw_circle(Vector2(width * 0.5, foot_y + 1.0), width * 0.33, Color(INK, 0.46))
         draw_texture_rect(sprite, sprite_rect, false, Color.WHITE)
-        var sprite_anchor := get_foot_anchor_local()
-        draw_line(sprite_anchor + Vector2(-10.0, 0.0), sprite_anchor + Vector2(10.0, 0.0), GOLD, 2.0)
-        draw_line(sprite_anchor + Vector2(0.0, -10.0), sprite_anchor + Vector2(0.0, 2.0), GOLD, 2.0)
         draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
         return
 
+    draw_circle(Vector2(width * 0.5, foot_y + 2.0), width * 0.33, Color(INK, 0.34))
     draw_set_transform(visual_offset, 0.0, Vector2.ONE * visual_scale)
 
     var head_center := Vector2(width * 0.5, height * 0.18)
@@ -209,7 +207,4 @@ func _draw() -> void:
     draw_line(sword_hand, sword_end, Color("d8d4c9"), 3.0, true)
     draw_line(sword_hand + Vector2(-7.0 * facing, -5.0), sword_hand + Vector2(7.0 * facing, 5.0), GOLD, 3.0, true)
 
-    var anchor := get_foot_anchor_local()
-    draw_line(anchor + Vector2(-10.0, 0.0), anchor + Vector2(10.0, 0.0), GOLD, 2.0)
-    draw_line(anchor + Vector2(0.0, -10.0), anchor + Vector2(0.0, 2.0), GOLD, 2.0)
     draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)

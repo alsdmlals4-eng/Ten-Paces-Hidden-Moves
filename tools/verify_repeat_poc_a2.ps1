@@ -16,8 +16,6 @@ try {
         }
         & $godot.Source --headless --editor --path . --quit
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-        & $godot.Source --headless --path . --script res://tests/verify_combat_hypothesis.gd
-        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
         & $godot.Source --headless --path . --script res://tests/verify_combat_review_summary.gd
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     }

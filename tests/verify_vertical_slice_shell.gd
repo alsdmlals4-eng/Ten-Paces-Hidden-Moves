@@ -1,6 +1,7 @@
 extends SceneTree
 
 const SHELL_SCENE_PATH := "res://scenes/run/vertical_slice_shell.tscn"
+const TITLE_LOGO_PATH := "res://assets/ui/logo/ten_paces_hidden_moves_title_logo_01_v1.png"
 const DEFAULT_STARTERS := [
     "mount_hua_plum_blossom_sword",
     "shaolin_arhat_vajra_art",
@@ -31,17 +32,24 @@ func _run() -> void:
         await process_frame
 
     _expect_eq(shell.run_state.get_current_screen(), "MAIN", "Shell must start at MAIN.")
-    _expect_true(shell.content_panel.visible, "MAIN must show the non-combat content panel.")
+    _expect_false(shell.content_panel.visible, "MAIN must reserve the non-combat content panel for setup and route screens, not the title surface.")
     _expect_false(shell.combat_host.visible, "MAIN must not show CombatBoardPreview.")
-    _expect_true(bool(shell.get_meta("technical_shell", false)), "Phase-I shell must identify itself as a technical shell.")
     _expect_false(bool(shell.get_meta("final_visual_reference_pending", true)), "Shell must record that the combat visual reference is approved.")
-    var visual_reference_status := shell.find_child("VisualReferenceStatus", true, false) as Label
-    _expect_true(visual_reference_status != null, "MAIN must expose visual-reference status copy.")
-    if visual_reference_status != null:
-        _expect_eq(visual_reference_status.text, "승인 전투 레퍼런스 확인됨 · 현재 UI는 기능/정보 위계 검증용", "MAIN must state that the approved reference exists while the shell remains functional visual-hierarchy evidence.")
+    var main_title_screen := shell.find_child("MainTitleScreen", true, false) as Control
+    _expect_true(main_title_screen != null and main_title_screen.visible, "MAIN must render the player-facing title screen.")
+    _expect_true(ResourceLoader.exists(TITLE_LOGO_PATH), "MAIN must ship the final-locked title logo as a runtime asset.")
+    var title_logo := shell.find_child("GameTitleLogo", true, false) as TextureRect
+    _expect_true(title_logo != null and title_logo.visible and title_logo.texture != null, "MAIN must render the final-locked game title logo.")
+    if title_logo != null and title_logo.texture != null:
+        _expect_eq(title_logo.texture.resource_path, TITLE_LOGO_PATH, "MAIN title logo must consume the final-locked runtime PNG.")
+    var start_button := shell.find_child("MainStartButton", true, false) as Button
+    _expect_true(start_button != null and not start_button.disabled, "MAIN must expose one enabled real start action.")
+    _expect_false(shell.find_child("VisualReferenceStatus", true, false) != null, "MAIN must not expose technical visual-reference status copy to players.")
 
-    _expect_true(shell.start_new_run(), "Shell must start a new run.")
-    _expect_eq(shell.run_state.get_current_screen(), "SETUP", "New run must enter SETUP.")
+    if start_button != null:
+        start_button.emit_signal("pressed")
+        await process_frame
+    _expect_eq(shell.run_state.get_current_screen(), "SETUP", "The visible MAIN start action must start a new run.")
     _select_default_setup(shell)
     _expect_true(shell.advance_noncombat(), "SETUP with four selected manuals must advance.")
     _expect_true(shell.advance_noncombat(), "INTRO must advance.")

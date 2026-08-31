@@ -337,13 +337,13 @@
       "asset_family_id": "COMBAT_BACKGROUND_01",
       "classification": "RUNTIME_IMAGE",
       "actual_consumer": "src/combat/battle_background.gd",
-      "active_asset": "res://assets/backgrounds/ink_mist_valley_duel_01_v1.png",
+      "active_asset": "res://assets/backgrounds/frontal_courtyard_duel_background_01_v1.png",
       "states": [
         "normal",
         "STRETCH_KEEP_ASPECT_COVERED"
       ],
-      "status": "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260830",
-      "production_rule": "The 2026-08-30 candidate completed separate brief, user final lock, manifest/provenance registration, consumer integration, focused contracts, and an actual Godot 4.7.1 new-run-to-Dogyeom-combat screenshot/node/log readback. This is machine-runtime evidence, not human/device/release approval."
+      "status": "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260831",
+      "production_rule": "The 2026-08-31 frontal-courtyard candidate completed separate brief, user final lock, manifest/provenance registration, consumer integration, and Godot 4.7.1 visible screenshot/node/log readback. It is not human/device/release approval."
     },
     {
       "asset_family_id": "COMBAT_CHARACTER_BATTLERS",

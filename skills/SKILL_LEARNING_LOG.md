@@ -217,3 +217,37 @@ LRN-TEN-LOCAL-004:
 - launcher/process/port 존재와 exact-project live readiness는 별도 증거다.
 - reused live tool의 인증은 fresh shell의 단일 추측이 아니라 exact instance + 지원 auth source probe로 복구하되 secret을 기록하지 않는다.
 - native stderr 텍스트와 process 실패를 동일시하지 않고 exit code·semantic payload·실제 후속 상태를 함께 판정한다.
+
+## 2026-08-31 — Final-locked shared card atlas propagation
+
+```yaml
+date: 2026-08-31
+work_item: MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01 final lock
+work_mode: BUILD → REVIEW
+skill_id: combat-implementation-handoff; combat-ux-and-accessibility; ten-paces-verification; hera-godot:live-editor
+skill_mode: existing-renderer extension → asset lifecycle → focused regression → visible runtime observation
+selection: user-directed
+trigger: user final lock "삽화 확정" after the reviewed semantic atlas candidate
+reason: 무공과 절초가 기초 행동과 동일한 카드 위계를 유지하면서도 카드 삽화를 실제 Godot 소비처에 보여야 했다.
+work_performed:
+  - candidate SHA-256 readback 뒤 approved와 runtime destination으로 exact-byte promotion
+  - existing ActionViewModelAdapter에서 source-kind semantic atlas region mapping 추가
+  - existing ActionChoiceCard renderer를 semantic_atlas policy까지 일반화하고 MartialActionPanel/UltimateActionPanel snapshot을 동기화
+  - manifest/provenance/current visual owners와 focused Godot/Python regression을 갱신
+  - exact Ten Paces Hera instance에서 무공·절초 탭의 shared card TextureRect와 diagnostics를 관측
+result: 하나의 renderer와 하나의 semantic atlas로 basic/martial/ultimate card hierarchy를 보존했다.
+evidence:
+  - assets/ASSET_MANIFEST.json
+  - src/ui/action_selection/action_view_model_adapter.gd
+  - src/ui/action_selection/action_choice_card.gd
+  - tests/verify_action_card_source_unification.gd
+  - tests/verify_martial_action_panel.gd
+  - tests/verify_ultimate_action_panel.gd
+verification_status: PASS
+exceptions:
+  - human readability/fun, accessibility-user, Android device, release performance, and release rights remain separate NOT_RUN or conditional gates
+  - one project-local example is insufficient to create a new Base common rule
+learning_state: PATTERN
+skill_change: APPLIED
+next_review_trigger: 새 action source, atlas region meaning 변경, asset destination 변경, 또는 card layout consumer 추가
+```
