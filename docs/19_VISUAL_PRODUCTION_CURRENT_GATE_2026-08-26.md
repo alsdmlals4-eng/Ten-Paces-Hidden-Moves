@@ -257,6 +257,10 @@ final_vfx_audio: NOT_RUN
 
 ## 10. Screen-first coverage readback · 2026-08-27
 
+## 10A. Runtime visual capture evidence · 2026-09-01
+
+`TEN-DEC-20260901-RUNTIME-VISUAL-CAPTURE-EVIDENCE-01` is the current owner for the user-required in-game capture evidence on every player-visible design or visual change. Store the smallest useful normal/result screenshot set in `docs/evidence/RUNTIME_VISUAL_CAPTURE_MANIFEST.json`; do not treat a temporary HERA output, a static planning board, a generated candidate, or a screenshot alone as Human/device/accessibility/release approval.
+
 Issue [#238](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/issues/238)은 `VerticalSliceShell`의 actual screen state와 asset consumer를 fresh-read했다. 상세 Target Screen Inventory, Screen→Asset Coverage Matrix, Design Reference Queue, Runtime Asset Family Queue, correction log, bounded Codex handoff는 `docs/17_VERTICAL_SLICE_VISUAL_UX_REQUIREMENT_SPEC.md`의 **§16**이 단독으로 소유한다. 이 Gate에 같은 matrix를 복제하지 않는다.
 
 ```yaml

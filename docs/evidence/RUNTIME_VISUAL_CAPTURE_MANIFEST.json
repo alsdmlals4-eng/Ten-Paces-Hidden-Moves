@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "manifest_role": "TEN_RUNTIME_VISUAL_CAPTURE_MANIFEST",
+  "retention_policy": "MINIMUM_REPRESENTATIVE_CAPTURE_SET",
+  "captures": [
+    {
+      "capture_id": "TEN-RVC-20260901-001",
+      "recorded_at_utc": "2026-08-31T15:15:28.924189+00:00",
+      "work_item_id": "TEN-DESIGN-RUNTIME-CAPTURE-POLICY-001",
+      "source_commit": "a19de4b4a9f7979030c53591875f6be6cf6385b6",
+      "runtime": {
+        "scene_path": "res://scenes/combat/combat_board_preview.tscn",
+        "capture_state": "initial_first_bundle_action_selection",
+        "entry_route": "hera_run_scene_direct_no_state_injection",
+        "source_delta": "HERA_SOURCE_DELTA_NONE"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/battle_background.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 0
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260901-001.png",
+        "sha256": "b31741b119e8d9ddf5890e979f29901e77ee781b42e5b71610e5696c29d07f5b",
+        "bytes": 914908,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      }
+    }
+  ]
+}
