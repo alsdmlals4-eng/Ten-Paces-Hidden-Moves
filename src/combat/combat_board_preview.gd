@@ -15,6 +15,7 @@ const TILE_SCENE := preload("res://scenes/combat/combat_board_tile.tscn")
 const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placeholder.tscn")
 const ACTION_REVEAL_OVERLAY_SCRIPT := preload("res://src/ui/combat_action_reveal_overlay.gd")
 const ULTIMATE_VFX_PATH := "res://assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png"
+const ATTACK_CLASH_VFX_PATH := "res://assets/vfx/attack_clash_ink_gold_atlas_rgba_v1.png"
 
 const CANVAS_COLOR := Color("171411")
 const GUIDE_COLOR := Color("b99254")
@@ -80,6 +81,7 @@ var _fast_replay := false
 var _reduced_motion := false
 var _presentation_skip_requested := false
 var _ultimate_vfx_sheet: Texture2D
+var _attack_clash_vfx_sheet: Texture2D
 var _sound_muted := false
 var _sound_volume := 0.65
 var _defer_character_snap := false
@@ -97,6 +99,8 @@ func _ready() -> void:
 	resolution_engine = CombatResolutionEngine.new()
 	review_summary_builder = REVIEW_SUMMARY_BUILDER_SCRIPT.new() as CombatReviewSummaryBuilder
 	_ultimate_vfx_sheet = load(ULTIMATE_VFX_PATH) as Texture2D
+	if ResourceLoader.exists(ATTACK_CLASH_VFX_PATH):
+		_attack_clash_vfx_sheet = load(ATTACK_CLASH_VFX_PATH) as Texture2D
 	_configure_ultimate_menu()
 	combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
 	combat_state["ai_enabled"] = true
@@ -294,6 +298,7 @@ func _build_structure() -> void:
 	presentation_label.add_theme_color_override("font_color", Color("e8c46a"))
 	presentation_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	presentation_label.visible = false
+	presentation_label.z_index = 32
 	add_child(presentation_label)
 
 	presentation_vfx = TextureRect.new()
@@ -302,6 +307,7 @@ func _build_structure() -> void:
 	presentation_vfx.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	presentation_vfx.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	presentation_vfx.visible = false
+	presentation_vfx.z_index = 31
 	add_child(presentation_vfx)
 
 	action_reveal_overlay = ACTION_REVEAL_OVERLAY_SCRIPT.new()
@@ -997,21 +1003,34 @@ func _resolve_and_present(context: Dictionary) -> void:
 func _present_timing_duel(events_value: Array, timing: int, phase: String) -> void:
 	_set_presentation_state("presenting_result")
 	_set_resolution_surface_visible(false)
+	set_meta("presentation_future_action_exposed", false)
+	set_meta("presentation_feedback_kind", "")
+	set_meta("presentation_feedback_reduced_motion_safe", _reduced_motion)
 	if is_instance_valid(presentation_label):
 		presentation_label.visible = false
 	if is_instance_valid(action_reveal_overlay):
 		action_reveal_overlay.show_timing(timing, phase, events_value, _reduced_motion)
 	set_meta("action_reveal_snapshot", action_reveal_overlay.get_snapshot() if is_instance_valid(action_reveal_overlay) else {})
+	var presented_event_count := 0
 	for value in events_value:
 		if typeof(value) != TYPE_DICTIONARY:
 			continue
 		var event: Dictionary = value
 		if str(event.get("type", "")) not in ["action_result", "clash"]:
 			continue
-		_show_ultimate_vfx(event)
+		_show_presentation_feedback(event)
 		_play_character_action_motion(event)
 		_play_event_sfx(event)
-	if not _presentation_skip_requested:
+		presented_event_count += 1
+		if not _presentation_skip_requested:
+			var event_duration := _event_presentation_duration(event)
+			if _fast_replay:
+				event_duration = minf(event_duration, 0.10)
+			elif _reduced_motion:
+				event_duration = 0.0
+			if event_duration > 0.0:
+				await _wait_for_presentation_delay(event_duration)
+	if presented_event_count == 0 and not _presentation_skip_requested:
 		var duration := _timing_reveal_duration(events_value)
 		if _fast_replay:
 			duration = minf(duration, 0.16)
@@ -1021,6 +1040,8 @@ func _present_timing_duel(events_value: Array, timing: int, phase: String) -> vo
 			await _wait_for_presentation_delay(duration)
 	if is_instance_valid(presentation_vfx):
 		presentation_vfx.visible = false
+	if is_instance_valid(presentation_label):
+		presentation_label.visible = false
 	if is_instance_valid(action_reveal_overlay):
 		action_reveal_overlay.hide_reveal()
 
@@ -1137,7 +1158,7 @@ func _present_authoritative_events(events_value: Array, timing: int) -> void:
 		presentation_label.text = summary
 		presentation_label.visible = true
 		presentation_label.modulate = Color.WHITE if _reduced_motion else Color(1.0, 0.88, 0.50, 1.0)
-		_show_ultimate_vfx(event)
+		_show_presentation_feedback(event)
 		_play_character_action_motion(event)
 		_play_event_sfx(event)
 		if not _presentation_skip_requested:
@@ -1207,6 +1228,63 @@ func _presentation_summary_for_event(event: Dictionary, fallback: String) -> Str
 		return "%s · 피해 %d" % [str(event.get("card_name", "공격")), int(event.get("damage", 0))]
 	return fallback
 
+func _show_presentation_feedback(event: Dictionary) -> void:
+	var kind := _presentation_feedback_kind(event)
+	if kind.is_empty():
+		return
+	set_meta("presentation_feedback_kind", kind)
+	set_meta("presentation_feedback_event", event.duplicate(true))
+	set_meta("presentation_feedback_reduced_motion_safe", _reduced_motion)
+	if is_instance_valid(presentation_label):
+		presentation_label.text = _presentation_summary_for_event(event, str(event.get("card_name", "행동")))
+		presentation_label.modulate = Color.WHITE if _reduced_motion else Color(1.0, 0.88, 0.50, 1.0)
+		presentation_label.visible = true
+	_show_feedback_vfx(event, kind)
+
+func _presentation_feedback_kind(event: Dictionary) -> String:
+	var outcome := str(event.get("outcome", ""))
+	if str(event.get("type", "")) == "clash" or outcome.begins_with("clash_"):
+		return "clash"
+	if str(event.get("card_id", "")).begins_with("ultimate_"):
+		return "ultimate"
+	if str(event.get("category", "")) == "attack" or int(event.get("damage", 0)) > 0:
+		return "attack"
+	return ""
+
+func _show_feedback_vfx(event: Dictionary, kind: String) -> void:
+	if kind == "ultimate":
+		_show_ultimate_vfx(event)
+		return
+	if not is_instance_valid(presentation_vfx) or _attack_clash_vfx_sheet == null:
+		if is_instance_valid(presentation_vfx):
+			presentation_vfx.visible = false
+		return
+	var sheet_size := _attack_clash_vfx_sheet.get_size()
+	var atlas := AtlasTexture.new()
+	atlas.atlas = _attack_clash_vfx_sheet
+	var band_index := 1 if kind == "clash" else 0
+	atlas.region = Rect2(0.0, float(band_index) * sheet_size.y / 2.0, sheet_size.x, sheet_size.y / 2.0)
+	presentation_vfx.texture = atlas
+	presentation_vfx.modulate = Color.WHITE if _reduced_motion else Color(1.0, 1.0, 1.0, 0.90)
+	_place_feedback_vfx(event, kind)
+	presentation_vfx.visible = true
+
+func _place_feedback_vfx(event: Dictionary, kind: String) -> void:
+	if not is_instance_valid(presentation_vfx):
+		return
+	var player_foot := player_character.get_foot_anchor_global() if is_instance_valid(player_character) else size * 0.5
+	var enemy_foot := enemy_character.get_foot_anchor_global() if is_instance_valid(enemy_character) else size * 0.5
+	var actor_foot := player_foot if str(event.get("actor", "")) == "player" else enemy_foot
+	var target_foot := enemy_foot if str(event.get("actor", "")) == "player" else player_foot
+	var impact := (player_foot + enemy_foot) * 0.5 if kind == "clash" else actor_foot.lerp(target_foot, 0.72)
+	var effect_size := Vector2(
+		clampf(size.x * (0.42 if kind == "ultimate" else 0.26), 250.0, 640.0),
+		clampf(size.y * (0.22 if kind == "ultimate" else 0.12), 90.0, 210.0)
+	)
+	presentation_vfx.size = effect_size
+	presentation_vfx.position = impact - Vector2(effect_size.x * 0.5, effect_size.y * 0.66)
+	presentation_vfx.pivot_offset = effect_size * 0.5
+
 func _show_ultimate_vfx(event: Dictionary) -> void:
 	if not is_instance_valid(presentation_vfx) or _ultimate_vfx_sheet == null:
 		return
@@ -1227,6 +1305,7 @@ func _show_ultimate_vfx(event: Dictionary) -> void:
 	atlas.region = Rect2(0.0, float(band_index) * sheet_size.y / 3.0, sheet_size.x, sheet_size.y / 3.0)
 	presentation_vfx.texture = atlas
 	presentation_vfx.modulate = Color.WHITE if _reduced_motion else Color(1.0, 1.0, 1.0, 0.96)
+	_place_feedback_vfx(event, "ultimate")
 	presentation_vfx.visible = true
 	presentation_vfx.pivot_offset = presentation_vfx.size * 0.5
 	presentation_vfx.scale = Vector2.ONE

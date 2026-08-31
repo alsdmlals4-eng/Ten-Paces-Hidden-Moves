@@ -12,7 +12,7 @@ func configure_action(definition: Dictionary, illustration_policy: String, statu
 	action_definition = definition.duplicate(true)
 	for child in get_children():
 		child.queue_free()
-	custom_minimum_size = Vector2(0.0, 96.0)
+	custom_minimum_size = Vector2(0.0, 138.0)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	focus_mode = Control.FOCUS_ALL
 	text = ""
@@ -46,7 +46,7 @@ func _add_illustration() -> void:
 	illustration.offset_left = 7.0
 	illustration.offset_top = 5.0
 	illustration.offset_right = -7.0
-	illustration.offset_bottom = 55.0
+	illustration.offset_bottom = 60.0
 	add_child(illustration)
 
 func _add_name_label(has_illustration: bool) -> void:
@@ -63,8 +63,8 @@ func _add_name_label(has_illustration: bool) -> void:
 	label.offset_left = 5.0
 	label.offset_right = -5.0
 	if has_illustration:
-		label.offset_top = -40.0
-		label.offset_bottom = -26.0
+		label.offset_top = -72.0
+		label.offset_bottom = -54.0
 	else:
 		label.offset_top = 7.0
 		label.offset_bottom = 25.0
@@ -77,7 +77,7 @@ func _add_facts_label(has_illustration: bool) -> void:
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.clip_text = true
+	label.clip_text = false
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.add_theme_font_size_override("font_size", 10)
 	label.add_theme_color_override("font_color", Color("4d4032"))
@@ -85,8 +85,8 @@ func _add_facts_label(has_illustration: bool) -> void:
 	label.offset_left = 6.0
 	label.offset_right = -6.0
 	if has_illustration:
-		label.offset_top = -26.0
-		label.offset_bottom = -14.0
+		label.offset_top = -54.0
+		label.offset_bottom = -34.0
 	else:
 		label.offset_top = 26.0
 		label.offset_bottom = 42.0
@@ -99,7 +99,7 @@ func _add_effect_or_tag_label(has_illustration: bool, has_status: bool) -> void:
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.clip_text = true
+	label.clip_text = false
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.add_theme_font_size_override("font_size", 9)
 	label.add_theme_color_override("font_color", Color("5a4a37"))
@@ -107,8 +107,8 @@ func _add_effect_or_tag_label(has_illustration: bool, has_status: bool) -> void:
 	label.offset_left = 6.0
 	label.offset_right = -6.0
 	if has_illustration:
-		label.offset_top = -14.0 if has_status else -14.0
-		label.offset_bottom = -4.0 if has_status else -2.0
+		label.offset_top = -34.0
+		label.offset_bottom = -18.0 if has_status else -6.0
 	else:
 		label.offset_top = 44.0
 		label.offset_bottom = 74.0 if not has_status else 67.0
@@ -126,29 +126,40 @@ func _add_status_label(status_text: String) -> void:
 	label.add_theme_color_override("font_color", Color("7e2f28") if not bool(action_definition.get("locked", false)) else Color("d2c6ab"))
 	label.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	label.offset_left = 6.0
-	label.offset_top = -15.0
+	label.offset_top = -18.0
 	label.offset_right = -6.0
-	label.offset_bottom = -1.0
+	label.offset_bottom = -3.0
 	add_child(label)
 
 func _compact_card_facts() -> String:
-	var costs := PackedStringArray()
 	var stamina := int(action_definition.get("stamina_cost", 0))
 	var internal := int(action_definition.get("internal_cost", 0))
 	var momentum := int(action_definition.get("momentum_cost", 0))
-	if stamina > 0:
-		costs.append("기%d" % stamina)
-	if internal > 0:
-		costs.append("내%d" % internal)
-	if momentum > 0:
-		costs.append("기세%d" % momentum)
-	if costs.is_empty():
-		costs.append("비용 없음")
 	var category_label := _category_label()
-	var facts := "%s · %s · %s" % [str(action_definition.get("source_label", "행동")), category_label, " ".join(costs)]
-	if _category() == "attack" and not bool(action_definition.get("hide_range", false)):
-		facts += " · 거리 %s" % str(action_definition.get("range_text", "-"))
+	var facts := "%s · %s · 사거리 %s · 기력 %d · 내력 %d" % [
+		str(action_definition.get("source_label", "행동")),
+		category_label,
+		_range_fact_text(),
+		stamina,
+		internal
+	]
+	if momentum > 0:
+		facts += " · 기세 %d" % momentum
 	return facts
+
+func _range_fact_text() -> String:
+	if bool(action_definition.get("hide_range", false)):
+		return "의도"
+	var range_text := str(action_definition.get("range_text", "")).strip_edges()
+	if not range_text.is_empty() and range_text != "-":
+		return range_text
+	match _category():
+		"move":
+			return "1"
+		"response", "observation", "recovery", "strengthen":
+			return "자신"
+		_:
+			return "제한 없음"
 
 func _effect_or_tag_text() -> String:
 	var detail: Dictionary = action_definition.get("detail", {}) as Dictionary
@@ -171,15 +182,14 @@ func _tooltip_text(status_text: String) -> String:
 
 func _accessibility_name(status_text: String) -> String:
 	var state: String = status_text if not status_text.is_empty() else (str(action_definition.get("lock_reason", "")) if bool(action_definition.get("locked", false)) else "사용 가능")
-	var range_text := "거리 %s, " % str(action_definition.get("range_text", "-")) if _category() == "attack" and not bool(action_definition.get("hide_range", false)) else ""
-	return "%s, %s, %s, %d수, 기력 %d, 내력 %d, %s%s" % [
+	return "%s, %s, %s, %d수, 사거리 %s, 기력 %d, 내력 %d, %s" % [
 		str(action_definition.get("name", "")),
 		str(action_definition.get("source_label", "행동")),
 		_category_label(),
 		int(action_definition.get("action_slots", 1)),
+		_range_fact_text(),
 		int(action_definition.get("stamina_cost", 0)),
 		int(action_definition.get("internal_cost", 0)),
-		range_text,
 		state
 	]
 

@@ -299,7 +299,7 @@ func _layout_product_action_dock() -> void:
         return
     var lower_margin := maxf(10.0, size.x * 0.014)
     var lower_bottom := maxf(8.0, size.y * 0.012)
-    var dock_height := clampf(size.y * 0.30, 232.0, 270.0)
+    var dock_height := clampf(size.y * 0.39, 332.0, 360.0)
     var dock_y := size.y - dock_height - lower_bottom
     action_selection_dock.position = Vector2(lower_margin, dock_y)
     action_selection_dock.size = Vector2(maxf(1.0, size.x - lower_margin * 2.0), dock_height)

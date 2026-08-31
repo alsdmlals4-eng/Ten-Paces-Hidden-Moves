@@ -185,7 +185,7 @@ func _normalize_action(definition: Dictionary, source_kind: String, source_id: S
         "target": str(definition.get("target", "")),
         "damage": _damage_text(definition),
         "condition": str(definition.get("condition", "없음")),
-        "effect_text": str(definition.get("effect_text", _effect_step_summary(definition.get("effect_steps", [])))),
+        "effect_text": _effect_text(definition, source_kind),
         "flavor": str(definition.get("flavor", "")),
         "hits": _hit_count(definition.get("hits", _independent_attack_count(definition.get("effect_steps", []))))
     }
@@ -240,6 +240,8 @@ func _damage_text(definition: Dictionary) -> String:
     if typeof(formula_value) != TYPE_DICTIONARY:
         return str(definition.get("damage", "없음"))
     var formula: Dictionary = formula_value
+    if formula.is_empty():
+        return str(definition.get("damage", "없음"))
     var base := int(formula.get("base", 0))
     var stat_label: String = str({"external": "외공", "internal_power": "내공"}.get(str(formula.get("stat_key", "")), "능력치"))
     var coefficient := float(formula.get("coefficient", 0.0))
@@ -271,6 +273,22 @@ func _effect_step_summary(values) -> String:
     if attack_count > 0:
         operations.append("연속 공격 %d회" % attack_count if attack_count > 1 else "공격")
     return " → ".join(operations)
+
+func _effect_text(definition: Dictionary, source_kind: String) -> String:
+    var explicit_text := str(definition.get("effect_text", "")).strip_edges()
+    if not explicit_text.is_empty():
+        return explicit_text
+    var step_summary := _effect_step_summary(definition.get("effect_steps", []))
+    if not step_summary.is_empty():
+        return step_summary
+    if source_kind == "ultimate":
+        var parts := PackedStringArray()
+        parts.append("돌진 후 공격" if bool(definition.get("dash_before_attack", false)) else "공격")
+        var damage_text := _damage_text(definition)
+        if not damage_text.is_empty() and damage_text != "없음":
+            parts.append("기본 피해 %s" % damage_text)
+        return " · ".join(parts)
+    return ""
 
 func _independent_attack_count(values) -> int:
     if typeof(values) != TYPE_ARRAY:

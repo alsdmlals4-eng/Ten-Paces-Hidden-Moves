@@ -2,6 +2,7 @@ class_name VerticalSliceShell
 extends Control
 
 const COMBAT_SCENE := preload("res://scenes/run/vertical_slice_combat_bridge.tscn")
+const MAIN_TITLE_SCENE := preload("res://scenes/ui/main_title_screen.tscn")
 const OpponentRuntimeBindingScript := preload("res://src/run/vertical_slice_opponent_runtime_binding.gd")
 const TECHNICAL_RUN_SEED := 20260820
 
@@ -11,6 +12,7 @@ var starter_manual_catalog: VerticalSliceStarterManualCatalog
 var manual_registry: MartialManualRegistry
 var content_panel: PanelContainer
 var combat_host: Control
+var main_title_screen: Control
 var title_label: Label
 var description_label: Label
 var primary_button: Button
@@ -120,12 +122,18 @@ func get_active_combat_loadout_snapshot() -> Dictionary:
 
 func _build_shell() -> void:
     var background := ColorRect.new()
-    background.name = "TechnicalBackground"
+    background.name = "ShellBackdrop"
     background.color = Color("171411")
     background.mouse_filter = Control.MOUSE_FILTER_IGNORE
     background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     add_child(background)
     move_child(background, 0)
+
+    main_title_screen = MAIN_TITLE_SCENE.instantiate() as Control
+    main_title_screen.name = "MainTitleScreen"
+    main_title_screen.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+    main_title_screen.connect("start_requested", Callable(self, "_on_primary_button_pressed"))
+    add_child(main_title_screen)
 
     combat_host = Control.new()
     combat_host.name = "CombatHost"
@@ -164,13 +172,6 @@ func _build_shell() -> void:
     stack.add_theme_constant_override("separation", 14)
     margin.add_child(stack)
 
-    var technical_label := Label.new()
-    technical_label.text = "PC-FIRST VERTICAL SLICE · FUNCTIONAL UI"
-    technical_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    technical_label.add_theme_color_override("font_color", Color("b99254"))
-    technical_label.add_theme_font_size_override("font_size", 15)
-    stack.add_child(technical_label)
-
     title_label = Label.new()
     title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     title_label.add_theme_color_override("font_color", Color("eadfc9"))
@@ -206,14 +207,6 @@ func _build_shell() -> void:
     failure_end_button.visible = false
     failure_end_button.pressed.connect(end_failed_run)
     stack.add_child(failure_end_button)
-
-    var pending_label := Label.new()
-    pending_label.name = "VisualReferenceStatus"
-    pending_label.text = "승인 전투 레퍼런스 확인됨 · 현재 UI는 기능/정보 위계 검증용"
-    pending_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    pending_label.add_theme_color_override("font_color", Color("8d8375"))
-    pending_label.add_theme_font_size_override("font_size", 13)
-    stack.add_child(pending_label)
 
 
 func _build_setup_options() -> void:
@@ -310,8 +303,11 @@ func _render_current_screen() -> void:
         or screen == VerticalSliceRunState.SCREEN_REVIEW
     )
 
+    var showing_main := screen == VerticalSliceRunState.SCREEN_MAIN
     combat_host.visible = keeps_combat_visible
-    content_panel.visible = not keeps_combat_visible
+    content_panel.visible = not keeps_combat_visible and not showing_main
+    if is_instance_valid(main_title_screen):
+        main_title_screen.visible = showing_main
     if setup_options_container != null:
         setup_options_container.visible = screen == VerticalSliceRunState.SCREEN_SETUP
     if failure_end_button != null:
@@ -325,8 +321,8 @@ func _render_current_screen() -> void:
         VerticalSliceRunState.SCREEN_MAIN:
             _set_content(
                 "십보강호: 숨은 수의 비무",
-                "첫 5전 Vertical Slice의 PC-first 기능 UI입니다.\n전투 코어는 기존 CombatBoardPreview를 그대로 재사용합니다.",
-                "새 비무행"
+                "세 수를 고르고, 한 수씩 드러나는 승부를 읽습니다.",
+                "비무행 시작"
             )
         VerticalSliceRunState.SCREEN_SETUP:
             _set_content(

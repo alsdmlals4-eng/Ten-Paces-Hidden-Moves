@@ -69,7 +69,61 @@ func _run() -> void:
 		await create_timer(0.05).timeout
 	_expect(str(board.get_meta("presentation_state", "")) == "review_ready", "Skip must preserve ordered snapshot completion and reach review.")
 
-	_cleanup(board)
+	board.queue_free()
+	await process_frame
+	await _verify_public_feedback_surface()
+	_finish()
+
+func _verify_public_feedback_surface() -> void:
+	var board := BOARD_SCENE.instantiate() as CombatBoardPreview
+	root.add_child(board)
+	board.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	board.size = Vector2(1440.0, 900.0)
+	for _frame in range(4):
+		await process_frame
+	await board._present_timing_duel([{
+		"type": "action_result",
+		"card_id": "basic_quick_attack",
+		"category": "attack",
+		"card_name": "속공",
+		"actor": "player",
+		"damage": 6,
+		"outcome": "hit"
+	}], 1, "quick_attack")
+	_expect(str(board.get_meta("presentation_feedback_kind", "")) == "attack", "A resolved normal attack must publish normal-attack feedback.")
+	_expect(not bool(board.get_meta("presentation_future_action_exposed", true)), "Normal-attack feedback must not expose a future hidden action.")
+	await board._present_timing_duel([{
+		"type": "clash",
+		"card_id": "basic_guard",
+		"card_name": "막기",
+		"actor": "enemy",
+		"damage": 0,
+		"outcome": "clash_draw"
+	}], 1, "clash")
+	_expect(str(board.get_meta("presentation_feedback_kind", "")) == "clash", "A resolved clash must publish central clash feedback.")
+	await board._present_timing_duel([{
+		"type": "action_result",
+		"card_id": "ultimate_ten_paces_wave",
+		"category": "attack",
+		"card_name": "십보 유파",
+		"actor": "player",
+		"damage": 8,
+		"outcome": "hit"
+	}], 1, "quick_attack")
+	_expect(str(board.get_meta("presentation_feedback_kind", "")) == "ultimate", "A resolved ultimate must publish ultimate feedback.")
+	board._reduced_motion = true
+	await board._present_timing_duel([{
+		"type": "action_result",
+		"card_id": "basic_quick_attack",
+		"category": "attack",
+		"card_name": "속공",
+		"actor": "player",
+		"damage": 6,
+		"outcome": "hit"
+	}], 1, "quick_attack")
+	_expect(bool(board.get_meta("presentation_feedback_reduced_motion_safe", false)), "Reduced Motion must retain a static readable action result.")
+	board.queue_free()
+	await process_frame
 
 func _card(board: CombatBoardPreview, card_id: String) -> Dictionary:
 	for value in board.basic_card_tray.cards:

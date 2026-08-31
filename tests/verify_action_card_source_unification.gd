@@ -62,7 +62,7 @@ func _verify_common_card_information_hierarchy() -> void:
 	_verify_card_text_hierarchy(basic_move, "basic_atlas_only", "기초 · 이동", "접근 또는 후퇴", "basic move")
 	_verify_card_text_hierarchy(basic_meditate, "basic_atlas_only", "기초 · 회복", "기력과 내력을", "basic meditate")
 	_verify_card_text_hierarchy(martial, "semantic_atlas", "[화산파] 매화검결 · 공격", "연속", "tagless martial attack")
-	_verify_card_text_hierarchy(ultimate, "semantic_atlas", "기본 절초 · 공격", "절초", "ultimate")
+	_verify_card_text_hierarchy(ultimate, "semantic_atlas", "기본 절초 · 공격", "기본 피해 8", "ultimate")
 
 func _verify_card_text_hierarchy(definition: Dictionary, illustration_policy: String, expected_facts: String, expected_effect: String, label: String) -> void:
 	_check(not definition.is_empty(), "%s definition must exist." % label)
@@ -74,8 +74,13 @@ func _verify_card_text_hierarchy(definition: Dictionary, illustration_policy: St
 	var effect := card.find_child("CardEffectOrTag", false, false) as Label
 	var illustration := card.find_child("CardIllustration", false, false) as TextureRect
 	_check(is_instance_valid(facts) and facts.text.contains(expected_facts), "%s must expose source, Korean category, and cost/range facts." % label)
+	_check(is_instance_valid(facts) and facts.text.contains("사거리"), "%s must always expose its range meaning in the shared card facts." % label)
+	_check(is_instance_valid(facts) and facts.text.contains("기력") and facts.text.contains("내력"), "%s must always expose stamina and internal-cost facts, including zero cost." % label)
 	_check(is_instance_valid(effect) and effect.text.contains(expected_effect), "%s must expose its effect text or tag on the common card." % label)
+	_check(is_instance_valid(effect) and effect.text != "절초", "%s must expose an actionable effect summary rather than the generic ultimate tag." % label)
 	_check(is_instance_valid(illustration) == (illustration_policy != "forbidden"), "%s illustration presence must match the card policy." % label)
+	_check(card.custom_minimum_size.y >= 132.0, "%s card must reserve enough vertical space for illustration, facts, and effect text." % label)
+	_check(is_instance_valid(facts) and not facts.clip_text and is_instance_valid(effect) and not effect.clip_text, "%s card facts and effect must not silently clip inside the common card." % label)
 	_check(not card.accessibility_name.strip_edges().is_empty(), "%s must expose an accessibility name." % label)
 	_check(not card.accessibility_description.strip_edges().is_empty(), "%s must expose an accessibility description." % label)
 	card.queue_free()

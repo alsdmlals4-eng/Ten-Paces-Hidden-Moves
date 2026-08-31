@@ -1,131 +1,207 @@
-# Frontal Duel Presentation and Illustrated Card Policy Implementation Plan
+# Frontal Duel Feedback and Readable Card Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:executing-plans` or `superpowers:subagent-driven-development` task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:executing-plans` task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Promote the final-locked frontal courtyard background and make the combat screen a same-ground-line frontal duel while removing the obsolete hypothesis and visible immediate-complete UI without changing combat rules.
+**Goal:** Ground the frontal duel, reveal attack/clash/ultimate feedback from only one resolved event, restore readable card facts for all sources, and replace the technical MAIN shell without changing combat rules.
 
-**Architecture:** The background remains a data-free `TextureRect`; `CombatBoardPreviewAuto` changes only player-facing layout anchors; `CombatBoardPreview` retires only user-facing controls and their focus/summary plumbing. Action cards remain one shared component; a subsequent image-only gate supplies non-basic illustration content.
+**Architecture:** `CombatCharacterPlaceholder` owns visual grounding only. `CombatBoardPreview` renders feedback only after public resolution. `ActionViewModelAdapter` publishes facts while `ActionChoiceCard` lays them out identically. `MainTitleScreen` decorates the existing `VerticalSliceShell` and emits only its existing start route.
 
-**Tech Stack:** Godot 4.7 GDScript, project-owned JSON/Markdown asset manifest, Godot headless regression scripts, visible Windows Godot/Hera runtime readback.
+**Tech Stack:** Godot 4.7 GDScript, project PNG assets and JSON manifest, Godot headless scripts, HERA visible-editor observation.
 
 **Spec:** `docs/superpowers/specs/2026-08-31-frontal-duel-presentation-and-card-illustration-design.md`
 
 ## Global Constraints
 
-- Preserve the 10-tile logical combat model, distance-first display, 3/3/4 planning, AI private-plan boundary, save schema, and Windows/Android shared core.
-- Do not delete active or rollback assets merely because they are no longer the active presentation.
-- Keep Fast Replay, Reduced Motion, sound controls, sequential reveal, combat log, observation, and review functional.
-- Use RED→GREEN tests before production GDScript changes; do not mark Human, Android, accessibility-user, or release evidence as passed without its own run.
+- Preserve the 10-tile logic, distance-first display, 3/3/4 planning, private-plan boundary, action IDs, save schema, and shared Windows/Android core.
+- Presentation cannot calculate damage, alter resolution, expose future actions, or make animation completion authoritative.
+- Keep the grid, opponent-intent hypothesis input, and immediate-complete player button absent from product UI.
+- Basic, martial, and ultimate sources continue to use `ActionChoiceCard`; facts are published data rather than UI combat calculations.
+- New raster art is `GENERATED_CANDIDATE` until provenance, user final lock, manifest registration, and consumer readback complete.
+- Preserve Fast Replay, Reduced Motion, sound controls, sequential reveal, combat log, observation, review, and keyboard focus.
+- Run RED before production code. Automated and visible Windows evidence never substitutes for Android, accessibility-user, human-play, release, or rights PASS.
 
 ---
 
-### Task 1: Write the presentation-regression contract before source changes
+### Task 1: Write focused RED contracts
 
 **Files:**
 - Modify: `tests/verify_ink_paper_combat_presentation.gd`
-- Modify: `tests/verify_combat_character_art.gd`
-- Modify: `tests/verify_combat_focus_order.gd`
-- Modify: `tests/verify_combat_review_ui.gd`
+- Modify: `tests/verify_action_card_source_unification.gd`
+- Modify: `tests/verify_combat_action_reveal.gd`
+- Modify: `tests/verify_vertical_slice_shell.gd`
 
 **Interfaces:**
-- Consumes: `CombatBoardPreview.get_layout_snapshot()`, `CombatCharacterPlaceholder.get_foot_anchor_global()`, child-node names, `BattleBackground` metadata.
-- Produces: failing checks for the promoted background route, a shared baseline, removed user-facing controls, and retained reveal/review routes.
+- Consumes: `get_foot_anchor_global()`, board presentation metadata, `ActionChoiceCard` child nodes, and `VerticalSliceShell.start_new_run()`.
+- Produces: failures for floating/debug feet, missing feedback, missing card facts, and technical MAIN copy.
 
-- [ ] **Step 1: Replace diagonal and removed-control expectations with the desired contract.**
+- [x] **Step 1: Add grounding assertions.**
 
 ```gdscript
-_expect(board.get_meta("duel_composition", "") == "player_left|enemy_right|shared_ground|distance_center", "Combat must use the frontal same-ground-line composition.")
-_expect(absf(player_foot.y - enemy_foot.y) <= 1.0, "Both combatants must share the visible ground baseline.")
-_expect(board.get_node_or_null("OpponentHypothesisPanel") == null, "Opponent hypothesis input must not be a runtime node.")
-_expect(board.get_node_or_null("SkipPresentationButton") == null, "Immediate-complete must not be player-facing.")
+_check(absf(player.get_foot_anchor_global().y - enemy.get_foot_anchor_global().y) <= 1.0, "Both battlers must share one floor baseline.")
+_check(player.visual_offset.y == 0.0 and enemy.visual_offset.y == 0.0, "Idle pose must not bob above the floor.")
 ```
 
-- [ ] **Step 2: Run the four focused scripts and record expected RED failures.**
+- [x] **Step 2: Add one-event-feedback assertions.**
+
+```gdscript
+_check(board.get_meta("presentation_feedback_kind", "") in ["attack", "clash", "ultimate"], "Resolved action must publish one feedback kind.")
+_check(not board.get_meta("presentation_future_action_exposed", false), "Feedback must not reveal a hidden future action.")
+_check(board.get_meta("presentation_feedback_reduced_motion_safe", false), "Reduced Motion must retain a readable result.")
+```
+
+- [x] **Step 3: Add shared-card and MAIN assertions.**
+
+```gdscript
+_check(facts.text.contains("사거리") and facts.text.contains("기력") and facts.text.contains("내력"), "%s must show range and resource facts." % label)
+_check(not effect.text.strip_edges().is_empty() and effect.text != "절초", "%s must have an actionable effect summary." % label)
+_expect_true(shell.find_child("MainTitleScreen", true, false) != null, "MAIN must use the player-facing title screen.")
+```
+
+- [x] **Step 4: Run and retain RED output.**
 
 ```powershell
-& $Godot --headless --path . -s res://tests/verify_ink_paper_combat_presentation.gd
-& $Godot --headless --path . -s res://tests/verify_combat_character_art.gd
-& $Godot --headless --path . -s res://tests/verify_combat_focus_order.gd
-& $Godot --headless --path . -s res://tests/verify_combat_review_ui.gd
+& $Godot --headless --path . --script res://tests/verify_ink_paper_combat_presentation.gd
+& $Godot --headless --path . --script res://tests/verify_action_card_source_unification.gd
+& $Godot --headless --path . --script res://tests/verify_combat_action_reveal.gd
+& $Godot --headless --path . --script res://tests/verify_vertical_slice_shell.gd
 ```
 
-Expected: failures identify the old active background, diagonal vertical offset, and hypothesis/skip focus nodes.
+Expected: source behavior fails, with all scenes still parsing.
 
-### Task 2: Promote the final-locked raster with rollback provenance
-
-**Files:**
-- Create: `docs/visual-assets/approved/FRONTAL_COURTYARD_DUEL_BACKGROUND_01_v1.png`
-- Create: `docs/visual-assets/approved/FRONTAL_COURTYARD_DUEL_BACKGROUND_01_v1.md`
-- Create: `assets/backgrounds/frontal_courtyard_duel_background_01_v1.png`
-- Modify: `assets/ASSET_MANIFEST.json`
-- Modify: `src/combat/battle_background.gd`
-
-**Interfaces:**
-- Consumes: candidate SHA-256 `27778369c3896d7d6237990ec70620c54ad0d636f660c9aa80322b0632262d06` and user final lock.
-- Produces: active `BattleBackground` path and an inactive `ink_mist_valley_duel_01_v1` rollback record.
-
-- [ ] **Step 1: Copy the candidate to canonical and runtime destinations without overwriting the previous background.**
-- [ ] **Step 2: Write provenance with the candidate hash, generation output ID, user lock, intended consumer, reference boundary, and evidence ceiling.**
-- [ ] **Step 3: Point `BACKGROUND_SOURCE_PATH` and preload at the new runtime PNG; set metadata to `original_frontal_courtyard_hanji_wuxia_duel`.**
-- [ ] **Step 4: Verify byte equality of candidate, canonical, and runtime copies, then run the focused background regression.**
-
-### Task 3: Replace the diagonal stage with a frontal same-ground-line stage
+### Task 2: Ground frontal battlers
 
 **Files:**
-- Modify: `src/combat/combat_board_preview_auto.gd`
 - Modify: `src/combat/combat_character_placeholder.gd`
+- Modify: `src/combat/combat_board_preview_auto.gd`
 - Modify: `tests/verify_ink_paper_combat_presentation.gd`
 - Modify: `tests/verify_combat_character_art.gd`
-- Modify: `tests/verify_diagonal_duel_assets.gd`
 
 **Interfaces:**
-- Consumes: existing `set_dimensions`, `place_foot_at`, HUD/timing bounds, and approved player/enemy battler paths.
-- Produces: `duel_composition=player_left|enemy_right|shared_ground|distance_center`, equal foot Y, comparable dimensions, and the approved inward-facing player image route.
+- Consumes: `place_foot_at(anchor)`, the existing common `player_foot_y`, and approved battler textures.
+- Produces: equal-foot placement, fixed shadow, no runtime debug crosses, and lunge that returns to zero visual offset.
 
-- [ ] **Step 1: Change `_apply_diagonal_duel_composition()` to one `shared_foot_y`, comparable widths, same z-order, left/right separation, and a centred range panel.**
-- [ ] **Step 2: Route `PLAYER_ART_PATH` to `player_wanderer_battler_rgba_v1.png`; retain generic-enemy and candidate-specific Dogyeom routing until its own asset decision.**
-- [ ] **Step 3: Run the Task 1 RED scripts until they turn GREEN, then run movement/attack-moment regressions to confirm logical tiles and anchors remain intact.**
+- [x] **Step 1: Keep `place_foot_at()` and the shared `player_foot_y` as the only floor placement route.**
+- [x] **Step 2: Replace the idle vertical sine movement with a stable zero offset, retaining attack lunge as temporary presentational motion.**
+- [x] **Step 3: Draw a flattened fixed shadow before the texture and remove both sprite and fallback debug cross paths.**
+- [x] **Step 4: Run grounding and frontal composition checks.**
 
-### Task 4: Retire obsolete player-facing intent-hypothesis and immediate-complete UI
+```powershell
+& $Godot --headless --path . --script res://tests/verify_ink_paper_combat_presentation.gd
+& $Godot --headless --path . --script res://tests/verify_combat_character_art.gd
+& $Godot --headless --path . --script res://tests/verify_frontal_duel_assets.gd
+```
+
+### Task 3: Add public-event attack, clash, and ultimate feedback
 
 **Files:**
+- Create after final visual lock: `assets/vfx/attack_clash_ink_gold_atlas_rgba_v1.png`
+- Modify after final visual lock: `assets/ASSET_MANIFEST.json`
 - Modify: `src/combat/combat_board_preview.gd`
-- Delete only after zero-reference check: `src/ui/opponent_hypothesis_panel.gd`, `scenes/ui/opponent_hypothesis_panel.tscn`
-- Modify: `src/combat/combat_review_summary_builder.gd` and `src/ui/combat_review_panel.gd` only if they still display the removed player-hypothesis field
-- Modify: `tests/verify_combat_focus_order.gd`, `tests/verify_combat_review_ui.gd`, `tests/verify_diagonal_duel_action_reveal.gd`
+- Modify only if required: `scenes/combat/combat_board_preview.tscn`
+- Modify: `tests/verify_combat_action_reveal.gd`
+- Modify: `tests/verify_combat_presentation_controls.gd`
 
 **Interfaces:**
-- Consumes: presentation state and review result only.
-- Produces: no hypothesis selection/focus/copy and no visible skip button, with an internal deterministic completion helper retained for tests if required.
+- Consumes: `_present_timing_duel(events_value, timing, phase)`, the existing ultimate VFX texture, and reduced-motion state.
+- Produces: `presentation_feedback_kind` metadata and visual-only normal attack, clash, or ultimate presentation for one current public event.
 
-- [ ] **Step 1: Remove the preload, member, construction, layout, focus, reset/commit calls, metadata, and accessibility labels for `OpponentHypothesisPanel`.**
-- [ ] **Step 2: Remove `SkipPresentationButton` construction/layout/focus/accessibility. Preserve `_skip_presentation()` only as non-player-facing test plumbing; do not bind it to a visible input.**
-- [ ] **Step 3: Replace review expectations that require a user hypothesis with public result/reason expectations.**
-- [ ] **Step 4: Run the focused focus/review/reveal scripts and verify fast replay, reduced motion, sound, sequential reveal, and review continue to work.**
+- [x] **Step 1: Classify one resolved event as `attack`, `clash`, or `ultimate`, after it becomes public and without reading later events.**
+- [ ] **Step 2: Route a short transparent normal-attack brush/impact at actor and target, and symmetric clash strokes at the centre. The new raster is quieter than ultimate feedback.**
+- [x] **Step 3: Re-anchor the existing ultimate strip and action/result label to the current impact point; clear it after a bounded delay.**
+- [x] **Step 4: Reduced Motion skips trails but preserves action/result and a static impact; Fast Replay shortens duration only.**
+- [x] **Step 5: Run reveal, liveness, terminal, SFX, and keyboard checks.**
 
-### Task 5: Record card-art coverage honestly and prepare the next asset gate
+```powershell
+& $Godot --headless --path . --script res://tests/verify_combat_action_reveal.gd
+& $Godot --headless --path . --script res://tests/verify_combat_presentation_liveness.gd
+& $Godot --headless --path . --script res://tests/verify_combat_terminal_presentation.gd
+& $Godot --headless --path . --script res://tests/verify_combat_sfx_presentation.gd
+& $Godot --headless --path . --script res://tests/verify_combat_keyboard_accessibility.gd
+```
+
+### Task 4: Restore common readable card facts
 
 **Files:**
-- Modify: `docs/19_VISUAL_PRODUCTION_CURRENT_GATE_2026-08-26.md`
-- Modify: `docs/decisions/2026-08-30_MARTIAL_MANUAL_TEXT_FIRST_PRESENTATION_DECISION.md` with superseded status only
-- Modify: `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` and current planning status owner
-- Create after generation: one candidate record under `docs/visual-assets/candidates/`
+- Modify: `src/ui/action_selection/action_view_model_adapter.gd`
+- Modify: `src/ui/action_selection/action_choice_card.gd`
+- Modify: `src/ui/action_selection/action_selection_dock.gd`
+- Modify only for common-card viewport: `src/ui/action_selection/basic_action_panel.gd`, `src/ui/action_selection/martial_action_panel.gd`, `src/ui/action_selection/ultimate_action_panel.gd`
+- Modify: `tests/verify_action_card_source_unification.gd`
+- Modify: `tests/verify_action_view_model_adapter.gd`
+- Modify: `tests/verify_basic_action_panel.gd`
+- Modify: `tests/verify_martial_action_panel.gd`
+- Modify: `tests/verify_ultimate_action_panel.gd`
 
 **Interfaces:**
-- Consumes: active basic atlas and current shared `ActionChoiceCard` consumer.
-- Produces: `BRIEF_READY`/`GENERATED_CANDIDATE` only for non-basic card art until a separate final lock.
+- Consumes: `range_text`, `stamina_cost`, `internal_cost`, `action_slots`, `detail.effect_text`, ultimate `damage`, and `dash_before_attack`.
+- Produces: visible range/기력/내력, one-line effect, and readable common-card bounds below the approved illustration.
 
-- [ ] **Step 1: Record the user-approved all-card-illustration policy and mark non-basic runtime coverage as pending rather than falsely completed.**
-- [ ] **Step 2: Generate exactly one text-free supplemental category-atlas candidate; preserve it outside runtime assets with its prompt, output ID, hash, and planned action-source mapping.**
-- [ ] **Step 3: Present that candidate for a separate final lock before adding it to card data, manifest, or runtime panels.**
+- [x] **Step 1: Add an adapter-only ultimate summary such as `돌진 후 공격 · 기본 피해 8`; do not call combat resolution.**
+- [x] **Step 2: Make `_facts_text()` always show `사거리`, `기력`, and `내력`, using data-backed `자신` or `제한 없음` semantics where appropriate.**
+- [x] **Step 3: Increase common-card minimum height and reserve illustration/facts/effect regions so labels cannot overlap or clip.**
+- [x] **Step 4: Keep the basic 5×2 grid; add a bounded scroll viewport only if martial/ultimate common cards need it.**
+- [x] **Step 5: Run card/adaptor/panel checks and retain all ten basic actions.**
 
-### Task 6: Full verification, adversarial review, and delivery hygiene
+```powershell
+& $Godot --headless --path . --script res://tests/verify_action_view_model_adapter.gd
+& $Godot --headless --path . --script res://tests/verify_action_card_source_unification.gd
+& $Godot --headless --path . --script res://tests/verify_basic_action_panel.gd
+& $Godot --headless --path . --script res://tests/verify_martial_action_panel.gd
+& $Godot --headless --path . --script res://tests/verify_ultimate_action_panel.gd
+```
+
+### Task 5: Build the actual MAIN title surface
 
 **Files:**
-- Create: `docs/operations/2026-08-31_FRONTAL_DUEL_PRESENTATION_EXECUTION_REPORT.md`
-- Modify: affected current status owners from Task 5
+- Create: `src/ui/main_title_screen.gd`
+- Create: `scenes/ui/main_title_screen.tscn`
+- Modify: `src/run/vertical_slice_shell.gd`
+- Modify: `tests/verify_vertical_slice_shell.gd`
+- Modify: `tests/verify_default_vertical_slice_entry.gd`
 
-- [ ] **Step 1: Run project operating validation, affected static checks, focused Godot scripts, relevant Python discovery, and `git diff --check` (excluding binary PNGs).**
-- [ ] **Step 2: Use Hera against the exact worktree editor session: open combat, inspect the node tree, select an action, run a sequential reveal, and capture/read the frontal screenshot.**
-- [ ] **Step 3: Run five adversarial review loops across source/asset authority, unaffected combat core, focus/accessibility, runtime screen, and repository hygiene; correct real findings only.**
-- [ ] **Step 4: Remove generated local test captures/import caches, commit only canonical source, create the current-task PR, and preserve the active worktree until merge and exact-main readback are complete.**
+**Interfaces:**
+- Consumes: existing approved courtyard and battler textures plus `_on_primary_button_pressed()`.
+- Produces: a `MainTitleScreen` with one real `비무행 시작` action and no technical copy.
+
+- [x] **Step 1: Build a full-rect title scene with the approved courtyard, low-opacity inward battlers, title, short promise, and start button.**
+- [x] **Step 2: Connect only to the existing shell start route; do not add settings/store/records or a new run state.**
+- [x] **Step 3: Show it only in `SCREEN_MAIN`; retain the existing content panel for all other shell screens.**
+- [x] **Step 4: Remove visible technical/pending status copy and verify `MAIN → SETUP → INTRO → BRIEFING → COMBAT`.**
+
+```powershell
+& $Godot --headless --path . --script res://tests/verify_vertical_slice_shell.gd
+& $Godot --headless --path . --script res://tests/verify_default_vertical_slice_entry.gd
+```
+
+### Task 6: Lock asset, clean only proven-unused variants, and verify the real screen
+
+**Files:**
+- Modify after final VFX lock: `assets/ASSET_MANIFEST.json`
+- Delete after zero-reference proof: `assets/vfx/ultimate_ink_gold_sprite_sheet.png`
+- Delete after zero-reference proof: `assets/vfx/ultimate_ink_gold_sprite_sheet_transparency_candidate.png`
+- Modify: `docs/superpowers/specs/2026-08-31-frontal-duel-presentation-and-card-illustration-design.md`
+- Create: `docs/operations/2026-08-31_FRONTAL_DUEL_FEEDBACK_EXECUTION_REPORT.md`
+
+**Interfaces:**
+- Consumes: user final lock, exact asset SHA-256, active consumer routes, and current PR baseline.
+- Produces: one registered normal/clash atlas, one registered ultimate atlas, no unreferenced rejected binary variants, and evidence-bounded execution record.
+
+- [ ] **Step 1: `rg` tracked code, scenes, data, docs, and manifest before deletion. Retain active `ultimate_ink_gold_sprite_sheet_rgba.png`; remove only zero-consumer variants and their imports.**
+- [ ] **Step 2: Register the approved VFX with SHA-256, prompt, output ID, alpha audit, approval, consumer, and state.**
+- [x] **Step 3: Run one Godot import after asset edits, focused tests, operating validation, static contracts, and `git diff --check` excluding PNG files.**
+- [ ] **Step 4: Use HERA only when its project path equals this worktree. Capture MAIN and attack/clash/ultimate views; inspect equal foot Y and hidden tactical layer.**
+- [x] **Step 5: Perform five evidenced adversarial review loops across asset authority, core boundaries, input/accessibility, runtime, and repository hygiene; write the outcomes.**
+
+## Plan Self-Review
+
+- **Spec coverage:** Tasks 2–5 cover grounding, three feedback states, card readability, and MAIN. Task 6 covers asset lifecycle, cleanup, runtime proof, and adversarial review.
+- **No placeholders:** Every production file, test, command, and conditional asset-lock boundary is named.
+- **Type consistency:** feedback metadata stays on `CombatBoardPreview`; the adapter feeds `ActionChoiceCard`; the title scene invokes the existing shell callback only.
+
+## Execution Mode
+
+The user approved the recommended scope and authorized screen verification. Execute inline in the existing isolated PR worktree, reporting only a genuine new asset-final-lock or correct-editor blocker.
+
+## Execution record
+
+Tasks 1, 2, 4, and 5 plus the non-raster portions of Task 3 are complete and machine-verified. Task 3 step 2 and Task 6 steps 1, 2, and 4 remain open: their conditions are the normal/clash VFX final lock, executable zero-consumer binary cleanup, and an active Godot session whose project path is exactly this worktree. The evidence, root-cause recovery, and five full-scope adversarial loops are recorded in `docs/operations/2026-08-31_FRONTAL_DUEL_FEEDBACK_EXECUTION_REPORT.md`.

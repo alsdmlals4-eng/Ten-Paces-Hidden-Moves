@@ -32,6 +32,9 @@ func _run() -> void:
 	_expect(enemy_foot.x > board.size.x * 0.52, "Enemy battler must occupy the right side of the frontal duel composition.")
 	_expect(absf(player_foot.y - enemy_foot.y) <= board.size.y * 0.01, "Both battlers must share one grounded horizontal duel line, not a diagonal depth line.")
 	_expect(absf(board.player_character.size.y - board.enemy_character.size.y) <= board.size.y * 0.03, "Both battlers must use a comparable frontal-composition scale.")
+	await create_timer(0.08).timeout
+	_expect(is_zero_approx(board.player_character.visual_offset.y), "Player idle pose must keep its feet on the shared floor rather than bob vertically.")
+	_expect(is_zero_approx(board.enemy_character.visual_offset.y), "Enemy idle pose must keep its feet on the shared floor rather than bob vertically.")
 	_expect(str(board.get_meta("duel_composition", "")) == "player_left|enemy_right|shared_ground|distance_center", "Combat must declare the shared-ground frontal duel composition.")
 	_expect(not is_instance_valid(board.get_node_or_null("OpponentHypothesisPanel")), "Player-facing opponent-intention hypothesis UI must be retired.")
 	_expect(not is_instance_valid(board.get_node_or_null("SkipPresentationButton")), "The visible immediate-complete control must be retired; timing reveals remain sequential.")
