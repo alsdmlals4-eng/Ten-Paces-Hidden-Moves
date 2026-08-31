@@ -34,7 +34,8 @@
   "position_swap_forbidden": true,
   "placement_resource_preview": true,
   "semantic_player_move_intent": true,
-  "semantic_player_aim_intent": true,
+  "semantic_player_aim_intent": false,
+  "auto_target_public_opponent": true,
   "enemy_plan_source": "public_state_ai",
   "enemy_bundles": {}
 }

@@ -139,6 +139,12 @@ func get_foot_anchor_local() -> Vector2:
 func get_foot_anchor_global() -> Vector2:
     return global_position + get_foot_anchor_local()
 
+func get_foot_position() -> Vector2:
+    return get_foot_anchor_global()
+
+func get_shadow_contact_y() -> float:
+    return global_position.y + size.y - 3.0
+
 func _notification(what: int) -> void:
     if what == NOTIFICATION_RESIZED:
         queue_redraw()
@@ -152,7 +158,7 @@ func _draw() -> void:
 
     var sprite := get_render_texture()
     if sprite != null:
-        draw_circle(Vector2(width * 0.5, foot_y + 2.0), width * 0.33, Color(INK, 0.34))
+        _draw_contact_shadow(width, foot_y)
         var draw_offset := visual_offset
         var draw_scale := Vector2.ONE * visual_scale
         if is_character_art_horizontally_mirrored():
@@ -168,7 +174,7 @@ func _draw() -> void:
         draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
         return
 
-    draw_circle(Vector2(width * 0.5, foot_y + 2.0), width * 0.33, Color(INK, 0.34))
+    _draw_contact_shadow(width, foot_y)
     draw_set_transform(visual_offset, 0.0, Vector2.ONE * visual_scale)
 
     var head_center := Vector2(width * 0.5, height * 0.18)
@@ -207,4 +213,9 @@ func _draw() -> void:
     draw_line(sword_hand, sword_end, Color("d8d4c9"), 3.0, true)
     draw_line(sword_hand + Vector2(-7.0 * facing, -5.0), sword_hand + Vector2(7.0 * facing, 5.0), GOLD, 3.0, true)
 
+    draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+
+func _draw_contact_shadow(width: float, foot_y: float) -> void:
+    draw_set_transform(Vector2(width * 0.5, foot_y - 1.0), 0.0, Vector2(1.0, 0.22))
+    draw_circle(Vector2.ZERO, width * 0.42, Color(INK, 0.42))
     draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)

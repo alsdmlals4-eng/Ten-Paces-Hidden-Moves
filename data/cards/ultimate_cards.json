@@ -19,7 +19,7 @@
       "action_slots": 1,
       "stamina_cost": 0,
       "internal_cost": 0,
-      "targeting_mode": "aim_intent",
+      "targeting_mode": "none",
       "tags": [
         "절초",
         "속공"
@@ -40,7 +40,7 @@
       "action_slots": 2,
       "stamina_cost": 0,
       "internal_cost": 0,
-      "targeting_mode": "aim_intent",
+      "targeting_mode": "none",
       "tags": [
         "절초"
       ]
@@ -60,7 +60,7 @@
       "action_slots": 3,
       "stamina_cost": 0,
       "internal_cost": 0,
-      "targeting_mode": "aim_intent",
+      "targeting_mode": "none",
       "tags": [
         "절초",
         "필중"

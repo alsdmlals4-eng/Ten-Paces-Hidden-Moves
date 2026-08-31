@@ -173,7 +173,7 @@ func _begin_targeting_for_anchor(anchor_index: int) -> bool:
     if placement.is_empty() or bool(placement.get("target_ready", true)):
         return false
     var mode := str(placement.get("targeting_mode", "none"))
-    if mode not in ["move_intent", "aim_intent"]:
+    if mode != "move_intent":
         return false
     _targeting_anchor = anchor_index
     _targeting_mode = mode
@@ -221,8 +221,7 @@ func _on_product_intent_selected(intent: Dictionary) -> void:
     _begin_next_pending_target()
 
 func _intent_title(placement: Dictionary) -> String:
-    var prefix := "이동 의도" if str(placement.get("targeting_mode", "")) == "move_intent" else "공격 의도"
-    return "%s · %s" % [prefix, str(placement.get("card_name", "행동"))]
+    return "이동 의도 · %s" % str(placement.get("card_name", "행동"))
 
 func _build_semantic_intents(placement: Dictionary) -> Array[Dictionary]:
     var definition: Dictionary = placement.get("definition", {})
@@ -239,9 +238,6 @@ func _build_semantic_intents(placement: Dictionary) -> Array[Dictionary]:
             var retreat_tile := _targeting_origin_tile - toward_direction * steps
             if retreat_tile >= 1 and retreat_tile <= tiles.size():
                 result.append(_make_intent_card("retreat_%d" % steps, "후퇴 %d칸" % steps, "retreat", -toward_direction, steps, "상대와의 거리를 벌린다.", "move"))
-        return result
-    result.append(_make_intent_card("aim_opponent", "상대를 노림", "aim_opponent", toward_direction, 0, "현재 보이는 상대 쪽을 노린다.", "attack"))
-    result.append(_make_intent_card("predict_away", "반대 예측", "predict_away", -toward_direction, 0, "상대가 피할 쪽을 예측해 노린다.", "attack"))
     return result
 
 func _make_intent_card(intent_id: String, label: String, intent: String, resolver_direction: int, steps: int, summary: String, category: String) -> Dictionary:
@@ -299,7 +295,7 @@ func _layout_product_action_dock() -> void:
         return
     var lower_margin := maxf(10.0, size.x * 0.014)
     var lower_bottom := maxf(8.0, size.y * 0.012)
-    var dock_height := clampf(size.y * 0.39, 332.0, 360.0)
+    var dock_height := clampf(size.y * 0.36, 312.0, 332.0)
     var dock_y := size.y - dock_height - lower_bottom
     action_selection_dock.position = Vector2(lower_margin, dock_y)
     action_selection_dock.size = Vector2(maxf(1.0, size.x - lower_margin * 2.0), dock_height)
@@ -308,7 +304,10 @@ func _layout_product_action_dock() -> void:
         var timing_height := action_timing_panel.size.y
         var timing_y := dock_y - timing_height - 8.0
         action_timing_panel.position.y = timing_y
-        combat_progress_button.position.y = timing_y
+        combat_progress_button.position.y = timing_y + (timing_height - combat_progress_button.size.y) * 0.5
+        if is_instance_valid(observation_reveal_status):
+            observation_reveal_status.position = Vector2((size.x - 360.0) * 0.5, timing_y - 30.0)
+            observation_reveal_status.size = Vector2(360.0, 24.0)
         _shift_battlefield_above(timing_y - 30.0)
         if is_instance_valid(combat_log_panel):
             combat_log_panel.size.y = maxf(1.0, timing_y - 10.0 - combat_log_panel.position.y)
@@ -323,7 +322,8 @@ func _apply_frontal_duel_composition() -> void:
 
     var timing_top := action_timing_panel.position.y if is_instance_valid(action_timing_panel) else size.y * 0.60
     var hud_bottom := top_hud.position.y + top_hud.size.y if is_instance_valid(top_hud) else size.y * 0.18
-    var player_foot_y := clampf(size.y * 0.56, hud_bottom + 154.0, timing_top - 12.0)
+    var grounded_floor_y := battle_background.get_duel_floor_y(size) if is_instance_valid(battle_background) else size.y * 0.46
+    var player_foot_y := clampf(grounded_floor_y, hud_bottom + 154.0, timing_top - 12.0)
     var normalized_distance := clampf(float(absi(_enemy_tile - _player_tile)) / 4.0, 0.0, 1.0)
     var horizontal_separation := lerpf(size.x * 0.13, size.x * 0.205, normalized_distance)
     var tile_center_drift := clampf((float(_player_tile + _enemy_tile) * 0.5 - 5.5) * size.x * 0.014, -size.x * 0.05, size.x * 0.05)
@@ -345,6 +345,7 @@ func _apply_frontal_duel_composition() -> void:
         range_readout_panel.z_index = 6
 
     set_meta("duel_composition", "player_left|enemy_right|shared_ground|distance_center")
+    set_meta("duel_floor_y", player_foot_y)
     set_meta("logical_board_default_visibility", "hidden")
 
 func _set_tactical_target_layer_visible(_value: bool) -> void:

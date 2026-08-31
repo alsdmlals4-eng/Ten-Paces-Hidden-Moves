@@ -20,8 +20,8 @@ def test_phase2_runtime_data_matches_the_approved_opening_and_basic_actions() ->
     progress = load("data/combat/combat_progress_preview.json")
 
     assert (board["player_start_tile"], board["enemy_start_tile"]) == (4, 6)
-    assert board["basic_card_tray"]["card_count"] == 10
-    assert board["basic_card_tray"]["card_ids"] == [
+    assert board["basic_action_cards"]["card_count"] == 10
+    assert board["basic_action_cards"]["card_ids"] == [
         "basic_move",
         "basic_footwork",
         "basic_guard",
@@ -35,7 +35,7 @@ def test_phase2_runtime_data_matches_the_approved_opening_and_basic_actions() ->
     ]
 
     by_id = {card["id"]: card for card in basics}
-    assert list(by_id) == board["basic_card_tray"]["card_ids"]
+    assert list(by_id) == board["basic_action_cards"]["card_ids"]
     assert by_id["basic_heavy_attack"]["internal_cost"] == 2
     assert by_id["basic_heavy_attack"]["range"] == {"min": 1, "max": 2}
     assert by_id["basic_heavy_attack"]["damage_formula"] == {
@@ -65,5 +65,5 @@ def test_phase2_runtime_data_matches_the_approved_opening_and_basic_actions() ->
         }
     assert resolution["meditate_stamina_restore"] == 1
     assert resolution["meditate_internal_restore"] == 1
-    assert progress["button_text"] == "행동계획 실행"
+    assert progress["button_text"] == "{bundle_actions}수 실행"
     assert "잠금" not in progress["caption"]

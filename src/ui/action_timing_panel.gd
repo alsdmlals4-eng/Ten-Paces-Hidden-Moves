@@ -198,8 +198,6 @@ func _targeting_mode_for_definition(definition: Dictionary) -> String:
     var category := str(definition.get("category", ""))
     if category == "move":
         return "move_intent"
-    if category == "attack":
-        return "aim_intent"
     return "none"
 
 func set_placement_target(anchor_index: int, target_data: Dictionary) -> bool:
@@ -231,8 +229,6 @@ func set_placement_target(anchor_index: int, target_data: Dictionary) -> bool:
 func _format_target_text(mode: String, direction: int, target_tile: int) -> String:
     if mode == "move_intent":
         return "이동 의도 · %d칸" % absi(target_tile)
-    if mode == "aim_intent":
-        return "공격 의도 선택"
     return "의도 선택"
 
 func _sync_placement_slots(placement: Dictionary) -> void:

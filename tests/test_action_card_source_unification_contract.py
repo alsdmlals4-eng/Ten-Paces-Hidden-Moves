@@ -15,14 +15,15 @@ def read(relative_path: str) -> str:
 
 
 class ActionCardSourceUnificationContractTests(unittest.TestCase):
-    def test_active_combat_contract_uses_semantic_card_intents_not_board_tile_direction_picker(self) -> None:
+    def test_active_combat_contract_keeps_movement_intent_but_auto_targets_non_move_actions(self) -> None:
         board = json.loads(read("data/combat/combat_board_poc.json"))
         selection = board.get("basic_action_cards", {})
         targeting = board.get("action_targeting", {})
 
         self.assertEqual("shared_action_card_grid", selection.get("card_surface"))
         self.assertEqual("semantic_intent_cards", targeting.get("move_mode"))
-        self.assertEqual("semantic_aim_cards", targeting.get("attack_mode"))
+        self.assertEqual("auto_target_public_opponent", targeting.get("attack_mode"))
+        self.assertTrue(targeting.get("auto_target_public_opponent"))
         self.assertNotIn("select_destination_board_tile", json.dumps(board, ensure_ascii=False))
         self.assertNotIn("select_left_or_right_direction", json.dumps(board, ensure_ascii=False))
 
@@ -32,7 +33,7 @@ class ActionCardSourceUnificationContractTests(unittest.TestCase):
         self.assertIn('label.name = "CardFacts"', renderer)
         self.assertIn('label.name = "CardEffectOrTag"', renderer)
         self.assertIn('accessibility_description = _accessibility_description(status_text)', renderer)
-        self.assertIn('and not bool(action_definition.get("hide_range", false))', renderer)
+        self.assertIn('if bool(action_definition.get("hide_range", false))', renderer)
         self.assertIn('return "공격"', renderer)
 
     def test_current_human_facing_owners_do_not_point_to_retired_action_selection_fixture(self) -> None:

@@ -253,17 +253,14 @@ func _build_structure() -> void:
 	combat_log_panel.layout_requested.connect(_layout_board)
 	add_child(combat_log_panel)
 
-	observation_reveal_button = Button.new()
-	observation_reveal_button.name = "ObservationRevealButton"
-	observation_reveal_button.text = "관찰점 사용 · 잠긴 적 행동 유형"
-	observation_reveal_button.tooltip_text = "관찰점 1을 사용해 잠긴 적 행동의 유형만 확인합니다. 기술명·목표·피해는 공개하지 않습니다."
-	observation_reveal_button.pressed.connect(request_locked_enemy_action_type_reveal)
-	_apply_keyboard_focus_ring(observation_reveal_button)
-	add_child(observation_reveal_button)
 	observation_reveal_status = Label.new()
 	observation_reveal_status.name = "ObservationRevealStatus"
-	observation_reveal_status.text = "관찰 기록 · 없음"
+	observation_reveal_status.text = ""
 	observation_reveal_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	observation_reveal_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	observation_reveal_status.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	observation_reveal_status.clip_text = true
+	observation_reveal_status.visible = false
 	add_child(observation_reveal_status)
 
 	combat_review_panel = COMBAT_REVIEW_SCENE.instantiate() as CombatReviewPanel
@@ -460,17 +457,20 @@ func _layout_board() -> void:
 	var tray_top := basic_card_tray.position.y if is_instance_valid(basic_card_tray) else size.y - tray_height - lower_bottom
 	var timing_row_y := tray_top - timing_height - panel_gap
 	var timing_row_width := maxf(1.0, size.x - lower_margin * 2.0)
-	var progress_width := clampf(size.x * 0.095, 120.0, 142.0)
+	var progress_width := clampf(size.x * 0.075, 88.0, 104.0)
 	var progress_gap := 8.0
-	var timing_width := maxf(1.0, timing_row_width - progress_width - progress_gap)
+	var collapsed_log_width := combat_log_panel.get_preferred_width(48.0) if is_instance_valid(combat_log_panel) else 0.0
+	var compact_log_gap := 4.0 if collapsed_log_width > 0.0 else 0.0
+	var timing_width := maxf(1.0, timing_row_width - progress_width - progress_gap - collapsed_log_width - compact_log_gap)
 
 	if is_instance_valid(action_timing_panel):
 		action_timing_panel.position = Vector2(lower_margin, timing_row_y)
 		action_timing_panel.size = Vector2(timing_width, timing_height)
 
 	if is_instance_valid(combat_progress_button):
-		combat_progress_button.position = Vector2(lower_margin + timing_width + progress_gap, timing_row_y)
-		combat_progress_button.size = Vector2(progress_width, timing_height)
+		var progress_height := minf(timing_height, 68.0)
+		combat_progress_button.position = Vector2(lower_margin + timing_width + progress_gap, timing_row_y + (timing_height - progress_height) * 0.5)
+		combat_progress_button.size = Vector2(progress_width, progress_height)
 
 	if is_instance_valid(ultimate_menu):
 		ultimate_menu.visible = false
@@ -518,12 +518,9 @@ func _layout_board() -> void:
 		combat_log_panel.position = Vector2(size.x - overlay_margin - log_width, overlay_top)
 		combat_log_panel.size = Vector2(log_width, overlay_height)
 
-	if is_instance_valid(observation_reveal_button):
-		observation_reveal_button.position = Vector2(overlay_margin, presentation_y + 152.0)
-		observation_reveal_button.size = Vector2(clampf(size.x * 0.22, 280.0, 320.0), 30.0)
 	if is_instance_valid(observation_reveal_status):
-		observation_reveal_status.position = Vector2(overlay_margin, presentation_y + 184.0)
-		observation_reveal_status.size = Vector2(clampf(size.x * 0.22, 280.0, 320.0), 40.0)
+		observation_reveal_status.position = Vector2((size.x - 360.0) * 0.5, timing_row_y - 30.0)
+		observation_reveal_status.size = Vector2(360.0, 24.0)
 
 	if is_instance_valid(combat_review_panel):
 		var review_size := Vector2(clampf(size.x * 0.52, 460.0, 620.0), clampf(size.y * 0.48, 320.0, 430.0))
@@ -1098,10 +1095,24 @@ func _on_review_continue_requested() -> void:
 	combat_state["round_number"] = int(advanced.get("round_number", combat_state.get("round_number", 1)))
 	combat_state["bundle_index"] = int(advanced.get("current_bundle", combat_state.get("bundle_index", 1)))
 	resolution_engine.lock_enemy_bundle(combat_state, int(combat_state.get("bundle_index", 1)))
+	var observation_result := reveal_available_locked_enemy_action_types()
 	_sync_runtime_context()
 	combat_progress_button.mark_resolution_applied()
 	_apply_combat_state_to_view()
 	if is_instance_valid(combat_log_panel):
+		if bool(observation_result.get("ok", false)):
+			var visible_types: Array = observation_result.get("revealed_action_types", [])
+			var display_records := PackedStringArray()
+			for value in visible_types:
+				if typeof(value) != TYPE_ARRAY:
+					continue
+				var record := PackedStringArray()
+				for action_type in value:
+					record.append(str(action_type))
+				if not record.is_empty():
+					display_records.append("[%s]" % "→".join(record))
+			if not display_records.is_empty():
+				combat_log_panel.append_entry("[관찰 공개] 다음 상대 행동: %s" % " / ".join(display_records), "system")
 		combat_log_panel.append_entry("[복기 완료] 다음 행동 묶음을 준비합니다.", "system")
 	_review_terminal = false
 	_set_resolution_surface_visible(true)
@@ -1605,8 +1616,7 @@ func _configure_keyboard_focus_order() -> void:
 	set_meta("keyboard_focus_order", "review_detail|review_continue" if is_instance_valid(combat_review_panel) and combat_review_panel.visible else "cards|ultimate_list|timings|tiles|progress|presentation_controls")
 
 func _configure_accessibility_semantics() -> void:
-	_set_accessibility_semantics(observation_reveal_button, "관찰점 사용", "관찰점 1을 써서 잠긴 적 행동의 유형만 확인합니다. 기술명, 목표, 피해는 공개하지 않습니다.")
-	_set_accessibility_semantics(observation_reveal_status, "관찰 기록", "관찰점으로 공개된 적 행동 유형 기록입니다.")
+	_set_accessibility_semantics(observation_reveal_status, "관찰 공개", "관찰점으로 자동 공개된 잠긴 상대 행동 유형입니다. 기술명, 목표, 피해는 공개하지 않습니다.")
 	if is_instance_valid(basic_card_tray):
 		for card_value in basic_card_tray.cards:
 			if card_value is BasicCardTrayItem:
@@ -1735,27 +1745,37 @@ func _refresh_range_readout() -> void:
 	set_meta("player_facing_engaged", distance == 0)
 
 func request_locked_enemy_action_type_reveal() -> void:
-	if _inputs_locked() or resolution_engine == null:
-		return
-	var locked := resolution_engine.get_locked_enemy_action_type_entries(combat_state, int(combat_state.get("bundle_index", 1)))
-	var reveal := resolution_engine.reveal_next_locked_enemy_action_types(combat_state, locked)
-	if not bool(reveal.get("valid", false)):
-		return
-	combat_state = (reveal.get("state", combat_state) as Dictionary).duplicate(true)
-	var payload: Dictionary = reveal.get("payload", {})
-	var action_types: Array = payload.get("action_types", [])
-	set_meta("observation_reveal_payload", {"action_types": action_types.duplicate(), "reveal_index": int(payload.get("reveal_index", 0))})
+	reveal_available_locked_enemy_action_types()
+
+func reveal_available_locked_enemy_action_types() -> Dictionary:
+	if resolution_engine == null:
+		return {"ok": false, "reveal_level": "ACTUAL_ACTION_TYPES", "revealed_action_types": []}
+	var revealed_action_types: Array = []
+	var last_payload: Dictionary = {}
+	while int((combat_state.get("player", {}) as Dictionary).get("observation_points", 0)) > 0:
+		var locked := resolution_engine.get_locked_enemy_action_type_entries(combat_state, int(combat_state.get("bundle_index", 1)))
+		var reveal := resolution_engine.reveal_next_locked_enemy_action_types(combat_state, locked)
+		if not bool(reveal.get("valid", false)):
+			break
+		combat_state = (reveal.get("state", combat_state) as Dictionary).duplicate(true)
+		last_payload = (reveal.get("payload", {}) as Dictionary).duplicate(true)
+		var action_types: Array = last_payload.get("action_types", [])
+		revealed_action_types.append(action_types.duplicate())
+	if revealed_action_types.is_empty():
+		return {"ok": false, "reveal_level": "ACTUAL_ACTION_TYPES", "revealed_action_types": []}
+	set_meta("observation_reveal_payload", {
+		"action_types": (last_payload.get("action_types", []) as Array).duplicate(),
+		"reveal_index": int(last_payload.get("reveal_index", 0)),
+		"revealed_action_types": revealed_action_types.duplicate()
+	})
 	_apply_combat_state_to_view()
+	return {"ok": true, "reveal_level": "ACTUAL_ACTION_TYPES", "revealed_action_types": revealed_action_types.duplicate()}
 
 func _refresh_observation_reveal() -> void:
 	var player: Dictionary = combat_state.get("player", {})
 	if is_instance_valid(observation_reveal_status):
 		observation_reveal_status.text = _format_observation_reveal_history(player)
-	if not is_instance_valid(observation_reveal_button):
-		return
-	var available := not _inputs_locked() and int(player.get("observation_points", 0)) > 0
-	observation_reveal_button.visible = available
-	observation_reveal_button.disabled = not available
+		observation_reveal_status.visible = not (player.get("observation_reveals", []) as Array).is_empty()
 
 func _format_observation_reveal_history(player: Dictionary) -> String:
 	var history: Array = player.get("observation_reveals", []) if typeof(player.get("observation_reveals", [])) == TYPE_ARRAY else []
@@ -1768,7 +1788,7 @@ func _format_observation_reveal_history(player: Dictionary) -> String:
 			action_types.append(str(action_type))
 		if not action_types.is_empty():
 			records.append("[%s]" % "→".join(action_types))
-	return "관찰 기록 · 없음" if records.is_empty() else "관찰 기록 · %s" % " / ".join(records)
+	return "관찰 공개 · 상대 %s" % " / ".join(records)
 
 func _clear_action_selection() -> void:
 	_selected_action_definition.clear()

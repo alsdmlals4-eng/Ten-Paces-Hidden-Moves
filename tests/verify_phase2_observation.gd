@@ -41,7 +41,7 @@ func _run() -> void:
         failures.append("Observation must consume exactly one stored point.")
     _expect_locked_enemy_plan_is_reused(engine, hud)
     _expect_inherited_enemy_plan_types(hud)
-    await _expect_board_reveal_request()
+    await _expect_board_auto_reveal()
     if failures.is_empty():
         print("PHASE2_OBSERVATION_VERIFY_OK")
         quit(0)
@@ -50,7 +50,7 @@ func _run() -> void:
         push_error(failure)
     quit(1)
 
-func _expect_board_reveal_request() -> void:
+func _expect_board_auto_reveal() -> void:
     var packed := load(BOARD_SCENE_PATH) as PackedScene
     var board := packed.instantiate() as CombatBoardPreview if packed != null else null
     if board == null:
@@ -70,16 +70,19 @@ func _expect_board_reveal_request() -> void:
     player["observation_points"] = 2
     board.combat_state["player"] = player
     board._apply_combat_state_to_view()
-    board.request_locked_enemy_action_type_reveal()
-    board.request_locked_enemy_action_type_reveal()
+    var result: Dictionary = board.reveal_available_locked_enemy_action_types()
+    if not bool(result.get("ok", false)) or str(result.get("reveal_level", "")) != "ACTUAL_ACTION_TYPES":
+        failures.append("The board must automatically reveal available locked enemy action types after lock.")
     var payload: Dictionary = board.get_meta("observation_reveal_payload", {})
     if not payload.has("action_types") or (payload.get("action_types", []) as Array).is_empty():
         failures.append("The board must render an explicit observation request result for a locked enemy bundle.")
     for forbidden_key in ["name", "target_tile", "damage", "ai_reason", "ai_seed"]:
         if payload.has(forbidden_key):
             failures.append("Board observation UI leaked %s." % forbidden_key)
-    if board.observation_reveal_status == null or board.observation_reveal_status.text != "관찰 기록 · [이동→공격] / [공격]":
+    if board.observation_reveal_status == null or board.observation_reveal_status.text != "관찰 공개 · 상대 [이동→공격] / [공격]":
         failures.append("The board must render every observation reveal in accessible front-to-back history order.")
+    if board.observation_reveal_button != null:
+        failures.append("Observation types must be disclosed automatically, without a separate player reveal button.")
     board.queue_free()
     await process_frame
 

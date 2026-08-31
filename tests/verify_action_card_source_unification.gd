@@ -116,15 +116,10 @@ func _verify_semantic_intent_runtime_surface() -> void:
 	if not heavy.is_empty():
 		board._on_product_action_selected(heavy)
 		await process_frame
-		_check(board._targeting_mode == "aim_intent", "Attack must request aim cards rather than left-right direction picking.")
-		var intent_names: Array[String] = []
-		for intent in board.action_selection_dock.action_intent_panel.intents:
-			intent_names.append(str(intent.get("name", "")))
-		_check(intent_names == ["상대를 노림", "반대 예측"], "Attack intent cards must use the approved semantic labels.")
-		if not board.action_selection_dock.action_intent_panel.intent_buttons.is_empty():
-			var aim_button := board.action_selection_dock.action_intent_panel.intent_buttons[0] as ActionChoiceCard
-			_check(not aim_button.accessibility_name.contains("거리 -"), "Aim intent accessibility must omit hidden range placeholders.")
-			_check(not aim_button.accessibility_description.strip_edges().is_empty(), "Aim intent must expose an accessibility description.")
+		_check(board._targeting_mode == "none", "Attack must lock against the public opponent without a direction-selection surface.")
+		_check(not board.action_selection_dock.action_intent_panel.visible, "Attack must not open an intent-card surface.")
+		var heavy_placement := board.action_timing_panel.get_placement(2)
+		_check(bool(heavy_placement.get("target_ready", false)), "Auto-targeted attacks must be immediately ready for current-bundle execution.")
 	board.queue_free()
 	await process_frame
 
