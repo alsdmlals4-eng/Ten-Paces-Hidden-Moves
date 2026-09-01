@@ -124,17 +124,20 @@ implementation_feasibility: FEASIBLE
 4. **렌더·가독성 공격:** 첫 image-centred render에서 두 곳의 불투명 overlay와 raw VFX checker 노출을 찾았다. full-screen black overlay는 제거하고, 하단 caption은 얇은 opaque panel로 한정했다. Poppler 144 DPI 전 페이지 재-render에서 hero image 숨김·한글 clip·요소 overlap·checker panel 0건을 확인했다.
 5. **전파·재현성·용량 공격:** 사람이 읽는 source, PDF, report, regression test, generator가 함께 바뀌는지와 불필요한 파생 PNG/temp path가 남는지 확인했다. canonical markdown에 이미지 우선 규칙을 추가하고 source-path existence를 검사하는 회귀 test와 재생성 script를 추가했다. protected product paths, 기존 open PR #199/#200, 새 runtime raster는 건드리지 않았다.
 
-### 보정 clean-exit 후보
+### 보정 clean-exit 및 post-merge readback
 
-현재 branch에서 `REMAINING_WORK_RECALCULATION_REQUIRED` 결과는 이 보정 범위의 구현·문서·PDF·회귀 test·render 검증 후 `0`이다. focused 4 passed, full 446 passed, operating-system/reference-freshness PASS, final 7-page render/readback PASS를 확인했다. PR exact-head checks, normal merge, 새 `main`의 PDF hash/readback와 post-merge adversarial review는 아직 실행 전이므로 이 시점에는 `CLEAN_REVIEW_EXIT_CANDIDATE_PREMERGE`다.
+`REMAINING_WORK_RECALCULATION_REQUIRED` 결과는 이 보정 범위의 구현·문서·PDF·회귀 test·render 검증 후 `0`이다. pre-merge focused 4 passed, full 446 passed, operating-system/reference-freshness PASS, final 7-page render/readback PASS를 확인했다.
+
+PR #312는 exact head `0d220da0d87b5ce27d9189897f33b5591f0281cf`에서 모든 완료 check가 `SUCCESS` 또는 적용 범위의 `SKIPPED`로 끝나고, review/comment 0건인 상태에서 normal merge commit `4338fe063bb4c0d4075c5ede90ca96bc23c63b08`로 병합됐다. 새 `main`에서 PDF SHA-256 `ED9A36F9800BFA23C455CFEF1981E85789E7A39103BC949634EC9D95AA579B58`, 7쪽 A4 landscape, `실제 Godot`·`통합 카드`·`PENDING`·`이미지 중심 블루프린트` text readback, focused blueprint regression 4 passed, reference freshness PASS를 다시 확인했다. 이 변경의 `CLEAN_REVIEW_EXIT_POSTMERGE`는 위 readback 범위에서 성립한다.
 
 ## 이미지 중심 보정 동기화 상태
 
-- current source main: `255d1152a5be0db7e36a0a6068a532b653ae4fa5`.
-- current branch: `codex/frontal-duel-visual-blueprint-pdf-20260902`.
+- source main before correction: `255d1152a5be0db7e36a0a6068a532b653ae4fa5`.
+- correction branch / exact head: `codex/frontal-duel-visual-blueprint-pdf-20260902` / `0d220da0d87b5ce27d9189897f33b5591f0281cf`.
+- correction PR / normal merge: #312 / `4338fe063bb4c0d4075c5ede90ca96bc23c63b08`.
 - current exact PDF output hash: `ED9A36F9800BFA23C455CFEF1981E85789E7A39103BC949634EC9D95AA579B58`.
 - pre-existing open PR #199/#200은 read-only이며 이 보정과 path/semantic overlap이 없다.
-- PR publish, required check, safe merge, post-merge main/readback는 **PENDING**이다. 성공으로 선승격하지 않는다.
+- PR publish, exact-head checks, normal merge, post-merge `main`/PDF/readback는 모두 위 commit에서 완료됐다. first correction branch는 local·origin에서 제거됐고, 다른 open PR과 product protected paths는 변경하지 않았다.
 
 ## 다음 안전 작업
 
