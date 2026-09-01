@@ -80,6 +80,9 @@ jobs:
         if: steps.scope.outputs.code_changed == 'true'
         run: python -m unittest tests.test_local_executor_handoff_contract -v
 
+      - name: Run runtime visual capture freshness regression tests
+        run: python -m unittest tests.test_runtime_visual_capture_contract -v
+
       - name: Run post-merge canon lifecycle regression tests
         run: python -m unittest tests.test_postmerge_canon_lifecycle -v
 
