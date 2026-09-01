@@ -8,7 +8,7 @@ import shutil
 import struct
 import sys
 import tempfile
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -18,6 +18,9 @@ COMMIT_RE = re.compile(r"^[0-9a-f]{40}$", re.IGNORECASE)
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 MANIFEST_ROLE = "TEN_RUNTIME_VISUAL_CAPTURE_MANIFEST"
 MAX_IMAGE_BYTES = 15 * 1024 * 1024
+LAUNCHER_ID = "ISSUE54_HUMAN_VALIDATION_LAUNCHER"
+FRESH_ARTIFACT_GATE = "FRESH_RUNTIME_ARTIFACT_GATE"
+FRESHNESS_CLOCK_SKEW = timedelta(seconds=2)
 
 
 class CaptureValidationError(ValueError):
@@ -77,6 +80,66 @@ def load_manifest(path: Path) -> dict[str, Any]:
     return manifest
 
 
+def load_launch_manifest(
+    root: Path,
+    path: Path,
+    *,
+    expected_commit: str,
+    source: Path,
+) -> dict[str, Any]:
+    resolved = path.resolve()
+    expected = (
+        root
+        / "build"
+        / "issue54-human-validation"
+        / expected_commit
+        / "issue54-human-validation-launch.json"
+    ).resolve()
+    if resolved != expected:
+        raise CaptureValidationError(
+            "launch manifest must be the exact project run manifest for the source commit"
+        )
+    if not resolved.is_file():
+        raise CaptureValidationError(f"launch manifest does not exist: {resolved}")
+    try:
+        payload = json.loads(resolved.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise CaptureValidationError(f"launch manifest is not valid JSON: {resolved}") from exc
+    if not isinstance(payload, dict) or payload.get("schema_version") != 1:
+        raise CaptureValidationError("launch manifest schema mismatch")
+    if payload.get("launcher_id") != LAUNCHER_ID:
+        raise CaptureValidationError("launch manifest launcher identity mismatch")
+    if payload.get("fresh_artifact_gate") != FRESH_ARTIFACT_GATE:
+        raise CaptureValidationError("launch manifest does not assert the fresh artifact gate")
+    if str(payload.get("exact_git_commit", "")).lower() != expected_commit:
+        raise CaptureValidationError("launch manifest source commit mismatch")
+    manifest_root = payload.get("project_root")
+    if not isinstance(manifest_root, str) or Path(manifest_root).resolve() != root:
+        raise CaptureValidationError("launch manifest project root mismatch")
+    raw_started = payload.get("created_at_utc")
+    if not isinstance(raw_started, str):
+        raise CaptureValidationError("launch manifest created_at_utc is required")
+    try:
+        started = datetime.fromisoformat(raw_started.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise CaptureValidationError("launch manifest created_at_utc must be ISO-8601") from exc
+    if started.tzinfo is None:
+        raise CaptureValidationError("launch manifest created_at_utc must include a timezone")
+    started_utc = started.astimezone(UTC)
+    source_mtime_utc = datetime.fromtimestamp(source.stat().st_mtime, UTC)
+    if source_mtime_utc + FRESHNESS_CLOCK_SKEW < started_utc:
+        raise CaptureValidationError(
+            "source image is older than launch run; prior artifact existence is not fresh evidence"
+        )
+    return {
+        "launcher_id": LAUNCHER_ID,
+        "launch_manifest_path": resolved.relative_to(root).as_posix(),
+        "launch_manifest_sha256": sha256_file(resolved),
+        "launch_created_at_utc": started_utc.isoformat(),
+        "source_mtime_utc": source_mtime_utc.isoformat(),
+        "freshness_basis": "SOURCE_MTIME_AT_OR_AFTER_LAUNCH_CREATED_AT_WITH_2S_SKEW",
+    }
+
 def atomic_write_json(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile(
@@ -102,6 +165,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--source-image", required=True, type=Path)
     parser.add_argument("--capture-id", required=True)
     parser.add_argument("--source-commit", required=True)
+    parser.add_argument("--launch-manifest", required=True, type=Path)
     parser.add_argument("--scene-path", required=True)
     parser.add_argument("--capture-state", required=True)
     parser.add_argument("--entry-route", required=True)
@@ -135,6 +199,12 @@ def register_capture(args: argparse.Namespace) -> dict[str, Any]:
         if not (root / consumer).is_file():
             raise CaptureValidationError(f"consumer does not exist as a repository file: {consumer}")
     width, height, byte_count, digest = inspect_png(source)
+    producer_run = load_launch_manifest(
+        root,
+        args.launch_manifest,
+        expected_commit=args.source_commit.lower(),
+        source=source,
+    )
 
     evidence_root = root / "docs" / "evidence"
     capture_dir = evidence_root / "runtime-captures"
@@ -171,6 +241,7 @@ def register_capture(args: argparse.Namespace) -> dict[str, Any]:
         "recorded_at_utc": datetime.now(UTC).isoformat(),
         "work_item_id": args.work_item_id,
         "source_commit": args.source_commit.lower(),
+        "producer_run": producer_run,
         "runtime": {
             "scene_path": args.scene_path,
             "capture_state": args.capture_state,

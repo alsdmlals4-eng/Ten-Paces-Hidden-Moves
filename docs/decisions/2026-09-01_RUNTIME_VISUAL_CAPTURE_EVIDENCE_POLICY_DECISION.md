@@ -29,11 +29,12 @@ python tools/register_runtime_visual_capture.py --help
 Each capture must include:
 
 - `capture_id`, work item, exact committed `source_commit`, and SHA-256 of the copied PNG.
+- the exact `issue54-human-validation-launch.json` produced for that commit, its SHA-256, launch timestamp, and source-image modification time. A source image older than the launch run is rejected as stale evidence.
 - `res://` scene, capture state, normal entry route, and all relevant repository consumer paths.
 - image dimensions/byte count, diagnostic error/warning counts, and source-delta status when a live-QA tool was used.
 - explicit `MACHINE_RUNTIME_CAPTURE` evidence level plus `NOT_RUN` Human usability, Android device, accessibility-user, and release-performance ceilings.
 
-Temporary tool output such as an AppData HERA screenshot is acquisition input only. It becomes reviewable repository evidence only after the registrar copies it, hashes it, and records it in this manifest. The registrar never deletes a shared temporary source and never adds it to the game's runtime asset catalog.
+Temporary tool output such as an AppData HERA screenshot is acquisition input only. It becomes reviewable repository evidence only after the registrar binds it to the exact launch manifest, rejects pre-run stale files, copies it, hashes it, and records it in this manifest. The registrar never deletes a shared temporary source and never adds it to the game's runtime asset catalog. The filesystem timestamp check blocks ordinary leftover-file reuse; it is not cryptographic producer attestation and does not prove visual quality.
 
 ## Tool and authority boundaries
 
@@ -50,6 +51,6 @@ Potentially reusable lessons are first submitted through the Base Change Proposa
 
 ## Verification and rollback
 
-The registrar rejects non-PNG input, unsafe paths, malformed IDs/source commits, duplicate IDs, missing metadata, and unreasoned third captures. Its test contract verifies source/copy hash equality, dimensions, evidence ceilings, and rejection behavior.
+The registrar rejects non-PNG input, unsafe paths, malformed IDs/source commits, duplicate IDs, missing metadata, mismatched launch identity, source images older than the launch run, and unreasoned third captures. Its test contract verifies source/copy hash equality, dimensions, launch-manifest binding, stale-artifact rejection, evidence ceilings, and rejection behavior.
 
 Rollback removes the dedicated policy, registrar, manifest records, and only the exact capture files introduced by the reverted work item. It does not delete production assets, historical visual decisions, or shared temporary capture locations.

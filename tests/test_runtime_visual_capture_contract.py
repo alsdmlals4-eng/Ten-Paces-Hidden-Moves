@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import tempfile
 import unittest
+from datetime import UTC, datetime, timedelta
 from hashlib import sha256
 from pathlib import Path
 
@@ -30,10 +32,51 @@ class RuntimeVisualCaptureContractTests(unittest.TestCase):
             + b"\x00\x00\x00\x00IEND\xaeB`\x82"
         )
 
-    def _run(self, project_root: Path, source: Path, capture_id: str, *extra: str) -> subprocess.CompletedProcess[str]:
+    def _write_launch_manifest(
+        self,
+        project_root: Path,
+        source: Path,
+        *,
+        created_at_utc: str | None = None,
+        exact_commit: str | None = None,
+    ) -> Path:
+        commit = exact_commit or self.source_commit
+        run_root = project_root / "build" / "issue54-human-validation" / commit
+        run_root.mkdir(parents=True, exist_ok=True)
+        launch_manifest = run_root / "issue54-human-validation-launch.json"
+        if created_at_utc is None:
+            source_time = datetime.fromtimestamp(source.stat().st_mtime, UTC)
+            created_at_utc = (source_time - timedelta(seconds=1)).isoformat()
+        launch_manifest.write_text(
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "launcher_id": "ISSUE54_HUMAN_VALIDATION_LAUNCHER",
+                    "created_at_utc": created_at_utc,
+                    "project_root": str(project_root.resolve()),
+                    "exact_git_commit": commit,
+                    "fresh_artifact_gate": "FRESH_RUNTIME_ARTIFACT_GATE",
+                },
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        return launch_manifest
+
+    def _run(
+        self,
+        project_root: Path,
+        source: Path,
+        capture_id: str,
+        *extra: str,
+        launch_manifest: Path | None = None,
+    ) -> subprocess.CompletedProcess[str]:
         consumer = project_root / "src" / "combat" / "combat_board_preview.gd"
         consumer.parent.mkdir(parents=True, exist_ok=True)
         consumer.write_text("# capture-test consumer\n", encoding="utf-8")
+        if launch_manifest is None:
+            launch_manifest = self._write_launch_manifest(project_root, source)
         return subprocess.run(
             [
                 sys.executable,
@@ -46,6 +89,8 @@ class RuntimeVisualCaptureContractTests(unittest.TestCase):
                 capture_id,
                 "--source-commit",
                 self.source_commit,
+                "--launch-manifest",
+                str(launch_manifest),
                 "--scene-path",
                 "res://scenes/combat/combat_board_preview.tscn",
                 "--capture-state",
@@ -100,6 +145,14 @@ class RuntimeVisualCaptureContractTests(unittest.TestCase):
             entry = manifest["captures"][0]
             self.assertEqual("TEN-RVC-20260901-001", entry["capture_id"])
             self.assertEqual(self.source_commit, entry["source_commit"])
+            producer = entry["producer_run"]
+            self.assertEqual("ISSUE54_HUMAN_VALIDATION_LAUNCHER", producer["launcher_id"])
+            self.assertEqual(
+                f"build/issue54-human-validation/{self.source_commit}/issue54-human-validation-launch.json",
+                producer["launch_manifest_path"],
+            )
+            launch_manifest = project_root / producer["launch_manifest_path"]
+            self.assertEqual(sha256(launch_manifest.read_bytes()).hexdigest(), producer["launch_manifest_sha256"])
             self.assertEqual("MACHINE_RUNTIME_CAPTURE", entry["evidence_level"])
             self.assertEqual("NOT_RUN", entry["evidence_ceiling"]["human_usability"])
             self.assertEqual("NOT_RUN", entry["evidence_ceiling"]["android_actual_device"])
@@ -141,6 +194,33 @@ class RuntimeVisualCaptureContractTests(unittest.TestCase):
             )
             self.assertNotEqual(0, result.returncode)
             self.assertIn("consumer does not exist", result.stderr)
+
+    def test_registrar_rejects_capture_older_than_launch_run_without_creating_evidence(self) -> None:
+        self.assertTrue(SCRIPT.is_file(), f"missing registrar: {SCRIPT}")
+        with tempfile.TemporaryDirectory() as temporary:
+            project_root = Path(temporary) / "project"
+            project_root.mkdir()
+            source = Path(temporary) / "stale-source.png"
+            self._write_png(source)
+            stale_time = (datetime.now(UTC) - timedelta(minutes=10)).timestamp()
+            os.utime(source, (stale_time, stale_time))
+            launch_manifest = self._write_launch_manifest(
+                project_root,
+                source,
+                created_at_utc=datetime.now(UTC).isoformat(),
+            )
+
+            result = self._run(
+                project_root,
+                source,
+                "TEN-RVC-20260901-007",
+                launch_manifest=launch_manifest,
+            )
+            self.assertNotEqual(0, result.returncode)
+            self.assertIn("older than launch run", result.stderr)
+            self.assertFalse(
+                (project_root / "docs" / "evidence" / "RUNTIME_VISUAL_CAPTURE_MANIFEST.json").exists()
+            )
 
     def test_registrar_requires_explicit_reason_for_a_third_capture_of_one_work_item(self) -> None:
         self.assertTrue(SCRIPT.is_file(), f"missing registrar: {SCRIPT}")
