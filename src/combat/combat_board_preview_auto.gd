@@ -7,6 +7,7 @@ const ACTION_SELECTION_DOCK_SCENE := preload("res://scenes/ui/action_selection/a
 var action_placement_controller: ActionPlacementController
 var action_selection_dock: ActionSelectionDock
 var _pending_controller_definition: Dictionary = {}
+var _plan_locked := false
 
 func _ready() -> void:
     super._ready()
@@ -30,6 +31,9 @@ func _ready() -> void:
     set_meta("virtual_combo_enabled", false)
 
 func restart_combat() -> void:
+    _plan_locked = false
+    if is_instance_valid(combat_progress_button):
+        combat_progress_button.set_plan_locked(false)
     _player_tile = int(contract.get("player_start_tile", 4))
     _enemy_tile = int(contract.get("enemy_start_tile", 6))
     super.restart_combat()
@@ -77,6 +81,23 @@ func _on_product_action_selected(definition: Dictionary) -> void:
     if _inputs_locked():
         return
     _auto_place_selected_card(definition.duplicate(true))
+
+func _on_progress_requested(context: Dictionary) -> void:
+    if (not _plan_locked and super._inputs_locked()) or not action_timing_panel.is_current_bundle_complete():
+        return
+    if not _plan_locked:
+        _plan_locked = true
+        if is_instance_valid(combat_progress_button):
+            combat_progress_button.set_plan_locked(true)
+        _set_presentation_state("plan_locked")
+        set_meta("plan_locked", true)
+        return
+    _plan_locked = false
+    if is_instance_valid(combat_progress_button):
+        combat_progress_button.set_plan_locked(false)
+    _set_presentation_state("planning")
+    set_meta("plan_locked", false)
+    super._on_progress_requested(context)
 
 func _on_product_source_changed(_source: String) -> void:
     call_deferred("_configure_keyboard_focus_order")
@@ -276,6 +297,9 @@ func _set_presentation_state(value: String) -> void:
     _sync_action_placement_controller_state()
     _sync_action_selection_dock()
 
+func _inputs_locked() -> bool:
+    return _plan_locked or super._inputs_locked()
+
 func _set_resolution_surface_visible(value: bool) -> void:
     super._set_resolution_surface_visible(value)
     if is_instance_valid(action_selection_dock):
@@ -402,6 +426,8 @@ func _sync_action_selection_dock() -> void:
 func _dock_interaction_state() -> String:
     if _targeting_anchor > 0:
         return "targeting"
+    if _plan_locked:
+        return "plan_locked"
     # An ultimate reserves multiple timing slots as one atomic plan.  Keep its
     # source context stable until the player explicitly removes that plan.
     if not _ultimate_reservation_anchors.is_empty():

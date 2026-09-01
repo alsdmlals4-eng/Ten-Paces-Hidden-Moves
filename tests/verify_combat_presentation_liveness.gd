@@ -43,6 +43,11 @@ func _plan_first_bundle(board: CombatBoardPreview) -> void:
         failures.append("First bundle progress did not enable.")
         return
     board.combat_progress_button.request_progress()
+    await process_frame
+    if str(board.get_meta("presentation_state", "")) != "plan_locked":
+        failures.append("First bundle must visibly lock its plan before reveal playback.")
+        return
+    board.combat_progress_button.request_progress()
 
 func _plan_second_bundle(board: CombatBoardPreview) -> void:
     if str(board.get_meta("presentation_state", "")) != "next_bundle_ready":
@@ -65,6 +70,11 @@ func _plan_second_bundle(board: CombatBoardPreview) -> void:
         return
     if not board.combat_progress_button.progress_enabled:
         failures.append("Second bundle progress did not enable.")
+        return
+    board.combat_progress_button.request_progress()
+    await process_frame
+    if str(board.get_meta("presentation_state", "")) != "plan_locked":
+        failures.append("Second bundle must visibly lock its plan before reveal playback.")
         return
     board.combat_progress_button.request_progress()
 

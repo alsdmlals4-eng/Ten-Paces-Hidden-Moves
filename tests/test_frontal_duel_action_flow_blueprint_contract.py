@@ -9,6 +9,8 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 BLUEPRINT_PATH = REPOSITORY_ROOT / "docs" / "design" / "2026-09-01_FRONTAL_DUEL_ACTION_FLOW_BLUEPRINT.md"
 BENCHMARK_PATH = REPOSITORY_ROOT / "docs" / "reviews" / "2026-09-01_FRONTAL_DUEL_REVEAL_AND_CARD_BENCHMARK.md"
 CURRENT_STATUS_PATH = REPOSITORY_ROOT / "docs" / "planning-data" / "current_user_planning_status.json"
+PLAN_LOCK_DECISION_PATH = REPOSITORY_ROOT / "docs" / "decisions" / "2026-09-01_ACTION_PLAN_LOCK_AND_EXECUTE_CTA_DECISION.md"
+PLAN_LOCK_BUILD_APPROVAL_PATH = REPOSITORY_ROOT / "docs" / "implementation" / "BUILD_APPROVAL_2026-09-01_ACTION_PLAN_LOCK_REFINEMENT.md"
 
 
 class FrontalDuelActionFlowBlueprintContractTests(unittest.TestCase):
@@ -42,6 +44,20 @@ class FrontalDuelActionFlowBlueprintContractTests(unittest.TestCase):
         self.assertIn("DESK_RESEARCH_ONLY_NO_TEN_PACES_HUMAN_PLAYTEST_NO_RUNTIME_OR_RULE_MUTATION", benchmark)
         self.assertIn("NO_NEW_RASTER_REQUIRED", status["frontal_duel_blueprint_asset_disposition"])
         self.assertIn("NOT_RUN", status["frontal_duel_blueprint_evidence_ceiling"])
+        self.assertIn("IMPLEMENTED_MACHINE_VERIFIED", status["frontal_duel_blueprint_status"])
+        self.assertIn("CURRENT_EXACT_REPOSITORY_CAPTURE", status["frontal_duel_blueprint_status"])
+
+    def test_plan_lock_is_a_scoped_approved_transition_not_a_core_rule_change(self) -> None:
+        decision = PLAN_LOCK_DECISION_PATH.read_text(encoding="utf-8")
+        approval = PLAN_LOCK_BUILD_APPROVAL_PATH.read_text(encoding="utf-8")
+        status = json.loads(CURRENT_STATUS_PATH.read_text(encoding="utf-8"))
+
+        self.assertEqual("TEN-DEC-20260901-ACTION-PLAN-LOCK-AND-EXECUTE-CTA-01", status["frontal_duel_plan_lock_decision"])
+        self.assertEqual("docs/implementation/BUILD_APPROVAL_2026-09-01_ACTION_PLAN_LOCK_REFINEMENT.md", status["frontal_duel_plan_lock_build_approval"])
+        self.assertIn("resolver_invocation: 0", decision)
+        self.assertIn("resolver_invocation: exactly_once", decision)
+        self.assertIn("save_schema: preserved", decision)
+        self.assertIn("No new raster asset is approved or required.", approval)
 
 
 if __name__ == "__main__":

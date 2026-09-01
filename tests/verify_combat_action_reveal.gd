@@ -36,6 +36,10 @@ func _run() -> void:
 	_expect(board.combat_progress_button.progress_enabled, "Completed first bundle must enable execution.")
 	var resolution_before := int(board.get_layout_snapshot().get("resolution_count", 0))
 	board.combat_progress_button.request_progress()
+	await process_frame
+	_expect(str(board.get_meta("presentation_state", "")) == "plan_locked", "Completed bundle must pause at visible plan lock before action reveal.")
+	_expect(int(board.get_layout_snapshot().get("resolution_count", 0)) == resolution_before, "Plan lock must not apply combat resolution.")
+	board.combat_progress_button.request_progress()
 
 	var reveal_seen := false
 	for _attempt in range(80):
