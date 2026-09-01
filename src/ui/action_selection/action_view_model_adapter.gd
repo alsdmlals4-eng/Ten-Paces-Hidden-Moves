@@ -219,8 +219,6 @@ func _semantic_targeting_mode(definition: Dictionary) -> String:
     match str(definition.get("category", "")):
         "move":
             return "move_intent"
-        "attack":
-            return "aim_intent"
         _:
             return "none"
 

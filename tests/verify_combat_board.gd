@@ -62,7 +62,7 @@ func _run() -> void:
     await _verify_step9_placement(board)
     _verify_rule_resolution(board)
     await _verify_targeting_10_5_and_step10_resolution(board)
-    _verify_wrong_attack_direction(board)
+    _verify_auto_attack_targeting(board)
     _verify_layout(board, board.get_layout_snapshot())
     _verify_character_anchors(board, board.get_layout_snapshot())
     await _verify_second_bundle_returns_to_planning(board)
@@ -172,6 +172,10 @@ func _verify_cards_and_overlays(board: CombatBoardPreview, snapshot: Dictionary)
         failures.append("Progress button must exist.")
     elif board.combat_progress_button.progress_enabled:
         failures.append("Progress button must start disabled before placements.")
+    elif board.combat_progress_button.get_button_text() != "3수 실행":
+        failures.append("Progress control must show only the current three-action bundle count.")
+    elif board.combat_progress_button.size.x > 104.0 or board.combat_progress_button.size.y > 72.0:
+        failures.append("Progress control must remain compact beside the timing strip.")
 
 func _card_definition(board: CombatBoardPreview, card_id: String) -> Dictionary:
     for definition in board.action_selection_dock.basic_panel.actions:
@@ -221,13 +225,11 @@ func _verify_step9_placement(board: CombatBoardPreview) -> void:
         return
     if not board.action_timing_panel.has_assignment_at(1) or not board.action_timing_panel.has_assignment_at(2):
         failures.append("Two-slot placement must occupy consecutive timings.")
-    if board.action_timing_panel.is_current_bundle_complete():
-        failures.append("An attack without a selected aim intent must not complete the bundle.")
-    if not board._begin_targeting_for_anchor(1):
-        failures.append("Heavy attack must enter semantic aim targeting mode.")
-    elif board._targeting_mode != "aim_intent" or board.action_selection_dock.action_intent_panel.intent_buttons.size() != 2:
-        failures.append("Heavy attack must expose the two semantic aim cards.")
-    board._clear_targeting()
+    var heavy_placement := board.action_timing_panel.get_placement(1)
+    if str(heavy_placement.get("targeting_mode", "")) != "none" or not bool(heavy_placement.get("target_ready", false)):
+        failures.append("Heavy attack must lock directly against the public opponent without aim-direction cards.")
+    if board._begin_targeting_for_anchor(1):
+        failures.append("Heavy attack must not open a semantic direction picker.")
     var removed := board.action_timing_panel.remove_at(2)
     if str(removed.get("card_id", "")) != "basic_heavy_attack":
         failures.append("Clicking either occupied part must remove the whole card.")
@@ -269,10 +271,10 @@ func _verify_rule_resolution(board: CombatBoardPreview) -> void:
         "anchor_index": 1,
         "span": 2,
         "indices": PackedInt32Array([1, 2]),
-        "targeting_mode": "aim_intent",
+        "targeting_mode": "none",
         "target_ready": true,
-        "target_tile": 6,
-        "direction": 1,
+        "target_tile": 0,
+        "direction": 0,
         "origin_tile": EXPECTED_PLAYER_TILE
     }
     var heavy_result := engine.resolve_bundle([heavy_placement], {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, heavy_state)
@@ -303,9 +305,9 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
     await process_frame
 
     if board.action_timing_panel.is_current_bundle_complete():
-        failures.append("Move and attack placements must require targets before progress enables.")
+        failures.append("Movement placement must require its approach or retreat intent before progress enables.")
     if board.combat_progress_button.progress_enabled:
-        failures.append("Progress must remain disabled while a movement or attack intent is unresolved.")
+        failures.append("Progress must remain disabled while movement intent is unresolved.")
     if board.action_timing_panel.get_pending_target_anchor() != 1:
         failures.append("Move at timing 1 must be the first pending target.")
 
@@ -327,16 +329,11 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
     if int(move_placement.get("direction", 0)) != 1:
         failures.append("Move intent must preserve its resolver direction internally.")
 
-    if int(board.get_meta("targeting_anchor", 0)) != 3:
-        failures.append("After movement targeting, the pending quick attack must become active.")
-    if board._targeting_mode != "aim_intent":
-        failures.append("Projected quick attack must activate semantic aim selection.")
-    board._on_product_intent_selected(_intent_by_id(board, "aim_opponent"))
-    await process_frame
-
     var quick_placement := board.action_timing_panel.get_placement(3)
-    if not bool(quick_placement.get("target_ready", false)) or int(quick_placement.get("direction", 0)) != 1:
-        failures.append("Attack aim intent must store the chosen resolver direction internally.")
+    if not bool(quick_placement.get("target_ready", false)) or int(quick_placement.get("direction", 0)) != 0:
+        failures.append("Attack must be target-ready with resolver-derived public-opponent direction.")
+    if int(board.get_meta("targeting_anchor", 0)) != 0 or board._targeting_mode != "":
+        failures.append("After movement intent, a placed attack must not activate a direction picker.")
     if not board.action_timing_panel.is_current_bundle_complete():
         failures.append("The first bundle must complete after all slots and targets are set.")
     if not board.combat_progress_button.progress_enabled:
@@ -414,10 +411,6 @@ func _verify_second_bundle_returns_to_planning(board: CombatBoardPreview) -> voi
     if not board.action_timing_panel.place_card(quick, 4):
         failures.append("Quick attack must place at timing 4 after bundle 1 resolves.")
         return
-    if not board._begin_targeting_for_anchor(4):
-        failures.append("Quick attack at timing 4 must enter target selection.")
-        return
-    board._on_product_intent_selected(_intent_by_id(board, "aim_opponent"))
     if not board.action_timing_panel.place_card(meditate, 5) or not board.action_timing_panel.place_card(meditate, 6):
         failures.append("Second bundle must accept non-targeted follow-up actions.")
         return
@@ -442,7 +435,7 @@ func _verify_second_bundle_returns_to_planning(board: CombatBoardPreview) -> voi
     else:
         failures.append("Second bundle must advance after explicit review confirmation.")
 
-func _verify_wrong_attack_direction(board: CombatBoardPreview) -> void:
+func _verify_auto_attack_targeting(board: CombatBoardPreview) -> void:
     var quick := _card_definition(board, "basic_quick_attack")
     if quick.is_empty():
         return
@@ -456,10 +449,10 @@ func _verify_wrong_attack_direction(board: CombatBoardPreview) -> void:
         "anchor_index": 1,
         "span": 1,
         "indices": PackedInt32Array([1]),
-        "targeting_mode": "aim_intent",
+        "targeting_mode": "none",
         "target_ready": true,
-        "target_tile": 3,
-        "direction": -1,
+        "target_tile": 0,
+        "direction": 0,
         "origin_tile": EXPECTED_PLAYER_TILE
     }
     var result := engine.resolve_bundle([placement], {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, state)
@@ -468,8 +461,8 @@ func _verify_wrong_attack_direction(board: CombatBoardPreview) -> void:
         var record: Dictionary = record_value
         if str(record.get("actor", "")) == "player" and str(record.get("outcome", "")) == "miss_direction":
             found_miss_direction = true
-    if not found_miss_direction:
-        failures.append("An attack aimed away from an adjacent enemy must resolve as miss_direction.")
+    if found_miss_direction:
+        failures.append("An automatically targeted adjacent attack must derive the public-opponent direction, never miss behind the actor.")
 
 func _intent_by_id(board: CombatBoardPreview, intent_id: String) -> Dictionary:
     for value in board.action_selection_dock.action_intent_panel.intents:
@@ -490,6 +483,9 @@ func _verify_layout(board: CombatBoardPreview, snapshot: Dictionary) -> void:
         failures.append("Card tray must not overlap action timing.")
     if tray_bottom > board.size.y + SIZE_TOLERANCE:
         failures.append("Card tray must remain inside the viewport.")
+    if is_instance_valid(board.combat_log_panel) and is_instance_valid(board.combat_progress_button):
+        if board.combat_log_panel.get_global_rect().intersects(board.combat_progress_button.get_global_rect()):
+            failures.append("Compact bundle execution control must not be covered by the combat-log toggle.")
 
 func _verify_character_anchors(board: CombatBoardPreview, snapshot: Dictionary) -> void:
     var player_size: Vector2 = snapshot.get("player_size", Vector2.ZERO)

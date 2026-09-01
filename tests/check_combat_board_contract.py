@@ -145,15 +145,15 @@ def main() -> None:
     assert targeting["footwork_move_range"] == 2
     assert targeting["footwork_distance_choice"] == [1, 2]
     assert targeting["move_intents"] == ["approach", "retreat"]
-    assert targeting["attack_mode"] == "semantic_aim_cards"
-    assert targeting["attack_intents"] == ["aim_opponent", "predict_away"]
+    assert targeting["attack_mode"] == "auto_target_public_opponent"
+    assert targeting["attack_intents"] == []
     assert targeting["heavy_attack_range"] == 2
     assert targeting["heavy_attack_hits_distances"] == [1, 2]
     assert targeting["attack_range_tiles_are_clickable"] is False
     assert targeting["logical_board_visible_during_selection"] is False
     assert targeting["tile_states"] == ["hidden"]
     assert targeting["shape_and_text_fallback"] is True
-    assert targeting["unresolved_target_blocks_progress"] is True
+    assert targeting["unresolved_movement_intent_blocks_progress"] is True
     assert targeting["resolution_uses_semantic_intent"] is True
 
     response = contract["response_rules"]
@@ -272,7 +272,8 @@ def main() -> None:
     assert resolution_contract["resolution_order"] == ["response", "quick_attack", "move", "general"]
     assert resolution_contract["same_phase_attacks"] == "simultaneous_damage"
     assert resolution_contract["uses_semantic_move_intent"] is True
-    assert resolution_contract["uses_semantic_aim_intent"] is True
+    assert resolution_contract["uses_semantic_aim_intent"] is False
+    assert resolution_contract["uses_auto_target_public_opponent"] is True
     assert resolution_contract["uses_card_specific_move_range"] is True
     assert resolution_contract["uses_guard_bundle_profiles"] is True
     assert resolution_contract["uses_stance_response_combo"] is True
@@ -299,7 +300,8 @@ def main() -> None:
     assert resolution["stance_response_defense_multiplier"] == 1.5
     assert resolution["placement_resource_preview"] is True
     assert resolution["semantic_player_move_intent"] is True
-    assert resolution["semantic_player_aim_intent"] is True
+    assert resolution["semantic_player_aim_intent"] is False
+    assert resolution["auto_target_public_opponent"] is True
     assert resolution["damage_interrupts_current_timing_actions"] is True
     assert resolution["bundle_momentum_gain"] == 1
     assert resolution["guard_success_momentum_gain"] == 1

@@ -25,6 +25,7 @@ func _run() -> void:
     assert(panel.place_card(one_slot, 1))
     await process_frame
     _assert_single_block(panel, "basic_guard", 1, 0, ["실행"])
+    assert(panel.is_linked_block_inside_timing_bounds())
     assert("막기" not in panel.get_slot(1).get_assignment_display_text())
     panel.get_linked_block(1).activate()
     assert(activated_anchor == 1)
@@ -39,11 +40,12 @@ func _run() -> void:
         "source_label": "유운검결",
         "category": "attack",
         "action_slots": 2,
-        "targeting_mode": "attack_direction"
+        "targeting_mode": "none"
     }
     assert(panel.place_card(two_slot, 1))
     await process_frame
     _assert_single_block(panel, "technique_flowing_cloud_threefold", 2, 1, ["전조", "실행"])
+    assert(panel.is_linked_block_inside_timing_bounds())
     assert("유운삼첩" not in panel.get_slot(1).get_assignment_display_text())
     assert("유운삼첩" not in panel.get_slot(2).get_assignment_display_text())
     assert(panel.get_slot(1).get_stage_label() == "전조")
@@ -59,11 +61,12 @@ func _run() -> void:
         "source_label": "기본 절초",
         "category": "attack",
         "action_slots": 3,
-        "targeting_mode": "attack_direction"
+        "targeting_mode": "none"
     }
     assert(panel.place_card(three_slot, 1))
     await process_frame
     _assert_single_block(panel, "ultimate_void_sword_qi", 3, 2, ["전조", "전조", "실행"])
+    assert(panel.is_linked_block_inside_timing_bounds())
     assert(panel.get_slot(1).get_stage_label() == "전조")
     assert(panel.get_slot(2).get_stage_label() == "전조")
     assert(panel.get_slot(3).get_stage_label() == "실행")

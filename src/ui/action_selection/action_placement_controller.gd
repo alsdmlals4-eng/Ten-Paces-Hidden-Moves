@@ -45,7 +45,7 @@ func select_and_place(definition: Dictionary) -> bool:
     if locked:
         return _fail(CODE_CURRENT_BUNDLE_LOCKED, "현재 행동 묶음은 편집할 수 없습니다.")
     if targeting_in_progress:
-        return _fail(CODE_TARGETING_IN_PROGRESS, "먼저 배치된 행동의 대상 또는 방향을 지정해야 합니다.")
+        return _fail(CODE_TARGETING_IN_PROGRESS, "먼저 배치된 이동의 접근 또는 후퇴를 정해야 합니다.")
     if definition.is_empty() or not is_instance_valid(timing_panel):
         return _fail(CODE_INVALID_ACTION, "배치할 행동 정보가 없습니다.")
     if bool(definition.get("locked", false)):

@@ -59,9 +59,31 @@ func get_anchor_rect(anchor_index: int) -> Rect2:
         return Rect2()
     var left := first_slot.position.x + 3.0
     var right := last_slot.position.x + last_slot.size.x - 3.0
-    var top := first_slot.position.y + 23.0
-    var height := maxf(30.0, first_slot.size.y - 27.0)
-    return Rect2(Vector2(left, top), Vector2(maxf(1.0, right - left), height))
+    var top := first_slot.position.y + 22.0
+    var bottom := first_slot.position.y + first_slot.size.y - 4.0
+    return Rect2(Vector2(left, top), Vector2(maxf(1.0, right - left), maxf(1.0, bottom - top)))
+
+func is_linked_block_inside_timing_bounds() -> bool:
+    if slots.is_empty():
+        return true
+    var timing_bounds := Rect2(get_slot(1).get_global_rect().position, Vector2.ZERO)
+    for slot_value in slots:
+        if is_instance_valid(slot_value):
+            timing_bounds = timing_bounds.merge(slot_value.get_global_rect())
+    for block_value in linked_blocks.values():
+        var block := block_value as LinkedActionBlock
+        if not is_instance_valid(block):
+            continue
+        var block_bounds := block.get_global_rect()
+        if block_bounds.position.x < timing_bounds.position.x - 0.5:
+            return false
+        if block_bounds.position.y < timing_bounds.position.y - 0.5:
+            return false
+        if block_bounds.end.x > timing_bounds.end.x + 0.5:
+            return false
+        if block_bounds.end.y > timing_bounds.end.y + 0.5:
+            return false
+    return true
 
 func can_move_placement(anchor_index: int, new_anchor_index: int) -> bool:
     if anchor_index <= 0 or new_anchor_index <= 0 or not placements.has(anchor_index):
@@ -179,6 +201,7 @@ func _build_linked_block_layer() -> void:
     _linked_block_layer = Control.new()
     _linked_block_layer.name = "LinkedActionBlockLayer"
     _linked_block_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    _linked_block_layer.clip_contents = true
     _linked_block_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     add_child(_linked_block_layer)
     set_meta("linked_action_blocks_enabled", true)
@@ -211,6 +234,8 @@ func _refresh_linked_blocks() -> void:
             continue
         var block := LINKED_BLOCK_SCENE.instantiate() as LinkedActionBlock
         block.name = "LinkedActionBlock%02d" % anchor_index
+        block.clip_contents = true
+        block.custom_minimum_size = Vector2.ZERO
         block.configure(placement)
         block.block_activated.connect(_on_linked_block_activated)
         block.block_drag_requested.connect(_on_linked_block_drag_requested)

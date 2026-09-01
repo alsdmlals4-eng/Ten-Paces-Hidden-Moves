@@ -154,7 +154,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 | DEC-CORE-001 | 10칸 직선 전장, 공개 시작 거리 2, 거리 중심 HUD | CURRENT | CONFIRMED / IMPLEMENTED |
 | SYS-PLAN-001 | `3수 → 해결 → 3수 → 해결 → 4수 → 해결` | CURRENT | CONFIRMED / IMPLEMENTED |
 | SYS-PLAN-002 | 3수 = 3슬롯, 2슬롯 행동은 `[전조] → [실행]`으로 2수를 소모 | CURRENT | CONFIRMED / IMPLEMENTED |
-| UI-COMBAT-001 | CTA `행동계획 실행`; 실행 뒤 전투 표현으로 전환 | CURRENT | CONFIRMED / IMPLEMENTED |
+| UI-COMBAT-001 | CTA `N수 실행`; 실행 뒤 전투 표현으로 전환 | CURRENT | CONFIRMED / IMPLEMENTED |
 | SYS-AI-001 | AI는 공개 상태·해결 이력만 사용, 미확정 계획/UI 의도를 읽지 않음 | CURRENT | CONFIRMED / IMPLEMENTED |
 | UX-RETRY-001 | 첫 패배 후 실제 원인 복기·동일 seed 1회 무료 재도전 | CURRENT | CONFIRMED / IMPLEMENTED |
 | CNT-MANUAL-001 | 덱·손패·드로우·장착 제한 없이 해금 기술을 슬롯에 배치 | CURRENT | CONFIRMED / IMPLEMENTED |
@@ -210,7 +210,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 
 | 시간 | 목표 경험 | evidence 상태 |
 |---|---|---|
-| 첫 5분 | 거리 2에서 슬롯 배치→`행동계획 실행`→해결의 기본 리듬을 1회 이해 | IMPLEMENTED path / UX_NOT_RUN |
+| 첫 5분 | 거리 2에서 슬롯 배치→`N수 실행`→해결의 기본 리듬을 1회 이해 | IMPLEMENTED path / UX_NOT_RUN |
 | 첫 15분 | 합·중단 또는 방어·강건의 실패 원인을 Review로 읽고 같은 seed를 한 번 다시 푼다 | DOCUMENTED + PARTIAL_IMPLEMENTED / UX_NOT_RUN |
 | 첫 30분 | 5대련의 대응·거리·반복 파훼를 보고, 성장이 답이 아니라 선택지 확장임을 이해 | DOCUMENTED vertical-slice goal / NOT_RUN |
 
@@ -219,7 +219,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 ```text
 공개 거리·해결 이력 관찰
   → 가설과 3수 계획
-  → 행동계획 실행 (편집 종료)
+  → N수 실행 (편집 종료)
   → 동시 해결·전투 표현
   → 결과/복기: 실제 원인·거리·자원 변화
   → 다음 bundle 또는 결과
@@ -272,12 +272,12 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 
 **WHY.** 계획을 숨기는 이유는 상대가 내 UI·미확정 계획을 읽는 즉시 심리전이 사라지기 때문이다. 3수의 제한은 “무엇을 할까”를 “어떤 타이밍을 포기할까”로 바꾼다.
 
-**HOW.** 사용자는 해금된 기술에서 행동을 선택하고 현재 bundle의 빈 슬롯에 배치한다. 1수 행동은 한 슬롯, 2수 행동은 `[전조]`와 `[실행]`의 연속 두 슬롯을 차지한다. 배치가 끝난 뒤 `행동계획 실행`을 누르면 편집이 중단되고 Combat Presentation으로 전환한다. 취소/재배치는 실행 전만 가능하다.
+**HOW.** 사용자는 해금된 기술에서 행동을 선택하고 현재 bundle의 빈 슬롯에 배치한다. 1수 행동은 한 슬롯, 2수 행동은 `[전조]`와 `[실행]`의 연속 두 슬롯을 차지한다. 이동만 접근/후퇴 의도를 고르고, 공격·반격·절초는 공개된 상대를 자동 대상으로 한다. 배치가 끝난 뒤 `N수 실행`을 누르면 편집이 중단되고 Combat Presentation으로 전환한다. 취소/재배치는 실행 전만 가능하다.
 
 | 상태 | entry | player input | output / guard |
 |---|---|---|---|
 | Planning | bundle 시작 | 선택·배치·제거 | 슬롯 유효성 표시 |
-| Ready | 유효 계획 | `행동계획 실행` | UI editing disabled |
+| Ready | 유효 계획 | `N수 실행` | UI editing disabled |
 | Presentation | 실행 요청 수락 | 관찰 중심 | resolver 이벤트에 맞춘 표현 |
 | Resolved | bundle 종료 | 복기/다음 수 | public history 갱신 |
 
@@ -306,7 +306,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 ```text
 공개 거리·자원·해결 이력 확인
   → 현재 묶음의 3칸(마지막 묶음은 4칸)에 행동 배치
-  → 행동계획 실행
+  → N수 실행
   → 양측의 잠긴 계획을 동시 해결·표현
   → 공개 이력과 자원 갱신
 ```
@@ -316,7 +316,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 | 1슬롯 행동 | 해당 수에 행동명 | 다음 수의 유연성은 남긴다 | 행동 종류별 거리·자원·대응 규칙 |
 | 2슬롯 행동 | 첫 수 `[전조]` → 둘째 수 `[실행]` | 전조부터 실행까지 두 슬롯을 점유한다 | 첫 전조에 비용 전액 선지불, 확정 뒤 환불 없음 |
 | 전조 중 피격 | 연결 슬롯은 같은 `action_instance_id` | 강한 수를 준비한 만큼 중단 위험이 생긴다 | 실제 체력 피해가 나면 `[강건]`이 없을 때 남은 전조·실행을 취소 |
-| 실행 요청 | `행동계획 실행` | 되돌릴 수 있는 계획 단계를 끝낸다 | 입력은 비활성화되고 resolver event로 전환 |
+| 실행 요청 | `N수 실행` | 되돌릴 수 있는 계획 단계를 끝낸다 | 입력은 비활성화되고 resolver event로 전환 |
 
 `[전조]`는 별도의 강화 보너스가 아니라 **실행 전 점유와 읽을 수 있는 위험**을 뜻한다. 따라서 2슬롯 강공·장풍의 전조를 본 상대는 대응·이동·관찰을 고민할 여지를 얻지만, 상대 AI는 플레이어가 아직 실행하지 않은 슬롯·방향·대상을 볼 수 없다.
 
@@ -494,7 +494,7 @@ Duel 1 → 성장/회복 노드 → 정보/준비 노드 → Duel 2
 | UI-MAIN-001 | Main / Setup | run 시작 | start, settings | mouse/touch/focus | PARTIAL |
 | UI-BRIEF-001 | Briefing | 이번 대련의 공개 조건 이해 | 거리, 상대, 학습 목표 | continue | DOCUMENTED |
 | UI-PLAN-001 | Action Selection Dock | 3수에 계획 배치 | distance N, slot occupancy, action cost, resources | select/place/remove; validation | IMPLEMENTED |
-| UI-COMBAT-001 | Combat Board | 해결을 읽기 | 공개 거리, action resolution, result | `행동계획 실행` 이후 관찰 중심 | IMPLEMENTED |
+| UI-COMBAT-001 | Combat Board | 해결을 읽기 | 공개 거리, action resolution, result | `N수 실행` 이후 관찰 중심 | IMPLEMENTED |
 | UI-REVIEW-001 | Review | 실패 원인으로 다음 가설 세움 | hypothesis/actual/cause/distance before-after | retry/return | IMPLEMENTED |
 | UI-RESULT-001 | Result/Route | 보상과 다음 선택 | win/loss, reward, route info | choose/continue | PARTIAL |
 
@@ -576,7 +576,7 @@ vertical_slice_shell.tscn
 |---|---|---|---|
 | DAT-ACTION-001 | `basic_cards.json` | `id`, slots/span, resource, range, effect; 2-slot has telegraph/execution meaning | combat data |
 | DAT-RESOLVE-001 | `combat_resolution_preview.json` | board 10 cells, starting positions, public AI source, action fixture | combat fixture |
-| DAT-PLAN-001 | `combat_board_poc.json` | 3/3/4 slot capacity, hidden logical tile layer, semantic `move_intent` / `aim_intent` player-facing planning fixture | action selection |
+| DAT-PLAN-001 | `combat_board_poc.json` | 3/3/4 slot capacity, hidden logical tile layer, player-facing `move_intent` only and public-opponent auto target for all other actions | action selection |
 | DAT-MANUAL-001 | `martial_manual_cards.json`, `martial_manuals/*.json` | manual ID, unlock/adoption data | content data |
 | DAT-RUN-001 | `vertical_slice_opponents.json` | candidate catalog, focus IDs, `final_stat_total_seed`; runtime binding fields are absent | run content / NOT_RUNTIME_BOUND |
 

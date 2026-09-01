@@ -38,7 +38,7 @@ def main() -> None:
     assert 'normalized["source"] = source_kind' in adapter
     assert "action_selection_poc.json" not in adapter
     assert 'return "move_intent"' in adapter
-    assert 'return "aim_intent"' in adapter
+    assert 'return "aim_intent"' not in adapter
 
     shared_card = read("src/ui/action_selection/action_choice_card.gd")
     assert 'class_name ActionChoiceCard' in shared_card
@@ -105,7 +105,7 @@ def main() -> None:
         'set_meta("product_action_selection_enabled", true)',
         'set_meta("virtual_combo_enabled", false)',
         "_hide_legacy_action_ui",
-        '"move_intent", "aim_intent"',
+        '"move_intent"',
     ):
         assert token in combat
     assert "docs/planning-data" not in combat

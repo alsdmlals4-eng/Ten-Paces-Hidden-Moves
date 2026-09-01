@@ -5,6 +5,7 @@
 > 현재 정보 위계 Decision: `docs/decisions/2026-08-11_COMBAT_UI_INFORMATION_HIERARCHY_DECISION.md` (`TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01`)  
 > 시작 거리 런타임 매핑: `docs/decisions/2026-08-28_OPENING_DISTANCE_RUNTIME_MAPPING_DECISION.md` (`TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01`)
 > 첫 5전 패배·재도전 scope: `docs/decisions/2026-08-28_FIRST_FIVE_DEFEAT_RETRY_SCOPE_DECISION.md` (`TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01`)
+> 현재 전장 접지·자동 대상·관찰 공개: `docs/decisions/2026-09-01_GROUNDED_DUEL_AUTOMATIC_TARGETING_AND_OBSERVATION_DECISION.md` (`TEN-DEC-20260901-GROUNDED-DUEL-AUTO-TARGET-OBSERVE-01`)
 > 구조화 계약: `docs/planning-data/approved_20260811_combat_ui_information_hierarchy_contract.json`
 
 ## 1. UI 목표
@@ -17,8 +18,8 @@
 
 - 상단: 양측 체력·기력·내력·기세·방어도·회피 횟수·`[필중]` 스택·`[강화]`·`[강건]`.
 - 중앙: 두 전투원의 대치 장면 + 중앙 `거리 N` 배지. 거리0은 `[밀착]`.
-- 중앙 하단: 현재 묶음의 3/3/4 행동계획과 `행동계획 실행`.
-- 하단: `기초 / 무공 / 절초` 행동 선택과 하나의 공통 카드 격자. 기초만 승인된 기본 행동 수묵 atlas를 쓰며 무공·절초 선택 카드는 삽화를 만들지 않는다.
+- 중앙 하단: 현재 묶음의 3/3/4 행동계획과 컴팩트 `N수 실행` CTA.
+- 하단: `기초 / 무공 / 절초` 행동 선택과 하나의 공통 카드 격자. 세 출처 모두 승인된 카드 삽화를 같은 카드 shell 안에서 사용한다.
 - 우측 또는 오버레이: 행동 상세, 전투 기록, 결정적 복기.
 - 기본 절초 목록 3종은 시작부터 표시하고, 무공 10성 절초는 해금 뒤 같은 목록에 추가한다.
 
@@ -83,15 +84,15 @@
 
 다중 슬롯 행동 전체는 하나의 연결 블록이며 일부 슬롯만 독립적으로 제거·이동하지 않는다.
 
-### 5.2 행동계획 실행
+### 5.2 컴팩트 실행 CTA
 
 현재 묶음의 계획이 유효하면 플레이어는 다음 조작으로 확정한다.
 
 ```text
-[행동계획 실행]
+[3수 실행]
 ```
 
-실행 전에는 현재 묶음의 행동 제거·재배치·의도 수정을 허용한다. `행동계획 실행`은 유효한 묶음을 commit한 뒤 전투·해결 애니메이션으로 전환한다. 실행 뒤에는 해당 묶음을 편집하지 않는다. 적 계획은 `[관찰]` 공개 전에 먼저 잠긴다.
+버튼은 현재 묶음의 슬롯 수만 표시한다. 즉 첫·둘째 묶음은 `3수 실행`, 마지막 묶음은 `4수 실행`이다. 실행 전에는 현재 묶음의 행동 제거·재배치·이동 의도 수정을 허용한다. `N수 실행`은 유효한 묶음을 commit한 뒤 전투·해결 애니메이션으로 전환한다. 실행 뒤에는 해당 묶음을 편집하지 않는다. 적 계획은 `[관찰]` 공개 전에 먼저 잠긴다. 포커스 이름과 tooltip은 이 버튼이 현재 행동계획을 실행한다는 완전한 의미를 보존한다.
 
 ## 6. 카드 본체와 상세 정보 위계
 
@@ -111,19 +112,19 @@
 - 내부 밸런스 틱은 표시하지 않는다.
 - 적용되지 않는 필드를 `-`로 채워 카드 높이를 낭비하지 않는다.
 
-### 6.3 무공·절초 행동 카드 — `COMMON_CARD_SHELL_NO_ILLUSTRATION`
+### 6.3 무공·절초 행동 카드 — `COMMON_CARD_SHELL_WITH_APPROVED_ILLUSTRATION`
 
-`TEN-DEC-20260830-ACTION-CARD-SOURCE-UNIFICATION-01`에 따라 보유 무공서와 선택된 무공 기술 목록은 삽화 카드가 아니라 전술 정보 목록이며, 무공·절초 선택 카드는 기초와 같은 카드 골격으로 읽는다. 이 범위는 `MartialActionPanel`의 `source: martial_manual`, `source_kind: martial` 기술 선택과 `UltimateActionPanel`의 절초 선택에 적용한다.
+`TEN-DEC-20260831-ACTION-CARD-ILLUSTRATION-EXTENSION-01`에 따라 보유 무공서와 선택된 무공 기술 목록은 승인된 삽화를 보조 신호로 사용하는 전술 카드다. 무공·절초 선택 카드는 기초와 같은 카드 골격으로 읽는다. 이 범위는 `MartialActionPanel`의 `source: martial_manual`, `source_kind: martial` 기술 선택과 `UltimateActionPanel`의 절초 선택에 적용한다.
 
 - 무공서명·현재 성수, 기술명, 행동 수, 기력/내력 비용, 잠금/해금 성수, 행동 종류/효과 태그를 우선 표시한다.
 - 공격일 때만 사거리, 실제 조건이 있을 때만 조건/상세 효과를 표시한다.
-- 무공·절초 선택 카드에는 중앙 삽화, `illustration` data field, `TextureRect` 삽화 consumer를 두지 않는다.
+- 무공·절초 선택 카드는 승인된 `MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01`의 정해진 region만 보조 삽화로 사용한다. 이름·비용·사거리·효과·잠금은 여전히 UI/data binding이 소유한다.
 - 선택·hover·keyboard focus·잠금은 종이 면·테두리·텍스트·accessibility name으로 구분하며 색만으로 전달하지 않는다.
-- 기초 카드의 승인 `TEN_BASIC_TECHNIQUE_INK_ATLAS_01`, 전장/대치 인물, 전투 중 `VS` 공개와 필살기 연출은 이 규칙의 대상이 아니다.
+- 기초 카드의 승인 `TEN_BASIC_TECHNIQUE_INK_ATLAS_01`, 전장/대치 인물, 전투 중 `VS` 공개와 필살기 연출은 이 카드 삽화 규칙과 별도의 consumer다.
 
 ### 6.4 대상 선택 — 의미 카드
 
-플레이어가 보거나 누르는 대상 선택 surface에는 1~10 타일·좌/우 방향·목적지 번호를 표시하지 않는다. 이동은 `접근 N칸` 또는 `후퇴 N칸`, 공격·반격·절초는 `상대를 노림` 또는 `반대 예측` 카드로 확정한다. 10칸 논리 전장과 resolver의 내부 부호·목적지 계산은 호환 경계에만 남기며, 공개 화면은 두 인물과 `거리 N`을 계속 우선한다.
+플레이어가 보거나 누르는 대상 선택 surface에는 1~10 타일·좌/우 방향·목적지 번호를 표시하지 않는다. 이동만 `접근 N칸` 또는 `후퇴 N칸` 의미 카드로 확정한다. 공격·반격·절초는 공개된 상대를 자동 대상으로 하므로 별도 방향·노림 선택을 열지 않는다. 10칸 논리 전장과 resolver의 내부 부호·목적지 계산은 호환 경계에만 남기며, 공개 화면은 두 인물과 `거리 N`을 계속 우선한다.
 
 #### 예시 — 이동
 
@@ -265,7 +266,7 @@ A 2·3타 → 단독 잔여타
 
 - 명시적 포커스와 키보드·게임패드 동등 입력.
 - 색 외에 아이콘·형태·텍스트·로그를 함께 사용.
-- `행동계획 실행`은 포커스와 실행 전/해결 중 상태를 텍스트로 식별한다.
+- `N수 실행`은 포커스와 실행 전/해결 중 상태를 텍스트로 식별하며, 접근성 이름은 현재 행동계획 실행의 전체 의미를 제공한다.
 - 모션 감소·빠른 재생·즉시 완료가 결과를 바꾸지 않는다.
 - 타격 연출을 건너뛰어도 판정 순서와 원인을 텍스트로 보존한다.
 - Windows와 Android에서 동일한 핵심 정보 필드를 유지하고 배치만 반응형으로 바꾼다.
@@ -321,10 +322,10 @@ UI·UX는 에셋을 먼저 고르고 화면을 맞추지 않는다.
 ## 13. 현재 검증 상태
 
 - 새 정보 위계: `CURRENT_APPROVED_PLANNING`.
-- Godot 제품 UI 반영: `NOT_RUN / NOT_AUTHORIZED`.
+- Godot 제품 UI 반영: `IMPLEMENTED / MACHINE_RUNTIME_VERIFIED` (Windows-visible machine capture; Human/Android/accessibility-user는 별도).
 - 현재 런타임 내부 시작 좌표: `4/6`; 플레이어-facing 공개 시작 거리는 `2`.
 - 이전 4/7 표기는 `SUPERSEDED_HISTORICAL_EVIDENCE`이며 좌표는 플레이어 화면에 노출하지 않는다.
-- 진행 CTA는 `행동계획 실행`이다. 실행 시작부터 판정·연출·복기까지 행동 편집 입력은 사용할 수 없다.
+- 진행 CTA는 `N수 실행`이다. 실행 시작부터 판정·연출·복기까지 행동 편집 입력은 사용할 수 없다.
 - 자동 UI/판정 회귀는 Issue #258 branch에서 실행했고 Windows 실제 가독성·입력·접근성 사용자 검증은 `NOT_RUN`이다.
 - Windows 실제 가독성: 이 Decision에 대해 `NOT_RUN`.
 - Android 실제 가독성: `NOT_RUN`.

@@ -63,12 +63,12 @@
 - `거리 N` 중심, 3/3/4 계획 의미 보존.
 - `기초 / 무공 / 절초` 출처 분리.
 - Action grid 최대 5×2, 최대 10개 수용.
-- 기초·무공·절초는 하나의 `ActionChoiceCard` 카드 규칙을 공유한다. 무공·절초 공용 삽화 atlas는 생성 후보이며, 별도 사용자 최종 확정 전에는 기초 카드만 실제 삽화를 소비한다.
+- 기초·무공·절초는 하나의 `ActionChoiceCard` 카드 규칙과 승인된 출처별 삽화 atlas를 공유한다.
 - 텍스트·비용·사거리·효과 숫자는 원화가 아니라 Godot UI/data binding이 소유.
 - 제한 금색은 선택·확정·절초·결정적 결과에만 사용.
 - 상대의 숨은 계획/정답을 색·포즈·연출로 누설하지 않음.
 
-2026-08-28 사용자 Decision `TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01`은 현재 묶음 CTA를 `행동계획 실행`으로 고정했다. 이는 유효한 3/3/4 슬롯 묶음을 commit한 뒤 전투·해결 애니메이션으로 전환하는 행위다. 과거 대표 시안과 POC의 `진행`은 historical/implementation copy이며, 별도 Codex handoff에서 copy와 전환을 함께 교정할 때까지 runtime current truth가 아니다.
+`TEN-DEC-20260901-GROUNDED-DUEL-AUTO-TARGET-OBSERVE-01`은 현재 묶음 CTA의 보이는 copy를 `N수 실행`으로 컴팩트화했다. 이는 유효한 3/3/4 슬롯 묶음을 commit한 뒤 전투·해결 애니메이션으로 전환하는 행위라는 2026-08-28 Decision의 의미를 유지한다. 역사적 `행동계획 실행` 표기는 이 보이는 CTA copy 범위에서 superseded다.
 
 ### 무공·절초 카드 — 공용 삽화 후보 gate
 

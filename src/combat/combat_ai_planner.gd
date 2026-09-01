@@ -436,8 +436,8 @@ func _build_action(candidate: Dictionary, snapshot: Dictionary, supplied_definit
     var reason := "public_distance_%d" % int(snapshot.get("distance", 0))
     if not reason_codes.is_empty():
         reason += "_" + reason_codes
-    if targeting_mode.is_empty():
-        targeting_mode = "move_intent" if is_move else ("none" if card_id in ["basic_meditate", "basic_guard", "basic_evade"] else "aim_intent")
+    if targeting_mode.is_empty() or not is_move:
+        targeting_mode = "move_intent" if is_move else "none"
     return {
         "timing": int(snapshot.get("bundle_start", 1)) if timing < 0 else timing,
         "card_id": card_id,

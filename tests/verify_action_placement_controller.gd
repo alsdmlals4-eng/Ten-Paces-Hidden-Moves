@@ -49,12 +49,12 @@ func _run() -> void:
         "source_kind": "martial",
         "category": "attack",
         "action_slots": 2,
-        "targeting_mode": "attack_direction"
+        "targeting_mode": "none"
     }
     assert(controller.select_and_place(two_slot))
     assert(panel.has_assignment_at(1))
     assert(panel.has_assignment_at(2))
-    assert(targeting_count == 1)
+    assert(targeting_count == 0)
 
     panel.clear_current_bundle()
     controller.set_targeting_in_progress(false)
@@ -65,7 +65,7 @@ func _run() -> void:
         "source_kind": "ultimate",
         "category": "attack",
         "action_slots": 3,
-        "targeting_mode": "attack_direction"
+        "targeting_mode": "none"
     }
     assert(controller.select_and_place(three_slot_ultimate) == false)
     assert(last_failure_code == "MOMENTUM_INSUFFICIENT")

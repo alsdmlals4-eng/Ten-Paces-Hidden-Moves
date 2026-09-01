@@ -56,8 +56,7 @@ func _build() -> void:
 
     _caption_label = Label.new()
     _caption_label.name = "ProgressCaption"
-    _caption_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    _caption_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+    _caption_label.visible = false
     _caption_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
     _caption_label.add_theme_font_size_override("font_size", 13)
     _caption_label.add_theme_color_override("font_color", PAPER)
@@ -68,7 +67,7 @@ func _build() -> void:
     _button.focus_mode = Control.FOCUS_ALL
     _apply_keyboard_focus_ring()
     _button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-    _button.add_theme_font_size_override("font_size", 24)
+    _button.add_theme_font_size_override("font_size", 18)
     _button.add_theme_color_override("font_color", Color("211c17"))
     _button.add_theme_color_override("font_hover_color", Color("211c17"))
     _button.add_theme_color_override("font_pressed_color", Color("211c17"))
@@ -79,8 +78,7 @@ func _build() -> void:
 
     _status_label = Label.new()
     _status_label.name = "ProgressStatus"
-    _status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    _status_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+    _status_label.visible = false
     _status_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
     _status_label.add_theme_font_size_override("font_size", 12)
     _status_label.add_theme_color_override("font_color", MUTED)
@@ -178,8 +176,8 @@ func get_request_context() -> Dictionary:
 func _refresh() -> void:
     if _button == null:
         return
-    _caption_label.text = str(progress_data.get("caption", "현재 행동계획을 실행합니다"))
-    _button.text = str(progress_data.get("button_text", "행동계획 실행"))
+    _button.text = get_button_text()
+    _button.tooltip_text = "%s · 현재 행동 묶음을 실행합니다." % _button.text
     _button.disabled = not progress_enabled
     if resolution_applied:
         _status_label.text = str(progress_data.get("requested_text", "판정 완료"))
@@ -192,17 +190,20 @@ func _refresh() -> void:
         _status_label.add_theme_color_override("font_color", MUTED)
     queue_redraw()
 
+func get_button_text() -> String:
+    var sequence: Array = runtime_context.get("timing_sequence", [3, 3, 4])
+    var bundle_index := maxi(1, int(runtime_context.get("bundle_index", 1)))
+    var sequence_index := clampi(bundle_index - 1, 0, maxi(0, sequence.size() - 1))
+    var action_count := int(sequence[sequence_index]) if not sequence.is_empty() else 3
+    return "%d수 실행" % action_count
+
 func _layout() -> void:
     if _button == null:
         return
     var width := maxf(1.0, size.x)
     var height := maxf(1.0, size.y)
-    _caption_label.position = Vector2(6.0, 7.0)
-    _caption_label.size = Vector2(maxf(1.0, width - 12.0), 20.0)
-    _button.position = Vector2(9.0, 31.0)
-    _button.size = Vector2(maxf(1.0, width - 18.0), maxf(44.0, height - 67.0))
-    _status_label.position = Vector2(6.0, maxf(78.0, height - 30.0))
-    _status_label.size = Vector2(maxf(1.0, width - 12.0), 20.0)
+    _button.position = Vector2(4.0, 4.0)
+    _button.size = Vector2(maxf(1.0, width - 8.0), maxf(1.0, height - 8.0))
     queue_redraw()
 
 func get_progress_snapshot() -> Dictionary:
@@ -211,7 +212,7 @@ func get_progress_snapshot() -> Dictionary:
         "runtime_step": int(progress_data.get("runtime_step", 10)),
         "placement_gate_step": int(progress_data.get("placement_gate_step", 9)),
         "layout_role": "bottom_upper_right",
-        "button_text": str(progress_data.get("button_text", "행동계획 실행")),
+        "button_text": get_button_text(),
         "enabled": progress_enabled,
         "request_count": request_count,
         "request_mode": str(progress_data.get("request_mode", "resolve_bundle")),
@@ -232,4 +233,3 @@ func _draw() -> void:
     draw_rect(Rect2(Vector2.ZERO, size), PANEL, true)
     draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color("211c17"), false, 2.0)
     draw_rect(Rect2(Vector2(4.0, 4.0), size - Vector2(8.0, 8.0)), Color(GOLD, 0.72 if progress_enabled else 0.34), false, 1.0)
-    draw_line(Vector2(8.0, 28.0), Vector2(maxf(8.0, size.x - 8.0), 28.0), Color("211c17", 0.42), 1.0)

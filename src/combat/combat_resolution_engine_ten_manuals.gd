@@ -219,7 +219,7 @@ func _build_normalized_loadout_cards(loadout: Array, mastery_by_manual: Dictiona
         card["source"] = "martial_manual"
         card["source_kind"] = "ultimate" if int(card.get("unlock_star", 0)) >= 10 else "martial"
         if not card.has("targeting_mode"):
-            card["targeting_mode"] = "aim_intent" if _has_attack_step(card) else "none"
+            card["targeting_mode"] = "none"
         if not card.has("category"):
             card["category"] = "attack" if _has_attack_step(card) else "utility"
         card["range_text"] = _range_text(card)

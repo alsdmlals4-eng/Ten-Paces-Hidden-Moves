@@ -53,10 +53,13 @@ func _plan_second_bundle(board: CombatBoardPreview) -> void:
     if not board.action_timing_panel.place_card(quick, 4):
         failures.append("Second bundle quick-attack placement failed.")
         return
-    if not board._begin_targeting_for_anchor(4):
-        failures.append("Second bundle quick-attack targeting did not start.")
+    var quick_placement := board.action_timing_panel.get_placement(4)
+    if str(quick_placement.get("targeting_mode", "")) != "none" or not bool(quick_placement.get("target_ready", false)):
+        failures.append("Second bundle quick attack must be immediately ready against the public opponent.")
         return
-    board._on_board_tile_clicked(6)
+    if board._begin_targeting_for_anchor(4):
+        failures.append("Second bundle quick attack must not reopen a direction-selection surface.")
+        return
     if not board.action_timing_panel.place_card(meditate, 5) or not board.action_timing_panel.place_card(meditate, 6):
         failures.append("Second bundle recovery placement failed.")
         return
