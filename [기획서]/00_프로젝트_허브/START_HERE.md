@@ -17,7 +17,7 @@
 - 이전 `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`은 `SUPERSEDED_HISTORICAL_EVIDENCE`다.
 - 프로젝트 Skill authority: `../../../skills/SKILL_REGISTRY.json`.
 - 이 디렉터리의 `SKILL_REGISTRY.json`은 legacy compatibility reference이며 기본 자동 discovery 대상이 아니다.
-- Base 동기화/채택의 과거 증거는 `BASE_MAIN_SYNC_AUDIT.md`, `../../../docs/BASE_RULES_VERSION.md`에서 필요할 때만 읽는다.
+- Base 동기화/채택의 current audit와 compatibility evidence는 `BASE_MAIN_SYNC_AUDIT.md`, `../../../docs/BASE_RULES_VERSION.md`에서 읽고, 새 L1+ 작업은 repository-owned work receipt를 먼저 만든다.
 
 ## 현재 상태 authority
 

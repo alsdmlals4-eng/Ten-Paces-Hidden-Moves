@@ -5,30 +5,24 @@
 
 ## 1. 기준 정보
 
-- 이전 프로젝트 기준의 재현 가능한 SHA는 `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`에 보존한다.
-- 현재 적용 기준: `alsdmlals4-eng/Base@41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
-- 추가 변화: 6개 커밋·43개 변경 파일.
-- 전투 기준: PR #7 `agent/t0-combat-poc-board@147a031c75e96bff170d7f99016beb9e85b12066`.
-- 최신 승인 이슈: Issue #13 STEP 12~14.
-- 정합화 브랜치: `agent/pr7-canonical-skill-refresh`.
+- current compatibility/adoption pin: `alsdmlals4-eng/Base@5adc196c0185951f50e49ab5e51586eff8d60886` (`v9.4.4`).
+- current Base `main` observation for this audit: `19355b7ef065a21d0f2b685c7d9be64a4a3970f8`; this is audit evidence, not a permanent project pin.
+- exact project audit baseline: `main@4032cf550295da6d55646a8fb64fb27acaf1ddc3`.
+- current adaptation owner: `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`.
+- per-work proof: `docs/operations/2026-09-01_BASE_CURRENT_ADAPTER_WORK_CONTRACT_RECEIPT.json`.
 
-## 2. 이번 Base 변화
+이번 적용은 전투·Godot·asset 변경이 아니라 thin operating adapter 갱신이다. Base의 current project-start receipt, reuse-first, bounded hygiene, feature-level contract, conditional Blueprint, bounded runtime capture, active-surface correction을 십보강호의 repository-first 정본과 10개 game benchmark gate에 맞춰 연결한다.
 
-Base 최신 변화는 공용 절차의 책임을 더 명확히 분리했다.
+## 2. 이번 Base 변화와 historical initial v9 adoption context
 
-- 프로젝트 코어 식별·승인 확정.
-- 적대적 검토와 최소 개선.
-- 계약 보존 리팩터링.
-- stale·죽은 자료 가지치기.
-- Skill 본문 간소화와 조건부 reference.
-- 로컬·GitHub 상태 동기화.
-- 장기 작업 연속성.
-- 게임 유저리서치 11영역.
-- 사용자 학습 노트.
-- 프로젝트 시각 대시보드.
-- 게임 엔진 런타임 오류 진단.
+다음은 이전 Base refresh의 재현·학습 evidence다. current Base 또는 current project stage로 읽지 않는다.
 
-Base 활성 Skill은 25개이며 모두 기본 로드하지 않는다. 프로젝트 Registry trigger가 필요한 최소 Skill만 선택한다.
+- 당시 비교 기준: `alsdmlals4-eng/Base@41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`.
+- 당시 범위: 6개 커밋·43개 변경 파일.
+- 당시 전투 baseline: PR #7 `agent/t0-combat-poc-board@147a031c75e96bff170d7f99016beb9e85b12066`.
+- 당시 정합화 branch: `agent/pr7-canonical-skill-refresh`.
+
+역사 사례의 교훈은 current project owner와 actual implementation을 먼저 읽고 Base route를 선택한다는 점이다. Base Skill 전체를 기본 로드하거나 프로젝트에 복사하지 않는다.
 
 ## 3. 프로젝트 적용 구조
 
@@ -133,16 +127,12 @@ Base로 승격하지 않는다.
 ## 7. 검증 상태
 
 ```yaml
-base_commit_sync: APPLIED_IN_REFRESH_BRANCH
-base_skill_routes_25: APPLIED_IN_REFRESH_BRANCH
+base_v944_compatibility_pin: PENDING_CURRENT_ADAPTER_PR
+base_current_main_adaptation: PENDING_CURRENT_ADAPTER_PR
+project_work_receipt: PENDING_VALIDATOR
 local_skills_4: PRESERVED
-board_schema_16_freshness: APPLIED_IN_REFRESH_BRANCH
-stale_counterexamples: ADDED
-tracked_python_cache: REMOVED
-product_code_data_scene_assets: PRESERVED_PENDING_FINAL_DIFF
-documentation_governance: NOT_RUN_ON_LATEST_REFRESH_HEAD
-card_component_contract: NOT_RUN_ON_LATEST_REFRESH_HEAD
-human_step14: NOT_RUN
+product_code_data_scene_assets: OUT_OF_SCOPE_UNCHANGED
+human_device_accessibility_release: NOT_RUN
 ```
 
 Actions 성공 전에는 최신화 완료로 표시하지 않는다.

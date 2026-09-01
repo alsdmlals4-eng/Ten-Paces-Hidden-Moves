@@ -44,7 +44,7 @@ base_remote_policy: LATEST_COMPLETED_MAIN_PROGRESSIVE_LOAD
 - 현행 workspace contract `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`을 사용한다.
 - 사람용 설명/Flow/Visual과 structured/runtime truth는 repository를 우선한다.
 - Google Sheets는 신규 Decision/현재 상태의 sync surface가 아니라 migration compatibility source다.
-- project Base v9.4.3 pin과 Base remote current를 구분한다.
+- project Base v9.4.4 pin과 Base remote current를 구분한다.
 - branch/head 상태와 main 상태를 별도 축으로 기록한다.
 - 중요한 결정은 현재 조사 + 최소 3개 실질 대안 + 장기 비용/위험/rollback 비교를 거친다.
 

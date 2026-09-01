@@ -133,7 +133,7 @@ planning_visual_cadence_decision: TEN-DEC-20260828-CORE-SCENE-VISUAL-BOARD-FINAL
 planning_visual_requirement_status: COMPLETE
 planning_visual_overlay: TEN-DEC-20260811-COMBAT-UI-INFORMATION-HIERARCHY-01
 ci_supply_chain_followup: RESOLVED_ISSUE_140
-base_release_pinned: 9.4.3
+base_release_pinned: 9.4.4
 base_remote_observation: CURRENT_REMOTE_REQUIRES_LIVE_REFETCH_NO_AUTOMATIC_PROJECT_ADOPTION
 ```
 
@@ -387,7 +387,7 @@ user_disposition: DEFERRED_BY_USER
 
 ## Base 관찰
 
-Base remote `main`의 exact SHA는 이 live router에 current 값으로 저장하지 않는다. 매 resume/post-merge마다 `ALWAYS_REFETCH_CURRENT_MAIN`으로 다시 읽고, 프로젝트의 Base 적용 권위는 current r5.4 project contract와 `docs/BASE_RULES_VERSION.md`·`skills/PROJECT_BASE_ADAPTER.json`의 compatibility pin을 구분한다. 새 Base 기능은 별도 current-contract 검토 없이 자동 채택하지 않는다.
+Base remote `main`의 exact SHA는 이 live router에 current 값으로 저장하지 않는다. 매 resume/post-merge마다 `ALWAYS_REFETCH_CURRENT_MAIN`으로 다시 읽고, 프로젝트의 Base 적용 권위는 current r5.4 project contract와 `docs/BASE_RULES_VERSION.md`·`skills/PROJECT_BASE_ADAPTER.json`의 compatibility pin을 구분한다. current Base 기능은 `BASE_MAIN_SYNC_AUDIT.md`의 `ADOPT / ADAPT / REJECT` 판정과 repository-owned work receipt를 거친 경우에만 project thin adapter로 적용한다.
 
 과거 handoff에서 관측한 Base SHA는 위 `historical_base_main_at_handoff`에 증거 스냅샷으로 보존한다.
 

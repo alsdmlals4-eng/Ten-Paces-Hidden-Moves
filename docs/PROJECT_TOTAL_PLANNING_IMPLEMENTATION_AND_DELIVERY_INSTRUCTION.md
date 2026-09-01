@@ -117,7 +117,7 @@ historical_contracts:
 - 과거 채팅·Handoff·저장된 SHA를 current truth로 자동 승격하지 않는다.
 - Notion은 migration/history input일 뿐 current conflict surface가 아니다.
 - Google Sheets는 고유 미이관 자료를 찾는 `MIGRATION_ONLY_UNTIL_REMOVAL` source이며 신규 기획·승인·current state 작업면이 아니다.
-- Base v9.4.3 등 프로젝트가 보존한 release pin은 compatibility/adoption evidence이지 current Base remote truth가 아니다.
+- Base v9.4.4 등 프로젝트가 보존한 release pin은 compatibility/adoption evidence이지 current Base remote truth가 아니다.
 - `LEGACY_ABSORB_VERIFY_REMOVE`: 퇴역 surface는 UNIQUE만 현행 owner로 이관하고 destination readback + active reference 0을 확인한 뒤 `[대체됨]`·`[보류]`·Archive·remove로 닫는다.
 
 ## 2. DOMAIN SPLIT
@@ -170,6 +170,27 @@ Base의 상세 절차를 여기 복제하지 않지만 다음 **프로젝트 실
 - `TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01`은 이 연구 게이트를 새 L1+ player-facing 또는 implementation package에 구체화한다. 새 package는 plan/mutation 전에 10개 이상의 유사·인접 게임을 포함한 역공학 packet을 남기며, 직접 비교 3개·인접 시스템 3개·부정/혼합 사례 1개 이상과 공식 제품 사실, 제한된 플레이어 반응 신호/공개된 공백, mechanism, transfer principle, `DO_NOT_COPY`, `ADOPT/ADAPT/AVOID/TEST`를 분리한다. 같은 decision dimension·current project state·source freshness가 모두 일치하는 bounded continuation만 packet을 재사용할 수 있고 `no silent bypass`다. 이 gate는 user approval이나 project core/공개-비공개 정보 경계·deck/hand/draw 금지를 대체하지 않는다.
 - 모든 작업·권장안·retained change는 적어도 한 번 전체 적대 검토를 거친다. material 계획·구현·문서·PR 변경은 Base `running-adversarial-review-and-refinement`의 최소 5회 full-scope loop, better-alternative search, long-term-fit recheck와 `CLEAN_REVIEW_EXIT`를 닫는다. 각 loop는 정본·actual implementation/diff·untouched consumer·실행 증거·비용·장기 유지성을 함께 공격하며, 가짜 finding/loop로 횟수를 채우지 않는다.
 - material mutation 전 `implementation feasibility record`는 project의 실제 경로·의존성·테스트/CI·target environment와 최신 외부 근거를 교차 대조해 `FEASIBLE / PARTIAL / BLOCKED_UNVERIFIED`로 판정한다. 검색 결과·snippet·모델 자신감은 구현 또는 Human/device/accessibility/release PASS가 아니다.
+
+### 4.2 current Base receipt·구조 적용
+
+Base의 `WORK_PROJECT_START_CANON_CHECKLIST` 전체를 이 문서에 복사하지 않는다. 십보강호는 아래 순서와 경계만 project-local contract로 채택한다.
+
+```text
+current Project/Base exact readback
+→ repository-owned benchmark/reuse receipt
+→ scope-limited hygiene classification
+→ current owner confusion·stale entrypoint 최소 교정
+→ approval-bound execution sequence
+→ changed contract/code/asset and its consumer/test together
+→ exact-head verification and reuse-learning closeout
+```
+
+- `PROJECT_START_CANON_CHECKLIST_REQUIRED`: L1+ work는 `benchmark_preflight_receipt`와 `context_configuration_hygiene`을 repository에 기록하고, resolved Base checkout의 receipt validator를 실행한다. receipt는 second canon이 아니라 시작 근거·교정·proof의 bounded record다.
+- `REUSE_FIRST_PREFLIGHT_REQUIRED`: 같은 project consumer와 최신 source가 유지되면 `REUSED_EVIDENCE`를 사용할 수 있다. 다르면 project canon → approved reference/benchmark → Base reuse profile/registry → targeted cross-project evidence → decision-relevant external source 순으로 다시 검토한다.
+- `MANDATORY_BENCHMARK_REVERSE_ENGINEERING_PREFLIGHT`: player-facing L1+ package에는 현재의 10개 이상 game packet을 적용한다. 순수 operating contract/adapter update에는 Base current owner와 project actual consumer 비교를 task-appropriate receipt로 남기며, 무관한 장르 사례를 강제하지 않는다.
+- `LEGACY_CONTEXT_CONFIGURATION_HYGIENE_REQUIRED`: 이번 scope 안의 entrypoint/configuration/generated view만 `ACTIVE_OWNER / COMPATIBILITY / ARCHIVE / OBSOLETE_CANDIDATE / UNKNOWN_UNVERIFIED`로 분류한다. 이름·날짜만으로 광범위 삭제하지 않고, active reference/consumer 0 및 Git recovery/readback을 확인할 때만 제거한다.
+- feature-level module/contract 분리는 새 또는 materially changed feature에만 적용한다. 십보강호의 공유 전투 코어·10칸·3/3/4·공개 정보 AI·저장 의미는 user Decision 없이 Base 구조에 맞추어 재설계하지 않는다.
+- conditional Blueprint/wireframe은 연결된 player-facing system의 이해나 구현 위험이 실제로 높을 때만 만든다. runtime capture는 실제 화면 consumer가 바뀐 경우에만 project asset/evidence owner에 추가한다.
 
 ## 5. Godot·Codex·PowerShell 현재 역할
 

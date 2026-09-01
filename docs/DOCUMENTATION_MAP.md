@@ -36,7 +36,7 @@
 12. `11_BASE_ADOPTION_AND_LEARNING_LOG.md` — Base 채택·제안·검증 역사.
 13. `12_VERTICAL_SLICE_JIANGHU_JOURNEY.md` 이후 Vertical Slice 문서 — 승인된 5전 세계/콘텐츠/UX 구조.
 
-사람이 한눈에 이해·비교·수정할 전체 Flow·Visual·핵심 표는 exact Project Notion을 함께 읽는다.
+사람이 한눈에 이해·비교·수정할 전체 Flow·Visual·핵심 표는 repository human-facing owner와 source-SHA-bound derived PDF에서 읽는다. Notion은 고유 미이관 자료가 확인된 migration/history scope에서만 읽는다.
 
 ## 3. Current Decision 찾기
 
@@ -76,10 +76,10 @@ ACTIVE_CONTEXT.md
 | 기술 작성·능력치 | 02, 05, 06, current budget JSON, 관련 Decision |
 | 무공·성장 | 01, 02, 03, 05, 06, 08, current planning/runtime data |
 | 콘텐츠·경로 | 01, 03, 04, Vertical Slice owner, planning JSON, exact Notion |
-| UI·접근성 | 02, 07, 08, 09, 10, actual Scene/runtime, exact Notion Visual/Flow |
+| UI·접근성 | 02, 07, 08, 09, 10, actual Scene/runtime, repository Visual/Flow owner |
 | 제품 구현 | Active Context, current operating contract, current implementation Gate, relevant owner/test |
-| 검수 | 08, current diff, exact-head CI, actual runtime evidence, affected Notion/repository destination |
-| Base compatibility | Base latest owner + `BASE_RULES_VERSION.md` + `skills/PROJECT_BASE_ADAPTER.json` |
+| 검수 | 08, current diff, exact-head CI, actual runtime evidence, affected repository destination |
+| Base compatibility | Base latest owner + `BASE_RULES_VERSION.md` + `skills/PROJECT_BASE_ADAPTER.json` + current work receipt |
 
 ## 6. 구형·오해 표현 차단
 
