@@ -118,6 +118,22 @@ MAIN
 
 공격/무공/절초는 이 intent를 열지 않는다. target은 현재 규칙의 유효 대상 자동 선정 결과를 사용한다. 이 UI는 방향·범위를 새로 판정하지 않고, 플레이어 의도만 `ActionTimingPanel`에 보낸다.
 
+### D. 이미지 우선 블루프린트 기준
+
+사람이 보는 파생 PDF와 구현 인계의 화면 설명은 추상 도식만으로 현재 화면을 대체하지 않는다. 다음 **승인 자산·실제 캡처**를 우선 배치하고, 텍스트 와이어프레임은 이미지에서 바로 확인하기 어려운 입력·공개 경계만 보완한다.
+
+| 우선순위 | 이미지 | 역할 | 증거 상태 | PDF에서 반드시 보존할 읽기 |
+| --- | --- | --- | --- | --- |
+| 1 | `docs/evidence/runtime-captures/TEN-RVC-20260901-001.png` | 실제 Godot 계획 편집 화면 | `MACHINE_RUNTIME_CAPTURE` | 정면 공유 바닥, 거리 2, 3/3/4 슬롯, 공통 카드 격자, 카드의 삽화·비용·효과 |
+| 2 | `docs/evidence/runtime-captures/TEN-RVC-20260901-005.png` | 공격 자동 배치 직후의 실제 Godot 화면 | `MACHINE_RUNTIME_CAPTURE` | 공격에 별도 방향 선택기가 없고, 선택된 카드와 현재 수가 어떻게 이어지는지 |
+| 3 | `docs/visual-assets/planning/PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2.png` | 승인된 정면 결투·합·카드·석정 시각 문법 | `USER_FINAL_LOCKED_PLANNING_ARTIFACT_ONLY` | 고정된 따뜻한 석정, 정면 대치, 먹선·절제된 금색, 카드/합 연출의 시각 방향 |
+| 4 | `assets/ui/cards/martial_ultimate_card_illustration_atlas_01_v1.png` | 무공·절초 카드 삽화 atlas | `USER_FINAL_LOCKED + IMPLEMENTED` | 기초·무공·절초의 한 카드 shell과 삽화 밀도 |
+| 5 | `assets/vfx/attack_clash_ink_gold_atlas_rgba_v1.png` | 합·공격 충돌의 실제 VFX atlas | `USER_FINAL_LOCKED + IMPLEMENTED` | 현재 수의 공개 뒤에만 쓰이는 짧은 먹선/금색 충돌 강조 |
+
+`TEN-RVC-20260901-001`과 `TEN-RVC-20260901-005`는 계획 편집과 자동 배치의 **기계 런타임 캡처**다. 이 둘이 아직 `plan_locked → reveal → impact`의 사람 검수나 정확한 새 capture를 대체하지는 않는다. 따라서 PDF는 그 미래 상태를 실제 캡처라고 표시하지 않고, 승인 VFX/카드 자산을 이용한 **구현 계약**으로만 표시한다.
+
+`attack_clash_ink_gold_atlas_rgba_v1.png`은 source bytes가 opaque라 `CombatBoardPreview`의 neutral-light `ShaderMaterial` matte를 거쳐 화면에 표시된다. 사람용 PDF에는 이 raw atlas를 체커보드처럼 직접 싣지 않고, 실제 런타임 capture가 추가되기 전에는 `PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2`의 승인된 합 장면으로 **시각 방향만** 설명한다.
+
 ## 5. 통합 카드 계약
 
 | 영역 | 항상 보임 | 조건부 보임 | 상세 패널로 이동 | 금지 |

@@ -59,6 +59,22 @@ class FrontalDuelActionFlowBlueprintContractTests(unittest.TestCase):
         self.assertIn("save_schema: preserved", decision)
         self.assertIn("No new raster asset is approved or required.", approval)
 
+    def test_human_blueprint_uses_current_visual_evidence_before_abstract_diagrams(self) -> None:
+        blueprint = BLUEPRINT_PATH.read_text(encoding="utf-8")
+        required_visual_inputs = (
+            "docs/evidence/runtime-captures/TEN-RVC-20260901-001.png",
+            "docs/evidence/runtime-captures/TEN-RVC-20260901-005.png",
+            "docs/visual-assets/planning/PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2.png",
+            "assets/ui/cards/martial_ultimate_card_illustration_atlas_01_v1.png",
+            "assets/vfx/attack_clash_ink_gold_atlas_rgba_v1.png",
+        )
+
+        self.assertIn("### D. 이미지 우선 블루프린트 기준", blueprint)
+        for relative_path in required_visual_inputs:
+            self.assertIn(relative_path, blueprint)
+            self.assertTrue((REPOSITORY_ROOT / relative_path).exists(), relative_path)
+        self.assertIn("체커보드처럼 직접 싣지 않고", blueprint)
+
 
 if __name__ == "__main__":
     unittest.main()
