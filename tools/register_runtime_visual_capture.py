@@ -8,16 +8,20 @@ import shutil
 import struct
 import sys
 import tempfile
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
 
 CAPTURE_ID_RE = re.compile(r"^TEN-RVC-\d{8}-\d{3}$")
 COMMIT_RE = re.compile(r"^[0-9a-f]{40}$", re.IGNORECASE)
+RUN_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
+DIGEST_RE = re.compile(r"^[0-9a-f]{64}$")
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 MANIFEST_ROLE = "TEN_RUNTIME_VISUAL_CAPTURE_MANIFEST"
+PRODUCER_RECEIPT_ROLE = "TEN_RUNTIME_VISUAL_CAPTURE_PRODUCER_RECEIPT"
 MAX_IMAGE_BYTES = 15 * 1024 * 1024
+FRESHNESS_CLOCK_TOLERANCE = timedelta(seconds=2)
 
 
 class CaptureValidationError(ValueError):
@@ -39,6 +43,30 @@ def validate_relative_repository_path(value: str, *, label: str) -> str:
     return candidate.as_posix()
 
 
+def validate_relative_artifact_path(value: object) -> Path:
+    if not isinstance(value, str) or not value:
+        raise CaptureValidationError("producer receipt artifact path must be a non-empty relative path")
+    candidate = Path(value)
+    if candidate.is_absolute() or ".." in candidate.parts:
+        raise CaptureValidationError("producer receipt artifact path must be a safe relative path")
+    return candidate
+
+
+def parse_aware_timestamp(value: object, *, label: str) -> datetime:
+    if not isinstance(value, str) or not value.strip():
+        raise CaptureValidationError(f"producer receipt {label} must be a timezone-aware timestamp")
+    normalized = value.strip()
+    if normalized.endswith("Z"):
+        normalized = normalized[:-1] + "+00:00"
+    try:
+        parsed = datetime.fromisoformat(normalized)
+    except ValueError as exc:
+        raise CaptureValidationError(f"producer receipt {label} is not a valid ISO-8601 timestamp") from exc
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise CaptureValidationError(f"producer receipt {label} must include a timezone")
+    return parsed.astimezone(UTC)
+
+
 def inspect_png(path: Path) -> tuple[int, int, int, str]:
     if not path.is_file():
         raise CaptureValidationError(f"source image does not exist: {path}")
@@ -56,6 +84,97 @@ def inspect_png(path: Path) -> tuple[int, int, int, str]:
     if width <= 0 or height <= 0:
         raise CaptureValidationError("source image must have positive PNG dimensions")
     return width, height, byte_count, sha256_file(path)
+
+
+def load_producer_receipt(
+    receipt_path: Path,
+    *,
+    source: Path,
+    expected_run_id: str,
+    expected_source_commit: str,
+    actual_byte_count: int,
+    actual_digest: str,
+) -> dict[str, Any]:
+    receipt = receipt_path.resolve()
+    if not receipt.is_file():
+        raise CaptureValidationError(f"producer receipt does not exist: {receipt}")
+    if receipt == source:
+        raise CaptureValidationError("producer receipt cannot be the source image")
+    try:
+        payload = json.loads(receipt.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        raise CaptureValidationError(f"producer receipt is not valid UTF-8 JSON: {receipt}") from exc
+    if not isinstance(payload, dict):
+        raise CaptureValidationError("producer receipt must be a JSON object")
+    if payload.get("schema_version") != 1 or payload.get("receipt_role") != PRODUCER_RECEIPT_ROLE:
+        raise CaptureValidationError("producer receipt schema or role mismatch")
+
+    producer_id = payload.get("producer_id")
+    if not isinstance(producer_id, str) or not producer_id.strip():
+        raise CaptureValidationError("producer receipt producer_id is required")
+    if payload.get("producer_status") != "PASS":
+        raise CaptureValidationError("producer status must be PASS before runtime evidence registration")
+
+    run_id = payload.get("run_id")
+    if not isinstance(run_id, str) or not RUN_ID_RE.fullmatch(run_id):
+        raise CaptureValidationError("producer receipt run ID is missing or malformed")
+    if run_id != expected_run_id:
+        raise CaptureValidationError("producer receipt run ID mismatch")
+
+    source_commit = payload.get("source_commit")
+    if not isinstance(source_commit, str) or not COMMIT_RE.fullmatch(source_commit):
+        raise CaptureValidationError("producer receipt source commit is missing or malformed")
+    if source_commit.lower() != expected_source_commit.lower():
+        raise CaptureValidationError("producer receipt source commit mismatch")
+
+    started_at = parse_aware_timestamp(payload.get("started_at_utc"), label="started_at_utc")
+    completed_at = parse_aware_timestamp(payload.get("completed_at_utc"), label="completed_at_utc")
+    if completed_at < started_at:
+        raise CaptureValidationError("producer receipt completion precedes producer start")
+
+    artifact = payload.get("artifact")
+    if not isinstance(artifact, dict):
+        raise CaptureValidationError("producer receipt artifact object is required")
+    artifact_relative_path = validate_relative_artifact_path(artifact.get("path"))
+    receipt_artifact = (receipt.parent / artifact_relative_path).resolve()
+    if receipt_artifact != source:
+        raise CaptureValidationError("producer receipt artifact path does not resolve to the source image")
+
+    expected_digest = artifact.get("sha256")
+    if not isinstance(expected_digest, str) or not DIGEST_RE.fullmatch(expected_digest):
+        raise CaptureValidationError("producer receipt artifact SHA-256 is missing or malformed")
+    if expected_digest != actual_digest:
+        raise CaptureValidationError("producer receipt artifact SHA-256 mismatch")
+
+    expected_bytes = artifact.get("bytes")
+    if not isinstance(expected_bytes, int) or isinstance(expected_bytes, bool) or expected_bytes <= 0:
+        raise CaptureValidationError("producer receipt artifact bytes must be a positive integer")
+    if expected_bytes != actual_byte_count:
+        raise CaptureValidationError("producer receipt artifact bytes mismatch")
+
+    expected_mtime_ns = artifact.get("mtime_ns")
+    if not isinstance(expected_mtime_ns, int) or isinstance(expected_mtime_ns, bool) or expected_mtime_ns <= 0:
+        raise CaptureValidationError("producer receipt artifact mtime_ns must be a positive integer")
+    source_stat = source.stat()
+    if expected_mtime_ns != source_stat.st_mtime_ns:
+        raise CaptureValidationError("producer receipt artifact mtime mismatch")
+
+    artifact_time = datetime.fromtimestamp(source_stat.st_mtime_ns / 1_000_000_000, UTC)
+    if artifact_time < started_at - FRESHNESS_CLOCK_TOLERANCE:
+        raise CaptureValidationError("source artifact predates producer run")
+    if artifact_time > completed_at + FRESHNESS_CLOCK_TOLERANCE:
+        raise CaptureValidationError("source artifact timestamp is later than producer completion")
+
+    return {
+        "receipt_role": PRODUCER_RECEIPT_ROLE,
+        "producer_id": producer_id.strip(),
+        "producer_status": "PASS",
+        "run_id": run_id,
+        "started_at_utc": started_at.isoformat(),
+        "completed_at_utc": completed_at.isoformat(),
+        "receipt_sha256": sha256_file(receipt),
+        "artifact_mtime_ns": source_stat.st_mtime_ns,
+    }
 
 
 def load_manifest(path: Path) -> dict[str, Any]:
@@ -96,10 +215,12 @@ def atomic_write_json(path: Path, payload: dict[str, Any]) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Register a repository-controlled Godot runtime visual capture without upgrading Human/device evidence."
+        description="Register a producer-bound Godot runtime visual capture without upgrading Human/device evidence."
     )
     parser.add_argument("--project-root", required=True, type=Path)
     parser.add_argument("--source-image", required=True, type=Path)
+    parser.add_argument("--producer-receipt", required=True, type=Path)
+    parser.add_argument("--run-id", required=True)
     parser.add_argument("--capture-id", required=True)
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--scene-path", required=True)
@@ -124,6 +245,8 @@ def register_capture(args: argparse.Namespace) -> dict[str, Any]:
         raise CaptureValidationError("capture ID must match TEN-RVC-YYYYMMDD-NNN")
     if not COMMIT_RE.fullmatch(args.source_commit):
         raise CaptureValidationError("source commit must be an exact 40-character Git SHA")
+    if not isinstance(args.run_id, str) or not RUN_ID_RE.fullmatch(args.run_id):
+        raise CaptureValidationError("run ID must be 1-128 safe identifier characters")
     if not args.scene_path.startswith("res://") or ".." in Path(args.scene_path.removeprefix("res://")).parts:
         raise CaptureValidationError("scene path must be a safe res:// path")
     if not args.capture_state.strip() or not args.entry_route.strip() or not args.work_item_id.strip():
@@ -134,7 +257,16 @@ def register_capture(args: argparse.Namespace) -> dict[str, Any]:
     for consumer in consumers:
         if not (root / consumer).is_file():
             raise CaptureValidationError(f"consumer does not exist as a repository file: {consumer}")
+
     width, height, byte_count, digest = inspect_png(source)
+    producer_receipt = load_producer_receipt(
+        args.producer_receipt,
+        source=source,
+        expected_run_id=args.run_id,
+        expected_source_commit=args.source_commit,
+        actual_byte_count=byte_count,
+        actual_digest=digest,
+    )
 
     evidence_root = root / "docs" / "evidence"
     capture_dir = evidence_root / "runtime-captures"
@@ -171,6 +303,7 @@ def register_capture(args: argparse.Namespace) -> dict[str, Any]:
         "recorded_at_utc": datetime.now(UTC).isoformat(),
         "work_item_id": args.work_item_id,
         "source_commit": args.source_commit.lower(),
+        "producer_receipt": producer_receipt,
         "runtime": {
             "scene_path": args.scene_path,
             "capture_state": args.capture_state,
@@ -220,7 +353,16 @@ def main(argv: list[str] | None = None) -> int:
     except CaptureValidationError as exc:
         print(f"runtime visual capture rejected: {exc}", file=sys.stderr)
         return 2
-    print(json.dumps({"capture_id": entry["capture_id"], "image": entry["image"]}, ensure_ascii=False))
+    print(
+        json.dumps(
+            {
+                "capture_id": entry["capture_id"],
+                "run_id": entry["producer_receipt"]["run_id"],
+                "image": entry["image"],
+            },
+            ensure_ascii=False,
+        )
+    )
     return 0
 
 
