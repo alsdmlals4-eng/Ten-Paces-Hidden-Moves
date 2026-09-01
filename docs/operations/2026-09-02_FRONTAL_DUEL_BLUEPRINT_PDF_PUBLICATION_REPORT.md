@@ -66,8 +66,14 @@ implementation_feasibility: FEASIBLE
 
 판정: `CLEAN_REVIEW_EXIT`. 발견된 유효 결함은 1건이며 최소 수정·재-render로 닫았다. 추가 repository mutation이 필요한 누락·충돌·중복은 발견되지 않았다.
 
+## post-merge main readback
+
+- PR #310은 normal merge commit `a28fb584a8ab72d223def4cfac4dd7b0ae9f8267`로 `main`에 병합됐다.
+- local `main`과 `origin/main`은 이 SHA에서 일치하며, publication PDF와 report 모두 tracked readback됐다.
+- PDF SHA-256은 발행 기록의 `25A8A3D2151103B3278D51A0F6738D2E3E2CCE48A051D23603238AD1DD414C86`와 일치한다.
+- publication branch `codex/frontal-duel-blueprint-pdf-20260902`는 local·origin에서 삭제됐다. 다른 open PR과 product protected paths는 변경하지 않았다.
+
 ## 다음 안전 작업
 
 1. 정확한 십보강호 project-bound Godot session이 준비되면 plan-locked·reveal·impact 최소 캡처를 repository manifest에 추가한다.
 2. 그 과정에서 실제 새 visual consumer가 발견되면 별도 pre-generation approval 없이 brief와 단일 후보를 만들고, consumer 연결·runtime evidence를 남긴 뒤 final lock 상태를 사용자에게 제시한다.
-3. PDF는 이번 branch의 code-free publication artifact로 검토·병합한 뒤, source SHA와 GitHub `main` readback을 갱신한다.
