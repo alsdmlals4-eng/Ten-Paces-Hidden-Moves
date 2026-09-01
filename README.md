@@ -28,11 +28,11 @@
 ACTIVE_CONTEXT.md
 + current planning JSON
 + GitHub live metadata
-+ exact Project Notion
++ repository human-facing / structured owners
 → current state
 ```
 
-사람용 Project Home·Flow·Visual·핵심 표는 `NOTION_DEFAULT_PROJECT_WORKSPACE`, Markdown/JSON·코드·Scene·Resource·Test·runtime evidence는 repository가 소유합니다. Google Sheets는 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility source입니다.
+사람용 Project Home·Flow·Visual·핵심 표와 Markdown/JSON·코드·Scene·Resource·Test·runtime evidence는 repository가 소유합니다. 사람용 PDF는 source SHA를 밝힌 파생 snapshot이며, Google Sheets와 Notion은 고유 미이관 자료가 확인될 때만 읽는 migration/history source입니다.
 
 ## 프로젝트 코어와 핵심 재미
 
@@ -66,7 +66,7 @@ ACTIVE_CONTEXT.md
 
 첫 5전 Vertical Slice의 현재 구현/검증 상태는 [Active Context]([기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md)가 단독 책임집니다. README는 mutable 완료 상태를 고정하지 않습니다.
 
-사람이 이해할 전체 흐름과 Visual/UX는 Notion Project Home에서 보고, 구현 사실은 repository/runtime evidence에서 검증합니다.
+사람이 이해할 전체 흐름과 Visual/UX는 repository human-facing owner와 파생 PDF에서 보고, 구현 사실은 repository/runtime evidence에서 검증합니다.
 
 ## 역사·호환 기준
 
@@ -75,7 +75,7 @@ ACTIVE_CONTEXT.md
 - PR #65는 ActionSelectionDock/화면 구조 구현 이력입니다.
 - PR #92는 초기 10권 무공 런타임·UI/AI·자동 제품 검증 이력입니다.
 - 과거 Base 기준 `c987647d01ad2baa028a16e03d85ddfc1572a727`은 `HISTORICAL_COMPATIBILITY_BASELINE`입니다.
-- 과거 Base v9.4.3 pin은 프로젝트 채택/회귀 증거이며 current Base remote truth가 아닙니다.
-- `TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01`은 역사 계약이고 현행 project operating contract는 v4.8 r2입니다.
+- v9.4.4 pin은 프로젝트 채택/회귀 증거이며 current Base remote truth가 아닙니다. 현재 Base main은 매 material 작업에서 다시 읽습니다.
+- `TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01`과 v4.8 r2는 역사 계약이고, 현행 실행 권위는 repository-only workspace Decision과 r5.4 product-safety baseline입니다.
 
 정적 검사·Actions 성공은 Windows 실제 Godot, 실물 게임패드, Android 실제 기기, 접근성 보조기술, 성능, 실제 플레이 재미를 증명하지 않습니다. 실행하지 않은 항목은 `NOT_RUN`입니다.

@@ -5,7 +5,7 @@
   "base_registry": {
     "hash_definition": "RAW_FILE_BYTES_SHA256",
     "path": "skills/SKILL_REGISTRY.json",
-    "sha256": "693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59"
+    "sha256": "08f882d0c77339e8f7ff187c35b79501e0a2958ab1ff1c7aaa1c0ef8dbee45d6"
   },
   "base_routes": [
     {
@@ -408,6 +408,6 @@
   "source_registry": {
     "hash_definition": "RAW_FILE_BYTES_SHA256",
     "path": "skills/PROJECT_BASE_ADAPTER.json",
-    "sha256": "4bb4928496912b4f2d26de37b324aefb91271f0792112bcd654f01c43796b8e4"
+    "sha256": "315aa83ba24136a02d2f73a17e063ec67e0c141c0f4ab8c70fc44ec95a10e776"
   }
 }

@@ -21,21 +21,25 @@ latest user instruction
 
 Base 동기화·채택 이력의 프로젝트 감사 진입점은 `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`다. 이 감사의 과거 SHA나 pin을 current Base remote truth로 승격하지 않는다.
 
-## 2. 보존된 Base v9.4.3 채택 증거
+## 2. 현재 호환 pin과 current-main 감사
 
 ```yaml
 base_repository: alsdmlals4-eng/Base
-base_release_version: 9.4.3
-release_commit: 7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8
-release_evidence_commit: da33a350d61b8adc52df97fccc7001708a933370
-release_finalization_commit: 0b7c94f38d959efc0fc9442274c60b2e268a3c97
+base_release_version: 9.4.4
+release_commit: 210ec78292fa12ed7563ba743b322dd36103ae4a
+release_evidence_commit: bb61e68dc3028421b60c11b87ba2abd297ee6f78
+release_finalization_commit: 5adc196c0185951f50e49ab5e51586eff8d60886
+base_registry_sha256: 08f882d0c77339e8f7ff187c35b79501e0a2958ab1ff1c7aaa1c0ef8dbee45d6
+current_base_main_observed_2026_09_01: 19355b7ef065a21d0f2b685c7d9be64a4a3970f8
+current_main_adaptation_audit: "[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md"
+current_work_receipt: docs/operations/2026-09-01_BASE_CURRENT_ADAPTER_WORK_CONTRACT_RECEIPT.json
 adapter: skills/PROJECT_BASE_ADAPTER.json
 shared_skill_policy: adapter_only
 project_local_skills: 4
 publication_policy: source_only
 ```
 
-이 pin을 이유로 최신 Base의 운영 owner, Fresh-Read, repository-only domain split, Sheets migration-only 정책을 무시하지 않는다. 2026-08-26 r5.4 binding에서 관찰한 Base main `edb3b3376603c9f6b00d64af3126304f8c9946bf`도 **binding 시점 관측 증거**이며 다음 작업의 permanent current SHA가 아니다.
+v9.4.4 pin은 재현 가능한 release/회귀 기준이고, `19355b7…`은 이번 감사 시점의 current Base `main` 관측값이다. 둘 모두 다음 작업의 permanent current SHA가 아니며, 다음 material 작업은 다시 fetch한다. v9.4.3과 2026-08-26 r5.4 binding의 Base SHA는 historical compatibility evidence로 보존한다.
 
 ## 3. Current workspace boundary
 
@@ -97,6 +101,27 @@ responsive_minimum: [pc_standard, pc_wide_or_ultrawide, mobile_landscape]
 - GPT→PowerShell→local Codex, project-specific CODEX_HOME, 과거 dedicated port checkpoint를 current readiness로 사용하지 않는다.
 - 호환 가능한 host에서는 shared approved exact Godot pin + Godot AI 기본 포트 + exact project/editor/session identity를 기본으로 한다.
 - 새 이미지 생성은 scoped single generation 뒤 user final lock이다. 2026-08-25 max-three 메모와 pre-generation approval은 history다.
+
+### 6.1 current Base 작업 진입의 프로젝트식 적용
+
+새 L1+ 작업은 프로젝트 canon과 실제 consumer를 먼저 읽은 뒤, repository-owned receipt로 다음을 남긴다.
+
+```text
+exact Project/Base source readback
+→ task-appropriate benchmark/reuse evidence
+→ scope-limited context·configuration hygiene inventory
+→ stale/conflict correction 또는 명시적 defer
+→ approval-bound work sequence
+→ code/asset/document mutation
+→ verification and reuse-learning handoff
+```
+
+- Base의 `PROJECT_START_CANON_CHECKLIST_REQUIRED`, `REUSE_FIRST_PREFLIGHT_REQUIRED`, `LEGACY_CONTEXT_CONFIGURATION_HYGIENE_REQUIRED`를 채택한다.
+- 게임 규칙·UI·시각 자산처럼 player-facing package에는 기존 `TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01`의 10개 이상 비교 gate를 보존한다. 운영 문서·adapter-only 변경은 현재 Base owner와 exact project consumer의 `REUSED_EVIDENCE`로 한정하며, 무관한 게임 사례를 형식적으로 늘리지 않는다.
+- Base의 feature contract 모듈화는 새/변경 기능에서만 `owner → contract → code/data/Scene → consumer → test`를 같은 변경 단위로 연결하는 방식으로 적용한다. 기존 전투 모듈을 일괄 재구성하지 않는다.
+- conditional Blueprint/wireframe은 연결된 player-facing 시스템 변경의 이해·구현 gate가 실제로 필요할 때만 만든다. 이 운영계약 갱신 자체에는 새 화면 consumer가 없으므로 `NOT_APPLICABLE_WITH_REASON`이다.
+- 화면이 실제로 바뀌는 경우에만 project-local runtime capture manifest/capture를 갱신한다. 이번 문서·adapter 작업은 제품 화면을 바꾸지 않아 새 Godot capture를 만들지 않는다.
+- 정리는 날짜·파일명 기준으로 하지 않는다. `OBSOLETE_CANDIDATE`의 active reference/consumer 0, Git 복구 가능 삭제, readback이 모두 확인될 때만 삭제한다.
 
 ## 7. 과거 Base baseline
 

@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "artifact_role": "TEN_PACES_BASE_CURRENT_ADAPTER_WORK_CONTRACT_RECEIPT",
+  "work_level": "L1",
+  "scope": "Refresh the project operating adapter, work order, startup receipt, generated compatibility views, and regression/CI contracts to the current Base while preserving all product paths.",
+  "approval_scope": "User explicit request: detailed Base fresh-read and project-specific update of work order, structure, and contracts; no game-system expansion.",
+  "source_identity": {
+    "base_current_main_observed": "19355b7ef065a21d0f2b685c7d9be64a4a3970f8",
+    "base_v944_release": "210ec78292fa12ed7563ba743b322dd36103ae4a",
+    "base_v944_evidence": "bb61e68dc3028421b60c11b87ba2abd297ee6f78",
+    "base_v944_finalization": "5adc196c0185951f50e49ab5e51586eff8d60886",
+    "project_main_before_mutation": "4032cf550295da6d55646a8fb64fb27acaf1ddc3",
+    "pre_existing_open_prs_preserved": [200, 305]
+  },
+  "benchmark_preflight_receipt": {
+    "state": "REUSED_EVIDENCE",
+    "entries": [
+      {
+        "source_and_evidence": "Base@19355b7ef065a21d0f2b685c7d9be64a4a3970f8: START_HERE.md, WORK_PROJECT_START_CANON_CHECKLIST.md, WORK_PROJECT_EXECUTION_CURRENT_ROUTER.md, managing-project-intake-and-work-contract/SKILL.md, work-decomposition-and-sequencing.md, PROJECT_WORK_REUSE_HANDOFF.json.",
+        "observed_pattern": "A material workflow/adapter change must use a repository-owned reuse/benchmark receipt, scoped hygiene inventory, thin project adaptation, exact Base validation, and an exit learning handoff.",
+        "project_fit_and_difference": "Ten Paces already owns repository-first authority, player-facing ten-game reverse-engineering, runtime visual evidence, and four local skills. The Base procedure is reused as a thin route only; project game rules and visual meaning are not copied or replaced.",
+        "disposition": "ADAPT"
+      },
+      {
+        "source_and_evidence": "Ten Paces main@4032cf550295da6d55646a8fb64fb27acaf1ddc3: AGENTS.md, docs/BASE_RULES_VERSION.md, PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md, ACTIVE_CONTEXT.md, current_user_planning_status.json, PROJECT_BASE_ADAPTER.json, generated adapter views, current runtime-capture owners, and live PR metadata.",
+        "observed_pattern": "The project already separates repository canon from historical migration sources and protects data/, src/, scenes/, assets/, addons/, and project.godot from governance-only work.",
+        "project_fit_and_difference": "The requested change is operating-contract-only. Existing card, combat, capture, asset, and platform evidence remains the consumer source; no new player-facing design or irrelevant game benchmark is introduced.",
+        "disposition": "ADOPT"
+      },
+      {
+        "source_and_evidence": "Base current commits 56dce2ac, a54966fc, 19fb7b43, 5f22096c, 781dfe8f, d060ffab, and 19355b7e after the v9.4.4 finalization.",
+        "observed_pattern": "Feature-level contracts, conditional Blueprint/wireframe, bounded runtime capture, benchmark-first intake, receipt/hygiene gates, and active-surface correction are conditional safeguards rather than automatic product work.",
+        "project_fit_and_difference": "Use these only when their actual trigger exists: a changed feature has a consumer, a player-facing system needs a Blueprint, or a changed screen needs a capture. Do not create wireframes/captures or delete archives merely to mirror Base.",
+        "disposition": "ADAPT"
+      }
+    ],
+    "reason_not_applicable": ""
+  },
+  "context_configuration_hygiene": {
+    "scope": "Base-current operating adapter reconciliation only; excludes Godot product paths and unrelated worktrees.",
+    "inventory": [
+      {
+        "path": "skills/PROJECT_BASE_ADAPTER.json",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Canonical project Base adapter; v2 schema and generated views are validated by Base tooling.",
+        "references_and_consumers": "PROJECT_SKILL_SNAPSHOT.json, BASE_V9_ADAPTER.json, PROJECT_BASE_SKILL_ADAPTER.json, project workflow router, dashboard, adapter tests, and validate-project-base-adapter workflow.",
+        "removal_proposed": false
+      },
+      {
+        "path": "docs/BASE_RULES_VERSION.md and [기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Current project-specific Base compatibility boundary and adaptation disposition.",
+        "references_and_consumers": "AGENTS read order, README, Active Context, documentation governance, project documentation map, and execution reports.",
+        "removal_proposed": false
+      },
+      {
+        "path": "tests/test_base_v943_first_prompt_adoption.py and .github/workflows/validate-base-v943-first-prompt-adapter.yml",
+        "classification": "OBSOLETE_CANDIDATE",
+        "owner_or_provenance": "Version-specific v9.4.3 current-pin regression replaced by the v9.4.4 reuse-first regression.",
+        "references_and_consumers": "Pre-change, each item only consumed the other. Post-change executable-source scan of tests/ and .github/ must show zero references; the v9.4.4 test/workflow provides successor coverage. Historical/audit prose may retain the identifier as removal evidence.",
+        "removal_proposed": true,
+        "references_and_consumers_zero_before_removal": true,
+        "git_recoverable_removal_and_readback": true
+      },
+      {
+        "path": ".worktrees/* existing unrelated worktrees and pre-existing PR #200/#305",
+        "classification": "UNKNOWN_UNVERIFIED",
+        "owner_or_provenance": "Existing concurrent or historical workstreams outside this task.",
+        "references_and_consumers": "Not inspected as deletion targets; retained read-only to avoid taking over other work or removing recoverable evidence.",
+        "removal_proposed": false
+      }
+    ],
+    "entrypoint_or_token_saving_correction": "Correct only active repository/Notion wording and Base version entrypoints that affect fresh-read routing.",
+    "cleanup_result": "CORRECTED"
+  },
+  "implementation_feasibility": {
+    "state": "FEASIBLE",
+    "evidence": "The Base v9.4.4 lock, current validator, project adapter v2 schema, generated artifact builder, and focused project tests are all readable from the local exact repositories.",
+    "protected_scope": ["data/", "src/", "scenes/", "assets/", "addons/", "project.godot"],
+    "runtime_change": false
+  },
+  "execution_sequence": [
+    "Correct current Base release identity and thin-adapter gates.",
+    "Record current-main ADOPT/ADAPT/REJECT disposition and project work order.",
+    "Regenerate deterministic compatibility views from the canonical adapter.",
+    "Replace obsolete v9.4.3-only regression coverage with v9.4.4/current-contract coverage.",
+    "Run adapter, receipt, reference-freshness, project-operating, and focused regression validation.",
+    "Perform five full-scope adversarial loops, then commit/push/PR and inspect exact-head CI."
+  ],
+  "evidence_and_exit": {
+    "execution_report": "docs/operations/2026-09-01_BASE_CURRENT_ADAPTER_RECONCILIATION_EXECUTION_REPORT.md",
+    "human_usability_evidence": "NOT_RUN_NOT_APPLICABLE_TO_OPERATING_CONTRACT_ONLY_CHANGE",
+    "player_experience_evidence": "NOT_RUN_NOT_APPLICABLE_TO_OPERATING_CONTRACT_ONLY_CHANGE",
+    "rollback": "Revert the dedicated current-task commit or close its PR; no product-path migration or file deletion outside the replaced v9.4.3-only test/workflow is included.",
+    "project_only_lessons": "A current Base update is safe only when it records the project-specific ADOPT/ADAPT/REJECT boundary and validates the actual project entrypoints rather than copying Base templates.",
+    "base_promotion_candidates": "NO_NEW_REUSE_LEARNING"
+  }
+}
