@@ -408,6 +408,6 @@
   "source_registry": {
     "hash_definition": "RAW_FILE_BYTES_SHA256",
     "path": "skills/PROJECT_BASE_ADAPTER.json",
-    "sha256": "2ee764cd3e4ae47ac73046f0f8e64de738a51071e997d1a3402c1cb5efc8b4de"
+    "sha256": "f800a654fe88f0b27373b64343cc295edea868236ae7bd0b6c3cb33691130f00"
   }
 }
