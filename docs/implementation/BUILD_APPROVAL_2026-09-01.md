@@ -1,4 +1,4 @@
-# Grounded Duel, Automatic Targeting, and Observation BUILD Approval
+# Historical — Grounded Duel, Automatic Targeting, and Observation BUILD Approval (PR #305)
 
 - **Decision / contract:** `TEN-DEC-20260901-GROUNDED-DUEL-AUTO-TARGET-OBSERVE-01`, retaining the applicable boundaries of `TEN-DEC-20260830-ACTION-CARD-SOURCE-UNIFICATION-01` and `TEN-DEC-20260831-ACTION-CARD-ILLUSTRATION-EXTENSION-01`.
 - **Approved on:** `2026-09-01 KST`.
@@ -13,7 +13,7 @@
 3. Constrain linked action blocks to their own timing slots; compact the visible execution control to the current bundle's `N수 실행` without changing commit semantics.
 4. Spend only available observation points after the enemy bundle locks to disclose each locked enemy **action type**. Keep card name, technique/manual ID, cost, range, target, direction, damage, future bundle, and AI weights hidden.
 5. Keep a multi-slot 절초 reservation atomic: source switching stays locked only while its reservation is active and returns after the player removes the reserved timing slot.
-6. Update only the exact protected paths in `docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json`, focused regressions, machine runtime evidence, and the execution report required for PR #305.
+6. The exact PR #305 protected-path authorization is retained only in the immutable [PR #305 archive record](../operations/2026-09-01_PR305_PROTECTED_CHANGE_APPROVAL_RECORD.md), together with focused regressions, machine runtime evidence, and its execution report. It is historical and does **not** authorize the current active `PROJECT_PROTECTED_CHANGE_APPROVAL.json` manifest.
 
 ## Exclusions and evidence ceiling
 
