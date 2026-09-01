@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import re
+import secrets
 import shutil
 import struct
 import sys
@@ -14,9 +15,16 @@ from typing import Any
 
 
 CAPTURE_ID_RE = re.compile(r"^TEN-RVC-\d{8}-\d{3}$")
+CAPTURE_RUN_ID_RE = re.compile(r"^TEN-RVC-RUN-\d{8}-\d{3}$")
 COMMIT_RE = re.compile(r"^[0-9a-f]{40}$", re.IGNORECASE)
+NONCE_RE = re.compile(r"^[0-9a-f]{32}$")
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 MANIFEST_ROLE = "TEN_RUNTIME_VISUAL_CAPTURE_MANIFEST"
+FRESHNESS_RECEIPT_ROLE = "TEN_RUNTIME_VISUAL_CAPTURE_FRESHNESS_RECEIPT"
+FRESHNESS_MODE = "PREPARED_ABSENT_THEN_PRESENT"
+FRESHNESS_CLAIM_CEILING = (
+    "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+)
 MAX_IMAGE_BYTES = 15 * 1024 * 1024
 
 
@@ -37,6 +45,20 @@ def validate_relative_repository_path(value: str, *, label: str) -> str:
     if not value or candidate.is_absolute() or ".." in candidate.parts:
         raise CaptureValidationError(f"{label} must be a non-empty repository-relative path")
     return candidate.as_posix()
+
+
+def validate_commit(value: str, *, label: str) -> str:
+    if not COMMIT_RE.fullmatch(value):
+        raise CaptureValidationError(f"{label} must be an exact 40-character Git SHA")
+    return value.lower()
+
+
+def validate_capture_run_id(value: str) -> str:
+    if not CAPTURE_RUN_ID_RE.fullmatch(value):
+        raise CaptureValidationError(
+            "capture run ID must match TEN-RVC-RUN-YYYYMMDD-NNN"
+        )
+    return value
 
 
 def inspect_png(path: Path) -> tuple[int, int, int, str]:
@@ -94,6 +116,128 @@ def atomic_write_json(path: Path, payload: dict[str, Any]) -> None:
     temporary_path.replace(path)
 
 
+def prepare_freshness_receipt(
+    *,
+    project_root: Path,
+    source_image: Path,
+    receipt_path: Path,
+    capture_run_id: str,
+    source_commit: str,
+) -> dict[str, Any]:
+    root = project_root.resolve()
+    source = source_image.resolve()
+    receipt = receipt_path.resolve()
+    if not root.is_dir():
+        raise CaptureValidationError(f"project root does not exist: {root}")
+    normalized_commit = validate_commit(source_commit, label="source commit")
+    normalized_run_id = validate_capture_run_id(capture_run_id)
+    if source == receipt:
+        raise CaptureValidationError("freshness receipt cannot use the source image path")
+    if source.exists():
+        raise CaptureValidationError(
+            "source image already exists before capture preparation; remove or isolate stale transient output first"
+        )
+    if receipt.exists():
+        raise CaptureValidationError(
+            f"freshness receipt already exists and cannot be reused: {receipt}"
+        )
+
+    payload = {
+        "schema_version": 1,
+        "receipt_role": FRESHNESS_RECEIPT_ROLE,
+        "capture_run_id": normalized_run_id,
+        "source_commit": normalized_commit,
+        "project_root": str(root),
+        "source_image": str(source),
+        "source_absent_at_prepare": True,
+        "prepared_at_utc": datetime.now(UTC).isoformat(),
+        "receipt_nonce": secrets.token_hex(16),
+    }
+    atomic_write_json(receipt, payload)
+    if source.exists():
+        receipt.unlink(missing_ok=True)
+        raise CaptureValidationError(
+            "source image appeared during capture preparation; use a new run identity and retry"
+        )
+    return payload
+
+
+def load_freshness_receipt(path: Path) -> tuple[dict[str, Any], str]:
+    receipt = path.resolve()
+    if not receipt.is_file():
+        raise CaptureValidationError(f"freshness receipt does not exist: {receipt}")
+    try:
+        raw = receipt.read_bytes()
+        payload = json.loads(raw.decode("utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise CaptureValidationError(
+            f"freshness receipt is not valid UTF-8 JSON: {receipt}"
+        ) from exc
+    if not isinstance(payload, dict):
+        raise CaptureValidationError("freshness receipt must be a JSON object")
+    if payload.get("schema_version") != 1:
+        raise CaptureValidationError("freshness receipt schema_version must be 1")
+    if payload.get("receipt_role") != FRESHNESS_RECEIPT_ROLE:
+        raise CaptureValidationError("freshness receipt role mismatch")
+    return payload, hashlib.sha256(raw).hexdigest()
+
+
+def validate_freshness_receipt(
+    *,
+    receipt_path: Path,
+    project_root: Path,
+    source_image: Path,
+    capture_run_id: str,
+    source_commit: str,
+    expected_source_commit: str,
+) -> dict[str, Any]:
+    root = project_root.resolve()
+    source = source_image.resolve()
+    normalized_run_id = validate_capture_run_id(capture_run_id)
+    normalized_commit = validate_commit(source_commit, label="source commit")
+    normalized_expected = validate_commit(
+        expected_source_commit, label="expected source commit"
+    )
+    if normalized_commit != normalized_expected:
+        raise CaptureValidationError(
+            "source commit does not match the trusted expected source commit"
+        )
+
+    receipt, receipt_digest = load_freshness_receipt(receipt_path)
+    if receipt.get("project_root") != str(root):
+        raise CaptureValidationError("freshness receipt project root mismatch")
+    if receipt.get("capture_run_id") != normalized_run_id:
+        raise CaptureValidationError("freshness receipt capture run ID mismatch")
+    if receipt.get("source_commit") != normalized_commit:
+        raise CaptureValidationError("freshness receipt source commit mismatch")
+    if receipt.get("source_image") != str(source):
+        raise CaptureValidationError("freshness receipt source image path mismatch")
+    if receipt.get("source_absent_at_prepare") is not True:
+        raise CaptureValidationError(
+            "freshness receipt does not prove source absence at preparation"
+        )
+    prepared_at = receipt.get("prepared_at_utc")
+    if not isinstance(prepared_at, str) or not prepared_at.strip():
+        raise CaptureValidationError("freshness receipt prepared_at_utc is required")
+    nonce = receipt.get("receipt_nonce")
+    if not isinstance(nonce, str) or not NONCE_RE.fullmatch(nonce):
+        raise CaptureValidationError("freshness receipt nonce is malformed")
+    if not source.is_file():
+        raise CaptureValidationError(
+            "current capture run did not create the expected source image"
+        )
+    return {
+        "mode": FRESHNESS_MODE,
+        "capture_run_id": normalized_run_id,
+        "prepared_at_utc": prepared_at,
+        "source_absent_at_prepare": True,
+        "trusted_source_identity_match": True,
+        "receipt_nonce": nonce,
+        "receipt_sha256": receipt_digest,
+        "claim_ceiling": FRESHNESS_CLAIM_CEILING,
+    }
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Register a repository-controlled Godot runtime visual capture without upgrading Human/device evidence."
@@ -101,7 +245,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--project-root", required=True, type=Path)
     parser.add_argument("--source-image", required=True, type=Path)
     parser.add_argument("--capture-id", required=True)
+    parser.add_argument("--capture-run-id", required=True)
+    parser.add_argument("--freshness-receipt", required=True, type=Path)
     parser.add_argument("--source-commit", required=True)
+    parser.add_argument("--expected-source-commit", required=True)
     parser.add_argument("--scene-path", required=True)
     parser.add_argument("--capture-state", required=True)
     parser.add_argument("--entry-route", required=True)
@@ -122,8 +269,17 @@ def register_capture(args: argparse.Namespace) -> dict[str, Any]:
         raise CaptureValidationError(f"project root does not exist: {root}")
     if not CAPTURE_ID_RE.fullmatch(args.capture_id):
         raise CaptureValidationError("capture ID must match TEN-RVC-YYYYMMDD-NNN")
-    if not COMMIT_RE.fullmatch(args.source_commit):
-        raise CaptureValidationError("source commit must be an exact 40-character Git SHA")
+    normalized_source_commit = validate_commit(
+        args.source_commit, label="source commit"
+    )
+    freshness = validate_freshness_receipt(
+        receipt_path=args.freshness_receipt,
+        project_root=root,
+        source_image=source,
+        capture_run_id=args.capture_run_id,
+        source_commit=normalized_source_commit,
+        expected_source_commit=args.expected_source_commit,
+    )
     if not args.scene_path.startswith("res://") or ".." in Path(args.scene_path.removeprefix("res://")).parts:
         raise CaptureValidationError("scene path must be a safe res:// path")
     if not args.capture_state.strip() or not args.entry_route.strip() or not args.work_item_id.strip():
@@ -143,6 +299,13 @@ def register_capture(args: argparse.Namespace) -> dict[str, Any]:
     existing_ids = {entry.get("capture_id") for entry in manifest["captures"] if isinstance(entry, dict)}
     if args.capture_id in existing_ids:
         raise CaptureValidationError(f"capture ID already exists: {args.capture_id}")
+    existing_receipt_nonces = {
+        entry.get("freshness", {}).get("receipt_nonce")
+        for entry in manifest["captures"]
+        if isinstance(entry, dict) and isinstance(entry.get("freshness"), dict)
+    }
+    if freshness["receipt_nonce"] in existing_receipt_nonces:
+        raise CaptureValidationError("freshness receipt was already consumed by another capture")
 
     same_work_item = [
         entry for entry in manifest["captures"]
@@ -170,7 +333,7 @@ def register_capture(args: argparse.Namespace) -> dict[str, Any]:
         "capture_id": args.capture_id,
         "recorded_at_utc": datetime.now(UTC).isoformat(),
         "work_item_id": args.work_item_id,
-        "source_commit": args.source_commit.lower(),
+        "source_commit": normalized_source_commit,
         "runtime": {
             "scene_path": args.scene_path,
             "capture_state": args.capture_state,
@@ -190,6 +353,7 @@ def register_capture(args: argparse.Namespace) -> dict[str, Any]:
             "width": width,
             "height": height,
         },
+        "freshness": freshness,
         "evidence_level": "MACHINE_RUNTIME_CAPTURE",
         "evidence_ceiling": {
             "human_usability": "NOT_RUN",
