@@ -10,7 +10,7 @@ BLUEPRINT_PATH = REPOSITORY_ROOT / "docs" / "design" / "2026-09-01_FRONTAL_DUEL_
 BENCHMARK_PATH = REPOSITORY_ROOT / "docs" / "reviews" / "2026-09-01_FRONTAL_DUEL_REVEAL_AND_CARD_BENCHMARK.md"
 CURRENT_STATUS_PATH = REPOSITORY_ROOT / "docs" / "planning-data" / "current_user_planning_status.json"
 PLAN_LOCK_DECISION_PATH = REPOSITORY_ROOT / "docs" / "decisions" / "2026-09-01_ACTION_PLAN_LOCK_AND_EXECUTE_CTA_DECISION.md"
-PLAN_LOCK_BUILD_APPROVAL_PATH = REPOSITORY_ROOT / "docs" / "implementation" / "BUILD_APPROVAL_2026-09-01_ACTION_PLAN_LOCK_REFINEMENT.md"
+PLAN_LOCK_BUILD_APPROVAL_PATH = REPOSITORY_ROOT / "docs" / "implementation" / "BUILD_APPROVAL_2026-09-01.md"
 
 
 class FrontalDuelActionFlowBlueprintContractTests(unittest.TestCase):
@@ -53,7 +53,7 @@ class FrontalDuelActionFlowBlueprintContractTests(unittest.TestCase):
         status = json.loads(CURRENT_STATUS_PATH.read_text(encoding="utf-8"))
 
         self.assertEqual("TEN-DEC-20260901-ACTION-PLAN-LOCK-AND-EXECUTE-CTA-01", status["frontal_duel_plan_lock_decision"])
-        self.assertEqual("docs/implementation/BUILD_APPROVAL_2026-09-01_ACTION_PLAN_LOCK_REFINEMENT.md", status["frontal_duel_plan_lock_build_approval"])
+        self.assertEqual("docs/implementation/BUILD_APPROVAL_2026-09-01.md", status["frontal_duel_plan_lock_build_approval"])
         self.assertIn("resolver_invocation: 0", decision)
         self.assertIn("resolver_invocation: exactly_once", decision)
         self.assertIn("save_schema: preserved", decision)
