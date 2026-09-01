@@ -33,7 +33,9 @@ class ActionCardSourceUnificationContractTests(unittest.TestCase):
         self.assertIn('label.name = "CardFacts"', renderer)
         self.assertIn('label.name = "CardEffectOrTag"', renderer)
         self.assertIn('accessibility_description = _accessibility_description(status_text)', renderer)
-        self.assertIn('if bool(action_definition.get("hide_range", false))', renderer)
+        self.assertIn('func _range_fact_text() -> String:', renderer)
+        self.assertIn('if bool(action_definition.get("hide_range", false)):', renderer)
+        self.assertIn('return "의도"', renderer)
         self.assertIn('return "공격"', renderer)
 
     def test_current_human_facing_owners_do_not_point_to_retired_action_selection_fixture(self) -> None:
