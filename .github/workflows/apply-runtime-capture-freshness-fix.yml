@@ -1,0 +1,139 @@
+name: Apply runtime capture freshness fix
+
+on:
+  push:
+    branches:
+      - fix/runtime-capture-launch-run-freshness-20260902
+    paths:
+      - .github/workflows/apply-runtime-capture-freshness-fix.yml
+
+permissions:
+  contents: write
+
+jobs:
+  red-green-commit:
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/runtime-capture-launch-run-freshness-20260902
+          fetch-depth: 0
+      - name: Add launch-run freshness regression and prove RED
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("tests/test_runtime_visual_capture_contract.py")
+          text = path.read_text(encoding="utf-8")
+          text = text.replace("import json\n", "import json\nimport os\n", 1)
+          text = text.replace(
+              "from hashlib import sha256\n",
+              "from datetime import UTC, datetime, timedelta\nfrom hashlib import sha256\n",
+              1,
+          )
+          old_signature = "    def _run(self, project_root: Path, source: Path, capture_id: str, *extra: str) -> subprocess.CompletedProcess[str]:\n"
+          new_signature = "    def _write_launch_manifest(\n        self,\n        project_root: Path,\n        source: Path,\n        *,\n        created_at_utc: str | None = None,\n        exact_commit: str | None = None,\n    ) -> Path:\n        commit = exact_commit or self.source_commit\n        run_root = project_root / \"build\" / \"issue54-human-validation\" / commit\n        run_root.mkdir(parents=True, exist_ok=True)\n        launch_manifest = run_root / \"issue54-human-validation-launch.json\"\n        if created_at_utc is None:\n            source_time = datetime.fromtimestamp(source.stat().st_mtime, UTC)\n            created_at_utc = (source_time - timedelta(seconds=1)).isoformat()\n        launch_manifest.write_text(\n            json.dumps(\n                {\n                    \"schema_version\": 1,\n                    \"launcher_id\": \"ISSUE54_HUMAN_VALIDATION_LAUNCHER\",\n                    \"created_at_utc\": created_at_utc,\n                    \"project_root\": str(project_root.resolve()),\n                    \"exact_git_commit\": commit,\n                    \"fresh_artifact_gate\": \"FRESH_RUNTIME_ARTIFACT_GATE\",\n                },\n                indent=2,\n            )\n            + \"\\n\",\n            encoding=\"utf-8\",\n        )\n        return launch_manifest\n\n    def _run(\n        self,\n        project_root: Path,\n        source: Path,\n        capture_id: str,\n        *extra: str,\n        launch_manifest: Path | None = None,\n    ) -> subprocess.CompletedProcess[str]:\n"
+          if text.count(old_signature) != 1:
+              raise SystemExit("_run signature anchor missing or ambiguous")
+          text = text.replace(old_signature, new_signature)
+          old_consumer = "        consumer.write_text(\"# capture-test consumer\\n\", encoding=\"utf-8\")\n        return subprocess.run(\n"
+          new_consumer = "        consumer.write_text(\"# capture-test consumer\\n\", encoding=\"utf-8\")\n        if launch_manifest is None:\n            launch_manifest = self._write_launch_manifest(project_root, source)\n        return subprocess.run(\n"
+          if text.count(old_consumer) != 1:
+              raise SystemExit("consumer anchor missing or ambiguous")
+          text = text.replace(old_consumer, new_consumer)
+          old_args = "                \"--source-commit\",\n                self.source_commit,\n                \"--scene-path\",\n"
+          new_args = "                \"--source-commit\",\n                self.source_commit,\n                \"--launch-manifest\",\n                str(launch_manifest),\n                \"--scene-path\",\n"
+          if text.count(old_args) != 1:
+              raise SystemExit("CLI args anchor missing or ambiguous")
+          text = text.replace(old_args, new_args)
+          anchor = "    def test_registrar_requires_explicit_reason_for_a_third_capture_of_one_work_item(self) -> None:\n"
+          new_test = "    def test_registrar_rejects_capture_older_than_launch_run_without_creating_evidence(self) -> None:\n        self.assertTrue(SCRIPT.is_file(), f\"missing registrar: {SCRIPT}\")\n        with tempfile.TemporaryDirectory() as temporary:\n            project_root = Path(temporary) / \"project\"\n            project_root.mkdir()\n            source = Path(temporary) / \"stale-source.png\"\n            self._write_png(source)\n            stale_time = (datetime.now(UTC) - timedelta(minutes=10)).timestamp()\n            os.utime(source, (stale_time, stale_time))\n            launch_manifest = self._write_launch_manifest(\n                project_root,\n                source,\n                created_at_utc=datetime.now(UTC).isoformat(),\n            )\n\n            result = self._run(\n                project_root,\n                source,\n                \"TEN-RVC-20260901-007\",\n                launch_manifest=launch_manifest,\n            )\n            self.assertNotEqual(0, result.returncode)\n            self.assertIn(\"older than launch run\", result.stderr)\n            self.assertFalse(\n                (project_root / \"docs\" / \"evidence\" / \"RUNTIME_VISUAL_CAPTURE_MANIFEST.json\").exists()\n            )\n\n"
+          if text.count(anchor) != 1:
+              raise SystemExit("test insertion anchor missing or ambiguous")
+          path.write_text(text.replace(anchor, new_test + anchor), encoding="utf-8")
+          PY
+          set +e
+          python -m unittest tests.test_runtime_visual_capture_contract.RuntimeVisualCaptureContractTests.test_registrar_rejects_capture_older_than_launch_run_without_creating_evidence -v > /tmp/runtime-capture-red.log 2>&1
+          red_rc=$?
+          set -e
+          cat /tmp/runtime-capture-red.log
+          test "$red_rc" -ne 0
+      - name: Add launch-manifest identity and freshness gate
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path: Path, old: str, new: str) -> None:
+              text = path.read_text(encoding="utf-8")
+              if text.count(old) != 1:
+                  raise SystemExit(f"patch anchor missing or ambiguous in {path}: {old[:80]}")
+              path.write_text(text.replace(old, new), encoding="utf-8")
+
+          source = Path("tools/register_runtime_visual_capture.py")
+          replace_once(source, "from datetime import UTC, datetime\n", "from datetime import UTC, datetime, timedelta\n")
+          replace_once(
+              source,
+              "MAX_IMAGE_BYTES = 15 * 1024 * 1024\n",
+              "MAX_IMAGE_BYTES = 15 * 1024 * 1024\nLAUNCHER_ID = \"ISSUE54_HUMAN_VALIDATION_LAUNCHER\"\nFRESH_ARTIFACT_GATE = \"FRESH_RUNTIME_ARTIFACT_GATE\"\nFRESHNESS_CLOCK_SKEW = timedelta(seconds=2)\n",
+          )
+          load_anchor = "\ndef atomic_write_json(path: Path, payload: dict[str, Any]) -> None:\n"
+          load_function = "\ndef load_launch_manifest(\n    root: Path,\n    path: Path,\n    *,\n    expected_commit: str,\n    source: Path,\n) -> dict[str, Any]:\n    resolved = path.resolve()\n    expected = (\n        root\n        / \"build\"\n        / \"issue54-human-validation\"\n        / expected_commit\n        / \"issue54-human-validation-launch.json\"\n    ).resolve()\n    if resolved != expected:\n        raise CaptureValidationError(\n            \"launch manifest must be the exact project run manifest for the source commit\"\n        )\n    if not resolved.is_file():\n        raise CaptureValidationError(f\"launch manifest does not exist: {resolved}\")\n    try:\n        payload = json.loads(resolved.read_text(encoding=\"utf-8\"))\n    except json.JSONDecodeError as exc:\n        raise CaptureValidationError(f\"launch manifest is not valid JSON: {resolved}\") from exc\n    if not isinstance(payload, dict) or payload.get(\"schema_version\") != 1:\n        raise CaptureValidationError(\"launch manifest schema mismatch\")\n    if payload.get(\"launcher_id\") != LAUNCHER_ID:\n        raise CaptureValidationError(\"launch manifest launcher identity mismatch\")\n    if payload.get(\"fresh_artifact_gate\") != FRESH_ARTIFACT_GATE:\n        raise CaptureValidationError(\"launch manifest does not assert the fresh artifact gate\")\n    if str(payload.get(\"exact_git_commit\", \"\")).lower() != expected_commit:\n        raise CaptureValidationError(\"launch manifest source commit mismatch\")\n    manifest_root = payload.get(\"project_root\")\n    if not isinstance(manifest_root, str) or Path(manifest_root).resolve() != root:\n        raise CaptureValidationError(\"launch manifest project root mismatch\")\n    raw_started = payload.get(\"created_at_utc\")\n    if not isinstance(raw_started, str):\n        raise CaptureValidationError(\"launch manifest created_at_utc is required\")\n    try:\n        started = datetime.fromisoformat(raw_started.replace(\"Z\", \"+00:00\"))\n    except ValueError as exc:\n        raise CaptureValidationError(\"launch manifest created_at_utc must be ISO-8601\") from exc\n    if started.tzinfo is None:\n        raise CaptureValidationError(\"launch manifest created_at_utc must include a timezone\")\n    started_utc = started.astimezone(UTC)\n    source_mtime_utc = datetime.fromtimestamp(source.stat().st_mtime, UTC)\n    if source_mtime_utc + FRESHNESS_CLOCK_SKEW < started_utc:\n        raise CaptureValidationError(\n            \"source image is older than launch run; prior artifact existence is not fresh evidence\"\n        )\n    return {\n        \"launcher_id\": LAUNCHER_ID,\n        \"launch_manifest_path\": resolved.relative_to(root).as_posix(),\n        \"launch_manifest_sha256\": sha256_file(resolved),\n        \"launch_created_at_utc\": started_utc.isoformat(),\n        \"source_mtime_utc\": source_mtime_utc.isoformat(),\n        \"freshness_basis\": \"SOURCE_MTIME_AT_OR_AFTER_LAUNCH_CREATED_AT_WITH_2S_SKEW\",\n    }\n\n"
+          replace_once(source, load_anchor, load_function + "def atomic_write_json(path: Path, payload: dict[str, Any]) -> None:\n")
+          replace_once(
+              source,
+              "    parser.add_argument(\"--source-commit\", required=True)\n",
+              "    parser.add_argument(\"--source-commit\", required=True)\n    parser.add_argument(\"--launch-manifest\", required=True, type=Path)\n",
+          )
+          replace_once(
+              source,
+              "    width, height, byte_count, digest = inspect_png(source)\n\n    evidence_root = root / \"docs\" / \"evidence\"\n",
+              "    width, height, byte_count, digest = inspect_png(source)\n    producer_run = load_launch_manifest(\n        root,\n        args.launch_manifest,\n        expected_commit=args.source_commit.lower(),\n        source=source,\n    )\n\n    evidence_root = root / \"docs\" / \"evidence\"\n",
+          )
+          replace_once(
+              source,
+              "        \"source_commit\": args.source_commit.lower(),\n        \"runtime\": {\n",
+              "        \"source_commit\": args.source_commit.lower(),\n        \"producer_run\": producer_run,\n        \"runtime\": {\n",
+          )
+
+          tests = Path("tests/test_runtime_visual_capture_contract.py")
+          replace_once(
+              tests,
+              "            self.assertEqual(self.source_commit, entry[\"source_commit\"])\n            self.assertEqual(\"MACHINE_RUNTIME_CAPTURE\", entry[\"evidence_level\"])\n",
+              "            self.assertEqual(self.source_commit, entry[\"source_commit\"])\n            producer = entry[\"producer_run\"]\n            self.assertEqual(\"ISSUE54_HUMAN_VALIDATION_LAUNCHER\", producer[\"launcher_id\"])\n            self.assertEqual(\n                f\"build/issue54-human-validation/{self.source_commit}/issue54-human-validation-launch.json\",\n                producer[\"launch_manifest_path\"],\n            )\n            launch_manifest = project_root / producer[\"launch_manifest_path\"]\n            self.assertEqual(sha256(launch_manifest.read_bytes()).hexdigest(), producer[\"launch_manifest_sha256\"])\n            self.assertEqual(\"MACHINE_RUNTIME_CAPTURE\", entry[\"evidence_level\"])\n",
+          )
+
+          decision = Path("docs/decisions/2026-09-01_RUNTIME_VISUAL_CAPTURE_EVIDENCE_POLICY_DECISION.md")
+          replace_once(
+              decision,
+              "- `capture_id`, work item, exact committed `source_commit`, and SHA-256 of the copied PNG.\n",
+              "- `capture_id`, work item, exact committed `source_commit`, and SHA-256 of the copied PNG.\n- the exact `issue54-human-validation-launch.json` produced for that commit, its SHA-256, launch timestamp, and source-image modification time. A source image older than the launch run is rejected as stale evidence.\n",
+          )
+          replace_once(
+              decision,
+              "Temporary tool output such as an AppData HERA screenshot is acquisition input only. It becomes reviewable repository evidence only after the registrar copies it, hashes it, and records it in this manifest. The registrar never deletes a shared temporary source and never adds it to the game's runtime asset catalog.\n",
+              "Temporary tool output such as an AppData HERA screenshot is acquisition input only. It becomes reviewable repository evidence only after the registrar binds it to the exact launch manifest, rejects pre-run stale files, copies it, hashes it, and records it in this manifest. The registrar never deletes a shared temporary source and never adds it to the game's runtime asset catalog. The filesystem timestamp check blocks ordinary leftover-file reuse; it is not cryptographic producer attestation and does not prove visual quality.\n",
+          )
+          replace_once(
+              decision,
+              "The registrar rejects non-PNG input, unsafe paths, malformed IDs/source commits, duplicate IDs, missing metadata, and unreasoned third captures. Its test contract verifies source/copy hash equality, dimensions, evidence ceilings, and rejection behavior.\n",
+              "The registrar rejects non-PNG input, unsafe paths, malformed IDs/source commits, duplicate IDs, missing metadata, mismatched launch identity, source images older than the launch run, and unreasoned third captures. Its test contract verifies source/copy hash equality, dimensions, launch-manifest binding, stale-artifact rejection, evidence ceilings, and rejection behavior.\n",
+          )
+          PY
+      - name: Prove GREEN
+        shell: bash
+        run: |
+          python -m unittest tests/test_runtime_visual_capture_contract.py -v
+          python -m py_compile tools/register_runtime_visual_capture.py tests/test_runtime_visual_capture_contract.py
+      - name: Remove one-shot workflow and commit exact final diff
+        shell: bash
+        run: |
+          rm .github/workflows/apply-runtime-capture-freshness-fix.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add tools/register_runtime_visual_capture.py tests/test_runtime_visual_capture_contract.py docs/decisions/2026-09-01_RUNTIME_VISUAL_CAPTURE_EVIDENCE_POLICY_DECISION.md .github/workflows/apply-runtime-capture-freshness-fix.yml
+          git commit -m "fix: bind runtime captures to the current launch run"
+          test "$(git diff --name-only origin/main...HEAD | sort | tr '\n' ' ')" = "docs/decisions/2026-09-01_RUNTIME_VISUAL_CAPTURE_EVIDENCE_POLICY_DECISION.md tests/test_runtime_visual_capture_contract.py tools/register_runtime_visual_capture.py "
+          git push origin HEAD:fix/runtime-capture-launch-run-freshness-20260902
