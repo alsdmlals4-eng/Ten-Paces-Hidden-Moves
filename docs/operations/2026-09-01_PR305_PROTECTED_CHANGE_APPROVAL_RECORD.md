@@ -8,7 +8,7 @@ implementation_merge_commit: ab180360da27c163b7da4dc3c17789fa29bc1a14
 implementation_base_commit: 8d0f401f42431e78f78f26067f3dfc0309ddda9e
 decision_ids:
   - TEN-DEC-20260901-GROUNDED-DUEL-AUTO-TARGET-OBSERVE-01
-approved_protected_paths:
+approved_protected_path_groups_for_reading_only:
   - data/cards/martial_manuals/*
   - data/cards/ultimate_cards.json
   - data/combat/*
@@ -17,6 +17,35 @@ approved_protected_paths:
   - src/combat/*
   - src/ui/action_selection/*
   - src/ui/action_timing_panel*.gd
+  - src/ui/combat_progress_button.gd
+  - src/validation/vertical_slice_balance_public_policy.gd
+approved_protected_paths_exact:
+  - data/cards/martial_manuals/beggars_dragon_subduing_palm.json
+  - data/cards/martial_manuals/hebei_peng_five_tigers_saber.json
+  - data/cards/martial_manuals/mount_hua_plum_blossom_sword.json
+  - data/cards/martial_manuals/nangong_boundless_sky_sword.json
+  - data/cards/martial_manuals/shaolin_arhat_vajra_art.json
+  - data/cards/martial_manuals/sichuan_tang_hidden_weapons.json
+  - data/cards/martial_manuals/wudang_taiji_sword.json
+  - data/cards/martial_manuals/yang_family_spear.json
+  - data/cards/ultimate_cards.json
+  - data/combat/combat_board_poc.json
+  - data/combat/combat_progress_preview.json
+  - data/combat/combat_resolution_preview.json
+  - data/combat/mastery_ultimate_poc.json
+  - scenes/ui/action_selection/linked_action_block.tscn
+  - scenes/ui/combat_progress_button.tscn
+  - src/combat/battle_background.gd
+  - src/combat/combat_ai_planner.gd
+  - src/combat/combat_board_preview.gd
+  - src/combat/combat_board_preview_auto.gd
+  - src/combat/combat_character_placeholder.gd
+  - src/combat/combat_resolution_engine_ten_manuals.gd
+  - src/ui/action_selection/action_placement_controller.gd
+  - src/ui/action_selection/action_selection_dock.gd
+  - src/ui/action_selection/action_view_model_adapter.gd
+  - src/ui/action_timing_panel.gd
+  - src/ui/action_timing_panel_auto.gd
   - src/ui/combat_progress_button.gd
   - src/validation/vertical_slice_balance_public_policy.gd
 approval_manifest_path: docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json
