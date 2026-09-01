@@ -15,6 +15,7 @@ var progress_enabled := false
 var request_count := 0
 var last_request_context: Dictionary = {}
 var resolution_applied := false
+var plan_locked := false
 
 var _caption_label: Label
 var _button: Button
@@ -146,10 +147,17 @@ func set_progress_enabled(value: bool) -> void:
     set_meta("enabled", progress_enabled)
     _refresh()
 
+func set_plan_locked(value: bool) -> void:
+    plan_locked = value
+    set_meta("plan_locked", plan_locked)
+    _refresh()
+
 func mark_resolution_applied() -> void:
     resolution_applied = true
     progress_enabled = false
+    plan_locked = false
     set_meta("enabled", false)
+    set_meta("plan_locked", false)
     _refresh()
 
 func request_progress() -> void:
@@ -177,7 +185,10 @@ func _refresh() -> void:
     if _button == null:
         return
     _button.text = get_button_text()
-    _button.tooltip_text = "%s · 현재 행동 묶음을 실행합니다." % _button.text
+    _button.tooltip_text = "%s · %s" % [
+        _button.text.replace("\n", " "),
+        "현재 잠긴 행동 묶음을 실행합니다." if plan_locked else "현재 행동 묶음을 잠그고 배치를 닫습니다."
+    ]
     _button.disabled = not progress_enabled
     if resolution_applied:
         _status_label.text = str(progress_data.get("requested_text", "판정 완료"))
@@ -191,6 +202,8 @@ func _refresh() -> void:
     queue_redraw()
 
 func get_button_text() -> String:
+    if not plan_locked:
+        return "행동계획\n잠금"
     var sequence: Array = runtime_context.get("timing_sequence", [3, 3, 4])
     var bundle_index := maxi(1, int(runtime_context.get("bundle_index", 1)))
     var sequence_index := clampi(bundle_index - 1, 0, maxi(0, sequence.size() - 1))
@@ -220,6 +233,7 @@ func get_progress_snapshot() -> Dictionary:
         "writes_combat_log": bool(progress_data.get("writes_combat_log", true)),
         "action_placement_required": bool(progress_data.get("action_placement_required", true)),
         "resolution_applied": resolution_applied,
+        "plan_locked": plan_locked,
         "runtime_context": runtime_context.duplicate(true),
         "last_request_context": last_request_context.duplicate(true),
         "data_path": DATA_PATH

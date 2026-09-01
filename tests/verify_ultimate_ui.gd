@@ -173,6 +173,10 @@ func _verify_ultimate_playback_visibility() -> void:
             failures.append("Playback VFX test could not complete the first bundle.")
         else:
             board.combat_progress_button.request_progress()
+            await process_frame
+            if str(board.get_meta("presentation_state", "")) != "plan_locked":
+                failures.append("Ultimate playback must visibly lock the completed plan before revealing actions.")
+            board.combat_progress_button.request_progress()
             var ultimate_timing_seen := false
             for _attempt in range(40):
                 await process_frame

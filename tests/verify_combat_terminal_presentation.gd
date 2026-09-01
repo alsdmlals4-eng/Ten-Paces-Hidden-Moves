@@ -40,6 +40,10 @@ func _run() -> void:
                 failures.append("A complete 3-slot terminal ultimate must enable progress.")
             else:
                 board.combat_progress_button.request_progress()
+                await process_frame
+                if str(board.get_meta("presentation_state", "")) != "plan_locked":
+                    failures.append("A complete terminal ultimate must visibly lock its plan before resolution.")
+                board.combat_progress_button.request_progress()
                 for _attempt in range(120):
                     await process_frame
                     if str(board.get_meta("presentation_state", "")) == "review_ready":

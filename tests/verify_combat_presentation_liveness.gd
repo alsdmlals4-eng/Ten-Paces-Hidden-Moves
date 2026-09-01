@@ -16,11 +16,13 @@ func _run() -> void:
     root.add_child(board)
     for _index in range(6):
         await process_frame
+    _stabilize_three_bundle_test_state(board)
 
     await _plan_first_bundle(board)
     await _wait_for_review_then_next_bundle(board, "first")
     await _plan_second_bundle(board)
     await _wait_for_review_then_next_bundle(board, "second")
+    await _plan_final_bundle(board)
 
     board.queue_free()
     await process_frame
@@ -41,6 +43,11 @@ func _plan_first_bundle(board: CombatBoardPreview) -> void:
         return
     if not board.combat_progress_button.progress_enabled:
         failures.append("First bundle progress did not enable.")
+        return
+    board.combat_progress_button.request_progress()
+    await process_frame
+    if str(board.get_meta("presentation_state", "")) != "plan_locked":
+        failures.append("First bundle must visibly lock its plan before reveal playback.")
         return
     board.combat_progress_button.request_progress()
 
@@ -67,6 +74,47 @@ func _plan_second_bundle(board: CombatBoardPreview) -> void:
         failures.append("Second bundle progress did not enable.")
         return
     board.combat_progress_button.request_progress()
+    await process_frame
+    if str(board.get_meta("presentation_state", "")) != "plan_locked":
+        failures.append("Second bundle must visibly lock its plan before reveal playback.")
+        return
+    board.combat_progress_button.request_progress()
+
+func _plan_final_bundle(board: CombatBoardPreview) -> void:
+    if str(board.get_meta("presentation_state", "")) != "next_bundle_ready":
+        failures.append("Final four-action bundle requires next_bundle_ready after second review confirmation.")
+        return
+    var quick := _card(board, "basic_quick_attack")
+    var meditate := _card(board, "basic_meditate")
+    if not board.action_timing_panel.place_card(quick, 7):
+        failures.append("Final bundle quick-attack placement failed.")
+        return
+    for anchor in [8, 9, 10]:
+        if not board.action_timing_panel.place_card(meditate, anchor):
+            failures.append("Final bundle recovery placement failed at timing %d." % anchor)
+            return
+    if not board.action_timing_panel.is_current_bundle_complete() or not board.combat_progress_button.progress_enabled:
+        failures.append("Final four-action bundle must enable the plan-lock CTA only after all four actions are ready.")
+        return
+    if board.combat_progress_button.get_button_text() != "행동계획\n잠금":
+        failures.append("Final bundle must still start with the compact plan-lock CTA.")
+        return
+    var resolution_before := int(board.get_layout_snapshot().get("resolution_count", 0))
+    board.combat_progress_button.request_progress()
+    await process_frame
+    if str(board.get_meta("presentation_state", "")) != "plan_locked":
+        failures.append("Final four-action bundle must visibly lock before execution.")
+        return
+    if int(board.get_layout_snapshot().get("resolution_count", 0)) != resolution_before:
+        failures.append("Final bundle plan lock must not resolve any action.")
+        return
+    if board.combat_progress_button.get_button_text() != "4수 실행":
+        failures.append("Final locked bundle must expose exactly the current four-action count.")
+        return
+    board.combat_progress_button.request_progress()
+    await process_frame
+    if int(board.get_layout_snapshot().get("resolution_count", 0)) != resolution_before + 1:
+        failures.append("Final four-action bundle second CTA must invoke exactly one resolution.")
 
 func _wait_for_review_then_next_bundle(board: CombatBoardPreview, bundle_name: String) -> void:
     var review_seen := false
@@ -84,7 +132,7 @@ func _wait_for_review_then_next_bundle(board: CombatBoardPreview, bundle_name: S
                 return
         await create_timer(0.05).timeout
     if not review_seen:
-        failures.append("%s bundle must enter review_ready before reopening planning input." % bundle_name)
+        failures.append("%s bundle must enter review_ready before reopening planning input (last state=%s)." % [bundle_name, str(board.get_meta("presentation_state", ""))])
     else:
         failures.append("%s bundle must reopen planning input after explicit review confirmation." % bundle_name)
 
@@ -93,6 +141,18 @@ func _card(board: CombatBoardPreview, card_id: String) -> Dictionary:
         if str(card.definition.get("id", "")) == card_id:
             return card.definition.duplicate(true)
     return {}
+
+func _stabilize_three_bundle_test_state(board: CombatBoardPreview) -> void:
+    # This verifier needs to cross all 3/3/4 planning bundles.  Raise only the
+    # disposable product-test resource pools so an ordinary early terminal
+    # result cannot skip the final CTA transition under test.
+    for actor_key in ["player", "enemy"]:
+        var actor: Dictionary = (board.combat_state.get(actor_key, {}) as Dictionary).duplicate(true)
+        actor["health"] = [240, 240]
+        actor["stamina"] = [40, 40]
+        actor["internal"] = [40, 40]
+        board.combat_state[actor_key] = actor
+    board._apply_combat_state_to_view()
 
 func _finish() -> void:
     if failures.is_empty():

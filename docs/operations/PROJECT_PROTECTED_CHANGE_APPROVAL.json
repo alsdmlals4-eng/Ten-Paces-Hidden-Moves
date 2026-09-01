@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "ab180360da27c163b7da4dc3c17789fa29bc1a14",
+  "decision_ids": [
+    "TEN-DEC-20260901-ACTION-PLAN-LOCK-AND-EXECUTE-CTA-01"
+  ],
+  "approved_paths": [
+    "src/combat/combat_board_preview_auto.gd",
+    "src/ui/action_selection/action_selection_dock.gd",
+    "src/ui/combat_progress_button.gd"
+  ],
+  "approval_source": "User's explicit 2026-09-01 instruction: follow the recommended approach, begin blueprint work in order, benchmark, create needed UI/images, and make it; prior same-turn direction explicitly required the action-plan lock to fit its slot and execution to show only the current action count.",
+  "approval_time": "2026-09-01T14:00:00+09:00",
+  "scope_summary": "Only the current completed action bundle gains a presentation/input plan-lock first activation and a compact current-count execute second activation. The existing resolver remains invoked exactly once on the second activation. The ten-cell logical core, 3/3/4 cadence, combat formulas, save schema, AI information boundary, observation payload, card data, approved asset bytes, platform behavior, and release scope are excluded."
+}

@@ -172,8 +172,8 @@ func _verify_cards_and_overlays(board: CombatBoardPreview, snapshot: Dictionary)
         failures.append("Progress button must exist.")
     elif board.combat_progress_button.progress_enabled:
         failures.append("Progress button must start disabled before placements.")
-    elif board.combat_progress_button.get_button_text() != "3수 실행":
-        failures.append("Progress control must show only the current three-action bundle count.")
+    elif board.combat_progress_button.get_button_text() != "행동계획\n잠금":
+        failures.append("A completed bundle must first expose the compact plan-lock action.")
     elif board.combat_progress_button.size.x > 104.0 or board.combat_progress_button.size.y > 72.0:
         failures.append("Progress control must remain compact beside the timing strip.")
 
@@ -343,6 +343,17 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
     var before_log_count := int(board.combat_log_panel.get_log_snapshot().get("entry_count", 0))
     board.combat_progress_button.request_progress()
     await process_frame
+    var plan_locked_snapshot := board.get_layout_snapshot()
+    if not bool(plan_locked_snapshot.get("inputs_locked", false)):
+        failures.append("Plan lock must lock combat planning inputs before resolution.")
+    if str(plan_locked_snapshot.get("presentation_state", "")) != "plan_locked":
+        failures.append("First progress action must enter the explicit plan_locked state.")
+    if int(plan_locked_snapshot.get("resolution_count", 0)) != 0:
+        failures.append("Plan lock must not resolve the current bundle.")
+    if board.combat_progress_button.get_button_text() != "3수 실행":
+        failures.append("After plan lock, the compact progress action must show only the current action count.")
+    board.combat_progress_button.request_progress()
+    await process_frame
     var presenting_snapshot := board.get_layout_snapshot()
     if not bool(presenting_snapshot.get("inputs_locked", false)):
         failures.append("Committed-to-presentation resolution must lock combat planning inputs.")
@@ -416,6 +427,11 @@ func _verify_second_bundle_returns_to_planning(board: CombatBoardPreview) -> voi
         return
     if not board.combat_progress_button.progress_enabled:
         failures.append("A complete second bundle must enable progress.")
+        return
+    board.combat_progress_button.request_progress()
+    await process_frame
+    if str(board.get_meta("presentation_state", "")) != "plan_locked":
+        failures.append("Second bundle must also require a visible plan-lock step before resolution.")
         return
     board.combat_progress_button.request_progress()
     var review_seen := false

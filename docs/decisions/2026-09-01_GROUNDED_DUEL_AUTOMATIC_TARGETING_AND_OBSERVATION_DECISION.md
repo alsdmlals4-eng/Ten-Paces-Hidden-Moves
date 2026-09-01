@@ -103,7 +103,7 @@ presentation:
 
 - `TEN-DEC-20260830-ACTION-CARD-SOURCE-UNIFICATION-01`의 공통 카드 shell·타일/좌우 선택 퇴역·이동 의미 카드 원칙은 유지한다.
 - 같은 2026-08-30 Decision의 `attack_input: semantic_aim_cards`, 공격 `aim_intent`, `상대를 노림 / 반대 예측`은 **이 player-facing input 범위에서 SUPERSEDED**다.
-- `TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01`의 “유효한 묶음을 commit하고 해결로 전환한다”는 의미는 유지한다. 보이는 CTA copy만 `행동계획 실행`에서 `N수 실행`으로 supersede한다.
+- `TEN-DEC-20260828-ACTION-PLAN-EXECUTION-CTA-01`의 3/3/4 슬롯과 해결 뒤 Review 인과 설명은 유지한다. CTA copy와 lock/execute input semantics는 `TEN-DEC-20260901-ACTION-PLAN-LOCK-AND-EXECUTE-CTA-01`이 supersede한다.
 - `TEN-DEC-20260831-ACTION-CARD-ILLUSTRATION-EXTENSION-01`의 기초·무공·절초 공통 카드 삽화는 유지한다. 이 결정은 삽화 asset을 새로 만들거나 바꾸지 않는다.
 - `TEN-DEC-20260802-OBSERVATION-STATS-MASTERY-DECISION`의 공개 정보 경계는 유지하고, 수동 버튼만 자동 type-only 공개로 바꾼다.
 
