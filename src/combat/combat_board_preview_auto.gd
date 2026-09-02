@@ -504,7 +504,9 @@ func _configure_keyboard_focus_order() -> void:
                 sequence.append_array(action_selection_dock.basic_panel.buttons)
 
     var appended_anchors: Dictionary = {}
-    for timing_index in range(1, 11):
+    var visible_timing_indices := action_timing_panel.get_visible_timing_indices()
+    for timing_value in visible_timing_indices:
+        var timing_index := int(timing_value)
         if action_timing_panel.has_assignment_at(timing_index):
             var anchor_index := action_timing_panel.get_assignment_anchor(timing_index)
             if appended_anchors.has(anchor_index):

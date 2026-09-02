@@ -121,7 +121,9 @@ func get_visible_timing_indices() -> PackedInt32Array:
 func _refresh_slot_visibility() -> void:
     var visible_indices := get_visible_timing_indices()
     for slot in slots:
-        slot.visible = slot.timing_index in visible_indices
+        var is_current_bundle_slot := slot.timing_index in visible_indices
+        slot.visible = is_current_bundle_slot
+        slot.focus_mode = Control.FOCUS_ALL if is_current_bundle_slot else Control.FOCUS_NONE
     for group_label in _group_labels:
         group_label.visible = false
     set_meta("visible_timing_indices", visible_indices)
@@ -491,8 +493,7 @@ func _layout() -> void:
     var visible_indices := get_visible_timing_indices()
     if visible_indices.is_empty():
         return
-    for slot in slots:
-        slot.visible = slot.timing_index in visible_indices
+    _refresh_slot_visibility()
     var base_gap := 8.0
     var total_gap := base_gap * float(maxi(0, visible_indices.size() - 1))
     var slot_width := maxf(48.0, (width - total_gap) / float(visible_indices.size()))

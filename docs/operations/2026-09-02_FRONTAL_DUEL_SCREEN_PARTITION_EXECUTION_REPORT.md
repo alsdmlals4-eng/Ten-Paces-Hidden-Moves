@@ -42,7 +42,7 @@
 | RED | 신규 `verify_frontal_duel_screen_partition.gd`가 세 surface, current-only indices, distant profile/separation이 없다는 6개 assertion으로 먼저 실패 |
 | GREEN | 같은 verifier가 `FRONTAL_DUEL_SCREEN_PARTITION_VERIFY_OK`로 통과 |
 | root-cause correction | `ActionSelectionDock` scene의 legacy minimum height `350`이 planning surface보다 커 overflow를 만들던 것을 `272` 및 내부 `232`로 맞춤 |
-| focused Godot | `verify_combat_board`, `verify_ink_paper_combat_presentation`, `verify_combat_character_art`, `verify_action_repositioning`, `verify_action_card_source_unification`, `verify_combat_layout_accessibility`, `verify_frontal_duel_assets`, `verify_duel_foreground_banner` passed |
+| focused Godot | `verify_combat_board`, `verify_ink_paper_combat_presentation`, `verify_combat_character_art`, `verify_action_repositioning`, `verify_action_card_source_unification`, `verify_combat_layout_accessibility`, `verify_frontal_duel_assets`, `verify_duel_foreground_banner`, `verify_combat_focus_order`, `verify_frontal_duel_screen_partition` passed |
 | core contract | `python tests/check_combat_board_contract.py` passed |
 | full Python | `python -m unittest discover -s tests -p 'test_*.py' -v` — 455 tests, `OK` |
 | visible Godot runtime | [`TEN-RVC-20260902-003.png`](../evidence/runtime-captures/TEN-RVC-20260902-003.png), `1280×800`, errors `0`, warnings `0`, source SHA `801f29a8…` |
@@ -50,7 +50,7 @@
 ## Five adversarial review loops
 
 1. **Floating surface attack:** inspected capture for landscape leaking behind planner/HUD. Separate opaque top/planning surfaces and stage-only clipping remove the overlap.
-2. **Future-information attack:** verified 3/3/4 storage persists but UI exposes only `[1,2,3]`, then `[4,5,6]`, then `[7,8,9,10]`; no future plan preview was reintroduced.
+2. **Future-information and input attack:** verified 3/3/4 storage persists but UI exposes only `[1,2,3]`, then `[4,5,6]`, then `[7,8,9,10]`. After remote CI exposed a legacy Tab-chain expectation, hidden future slots were set to `FOCUS_NONE` and the product chain now enumerates current indices only; no future plan preview or invisible input stop remains.
 3. **Distant-composition attack:** required initial horizontal foot separation at least 42% of viewport width and each battler at most 52% of stage height; shared floor and contact shadow assertions remain active.
 4. **Layout-overflow attack:** caught the 350px dock minimum that exceeded the computed planning region; corrected the actual scene constraints rather than hiding or clipping input.
 5. **Rule/asset scope attack:** reviewed changed consumers to ensure no combat formula, AI, save, input policy, or locked raster bytes changed. No Base promotion is proposed: one project-specific combat layout consumer set is not cross-project evidence.

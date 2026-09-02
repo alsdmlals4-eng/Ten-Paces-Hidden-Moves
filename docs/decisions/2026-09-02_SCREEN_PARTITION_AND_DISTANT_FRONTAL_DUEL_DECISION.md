@@ -59,6 +59,7 @@ timing_visibility:
   bundle_3: [7, 8, 9, 10]
   logical_slot_storage: all_ten_preserved
   future_bundle_preview: forbidden
+  keyboard_traversal: current_bundle_only
 
 frontal_composition:
   profile: distant_frontal_duel
