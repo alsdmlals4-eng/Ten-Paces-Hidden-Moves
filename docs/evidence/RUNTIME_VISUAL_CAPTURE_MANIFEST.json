@@ -207,6 +207,55 @@
         "accessibility_user": "NOT_RUN",
         "release_performance": "NOT_RUN"
       }
+    },
+    {
+      "capture_id": "TEN-RVC-20260902-003",
+      "recorded_at_utc": "2026-09-02T13:06:09.850065+00:00",
+      "work_item_id": "TEN-FRONTAL-DUEL-SCREEN-PARTITION-20260902",
+      "source_commit": "801f29a82451c9a9e5ae6ddb86d1c11b17f2494f",
+      "runtime": {
+        "scene_path": "res://scenes/combat/combat_board_preview.tscn",
+        "capture_state": "initial_first_bundle_partitioned_distant_duel",
+        "entry_route": "visible_godot_runtime_scene_direct_no_state_injection",
+        "source_delta": "EXACT_HEAD_801F29A8; visible Godot scene direct; temporary external capture harness only; unrelated preexisting worktree changes excluded"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd",
+        "src/combat/battle_background.gd",
+        "src/ui/combat_screen_surface.gd",
+        "src/ui/action_timing_panel.gd",
+        "scenes/ui/action_selection/action_selection_dock.tscn"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 0
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260902-003.png",
+        "sha256": "4f0ba4dd524d706523e7089ec58cc6e6bd08e781a790dee8d6c7fa7e5786e4ac",
+        "bytes": 760544,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260902-004",
+        "prepared_at_utc": "2026-09-02T13:01:08.611508+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "d51317bb8296d6124bd531259ec2a931",
+        "receipt_sha256": "8b4d35b3c1bef45d0e075d1bdf0de6505fc537485ac9514c5f22267b366015f7",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      }
     }
   ]
 }
