@@ -6,6 +6,7 @@
 |---|---|
 | baseline source commit | `ef7a48d2769b17b4632b695191a293ee40524ac4` |
 | product source commit captured | `801f29a82451c9a9e5ae6ddb86d1c11b17f2494f` |
+| final product/input commit | `a403884c1d47aec36654a129d8c338d304cd79eb` |
 | Work Mode | `BUILD → REVIEW` |
 | Skill / Skill Mode | `ten-paces-hidden-moves-workflow-router / project-local build and verification route`; `systematic-debugging / layout root-cause analysis`; `test-driven-development / RED → GREEN` |
 | current source relevance | `REUSED_BOUNDED_CONTINUATION`; the existing 10+ game packets remain relevant to the unchanged information-hierarchy and plan-commitment dimension |
@@ -46,6 +47,7 @@
 | core contract | `python tests/check_combat_board_contract.py` passed |
 | full Python | `python -m unittest discover -s tests -p 'test_*.py' -v` — 455 tests, `OK` |
 | visible Godot runtime | [`TEN-RVC-20260902-003.png`](../evidence/runtime-captures/TEN-RVC-20260902-003.png), `1280×800`, errors `0`, warnings `0`, source SHA `801f29a8…` |
+| remote CI | PR `#321` exact product/input head `a403884c…`: `approved-protected-change` label recognized; 30 checks succeeded, no failed/pending checks, merge state `CLEAN` |
 
 ## Five adversarial review loops
 
@@ -64,4 +66,4 @@
 
 ## 미검증·남은 위험
 
-이 capture는 recorded Windows-visible machine render를 입증한다. Human UX/사람 플레이, 실제 물리 입력, 접근성 사용자, Android 실제 device, release performance, remote CI, PR merge, post-merge `main` readback은 `NOT_RUN` 또는 아직 진행 전이다. 인물의 최종 미학·거리감에 대한 사람 승인도 capture를 본 사용자 판단과 분리한다.
+이 capture는 recorded Windows-visible machine render를 입증한다. Human UX/사람 플레이, 실제 물리 입력, 접근성 사용자, Android 실제 device, release performance, PR merge, post-merge `main` readback은 `NOT_RUN` 또는 아직 진행 전이다. 인물의 최종 미학·거리감에 대한 사람 승인도 capture를 본 사용자 판단과 분리한다.
