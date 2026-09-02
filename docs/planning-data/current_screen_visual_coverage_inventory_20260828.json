@@ -334,28 +334,28 @@
   ],
   "asset_family_inventory": [
     {
-      "asset_family_id": "COMBAT_BACKGROUND_01",
+      "asset_family_id": "COMBAT_BACKGROUND_AND_FOREGROUND_02",
       "classification": "RUNTIME_IMAGE",
-      "actual_consumer": "src/combat/battle_background.gd",
-      "active_asset": "res://assets/backgrounds/frontal_courtyard_duel_background_01_v1.png",
+      "actual_consumer": "src/combat/battle_background.gd; src/ui/duel_foreground_banner.gd",
+      "active_asset": "res://assets/backgrounds/frontal_courtyard_duel_background_02_v1.png; res://assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png",
       "states": [
         "normal",
         "STRETCH_KEEP_ASPECT_COVERED"
       ],
-      "status": "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260831",
-      "production_rule": "The 2026-08-31 frontal-courtyard candidate completed separate brief, user final lock, manifest/provenance registration, consumer integration, and Godot 4.7.1 visible screenshot/node/log readback. It is not human/device/release approval."
+      "status": "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_PENDING_MACHINE_RUNTIME_VERIFICATION_20260902",
+      "production_rule": "The 2026-09-02 modular pack completed separate briefs, explicit final lock, manifest/provenance registration, and consumer integration. Exact new-art machine runtime capture remains required; it is not human/device/release approval."
     },
     {
       "asset_family_id": "COMBAT_CHARACTER_BATTLERS",
       "classification": "RUNTIME_IMAGE",
       "actual_consumer": "src/combat/combat_character_placeholder.gd",
-      "active_asset": "res://assets/characters/player_wanderer_battler_rgba_v1.png; res://assets/characters/enemy_masked_battler_rgba_v1.png; res://assets/characters/dogyeom_combat_battler_01_v1.png for slot1_dogyeom",
+      "active_asset": "res://assets/characters/player_wanderer_battler_rgba_v2.png; res://assets/characters/enemy_masked_battler_rgba_v2.png; res://assets/characters/dogyeom_combat_battler_01_v1.png for slot1_dogyeom",
       "states": [
         "player",
         "generic_enemy",
         "slot1_dogyeom"
       ],
-      "status": "COVERED_EXISTING_RUNTIME",
+      "status": "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_PENDING_MACHINE_RUNTIME_VERIFICATION_20260902",
       "production_rule": "remaining opponents require exact opponent routing and identity source"
     },
     {

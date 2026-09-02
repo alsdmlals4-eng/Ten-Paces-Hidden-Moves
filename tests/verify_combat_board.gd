@@ -1,7 +1,7 @@
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
-const BACKGROUND_ASSET_PATH := "res://assets/backgrounds/frontal_courtyard_duel_background_01_v1.png"
+const BACKGROUND_ASSET_PATH := "res://assets/backgrounds/frontal_courtyard_duel_background_02_v1.png"
 const EXPECTED_TILE_COUNT := 10
 const EXPECTED_PLAYER_TILE := 4
 const EXPECTED_ENEMY_TILE := 6

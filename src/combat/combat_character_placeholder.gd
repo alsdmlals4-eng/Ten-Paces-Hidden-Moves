@@ -8,8 +8,8 @@ const ENEMY_OUTLINE := Color("bd6558")
 const INK := Color("1d1a17")
 const PAPER := Color("d8c9aa")
 const GOLD := Color("b99254")
-const PLAYER_ART_PATH := "res://assets/characters/player_wanderer_battler_rgba_v1.png"
-const ENEMY_ART_PATH := "res://assets/characters/enemy_masked_battler_rgba_v1.png"
+const PLAYER_ART_PATH := "res://assets/characters/player_wanderer_battler_rgba_v2.png"
+const ENEMY_ART_PATH := "res://assets/characters/enemy_masked_battler_rgba_v2.png"
 const DOGYEOM_ART_PATH := "res://assets/characters/dogyeom_combat_battler_01_v1.png"
 
 var role: String = "player"

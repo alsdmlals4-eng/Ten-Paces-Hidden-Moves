@@ -1,6 +1,7 @@
 {
   "schema_version": 1,
   "generated_at": "2026-07-23",
+  "updated_at": "2026-09-02",
   "license": "Project-original AI-generated concept asset; retain generation prompt and do not claim third-party source material.",
   "assets": [
     {
@@ -20,7 +21,55 @@
       "runtime_consumer": "src/combat/battle_background.gd",
       "replaces_active_asset": "ink_mist_valley_duel_01_v1",
       "transparency_required": false,
-      "active": true
+      "active": false,
+      "lifecycle_status": "SUPERSEDED_BY_USER_FINAL_LOCK_20260902",
+      "superseded_by": "frontal_courtyard_duel_background_02_v1"
+    },
+    {
+      "id": "frontal_courtyard_duel_background_02_v1",
+      "path": "res://assets/backgrounds/frontal_courtyard_duel_background_02_v1.png",
+      "role": "정면 대치와 공유 지면 접점을 위한 모듈형 무협 애니메이션 석조 마당 전장 배경",
+      "generator": "OpenAI built-in image generation",
+      "generation_output_id": "exec-3d7cc1b7-de1b-4322-82f4-288108f1d2a7",
+      "source_png_sha256": "1f36bb1b853cf6008ca9d54bf71ebe1ce3916ce90db75a8caca1e62e5ad076fd",
+      "dimensions": "1672x941",
+      "prompt": "Original 16:9 Korean wuxia animation key-art environment only: warm dusk stone courtyard, centered gate, painted mountains and a broad continuous stone floor with clear left/right shared ground-contact zones. Separate background layer only; no people, weapon, banner, silhouette, UI, text, logo, watermark, or copied reference composition.",
+      "reference_usage": "User-provided images informed only the functional art direction: frontal shared ground, low-key warm dusk, painted wuxia animation value grouping, and a gameplay-safe centre. No reference pixels, identities, UI, or composition were included.",
+      "license": "User final-locked AI-generated project asset; retain provenance and independent similarity review.",
+      "rights_review": "CONDITIONAL_RELEASE_RIGHTS: user remains responsible for input rights and final use; output is not guaranteed unique; no third-party source material was included in the runtime file.",
+      "approval": "user explicit: 배경,깃발도 방금 만든거 2개 승인 (2026-09-02)",
+      "source_asset": "docs/visual-assets/approved/FRONTAL_COURTYARD_DUEL_BACKGROUND_02_v1.png",
+      "runtime_consumer": "BattleBackground in src/combat/battle_background.gd; MainTitleScreen in src/ui/main_title_screen.gd",
+      "replaces_active_asset": "frontal_courtyard_duel_background_01_v1",
+      "transparency_required": false,
+      "active": true,
+      "lifecycle_status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED_PENDING_MACHINE_RUNTIME_VERIFICATION"
+    },
+    {
+      "id": "frontal_courtyard_banner_overlay_01_v1",
+      "path": "res://assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png",
+      "role": "전투·메인·후속 정면 구도 화면에 재사용하는 투명 세로 깃발 전경 레이어",
+      "generator": "OpenAI built-in image generation",
+      "generation_output_id": "exec-66e61807-3dea-4dad-9a65-1a419b7b3ec6",
+      "source_png_sha256": "56667318d441f7e74accfc08f7038500e5d3b313bc68a15387f9c3c62608d7e2",
+      "dimensions": "1024x1536",
+      "prompt": "Original transparent vertical Korean wuxia court banner overlay with weathered warm fabric, restrained charcoal ink edge work, no background rectangle, no people, weapon, UI, text, logo, watermark, or copied reference composition. Must be reusable as a mirrored left/right pair over an environment-only duel background.",
+      "reference_usage": "User-provided images informed only the request for separate foreground banners within a warm painted wuxia environment. No reference pixels, text, identity, or composition were included.",
+      "license": "User final-locked AI-generated project asset; retain provenance and independent similarity review.",
+      "rights_review": "CONDITIONAL_RELEASE_RIGHTS: user remains responsible for input rights and final use; output is not guaranteed unique; no third-party source material was included in the runtime file.",
+      "approval": "user explicit: 배경,깃발도 방금 만든거 2개 승인 (2026-09-02)",
+      "source_asset": "docs/visual-assets/approved/FRONTAL_COURTYARD_BANNER_OVERLAY_01_v1.png",
+      "runtime_consumer": "DuelForegroundBanner in src/ui/duel_foreground_banner.gd; consumed by CombatBoardPreview and MainTitleScreen",
+      "transparency_required": true,
+      "transparency_audit": {
+        "mode": "RGBA",
+        "has_alpha": true,
+        "alpha_bounds_at_threshold_16": [340, 8, 684, 1528],
+        "corner_alpha": [0, 0, 0, 0],
+        "status": "APPROVED_ACTIVE"
+      },
+      "active": true,
+      "lifecycle_status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED_PENDING_MACHINE_RUNTIME_VERIFICATION"
     },
     {
       "id": "player_wanderer_ink_v1",
@@ -33,6 +82,35 @@
       "active": true
     },
     {
+      "id": "player_wanderer_battler_rgba_v2",
+      "path": "res://assets/characters/player_wanderer_battler_rgba_v2.png",
+      "role": "강호낭인 정면 대치 전장 전신 원화 — 무협 애니메이션 키아트",
+      "generator": "OpenAI built-in image generation",
+      "generation_output_id": "exec-4695661f-7c4a-46a2-afaa-113372e4504c",
+      "source_png_sha256": "383fd9a62de43d1b9c5c6c38f1ad9d537d8f088c08e4f25e23e974b87dc08864",
+      "dimensions": "1024x1536",
+      "prompt": "Original full-body Korean wuxia animation key-art player, facing right in a grounded low ready stance; wind-swept dark robe, tied hair, a single body-proportional low sword ending near the forward boot, transparent background, no baked floor, text, logo, UI, watermark, franchise identity, or copied reference pose.",
+      "reference_usage": "User-provided image informed only broad style requirements: animated wuxia silhouette, charcoal outline, low weapon, and shared-ground readability. No reference pixel, identity, pose, UI, or composition was included.",
+      "license": "User final-locked AI-generated project asset; retain provenance and independent similarity review.",
+      "approval": "user explicit: 방금 2 이미지는 승인 (2026-09-02)",
+      "source_asset": "docs/visual-assets/approved/WANDERER_COMBAT_BATTLER_02_20260902_v2.png",
+      "runtime_consumer": "src/combat/combat_character_placeholder.gd PLAYER_ART_PATH; src/ui/main_title_screen.gd PLAYER_PATH",
+      "transparency_required": true,
+      "transparency_audit": {
+        "mode": "RGBA",
+        "has_alpha": true,
+        "alpha_extrema": [0, 255],
+        "transparent_pixels": 922489,
+        "partially_transparent_pixels": 650375,
+        "corner_alpha": [0, 0, 0, 0],
+        "alpha_bounds_at_threshold_16": [56, 120, 984, 1412],
+        "foot_safe_bottom_margin_px": 123,
+        "status": "APPROVED_ACTIVE"
+      },
+      "active": true,
+      "lifecycle_status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED_PENDING_MACHINE_RUNTIME_VERIFICATION"
+    },
+    {
       "id": "enemy_masked_ink_v1",
       "path": "res://assets/portraits/enemy_masked_ink_v1.png",
       "role": "무명 검객 상태 패널 초상",
@@ -41,6 +119,35 @@
       "license": "Project-original AI-generated concept asset; retain generation prompt and do not claim third-party source material.",
       "transparency_required": false,
       "active": true
+    },
+    {
+      "id": "enemy_masked_battler_rgba_v2",
+      "path": "res://assets/characters/enemy_masked_battler_rgba_v2.png",
+      "role": "무명 검객 정면 대치 전장 전신 원화 — 무협 애니메이션 키아트",
+      "generator": "OpenAI built-in image generation",
+      "generation_output_id": "exec-3eae95cf-fa7d-44f4-b326-8a2e839d7fbe",
+      "source_png_sha256": "0841505d275ca970d7d085d7ab206788276517d2290a63960d829e657dfbe17f",
+      "dimensions": "1024x1536",
+      "prompt": "Original full-body Korean wuxia animation key-art masked opponent, facing left in a grounded low ready stance; dark armor-robe, muted red lining, one short body-proportional low sword ending near the forward boot, transparent background, no baked floor, text, logo, UI, watermark, franchise identity, or copied reference pose.",
+      "reference_usage": "User-provided image informed only broad style requirements: animated wuxia silhouette, charcoal outline, low weapon, and shared-ground readability. No reference pixel, identity, pose, UI, or composition was included.",
+      "license": "User final-locked AI-generated project asset; retain provenance and independent similarity review.",
+      "approval": "user explicit: 방금 2 이미지는 승인 (2026-09-02)",
+      "source_asset": "docs/visual-assets/approved/MASKED_SWORDSMAN_COMBAT_BATTLER_02_20260902_v2.png",
+      "runtime_consumer": "src/combat/combat_character_placeholder.gd ENEMY_ART_PATH; src/ui/main_title_screen.gd ENEMY_PATH",
+      "transparency_required": true,
+      "transparency_audit": {
+        "mode": "RGBA",
+        "has_alpha": true,
+        "alpha_extrema": [0, 255],
+        "transparent_pixels": 970318,
+        "partially_transparent_pixels": 602546,
+        "corner_alpha": [0, 0, 0, 0],
+        "alpha_bounds_at_threshold_16": [88, 124, 1000, 1428],
+        "foot_safe_bottom_margin_px": 107,
+        "status": "APPROVED_ACTIVE"
+      },
+      "active": true,
+      "lifecycle_status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED_PENDING_MACHINE_RUNTIME_VERIFICATION"
     },
     {
       "id": "dogyeom_status_portrait_01_v1",
@@ -74,7 +181,9 @@
         "status": "APPROVED_ACTIVE"
       },
       "runtime_consumer": "src/combat/combat_character_placeholder.gd PLAYER_ART_PATH",
-      "active": true
+      "active": false,
+      "lifecycle_status": "SUPERSEDED_BY_USER_FINAL_LOCK_20260902",
+      "superseded_by": "player_wanderer_battler_rgba_v2"
     },
     {
       "id": "player_wanderer_battler_chroma_v1",
@@ -109,7 +218,9 @@
         "corner_alpha": [0, 0, 0, 0],
         "status": "APPROVED_ACTIVE"
       },
-      "active": true
+      "active": false,
+      "lifecycle_status": "SUPERSEDED_BY_USER_FINAL_LOCK_20260902",
+      "superseded_by": "enemy_masked_battler_rgba_v2"
     },
     {
       "id": "enemy_masked_battler_chroma_v1",

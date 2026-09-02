@@ -17,8 +17,8 @@ func _run() -> void:
     for _index in range(4):
         await process_frame
 
-    _require_role_art(board.player_character, "player", "res://assets/characters/player_wanderer_battler_rgba_v1.png")
-    _require_role_art(board.enemy_character, "enemy", "res://assets/characters/enemy_masked_battler_rgba_v1.png")
+    _require_role_art(board.player_character, "player", "res://assets/characters/player_wanderer_battler_rgba_v2.png")
+    _require_role_art(board.enemy_character, "enemy", "res://assets/characters/enemy_masked_battler_rgba_v2.png")
     _require_anchor(board, "player")
     _require_anchor(board, "enemy")
     await _require_art_motion(board.player_character, "player")

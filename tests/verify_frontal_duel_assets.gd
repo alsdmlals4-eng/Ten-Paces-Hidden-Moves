@@ -2,9 +2,11 @@
 extends SceneTree
 
 const BOARD_SCENE := preload("res://scenes/combat/combat_board_preview.tscn")
-const PLAYER_BATTLER_PATH := "res://assets/characters/player_wanderer_battler_rgba_v1.png"
+const BACKGROUND_PATH := "res://assets/backgrounds/frontal_courtyard_duel_background_02_v1.png"
+const BANNER_PATH := "res://assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png"
+const PLAYER_BATTLER_PATH := "res://assets/characters/player_wanderer_battler_rgba_v2.png"
 const DOGYEOM_BATTLER_PATH := "res://assets/characters/dogyeom_combat_battler_01_v1.png"
-const GENERIC_ENEMY_BATTLER_PATH := "res://assets/characters/enemy_masked_battler_rgba_v1.png"
+const GENERIC_ENEMY_BATTLER_PATH := "res://assets/characters/enemy_masked_battler_rgba_v2.png"
 const BASIC_ATLAS_PATH := "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png"
 const EXPECTED_IDS := [
 	"basic_move", "basic_footwork", "basic_guard", "basic_evade", "basic_quick_attack",
@@ -19,6 +21,8 @@ func _init() -> void:
 func _run() -> void:
 	_expect(ResourceLoader.exists(PLAYER_BATTLER_PATH), "Player frontal battler must exist.")
 	_expect(ResourceLoader.exists(DOGYEOM_BATTLER_PATH), "Dogyeom frontal battler must exist.")
+	_expect(ResourceLoader.exists(BACKGROUND_PATH), "Approved modular courtyard background must exist.")
+	_expect(ResourceLoader.exists(BANNER_PATH), "Approved modular banner overlay must exist.")
 	_expect(ResourceLoader.exists(BASIC_ATLAS_PATH), "Final-locked basic-technique atlas must be registered as a runtime asset.")
 
 	var board := BOARD_SCENE.instantiate() as CombatBoardPreview
@@ -36,6 +40,10 @@ func _run() -> void:
 	_expect(str(board.enemy_character.get_meta("character_art_path", "")) == GENERIC_ENEMY_BATTLER_PATH, "Generic combat preview must retain its non-Dogyeom fallback battler.")
 	_expect(board.player_character.get_render_texture() != null, "Player frontal battler texture must load.")
 	_expect(board.enemy_character.get_render_texture() != null, "Generic enemy frontal battler texture must load.")
+	var layout := board.get_layout_snapshot()
+	_expect(str(layout.get("background_path", "")) == BACKGROUND_PATH, "Combat board must consume the approved modular courtyard background.")
+	_expect(bool(layout.get("foreground_banner_ready", false)), "Combat board must expose the reusable foreground banner layer.")
+	_expect(str(layout.get("foreground_banner_path", "")) == BANNER_PATH, "Combat board foreground must consume the approved banner overlay.")
 
 	var cards: Dictionary = {}
 	for value in board.basic_card_tray.cards:

@@ -14,6 +14,7 @@ const REVIEW_SUMMARY_BUILDER_SCRIPT := preload("res://src/combat/combat_review_s
 const TILE_SCENE := preload("res://scenes/combat/combat_board_tile.tscn")
 const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placeholder.tscn")
 const ACTION_REVEAL_OVERLAY_SCRIPT := preload("res://src/ui/combat_action_reveal_overlay.gd")
+const DUEL_FOREGROUND_BANNER_SCRIPT := preload("res://src/ui/duel_foreground_banner.gd")
 const ULTIMATE_VFX_PATH := "res://assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png"
 const ATTACK_CLASH_VFX_PATH := "res://assets/vfx/attack_clash_ink_gold_atlas_rgba_v1.png"
 const ATTACK_CLASH_MATTE_SHADER := """
@@ -35,6 +36,7 @@ const GUIDE_COLOR := Color("b99254")
 var contract: Dictionary = {}
 var tiles: Array[CombatBoardTile] = []
 var battle_background: BattleBackground
+var duel_foreground_banner: DuelForegroundBanner
 var top_hud: TopCombatHud
 var action_timing_panel: ActionTimingPanel
 var combat_progress_button: CombatProgressButton
@@ -159,6 +161,10 @@ func _build_structure() -> void:
 	canvas.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	canvas.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(canvas)
+
+	duel_foreground_banner = DUEL_FOREGROUND_BANNER_SCRIPT.new() as DuelForegroundBanner
+	duel_foreground_banner.name = "DuelForegroundBanner"
+	add_child(duel_foreground_banner)
 
 	_anchor_line = ColorRect.new()
 	_anchor_line.name = "FootAnchorGuide"
@@ -397,7 +403,9 @@ func _apply_attack_clash_vfx_matte() -> void:
 	set_meta("step", 10)
 	set_meta("targeting_patch", "10.5")
 	set_meta("background_component", "BattleBackground")
-	set_meta("background_asset", "res://assets/backgrounds/frontal_courtyard_duel_background_01_v1.png")
+	set_meta("background_asset", "res://assets/backgrounds/frontal_courtyard_duel_background_02_v1.png")
+	set_meta("foreground_banner_component", "DuelForegroundBanner")
+	set_meta("foreground_banner_asset", "res://assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png")
 	set_meta("hud_component", "TopCombatHud")
 	set_meta("hud_layout", "player_status|player_momentum|round|enemy_momentum|enemy_status")
 	set_meta("action_timing_component", "ActionTimingPanel")
@@ -1861,7 +1869,9 @@ func get_layout_snapshot() -> Dictionary:
 	return {
 		"layout_ready": _layout_ready,
 		"background_ready": is_instance_valid(battle_background) and battle_background.texture != null,
-		"background_path": "res://assets/backgrounds/frontal_courtyard_duel_background_01_v1.png",
+		"background_path": "res://assets/backgrounds/frontal_courtyard_duel_background_02_v1.png",
+		"foreground_banner_ready": is_instance_valid(duel_foreground_banner),
+		"foreground_banner_path": str(duel_foreground_banner.get_meta("asset_path", "")) if is_instance_valid(duel_foreground_banner) else "",
 		"hud_ready": is_instance_valid(top_hud),
 		"hud_snapshot": hud_snapshot,
 		"range_readout": {

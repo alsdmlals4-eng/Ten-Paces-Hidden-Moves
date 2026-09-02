@@ -186,12 +186,13 @@ def main() -> None:
     assert res_file(ultimate["asset_manifest"]).exists()
     active_assets = [asset for asset in asset_manifest["assets"] if asset["active"]]
     assert {asset["id"] for asset in active_assets} == {
-        "frontal_courtyard_duel_background_01_v1",
+        "frontal_courtyard_duel_background_02_v1",
+        "frontal_courtyard_banner_overlay_01_v1",
         "player_wanderer_ink_v1",
         "enemy_masked_ink_v1",
         "dogyeom_status_portrait_01_v1",
-        "player_wanderer_battler_rgba_v1",
-        "enemy_masked_battler_rgba_v1",
+        "player_wanderer_battler_rgba_v2",
+        "enemy_masked_battler_rgba_v2",
         "dogyeom_combat_battler_01_v1",
         "basic_technique_ink_atlas_01_v1",
         "martial_ultimate_card_illustration_atlas_01_v1",
@@ -203,14 +204,21 @@ def main() -> None:
         assert res_file(asset["path"]).exists(), asset["path"]
         assert asset.get("prompt") or asset.get("source_png_sha256"), asset["id"]
         assert asset.get("license", asset_manifest.get("license", ""))
-    battle_background = next(asset for asset in active_assets if asset["id"] == "frontal_courtyard_duel_background_01_v1")
-    assert battle_background["source_asset"] == "docs/visual-assets/approved/FRONTAL_COURTYARD_DUEL_BACKGROUND_01_v1.png"
-    assert battle_background["runtime_consumer"] == "src/combat/battle_background.gd"
-    assert battle_background["replaces_active_asset"] == "ink_mist_valley_duel_01_v1"
+    battle_background = next(asset for asset in active_assets if asset["id"] == "frontal_courtyard_duel_background_02_v1")
+    assert battle_background["source_asset"] == "docs/visual-assets/approved/FRONTAL_COURTYARD_DUEL_BACKGROUND_02_v1.png"
+    assert "src/combat/battle_background.gd" in battle_background["runtime_consumer"]
+    assert battle_background["replaces_active_asset"] == "frontal_courtyard_duel_background_01_v1"
     canonical_source = ROOT / battle_background["source_asset"]
     assert canonical_source.exists()
     assert hashlib.sha256(canonical_source.read_bytes()).hexdigest() == battle_background["source_png_sha256"]
     assert hashlib.sha256(res_file(battle_background["path"]).read_bytes()).hexdigest() == battle_background["source_png_sha256"]
+    banner_overlay = next(asset for asset in active_assets if asset["id"] == "frontal_courtyard_banner_overlay_01_v1")
+    assert banner_overlay["source_asset"] == "docs/visual-assets/approved/FRONTAL_COURTYARD_BANNER_OVERLAY_01_v1.png"
+    assert "DuelForegroundBanner" in banner_overlay["runtime_consumer"]
+    banner_source = ROOT / banner_overlay["source_asset"]
+    assert banner_source.exists()
+    assert hashlib.sha256(banner_source.read_bytes()).hexdigest() == banner_overlay["source_png_sha256"]
+    assert hashlib.sha256(res_file(banner_overlay["path"]).read_bytes()).hexdigest() == banner_overlay["source_png_sha256"]
     assert all(asset["id"] not in {"twilight_ink_duel_v1", "ink_mist_valley_duel_01_v1"} for asset in asset_manifest["assets"])
     semantic_atlas = next(asset for asset in active_assets if asset["id"] == "martial_ultimate_card_illustration_atlas_01_v1")
     assert semantic_atlas["source_asset"] == "docs/visual-assets/approved/MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01_v1.png"
@@ -239,7 +247,7 @@ def main() -> None:
     assert attack_clash_source.exists()
     assert hashlib.sha256(attack_clash_source.read_bytes()).hexdigest() == attack_clash_vfx["source_png_sha256"]
     assert hashlib.sha256(res_file(attack_clash_vfx["path"]).read_bytes()).hexdigest() == attack_clash_vfx["source_png_sha256"]
-    for asset_id in ("player_wanderer_battler_rgba_v1", "dogyeom_combat_battler_01_v1", "enemy_masked_battler_rgba_v1"):
+    for asset_id in ("player_wanderer_battler_rgba_v2", "dogyeom_combat_battler_01_v1", "enemy_masked_battler_rgba_v2"):
         character_art = next(asset for asset in active_assets if asset["id"] == asset_id)
         audit = character_art["transparency_audit"]
         assert character_art.get("source_asset") or character_art.get("source_png_sha256")
@@ -321,10 +329,11 @@ def main() -> None:
     assert "combat_ai" not in excluded and "combat_end_restart" not in excluded
 
     required_files = [
-        "assets/backgrounds/frontal_courtyard_duel_background_01_v1.png",
-        "assets/characters/player_wanderer_battler_rgba_v1.png",
+        "assets/backgrounds/frontal_courtyard_duel_background_02_v1.png",
+        "assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png",
+        "assets/characters/player_wanderer_battler_rgba_v2.png",
         "assets/characters/dogyeom_combat_battler_01_v1.png",
-        "assets/characters/enemy_masked_battler_rgba_v1.png",
+        "assets/characters/enemy_masked_battler_rgba_v2.png",
         "assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
         "assets/reference/step_02_character_scale_and_tile_placement.svg",
         "scenes/combat/combat_board_preview.tscn",
@@ -334,6 +343,7 @@ def main() -> None:
         "src/combat/combat_board_preview.gd",
         "src/combat/combat_board_tile.gd",
         "src/combat/combat_resolution_engine.gd",
+        "src/ui/duel_foreground_banner.gd",
         "src/combat/combat_ai_planner.gd",
         "src/ui/combat_action_reveal_overlay.gd",
         "src/ui/action_timing_panel.gd",
@@ -397,9 +407,9 @@ def main() -> None:
         "action_reveal_snapshot",
     ))
     assert all(token in character_script for token in (
-        "player_wanderer_battler_rgba_v1.png",
+        "player_wanderer_battler_rgba_v2.png",
         "dogyeom_combat_battler_01_v1.png",
-        "enemy_masked_battler_rgba_v1.png",
+        "enemy_masked_battler_rgba_v2.png",
         "get_render_texture",
         "character_art_path",
     ))
