@@ -108,7 +108,24 @@ func _resolve_state(global_index: int, group_index: int, _group_end: int) -> Str
 func _refresh_slot_states() -> void:
     for slot in slots:
         slot.configure(slot.timing_index, slot.bundle_index, slot.local_index, _resolve_state(slot.timing_index, slot.bundle_index, slot.timing_index))
+    _refresh_slot_visibility()
     _update_group_colors()
+
+func get_visible_timing_indices() -> PackedInt32Array:
+    var result := PackedInt32Array()
+    var bounds := get_bundle_bounds(int(timing_data.get("current_bundle", 1)))
+    for timing_index in range(bounds.x, bounds.y + 1):
+        result.append(timing_index)
+    return result
+
+func _refresh_slot_visibility() -> void:
+    var visible_indices := get_visible_timing_indices()
+    for slot in slots:
+        slot.visible = slot.timing_index in visible_indices
+    for group_label in _group_labels:
+        group_label.visible = false
+    set_meta("visible_timing_indices", visible_indices)
+    set_meta("visible_timing_count", visible_indices.size())
 
 func _update_group_colors() -> void:
     var current_bundle := int(timing_data.get("current_bundle", 1))
@@ -451,12 +468,12 @@ func _refresh() -> void:
     if _title_label == null:
         return
     var sequence: Array = timing_data.get("timing_sequence", [3, 3, 4])
-    var sequence_texts := PackedStringArray()
-    for value in sequence:
-        sequence_texts.append("%d수" % int(value))
-    _title_label.text = "행동 진행"
-    _sequence_label.text = " → ".join(sequence_texts)
+    var current_bundle := clampi(int(timing_data.get("current_bundle", 1)), 1, sequence.size())
+    var current_count := int(sequence[current_bundle - 1]) if current_bundle - 1 < sequence.size() else 1
+    _title_label.text = "현재 행동 묶음 · %d묶음 / %d수" % [current_bundle, current_count]
+    _sequence_label.text = "현재 묶음 계획"
     _progress_label.text = "라운드 %d" % int(timing_data.get("round_number", 1))
+    _refresh_slot_visibility()
     _update_group_colors()
 
 func _layout() -> void:
@@ -471,36 +488,25 @@ func _layout() -> void:
     _progress_label.position = Vector2(side_margin + width * 0.70, 5.0)
     _progress_label.size = Vector2(width * 0.30, 24.0)
 
-    var sequence: Array = timing_data.get("timing_sequence", [3, 3, 4])
-    var base_gap := 6.0
-    var group_extra_gap := 16.0
-    var total_gap := base_gap * float(slots.size() - 1) + group_extra_gap * float(maxi(0, sequence.size() - 1))
-    var slot_width := maxf(48.0, (width - total_gap) / float(slots.size()))
+    var visible_indices := get_visible_timing_indices()
+    if visible_indices.is_empty():
+        return
+    for slot in slots:
+        slot.visible = slot.timing_index in visible_indices
+    var base_gap := 8.0
+    var total_gap := base_gap * float(maxi(0, visible_indices.size() - 1))
+    var slot_width := maxf(48.0, (width - total_gap) / float(visible_indices.size()))
     var slot_y := 50.0
     var slot_height := maxf(56.0, size.y - slot_y - 9.0)
     var x := side_margin
-    var slot_cursor := 0
     _separator_x.clear()
-
-    for group_index in range(sequence.size()):
-        var count := int(sequence[group_index])
-        var group_start_x := x
-        for _local_index in range(count):
-            var slot := slots[slot_cursor]
-            slot.position = Vector2(x, slot_y)
-            slot.size = Vector2(slot_width, slot_height)
-            x += slot_width
-            slot_cursor += 1
-            if slot_cursor < slots.size():
-                x += base_gap
-        var group_end_x := x - base_gap if slot_cursor < slots.size() else x
-        if group_index < _group_labels.size():
-            var group_label := _group_labels[group_index]
-            group_label.position = Vector2(group_start_x, 29.0)
-            group_label.size = Vector2(maxf(1.0, group_end_x - group_start_x), 18.0)
-        if group_index < sequence.size() - 1:
-            _separator_x.append(x + group_extra_gap * 0.5 - base_gap * 0.5)
-            x += group_extra_gap
+    for timing_value in visible_indices:
+        var slot := get_slot(int(timing_value))
+        if slot == null:
+            continue
+        slot.position = Vector2(x, slot_y)
+        slot.size = Vector2(slot_width, slot_height)
+        x += slot_width + base_gap
     queue_redraw()
 
 func get_timing_snapshot() -> Dictionary:
@@ -518,6 +524,8 @@ func get_timing_snapshot() -> Dictionary:
         "round_number": int(timing_data.get("round_number", 1)),
         "timing_sequence": timing_data.get("timing_sequence", [3, 3, 4]),
         "total_timings": slots.size(),
+        "visible_timing_indices": get_visible_timing_indices(),
+        "visible_timing_count": get_visible_timing_indices().size(),
         "current_bundle": int(timing_data.get("current_bundle", 1)),
         "current_timing": int(timing_data.get("current_timing", 1)),
         "progress_scope": "round",

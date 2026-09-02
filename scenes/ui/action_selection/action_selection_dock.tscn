@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/ui/action_selection/action_selection_dock.gd" id="1_dock"]
 
 [node name="ActionSelectionDock" type="Control"]
-custom_minimum_size = Vector2(720, 350)
+custom_minimum_size = Vector2(720, 272)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -53,13 +53,13 @@ theme_override_constants/separation = 8
 
 [node name="ContentHost" type="Control" parent="DockColumn/Body"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(480, 300)
+custom_minimum_size = Vector2(480, 232)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="DetailHost" type="Control" parent="DockColumn/Body"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(220, 300)
+custom_minimum_size = Vector2(220, 232)
 layout_mode = 2
 size_flags_vertical = 3

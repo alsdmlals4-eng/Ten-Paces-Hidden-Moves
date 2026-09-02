@@ -27,11 +27,23 @@ func _ready() -> void:
 		set_meta("texture_height", texture.get_height())
 	set_meta("duel_floor_image_ratio", DUEL_FLOOR_IMAGE_RATIO)
 
+func set_stage_rect(value: Rect2) -> void:
+	set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	position = value.position
+	size = value.size
+	set_meta("stage_rect", value)
+
 func get_duel_floor_y(viewport_size: Vector2) -> float:
+	var rendered_viewport := size if size.x > 0.0 and size.y > 0.0 else viewport_size
 	if texture == null or texture.get_width() <= 0 or texture.get_height() <= 0:
-		return viewport_size.y * DUEL_FLOOR_IMAGE_RATIO
+		return position.y + rendered_viewport.y * DUEL_FLOOR_IMAGE_RATIO
 	var texture_size := Vector2(float(texture.get_width()), float(texture.get_height()))
-	var scale := maxf(viewport_size.x / texture_size.x, viewport_size.y / texture_size.y)
+	var scale := maxf(rendered_viewport.x / texture_size.x, rendered_viewport.y / texture_size.y)
 	var rendered_size := texture_size * scale
-	var vertical_crop := (rendered_size.y - viewport_size.y) * 0.5
-	return rendered_size.y * DUEL_FLOOR_IMAGE_RATIO - vertical_crop
+	var vertical_crop := (rendered_size.y - rendered_viewport.y) * 0.5
+	var image_floor_y := rendered_size.y * DUEL_FLOOR_IMAGE_RATIO - vertical_crop
+	# A wide central stage crops much of the original vertical image. Keep the
+	# contact line in the visible foreground stone band rather than letting the
+	# battlers drift into the horizon after that crop.
+	var foreground_floor_y := rendered_viewport.y * 0.72
+	return position.y + maxf(image_floor_y, foreground_floor_y)

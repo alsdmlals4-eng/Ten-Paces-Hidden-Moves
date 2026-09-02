@@ -29,6 +29,12 @@ func configure_overlay(value_banner_path: String = DEFAULT_BANNER_PATH, value_op
 	if is_inside_tree():
 		_rebuild_banner_pair()
 
+func set_stage_rect(value: Rect2) -> void:
+	set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	position = value.position
+	size = value.size
+	set_meta("stage_rect", value)
+
 func _rebuild_banner_pair() -> void:
 	for child in get_children():
 		child.queue_free()

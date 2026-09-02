@@ -15,6 +15,7 @@ const TILE_SCENE := preload("res://scenes/combat/combat_board_tile.tscn")
 const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placeholder.tscn")
 const ACTION_REVEAL_OVERLAY_SCRIPT := preload("res://src/ui/combat_action_reveal_overlay.gd")
 const DUEL_FOREGROUND_BANNER_SCRIPT := preload("res://src/ui/duel_foreground_banner.gd")
+const COMBAT_SCREEN_SURFACE_SCRIPT := preload("res://src/ui/combat_screen_surface.gd")
 const ULTIMATE_VFX_PATH := "res://assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png"
 const ATTACK_CLASH_VFX_PATH := "res://assets/vfx/attack_clash_ink_gold_atlas_rgba_v1.png"
 const ATTACK_CLASH_MATTE_SHADER := """
@@ -37,6 +38,9 @@ var contract: Dictionary = {}
 var tiles: Array[CombatBoardTile] = []
 var battle_background: BattleBackground
 var duel_foreground_banner: DuelForegroundBanner
+var top_hud_surface: CombatScreenSurface
+var duel_stage_surface: CombatScreenSurface
+var planning_surface: CombatScreenSurface
 var top_hud: TopCombatHud
 var action_timing_panel: ActionTimingPanel
 var combat_progress_button: CombatProgressButton
@@ -71,6 +75,7 @@ var combat_state: Dictionary = {}
 var _tile_layer: Control
 var _character_layer: Control
 var _anchor_line: ColorRect
+var _background_readability_tint: ColorRect
 var _layout_ready := false
 var _tile_width := 0.0
 var _tile_height := 0.0
@@ -155,16 +160,31 @@ func _build_structure() -> void:
 	battle_background.name = "BattleBackground"
 	add_child(battle_background)
 
-	var canvas := ColorRect.new()
-	canvas.name = "BackgroundReadabilityTint"
-	canvas.color = Color(CANVAS_COLOR, 0.20)
-	canvas.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	canvas.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(canvas)
+	_background_readability_tint = ColorRect.new()
+	_background_readability_tint.name = "BackgroundReadabilityTint"
+	_background_readability_tint.color = Color(CANVAS_COLOR, 0.20)
+	_background_readability_tint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_background_readability_tint.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(_background_readability_tint)
 
 	duel_foreground_banner = DUEL_FOREGROUND_BANNER_SCRIPT.new() as DuelForegroundBanner
 	duel_foreground_banner.name = "DuelForegroundBanner"
 	add_child(duel_foreground_banner)
+
+	top_hud_surface = COMBAT_SCREEN_SURFACE_SCRIPT.new() as CombatScreenSurface
+	top_hud_surface.name = "TopHudSurface"
+	top_hud_surface.configure_surface("top_hud")
+	add_child(top_hud_surface)
+
+	duel_stage_surface = COMBAT_SCREEN_SURFACE_SCRIPT.new() as CombatScreenSurface
+	duel_stage_surface.name = "DuelStageSurface"
+	duel_stage_surface.configure_surface("duel_stage")
+	add_child(duel_stage_surface)
+
+	planning_surface = COMBAT_SCREEN_SURFACE_SCRIPT.new() as CombatScreenSurface
+	planning_surface.name = "PlanningSurface"
+	planning_surface.configure_surface("planning")
+	add_child(planning_surface)
 
 	_anchor_line = ColorRect.new()
 	_anchor_line.name = "FootAnchorGuide"
@@ -406,6 +426,7 @@ func _apply_attack_clash_vfx_matte() -> void:
 	set_meta("background_asset", "res://assets/backgrounds/frontal_courtyard_duel_background_02_v1.png")
 	set_meta("foreground_banner_component", "DuelForegroundBanner")
 	set_meta("foreground_banner_asset", "res://assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png")
+	set_meta("screen_surface_partition", "top_hud|duel_stage|planning")
 	set_meta("hud_component", "TopCombatHud")
 	set_meta("hud_layout", "player_status|player_momentum|round|enemy_momentum|enemy_status")
 	set_meta("action_timing_component", "ActionTimingPanel")
@@ -450,7 +471,7 @@ func _layout_board() -> void:
 	if is_instance_valid(top_hud):
 		var hud_margin := maxf(10.0, size.x * 0.012)
 		top_hud.position = Vector2(hud_margin, 10.0)
-		top_hud.size = Vector2(maxf(1.0, size.x - hud_margin * 2.0), clampf(size.y * 0.23, 176.0, 220.0))
+		top_hud.size = Vector2(maxf(1.0, size.x - hud_margin * 2.0), clampf(size.y * 0.19, 144.0, 188.0))
 
 	var lower_margin := maxf(10.0, size.x * 0.014)
 	var lower_bottom := maxf(8.0, size.y * 0.012)
@@ -479,6 +500,8 @@ func _layout_board() -> void:
 		var progress_height := minf(timing_height, 68.0)
 		combat_progress_button.position = Vector2(lower_margin + timing_width + progress_gap, timing_row_y + (timing_height - progress_height) * 0.5)
 		combat_progress_button.size = Vector2(progress_width, progress_height)
+
+	_layout_screen_surfaces(timing_row_y - 8.0)
 
 	if is_instance_valid(ultimate_menu):
 		ultimate_menu.visible = false
@@ -594,6 +617,43 @@ func _layout_board() -> void:
 	set_meta("tile_width", _tile_width)
 	set_meta("tile_height", _tile_height)
 	set_meta("tile_gap", _tile_gap)
+
+func _layout_screen_surfaces(planning_top: float = -1.0) -> void:
+	if size.x <= 0.0 or size.y <= 0.0:
+		return
+	var top_bottom := top_hud.position.y + top_hud.size.y + 8.0 if is_instance_valid(top_hud) else size.y * 0.20
+	var requested_planning_top := planning_top
+	if requested_planning_top < 0.0:
+		requested_planning_top = action_timing_panel.position.y - 8.0 if is_instance_valid(action_timing_panel) else size.y * 0.62
+	var resolved_top_bottom := clampf(top_bottom, 1.0, size.y - 42.0)
+	var resolved_planning_top := clampf(requested_planning_top, resolved_top_bottom + 24.0, size.y - 18.0)
+	var stage_gap := 5.0
+	var top_rect := Rect2(Vector2.ZERO, Vector2(size.x, resolved_top_bottom))
+	var duel_rect := Rect2(Vector2(0.0, resolved_top_bottom + stage_gap), Vector2(size.x, maxf(1.0, resolved_planning_top - resolved_top_bottom - stage_gap * 2.0)))
+	var planning_rect := Rect2(Vector2(0.0, resolved_planning_top), Vector2(size.x, maxf(1.0, size.y - resolved_planning_top)))
+	if is_instance_valid(top_hud_surface):
+		top_hud_surface.position = top_rect.position
+		top_hud_surface.size = top_rect.size
+	if is_instance_valid(duel_stage_surface):
+		duel_stage_surface.position = duel_rect.position
+		duel_stage_surface.size = duel_rect.size
+	if is_instance_valid(planning_surface):
+		planning_surface.position = planning_rect.position
+		planning_surface.size = planning_rect.size
+	if is_instance_valid(battle_background):
+		battle_background.set_stage_rect(duel_rect)
+	if is_instance_valid(_background_readability_tint):
+		_background_readability_tint.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+		_background_readability_tint.position = duel_rect.position
+		_background_readability_tint.size = duel_rect.size
+	if is_instance_valid(duel_foreground_banner):
+		duel_foreground_banner.set_stage_rect(duel_rect)
+	set_meta("top_hud_surface_rect", top_rect)
+	set_meta("duel_stage_surface_rect", duel_rect)
+	set_meta("planning_surface_rect", planning_rect)
+
+func get_duel_stage_rect() -> Rect2:
+	return Rect2(duel_stage_surface.position, duel_stage_surface.size) if is_instance_valid(duel_stage_surface) else Rect2()
 
 func _on_card_hovered(definition: Dictionary) -> void:
 	if _detail_pinned:
@@ -1872,6 +1932,11 @@ func get_layout_snapshot() -> Dictionary:
 		"background_path": "res://assets/backgrounds/frontal_courtyard_duel_background_02_v1.png",
 		"foreground_banner_ready": is_instance_valid(duel_foreground_banner),
 		"foreground_banner_path": str(duel_foreground_banner.get_meta("asset_path", "")) if is_instance_valid(duel_foreground_banner) else "",
+		"screen_surfaces": {
+			"top_hud": Rect2(top_hud_surface.position, top_hud_surface.size) if is_instance_valid(top_hud_surface) else Rect2(),
+			"duel_stage": get_duel_stage_rect(),
+			"planning": Rect2(planning_surface.position, planning_surface.size) if is_instance_valid(planning_surface) else Rect2()
+		},
 		"hud_ready": is_instance_valid(top_hud),
 		"hud_snapshot": hud_snapshot,
 		"range_readout": {

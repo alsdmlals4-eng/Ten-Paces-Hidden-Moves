@@ -320,7 +320,7 @@ func _layout_product_action_dock() -> void:
         return
     var lower_margin := maxf(10.0, size.x * 0.014)
     var lower_bottom := maxf(8.0, size.y * 0.012)
-    var dock_height := clampf(size.y * 0.36, 312.0, 332.0)
+    var dock_height := clampf(size.y * 0.34, 272.0, 304.0)
     var dock_y := size.y - dock_height - lower_bottom
     action_selection_dock.position = Vector2(lower_margin, dock_y)
     action_selection_dock.size = Vector2(maxf(1.0, size.x - lower_margin * 2.0), dock_height)
@@ -336,6 +336,7 @@ func _layout_product_action_dock() -> void:
         _shift_battlefield_above(timing_y - 30.0)
         if is_instance_valid(combat_log_panel):
             combat_log_panel.size.y = maxf(1.0, timing_y - 10.0 - combat_log_panel.position.y)
+        _layout_screen_surfaces(timing_y - 10.0)
     _hide_legacy_action_ui()
 
 func _apply_frontal_duel_composition() -> void:
@@ -345,17 +346,19 @@ func _apply_frontal_duel_composition() -> void:
     if is_instance_valid(_anchor_line):
         _anchor_line.visible = false
 
+    var duel_rect := get_duel_stage_rect()
     var timing_top := action_timing_panel.position.y if is_instance_valid(action_timing_panel) else size.y * 0.60
-    var hud_bottom := top_hud.position.y + top_hud.size.y if is_instance_valid(top_hud) else size.y * 0.18
+    var hud_bottom := maxf(top_hud.position.y + top_hud.size.y, duel_rect.position.y) if is_instance_valid(top_hud) else duel_rect.position.y
     var grounded_floor_y := battle_background.get_duel_floor_y(size) if is_instance_valid(battle_background) else size.y * 0.46
-    var player_foot_y := clampf(grounded_floor_y, hud_bottom + 154.0, timing_top - 12.0)
+    var player_foot_y := clampf(grounded_floor_y, hud_bottom + 32.0, timing_top - 16.0)
     var normalized_distance := clampf(float(absi(_enemy_tile - _player_tile)) / 4.0, 0.0, 1.0)
-    var horizontal_separation := lerpf(size.x * 0.13, size.x * 0.205, normalized_distance)
+    var horizontal_separation := lerpf(size.x * 0.19, size.x * 0.255, normalized_distance)
     var tile_center_drift := clampf((float(_player_tile + _enemy_tile) * 0.5 - 5.5) * size.x * 0.014, -size.x * 0.05, size.x * 0.05)
     var duel_center_x := size.x * 0.5 + tile_center_drift
 
-    player_character.set_dimensions(_tile_width * 1.08)
-    enemy_character.set_dimensions(_tile_width * 1.08)
+    var distant_scale_width := minf(_tile_width * 0.76, maxf(54.0, duel_rect.size.y * 0.31))
+    player_character.set_dimensions(distant_scale_width)
+    enemy_character.set_dimensions(distant_scale_width)
     player_character.z_index = 4
     enemy_character.z_index = 4
     if not _defer_character_snap:
@@ -371,6 +374,7 @@ func _apply_frontal_duel_composition() -> void:
 
     set_meta("duel_composition", "player_left|enemy_right|shared_ground|distance_center")
     set_meta("duel_floor_y", player_foot_y)
+    set_meta("character_scale_profile", "distant_frontal_duel")
     set_meta("logical_board_default_visibility", "hidden")
 
 func _set_tactical_target_layer_visible(_value: bool) -> void:
