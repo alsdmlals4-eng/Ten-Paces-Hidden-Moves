@@ -75,6 +75,18 @@ class FrontalDuelActionFlowBlueprintContractTests(unittest.TestCase):
             self.assertTrue((REPOSITORY_ROOT / relative_path).exists(), relative_path)
         self.assertIn("체커보드처럼 직접 싣지 않고", blueprint)
 
+    def test_human_pdf_keeps_the_structural_blueprint_layer_alongside_images(self) -> None:
+        """A visual-evidence revision must not delete the actionable old PDF maps."""
+        generator = (REPOSITORY_ROOT / "tools" / "build_frontal_duel_visual_blueprint_pdf.py").read_text(encoding="utf-8")
+        blueprint = BLUEPRINT_PATH.read_text(encoding="utf-8")
+
+        self.assertIn("### E. 이미지와 구조 설계의 이중 레이어", blueprint)
+        self.assertIn("page_flow_map", generator)
+        self.assertIn("page_plan_wireframe", generator)
+        self.assertIn("page_reveal_wireframe", generator)
+        self.assertIn("3수 → 해결 → 3수 → 해결 → 4수", generator)
+        self.assertIn("현재 수만 공개", generator)
+
 
 if __name__ == "__main__":
     unittest.main()

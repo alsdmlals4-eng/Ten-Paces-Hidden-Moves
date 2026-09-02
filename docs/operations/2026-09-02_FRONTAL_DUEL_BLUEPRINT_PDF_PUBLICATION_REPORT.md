@@ -11,6 +11,11 @@ initial_publication_parent_sha: d0a641ce6a9d3920d33f27446e47d06efd1d550a
 image_correction_parent_sha: 255d1152a5be0db7e36a0a6068a532b653ae4fa5
 image_correction_branch: codex/frontal-duel-visual-blueprint-pdf-20260902
 image_correction_output_sha256: ED9A36F9800BFA23C455CFEF1981E85789E7A39103BC949634EC9D95AA579B58
+hybrid_restoration_parent_sha: fba401848ff9d2a704e8f1e8e330e8f5ef67f3f3
+hybrid_restoration_rebased_write_parent_sha: 5e57f4de88ca92648cf2e6155b99db3ee77d9670
+hybrid_restoration_branch: codex/frontal-duel-blueprint-hybrid-restoration-20260902
+hybrid_restoration_output_sha256: 07E87BAEC46D068928DE2AA3B9D8B11EC8D9AC5E179C8E6BF71FBF782CE87576
+current_base_main_observed_2026_09_02: aaa94caf5772c262f023dd9e80fd4b8bbffd85db
 authority_domain: HUMAN_GDD_PDF_DERIVED_VIEW
 core_rule_change: false
 runtime_or_save_change: false
@@ -24,9 +29,9 @@ implementation_feasibility: FEASIBLE
 
 사용자는 권장안에 따라 현재 전투 블루프린트를 PDF로 보고, 앞으로 실제 소비처가 확인된 이미지는 생성 전 별도 승인을 기다리지 말고 제작하라고 지시했다.
 
-이번 PDF는 기존 정본을 읽기 쉬운 7쪽 파생본으로 발행하는 작업이다. 전투 규칙, 저장, Godot scene/code, 승인 자산, 이미지 정본 상태를 바꾸지 않으며, 독립 정본이 아니다.
+현재 PDF는 기존 정본을 읽기 쉬운 **10쪽 하이브리드 파생본**으로 발행하는 작업이다. 실제 Godot/승인 이미지를 먼저 보여 주되, 이전본의 흐름 맵과 두 와이어프레임도 구조 설계 레이어로 보존한다. 전투 규칙, 저장, Godot scene/code, 승인 자산, 이미지 정본 상태를 바꾸지 않으며, 독립 정본이 아니다.
 
-## 현재 정본·동시성 readback
+## 최초 발행 당시 정본·동시성 readback (역사 기록)
 
 - local `main`과 `origin/main`은 시작 시 `d0a641ce6a9d3920d33f27446e47d06efd1d550a`에서 일치했다.
 - 관련 열린 PR은 없었다. PR #199와 PR #200은 서로 다른 기존 draft 문서 작업으로 read-only 보존했다.
@@ -39,10 +44,10 @@ implementation_feasibility: FEASIBLE
 | 항목 | 결과 |
 | --- | --- |
 | 파생 PDF | `output/pdf/TEN_PACES_FRONTAL_DUEL_ACTION_FLOW_BLUEPRINT_2026-09-02.pdf` |
-| 페이지 | A4 landscape 7쪽 |
+| 페이지 | A4 landscape 10쪽 |
 | 입력 | current blueprint, action-plan-lock Decision, benchmark, actual consumer/asset state, approved visual board, current runtime captures, existing runtime-evidence ceiling |
-| 출력 SHA-256 | `ED9A36F9800BFA23C455CFEF1981E85789E7A39103BC949634EC9D95AA579B58` |
-| 포함 | 실제 Godot 화면 표지·계획 이미지 wireframe, final-locked visual board, illustrated-card contract, 잠금→공개→합 구현 contract, asset/evidence boundary |
+| 출력 SHA-256 | `07E87BAEC46D068928DE2AA3B9D8B11EC8D9AC5E179C8E6BF71FBF782CE87576` |
+| 포함 | 실제 Godot 화면·승인 시각 보드·카드 계약, 3/3/4 흐름 맵, 계획/공개 구조 와이어프레임, 잠금→공개→합 구현 contract, asset/evidence boundary |
 | 제외 | 새 rules, numerical balance, future action preview, deck/hand/draw, new image candidate, Human/device PASS claim |
 
 ## 2026-09-02 이미지 중심 발행 보정
@@ -78,13 +83,80 @@ implementation_feasibility: FEASIBLE
 - Visual render: every page rendered through Poppler at 144 DPI. The first image-centred render exposed two opaque overlay failures and one raw opaque VFX-atlas checker exposure; all three were corrected and the final seven-page render has no hidden hero image, clipped Korean text, overlap, or raw checker panel.
 - Text readback: `실제 Godot`, `통합 카드`, `PENDING` present. This is PDF/readback evidence, not human UX or device evidence.
 
+## 2026-09-02 블루프린트 퇴행 재감사 · 하이브리드 복원
+
+### 작업 전 문제 → 조사·비교 결과
+
+사용자는 이미지 중심 보정 이후에도 블루프린트가 이전판보다 퇴행했다고 지적했다. 이 판단은 단순 취향이 아니라 PDF 두 revision을 직접 대조해 확인했다.
+
+- 이전 `794471bf` PDF는 7쪽 안에 `플레이어가 한 묶음을 읽는 순서`, 계획 편집 와이어프레임, 한 수 공개 와이어프레임을 독립 페이지로 두었다. 그 페이지들은 `계획 편집 → 행동계획 잠금 → N수 실행 → 이번 수 공개 → 충돌·정착 → 복기`와 입력/숨김 경계를 한 화면에서 추적할 수 있게 했다.
+- 당시 최신 `fba40184` PDF는 실제 Godot capture와 승인 시각 보드를 크게 배치한 점은 개선했지만, 위 세 구조를 image caption과 PENDING stage로 치환했다. 따라서 시각 기준은 강해졌고 구현자가 읽을 상태·입력·결과 계약은 약해졌다.
+- `CURRENT_SOURCE_RELEVANCE_CHECK`는 `NOT_APPLICABLE_WITH_REASON`이다. 판단 근거는 이 repository의 두 PDF, canonical Markdown, generator, capture/asset consumer이며, 최신 외부 정보가 문서 표현 복원의 결론을 바꾸지 않는다. 같은 decision dimension의 10개 사례 packet은 `REUSED_EVIDENCE`; 새 게임 규칙/UX/asset 선택은 없다.
+- `IMPLEMENTATION_FEASIBILITY`는 `FEASIBLE`: source Markdown, actual/approved visual input, deterministic generator, Poppler, pypdf, regression test가 모두 현 저장소에서 확인됐다. protected product path는 변경하지 않는다.
+
+### 채택 구조와 이유
+
+권장안은 **이미지 앵커 + 구조 설계 레이어의 하이브리드**다.
+
+| 대안 | 장점 | 한계 | 판정 |
+| --- | --- | --- | --- |
+| 이전 text-first PDF로 완전 복귀 | 흐름·상태·입력을 빠르게 읽는다. | 실제 Godot 화면과 승인 시각 방향을 다시 부차화한다. | `REJECT` |
+| 기존 image-first PDF 유지 | 시각 기준과 카드/배경 질량을 바로 확인한다. | 사용자가 지적한 흐름·와이어프레임 정보 손실을 해결하지 못한다. | `REJECT` |
+| 이미지와 구조 설계 레이어 병렬 유지 | 실제 화면을 기준으로 두면서 구현 상태·입력·공개 경계를 명시한다. | 3쪽이 늘어나지만 같은 source/asset만 재사용하며 현재의 모호성을 제거한다. | `ADOPT` |
+
+복원한 10쪽 순서는 `실제 화면/승인 시각 → 실제 계획 화면 → 3/3/4 흐름 맵 → 계획 구조 → 카드 → 한 수 공개 구조 → 잠금/공개/합 표현 계약 → 증거 → handoff`다. 새 state와 새 asset을 만들어 낸 것이 아니며, p3의 runtime capture와 `PENDING` capture를 계속 구분한다.
+
+### 실제 구현 또는 준비 결과
+
+- canonical blueprint에 `### E. 이미지와 구조 설계의 이중 레이어`를 추가해, 이미지가 흐름 맵/와이어프레임을 대체하지 못하도록 발행 규칙을 명시했다.
+- generator에 `page_flow_map`, `page_plan_wireframe`, `page_reveal_wireframe`을 추가하고, 기존 visual/capture/card pages를 유지한 10쪽 PDF로 재생성했다.
+- regression test를 먼저 추가해 새 구조 페이지와 핵심 보호 문구가 없는 현재 generator에서 예상대로 `FAIL`을 확인한 뒤, 최소 구현 후 focused 5개 test `PASS`를 확인했다.
+- 실제 레이아웃 검수에서 계획 와이어프레임의 우측 HUD copy가 panel 경계에 가까운 것을 발견해 글꼴/정렬을 한 번 최소 보정했다. 최종 144 DPI 재-render에서 해당 copy, page 4 flow, page 7 reveal, page 8 evidence-stage 모두 clip/overlap 없이 읽힌다.
+
+### 기대 효과
+
+- 기획/검수자는 실제 석정·캐릭터·카드 삽화의 인게임 방향을 이미지로 확인한다.
+- 구현자는 첫 CTA와 resolver 호출 0회, 둘째 CTA의 1회 시작, 현재 수만 공개, 정착 후 다음 수라는 state contract를 도식으로 확인한다.
+- 새 문서 작업에서 이미지 표현을 강화하더라도 구조적 flow/wireframe을 삭제하는 회귀를 test가 차단한다.
+
+### 5회 전체 적대 검토
+
+각 회차는 canonical source, 이전/현재 PDF, generator diff, visual input, unchanged product consumer, evidence ceiling, temp/output retention을 함께 다시 대조했다.
+
+1. **구조 퇴행 공격:** 이전 flow/wireframe이 단순 장식인지 확인했다. 3/3/4, 입력 경계, hidden-info boundary, resolver timing을 소유하므로 `MUST_FIX / OMISSION`으로 판정했다.
+2. **이미지 재퇴행 공격:** wireframe을 복구하면서 actual capture/approved board가 다시 빠지는지 확인했다. 새 page 4/5/7에 image anchor를 남기고 기존 image pages를 유지해 방지했다.
+3. **증거 위장 공격:** structural page의 card/VFX sample이 새 runtime capture처럼 읽힐 위험을 확인했다. p3 runtime anchor와 planning-only art direction을 분리하고 exact plan-locked/reveal/impact는 계속 `PENDING`으로 유지했다.
+4. **가독성 공격:** Poppler 144 DPI render에서 long HUD copy와 10-page footer count를 포함해 경계·한글·flow arrow·card fact text를 검토했다. HUD copy 정렬을 보정한 뒤 final render의 clipping, overlap, raw checker exposure는 0건이다.
+5. **전파·용량 공격:** Markdown source, generator, PDF, regression test, report를 함께 갱신했다. 새 raster/제품 코드/scene은 0개이며, 비교/렌더 temporary files는 final validation 이후 path-limited cleanup 대상이다. 기존 open PR #199/#200은 read-only다.
+
+### 검증 증거와 미검증
+
+```yaml
+baseline_project_main: fba401848ff9d2a704e8f1e8e330e8f5ef67f3f3
+rebased_write_parent: 5e57f4de88ca92648cf2e6155b99db3ee77d9670
+current_base_remote_observed: aaa94caf5772c262f023dd9e80fd4b8bbffd85db
+base_adoption_action: "NO_SILENT_ADOPTION; project v9.4.4 pin remains compatibility evidence"
+focused_red: "new structural-layer regression assertion failed before implementation as expected"
+focused_green: "python -m unittest tests.test_frontal_duel_action_flow_blueprint_contract -v -> 5 passed"
+full_regression: "python -m unittest discover -s tests -p 'test_*.py' -v -> 447 passed"
+operating_contract: "python tools/check_project_operating_system.py -> PASS"
+reference_freshness: "python tools/check_canonical_reference_freshness.py --root . --config .github/reference-freshness.json -> PASS"
+pdf_readback: "10 pages; required flow/wireframe/current-timing/PENDING tokens present"
+visual_render: "Poppler 144 DPI; page 4/5/7/8 inspected after final rebuild"
+product_runtime_change: NONE
+human_player: NOT_RUN
+android_actual_device: NOT_RUN
+accessibility_user: NOT_RUN
+release_performance: NOT_RUN
+```
+
 ## 이미지·자산 처리
 
 사용자의 이번 지시는 current visual production owner의 `scoped brief → single generation → final user lock` 절차와 양립한다. **생성 전 별도 승인 대기는 하지 않되, 새 후보가 실제 runtime consumer에 필요하다는 확인은 유지**한다.
 
 이번 PDF는 이미 final-locked·구현된 정면 석정 background를 표지의 파생 표현으로 재사용했다. 새 런타임 raster는 생성하지 않았다. current P0 전투 consumer에 background, battler, 기초/무공/절초 atlas, attack-clash/ultimate VFX가 모두 존재하므로 중복 생성은 용량·provenance·검수 비용만 늘린다.
 
-## 검증
+## 최초·이미지 중심 보정 당시 검증 (역사 기록)
 
 - PDF metadata: 7 pages, A4 landscape, title/author/subject readback PASS.
 - 텍스트 readback: `정면 결투`, `행동계획 잠금`, `PENDING` 포함 여부 PASS.

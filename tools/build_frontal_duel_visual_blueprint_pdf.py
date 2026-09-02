@@ -25,6 +25,7 @@ from reportlab.pdfgen.canvas import Canvas
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / "output/pdf/TEN_PACES_FRONTAL_DUEL_ACTION_FLOW_BLUEPRINT_2026-09-02.pdf"
 PAGE_W, PAGE_H = landscape(A4)
+PAGE_COUNT = 10
 
 ASSETS = {
     "runtime_plan": ROOT / "docs/evidence/runtime-captures/TEN-RVC-20260901-001.png",
@@ -139,7 +140,7 @@ def page_shell(c: Canvas, number: int, title: str, subtitle: str, normal: str, b
     c.setStrokeColor(LINE)
     c.line(26, 31, PAGE_W - 26, 31)
     label(c, "정면 결투 행동 흐름 · 이미지 중심 파생 블루프린트", 26, 16, 8, normal, MUTED)
-    label(c, f"{number} / 7", PAGE_W - 26, 16, 8, normal, MUTED, centered=True)
+    label(c, f"{number} / {PAGE_COUNT}", PAGE_W - 26, 16, 8, normal, MUTED, centered=True)
 
 
 def callout(c: Canvas, number: str, heading: str, body: str, x: float, y: float, width: float, height: float, normal: str, bold: str) -> None:
@@ -148,6 +149,20 @@ def callout(c: Canvas, number: str, heading: str, body: str, x: float, y: float,
     label(c, number, x + 19.5, y + height - 24, 10, bold, INK, centered=True)
     label(c, heading, x + 39, y + height - 23, 10, bold)
     paragraph(c, body, x + 12, y + height - 45, width - 24, size=8, leading=11, font=normal, color=MUTED)
+
+
+def flow_node(c: Canvas, heading: str, subline: str, x: float, y: float, width: float, *, highlighted: bool, normal: str, bold: str) -> None:
+    fill = HexColor("#e5cea0") if highlighted else HexColor("#f1e5c9")
+    rect(c, x, y, width, 78, fill, stroke=LINE)
+    label(c, heading, x + width / 2, y + 47, 11, bold, INK, centered=True)
+    label(c, subline, x + width / 2, y + 24, 7.8, normal, MUTED, centered=True)
+
+
+def wire_label(c: Canvas, text: str, x: float, y: float, width: float, *, active: bool, normal: str, bold: str) -> None:
+    fill = GOLD if active else HexColor("#f1e5c9")
+    text_color = INK if active else MUTED
+    rect(c, x, y, width, 27, fill, stroke=LINE)
+    label(c, text, x + width / 2, y + 9, 8.4, bold if active else normal, text_color, centered=True)
 
 
 def page_cover(c: Canvas, normal: str, bold: str) -> None:
@@ -199,8 +214,70 @@ def page_plan_capture(c: Canvas, normal: str, bold: str) -> None:
     label(c, "캡처가 보여주는 것: 계획 편집·카드 사실·현재 수.  아직 보이지 않는 잠금/공개/합은 다음 페이지에서 ‘구현 계약’으로만 표시한다.", PAGE_W / 2, 80, 8.2, normal, MUTED, centered=True)
 
 
+def page_flow_map(c: Canvas, normal: str, bold: str) -> None:
+    page_shell(c, 4, "플레이어 흐름 맵 · 3/3/4", "이미지 앵커 위에 입력·공개·정착의 책임을 다시 연결", normal, bold)
+    draw_image(c, ASSETS["runtime_plan"], 25, 404, 300, 116)
+    rect(c, 25, 404, 300, 116, Color(0, 0, 0, alpha=0), stroke=LINE)
+    draw_image(c, ASSETS["visual_board"], 339, 404, 477, 116)
+    rect(c, 339, 404, 477, 116, Color(0, 0, 0, alpha=0), stroke=LINE)
+    label(c, "실제 Godot 계획 편집", 34, 386, 8, bold, MUTED)
+    label(c, "승인된 공개·합 시각 방향", 350, 386, 8, bold, MUTED)
+    nodes = [
+        ("계획 편집", "카드·관찰·현재 슬롯", False),
+        ("행동계획 잠금", "첫 CTA · resolver 0회", True),
+        ("N수 실행", "둘째 CTA · 1회 시작", True),
+        ("현재 수 공개", "양측 카드·이유", False),
+        ("합·정착", "VFX·거리/자원 갱신", True),
+        ("복기", "원인 → 적용 → 결과", False),
+    ]
+    node_w, start_x = 119, 26
+    for index, (heading, subline, highlighted) in enumerate(nodes):
+        x = start_x + index * 132
+        flow_node(c, heading, subline, x, 286, node_w, highlighted=highlighted, normal=normal, bold=bold)
+        if index < len(nodes) - 1:
+            label(c, "→", x + 125, 312, 21, bold, GOLD, centered=True)
+    rect(c, 25, 215, 792, 43, PANEL)
+    label(c, "3수 → 해결 → 3수 → 해결 → 4수  ·  한 묶음을 잠근 뒤 현재 수만 공개하고, 해결 뒤에만 다음 수로 간다.", PAGE_W / 2, 231, 10, bold, PAPER, centered=True)
+    callout(c, "입력", "플레이어가 조작하는 것", "기초·무공·절초 카드 선택, 이동만 전진/후퇴 intent, 관찰점 사용, 잠금 뒤 실행 시작.", 25, 76, 378, 118, normal, bold)
+    callout(c, "보호", "끝까지 숨길 것", "미래 timing의 상대 행동, 관찰 전 기술명·대상·피해, 플레이어의 미확정 계획을 읽는 AI, 논리 타일/공격 방향 UI.", 438, 76, 378, 118, normal, bold)
+
+
+def page_plan_wireframe(c: Canvas, normal: str, bold: str) -> None:
+    page_shell(c, 5, "계획 편집 · 구조 와이어프레임", "p3 실제 Godot 화면을 대체하지 않는 layout/content contract", normal, bold)
+    rect(c, 24, 94, 505, 422, PANEL, stroke=GOLD)
+    rect(c, 41, 469, 471, 30, HexColor("#17130f"), stroke=LINE)
+    label(c, "나: 체력·기력·내력·기세", 52, 480, 8.5, bold, PAPER)
+    label(c, "제 N 라운드 · 현재 3수", 278, 480, 8.8, bold, PAPER, centered=True)
+    label(c, "상대: 체력·기력·내력·기세", 447, 480, 7.4, bold, PAPER, centered=True)
+    rect(c, 41, 339, 471, 111, HexColor("#4c4030"), stroke=LINE)
+    label(c, "공유 석정 바닥 · 동일 foot-anchor · 논리 grid/number 미표시", 276, 350, 8, normal, HexColor("#d3c29d"), centered=True)
+    label(c, "나", 117, 395, 21, bold, PAPER, centered=True)
+    label(c, "거리 2", 276, 394, 16, bold, PAPER, centered=True)
+    label(c, "상대", 435, 395, 21, bold, PAPER, centered=True)
+    rect(c, 41, 284, 471, 39, HexColor("#e5cea0"), stroke=LINE)
+    label(c, "현재 계획 3수", 55, 299, 9, bold)
+    wire_label(c, "1 · 이동 / 전진", 145, 290, 100, active=False, normal=normal, bold=bold)
+    wire_label(c, "2 · 전조", 253, 290, 78, active=False, normal=normal, bold=bold)
+    wire_label(c, "3 · 공격", 339, 290, 72, active=False, normal=normal, bold=bold)
+    wire_label(c, "행동계획 잠금", 419, 290, 83, active=True, normal=normal, bold=bold)
+    rect(c, 41, 122, 471, 145, HexColor("#17130f"), stroke=LINE)
+    label(c, "기초    무공    절초", 58, 245, 10, bold, GOLD)
+    for index, card_name in enumerate(("이동", "보법", "막기", "회피", "속공")):
+        x = 58 + index * 88
+        rect(c, x, 144, 77, 78, HexColor("#f1e5c9"), stroke=GOLD)
+        label(c, f"{index + 1} · {card_name}", x + 7, 199, 8.5, bold)
+        label(c, "N수 · 비용", x + 7, 177, 7.2, normal, MUTED)
+        label(c, "사거리/효과", x + 7, 157, 7.2, normal, MUTED)
+    callout(c, "A", "상태 HUD", "상태·관찰 기록은 위에 고정한다. 상대의 숨은 기술명·대상·피해는 넣지 않는다.", 553, 410, 263, 93, normal, bold)
+    callout(c, "B", "행동계획 행", "현재 묶음만 편집한다. 첫 CTA는 plan_locked 진입이며 resolver를 호출하지 않는다.", 553, 304, 263, 93, normal, bold)
+    callout(c, "C", "공통 카드 표면", "기초·무공·절초 탭은 같은 shell을 쓴다. 이름·N수·비용·사거리/효과는 card에서 읽는다.", 553, 198, 263, 93, normal, bold)
+    draw_image(c, ASSETS["runtime_plan"], 553, 94, 263, 82)
+    rect(c, 553, 94, 263, 82, Color(0, 0, 0, alpha=0), stroke=LINE)
+    label(c, "이미지 앵커: p3의 실제 runtime capture", 554, 79, 7.5, normal, MUTED)
+
+
 def page_card_art(c: Canvas, normal: str, bold: str) -> None:
-    page_shell(c, 4, "통합 카드 · 삽화와 사실 정보", "카드 그림은 장식이 아니라 행동 출처를 빠르게 읽는 보조 채널", normal, bold)
+    page_shell(c, 6, "통합 카드 · 삽화와 사실 정보", "카드 그림은 장식이 아니라 행동 출처를 빠르게 읽는 보조 채널", normal, bold)
     draw_image(c, ASSETS["card_atlas"], 24, 180, 493, 286)
     rect(c, 24, 180, 493, 286, Color(0, 0, 0, alpha=0), stroke=LINE)
     draw_image(c, ASSETS["runtime_attack"], 24, 60, 493, 100)
@@ -212,8 +289,34 @@ def page_card_art(c: Canvas, normal: str, bold: str) -> None:
     callout(c, "D", "상태도 같은 언어", "선택·focus·disabled·locked·reserved를 색만이 아니라 테두리·문구·상세 설명으로 함께 전달한다.", 545, 127, 270, 75, normal, bold)
 
 
+def page_reveal_wireframe(c: Canvas, normal: str, bold: str) -> None:
+    page_shell(c, 7, "한 수 공개 · 구조 와이어프레임", "현재 timing만 · 원인 판정부터 정착까지의 표현 순서", normal, bold)
+    draw_image(c, ASSETS["visual_board"], 25, 362, 792, 158)
+    rect(c, 25, 362, 792, 158, Color(0, 0, 0, alpha=0), stroke=LINE)
+    rect(c, 25, 186, 792, 154, PANEL, stroke=GOLD)
+    label(c, "2번째 행동 공개", PAGE_W / 2, 312, 18, bold, PAPER, centered=True)
+    label(c, "현재 수만 공개 · 다음 수는 공개하지 않습니다", PAGE_W / 2, 290, 9, normal, GOLD, centered=True)
+    rect(c, 77, 212, 184, 57, HexColor("#f1e5c9"), stroke=GOLD)
+    label(c, "나 · 전조 · 1수", 92, 248, 11, bold)
+    label(c, "기력 1 · 효과", 92, 226, 8, normal, MUTED)
+    label(c, "VS", PAGE_W / 2, 232, 25, bold, GOLD, centered=True)
+    rect(c, 581, 212, 184, 57, HexColor("#f1e5c9"), stroke=GOLD)
+    label(c, "상대 · 검격 · 1수", 596, 248, 11, bold)
+    label(c, "사거리 1 · 효과", 596, 226, 8, normal, MUTED)
+    rect(c, 294, 195, 253, 28, HexColor("#e5cea0"), stroke=LINE)
+    label(c, "합/방어/회피 · 실제 resolver event", PAGE_W / 2, 205, 8.5, bold, INK, centered=True)
+    steps = ("카드 공개", "원인 판정", "합 / 방어 / 회피", "VFX · 피격", "거리 · 자원 정착", "다음 수")
+    for index, step in enumerate(steps):
+        x = 25 + index * 132
+        wire_label(c, step, x, 132, 118, active=index in (0, 3), normal=normal, bold=bold)
+        if index < len(steps) - 1:
+            label(c, "→", x + 124, 140, 17, bold, GOLD, centered=True)
+    rect(c, 25, 70, 792, 39, HexColor("#f1e5c9"), stroke=LINE)
+    label(c, "빈 면은 ‘이번 수 행동 없음’으로 명시한다. future action, 기술명·대상·피해의 선공개는 이 구조에 들어오지 않는다.", PAGE_W / 2, 83, 8.5, normal, MUTED, centered=True)
+
+
 def page_reveal_contract(c: Canvas, normal: str, bold: str) -> None:
-    page_shell(c, 5, "잠금 → 한 수 공개 → 합 → 정착", "계획 이후의 표현 계약 · 실제 캡처와 아직 필요한 capture를 엄격히 구분", normal, bold)
+    page_shell(c, 8, "잠금 → 한 수 공개 → 합 → 정착", "계획 이후의 표현 계약 · 실제 캡처와 아직 필요한 capture를 엄격히 구분", normal, bold)
     # Three image-led stages.
     stages = [
         ("계획 잠금", ASSETS["runtime_plan"], "현재 묶음만 고정하고 카드 배치를 닫는다.", "PENDING: exact plan-locked capture"),
@@ -237,7 +340,7 @@ def page_reveal_contract(c: Canvas, normal: str, bold: str) -> None:
 
 
 def page_evidence(c: Canvas, normal: str, bold: str) -> None:
-    page_shell(c, 6, "이미지의 증거 상태", "승인 이미지 · 기계 런타임 캡처 · 아직 필요한 사람/기기 검증을 분리", normal, bold)
+    page_shell(c, 9, "이미지의 증거 상태", "승인 이미지 · 기계 런타임 캡처 · 아직 필요한 사람/기기 검증을 분리", normal, bold)
     draw_image(c, ASSETS["runtime_attack"], 24, 256, 480, 300)
     rect(c, 24, 256, 480, 300, Color(0, 0, 0, alpha=0), stroke=LINE)
     callout(c, "✓", "실제 Godot 기계 캡처", "정면 대치, 거리 2, 3/3/4 계획 줄, 카드 격자, 자동 공격 배치가 실제 화면에 존재한다.", 530, 458, 285, 78, normal, bold)
@@ -250,7 +353,7 @@ def page_evidence(c: Canvas, normal: str, bold: str) -> None:
 
 
 def page_handoff(c: Canvas, normal: str, bold: str) -> None:
-    page_shell(c, 7, "구현·발행 인계", "이미지 우선이지만 규칙·상태·검증 책임은 텍스트 정본과 Godot에 남긴다", normal, bold)
+    page_shell(c, 10, "구현·발행 인계", "이미지 우선이지만 규칙·상태·검증 책임은 텍스트 정본과 Godot에 남긴다", normal, bold)
     draw_image(c, ASSETS["background"], 24, 250, 792, 274)
     rect(c, 24, 250, 792, 42, PANEL)
     label(c, "정면 석정은 전투의 큰 질량이다. 그러나 거리·현재 수·카드 사실보다 앞서면 안 된다.", PAGE_W / 2, 270, 11, bold, PAPER, centered=True)
@@ -284,7 +387,10 @@ def build(output: Path) -> None:
         page_cover(canvas, normal, bold); canvas.showPage()
         page_visual_direction(canvas, normal, bold); canvas.showPage()
         page_plan_capture(canvas, normal, bold); canvas.showPage()
+        page_flow_map(canvas, normal, bold); canvas.showPage()
+        page_plan_wireframe(canvas, normal, bold); canvas.showPage()
         page_card_art(canvas, normal, bold); canvas.showPage()
+        page_reveal_wireframe(canvas, normal, bold); canvas.showPage()
         page_reveal_contract(canvas, normal, bold); canvas.showPage()
         page_evidence(canvas, normal, bold); canvas.showPage()
         page_handoff(canvas, normal, bold); canvas.showPage()
