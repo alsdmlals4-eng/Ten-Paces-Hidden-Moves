@@ -24,6 +24,7 @@ var visual_scale := 1.0
 var character_sprite: Texture2D
 var _character_art_path := ""
 var _sprite_foot_ratio := 0.94
+var _motion_tween: Tween
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -98,10 +99,12 @@ func place_foot_at(anchor: Vector2) -> void:
     set_meta("foot_anchor", anchor)
 
 func animate_move_to(anchor: Vector2, duration: float = 0.22) -> void:
+    _stop_motion_tween()
     motion_state = "move"
     set_process(true)
     var target_position := anchor - Vector2(size.x * 0.5, size.y)
     var tween := create_tween()
+    _motion_tween = tween
     tween.set_trans(Tween.TRANS_SINE)
     tween.set_ease(Tween.EASE_OUT)
     tween.tween_property(self, "position", target_position, duration)
@@ -110,10 +113,12 @@ func animate_move_to(anchor: Vector2, duration: float = 0.22) -> void:
     tween.tween_callback(set_idle)
 
 func play_attack_motion(duration: float = 0.28) -> void:
+    _stop_motion_tween()
     motion_state = "attack"
     set_process(true)
     var lunge := Vector2(size.x * 0.15 * float(facing), 0.0)
     var tween := create_tween()
+    _motion_tween = tween
     tween.set_trans(Tween.TRANS_QUAD)
     tween.set_ease(Tween.EASE_OUT)
     tween.tween_property(self, "visual_offset", lunge, duration * 0.42)
@@ -123,7 +128,66 @@ func play_attack_motion(duration: float = 0.28) -> void:
     tween.parallel().tween_property(self, "visual_scale", 1.0, duration * 0.58)
     tween.tween_callback(set_idle)
 
+func play_evade_motion(duration: float = 0.24) -> void:
+    _play_offset_motion("evade", Vector2(-size.x * 0.16 * float(facing), 0.0), 0.96, duration)
+
+func play_block_motion(duration: float = 0.22) -> void:
+    _play_offset_motion("block", Vector2(-size.x * 0.035 * float(facing), 0.0), 0.93, duration)
+
+func play_hit_motion(duration: float = 0.24) -> void:
+    _play_offset_motion("hit", Vector2(-size.x * 0.12 * float(facing), 0.0), 0.98, duration)
+
+func play_ultimate_motion(duration: float = 0.42) -> void:
+    _play_offset_motion("ultimate", Vector2(size.x * 0.22 * float(facing), 0.0), 1.12, duration)
+
+func play_clash_motion(clash_anchor: Vector2, duration: float = 0.34) -> void:
+    _stop_motion_tween()
+    motion_state = "clash"
+    set_process(true)
+    var start_position := position
+    var horizontal_travel := clash_anchor.x - get_foot_anchor_global().x
+    var target_position := Vector2(start_position.x + horizontal_travel, start_position.y)
+    set_meta("last_clash_anchor", clash_anchor)
+    set_meta("last_clash_target_position", target_position)
+    var tween := create_tween()
+    _motion_tween = tween
+    var safe_duration := maxf(0.16, duration)
+    var approach_duration := safe_duration * 0.38
+    var contact_hold_duration := safe_duration * 0.18
+    var return_duration := safe_duration - approach_duration - contact_hold_duration
+    tween.set_trans(Tween.TRANS_QUAD)
+    tween.set_ease(Tween.EASE_OUT)
+    tween.tween_property(self, "position", target_position, approach_duration)
+    tween.parallel().tween_property(self, "visual_scale", 1.07, approach_duration)
+    tween.tween_interval(contact_hold_duration)
+    tween.set_ease(Tween.EASE_IN)
+    tween.tween_property(self, "position", start_position, return_duration)
+    tween.parallel().tween_property(self, "visual_scale", 1.0, return_duration)
+    tween.tween_callback(set_idle)
+
+func _play_offset_motion(next_state: String, offset: Vector2, peak_scale: float, duration: float) -> void:
+    _stop_motion_tween()
+    motion_state = next_state
+    set_process(true)
+    var safe_duration := maxf(0.12, duration)
+    var tween := create_tween()
+    _motion_tween = tween
+    tween.set_trans(Tween.TRANS_QUAD)
+    tween.set_ease(Tween.EASE_OUT)
+    tween.tween_property(self, "visual_offset", offset, safe_duration * 0.42)
+    tween.parallel().tween_property(self, "visual_scale", peak_scale, safe_duration * 0.42)
+    tween.set_ease(Tween.EASE_IN)
+    tween.tween_property(self, "visual_offset", Vector2.ZERO, safe_duration * 0.58)
+    tween.parallel().tween_property(self, "visual_scale", 1.0, safe_duration * 0.58)
+    tween.tween_callback(set_idle)
+
+func _stop_motion_tween() -> void:
+    if is_instance_valid(_motion_tween):
+        _motion_tween.kill()
+    _motion_tween = null
+
 func set_idle() -> void:
+    _motion_tween = null
     motion_state = "idle"
     visual_offset = Vector2.ZERO
     visual_scale = 1.0

@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource path="res://src/ui/observation_reveal_panel.gd" type="Script" id="1"]
+
+[node name="ObservationRevealPanel" type="Control"]
+mouse_filter = 2
+script = ExtResource("1")

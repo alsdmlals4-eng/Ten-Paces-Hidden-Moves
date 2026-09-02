@@ -132,20 +132,21 @@ func _add_status_label(status_text: String) -> void:
 	add_child(label)
 
 func _compact_card_facts() -> String:
-	var stamina := int(action_definition.get("stamina_cost", 0))
-	var internal := int(action_definition.get("internal_cost", 0))
-	var momentum := int(action_definition.get("momentum_cost", 0))
-	var category_label := _category_label()
-	var facts := "%s · %s · 사거리 %s · 기력 %d · 내력 %d" % [
+	var facts := PackedStringArray([
 		str(action_definition.get("source_label", "행동")),
-		category_label,
-		_range_fact_text(),
-		stamina,
-		internal
-	]
+		_category_label(),
+		"기력 %d" % int(action_definition.get("stamina_cost", 0)),
+		"내력 %d" % int(action_definition.get("internal_cost", 0))
+	])
+	if _shows_range_fact():
+		facts.append("사거리 %s" % _range_fact_text())
+	var momentum := int(action_definition.get("momentum_cost", 0))
 	if momentum > 0:
-		facts += " · 기세 %d" % momentum
-	return facts
+		facts.append("기세 %d" % momentum)
+	return " · ".join(facts)
+
+func _shows_range_fact() -> bool:
+	return _category() == "attack" and not bool(action_definition.get("hide_range", false))
 
 func _range_fact_text() -> String:
 	if bool(action_definition.get("hide_range", false)):
@@ -182,16 +183,21 @@ func _tooltip_text(status_text: String) -> String:
 
 func _accessibility_name(status_text: String) -> String:
 	var state: String = status_text if not status_text.is_empty() else (str(action_definition.get("lock_reason", "")) if bool(action_definition.get("locked", false)) else "사용 가능")
-	return "%s, %s, %s, %d수, 사거리 %s, 기력 %d, 내력 %d, %s" % [
+	var parts := PackedStringArray([
 		str(action_definition.get("name", "")),
 		str(action_definition.get("source_label", "행동")),
 		_category_label(),
-		int(action_definition.get("action_slots", 1)),
-		_range_fact_text(),
-		int(action_definition.get("stamina_cost", 0)),
-		int(action_definition.get("internal_cost", 0)),
-		state
-	]
+		"%d수" % int(action_definition.get("action_slots", 1)),
+		"기력 %d" % int(action_definition.get("stamina_cost", 0)),
+		"내력 %d" % int(action_definition.get("internal_cost", 0))
+	])
+	if _shows_range_fact():
+		parts.append("사거리 %s" % _range_fact_text())
+	var momentum := int(action_definition.get("momentum_cost", 0))
+	if momentum > 0:
+		parts.append("기세 %d" % momentum)
+	parts.append(state)
+	return ", ".join(parts)
 
 func _accessibility_description(status_text: String) -> String:
 	var state: String = status_text if not status_text.is_empty() else (str(action_definition.get("lock_reason", "")) if bool(action_definition.get("locked", false)) else "선택하면 현재 묶음에 자동 배치")

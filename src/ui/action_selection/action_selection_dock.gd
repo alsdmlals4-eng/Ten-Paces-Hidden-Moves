@@ -36,9 +36,11 @@ var martial_panel: MartialActionPanel
 var ultimate_panel: UltimateActionPanel
 var action_detail_panel: ActionDetailPanel
 var action_intent_panel: ActionIntentPanel
+var _backdrop: Panel
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_PASS
+    _build_backdrop()
     basic_tab.pressed.connect(func(): set_active_source("basic"))
     martial_tab.pressed.connect(func(): set_active_source("martial"))
     ultimate_tab.pressed.connect(func(): set_active_source("ultimate"))
@@ -49,6 +51,22 @@ func _ready() -> void:
     set_meta("manual_is_not_directly_placeable", true)
     set_meta("virtual_combo_enabled", false)
     set_meta("presentation_surface", "paper_ink_r1")
+
+func _build_backdrop() -> void:
+    if is_instance_valid(_backdrop):
+        return
+    _backdrop = Panel.new()
+    _backdrop.name = "DockBackground"
+    _backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    _backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+    var style := StyleBoxFlat.new()
+    style.bg_color = Color(CHARCOAL_INK, 0.97)
+    style.border_color = Color(RESTRAINED_GOLD, 0.78)
+    style.set_border_width_all(2)
+    style.set_corner_radius_all(4)
+    _backdrop.add_theme_stylebox_override("panel", style)
+    add_child(_backdrop)
+    move_child(_backdrop, 0)
 
 func set_active_source(source: String) -> void:
     if not switching_enabled or source not in SOURCES or source == active_source:
@@ -284,10 +302,5 @@ func _apply_tab_presentation(button: Button, selected: bool) -> void:
 
 func _notification(what: int) -> void:
     if what == NOTIFICATION_RESIZED:
-        queue_redraw()
-
-func _draw() -> void:
-    draw_rect(Rect2(Vector2.ZERO, size), Color(CHARCOAL_INK, 0.97), true)
-    draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color(RESTRAINED_GOLD, 0.78), false, 2.0)
-    draw_line(Vector2(12.0, 45.0), Vector2(maxf(12.0, size.x - 12.0), 45.0), Color(RESTRAINED_GOLD, 0.38), 1.0)
-    draw_line(Vector2(12.0, size.y - 8.0), Vector2(maxf(12.0, size.x - 12.0), size.y - 8.0), Color(PAPER_SURFACE, 0.22), 1.0)
+        if is_instance_valid(_backdrop):
+            _backdrop.queue_redraw()

@@ -4,7 +4,8 @@
   "status": "APPROVED",
   "protected_base_commit": "ef7a48d2769b17b4632b695191a293ee40524ac4",
   "decision_ids": [
-    "TEN-DEC-20260902-SCREEN-PARTITION-AND-DISTANT-FRONTAL-DUEL-01"
+    "TEN-DEC-20260902-SCREEN-PARTITION-AND-DISTANT-FRONTAL-DUEL-01",
+    "TEN-DEC-20260903-MODULAR-DUEL-UI-AND-PRESENTATION-MOTION-01"
   ],
   "approved_paths": [
     "assets/ASSET_MANIFEST.json",
@@ -16,6 +17,14 @@
     "assets/characters/player_wanderer_battler_rgba_v2.png.import",
     "assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png",
     "assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png.import",
+    "assets/ui/duel/current_action_slot_frame_01_v1.png",
+    "assets/ui/duel/current_action_slot_frame_01_v1.png.import",
+    "assets/ui/duel/observation_reveal_frame_01_v1.png",
+    "assets/ui/duel/observation_reveal_frame_01_v1.png.import",
+    "assets/ui/duel/status_hud_frame_01_v1.png",
+    "assets/ui/duel/status_hud_frame_01_v1.png.import",
+    "assets/ui/duel/technique_detail_frame_01_v1.png",
+    "assets/ui/duel/technique_detail_frame_01_v1.png.import",
     "data/combat/combat_board_poc.json",
     "scenes/ui/action_selection/action_selection_dock.tscn",
     "src/combat/battle_background.gd",
@@ -26,11 +35,20 @@
     "src/ui/action_timing_panel_auto.gd",
     "src/ui/combat_screen_surface.gd",
     "src/ui/combat_screen_surface.gd.uid",
+    "src/ui/combatant_status_panel.gd",
+    "src/ui/action_timing_slot.gd",
+    "src/ui/action_selection/action_choice_card.gd",
+    "src/ui/action_selection/action_detail_panel.gd",
+    "src/ui/action_selection/action_selection_dock.gd",
+    "src/ui/combat_action_reveal_overlay.gd",
     "src/ui/duel_foreground_banner.gd",
     "src/ui/duel_foreground_banner.gd.uid",
-    "src/ui/main_title_screen.gd"
+    "src/ui/main_title_screen.gd",
+    "src/ui/observation_reveal_panel.gd",
+    "src/ui/observation_reveal_panel.gd.uid",
+    "scenes/ui/observation_reveal_panel.tscn"
   ],
-  "approval_source": "User explicitly final-locked the modular combat art, then directed the top/middle/bottom screen separation, current-only 3/3/4 action bundle display, and distant frontal combatant framing on 2026-09-02 KST; standing in-scope continuation and required approvals apply.",
-  "approval_time": "2026-09-02T22:09:08+09:00",
-  "scope_summary": "PR #321 only: retain the final-locked modular frontal courtyard art, partition the combat screen into independent HUD/duel/planning surfaces, show only the current logical 3/3/4 bundle, and use a distant shared-floor frontal duel composition. No combat rules, AI boundary, save schema, input policy, or raster-byte replacement is authorized."
+  "approval_source": "User explicitly final-locked the modular combat art, then directed the top/middle/bottom screen separation, current-only 3/3/4 action bundle display, distant frontal combatant framing, separately generated status/slot/detail/observation modules, and presentation-only attack/evade/block/hit/ultimate/clash motion. The user then wrote ‘확정’ on 2026-09-03 KST for the four final UI frames and retained v2 combatant originals; standing in-scope continuation and required approvals apply.",
+  "approval_time": "2026-09-03T00:00:00+09:00",
+  "scope_summary": "PR #321 only: retain final-locked modular courtyard and v2 combatant art, render the four final-locked modular UI frames with dynamic public data, keep current-only 3/3/4 preparation visibility, hide planning UI during per-action reveal, and add grounded presentation-only attack/evade/block/hit/ultimate/clash transforms. No combat rules, AI boundary, save schema, hidden information release, input policy, or replacement of approved combatant raster bytes is authorized."
 }

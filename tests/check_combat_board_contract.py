@@ -199,11 +199,28 @@ def main() -> None:
         "ten_paces_hidden_moves_title_logo_01_v1",
         "attack_clash_ink_gold_atlas_01_v1",
         "ultimate_ink_gold_sprite_sheet_rgba",
+        "status_hud_frame_01_v1",
+        "current_action_slot_frame_01_v1",
+        "technique_detail_frame_01_v1",
+        "observation_reveal_frame_01_v1",
     }
     for asset in active_assets:
         assert res_file(asset["path"]).exists(), asset["path"]
         assert asset.get("prompt") or asset.get("source_png_sha256"), asset["id"]
         assert asset.get("license", asset_manifest.get("license", ""))
+    for asset_id in (
+        "status_hud_frame_01_v1",
+        "current_action_slot_frame_01_v1",
+        "technique_detail_frame_01_v1",
+        "observation_reveal_frame_01_v1",
+    ):
+        modular_frame = next(asset for asset in active_assets if asset["id"] == asset_id)
+        source = ROOT / modular_frame["source_asset"]
+        assert source.exists(), modular_frame["source_asset"]
+        assert hashlib.sha256(source.read_bytes()).hexdigest() == modular_frame["source_png_sha256"]
+        assert hashlib.sha256(res_file(modular_frame["path"]).read_bytes()).hexdigest() == modular_frame["source_png_sha256"]
+        assert modular_frame["transparency_audit"]["has_alpha"] is True
+        assert modular_frame["transparency_audit"]["status"] == "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_VERIFIED"
     battle_background = next(asset for asset in active_assets if asset["id"] == "frontal_courtyard_duel_background_02_v1")
     assert battle_background["source_asset"] == "docs/visual-assets/approved/FRONTAL_COURTYARD_DUEL_BACKGROUND_02_v1.png"
     assert "src/combat/battle_background.gd" in battle_background["runtime_consumer"]

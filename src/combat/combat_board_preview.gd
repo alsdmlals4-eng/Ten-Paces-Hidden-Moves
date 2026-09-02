@@ -16,6 +16,7 @@ const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placehold
 const ACTION_REVEAL_OVERLAY_SCRIPT := preload("res://src/ui/combat_action_reveal_overlay.gd")
 const DUEL_FOREGROUND_BANNER_SCRIPT := preload("res://src/ui/duel_foreground_banner.gd")
 const COMBAT_SCREEN_SURFACE_SCRIPT := preload("res://src/ui/combat_screen_surface.gd")
+const OBSERVATION_REVEAL_SCENE := preload("res://scenes/ui/observation_reveal_panel.tscn")
 const ULTIMATE_VFX_PATH := "res://assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png"
 const ATTACK_CLASH_VFX_PATH := "res://assets/vfx/attack_clash_ink_gold_atlas_rgba_v1.png"
 const ATTACK_CLASH_MATTE_SHADER := """
@@ -49,7 +50,7 @@ var card_detail_panel: CardDetailPanel
 var combat_log_panel: CombatLogPanel
 var combat_review_panel: CombatReviewPanel
 var observation_reveal_button: Button
-var observation_reveal_status: Label
+var observation_reveal_panel: Control
 var ultimate_menu: MenuButton
 var ultimate_list_panel: PanelContainer
 var ultimate_list_title: Label
@@ -112,6 +113,7 @@ var _committed_player_plan_snapshot: Array = []
 var _committed_state_before: Dictionary = {}
 var _last_review_summary: Dictionary = {}
 var _review_terminal := false
+var _presentation_motion_snapshot: Dictionary = {}
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_PASS
@@ -279,15 +281,11 @@ func _build_structure() -> void:
 	combat_log_panel.layout_requested.connect(_layout_board)
 	add_child(combat_log_panel)
 
-	observation_reveal_status = Label.new()
-	observation_reveal_status.name = "ObservationRevealStatus"
-	observation_reveal_status.text = ""
-	observation_reveal_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	observation_reveal_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	observation_reveal_status.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	observation_reveal_status.clip_text = true
-	observation_reveal_status.visible = false
-	add_child(observation_reveal_status)
+	observation_reveal_panel = OBSERVATION_REVEAL_SCENE.instantiate() as Control
+	observation_reveal_panel.name = "ObservationRevealPanel"
+	observation_reveal_panel.visible = false
+	observation_reveal_panel.z_index = 18
+	add_child(observation_reveal_panel)
 
 	combat_review_panel = COMBAT_REVIEW_SCENE.instantiate() as CombatReviewPanel
 	combat_review_panel.name = "CombatReviewPanel"
@@ -441,6 +439,8 @@ func _apply_attack_clash_vfx_matte() -> void:
 	set_meta("basic_card_tray_layout", "bottom_lower")
 	set_meta("basic_card_count", 8)
 	set_meta("card_detail_component", "CardDetailPanel")
+	set_meta("observation_component", "ObservationRevealPanel")
+	set_meta("observation_information_boundary", "action_types_only")
 	set_meta("combat_log_component", "CombatLogPanel")
 	set_meta("combat_review_component", "CombatReviewPanel")
 	set_meta("review_requires_explicit_continue", true)
@@ -517,8 +517,8 @@ func _layout_board() -> void:
 		presentation_vfx.position = Vector2(size.x * 0.20, presentation_y + 60.0)
 		presentation_vfx.size = Vector2(size.x * 0.60, clampf(size.y * 0.22, 150.0, 210.0))
 	if is_instance_valid(action_reveal_overlay):
-		action_reveal_overlay.position = Vector2.ZERO
-		action_reveal_overlay.size = size
+		var reveal_rect := Rect2(duel_stage_surface.position, duel_stage_surface.size) if is_instance_valid(duel_stage_surface) else Rect2(Vector2.ZERO, Vector2(size.x, size.y * 0.50))
+		action_reveal_overlay.configure_presentation_rect(reveal_rect)
 	var playback_x := maxf(lower_margin, size.x - 420.0)
 	for button_value in [fast_replay_button, reduced_motion_button, restart_combat_button]:
 		if is_instance_valid(button_value):
@@ -549,9 +549,11 @@ func _layout_board() -> void:
 		combat_log_panel.position = Vector2(size.x - overlay_margin - log_width, overlay_top)
 		combat_log_panel.size = Vector2(log_width, overlay_height)
 
-	if is_instance_valid(observation_reveal_status):
-		observation_reveal_status.position = Vector2((size.x - 360.0) * 0.5, timing_row_y - 30.0)
-		observation_reveal_status.size = Vector2(360.0, 24.0)
+	if is_instance_valid(observation_reveal_panel):
+		var duel_rect := get_duel_stage_rect()
+		var observation_size := Vector2(clampf(size.x * 0.17, 170.0, 238.0), clampf(duel_rect.size.y * 0.58, 144.0, 260.0))
+		observation_reveal_panel.position = Vector2(size.x - overlay_margin - observation_size.x, maxf(duel_rect.position.y + 12.0, presentation_y + 28.0))
+		observation_reveal_panel.size = observation_size
 
 	if is_instance_valid(combat_review_panel):
 		var review_size := Vector2(clampf(size.x * 0.52, 460.0, 620.0), clampf(size.y * 0.48, 320.0, 430.0))
@@ -1223,9 +1225,18 @@ func _set_presentation_state(value: String) -> void:
 	set_meta("inputs_locked", _inputs_locked())
 
 func _set_resolution_surface_visible(value: bool) -> void:
-	for control_value in [action_timing_panel, combat_progress_button, basic_card_tray]:
+	if is_instance_valid(planning_surface):
+		planning_surface.visible = value
+	if is_instance_valid(top_hud_surface):
+		top_hud_surface.visible = true
+	if is_instance_valid(duel_stage_surface):
+		duel_stage_surface.visible = true
+	for control_value in [action_timing_panel, combat_progress_button, basic_card_tray, card_detail_panel, observation_reveal_panel, combat_log_panel]:
 		if is_instance_valid(control_value):
-			(control_value as Control).visible = value
+			if control_value == observation_reveal_panel:
+				(control_value as Control).visible = value and _observation_has_revealed_types()
+			else:
+				(control_value as Control).visible = value
 
 func _inputs_locked() -> bool:
 	return _presentation_state not in ["planning", "next_bundle_ready"]
@@ -1300,16 +1311,60 @@ func _feedback_windup_duration(event: Dictionary, total_duration: float) -> floa
 func _play_character_action_motion(event: Dictionary, duration: float = -1.0) -> void:
 	if _reduced_motion:
 		return
+	var motion_duration := _event_presentation_duration(event) if duration <= 0.0 else duration
+	if str(event.get("type", "")) == "clash" or str(event.get("outcome", "")).begins_with("clash_"):
+		_play_clash_motion(motion_duration)
+		return
 	var card_id := str(event.get("card_id", ""))
 	var is_attack := card_id.begins_with("ultimate_") or card_id.contains("attack") or str(event.get("category", "")) == "attack"
 	if not is_attack:
 		return
-	var motion_duration := _event_presentation_duration(event) if duration <= 0.0 else duration
 	var actor := str(event.get("actor", ""))
 	if actor == "player" and is_instance_valid(player_character):
-		player_character.play_attack_motion(motion_duration)
+		if card_id.begins_with("ultimate_"):
+			player_character.play_ultimate_motion(motion_duration)
+		else:
+			player_character.play_attack_motion(motion_duration)
 	elif actor == "enemy" and is_instance_valid(enemy_character):
-		enemy_character.play_attack_motion(motion_duration)
+		if card_id.begins_with("ultimate_"):
+			enemy_character.play_ultimate_motion(motion_duration)
+		else:
+			enemy_character.play_attack_motion(motion_duration)
+
+func _play_clash_motion(duration: float) -> void:
+	if not is_instance_valid(player_character) or not is_instance_valid(enemy_character):
+		return
+	var player_foot := player_character.get_foot_anchor_global()
+	var enemy_foot := enemy_character.get_foot_anchor_global()
+	var clash_anchor := (player_foot + enemy_foot) * 0.5
+	clash_anchor.y = (player_foot.y + enemy_foot.y) * 0.5
+	_presentation_motion_snapshot = {
+		"clash_anchor": clash_anchor,
+		"clash_anchor_valid": is_equal_approx(player_foot.y, enemy_foot.y),
+		"player_foot_before": player_foot,
+		"enemy_foot_before": enemy_foot,
+		"shared_floor_y": clash_anchor.y
+	}
+	player_character.play_clash_motion(clash_anchor, duration)
+	enemy_character.play_clash_motion(clash_anchor, duration)
+
+func _play_character_impact_motion(event: Dictionary, duration: float) -> void:
+	if _reduced_motion:
+		return
+	if str(event.get("type", "")) == "clash" or str(event.get("outcome", "")).begins_with("clash_"):
+		return
+	var actor := str(event.get("actor", ""))
+	var defender := enemy_character if actor == "player" else player_character
+	if not is_instance_valid(defender):
+		return
+	var defense_outcome := str(event.get("defense_outcome", ""))
+	var outcome := str(event.get("outcome", ""))
+	if defense_outcome == "evade" or outcome == "evade":
+		defender.play_evade_motion(duration)
+	elif defense_outcome == "block" or outcome == "block":
+		defender.play_block_motion(duration)
+	elif int(event.get("damage", 0)) > 0:
+		defender.play_hit_motion(duration)
 
 func _present_resolved_event_feedback(event: Dictionary) -> void:
 	var kind := _prepare_presentation_feedback(event)
@@ -1397,6 +1452,7 @@ func _show_presentation_feedback(event: Dictionary) -> void:
 	_show_presentation_impact(event, kind, 0.0)
 
 func _show_presentation_impact(event: Dictionary, kind: String, recovery_duration: float) -> void:
+	_play_character_impact_motion(event, maxf(0.18, recovery_duration))
 	_show_feedback_label(event, recovery_duration)
 	_show_feedback_vfx(event, kind, recovery_duration)
 
@@ -1684,7 +1740,7 @@ func _configure_keyboard_focus_order() -> void:
 	set_meta("keyboard_focus_order", "review_detail|review_continue" if is_instance_valid(combat_review_panel) and combat_review_panel.visible else "cards|ultimate_list|timings|tiles|progress|presentation_controls")
 
 func _configure_accessibility_semantics() -> void:
-	_set_accessibility_semantics(observation_reveal_status, "관찰 공개", "관찰점으로 자동 공개된 잠긴 상대 행동 유형입니다. 기술명, 목표, 피해는 공개하지 않습니다.")
+	_set_accessibility_semantics(observation_reveal_panel, "관찰 공개", "관찰점으로 자동 공개된 잠긴 상대 행동 유형입니다. 기술명, 목표, 피해, 방향, 비용, 숨은 계획은 공개하지 않습니다.")
 	if is_instance_valid(basic_card_tray):
 		for card_value in basic_card_tray.cards:
 			if card_value is BasicCardTrayItem:
@@ -1841,22 +1897,12 @@ func reveal_available_locked_enemy_action_types() -> Dictionary:
 
 func _refresh_observation_reveal() -> void:
 	var player: Dictionary = combat_state.get("player", {})
-	if is_instance_valid(observation_reveal_status):
-		observation_reveal_status.text = _format_observation_reveal_history(player)
-		observation_reveal_status.visible = not (player.get("observation_reveals", []) as Array).is_empty()
-
-func _format_observation_reveal_history(player: Dictionary) -> String:
-	var history: Array = player.get("observation_reveals", []) if typeof(player.get("observation_reveals", [])) == TYPE_ARRAY else []
-	var records := PackedStringArray()
-	for revealed_value in history:
-		if typeof(revealed_value) != TYPE_ARRAY:
-			continue
-		var action_types := PackedStringArray()
-		for action_type in revealed_value:
-			action_types.append(str(action_type))
-		if not action_types.is_empty():
-			records.append("[%s]" % "→".join(action_types))
-	return "관찰 공개 · 상대 %s" % " / ".join(records)
+	if is_instance_valid(observation_reveal_panel):
+		var history: Array = player.get("observation_reveals", []) if typeof(player.get("observation_reveals", [])) == TYPE_ARRAY else []
+		observation_reveal_panel.call("set_revealed_types", history)
+		observation_reveal_panel.visible = _observation_has_revealed_types() and not _inputs_locked()
+	if is_instance_valid(combat_log_panel) and is_instance_valid(observation_reveal_panel):
+		combat_log_panel.visible = not _observation_has_revealed_types()
 
 func _clear_action_selection() -> void:
 	_selected_action_definition.clear()
@@ -1918,6 +1964,32 @@ func get_character_foot_anchor(role: String) -> Vector2:
 
 func get_combat_state_snapshot() -> Dictionary:
 	return combat_state.duplicate(true)
+
+func get_modular_duel_ui_snapshot() -> Dictionary:
+	var observation_snapshot := _observation_snapshot()
+	return {
+		"status_frame_loaded": is_instance_valid(top_hud) and is_instance_valid(top_hud.player_panel) and is_instance_valid(top_hud.enemy_panel) and bool(top_hud.player_panel.get_meta("status_hud_frame_loaded", false)) and bool(top_hud.enemy_panel.get_meta("status_hud_frame_loaded", false)),
+		"current_action_slot_frame_loaded": is_instance_valid(action_timing_panel) and action_timing_panel.get_slot(1) != null and bool(action_timing_panel.get_slot(1).get_meta("current_action_slot_frame_loaded", false)),
+		"technique_detail_frame_loaded": is_instance_valid(card_detail_panel) and bool(card_detail_panel.get_meta("technique_detail_frame_loaded", false)),
+		"observation_frame_loaded": is_instance_valid(observation_reveal_panel) and bool(observation_reveal_panel.get_meta("observation_frame_loaded", false)),
+		"player_numeric_values_visible": is_instance_valid(top_hud) and is_instance_valid(top_hud.player_panel) and bool(top_hud.player_panel.get_meta("numeric_values_visible", false)),
+		"enemy_numeric_values_visible": is_instance_valid(top_hud) and is_instance_valid(top_hud.enemy_panel) and bool(top_hud.enemy_panel.get_meta("numeric_values_visible", true)),
+		"momentum_segments": int(top_hud.get_meta("momentum_segments", 0)) if is_instance_valid(top_hud) else 0,
+		"observation_values": observation_snapshot.get("revealed_types", []),
+		"observation_private_fields_visible": bool(observation_snapshot.get("private_fields_visible", true))
+	}
+
+func get_presentation_motion_snapshot() -> Dictionary:
+	return _presentation_motion_snapshot.duplicate(true)
+
+func _observation_has_revealed_types() -> bool:
+	return is_instance_valid(observation_reveal_panel) and observation_reveal_panel.has_method("has_revealed_types") and bool(observation_reveal_panel.call("has_revealed_types"))
+
+func _observation_snapshot() -> Dictionary:
+	if not is_instance_valid(observation_reveal_panel) or not observation_reveal_panel.has_method("get_observation_snapshot"):
+		return {}
+	var value = observation_reveal_panel.call("get_observation_snapshot")
+	return value as Dictionary if typeof(value) == TYPE_DICTIONARY else {}
 
 func get_layout_snapshot() -> Dictionary:
 	var hud_snapshot := top_hud.get_hud_snapshot() if is_instance_valid(top_hud) else {}

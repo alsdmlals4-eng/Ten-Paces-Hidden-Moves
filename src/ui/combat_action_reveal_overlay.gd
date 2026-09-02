@@ -2,7 +2,7 @@ class_name CombatActionRevealOverlay
 extends Control
 
 const INK := Color("17120f")
-const INK_SOFT := Color(0.08, 0.06, 0.045, 0.86)
+const INK_SOFT := Color(0.08, 0.06, 0.045, 0.42)
 const PAPER := Color("ddd0ae")
 const PAPER_DARK := Color("b6a17b")
 const GOLD := Color("d7b66b")
@@ -14,9 +14,11 @@ var _heading: Label
 var _phase: Label
 var _versus: Label
 var _result: Label
+var _ink_veil: ColorRect
 var _player_widgets: Dictionary = {}
 var _enemy_widgets: Dictionary = {}
 var _snapshot: Dictionary = {}
+var _presentation_rect := Rect2()
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -28,8 +30,8 @@ func _ready() -> void:
 func show_timing(timing: int, phase: String, events_value: Array, reduced_motion: bool) -> void:
 	var player_events := _actor_events(events_value, "player")
 	var enemy_events := _actor_events(events_value, "enemy")
-	_fill_card(_player_widgets, player_events, "강호낭인", PLAYER_ACCENT)
-	_fill_card(_enemy_widgets, enemy_events, "상대", ENEMY_ACCENT)
+	_fill_callout(_player_widgets, player_events, "강호낭인", PLAYER_ACCENT)
+	_fill_callout(_enemy_widgets, enemy_events, "상대", ENEMY_ACCENT)
 	_heading.text = "대응" if phase == "response" else "%d번째 행동 공개" % timing
 	_phase.text = "대응 확인" if phase == "response" else "한 수씩 겨룬다"
 	_result.text = _result_text(player_events, enemy_events)
@@ -40,6 +42,8 @@ func show_timing(timing: int, phase: String, events_value: Array, reduced_motion
 		"player_action_count": player_events.size(),
 		"enemy_action_count": enemy_events.size(),
 		"future_action_visible": false,
+		"selection_cards_visible": false,
+		"action_callouts_visible": true,
 		"result_text": _result.text
 	}
 	visible = true
@@ -57,13 +61,21 @@ func hide_reveal() -> void:
 func get_snapshot() -> Dictionary:
 	return _snapshot.duplicate(true)
 
+func configure_presentation_rect(value: Rect2) -> void:
+	_presentation_rect = value
+	_layout_cards()
+
+func get_reveal_rect() -> Rect2:
+	var local_rect := _resolved_presentation_rect()
+	return Rect2(global_position + local_rect.position, local_rect.size)
+
 func _build() -> void:
-	var dim := ColorRect.new()
-	dim.name = "InkVeil"
-	dim.color = INK_SOFT
-	dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(dim)
+	_ink_veil = ColorRect.new()
+	_ink_veil.name = "InkVeil"
+	_ink_veil.color = INK_SOFT
+	_ink_veil.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_ink_veil.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	add_child(_ink_veil)
 
 	_heading = Label.new()
 	_heading.name = "RevealHeading"
@@ -83,8 +95,8 @@ func _build() -> void:
 	_phase.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_phase)
 
-	_player_widgets = _make_action_card("PlayerActionCard")
-	_enemy_widgets = _make_action_card("EnemyActionCard")
+	_player_widgets = _make_action_callout("PlayerActionCallout")
+	_enemy_widgets = _make_action_callout("EnemyActionCallout")
 	add_child(_player_widgets["panel"])
 	add_child(_enemy_widgets["panel"])
 
@@ -108,21 +120,21 @@ func _build() -> void:
 	_result.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_result)
 
-func _make_action_card(node_name: String) -> Dictionary:
+func _make_action_callout(node_name: String) -> Dictionary:
 	var panel := PanelContainer.new()
 	panel.name = node_name
 	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(PAPER, 0.98)
+	style.bg_color = Color(INK, 0.84)
 	style.border_color = PAPER_DARK
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(5)
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(3)
 	style.shadow_color = Color(0.0, 0.0, 0.0, 0.42)
-	style.shadow_size = 8
-	style.content_margin_left = 10.0
-	style.content_margin_right = 10.0
-	style.content_margin_top = 8.0
-	style.content_margin_bottom = 8.0
+	style.shadow_size = 4
+	style.content_margin_left = 8.0
+	style.content_margin_right = 8.0
+	style.content_margin_top = 5.0
+	style.content_margin_bottom = 5.0
 	panel.add_theme_stylebox_override("panel", style)
 
 	var column := VBoxContainer.new()
@@ -138,28 +150,19 @@ func _make_action_card(node_name: String) -> Dictionary:
 	side.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(side)
 
-	var art := TextureRect.new()
-	art.name = "Illustration"
-	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	art.custom_minimum_size = Vector2(118.0, 82.0)
-	art.modulate = Color(0.32, 0.29, 0.25, 0.96)
-	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	column.add_child(art)
-
 	var action_name := Label.new()
 	action_name.name = "ActionName"
 	action_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	action_name.add_theme_font_size_override("font_size", 20)
-	action_name.add_theme_color_override("font_color", INK)
+	action_name.add_theme_font_size_override("font_size", 17)
+	action_name.add_theme_color_override("font_color", PAPER)
 	action_name.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(action_name)
 
 	var facts := Label.new()
 	facts.name = "Facts"
 	facts.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	facts.add_theme_font_size_override("font_size", 12)
-	facts.add_theme_color_override("font_color", MUTED)
+	facts.add_theme_font_size_override("font_size", 11)
+	facts.add_theme_color_override("font_color", Color("c4b391"))
 	facts.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(facts)
 
@@ -167,27 +170,24 @@ func _make_action_card(node_name: String) -> Dictionary:
 	outcome.name = "Outcome"
 	outcome.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	outcome.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	outcome.add_theme_font_size_override("font_size", 13)
-	outcome.add_theme_color_override("font_color", INK)
+	outcome.add_theme_font_size_override("font_size", 11)
+	outcome.add_theme_color_override("font_color", Color("e8d8b7"))
 	outcome.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(outcome)
 
-	return {"panel": panel, "style": style, "side": side, "art": art, "name": action_name, "facts": facts, "outcome": outcome}
+	return {"panel": panel, "style": style, "side": side, "name": action_name, "facts": facts, "outcome": outcome}
 
-func _fill_card(widgets: Dictionary, events: Array, side_name: String, accent: Color) -> void:
+func _fill_callout(widgets: Dictionary, events: Array, side_name: String, accent: Color) -> void:
 	var style := widgets.get("style") as StyleBoxFlat
 	if style != null:
 		style.border_color = accent
 	var side := widgets.get("side") as Label
-	var art := widgets.get("art") as TextureRect
 	var action_name := widgets.get("name") as Label
 	var facts := widgets.get("facts") as Label
 	var outcome := widgets.get("outcome") as Label
 	if side != null:
 		side.text = side_name
 	if events.is_empty():
-		if art != null:
-			art.texture = null
 		if action_name != null:
 			action_name.text = "행동 없음"
 		if facts != null:
@@ -196,12 +196,12 @@ func _fill_card(widgets: Dictionary, events: Array, side_name: String, accent: C
 			outcome.text = "상대의 다음 수는 공개하지 않습니다"
 		return
 	var first: Dictionary = events[0]
-	if art != null:
-		art.texture = _texture_from_spec(first.get("illustration", {}))
 	if action_name != null:
 		action_name.text = str(first.get("card_name", "행동"))
 	if facts != null:
-		facts.text = "%s · 거리 %s · %d수" % [str(first.get("category_label", first.get("category", "행동"))), str(first.get("range_text", "-")), int(first.get("action_slots", 1))]
+		facts.text = "%s · %d수" % [str(first.get("category_label", first.get("category", "행동"))), int(first.get("action_slots", 1))]
+		if str(first.get("category", "")) == "attack":
+			facts.text += " · 사거리 %s" % str(first.get("range_text", "-"))
 	if outcome != null:
 		outcome.text = _event_outcome(first)
 		if events.size() > 1:
@@ -249,36 +249,33 @@ func _event_outcome(event: Dictionary) -> String:
 		return "피해 %d" % int(event.get("damage", 0))
 	return "실행"
 
-func _texture_from_spec(spec_value) -> Texture2D:
-	if typeof(spec_value) != TYPE_DICTIONARY:
-		return null
-	var spec: Dictionary = spec_value
-	var path := str(spec.get("atlas", ""))
-	var region: Array = spec.get("region", [])
-	if path.is_empty() or region.size() != 4 or not ResourceLoader.exists(path):
-		return null
-	var texture := AtlasTexture.new()
-	texture.atlas = load(path) as Texture2D
-	texture.region = Rect2(float(region[0]), float(region[1]), float(region[2]), float(region[3]))
-	return texture
-
 func _layout_cards() -> void:
 	if size.x <= 0.0 or size.y <= 0.0 or _heading == null:
 		return
-	var card_width := clampf(size.x * 0.25, 235.0, 340.0)
-	var card_height := clampf(size.y * 0.43, 228.0, 312.0)
-	var center_x := size.x * 0.5
-	var card_y := clampf(size.y * 0.28, 118.0, size.y - card_height - 68.0)
-	var side_gap := clampf(size.x * 0.11, 100.0, 164.0)
+	var region := _resolved_presentation_rect()
+	if is_instance_valid(_ink_veil):
+		_ink_veil.position = region.position
+		_ink_veil.size = region.size
+	var card_width := clampf(region.size.x * 0.17, 146.0, 214.0)
+	var card_height := clampf(region.size.y * 0.20, 64.0, 86.0)
+	var center_x := region.position.x + region.size.x * 0.5
+	var card_y := clampf(region.position.y + region.size.y * 0.18, region.position.y + 76.0, region.end.y - card_height - 54.0)
+	var side_gap := clampf(region.size.x * 0.055, 38.0, 72.0)
 	(_player_widgets.get("panel") as Control).position = Vector2(center_x - side_gap - card_width, card_y)
 	(_player_widgets.get("panel") as Control).size = Vector2(card_width, card_height)
 	(_enemy_widgets.get("panel") as Control).position = Vector2(center_x + side_gap, card_y)
 	(_enemy_widgets.get("panel") as Control).size = Vector2(card_width, card_height)
-	_heading.position = Vector2(size.x * 0.30, maxf(18.0, size.y * 0.09))
-	_heading.size = Vector2(size.x * 0.40, 42.0)
+	_heading.position = Vector2(region.position.x + region.size.x * 0.30, region.position.y + maxf(12.0, region.size.y * 0.06))
+	_heading.size = Vector2(region.size.x * 0.40, 38.0)
 	_phase.position = Vector2(size.x * 0.30, _heading.position.y + 39.0)
-	_phase.size = Vector2(size.x * 0.40, 26.0)
-	_versus.position = Vector2(center_x - 44.0, card_y + card_height * 0.42)
-	_versus.size = Vector2(88.0, 56.0)
-	_result.position = Vector2(size.x * 0.18, card_y + card_height + 12.0)
-	_result.size = Vector2(size.x * 0.64, 46.0)
+	_phase.position.x = region.position.x + region.size.x * 0.30
+	_phase.size = Vector2(region.size.x * 0.40, 24.0)
+	_versus.position = Vector2(center_x - 32.0, card_y + card_height * 0.10)
+	_versus.size = Vector2(64.0, 42.0)
+	_result.position = Vector2(region.position.x + region.size.x * 0.20, card_y + card_height + 6.0)
+	_result.size = Vector2(region.size.x * 0.60, 34.0)
+
+func _resolved_presentation_rect() -> Rect2:
+	if _presentation_rect.size.x > 0.0 and _presentation_rect.size.y > 0.0:
+		return _presentation_rect
+	return Rect2(Vector2.ZERO, size)

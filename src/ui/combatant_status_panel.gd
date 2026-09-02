@@ -13,6 +13,7 @@ const PLAYER_PORTRAIT := preload("res://assets/portraits/player_wanderer_ink_v1.
 const ENEMY_PORTRAIT := preload("res://assets/portraits/enemy_masked_ink_v1.png")
 const DOGYEOM_STATUS_PORTRAIT := preload("res://assets/portraits/dogyeom_status_portrait_01_v1.png")
 const DOGYEOM_CANDIDATE_ID := "slot1_dogyeom"
+const STATUS_HUD_FRAME := preload("res://assets/ui/duel/status_hud_frame_01_v1.png")
 
 var side: String = "player"
 var combatant: Dictionary = {}
@@ -24,9 +25,19 @@ var _stamina_label: Label
 var _internal_label: Label
 var _status_labels: Array[Label] = []
 var _portrait: TextureRect
+var _status_hud_frame: TextureRect
+var show_numeric_values := true
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_IGNORE
+    _status_hud_frame = TextureRect.new()
+    _status_hud_frame.name = "StatusHudFrame"
+    _status_hud_frame.texture = STATUS_HUD_FRAME
+    _status_hud_frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+    _status_hud_frame.stretch_mode = TextureRect.STRETCH_SCALE
+    _status_hud_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    _status_hud_frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+    add_child(_status_hud_frame)
     _portrait = TextureRect.new()
     _portrait.name = "CombatantInkPortrait"
     _portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -44,11 +55,15 @@ func _ready() -> void:
 
 func configure(value_side: String, value_combatant: Dictionary) -> void:
     side = value_side
+    show_numeric_values = side == "player"
     combatant = value_combatant.duplicate(true)
     if is_inside_tree():
         _refresh()
         _layout()
     queue_redraw()
+    set_meta("status_hud_frame_path", "res://assets/ui/duel/status_hud_frame_01_v1.png")
+    set_meta("status_hud_frame_loaded", STATUS_HUD_FRAME != null)
+    set_meta("numeric_values_visible", show_numeric_values)
 
 func _make_label(font_size: int, color: Color) -> Label:
     var label := Label.new()
@@ -104,7 +119,7 @@ func _portrait_for_current_combatant() -> Texture2D:
 
 func _format_resource(label: String, key: String) -> String:
     var pair := _resource_pair(key)
-    return "%s  %d/%d" % [label, pair.x, pair.y]
+    return "%s  %d/%d" % [label, pair.x, pair.y] if show_numeric_values else label
 
 func _resource_pair(key: String) -> Vector2i:
     var value = combatant.get(key, [0, 0])

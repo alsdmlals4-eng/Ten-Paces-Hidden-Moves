@@ -2,7 +2,6 @@
 extends SceneTree
 
 const BOARD_SCENE := preload("res://scenes/combat/combat_board_preview.tscn")
-const BASIC_ATLAS_PATH := "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png"
 const ATTACK_CLASH_VFX_PATH := "res://assets/vfx/attack_clash_ink_gold_atlas_rgba_v1.png"
 
 var failures: Array[String] = []
@@ -50,19 +49,15 @@ func _run() -> void:
 				reveal_seen = true
 				_expect(not bool(snapshot.get("future_action_visible", true)), "Timing 1 reveal must not expose later timing actions.")
 				_expect(int(snapshot.get("event_count", 0)) > 0, "Timing 1 reveal must expose its authoritative events.")
-				var player_panel := overlay.get_node_or_null("PlayerActionCard") as PanelContainer
-				var enemy_panel := overlay.get_node_or_null("EnemyActionCard") as PanelContainer
-				var player_column := player_panel.get_child(0) as VBoxContainer if player_panel != null and player_panel.get_child_count() > 0 else null
-				var enemy_column := enemy_panel.get_child(0) as VBoxContainer if enemy_panel != null and enemy_panel.get_child_count() > 0 else null
-				var player_art := player_column.get_node_or_null("Illustration") as TextureRect if player_column != null else null
-				var enemy_art := enemy_column.get_node_or_null("Illustration") as TextureRect if enemy_column != null else null
-				_expect(player_art != null and player_art.texture != null, "Current player action must render a card illustration in the reveal.")
-				_expect(enemy_art != null and enemy_art.texture != null, "Current enemy action must render a card illustration in the reveal.")
-				if player_art != null and player_art.texture is AtlasTexture:
-					_expect((player_art.texture as AtlasTexture).atlas.resource_path == BASIC_ATLAS_PATH, "Current basic action reveal must consume the final-locked technique atlas.")
+				_expect(not bool(snapshot.get("selection_cards_visible", true)), "Battle reveal must remove planning-card surfaces so the duel animation remains the focus.")
+				_expect(bool(snapshot.get("action_callouts_visible", false)), "Battle reveal must retain compact per-action callouts after selection cards disappear.")
+				_expect(overlay.get_node_or_null("PlayerActionCard") == null and overlay.get_node_or_null("EnemyActionCard") == null, "Battle reveal must not recreate the preparation-screen card components.")
+				_expect(overlay.get_node_or_null("PlayerActionCallout") != null and overlay.get_node_or_null("EnemyActionCallout") != null, "Battle reveal must expose one compact callout for each combatant.")
 				var player: Dictionary = board.combat_state.get("player", {})
 				_expect(int(player.get("tile", 0)) == 4, "Timing 1 state must not apply before its reveal resolves.")
 				_expect(not board.action_selection_dock.visible, "Planning dock must be hidden while the duel reveal is active.")
+				_expect(not board.action_timing_panel.visible and not board.combat_progress_button.visible, "Current bundle slots and execution control must be hidden while the duel reveal is active.")
+				_expect(not board.planning_surface.visible, "Duel reveal must hide the full planning surface so only top status and middle battle remain.")
 				break
 		await create_timer(0.05).timeout
 	_expect(reveal_seen, "A committed bundle must show a timing-1 action reveal overlay.")

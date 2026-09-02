@@ -330,9 +330,6 @@ func _layout_product_action_dock() -> void:
         var timing_y := dock_y - timing_height - 8.0
         action_timing_panel.position.y = timing_y
         combat_progress_button.position.y = timing_y + (timing_height - combat_progress_button.size.y) * 0.5
-        if is_instance_valid(observation_reveal_status):
-            observation_reveal_status.position = Vector2((size.x - 360.0) * 0.5, timing_y - 30.0)
-            observation_reveal_status.size = Vector2(360.0, 24.0)
         _shift_battlefield_above(timing_y - 30.0)
         if is_instance_valid(combat_log_panel):
             combat_log_panel.size.y = maxf(1.0, timing_y - 10.0 - combat_log_panel.position.y)

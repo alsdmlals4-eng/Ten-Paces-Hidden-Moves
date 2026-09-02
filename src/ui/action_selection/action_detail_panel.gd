@@ -1,6 +1,8 @@
 class_name ActionDetailPanel
 extends PanelContainer
 
+const TECHNIQUE_DETAIL_FRAME := preload("res://assets/ui/duel/technique_detail_frame_01_v1.png")
+
 var definition: Dictionary = {}
 var manual_definition: Dictionary = {}
 var pinned := false
@@ -92,6 +94,8 @@ func _build() -> void:
         return
     _built = true
     add_theme_stylebox_override("panel", _panel_style())
+    set_meta("technique_detail_frame_path", "res://assets/ui/duel/technique_detail_frame_01_v1.png")
+    set_meta("technique_detail_frame_loaded", TECHNIQUE_DETAIL_FRAME != null)
 
     var column := VBoxContainer.new()
     column.name = "ActionDetailColumn"
@@ -180,7 +184,8 @@ func _apply_action() -> void:
     _add_row("내력", str(maxi(0, int(definition.get("internal_cost", 0)))))
     if source_kind == "ultimate" or int(definition.get("momentum_cost", 0)) > 0:
         _add_row("절초기세", str(maxi(0, int(definition.get("momentum_cost", 5)))))
-    _add_row("사거리", str(definition.get("range_text", "-")))
+    if str(definition.get("category", "")) == "attack":
+        _add_row("사거리", str(definition.get("range_text", "-")))
 
     var target := str(detail.get("target", definition.get("target", "")))
     if not target.is_empty():
@@ -324,14 +329,15 @@ func _string_list(values) -> Array[String]:
         result.append(str(value))
     return result
 
-func _panel_style() -> StyleBoxFlat:
-    var style := StyleBoxFlat.new()
-    style.bg_color = Color(0.035, 0.040, 0.043, 0.97)
-    style.border_color = Color("8d6b35")
-    style.set_border_width_all(2)
-    style.set_corner_radius_all(8)
-    style.content_margin_left = 18
-    style.content_margin_right = 18
-    style.content_margin_top = 16
-    style.content_margin_bottom = 16
+func _panel_style() -> StyleBox:
+    var style := StyleBoxTexture.new()
+    style.texture = TECHNIQUE_DETAIL_FRAME
+    style.texture_margin_left = 42.0
+    style.texture_margin_top = 42.0
+    style.texture_margin_right = 42.0
+    style.texture_margin_bottom = 42.0
+    style.content_margin_left = 28
+    style.content_margin_right = 28
+    style.content_margin_top = 26
+    style.content_margin_bottom = 26
     return style

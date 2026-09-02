@@ -208,7 +208,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_status: FRONTAL_COURTYARD_DUEL_PRESENTATION_SHARED_MARTIAL_ULTIMATE_CARD_ATLAS_TITLE_LOGO_01_AND_ATTACK_CLASH_ATLAS_01_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_20260831_HUMAN_PLAYER_COMPARISON_DEFERRED",
+            "user_directed_planning_status: FRONTAL_DUEL_V2_LOCKED_ART_AND_CARDS_PLUS_MODULAR_DUEL_UI_AND_PRESENTATION_MOTION_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_VERIFIED_20260903_WINDOWS_PREPARATION_OBSERVED_ACTION_REVEAL_VISIBLE_HUMAN_DEFERRED",
             current_section,
         )
         self.assertIn(
@@ -220,7 +220,11 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_latest_decision: TEN-DEC-20260831-ACTION-CARD-ILLUSTRATION-EXTENSION-01",
+            "user_directed_planning_latest_decision: TEN-DEC-20260903-MODULAR-DUEL-UI-AND-PRESENTATION-MOTION-01",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_modular_duel_ui_presentation_status: USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_VERIFIED_WINDOWS_PREPARATION_OBSERVED_ACTION_REVEAL_VISIBLE_BLOCKED_UNVERIFIED_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN",
             current_section,
         )
         self.assertIn(
@@ -389,12 +393,20 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "FRONTAL_COURTYARD_DUEL_PRESENTATION_SHARED_MARTIAL_ULTIMATE_CARD_ATLAS_TITLE_LOGO_01_AND_ATTACK_CLASH_ATLAS_01_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_AUTOMATED_GODOT_VERIFIED_20260831_HUMAN_PLAYER_COMPARISON_DEFERRED",
+            "FRONTAL_DUEL_V2_LOCKED_ART_AND_CARDS_PLUS_MODULAR_DUEL_UI_AND_PRESENTATION_MOTION_USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_VERIFIED_20260903_WINDOWS_PREPARATION_OBSERVED_ACTION_REVEAL_VISIBLE_HUMAN_DEFERRED",
             status["user_directed_planning_status"],
         )
         self.assertIn(
             "FRONTAL_COURTYARD_DUEL_01",
             status["completed_scope"],
+        )
+        self.assertEqual(
+            "TEN-DEC-20260903-MODULAR-DUEL-UI-AND-PRESENTATION-MOTION-01",
+            status["modular_duel_ui_presentation_decision"],
+        )
+        self.assertEqual(
+            "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_VERIFIED_WINDOWS_PREPARATION_OBSERVED_ACTION_REVEAL_VISIBLE_BLOCKED_UNVERIFIED_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN",
+            status["modular_duel_ui_presentation_status"],
         )
         self.assertIn(
             "TEN_BASIC_TECHNIQUE_INK_ATLAS_01",

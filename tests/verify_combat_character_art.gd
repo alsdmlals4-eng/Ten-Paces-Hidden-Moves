@@ -22,6 +22,7 @@ func _run() -> void:
     _require_anchor(board, "player")
     _require_anchor(board, "enemy")
     await _require_art_motion(board.player_character, "player")
+    await _require_grounded_presentation_motions(board)
 
     board.queue_free()
     await process_frame
@@ -63,6 +64,43 @@ func _require_art_motion(character: CombatCharacterPlaceholder, role: String) ->
     await create_timer(0.14).timeout
     if character.motion_state != "idle" or character.get_foot_anchor_global().distance_to(foot_before) > 0.1:
         failures.append("%s attack motion must return to the original visual foot anchor." % role)
+
+func _require_grounded_presentation_motions(board: CombatBoardPreview) -> void:
+    var player := board.player_character
+    var enemy := board.enemy_character
+    if player == null or enemy == null:
+        failures.append("Grounded presentation verification requires both character actors.")
+        return
+    for motion in ["play_evade_motion", "play_block_motion", "play_hit_motion", "play_ultimate_motion"]:
+        var foot_before := player.get_foot_anchor_global()
+        player.call(motion, 0.12)
+        await create_timer(0.03).timeout
+        if player.motion_state == "idle":
+            failures.append("%s must enter a visible presentation state before returning to idle." % motion)
+        if absf(player.get_foot_anchor_global().y - foot_before.y) > 0.1:
+            failures.append("%s must preserve the grounded foot height during presentation." % motion)
+        await create_timer(0.14).timeout
+        if player.motion_state != "idle" or player.get_foot_anchor_global().distance_to(foot_before) > 0.1:
+            failures.append("%s must return to its original grounded foot anchor." % motion)
+
+    var player_foot_before := player.get_foot_anchor_global()
+    var enemy_foot_before := enemy.get_foot_anchor_global()
+    board._play_clash_motion(0.30)
+    await create_timer(0.14).timeout
+    var player_foot_at_clash := player.get_foot_anchor_global()
+    var enemy_foot_at_clash := enemy.get_foot_anchor_global()
+    if player.motion_state != "clash" or enemy.motion_state != "clash":
+        failures.append("A clash must animate both combatants toward the shared contact point.")
+    if player_foot_at_clash.distance_to(enemy_foot_at_clash) > 4.0:
+        failures.append("A clash must visibly converge both combatants on one common action point.")
+    if absf(player_foot_at_clash.y - player_foot_before.y) > 0.1 or absf(enemy_foot_at_clash.y - enemy_foot_before.y) > 0.1:
+        failures.append("A clash must preserve both combatants on the shared ground line.")
+    var clash_snapshot: Dictionary = board.get_presentation_motion_snapshot()
+    if not bool(clash_snapshot.get("clash_anchor_valid", false)):
+        failures.append("Clash presentation must record the shared grounded anchor for inspection.")
+    await create_timer(0.24).timeout
+    if player.motion_state != "idle" or enemy.motion_state != "idle" or player.get_foot_anchor_global().distance_to(player_foot_before) > 0.1 or enemy.get_foot_anchor_global().distance_to(enemy_foot_before) > 0.1:
+        failures.append("A clash must return both combatants to their original grounded placements.")
 
 func _finish() -> void:
     if failures.is_empty():

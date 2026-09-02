@@ -12,6 +12,7 @@ const MUTED := Color("8e8372")
 const LOCKED := Color("4f4940")
 const TARGET_PENDING := Color("e6a84f")
 const RESOURCE_BLOCKED := Color("b85a4a")
+const CURRENT_ACTION_SLOT_FRAME := preload("res://assets/ui/duel/current_action_slot_frame_01_v1.png")
 
 var timing_index := 1
 var bundle_index := 1
@@ -31,6 +32,7 @@ var _hovered := false
 var _timing_label: Label
 var _placeholder_label: Label
 var _status_label: Label
+var _frame: TextureRect
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_STOP
@@ -38,12 +40,22 @@ func _ready() -> void:
     mouse_entered.connect(_on_mouse_entered)
     mouse_exited.connect(_on_mouse_exited)
     gui_input.connect(_on_gui_input)
+    _frame = TextureRect.new()
+    _frame.name = "CurrentActionSlotFrame"
+    _frame.texture = CURRENT_ACTION_SLOT_FRAME
+    _frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+    _frame.stretch_mode = TextureRect.STRETCH_SCALE
+    _frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    _frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+    add_child(_frame)
     _timing_label = _make_label(13, PAPER)
     _placeholder_label = _make_label(16, MUTED)
     _status_label = _make_label(11, MUTED)
     resized.connect(_layout)
     _refresh()
     _layout()
+    set_meta("current_action_slot_frame_path", "res://assets/ui/duel/current_action_slot_frame_01_v1.png")
+    set_meta("current_action_slot_frame_loaded", CURRENT_ACTION_SLOT_FRAME != null)
 
 func configure(global_index: int, group_index: int, timing_in_group: int, state: String) -> void:
     timing_index = global_index
@@ -192,7 +204,7 @@ func _refresh() -> void:
     _timing_label.text = "%d수" % local_index
     if has_assignment():
         var stage_label := get_stage_label()
-        _placeholder_label.text = "[%s]" % stage_label
+        _placeholder_label.text = "[%s] %s" % [stage_label, str(assigned_definition.get("name", "행동"))]
         if not resource_ready:
             _status_label.text = resource_text if not resource_text.is_empty() else "자원 부족"
         elif not target_ready and targeting_mode != "none":
