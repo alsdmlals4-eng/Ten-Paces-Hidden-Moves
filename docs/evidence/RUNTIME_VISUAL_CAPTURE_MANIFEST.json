@@ -113,6 +113,100 @@
         "accessibility_user": "NOT_RUN",
         "release_performance": "NOT_RUN"
       }
+    },
+    {
+      "capture_id": "TEN-RVC-20260902-001",
+      "recorded_at_utc": "2026-09-02T12:22:10.065451+00:00",
+      "work_item_id": "TEN-MODULAR-FRONTAL-DUEL-ART-PACK-20260902",
+      "source_commit": "847ede9085781f9c38c8d8c1c4b6624de974b965",
+      "runtime": {
+        "scene_path": "res://scenes/combat/combat_board_preview.tscn",
+        "capture_state": "initial_first_bundle_modular_art_pack",
+        "entry_route": "visible_godot_run_scene_direct_no_state_injection",
+        "source_delta": "EXACT_HEAD_847EDE90; temporary external capture harness only; unrelated preexisting worktree changes excluded from captured consumers"
+      },
+      "consumers": [
+        "src/combat/battle_background.gd",
+        "src/ui/duel_foreground_banner.gd",
+        "src/combat/combat_character_placeholder.gd",
+        "src/combat/combat_board_preview.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 0
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260902-001.png",
+        "sha256": "3371fadca88fa94954dd3d252932776362af43e27a55f05cafb5c6dea8d2d71e",
+        "bytes": 1048768,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260902-002",
+        "prepared_at_utc": "2026-09-02T12:21:16.434466+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "a148caebac0f9445452fe350b4bc187a",
+        "receipt_sha256": "eeab84cebeabc1eab6ff7dfcdf07d5bdeff17f637bc778fae5c47346bacd4086",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      }
+    },
+    {
+      "capture_id": "TEN-RVC-20260902-002",
+      "recorded_at_utc": "2026-09-02T12:23:18.542564+00:00",
+      "work_item_id": "TEN-MODULAR-FRONTAL-DUEL-ART-PACK-20260902",
+      "source_commit": "847ede9085781f9c38c8d8c1c4b6624de974b965",
+      "runtime": {
+        "scene_path": "res://scenes/run/vertical_slice_shell.tscn",
+        "capture_state": "main_title_modular_art_pack",
+        "entry_route": "visible_godot_main_title_component_direct_no_state_injection",
+        "source_delta": "EXACT_HEAD_847EDE90; temporary external capture harness only; unrelated preexisting worktree changes excluded from captured consumers"
+      },
+      "consumers": [
+        "src/ui/main_title_screen.gd",
+        "src/ui/duel_foreground_banner.gd",
+        "src/combat/battle_background.gd",
+        "src/combat/combat_character_placeholder.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 0
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260902-002.png",
+        "sha256": "3f93eda38ba4f32da2d04fbba5b1dc9df1035b22cf8160cbdab23bdbb13ac868",
+        "bytes": 1808713,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260902-003",
+        "prepared_at_utc": "2026-09-02T12:22:49.558623+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "da6b43593b0cb14630125d189d698168",
+        "receipt_sha256": "a21236ee46895605f954c2dc4a95094846bd0ae4e13ee600acf8b74fe8e686fa",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      }
     }
   ]
 }

@@ -1,7 +1,7 @@
 # MASKED_SWORDSMAN_COMBAT_BATTLER_02_20260902_v2
 
 - **Asset ID:** `enemy_masked_battler_rgba_v2`
-- **Lifecycle:** `USER_FINAL_LOCKED → CANON_REGISTERED → IMPLEMENTED → PENDING_MACHINE_RUNTIME_VERIFICATION`
+- **Lifecycle:** `USER_FINAL_LOCKED → CANON_REGISTERED → IMPLEMENTED → MACHINE_RUNTIME_VERIFIED_20260902`
 - **Approved source:** `docs/visual-assets/candidates/MASKED_SWORDSMAN_COMBAT_BATTLER_02_20260902_v2.png`
 - **Canonical source copy:** `docs/visual-assets/approved/MASKED_SWORDSMAN_COMBAT_BATTLER_02_20260902_v2.png`
 - **Runtime destination:** `res://assets/characters/enemy_masked_battler_rgba_v2.png`
@@ -17,4 +17,4 @@ The user explicitly approved this revised opponent in the 2026-09-02 message: �
 
 ## Provenance and rights boundary
 
-Generated as an original project asset with OpenAI built-in image generation (`exec-3eae95cf-fa7d-44f4-b326-8a2e839d7fbe`). User references informed broad animated-wuxia styling and gameplay readability only, not reference pixels, poses, identities, UI, or composition. Runtime verification must still check physical floor contact at the current exact project revision.
+Generated as an original project asset with OpenAI built-in image generation (`exec-3eae95cf-fa7d-44f4-b326-8a2e839d7fbe`). User references informed broad animated-wuxia styling and gameplay readability only, not reference pixels, poses, identities, UI, or composition. `TEN-RVC-20260902-001` records the same shared floor baseline in actual Godot rendering at exact source commit `847ede9085781f9c38c8d8c1c4b6624de974b965`; `TEN-RVC-20260902-002` records the reusable title composition.

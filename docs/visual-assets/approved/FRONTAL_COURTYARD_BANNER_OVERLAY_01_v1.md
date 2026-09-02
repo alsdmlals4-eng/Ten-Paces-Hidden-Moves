@@ -1,7 +1,7 @@
 # FRONTAL_COURTYARD_BANNER_OVERLAY_01_v1
 
 - **Asset ID:** `frontal_courtyard_banner_overlay_01_v1`
-- **Lifecycle:** `USER_FINAL_LOCKED → CANON_REGISTERED → IMPLEMENTED → PENDING_MACHINE_RUNTIME_VERIFICATION`
+- **Lifecycle:** `USER_FINAL_LOCKED → CANON_REGISTERED → IMPLEMENTED → MACHINE_RUNTIME_VERIFIED_20260902`
 - **Approved source:** `docs/visual-assets/candidates/FRONTAL_COURTYARD_BANNER_OVERLAY_01_20260902_v1.png`
 - **Canonical source copy:** `docs/visual-assets/approved/FRONTAL_COURTYARD_BANNER_OVERLAY_01_v1.png`
 - **Runtime destination:** `res://assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png`
@@ -17,3 +17,5 @@ The user explicitly approved this banner in the 2026-09-02 message: “배경,�
 ## Provenance and rights boundary
 
 Generated as an original project asset with OpenAI built-in image generation (`exec-66e61807-3dea-4dad-9a65-1a419b7b3ec6`). User references informed only functional separate-layer requirements and warm painted wuxia direction. Release rights remain conditional on the project’s asset-rights review; approval and runtime registration do not claim Human/UX, Android, or release PASS.
+
+`TEN-RVC-20260902-001` proves the combat consumer and `TEN-RVC-20260902-002` proves the main-title consumer at exact source commit `847ede9085781f9c38c8d8c1c4b6624de974b965`. Both are machine-only visual records.

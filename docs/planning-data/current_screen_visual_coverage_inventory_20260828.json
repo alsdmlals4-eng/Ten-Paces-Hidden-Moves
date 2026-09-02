@@ -342,8 +342,8 @@
         "normal",
         "STRETCH_KEEP_ASPECT_COVERED"
       ],
-      "status": "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_PENDING_MACHINE_RUNTIME_VERIFICATION_20260902",
-      "production_rule": "The 2026-09-02 modular pack completed separate briefs, explicit final lock, manifest/provenance registration, and consumer integration. Exact new-art machine runtime capture remains required; it is not human/device/release approval."
+      "status": "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260902",
+      "production_rule": "The 2026-09-02 modular pack completed separate briefs, explicit final lock, manifest/provenance registration, consumer integration, and compact actual-window captures TEN-RVC-20260902-001/002. It is not human/device/release approval."
     },
     {
       "asset_family_id": "COMBAT_CHARACTER_BATTLERS",
@@ -355,7 +355,7 @@
         "generic_enemy",
         "slot1_dogyeom"
       ],
-      "status": "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_PENDING_MACHINE_RUNTIME_VERIFICATION_20260902",
+      "status": "USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_20260902",
       "production_rule": "remaining opponents require exact opponent routing and identity source"
     },
     {

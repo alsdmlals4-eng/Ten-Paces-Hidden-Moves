@@ -183,7 +183,7 @@ canon + actual game consumer review
 
 각 exact source PNG, SHA-256, prompt scope, alpha audit, approval phrase, consumers, and rights ceiling are `assets/ASSET_MANIFEST.json` and the four `docs/visual-assets/approved/*_v1.md` / `*_v2.md` records that own. Old generic v1 binaries remain manifest-marked, recoverable superseded assets—not deleted current evidence.
 
-현재 상태: `USER_FINAL_LOCKED · CANON_REGISTERED · IMPLEMENTED · PENDING_MACHINE_RUNTIME_VERIFICATION`. Exact new-art capture is mandatory before a runtime-verified claim. Human usability/player approval, accessibility-user, Android device, and release clearance remain `NOT_RUN`.
+현재 상태: `USER_FINAL_LOCKED · CANON_REGISTERED · IMPLEMENTED · MACHINE_RUNTIME_VERIFIED_20260902`. `TEN-RVC-20260902-001`은 actual Godot combat screen, `TEN-RVC-20260902-002`는 actual Godot main-title component screen을 같은 exact source commit에서 기록한다. Human usability/player approval, accessibility-user, Android device, and release clearance remain `NOT_RUN`.
 
 ### `TEN_BASIC_TECHNIQUE_INK_ATLAS_01` · 기초 기술 5×2 Card Atlas
 

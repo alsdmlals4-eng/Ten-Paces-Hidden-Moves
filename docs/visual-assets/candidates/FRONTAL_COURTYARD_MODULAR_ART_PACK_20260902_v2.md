@@ -2,7 +2,7 @@
 
 ```yaml
 asset_pack_id: FRONTAL_COURTYARD_MODULAR_ART_PACK_20260902_v2
-status: USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED_PENDING_MACHINE_RUNTIME_VERIFICATION
+status: USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_RUNTIME_VERIFIED_20260902
 generation_mode: USER_FEEDBACK_SCOPED_SINGLE_IMAGEGEN_REVISION_PER_CHARACTER
 predecessor: FRONTAL_COURTYARD_MODULAR_ART_PACK_20260902_v1
 user_feedback_applied:
@@ -20,14 +20,14 @@ modules:
   - id: FRONTAL_COURTYARD_BACKGROUND_02
     reuse_from: FRONTAL_COURTYARD_MODULAR_ART_PACK_20260902_v1
     output: docs/visual-assets/candidates/FRONTAL_COURTYARD_BACKGROUND_02_20260902_v1.png
-    state: USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED_PENDING_MACHINE_RUNTIME_VERIFICATION
+    state: USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_RUNTIME_VERIFIED_20260902
     intended_runtime_consumers:
       - src/combat/battle_background.gd
       - src/ui/main_title_screen.gd
   - id: FRONTAL_COURTYARD_BANNER_OVERLAY_01
     reuse_from: FRONTAL_COURTYARD_MODULAR_ART_PACK_20260902_v1
     output: docs/visual-assets/candidates/FRONTAL_COURTYARD_BANNER_OVERLAY_01_20260902_v1.png
-    state: USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED_PENDING_MACHINE_RUNTIME_VERIFICATION
+    state: USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_RUNTIME_VERIFIED_20260902
     intended_runtime_consumers:
       - proposed BattleBackground foreground overlay in combat board
       - proposed main-title foreground overlay
@@ -39,7 +39,7 @@ modules:
     alpha: verified__transparent_pixels_922489__partially_transparent_pixels_650375__opaque_pixels_0
     alpha_bounds_at_threshold_16: 56,120-984,1412
     foot_safe_bottom_margin_px: 123
-    state: USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED_PENDING_MACHINE_RUNTIME_VERIFICATION
+    state: USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_RUNTIME_VERIFIED_20260902
     predecessor: WANDERER_COMBAT_BATTLER_02_20260902_v1
     intended_runtime_consumers:
       - src/combat/combat_character_placeholder.gd PLAYER_ART_PATH successor
@@ -52,12 +52,12 @@ modules:
     alpha: verified__transparent_pixels_970318__partially_transparent_pixels_602546__opaque_pixels_0
     alpha_bounds_at_threshold_16: 88,124-1000,1428
     foot_safe_bottom_margin_px: 107
-    state: USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED_PENDING_MACHINE_RUNTIME_VERIFICATION
+    state: USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_RUNTIME_VERIFIED_20260902
     predecessor: MASKED_SWORDSMAN_COMBAT_BATTLER_02_20260902_v1
     intended_runtime_consumers:
       - src/combat/combat_character_placeholder.gd ENEMY_ART_PATH successor
       - src/ui/main_title_screen.gd ENEMY_PATH successor
-approval_boundary: User final lock is explicit for all four modules: revised player/enemy in “방금 2 이미지는 승인”, then background/banner in “배경,깃발도 방금 만든거 2개 승인” (2026-09-02). Canon registration and runtime implementation are now scoped to this exact pack. Machine runtime verification, Human/UX verification, Android-device verification, and release-rights clearance remain separate.
+approval_boundary: User final lock is explicit for all four modules: revised player/enemy in “방금 2 이미지는 승인”, then background/banner in “배경,깃발도 방금 만든거 2개 승인” (2026-09-02). Canon registration, runtime implementation, and compact actual-window machine captures are scoped to this exact pack. Human/UX verification, Android-device verification, and release-rights clearance remain separate.
 ```
 
 ## Review focus
@@ -65,4 +65,4 @@ approval_boundary: User final lock is explicit for all four modules: revised pla
 1. Both full bodies use one horizontal foot baseline with no baked ground or dark halo, so the runtime can supply the one shared contact shadow and align them to the courtyard floor.
 2. Both swords are a single low, physical blade next to the front boot; neither becomes a horizontal attack line, long beam, or VFX trail.
 3. The player remains left-facing-right and the masked opponent right-facing-left. The background and banner are still independent layers; no image contains another module.
-4. The exact pack is final-locked and replaces only the generic background/player/enemy consumers. The Godot machine/runtime capture is still pending and must be recorded separately; no Human, Android, accessibility-user, or release claim is made.
+4. The exact pack is final-locked and replaces only the generic background/player/enemy consumers. `TEN-RVC-20260902-001` and `TEN-RVC-20260902-002` record the compact Godot machine/runtime results; no Human, Android, accessibility-user, or release claim is made.

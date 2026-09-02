@@ -1,7 +1,7 @@
 # FRONTAL_COURTYARD_DUEL_BACKGROUND_02_v1
 
 - **Asset ID:** `frontal_courtyard_duel_background_02_v1`
-- **Lifecycle:** `USER_FINAL_LOCKED → CANON_REGISTERED → IMPLEMENTED → PENDING_MACHINE_RUNTIME_VERIFICATION`
+- **Lifecycle:** `USER_FINAL_LOCKED → CANON_REGISTERED → IMPLEMENTED → MACHINE_RUNTIME_VERIFIED_20260902`
 - **Approved source:** `docs/visual-assets/candidates/FRONTAL_COURTYARD_BACKGROUND_02_20260902_v1.png`
 - **Canonical source copy:** `docs/visual-assets/approved/FRONTAL_COURTYARD_DUEL_BACKGROUND_02_v1.png`
 - **Runtime destination:** `res://assets/backgrounds/frontal_courtyard_duel_background_02_v1.png`
@@ -17,3 +17,5 @@ The user explicitly approved this background in the 2026-09-02 message: “배�
 ## Provenance and rights boundary
 
 Generated as an original project asset with OpenAI built-in image generation (`exec-3d7cc1b7-de1b-4322-82f4-288108f1d2a7`). User references informed only functional art direction—painted wuxia animation mood, frontal staging, and shared floor—never pixels, identities, UI, or composition. Release rights remain conditional on the project’s asset-rights review; this approval is not a release-rights, Human/UX, Android, or performance PASS.
+
+Godot 4.7.1 actual-window capture `TEN-RVC-20260902-001` records the initial combat surface at the exact source commit `847ede9085781f9c38c8d8c1c4b6624de974b965`; `TEN-RVC-20260902-002` records the main-title surface. Both remain machine evidence only.

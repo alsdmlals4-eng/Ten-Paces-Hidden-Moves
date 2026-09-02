@@ -43,7 +43,7 @@
       "replaces_active_asset": "frontal_courtyard_duel_background_01_v1",
       "transparency_required": false,
       "active": true,
-      "lifecycle_status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED_PENDING_MACHINE_RUNTIME_VERIFICATION"
+      "lifecycle_status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_RUNTIME_VERIFIED_20260902"
     },
     {
       "id": "frontal_courtyard_banner_overlay_01_v1",
@@ -69,7 +69,7 @@
         "status": "APPROVED_ACTIVE"
       },
       "active": true,
-      "lifecycle_status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED_PENDING_MACHINE_RUNTIME_VERIFICATION"
+      "lifecycle_status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_RUNTIME_VERIFIED_20260902"
     },
     {
       "id": "player_wanderer_ink_v1",
@@ -108,7 +108,7 @@
         "status": "APPROVED_ACTIVE"
       },
       "active": true,
-      "lifecycle_status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED_PENDING_MACHINE_RUNTIME_VERIFICATION"
+      "lifecycle_status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_RUNTIME_VERIFIED_20260902"
     },
     {
       "id": "enemy_masked_ink_v1",
@@ -147,7 +147,7 @@
         "status": "APPROVED_ACTIVE"
       },
       "active": true,
-      "lifecycle_status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED_PENDING_MACHINE_RUNTIME_VERIFICATION"
+      "lifecycle_status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_RUNTIME_VERIFIED_20260902"
     },
     {
       "id": "dogyeom_status_portrait_01_v1",
