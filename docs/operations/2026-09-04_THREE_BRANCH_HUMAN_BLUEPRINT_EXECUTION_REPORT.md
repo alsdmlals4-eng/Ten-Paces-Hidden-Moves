@@ -61,7 +61,7 @@
 
 1. `python -m unittest tests.test_human_blueprint_20260904_contract -v`를 builder/owner/PDF가 없을 때 실행했다. `new dated human-blueprint builder must exist`로 **RED**를 확인했다.
 2. candidate record와 deterministic 24-page builder를 추가하고 PDF를 생성했다.
-3. 최종 `python -m unittest tests.test_human_blueprint_20260904_contract tests.test_human_game_blueprint_profile tests.test_base_v91_operating_contract tests.test_project_governance -v`는 **26 tests OK**였다.
+3. focused final `python -m unittest tests.test_human_blueprint_20260904_contract tests.test_human_game_blueprint_profile tests.test_base_v91_operating_contract tests.test_project_governance -v`는 **26 tests OK**였다.
 4. Poppler로 24쪽 전부를 raster render하고 각 쪽을 점검했다. 11쪽의 HUD 누락, 14~16쪽의 작은 HUD 겹침, 16쪽 공지 card crop, 21쪽 handoff card crop을 찾아 builder layout을 보정한 뒤 재생성했다.
 5. generated PDF의 textconv은 whitespace 검사의 대상이 아니므로 `git diff --check -- . ':!exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260904.pdf'`, JSON parse, current/historical wording search, `python tools/check_canonical_reference_freshness.py --root . --config .github/reference-freshness.json`, `python tools/check_project_operating_system.py`를 final readback에서 실행했다. 전자는 각각 source whitespace error 없음, parse PASS, historical-only matches, `canonical reference freshness: PASS`, `project operating system: PASS`를 냈다. PDF byte/구조는 아래 전용 검증으로 검사했다.
 
@@ -72,6 +72,12 @@
 - `pdfinfo`: 24 pages, A4 landscape, PDF 1.4.
 - `pypdf`: 24 pages and required `강호행로 / 3갈래 / 4회 선택 / 행동 실행 / VS / GENERATED_CANDIDATE / RUNTIME_IMPLEMENTATION_NOT_STARTED` markers present.
 - Poppler: 24 rendered pages. All-page inspection completed; last publish readback rechecked page 22 status matrix. Earlier visual fixes retained the 11쪽 full three-resource HUD, 14~16쪽 compact HUD/card readability, and 21쪽 handoff card bounds.
+
+### PR scope-aware CI reconciliation
+
+- 기존 PR #321의 `scope-aware-validation`은 새 atlas/PDF와 무관하게, `tests/test_current_discovery_contract.py`가 당시 `FRONTAL_DUEL_V2...` 문자열을 current state로 고정해서 실패했다.
+- current `ACTIVE_CONTEXT`, planning JSON, `test_current_discovery_contract.py`, `test_integrated_work_contract_v48r54.py`를 함께 갱신했다. final local equivalent는 project-governance discovery 13 tests + scope-aware module group 58 tests + current human Blueprint group 13 tests, 총 **84 tests OK**였다.
+- 이 보정은 legacy runtime evidence를 지우지 않는다. 새 atlas는 `GENERATED_CANDIDATE`, route/CTA/Review surface는 `IMPLEMENTED_LEGACY`, 새 runtime package는 `NOT_RUN`으로 유지한다.
 
 ### 5회 full-scope 적대 검토
 

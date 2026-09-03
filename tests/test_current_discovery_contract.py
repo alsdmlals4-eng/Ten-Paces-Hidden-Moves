@@ -200,15 +200,15 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertIn("next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION", current_section)
         self.assertIn("next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE", current_section)
         self.assertIn(
-            "user_directed_planning_next_package: MACHINE_ONLY_RUNTIME_EVIDENCE_CONTINUES_HUMAN_PLAYER_COMPARISON_DEFERRED_BEFORE_SEPARATE_NUMERICAL_DECISION",
+            "user_directed_planning_next_package: THREE_BRANCH_FOUR_CHOICE_ROUTE_AND_EXECUTION_SURFACE_TEST_FIRST_GODOT_BUILD_PACKAGE",
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_next_decision: TEN-DEC-20260830-BALANCE-MEASUREMENT-REPRESENTATIVE-POLICY-COVERAGE-01",
+            "user_directed_planning_next_decision: TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01",
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_status: FRONTAL_DUEL_V2_LOCKED_ART_AND_CARDS_PLUS_MODULAR_DUEL_UI_AND_NATIVE_2D_PRESENTATION_PHASES_IMPLEMENTED_REFERENCE_LAYOUT_HOVER_DETAIL_PLAN_LOCK_AND_ACTION_REVEAL_RUNTIME_CAPTURED_TEN_RVC_20260903_001_003_004_005_006_HUMAN_DEFERRED",
+            "user_directed_planning_status: THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_CTA_REVIEW_SURFACES_IMPLEMENTED_LEGACY_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN",
             current_section,
         )
         self.assertIn(
@@ -220,7 +220,15 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_latest_decision: TEN-DEC-20260903-NATIVE-2D-PRESENTATION-PHASE-ABSORPTION-01",
+            "user_directed_planning_latest_decision: TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_human_blueprint_publication: exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260904.pdf",
+            current_section,
+        )
+        self.assertIn(
+            "user_directed_planning_human_blueprint_incremental_revision_status: DERIVED_24_PAGE_CURRENT_PUBLICATION_ATLAS_FLOW_WIREFRAME_PM_AND_HANDOFF_MACHINE_DOCUMENT_AND_VISUAL_VERIFIED_RUNTIME_HUMAN_DEVICE_ACCESSIBILITY_RELEASE_NOT_RUN",
             current_section,
         )
         self.assertIn(
@@ -277,7 +285,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn("planning_work_handoff: docs/handoffs/2026-08-26_GPT_WORK_HANDOFF.md", current_section)
-        self.assertIn("planning_visual_next: NONE_CURRENT_TITLE_LOGO_AND_ATTACK_CLASH_ATLAS_FINAL_LOCKED_IMPLEMENTED_REMAINING_ASSETS_REQUIRE_ACTUAL_CONSUMER_VERIFICATION", current_section)
+        self.assertIn("planning_visual_next: WHOLE_SCENE_ATLAS_CANDIDATE_GENERATED_ACTUAL_RUNTIME_CONSUMER_BOUND_SPLIT_BRIEFS_REQUIRE_SEPARATE_GODOT_BUILD_PACKAGE_AND_USER_FINAL_LOCK", current_section)
         self.assertIn(
             "planning_visual_generation: SCOPED_SINGLE_RESULT_GENERATED_CANDIDATE_SEPARATE_FINAL_USER_LOCK_REQUIRED",
             current_section,
@@ -393,8 +401,20 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "FRONTAL_DUEL_V2_LOCKED_ART_AND_CARDS_PLUS_MODULAR_DUEL_UI_AND_NATIVE_2D_PRESENTATION_PHASES_IMPLEMENTED_REFERENCE_LAYOUT_HOVER_DETAIL_PLAN_LOCK_AND_ACTION_REVEAL_RUNTIME_CAPTURED_TEN_RVC_20260903_001_003_004_005_006_HUMAN_DEFERRED",
+            "THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_CTA_REVIEW_SURFACES_IMPLEMENTED_LEGACY_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN",
             status["user_directed_planning_status"],
+        )
+        self.assertEqual(
+            "TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01",
+            status["three_branch_four_choice_human_blueprint_decision"],
+        )
+        self.assertEqual(
+            "exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260904.pdf",
+            status["human_game_blueprint_publication"],
+        )
+        self.assertEqual(
+            "GENERATED_CANDIDATE_DOCUMENTATION_CONSUMED_RUNTIME_CONSUMER_NONE_SHIPPING_RIGHTS_AND_FINAL_LOCK_REVIEW_REQUIRED",
+            status["three_branch_four_choice_human_blueprint_candidate_status"],
         )
         self.assertIn(
             "FRONTAL_COURTYARD_DUEL_01",
@@ -425,11 +445,11 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["evidence_ceiling"]["pr277_protected_approval_lifecycle"],
         )
         self.assertEqual(
-            "MACHINE_ONLY_RUNTIME_EVIDENCE_CONTINUES_HUMAN_PLAYER_COMPARISON_DEFERRED_BEFORE_SEPARATE_NUMERICAL_DECISION",
+            "THREE_BRANCH_FOUR_CHOICE_ROUTE_AND_EXECUTION_SURFACE_TEST_FIRST_GODOT_BUILD_PACKAGE",
             status["next_phase"],
         )
         self.assertEqual(
-            "MACHINE_ONLY_RUNTIME_EVIDENCE_CONTINUES_HUMAN_PLAYER_COMPARISON_DEFERRED_BEFORE_SEPARATE_NUMERICAL_DECISION",
+            "THREE_BRANCH_FOUR_CHOICE_ROUTE_AND_EXECUTION_SURFACE_TEST_FIRST_GODOT_BUILD_PACKAGE",
             status["next_product_execution_surface"],
         )
         self.assertEqual(
