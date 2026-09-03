@@ -50,6 +50,35 @@ implementation_feasibility: FEASIBLE
 | 포함 | 실제 Godot 화면·승인 시각 보드·카드 계약, 3/3/4 흐름 맵, 계획/공개 구조 와이어프레임, 잠금→공개→합 구현 contract, asset/evidence boundary |
 | 제외 | 새 rules, numerical balance, future action preview, deck/hand/draw, new image candidate, Human/device PASS claim |
 
+## 2026-09-02 사람용 Master GDD 무손실 복원
+
+### 작업 전 문제
+
+사용자가 기존 36쪽 사람용 GDD를 10쪽 focused action-flow PDF로 잘못 축소해 “최종 블루프린트”처럼 읽히는 퇴행을 지적했다. 10쪽 파일은 전투 흐름의 유용한 보조 자료였지만, 36쪽 source의 비전, player journey, 시스템 지도, AI 경계, 콘텐츠, 플랫폼, QA, 위험, register를 대체하지 못한다.
+
+### 채택한 구조와 이유
+
+`HUMAN_BLUEPRINT_ADDITIVE_20260902`를 채택했다. 새 `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf`는 다음만 수행한다.
+
+1. 사람이 읽을 current cover 1쪽을 제공한다.
+2. `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf`의 36쪽을 rasterize·요약·순서변경 없이 그대로 포함한다.
+3. 기존 focused generator의 visual direction, actual planning capture, 3/3/4 flow, planning/reveal wireframe, card/evidence/handoff 9쪽을 관련 baseline section 곁에 interleave한다.
+
+그러므로 현재 PDF는 총 46쪽이며, 36쪽 source와 10쪽 focused output 중 어느 것도 “10쪽으로 대체된 인간용 정본”이라고 주장하지 않는다. 기존 10쪽 output은 current master 역할에서 제거된 `ABSORBED_DERIVED_OUTPUT`이다.
+
+### 실제 산출물 및 증거 경계
+
+| 항목 | 결과 |
+| --- | --- |
+| current human master | `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf` |
+| page structure | 1 current cover + 36 exact baseline pages + 9 visual/wireframe addendum pages = 46 |
+| output SHA-256 | `B92CB4D40881E405E71D69659E0EF981D5C9E9FC5FEAB96E55F66069490115C7` |
+| preserved source | `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` (`PRESERVED_BASELINE_SOURCE_36_PAGES`) |
+| focused output | `output/pdf/TEN_PACES_FRONTAL_DUEL_ACTION_FLOW_BLUEPRINT_2026-09-02.pdf` (`ABSORBED_DERIVED_OUTPUT`; no current-master role) |
+| image state | newly generated modular courtyard/banner/character candidates are deliberately excluded until a separate user final lock; no candidate is represented as runtime or human proof |
+
+The assembler is `tools/build_human_game_blueprint_pdf.py`. It writes atomically, checks the baseline page count before assembly, and fails if the expected 46-page result cannot be produced. The profile test proves that every 36-page source text page reappears in the same order in the 46-page output.
+
 ## 2026-09-02 이미지 중심 발행 보정
 
 ### 발견과 판정
@@ -215,3 +244,61 @@ PR #312는 exact head `0d220da0d87b5ce27d9189897f33b5591f0281cf`에서 모든 �
 
 1. 정확한 십보강호 project-bound Godot session이 준비되면 plan-locked·reveal·impact 최소 캡처를 repository manifest에 추가한다.
 2. 그 과정에서 실제 새 visual consumer가 발견되면 별도 pre-generation approval 없이 brief와 단일 후보를 만들고, consumer 연결·runtime evidence를 남긴 뒤 final lock 상태를 사용자에게 제시한다.
+
+## 2026-09-03 누적 개정 · 52쪽 Blueprint 확장
+
+> 이 절은 과거 7/10/46쪽 발행의 당시 사실을 지우지 않는다. 사용자가 요청한
+> 목표·시스템·케이스 현황, 단계별 FM, 준비/전투 wireframe, 이미지 제작 보드를
+> 현재 human derived publication에 **누적**한 결과만 소유한다.
+
+### 작업 전 문제 → 조사·비교 결과
+
+46쪽 version은 36쪽 baseline을 지켜 기존 축소 퇴행을 회복했지만, 현재 독자가
+`무엇을`, `어떤 시스템으로`, `어떤 케이스에서`, `어떤 증거로` 다음 작업으로
+이어가야 하는지 한 화면에서 읽는 구조가 부족했다. 또한 이미지 제작의
+whole-scene → 분리 후보 → 합성 순서가 과거 asset MD에 흩어져 있어 Blueprint
+자체만으로는 provenance와 runtime consumer를 대조하기 어려웠다.
+
+실제 source를 다시 확인했다. 36쪽 baseline은 보존 source이고, current task PR
+`#321`의 `TEN-RVC-20260903-003…006`은 준비·hover detail·plan lock·현재 행동
+공개의 machine runtime captures다. `FRONTAL_COURTYARD_DUEL_SEQUENCE_BOARD_20260902_v2`
+는 `SUPERSEDED_GENERATED_EXPLORATION` whole-scene candidate이며, background/banner/two
+battlers는 각각 final-locked·canon-registered·runtime-consumed module이다. 따라서
+새 raster를 만들거나 승인 module을 교체하지 않는 것이 정확한 범위다.
+
+### 채택한 구조와 이유
+
+| 대상 | 현재 상태 | 요청 이유 | 기대 효과 |
+|---|---|---|---|
+| project goal/system | source와 PDF에 분산 | 문서가 화면 시안으로만 보이지 않아야 함 | 목표·core boundary·다음 안전 작업을 한 route에서 판독 |
+| staged FM | 기존 3/3/4 흐름은 있었음 | 잠금/공개/합/정착 책임을 단계별로 읽어야 함 | 구현·검수가 같은 transition을 참조 |
+| prep/combat wireframes | 구조가 한 페이지에 섞일 위험 | 20/50/30 준비 surface와 lock 후 전투 surface를 분리 | 카드가 떠 보이거나 잠금 상태가 혼동되는 회귀 예방 |
+| image-production board | lineage가 asset owner에 흩어짐 | 전체 장면 후보와 분리 runtime module을 혼동하면 안 됨 | 후보·canon·runtime evidence를 한 page에서 대조 |
+| case matrix | 현황이 보고서에 흩어짐 | 구현·machine capture·Human/device evidence가 뒤섞이면 안 됨 | `PARTIAL`/`NOT_RUN`을 포함한 우선순위 판단 |
+
+새 master는 `1 + preserved baseline 36 + additive layer 15 = 52 pages`다. baseline
+36쪽은 같은 순서와 동일 PDF page object text를 유지한다. 새 15쪽은 current
+master의 subject boundary 옆에 interleave하며, independent canon이나 gameplay rule
+변경을 만들지 않는다.
+
+### 실제 산출물과 증거
+
+```yaml
+publication: exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf
+sha256: B2A3CE38E3AEFDACEE91FF5CCDC6B45432A870ECE32A51C362DBB584B27692E4
+page_count: 52
+additive_pages: 15
+preserved_baseline_pages: 36
+generated_from:
+  - tools/build_human_game_blueprint_pdf.py
+  - tools/build_frontal_duel_visual_blueprint_pdf.py
+whole_scene_candidate: SUPERSEDED_GENERATED_EXPLORATION
+separated_modules: USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED
+runtime_captures: MACHINE_RUNTIME_CAPTURE_ONLY
+human_android_accessibility_release: NOT_RUN
+```
+
+Rendered-output regression was written before the extension and failed at 46
+pages as expected. After the minimal 52-page build it passed alongside the
+baseline-order contract. Visual publication validation is recorded in
+`docs/operations/2026-09-03_HUMAN_BLUEPRINT_INCREMENTAL_REVISION_EXECUTION_REPORT.md`.

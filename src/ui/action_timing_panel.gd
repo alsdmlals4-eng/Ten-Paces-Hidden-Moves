@@ -8,8 +8,8 @@ signal bundle_advanced(snapshot: Dictionary)
 const DATA_PATH := "res://data/combat/combat_action_timing_preview.json"
 const SLOT_SCENE := preload("res://scenes/ui/action_timing_slot.tscn")
 
-const PANEL := Color("d9ccb1")
-const PAPER := Color("211c17")
+const PANEL := Color("171411")
+const PAPER := Color("e0cfaa")
 const GOLD := Color("c79a50")
 const MUTED := Color("665b4b")
 
@@ -49,11 +49,11 @@ func _load_data() -> Dictionary:
     return parsed
 
 func _build_content() -> void:
-    _title_label = _make_label(16, PAPER, HORIZONTAL_ALIGNMENT_LEFT)
+    _title_label = _make_label(13, PAPER, HORIZONTAL_ALIGNMENT_LEFT)
     _title_label.name = "ActionTimingTitle"
-    _sequence_label = _make_label(15, GOLD, HORIZONTAL_ALIGNMENT_CENTER)
+    _sequence_label = _make_label(13, GOLD, HORIZONTAL_ALIGNMENT_CENTER)
     _sequence_label.name = "TimingSequenceLabel"
-    _progress_label = _make_label(14, PAPER, HORIZONTAL_ALIGNMENT_RIGHT)
+    _progress_label = _make_label(12, PAPER, HORIZONTAL_ALIGNMENT_RIGHT)
     _progress_label.name = "TimingProgressLabel"
 
     var sequence: Array = timing_data.get("timing_sequence", [3, 3, 4])
@@ -108,7 +108,26 @@ func _resolve_state(global_index: int, group_index: int, _group_end: int) -> Str
 func _refresh_slot_states() -> void:
     for slot in slots:
         slot.configure(slot.timing_index, slot.bundle_index, slot.local_index, _resolve_state(slot.timing_index, slot.bundle_index, slot.timing_index))
+    _refresh_slot_visibility()
     _update_group_colors()
+
+func get_visible_timing_indices() -> PackedInt32Array:
+    var result := PackedInt32Array()
+    var bounds := get_bundle_bounds(int(timing_data.get("current_bundle", 1)))
+    for timing_index in range(bounds.x, bounds.y + 1):
+        result.append(timing_index)
+    return result
+
+func _refresh_slot_visibility() -> void:
+    var visible_indices := get_visible_timing_indices()
+    for slot in slots:
+        var is_current_bundle_slot := slot.timing_index in visible_indices
+        slot.visible = is_current_bundle_slot
+        slot.focus_mode = Control.FOCUS_ALL if is_current_bundle_slot else Control.FOCUS_NONE
+    for group_label in _group_labels:
+        group_label.visible = false
+    set_meta("visible_timing_indices", visible_indices)
+    set_meta("visible_timing_count", visible_indices.size())
 
 func _update_group_colors() -> void:
     var current_bundle := int(timing_data.get("current_bundle", 1))
@@ -451,12 +470,12 @@ func _refresh() -> void:
     if _title_label == null:
         return
     var sequence: Array = timing_data.get("timing_sequence", [3, 3, 4])
-    var sequence_texts := PackedStringArray()
-    for value in sequence:
-        sequence_texts.append("%d수" % int(value))
-    _title_label.text = "행동 진행"
-    _sequence_label.text = " → ".join(sequence_texts)
-    _progress_label.text = "라운드 %d" % int(timing_data.get("round_number", 1))
+    var current_bundle := clampi(int(timing_data.get("current_bundle", 1)), 1, sequence.size())
+    var current_count := int(sequence[current_bundle - 1]) if current_bundle - 1 < sequence.size() else 1
+    _title_label.text = "현재 계획 · %d수" % current_count
+    _sequence_label.text = ""
+    _progress_label.text = ""
+    _refresh_slot_visibility()
     _update_group_colors()
 
 func _layout() -> void:
@@ -465,42 +484,28 @@ func _layout() -> void:
     var side_margin := 12.0
     var width := maxf(1.0, size.x - side_margin * 2.0)
     _title_label.position = Vector2(side_margin, 5.0)
-    _title_label.size = Vector2(width * 0.30, 24.0)
-    _sequence_label.position = Vector2(side_margin + width * 0.30, 5.0)
-    _sequence_label.size = Vector2(width * 0.40, 24.0)
-    _progress_label.position = Vector2(side_margin + width * 0.70, 5.0)
-    _progress_label.size = Vector2(width * 0.30, 24.0)
+    _title_label.size = Vector2(width, 19.0)
+    _sequence_label.visible = false
+    _progress_label.visible = false
 
-    var sequence: Array = timing_data.get("timing_sequence", [3, 3, 4])
-    var base_gap := 6.0
-    var group_extra_gap := 16.0
-    var total_gap := base_gap * float(slots.size() - 1) + group_extra_gap * float(maxi(0, sequence.size() - 1))
-    var slot_width := maxf(48.0, (width - total_gap) / float(slots.size()))
-    var slot_y := 50.0
-    var slot_height := maxf(56.0, size.y - slot_y - 9.0)
+    var visible_indices := get_visible_timing_indices()
+    if visible_indices.is_empty():
+        return
+    _refresh_slot_visibility()
+    var base_gap := 8.0
+    var total_gap := base_gap * float(maxi(0, visible_indices.size() - 1))
+    var slot_width := maxf(48.0, (width - total_gap) / float(visible_indices.size()))
+    var slot_y := 28.0
+    var slot_height := maxf(48.0, size.y - slot_y - 7.0)
     var x := side_margin
-    var slot_cursor := 0
     _separator_x.clear()
-
-    for group_index in range(sequence.size()):
-        var count := int(sequence[group_index])
-        var group_start_x := x
-        for _local_index in range(count):
-            var slot := slots[slot_cursor]
-            slot.position = Vector2(x, slot_y)
-            slot.size = Vector2(slot_width, slot_height)
-            x += slot_width
-            slot_cursor += 1
-            if slot_cursor < slots.size():
-                x += base_gap
-        var group_end_x := x - base_gap if slot_cursor < slots.size() else x
-        if group_index < _group_labels.size():
-            var group_label := _group_labels[group_index]
-            group_label.position = Vector2(group_start_x, 29.0)
-            group_label.size = Vector2(maxf(1.0, group_end_x - group_start_x), 18.0)
-        if group_index < sequence.size() - 1:
-            _separator_x.append(x + group_extra_gap * 0.5 - base_gap * 0.5)
-            x += group_extra_gap
+    for timing_value in visible_indices:
+        var slot := get_slot(int(timing_value))
+        if slot == null:
+            continue
+        slot.position = Vector2(x, slot_y)
+        slot.size = Vector2(slot_width, slot_height)
+        x += slot_width + base_gap
     queue_redraw()
 
 func get_timing_snapshot() -> Dictionary:
@@ -518,6 +523,8 @@ func get_timing_snapshot() -> Dictionary:
         "round_number": int(timing_data.get("round_number", 1)),
         "timing_sequence": timing_data.get("timing_sequence", [3, 3, 4]),
         "total_timings": slots.size(),
+        "visible_timing_indices": get_visible_timing_indices(),
+        "visible_timing_count": get_visible_timing_indices().size(),
         "current_bundle": int(timing_data.get("current_bundle", 1)),
         "current_timing": int(timing_data.get("current_timing", 1)),
         "progress_scope": "round",
@@ -547,6 +554,6 @@ func _draw() -> void:
     draw_rect(Rect2(Vector2.ZERO, size), PANEL, true)
     draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color("211c17"), false, 2.0)
     draw_rect(Rect2(Vector2(4.0, 4.0), size - Vector2(8.0, 8.0)), Color(GOLD, 0.62), false, 1.0)
-    draw_line(Vector2(12.0, 31.0), Vector2(maxf(12.0, size.x - 12.0), 31.0), Color("211c17", 0.42), 1.0)
+    draw_line(Vector2(12.0, 25.0), Vector2(maxf(12.0, size.x - 12.0), 25.0), Color(GOLD, 0.38), 1.0)
     for separator in _separator_x:
-        draw_line(Vector2(separator, 31.0), Vector2(separator, maxf(31.0, size.y - 8.0)), Color("211c17", 0.42), 2.0)
+        draw_line(Vector2(separator, 25.0), Vector2(separator, maxf(25.0, size.y - 8.0)), Color(GOLD, 0.28), 1.0)

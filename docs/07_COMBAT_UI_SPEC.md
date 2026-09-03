@@ -6,6 +6,8 @@
 > 시작 거리 런타임 매핑: `docs/decisions/2026-08-28_OPENING_DISTANCE_RUNTIME_MAPPING_DECISION.md` (`TEN-DEC-20260828-OPENING-DISTANCE-RUNTIME-MAPPING-01`)
 > 첫 5전 패배·재도전 scope: `docs/decisions/2026-08-28_FIRST_FIVE_DEFEAT_RETRY_SCOPE_DECISION.md` (`TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01`)
 > 현재 전장 접지·자동 대상·관찰 공개: `docs/decisions/2026-09-01_GROUNDED_DUEL_AUTOMATIC_TARGETING_AND_OBSERVATION_DECISION.md` (`TEN-DEC-20260901-GROUNDED-DUEL-AUTO-TARGET-OBSERVE-01`)
+> 현재 모듈 UI·행동 공개 모션: `docs/decisions/2026-09-03_MODULAR_DUEL_UI_AND_PRESENTATION_MOTION_DECISION.md` (`TEN-DEC-20260903-MODULAR-DUEL-UI-AND-PRESENTATION-MOTION-01`)
+> 최신 사용자-facing 준비/실행 overlay: `docs/decisions/2026-09-04_THREE_BRANCH_FOUR_CHOICE_JIANGHU_AND_HUMAN_BLUEPRINT_DECISION.md` (`TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01`)
 > 구조화 계약: `docs/planning-data/approved_20260811_combat_ui_information_hierarchy_contract.json`
 
 ## 1. UI 목표
@@ -16,11 +18,13 @@
 
 ## 2. 화면 구조
 
-- 상단: 양측 체력·기력·내력·기세·방어도·회피 횟수·`[필중]` 스택·`[강화]`·`[강건]`.
-- 중앙: 두 전투원의 대치 장면 + 중앙 `거리 N` 배지. 거리0은 `[밀착]`.
-- 중앙 하단: 현재 묶음의 3/3/4 행동계획과 컴팩트 `N수 실행` CTA.
-- 하단: `기초 / 무공 / 절초` 행동 선택과 하나의 공통 카드 격자. 세 출처 모두 승인된 카드 삽화를 같은 카드 shell 안에서 사용한다.
-- 우측 또는 오버레이: 행동 상세, 전투 기록, 결정적 복기.
+- 준비 화면은 상단 약 20%, 정면 결투 중단 약 50%, 계획·선택 하단 약 30%의 독립 표면으로 분리한다. 하단은 풍경의 연장이 아니라 별도 수묵·종이 UI surface다.
+- 상단: 양측의 독립 상태 HUD 프레임. 체력·기력·내력과 `현재/최대`는 플레이어만 숫자로 보이며, 적은 같은 게이지·기세 5칸·상태칸 구조를 쓰되 자원 숫자를 보이지 않는다.
+- 중앙: 같은 바닥선에 접지한 두 전투원의 원거리 정면 대치 + 중앙 `거리 N` 배지. 거리0은 `[밀착]`.
+- 하단 상부: 현재 묶음 하나만 보이는 3/3/4 행동 슬롯과 단일 `행동 실행` CTA.
+- 하단: `기본 / 무공 / 절초` 행동 선택과 하나의 공통 5×2 카드 격자. 세 출처 모두 승인된 카드 삽화를 같은 카드 shell 안에서 사용한다.
+- 하단 우측: 선택·hover한 행동의 상세 프레임과 상대 관찰의 유형 전용 프레임. 관찰은 기술명·피해·방향·비용을 표시하지 않는다.
+- 전투 공개 화면: 상단과 중단만 남기고, 하단 행동계획·카드·상세·관찰 선택 표면은 숨긴다. 한 수의 행동 호출·결과·모션을 끝낸 뒤에만 다음 수로 진행한다.
 - 기본 절초 목록 3종은 시작부터 표시하고, 무공 10성 절초는 해금 뒤 같은 목록에 추가한다.
 
 ### 2.1 거리 표현
@@ -84,15 +88,15 @@
 
 다중 슬롯 행동 전체는 하나의 연결 블록이며 일부 슬롯만 독립적으로 제거·이동하지 않는다.
 
-### 5.2 컴팩트 실행 CTA
+### 5.2 단일 행동 실행 CTA
 
-현재 묶음의 계획이 유효하면 플레이어는 다음 조작으로 확정한다.
+현재 묶음의 계획이 유효하면 플레이어는 다음 한 조작으로 확정한다.
 
 ```text
-[3수 실행]
+[행동 실행]
 ```
 
-버튼은 현재 묶음의 슬롯 수만 표시한다. 즉 첫·둘째 묶음은 `3수 실행`, 마지막 묶음은 `4수 실행`이다. 실행 전에는 현재 묶음의 행동 제거·재배치·이동 의도 수정을 허용한다. `N수 실행`은 유효한 묶음을 commit한 뒤 전투·해결 애니메이션으로 전환한다. 실행 뒤에는 해당 묶음을 편집하지 않는다. 적 계획은 `[관찰]` 공개 전에 먼저 잠긴다. 포커스 이름과 tooltip은 이 버튼이 현재 행동계획을 실행한다는 완전한 의미를 보존한다.
+별도의 `행동계획 잠금`은 player-facing 버튼/화면이 아니다. 실행 전에는 현재 묶음의 행동 제거·재배치·이동 의도 수정을 허용하고, `행동 실행`을 누르면 유효성 확인 뒤 즉시 전투 공개·해결 애니메이션으로 전환한다. 실행 뒤 해당 묶음은 편집하지 않는다. 적 계획은 `[관찰]` 공개 전에 잠긴다. 포커스 이름과 tooltip은 “현재 행동계획 실행”의 전체 의미를 보존한다. 기존 lock → `N수 실행`은 현재 product runtime의 `IMPLEMENTED_LEGACY`다.
 
 ## 6. 카드 본체와 상세 정보 위계
 
@@ -266,7 +270,7 @@ A 2·3타 → 단독 잔여타
 
 - 명시적 포커스와 키보드·게임패드 동등 입력.
 - 색 외에 아이콘·형태·텍스트·로그를 함께 사용.
-- `N수 실행`은 포커스와 실행 전/해결 중 상태를 텍스트로 식별하며, 접근성 이름은 현재 행동계획 실행의 전체 의미를 제공한다.
+- `행동 실행`은 포커스와 실행 전/해결 중 상태를 텍스트로 식별하며, 접근성 이름은 현재 행동계획 실행의 전체 의미를 제공한다.
 - 모션 감소·빠른 재생·즉시 완료가 결과를 바꾸지 않는다.
 - 타격 연출을 건너뛰어도 판정 순서와 원인을 텍스트로 보존한다.
 - Windows와 Android에서 동일한 핵심 정보 필드를 유지하고 배치만 반응형으로 바꾼다.
@@ -322,10 +326,10 @@ UI·UX는 에셋을 먼저 고르고 화면을 맞추지 않는다.
 ## 13. 현재 검증 상태
 
 - 새 정보 위계: `CURRENT_APPROVED_PLANNING`.
-- Godot 제품 UI 반영: `IMPLEMENTED / MACHINE_RUNTIME_VERIFIED` (Windows-visible machine capture; Human/Android/accessibility-user는 별도).
+- Godot 제품 UI 반영: `IMPLEMENTED / MACHINE_VERIFIED`, Windows-visible 준비 화면은 실제 제품 시작 경로에서 관측했다. 잠금 뒤 행동 공개의 인간 판독성·완전한 전투 시퀀스와 Android/접근성 사용자 검증은 별도다.
 - 현재 런타임 내부 시작 좌표: `4/6`; 플레이어-facing 공개 시작 거리는 `2`.
 - 이전 4/7 표기는 `SUPERSEDED_HISTORICAL_EVIDENCE`이며 좌표는 플레이어 화면에 노출하지 않는다.
-- 진행 CTA는 `N수 실행`이다. 실행 시작부터 판정·연출·복기까지 행동 편집 입력은 사용할 수 없다.
+- 최신 사용자-facing 진행 CTA는 `행동 실행`이다. 실행 시작부터 판정·연출·인과 요약까지 행동 편집 입력은 사용할 수 없다. 현재 Godot의 lock → `N수 실행`은 `IMPLEMENTED_LEGACY`; 새 계약의 runtime 검증은 `NOT_RUN`이다.
 - 자동 UI/판정 회귀는 Issue #258 branch에서 실행했고 Windows 실제 가독성·입력·접근성 사용자 검증은 `NOT_RUN`이다.
 - Windows 실제 가독성: 이 Decision에 대해 `NOT_RUN`.
 - Android 실제 가독성: `NOT_RUN`.

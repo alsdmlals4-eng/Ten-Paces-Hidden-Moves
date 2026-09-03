@@ -45,7 +45,7 @@ class GptWorkHandoff20260826Tests(unittest.TestCase):
         self.assertEqual("AUTOMATED_GODOT_PASS_20260826", portrait["opponent_specific_routing"])
         background = visual["approved_results"]["FRONTAL_COURTYARD_DUEL_BACKGROUND_01"]
         self.assertEqual("USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_RUNTIME_VERIFIED_2026_08_31", background["status"])
-        self.assertEqual("res://assets/backgrounds/frontal_courtyard_duel_background_01_v1.png", background["runtime_asset"])
+        self.assertEqual("res://assets/backgrounds/frontal_courtyard_duel_background_02_v1.png", background["runtime_asset"])
         self.assertEqual("src/combat/battle_background.gd", background["consumer"])
         self.assertEqual("ink_mist_valley_duel_01_v1", background["previous_runtime_asset_removed_from_current_tree_id"])
         self.assertEqual("PROJECT_CORE_SCENE_VISUAL_BOARD", visual["next_result"]["id"])

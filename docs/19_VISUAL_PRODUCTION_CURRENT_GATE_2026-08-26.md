@@ -43,7 +43,7 @@
 - source PNG SHA-256: `064a8772406c743bbe6b252c138b4333c88b00b90a0ba905cce9ea18773539c9`.
 - historical Notion `04 · 에셋 라이브러리` preview delivery/readback evidence: `PASS`.
 - 실제 consumer slot: `src/combat/combat_character_placeholder.gd`.
-- 현재 generic runtime asset: `res://assets/characters/enemy_masked_battler_rgba_v1.png`.
+- 현재 generic runtime asset: `res://assets/characters/enemy_masked_battler_rgba_v2.png`.
 - runtime asset: `res://assets/characters/dogyeom_combat_battler_01_v1.png`.
 - 승인 source contract: transparent RGBA full body / enemy left-facing / foot-anchor safe.
 - `slot1_dogyeom`만 전용 Battler를 선택하고, 다른 상대 및 ID 누락 상대는 generic fallback을 유지한다.
@@ -54,12 +54,12 @@
 
 ## 3. Current visual language
 
-> **세계는 저대비 수묵화, 인물은 수묵 선화 × 제한 디더링, 정보는 독립적이고 정제된 전술 UI.**
+> **세계는 저대비 한지 질감의 무협 애니메이션, 인물은 굵은 수묵 윤곽 × 절제된 셀 음영, 정보는 독립적이고 정제된 전술 UI.**
 
 보호한다.
 
 - 전장이 가장 큰 시각 질량.
-- 세로로 긴 7~7.5등신 계열의 반실사 무협 인물.
+- 세로로 긴 7~7.5등신 계열의 무협 애니메이션 전신 인물과 물리적으로 짧은 저자세 검.
 - `거리 N` 중심, 3/3/4 계획 의미 보존.
 - `기초 / 무공 / 절초` 출처 분리.
 - Action grid 최대 5×2, 최대 10개 수용.
@@ -104,7 +104,7 @@ canon + actual game consumer review
 
 현재 확인한 소비처:
 
-1. **전장 전신 Battler** — `src/combat/combat_character_placeholder.gd`; 현재 enemy texture는 `res://assets/characters/enemy_masked_battler_rgba_v1.png`.
+1. **전장 전신 Battler** — `src/combat/combat_character_placeholder.gd`; 현재 generic enemy texture는 `res://assets/characters/enemy_masked_battler_rgba_v2.png`.
 2. **상태 패널 Portrait** — `src/ui/combatant_status_panel.gd`; 현재 enemy portrait는 `res://assets/portraits/enemy_masked_ink_v1.png`.
 3. **카드 중앙 삽화** — `src/ui/card_view.gd`의 `CardView.illustration`; `data/cards/basic_cards.json`이 실제 illustration atlas region 소비 계약을 보유한다.
 
@@ -138,11 +138,11 @@ canon + actual game consumer review
 
 **실제 게임 소비처:** `src/combat/combat_character_placeholder.gd`.
 
-승인된 투명 RGBA 전신 PNG를 `res://assets/characters/dogyeom_combat_battler_01_v1.png`로 등록했다. 전투판은 `combat_state.enemy.candidate_id == "slot1_dogyeom"`일 때만 이 Battler를 선택하며, 다른 상대와 ID 누락 상대는 기존 `enemy_masked_battler_rgba_v1.png`를 유지한다. 기존 enemy-facing, 발 앵커, 이동·공격 모션, 전투 규칙은 변경하지 않았다.
+승인된 투명 RGBA 전신 PNG를 `res://assets/characters/dogyeom_combat_battler_01_v1.png`로 등록했다. 전투판은 `combat_state.enemy.candidate_id == "slot1_dogyeom"`일 때만 이 Battler를 선택하며, 다른 상대와 ID 누락 상대는 현재 `enemy_masked_battler_rgba_v2.png` generic fallback을 유지한다. 기존 enemy-facing, 발 앵커, 이동·공격 모션, 전투 규칙은 변경하지 않았다.
 
 현재 상태: `IMPLEMENTED · AUTOMATED_GODOT_VERIFIED_20260827 · WINDOWS_HUMAN_VISUAL_REVIEW_NOT_RUN`.
 
-### `FRONTAL_COURTYARD_DUEL_BACKGROUND_01` · 전투 배경
+### `FRONTAL_COURTYARD_DUEL_BACKGROUND_01` · 전투 배경 (역사 버전)
 
 **실제 게임 소비처:** `src/combat/battle_background.gd`.
 
@@ -158,19 +158,32 @@ canon + actual game consumer review
 - cleanup: superseded background binaries were removed from the current tree under the user-approved cleanup rule and remain recoverable from Git history.
 - provenance and release-rights ceiling: see `docs/visual-assets/approved/FRONTAL_COURTYARD_DUEL_BACKGROUND_01_v1.md`. This is a user-final-locked project asset, not a blanket shipping-rights or release-pass claim.
 
-현재 상태: `USER_FINAL_LOCKED · CANON_REGISTERED · IMPLEMENTED · MACHINE_RUNTIME_VERIFIED_20260831`. Godot 4.7.1 visible node/log readback에서 논리 타일/foot guide는 숨김, 두 전투원은 같은 `y=267` 바닥선, 중앙 `거리 2`, diagnostics 오류·경고 0건을 확인했다. 이는 Windows human usability, Android actual device, accessibility-user, release-performance 확정이 아니다.
+현재 상태: `SUPERSEDED_BY_USER_FINAL_LOCK_20260902`. 이 버전의 2026-08-31 machine evidence는 역사 증거로 보존하며, 새 modular background의 runtime evidence로 재사용하지 않는다.
 
 ### `FRONTAL_COMBATANT_ROUTING_01` · 정면 대치 Battler Routing
 
 **실제 게임 소비처:** `src/combat/combat_character_placeholder.gd`.
 
-2026-08-31의 사용자 explicit `최종확정`에 따라 정면 대치 공유 지면 구도로 되돌렸다. `player_wanderer_battler_rgba_v1.png`은 left player Battler로, `dogyeom_combat_battler_01_v1.png`은 mirrored `slot1_dogyeom`으로, `enemy_masked_battler_rgba_v1.png`은 generic fallback으로 연결한다. status portrait, 전투 타일 논리, AI 정보 경계, 저장 schema는 바꾸지 않는다.
+2026-08-31의 사용자 explicit `최종확정`에 따라 정면 대치 공유 지면 구도로 되돌렸던 historical routing이다. 이후 2026-09-02 explicit final lock에 따라 generic player/enemy route는 v2로 supersede되었다. status portrait, 전투 타일 논리, AI 정보 경계, 저장 schema는 바꾸지 않는다.
 
 - `assets/ASSET_MANIFEST.json`은 현재 player, generic enemy, Dogyeom 전신 원화의 provenance, alpha audit, 정확한 consumer를 소유한다.
 - 대각선 pair binary와 derived crop은 현재 소비처가 없어 사용자 승인 cleanup rule에 따라 현재 트리에서 제거했다. Git history에서만 복구 가능하다.
 - 새 정면 shared-ground composition의 Godot runtime readback은 아직 실행 전이다.
 
-현재 상태: `IMPLEMENTED · PENDING_MACHINE_RUNTIME_VERIFICATION_20260831`. Human usability/player approval, accessibility-user, Android device, release clearance는 `NOT_RUN`이다.
+현재 상태: `SUPERSEDED_BY_USER_FINAL_LOCK_20260902`. Human usability/player approval, accessibility-user, Android device, release clearance는 `NOT_RUN`이다.
+
+### `FRONTAL_COURTYARD_MODULAR_ART_PACK_20260902_v2` · 현재 배경·전경·전투원
+
+사용자 명시 승인 “방금 2 이미지는 승인”과 “배경,깃발도 방금 만든거 2개 승인”(2026-09-02)에 따라 다음 네 모듈을 현재 generic runtime route로 등록했다.
+
+- Background: `frontal_courtyard_duel_background_02_v1.png`; environment-only shared stone-floor module.
+- Foreground: `frontal_courtyard_banner_overlay_01_v1.png`; `DuelForegroundBanner`가 좌/우 반전 pair로 재사용하며 input을 가로막지 않는다.
+- Player / generic enemy: `player_wanderer_battler_rgba_v2.png`, `enemy_masked_battler_rgba_v2.png`; low, body-proportional swords and alpha-only figures with no baked floor.
+- Consumers: `BattleBackground`, `CombatBoardPreview`, `MainTitleScreen`, and `CombatCharacterPlaceholder`. Dogyeom’s specific `slot1_dogyeom` route is untouched.
+
+각 exact source PNG, SHA-256, prompt scope, alpha audit, approval phrase, consumers, and rights ceiling are `assets/ASSET_MANIFEST.json` and the four `docs/visual-assets/approved/*_v1.md` / `*_v2.md` records that own. Old generic v1 binaries remain manifest-marked, recoverable superseded assets—not deleted current evidence.
+
+현재 상태: `USER_FINAL_LOCKED · CANON_REGISTERED · IMPLEMENTED · MACHINE_RUNTIME_VERIFIED_20260902`. `TEN-RVC-20260902-001`은 actual Godot combat screen, `TEN-RVC-20260902-002`는 actual Godot main-title component screen을 같은 exact source commit에서 기록한다. Human usability/player approval, accessibility-user, Android device, and release clearance remain `NOT_RUN`.
 
 ### `TEN_BASIC_TECHNIQUE_INK_ATLAS_01` · 기초 기술 5×2 Card Atlas
 

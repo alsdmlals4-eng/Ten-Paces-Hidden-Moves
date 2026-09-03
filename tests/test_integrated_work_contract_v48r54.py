@@ -169,7 +169,7 @@ class IntegratedWorkContractV48R54Tests(unittest.TestCase):
         self.assertEqual("USER_APPROVED_FINAL_LOCKED", visual["next_result"]["final_lock_status"])
         self.assertEqual([], planning["next_visual_batch"])
         self.assertEqual(
-            "NONE_CURRENT_TITLE_LOGO_AND_ATTACK_CLASH_ATLAS_FINAL_LOCKED_IMPLEMENTED; REMAINING_ASSETS_REQUIRE_ACTUAL_CONSUMER_VERIFICATION",
+            "WHOLE_SCENE_ATLAS_CANDIDATE_GENERATED; ACTUAL_RUNTIME_CONSUMER_BOUND_SPLIT_BRIEFS_REQUIRE_SEPARATE_GODOT_BUILD_PACKAGE_AND_USER_FINAL_LOCK",
             planning["next_image_generation"],
         )
         self.assertEqual(

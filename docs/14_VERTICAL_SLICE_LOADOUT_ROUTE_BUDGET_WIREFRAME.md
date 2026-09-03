@@ -1,6 +1,6 @@
 # 십보강호 Vertical Slice · 상대 Loadout · Route 예산 · 비전투 Wire 상세
 
-> 상태: APPROVED_PLANNING_DETAIL  
+> 상태: `APPROVED_PLANNING_DETAIL_WITH_20260904_ROUTE_SURFACE_SUPERSESSION`
 > 상위 Decision: `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01`  
 > 선행 상세: `TEN-DEC-20260820-VERTICAL-SLICE-CONTENT-DETAIL-01`  
 > 이번 Decision: `TEN-DEC-20260820-VERTICAL-SLICE-LOADOUT-ROUTE-WIRE-01`  
@@ -11,6 +11,8 @@
 > 제품 구현 권한: `false`
 
 이 문서는 첫 Vertical Slice에서 사용할 15명 후보의 **기존 무공서/기술 배정**, 4개 성장 Route 노드의 **초기 수치 예산**, 4개 정보 Route 노드와 비전투 화면의 **wire-level 정보 위계**를 책임진다.
+
+> **2026-09-04 current-surface overlay:** 아래 `Growth/Recovery → Information/Preparation`의 8개 직렬 노드와 별도 `Combat Review Overlay` 화면 경계는 `IMPLEMENTED_LEGACY_HISTORICAL_WIRE`다. 현재 player-facing route는 `3갈래 후보 중 1개 × 정확히 4회`, `0/4 → 4/4` 뒤 다음 Briefing이며, 인과 설명은 current result strip/종료 원인 요약에만 남긴다. 후보별 공개 효과 범주·정보 누출 금지는 이 문서의 detail을 재사용하되, 화면 구조는 `TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01`과 `docs/13_VERTICAL_SLICE_OPPONENT_ROUTE_TEXT_UX.md`가 우선한다.
 
 수치는 사람 플레이 전의 `REVERSIBLE_BALANCE_SEED`이며, 전투 규칙·무공서 효과·제품 코드·runtime data를 변경하지 않는다.
 

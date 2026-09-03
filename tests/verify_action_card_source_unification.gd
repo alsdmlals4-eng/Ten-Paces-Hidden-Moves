@@ -59,28 +59,26 @@ func _verify_common_card_information_hierarchy() -> void:
 	if not manuals.is_empty():
 		martial = _find_action((manuals[0] as Dictionary).get("techniques", []) as Array[Dictionary], "mount_hua_plum_blossom_sword_star3")
 	var ultimate := _find_action(adapter.build_ultimate_actions(5), "ultimate_ten_paces_wave")
-	_verify_card_text_hierarchy(basic_move, "basic_atlas_only", "기초 · 이동", "접근 또는 후퇴", "basic move")
-	_verify_card_text_hierarchy(basic_meditate, "basic_atlas_only", "기초 · 회복", "기력과 내력을", "basic meditate")
-	_verify_card_text_hierarchy(martial, "semantic_atlas", "[화산파] 매화검결 · 공격", "연속", "tagless martial attack")
-	_verify_card_text_hierarchy(ultimate, "semantic_atlas", "기본 절초 · 공격", "기본 피해 8", "ultimate")
+	_verify_card_text_hierarchy(basic_move, "basic_atlas_only", "이동", "basic move")
+	_verify_card_text_hierarchy(basic_meditate, "basic_atlas_only", "회복", "basic meditate")
+	_verify_card_text_hierarchy(martial, "semantic_atlas", "공격", "tagless martial attack")
+	_verify_card_text_hierarchy(ultimate, "semantic_atlas", "공격", "ultimate")
 
-func _verify_card_text_hierarchy(definition: Dictionary, illustration_policy: String, expected_facts: String, expected_effect: String, label: String) -> void:
+func _verify_card_text_hierarchy(definition: Dictionary, illustration_policy: String, expected_tag: String, label: String) -> void:
 	_check(not definition.is_empty(), "%s definition must exist." % label)
 	if definition.is_empty():
 		return
 	var card := ACTION_CHOICE_CARD_SCRIPT.new() as ActionChoiceCard
 	card.configure_action(definition, illustration_policy)
-	var facts := card.find_child("CardFacts", false, false) as Label
-	var effect := card.find_child("CardEffectOrTag", false, false) as Label
+	var name_label := card.find_child("CardName", false, false) as Label
+	var tag_label := card.find_child("CardTag", false, false) as Label
 	var illustration := card.find_child("CardIllustration", false, false) as TextureRect
-	_check(is_instance_valid(facts) and facts.text.contains(expected_facts), "%s must expose source, Korean category, and cost/range facts." % label)
-	_check(is_instance_valid(facts) and facts.text.contains("사거리"), "%s must always expose its range meaning in the shared card facts." % label)
-	_check(is_instance_valid(facts) and facts.text.contains("기력") and facts.text.contains("내력"), "%s must always expose stamina and internal-cost facts, including zero cost." % label)
-	_check(is_instance_valid(effect) and effect.text.contains(expected_effect), "%s must expose its effect text or tag on the common card." % label)
-	_check(is_instance_valid(effect) and effect.text != "절초", "%s must expose an actionable effect summary rather than the generic ultimate tag." % label)
+	_check(is_instance_valid(name_label) and name_label.text.contains(str(definition.get("name", ""))) and name_label.text.contains("%d수" % int(definition.get("action_slots", 1))), "%s must expose only its name and occupied action slots in the card title." % label)
+	_check(is_instance_valid(tag_label) and tag_label.text.contains(expected_tag), "%s must expose one Korean core tag inside the compact card." % label)
+	_check(is_instance_valid(tag_label) and not tag_label.text.contains("기력") and not tag_label.text.contains("내력") and not tag_label.text.contains("사거리"), "%s must reserve costs, range, and effect detail for the dedicated detail panel." % label)
 	_check(is_instance_valid(illustration) == (illustration_policy != "forbidden"), "%s illustration presence must match the card policy." % label)
-	_check(card.custom_minimum_size.y >= 132.0, "%s card must reserve enough vertical space for illustration, facts, and effect text." % label)
-	_check(is_instance_valid(facts) and not facts.clip_text and is_instance_valid(effect) and not effect.clip_text, "%s card facts and effect must not silently clip inside the common card." % label)
+	_check(card.custom_minimum_size.y <= 84.0, "%s card must remain compact enough for a 5 by 2 lower-screen grid." % label)
+	_check(is_instance_valid(name_label) and name_label.clip_text and is_instance_valid(tag_label) and tag_label.clip_text, "%s compact card must keep text inside its own card frame." % label)
 	_check(not card.accessibility_name.strip_edges().is_empty(), "%s must expose an accessibility name." % label)
 	_check(not card.accessibility_description.strip_edges().is_empty(), "%s must expose an accessibility description." % label)
 	card.queue_free()

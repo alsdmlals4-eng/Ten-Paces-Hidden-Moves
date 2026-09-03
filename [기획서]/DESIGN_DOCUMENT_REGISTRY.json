@@ -4,7 +4,7 @@
   "registry_role": "ai-design-document-router-and-publication-index",
   "project_name": "십보강호: 숨은 수의 비무",
   "source_of_truth_policy": "Each question has exactly one Markdown or JSON source of truth. Active sources describe the current contract; history lives in Git, Change Log, and Learning Log.",
-  "publication_note": "Current repository operation is source_only because no publication generator is installed. Promote selected documents to milestone_sync only when generator, fonts, rendering, manifest, and review are installed together.",
+  "publication_note": "Structured source registry remains source_only. The derived human Blueprint is owned and rendered by docs/design/PROJECT_AI_PRODUCTION_SPEC.md plus its explicit builder, rendering review, and evidence record; do not add its binary path to this source registry.",
   "required_responsibility_coverage": ["프로젝트 전체", "게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA", "프로덕션·PM", "통합검수"],
   "available_responsibility_catalog": ["설정·내러티브", "게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "테크니컬 아트·파이프라인", "아트", "사운드", "QA", "프로덕션·PM", "분석·유저리서치", "통합검수"],
   "documents": [

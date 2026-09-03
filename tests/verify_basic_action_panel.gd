@@ -29,10 +29,10 @@ func _run() -> void:
     ])
     assert(not bool(snapshot.get("scrolling_enabled", true)))
     assert(panel.buttons.size() == 10)
-    assert(panel.buttons[0].custom_minimum_size.y >= 88.0)
+    assert(panel.buttons[0].custom_minimum_size.y <= 84.0)
     var illustration := panel.buttons[0].get_node_or_null("CardIllustration") as TextureRect
     assert(is_instance_valid(illustration))
-    assert(illustration.offset_bottom - illustration.offset_top >= 50.0)
+    assert(illustration.offset_bottom - illustration.offset_top >= 30.0)
 
     panel.set_interaction_enabled(false)
     assert(not bool(panel.get_panel_snapshot().get("interaction_enabled", true)))

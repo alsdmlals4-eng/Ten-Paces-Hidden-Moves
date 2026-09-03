@@ -1,6 +1,8 @@
 class_name ActionDetailPanel
 extends PanelContainer
 
+const TECHNIQUE_DETAIL_FRAME := preload("res://assets/ui/duel/technique_detail_frame_01_v1.png")
+
 var definition: Dictionary = {}
 var manual_definition: Dictionary = {}
 var pinned := false
@@ -16,14 +18,17 @@ var _rows: Dictionary = {}
 var _row_keys: Array[String] = []
 var _section_titles: Array[String] = []
 var _lineage_text := ""
+var _primary_effect := ""
 
 func _ready() -> void:
-    custom_minimum_size = Vector2(310.0, 350.0)
+    custom_minimum_size = Vector2(250.0, 142.0)
     mouse_filter = Control.MOUSE_FILTER_STOP
+    # A compact detail column is scrollable.  Its rich model must never paint
+    # below the frame while the player is reading the first cost/effect rows.
+    clip_contents = true
     _build()
     _apply_content()
-    if detail_mode == "empty":
-        visible = false
+    visible = detail_mode != "empty"
 
 func show_action(value: Dictionary, value_pinned: bool = false) -> void:
     definition = value.duplicate(true)
@@ -70,7 +75,7 @@ func clear_definition() -> void:
 func get_detail_snapshot() -> Dictionary:
     return {
         "step": 7,
-        "layout_role": "left_overlay",
+        "layout_role": "right_detail_column",
         "mode": detail_mode,
         "visible": visible,
         "pinned": pinned,
@@ -81,10 +86,17 @@ func get_detail_snapshot() -> Dictionary:
         "rows": _rows.duplicate(true),
         "section_titles": _section_titles.duplicate(),
         "lineage_text": _lineage_text,
+        "primary_effect": _primary_effect,
         "hover_preview": true,
         "click_pin": true,
         "blank_click_close": true,
         "action_placement_enabled": false
+    }
+
+func get_layout_snapshot() -> Dictionary:
+    return {
+        "panel_rect": get_global_rect(),
+        "body_rect": _scroll.get_global_rect() if is_instance_valid(_scroll) else Rect2()
     }
 
 func _build() -> void:
@@ -92,10 +104,12 @@ func _build() -> void:
         return
     _built = true
     add_theme_stylebox_override("panel", _panel_style())
+    set_meta("technique_detail_frame_path", "res://assets/ui/duel/technique_detail_frame_01_v1.png")
+    set_meta("technique_detail_frame_loaded", TECHNIQUE_DETAIL_FRAME != null)
 
     var column := VBoxContainer.new()
     column.name = "ActionDetailColumn"
-    column.add_theme_constant_override("separation", 7)
+    column.add_theme_constant_override("separation", 3)
     add_child(column)
 
     var header := HBoxContainer.new()
@@ -104,13 +118,14 @@ func _build() -> void:
 
     _title = Label.new()
     _title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    _title.add_theme_font_size_override("font_size", 25)
+    _title.add_theme_font_size_override("font_size", 16)
     _title.add_theme_color_override("font_color", Color("ead8b4"))
+    _title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     _title.clip_text = true
     header.add_child(_title)
 
     _source = Label.new()
-    _source.add_theme_font_size_override("font_size", 14)
+    _source.add_theme_font_size_override("font_size", 11)
     _source.add_theme_color_override("font_color", Color("d6b36c"))
     _source.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
     header.add_child(_source)
@@ -119,13 +134,25 @@ func _build() -> void:
     _mode_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
     _mode_label.add_theme_font_size_override("font_size", 12)
     _mode_label.add_theme_color_override("font_color", Color("9f9484"))
+    _mode_label.visible = false
     column.add_child(_mode_label)
+
+    # The locked outer frame remains visible as the project detail identity.
+    # Its original portrait illustration well is intentionally covered by a
+    # real parchment contract surface in this compact slot: cost, effect, and
+    # range need one readable lane, not a tiny column around the medallion.
+    var content_lane := PanelContainer.new()
+    content_lane.name = "ActionDetailContentLane"
+    content_lane.size_flags_vertical = Control.SIZE_EXPAND_FILL
+    content_lane.add_theme_stylebox_override("panel", _contract_style())
+    column.add_child(content_lane)
 
     _scroll = ScrollContainer.new()
     _scroll.name = "ActionDetailScroll"
+    _scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     _scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
     _scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-    column.add_child(_scroll)
+    content_lane.add_child(_scroll)
 
     _content = VBoxContainer.new()
     _content.name = "ActionDetailContent"
@@ -134,7 +161,7 @@ func _build() -> void:
     _scroll.add_child(_content)
 
     set_meta("step", 7)
-    set_meta("layout_role", "left_overlay")
+    set_meta("layout_role", "right_detail_column")
     set_meta("hover_preview", true)
     set_meta("click_pin", true)
     set_meta("blank_click_close", true)
@@ -149,6 +176,7 @@ func _apply_content() -> void:
     _row_keys.clear()
     _section_titles.clear()
     _lineage_text = ""
+    _primary_effect = ""
 
     match detail_mode:
         "action":
@@ -169,18 +197,32 @@ func _apply_action() -> void:
     _source.text = str(definition.get("source_label", definition.get("category_label", "")))
     var source_kind := str(definition.get("source_kind", definition.get("source", "")))
     var detail: Dictionary = definition.get("detail", {})
+    var action_slots := maxi(1, int(definition.get("action_slots", 1)))
+    var stamina := maxi(0, int(definition.get("stamina_cost", 0)))
+    var internal := maxi(0, int(definition.get("internal_cost", 0)))
+    var effect_text := str(detail.get("effect_text", definition.get("effect_text", "")))
+    _primary_effect = _compact_effect_text(definition, effect_text)
+
+    # The first viewport of this small right panel is the decision contract:
+    # title, payment, result.  Provenance and advanced tactical facts remain
+    # below it for scroll/keyboard inspection instead of invading the card grid.
+    _add_row("소모", "기력 %d · 내력 %d · %d수" % [stamina, internal, action_slots])
+    if not effect_text.is_empty():
+        _add_section("효과", _primary_effect if _is_compact_layout() else effect_text)
+    var range_text := str(definition.get("range_text", ""))
+    if not range_text.is_empty() and range_text != "-":
+        _add_row("사거리", range_text)
 
     _add_row("출처", str(definition.get("source_label", "-")))
     if not str(definition.get("category_label", "")).is_empty() or not str(definition.get("category", "")).is_empty():
         _add_row("계열", str(definition.get("category_label", definition.get("category", "-"))))
-    _add_row("수 점유", "%d수" % maxi(1, int(definition.get("action_slots", 1))))
+    _add_row("수 점유", "%d수" % action_slots)
     _add_row("전조", "%d수" % maxi(0, int(definition.get("telegraph_count", maxi(0, int(definition.get("action_slots", 1)) - 1)))))
     _add_row("실행", "%d수" % maxi(1, int(definition.get("execution_count", 1))))
-    _add_row("기력", str(maxi(0, int(definition.get("stamina_cost", 0)))))
-    _add_row("내력", str(maxi(0, int(definition.get("internal_cost", 0)))))
+    _add_row("기력", str(stamina))
+    _add_row("내력", str(internal))
     if source_kind == "ultimate" or int(definition.get("momentum_cost", 0)) > 0:
         _add_row("절초기세", str(maxi(0, int(definition.get("momentum_cost", 5)))))
-    _add_row("사거리", str(definition.get("range_text", "-")))
 
     var target := str(detail.get("target", definition.get("target", "")))
     if not target.is_empty():
@@ -200,9 +242,6 @@ func _apply_action() -> void:
     if source_kind == "ultimate":
         _add_row("진행 전 환불", "가능" if bool(definition.get("refund_before_commit", true)) else "불가")
 
-    var effect_text := str(detail.get("effect_text", definition.get("effect_text", "")))
-    if not effect_text.is_empty():
-        _add_section("효과", effect_text)
     var condition := str(detail.get("condition", definition.get("condition", "")))
     if not condition.is_empty() and condition != "없음":
         _add_section("조건", condition)
@@ -252,6 +291,30 @@ func _apply_manual() -> void:
     ]))
     _add_section("성급 계보", _lineage_text)
 
+func _is_compact_layout() -> bool:
+    return size.x <= 300.0 or custom_minimum_size.x <= 300.0
+
+func _compact_effect_text(value: Dictionary, effect_text: String) -> String:
+    var category := str(value.get("category", ""))
+    if category == "move":
+        return "이동 %d" % maxi(1, int(value.get("move_range", 1)))
+    var damage_formula: Dictionary = value.get("damage_formula", {}) as Dictionary
+    var base_damage := maxi(0, int(damage_formula.get("base", 0)))
+    if base_damage > 0:
+        return "위력 %d" % base_damage
+    var restore: Dictionary = value.get("restore", {}) as Dictionary
+    if not restore.is_empty():
+        return "기력 +%d · 내력 +%d" % [maxi(0, int(restore.get("stamina", 0))), maxi(0, int(restore.get("internal", 0)))]
+    var observation_points := maxi(0, int(value.get("observation_points", 0)))
+    if observation_points > 0:
+        return "관찰점 +%d" % observation_points
+    if category == "response":
+        return "방어 또는 회피"
+    if category == "strengthen":
+        return "다음 비이동 강화"
+    var first_sentence := effect_text.split(".", false)[0].strip_edges()
+    return first_sentence.left(18) + "…" if first_sentence.length() > 18 else first_sentence
+
 func _movement_timing_text(value: Dictionary) -> String:
     var explicit := str(value.get("move_timing", ""))
     if not explicit.is_empty():
@@ -275,35 +338,37 @@ func _refresh_mode_label() -> void:
 func _add_row(key: String, value: String) -> void:
     _rows[key] = value
     _row_keys.append(key)
+    var compact := _is_compact_layout()
     var row := HBoxContainer.new()
     var key_label := Label.new()
-    key_label.custom_minimum_size = Vector2(96.0, 0.0)
+    key_label.custom_minimum_size = Vector2(44.0 if compact else 54.0, 0.0)
     key_label.text = key
-    key_label.add_theme_color_override("font_color", Color("cda960"))
-    key_label.add_theme_font_size_override("font_size", 15)
+    key_label.add_theme_color_override("font_color", Color("4d4032") if compact else Color("cda960"))
+    key_label.add_theme_font_size_override("font_size", 11 if compact else 12)
     var value_label := Label.new()
     value_label.text = value
     value_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     value_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    value_label.add_theme_color_override("font_color", Color("e9dfcd"))
-    value_label.add_theme_font_size_override("font_size", 15)
+    value_label.add_theme_color_override("font_color", Color("211c17") if compact else Color("e9dfcd"))
+    value_label.add_theme_font_size_override("font_size", 11 if compact else 12)
     row.add_child(key_label)
     row.add_child(value_label)
     _content.add_child(row)
 
 func _add_section(title: String, value: String, muted := false) -> void:
+    var compact := _is_compact_layout()
     if not title.is_empty():
         _section_titles.append(title)
         var label := Label.new()
         label.text = title
-        label.add_theme_color_override("font_color", Color("cda960"))
-        label.add_theme_font_size_override("font_size", 15)
+        label.add_theme_color_override("font_color", Color("4d4032") if compact else Color("cda960"))
+        label.add_theme_font_size_override("font_size", 11 if compact else 12)
         _content.add_child(label)
     var body := Label.new()
     body.text = value
     body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    body.add_theme_font_size_override("font_size", 15)
-    body.add_theme_color_override("font_color", Color("9f9484") if muted else Color("e9dfcd"))
+    body.add_theme_font_size_override("font_size", 11 if compact else 12)
+    body.add_theme_color_override("font_color", (Color("6a5843") if muted else Color("211c17")) if compact else (Color("9f9484") if muted else Color("e9dfcd")))
     _content.add_child(body)
 
 func _add_separator() -> void:
@@ -324,14 +389,30 @@ func _string_list(values) -> Array[String]:
         result.append(str(value))
     return result
 
-func _panel_style() -> StyleBoxFlat:
-    var style := StyleBoxFlat.new()
-    style.bg_color = Color(0.035, 0.040, 0.043, 0.97)
-    style.border_color = Color("8d6b35")
-    style.set_border_width_all(2)
-    style.set_corner_radius_all(8)
-    style.content_margin_left = 18
-    style.content_margin_right = 18
+func _panel_style() -> StyleBox:
+    var style := StyleBoxTexture.new()
+    style.texture = TECHNIQUE_DETAIL_FRAME
+    style.texture_margin_left = 42.0
+    style.texture_margin_top = 42.0
+    style.texture_margin_right = 42.0
+    style.texture_margin_bottom = 42.0
+    # At a right-column width the source frame's decorative side rails need a
+    # deliberate text safe area; the generic 28px inset allowed labels to sit
+    # across those rails in the actual 1280px preparation viewport.
+    style.content_margin_left = 20
+    style.content_margin_right = 16
     style.content_margin_top = 16
-    style.content_margin_bottom = 16
+    style.content_margin_bottom = 14
+    return style
+
+func _contract_style() -> StyleBoxFlat:
+    var style := StyleBoxFlat.new()
+    style.bg_color = Color("d8c39cf2")
+    style.border_color = Color("8d6b35")
+    style.set_border_width_all(1)
+    style.set_corner_radius_all(2)
+    style.content_margin_left = 5.0
+    style.content_margin_right = 5.0
+    style.content_margin_top = 4.0
+    style.content_margin_bottom = 4.0
     return style

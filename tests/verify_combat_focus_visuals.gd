@@ -30,12 +30,15 @@ func _run() -> void:
             available_ultimate = button
             break
     _require_focus_ring(available_ultimate, "available ultimate action")
-    _require_focus_ring(board.fast_replay_button, "fast playback")
     if is_instance_valid(board.get_node_or_null("SkipPresentationButton")):
         failures.append("The retired immediate-complete control must not remain in the focusable surface.")
-    _require_focus_ring(board.reduced_motion_button, "reduced motion")
-    _require_focus_ring(board.sound_toggle_button, "sound toggle")
-    _require_focus_ring(board.sound_volume_slider, "sound volume")
+    for retired_presentation_control in [
+        board.fast_replay_button,
+        board.reduced_motion_button,
+        board.sound_toggle_button,
+        board.sound_volume_slider,
+    ]:
+        _require_excluded_from_focus(retired_presentation_control, "retired presentation control")
     _require_focus_ring(board.combat_progress_button._button, "progress")
 
     board.queue_free()
@@ -49,6 +52,10 @@ func _require_focus_ring(control: Control, label: String) -> void:
     var focus_style := control.get_theme_stylebox("focus")
     if focus_style == null or not bool(control.get_meta("keyboard_focus_ring", false)):
         failures.append("%s must have a visible non-color-only focus ring." % label)
+
+func _require_excluded_from_focus(control: Control, label: String) -> void:
+    if control == null or control.visible or control.focus_mode != Control.FOCUS_NONE:
+        failures.append("%s must remain hidden and absent from keyboard traversal." % label)
 
 func _finish() -> void:
     if failures.is_empty():
