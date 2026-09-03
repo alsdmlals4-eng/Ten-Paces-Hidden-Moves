@@ -1,4 +1,4 @@
-# 제품 전투 계획의 Tab 포커스가 출처·행동·수·진행·접근성 순서로 고정되는지 검증한다.
+# 준비 화면의 Tab 포커스가 출처·행동·현재 수·잠금 순서로 고정되는지 검증한다.
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
@@ -30,6 +30,14 @@ func _run() -> void:
         failures.append("Hidden legacy basic-card controls must not remain in the product focus order.")
     if board.ultimate_list_panel.visible or board.ultimate_menu.focus_mode != Control.FOCUS_NONE:
         failures.append("Hidden legacy ultimate controls must not remain in the product focus order.")
+    for removed_presentation_control in [
+        board.fast_replay_button,
+        board.reduced_motion_button,
+        board.sound_toggle_button,
+        board.sound_volume_slider,
+    ]:
+        if removed_presentation_control.visible or removed_presentation_control.focus_mode != Control.FOCUS_NONE:
+            failures.append("The preparation reference layout must not expose retired presentation controls in keyboard traversal.")
 
     var basic_tab: Button = board.action_selection_dock.basic_tab
     var martial_tab: Button = board.action_selection_dock.martial_tab
@@ -71,11 +79,7 @@ func _run() -> void:
         var future_slot := board.action_timing_panel.get_slot(timing_index)
         if future_slot.visible or future_slot.focus_mode != Control.FOCUS_NONE:
             failures.append("Future timing slot %d must be hidden and removed from keyboard traversal." % timing_index)
-    _require_next(progress, board.fast_replay_button, "progress button")
-    _require_next(board.fast_replay_button, board.reduced_motion_button, "fast playback")
-    _require_next(board.reduced_motion_button, board.sound_toggle_button, "reduced motion")
-    _require_next(board.sound_toggle_button, board.sound_volume_slider, "sound toggle")
-    _require_next(board.sound_volume_slider, basic_tab, "sound volume")
+    _require_next(progress, basic_tab, "progress button")
 
     board.queue_free()
     await process_frame

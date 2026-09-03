@@ -50,8 +50,14 @@ func _run() -> void:
 
     if board.combat_progress_button._button.focus_mode != Control.FOCUS_ALL:
         failures.append("The progress button must participate in keyboard focus traversal.")
-    if board.reduced_motion_button.focus_mode != Control.FOCUS_ALL or board.sound_toggle_button.focus_mode != Control.FOCUS_ALL:
-        failures.append("Presentation accessibility controls must be keyboard focusable.")
+    for retired_presentation_control in [
+        board.fast_replay_button,
+        board.reduced_motion_button,
+        board.sound_toggle_button,
+        board.sound_volume_slider,
+    ]:
+        if retired_presentation_control.visible or retired_presentation_control.focus_mode != Control.FOCUS_NONE:
+            failures.append("The reference preparation surface must exclude retired presentation controls from keyboard traversal.")
 
     board.queue_free()
     await process_frame
