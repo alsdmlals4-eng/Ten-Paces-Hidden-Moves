@@ -77,10 +77,12 @@ def main() -> None:
 
     slot = read("src/ui/action_timing_slot.gd")
     assert 'return "전조" if _assignment_stage() == "preparation" else "실행"' in slot
-    # A planned slot retains its stage while naming the selected technique.
-    # The timing surface must not regress to a stage-only placeholder.
-    assert '_placeholder_label.text = "[%s] %s" % [stage_label, str(assigned_definition.get("name", "행동"))]' in slot
-    assert '%s [준비]' not in slot
+    # A linked action block owns the selected technique name.  Individual timing
+    # cells show only their visible phase so one multi-slot action is not read as
+    # multiple duplicate cards; the accessible name keeps the technique context.
+    assert '_placeholder_label.text = "[%s]" % stage_label' in slot
+    assert 'str(assigned_definition.get("name", "행동"))' in slot
+    assert '_placeholder_label.text = "[%s] %s"' not in slot
 
     block = read("src/ui/action_selection/linked_action_block.gd")
     assert 'stages.append("실행" if index == span - 1 else "전조")' in block

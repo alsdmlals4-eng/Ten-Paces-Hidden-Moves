@@ -160,3 +160,9 @@ The first visible lock-state review exposed an important composition defect: hid
 ### Evidence ceiling
 
 The plan-locked and action-reveal images prove the machine runtime composition and public presentation state only.  They are not human readability approval, physical play evidence, Android evidence, accessibility-user evidence, release performance proof, or permission to alter the locked art assets.
+
+## 2026-09-03 current-state contract repair
+
+The full local regression deliberately caught three stale expectations that still described the earlier `TEN-RVC-20260903-001` preparation-only state after the newer hover, lock, and single-action-reveal captures were registered.  The current-state regression now requires the aligned repository owners to name `001/003/004/005/006`, retain `HUMAN_DEFERRED`, and identify the native 2D presentation Decision as latest.  This corrects the contract consumer rather than reverting accurate evidence owners.
+
+The first remote PR run then exposed a separate legacy source-text assertion in `tests/check_action_selection_contract.py`: it still required every individual timing slot to display the selected technique name.  The active runtime and its focused linked-block verifier instead intentionally place the name on the single linked action block, while each slot shows only `전조` or `실행` and keeps the full name in accessibility context.  The contract now guards that current split explicitly.  Local evidence after the repair: the action-selection contract check passed; the related 28 Python regressions passed; the complete Python suite passed `455/455`; and the focused six Godot 4.7.1 verifiers plus the protected operating-contract validator passed.  The subsequent exact-PR-head remote checks remain a separate CI readback.
