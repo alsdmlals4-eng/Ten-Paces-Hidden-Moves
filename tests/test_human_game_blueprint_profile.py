@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import json
+import importlib.util
 import re
+import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -177,6 +180,64 @@ class HumanGameBlueprintProfileContract(unittest.TestCase):
         for baseline_page in baseline.pages:
             baseline_text = baseline_page.extract_text()
             next_additive_index = additive_pages.index(baseline_text, next_additive_index) + 1
+
+    def test_incremental_blueprint_exposes_goals_systems_case_statuses_and_visual_production_flow(self) -> None:
+        """The human master must expose the new planning layers as rendered PDF content."""
+        current = PdfReader(str(ROOT / CURRENT_PDF))
+        rendered_text = "\n".join(page.extract_text() or "" for page in current.pages)
+
+        # A regression that merely kept the old 46-page addendum would lose this
+        # user-requested decision surface while still preserving the baseline.
+        self.assertGreaterEqual(len(current.pages), 52)
+        for required_heading in (
+            "프로젝트 목표 · 시스템 지도",
+            "단계별 FM · Flow Map",
+            "준비 화면 · 구조 와이어프레임",
+            "전투 화면 · 구조 와이어프레임",
+            "이미지 제작 파이프라인",
+            "케이스별 현재 상태",
+        ):
+            self.assertIn(required_heading, rendered_text)
+
+        # The production board must communicate the requested whole-scene →
+        # separated-candidate → composition progression, not just display art.
+        self.assertIn("전체 장면 후보", rendered_text)
+        self.assertIn("분리 후보", rendered_text)
+        self.assertIn("합성 · Godot 런타임", rendered_text)
+
+    def test_image_production_board_preserves_full_portrait_module_bounds(self) -> None:
+        """Tall, transparent battler candidates must be contained rather than cropped in the production board."""
+        generator_path = ROOT / "tools" / "build_frontal_duel_visual_blueprint_pdf.py"
+        module_spec = importlib.util.spec_from_file_location("frontal_blueprint_generator", generator_path)
+        self.assertIsNotNone(module_spec)
+        module = importlib.util.module_from_spec(module_spec)
+        assert module_spec.loader is not None
+        module_spec.loader.exec_module(module)
+
+        contain = getattr(module, "contain_dimensions", None)
+        self.assertTrue(callable(contain), "the production board needs a portrait-safe contain geometry helper")
+        self.assertEqual(contain(1024, 1536, 110, 54), (36, 54))
+
+    def test_human_blueprint_rebuild_has_a_bounded_publication_size(self) -> None:
+        """Repeated visual evidence must not turn one retained 52-page Blueprint into an oversized duplicate binary."""
+        with tempfile.TemporaryDirectory(prefix="ten-paces-human-blueprint-size-") as directory:
+            output = Path(directory) / "human-blueprint.pdf"
+            builder_path = ROOT / "tools" / "build_human_game_blueprint_pdf.py"
+            module_spec = importlib.util.spec_from_file_location("human_blueprint_builder", builder_path)
+            self.assertIsNotNone(module_spec)
+            module = importlib.util.module_from_spec(module_spec)
+            assert module_spec.loader is not None
+            sys.path.insert(0, str(builder_path.parent))
+            try:
+                module_spec.loader.exec_module(module)
+            finally:
+                sys.path.pop(0)
+            module.build(output)
+            self.assertLess(
+                output.stat().st_size,
+                32 * 1024 * 1024,
+                "a current 52-page derived PDF should reuse compressed visual evidence rather than embed redundant full-resolution rasters",
+            )
 
 
 if __name__ == "__main__":

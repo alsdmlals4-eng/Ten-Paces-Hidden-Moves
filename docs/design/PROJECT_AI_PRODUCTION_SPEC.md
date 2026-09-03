@@ -63,9 +63,9 @@ known_stale_points: opponent runtime personality binding is implemented; determi
 | master role | exact artifact | current boundary |
 |---|---|---|
 | `AI_PRODUCTION_SPEC_MARKDOWN` | `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` | active project-wide machine-searchable narrative source |
-| `HUMAN_MASTER_GDD_PDF` | `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf` | current additive human-facing derived publication: preserved 36-page 20260829 baseline + current nine-page frontal-duel visual/wireframe layer |
+| `HUMAN_MASTER_GDD_PDF` | `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf` | current additive human-facing derived publication: preserved 36-page 20260829 baseline + current fifteen-page frontal-duel planning/visual/production layer |
 
-`HUMAN_BLUEPRINT_ADDITIVE_20260902`: `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf` = `CURRENT_HUMAN_DERIVED_PUBLICATION`. 이 46-page 파생본은 새 표지 1쪽, 원문 그대로 보존한 20260829 36쪽 baseline, current frontal-duel visual/wireframe addendum 9쪽을 주제별로 interleave한다. source owner나 최신 repository commit 판정자는 아니다. `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` = `PRESERVED_BASELINE_SOURCE_36_PAGES`; 삭제하거나 10쪽으로 요약·치환하지 않는다. 기존 집중 10쪽 output은 새 master 안에 흡수된 `ABSORBED_DERIVED_OUTPUT`이며 current master 역할이 없다. `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf` = `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`.
+`HUMAN_BLUEPRINT_ADDITIVE_20260902`: `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf` = `CURRENT_HUMAN_DERIVED_PUBLICATION`. 이 52-page 파생본은 새 표지 1쪽, 원문 그대로 보존한 20260829 36쪽 baseline, current frontal-duel planning/visual/production addendum 15쪽을 주제별로 interleave한다. 새 layer에는 프로젝트 목표·시스템 지도, 케이스별 증거 상태, 단계별 `FM(Flow Map)`, 준비/전투 구조 wireframe, 전체 장면 후보 → 분리 후보 → Godot 합성의 이미지 제작 보드가 포함된다. source owner나 최신 repository commit 판정자는 아니다. `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` = `PRESERVED_BASELINE_SOURCE_36_PAGES`; 삭제하거나 10쪽으로 요약·치환하지 않는다. 기존 집중 10쪽 output은 새 master 안에 흡수된 `ABSORBED_DERIVED_OUTPUT`이며 current master 역할이 없다. `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf` = `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`.
 
 ### 00.4 LAYERED READER ROUTE
 
@@ -116,7 +116,7 @@ known_stale_points: opponent runtime personality binding is implemented; determi
 | Repository source snapshot | `origin/main@afa152b` | paired publication이 capture한 코드·데이터·Scene·test snapshot; latest commit 주장 아님 | CURRENT_PAIRED_SOURCE_SNAPSHOT |
 | delivery lineage | `18d647c34ae8544d58d79e870f82dde1ef1d0c55` | complete 20260829 spec/PDF pair landing | CURRENT_DELIVERY_LINEAGE |
 | `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` | pair `ten-paces-hidden-moves-20260829-afa152b` | active project-wide machine-searchable narrative source | CURRENT |
-| `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf` | 46 pages: cover + preserved 36-page baseline + 9-page visual/wireframe layer | current human-facing derived publication; no game rule or runtime evidence replacement | CURRENT_HUMAN_DERIVED_PUBLICATION |
+| `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf` | 52 pages: cover + preserved 36-page baseline + 15-page planning/visual/production layer | current human-facing derived publication; no game rule or runtime evidence replacement | CURRENT_HUMAN_DERIVED_PUBLICATION |
 | `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` | same pair, 36 pages | exact preserved baseline source inside the current additive human publication | PRESERVED_BASELINE_SOURCE_36_PAGES |
 | `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf` | earlier pair | historical derived publication only | HISTORICAL_DERIVED_NOT_CURRENT_SOURCE |
 | GitHub PR #261 / #263 | merged, checks success | Phase 2 정본 reconciliation / every-task adversarial-research gate | HISTORICAL_AUTOMATED_EVIDENCE |
