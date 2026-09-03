@@ -50,6 +50,35 @@ implementation_feasibility: FEASIBLE
 | 포함 | 실제 Godot 화면·승인 시각 보드·카드 계약, 3/3/4 흐름 맵, 계획/공개 구조 와이어프레임, 잠금→공개→합 구현 contract, asset/evidence boundary |
 | 제외 | 새 rules, numerical balance, future action preview, deck/hand/draw, new image candidate, Human/device PASS claim |
 
+## 2026-09-02 사람용 Master GDD 무손실 복원
+
+### 작업 전 문제
+
+사용자가 기존 36쪽 사람용 GDD를 10쪽 focused action-flow PDF로 잘못 축소해 “최종 블루프린트”처럼 읽히는 퇴행을 지적했다. 10쪽 파일은 전투 흐름의 유용한 보조 자료였지만, 36쪽 source의 비전, player journey, 시스템 지도, AI 경계, 콘텐츠, 플랫폼, QA, 위험, register를 대체하지 못한다.
+
+### 채택한 구조와 이유
+
+`HUMAN_BLUEPRINT_ADDITIVE_20260902`를 채택했다. 새 `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf`는 다음만 수행한다.
+
+1. 사람이 읽을 current cover 1쪽을 제공한다.
+2. `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf`의 36쪽을 rasterize·요약·순서변경 없이 그대로 포함한다.
+3. 기존 focused generator의 visual direction, actual planning capture, 3/3/4 flow, planning/reveal wireframe, card/evidence/handoff 9쪽을 관련 baseline section 곁에 interleave한다.
+
+그러므로 현재 PDF는 총 46쪽이며, 36쪽 source와 10쪽 focused output 중 어느 것도 “10쪽으로 대체된 인간용 정본”이라고 주장하지 않는다. 기존 10쪽 output은 current master 역할에서 제거된 `ABSORBED_DERIVED_OUTPUT`이다.
+
+### 실제 산출물 및 증거 경계
+
+| 항목 | 결과 |
+| --- | --- |
+| current human master | `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf` |
+| page structure | 1 current cover + 36 exact baseline pages + 9 visual/wireframe addendum pages = 46 |
+| output SHA-256 | `B92CB4D40881E405E71D69659E0EF981D5C9E9FC5FEAB96E55F66069490115C7` |
+| preserved source | `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` (`PRESERVED_BASELINE_SOURCE_36_PAGES`) |
+| focused output | `output/pdf/TEN_PACES_FRONTAL_DUEL_ACTION_FLOW_BLUEPRINT_2026-09-02.pdf` (`ABSORBED_DERIVED_OUTPUT`; no current-master role) |
+| image state | newly generated modular courtyard/banner/character candidates are deliberately excluded until a separate user final lock; no candidate is represented as runtime or human proof |
+
+The assembler is `tools/build_human_game_blueprint_pdf.py`. It writes atomically, checks the baseline page count before assembly, and fails if the expected 46-page result cannot be produced. The profile test proves that every 36-page source text page reappears in the same order in the 46-page output.
+
 ## 2026-09-02 이미지 중심 발행 보정
 
 ### 발견과 판정

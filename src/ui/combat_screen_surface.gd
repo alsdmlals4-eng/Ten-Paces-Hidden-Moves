@@ -33,11 +33,12 @@ func _apply_surface_style() -> void:
 	style.set_corner_radius_all(4)
 	match surface_role:
 		"top_hud":
-			style.bg_color = Color(INK, 0.97)
-			style.border_color = Color(GOLD, 0.72)
-			style.border_width_bottom = 2
-			style.shadow_color = Color(0.0, 0.0, 0.0, 0.42)
-			style.shadow_size = 5
+			# Status frames are brush assets over the courtyard, not a separate
+			# opaque application bar.
+			style.bg_color = Color(INK, 0.0)
+			style.border_color = Color(GOLD, 0.0)
+			style.border_width_bottom = 0
+			style.shadow_size = 0
 		"duel_stage":
 			style.bg_color = Color(0.0, 0.0, 0.0, 0.0)
 			style.border_color = Color(PAPER_INK, 0.82)

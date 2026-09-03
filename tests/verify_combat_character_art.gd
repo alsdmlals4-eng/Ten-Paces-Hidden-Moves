@@ -22,6 +22,7 @@ func _run() -> void:
     _require_anchor(board, "player")
     _require_anchor(board, "enemy")
     await _require_art_motion(board.player_character, "player")
+    await _require_motion_phase_contract(board.player_character)
     await _require_grounded_presentation_motions(board)
 
     board.queue_free()
@@ -64,6 +65,46 @@ func _require_art_motion(character: CombatCharacterPlaceholder, role: String) ->
     await create_timer(0.14).timeout
     if character.motion_state != "idle" or character.get_foot_anchor_global().distance_to(foot_before) > 0.1:
         failures.append("%s attack motion must return to the original visual foot anchor." % role)
+
+func _require_motion_phase_contract(character: CombatCharacterPlaceholder) -> void:
+    if character == null or not character.has_method("get_motion_snapshot"):
+        failures.append("Combat character presentation must expose a motion-state snapshot for phase-aware playback.")
+        return
+
+    var foot_before := character.get_foot_anchor_global()
+    character.play_attack_motion(0.50)
+    await create_timer(0.04).timeout
+    var windup: Dictionary = character.get_motion_snapshot()
+    if str(windup.get("state", "")) != "attack" or str(windup.get("phase", "")) != "windup":
+        failures.append("Attack presentation must enter a distinct windup phase before the active strike.")
+
+    await create_timer(0.12).timeout
+    var active: Dictionary = character.get_motion_snapshot()
+    if str(active.get("state", "")) != "attack" or str(active.get("phase", "")) != "active":
+        failures.append("Attack presentation must expose its active strike phase without changing combat state.")
+
+    await create_timer(0.18).timeout
+    var recovery: Dictionary = character.get_motion_snapshot()
+    if str(recovery.get("state", "")) != "attack" or str(recovery.get("phase", "")) != "recovery":
+        failures.append("Attack presentation must expose a recovery phase after the active strike.")
+
+    await create_timer(0.22).timeout
+    var idle: Dictionary = character.get_motion_snapshot()
+    if str(idle.get("state", "")) != "idle" or str(idle.get("phase", "")) != "idle":
+        failures.append("A completed motion phase sequence must return the character to idle.")
+    if character.get_foot_anchor_global().distance_to(foot_before) > 0.1:
+        failures.append("Motion phase playback must preserve the original foot anchor after recovery.")
+
+    character.play_attack_motion(0.50)
+    await create_timer(0.04).timeout
+    character.play_hit_motion(0.24)
+    await create_timer(0.03).timeout
+    var interrupted: Dictionary = character.get_motion_snapshot()
+    if str(interrupted.get("state", "")) != "hit" or str(interrupted.get("phase", "")) != "active":
+        failures.append("A new presentation motion must interrupt the prior motion and expose its own active phase.")
+    await create_timer(0.26).timeout
+    if character.get_foot_anchor_global().distance_to(foot_before) > 0.1:
+        failures.append("Interrupted presentation motions must still restore the grounded foot anchor.")
 
 func _require_grounded_presentation_motions(board: CombatBoardPreview) -> void:
     var player := board.player_character

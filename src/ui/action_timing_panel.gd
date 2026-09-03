@@ -8,8 +8,8 @@ signal bundle_advanced(snapshot: Dictionary)
 const DATA_PATH := "res://data/combat/combat_action_timing_preview.json"
 const SLOT_SCENE := preload("res://scenes/ui/action_timing_slot.tscn")
 
-const PANEL := Color("d9ccb1")
-const PAPER := Color("211c17")
+const PANEL := Color("171411")
+const PAPER := Color("e0cfaa")
 const GOLD := Color("c79a50")
 const MUTED := Color("665b4b")
 
@@ -49,11 +49,11 @@ func _load_data() -> Dictionary:
     return parsed
 
 func _build_content() -> void:
-    _title_label = _make_label(16, PAPER, HORIZONTAL_ALIGNMENT_LEFT)
+    _title_label = _make_label(13, PAPER, HORIZONTAL_ALIGNMENT_LEFT)
     _title_label.name = "ActionTimingTitle"
-    _sequence_label = _make_label(15, GOLD, HORIZONTAL_ALIGNMENT_CENTER)
+    _sequence_label = _make_label(13, GOLD, HORIZONTAL_ALIGNMENT_CENTER)
     _sequence_label.name = "TimingSequenceLabel"
-    _progress_label = _make_label(14, PAPER, HORIZONTAL_ALIGNMENT_RIGHT)
+    _progress_label = _make_label(12, PAPER, HORIZONTAL_ALIGNMENT_RIGHT)
     _progress_label.name = "TimingProgressLabel"
 
     var sequence: Array = timing_data.get("timing_sequence", [3, 3, 4])
@@ -472,9 +472,9 @@ func _refresh() -> void:
     var sequence: Array = timing_data.get("timing_sequence", [3, 3, 4])
     var current_bundle := clampi(int(timing_data.get("current_bundle", 1)), 1, sequence.size())
     var current_count := int(sequence[current_bundle - 1]) if current_bundle - 1 < sequence.size() else 1
-    _title_label.text = "현재 행동 묶음 · %d묶음 / %d수" % [current_bundle, current_count]
-    _sequence_label.text = "현재 묶음 계획"
-    _progress_label.text = "라운드 %d" % int(timing_data.get("round_number", 1))
+    _title_label.text = "현재 계획 · %d수" % current_count
+    _sequence_label.text = ""
+    _progress_label.text = ""
     _refresh_slot_visibility()
     _update_group_colors()
 
@@ -484,11 +484,9 @@ func _layout() -> void:
     var side_margin := 12.0
     var width := maxf(1.0, size.x - side_margin * 2.0)
     _title_label.position = Vector2(side_margin, 5.0)
-    _title_label.size = Vector2(width * 0.30, 24.0)
-    _sequence_label.position = Vector2(side_margin + width * 0.30, 5.0)
-    _sequence_label.size = Vector2(width * 0.40, 24.0)
-    _progress_label.position = Vector2(side_margin + width * 0.70, 5.0)
-    _progress_label.size = Vector2(width * 0.30, 24.0)
+    _title_label.size = Vector2(width, 19.0)
+    _sequence_label.visible = false
+    _progress_label.visible = false
 
     var visible_indices := get_visible_timing_indices()
     if visible_indices.is_empty():
@@ -497,8 +495,8 @@ func _layout() -> void:
     var base_gap := 8.0
     var total_gap := base_gap * float(maxi(0, visible_indices.size() - 1))
     var slot_width := maxf(48.0, (width - total_gap) / float(visible_indices.size()))
-    var slot_y := 50.0
-    var slot_height := maxf(56.0, size.y - slot_y - 9.0)
+    var slot_y := 28.0
+    var slot_height := maxf(48.0, size.y - slot_y - 7.0)
     var x := side_margin
     _separator_x.clear()
     for timing_value in visible_indices:
@@ -556,6 +554,6 @@ func _draw() -> void:
     draw_rect(Rect2(Vector2.ZERO, size), PANEL, true)
     draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color("211c17"), false, 2.0)
     draw_rect(Rect2(Vector2(4.0, 4.0), size - Vector2(8.0, 8.0)), Color(GOLD, 0.62), false, 1.0)
-    draw_line(Vector2(12.0, 31.0), Vector2(maxf(12.0, size.x - 12.0), 31.0), Color("211c17", 0.42), 1.0)
+    draw_line(Vector2(12.0, 25.0), Vector2(maxf(12.0, size.x - 12.0), 25.0), Color(GOLD, 0.38), 1.0)
     for separator in _separator_x:
-        draw_line(Vector2(separator, 31.0), Vector2(separator, maxf(31.0, size.y - 8.0)), Color("211c17", 0.42), 2.0)
+        draw_line(Vector2(separator, 25.0), Vector2(separator, maxf(25.0, size.y - 8.0)), Color(GOLD, 0.28), 1.0)

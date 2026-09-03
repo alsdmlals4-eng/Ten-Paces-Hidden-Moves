@@ -1,9 +1,17 @@
 extends SceneTree
 
 var activated_anchor := 0
+var _completed := false
 
 func _init() -> void:
     call_deferred("_run")
+    call_deferred("_watchdog")
+
+func _watchdog() -> void:
+    await create_timer(10.0).timeout
+    if not _completed:
+        push_error("verify_linked_action_blocks did not complete; exiting so the suite cannot stall.")
+        quit(1)
 
 func _run() -> void:
     var panel_scene := load("res://scenes/ui/action_timing_panel.tscn")
@@ -71,6 +79,7 @@ func _run() -> void:
     assert(panel.get_slot(2).get_stage_label() == "전조")
     assert(panel.get_slot(3).get_stage_label() == "실행")
 
+    _completed = true
     print("verify_linked_action_blocks: PASS")
     quit(0)
 

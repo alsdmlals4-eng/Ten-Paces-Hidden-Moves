@@ -256,6 +256,299 @@
         "accessibility_user": "NOT_RUN",
         "release_performance": "NOT_RUN"
       }
+    },
+    {
+      "capture_id": "TEN-RVC-20260903-001",
+      "recorded_at_utc": "2026-09-03T01:35:39.507144+00:00",
+      "work_item_id": "TEN-MODULAR-DUEL-UI-AND-PRESENTATION-20260903",
+      "source_commit": "8731cad50f0257baf894bc2b1549d54a6bf81926",
+      "runtime": {
+        "scene_path": "res://scenes/combat/combat_board_preview.tscn",
+        "capture_state": "initial_first_bundle_20_40_40_partition_current_plan_three_slots",
+        "entry_route": "visible_godot_direct_scene_client_capture_no_state_injection",
+        "source_delta": "DIRTY_WORKTREE: current task UI layout, current-bundle action timing, card hierarchy, status HUD, and presentation files; capture is not an exact committed-head assertion"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd",
+        "src/ui/action_timing_panel.gd",
+        "src/ui/action_selection/action_choice_card.gd",
+        "src/ui/combatant_status_panel.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 0
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260903-001.png",
+        "sha256": "31e653d5f57b02b423e38f37c0b290f55d283371e8610f568548c2ad262c1365",
+        "bytes": 1533197,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260903-001",
+        "prepared_at_utc": "2026-09-03T01:33:37.558747+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "11e063fadd6ca9aa2395e725a402d0a7",
+        "receipt_sha256": "550653afb9431852ba285e6f43981b3b41055ac6abab97333b1a125fa5131eaa",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      }
+    },
+    {
+      "capture_id": "TEN-RVC-20260903-002",
+      "recorded_at_utc": "2026-09-03T02:33:48.445009+00:00",
+      "work_item_id": "TEN-MODULAR-DUEL-UI-AND-PRESENTATION-20260903",
+      "source_commit": "8731cad50f0257baf894bc2b1549d54a6bf81926",
+      "runtime": {
+        "scene_path": "res://scenes/combat/combat_board_preview.tscn",
+        "capture_state": "initial_first_bundle_reference_layout_status_clear_plan_lock_and_right_information_columns",
+        "entry_route": "hera_run_scene_direct_no_state_injection",
+        "source_delta": "DIRTY_WORKTREE: reference-layout correction for status gauge lanes, plan/lock group, 5x2 grid, detail and observation columns; capture is not an exact committed-head assertion"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd",
+        "src/ui/combatant_status_panel.gd",
+        "src/ui/observation_reveal_panel.gd",
+        "src/ui/action_selection/action_detail_panel.gd",
+        "scenes/ui/action_selection/action_selection_dock.tscn"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 0
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260903-002.png",
+        "sha256": "bec6f9416277369f62195a8c407163a0d247e8d9b1f9026bf51e8d262be02c86",
+        "bytes": 1323207,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260903-002",
+        "prepared_at_utc": "2026-09-03T02:31:33.130345+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "3eb65b4d515a8e4f916ba85d79697ffa",
+        "receipt_sha256": "3ae06d4bbf4315ad0f7c3ca041414d535e716443fd60f55c57c0ba41ab596631",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      }
+    },
+    {
+      "capture_id": "TEN-RVC-20260903-003",
+      "recorded_at_utc": "2026-09-03T03:22:08.719895+00:00",
+      "work_item_id": "TEN-MODULAR-DUEL-UI-AND-PRESENTATION-20260903",
+      "source_commit": "8731cad50f0257baf894bc2b1549d54a6bf81926",
+      "runtime": {
+        "scene_path": "res://scenes/combat/combat_board_preview.tscn",
+        "capture_state": "initial_first_bundle_reference_layout_compact_detail_contract",
+        "entry_route": "hera_run_scene_direct_no_state_injection",
+        "source_delta": "DIRTY_WORKTREE: reference-layout correction with full-width compact detail contract; capture is not an exact committed-head assertion"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview_auto.gd",
+        "src/ui/action_selection/action_detail_panel.gd",
+        "src/ui/action_selection/action_selection_dock.gd",
+        "scenes/ui/action_selection/action_selection_dock.tscn",
+        "src/ui/combatant_status_panel.gd",
+        "src/ui/observation_reveal_panel.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 0
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260903-003.png",
+        "sha256": "cb448c76c874c7988fb2633c8b9029121cf4467b3a8d767d11fc4cbe481d8a4e",
+        "bytes": 1294258,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260903-003",
+        "prepared_at_utc": "2026-09-03T03:21:43.770508+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "41c63772fc6f31054e13f8b14b7add84",
+        "receipt_sha256": "6c8ac7dc0b59ef1b4ea40cee9af4da3f4d32944252fb806685e5e7b0037ac738",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Retains the initial reference-layout capture while adding the final compact-detail correction; both are machine-runtime evidence for distinct reviewed UI states."
+    },
+    {
+      "capture_id": "TEN-RVC-20260903-004",
+      "recorded_at_utc": "2026-09-03T03:22:45.547387+00:00",
+      "work_item_id": "TEN-MODULAR-DUEL-UI-AND-PRESENTATION-20260903",
+      "source_commit": "8731cad50f0257baf894bc2b1549d54a6bf81926",
+      "runtime": {
+        "scene_path": "res://scenes/combat/combat_board_preview.tscn",
+        "capture_state": "basic_move_hover_compact_cost_effect_range_contract",
+        "entry_route": "hera_run_scene_direct_hover_no_state_injection",
+        "source_delta": "DIRTY_WORKTREE: final compact-detail hover contract; capture is not an exact committed-head assertion"
+      },
+      "consumers": [
+        "src/ui/action_selection/action_detail_panel.gd",
+        "src/ui/action_selection/action_selection_dock.gd",
+        "src/ui/action_selection/action_choice_card.gd",
+        "scenes/ui/action_selection/action_detail_panel.tscn"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 0
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260903-004.png",
+        "sha256": "d2868c6d9689a748b7acb81414148e88d7d2ab47ec4ec1881375248ba5823543",
+        "bytes": 1318998,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260903-004",
+        "prepared_at_utc": "2026-09-03T03:22:44.538043+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "b190f7c2c6e4605e78a3a0502ecc1b61",
+        "receipt_sha256": "d95834a770d61f795d23ce676d48cf83a696d5a08cb9ff90294ea153eed378eb",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Hover detail is a distinct player-visible state required to validate cost, effect, and range visibility without changing the idle preparation layout."
+    },
+    {
+      "capture_id": "TEN-RVC-20260903-005",
+      "recorded_at_utc": "2026-09-03T03:43:18.226378+00:00",
+      "work_item_id": "TEN-MODULAR-DUEL-UI-AND-PRESENTATION-20260903",
+      "source_commit": "8731cad50f0257baf894bc2b1549d54a6bf81926",
+      "runtime": {
+        "scene_path": "res://scenes/combat/combat_board_preview.tscn",
+        "capture_state": "current_bundle_plan_locked_top_middle_expanded_duel",
+        "entry_route": "hera_run_scene_synthetic_input_complete_bundle_then_lock",
+        "source_delta": "DIRTY_WORKTREE: plan-lock lower-surface removal and expanded grounded duel stage; capture is not an exact committed-head assertion"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview_auto.gd",
+        "src/combat/combat_board_preview.gd",
+        "src/ui/combat_progress_button.gd",
+        "src/ui/combat_screen_surface.gd",
+        "src/combat/battle_background.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 0
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260903-005.png",
+        "sha256": "3215cbdddc8acc2a59080b113682525781b3e651210f0613eca92ed91672f889",
+        "bytes": 1719398,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260903-005",
+        "prepared_at_utc": "2026-09-03T03:43:17.352119+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "f703fededf67a92c693b68c8df73b049",
+        "receipt_sha256": "d756cdb694d42b98e542b8fb4b7725f86571e4c70404d9a5cd8218cfb9ac137e",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Locked-plan presentation is a required distinct visible state: lower planning hides, a compact execution CTA remains in the duel stage, and the courtyard expands to avoid an empty lower screen."
+    },
+    {
+      "capture_id": "TEN-RVC-20260903-006",
+      "recorded_at_utc": "2026-09-03T03:43:52.872772+00:00",
+      "work_item_id": "TEN-MODULAR-DUEL-UI-AND-PRESENTATION-20260903",
+      "source_commit": "8731cad50f0257baf894bc2b1549d54a6bf81926",
+      "runtime": {
+        "scene_path": "res://scenes/combat/combat_board_preview.tscn",
+        "capture_state": "current_first_revealed_action_player_enemy_callouts_expanded_duel",
+        "entry_route": "hera_run_scene_synthetic_input_complete_bundle_lock_then_execute",
+        "source_delta": "DIRTY_WORKTREE: current-action reveal over expanded locked duel stage; capture is not an exact committed-head assertion"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd",
+        "src/ui/combat_action_reveal_overlay.gd",
+        "src/combat/combat_character_placeholder.gd",
+        "assets/vfx/attack_clash_ink_gold_atlas_rgba_v1.png"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 0
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260903-006.png",
+        "sha256": "7ed650b7893078be070208cefadfe4f22f5f7af788d0871d1bb4960b07794380",
+        "bytes": 1539871,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260903-006",
+        "prepared_at_utc": "2026-09-03T03:43:51.336724+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "4aba2d32836f4c1faa9887132a869596",
+        "receipt_sha256": "d0c707a1dcf7cd8728d6d2b8c3441d3ba3126e48e8060b7ce265c00086e5eaed",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "The one-action reveal is a required separate state from plan lock: it verifies that the lower planning UI is absent while player and enemy actions resolve in the combat stage."
     }
   ]
 }

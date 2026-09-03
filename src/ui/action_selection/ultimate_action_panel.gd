@@ -7,7 +7,7 @@ signal detail_cleared()
 
 const ADAPTER_SCRIPT := preload("res://src/ui/action_selection/action_view_model_adapter.gd")
 const ACTION_CHOICE_CARD_SCRIPT := preload("res://src/ui/action_selection/action_choice_card.gd")
-const ACTION_COLUMNS := 3
+const ACTION_COLUMNS := 5
 const PAPER_SURFACE := Color("d9ccb1")
 const PAPER_HOVER := Color("eee2c9")
 const CHARCOAL_INK := Color("211c17")
@@ -29,6 +29,8 @@ var interaction_enabled := true
 func _ready() -> void:
     momentum_label.add_theme_color_override("font_color", Color("ead8b4"))
     momentum_label.add_theme_font_size_override("font_size", 15)
+    momentum_label.visible = false
+    segment_row.visible = false
     set_momentum(momentum_current, momentum_maximum)
     set_meta("presentation_surface", "paper_ink_r1")
 

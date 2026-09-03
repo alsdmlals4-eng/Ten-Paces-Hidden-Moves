@@ -204,7 +204,10 @@ func _refresh() -> void:
     _timing_label.text = "%d수" % local_index
     if has_assignment():
         var stage_label := get_stage_label()
-        _placeholder_label.text = "[%s] %s" % [stage_label, str(assigned_definition.get("name", "행동"))]
+        # The linked action block owns the action name. Individual timing cells
+        # communicate only the visible phase so a multi-slot action is not read
+        # as several duplicate cards.
+        _placeholder_label.text = "[%s]" % stage_label
         if not resource_ready:
             _status_label.text = resource_text if not resource_text.is_empty() else "자원 부족"
         elif not target_ready and targeting_mode != "none":

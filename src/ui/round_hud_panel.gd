@@ -15,8 +15,8 @@ var _order_label: Label
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_IGNORE
-    _round_label = _make_label(20, PAPER)
-    _bundle_label = _make_label(14, GOLD)
+    _round_label = _make_label(17, PAPER)
+    _bundle_label = _make_label(12, GOLD)
     _selection_label = _make_label(14, PAPER)
     _order_label = _make_label(13, MUTED)
     resized.connect(_layout)
@@ -57,15 +57,18 @@ func _refresh() -> void:
 func _layout() -> void:
     if _round_label == null:
         return
+    var compact := size.x <= 190.0
     var width := maxf(1.0, size.x - 16.0)
-    _round_label.position = Vector2(8.0, 8.0)
-    _round_label.size = Vector2(width, 28.0)
-    _bundle_label.position = Vector2(8.0, 35.0)
-    _bundle_label.size = Vector2(width, 20.0)
-    _selection_label.position = Vector2(8.0, 57.0)
-    _selection_label.size = Vector2(width, 22.0)
-    _order_label.position = Vector2(8.0, maxf(84.0, size.y - 30.0))
-    _order_label.size = Vector2(width, 20.0)
+    _round_label.position = Vector2(8.0, 3.0)
+    _round_label.size = Vector2(width, 22.0)
+    _bundle_label.position = Vector2(8.0, 25.0)
+    _bundle_label.size = Vector2(width, 16.0)
+    _selection_label.position = Vector2(8.0, 42.0)
+    _selection_label.size = Vector2(width, 18.0)
+    _order_label.position = Vector2(8.0, maxf(54.0, size.y - 22.0))
+    _order_label.size = Vector2(width, 16.0)
+    _selection_label.visible = not compact
+    _order_label.visible = not compact
     queue_redraw()
 
 func _notification(what: int) -> void:
@@ -75,5 +78,6 @@ func _notification(what: int) -> void:
 func _draw() -> void:
     draw_rect(Rect2(Vector2.ZERO, size), PANEL, true)
     draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color(GOLD, 0.70), false, 2.0)
-    draw_line(Vector2(size.x * 0.12, 82.0), Vector2(size.x * 0.88, 82.0), Color(GOLD, 0.52), 1.0)
-    draw_line(Vector2(size.x * 0.5 - 28.0, 4.0), Vector2(size.x * 0.5 + 28.0, 4.0), GOLD, 3.0)
+    if size.x > 190.0:
+        draw_line(Vector2(size.x * 0.12, 66.0), Vector2(size.x * 0.88, 66.0), Color(GOLD, 0.52), 1.0)
+    draw_line(Vector2(size.x * 0.5 - 20.0, 3.0), Vector2(size.x * 0.5 + 20.0, 3.0), GOLD, 2.0)

@@ -23,7 +23,6 @@ from reportlab.pdfgen.canvas import Canvas
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_OUTPUT = ROOT / "output/pdf/TEN_PACES_FRONTAL_DUEL_ACTION_FLOW_BLUEPRINT_2026-09-02.pdf"
 PAGE_W, PAGE_H = landscape(A4)
 PAGE_COUNT = 10
 
@@ -403,7 +402,7 @@ def build(output: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     output = args.output.resolve()
     build(output)

@@ -3,6 +3,6 @@
 [ext_resource path="res://src/ui/action_timing_panel_auto.gd" type="Script" id="1"]
 
 [node name="ActionTimingPanel" type="Control"]
-custom_minimum_size = Vector2(720, 120)
+custom_minimum_size = Vector2(420, 76)
 mouse_filter = 2
 script = ExtResource("1")

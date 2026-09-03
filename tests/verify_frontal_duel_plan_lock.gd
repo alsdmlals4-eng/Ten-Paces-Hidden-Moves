@@ -35,6 +35,11 @@ func _run() -> void:
 	_expect(board.combat_progress_button._button.text == "3수 실행", "Only a locked plan may expose the compact current-action execution CTA.")
 	_expect(not board.action_selection_dock.switching_enabled, "Plan lock must prevent changing action-card sources.")
 	_expect(bool(board.get_meta("inputs_locked", false)), "Plan lock must prevent timing and placement changes.")
+	_expect(not board.planning_surface.visible and not board.action_selection_dock.visible and not board.action_timing_panel.visible, "A locked plan must remove the entire lower planning surface before the duel reveal, leaving only the top and middle combat presentation.")
+	var duel_surface := board.get_node_or_null("DuelStageSurface") as Control
+	_expect(duel_surface != null and duel_surface.get_global_rect().encloses(board.combat_progress_button.get_global_rect()), "The locked-plan execution CTA must move into the duel stage rather than remain in the hidden planning row.")
+	_expect(duel_surface != null and duel_surface.get_global_rect().end.y >= board.get_global_rect().end.y - 1.0, "When the planning surface disappears, the duel stage must expand through the released space instead of leaving an empty black lower screen.")
+	_expect(board.battle_background.get_global_rect().end.y >= board.get_global_rect().end.y - 1.0, "The locked-plan duel field must extend the grounded courtyard background through the released lower space.")
 
 	board.combat_progress_button.request_progress()
 	await process_frame

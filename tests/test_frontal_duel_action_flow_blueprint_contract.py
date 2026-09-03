@@ -45,7 +45,11 @@ class FrontalDuelActionFlowBlueprintContractTests(unittest.TestCase):
         self.assertIn("NO_NEW_RASTER_REQUIRED", status["frontal_duel_blueprint_asset_disposition"])
         self.assertIn("NOT_RUN", status["frontal_duel_blueprint_evidence_ceiling"])
         self.assertIn("IMPLEMENTED_MACHINE_VERIFIED", status["frontal_duel_blueprint_status"])
-        self.assertIn("CURRENT_EXACT_REPOSITORY_CAPTURE", status["frontal_duel_blueprint_status"])
+        self.assertIn(
+            "REFERENCE_LAYOUT_PLAN_LOCK_AND_CURRENT_REVEAL_RUNTIME_CAPTURED",
+            status["frontal_duel_blueprint_status"],
+        )
+        self.assertIn("HUMAN_DEFERRED", status["frontal_duel_blueprint_status"])
 
     def test_plan_lock_is_a_scoped_approved_transition_not_a_core_rule_change(self) -> None:
         decision = PLAN_LOCK_DECISION_PATH.read_text(encoding="utf-8")
@@ -86,6 +90,16 @@ class FrontalDuelActionFlowBlueprintContractTests(unittest.TestCase):
         self.assertIn("page_reveal_wireframe", generator)
         self.assertIn("3수 → 해결 → 3수 → 해결 → 4수", generator)
         self.assertIn("현재 수만 공개", generator)
+
+    def test_absorbed_focused_generator_requires_an_explicit_noncurrent_output(self) -> None:
+        """The addendum builder must not recreate a competing current-master PDF by default."""
+        generator = (REPOSITORY_ROOT / "tools" / "build_frontal_duel_visual_blueprint_pdf.py").read_text(encoding="utf-8")
+
+        self.assertNotIn(
+            'DEFAULT_OUTPUT = ROOT / "output/pdf/TEN_PACES_FRONTAL_DUEL_ACTION_FLOW_BLUEPRINT_2026-09-02.pdf"',
+            generator,
+        )
+        self.assertIn('parser.add_argument("--output", type=Path, required=True)', generator)
 
 
 if __name__ == "__main__":

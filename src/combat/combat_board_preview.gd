@@ -210,10 +210,10 @@ func _build_structure() -> void:
 	range_readout_panel.name = "RangeReadoutPanel"
 	range_readout_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var range_style := StyleBoxFlat.new()
-	range_style.bg_color = Color(0.78, 0.72, 0.61, 0.92)
-	range_style.border_color = Color("3d3328")
+	range_style.bg_color = Color("171411")
+	range_style.border_color = Color("c79a50")
 	range_style.set_border_width_all(2)
-	range_style.set_corner_radius_all(7)
+	range_style.set_corner_radius_all(3)
 	range_style.shadow_color = Color(0.0, 0.0, 0.0, 0.46)
 	range_style.shadow_size = 6
 	range_style.content_margin_left = 10.0
@@ -231,9 +231,9 @@ func _build_structure() -> void:
 	range_readout_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	range_readout_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	range_readout_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	range_readout_label.add_theme_font_size_override("font_size", 25)
-	range_readout_label.add_theme_color_override("font_color", Color("201a14"))
-	range_readout_label.add_theme_color_override("font_shadow_color", Color(0.95, 0.89, 0.74, 0.55))
+	range_readout_label.add_theme_font_size_override("font_size", 20)
+	range_readout_label.add_theme_color_override("font_color", Color("e0cfaa"))
+	range_readout_label.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.85))
 	range_readout_label.add_theme_constant_override("shadow_offset_x", 1)
 	range_readout_label.add_theme_constant_override("shadow_offset_y", 1)
 	range_readout_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -470,8 +470,8 @@ func _layout_board() -> void:
 
 	if is_instance_valid(top_hud):
 		var hud_margin := maxf(10.0, size.x * 0.012)
-		top_hud.position = Vector2(hud_margin, 10.0)
-		top_hud.size = Vector2(maxf(1.0, size.x - hud_margin * 2.0), clampf(size.y * 0.19, 144.0, 188.0))
+		top_hud.position = Vector2(hud_margin, 8.0)
+		top_hud.size = Vector2(maxf(1.0, size.x - hud_margin * 2.0), clampf(size.y * 0.18, 130.0, 162.0))
 
 	var lower_margin := maxf(10.0, size.x * 0.014)
 	var lower_bottom := maxf(8.0, size.y * 0.012)
@@ -642,14 +642,15 @@ func _layout_screen_surfaces(planning_top: float = -1.0) -> void:
 	if is_instance_valid(planning_surface):
 		planning_surface.position = planning_rect.position
 		planning_surface.size = planning_rect.size
+	var upper_visual_rect := Rect2(Vector2.ZERO, Vector2(size.x, resolved_planning_top))
 	if is_instance_valid(battle_background):
-		battle_background.set_stage_rect(duel_rect)
+		battle_background.set_stage_rect(upper_visual_rect)
 	if is_instance_valid(_background_readability_tint):
 		_background_readability_tint.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 		_background_readability_tint.position = duel_rect.position
 		_background_readability_tint.size = duel_rect.size
 	if is_instance_valid(duel_foreground_banner):
-		duel_foreground_banner.set_stage_rect(duel_rect)
+		duel_foreground_banner.set_stage_rect(upper_visual_rect)
 	set_meta("top_hud_surface_rect", top_rect)
 	set_meta("duel_stage_surface_rect", duel_rect)
 	set_meta("planning_surface_rect", planning_rect)
@@ -1900,7 +1901,11 @@ func _refresh_observation_reveal() -> void:
 	if is_instance_valid(observation_reveal_panel):
 		var history: Array = player.get("observation_reveals", []) if typeof(player.get("observation_reveals", [])) == TYPE_ARRAY else []
 		observation_reveal_panel.call("set_revealed_types", history)
-		observation_reveal_panel.visible = _observation_has_revealed_types() and not _inputs_locked()
+		# The lower preparation column remains present before observation succeeds;
+		# it simply contains no action types until the public-information rule
+		# supplies one.  This prevents the detail and observation area from
+		# reflowing while preserving the no-private-data boundary.
+		observation_reveal_panel.visible = not _inputs_locked()
 	if is_instance_valid(combat_log_panel) and is_instance_valid(observation_reveal_panel):
 		combat_log_panel.visible = not _observation_has_revealed_types()
 

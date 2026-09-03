@@ -12,7 +12,9 @@ func configure_action(definition: Dictionary, illustration_policy: String, statu
 	action_definition = definition.duplicate(true)
 	for child in get_children():
 		child.queue_free()
-	custom_minimum_size = Vector2(0.0, 138.0)
+	# A compact fixed card preserves the approved 5 by 2 preparation grid.
+	# Costs, range, and effects deliberately live in the hover detail panel.
+	custom_minimum_size = Vector2(0.0, 80.0)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	focus_mode = Control.FOCUS_ALL
 	text = ""
@@ -28,11 +30,8 @@ func configure_action(definition: Dictionary, illustration_policy: String, statu
 	var has_illustration := illustration_policy in ["basic_atlas_only", "semantic_atlas"] and _has_illustration_spec()
 	if has_illustration:
 		_add_illustration()
-	_add_name_label(has_illustration)
-	_add_facts_label(has_illustration)
-	_add_effect_or_tag_label(has_illustration, not status_text.is_empty())
-	if not status_text.is_empty():
-		_add_status_label(status_text)
+	_add_name_label()
+	_add_tag_label()
 
 func _add_illustration() -> void:
 	var illustration := TextureRect.new()
@@ -46,10 +45,10 @@ func _add_illustration() -> void:
 	illustration.offset_left = 7.0
 	illustration.offset_top = 5.0
 	illustration.offset_right = -7.0
-	illustration.offset_bottom = 60.0
+	illustration.offset_bottom = 40.0
 	add_child(illustration)
 
-func _add_name_label(has_illustration: bool) -> void:
+func _add_name_label() -> void:
 	var label := Label.new()
 	label.name = "CardName"
 	label.text = "%s  %d수" % [str(action_definition.get("name", "")), int(action_definition.get("action_slots", 1))]
@@ -59,110 +58,31 @@ func _add_name_label(has_illustration: bool) -> void:
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.add_theme_font_size_override("font_size", 14)
 	label.add_theme_color_override("font_color", CHARCOAL_INK)
-	label.set_anchors_preset(Control.PRESET_BOTTOM_WIDE if has_illustration else Control.PRESET_TOP_WIDE)
+	label.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	label.offset_left = 5.0
 	label.offset_right = -5.0
-	if has_illustration:
-		label.offset_top = -72.0
-		label.offset_bottom = -54.0
-	else:
-		label.offset_top = 7.0
-		label.offset_bottom = 25.0
+	label.offset_top = 40.0
+	label.offset_bottom = 59.0
 	add_child(label)
 
-func _add_facts_label(has_illustration: bool) -> void:
+func _add_tag_label() -> void:
 	var label := Label.new()
-	label.name = "CardFacts"
-	label.text = _compact_card_facts()
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.clip_text = false
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.add_theme_font_size_override("font_size", 10)
-	label.add_theme_color_override("font_color", Color("4d4032"))
-	label.set_anchors_preset(Control.PRESET_BOTTOM_WIDE if has_illustration else Control.PRESET_TOP_WIDE)
-	label.offset_left = 6.0
-	label.offset_right = -6.0
-	if has_illustration:
-		label.offset_top = -54.0
-		label.offset_bottom = -34.0
-	else:
-		label.offset_top = 26.0
-		label.offset_bottom = 42.0
-	add_child(label)
-
-func _add_effect_or_tag_label(has_illustration: bool, has_status: bool) -> void:
-	var label := Label.new()
-	label.name = "CardEffectOrTag"
-	label.text = _effect_or_tag_text()
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.clip_text = false
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.add_theme_font_size_override("font_size", 9)
-	label.add_theme_color_override("font_color", Color("5a4a37"))
-	label.set_anchors_preset(Control.PRESET_BOTTOM_WIDE if has_illustration else Control.PRESET_TOP_WIDE)
-	label.offset_left = 6.0
-	label.offset_right = -6.0
-	if has_illustration:
-		label.offset_top = -34.0
-		label.offset_bottom = -18.0 if has_status else -6.0
-	else:
-		label.offset_top = 44.0
-		label.offset_bottom = 74.0 if not has_status else 67.0
-	add_child(label)
-
-func _add_status_label(status_text: String) -> void:
-	var label := Label.new()
-	label.name = "CardStatus"
-	label.text = status_text
+	label.name = "CardTag"
+	label.text = _category_label()
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.clip_text = true
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.add_theme_font_size_override("font_size", 10)
-	label.add_theme_color_override("font_color", Color("7e2f28") if not bool(action_definition.get("locked", false)) else Color("d2c6ab"))
-	label.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	label.add_theme_font_size_override("font_size", 11)
+	label.add_theme_color_override("font_color", Color("4d4032"))
+	label.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	label.offset_left = 6.0
-	label.offset_top = -18.0
 	label.offset_right = -6.0
-	label.offset_bottom = -3.0
+	label.offset_top = 59.0
+	label.offset_bottom = 77.0
 	add_child(label)
 
-func _compact_card_facts() -> String:
-	var facts := PackedStringArray([
-		str(action_definition.get("source_label", "행동")),
-		_category_label(),
-		"기력 %d" % int(action_definition.get("stamina_cost", 0)),
-		"내력 %d" % int(action_definition.get("internal_cost", 0))
-	])
-	if _shows_range_fact():
-		facts.append("사거리 %s" % _range_fact_text())
-	var momentum := int(action_definition.get("momentum_cost", 0))
-	if momentum > 0:
-		facts.append("기세 %d" % momentum)
-	return " · ".join(facts)
-
-func _shows_range_fact() -> bool:
-	return _category() == "attack" and not bool(action_definition.get("hide_range", false))
-
-func _range_fact_text() -> String:
-	if bool(action_definition.get("hide_range", false)):
-		return "의도"
-	var range_text := str(action_definition.get("range_text", "")).strip_edges()
-	if not range_text.is_empty() and range_text != "-":
-		return range_text
-	match _category():
-		"move":
-			return "1"
-		"response", "observation", "recovery", "strengthen":
-			return "자신"
-		_:
-			return "제한 없음"
-
-func _effect_or_tag_text() -> String:
+func _detail_summary() -> String:
 	var detail: Dictionary = action_definition.get("detail", {}) as Dictionary
 	var effect_text := str(detail.get("effect_text", action_definition.get("effect_text", "")))
 	if not effect_text.is_empty():
@@ -170,7 +90,7 @@ func _effect_or_tag_text() -> String:
 	var tags: Array = action_definition.get("tags", []) as Array
 	if typeof(tags) == TYPE_ARRAY and not tags.is_empty():
 		return str(tags[0])
-	return "효과 정보 없음"
+	return "상세 효과는 우측 패널에서 확인"
 
 func _tooltip_text(status_text: String) -> String:
 	var state: String = status_text if not status_text.is_empty() else (str(action_definition.get("lock_reason", "")) if bool(action_definition.get("locked", false)) else "사용 가능")
@@ -191,8 +111,7 @@ func _accessibility_name(status_text: String) -> String:
 		"기력 %d" % int(action_definition.get("stamina_cost", 0)),
 		"내력 %d" % int(action_definition.get("internal_cost", 0))
 	])
-	if _shows_range_fact():
-		parts.append("사거리 %s" % _range_fact_text())
+	parts.append("사거리 %s" % str(action_definition.get("range_text", "-")))
 	var momentum := int(action_definition.get("momentum_cost", 0))
 	if momentum > 0:
 		parts.append("기세 %d" % momentum)
@@ -201,7 +120,7 @@ func _accessibility_name(status_text: String) -> String:
 
 func _accessibility_description(status_text: String) -> String:
 	var state: String = status_text if not status_text.is_empty() else (str(action_definition.get("lock_reason", "")) if bool(action_definition.get("locked", false)) else "선택하면 현재 묶음에 자동 배치")
-	return "%s. %s." % [_effect_or_tag_text(), state]
+	return "%s. %s." % [_detail_summary(), state]
 
 func _category_label() -> String:
 	var explicit_label := str(action_definition.get("category_label", "")).strip_edges()

@@ -105,11 +105,15 @@ func _layout() -> void:
 		return
 	var width := maxf(1.0, size.x)
 	var height := maxf(1.0, size.y)
-	_title.position = Vector2(width * 0.17, height * 0.09)
-	_title.size = Vector2(width * 0.66, height * 0.14)
-	_hint.position = Vector2(width * 0.16, height * 0.22)
-	_hint.size = Vector2(width * 0.68, height * 0.10)
+	# observation_reveal_frame_01_v1 is a portrait panel: the upper parchment
+	# owns the title/hint, while the lower three parchment strips own the public
+	# action-type rows.  Match those dedicated lanes instead of stretching every
+	# label across the decorative central seal.
+	_title.position = Vector2(width * 0.17, height * 0.13)
+	_title.size = Vector2(width * 0.66, height * 0.08)
+	_hint.position = Vector2(width * 0.17, height * 0.22)
+	_hint.size = Vector2(width * 0.66, height * 0.07)
 	for index in range(_rows.size()):
 		var row := _rows[index]
-		row.position = Vector2(width * 0.20, height * (0.37 + float(index) * 0.18))
-		row.size = Vector2(width * 0.60, height * 0.13)
+		row.position = Vector2(width * 0.40, height * (0.445 + float(index) * 0.15))
+		row.size = Vector2(width * 0.41, height * 0.085)

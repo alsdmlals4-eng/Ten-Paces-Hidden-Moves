@@ -211,7 +211,9 @@ func _build_detail_panel() -> void:
     action_detail_panel.name = "ActionDetailPanel"
     _fill_host(action_detail_panel)
     detail_host.add_child(action_detail_panel)
-    action_detail_panel.custom_minimum_size = Vector2(220.0, 0.0)
+    # The decorative detail frame reserves a right medallion.  A 250 px host
+    # leaves a real text lane for the compact cost/effect/range contract.
+    action_detail_panel.custom_minimum_size = Vector2(250.0, 0.0)
 
 func _fill_host(panel: Control) -> void:
     panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)

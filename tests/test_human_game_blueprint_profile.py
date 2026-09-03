@@ -5,6 +5,8 @@ import re
 import unittest
 from pathlib import Path
 
+from pypdf import PdfReader
+
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC_PATH = ROOT / "docs/design/PROJECT_AI_PRODUCTION_SPEC.md"
@@ -15,8 +17,10 @@ GOVERNANCE_PATH = ROOT / ".github/documentation-governance.json"
 PROJECT_SOURCE_SHA = "afa152b985975a3f8e6292ca0298d22a95c03872"
 DELIVERY_BASELINE_SHA = "18d647c34ae8544d58d79e870f82dde1ef1d0c55"
 PAIR_ID = "ten-paces-hidden-moves-20260829-afa152b"
-CURRENT_PDF = "exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf"
+BASELINE_PDF = "exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf"
+CURRENT_PDF = "exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf"
 HISTORICAL_PDF = "exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf"
+ADDITIVE_PDF = "exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf"
 
 
 def read(path: Path) -> str:
@@ -47,11 +51,15 @@ class HumanGameBlueprintProfileContract(unittest.TestCase):
         self.assertIn(f"pair_id: {PAIR_ID}", self.spec)
         self.assertIn(f"project_sha: {PROJECT_SOURCE_SHA}", self.spec)
         self.assertIn(f"delivery_lineage_commit: {DELIVERY_BASELINE_SHA}", self.spec)
+        self.assertTrue((ROOT / BASELINE_PDF).is_file())
         self.assertTrue((ROOT / CURRENT_PDF).is_file())
         self.assertTrue((ROOT / HISTORICAL_PDF).is_file())
-        self.assertIn(f"`{CURRENT_PDF}` = `CURRENT_PAIRED_DERIVED_PUBLICATION`", self.spec)
+        self.assertIn(f"`{CURRENT_PDF}` = `CURRENT_HUMAN_DERIVED_PUBLICATION`", self.spec)
+        self.assertIn("HUMAN_BLUEPRINT_ADDITIVE_20260902", self.spec)
+        self.assertIn(f"`{BASELINE_PDF}` = `PRESERVED_BASELINE_SOURCE_36_PAGES`", self.spec)
         self.assertIn(f"`{HISTORICAL_PDF}` = `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`", self.spec)
         self.assertNotIn(f"`{CURRENT_PDF}` = `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`", self.spec)
+        self.assertNotIn("TEN_PACES_FRONTAL_DUEL_ACTION_FLOW_BLUEPRINT_2026-09-02.pdf | current", self.doc_map)
 
     def test_layered_reader_route_and_reusable_contracts(self) -> None:
         required = (
@@ -152,6 +160,23 @@ class HumanGameBlueprintProfileContract(unittest.TestCase):
         }
         configured_sources = set(self.governance["required_design_sources"])
         self.assertEqual(configured_sources, registry_sources)
+
+    def test_current_human_master_is_additive_and_preserves_all_36_baseline_pages(self) -> None:
+        """A focused visual addendum must never replace the full human blueprint."""
+        baseline_path = ROOT / BASELINE_PDF
+        additive_path = ROOT / CURRENT_PDF
+        self.assertEqual(CURRENT_PDF, ADDITIVE_PDF)
+        self.assertTrue(additive_path.is_file(), "the additive human-master PDF must be published")
+
+        baseline = PdfReader(str(baseline_path))
+        additive = PdfReader(str(additive_path))
+        self.assertEqual(len(baseline.pages), 36)
+        self.assertGreaterEqual(len(additive.pages), 46)
+        additive_pages = [page.extract_text() for page in additive.pages]
+        next_additive_index = 0
+        for baseline_page in baseline.pages:
+            baseline_text = baseline_page.extract_text()
+            next_additive_index = additive_pages.index(baseline_text, next_additive_index) + 1
 
 
 if __name__ == "__main__":

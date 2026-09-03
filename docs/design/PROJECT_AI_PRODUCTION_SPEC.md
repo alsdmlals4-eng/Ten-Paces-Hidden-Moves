@@ -10,10 +10,10 @@ delivery_lineage_commit: 18d647c34ae8544d58d79e870f82dde1ef1d0c55
 base_repository: alsdmlals4-eng/Base
 base_sha: 2e6fa14a93ffba177b22fd7ff21e2f654ea15bb0
 generated_at_utc: 2026-08-29T00:59:49Z
-document_version: 1.1.0
+document_version: 1.1.1
 scope: vertical-slice production snapshot; documentation and delivery only
 canonical_path: docs/design/PROJECT_AI_PRODUCTION_SPEC.md
-human_pdf_path: exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf
+human_pdf_path: exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf
 source_priority: latest user direction > repository owners/Decisions > actual code/data/scene/tests > derived views > historical migration inputs > example PDF
 overall_status: DOCUMENTED_CURRENT_SNAPSHOT / PRODUCT_RUNTIME_PARTIAL
 known_stale_points: opponent runtime personality binding is implemented; deterministic balance instrumentation, human, Android, accessibility, audio and release evidence are NOT_RUN
@@ -63,9 +63,9 @@ known_stale_points: opponent runtime personality binding is implemented; determi
 | master role | exact artifact | current boundary |
 |---|---|---|
 | `AI_PRODUCTION_SPEC_MARKDOWN` | `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` | active project-wide machine-searchable narrative source |
-| `HUMAN_MASTER_GDD_PDF` | `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` | current human-facing derived publication for pair `ten-paces-hidden-moves-20260829-afa152b` |
+| `HUMAN_MASTER_GDD_PDF` | `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf` | current additive human-facing derived publication: preserved 36-page 20260829 baseline + current nine-page frontal-duel visual/wireframe layer |
 
-`exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` = `CURRENT_PAIRED_DERIVED_PUBLICATION`. 이 PDF는 36-page paired publication이며 source owner나 최신 repository commit 판정자가 아니다. 이번 reconciliation은 PDF binary/metadata를 수정하지 않았고 새 profile token이 PDF에 새로 인쇄됐다고 주장하지 않는다. `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf` = `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`.
+`HUMAN_BLUEPRINT_ADDITIVE_20260902`: `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf` = `CURRENT_HUMAN_DERIVED_PUBLICATION`. 이 46-page 파생본은 새 표지 1쪽, 원문 그대로 보존한 20260829 36쪽 baseline, current frontal-duel visual/wireframe addendum 9쪽을 주제별로 interleave한다. source owner나 최신 repository commit 판정자는 아니다. `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` = `PRESERVED_BASELINE_SOURCE_36_PAGES`; 삭제하거나 10쪽으로 요약·치환하지 않는다. 기존 집중 10쪽 output은 새 master 안에 흡수된 `ABSORBED_DERIVED_OUTPUT`이며 current master 역할이 없다. `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf` = `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`.
 
 ### 00.4 LAYERED READER ROUTE
 
@@ -116,7 +116,8 @@ known_stale_points: opponent runtime personality binding is implemented; determi
 | Repository source snapshot | `origin/main@afa152b` | paired publication이 capture한 코드·데이터·Scene·test snapshot; latest commit 주장 아님 | CURRENT_PAIRED_SOURCE_SNAPSHOT |
 | delivery lineage | `18d647c34ae8544d58d79e870f82dde1ef1d0c55` | complete 20260829 spec/PDF pair landing | CURRENT_DELIVERY_LINEAGE |
 | `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` | pair `ten-paces-hidden-moves-20260829-afa152b` | active project-wide machine-searchable narrative source | CURRENT |
-| `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` | same pair, 36 pages | current human-facing derived publication; read-only in this reconciliation | CURRENT_PAIRED_DERIVED_PUBLICATION |
+| `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf` | 46 pages: cover + preserved 36-page baseline + 9-page visual/wireframe layer | current human-facing derived publication; no game rule or runtime evidence replacement | CURRENT_HUMAN_DERIVED_PUBLICATION |
+| `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` | same pair, 36 pages | exact preserved baseline source inside the current additive human publication | PRESERVED_BASELINE_SOURCE_36_PAGES |
 | `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf` | earlier pair | historical derived publication only | HISTORICAL_DERIVED_NOT_CURRENT_SOURCE |
 | GitHub PR #261 / #263 | merged, checks success | Phase 2 정본 reconciliation / every-task adversarial-research gate | HISTORICAL_AUTOMATED_EVIDENCE |
 | GitHub PR #273 / Issue #267 | merged isolated implementation and post-merge readback | opponent runtime personality binding implemented; balance instrumentation remains separate | IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK / BALANCE_SIMULATION_NOT_RUN |

@@ -60,8 +60,8 @@ func _build() -> void:
     var segments := int(hud_data.get("momentum_segments", 5))
     var player_data: Dictionary = hud_data.get("player", {})
     var enemy_data: Dictionary = hud_data.get("enemy", {})
-    player_panel.configure("player", player_data)
-    enemy_panel.configure("enemy", enemy_data)
+    player_panel.configure("player", player_data, player_data.get("momentum", [0, segments]))
+    enemy_panel.configure("enemy", enemy_data, enemy_data.get("momentum", [0, segments]))
     player_momentum.configure("player", player_data.get("momentum", [0, segments]), segments)
     enemy_momentum.configure("enemy", enemy_data.get("momentum", [0, segments]), segments)
     round_panel.configure(hud_data.get("round", {}))
@@ -72,7 +72,7 @@ func _build() -> void:
         "player": player_data.duplicate(true),
         "enemy": enemy_data.duplicate(true)
     }
-    set_meta("layout", "player_status|player_momentum|round|enemy_momentum|enemy_status")
+    set_meta("layout", "wide_status_with_embedded_momentum|compact_round_marker")
     set_meta("momentum_segments", segments)
     set_meta("lower_status_panels", false)
     set_meta("runtime_step", 10)
@@ -84,8 +84,8 @@ func apply_combat_state(state: Dictionary, timing_sequence: Array = [3, 3, 4]) -
     var segments := int(hud_data.get("momentum_segments", 5))
     var player_data: Dictionary = (state.get("player", {}) as Dictionary).duplicate(true)
     var enemy_data: Dictionary = (state.get("enemy", {}) as Dictionary).duplicate(true)
-    player_panel.configure("player", player_data)
-    enemy_panel.configure("enemy", enemy_data)
+    player_panel.configure("player", player_data, player_data.get("momentum", [0, segments]))
+    enemy_panel.configure("enemy", enemy_data, enemy_data.get("momentum", [0, segments]))
     player_momentum.configure("player", player_data.get("momentum", [0, segments]), segments)
     enemy_momentum.configure("enemy", enemy_data.get("momentum", [0, segments]), segments)
 
@@ -114,27 +114,24 @@ func _selection_text(bundle_index: int, timing_sequence: Array) -> String:
 func _layout() -> void:
     if not is_instance_valid(player_panel):
         return
-    var gap := clampf(size.x * 0.008, 6.0, 10.0)
-    var side_width := clampf(size.x * 0.18, 150.0, 270.0)
-    var gauge_width := clampf(size.x * 0.115, 92.0, 170.0)
-    var center_width := size.x - side_width * 2.0 - gauge_width * 2.0 - gap * 4.0
-    if center_width < 180.0:
-        var compact_side := clampf((size.x - 180.0 - gauge_width * 2.0 - gap * 4.0) * 0.5, 108.0, side_width)
-        side_width = compact_side
-        center_width = size.x - side_width * 2.0 - gauge_width * 2.0 - gap * 4.0
-    center_width = maxf(1.0, center_width)
-    var side_height := maxf(168.0, size.y)
-    var center_height := minf(116.0, side_height)
+    var side_width := clampf(size.x * 0.32, 340.0, 420.0)
+    var side_height := maxf(1.0, minf(size.y - 2.0, side_width / 2.65))
+    var center_width := clampf(size.x * 0.11, 136.0, 156.0)
+    var center_height := minf(54.0, side_height)
 
     player_panel.position = Vector2(0.0, 0.0)
     player_panel.size = Vector2(side_width, side_height)
-    player_momentum.position = Vector2(side_width + gap, 0.0)
-    player_momentum.size = Vector2(gauge_width, center_height)
-    round_panel.position = Vector2(side_width + gauge_width + gap * 2.0, 0.0)
+    # Keep these component instances for old consumers, but the approved state
+    # design embeds their five segments inside each wide status frame.
+    player_momentum.visible = false
+    enemy_momentum.visible = false
+    player_momentum.position = Vector2.ZERO
+    player_momentum.size = Vector2.ZERO
+    enemy_momentum.position = Vector2.ZERO
+    enemy_momentum.size = Vector2.ZERO
+    round_panel.position = Vector2((size.x - center_width) * 0.5, 6.0)
     round_panel.size = Vector2(center_width, center_height)
-    enemy_momentum.position = Vector2(round_panel.position.x + center_width + gap, 0.0)
-    enemy_momentum.size = Vector2(gauge_width, center_height)
-    enemy_panel.position = Vector2(enemy_momentum.position.x + gauge_width + gap, 0.0)
+    enemy_panel.position = Vector2(size.x - side_width, 0.0)
     enemy_panel.size = Vector2(side_width, side_height)
 
 func get_hud_snapshot() -> Dictionary:
