@@ -21,9 +21,9 @@ PROJECT_SOURCE_SHA = "afa152b985975a3f8e6292ca0298d22a95c03872"
 DELIVERY_BASELINE_SHA = "18d647c34ae8544d58d79e870f82dde1ef1d0c55"
 PAIR_ID = "ten-paces-hidden-moves-20260829-afa152b"
 BASELINE_PDF = "exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf"
-CURRENT_PDF = "exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf"
+CURRENT_PDF = "exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260904.pdf"
 HISTORICAL_PDF = "exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf"
-ADDITIVE_PDF = "exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf"
+SUPERSEDED_PDF = "exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf"
 
 
 def read(path: Path) -> str:
@@ -58,7 +58,8 @@ class HumanGameBlueprintProfileContract(unittest.TestCase):
         self.assertTrue((ROOT / CURRENT_PDF).is_file())
         self.assertTrue((ROOT / HISTORICAL_PDF).is_file())
         self.assertIn(f"`{CURRENT_PDF}` = `CURRENT_HUMAN_DERIVED_PUBLICATION`", self.spec)
-        self.assertIn("HUMAN_BLUEPRINT_ADDITIVE_20260902", self.spec)
+        self.assertIn("HUMAN_BLUEPRINT_CURRENT_20260904", self.spec)
+        self.assertIn("SUPERSEDED_HUMAN_DERIVED_PUBLICATION_RETAINED", self.spec)
         self.assertIn(f"`{BASELINE_PDF}` = `PRESERVED_BASELINE_SOURCE_36_PAGES`", self.spec)
         self.assertIn(f"`{HISTORICAL_PDF}` = `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`", self.spec)
         self.assertNotIn(f"`{CURRENT_PDF}` = `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`", self.spec)
@@ -151,7 +152,8 @@ class HumanGameBlueprintProfileContract(unittest.TestCase):
         serialized = json.dumps(self.registry, ensure_ascii=False)
         self.assertNotIn(CURRENT_PDF, serialized)
         self.assertNotIn(HISTORICAL_PDF, serialized)
-        self.assertNotIn("BLUEPRINT", serialized.upper())
+        self.assertNotIn("HUMAN_GAME_BLUEPRINT_20260904.pdf", serialized)
+        self.assertNotIn("build_human_game_blueprint_20260904_pdf.py", serialized)
 
     def test_governance_required_sources_exactly_match_registry_sources(self) -> None:
         registry_sources = {
@@ -164,46 +166,43 @@ class HumanGameBlueprintProfileContract(unittest.TestCase):
         configured_sources = set(self.governance["required_design_sources"])
         self.assertEqual(configured_sources, registry_sources)
 
-    def test_current_human_master_is_additive_and_preserves_all_36_baseline_pages(self) -> None:
-        """A focused visual addendum must never replace the full human blueprint."""
+    def test_current_human_master_is_current_and_preserves_prior_derived_publications(self) -> None:
+        """The short current reader publication must retain, not overwrite, historical derived PDFs."""
         baseline_path = ROOT / BASELINE_PDF
-        additive_path = ROOT / CURRENT_PDF
-        self.assertEqual(CURRENT_PDF, ADDITIVE_PDF)
-        self.assertTrue(additive_path.is_file(), "the additive human-master PDF must be published")
+        current_path = ROOT / CURRENT_PDF
+        superseded_path = ROOT / SUPERSEDED_PDF
+        self.assertTrue(current_path.is_file(), "the current human-master PDF must be published")
+        self.assertTrue(superseded_path.is_file(), "the superseded derived PDF must be retained")
 
         baseline = PdfReader(str(baseline_path))
-        additive = PdfReader(str(additive_path))
+        current = PdfReader(str(current_path))
+        superseded = PdfReader(str(superseded_path))
         self.assertEqual(len(baseline.pages), 36)
-        self.assertGreaterEqual(len(additive.pages), 46)
-        additive_pages = [page.extract_text() for page in additive.pages]
-        next_additive_index = 0
-        for baseline_page in baseline.pages:
-            baseline_text = baseline_page.extract_text()
-            next_additive_index = additive_pages.index(baseline_text, next_additive_index) + 1
+        self.assertEqual(len(current.pages), 24)
+        self.assertGreaterEqual(len(superseded.pages), 52)
 
     def test_incremental_blueprint_exposes_goals_systems_case_statuses_and_visual_production_flow(self) -> None:
         """The human master must expose the new planning layers as rendered PDF content."""
         current = PdfReader(str(ROOT / CURRENT_PDF))
         rendered_text = "\n".join(page.extract_text() or "" for page in current.pages)
 
-        # A regression that merely kept the old 46-page addendum would lose this
-        # user-requested decision surface while still preserving the baseline.
-        self.assertGreaterEqual(len(current.pages), 52)
+        self.assertEqual(len(current.pages), 24)
         for required_heading in (
-            "프로젝트 목표 · 시스템 지도",
-            "단계별 FM · Flow Map",
-            "준비 화면 · 구조 와이어프레임",
-            "전투 화면 · 구조 와이어프레임",
+            "프로젝트 소개",
+            "3×3 화면 아틀라스",
+            "강호행로 · 3갈래 × 4회",
+            "비무 준비 와이어프레임",
+            "비무 PM 체크",
             "이미지 제작 파이프라인",
-            "케이스별 현재 상태",
+            "Godot 구현 handoff",
         ):
             self.assertIn(required_heading, rendered_text)
 
         # The production board must communicate the requested whole-scene →
         # separated-candidate → composition progression, not just display art.
-        self.assertIn("전체 장면 후보", rendered_text)
-        self.assertIn("분리 후보", rendered_text)
-        self.assertIn("합성 · Godot 런타임", rendered_text)
+        self.assertIn("전체 아틀라스", rendered_text)
+        self.assertIn("분리 brief", rendered_text)
+        self.assertIn("Godot 합성", rendered_text)
 
     def test_image_production_board_preserves_full_portrait_module_bounds(self) -> None:
         """Tall, transparent battler candidates must be contained rather than cropped in the production board."""
@@ -219,10 +218,10 @@ class HumanGameBlueprintProfileContract(unittest.TestCase):
         self.assertEqual(contain(1024, 1536, 110, 54), (36, 54))
 
     def test_human_blueprint_rebuild_has_a_bounded_publication_size(self) -> None:
-        """Repeated visual evidence must not turn one retained 52-page Blueprint into an oversized duplicate binary."""
+        """Repeated derived builds must remain bounded and use the dated current builder."""
         with tempfile.TemporaryDirectory(prefix="ten-paces-human-blueprint-size-") as directory:
             output = Path(directory) / "human-blueprint.pdf"
-            builder_path = ROOT / "tools" / "build_human_game_blueprint_pdf.py"
+            builder_path = ROOT / "tools" / "build_human_game_blueprint_20260904_pdf.py"
             module_spec = importlib.util.spec_from_file_location("human_blueprint_builder", builder_path)
             self.assertIsNotNone(module_spec)
             module = importlib.util.module_from_spec(module_spec)
@@ -236,7 +235,7 @@ class HumanGameBlueprintProfileContract(unittest.TestCase):
             self.assertLess(
                 output.stat().st_size,
                 32 * 1024 * 1024,
-                "a current 52-page derived PDF should reuse compressed visual evidence rather than embed redundant full-resolution rasters",
+                "the current 24-page derived PDF should retain compressed, bounded evidence",
             )
 
 

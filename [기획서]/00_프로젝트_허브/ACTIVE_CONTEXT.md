@@ -50,15 +50,15 @@ user_directed_planning_work_mode: REVIEW_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_C
 user_directed_planning_decision: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
 user_directed_planning_next_package: MACHINE_ONLY_RUNTIME_EVIDENCE_CONTINUES_HUMAN_PLAYER_COMPARISON_DEFERRED_BEFORE_SEPARATE_NUMERICAL_DECISION
 user_directed_planning_next_decision: TEN-DEC-20260830-BALANCE-MEASUREMENT-REPRESENTATIVE-POLICY-COVERAGE-01
-user_directed_planning_status: FRONTAL_DUEL_V2_LOCKED_ART_AND_CARDS_PLUS_MODULAR_DUEL_UI_AND_NATIVE_2D_PRESENTATION_PHASES_IMPLEMENTED_REFERENCE_LAYOUT_HOVER_DETAIL_PLAN_LOCK_AND_ACTION_REVEAL_RUNTIME_CAPTURED_TEN_RVC_20260903_001_003_004_005_006_HUMAN_DEFERRED
-user_directed_planning_current_direction: FRONTAL_SHARED_GROUND_DUEL_NO_VISIBLE_LOGICAL_BOARD_NO_PLAYER_FACING_OPPONENT_INTENT_HYPOTHESIS_OR_SKIP_UI_PLUS_UNIFIED_BASIC_MARTIAL_ULTIMATE_CARD_PRESENTATION_WITH_FINAL_LOCKED_SEMANTIC_ATLAS_PLUS_FINAL_LOCKED_TITLE_LOGO_PLUS_NATIVE_2D_PHASED_ATTACK_CLASH_FEEDBACK_WITHOUT_SPINE_RUNTIME
-user_directed_planning_human_blueprint_publication: exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf
-user_directed_planning_human_blueprint_source_builder: tools/build_human_game_blueprint_pdf.py
-user_directed_planning_human_blueprint_incremental_revision_receipt: docs/operations/2026-09-03_HUMAN_BLUEPRINT_INCREMENTAL_REVISION_WORK_CONTRACT_RECEIPT.json
-user_directed_planning_human_blueprint_incremental_revision_execution_report: docs/operations/2026-09-03_HUMAN_BLUEPRINT_INCREMENTAL_REVISION_EXECUTION_REPORT.md
-user_directed_planning_human_blueprint_incremental_revision_status: DERIVED_52_PAGE_PUBLICATION_36_BASELINE_PAGES_PRESERVED_PLUS_15_ADDITIVE_GOAL_SYSTEM_CASE_FM_WIREFRAME_AND_VISUAL_PRODUCTION_PAGES_MACHINE_DOCUMENT_VERIFIED_REMOTE_CI_PASS_PR321_HUMAN_DEVICE_ACCESSIBILITY_RELEASE_NOT_RUN
-user_directed_planning_human_blueprint_visual_production_scope: WHOLE_SCENE_CANDIDATE_THEN_SEPARATED_BACKGROUND_BANNER_BATTLER_AND_CARD_MODULES_THEN_GODOT_RUNTIME_COMPOSITION_REUSE_FINAL_LOCKED_MODULES_NO_NEW_RASTER_UNTIL_ACTUAL_CONSUMER_GAP
-user_directed_planning_latest_decision: TEN-DEC-20260903-NATIVE-2D-PRESENTATION-PHASE-ABSORPTION-01
+user_directed_planning_status: THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_CTA_REVIEW_SURFACES_IMPLEMENTED_LEGACY_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN
+user_directed_planning_current_direction: FRONTAL_SHARED_GROUND_DUEL_NO_VISIBLE_LOGICAL_BOARD_PLUS_3_BRANCH_4_PICK_JIANGHU_ROUTE_PLUS_SINGLE_PLAYER_FACING_ACTION_EXECUTE_CTA_PLUS_CURRENT_CARD_VS_COMPARE_RAIL_PLUS_INLINE_CAUSAL_RECAP_PLUS_UNIFIED_BLUE_GRAY_HANJI_INK_CANDIDATE_STYLE_WITHOUT_SPINE_RUNTIME
+user_directed_planning_human_blueprint_publication: exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260904.pdf
+user_directed_planning_human_blueprint_source_builder: tools/build_human_game_blueprint_20260904_pdf.py
+user_directed_planning_human_blueprint_incremental_revision_receipt: docs/operations/2026-09-04_THREE_BRANCH_HUMAN_BLUEPRINT_WORK_CONTRACT_RECEIPT.json
+user_directed_planning_human_blueprint_incremental_revision_execution_report: docs/operations/2026-09-04_THREE_BRANCH_HUMAN_BLUEPRINT_EXECUTION_REPORT.md
+user_directed_planning_human_blueprint_incremental_revision_status: DERIVED_24_PAGE_CURRENT_PUBLICATION_ATLAS_FLOW_WIREFRAME_PM_AND_HANDOFF_MACHINE_DOCUMENT_AND_VISUAL_VERIFIED_RUNTIME_HUMAN_DEVICE_ACCESSIBILITY_RELEASE_NOT_RUN
+user_directed_planning_human_blueprint_visual_production_scope: WHOLE_SCENE_CANDIDATE_THEN_ACTUAL_CONSUMER_BOUND_SEPARATED_MODULE_BRIEFS_THEN_USER_FINAL_LOCK_PROVENANCE_AND_GODOT_COMPOSITION_NO_SILENT_REPLACEMENT_OF_FINAL_LOCKED_MODULES
+user_directed_planning_latest_decision: TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01
 user_directed_planning_modular_duel_ui_presentation_decision: docs/decisions/2026-09-03_MODULAR_DUEL_UI_AND_PRESENTATION_MOTION_DECISION.md
 user_directed_planning_modular_duel_ui_presentation_execution_report: docs/operations/2026-09-03_MODULAR_DUEL_UI_AND_PRESENTATION_EXECUTION_REPORT.md
 user_directed_planning_modular_duel_ui_presentation_status: USER_FINAL_LOCKED_CANON_REGISTERED_IMPLEMENTED_MACHINE_VERIFIED_WINDOWS_REFERENCE_LAYOUT_HOVER_DETAIL_PLAN_LOCK_AND_CURRENT_ACTION_REVEAL_RUNTIME_CAPTURED_TEN_RVC_20260903_001_003_004_005_006_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN
@@ -206,7 +206,7 @@ authority_bootstrap_merge_commit: 43a6e625c57c6f3e50b562e494fec074be553457
 - 구현 Gate: `TEN-DEC-20260820-PC-FIRST-VERTICAL-SLICE-IMPLEMENTATION-GATE-01`, `docs/planning-data/current_vertical_slice_implementation_gate_20260820.json`.
 - Phase I–VI 상태: `AUTHORIZED_AND_MERGED`; exact PR/SHA는 위 관측 증거 스냅샷에서만 역사 증거로 보존한다.
 - 구현 Handoff: `docs/16_VERTICAL_SLICE_IMPLEMENTATION_HANDOFF_PLAN.md`.
-- 강호 비무행·플레이어 역할·5전 감정곡선·비전투 App Flow: `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01`, `docs/12_VERTICAL_SLICE_JIANGHU_JOURNEY.md`.
+- 강호 비무행·플레이어 역할·5전 감정곡선·비전투 App Flow: `TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01`, `docs/12_VERTICAL_SLICE_JIANGHU_JOURNEY.md`. `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01`의 구간당 2노드는 historical baseline이다.
 - 15명 후보·8개 Route·Briefing/Review/Result 텍스트 UX: `TEN-DEC-20260820-VERTICAL-SLICE-CONTENT-DETAIL-01`, `docs/13_VERTICAL_SLICE_OPPONENT_ROUTE_TEXT_UX.md`.
 - 후보 무공 배정·Route Seed·비전투 Wire: `TEN-DEC-20260820-VERTICAL-SLICE-LOADOUT-ROUTE-WIRE-01`, `docs/14_VERTICAL_SLICE_LOADOUT_ROUTE_BUDGET_WIREFRAME.md`.
 - 난이도 Seed·AI 공정성·검증 계약·aggregate 시간 예산·Planning Review Ready: `TEN-DEC-20260820-VERTICAL-SLICE-REVIEW-READY-01`, `docs/15_VERTICAL_SLICE_REVIEW_READY_CONTRACT.md`.
@@ -234,7 +234,8 @@ authority_bootstrap_merge_commit: 43a6e625c57c6f3e50b562e494fec074be553457
 - `TEN-DEC-20260820-VERTICAL-SLICE-PLANNING-COMPLETE-01` — 아래 첫 5전 Vertical Slice 기획 계보를 사용자 완료 승인한다.
 - `TEN-DEC-20260820-VISUAL-UX-SYSTEM-01` — 통합 수묵 전술 화폭, 화면별 정보 위계, 재사용 컴포넌트, 최소 신규 자산 요구사항을 승인하고 당시 명시적 자산/구현 요청 대기로 전환했다. 이후 2026-08-25 사용자가 Visual 작업을 명시 재개했고, 2026-08-28 현행 cadence는 scoped 한 결과 생성 뒤 user final lock을 소유한다.
 - `TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01` — 설명용/스타일 검증용 이미지를 current production 대상으로 만들지 않고 실제 게임 소비처가 확인된 자산만 생성한다. 도겸 Character Master와 실제 전장 consumer용 `DOGYEOM_COMBAT_BATTLER_01`은 사용자 승인 완료이며, 상태 패널 consumer용 `DOGYEOM_STATUS_PORTRAIT_01`도 새 원화 1장으로 사용자 승인·historical Notion binary delivery evidence 후 상태 패널에 구현됐다. 도겸 ID만 승인 초상으로 라우팅하며 다른 상대는 generic fallback을 유지한다. 다음 Visual은 자동 시작하지 않지만 concrete consumer가 있으면 pre-generation 승인 없이 scoped 결과를 만들고 final lock만 사용자에게 요청한다.
-- `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01` — Main→시작 6중4→비무행 도입→Briefing→Combat Review Overlay→Duel Result/Reward 별도 Scene→Route 2노드→다음 비무→5전 완주.
+- `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01` — historical baseline: Main→시작 6중4→비무행 도입→Briefing→Combat Review Overlay→Duel Result/Reward 별도 Scene→Route 2노드→다음 비무→5전 완주. 화면/route/CTA 경계는 2026-09-04 successor가 대체한다.
+- `TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01` — `비무 결과 → 3갈래 중 1개 × 정확히 4회 → 다음 Briefing`, 단일 `행동 실행`, 현재 카드 `VS`, 별도 Review 없음의 현재 문서 계약과 24-page 사람용 Blueprint 후보 atlas의 정본 연결. Godot route/CTA/review surface는 `IMPLEMENTED_LEGACY`; 새 계약 runtime은 `NOT_RUN`이다.
 - `TEN-DEC-20260820-VERTICAL-SLICE-CONTENT-DETAIL-01` — 후보 15명·8개 Route·텍스트 UX.
 - `TEN-DEC-20260820-VERTICAL-SLICE-LOADOUT-ROUTE-WIRE-01` — 기존 10권 재사용·다음 후보 선잠금·Route 수치 Seed·비전투 Wire.
 - `TEN-DEC-20260820-VERTICAL-SLICE-REVIEW-READY-01` — 난이도/AI/검증/시간 예산과 최종 기획 검토 준비.

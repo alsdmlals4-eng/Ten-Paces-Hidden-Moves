@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "receipt_id": "TEN-RCP-20260904-THREE-BRANCH-HUMAN-BLUEPRINT-01",
+  "recorded_date": "2026-09-04",
+  "baseline_head": "09e3f923fc30514228d70f6f8f8465a41712fa2e",
+  "work_mode": "PLAN_AND_REVIEW_DOCUMENTATION_CANDIDATE_PRODUCTION",
+  "authorization": {
+    "source": "user explicit: 3갈래, 카운터 4개 승인; 필요한 이미지 제작; 사람용 블루프린트에 atlas+flowmap+wireframe+PM; 승인 필요한 사항은 모두 승인; 작업 마무리까지 진행 (2026-09-04)",
+    "authorized_scope": [
+      "current route and player-facing surface documentation",
+      "documentation-only whole-scene image candidate",
+      "human-facing derived Blueprint PDF",
+      "provenance, validation, decision, status, report and handoff preparation"
+    ],
+    "explicit_exclusions_preserved": [
+      "data/",
+      "src/",
+      "scenes/",
+      "assets/",
+      "project.godot",
+      "final runtime visual lock",
+      "shipping asset rights or release claim"
+    ]
+  },
+  "current_contract": {
+    "decision": "TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01",
+    "route": "3 candidates per stage; choose 1 candidate exactly 4 times; visible counter 0/4 through 4/4; then next Bimu Briefing",
+    "preparation": "top/middle/bottom 20/50/30; player current/max visible; enemy numeric values hidden; five momentum pips; 5x2 tabs; plan/detail/observation",
+    "execution": "one player-facing 행동 실행 CTA; current-card VS compare rail in base/clash/ultimate; no standalone Review; current-card-only interruption"
+  },
+  "runtime_truth_at_receipt": {
+    "route_model": "src/run/vertical_slice_route_model.gd = IMPLEMENTED_LEGACY_TWO_NODE_ROUTE",
+    "route_shell": "src/run/vertical_slice_shell_route_auto.gd = IMPLEMENTED_LEGACY_TWO_NODE_ROUTE",
+    "combat_cta": "src/ui/combat_progress_button.gd = IMPLEMENTED_LEGACY_TWO_STEP_CTA",
+    "new_contract_runtime": "NOT_RUN",
+    "product_source_mutated_by_this_package": false
+  },
+  "artifacts": {
+    "decision": "docs/decisions/2026-09-04_THREE_BRANCH_FOUR_CHOICE_JIANGHU_AND_HUMAN_BLUEPRINT_DECISION.md",
+    "benchmark": "docs/reviews/2026-09-04_THREE_BRANCH_FOUR_CHOICE_ROUTE_BENCHMARK.md",
+    "candidate_atlas": "docs/visual-assets/candidates/TEN-HUMAN-BLUEPRINT-20260904/TEN_PACES_3X3_SCREEN_ATLAS_20260904_v1.png",
+    "candidate_record": "docs/visual-assets/candidates/TEN-HUMAN-BLUEPRINT-20260904/TEN_PACES_3X3_SCREEN_ATLAS_20260904_v1.md",
+    "builder": "tools/build_human_game_blueprint_20260904_pdf.py",
+    "publication": "exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260904.pdf",
+    "regression": "tests/test_human_blueprint_20260904_contract.py",
+    "execution_report": "docs/operations/2026-09-04_THREE_BRANCH_HUMAN_BLUEPRINT_EXECUTION_REPORT.md",
+    "publication_sha256": "496b38fd30fa35b1a48014504a47b9f6c04eb5217894a7dbbb37d435ff42522b"
+  },
+  "asset_state": {
+    "id": "TEN_PACES_3X3_SCREEN_ATLAS_20260904_v1",
+    "status": "GENERATED_CANDIDATE_DOCUMENTATION_CONSUMED",
+    "runtime_consumer": "NONE",
+    "final_lock": "NOT_REQUESTED",
+    "rights_and_release": "RELEASE_BLOCKED_UNVERIFIED",
+    "locked_existing_modules": "PRESERVED_NOT_REPLACED"
+  },
+  "evidence_ceiling": {
+    "documentation_and_pdf": "MACHINE_VERIFIED_AFTER_FOCUSED_TESTS_AND_ALL_PAGE_RENDER_REVIEW",
+    "godot_automated_new_contract": "NOT_RUN",
+    "windows_runtime_new_contract": "NOT_RUN",
+    "human_player_ux": "NOT_RUN",
+    "android_and_accessibility": "NOT_RUN",
+    "shipping_rights_and_release": "RELEASE_BLOCKED_UNVERIFIED"
+  }
+}

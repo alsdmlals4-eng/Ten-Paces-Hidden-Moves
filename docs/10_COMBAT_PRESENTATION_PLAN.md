@@ -1,6 +1,6 @@
 # 십보강호 전투 연출 기획서
 
-> 책임: 최신 전투의 시선 흐름·수별 타격·합·중단·복기·접근성 폴백  
+> 책임: 최신 전투의 시선 흐름·수별 타격·합·중단·인과 요약·접근성 폴백
 > 규칙 원본: `docs/02_COMBAT_RULES.md`
 > 첫 5전 패배·재도전 scope: `docs/decisions/2026-08-28_FIRST_FIVE_DEFEAT_RETRY_SCOPE_DECISION.md` (`TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01`)
 
@@ -21,7 +21,9 @@
 
 ## 3. 현재 전투 흐름
 
-계획·대상·예상 자원 → commit → 대응 → 수별 공격 행동 → 타격쌍 → 효과·중단 → 이동·일반 행동 → 다음 묶음 또는 종료 → 복기 → 결전 다시 시작.
+계획·대상·예상 자원 → **행동 실행** → 현재 카드 `VS` 공개 → 대응 → 수별 공격 행동 → 타격쌍 → 효과·중단 → 이동·일반 행동 → 다음 묶음 또는 종료 → 현재 결과 strip/결과 원인 요약 → 결전 다시 시작.
+
+별도 `Combat Review` overlay/scene은 최신 사용자-facing 화면 경계가 아니다. 복기의 인과 정보는 보존하되 현재 수 결과 strip과 전투 종료의 실제 원인 1~3개로 흡수한다. 기존 overlay 구현은 `IMPLEMENTED_LEGACY`이며, 이 문서가 요구하는 current-card-only 중단과 상단 `내 카드 → VS ← 상대 카드` rail의 새 runtime 검증은 `NOT_RUN`이다.
 
 ## 4. 수별 판정 표현
 
