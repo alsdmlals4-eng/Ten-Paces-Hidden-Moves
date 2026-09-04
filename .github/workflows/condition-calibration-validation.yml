@@ -9,7 +9,7 @@ on:
       - "docs/planning-data/approved_20260805_condition_calibration_contract.json"
       - "docs/02_COMBAT_RULES.md"
       - "docs/CANON_LIFECYCLE_REGISTRY.md"
-      - "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
+      - '\[기획서\]/00_프로젝트_허브/ACTIVE_CONTEXT.md'
       - "docs/04_ROADMAP.md"
       - "tools/check_condition_calibration_contract.py"
       - "tests/test_condition_calibration_contract.py"
@@ -27,6 +27,10 @@ jobs:
         with:
           python-version: "3.12"
       - name: Run condition calibration regression tests
-        run: python -m unittest tests.test_condition_calibration_contract -v
+        run: >-
+          python -m unittest
+          tests.test_condition_calibration_contract
+          tests.test_workflow_literal_path_filters
+          -v
       - name: Validate condition calibration contract
         run: python tools/check_condition_calibration_contract.py
