@@ -10,10 +10,10 @@ delivery_lineage_commit: 18d647c34ae8544d58d79e870f82dde1ef1d0c55
 base_repository: alsdmlals4-eng/Base
 base_sha: 2e6fa14a93ffba177b22fd7ff21e2f654ea15bb0
 generated_at_utc: 2026-08-29T00:59:49Z
-document_version: 1.1.0
+document_version: 1.1.2
 scope: vertical-slice production snapshot; documentation and delivery only
 canonical_path: docs/design/PROJECT_AI_PRODUCTION_SPEC.md
-human_pdf_path: exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf
+human_pdf_path: exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260904.pdf
 source_priority: latest user direction > repository owners/Decisions > actual code/data/scene/tests > derived views > historical migration inputs > example PDF
 overall_status: DOCUMENTED_CURRENT_SNAPSHOT / PRODUCT_RUNTIME_PARTIAL
 known_stale_points: opponent runtime personality binding is implemented; deterministic balance instrumentation, human, Android, accessibility, audio and release evidence are NOT_RUN
@@ -63,9 +63,9 @@ known_stale_points: opponent runtime personality binding is implemented; determi
 | master role | exact artifact | current boundary |
 |---|---|---|
 | `AI_PRODUCTION_SPEC_MARKDOWN` | `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` | active project-wide machine-searchable narrative source |
-| `HUMAN_MASTER_GDD_PDF` | `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` | current human-facing derived publication for pair `ten-paces-hidden-moves-20260829-afa152b` |
+| `HUMAN_MASTER_GDD_PDF` | `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260904.pdf` | current 24-page human-facing derived publication: 3×3 atlas, 강호행로/비무 flow, wireframes, asset split plan, PM, handoff and evidence ceiling |
 
-`exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` = `CURRENT_PAIRED_DERIVED_PUBLICATION`. 이 PDF는 36-page paired publication이며 source owner나 최신 repository commit 판정자가 아니다. 이번 reconciliation은 PDF binary/metadata를 수정하지 않았고 새 profile token이 PDF에 새로 인쇄됐다고 주장하지 않는다. `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf` = `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`.
+`HUMAN_BLUEPRINT_CURRENT_20260904`: `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260904.pdf` = `CURRENT_HUMAN_DERIVED_PUBLICATION`. 이 24-page 파생본은 프로젝트 소개, 3×3 화면 atlas, `강호행로 3갈래 × 4회`, 비무 준비/실행 와이어프레임, 이미지 분리·합성 후보, 단계별 PM, Godot handoff와 evidence ceiling을 사람용으로 연결한다. source owner나 최신 repository commit 판정자는 아니다. `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf`는 두 노드 route·두 단계 CTA·별도 Review 화면을 포함한 `SUPERSEDED_HUMAN_DERIVED_PUBLICATION_RETAINED`로 보존한다. `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` = `PRESERVED_BASELINE_SOURCE_36_PAGES`; 삭제하거나 10쪽으로 요약·치환하지 않는다. `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf` = `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`.
 
 ### 00.4 LAYERED READER ROUTE
 
@@ -116,7 +116,9 @@ known_stale_points: opponent runtime personality binding is implemented; determi
 | Repository source snapshot | `origin/main@afa152b` | paired publication이 capture한 코드·데이터·Scene·test snapshot; latest commit 주장 아님 | CURRENT_PAIRED_SOURCE_SNAPSHOT |
 | delivery lineage | `18d647c34ae8544d58d79e870f82dde1ef1d0c55` | complete 20260829 spec/PDF pair landing | CURRENT_DELIVERY_LINEAGE |
 | `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` | pair `ten-paces-hidden-moves-20260829-afa152b` | active project-wide machine-searchable narrative source | CURRENT |
-| `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` | same pair, 36 pages | current human-facing derived publication; read-only in this reconciliation | CURRENT_PAIRED_DERIVED_PUBLICATION |
+| `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260904.pdf` | 24 pages: atlas, two system sections, Flow Map, wireframes, asset split plan, PM, handoff and risks | current human-facing derived publication; no game rule or runtime evidence replacement | CURRENT_HUMAN_DERIVED_PUBLICATION |
+| `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf` | 52 pages: preserved baseline + prior planning/visual layer | retained derived publication with obsolete 2-node route/two-step CTA/Review screen boundaries | SUPERSEDED_HUMAN_DERIVED_PUBLICATION_RETAINED |
+| `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` | same pair, 36 pages | exact preserved baseline source inside the current additive human publication | PRESERVED_BASELINE_SOURCE_36_PAGES |
 | `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf` | earlier pair | historical derived publication only | HISTORICAL_DERIVED_NOT_CURRENT_SOURCE |
 | GitHub PR #261 / #263 | merged, checks success | Phase 2 정본 reconciliation / every-task adversarial-research gate | HISTORICAL_AUTOMATED_EVIDENCE |
 | GitHub PR #273 / Issue #267 | merged isolated implementation and post-merge readback | opponent runtime personality binding implemented; balance instrumentation remains separate | IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK / BALANCE_SIMULATION_NOT_RUN |
@@ -143,6 +145,17 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 
 ## 02. CURRENT PROJECT STATE
 
+### 02.0 2026-09-04 사용자 승인 현재 overlay
+
+`TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01`은 다음의 player-facing 계약을 현재값으로 정한다.
+
+- 강호행로: 비무 사이 `3갈래 후보 중 1개 × 4단계`, `0/4 → 4/4`, 네 번째 적용 뒤 다음 Briefing. deck/hand/draw, 일반 전투, 정답 누출은 추가하지 않는다.
+- 준비: 상단 HUD/중단 정면 결투/하단 계획·카드·상세·관찰 `20/50/30`, 플레이어 current/max 표기, 적 정확 수치 비공개, 양측 기세 5칸, `기본 / 무공 / 절초` 5×2.
+- 실행: player-facing CTA는 단일 `행동 실행`; 실행 중에는 상단 HUD와 중단 전투만 남는다. 기본/합/절초는 모두 현재 공개 카드 `→ VS ←` rail을 쓴다.
+- 인과 요약: 별도 Review overlay/scene은 두지 않고 현재 수 result strip과 종료 Result의 실제 원인 1~3개로 흡수한다. 피격 중단은 공개된 현재 카드만 손상한다.
+
+이 overlay는 `USER_APPROVED_CURRENT / SPECIFIED`다. 실제 `vertical_slice_route_model.gd`, `vertical_slice_shell_route_auto.gd`, `combat_progress_button.gd`, Review surface는 각각 두 노드 route/두 단계 CTA/별도 carrier를 유지하므로 이 항목들은 `IMPLEMENTED_LEGACY`; 새 runtime capture·Human·Android·접근성·권리/출시 evidence는 `NOT_RUN` 또는 `RELEASE_BLOCKED_UNVERIFIED`다. 아래의 이전 `N수 실행`·Review·8노드 서술은 구현/역사 설명으로만 읽고 이 overlay를 덮어쓰지 않는다.
+
 ### 02.1 프로젝트 한 문장
 
 **십보강호는 공개된 거리·해결 이력만으로 상대의 다음 수를 가설화하고, 3개의 수(슬롯)에 1수 또는 2수 `[전조] → [실행]`을 비공개 배치한 뒤 실행·복기로 가설을 검증하는 1대1 무협 심리전이다.**
@@ -154,7 +167,8 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 | DEC-CORE-001 | 10칸 직선 전장, 공개 시작 거리 2, 거리 중심 HUD | CURRENT | CONFIRMED / IMPLEMENTED |
 | SYS-PLAN-001 | `3수 → 해결 → 3수 → 해결 → 4수 → 해결` | CURRENT | CONFIRMED / IMPLEMENTED |
 | SYS-PLAN-002 | 3수 = 3슬롯, 2슬롯 행동은 `[전조] → [실행]`으로 2수를 소모 | CURRENT | CONFIRMED / IMPLEMENTED |
-| UI-COMBAT-001 | CTA `N수 실행`; 실행 뒤 전투 표현으로 전환 | CURRENT | CONFIRMED / IMPLEMENTED |
+| UI-COMBAT-001 | 단일 CTA `행동 실행`; 실행 뒤 전투 표현으로 전환 | USER_APPROVED_CURRENT | SPECIFIED / RUNTIME_IMPLEMENTATION_NOT_STARTED |
+| SYS-ROUTE-20260904 | 3갈래 후보 중 1개 × 4회, `0/4 → 4/4` 뒤 Briefing | USER_APPROVED_CURRENT | SPECIFIED / IMPLEMENTED_LEGACY_TWO_NODE_ROUTE |
 | SYS-AI-001 | AI는 공개 상태·해결 이력만 사용, 미확정 계획/UI 의도를 읽지 않음 | CURRENT | CONFIRMED / IMPLEMENTED |
 | UX-RETRY-001 | 첫 패배 후 실제 원인 복기·동일 seed 1회 무료 재도전 | CURRENT | CONFIRMED / IMPLEMENTED |
 | CNT-MANUAL-001 | 덱·손패·드로우·장착 제한 없이 해금 기술을 슬롯에 배치 | CURRENT | CONFIRMED / IMPLEMENTED |
@@ -162,7 +176,7 @@ Notion은 이 문서의 입력으로만 읽었다. #261 병합 후의 GitHub 상
 | DEC-OPS-001 | repository-only canonical workspace | CURRENT | user confirmed; Notion is historical migration input only |
 | DEC-STALE-001 | Phase 2 merge 전 Active Context/JSON/Notion 상태 | RESOLVED | repository owner sync·governance regression·readback 완료 |
 | DEC-OPPONENT-001 | 15 candidate의 runtime personality binding | CURRENT_DECISION | IMPLEMENTED_MERGED_MAIN_PR273_POSTMERGE_READBACK / BALANCE_SIMULATION_NOT_RUN |
-| DEC-HIST-001 | `행동계획 잠금`, 4/7 슬롯 등 과거 표기 | SUPERSEDED | current CTA/3-3-4 계약으로 대체 |
+| DEC-HIST-001 | player-facing `행동계획 잠금`/`N수 실행`, 고정 2노드 route, 별도 Review overlay | SUPERSEDED_FOR_SURFACE_BOUNDARY | current 단일 CTA/3갈래×4회/인과 요약으로 대체; existing code는 legacy evidence |
 | QA-HUMAN-001 | 사람 플레이·가독성·감정 evidence | UNKNOWN_UNVERIFIED | NOT_RUN |
 
 ### 02.3 현재 Work 5단계 위치

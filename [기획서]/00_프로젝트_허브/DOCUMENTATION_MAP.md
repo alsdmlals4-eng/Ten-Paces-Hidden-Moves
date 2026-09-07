@@ -31,8 +31,8 @@
 | 프로젝트 고유 Skill | `skills/SKILL_REGISTRY.json`, `skills/*/SKILL.md` |
 | 게임 정체성·핵심 재미 | `docs/01_GAME_DESIGN.md` |
 | 통합 기획·AI 실행 명세·Notion 이관표 | `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` — active project-wide machine-searchable narrative source; paired source snapshot `afa152b`, delivery lineage `18d647c` |
-| 현재 사람용 master GDD publication | `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf` — pair `ten-paces-hidden-moves-20260829-afa152b`, `CURRENT_PAIRED_DERIVED_PUBLICATION`; source owner 또는 latest-repository-commit 판정자 아님 |
-| 세계·플레이어 역할·강호 비무행·5전 감정곡선·비전투 App Flow | `docs/12_VERTICAL_SLICE_JIANGHU_JOURNEY.md`, `TEN-DEC-20260820-JIANGHU-JOURNEY-VERTICAL-SLICE-01` |
+| 현재 사람용 master GDD publication | `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260904.pdf` — `CURRENT_HUMAN_DERIVED_PUBLICATION`, 3×3 atlas·강호행로/비무 Flow·와이어프레임·분리후보·PM을 묶은 24-page human view; source owner 또는 latest-repository-commit 판정자 아님 |
+| 세계·플레이어 역할·강호 비무행·5전 감정곡선·비전투 App Flow | `docs/12_VERTICAL_SLICE_JIANGHU_JOURNEY.md`, `TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01` |
 | 전투 규칙·판정·자원·AI·관찰 | `docs/02_COMBAT_RULES.md` |
 | 전투 UI 정보 위계·거리·카드·관찰 표시 | `docs/decisions/2026-08-11_COMBAT_UI_INFORMATION_HIERARCHY_DECISION.md`, `docs/07_COMBAT_UI_SPEC.md` |
 | 콘텐츠 범위 | `docs/03_CONTENT_CATALOG.md` |
@@ -60,7 +60,7 @@
 
 `NO_SEPARATE_BLUEPRINT_ARTIFACT`
 
-Blueprint는 세 번째 문서가 아니다. AI spec이 layered route를 선언하고, 수정하지 않은 20260829 paired PDF가 current human master publication으로 연결된다. master role은 `AI_PRODUCTION_SPEC_MARKDOWN`과 `HUMAN_MASTER_GDD_PDF` 정확히 둘이며, mutable state나 rules를 이 지도에 복사하지 않는다.
+Blueprint는 세 번째 정본 문서가 아니다. AI spec이 layered route를 선언하고, 20260904 PDF가 current human master publication으로 연결된다. master role은 `AI_PRODUCTION_SPEC_MARKDOWN`과 `HUMAN_MASTER_GDD_PDF` 정확히 둘이며, mutable state나 rules를 이 지도에 복사하지 않는다.
 
 | layer | 책임 질문 | current route |
 |---|---|---|
@@ -77,7 +77,7 @@ Blueprint는 세 번째 문서가 아니다. AI spec이 layered route를 선언�
 -> VERIFICATION READ
 ```
 
-`exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf`만 `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`다. current 20260829 PDF는 current paired derived publication이지만 repository owner보다 높은 source가 아니다.
+`exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260828.pdf`는 `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`다. `exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf`는 current human master가 아니라 `PRESERVED_BASELINE_SOURCE_36_PAGES`이며, `exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf`는 두 노드 route·두 단계 CTA·별도 Review 경계를 가진 `SUPERSEDED_HUMAN_DERIVED_PUBLICATION_RETAINED`다. current 20260904 PDF는 repository owner보다 높은 source가 아니다.
 
 ## Prospective package lifecycle
 

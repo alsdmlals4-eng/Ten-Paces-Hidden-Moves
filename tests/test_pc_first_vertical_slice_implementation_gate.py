@@ -28,11 +28,11 @@ class PcFirstVerticalSliceImplementationGateTests(unittest.TestCase):
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "MACHINE_ONLY_RUNTIME_EVIDENCE_CONTINUES_HUMAN_PLAYER_COMPARISON_DEFERRED_BEFORE_SEPARATE_NUMERICAL_DECISION",
+            "THREE_BRANCH_FOUR_CHOICE_ROUTE_AND_EXECUTION_SURFACE_TEST_FIRST_GODOT_BUILD_PACKAGE",
             status["next_phase"],
         )
         self.assertEqual(
-            "MACHINE_ONLY_RUNTIME_EVIDENCE_CONTINUES_HUMAN_PLAYER_COMPARISON_DEFERRED_BEFORE_SEPARATE_NUMERICAL_DECISION",
+            "THREE_BRANCH_FOUR_CHOICE_ROUTE_AND_EXECUTION_SURFACE_TEST_FIRST_GODOT_BUILD_PACKAGE",
             status["next_product_execution_surface"],
         )
         self.assertTrue(status["vertical_slice_pc_implementation_authorized"])

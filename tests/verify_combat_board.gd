@@ -1,7 +1,7 @@
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
-const BACKGROUND_ASSET_PATH := "res://assets/backgrounds/frontal_courtyard_duel_background_01_v1.png"
+const BACKGROUND_ASSET_PATH := "res://assets/backgrounds/frontal_courtyard_duel_background_02_v1.png"
 const EXPECTED_TILE_COUNT := 10
 const EXPECTED_PLAYER_TILE := 4
 const EXPECTED_ENEMY_TILE := 6
@@ -506,19 +506,21 @@ func _verify_layout(board: CombatBoardPreview, snapshot: Dictionary) -> void:
 func _verify_character_anchors(board: CombatBoardPreview, snapshot: Dictionary) -> void:
     var player_size: Vector2 = snapshot.get("player_size", Vector2.ZERO)
     var enemy_size: Vector2 = snapshot.get("enemy_size", Vector2.ZERO)
-    var tile_width := float(snapshot.get("tile_width", 0.0))
     if absf(player_size.y - enemy_size.y) > SIZE_TOLERANCE:
         failures.append("Combat presentation must keep both battlers at a comparable frontal-duel scale.")
-    var player_height_ratio := board.player_character.character_height_ratio if is_instance_valid(board.player_character) else 0.0
-    var enemy_height_ratio := board.enemy_character.character_height_ratio if is_instance_valid(board.enemy_character) else 0.0
-    if tile_width > 0.0 and absf(player_size.y / tile_width - player_height_ratio * 1.08) > SIZE_TOLERANCE:
-        failures.append("Player frontal-duel height must retain the approved 1.08 visual scale multiplier.")
-    if tile_width > 0.0 and absf(enemy_size.y / tile_width - enemy_height_ratio * 1.08) > SIZE_TOLERANCE:
-        failures.append("Enemy frontal-duel height must retain the approved 1.08 visual scale multiplier.")
+    var duel_stage: Rect2 = snapshot.get("screen_surfaces", {}).get("duel_stage", Rect2())
+    if str(board.get_meta("character_scale_profile", "")) != "distant_frontal_duel":
+        failures.append("Combat presentation must declare the approved distant frontal-duel scale profile.")
+    if duel_stage.size.y > 0.0 and player_size.y > duel_stage.size.y * 0.52 + SIZE_TOLERANCE:
+        failures.append("Player frontal-duel height must remain proportionate to the distant middle-stage surface.")
+    if duel_stage.size.y > 0.0 and enemy_size.y > duel_stage.size.y * 0.52 + SIZE_TOLERANCE:
+        failures.append("Enemy frontal-duel height must remain proportionate to the distant middle-stage surface.")
     var player_foot: Vector2 = snapshot.get("player_foot", Vector2.ZERO)
     var enemy_foot: Vector2 = snapshot.get("enemy_foot", Vector2.ZERO)
     if player_foot.x >= enemy_foot.x - POSITION_TOLERANCE:
         failures.append("Combat presentation must keep the player left of the enemy in the duel composition.")
+    if enemy_foot.x - player_foot.x < board.size.x * 0.36:
+        failures.append("Combat presentation must retain a readable distant frontal separation.")
     if absf(player_foot.y - enemy_foot.y) > board.size.y * 0.01:
         failures.append("Combat presentation must keep both battlers on one shared grounded frontal duel line.")
     if str(board.get_meta("duel_composition", "")) != "player_left|enemy_right|shared_ground|distance_center":

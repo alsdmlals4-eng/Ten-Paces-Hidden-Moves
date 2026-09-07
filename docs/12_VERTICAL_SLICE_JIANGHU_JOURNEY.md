@@ -202,26 +202,19 @@ short_personality_hook:
 ### 7.1 전체 구조
 
 ```text
-Duel 1
-→ Growth/Recovery
-→ Information/Preparation
-→ Duel 2
-→ Growth/Recovery
-→ Information/Preparation
-→ Duel 3
-→ Growth/Recovery
-→ Information/Preparation
-→ Duel 4
-→ Growth/Recovery
-→ Information/Preparation
-→ Duel 5
+Duel 결과
+→ 강호행로 1단계: 3갈래 후보 중 1개
+→ 강호행로 2단계: 3갈래 후보 중 1개
+→ 강호행로 3단계: 3갈래 후보 중 1개
+→ 강호행로 4단계: 3갈래 후보 중 1개
+→ 다음 Duel Briefing
 ```
 
-이 구조는 화면상 반드시 일직선일 필요는 없지만 **실제 방문 노드 수는 구간당 정확히 2개**다.
+이 구조는 한 route surface 안에서 `0/4 → 4/4` counter로 이어진다. 매 단계는 정확히 세 후보를 비교하고 하나만 적용한 뒤 다음 단계의 세 후보로 합류한다. 기존 `성장/회복 → 정보/대비` 고정 2노드는 `IMPLEMENTED_LEGACY`이며, 이 최신 3갈래·4회 계약은 `TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01`이 소유한다.
 
-### 7.2 1차 노드의 플레이어 질문
+### 7.2 후보의 플레이어 질문
 
-> `지난 비무에서 생긴 문제 중 무엇을 회복하거나 성장시킬 것인가?`
+> `이번 단계에서 성장/회복, 정보/관찰, 사건/대비 중 무엇을 감수하고 다음 비무를 준비할 것인가?`
 
 노드가 만드는 선택:
 
@@ -230,11 +223,7 @@ Duel 1
 - 장기 빌드 선택지를 넓힌다.
 - 단기 안정성을 포기하고 이후 고점을 노린다.
 
-### 7.3 2차 노드의 플레이어 질문
-
-> `다음 상대에 대해 무엇을 알고 들어갈 것인가?`
-
-정보는 `가설 재료`여야 한다.
+정보/관찰 후보는 `가설 재료`여야 한다.
 
 좋은 예:
 
@@ -284,13 +273,13 @@ Combat 자체는 `docs/02_COMBAT_RULES.md`와 전투 UI Decision의 권위다.
 
 비전투 서사가 Combat 판정에 숨은 보정치를 넣지 않는다.
 
-## 10. Combat Review · Duel Result · Reward 계약
+## 10. 현재 결과 strip · Duel Result · Reward 계약
 
-**기존 Scene 경계를 보존한다.** `Combat Review`는 Combat Scene 위의 Overlay이고, `Duel Result`는 별도 Scene이다. 이 문서에서 `Review → Result + Reward`를 묶어 말할 때는 **연속된 사용자 경험 흐름**이라는 뜻이지 하나의 Scene이라는 뜻이 아니다.
+`복기`는 인과 정보를 읽는 기능으로 유지하되, 별도 `Combat Review` Overlay/Scene은 최신 화면 경계가 아니다. Combat의 현재 수 result strip과 종료 Result의 실제 원인 1~3개가 그 역할을 나눠 가진다. 기존 Overlay는 `IMPLEMENTED_LEGACY`다.
 
-### 10.1 Combat Review Overlay
+### 10.1 현재 결과 strip과 종료 원인 요약
 
-Combat 종료 직후 가장 결정적인 1~3개 실제 사건을 우선한다.
+Combat 종료 직후 또는 결과 화면에서 가장 결정적인 1~3개 실제 사건을 우선한다.
 
 가능한 사건 예:
 
@@ -302,10 +291,10 @@ Combat 종료 직후 가장 결정적인 1~3개 실제 사건을 우선한다.
 
 숨은 정답·미선택 미래 결과를 보여 주지 않는다.
 
-### 10.2 Duel Result 별도 Scene
+### 10.2 Duel Result와 보상
 
 - 승리: 핵심 전투 종료 상태, 현재 승인된 등급 표시가 있다면 그 결과, 승인된 보상 선택, 다음 이동(1~4전이면 Route, 5전이면 완주 요약).
-- 첫 패배: Combat Review 뒤 실제 원인 1~3개와 복원 범위를 다시 확인하고, 같은 상대·같은 seed의 무료 재도전 `1회`를 선택한다.
+- 첫 패배: 실제 원인 1~3개와 복원 범위를 결과 안에서 다시 확인하고, 같은 상대·같은 seed의 무료 재도전 `1회`를 선택한다.
 - 재도전 뒤 패배: 보상·Route·영구재화 결제 없이 회차 종료 및 타이틀 복귀만 가능하다.
 
 보상은 `다음 Route 선택에 무엇이 달라지는가`가 읽혀야 한다. 사람 검증 전 전투 종료 등급을 경제 증폭기에 연결하지 않는 기존 보호를 유지한다.
@@ -342,12 +331,10 @@ flowchart TD
     C --> D["짧은 강호 비무행 도입"]
     D --> E["Duel Briefing"]
     E --> F["Combat · 3/3/4"]
-    F --> G["Combat Review Overlay"]
-    G --> H["Duel Result + Reward · 별도 Scene"]
-    H --> I{"5번째 비무 완료?"}
-    I -- "아니오" --> J["Route Node 1 · 회복/성장"]
-    J --> K["Route Node 2 · 정보/대비"]
-    K --> E
+    F --> G["현재 결과 strip / Duel Result + Reward"]
+    G --> I{"5번째 비무 완료?"}
+    I -- "아니오" --> J["강호행로 · 3갈래 중 1개 × 4회 · 0/4→4/4"]
+    J --> E
     I -- "예" --> L["비무행 완주 요약"]
     L --> M["Main / 기록"]
 ```
@@ -360,8 +347,8 @@ flowchart TD
 |---|---:|
 | 첫 도입 | 45~60초 이하 |
 | Briefing 1회 | 15~30초 |
-| Combat Review + Duel Result/Reward 합산 | 20~45초 |
-| Route Node 1회 | 20~40초 |
+| 현재 결과 strip + Duel Result/Reward 합산 | 20~45초 |
+| 강호행로 4회 선택 합산 | 80~160초 (튜닝 대상) |
 | 첫 회차 비전투 비중 | 약 35~40% 이하 |
 | 반복 회차 비전투 비중 | 약 25~30% 이하 |
 
@@ -378,10 +365,9 @@ flowchart TD
 - 5개 슬롯의 기준 아키타입
 - 각 슬롯 후보 최대 3명 구조 지원
 - 반복 인물 1명
-- 8개 실제 방문 Route 노드
+- 비무 간 `3갈래 후보 중 1개 × 4회` route surface
 - Briefing
-- Combat Review Overlay
-- Duel Result + Reward 별도 Scene
+- 현재 결과 strip과 Duel Result + Reward
 - 완주 요약
 
 ### 필수가 아님
@@ -404,10 +390,9 @@ planning_acceptance:
   five_duel_emotional_arc_defined: true
   candidate_15_structure_preserved: true
   recurring_character_function_defined: true
-  route_two_nodes_per_gap_preserved: true
+  route_three_candidates_four_picks_per_gap: true
   briefing_information_boundary_defined: true
-  combat_review_overlay_boundary_preserved: true
-  duel_result_separate_scene_boundary_preserved: true
+  causal_recap_inline_result_strip_preserved: true
   observation_answer_leak_guardrail_preserved: true
   app_flow_main_to_run_complete_defined: true
   non_combat_time_budget_defined_as_tunable: true
@@ -425,7 +410,7 @@ planning_acceptance:
 - Route 정보가 정답을 누출하지 않으면서 다음 계획을 실제로 바꾸는가.
 - 비전투 시간이 3/3/4 전투의 집중을 침범하지 않는가.
 - 패배 복기가 `왜 졌는지`를 설명하지만 다음 정답을 대신 선택하지 않는가.
-- Combat Review Overlay와 Duel Result Scene이 연속으로 느껴지되 역할이 혼동되지 않는가.
+- 현재 result strip과 Duel Result 원인 요약이 별도 Review 화면 없이도 역할을 혼동시키지 않는가.
 
 실행하지 않은 Godot/Windows/Android/Human 검증은 `NOT_RUN`이다.
 

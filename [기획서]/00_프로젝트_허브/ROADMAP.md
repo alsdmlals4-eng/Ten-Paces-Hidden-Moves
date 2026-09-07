@@ -12,7 +12,7 @@
 
 ```yaml
 current_state_owner: ACTIVE_CONTEXT_PLUS_CURRENT_JSON
-current_human_workspace: EXACT_PROJECT_NOTION
+current_human_workspace: REPOSITORY_HUMAN_FACING_CANON
 current_structured_runtime_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME
 google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01

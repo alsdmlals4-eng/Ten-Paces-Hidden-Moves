@@ -29,6 +29,7 @@ func _run() -> void:
     assert(int(snapshot.get("locked_technique_count", 0)) == 1)
     assert(snapshot.get("card_surface", "") == "shared_action_card_grid")
     assert(snapshot.get("illustration_policy", "") == "semantic_atlas")
+    assert(int(snapshot.get("technique_columns", 0)) == 5)
 
     assert(panel.manual_buttons.size() == 2)
     assert(panel.technique_buttons.size() == 2)
@@ -49,9 +50,8 @@ func _run() -> void:
     assert(not unlocked_button.disabled)
     assert(locked_button.disabled)
     assert(locked_button.focus_mode == Control.FOCUS_ALL)
-    var locked_status := locked_button.find_child("CardStatus", false, false) as Label
-    assert(is_instance_valid(locked_status))
-    assert(locked_status.text.ends_with("7성 해금 · 현재 5성"))
+    assert(locked_button.find_child("CardStatus", false, false) == null)
+    assert(locked_button.accessibility_name.contains("7성 해금 · 현재 5성"))
 
     panel.technique_selected.connect(_on_technique_selected)
 

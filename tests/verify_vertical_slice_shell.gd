@@ -62,7 +62,12 @@ func _run() -> void:
     _expect_true(shell.combat_host.visible, "COMBAT must show the combat host.")
     _expect_eq(shell.combat_host.get_child_count(), 1, "Combat host must reuse exactly one combat scene instance.")
     if shell.combat_host.get_child_count() == 1:
-        _expect_eq(shell.combat_host.get_child(0).name, "CombatBoardPreview", "Shell must host the existing CombatBoardPreview scene.")
+        var combat_view = shell.combat_host.get_child(0)
+        _expect_eq(combat_view.name, "CombatBoardPreview", "Shell must host the existing CombatBoardPreview scene.")
+        _expect_true(combat_view.action_timing_panel != null, "The fresh combat screen needs the current action bundle panel.")
+        if combat_view.action_timing_panel != null:
+            _expect_eq(combat_view.action_timing_panel.get_occupied_actionable_count(), 0, "A newly entered combat must not inherit pre-placed actions from an earlier attempt.")
+            _expect_eq(combat_view.action_timing_panel.get_placement_list().size(), 0, "A newly entered combat must start with no persisted action placements.")
 
     _expect_true(shell.complete_combat_for_runtime({"outcome": "win", "duel_index": 1}), "Runtime combat completion must enter REVIEW.")
     _expect_eq(shell.run_state.get_current_screen(), "REVIEW", "Terminal combat must enter REVIEW before RESULT.")

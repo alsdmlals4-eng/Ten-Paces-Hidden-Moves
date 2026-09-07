@@ -1,6 +1,6 @@
 # 십보강호 전투 연출 기획서
 
-> 책임: 최신 전투의 시선 흐름·수별 타격·합·중단·복기·접근성 폴백  
+> 책임: 최신 전투의 시선 흐름·수별 타격·합·중단·인과 요약·접근성 폴백
 > 규칙 원본: `docs/02_COMBAT_RULES.md`
 > 첫 5전 패배·재도전 scope: `docs/decisions/2026-08-28_FIRST_FIVE_DEFEAT_RETRY_SCOPE_DECISION.md` (`TEN-DEC-20260828-FIRST_FIVE-DEFEAT-RETRY-SCOPE-01`)
 
@@ -21,7 +21,9 @@
 
 ## 3. 현재 전투 흐름
 
-계획·대상·예상 자원 → commit → 대응 → 수별 공격 행동 → 타격쌍 → 효과·중단 → 이동·일반 행동 → 다음 묶음 또는 종료 → 복기 → 결전 다시 시작.
+계획·대상·예상 자원 → **행동 실행** → 현재 카드 `VS` 공개 → 대응 → 수별 공격 행동 → 타격쌍 → 효과·중단 → 이동·일반 행동 → 다음 묶음 또는 종료 → 현재 결과 strip/결과 원인 요약 → 결전 다시 시작.
+
+별도 `Combat Review` overlay/scene은 최신 사용자-facing 화면 경계가 아니다. 복기의 인과 정보는 보존하되 현재 수 결과 strip과 전투 종료의 실제 원인 1~3개로 흡수한다. 기존 overlay 구현은 `IMPLEMENTED_LEGACY`이며, 이 문서가 요구하는 current-card-only 중단과 상단 `내 카드 → VS ← 상대 카드` rail의 새 runtime 검증은 `NOT_RUN`이다.
 
 ## 4. 수별 판정 표현
 
@@ -49,6 +51,14 @@
 - 최종 피해와 방어도 변화.
 - 공격 행동당 절초기세 +1 획득 여부.
 - 중단된 공격의 후속타 취소와 유지된 공격의 잔여 단독타 전환.
+
+### 5.1 정면 접지 모션 계약
+
+- 공격은 공격자가 상대 쪽으로 짧게 전진한 뒤 같은 발 앵커로 복귀한다.
+- 회피와 피격은 상대 반대쪽으로 짧게 이동한 뒤 복귀하고, 막기는 같은 자리에서 방어 자세·복귀를 보인다.
+- 절초는 긴 전조·강조·복귀와 기존 승인 VFX를 사용한다.
+- `[합]`은 양측이 같은 중앙 `clash_anchor`까지 수평으로 접근해 잠시 겹친 뒤 각자의 원래 발 앵커로 돌아온다.
+- 이 변환은 presentation-only다. 거리·자원·피해·잠금 계획·AI·저장값을 바꾸지 않으며, 모션 감소에서는 변환을 건너뛰되 결과 텍스트와 정지 VFX는 남긴다.
 
 ## 6. 중단·강건 연출
 
@@ -134,6 +144,4 @@
 
 ## 13. 현재 상태
 
-현행 연출에는 `timing_results`와 `presentation_events` 기반 기술 증거가 있으나 최신 조건부 순차 합 이벤트는 미구현이다. 실제 에셋 스토어 검색·취득·생성·audio bus 통합도 `NOT_STARTED`다. `HUMAN_NOT_RUN`, 실제 읽기성·피로도·사운드 선호는 `UNVERIFIED`다.
-
-Issue #258 branch에서는 `행동계획 실행` 뒤의 입력 비활성화와 Review 전환의 자동 회귀만 확보했다. 새 이미지·오디오·연출 자산은 추가하지 않았으며 Windows visible/Human 검증은 `NOT_RUN`이다.
+현행 연출은 `timing_results`와 `presentation_events`를 기반으로 한 수씩 공개한다. `TEN-DEC-20260903-MODULAR-DUEL-UI-AND-PRESENTATION-MOTION-01` 범위에서 공격·회피·막기·피격·절초·공유 충돌점 `[합]`의 presentation-only 모션과 하단 계획 surface 숨김을 자동 회귀로 검증했다. 실제 소리 에셋 검색·취득·audio bus 통합은 여전히 `NOT_STARTED`다. Windows-visible 준비 화면은 확인했으나, 인간 플레이의 읽기성·피로도·사운드 선호는 `HUMAN_NOT_RUN`이며 Android 실기기와 접근성 사용자 평가는 `NOT_RUN`이다.

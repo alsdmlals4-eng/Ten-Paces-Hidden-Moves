@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/ui/action_selection/basic_action_panel.gd" id="1_panel"]
 
 [node name="BasicActionPanel" type="Control"]
-custom_minimum_size = Vector2(600, 300)
+custom_minimum_size = Vector2(600, 142)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,7 +19,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 4
+theme_override_constants/separation = 2
 
 [node name="Title" type="Label" parent="PanelColumn"]
 layout_mode = 2

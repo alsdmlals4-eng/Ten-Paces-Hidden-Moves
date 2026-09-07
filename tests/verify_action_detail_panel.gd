@@ -15,12 +15,19 @@ func _run() -> void:
     var panel = scene.instantiate()
     get_root().add_child(panel)
     await process_frame
+    assert(panel.clip_contents == true)
 
     var adapter = adapter_script.new()
     var basic: Dictionary = adapter.build_basic_actions()[0]
     panel.show_action(basic, false)
     var basic_snapshot: Dictionary = panel.get_detail_snapshot()
     assert(str(basic_snapshot.get("mode", "")) == "action")
+    assert((basic_snapshot.get("row_keys", []) as Array)[0] == "소모")
+    assert("효과" in basic_snapshot.get("section_titles", []))
+    assert(str((basic_snapshot.get("rows", {}) as Dictionary).get("소모", "")).contains("기력"))
+    assert(str((basic_snapshot.get("rows", {}) as Dictionary).get("소모", "")).contains("내력"))
+    assert(str((basic_snapshot.get("rows", {}) as Dictionary).get("소모", "")).contains("수"))
+    assert(str(basic_snapshot.get("primary_effect", "")) == "이동 1")
     assert("출처" in basic_snapshot.get("row_keys", []))
     assert("수 점유" in basic_snapshot.get("row_keys", []))
     assert("기력" in basic_snapshot.get("row_keys", []))
@@ -61,7 +68,10 @@ func _run() -> void:
     assert("10성 절초 또는 진의" in str(manual_snapshot.get("lineage_text", "")))
 
     panel.clear_detail()
+    var idle_snapshot: Dictionary = panel.get_detail_snapshot()
     assert(panel.visible == false)
+    assert(str(idle_snapshot.get("mode", "")) == "empty")
+    assert(str(idle_snapshot.get("title", "")) == "")
 
     print("verify_action_detail_panel: PASS")
     quit(0)

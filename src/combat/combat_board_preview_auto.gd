@@ -37,6 +37,7 @@ func restart_combat() -> void:
     _player_tile = int(contract.get("player_start_tile", 4))
     _enemy_tile = int(contract.get("enemy_start_tile", 6))
     super.restart_combat()
+    _set_plan_locked_surface_visible(false)
     if is_instance_valid(action_selection_dock):
         action_selection_dock.set_interaction_state("new_combat")
     _sync_action_placement_controller_state()
@@ -91,6 +92,11 @@ func _on_progress_requested(context: Dictionary) -> void:
             combat_progress_button.set_plan_locked(true)
         _set_presentation_state("plan_locked")
         set_meta("plan_locked", true)
+        # Locking is the handoff from private planning to the public duel.
+        # Keep only the compact execution CTA inside the middle stage; the
+        # entire lower deck, timing row, detail, and observation surface must
+        # disappear before any action is revealed.
+        _set_plan_locked_surface_visible(true)
         return
     _plan_locked = false
     if is_instance_valid(combat_progress_button):
@@ -304,6 +310,59 @@ func _set_resolution_surface_visible(value: bool) -> void:
     super._set_resolution_surface_visible(value)
     if is_instance_valid(action_selection_dock):
         action_selection_dock.visible = value
+    if is_instance_valid(observation_reveal_panel):
+        observation_reveal_panel.visible = value
+
+func _set_plan_locked_surface_visible(value: bool) -> void:
+    if is_instance_valid(planning_surface):
+        planning_surface.visible = not value
+    if is_instance_valid(action_timing_panel):
+        action_timing_panel.visible = not value
+    if is_instance_valid(action_selection_dock):
+        action_selection_dock.visible = not value
+    if is_instance_valid(observation_reveal_panel):
+        observation_reveal_panel.visible = not value
+    if is_instance_valid(combat_progress_button):
+        combat_progress_button.visible = true
+    if value:
+        _expand_locked_duel_stage()
+        _layout_locked_plan_execute_prompt()
+
+func _expand_locked_duel_stage() -> void:
+    if size.x <= 0.0 or size.y <= 0.0:
+        return
+    var top_bottom := top_hud.position.y + top_hud.size.y + 8.0 if is_instance_valid(top_hud) else size.y * 0.20
+    var stage_gap := 5.0
+    var duel_rect := Rect2(
+        Vector2(0.0, top_bottom + stage_gap),
+        Vector2(size.x, maxf(1.0, size.y - top_bottom - stage_gap))
+    )
+    if is_instance_valid(duel_stage_surface):
+        duel_stage_surface.position = duel_rect.position
+        duel_stage_surface.size = duel_rect.size
+    var full_duel_visual_rect := Rect2(Vector2.ZERO, size)
+    if is_instance_valid(battle_background):
+        battle_background.set_stage_rect(full_duel_visual_rect)
+    if is_instance_valid(duel_foreground_banner):
+        duel_foreground_banner.set_stage_rect(full_duel_visual_rect)
+    if is_instance_valid(_background_readability_tint):
+        _background_readability_tint.position = duel_rect.position
+        _background_readability_tint.size = duel_rect.size
+    _apply_frontal_duel_composition()
+    set_meta("locked_duel_stage_expanded", true)
+
+func _layout_locked_plan_execute_prompt() -> void:
+    if not _plan_locked or not is_instance_valid(combat_progress_button):
+        return
+    var duel_rect := get_duel_stage_rect()
+    if duel_rect.size.x <= 0.0 or duel_rect.size.y <= 0.0:
+        return
+    var prompt_size := Vector2(clampf(size.x * 0.09, 104.0, 124.0), 48.0)
+    combat_progress_button.size = prompt_size
+    combat_progress_button.position = Vector2(
+        duel_rect.get_center().x - prompt_size.x * 0.5,
+        maxf(duel_rect.position.y + 14.0, duel_rect.end.y - prompt_size.y - 12.0)
+    )
 
 func _refresh_ultimate_menu() -> void:
     super._refresh_ultimate_menu()
@@ -318,24 +377,47 @@ func _layout_board() -> void:
 func _layout_product_action_dock() -> void:
     if not is_instance_valid(action_selection_dock) or size.x <= 0.0 or size.y <= 0.0:
         return
-    var lower_margin := maxf(10.0, size.x * 0.014)
+    var lower_margin := maxf(18.0, size.x * 0.085)
     var lower_bottom := maxf(8.0, size.y * 0.012)
-    var dock_height := clampf(size.y * 0.36, 312.0, 332.0)
-    var dock_y := size.y - dock_height - lower_bottom
+    # The reference preparation composition places the planning ink frame at
+    # 60% of the screen: full 20% status overlay, a large frontal duel field,
+    # then one compact action bundle plus a 5 by 2 card grid.
+    var planning_top := clampf(size.y * 0.60, 260.0, size.y - 176.0)
+    var timing_height := clampf(size.y * 0.105, 70.0, 92.0)
+    var timing_y := planning_top + 8.0
+    var dock_y := timing_y + timing_height + 8.0
+    var dock_height := maxf(142.0, size.y - dock_y - lower_bottom)
     action_selection_dock.position = Vector2(lower_margin, dock_y)
     action_selection_dock.size = Vector2(maxf(1.0, size.x - lower_margin * 2.0), dock_height)
 
     if is_instance_valid(action_timing_panel) and is_instance_valid(combat_progress_button):
-        var timing_height := action_timing_panel.size.y
-        var timing_y := dock_y - timing_height - 8.0
-        action_timing_panel.position.y = timing_y
+        var timing_width := clampf(size.x * 0.48, 540.0, 640.0)
+        var progress_width := clampf(size.x * 0.075, 78.0, 96.0)
+        action_timing_panel.position = Vector2(lower_margin, timing_y)
+        action_timing_panel.size = Vector2(timing_width, timing_height)
+        combat_progress_button.position.x = lower_margin + timing_width + 8.0
+        combat_progress_button.size = Vector2(progress_width, minf(timing_height, 60.0))
         combat_progress_button.position.y = timing_y + (timing_height - combat_progress_button.size.y) * 0.5
-        if is_instance_valid(observation_reveal_status):
-            observation_reveal_status.position = Vector2((size.x - 360.0) * 0.5, timing_y - 30.0)
-            observation_reveal_status.size = Vector2(360.0, 24.0)
-        _shift_battlefield_above(timing_y - 30.0)
-        if is_instance_valid(combat_log_panel):
-            combat_log_panel.size.y = maxf(1.0, timing_y - 10.0 - combat_log_panel.position.y)
+        _shift_battlefield_above(planning_top - 24.0)
+        _layout_screen_surfaces(planning_top)
+
+    if is_instance_valid(observation_reveal_panel):
+        var source_column_width := 660.0
+        var detail_column_width := 250.0
+        var column_gap := 8.0
+        var observation_x := lower_margin + source_column_width + detail_column_width + column_gap * 2.0
+        # This source frame is portrait-oriented.  Preserve that visual lane so
+        # its parchment rows stay readable rather than treating it as a short
+        # horizontal tooltip beneath the detail column.
+        var observation_y := dock_y
+        observation_reveal_panel.position = Vector2(observation_x, observation_y)
+        observation_reveal_panel.size = Vector2(clampf(size.x * 0.13, 164.0, 190.0), dock_height)
+
+    for control_value in [sound_toggle_button, sound_volume_slider, fast_replay_button, reduced_motion_button, combat_log_panel]:
+        if is_instance_valid(control_value):
+            var control := control_value as Control
+            control.visible = false
+            control.focus_mode = Control.FOCUS_NONE
     _hide_legacy_action_ui()
 
 func _apply_frontal_duel_composition() -> void:
@@ -345,17 +427,19 @@ func _apply_frontal_duel_composition() -> void:
     if is_instance_valid(_anchor_line):
         _anchor_line.visible = false
 
-    var timing_top := action_timing_panel.position.y if is_instance_valid(action_timing_panel) else size.y * 0.60
-    var hud_bottom := top_hud.position.y + top_hud.size.y if is_instance_valid(top_hud) else size.y * 0.18
+    var duel_rect := get_duel_stage_rect()
+    var timing_top := size.y - 16.0 if _plan_locked else (action_timing_panel.position.y if is_instance_valid(action_timing_panel) else size.y * 0.60)
+    var hud_bottom := maxf(top_hud.position.y + top_hud.size.y, duel_rect.position.y) if is_instance_valid(top_hud) else duel_rect.position.y
     var grounded_floor_y := battle_background.get_duel_floor_y(size) if is_instance_valid(battle_background) else size.y * 0.46
-    var player_foot_y := clampf(grounded_floor_y, hud_bottom + 154.0, timing_top - 12.0)
+    var player_foot_y := clampf(grounded_floor_y, hud_bottom + 32.0, timing_top - 16.0)
     var normalized_distance := clampf(float(absi(_enemy_tile - _player_tile)) / 4.0, 0.0, 1.0)
-    var horizontal_separation := lerpf(size.x * 0.13, size.x * 0.205, normalized_distance)
+    var horizontal_separation := lerpf(size.x * 0.19, size.x * 0.255, normalized_distance)
     var tile_center_drift := clampf((float(_player_tile + _enemy_tile) * 0.5 - 5.5) * size.x * 0.014, -size.x * 0.05, size.x * 0.05)
     var duel_center_x := size.x * 0.5 + tile_center_drift
 
-    player_character.set_dimensions(_tile_width * 1.08)
-    enemy_character.set_dimensions(_tile_width * 1.08)
+    var distant_scale_width := minf(_tile_width * 0.76, maxf(54.0, duel_rect.size.y * 0.31))
+    player_character.set_dimensions(distant_scale_width)
+    enemy_character.set_dimensions(distant_scale_width)
     player_character.z_index = 4
     enemy_character.z_index = 4
     if not _defer_character_snap:
@@ -363,14 +447,15 @@ func _apply_frontal_duel_composition() -> void:
         enemy_character.place_foot_at(Vector2(duel_center_x + horizontal_separation, player_foot_y))
 
     if is_instance_valid(range_readout_panel):
-        var range_size := Vector2(clampf(size.x * 0.15, 152.0, 220.0), 72.0)
-        var range_y := clampf(player_foot_y - range_size.y - 44.0, hud_bottom + 20.0, timing_top - range_size.y - 10.0)
+        var range_size := Vector2(clampf(size.x * 0.090, 104.0, 122.0), 44.0)
+        var range_y := top_hud.position.y + top_hud.size.y * 0.50 if is_instance_valid(top_hud) else hud_bottom + 12.0
         range_readout_panel.position = Vector2(duel_center_x - range_size.x * 0.5, range_y)
         range_readout_panel.size = range_size
         range_readout_panel.z_index = 6
 
     set_meta("duel_composition", "player_left|enemy_right|shared_ground|distance_center")
     set_meta("duel_floor_y", player_foot_y)
+    set_meta("character_scale_profile", "distant_frontal_duel")
     set_meta("logical_board_default_visibility", "hidden")
 
 func _set_tactical_target_layer_visible(_value: bool) -> void:
@@ -500,7 +585,9 @@ func _configure_keyboard_focus_order() -> void:
                 sequence.append_array(action_selection_dock.basic_panel.buttons)
 
     var appended_anchors: Dictionary = {}
-    for timing_index in range(1, 11):
+    var visible_timing_indices := action_timing_panel.get_visible_timing_indices()
+    for timing_value in visible_timing_indices:
+        var timing_index := int(timing_value)
         if action_timing_panel.has_assignment_at(timing_index):
             var anchor_index := action_timing_panel.get_assignment_anchor(timing_index)
             if appended_anchors.has(anchor_index):

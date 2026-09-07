@@ -66,8 +66,15 @@ func get_anchor_rect(anchor_index: int) -> Rect2:
 func is_linked_block_inside_timing_bounds() -> bool:
     if slots.is_empty():
         return true
-    var timing_bounds := Rect2(get_slot(1).get_global_rect().position, Vector2.ZERO)
-    for slot_value in slots:
+    var visible_indices := get_visible_timing_indices()
+    if visible_indices.is_empty():
+        return true
+    var first_slot := get_slot(int(visible_indices[0]))
+    if first_slot == null:
+        return true
+    var timing_bounds := Rect2(first_slot.get_global_rect().position, Vector2.ZERO)
+    for timing_value in visible_indices:
+        var slot_value := get_slot(int(timing_value))
         if is_instance_valid(slot_value):
             timing_bounds = timing_bounds.merge(slot_value.get_global_rect())
     for block_value in linked_blocks.values():

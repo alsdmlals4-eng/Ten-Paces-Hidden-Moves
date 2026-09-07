@@ -27,16 +27,18 @@ class ActionCardSourceUnificationContractTests(unittest.TestCase):
         self.assertNotIn("select_destination_board_tile", json.dumps(board, ensure_ascii=False))
         self.assertNotIn("select_left_or_right_direction", json.dumps(board, ensure_ascii=False))
 
-    def test_common_card_renderer_exposes_category_effect_and_assistive_description(self) -> None:
+    def test_common_card_renderer_keeps_compact_tag_and_moves_detail_facts_to_detail_panel(self) -> None:
         renderer = read("src/ui/action_selection/action_choice_card.gd")
+        detail_panel = read("src/ui/action_selection/action_detail_panel.gd")
 
-        self.assertIn('label.name = "CardFacts"', renderer)
-        self.assertIn('label.name = "CardEffectOrTag"', renderer)
+        self.assertIn('label.name = "CardTag"', renderer)
         self.assertIn('accessibility_description = _accessibility_description(status_text)', renderer)
-        self.assertIn('func _range_fact_text() -> String:', renderer)
-        self.assertIn('if bool(action_definition.get("hide_range", false)):', renderer)
-        self.assertIn('return "의도"', renderer)
-        self.assertIn('return "공격"', renderer)
+        self.assertIn('custom_minimum_size = Vector2(0.0, 80.0)', renderer)
+        self.assertNotIn('label.name = "CardFacts"', renderer)
+        self.assertIn('_add_row("기력"', detail_panel)
+        self.assertIn('_add_row("내력"', detail_panel)
+        self.assertIn('_add_row("사거리"', detail_panel)
+        self.assertIn('_add_section("효과"', detail_panel)
 
     def test_current_human_facing_owners_do_not_point_to_retired_action_selection_fixture(self) -> None:
         for path in (

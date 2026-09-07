@@ -16,7 +16,7 @@ project_default_branch: main
 human_workspace: REPOSITORY_HUMAN_FACING_CANON
 runtime_structured_authority: GITHUB_REPOSITORY_AND_ACTUAL_RUNTIME
 google_sheets_policy: MIGRATION_ONLY_UNTIL_REMOVAL
-open_pr_policy: OPEN_PR_READ_ONLY_BY_DEFAULT
+open_pr_policy: USER_AUTHORIZED_RELATED_PR_REVIEW_ABSORB_CORRECT_VERIFY_MERGE_NO_NAMED_REAPPROVAL
 current_task_pr_policy: CURRENT_TASK_CONTINUATION_AUTHORIZES_READY_MERGE
 force_and_ruleset_bypass_policy: FORBIDDEN
 work_structure_flexibility_policy: FIX_ONLY_TRUE_INVARIANTS_KEEP_COUNTS_TOOLS_AND_MODES_DYNAMIC
@@ -105,13 +105,15 @@ historical_contracts:
 
 ```text
 최신 사용자 지시
-→ 최신 Base completed main + Base root AGENTS.md
 → 프로젝트 AGENTS.md
+→ docs/BASE_RULES_VERSION.md
 → 이 thin adapter + repository-only workspace decision
 → [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
 → current planning JSON + GitHub live metadata + repository human-facing owner
 → 최신 Decision / 질문별 owner
 → 실제 code/data/scene/resource/asset/test/runtime
+→ 프로젝트 compatibility/adoption pin
+→ 최신 Base completed main의 필요한 owner + 드리프트 확인
 ```
 
 - 과거 채팅·Handoff·저장된 SHA를 current truth로 자동 승격하지 않는다.
@@ -264,8 +266,8 @@ UI/구조는 최소 `ko / en / ja / zh-*`를 수용할 localization-ready 구조
 
 ## 8. Open PR·CI·완료
 
-- 모든 pre-existing open/draft/ready PR은 `READ_ONLY`가 기본이다.
-- current-task continuation이 latest completed main에서 직접 만든 하나의 명확한 PR만 exact HEAD·required checks·review/thread/ruleset Gate 뒤 safe merge할 수 있다.
+- 관련 pre-existing open/draft/ready PR은 `TEN-DEC-20260908-STANDING-PR-INTEGRATION-01`의 상시 승인으로 검토·흡수·교정·검증·병합한다. 번호별 재승인은 요구하지 않는다. 무관한 작업과 미커밋 변경은 보존한다.
+- current-task 및 관련 기존 PR은 latest main·exact HEAD·required checks·review/thread/ruleset Gate 뒤 safe merge한다. draft 미완료 사유와 실패 검증을 먼저 해소한다.
 - direct main push, force push, admin/ruleset bypass는 금지한다.
 - CI check 이름과 required 상태는 live repository/ruleset에서 발견한다.
 - `REQUIRED_WORK_REMAINING: 0`은 completion candidate이며 correction rescan + 최소 5회 adversarial loop + postmerge repository readback 뒤에만 종료한다.
@@ -276,7 +278,7 @@ UI/구조는 최소 `ko / en / ja / zh-*`를 수용할 localization-ready 구조
 `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`의 프로젝트 고유 의미는 삭제하지 않는다.
 
 - Notion human canon은 `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`로 **SUPERSEDED_FOR_CURRENT_EXECUTION**; repository human/runtime canon / Sheet migration-only: **CURRENT**.
-- Base progressive-load / open PR read-only / IRG / 5회 adversarial review: **PRESERVED**.
+- Base progressive-load / IRG / 5회 adversarial review: **PRESERVED**. 기존 open PR read-only는 관련 PR에 한해 `TEN-DEC-20260908-STANDING-PR-INTEGRATION-01`로 대체된다.
 - Whole-project audit / requirement traceability / bounded early checkpoint / playable Slice / decision-screen comprehension / Audio·Visual POC / Asset·Audio provenance / user-runnable play / CI supply-chain·cost / partial Skill absorption: **RESTORED/IMPROVED r5.4 project invariants**.
 - Fresh-Read GitHub+repository owner cold-start: **CURRENT**.
 - Visual exactly-one approval loop: **CURRENT r5.4 OVERRIDE**.

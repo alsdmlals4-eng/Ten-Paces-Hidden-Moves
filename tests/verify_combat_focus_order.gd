@@ -1,4 +1,4 @@
-# 제품 전투 계획의 Tab 포커스가 출처·행동·수·진행·접근성 순서로 고정되는지 검증한다.
+# 준비 화면의 Tab 포커스가 출처·행동·현재 수·잠금 순서로 고정되는지 검증한다.
 extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
@@ -30,13 +30,22 @@ func _run() -> void:
         failures.append("Hidden legacy basic-card controls must not remain in the product focus order.")
     if board.ultimate_list_panel.visible or board.ultimate_menu.focus_mode != Control.FOCUS_NONE:
         failures.append("Hidden legacy ultimate controls must not remain in the product focus order.")
+    for removed_presentation_control in [
+        board.fast_replay_button,
+        board.reduced_motion_button,
+        board.sound_toggle_button,
+        board.sound_volume_slider,
+    ]:
+        if removed_presentation_control.visible or removed_presentation_control.focus_mode != Control.FOCUS_NONE:
+            failures.append("The preparation reference layout must not expose retired presentation controls in keyboard traversal.")
 
     var basic_tab: Button = board.action_selection_dock.basic_tab
     var martial_tab: Button = board.action_selection_dock.martial_tab
     var ultimate_tab: Button = board.action_selection_dock.ultimate_tab
     var basic_buttons: Array[Button] = board.action_selection_dock.basic_panel.buttons
-    var first_slot: ActionTimingSlot = board.action_timing_panel.get_slot(1)
-    var last_slot: ActionTimingSlot = board.action_timing_panel.get_slot(10)
+    var visible_indices := board.action_timing_panel.get_visible_timing_indices()
+    var first_slot: ActionTimingSlot = board.action_timing_panel.get_slot(int(visible_indices[0])) if not visible_indices.is_empty() else null
+    var last_slot: ActionTimingSlot = board.action_timing_panel.get_slot(int(visible_indices[visible_indices.size() - 1])) if not visible_indices.is_empty() else null
     var progress: Button = board.combat_progress_button._button
     if is_instance_valid(board.get_node_or_null("OpponentHypothesisPanel")):
         failures.append("The retired opponent-intention hypothesis surface must not remain in focus order.")
@@ -53,18 +62,24 @@ func _run() -> void:
             _require_next(basic_buttons[index], basic_buttons[index + 1], "basic action %d" % (index + 1))
         _require_next(basic_buttons[basic_buttons.size() - 1], first_slot, "last basic action")
 
-    for timing_index in range(1, 10):
+    if visible_indices != PackedInt32Array([1, 2, 3]):
+        failures.append("Initial focus traversal must expose exactly the current first 3수 bundle.")
+    for visible_offset in range(maxi(0, visible_indices.size() - 1)):
+        var timing_index := int(visible_indices[visible_offset])
+        var next_timing_index := int(visible_indices[visible_offset + 1])
         _require_next(
             board.action_timing_panel.get_slot(timing_index),
-            board.action_timing_panel.get_slot(timing_index + 1),
+            board.action_timing_panel.get_slot(next_timing_index),
             "timing slot %d" % timing_index
         )
     _require_next(last_slot, progress, "last timing slot")
-    _require_next(progress, board.fast_replay_button, "progress button")
-    _require_next(board.fast_replay_button, board.reduced_motion_button, "fast playback")
-    _require_next(board.reduced_motion_button, board.sound_toggle_button, "reduced motion")
-    _require_next(board.sound_toggle_button, board.sound_volume_slider, "sound toggle")
-    _require_next(board.sound_volume_slider, basic_tab, "sound volume")
+    for timing_index in range(1, 11):
+        if timing_index in visible_indices:
+            continue
+        var future_slot := board.action_timing_panel.get_slot(timing_index)
+        if future_slot.visible or future_slot.focus_mode != Control.FOCUS_NONE:
+            failures.append("Future timing slot %d must be hidden and removed from keyboard traversal." % timing_index)
+    _require_next(progress, basic_tab, "progress button")
 
     board.queue_free()
     await process_frame

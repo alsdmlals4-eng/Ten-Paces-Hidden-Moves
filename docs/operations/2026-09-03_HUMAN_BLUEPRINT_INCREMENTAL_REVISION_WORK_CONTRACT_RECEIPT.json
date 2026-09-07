@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "artifact_role": "TEN_PACES_HUMAN_BLUEPRINT_INCREMENTAL_REVISION_WORK_CONTRACT_RECEIPT",
+  "work_level": "L1",
+  "work_mode": "BUILD",
+  "scope": "Incrementally revise the current derived Human Game Blueprint PDF without deleting or replacing any page of the preserved 36-page Master GDD. Add project-goal/system/case-status planning surfaces, staged Flow Maps, preparation and combat wireframes, and an asset-provenance production board.",
+  "approval_scope": "User explicit continuation: '맞아 진행해'; Blueprint must include wireframes, image-production material, and staged FM (interpreted as Flow Map), and image work must retain the whole-scene -> separated-candidate -> composition sequence.",
+  "source_identity": {
+    "project_pr": 321,
+    "project_branch_head_before_mutation": "ae0e59f7d774d95465a8bc125d93c52b79fc386c",
+    "project_main_observed": "0afdef427257ae5f8bcc2f37b7c46e13bc00b44b",
+    "base_current_main_observed": "575b44cb3a68c361dcb7a677a98b86c76c0ca16d",
+    "project_base_adoption_boundary": "docs/BASE_RULES_VERSION.md and skills/PROJECT_BASE_ADAPTER.json; no silent Base version replacement",
+    "preserved_human_baseline": "exports/ten-paces-hidden-moves_MASTER_PRODUCTION_GDD_20260829.pdf",
+    "current_publication_path": "exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260902.pdf"
+  },
+  "fresh_read": {
+    "owners": [
+      "AGENTS.md",
+      "docs/BASE_RULES_VERSION.md",
+      "docs/design/PROJECT_AI_PRODUCTION_SPEC.md",
+      "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+      "docs/planning-data/current_user_planning_status.json",
+      "docs/evidence/RUNTIME_VISUAL_CAPTURE_MANIFEST.json",
+      "docs/visual-assets/approved/*.md",
+      "docs/visual-assets/candidates/FRONTAL_COURTYARD_MODULAR_ART_PACK_20260902_v2.md",
+      "skills/PROJECT_BASE_ADAPTER.json",
+      "Base origin/main: building-project-visual-dashboards and project-start owners"
+    ],
+    "actual_consumers": [
+      "tools/build_frontal_duel_visual_blueprint_pdf.py",
+      "tools/build_human_game_blueprint_pdf.py",
+      "tests/test_human_game_blueprint_profile.py",
+      "docs/evidence/runtime-captures/TEN-RVC-20260903-003.png through 006.png"
+    ],
+    "open_pr_boundary": "PR #321 is the current-task continuation and is CLEAN/OPEN at the observed head. Pre-existing unrelated PRs remain read-only."
+  },
+  "benchmark_and_relevance": {
+    "current_source_relevance_check": "APPLICABLE: the requested output is a human-facing project Blueprint and therefore must be grounded in the actual current Godot screen, asset consumers, and preserved GDD rather than historical PDF length or reference-only chat images.",
+    "benchmark_reuse": "ADAPT: the project-owned 10-game reverse-engineering record remains the system benchmark. This additive derived-document revision does not alter a player-facing rule, UX semantic, content system, or runtime consumer, so a duplicate external 10-game study is not needed.",
+    "do_not_copy": "No external game UI, commercial art, or reference-image pixels are copied into the publication."
+  },
+  "asset_pipeline": {
+    "whole_scene_reference": "docs/visual-assets/candidates/FRONTAL_COURTYARD_DUEL_SEQUENCE_BOARD_20260902_v2.png (SUPERSEDED_GENERATED_EXPLORATION; visual predecessor only)",
+    "separated_modules": [
+      "FRONTAL_COURTYARD_DUEL_BACKGROUND_02_v1",
+      "FRONTAL_COURTYARD_BANNER_OVERLAY_01_v1",
+      "WANDERER_COMBAT_BATTLER_02_20260902_v2",
+      "MASKED_SWORDSMAN_COMBAT_BATTLER_02_20260902_v2"
+    ],
+    "composition_evidence": "TEN-RVC-20260903-003 through 006 are machine runtime captures; they are not Human, Android, accessibility, rights, or release evidence.",
+    "new_generation": "NONE_REQUIRED: all required visual stages have an existing repository file and verified PDF/runtime consumer. Locked modules are not replaced by this documentation-only package."
+  },
+  "implementation_feasibility": {
+    "state": "FEASIBLE",
+    "protected_product_paths": ["data/", "src/", "scenes/", "assets/", "addons/", "project.godot"],
+    "runtime_change": false,
+    "destructive_action": false,
+    "rollback": "Revert the dedicated PR commit. The original 36-page source remains a retained file and no approved raster is deleted."
+  },
+  "execution_sequence": [
+    "Write and run a failing rendered-PDF regression for the requested incremental planning layers.",
+    "Revise the existing design/implementation plan; retain its baseline-preservation contract while expanding the addendum from 46 to 52 pages.",
+    "Build the revised derived PDF from whole-scene, module, and runtime evidence with explicit evidence ceilings.",
+    "Render every PDF page, visually audit page boundaries and the new planning surfaces, then run reference-freshness, focused, and project validations.",
+    "Record five full-scope adversarial review loops, commit only owned source/evidence files, push PR #321, and read back exact-head CI."
+  ],
+  "evidence_and_exit": {
+    "execution_report": "docs/operations/2026-09-03_HUMAN_BLUEPRINT_INCREMENTAL_REVISION_EXECUTION_REPORT.md",
+    "machine_runtime_evidence": "REUSED_CURRENT_CAPTURE_ONLY",
+    "human_usability": "NOT_RUN",
+    "android_actual_device": "NOT_RUN",
+    "accessibility_user": "NOT_RUN",
+    "release_rights": "NOT_RUN",
+    "base_promotion_candidate": "NONE: the project-specific preserved-PDF and approved-asset lineage is not yet a verified cross-project Base rule."
+  }
+}

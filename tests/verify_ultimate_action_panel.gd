@@ -25,6 +25,8 @@ func _run() -> void:
     _check(int(locked_snapshot.get("enabled_count", -1)) == 0, "No ultimate may be enabled below five momentum.")
     _check(int(locked_snapshot.get("action_count", 0)) >= 4, "Base and mastery ultimates must both be represented.")
     _check(str(locked_snapshot.get("illustration_policy", "")) == "semantic_atlas", "Ultimate cards must publish the semantic-atlas policy.")
+    _check(int(locked_snapshot.get("action_columns", 0)) == 5, "Ultimate cards must use the shared five-column grid.")
+    _check(not panel.momentum_label.visible and not panel.segment_row.visible, "Ultimate momentum belongs in the shared status HUD, not above the card grid.")
     _check(str(panel.get_action("ultimate_ten_paces_wave").get("lock_reason", "")) == "기세 4/5", "Momentum lock reason must show 4/5.")
     var locked_button: Button = panel.get_action_button("ultimate_ten_paces_wave")
     _check(is_instance_valid(locked_button) and is_instance_valid(locked_button.find_child("CardIllustration", false, false)), "Locked ultimates must retain their semantic illustration.")
@@ -48,8 +50,8 @@ func _run() -> void:
     var reserved_button: Button = panel.get_action_button("ultimate_cleave_peak")
     _check(is_instance_valid(reserved_button), "Reserved ultimate button must exist.")
     if is_instance_valid(reserved_button):
-        var reserved_status := reserved_button.find_child("CardStatus", false, false) as Label
-        _check(is_instance_valid(reserved_status) and "5~6수 예약" in reserved_status.text, "Reserved ultimate must display its timing range.")
+        _check(reserved_button.find_child("CardStatus", false, false) == null, "Compact ultimate cards must not add an extra state row below their core tag.")
+        _check("5~6수 예약" in reserved_button.accessibility_name, "Reserved ultimate timing must remain available to assistive output.")
 
     panel.ultimate_selected.connect(_on_ultimate_selected)
     _check(panel.activate_ultimate("ultimate_flowing_cloud_true_intent") == false, "Locked mastery ultimate must not activate.")

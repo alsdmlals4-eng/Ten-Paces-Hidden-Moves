@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/ui/action_selection/action_detail_panel.gd" id="1_detail"]
 
 [node name="ActionDetailPanel" type="PanelContainer"]
-custom_minimum_size = Vector2(310, 350)
+custom_minimum_size = Vector2(250, 142)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

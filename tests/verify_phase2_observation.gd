@@ -79,8 +79,16 @@ func _expect_board_auto_reveal() -> void:
     for forbidden_key in ["name", "target_tile", "damage", "ai_reason", "ai_seed"]:
         if payload.has(forbidden_key):
             failures.append("Board observation UI leaked %s." % forbidden_key)
-    if board.observation_reveal_status == null or board.observation_reveal_status.text != "관찰 공개 · 상대 [이동→공격] / [공격]":
-        failures.append("The board must render every observation reveal in accessible front-to-back history order.")
+    if board.observation_reveal_panel == null:
+        failures.append("The board must render observation through the dedicated observation panel.")
+    elif board.observation_reveal_panel.has_method("get_observation_snapshot"):
+        var panel_snapshot = board.observation_reveal_panel.call("get_observation_snapshot") as Dictionary
+        if panel_snapshot.get("revealed_types", []) != ["이동", "공격"]:
+            failures.append("The board must disclose unique observed action types in player-facing order.")
+        if bool(panel_snapshot.get("private_fields_visible", true)):
+            failures.append("The observation panel must not render locked-plan private fields.")
+    else:
+        failures.append("The observation panel must expose its player-facing type-only snapshot.")
     if board.observation_reveal_button != null:
         failures.append("Observation types must be disclosed automatically, without a separate player reveal button.")
     board.queue_free()
