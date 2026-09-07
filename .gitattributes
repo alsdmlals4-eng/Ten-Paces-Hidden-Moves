@@ -1,4 +1,5 @@
 # Byte-validated operating-contract inputs and generated views stay LF on every checkout.
+*.pdf binary
 /skills/PROJECT_BASE_ADAPTER.json text eol=lf
 /.agents/skills/ten-paces-hidden-moves-workflow-router/SKILL.md text eol=lf
 /docs/PROJECT_OPERATING_DASHBOARD.html text eol=lf

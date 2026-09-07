@@ -38,3 +38,7 @@ CURRENT_SOURCE_RELEVANCE_CHECK: 기존 승인된 정보 경계와 3/3/4 UI의 �
 5. 통합 전 후보: main 재조회 동일, PR head 외부 변경 없음, 미해결 review thread 0, branch rules API 결과 빈 목록 확인. 기존 #199/#200은 문서/이전 Base 채택 범위로 식별하고 게임 UI 패치에 무차별 혼합하지 않음. import 부산물과 dirty 원 작업은 stage하지 않는다. 중복 구현보다 이 교정 PR을 먼저 통합하고 새 행로 구현을 잇는 것이 장기적으로 적합하다. 원격 exact-head 검증과 postmerge readback은 아직 남아 있다.
 
 Exact-head 원격 CI와 보호 규칙 확인 및 main readback은 통합 시 별도 실행한다. 승인된 블루프린트와 4회 강호행로·이벤트·휴식·정탐 구현은 후속 작업이며 이 교정으로 완료를 주장하지 않는다. 승인 원본 이미지·다른 worktree·미커밋 파일은 변경/삭제하지 않는다.
+
+## 원격 검증에서 재개방된 교정
+
+원격 run 34154758662는 기존 PDF를 text diff로 인식하여 PDF 내부의 정상 공백을 오류로 처리했다. 로컬 속성 반례도 `unspecified/astextplain/unspecified`로 RED였다. `.gitattributes`의 `*.pdf binary`로 저장 바이트/병합/비교 정책을 명시한다. PDF bytes는 수정하지 않으며 test_pdf_binary_contract를 추가한다. 이 실패는 이전 CI 성공이나 새 UI 회귀와 무관한 통합 누락으로, 검사 제외나 실패 무시로 처리하지 않는다.
