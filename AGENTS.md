@@ -108,9 +108,9 @@ project.godot
 
 ## 8. Open PR·동시성
 
-- pre-existing open/draft/ready PR은 `READ_ONLY`가 기본이다.
-- 다른 채팅/작업자의 PR·branch·path를 takeover하지 않는다.
-- current-task PR만 latest-main reconciliation → exact HEAD → required checks → review/thread/ruleset → safe merge → postmerge main readback까지 현재 승인 범위에서 진행할 수 있다.
+- 사용자 상시 승인에 따라 이 프로젝트의 현재 승인 작업과 관련되거나 겹치는 pre-existing open/draft/ready PR도 검토·흡수·교정·검증·병합 범위에 포함한다. PR 번호별 재승인은 요구하지 않는다. 근거: `docs/decisions/2026-09-08_STANDING_PR_INTEGRATION_AUTHORIZATION.md`.
+- 먼저 모든 열린 PR의 실제 diff·소유 경계·동시 변경을 fresh-read한다. 관련 변경은 원본 branch와 사용자 미커밋 작업을 보존하며 통합하고, 중복 반영·의미 충돌·누락을 교정한다. 무관한 변경은 흡수하지 않는다.
+- current-task 및 위 상시 승인 대상 PR은 latest-main reconciliation → exact HEAD → required checks → review/thread/ruleset → safe merge → postmerge main readback까지 진행한다. draft는 미완료 사유를 해소한 뒤에만 ready로 전환한다. 실패 검증, 보호 규칙 우회, direct main push, force push를 허용하는 승인이 아니다.
 
 ## 9. 출시·자산 권리 owner
 

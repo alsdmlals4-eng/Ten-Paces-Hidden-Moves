@@ -7,6 +7,8 @@
 
 ## 현재 기준
 
+2026-09-08 사용자 상시 승인: 관련 기존 open/draft/ready PR은 번호별 재승인 없이 검토·흡수·교정·검증·병합한다. 책임 결정은 `docs/decisions/2026-09-08_STANDING_PR_INTEGRATION_AUTHORIZATION.md`다. 기존 성공 CI만으로 병합하지 않고 최신 main·실제 diff·회귀·보호 규칙을 다시 확인한다. 현재 전투 UI 교정 증거는 `docs/operations/2026-09-08_PR_INTEGRATION_CORRECTIONS.md`를 참조한다. 강호행로 4회 선택은 다음 구현 범위이며 이 UI 교정으로 완료 처리하지 않는다.
+
 ```yaml
 project: 십보강호: 숨은 수의 비무
 repository: alsdmlals4-eng/Ten-Paces-Hidden-Moves

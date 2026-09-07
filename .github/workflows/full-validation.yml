@@ -106,6 +106,8 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_action_repositioning.gd
       - name: Verify action detail panel
         run: godot --headless --path . --script res://tests/verify_action_detail_panel.gd
+      - name: Verify integration information boundaries
+        run: godot --headless --path . --script res://tests/verify_integration_information_boundaries.gd
       - name: Verify combat action selection integration
         run: godot --headless --path . --script res://tests/verify_combat_action_selection_integration.gd
 
@@ -235,5 +237,7 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_action_repositioning.gd
       - name: Verify action detail panel
         run: godot --headless --path . --script res://tests/verify_action_detail_panel.gd
+      - name: Verify integration information boundaries
+        run: godot --headless --path . --script res://tests/verify_integration_information_boundaries.gd
       - name: Verify combat action selection integration
         run: godot --headless --path . --script res://tests/verify_combat_action_selection_integration.gd

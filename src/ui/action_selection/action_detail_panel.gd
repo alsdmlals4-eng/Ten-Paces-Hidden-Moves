@@ -209,6 +209,8 @@ func _apply_action() -> void:
     _add_row("소모", "기력 %d · 내력 %d · %d수" % [stamina, internal, action_slots])
     if not effect_text.is_empty():
         _add_section("효과", _primary_effect if _is_compact_layout() else effect_text)
+        if _is_compact_layout() and _primary_effect != effect_text:
+            _add_section("효과 상세", effect_text)
     var range_text := str(definition.get("range_text", ""))
     if not range_text.is_empty() and range_text != "-":
         _add_row("사거리", range_text)
@@ -292,7 +294,7 @@ func _apply_manual() -> void:
     _add_section("성급 계보", _lineage_text)
 
 func _is_compact_layout() -> bool:
-    return size.x <= 300.0 or custom_minimum_size.x <= 300.0
+    return (size.x if size.x > 0.0 else custom_minimum_size.x) <= 300.0
 
 func _compact_effect_text(value: Dictionary, effect_text: String) -> String:
     var category := str(value.get("category", ""))
@@ -309,7 +311,11 @@ func _compact_effect_text(value: Dictionary, effect_text: String) -> String:
     if observation_points > 0:
         return "관찰점 +%d" % observation_points
     if category == "response":
-        return "방어 또는 회피"
+        if str(value.get("id", "")) == "basic_guard":
+            return "막기 · 방어도 / 잔여 피해 50%"
+        if str(value.get("id", "")) == "basic_evade":
+            return "회피 · 같은 수 공격 회피"
+        return effect_text
     if category == "strengthen":
         return "다음 비이동 강화"
     var first_sentence := effect_text.split(".", false)[0].strip_edges()

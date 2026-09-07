@@ -110,6 +110,7 @@ func _refresh_slot_states() -> void:
         slot.configure(slot.timing_index, slot.bundle_index, slot.local_index, _resolve_state(slot.timing_index, slot.bundle_index, slot.timing_index))
     _refresh_slot_visibility()
     _update_group_colors()
+    _layout()
 
 func get_visible_timing_indices() -> PackedInt32Array:
     var result := PackedInt32Array()

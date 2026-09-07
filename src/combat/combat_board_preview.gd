@@ -1151,7 +1151,10 @@ func _show_review_panel(terminal: bool) -> void:
 	_sync_progress_availability()
 
 func _on_review_detail_requested() -> void:
+	if _presentation_state != "review_ready":
+		return
 	if is_instance_valid(combat_log_panel):
+		combat_log_panel.visible = true
 		combat_log_panel.set_collapsed(false)
 
 func _on_review_continue_requested() -> void:
@@ -1907,7 +1910,9 @@ func _refresh_observation_reveal() -> void:
 		# reflowing while preserving the no-private-data boundary.
 		observation_reveal_panel.visible = not _inputs_locked()
 	if is_instance_valid(combat_log_panel) and is_instance_valid(observation_reveal_panel):
-		combat_log_panel.visible = not _observation_has_revealed_types()
+		# Presentation/review owns this surface; never expose future bundle logs.
+		if not _inputs_locked():
+			combat_log_panel.visible = not _observation_has_revealed_types()
 
 func _clear_action_selection() -> void:
 	_selected_action_definition.clear()
