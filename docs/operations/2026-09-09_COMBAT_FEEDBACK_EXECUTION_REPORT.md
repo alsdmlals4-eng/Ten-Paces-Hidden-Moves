@@ -1,6 +1,6 @@
 # 전투 결과·절초 피드백 교정 실행 기록
 
-상태: MACHINE_VERIFIED_NATIVE_FIXTURE_CAPTURED_DELIVERY_IN_PROGRESS. 병합·전체 Blueprint 완료 보고가 아니다.
+상태: MAIN_MERGED_VERIFIED_PR335. 이 좁은 전투 피드백 교정은 병합됐지만 전체 Blueprint 완료 보고가 아니다. 아래 단계별 당시 PENDING/실패 기록은 역사로 보존하며 최신 전달 결과는 마지막 closeout을 따른다.
 
 ## 작업 전 문제와 조사
 
@@ -80,3 +80,9 @@ R5에서 발견한 캡처 등록 공백까지 해결한 후 정본/current순서
 post-correction native/독립 코드검토와 정본2장/supplemental7캡처는 완료했고, 로컬 whole496PASS1문서FAIL 뒤 해당 owner/관련31검사 교정도 확인했다. exact-head CI·정상 병합·main readback은 아직 PENDING이다. 사람 플레이·청음·실물 입력·Android·접근성 사용자·Release 성능·출시 권리는 NOT_RUN이다. UI 인물/카드 크기·빈 영역과 전체 승인 아틀라스 fidelity도 완료가 아니다.
 
 표시 교정 뒤에는 별도 실행 계약으로 고유 대응·공통 피해/방어·첫 전조 비용/once/강건과 v1 저장 완주 호환을 교정한다. 그 다음 성장 지출/수련/해금, 사건표·선택·조건, 정탐/상태/보상과 적별 콘텐츠·아트/음향 완성도를 계속 다룬다. 이 보고서는 정의 분류나 자동10전 결과를 전체 Blueprint 구현 완료로 확대하지 않는다.
+
+## PR #335 merge and one-time approval closeout — 2026-09-09
+
+Final candidate `8509813e0b0bb3df8f69ae5fb4baf410d02df7aa` passed the controller's full497 tests in335.30s. All32 exact-head GitHub checks passed, no unresolved review threads remained, and ordinary merge produced `477697842bf14d95e670f01b0fe815e384b53658` at2026-09-08T22:33:42Z. The tested and merged tracked trees are identical. Detached merged-main non-engine regression passed484 in17.57s; this is not another full497 run. The imported E wrapper correctly rejected unapproved generated sidecars; the same exact merged tree's fresh clean F wrapper passed before import. No source asset was removed or approval scope widened.
+
+The exact1511-byte approval is retained in `docs/operations/2026-09-09_PR335_PROTECTED_CHANGE_APPROVAL_RECORD.md`; the active manifest is retired and `skills/PROJECT_BASE_ADAPTER.json` protected_baseline.commit advances to the exact merged main. Adoption/version pins remain unchanged. The archive records historical CI failures and successful corrective runs. Current owners now route to separate shared-execution/v1 entire-run compatibility specification review, then growth/events/status/rewards and atlas fidelity. Human play, listening, physical input, Android, accessibility, release and whole Blueprint completion remain NOT_RUN; no v2 schema or new gameplay inference is approved by this closeout.
