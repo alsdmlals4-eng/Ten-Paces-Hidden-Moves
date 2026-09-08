@@ -26,15 +26,11 @@ class PcFirstVerticalSliceImplementationGateTests(unittest.TestCase):
     def test_current_user_status_preserves_pc_slice_history_and_current_visual_readback(self) -> None:
         status_path = ROOT / "docs" / "planning-data" / "current_user_planning_status.json"
         status = json.loads(status_path.read_text(encoding="utf-8"))
+        operating_path = ROOT / "docs" / "planning-data" / "current_operating_state.json"
+        operating = json.loads(operating_path.read_text(encoding="utf-8"))
 
-        self.assertEqual(
-            "BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS",
-            status["next_phase"],
-        )
-        self.assertEqual(
-            "BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS",
-            status["next_product_execution_surface"],
-        )
+        self.assertEqual(operating["next_package"], status["next_phase"])
+        self.assertEqual(operating["next_package"], status["next_product_execution_surface"])
         self.assertTrue(status["vertical_slice_pc_implementation_authorized"])
         self.assertFalse(status["windows_android_adapter_implementation_authorized"])
         self.assertEqual("USER_EXPLICIT_NON_IMAGE_WORK_REQUEST", status["implementation_request_source"])
