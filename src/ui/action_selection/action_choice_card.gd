@@ -109,6 +109,8 @@ func _add_summary_line(parent: VBoxContainer, value: String) -> void:
 	parent.add_child(label)
 
 func _primary_summary(preview_actor: Dictionary) -> String:
+	if not str(action_definition.get("constraint_lock_reason", "")).is_empty():
+		return str(action_definition.get("constraint_lock_reason"))
 	var preview: Dictionary = _resolution_engine().preview_action_magnitude(action_definition, preview_actor)
 	if bool(preview.get("available", false)):
 		if _category() == "attack":

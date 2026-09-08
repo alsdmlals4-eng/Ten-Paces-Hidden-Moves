@@ -22,6 +22,9 @@ func _init() -> void:
 func get_options() -> Array:
     return (_catalog.get("constraints", []) as Array).duplicate(true)
 
+func get_selection_policy() -> Dictionary:
+    return (_catalog.get("selection_policy", {}) as Dictionary).duplicate(true)
+
 func validate_selection(selection: Array, player_manual_ids: Array, enemy_manual_ids: Array) -> Dictionary:
     var errors: Array = []
     var normalized: Array = []

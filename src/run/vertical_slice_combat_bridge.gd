@@ -10,6 +10,7 @@ signal terminal_review_confirmed(result: Dictionary)
 var _vertical_slice_terminal_result: Dictionary = {}
 var _vertical_slice_loadout_snapshot: Dictionary = {}
 var _battle_metrics_helper: VerticalSliceBattleMetrics
+var _bimu_ui_options: Array = preload("res://src/run/bimu_constraint_model.gd").new().get_options()
 
 
 func _ready() -> void:
@@ -141,6 +142,33 @@ func get_vertical_slice_player_resources() -> Dictionary:
 
 func get_vertical_slice_loadout_snapshot() -> Dictionary:
     return _vertical_slice_loadout_snapshot.duplicate(true)
+
+
+func _build_action_selection_runtime_context() -> Dictionary:
+    var context := super._build_action_selection_runtime_context()
+    if resolution_engine == null or not resolution_engine.has_method("get_bimu_receipt"):
+        return context
+    var reasons := {}
+    for card_id in resolution_engine.cards_by_id:
+        var reason: String = resolution_engine.get_action_lock_reason(str(card_id))
+        if not reason.is_empty():
+            reasons[str(card_id)] = reason
+    context["constraint_lock_reasons"] = reasons
+    var receipt: Dictionary = resolution_engine.get_bimu_receipt()
+    var effects: Array = receipt.get("disclosed_effects", [])
+    var names := PackedStringArray()
+    for selection in receipt.get("selections", []):
+        for option in _bimu_ui_options:
+            if str(option["constraint_id"]) == str(selection.get("constraint_id", "")):
+                var label := str(option["display_name_ko"])
+                var field := str((option.get("parameter_binding", {}) as Dictionary).get("field", ""))
+                if not field.is_empty():
+                    var target := str(selection.get(field, ""))
+                    label += " (%s)" % str(preload("res://src/ui/bimu_constraint_panel.gd").STAT_LABELS.get(target, resolution_engine.martial_registry.get_manual(target).get("manual_name", target)))
+                names.append(label)
+    context["constraint_summary"] = "이번 비무 · 제약 없음" if names.is_empty() else "이번 비무 · " + " / ".join(names)
+    context["constraint_details"] = "\n".join(effects)
+    return context
 
 
 func _on_progress_requested(context: Dictionary) -> void:

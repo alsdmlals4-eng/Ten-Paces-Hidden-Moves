@@ -26,6 +26,15 @@ var reservations: Array[Dictionary] = []
 var action_buttons: Array[Button] = []
 var interaction_enabled := true
 var preview_actor: Dictionary = {}
+var constraint_lock_reasons: Dictionary = {}
+var _momentum_initialized := false
+var _martial_context_initialized := false
+
+func set_constraint_lock_reasons(value: Dictionary) -> void:
+    if constraint_lock_reasons == value:
+        return
+    constraint_lock_reasons = value.duplicate(true)
+    _rebuild_actions()
 
 func set_preview_actor(value: Dictionary) -> void:
     if preview_actor == value:
@@ -42,6 +51,9 @@ func _ready() -> void:
     set_meta("presentation_surface", "paper_ink_r1")
 
 func set_martial_context(loadout: Array, mastery_by_manual: Dictionary) -> void:
+    if _martial_context_initialized and martial_loadout == loadout and martial_mastery_by_manual == mastery_by_manual:
+        return
+    _martial_context_initialized = true
     martial_loadout.clear()
     for value in loadout:
         martial_loadout.append(str(value))
@@ -50,6 +62,9 @@ func set_martial_context(loadout: Array, mastery_by_manual: Dictionary) -> void:
     _rebuild_actions()
 
 func set_momentum(current: int, maximum: int) -> void:
+    if _momentum_initialized and momentum_maximum == maxi(1, maximum) and momentum_current == clampi(current, 0, maxi(1, maximum)):
+        return
+    _momentum_initialized = is_node_ready()
     momentum_maximum = maxi(1, maximum)
     momentum_current = clampi(current, 0, momentum_maximum)
     actions = ADAPTER_SCRIPT.new().build_ultimate_actions(momentum_current, martial_loadout, martial_mastery_by_manual)
@@ -57,6 +72,8 @@ func set_momentum(current: int, maximum: int) -> void:
     _rebuild_actions()
 
 func set_reservations(values: Array[Dictionary]) -> void:
+    if reservations == values:
+        return
     reservations.clear()
     for value in values:
         reservations.append(value.duplicate(true))
@@ -67,11 +84,11 @@ func set_interaction_enabled(enabled: bool) -> void:
     for button in action_buttons:
         var action_id := str(button.get_meta("action_id", ""))
         var action := get_action(action_id)
-        button.disabled = not interaction_enabled or bool(action.get("locked", false)) or _is_reserved(action_id)
+        button.disabled = not interaction_enabled or bool(action.get("locked", false)) or constraint_lock_reasons.has(action_id) or _is_reserved(action_id)
     set_meta("interaction_enabled", interaction_enabled)
 
 func activate_ultimate(action_id: String) -> bool:
-    if not interaction_enabled:
+    if not interaction_enabled or constraint_lock_reasons.has(action_id):
         return false
     var action := get_action(action_id)
     if action.is_empty() or bool(action.get("locked", false)) or _is_reserved(action_id):
@@ -101,7 +118,7 @@ func get_panel_snapshot() -> Dictionary:
         action_ids.append(action_id)
         if str(action.get("source", "")) == "martial_manual":
             martial_count += 1
-        if not bool(action.get("locked", false)) and not _is_reserved(action_id):
+        if not bool(action.get("locked", false)) and not constraint_lock_reasons.has(action_id) and not _is_reserved(action_id):
             enabled_count += 1
     return {
         "momentum_current": momentum_current,
@@ -144,7 +161,13 @@ func _rebuild_actions() -> void:
     action_buttons.clear()
     action_list.columns = ACTION_COLUMNS
     for action in actions:
+        action = action.duplicate(true)
         var action_id := str(action.get("id", ""))
+        var constraint_reason := str(constraint_lock_reasons.get(action_id, ""))
+        if not constraint_reason.is_empty():
+            action["locked"] = true
+            action["lock_reason"] = constraint_reason
+            action["constraint_lock_reason"] = constraint_reason
         var button := ACTION_CHOICE_CARD_SCRIPT.new() as ActionChoiceCard
         button.configure_action(action, "semantic_atlas", _action_status(action), preview_actor)
         button.set_meta("action_id", action_id)
@@ -163,6 +186,8 @@ func _rebuild_actions() -> void:
     set_meta("illustration_policy", "semantic_atlas")
 
 func _action_status(action: Dictionary) -> String:
+    if constraint_lock_reasons.has(str(action.get("id", ""))):
+        return str(constraint_lock_reasons[str(action.get("id", ""))])
     var reservation := _get_reservation(str(action.get("id", "")))
     if not reservation.is_empty():
         return "%d~%d수 예약" % [int(reservation.get("start_timing", 0)), int(reservation.get("end_timing", 0))]

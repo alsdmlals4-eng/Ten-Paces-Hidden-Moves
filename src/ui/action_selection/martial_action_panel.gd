@@ -26,6 +26,14 @@ var technique_buttons: Array[Button] = []
 var selected_manual_id := ""
 var interaction_enabled := true
 var preview_actor: Dictionary = {}
+var constraint_lock_reasons: Dictionary = {}
+var _manuals_initialized := false
+
+func set_constraint_lock_reasons(value: Dictionary) -> void:
+    if constraint_lock_reasons == value:
+        return
+    constraint_lock_reasons = value.duplicate(true)
+    _rebuild_techniques()
 
 func set_preview_actor(value: Dictionary) -> void:
     if preview_actor == value:
@@ -41,6 +49,9 @@ func _ready() -> void:
     set_meta("presentation_surface", "paper_ink_r1")
 
 func set_manuals(values: Array[Dictionary]) -> void:
+    if _manuals_initialized and manuals == values:
+        return
+    _manuals_initialized = true
     manuals.clear()
     for value in values:
         manuals.append(value.duplicate(true))
@@ -78,7 +89,7 @@ func set_interaction_enabled(enabled: bool) -> void:
     set_meta("interaction_enabled", interaction_enabled)
 
 func activate_technique(technique_id: String) -> bool:
-    if not interaction_enabled:
+    if not interaction_enabled or constraint_lock_reasons.has(technique_id):
         return false
     var technique := _find_selected_technique(technique_id)
     if technique.is_empty() or bool(technique.get("locked", false)):
@@ -96,7 +107,7 @@ func get_panel_snapshot() -> Dictionary:
     var technique_ids: Array[String] = []
     for technique in _ordered_selected_techniques():
         technique_ids.append(str(technique.get("id", "")))
-        if bool(technique.get("locked", false)):
+        if bool(technique.get("locked", false)) or constraint_lock_reasons.has(str(technique.get("id", ""))):
             locked_count += 1
         else:
             unlocked_count += 1
@@ -155,9 +166,15 @@ func _rebuild_techniques() -> void:
         int(manual.get("mastery", 0))
     ]
     for technique in _ordered_selected_techniques():
+        technique = technique.duplicate(true)
+        var constraint_reason := str(constraint_lock_reasons.get(str(technique.get("id", "")), ""))
+        if not constraint_reason.is_empty():
+            technique["locked"] = true
+            technique["lock_reason"] = constraint_reason
+            technique["constraint_lock_reason"] = constraint_reason
         var locked := bool(technique.get("locked", false))
         var button := ACTION_CHOICE_CARD_SCRIPT.new() as ActionChoiceCard
-        button.configure_action(technique, "semantic_atlas", _locked_technique_text(technique) if locked else "사용 가능", preview_actor)
+        button.configure_action(technique, "semantic_atlas", constraint_reason if not constraint_reason.is_empty() else (_locked_technique_text(technique) if locked else "사용 가능"), preview_actor)
         button.disabled = locked or not interaction_enabled
         button.set_meta("technique_id", str(technique.get("id", "")))
         button.set_meta("locked", locked)
