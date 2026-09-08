@@ -11,7 +11,9 @@
 ## 현재 단계
 
 최초 저장 공개 전 전투원별 성급 실행·복구 교정
-`TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`은 영속 저장 작업의 선행 검증 보완이다.
+`TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`과 영속 저장은 PR #333으로 병합됐다.
+다음 안전 작업은 battle presentation correctness의 `star-10 actor classification`과 `victory/defeat cue`이며,
+그 뒤 `growth/events/status/reward` 정본 공백을 다룬다. 이는 전체 Blueprint 완료 주장이 아니다.
 상세 전달 순서는 `../../../docs/04_ROADMAP.md`, 현재 결과는 Active Context/current JSON을 따른다.
 
 영속 저장·이어하기 `TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01`의 검증·전달 순서는

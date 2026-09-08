@@ -189,7 +189,8 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertNotIn("project_main_checkpoint:", current_section)
         self.assertNotIn("base_remote_main_observed:", current_section)
 
-        self.assertIn("product_stage: TEN_DUEL_CAMPAIGN_AND_BIMU_CONSTRAINTS_MAIN_MERGED_VERIFIED", current_section)
+        operating = json.loads((ROOT / "docs/planning-data/current_operating_state.json").read_text(encoding="utf-8"))
+        self.assertIn(f"product_stage: {operating['active_decision_state']}", current_section)
         self.assertIn("phase_i_vi_implementation: AUTHORIZED_AND_MERGED", current_section)
         self.assertIn(
             "future_product_mutation_authorized: false_NEW_PRODUCT_MUTATION_REQUIRES_FRESH_APPROVED_CONTRACT",
@@ -197,17 +198,10 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertIn("human_validation: NOT_RUN", current_section)
         self.assertIn("android_validation: NOT_RUN", current_section)
-        operating = json.loads((ROOT / "docs/planning-data/current_operating_state.json").read_text(encoding="utf-8"))
         self.assertIn(f"next_package: {operating['next_package']}", current_section)
         self.assertIn(f"next_planning_decision: {operating['next_planning_decision']}", current_section)
-        self.assertIn(
-            "user_directed_planning_next_package: BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS",
-            current_section,
-        )
-        self.assertIn(
-            "user_directed_planning_next_decision: TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01",
-            current_section,
-        )
+        self.assertIn(f"user_directed_planning_next_package: {operating['next_package']}", current_section)
+        self.assertIn(f"user_directed_planning_next_decision: {operating['next_planning_decision']}", current_section)
         self.assertIn(
             "user_directed_planning_status: THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_SINGLE_EXECUTE_INLINE_CAUSAL_AND_TERMINAL_RESULT_SURFACES_MAIN_MERGED_VERIFIED_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN",
             current_section,
@@ -400,6 +394,8 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
     def test_current_user_planning_status_records_deferred_human_gate_and_runtime_gap(self) -> None:
         status_path = ROOT / "docs/planning-data/current_user_planning_status.json"
         status = json.loads(status_path.read_text(encoding="utf-8"))
+        operating_path = ROOT / "docs/planning-data/current_operating_state.json"
+        operating = json.loads(operating_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
             "THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_SINGLE_EXECUTE_INLINE_CAUSAL_AND_TERMINAL_RESULT_SURFACES_MAIN_MERGED_VERIFIED_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN",
@@ -445,14 +441,8 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             "ACTIVE_MANIFEST_ARCHIVED_PR278_BASELINE_PROMOTED_MAIN_READBACK_PASS",
             status["evidence_ceiling"]["pr277_protected_approval_lifecycle"],
         )
-        self.assertEqual(
-            "BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS",
-            status["next_phase"],
-        )
-        self.assertEqual(
-            "BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS",
-            status["next_product_execution_surface"],
-        )
+        self.assertEqual(operating["next_package"], status["next_phase"])
+        self.assertEqual(operating["next_package"], status["next_product_execution_surface"])
         self.assertEqual(
             "docs/operations/2026-08-30_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_COMPARISON_DEFERRED_EXECUTION_REPORT.md",
             status["machine_runtime_readback_execution_report"],

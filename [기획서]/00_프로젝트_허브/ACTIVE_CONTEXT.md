@@ -7,7 +7,7 @@
 
 ## 현재 기준
 
-2026-09-09 durable save/continue와 최초 저장 공개 전 성급·능력치 실행 교정은 최종 전체490개 검사와 독립 전체 분기 검토(중요 이상0건)를 통과했다. 실제 저장 실패·재시도·이어하기 캡처5장을 기록했으며 protected delivery가 남아 있다. 제목의 새 여정/이어하기, 전체 셸 복원, 행로·보상·패배/재도전·완주 저장과 저장 실패 재시도를 연결했다. 실제 선택 UI가 만든 정의와 각 전투원의 성급 정의를 대조하고, 한글 능력치 참조를 실제 영문 actor.stats에 대응시킨다. 공개된 적 계획은 재구성으로 교체할 수 없으며 COMMITTED 한 번 해결/RESOLVED 재실행 없음과 구형 QA 파일 무변경 거부를 검증했다. 저장 검증 반복은 Task4에서 한정 교정됐고 Task5의 일반 속도·실제 버튼 캠페인은 격리 저장 위치에서 10승·10보상·36행로·299입력으로 162570ms에 완주했다. 237회 checkpoint 시간은 실행 보고서의 원본 표본을 따른다. 이는 디버그 native 실행이며 FPS·Human·Android·접근성 사용자·release와 전체 Blueprint 완료는 NOT_RUN이다. 성장 지출·영구 능력치 지급·해금 조건·보유 무공 전투 확장 및 사건/상태/보상 정본 공백은 후속 작업이다. main 병합 완료로 읽지 않는다. 책임 기록: `docs/operations/2026-09-08_DURABLE_SAVE_EXECUTION_REPORT.md`; 실행 교정 Decision: `TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`.
+2026-09-09 durable save/continue와 최초 저장 공개 전 성급·능력치 실행 교정은 PR #333 exact head `baabfc7ae6a29f6ebc47ea5644a110bc7258fc38`로 현재 remote check 32개를 통과하고 main `fe720f5dce686ea5b2ff68a1ec078d53544a0e92`에 정상 병합됐다. 첫 approval-label 누락 run `34265224533`의 실패는 역사 증거로 보존하고, `approved-protected-change` 적용 뒤 같은 exact head run `34265510529`의 PASS를 현재 승인 검사로 사용한다. 제목의 새 여정/이어하기, 전체 셸 복원, 행로·보상·패배/재도전·완주 저장과 저장 실패 재시도를 연결했다. 실제 선택 UI가 만든 정의와 각 전투원의 성급 정의를 대조하고, 한글 능력치 참조를 실제 영문 actor.stats에 대응시킨다. 공개된 적 계획은 재구성으로 교체할 수 없으며 COMMITTED 한 번 해결/RESOLVED 재실행 없음과 구형 QA 파일 무변경 거부를 검증했다. 실제 저장 실패·재시도·이어하기 캡처 5장을 보존한다. source `50cb8fe4` 전체 490건과 import 준비 뒤 post-merge `fe720f5d` 전체 490건은 서로 다른 실행 증거이며, fresh post-merge worktree의 첫 import 전 실행은 missing global class로 실패했다. 이 결과는 디버그 native/자동 검증이며 FPS·Human·Android·접근성 사용자·release와 전체 Blueprint 완료는 `NOT_RUN`이다. 다음 안전 작업은 battle presentation correctness의 star-10 actor classification과 victory/defeat cue이며, 그 뒤 성장 지출·영구 능력치 지급·해금 조건·보유 무공 전투 확장 및 사건/상태/보상 정본 공백을 다룬다. 책임 기록: `docs/operations/2026-09-08_DURABLE_SAVE_EXECUTION_REPORT.md`; 승인 archive: `docs/operations/2026-09-09_PR333_PROTECTED_CHANGE_APPROVAL_RECORD.md`; 실행 교정 Decision: `TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`.
 
 이전 Task3 검증 당시 전체 Python487건/391.40초, 저장 캠페인10승·10보상·36행로·299입력,237회 저장 평균692ms/최대1144ms는 교정 전 역사 측정으로 보존한다. Task4·Task5 이후 성능의 현행 값으로 사용하지 않는다.
 
@@ -70,14 +70,14 @@ current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN
 base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
 live_exact_sha_authority: NONE_REFETCH_REQUIRED
 active_project_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
-product_stage: TEN_DUEL_CAMPAIGN_AND_BIMU_CONSTRAINTS_MAIN_MERGED_VERIFIED
+product_stage: ACTOR_BOUND_DURABLE_CONTINUE_PR333_MAIN_MERGED_VERIFIED
 runtime_work_mode: REVIEW
 historical_runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
-active_planning_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
+active_planning_pr: NONE
 active_planning_parent_pr: NONE
-active_approval_count: SCOPED_BUILD_APPROVED_HUMAN_FINAL_NOT_RUN
-active_decision_state: ACTOR_BOUND_DURABLE_CONTINUE_REVIEW_APPROVED_NATIVE_CAPTURED_DELIVERY_PENDING
+active_approval_count: SCOPED_BUILD_MERGED_HUMAN_FINAL_NOT_RUN
+active_decision_state: ACTOR_BOUND_DURABLE_CONTINUE_PR333_MAIN_MERGED_VERIFIED
 source_decision: TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
@@ -88,7 +88,7 @@ windows_validation: BIMU_CONSTRAINT_VISIBLE_1280X800_CAPTURED_720_HEADLESS_ONLY_
 android_validation: NOT_RUN
 engine: Godot 4.7
 historical_runtime_implementation: TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92
-runtime_implementation: TEN_DUEL_MERGED_BIMU_CONSTRAINTS_MAIN_MERGED_VERIFIED
+runtime_implementation: ACTOR_BOUND_DURABLE_CONTINUE_PR333_MAIN_MERGED_VERIFIED
 latest_combat_planning_runtime: PRODUCT_VALIDATION_AUTOMATED
 automated_validation: PASS
 human_validation: NOT_RUN
@@ -96,12 +96,12 @@ accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
 performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 phase_i_vi_implementation: AUTHORIZED_AND_MERGED
 future_product_mutation_authorized: false_NEW_PRODUCT_MUTATION_REQUIRES_FRESH_APPROVED_CONTRACT
-next_package: ACTOR_BOUND_SAVE_INDEPENDENT_REVIEW_AND_PROTECTED_DELIVERY_THEN_GROWTH_EVENT_STATUS_REWARD_CANON_GAPS
-next_planning_decision: TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01
+next_package: BATTLE_PRESENTATION_CORRECTNESS_STAR10_ACTOR_CLASSIFICATION_AND_VICTORY_DEFEAT_CUE_THEN_GROWTH_EVENT_STATUS_REWARD_CANON_GAPS
+next_planning_decision: BATTLE_PRESENTATION_CORRECTNESS_DECISION_REQUIRED
 user_directed_planning_work_mode: REVIEW_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_COMPARISON_DEFERRED
 user_directed_planning_decision: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
-user_directed_planning_next_package: BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS
-user_directed_planning_next_decision: TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01
+user_directed_planning_next_package: BATTLE_PRESENTATION_CORRECTNESS_STAR10_ACTOR_CLASSIFICATION_AND_VICTORY_DEFEAT_CUE_THEN_GROWTH_EVENT_STATUS_REWARD_CANON_GAPS
+user_directed_planning_next_decision: BATTLE_PRESENTATION_CORRECTNESS_DECISION_REQUIRED
 user_directed_planning_status: THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_SINGLE_EXECUTE_INLINE_CAUSAL_AND_TERMINAL_RESULT_SURFACES_MAIN_MERGED_VERIFIED_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN
 user_directed_planning_single_execute_status: IMPLEMENTED_MERGED_MAIN_PR329_REMOTE_CI_32_SUCCESS_POSTMERGE_APPROVAL_LIFECYCLE_IN_PROGRESS_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN
 user_directed_planning_current_direction: FRONTAL_SHARED_GROUND_DUEL_NO_VISIBLE_LOGICAL_BOARD_PLUS_3_BRANCH_4_PICK_JIANGHU_ROUTE_PLUS_SINGLE_PLAYER_FACING_ACTION_EXECUTE_CTA_PLUS_CURRENT_CARD_VS_COMPARE_RAIL_PLUS_INLINE_CAUSAL_RECAP_PLUS_UNIFIED_BLUE_GRAY_HANJI_INK_CANDIDATE_STYLE_WITHOUT_SPINE_RUNTIME

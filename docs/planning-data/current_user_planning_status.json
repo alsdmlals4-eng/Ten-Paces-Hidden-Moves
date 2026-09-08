@@ -7,16 +7,22 @@
   "durable_continue_continuation": {
     "decision": "TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01",
     "parent_decision": "TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01",
-    "integration_status": "LOCAL_MACHINE_VERIFIED_CONTROLLER_REVIEW_PENDING",
-    "review_correction": "ACTOR_OWNED_MASTERY_STAT_AND_STRICT_CONTINUE_VERIFIED_INDEPENDENT_REVIEW_PENDING",
+    "integration_status": "MAIN_MERGED_VERIFIED_PR333",
+    "review_correction": "ACTOR_OWNED_MASTERY_STAT_AND_STRICT_CONTINUE_INDEPENDENT_REVIEW_APPROVED",
+    "implementation_pr": 333,
+    "implementation_exact_head": "baabfc7ae6a29f6ebc47ea5644a110bc7258fc38",
+    "merge_commit": "fe720f5dce686ea5b2ff68a1ec078d53544a0e92",
+    "merged_at": "2026-09-08T18:55:45Z",
+    "remote_check_summary": "32_SUCCESS_0_CURRENT_FAILURE_0_PENDING_PLUS_HISTORICAL_MISSING_LABEL_FAILURE",
     "implementation_record": "docs/operations/2026-09-08_DURABLE_SAVE_EXECUTION_REPORT.md",
     "machine_runtime": "ORDINARY_NATIVE_PERSISTED_CAMPAIGN_10_WINS_10_REWARDS_36_ROUTES_299_ACTIVATIONS",
     "storage_performance": "TASK5_237_INTEGRATED_WRITES_MEAN_97_329MS_MAX_243MS_DEBUG_NATIVE_NO_FPS_CLAIM",
     "preoptimization_storage_history": "TASK3_237_INTEGRATED_WRITES_MEAN_692MS_MAX_1144MS_HISTORICAL",
     "human_android_accessibility_release": "NOT_RUN",
     "remaining": [
-      "independent controller review and visible capture",
-      "protected CI merge and main readback"
+      "battle presentation correctness: star-10 actor classification and victory/defeat cue",
+      "growth, events, status and reward canon gaps",
+      "whole Blueprint and Human/Android/accessibility/release verification"
     ]
   },
   "constraint_continuation": {
@@ -183,7 +189,7 @@
   "balance_measurement_representative_policy_coverage_postmerge_readback": "docs/operations/2026-08-30_PR293_REPRESENTATIVE_POLICY_COVERAGE_POSTMERGE_READBACK.md",
   "balance_measurement_representative_policy_coverage_scope": "ENGINE_DIRECT_NON_SHIPPING_OPENING_NO_ROUTE_15_CANDIDATES_15_LEGAL_STARTER_LOADOUTS_6_PUBLIC_POLICIES_5_AI_SEEDS_SCHEMA_3_SAFE_AGGREGATE_SELECTION_COUNTS",
   "long_horizon_user_direction": "IMPLEMENT_GDD_BY_APPROVED_VERIFIED_GODOT_PACKAGES_WITHOUT_SILENT_CORE_SCOPE_EXPANSION",
-  "next_product_execution_surface": "BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS",
+  "next_product_execution_surface": "BATTLE_PRESENTATION_CORRECTNESS_STAR10_ACTOR_CLASSIFICATION_AND_VICTORY_DEFEAT_CUE_THEN_GROWTH_EVENT_STATUS_REWARD_CANON_GAPS",
   "machine_runtime_readback_execution_report": "docs/operations/2026-08-30_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_COMPARISON_DEFERRED_EXECUTION_REPORT.md",
   "machine_runtime_readback_status": "PARTIAL_CURRENT_MAIN_GODOT_4_7_1_VISIBLE_COMBAT_SCREEN_AND_6750_ROW_REPORT_SHA_MATCHED_HUMAN_PLAYER_COMPARISON_DEFERRED",
   "machine_runtime_readback_report_sha256": "A0669A0727C9608B6A240910CE529263C1982C510E4B3C376BD58D8AB5F66558",
@@ -230,7 +236,7 @@
   "windows_android_adapter_implementation_authorized": false,
   "product_implementation_authorized": true,
   "implementation_gate": "SCOPED_PC_FIRST_VERTICAL_SLICE_GATE_PLUS_EXISTING_PLATFORM_EVIDENCE_CEILINGS",
-  "next_phase": "BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS",
+  "next_phase": "BATTLE_PRESENTATION_CORRECTNESS_STAR10_ACTOR_CLASSIFICATION_AND_VICTORY_DEFEAT_CUE_THEN_GROWTH_EVENT_STATUS_REWARD_CANON_GAPS",
   "current_screen_visual_coverage_inventory": "docs/planning-data/current_screen_visual_coverage_inventory_20260828.json",
   "next_image_generation": "WHOLE_SCENE_ATLAS_CANDIDATE_GENERATED; ACTUAL_RUNTIME_CONSUMER_BOUND_SPLIT_BRIEFS_REQUIRE_SEPARATE_GODOT_BUILD_PACKAGE_AND_USER_FINAL_LOCK",
   "next_visual_batch": [],
