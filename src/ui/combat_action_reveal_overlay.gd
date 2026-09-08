@@ -19,6 +19,7 @@ var _player_widgets: Dictionary = {}
 var _enemy_widgets: Dictionary = {}
 var _snapshot: Dictionary = {}
 var _presentation_rect := Rect2()
+var _layout_revision := 0
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -153,6 +154,7 @@ func _make_action_callout(node_name: String) -> Dictionary:
 	var action_name := Label.new()
 	action_name.name = "ActionName"
 	action_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	action_name.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	action_name.add_theme_font_size_override("font_size", 17)
 	action_name.add_theme_color_override("font_color", PAPER)
 	action_name.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -161,6 +163,7 @@ func _make_action_callout(node_name: String) -> Dictionary:
 	var facts := Label.new()
 	facts.name = "Facts"
 	facts.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	facts.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	facts.add_theme_font_size_override("font_size", 11)
 	facts.add_theme_color_override("font_color", Color("c4b391"))
 	facts.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -202,6 +205,17 @@ func _fill_callout(widgets: Dictionary, events: Array, side_name: String, accent
 		facts.text = "%s · %d수" % [str(first.get("category_label", first.get("category", "행동"))), int(first.get("action_slots", 1))]
 		if str(first.get("category", "")) == "attack":
 			facts.text += " · 사거리 %s" % str(first.get("range_text", "-"))
+			if first.has("raw_damage"):
+				facts.text += " · 위력 %d" % int(first["raw_damage"])
+			if str(first.get("type", "")) == "clash" and first.has("clash_opponent_raw_damage") and first.has("clash_difference"):
+				facts.text += " 대 %d · 차이 %d" % [int(first["clash_opponent_raw_damage"]), int(first["clash_difference"])]
+		var costs := PackedStringArray()
+		if first.has("stamina_cost"):
+			costs.append("기력%d" % int(first["stamina_cost"]))
+		if first.has("internal_cost"):
+			costs.append("내력%d" % int(first["internal_cost"]))
+		if not costs.is_empty():
+			facts.text += " · 소모 %s" % "/".join(costs)
 	if outcome != null:
 		outcome.text = _event_outcome(first)
 		if events.size() > 1:
@@ -257,23 +271,54 @@ func _layout_cards() -> void:
 		_ink_veil.position = region.position
 		_ink_veil.size = region.size
 	var card_width := clampf(region.size.x * 0.17, 146.0, 214.0)
-	var card_height := clampf(region.size.y * 0.20, 64.0, 86.0)
-	var center_x := region.position.x + region.size.x * 0.5
-	var card_y := clampf(region.position.y + region.size.y * 0.18, region.position.y + 76.0, region.end.y - card_height - 54.0)
-	var side_gap := clampf(region.size.x * 0.055, 38.0, 72.0)
-	(_player_widgets.get("panel") as Control).position = Vector2(center_x - side_gap - card_width, card_y)
-	(_player_widgets.get("panel") as Control).size = Vector2(card_width, card_height)
-	(_enemy_widgets.get("panel") as Control).position = Vector2(center_x + side_gap, card_y)
-	(_enemy_widgets.get("panel") as Control).size = Vector2(card_width, card_height)
-	_heading.position = Vector2(region.position.x + region.size.x * 0.30, region.position.y + maxf(12.0, region.size.y * 0.06))
-	_heading.size = Vector2(region.size.x * 0.40, 38.0)
-	_phase.position = Vector2(size.x * 0.30, _heading.position.y + 39.0)
+	var player_panel := _player_widgets.get("panel") as Control
+	var enemy_panel := _enemy_widgets.get("panel") as Control
+	# Width is authoritative before Container minimum heights are sampled. This
+	# prevents a long previous row from leaving a stale unwrapped minimum width.
+	for widgets in [_player_widgets, _enemy_widgets]:
+		for key in ["name", "facts", "outcome"]:
+			var label := widgets.get(key) as Label
+			if label != null:
+				label.custom_minimum_size.x = 0.0
+				label.size.x = maxf(1.0, card_width - 16.0)
+	player_panel.size = Vector2(card_width, 64.0)
+	enemy_panel.size = Vector2(card_width, 64.0)
+	_heading.position = Vector2(region.position.x + region.size.x * 0.30, region.position.y)
+	_heading.size = Vector2(region.size.x * 0.40, 40.0)
+	_phase.position = Vector2(size.x * 0.30, _heading.get_rect().end.y)
 	_phase.position.x = region.position.x + region.size.x * 0.30
 	_phase.size = Vector2(region.size.x * 0.40, 24.0)
-	_versus.position = Vector2(center_x - 32.0, card_y + card_height * 0.10)
+	_layout_revision += 1
+	call_deferred("_settle_card_layout", _layout_revision, region, card_width)
+
+func _settle_card_layout(revision: int, region: Rect2, card_width: float) -> void:
+	if revision != _layout_revision or not is_inside_tree():
+		return
+	var player_panel := _player_widgets.get("panel") as Control
+	var enemy_panel := _enemy_widgets.get("panel") as Control
+	var required_height := maxf(player_panel.get_combined_minimum_size().y, enemy_panel.get_combined_minimum_size().y)
+	var result_height := maxf(34.0, _result.get_combined_minimum_size().y)
+	# Re-anchor rows after actual font/container sizes have settled.
+	_heading.position.y = region.position.y
+	_phase.position.y = _heading.get_rect().end.y
+	var card_top := _phase.get_rect().end.y
+	var result_gap := 4.0
+	var available_height := maxf(1.0, region.end.y - card_top - result_height - result_gap)
+	var card_height := minf(maxf(clampf(region.size.y * 0.20, 64.0, 112.0), required_height), available_height)
+	var center_x := region.position.x + region.size.x * 0.5
+	var side_gap := clampf(region.size.x * 0.055, 38.0, 72.0)
+	player_panel.position = Vector2(center_x - side_gap - card_width, card_top)
+	player_panel.size = Vector2(card_width, card_height)
+	enemy_panel.position = Vector2(center_x + side_gap, card_top)
+	enemy_panel.size = Vector2(card_width, card_height)
+	_versus.position = Vector2(center_x - 32.0, card_top + maxf(0.0, (card_height - 42.0) * 0.5))
 	_versus.size = Vector2(64.0, 42.0)
-	_result.position = Vector2(region.position.x + region.size.x * 0.20, card_y + card_height + 6.0)
-	_result.size = Vector2(region.size.x * 0.60, 34.0)
+	_result.position = Vector2(region.position.x + region.size.x * 0.20, card_top + card_height + result_gap)
+	_result.size = Vector2(region.size.x * 0.60, result_height)
+	var bounded := region.encloses(_heading.get_rect()) and region.encloses(_phase.get_rect()) and region.encloses(player_panel.get_rect()) and region.encloses(enemy_panel.get_rect()) and region.encloses(_versus.get_rect()) and region.encloses(_result.get_rect())
+	bounded = bounded and not player_panel.get_rect().intersects(enemy_panel.get_rect()) and not _versus.get_rect().intersects(player_panel.get_rect()) and not _versus.get_rect().intersects(enemy_panel.get_rect())
+	bounded = bounded and not _result.get_rect().intersects(player_panel.get_rect()) and not _result.get_rect().intersects(enemy_panel.get_rect())
+	set_meta("layout_bounded", bounded)
 
 func _resolved_presentation_rect() -> Rect2:
 	if _presentation_rect.size.x > 0.0 and _presentation_rect.size.y > 0.0:

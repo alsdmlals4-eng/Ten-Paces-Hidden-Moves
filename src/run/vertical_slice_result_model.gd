@@ -19,6 +19,7 @@ func build_snapshot(terminal_result: Dictionary, player_loadout, opponent: Dicti
         "grade_status": GRADE_STATUS,
         "final_grade": "",
         "battle_metrics": battle_metrics.normalize(terminal_result.get("battle_metrics", {})),
+        "review_summary": (terminal_result.get("review_summary", {}) as Dictionary).duplicate(true) if typeof(terminal_result.get("review_summary", {})) == TYPE_DICTIONARY else {},
         "reward_options": build_reward_options(player_loadout, opponent)
     }
 

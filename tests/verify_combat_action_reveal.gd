@@ -60,10 +60,10 @@ func _run() -> void:
 	_expect(int(board.get_layout_snapshot().get("resolution_count", 0)) == resolution_before + 1, "A reveal sequence must keep one authoritative resolver call per bundle.")
 	board._skip_presentation()
 	for _attempt in range(80):
-		if str(board.get_meta("presentation_state", "")) == "review_ready":
+		if str(board.get_meta("presentation_state", "")) == "next_bundle_ready":
 			break
 		await create_timer(0.05).timeout
-	_expect(str(board.get_meta("presentation_state", "")) == "review_ready", "Skip must preserve ordered snapshot completion and reach review.")
+	_expect(str(board.get_meta("presentation_state", "")) == "next_bundle_ready", "Skip must preserve ordered snapshot completion and reopen planning without a review click.")
 
 	board.queue_free()
 	await process_frame

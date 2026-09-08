@@ -42,17 +42,17 @@ func _run() -> void:
                 board.combat_progress_button.request_progress()
                 for _attempt in range(120):
                     await process_frame
-                    if str(board.get_meta("presentation_state", "")) == "review_ready":
+                    if str(board.get_meta("presentation_state", "")) == "terminal_result_ready":
                         break
                     await create_timer(0.05).timeout
-                if str(board.get_meta("presentation_state", "")) != "review_ready":
-                    failures.append("A defeated combatant must stop in terminal review_ready before restart.")
+                if str(board.get_meta("presentation_state", "")) != "terminal_result_ready":
+                    failures.append("A defeated combatant must stop at the inline terminal result before restart.")
                 if not board._inputs_locked():
                     failures.append("Terminal review must keep planning inputs locked.")
-                if board.combat_review_panel == null or not board.combat_review_panel.visible:
-                    failures.append("Terminal result must show the combat review panel.")
-                elif board.combat_review_panel.get_continue_button().text != "결전 다시 시작":
-                    failures.append("Terminal review continue action must be 결전 다시 시작.")
+                if board.combat_review_panel != null and board.combat_review_panel.visible:
+                    failures.append("Terminal result must not show the combat review panel.")
+                if not board.restart_combat_button.visible:
+                    failures.append("Standalone terminal result must expose the existing restart action.")
                 if str(board.get_meta("last_sfx_kind", "")) != "defeat":
                     failures.append("A terminal result must request the defeat SFX after its hit presentation.")
 

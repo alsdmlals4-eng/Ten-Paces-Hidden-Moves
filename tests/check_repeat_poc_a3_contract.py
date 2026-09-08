@@ -48,14 +48,18 @@ def main() -> None:
     for token in (
         "COMBAT_REVIEW_SCENE",
         "combat_review_panel",
-        '"review_ready"',
-        "_show_review_panel",
+        "_finish_bundle_presentation",
+        "_advance_to_next_bundle",
+        "inline_result_label",
         "_on_review_detail_requested",
         "_on_review_continue_requested",
         "set_collapsed(false)",
         "last_review_summary",
+        "combat_review_panel.hide_review()",
     ):
         assert token in board, f"board A3 integration missing token: {token}"
+    assert "_show_review_panel" not in board, "active board must not restore the standalone review gate"
+    assert "combat_review_panel.show_summary" not in board, "active board must not present the legacy review overlay"
     assert 'return _presentation_state not in ["planning", "next_bundle_ready"]' in board
 
     print("repeat POC A3 static contract: PASS")

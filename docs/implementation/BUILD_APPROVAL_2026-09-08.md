@@ -19,6 +19,13 @@ Mechanical checks, visible captures, Human play, Android, rights and release are
 The completed public-policy headless campaign does not mean every Blueprint feature or
 Human playtest is finished. Exact protected-path approval must match the final PR diff.
 
+## Separate continuation: inline combat results
+
+- Decision: `TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01`, sections 1.2/1.3.
+- Scope: remove the active standalone review overlay/click, retain the real resolved cause inline, hand the terminal receipt through the existing internal REVIEW state to RESULT exactly once, and size reveal callouts/results from actual minimum content height.
+- Existing resolver, 3/3/4 bundles, public-only AI, rewards/resources, save schema, audio, engine and approved assets remain unchanged. Existing resolved raw power/cost fields may be displayed; UI does not recompute combat values.
+- Machine/headless evidence does not supply Windows visible Human, physical input, accessibility-user, Android-device, release-performance or shipping acceptance.
+
 ## Separate continuation: bimu constraints runtime
 
 - Decision: `TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01`.

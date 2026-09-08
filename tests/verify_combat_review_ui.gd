@@ -48,32 +48,25 @@ func _verify_panel() -> void:
 func _verify_board_gate() -> void:
     var board := BOARD_SCENE.instantiate() as CombatBoardPreview
     root.add_child(board)
-    for _index in range(4):
+    for _index in range(8):
         await process_frame
-    board._last_review_summary = _summary()
-    board._show_review_panel(false)
-    await process_frame
-    _expect(str(board.get_meta("presentation_state", "")) == "review_ready", "Board must enter review_ready.")
-    _expect(bool(board.get_meta("inputs_locked", false)), "Planning inputs must remain locked during review.")
-    _expect(board.combat_review_panel.visible, "Board review panel must be visible.")
+    board._reduced_motion = true
+    for _index in range(3):
+        board.action_selection_dock.basic_panel.buttons[2].emit_signal("pressed")
+        await process_frame
+    board.combat_progress_button.request_progress()
+    var deadline := Time.get_ticks_msec() + 15000
+    while str(board.get_meta("presentation_state", "")) != "next_bundle_ready" and Time.get_ticks_msec() < deadline:
+        await process_frame
+    _expect(str(board.get_meta("presentation_state", "")) == "next_bundle_ready", "Board must continue without a standalone review gate.")
+    _expect(not bool(board.get_meta("inputs_locked", true)), "Planning inputs must unlock for the next bundle.")
+    _expect(not board.combat_review_panel.visible, "Legacy review panel must remain hidden in active board integration.")
+    _expect(board.inline_result_label.is_visible_in_tree(), "Active board must retain the resolved cause inline.")
+    _expect(not str(board.get_meta("inline_result_cause", "")).is_empty(), "Inline result must consume the actual review summary cause.")
     board._toggle_reduced_motion()
     board._toggle_sound()
     board._skip_presentation()
-    _expect(board.combat_review_panel.get_display_text().contains("[합]"), "Review text must survive accessibility presentation options.")
-    board._on_review_detail_requested()
-    _expect(not board.combat_log_panel.collapsed, "Detail request must expand existing combat log.")
-    board._on_review_continue_requested()
-    await process_frame
-    _expect(str(board.get_meta("presentation_state", "")) == "next_bundle_ready", "Continue must unlock the next bundle state.")
-    _expect(not board.combat_review_panel.visible, "Continue must hide review panel.")
-
-    board.combat_state["player"]["health"] = [0, 30]
-    board._last_review_summary = _summary()
-    board._show_review_panel(true)
-    board._on_review_continue_requested()
-    await process_frame
-    _expect(str(board.get_meta("presentation_state", "")) == "planning", "Terminal continue must restart combat.")
-    _expect(board._last_review_summary.is_empty(), "Restart must clear review summary.")
+    _expect(not board.combat_review_panel.visible, "Presentation options must not restore the legacy overlay.")
     board.queue_free()
     await process_frame
 
