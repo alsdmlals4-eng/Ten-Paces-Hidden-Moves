@@ -400,11 +400,7 @@ func _confirm_terminal_result_once() -> void:
 func _build_vertical_slice_terminal_result() -> Dictionary:
     var player_health := _current_health("player")
     var enemy_health := _current_health("enemy")
-    var outcome := "draw"
-    if enemy_health <= 0 and player_health > 0:
-        outcome = "win"
-    elif player_health <= 0 and enemy_health > 0:
-        outcome = "loss"
+    var outcome := CombatResolutionEngine.battle_outcome(combat_state)
 
     var metrics := _battle_metrics_helper.make_initial_metrics() if _battle_metrics_helper != null else {}
     if combat_state.has("battle_metrics") and typeof(combat_state.get("battle_metrics")) == TYPE_DICTIONARY:

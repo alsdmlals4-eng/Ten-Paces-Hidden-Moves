@@ -1,0 +1,119 @@
+extends Node
+
+# Diagnostic-only scene: real board and resolver; explicit high-mastery fixtures.
+# No run session/store is instantiated and no player save is read or written.
+const BOARD = preload("res://scenes/combat/combat_board_preview.tscn")
+const ENGINE = preload("res://src/run/vertical_slice_metrics_combat_resolution_engine.gd")
+var board
+var case_name := ""
+var capture_ready := false
+var freeze_kind := ""
+var impact_frames := 0
+
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	for child in get_tree().root.get_children():
+		if child.name in ["HeraGameInspector", "_mcp_game_helper"]:
+			child.process_mode = Node.PROCESS_MODE_ALWAYS
+	call_deferred("_load_case", "peng")
+
+func qa_peng() -> bool:
+	call_deferred("_load_case", "peng")
+	return true
+
+func qa_purple() -> bool:
+	call_deferred("_load_case", "purple")
+	return true
+
+func qa_clash() -> bool:
+	call_deferred("_load_case", "clash")
+	return true
+
+func qa_evade() -> bool:
+	call_deferred("_load_case", "evade")
+	return true
+
+func qa_win() -> bool:
+	call_deferred("_load_case", "win")
+	return true
+
+func qa_loss() -> bool:
+	call_deferred("_load_case", "loss")
+	return true
+
+func qa_draw() -> bool:
+	call_deferred("_load_case", "draw")
+	return true
+
+func qa_snapshot() -> Dictionary:
+	return {"case": case_name, "capture_ready": capture_ready, "viewport": str(get_viewport().get_visible_rect().size),
+		"source": "actual_board_and_resolver_with_seeded_fixture", "not_organic_growth": true,
+		"phase": board.get_meta("presentation_feedback_phase", "") if is_instance_valid(board) else "",
+		"kind": board.get_meta("presentation_feedback_kind", "") if is_instance_valid(board) else "",
+		"sfx": board.get_meta("last_sfx_kind", "") if is_instance_valid(board) else "",
+		"event": board.get_meta("presentation_feedback_event", {}) if is_instance_valid(board) else {}}
+
+func _load_case(selected: String) -> void:
+	get_tree().paused = false
+	capture_ready = false
+	freeze_kind = ""
+	impact_frames = 0
+	if is_instance_valid(board):
+		board.queue_free()
+		await get_tree().process_frame
+	case_name = selected
+	board = BOARD.instantiate()
+	board.name = "ActualCombatBoard"
+	board.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(board)
+	for index in range(5):
+		await get_tree().process_frame
+	board._sound_muted = true
+	if selected in ["win", "loss", "draw"]:
+		board.combat_state.player.health[0] = 0 if selected in ["loss", "draw"] else 24
+		board.combat_state.enemy.health[0] = 0 if selected in ["win", "draw"] else 21
+		board._finalize_resolved_bundle()
+		for index in range(3):
+			await get_tree().process_frame
+		capture_ready = true
+		print("NATIVE_FEEDBACK_READY ", JSON.stringify(qa_snapshot()))
+		return
+	var engine = ENGINE.new()
+	var manual := "hebei_peng_five_tigers_saber" if selected == "peng" else "mount_hua_purple_mist_art"
+	engine.configure_martial_loadouts([manual], {manual: 10}, [], {})
+	var id := manual + "_star10" if selected in ["peng", "purple"] else "basic_heavy_attack"
+	var definition: Dictionary = engine.get_actor_card_definition(id, "player")
+	var timing: int = int(definition.action_slots)
+	engine.rules.enemy_bundles = {"1": []}
+	if selected == "clash":
+		engine.rules.enemy_bundles = {"1": [{"card_id": "basic_heavy_attack", "timing": 1, "direction": -1}]}
+	elif selected == "evade":
+		engine.rules.enemy_bundles = {"1": [{"card_id": "basic_evade", "timing": timing}]}
+	var actor := {"name": "연출 검증", "health": [100,100], "stamina": [30,30], "internal": [30,30], "momentum": [5,5],
+		"stats": {"external": 10, "constitution": 10, "agility": 10, "internal_power": 10, "insight": 10}, "defense": 0, "statuses": []}
+	var state: Dictionary = engine.make_initial_state({"player": actor.duplicate(true), "enemy": actor.duplicate(true)}, 4, 5)
+	state.ai_enabled = false
+	if selected == "purple":
+		state.player.health[0] = 60
+		state.player.stamina[0] = 3
+		state.player.internal[0] = 3
+	board.resolution_engine = engine
+	board.combat_state = state
+	board._committed_state_before = state.duplicate(true)
+	board._committed_player_plan_snapshot = [{"card_id": id, "definition": definition, "anchor_index": 1,
+		"direction": 1, "target_ready": true, "target_tile": 5, "origin_tile": 4}]
+	board._apply_combat_state_to_view()
+	freeze_kind = "ultimate" if selected in ["peng", "purple"] else ("clash" if selected == "clash" else "outcome")
+	board._resolve_and_present({"round_number": 1, "bundle_index": 1})
+
+func _process(_delta: float) -> void:
+	if capture_ready or freeze_kind.is_empty() or not is_instance_valid(board):
+		return
+	if str(board.get_meta("presentation_feedback_phase", "")) != "impact" or str(board.get_meta("presentation_feedback_kind", "")) != freeze_kind:
+		impact_frames = 0
+		return
+	impact_frames += 1
+	if impact_frames >= 3:
+		get_tree().paused = true
+		capture_ready = true
+		print("NATIVE_FEEDBACK_READY ", JSON.stringify(qa_snapshot()))

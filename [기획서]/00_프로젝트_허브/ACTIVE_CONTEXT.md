@@ -7,6 +7,8 @@
 
 ## 현재 기준
 
+2026-09-09 전투 피드백 교정은 로컬 제품 `6dded6f133e29a7deadfb3a623f23390439f1d4a`까지 구현·독립 검토됐다. 실제 전조8건의 거짓 절초 발동을0건으로 교정했고, 필중+막기의 잔여 피해22→18→9를 유지한다. 승/패/무승부 cue, actor-owned 절초, 실제7장 캡처를 확보했다. 캡처는 고성급·고자원 fixture/직접 종료 상태이며 정상 성장 플레이나 Human 승인 증거가 아니다. 현재 branch 전체 검사는496PASS/로드맵 링크1FAIL 뒤 해당 owner와 관련31검사를 교정·통과했고, 병합·최종 exact-head 검증은 진행 중이다. 전투 영역/글자 중첩·빈 공간, 실제 고유 대응·공통 방어와 v1 저장 완주 호환, 성장/사건/상태/보상은 남아 있다. 현행 책임 기록은 `docs/operations/2026-09-09_COMBAT_FEEDBACK_EXECUTION_REPORT.md`다. 아래 병합 이력의 당시 다음 작업 문구는 역사로 읽으며 실제 순서는 current JSON을 따른다.
+
 2026-09-09 durable save/continue와 최초 저장 공개 전 성급·능력치 실행 교정은 PR #333 exact head `baabfc7ae6a29f6ebc47ea5644a110bc7258fc38`로 현재 remote check 32개를 통과하고 main `fe720f5dce686ea5b2ff68a1ec078d53544a0e92`에 정상 병합됐다. 첫 approval-label 누락 run `34265224533`의 실패는 역사 증거로 보존하고, `approved-protected-change` 적용 뒤 같은 exact head run `34265510529`의 PASS를 현재 승인 검사로 사용한다. 제목의 새 여정/이어하기, 전체 셸 복원, 행로·보상·패배/재도전·완주 저장과 저장 실패 재시도를 연결했다. 실제 선택 UI가 만든 정의와 각 전투원의 성급 정의를 대조하고, 한글 능력치 참조를 실제 영문 actor.stats에 대응시킨다. 공개된 적 계획은 재구성으로 교체할 수 없으며 COMMITTED 한 번 해결/RESOLVED 재실행 없음과 구형 QA 파일 무변경 거부를 검증했다. 실제 저장 실패·재시도·이어하기 캡처 5장을 보존한다. source `50cb8fe4` 전체 490건과 import 준비 뒤 post-merge `fe720f5d` 전체 490건은 서로 다른 실행 증거이며, fresh post-merge worktree의 첫 import 전 실행은 missing global class로 실패했다. 이 결과는 디버그 native/자동 검증이며 FPS·Human·Android·접근성 사용자·release와 전체 Blueprint 완료는 `NOT_RUN`이다. 다음 안전 작업은 battle presentation correctness의 star-10 actor classification과 victory/defeat cue이며, 그 뒤 성장 지출·영구 능력치 지급·해금 조건·보유 무공 전투 확장 및 사건/상태/보상 정본 공백을 다룬다. 책임 기록: `docs/operations/2026-09-08_DURABLE_SAVE_EXECUTION_REPORT.md`; 승인 archive: `docs/operations/2026-09-09_PR333_PROTECTED_CHANGE_APPROVAL_RECORD.md`; 실행 교정 Decision: `TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`.
 
 이전 Task3 검증 당시 전체 Python487건/391.40초, 저장 캠페인10승·10보상·36행로·299입력,237회 저장 평균692ms/최대1144ms는 교정 전 역사 측정으로 보존한다. Task4·Task5 이후 성능의 현행 값으로 사용하지 않는다.
@@ -70,15 +72,15 @@ current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN
 base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
 live_exact_sha_authority: NONE_REFETCH_REQUIRED
 active_project_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
-product_stage: ACTOR_BOUND_DURABLE_CONTINUE_PR333_MAIN_MERGED_VERIFIED
-runtime_work_mode: REVIEW
+product_stage: COMBAT_FEEDBACK_MACHINE_VERIFIED_NATIVE_FIXTURE_CAPTURED_DELIVERY_IN_PROGRESS
+runtime_work_mode: BUILD
 historical_runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
 active_planning_pr: NONE
 active_planning_parent_pr: NONE
-active_approval_count: SCOPED_BUILD_MERGED_HUMAN_FINAL_NOT_RUN
-active_decision_state: ACTOR_BOUND_DURABLE_CONTINUE_PR333_MAIN_MERGED_VERIFIED
-source_decision: TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01
+active_approval_count: SCOPED_BUILD_AUTHORIZED_HUMAN_FINAL_NOT_RUN
+active_decision_state: COMBAT_FEEDBACK_MACHINE_VERIFIED_NATIVE_FIXTURE_CAPTURED_DELIVERY_IN_PROGRESS
+source_decision: TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
 platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
@@ -96,12 +98,12 @@ accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
 performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 phase_i_vi_implementation: AUTHORIZED_AND_MERGED
 future_product_mutation_authorized: false_NEW_PRODUCT_MUTATION_REQUIRES_FRESH_APPROVED_CONTRACT
-next_package: BATTLE_PRESENTATION_CORRECTNESS_STAR10_ACTOR_CLASSIFICATION_AND_VICTORY_DEFEAT_CUE_THEN_GROWTH_EVENT_STATUS_REWARD_CANON_GAPS
-next_planning_decision: BATTLE_PRESENTATION_CORRECTNESS_DECISION_REQUIRED
+next_package: COMBAT_FEEDBACK_PROTECTED_DELIVERY_THEN_SHARED_COMBAT_EXECUTION_WITH_V1_RUN_COMPATIBILITY_THEN_GROWTH_EVENTS_STATUS_REWARDS
+next_planning_decision: TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01
 user_directed_planning_work_mode: REVIEW_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_COMPARISON_DEFERRED
 user_directed_planning_decision: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
-user_directed_planning_next_package: BATTLE_PRESENTATION_CORRECTNESS_STAR10_ACTOR_CLASSIFICATION_AND_VICTORY_DEFEAT_CUE_THEN_GROWTH_EVENT_STATUS_REWARD_CANON_GAPS
-user_directed_planning_next_decision: BATTLE_PRESENTATION_CORRECTNESS_DECISION_REQUIRED
+user_directed_planning_next_package: COMBAT_FEEDBACK_PROTECTED_DELIVERY_THEN_SHARED_COMBAT_EXECUTION_WITH_V1_RUN_COMPATIBILITY_THEN_GROWTH_EVENTS_STATUS_REWARDS
+user_directed_planning_next_decision: TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01
 user_directed_planning_status: THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_SINGLE_EXECUTE_INLINE_CAUSAL_AND_TERMINAL_RESULT_SURFACES_MAIN_MERGED_VERIFIED_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN
 user_directed_planning_single_execute_status: IMPLEMENTED_MERGED_MAIN_PR329_REMOTE_CI_32_SUCCESS_POSTMERGE_APPROVAL_LIFECYCLE_IN_PROGRESS_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN
 user_directed_planning_current_direction: FRONTAL_SHARED_GROUND_DUEL_NO_VISIBLE_LOGICAL_BOARD_PLUS_3_BRANCH_4_PICK_JIANGHU_ROUTE_PLUS_SINGLE_PLAYER_FACING_ACTION_EXECUTE_CTA_PLUS_CURRENT_CARD_VS_COMPARE_RAIL_PLUS_INLINE_CAUSAL_RECAP_PLUS_UNIFIED_BLUE_GRAY_HANJI_INK_CANDIDATE_STYLE_WITHOUT_SPINE_RUNTIME

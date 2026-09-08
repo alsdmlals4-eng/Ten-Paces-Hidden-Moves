@@ -549,6 +549,101 @@
         "release_performance": "NOT_RUN"
       },
       "additional_state_reason": "The one-action reveal is a required separate state from plan lock: it verifies that the lower planning UI is absent while player and enemy actions resolve in the combat stage."
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-001",
+      "recorded_at_utc": "2026-09-08T22:02:02.569792+00:00",
+      "work_item_id": "TEN-COMBAT-FEEDBACK-20260909",
+      "source_commit": "6dded6f133e29a7deadfb3a623f23390439f1d4a",
+      "runtime": {
+        "scene_path": "res://scenes/combat/combat_board_preview.tscn",
+        "capture_state": "NORMAL_BOARD_ENTRY_NO_QA_STATE_MUTATION;1280x800;errors0_warnings17_from_live_debugger;game_run_r98925-1",
+        "entry_route": "Exact E editor33844 custom-run unchanged combat_board_preview.tscn; actual game24292 parent33844; no qa state mutation, no run store; Hera exact scene unique PID screenshot",
+        "source_delta": "NO_TRACKED_SRC_DATA_SCENE_PROJECT_DELTA;PREEXISTING_GENERATED_IMPORT_UID_SIDECARS_PRESERVED;IGNORED_QA_FIXTURE_NOT_USED_FOR_NORMAL"
+      },
+      "consumers": [
+        "scenes/combat/combat_board_preview.tscn",
+        "src/combat/combat_board_preview.gd",
+        "src/ui/combat_presentation_profile.gd",
+        "src/ui/combat_sound_bank.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 17
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-001.png",
+        "sha256": "364ed8e1c541ea32c5aee2e5946263fd2c2fc0d1a692bc712a68ba08c6be270e",
+        "bytes": 1030918,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-001",
+        "prepared_at_utc": "2026-09-08T21:59:12.834907+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "7a9b94d8367078a194fb08a9ed6ff247",
+        "receipt_sha256": "96ec9c77b8a31b426c045601d2a8dc276855e8f2a59c3e24def28915b980c2c7",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      }
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-002",
+      "recorded_at_utc": "2026-09-08T22:02:50.898289+00:00",
+      "work_item_id": "TEN-COMBAT-FEEDBACK-20260909",
+      "source_commit": "6dded6f133e29a7deadfb3a623f23390439f1d4a",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/capture-policy-20260909/capture_fixture.tscn",
+        "capture_state": "SEEDED_FIXTURE_PENG_STAR10_ACTUAL_EXECUTION_TIMING3_IMPACT_DAMAGE28;not_organic_growth;1440x900_logical_1280x800_PNG;errors0_warnings17_from_live_debugger;game_run_r153672-2",
+        "entry_route": "Exact E editor33844 custom-run ignored capture_fixture; actual game33204 parent33844; real board resolver seeded stats10 HP100 resources30 mastery10; no run store; fixture pauses at third impact frame; Hera qa_snapshot read-only and exact unique PID screenshot",
+        "source_delta": "NO_TRACKED_SRC_DATA_SCENE_PROJECT_DELTA;PREEXISTING_GENERATED_IMPORT_UID_SIDECARS_PRESERVED;IGNORED_FIXTURE_SHA256_D479CA11AD51FF39B1269BD5AB719A62BB5E26FFC3E23D149AF77DB15B2AAB14"
+      },
+      "consumers": [
+        "scenes/combat/combat_board_preview.tscn",
+        "src/combat/combat_board_preview.gd",
+        "src/ui/combat_presentation_profile.gd",
+        "src/combat/combat_resolution_engine.gd",
+        "src/run/vertical_slice_metrics_combat_resolution_engine.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 17
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-002.png",
+        "sha256": "13fc5b79f24a0936220ec0f31754ab9e90553d1d5c84ebed4c32d4ca530128c1",
+        "bytes": 731138,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-002",
+        "prepared_at_utc": "2026-09-08T21:59:12.976465+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "f51f73a7b50a43189659ecc2e3cfc540",
+        "receipt_sha256": "b72de1556a9eb35d8d760774ef74a76d4978f3e24cb82a0aa317e511cebb07db",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      }
     }
   ]
 }

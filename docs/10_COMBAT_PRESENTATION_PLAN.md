@@ -21,9 +21,9 @@
 
 ## 3. 현재 전투 흐름
 
-계획·대상·예상 자원 → **행동 실행** → 현재 카드 `VS` 공개 → 대응 → 수별 공격 행동 → 타격쌍 → 효과·중단 → 이동·일반 행동 → 다음 묶음 또는 종료 → 현재 결과 strip/결과 원인 요약 → 결전 다시 시작.
+계획·대상·예상 자원 → **행동 실행** → 현재 수 카드 `VS` 공개·효과 비교 → 그 수의 확정 사건 연출 → 현재 결과 strip → 다음 묶음 또는 비무 종료. 승리 뒤에는 보상 확인을 거쳐 강호행로로 가며, 합·회피·절초 연출에서 강호행로로 직접 돌아가지 않는다. 실제 도메인 순서는 `docs/02_COMBAT_RULES.md`가 소유하고 화면이 다시 계산하지 않는다.
 
-별도 `Combat Review` overlay/scene은 최신 사용자-facing 화면 경계가 아니다. 복기의 인과 정보는 보존하되 현재 수 결과 strip과 전투 종료의 실제 원인 1~3개로 흡수한다. 기존 overlay 구현은 `IMPLEMENTED_LEGACY`이며, 이 문서가 요구하는 current-card-only 중단과 상단 `내 카드 → VS ← 상대 카드` rail의 새 runtime 검증은 `NOT_RUN`이다.
+별도 `Combat Review` overlay/scene은 최신 사용자-facing 화면 경계가 아니다. 복기의 인과 정보는 보존하되 현재 수 결과 strip과 전투 종료의 실제 원인 1~3개로 흡수한다. 기존 overlay 구현은 `IMPLEMENTED_LEGACY`다. PR331의 inline 결과·현재 카드 rail 구현/검증은 `docs/operations/2026-09-08_INLINE_COMBAT_RESULTS_EXECUTION_REPORT.md`에서 확인한다. 이를 다시 미착수로 표시하지 않으며, 그 자동/native 증거를 Human 최종 가독성 승인으로 확대하지 않는다.
 
 ## 4. 수별 판정 표현
 
@@ -66,7 +66,7 @@
 
 ## 7. 효과 연출
 
-`CombatPresentationController._consume_effects`는 판정 엔진이 반환한 구조화 효과 사건을 순서대로 소비해 아이콘·문구·VFX·SFX 요청으로 변환한다. `_consume_effects`는 피해·자원·상태·합 승패를 재계산하지 않는다.
+현재 실제 소비자는 `CombatBoardPreview._present_timing_duel`과 `_present_resolved_event_feedback`이며, `CombatPresentationProfile.for_event`가 actor-owned 정의와 확정 사건을 표현으로 분류한다. 이전 문서의 `CombatPresentationController._consume_effects`는 실제 구현 클래스/함수가 아니었으므로 현재 API로 요구하지 않는다. 화면과 순수 profile은 피해·자원·상태·합 승패를 재계산하지 않는다. 아래 효과별 인과 표현은 목표 계약이며, 모든 조건부 무공이 실제 도메인에 연결됐다는 완료 표시는 아니다.
 
 - `PER_HIT`: 각 타격 아래 효과 아이콘·문구.
 - `ONCE_PER_ACTION`: 최초 발동 뒤 잠금 표식.
@@ -82,6 +82,8 @@
 ## 8. 절초 연출
 
 기본 절초 3종은 시작부터 표시하고 기존 예약·취소·기세 선소모 계약을 유지한다. 무공 10성 절초는 성급 도달 순간 목록에 추가하며, 주요 비무 5 승리 전역 해금 연출은 사용하지 않는다. 집중 경로의 “5전 전 10성 가능”은 예상치로 표시하고 보장 표식을 금지한다.
+
+`TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01`은 절초 identity와 실행 성공을 구분한다. 전조는 카드 공개만 유지하고 성공 발동 VFX·소리를 내지 않는다. 실제 실행의 합·실패·대상 회피/막기(`sure_hit_block` 포함)가 성공 절초 강조보다 우선한다. 회복형은 자기 위치, 실제 피해를 준 공격/반격형은 타격 위치에 기존 승인 VFX를 사용한다. 고유 program 없이 기본 방어로 처리된 무공을 성공 반격으로 포장하지 않는다.
 
 ## 9. 종료·재시작 연출과 첫 5전 재도전
 
@@ -144,4 +146,6 @@
 
 ## 13. 현재 상태
 
-현행 연출은 `timing_results`와 `presentation_events`를 기반으로 한 수씩 공개한다. `TEN-DEC-20260903-MODULAR-DUEL-UI-AND-PRESENTATION-MOTION-01` 범위에서 공격·회피·막기·피격·절초·공유 충돌점 `[합]`의 presentation-only 모션과 하단 계획 surface 숨김을 자동 회귀로 검증했다. 실제 소리 에셋 검색·취득·audio bus 통합은 여전히 `NOT_STARTED`다. Windows-visible 준비 화면은 확인했으나, 인간 플레이의 읽기성·피로도·사운드 선호는 `HUMAN_NOT_RUN`이며 Android 실기기와 접근성 사용자 평가는 `NOT_RUN`이다.
+현행 연출은 `timing_results`와 `presentation_events`를 기반으로 한 수씩 공개한다. `TEN-DEC-20260903-MODULAR-DUEL-UI-AND-PRESENTATION-MOTION-01`의 presentation-only 모션과 PR331의 inline 결과를 보존한다. 현재 feedback 교정은 `TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01`과 Active Context에서 추적한다. `CombatSoundBank`의 기존 원본 합성음 9개와 새 승리·무승부·절초 발동 cue 3개는 코드에서 제작하고 기존 cache/두 audio player/음소거 경로를 소비한다. 외부 음원 취득, 별도 music/ambience, 다중 audio bus 완성은 이 사실과 별개이며 미완료다.
+
+무공별 고유 대응과 일반/무공 공통 방어 해결은 `docs/reviews/2026-09-09_MARTIAL_DOMAIN_INTEGRATION_PREFLIGHT.md`의 실제 결함으로 남아 있다. 모든 10성 정의를 분류하는 검사와 10종 고유 전투 효과가 완성됐다는 주장을 구분한다. 현재 화면은 승인 아틀라스에 비해 인물·카드 크기와 빈 공간 활용 개선이 필요하다. 인간 플레이의 읽기성·피로도·사운드 선호는 `HUMAN_NOT_RUN`이며 Android 실기기·접근성 사용자·출시 검증은 `NOT_RUN`이다.

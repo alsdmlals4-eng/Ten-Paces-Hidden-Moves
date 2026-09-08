@@ -15,7 +15,8 @@ func run_check() -> void:
     for repeat in range(100):
         for cue in bank.CUES:
             bank.get_stream(cue)
-    print("SOUND_CACHE_MEASUREMENT cold_9_cues_us=%d warm_900_lookups_us=%d" % [cold_us, Time.get_ticks_usec() - warm_start])
+    var warm_lookup_count: int = bank.CUES.size() * 100
+    print("SOUND_CACHE_MEASUREMENT cue_count=%d cold_us=%d warm_lookup_count=%d warm_us=%d" % [bank.CUES.size(), cold_us, warm_lookup_count, Time.get_ticks_usec() - warm_start])
     var board = load("res://scenes/combat/combat_board_preview.tscn").instantiate()
     root.add_child(board)
     await process_frame

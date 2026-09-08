@@ -1,6 +1,8 @@
 class_name CombatBoardPreview
 extends Control
 
+const CombatPresentationProfileScript := preload("res://src/ui/combat_presentation_profile.gd")
+
 const CONTRACT_PATH := "res://data/combat/combat_board_poc.json"
 const BACKGROUND_SCENE := preload("res://scenes/combat/battle_background.tscn")
 const TOP_HUD_SCENE := preload("res://scenes/ui/top_combat_hud.tscn")
@@ -1161,14 +1163,24 @@ func _finalize_resolved_bundle() -> void:
 	var terminal := _combat_has_ended()
 	_apply_combat_state_to_view()
 	if terminal:
-		_play_procedural_sfx("defeat")
+		var outcome := CombatResolutionEngine.battle_outcome(combat_state)
+		var cue := "draw"
+		var terminal_label := "무승부 · 결전 종료"
+		var terminal_log := "[무승부] 양측의 체력이 0이 되어 결전이 끝났습니다."
+		if outcome == "win":
+			cue = "victory"
+			terminal_label = "승리 · 결전 종료"
+			terminal_log = "[승리] 상대의 체력이 0이 되어 결전이 끝났습니다."
+		elif outcome == "loss":
+			cue = "defeat"
+			terminal_label = "패배 · 결전 종료"
+			terminal_log = "[패배] 플레이어의 체력이 0이 되어 결전이 끝났습니다."
+		_play_procedural_sfx(cue)
 		if is_instance_valid(presentation_label):
-			var player_health := int(((combat_state.get("player", {}) as Dictionary).get("health", [0, 0]) as Array)[0])
-			var enemy_health := int(((combat_state.get("enemy", {}) as Dictionary).get("health", [0, 0]) as Array)[0])
-			presentation_label.text = "무승부 · 결전 종료" if player_health <= 0 and enemy_health <= 0 else "전투 불능 · 결전 종료"
+			presentation_label.text = terminal_label
 			presentation_label.visible = true
 		if is_instance_valid(combat_log_panel):
-			combat_log_panel.append_entry("[전투 불능] 체력이 0이 되어 결전이 끝났습니다.", "system")
+			combat_log_panel.append_entry(terminal_log, "system")
 	_finish_bundle_presentation(terminal)
 
 func _present_timing_duel(events_value: Array, timing: int, phase: String) -> void:
@@ -1398,9 +1410,10 @@ func _wait_for_session_resume() -> void:
 		await get_tree().process_frame
 
 func _event_presentation_duration(event: Dictionary) -> float:
-	if str(event.get("type", "")) == "clash":
+	var profile := _presentation_profile_for_event(event)
+	if str(profile.get("kind", "")) == "clash":
 		return 0.34
-	if str(event.get("card_id", "")).begins_with("ultimate_"):
+	if str(profile.get("kind", "")) == "ultimate":
 		return 0.70
 	if int(event.get("damage", 0)) > 0:
 		return 0.24
@@ -1417,31 +1430,29 @@ func _effective_event_presentation_duration(event: Dictionary) -> float:
 func _feedback_windup_duration(event: Dictionary, total_duration: float) -> float:
 	if _reduced_motion:
 		return 0.0
-	if str(event.get("type", "")) == "clash":
+	var motion := str(_presentation_profile_for_event(event).get("motion", ""))
+	if motion == "clash":
 		return total_duration * 0.25
-	var card_id := str(event.get("card_id", ""))
-	var is_attack := card_id.begins_with("ultimate_") or card_id.contains("attack") or str(event.get("category", "")) == "attack"
-	return total_duration * 0.42 if is_attack else 0.0
+	return total_duration * 0.42 if motion in ["attack", "ultimate"] else 0.0
 
 func _play_character_action_motion(event: Dictionary, duration: float = -1.0) -> void:
 	if _reduced_motion:
 		return
 	var motion_duration := _event_presentation_duration(event) if duration <= 0.0 else duration
-	if str(event.get("type", "")) == "clash" or str(event.get("outcome", "")).begins_with("clash_"):
+	var motion := str(_presentation_profile_for_event(event).get("motion", ""))
+	if motion == "clash":
 		_play_clash_motion(motion_duration)
 		return
-	var card_id := str(event.get("card_id", ""))
-	var is_attack := card_id.begins_with("ultimate_") or card_id.contains("attack") or str(event.get("category", "")) == "attack"
-	if not is_attack:
+	if motion not in ["attack", "ultimate"]:
 		return
 	var actor := str(event.get("actor", ""))
 	if actor == "player" and is_instance_valid(player_character):
-		if card_id.begins_with("ultimate_"):
+		if motion == "ultimate":
 			player_character.play_ultimate_motion(motion_duration)
 		else:
 			player_character.play_attack_motion(motion_duration)
 	elif actor == "enemy" and is_instance_valid(enemy_character):
-		if card_id.begins_with("ultimate_"):
+		if motion == "ultimate":
 			enemy_character.play_ultimate_motion(motion_duration)
 		else:
 			enemy_character.play_attack_motion(motion_duration)
@@ -1466,7 +1477,9 @@ func _play_clash_motion(duration: float) -> void:
 func _play_character_impact_motion(event: Dictionary, duration: float) -> void:
 	if _reduced_motion:
 		return
-	if str(event.get("type", "")) == "clash" or str(event.get("outcome", "")).begins_with("clash_"):
+	if str(event.get("action_stage", "")) == "preparation" or str(event.get("outcome", "")) == "preparation":
+		return
+	if str(_presentation_profile_for_event(event).get("kind", "")) == "clash":
 		return
 	var actor := str(event.get("actor", ""))
 	var defender := enemy_character if actor == "player" else player_character
@@ -1474,9 +1487,9 @@ func _play_character_impact_motion(event: Dictionary, duration: float) -> void:
 		return
 	var defense_outcome := str(event.get("defense_outcome", ""))
 	var outcome := str(event.get("outcome", ""))
-	if defense_outcome == "evade" or outcome == "evade":
+	if defense_outcome == "evade" or outcome in ["evade", "evaded"]:
 		defender.play_evade_motion(duration)
-	elif defense_outcome == "block" or outcome == "block":
+	elif defense_outcome in ["block", "sure_hit_block"] or outcome in ["block", "blocked", "sure_hit_block"] or _event_all_attacks_blocked(event):
 		defender.play_block_motion(duration)
 	elif int(event.get("damage", 0)) > 0:
 		defender.play_hit_motion(duration)
@@ -1538,10 +1551,22 @@ func _presentation_summary_for_event(event: Dictionary, fallback: String) -> Str
 		return "예측 빗나감"
 	if outcome == "miss_range":
 		return "사거리 실패"
-	if str(event.get("defense_outcome", "")) == "block":
+	if outcome == "move_invalid":
+		return "이동 실패"
+	if outcome == "martial_failed":
+		var failure_reason := str(event.get("failure_reason", "무공 효과 실패"))
+		return "무공 실패 · %s%s" % [failure_reason, " · 피해 %d" % int(event.get("damage", 0)) if int(event.get("damage", 0)) > 0 else ""]
+	if str(event.get("defense_outcome", "")) == "block" or outcome in ["block", "blocked"]:
 		return "막기 · 피해 경감"
-	if str(event.get("defense_outcome", "")) == "evade":
+	if str(event.get("defense_outcome", "")) == "evade" or outcome in ["evade", "evaded"]:
 		return "회피 · 피해 없음"
+	if _event_all_attacks_blocked(event):
+		return "막기 · 피해 없음"
+	if _event_requirement_unmet(event):
+		return "조건 미충족 · 후속 효과 미발동"
+	var profile := _presentation_profile_for_event(event)
+	if str(profile.get("kind", "")) == "outcome" and outcome in ["response", "response_combo"] and not _event_has_execution_facts(event):
+		return "방어 준비"
 	if str(event.get("defense_outcome", "")) in ["sure_hit", "sure_hit_block"]:
 		return "필중 · 회피 불가 · 피해 %d" % int(event.get("damage", 0))
 	if int(event.get("damage", 0)) > 0:
@@ -1600,18 +1625,22 @@ func _show_feedback_label(event: Dictionary, recovery_duration: float) -> void:
 	_presentation_label_tween.tween_property(presentation_label, "scale", Vector2(0.99, 0.99), exit_duration)
 
 func _presentation_feedback_kind(event: Dictionary) -> String:
-	var outcome := str(event.get("outcome", ""))
-	if str(event.get("type", "")) == "clash" or outcome.begins_with("clash_"):
-		return "clash"
-	if str(event.get("card_id", "")).begins_with("ultimate_"):
-		return "ultimate"
-	if str(event.get("category", "")) == "attack" or int(event.get("damage", 0)) > 0:
-		return "attack"
-	return ""
+	return str(_presentation_profile_for_event(event).get("kind", ""))
+
+func _presentation_profile_for_event(event: Dictionary) -> Dictionary:
+	var actor := str(event.get("actor", "player"))
+	var definition := {}
+	if resolution_engine != null and resolution_engine.has_method("get_actor_card_definition"):
+		definition = resolution_engine.get_actor_card_definition(str(event.get("card_id", "")), actor)
+	return CombatPresentationProfileScript.for_event(definition, event)
 
 func _show_feedback_vfx(event: Dictionary, kind: String, recovery_duration: float = 0.0) -> void:
 	if kind == "ultimate":
 		_show_ultimate_vfx(event, recovery_duration)
+		return
+	if kind not in ["attack", "clash"]:
+		if is_instance_valid(presentation_vfx):
+			presentation_vfx.visible = false
 		return
 	if not is_instance_valid(presentation_vfx) or _attack_clash_vfx_sheet == null:
 		if is_instance_valid(presentation_vfx):
@@ -1634,7 +1663,8 @@ func _place_feedback_vfx(event: Dictionary, kind: String) -> void:
 	var enemy_foot := enemy_character.get_foot_anchor_global() if is_instance_valid(enemy_character) else size * 0.5
 	var actor_foot := player_foot if str(event.get("actor", "")) == "player" else enemy_foot
 	var target_foot := enemy_foot if str(event.get("actor", "")) == "player" else player_foot
-	var impact := (player_foot + enemy_foot) * 0.5 if kind == "clash" else actor_foot.lerp(target_foot, 0.72)
+	var profile := _presentation_profile_for_event(event)
+	var impact := (player_foot + enemy_foot) * 0.5 if kind == "clash" else (actor_foot if str(profile.get("anchor", "impact")) == "self" else actor_foot.lerp(target_foot, 0.72))
 	var effect_size := Vector2(
 		clampf(size.x * (0.42 if kind == "ultimate" else 0.26), 250.0, 640.0),
 		clampf(size.y * (0.22 if kind == "ultimate" else 0.12), 90.0, 210.0)
@@ -1645,15 +1675,10 @@ func _place_feedback_vfx(event: Dictionary, kind: String) -> void:
 
 func _show_ultimate_vfx(event: Dictionary, recovery_duration: float = 0.0) -> void:
 	if not is_instance_valid(presentation_vfx) or _ultimate_vfx_sheet == null:
+		if is_instance_valid(presentation_vfx):
+			presentation_vfx.visible = false
 		return
-	var card_id := str(event.get("card_id", ""))
-	var band_index := -1
-	if card_id == "ultimate_ten_paces_wave":
-		band_index = 0
-	elif card_id == "ultimate_cleave_peak":
-		band_index = 1
-	elif card_id == "ultimate_void_sword_qi":
-		band_index = 2
+	var band_index := int(_presentation_profile_for_event(event).get("band", -1))
 	if band_index < 0:
 		presentation_vfx.visible = false
 		return
@@ -1907,16 +1932,59 @@ func _set_accessibility_semantics(control: Control, name_value: String, descript
 
 func _play_event_sfx(event: Dictionary) -> void:
 	var outcome := str(event.get("outcome", ""))
-	if outcome.begins_with("clash_"):
+	if str(event.get("action_stage", "")) == "preparation" or outcome == "preparation":
+		return
+	var profile := _presentation_profile_for_event(event)
+	if str(profile.get("kind", "")) == "clash":
 		_play_procedural_sfx("metal_clash")
 	elif outcome == "interrupted":
 		_play_procedural_sfx("interrupt")
-	elif str(event.get("defense_outcome", "")) == "evade":
+	elif str(event.get("defense_outcome", "")) == "evade" or outcome in ["evade", "evaded"]:
 		_play_procedural_sfx("evade")
-	elif str(event.get("defense_outcome", "")) == "block":
+	elif str(event.get("defense_outcome", "")) in ["block", "sure_hit_block"] or outcome in ["block", "blocked", "sure_hit_block"]:
 		_play_procedural_sfx("metal_clash" if int(event.get("damage", 0)) > 0 else "block")
+	elif _event_all_attacks_blocked(event):
+		_play_procedural_sfx("block")
+	elif str(profile.get("kind", "")) == "ultimate":
+		_play_procedural_sfx("ultimate_release")
 	elif int(event.get("damage", 0)) > 0:
 		_play_procedural_sfx("heavy_hit" if int(event.get("damage", 0)) >= 14 else "sword_wind")
+
+func _event_requirement_unmet(event: Dictionary) -> bool:
+	for value in event.get("martial_events", []):
+		if typeof(value) != TYPE_DICTIONARY:
+			continue
+		var martial_event: Dictionary = value
+		var status := str(martial_event.get("status", ""))
+		if status == "SKIPPED_REQUIREMENT" or (status == "FAILED" and str(martial_event.get("op", "")).begins_with("REQUIRE_")):
+			return true
+	return false
+
+func _event_all_attacks_blocked(event: Dictionary) -> bool:
+	if int(event.get("damage", 0)) > 0:
+		return false
+	var attempted := 0
+	for value in event.get("martial_events", []):
+		if typeof(value) != TYPE_DICTIONARY:
+			continue
+		var martial_event: Dictionary = value
+		if str(martial_event.get("op", "")) not in ["ATTACK", "INDEPENDENT_ATTACK"]:
+			continue
+		var status := str(martial_event.get("status", ""))
+		if status.begins_with("SKIPPED_"):
+			continue
+		attempted += 1
+		if status != "BLOCKED":
+			return false
+	return attempted > 0
+
+func _event_has_execution_facts(event: Dictionary) -> bool:
+	if event.has("martial_events") and typeof(event.get("martial_events")) == TYPE_ARRAY and not (event.get("martial_events") as Array).is_empty():
+		return true
+	for key in ["actual_hp_hits", "clash_won", "evade_succeeded", "failure_reason"]:
+		if event.has(key):
+			return true
+	return false
 
 func _play_momentum_gain_sfx(state_before: Dictionary, state_after: Dictionary) -> void:
 	for actor_key in ["player", "enemy"]:

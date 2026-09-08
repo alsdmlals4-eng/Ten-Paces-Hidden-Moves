@@ -14,7 +14,10 @@ const CUES := {
     "interrupt": [0.20, 170.0, 0.56],
     "momentum_charge": [0.24, 660.0, 0.03],
     "ultimate_reserve": [0.42, 220.0, 0.15],
-    "defeat": [0.52, 110.0, 0.10]
+    "defeat": [0.52, 110.0, 0.10],
+    "victory": [0.46, 523.25, 0.03],
+    "draw": [0.36, 220.0, 0.04],
+    "ultimate_release": [0.30, 165.0, 0.26]
 }
 
 static func get_stream(kind: String) -> AudioStreamWAV:
@@ -39,8 +42,10 @@ static func get_stream(kind: String) -> AudioStreamWAV:
         var rise := minf(time / 0.006, 1.0)
         var envelope := rise * pow(1.0 - progress, 2.5)
         var sweep := 1.0 - 0.4 * progress
-        if kind in ["momentum_charge", "ultimate_reserve"]:
+        if kind in ["momentum_charge", "ultimate_reserve", "victory"]:
             sweep = 1.0 + 0.6 * progress
+        elif kind == "draw":
+            sweep = 1.0
         phase += TAU * frequency * sweep / RATE
         filtered_noise = lerpf(filtered_noise, rng.randf_range(-1.0, 1.0), 0.60)
         var tone := sin(phase) * 0.6 + sin(phase * 2.71) * 0.25 + sin(phase * 4.13) * 0.15
