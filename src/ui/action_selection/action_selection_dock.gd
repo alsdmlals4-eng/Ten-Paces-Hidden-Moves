@@ -87,6 +87,15 @@ func set_interaction_state(state: String) -> void:
 
 func set_runtime_context(context: Dictionary) -> void:
     runtime_context = context.duplicate(true)
+    var preview_actor: Dictionary = runtime_context.get("preview_actor", {}) as Dictionary
+    if is_instance_valid(basic_panel):
+        basic_panel.set_preview_actor(preview_actor)
+    if is_instance_valid(martial_panel):
+        martial_panel.set_preview_actor(preview_actor)
+    if is_instance_valid(ultimate_panel):
+        ultimate_panel.set_preview_actor(preview_actor)
+    if is_instance_valid(action_detail_panel):
+        action_detail_panel.set_preview_actor(preview_actor)
     var loadout: Array = []
     var mastery_by_manual: Dictionary = {}
     if runtime_context.has("martial_loadout"):

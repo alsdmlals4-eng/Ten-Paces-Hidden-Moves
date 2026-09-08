@@ -24,6 +24,13 @@ var manual_buttons: Array[Button] = []
 var technique_buttons: Array[Button] = []
 var selected_manual_id := ""
 var interaction_enabled := true
+var preview_actor: Dictionary = {}
+
+func set_preview_actor(value: Dictionary) -> void:
+    if preview_actor == value:
+        return
+    preview_actor = value.duplicate(true)
+    _rebuild_techniques()
 
 func _ready() -> void:
     title_label.add_theme_color_override("font_color", Color("ead8b4"))
@@ -147,7 +154,7 @@ func _rebuild_techniques() -> void:
     for technique in _ordered_selected_techniques():
         var locked := bool(technique.get("locked", false))
         var button := ACTION_CHOICE_CARD_SCRIPT.new() as ActionChoiceCard
-        button.configure_action(technique, "semantic_atlas", _locked_technique_text(technique) if locked else "사용 가능")
+        button.configure_action(technique, "semantic_atlas", _locked_technique_text(technique) if locked else "사용 가능", preview_actor)
         button.disabled = locked or not interaction_enabled
         button.set_meta("technique_id", str(technique.get("id", "")))
         button.set_meta("locked", locked)

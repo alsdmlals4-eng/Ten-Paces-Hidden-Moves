@@ -15,6 +15,13 @@ const COLUMNS := 5
 var actions: Array[Dictionary] = []
 var buttons: Array[Button] = []
 var interaction_enabled := true
+var preview_actor: Dictionary = {}
+
+func set_preview_actor(value: Dictionary) -> void:
+	if preview_actor == value:
+		return
+	preview_actor = value.duplicate(true)
+	_rebuild()
 
 func _ready() -> void:
 	action_grid.columns = COLUMNS
@@ -51,7 +58,7 @@ func _rebuild() -> void:
 
 	for definition in actions:
 		var button := ACTION_CHOICE_CARD_SCRIPT.new() as ActionChoiceCard
-		button.configure_action(definition, "basic_atlas_only")
+		button.configure_action(definition, "basic_atlas_only", "", preview_actor)
 		button.mouse_entered.connect(_on_action_hovered.bind(definition))
 		button.mouse_exited.connect(_on_action_unhovered)
 		button.focus_entered.connect(_on_action_hovered.bind(definition))

@@ -1,0 +1,112 @@
+extends SceneTree
+
+const ENGINE_SCRIPT := preload("res://src/combat/combat_resolution_engine.gd")
+const ADAPTER_SCRIPT := preload("res://src/ui/action_selection/action_view_model_adapter.gd")
+const CARD_SCRIPT := preload("res://src/ui/action_selection/action_choice_card.gd")
+const BOARD_SCENE := preload("res://scenes/combat/combat_board_preview.tscn")
+
+var failures: Array[String] = []
+
+func _init() -> void:
+	call_deferred("_run")
+
+func _run() -> void:
+	_verify_engine_preview_is_actor_backed_and_pure()
+	_verify_card_contract_and_unknown_actor_fallback()
+	await _verify_board_context_and_geometry(Vector2(1280.0, 720.0))
+	await _verify_board_context_and_geometry(Vector2(1280.0, 800.0))
+	_finish()
+
+func _verify_engine_preview_is_actor_backed_and_pure() -> void:
+	var engine := ENGINE_SCRIPT.new() as CombatResolutionEngine
+	var definition := _find_action(ADAPTER_SCRIPT.new().build_basic_actions(), "basic_quick_attack")
+	var low_actor := {"stats": {"external": 4}}
+	var high_actor := {"stats": {"external": 10}}
+	var low_before := low_actor.duplicate(true)
+	var high_before := high_actor.duplicate(true)
+	var low: Dictionary = engine.preview_attack_damage(definition, low_actor)
+	var high: Dictionary = engine.preview_attack_damage(definition, high_actor)
+	_check(bool(low.get("available", false)), "Known player stats must produce an attack preview.")
+	_check(int(high.get("value", -1)) > int(low.get("value", -1)), "Changing the player's actual attack stat must change preview power.")
+	_check(low_actor == low_before and high_actor == high_before, "Attack preview must not mutate actor state.")
+	_check(not bool(engine.preview_attack_damage(definition, {}).get("available", true)), "Unknown actor stats must fail to a truthful formula fallback.")
+
+func _verify_card_contract_and_unknown_actor_fallback() -> void:
+	var adapter := ADAPTER_SCRIPT.new() as ActionViewModelAdapter
+	var definitions := [
+		_find_action(adapter.build_basic_actions(), "basic_quick_attack"),
+		_find_action(adapter.build_basic_actions(), "basic_move"),
+		_find_action(adapter.build_ultimate_actions(5), "ultimate_ten_paces_wave")
+	]
+	for definition in definitions:
+		_check(not definition.is_empty(), "Focused basic, movement, and ultimate definitions must exist.")
+		if definition.is_empty():
+			continue
+		var card := CARD_SCRIPT.new() as ActionChoiceCard
+		card.configure_action(definition, "semantic_atlas", "", {"stats": {"external": 8, "internal_power": 8}, "attack_power": 8})
+		var summary := card.find_child("CardSummary", false, false) as VBoxContainer
+		_check(is_instance_valid(summary), "Every preparation card must contain an always-visible summary.")
+		var text := _descendant_label_text(summary)
+		_check(text.contains("수") and text.contains("기력") and text.contains("내력"), "Card summary must always show slot, stamina, and internal costs.")
+		_check(text.contains("거리"), "Card summary must always show range.")
+		_check(text.contains("예상 위력") or text.contains("이동") or text.contains("효과"), "Card summary must show a primary magnitude, movement, or truthful effect fallback.")
+		_check(card.find_child("CardIllustration", false, false) != null, "Always-visible summaries must preserve illustrations.")
+		_check(card.custom_minimum_size.y <= 96.0, "Summary cards must remain within the bounded two-row geometry budget.")
+		for summary_label in summary.find_children("*", "Label", true, false):
+			_check((summary_label as Label).get_combined_minimum_size().x <= 128.0, "Always-visible summary text must fit the 128px card lane without clipping.")
+		card.queue_free()
+
+	var unknown := CARD_SCRIPT.new() as ActionChoiceCard
+	unknown.configure_action(definitions[0], "semantic_atlas", "", {})
+	var unknown_text := _descendant_label_text(unknown.find_child("CardSummary", false, false))
+	_check(unknown_text.contains("위력식") and not unknown_text.contains("예상 위력"), "Unknown actors must show a formula/baseline label instead of invented preview damage.")
+	unknown.queue_free()
+
+func _verify_board_context_and_geometry(viewport_size: Vector2) -> void:
+	var board := BOARD_SCENE.instantiate() as CombatBoardPreview
+	board.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	board.size = viewport_size
+	root.add_child(board)
+	for _frame in range(5):
+		await process_frame
+	var dock := board.action_selection_dock as ActionSelectionDock
+	_check(typeof(dock.runtime_context.get("preview_actor", {})) == TYPE_DICTIONARY and not (dock.runtime_context.get("preview_actor", {}) as Dictionary).is_empty(), "Combat board must connect the current player snapshot to card previews.")
+	var cards := dock.basic_panel.buttons
+	_check(cards.size() == 10, "The existing 5 by 2 basic grid must remain intact.")
+	for button in cards:
+		var rect := (button as Control).get_global_rect()
+		var host_rect := dock.content_host.get_global_rect()
+		_check(rect.position.x >= host_rect.position.x - 0.5 and rect.end.x <= host_rect.end.x + 0.5 and rect.position.y >= host_rect.position.y - 0.5 and rect.end.y <= host_rect.end.y + 0.5, "Every summary card must remain inside the in-viewport content host at %s." % str(viewport_size))
+	_check(dock.get_global_rect().position.y >= board.top_hud.get_global_rect().end.y, "Planning UI must not overlap the resource HUD.")
+	var duel_surface := board.get_node_or_null("DuelStageSurface") as Control
+	_check(is_instance_valid(duel_surface) and duel_surface.get_global_rect().end.y <= board.planning_surface.get_global_rect().position.y + 1.0, "Planning UI must not overlap the battlefield partition.")
+	board.queue_free()
+	await process_frame
+
+func _find_action(actions: Array[Dictionary], action_id: String) -> Dictionary:
+	for action in actions:
+		if str(action.get("id", "")) == action_id:
+			return action.duplicate(true)
+	return {}
+
+func _descendant_label_text(node: Node) -> String:
+	if node == null:
+		return ""
+	var parts := PackedStringArray()
+	for child in node.find_children("*", "Label", true, false):
+		parts.append((child as Label).text)
+	return " ".join(parts)
+
+func _check(condition: bool, message: String) -> void:
+	if not condition:
+		failures.append(message)
+
+func _finish() -> void:
+	if failures.is_empty():
+		print("verify_action_card_summary: PASS")
+		quit(0)
+		return
+	for failure in failures:
+		push_error(failure)
+	print("verify_action_card_summary: FAIL count=%d" % failures.size())
+	quit(1)

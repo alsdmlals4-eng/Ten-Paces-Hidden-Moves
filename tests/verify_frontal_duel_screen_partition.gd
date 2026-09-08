@@ -3,7 +3,7 @@ extends SceneTree
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
 const VIEWPORT_SIZE := Vector2(1440.0, 900.0)
 const TARGET_TOP_OVERLAY_RATIO := 0.20
-const TARGET_PLANNING_TOP_RATIO := 0.60
+const TARGET_PLANNING_TOP_RATIO := 0.535
 
 var failures: Array[String] = []
 
@@ -49,7 +49,7 @@ func _verify_three_screen_surfaces(board: CombatBoardPreview) -> void:
 	_expect(top_rect.end.y <= duel_rect.position.y + 0.5, "Top status surface must end before the semantic duel stage begins.")
 	_expect(duel_rect.end.y <= planning_rect.position.y + 0.5, "Duel stage must end before the planning surface begins.")
 	_expect(absf(top_rect.size.y / board.size.y - TARGET_TOP_OVERLAY_RATIO) <= 0.035, "Top status overlay must occupy about 20 percent of the preparation view.")
-	_expect(absf((planning_rect.position.y - board.global_position.y) / board.size.y - TARGET_PLANNING_TOP_RATIO) <= 0.045, "The 5 by 2 card surface must begin at the reference preparation-screen split, not halfway up the combat view.")
+	_expect(absf((planning_rect.position.y - board.global_position.y) / board.size.y - TARGET_PLANNING_TOP_RATIO) <= 0.045, "The expanded 5 by 2 summary-card surface must preserve a bounded lower preparation split.")
 	_expect(board.battle_background.get_global_rect().position.y <= 1.0 and board.battle_background.get_global_rect().end.y >= planning_rect.position.y - 1.0, "Courtyard background must continue behind the transparent top status overlay through the combat floor.")
 	_expect(board.duel_foreground_banner.get_global_rect().position.y <= 1.0 and board.duel_foreground_banner.get_global_rect().end.y >= planning_rect.position.y - 1.0, "Banner foreground must share the full upper duel composition behind the status overlay.")
 	_expect(planning_rect.encloses(board.action_timing_panel.get_global_rect()), "Action bundle display must sit on the lower planning surface.")

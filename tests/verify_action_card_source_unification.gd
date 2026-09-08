@@ -71,14 +71,22 @@ func _verify_card_text_hierarchy(definition: Dictionary, illustration_policy: St
 	var card := ACTION_CHOICE_CARD_SCRIPT.new() as ActionChoiceCard
 	card.configure_action(definition, illustration_policy)
 	var name_label := card.find_child("CardName", false, false) as Label
-	var tag_label := card.find_child("CardTag", false, false) as Label
+	var summary := card.find_child("CardSummary", false, false) as VBoxContainer
 	var illustration := card.find_child("CardIllustration", false, false) as TextureRect
 	_check(is_instance_valid(name_label) and name_label.text.contains(str(definition.get("name", ""))) and name_label.text.contains("%d수" % int(definition.get("action_slots", 1))), "%s must expose only its name and occupied action slots in the card title." % label)
-	_check(is_instance_valid(tag_label) and tag_label.text.contains(expected_tag), "%s must expose one Korean core tag inside the compact card." % label)
-	_check(is_instance_valid(tag_label) and not tag_label.text.contains("기력") and not tag_label.text.contains("내력") and not tag_label.text.contains("사거리"), "%s must reserve costs, range, and effect detail for the dedicated detail panel." % label)
+	var summary_text := ""
+	if is_instance_valid(summary):
+		for summary_label in summary.find_children("*", "Label", true, false):
+			summary_text += (summary_label as Label).text
+	_check(is_instance_valid(summary) and (summary_text.contains(expected_tag) or summary_text.contains("효과") or summary_text.contains("위력")), "%s must expose a Korean primary effect inside the compact card." % label)
+	_check(summary_text.contains("기력") and summary_text.contains("내력") and summary_text.contains("거리"), "%s must keep costs and range always visible while richer detail remains in the dedicated panel." % label)
 	_check(is_instance_valid(illustration) == (illustration_policy != "forbidden"), "%s illustration presence must match the card policy." % label)
-	_check(card.custom_minimum_size.y <= 84.0, "%s card must remain compact enough for a 5 by 2 lower-screen grid." % label)
-	_check(is_instance_valid(name_label) and name_label.clip_text and is_instance_valid(tag_label) and tag_label.clip_text, "%s compact card must keep text inside its own card frame." % label)
+	_check(card.custom_minimum_size.y <= 90.0, "%s card must remain compact enough for a 5 by 2 lower-screen grid." % label)
+	var summary_clips := is_instance_valid(summary)
+	if is_instance_valid(summary):
+		for summary_label in summary.find_children("*", "Label", true, false):
+			summary_clips = summary_clips and (summary_label as Label).clip_text
+	_check(is_instance_valid(name_label) and name_label.clip_text and summary_clips, "%s compact card must keep text inside its own card frame." % label)
 	_check(not card.accessibility_name.strip_edges().is_empty(), "%s must expose an accessibility name." % label)
 	_check(not card.accessibility_description.strip_edges().is_empty(), "%s must expose an accessibility description." % label)
 	card.queue_free()

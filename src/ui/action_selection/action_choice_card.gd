@@ -5,16 +5,15 @@ const PAPER_SURFACE := Color("d9ccb1")
 const PAPER_HOVER := Color("eee2c9")
 const CHARCOAL_INK := Color("211c17")
 const RESTRAINED_GOLD := Color("b99254")
+const RESOLUTION_ENGINE_SCRIPT := preload("res://src/combat/combat_resolution_engine.gd")
 
 var action_definition: Dictionary = {}
 
-func configure_action(definition: Dictionary, illustration_policy: String, status_text: String = "") -> void:
+func configure_action(definition: Dictionary, illustration_policy: String, status_text: String = "", preview_actor: Dictionary = {}) -> void:
 	action_definition = definition.duplicate(true)
 	for child in get_children():
 		child.queue_free()
-	# A compact fixed card preserves the approved 5 by 2 preparation grid.
-	# Costs, range, and effects deliberately live in the hover detail panel.
-	custom_minimum_size = Vector2(0.0, 80.0)
+	custom_minimum_size = Vector2(0.0, 88.0)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	focus_mode = Control.FOCUS_ALL
 	text = ""
@@ -31,7 +30,7 @@ func configure_action(definition: Dictionary, illustration_policy: String, statu
 	if has_illustration:
 		_add_illustration()
 	_add_name_label()
-	_add_tag_label()
+	_add_summary(preview_actor)
 
 func _add_illustration() -> void:
 	var illustration := TextureRect.new()
@@ -45,7 +44,7 @@ func _add_illustration() -> void:
 	illustration.offset_left = 7.0
 	illustration.offset_top = 5.0
 	illustration.offset_right = -7.0
-	illustration.offset_bottom = 40.0
+	illustration.offset_bottom = 31.0
 	add_child(illustration)
 
 func _add_name_label() -> void:
@@ -56,31 +55,63 @@ func _add_name_label() -> void:
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.clip_text = true
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.add_theme_font_size_override("font_size", 14)
+	label.add_theme_font_size_override("font_size", 12)
 	label.add_theme_color_override("font_color", CHARCOAL_INK)
 	label.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	label.offset_left = 5.0
 	label.offset_right = -5.0
-	label.offset_top = 40.0
-	label.offset_bottom = 59.0
+	label.offset_top = 31.0
+	label.offset_bottom = 49.0
 	add_child(label)
 
-func _add_tag_label() -> void:
+func _add_summary(preview_actor: Dictionary) -> void:
+	var summary := VBoxContainer.new()
+	summary.name = "CardSummary"
+	summary.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	summary.add_theme_constant_override("separation", 0)
+	summary.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	summary.offset_left = 4.0
+	summary.offset_right = -4.0
+	summary.offset_top = 49.0
+	summary.offset_bottom = 86.0
+	add_child(summary)
+	var momentum_text := " · 기세 %d" % int(action_definition.get("momentum_cost", 0)) if int(action_definition.get("momentum_cost", 0)) > 0 else ""
+	_add_summary_line(summary, "%d수 · 기력 %d · 내력 %d%s" % [int(action_definition.get("action_slots", 1)), int(action_definition.get("stamina_cost", 0)), int(action_definition.get("internal_cost", 0)), momentum_text])
+	var range_line := "거리 %s" % str(action_definition.get("range_text", "-"))
+	var movement := maxi(0, int(action_definition.get("move_range", 0)))
+	if bool(action_definition.get("dash_before_attack", false)):
+		movement = maxi(movement, 1)
+	if movement > 0:
+		range_line += " · 이동 %d칸" % movement
+	_add_summary_line(summary, range_line)
+	_add_summary_line(summary, _primary_summary(preview_actor))
+
+func _add_summary_line(parent: VBoxContainer, value: String) -> void:
 	var label := Label.new()
-	label.name = "CardTag"
-	label.text = _category_label()
+	label.text = value
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.clip_text = true
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.add_theme_font_size_override("font_size", 11)
 	label.add_theme_color_override("font_color", Color("4d4032"))
-	label.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	label.offset_left = 6.0
-	label.offset_right = -6.0
-	label.offset_top = 59.0
-	label.offset_bottom = 77.0
-	add_child(label)
+	parent.add_child(label)
+
+func _primary_summary(preview_actor: Dictionary) -> String:
+	var preview: Dictionary = RESOLUTION_ENGINE_SCRIPT.new().preview_action_magnitude(action_definition, preview_actor)
+	if bool(preview.get("available", false)):
+		if _category() == "attack":
+			return "예상 위력 %d" % int(preview.get("value", 0))
+		return str(preview.get("label", ""))
+	if _category() == "attack":
+		return _formula_baseline_text()
+	return "효과 조건부 · 상세 확인"
+
+func _formula_baseline_text() -> String:
+	var formula: Dictionary = action_definition.get("damage_formula", {}) as Dictionary
+	if not formula.is_empty():
+		var stat_label := str({"external": "외공", "internal_power": "내공"}.get(str(formula.get("stat_key", "")), "능력"))
+		return "위력식 기본%d+%s×%.2f" % [int(formula.get("base", 0)), stat_label, float(formula.get("coefficient", 0.0))]
+	return "위력식 %s" % str(action_definition.get("damage", "조건부"))
 
 func _detail_summary() -> String:
 	var detail: Dictionary = action_definition.get("detail", {}) as Dictionary

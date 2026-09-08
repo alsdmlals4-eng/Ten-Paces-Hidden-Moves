@@ -379,10 +379,10 @@ func _layout_product_action_dock() -> void:
         return
     var lower_margin := maxf(18.0, size.x * 0.085)
     var lower_bottom := maxf(8.0, size.y * 0.012)
-    # The reference preparation composition places the planning ink frame at
-    # 60% of the screen: full 20% status overlay, a large frontal duel field,
-    # then one compact action bundle plus a 5 by 2 card grid.
-    var planning_top := clampf(size.y * 0.60, 260.0, size.y - 176.0)
+    # The summary-card continuation moves the planning ink frame only enough
+    # to keep two readable rows at 720p while retaining the top HUD and a
+    # distinct frontal duel field.
+    var planning_top := clampf(size.y * 0.535, 260.0, size.y - 232.0)
     var timing_height := clampf(size.y * 0.105, 70.0, 92.0)
     var timing_y := planning_top + 8.0
     var dock_y := timing_y + timing_height + 8.0
@@ -540,6 +540,10 @@ func _build_action_selection_runtime_context() -> Dictionary:
         "interaction_state": _dock_interaction_state(),
         "round_number": int(combat_state.get("round_number", 1)),
         "bundle_index": int(combat_state.get("bundle_index", 1)),
+        "preview_actor": {
+            "stats": (player.get("stats", {}) as Dictionary).duplicate(true),
+            "attack_power": int(player.get("attack_power", 0))
+        },
         "momentum": [current, maximum],
         "momentum_maximum": maximum,
         "ultimate_reservations": _build_ultimate_reservation_snapshot()
