@@ -156,7 +156,44 @@ func _run() -> void:
     check(not codec.decode("[".repeat(66) + "0" + "]".repeat(66)).get("ok", false), "Deep input bounded")
     _verify_campaign_snapshots()
     _verify_interrupted_generation(source)
+    _verify_corrupt_metadata_recovery(source)
     finish()
+
+func _verify_corrupt_metadata_recovery(source: Dictionary) -> void:
+    var storage := OS.get_cache_dir().path_join("ten-paces-metadata-test-%s-%s" % [OS.get_process_id(), Time.get_ticks_usec()])
+    var store = load("res://src/run/run_save_store.gd").new(storage)
+    check(store.replace_run("metadata", "start", source).get("ok", false), "Metadata fixture durable in both slots")
+    var primary := storage.path_join("primary.json")
+    var original: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(primary))
+    for mutation in ["content_changed", "content_missing", "schema_missing", "schema_string"]:
+        var damaged: Dictionary = original.duplicate(true)
+        match mutation:
+            "content_changed": damaged.content_identity = "different-content"
+            "content_missing": damaged.erase("content_identity")
+            "schema_missing": damaged.erase("schema_version")
+            "schema_string": damaged.schema_version = "1"
+        var text := JSON.stringify(damaged)
+        var file := FileAccess.open(primary, FileAccess.WRITE)
+        file.store_string(text)
+        file.close()
+        var loaded: Dictionary = store.load_checkpoint()
+        check(loaded.status == "RECOVERED_BACKUP", "Corrupt metadata recovers backup: " + mutation)
+        check(loaded.get("payload", {}) == store.codec.normalized(original), "Metadata recovery exposes only validated original payload: " + mutation)
+        check(FileAccess.get_file_as_string(primary) == text, "Metadata recovery preserves damaged primary: " + mutation)
+    for mutation in ["different_content_valid_hash", "future_numeric_schema"]:
+        var incompatible: Dictionary = original.duplicate(true)
+        if mutation == "different_content_valid_hash":
+            incompatible.content_identity = "different-content"
+            incompatible.erase("integrity_hash")
+            incompatible.integrity_hash = store.codec.digest(incompatible)
+        else:
+            incompatible.schema_version = 999
+        var text := JSON.stringify(incompatible)
+        var file := FileAccess.open(primary, FileAccess.WRITE)
+        file.store_string(text)
+        file.close()
+        check(store.load_checkpoint().status == "INCOMPATIBLE", "Genuine incompatible metadata blocks fallback: " + mutation)
+        check(FileAccess.get_file_as_string(primary) == text, "Incompatible primary preserved: " + mutation)
 
 func _verify_interrupted_generation(source: Dictionary) -> void:
     var storage := OS.get_cache_dir().path_join("ten-paces-generation-test-%s-%s" % [OS.get_process_id(), Time.get_ticks_usec()])

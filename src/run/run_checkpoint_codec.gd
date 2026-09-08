@@ -125,21 +125,26 @@ func decode(text: String) -> Dictionary:
     if parser.parse(text) != OK or typeof(parser.data) != TYPE_DICTIONARY or not json_safe(parser.data, 0, [0]):
         return error("CORRUPT", "Malformed JSON")
     var envelope: Dictionary = parser.data
-    if not integer(envelope.get("schema_version"), 1) or envelope.schema_version != SCHEMA_VERSION:
+    if not integer(envelope.get("schema_version"), 1):
+        return error("CORRUPT", "Malformed schema version")
+    # An explicit future numeric schema owns the slot even when its format is unknown.
+    if envelope.schema_version != SCHEMA_VERSION:
         return error("INCOMPATIBLE", "Unsupported schema")
-    if envelope.get("content_identity") != content_identity() or content_identity().is_empty():
-        return error("INCOMPATIBLE", "Incompatible content")
     var keys := ["schema_version", "save_id", "checkpoint_id", "revision", "active", "written_at_utc", "app_version", "content_identity", "run_state", "combat_checkpoint", "integrity_hash"]
     if envelope.size() != keys.size(): return error("CORRUPT", "Unexpected envelope fields")
     for key in keys:
         if not envelope.has(key): return error("CORRUPT", "Missing envelope field")
-    for key in ["save_id", "checkpoint_id", "written_at_utc", "app_version", "integrity_hash"]:
+    for key in ["save_id", "checkpoint_id", "written_at_utc", "app_version", "content_identity", "integrity_hash"]:
         if typeof(envelope[key]) != TYPE_STRING or envelope[key].is_empty(): return error("CORRUPT", "Malformed envelope identity")
     if not integer(envelope.revision, 1) or typeof(envelope.active) != TYPE_BOOL: return error("CORRUPT", "Malformed revision or active state")
     var hash_input := envelope.duplicate(true)
     hash_input.erase("integrity_hash")
     if digest(hash_input) != envelope.integrity_hash: return error("CORRUPT", "Integrity mismatch")
     if typeof(envelope.run_state) != TYPE_DICTIONARY or typeof(envelope.combat_checkpoint) != TYPE_DICTIONARY: return error("CORRUPT", "Malformed payload")
+    # Current-schema metadata damage must recover from backup, not masquerade as
+    # a genuinely incompatible, intact checkpoint and suppress recovery.
+    if envelope.content_identity != content_identity() or content_identity().is_empty():
+        return error("INCOMPATIBLE", "Incompatible content")
     if envelope.active:
         var validation := validate_payload(envelope.run_state, envelope.combat_checkpoint)
         if not validation.ok: return validation
