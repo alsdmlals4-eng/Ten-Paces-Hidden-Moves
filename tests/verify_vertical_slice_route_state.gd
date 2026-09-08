@@ -1,12 +1,15 @@
 extends SceneTree
 
-const SHELL_SCENE := preload("res://scenes/run/vertical_slice_shell.tscn")
-const DEFAULT_STARTERS := [
+const RunStateScript := preload("res://src/run/vertical_slice_run_state.gd")
+const CatalogScript := preload("res://src/run/vertical_slice_opponent_catalog.gd")
+const RouteModelScript := preload("res://src/run/vertical_slice_route_model.gd")
+const STARTERS := [
     "mount_hua_plum_blossom_sword",
     "shaolin_arhat_vajra_art",
     "wudang_taiji_sword",
     "yang_family_spear"
 ]
+const FIRST_INTERVAL_CHOICES := ["training", "recon", "event", "rest"]
 
 var failures: Array[String] = []
 
@@ -16,107 +19,121 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-    var shell = SHELL_SCENE.instantiate()
-    root.add_child(shell)
-    if shell is Control:
-        shell.set_anchors_preset(Control.PRESET_TOP_LEFT)
-        shell.size = Vector2(1440.0, 900.0)
-    for _index in range(3):
-        await process_frame
-
-    _expect_true(shell.start_new_run(), "Route test run must start.")
-    for manual_id in DEFAULT_STARTERS:
-        _expect_true(shell.toggle_setup_manual(manual_id), "Starter selection must succeed: %s" % manual_id)
-    _expect_true(shell.advance_noncombat(), "SETUP → INTRO")
-    _expect_true(shell.advance_noncombat(), "INTRO → BRIEFING")
-    _expect_true(shell.advance_noncombat(), "BRIEFING → COMBAT")
-    await process_frame
-
-    var duel_one_opponent: Dictionary = shell.run_state.get_current_opponent()
-    var terminal_result := {
-        "terminal": true,
-        "outcome": "win",
-        "player_health": 12,
-        "enemy_health": 0,
-        "player_resources": {
-            "health": [12, 40],
-            "stamina": [2, 5],
-            "internal": [1, 4]
-        },
-        "battle_metrics": {
-            "successful_dodges": 1,
-            "clash_wins": 1,
-            "player_health_lost": 28,
-            "rounds_elapsed": 3,
-            "ultimate_uses": 0
-        },
-        "review_summary": {"cause_code": "clash", "review_focus": "합의 원인"},
-        "presentation_state": "review_ready"
-    }
-    _expect_true(shell.complete_combat_for_runtime(terminal_result), "Terminal result must enter REVIEW.")
-    _expect_eq(shell.run_state.get_player_run_resources(), terminal_result["player_resources"], "RunState must persist terminal player health/stamina/internal pairs.")
-    _expect_true(shell.complete_review_for_runtime(), "REVIEW → RESULT")
-    _expect_true(shell.select_result_reward("focused_training", DEFAULT_STARTERS[0]), "Focused result reward must be selectable.")
-    _expect_true(shell.advance_noncombat(), "Reward-confirmed RESULT → R1 Growth/Recovery.")
-    await process_frame
-
-    _expect_eq(shell.run_state.get_current_screen(), "ROUTE_GROWTH", "Run must enter Growth/Recovery Route first.")
-    var progression: Dictionary = shell.run_state.get_progression_snapshot()
-    _expect_eq(int(progression.get("free_training_pool", -1)), 3, "Focused Duel reward must apply +3 free training before Route renders.")
-    _expect_eq(int((progression.get("training_by_manual", {}) as Dictionary).get(DEFAULT_STARTERS[0], -1)), 5, "Focused Duel reward must apply +5 to its selected manual exactly once.")
-    _expect_eq(int((progression.get("mastery_by_manual", {}) as Dictionary).get(DEFAULT_STARTERS[0], -1)), 5, "Five invested points from mastery 3 must cross 4★(2) and 5★(+3).")
-    _expect_eq(shell.get_route_option_count(), 3, "Growth/Recovery Route must expose exactly three choices.")
-    _expect_false(shell.primary_button.disabled == false, "Growth Route CTA must remain disabled until one route choice is selected.")
-
-    _expect_true(shell.select_growth_route("recovery"), "R1 recovery option must be selectable.")
-    var recovered: Dictionary = shell.run_state.get_player_run_resources()
-    _expect_eq(recovered.get("health", []), [22, 40], "25% of max 40 must restore 10 health without exceeding max.")
-    _expect_eq(recovered.get("stamina", []), [3, 5], "Recovery must restore stamina +1 with cap.")
-    _expect_eq(recovered.get("internal", []), [2, 4], "Recovery must restore internal +1 with cap.")
-    _expect_true(shell.advance_noncombat(), "Confirmed R1 choice must advance to R2 Info/Preparation.")
-    await process_frame
-
-    _expect_eq(shell.run_state.get_current_screen(), "ROUTE_INFO", "Growth Route must lead to Info Route.")
-    var locked_next: Dictionary = shell.run_state.get_route_target_opponent()
-    var locked_id := str(locked_next.get("candidate_id", ""))
-    _expect_true(not locked_id.is_empty(), "Info Route must target the already-locked next opponent.")
-    _expect_eq(int(locked_next.get("duel_slot", 0)), 2, "R2 must target Slot 2 opponent after Duel 1.")
-    _expect_eq(shell.get_route_option_count(), 3, "Info Route must expose exactly three public-info choices.")
-    _expect_true(shell.select_info_route("MANUAL_RUMOR"), "R2 MANUAL_RUMOR must be selectable.")
-    var intel: Dictionary = shell.run_state.get_pending_route_intel()
-    _expect_eq(str(intel.get("candidate_id", "")), locked_id, "Route intel must remain scoped to the locked opponent.")
-    _expect_eq(str(intel.get("category", "")), "MANUAL_RUMOR", "Selected info category must be recorded.")
-    var intel_text := str(intel.get("text", ""))
-    _expect_true(not intel_text.is_empty(), "Selected Route intel must produce player-facing public text.")
-    _expect_false(intel_text.contains(str(locked_next.get("behavior_focus", ""))), "Route intel must not expose internal behavior keys.")
-    _expect_false(intel_text.contains("AI 가중치"), "Route intel must not expose AI weights.")
-    _expect_false(intel_text.contains("현재 계획"), "Route intel must not expose the hidden current plan.")
-
-    _expect_true(shell.advance_noncombat(), "Confirmed R2 choice must advance to Duel 2 Briefing.")
-    await process_frame
-    _expect_eq(shell.run_state.get_current_screen(), "BRIEFING", "Info Route must advance to next Briefing.")
-    _expect_eq(str(shell.run_state.get_current_opponent().get("candidate_id", "")), locked_id, "Route target must promote without reroll.")
-    var briefing_text := "%s\n%s" % [shell.title_label.text, shell.description_label.text]
-    _expect_true(briefing_text.contains(intel_text), "Next Briefing must include the chosen Route intel as one acquired clue.")
-    _expect_false(briefing_text.contains(str(locked_next.get("behavior_focus", ""))), "Briefing must still hide internal behavior keys after Route intel.")
-
-    _expect_true(shell.advance_noncombat(), "Duel 2 Briefing → Combat")
-    await process_frame
-    await process_frame
-    var resources_snapshot: Dictionary = shell.get_active_combat_resource_snapshot()
-    _expect_eq(resources_snapshot.get("health", []), [22, 40], "Duel 2 combat must start from persisted/recovered health.")
-    _expect_eq(resources_snapshot.get("stamina", []), [3, 5], "Duel 2 combat must start from persisted/recovered stamina.")
-    _expect_eq(resources_snapshot.get("internal", []), [2, 4], "Duel 2 combat must start from persisted/recovered internal.")
-
-    var route_history: Array = shell.run_state.get_route_history()
-    _expect_eq(route_history.size(), 2, "R1 and R2 must each record exactly one confirmed route receipt.")
-    _expect_eq(str((route_history[0] as Dictionary).get("node_id", "")), "R1", "First confirmed Route receipt must be R1.")
-    _expect_eq(str((route_history[1] as Dictionary).get("node_id", "")), "R2", "Second confirmed Route receipt must be R2.")
-    _expect_eq(str(duel_one_opponent.get("candidate_id", "")), str((shell.run_state.get_reward_history()[0] as Dictionary).get("opponent_candidate_id", "")), "Duel reward history must remain associated with Duel 1 opponent.")
-
-    shell.queue_free()
-    await process_frame
+    _verify_route_model_boundaries()
+    _verify_route_effects_and_receipts()
     _finish()
+
+
+func _verify_route_model_boundaries() -> void:
+    var model = RouteModelScript.new()
+    _expect_true(model.has_method("get_jianghu_options"), "Route model must own Jianghu candidate generation.")
+    if not model.has_method("get_jianghu_options"):
+        return
+    for completed_duels in range(1, 10):
+        for step in range(4):
+            var options: Array = model.get_jianghu_options(completed_duels, step)
+            _expect_eq(options.size(), 3, "Every one of four Jianghu steps in Interval %d must expose three choices." % completed_duels)
+            _expect_eq(_option_ids(options).size(), 3, "Every Jianghu choice must have a non-empty ID.")
+            _expect_eq(_unique_count(_option_ids(options)), 3, "Each Jianghu step must expose three distinct choices.")
+    for invalid_pair in [[0, 0], [10, 0], [1, -1], [1, 4]]:
+        _expect_true(model.get_jianghu_options(invalid_pair[0], invalid_pair[1]).is_empty(), "Route model must reject interval/step outside the 9×4 campaign boundary.")
+
+
+func _verify_route_effects_and_receipts() -> void:
+    var run = _new_combat_run()
+    var duel_one_opponent_id := str(run.get_current_opponent().get("candidate_id", ""))
+    var terminal_result := {
+        "outcome": "win",
+        "player_resources": {"health": [12, 40], "stamina": [2, 5], "internal": [1, 4]},
+        "battle_metrics": {"successful_dodges": 1, "clash_wins": 1, "player_health_lost": 28, "rounds_elapsed": 3, "ultimate_uses": 0},
+        "review_summary": {"cause_code": "clash", "review_focus": "합의 원인"}
+    }
+    _expect_true(run.mark_combat_finished(terminal_result), "Terminal result must enter Review.")
+    _expect_eq(run.get_player_run_resources(), terminal_result["player_resources"], "RunState must persist terminal player resources.")
+    _expect_true(run.advance(), "Review must enter Result.")
+    _expect_true(run.set_pending_result_reward({"reward_type": "focused_training", "target_manual_id": STARTERS[0], "focused_training": 5, "free_training": 3}), "Focused result reward must be selectable.")
+    _expect_true(run.advance(), "Reward-confirmed Result must enter Jianghu.")
+    _expect_eq(run.get_current_screen(), "JIANGHU", "The new Route is one four-step Jianghu interval.")
+    var rewarded: Dictionary = run.get_progression_snapshot()
+    _expect_eq(int(rewarded.get("free_training_pool", -1)), 3, "Focused duel reward must apply +3 free training before Jianghu renders.")
+    _expect_eq(int((rewarded.get("training_by_manual", {}) as Dictionary).get(STARTERS[0], -1)), 5, "Focused duel reward must apply +5 exactly once.")
+    var locked_next: Dictionary = run.get_route_target_opponent()
+    var locked_id := str(locked_next.get("candidate_id", ""))
+    _expect_true(not locked_id.is_empty(), "Jianghu must target an already-locked next opponent.")
+    _expect_eq(int(locked_next.get("duel_slot", 0)), 1, "Duel 2 uses the second distinct Slot-1 binding in the ten-duel cadence.")
+
+    for step in range(4):
+        var options: Array = run.get_jianghu_options()
+        _expect_eq(options.size(), 3, "Jianghu Step %d must expose exactly three choices." % step)
+        if options.size() != 3:
+            continue
+        var choice_id: String = str(FIRST_INTERVAL_CHOICES[step])
+        _expect_true(choice_id in _option_ids(options), "The deterministic first interval must offer %s at Step %d." % [choice_id, step])
+        var before: Dictionary = run.get_progression_snapshot()
+        _expect_true(run.select_jianghu_node(choice_id, step), "The offered %s Route must be selectable." % choice_id)
+        var once: Dictionary = run.get_progression_snapshot()
+        _expect_false(run.select_jianghu_node(choice_id, step), "A selected Route effect must reject duplicate input.")
+        _expect_eq(run.get_progression_snapshot(), once, "Duplicate input must not apply %s twice." % choice_id)
+        if choice_id == "recon":
+            var pending_intel: Dictionary = run.get_pending_jianghu()
+            var intel_text := str(pending_intel.get("text", ""))
+            _expect_true(not intel_text.is_empty(), "Recon must produce one public clue.")
+            _expect_eq(str(pending_intel.get("candidate_id", "")), locked_id, "Recon clue must remain scoped to the locked opponent.")
+            _expect_false(intel_text.contains(str(locked_next.get("behavior_focus", ""))), "Recon must not expose internal behavior keys.")
+            _expect_false(intel_text.contains("AI 가중치") or intel_text.contains("현재 계획"), "Recon must not expose weights or hidden plans.")
+            _expect_eq(before, once, "Recon must not mutate player progression.")
+        else:
+            _expect_true(before != once, "%s must apply its documented progression effect." % choice_id)
+        _expect_true(run.advance(), "A selected Route receipt must confirm once.")
+        if step < 3:
+            _expect_false(run.advance(), "A confirmed step must wait for the next choice.")
+        _expect_eq(run.get_progression_snapshot(), once, "Receipt confirmation must not reapply %s." % choice_id)
+        _expect_eq(run.get_route_history().size(), step + 1, "Each confirmed step must append exactly one Route receipt.")
+        var receipt: Dictionary = run.get_route_history()[step] if run.get_route_history().size() > step else {}
+        _expect_eq(str(receipt.get("node_id", "")), "J1-%d" % (step + 1), "Route receipt must preserve its exact interval-step identity.")
+
+    _expect_eq(run.get_current_screen(), "BRIEFING", "The fourth confirmed choice must enter Duel 2 Briefing.")
+    _expect_eq(str(run.get_current_opponent().get("candidate_id", "")), locked_id, "The locked Route target must promote without reroll.")
+    _expect_eq(run.get_progression_snapshot().get("player_resources", {}), {"health": [22, 40], "stamina": [3, 5], "internal": [3, 4]}, "Event and rest effects must apply once with resource caps.")
+    _expect_eq(int(run.get_progression_snapshot().get("free_training_pool", -1)), 8, "Focused reward +3, training +3, and event +2 must apply once each.")
+    _expect_eq(str((run.get_reward_history()[0] as Dictionary).get("opponent_candidate_id", "")), duel_one_opponent_id, "Duel reward history must remain associated with Duel 1 opponent.")
+
+
+func _new_combat_run():
+    var run = RunStateScript.new()
+    var catalog = CatalogScript.new()
+    _expect_true(run.configure_opponents(catalog, 20260908), "Route fixture must configure opponents.")
+    _expect_true(run.start_new_run(), "Route fixture must start.")
+    _expect_true(run.confirm_setup_loadout(STARTERS, _starter_mastery()), "Route fixture must accept starter manuals.")
+    _expect_true(run.advance(), "Setup must enter Intro.")
+    _expect_true(run.advance(), "Intro must enter Briefing.")
+    _expect_true(run.advance(), "Briefing must enter Combat.")
+    return run
+
+
+func _starter_mastery() -> Dictionary:
+    var result := {}
+    for manual_id in STARTERS:
+        result[manual_id] = 3
+    return result
+
+
+func _option_ids(options: Array) -> Array[String]:
+    var result: Array[String] = []
+    for value in options:
+        if typeof(value) != TYPE_DICTIONARY:
+            continue
+        var option_id := str((value as Dictionary).get("id", ""))
+        if not option_id.is_empty():
+            result.append(option_id)
+    return result
+
+
+func _unique_count(values: Array[String]) -> int:
+    var seen := {}
+    for value in values:
+        seen[value] = true
+    return seen.size()
 
 
 func _expect_true(value: bool, message: String) -> void:

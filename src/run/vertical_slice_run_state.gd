@@ -17,7 +17,9 @@ const SCREEN_RESULT := "RESULT"
 const SCREEN_ROUTE_GROWTH := "ROUTE_GROWTH"
 const SCREEN_ROUTE_INFO := "ROUTE_INFO"
 const SCREEN_COMPLETION := "COMPLETION"
-const MAX_DUELS := 5
+const MAX_DUELS := 10
+const SCREEN_JIANGHU := "JIANGHU"
+const JIANGHU_CHOICES := 4
 const STARTER_SELECTION_COUNT := 4
 const STARTER_MASTERY := 3
 
@@ -47,6 +49,65 @@ var _pre_battle_snapshot: Dictionary = {}
 var _retry_count: int = 0
 var _attempt_id: int = 0
 var _failure_receipt: Dictionary = {}
+var jianghu_step: int = 0
+var _pending_jianghu: Dictionary = {}
+
+
+func get_jianghu_options() -> Array:
+    if _current_screen != SCREEN_JIANGHU or _route_model == null:
+        return []
+    return _route_model.get_jianghu_options(completed_duels, jianghu_step)
+
+
+func get_pending_jianghu() -> Dictionary:
+    return _pending_jianghu.duplicate(true)
+
+
+func select_jianghu_node(node_id: String, expected_step: int) -> bool:
+    if _current_screen != SCREEN_JIANGHU or _progression == null or _route_model == null:
+        return false
+    if completed_duels < 1 or completed_duels >= MAX_DUELS or duel_index != completed_duels:
+        return false
+    if expected_step != jianghu_step or expected_step < 0 or expected_step >= JIANGHU_CHOICES or not _pending_jianghu.is_empty():
+        return false
+    var selected: Dictionary = {}
+    for option in get_jianghu_options():
+        if typeof(option) == TYPE_DICTIONARY and str((option as Dictionary).get("id", "")) == node_id:
+            selected = (option as Dictionary).duplicate(true)
+            break
+    if selected.is_empty():
+        return false
+    var candidate := get_route_target_opponent()
+    match node_id:
+        "rest":
+            _progression.apply_recovery(0.25, 1, 1)
+        "training":
+            if not _progression.add_free_training(3):
+                return false
+        "event":
+            if not _progression.add_free_training(2):
+                return false
+            _progression.apply_recovery(0.0, 0, 1)
+        "recon", "investigate":
+            if candidate.is_empty():
+                return false
+            var category := "MANUAL_RUMOR" if node_id == "recon" else "FOOTWORK_SIGHTING"
+            var text: String = _route_model.build_public_intel(category, candidate)
+            if text.is_empty():
+                return false
+            selected["text"] = text
+            selected["candidate_id"] = candidate["candidate_id"]
+            selected["category"] = category
+            if node_id == "investigate":
+                if not _progression.add_free_training(1):
+                    return false
+            _intel_by_candidate[str(candidate.get("candidate_id", ""))] = selected.duplicate(true)
+        _:
+            return false
+    selected["route_type"] = node_id
+    selected["node_id"] = "J%d-%d" % [completed_duels, jianghu_step + 1]
+    _pending_jianghu = selected
+    return true
 
 
 func _init() -> void:
@@ -79,6 +140,8 @@ func configure_opponents(catalog, run_seed: int) -> bool:
     if _current_screen != SCREEN_MAIN:
         return false
     if catalog == null or not catalog.has_method("is_valid") or not catalog.is_valid():
+        return false
+    if not catalog.has_method("select_campaign_candidate_id") or not catalog.has_method("get_candidate"):
         return false
     _opponent_catalog = catalog
     _run_seed = run_seed
@@ -249,7 +312,7 @@ func get_route_history() -> Array:
 
 
 func set_pending_result_reward(receipt: Dictionary) -> bool:
-    if _current_screen != SCREEN_RESULT or receipt.is_empty():
+    if _current_screen != SCREEN_RESULT or receipt.is_empty() or not _pending_result_reward.is_empty():
         return false
     var reward_type := str(receipt.get("reward_type", ""))
     if reward_type not in ["free_training", "focused_training", "faction_transfer"]:
@@ -293,8 +356,10 @@ func start_new_run() -> bool:
     _retry_count = 0
     _attempt_id = 0
     _progression.reset()
+    jianghu_step = 0
+    _pending_jianghu.clear()
     if _opponent_catalog != null:
-        _current_opponent_id = str(_opponent_catalog.select_candidate_id(1, _run_seed))
+        _current_opponent_id = str(_opponent_catalog.select_campaign_candidate_id(1))
         if _current_opponent_id.is_empty():
             return false
     return _transition_to(SCREEN_SETUP)
@@ -329,7 +394,31 @@ func advance() -> bool:
             _pending_growth_route.clear()
             _pending_route_intel.clear()
             _pre_battle_snapshot.clear()
-            return _transition_to(SCREEN_ROUTE_GROWTH)
+            jianghu_step = 0
+            _pending_jianghu.clear()
+            return _transition_to(SCREEN_JIANGHU)
+        SCREEN_JIANGHU:
+            if completed_duels < 1 or completed_duels >= MAX_DUELS or duel_index != completed_duels:
+                return false
+            if jianghu_step < 0 or jianghu_step >= JIANGHU_CHOICES or _pending_jianghu.is_empty():
+                return false
+            if str(_pending_jianghu.get("node_id", "")) != "J%d-%d" % [completed_duels, jianghu_step + 1]:
+                return false
+            if jianghu_step == JIANGHU_CHOICES - 1 and _opponent_catalog != null and _next_opponent_id.is_empty():
+                return false
+            _route_history.append(_pending_jianghu.duplicate(true))
+            _pending_jianghu.clear()
+            jianghu_step += 1
+            route_visits += 1
+            if jianghu_step < JIANGHU_CHOICES:
+                screen_changed.emit(SCREEN_JIANGHU, SCREEN_JIANGHU)
+                return true
+            duel_index += 1
+            _promote_next_opponent_if_configured()
+            _pre_battle_snapshot.clear()
+            _retry_count = 0
+            _attempt_id = 0
+            return _transition_to(SCREEN_BRIEFING)
         SCREEN_ROUTE_GROWTH:
             if _pending_growth_route.is_empty():
                 return false
@@ -356,11 +445,20 @@ func advance() -> bool:
 func mark_combat_finished(result: Dictionary) -> bool:
     if _current_screen != SCREEN_COMBAT:
         return false
-    if completed_duels >= MAX_DUELS:
+    if duel_index < 1 or duel_index > MAX_DUELS or completed_duels != duel_index - 1:
         return false
+    var outcome := str(result.get("outcome", ""))
+    if outcome not in ["win", "loss", "draw"]:
+        return false
+    if not _has_valid_result_resources(result):
+        return false
+    if _opponent_catalog != null:
+        var expected_opponent_id := str(_opponent_catalog.select_campaign_candidate_id(duel_index))
+        if expected_opponent_id.is_empty() or _current_opponent_id != expected_opponent_id or get_current_opponent().is_empty():
+            return false
     last_combat_result = result.duplicate(true)
     last_combat_result["attempt_id"] = _attempt_id
-    if str(result.get("outcome", "")) == "loss":
+    if outcome == "loss":
         _failure_receipt = {
             "duel_index": duel_index,
             "attempt_id": _attempt_id,
@@ -370,8 +468,8 @@ func mark_combat_finished(result: Dictionary) -> bool:
         last_combat_result["review_causes"] = _failure_receipt["review_causes"]
         return _transition_to(SCREEN_REVIEW)
     var resources = result.get("player_resources", null)
-    if typeof(resources) == TYPE_DICTIONARY:
-        _progression.set_player_resources(resources as Dictionary)
+    if typeof(resources) == TYPE_DICTIONARY and not _progression.set_player_resources(resources as Dictionary):
+        return false
     _duel_history.append(_build_duel_history_row(result))
     _pending_result_reward.clear()
     completed_duels += 1
@@ -400,8 +498,19 @@ func end_failed_run() -> bool:
     _pending_result_reward.clear()
     _pending_growth_route.clear()
     _pending_route_intel.clear()
+    _pending_jianghu.clear()
+    _duel_history.clear()
+    _reward_history.clear()
+    _route_history.clear()
+    _intel_by_candidate.clear()
+    _player_manual_loadout.clear()
+    _player_mastery_by_manual.clear()
     _current_opponent_id = ""
     _next_opponent_id = ""
+    duel_index = 1
+    completed_duels = 0
+    route_visits = 0
+    jianghu_step = 0
     _retry_count = 0
     _attempt_id = 0
     _progression.reset()
@@ -430,6 +539,12 @@ func _restore_pre_battle_snapshot(snapshot: Dictionary) -> bool:
     if snapshot.is_empty() or typeof(snapshot.get("progression", {})) != TYPE_DICTIONARY:
         return false
     var progression_snapshot: Dictionary = snapshot.get("progression", {})
+    var duel_history_value = snapshot.get("duel_history", [])
+    var reward_history_value = snapshot.get("reward_history", [])
+    var route_history_value = snapshot.get("route_history", [])
+    var intel_value = snapshot.get("intel_by_candidate", {})
+    if typeof(duel_history_value) != TYPE_ARRAY or typeof(reward_history_value) != TYPE_ARRAY or typeof(route_history_value) != TYPE_ARRAY or typeof(intel_value) != TYPE_DICTIONARY:
+        return false
     if not _progression.restore_snapshot(progression_snapshot):
         return false
     _run_seed = int(snapshot.get("run_seed", _run_seed))
@@ -438,13 +553,15 @@ func _restore_pre_battle_snapshot(snapshot: Dictionary) -> bool:
     route_visits = int(snapshot.get("route_visits", route_visits))
     _current_opponent_id = str(snapshot.get("current_opponent_id", ""))
     _next_opponent_id = str(snapshot.get("next_opponent_id", ""))
-    _duel_history = (snapshot.get("duel_history", []) as Array).duplicate(true)
-    _reward_history = (snapshot.get("reward_history", []) as Array).duplicate(true)
-    _route_history = (snapshot.get("route_history", []) as Array).duplicate(true)
-    _intel_by_candidate = (snapshot.get("intel_by_candidate", {}) as Dictionary).duplicate(true)
+    _duel_history = (duel_history_value as Array).duplicate(true)
+    _reward_history = (reward_history_value as Array).duplicate(true)
+    _route_history = (route_history_value as Array).duplicate(true)
+    _intel_by_candidate = (intel_value as Dictionary).duplicate(true)
     _pending_result_reward.clear()
     _pending_growth_route.clear()
     _pending_route_intel.clear()
+    _pending_jianghu.clear()
+    jianghu_step = 0
     return true
 
 
@@ -459,6 +576,19 @@ func _extract_review_causes(result: Dictionary) -> Array:
     if causes.is_empty():
         causes.append({"event": "combat_loss", "label": "전투에서 패배했습니다."})
     return causes
+
+
+func _has_valid_result_resources(result: Dictionary) -> bool:
+    if not result.has("player_resources"):
+        return true
+    var resources = result.get("player_resources")
+    if typeof(resources) != TYPE_DICTIONARY:
+        return false
+    for key in ["health", "stamina", "internal"]:
+        var pair = (resources as Dictionary).get(key, null)
+        if typeof(pair) != TYPE_ARRAY or pair.size() < 2:
+            return false
+    return true
 
 
 func is_complete() -> bool:
@@ -510,10 +640,10 @@ func _lock_next_opponent_if_configured() -> bool:
         return true
     if not _next_opponent_id.is_empty():
         return true
-    var next_slot := duel_index + 1
+    var next_slot := completed_duels + 1
     if next_slot > MAX_DUELS:
         return true
-    _next_opponent_id = str(_opponent_catalog.select_candidate_id(next_slot, _run_seed))
+    _next_opponent_id = str(_opponent_catalog.select_campaign_candidate_id(next_slot))
     return not _next_opponent_id.is_empty()
 
 
