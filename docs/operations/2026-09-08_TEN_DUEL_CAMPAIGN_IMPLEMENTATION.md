@@ -251,3 +251,18 @@ has its own 27-path approval matching its product diff. Generated local imports/
 and raw exploratory captures were preserved, never bulk-staged. Its old stalled Full
 Validation run was cancelled after the concrete obsolete assertion was identified;
 new exact-head CI must pass before merge. No protected-rule bypass was used.
+
+### Postmerge closeout
+
+PR 322 passed all 32 exact-head checks and merged as
+`81ef0f0b2ede9cd63d6a2aba521a645efc1d4e5f`. Detached-main readback passed all
+472 Python tests. The corrected sequential actual resolver/RunState probe again
+completed ten wins, ten rewards and 36 offered route choices with exact resource
+handoff assertions. This remains machine evidence, not visible-input, Human,
+Android, accessibility, balance or release acceptance.
+
+The one-time PR 322 protected-change manifest is archived byte-for-byte with its
+SHA-256 and explicit inactive-authority markers, then removed from the active
+path. The adapter protected baseline advances to the exact merged main commit;
+the adopted Base source regenerates the operating views. The next constraint
+package is not implementation-authorized by this archive.
