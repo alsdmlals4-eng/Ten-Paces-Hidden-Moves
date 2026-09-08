@@ -22,9 +22,6 @@ func _run() -> void:
 	var deadline := Time.get_ticks_msec() + 15000
 	while str(board.get_meta("presentation_state", "")) != "next_bundle_ready" and Time.get_ticks_msec() < deadline:
 		await process_frame
-	if "--retrospective-old-behavior" in OS.get_cmdline_user_args():
-		board.combat_review_panel.show_summary(board._last_review_summary, false)
-		board._set_presentation_state("review_ready")
 	_expect(str(board.get_meta("presentation_state", "")) == "next_bundle_ready", "No modal review click is required")
 	_expect(int(board.get_meta("resolution_count", 0)) == 1, "One existing resolution only")
 	_expect(not board.combat_review_panel.visible, "No standalone product review overlay")
