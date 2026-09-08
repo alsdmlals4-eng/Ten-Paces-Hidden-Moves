@@ -86,15 +86,19 @@ func _run() -> void:
 		for _frame in range(3):
 			await process_frame
 		var inline_rect: Rect2 = board.inline_result_label.get_global_rect()
-		_expect(not inline_rect.intersects(board.action_timing_panel.get_global_rect()), "Inline result has a dedicated row below timing panel at %s" % viewport_size)
+		_expect(board.inline_result_label.is_visible_in_tree(), "Valid nonterminal inline cause remains visible at %s" % viewport_size)
+		_expect(not inline_rect.intersects(board.action_timing_panel.get_global_rect()), "Inline result causal lane does not intersect timing panel at %s" % viewport_size)
+		_expect(not inline_rect.intersects(board.combat_progress_button.get_global_rect()), "Inline result causal lane does not intersect progress controls at %s" % viewport_size)
 		var dock = board.action_selection_dock
 		_expect(bool(board.get_meta("inline_result_row_bounded", false)), "Inline result owns a bounded row at %s" % viewport_size)
 		_expect(not inline_rect.intersects(dock.get_global_rect()), "Inline result does not intersect actual ActionSelectionDock at %s" % viewport_size)
 		for tab in [dock.basic_tab, dock.martial_tab, dock.ultimate_tab]:
 			_expect(not inline_rect.intersects(tab.get_global_rect()), "Inline result does not intersect an actual source tab at %s" % viewport_size)
+		_expect(dock.basic_panel.buttons.size() == 10, "All ten basic product action cards exist at %s" % viewport_size)
 		for button in dock.basic_panel.buttons:
-			if button.visible:
-				_expect(not inline_rect.intersects(button.get_global_rect()), "Inline result does not intersect a visible product action card at %s" % viewport_size)
+			_expect(button.is_visible_in_tree(), "Each basic product action card remains visible at %s" % viewport_size)
+			_expect(not inline_rect.intersects(button.get_global_rect()), "Inline result does not intersect a visible product action card at %s" % viewport_size)
+			_expect(Rect2(Vector2.ZERO, viewport_size).encloses(button.get_global_rect()), "Visible product action card stays wholly inside viewport at %s" % viewport_size)
 		for slot in board.action_timing_panel.slots:
 			_expect(not inline_rect.intersects(slot.get_global_rect()), "Inline result does not intersect timing slots at %s" % viewport_size)
 

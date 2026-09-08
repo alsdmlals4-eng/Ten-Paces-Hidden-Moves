@@ -653,15 +653,26 @@ func _layout_board() -> void:
 func _settle_inline_result_row(row_height: float, row_gap: float) -> void:
 	if not is_instance_valid(inline_result_label) or not is_instance_valid(action_timing_panel):
 		return
+	var product_dock := get_node_or_null("ActionSelectionDock") as Control
+	if is_instance_valid(product_dock) and product_dock.visible and is_instance_valid(combat_progress_button):
+		var lane_gap := row_gap
+		var lane_left := combat_progress_button.get_rect().end.x + lane_gap
+		var lane_right := product_dock.get_rect().end.x
+		var lane_width := lane_right - lane_left
+		var lane_height := action_timing_panel.size.y
+		if lane_width < 220.0 or lane_height < inline_result_label.get_combined_minimum_size().y:
+			set_meta("inline_result_row_bounded", false)
+			return
+		inline_result_label.position = Vector2(lane_left, action_timing_panel.position.y)
+		inline_result_label.size = Vector2(lane_width, lane_height)
+		set_meta("inline_result_row_bounded", true)
+		return
 	var inline_row_y := action_timing_panel.get_rect().end.y + row_gap
 	for slot in action_timing_panel.slots:
 		if is_instance_valid(slot):
 			inline_row_y = maxf(inline_row_y, slot.get_rect().end.y + action_timing_panel.position.y + row_gap)
 	var next_control_top := INF
-	var product_dock := get_node_or_null("ActionSelectionDock") as Control
-	if is_instance_valid(product_dock) and product_dock.visible:
-		next_control_top = minf(next_control_top, product_dock.position.y)
-	elif is_instance_valid(basic_card_tray) and basic_card_tray.visible:
+	if is_instance_valid(basic_card_tray) and basic_card_tray.visible:
 		next_control_top = minf(next_control_top, basic_card_tray.position.y)
 	if next_control_top < INF and inline_row_y + row_height + row_gap > next_control_top:
 		# Do not move the result back over timing slots. Auto composition reserves

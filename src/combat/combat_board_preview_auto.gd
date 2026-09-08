@@ -372,15 +372,9 @@ func _layout_product_action_dock() -> void:
     # to keep two readable rows at 720p while retaining the top HUD and a
     # distinct frontal duel field.
     var planning_top := clampf(size.y * 0.50, 260.0, size.y - 242.0)
-    var timing_height := clampf(size.y * 0.13, 94.0, 112.0)
+    var timing_height := clampf(size.y * 0.105, 70.0, 92.0)
     var timing_y := planning_top + 8.0
-    var inline_row_height := 46.0
-    var row_gap := 8.0
-    # TimingSlot children may extend slightly beyond the panel's requested
-    # height while their readable rows settle. Reserve that measured lane too.
-    var timing_slot_overflow_allowance := 12.0
-    var inline_row_y := timing_y + timing_height + timing_slot_overflow_allowance + row_gap
-    var dock_y := inline_row_y + inline_row_height + row_gap
+    var dock_y := timing_y + timing_height + 8.0
     var dock_height := maxf(142.0, size.y - dock_y - lower_bottom)
     action_selection_dock.position = Vector2(lower_margin, dock_y)
     action_selection_dock.size = Vector2(maxf(1.0, size.x - lower_margin * 2.0), dock_height)
@@ -393,10 +387,6 @@ func _layout_product_action_dock() -> void:
         combat_progress_button.position.x = lower_margin + timing_width + 8.0
         combat_progress_button.size = Vector2(progress_width, minf(timing_height, 60.0))
         combat_progress_button.position.y = timing_y + (timing_height - combat_progress_button.size.y) * 0.5
-        if is_instance_valid(inline_result_label):
-            inline_result_label.position = Vector2(size.x * 0.27, inline_row_y)
-            inline_result_label.size = Vector2(size.x * 0.46, inline_row_height)
-            call_deferred("_settle_inline_result_row", inline_row_height, row_gap)
         _shift_battlefield_above(planning_top - 24.0)
         _layout_screen_surfaces(planning_top)
 
