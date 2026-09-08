@@ -34,6 +34,8 @@ on:
       - "tests/verify_combat_focus_order.gd"
       - "tests/verify_combat_layout_accessibility.gd"
       - "tests/verify_combat_action_selection_integration.gd"
+      - "tests/verify_combat_outcome_feedback.gd"
+      - "tests/verify_actor_ultimate_presentation.gd"
       - "tests/probe_native_ten_duel_campaign.gd"
       - "tests/probe_sequential_ten_duel_campaign.gd"
       - ".github/workflows/validate-ten-manual-product-gate.yml"
@@ -82,6 +84,10 @@ jobs:
           include-templates: false
       - name: Import and parse project
         run: godot --headless --editor --path . --quit
+      - name: Verify shared terminal outcome feedback
+        run: godot --headless --path . --script res://tests/verify_combat_outcome_feedback.gd
+      - name: Verify actor-owned ultimate presentation
+        run: godot --headless --path . --script res://tests/verify_actor_ultimate_presentation.gd
       - name: Verify fifty ten-manual product scenarios
         run: godot --headless --path . --script res://tests/verify_ten_manual_product_gate.gd
       - name: Verify product viewport matrix

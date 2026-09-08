@@ -42,6 +42,26 @@ class CombatFeedbackCorrectionTests(unittest.TestCase):
     def test_existing_terminal_flow_requests_victory_cue(self):
         self.native("verify_combat_terminal_presentation.gd", "COMBAT_TERMINAL_PRESENTATION_VERIFY_OK")
 
+    def test_actor_owned_ultimate_presentation_profiles(self):
+        self.native("verify_actor_ultimate_presentation.gd", "ACTOR_ULTIMATE_PRESENTATION_VERIFY_OK")
+
+    def test_native_feedback_regressions_run_in_automated_product_evidence(self):
+        workflow_path = ROOT / ".github" / "workflows" / "validate-ten-manual-product-gate.yml"
+        workflow = workflow_path.read_text(encoding="utf-8")
+        job_start = workflow.index("  automated-product-evidence:")
+        job_end = workflow.index("  windows-product-evidence:", job_start)
+        job = workflow[job_start:job_end]
+        import_index = job.index("godot --headless --editor --path . --quit")
+        for script in (
+            "tests/verify_combat_outcome_feedback.gd",
+            "tests/verify_actor_ultimate_presentation.gd",
+        ):
+            self.assertTrue((ROOT / script).is_file(), script)
+            command = "godot --headless --path . --script res://" + script
+            self.assertIn(command, job)
+            self.assertGreater(job.index(command), import_index)
+            self.assertIn(f'- "{script}"', workflow[:job_start])
+
 
 if __name__ == "__main__":
     unittest.main()

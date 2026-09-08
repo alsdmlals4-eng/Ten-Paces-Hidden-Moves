@@ -1043,6 +1043,11 @@ func _build_presentation_events(state_before: Dictionary, state_after: Dictionar
         for key in ["category", "category_label", "source_label", "range_text", "action_slots", "stamina_cost", "internal_cost", "illustration", "target", "raw_damage", "damage", "damage_after_block", "defense_outcome", "actor_tile_after_action", "target_tile_at_action", "clash", "clash_opponent_raw_damage", "clash_difference", "sure_hit"]:
             if action.has(key):
                 event[key] = action[key]
+        for key in ["failure_reason", "martial_events", "actual_hp_hits", "clash_won", "evade_succeeded"]:
+            if not action.has(key):
+                continue
+            var fact = action[key]
+            event[key] = fact.duplicate(true) if typeof(fact) in [TYPE_ARRAY, TYPE_DICTIONARY] else fact
         events.append(event)
     if append_state:
         events.append({
