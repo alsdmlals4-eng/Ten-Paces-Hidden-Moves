@@ -1,5 +1,7 @@
 """Keep the new campaign and presentation regressions in actual CI execution."""
 from pathlib import Path
+import subprocess
+import sys
 import unittest
 
 
@@ -13,6 +15,7 @@ class CampaignRuntimeCiTest(unittest.TestCase):
             "verify_ten_duel_campaign",
             "verify_vertical_slice_failure_retry",
             "verify_action_card_summary",
+            "verify_combat_action_selection_integration",
             "verify_jianghu_rest_presentation",
             "verify_atlas_presentation_successor",
             "verify_inline_combat_results",
@@ -27,6 +30,17 @@ class CampaignRuntimeCiTest(unittest.TestCase):
         bridge = (root / ".github/workflows/validate-vertical-slice-run-state.yml").read_text(encoding="utf-8")
         self.assertIn("run: godot --headless --path . --script res://tests/verify_inline_combat_results.gd", product)
         self.assertIn("run: godot --headless --path . --script res://tests/verify_vertical_slice_combat_bridge.gd", bridge)
+
+    def test_repeat_poc_a3_standalone_contract_is_collected_by_pytest(self):
+        root = Path(__file__).resolve().parents[1]
+        completed = subprocess.run(
+            [sys.executable, str(root / "tests" / "check_repeat_poc_a3_contract.py")],
+            cwd=root,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
 
 
 if __name__ == "__main__":
