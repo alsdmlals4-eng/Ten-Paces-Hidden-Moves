@@ -189,7 +189,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         self.assertNotIn("project_main_checkpoint:", current_section)
         self.assertNotIn("base_remote_main_observed:", current_section)
 
-        self.assertIn("product_stage: TEN_DUEL_CAMPAIGN_MERGED_BIMU_CONSTRAINTS_LOCAL_VERIFIED", current_section)
+        self.assertIn("product_stage: TEN_DUEL_CAMPAIGN_AND_BIMU_CONSTRAINTS_MAIN_MERGED_VERIFIED", current_section)
         self.assertIn("phase_i_vi_implementation: AUTHORIZED_AND_MERGED", current_section)
         self.assertIn(
             "future_product_mutation_authorized: false_NEW_PRODUCT_MUTATION_REQUIRES_FRESH_APPROVED_CONTRACT",
@@ -197,10 +197,10 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertIn("human_validation: NOT_RUN", current_section)
         self.assertIn("android_validation: NOT_RUN", current_section)
-        self.assertIn("next_package: BIMU_CONSTRAINT_EXACT_HEAD_CI_AND_PROTECTED_DELIVERY", current_section)
+        self.assertIn("next_package: NATIVE_INPUT_CAMPAIGN_AND_BLUEPRINT_GAP_VERIFICATION", current_section)
         self.assertIn("next_planning_decision: TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01", current_section)
         self.assertIn(
-            "user_directed_planning_next_package: BIMU_CONSTRAINT_EXACT_HEAD_CI_AND_PROTECTED_DELIVERY",
+            "user_directed_planning_next_package: NATIVE_INPUT_CAMPAIGN_AND_BLUEPRINT_GAP_VERIFICATION",
             current_section,
         )
         self.assertIn(
@@ -445,11 +445,11 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["evidence_ceiling"]["pr277_protected_approval_lifecycle"],
         )
         self.assertEqual(
-            "BIMU_CONSTRAINT_EXACT_HEAD_CI_AND_PROTECTED_DELIVERY",
+            "NATIVE_INPUT_CAMPAIGN_AND_BLUEPRINT_GAP_VERIFICATION",
             status["next_phase"],
         )
         self.assertEqual(
-            "BIMU_CONSTRAINT_EXACT_HEAD_CI_AND_PROTECTED_DELIVERY",
+            "NATIVE_INPUT_CAMPAIGN_AND_BLUEPRINT_GAP_VERIFICATION",
             status["next_product_execution_surface"],
         )
         self.assertEqual(

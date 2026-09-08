@@ -28,11 +28,11 @@ class PcFirstVerticalSliceImplementationGateTests(unittest.TestCase):
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "BIMU_CONSTRAINT_EXACT_HEAD_CI_AND_PROTECTED_DELIVERY",
+            "NATIVE_INPUT_CAMPAIGN_AND_BLUEPRINT_GAP_VERIFICATION",
             status["next_phase"],
         )
         self.assertEqual(
-            "BIMU_CONSTRAINT_EXACT_HEAD_CI_AND_PROTECTED_DELIVERY",
+            "NATIVE_INPUT_CAMPAIGN_AND_BLUEPRINT_GAP_VERIFICATION",
             status["next_product_execution_surface"],
         )
         self.assertTrue(status["vertical_slice_pc_implementation_authorized"])
