@@ -9,8 +9,15 @@ const STARTERS := [
     "wudang_taiji_sword",
     "yang_family_spear"
 ]
+const BASIC_ULTIMATES := [
+    "ultimate_void_sword_qi",
+    "ultimate_cleave_peak",
+    "ultimate_ten_paces_wave"
+]
+const BasicCardTrayScript := preload("res://src/ui/basic_card_tray.gd")
 
 var failures: Array[String] = []
+var publicly_used_player_cards := {}
 
 
 func _initialize() -> void:
@@ -18,6 +25,7 @@ func _initialize() -> void:
 
 
 func run_probe() -> void:
+    publicly_used_player_cards.clear()
     var catalog := VerticalSliceOpponentCatalog.new()
     var run := VerticalSliceRunState.new()
     var mastery := {}
@@ -54,7 +62,7 @@ func run_probe() -> void:
                 break
 
         var reward := VerticalSliceResultModel.new().build_reward_receipt(
-            "focused_training", STARTERS[(duel - 1) % STARTERS.size()],
+            "focused_training", _reward_target_for_duel(duel),
             run.get_player_manual_loadout(), run.get_current_opponent())
         _require(run.set_pending_result_reward(reward), "duel %d reward must be accepted" % duel)
         _require(run.advance(), "duel %d reward must advance" % duel)
@@ -73,6 +81,11 @@ func run_probe() -> void:
             run.get_reward_history().size(), run.get_route_history().size()
         ])
 
+    var publicly_used_card_ids: Array = publicly_used_player_cards.keys()
+    publicly_used_card_ids.sort()
+    var ultimate_use_count := 0
+    for attempt in attempts:
+        ultimate_use_count += int((attempt.get("battle_metrics", {}) as Dictionary).get("ultimate_uses", 0))
     var summary := {
         "complete": run.is_complete(),
         "completed_duels": run.completed_duels,
@@ -83,6 +96,8 @@ func run_probe() -> void:
         "route_choices": run.get_route_history(),
         "resources": run.get_player_run_resources(),
         "progression": run.get_progression_snapshot(),
+        "publicly_used_player_card_ids": publicly_used_card_ids,
+        "ultimate_use_count": ultimate_use_count,
         "attempts": attempts
     }
     print("SEQUENTIAL_CAMPAIGN_SUMMARY ", JSON.stringify(summary))
@@ -90,6 +105,9 @@ func run_probe() -> void:
     _require(run.get_duel_history().size() == 10, "ten actual terminal successes must be retained")
     _require(run.get_reward_history().size() == 10, "ten earned rewards must be retained")
     _require(run.get_route_history().size() == 36, "nine intervals must retain 36 real choices")
+    _require(publicly_used_player_cards.has("shaolin_arhat_vajra_art_star7"), "public policy must actually resolve the unlocked Shaolin seven-star technique")
+    _require(publicly_used_player_cards.has("yang_family_spear_star7"), "public policy must actually resolve the unlocked Yang seven-star technique")
+    _require(ultimate_use_count > 0, "public policy must actually resolve a base ultimate when own momentum makes one legal")
     for failure in failures:
         printerr("SEQUENTIAL_CAMPAIGN_FAIL: ", failure)
     quit(1 if not failures.is_empty() else 0)
@@ -105,6 +123,7 @@ func _resolve_actual_duel(run: VerticalSliceRunState, policy_mode: int) -> Dicti
     engine.configure_martial_loadouts(
         run.get_player_manual_loadout(), run.get_player_mastery_by_manual(),
         [enemy_manual], {enemy_manual: int(candidate.get("signature_star_seed", 3))})
+    var available_player_card_ids := Array(engine.get_player_martial_card_ids())
     var hud: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/combat/combat_hud_preview.json"))
     var player_hud: Dictionary = (hud.get("player", {}) as Dictionary).duplicate(true)
     for key in ["health", "stamina", "internal"]:
@@ -121,6 +140,7 @@ func _resolve_actual_duel(run: VerticalSliceRunState, policy_mode: int) -> Dicti
         "duel %d policy %d initial engine resources must exactly match RunState before the first resolver" % [run.duel_index, policy_mode]
     )
     state["ai_enabled"] = true
+    var duel_public_player_cards := {}
     for turn in range(MAX_BUNDLES):
         var bundle := turn % 3 + 1
         state["bundle_index"] = bundle
@@ -133,20 +153,29 @@ func _resolve_actual_duel(run: VerticalSliceRunState, policy_mode: int) -> Dicti
             "timing_sequence": [3, 3, 4]
         }, state)
         state = result.get("state", {})
+        _remember_public_player_cards(state)
+        for card_id in _player_card_counts(state):
+            duel_public_player_cards[str(card_id)] = true
         var player_hp := int((state["player"]["health"] as Array)[0])
         var enemy_hp := int((state["enemy"]["health"] as Array)[0])
         if player_hp <= 0 or enemy_hp <= 0:
             var outcome := "draw" if player_hp <= 0 and enemy_hp <= 0 else ("win" if enemy_hp <= 0 else "loss")
+            var duel_public_player_card_ids: Array = duel_public_player_cards.keys()
+            duel_public_player_card_ids.sort()
             return {
                 "terminal": true,
                 "outcome": outcome,
                 "duel_index": run.duel_index,
                 "candidate_id": str(candidate.get("candidate_id", "")),
                 "policy_mode": policy_mode,
+                "policy": _policy_label(policy_mode),
                 "bundles": turn + 1,
                 "player_health": player_hp,
                 "enemy_health": enemy_hp,
                 "player_resources": _resource_snapshot(state["player"]),
+                "available_player_card_ids": available_player_card_ids.duplicate(),
+                "duel_public_player_card_ids": duel_public_player_card_ids,
+                "player_card_counts": _player_card_counts(state),
                 "battle_metrics": (state.get("battle_metrics", {}) as Dictionary).duplicate(true)
             }
     return {"outcome": "stalled", "duel_index": run.duel_index, "candidate_id": str(candidate.get("candidate_id", "")), "policy_mode": policy_mode}
@@ -161,39 +190,140 @@ func _public_policy(engine, state: Dictionary, bundle: int, policy_mode: int) ->
     var stamina := int((player["stamina"] as Array)[0])
     var internal := int((player["internal"] as Array)[0])
     var distance := absi(int(player["tile"]) - int(enemy["tile"]))
+    var defense := _public_bundle_defense(engine, policy_mode)
+    if not defense.is_empty() and stamina >= int(defense.get("stamina_cost", 0)) and internal >= int(defense.get("internal_cost", 0)):
+        placements.append(_placement_for(defense, start, player, enemy))
+        stamina -= int(defense.get("stamina_cost", 0))
+        internal -= int(defense.get("internal_cost", 0))
+        start += 1
+        remaining -= 1
     while remaining > 0:
-        var card_id := "basic_meditate"
-        # These are real star-3 techniques from the selected starter manuals.
-        # Selection depends only on own loadout/resources and public distance.
-        if int(state.get("round_number", 1)) == 1 and bundle == 1 and start == 1 and distance == 2 and remaining >= 1 and stamina >= 1:
-            card_id = "yang_family_spear_star3"
-        elif int(state.get("round_number", 1)) == 1 and bundle == 2 and start == 4 and distance == 1 and remaining >= 2 and stamina >= 1 and internal >= 1:
-            card_id = "mount_hua_plum_blossom_sword_star3"
-        elif policy_mode == 1 and distance <= 2 and remaining >= 2 and stamina >= 1 and internal >= 2:
-            card_id = "basic_heavy_attack"
-        elif distance <= 1 and stamina >= 1:
-            card_id = "basic_quick_attack"
-        elif distance <= 3 and distance >= 1 and internal >= 1 and remaining >= 2:
-            card_id = "basic_palm"
-        elif distance > 3:
-            card_id = "basic_move"
-        var definition: Dictionary = engine.cards_by_id[card_id]
+        var definition := _best_public_action(engine, state, remaining, stamina, internal, distance)
+        if definition.is_empty():
+            definition = (engine.cards_by_id.get("basic_meditate", {}) as Dictionary).duplicate(true)
         var span := int(definition.get("action_slots", 1))
+        if _is_ultimate(definition):
+            var momentum: Array = player.get("momentum", [0, 5])
+            player["momentum"] = [0, int(momentum[1])]
+            state["player"] = player
         stamina -= int(definition.get("stamina_cost", 0))
         internal -= int(definition.get("internal_cost", 0))
-        if card_id == "basic_meditate":
+        if str(definition.get("base_card_id", definition.get("id", ""))) == "basic_meditate":
             stamina += 1
             internal += 1
-        var direction := 1 if int(enemy["tile"]) >= int(player["tile"]) else -1
-        placements.append({
-            "card_id": card_id, "anchor_index": start, "span": span,
-            "target_ready": true,
-            "target_tile": int(player["tile"]) + direction if card_id == "basic_move" else int(enemy["tile"]),
-            "direction": direction, "origin_tile": int(player["tile"])
-        })
+        placements.append(_placement_for(definition, start, player, enemy))
         start += span
         remaining -= span
     return placements
+
+
+func _best_public_action(engine, state: Dictionary, remaining: int, stamina: int, internal: int, distance: int) -> Dictionary:
+    var candidates: Array[Dictionary] = []
+    var player_ids: PackedStringArray = engine.get_player_martial_card_ids()
+    for card_id in player_ids:
+        var martial: Dictionary = (engine.cards_by_id.get(card_id, {}) as Dictionary).duplicate(true)
+        if _public_action_is_legal(martial, state, remaining, stamina, internal, distance):
+            candidates.append(martial)
+    for card_id in BASIC_ULTIMATES + ["basic_heavy_attack", "basic_quick_attack", "basic_palm"]:
+        var definition: Dictionary = (engine.cards_by_id.get(card_id, {}) as Dictionary).duplicate(true)
+        if _public_action_is_legal(definition, state, remaining, stamina, internal, distance):
+            candidates.append(definition)
+    if candidates.is_empty() and distance > 1:
+        return (engine.cards_by_id.get("basic_move", {}) as Dictionary).duplicate(true)
+    candidates.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+        var a_score := _public_action_score(a)
+        var b_score := _public_action_score(b)
+        return a_score > b_score if a_score != b_score else str(a.get("id", "")) < str(b.get("id", ""))
+    )
+    return candidates[0] if not candidates.is_empty() else {}
+
+
+func _public_action_is_legal(definition: Dictionary, state: Dictionary, remaining: int, stamina: int, internal: int, distance: int) -> bool:
+    if definition.is_empty() or str(definition.get("category", "")) != "attack":
+        return false
+    if int(definition.get("action_slots", 1)) > remaining:
+        return false
+    if int(definition.get("stamina_cost", 0)) > stamina or int(definition.get("internal_cost", 0)) > internal:
+        return false
+    if _is_ultimate(definition):
+        var momentum = (state.get("player", {}) as Dictionary).get("momentum", [0, 5])
+        if typeof(momentum) != TYPE_ARRAY or momentum.size() < 2 or int(momentum[0]) != int(momentum[1]):
+            return false
+    var range_data = definition.get("range", {})
+    var minimum := 0
+    var maximum := int(str(definition.get("range_text", "0")))
+    if typeof(range_data) == TYPE_DICTIONARY and not (range_data as Dictionary).is_empty():
+        minimum = int((range_data as Dictionary).get("min", 0))
+        maximum = int((range_data as Dictionary).get("max", minimum))
+    var approach := 1 if bool(definition.get("dash_before_attack", false)) else _leading_move_toward(definition)
+    var effective_distance := maxi(0, distance - approach)
+    return effective_distance >= minimum and effective_distance <= maximum
+
+
+func _public_action_score(definition: Dictionary) -> int:
+    if _is_ultimate(definition):
+        return 1000 + int(str(definition.get("damage", "0"))) * 10 - int(definition.get("action_slots", 1))
+    var power := 0
+    for value in definition.get("effect_steps", []):
+        if typeof(value) == TYPE_DICTIONARY and str((value as Dictionary).get("op", "")) in ["ATTACK", "INDEPENDENT_ATTACK", "SPECIAL_CLASH"]:
+            power += int((value as Dictionary).get("power", 0))
+    if power == 0:
+        var damage_formula = definition.get("damage_formula", {})
+        if typeof(damage_formula) == TYPE_DICTIONARY:
+            power = int((damage_formula as Dictionary).get("base", 0)) + int(floor(float((damage_formula as Dictionary).get("coefficient", 0.0)) * 4.0))
+    var card_id := str(definition.get("id", ""))
+    var mastery_priority := 30 if int(definition.get("unlock_star", 0)) >= 7 and not publicly_used_player_cards.has(card_id) else 0
+    return power * 10 + mastery_priority - int(definition.get("action_slots", 1)) * 2 - int(definition.get("stamina_cost", 0)) - int(definition.get("internal_cost", 0))
+
+
+func _leading_move_toward(definition: Dictionary) -> int:
+    var steps: Array = definition.get("effect_steps", [])
+    if not steps.is_empty() and typeof(steps[0]) == TYPE_DICTIONARY and str((steps[0] as Dictionary).get("op", "")) == "MOVE_TOWARD":
+        return maxi(0, int((steps[0] as Dictionary).get("tiles", 0)))
+    return 0
+
+
+func _public_bundle_defense(engine, policy_mode: int) -> Dictionary:
+    if policy_mode == 0:
+        return (engine.cards_by_id.get("basic_guard", {}) as Dictionary).duplicate(true)
+    var tray = BasicCardTrayScript.new()
+    var combo: Dictionary = tray.build_stance_response_combo(
+        engine.cards_by_id.get("basic_stance", {}),
+        engine.cards_by_id.get("basic_evade", {})
+    )
+    tray.free()
+    return combo
+
+
+func _placement_for(definition: Dictionary, anchor: int, player: Dictionary, enemy: Dictionary) -> Dictionary:
+    var base_id := str(definition.get("base_card_id", definition.get("id", "")))
+    var direction := 1 if int(enemy.get("tile", 1)) >= int(player.get("tile", 1)) else -1
+    return {
+        "card_id": str(definition.get("id", "")),
+        "definition": definition.duplicate(true),
+        "anchor_index": anchor,
+        "span": int(definition.get("action_slots", 1)),
+        "target_ready": true,
+        "target_tile": int(player.get("tile", 1)) + direction if base_id == "basic_move" else int(enemy.get("tile", 1)),
+        "direction": direction,
+        "origin_tile": int(player.get("tile", 1))
+    }
+
+
+func _is_ultimate(definition: Dictionary) -> bool:
+    return str(definition.get("source", "")) == "ultimate" or str(definition.get("source_kind", "")) == "ultimate"
+
+
+func _reward_target_for_duel(duel: int) -> String:
+    if duel <= 4:
+        return "shaolin_arhat_vajra_art"
+    if duel <= 8:
+        return "yang_family_spear"
+    return "mount_hua_plum_blossom_sword"
+
+
+func _policy_label(policy_mode: int) -> String:
+    return "public_guarded_pressure" if policy_mode == 0 else "public_evasive_retry"
 
 
 func _choose_public_route(options: Array) -> String:
@@ -209,6 +339,22 @@ func _resource_snapshot(actor: Dictionary) -> Dictionary:
     for key in ["health", "stamina", "internal"]:
         result[key] = (actor.get(key, [0, 0]) as Array).duplicate()
     return result
+
+
+func _player_card_counts(state: Dictionary) -> Dictionary:
+    var counts := {}
+    for value in state.get("public_resolution_history", []):
+        if typeof(value) != TYPE_DICTIONARY or str((value as Dictionary).get("actor", "")) != "player":
+            continue
+        var card_id := str((value as Dictionary).get("card_id", ""))
+        if not card_id.is_empty():
+            counts[card_id] = int(counts.get(card_id, 0)) + 1
+    return counts
+
+
+func _remember_public_player_cards(state: Dictionary) -> void:
+    for card_id in _player_card_counts(state):
+        publicly_used_player_cards[str(card_id)] = true
 
 
 func _apply_validated_run_resources(state: Dictionary, resources: Dictionary) -> bool:
