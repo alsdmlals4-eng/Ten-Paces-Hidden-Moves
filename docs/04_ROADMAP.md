@@ -40,6 +40,8 @@ PR #92와 PR #102는 재현 가능한 병합 계보이며 현재 active PR이 �
 
 병합된 저장·10전 완주 증거는 `docs/operations/2026-09-08_DURABLE_SAVE_EXECUTION_REPORT.md`에 보존한다. 새 표시·판정 작업으로 과거 검증 기록을 대체하지 않는다.
 
+전투 피드백 교정 계보는 PR #335이며 `docs/operations/2026-09-09_COMBAT_FEEDBACK_EXECUTION_REPORT.md`와 해당 승인 보존 기록에서 검사·병합·실제 화면의 한계를 확인한다. 표시 교정은 공통 판정·기존 저장 호환과 전체 아틀라스 구현을 대신하지 않는다.
+
 `TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01`의 전달 순서는 strict 저장·전투 checkpoint → 실제 title/shell·생명주기 연결 → 격리된 새 프로세스 재개·10전 캠페인 → 저장 지연 교정 → `TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`의 각 전투원 성급·능력치 실행/복구 일치 → 독립 검수·보호 전달이다. 이 계보는 PR #333으로 main에 병합됐고 최초 공개 저장은 교정된 semantic identity를 사용한다. 전투 표시 교정은 `TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01`이 소유한다. actor-owned 절초·실제 방어/실패·전조/실행과 승패 음향을 검증한 뒤, 고유 대응 무공과 공통 피해·방어 해결의 실제 누락을 별도 실행 계약으로 교정한다. 그 도메인 변경은 기존 공개 저장의 완주 호환을 함께 명세해야 하며 표시 수정에 숨겨 넣지 않는다. 이후 성장 지출·영구 능력치 지급·해금 조건·보유 무공 전투 확장과 `growth/events/status/reward` 공백을 다룬다. 도메인 진단 책임 기록은 `docs/reviews/2026-09-09_MARTIAL_DOMAIN_INTEGRATION_PREFLIGHT.md`, 현재 완료 상태와 남은 Gate는 Active Context/current JSON에서 읽는다. 자동 재개·분류 검증은 Human·Android·출시 또는 whole Blueprint complete 증거를 대체하지 않는다.
 
 `TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01` 비무 제약의 전달 순서는 승인 catalog → frozen duel receipt → 공유 engine 강제 →
