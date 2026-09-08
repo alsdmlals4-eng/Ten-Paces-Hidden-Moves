@@ -209,3 +209,19 @@ Current remaining product gaps: visible-input full campaign, rich node/event sce
 briefing constraints and scout-level status, target currency/training/grade rewards,
 actor/VFX polish, Blueprint reconciliation. Human, Android, rights and release remain
 NOT_RUN. This integration package is a verified increment, not the entire Blueprint.
+
+### Final real-consumer review corrections
+
+Independent delivery review caught two missed consumers: martial `effect_steps` attacks
+were falsely labeled raw power 0, and detail-hover created a fresh engine. Real ten-manual
+attack coverage reproduced 43 RED assertions; 1b4b68f6 now reports single unconditional
+raw attack power, otherwise a truthful conditional/multihit label, and shares one read-only
+preview engine across cards and detail. Reviewer reran the sequential probe: still 10 wins.
+
+Controller's actual martial-tab capture then found left-offscreen clipping caused by the
+four-manual selector's minimum width. de71c6cd adds native horizontal scrolling without
+shrinking fonts or deleting manual information. Six RED containment assertions now pass
+at 720p/800p, including first/last selectable manual and technique card bounds. Corrected
+actual capture reviewed: `docs/runtime-captures/TEN-ATLAS-SUCCESSOR-20260908/martial-summary-fixed-1280x800.png`.
+The earlier offscreen capture is not final evidence. The six new campaign/presentation
+checks now execute in the product CI job after import; a Python contract guards that wiring.
