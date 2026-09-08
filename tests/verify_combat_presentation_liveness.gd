@@ -96,24 +96,14 @@ func _plan_final_bundle(board: CombatBoardPreview) -> void:
         failures.append("Final four-action bundle single CTA must invoke exactly one resolution.")
 
 func _wait_for_review_then_next_bundle(board: CombatBoardPreview, bundle_name: String) -> void:
-    var review_seen := false
     for _attempt in range(120):
         var state_value := str(board.get_meta("presentation_state", ""))
-        if state_value == "review_ready":
-            review_seen = true
-            if not bool(board.get_meta("inputs_locked", false)):
-                failures.append("%s bundle review must keep planning input locked." % bundle_name)
-            if board.combat_review_panel == null or not board.combat_review_panel.visible:
-                failures.append("%s bundle review panel must be visible." % bundle_name)
-            board._on_review_continue_requested()
-            await process_frame
-            if str(board.get_meta("presentation_state", "")) == "next_bundle_ready":
-                return
+        if state_value == "next_bundle_ready":
+            if board.combat_review_panel != null and board.combat_review_panel.visible:
+                failures.append("%s bundle must not show a review overlay." % bundle_name)
+            return
         await create_timer(0.05).timeout
-    if not review_seen:
-        failures.append("%s bundle must enter review_ready before reopening planning input (last state=%s)." % [bundle_name, str(board.get_meta("presentation_state", ""))])
-    else:
-        failures.append("%s bundle must reopen planning input after explicit review confirmation." % bundle_name)
+    failures.append("%s bundle must automatically reopen planning input (last state=%s)." % [bundle_name, str(board.get_meta("presentation_state", ""))])
 
 func _card(board: CombatBoardPreview, card_id: String) -> Dictionary:
     for card in board.basic_card_tray.cards:

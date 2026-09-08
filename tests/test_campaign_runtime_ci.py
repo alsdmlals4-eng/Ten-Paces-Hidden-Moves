@@ -15,6 +15,7 @@ class CampaignRuntimeCiTest(unittest.TestCase):
             "verify_action_card_summary",
             "verify_jianghu_rest_presentation",
             "verify_atlas_presentation_successor",
+            "verify_inline_combat_results",
         ):
             with self.subTest(script=script):
                 self.assertTrue((root / "tests" / f"{script}.gd").is_file())

@@ -67,8 +67,11 @@ func _render_result() -> void:
     _refresh_result_snapshot()
     var metrics: Dictionary = _result_snapshot.get("battle_metrics", {})
     var outcome_label := _outcome_label(str(_result_snapshot.get("outcome", "draw")))
-    var description := "승부 · %s\n등급 · 산식 미확정\n\n전투 기록 · 회피 성공 %d · 합 승리 %d · 잃은 체력 %d · 전투 라운드 %d · 절초 사용 %d\n\n보상을 하나 고른 뒤 확정하면 수련에 반영됩니다." % [
+    var review_summary: Dictionary = _result_snapshot.get("review_summary", {})
+    var cause_label := str(review_summary.get("cause_label", "확정된 전투 결과"))
+    var description := "승부 · %s\n결정 원인 · %s\n등급 · 산식 미확정\n\n전투 기록 · 회피 성공 %d · 합 승리 %d · 잃은 체력 %d · 전투 라운드 %d · 절초 사용 %d\n\n보상을 하나 고른 뒤 확정하면 수련에 반영됩니다." % [
         outcome_label,
+        cause_label,
         int(metrics.get("successful_dodges", 0)),
         int(metrics.get("clash_wins", 0)),
         int(metrics.get("player_health_lost", 0)),

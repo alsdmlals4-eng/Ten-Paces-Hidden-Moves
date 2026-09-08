@@ -81,12 +81,11 @@ func _run() -> void:
         "decisive_facts": ["enemy_health_zero"]
     })
 
-    bridge.call("_show_review_panel", true)
+    bridge.call("_finish_bundle_presentation", true)
+    await process_frame
     await process_frame
 
-    _expect_eq(shell.run_state.get_current_screen(), "REVIEW", "Terminal combat review-ready event must advance RunState to REVIEW.")
-    _expect_true(shell.combat_host.visible, "REVIEW must remain on the combat host.")
-    _expect_false(shell.content_panel.visible, "REVIEW must not render the separate result panel yet.")
+    _expect_eq(shell.run_state.get_current_screen(), "RESULT", "Terminal receipt must pass through internal REVIEW and reach RESULT without another click.")
     _expect_eq(str(shell.run_state.last_combat_result.get("outcome", "")), "win", "Enemy health zero must map to a win result.")
     _expect_eq(int(shell.run_state.last_combat_result.get("duel_index", 0)), 1, "Shell must attach the current duel index to the terminal result.")
     _expect_true(bool(shell.run_state.last_combat_result.get("terminal", false)), "Runtime result must be explicitly terminal.")
@@ -100,13 +99,10 @@ func _run() -> void:
     _expect_eq(persisted_resources.get("stamina", []), [2, 5], "Terminal bridge must carry player stamina current/max pair.")
     _expect_eq(persisted_resources.get("internal", []), [1, 4], "Terminal bridge must carry player internal current/max pair.")
 
-    bridge.call("_on_review_continue_requested")
-    await process_frame
-
-    _expect_eq(shell.run_state.get_current_screen(), "RESULT", "Terminal Review continue must advance to separate RESULT instead of restarting combat.")
+    _expect_eq(shell.run_state.get_current_screen(), "RESULT", "Terminal flow must reach separate RESULT instead of restarting combat.")
     _expect_false(shell.combat_host.visible, "RESULT must leave the combat host.")
     _expect_true(shell.content_panel.visible, "RESULT must render the non-combat result shell.")
-    _expect_eq(str(bridge.get_meta("presentation_state", "")), "review_ready", "Bridge confirmation must not restart/reset the terminal combat before Result consumes it.")
+    _expect_eq(str(bridge.get_meta("presentation_state", "")), "terminal_result_ready", "Bridge handoff must not restart/reset terminal combat before Result consumes it.")
     var final_state: Dictionary = bridge.get("combat_state")
     var final_enemy: Dictionary = final_state.get("enemy", {})
     var final_enemy_health = final_enemy.get("health", [999, 999])

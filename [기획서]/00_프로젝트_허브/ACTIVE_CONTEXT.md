@@ -7,6 +7,8 @@
 
 ## 현재 기준
 
+2026-09-08 inline combat results BUILD 후보: 승인된 화면 경계에 따라 활성 standalone 복기 overlay/추가 click을 제거하고, resolver summary의 실제 원인을 전투 inline strip과 terminal Result가 소비하도록 구현했다. reveal card/result는 actual minimum height로 배치한다. 로컬 Godot 4.7.1 focused 회귀와 Python 476건, native ordinary-default 10전(10승·10보상·36행로·299활성화)이 PASS했다. 아직 branch-local이며 controller capture/독립 review/CI/병합/readback 전이다. Human·물리 입력·Android·접근성 사용자·release evidence는 `NOT_RUN`. 책임 기록: `docs/operations/2026-09-08_INLINE_COMBAT_RESULTS_EXECUTION_REPORT.md`.
+
 2026-09-08 병합된 10전 확장: 최신 사용자 지시는 10전과 비무 사이 4회 행로 선택,
 인게임 캡처, Blueprint 아틀라스 기반의 대부분 이미지 교체다. 작업은
 PR 322로 32개 검사를 통과하고 `81ef0f0b2ede9cd63d6a2aba521a645efc1d4e5f`에 병합됐다.

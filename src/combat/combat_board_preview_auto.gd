@@ -507,7 +507,7 @@ func _dock_interaction_state() -> String:
     if not _ultimate_reservation_anchors.is_empty():
         return "ultimate_reserved"
     match _presentation_state:
-        "review_ready":
+        "terminal_result_ready":
             return "review"
         "resolving":
             return "resolving"

@@ -1,0 +1,46 @@
+# Inline combat results implementation execution report
+
+## 작업 전 문제
+
+해결 뒤 활성 제품 흐름이 별도 복기 오버레이와 추가 확인 클릭에서 멈췄고, 1280×720 계열에서 `RevealResult`가 명목 카드 높이보다 커진 callout과 겹쳤다. 결과 원인은 resolver가 이미 만든 summary/event에 있었지만 active 화면과 terminal Result가 일관되게 소비하지 않았다.
+
+## 조사·비교 결과
+
+`CURRENT_SOURCE_RELEVANCE_CHECK: REUSED_EVIDENCE`. 같은 reveal/replay 차원의 9월 1일 열 게임 비교와 9월 4일 승인 Decision을 재사용했다. Godot Container/Label 공식 문서에 따라 실제 combined minimum size와 wrap 경계를 채택했다. 새 게임 메커니즘·새 자산·새 외부 비용은 없다.
+
+## 채택한 구조와 이유
+
+- base board가 `_finish_bundle_presentation(terminal)`과 `_advance_to_next_bundle()`을 소유한다.
+- 비종료 묶음은 실제 `CombatReviewSummaryBuilder` cause를 inline label에 보존하고 자동으로 다음 묶음을 연다.
+- 종료 묶음은 bridge가 기존 terminal receipt를 ready→deferred confirmed 순서로 한 번씩 방출한다. RunState의 내부 `REVIEW` 이름과 API는 유지된다.
+- Result model/shell은 같은 immutable `review_summary.cause_label`을 표시한다.
+- reveal callout은 `get_combined_minimum_size()`로 높이를 산정하고 결과 strip을 그 아래에 둔다. 공격 event에 이미 존재하는 raw power와 resource cost만 표시하며 UI 계산은 하지 않는다.
+
+## 실제 구현 또는 준비 결과
+
+활성 standalone review overlay/click을 제거했고 standalone terminal에서는 기존 restart control만 남겼다. 기존 legacy review scene과 고립 unit consumer는 삭제하지 않았다. CI 두 제품 경로에 `verify_inline_combat_results.gd`를 연결했고 active board/reveal/liveness/terminal/bridge/native campaign fixture를 새 흐름으로 이관했다.
+
+## 사용 예·기대효과
+
+플레이어는 한 묶음 해결 직후 실제 원인을 전투 화면에서 읽고 추가 클릭 없이 다음 계획으로 복귀한다. 마지막 해결은 실제 원인·metrics·resources를 별도 Result에 한 번 전달한다. 720/800/1080 layout regression은 callout과 result rect가 겹치거나 region 밖으로 나가면 실패한다.
+
+## 검증 증거
+
+- Godot 4.7.1 fresh editor import: native exit 0. import가 만든 `.import`/`.uid` churn은 소유 변경에서 제외.
+- focused inline/board/reveal/liveness/terminal/bridge/result regressions: PASS, native exit 0.
+- `python -m pytest -q`: 476 PASS.
+- native ordinary-default ten-duel campaign: 10 wins, 10 rewards, 36 routes, 299 activations, failures 0, native exit 0. 실제 UI path이며 terminal state injection 없음.
+- RED 한계: 새 regression을 구현 변경 뒤 작성해 별도 behavioral nonzero RED를 캡처하지 못했다. 기존 `verify_combat_board.gd`는 이관 전 old `review_ready` 기대 때문에 실제 nonzero였지만 이는 새 요구의 독립 RED 증거로 승격하지 않는다.
+- protected lifecycle local check: manifest의 승인 소스 6개는 정확하지만 fresh import가 만든 unstaged `.import`/`.uid` 6개도 baseline delta로 감지되어 현재 worktree에서는 nonzero. 생성 churn을 제품 변경으로 승인·커밋하지 않았으며 controller의 clean checkout exact-head 검증이 필요하다.
+
+## 자동화·학습 반영
+
+1. 정본/코어 공격: resolver와 summary builder를 유지하고 UI 계산 추가 없음 — CLEAN.
+2. diff/untouched consumer 공격: legacy isolated widget 보존, active review-click fixture 이관 — CLEAN.
+3. receipt/teardown 공격: ready 뒤 deferred confirmed, once meta guard, campaign 10 terminal handoff — CLEAN.
+4. layout/접근성 공격: 1280×720·1280×800·1920×1080 bounded rect, wrap/font 유지 — MACHINE CLEAN; Human 별도.
+5. 장기 적합성/범위 공격: 새 overlay·scene·asset/schema 없이 기존 hook/model 확장, campaign resource/reward/history 통과 — CLEAN_REVIEW_EXIT.
+
+## 미검증·남은 위험
+
+Windows visible Human usability, 물리 키보드/마우스/게임패드, accessibility user, Android actual device, release performance와 사람 가독성/재미는 `NOT_RUN`. 현재 저장/이어하기는 durable consumer가 없는 것으로 read-only 검색에서 확인됐으며 별도 승인 설계 대상이다. controller의 실제 화면 capture·독립 review·exact-head CI·보호 병합·postmerge closeout은 후속 단계다.

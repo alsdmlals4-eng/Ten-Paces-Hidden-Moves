@@ -89,13 +89,14 @@ func run_probe() -> void:
             await _click(bridge.combat_progress_button._button, "execute plan")
             _require(int(bridge.get_meta("resolution_count", 0)) == resolution_before + 1, "one execute activation must start exactly one resolution")
             var deadline := Time.get_ticks_msec() + 30000
-            while not bridge.combat_review_panel.is_visible_in_tree() and Time.get_ticks_msec() < deadline and Time.get_ticks_msec() - started_ms < WALL_TIMEOUT_MS:
+            while bridge._presentation_state not in ["next_bundle_ready", "terminal_result_ready"] and Time.get_ticks_msec() < deadline and Time.get_ticks_msec() - started_ms < WALL_TIMEOUT_MS:
                 await process_frame
-            _require(bridge.combat_review_panel.is_visible_in_tree(), "bounded review wait stalled: " + _diagnostic(bridge))
+            _require(bridge._presentation_state in ["next_bundle_ready", "terminal_result_ready"], "bounded inline result wait stalled: " + _diagnostic(bridge))
+            _require(not bridge.combat_review_panel.is_visible_in_tree(), "standalone review overlay must remain hidden")
             if not failures.is_empty():
                 break
             _remember_public_player_cards(bridge.combat_state)
-            terminal = run.get_current_screen() == VerticalSliceRunState.SCREEN_REVIEW
+            terminal = bridge._presentation_state == "terminal_result_ready" or run.get_current_screen() in [VerticalSliceRunState.SCREEN_REVIEW, VerticalSliceRunState.SCREEN_RESULT]
             if terminal:
                 _require(_terminal_success(bridge.combat_state, run.last_combat_result, run.get_duel_history(), run.duel_index), "terminal HP/result/history must consistently prove success: " + _diagnostic(bridge))
                 if not failures.is_empty():
@@ -104,10 +105,12 @@ func run_probe() -> void:
                 terminal_outcomes[outcome] += 1
                 _require(run.get_player_run_resources() == bridge.get_vertical_slice_player_resources(), "terminal bridge resources must exactly reach shell")
             print("NATIVE_BUNDLE duel=%d turn=%d player=%s enemy_hp=%s terminal=%s" % [run.duel_index, turn + 1, bridge.get_vertical_slice_player_resources(), bridge.combat_state.enemy.health, terminal])
-            await _click(bridge.combat_review_panel.get_continue_button(), "review continue")
             if terminal:
+                deadline = Time.get_ticks_msec() + 5000
+                while run.get_current_screen() == VerticalSliceRunState.SCREEN_REVIEW and Time.get_ticks_msec() < deadline:
+                    await process_frame
                 break
-            _require(bridge._presentation_state == "next_bundle_ready" and not bridge.combat_review_panel.is_visible_in_tree(), "review must reach next bundle")
+            _require(bridge._presentation_state == "next_bundle_ready", "inline result must reach next bundle")
         _require(terminal, "duel must reach real terminal review")
         if not failures.is_empty():
             break

@@ -182,6 +182,7 @@ func _verify_result_and_reward_contract() -> void:
     for label in ["회피 성공", "합 승리", "잃은 체력", "전투 라운드", "절초 사용"]:
         _expect_true(result_text.contains(label), "Result must show approved raw metric label: %s" % label)
     _expect_true(result_text.contains("산식 미확정"), "Result must explain that S/A/B/C formula is pending.")
+    _expect_true(result_text.contains(str(review_summary.get("cause_label", ""))), "Result must show the actual terminal cause.")
     _expect_false(result_text.contains("다음에는"), "Result must not auto-prescribe the next action.")
 
     var focus_manual := DEFAULT_STARTERS[0]

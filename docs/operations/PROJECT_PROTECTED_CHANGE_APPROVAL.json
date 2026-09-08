@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "30b854b657fa5f29904d05c77aad38c7b6e17072",
+  "decision_ids": ["TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01"],
+  "approved_paths": [
+    "src/combat/combat_board_preview.gd",
+    "src/combat/combat_board_preview_auto.gd",
+    "src/run/vertical_slice_combat_bridge.gd",
+    "src/run/vertical_slice_result_model.gd",
+    "src/run/vertical_slice_shell_result_auto.gd",
+    "src/ui/combat_action_reveal_overlay.gd"
+  ],
+  "approval_source": "Current user-authorized continuous implementation of the accepted September 4 Human Blueprint screen-boundary decision and exact Codex handoff.",
+  "approval_time": "2026-09-08T00:00:00+09:00",
+  "scope_summary": "Replace active standalone combat review with actual inline causal results and uninterrupted next-bundle or terminal result handoff; correct reveal layout using actual minimum sizes; preserve combat, AI, reward, resource, route, save, audio, engine and asset semantics."
+}

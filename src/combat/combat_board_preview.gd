@@ -59,6 +59,7 @@ var range_readout_panel: PanelContainer
 var range_readout_label: Label
 var range_engagement_label: Label
 var presentation_label: Label
+var inline_result_label: Label
 var presentation_vfx: TextureRect
 var action_reveal_overlay
 var fast_replay_button: Button
@@ -342,6 +343,17 @@ func _build_structure() -> void:
 	presentation_label.visible = false
 	presentation_label.z_index = 32
 	add_child(presentation_label)
+	inline_result_label = Label.new()
+	inline_result_label.name = "InlineCombatResult"
+	inline_result_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	inline_result_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	inline_result_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	inline_result_label.add_theme_font_size_override("font_size", 15)
+	inline_result_label.add_theme_color_override("font_color", Color("f0e5ca"))
+	inline_result_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	inline_result_label.visible = false
+	inline_result_label.z_index = 18
+	add_child(inline_result_label)
 
 	presentation_vfx = TextureRect.new()
 	presentation_vfx.name = "UltimateInkGoldVfx"
@@ -524,6 +536,9 @@ func _layout_board() -> void:
 	if is_instance_valid(presentation_label):
 		presentation_label.position = Vector2(size.x * 0.32, presentation_y)
 		presentation_label.size = Vector2(size.x * 0.36, 60.0)
+	if is_instance_valid(inline_result_label):
+		inline_result_label.position = Vector2(size.x * 0.27, timing_row_y - 58.0)
+		inline_result_label.size = Vector2(size.x * 0.46, 46.0)
 	if is_instance_valid(presentation_vfx):
 		presentation_vfx.position = Vector2(size.x * 0.20, presentation_y + 60.0)
 		presentation_vfx.size = Vector2(size.x * 0.60, clampf(size.y * 0.22, 150.0, 210.0))
@@ -1101,7 +1116,7 @@ func _resolve_and_present(context: Dictionary) -> void:
 			presentation_label.visible = true
 		if is_instance_valid(combat_log_panel):
 			combat_log_panel.append_entry("[전투 불능] 체력이 0이 되어 결전이 끝났습니다.", "system")
-	_show_review_panel(terminal)
+	_finish_bundle_presentation(terminal)
 
 func _present_timing_duel(events_value: Array, timing: int, phase: String) -> void:
 	_set_presentation_state("presenting_result")
@@ -1140,6 +1155,11 @@ func _present_timing_duel(events_value: Array, timing: int, phase: String) -> vo
 		_record_presentation_feedback_visibility()
 	if is_instance_valid(action_reveal_overlay):
 		action_reveal_overlay.hide_reveal()
+	if is_instance_valid(inline_result_label):
+		inline_result_label.visible = false
+		inline_result_label.text = ""
+	remove_meta("inline_result_cause")
+	remove_meta("inline_result_summary")
 
 func _timing_reveal_duration(events_value: Array) -> float:
 	var duration := 0.82
@@ -1151,15 +1171,28 @@ func _timing_reveal_duration(events_value: Array) -> float:
 			duration = maxf(duration, _event_presentation_duration(event) + 0.24)
 	return duration
 
-func _show_review_panel(terminal: bool) -> void:
+func _finish_bundle_presentation(terminal: bool) -> void:
 	_review_terminal = terminal
-	if is_instance_valid(restart_combat_button):
-		restart_combat_button.visible = false
 	if is_instance_valid(combat_review_panel):
-		combat_review_panel.show_summary(_last_review_summary, terminal)
-	_set_presentation_state("review_ready")
+		combat_review_panel.hide_review()
+	_show_inline_result(_last_review_summary)
+	if terminal:
+		if is_instance_valid(restart_combat_button):
+			restart_combat_button.visible = true
+		_set_presentation_state("terminal_result_ready")
+	else:
+		_advance_to_next_bundle()
 	_configure_keyboard_focus_order()
 	_sync_progress_availability()
+
+func _show_inline_result(summary: Dictionary) -> void:
+	if not is_instance_valid(inline_result_label):
+		return
+	var cause := str(summary.get("cause_label", "")).strip_edges()
+	inline_result_label.text = "이번 묶음 · %s" % (cause if not cause.is_empty() else "확정된 전투 결과")
+	inline_result_label.visible = true
+	set_meta("inline_result_cause", cause)
+	set_meta("inline_result_summary", summary.duplicate(true))
 
 func _on_review_detail_requested() -> void:
 	if _presentation_state != "review_ready":
@@ -1169,11 +1202,11 @@ func _on_review_detail_requested() -> void:
 		combat_log_panel.set_collapsed(false)
 
 func _on_review_continue_requested() -> void:
-	if _presentation_state != "review_ready":
-		return
 	if _review_terminal:
 		restart_combat()
 		return
+
+func _advance_to_next_bundle() -> void:
 	if is_instance_valid(combat_review_panel):
 		combat_review_panel.hide_review()
 	var advanced := action_timing_panel.advance_after_resolution()
@@ -1656,6 +1689,11 @@ func restart_combat() -> void:
 	_committed_player_plan_snapshot.clear()
 	_committed_state_before.clear()
 	_last_review_summary.clear()
+	if is_instance_valid(inline_result_label):
+		inline_result_label.visible = false
+		inline_result_label.text = ""
+	remove_meta("inline_result_cause")
+	remove_meta("inline_result_summary")
 	_review_terminal = false
 	_progress_request_count = 0
 	if is_instance_valid(momentum_sfx_player):

@@ -78,6 +78,8 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_ten_manual_product_viewports.gd
       - name: Verify keyboard accessibility
         run: godot --headless --path . --script res://tests/verify_combat_keyboard_accessibility.gd
+      - name: Verify inline combat results
+        run: godot --headless --path . --script res://tests/verify_inline_combat_results.gd
       - name: Verify focus order
         run: godot --headless --path . --script res://tests/verify_combat_focus_order.gd
       - name: Verify layout accessibility

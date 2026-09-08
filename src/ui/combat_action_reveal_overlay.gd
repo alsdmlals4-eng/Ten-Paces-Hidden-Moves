@@ -202,6 +202,10 @@ func _fill_callout(widgets: Dictionary, events: Array, side_name: String, accent
 		facts.text = "%s · %d수" % [str(first.get("category_label", first.get("category", "행동"))), int(first.get("action_slots", 1))]
 		if str(first.get("category", "")) == "attack":
 			facts.text += " · 사거리 %s" % str(first.get("range_text", "-"))
+			if first.has("raw_damage"):
+				facts.text += " · 위력 %d" % int(first.get("raw_damage"))
+		if first.has("stamina_cost") or first.has("internal_cost"):
+			facts.text += " · 소모 기력%d/내력%d" % [int(first.get("stamina_cost", 0)), int(first.get("internal_cost", 0))]
 	if outcome != null:
 		outcome.text = _event_outcome(first)
 		if events.size() > 1:
@@ -257,14 +261,17 @@ func _layout_cards() -> void:
 		_ink_veil.position = region.position
 		_ink_veil.size = region.size
 	var card_width := clampf(region.size.x * 0.17, 146.0, 214.0)
-	var card_height := clampf(region.size.y * 0.20, 64.0, 86.0)
+	var player_panel := _player_widgets.get("panel") as Control
+	var enemy_panel := _enemy_widgets.get("panel") as Control
+	var required_height := maxf(player_panel.get_combined_minimum_size().y, enemy_panel.get_combined_minimum_size().y)
+	var card_height := maxf(clampf(region.size.y * 0.20, 64.0, 112.0), required_height)
 	var center_x := region.position.x + region.size.x * 0.5
 	var card_y := clampf(region.position.y + region.size.y * 0.18, region.position.y + 76.0, region.end.y - card_height - 54.0)
 	var side_gap := clampf(region.size.x * 0.055, 38.0, 72.0)
-	(_player_widgets.get("panel") as Control).position = Vector2(center_x - side_gap - card_width, card_y)
-	(_player_widgets.get("panel") as Control).size = Vector2(card_width, card_height)
-	(_enemy_widgets.get("panel") as Control).position = Vector2(center_x + side_gap, card_y)
-	(_enemy_widgets.get("panel") as Control).size = Vector2(card_width, card_height)
+	player_panel.position = Vector2(center_x - side_gap - card_width, card_y)
+	player_panel.size = Vector2(card_width, card_height)
+	enemy_panel.position = Vector2(center_x + side_gap, card_y)
+	enemy_panel.size = Vector2(card_width, card_height)
 	_heading.position = Vector2(region.position.x + region.size.x * 0.30, region.position.y + maxf(12.0, region.size.y * 0.06))
 	_heading.size = Vector2(region.size.x * 0.40, 38.0)
 	_phase.position = Vector2(size.x * 0.30, _heading.position.y + 39.0)
@@ -272,8 +279,10 @@ func _layout_cards() -> void:
 	_phase.size = Vector2(region.size.x * 0.40, 24.0)
 	_versus.position = Vector2(center_x - 32.0, card_y + card_height * 0.10)
 	_versus.size = Vector2(64.0, 42.0)
-	_result.position = Vector2(region.position.x + region.size.x * 0.20, card_y + card_height + 6.0)
-	_result.size = Vector2(region.size.x * 0.60, 34.0)
+	var result_height := maxf(34.0, _result.get_combined_minimum_size().y)
+	_result.position = Vector2(region.position.x + region.size.x * 0.20, card_y + card_height + 8.0)
+	_result.size = Vector2(region.size.x * 0.60, result_height)
+	set_meta("layout_bounded", _result.get_rect().end.y <= region.end.y + 0.5 and not _result.get_rect().intersects(player_panel.get_rect()) and not _result.get_rect().intersects(enemy_panel.get_rect()))
 
 func _resolved_presentation_rect() -> Rect2:
 	if _presentation_rect.size.x > 0.0 and _presentation_rect.size.y > 0.0:

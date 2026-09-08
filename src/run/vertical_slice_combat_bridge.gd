@@ -180,28 +180,20 @@ func _on_progress_requested(context: Dictionary) -> void:
     await super._on_progress_requested(context)
 
 
-func _show_review_panel(terminal: bool) -> void:
-    super._show_review_panel(terminal)
+func _finish_bundle_presentation(terminal: bool) -> void:
+    super._finish_bundle_presentation(terminal)
     if not terminal:
         return
-    if combat_review_panel != null:
-        var continue_button := combat_review_panel.get_continue_button()
-        if continue_button != null:
-            continue_button.text = "결과 확인"
-            continue_button.accessibility_description = "복기를 확인하고 별도 비무 결과 화면으로 이동합니다."
     _vertical_slice_terminal_result = _build_vertical_slice_terminal_result()
     terminal_review_ready.emit(_vertical_slice_terminal_result.duplicate(true))
+    call_deferred("_confirm_terminal_result_once")
 
 
-func _on_review_continue_requested() -> void:
-    if _presentation_state != "review_ready":
+func _confirm_terminal_result_once() -> void:
+    if _vertical_slice_terminal_result.is_empty() or bool(get_meta("terminal_result_confirmed", false)):
         return
-    if _review_terminal:
-        if _vertical_slice_terminal_result.is_empty():
-            _vertical_slice_terminal_result = _build_vertical_slice_terminal_result()
-        terminal_review_confirmed.emit(_vertical_slice_terminal_result.duplicate(true))
-        return
-    super._on_review_continue_requested()
+    set_meta("terminal_result_confirmed", true)
+    terminal_review_confirmed.emit(_vertical_slice_terminal_result.duplicate(true))
 
 
 func _build_vertical_slice_terminal_result() -> Dictionary:
