@@ -48,7 +48,7 @@
 - Modify `src/combat/combat_board_preview.gd`, `src/combat/combat_board_preview_auto.gd` only where active presentation state needs it.
 - Modify `src/combat/combat_resolution_engine.gd` for exact enemy lock snapshot/restore, without changing AI decisions.
 - Modify `src/run/vertical_slice_combat_bridge.gd`, `src/ui/action_timing_panel.gd` (verify actual path first) for checkpoint/finalize/timing interfaces.
-- Extend Task 1 codec to strict current combat DTO; add `tests/verify_combat_checkpoint_resume.gd`, bind actual CI runners and Python binding assertions. Extend approval/report only actual owned paths.
+- Add `src/run/combat_checkpoint_codec.gd` for the strict combat DTO and delegate to it from Task 1 codec, keeping domain validation focused rather than growing the file-store class. Add `tests/verify_combat_checkpoint_resume.gd`, bind actual CI runners and Python binding assertions. Extend approval/report only actual owned paths.
 
 **Hooks / semantics**
 - Emit/request BUNDLE_COMMITTED after `_committed_player_plan_snapshot` and `_committed_state_before` are complete in `_on_progress_requested`, before resolver. Persistence failure can synchronously veto resolution while keeping commitment frozen for retry.
@@ -57,6 +57,7 @@
 - Restore a committed snapshot by importing exact state/context/plan/enemy lock, then resolving once. Restore a resolved snapshot by common finalize using authoritative final state/summary, without rerunning resolver or animations. Terminal receipt handoff remains exactly once and uses final resources.
 - Internal REVIEW is not durable: terminal ready/confirmed are one coordinator transaction publishing only RESULT/FAILURE_RETRY. A crash between the two signals restores the prior durable RESOLVED checkpoint and completes once; a delayed callback sees the applied boundary and does nothing. Test both victory and defeat in that exact gap.
 - Restore a planning snapshot without another observation reveal, reservation or AI redecision. Preserve full player/enemy statuses, modifiers, martial preparation, metrics, public history, observation state and existing AI seed. Do not connect run_seed or change current AI seed behavior.
+- Preserve the original lazy/eager enemy-lock timing: an initial PLANNING baseline may have an empty lock after bridge reconfiguration; do not force an earlier AI decision. Before COMMITTED capture obtain the lock at the same point the resolver would use it. If the player explicitly reveals observation while planning, persist the changed observation fields and actual lock in the stable planning baseline while excluding reversible placements/reserved momentum. Test observe -> reopen and partial plan -> observe -> reopen: no point refund, no new lock, no second reveal, no retained unsent ultimate spend.
 - No runtime object serialization. Rebuild binding/loadout/model dependencies first; verify saved identity. Keep integer-key maps as entry arrays when serialized. Do not call ultimate reserve again on committed restore.
 
 **Steps**
