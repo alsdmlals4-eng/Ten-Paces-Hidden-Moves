@@ -6,7 +6,7 @@
   "active_planning_pr": "GITHUB_PR_METADATA_REFETCH_REQUIRED",
   "active_planning_parent_pr": "NONE",
   "active_approval_count": "SCOPED_BUILD_APPROVED_HUMAN_FINAL_NOT_RUN",
-  "active_decision_state": "BIMU_CONSTRAINTS_IMPLEMENTED_LOCAL_VERIFIED_AWAITING_CI_MERGE",
-  "next_package": "BIMU_CONSTRAINT_EXACT_HEAD_CI_AND_PROTECTED_DELIVERY",
+  "active_decision_state": "BIMU_CONSTRAINTS_MAIN_MERGED_VERIFIED",
+  "next_package": "NATIVE_INPUT_CAMPAIGN_AND_BLUEPRINT_GAP_VERIFICATION",
   "next_planning_decision": "TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01"
 }

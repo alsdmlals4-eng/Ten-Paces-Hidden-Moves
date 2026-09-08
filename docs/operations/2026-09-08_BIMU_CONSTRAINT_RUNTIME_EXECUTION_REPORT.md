@@ -1,4 +1,19 @@
-# 비무 제약 런타임 로컬 구현·검증 기록
+# 비무 제약 런타임 구현·검증 기록
+
+## 현재 병합 상태
+
+현재 상태: `MAIN_MERGED_VERIFIED`. PR 325는 exact head
+`99298f167f80e59732c42323e4cd6bde9f3c4d8d`에서 34/34 SUCCESS 뒤
+`12fe75ca795c9af640a58eff975e2a6cbe02888d`에 병합됐다.
+Controller의 detached main pytest는 473 PASS (17.94s), merged model 45 cases,
+runtime/UI/실제 public-policy 10전 probe는 모두 exit 0, script errors 0였다.
+독립 최종 review가 승인됐다. 일회성 승인은 원문 bytes/hash를 보존하고 수명 종료한다.
+책임 기록: `docs/operations/2026-09-08_PR325_PROTECTED_CHANGE_APPROVAL_RECORD.md`.
+다음 안전 작업은 native-input 전체 캠페인과 Blueprint 구현 공백 검증이다.
+Human/device/accessibility/release 및 전체 Blueprint 완료를 승격하지 않는다.
+
+아래 로컬 단계의 CI 대기·활성 manifest 설명은 병합 전 당시 이력이며,
+현재 권위는 위 병합 상태와 보존 기록이다.
 
 ## 작업 전 문제와 현재 결과
 

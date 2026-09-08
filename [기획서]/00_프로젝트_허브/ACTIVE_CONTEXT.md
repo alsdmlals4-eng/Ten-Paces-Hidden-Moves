@@ -27,7 +27,9 @@ detached main Python 472건도 PASS했다. 이전 PR 321 승인 기록은 PR 323
 카드 비용·슬롯·사거리·주효과 요약을 연결하고 실제 렌더의 글자 넘침을 교정했다.
 비무 제약 9종의 복수 선택·기법 제한·상대 강화는 별도 승인 Decision 아래 구현됐으며
 로컬 기계 검증과 1280×800 실제 캡처를 확보했다. 720p는 headless만 검증했다.
-다음 안전 작업은 이 패키지의 exact-head CI·보호 병합·main readback이다.
+PR 325는 exact head 34/34 SUCCESS 뒤 `12fe75ca795c9af640a58eff975e2a6cbe02888d`에 병합됐다.
+merged main pytest 473건과 model/runtime/UI/실제 10전 probe가 통과했다.
+다음 안전 작업은 native-input 전체 캠페인과 Blueprint 구현 공백 검증이다.
 책임 증거: `docs/operations/2026-09-08_BIMU_CONSTRAINT_RUNTIME_EXECUTION_REPORT.md`.
 실제 입력 전체 캠페인, 사건 시각자료와 전체 Blueprint 대응·최종 검수는 남아 있다.
 
@@ -45,25 +47,25 @@ current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN
 base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
 live_exact_sha_authority: NONE_REFETCH_REQUIRED
 active_project_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
-product_stage: TEN_DUEL_CAMPAIGN_MERGED_BIMU_CONSTRAINTS_LOCAL_VERIFIED
+product_stage: TEN_DUEL_CAMPAIGN_AND_BIMU_CONSTRAINTS_MAIN_MERGED_VERIFIED
 runtime_work_mode: REVIEW
 historical_runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
 active_planning_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
 active_planning_parent_pr: NONE
 active_approval_count: SCOPED_BUILD_APPROVED_HUMAN_FINAL_NOT_RUN
-active_decision_state: BIMU_CONSTRAINTS_IMPLEMENTED_LOCAL_VERIFIED_AWAITING_CI_MERGE
+active_decision_state: BIMU_CONSTRAINTS_MAIN_MERGED_VERIFIED
 source_decision: TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
 platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
 design_platforms: WINDOWS_ANDROID
 platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
-windows_validation: BIMU_CONSTRAINT_VISIBLE_1280X800_CAPTURED_720_HEADLESS_ONLY_CI_PENDING
+windows_validation: BIMU_CONSTRAINT_VISIBLE_1280X800_CAPTURED_720_HEADLESS_ONLY_MERGED_CI_PASS
 android_validation: NOT_RUN
 engine: Godot 4.7
 historical_runtime_implementation: TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92
-runtime_implementation: TEN_DUEL_MERGED_BIMU_CONSTRAINTS_IMPLEMENTED_LOCAL_VERIFIED_AWAITING_CI_MERGE
+runtime_implementation: TEN_DUEL_MERGED_BIMU_CONSTRAINTS_MAIN_MERGED_VERIFIED
 latest_combat_planning_runtime: PRODUCT_VALIDATION_AUTOMATED
 automated_validation: PASS
 human_validation: NOT_RUN
@@ -71,11 +73,11 @@ accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
 performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 phase_i_vi_implementation: AUTHORIZED_AND_MERGED
 future_product_mutation_authorized: false_NEW_PRODUCT_MUTATION_REQUIRES_FRESH_APPROVED_CONTRACT
-next_package: BIMU_CONSTRAINT_EXACT_HEAD_CI_AND_PROTECTED_DELIVERY
+next_package: NATIVE_INPUT_CAMPAIGN_AND_BLUEPRINT_GAP_VERIFICATION
 next_planning_decision: TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01
 user_directed_planning_work_mode: REVIEW_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_COMPARISON_DEFERRED
 user_directed_planning_decision: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
-user_directed_planning_next_package: BIMU_CONSTRAINT_EXACT_HEAD_CI_AND_PROTECTED_DELIVERY
+user_directed_planning_next_package: NATIVE_INPUT_CAMPAIGN_AND_BLUEPRINT_GAP_VERIFICATION
 user_directed_planning_next_decision: TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01
 user_directed_planning_status: THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_CTA_REVIEW_SURFACES_IMPLEMENTED_LEGACY_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN
 user_directed_planning_current_direction: FRONTAL_SHARED_GROUND_DUEL_NO_VISIBLE_LOGICAL_BOARD_PLUS_3_BRANCH_4_PICK_JIANGHU_ROUTE_PLUS_SINGLE_PLAYER_FACING_ACTION_EXECUTE_CTA_PLUS_CURRENT_CARD_VS_COMPARE_RAIL_PLUS_INLINE_CAUSAL_RECAP_PLUS_UNIFIED_BLUE_GRAY_HANJI_INK_CANDIDATE_STYLE_WITHOUT_SPINE_RUNTIME
