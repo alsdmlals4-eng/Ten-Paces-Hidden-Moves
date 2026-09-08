@@ -161,9 +161,10 @@ func _lock(lock: Dictionary, state: Dictionary, engine, allow_empty: bool) -> bo
     if lock.key.is_empty(): return allow_empty and lock.actions.is_empty()
     if lock.key != "%d:%d" % [state.round_number, state.bundle_index]: return false
     var used := {}
+    var allowed_cards: Dictionary = engine.get_enemy_ai_cards_by_id()
     for action in lock.actions:
         if not _keys(action, ["actor", "anchor_index", "span", "execution_timing", "definition", "targeting_mode", "target_ready", "target_tile", "direction", "origin_tile", "ai_reason", "ai_seed", "action_types"]) or action.get("actor") != "enemy": return false
-        if not _action(action, state.bundle_index, engine, used): return false
+        if not _action(action, state.bundle_index, allowed_cards, used): return false
         if not integer(action.get("execution_timing"), 1, 10) or action.execution_timing != action.anchor_index + action.span - 1: return false
         if not integer(action.get("ai_seed"), -9007199254740991) or typeof(action.get("ai_reason")) != TYPE_STRING or typeof(action.get("action_types")) != TYPE_ARRAY: return false
         for label in action.action_types:
@@ -172,9 +173,15 @@ func _lock(lock: Dictionary, state: Dictionary, engine, allow_empty: bool) -> bo
 
 func _plan(plan: Array, context: Dictionary, engine) -> bool:
     var used := {}
+    var allowed_cards: Dictionary = {}
+    var player_martial_ids = engine.get_player_martial_card_ids()
+    for id in engine.cards_by_id:
+        var definition: Dictionary = engine.cards_by_id[id]
+        if definition.get("source") != "martial_manual" or id in player_martial_ids:
+            allowed_cards[id] = definition
     for row in plan:
         if not _keys(row, ["card_id", "card_name", "definition", "anchor_index", "span", "indices", "targeting_mode", "target_ready", "resource_ready", "target_tile", "direction", "origin_tile", "target_text"], ["intent"]): return false
-        if not _action(row, context.bundle_index, engine, used): return false
+        if not _action(row, context.bundle_index, allowed_cards, used): return false
         if typeof(row.card_name) != TYPE_STRING or typeof(row.target_text) != TYPE_STRING or typeof(row.resource_ready) != TYPE_BOOL or row.resource_ready != true: return false
         if row.has("intent") and typeof(row.intent) != TYPE_STRING: return false
         if row.get("card_id") != row.definition.id or typeof(row.get("indices")) != TYPE_ARRAY: return false
@@ -184,12 +191,12 @@ func _plan(plan: Array, context: Dictionary, engine) -> bool:
         if not engine.get_action_lock_reason(row.card_id).is_empty(): return false
     return used.size() == [3, 3, 4][int(context.bundle_index) - 1]
 
-func _action(row: Dictionary, bundle, engine, used: Dictionary) -> bool:
+func _action(row: Dictionary, bundle, allowed_cards: Dictionary, used: Dictionary) -> bool:
     if typeof(row.get("definition")) != TYPE_DICTIONARY: return false
     var id = row.definition.get("id")
-    if typeof(id) != TYPE_STRING or not engine.cards_by_id.has(id) or portable(row.definition) != portable(engine.cards_by_id[id]): return false
+    if typeof(id) != TYPE_STRING or not allowed_cards.has(id) or portable(row.definition) != portable(allowed_cards[id]): return false
     if not integer(row.get("anchor_index"), 1, 10) or not integer(row.get("span"), 1, 4): return false
-    if row.span != engine.cards_by_id[id].get("action_slots", 1): return false
+    if row.span != allowed_cards[id].get("action_slots", 1): return false
     var first: int = [1, 4, 7][int(bundle) - 1]
     var last: int = [3, 6, 10][int(bundle) - 1]
     for index in range(int(row.anchor_index), int(row.anchor_index + row.span)):

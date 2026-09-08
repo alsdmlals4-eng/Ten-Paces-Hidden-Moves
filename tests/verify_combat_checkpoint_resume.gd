@@ -233,6 +233,73 @@ func _ultimate_resume() -> void:
     restored.queue_free()
     await process_frame
 
+func _actor_owned_actions(board, committed: Dictionary) -> void:
+    var engine = board.resolution_engine
+    var player_only := ""
+    var enemy_only := ""
+    for id in engine.get_player_martial_card_ids():
+        if id not in engine.get_enemy_martial_card_ids() and engine.cards_by_id[id].get("action_slots", 1) == 1:
+            player_only = id
+            break
+    for id in engine.get_enemy_martial_card_ids():
+        if id not in engine.get_player_martial_card_ids() and engine.cards_by_id[id].get("action_slots", 1) == 1:
+            enemy_only = id
+            break
+    _expect(not player_only.is_empty() and not enemy_only.is_empty(), "Actor ownership fixture has distinct unlocked martial actions")
+    if player_only.is_empty() or enemy_only.is_empty(): return
+    var shared: Dictionary = _json(committed)
+    var shared_manual: String = shared.binding.enemy_loadout[0]
+    shared.binding.player_loadout[0] = shared_manual
+    shared.binding.player_mastery_by_manual[shared_manual] = shared.binding.enemy_mastery_by_manual[shared_manual]
+    var shared_codec = load("res://src/run/combat_checkpoint_codec.gd").new()
+    var shared_engine = shared_codec._engine(shared_codec.portable(shared.binding))
+    _expect(shared_engine != null, "Shared manual fixture rebuilds actual actor bindings")
+    if shared_engine != null:
+        var definition: Dictionary = _json(shared_engine.cards_by_id[enemy_only])
+        shared.player_plan[0].definition = definition
+        shared.player_plan[0].card_id = enemy_only
+        shared.player_plan[0].card_name = definition.get("name", enemy_only)
+        var action: Dictionary = shared.enemy_lock.actions[0].duplicate(true)
+        action.definition = definition
+        action.anchor_index = 1
+        action.span = 1
+        action.execution_timing = 1
+        shared.enemy_lock.actions = [action]
+        for state in [shared.state, shared.state_before]:
+            state.player.stamina = [100, 100]
+            state.player.internal = [100, 100]
+        _expect(shared_codec.validate(shared).ok, "Same unlocked manual remains legal for both actors")
+    for actor in ["player", "enemy"]:
+        for valid_owner in [true, false]:
+            var dto: Dictionary = _json(committed)
+            var id: String = (player_only if valid_owner else enemy_only) if actor == "player" else (enemy_only if valid_owner else player_only)
+            var definition: Dictionary = _json(engine.cards_by_id[id])
+            for state in [dto.state, dto.state_before]:
+                state.player.stamina = [100, 100]
+                state.player.internal = [100, 100]
+            if actor == "player":
+                dto.player_plan[0].definition = definition
+                dto.player_plan[0].card_id = id
+                dto.player_plan[0].card_name = definition.get("name", id)
+            else:
+                var action: Dictionary = dto.enemy_lock.actions[0].duplicate(true)
+                action.definition = definition
+                action.anchor_index = 1
+                action.span = 1
+                action.execution_timing = 1
+                dto.enemy_lock.actions = [action]
+            var validation: Dictionary = load("res://src/run/combat_checkpoint_codec.gd").new().validate(dto)
+            _expect(validation.ok == valid_owner, "Actor-owned canonical definition membership: " + actor + " valid=" + str(valid_owner))
+            if not valid_owner:
+                var target = await _board()
+                target.checkpoint_writer = func(_dto): return false
+                var before: Dictionary = target.combat_state.duplicate(true)
+                var lock_before: Dictionary = target.resolution_engine.export_enemy_lock()
+                _expect(not target.restore_combat_checkpoint(dto).ok, "Cross-actor restore rejected: " + actor)
+                _expect(target.combat_state == before and target.resolution_engine.export_enemy_lock() == lock_before and target._resolution_count == 0, "Cross-actor rejection preserves live state and lock: " + actor)
+                target.queue_free()
+                await process_frame
+
 func _observation_without_plan() -> void:
     var board = await _board()
     board.combat_state.player.observation_points = 1
@@ -285,6 +352,7 @@ func _committed_and_resolved(outcome: String) -> void:
     await board._on_progress_requested(board.action_timing_panel.get_runtime_context())
     _expect(board._resolution_count == 0, "Persistence veto prevents resolution")
     var committed: Dictionary = board.call("get_last_stable_checkpoint")
+    if outcome == "ongoing": await _actor_owned_actions(board, committed)
     var no_resource: Dictionary = _json(committed)
     no_resource.state.player.stamina = [0, 5]
     no_resource.state_before.player.stamina = [0, 5]
