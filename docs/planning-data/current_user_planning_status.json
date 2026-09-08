@@ -6,7 +6,7 @@
   "updated_date": "2026-09-08",
   "campaign_continuation": {
     "branch": "codex/ten-duel-campaign-20260908",
-    "integration_status": "LOCAL_BRANCH_NOT_YET_MERGED",
+    "integration_status": "PR322_OPEN_EXACT_HEAD_CI_PENDING",
     "authority": "Latest explicit user continuation; ten duels, four next-node choices per interval, recreate and connect assets",
     "implementation_record": "docs/operations/2026-09-08_TEN_DUEL_CAMPAIGN_IMPLEMENTATION.md",
     "actual_sequential_probe": "tests/probe_sequential_ten_duel_campaign.gd",
@@ -31,7 +31,7 @@
   "human_game_blueprint_20260902_status": "SUPERSEDED_HUMAN_DERIVED_PUBLICATION_RETAINED_OBSOLETE_TWO_NODE_ROUTE_TWO_STEP_CTA_AND_SEPARATE_REVIEW_SCREEN_WARNING",
   "three_branch_four_choice_human_blueprint_decision": "TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01",
   "three_branch_four_choice_human_blueprint_decision_path": "docs/decisions/2026-09-04_THREE_BRANCH_FOUR_CHOICE_JIANGHU_AND_HUMAN_BLUEPRINT_DECISION.md",
-  "three_branch_four_choice_human_blueprint_status": "USER_APPROVED_CURRENT_SPECIFIED_DOCUMENTATION_CANDIDATE_GENERATED_RUNTIME_IMPLEMENTATION_NOT_STARTED",
+  "three_branch_four_choice_human_blueprint_status": "USER_APPROVED_ROUTE_STATE_IMPLEMENTED_PR322_HEADLESS_VERIFIED_FULL_BLUEPRINT_AND_HUMAN_REVIEW_INCOMPLETE",
   "three_branch_four_choice_human_blueprint_candidate_atlas": "docs/visual-assets/candidates/TEN-HUMAN-BLUEPRINT-20260904/TEN_PACES_3X3_SCREEN_ATLAS_20260904_v1.png",
   "three_branch_four_choice_human_blueprint_candidate_status": "GENERATED_CANDIDATE_DOCUMENTATION_CONSUMED_RUNTIME_CONSUMER_NONE_SHIPPING_RIGHTS_AND_FINAL_LOCK_REVIEW_REQUIRED",
   "frontal_duel_plan_lock_decision": "TEN-DEC-20260901-ACTION-PLAN-LOCK-AND-EXECUTE-CTA-01",

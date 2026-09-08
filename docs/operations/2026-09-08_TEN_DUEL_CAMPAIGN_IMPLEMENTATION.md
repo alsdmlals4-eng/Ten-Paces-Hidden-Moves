@@ -225,3 +225,29 @@ at 720p/800p, including first/last selectable manual and technique card bounds. 
 actual capture reviewed: `docs/runtime-captures/TEN-ATLAS-SUCCESSOR-20260908/martial-summary-fixed-1280x800.png`.
 The earlier offscreen capture is not final evidence. The six new campaign/presentation
 checks now execute in the product CI job after import; a Python contract guards that wiring.
+
+### Cross-platform final-gate corrections
+
+313ffc9c replaces the fixed 98px height with a minimum 104px and measured native
+summary height plus 4px padding; the 112px viewport ceiling remains tested. The native
+manual scroll follows keyboard focus. At a00f2030 Windows and Linux product CI both
+passed, including the new card bounds test. This does not imply the separate Full
+Validation workflow was finished: it exposed a legacy <=84px / art>=30px assertion.
+581dd6ef updates that test to actual content bounds and explicit quit(1) on failure,
+preventing a failed assertion from leaving the Godot process alive. 9ae2dc4c removes
+the corresponding obsolete exact 98px Python source contract. Full pytest: 472 PASS.
+
+Fresh native 1280x800 capture after the dynamic-height fix:
+`docs/runtime-captures/TEN-ATLAS-SUCCESSOR-20260908/martial-dynamic-layout-1280x800.png`.
+Hera editor 6628, game 23852; normal start/manual selection/briefing/preparation
+methods then actual martial-tab click. No synthetic terminal or resource injection.
+Capture shows the native horizontal selector and retained cards; actor art, density
+and final Human readability remain follow-up work, not final art acceptance.
+
+PR 323 archived PR 321's exact approval JSON/hash, added inactive-authority markers,
+and promoted only the protected baseline. Exact-head checks and independent review
+passed; merged main a0d4d967b81ab4a6ce8dc4623546fecceceb4307 read back. PR 322 now
+has its own 27-path approval matching its product diff. Generated local imports/UIDs
+and raw exploratory captures were preserved, never bulk-staged. Its old stalled Full
+Validation run was cancelled after the concrete obsolete assertion was identified;
+new exact-head CI must pass before merge. No protected-rule bypass was used.

@@ -15,9 +15,12 @@
 매 비무 첫 해결 전 누적 자원 일치를 검사했고 controller와 독립 검토자가 재실행했다.
 이는 headless 통합 검증이며 UI 입력 경로·사람 플레이·전체 정책 균형 증거는 아니다.
 기존 2노드 회귀를 새 구조로 이관했고 누적 정탐 손실과 존재하지
-않는 시작 무공 ID 수락도 교정했다. Python 470 PASS와 focused Godot 회귀 PASS.
+않는 시작 무공 ID 수락도 교정했다. Python 472 PASS와 focused Godot 회귀 PASS.
 주막 휴식 삽화 연결은 실제 1280×800 렌더 검수와 중복 회복 방지 검사를 통과했다.
-전체 Blueprint 기능 구현·CI·병합은 아직 진행 중이다.
+PR 322 통합 진행 중이다. Windows/Linux 제품 CI는 a00f2030에서 PASS였으며,
+별도 전체 검사에서 발견한 오래된 카드 크기 assertion과 실패 시 미종료를 추가 교정했다.
+최종 HEAD 전체 CI는 재실행한다. 이전 PR 321 승인 기록은 PR 323으로 보존·종료했다.
+전체 Blueprint 기능 구현·최종 검수는 아직 진행 중이다.
 책임 진행 기록: `docs/operations/2026-09-08_TEN_DUEL_CAMPAIGN_IMPLEMENTATION.md`.
 새 공통 배경은 최신 사용자 연속 구현 지시에 따라 별도 경로로 런타임 연결했다.
 원본 승인 자산을 덮어쓰지 않았고 Human 최종 검수/출시 권리 확인은 미완료다.
