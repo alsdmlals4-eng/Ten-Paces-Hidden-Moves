@@ -101,11 +101,12 @@ func select_jianghu_node(node_id: String, expected_step: int) -> bool:
             if node_id == "investigate":
                 if not _progression.add_free_training(1):
                     return false
-            _intel_by_candidate[str(candidate.get("candidate_id", ""))] = selected.duplicate(true)
         _:
             return false
     selected["route_type"] = node_id
     selected["node_id"] = "J%d-%d" % [completed_duels, jianghu_step + 1]
+    if node_id in ["recon", "investigate"]:
+        _record_candidate_intel(selected)
     _pending_jianghu = selected
     return true
 
@@ -430,7 +431,7 @@ func advance() -> bool:
                 return false
             var intel_receipt := _pending_route_intel.duplicate(true)
             _route_history.append(intel_receipt)
-            _intel_by_candidate[str(intel_receipt.get("candidate_id", ""))] = intel_receipt.duplicate(true)
+            _record_candidate_intel(intel_receipt)
             _pending_route_intel.clear()
             duel_index += 1
             _promote_next_opponent_if_configured()
@@ -576,6 +577,37 @@ func _extract_review_causes(result: Dictionary) -> Array:
     if causes.is_empty():
         causes.append({"event": "combat_loss", "label": "전투에서 패배했습니다."})
     return causes
+
+
+func _record_candidate_intel(receipt: Dictionary) -> void:
+    var candidate_id := str(receipt.get("candidate_id", ""))
+    var receipt_text := str(receipt.get("text", ""))
+    if candidate_id.is_empty() or receipt_text.is_empty():
+        return
+    var entries: Array = []
+    var existing_value = _intel_by_candidate.get(candidate_id, {})
+    if typeof(existing_value) == TYPE_DICTIONARY:
+        var existing: Dictionary = existing_value
+        var existing_entries = existing.get("entries", [])
+        if existing.has("entries") and typeof(existing_entries) == TYPE_ARRAY:
+            for value in existing_entries:
+                if typeof(value) == TYPE_DICTIONARY:
+                    entries.append((value as Dictionary).duplicate(true))
+        elif not str(existing.get("text", "")).is_empty():
+            entries.append(existing.duplicate(true))
+    for entry in entries:
+        if str((entry as Dictionary).get("text", "")) == receipt_text:
+            return
+    entries.append(receipt.duplicate(true))
+    var combined := receipt.duplicate(true)
+    var texts: Array[String] = []
+    for entry in entries:
+        var text := str((entry as Dictionary).get("text", ""))
+        if not text.is_empty():
+            texts.append(text)
+    combined["entries"] = entries
+    combined["text"] = "\n".join(texts)
+    _intel_by_candidate[candidate_id] = combined
 
 
 func _has_valid_result_resources(result: Dictionary) -> bool:

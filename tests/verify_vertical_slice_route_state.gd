@@ -21,6 +21,8 @@ func _initialize() -> void:
 func _run() -> void:
     _verify_route_model_boundaries()
     _verify_route_effects_and_receipts()
+    _verify_multiple_intel_clues_accumulate()
+    _verify_legacy_single_intel_receipt_upgrades_without_loss()
     _finish()
 
 
@@ -97,6 +99,66 @@ func _verify_route_effects_and_receipts() -> void:
     _expect_eq(run.get_progression_snapshot().get("player_resources", {}), {"health": [22, 40], "stamina": [3, 5], "internal": [3, 4]}, "Event and rest effects must apply once with resource caps.")
     _expect_eq(int(run.get_progression_snapshot().get("free_training_pool", -1)), 8, "Focused reward +3, training +3, and event +2 must apply once each.")
     _expect_eq(str((run.get_reward_history()[0] as Dictionary).get("opponent_candidate_id", "")), duel_one_opponent_id, "Duel reward history must remain associated with Duel 1 opponent.")
+
+
+func _verify_multiple_intel_clues_accumulate() -> void:
+    var run = _new_combat_run()
+    _expect_true(run.mark_combat_finished({"outcome": "win"}), "Intel accumulation fixture Duel 1 must finish.")
+    _expect_true(run.advance(), "Intel accumulation fixture Review must enter Result.")
+    _expect_true(run.set_pending_result_reward({"reward_type": "free_training", "free_training": 6}), "Intel accumulation fixture reward must be selected.")
+    _expect_true(run.advance(), "Intel accumulation fixture must enter the first Jianghu interval.")
+    var duel_two_id := str(run.get_route_target_opponent().get("candidate_id", ""))
+    var first_texts := _choose_route_sequence(run, ["recon", "investigate", "rest", "training"], true)
+    _expect_eq(run.get_current_screen(), "BRIEFING", "Recon then investigate must still complete the first Jianghu interval.")
+    _expect_eq(str(run.get_current_opponent().get("candidate_id", "")), duel_two_id, "Accumulated clues must promote with their target opponent.")
+    var duel_two_intel: Dictionary = run.get_current_opponent_intel()
+    var duel_two_text := str(duel_two_intel.get("text", ""))
+    _expect_eq(str(duel_two_intel.get("candidate_id", "")), duel_two_id, "The combined clue API must remain scoped to Duel 2.")
+    _expect_true(duel_two_text.contains(str(first_texts.get("recon", ""))), "Briefing must retain the earlier manual rumor after a later footwork clue.")
+    _expect_true(duel_two_text.contains(str(first_texts.get("investigate", ""))), "Briefing must retain the later footwork clue alongside the manual rumor.")
+    _expect_eq(duel_two_text.count(str(first_texts.get("recon", ""))), 1, "A rejected duplicate recon selection must not duplicate its public clue.")
+    _expect_false(duel_two_text.contains("AI 가중치") or duel_two_text.contains("현재 계획"), "Combined public clues must not expose AI weights or hidden plans.")
+
+    _expect_true(run.advance(), "Duel 2 Briefing must enter Combat.")
+    _expect_true(run.mark_combat_finished({"outcome": "win"}), "Intel accumulation fixture Duel 2 must finish.")
+    _expect_true(run.advance(), "Duel 2 Review must enter Result.")
+    _expect_true(run.set_pending_result_reward({"reward_type": "free_training", "free_training": 6}), "Duel 2 reward must be selected.")
+    _expect_true(run.advance(), "Duel 2 Result must enter the second Jianghu interval.")
+    var duel_three_id := str(run.get_route_target_opponent().get("candidate_id", ""))
+    var second_texts := _choose_route_sequence(run, ["investigate", "investigate", "training", "recon"], false)
+    _expect_eq(run.get_current_screen(), "BRIEFING", "Investigate then recon must complete the second Jianghu interval.")
+    var duel_three_intel: Dictionary = run.get_current_opponent_intel()
+    var duel_three_text := str(duel_three_intel.get("text", ""))
+    _expect_eq(str(duel_three_intel.get("candidate_id", "")), duel_three_id, "The next opponent must receive only its own accumulated clues.")
+    _expect_true(duel_three_text.find(str(second_texts.get("investigate", ""))) < duel_three_text.find(str(second_texts.get("recon", ""))), "Combined clue text must preserve the acquisition order when information choices are reversed.")
+    _expect_eq(duel_three_text.count(str(second_texts.get("investigate", ""))), 1, "Selecting the same public clue at another valid step must not duplicate its text.")
+    _expect_false(duel_three_text.contains(str(first_texts.get("recon", ""))) or duel_three_text.contains(str(first_texts.get("investigate", ""))), "Clues acquired for Duel 2 must not leak into Duel 3.")
+
+
+func _choose_route_sequence(run, choices: Array, verify_duplicate: bool) -> Dictionary:
+    var texts := {}
+    for step in range(choices.size()):
+        var choice_id := str(choices[step])
+        _expect_true(choice_id in _option_ids(run.get_jianghu_options()), "Intel fixture choice must be offered: %s." % choice_id)
+        _expect_true(run.select_jianghu_node(choice_id, step), "Intel fixture must select %s at Step %d." % [choice_id, step])
+        if choice_id in ["recon", "investigate"]:
+            texts[choice_id] = str(run.get_pending_jianghu().get("text", ""))
+            if verify_duplicate and choice_id == "recon":
+                _expect_false(run.select_jianghu_node(choice_id, step), "Duplicate recon input must be rejected before receipt confirmation.")
+        _expect_true(run.advance(), "Intel fixture must confirm %s at Step %d." % [choice_id, step])
+    return texts
+
+
+func _verify_legacy_single_intel_receipt_upgrades_without_loss() -> void:
+    var run = RunStateScript.new()
+    run.set("_current_opponent_id", "legacy_target")
+    run.set("_intel_by_candidate", {
+        "legacy_target": {"candidate_id": "legacy_target", "category": "MANUAL_RUMOR", "text": "기존 무공 단서"}
+    })
+    run.call("_record_candidate_intel", {"candidate_id": "legacy_target", "category": "FOOTWORK_SIGHTING", "text": "새 보법 단서"})
+    var upgraded_text := str(run.get_current_opponent_intel().get("text", ""))
+    _expect_true(upgraded_text.contains("기존 무공 단서"), "A legacy single-receipt intel snapshot must keep its original clue when upgraded.")
+    _expect_true(upgraded_text.contains("새 보법 단서"), "A legacy single-receipt intel snapshot must append the newly acquired clue.")
 
 
 func _new_combat_run():
