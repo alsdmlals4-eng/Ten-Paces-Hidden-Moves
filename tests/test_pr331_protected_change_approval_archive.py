@@ -52,5 +52,5 @@ def test_pr331_linked_current_routing_fields_are_aligned():
     assert f"next_package: {operating['next_package']}" in active
     assert f"active_decision_state: {operating['active_decision_state']}" in active
     status = json.loads((ROOT / "docs/planning-data/current_user_planning_status.json").read_text(encoding="utf-8"))
-    assert status["durable_continue_continuation"]["decision"] == operating["source_decision"]
+    assert status["durable_continue_continuation"]["decision"] == "TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01"
     assert (ROOT / status["durable_continue_continuation"]["implementation_record"]).is_file()

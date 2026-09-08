@@ -67,3 +67,5 @@ Prospective owner/archive RED `python -m pytest -q tests/test_pr333_protected_ch
 셋째, durable 보고서가 실제 adapter key `protected_baseline.commit`을 `protected_paths_merged_baseline.commit`으로 잘못 적었다. 제품·JSON을 바꾸지 않고 보고서 식별자만 실제 `skills/PROJECT_BASE_ADAPTER.json`과 일치시켰다.
 
 이 교정은 이미 서로 일치하던 current JSON/Active Context를 대상으로 test 구조를 단단하게 만든 것이므로 snapshot behavior에 대한 새 prospective RED를 발명하지 않았다. 첫 refactor 실행은 test 자체의 hub→detailed-roadmap 간접 링크 기대와 한 함수의 local `operating` load 누락을 정직하게 **2 failed, 32 passed in 1.94s**로 드러냈다. 두 test 구현 문제를 고친 focused governance 묶음은 **34 passed in 2.26s**였다. 이 round는 새 제품 의미, current successor 값, archived PR bytes 또는 승인 수명주기를 변경하지 않는다.
+
+최종 cross-era 검사에서는 PR #331 archive test 한 곳이 historical durable-continuation Decision을 다시 live `operating.source_decision`에 연결한 동일 패턴을 발견했다. PR #333의 immutable Decision `TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01` literal로 분리하고, 이 closeout에서 수정한 네 test의 `source_decision` 관계를 재검색해 추가 historical→current 결합이 없음을 확인했다. 이미 일치하는 snapshot의 test-design 교정이므로 가짜 RED는 만들지 않았다.
