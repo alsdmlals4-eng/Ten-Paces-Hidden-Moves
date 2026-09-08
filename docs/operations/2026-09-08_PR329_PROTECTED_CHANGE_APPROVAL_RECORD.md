@@ -36,4 +36,6 @@ ewogICJzY2hlbWFfdmVyc2lvbiI6IDEsCiAgImFydGlmYWN0X3JvbGUiOiAiUFJPSkVDVF9QUk9URUNU
 - Loop 4: current/history 및 CI rollup을 공격해 initial failure와 final success를 함께 기록하고 33/33 오표현을 금지했다.
 - Loop 5: 전체 diff·capture provenance·제품/asset/core consumer를 공격해 docs/adapter/test 외 변경 0과 `CLEAN_REVIEW_EXIT`를 확인했다.
 
+첫 committed lifecycle 검사는 PASS했지만 approval-aware operating validator가 baseline 변경에 따른 네 generated view stale 상태를 발견했다. 채택 generator `build_project_operating_artifacts.py --write`로 snapshot/dashboard/두 compatibility view만 재생성했다. 이는 제품 변경이 아니라 canonical adapter 파생본 동기화이며, 재생성 전 validator failure를 숨기지 않는다.
+
 Controller가 이 closeout의 remote CI, merge와 postmerge readback을 수행한다.
