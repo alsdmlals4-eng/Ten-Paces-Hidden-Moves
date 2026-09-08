@@ -73,9 +73,11 @@ func _verify_reference_preparation_hierarchy(board: CombatBoardPreview) -> void:
 	_expect(is_instance_valid(hud.player_momentum) and not hud.player_momentum.visible, "Momentum must live inside the player status frame, not in a detached top panel.")
 	_expect(is_instance_valid(hud.enemy_momentum) and not hud.enemy_momentum.visible, "Momentum must live inside the enemy status frame, not in a detached top panel.")
 	if is_instance_valid(hud.player_panel):
-		_expect(hud.player_panel._portrait.get_global_rect().end.x + 6.0 <= hud.player_panel._health_label.get_global_rect().position.x, "Player status text must have a dedicated column to the right of the portrait.")
+		_expect(not hud.player_panel._portrait.visible, "Player live status reserves its width for resources, not a portrait.")
+		_expect(player_rect.encloses(hud.player_panel._health_label.get_global_rect()), "Player resource label stays inside the status panel.")
 	if is_instance_valid(hud.enemy_panel):
-		_expect(hud.enemy_panel._health_label.get_global_rect().end.x + 6.0 <= hud.enemy_panel._portrait.get_global_rect().position.x, "Enemy status text must have a dedicated column to the left of the portrait.")
+		_expect(not hud.enemy_panel._portrait.visible, "Enemy live status uses the same portrait-free hierarchy.")
+		_expect(enemy_rect.encloses(hud.enemy_panel._health_label.get_global_rect()), "Enemy resource label stays inside the status panel.")
 
 	var planning_rect := board.planning_surface.get_global_rect() if is_instance_valid(board.planning_surface) else Rect2()
 	var timing_rect := board.action_timing_panel.get_global_rect() if is_instance_valid(board.action_timing_panel) else Rect2()

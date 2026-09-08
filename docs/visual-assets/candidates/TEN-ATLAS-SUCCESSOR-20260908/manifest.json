@@ -1,0 +1,20 @@
+{
+  "asset_id": "TEN-ATLAS-DUEL-COURTYARD-20260908-V1",
+  "file": "duel-courtyard-v1.png",
+  "sha256": "608d67e244ab3bc0c579ff04b359682a20c5189236117ff5390b0d7182dd092c",
+  "status": "IMPLEMENTED_UNDER_CONTINUATION_AUTHORIZATION",
+  "generation_route": "built-in image_gen",
+  "source_output": "C:/Users/user/.codex/generated_images/01a04af4-16f3-7153-96fc-823b2094d386/exec-212f9e75-1f87-412c-9d97-b77f2130264a.png",
+  "reference": "user-provided approved blueprint core screen codex-clipboard-60018f76-c7dc-4a26-b6bc-b16187a070bf.png",
+  "brief": "docs/operations/2026-09-08_ATLAS_VISUAL_SUCCESSOR_BRIEF.md",
+  "review": "Ink/slate palette, bamboo framing, central gate and empty courtyard present. No baked HUD or actors. Upper-region texture needs review at actual display scale.",
+  "intended_consumers": ["combat backdrop", "briefing backdrop", "result backdrop", "Human Blueprint atlas"],
+  "runtime_consumer": ["src/combat/battle_background.gd", "src/ui/main_title_screen.gd", "src/run/vertical_slice_shell.gd"],
+  "runtime_asset": "assets/backgrounds/atlas_blue_ink_courtyard_v1.png",
+  "implementation_authorization": "Latest user: recreate if needed and connect; continue implementation without intermediate approvals. This is not a separate final visual or release acceptance.",
+  "user_approved": false,
+  "runtime_verified": true,
+  "runtime_evidence": "docs/runtime-captures/TEN-ATLAS-SUCCESSOR-20260908/combat-native-status-1280x800.png; actual Godot 4.7.1 window, captured through Hera, not a mockup",
+  "capture_sha256": "eea25d856fe492c678906c8b921c650a8ffbb85008d662ca1540f2cfaa355f23",
+  "shipping_rights": "UNVERIFIED"
+}

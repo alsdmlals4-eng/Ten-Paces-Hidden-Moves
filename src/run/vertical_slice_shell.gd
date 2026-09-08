@@ -121,9 +121,11 @@ func get_active_combat_loadout_snapshot() -> Dictionary:
 
 
 func _build_shell() -> void:
-    var background := ColorRect.new()
+    var background := TextureRect.new()
     background.name = "ShellBackdrop"
-    background.color = Color("171411")
+    background.texture = preload("res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png")
+    background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+    background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
     background.mouse_filter = Control.MOUSE_FILTER_IGNORE
     background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     add_child(background)
@@ -154,10 +156,10 @@ func _build_shell() -> void:
     add_child(content_panel)
 
     var panel_style := StyleBoxFlat.new()
-    panel_style.bg_color = Color("241f1a")
-    panel_style.border_color = Color("7f6847")
+    panel_style.bg_color = Color(0.025, 0.045, 0.062, 0.93)
+    panel_style.border_color = Color("ae8c55")
     panel_style.set_border_width_all(2)
-    panel_style.set_corner_radius_all(8)
+    panel_style.set_corner_radius_all(2)
     content_panel.add_theme_stylebox_override("panel", panel_style)
 
     var margin := MarginContainer.new()

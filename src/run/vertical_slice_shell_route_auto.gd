@@ -65,13 +65,43 @@ func _render_current_screen() -> void:
     if route_options_container == null or run_state == null:
         return
     var screen := run_state.get_current_screen()
-    route_options_container.visible = screen in [VerticalSliceRunState.SCREEN_ROUTE_GROWTH, VerticalSliceRunState.SCREEN_ROUTE_INFO]
-    if screen == VerticalSliceRunState.SCREEN_ROUTE_GROWTH:
+    route_options_container.visible = screen in [VerticalSliceRunState.SCREEN_JIANGHU, VerticalSliceRunState.SCREEN_ROUTE_GROWTH, VerticalSliceRunState.SCREEN_ROUTE_INFO]
+    if screen == VerticalSliceRunState.SCREEN_JIANGHU:
+        _render_jianghu()
+    elif screen == VerticalSliceRunState.SCREEN_ROUTE_GROWTH:
         _render_growth_route()
     elif screen == VerticalSliceRunState.SCREEN_ROUTE_INFO:
         _render_info_route()
     else:
         _route_logical_option_count = 0
+
+
+func _render_jianghu() -> void:
+    _clear_route_options()
+    var pending := run_state.get_pending_jianghu()
+    var step := run_state.jianghu_step
+    var resources := run_state.get_player_run_resources()
+    var health: Array = resources.get("health", [0, 0])
+    title_label.text = "강호행로 · %d/4 · 다음 비무 %d/10" % [step + (0 if pending.is_empty() else 1), run_state.duel_index + 1]
+    description_label.text = "세 갈래 중 다음 목적지 하나를 선택합니다.\n체력 %d/%d · 다음 상대 %s\n\n%s" % [health[0], health[1], run_state.get_route_target_opponent().get("working_name", ""), "아직 고르지 않은 길은 다음 단계에서 새로 제시됩니다." if pending.is_empty() else "선택 결과 · %s\n%s" % [pending.get("effect", ""), pending.get("text", "")]]
+    var options := run_state.get_jianghu_options()
+    _route_logical_option_count = options.size()
+    for option in options:
+        var button := Button.new()
+        button.name = "Jianghu_" + str(option["id"])
+        button.text = "%s\n%s" % [option["label"], option["effect"]]
+        button.custom_minimum_size.y = 64
+        button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+        button.disabled = not pending.is_empty()
+        button.pressed.connect(_choose_jianghu.bind(str(option["id"]), step))
+        route_options_container.add_child(button)
+    primary_button.text = "다음 갈림길" if step < 3 else "다음 비무 브리핑"
+    primary_button.disabled = pending.is_empty()
+
+
+func _choose_jianghu(node_id: String, step: int) -> void:
+    if run_state.select_jianghu_node(node_id, step):
+        _render_jianghu()
 
 
 func _render_briefing() -> void:

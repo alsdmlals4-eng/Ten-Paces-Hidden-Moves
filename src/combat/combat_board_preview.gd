@@ -67,6 +67,7 @@ var reduced_motion_button: Button
 var sound_toggle_button: Button
 var sound_volume_slider: HSlider
 var procedural_sfx_player: AudioStreamPlayer
+var momentum_sfx_player: AudioStreamPlayer
 var player_character: CombatCharacterPlaceholder
 var enemy_character: CombatCharacterPlaceholder
 var resolution_engine: CombatResolutionEngine
@@ -139,6 +140,9 @@ func _ready() -> void:
 	call_deferred("_sync_progress_availability")
 
 func _exit_tree() -> void:
+	if is_instance_valid(momentum_sfx_player):
+		momentum_sfx_player.stop()
+		momentum_sfx_player.stream = null
 	if is_instance_valid(procedural_sfx_player):
 		procedural_sfx_player.stop()
 		procedural_sfx_player.stream = null
@@ -171,6 +175,7 @@ func _build_structure() -> void:
 
 	duel_foreground_banner = DUEL_FOREGROUND_BANNER_SCRIPT.new() as DuelForegroundBanner
 	duel_foreground_banner.name = "DuelForegroundBanner"
+	duel_foreground_banner.visible = false
 	add_child(duel_foreground_banner)
 
 	top_hud_surface = COMBAT_SCREEN_SURFACE_SCRIPT.new() as CombatScreenSurface
@@ -399,6 +404,12 @@ func _apply_attack_clash_vfx_matte() -> void:
 	procedural_sfx_player = AudioStreamPlayer.new()
 	procedural_sfx_player.name = "ProceduralSfxPlayer"
 	add_child(procedural_sfx_player)
+	momentum_sfx_player = AudioStreamPlayer.new()
+	momentum_sfx_player.name = "MomentumSfxPlayer"
+	add_child(momentum_sfx_player)
+	# Warm once during scene construction, never synthesize on the first hit.
+	for cue in preload("res://src/ui/combat_sound_bank.gd").CUES:
+		preload("res://src/ui/combat_sound_bank.gd").get_stream(cue)
 
 	var tile_count := int(contract.get("tile_count", 10))
 	var anchor_ratio := float(contract.get("foot_anchor_y_ratio", 0.68))
@@ -421,7 +432,7 @@ func _apply_attack_clash_vfx_matte() -> void:
 	set_meta("step", 10)
 	set_meta("targeting_patch", "10.5")
 	set_meta("background_component", "BattleBackground")
-	set_meta("background_asset", "res://assets/backgrounds/frontal_courtyard_duel_background_02_v1.png")
+	set_meta("background_asset", BattleBackground.BACKGROUND_SOURCE_PATH)
 	set_meta("foreground_banner_component", "DuelForegroundBanner")
 	set_meta("foreground_banner_asset", "res://assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png")
 	set_meta("screen_surface_partition", "top_hud|duel_stage|planning")
@@ -1647,6 +1658,8 @@ func restart_combat() -> void:
 	_last_review_summary.clear()
 	_review_terminal = false
 	_progress_request_count = 0
+	if is_instance_valid(momentum_sfx_player):
+		momentum_sfx_player.stop()
 	if is_instance_valid(procedural_sfx_player):
 		procedural_sfx_player.stop()
 	_presentation_feedback_phase_history.clear()
@@ -1679,6 +1692,8 @@ func _toggle_reduced_motion() -> void:
 
 func _toggle_sound() -> void:
 	_sound_muted = not _sound_muted
+	if _sound_muted and is_instance_valid(momentum_sfx_player):
+		momentum_sfx_player.stop()
 	if _sound_muted and is_instance_valid(procedural_sfx_player):
 		procedural_sfx_player.stop()
 	if is_instance_valid(sound_toggle_button):
@@ -1686,6 +1701,9 @@ func _toggle_sound() -> void:
 
 func _set_sound_volume(value: float) -> void:
 	_sound_volume = clampf(value, 0.0, 1.0)
+	for player in [procedural_sfx_player, momentum_sfx_player]:
+		if is_instance_valid(player):
+			player.volume_linear = _sound_volume
 
 func _apply_keyboard_focus_ring(control: Control) -> void:
 	if control == null:
@@ -1811,34 +1829,13 @@ func _play_procedural_sfx(kind: String) -> void:
 	set_meta("last_sfx_kind", kind)
 	if _sound_muted or not is_instance_valid(procedural_sfx_player):
 		return
-	var frequency := 440.0
-	var duration := 0.12
-	match kind:
-		"momentum_charge": frequency = 660.0
-		"ultimate_reserve": frequency = 480.0
-		"sword_wind": frequency = 760.0
-		"metal_clash": frequency = 1100.0
-		"heavy_hit": frequency = 90.0
-		"block": frequency = 320.0
-		"evade": frequency = 880.0
-		"interrupt": frequency = 180.0
-		"defeat": frequency = 70.0
-	var sample_rate := 22050
-	var sample_count := maxi(1, int(duration * sample_rate))
-	var pcm := PackedByteArray()
-	pcm.resize(sample_count * 2)
-	for index in range(sample_count):
-		var envelope := 1.0 - float(index) / float(sample_count)
-		var sample := int(sin(TAU * frequency * float(index) / float(sample_rate)) * 14000.0 * envelope * _sound_volume)
-		pcm[index * 2] = sample & 0xff
-		pcm[index * 2 + 1] = (sample >> 8) & 0xff
-	var stream := AudioStreamWAV.new()
-	stream.format = AudioStreamWAV.FORMAT_16_BITS
-	stream.mix_rate = sample_rate
-	stream.stereo = false
-	stream.data = pcm
-	procedural_sfx_player.stream = stream
-	procedural_sfx_player.play()
+	var stream := preload("res://src/ui/combat_sound_bank.gd").get_stream(kind)
+	if stream == null:
+		return
+	var player := momentum_sfx_player if kind == "momentum_charge" else procedural_sfx_player
+	player.stream = stream
+	player.volume_linear = _sound_volume
+	player.play()
 
 func _append_resolution_logs(values) -> void:
 	if not is_instance_valid(combat_log_panel) or typeof(values) != TYPE_ARRAY:
@@ -2011,7 +2008,7 @@ func get_layout_snapshot() -> Dictionary:
 	return {
 		"layout_ready": _layout_ready,
 		"background_ready": is_instance_valid(battle_background) and battle_background.texture != null,
-		"background_path": "res://assets/backgrounds/frontal_courtyard_duel_background_02_v1.png",
+		"background_path": BattleBackground.BACKGROUND_SOURCE_PATH,
 		"foreground_banner_ready": is_instance_valid(duel_foreground_banner),
 		"foreground_banner_path": str(duel_foreground_banner.get_meta("asset_path", "")) if is_instance_valid(duel_foreground_banner) else "",
 		"screen_surfaces": {
