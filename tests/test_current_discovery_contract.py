@@ -197,10 +197,10 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertIn("human_validation: NOT_RUN", current_section)
         self.assertIn("android_validation: NOT_RUN", current_section)
-        self.assertIn("next_package: NATIVE_INPUT_CAMPAIGN_AND_BLUEPRINT_GAP_VERIFICATION", current_section)
+        self.assertIn("next_package: BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS", current_section)
         self.assertIn("next_planning_decision: TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01", current_section)
         self.assertIn(
-            "user_directed_planning_next_package: NATIVE_INPUT_CAMPAIGN_AND_BLUEPRINT_GAP_VERIFICATION",
+            "user_directed_planning_next_package: BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS",
             current_section,
         )
         self.assertIn(
@@ -208,7 +208,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             current_section,
         )
         self.assertIn(
-            "user_directed_planning_status: THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_CTA_REVIEW_SURFACES_IMPLEMENTED_LEGACY_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN",
+            "user_directed_planning_status: THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_SINGLE_EXECUTE_INLINE_CAUSAL_AND_TERMINAL_RESULT_SURFACES_MAIN_MERGED_VERIFIED_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN",
             current_section,
         )
         self.assertIn(

@@ -19,7 +19,9 @@ def test_pr331_approval_bytes_and_retired_authority():
     assert "implementation_authority: NONE" in record
     assert "ARCHIVED_NOT_CURRENT_EXECUTION_AUTHORITY" in record
     assert f"implementation_merge_commit: {MERGE}" in record
-    assert not (ROOT / "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json").exists()
+    active = ROOT / "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
+    if active.exists():
+        assert active.read_bytes() != raw, "the exact retired PR331 approval must not be reactivated"
 
 
 def test_pr331_current_owners_describe_merged_scope_and_next_gap():
@@ -34,3 +36,15 @@ def test_pr331_current_owners_describe_merged_scope_and_next_gap():
     assert "IMPLEMENTED_LEGACY" not in status["user_directed_planning_status"]
     assert status["next_product_execution_surface"] == "BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS"
     assert status["next_phase"] == "BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS"
+
+
+def test_pr331_linked_current_routing_fields_are_aligned():
+    active = (ROOT / "[기획서]" / "00_프로젝트_허브" / "ACTIVE_CONTEXT.md").read_text(encoding="utf-8")
+    operating = json.loads((ROOT / "docs/planning-data/current_operating_state.json").read_text(encoding="utf-8"))
+    next_gap = "BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS"
+    merged_status = "THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_SINGLE_EXECUTE_INLINE_CAUSAL_AND_TERMINAL_RESULT_SURFACES_MAIN_MERGED_VERIFIED_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN"
+    assert f"next_package: {next_gap}" in active
+    assert f"user_directed_planning_next_package: {next_gap}" in active
+    assert f"user_directed_planning_status: {merged_status}" in active
+    assert operating["next_package"] == next_gap
+    assert operating["active_decision_state"] == "INLINE_COMBAT_RESULTS_MAIN_MERGED_VERIFIED"
