@@ -4,6 +4,7 @@
 
 **Goal:** Persist the actual ten-duel run and deterministic combat boundaries and connect safe Continue/recovery to the existing game.
 **Spec:** `docs/decisions/2026-09-08_DURABLE_RUN_CONTINUE.md`.
+**Pre-publication corrective spec:** `docs/decisions/2026-09-09_MARTIAL_ACTOR_BINDING_CORRECTION.md` (Task5 only).
 **Architecture:** Explicit run codec, validated local store, combat checkpoint producer and one shell session coordinator. Existing resolver/run/progression remain rule owners. No generic Node serialization.
 **Tech Stack:** Godot 4.7.1/GDScript, FileAccess/DirAccess/JSON/HashingContext, current native SceneTree and Python contracts.
 **Base:** `27f7d922e8ec36e038c6dc943b069161b8b53536`.
@@ -11,6 +12,7 @@
 ## Global constraints
 
 - Preserve all existing combat, AI public-information, scouting, reward, retry, manual loadout and 10-duel/36-route rules. No new assets, cloud, paid dependencies or engine changes.
+- Task5 explicitly corrects actor-specific mastery/stat consumer defects before first save publication. It preserves authored numbers/IDs and schema shape1 while changing semantic compatibility to `ten-duel-four-route-one-retry-bimu-actor-bound-save-v1`. Task4 must still leave codecs and rules unchanged.
 - Save stable domain boundaries, never intermediate animated combat_state. UI must not recalculate combat/reward.
 - Restore must fail closed without partial live mutation or destroying primary/backup evidence. No silent sanitization of malformed data.
 - Preserve unrelated worktrees, dirty files, Draft PRs, approved PDFs and image originals. Do not stage generated .godot/import/UID churn.
@@ -114,9 +116,91 @@ Controller profiled the actual configured first-duel PLANNING checkpoint on revi
 - [ ] Repeat controller workload with cold and warm samples separately and measure representative later-run integrated checkpoints. Compare identical input/source conditions; report measured timings and method, not guessed FPS or platform-wide claims. Wall-time thresholds must not become flaky CI assertions: count exact avoided domain work deterministically instead.
 - [ ] Run full pytest once, native persisted ordinary campaign regression when integrated changed consumers warrant it, relevant operating/approval checks, record real self-review and exact commands, commit only owned files. Independent task review and whole-branch review remain controller gates.
 
+## Task 5: Correct actor-owned martial effects before first save publication
+
+**Spec:** `docs/decisions/2026-09-09_MARTIAL_ACTOR_BINDING_CORRECTION.md`.
+**Research:** `docs/operations/2026-09-09_MARTIAL_ACTOR_BINDING_RESEARCH.md`.
+This is one coupled execution/restore correction, not growth implementation. Begin only after Task4 review is complete. Capture old semantic fixture before changing product code.
+
+**Files / responsibility**
+- Modify `src/combat/combat_resolution_engine.gd`: small virtual actor-definition lookup preserving base/basic/generic behavior; route existing fallback lookup through it.
+- Modify `src/combat/combat_resolution_engine_prepare.gd`: player/enemy attempt reconstruction uses actor lookup, without duplicating prepare resolution or changing its state lifetime.
+- Modify `src/combat/combat_resolution_engine_ten_manuals.gd`: separate effective actor maps, actor lookup override, canonical player construction and enemy/AI/direct/pipeline consumers; preserve legacy union discovery and clear all old derived entries on reconfiguration.
+- Modify `src/combat/martial_effect_pipeline.gd`: explicit authored-stat mapping and pre-execution validation; no new numerical rules.
+- Modify `src/run/vertical_slice_metrics_combat_resolution_engine.gd`: Bimu action lock uses player definition, and rejected plan returns unchanged before metrics accumulation.
+- Modify `src/run/combat_checkpoint_codec.gd`, `src/run/vertical_slice_combat_bridge.gd`: strict player canonical definition and enemy lock use actor map. Existing saved definitions are not sanitized.
+- Modify `src/run/run_checkpoint_codec.gd`: exact semantic string only, no DTO field or validation weakening. Store Task4 cache stays unchanged unless a new regression demonstrates a direct context bug.
+- Add `tests/verify_martial_actor_binding.gd`; extend `tests/verify_martial_effect_pipeline.gd`, `tests/verify_combat_checkpoint_resume.gd`, fresh-process driver `tests/test_durable_save_contract.py` and helper `tests/durable_continue_process.gd`. Add `tests/fixtures/pre_publication_save_v1_actor_shared.json` plus provenance note. Existing unrelated fixtures remain protected.
+- Bind new native verifier in `.github/workflows/validate-ten-manual-product-gate.yml` (path trigger and actual Godot step), beside the existing save/cache verifier. Do not add a duplicate CI framework.
+- Update `docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json` and `docs/implementation/BUILD_APPROVAL_2026-09-08.md` with only actual additional protected paths; regenerate adopted operating artifacts using current project tool. Update execution report, current operating state/Active Context, related mastery/architecture/test/roadmap status with this bounded correction. Preserve historical factual evidence and approved PDF/image bytes.
+
+**Interfaces / required behavior**
+Base engine introduces virtual owned-copy APIs; TenManual overrides for actor maps:
+
+```gdscript
+func get_actor_card_definition(card_id: String, actor_key: String) -> Dictionary:
+    if actor_key not in ["player", "enemy"]:
+        return {}
+    return (cards_by_id.get(card_id, {}) as Dictionary).duplicate(true)
+
+func get_actor_cards_by_id(actor_key: String) -> Dictionary:
+    if actor_key not in ["player", "enemy"]:
+        return {}
+    return cards_by_id.duplicate(true)
+```
+
+TenManual owns `_player_martial_cards` and `_enemy_martial_cards`, each from `_build_normalized_loadout_cards`. Its override looks up own martial ID; a martial ID known only to the other actor returns empty. Non-martial definitions delegate to base. Aggregate lookup copies non-martial cards plus the selected actor's effective map. `get_enemy_ai_cards_by_id()` delegates to enemy aggregate; shared `cards_by_id` is discovery-only union with player precedence on overlap. IDs/`get_loaded_*` sets remain stable. External mutation of returned maps cannot affect engine/registry/other actor. Reconfigure removes all prior martial union entries and both maps, but preserves basic/generic cards.
+
+Route base fallback construction and preparation reconstruction through virtual actor lookup. For real martial player placements, use current player effective definition before span/cost/execute (preserve intent, anchor, direction, target and reservations). Existing inline test-only non-martial supplied definitions remain supported. Reject unavailable actor martial IDs instead of using the opposite side. Direct martial pipeline lookup uses actor API. Never implement a second per-actor rules engine.
+
+Apply canonical martial lookup even when an incoming placement already contains `definition`: both player construction and prepare `_placement_attempts` must agree. Recognize IDs from registry/actor maps, never trust `source` metadata. In TenManual `preview_player_plan` and `resolve_bundle`, preflight every martial placement before delegating to existing resolution: unavailable actor ID or disagreeing placement.card_id/definition.id rejects the whole plan with `MARTIAL_ACTOR_DEFINITION_MISMATCH`, unchanged input/output state and enemy lock, no costs/effects/metrics, valid=false (and rejected=true for resolve). Do not silently skip bad actions. Domain execution owns canonical definitions by ID; exact UI-decorated producer validation remains in the bridge (no UI adapter import into engine). Existing non-martial inline fixtures retain their current behavior. The metrics subclass checks rejection before accumulation; Bimu lock lookup uses the player actor API.
+
+Both configure APIs now return bool. Build candidate effective maps first. With a nonempty enemy lock, equal current effective maps are true/no-op; different maps return false before clearing or replacing anything. With no lock, replace maps/union as usual. Never clear a revealed lock during reconfigure. Existing fresh-engine make_initial_state and codec construction order are preserved; check bool at actual bridge/codec configuration boundaries. Regression: lock→changed mastery configure rejected/maps and lock byte-equivalent; same binding succeeds/no reroll; fresh engine configuration still succeeds.
+
+Stat boundary:
+
+```gdscript
+const STAT_KEYS := {
+    "외공": "external", "근골": "constitution", "신법": "agility",
+    "내공": "internal_power", "심안": "insight",
+    "external": "external", "constitution": "constitution", "agility": "agility",
+    "internal_power": "internal_power", "insight": "insight"
+}
+```
+
+Preflight all SPECIAL_CLASH steps before the effect loop. If stat nonempty: require String reference in STAT_KEYS, Dictionary actor.stats, canonical-key presence and finite int/float value (not bool/String). Require finite int/float coefficient. If reference empty, only numeric coefficient0 is legal. Invalid program returns `_failure(original_state, [], "INVALID_STAT_REFERENCE")`. Valid `_execute_clash` reads the mapped key and preserves fixed power + floor(stat×coefficient), event structure and conditions. Update old Korean-only direct-pipeline actor fixture to canonical engine keys; no Korean shadow keys in product state.
+
+**Steps / executable checks**
+- [ ] Read the spec, research, actual engine/prepare/bridge/codec/test consumers and Task4 report. Run operating validator. Record exact BASE. Preserve a real old-codec envelope from an isolated configured first-duel fixture and record source SHA, old semantic string, fixture SHA and generation command. Never read production user:// for this fixture.
+- [ ] Create `verify_martial_actor_binding.gd` with dynamic method checks so missing APIs cause behavioral assertions, not parse-only failure. Add the following direct regression against current public APIs before implementation:
+
+```gdscript
+var engine = preload("res://src/combat/combat_resolution_engine_ten_manuals.gd").new()
+var manual := "shaolin_arhat_vajra_art"
+engine.configure_martial_loadouts([manual], {manual: 3}, [manual], {manual: 7})
+var state := engine.make_initial_state({"player": {"health": [30,30], "stamina": [5,5], "internal": [4,4]}, "enemy": {"health": [30,30], "stamina": [5,5], "internal": [4,4]}}, 4, 6)
+state.player.internal = [0, 4]
+state.enemy.internal = [0, 4]
+var result: Dictionary = engine.resolve_martial_card(manual + "_star3", state, "player", {"full_absorb": true})
+_assert(result.state.player.internal[0] == 0, "player3 must not receive enemy7 star5 recovery")
+engine.configure_martial_loadouts([manual], {manual: 5}, [manual], {manual: 3})
+result = engine.resolve_martial_card(manual + "_star3", state, "player", {"full_absorb": true})
+_assert(result.state.player.internal[0] == 1, "player5 must retain own star5 recovery")
+```
+
+- [ ] Add mirrored enemy calls, player7/enemy9 and player9/enemy7 overlay comparisons to registry, missing/foreign actor ID, deep-copy mutation and reconfigure cleanup. Assert whole-plan preview/resolve rejection (including spoofed source and disagreeing IDs) preserves state/lock/metrics, and lock-preserving reconfiguration boundaries above. Add exact definition equality between native UI-adapter-decorated placement export, actor canonical map and strict saved player plan; enemy lock must match enemy mastery. Run native tests and record numeric/effect assertion RED.
+- [ ] Extend pipeline test with actual canonical state and `SPECIAL_CLASH {power:8,stat:"내공",coefficient:1.0}`. At internal_power4 expect event.power12. Table-test all five aliases/English references with nonuniform values and1/4/15 boundaries, fractional coefficient0.25 floor, fixed-only0, unknown name, absent canonical stat, String/bool/nonfinite coefficient/value. Prepend defense gain to invalid programs and assert both input/output unchanged and no applied events; conditional invalid step must still reject. Record RED before code changes.
+- [ ] Implement the small lookup API, two effective maps and consumer routing described above. Implement stat preflight/mapping; do not change data JSON numeric values. Run new actor verifier plus existing registry/UI-AI/pipeline/prepare/resolution suites to GREEN. A newly revealed unrelated combat defect is reported to controller, not silently expanded into a rewrite.
+- [ ] Change semantic string to `ten-duel-four-route-one-retry-bimu-actor-bound-save-v1`. Update strict bridge/codecs to actor lookup, preserving exact comparison. Use pre-change fixture in injected directory: old identity→INCOMPATIBLE and same bytes after repeated open; no automatic migration. Context-cache tests must still pass.
+- [ ] Extend fresh-process committed fixtures with shared manual at unequal mastery (both orientations) and actual dock placement. Restored and uninterrupted final state, effect events, enemy lock, resources, reservation count and receipt count must match. Persisted RESOLVED must not invoke resolver. Tampered same-ID opposite-mastery definition must be rejected with no live mutation; legitimate UI-only metadata projection must be accepted through the exact producer adapter.
+- [ ] Execute focused native/Python save suites, whole pytest, and ordinary persisted10-duel native campaign with actual inputs/default resolver: record actual wins/rewards/36routes/input count and checkpoint timings, no injected victories. CI includes new verifier. No hard wall-time assertion or fabricated performance claim.
+- [ ] Update exact protected-path approval, regenerate/validate adopted artifacts, append report with commands, outputs, RED/GREEN, source/semantic fixture hash and limitations. Reconcile current routing/roadmap/test/mastery/architecture owners with implemented status only after evidence. Self-review actual diff plus untouched costs/AI/lock/prepare consumers, commit owned paths only. Return short report contract; no push, merge or subagents.
+
+Commands use the verified local executable `C:/Users/user/Downloads/Godot_v4.7.1-stable_win64.exe/Godot_v4.7.1-stable_win64_console.exe` with `--headless --path . --script res://tests/verify_martial_actor_binding.gd`, analogous affected verifier paths, and `python -m pytest -q`. Fresh import only if needed. Controller owns final whole-branch review, visible capture, CI and protected delivery.
+
 ## Controller delivery and self-review
 
-Task interfaces are sequential: codec/store -> deterministic combat DTO -> shell/lifecycle -> measured store optimization. Shared codec/report/approval/CI files are edited by only one implementer at a time. Tasks cannot ship as disconnected completion; all four must finish before this save feature is described as implemented and its measured bottleneck corrected.
+Task interfaces are sequential: codec/store -> deterministic combat DTO -> shell/lifecycle -> measured store optimization -> pre-publication actor/stat semantic correction. Shared codec/report/approval/CI files are edited by only one implementer at a time. All five must finish before initial save publication; Task5 runs only after Task4's independent review. The added correction is covered by its named successor spec and fresh ten-case research, not silently treated as save-neutral.
 
 Controller conducts an independent full-scope preflight, each task spec+quality review, controller executable/capture review and final full-branch review. Each loop covers current authority, actual changes, untouched consumers, validation evidence, cost and maintainability. Five is a minimum, not five invented findings. Complete related current-state correction, exact-head CI, normal protected PR merge and detached-main readback. Existing PR332 is already merged as base. One-time product approval is closed out only after merged verification, with exact original bytes archived.
 

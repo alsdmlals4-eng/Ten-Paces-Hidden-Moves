@@ -5,6 +5,8 @@ Status: SPECIFIED / BUILD_AUTHORIZED_BY_CURRENT_CONTINUOUS_IMPLEMENTATION_REQUES
 Parents: approved_20260806_windows_android_adapter_architecture_contract.json; current ten-duel campaign and one-free-retry owners. This supplies missing technical defaults under the user's approved implementation scope; it does not grant new retries or change game meaning.
 Research: ../operations/2026-09-08_DURABLE_SAVE_RESEARCH_AND_FEASIBILITY.md.
 
+Pre-publication correction: `2026-09-09_MARTIAL_ACTOR_BINDING_CORRECTION.md` explicitly amends execution compatibility before initial publication. Numeric-rule preservation below does not preserve the discovered actor-definition overwrite or Korean-stat lookup bugs. Schema shape stays1; the corrected semantic identity rejects and preserves old unpublished QA files. This narrow successor does not authorize growth/all-owned changes inside the save package.
+
 ## Player behavior
 
 Title offers 새 여정 and 이어하기 when a validated active run exists. Continue shows the last durable position (duel and route/bundle), never an invented snapshot. Starting anew with an active run requires a clear replacement confirmation, which is a player interaction, not another development approval. No arbitrary quickload/save selection, reroll, cloud or additional retries. During a disk failure, block new irreversible gameplay commands and offer a retry with truthful Korean feedback; do not silently continue unsaved.
