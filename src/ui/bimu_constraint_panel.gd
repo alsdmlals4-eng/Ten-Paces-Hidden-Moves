@@ -15,8 +15,21 @@ var _options: Array = Model.new().get_options()
 var _policy: Dictionary = Model.new().get_selection_policy()
 var _focus_scroll_pending := false
 var submit_selection: Callable
+var _awaiting_acknowledgment := false
+var _published_presentation: Dictionary = {}
+var _widget_context: Array = []
 
 func configure(run_state: VerticalSliceRunState, registry: MartialManualRegistry) -> void:
+    _awaiting_acknowledgment = false
+    var opponent := run_state.get_current_opponent()
+    var context := [run_state.duel_index, opponent.get("candidate_id", ""),
+        opponent.get("signature_manual_id", ""), run_state.get_player_manual_loadout()]
+    if run_state == _run_state and registry == _manual_registry and context == _widget_context:
+        # Acknowledged selection changes do not replace the focused widgets or
+        # scroll container. New duel/opponent/loadout contexts still rebuild.
+        _refresh()
+        return
+    _widget_context = context.duplicate(true)
     _run_state = run_state
     _manual_registry = registry
     for child in get_children():
@@ -128,20 +141,35 @@ func _on_target_changed(_index: int, id: String) -> void:
             proposed[index] = _selection_item(id)
             _submit(proposed)
             return
+    # An unselected option's target is local UI intent, not a domain transaction.
+    _remember_published_presentation()
 
 func _submit(proposed: Array) -> bool:
+    if _awaiting_acknowledgment:
+        _restore_published_presentation()
+        return false
     var receipt := _run_state.validate_bimu_constraints(proposed)
     if not receipt.get("valid", false):
         _refresh(" ".join(receipt.get("errors", [])))
         return false
     var accepted := bool(submit_selection.call(proposed)) if submit_selection.is_valid() else _run_state.select_bimu_constraints(proposed)
     if not accepted:
-        _refresh("비무가 시작되어 제약을 바꿀 수 없습니다.")
+        if submit_selection.is_valid():
+            # The callback can retain a changed domain candidate pending disk ack.
+            # BaseButton/OptionButton already changed their own state before this
+            # callback, so restore the published widgets without reading that DTO.
+            _awaiting_acknowledgment = true
+            _restore_published_presentation()
+        else:
+            _refresh("비무가 시작되어 제약을 바꿀 수 없습니다.")
         return false
     _refresh()
     return true
 
 func _refresh(reason: String = "") -> void:
+    if _awaiting_acknowledgment:
+        _restore_published_presentation()
+        return
     var selected := _run_state.get_pending_bimu_constraints()
     var receipt := _run_state.validate_bimu_constraints(selected)
     for button in option_buttons.values():
@@ -172,8 +200,28 @@ func _refresh(reason: String = "") -> void:
     summary_label.text = "%s\n%s" % [counter, "제약 없이 시작할 수 있습니다." if effects.is_empty() else "\n".join(effects)]
     reason_label.text = reason
     reason_label.visible = not reason.is_empty()
+    _remember_published_presentation()
     selection_changed.emit(receipt)
     _queue_focused_row_visibility()
+
+func _remember_published_presentation() -> void:
+    _published_presentation = {"buttons": {}, "targets": {}, "summary": summary_label.text,
+        "reason": reason_label.text, "reason_visible": reason_label.visible}
+    for id in option_buttons:
+        var button: Button = option_buttons[id]
+        _published_presentation.buttons[id] = [button.button_pressed, button.text, button.accessibility_name]
+    for id in target_selectors: _published_presentation.targets[id] = target_selectors[id].selected
+
+func _restore_published_presentation() -> void:
+    for id in _published_presentation.buttons:
+        var state: Array = _published_presentation.buttons[id]
+        option_buttons[id].set_pressed_no_signal(state[0])
+        option_buttons[id].text = state[1]
+        option_buttons[id].accessibility_name = state[2]
+    for id in _published_presentation.targets: target_selectors[id].select(_published_presentation.targets[id])
+    summary_label.text = _published_presentation.summary
+    reason_label.text = _published_presentation.reason
+    reason_label.visible = _published_presentation.reason_visible
 
 func _style_option(button: Button) -> void:
     var normal := StyleBoxFlat.new()

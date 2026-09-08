@@ -420,6 +420,7 @@ func _render_current_screen() -> void:
 
 
 func _render_briefing() -> void:
+    var focused := get_viewport().gui_get_focus_owner()
     var opponent: Dictionary = run_state.get_current_opponent()
     if opponent.is_empty():
         _set_content("비무 %d · 상대 정보 없음" % run_state.duel_index, "잠긴 상대 데이터를 찾을 수 없습니다.", "비무 시작")
@@ -440,6 +441,9 @@ func _render_briefing() -> void:
         "비무 시작"
     )
     _show_bimu_briefing()
+    # _set_content temporarily hides the briefing. Keep focus only when configure
+    # retained the same widget; a new opponent/loadout must not revive old nodes.
+    if is_instance_valid(focused) and _bimu_constraint_panel.is_ancestor_of(focused): focused.grab_focus()
 
 
 func get_bimu_constraint_panel() -> VBoxContainer:
@@ -644,6 +648,9 @@ func _publish_session_screen() -> void:
     if session != null and (session.busy or session.blocked):
         _apply_session_input_lock()
         return
+    # Restore old widget locks before the new screen calculates availability.
+    # An old MAIN enabled value must not overwrite a new SETUP 0/4 disabled CTA.
+    _apply_session_input_lock()
     _render_current_screen()
     if session != null:
         main_title_screen.configure_continue(session.available, session.status)

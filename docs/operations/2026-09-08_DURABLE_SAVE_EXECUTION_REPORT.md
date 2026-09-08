@@ -1,6 +1,6 @@
 # Durable save and Continue execution evidence
 
-Status: LOCAL_MACHINE_VERIFIED / CONTROLLER_REVIEW_PENDING. Final whole Python suite: 487 passed in391.40s. Not merged; Human, Android physical lifecycle, accessibility users, release performance and whole Blueprint completion NOT_RUN.
+Status: LOCAL_MACHINE_VERIFIED / CONTROLLER_REVIEW_PENDING. Pre-review Task3 whole Python suite: 487 passed in391.40s. Review corrections use the scoped fresh regressions below; no later whole-suite result is implied. Not merged; Human, Android physical lifecycle, accessibility users, release performance and whole Blueprint completion NOT_RUN.
 
 ## Before / research / implementation
 
@@ -53,3 +53,17 @@ The complete package review lineage includes controller preflight, Task1 impleme
 Self-review considered authority/spec, actual changes, untouched screen hierarchy/route ensure/callbacks/AI/ultimate/reward consumers, failure and rollback evidence, storage cost and maintenance together. The accepted architecture keeps domain owners and one coordinator; save-on-every-signal, command replay and whole animated Node serialization were rejected. The actual UI request/view-model mismatches became regression fixtures. No unverified project lesson is promoted to Base policy; reusable candidate: verify persistence with real UI producers as well as domain fixtures, normalize presentation transport at the producer, and keep an immutable acknowledged boundary across pause and IO failure.
 
 Remaining: independent controller review/capture; measured storage-latency correction; clean-candidate protected checker/exact-head CI/protected merge/main readback; Human/Android/accessibility/release gates. Preserved PDFs remain historical reader artifacts; the human-facing flow owner now explains current save/continue rules without regenerating them.
+
+## Independent review correction round 1
+
+Base `f41cc10eb905eda51851671782995a8b95b72596` (controller planning commit after product `159ca9c8`). Work Mode BUILD; receiving-code-review verification, project implementation/build, TDD and project verification/regression/evidence-report. Same approved save-publication contract and research remain relevant. No new rule, schema, asset, dependency or protected path.
+
+Actual keyboard `ui_accept` on Bimu toggle and native OptionButton popup/down/accept reproduced four RED failures: SETUP 0/4 CTA enabled after new-run retry; failed toggle exposed staged pressed/text/summary/CTA; blocked refresh published staged selection; failed target change exposed staged target. The panel now retains its last published presentation without reading the pending domain DTO or emitting a selection receipt on failure. Retry acknowledges the identical candidate once, then publishes its selection once. Old button lock metadata is restored before the new screen computes availability. New-run and corrupt-replacement retries both retain the zero-of-four disabled CTA. Focused native GREEN was repeated, with no extra effects/writes on two reopens.
+
+Adjacent Bimu UI regression initially hit a stale freed Button reference while printing an apparent OK afterward; that run is not PASS. Current-widget requery exposed real 720/800 last-row/target visibility failures. Controller approved the narrow related correction: same run/registry identity plus duel/opponent/signature-manual/player-loadout context keeps existing widgets/scroll; changed context rebuilds target bindings. The shell restores a retained focused widget after its brief temporary hide. Existing visibility assertions remain; positive changed-opponent and changed-player-loadout targets are tested. Final native `verify_bimu_constraint_ui.gd`: exit0, `BIMU_UI_IDENTICAL_UPDATES=10 CHANGED_MANUAL_LISTS=0`, `BIMU_CONSTRAINT_UI_OK`, no SCRIPT ERROR or warning.
+
+Controller independently passed the broad protected checker in a clean, non-imported detached `f41cc10e` checkout, exact baseline/approval, exit0 `Approved project operating contract validation passed`. This supersedes only the environmental blocker for that pre-fix candidate; final correction-head clean verification remains controller-owned. Generated sidecars in the implementation workspace remain preserved.
+
+Final correction-candidate command `python -m pytest tests/test_durable_save_contract.py -q -k actual_shell_transactions_recovery_and_lifecycle`: **1 passed, 5 deselected in22.73s**. Related native setup/briefing, failure/retry and shell scripts all exit0 with `...VERIFY_OK`, no script error/warning. The earlier full487 result is not relabeled as a full rerun of this correction; controller requested focused amended-code plus adjacent native verification for each review round.
+
+Post-correction `python -m pytest -q --ignore=tests/test_durable_save_contract.py`: **481 passed in14.59s**; project operating-system and protected lifecycle validators PASS again. Independent re-review remains pending; no five-loop clean exit or Human/device completion is claimed.

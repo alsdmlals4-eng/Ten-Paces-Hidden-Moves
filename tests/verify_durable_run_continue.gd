@@ -18,16 +18,93 @@ func make_shell():
     await process_frame
     return shell
 
+func tap_action(action: String) -> void:
+    for pressed in [true, false]:
+        var event := InputEventAction.new()
+        event.action = action
+        event.pressed = pressed
+        root.push_input(event)
+        await process_frame
+
+func bimu_surface(shell) -> Dictionary:
+    var panel = shell.get_bimu_constraint_panel()
+    var snapshot := {"buttons": {}, "targets": {}, "summary": panel.summary_label.text,
+        "reason": panel.reason_label.text, "cta": shell.primary_button.text}
+    for id in panel.option_buttons:
+        var button: Button = panel.option_buttons[id]
+        snapshot.buttons[id] = [button.button_pressed, button.text, button.accessibility_name]
+    for id in panel.target_selectors: snapshot.targets[id] = panel.target_selectors[id].selected
+    return snapshot
+
+func verify_bimu_failed_publication(shell):
+    var panel = shell.get_bimu_constraint_panel()
+    var before := bimu_surface(shell)
+    var revision: int = shell.session.last_durable.revision
+    var emissions := [0]
+    panel.selection_changed.connect(func(_receipt): emissions[0] += 1)
+    shell.session.store.io_guard = func(operation, _path): return operation != "write_primary"
+    panel.option_buttons.CST_TECH_MANUAL_SEAL.grab_focus()
+    await tap_action("ui_accept")
+    check(shell.session.blocked, "actual bimu toggle reaches failed save")
+    check(bimu_surface(shell) == before and emissions[0] == 0, "failed bimu toggle preserves published pressed labels summary CTA without signal")
+    check(shell.primary_button.disabled and panel.option_buttons.CST_TECH_MANUAL_SEAL.disabled, "failed bimu toggle blocks inputs")
+    var pending: Dictionary = shell.session._pending.duplicate(true)
+    shell._render_current_screen()
+    panel._refresh()
+    check(bimu_surface(shell) == before and emissions[0] == 0, "blocked bimu refresh cannot publish staged selection")
+    check(shell.session.last_durable.revision == revision and shell.session._pending == pending, "failed bimu render cannot write or replace candidate")
+    shell.session.store.io_guard = Callable()
+    check(await shell.retry_durable_save(), "bimu toggle retry acknowledges")
+    check(shell.session.last_durable.revision == revision + 1, "bimu toggle retry writes once")
+    check(emissions[0] == 1, "bimu toggle retry publishes one selection receipt")
+    check(panel.option_buttons.CST_TECH_MANUAL_SEAL.button_pressed and "선택한" in shell.primary_button.text, "acknowledged bimu selection published")
+    before = bimu_surface(shell)
+    revision = shell.session.last_durable.revision
+    emissions[0] = 0
+    var target: OptionButton = panel.target_selectors.CST_TECH_MANUAL_SEAL
+    target.grab_focus()
+    await tap_action("ui_accept")
+    await tap_action("ui_down")
+    shell.session.store.io_guard = func(operation, _path): return operation != "write_primary"
+    await tap_action("ui_accept")
+    check(shell.session.blocked, "actual bimu target selection reaches failed save")
+    check(bimu_surface(shell) == before and emissions[0] == 0, "failed bimu target preserves target selection and published surface")
+    pending = shell.session._pending.duplicate(true)
+    shell._render_current_screen()
+    panel._refresh()
+    check(shell.session.last_durable.revision == revision and shell.session._pending == pending, "target failure render cannot autosave")
+    shell.session.store.io_guard = Callable()
+    check(await shell.retry_durable_save(), "bimu target retry acknowledges")
+    check(shell.session.last_durable.revision == revision + 1, "target retry writes once")
+    check(emissions[0] == 1, "target retry publishes one selection receipt")
+    check(panel.target_selectors.CST_TECH_MANUAL_SEAL.selected == 1, "acknowledged target publishes requested item")
+    var saved: Dictionary = shell.run_state.export_snapshot()
+    for reopen in range(2):
+        shell.queue_free()
+        await process_frame
+        shell = await make_shell()
+        check(shell.continue_saved_run(), "bimu repeated reopen")
+        check(shell.run_state.export_snapshot() == saved and shell.session.last_durable.revision == revision + 1, "bimu repeated reopen has no effect or write replay")
+    check(shell._submit_bimu_constraints([]), "clear fixture constraints through acknowledged transaction")
+    return shell
+
 func _run() -> void:
     var shell = await make_shell()
     check(shell.has_method("configure_save_storage"), "actual shell must expose isolated durable storage")
     check(shell.find_child("MainContinueButton", true, false) != null, "title must offer validated Continue")
     if failures.is_empty():
-        check(shell.start_new_run(), "new generation must save setup")
+        shell.session.store.io_guard = func(operation, _path): return operation != "write_primary"
+        shell.find_child("MainStartButton", true, false).grab_focus()
+        await tap_action("ui_accept")
+        check(shell.session.blocked, "actual new journey failure blocks")
+        shell.session.store.io_guard = Callable()
+        check(await shell.retry_durable_save(), "new generation retry saves setup")
+        check(shell.primary_button.disabled and shell.get_setup_selected_manual_ids().is_empty(), "new journey retry respects SETUP zero-of-four disabled CTA")
         var options: Array = shell.starter_manual_catalog.get_options()
         for option in options.slice(0, 4): shell.toggle_setup_manual(str(option.manual_id))
         check(shell.advance_noncombat(), "starter confirmation saves")
         check(shell.advance_noncombat(), "intro advances")
+        shell = await verify_bimu_failed_publication(shell)
         var revision: int = shell.session.last_durable.revision
         shell._render_current_screen()
         check(shell.session.last_durable.revision == revision, "briefing render must not autosave")
@@ -183,6 +260,7 @@ func _run() -> void:
     check(FileAccess.get_sha256(primary) == hash, "preservation failure never overwrites source")
     shell.session.store.io_guard = Callable()
     check(await shell.retry_durable_save(), "replacement retries original pending generation")
+    check(shell.primary_button.disabled and shell.get_setup_selected_manual_ids().is_empty(), "replacement retry respects SETUP zero-of-four disabled CTA")
     check(FileAccess.file_exists(storage.path_join("primary_evidence_" + hash + ".json")), "original corrupt evidence retained")
     shell.queue_free()
     await process_frame
