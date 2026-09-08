@@ -102,13 +102,13 @@ func _run() -> void:
     var briefing_text := "%s\n%s" % [shell.title_label.text, shell.description_label.text]
     _expect_true(briefing_text.contains(str(opponent.get("working_name", ""))), "Briefing must show the locked opponent working name.")
     _expect_true(briefing_text.contains(str(opponent.get("martial_identity", ""))), "Briefing must show the opponent martial identity.")
-    _expect_true(briefing_text.contains(str(opponent.get("public_briefing_hook", ""))), "Briefing must show the approved public briefing hook.")
+    _expect_false(briefing_text.contains("최근 평"), "Briefing must omit the removed recent-rating section.")
     _expect_true(briefing_text.contains(str(opponent.get("readable_habit", ""))), "Briefing must expose the readable habit as a hypothesis input.")
     _expect_true(briefing_text.contains(str(opponent.get("ambiguity_or_counterexample", ""))), "Briefing must expose the counterexample/ambiguity instead of an answer key.")
     _expect_false(briefing_text.contains(str(opponent.get("candidate_id", ""))), "Briefing must not expose internal candidate IDs.")
     _expect_false(briefing_text.contains(str(opponent.get("runtime_archetype_id", ""))), "Briefing must not expose internal runtime archetype IDs.")
     _expect_false(briefing_text.contains(str(opponent.get("behavior_focus", ""))), "Briefing must not expose internal behavior-focus keys.")
-    _expect_true(briefing_text.contains("현재 계획"), "Briefing must explicitly mark the current hidden plan as unknown rather than reveal it.")
+    _expect_true(briefing_text.contains("상대의 다음 수는 아직 알 수 없습니다"), "Briefing must explicitly mark the hidden next action as unknown in player-facing language.")
 
     _expect_true(shell.advance_noncombat(), "Briefing must advance to Combat.")
     await process_frame
