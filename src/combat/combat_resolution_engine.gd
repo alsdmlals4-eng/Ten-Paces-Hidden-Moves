@@ -412,6 +412,15 @@ func clear_locked_enemy_bundle() -> void:
     _locked_enemy_bundle_key = ""
     _locked_enemy_actions.clear()
 
+func export_enemy_lock() -> Dictionary:
+    return {"key": _locked_enemy_bundle_key, "actions": _locked_enemy_actions.duplicate(true)}
+
+# Caller validates the complete checkpoint with its configured domain codec first.
+# Import does not ask the planner to decide or reserve any momentum.
+func import_enemy_lock(snapshot: Dictionary) -> void:
+    _locked_enemy_bundle_key = snapshot.key
+    _locked_enemy_actions = snapshot.actions.duplicate(true)
+
 func _get_locked_enemy_actions(state_value: Dictionary, bundle_index: int) -> Array:
     lock_enemy_bundle(state_value, bundle_index)
     return _locked_enemy_actions.duplicate(true)

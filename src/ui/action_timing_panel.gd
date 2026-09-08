@@ -413,6 +413,17 @@ func reset_to_initial() -> void:
     _update_runtime_meta()
     _emit_placement_changed()
 
+# Stable boundary restoration has no placed UI cards and emits no gameplay signal.
+func restore_boundary_context(context: Dictionary) -> void:
+    for anchor_value in placements.keys().duplicate():
+        _clear_placement_without_signal(int(anchor_value))
+    timing_data["round_number"] = int(context.round_number)
+    timing_data["current_bundle"] = int(context.bundle_index)
+    timing_data["current_timing"] = int(context.current_timing)
+    _refresh_slot_states()
+    _refresh()
+    _update_runtime_meta()
+
 func _emit_placement_changed() -> void:
     _refresh_resource_projection()
     set_meta("cards_inserted", not placements.is_empty())

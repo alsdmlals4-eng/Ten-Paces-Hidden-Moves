@@ -63,3 +63,20 @@ Human playtest is finished. Exact protected-path approval must match the final P
 - The trusted protected baseline remains the adapter's `bf161025b63edd7eb441b2c4f2ae9da5155f68da`; its product diff through the merged-main source baseline is empty. Source revision and protected authority are distinct. No adapter/adoption pin change is needed.
 - No UI connection or combat checkpoint implementation is claimed by this task. Nonempty combat checkpoints reject until the next bounded task implements their validation. The July planning-only save sample has no migration authority over this schema.
 - Test paths are injected unique temporary/cache directories. No actual player save is touched. Windows physical input, Android lifecycle/device, Human UX and release acceptance remain `NOT_RUN`.
+
+### Task 2 continuation: deterministic combat boundaries
+
+- Same durable Decision and bounded implementation authority. Task 2 adds the actual
+  combat DTO validator, board commit/resolved hooks, bridge stable snapshot/restore,
+  exact enemy-lock export/import and timing-boundary restoration. The one-time manifest
+  lists all five additional protected paths; no other product scope is implied.
+- PLANNING preserves the pre-placement baseline and separately persisted observation;
+  COMMITTED freezes the exact plan and lock before resolving; RESOLVED stores the final
+  state and summary before animation. Failed writes synchronously stop at that boundary.
+- This supersedes Task 1's temporary nonempty-combat rejection only after strict domain
+  validation and run/duel/attempt/loadout/constraint identity checks. Internal REVIEW is
+  still not a durable screen. Task 3 owns the shell's atomic terminal transaction,
+  title Continue, failure feedback and lifecycle connection.
+- Native checkpoint/fresh-process tests are in `tests/verify_combat_checkpoint_resume.gd`
+  and the existing durable contract Python runner. Full Continue, visible Windows,
+  Android physical lifecycle, Human UX and release claims remain `NOT_RUN` here.

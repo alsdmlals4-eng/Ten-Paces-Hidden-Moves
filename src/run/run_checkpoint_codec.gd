@@ -77,11 +77,21 @@ func content_identity() -> String:
 func validate_payload(run_state, combat_checkpoint = {}) -> Dictionary:
     if typeof(run_state) != TYPE_DICTIONARY or typeof(combat_checkpoint) != TYPE_DICTIONARY or not json_safe([run_state, combat_checkpoint], 0, [0]):
         return error("CORRUPT", "Unsupported or unbounded payload")
-    if not combat_checkpoint.is_empty():
-        return error("INCOMPATIBLE", "Combat checkpoint validation is not installed")
     var candidate = load("res://src/run/vertical_slice_run_state.gd").new()
     var validation: Dictionary = candidate.validate_snapshot(run_state)
     if not validation.get("ok", false): return validation
+    if not combat_checkpoint.is_empty():
+        if run_state.current_screen != "COMBAT": return error("CORRUPT", "Combat payload outside combat")
+        var combat_validation: Dictionary = load("res://src/run/combat_checkpoint_codec.gd").new().validate(combat_checkpoint)
+        if not combat_validation.ok: return combat_validation
+        var s: Dictionary = normalized(run_state)
+        var c: Dictionary = normalized(combat_checkpoint)
+        if c.duel_index != s.duel_index or c.attempt_id != s.attempt_id or c.binding.enemy_candidate_id != s.current_opponent_id or c.binding.player_loadout != s.player_manual_loadout or c.binding.player_mastery_by_manual != s.progression.mastery_by_manual or c.binding.bimu_receipt != s.frozen_bimu_receipt:
+            return error("CORRUPT", "Combat/run identity mismatch")
+        if c.phase == "PLANNING" and c.state.player.health[0] == 0:
+            if c.state.player.health != s.progression.player_resources.health or c.state.player.health != s.pre_battle_snapshot.progression.player_resources.health:
+                return error("CORRUPT", "Initial zero-health planning does not match carried resources")
+        return {"ok": true, "status": "VALID", "run_state": s, "combat_checkpoint": c}
     if run_state.current_screen in ["COMBAT", "REVIEW", "MAIN"]:
         return error("CORRUPT", "Not a durable run-only boundary")
     return {"ok": true, "status": "VALID", "run_state": normalized(run_state), "combat_checkpoint": {}}

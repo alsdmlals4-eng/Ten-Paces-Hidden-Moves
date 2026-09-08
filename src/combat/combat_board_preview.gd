@@ -1107,16 +1107,28 @@ func _on_progress_requested(context: Dictionary) -> void:
 	_set_presentation_state("committed")
 	_progress_request_count += 1
 	set_meta("progress_request_count", _progress_request_count)
+	if not _accept_committed_boundary(context):
+		return
 
 	await _resolve_and_present(context)
+
+func _accept_committed_boundary(_context: Dictionary) -> bool:
+	return true
+
+func _accept_resolved_boundary(_result: Dictionary) -> bool:
+	return true
 
 func _resolve_and_present(context: Dictionary) -> void:
 
 	var result := resolution_engine.resolve_bundle(_committed_player_plan_snapshot, context, combat_state)
-	_set_presentation_state("resolving")
-	_presentation_events = result.get("presentation_events", [])
 	_resolution_count += 1
 	set_meta("resolution_count", _resolution_count)
+	if review_summary_builder != null:
+		_last_review_summary = review_summary_builder.build_summary(result, _committed_player_plan_snapshot, _committed_state_before)
+	if not _accept_resolved_boundary(result):
+		return
+	_set_presentation_state("resolving")
+	_presentation_events = result.get("presentation_events", [])
 	_append_resolution_logs(result.get("logs", []))
 	_presentation_skip_requested = false
 
@@ -1136,10 +1148,10 @@ func _resolve_and_present(context: Dictionary) -> void:
 	var state_before_bundle_rewards := combat_state.duplicate(true)
 	combat_state = (result.get("state", combat_state) as Dictionary).duplicate(true)
 	_play_momentum_gain_sfx(state_before_bundle_rewards, combat_state)
-	if review_summary_builder != null:
-		_last_review_summary = review_summary_builder.build_summary(result, _committed_player_plan_snapshot, _committed_state_before)
-		set_meta("last_review_summary", _last_review_summary.duplicate(true))
+	_finalize_resolved_bundle()
 
+func _finalize_resolved_bundle() -> void:
+	set_meta("last_review_summary", _last_review_summary.duplicate(true))
 	_clear_action_selection()
 	_clear_card_detail()
 	var terminal := _combat_has_ended()

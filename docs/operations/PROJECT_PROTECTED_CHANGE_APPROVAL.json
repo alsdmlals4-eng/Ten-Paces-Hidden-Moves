@@ -8,9 +8,14 @@
     "src/run/vertical_slice_run_state.gd",
     "src/run/vertical_slice_progression_state.gd",
     "src/run/run_checkpoint_codec.gd",
-    "src/run/run_save_store.gd"
+    "src/run/run_save_store.gd",
+    "src/combat/combat_board_preview.gd",
+    "src/combat/combat_resolution_engine.gd",
+    "src/run/vertical_slice_combat_bridge.gd",
+    "src/run/combat_checkpoint_codec.gd",
+    "src/ui/action_timing_panel.gd"
   ],
-  "approval_source": "Current user-authorized continuous implementation and exact Codex durable-save handoff; explicit run snapshot and validated recoverable local store only in Task 1.",
+  "approval_source": "Current user-authorized continuous implementation and exact Codex durable-save handoff; Task 1 run/storage and Task 2 deterministic combat boundaries.",
   "approval_time": "2026-09-08T00:00:00+09:00",
-  "scope_summary": "Implement schema-1 explicit run snapshot, fail-closed validation, recoverable local file storage, idempotent revision and generation retirement. Preserve combat, AI, reward, route, retry, manual-loadout, engine and asset semantics. Combat DTO and title/shell wiring are subsequent bounded tasks."
+  "scope_summary": "Implement schema-1 explicit run snapshot, fail-closed validation, recoverable local file storage, idempotent revision and generation retirement; deterministic planning/committed/resolved combat DTOs, exact AI lock restore and synchronous persistence veto. Preserve combat, AI, reward, route, retry, manual-loadout, engine and asset semantics. Title/shell/lifecycle wiring remains Task 3."
 }
