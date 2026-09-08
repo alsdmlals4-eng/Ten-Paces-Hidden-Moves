@@ -30,6 +30,8 @@
 4. 추가 GREEN: 실제 구조 overlay를 구현했다.
 5. 자체 검토 RED: JSON 정책 budget을 0으로 바꾼 fixture와 빈 catalog fixture가 각각 정책 중복 하드코딩 및 fail-open을 검출했다.
 6. 최종 GREEN: 정책을 JSON owner에서만 소비하고 malformed catalog를 거부한 뒤 `BIMU_CONSTRAINT_MODEL_OK cases=37`, exit `0`.
+7. Review round 1 RED: 실제 `MartialManualRegistry.build_unlocked_cards()` definition을 사용하자 JSON integral `TYPE_FLOAT`인 `unlock_star`/`action_slots` 봉인 2건이 실패했다. integral float mastery/resource pair도 실패했고, lifecycle 정책 및 selector shape 드리프트 fixture가 fail-open임을 확인했다. 출력은 6개 명명된 failure, exit `1`이었다.
+8. Review round 1 GREEN: finite integral numeric predicate를 selector/mastery/resource/stat에 공통 적용하고 fractional/wrong type은 거부했다. 정확한 9 ID와 필수 selector/binding/overlay, `BEFORE_COMBAT_SETUP/CURRENT_DUEL/RESTORE_SAME_CONSTRAINT_RECEIPT/NONE_V0`를 catalog contract로 검증한 뒤 `BIMU_CONSTRAINT_MODEL_OK cases=45`, exit `0`.
 
 ## 검증 증거
 
@@ -46,7 +48,7 @@ Godot_v4.7.1-stable_win64_console.exe --headless --path . --script res://tests/v
 
 ```text
 BIMU_CONSTRAINT_JSON_OK options=9
-BIMU_CONSTRAINT_MODEL_OK cases=37
+BIMU_CONSTRAINT_MODEL_OK cases=45
 TEN_DUEL_CAMPAIGN_STATE_OK (synthetic terminal results; not full battle playthrough)
 combined exit=0
 ```
@@ -55,7 +57,7 @@ combined exit=0
 
 1. 정본/범위: 역사 상태를 제외하고 새 Decision과 정확한 9종 값만 채택. 새 core/reward/save/UI/RunState 없음.
 2. 실제 diff/소비자: model files/test/report만 소유. 기존 import/capture와 open work는 untouched. 다음 RunState/engine/UI 소비자는 controller 후속 Task이며 이번 변경에서 조기 연결하지 않음.
-3. 실패/반례: 비 Dictionary, 누락/잘못된 타입/추가 key/알 수 없는 ID/중복/2개 초과/3점 초과/상대강화 2개/소유권/허용 stat을 fail-closed 검토. 집중 테스트로 확인.
+3. 실패/반례: 비 Dictionary, 누락/잘못된 타입/추가 key/알 수 없는 ID/중복/2개 초과/3점 초과/상대강화 2개/소유권/허용 stat, fractional·non-finite 수치, 정책·필수 shape 드리프트를 fail-closed 검토. 실제 Registry 카드 definition을 포함한 집중 테스트로 확인.
 4. 실제 실행 구조/비용: runtime resource pair와 nested stats 불일치를 발견해 RED→GREEN으로 교정. deep copy와 clamp로 원본 mutation 및 최대치 증가를 차단. 추가 서비스/비용 없음.
 5. 장기 적합성/clean exit: definition의 실제 source/identity/metadata만 사용하고 `_star3` 등 ID 추론 없음. basic/ultimate 보호, 빈/단일-valid forged receipt 무효, 선택 보상/거리/3-3-4/AI private 계획 변경 없음. 추가 finding 없이 clean exit.
 

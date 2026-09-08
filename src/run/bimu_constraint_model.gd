@@ -3,6 +3,11 @@ extends RefCounted
 
 const CATALOG_PATH := "res://data/run/bimu_constraints.json"
 const ALLOWED_STAT_KEYS := ["external", "constitution", "agility", "internal_power", "insight"]
+const EXPECTED_CONSTRAINT_IDS := [
+    "CST_ENEMY_MASTERED_MANUAL", "CST_ENEMY_RESOURCE_SURPLUS", "CST_ENEMY_START_MOMENTUM_1",
+    "CST_ENEMY_STAT_DISCIPLINE", "CST_TECH_MANUAL_SEAL", "CST_TECH_MULTI_SLOT_SEAL",
+    "CST_TECH_RECOVERY_SEAL", "CST_TECH_RESPONSE_SEAL", "CST_TECH_ULTIMATE_SEAL"
+]
 
 var _catalog: Dictionary = {}
 var _options_by_id: Dictionary = {}
@@ -100,13 +105,13 @@ func action_lock_reason(definition: Dictionary, validated_receipt: Dictionary) -
         var item: Dictionary = value
         match str(item.get("constraint_id", "")):
             "CST_TECH_ULTIMATE_SEAL":
-                if typeof(definition.get("unlock_star")) == TYPE_INT and int(definition.get("unlock_star")) == 10: return "비무 제약: 절초 봉인"
+                if _is_integer_value(definition.get("unlock_star")) and int(definition.get("unlock_star")) == 10: return "비무 제약: 절초 봉인"
             "CST_TECH_RESPONSE_SEAL":
                 if typeof(definition.get("category")) == TYPE_STRING and str(definition.get("category")) == "response": return "비무 제약: 대응 봉인"
             "CST_TECH_RECOVERY_SEAL":
                 if typeof(definition.get("category")) == TYPE_STRING and str(definition.get("category")) == "recovery": return "비무 제약: 회복 봉인"
             "CST_TECH_MULTI_SLOT_SEAL":
-                if typeof(definition.get("action_slots")) == TYPE_INT and int(definition.get("action_slots")) >= 2: return "비무 제약: 연속 수 봉인"
+                if _is_integer_value(definition.get("action_slots")) and int(definition.get("action_slots")) >= 2: return "비무 제약: 연속 수 봉인"
             "CST_TECH_MANUAL_SEAL":
                 if str(definition.get("manual_id")) == str(item.get("target_manual_id", "")): return "비무 제약: 문파 단절"
     return ""
@@ -117,7 +122,7 @@ func enemy_mastery_overlay(masteries: Dictionary, receipt: Dictionary) -> Dictio
         var item: Dictionary = value
         if str(item.get("constraint_id", "")) == "CST_ENEMY_MASTERED_MANUAL":
             var manual_id := str(item.get("target_enemy_manual_id", ""))
-            if result.has(manual_id) and typeof(result.get(manual_id)) == TYPE_INT:
+            if result.has(manual_id) and _is_integer_value(result.get(manual_id)):
                 result[manual_id] = clampi(int(result.get(manual_id)) + 2, 0, 10)
     return result
 
@@ -134,22 +139,22 @@ func enemy_state_overlay(enemy: Dictionary, receipt: Dictionary) -> Dictionary:
                 var stat_key := str(item.get("target_stat_key", ""))
                 if stat_key in ALLOWED_STAT_KEYS:
                     var stats: Dictionary = result.get("stats", {}) if typeof(result.get("stats", {})) == TYPE_DICTIONARY else {}
-                    if stats.has(stat_key) and typeof(stats.get(stat_key)) == TYPE_INT:
+                    if stats.has(stat_key) and _is_integer_value(stats.get(stat_key)):
                         stats[stat_key] = int(stats.get(stat_key)) + 1
                         result["stats"] = stats
-                    elif result.has(stat_key) and typeof(result.get(stat_key)) == TYPE_INT:
+                    elif result.has(stat_key) and _is_integer_value(result.get(stat_key)):
                         result[stat_key] = int(result.get(stat_key)) + 1
     return result
 
 func _increase_current(state: Dictionary, key: String) -> void:
     var pair_value = state.get(key)
-    if typeof(pair_value) == TYPE_ARRAY and (pair_value as Array).size() >= 2 and typeof(pair_value[0]) == TYPE_INT and typeof(pair_value[1]) == TYPE_INT:
+    if typeof(pair_value) == TYPE_ARRAY and (pair_value as Array).size() >= 2 and _is_integer_value(pair_value[0]) and _is_integer_value(pair_value[1]):
         var pair: Array = (pair_value as Array).duplicate()
         pair[0] = clampi(int(pair[0]) + 1, 0, maxi(0, int(pair[1])))
         state[key] = pair
         return
     var maximum_key := key + "_max"
-    if state.has(key) and state.has(maximum_key) and typeof(state.get(key)) == TYPE_INT and typeof(state.get(maximum_key)) == TYPE_INT:
+    if state.has(key) and state.has(maximum_key) and _is_integer_value(state.get(key)) and _is_integer_value(state.get(maximum_key)):
         state[key] = clampi(int(state.get(key)) + 1, 0, maxi(0, int(state.get(maximum_key))))
 
 func _receipt_selections(receipt: Dictionary) -> Array:
@@ -194,20 +199,51 @@ func _catalog_contract_valid() -> bool:
             return false
     if int(policy.get("minimum_selected_constraints")) > int(policy.get("max_selected_constraints")):
         return false
+    if str(policy.get("selection_lock", "")) != "BEFORE_COMBAT_SETUP" or str(policy.get("duration", "")) != "CURRENT_DUEL":
+        return false
+    if str(policy.get("retry_policy", "")) != "RESTORE_SAME_CONSTRAINT_RECEIPT" or str(policy.get("result_reward_formula_link", "")) != "NONE_V0":
+        return false
     var options: Array = _catalog.get("constraints")
     if options.size() != 9 or _options_by_id.size() != 9:
         return false
+    var catalog_ids: Array[String] = []
     for value in options:
         if typeof(value) != TYPE_DICTIONARY:
             return false
         var option: Dictionary = value
         var constraint_id := str(option.get("constraint_id", ""))
-        if constraint_id.is_empty() or not _options_by_id.has(constraint_id) or not _is_integer_value(option.get("selection_cost")) or int(option.get("selection_cost")) < 0:
+        if constraint_id.is_empty() or constraint_id in catalog_ids or not _options_by_id.has(constraint_id) or not _is_integer_value(option.get("selection_cost")) or int(option.get("selection_cost")) < 0:
             return false
-    return true
+        catalog_ids.append(constraint_id)
+        if not _option_contract_valid(option, constraint_id):
+            return false
+    catalog_ids.sort()
+    return catalog_ids == EXPECTED_CONSTRAINT_IDS
+
+func _option_contract_valid(option: Dictionary, constraint_id: String) -> bool:
+    if str(option.get("duration", "")) != "CURRENT_DUEL" or str(option.get("briefing_disclosure", "")).is_empty():
+        return false
+    if typeof(option.get("runtime_overlay")) != TYPE_DICTIONARY or (option.get("runtime_overlay") as Dictionary).is_empty():
+        return false
+    var selector = option.get("selector")
+    var binding = option.get("parameter_binding")
+    match constraint_id:
+        "CST_TECH_ULTIMATE_SEAL": return typeof(selector) == TYPE_DICTIONARY and _is_integer_value((selector as Dictionary).get("unlock_star_exact")) and int((selector as Dictionary).get("unlock_star_exact")) == 10
+        "CST_TECH_RESPONSE_SEAL": return typeof(selector) == TYPE_DICTIONARY and str((selector as Dictionary).get("category_exact", "")) == "response"
+        "CST_TECH_RECOVERY_SEAL": return typeof(selector) == TYPE_DICTIONARY and str((selector as Dictionary).get("category_exact", "")) == "recovery"
+        "CST_TECH_MULTI_SLOT_SEAL": return typeof(selector) == TYPE_DICTIONARY and _is_integer_value((selector as Dictionary).get("action_slots_min")) and int((selector as Dictionary).get("action_slots_min")) == 2
+        "CST_TECH_MANUAL_SEAL": return _binding_field_is(binding, "target_manual_id")
+        "CST_ENEMY_MASTERED_MANUAL": return _binding_field_is(binding, "target_enemy_manual_id")
+        "CST_ENEMY_STAT_DISCIPLINE": return _binding_field_is(binding, "target_stat_key") and (binding as Dictionary).get("allowed_values", []) == ALLOWED_STAT_KEYS
+        "CST_ENEMY_START_MOMENTUM_1": return str((option.get("runtime_overlay") as Dictionary).get("resource", "")) == "momentum"
+        "CST_ENEMY_RESOURCE_SURPLUS": return typeof((option.get("runtime_overlay") as Dictionary).get("resources")) == TYPE_DICTIONARY
+    return false
+
+func _binding_field_is(value, expected_field: String) -> bool:
+    return typeof(value) == TYPE_DICTIONARY and (value as Dictionary).get("required") == true and str((value as Dictionary).get("field", "")) == expected_field
 
 func _is_integer_value(value) -> bool:
-    return typeof(value) == TYPE_INT or (typeof(value) == TYPE_FLOAT and is_equal_approx(float(value), floor(float(value))))
+    return typeof(value) == TYPE_INT or (typeof(value) == TYPE_FLOAT and is_finite(float(value)) and is_equal_approx(float(value), floor(float(value))))
 
 func _validated_string_set(values: Array, label: String, errors: Array) -> Dictionary:
     var result: Dictionary = {}

@@ -1,6 +1,7 @@
 extends SceneTree
 
 const MODEL_SCRIPT := preload("res://src/run/bimu_constraint_model.gd")
+const REGISTRY_SCRIPT := preload("res://src/combat/martial_manual_registry.gd")
 
 var failures: Array[String] = []
 
@@ -17,6 +18,12 @@ func _run() -> void:
     var malformed_catalog_model = MODEL_SCRIPT.new()
     malformed_catalog_model._catalog = {}
     _expect(malformed_catalog_model.validate_selection([], [], []).get("valid") == false, "missing catalog fails closed")
+    var policy_contract_model = MODEL_SCRIPT.new()
+    policy_contract_model._catalog["selection_policy"]["duration"] = "FOREVER"
+    _expect(policy_contract_model.validate_selection([], [], []).get("valid") == false, "selection lifecycle contract drift fails closed")
+    var malformed_shape_model = MODEL_SCRIPT.new()
+    (malformed_shape_model._catalog["constraints"][0] as Dictionary).erase("selector")
+    _expect(malformed_shape_model.validate_selection([], [], []).get("valid") == false, "required selector shape drift fails closed")
 
     var response := model.validate_selection([{"constraint_id": "CST_TECH_RESPONSE_SEAL"}], ["wudang_taiji_sword"], [])
     _expect(response.get("valid") == true and response.get("selection_point_spent") == 1, "response seal validates")
@@ -29,6 +36,13 @@ func _run() -> void:
     _expect(model.action_lock_reason({"source": "martial_manual", "manual_id": "wudang_taiji_sword", "unlock_star": 10, "category": "response", "action_slots": 3}, ultimate) == "비무 제약: 절초 봉인", "star10 seal matches")
     var multi := model.validate_selection([{"constraint_id": "CST_TECH_MULTI_SLOT_SEAL"}], ["wudang_taiji_sword"], [])
     _expect(model.action_lock_reason({"source": "martial_manual", "manual_id": "wudang_taiji_sword", "unlock_star": 7, "category": "attack", "action_slots": 2}, multi) == "비무 제약: 연속 수 봉인", "multi-slot seal matches")
+    var registry = REGISTRY_SCRIPT.new()
+    var registry_cards: Array = registry.build_unlocked_cards("wudang_taiji_sword", 10)
+    var actual_star10 := _find_card(registry_cards, "wudang_taiji_sword_star10")
+    var actual_star7 := _find_card(registry_cards, "wudang_taiji_sword_star7")
+    _expect(model.action_lock_reason(actual_star10, ultimate) == "비무 제약: 절초 봉인", "star10 seal accepts the actual registry JSON numeric representation")
+    _expect(model.action_lock_reason(actual_star7, multi) == "비무 제약: 연속 수 봉인", "multi-slot seal accepts the actual registry JSON numeric representation")
+    _expect(model.action_lock_reason({"source": "martial_manual", "manual_id": "wudang_taiji_sword", "unlock_star": 10.5, "category": "attack", "action_slots": 2.5}, ultimate).is_empty(), "fractional selector numerics fail closed")
     var manual := model.validate_selection([{"constraint_id": "CST_TECH_MANUAL_SEAL", "target_manual_id": "wudang_taiji_sword"}], ["wudang_taiji_sword", "shaolin_arhat_vajra_art"], [])
     _expect(manual.get("valid") == true, "owned manual seal validates when at least two manuals are owned")
     _expect(model.action_lock_reason({"source": "martial_manual", "manual_id": "wudang_taiji_sword", "unlock_star": 3, "category": "response", "action_slots": 1}, manual) == "비무 제약: 문파 단절", "manual seal matches manual identity")
@@ -58,6 +72,8 @@ func _run() -> void:
 
     var mastery := model.enemy_mastery_overlay({"wudang_taiji_sword": 9}, model.validate_selection([{"constraint_id": "CST_ENEMY_MASTERED_MANUAL", "target_enemy_manual_id": "wudang_taiji_sword"}], [], ["wudang_taiji_sword"]))
     _expect(mastery.get("wudang_taiji_sword") == 10, "enemy mastery is capped at ten")
+    var float_mastery := model.enemy_mastery_overlay({"wudang_taiji_sword": 8.0}, model.validate_selection([{"constraint_id": "CST_ENEMY_MASTERED_MANUAL", "target_enemy_manual_id": "wudang_taiji_sword"}], [], ["wudang_taiji_sword"]))
+    _expect(float_mastery.get("wudang_taiji_sword") == 10, "integral JSON float mastery is accepted and capped")
     var original_mastery := {"wudang_taiji_sword": 9}
     model.enemy_mastery_overlay(original_mastery, model.validate_selection([{"constraint_id": "CST_ENEMY_MASTERED_MANUAL", "target_enemy_manual_id": "wudang_taiji_sword"}], [], ["wudang_taiji_sword"]))
     _expect(original_mastery.get("wudang_taiji_sword") == 9, "mastery overlay does not mutate input")
@@ -74,12 +90,14 @@ func _run() -> void:
     var runtime_enemy := {"momentum": [4, 5], "stamina": [3, 3], "internal": [2, 4], "stats": {"external": 7}}
     var runtime_resource_state := model.enemy_state_overlay(runtime_enemy, state_receipt)
     _expect(runtime_resource_state.get("stamina") == [3, 3] and runtime_resource_state.get("internal") == [3, 4], "runtime resource pairs gain current only and clamp")
+    var float_runtime_state := model.enemy_state_overlay({"stamina": [2.0, 3.0], "internal": [3.0, 3.0]}, state_receipt)
+    _expect(float_runtime_state.get("stamina") == [3, 3.0] and float_runtime_state.get("internal") == [3, 3.0], "integral JSON float resource pairs are accepted and capped")
     var runtime_stat_state := model.enemy_state_overlay(runtime_enemy, model.validate_selection([{"constraint_id": "CST_ENEMY_STAT_DISCIPLINE", "target_stat_key": "external"}], [], []))
     _expect((runtime_stat_state.get("stats") as Dictionary).get("external") == 8, "runtime nested stat gains one")
     _expect(model.enemy_state_overlay(enemy, {}).hash() == enemy.hash(), "empty receipt is identity")
 
     if failures.is_empty():
-        print("BIMU_CONSTRAINT_MODEL_OK cases=37")
+        print("BIMU_CONSTRAINT_MODEL_OK cases=45")
         quit(0)
         return
     for failure in failures:
@@ -89,3 +107,9 @@ func _run() -> void:
 func _expect(condition: bool, message: String) -> void:
     if not condition:
         failures.append(message)
+
+func _find_card(cards: Array, card_id: String) -> Dictionary:
+    for value in cards:
+        if typeof(value) == TYPE_DICTIONARY and str((value as Dictionary).get("id", "")) == card_id:
+            return (value as Dictionary).duplicate(true)
+    return {}
