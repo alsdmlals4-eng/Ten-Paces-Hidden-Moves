@@ -1,5 +1,12 @@
 # 단일 `행동 실행` Blueprint 전환 실행 보고서
 
+## PR 329 병합·postmerge readback
+
+- implementation exact head `ee5dde81f9184958514f93b8cc7fbe721c57e189`은 PR 329로 정상 병합되어 main `30b854b657fa5f29904d05c77aad38c7b6e17072`가 됐다. unresolved review thread 없이 normal merge됐고 controller detached-main `pytest`는 `475 passed in 15.45s`였다.
+- 최종 adapter workflow run `34210727715`는 SUCCESS다. 최초 run `34210353792`의 missing label failure는 역사 실패로 보존하며, 전체 rollup은 `32 SUCCESS + historical failed run`; `33/33`으로 합산하지 않는다.
+- 준비/해결 캡처와 그 source revision은 위 Controller 통합 검증 기록 그대로 보존한다. 이 closeout은 제품·art·core bytes를 바꾸지 않는다.
+- active one-time approval은 merge Git blob bytes와 SHA-256을 `2026-09-08_PR329_PROTECTED_CHANGE_APPROVAL_RECORD.md`에 보존한 뒤 제거하고 protected baseline을 위 main으로 승격한다.
+
 ## Controller 통합 검증
 
 - 독립 exact checkout `ebb3f3f5`: Python 474 PASS (15.63s), explicit protected approval validator PASS. 이후 CI 연결 회귀 1건이 추가되었다.
