@@ -111,12 +111,12 @@ func _verify_board_context_and_geometry(viewport_size: Vector2) -> void:
 	for _frame in range(5):
 		await process_frame
 	var dock := board.action_selection_dock as ActionSelectionDock
+	var host_rect := dock.content_host.get_global_rect()
 	_check(typeof(dock.runtime_context.get("preview_actor", {})) == TYPE_DICTIONARY and not (dock.runtime_context.get("preview_actor", {}) as Dictionary).is_empty(), "Combat board must connect the current player snapshot to card previews.")
 	var cards := dock.basic_panel.buttons
 	_check(cards.size() == 10, "The existing 5 by 2 basic grid must remain intact.")
 	for button in cards:
 		var rect := (button as Control).get_global_rect()
-		var host_rect := dock.content_host.get_global_rect()
 		_check(rect.position.x >= host_rect.position.x - 0.5 and rect.end.x <= host_rect.end.x + 0.5 and rect.position.y >= host_rect.position.y - 0.5 and rect.end.y <= host_rect.end.y + 0.5, "Every summary card must remain inside the in-viewport content host at %s." % str(viewport_size))
 		var summary := (button as Control).find_child("CardSummary", false, false) as VBoxContainer
 		_check(is_instance_valid(summary), "Rendered cards must retain the summary container.")
@@ -127,6 +127,31 @@ func _verify_board_context_and_geometry(viewport_size: Vector2) -> void:
 				_check(rect.encloses(label_rect), "Every rendered summary line must stay inside its card border at %s." % str(viewport_size))
 				_check(label_rect.position.y >= prior_bottom - 0.5, "Rendered summary lines must not overlap each other at %s." % str(viewport_size))
 				prior_bottom = label_rect.end.y
+	dock.set_active_source("martial")
+	for _frame in range(3):
+		await process_frame
+	var martial := dock.martial_panel as MartialActionPanel
+	_check(is_instance_valid(martial) and martial.manual_buttons.size() == 4, "The actual four-manual horizontal selector must render in the martial source.")
+	if is_instance_valid(martial):
+		var manual_viewport_rect := martial.manual_scroll.get_global_rect()
+		_check(host_rect.encloses(manual_viewport_rect), "The real manual selector viewport must stay inside the content host at %s." % str(viewport_size))
+		_check(martial.manual_scroll.clip_contents, "The horizontal manual selector must clip offscreen choices at %s." % str(viewport_size))
+		if not martial.manual_buttons.is_empty():
+			var first_manual := martial.manual_buttons.front() as Control
+			_check(manual_viewport_rect.encloses(first_manual.get_global_rect()), "The first real manual must be fully visible without left clipping at %s." % str(viewport_size))
+			var horizontal_bar := martial.manual_scroll.get_h_scroll_bar()
+			_check(horizontal_bar.max_value > horizontal_bar.page, "Four real manuals must remain horizontally scrollable at %s." % str(viewport_size))
+			martial.manual_scroll.scroll_horizontal = int(horizontal_bar.max_value)
+			await process_frame
+			var last_manual := martial.manual_buttons.back() as Control
+			_check(manual_viewport_rect.encloses(last_manual.get_global_rect()), "The last real manual must be fully reachable inside the selector viewport at %s." % str(viewport_size))
+		for button in martial.technique_buttons:
+			var technique_rect := (button as Control).get_global_rect()
+			_check(host_rect.encloses(technique_rect), "Every real martial technique card must stay inside the content host at %s." % str(viewport_size))
+			var summary := (button as Control).find_child("CardSummary", false, false) as VBoxContainer
+			if is_instance_valid(summary):
+				for summary_label in summary.find_children("*", "Label", true, false):
+					_check((summary_label as Label).get_combined_minimum_size().x <= technique_rect.size.x + 0.5, "Martial fallback text must fit its actual card lane without clipping at %s." % str(viewport_size))
 	_check(dock.get_global_rect().position.y >= board.top_hud.get_global_rect().end.y, "Planning UI must not overlap the resource HUD.")
 	var duel_surface := board.get_node_or_null("DuelStageSurface") as Control
 	_check(is_instance_valid(duel_surface) and duel_surface.get_global_rect().end.y <= board.planning_surface.get_global_rect().position.y + 1.0, "Planning UI must not overlap the battlefield partition.")

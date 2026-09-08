@@ -15,6 +15,7 @@ const CHARCOAL_INK := Color("211c17")
 const RESTRAINED_GOLD := Color("b99254")
 
 @onready var title_label: Label = $PanelColumn/Title
+@onready var manual_scroll: ScrollContainer = %ManualScroll
 @onready var manual_row: HBoxContainer = %ManualRow
 @onready var selected_manual_title: Label = %SelectedManualTitle
 @onready var technique_list: GridContainer = %TechniqueList
@@ -50,6 +51,8 @@ func set_manuals(values: Array[Dictionary]) -> void:
     _rebuild_manuals()
     _rebuild_techniques()
     manual_row.visible = manuals.size() > 1
+    manual_scroll.visible = manuals.size() > 1
+    manual_scroll.scroll_horizontal = 0
 
 func select_manual(manual_id: String) -> bool:
     if not interaction_enabled or not _has_manual(manual_id):

@@ -160,3 +160,42 @@ The failed attempt to invoke nonexistent `tests/verify_ten_manual_runtime.gd`
 was an operator path error, not product evidence; it was replaced by the three
 existing focused manual verifiers above. Visible/Human/Android/accessibility and
 release-performance evidence remain `NOT_RUN`.
+
+## 2026-09-08 martial selector containment correction
+
+The actual 1280x800 renderer capture
+`docs/runtime-captures/TEN-ATLAS-SUCCESSOR-20260908/martial-summary-1280x800.png`
+exposed a second P1 that the earlier basic-action geometry path did not cover.
+Four real manual buttons contributed their full text minimum widths to the
+horizontal container. The martial panel consequently grew wider than its
+content host and centered with a negative left edge, clipping the first manual
+and a technique card.
+
+The new RED switches the real dock to the martial source at both 1280x720 and
+1280x800. Before the correction it produced six containment failures: two
+manual selectors and one technique card at each viewport. The retained layout
+wraps the existing horizontal manual row in a native horizontal
+`ScrollContainer`; it does not reduce fonts, remove names/mastery information,
+change technique cards, or alter gameplay. A source refresh resets the row to
+the first manual.
+
+The geometry regression now checks the actual scroll viewport rather than
+incorrectly requiring all clipped scroll children to be visible simultaneously.
+It proves that the viewport stays inside the content host, offscreen choices are
+clipped, four real manuals require native horizontal scrolling, the first manual
+is fully visible at the initial position, and the last manual is fully reachable
+at the far position. Every rendered technique card remains inside the host, and
+each compact martial fallback line's minimum width fits the actual card lane.
+
+Fresh focused result after the correction:
+
+- `verify_action_card_summary.gd`: PASS at both 1280x720 and 1280x800.
+- `verify_martial_action_panel.gd`: PASS.
+- `verify_action_selection_dock.gd`: PASS.
+- `verify_combat_board.gd`: PASS.
+- `verify_action_card_source_unification.gd`: PASS.
+- Owned-file static diff check: PASS.
+
+Controller-owned visible recapture after this exact correction remains
+`NOT_RUN`; the source failure capture remains failure evidence rather than final
+visual acceptance.
