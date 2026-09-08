@@ -29,8 +29,11 @@
 - Godot 4.7.1 fresh editor import: native exit 0. import가 만든 `.import`/`.uid` churn은 소유 변경에서 제외.
 - focused inline/board/reveal/liveness/terminal/bridge/result regressions: PASS, native exit 0.
 - fix round 2 current readback: `verify_inline_combat_results.gd` native exit 0, `verify_vertical_slice_combat_bridge.gd` native exit 0, `tests/test_campaign_runtime_ci.py` 2 PASS; inline과 bridge의 실제 CI 호출을 함께 검증했다.
+- final layout wave prospective RED: 실제 rect 검사를 추가한 parse-clean regression이 callout/VS, heading/phase/callout 침범과 1280×720·1280×800 inline/timing-slot 교차로 native exit 1이었다. 이는 controller의 1280×800 capture에서 짧은 4줄 callout이 약 325px로 남은 실제 결함을 재현한 뒤 production 수정 전에 기록했다. 활성 `ActionSelectionDock` source tab/visible card 검사를 추가하자 nominal timing height만 사용한 중간 수정도 720/800에서 bounded-row와 timing-slot invariant로 native exit 1이었다.
+- final layout wave GREEN: reveal은 목표 폭을 먼저 고정하고 wrapped label/container가 정착한 뒤 실제 minimum height를 deferred 재측정한다. heading·phase·양쪽 callout·VS·result의 region 포함/비교차, short→long→short 높이 reset과 720/800/1080 배치를 검사한다. auto composition은 실제 timing-slot overflow, 46px inline row와 양쪽 gap을 활성 `ActionSelectionDock` 앞에 예약하며 deferred readback이 source tabs와 visible product action cards까지 비교한다. focused inline/reveal/board/partition/liveness/bridge/action-source 7개는 모두 native exit 0.
 - `python -m pytest -q`: 476 PASS.
 - native ordinary-default ten-duel campaign: 10 wins, 10 rewards, 36 routes, 299 activations, failures 0, native exit 0. 실제 UI path이며 terminal state injection 없음.
+- final layout wave 뒤 ordinary-default native campaign 재실행: 10 wins, 10 rewards, 36 routes, 299 activations, failures 0, native exit 0. 별도 synthetic terminal-state smoke의 PASS는 이 증거로 사용하지 않았다.
 - RED 한계: 새 regression을 구현 변경 뒤 작성해 별도 behavioral nonzero RED를 캡처하지 못했다. 기존 `verify_combat_board.gd`는 이관 전 old `review_ready` 기대 때문에 실제 nonzero였지만 이는 새 요구의 독립 RED 증거로 승격하지 않는다.
 - protected lifecycle: fresh-import worktree에서는 generated `.import`/`.uid` delta 때문에 local nonzero였지만, controller가 clean `6ba11a32`에서 exact manifest lifecycle과 Base operating validators PASS를 확인했다. 생성 churn은 제품 변경으로 승인·커밋하지 않았다.
 - fix round 1 prospective RED: duplicate terminal finish는 ready signal `actual=2`로 native exit 1, clash/cost regression은 `15 vs 10 · 차이 5` 누락과 존재하지 않는 `내력0` 표시로 native exit 1. parse-only 실패를 먼저 제거한 뒤 behavior RED를 기록했다.
@@ -46,7 +49,7 @@
 4. layout/접근성 공격: 1280×720·1280×800·1920×1080 bounded rect, wrap/font 유지 — MACHINE CLEAN; Human 별도.
 5. 장기 적합성/범위 공격: 새 overlay·scene·asset/schema 없이 기존 hook/model 확장, campaign resource/reward/history 통과 — CLEAN_REVIEW_EXIT.
 
-Fix round 1은 terminal handoff-start와 confirmation guard를 분리하고 새 loadout lifecycle에서만 reset한다. 반복 finish/deferred 호출은 ready 1회·confirmed 1회와 동일 resources를 검증한다. clash callout은 resolver가 제공한 `raw_damage=15`, `clash_opponent_raw_damage=10`, `clash_difference=5`, `damage=5`를 그대로 표시하며 산술을 수행하지 않는다. 비용은 실제 존재하는 key만 표시한다. Fix round 2에서는 잘못된 사후 상태 주입 flag를 제거하고 실제 이전 production 전환으로 민감도를 재검증했다. inline layout/event regression과 bridge terminal/resource regression을 함께 계약으로 명시했고 두 테스트 모두 실제 CI 호출 목록 및 binding guard에 포함됨을 확인했다. Fix 후 focused/full regression은 구현자 GREEN이며 최종 상태는 controller 독립 재검토 전 `READY_FOR_RE_REVIEW`다.
+Fix round 1은 terminal handoff-start와 confirmation guard를 분리하고 새 loadout lifecycle에서만 reset한다. 반복 finish/deferred 호출은 ready 1회·confirmed 1회와 동일 resources를 검증한다. clash callout은 resolver가 제공한 `raw_damage=15`, `clash_opponent_raw_damage=10`, `clash_difference=5`, `damage=5`를 그대로 표시하며 산술을 수행하지 않는다. 비용은 실제 존재하는 key만 표시한다. Fix round 2에서는 잘못된 사후 상태 주입 flag를 제거하고 실제 이전 production 전환으로 민감도를 재검증했다. inline layout/event regression과 bridge terminal/resource regression을 함께 계약으로 명시했고 두 테스트 모두 실제 CI 호출 목록 및 binding guard에 포함됨을 확인했다. Final layout wave에서는 stale minimum-height와 nowrap width 침범을 width-first/deferred container 배치로 교정하고, inline 결과를 legacy `timing_row_y - 58` 좌표 대신 실제 timing slot과 활성 ActionSelectionDock 사이의 전용 행에 배치했다. Fix 후 focused/full regression은 구현자 GREEN이며 최종 상태는 controller 독립 재검토 전 `READY_FOR_RE_REVIEW`다.
 
 ## 미검증·남은 위험
 

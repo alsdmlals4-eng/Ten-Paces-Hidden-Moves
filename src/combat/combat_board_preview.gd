@@ -524,6 +524,9 @@ func _layout_board() -> void:
 		combat_progress_button.position = Vector2(lower_margin + timing_width + progress_gap, timing_row_y + (timing_height - progress_height) * 0.5)
 		combat_progress_button.size = Vector2(progress_width, progress_height)
 
+	var inline_row_height := 46.0
+	var inline_row_gap := 8.0
+	var inline_row_y := timing_row_y + timing_height + inline_row_gap
 	_layout_screen_surfaces(timing_row_y - 8.0)
 
 	if is_instance_valid(ultimate_menu):
@@ -537,8 +540,9 @@ func _layout_board() -> void:
 		presentation_label.position = Vector2(size.x * 0.32, presentation_y)
 		presentation_label.size = Vector2(size.x * 0.36, 60.0)
 	if is_instance_valid(inline_result_label):
-		inline_result_label.position = Vector2(size.x * 0.27, timing_row_y - 58.0)
-		inline_result_label.size = Vector2(size.x * 0.46, 46.0)
+		inline_result_label.position = Vector2(size.x * 0.27, inline_row_y)
+		inline_result_label.size = Vector2(size.x * 0.46, inline_row_height)
+		call_deferred("_settle_inline_result_row", inline_row_height, inline_row_gap)
 	if is_instance_valid(presentation_vfx):
 		presentation_vfx.position = Vector2(size.x * 0.20, presentation_y + 60.0)
 		presentation_vfx.size = Vector2(size.x * 0.60, clampf(size.y * 0.22, 150.0, 210.0))
@@ -645,6 +649,28 @@ func _layout_board() -> void:
 	set_meta("tile_width", _tile_width)
 	set_meta("tile_height", _tile_height)
 	set_meta("tile_gap", _tile_gap)
+
+func _settle_inline_result_row(row_height: float, row_gap: float) -> void:
+	if not is_instance_valid(inline_result_label) or not is_instance_valid(action_timing_panel):
+		return
+	var inline_row_y := action_timing_panel.get_rect().end.y + row_gap
+	for slot in action_timing_panel.slots:
+		if is_instance_valid(slot):
+			inline_row_y = maxf(inline_row_y, slot.get_rect().end.y + action_timing_panel.position.y + row_gap)
+	var next_control_top := INF
+	var product_dock := get_node_or_null("ActionSelectionDock") as Control
+	if is_instance_valid(product_dock) and product_dock.visible:
+		next_control_top = minf(next_control_top, product_dock.position.y)
+	elif is_instance_valid(basic_card_tray) and basic_card_tray.visible:
+		next_control_top = minf(next_control_top, basic_card_tray.position.y)
+	if next_control_top < INF and inline_row_y + row_height + row_gap > next_control_top:
+		# Do not move the result back over timing slots. Auto composition reserves
+		# this row before its visible action dock; this is a fail-closed fallback.
+		set_meta("inline_result_row_bounded", false)
+		return
+	inline_result_label.position = Vector2(size.x * 0.27, inline_row_y)
+	inline_result_label.size = Vector2(size.x * 0.46, row_height)
+	set_meta("inline_result_row_bounded", true)
 
 func _layout_screen_surfaces(planning_top: float = -1.0) -> void:
 	if size.x <= 0.0 or size.y <= 0.0:
