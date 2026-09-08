@@ -463,7 +463,8 @@ func _ensure_combat_view() -> void:
             {
                 "name": str(opponent.get("working_name", "")),
                 "epithet": str(opponent.get("martial_identity", ""))
-            }
+            },
+            run_state.get_frozen_bimu_receipt()
         ))
     _combat_view.set_meta("vertical_slice_runtime_loadout_bound_from_shell", runtime_loadout_bound)
     if not runtime_loadout_bound:
