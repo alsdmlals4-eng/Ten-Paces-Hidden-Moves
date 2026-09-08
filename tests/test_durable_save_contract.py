@@ -39,6 +39,9 @@ class DurableSaveContractTests(unittest.TestCase):
     def test_native_corruption_retry_and_generation_contract(self):
         self.native()
 
+    def test_native_validation_cache_and_recovery_contract(self):
+        self.native(script="verify_run_save_cache.gd", marker="RUN_SAVE_CACHE: PASS")
+
     def test_actual_shell_transactions_recovery_and_lifecycle(self):
         self.native(script="verify_durable_run_continue.gd", marker="DURABLE_CONTINUE PASS")
 

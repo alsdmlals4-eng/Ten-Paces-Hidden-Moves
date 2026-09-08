@@ -18,6 +18,7 @@ on:
       - "tests/verify_ten_manual_product_gate.gd"
       - "tests/verify_bimu_constraint_model.gd"
       - "tests/verify_run_save_store.gd"
+      - "tests/verify_run_save_cache.gd"
       - "tests/verify_combat_checkpoint_resume.gd"
       - "tests/test_durable_save_contract.py"
       - "tests/verify_durable_run_continue.gd"
@@ -108,6 +109,8 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_vertical_slice_failure_retry.gd
       - name: Verify durable run snapshot and recoverable local store
         run: godot --headless --path . --script res://tests/verify_run_save_store.gd
+      - name: Verify bounded raw-byte save validation cache
+        run: godot --headless --path . --script res://tests/verify_run_save_cache.gd
       - name: Verify deterministic combat checkpoint resume
         run: godot --headless --path . --script res://tests/verify_combat_checkpoint_resume.gd
       - name: Verify actual title continuation and transactional recovery
