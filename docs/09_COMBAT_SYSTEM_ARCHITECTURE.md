@@ -21,8 +21,12 @@
 
 ## 2. 실제 파일 책임
 
+- `combat_resolution_engine_ten_manuals.gd`: 하나의 registry에서 각 전투원의 성급으로 합성한 player/enemy 정의를 별도 복사 소유한다. `get_actor_card_definition` / `get_actor_cards_by_id`는 깊은 복사본을 반환하며, 공용 `cards_by_id`는 player 우선의 발견용 합집합이다. 실행·비용·준비·AI·저장 검증은 해당 actor 정의를 사용한다. 잘못된 무공 소유/ID는 전체 계획을 상태·적 lock·metrics 변경 전에 거부한다. 공개 lock 뒤 다른 유효 정의로 재구성할 수 없고 같은 정의 재요청만 무변경 성공한다.
+- `martial_effect_pipeline.gd`: 승인된 한글 능력치 참조를 실제 actor.stats의 `external / constitution / agility / internal_power / insight`에 대응시킨다. 모든 SPECIAL_CLASH의 참조/계수/실제 값이 유효한지 첫 효과 전에 검사하고 오류는 원본 상태와 이벤트0개로 반환한다. 고정 위력과 `floor(stat × coefficient)` 수치는 변경하지 않는다.
+
 - `src/run/run_session_coordinator.gd`: run+combat stable DTO의 단일 저장 트랜잭션, 보류 중인 동일 쓰기의 재시도, 검증된 이어하기와 terminal receipt를 소유한다. 셸 상속 체인을 구성한 뒤에만 초기화하며 화면 신호·복원 중 동기 콜백은 완성된 스냅샷의 저장 확인까지 공개하지 않는다.
 - `src/run/run_checkpoint_codec.gd`, `combat_checkpoint_codec.gd`, `run_save_store.gd`: 명시적 schema-1 DTO, 전체 검증, content binding, 검증된 백업과 세대 교체를 소유한다. 전투판은 `PLANNING / BUNDLE_COMMITTED / BUNDLE_RESOLVED`의 안정 경계만 내보내며 UI용 표시 필드를 판정 데이터와 분리한다.
+- 최초 저장 공개 전 실행 교정 Decision `TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`은 schema1 모양을 보존하고 semantic identity를 `ten-duel-four-route-one-retry-bimu-actor-bound-save-v1`로 구분한다. 과거 QA 파일은 그대로 보존하고 INCOMPATIBLE로 반환한다. COMMITTED는 actor별 확정 정의와 lock으로 한 번 해결하며 RESOLVED는 저장된 결과를 재계산하지 않는다.
 - `VerticalSliceShell` lifecycle adapter: production entry에서 로컬 저장 기본 ON, script entry는 명시적 테스트 디렉터리가 없으면 OFF다. focus/pause/close는 마지막 안정 DTO만 flush하고 presentation wait·입력을 정지한다. Android 실기기 증거를 대신하지 않는다.
 
 - `data/cards/basic_cards.json`, `ultimate_cards.json`: 현재 구형 런타임 행동.

@@ -3,7 +3,7 @@
   "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
   "status": "APPROVED",
   "protected_base_commit": "bf161025b63edd7eb441b2c4f2ae9da5155f68da",
-  "decision_ids": ["TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01"],
+  "decision_ids": ["TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01", "TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01"],
   "approved_paths": [
     "src/run/vertical_slice_run_state.gd",
     "src/run/vertical_slice_progression_state.gd",
@@ -20,9 +20,14 @@
     "src/run/vertical_slice_shell_route_auto.gd",
     "src/run/vertical_slice_shell_completion_auto.gd",
     "src/ui/main_title_screen.gd",
-    "src/ui/bimu_constraint_panel.gd"
+    "src/ui/bimu_constraint_panel.gd",
+    "src/combat/combat_resolution_engine_prepare.gd",
+    "src/combat/combat_resolution_engine_ten_manuals.gd",
+    "src/combat/martial_effect_pipeline.gd",
+    "src/run/vertical_slice_metrics_combat_resolution_engine.gd",
+    "src/validation/ten_manual_product_scenario_validator.gd"
   ],
-  "approval_source": "Current user-authorized continuous implementation and exact Codex durable-save handoff; Task 1 run/storage, Task 2 combat boundaries, Task 3 title/shell/lifecycle integration and actual UI domain DTO export.",
+  "approval_source": "Current user-authorized continuous implementation and exact Codex durable-save handoff; Tasks 1-4 run/storage, combat boundaries, title/shell/lifecycle and bounded validation reuse; Task 5 named pre-publication actor/mastery/stat correction, including its actual structural validation fixture.",
   "approval_time": "2026-09-08T00:00:00+09:00",
-  "scope_summary": "Implement schema-1 explicit run snapshot, fail-closed validation, recoverable local file storage, idempotent revision/generation retirement, deterministic combat DTOs and exact AI lock restore; connect title Continue, transactional run progression, save-failure freeze/retry, lifecycle pause and strict UI-to-domain checkpoint export. Preserve combat, AI, reward, route, retry, manual-loadout, engine and asset semantics. Human/device/release and protected delivery remain separate gates."
+  "scope_summary": "Implement schema-1 explicit run snapshot, fail-closed validation, recoverable local file storage, idempotent revision/generation retirement, deterministic combat DTOs and exact AI lock restore; connect title Continue, transactional run progression, save-failure freeze/retry, lifecycle pause and strict UI-to-domain checkpoint export. Task 5 corrects actor-owned mastery effects and canonical stat references, preserves revealed locks, and explicitly changes semantic content identity before first publication while retaining schema1 shape, authored IDs/numbers and incompatible old file bytes. No growth spending, rebalance, AI information-boundary, reward, route, retry, engine or asset change. Human/device/release and protected delivery remain separate gates."
 }

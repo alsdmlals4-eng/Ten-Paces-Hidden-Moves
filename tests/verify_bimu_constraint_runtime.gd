@@ -107,7 +107,10 @@ func _engine_guards(engine) -> void:
     check(not engine.get_action_lock_reason(blocked_id).is_empty(), "invalid bind preserves prior constraints")
     var all_ids: Array = Array(engine.martial_registry.get_manual_ids())
     for id in all_ids: mastery[id] = 10
-    engine.configure_martial_loadouts(all_ids, mastery, [STARTERS[1]], {STARTERS[1]: 3})
+    # Start the independent selector fixture without the preceding revealed lock.
+    # Product reconfiguration must never clear or replace a revealed plan.
+    engine.clear_locked_enemy_bundle()
+    check(engine.configure_martial_loadouts(all_ids, mastery, [STARTERS[1]], {STARTERS[1]: 3}), "fresh all-manual selector fixture configures")
     for seal in ["CST_TECH_ULTIMATE_SEAL", "CST_TECH_RESPONSE_SEAL", "CST_TECH_RECOVERY_SEAL", "CST_TECH_MULTI_SLOT_SEAL"]:
         check(engine.configure_bimu_constraints([{"constraint_id": seal}], all_ids, [STARTERS[1]]), "seal binds " + seal)
         var matches := 0

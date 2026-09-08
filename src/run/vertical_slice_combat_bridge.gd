@@ -65,7 +65,8 @@ func configure_vertical_slice_loadouts(
     if not engine.configure_enemy_runtime_binding(enemy_runtime_binding):
         return false
     var effective_enemy_mastery := engine.get_bimu_enemy_mastery(enemy_mastery_by_manual)
-    engine.configure_martial_loadouts(player_ids, player_mastery_by_manual.duplicate(true), enemy_ids, effective_enemy_mastery)
+    if not engine.configure_martial_loadouts(player_ids, player_mastery_by_manual.duplicate(true), enemy_ids, effective_enemy_mastery):
+        return false
     _ten_manual_loadout_data = {
         "authority": "VERTICAL_SLICE_PHASE_V_RUNTIME_LOADOUT_METRICS_AND_RESOURCE_PERSISTENCE",
         "player": {
@@ -210,7 +211,7 @@ func _checkpoint_domain_plan() -> Array:
     var result: Array = []
     for placement in _committed_player_plan_snapshot:
         var id := str(placement.card_id)
-        var canonical: Dictionary = resolution_engine.cards_by_id.get(id, {})
+        var canonical: Dictionary = resolution_engine.get_actor_card_definition(id, "player")
         if canonical.is_empty(): return []
         var actual = COMBAT_CHECKPOINT.portable(placement.definition)
         if actual != COMBAT_CHECKPOINT.portable(canonical) and actual != COMBAT_CHECKPOINT.portable(presentations.get(id, {})):

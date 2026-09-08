@@ -7,7 +7,7 @@ const MAX_NODES := 100000
 const MAX_SAFE_INTEGER := 9007199254740991
 const SCHEMA_VERSION := 1
 # Bump for code-owned combat/reward/route/save semantics; presentation changes do not bump it.
-const SEMANTIC_CONTRACT_VERSION := "ten-duel-four-route-one-retry-bimu-save-v1"
+const SEMANTIC_CONTRACT_VERSION := "ten-duel-four-route-one-retry-bimu-actor-bound-save-v1"
 var _content_identity: String = ""
 var _number_pattern := RegEx.create_from_string("-?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?")
 

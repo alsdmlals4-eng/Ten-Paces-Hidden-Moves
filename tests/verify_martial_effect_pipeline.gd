@@ -18,6 +18,7 @@ func _run() -> void:
     _verify_four_independent_projectiles(registry, pipeline)
     _verify_counter_before_movement(registry, pipeline)
     _verify_unknown_operation_is_atomic(pipeline)
+    _verify_actual_stat_boundary(pipeline)
     _finish()
 
 func _verify_vajra_state_precedes_attack(registry, pipeline) -> void:
@@ -112,8 +113,50 @@ func _actor(label: String, tile: int) -> Dictionary:
         "defense": 0,
         "status_counts": {},
         "battle_uses": {},
-        "stats": {"외공": 5, "근골": 5, "신법": 5, "내공": 5, "심안": 5}
+        "stats": {"external": 5, "constitution": 5, "agility": 5, "internal_power": 5, "insight": 5}
     }
+
+func _verify_actual_stat_boundary(pipeline) -> void:
+    var engine = preload("res://src/combat/combat_resolution_engine_ten_manuals.gd").new()
+    var state: Dictionary = engine.make_initial_state(_state(4, 5), 4, 5)
+    state.player.stats = {"external": 1, "constitution": 4, "agility": 7, "internal_power": 4, "insight": 15}
+    state.enemy.stats = {"external": 15, "constitution": 7, "agility": 4, "internal_power": 1, "insight": 9}
+    for actor in ["player", "enemy"]:
+        for pair in [["외공", "external"], ["근골", "constitution"], ["신법", "agility"], ["내공", "internal_power"], ["심안", "insight"]]:
+            for reference in pair:
+                var definition := {"effect_steps": [{"op": "SPECIAL_CLASH", "power": 8, "stat": reference, "coefficient": 1.0}]}
+                var result: Dictionary = pipeline.execute(definition, state, actor)
+                _assert(result.completed and result.events[0].power == 8 + state[actor].stats[pair[1]], "Actual canonical stat " + actor + " " + reference)
+    for value in [1, 4, 15]:
+        state.player.stats.internal_power = value
+        var result: Dictionary = pipeline.execute({"effect_steps": [{"op": "SPECIAL_CLASH", "power": 8, "stat": "내공", "coefficient": 1.0}]}, state, "player")
+        _assert(result.completed and result.events[0].power == {1: 9, 4: 12, 15: 23}[value], "Authored internal scaling boundary " + str(value))
+    var fractional: Dictionary = pipeline.execute({"effect_steps": [{"op": "SPECIAL_CLASH", "power": 8, "stat": "내공", "coefficient": 0.25}]}, state, "player")
+    _assert(fractional.completed and fractional.events[0].power == 11, "Fractional contribution is floored")
+    var fixed: Dictionary = pipeline.execute({"effect_steps": [{"op": "SPECIAL_CLASH", "power": 8, "stat": "", "coefficient": 0}]}, state, "player")
+    _assert(fixed.completed and fixed.events[0].power == 8, "Fixed-only clash accepts empty zero reference")
+    var cases := [{"stat": "unknown", "coefficient": 1}, {"stat": "", "coefficient": 1}, {"stat": false, "coefficient": 0}, {"stat": 4, "coefficient": 0}]
+    for coefficient in ["1", true, INF, NAN]: cases.append({"stat": "내공", "coefficient": coefficient})
+    for entry in cases:
+        var step: Dictionary = entry.duplicate(true)
+        step.merge({"op": "SPECIAL_CLASH", "power": 8, "condition": "CLASH_WIN"})
+        _invalid_stat_atomic(pipeline, state, step, "bad reference or coefficient " + str(entry))
+    for value in [null, "4", true, INF, NAN]:
+        var invalid := state.duplicate(true)
+        if value == null: invalid.player.stats.erase("internal_power")
+        else: invalid.player.stats.internal_power = value
+        _invalid_stat_atomic(pipeline, invalid, {"op": "SPECIAL_CLASH", "power": 8, "stat": "내공", "coefficient": 1}, "absent or invalid canonical stat " + str(value))
+    var invalid := state.duplicate(true)
+    invalid.player.stats = []
+    _invalid_stat_atomic(pipeline, invalid, {"op": "SPECIAL_CLASH", "stat": "내공", "coefficient": 1}, "non-dictionary stats")
+
+func _invalid_stat_atomic(pipeline, state: Dictionary, step: Dictionary, label: String) -> void:
+    # Variant bytes preserve invalid numeric values without coercing NaN to JSON null.
+    var before := var_to_bytes(state)
+    var result: Dictionary = pipeline.execute({"effect_steps": [{"op": "GAIN_RESOURCE", "resource": "defense", "amount": 9}, step]}, state, "player")
+    _assert(not result.completed and result.failure_reason == "INVALID_STAT_REFERENCE", "Invalid stat fails closed: " + label)
+    _assert(result.events.is_empty(), "Invalid stat emits no applied events: " + label)
+    _assert(var_to_bytes(state) == before and var_to_bytes(result.state) == before, "Invalid stat preserves input/output: " + label)
 
 func _event_ops(result: Dictionary) -> PackedStringArray:
     var ops := PackedStringArray()

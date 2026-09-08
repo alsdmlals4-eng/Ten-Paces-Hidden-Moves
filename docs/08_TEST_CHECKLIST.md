@@ -13,6 +13,8 @@
 
 ## 2. 현재 증거 요약
 
+성급·능력치 실행 교정 회귀는 `tests/verify_martial_actor_binding.gd`와 `tests/verify_martial_effect_pipeline.gd`가 소유한다. 양측3/5/7/9성 overlay, 복사 격리, 없는 소유 ID의 전체 계획 거부, lock 보존 재구성, 실제 영문 actor.stats와 한글/영문 참조, 잘못된 값의 원자적 실패를 검사한다. 엄격한 actor별 저장 정의는 `verify_combat_checkpoint_resume.gd`와 `test_durable_save_contract.py`의 실제 dock·별도 프로세스 COMMITTED/RESOLVED 비교로 연결된다. 저장된 이전 semantic fixture는 반복 열기 뒤에도 같은 bytes로 남아야 한다. 현재 합법적 회차 progression을 쓰는 전체 셸 저장과, 아직 성장 지출이 없는 고성급을 명시 입력하는 독립 combat DTO 검증은 서로 다른 증거 범위다. 실행 횟수·결과·캠페인 시간·미검증은 `docs/operations/2026-09-08_DURABLE_SAVE_EXECUTION_REPORT.md`를 참조한다.
+
 ```yaml
 legacy_t0_runtime:
   implementation_status: IMPLEMENTED_LEGACY

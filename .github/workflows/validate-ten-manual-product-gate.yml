@@ -19,6 +19,9 @@ on:
       - "tests/verify_bimu_constraint_model.gd"
       - "tests/verify_run_save_store.gd"
       - "tests/verify_run_save_cache.gd"
+      - "tests/verify_martial_actor_binding.gd"
+      - "tests/verify_martial_effect_pipeline.gd"
+      - "tests/fixtures/pre_publication_save_v1_actor_shared.json"
       - "tests/verify_combat_checkpoint_resume.gd"
       - "tests/test_durable_save_contract.py"
       - "tests/verify_durable_run_continue.gd"
@@ -111,6 +114,10 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_run_save_store.gd
       - name: Verify bounded raw-byte save validation cache
         run: godot --headless --path . --script res://tests/verify_run_save_cache.gd
+      - name: Verify actor-owned martial execution and preserved old save identity
+        run: godot --headless --path . --script res://tests/verify_martial_actor_binding.gd
+      - name: Verify canonical stat references and atomic martial effect failures
+        run: godot --headless --path . --script res://tests/verify_martial_effect_pipeline.gd
       - name: Verify deterministic combat checkpoint resume
         run: godot --headless --path . --script res://tests/verify_combat_checkpoint_resume.gd
       - name: Verify actual title continuation and transactional recovery

@@ -80,3 +80,22 @@ Human playtest is finished. Exact protected-path approval must match the final P
 - Native checkpoint/fresh-process tests are in `tests/verify_combat_checkpoint_resume.gd`
   and the existing durable contract Python runner. Full Continue, visible Windows,
   Android physical lifecycle, Human UX and release claims remain `NOT_RUN` here.
+
+### Task 5 continuation: actor-owned execution before initial save publication
+
+- Named successor Decision: `TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`.
+  The same continuous correction authorization covers the proven runtime/approved-data
+  mismatch; it does not add growth spending, stat grants, unlock gates or balance changes.
+- Additional exact protected paths: `src/combat/combat_resolution_engine_prepare.gd`,
+  `src/combat/combat_resolution_engine_ten_manuals.gd`, `src/combat/martial_effect_pipeline.gd`,
+  `src/run/vertical_slice_metrics_combat_resolution_engine.gd`, and
+  `src/validation/ten_manual_product_scenario_validator.gd` (canonical stat fixture only).
+  Existing approved base-engine, bridge and codec paths are reused.
+- The old shared-definition QA envelope is preserved with source/hash provenance.
+  Schema shape1 stays; semantic identity becomes
+  `ten-duel-four-route-one-retry-bimu-actor-bound-save-v1`. Old files remain incompatible
+  and unchanged, without automatic migration or user-directory inspection.
+- Evidence includes `tests/verify_martial_actor_binding.gd`, actual dock/process fixtures
+  in the existing durable driver, pipeline/checkpoint regressions and the bounded
+  `tests/verify_bimu_constraint_runtime.gd` independent-selector fixture correction.
+  Task 5's changed file inventory, full results and limits are in the durable execution report.

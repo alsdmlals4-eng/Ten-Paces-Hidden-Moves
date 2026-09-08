@@ -269,6 +269,19 @@ func _actor_owned_actions(board, committed: Dictionary) -> void:
             state.player.stamina = [100, 100]
             state.player.internal = [100, 100]
         _expect(shared_codec.validate(shared).ok, "Same unlocked manual remains legal for both actors")
+        # Combat-module binding can represent higher mastery independently of the
+        # full-run progression validator, which still owns current earned growth.
+        shared.binding.player_mastery_by_manual[shared_manual] = 5
+        shared_engine = shared_codec._engine(shared_codec.portable(shared.binding))
+        shared.player_plan[0].definition = _json(shared_engine.get_actor_card_definition(enemy_only, "player"))
+        shared.enemy_lock.actions[0].definition = _json(shared_engine.get_actor_card_definition(enemy_only, "enemy"))
+        _expect(shared_codec.validate(shared).ok, "Strict DTO accepts unequal actor effective definitions for one ID")
+        var opposite: Dictionary = _json(shared)
+        opposite.player_plan[0].definition = opposite.enemy_lock.actions[0].definition.duplicate(true)
+        _expect(not shared_codec.validate(opposite).ok, "Strict DTO rejects same-ID opposite mastery in player plan")
+        opposite = _json(shared)
+        opposite.enemy_lock.actions[0].definition = opposite.player_plan[0].definition.duplicate(true)
+        _expect(not shared_codec.validate(opposite).ok, "Strict DTO rejects same-ID opposite mastery in enemy lock")
     for actor in ["player", "enemy"]:
         for valid_owner in [true, false]:
             var dto: Dictionary = _json(committed)

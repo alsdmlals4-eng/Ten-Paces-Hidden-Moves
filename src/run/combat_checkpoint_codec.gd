@@ -96,7 +96,7 @@ func _engine(binding: Dictionary):
     if not engine.configure_bimu_constraints(binding.bimu_receipt.selections, binding.player_loadout, binding.enemy_loadout): return null
     if not engine.configure_enemy_runtime_binding(binding.enemy_runtime_binding): return null
     if portable(engine.get_bimu_enemy_mastery(binding.enemy_mastery_by_manual)) != portable(binding.effective_enemy_mastery_by_manual): return null
-    engine.configure_martial_loadouts(binding.player_loadout, binding.player_mastery_by_manual, binding.enemy_loadout, binding.effective_enemy_mastery_by_manual)
+    if not engine.configure_martial_loadouts(binding.player_loadout, binding.player_mastery_by_manual, binding.enemy_loadout, binding.effective_enemy_mastery_by_manual): return null
     return engine
 
 func _context(context: Dictionary, state: Dictionary) -> bool:
@@ -161,7 +161,7 @@ func _lock(lock: Dictionary, state: Dictionary, engine, allow_empty: bool) -> bo
     if lock.key.is_empty(): return allow_empty and lock.actions.is_empty()
     if lock.key != "%d:%d" % [state.round_number, state.bundle_index]: return false
     var used := {}
-    var allowed_cards: Dictionary = engine.get_enemy_ai_cards_by_id()
+    var allowed_cards: Dictionary = engine.get_actor_cards_by_id("enemy")
     for action in lock.actions:
         if not _keys(action, ["actor", "anchor_index", "span", "execution_timing", "definition", "targeting_mode", "target_ready", "target_tile", "direction", "origin_tile", "ai_reason", "ai_seed", "action_types"]) or action.get("actor") != "enemy": return false
         if not _action(action, state.bundle_index, allowed_cards, used): return false
@@ -173,12 +173,7 @@ func _lock(lock: Dictionary, state: Dictionary, engine, allow_empty: bool) -> bo
 
 func _plan(plan: Array, context: Dictionary, engine) -> bool:
     var used := {}
-    var allowed_cards: Dictionary = {}
-    var player_martial_ids = engine.get_player_martial_card_ids()
-    for id in engine.cards_by_id:
-        var definition: Dictionary = engine.cards_by_id[id]
-        if definition.get("source") != "martial_manual" or id in player_martial_ids:
-            allowed_cards[id] = definition
+    var allowed_cards: Dictionary = engine.get_actor_cards_by_id("player")
     for row in plan:
         if not _keys(row, ["card_id", "card_name", "definition", "anchor_index", "span", "indices", "targeting_mode", "target_ready", "resource_ready", "target_tile", "direction", "origin_tile", "target_text"], ["intent"]): return false
         if not _action(row, context.bundle_index, allowed_cards, used): return false

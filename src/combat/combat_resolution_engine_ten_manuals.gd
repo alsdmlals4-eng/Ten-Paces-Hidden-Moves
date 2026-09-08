@@ -9,21 +9,28 @@ var martial_effect_pipeline: MartialEffectPipeline
 var _loaded_martial_card_ids := PackedStringArray()
 var _loaded_player_martial_card_ids := PackedStringArray()
 var _loaded_enemy_martial_card_ids := PackedStringArray()
+var _player_martial_cards: Dictionary = {}
+var _enemy_martial_cards: Dictionary = {}
 
 func _init() -> void:
     super()
     martial_registry = MartialManualRegistryScript.new()
     martial_effect_pipeline = MartialEffectPipelineScript.new()
 
-func configure_martial_loadout(loadout: Array, mastery_by_manual: Dictionary) -> void:
-    configure_martial_loadouts(loadout, mastery_by_manual, [], {})
+func configure_martial_loadout(loadout: Array, mastery_by_manual: Dictionary) -> bool:
+    return configure_martial_loadouts(loadout, mastery_by_manual, [], {})
 
-func configure_martial_loadouts(player_loadout: Array, player_mastery_by_manual: Dictionary, enemy_loadout: Array = [], enemy_mastery_by_manual: Dictionary = {}) -> void:
-    _remove_loaded_martial_cards()
+func configure_martial_loadouts(player_loadout: Array, player_mastery_by_manual: Dictionary, enemy_loadout: Array = [], enemy_mastery_by_manual: Dictionary = {}) -> bool:
     var player_cards := _build_normalized_loadout_cards(player_loadout, player_mastery_by_manual)
     var enemy_cards := _build_normalized_loadout_cards(enemy_loadout, enemy_mastery_by_manual)
-    _loaded_player_martial_card_ids = _register_loadout_cards(player_cards)
+    if not _locked_enemy_bundle_key.is_empty() or not _locked_enemy_actions.is_empty():
+        return player_cards == _player_martial_cards and enemy_cards == _enemy_martial_cards
+    _remove_loaded_martial_cards()
+    _player_martial_cards = player_cards
+    _enemy_martial_cards = enemy_cards
+    # Compatibility discovery union only; player wins a shared ID. Execution is actor-bound.
     _loaded_enemy_martial_card_ids = _register_loadout_cards(enemy_cards)
+    _loaded_player_martial_card_ids = _register_loadout_cards(player_cards)
     var union := PackedStringArray()
     for card_id in _loaded_player_martial_card_ids:
         if card_id not in union:
@@ -33,11 +40,89 @@ func configure_martial_loadouts(player_loadout: Array, player_mastery_by_manual:
             union.append(card_id)
     union.sort()
     _loaded_martial_card_ids = union
+    return true
+
+func get_actor_card_definition(card_id: String, actor_key: String) -> Dictionary:
+    if actor_key not in ["player", "enemy"]:
+        return {}
+    var owned := _player_martial_cards if actor_key == "player" else _enemy_martial_cards
+    if owned.has(card_id):
+        return (owned[card_id] as Dictionary).duplicate(true)
+    if _is_martial_card_id(card_id):
+        return {}
+    return super.get_actor_card_definition(card_id, actor_key)
+
+func get_actor_cards_by_id(actor_key: String) -> Dictionary:
+    if actor_key not in ["player", "enemy"]:
+        return {}
+    var result := {}
+    for id in cards_by_id:
+        if not _is_martial_card_id(str(id)):
+            result[id] = (cards_by_id[id] as Dictionary).duplicate(true)
+    result.merge((_player_martial_cards if actor_key == "player" else _enemy_martial_cards).duplicate(true), true)
+    return result
+
+func _is_martial_card_id(card_id: String) -> bool:
+    if _player_martial_cards.has(card_id) or _enemy_martial_cards.has(card_id):
+        return true
+    for manual in martial_registry.manuals.values():
+        for card in manual.get("cards", {}).values():
+            if card.get("id", "") == card_id:
+                return true
+    return false
+
+func _martial_plan_rejection(placements: Array, state: Dictionary) -> Dictionary:
+    var invalid := PackedInt32Array()
+    for value in placements:
+        if typeof(value) != TYPE_DICTIONARY:
+            continue
+        var placement: Dictionary = value
+        var supplied = placement.get("definition", {})
+        var definition_id := str(supplied.get("id", "")) if typeof(supplied) == TYPE_DICTIONARY else ""
+        var card_id := str(placement.get("card_id", definition_id))
+        if not _is_martial_card_id(card_id) and not _is_martial_card_id(definition_id):
+            continue
+        if get_actor_card_definition(card_id, "player").is_empty() or typeof(supplied) != TYPE_DICTIONARY or (supplied.has("id") and (typeof(supplied.id) != TYPE_STRING or card_id != definition_id)):
+            invalid.append(int(placement.get("anchor_index", 1)))
+    if invalid.is_empty():
+        return {}
+    return {"valid": false, "failure_reason": "MARTIAL_ACTOR_DEFINITION_MISMATCH", "invalid_anchors": invalid, "state": state.duplicate(true), "events": [], "resolved_actions": [], "logs": [], "presentation_events": []}
+
+func preview_player_plan(state_value: Dictionary, placements: Array) -> Dictionary:
+    var rejection := _martial_plan_rejection(placements, state_value)
+    return rejection if not rejection.is_empty() else super.preview_player_plan(state_value, placements)
+
+func resolve_bundle(player_placements: Array, context: Dictionary, state_value: Dictionary) -> Dictionary:
+    var rejection := _martial_plan_rejection(player_placements, state_value)
+    if not rejection.is_empty():
+        rejection["rejected"] = true
+        return rejection
+    return super.resolve_bundle(player_placements, context, state_value)
+
+func _canonical_actor_placements(placements: Array, actor_key: String) -> Array:
+    var result := placements.duplicate(true)
+    for placement in result:
+        if typeof(placement) != TYPE_DICTIONARY:
+            continue
+        var supplied = placement.get("definition", {})
+        var definition_id := str(supplied.get("id", "")) if typeof(supplied) == TYPE_DICTIONARY else ""
+        var card_id := str(placement.get("card_id", definition_id))
+        if _is_martial_card_id(card_id):
+            var canonical := get_actor_card_definition(card_id, actor_key)
+            placement["definition"] = canonical
+            placement["span"] = int(canonical.get("action_slots", 1))
+    return result
+
+func _build_player_actions(placements: Array) -> Array:
+    return super._build_player_actions(_canonical_actor_placements(placements, "player"))
+
+func _placement_attempts(placements: Array, actor_key: String) -> Array:
+    return super._placement_attempts(_canonical_actor_placements(placements, actor_key), actor_key)
 
 func resolve_martial_card(card_id: String, state: Dictionary, actor_key: String, context: Dictionary = {}) -> Dictionary:
-    if not cards_by_id.has(card_id):
+    var definition := get_actor_card_definition(card_id, actor_key)
+    if definition.is_empty():
         return _martial_failure(state, "MARTIAL_CARD_NOT_LOADED")
-    var definition: Dictionary = cards_by_id.get(card_id, {})
     if str(definition.get("source", "")) != "martial_manual":
         return _martial_failure(state, "NOT_A_MARTIAL_CARD")
     return martial_effect_pipeline.execute(definition.duplicate(true), state, actor_key, context)
@@ -52,14 +137,7 @@ func get_enemy_martial_card_ids() -> PackedStringArray:
     return _loaded_enemy_martial_card_ids.duplicate()
 
 func get_enemy_ai_cards_by_id() -> Dictionary:
-    var result: Dictionary = {}
-    for card_key in cards_by_id.keys():
-        var card_id := str(card_key)
-        var definition: Dictionary = cards_by_id.get(card_key, {})
-        if str(definition.get("source", "")) == "martial_manual" and card_id not in _loaded_enemy_martial_card_ids:
-            continue
-        result[card_id] = definition.duplicate(true)
-    return result
+    return get_actor_cards_by_id("enemy")
 
 func _build_enemy_actions(bundle_index: int, state: Dictionary = {}) -> Array:
     var result: Array = []
@@ -72,7 +150,7 @@ func _build_enemy_actions(bundle_index: int, state: Dictionary = {}) -> Array:
             continue
         var entry: Dictionary = value
         var card_id := str(entry.get("card_id", ""))
-        var definition: Dictionary = (cards_by_id.get(card_id, {}) as Dictionary).duplicate(true)
+        var definition := get_actor_card_definition(card_id, "enemy")
         if definition.is_empty():
             continue
         var anchor := int(entry.get("timing", 1))
@@ -269,3 +347,5 @@ func _remove_loaded_martial_cards() -> void:
     _loaded_martial_card_ids = PackedStringArray()
     _loaded_player_martial_card_ids = PackedStringArray()
     _loaded_enemy_martial_card_ids = PackedStringArray()
+    _player_martial_cards.clear()
+    _enemy_martial_cards.clear()

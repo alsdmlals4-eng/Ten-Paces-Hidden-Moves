@@ -42,6 +42,18 @@ class DurableSaveContractTests(unittest.TestCase):
     def test_native_validation_cache_and_recovery_contract(self):
         self.native(script="verify_run_save_cache.gd", marker="RUN_SAVE_CACHE: PASS")
 
+    def test_actor_mastery_and_stat_execution_contract(self):
+        self.native(script="verify_martial_actor_binding.gd", marker="MARTIAL_ACTOR_BINDING: PASS")
+        self.native(script="verify_martial_effect_pipeline.gd", marker="MARTIAL_EFFECT_PIPELINE_VERIFY_OK")
+
+    def test_actor_bound_actual_dock_across_processes(self):
+        with tempfile.TemporaryDirectory(prefix="ten-paces-actor-process-") as directory:
+            for orientation in ["low", "high"]:
+                self.native("write", "actor_" + orientation, directory, script="durable_continue_process.gd", marker="FRESH_ACTOR_WRITE PASS")
+                for boundary in ["committed", "resolved"]:
+                    for _ in range(2):
+                        self.native("read", "actor_" + orientation + "_" + boundary, directory, script="durable_continue_process.gd", marker="FRESH_ACTOR_READ PASS")
+
     def test_actual_shell_transactions_recovery_and_lifecycle(self):
         self.native(script="verify_durable_run_continue.gd", marker="DURABLE_CONTINUE PASS")
 
