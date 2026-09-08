@@ -54,3 +54,40 @@
 - standalone review 제거는 별도 Blueprint gap이며 이번 범위 밖이다.
 - Windows visible physical mouse/keyboard, gamepad, Human UX/fun/readability, accessibility user, Android device/touch/back/safe-area/lifecycle, release performance/rights/store는 `NOT_RUN`이다.
 - controller의 독립 review, runtime capture, exact CI, protected merge, postmerge main readback은 아직 수행되지 않았다.
+
+## 별도 최적화: 동일 action-dock context 재구성 방지
+
+### 작업 전 문제 · 조사·채택 구조
+
+- Task 2 기준 HEAD `ea86c8fe88743d7fa0029bbaefdbc48776ec27f7`; Work Mode `BUILD`; `combat-implementation-handoff/build`, `ten-paces-verification/performance-profile+regression+evidence-report`, TDD, `running-adversarial-review-and-refinement`를 적용했다.
+- `CURRENT_SOURCE_RELEVANCE_CHECK: REUSED_EVIDENCE`. 동일 consumer의 승인된 Blueprint/10-game packet과 2026-09-08 fresh Godot 공식 optimization guidance를 재사용했다. 측정 후 국소 병목만 줄이는 `ADOPT`, adapter/global cache 및 speculative refactor는 `REJECT`했다.
+- 구현 가능성 `FEASIBLE`: `ActionSelectionDock.set_runtime_context`가 동일 loadout/mastery에도 `ActionViewModelAdapter`를 새로 만들고 manual registry를 다시 읽었다. `MartialActionPanel.set_manuals`와 `UltimateActionPanel.set_martial_context`에는 equality guard가 있었지만 그 앞의 dock adapter 비용은 이미 발생했다. Ultimate panel 자체 guard는 owned copy와 readiness flag를 사용해 hidden identical-context registry path가 없음을 확인했다.
+- dock에만 `_manual_context_initialized`, owned normalized loadout copy, deep mastery copy를 두고, 두 입력이 실제로 달라질 때만 martial/ultimate manual context를 갱신한다. constraint/resource preview, momentum, reservation과 기타 interaction/target/source/detail 경로는 cache guard 밖에 유지했다.
+
+### 실제 결과 · 사용 예 · 기대효과
+
+- 최초 명시적 empty context는 한 번 초기화한다. 동일 empty/populated input은 manual adapter 경로를 다시 호출하지 않는다. caller가 전달 후 원본 Array/Dictionary를 mutate해도 dock cache/runtime snapshot은 변하지 않는다.
+- mastery 3→7 및 loadout identity 변경은 새 view model과 technique/manual identity를 재구성한다. dynamic-only preview actor, constraint, momentum, reservation 변경은 manual registry 재구성 없이 실제 panel output을 갱신한다.
+- warmed real dock, four manuals, identical context 100회, synchronous headless 3 samples: 변경 전 controller baseline `539854 / 563441 / 561096 µs`; 최종 변경 후 확인 `1375 / 1166 / 1172 µs` (직전 run `1181 / 1157 / 1154 µs`). 같은 microbenchmark에서 중복 파싱 제거를 관측한 것이며 FPS, Windows visible, Android/device 또는 Human-perceived 성능 등가는 주장하지 않는다.
+
+### 검증 증거
+
+- RED: 새 focused regression을 구현 전 실행해 test subclass가 호출하는 `_build_owned_manuals` production seam 부재와 redundant path 미구현으로 compile failure를 확인했다.
+- GREEN/measurement: `Godot_v4.7.1-stable_win64_console.exe --headless --path . --script res://tests/verify_action_dock_context_invalidation.gd` → 최종 `ACTION_DOCK_REFRESH_MEASUREMENT identical_100_usec=[1375, 1166, 1172]`, `ACTION_DOCK_CONTEXT_INVALIDATION_OK`.
+- 관련 Godot: `verify_action_selection_dock.gd`, `verify_martial_action_panel.gd`, `verify_combat_action_selection_integration.gd`, `verify_bimu_constraint_ui.gd`, `verify_bimu_constraint_runtime.gd`, `verify_ultimate_ui.gd` PASS. Ultimate test 종료의 기존 `2 ObjectDB instances were leaked` warning은 이 변경의 신규 failure로 승격하지 않았다.
+- 전체 Python: `python -m pytest -q` → `474 passed in 17.73s`. Task 1 native campaign은 player behavior 변경이 없고 controller가 최종 native replay/capture를 별도 수행하므로 재사용했으며, 이번 task에서 새 Human/device evidence로 승격하지 않았다.
+- 운영/보호경로 회귀: `python tools/check_project_operating_system.py` PASS; 지정 unittest 4모듈 `Ran 9 tests ... OK`.
+
+### 5회 전체 범위 적대 검토
+
+1. 초기화/empty를 공격: readiness flag 없이 empty equality가 첫 setup을 건너뛸 위험을 차단했고 explicit empty regression으로 확인했다.
+2. aliasing/stale state를 공격: normalized Array와 deep Dictionary를 cache가 소유하며 caller mutation 뒤 retained snapshot/mastery가 유지됨을 확인했다.
+3. dynamic consumer를 공격: cache guard를 manual pair에만 한정하고 preview summary, constraint locked count/summary, momentum, reservation의 실제 output 변경을 회귀로 확인했다.
+4. genuine change/ultimate를 공격: mastery unlock과 loadout identity가 재구성되고 ultimate panel의 자체 initialized/equality guard가 identical hidden registry path를 차단함을 확인했다.
+5. 범위/장기 적합성/비용을 공격: global cache·frame delay·adapter/renderer refactor·data/schema/editor setting·gameplay 변화 0, Task 1 경로 보존, generated import/UID unstaged 유지. 신규 MUST_FIX 0으로 `CLEAN_REVIEW_EXIT`.
+
+### 자동화·학습 반영 · 미검증 위험
+
+- deterministic focused regression은 wall-time threshold 대신 실제 production build seam 호출 수와 실제 panel/view-model output을 검증한다. benchmark 숫자는 진단 출력이며 CI 합격 조건이 아니다.
+- 보호 manifest와 same-date BUILD record에 실제 추가 product path 한 개를 append했고 CTA scope 및 기존 경로를 보존했다.
+- Windows visible/physical input, gamepad, Human UX/perceived performance, accessibility user, Android actual device/touch/lifecycle, release performance/rights/store, controller independent review/capture/exact CI/merge/readback은 `NOT_RUN`이다.

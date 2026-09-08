@@ -42,3 +42,9 @@ Human playtest is finished. Exact protected-path approval must match the final P
 - Protected product paths are limited to `src/combat/combat_board_preview.gd`, `src/combat/combat_board_preview_auto.gd`, and `src/ui/combat_progress_button.gd`; the exact one-time manifest remains mandatory.
 - Preserve 3/3/4 private commitments, reservations, public-only AI, resolver mechanics, rewards, numerical rules, save schema, routes, audio, engine and existing approved assets. Standalone review removal is a separate gap.
 - Machine tests and the native ordinary-default campaign do not provide physical-input, Human UX, accessibility-user, Android-device or release acceptance.
+
+### Measured action-dock optimization within the same continuation
+
+- Additional protected product path: `src/ui/action_selection/action_selection_dock.gd`; tests and reports are the adjacent evidence paths.
+- Scope is limited to owned-copy invalidation of identical `martial_loadout` / `martial_mastery_by_manual` inputs. Resource preview, constraint locks, momentum, reservations, source/detail, targeting and interaction updates remain live on every relevant context call.
+- No adapter-wide/global cache, deferred frame, gameplay/numerical/reward/save/route/audio/engine change, or FPS/device claim is approved.

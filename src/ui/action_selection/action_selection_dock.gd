@@ -38,6 +38,9 @@ var action_detail_panel: ActionDetailPanel
 var action_intent_panel: ActionIntentPanel
 var _backdrop: Panel
 var constraint_summary: Label
+var _manual_context_initialized := false
+var _manual_loadout_cache: Array[String] = []
+var _manual_mastery_cache: Dictionary = {}
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_PASS
@@ -127,10 +130,7 @@ func set_runtime_context(context: Dictionary) -> void:
     if typeof(runtime_context.get("martial_mastery_by_manual", {})) == TYPE_DICTIONARY:
         mastery_by_manual = (runtime_context.get("martial_mastery_by_manual", {}) as Dictionary).duplicate(true)
     if runtime_context.has("martial_loadout") or runtime_context.has("martial_mastery_by_manual"):
-        if is_instance_valid(martial_panel):
-            martial_panel.set_manuals(ADAPTER_SCRIPT.new().build_owned_manuals(loadout, mastery_by_manual))
-        if is_instance_valid(ultimate_panel):
-            ultimate_panel.set_martial_context(loadout, mastery_by_manual)
+        _set_manual_context(loadout, mastery_by_manual)
     if is_instance_valid(ultimate_panel):
         var current := 0
         var maximum := 5
@@ -148,6 +148,22 @@ func set_runtime_context(context: Dictionary) -> void:
                 reservation_values.append((value as Dictionary).duplicate(true))
         ultimate_panel.set_reservations(reservation_values)
     set_meta("runtime_context", runtime_context)
+
+func _set_manual_context(loadout: Array, mastery_by_manual: Dictionary) -> void:
+    if _manual_context_initialized and _manual_loadout_cache == loadout and _manual_mastery_cache == mastery_by_manual:
+        return
+    _manual_context_initialized = true
+    _manual_loadout_cache.clear()
+    for value in loadout:
+        _manual_loadout_cache.append(str(value))
+    _manual_mastery_cache = mastery_by_manual.duplicate(true)
+    if is_instance_valid(martial_panel):
+        martial_panel.set_manuals(_build_owned_manuals(_manual_loadout_cache, _manual_mastery_cache))
+    if is_instance_valid(ultimate_panel):
+        ultimate_panel.set_martial_context(_manual_loadout_cache, _manual_mastery_cache)
+
+func _build_owned_manuals(loadout: Array, mastery_by_manual: Dictionary) -> Array[Dictionary]:
+    return ADAPTER_SCRIPT.new().build_owned_manuals(loadout, mastery_by_manual)
 
 func set_targeting_intents(title: String, values: Array[Dictionary]) -> void:
     if not is_instance_valid(action_intent_panel):
