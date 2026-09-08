@@ -111,6 +111,15 @@ func _resolve_actual_duel(run: VerticalSliceRunState, policy_mode: int) -> Dicti
         player_hud[key] = (run.get_player_run_resources().get(key, [0, 0]) as Array).duplicate()
     hud["player"] = player_hud
     var state := engine.make_initial_state(hud, 4, 6)
+    var expected_resources := run.get_player_run_resources()
+    _require(
+        _apply_validated_run_resources(state, expected_resources),
+        "duel %d policy %d RunState resources must be valid before combat" % [run.duel_index, policy_mode]
+    )
+    _require(
+        _resource_snapshot(state.get("player", {})) == expected_resources,
+        "duel %d policy %d initial engine resources must exactly match RunState before the first resolver" % [run.duel_index, policy_mode]
+    )
     state["ai_enabled"] = true
     for turn in range(MAX_BUNDLES):
         var bundle := turn % 3 + 1
@@ -200,6 +209,22 @@ func _resource_snapshot(actor: Dictionary) -> Dictionary:
     for key in ["health", "stamina", "internal"]:
         result[key] = (actor.get(key, [0, 0]) as Array).duplicate()
     return result
+
+
+func _apply_validated_run_resources(state: Dictionary, resources: Dictionary) -> bool:
+    var player_value = state.get("player", null)
+    if typeof(player_value) != TYPE_DICTIONARY:
+        return false
+    var player: Dictionary = (player_value as Dictionary).duplicate(true)
+    for key in ["health", "stamina", "internal"]:
+        var pair = resources.get(key, null)
+        if typeof(pair) != TYPE_ARRAY or pair.size() < 2:
+            return false
+        var maximum := maxi(0, int(pair[1]))
+        var current := clampi(int(pair[0]), 0, maximum)
+        player[key] = [current, maximum]
+    state["player"] = player
+    return true
 
 
 func _attempt_line(value: Dictionary) -> String:
