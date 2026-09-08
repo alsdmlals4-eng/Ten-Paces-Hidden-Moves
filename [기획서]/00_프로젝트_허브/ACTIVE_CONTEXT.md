@@ -7,7 +7,7 @@
 
 ## 현재 기준
 
-2026-09-09 durable save/continue와 최초 저장 공개 전 성급·능력치 실행 교정은 로컬 기계 검증을 마쳤으며 독립 검토·protected delivery가 남아 있다. 제목의 새 여정/이어하기, 전체 셸 복원, 행로·보상·패배/재도전·완주 저장과 저장 실패 재시도를 연결했다. 실제 선택 UI가 만든 정의와 각 전투원의 성급 정의를 대조하고, 한글 능력치 참조를 실제 영문 actor.stats에 대응시킨다. 공개된 적 계획은 재구성으로 교체할 수 없으며 COMMITTED 한 번 해결/RESOLVED 재실행 없음과 구형 QA 파일 무변경 거부를 검증했다. 저장 검증 반복은 Task4에서 한정 교정됐고 Task5의 일반 속도·실제 버튼 캠페인은 격리 저장 위치에서 10승·10보상·36행로·299입력으로 162570ms에 완주했다. 237회 checkpoint 시간은 실행 보고서의 원본 표본을 따른다. 이는 디버그 native 실행이며 FPS·Human·Android·접근성 사용자·release와 전체 Blueprint 완료는 NOT_RUN이다. 성장 지출·영구 능력치 지급·해금 조건·보유 무공 전투 확장 및 사건/상태/보상 정본 공백은 후속 작업이다. main 병합 완료로 읽지 않는다. 책임 기록: `docs/operations/2026-09-08_DURABLE_SAVE_EXECUTION_REPORT.md`; 실행 교정 Decision: `TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`.
+2026-09-09 durable save/continue와 최초 저장 공개 전 성급·능력치 실행 교정은 최종 전체490개 검사와 독립 전체 분기 검토(중요 이상0건)를 통과했다. 실제 저장 실패·재시도·이어하기 캡처5장을 기록했으며 protected delivery가 남아 있다. 제목의 새 여정/이어하기, 전체 셸 복원, 행로·보상·패배/재도전·완주 저장과 저장 실패 재시도를 연결했다. 실제 선택 UI가 만든 정의와 각 전투원의 성급 정의를 대조하고, 한글 능력치 참조를 실제 영문 actor.stats에 대응시킨다. 공개된 적 계획은 재구성으로 교체할 수 없으며 COMMITTED 한 번 해결/RESOLVED 재실행 없음과 구형 QA 파일 무변경 거부를 검증했다. 저장 검증 반복은 Task4에서 한정 교정됐고 Task5의 일반 속도·실제 버튼 캠페인은 격리 저장 위치에서 10승·10보상·36행로·299입력으로 162570ms에 완주했다. 237회 checkpoint 시간은 실행 보고서의 원본 표본을 따른다. 이는 디버그 native 실행이며 FPS·Human·Android·접근성 사용자·release와 전체 Blueprint 완료는 NOT_RUN이다. 성장 지출·영구 능력치 지급·해금 조건·보유 무공 전투 확장 및 사건/상태/보상 정본 공백은 후속 작업이다. main 병합 완료로 읽지 않는다. 책임 기록: `docs/operations/2026-09-08_DURABLE_SAVE_EXECUTION_REPORT.md`; 실행 교정 Decision: `TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`.
 
 이전 Task3 검증 당시 전체 Python487건/391.40초, 저장 캠페인10승·10보상·36행로·299입력,237회 저장 평균692ms/최대1144ms는 교정 전 역사 측정으로 보존한다. Task4·Task5 이후 성능의 현행 값으로 사용하지 않는다.
 
@@ -77,7 +77,7 @@ active_planning_work_mode: REVIEW
 active_planning_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
 active_planning_parent_pr: NONE
 active_approval_count: SCOPED_BUILD_APPROVED_HUMAN_FINAL_NOT_RUN
-active_decision_state: ACTOR_BOUND_DURABLE_CONTINUE_LOCAL_MACHINE_VERIFIED_CONTROLLER_REVIEW_PENDING
+active_decision_state: ACTOR_BOUND_DURABLE_CONTINUE_REVIEW_APPROVED_NATIVE_CAPTURED_DELIVERY_PENDING
 source_decision: TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
