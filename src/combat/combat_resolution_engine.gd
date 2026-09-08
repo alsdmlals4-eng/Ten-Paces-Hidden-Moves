@@ -35,6 +35,16 @@ func _init() -> void:
             var ultimate: Dictionary = value
             cards_by_id[str(ultimate.get("id", ""))] = ultimate.duplicate(true)
 
+func get_actor_card_definition(card_id: String, actor_key: String) -> Dictionary:
+    if actor_key not in ["player", "enemy"]:
+        return {}
+    return (cards_by_id.get(card_id, {}) as Dictionary).duplicate(true)
+
+func get_actor_cards_by_id(actor_key: String) -> Dictionary:
+    if actor_key not in ["player", "enemy"]:
+        return {}
+    return cards_by_id.duplicate(true)
+
 func _load_json(path: String, label: String) -> Dictionary:
     if not FileAccess.file_exists(path):
         push_error("%s file was not found: %s" % [label, path])
@@ -338,7 +348,7 @@ func _build_player_actions(placements: Array) -> Array:
         var definition: Dictionary = (placement.get("definition", {}) as Dictionary).duplicate(true)
         if definition.is_empty():
             var card_id := str(placement.get("card_id", ""))
-            definition = (cards_by_id.get(card_id, {}) as Dictionary).duplicate(true)
+            definition = get_actor_card_definition(card_id, "player")
         if definition.is_empty():
             continue
         var anchor := int(placement.get("anchor_index", 1))
@@ -362,13 +372,13 @@ func _build_enemy_actions(bundle_index: int, state: Dictionary = {}) -> Array:
     var bundles: Dictionary = rules.get("enemy_bundles", {})
     var plan: Array = bundles.get(str(bundle_index), [])
     if plan.is_empty() and bool(state.get("ai_enabled", false)) and str(rules.get("enemy_plan_source", "fixture")) == "public_state_ai" and ai_planner != null:
-        plan = ai_planner.build_bundle_actions(state, bundle_index, cards_by_id)
+        plan = ai_planner.build_bundle_actions(state, bundle_index, get_actor_cards_by_id("enemy"))
     for value in plan:
         if typeof(value) != TYPE_DICTIONARY:
             continue
         var entry: Dictionary = value
         var card_id := str(entry.get("card_id", ""))
-        var definition: Dictionary = (cards_by_id.get(card_id, {}) as Dictionary).duplicate(true)
+        var definition := get_actor_card_definition(card_id, "enemy")
         if definition.is_empty():
             continue
         var anchor := int(entry.get("timing", 1))
@@ -411,6 +421,15 @@ func lock_enemy_bundle(state_value: Dictionary, bundle_index: int) -> void:
 func clear_locked_enemy_bundle() -> void:
     _locked_enemy_bundle_key = ""
     _locked_enemy_actions.clear()
+
+func export_enemy_lock() -> Dictionary:
+    return {"key": _locked_enemy_bundle_key, "actions": _locked_enemy_actions.duplicate(true)}
+
+# Caller validates the complete checkpoint with its configured domain codec first.
+# Import does not ask the planner to decide or reserve any momentum.
+func import_enemy_lock(snapshot: Dictionary) -> void:
+    _locked_enemy_bundle_key = snapshot.key
+    _locked_enemy_actions = snapshot.actions.duplicate(true)
 
 func _get_locked_enemy_actions(state_value: Dictionary, bundle_index: int) -> Array:
     lock_enemy_bundle(state_value, bundle_index)

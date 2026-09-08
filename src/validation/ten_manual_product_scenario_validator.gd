@@ -86,15 +86,17 @@ func _execute_card_program(scenario_id: String, card: Dictionary, failures: Arra
         "player": {"position": 4, "health": [30, 30], "stamina": [10, 10], "internal": [10, 10], "momentum": [5, 5], "defense": 4, "statuses": {"prepared": 1, "evade": 1, "fortitude": 1}, "once_per_battle": {}},
         "enemy": {"position": 5, "health": [30, 30], "stamina": [10, 10], "internal": [10, 10], "momentum": [5, 5], "defense": 2, "statuses": {}, "once_per_battle": {}}
     }
+    # SPECIAL_CLASH consumes canonical actor state, not a context-only shadow.
+    for actor in ["player", "enemy"]:
+        state[actor]["stats"] = {"external": 4, "constitution": 4, "agility": 4, "internal_power": 4, "insight": 4}
     var result: Dictionary = pipeline.execute(card, state, "player", {
         "direction": 1,
         "clash_won": true,
         "evade_succeeded": true,
-        "resource_maximums": {"health": 30, "stamina": 10, "internal": 10, "momentum": 5},
-        "stats": {"외공": 4, "근골": 4, "신법": 4, "내공": 4, "심안": 4}
+        "resource_maximums": {"health": 30, "stamina": 10, "internal": 10, "momentum": 5}
     })
     var reason := str(result.get("failure_reason", ""))
-    _expect(reason not in ["MISSING_COMBATANT", "INVALID_EFFECT_STEPS", "INVALID_EFFECT_STEP", "UNKNOWN_EFFECT_OP"], "%s card %s failed structurally: %s" % [scenario_id, card.get("id", ""), reason], failures)
+    _expect(reason not in ["MISSING_COMBATANT", "INVALID_EFFECT_STEPS", "INVALID_EFFECT_STEP", "UNKNOWN_EFFECT_OP", "INVALID_STAT_REFERENCE"], "%s card %s failed structurally: %s" % [scenario_id, card.get("id", ""), reason], failures)
     _expect((result.get("events", []) as Array).size() > 0, "%s card %s must emit effect events." % [scenario_id, card.get("id", "")], failures)
 
 func _build_report(registry, contract: Dictionary, results: Array[Dictionary], failures: Array[String], started: int) -> Dictionary:

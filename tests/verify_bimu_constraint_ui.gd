@@ -26,12 +26,44 @@ func _run() -> void:
     check(shell.has_method("get_bimu_constraint_panel"), "native briefing constraint panel missing")
     if shell.has_method("get_bimu_constraint_panel"):
         await _briefing(shell)
+    await _panel_context_refresh(shell)
     await _unchanged_panels()
     shell.queue_free()
     await process_frame
     for failure in failures: push_error(failure)
     if failures.is_empty(): print("BIMU_CONSTRAINT_UI_OK")
     quit(0 if failures.is_empty() else 1)
+
+func _panel_context_refresh(shell) -> void:
+    # Isolated panel-binding fixture, never a campaign outcome or durable write.
+    var run = VerticalSliceRunState.new()
+    check(run.configure_opponents(shell.opponent_catalog, 20260820), "panel context fixture binds actual opponent catalog")
+    var mastery := {}
+    for id in STARTERS: mastery[id] = 3
+    check(run.start_new_run() and run.confirm_setup_loadout(STARTERS, mastery) and run.advance() and run.advance(), "panel context fixture reaches actual briefing")
+    var panel = preload("res://src/ui/bimu_constraint_panel.gd").new()
+    root.add_child(panel)
+    panel.configure(run, shell.manual_registry)
+    var button = panel.option_buttons.CST_TECH_MANUAL_SEAL
+    var scroll = panel.options_scroll
+    panel.configure(run, shell.manual_registry)
+    check(panel.option_buttons.CST_TECH_MANUAL_SEAL == button and panel.options_scroll == scroll, "same acknowledged context preserves widgets and scroll")
+    var previous_manual: String = run.get_current_opponent().signature_manual_id
+    for candidate in run._opponent_catalog.get_all_candidates():
+        if candidate.signature_manual_id != previous_manual:
+            run._current_opponent_id = candidate.candidate_id
+            break
+    run.duel_index += 1
+    panel.configure(run, shell.manual_registry)
+    check(panel.option_buttons.CST_TECH_MANUAL_SEAL != button, "changed duel opponent rebuilds bindings")
+    check(panel.target_selectors.CST_ENEMY_MASTERED_MANUAL.get_item_metadata(0) == run.get_current_opponent().signature_manual_id, "changed opponent has current enemy manual target")
+    button = panel.option_buttons.CST_TECH_MANUAL_SEAL
+    run._player_manual_loadout.reverse()
+    panel.configure(run, shell.manual_registry)
+    check(panel.option_buttons.CST_TECH_MANUAL_SEAL != button, "changed loadout rebuilds bindings")
+    check(panel.target_selectors.CST_TECH_MANUAL_SEAL.get_item_metadata(0) == run.get_player_manual_loadout()[0], "changed loadout has current player target order")
+    panel.queue_free()
+    await process_frame
 
 func _briefing(shell) -> void:
     var panel = shell.get_bimu_constraint_panel()
@@ -97,6 +129,7 @@ func _briefing(shell) -> void:
         panel.call("_refresh")
         await process_frame
         await process_frame
+        last = panel.option_buttons.values()[8]
         last.grab_focus()
         panel.options_scroll.ensure_control_visible(last)
         await process_frame
@@ -105,6 +138,7 @@ func _briefing(shell) -> void:
         await process_frame
         await process_frame
         await process_frame
+        last = panel.option_buttons.values()[8]
         check(panel.summary_label.text.get_slice("\n", 0) == "선택 2/2 · 제약 점수 2/3", "selected exact integer counter %d" % height)
         check(last.text.begins_with("[선택]"), "selected state has explicit text cue")
         var target: Control = panel.target_selectors["CST_ENEMY_STAT_DISCIPLINE"]

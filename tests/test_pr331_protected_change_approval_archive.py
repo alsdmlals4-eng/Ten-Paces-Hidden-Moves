@@ -46,5 +46,10 @@ def test_pr331_linked_current_routing_fields_are_aligned():
     assert f"next_package: {next_gap}" in active
     assert f"user_directed_planning_next_package: {next_gap}" in active
     assert f"user_directed_planning_status: {merged_status}" in active
-    assert operating["next_package"] == next_gap
-    assert operating["active_decision_state"] == "INLINE_COMBAT_RESULTS_MAIN_MERGED_VERIFIED"
+    # PR331 remains historical merged evidence; a scoped verified successor may
+    # advance the live operating package without rewriting the archived approval.
+    assert f"next_package: {operating['next_package']}" in active
+    assert f"active_decision_state: {operating['active_decision_state']}" in active
+    status = json.loads((ROOT / "docs/planning-data/current_user_planning_status.json").read_text(encoding="utf-8"))
+    assert status["durable_continue_continuation"]["decision"] == operating["source_decision"]
+    assert (ROOT / status["durable_continue_continuation"]["implementation_record"]).is_file()

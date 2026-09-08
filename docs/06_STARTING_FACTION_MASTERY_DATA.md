@@ -6,6 +6,10 @@
 
 ## 현재 상태
 
+2026-09-09 실행 교정의 책임 Decision은 `TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`이다. 같은 무공 ID를 공유해도 각 전투원 자신의 성급 overlay와 실제 능력치를 소비한다. 예를 들어 플레이어3성/상대7성은 플레이어에게 5성 회복을 주지 않으며, 플레이어5성/상대3성은 자신의 5성 효과를 유지한다. 내공4를 참조하는 고정위력8+내공×1의 합 위력은12다. 이 교정의 native/strict checkpoint/별도 프로세스 증거는 `docs/operations/2026-09-08_DURABLE_SAVE_EXECUTION_REPORT.md`에서 읽는다.
+
+아래 foundation 계보와 승인된 성급별 성장 설계는 보존한다. 실제 성장 포인트 지출, 짝수 성급 최초 도달의 영구 능력치 지급, 능력치 해금 조건과 보유 무공 전체의 전투 사용 확장은 이 교정으로 구현되지 않았다. 자동 검증을 전체 성장·Human·밸런스 완료로 읽지 않는다.
+
 ```yaml
 status: T1 이후 가설 원본
 active_batch: 10/10

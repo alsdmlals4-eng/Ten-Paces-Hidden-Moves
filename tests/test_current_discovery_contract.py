@@ -197,8 +197,9 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         )
         self.assertIn("human_validation: NOT_RUN", current_section)
         self.assertIn("android_validation: NOT_RUN", current_section)
-        self.assertIn("next_package: BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS", current_section)
-        self.assertIn("next_planning_decision: TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01", current_section)
+        operating = json.loads((ROOT / "docs/planning-data/current_operating_state.json").read_text(encoding="utf-8"))
+        self.assertIn(f"next_package: {operating['next_package']}", current_section)
+        self.assertIn(f"next_planning_decision: {operating['next_planning_decision']}", current_section)
         self.assertIn(
             "user_directed_planning_next_package: BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS",
             current_section,

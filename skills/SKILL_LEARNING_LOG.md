@@ -24,6 +24,10 @@ skill_change: NONE | PROPOSED | APPLIED
 next_review_trigger:
 ```
 
+## 2026-09-09 — 저장·이어하기 실제 producer와 안정 경계
+
+도메인 fixture의 timing context/기술 정의와 실제 버튼·카드 view-model이 서로 다른 표시 필드를 전달했다. 실제 UI 입력으로 strict persistence 거부를 재현하고, 현재 owner의 정확한 정의를 확인한 producer만 도메인 DTO로 내보내도록 교정했다. `combat-implementation-handoff: build/runtime-handoff`, `ten-paces-verification: regression/performance-profile`, `auditing-canonical-reference-freshness: impact-map/closure-report`를 적용했다. 정지·실패·재시도는 전 프레임 화면이 아니라 마지막 안정 스냅샷으로 검증한다. 상태 `OBSERVATION`, 공용 Skill 변경 `NONE`; evidence: `docs/operations/2026-09-08_DURABLE_SAVE_EXECUTION_REPORT.md`. 미검증 Human/device/release와 별도 저장 성능 최적화를 유지한다.
+
 ## 2026-07-20 — Governance foundation
 
 ```yaml

@@ -32,7 +32,7 @@ func get_bimu_enemy_mastery(masteries: Dictionary) -> Dictionary:
 func get_action_lock_reason(card_id: String) -> String:
     if card_id not in get_player_martial_card_ids():
         return ""
-    return _bimu_model.action_lock_reason(cards_by_id.get(card_id, {}), _bimu_receipt)
+    return _bimu_model.action_lock_reason(get_actor_card_definition(card_id, "player"), _bimu_receipt)
 
 
 func _constraint_plan_rejection(placements: Array) -> Dictionary:
@@ -55,6 +55,9 @@ func _constraint_plan_rejection(placements: Array) -> Dictionary:
 
 
 func preview_player_plan(state_value: Dictionary, placements: Array) -> Dictionary:
+    var actor_rejection := _martial_plan_rejection(placements, state_value)
+    if not actor_rejection.is_empty():
+        return actor_rejection
     var rejection := _constraint_plan_rejection(placements)
     if not rejection["reasons"].is_empty():
         return {"valid": false, "state": state_value.duplicate(true), "invalid_anchors": rejection["invalid_anchors"], "events": [], "constraint_reasons": rejection["reasons"]}
@@ -104,12 +107,18 @@ func make_initial_state(hud_data: Dictionary, player_tile: int, enemy_tile: int)
 
 
 func resolve_bundle(player_placements: Array, context: Dictionary, state_value: Dictionary) -> Dictionary:
+    var actor_rejection := _martial_plan_rejection(player_placements, state_value)
+    if not actor_rejection.is_empty():
+        actor_rejection["rejected"] = true
+        return actor_rejection
     var rejection := _constraint_plan_rejection(player_placements)
     if not rejection["reasons"].is_empty():
         return {"rejected": true, "valid": false, "failure_reason": "BIMU_CONSTRAINT_FORBIDDEN_ACTION", "constraint_reasons": rejection["reasons"], "invalid_anchors": rejection["invalid_anchors"], "state": state_value.duplicate(true), "resolved_actions": [], "logs": [], "presentation_events": []}
     var before := state_value.duplicate(true)
     var current: Dictionary = state_value.get("battle_metrics", battle_metrics.make_initial_metrics())
     var result := super.resolve_bundle(player_placements, context, state_value)
+    if bool(result.get("rejected", false)):
+        return result
     var next_metrics := battle_metrics.accumulate(current, before, result)
     var next_state: Dictionary = result.get("state", {})
     next_state["battle_metrics"] = next_metrics.duplicate(true)

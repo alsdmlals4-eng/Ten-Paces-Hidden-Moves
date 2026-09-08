@@ -55,3 +55,47 @@ Human playtest is finished. Exact protected-path approval must match the final P
 - Additional protected product path: `src/ui/action_selection/action_selection_dock.gd`; tests and reports are the adjacent evidence paths.
 - Scope is limited to owned-copy invalidation of identical `martial_loadout` / `martial_mastery_by_manual` inputs. Resource preview, constraint locks, momentum, reservations, source/detail, targeting and interaction updates remain live on every relevant context call.
 - No adapter-wide/global cache, deferred frame, gameplay/numerical/reward/save/route/audio/engine change, or FPS/device claim is approved.
+
+## Separate continuation: durable local run checkpoint
+
+- Decision: `TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01`; same current continuous implementation authority and independent Codex handoff.
+- Merged-main baseline: `27f7d922e8ec36e038c6dc943b069161b8b53536`. Task 1 owns explicit run/progression DTO validation/import and recoverable local storage; its exact four protected paths are in the new one-time `docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json`.
+- The trusted protected baseline remains the adapter's `bf161025b63edd7eb441b2c4f2ae9da5155f68da`; its product diff through the merged-main source baseline is empty. Source revision and protected authority are distinct. No adapter/adoption pin change is needed.
+- No UI connection or combat checkpoint implementation is claimed by this task. Nonempty combat checkpoints reject until the next bounded task implements their validation. The July planning-only save sample has no migration authority over this schema.
+- Test paths are injected unique temporary/cache directories. No actual player save is touched. Windows physical input, Android lifecycle/device, Human UX and release acceptance remain `NOT_RUN`.
+
+### Task 2 continuation: deterministic combat boundaries
+
+- Same durable Decision and bounded implementation authority. Task 2 adds the actual
+  combat DTO validator, board commit/resolved hooks, bridge stable snapshot/restore,
+  exact enemy-lock export/import and timing-boundary restoration. The one-time manifest
+  lists all five additional protected paths; no other product scope is implied.
+- PLANNING preserves the pre-placement baseline and separately persisted observation;
+  COMMITTED freezes the exact plan and lock before resolving; RESOLVED stores the final
+  state and summary before animation. Failed writes synchronously stop at that boundary.
+- This supersedes Task 1's temporary nonempty-combat rejection only after strict domain
+  validation and run/duel/attempt/loadout/constraint identity checks. Internal REVIEW is
+  still not a durable screen. Task 3 owns the shell's atomic terminal transaction,
+  title Continue, failure feedback and lifecycle connection.
+- Native checkpoint/fresh-process tests are in `tests/verify_combat_checkpoint_resume.gd`
+  and the existing durable contract Python runner. Full Continue, visible Windows,
+  Android physical lifecycle, Human UX and release claims remain `NOT_RUN` here.
+
+### Task 5 continuation: actor-owned execution before initial save publication
+
+- Named successor Decision: `TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`.
+  The same continuous correction authorization covers the proven runtime/approved-data
+  mismatch; it does not add growth spending, stat grants, unlock gates or balance changes.
+- Additional exact protected paths: `src/combat/combat_resolution_engine_prepare.gd`,
+  `src/combat/combat_resolution_engine_ten_manuals.gd`, `src/combat/martial_effect_pipeline.gd`,
+  `src/run/vertical_slice_metrics_combat_resolution_engine.gd`, and
+  `src/validation/ten_manual_product_scenario_validator.gd` (canonical stat fixture only).
+  Existing approved base-engine, bridge and codec paths are reused.
+- The old shared-definition QA envelope is preserved with source/hash provenance.
+  Schema shape1 stays; semantic identity becomes
+  `ten-duel-four-route-one-retry-bimu-actor-bound-save-v1`. Old files remain incompatible
+  and unchanged, without automatic migration or user-directory inspection.
+- Evidence includes `tests/verify_martial_actor_binding.gd`, actual dock/process fixtures
+  in the existing durable driver, pipeline/checkpoint regressions and the bounded
+  `tests/verify_bimu_constraint_runtime.gd` independent-selector fixture correction.
+  Task 5's changed file inventory, full results and limits are in the durable execution report.

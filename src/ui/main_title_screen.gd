@@ -2,6 +2,8 @@ class_name MainTitleScreen
 extends Control
 
 signal start_requested
+signal continue_requested
+signal reread_requested
 
 const BACKGROUND_PATH := "res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png"
 const PLAYER_PATH := "res://assets/characters/player_wanderer_battler_rgba_v2.png"
@@ -15,6 +17,8 @@ const GOLD := Color("b99254")
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_build_surface()
+	resized.connect(_fit_title)
+	_fit_title()
 
 func _build_surface() -> void:
 	for child in get_children():
@@ -42,13 +46,13 @@ func _build_surface() -> void:
 	var center := VBoxContainer.new()
 	center.name = "TitleCenter"
 	center.anchor_left = 0.28
-	center.anchor_top = 0.20
+	center.anchor_top = 0.06
 	center.anchor_right = 0.72
-	center.anchor_bottom = 0.82
+	center.anchor_bottom = 0.94
 	center.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	center.grow_vertical = Control.GROW_DIRECTION_BOTH
 	center.alignment = BoxContainer.ALIGNMENT_CENTER
-	center.add_theme_constant_override("separation", 14)
+	center.add_theme_constant_override("separation", 8)
 	add_child(center)
 	var eyebrow := _make_label("숨은 수로 겨루는 일대일 비무", 16, Color("e7d9bc"))
 	eyebrow.name = "TitleEyebrow"
@@ -58,7 +62,7 @@ func _build_surface() -> void:
 	title_logo.texture = load(TITLE_LOGO_PATH) as Texture2D
 	title_logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	title_logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	title_logo.custom_minimum_size = Vector2(0.0, 280.0)
+	title_logo.custom_minimum_size = Vector2(0.0, 210.0)
 	title_logo.size_flags_horizontal = Control.SIZE_FILL
 	title_logo.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	title_logo.accessibility_name = "십보강호: 숨은 수의 비무"
@@ -71,7 +75,7 @@ func _build_surface() -> void:
 	center.add_child(promise)
 	var start_button := Button.new()
 	start_button.name = "MainStartButton"
-	start_button.text = "비무행 시작"
+	start_button.text = "새 여정"
 	start_button.custom_minimum_size = Vector2(286.0, 58.0)
 	start_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	start_button.accessibility_name = "비무행 시작"
@@ -79,9 +83,48 @@ func _build_surface() -> void:
 	_apply_start_style(start_button)
 	start_button.pressed.connect(func(): start_requested.emit())
 	center.add_child(start_button)
+	var continue_button := Button.new()
+	continue_button.name = "MainContinueButton"
+	continue_button.text = "이어하기"
+	continue_button.custom_minimum_size = Vector2(286.0, 48.0)
+	continue_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	_apply_start_style(continue_button)
+	continue_button.pressed.connect(func():
+		if continue_button.get_meta("read_retry", false): reread_requested.emit()
+		else: continue_requested.emit())
+	continue_button.visible = false
+	center.add_child(continue_button)
+	var save_notice := _make_label("", 14, PAPER)
+	save_notice.name = "SaveContinueNotice"
+	save_notice.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	center.add_child(save_notice)
 	var hint := _make_label("거리와 공개된 행동 기록으로 다음 수를 읽습니다", 13, Color("d6c4a2"))
 	hint.name = "TitleHint"
 	center.add_child(hint)
+
+func _fit_title() -> void:
+	var logo := find_child("GameTitleLogo", true, false) as TextureRect
+	if logo != null: logo.custom_minimum_size.y = clampf(size.y * 0.24, 128.0, 210.0)
+
+func configure_continue(payload: Dictionary, status: String) -> void:
+	var button := find_child("MainContinueButton", true, false) as Button
+	var notice := find_child("SaveContinueNotice", true, false) as Label
+	button.set_meta("read_retry", status == "IO_FAILURE")
+	button.visible = not payload.is_empty() or status == "IO_FAILURE"
+	button.disabled = payload.is_empty() and status != "IO_FAILURE"
+	(find_child("MainStartButton", true, false) as Button).disabled = false
+	if not payload.is_empty():
+		var run: Dictionary = payload.run_state
+		var place := "비무 %d" % int(run.duel_index)
+		if run.current_screen == "JIANGHU": place += " · 행로 %d/4" % (int(run.jianghu_step) + 1)
+		elif not payload.combat_checkpoint.is_empty(): place += " · %d번째 묶음" % int(payload.combat_checkpoint.state.bundle_index)
+		button.text = "이어하기 · " + place
+		notice.text = "마지막으로 확정된 진행부터 이어집니다.\n확정 전 배치는 다시 고릅니다."
+		if status == "RECOVERED_BACKUP": notice.text = "백업에서 진행을 복구했습니다.\n" + notice.text
+	else:
+		button.text = "저장 다시 읽기"
+		var notices := {"CORRUPT": "저장 기록을 읽을 수 없습니다. 새 여정을 선택하면 진단 사본을 보존합니다.", "INCOMPATIBLE": "이 버전에서 사용할 수 없는 저장 기록입니다. 원본을 보존합니다.", "IO_FAILURE": "저장 위치를 읽지 못했습니다. 파일 접근 상태를 확인해 주세요."}
+		notice.text = str(notices.get(status, ""))
 
 func _add_battler(node_name: String, path: String, is_left: bool) -> void:
 	var battler := TextureRect.new()

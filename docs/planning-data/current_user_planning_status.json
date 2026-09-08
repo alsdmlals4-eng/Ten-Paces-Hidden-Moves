@@ -3,7 +3,22 @@
   "pr_integration_authority": "TEN-DEC-20260908-STANDING-PR-INTEGRATION-01",
   "pr_integration_policy": "RELATED_EXISTING_PRS_REVIEW_ABSORB_CORRECT_VERIFY_MERGE_WITHOUT_NAMED_REAPPROVAL",
   "project": "TEN_PACES",
-  "updated_date": "2026-09-08",
+  "updated_date": "2026-09-09",
+  "durable_continue_continuation": {
+    "decision": "TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01",
+    "parent_decision": "TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01",
+    "integration_status": "LOCAL_MACHINE_VERIFIED_CONTROLLER_REVIEW_PENDING",
+    "review_correction": "ACTOR_OWNED_MASTERY_STAT_AND_STRICT_CONTINUE_VERIFIED_INDEPENDENT_REVIEW_PENDING",
+    "implementation_record": "docs/operations/2026-09-08_DURABLE_SAVE_EXECUTION_REPORT.md",
+    "machine_runtime": "ORDINARY_NATIVE_PERSISTED_CAMPAIGN_10_WINS_10_REWARDS_36_ROUTES_299_ACTIVATIONS",
+    "storage_performance": "TASK5_237_INTEGRATED_WRITES_MEAN_97_329MS_MAX_243MS_DEBUG_NATIVE_NO_FPS_CLAIM",
+    "preoptimization_storage_history": "TASK3_237_INTEGRATED_WRITES_MEAN_692MS_MAX_1144MS_HISTORICAL",
+    "human_android_accessibility_release": "NOT_RUN",
+    "remaining": [
+      "independent controller review and visible capture",
+      "protected CI merge and main readback"
+    ]
+  },
   "constraint_continuation": {
     "decision": "TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01",
     "integration_status": "MAIN_MERGED_VERIFIED",

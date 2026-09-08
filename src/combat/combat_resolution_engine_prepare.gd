@@ -78,7 +78,7 @@ func _placement_attempts(placements: Array, actor_key: String) -> Array:
         var placement: Dictionary = value
         var definition: Dictionary = (placement.get("definition", {}) as Dictionary).duplicate(true)
         if definition.is_empty():
-            definition = (cards_by_id.get(str(placement.get("card_id", "")), {}) as Dictionary).duplicate(true)
+            definition = get_actor_card_definition(str(placement.get("card_id", "")), actor_key)
         if definition.is_empty():
             continue
         var anchor := int(placement.get("anchor_index", 1))
@@ -107,7 +107,7 @@ func _enemy_attempts_from_result(result: Dictionary) -> Array:
         if seen.has(key):
             continue
         seen[key] = true
-        var definition: Dictionary = (cards_by_id.get(card_id, {}) as Dictionary).duplicate(true)
+        var definition := get_actor_card_definition(card_id, "enemy")
         if definition.is_empty():
             continue
         attempts.append({

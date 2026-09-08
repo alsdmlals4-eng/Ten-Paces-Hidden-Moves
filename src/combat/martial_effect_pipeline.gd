@@ -23,6 +23,13 @@ const ALLOWED_OPS := [
     "END_DEFENSE_LOSS_RECORD"
 ]
 
+const STAT_KEYS := {
+    "외공": "external", "근골": "constitution", "신법": "agility",
+    "내공": "internal_power", "심안": "insight",
+    "external": "external", "constitution": "constitution", "agility": "agility",
+    "internal_power": "internal_power", "insight": "insight"
+}
+
 func execute(definition: Dictionary, state_value: Dictionary, actor_key: String, context_value: Dictionary = {}) -> Dictionary:
     var original_state := state_value.duplicate(true)
     var state := state_value.duplicate(true)
@@ -39,6 +46,11 @@ func execute(definition: Dictionary, state_value: Dictionary, actor_key: String,
     if typeof(steps_value) != TYPE_ARRAY:
         return _failure(original_state, [], "INVALID_EFFECT_STEPS")
     var steps: Array = steps_value
+    # Validate the whole stat program before any effect, including skipped conditions.
+    for step in steps:
+        if typeof(step) == TYPE_DICTIONARY and step.get("op", "") == "SPECIAL_CLASH":
+            if not _valid_stat_reference(step, state.get(actor_key, {})):
+                return _failure(original_state, [], "INVALID_STAT_REFERENCE")
 
     for index in range(steps.size()):
         var step_value = steps[index]
@@ -236,13 +248,28 @@ func _execute_attack(op: String, step: Dictionary, state: Dictionary, actor_key:
     state[target_key] = target
     return _event(op, "HIT" if health_damage > 0 else "BLOCKED", {"attempt": attempt, "raw_power": raw_power, "defense": defense, "health_damage": health_damage, "distance": distance})
 
+func _finite_number(value) -> bool:
+    return typeof(value) in [TYPE_INT, TYPE_FLOAT] and is_finite(float(value))
+
+func _valid_stat_reference(step: Dictionary, actor: Dictionary) -> bool:
+    var reference = step.get("stat", "")
+    var coefficient = step.get("coefficient", 0)
+    if typeof(reference) != TYPE_STRING or not _finite_number(coefficient):
+        return false
+    if reference.is_empty():
+        return coefficient == 0
+    if not STAT_KEYS.has(reference) or typeof(actor.get("stats")) != TYPE_DICTIONARY:
+        return false
+    var stats: Dictionary = actor.stats
+    return stats.has(STAT_KEYS[reference]) and _finite_number(stats[STAT_KEYS[reference]])
+
 func _execute_clash(step: Dictionary, state: Dictionary, actor_key: String, _target_key: String, runtime: Dictionary, context: Dictionary) -> Dictionary:
     var actor: Dictionary = state.get(actor_key, {})
     var power := maxi(0, int(step.get("power", 0)))
     var stat_name := str(step.get("stat", ""))
-    var stats: Dictionary = actor.get("stats", {})
     var coefficient := float(step.get("coefficient", 0.0))
-    power += int(floor(float(stats.get(stat_name, 0)) * coefficient))
+    if not stat_name.is_empty():
+        power += int(floor(float(actor.stats[STAT_KEYS[stat_name]]) * coefficient))
     var opponent := maxi(0, int(context.get("opponent_clash_power", 0)))
     var won := power > opponent
     runtime["clash_won"] = won

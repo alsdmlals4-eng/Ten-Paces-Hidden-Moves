@@ -23,12 +23,18 @@ func get_completion_snapshot() -> Dictionary:
 
 
 func _render_current_screen() -> void:
+    if session != null and (session.busy or session.blocked):
+        _apply_session_input_lock()
+        return
     super._render_current_screen()
     if run_state != null and run_state.get_current_screen() == VerticalSliceRunState.SCREEN_COMPLETION:
         _render_completion()
 
 
 func _render_completion() -> void:
+    if session != null and (session.busy or session.blocked):
+        _apply_session_input_lock()
+        return
     if completion_model == null or run_state == null:
         return
     _refresh_completion_snapshot()

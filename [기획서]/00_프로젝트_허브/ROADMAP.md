@@ -10,6 +10,13 @@
 
 ## 현재 단계
 
+최초 저장 공개 전 전투원별 성급 실행·복구 교정
+`TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`은 영속 저장 작업의 선행 검증 보완이다.
+상세 전달 순서는 `../../../docs/04_ROADMAP.md`, 현재 결과는 Active Context/current JSON을 따른다.
+
+영속 저장·이어하기 `TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01`의 검증·전달 순서는
+`../../../docs/04_ROADMAP.md`에서 읽고 현재 결과는 Active Context/current JSON을 따른다.
+
 비무 제약 채택 `TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01`의 검증·전달 순서는
 `../../../docs/04_ROADMAP.md`에서 읽고 현재 결과는 Active Context/current JSON을 따른다.
 

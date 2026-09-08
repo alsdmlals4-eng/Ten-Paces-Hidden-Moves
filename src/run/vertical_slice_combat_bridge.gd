@@ -6,6 +6,18 @@ const BATTLE_METRICS_SCRIPT := preload("res://src/run/vertical_slice_battle_metr
 
 signal terminal_review_ready(result: Dictionary)
 signal terminal_review_confirmed(result: Dictionary)
+signal stable_checkpoint_changed(checkpoint: Dictionary)
+
+const COMBAT_CHECKPOINT = preload("res://src/run/combat_checkpoint_codec.gd")
+# Synchronous acknowledgment; false freezes the immutable pending boundary.
+var checkpoint_writer: Callable
+var _stable_checkpoint: Dictionary = {}
+var _checkpoint_pending := false
+var _checkpoint_restoring := false
+var _checkpoint_advancing := false
+var _checkpoint_duel := 1
+var _checkpoint_attempt := 0
+var _applied_restoration := ""
 
 var _vertical_slice_terminal_result: Dictionary = {}
 var _terminal_handoff_started := false
@@ -53,7 +65,8 @@ func configure_vertical_slice_loadouts(
     if not engine.configure_enemy_runtime_binding(enemy_runtime_binding):
         return false
     var effective_enemy_mastery := engine.get_bimu_enemy_mastery(enemy_mastery_by_manual)
-    engine.configure_martial_loadouts(player_ids, player_mastery_by_manual.duplicate(true), enemy_ids, effective_enemy_mastery)
+    if not engine.configure_martial_loadouts(player_ids, player_mastery_by_manual.duplicate(true), enemy_ids, effective_enemy_mastery):
+        return false
     _ten_manual_loadout_data = {
         "authority": "VERTICAL_SLICE_PHASE_V_RUNTIME_LOADOUT_METRICS_AND_RESOURCE_PERSISTENCE",
         "player": {
@@ -103,6 +116,7 @@ func configure_vertical_slice_loadouts(
     _vertical_slice_terminal_result.clear()
     _terminal_handoff_started = false
     _terminal_confirmation_emitted = false
+    capture_planning_checkpoint()
     return true
 
 
@@ -138,7 +152,185 @@ func apply_vertical_slice_player_resources(resources: Dictionary) -> bool:
     _apply_combat_state_to_view()
     _refresh_ultimate_menu()
     _sync_action_selection_dock()
+    capture_planning_checkpoint()
     return true
+
+
+func configure_checkpoint_identity(duel_index: int, attempt_id: int) -> void:
+    _checkpoint_duel = duel_index
+    _checkpoint_attempt = attempt_id
+    if not _stable_checkpoint.is_empty():
+        _stable_checkpoint.duel_index = duel_index
+        _stable_checkpoint.attempt_id = attempt_id
+
+
+func get_last_stable_checkpoint() -> Dictionary:
+    return _stable_checkpoint.duplicate(true)
+
+
+func capture_planning_checkpoint() -> bool:
+    if _checkpoint_restoring or _vertical_slice_loadout_snapshot.is_empty() or _inputs_locked():
+        return false
+    if _checkpoint_pending:
+        return false
+    if not action_timing_panel.get_resolution_placements().is_empty():
+        return false
+    return _publish_checkpoint(_make_checkpoint("PLANNING", combat_state, action_timing_panel.get_runtime_context()))
+
+
+func _make_checkpoint(phase: String, state: Dictionary, context: Dictionary) -> Dictionary:
+    # ProgressButton requests also contain UI execution flags. The durable domain
+    # context owns only timing facts, exactly like ActionTimingPanel's context.
+    var timing_context := {}
+    for key in ["round_number", "bundle_index", "current_timing", "total_timings", "timing_sequence"]:
+        timing_context[key] = context[key]
+    return COMBAT_CHECKPOINT.portable({
+        "phase": phase, "duel_index": _checkpoint_duel, "attempt_id": _checkpoint_attempt,
+        "state": state, "context": timing_context, "enemy_lock": resolution_engine.export_enemy_lock(),
+        "binding": _vertical_slice_loadout_snapshot,
+        "player_plan": [] if phase == "PLANNING" else _checkpoint_domain_plan(),
+        "state_before": {} if phase == "PLANNING" else _committed_state_before,
+        "reservation_anchors": [] if phase == "PLANNING" else Array(_ultimate_reservation_anchors),
+        "review_summary": _last_review_summary if phase == "BUNDLE_RESOLVED" else {}
+    })
+
+
+func _checkpoint_domain_plan() -> Array:
+    # The live dock decorates definitions with labels, art and lock presentation.
+    # Accept only an exact current producer definition before replacing it with
+    # its engine-owned definition. File validation remains exact and fail-closed.
+    var adapter = preload("res://src/ui/action_selection/action_view_model_adapter.gd").new()
+    var presentations: Dictionary = {}
+    for definition in adapter.build_basic_actions(): presentations[definition.id] = definition
+    var binding := _vertical_slice_loadout_snapshot
+    for manual in adapter.build_owned_manuals(binding.player_loadout, binding.player_mastery_by_manual):
+        for definition in manual.techniques:
+            if not definition.locked: presentations[definition.id] = definition
+    for definition in adapter.build_ultimate_actions(5, binding.player_loadout, binding.player_mastery_by_manual):
+        if not definition.locked: presentations[definition.id] = definition
+    var result: Array = []
+    for placement in _committed_player_plan_snapshot:
+        var id := str(placement.card_id)
+        var canonical: Dictionary = resolution_engine.get_actor_card_definition(id, "player")
+        if canonical.is_empty(): return []
+        var actual = COMBAT_CHECKPOINT.portable(placement.definition)
+        if actual != COMBAT_CHECKPOINT.portable(canonical) and actual != COMBAT_CHECKPOINT.portable(presentations.get(id, {})):
+            return []
+        var row: Dictionary = placement.duplicate(true)
+        row.definition = canonical.duplicate(true)
+        result.append(row)
+    return result
+
+
+func _publish_checkpoint(dto: Dictionary) -> bool:
+    _stable_checkpoint = dto.duplicate(true)
+    _checkpoint_pending = checkpoint_writer.is_valid() and not bool(checkpoint_writer.call(dto.duplicate(true)))
+    if _checkpoint_pending:
+        _set_presentation_state("committed")
+    stable_checkpoint_changed.emit(dto.duplicate(true))
+    return not _checkpoint_pending
+
+
+func _accept_committed_boundary(context: Dictionary) -> bool:
+    # This is the same lazy lock point used at the start of resolve_bundle.
+    resolution_engine.lock_enemy_bundle(_committed_state_before, int(context.bundle_index))
+    return _publish_checkpoint(_make_checkpoint("BUNDLE_COMMITTED", _committed_state_before, context))
+
+
+func _accept_resolved_boundary(result: Dictionary) -> bool:
+    return _publish_checkpoint(_make_checkpoint("BUNDLE_RESOLVED", result.state, action_timing_panel.get_runtime_context()))
+
+
+func retry_checkpoint() -> bool:
+    if not _checkpoint_pending:
+        return true
+    if checkpoint_writer.is_valid() and not bool(checkpoint_writer.call(_stable_checkpoint.duplicate(true))):
+        return false
+    _checkpoint_pending = false
+    match _stable_checkpoint.phase:
+        "BUNDLE_COMMITTED":
+            await _resolve_and_present(_stable_checkpoint.context)
+        "BUNDLE_RESOLVED":
+            combat_state = _stable_checkpoint.state.duplicate(true)
+            _last_review_summary = _stable_checkpoint.review_summary.duplicate(true)
+            _finalize_resolved_bundle()
+        "PLANNING":
+            _set_presentation_state("next_bundle_ready")
+    return not _checkpoint_pending
+
+
+func _advance_to_next_bundle() -> void:
+    _checkpoint_advancing = true
+    # Reservation was consumed by the resolved bundle; no refund or re-reservation.
+    _ultimate_reservation_anchors.clear()
+    super._advance_to_next_bundle()
+    _checkpoint_advancing = false
+    capture_planning_checkpoint()
+
+
+func request_locked_enemy_action_type_reveal() -> void:
+    if _checkpoint_pending or _checkpoint_restoring or _inputs_locked():
+        return
+    super.request_locked_enemy_action_type_reveal()
+
+
+func reveal_available_locked_enemy_action_types() -> Dictionary:
+    var result := super.reveal_available_locked_enemy_action_types()
+    if result.get("ok", false) and not _checkpoint_advancing and not _checkpoint_restoring and _stable_checkpoint.get("phase") == "PLANNING":
+        var baseline := _stable_checkpoint.duplicate(true)
+        for key in ["observation_points", "observation_reveal_index", "observation_reveals"]:
+            if combat_state.player.has(key): baseline.state.player[key] = COMBAT_CHECKPOINT.portable(combat_state.player[key])
+        baseline.enemy_lock = COMBAT_CHECKPOINT.portable(resolution_engine.export_enemy_lock())
+        _publish_checkpoint(baseline)
+    return result
+
+
+func restore_combat_checkpoint(dto: Dictionary) -> Dictionary:
+    # Complete DTO and configured identity validation precede every live assignment.
+    if _vertical_slice_loadout_snapshot.is_empty():
+        return {"ok": false, "status": "CORRUPT", "error": "Configure combat binding before restore"}
+    var validation: Dictionary = COMBAT_CHECKPOINT.new().validate(dto, _vertical_slice_loadout_snapshot)
+    if not validation.ok: return validation
+    if dto.phase == "PLANNING" and dto.state.player.health[0] == 0 and COMBAT_CHECKPOINT.portable(dto.state.player.health) != COMBAT_CHECKPOINT.portable(combat_state.player.health):
+        return {"ok": false, "status": "CORRUPT", "error": "Apply carried resources before initial zero-health restore"}
+    if int(dto.duel_index) != _checkpoint_duel or int(dto.attempt_id) != _checkpoint_attempt:
+        return {"ok": false, "status": "CORRUPT", "error": "Combat identity mismatch"}
+    var fingerprint: String = preload("res://src/run/run_checkpoint_codec.gd").digest(dto)
+    if fingerprint == _applied_restoration: return {"ok": true, "status": "ALREADY_APPLIED"}
+    if _checkpoint_pending: return {"ok": false, "status": "IO_FAILURE", "error": "Pending checkpoint"}
+    _checkpoint_restoring = true
+    _stable_checkpoint = COMBAT_CHECKPOINT.portable(dto)
+    combat_state = _stable_checkpoint.state.duplicate(true)
+    resolution_engine.import_enemy_lock(_stable_checkpoint.enemy_lock)
+    action_timing_panel.restore_boundary_context(_stable_checkpoint.context)
+    _committed_player_plan_snapshot = _stable_checkpoint.player_plan.duplicate(true)
+    _committed_state_before = _stable_checkpoint.state_before.duplicate(true)
+    _ultimate_reservation_anchors = PackedInt32Array(_stable_checkpoint.reservation_anchors)
+    _last_review_summary = _stable_checkpoint.review_summary.duplicate(true)
+    _terminal_handoff_started = false
+    _terminal_confirmation_emitted = false
+    _vertical_slice_terminal_result.clear()
+    _clear_targeting()
+    _sync_action_placement_controller_state()
+    _apply_combat_state_to_view()
+    _sync_runtime_context()
+    _applied_restoration = fingerprint
+    _checkpoint_restoring = false
+    match _stable_checkpoint.phase:
+        "PLANNING":
+            _set_presentation_state("next_bundle_ready")
+        "BUNDLE_COMMITTED":
+            _set_presentation_state("committed")
+            var result: Dictionary = resolution_engine.resolve_bundle(_committed_player_plan_snapshot, _stable_checkpoint.context, combat_state)
+            _resolution_count += 1
+            _last_review_summary = review_summary_builder.build_summary(result, _committed_player_plan_snapshot, _committed_state_before)
+            if _accept_resolved_boundary(result):
+                combat_state = result.state.duplicate(true)
+                _finalize_resolved_bundle()
+        "BUNDLE_RESOLVED":
+            _finalize_resolved_bundle()
+    _sync_action_selection_dock()
+    return {"ok": true, "status": "RESTORED", "pending": _checkpoint_pending}
 
 
 func get_vertical_slice_player_resources() -> Dictionary:
