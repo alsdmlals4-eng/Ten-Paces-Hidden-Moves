@@ -1189,7 +1189,9 @@ func _show_inline_result(summary: Dictionary) -> void:
 	if not is_instance_valid(inline_result_label):
 		return
 	var cause := str(summary.get("cause_label", "")).strip_edges()
-	inline_result_label.text = "이번 묶음 · %s" % (cause if not cause.is_empty() else "확정된 전투 결과")
+	if cause.is_empty():
+		cause = "확정된 전투 결과"
+	inline_result_label.text = "이번 묶음 · %s" % cause
 	inline_result_label.visible = true
 	set_meta("inline_result_cause", cause)
 	set_meta("inline_result_summary", summary.duplicate(true))

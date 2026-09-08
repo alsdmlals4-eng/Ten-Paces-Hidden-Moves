@@ -31,15 +31,21 @@
 - `python -m pytest -q`: 476 PASS.
 - native ordinary-default ten-duel campaign: 10 wins, 10 rewards, 36 routes, 299 activations, failures 0, native exit 0. 실제 UI path이며 terminal state injection 없음.
 - RED 한계: 새 regression을 구현 변경 뒤 작성해 별도 behavioral nonzero RED를 캡처하지 못했다. 기존 `verify_combat_board.gd`는 이관 전 old `review_ready` 기대 때문에 실제 nonzero였지만 이는 새 요구의 독립 RED 증거로 승격하지 않는다.
-- protected lifecycle local check: manifest의 승인 소스 6개는 정확하지만 fresh import가 만든 unstaged `.import`/`.uid` 6개도 baseline delta로 감지되어 현재 worktree에서는 nonzero. 생성 churn을 제품 변경으로 승인·커밋하지 않았으며 controller의 clean checkout exact-head 검증이 필요하다.
+- protected lifecycle: fresh-import worktree에서는 generated `.import`/`.uid` delta 때문에 local nonzero였지만, controller가 clean `6ba11a32`에서 exact manifest lifecycle과 Base operating validators PASS를 확인했다. 생성 churn은 제품 변경으로 승인·커밋하지 않았다.
+- fix round 1 prospective RED: duplicate terminal finish는 ready signal `actual=2`로 native exit 1, clash/cost regression은 `15 vs 10 · 차이 5` 누락과 존재하지 않는 `내력0` 표시로 native exit 1. parse-only 실패를 먼저 제거한 뒤 behavior RED를 기록했다.
+- `RETROSPECTIVE_REGRESSION_SENSITIVITY`: `--retrospective-old-behavior`로 legacy overlay pause를 재현했을 때 no-click/hidden-overlay invariant가 native exit 1로 실패했다. 이는 regression 민감도 증거이며 최초 구현의 TDD chronology를 대체하지 않는다.
 
 ## 자동화·학습 반영
+
+아래 5회는 최초 구현자의 자체검토 기록이다. 당시 `CLEAN_REVIEW_EXIT`로 판단했지만 이후 독립 review가 terminal 중복 ready와 causal field 표시 결함을 발견했으므로 최종 독립 clean 판정이 아니다.
 
 1. 정본/코어 공격: resolver와 summary builder를 유지하고 UI 계산 추가 없음 — CLEAN.
 2. diff/untouched consumer 공격: legacy isolated widget 보존, active review-click fixture 이관 — CLEAN.
 3. receipt/teardown 공격: ready 뒤 deferred confirmed, once meta guard, campaign 10 terminal handoff — CLEAN.
 4. layout/접근성 공격: 1280×720·1280×800·1920×1080 bounded rect, wrap/font 유지 — MACHINE CLEAN; Human 별도.
 5. 장기 적합성/범위 공격: 새 overlay·scene·asset/schema 없이 기존 hook/model 확장, campaign resource/reward/history 통과 — CLEAN_REVIEW_EXIT.
+
+Fix round 1은 terminal handoff-start와 confirmation guard를 분리하고 새 loadout lifecycle에서만 reset한다. 반복 finish/deferred 호출은 ready 1회·confirmed 1회와 동일 resources를 검증한다. clash callout은 resolver가 제공한 `raw_damage=15`, `clash_opponent_raw_damage=10`, `clash_difference=5`, `damage=5`를 그대로 표시하며 산술을 수행하지 않는다. 비용은 실제 존재하는 key만 표시한다. Fix 후 focused/full regression은 구현자 GREEN이며 최종 상태는 controller 독립 재검토 전 `READY_FOR_RE_REVIEW`다.
 
 ## 미검증·남은 위험
 

@@ -203,9 +203,16 @@ func _fill_callout(widgets: Dictionary, events: Array, side_name: String, accent
 		if str(first.get("category", "")) == "attack":
 			facts.text += " · 사거리 %s" % str(first.get("range_text", "-"))
 			if first.has("raw_damage"):
-				facts.text += " · 위력 %d" % int(first.get("raw_damage"))
-		if first.has("stamina_cost") or first.has("internal_cost"):
-			facts.text += " · 소모 기력%d/내력%d" % [int(first.get("stamina_cost", 0)), int(first.get("internal_cost", 0))]
+				facts.text += " · 위력 %d" % int(first["raw_damage"])
+			if str(first.get("type", "")) == "clash" and first.has("clash_opponent_raw_damage") and first.has("clash_difference"):
+				facts.text += " 대 %d · 차이 %d" % [int(first["clash_opponent_raw_damage"]), int(first["clash_difference"])]
+		var costs := PackedStringArray()
+		if first.has("stamina_cost"):
+			costs.append("기력%d" % int(first["stamina_cost"]))
+		if first.has("internal_cost"):
+			costs.append("내력%d" % int(first["internal_cost"]))
+		if not costs.is_empty():
+			facts.text += " · 소모 %s" % "/".join(costs)
 	if outcome != null:
 		outcome.text = _event_outcome(first)
 		if events.size() > 1:

@@ -8,6 +8,8 @@ signal terminal_review_ready(result: Dictionary)
 signal terminal_review_confirmed(result: Dictionary)
 
 var _vertical_slice_terminal_result: Dictionary = {}
+var _terminal_handoff_started := false
+var _terminal_confirmation_emitted := false
 var _vertical_slice_loadout_snapshot: Dictionary = {}
 var _battle_metrics_helper: VerticalSliceBattleMetrics
 var _bimu_ui_options: Array = preload("res://src/run/bimu_constraint_model.gd").new().get_options()
@@ -98,6 +100,9 @@ func configure_vertical_slice_loadouts(
     set_meta("vertical_slice_enemy_candidate_id", enemy_candidate_id)
     set_meta("vertical_slice_battle_metrics_bound", true)
     set_meta("vertical_slice_run_resources_bound", true)
+    _vertical_slice_terminal_result.clear()
+    _terminal_handoff_started = false
+    _terminal_confirmation_emitted = false
     return true
 
 
@@ -181,6 +186,10 @@ func _on_progress_requested(context: Dictionary) -> void:
 
 
 func _finish_bundle_presentation(terminal: bool) -> void:
+    if terminal and _terminal_handoff_started:
+        return
+    if terminal:
+        _terminal_handoff_started = true
     super._finish_bundle_presentation(terminal)
     if not terminal:
         return
@@ -190,9 +199,9 @@ func _finish_bundle_presentation(terminal: bool) -> void:
 
 
 func _confirm_terminal_result_once() -> void:
-    if _vertical_slice_terminal_result.is_empty() or bool(get_meta("terminal_result_confirmed", false)):
+    if _vertical_slice_terminal_result.is_empty() or _terminal_confirmation_emitted:
         return
-    set_meta("terminal_result_confirmed", true)
+    _terminal_confirmation_emitted = true
     terminal_review_confirmed.emit(_vertical_slice_terminal_result.duplicate(true))
 
 

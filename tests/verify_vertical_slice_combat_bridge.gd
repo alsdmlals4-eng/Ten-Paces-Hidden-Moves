@@ -80,9 +80,16 @@ func _run() -> void:
         "headline": "테스트 복기",
         "decisive_facts": ["enemy_health_zero"]
     })
+    var signal_counts := {"ready": 0, "confirmed": 0}
+    bridge.terminal_review_ready.connect(func(_result: Dictionary) -> void: signal_counts["ready"] += 1)
+    bridge.terminal_review_confirmed.connect(func(_result: Dictionary) -> void: signal_counts["confirmed"] += 1)
 
     bridge.call("_finish_bundle_presentation", true)
+    bridge.call("_finish_bundle_presentation", true)
+    bridge.call_deferred("_confirm_terminal_result_once")
     await process_frame
+    _expect_eq(signal_counts["ready"], 1, "Repeated terminal finish must emit one ready receipt.")
+    _expect_eq(signal_counts["confirmed"], 1, "Repeated deferred confirmation must emit one confirmed receipt.")
     await process_frame
 
     _expect_eq(shell.run_state.get_current_screen(), "RESULT", "Terminal receipt must pass through internal REVIEW and reach RESULT without another click.")
