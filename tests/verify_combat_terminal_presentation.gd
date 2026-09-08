@@ -53,8 +53,8 @@ func _run() -> void:
                     failures.append("Terminal result must not show the combat review panel.")
                 if not board.restart_combat_button.visible:
                     failures.append("Standalone terminal result must expose the existing restart action.")
-                if str(board.get_meta("last_sfx_kind", "")) != "defeat":
-                    failures.append("A terminal result must request the defeat SFX after its hit presentation.")
+                if str(board.get_meta("last_sfx_kind", "")) != "victory":
+                    failures.append("A won terminal result must request the victory SFX after its hit presentation.")
 
                 board._on_review_continue_requested()
                 await process_frame

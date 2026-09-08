@@ -1161,14 +1161,24 @@ func _finalize_resolved_bundle() -> void:
 	var terminal := _combat_has_ended()
 	_apply_combat_state_to_view()
 	if terminal:
-		_play_procedural_sfx("defeat")
+		var outcome := CombatResolutionEngine.battle_outcome(combat_state)
+		var cue := "draw"
+		var terminal_label := "무승부 · 결전 종료"
+		var terminal_log := "[무승부] 양측의 체력이 0이 되어 결전이 끝났습니다."
+		if outcome == "win":
+			cue = "victory"
+			terminal_label = "승리 · 결전 종료"
+			terminal_log = "[승리] 상대의 체력이 0이 되어 결전이 끝났습니다."
+		elif outcome == "loss":
+			cue = "defeat"
+			terminal_label = "패배 · 결전 종료"
+			terminal_log = "[패배] 플레이어의 체력이 0이 되어 결전이 끝났습니다."
+		_play_procedural_sfx(cue)
 		if is_instance_valid(presentation_label):
-			var player_health := int(((combat_state.get("player", {}) as Dictionary).get("health", [0, 0]) as Array)[0])
-			var enemy_health := int(((combat_state.get("enemy", {}) as Dictionary).get("health", [0, 0]) as Array)[0])
-			presentation_label.text = "무승부 · 결전 종료" if player_health <= 0 and enemy_health <= 0 else "전투 불능 · 결전 종료"
+			presentation_label.text = terminal_label
 			presentation_label.visible = true
 		if is_instance_valid(combat_log_panel):
-			combat_log_panel.append_entry("[전투 불능] 체력이 0이 되어 결전이 끝났습니다.", "system")
+			combat_log_panel.append_entry(terminal_log, "system")
 	_finish_bundle_presentation(terminal)
 
 func _present_timing_duel(events_value: Array, timing: int, phase: String) -> void:

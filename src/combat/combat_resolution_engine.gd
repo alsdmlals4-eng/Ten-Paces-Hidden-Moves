@@ -19,6 +19,26 @@ static func shared_preview_engine() -> RefCounted:
         _shared_preview_instance = CombatResolutionEngine.new()
     return _shared_preview_instance
 
+
+static func battle_outcome(state: Dictionary) -> String:
+    var player_health := _battle_outcome_health(state, "player")
+    var enemy_health := _battle_outcome_health(state, "enemy")
+    if enemy_health <= 0 and player_health > 0:
+        return "win"
+    if player_health <= 0 and enemy_health > 0:
+        return "loss"
+    return "draw"
+
+
+static func _battle_outcome_health(state: Dictionary, actor_key: String) -> int:
+    var actor: Dictionary = state.get(actor_key, {})
+    var health = actor.get("health", [0, 0])
+    if typeof(health) == TYPE_ARRAY and health.size() >= 1:
+        return int(health[0])
+    if typeof(health) == TYPE_PACKED_INT32_ARRAY and health.size() >= 1:
+        return int(health[0])
+    return 0
+
 func _init() -> void:
     ai_planner = CombatAiPlannerScript.new()
     rules = _load_json(RULES_PATH, "STEP 10 resolution rules")
