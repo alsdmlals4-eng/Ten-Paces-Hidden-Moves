@@ -136,3 +136,15 @@ Presentation review cycle evidence (bounded implementation, not full product acc
 Current focused PASS: atlas successor, frontal assets, ink-paper presentation,
 combat board, screen partition, combat SFX. Native-status rendered capture:
 `combat-atlas-native-status.png` at 1280x800 (before the final 720p geometry refinement).
+
+### Rest consumer continuation
+
+Reused existing Blueprint inn illustration unchanged (SHA-256 recorded in rest-runtime-manifest).
+The same ten-game route benchmark applies: this connects the approved rest outcome, not
+a new economy, choice count, or event effect. Existing run-state remains the sole recovery owner.
+Rest changes only backdrop and composition; resolved options hide, continuation restores
+the next three-choice screen. Regression RED: missing art, wrong panel position, disabled
+choices retained. GREEN after binding; duplicate selection cannot heal twice. Existing
+shell regression also PASS. Actual 1280x800 capture reviewed: traveller unobscured, native
+Korean text and continuation visible. Synthetic terminal used to reach scene is NOT duel evidence.
+Final human visual approval, rights release review and Android runtime remain NOT_RUN.
