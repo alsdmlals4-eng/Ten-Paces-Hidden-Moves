@@ -7,6 +7,8 @@ implementation_merge_commit: 751f4ee07e84f810015cedaa9c9d77a93016c041
 implementation_base_commit: 0afdef427257ae5f8bcc2f37b7c46e13bc00b44b
 approval_manifest_sha256: BF47A15AA52C97BFBD7C4F83E7238F472B9377076764AC0C26D7DA6B1F3A94A9
 approval_lifecycle: ARCHIVED_NOT_CURRENT_EXECUTION_AUTHORITY
+active_authority: false
+implementation_authority: NONE
 ```
 
 PR 321의 완료된 일회성 승인을 원문 전체와 Git blob 해시로 보존한다.

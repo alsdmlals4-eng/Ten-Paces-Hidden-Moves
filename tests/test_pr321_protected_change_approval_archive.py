@@ -19,6 +19,8 @@ class Pr321ArchiveTests(unittest.TestCase):
         archived = json.loads(re.search(r"```json\n(.*?)\n```", record, re.S).group(1))
         self.assertEqual(original, archived)
         self.assertIn("NOT_CURRENT_EXECUTION_AUTHORITY", record)
+        self.assertIn("active_authority: false", record)
+        self.assertIn("implementation_authority: NONE", record)
 
 
 if __name__ == "__main__":
