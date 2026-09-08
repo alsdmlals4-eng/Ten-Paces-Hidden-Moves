@@ -14,6 +14,7 @@ var _manual_registry: MartialManualRegistry
 var _options: Array = Model.new().get_options()
 var _policy: Dictionary = Model.new().get_selection_policy()
 var _focus_scroll_pending := false
+var submit_selection: Callable
 
 func configure(run_state: VerticalSliceRunState, registry: MartialManualRegistry) -> void:
     _run_state = run_state
@@ -133,7 +134,8 @@ func _submit(proposed: Array) -> bool:
     if not receipt.get("valid", false):
         _refresh(" ".join(receipt.get("errors", [])))
         return false
-    if not _run_state.select_bimu_constraints(proposed):
+    var accepted := bool(submit_selection.call(proposed)) if submit_selection.is_valid() else _run_state.select_bimu_constraints(proposed)
+    if not accepted:
         _refresh("비무가 시작되어 제약을 바꿀 수 없습니다.")
         return false
     _refresh()

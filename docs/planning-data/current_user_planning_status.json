@@ -4,6 +4,19 @@
   "pr_integration_policy": "RELATED_EXISTING_PRS_REVIEW_ABSORB_CORRECT_VERIFY_MERGE_WITHOUT_NAMED_REAPPROVAL",
   "project": "TEN_PACES",
   "updated_date": "2026-09-08",
+  "durable_continue_continuation": {
+    "decision": "TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01",
+    "integration_status": "LOCAL_MACHINE_VERIFIED_CONTROLLER_REVIEW_PENDING",
+    "implementation_record": "docs/operations/2026-09-08_DURABLE_SAVE_EXECUTION_REPORT.md",
+    "machine_runtime": "ORDINARY_NATIVE_PERSISTED_CAMPAIGN_10_WINS_10_REWARDS_36_ROUTES_299_ACTIVATIONS",
+    "storage_performance": "237_INTEGRATED_WRITES_MEAN_692MS_MAX_1144MS_BOUNDED_OPTIMIZATION_PENDING",
+    "human_android_accessibility_release": "NOT_RUN",
+    "remaining": [
+      "independent controller review and visible capture",
+      "reused-store latency correction",
+      "protected CI merge and main readback"
+    ]
+  },
   "constraint_continuation": {
     "decision": "TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01",
     "integration_status": "MAIN_MERGED_VERIFIED",

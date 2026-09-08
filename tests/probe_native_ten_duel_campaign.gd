@@ -147,6 +147,8 @@ func run_probe() -> void:
         ultimate_used = ultimate_used or publicly_used_player_cards.has(card_id)
     _require(ultimate_used, "base ultimate must resolve")
     print("NATIVE_CAMPAIGN_SUMMARY ", JSON.stringify({"complete": run.is_complete(), "duels": run.get_duel_history().size(), "outcomes": terminal_outcomes, "rewards": run.get_reward_history().size(), "routes": run.get_route_history().size(), "activations": activations, "cards": publicly_used_player_cards.keys(), "elapsed_ms": Time.get_ticks_msec() - started_ms, "mode": "ordinary_defaults", "failures": failures}))
+    if shell.session.enabled:
+        print("NATIVE_DURABLE_TIMINGS_MS ", JSON.stringify(shell.session.write_msec))
     shell.queue_free()
     await process_frame
     await process_frame
@@ -275,4 +277,4 @@ func _route_matches(receipt: Dictionary, choice: String, node_id: String) -> boo
     return not choice.is_empty() and str(receipt.get("id", "")) == choice and str(receipt.get("route_type", "")) == choice and str(receipt.get("node_id", "")) == node_id
 
 func _diagnostic(bridge) -> String:
-    return JSON.stringify({"duel": shell.run_state.duel_index, "bundle": bridge.combat_state.get("bundle_index", -1), "screen": shell.run_state.get_current_screen(), "presentation_state": bridge._presentation_state, "last_input": last_input})
+    return JSON.stringify({"duel": shell.run_state.duel_index, "bundle": bridge.combat_state.get("bundle_index", -1), "screen": shell.run_state.get_current_screen(), "presentation_state": bridge._presentation_state, "last_input": last_input, "save_status": shell.session.status, "save_error": shell.session.error})

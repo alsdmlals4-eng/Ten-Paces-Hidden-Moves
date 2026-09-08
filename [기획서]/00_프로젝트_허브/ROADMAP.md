@@ -10,6 +10,9 @@
 
 ## 현재 단계
 
+영속 저장·이어하기 `TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01`의 검증·전달 순서는
+`../../../docs/04_ROADMAP.md`에서 읽고 현재 결과는 Active Context/current JSON을 따른다.
+
 비무 제약 채택 `TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01`의 검증·전달 순서는
 `../../../docs/04_ROADMAP.md`에서 읽고 현재 결과는 Active Context/current JSON을 따른다.
 

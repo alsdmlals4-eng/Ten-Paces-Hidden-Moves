@@ -7,6 +7,8 @@
 
 ## 현재 기준
 
+2026-09-09 durable save/continue는 승인된 연속 구현 범위에서 로컬 구현·기계 검증을 완료했다. 제목의 새 여정/이어하기, 전체 셸 복원, 행로·보상·패배/재도전·완주 저장과 저장 실패 시 입력 정지/동일 스냅샷 재시도를 연결했다. 실제 카드 선택 UI에서 넘어오는 부가 표시 정보는 현재 판정 정의와 대조한 뒤 저장용 도메인 데이터로 내보낸다. 일반 속도의 실제 버튼 입력 캠페인은 저장을 켠 격리 위치에서 10승·10보상·36행로·299입력으로 두 번 완주했다. 마지막 237회 저장 평균 692ms, 최대 1144ms로 동기 저장 지연이 남아 있으며 후속으로 한정된 최적화를 검토한다. 마지막 실패 화면 공개 방지 교정 뒤 전체 Python 487건이 391.40초에 통과했다. 독립 검토·visible capture·protected delivery는 진행 중이고 아직 main 병합 완료가 아니다. Human·Android 실기기·접근성 사용자·release 및 전체 Blueprint 완료는 `NOT_RUN`. 책임 기록: `docs/operations/2026-09-08_DURABLE_SAVE_EXECUTION_REPORT.md`.
+
 2026-09-08 inline combat results는 PR 331 exact head `0371f886daf83683130c81437a2e2e6132d27628`로 32개 remote check를 통과하고 main `bf161025b63edd7eb441b2c4f2ae9da5155f68da`에 병합됐다. 활성 standalone 복기 overlay/추가 click 없이 resolver cause를 bounded inline lane과 terminal Result가 소비하며, reveal과 action dock은 720/800/1080 actual rect 회귀 및 controller capture를 통과했다. detached-main Python 478건, protected lifecycle과 Base operating contract가 PASS했다. native ordinary-default 10전은 실제 UI 입력 경로로 10승·10보상·36행로·299활성화를 완료했다. 이는 machine/runtime capture evidence이며 Human·물리 입력·Android·접근성 사용자·release·전체 Blueprint 완료는 `NOT_RUN`. 다음 안전 surface는 durable save/continue와 event/status/reward canon gap의 별도 설계다. 책임 기록: `docs/operations/2026-09-08_INLINE_COMBAT_RESULTS_EXECUTION_REPORT.md`, `docs/operations/2026-09-08_PR331_PROTECTED_CHANGE_APPROVAL_RECORD.md`.
 
 2026-09-08 병합된 10전 확장: 최신 사용자 지시는 10전과 비무 사이 4회 행로 선택,
@@ -73,8 +75,8 @@ active_planning_work_mode: REVIEW
 active_planning_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
 active_planning_parent_pr: NONE
 active_approval_count: SCOPED_BUILD_APPROVED_HUMAN_FINAL_NOT_RUN
-active_decision_state: INLINE_COMBAT_RESULTS_MAIN_MERGED_VERIFIED
-source_decision: TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01
+active_decision_state: DURABLE_CONTINUE_LOCAL_MACHINE_VERIFIED_CONTROLLER_REVIEW_PENDING
+source_decision: TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
 platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
@@ -92,8 +94,8 @@ accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
 performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 phase_i_vi_implementation: AUTHORIZED_AND_MERGED
 future_product_mutation_authorized: false_NEW_PRODUCT_MUTATION_REQUIRES_FRESH_APPROVED_CONTRACT
-next_package: BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS
-next_planning_decision: TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01
+next_package: DURABLE_SAVE_REUSED_STORE_LATENCY_REVIEW_AND_PROTECTED_DELIVERY_THEN_EVENT_STATUS_REWARD_CANON_GAPS
+next_planning_decision: TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01
 user_directed_planning_work_mode: REVIEW_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_COMPARISON_DEFERRED
 user_directed_planning_decision: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
 user_directed_planning_next_package: BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS

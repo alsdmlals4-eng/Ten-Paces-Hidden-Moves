@@ -178,15 +178,47 @@ func capture_planning_checkpoint() -> bool:
 
 
 func _make_checkpoint(phase: String, state: Dictionary, context: Dictionary) -> Dictionary:
+    # ProgressButton requests also contain UI execution flags. The durable domain
+    # context owns only timing facts, exactly like ActionTimingPanel's context.
+    var timing_context := {}
+    for key in ["round_number", "bundle_index", "current_timing", "total_timings", "timing_sequence"]:
+        timing_context[key] = context[key]
     return COMBAT_CHECKPOINT.portable({
         "phase": phase, "duel_index": _checkpoint_duel, "attempt_id": _checkpoint_attempt,
-        "state": state, "context": context, "enemy_lock": resolution_engine.export_enemy_lock(),
+        "state": state, "context": timing_context, "enemy_lock": resolution_engine.export_enemy_lock(),
         "binding": _vertical_slice_loadout_snapshot,
-        "player_plan": [] if phase == "PLANNING" else _committed_player_plan_snapshot,
+        "player_plan": [] if phase == "PLANNING" else _checkpoint_domain_plan(),
         "state_before": {} if phase == "PLANNING" else _committed_state_before,
         "reservation_anchors": [] if phase == "PLANNING" else Array(_ultimate_reservation_anchors),
         "review_summary": _last_review_summary if phase == "BUNDLE_RESOLVED" else {}
     })
+
+
+func _checkpoint_domain_plan() -> Array:
+    # The live dock decorates definitions with labels, art and lock presentation.
+    # Accept only an exact current producer definition before replacing it with
+    # its engine-owned definition. File validation remains exact and fail-closed.
+    var adapter = preload("res://src/ui/action_selection/action_view_model_adapter.gd").new()
+    var presentations: Dictionary = {}
+    for definition in adapter.build_basic_actions(): presentations[definition.id] = definition
+    var binding := _vertical_slice_loadout_snapshot
+    for manual in adapter.build_owned_manuals(binding.player_loadout, binding.player_mastery_by_manual):
+        for definition in manual.techniques:
+            if not definition.locked: presentations[definition.id] = definition
+    for definition in adapter.build_ultimate_actions(5, binding.player_loadout, binding.player_mastery_by_manual):
+        if not definition.locked: presentations[definition.id] = definition
+    var result: Array = []
+    for placement in _committed_player_plan_snapshot:
+        var id := str(placement.card_id)
+        var canonical: Dictionary = resolution_engine.cards_by_id.get(id, {})
+        if canonical.is_empty(): return []
+        var actual = COMBAT_CHECKPOINT.portable(placement.definition)
+        if actual != COMBAT_CHECKPOINT.portable(canonical) and actual != COMBAT_CHECKPOINT.portable(presentations.get(id, {})):
+            return []
+        var row: Dictionary = placement.duplicate(true)
+        row.definition = canonical.duplicate(true)
+        result.append(row)
+    return result
 
 
 func _publish_checkpoint(dto: Dictionary) -> bool:

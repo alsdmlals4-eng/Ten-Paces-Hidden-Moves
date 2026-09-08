@@ -13,9 +13,16 @@
     "src/combat/combat_resolution_engine.gd",
     "src/run/vertical_slice_combat_bridge.gd",
     "src/run/combat_checkpoint_codec.gd",
-    "src/ui/action_timing_panel.gd"
+    "src/ui/action_timing_panel.gd",
+    "src/run/run_session_coordinator.gd",
+    "src/run/vertical_slice_shell.gd",
+    "src/run/vertical_slice_shell_result_auto.gd",
+    "src/run/vertical_slice_shell_route_auto.gd",
+    "src/run/vertical_slice_shell_completion_auto.gd",
+    "src/ui/main_title_screen.gd",
+    "src/ui/bimu_constraint_panel.gd"
   ],
-  "approval_source": "Current user-authorized continuous implementation and exact Codex durable-save handoff; Task 1 run/storage and Task 2 deterministic combat boundaries.",
+  "approval_source": "Current user-authorized continuous implementation and exact Codex durable-save handoff; Task 1 run/storage, Task 2 combat boundaries, Task 3 title/shell/lifecycle integration and actual UI domain DTO export.",
   "approval_time": "2026-09-08T00:00:00+09:00",
-  "scope_summary": "Implement schema-1 explicit run snapshot, fail-closed validation, recoverable local file storage, idempotent revision and generation retirement; deterministic planning/committed/resolved combat DTOs, exact AI lock restore and synchronous persistence veto. Preserve combat, AI, reward, route, retry, manual-loadout, engine and asset semantics. Title/shell/lifecycle wiring remains Task 3."
+  "scope_summary": "Implement schema-1 explicit run snapshot, fail-closed validation, recoverable local file storage, idempotent revision/generation retirement, deterministic combat DTOs and exact AI lock restore; connect title Continue, transactional run progression, save-failure freeze/retry, lifecycle pause and strict UI-to-domain checkpoint export. Preserve combat, AI, reward, route, retry, manual-loadout, engine and asset semantics. Human/device/release and protected delivery remain separate gates."
 }

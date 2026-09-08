@@ -21,6 +21,10 @@
 
 ## 2. 실제 파일 책임
 
+- `src/run/run_session_coordinator.gd`: run+combat stable DTO의 단일 저장 트랜잭션, 보류 중인 동일 쓰기의 재시도, 검증된 이어하기와 terminal receipt를 소유한다. 셸 상속 체인을 구성한 뒤에만 초기화하며 화면 신호·복원 중 동기 콜백은 완성된 스냅샷의 저장 확인까지 공개하지 않는다.
+- `src/run/run_checkpoint_codec.gd`, `combat_checkpoint_codec.gd`, `run_save_store.gd`: 명시적 schema-1 DTO, 전체 검증, content binding, 검증된 백업과 세대 교체를 소유한다. 전투판은 `PLANNING / BUNDLE_COMMITTED / BUNDLE_RESOLVED`의 안정 경계만 내보내며 UI용 표시 필드를 판정 데이터와 분리한다.
+- `VerticalSliceShell` lifecycle adapter: production entry에서 로컬 저장 기본 ON, script entry는 명시적 테스트 디렉터리가 없으면 OFF다. focus/pause/close는 마지막 안정 DTO만 flush하고 presentation wait·입력을 정지한다. Android 실기기 증거를 대신하지 않는다.
+
 - `data/cards/basic_cards.json`, `ultimate_cards.json`: 현재 구형 런타임 행동.
 - `data/combat/*.json`: 전장·HUD·판정·AI preview 계약.
 - `data/run/vertical_slice_opponents.json`, `vertical_slice_opponent_archetypes.json`: 첫 5전 candidate identity/focus/seed와 reusable runtime personality profile.

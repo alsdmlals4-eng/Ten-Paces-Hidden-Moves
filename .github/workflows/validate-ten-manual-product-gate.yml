@@ -20,6 +20,9 @@ on:
       - "tests/verify_run_save_store.gd"
       - "tests/verify_combat_checkpoint_resume.gd"
       - "tests/test_durable_save_contract.py"
+      - "tests/verify_durable_run_continue.gd"
+      - "tests/durable_continue_process.gd"
+      - "tests/verify_save_entry_isolation.gd"
       - "tests/verify_bimu_constraint_runtime.gd"
       - "tests/verify_bimu_constraint_ui.gd"
       - "tests/verify_ten_manual_product_viewports.gd"
@@ -92,7 +95,7 @@ jobs:
       - name: Verify sequential public-policy ten-duel campaign
         run: godot --headless --path . --script res://tests/probe_sequential_ten_duel_campaign.gd
       - name: Verify native-input ten-duel campaign
-        run: godot --headless --path . --script res://tests/probe_native_ten_duel_campaign.gd
+        run: godot --headless --path . --script res://tests/probe_native_ten_duel_campaign.gd -- --run-save-dir=user://ci-native-durable-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Verify bimu constraint catalog and model
         run: godot --headless --path . --script res://tests/verify_bimu_constraint_model.gd
       - name: Verify bimu constraint frozen receipt and engine enforcement
@@ -107,6 +110,8 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_run_save_store.gd
       - name: Verify deterministic combat checkpoint resume
         run: godot --headless --path . --script res://tests/verify_combat_checkpoint_resume.gd
+      - name: Verify actual title continuation and transactional recovery
+        run: godot --headless --path . --script res://tests/verify_durable_run_continue.gd
       - name: Verify rendered preparation summaries
         run: godot --headless --path . --script res://tests/verify_action_card_summary.gd
       - name: Verify rest and route presentation transitions

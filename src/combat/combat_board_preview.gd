@@ -117,6 +117,9 @@ var _last_review_summary: Dictionary = {}
 var _review_terminal := false
 var _presentation_motion_snapshot: Dictionary = {}
 
+var session_input_blocked := false
+var session_suspended := false
+
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_PASS
 	contract = _load_contract()
@@ -1144,6 +1147,7 @@ func _resolve_and_present(context: Dictionary) -> void:
 			str(timing_result.get("phase", "timing"))
 		)
 		await _apply_timing_snapshot(timing_result.get("state", combat_state))
+		await _wait_for_session_resume()
 
 	var state_before_bundle_rewards := combat_state.duplicate(true)
 	combat_state = (result.get("state", combat_state) as Dictionary).duplicate(true)
@@ -1290,6 +1294,7 @@ func _advance_to_next_bundle() -> void:
 	_sync_progress_availability()
 
 func _apply_timing_snapshot(state_value) -> void:
+	await _wait_for_session_resume()
 	if typeof(state_value) != TYPE_DICTIONARY:
 		return
 	var state_before_snapshot := combat_state.duplicate(true)
@@ -1298,6 +1303,7 @@ func _apply_timing_snapshot(state_value) -> void:
 	_apply_combat_state_to_view()
 	_play_momentum_gain_sfx(state_before_snapshot, combat_state)
 	await get_tree().process_frame
+	await _wait_for_session_resume()
 	var player_target := get_tile_foot_anchor(_player_tile)
 	var enemy_target := get_tile_foot_anchor(_enemy_tile)
 	if _player_tile == _enemy_tile:
@@ -1311,7 +1317,8 @@ func _apply_timing_snapshot(state_value) -> void:
 		if enemy_moves:
 			enemy_character.animate_move_to(enemy_target)
 		if player_moves or enemy_moves:
-			await get_tree().create_timer(0.24).timeout
+			await get_tree().create_timer(0.24, false).timeout
+			await _wait_for_session_resume()
 	_defer_character_snap = false
 	_layout_board()
 
@@ -1338,7 +1345,7 @@ func _set_resolution_surface_visible(value: bool) -> void:
 				(control_value as Control).visible = value
 
 func _inputs_locked() -> bool:
-	return _presentation_state not in ["planning", "next_bundle_ready"]
+	return session_input_blocked or session_suspended or _presentation_state not in ["planning", "next_bundle_ready"]
 
 func _combat_has_ended() -> bool:
 	for actor_key in ["player", "enemy"]:
@@ -1377,8 +1384,17 @@ func _present_authoritative_events(events_value: Array, timing: int) -> void:
 	set_meta("presentation_event_count", events_value.size())
 
 func _wait_for_presentation_delay(duration: float) -> void:
-	var deadline_usec := Time.get_ticks_usec() + int(duration * 1000000.0)
-	while not _presentation_skip_requested and Time.get_ticks_usec() < deadline_usec:
+	var remaining := duration
+	while not _presentation_skip_requested and remaining > 0.0:
+		await _wait_for_session_resume()
+		var before := Time.get_ticks_usec()
+		await get_tree().process_frame
+		if not session_suspended and not get_tree().paused:
+			remaining -= float(Time.get_ticks_usec() - before) / 1000000.0
+	await _wait_for_session_resume()
+
+func _wait_for_session_resume() -> void:
+	while session_suspended or get_tree().paused:
 		await get_tree().process_frame
 
 func _event_presentation_duration(event: Dictionary) -> float:

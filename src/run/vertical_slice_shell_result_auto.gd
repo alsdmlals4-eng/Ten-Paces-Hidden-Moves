@@ -35,10 +35,9 @@ func select_result_reward(reward_type: String, target_manual_id: String = "") ->
         run_state.get_player_manual_loadout(),
         opponent
     )
-    if receipt.is_empty() or not run_state.set_pending_result_reward(receipt):
-        return false
-    _render_result()
-    return true
+    if receipt.is_empty(): return false
+    _initialize_run_session()
+    return session.transact(func(): return run_state.set_pending_result_reward(receipt))
 
 
 func _build_result_options_container() -> void:
@@ -54,6 +53,9 @@ func _build_result_options_container() -> void:
 
 
 func _render_current_screen() -> void:
+    if session != null and (session.busy or session.blocked):
+        _apply_session_input_lock()
+        return
     super._render_current_screen()
     if result_options_container != null:
         result_options_container.visible = run_state != null and run_state.get_current_screen() == VerticalSliceRunState.SCREEN_RESULT
@@ -62,6 +64,9 @@ func _render_current_screen() -> void:
 
 
 func _render_result() -> void:
+    if session != null and (session.busy or session.blocked):
+        _apply_session_input_lock()
+        return
     if result_model == null or run_state == null:
         return
     _refresh_result_snapshot()
@@ -84,6 +89,7 @@ func _render_result() -> void:
     _set_content("비무 %d 결과" % run_state.completed_duels, description, next_label)
     primary_button.disabled = run_state.get_pending_result_reward().is_empty()
     _rebuild_result_reward_buttons()
+    _apply_session_input_lock()
 
 
 func _refresh_result_snapshot() -> void:

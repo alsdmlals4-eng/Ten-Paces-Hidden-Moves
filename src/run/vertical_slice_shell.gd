@@ -26,6 +26,15 @@ var _setup_selected_manual_ids: Array[String] = []
 var _briefing_body: HBoxContainer
 var _briefing_description_scroll: ScrollContainer
 var _bimu_constraint_panel: VBoxContainer
+var session
+var _save_storage_override := ""
+var _retained_combat_view: Control
+var _recovery_panel: PanelContainer
+var _recovery_label: Label
+var _save_retry_button: Button
+var _replacement_dialog: ConfirmationDialog
+var _explicit_pause := false
+var _application_suspended := false
 
 
 func _ready() -> void:
@@ -53,15 +62,26 @@ func _ready() -> void:
     _build_shell()
     _build_setup_options()
     _render_current_screen()
+    call_deferred("_initialize_run_session")
 
 
-func start_new_run() -> bool:
+func start_new_run(replacement_confirmed: bool = false) -> bool:
+    _initialize_run_session()
+    if not session.accepts_commands(): return false
+    if session.enabled and not replacement_confirmed and (not session.available.is_empty() or session.status in ["CORRUPT", "INCOMPATIBLE", "IO_FAILURE"]):
+        _replacement_dialog.popup_centered(Vector2i(520, 200))
+        return false
     _setup_selected_manual_ids.clear()
     _refresh_setup_selection_ui()
-    return run_state.start_new_run()
+    return session.transact(Callable(run_state, "start_new_run"), true)
 
 
 func advance_noncombat() -> bool:
+    _initialize_run_session()
+    return session.transact(Callable(self, "_advance_noncombat_domain"))
+
+
+func _advance_noncombat_domain() -> bool:
     var screen := run_state.get_current_screen()
     if screen == VerticalSliceRunState.SCREEN_COMBAT or screen == VerticalSliceRunState.SCREEN_REVIEW:
         return false
@@ -77,18 +97,19 @@ func advance_noncombat() -> bool:
 func retry_failed_combat() -> bool:
     if run_state == null or run_state.get_current_screen() != VerticalSliceRunState.SCREEN_FAILURE_RETRY:
         return false
-    _discard_combat_view()
-    return run_state.retry_failed_duel()
+    _initialize_run_session()
+    return session.transact(Callable(run_state, "retry_failed_duel"))
 
 
 func end_failed_run() -> bool:
     if run_state == null:
         return false
-    _discard_combat_view()
-    return run_state.end_failed_run()
+    _initialize_run_session()
+    return session.transact(Callable(run_state, "end_failed_run"))
 
 
 func complete_combat_for_runtime(result: Dictionary) -> bool:
+    if session != null and session.enabled: return session.terminal_ready(result)
     return run_state.mark_combat_finished(result)
 
 
@@ -107,6 +128,7 @@ func get_setup_selected_manual_ids() -> Array:
 
 
 func toggle_setup_manual(manual_id: String) -> bool:
+    if session != null and not session.accepts_commands(): return false
     if run_state == null or run_state.get_current_screen() != VerticalSliceRunState.SCREEN_SETUP:
         return false
     if not _setup_buttons.has(manual_id):
@@ -262,6 +284,7 @@ func _on_setup_manual_toggled(pressed: bool, manual_id: String) -> void:
 
 
 func _set_setup_manual_selected(manual_id: String, selected: bool) -> bool:
+    if session != null and not session.accepts_commands(): return false
     if not _setup_buttons.has(manual_id):
         return false
     var already_selected := manual_id in _setup_selected_manual_ids
@@ -295,10 +318,14 @@ func _refresh_setup_selection_ui() -> void:
 
 
 func _on_screen_changed(_previous_screen: String, _current_screen: String) -> void:
-    _render_current_screen()
+    if session != null and (session.busy or session.blocked): return
+    _publish_session_screen()
 
 
 func _render_current_screen() -> void:
+    if session != null and (session.busy or session.blocked):
+        _apply_session_input_lock()
+        return
     if content_panel == null or combat_host == null:
         return
 
@@ -320,6 +347,7 @@ func _render_current_screen() -> void:
 
     if keeps_combat_visible:
         _ensure_combat_view()
+        _apply_session_input_lock()
         return
 
     match screen:
@@ -388,6 +416,7 @@ func _render_current_screen() -> void:
             primary_button.disabled = true
         _:
             _set_content("Unknown", screen, "계속")
+    _apply_session_input_lock()
 
 
 func _render_briefing() -> void:
@@ -439,6 +468,7 @@ func _show_bimu_briefing() -> void:
         _bimu_constraint_panel.size_flags_stretch_ratio = 1.3
         _briefing_body.add_child(_bimu_constraint_panel)
         _bimu_constraint_panel.selection_changed.connect(_on_bimu_selection_changed)
+        _bimu_constraint_panel.submit_selection = Callable(self, "_submit_bimu_constraints")
     _briefing_body.visible = true
     description_label.reparent(_briefing_description_scroll)
     description_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -483,15 +513,21 @@ func _set_content(title: String, description: String, button_text: String) -> vo
 
 func _ensure_combat_view() -> void:
     if _combat_view != null and is_instance_valid(_combat_view):
-        if _combat_view_duel_index == run_state.duel_index:
+        if _combat_view_duel_index == run_state.duel_index and int(_combat_view.get_meta("shell_attempt", 0)) == run_state._attempt_id:
             return
-        _discard_combat_view()
+        if session != null and session.busy:
+            _retained_combat_view = _combat_view
+            _combat_view = null
+        else:
+            _discard_combat_view()
 
     _combat_view = COMBAT_SCENE.instantiate() as Control
     if _combat_view == null:
         push_error("Vertical Slice shell could not instantiate the combat bridge.")
         return
     _combat_view_duel_index = run_state.duel_index
+    _combat_view.set_meta("shell_attempt", run_state._attempt_id)
+    _combat_view.visible = session == null or not session.busy
     _combat_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     combat_host.add_child(_combat_view)
 
@@ -545,10 +581,162 @@ func _on_terminal_review_ready(result: Dictionary) -> void:
         return
     var run_result := result.duplicate(true)
     run_result["duel_index"] = run_state.duel_index
+    if session != null and session.enabled:
+        session.terminal_ready(run_result)
+        return
     complete_combat_for_runtime(run_result)
 
 
 func _on_terminal_review_confirmed(_result: Dictionary) -> void:
+    if session != null and session.enabled: return
     if run_state.get_current_screen() != VerticalSliceRunState.SCREEN_REVIEW:
         return
     complete_review_for_runtime()
+
+
+func configure_save_storage(path: String) -> void:
+    assert(not is_inside_tree(), "Configure isolated storage before adding the shell")
+    _save_storage_override = path
+
+
+func _initialize_run_session() -> void:
+    if session != null: return
+    session = preload("res://src/run/run_session_coordinator.gd").new()
+    var script_entry := "--script" in OS.get_cmdline_args() or "-s" in OS.get_cmdline_args()
+    var path := _save_storage_override
+    for argument in OS.get_cmdline_user_args():
+        if argument.begins_with("--run-save-dir="): path = argument.trim_prefix("--run-save-dir=")
+    session.configure(self, "user://run_checkpoint" if path.is_empty() else path, not script_entry or not path.is_empty())
+    process_mode = Node.PROCESS_MODE_ALWAYS
+    combat_host.process_mode = Node.PROCESS_MODE_PAUSABLE
+    if session.enabled: get_tree().auto_accept_quit = false
+    main_title_screen.continue_requested.connect(continue_saved_run)
+    main_title_screen.reread_requested.connect(func():
+        if session.accepts_commands():
+            session.refresh_available()
+            _publish_session_screen())
+    _replacement_dialog = ConfirmationDialog.new()
+    _replacement_dialog.title = "새 여정 시작"
+    _replacement_dialog.dialog_text = "현재 여정을 새 여정으로 바꿉니다. 계속하시겠습니까?\n읽을 수 없는 저장 기록은 진단 사본으로 보존합니다."
+    _replacement_dialog.ok_button_text = "새 여정 시작"
+    _replacement_dialog.cancel_button_text = "돌아가기"
+    _replacement_dialog.confirmed.connect(func(): start_new_run(true))
+    add_child(_replacement_dialog)
+    _build_save_recovery()
+    _publish_session_screen()
+
+
+func continue_saved_run() -> bool:
+    _initialize_run_session()
+    return session.continue_run()
+
+
+func retry_durable_save() -> bool:
+    return await session.retry()
+
+
+func _submit_bimu_constraints(proposed: Array) -> bool:
+    _initialize_run_session()
+    return session.transact(func(): return run_state.select_bimu_constraints(proposed))
+
+
+func _publish_session_screen() -> void:
+    if session != null and (session.busy or session.blocked):
+        _apply_session_input_lock()
+        return
+    _render_current_screen()
+    if session != null:
+        main_title_screen.configure_continue(session.available, session.status)
+        _apply_session_input_lock()
+
+
+func _build_save_recovery() -> void:
+    _recovery_panel = PanelContainer.new()
+    _recovery_panel.name = "SaveRecoveryPanel"
+    _recovery_panel.anchor_left = 0.18
+    _recovery_panel.anchor_right = 0.82
+    _recovery_panel.anchor_top = 0.02
+    _recovery_panel.anchor_bottom = 0.02
+    _recovery_panel.process_mode = Node.PROCESS_MODE_ALWAYS
+    add_child(_recovery_panel)
+    var stack := VBoxContainer.new()
+    _recovery_panel.add_child(stack)
+    _recovery_label = Label.new()
+    _recovery_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+    stack.add_child(_recovery_label)
+    _save_retry_button = Button.new()
+    _save_retry_button.name = "RetryDurableSaveButton"
+    _save_retry_button.text = "저장 다시 시도"
+    _save_retry_button.pressed.connect(retry_durable_save)
+    stack.add_child(_save_retry_button)
+    var resume_button := Button.new()
+    resume_button.name = "ResumeSessionButton"
+    resume_button.text = "계속하기"
+    resume_button.pressed.connect(func(): set_session_paused(false))
+    stack.add_child(resume_button)
+
+
+func _apply_session_input_lock() -> void:
+    if session == null: return
+    var locked: bool = not session.accepts_commands()
+    for host in [content_panel, main_title_screen, combat_host]: _lock_session_buttons(host, locked)
+    if is_instance_valid(_combat_view):
+        _combat_view.session_input_blocked = locked
+        _combat_view.session_suspended = session.suspended
+        _combat_view._sync_progress_availability()
+    if _recovery_panel != null:
+        _recovery_panel.visible = session.blocked or session.suspended
+        _recovery_label.text = "저장을 확인하지 못했습니다. 진행을 멈췄습니다. 저장 위치를 확인한 뒤 다시 시도해 주세요." if session.blocked else "일시 정지 · 마지막으로 확정된 진행을 보존합니다."
+        _save_retry_button.visible = session.blocked
+        _save_retry_button.disabled = session.suspended
+        _recovery_panel.find_child("ResumeSessionButton", true, false).visible = _explicit_pause
+
+
+func _lock_session_buttons(node: Node, locked: bool) -> void:
+    if node is BaseButton:
+        if locked:
+            if not node.has_meta("before_session_lock"): node.set_meta("before_session_lock", node.disabled)
+            node.disabled = true
+        elif node.has_meta("before_session_lock"):
+            node.disabled = bool(node.get_meta("before_session_lock"))
+            node.remove_meta("before_session_lock")
+    for child in node.get_children(): _lock_session_buttons(child, locked)
+
+
+func _release_retained_combat() -> void:
+    if is_instance_valid(_retained_combat_view): _retained_combat_view.queue_free()
+    _retained_combat_view = null
+    if is_instance_valid(_combat_view): _combat_view.visible = true
+    if run_state.get_current_screen() == "MAIN": _discard_combat_view()
+
+
+func set_session_paused(value: bool) -> void:
+    _explicit_pause = value
+    _update_session_suspension()
+
+
+func _update_session_suspension() -> void:
+    if session == null or not session.enabled: return
+    var value := _explicit_pause or _application_suspended
+    if value and not session.suspended: session.flush_stable()
+    session.suspended = value
+    get_tree().paused = value
+    if not value and is_instance_valid(_combat_view):
+        _combat_view.session_suspended = false
+        _combat_view.session_input_blocked = session.blocked
+        _combat_view._sync_runtime_context()
+        _combat_view._sync_action_selection_dock()
+    _publish_session_screen()
+
+
+func _notification(what: int) -> void:
+    if session == null or not session.enabled: return
+    if what in [NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_APPLICATION_PAUSED]:
+        _application_suspended = true
+        _update_session_suspension()
+    elif what in [NOTIFICATION_APPLICATION_FOCUS_IN, NOTIFICATION_APPLICATION_RESUMED]:
+        _application_suspended = false
+        _update_session_suspension()
+    elif what == NOTIFICATION_WM_CLOSE_REQUEST:
+        if session.flush_stable(): get_tree().quit()
+        else: _apply_session_input_lock()

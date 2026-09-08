@@ -25,19 +25,15 @@ func select_growth_route(choice_type: String, target_manual_id: String = "") -> 
     var target := target_manual_id
     if choice_type == "focused_training" and target.is_empty():
         target = _selected_focus_target_manual_id()
-    if not run_state.select_growth_route(choice_type, target):
-        return false
-    _render_growth_route()
-    return true
+    _initialize_run_session()
+    return session.transact(func(): return run_state.select_growth_route(choice_type, target))
 
 
 func select_info_route(category: String) -> bool:
     if run_state == null or run_state.get_current_screen() != VerticalSliceRunState.SCREEN_ROUTE_INFO:
         return false
-    if not run_state.select_info_route(category):
-        return false
-    _render_info_route()
-    return true
+    _initialize_run_session()
+    return session.transact(func(): return run_state.select_info_route(category))
 
 
 func get_active_combat_resource_snapshot() -> Dictionary:
@@ -61,6 +57,9 @@ func _build_route_options_container() -> void:
 
 
 func _render_current_screen() -> void:
+    if session != null and (session.busy or session.blocked):
+        _apply_session_input_lock()
+        return
     _set_route_composition(false)
     super._render_current_screen()
     if route_options_container == null or run_state == null:
@@ -78,6 +77,9 @@ func _render_current_screen() -> void:
 
 
 func _render_jianghu() -> void:
+    if session != null and (session.busy or session.blocked):
+        _apply_session_input_lock()
+        return
     _clear_route_options()
     var pending := run_state.get_pending_jianghu()
     var resting := str(pending.get("route_type", "")) == "rest"
@@ -107,6 +109,7 @@ func _render_jianghu() -> void:
         route_options_container.add_child(button)
     primary_button.text = "다음 갈림길" if step < 3 else "다음 비무 브리핑"
     primary_button.disabled = pending.is_empty()
+    _apply_session_input_lock()
 
 
 func _set_route_composition(resting: bool) -> void:
@@ -123,8 +126,8 @@ func _set_route_composition(resting: bool) -> void:
 
 
 func _choose_jianghu(node_id: String, step: int) -> void:
-    if run_state.select_jianghu_node(node_id, step):
-        _render_jianghu()
+    _initialize_run_session()
+    session.transact(func(): return run_state.select_jianghu_node(node_id, step))
 
 
 func _render_briefing() -> void:
@@ -138,6 +141,9 @@ func _render_briefing() -> void:
 
 
 func _render_growth_route() -> void:
+    if session != null and (session.busy or session.blocked):
+        _apply_session_input_lock()
+        return
     if route_options_container == null or run_state == null:
         return
     _clear_route_options()
@@ -188,9 +194,13 @@ func _render_growth_route() -> void:
     primary_button.disabled = not selected
     if selected:
         description_label.text += "\n선택 확정됨 · 계속하면 다음 정보/대비 노드로 이동합니다."
+    _apply_session_input_lock()
 
 
 func _render_info_route() -> void:
+    if session != null and (session.busy or session.blocked):
+        _apply_session_input_lock()
+        return
     if route_options_container == null or run_state == null:
         return
     _clear_route_options()
@@ -216,6 +226,7 @@ func _render_info_route() -> void:
     primary_button.disabled = intel.is_empty()
     if not intel.is_empty():
         description_label.text += "\n\n선택한 단서 · %s" % str(intel.get("text", ""))
+    _apply_session_input_lock()
 
 
 func _on_info_option_pressed(category: String) -> void:
@@ -223,7 +234,9 @@ func _on_info_option_pressed(category: String) -> void:
 
 
 func _ensure_combat_view() -> void:
+    var previous := _combat_view
     super._ensure_combat_view()
+    if _combat_view == previous: return
     if _combat_view == null or not is_instance_valid(_combat_view) or run_state == null:
         return
     if not _combat_view.has_method("apply_vertical_slice_player_resources"):

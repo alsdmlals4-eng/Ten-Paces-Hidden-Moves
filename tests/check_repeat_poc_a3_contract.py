@@ -60,7 +60,7 @@ def main() -> None:
         assert token in board, f"board A3 integration missing token: {token}"
     assert "_show_review_panel" not in board, "active board must not restore the standalone review gate"
     assert "combat_review_panel.show_summary" not in board, "active board must not present the legacy review overlay"
-    assert 'return _presentation_state not in ["planning", "next_bundle_ready"]' in board
+    assert 'return session_input_blocked or session_suspended or _presentation_state not in ["planning", "next_bundle_ready"]' in board
 
     print("repeat POC A3 static contract: PASS")
 

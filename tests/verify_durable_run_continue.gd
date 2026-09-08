@@ -1,0 +1,191 @@
+extends SceneTree
+
+const SHELL := preload("res://scenes/run/vertical_slice_shell.tscn")
+var failures: Array[String] = []
+var storage := "user://durable_continue_test_%d_%d" % [OS.get_process_id(), Time.get_ticks_usec()]
+
+func _initialize() -> void:
+    create_timer(180.0).timeout.connect(func(): printerr("DURABLE_CONTINUE timed out"); quit(1))
+    call_deferred("_run")
+
+func check(value: bool, message: String) -> void:
+    if not value: failures.append(message)
+
+func make_shell():
+    var shell = SHELL.instantiate()
+    if shell.has_method("configure_save_storage"): shell.configure_save_storage(storage)
+    root.add_child(shell)
+    await process_frame
+    return shell
+
+func _run() -> void:
+    var shell = await make_shell()
+    check(shell.has_method("configure_save_storage"), "actual shell must expose isolated durable storage")
+    check(shell.find_child("MainContinueButton", true, false) != null, "title must offer validated Continue")
+    if failures.is_empty():
+        check(shell.start_new_run(), "new generation must save setup")
+        var options: Array = shell.starter_manual_catalog.get_options()
+        for option in options.slice(0, 4): shell.toggle_setup_manual(str(option.manual_id))
+        check(shell.advance_noncombat(), "starter confirmation saves")
+        check(shell.advance_noncombat(), "intro advances")
+        var revision: int = shell.session.last_durable.revision
+        shell._render_current_screen()
+        check(shell.session.last_durable.revision == revision, "briefing render must not autosave")
+        shell.session.store.io_guard = func(operation, _path): return operation != "write_primary"
+        check(not shell.advance_noncombat(), "briefing combat save failure reported")
+        check(shell.session.blocked, "save failure blocks irreversible commands")
+        check(not shell.combat_host.visible, "unacknowledged combat transition must not publish staged board")
+        check(not shell.advance_noncombat(), "blocked command rejected")
+        check(shell.primary_button.disabled, "failure rendering keeps primary input disabled")
+        shell.session.store.io_guard = Callable()
+        check(await shell.retry_durable_save(), "retry recovers exact pending payload")
+        check(shell.run_state.get_current_screen() == "COMBAT", "retry publishes combat")
+        var dto: Dictionary = shell._combat_view.get_last_stable_checkpoint()
+        check(dto.phase == "PLANNING", "first combat checkpoint stable")
+        shell.queue_free()
+        await process_frame
+        shell = await make_shell()
+        check(shell.find_child("MainContinueButton", true, false).visible, "valid saved run offered on title")
+        for viewport_size in [Vector2i(960, 640), Vector2i(1280, 720), Vector2i(1280, 800), Vector2i(1920, 1080)]:
+            root.size = viewport_size
+            root.content_scale_size = viewport_size
+            shell.size = Vector2(viewport_size)
+            await process_frame
+            await process_frame
+            var title_button: Button = shell.find_child("MainContinueButton", true, false)
+            var notice: Label = shell.find_child("SaveContinueNotice", true, false)
+            check(title_button.get_global_rect().end.y <= root.size.y and notice.get_global_rect().end.y <= root.size.y, "title Continue and notice fit " + str(viewport_size))
+        check(shell.continue_saved_run(), "actual subclass chain restores")
+        check(shell._combat_view.get_last_stable_checkpoint() == dto, "restore retains complete planning DTO")
+        shell._combat_view.combat_state.player.health[0] -= 1
+        var health: int = shell._combat_view.combat_state.player.health[0]
+        shell._ensure_combat_view()
+        check(shell._combat_view.combat_state.player.health[0] == health, "existing ensure never resets restored resources")
+        # Synthetic terminal fixtures test transaction consumers, not campaign play.
+        check(shell.complete_combat_for_runtime({"outcome": "loss", "review_causes": [{"event": "miss_range"}]}), "defeat committed directly to failure screen")
+        check(shell.run_state.get_current_screen() == "FAILURE_RETRY", "internal REVIEW never durable")
+        var old_board = shell._combat_view
+        shell.session.store.io_guard = func(operation, _path): return operation != "write_primary"
+        check(not shell.retry_failed_combat(), "retry combat write failure reported")
+        check(is_instance_valid(old_board) and old_board.is_inside_tree(), "failed retry retains previous board")
+        check(shell._retained_combat_view == old_board, "old board explicitly retained until acknowledgment")
+        check(old_board.visible and not shell._combat_view.visible, "failed retry keeps published board visible and candidate hidden")
+        check(shell.run_state._attempt_id == 1, "retry staged once")
+        check(not shell.retry_failed_combat(), "repeat retry command refused while pending")
+        shell.session.store.io_guard = Callable()
+        check(await shell.retry_durable_save(), "retry write recovers")
+        check(shell._combat_view.visible, "acknowledged retry publishes candidate board")
+        check(shell.run_state._attempt_id == 1, "disk retry never consumes another game retry")
+        var board = shell._combat_view
+        # A process-frame continuation must not finish movement or a bundle while paused.
+        var moved: Dictionary = board.combat_state.duplicate(true)
+        moved.player.tile = 3
+        board._apply_timing_snapshot(moved)
+        shell.set_session_paused(true)
+        var paused_state: Dictionary = board.combat_state.duplicate(true)
+        var paused_run: Dictionary = shell.run_state.export_snapshot()
+        await create_timer(0.35, true).timeout
+        check(board.combat_state == paused_state and shell.run_state.export_snapshot() == paused_run, "pause freezes state and receipts across frame wait")
+        check(board._defer_character_snap, "paused frame continuation does not settle movement")
+        check(not shell.advance_noncombat(), "paused command rejected")
+        shell.set_session_paused(false)
+        await create_timer(0.5, true).timeout
+        check(not board._defer_character_snap, "resume settles movement once")
+        for i in [1, 2, 3]:
+            for action in board.action_selection_dock.basic_panel.actions:
+                if action.id == "basic_guard": board.action_selection_dock.request_action(action)
+        board.combat_progress_button.request_progress()
+        check(not shell.session.blocked, "actual ProgressButton UI request produces a valid domain checkpoint")
+        shell.set_session_paused(true)
+        paused_state = board.combat_state.duplicate(true)
+        var paused_phase: String = board._presentation_state
+        var count: int = board._resolution_count
+        await create_timer(0.4, true).timeout
+        check(board.combat_state == paused_state and board._presentation_state == paused_phase and board._resolution_count == count, "paused resolution presentation cannot advance phase/resources/counters")
+        shell.set_session_paused(false)
+        var deadline := Time.get_ticks_msec() + 15000
+        while board._presentation_state not in ["next_bundle_ready", "terminal_result_ready"] and Time.get_ticks_msec() < deadline: await process_frame
+        check(board._resolution_count == count and board.combat_state.bundle_index == 2, "resume advances one bundle without rerunning resolver")
+        var committed: Array = board._committed_player_plan_snapshot.duplicate(true)
+        board._committed_player_plan_snapshot[0].definition.damage = "forged damage"
+        check(board._checkpoint_domain_plan().is_empty(), "changed gameplay definition is rejected, never repaired by producer")
+        board._committed_player_plan_snapshot = committed
+        check(shell.complete_combat_for_runtime({"outcome": "win"}), "synthetic result committed")
+        shell._on_terminal_review_confirmed({"outcome": "win"})
+        check(shell.run_state.completed_duels == 1, "deferred terminal confirmation does not repeat receipt")
+        check(shell.select_result_reward("free_training"), "reward pending saved")
+        var pending_snapshot: Dictionary = shell.run_state.export_snapshot()
+        shell.queue_free()
+        await process_frame
+        shell = await make_shell()
+        check(shell.continue_saved_run(), "pending reward Continue")
+        check(shell.run_state.export_snapshot() == pending_snapshot, "pending reward restored without granting")
+        shell.session.store.io_guard = func(operation, _path): return operation != "write_primary"
+        check(not shell.advance_noncombat(), "reward confirmation disk failure")
+        check(shell.run_state.get_reward_history().size() == 1, "reward transaction staged once")
+        shell._render_jianghu()
+        check(shell.primary_button.disabled, "direct route render retains freeze")
+        shell.session.store.io_guard = Callable()
+        check(await shell.retry_durable_save(), "reward confirmation retry")
+        check(shell.run_state.get_reward_history().size() == 1, "reward retry grants exactly once")
+        # Rest is an authored choice at the third node in the first interval.
+        for step in range(2):
+            shell._choose_jianghu(str(shell.run_state.get_jianghu_options()[0].id), step)
+            check(shell.advance_noncombat(), "reach authored rest choice")
+        for option in shell.run_state.get_jianghu_options():
+            if option.id == "rest": shell._choose_jianghu(str(option.id), 2)
+        var route_snapshot: Dictionary = shell.run_state.export_snapshot()
+        check(not shell.run_state.get_pending_jianghu().is_empty(), "rest effect and receipt saved together")
+        shell.queue_free()
+        await process_frame
+        shell = await make_shell()
+        check(shell.continue_saved_run(), "rest Continue")
+        check(shell.run_state.export_snapshot() == route_snapshot, "rest never applied twice on reopen")
+        var after_rest: Dictionary = shell.run_state.get_player_run_resources()
+        check(shell.advance_noncombat(), "same-screen route advance saved")
+        check(shell.run_state.get_player_run_resources() == after_rest and shell.run_state.route_visits == 3, "route advance consumes pending once")
+        print("DURABLE_CONTINUE integrated_write_ms=", shell.session.write_msec)
+    shell.queue_free()
+    await process_frame
+    # Invalid/incompatible slots preserve evidence before explicit replacement.
+    var primary := storage.path_join("primary.json")
+    var backup := storage.path_join("backup.json")
+    var truncated := FileAccess.open(primary, FileAccess.WRITE)
+    truncated.store_string("{truncated")
+    truncated.close()
+    shell = await make_shell()
+    check(shell.session.status == "RECOVERED_BACKUP", "truncated primary offers validated backup")
+    check("백업" in shell.find_child("SaveContinueNotice", true, false).text, "backup recovery disclosed on title")
+    shell.queue_free()
+    await process_frame
+    var future := FileAccess.open(primary, FileAccess.WRITE)
+    future.store_string('{"schema_version":999}')
+    future.close()
+    shell = await make_shell()
+    check(shell.session.status == "INCOMPATIBLE", "future schema title fails closed without backup downgrade")
+    check(not shell.find_child("MainContinueButton", true, false).visible, "future schema cannot continue")
+    check("버전" in shell.find_child("SaveContinueNotice", true, false).text, "future schema explains incompatibility")
+    shell.queue_free()
+    await process_frame
+    for path in [primary, backup]:
+        var file := FileAccess.open(path, FileAccess.WRITE)
+        file.store_string("{truncated")
+        file.close()
+    shell = await make_shell()
+    check(shell.session.status == "CORRUPT", "both corrupt fail closed on title")
+    check(not shell.find_child("SaveContinueNotice", true, false).text.is_empty(), "corrupt title gives player feedback")
+    var hash := FileAccess.get_sha256(primary)
+    check(not shell.start_new_run(), "corrupt replacement asks player confirmation")
+    check(FileAccess.get_sha256(primary) == hash, "confirmation retains original source")
+    shell._replacement_dialog.hide()
+    shell.session.store.io_guard = func(operation, _path): return not operation.begins_with("preserve_")
+    check(not shell.start_new_run(true), "evidence preservation failure blocks replacement")
+    check(FileAccess.get_sha256(primary) == hash, "preservation failure never overwrites source")
+    shell.session.store.io_guard = Callable()
+    check(await shell.retry_durable_save(), "replacement retries original pending generation")
+    check(FileAccess.file_exists(storage.path_join("primary_evidence_" + hash + ".json")), "original corrupt evidence retained")
+    shell.queue_free()
+    await process_frame
+    for failure in failures: printerr("DURABLE_CONTINUE_FAIL: ", failure)
+    print("DURABLE_CONTINUE ", "PASS" if failures.is_empty() else "FAIL")
+    quit(0 if failures.is_empty() else 1)
