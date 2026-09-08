@@ -33,3 +33,12 @@ Human playtest is finished. Exact protected-path approval must match the final P
   A fresh exact protected-path manifest is required before delivery of this package.
 - Implementation and review are in progress. Visible/Human/Android/release acceptance
   is not supplied by this BUILD approval or the pure model tests.
+
+## Separate continuation: single `행동 실행` Blueprint transition
+
+- Decision: `TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01`, section 1.2; this CTA-only supersession replaces the player-facing two-step branch of `TEN-DEC-20260901-ACTION-PLAN-LOCK-AND-EXECUTE-CTA-01`.
+- Approval source: the current user's approved single-execute Blueprint implementation continuation and exact Codex handoff.
+- Scope: the active combat progress control uses exactly `행동 실행`; one complete and target-ready activation closes private planning and starts exactly one existing authoritative bundle resolution. Incomplete, target-incomplete, and repeated resolving inputs remain rejected.
+- Protected product paths are limited to `src/combat/combat_board_preview.gd`, `src/combat/combat_board_preview_auto.gd`, and `src/ui/combat_progress_button.gd`; the exact one-time manifest remains mandatory.
+- Preserve 3/3/4 private commitments, reservations, public-only AI, resolver mechanics, rewards, numerical rules, save schema, routes, audio, engine and existing approved assets. Standalone review removal is a separate gap.
+- Machine tests and the native ordinary-default campaign do not provide physical-input, Human UX, accessibility-user, Android-device or release acceptance.

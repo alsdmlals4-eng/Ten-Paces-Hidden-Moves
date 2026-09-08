@@ -26,11 +26,12 @@
 
 ## 검증 증거
 
-- Fresh import: Godot 4.7.1 headless editor import 실행; 생성 import/UID는 unstaged 유지.
-- RED: 변경 전 focused `verify_frontal_duel_plan_lock.gd`에서 label, one-activation resolution, presentation 진입 3 assertions가 의도대로 실패.
-- GREEN: focused PASS. 관련 `verify_combat_board`, pointer lock, keyboard accessibility, prepare auto-placement contract, action reveal, presentation liveness, terminal presentation, ultimate UI 모두 PASS.
-- 전체 Python: `474 passed in 15.85s`.
-- ordinary-default native campaign: exit 0, `activations=343`, 10 wins/10 duels, 10 rewards, 36 routes, real terminal HP/history consistency, Shaolin/Yang seven-star와 base ultimate 사용, exact bidirectional resource assertions PASS; elapsed `140394ms`.
+- Fresh import: `Godot_v4.7.1-stable_win64_console.exe --headless --editor --path . --quit`; 생성 import/UID는 unstaged 유지.
+- RED: `Godot_v4.7.1-stable_win64_console.exe --headless --path . --script res://tests/verify_frontal_duel_plan_lock.gd`가 변경 전 label, one-activation resolution, presentation 진입 3 assertions에서 의도대로 실패.
+- GREEN: 같은 focused command PASS. 같은 Godot invocation으로 `verify_combat_board.gd`, `verify_combat_pointer_lock.gd`, `verify_combat_keyboard_accessibility.gd`, `verify_combat_action_reveal.gd`, `verify_combat_presentation_liveness.gd`, `verify_combat_terminal_presentation.gd`, `verify_ultimate_ui.gd` PASS; `python tests/check_prepare_auto_placement_contract.py` PASS.
+- 전체 Python: `python -m pytest -q` → `474 passed in 15.95s` (latest-main reconciliation 뒤 최종 재실행; 최초 run `474 passed in 15.85s`).
+- ordinary-default native campaign: `Godot_v4.7.1-stable_win64_console.exe --headless --path . --script res://tests/probe_native_ten_duel_campaign.gd` → exit 0, `activations=343`, 10 wins/10 duels, 10 rewards, 36 routes, real terminal HP/history consistency, Shaolin/Yang seven-star와 base ultimate 사용, exact bidirectional resource assertions PASS; elapsed `140394ms`.
+- Base validator: 초기 operating-contract check PASS. 생성 import/UID가 없는 clean controller checkout에서 `python C:/Users/user/Documents/GitHub/Base/tools/check_approved_project_operating_contract.py --project-root . --base-repository C:/Users/user/Documents/GitHub/Base --protected-base 12fe75ca795c9af640a58eff975e2a6cbe02888d --approval docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json --external-approval true --check` PASS. 구현 작업트리에서는 의도적으로 보존한 generated import/UID가 추가 protected delta로 감지되므로 exact-path validator를 재해석하지 않는다.
 - 알려진 ObjectDB/audio exit warning은 기존 진단이며 억제·수정하지 않았다.
 
 ## 5회 전체 범위 적대 검토
@@ -45,6 +46,8 @@
 
 - focused test와 전체 native probe가 single activation exactly-once를 직접 소유하도록 갱신했다. 두-click 기대를 남기지 않고 기존 target/resource/reveal/review assertions는 유지했다.
 - 보호 변경은 baseline `12fe75ca…`와 정확한 product path 3개로 `PROJECT_PROTECTED_CHANGE_APPROVAL.json`에 등록했다. archive/promotion은 controller의 merge lifecycle 책임이다.
+- `.github/workflows/validate-base-v9-adoption.yml`의 changed-BUILD-record gate를 충족하도록 기존 `BUILD_APPROVAL_2026-09-08.md`에 이전 package를 보존한 별도 CTA continuation을 추가했다.
+- Review fix round 1 검증: `git diff --name-only origin/main` 결과에 workflow와 같은 runtime/BUILD 정규식을 적용한 명령 → `CHANGED_PATH_BUILD_GATE PASS runtime=3 build=1`; `python -m unittest tests.test_base_v9_adoption tests.test_approved_protected_change_adoption tests.test_approved_protected_change_workflow tests.test_base_current_work_contract_adaptation` → `Ran 9 tests ... OK`; `python tools/check_project_operating_system.py` → `project operating system: PASS`.
 
 ## 미검증·남은 위험
 
