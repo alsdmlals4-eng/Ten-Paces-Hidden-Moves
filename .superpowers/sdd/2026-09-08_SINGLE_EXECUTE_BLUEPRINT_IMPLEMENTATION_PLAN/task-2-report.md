@@ -8,5 +8,6 @@
 - Focused/adjacent Godot: action dock, martial panel, action-selection integration, bimu constraint UI/runtime, ultimate UI PASS; known ultimate ObjectDB warning remains.
 - Full Python: `474 passed in 17.73s`.
 - Operating/protected-path regression: project operating system PASS; 9/9 selected contract tests PASS.
+- Fail-closed review fix round 2: captured Godot output and `$LASTEXITCODE` immediately, returned native nonzero first, and reserved wrapper exit `42` for a false-zero `FAILED`/missing-`OK` marker. Guard-only RED returned native/wrapper status `1` with `FAILED count=7` and `[553713, 558264, 571180]`; restored GREEN returned native/wrapper status `0`, `OK`, and `[1198, 1349, 1348]`. Product/test paths were read back equal to `a3b1ef11` before GREEN.
 - Durable evidence: `docs/operations/2026-09-08_SINGLE_EXECUTE_BLUEPRINT_EXECUTION_REPORT.md` optimization section. Approval and same-date BUILD records append the exact product path without replacing Task 1 scope.
 - Evidence ceiling: physical/Human/accessibility-user/Android/release and controller independent replay/CI/merge/readback remain `NOT_RUN`.
