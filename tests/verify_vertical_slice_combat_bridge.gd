@@ -114,18 +114,18 @@ func _run() -> void:
 
     _expect_false(shell.advance_noncombat(), "RESULT must not leave until a reward is selected.")
     _expect_true(shell.select_result_reward("free_training"), "Bridge flow must select one Result reward before Route.")
-    _expect_true(shell.advance_noncombat(), "Reward-confirmed RESULT must advance to Growth/Recovery.")
-    _expect_eq(shell.run_state.get_current_screen(), "ROUTE_GROWTH", "Bridge flow must enter Growth/Recovery before Info/Preparation.")
-    _expect_false(shell.advance_noncombat(), "Growth/Recovery may not be skipped without an explicit Route choice.")
-    _expect_true(shell.select_growth_route("recovery"), "Bridge flow must be able to select the legal recovery Route choice.")
-    _expect_true(shell.advance_noncombat(), "Confirmed Growth/Recovery must advance to Info/Preparation.")
-    _expect_eq(shell.run_state.get_current_screen(), "ROUTE_INFO", "Bridge flow must enter Info/Preparation after Growth/Recovery.")
-    _expect_false(shell.advance_noncombat(), "Info/Preparation may not be skipped without an explicit public clue choice.")
-    var info_options: Array = shell.run_state.get_info_route_options()
-    _expect_eq(info_options.size(), 3, "Info/Preparation must expose exactly three public clue options.")
-    if info_options.size() == 3:
-        _expect_true(shell.select_info_route(str((info_options[0] as Dictionary).get("category", ""))), "Bridge flow must select one legal Info/Preparation clue.")
-    _expect_true(shell.advance_noncombat(), "Confirmed Info/Preparation must advance to Duel 2 Briefing.")
+    _expect_true(shell.advance_noncombat(), "Reward-confirmed Result must advance to Jianghu.")
+    _expect_eq(shell.run_state.get_current_screen(), "JIANGHU", "Bridge flow must enter the four-choice Jianghu interval.")
+    for step in range(4):
+        _expect_false(shell.advance_noncombat(), "Jianghu Step %d may not be skipped." % step)
+        var route_options: Array = shell.run_state.get_jianghu_options()
+        _expect_eq(route_options.size(), 3, "Jianghu must expose exactly three choices at each step.")
+        if route_options.size() == 3:
+            var route_id := "rest" if step == 2 else str((route_options[0] as Dictionary).get("id", ""))
+            _expect_true(shell.run_state.select_jianghu_node(route_id, step), "Bridge flow must select one offered Jianghu choice.")
+        _expect_true(shell.advance_noncombat(), "Confirmed Jianghu choice must advance Step %d." % step)
+        await process_frame
+    _expect_eq(shell.run_state.get_current_screen(), "BRIEFING", "The fourth Jianghu choice must advance to Duel 2 Briefing.")
     _expect_true(shell.advance_noncombat(), "Duel 2 Briefing must enter a new COMBAT.")
     for _index in range(4):
         await process_frame

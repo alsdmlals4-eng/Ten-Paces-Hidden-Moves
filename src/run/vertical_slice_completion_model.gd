@@ -2,7 +2,7 @@ class_name VerticalSliceCompletionModel
 extends RefCounted
 
 const STATUS := "STRUCTURED_RUN_SUMMARY"
-const PEER_CLOSING_LINE := "다섯 번 싸워서 다섯 명을 안 건 아니겠지. 네가 어떤 수를 두는 사람인지는 조금 알았을 테고."
+const PEER_CLOSING_LINE := "열 번 싸워서 열 명을 안 건 아니겠지. 네가 어떤 수를 두는 사람인지는 조금 알았을 테고."
 const MAX_REVIEW_CAUSES := 3
 const MAX_FOCUSED_GROWTH := 2
 

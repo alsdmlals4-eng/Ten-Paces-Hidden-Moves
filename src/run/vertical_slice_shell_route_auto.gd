@@ -61,17 +61,70 @@ func _build_route_options_container() -> void:
 
 
 func _render_current_screen() -> void:
+    _set_route_composition(false)
     super._render_current_screen()
     if route_options_container == null or run_state == null:
         return
     var screen := run_state.get_current_screen()
-    route_options_container.visible = screen in [VerticalSliceRunState.SCREEN_ROUTE_GROWTH, VerticalSliceRunState.SCREEN_ROUTE_INFO]
-    if screen == VerticalSliceRunState.SCREEN_ROUTE_GROWTH:
+    route_options_container.visible = screen in [VerticalSliceRunState.SCREEN_JIANGHU, VerticalSliceRunState.SCREEN_ROUTE_GROWTH, VerticalSliceRunState.SCREEN_ROUTE_INFO]
+    if screen == VerticalSliceRunState.SCREEN_JIANGHU:
+        _render_jianghu()
+    elif screen == VerticalSliceRunState.SCREEN_ROUTE_GROWTH:
         _render_growth_route()
     elif screen == VerticalSliceRunState.SCREEN_ROUTE_INFO:
         _render_info_route()
     else:
         _route_logical_option_count = 0
+
+
+func _render_jianghu() -> void:
+    _clear_route_options()
+    var pending := run_state.get_pending_jianghu()
+    var resting := str(pending.get("route_type", "")) == "rest"
+    _set_route_composition(resting)
+    route_options_container.visible = pending.is_empty()
+    var step := run_state.jianghu_step
+    var resources := run_state.get_player_run_resources()
+    var health: Array = resources.get("health", [0, 0])
+    title_label.text = "강호행로 · %d/4 · 다음 비무 %d/10" % [step + (0 if pending.is_empty() else 1), run_state.duel_index + 1]
+    if resting:
+        title_label.text = "주막에서 휴식 · %d/4" % (step + 1)
+    description_label.text = "세 갈래 중 다음 목적지 하나를 선택합니다.\n체력 %d/%d · 다음 상대 %s\n\n%s" % [health[0], health[1], run_state.get_route_target_opponent().get("working_name", ""), "아직 고르지 않은 길은 다음 단계에서 새로 제시됩니다." if pending.is_empty() else "선택 결과 · %s\n%s" % [pending.get("effect", ""), pending.get("text", "")]]
+    if resting:
+        var stamina: Array = resources.get("stamina", [0, 0])
+        var internal: Array = resources.get("internal", [0, 0])
+        description_label.text = "빗소리를 들으며 잠시 몸을 추스릅니다.\n\n%s\n\n현재 체력 %d/%d\n기력 %d/%d · 내력 %d/%d\n\n휴식을 마쳤습니다. 다음 갈림길로 나아갑니다." % [pending.get("effect", ""), health[0], health[1], stamina[0], stamina[1], internal[0], internal[1]]
+    var options := run_state.get_jianghu_options()
+    _route_logical_option_count = options.size()
+    for option in options:
+        var button := Button.new()
+        button.name = "Jianghu_" + str(option["id"])
+        button.text = "%s\n%s" % [option["label"], option["effect"]]
+        button.custom_minimum_size.y = 64
+        button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+        button.disabled = not pending.is_empty()
+        button.pressed.connect(_choose_jianghu.bind(str(option["id"]), step))
+        route_options_container.add_child(button)
+    primary_button.text = "다음 갈림길" if step < 3 else "다음 비무 브리핑"
+    primary_button.disabled = pending.is_empty()
+
+
+func _set_route_composition(resting: bool) -> void:
+    if content_panel == null:
+        return
+    content_panel.anchor_left = 0.54 if resting else 0.14
+    content_panel.anchor_right = 0.94 if resting else 0.86
+    var backdrop := get_node_or_null("ShellBackdrop") as TextureRect
+    if backdrop != null:
+        var path := "res://assets/backgrounds/jianghu_rest_inn_v1.png" if resting else "res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png"
+        if not resting and run_state != null and run_state.get_current_screen() == VerticalSliceRunState.SCREEN_JIANGHU:
+            path = "res://assets/backgrounds/jianghu_blue_ink_landscape_v1.png"
+        backdrop.texture = load(path) as Texture2D
+
+
+func _choose_jianghu(node_id: String, step: int) -> void:
+    if run_state.select_jianghu_node(node_id, step):
+        _render_jianghu()
 
 
 func _render_briefing() -> void:

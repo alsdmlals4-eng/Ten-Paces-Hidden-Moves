@@ -79,6 +79,18 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_combat_layout_accessibility.gd
       - name: Verify action selection integration
         run: godot --headless --path . --script res://tests/verify_combat_action_selection_integration.gd
+      - name: Verify sequential public-policy ten-duel campaign
+        run: godot --headless --path . --script res://tests/probe_sequential_ten_duel_campaign.gd
+      - name: Verify campaign state boundaries
+        run: godot --headless --path . --script res://tests/verify_ten_duel_campaign.gd
+      - name: Verify campaign failure and retry
+        run: godot --headless --path . --script res://tests/verify_vertical_slice_failure_retry.gd
+      - name: Verify rendered preparation summaries
+        run: godot --headless --path . --script res://tests/verify_action_card_summary.gd
+      - name: Verify rest and route presentation transitions
+        run: godot --headless --path . --script res://tests/verify_jianghu_rest_presentation.gd
+      - name: Verify shared atlas presentation and sound cache
+        run: godot --headless --path . --script res://tests/verify_atlas_presentation_successor.gd
       - name: Upload automated product evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

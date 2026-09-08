@@ -15,6 +15,7 @@ const CHARCOAL_INK := Color("211c17")
 const RESTRAINED_GOLD := Color("b99254")
 
 @onready var title_label: Label = $PanelColumn/Title
+@onready var manual_scroll: ScrollContainer = %ManualScroll
 @onready var manual_row: HBoxContainer = %ManualRow
 @onready var selected_manual_title: Label = %SelectedManualTitle
 @onready var technique_list: GridContainer = %TechniqueList
@@ -24,6 +25,13 @@ var manual_buttons: Array[Button] = []
 var technique_buttons: Array[Button] = []
 var selected_manual_id := ""
 var interaction_enabled := true
+var preview_actor: Dictionary = {}
+
+func set_preview_actor(value: Dictionary) -> void:
+    if preview_actor == value:
+        return
+    preview_actor = value.duplicate(true)
+    _rebuild_techniques()
 
 func _ready() -> void:
     title_label.add_theme_color_override("font_color", Color("ead8b4"))
@@ -43,6 +51,8 @@ func set_manuals(values: Array[Dictionary]) -> void:
     _rebuild_manuals()
     _rebuild_techniques()
     manual_row.visible = manuals.size() > 1
+    manual_scroll.visible = manuals.size() > 1
+    manual_scroll.scroll_horizontal = 0
 
 func select_manual(manual_id: String) -> bool:
     if not interaction_enabled or not _has_manual(manual_id):
@@ -147,7 +157,7 @@ func _rebuild_techniques() -> void:
     for technique in _ordered_selected_techniques():
         var locked := bool(technique.get("locked", false))
         var button := ACTION_CHOICE_CARD_SCRIPT.new() as ActionChoiceCard
-        button.configure_action(technique, "semantic_atlas", _locked_technique_text(technique) if locked else "사용 가능")
+        button.configure_action(technique, "semantic_atlas", _locked_technique_text(technique) if locked else "사용 가능", preview_actor)
         button.disabled = locked or not interaction_enabled
         button.set_meta("technique_id", str(technique.get("id", "")))
         button.set_meta("locked", locked)

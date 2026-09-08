@@ -11,6 +11,13 @@ var cards_by_id: Dictionary = {}
 var ai_planner: RefCounted
 var _locked_enemy_bundle_key := ""
 var _locked_enemy_actions: Array = []
+static var _shared_preview_instance: RefCounted
+
+
+static func shared_preview_engine() -> RefCounted:
+    if not is_instance_valid(_shared_preview_instance):
+        _shared_preview_instance = CombatResolutionEngine.new()
+    return _shared_preview_instance
 
 func _init() -> void:
     ai_planner = CombatAiPlannerScript.new()
@@ -82,6 +89,71 @@ func _normalize_combatant_stats(actor: Dictionary) -> void:
     for stat_key in ["external", "constitution", "agility", "internal_power", "insight"]:
         stats[stat_key] = int(source_stats.get(stat_key, 4))
     actor["stats"] = stats
+
+func preview_attack_damage(definition: Dictionary, actor: Dictionary) -> Dictionary:
+    # This is raw attack magnitude only: clash, guard, evade, range and
+    # interruption remain unresolved. Unknown actor inputs stay unavailable.
+    if str(definition.get("category", "")) != "attack":
+        return {"available": false, "reason": "not_attack"}
+    var martial_preview := _preview_martial_attack_power(definition)
+    if not martial_preview.is_empty():
+        return martial_preview
+    var formula_value = definition.get("damage_formula", {})
+    if typeof(formula_value) == TYPE_DICTIONARY and not (formula_value as Dictionary).is_empty():
+        var formula := formula_value as Dictionary
+        var stat_key := str(formula.get("stat_key", ""))
+        var stats_value = actor.get("stats", {})
+        if stat_key.is_empty() or typeof(stats_value) != TYPE_DICTIONARY or not (stats_value as Dictionary).has(stat_key):
+            return {"available": false, "reason": "actor_stat_unknown", "formula": formula.duplicate(true)}
+    elif str(definition.get("source", "")) == "ultimate" and float(definition.get("attack_power_coefficient", 0.0)) != 0.0 and not actor.has("attack_power"):
+        return {"available": false, "reason": "actor_power_unknown"}
+    return {"available": true, "value": _calculate_attack_damage(definition, actor), "kind": "raw_attack_magnitude", "conditional_resolution_excluded": true}
+
+
+func _preview_martial_attack_power(definition: Dictionary) -> Dictionary:
+    if str(definition.get("source", "")) != "martial_manual":
+        return {}
+    var attack_steps: Array[Dictionary] = []
+    var has_clash := false
+    var has_requirement := false
+    for value in definition.get("effect_steps", []):
+        if typeof(value) != TYPE_DICTIONARY:
+            continue
+        var step: Dictionary = value
+        var operation := str(step.get("op", ""))
+        if operation in ["ATTACK", "INDEPENDENT_ATTACK"]:
+            attack_steps.append(step)
+        elif operation == "SPECIAL_CLASH":
+            has_clash = true
+        elif operation.begins_with("REQUIRE_"):
+            has_requirement = true
+    if attack_steps.size() == 1 and not has_clash and not has_requirement:
+        var power := maxi(0, int(attack_steps[0].get("power", 0)))
+        if power > 0:
+            return {"available": true, "value": power, "kind": "martial_single_attack_raw_power", "conditional_resolution_excluded": true}
+    var reason := "conditional_or_multi_hit" if attack_steps.size() > 1 or has_requirement else "clash_or_non_damage_attack"
+    return {"available": false, "reason": reason, "label": "조건·다단 위력 · 상세 확인"}
+
+func preview_action_magnitude(definition: Dictionary, actor: Dictionary) -> Dictionary:
+    var category := str(definition.get("category", ""))
+    if category == "attack":
+        return preview_attack_damage(definition, actor)
+    if category == "move":
+        return {"available": true, "label": "이동 %d칸" % maxi(1, int(definition.get("move_range", 1))), "kind": "movement"}
+    var card_id := _base_card_id(definition)
+    if card_id == "basic_guard":
+        return {"available": true, "label": "방어도 %d · 동수 50%%" % maxi(0, int(rules.get("guard_block", 4))), "kind": "defense"}
+    if card_id == "basic_evade":
+        return {"available": true, "label": "동수 공격 완전 회피", "kind": "evasion"}
+    if card_id == "basic_stance":
+        return {"available": true, "label": "다음 공격 +%d · 강건" % int(rules.get("stance_attack_bonus", 2)), "kind": "strengthen"}
+    var restore: Dictionary = definition.get("restore", {}) as Dictionary
+    if not restore.is_empty():
+        return {"available": true, "label": "회복 기력+%d · 내력+%d" % [int(restore.get("stamina", 0)), int(restore.get("internal", 0))], "kind": "restore"}
+    var points := maxi(0, int(definition.get("observation_points", 0)))
+    if points > 0:
+        return {"available": true, "label": "관찰점 +%d" % points, "kind": "observation"}
+    return {"available": false, "reason": "compound_or_conditional"}
 
 func preview_player_plan(state_value: Dictionary, placements: Array) -> Dictionary:
     var state := state_value.duplicate(true)

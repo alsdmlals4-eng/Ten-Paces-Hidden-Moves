@@ -2,7 +2,7 @@ extends SceneTree
 
 const BOARD_SCENE := preload("res://scenes/combat/combat_board_preview.tscn")
 const VIEWPORT_SIZE := Vector2(1440.0, 900.0)
-const APPROVED_BACKGROUND_PATH := "res://assets/backgrounds/frontal_courtyard_duel_background_02_v1.png"
+const APPROVED_BACKGROUND_PATH := "res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png"
 
 var failures: Array[String] = []
 
@@ -84,7 +84,8 @@ func _run() -> void:
 		var progress_style := board.combat_progress_button._button.get_theme_stylebox("normal") as StyleBoxFlat
 		_expect(progress_style != null and progress_style.bg_color.is_equal_approx(Color("b99254")), "Execution control must render as a restrained gold paper CTA.")
 	if is_instance_valid(board.action_timing_panel):
-		_expect(board.action_timing_panel._title_label.get_theme_color("font_color").is_equal_approx(Color("211c17")), "Plan-strip title must render with readable charcoal ink on paper.")
+		var title_ink := board.action_timing_panel._title_label.get_theme_color("font_color")
+		_expect(title_ink.get_luminance() > 0.5, "The current dark plan strip needs a light readable title, not charcoal on charcoal.")
 	if is_instance_valid(board.action_selection_dock):
 		var dock: ActionSelectionDock = board.action_selection_dock as ActionSelectionDock
 		_expect(dock.get_dock_snapshot().get("active_source", "") == "basic", "Actual product dock must begin on the basic-action source.")
@@ -93,11 +94,13 @@ func _run() -> void:
 		_expect(dock.basic_panel.buttons.size() == 10, "Basic action source must expose all ten current basic actions as cards.")
 		if not dock.basic_panel.buttons.is_empty():
 			var first_basic_card := dock.basic_panel.buttons[0]
-			_expect(first_basic_card.custom_minimum_size.y >= 88.0, "Basic action cards must reserve a full illustrated-card height rather than collapse into thin list rows.")
+			_expect(first_basic_card.custom_minimum_size.y >= 98.0, "Summary cards must retain the complete image/name/three-line effect stack.")
 			var card_illustration := first_basic_card.get_node_or_null("CardIllustration") as TextureRect
 			_expect(is_instance_valid(card_illustration), "Basic action cards must consume their existing illustration atlas rather than render as text-only buttons.")
 			if is_instance_valid(card_illustration):
-				_expect(card_illustration.offset_bottom - card_illustration.offset_top >= 50.0, "Basic action card illustrations must occupy the dominant upper card area.")
+				_expect(card_illustration.texture != null and card_illustration.offset_bottom - card_illustration.offset_top >= 26.0, "Summary cards must retain the textured 26px illustration band above their three effect lines.")
+				var name_label := first_basic_card.get_node("CardName") as Label
+				_expect(card_illustration.offset_bottom <= name_label.offset_top, "Illustration and action name must not overlap.")
 		var tab_style := dock.basic_tab.get_theme_stylebox("normal") as StyleBoxFlat
 		_expect(tab_style != null and tab_style.bg_color.is_equal_approx(Color("d9ccb1")), "Selected basic source tab must render as a warm paper surface.")
 		var action_style := dock.basic_panel.buttons[0].get_theme_stylebox("normal") as StyleBoxFlat

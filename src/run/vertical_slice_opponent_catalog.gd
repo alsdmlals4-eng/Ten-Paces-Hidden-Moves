@@ -3,6 +3,11 @@ extends RefCounted
 
 const DATA_PATH := "res://data/run/vertical_slice_opponents.json"
 const RuntimeBindingScript := preload("res://src/run/vertical_slice_opponent_runtime_binding.gd")
+const CAMPAIGN_ORDER := [
+    "slot1_dogyeom", "slot1_yeongyo", "slot2_mukjin", "slot2_danso",
+    "slot3_seolha", "slot3_biyeon", "slot4_cheongheo", "slot4_jinryeo",
+    "slot5_pungmok", "slot5_rajin"
+]
 
 var load_errors := PackedStringArray()
 
@@ -44,6 +49,13 @@ func get_candidate(candidate_id: String) -> Dictionary:
 
 func get_selection_binding_status() -> String:
     return _selection_binding_status
+
+
+func select_campaign_candidate_id(duel_number: int) -> String:
+    if not is_valid() or duel_number < 1 or duel_number > CAMPAIGN_ORDER.size():
+        return ""
+    var candidate_id: String = CAMPAIGN_ORDER[duel_number - 1]
+    return candidate_id if _candidates_by_id.has(candidate_id) else ""
 
 
 func select_candidate_id(duel_slot: int, run_seed: int) -> String:
@@ -131,3 +143,26 @@ func _load(data_path: String) -> void:
         var slot_candidates: Array = _candidates_by_slot.get(duel_slot, [])
         if slot_candidates.size() != 3:
             load_errors.append("slot %d must contain exactly 3 candidates, got %d" % [duel_slot, slot_candidates.size()])
+    _validate_campaign_order(runtime_binding)
+
+
+func _validate_campaign_order(runtime_binding: RefCounted) -> void:
+    if CAMPAIGN_ORDER.size() != 10:
+        load_errors.append("campaign order must contain exactly 10 candidates")
+        return
+    var seen := {}
+    for index in range(CAMPAIGN_ORDER.size()):
+        var candidate_id := str(CAMPAIGN_ORDER[index])
+        if candidate_id.is_empty() or seen.has(candidate_id):
+            load_errors.append("campaign order candidate must be non-empty and unique: %s" % candidate_id)
+            continue
+        seen[candidate_id] = true
+        if not _candidates_by_id.has(candidate_id):
+            load_errors.append("campaign order candidate is not in the validated catalog: %s" % candidate_id)
+            continue
+        var candidate: Dictionary = _candidates_by_id[candidate_id]
+        var expected_slot := int(index / 2) + 1
+        if int(candidate.get("duel_slot", 0)) != expected_slot:
+            load_errors.append("campaign candidate %s must preserve difficulty slot %d" % [candidate_id, expected_slot])
+        if runtime_binding == null or not bool(runtime_binding.build(candidate).get("valid", false)):
+            load_errors.append("campaign candidate has no valid runtime binding: %s" % candidate_id)

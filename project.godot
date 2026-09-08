@@ -14,7 +14,7 @@ general/accessibility_support=1
 
 [application]
 
-config/name="십보강호: 첫 5전 Vertical Slice"
+config/name="십보강호: 숨은 수의 비무"
 run/main_scene="res://scenes/run/vertical_slice_shell.tscn"
 config/features=PackedStringArray("4.7")
 

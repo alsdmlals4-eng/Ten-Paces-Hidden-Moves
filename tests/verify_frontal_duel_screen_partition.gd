@@ -3,7 +3,7 @@ extends SceneTree
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
 const VIEWPORT_SIZE := Vector2(1440.0, 900.0)
 const TARGET_TOP_OVERLAY_RATIO := 0.20
-const TARGET_PLANNING_TOP_RATIO := 0.60
+const TARGET_PLANNING_TOP_RATIO := 0.50
 
 var failures: Array[String] = []
 
@@ -49,7 +49,7 @@ func _verify_three_screen_surfaces(board: CombatBoardPreview) -> void:
 	_expect(top_rect.end.y <= duel_rect.position.y + 0.5, "Top status surface must end before the semantic duel stage begins.")
 	_expect(duel_rect.end.y <= planning_rect.position.y + 0.5, "Duel stage must end before the planning surface begins.")
 	_expect(absf(top_rect.size.y / board.size.y - TARGET_TOP_OVERLAY_RATIO) <= 0.035, "Top status overlay must occupy about 20 percent of the preparation view.")
-	_expect(absf((planning_rect.position.y - board.global_position.y) / board.size.y - TARGET_PLANNING_TOP_RATIO) <= 0.045, "The 5 by 2 card surface must begin at the reference preparation-screen split, not halfway up the combat view.")
+	_expect(absf((planning_rect.position.y - board.global_position.y) / board.size.y - TARGET_PLANNING_TOP_RATIO) <= 0.045, "The expanded 5 by 2 summary-card surface must preserve a bounded lower preparation split.")
 	_expect(board.battle_background.get_global_rect().position.y <= 1.0 and board.battle_background.get_global_rect().end.y >= planning_rect.position.y - 1.0, "Courtyard background must continue behind the transparent top status overlay through the combat floor.")
 	_expect(board.duel_foreground_banner.get_global_rect().position.y <= 1.0 and board.duel_foreground_banner.get_global_rect().end.y >= planning_rect.position.y - 1.0, "Banner foreground must share the full upper duel composition behind the status overlay.")
 	_expect(planning_rect.encloses(board.action_timing_panel.get_global_rect()), "Action bundle display must sit on the lower planning surface.")
@@ -73,9 +73,11 @@ func _verify_reference_preparation_hierarchy(board: CombatBoardPreview) -> void:
 	_expect(is_instance_valid(hud.player_momentum) and not hud.player_momentum.visible, "Momentum must live inside the player status frame, not in a detached top panel.")
 	_expect(is_instance_valid(hud.enemy_momentum) and not hud.enemy_momentum.visible, "Momentum must live inside the enemy status frame, not in a detached top panel.")
 	if is_instance_valid(hud.player_panel):
-		_expect(hud.player_panel._portrait.get_global_rect().end.x + 6.0 <= hud.player_panel._health_label.get_global_rect().position.x, "Player status text must have a dedicated column to the right of the portrait.")
+		_expect(not hud.player_panel._portrait.visible, "Player live status reserves its width for resources, not a portrait.")
+		_expect(player_rect.encloses(hud.player_panel._health_label.get_global_rect()), "Player resource label stays inside the status panel.")
 	if is_instance_valid(hud.enemy_panel):
-		_expect(hud.enemy_panel._health_label.get_global_rect().end.x + 6.0 <= hud.enemy_panel._portrait.get_global_rect().position.x, "Enemy status text must have a dedicated column to the left of the portrait.")
+		_expect(not hud.enemy_panel._portrait.visible, "Enemy live status uses the same portrait-free hierarchy.")
+		_expect(enemy_rect.encloses(hud.enemy_panel._health_label.get_global_rect()), "Enemy resource label stays inside the status panel.")
 
 	var planning_rect := board.planning_surface.get_global_rect() if is_instance_valid(board.planning_surface) else Rect2()
 	var timing_rect := board.action_timing_panel.get_global_rect() if is_instance_valid(board.action_timing_panel) else Rect2()

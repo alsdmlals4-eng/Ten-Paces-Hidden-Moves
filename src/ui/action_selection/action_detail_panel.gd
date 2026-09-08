@@ -2,11 +2,18 @@ class_name ActionDetailPanel
 extends PanelContainer
 
 const TECHNIQUE_DETAIL_FRAME := preload("res://assets/ui/duel/technique_detail_frame_01_v1.png")
+const RESOLUTION_ENGINE_SCRIPT := preload("res://src/combat/combat_resolution_engine.gd")
 
 var definition: Dictionary = {}
 var manual_definition: Dictionary = {}
 var pinned := false
 var detail_mode := "empty"
+var preview_actor: Dictionary = {}
+
+func set_preview_actor(value: Dictionary) -> void:
+    preview_actor = value.duplicate(true)
+    if is_inside_tree() and detail_mode == "action":
+        _apply_content()
 
 var _built := false
 var _title: Label
@@ -301,9 +308,14 @@ func _compact_effect_text(value: Dictionary, effect_text: String) -> String:
     if category == "move":
         return "이동 %d" % maxi(1, int(value.get("move_range", 1)))
     var damage_formula: Dictionary = value.get("damage_formula", {}) as Dictionary
-    var base_damage := maxi(0, int(damage_formula.get("base", 0)))
-    if base_damage > 0:
-        return "위력 %d" % base_damage
+    if category == "attack":
+        var preview: Dictionary = RESOLUTION_ENGINE_SCRIPT.shared_preview_engine().preview_attack_damage(value, preview_actor)
+        if bool(preview.get("available", false)):
+            return "예상 위력 %d · 방어/합 전" % int(preview.get("value", 0))
+        if not damage_formula.is_empty():
+            var stat_label := str({"external": "외공", "internal_power": "내공"}.get(str(damage_formula.get("stat_key", "")), "능력"))
+            return "위력식 기본 %d + %s × %.2f" % [int(damage_formula.get("base", 0)), stat_label, float(damage_formula.get("coefficient", 0.0))]
+        return str(preview.get("label", "조건·다단 위력 · 상세 확인"))
     var restore: Dictionary = value.get("restore", {}) as Dictionary
     if not restore.is_empty():
         return "기력 +%d · 내력 +%d" % [maxi(0, int(restore.get("stamina", 0))), maxi(0, int(restore.get("internal", 0)))]

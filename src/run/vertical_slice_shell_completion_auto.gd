@@ -33,7 +33,7 @@ func _render_completion() -> void:
         return
     _refresh_completion_snapshot()
     var lines: Array[String] = []
-    lines.append("5전 결과")
+    lines.append("10전 결과")
     for value in _completion_snapshot.get("duel_rows", []):
         if typeof(value) != TYPE_DICTIONARY:
             continue

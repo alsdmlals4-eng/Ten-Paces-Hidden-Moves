@@ -47,15 +47,19 @@ func _run() -> void:
     board._toggle_sound()
     board._set_sound_volume(0.25)
     board._play_procedural_sfx("heavy_hit")
-    var quiet_peak := _peak_pcm_sample(board.procedural_sfx_player.stream)
+    var quiet_stream := board.procedural_sfx_player.stream
+    var quiet_peak := _peak_pcm_sample(quiet_stream) * board.procedural_sfx_player.volume_linear
     board._set_sound_volume(1.0)
     board._play_procedural_sfx("heavy_hit")
-    var full_peak := _peak_pcm_sample(board.procedural_sfx_player.stream)
+    var full_peak := _peak_pcm_sample(board.procedural_sfx_player.stream) * board.procedural_sfx_player.volume_linear
+    if quiet_stream != board.procedural_sfx_player.stream:
+        failures.append("Changing volume must not rebuild immutable cached PCM.")
     if quiet_peak <= 0 or full_peak < quiet_peak * 3:
-        failures.append("The sound-volume control must produce meaningfully different PCM amplitudes.")
+        failures.append("The sound-volume control must produce meaningfully different output amplitudes.")
 
     board.queue_free()
     await process_frame
+    await create_timer(0.1).timeout
     _finish()
 
 func _finish() -> void:

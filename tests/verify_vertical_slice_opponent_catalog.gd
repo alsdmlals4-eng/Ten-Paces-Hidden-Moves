@@ -262,25 +262,24 @@ func _verify_run_lock_flow(catalog) -> void:
     _expect_true(run.get_route_target_opponent().is_empty(), "Blocked Result advance must not pre-lock the next opponent.")
     _expect_true(run.set_pending_result_reward({"reward_type": "free_training", "free_training": 6}), "Result must accept one valid reward receipt before Route.")
 
-    _expect_true(run.advance(), "Reward-confirmed RESULT → ROUTE_GROWTH must lock next opponent first.")
-    _expect_eq(run.get_current_screen(), "ROUTE_GROWTH", "Result must enter Growth/Recovery Route.")
+    _expect_true(run.advance(), "Reward-confirmed Result must lock the next opponent and enter Jianghu.")
+    _expect_eq(run.get_current_screen(), "JIANGHU", "Result must enter the four-choice Jianghu interval.")
     var locked_next: Dictionary = run.get_route_target_opponent()
     var locked_id := str(locked_next.get("candidate_id", ""))
     _expect_true(not locked_id.is_empty(), "Next opponent must be locked before the first Route node renders.")
-    _expect_eq(int(locked_next.get("duel_slot", 0)), 2, "The locked Route target after Duel 1 must belong to Slot 2.")
+    _expect_eq(int(locked_next.get("duel_slot", 0)), 1, "The locked target after Duel 1 must be the second distinct Slot-1 campaign binding.")
 
-    _expect_false(run.advance(), "ROUTE_GROWTH may not advance without an explicit choice.")
-    _expect_true(run.select_growth_route("free_training"), "ROUTE_GROWTH must accept one legal explicit choice.")
-    _expect_true(run.advance(), "Confirmed ROUTE_GROWTH → ROUTE_INFO")
-    _expect_eq(str(run.get_route_target_opponent().get("candidate_id", "")), locked_id, "Growth Route may not reroll the locked opponent.")
-    _expect_false(run.advance(), "ROUTE_INFO may not advance without an explicit public-info choice.")
-    var options: Array = run.get_info_route_options()
-    _expect_eq(options.size(), 3, "Info Route must expose exactly three approved public-info choices.")
-    if options.size() == 3:
-        _expect_true(run.select_info_route(str((options[0] as Dictionary).get("category", ""))), "Info Route must accept one legal public clue category.")
-    _expect_true(run.advance(), "Confirmed ROUTE_INFO → next BRIEFING")
-    _expect_eq(run.get_current_screen(), "BRIEFING", "Information Route must lead to the next Briefing.")
-    _expect_eq(run.duel_index, 2, "Duel slot must increment exactly once after the two Route nodes.")
+    for step in range(4):
+        _expect_false(run.advance(), "Jianghu may not advance without an explicit choice at Step %d." % step)
+        var options: Array = run.get_jianghu_options()
+        _expect_eq(options.size(), 3, "Every Jianghu step must expose exactly three choices.")
+        if options.size() == 3:
+            _expect_true(run.select_jianghu_node(str((options[0] as Dictionary).get("id", "")), step), "Jianghu must accept one offered choice at Step %d." % step)
+        _expect_true(run.advance(), "Confirmed Jianghu choice must advance Step %d." % step)
+        if step < 3:
+            _expect_eq(str(run.get_route_target_opponent().get("candidate_id", "")), locked_id, "Jianghu may not reroll the locked opponent.")
+    _expect_eq(run.get_current_screen(), "BRIEFING", "The fourth Jianghu choice must lead to the next Briefing.")
+    _expect_eq(run.duel_index, 2, "Duel index must increment exactly once after four Route choices.")
     _expect_eq(str(run.get_current_opponent().get("candidate_id", "")), locked_id, "The locked Route target must become the current Briefing opponent.")
     _expect_true(run.get_route_target_opponent().is_empty(), "Pending next-opponent lock must clear after promotion to current opponent.")
 

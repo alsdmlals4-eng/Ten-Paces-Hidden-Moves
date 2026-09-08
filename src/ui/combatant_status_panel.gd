@@ -8,7 +8,7 @@ const PLAYER_ACCENT := Color("377fb2")
 const ENEMY_ACCENT := Color("b44d43")
 const HEALTH_COLOR := Color("b54d44")
 const STAMINA_COLOR := Color("4c74a9")
-const INTERNAL_COLOR := Color("8a63a9")
+const INTERNAL_COLOR := Color("398d91")
 const PLAYER_PORTRAIT := preload("res://assets/portraits/player_wanderer_ink_v1.png")
 const ENEMY_PORTRAIT := preload("res://assets/portraits/enemy_masked_ink_v1.png")
 const DOGYEOM_STATUS_PORTRAIT := preload("res://assets/portraits/dogyeom_status_portrait_01_v1.png")
@@ -33,6 +33,8 @@ func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_IGNORE
     _status_hud_frame = TextureRect.new()
     _status_hud_frame.name = "StatusHudFrame"
+    _status_hud_frame.show_behind_parent = true
+    _status_hud_frame.visible = false
     _status_hud_frame.texture = STATUS_HUD_FRAME
     _status_hud_frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
     _status_hud_frame.stretch_mode = TextureRect.STRETCH_SCALE
@@ -41,6 +43,7 @@ func _ready() -> void:
     add_child(_status_hud_frame)
     _portrait = TextureRect.new()
     _portrait.name = "CombatantInkPortrait"
+    _portrait.visible = false
     _portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
     _portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
     _portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -127,7 +130,13 @@ func _portrait_for_current_combatant() -> Texture2D:
 
 func _format_resource(label: String, key: String) -> String:
     var pair := _resource_pair(key)
-    return "%s  %d/%d" % [label, pair.x, pair.y] if show_numeric_values else label
+    return "%s  %d/%d" % [label, pair.x, pair.y] if show_numeric_values else "%s  ?/?" % label
+
+func get_visible_resource_ratio(key: String) -> float:
+    if not show_numeric_values:
+        return -1.0
+    var pair := _resource_pair(key)
+    return clampf(float(pair.x) / float(maxi(1, pair.y)), 0.0, 1.0)
 
 func _resource_pair(key: String) -> Vector2i:
     var value = combatant.get(key, [0, 0])
@@ -139,9 +148,8 @@ func _layout() -> void:
     if _name_label == null:
         return
 
-    # The approved status frame already owns the portrait ring, three bar
-    # wells, five momentum sockets, and two state wells.  Match its authored
-    # geometry rather than drawing a second rectangular HUD over it.
+    # Keep legacy portrait resources addressable, but the live status surface
+    # reserves its width for actual resources instead of a baked portrait frame.
     var portrait_size := minf(size.x * 0.232, size.y * 0.70)
     var portrait_x := size.x * 0.105 if side == "player" else size.x - size.x * 0.105 - portrait_size
     var resource_layout := get_resource_layout_snapshot()
@@ -153,7 +161,10 @@ func _layout() -> void:
         _portrait.position = Vector2(portrait_x, size.y * 0.125)
         _portrait.size = Vector2(portrait_size, minf(size.y * 0.72, portrait_size * 1.10))
 
-    _name_label.visible = false
+    _name_label.visible = true
+    _name_label.position = Vector2(16.0, 5.0)
+    _name_label.size = Vector2(size.x - 32.0, 22.0)
+    _name_label.add_theme_font_size_override("font_size", 16)
     _epithet_label.visible = false
 
     var labels := [_health_label, _stamina_label, _internal_label]
@@ -165,7 +176,7 @@ func _layout() -> void:
         label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT if side == "player" else HORIZONTAL_ALIGNMENT_RIGHT
         label.add_theme_font_size_override("font_size", 12)
 
-    var chip_y := size.y * 0.735
+    var chip_y := size.y - 24.0
     for index in range(_status_labels.size()):
         var chip := _status_labels[index]
         var chip_width := 34.0
@@ -181,23 +192,26 @@ func _notification(what: int) -> void:
         queue_redraw()
 
 func _draw() -> void:
+    # Native live UI, not an illustration: no baked values or duplicate wells.
+    draw_rect(Rect2(Vector2.ZERO, size), Color(0.025, 0.045, 0.06, 0.94))
+    draw_rect(Rect2(Vector2.ONE, size - Vector2(2.0, 2.0)), Color("ae8c55"), false, 1.0)
     var resource_layout := get_resource_layout_snapshot()
     var resource_x := float(resource_layout.get("resource_x", 0.0))
     var resource_width := float(resource_layout.get("resource_width", 0.0))
     var bar_rects: Array = resource_layout.get("bar_rects", [])
 
-    _draw_resource_bar(bar_rects[0] as Rect2, _resource_pair("health"), HEALTH_COLOR)
-    _draw_resource_bar(bar_rects[1] as Rect2, _resource_pair("stamina"), STAMINA_COLOR)
-    _draw_resource_bar(bar_rects[2] as Rect2, _resource_pair("internal"), INTERNAL_COLOR)
+    _draw_resource_bar(bar_rects[0] as Rect2, "health", HEALTH_COLOR)
+    _draw_resource_bar(bar_rects[1] as Rect2, "stamina", STAMINA_COLOR)
+    _draw_resource_bar(bar_rects[2] as Rect2, "internal", INTERNAL_COLOR)
     _draw_momentum(resource_x, resource_x + resource_width)
 
 func get_resource_layout_snapshot() -> Dictionary:
-    var resource_x := size.x * (0.360 if side == "player" else 0.140)
-    var resource_width := maxf(30.0, size.x * 0.500)
+    var resource_x := 16.0
+    var resource_width := maxf(30.0, size.x - 32.0)
     var label_rects: Array[Rect2] = []
     var bar_rects: Array[Rect2] = []
     for index in range(3):
-        var label_y := 15.0 + float(index) * 24.0
+        var label_y := 29.0 + float(index) * 20.0
         label_rects.append(Rect2(resource_x, label_y, resource_width, 13.0))
         bar_rects.append(Rect2(resource_x, label_y + 15.0, resource_width, 5.0))
     return {
@@ -207,22 +221,28 @@ func get_resource_layout_snapshot() -> Dictionary:
         "bar_rects": bar_rects
     }
 
+func get_momentum_rect() -> Rect2:
+    var center_y := minf(116.0, size.y - 30.0)
+    return Rect2(16.0, center_y - 7.0, maxf(30.0, size.x - 32.0), 12.0)
+
 func _draw_momentum(content_x: float, content_right: float) -> void:
-    var label_position := Vector2(content_x, 89.0) if side == "player" else Vector2(content_right - 58.0, 89.0)
+    var center_y := get_momentum_rect().position.y + 7.0
+    var label_position := Vector2(content_x, center_y + 3.0) if side == "player" else Vector2(content_right - 58.0, center_y + 3.0)
     draw_string(get_theme_default_font(), label_position, "절초 기세", HORIZONTAL_ALIGNMENT_LEFT, 58.0, 10, PAPER)
     var dot_gap := 17.0
     var total_width := float(maxi(1, momentum.y) - 1) * dot_gap + 12.0
     var start_x := content_x + 61.0 if side == "player" else content_right - 61.0 - total_width
     for index in range(momentum.y):
-        var center := Vector2(start_x + float(index) * dot_gap + 6.0, 86.0)
+        var center := Vector2(start_x + float(index) * dot_gap + 6.0, center_y)
         var filled := index < momentum.x
         draw_circle(center, 5.0, Color("c79a50") if filled else Color("392f26"))
         draw_arc(center, 5.0, 0.0, TAU, 16, Color("e0b768"), 1.0)
 
-func _draw_resource_bar(rect: Rect2, pair: Vector2i, color: Color) -> void:
+func _draw_resource_bar(rect: Rect2, key: String, color: Color) -> void:
     draw_rect(rect, Color(0.18, 0.16, 0.13, 0.92), true)
-    var ratio := clampf(float(pair.x) / float(maxi(1, pair.y)), 0.0, 1.0)
-    draw_rect(Rect2(rect.position, Vector2(rect.size.x * ratio, rect.size.y)), color, true)
+    var ratio := get_visible_resource_ratio(key)
+    if ratio >= 0.0:
+        draw_rect(Rect2(rect.position, Vector2(rect.size.x * ratio, rect.size.y)), color, true)
 
 func _status_color(kind: String) -> Color:
     match kind:

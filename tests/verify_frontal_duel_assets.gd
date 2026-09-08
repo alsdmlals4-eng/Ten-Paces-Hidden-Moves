@@ -2,7 +2,7 @@
 extends SceneTree
 
 const BOARD_SCENE := preload("res://scenes/combat/combat_board_preview.tscn")
-const BACKGROUND_PATH := "res://assets/backgrounds/frontal_courtyard_duel_background_02_v1.png"
+const BACKGROUND_PATH := "res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png"
 const BANNER_PATH := "res://assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png"
 const PLAYER_BATTLER_PATH := "res://assets/characters/player_wanderer_battler_rgba_v2.png"
 const DOGYEOM_BATTLER_PATH := "res://assets/characters/dogyeom_combat_battler_01_v1.png"

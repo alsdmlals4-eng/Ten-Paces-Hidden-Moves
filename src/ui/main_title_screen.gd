@@ -3,7 +3,7 @@ extends Control
 
 signal start_requested
 
-const BACKGROUND_PATH := "res://assets/backgrounds/frontal_courtyard_duel_background_02_v1.png"
+const BACKGROUND_PATH := "res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png"
 const PLAYER_PATH := "res://assets/characters/player_wanderer_battler_rgba_v2.png"
 const ENEMY_PATH := "res://assets/characters/enemy_masked_battler_rgba_v2.png"
 const TITLE_LOGO_PATH := "res://assets/ui/logo/ten_paces_hidden_moves_title_logo_01_v1.png"
@@ -29,12 +29,13 @@ func _build_surface() -> void:
 	add_child(background)
 	var shade := ColorRect.new()
 	shade.name = "InkVeil"
-	shade.color = Color(0.08, 0.055, 0.035, 0.35)
+	shade.color = Color(0.025, 0.045, 0.065, 0.20)
 	shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(shade)
 	var foreground_banner := DUEL_FOREGROUND_BANNER_SCRIPT.new() as DuelForegroundBanner
 	foreground_banner.name = "DuelForegroundBanner"
+	foreground_banner.visible = false
 	add_child(foreground_banner)
 	_add_battler("PlayerTitleBattler", PLAYER_PATH, true)
 	_add_battler("EnemyTitleBattler", ENEMY_PATH, false)

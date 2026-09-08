@@ -27,13 +27,19 @@ class ActionCardSourceUnificationContractTests(unittest.TestCase):
         self.assertNotIn("select_destination_board_tile", json.dumps(board, ensure_ascii=False))
         self.assertNotIn("select_left_or_right_direction", json.dumps(board, ensure_ascii=False))
 
-    def test_common_card_renderer_keeps_compact_tag_and_moves_detail_facts_to_detail_panel(self) -> None:
+    def test_common_card_renderer_keeps_summary_visible_and_rich_detail_in_panel(self) -> None:
         renderer = read("src/ui/action_selection/action_choice_card.gd")
         detail_panel = read("src/ui/action_selection/action_detail_panel.gd")
 
-        self.assertIn('label.name = "CardTag"', renderer)
+        self.assertIn('summary.name = "CardSummary"', renderer)
         self.assertIn('accessibility_description = _accessibility_description(status_text)', renderer)
-        self.assertIn('custom_minimum_size = Vector2(0.0, 80.0)', renderer)
+        self.assertIn('summary.get_combined_minimum_size().y + CARD_BOTTOM_PADDING', renderer)
+        self.assertIn('custom_minimum_size.y = maxf(CROSS_PLATFORM_CARD_HEIGHT, required_height)', renderer)
+        self.assertIn('summary.offset_bottom = custom_minimum_size.y - CARD_BOTTOM_PADDING', renderer)
+        self.assertNotIn('custom_minimum_size = Vector2(0.0, 98.0)', renderer)
+        self.assertIn('"예상 위력 %d"', renderer)
+        self.assertIn('"거리 %s"', renderer)
+        self.assertIn('기력 %d · 내력 %d', renderer)
         self.assertNotIn('label.name = "CardFacts"', renderer)
         self.assertIn('_add_row("기력"', detail_panel)
         self.assertIn('_add_row("내력"', detail_panel)

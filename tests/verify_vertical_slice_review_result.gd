@@ -193,12 +193,12 @@ func _verify_result_and_reward_contract() -> void:
     _expect_eq(int(receipt.get("free_training", 0)), 3, "Focused reward must preserve the approved +3 free value.")
     _expect_false(shell.primary_button.disabled, "Result CTA must enable after a valid reward selection.")
 
-    _expect_true(shell.advance_noncombat(), "Confirmed Result reward must advance to Growth/Recovery Route.")
-    _expect_eq(shell.run_state.get_current_screen(), "ROUTE_GROWTH", "Result must leave for the first Route node.")
+    _expect_true(shell.advance_noncombat(), "Confirmed Result reward must advance to the Jianghu interval.")
+    _expect_eq(shell.run_state.get_current_screen(), "JIANGHU", "Result must leave for the first of four Jianghu choices.")
     _expect_eq(shell.run_state.get_reward_history().size(), 1, "Confirmed reward receipt must move into RunState history exactly once.")
     var next_opponent: Dictionary = shell.run_state.get_route_target_opponent()
     _expect_true(not next_opponent.is_empty(), "Next opponent must lock when confirmed Result leaves for Route.")
-    _expect_eq(int(next_opponent.get("duel_slot", 0)), 2, "After Duel 1 Result the locked Route target must be Slot 2.")
+    _expect_eq(int(next_opponent.get("duel_slot", 0)), 1, "After Duel 1 Result the locked target must be the second Slot-1 campaign opponent.")
     _expect_eq(str(opponent.get("candidate_id", "")), str(shell.run_state.get_current_opponent().get("candidate_id", "")), "Current opponent must remain Duel 1 until Route promotion.")
 
     shell.queue_free()

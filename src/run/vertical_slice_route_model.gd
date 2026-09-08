@@ -2,6 +2,15 @@ class_name VerticalSliceRouteModel
 extends RefCounted
 
 const MANUAL_REGISTRY_SCRIPT := preload("res://src/combat/martial_manual_registry.gd")
+const CAMPAIGN_DUELS := 10
+const JIANGHU_CHOICES_PER_INTERVAL := 4
+const JIANGHU_ALTERNATIVES := [
+    {"id": "rest", "label": "주막에서 휴식", "effect": "최대 체력 25% 회복 · 기력 +1 · 내력 +1"},
+    {"id": "training", "label": "공터에서 수련", "effect": "자유 수련 포인트 +3"},
+    {"id": "recon", "label": "상대 무공 조사", "effect": "다음 상대의 보유 무공 단서 확인"},
+    {"id": "event", "label": "길 잃은 행인 돕기", "effect": "사건 해결 · 자유 수련 +2 · 내력 +1"},
+    {"id": "investigate", "label": "남겨진 발자국 조사", "effect": "다음 상대의 보법 단서 확인 · 자유 수련 +1"}
+]
 
 const GROWTH_SEEDS := {
     "R1": {"focused": 1, "free": 3},
@@ -21,6 +30,20 @@ var manual_registry: RefCounted
 
 func _init() -> void:
     manual_registry = MANUAL_REGISTRY_SCRIPT.new()
+
+
+func get_jianghu_options(completed_duels: int, jianghu_step: int) -> Array:
+    if completed_duels < 1 or completed_duels >= CAMPAIGN_DUELS:
+        return []
+    if jianghu_step < 0 or jianghu_step >= JIANGHU_CHOICES_PER_INTERVAL:
+        return []
+    var result: Array = []
+    var offset := (completed_duels + jianghu_step) % JIANGHU_ALTERNATIVES.size()
+    for index in range(3):
+        var option = JIANGHU_ALTERNATIVES[(offset + index) % JIANGHU_ALTERNATIVES.size()]
+        if typeof(option) == TYPE_DICTIONARY:
+            result.append((option as Dictionary).duplicate(true))
+    return result
 
 
 func growth_node_id(completed_duels: int) -> String:

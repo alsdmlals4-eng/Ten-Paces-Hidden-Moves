@@ -1,0 +1,16 @@
+{
+  "asset_id": "TEN-ATLAS-JIANGHU-LANDSCAPE-20260908-V1",
+  "runtime_asset": "assets/backgrounds/jianghu_blue_ink_landscape_v1.png",
+  "sha256": "768f2137f8cb4e586a3a8aacd63d433d50f784a5b4c6978d483a4ce9372a252f",
+  "source_output": "C:/Users/user/.codex/generated_images/01a04af4-16f3-7153-96fc-823b2094d386/exec-c9e785c9-4552-46eb-895c-dcbd203abc16.png",
+  "generation_route": "built-in image_gen, 2026-09-08",
+  "style_reference": "assets/backgrounds/atlas_blue_ink_courtyard_v1.png; project palette and ink medium only",
+  "brief": "docs/visual-assets/candidates/TEN-ATLAS-SUCCESSOR-20260908/jianghu-landscape-brief.md",
+  "consumer": "src/run/vertical_slice_shell_route_auto.gd; JIANGHU choices and non-rest outcomes",
+  "review": "Layered mountains, river, small inns, blue-gray ink and low-contrast center; no text, characters, nodes or fixed three-lane routes",
+  "status": "IMPLEMENTED_UNDER_CONTINUATION_AUTHORIZATION",
+  "user_approved": false,
+  "runtime_verified": true,
+  "runtime_evidence": "docs/runtime-captures/TEN-ATLAS-SUCCESSOR-20260908/jianghu-landscape-1280x800.png; actual renderer with synthetic terminal fixture, not campaign victory evidence",
+  "shipping_rights": "UNVERIFIED"
+}

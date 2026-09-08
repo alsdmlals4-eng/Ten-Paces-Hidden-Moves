@@ -4,7 +4,7 @@ extends SceneTree
 const BANNER_SCRIPT := preload("res://src/ui/duel_foreground_banner.gd")
 const BOARD_SCENE := preload("res://scenes/combat/combat_board_preview.tscn")
 const MAIN_TITLE_SCRIPT := preload("res://src/ui/main_title_screen.gd")
-const BACKGROUND_PATH := "res://assets/backgrounds/frontal_courtyard_duel_background_02_v1.png"
+const BACKGROUND_PATH := "res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png"
 const BANNER_PATH := "res://assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png"
 
 var failures: Array[String] = []

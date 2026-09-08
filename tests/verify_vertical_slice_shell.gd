@@ -54,6 +54,10 @@ func _run() -> void:
     _expect_true(shell.advance_noncombat(), "SETUP with four selected manuals must advance.")
     _expect_true(shell.advance_noncombat(), "INTRO must advance.")
     _expect_eq(shell.run_state.get_current_screen(), "BRIEFING", "Intro must lead to briefing.")
+    var briefing_text := str(shell.description_label.text)
+    for internal_copy in ["AI", "seed", "최근 평", "최근 전적"]:
+        _expect_false(briefing_text.contains(internal_copy), "Briefing must not expose internal or removed editorial copy: %s" % internal_copy)
+    _expect_true(briefing_text.contains("보유 무공") and briefing_text.contains("3 ☆"), "Briefing must show owned manual mastery as a number and one star.")
     _expect_true(shell.advance_noncombat(), "BRIEFING must enter COMBAT.")
     await process_frame
 
@@ -81,19 +85,18 @@ func _run() -> void:
     _expect_false(shell.advance_noncombat(), "RESULT must wait for one reward choice.")
     _expect_true(shell.select_result_reward("free_training"), "A valid Result reward must be selectable.")
 
-    _expect_true(shell.advance_noncombat(), "Reward-confirmed RESULT must advance to Growth/Recovery Route.")
-    _expect_eq(shell.run_state.get_current_screen(), "ROUTE_GROWTH", "First Route state must be Growth/Recovery.")
-    _expect_false(shell.advance_noncombat(), "Growth Route must wait for one explicit choice.")
-    _expect_true(shell.select_growth_route("free_training"), "Shell regression must select one legal Growth Route choice.")
-    _expect_true(shell.advance_noncombat(), "Confirmed Growth/Recovery must advance to Info/Preparation.")
-    _expect_eq(shell.run_state.get_current_screen(), "ROUTE_INFO", "Second Route state must be Info/Preparation.")
-    _expect_false(shell.advance_noncombat(), "Info Route must wait for one explicit clue category.")
-    var info_options: Array = shell.run_state.get_info_route_options()
-    _expect_eq(info_options.size(), 3, "Info Route must expose exactly three options.")
-    if info_options.size() == 3:
-        _expect_true(shell.select_info_route(str((info_options[0] as Dictionary).get("category", ""))), "Shell regression must select one legal Info Route category.")
-    _expect_true(shell.advance_noncombat(), "Confirmed Info/Preparation must advance to the next Briefing.")
-    _expect_eq(shell.run_state.get_current_screen(), "BRIEFING", "Two Route nodes must return to next Briefing.")
+    _expect_true(shell.advance_noncombat(), "Reward-confirmed Result must advance to Jianghu.")
+    _expect_eq(shell.run_state.get_current_screen(), "JIANGHU", "The Route surface must enter Jianghu.")
+    for step in range(4):
+        _expect_eq(shell.get_route_option_count(), 3, "Each Jianghu step must render exactly three logical options.")
+        _expect_false(shell.advance_noncombat(), "Jianghu must wait for one explicit choice at Step %d." % step)
+        var options: Array = shell.run_state.get_jianghu_options()
+        _expect_eq(options.size(), 3, "RunState must expose exactly three Jianghu options.")
+        if options.size() == 3:
+            _expect_true(shell.run_state.select_jianghu_node(str((options[0] as Dictionary).get("id", "")), step), "Shell regression must select one offered Jianghu option.")
+        _expect_true(shell.advance_noncombat(), "Confirmed Jianghu choice must advance Step %d." % step)
+        await process_frame
+    _expect_eq(shell.run_state.get_current_screen(), "BRIEFING", "Four Jianghu choices must return to the next Briefing.")
     _expect_eq(shell.run_state.duel_index, 2, "Shell flow must reach Duel 2 without recreating RunState.")
 
     shell.queue_free()

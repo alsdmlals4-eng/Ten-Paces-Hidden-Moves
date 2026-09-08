@@ -1,0 +1,16 @@
+{
+  "asset_id": "TEN-HBP-SCREEN-ROUTE-REST-INN-20260904-V1",
+  "runtime_asset": "assets/backgrounds/jianghu_rest_inn_v1.png",
+  "sha256": "80aa7da962884c75c9fbb71f0d555b79a41b63e8e3b79bffce74577951b04902",
+  "source": "blueprint-editorial-20260908/docs/visual-assets/candidates/TEN-HBP-ROUTE-REST-20260904/TEN_HBP_SCREEN_ROUTE_REST_INN_20260904_v1.png",
+  "original_generation_output": "C:/Users/user/.codex/generated_images/01a06b70-fa83-7132-bc6b-def94b70b16c/exec-f3952f70-4073-47dd-b85e-90f2eb3ef92b.png",
+  "generation_route": "built-in image_gen, 2026-09-04; original pixels reused unchanged",
+  "consumer": "src/run/vertical_slice_shell_route_auto.gd; pending Jianghu route_type rest only",
+  "implementation_authorization": "Latest user continuation: reuse or recreate necessary assets and connect without intermediate approval",
+  "historical_status": "GENERATED_CANDIDATE; not silently promoted to historical approval",
+  "status": "IMPLEMENTED_UNDER_CONTINUATION_AUTHORIZATION",
+  "user_approved": false,
+  "runtime_evidence": "docs/runtime-captures/TEN-ATLAS-SUCCESSOR-20260908/jianghu-rest-1280x800.png",
+  "evidence_limit": "Actual renderer, synthetic terminal used to reach rest UI; not evidence of campaign completion",
+  "shipping_rights": "UNVERIFIED"
+}
