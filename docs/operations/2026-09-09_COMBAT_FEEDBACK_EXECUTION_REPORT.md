@@ -69,6 +69,14 @@ Controller의 마지막 전체 검사는496PASS1문서FAIL이며, 그 뒤 실제
 
 R5에서 발견한 캡처 등록 공백까지 해결한 후 정본/current순서·제품5경로·untouched v1 저장/AI/원화·비용·증거ceiling을 다시 검토했다. 범위 안 미해결 blocker는 없다. 등록 경고와 실제화면 배치 부족, domain execution공백은 기록된 후속이며 narrow feedback PASS로 덮지 않는다. 최소5회 전체 검토의 clean exit는 이 확인까지다.
 
+### PR335 실제 전달 검사와 추가 교정
+
+- E imported exact `831519c974089de4b45022c6d8b08299f694c6a6`에서 controller 전체 검사를 다시 실행해 **497PASS336.33s**를 확인했다. 위495/2·496/1 실패는 역사로 보존한다. import metadata만 남긴 별도 checkout이며 실제 제품 변경은 없다.
+- PR335 최초 head `d2dc383fcf0d04fe1d68a84d7e5a8af8aa435290`는 위 source에 Decision 상태 두 줄만 교정한 버전이다. 주어진 전체 결과를 다른 exact HEAD의 결과라고 바꾸지 않는다.
+- 최초 opened-event adapter run `34285238281`은 label 부착 전 payload의 `EXTERNAL_APPROVAL=false`로 실패했다. 같은 HEAD의 labeled-event run `34285239029`는 PASS했다. 승인 label은 현재 실제 PR에 존재한다. 검사 우회나 label 권한 확장은 없다.
+- adoption run `34285238410`은 이 PR diff에 날짜별 BUILD 기록이 없어 실패했다. 기존 exact5경로 승인/Decision을 확대하지 않고 `docs/implementation/BUILD_APPROVAL_2026-09-09.md`를 추가해 실제 누락된 consumer를 연결했다. workflow 조건은 변경하지 않았다. 이 교정 뒤 최종 HEAD에서 CI를 다시 확인한다.
+- 전달 단계 재검토는 원 제품5경로, v1/AI/승인원화와 비용의 불변성, 문서의 상태·증거 상한, 실제 CI 실패 원인과 승인 owner를 다시 대조했다. 이전 full-scope clean exit가 CI까지 이미 통과했다는 뜻은 아니며 발견된 누락을 현재 기록에 보완한다.
+
 post-correction native/독립 코드검토와 정본2장/supplemental7캡처는 완료했고, 로컬 whole496PASS1문서FAIL 뒤 해당 owner/관련31검사 교정도 확인했다. exact-head CI·정상 병합·main readback은 아직 PENDING이다. 사람 플레이·청음·실물 입력·Android·접근성 사용자·Release 성능·출시 권리는 NOT_RUN이다. UI 인물/카드 크기·빈 영역과 전체 승인 아틀라스 fidelity도 완료가 아니다.
 
 표시 교정 뒤에는 별도 실행 계약으로 고유 대응·공통 피해/방어·첫 전조 비용/once/강건과 v1 저장 완주 호환을 교정한다. 그 다음 성장 지출/수련/해금, 사건표·선택·조건, 정탐/상태/보상과 적별 콘텐츠·아트/음향 완성도를 계속 다룬다. 이 보고서는 정의 분류나 자동10전 결과를 전체 Blueprint 구현 완료로 확대하지 않는다.
