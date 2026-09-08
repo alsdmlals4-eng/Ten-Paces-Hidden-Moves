@@ -31,7 +31,15 @@ PR 325는 exact head 34/34 SUCCESS 뒤 `12fe75ca795c9af640a58eff975e2a6cbe02888d
 merged main pytest 473건과 model/runtime/UI/실제 10전 probe가 통과했다.
 다음 안전 작업은 native-input 전체 캠페인과 Blueprint 구현 공백 검증이다.
 책임 증거: `docs/operations/2026-09-08_BIMU_CONSTRAINT_RUNTIME_EXECUTION_REPORT.md`.
-실제 입력 전체 캠페인, 사건 시각자료와 전체 Blueprint 대응·최종 검수는 남아 있다.
+PR 327은 22 SUCCESS / 3 정상 SKIPPED 뒤 `ae2c686cd09fd3c94a309b7fd8104673bf6c0c4d`에 병합됐다.
+Godot 입력 이벤트로 실제 버튼을 작동시킨 전체 캠페인은 10승·10회 보상·36회 행로·387회
+버튼 활성화를 통과했다. 병합본 Python 474건과 정본 수명주기·운영 검사도 PASS했다.
+이는 실제 UI consumer를 통과한 headless 자동 입력이며 물리 키보드·사람 플레이 증거는 아니다.
+종료 시 사운드 객체 2개 경고는 프로젝트 없는 최소 재현에서도 확인됐다. 미병합 엔진 수정안을
+채택하거나 경고를 억제하지 않았다. 책임 증거와 재현 한계:
+`docs/operations/2026-09-08_NATIVE_CAMPAIGN_FLOW_VERIFICATION_REPORT.md`.
+사건 시각자료와 전체 Blueprint 대응·최종 검수는 남아 있다. 다음 package의 native-input 부분은
+위 증거까지 완료됐고, Blueprint 공백 대조 부분은 진행 중이다.
 
 2026-09-08 사용자 상시 승인: 관련 기존 open/draft/ready PR은 번호별 재승인 없이 검토·흡수·교정·검증·병합한다. 책임 결정은 `docs/decisions/2026-09-08_STANDING_PR_INTEGRATION_AUTHORIZATION.md`다. 기존 성공 CI만으로 병합하지 않고 최신 main·실제 diff·회귀·보호 규칙을 다시 확인한다. 이전 전투 UI 교정 증거는 `docs/operations/2026-09-08_PR_INTEGRATION_CORRECTIONS.md`를 참조한다. 당시 후속 범위였던 강호행로 4회 선택은 이후 PR 322로 구현·병합됐다.
 
