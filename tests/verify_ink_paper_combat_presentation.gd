@@ -94,11 +94,11 @@ func _run() -> void:
 		_expect(dock.basic_panel.buttons.size() == 10, "Basic action source must expose all ten current basic actions as cards.")
 		if not dock.basic_panel.buttons.is_empty():
 			var first_basic_card := dock.basic_panel.buttons[0]
-			_expect(first_basic_card.custom_minimum_size.y >= 80.0, "Compact illustrated cards must retain their complete 80px image/name/category stack.")
+			_expect(first_basic_card.custom_minimum_size.y >= 98.0, "Summary cards must retain the complete image/name/three-line effect stack.")
 			var card_illustration := first_basic_card.get_node_or_null("CardIllustration") as TextureRect
 			_expect(is_instance_valid(card_illustration), "Basic action cards must consume their existing illustration atlas rather than render as text-only buttons.")
 			if is_instance_valid(card_illustration):
-				_expect(card_illustration.offset_bottom - card_illustration.offset_top >= 35.0, "Compact basic cards must retain a visible illustration band.")
+				_expect(card_illustration.texture != null and card_illustration.offset_bottom - card_illustration.offset_top >= 26.0, "Summary cards must retain the textured 26px illustration band above their three effect lines.")
 				var name_label := first_basic_card.get_node("CardName") as Label
 				_expect(card_illustration.offset_bottom <= name_label.offset_top, "Illustration and action name must not overlap.")
 		var tab_style := dock.basic_tab.get_theme_stylebox("normal") as StyleBoxFlat

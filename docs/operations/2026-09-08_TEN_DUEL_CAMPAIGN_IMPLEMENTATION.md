@@ -175,3 +175,37 @@ in-memory name and userdata discovery stale. Game process existed but Hera could
 it. Exact-session stop and synchronization of the already-authorized project setting
 restored capture; no other editor or project was changed. Shared headless test logs are
 not reliable proof of the visible game's cleanliness; use exact runtime capture/identity.
+
+### Corrected sequential completion and preparation readback
+
+The final public policy at 79408303 completed ten actual resolver wins with no retry,
+ten rewards and 36 offered route choices. Controller and independent reviewer reran it:
+exit 0, final resources health 9/30, stamina 1/5, internal 2/4, ten base ultimate uses.
+Seven-star Shaolin and Yang techniques actually resolved. Exact accumulated resource
+equality is asserted before every first resolver. Earlier invalid and failed policies
+remain historical counterexamples in the task report, not current completion evidence.
+
+Independent review: no hidden enemy plan read or arbitrary victory/resource injection.
+The probe DOES directly apply production-equivalent resource handoff and ultimate
+reservation, so its evidence ceiling is deterministic headless resolver/RunState
+integration, NOT UI placement input, global balance or Human gameplay acceptance.
+
+Preparation summaries now show action slots, stamina/internal cost, range, movement
+and main effect magnitude. Numerical previews use the combat engine's existing formula;
+missing actor data has an explicit formula fallback. A shared lazy engine removes
+per-card JSON/AI initialization. No FPS improvement claim is made without profiling.
+Actual first capture revealed summary overflow despite parent bounds passing. RED tests
+now inspect each rendered label and row overlap at 720p/800p. Cards are 98px, font remains
+11px and artwork is retained; corrected 1280x800 capture reviewed with no label overflow:
+`docs/runtime-captures/TEN-ATLAS-SUCCESSOR-20260908/combat-card-summaries-fixed-1280x800.png`.
+This capture enters combat via normal shell methods, not synthetic terminal injection.
+
+Briefing copy removes internal AI/seed terminology and the removed recent-rating line.
+Owned manuals display current mastery as a number plus one star. Regression observed
+four RED assertions, then GREEN. This copy repair does not implement the still-missing
+constraint selection or detailed scout-level status panels. Full Python suite: 470 PASS.
+
+Current remaining product gaps: visible-input full campaign, rich node/event scenes,
+briefing constraints and scout-level status, target currency/training/grade rewards,
+actor/VFX polish, Blueprint reconciliation. Human, Android, rights and release remain
+NOT_RUN. This integration package is a verified increment, not the entire Blueprint.

@@ -54,6 +54,10 @@ func _run() -> void:
     _expect_true(shell.advance_noncombat(), "SETUP with four selected manuals must advance.")
     _expect_true(shell.advance_noncombat(), "INTRO must advance.")
     _expect_eq(shell.run_state.get_current_screen(), "BRIEFING", "Intro must lead to briefing.")
+    var briefing_text := str(shell.description_label.text)
+    for internal_copy in ["AI", "seed", "최근 평", "최근 전적"]:
+        _expect_false(briefing_text.contains(internal_copy), "Briefing must not expose internal or removed editorial copy: %s" % internal_copy)
+    _expect_true(briefing_text.contains("보유 무공") and briefing_text.contains("3 ☆"), "Briefing must show owned manual mastery as a number and one star.")
     _expect_true(shell.advance_noncombat(), "BRIEFING must enter COMBAT.")
     await process_frame
 

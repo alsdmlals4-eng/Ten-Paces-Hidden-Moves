@@ -395,12 +395,11 @@ func _render_briefing() -> void:
     var manual_id := str(opponent.get("signature_manual_id", ""))
     var manual: Dictionary = manual_registry.get_manual(manual_id) if manual_registry != null else {}
     var manual_label := "[%s] %s" % [str(manual.get("faction", "")), str(manual.get("manual_name", ""))]
-    var description := "무인상 · %s\n공개 무공 · %s\n알려진 습관 · %s\n의심할 점 · %s\n최근 평 · %s\n\n알 수 없음 · 현재 계획 / AI 가중치 / 내부 선택 seed\n나의 무공 · %s" % [
+    var description := "무인상 · %s\n공개 무공 · %s\n알려진 습관 · %s\n의심할 점 · %s\n\n상대의 다음 수는 아직 알 수 없습니다. 공개된 단서로 대비하세요.\n\n나의 보유 무공\n%s" % [
         str(opponent.get("martial_identity", "")),
         manual_label,
         str(opponent.get("readable_habit", "")),
         str(opponent.get("ambiguity_or_counterexample", "")),
-        str(opponent.get("public_briefing_hook", "")),
         _player_manual_names_text()
     ]
     _set_content(
@@ -414,12 +413,13 @@ func _player_manual_names_text() -> String:
     var names: Array[String] = []
     if manual_registry == null:
         return "미확정"
+    var mastery := run_state.get_player_mastery_by_manual()
     for manual_id_value in run_state.get_player_manual_loadout():
         var manual: Dictionary = manual_registry.get_manual(str(manual_id_value))
         var name := str(manual.get("manual_name", ""))
         if not name.is_empty():
-            names.append(name)
-    return " · ".join(names) if not names.is_empty() else "미확정"
+            names.append("%s · %d ☆" % [name, int(mastery.get(str(manual_id_value), 0))])
+    return "\n".join(names) if not names.is_empty() else "미확정"
 
 
 func _set_content(title: String, description: String, button_text: String) -> void:

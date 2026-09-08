@@ -10,10 +10,10 @@
     "authority": "Latest explicit user continuation; ten duels, four next-node choices per interval, recreate and connect assets",
     "implementation_record": "docs/operations/2026-09-08_TEN_DUEL_CAMPAIGN_IMPLEMENTATION.md",
     "actual_sequential_probe": "tests/probe_sequential_ten_duel_campaign.gd",
-    "machine_runtime": "SEQUENTIAL_PROBE_RESOURCE_RESET_DEFECT_FOUND_COMPLETION_CLAIM_WITHDRAWN_FIX_PENDING",
+    "machine_runtime": "CORRECTED_PUBLIC_POLICY_TEN_WINS_36_ROUTE_CHOICES_EXACT_RESOURCE_HANDOFF_HEADLESS_VERIFIED",
     "human_android_release": "NOT_RUN",
     "remaining": [
-      "always-visible preparation summary",
+      "visible input full campaign and final visual review",
       "briefing constraints and status/intel levels",
       "full Blueprint content and shared asset reconciliation",
       "CI and protected merge"
