@@ -65,3 +65,15 @@ Fix round 1은 terminal handoff-start와 confirmation guard를 분리하고 새 
 - Controller and independent reviewer inspected both images: compact callouts, separated result text, cause beside the CTA, all ten basic cards visible. Bounded visual evidence applies only to these two 1280×800 states. Long clash, 720p and 1080p have machine geometry coverage, not equivalent visible captures.
 
 Windows visible Human usability, 물리 키보드/마우스/게임패드, accessibility user, Android actual device, release performance와 사람 가독성/재미는 `NOT_RUN`. 현재 저장/이어하기는 durable consumer가 없는 것으로 read-only 검색에서 확인됐으며 별도 설계·구현이 남는다. 위 두 상태 capture와 독립 review는 완료했고, exact-head CI·보호 병합·postmerge closeout은 후속 단계다.
+
+## Postmerge closeout
+
+PR 331 exact implementation head `0371f886daf83683130c81437a2e2e6132d27628`은 `32 SUCCESS / 0 FAIL / 0 PENDING`, CLEAN, unresolved threads `[]` 뒤 2026-09-08T12:23:10Z에 normal merge되어 main `bf161025b63edd7eb441b2c4f2ae9da5155f68da`가 됐다. Controller detached-main readback은 Python 478 PASS(15.52s), protected lifecycle PASS, Base operating validator PASS다.
+
+Closeout branch는 archive/current-owner regression 추가 뒤 Python 480 PASS(15.05s), adopted Base `19355b7ef065a21d0f2b685c7d9be64a4a3970f8` generator check 및 operating validator PASS다.
+
+Closeout review는 최초 archive regression이 향후의 모든 active approval manifest까지 금지하는 과도한 조건과 current routing owner 네 필드의 stale 값을 발견했다. 교정 전 linked-current regression은 `1 failed, 2 passed`(exit 1)로 `ACTIVE_CONTEXT.next_package`의 기존 native-campaign route를 포착했다. 교정 후 archive guard는 이후 별도 scope의 active approval을 허용하되 PR 331의 exact retired bytes 재활성화만 금지하며, `ACTIVE_CONTEXT`의 `next_package`·`user_directed_planning_next_package`·`user_directed_planning_status`와 `current_operating_state.json`의 `next_package`·`active_decision_state`를 merged inline-results 상태 및 `BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS`로 연결한다.
+
+첫 전체 재검사는 `19 failed, 462 passed`로 current discovery의 과거 literal 기대와 `ACTIVE_CONTEXT.active_decision_state` 한 필드가 아직 연결되지 않은 사실을 추가 포착했다. 해당 current consumer만 같은 merged 상태로 이관한 뒤 관련 87 PASS, 전체 Python 481 PASS(14.75s), committed focused 22 PASS, protected lifecycle PASS, adopted Base operating validator PASS를 확인했다. 이 교정은 current routing/test authority에 한정되며 역사 snapshot이나 제품 코드는 바꾸지 않는다.
+
+초기 exact head `51fd10c6`의 A3 standalone checker 실패와 native action-selection assertion 후 hang은 숨기지 않는다. test-only `0371f886`가 retired standalone review 기대를 inline/no-overlay/automatic-next 계약과 bounded failure exit로 이관했다. 최종 제품 commit `5eb580e6` 및 controller capture bytes는 그 교정에서 변하지 않았다. Active approval은 merged Git blob 그대로 `docs/operations/2026-09-08_PR331_PROTECTED_CHANGE_APPROVAL_RECORD.md`에 보존하고 종료했다. 다음 safe work는 durable save/continue와 event/status/reward canon gap이며 전체 Blueprint, Human/device/accessibility/release 완료가 아니다.

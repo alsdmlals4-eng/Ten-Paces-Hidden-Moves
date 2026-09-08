@@ -7,7 +7,7 @@
 
 ## 현재 기준
 
-2026-09-08 inline combat results BUILD 후보: 승인된 화면 경계에 따라 활성 standalone 복기 overlay/추가 click을 제거하고, resolver summary의 실제 원인을 전투 inline strip과 terminal Result가 소비하도록 구현했다. reveal card/result는 actual minimum height로 배치한다. 로컬 Godot 4.7.1 focused 회귀와 Python 476건, native ordinary-default 10전(10승·10보상·36행로·299활성화)이 PASS했다. 아직 branch-local이며 controller capture/독립 review/CI/병합/readback 전이다. Human·물리 입력·Android·접근성 사용자·release evidence는 `NOT_RUN`. 책임 기록: `docs/operations/2026-09-08_INLINE_COMBAT_RESULTS_EXECUTION_REPORT.md`.
+2026-09-08 inline combat results는 PR 331 exact head `0371f886daf83683130c81437a2e2e6132d27628`로 32개 remote check를 통과하고 main `bf161025b63edd7eb441b2c4f2ae9da5155f68da`에 병합됐다. 활성 standalone 복기 overlay/추가 click 없이 resolver cause를 bounded inline lane과 terminal Result가 소비하며, reveal과 action dock은 720/800/1080 actual rect 회귀 및 controller capture를 통과했다. detached-main Python 478건, protected lifecycle과 Base operating contract가 PASS했다. native ordinary-default 10전은 실제 UI 입력 경로로 10승·10보상·36행로·299활성화를 완료했다. 이는 machine/runtime capture evidence이며 Human·물리 입력·Android·접근성 사용자·release·전체 Blueprint 완료는 `NOT_RUN`. 다음 안전 surface는 durable save/continue와 event/status/reward canon gap의 별도 설계다. 책임 기록: `docs/operations/2026-09-08_INLINE_COMBAT_RESULTS_EXECUTION_REPORT.md`, `docs/operations/2026-09-08_PR331_PROTECTED_CHANGE_APPROVAL_RECORD.md`.
 
 2026-09-08 병합된 10전 확장: 최신 사용자 지시는 10전과 비무 사이 4회 행로 선택,
 인게임 캡처, Blueprint 아틀라스 기반의 대부분 이미지 교체다. 작업은
@@ -73,7 +73,7 @@ active_planning_work_mode: REVIEW
 active_planning_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
 active_planning_parent_pr: NONE
 active_approval_count: SCOPED_BUILD_APPROVED_HUMAN_FINAL_NOT_RUN
-active_decision_state: BIMU_CONSTRAINTS_MAIN_MERGED_VERIFIED
+active_decision_state: INLINE_COMBAT_RESULTS_MAIN_MERGED_VERIFIED
 source_decision: TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
@@ -92,13 +92,13 @@ accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
 performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 phase_i_vi_implementation: AUTHORIZED_AND_MERGED
 future_product_mutation_authorized: false_NEW_PRODUCT_MUTATION_REQUIRES_FRESH_APPROVED_CONTRACT
-next_package: NATIVE_INPUT_CAMPAIGN_AND_BLUEPRINT_GAP_VERIFICATION
+next_package: BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS
 next_planning_decision: TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01
 user_directed_planning_work_mode: REVIEW_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_COMPARISON_DEFERRED
 user_directed_planning_decision: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
-user_directed_planning_next_package: NATIVE_INPUT_CAMPAIGN_AND_BLUEPRINT_GAP_VERIFICATION
+user_directed_planning_next_package: BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS
 user_directed_planning_next_decision: TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01
-user_directed_planning_status: THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_CTA_REVIEW_SURFACES_IMPLEMENTED_LEGACY_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN
+user_directed_planning_status: THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_SINGLE_EXECUTE_INLINE_CAUSAL_AND_TERMINAL_RESULT_SURFACES_MAIN_MERGED_VERIFIED_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN
 user_directed_planning_single_execute_status: IMPLEMENTED_MERGED_MAIN_PR329_REMOTE_CI_32_SUCCESS_POSTMERGE_APPROVAL_LIFECYCLE_IN_PROGRESS_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN
 user_directed_planning_current_direction: FRONTAL_SHARED_GROUND_DUEL_NO_VISIBLE_LOGICAL_BOARD_PLUS_3_BRANCH_4_PICK_JIANGHU_ROUTE_PLUS_SINGLE_PLAYER_FACING_ACTION_EXECUTE_CTA_PLUS_CURRENT_CARD_VS_COMPARE_RAIL_PLUS_INLINE_CAUSAL_RECAP_PLUS_UNIFIED_BLUE_GRAY_HANJI_INK_CANDIDATE_STYLE_WITHOUT_SPINE_RUNTIME
 user_directed_planning_human_blueprint_publication: exports/ten-paces-hidden-moves_HUMAN_GAME_BLUEPRINT_20260904.pdf
