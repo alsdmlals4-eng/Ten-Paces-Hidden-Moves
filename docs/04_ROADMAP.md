@@ -38,7 +38,9 @@ PR #92와 PR #102는 재현 가능한 병합 계보이며 현재 active PR이 �
 
 ## 2. 프로젝트 코어 확정
 
-`TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01`의 전달 순서는 strict 저장·전투 checkpoint → 실제 title/shell·생명주기 연결 → 격리된 새 프로세스 재개·10전 캠페인 → 저장 지연 교정 → `TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`의 각 전투원 성급·능력치 실행/복구 일치 → 독립 검수·보호 전달이다. 이 계보는 PR #333으로 main에 병합됐고 최초 공개 저장은 교정된 semantic identity를 사용한다. 다음 안전 작업은 battle presentation correctness의 `star-10 actor classification`과 `victory/defeat cue`이며, 그 뒤 `growth/events/status/reward` 정본 공백을 다룬다. 성장 지출·영구 능력치 지급·해금 조건·보유 무공 전투 확장도 별도 후속이다. 현재 결과와 남은 Gate는 `docs/operations/2026-09-08_DURABLE_SAVE_EXECUTION_REPORT.md` 및 current owner에서 읽는다. 자동 재개 검증은 Human·Android·출시 또는 whole Blueprint complete 증거를 대체하지 않는다.
+병합된 저장·10전 완주 증거는 `docs/operations/2026-09-08_DURABLE_SAVE_EXECUTION_REPORT.md`에 보존한다. 새 표시·판정 작업으로 과거 검증 기록을 대체하지 않는다.
+
+`TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01`의 전달 순서는 strict 저장·전투 checkpoint → 실제 title/shell·생명주기 연결 → 격리된 새 프로세스 재개·10전 캠페인 → 저장 지연 교정 → `TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`의 각 전투원 성급·능력치 실행/복구 일치 → 독립 검수·보호 전달이다. 이 계보는 PR #333으로 main에 병합됐고 최초 공개 저장은 교정된 semantic identity를 사용한다. 전투 표시 교정은 `TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01`이 소유한다. actor-owned 절초·실제 방어/실패·전조/실행과 승패 음향을 검증한 뒤, 고유 대응 무공과 공통 피해·방어 해결의 실제 누락을 별도 실행 계약으로 교정한다. 그 도메인 변경은 기존 공개 저장의 완주 호환을 함께 명세해야 하며 표시 수정에 숨겨 넣지 않는다. 이후 성장 지출·영구 능력치 지급·해금 조건·보유 무공 전투 확장과 `growth/events/status/reward` 공백을 다룬다. 도메인 진단 책임 기록은 `docs/reviews/2026-09-09_MARTIAL_DOMAIN_INTEGRATION_PREFLIGHT.md`, 현재 완료 상태와 남은 Gate는 Active Context/current JSON에서 읽는다. 자동 재개·분류 검증은 Human·Android·출시 또는 whole Blueprint complete 증거를 대체하지 않는다.
 
 `TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01` 비무 제약의 전달 순서는 승인 catalog → frozen duel receipt → 공유 engine 강제 →
 native 선택·봉인 피드백 → 로컬 회귀/실제 캡처 → exact-head CI·보호 병합이다.
@@ -168,18 +170,19 @@ WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
 
 ## 6. 제품 연결 범위
 
-현재 보장:
+현재 확인한 연결 범위:
 
 - 정확한 10권 roster와 문파·주/보조능력치 조합.
 - 3·5·7·9·10성 해금과 overlay 합성.
 - 플레이어 명시적 loadout의 무공·절초 UI 표시.
 - 적 명시적 loadout의 해금 카드만 공개 상태 AI 후보로 사용.
-- 상태 선행·이동·사거리 재검사·독립 다단·조건부 후속의 실제 묶음 실행.
-- 자하신공 사용권·나한금강공 강건·회마창 사거리 재검사·능파미보 이동 전 반격·만천화우 독립 4회.
+- 실제 actor-owned 정의와 능력치에 따른 일반 무공 이동·사거리 재검사·다단·일부 조건부 후속 실행. 직접 effect pipeline 테스트와 실제 bundle 경로를 동일시하지 않는다.
+- 회마창 사거리 재검사·만천화우 독립 공격과 자하신공의 완료 시 회복 경로는 확인했다. 자하 사용권의 첫 전조 소비, 나한 강건의 첫 전조/중단 보호, 능파미보의 실제 회피 후 반격은 현재 bundle 경로에 누락·충돌이 있어 완료로 보장하지 않는다.
 - 기존 기본 행동·공용 절초·준비·자동 배치 동작 보존.
 
 현재 범위 밖 또는 별도 evidence가 필요한 항목:
 
+- 고유 대응 무공, 일반/무공 공통 방어·합·회피·피해 순서, 첫 전조 비용/once/강건과 기존 v1 저장 완주 호환. 실제 진단은 `docs/reviews/2026-09-09_MARTIAL_DOMAIN_INTEGRATION_PREFLIGHT.md`를 따른다.
 - 최종 loadout 획득·교체 경제.
 - 적별 최종 무공 배치와 난이도 곡선.
 - 최종 피해 계수·자원 비용 승인.

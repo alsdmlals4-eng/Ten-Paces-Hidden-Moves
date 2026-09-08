@@ -12,7 +12,8 @@
 
 최초 저장 공개 전 전투원별 성급 실행·복구 교정
 `TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`과 영속 저장은 PR #333으로 병합됐다.
-다음 안전 작업은 battle presentation correctness의 `star-10 actor classification`과 `victory/defeat cue`이며,
+전투 표시·승패 음향 교정은 `TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01`이 소유한다.
+이후 실제 고유 대응·공통 피해/방어 해결 누락을 기존 공개 저장의 완주 호환과 함께 별도 명세·교정하고,
 그 뒤 `growth/events/status/reward` 정본 공백을 다룬다. 이는 전체 Blueprint 완료 주장이 아니다.
 상세 전달 순서는 `../../../docs/04_ROADMAP.md`, 현재 결과는 Active Context/current JSON을 따른다.
 

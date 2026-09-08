@@ -38,9 +38,10 @@ board가 해당 사건 actor의 `get_actor_card_definition(card_id, actor)`로 �
 
 분류 우선순위:
 
+0. `action_stage=preparation` 또는 `outcome=preparation`은 기술의 전조이지 실행 성공이 아니다. 정의의 절초 identity는 유지하되 `kind=''`, `motion=''`, `band=-1`로 성공 VFX·타격 motion·발동 cue를 억제하고 기존 전조 카드 공개/기다림을 유지한다. 실제 전체 `timing_results`를 소비해 첫 두 전조와 마지막 실행을 각각 검사한다. 마지막 실행만 골라낸 검사로 이 경계를 대체하지 않는다.
 1. 실제 `type=clash` 또는 `outcome=clash_*`는 기존 합 연출을 유지한다.
 2. `interrupted`, `miss_direction`, `miss_range`, `move_invalid`, `martial_failed`는 실패/중단 label을 우선하며 성공 절초의 큰 VFX·공격 motion을 내보내지 않는다. 실제 양수 damage가 포함된 부분 실행 실패는 그 피해 사실을 텍스트/피격으로 보존하되 전체 절초 성공으로 포장하지 않는다.
-3. 이 사건의 **대상**이 회피/방어한 `defense_outcome=evade/block` 또는 동등한 outer outcome은 방어 피드백이 우선이며, 피해 없는 회피에 hit sound를 내보내지 않는다. 행동자 자신의 `evade_succeeded`는 상대 회피가 아니므로 상대에게 회피 모션을 주지 않는다. 다단 martial program의 일부 `BLOCKED`만으로 전체를 방어 성공으로 축약하지 않는다. 완료된 program에 실제 양수 aggregate damage가 있으면 일부 막힘과 관계없이 실제 피해와 정상 절초 강조를 보존한다. 실제 damage가 0이고 시도된 ATTACK가 전부 BLOCKED라면 방어 outcome으로 표시한다.
+3. 이 사건의 **대상**이 회피/방어한 `defense_outcome=evade/block/sure_hit_block` 또는 동등한 outer outcome은 방어 피드백이 우선이며, 피해 없는 회피에 hit sound를 내보내지 않는다. `sure_hit_block`은 실제 엔진의 필중+막기 결과이며 필중은 막기를 무시하지 않는다. 잔여 피해 숫자를 보존하면서 일반 block과 같은 defender motion·방어 cue 우선순위를 사용한다. `sure_hit`만 있고 막기가 없는 경우까지 방어로 바꾸지 않는다. 행동자 자신의 `evade_succeeded`는 상대 회피가 아니므로 상대에게 회피 모션을 주지 않는다. 다단 martial program의 일부 `BLOCKED`만으로 전체를 방어 성공으로 축약하지 않는다. 완료된 program에 실제 양수 aggregate damage가 있으면 일부 막힘과 관계없이 실제 피해와 정상 절초 강조를 보존한다. 실제 damage가 0이고 시도된 ATTACK가 전부 BLOCKED라면 방어 outcome으로 표시한다.
 4. 정상 절초 실행은 `ultimate`; 공격 절초 및 실제 반격 피해가 있는 대응 절초만 공격형 ultimate motion을 사용한다. 회복/피해 없는 실제 실행 대응은 제자리 self VFX+기술 이름으로 표현한다. `martial_events`의 SPECIAL_CLASH는 내부 효과 사실이며 outer clash로 승격하지 않는다. requirement가 실패해 counter가 건너뛰어진 완료 program은 `조건 미충족`을 표시하고 공격 성공 motion/impact를 내보내지 않는다. 이미 적용된 자기 상태 효과까지 실패로 되돌렸다고 표현하지 않는다.
    - 실제 bundle에서 고유 martial program 없이 `outcome=response/response_combo`만 발생한 무공은 현재 기본 방어 처리 사실만 표시한다: `kind=outcome`, 공격 motion 없음, band=-1, `방어 준비`. canonical identity가 절초라는 사실만으로 실행 성공을 만들지 않는다. 이는 고유 대응 구현 완료가 아니라 잘못된 성공 연출을 막는 보수적 표시이며, 후속 도메인 교정이 필요하다.
 5. 일반 공격·일반 utility는 기존 동작/분류를 유지한다.
