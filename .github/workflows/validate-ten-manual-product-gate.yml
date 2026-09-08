@@ -24,6 +24,8 @@ on:
       - "tests/verify_combat_focus_order.gd"
       - "tests/verify_combat_layout_accessibility.gd"
       - "tests/verify_combat_action_selection_integration.gd"
+      - "tests/probe_native_ten_duel_campaign.gd"
+      - "tests/probe_sequential_ten_duel_campaign.gd"
       - ".github/workflows/validate-ten-manual-product-gate.yml"
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
@@ -84,6 +86,8 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_combat_action_selection_integration.gd
       - name: Verify sequential public-policy ten-duel campaign
         run: godot --headless --path . --script res://tests/probe_sequential_ten_duel_campaign.gd
+      - name: Verify native-input ten-duel campaign
+        run: godot --headless --path . --script res://tests/probe_native_ten_duel_campaign.gd
       - name: Verify bimu constraint catalog and model
         run: godot --headless --path . --script res://tests/verify_bimu_constraint_model.gd
       - name: Verify bimu constraint frozen receipt and engine enforcement
