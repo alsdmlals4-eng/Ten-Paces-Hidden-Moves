@@ -84,24 +84,13 @@ func _on_product_action_selected(definition: Dictionary) -> void:
     _auto_place_selected_card(definition.duplicate(true))
 
 func _on_progress_requested(context: Dictionary) -> void:
-    if (not _plan_locked and super._inputs_locked()) or not action_timing_panel.is_current_bundle_complete():
+    if super._inputs_locked() or not action_timing_panel.is_current_bundle_complete():
         return
-    if not _plan_locked:
-        _plan_locked = true
-        if is_instance_valid(combat_progress_button):
-            combat_progress_button.set_plan_locked(true)
-        _set_presentation_state("plan_locked")
-        set_meta("plan_locked", true)
-        # Locking is the handoff from private planning to the public duel.
-        # Keep only the compact execution CTA inside the middle stage; the
-        # entire lower deck, timing row, detail, and observation surface must
-        # disappear before any action is revealed.
-        _set_plan_locked_surface_visible(true)
-        return
-    _plan_locked = false
+    # A valid activation atomically closes private planning and hands the
+    # committed bundle to the existing authoritative resolver.
+    _set_plan_locked_surface_visible(true)
     if is_instance_valid(combat_progress_button):
         combat_progress_button.set_plan_locked(false)
-    _set_presentation_state("planning")
     set_meta("plan_locked", false)
     super._on_progress_requested(context)
 
