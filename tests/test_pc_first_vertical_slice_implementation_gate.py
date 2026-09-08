@@ -28,11 +28,11 @@ class PcFirstVerticalSliceImplementationGateTests(unittest.TestCase):
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "NATIVE_INPUT_CAMPAIGN_AND_BLUEPRINT_GAP_VERIFICATION",
+            "BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS",
             status["next_phase"],
         )
         self.assertEqual(
-            "NATIVE_INPUT_CAMPAIGN_AND_BLUEPRINT_GAP_VERIFICATION",
+            "BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS",
             status["next_product_execution_surface"],
         )
         self.assertTrue(status["vertical_slice_pc_implementation_authorized"])

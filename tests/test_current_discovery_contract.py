@@ -401,7 +401,7 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
         status = json.loads(status_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            "THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_CTA_REVIEW_SURFACES_IMPLEMENTED_LEGACY_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN",
+            "THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_SINGLE_EXECUTE_INLINE_CAUSAL_AND_TERMINAL_RESULT_SURFACES_MAIN_MERGED_VERIFIED_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN",
             status["user_directed_planning_status"],
         )
         self.assertEqual(
@@ -445,11 +445,11 @@ class CurrentDiscoveryContractTests(unittest.TestCase):
             status["evidence_ceiling"]["pr277_protected_approval_lifecycle"],
         )
         self.assertEqual(
-            "NATIVE_INPUT_CAMPAIGN_AND_BLUEPRINT_GAP_VERIFICATION",
+            "BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS",
             status["next_phase"],
         )
         self.assertEqual(
-            "NATIVE_INPUT_CAMPAIGN_AND_BLUEPRINT_GAP_VERIFICATION",
+            "BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS",
             status["next_product_execution_surface"],
         )
         self.assertEqual(

@@ -7,7 +7,7 @@
 
 ## 현재 기준
 
-2026-09-08 inline combat results BUILD 후보: 승인된 화면 경계에 따라 활성 standalone 복기 overlay/추가 click을 제거하고, resolver summary의 실제 원인을 전투 inline strip과 terminal Result가 소비하도록 구현했다. reveal card/result는 actual minimum height로 배치한다. 로컬 Godot 4.7.1 focused 회귀와 Python 476건, native ordinary-default 10전(10승·10보상·36행로·299활성화)이 PASS했다. 아직 branch-local이며 controller capture/독립 review/CI/병합/readback 전이다. Human·물리 입력·Android·접근성 사용자·release evidence는 `NOT_RUN`. 책임 기록: `docs/operations/2026-09-08_INLINE_COMBAT_RESULTS_EXECUTION_REPORT.md`.
+2026-09-08 inline combat results는 PR 331 exact head `0371f886daf83683130c81437a2e2e6132d27628`로 32개 remote check를 통과하고 main `bf161025b63edd7eb441b2c4f2ae9da5155f68da`에 병합됐다. 활성 standalone 복기 overlay/추가 click 없이 resolver cause를 bounded inline lane과 terminal Result가 소비하며, reveal과 action dock은 720/800/1080 actual rect 회귀 및 controller capture를 통과했다. detached-main Python 478건, protected lifecycle과 Base operating contract가 PASS했다. native ordinary-default 10전은 실제 UI 입력 경로로 10승·10보상·36행로·299활성화를 완료했다. 이는 machine/runtime capture evidence이며 Human·물리 입력·Android·접근성 사용자·release·전체 Blueprint 완료는 `NOT_RUN`. 다음 안전 surface는 durable save/continue와 event/status/reward canon gap의 별도 설계다. 책임 기록: `docs/operations/2026-09-08_INLINE_COMBAT_RESULTS_EXECUTION_REPORT.md`, `docs/operations/2026-09-08_PR331_PROTECTED_CHANGE_APPROVAL_RECORD.md`.
 
 2026-09-08 병합된 10전 확장: 최신 사용자 지시는 10전과 비무 사이 4회 행로 선택,
 인게임 캡처, Blueprint 아틀라스 기반의 대부분 이미지 교체다. 작업은
