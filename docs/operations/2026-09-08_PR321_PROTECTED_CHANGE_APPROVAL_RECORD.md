@@ -18,73 +18,7 @@ Base 채택 버전 9.4.4와 보호 경로 정책은 변경하지 않는다.
 ## 원문 보존
 
 ```json
-{
-  "schema_version": 1,
-  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
-  "status": "APPROVED",
-  "protected_base_commit": "ef7a48d2769b17b4632b695191a293ee40524ac4",
-  "decision_ids": [
-    "TEN-DEC-20260902-SCREEN-PARTITION-AND-DISTANT-FRONTAL-DUEL-01",
-    "TEN-DEC-20260903-MODULAR-DUEL-UI-AND-PRESENTATION-MOTION-01"
-  ],
-  "approved_paths": [
-    "assets/ASSET_MANIFEST.json",
-    "assets/backgrounds/frontal_courtyard_duel_background_02_v1.png",
-    "assets/backgrounds/frontal_courtyard_duel_background_02_v1.png.import",
-    "assets/characters/enemy_masked_battler_rgba_v2.png",
-    "assets/characters/enemy_masked_battler_rgba_v2.png.import",
-    "assets/characters/player_wanderer_battler_rgba_v2.png",
-    "assets/characters/player_wanderer_battler_rgba_v2.png.import",
-    "assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png",
-    "assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png.import",
-    "assets/ui/duel/current_action_slot_frame_01_v1.png",
-    "assets/ui/duel/current_action_slot_frame_01_v1.png.import",
-    "assets/ui/duel/observation_reveal_frame_01_v1.png",
-    "assets/ui/duel/observation_reveal_frame_01_v1.png.import",
-    "assets/ui/duel/status_hud_frame_01_v1.png",
-    "assets/ui/duel/status_hud_frame_01_v1.png.import",
-    "assets/ui/duel/technique_detail_frame_01_v1.png",
-    "assets/ui/duel/technique_detail_frame_01_v1.png.import",
-    "data/combat/combat_board_poc.json",
-    "scenes/ui/action_selection/action_detail_panel.tscn",
-    "scenes/ui/action_selection/action_selection_dock.tscn",
-    "scenes/ui/action_selection/basic_action_panel.tscn",
-    "scenes/ui/action_selection/martial_action_panel.tscn",
-    "scenes/ui/action_selection/ultimate_action_panel.tscn",
-    "scenes/ui/action_timing_panel.tscn",
-    "scenes/ui/combat_progress_button.tscn",
-    "src/combat/battle_background.gd",
-    "src/combat/combat_board_preview.gd",
-    "src/combat/combat_board_preview_auto.gd",
-    "src/combat/combat_board_preview_ten_manuals_auto.gd",
-    "src/combat/combat_character_placeholder.gd",
-    "src/ui/action_timing_panel.gd",
-    "src/ui/action_timing_panel_auto.gd",
-    "src/ui/action_selection/basic_action_panel.gd",
-    "src/ui/action_selection/martial_action_panel.gd",
-    "src/ui/action_selection/ultimate_action_panel.gd",
-    "src/ui/combat_screen_surface.gd",
-    "src/ui/combat_screen_surface.gd.uid",
-    "src/ui/combatant_status_panel.gd",
-    "src/ui/action_timing_slot.gd",
-    "src/ui/action_selection/action_choice_card.gd",
-    "src/ui/action_selection/action_detail_panel.gd",
-    "src/ui/action_selection/action_selection_dock.gd",
-    "src/ui/combat_action_reveal_overlay.gd",
-    "src/ui/duel_foreground_banner.gd",
-    "src/ui/duel_foreground_banner.gd.uid",
-    "src/ui/main_title_screen.gd",
-    "src/ui/observation_reveal_panel.gd",
-    "src/ui/observation_reveal_panel.gd.uid",
-    "src/ui/round_hud_panel.gd",
-    "src/ui/top_combat_hud.gd",
-    "scenes/ui/observation_reveal_panel.tscn",
-    "scenes/ui/round_hud_panel.tscn"
-  ],
-  "approval_source": "User explicitly final-locked the modular combat art, then directed the top/middle/bottom screen separation, current-only 3/3/4 action bundle display, distant frontal combatant framing, separately generated status/slot/detail/observation modules, and presentation-only attack/evade/block/hit/ultimate/clash motion. The user then wrote ‘확정’ on 2026-09-03 KST for the four final UI frames and retained v2 combatant originals. The user additionally approved necessary in-scope permissions and directed that work continue until the actual in-game preparation screen matches the supplied target composition, including corrected text cells, plan-lock geometry, and screen proportions.",
-  "approval_time": "2026-09-03T00:00:00+09:00",
-  "scope_summary": "PR #321 only: retain final-locked modular courtyard and v2 combatant art; render the four final-locked modular UI frames with dynamic public data through the top HUD, round HUD, plan timing, action-source panels, and compact progress control; keep current-only 3/3/4 preparation visibility; hide planning UI during per-action reveal; and add grounded presentation-only attack/evade/block/hit/ultimate/clash transforms. No combat rules, AI boundary, save schema, hidden information release, input policy, or replacement of approved combatant raster bytes is authorized."
-}
+{"schema_version":1,"artifact_role":"PROJECT_PROTECTED_CHANGE_APPROVAL","status":"APPROVED","protected_base_commit":"ef7a48d2769b17b4632b695191a293ee40524ac4","decision_ids":["TEN-DEC-20260902-SCREEN-PARTITION-AND-DISTANT-FRONTAL-DUEL-01","TEN-DEC-20260903-MODULAR-DUEL-UI-AND-PRESENTATION-MOTION-01"],"approved_paths":["assets/ASSET_MANIFEST.json","assets/backgrounds/frontal_courtyard_duel_background_02_v1.png","assets/backgrounds/frontal_courtyard_duel_background_02_v1.png.import","assets/characters/enemy_masked_battler_rgba_v2.png","assets/characters/enemy_masked_battler_rgba_v2.png.import","assets/characters/player_wanderer_battler_rgba_v2.png","assets/characters/player_wanderer_battler_rgba_v2.png.import","assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png","assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png.import","assets/ui/duel/current_action_slot_frame_01_v1.png","assets/ui/duel/current_action_slot_frame_01_v1.png.import","assets/ui/duel/observation_reveal_frame_01_v1.png","assets/ui/duel/observation_reveal_frame_01_v1.png.import","assets/ui/duel/status_hud_frame_01_v1.png","assets/ui/duel/status_hud_frame_01_v1.png.import","assets/ui/duel/technique_detail_frame_01_v1.png","assets/ui/duel/technique_detail_frame_01_v1.png.import","data/combat/combat_board_poc.json","scenes/ui/action_selection/action_detail_panel.tscn","scenes/ui/action_selection/action_selection_dock.tscn","scenes/ui/action_selection/basic_action_panel.tscn","scenes/ui/action_selection/martial_action_panel.tscn","scenes/ui/action_selection/ultimate_action_panel.tscn","scenes/ui/action_timing_panel.tscn","scenes/ui/combat_progress_button.tscn","src/combat/battle_background.gd","src/combat/combat_board_preview.gd","src/combat/combat_board_preview_auto.gd","src/combat/combat_board_preview_ten_manuals_auto.gd","src/combat/combat_character_placeholder.gd","src/ui/action_timing_panel.gd","src/ui/action_timing_panel_auto.gd","src/ui/action_selection/basic_action_panel.gd","src/ui/action_selection/martial_action_panel.gd","src/ui/action_selection/ultimate_action_panel.gd","src/ui/combat_screen_surface.gd","src/ui/combat_screen_surface.gd.uid","src/ui/combatant_status_panel.gd","src/ui/action_timing_slot.gd","src/ui/action_selection/action_choice_card.gd","src/ui/action_selection/action_detail_panel.gd","src/ui/action_selection/action_selection_dock.gd","src/ui/combat_action_reveal_overlay.gd","src/ui/duel_foreground_banner.gd","src/ui/duel_foreground_banner.gd.uid","src/ui/main_title_screen.gd","src/ui/observation_reveal_panel.gd","src/ui/observation_reveal_panel.gd.uid","src/ui/round_hud_panel.gd","src/ui/top_combat_hud.gd","scenes/ui/observation_reveal_panel.tscn","scenes/ui/round_hud_panel.tscn"],"approval_source":"User explicitly final-locked the modular combat art, then directed the top/middle/bottom screen separation, current-only 3/3/4 action bundle display, distant frontal combatant framing, separately generated status/slot/detail/observation modules, and presentation-only attack/evade/block/hit/ultimate/clash motion. The user then wrote ‘확정’ on 2026-09-03 KST for the four final UI frames and retained v2 combatant originals. The user additionally approved necessary in-scope permissions and directed that work continue until the actual in-game preparation screen matches the supplied target composition, including corrected text cells, plan-lock geometry, and screen proportions.","approval_time":"2026-09-03T00:00:00+09:00","scope_summary":"PR #321 only: retain final-locked modular courtyard and v2 combatant art; render the four final-locked modular UI frames with dynamic public data through the top HUD, round HUD, plan timing, action-source panels, and compact progress control; keep current-only 3/3/4 preparation visibility; hide planning UI during per-action reveal; and add grounded presentation-only attack/evade/block/hit/ultimate/clash transforms. No combat rules, AI boundary, save schema, hidden information release, input policy, or replacement of approved combatant raster bytes is authorized."}
 ```
 
 ## 검증·검토
@@ -100,4 +34,3 @@ Base 채택 버전 9.4.4와 보호 경로 정책은 변경하지 않는다.
 - 외부 조사: NOT_APPLICABLE — 게임 설계 변경이 아닌 저장소 자체 승인 수명 복구이며,
   실제 lifecycle checker와 기존 PR 308 보존 검사 방식이 책임 원본이다.
 - 미검증: 이 문서는 게임 runtime, Human UX, 기기, 권리, 출시 검증을 주장하지 않는다.
-
