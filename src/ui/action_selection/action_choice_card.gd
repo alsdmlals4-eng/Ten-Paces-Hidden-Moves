@@ -8,7 +8,6 @@ const RESTRAINED_GOLD := Color("b99254")
 const RESOLUTION_ENGINE_SCRIPT := preload("res://src/combat/combat_resolution_engine.gd")
 
 var action_definition: Dictionary = {}
-static var _shared_resolution_engine: RefCounted
 
 func configure_action(definition: Dictionary, illustration_policy: String, status_text: String = "", preview_actor: Dictionary = {}) -> void:
 	action_definition = definition.duplicate(true)
@@ -104,13 +103,13 @@ func _primary_summary(preview_actor: Dictionary) -> String:
 			return "예상 위력 %d" % int(preview.get("value", 0))
 		return str(preview.get("label", ""))
 	if _category() == "attack":
+		if not str(preview.get("label", "")).is_empty():
+			return str(preview.get("label", ""))
 		return _formula_baseline_text()
 	return "효과 조건부 · 상세 확인"
 
 func _resolution_engine() -> RefCounted:
-	if not is_instance_valid(_shared_resolution_engine):
-		_shared_resolution_engine = RESOLUTION_ENGINE_SCRIPT.new()
-	return _shared_resolution_engine
+	return RESOLUTION_ENGINE_SCRIPT.shared_preview_engine()
 
 func _formula_baseline_text() -> String:
 	var formula: Dictionary = action_definition.get("damage_formula", {}) as Dictionary

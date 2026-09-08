@@ -129,3 +129,34 @@ and pre-existing import/cache churn were not staged.
 
 Rollback is the bounded card-summary commit only; reverting it restores the
 prior hover-dependent card surface without changing definitions or combat state.
+
+## 2026-09-08 martial preview correction
+
+Independent runtime review found that martial attacks expressed only through
+`effect_steps[].power` were reported as `예상 위력 0`. The regression now walks
+every mastery-10 attack definition from all ten real manual files. A preview may
+publish a number only for one unconditional `ATTACK`/`INDEPENDENT_ATTACK` step
+with positive raw power. Conditional, clash and multi-hit programs instead show
+`조건·다단 위력 · 상세 확인`; the UI does not invent an aggregate across range,
+defense, hit-count or clash gates.
+
+RED produced 43 failures across the real catalog, including
+`mount_hua_plum_blossom_sword_star3`. A second RED proved that the hover detail
+still constructed a new engine. GREEN uses the engine-owned lazy
+`shared_preview_engine()` in both the card and hover detail, so card JSON, rules
+and the AI planner are initialized once for these read-only previews.
+
+Fresh verification after the correction:
+
+- `verify_action_card_summary.gd`: PASS.
+- `verify_action_card_source_unification.gd`: PASS.
+- `verify_combat_board.gd`: PASS.
+- `verify_ten_manual_registry.gd`: PASS.
+- `verify_martial_effect_pipeline.gd`: PASS.
+- `verify_ten_manual_ui_ai_adoption.gd`: PASS.
+- Python discovery suite: `461/461` PASS.
+
+The failed attempt to invoke nonexistent `tests/verify_ten_manual_runtime.gd`
+was an operator path error, not product evidence; it was replaced by the three
+existing focused manual verifiers above. Visible/Human/Android/accessibility and
+release-performance evidence remain `NOT_RUN`.

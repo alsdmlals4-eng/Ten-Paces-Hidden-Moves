@@ -309,13 +309,13 @@ func _compact_effect_text(value: Dictionary, effect_text: String) -> String:
         return "이동 %d" % maxi(1, int(value.get("move_range", 1)))
     var damage_formula: Dictionary = value.get("damage_formula", {}) as Dictionary
     if category == "attack":
-        var preview: Dictionary = RESOLUTION_ENGINE_SCRIPT.new().preview_attack_damage(value, preview_actor)
+        var preview: Dictionary = RESOLUTION_ENGINE_SCRIPT.shared_preview_engine().preview_attack_damage(value, preview_actor)
         if bool(preview.get("available", false)):
             return "예상 위력 %d · 방어/합 전" % int(preview.get("value", 0))
         if not damage_formula.is_empty():
             var stat_label := str({"external": "외공", "internal_power": "내공"}.get(str(damage_formula.get("stat_key", "")), "능력"))
             return "위력식 기본 %d + %s × %.2f" % [int(damage_formula.get("base", 0)), stat_label, float(damage_formula.get("coefficient", 0.0))]
-        return "위력식 %s · 조건부 결과" % str(value.get("damage", "미확정"))
+        return str(preview.get("label", "조건·다단 위력 · 상세 확인"))
     var restore: Dictionary = value.get("restore", {}) as Dictionary
     if not restore.is_empty():
         return "기력 +%d · 내력 +%d" % [maxi(0, int(restore.get("stamina", 0))), maxi(0, int(restore.get("internal", 0)))]

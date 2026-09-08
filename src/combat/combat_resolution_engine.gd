@@ -11,6 +11,13 @@ var cards_by_id: Dictionary = {}
 var ai_planner: RefCounted
 var _locked_enemy_bundle_key := ""
 var _locked_enemy_actions: Array = []
+static var _shared_preview_instance: RefCounted
+
+
+static func shared_preview_engine() -> RefCounted:
+    if not is_instance_valid(_shared_preview_instance):
+        _shared_preview_instance = CombatResolutionEngine.new()
+    return _shared_preview_instance
 
 func _init() -> void:
     ai_planner = CombatAiPlannerScript.new()
@@ -88,6 +95,9 @@ func preview_attack_damage(definition: Dictionary, actor: Dictionary) -> Diction
     # interruption remain unresolved. Unknown actor inputs stay unavailable.
     if str(definition.get("category", "")) != "attack":
         return {"available": false, "reason": "not_attack"}
+    var martial_preview := _preview_martial_attack_power(definition)
+    if not martial_preview.is_empty():
+        return martial_preview
     var formula_value = definition.get("damage_formula", {})
     if typeof(formula_value) == TYPE_DICTIONARY and not (formula_value as Dictionary).is_empty():
         var formula := formula_value as Dictionary
@@ -98,6 +108,31 @@ func preview_attack_damage(definition: Dictionary, actor: Dictionary) -> Diction
     elif str(definition.get("source", "")) == "ultimate" and float(definition.get("attack_power_coefficient", 0.0)) != 0.0 and not actor.has("attack_power"):
         return {"available": false, "reason": "actor_power_unknown"}
     return {"available": true, "value": _calculate_attack_damage(definition, actor), "kind": "raw_attack_magnitude", "conditional_resolution_excluded": true}
+
+
+func _preview_martial_attack_power(definition: Dictionary) -> Dictionary:
+    if str(definition.get("source", "")) != "martial_manual":
+        return {}
+    var attack_steps: Array[Dictionary] = []
+    var has_clash := false
+    var has_requirement := false
+    for value in definition.get("effect_steps", []):
+        if typeof(value) != TYPE_DICTIONARY:
+            continue
+        var step: Dictionary = value
+        var operation := str(step.get("op", ""))
+        if operation in ["ATTACK", "INDEPENDENT_ATTACK"]:
+            attack_steps.append(step)
+        elif operation == "SPECIAL_CLASH":
+            has_clash = true
+        elif operation.begins_with("REQUIRE_"):
+            has_requirement = true
+    if attack_steps.size() == 1 and not has_clash and not has_requirement:
+        var power := maxi(0, int(attack_steps[0].get("power", 0)))
+        if power > 0:
+            return {"available": true, "value": power, "kind": "martial_single_attack_raw_power", "conditional_resolution_excluded": true}
+    var reason := "conditional_or_multi_hit" if attack_steps.size() > 1 or has_requirement else "clash_or_non_damage_attack"
+    return {"available": false, "reason": reason, "label": "조건·다단 위력 · 상세 확인"}
 
 func preview_action_magnitude(definition: Dictionary, actor: Dictionary) -> Dictionary:
     var category := str(definition.get("category", ""))

@@ -3,6 +3,7 @@ extends SceneTree
 const ENGINE_SCRIPT := preload("res://src/combat/combat_resolution_engine.gd")
 const ADAPTER_SCRIPT := preload("res://src/ui/action_selection/action_view_model_adapter.gd")
 const CARD_SCRIPT := preload("res://src/ui/action_selection/action_choice_card.gd")
+const MARTIAL_REGISTRY_SCRIPT := preload("res://src/combat/martial_manual_registry.gd")
 const BOARD_SCENE := preload("res://scenes/combat/combat_board_preview.tscn")
 
 var failures: Array[String] = []
@@ -12,6 +13,8 @@ func _init() -> void:
 
 func _run() -> void:
 	_verify_engine_preview_is_actor_backed_and_pure()
+	_verify_martial_attack_previews_never_invent_zero()
+	_verify_shared_preview_engine()
 	_verify_card_contract_and_unknown_actor_fallback()
 	await _verify_board_context_and_geometry(Vector2(1280.0, 720.0))
 	await _verify_board_context_and_geometry(Vector2(1280.0, 800.0))
@@ -30,6 +33,44 @@ func _verify_engine_preview_is_actor_backed_and_pure() -> void:
 	_check(int(high.get("value", -1)) > int(low.get("value", -1)), "Changing the player's actual attack stat must change preview power.")
 	_check(low_actor == low_before and high_actor == high_before, "Attack preview must not mutate actor state.")
 	_check(not bool(engine.preview_attack_damage(definition, {}).get("available", true)), "Unknown actor stats must fail to a truthful formula fallback.")
+
+
+func _verify_martial_attack_previews_never_invent_zero() -> void:
+	var engine := ENGINE_SCRIPT.new() as CombatResolutionEngine
+	var registry := MARTIAL_REGISTRY_SCRIPT.new() as MartialManualRegistry
+	var actor := {"stats": {"external": 8, "constitution": 8, "agility": 8, "internal_power": 8, "insight": 8}, "attack_power": 8}
+	var saw_single_attack := false
+	var saw_conditional_multi_hit := false
+	for manual_id in registry.get_manual_ids():
+		for definition_value in registry.build_unlocked_cards(manual_id, 10):
+			var definition: Dictionary = definition_value
+			if str(definition.get("category", "")) != "attack":
+				continue
+			var preview: Dictionary = engine.preview_attack_damage(definition, actor)
+			if bool(preview.get("available", false)):
+				saw_single_attack = true
+				_check(int(preview.get("value", 0)) > 0, "%s must never expose a false zero attack preview." % str(definition.get("id", "martial attack")))
+			else:
+				saw_conditional_multi_hit = true
+				_check(not str(preview.get("reason", "")).is_empty(), "%s must explain why one exact aggregate preview is unavailable." % str(definition.get("id", "martial attack")))
+			var card := CARD_SCRIPT.new() as ActionChoiceCard
+			card.configure_action(definition, "semantic_atlas", "", actor)
+			var text := _descendant_label_text(card.find_child("CardSummary", false, false))
+			_check(not text.contains("예상 위력 0"), "%s card must not render an invented zero magnitude." % str(definition.get("id", "martial attack")))
+			if not bool(preview.get("available", false)):
+				_check(text.contains("상세 확인"), "%s card must name the truthful non-aggregate fallback." % str(definition.get("id", "martial attack")))
+			card.queue_free()
+	_check(saw_single_attack, "The real martial catalog must exercise an exact single-attack preview.")
+	_check(saw_conditional_multi_hit, "The real martial catalog must exercise a truthful conditional or multi-hit fallback.")
+
+
+func _verify_shared_preview_engine() -> void:
+	var first = ENGINE_SCRIPT.shared_preview_engine()
+	var second = ENGINE_SCRIPT.shared_preview_engine()
+	_check(is_instance_valid(first) and first == second, "Card and hover-detail previews must share one lazy engine instance.")
+	var detail_source := FileAccess.get_file_as_string("res://src/ui/action_selection/action_detail_panel.gd")
+	_check(not detail_source.contains("RESOLUTION_ENGINE_SCRIPT.new().preview"), "Hover detail must not reload combat JSON and AI for every preview.")
+
 
 func _verify_card_contract_and_unknown_actor_fallback() -> void:
 	var adapter := ADAPTER_SCRIPT.new() as ActionViewModelAdapter
