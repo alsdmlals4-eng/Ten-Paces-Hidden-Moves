@@ -53,4 +53,13 @@ Fix round 1은 terminal handoff-start와 confirmation guard를 분리하고 새 
 
 ## 미검증·남은 위험
 
-Windows visible Human usability, 물리 키보드/마우스/게임패드, accessibility user, Android actual device, release performance와 사람 가독성/재미는 `NOT_RUN`. 현재 저장/이어하기는 durable consumer가 없는 것으로 read-only 검색에서 확인됐으며 별도 승인 설계 대상이다. controller의 실제 화면 capture·독립 review·exact-head CI·보호 병합·postmerge closeout은 후속 단계다.
+### Controller exact-source readback
+
+- Independent task review and final scoped code review: approved through `5eb580e6063abf3881b93e7d0da2d19521e33387`. Final review caught an introduced 720/800p card overflow; the corrective commit restores the original vertical budget and places the cause beside the progress control. This required an explicitly recorded extension of the default final fix-wave cap under the user's continuous correction instruction; no failing layout was merged.
+- Independent Python suite at `5a188391`: 477 passed in 17.08s. Final source changes after that are layout and its native acceptance only; exact-head CI remains required.
+- Actual Windows Godot editor 6628, game 18856, source `5eb580e6`, 1280×800: setup → briefing → three guard actions → one execute click → reveal → automatic bundle 2 readiness. No review-confirmation input, no terminal-state injection. Game stopped after capture; diagnostics 0 errors / 0 warnings during this run, not an audio-exit or Human acceptance claim.
+- `docs/runtime-captures/inline-reveal-fixed-20260908.png`: SHA-256 `0FCFAADCDF08904AB37728C4A9AE4685E357A60E3AC81C40D86F3860AFDB315A`.
+- `docs/runtime-captures/inline-next-ready-fixed-20260908.png`: SHA-256 `5C9BD018CAC6C4C75D8680312CF889E64657F3012F8756904B39A326191C58E9`.
+- Controller and independent reviewer inspected both images: compact callouts, separated result text, cause beside the CTA, all ten basic cards visible. Bounded visual evidence applies only to these two 1280×800 states. Long clash, 720p and 1080p have machine geometry coverage, not equivalent visible captures.
+
+Windows visible Human usability, 물리 키보드/마우스/게임패드, accessibility user, Android actual device, release performance와 사람 가독성/재미는 `NOT_RUN`. 현재 저장/이어하기는 durable consumer가 없는 것으로 read-only 검색에서 확인됐으며 별도 설계·구현이 남는다. 위 두 상태 capture와 독립 review는 완료했고, exact-head CI·보호 병합·postmerge closeout은 후속 단계다.
