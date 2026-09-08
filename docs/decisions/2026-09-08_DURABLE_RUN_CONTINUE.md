@@ -13,11 +13,17 @@ Save only stable logical boundaries, not every frame. Preserve run progress, pen
 
 The game remains one core on Windows/Android. Pause/focus loss stops presentation and new commits and flushes the last stable checkpoint; resume restores UI before accepting commands. No background simulation. Android physical lifecycle is NOT_RUN until device testing.
 
+The internal terminal REVIEW bridge is not a durable player-facing screen. A single coordinator transaction applies the terminal result and advances to RESULT or FAILURE_RETRY before publishing. Crash after ready and before deferred confirmation restores the last durable RESOLVED combat checkpoint, then completes this transaction once. A later deferred callback must recognize the already applied terminal boundary and do nothing.
+
+While a coordinator transaction or restore is active, synchronous screen_changed and board checkpoint callbacks are deferred; no recursive screen construction/save is allowed. Validate and save the final immutable run+combat payload, then publish/render once. Retry a failed write using that payload, never by calling the gameplay command again.
+
 ## Storage contract
 
 One active local run under user://, schema_version=1. Envelope includes save_id, written_at_utc, app_version, run_state, combat_checkpoint, integrity_hash, revision and content compatibility identity. Hash is corruption detection, not tamper/security protection. Unknown/future schemas or incompatible content fail closed, preserve original files and show a useful message. No fabricated migration from the old planning-only save sample. Test rejection and v1 roundtrip; future schema migrations need explicit fixtures.
 
 The store owns only its narrowly named primary/temp/backup files. Read size/depth/node bounds; reject non-finite and unsupported JSON values. Validate the complete temporary file before replacement. Preserve at least one validated backup; never rotate a corrupt primary over a good backup. Inspect every write/flush/read/rename error. Keep the last acknowledged durable state on failure. Temp files are not blindly promoted. This is bounded tested fault recovery, not a universal power-loss guarantee.
+
+An idempotent save requires equal generation, logical transaction identity and normalized payload hash. Same route/result position with changed pending data is a new revision. A failed-write retry retains the exact pending payload/revision. Boundary location alone is not an effect-deduplication key.
 
 New-run replacement/retirement must not allow recovery of a prior completed/abandoned run as active. Recommended minimal mechanism: write the new-generation initial checkpoint (or inactive tombstone) to both validated slots before acknowledging replacement, with backup-first then primary; if interrupted before acknowledgment, returning to the old valid primary is permitted. Do not silently load an old generation when a readable incompatible primary says a newer generation/schema owns the slot. Preserve incompatible/corrupt evidence when a player explicitly chooses a fresh run; do not delete it.
 
@@ -35,4 +41,3 @@ New-run replacement/retirement must not allow recovery of a prior completed/aban
 ## Evidence required
 
 Prospective behavioral RED -> GREEN, strict malformed-input rejection with no live mutation, primary corruption/backup and failed-write survival, no previous-generation resurrection after acknowledged replacement, future-schema preservation, and isolated test paths. Fresh-process restore for run/route/result/retry and battle planning/committed/resolved; restored versus uninterrupted resources, statuses, AI lock, observation, ultimate cost and final receipts must match. Continue/recovery native UI capture, full ordinary-input ten-duel regression, CI binding and exact-head protected delivery. Static, automated runtime, visible capture, Human, Android and release states remain distinct.
-
