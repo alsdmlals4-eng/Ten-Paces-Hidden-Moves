@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "81ef0f0b2ede9cd63d6a2aba521a645efc1d4e5f",
+  "decision_ids": ["TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01", "TEN-DEC-20260908-STANDING-PR-INTEGRATION-01"],
+  "approved_paths": [
+    "data/run/bimu_constraints.json",
+    "src/combat/combat_board_preview.gd",
+    "src/run/bimu_constraint_model.gd",
+    "src/run/vertical_slice_combat_bridge.gd",
+    "src/run/vertical_slice_metrics_combat_resolution_engine.gd",
+    "src/run/vertical_slice_run_state.gd",
+    "src/run/vertical_slice_shell.gd",
+    "src/ui/action_selection/action_choice_card.gd",
+    "src/ui/action_selection/action_selection_dock.gd",
+    "src/ui/action_selection/martial_action_panel.gd",
+    "src/ui/action_selection/ultimate_action_panel.gd",
+    "src/ui/bimu_constraint_panel.gd"
+  ],
+  "approval_source": "Latest explicit user implementation continuation, separately scoped by docs/implementation/BUILD_APPROVAL_2026-09-08.md and TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01. Related PR integration is standing-authorized without bypass. This fresh manifest applies only to the bimu constraint runtime package; PR322 approval remains archived.",
+  "approval_time": "2026-09-08T00:00:00+09:00",
+  "scope_summary": "Nine optional constraints; zero to two selections within three points; frozen current-duel and identical retry receipt; authoritative manual-only seal and enemy overlay; native selection/preparation feedback and unchanged-panel rebuild reduction. No reward formula, save schema, core change, original asset replacement, Human final lock or release approval. Exact protected paths are derived from committed diff against protected baseline."
+}

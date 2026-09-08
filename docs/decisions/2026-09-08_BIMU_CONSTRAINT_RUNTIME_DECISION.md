@@ -1,7 +1,7 @@
 # 비무 제약 v0 런타임 채택
 
 Decision ID: TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01
-Status: APPROVED_FOR_BUILD / IMPLEMENTATION_IN_PROGRESS
+Status: APPROVED_FOR_BUILD / IMPLEMENTED_LOCAL_VERIFIED_AWAITING_CI_MERGE
 
 최신 사용자 지시: 기획한 내용을 Godot에 연속 구현하고 부족한 상세는 권장안으로
 채우며, 제약은 기술 제한과 상대 강화 및 복수 선택을 포함한다. 이 지시를
@@ -30,9 +30,11 @@ RUNTIME_NOT_IMPLEMENTED 표기는 당시 사실로 보존한다.
 
 ## 구현·검증 경계
 
-현재 런타임 연결은 미완료. 데이터/모델 → RunState/engine → 브리핑/준비
-consumer 순으로 test-first 구현한다. UI 봉인만으로 완료 처리하지 않는다.
+데이터/모델 → RunState/engine → 브리핑/준비 consumer가 test-first 구현됐다.
+봉인된 실제 기술 ID는 UI와 engine에서 차단하며 retry는 frozen receipt를 복원한다.
+로컬 검증과 1280×800 visible 캡처의 책임 증거는
+`docs/operations/2026-09-08_BIMU_CONSTRAINT_RUNTIME_EXECUTION_REPORT.md`다.
+720p는 headless만 검증했고 exact-head CI·병합·main readback은 다음 Gate다.
 실제 보유 ID에 재결합한 규칙으로 forged placement를 차단하며 원본 데이터를 수정하지 않는다.
 0선택과 이전 10전 흐름은 회귀 보호한다. 기계/runtime PASS와 Human 균형·사용성,
 Android·접근성·출시 권리는 별도다. 해당 미실행 검증은 NOT_RUN으로 유지한다.
-

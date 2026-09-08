@@ -25,10 +25,13 @@ detached main Python 472건도 PASS했다. 이전 PR 321 승인 기록은 PR 323
 새 공통 배경은 최신 사용자 연속 구현 지시에 따라 별도 경로로 런타임 연결했다.
 원본 승인 자산을 덮어쓰지 않았고 Human 최종 검수/출시 권리 확인은 미완료다.
 카드 비용·슬롯·사거리·주효과 요약을 연결하고 실제 렌더의 글자 넘침을 교정했다.
-다음 안전 작업: 별도 승인될 브리핑 복수 제약/기법 제한/상대 강화 패키지, 실제 입력 캠페인,
-사건 시각자료와 Blueprint 대응을 계속 구현·검증한다.
+비무 제약 9종의 복수 선택·기법 제한·상대 강화는 별도 승인 Decision 아래 구현됐으며
+로컬 기계 검증과 1280×800 실제 캡처를 확보했다. 720p는 headless만 검증했다.
+다음 안전 작업은 이 패키지의 exact-head CI·보호 병합·main readback이다.
+책임 증거: `docs/operations/2026-09-08_BIMU_CONSTRAINT_RUNTIME_EXECUTION_REPORT.md`.
+실제 입력 전체 캠페인, 사건 시각자료와 전체 Blueprint 대응·최종 검수는 남아 있다.
 
-2026-09-08 사용자 상시 승인: 관련 기존 open/draft/ready PR은 번호별 재승인 없이 검토·흡수·교정·검증·병합한다. 책임 결정은 `docs/decisions/2026-09-08_STANDING_PR_INTEGRATION_AUTHORIZATION.md`다. 기존 성공 CI만으로 병합하지 않고 최신 main·실제 diff·회귀·보호 규칙을 다시 확인한다. 현재 전투 UI 교정 증거는 `docs/operations/2026-09-08_PR_INTEGRATION_CORRECTIONS.md`를 참조한다. 강호행로 4회 선택은 다음 구현 범위이며 이 UI 교정으로 완료 처리하지 않는다.
+2026-09-08 사용자 상시 승인: 관련 기존 open/draft/ready PR은 번호별 재승인 없이 검토·흡수·교정·검증·병합한다. 책임 결정은 `docs/decisions/2026-09-08_STANDING_PR_INTEGRATION_AUTHORIZATION.md`다. 기존 성공 CI만으로 병합하지 않고 최신 main·실제 diff·회귀·보호 규칙을 다시 확인한다. 이전 전투 UI 교정 증거는 `docs/operations/2026-09-08_PR_INTEGRATION_CORRECTIONS.md`를 참조한다. 당시 후속 범위였던 강호행로 4회 선택은 이후 PR 322로 구현·병합됐다.
 
 ```yaml
 project: 십보강호: 숨은 수의 비무
@@ -42,24 +45,25 @@ current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN
 base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
 live_exact_sha_authority: NONE_REFETCH_REQUIRED
 active_project_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
-product_stage: FIRST_FIVE_DUEL_PHASE_I_VI_IMPLEMENTED
+product_stage: TEN_DUEL_CAMPAIGN_MERGED_BIMU_CONSTRAINTS_LOCAL_VERIFIED
 runtime_work_mode: REVIEW
-runtime_integration_pr: 65
+historical_runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
-active_planning_pr: NONE
+active_planning_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
 active_planning_parent_pr: NONE
-active_approval_count: 1/10
-active_decision_state: WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED
-source_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
+active_approval_count: SCOPED_BUILD_APPROVED_HUMAN_FINAL_NOT_RUN
+active_decision_state: BIMU_CONSTRAINTS_IMPLEMENTED_LOCAL_VERIFIED_AWAITING_CI_MERGE
+source_decision: TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
 platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
 design_platforms: WINDOWS_ANDROID
 platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
-windows_validation: CI_EXPORT_RUNTIME_PASS_LOCAL_NOT_RUN
+windows_validation: BIMU_CONSTRAINT_VISIBLE_1280X800_CAPTURED_720_HEADLESS_ONLY_CI_PENDING
 android_validation: NOT_RUN
 engine: Godot 4.7
-runtime_implementation: TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92
+historical_runtime_implementation: TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92
+runtime_implementation: TEN_DUEL_MERGED_BIMU_CONSTRAINTS_IMPLEMENTED_LOCAL_VERIFIED_AWAITING_CI_MERGE
 latest_combat_planning_runtime: PRODUCT_VALIDATION_AUTOMATED
 automated_validation: PASS
 human_validation: NOT_RUN
@@ -67,11 +71,11 @@ accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
 performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 phase_i_vi_implementation: AUTHORIZED_AND_MERGED
 future_product_mutation_authorized: false_NEW_PRODUCT_MUTATION_REQUIRES_FRESH_APPROVED_CONTRACT
-next_package: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION
-next_planning_decision: WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE
+next_package: BIMU_CONSTRAINT_EXACT_HEAD_CI_AND_PROTECTED_DELIVERY
+next_planning_decision: TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01
 user_directed_planning_work_mode: REVIEW_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_COMPARISON_DEFERRED
 user_directed_planning_decision: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
-user_directed_planning_next_package: THREE_BRANCH_FOUR_CHOICE_ROUTE_AND_EXECUTION_SURFACE_TEST_FIRST_GODOT_BUILD_PACKAGE
+user_directed_planning_next_package: BIMU_CONSTRAINT_EXACT_HEAD_CI_AND_PROTECTED_DELIVERY
 user_directed_planning_next_decision: TEN-DEC-20260904-THREE-BRANCH-FOUR-CHOICE-JIANGHU-AND-HUMAN-BLUEPRINT-01
 user_directed_planning_status: THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_CTA_REVIEW_SURFACES_IMPLEMENTED_LEGACY_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN
 user_directed_planning_current_direction: FRONTAL_SHARED_GROUND_DUEL_NO_VISIBLE_LOGICAL_BOARD_PLUS_3_BRANCH_4_PICK_JIANGHU_ROUTE_PLUS_SINGLE_PLAYER_FACING_ACTION_EXECUTE_CTA_PLUS_CURRENT_CARD_VS_COMPARE_RAIL_PLUS_INLINE_CAUSAL_RECAP_PLUS_UNIFIED_BLUE_GRAY_HANJI_INK_CANDIDATE_STYLE_WITHOUT_SPINE_RUNTIME
@@ -177,7 +181,7 @@ base_remote_observation: CURRENT_REMOTE_REQUIRES_LIVE_REFETCH_NO_AUTOMATIC_PROJE
 
 `legacy_discovery_compatibility`와 `legacy_sheet_migration_locator`의 Sheet 문자열은 기존 회귀·발견 도구가 과거 상태·콘텐츠 표를 찾기 위한 호환 토큰일 뿐이다. 실제 current truth는 `GITHUB_MAIN_PLUS_REPOSITORY_OWNER_LIVE_READ`이며 신규 기획 입력·Decision 동기화는 repository를 사용하고 Google Sheets는 migration-only다.
 
-`active_planning_*`, `active_decision_state`, `next_package`, `next_planning_decision`은 `docs/planning-data/current_operating_state.json`이 소유하는 플랫폼 운영 상태와 동기화한다. 완료된 Vertical Slice 기획/Visual production 상태는 `docs/planning-data/current_user_planning_status.json`, `docs/planning-data/current_visual_production_handoff_20260826.json`, `user_directed_planning_*`·`planning_visual_*` overlay가 소유하며 기존 플랫폼 운영 계약을 덮어쓰지 않는다.
+`active_planning_*`, `active_decision_state`, `next_package`, `next_planning_decision`은 `docs/planning-data/current_operating_state.json`의 현재 승인 실행 패키지와 동기화한다. 과거 플랫폼 Adapter 기획은 역사 계보이며 Android 구현 승인으로 승격하지 않는다. 상세 기획/Visual production은 `docs/planning-data/current_user_planning_status.json`, `docs/planning-data/current_visual_production_handoff_20260826.json`, `user_directed_planning_*`·`planning_visual_*` overlay가 소유한다.
 
 플랫폼 Adapter 구현 Gate는 향후 플랫폼 확장 경계로 계속 유효하다. 첫 5전 PC-first Vertical Slice Phase I–VI와 `TEN-IMP-20260828-PHASE2-COMBAT-CANON-RECONCILIATION-01`은 `main`에 병합된 역사 근거다. `WARM_DUSK_TEN_STEP_COMBAT_ANCHOR_01_v2_NO_FLOOR_GRID`와 `PROJECT_CORE_SCENE_VISUAL_BOARD_20260828_R2`는 planning-only다. 최신 사용자 final lock으로 `FRONTAL_COURTYARD_DUEL_BACKGROUND_01`과 `MARTIAL_AND_ULTIMATE_CARD_ILLUSTRATION_ATLAS_01`은 각각 실제 소비처에 등록·구현되고 Godot 4.7.1 visible runtime에서 검증됐다. 카드 atlas는 `ActionViewModelAdapter`의 source-kind semantic mapping을 통해 하나의 `ActionChoiceCard` renderer로 전달되며 전투 규칙·AI·저장 schema를 바꾸지 않는다. 이전 ink-mist/diagonal runtime binaries는 현재 tree에서 제거됐으며 Git history로 복구 가능하다. Codex는 GitHub + repository owners fresh-read를 current authority로 사용한다.
 
@@ -321,7 +325,7 @@ Windows CI 기준 runtime은 약 2344.67ms, peak working set은 188571648 bytes,
 - 제품 병합 전 다음 Gate: `next_planning_decision: TEN_MANUAL_LOCAL_WINDOWS_ACCESSIBILITY_PERFORMANCE_GATE`.
 - 플랫폼 전용 operating-state 표식: `WINDOWS_ANDROID_ADAPTER_ARCHITECTURE_MERGED`, `WINDOWS_ANDROID_ADAPTER_IMPLEMENTATION_GATE`.
 
-현행 플랫폼 운영 값은 문서 상단 YAML의 `active_planning_pr`, `active_decision_state`, `next_planning_decision`을 사용한다. 사용자 Vertical Slice 기획/Visual production 상태는 `docs/planning-data/current_user_planning_status.json`, `docs/planning-data/current_visual_production_handoff_20260826.json`, `docs/planning-data/approved_20260820_vertical_slice_visual_ux_contract.json`과 `user_directed_planning_*`·`planning_visual_*` overlay를 사용한다. 제품 병합 권위는 별도 역사 증거인 `merged_product_pr: 92`, `product_implementation_merge_commit`, `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`로 유지한다.
+현행 실행 패키지는 문서 상단 YAML과 current operating JSON에서 읽는다. 위 플랫폼 전용 표식은 과거 Adapter 설계와 미실행 플랫폼 Gate의 발견용이다. 기획/Visual 세부는 current planning/visual JSON에서 읽는다. `merged_product_pr: 92`, `product_implementation_merge_commit`, `TEN_MANUAL_PRODUCT_VALIDATION_MERGED_PR92`는 과거 제품 병합 계보이며 현재 구현 상태를 대체하지 않는다.
 
 ## 완료·검증됨
 

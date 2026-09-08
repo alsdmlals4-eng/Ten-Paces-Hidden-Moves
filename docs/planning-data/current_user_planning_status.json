@@ -4,7 +4,21 @@
   "pr_integration_policy": "RELATED_EXISTING_PRS_REVIEW_ABSORB_CORRECT_VERIFY_MERGE_WITHOUT_NAMED_REAPPROVAL",
   "project": "TEN_PACES",
   "updated_date": "2026-09-08",
+  "constraint_continuation": {
+    "decision": "TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01",
+    "integration_status": "IMPLEMENTED_LOCAL_VERIFIED_AWAITING_CI_MERGE",
+    "implementation_record": "docs/operations/2026-09-08_BIMU_CONSTRAINT_RUNTIME_EXECUTION_REPORT.md",
+    "windows_visible": "1280X800_THREE_FIXED_CAPTURES",
+    "layout_1280x720": "HEADLESS_PASS_VISIBLE_NOT_RUN",
+    "human_android_accessibility_release": "NOT_RUN",
+    "remaining": [
+      "exact-head CI and protected merge",
+      "main readback",
+      "whole Blueprint completion and Human review"
+    ]
+  },
   "campaign_continuation": {
+    "record_role": "PR322_CAMPAIGN_HISTORY_REMAINING_LIST_AT_MERGE_CONSTRAINT_SUCCESSOR_ABOVE",
     "branch": "codex/ten-duel-campaign-20260908",
     "integration_status": "PR322_MERGED_MAIN_81EF0F0B_32_CHECKS_PASS",
     "authority": "Latest explicit user continuation; ten duels, four next-node choices per interval, recreate and connect assets",
@@ -145,7 +159,7 @@
   "balance_measurement_representative_policy_coverage_postmerge_readback": "docs/operations/2026-08-30_PR293_REPRESENTATIVE_POLICY_COVERAGE_POSTMERGE_READBACK.md",
   "balance_measurement_representative_policy_coverage_scope": "ENGINE_DIRECT_NON_SHIPPING_OPENING_NO_ROUTE_15_CANDIDATES_15_LEGAL_STARTER_LOADOUTS_6_PUBLIC_POLICIES_5_AI_SEEDS_SCHEMA_3_SAFE_AGGREGATE_SELECTION_COUNTS",
   "long_horizon_user_direction": "IMPLEMENT_GDD_BY_APPROVED_VERIFIED_GODOT_PACKAGES_WITHOUT_SILENT_CORE_SCOPE_EXPANSION",
-  "next_product_execution_surface": "THREE_BRANCH_FOUR_CHOICE_ROUTE_AND_EXECUTION_SURFACE_TEST_FIRST_GODOT_BUILD_PACKAGE",
+  "next_product_execution_surface": "BIMU_CONSTRAINT_EXACT_HEAD_CI_AND_PROTECTED_DELIVERY",
   "machine_runtime_readback_execution_report": "docs/operations/2026-08-30_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_COMPARISON_DEFERRED_EXECUTION_REPORT.md",
   "machine_runtime_readback_status": "PARTIAL_CURRENT_MAIN_GODOT_4_7_1_VISIBLE_COMBAT_SCREEN_AND_6750_ROW_REPORT_SHA_MATCHED_HUMAN_PLAYER_COMPARISON_DEFERRED",
   "machine_runtime_readback_report_sha256": "A0669A0727C9608B6A240910CE529263C1982C510E4B3C376BD58D8AB5F66558",
@@ -192,7 +206,7 @@
   "windows_android_adapter_implementation_authorized": false,
   "product_implementation_authorized": true,
   "implementation_gate": "SCOPED_PC_FIRST_VERTICAL_SLICE_GATE_PLUS_EXISTING_PLATFORM_EVIDENCE_CEILINGS",
-  "next_phase": "THREE_BRANCH_FOUR_CHOICE_ROUTE_AND_EXECUTION_SURFACE_TEST_FIRST_GODOT_BUILD_PACKAGE",
+  "next_phase": "BIMU_CONSTRAINT_EXACT_HEAD_CI_AND_PROTECTED_DELIVERY",
   "current_screen_visual_coverage_inventory": "docs/planning-data/current_screen_visual_coverage_inventory_20260828.json",
   "next_image_generation": "WHOLE_SCENE_ATLAS_CANDIDATE_GENERATED; ACTUAL_RUNTIME_CONSUMER_BOUND_SPLIT_BRIEFS_REQUIRE_SEPARATE_GODOT_BUILD_PACKAGE_AND_USER_FINAL_LOCK",
   "next_visual_batch": [],

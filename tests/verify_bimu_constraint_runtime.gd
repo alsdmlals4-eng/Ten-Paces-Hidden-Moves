@@ -153,7 +153,11 @@ func _overlays() -> void:
             "CST_ENEMY_MASTERED_MANUAL":
                 check(boosted[enemy_id] == mini(10, mastery[enemy_id] + 2), "mastery boost")
                 var expected: Dictionary = engine.martial_registry.build_loadout_cards([enemy_id], boosted)
-                check(engine.get_enemy_martial_card_ids().size() == expected.size(), "boosted registry unlocks reach engine")
+                var actual_ids: Array = engine.get_enemy_martial_card_ids()
+                var expected_ids: Array = expected.keys()
+                actual_ids.sort()
+                expected_ids.sort()
+                check(actual_ids == expected_ids, "boosted registry exact unlock IDs reach engine")
     check(candidate == original and catalog.get_candidate("slot1_dogyeom") == original, "catalog immutable")
 
 func _hud() -> Dictionary:

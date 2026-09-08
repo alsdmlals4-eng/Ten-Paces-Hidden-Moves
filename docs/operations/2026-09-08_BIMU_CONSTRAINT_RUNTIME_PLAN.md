@@ -77,6 +77,12 @@ opponent copy and own mastery. Display selected effect deltas, not hidden base s
 Preparation marks forbidden manual cards with reason and active constraint summary;
 normal inputs cannot reserve/place forbidden cards. Keep existing input semantics.
 Verify at720p/800p, keyboard, first/last options, no overlap; actual capture.
+When wiring constraint state, avoid rebuilding unchanged native manual/ultimate lists:
+current set_manuals resets horizontal scroll on every identical context and ultimate
+context rebuilds repeatedly. Same-data updates must preserve node/focus/scroll identity;
+changed receipt/mastery/resources still refresh correctly. Add an identity/count regression
+and measure rebuild reduction, not an unmeasured FPS claim. This is bounded to touched
+consumer setters, not a generic UI framework.
 
 ## Task 4: Integration and delivery
 
