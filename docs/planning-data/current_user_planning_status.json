@@ -6,7 +6,7 @@
   "updated_date": "2026-09-08",
   "campaign_continuation": {
     "branch": "codex/ten-duel-campaign-20260908",
-    "integration_status": "PR322_OPEN_EXACT_HEAD_CI_PENDING",
+    "integration_status": "PR322_MERGED_MAIN_81EF0F0B_32_CHECKS_PASS",
     "authority": "Latest explicit user continuation; ten duels, four next-node choices per interval, recreate and connect assets",
     "implementation_record": "docs/operations/2026-09-08_TEN_DUEL_CAMPAIGN_IMPLEMENTATION.md",
     "actual_sequential_probe": "tests/probe_sequential_ten_duel_campaign.gd",
@@ -16,7 +16,7 @@
       "visible input full campaign and final visual review",
       "briefing constraints and status/intel levels",
       "full Blueprint content and shared asset reconciliation",
-      "CI and protected merge"
+      "briefing multiple constraints, technique restrictions and opponent buffs as a separately authorized package"
     ]
   },
   "user_directed_planning_status": "THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_CTA_REVIEW_SURFACES_IMPLEMENTED_LEGACY_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN",
