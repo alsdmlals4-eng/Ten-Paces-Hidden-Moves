@@ -4,13 +4,14 @@ extends RefCounted
 const MAX_BYTES := 8 * 1024 * 1024
 const MAX_DEPTH := 64
 const MAX_NODES := 100000
+const MAX_SAFE_INTEGER := 9007199254740991
 const SCHEMA_VERSION := 1
 # Bump for code-owned combat/reward/route/save semantics; presentation changes do not bump it.
 const SEMANTIC_CONTRACT_VERSION := "ten-duel-four-route-one-retry-bimu-save-v1"
 var _content_identity: String = ""
 var _number_pattern := RegEx.create_from_string("-?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?")
 
-static func integer(value, minimum: int = 0, maximum: int = 9007199254740991) -> bool:
+static func integer(value, minimum: int = 0, maximum: int = MAX_SAFE_INTEGER) -> bool:
     return (typeof(value) == TYPE_INT or typeof(value) == TYPE_FLOAT) and is_finite(float(value)) and float(value) == floor(float(value)) and value >= minimum and value <= maximum
 
 static func json_safe(value, depth: int = 0, count: Array = [0]) -> bool:
@@ -35,7 +36,7 @@ static func json_safe(value, depth: int = 0, count: Array = [0]) -> bool:
 static func normalized(value):
     match typeof(value):
         TYPE_FLOAT:
-            return int(value) if integer(value, -9007199254740991) else value
+            return int(value) if integer(value, -MAX_SAFE_INTEGER) else value
         TYPE_ARRAY:
             var items: Array = []
             for item in value: items.append(normalized(item))
@@ -97,7 +98,7 @@ func validate_payload(run_state, combat_checkpoint = {}) -> Dictionary:
     return {"ok": true, "status": "VALID", "run_state": normalized(run_state), "combat_checkpoint": {}}
 
 func encode(save_id: String, checkpoint_id: String, revision: int, run_state: Dictionary, combat_checkpoint: Dictionary = {}, active: bool = true) -> Dictionary:
-    if save_id.is_empty() or checkpoint_id.is_empty() or revision < 1 or content_identity().is_empty():
+    if save_id.is_empty() or checkpoint_id.is_empty() or not integer(revision, 1) or content_identity().is_empty():
         return error("CORRUPT", "Missing checkpoint identity")
     if active:
         var validation := validate_payload(run_state, combat_checkpoint)
@@ -107,9 +108,13 @@ func encode(save_id: String, checkpoint_id: String, revision: int, run_state: Di
     var envelope := {"schema_version": SCHEMA_VERSION, "save_id": save_id, "checkpoint_id": checkpoint_id, "revision": revision, "active": active, "written_at_utc": Time.get_datetime_string_from_system(true) + "Z", "app_version": str(ProjectSettings.get_setting("application/config/version", "1")), "content_identity": content_identity(), "run_state": run_state.duplicate(true), "combat_checkpoint": combat_checkpoint.duplicate(true)}
     if envelope.app_version.is_empty(): envelope.app_version = "unversioned-schema1"
     envelope["integrity_hash"] = digest(envelope)
-    var text := JSON.stringify(normalized(envelope), "", true, true)
+    var normalized_envelope = normalized(envelope)
+    var text := JSON.stringify(normalized_envelope, "", true, true)
     if text.to_utf8_buffer().size() > MAX_BYTES: return error("CORRUPT", "Input exceeds size bound")
-    return {"ok": true, "status": "VALID", "payload": normalized(envelope), "text": text}
+    var transported = JSON.parse_string(text)
+    if typeof(transported) != TYPE_DICTIONARY or not json_safe(transported, 0, [0]) or normalized(transported) != normalized_envelope:
+        return error("CORRUPT", "Checkpoint cannot round-trip through JSON transport")
+    return {"ok": true, "status": "VALID", "payload": normalized_envelope, "text": text}
 
 func decode(text: String) -> Dictionary:
     if text.to_utf8_buffer().size() > MAX_BYTES: return error("CORRUPT", "Input exceeds size bound")

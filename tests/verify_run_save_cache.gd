@@ -27,6 +27,7 @@ class CountingCodec extends "res://src/run/run_checkpoint_codec.gd":
 
 var failures: Array[String] = []
 var _root_sequence := 0
+var _owned_roots: Array[String] = []
 
 
 func _initialize() -> void:
@@ -45,7 +46,9 @@ func check(condition: bool, label: String) -> void:
 
 func _new_root(label: String) -> String:
     _root_sequence += 1
-    return OS.get_cache_dir().path_join("ten-paces-save-cache-%s-%s-%s-%s" % [label, OS.get_process_id(), Time.get_ticks_usec(), _root_sequence])
+    var root_path := OS.get_cache_dir().path_join("ten-paces-save-cache-%s-%s-%s-%s" % [label, OS.get_process_id(), Time.get_ticks_usec(), _root_sequence])
+    _owned_roots.append(root_path)
+    return root_path
 
 
 func _write_bytes(path: String, bytes: PackedByteArray) -> bool:
@@ -399,6 +402,40 @@ func _verify_exact_write_readback(fixture: Dictionary) -> void:
     check(destination_retry.get("ok", false) and destination_retry.revision == destination_failed.revision, "Destination readback failure retries the immutable candidate")
 
 
+func _verify_revision_upper_bound(fixture: Dictionary) -> void:
+    var encoder := CODEC.new()
+    var maximum_declared_revision := CODEC.MAX_SAFE_INTEGER
+    var maximum_transport_revision := maximum_declared_revision - 1
+    var unroundtrippable: Dictionary = encoder.encode("revision-bound", "declared-maximum", maximum_declared_revision, {}, {}, false)
+    check(not unroundtrippable.get("ok", false) and unroundtrippable.get("status", "") == "CORRUPT", "Declared maximum that Godot cannot round-trip fails before cache seeding")
+    var beyond_bound: Dictionary = encoder.encode("revision-bound", "beyond-maximum", maximum_declared_revision + 1, {}, {}, false)
+    check(not beyond_bound.get("ok", false) and beyond_bound.get("status", "") == "CORRUPT", "Revision beyond the shared codec integer bound fails closed")
+    for operation_value in ["save", "replace", "retire"]:
+        var operation := str(operation_value)
+        var root_path := _new_root("revision-bound-" + operation)
+        var save_id := "revision-bound-" + operation
+        var encoded: Dictionary = _encoded(encoder, save_id, "last-valid", maximum_transport_revision, fixture.run, fixture.combat)
+        var last_valid_bytes: PackedByteArray = encoded.text.to_utf8_buffer()
+        var seed_readback: Dictionary = encoder.decode(encoded.text)
+        check(seed_readback.get("ok", false) and seed_readback.payload.revision == maximum_transport_revision, "Transport-boundary fixture is cold-readable before " + operation)
+        check(_write_bytes(root_path.path_join("primary.json"), last_valid_bytes), "Writes transport-boundary primary fixture for " + operation)
+        check(_write_bytes(root_path.path_join("backup.json"), last_valid_bytes), "Writes transport-boundary backup fixture for " + operation)
+        var store = STORE.new(root_path)
+        var result: Dictionary
+        match operation:
+            "save":
+                result = store.save_checkpoint(save_id, "next-save", fixture.run, fixture.combat)
+            "replace":
+                result = store.replace_run(save_id + "-replacement", "next-replace", fixture.run, fixture.combat)
+            "retire":
+                result = store.retire_run(save_id, "next-retire")
+        check(not result.get("ok", false) and result.get("status", "") == "CORRUPT", "Non-roundtrippable next revision fails before acknowledging " + operation)
+        check(FileAccess.get_file_as_bytes(root_path.path_join("primary.json")) == last_valid_bytes, "Rejected next revision preserves the last valid primary for " + operation)
+        check(FileAccess.get_file_as_bytes(root_path.path_join("backup.json")) == last_valid_bytes, "Rejected next revision preserves the last valid backup for " + operation)
+        var cold: Dictionary = STORE.new(root_path).load_checkpoint()
+        check(cold.get("ok", false) and cold.get("status", "") == "VALID_PRIMARY" and cold.payload.revision == maximum_transport_revision, "Fresh store cold-read keeps the last transport-valid revision after " + operation)
+
+
 func _run() -> void:
     var fixture: Dictionary = await _planning_fixture()
     if not failures.is_empty():
@@ -409,9 +446,44 @@ func _run() -> void:
     _verify_context_errors_and_eviction(fixture)
     _verify_idempotency_recovery_and_pending(fixture)
     _verify_exact_write_readback(fixture)
+    _verify_revision_upper_bound(fixture)
     _finish()
 
 
+func _remove_owned_tree(path: String, owned_root: String) -> bool:
+    if path != owned_root and not path.begins_with(owned_root + "/"):
+        return false
+    if not DirAccess.dir_exists_absolute(path):
+        return true
+    var directory := DirAccess.open(path)
+    if directory == null:
+        return false
+    directory.list_dir_begin()
+    var entry := directory.get_next()
+    while not entry.is_empty():
+        var child := path.path_join(entry)
+        var removed := _remove_owned_tree(child, owned_root) if directory.current_is_dir() else DirAccess.remove_absolute(child) == OK
+        if not removed:
+            directory.list_dir_end()
+            return false
+        entry = directory.get_next()
+    directory.list_dir_end()
+    return DirAccess.remove_absolute(path) == OK
+
+
+func _cleanup_owned_roots() -> bool:
+    var safe_prefix := OS.get_cache_dir().path_join("ten-paces-save-cache-").simplify_path()
+    for root_path in _owned_roots:
+        var owned_root := root_path.simplify_path()
+        if not owned_root.begins_with(safe_prefix) or not _remove_owned_tree(owned_root, owned_root):
+            return false
+    return true
+
+
 func _finish() -> void:
+    if failures.is_empty():
+        check(_cleanup_owned_roots(), "Removes only exact test-owned cache roots after a successful run")
+        if failures.is_empty():
+            print("RUN_SAVE_CACHE_CLEANUP: PASS (%s exact roots)" % _owned_roots.size())
     print("RUN_SAVE_CACHE: %s (%s failures)" % ["PASS" if failures.is_empty() else "FAIL", failures.size()])
     quit(0 if failures.is_empty() else 1)
