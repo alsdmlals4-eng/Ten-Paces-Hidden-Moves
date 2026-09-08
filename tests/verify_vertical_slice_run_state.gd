@@ -31,6 +31,16 @@ func _run() -> void:
     _expect_eq(run.get_current_screen(), "MAIN", "A new run state must begin at Main.")
     _expect_eq(run.duel_index, 1, "The first duel must be active before a new run starts.")
     _expect_true(run.start_new_run(), "Main must enter Setup through start_new_run().")
+    var setup_before: Dictionary = run.get_progression_snapshot()
+    var invented := ["invented_one", "invented_two", "invented_three", "invented_four"]
+    _expect_false(run.confirm_setup_loadout(invented, _mastery_for(invented)), "Setup must reject four invented manual IDs even when their mastery values are 3.")
+    _expect_eq(run.get_progression_snapshot(), setup_before, "Rejected invented IDs must not partially mutate progression.")
+    _expect_true(run.get_player_manual_loadout().is_empty(), "Rejected invented IDs must not partially mutate the retained loadout.")
+    var mixed_invalid := STARTERS.duplicate()
+    mixed_invalid[3] = "invented_mixed_manual"
+    _expect_false(run.confirm_setup_loadout(mixed_invalid, _mastery_for(mixed_invalid)), "Setup must reject a mixed selection containing one non-starter ID.")
+    _expect_eq(run.get_progression_snapshot(), setup_before, "Rejected mixed IDs must not partially mutate progression.")
+    _expect_true(run.get_player_manual_loadout().is_empty(), "Rejected mixed IDs must not partially mutate the retained loadout.")
     _expect_true(run.confirm_setup_loadout(STARTERS, _starter_mastery()), "Setup must accept exactly four starter manuals at mastery 3.")
     _expect_true(run.advance(), "Setup must advance to Intro.")
     _expect_true(run.advance(), "Intro must advance to Briefing.")
@@ -110,6 +120,13 @@ func _starter_mastery() -> Dictionary:
     var result := {}
     for manual_id in STARTERS:
         result[manual_id] = 3
+    return result
+
+
+func _mastery_for(manual_ids: Array) -> Dictionary:
+    var result := {}
+    for manual_id in manual_ids:
+        result[str(manual_id)] = 3
     return result
 
 

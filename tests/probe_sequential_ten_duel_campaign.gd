@@ -31,7 +31,7 @@ func run_probe() -> void:
     var attempts: Array[Dictionary] = []
     while failures.is_empty() and not run.is_complete():
         var duel := run.duel_index
-        var first := _resolve_actual_duel(run, catalog, 0)
+        var first := _resolve_actual_duel(run, 0)
         attempts.append(first.duplicate(true))
         print(_attempt_line(first))
         _require(str(first.get("outcome", "")) in ["win", "loss", "draw"], "duel %d must reach terminal HP" % duel)
@@ -41,7 +41,7 @@ func run_probe() -> void:
         _require(run.advance(), "duel %d review must advance" % duel)
         if str(first.get("outcome", "")) == "loss":
             _require(run.retry_failed_duel(), "duel %d must permit its one legal retry" % duel)
-            var retry := _resolve_actual_duel(run, catalog, 1)
+            var retry := _resolve_actual_duel(run, 1)
             attempts.append(retry.duplicate(true))
             print(_attempt_line(retry))
             _require(str(retry.get("outcome", "")) in ["win", "loss", "draw"], "duel %d retry must reach terminal HP" % duel)
@@ -95,7 +95,7 @@ func run_probe() -> void:
     quit(1 if not failures.is_empty() else 0)
 
 
-func _resolve_actual_duel(run: VerticalSliceRunState, catalog: VerticalSliceOpponentCatalog, policy_mode: int) -> Dictionary:
+func _resolve_actual_duel(run: VerticalSliceRunState, policy_mode: int) -> Dictionary:
     var candidate := run.get_current_opponent()
     var binding := VerticalSliceOpponentRuntimeBinding.new().build(candidate)
     var engine := VerticalSliceMetricsCombatResolutionEngine.new()
@@ -127,9 +127,10 @@ func _resolve_actual_duel(run: VerticalSliceRunState, catalog: VerticalSliceOppo
         var player_hp := int((state["player"]["health"] as Array)[0])
         var enemy_hp := int((state["enemy"]["health"] as Array)[0])
         if player_hp <= 0 or enemy_hp <= 0:
+            var outcome := "draw" if player_hp <= 0 and enemy_hp <= 0 else ("win" if enemy_hp <= 0 else "loss")
             return {
                 "terminal": true,
-                "outcome": "win" if enemy_hp <= 0 else "loss",
+                "outcome": outcome,
                 "duel_index": run.duel_index,
                 "candidate_id": str(candidate.get("candidate_id", "")),
                 "policy_mode": policy_mode,

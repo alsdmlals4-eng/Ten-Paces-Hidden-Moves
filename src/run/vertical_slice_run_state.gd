@@ -5,6 +5,7 @@ signal screen_changed(previous_screen: String, current_screen: String)
 
 const PROGRESSION_SCRIPT := preload("res://src/run/vertical_slice_progression_state.gd")
 const ROUTE_MODEL_SCRIPT := preload("res://src/run/vertical_slice_route_model.gd")
+const STARTER_CATALOG_SCRIPT := preload("res://src/run/vertical_slice_starter_manual_catalog.gd")
 
 const SCREEN_MAIN := "MAIN"
 const SCREEN_SETUP := "SETUP"
@@ -41,6 +42,7 @@ var _reward_history: Array[Dictionary] = []
 var _duel_history: Array[Dictionary] = []
 var _progression: RefCounted
 var _route_model: RefCounted
+var _starter_catalog: RefCounted
 var _pending_growth_route: Dictionary = {}
 var _pending_route_intel: Dictionary = {}
 var _route_history: Array[Dictionary] = []
@@ -115,6 +117,7 @@ func _init() -> void:
     _progression = PROGRESSION_SCRIPT.new()
     _progression.reset()
     _route_model = ROUTE_MODEL_SCRIPT.new()
+    _starter_catalog = STARTER_CATALOG_SCRIPT.new()
 
 
 func get_current_screen() -> String:
@@ -165,6 +168,8 @@ func get_route_target_opponent() -> Dictionary:
 
 func confirm_setup_loadout(loadout, mastery_by_manual: Dictionary) -> bool:
     if _current_screen != SCREEN_SETUP:
+        return false
+    if _starter_catalog == null or not _starter_catalog.is_valid() or not _starter_catalog.validate_selection(loadout):
         return false
     if typeof(loadout) != TYPE_ARRAY and typeof(loadout) != TYPE_PACKED_STRING_ARRAY:
         return false
