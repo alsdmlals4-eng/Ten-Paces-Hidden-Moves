@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01",
+  "catalog_id": "TEN-BIMU-CONSTRAINT-CATALOG-V0-20260908-01",
+  "selection_policy": {
+    "minimum_selected_constraints": 0,
+    "max_selected_constraints": 2,
+    "selection_point_budget": 3,
+    "max_enemy_reinforcements": 1,
+    "duplicate_selection_allowed": false,
+    "selection_lock": "BEFORE_COMBAT_SETUP",
+    "duration": "CURRENT_DUEL",
+    "retry_policy": "RESTORE_SAME_CONSTRAINT_RECEIPT",
+    "result_reward_formula_link": "NONE_V0",
+    "selection_counter_format_ko": "선택 {selected}/{max_selected} · 제약 점수 {spent}/{point_budget}"
+  },
+  "constraints": [
+    {"constraint_id":"CST_TECH_ULTIMATE_SEAL","display_name_ko":"절초 봉인","category":"TECHNIQUE_RESTRICTION","target_actor":"player","selection_cost":1,"duration":"CURRENT_DUEL","selector":{"unlock_star_exact":10},"effect_summary_ko":"이번 비무에서 달성도 10★ 절초를 계획에 배치할 수 없습니다.","briefing_disclosure":"플레이어 절초 봉인 · 10★ 기술 사용 불가","runtime_overlay":{"action_lock_reason_ko":"비무 제약: 절초 봉인"}},
+    {"constraint_id":"CST_TECH_RESPONSE_SEAL","display_name_ko":"대응 봉인","category":"TECHNIQUE_RESTRICTION","target_actor":"player","selection_cost":1,"duration":"CURRENT_DUEL","selector":{"category_exact":"response"},"effect_summary_ko":"이번 비무에서 대응 성향의 무공 기술을 계획에 배치할 수 없습니다. 기초 행동은 별도 데이터 범위이므로 자동으로 봉인하지 않습니다.","briefing_disclosure":"플레이어 대응 무공 봉인","runtime_overlay":{"action_lock_reason_ko":"비무 제약: 대응 봉인"}},
+    {"constraint_id":"CST_TECH_RECOVERY_SEAL","display_name_ko":"회복 봉인","category":"TECHNIQUE_RESTRICTION","target_actor":"player","selection_cost":1,"duration":"CURRENT_DUEL","selector":{"category_exact":"recovery"},"effect_summary_ko":"이번 비무에서 회복 성향의 무공 기술을 계획에 배치할 수 없습니다. 기초 명상은 별도 데이터 범위이므로 자동으로 봉인하지 않습니다.","briefing_disclosure":"플레이어 회복 무공 봉인","runtime_overlay":{"action_lock_reason_ko":"비무 제약: 회복 봉인"}},
+    {"constraint_id":"CST_TECH_MULTI_SLOT_SEAL","display_name_ko":"연속 수 봉인","category":"TECHNIQUE_RESTRICTION","target_actor":"player","selection_cost":2,"duration":"CURRENT_DUEL","selector":{"action_slots_min":2},"effect_summary_ko":"이번 비무에서 2수 이상을 차지하는 무공 기술을 계획에 배치할 수 없습니다.","briefing_disclosure":"플레이어 2수 이상 무공 봉인","runtime_overlay":{"action_lock_reason_ko":"비무 제약: 연속 수 봉인"}},
+    {"constraint_id":"CST_TECH_MANUAL_SEAL","display_name_ko":"문파 단절","category":"TECHNIQUE_RESTRICTION","target_actor":"player","selection_cost":1,"duration":"CURRENT_DUEL","parameter_binding":{"required":true,"field":"target_manual_id","eligibility":"owned_manual_count_at_least_2"},"effect_summary_ko":"선택한 보유 무공의 모든 기술을 이번 비무에서 계획에 배치할 수 없습니다.","briefing_disclosure":"플레이어 무공 1종 봉인 · 대상 무공명 공개","runtime_overlay":{"action_lock_reason_ko":"비무 제약: 문파 단절"}},
+    {"constraint_id":"CST_ENEMY_START_MOMENTUM_1","display_name_ko":"선수 기세","category":"ENEMY_REINFORCEMENT","target_actor":"enemy","selection_cost":1,"duration":"CURRENT_DUEL","effect_summary_ko":"상대는 비무 시작 시 공개 기세를 +1 얻습니다. 최대 기세를 넘지 않습니다.","briefing_disclosure":"상대 강화 · 시작 기세 +1","runtime_overlay":{"resource":"momentum","initial_current_delta":1,"initial_maximum_delta":0,"clamp_to_maximum":true}},
+    {"constraint_id":"CST_ENEMY_RESOURCE_SURPLUS","display_name_ko":"기혈 충만","category":"ENEMY_REINFORCEMENT","target_actor":"enemy","selection_cost":1,"duration":"CURRENT_DUEL","effect_summary_ko":"상대는 비무 시작 시 기력과 내력을 각각 +1 얻습니다. 각 최대치를 넘지 않습니다.","briefing_disclosure":"상대 강화 · 시작 기력 +1 · 시작 내력 +1","runtime_overlay":{"resources":{"stamina":{"initial_current_delta":1,"initial_maximum_delta":0},"internal":{"initial_current_delta":1,"initial_maximum_delta":0}},"clamp_to_maximum":true}},
+    {"constraint_id":"CST_ENEMY_MASTERED_MANUAL","display_name_ko":"무공 숙련","category":"ENEMY_REINFORCEMENT","target_actor":"enemy","selection_cost":2,"duration":"CURRENT_DUEL","parameter_binding":{"required":true,"field":"target_enemy_manual_id","eligibility":"enemy_owned_manual"},"effect_summary_ko":"선택한 상대 보유 무공의 달성도를 이번 비무에 한해 +2★ 높입니다. 최대 10★를 넘지 않습니다.","briefing_disclosure":"상대 강화 · 대상 무공 · 달성도 +2★ · 최대 10★","runtime_overlay":{"mastery_delta":2,"mastery_maximum":10}},
+    {"constraint_id":"CST_ENEMY_STAT_DISCIPLINE","display_name_ko":"내공 수련","category":"ENEMY_REINFORCEMENT","target_actor":"enemy","selection_cost":1,"duration":"CURRENT_DUEL","parameter_binding":{"required":true,"field":"target_stat_key","allowed_values":["external","constitution","agility","internal_power","insight"]},"effect_summary_ko":"선택한 상대 영구 스테이터스가 이번 비무에 한해 +1 됩니다.","briefing_disclosure":"상대 강화 · 대상 스테이터스 +1","runtime_overlay":{"stat_delta":1}}
+  ]
+}
