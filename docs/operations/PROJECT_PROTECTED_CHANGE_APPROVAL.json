@@ -11,6 +11,6 @@
     "src/ui/combat_sound_bank.gd"
   ],
   "approval_source": "Current user-authorized continuous Blueprint implementation, whole-project correction and protected integration. Exact Codex handoff: docs/operations/2026-09-09_COMBAT_FEEDBACK_IMPLEMENTATION_PLAN.md Task1; independently reviewed spec and official benchmark. This is new scoped authorization, not retired PR333 approval reuse.",
-  "approval_time": "2026-09-09T05:00:00+09:00",
+  "approval_time": "2026-09-09T04:55:44+09:00",
   "scope_summary": "Extract unchanged terminal win/loss/draw calculation into domain and consume it in board/bridge; correct labels/logs/cue routing; add three deterministic original sound cues using existing playback. Preserve combat rules, authored numbers, actor bindings, AI boundaries, save schema/semantic identity, receipts and state. No asset/data/scene/addon/engine/progression mutation. Task2 profile/projection requires explicit path extension in this same approved specification. Human/audio/device/release acceptance remains separate."
 }

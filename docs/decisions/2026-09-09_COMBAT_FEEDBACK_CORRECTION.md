@@ -41,7 +41,8 @@ board가 해당 사건 actor의 `get_actor_card_definition(card_id, actor)`로 �
 1. 실제 `type=clash` 또는 `outcome=clash_*`는 기존 합 연출을 유지한다.
 2. `interrupted`, `miss_direction`, `miss_range`, `move_invalid`, `martial_failed`는 실패/중단 label을 우선하며 성공 절초의 큰 VFX·공격 motion을 내보내지 않는다. 실제 양수 damage가 포함된 부분 실행 실패는 그 피해 사실을 텍스트/피격으로 보존하되 전체 절초 성공으로 포장하지 않는다.
 3. 이 사건의 **대상**이 회피/방어한 `defense_outcome=evade/block` 또는 동등한 outer outcome은 방어 피드백이 우선이며, 피해 없는 회피에 hit sound를 내보내지 않는다. 행동자 자신의 `evade_succeeded`는 상대 회피가 아니므로 상대에게 회피 모션을 주지 않는다. 다단 martial program의 일부 `BLOCKED`만으로 전체를 방어 성공으로 축약하지 않는다. 완료된 program에 실제 양수 aggregate damage가 있으면 일부 막힘과 관계없이 실제 피해와 정상 절초 강조를 보존한다. 실제 damage가 0이고 시도된 ATTACK가 전부 BLOCKED라면 방어 outcome으로 표시한다.
-4. 정상 절초 실행은 `ultimate`; 공격 절초 및 실제 반격 피해가 있는 대응 절초만 공격형 ultimate motion을 사용한다. 회복/피해 없는 대응은 제자리 self VFX+기술 이름으로 표현한다. `martial_events`의 SPECIAL_CLASH는 내부 효과 사실이며 outer clash로 승격하지 않는다. requirement가 실패해 counter가 건너뛰어진 완료 program은 `조건 미충족`을 표시하고 공격 성공 motion/impact를 내보내지 않는다. 이미 적용된 자기 상태 효과까지 실패로 되돌렸다고 표현하지 않는다.
+4. 정상 절초 실행은 `ultimate`; 공격 절초 및 실제 반격 피해가 있는 대응 절초만 공격형 ultimate motion을 사용한다. 회복/피해 없는 실제 실행 대응은 제자리 self VFX+기술 이름으로 표현한다. `martial_events`의 SPECIAL_CLASH는 내부 효과 사실이며 outer clash로 승격하지 않는다. requirement가 실패해 counter가 건너뛰어진 완료 program은 `조건 미충족`을 표시하고 공격 성공 motion/impact를 내보내지 않는다. 이미 적용된 자기 상태 효과까지 실패로 되돌렸다고 표현하지 않는다.
+   - 실제 bundle에서 고유 martial program 없이 `outcome=response/response_combo`만 발생한 무공은 현재 기본 방어 처리 사실만 표시한다: `kind=outcome`, 공격 motion 없음, band=-1, `방어 준비`. canonical identity가 절초라는 사실만으로 실행 성공을 만들지 않는다. 이는 고유 대응 구현 완료가 아니라 잘못된 성공 연출을 막는 보수적 표시이며, 후속 도메인 교정이 필요하다.
 5. 일반 공격·일반 utility는 기존 동작/분류를 유지한다.
 
 현재 `resolved_actions`가 가진 `failure_reason`, `martial_events`, `actual_hp_hits`, `clash_won`, `evade_succeeded`를 transient presentation event로 그대로 deep-copy 전달할 수 있다. 이 projection은 이미 확정된 정보만 표현하며 도메인 재계산/전투 상태 변경이 아니다. DTO schema에 새 필드를 추가하거나 RESOLVED 복원에 이벤트를 다시 실행하지 않는다.
@@ -70,7 +71,7 @@ board가 해당 사건 actor의 `get_actor_card_definition(card_id, actor)`로 �
 
 - RED→GREEN: 실제 승리의 기존 defeat 기대를 새 승리 기대와 비교하여 원 결함을 재현한다. win/loss/draw 전부 domain/board/bridge 일치, 이미 지급된 결과 중복 없음.
 - 10종 전부 actor-owned star10, star7, 상대만 보유, 위조 ID, 7 attack/2 response/1 recovery, 실패/회피/합 counterexample.
-- 실제 resolver로 도달 가능한 공격·회복·태극 대응 및 현재 소요의 조건 미충족 경로를 검증한다. 소요 성공 반격은 현재 `_run_martial_pipeline`가 `evade_succeeded`를 공급하지 않아 도달할 수 없다. 성공 자기 회피+반격의 순수 profile counterexample는 합성 표현 계약 검사로 명시하고 실제 gameplay PASS로 기록하지 않는다. 이 도메인 누락은 다음 전투 규칙 교정에서 실제 RED를 재현해 별도 책임 계약으로 처리한다.
+- 실제 `resolve_bundle`로 도달 가능한 공격·회복과 소요/태극의 현재 기본 방어 fallback을 검증한다. 실제 소요3/7/10 normal bundle probe는 `pipeline_calls=0`, `outcome=response`, 고유 이동/회피/반격 없음이었다. 초기 정적 검토의 ‘실제 bundle 조건 미충족’ 설명을 이 native 증거로 교정한다. direct `resolve_martial_card`에서는 별도로 context의 evade_succeeded 미공급 때문에 requirement가 실패한다. 서로 다른 실행 층위를 합치지 않는다. 정상 고유 대응 성공은 이 presentation 작업의 실제 gameplay PASS가 아니며 도메인 교정 항목이다. 성공 자기 회피+반격·조건 미충족의 순수 profile counterexample는 합성 표현 검사라고 명시한다.
 - 실제 resolver event에서 projection deep-copy와 기존 combat state/logs/locks/DTO equality를 확인한다. 테스트가 UI convenience data를 만들어 product 흐름 검증인 것처럼 주장하지 않는다.
 - 기존 ultimate/clash/game-feel/inline-result/actor-bound save 회귀와 전체 Python suite. 실제 native 화면에서 공격 절초, 회복 절초, 합, 회피, 승/패/무승부 capture를 별도 장면으로 기록한다. 테스트 fixture는 일반 캠페인 플레이의 성장 해금 증거가 아니다.
 - sound PCM의 길이·유한 값·크기/범위·cue별 상이함·cache reuse·mute 경로 검사. test 종료는 실제 자연 종료 또는 bounded audio mixer-release condition; 무한 대기/고정 sleep/경고 숨김 금지.
