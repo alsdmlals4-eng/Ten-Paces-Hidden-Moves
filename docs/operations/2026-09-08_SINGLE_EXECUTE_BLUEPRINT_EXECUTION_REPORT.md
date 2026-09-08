@@ -1,5 +1,16 @@
 # 단일 `행동 실행` Blueprint 전환 실행 보고서
 
+## Controller 통합 검증
+
+- 독립 exact checkout `ebb3f3f5`: Python 474 PASS (15.63s), explicit protected approval validator PASS. 이후 CI 연결 회귀 1건이 추가되었다.
+- 전체 branch 독립 검토는 신규 dock 회귀의 CI 연결 누락 P2를 발견했고 `53289e5b`로 교정했다. 단일 fix wave의 scoped 재검토 승인. 새 blocking finding 없음.
+- Controller native replay `29173fe6` (최종 제품 코드와 동일): 10승, 무승부 0, 보상 10회, 행로 36회, 실제 버튼 활성화 343회, 133203ms, failures 0, process exit 0. 이는 headless native-event 증거이다.
+- 실제 편집기 runtime 6628 / game 7840에서 시작 무공 네 권 선택 → 브리핑 → 막기 세 수 배치 → `행동 실행` 한 번 → 해결 화면을 확인했다. 상태 주입 없이 Hera semantic click을 사용했다. 원본 캡처는 1280×800이며 UI 좌표계 1440×900과 구분한다. 확대/합성하지 않았다.
+- 준비 캡처: `docs/runtime-captures/single-execute-ready-20260908.png`, SHA-256 `A81D99FFC3D30A9BF04457FABD77DF37DABFAF84757346AF98FA9C3D38984451`.
+- 해결 캡처: `docs/runtime-captures/single-execute-reveal-20260908.png`, SHA-256 `9E1EBA4E548719FBCC1D0FA1B8E7638592894A9249E67221CABFA111088BD839`.
+- 캡처 revision은 `ea86c8fe`이며 이후 최적화는 시각 레이아웃을 변경하지 않았다. 실행 중 로그 diagnostics 0 error/0 warning은 종료 이후 audio 경고 부재나 Human 검수 PASS를 증명하지 않는다.
+- 시각 검수에서 해결 결과 텍스트가 중앙 카드 설명과 겹치는 기존 문제가 확인됐다. 별도 복기 화면 제거와 함께 다음 전투 표현 교정 범위로 남긴다. 전체 Blueprint 구현/최종 UX 완료로 판정하지 않는다.
+
 ## 작업 전 문제
 
 - 기준 SHA: `6faa39cd074f2f8a67e042d5ccaa2ceee31b6a19`; 최신 `origin/main` `32a01130ee385b2070de408b345b8a579c32198b`를 최종 커밋 전에 병합했다.
