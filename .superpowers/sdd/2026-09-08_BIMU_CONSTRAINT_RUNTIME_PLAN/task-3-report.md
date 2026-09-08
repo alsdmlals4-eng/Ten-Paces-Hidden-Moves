@@ -104,3 +104,44 @@ Existing imports, generated UIDs, captures, artifacts and controller-owned docs 
 Capture at 1280x720 and 1280x800: (a) no-selection briefing with top options and explicit zero CTA; (b) choose `문파 단절` with an owned target plus `내공 수련` with a stat target, scroll to the last option and confirm selected deltas/target names; (c) attempt a third choice and verify readable reason; (d) begin combat, choose 무공, inspect the sealed target's disabled card/reason and active summary; (e) fixture with mastery 10 and momentum 5 plus 절초 봉인, confirm sealed manual ultimate and available base ultimate; (f) later briefing with route-acquired intel. Keyboard: focus public text scroll, first/last option, target dropdown, primary CTA; activate with keyboard and verify scroll/focus.
 
 Visible font/readability, pointer/keyboard observation, subsequent full-scope review loops, repository-wide tests, exact-head CI and protected merge remain controller work. No Human/UX/Android/release PASS is implied.
+
+## Review fix round 1 — native contrast, integer counters, focused-row visibility
+
+Baseline `370e01c9`. Controller review found a near-black unchecked icon, JSON-derived denominators rendered as `2.0/3.0`, and the final selected row/target clipped when the summary grew. The implementer inspected `docs/runtime-captures/TEN-BIMU-CONSTRAINTS-20260908/briefing-selected-1280x800.png` and confirmed the last-row clipping and decimal labels. The controller also supplied `briefing-zero-1280x800.png` as unchecked-state evidence.
+
+Changes are confined to `src/ui/bimu_constraint_panel.gd`, `tests/verify_bimu_constraint_ui.gd`, and this report. Replaced the theme-dependent CheckBox icon with a native toggle Button carrying explicit `[미선택]` / `[선택]` Korean text. Existing native StyleBoxFlat surfaces provide dark unchecked, paper selected and a three-pixel blue focus border. No raster/vector asset was produced. Font contrast is tested at >=4.5:1 in normal/selected states; unchecked boundary and focus boundary are tested at >=3:1, including focus against both normal and selected fills. These are style-parameter calculations, not Human/accessibility acceptance.
+
+Policy values are converted to integers at the presentation boundary; the regression compares the complete first line exactly (`선택 0/2 · 제약 점수 0/3` and `선택 2/2 · 제약 점수 2/3`). After footer updates and viewport resize, one coalesced deferred callback waits for Container layout and reveals the entire focused option row, including its target selector. It does not move focus or change unrelated scroll positions.
+
+TDD command (same executable/path as above):
+
+```powershell
+& 'C:/Users/user/Downloads/Godot_v4.7.1-stable_win64.exe/Godot_v4.7.1-stable_win64_console.exe' --headless --path . --script tests/verify_bimu_constraint_ui.gd
+```
+
+An initial test helper was inserted mid-function, producing parse errors; that test-authoring mistake was corrected before the behavioral RED. Behavioral RED then reproduced all three review findings at exit 1:
+
+```text
+ERROR: catalog policy exact integer counter
+ERROR: unchecked state has explicit text cue
+ERROR: native option has explicit normal selected focus styles
+ERROR: selected exact integer counter 720
+ERROR: selected state has explicit text cue
+ERROR: selected final row and target fully visible after footer grows 720
+ERROR: selected exact integer counter 800
+ERROR: selected final row and target fully visible after footer grows 800
+```
+
+GREEN after the implementation and stronger focus-contrast check: exit 0, `BIMU_UI_IDENTICAL_UPDATES=10 CHANGED_MANUAL_LISTS=0`, `BIMU_CONSTRAINT_UI_OK`, no script errors. The new scenario first selects a manual seal, focuses the final unchecked stat option with its short footer, emits the real toggle signal, waits for the expanded summary layout, then checks the full button and target rectangles are enclosed by the scroll viewport at 720/800. CTA bounds remain protected.
+
+Adjacent regression command:
+
+```powershell
+$cases = @('verify_bimu_constraint_ui', 'verify_vertical_slice_setup_briefing', 'verify_vertical_slice_shell', 'verify_action_selection_dock')
+foreach ($case in $cases) {
+    & 'C:/Users/user/Downloads/Godot_v4.7.1-stable_win64.exe/Godot_v4.7.1-stable_win64_console.exe' --headless --path . --script "tests/$case.gd"
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+```
+
+All four passed, overall exit 0, no script errors. Native locators are unchanged. Controller performs updated visible captures; no editor was manipulated by this subtask. Captured visual acceptance remains pending until that readback.

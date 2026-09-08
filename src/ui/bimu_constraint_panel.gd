@@ -13,6 +13,7 @@ var _run_state: VerticalSliceRunState
 var _manual_registry: MartialManualRegistry
 var _options: Array = Model.new().get_options()
 var _policy: Dictionary = Model.new().get_selection_policy()
+var _focus_scroll_pending := false
 
 func configure(run_state: VerticalSliceRunState, registry: MartialManualRegistry) -> void:
     _run_state = run_state
@@ -32,6 +33,7 @@ func configure(run_state: VerticalSliceRunState, registry: MartialManualRegistry
     options_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
     options_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
     options_scroll.follow_focus = true
+    options_scroll.resized.connect(_queue_focused_row_visibility)
     add_child(options_scroll)
     var rows := VBoxContainer.new()
     rows.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -42,11 +44,15 @@ func configure(run_state: VerticalSliceRunState, registry: MartialManualRegistry
         var row := VBoxContainer.new()
         row.name = id
         rows.add_child(row)
-        var button := CheckBox.new()
+        var button := Button.new()
         button.name = "SelectConstraint"
+        button.toggle_mode = true
+        button.alignment = HORIZONTAL_ALIGNMENT_LEFT
         button.text = "%s · %d점" % [option["display_name_ko"], option["selection_cost"]]
+        button.set_meta("option_label", button.text)
         button.accessibility_name = button.text
         button.custom_minimum_size.y = 38
+        _style_option(button)
         button.toggled.connect(func(_enabled: bool): toggle_constraint(id))
         row.add_child(button)
         option_buttons[id] = button
@@ -138,12 +144,16 @@ func _refresh(reason: String = "") -> void:
     var receipt := _run_state.validate_bimu_constraints(selected)
     for button in option_buttons.values():
         button.set_pressed_no_signal(false)
+        button.text = "[미선택] " + str(button.get_meta("option_label"))
+        button.accessibility_name = button.text
     var effects := PackedStringArray()
     for item in selected:
         var id := str(item["constraint_id"])
         if not option_buttons.has(id):
             continue
         option_buttons[id].set_pressed_no_signal(true)
+        option_buttons[id].text = "[선택] " + str(option_buttons[id].get_meta("option_label"))
+        option_buttons[id].accessibility_name = option_buttons[id].text
         for option in _options:
             if str(option["constraint_id"]) != id:
                 continue
@@ -156,8 +166,54 @@ func _refresh(reason: String = "") -> void:
                         target.select(index)
                 effect += " · " + target.get_item_text(target.selected)
             effects.append(effect)
-    var counter := str(_policy.get("selection_counter_format_ko", "선택 {selected} · 제약 점수 {spent}")).format({"selected": selected.size(), "max_selected": _policy.get("max_selected_constraints", "?"), "spent": int(receipt.get("selection_point_spent", 0)), "point_budget": _policy.get("selection_point_budget", "?")})
+    var counter := str(_policy.get("selection_counter_format_ko", "선택 {selected} · 제약 점수 {spent}")).format({"selected": selected.size(), "max_selected": int(_policy.get("max_selected_constraints", 0)), "spent": int(receipt.get("selection_point_spent", 0)), "point_budget": int(_policy.get("selection_point_budget", 0))})
     summary_label.text = "%s\n%s" % [counter, "제약 없이 시작할 수 있습니다." if effects.is_empty() else "\n".join(effects)]
     reason_label.text = reason
     reason_label.visible = not reason.is_empty()
     selection_changed.emit(receipt)
+    _queue_focused_row_visibility()
+
+func _style_option(button: Button) -> void:
+    var normal := StyleBoxFlat.new()
+    normal.bg_color = Color("17232b")
+    normal.border_color = Color("bfa16b")
+    normal.set_border_width_all(1)
+    normal.set_corner_radius_all(3)
+    normal.content_margin_left = 10
+    normal.content_margin_right = 10
+    var hover := normal.duplicate() as StyleBoxFlat
+    hover.bg_color = Color("293d48")
+    var selected := normal.duplicate() as StyleBoxFlat
+    selected.bg_color = Color("d9ccb1")
+    selected.set_border_width_all(2)
+    var focus := StyleBoxFlat.new()
+    focus.bg_color = Color.TRANSPARENT
+    focus.border_color = Color("40758a")
+    focus.set_border_width_all(3)
+    focus.set_corner_radius_all(3)
+    button.add_theme_stylebox_override("normal", normal)
+    button.add_theme_stylebox_override("hover", hover)
+    button.add_theme_stylebox_override("pressed", selected)
+    button.add_theme_stylebox_override("hover_pressed", selected)
+    button.add_theme_stylebox_override("focus", focus)
+    button.add_theme_color_override("font_color", Color("eadfc9"))
+    button.add_theme_color_override("font_hover_color", Color("eadfc9"))
+    button.add_theme_color_override("font_pressed_color", Color("211c17"))
+    button.add_theme_color_override("font_hover_pressed_color", Color("211c17"))
+    button.add_theme_font_size_override("font_size", 15)
+
+func _queue_focused_row_visibility() -> void:
+    if _focus_scroll_pending or not is_inside_tree():
+        return
+    _focus_scroll_pending = true
+    _ensure_focused_row_visible.call_deferred()
+
+func _ensure_focused_row_visible() -> void:
+    # Summary/reason wrapping changes the viewport after the input callback.
+    # Let Containers finish sorting before revealing the entire focused row,
+    # including its target dropdown. Do not move focus or unrelated scrolling.
+    await get_tree().process_frame
+    _focus_scroll_pending = false
+    var focused := get_viewport().gui_get_focus_owner()
+    if is_instance_valid(options_scroll) and is_instance_valid(focused) and options_scroll.is_ancestor_of(focused):
+        options_scroll.ensure_control_visible(focused.get_parent() as Control)

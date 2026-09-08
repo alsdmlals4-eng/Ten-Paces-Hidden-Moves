@@ -37,7 +37,19 @@ func _briefing(shell) -> void:
     var panel = shell.get_bimu_constraint_panel()
     check(panel.option_buttons.size() == 9, "nine native options")
     check(shell.primary_button.text.contains("제약 없이"), "explicit zero confirmation")
-    check(panel.summary_label.text.contains("선택 0/2") and panel.summary_label.text.contains("제약 점수 0/3"), "catalog policy counter")
+    check(panel.summary_label.text.get_slice("\n", 0) == "선택 0/2 · 제약 점수 0/3", "catalog policy exact integer counter")
+    for button in panel.option_buttons.values():
+        check(button.text.begins_with("[미선택]"), "unchecked state has explicit text cue")
+        check(button.has_theme_stylebox_override("normal") and button.has_theme_stylebox_override("pressed") and button.has_theme_stylebox_override("focus"), "native option has explicit normal selected focus styles")
+        if button.has_theme_stylebox_override("normal"):
+            var normal: StyleBoxFlat = button.get_theme_stylebox("normal")
+            var pressed: StyleBoxFlat = button.get_theme_stylebox("pressed")
+            var focus: StyleBoxFlat = button.get_theme_stylebox("focus")
+            check(_contrast(button.get_theme_color("font_color"), normal.bg_color) >= 4.5, "unchecked text contrast >= 4.5")
+            check(_contrast(button.get_theme_color("font_pressed_color"), pressed.bg_color) >= 4.5, "selected text contrast >= 4.5")
+            check(_contrast(normal.border_color, normal.bg_color) >= 3.0 and normal.border_width_left >= 1, "unchecked boundary contrast >= 3")
+            check(_contrast(focus.border_color, normal.bg_color) >= 3.0 and focus.border_width_left >= 2, "focus boundary contrast >= 3")
+            check(_contrast(focus.border_color, pressed.bg_color) >= 3.0, "selected focus boundary contrast >= 3")
     var intel: Dictionary = shell.run_state.get("_intel_by_candidate")
     intel[str(shell.run_state.get_current_opponent()["candidate_id"])] = {"text": "공개 단서 회귀 검증"}
     shell.call("_render_current_screen")
@@ -79,6 +91,26 @@ func _briefing(shell) -> void:
         check(shell.run_state.get_pending_bimu_constraints().size() != selected_count, "last option keyboard activation %d" % height)
         check(shell.primary_button.get_global_rect().end.y <= height, "CTA in viewport %d" % height)
         check(shell.primary_button.get_global_rect().position.y >= panel.get_global_rect().end.y - 1, "no options CTA overlap %d" % height)
+        # Reproduce the capture: click the last unchecked option with a short
+        # footer, then let the newly selected effect expand the summary.
+        shell.run_state.select_bimu_constraints([{"constraint_id": "CST_TECH_MANUAL_SEAL", "target_manual_id": STARTERS[0]}])
+        panel.call("_refresh")
+        await process_frame
+        await process_frame
+        last.grab_focus()
+        panel.options_scroll.ensure_control_visible(last)
+        await process_frame
+        last.set_pressed_no_signal(true)
+        last.toggled.emit(true)
+        await process_frame
+        await process_frame
+        await process_frame
+        check(panel.summary_label.text.get_slice("\n", 0) == "선택 2/2 · 제약 점수 2/3", "selected exact integer counter %d" % height)
+        check(last.text.begins_with("[선택]"), "selected state has explicit text cue")
+        var target: Control = panel.target_selectors["CST_ENEMY_STAT_DISCIPLINE"]
+        var scroll_rect: Rect2 = panel.options_scroll.get_global_rect()
+        check(scroll_rect.encloses(last.get_global_rect()) and scroll_rect.encloses(target.get_global_rect()), "selected final row and target fully visible after footer grows %d" % height)
+        check(shell.primary_button.get_global_rect().end.y <= height and shell.primary_button.get_global_rect().position.y >= panel.get_global_rect().end.y - 1, "expanded summary preserves CTA bounds %d" % height)
     shell.advance_noncombat()
     await process_frame
     await process_frame
@@ -128,6 +160,7 @@ func _unchanged_panels() -> void:
     martial.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
     martial.size = Vector2(600, 340)
     await process_frame
+
     check(ultimate.action_buttons.size() > 0, "default momentum initializes actions")
     var mastery := {}
     for id in STARTERS: mastery[id] = 10
@@ -179,3 +212,8 @@ func _unchanged_panels() -> void:
     martial.queue_free()
     ultimate.queue_free()
     await process_frame
+
+func _contrast(first: Color, second: Color) -> float:
+    var a := first.srgb_to_linear().get_luminance()
+    var b := second.srgb_to_linear().get_luminance()
+    return (maxf(a, b) + 0.05) / (minf(a, b) + 0.05)
