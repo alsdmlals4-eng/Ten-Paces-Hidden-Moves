@@ -92,7 +92,8 @@ func _verify_card_contract_and_unknown_actor_fallback() -> void:
 		_check(text.contains("거리"), "Card summary must always show range.")
 		_check(text.contains("예상 위력") or text.contains("이동") or text.contains("효과"), "Card summary must show a primary magnitude, movement, or truthful effect fallback.")
 		_check(card.find_child("CardIllustration", false, false) != null, "Always-visible summaries must preserve illustrations.")
-		_check(card.custom_minimum_size.y <= 100.0, "Summary cards must remain within the bounded two-row geometry budget.")
+		_check(card.custom_minimum_size.y <= 112.0, "Summary cards must remain within the bounded two-row geometry budget across platform font fallbacks.")
+		_check(card.custom_minimum_size.y >= 49.0 + summary.get_combined_minimum_size().y + 4.0, "Card height must derive from the native summary line height plus bottom padding.")
 		for summary_label in summary.find_children("*", "Label", true, false):
 			_check((summary_label as Label).get_combined_minimum_size().x <= 128.0, "Always-visible summary text must fit the 128px card lane without clipping.")
 		card.queue_free()
@@ -117,14 +118,14 @@ func _verify_board_context_and_geometry(viewport_size: Vector2) -> void:
 	_check(cards.size() == 10, "The existing 5 by 2 basic grid must remain intact.")
 	for button in cards:
 		var rect := (button as Control).get_global_rect()
-		_check(rect.position.x >= host_rect.position.x - 0.5 and rect.end.x <= host_rect.end.x + 0.5 and rect.position.y >= host_rect.position.y - 0.5 and rect.end.y <= host_rect.end.y + 0.5, "Every summary card must remain inside the in-viewport content host at %s." % str(viewport_size))
+		_check(rect.position.x >= host_rect.position.x - 0.5 and rect.end.x <= host_rect.end.x + 0.5 and rect.position.y >= host_rect.position.y - 0.5 and rect.end.y <= host_rect.end.y + 0.5, "Every summary card must remain inside the in-viewport content host at %s (host=%s card=%s)." % [str(viewport_size), str(host_rect), str(rect)])
 		var summary := (button as Control).find_child("CardSummary", false, false) as VBoxContainer
 		_check(is_instance_valid(summary), "Rendered cards must retain the summary container.")
 		if is_instance_valid(summary):
 			var prior_bottom := -INF
 			for summary_label in summary.find_children("*", "Label", true, false):
 				var label_rect := (summary_label as Label).get_global_rect()
-				_check(rect.encloses(label_rect), "Every rendered summary line must stay inside its card border at %s." % str(viewport_size))
+				_check(rect.encloses(label_rect), "Every rendered summary line must stay inside its card border at %s (card=%s label=%s)." % [str(viewport_size), str(rect), str(label_rect)])
 				_check(label_rect.position.y >= prior_bottom - 0.5, "Rendered summary lines must not overlap each other at %s." % str(viewport_size))
 				prior_bottom = label_rect.end.y
 	dock.set_active_source("martial")
@@ -145,6 +146,11 @@ func _verify_board_context_and_geometry(viewport_size: Vector2) -> void:
 			await process_frame
 			var last_manual := martial.manual_buttons.back() as Control
 			_check(manual_viewport_rect.encloses(last_manual.get_global_rect()), "The last real manual must be fully reachable inside the selector viewport at %s." % str(viewport_size))
+			martial.manual_scroll.scroll_horizontal = 0
+			await process_frame
+			last_manual.grab_focus()
+			await process_frame
+			_check(manual_viewport_rect.encloses(last_manual.get_global_rect()), "Keyboard focus must automatically reveal the last manual at %s." % str(viewport_size))
 		for button in martial.technique_buttons:
 			var technique_rect := (button as Control).get_global_rect()
 			_check(host_rect.encloses(technique_rect), "Every real martial technique card must stay inside the content host at %s." % str(viewport_size))

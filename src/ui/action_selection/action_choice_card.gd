@@ -6,6 +6,9 @@ const PAPER_HOVER := Color("eee2c9")
 const CHARCOAL_INK := Color("211c17")
 const RESTRAINED_GOLD := Color("b99254")
 const RESOLUTION_ENGINE_SCRIPT := preload("res://src/combat/combat_resolution_engine.gd")
+const CARD_CONTENT_TOP := 49.0
+const CARD_BOTTOM_PADDING := 4.0
+const CROSS_PLATFORM_CARD_HEIGHT := 104.0
 
 var action_definition: Dictionary = {}
 
@@ -13,7 +16,7 @@ func configure_action(definition: Dictionary, illustration_policy: String, statu
 	action_definition = definition.duplicate(true)
 	for child in get_children():
 		child.queue_free()
-	custom_minimum_size = Vector2(0.0, 98.0)
+	custom_minimum_size = Vector2(0.0, CROSS_PLATFORM_CARD_HEIGHT)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	focus_mode = Control.FOCUS_ALL
 	text = ""
@@ -72,8 +75,8 @@ func _add_summary(preview_actor: Dictionary) -> void:
 	summary.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	summary.offset_left = 4.0
 	summary.offset_right = -4.0
-	summary.offset_top = 49.0
-	summary.offset_bottom = 96.0
+	summary.offset_top = CARD_CONTENT_TOP
+	summary.offset_bottom = CROSS_PLATFORM_CARD_HEIGHT - CARD_BOTTOM_PADDING
 	add_child(summary)
 	var momentum_text := " · 기세 %d" % int(action_definition.get("momentum_cost", 0)) if int(action_definition.get("momentum_cost", 0)) > 0 else ""
 	_add_summary_line(summary, "%d수 · 기력 %d · 내력 %d%s" % [int(action_definition.get("action_slots", 1)), int(action_definition.get("stamina_cost", 0)), int(action_definition.get("internal_cost", 0)), momentum_text])
@@ -85,6 +88,15 @@ func _add_summary(preview_actor: Dictionary) -> void:
 		range_line += " · 이동 %d칸" % movement
 	_add_summary_line(summary, range_line)
 	_add_summary_line(summary, _primary_summary(preview_actor))
+	_fit_card_to_summary(summary)
+
+func _fit_card_to_summary(summary: VBoxContainer) -> void:
+	# Linux and Windows can resolve the Korean fallback font to different line
+	# heights. Size from the actual native labels, with a small cross-platform
+	# floor, so the third line never relies on one platform's fallback metrics.
+	var required_height := ceilf(CARD_CONTENT_TOP + summary.get_combined_minimum_size().y + CARD_BOTTOM_PADDING)
+	custom_minimum_size.y = maxf(CROSS_PLATFORM_CARD_HEIGHT, required_height)
+	summary.offset_bottom = custom_minimum_size.y - CARD_BOTTOM_PADDING
 
 func _add_summary_line(parent: VBoxContainer, value: String) -> void:
 	var label := Label.new()

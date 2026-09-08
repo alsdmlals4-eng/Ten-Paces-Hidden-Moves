@@ -199,3 +199,39 @@ Fresh focused result after the correction:
 Controller-owned visible recapture after this exact correction remains
 `NOT_RUN`; the source failure capture remains failure evidence rather than final
 visual acceptance.
+
+## 2026-09-08 Linux fallback typography correction
+
+PR 322 run `34185724374` supplied real Linux failure evidence: the unchanged
+label containment assertion failed 20 times, once for each basic card at both
+1280x720 and 1280x800. Windows passed the same assertion. The platform delta is
+the native Korean fallback font's line height: three 11 px labels began at y=49
+inside a fixed 98 px card, so the Linux fallback's final line descended beyond
+the card even though the Windows fallback fit.
+
+The correction keeps the assertion and now includes exact card/label rectangles
+in future failure messages. `ActionChoiceCard` sizes itself from the actual
+native summary container minimum height plus four pixels of bottom padding,
+with a conservative 104 px cross-platform floor. The existing illustration,
+name, three summary lines, 11 px text and five-by-two grid remain. To preserve
+that two-row grid at 720p, the dock recovers only its six-pixel decorative gap
+between source tabs and body; no combat or selection behavior changes.
+
+The bounded tests accept at most 112 px for unusual native fallback metrics and
+also require the chosen height to be at least the measured summary content plus
+padding. This is a content-derived constraint, not a relaxed containment check.
+The controller's concurrent `follow_focus = true` martial-scroll correction and
+keyboard-focus regression were preserved unchanged.
+
+Fresh Windows Godot 4.7.1 headless verification:
+
+- `verify_action_card_summary.gd`: PASS at 1280x720 and 1280x800, including
+  label containment and martial keyboard focus reveal.
+- `verify_action_selection_dock.gd`: PASS.
+- `verify_combat_board.gd`: PASS.
+- `verify_martial_action_panel.gd`: PASS.
+- `verify_action_card_source_unification.gd`: PASS after its compact-card bound
+  was aligned to the same cross-platform 112 px ceiling.
+
+Linux CI rerun at the correction commit remains required; local Windows headless
+evidence cannot substitute for that platform confirmation.

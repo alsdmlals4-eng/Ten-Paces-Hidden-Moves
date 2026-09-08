@@ -29,6 +29,7 @@ text = "보유 무공서"
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 62)
 layout_mode = 2
+follow_focus = true
 horizontal_scroll_mode = 1
 vertical_scroll_mode = 0
 
