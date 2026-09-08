@@ -135,10 +135,13 @@ class TenManualProductGateTests(unittest.TestCase):
             "tests/verify_combat_focus_order.gd",
             "tests/verify_combat_layout_accessibility.gd",
             "tests/verify_combat_action_selection_integration.gd",
+            "tests/probe_native_ten_duel_campaign.gd",
+            "tests/probe_sequential_ten_duel_campaign.gd",
             ".github/workflows/validate-ten-manual-product-gate.yml",
         )
+        push_scope = workflow.split("  push:\n", 1)[1].split("  pull_request:\n", 1)[0]
         for path in required_paths:
-            self.assertIn(f'      - "{path}"', workflow)
+            self.assertIn(f'      - "{path}"', push_scope)
         self.assertNotIn('      - "tests/**"', workflow)
         self.assertNotIn('      - "scripts/windows/**"', workflow)
         self.assertIn("workflow_dispatch:", workflow)
