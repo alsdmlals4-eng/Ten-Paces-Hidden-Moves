@@ -15,7 +15,10 @@ func _run() -> void:
     for step in range(3):
         shell.advance_noncombat()
     # Terminal injection is a UI fixture, not evidence of a won duel.
-    shell.complete_combat_for_runtime({"outcome": "win"})
+    shell.complete_combat_for_runtime({
+        "outcome": "win",
+        "player_resources": {"health": [12, 40], "stamina": [2, 5], "internal": [1, 4]}
+    })
     shell.complete_review_for_runtime()
     shell.select_result_reward("free_training")
     shell.advance_noncombat()
@@ -23,6 +26,8 @@ func _run() -> void:
         var options: Array = shell.run_state.get_jianghu_options()
         shell._choose_jianghu(str(options[0]["id"]), step)
         shell.advance_noncombat()
+    var before_rest: Dictionary = shell.run_state.get_player_run_resources()
+    check(before_rest == {"health": [12, 40], "stamina": [2, 5], "internal": [1, 4]}, "Rest fixture must reach the inn with damaged valid resources.")
     shell._choose_jianghu("rest", 2)
     await process_frame
     var backdrop = shell.get_node("ShellBackdrop")
@@ -31,6 +36,10 @@ func _run() -> void:
     check(not shell.route_options_container.visible, "Resolved rest must not retain disabled choice cards.")
     check(not shell.primary_button.disabled, "Rest must expose a working continuation.")
     var resources: Dictionary = shell.run_state.get_player_run_resources()
+    check(resources == {"health": [22, 40], "stamina": [3, 5], "internal": [2, 4]}, "One rest must heal 25% max health and restore one stamina and internal power exactly once.")
+    check(resources["health"][0] < resources["health"][1], "Rest fixture health must remain below cap before duplicate input.")
+    check(resources["stamina"][0] < resources["stamina"][1], "Rest fixture stamina must remain below cap before duplicate input.")
+    check(resources["internal"][0] < resources["internal"][1], "Rest fixture internal power must remain below cap before duplicate input.")
     shell._choose_jianghu("rest", 2)
     check(shell.run_state.get_player_run_resources() == resources, "Duplicate rest must not heal again.")
     shell.advance_noncombat()
