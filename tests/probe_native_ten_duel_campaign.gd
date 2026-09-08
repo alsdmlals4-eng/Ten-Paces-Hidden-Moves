@@ -3,6 +3,8 @@ extends "res://tests/probe_sequential_ten_duel_campaign.gd"
 var activations := 0
 var shell
 var started_ms := 0
+var last_input := "none"
+var terminal_outcomes := {"win": 0, "draw": 0}
 const WALL_TIMEOUT_MS := 900000
 
 func run_probe() -> void:
@@ -16,7 +18,40 @@ func run_probe() -> void:
     _require(activations == before, "rejected activation must not count as progress")
     _require(disabled_signals[0] == 0, "disabled control must not activate")
     disabled.queue_free()
-    print("NATIVE_HELPER_DISABLED PASS")
+    if failures.is_empty():
+        print("NATIVE_HELPER_DISABLED PASS")
+    var duplicate := Button.new()
+    root.add_child(duplicate)
+    # This isolated fixture simulates a broken consumer's extra pressed signal.
+    duplicate.pressed.connect(func(): duplicate.call_deferred("emit_signal", "pressed"), CONNECT_ONE_SHOT)
+    before = activations
+    _require(not await _activate(duplicate), "duplicate pressed must be rejected")
+    _require(activations == before, "duplicate pressed must not count as progress")
+    duplicate.queue_free()
+    var forged := {"terminal": true, "outcome": "win", "duel_index": 1, "player_health": 10, "enemy_health": 0}
+    _require(not _terminal_success({"player": {"health": [10, 30]}, "enemy": {"health": [10, 30]}}, forged, [{"duel_index": 1, "outcome": "win"}], 1), "review receipt must not fake terminal HP")
+    var won := {"player": {"health": [10, 30]}, "enemy": {"health": [0, 30]}}
+    _require(_terminal_success(won, forged, [{"duel_index": 1, "outcome": "win"}], 1), "consistent terminal win must pass")
+    _require(not _terminal_success(won, forged, [{"duel_index": 1, "outcome": "draw"}], 1), "contradictory history must fail")
+    _require(not _terminal_success(won, forged, [{"duel_index": 2, "outcome": "win"}], 1), "wrong duel history must fail")
+    var drawn := {"terminal": true, "outcome": "draw", "duel_index": 1, "player_health": 0, "enemy_health": 0}
+    _require(_terminal_success({"player": {"health": [0, 30]}, "enemy": {"health": [0, 30]}}, drawn, [{"duel_index": 1, "outcome": "draw"}], 1), "consistent terminal draw remains contract-legal")
+    var route := {"id": "rest", "route_type": "rest", "node_id": "J1-1"}
+    _require(_route_matches(route, "rest", "J1-1"), "matching route identity must pass")
+    _require(not _route_matches(route, "training", "J1-1"), "wrong selected route must fail")
+    _require(not _route_matches(route, "rest", "J1-2"), "stale route node must fail")
+    if failures.is_empty():
+        print("NATIVE_HELPER_GUARDS PASS")
+    if "--guards-only" in OS.get_cmdline_user_args():
+        for failure in failures:
+            printerr("NATIVE_GUARD_FAIL: ", failure)
+        quit(1 if not failures.is_empty() else 0)
+        return
+    if not failures.is_empty():
+        for failure in failures:
+            printerr("NATIVE_GUARD_FAIL: ", failure)
+        quit(1)
+        return
     shell = load("res://scenes/run/vertical_slice_shell.tscn").instantiate()
     root.add_child(shell)
     await process_frame
@@ -56,12 +91,17 @@ func run_probe() -> void:
             var deadline := Time.get_ticks_msec() + 30000
             while not bridge.combat_review_panel.is_visible_in_tree() and Time.get_ticks_msec() < deadline and Time.get_ticks_msec() - started_ms < WALL_TIMEOUT_MS:
                 await process_frame
-            _require(bridge.combat_review_panel.is_visible_in_tree(), "bounded review wait stalled")
+            _require(bridge.combat_review_panel.is_visible_in_tree(), "bounded review wait stalled: " + _diagnostic(bridge))
             if not failures.is_empty():
                 break
             _remember_public_player_cards(bridge.combat_state)
             terminal = run.get_current_screen() == VerticalSliceRunState.SCREEN_REVIEW
             if terminal:
+                _require(_terminal_success(bridge.combat_state, run.last_combat_result, run.get_duel_history(), run.duel_index), "terminal HP/result/history must consistently prove success: " + _diagnostic(bridge))
+                if not failures.is_empty():
+                    break
+                var outcome := str(run.last_combat_result.outcome)
+                terminal_outcomes[outcome] += 1
                 _require(run.get_player_run_resources() == bridge.get_vertical_slice_player_resources(), "terminal bridge resources must exactly reach shell")
             print("NATIVE_BUNDLE duel=%d turn=%d player=%s enemy_hp=%s terminal=%s" % [run.duel_index, turn + 1, bridge.get_vertical_slice_player_resources(), bridge.combat_state.enemy.health, terminal])
             await _click(bridge.combat_review_panel.get_continue_button(), "review continue")
@@ -85,11 +125,14 @@ func run_probe() -> void:
             break
         for step in range(4):
             var choice := _choose_public_route(run.get_jianghu_options())
+            var node_id := "J%d-%d" % [run.completed_duels, step + 1]
             await _click(shell.find_child("Jianghu_" + choice, true, false), "route " + choice)
-            _require(not run.get_pending_jianghu().is_empty(), "route must have real receipt")
+            _require(_route_matches(run.get_pending_jianghu(), choice, node_id), "pending route identity must match native choice")
             var route_count := run.get_route_history().size()
             await _click(shell.primary_button, "route continue")
             _require(run.get_route_history().size() == route_count + 1, "route must apply exactly once")
+            if failures.is_empty():
+                _require(_route_matches(run.get_route_history().back(), choice, node_id), "new route history identity must match native choice")
         _require(run.get_current_screen() == VerticalSliceRunState.SCREEN_BRIEFING, "routes must reach next briefing")
     _require(run.is_complete() and run.get_duel_history().size() == 10, "ten real terminal successes required")
     _require(run.get_reward_history().size() == 10, "ten earned rewards required")
@@ -100,7 +143,7 @@ func run_probe() -> void:
     for card_id in BASIC_ULTIMATES:
         ultimate_used = ultimate_used or publicly_used_player_cards.has(card_id)
     _require(ultimate_used, "base ultimate must resolve")
-    print("NATIVE_CAMPAIGN_SUMMARY ", JSON.stringify({"complete": run.is_complete(), "duels": run.get_duel_history().size(), "rewards": run.get_reward_history().size(), "routes": run.get_route_history().size(), "activations": activations, "cards": publicly_used_player_cards.keys(), "elapsed_ms": Time.get_ticks_msec() - started_ms, "mode": "ordinary_defaults", "failures": failures}))
+    print("NATIVE_CAMPAIGN_SUMMARY ", JSON.stringify({"complete": run.is_complete(), "duels": run.get_duel_history().size(), "outcomes": terminal_outcomes, "rewards": run.get_reward_history().size(), "routes": run.get_route_history().size(), "activations": activations, "cards": publicly_used_player_cards.keys(), "elapsed_ms": Time.get_ticks_msec() - started_ms, "mode": "ordinary_defaults", "failures": failures}))
     shell.queue_free()
     await process_frame
     await process_frame
@@ -119,7 +162,7 @@ func _activate(button: Button) -> bool:
         return false
     var observed := [0]
     var witness := func(): observed[0] += 1
-    button.pressed.connect(witness, CONNECT_ONE_SHOT)
+    button.pressed.connect(witness)
     var event := InputEventAction.new()
     event.action = "ui_accept"
     event.pressed = true
@@ -142,6 +185,7 @@ func _activate(button: Button) -> bool:
 func _click(button: Button, label: String) -> void:
     if not failures.is_empty():
         return
+    last_input = label
     _require(await _activate(button), "native activation rejected: " + label)
     if not failures.is_empty() and is_instance_valid(shell):
         print("NATIVE_DIAGNOSTIC label=%s screen=%s button=%s" % [label, shell.run_state.get_current_screen(), str(button)])
@@ -202,3 +246,30 @@ func _native_schedule(placements: Array, bundle: int) -> Array:
         placement.anchor_index = anchor
         anchor += int(placement.span)
     return result
+
+func _terminal_success(state: Dictionary, result: Dictionary, history: Array, duel: int) -> bool:
+    for actor in ["player", "enemy"]:
+        if typeof(state.get(actor)) != TYPE_DICTIONARY:
+            return false
+        var health = state[actor].get("health")
+        if typeof(health) != TYPE_ARRAY or health.size() != 2 or typeof(health[0]) != TYPE_INT:
+            return false
+    var player_hp := int(state.player.health[0])
+    var enemy_hp := int(state.enemy.health[0])
+    # A review screen is insufficient: actual HP must prove a win or legal draw.
+    if enemy_hp > 0 or player_hp < 0 or enemy_hp < 0:
+        return false
+    var outcome := "win" if player_hp > 0 else "draw"
+    if not bool(result.get("terminal", false)) or str(result.get("outcome", "")) != outcome:
+        return false
+    if int(result.get("player_health", -1)) != player_hp or int(result.get("enemy_health", -1)) != enemy_hp or int(result.get("duel_index", -1)) != duel:
+        return false
+    if history.size() != duel or typeof(history.back()) != TYPE_DICTIONARY:
+        return false
+    return str(history.back().get("outcome", "")) == outcome and int(history.back().get("duel_index", -1)) == duel
+
+func _route_matches(receipt: Dictionary, choice: String, node_id: String) -> bool:
+    return not choice.is_empty() and str(receipt.get("id", "")) == choice and str(receipt.get("route_type", "")) == choice and str(receipt.get("node_id", "")) == node_id
+
+func _diagnostic(bridge) -> String:
+    return JSON.stringify({"duel": shell.run_state.duel_index, "bundle": bridge.combat_state.get("bundle_index", -1), "screen": shell.run_state.get_current_screen(), "presentation_state": bridge._presentation_state, "last_input": last_input})

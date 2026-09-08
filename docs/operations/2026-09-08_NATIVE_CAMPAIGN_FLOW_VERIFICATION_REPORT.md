@@ -52,3 +52,47 @@ Bounds: 270 bundles per duel, 30 seconds per review wait, 900 seconds global cam
 The recurring lesson is that native UI policy must respect public atomic reservation ordering and actual continuation states; a resolver-only script cannot validate those boundaries. The negative helper guard and complete native probe retain the regression in the existing CI owner. Generated import/UID output is excluded from the commit; no protected product file is intentionally changed.
 
 This is generated native-input headless runtime evidence. It is not Windows visible observation, physical keyboard/mouse/gamepad evidence, Android device evidence, Human/fun/balance/accessibility-user acceptance, asset rights acceptance or release PASS. Only the production technical seed and one public action/route policy were exercised. Independent review, exact-head remote CI and postmerge readback belong to the controller's subsequent closeout.
+
+## Independent review correction round 1
+
+Review base: `ff8388da56341f73631ffb85f57972d418291189`. The reviewer confirmed the earlier actual win trace, but identified five ways the test could overclaim future results. They were test defects, not newly demonstrated game defects. `receiving-code-review` was used to compare each finding to the actual shell/RunState consumers before editing only the probe and reports.
+
+- Terminal success now requires actual player/enemy HP to prove a win or contract-legal draw, matching `last_combat_result.terminal`, HP, outcome, duel ID and the newly retained history row. The summary distinguishes wins and draws. A forged terminal receipt with both actors alive is rejected; contradictory history/wrong duel fixtures fail, and consistent win/draw fixtures pass.
+- The activation witness remains connected throughout press/release and settling frames, then disconnects. An isolated fixture deliberately emits an additional `pressed` signal: `observed=2` must return false without incrementing activations. The fixture's one-shot callback merely generates that duplicate; the actual witness is not one-shot. No synthetic signal is sent to production controls.
+- Each route's pending receipt and newly appended history must have the chosen `id` and `route_type`, plus the expected `J<duel>-<step>` node ID. Fixtures reject a different chosen route and a stale node.
+- Review stall errors include duel, bundle, shell screen, presentation state and last input label. These diagnostics contain no hidden enemy plan.
+- Helper PASS markers are conditional on successful assertions; guard failures stop before the campaign.
+
+Focused RED command, then identical GREEN command:
+
+```powershell
+& 'C:/Users/user/Downloads/Godot_v4.7.1-stable_win64.exe/Godot_v4.7.1-stable_win64_console.exe' --headless --path . --script tests/probe_native_ten_duel_campaign.gd -- --guards-only
+```
+
+RED exited 1 with duplicate accepted, duplicate progress counted, and forged terminal HP accepted. The old one-shot witness and a temporary receipt-only terminal predicate represented those missing guards. GREEN exited 0, observed and rejected two signals, and printed `NATIVE_HELPER_GUARDS PASS`. These are isolated negative fixtures, not fabricated campaign results.
+
+The first full rerun after the previous handoff's import cleanup could not load `atlas_blue_ink_courtyard_v1.png`; it emitted SCRIPT ERROR and was stopped with exit 1. Regenerating import metadata using the documented headless editor import fixed readiness. Import again exited 0 with the existing 45-object/22-resource editor teardown diagnostics. Regenerated import/UID files remain unstaged and preserved for controller verification; do not rerun a fresh/restored worktree without import.
+
+The corrected full run used the documented command with log `.godot/native-campaign-review1-final.log`: exit 0, `complete=true`, **10 wins / 0 draws**, 10 rewards, 36 routes, 387 activations, 141588 ms. Every new HP/result/history/route identity assertion passed, as did both-direction resource checks and required techniques/ultimates. No SCRIPT ERROR occurred. A two-object exit teardown warning did occur; it is not relabeled as a clean run. A diagnostic verbose repeat is recorded separately below when available.
+
+Adjacent current checks: `python tools/validate_ten_manual_product_gate.py --root .` → `TEN_MANUAL_PRODUCT_GATE_CONTRACT_OK`; `python -m unittest tests.test_ten_manual_product_gate -q` → 8 tests OK; project operating router PASS. Existing keyboard/action-selection runtime results above remain prior adjacent evidence, not newly rerun results. The CI step and product consumers were not edited in this correction round.
+
+## Five full-scope refinement passes for the retained package
+
+Each pass considers current authority and protected scope, the inherited public policy and real input path, negative assertions, terminal/route/resource consumers, existing CI and untouched tests, runtime evidence, cost and the Human/device evidence ceiling. The rows record actual findings or clean checks; no finding is invented to fill the count.
+
+| Pass | Full-scope result and evidence | Refinement / exit |
+|---|---|---|
+| 1 — authority and design-to-test boundary | Fresh project/router/contract validation and shell/dock/policy reads showed why resolver-only evidence did not cover UI flow. Existing CI and adjacent consumers remained the integration owner; no product or new service was needed. | Inherit the public policy with a deep state copy; test native controls; disabled-button RED/GREEN establishes the first guard. |
+| 2 — first complete native attempt | Production UI, resources, public actions, reward/route transitions and existing protected policy were checked against the actual attempt. Hidden settings, continuation naming and atomic reservation ordering differed from initial harness assumptions. Cost remained bounded and no Human claim followed from runtime. | Keep ordinary animation, assert `next_bundle_ready`, place the same selected actions with ultimate last. The 114856 ms failed attempt is retained, and the adjusted 142230 ms full run passed. |
+| 3 — independent adversarial review | The controller's independent reviewer checked the retained test, production consumers, actual trace and evidence ceiling. It found missing HP/result/history proof, duplicate-event blindness, weak route identity, incomplete stall diagnostics and unconditional helper PASS. No actual campaign result was fabricated by the earlier run. | Reopen the test package; all five findings are addressed in this correction round. |
+| 4 — counterexamples and current consumers | Re-read actual RunState history/result/route schema, the complete changed probe, source-lock implementation and untouched product CI. Negative duplicate and forged-terminal fixtures failed before correction and passed after it; valid draw semantics remain. Restored-worktree import readiness failed separately and was regenerated. | Persistent witness and terminal/route identity predicates retained; no production mutation. Contract and eight adjacent unittest checks pass. |
+| 5 — full rerun and retained diff | Re-inspected the full diff/public boundary/CI, exercised the whole native campaign again, and checked every new assertion at production transitions. The 141588 ms result is 10 actual wins, 36 identified routes and exact handoffs with no SCRIPT ERROR. A verbose repeat completed the same assertions in 141240 ms without an exit warning. | Local retained-test review exit is clean with the intermittent teardown observation explicitly limited below. Remote CI and independent re-review remain controller closeout gates. |
+
+Verbose diagnostic repeat command:
+
+```powershell
+& 'C:/Users/user/Downloads/Godot_v4.7.1-stable_win64.exe/Godot_v4.7.1-stable_win64_console.exe' --headless --path . --verbose --script tests/probe_native_ten_duel_campaign.gd --log-file .godot/native-campaign-review1-verbose.log
+```
+
+Result: exit 0, 141240 ms, 10 wins/0 draws, 10 rewards, 36 routes, 387 activations, all guards passed. This repeat has no SCRIPT ERROR, resource error or ObjectDB warning. Because the two-object teardown warning did not recur with verbose output, its object types and cause were not identified. No cleanup delay, warning suppression or product modification was added to obtain the clean repeat. The earlier warning remains an intermittent observation, not a demonstrated fixed bug or a failed campaign assertion. A future recurrence should capture verbose object identities before assigning a production cause.
