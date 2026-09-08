@@ -68,12 +68,12 @@
 
 - 최초 명시적 empty context는 한 번 초기화한다. 동일 empty/populated input은 manual adapter 경로를 다시 호출하지 않는다. caller가 전달 후 원본 Array/Dictionary를 mutate해도 dock cache/runtime snapshot은 변하지 않는다.
 - mastery 3→7 및 loadout identity 변경은 새 view model과 technique/manual identity를 재구성한다. dynamic-only preview actor, constraint, momentum, reservation 변경은 manual registry 재구성 없이 실제 panel output을 갱신한다.
-- warmed real dock, four manuals, identical context 100회, synchronous headless 3 samples: 변경 전 controller baseline `539854 / 563441 / 561096 µs`; 최종 변경 후 확인 `1375 / 1166 / 1172 µs` (직전 run `1181 / 1157 / 1154 µs`). 같은 microbenchmark에서 중복 파싱 제거를 관측한 것이며 FPS, Windows visible, Android/device 또는 Human-perceived 성능 등가는 주장하지 않는다.
+- warmed real dock, four manuals, identical context 100회, synchronous headless 3 samples: 변경 전 controller baseline `539854 / 563441 / 561096 µs`; behavioral RED 임시 baseline `543453 / 545626 / 540126 µs`; 최종 GREEN `1207 / 1187 / 1188 µs`. 같은 microbenchmark에서 중복 파싱 제거를 관측한 것이며 FPS, Windows visible, Android/device 또는 Human-perceived 성능 등가는 주장하지 않는다.
 
 ### 검증 증거
 
-- RED: 새 focused regression을 구현 전 실행해 test subclass가 호출하는 `_build_owned_manuals` production seam 부재와 redundant path 미구현으로 compile failure를 확인했다.
-- GREEN/measurement: `Godot_v4.7.1-stable_win64_console.exe --headless --path . --script res://tests/verify_action_dock_context_invalidation.gd` → 최종 `ACTION_DOCK_REFRESH_MEASUREMENT identical_100_usec=[1375, 1166, 1172]`, `ACTION_DOCK_CONTEXT_INVALIDATION_OK`.
+- Behavioral RED fix round 1: 최종 production helper seam과 동일한 test instrumentation을 유지하고 `ActionSelectionDock._set_manual_context`에서 invalidation guard/owned cache만 임시 제거한 isolated uncommitted baseline을 실행했다. 같은 focused command가 정상 parse/runtime 뒤 `identical empty expected=1 actual=2`, `identical populated expected=2 actual=4`, `dynamic-only expected=2 actual=5`, `warmed identical expected=4 actual=308`, `ACTION_DOCK_CONTEXT_INVALIDATION_FAILED count=7`로 실패했다. 100회 samples는 `[543453, 545626, 540126]`였다. 이 임시 baseline은 즉시 폐기하고 `git diff --exit-code HEAD --`로 production/test 3경로가 최종 commit과 동일함을 확인했다.
+- GREEN/measurement: guard/owned cache 복원 후 `Godot_v4.7.1-stable_win64_console.exe --headless --path . --script res://tests/verify_action_dock_context_invalidation.gd` → 최종 `ACTION_DOCK_REFRESH_MEASUREMENT identical_100_usec=[1207, 1187, 1188]`, `ACTION_DOCK_CONTEXT_INVALIDATION_OK`; warmed count는 기대 4를 유지했다.
 - 관련 Godot: `verify_action_selection_dock.gd`, `verify_martial_action_panel.gd`, `verify_combat_action_selection_integration.gd`, `verify_bimu_constraint_ui.gd`, `verify_bimu_constraint_runtime.gd`, `verify_ultimate_ui.gd` PASS. Ultimate test 종료의 기존 `2 ObjectDB instances were leaked` warning은 이 변경의 신규 failure로 승격하지 않았다.
 - 전체 Python: `python -m pytest -q` → `474 passed in 17.73s`. Task 1 native campaign은 player behavior 변경이 없고 controller가 최종 native replay/capture를 별도 수행하므로 재사용했으며, 이번 task에서 새 Human/device evidence로 승격하지 않았다.
 - 운영/보호경로 회귀: `python tools/check_project_operating_system.py` PASS; 지정 unittest 4모듈 `Ran 9 tests ... OK`.
