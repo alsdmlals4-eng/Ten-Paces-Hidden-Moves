@@ -17,6 +17,8 @@ on:
       - "tests/test_ten_manual_product_gate.py"
       - "tests/verify_ten_manual_product_gate.gd"
       - "tests/verify_bimu_constraint_model.gd"
+      - "tests/verify_run_save_store.gd"
+      - "tests/test_durable_save_contract.py"
       - "tests/verify_bimu_constraint_runtime.gd"
       - "tests/verify_bimu_constraint_ui.gd"
       - "tests/verify_ten_manual_product_viewports.gd"
@@ -100,6 +102,8 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_ten_duel_campaign.gd
       - name: Verify campaign failure and retry
         run: godot --headless --path . --script res://tests/verify_vertical_slice_failure_retry.gd
+      - name: Verify durable run snapshot and recoverable local store
+        run: godot --headless --path . --script res://tests/verify_run_save_store.gd
       - name: Verify rendered preparation summaries
         run: godot --headless --path . --script res://tests/verify_action_card_summary.gd
       - name: Verify rest and route presentation transitions

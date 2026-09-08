@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "bf161025b63edd7eb441b2c4f2ae9da5155f68da",
+  "decision_ids": ["TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01"],
+  "approved_paths": [
+    "src/run/vertical_slice_run_state.gd",
+    "src/run/vertical_slice_progression_state.gd",
+    "src/run/run_checkpoint_codec.gd",
+    "src/run/run_save_store.gd"
+  ],
+  "approval_source": "Current user-authorized continuous implementation and exact Codex durable-save handoff; explicit run snapshot and validated recoverable local store only in Task 1.",
+  "approval_time": "2026-09-08T00:00:00+09:00",
+  "scope_summary": "Implement schema-1 explicit run snapshot, fail-closed validation, recoverable local file storage, idempotent revision and generation retirement. Preserve combat, AI, reward, route, retry, manual-loadout, engine and asset semantics. Combat DTO and title/shell wiring are subsequent bounded tasks."
+}

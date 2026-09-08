@@ -25,7 +25,7 @@
 - Add `src/run/run_checkpoint_codec.gd`: bounded JSON-safe and strict domain validation, content compatibility identity and schema envelope/hash. Keep file IO out of this codec.
 - Add `src/run/run_save_store.gd`: injected-root file IO, temp/readback validation, revision, validated backup, recovery status, generation replacement/tombstone. No UI or combat calculations.
 - Add `tests/verify_run_save_store.gd`, `tests/test_durable_save_contract.py`; bind focused native test in `.github/workflows/validate-ten-manual-product-gate.yml` and its actual invoked runner if it owns the list (fresh-read before editing).
-- Add this package's scoped `docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json` and append `docs/implementation/BUILD_APPROVAL_2026-09-08.md` against the base above, listing only actual protected paths. Do not modify the adoption pin or historical retired approval archives.
+- Add this package's scoped `docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json` and append `docs/implementation/BUILD_APPROVAL_2026-09-08.md`, listing only actual protected paths. Source main remains the base above; the adopted validator's protected comparison baseline is `bf161025b63edd7eb441b2c4f2ae9da5155f68da` from the current adapter. Its diff to source main contains no protected product changes. Keep that protected baseline in the manifest/checker rather than bypassing or changing the adoption pin. Preserve historical retired approval archives.
 
 **Interface for subsequent tasks**
 - Run state exports a deep JSON-safe dictionary; strict validate/import reports success/error and restores every mutable field, including progression, pending receipts, frozen constraints, prebattle retry snapshot, attempt/counters/history.

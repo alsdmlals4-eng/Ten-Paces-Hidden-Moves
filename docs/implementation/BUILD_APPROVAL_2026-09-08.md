@@ -55,3 +55,11 @@ Human playtest is finished. Exact protected-path approval must match the final P
 - Additional protected product path: `src/ui/action_selection/action_selection_dock.gd`; tests and reports are the adjacent evidence paths.
 - Scope is limited to owned-copy invalidation of identical `martial_loadout` / `martial_mastery_by_manual` inputs. Resource preview, constraint locks, momentum, reservations, source/detail, targeting and interaction updates remain live on every relevant context call.
 - No adapter-wide/global cache, deferred frame, gameplay/numerical/reward/save/route/audio/engine change, or FPS/device claim is approved.
+
+## Separate continuation: durable local run checkpoint
+
+- Decision: `TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01`; same current continuous implementation authority and independent Codex handoff.
+- Merged-main baseline: `27f7d922e8ec36e038c6dc943b069161b8b53536`. Task 1 owns explicit run/progression DTO validation/import and recoverable local storage; its exact four protected paths are in the new one-time `docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json`.
+- The trusted protected baseline remains the adapter's `bf161025b63edd7eb441b2c4f2ae9da5155f68da`; its product diff through the merged-main source baseline is empty. Source revision and protected authority are distinct. No adapter/adoption pin change is needed.
+- No UI connection or combat checkpoint implementation is claimed by this task. Nonempty combat checkpoints reject until the next bounded task implements their validation. The July planning-only save sample has no migration authority over this schema.
+- Test paths are injected unique temporary/cache directories. No actual player save is touched. Windows physical input, Android lifecycle/device, Human UX and release acceptance remain `NOT_RUN`.

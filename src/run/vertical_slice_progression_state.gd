@@ -2,6 +2,7 @@ class_name VerticalSliceProgressionState
 extends RefCounted
 
 const STARTER_MASTERY := 3
+const CHECKPOINT_CODEC := preload("res://src/run/run_checkpoint_codec.gd")
 const MAX_MASTERY := 10
 const NEXT_STAR_COSTS := {
     4: 2,
@@ -172,8 +173,50 @@ func restore_snapshot(snapshot: Dictionary) -> bool:
     training_by_manual = (next_training as Dictionary).duplicate(true)
     free_training_pool = next_free_training
     player_resources = next_resources
-    pending_duplicate_transfers = (next_pending as Array).duplicate(true)
+    pending_duplicate_transfers.assign((next_pending as Array).duplicate(true))
     return true
+
+
+func validate_snapshot(snapshot: Dictionary) -> Dictionary:
+    if not CHECKPOINT_CODEC.json_safe(snapshot, 0, [0]) or snapshot.size() != 6:
+        return CHECKPOINT_CODEC.error("CORRUPT", "Malformed progression shape")
+    for key in ["owned_manual_ids", "pending_duplicate_transfers"]:
+        if typeof(snapshot.get(key)) != TYPE_ARRAY: return CHECKPOINT_CODEC.error("CORRUPT", "Malformed progression array")
+    for key in ["mastery_by_manual", "training_by_manual", "player_resources"]:
+        if typeof(snapshot.get(key)) != TYPE_DICTIONARY: return CHECKPOINT_CODEC.error("CORRUPT", "Malformed progression map")
+    if not CHECKPOINT_CODEC.integer(snapshot.get("free_training_pool")):
+        return CHECKPOINT_CODEC.error("CORRUPT", "Invalid training pool")
+    var registry = load("res://src/combat/martial_manual_registry.gd").new()
+    var seen := {}
+    for id in snapshot.owned_manual_ids:
+        if typeof(id) != TYPE_STRING or seen.has(id) or registry.get_manual(id).is_empty(): return CHECKPOINT_CODEC.error("CORRUPT", "Invalid owned manual")
+        seen[id] = true
+        if not CHECKPOINT_CODEC.integer(snapshot.mastery_by_manual.get(id), 3, 10) or not CHECKPOINT_CODEC.integer(snapshot.training_by_manual.get(id)):
+            return CHECKPOINT_CODEC.error("CORRUPT", "Invalid mastery/training")
+        if _mastery_after_total_training(int(snapshot.training_by_manual[id])) != snapshot.mastery_by_manual[id]:
+            return CHECKPOINT_CODEC.error("CORRUPT", "Mastery and training disagree")
+    if snapshot.mastery_by_manual.size() != seen.size() or snapshot.training_by_manual.size() != seen.size(): return CHECKPOINT_CODEC.error("CORRUPT", "Extra mastery/training IDs")
+    if not validate_resource_snapshot(snapshot.player_resources): return CHECKPOINT_CODEC.error("CORRUPT", "Invalid resource pairs")
+    for receipt in snapshot.pending_duplicate_transfers:
+        if typeof(receipt) != TYPE_DICTIONARY or receipt.get("reward_type") != "faction_transfer" or receipt.get("manual_id") not in seen or not CHECKPOINT_CODEC.integer(receipt.get("mastery"), 3, 3) or receipt.get("application_status") != "PENDING_DUPLICATE_POLICY":
+            return CHECKPOINT_CODEC.error("CORRUPT", "Invalid duplicate transfer")
+    return {"ok": true, "status": "VALID"}
+
+
+static func validate_resource_snapshot(resources) -> bool:
+    if typeof(resources) != TYPE_DICTIONARY or resources.size() != 3: return false
+    for key in ["health", "stamina", "internal"]:
+        var pair = resources.get(key)
+        if typeof(pair) != TYPE_ARRAY or pair.size() != 2 or not CHECKPOINT_CODEC.integer(pair[1], 1) or not CHECKPOINT_CODEC.integer(pair[0], 0) or pair[0] > pair[1]: return false
+    return true
+
+
+func import_snapshot(snapshot: Dictionary) -> Dictionary:
+    var result := validate_snapshot(snapshot)
+    if not result.ok: return result
+    # Strict validation finished; this internal method cannot clamp or drop input now.
+    restore_snapshot(CHECKPOINT_CODEC.normalized(snapshot))
+    return result
 
 
 func _add_training(manual_id: String, amount: int) -> void:

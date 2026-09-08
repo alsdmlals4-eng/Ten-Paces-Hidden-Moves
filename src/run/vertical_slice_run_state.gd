@@ -7,6 +7,204 @@ const PROGRESSION_SCRIPT := preload("res://src/run/vertical_slice_progression_st
 const ROUTE_MODEL_SCRIPT := preload("res://src/run/vertical_slice_route_model.gd")
 const STARTER_CATALOG_SCRIPT := preload("res://src/run/vertical_slice_starter_manual_catalog.gd")
 const CONSTRAINT_SCRIPT := preload("res://src/run/bimu_constraint_model.gd")
+const CHECKPOINT_CODEC := preload("res://src/run/run_checkpoint_codec.gd")
+# An explicit versioned domain DTO, never Object.get_property_list serialization.
+const SNAPSHOT_FIELDS := {
+    "duel_index": "duel_index", "completed_duels": "completed_duels", "route_visits": "route_visits", "last_combat_result": "last_combat_result",
+    "current_screen": "_current_screen", "flow_history": "_flow_history", "run_seed": "_run_seed", "current_opponent_id": "_current_opponent_id", "next_opponent_id": "_next_opponent_id",
+    "player_manual_loadout": "_player_manual_loadout", "player_mastery_by_manual": "_player_mastery_by_manual", "pending_result_reward": "_pending_result_reward", "reward_history": "_reward_history", "duel_history": "_duel_history",
+    "pending_growth_route": "_pending_growth_route", "pending_route_intel": "_pending_route_intel", "route_history": "_route_history", "intel_by_candidate": "_intel_by_candidate", "pre_battle_snapshot": "_pre_battle_snapshot",
+    "retry_count": "_retry_count", "attempt_id": "_attempt_id", "failure_receipt": "_failure_receipt", "jianghu_step": "jianghu_step", "pending_jianghu": "_pending_jianghu", "pending_bimu_constraints": "_pending_bimu_constraints", "frozen_bimu_receipt": "_frozen_bimu_receipt"
+}
+
+
+func export_snapshot() -> Dictionary:
+    var snapshot := {"progression": _progression.get_snapshot()}
+    for key in SNAPSHOT_FIELDS: snapshot[key] = get(SNAPSHOT_FIELDS[key])
+    return snapshot.duplicate(true)
+
+
+func validate_snapshot(snapshot: Dictionary) -> Dictionary:
+    var bad := CHECKPOINT_CODEC.error("CORRUPT", "Invalid run snapshot")
+    if not CHECKPOINT_CODEC.json_safe(snapshot, 0, [0]) or snapshot.size() != SNAPSHOT_FIELDS.size() + 1: return bad
+    var template := export_snapshot()
+    for key in template:
+        if not snapshot.has(key): return bad
+        if typeof(template[key]) == TYPE_INT:
+            if not CHECKPOINT_CODEC.integer(snapshot[key]): return bad
+        elif typeof(template[key]) != typeof(snapshot[key]): return bad
+    var s: Dictionary = CHECKPOINT_CODEC.normalized(snapshot)
+    var screens := [SCREEN_MAIN, SCREEN_SETUP, SCREEN_INTRO, SCREEN_BRIEFING, SCREEN_COMBAT, SCREEN_REVIEW, SCREEN_FAILURE_RETRY, SCREEN_RESULT, SCREEN_JIANGHU, SCREEN_COMPLETION]
+    if s.current_screen not in screens or s.flow_history.is_empty() or s.flow_history[-1] != s.current_screen: return bad
+    for screen in s.flow_history:
+        if typeof(screen) != TYPE_STRING or screen not in screens: return bad
+    if not CHECKPOINT_CODEC.integer(s.duel_index, 1, MAX_DUELS) or not CHECKPOINT_CODEC.integer(s.completed_duels, 0, MAX_DUELS) or not CHECKPOINT_CODEC.integer(s.route_visits, 0, 36) or not CHECKPOINT_CODEC.integer(s.jianghu_step, 0, 4): return bad
+    if not CHECKPOINT_CODEC.integer(s.retry_count, 0, 1) or s.attempt_id != s.retry_count: return bad
+    if not _progression.validate_snapshot(s.progression).ok: return bad
+    var catalog = load("res://src/run/vertical_slice_opponent_catalog.gd").new()
+    if not catalog.is_valid(): return bad
+    if s.current_screen != SCREEN_MAIN and s.current_opponent_id != catalog.select_campaign_candidate_id(s.duel_index): return bad
+    if not s.next_opponent_id.is_empty() and (s.completed_duels >= MAX_DUELS or s.next_opponent_id != catalog.select_campaign_candidate_id(s.completed_duels + 1)): return bad
+    for id in s.player_manual_loadout:
+        if typeof(id) != TYPE_STRING: return bad
+    if not s.player_manual_loadout.is_empty():
+        if not _starter_catalog.validate_selection(s.player_manual_loadout) or s.player_mastery_by_manual.size() != STARTER_SELECTION_COUNT: return bad
+        for id in s.player_manual_loadout:
+            if s.player_mastery_by_manual.get(id) != STARTER_MASTERY or not CHECKPOINT_CODEC.integer(s.player_mastery_by_manual.get(id), 3, 3) or id not in s.progression.owned_manual_ids: return bad
+    elif s.current_screen not in [SCREEN_MAIN, SCREEN_SETUP] or not s.player_mastery_by_manual.is_empty() or not s.progression.owned_manual_ids.is_empty(): return bad
+    for key in ["reward_history", "duel_history", "route_history", "pending_bimu_constraints"]:
+        for row in s[key]:
+            if typeof(row) != TYPE_DICTIONARY: return bad
+    if s.duel_history.size() != s.completed_duels or s.route_history.size() != s.route_visits: return bad
+    for i in range(s.duel_history.size()):
+        var row: Dictionary = s.duel_history[i]
+        if row.get("duel_index") != i + 1 or not CHECKPOINT_CODEC.integer(row.get("duel_index"), 1, 10) or row.get("opponent_candidate_id") != catalog.select_campaign_candidate_id(i + 1) or row.get("outcome") not in ["win", "draw"]: return bad
+        if typeof(row.get("battle_metrics")) != TYPE_DICTIONARY or typeof(row.get("review_summary")) != TYPE_DICTIONARY: return bad
+        for value in row.battle_metrics.values():
+            if not CHECKPOINT_CODEC.integer(value): return bad
+    var terminal_success: bool = s.current_screen in [SCREEN_RESULT, SCREEN_JIANGHU, SCREEN_COMPLETION] or (s.current_screen == SCREEN_REVIEW and s.last_combat_result.get("outcome") in ["win", "draw"])
+    if s.completed_duels != s.duel_index - (0 if terminal_success else 1): return bad
+    var unconfirmed: bool = s.current_screen == SCREEN_RESULT or (s.current_screen == SCREEN_REVIEW and terminal_success)
+    if s.reward_history.size() != s.completed_duels - (1 if unconfirmed else 0): return bad
+    if s.current_screen == SCREEN_COMPLETION and s.completed_duels != MAX_DUELS: return bad
+    if s.current_screen == SCREEN_JIANGHU:
+        if s.completed_duels < 1 or s.completed_duels >= 10 or s.jianghu_step >= 4 or s.next_opponent_id.is_empty(): return bad
+        if s.route_visits != (s.completed_duels - 1) * 4 + s.jianghu_step: return bad
+    elif s.route_visits != mini(s.duel_index - 1, 9) * 4: return bad
+    if not s.pending_growth_route.is_empty() or not s.pending_route_intel.is_empty(): return bad # Retired two-node flow is not schema 1.
+    for i in range(s.reward_history.size()):
+        var row: Dictionary = s.reward_history[i]
+        if row.get("duel_index") != i + 1 or row.get("opponent_candidate_id") != catalog.select_campaign_candidate_id(i + 1) or not _valid_reward(row, s.player_manual_loadout, catalog.get_candidate(catalog.select_campaign_candidate_id(i + 1))): return bad
+    if not s.pending_result_reward.is_empty() and (s.current_screen != SCREEN_RESULT or not _valid_reward(s.pending_result_reward, s.player_manual_loadout, catalog.get_candidate(s.current_opponent_id))): return bad
+    for i in range(s.route_history.size()):
+        if not _valid_jianghu_receipt(s.route_history[i], i / 4 + 1, i % 4, catalog): return bad
+    if not s.pending_jianghu.is_empty() and (s.current_screen != SCREEN_JIANGHU or not _valid_jianghu_receipt(s.pending_jianghu, s.completed_duels, s.jianghu_step, catalog)): return bad
+    if not _valid_progression_history(s, catalog): return bad
+    # Rebuild accumulated public intel from saved receipts, without applying their effects.
+    var intel_candidate = get_script().new()
+    for receipt in s.route_history:
+        if receipt.get("id") in ["recon", "investigate"]: intel_candidate._record_candidate_intel(receipt)
+    if s.pending_jianghu.get("id") in ["recon", "investigate"]: intel_candidate._record_candidate_intel(s.pending_jianghu)
+    if intel_candidate._intel_by_candidate != s.intel_by_candidate: return bad
+    var enemy_manual: String = catalog.get_candidate(s.current_opponent_id).get("signature_manual_id", "")
+    var receipt: Dictionary = _bimu_model.validate_selection(s.pending_bimu_constraints, s.player_manual_loadout, [] if enemy_manual.is_empty() else [enemy_manual])
+    if not receipt.valid or receipt.selections != s.pending_bimu_constraints: return bad
+    if not s.frozen_bimu_receipt.is_empty():
+        receipt["duel_index"] = s.duel_index
+        receipt["run_seed"] = s.run_seed
+        receipt["enemy_candidate_id"] = s.current_opponent_id
+        if receipt != s.frozen_bimu_receipt: return bad
+    if s.current_screen in [SCREEN_COMBAT, SCREEN_REVIEW, SCREEN_RESULT, SCREEN_FAILURE_RETRY, SCREEN_COMPLETION] and (s.frozen_bimu_receipt.is_empty() or s.pre_battle_snapshot.is_empty()): return bad
+    if not s.pre_battle_snapshot.is_empty() and not _valid_prebattle(s, catalog): return bad
+    if s.current_screen == SCREEN_FAILURE_RETRY or (s.current_screen == SCREEN_REVIEW and not terminal_success):
+        if s.last_combat_result.get("outcome") != "loss" or s.failure_receipt.get("duel_index") != s.duel_index or s.failure_receipt.get("attempt_id") != s.attempt_id or s.failure_receipt.get("retry_count") != s.retry_count or typeof(s.failure_receipt.get("review_causes")) != TYPE_ARRAY: return bad
+    elif not s.failure_receipt.is_empty(): return bad
+    if not s.last_combat_result.is_empty():
+        if s.last_combat_result.get("outcome") not in ["win", "loss", "draw"] or not CHECKPOINT_CODEC.integer(s.last_combat_result.get("attempt_id"), 0, 1): return bad
+        if s.last_combat_result.has("player_resources") and not PROGRESSION_SCRIPT.validate_resource_snapshot(s.last_combat_result.player_resources): return bad
+    return {"ok": true, "status": "VALID"}
+
+
+func _valid_reward(receipt: Dictionary, loadout: Array, opponent: Dictionary) -> bool:
+    match receipt.get("reward_type"):
+        "free_training":
+            return CHECKPOINT_CODEC.integer(receipt.get("free_training"), 6, 6) and CHECKPOINT_CODEC.integer(receipt.get("focused_training", 0), 0, 0)
+        "focused_training":
+            return CHECKPOINT_CODEC.integer(receipt.get("free_training"), 3, 3) and CHECKPOINT_CODEC.integer(receipt.get("focused_training"), 5, 5) and typeof(receipt.get("target_manual_id")) == TYPE_STRING and receipt.target_manual_id in loadout
+        "faction_transfer":
+            return receipt.get("manual_id") == opponent.get("signature_manual_id") and CHECKPOINT_CODEC.integer(receipt.get("mastery"), 3, 3)
+    return false
+
+
+func _valid_progression_history(s: Dictionary, catalog) -> bool:
+    # Validate accounting in a disposable domain model. Import never replays effects on live state.
+    var audit = get_script().new()
+    audit.configure_opponents(catalog, s.run_seed)
+    if not s.player_manual_loadout.is_empty():
+        audit.start_new_run()
+        if not audit.confirm_setup_loadout(s.player_manual_loadout, s.player_mastery_by_manual): return false
+    for row in s.reward_history:
+        var receipt: Dictionary = row.duplicate(true)
+        receipt.erase("duel_index")
+        receipt.erase("opponent_candidate_id")
+        if audit._progression.apply_reward_receipt(receipt).is_empty(): return false
+    var routes: Array = s.route_history.duplicate(true)
+    if not s.pending_jianghu.is_empty(): routes.append(s.pending_jianghu)
+    for index in range(routes.size()):
+        var duel := index / JIANGHU_CHOICES + 1
+        var step := index % JIANGHU_CHOICES
+        audit._current_screen = SCREEN_JIANGHU
+        audit.completed_duels = duel
+        audit.duel_index = duel
+        audit.jianghu_step = step
+        audit._next_opponent_id = catalog.select_campaign_candidate_id(duel + 1)
+        audit._pending_jianghu.clear()
+        if not audit.select_jianghu_node(routes[index].id, step): return false
+    var expected: Dictionary = audit.get_progression_snapshot()
+    for key in ["owned_manual_ids", "mastery_by_manual", "training_by_manual", "free_training_pool", "pending_duplicate_transfers"]:
+        if expected[key] != s.progression[key]: return false
+    return true
+
+
+func _valid_jianghu_receipt(receipt: Dictionary, duel: int, step: int, catalog) -> bool:
+    var expected := {}
+    for option in _route_model.get_jianghu_options(duel, step):
+        if option.id == receipt.get("id"): expected = option.duplicate(true)
+    if expected.is_empty(): return false
+    if expected.id in ["recon", "investigate"]:
+        var candidate: Dictionary = catalog.get_candidate(catalog.select_campaign_candidate_id(duel + 1))
+        expected["category"] = "MANUAL_RUMOR" if expected.id == "recon" else "FOOTWORK_SIGHTING"
+        expected["candidate_id"] = candidate.candidate_id
+        expected["text"] = _route_model.build_public_intel(expected.category, candidate)
+    expected["node_id"] = "J%d-%d" % [duel, step + 1]
+    expected["route_type"] = expected.id
+    return expected == receipt
+
+
+func _valid_prebattle(s: Dictionary, _catalog) -> bool:
+    var p: Dictionary = s.pre_battle_snapshot
+    var expected_keys := ["run_seed", "duel_index", "completed_duels", "route_visits", "current_opponent_id", "next_opponent_id", "bimu_receipt", "progression", "duel_history", "reward_history", "route_history", "intel_by_candidate"]
+    if p.size() != expected_keys.size(): return false
+    for key in expected_keys:
+        if not p.has(key): return false
+    for key in ["run_seed", "duel_index", "route_visits", "current_opponent_id"]:
+        if p[key] != s[key]: return false
+    if not CHECKPOINT_CODEC.integer(p.completed_duels, 0, 9) or p.completed_duels != s.duel_index - 1 or p.next_opponent_id != "" or p.bimu_receipt != s.frozen_bimu_receipt: return false
+    if typeof(p.progression) != TYPE_DICTIONARY or not _progression.validate_snapshot(p.progression).ok: return false
+    var expected_progression: Dictionary = p.progression
+    if s.current_screen == SCREEN_COMPLETION:
+        var check_progression = PROGRESSION_SCRIPT.new()
+        check_progression.import_snapshot(p.progression)
+        var final_reward: Dictionary = s.reward_history[-1].duplicate(true)
+        final_reward.erase("duel_index")
+        final_reward.erase("opponent_candidate_id")
+        if check_progression.apply_reward_receipt(final_reward).is_empty(): return false
+        expected_progression = check_progression.get_snapshot()
+    for key in ["owned_manual_ids", "mastery_by_manual", "training_by_manual", "free_training_pool", "pending_duplicate_transfers"]:
+        if expected_progression[key] != s.progression[key]: return false
+    if s.last_combat_result.get("outcome") not in ["win", "draw"] and p.progression.player_resources != s.progression.player_resources: return false
+    for key in ["duel_history", "reward_history", "route_history"]:
+        if typeof(p[key]) != TYPE_ARRAY or p[key].size() > s[key].size() or p[key] != s[key].slice(0, p[key].size()): return false
+    return p.duel_history.size() == p.completed_duels and p.reward_history.size() == p.completed_duels and p.route_history == s.route_history and p.intel_by_candidate == s.intel_by_candidate
+
+
+func import_snapshot(snapshot: Dictionary) -> Dictionary:
+    var validation := validate_snapshot(snapshot)
+    if not validation.ok: return validation
+    var next: Dictionary = CHECKPOINT_CODEC.normalized(snapshot)
+    var progression = PROGRESSION_SCRIPT.new()
+    progression.import_snapshot(next.progression)
+    var catalog = load("res://src/run/vertical_slice_opponent_catalog.gd").new()
+    # All validation/model reconstruction precedes live assignment. No signals or effects replay.
+    for key in SNAPSHOT_FIELDS:
+        var property: String = SNAPSHOT_FIELDS[key]
+        if typeof(next[key]) == TYPE_ARRAY:
+            get(property).assign(next[key])
+        else:
+            set(property, next[key])
+    _progression = progression
+    _opponent_catalog = catalog
+    return {"ok": true, "status": "VALID"}
 
 const SCREEN_MAIN := "MAIN"
 const SCREEN_SETUP := "SETUP"
@@ -627,9 +825,9 @@ func _restore_pre_battle_snapshot(snapshot: Dictionary) -> bool:
     route_visits = int(snapshot.get("route_visits", route_visits))
     _current_opponent_id = str(snapshot.get("current_opponent_id", ""))
     _next_opponent_id = str(snapshot.get("next_opponent_id", ""))
-    _duel_history = (duel_history_value as Array).duplicate(true)
-    _reward_history = (reward_history_value as Array).duplicate(true)
-    _route_history = (route_history_value as Array).duplicate(true)
+    _duel_history.assign((duel_history_value as Array).duplicate(true))
+    _reward_history.assign((reward_history_value as Array).duplicate(true))
+    _route_history.assign((route_history_value as Array).duplicate(true))
     _intel_by_candidate = (intel_value as Dictionary).duplicate(true)
     _pending_result_reward.clear()
     _pending_growth_route.clear()
