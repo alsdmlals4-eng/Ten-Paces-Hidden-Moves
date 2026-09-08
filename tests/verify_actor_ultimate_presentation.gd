@@ -210,6 +210,10 @@ func _verify_actual_routes_and_board_consumers() -> void:
 		board.queue_free()
 		await process_frame
 		return
+	board._sound_muted = true
+	board.procedural_sfx_player.stop()
+	_verify_actual_preparation_timings(board, actual_by_manual)
+	_verify_actual_sure_hit_guard(board)
 
 	var configured = actual_attack.get("engine")
 	board.resolution_engine = configured
@@ -317,6 +321,143 @@ func _verify_actual_routes_and_board_consumers() -> void:
 
 	board.queue_free()
 	await process_frame
+
+
+func _verify_actual_preparation_timings(board: CombatBoardPreview, actual_by_manual: Dictionary) -> void:
+	var sequences := [
+		actual_by_manual.get("hebei_peng_five_tigers_saber", {}),
+		actual_by_manual.get("mount_hua_purple_mist_art", {}),
+		actual_by_manual.get("wudang_taiji_sword", {}),
+		actual_by_manual.get("xiaoyao_lingbo_footwork", {}),
+		_actual_legacy_bundle("ultimate_void_sword_qi"),
+		_actual_interrupted_bundle(),
+		_actual_basic_bundle(),
+	]
+	for sequence in sequences:
+		var card_id := str((sequence.get("definition", {}) as Dictionary).get("id", ""))
+		var actual_events := _events_for_card_from_timings((sequence.get("result", {}) as Dictionary).get("timing_results", []), card_id)
+		var preparation_count := 0
+		var execution_or_failure_count := 0
+		board.resolution_engine = sequence.get("engine")
+		var definition: Dictionary = sequence.get("definition", {})
+		var expected_ultimate_identity := str(definition.get("source", "")) == "ultimate" or str(definition.get("source_kind", "")) == "ultimate"
+		var state_before_display: Dictionary = (sequence.get("result", {}) as Dictionary).get("state", {}).duplicate(true)
+		for event_value in actual_events:
+			var event: Dictionary = event_value
+			var is_preparation := str(event.get("action_stage", "")) == "preparation" or str(event.get("outcome", "")) == "preparation"
+			if not is_preparation:
+				execution_or_failure_count += 1
+				continue
+			preparation_count += 1
+			var profile: Dictionary = board.call("_presentation_profile_for_event", event)
+			_expect(bool(profile.get("is_ultimate", false)) == expected_ultimate_identity, "Preparation retains canonical identity without granting it by stage: " + card_id)
+			_expect(str(profile.get("kind", "sentinel")) == "" and str(profile.get("motion", "sentinel")) == "" and int(profile.get("band", 0)) == -1, "Actual preparation never claims successful ultimate release: " + card_id)
+			_expect(is_equal_approx(board._event_presentation_duration(event), 0.16), "Preparation keeps the ordinary bounded wait instead of 0.70 success duration: " + card_id)
+			board.player_character.motion_state = "idle"
+			board._play_character_action_motion(event, 0.50)
+			_expect(str(board.player_character.motion_state) == "idle", "Preparation does not trigger ultimate attack motion: " + card_id)
+			board.enemy_character.motion_state = "idle"
+			board._play_character_impact_motion(event, 0.20)
+			_expect(str(board.enemy_character.motion_state) == "idle", "Preparation does not trigger defender impact motion: " + card_id)
+			board._clear_presentation_vfx()
+			board._show_presentation_feedback(event)
+			_expect(not board.presentation_vfx.visible, "Preparation does not show success VFX: " + card_id)
+			board.remove_meta("last_sfx_kind")
+			board._play_event_sfx(event)
+			_expect(not board.has_meta("last_sfx_kind"), "Preparation does not request ultimate release audio: " + card_id)
+			_expect(str(event.get("action_stage", "")) == "preparation" and str(event.get("outcome", "")) == "preparation" and not str(event.get("card_name", "")).is_empty(), "Preparation retains its authored stage, outcome, and card-name telegraph facts: " + card_id)
+		_expect(preparation_count > 0, "Actual timing sequence includes at least one preparation telegraph: " + card_id)
+		_expect(execution_or_failure_count > 0, "Actual timing sequence retains a later execution/failure boundary: " + card_id)
+		_expect((sequence.get("result", {}) as Dictionary).get("state", {}) == state_before_display, "Preparation display does not mutate resolved state: " + card_id)
+		if card_id == "basic_heavy_attack":
+			var final_event: Dictionary = _event_for_card((sequence.get("result", {}) as Dictionary).get("presentation_events", []), card_id)
+			var final_profile: Dictionary = board.call("_presentation_profile_for_event", final_event)
+			_expect(str(final_profile.get("kind", "")) == "attack" and str(final_profile.get("motion", "")) == "attack", "Normal basic multi-slot execution retains ordinary attack presentation.")
+
+
+func _verify_actual_sure_hit_guard(board: CombatBoardPreview) -> void:
+	var guarded := _actual_legacy_bundle("ultimate_void_sword_qi", true)
+	var event: Dictionary = guarded.get("event", {})
+	_expect(str(event.get("defense_outcome", "")) == "sure_hit_block", "Actual sure-hit versus guard emits the authoritative sure_hit_block outcome.")
+	_expect(int(event.get("raw_damage", 0)) == 22 and int(event.get("damage_after_block", 0)) == 18 and int(event.get("damage", 0)) == 9, "Actual sure-hit guard retains raw 22, after-block 18, and residual damage 9.")
+	board.resolution_engine = guarded.get("engine")
+	var profile: Dictionary = board.call("_presentation_profile_for_event", event)
+	_expect(bool(profile.get("is_ultimate", false)) and str(profile.get("kind", "")) == "outcome" and str(profile.get("motion", "sentinel")) == "" and int(profile.get("band", 0)) == -1, "sure_hit_block receives target-defense priority without losing identity.")
+	board.enemy_character.motion_state = "idle"
+	board._play_character_impact_motion(event, 0.20)
+	_expect(str(board.enemy_character.motion_state) == "block", "sure_hit_block uses defender block motion while preserving residual damage.")
+	board._sound_muted = true
+	board.remove_meta("last_sfx_kind")
+	board._play_event_sfx(event)
+	_expect(str(board.get_meta("last_sfx_kind", "")) == "metal_clash", "Damaging sure_hit_block uses the existing damaging block cue priority.")
+	board._show_presentation_feedback(event)
+	_expect(not board.presentation_vfx.visible and board.presentation_label.visible, "sure_hit_block hides success VFX but keeps feedback text.")
+	_expect(str(board._presentation_summary_for_event(event, "fallback")) == "필중 · 회피 불가 · 피해 9", "sure_hit_block preserves the existing sure-hit residual-damage summary.")
+
+	var unguarded := _actual_legacy_bundle("ultimate_void_sword_qi", false)
+	var unguarded_event: Dictionary = unguarded.get("event", {})
+	_expect(str(unguarded_event.get("defense_outcome", "")) == "sure_hit" and int(unguarded_event.get("damage", 0)) == 22, "Actual unguarded sure-hit control remains sure_hit with full damage.")
+	board.resolution_engine = unguarded.get("engine")
+	var unguarded_profile: Dictionary = board.call("_presentation_profile_for_event", unguarded_event)
+	_expect(str(unguarded_profile.get("kind", "")) == "ultimate" and str(unguarded_profile.get("motion", "")) == "ultimate" and int(unguarded_profile.get("band", -1)) == 2, "sure_hit without block remains an eligible ultimate success.")
+	board.enemy_character.motion_state = "idle"
+	board._play_character_impact_motion(unguarded_event, 0.20)
+	_expect(str(board.enemy_character.motion_state) == "hit", "sure_hit-only control retains defender hit motion.")
+	board.remove_meta("last_sfx_kind")
+	board._play_event_sfx(unguarded_event)
+	_expect(str(board.get_meta("last_sfx_kind", "")) == "ultimate_release", "sure_hit-only control retains ultimate release cue.")
+
+
+func _actual_legacy_bundle(card_id: String, with_guard: bool = false) -> Dictionary:
+	var engine = ENGINE.new()
+	engine.rules["enemy_bundles"] = {"1": [{"timing": 3, "card_id": "basic_guard"}]} if with_guard else {}
+	var definition: Dictionary = engine.get_actor_card_definition(card_id, "player")
+	var state := _state(engine)
+	state["ai_enabled"] = false
+	var result: Dictionary = engine.resolve_bundle([_placement(definition, state)], {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, state)
+	return {"engine": engine, "definition": definition, "result": result, "event": _event_for_card(result.get("presentation_events", []), card_id)}
+
+
+func _actual_interrupted_bundle() -> Dictionary:
+	var manual_id := "hebei_peng_five_tigers_saber"
+	var engine = ENGINE.new()
+	engine.configure_martial_loadouts([manual_id], {manual_id: 10}, [], {})
+	engine.rules["enemy_bundles"] = {"1": [{"timing": 1, "card_id": "basic_quick_attack", "direction": -1}]}
+	var definition: Dictionary = engine.get_actor_card_definition(manual_id + "_star10", "player")
+	var state := _state(engine)
+	state["ai_enabled"] = false
+	var result: Dictionary = engine.resolve_bundle([_placement(definition, state)], {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, state)
+	return {"engine": engine, "definition": definition, "result": result, "event": _event_for_card(result.get("presentation_events", []), definition.id)}
+
+
+func _actual_basic_bundle() -> Dictionary:
+	var engine = ENGINE.new()
+	engine.rules["enemy_bundles"] = {}
+	var definition: Dictionary = engine.get_actor_card_definition("basic_heavy_attack", "player")
+	var state := _state(engine)
+	state["ai_enabled"] = false
+	var result: Dictionary = engine.resolve_bundle([_placement(definition, state)], {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, state)
+	return {"engine": engine, "definition": definition, "result": result, "event": _event_for_card(result.get("presentation_events", []), definition.id)}
+
+
+func _placement(definition: Dictionary, state: Dictionary) -> Dictionary:
+	return {
+		"card_id": definition.id, "definition": definition.duplicate(true), "anchor_index": 1,
+		"span": maxi(1, int(definition.get("action_slots", 1))), "target_ready": true,
+		"direction": 1, "target_tile": int((state.enemy as Dictionary).get("tile", 5)),
+		"origin_tile": int((state.player as Dictionary).get("tile", 4)),
+	}
+
+
+func _events_for_card_from_timings(timing_results: Array, card_id: String) -> Array:
+	var result: Array = []
+	for timing_value in timing_results:
+		if typeof(timing_value) != TYPE_DICTIONARY:
+			continue
+		for event_value in (timing_value as Dictionary).get("events", []):
+			if typeof(event_value) == TYPE_DICTIONARY and str((event_value as Dictionary).get("card_id", "")) == card_id:
+				result.append((event_value as Dictionary).duplicate(true))
+	return result
 
 
 func _actual_bundle(manual_id: String, star: int = 10) -> Dictionary:

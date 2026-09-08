@@ -34,6 +34,8 @@ static func for_event(definition: Dictionary, event: Dictionary) -> Dictionary:
 		"anchor": "impact",
 	}
 	var outcome := str(event.get("outcome", ""))
+	if str(event.get("action_stage", "")) == "preparation" or outcome == "preparation":
+		return result
 	if str(event.get("type", "")) == "clash" or outcome.begins_with("clash_"):
 		result.kind = "clash"
 		result.motion = "clash"
@@ -82,7 +84,7 @@ static func _is_failure(outcome: String) -> bool:
 static func _target_defended(event: Dictionary) -> bool:
 	var defense_outcome := str(event.get("defense_outcome", ""))
 	var outcome := str(event.get("outcome", ""))
-	return defense_outcome in ["evade", "block"] or outcome in ["evade", "evaded", "block", "blocked"]
+	return defense_outcome in ["evade", "block", "sure_hit_block"] or outcome in ["evade", "evaded", "block", "blocked", "sure_hit_block"]
 
 
 static func _requirement_unmet(event: Dictionary) -> bool:

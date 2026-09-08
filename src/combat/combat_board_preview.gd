@@ -1477,6 +1477,8 @@ func _play_clash_motion(duration: float) -> void:
 func _play_character_impact_motion(event: Dictionary, duration: float) -> void:
 	if _reduced_motion:
 		return
+	if str(event.get("action_stage", "")) == "preparation" or str(event.get("outcome", "")) == "preparation":
+		return
 	if str(_presentation_profile_for_event(event).get("kind", "")) == "clash":
 		return
 	var actor := str(event.get("actor", ""))
@@ -1487,7 +1489,7 @@ func _play_character_impact_motion(event: Dictionary, duration: float) -> void:
 	var outcome := str(event.get("outcome", ""))
 	if defense_outcome == "evade" or outcome in ["evade", "evaded"]:
 		defender.play_evade_motion(duration)
-	elif defense_outcome == "block" or outcome in ["block", "blocked"] or _event_all_attacks_blocked(event):
+	elif defense_outcome in ["block", "sure_hit_block"] or outcome in ["block", "blocked", "sure_hit_block"] or _event_all_attacks_blocked(event):
 		defender.play_block_motion(duration)
 	elif int(event.get("damage", 0)) > 0:
 		defender.play_hit_motion(duration)
@@ -1930,6 +1932,8 @@ func _set_accessibility_semantics(control: Control, name_value: String, descript
 
 func _play_event_sfx(event: Dictionary) -> void:
 	var outcome := str(event.get("outcome", ""))
+	if str(event.get("action_stage", "")) == "preparation" or outcome == "preparation":
+		return
 	var profile := _presentation_profile_for_event(event)
 	if str(profile.get("kind", "")) == "clash":
 		_play_procedural_sfx("metal_clash")
@@ -1937,7 +1941,7 @@ func _play_event_sfx(event: Dictionary) -> void:
 		_play_procedural_sfx("interrupt")
 	elif str(event.get("defense_outcome", "")) == "evade" or outcome in ["evade", "evaded"]:
 		_play_procedural_sfx("evade")
-	elif str(event.get("defense_outcome", "")) == "block" or outcome in ["block", "blocked"]:
+	elif str(event.get("defense_outcome", "")) in ["block", "sure_hit_block"] or outcome in ["block", "blocked", "sure_hit_block"]:
 		_play_procedural_sfx("metal_clash" if int(event.get("damage", 0)) > 0 else "block")
 	elif _event_all_attacks_blocked(event):
 		_play_procedural_sfx("block")
