@@ -27,6 +27,7 @@ def test_pr331_approval_bytes_and_retired_authority():
 def test_pr331_current_owners_describe_merged_scope_and_next_gap():
     active = (ROOT / "[기획서]" / "00_프로젝트_허브" / "ACTIVE_CONTEXT.md").read_text(encoding="utf-8")
     status = json.loads((ROOT / "docs/planning-data/current_user_planning_status.json").read_text(encoding="utf-8"))
+    operating = json.loads((ROOT / "docs/planning-data/current_operating_state.json").read_text(encoding="utf-8"))
     assert MERGE in active
     assert "branch-local" not in active.split("## 현재 기준", 1)[1].split("\n\n", 1)[0]
     inline = status["inline_combat_results_continuation"]
@@ -34,14 +35,14 @@ def test_pr331_current_owners_describe_merged_scope_and_next_gap():
     assert inline["merge_commit"] == MERGE
     assert "native-input complete campaign verification" not in status["constraint_continuation"]["remaining"]
     assert "IMPLEMENTED_LEGACY" not in status["user_directed_planning_status"]
-    assert status["next_product_execution_surface"] == "BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS"
-    assert status["next_phase"] == "BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS"
+    assert status["next_product_execution_surface"] == operating["next_package"]
+    assert status["next_phase"] == operating["next_package"]
 
 
 def test_pr331_linked_current_routing_fields_are_aligned():
     active = (ROOT / "[기획서]" / "00_프로젝트_허브" / "ACTIVE_CONTEXT.md").read_text(encoding="utf-8")
     operating = json.loads((ROOT / "docs/planning-data/current_operating_state.json").read_text(encoding="utf-8"))
-    next_gap = "BLUEPRINT_SAVE_CONTINUE_AND_EVENT_STATUS_REWARD_CANON_GAPS"
+    next_gap = operating["next_package"]
     merged_status = "THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_SINGLE_EXECUTE_INLINE_CAUSAL_AND_TERMINAL_RESULT_SURFACES_MAIN_MERGED_VERIFIED_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN"
     assert f"next_package: {next_gap}" in active
     assert f"user_directed_planning_next_package: {next_gap}" in active
@@ -51,5 +52,5 @@ def test_pr331_linked_current_routing_fields_are_aligned():
     assert f"next_package: {operating['next_package']}" in active
     assert f"active_decision_state: {operating['active_decision_state']}" in active
     status = json.loads((ROOT / "docs/planning-data/current_user_planning_status.json").read_text(encoding="utf-8"))
-    assert status["durable_continue_continuation"]["decision"] == operating["source_decision"]
+    assert status["durable_continue_continuation"]["decision"] == "TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01"
     assert (ROOT / status["durable_continue_continuation"]["implementation_record"]).is_file()

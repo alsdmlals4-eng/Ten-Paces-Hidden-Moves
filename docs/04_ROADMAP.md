@@ -38,7 +38,7 @@ PR #92와 PR #102는 재현 가능한 병합 계보이며 현재 active PR이 �
 
 ## 2. 프로젝트 코어 확정
 
-`TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01`의 전달 순서는 strict 저장·전투 checkpoint → 실제 title/shell·생명주기 연결 → 격리된 새 프로세스 재개·10전 캠페인 → 저장 지연 교정 → `TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`의 각 전투원 성급·능력치 실행/복구 일치 → 독립 검수·보호 전달이다. 최초 공개 저장은 교정된 semantic identity를 사용한다. 현재 결과와 남은 Gate는 `docs/operations/2026-09-08_DURABLE_SAVE_EXECUTION_REPORT.md` 및 current owner에서 읽는다. 성장 지출·영구 능력치 지급·해금 조건·보유 무공 전투 확장과 사건/상태/보상 공백은 별도 후속이며, 자동 재개 검증은 Human·Android·출시 검수를 대체하지 않는다.
+`TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01`의 전달 순서는 strict 저장·전투 checkpoint → 실제 title/shell·생명주기 연결 → 격리된 새 프로세스 재개·10전 캠페인 → 저장 지연 교정 → `TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`의 각 전투원 성급·능력치 실행/복구 일치 → 독립 검수·보호 전달이다. 이 계보는 PR #333으로 main에 병합됐고 최초 공개 저장은 교정된 semantic identity를 사용한다. 다음 안전 작업은 battle presentation correctness의 `star-10 actor classification`과 `victory/defeat cue`이며, 그 뒤 `growth/events/status/reward` 정본 공백을 다룬다. 성장 지출·영구 능력치 지급·해금 조건·보유 무공 전투 확장도 별도 후속이다. 현재 결과와 남은 Gate는 `docs/operations/2026-09-08_DURABLE_SAVE_EXECUTION_REPORT.md` 및 current owner에서 읽는다. 자동 재개 검증은 Human·Android·출시 또는 whole Blueprint complete 증거를 대체하지 않는다.
 
 `TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01` 비무 제약의 전달 순서는 승인 catalog → frozen duel receipt → 공유 engine 강제 →
 native 선택·봉인 피드백 → 로컬 회귀/실제 캡처 → exact-head CI·보호 병합이다.
