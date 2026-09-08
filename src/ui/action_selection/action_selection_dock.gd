@@ -37,10 +37,24 @@ var ultimate_panel: UltimateActionPanel
 var action_detail_panel: ActionDetailPanel
 var action_intent_panel: ActionIntentPanel
 var _backdrop: Panel
+var constraint_summary: Label
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_PASS
     _build_backdrop()
+    constraint_summary = Label.new()
+    constraint_summary.name = "BimuConstraintSummary"
+    constraint_summary.mouse_filter = Control.MOUSE_FILTER_PASS
+    constraint_summary.add_theme_font_size_override("font_size", 12)
+    constraint_summary.add_theme_color_override("font_color", Color("ead8b4"))
+    constraint_summary.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+    constraint_summary.set_anchors_preset(Control.PRESET_TOP_WIDE)
+    constraint_summary.offset_left = 325
+    constraint_summary.offset_right = -12
+    constraint_summary.offset_top = 6
+    constraint_summary.offset_bottom = 36
+    constraint_summary.clip_text = true
+    add_child(constraint_summary)
     basic_tab.pressed.connect(func(): set_active_source("basic"))
     martial_tab.pressed.connect(func(): set_active_source("martial"))
     ultimate_tab.pressed.connect(func(): set_active_source("ultimate"))
@@ -87,6 +101,15 @@ func set_interaction_state(state: String) -> void:
 
 func set_runtime_context(context: Dictionary) -> void:
     runtime_context = context.duplicate(true)
+    var constraint_reasons: Dictionary = runtime_context.get("constraint_lock_reasons", {})
+    if is_instance_valid(martial_panel):
+        martial_panel.set_constraint_lock_reasons(constraint_reasons)
+    if is_instance_valid(ultimate_panel):
+        ultimate_panel.set_constraint_lock_reasons(constraint_reasons)
+    if is_instance_valid(constraint_summary):
+        constraint_summary.text = str(runtime_context.get("constraint_summary", ""))
+        constraint_summary.tooltip_text = str(runtime_context.get("constraint_details", constraint_summary.text))
+        constraint_summary.accessibility_name = constraint_summary.tooltip_text
     var preview_actor: Dictionary = runtime_context.get("preview_actor", {}) as Dictionary
     if is_instance_valid(basic_panel):
         basic_panel.set_preview_actor(preview_actor)
@@ -143,6 +166,8 @@ func clear_targeting_intents() -> void:
 
 func request_action(definition: Dictionary) -> void:
     if definition.is_empty() or not switching_enabled:
+        return
+    if (runtime_context.get("constraint_lock_reasons", {}) as Dictionary).has(str(definition.get("id", ""))):
         return
     action_selected.emit(definition.duplicate(true))
 

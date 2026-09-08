@@ -3,12 +3,15 @@
 > 상세 제품 로드맵: `../../../docs/04_ROADMAP.md`  
 > 현재 상태 단독 책임 원본: `ACTIVE_CONTEXT.md` + `../../../docs/planning-data/current_operating_state.json` + `../../../docs/planning-data/current_user_planning_status.json`  
 > 정본 생명주기: `../../../docs/CANON_LIFECYCLE_REGISTRY.md`  
-> 사람용 상태·Flow·Visual: exact Project Notion  
-> 현행 작업계약: `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`
+> 사람용 상태·Flow·Visual: repository human-facing owners
+> 현행 작업계약: `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`
 
 이 문서는 **운영 방향·완료 계보·후속 Gate 의존 관계**를 보여 주는 stable router다. 활성 PR, exact SHA, Work Mode, 승인 수, 제품 stage, 현재 decision state, next package/Decision 같은 mutable checkpoint는 여기에 복제하지 않는다.
 
 ## 현재 단계
+
+비무 제약 채택 `TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01`의 검증·전달 순서는
+`../../../docs/04_ROADMAP.md`에서 읽고 현재 결과는 Active Context/current JSON을 따른다.
 
 ```yaml
 current_state_owner: ACTIVE_CONTEXT_PLUS_CURRENT_JSON

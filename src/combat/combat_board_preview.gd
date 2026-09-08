@@ -670,12 +670,12 @@ func get_duel_stage_rect() -> Rect2:
 	return Rect2(duel_stage_surface.position, duel_stage_surface.size) if is_instance_valid(duel_stage_surface) else Rect2()
 
 func _on_card_hovered(definition: Dictionary) -> void:
-	if _detail_pinned:
+	if _detail_pinned or not is_instance_valid(card_detail_panel):
 		return
 	card_detail_panel.show_definition(definition, false)
 
 func _on_card_unhovered(_card_id: String) -> void:
-	if _detail_pinned:
+	if _detail_pinned or not is_instance_valid(card_detail_panel):
 		return
 	card_detail_panel.clear_definition()
 

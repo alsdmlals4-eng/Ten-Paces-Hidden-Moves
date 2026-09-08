@@ -23,6 +23,9 @@ var _combat_view: Control
 var _combat_view_duel_index: int = 0
 var _setup_buttons: Dictionary = {}
 var _setup_selected_manual_ids: Array[String] = []
+var _briefing_body: HBoxContainer
+var _briefing_description_scroll: ScrollContainer
+var _bimu_constraint_panel: VBoxContainer
 
 
 func _ready() -> void:
@@ -407,6 +410,47 @@ func _render_briefing() -> void:
         description,
         "비무 시작"
     )
+    _show_bimu_briefing()
+
+
+func get_bimu_constraint_panel() -> VBoxContainer:
+    return _bimu_constraint_panel
+
+
+func _show_bimu_briefing() -> void:
+    var stack := primary_button.get_parent()
+    if _briefing_body == null:
+        _briefing_body = HBoxContainer.new()
+        _briefing_body.name = "BimuBriefingBody"
+        _briefing_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
+        _briefing_body.add_theme_constant_override("separation", 24)
+        stack.add_child(_briefing_body)
+        stack.move_child(_briefing_body, 1)
+        _briefing_description_scroll = ScrollContainer.new()
+        _briefing_description_scroll.name = "PublicOpponentBriefing"
+        _briefing_description_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+        _briefing_description_scroll.focus_mode = Control.FOCUS_ALL
+        _briefing_description_scroll.accessibility_name = "상대 공개 정보와 나의 보유 무공 · 위아래로 스크롤"
+        _briefing_description_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        _briefing_body.add_child(_briefing_description_scroll)
+        _bimu_constraint_panel = preload("res://src/ui/bimu_constraint_panel.gd").new()
+        _bimu_constraint_panel.name = "BimuConstraintPanel"
+        _bimu_constraint_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        _bimu_constraint_panel.size_flags_stretch_ratio = 1.3
+        _briefing_body.add_child(_bimu_constraint_panel)
+        _bimu_constraint_panel.selection_changed.connect(_on_bimu_selection_changed)
+    _briefing_body.visible = true
+    description_label.reparent(_briefing_description_scroll)
+    description_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    description_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+    description_label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+    content_panel.anchor_left = 0.06
+    content_panel.anchor_right = 0.94
+    _bimu_constraint_panel.configure(run_state, manual_registry)
+
+
+func _on_bimu_selection_changed(receipt: Dictionary) -> void:
+    primary_button.text = "제약 없이 비무 시작" if (receipt.get("selections", []) as Array).is_empty() else "선택한 제약으로 비무 시작"
 
 
 func _player_manual_names_text() -> String:
@@ -423,6 +467,14 @@ func _player_manual_names_text() -> String:
 
 
 func _set_content(title: String, description: String, button_text: String) -> void:
+    if _briefing_body != null:
+        _briefing_body.visible = false
+        var stack := primary_button.get_parent()
+        if description_label.get_parent() != stack:
+            description_label.reparent(stack)
+            stack.move_child(description_label, 1)
+        description_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+        description_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
     title_label.text = title
     description_label.text = description
     primary_button.text = button_text
@@ -463,7 +515,8 @@ func _ensure_combat_view() -> void:
             {
                 "name": str(opponent.get("working_name", "")),
                 "epithet": str(opponent.get("martial_identity", ""))
-            }
+            },
+            run_state.get_frozen_bimu_receipt()
         ))
     _combat_view.set_meta("vertical_slice_runtime_loadout_bound_from_shell", runtime_loadout_bound)
     if not runtime_loadout_bound:

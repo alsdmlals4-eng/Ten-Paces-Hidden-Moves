@@ -38,6 +38,11 @@ PR #92와 PR #102는 재현 가능한 병합 계보이며 현재 active PR이 �
 
 ## 2. 프로젝트 코어 확정
 
+`TEN-DEC-20260908-BIMU-CONSTRAINT-RUNTIME-01` 비무 제약의 전달 순서는 승인 catalog → frozen duel receipt → 공유 engine 강제 →
+native 선택·봉인 피드백 → 로컬 회귀/실제 캡처 → exact-head CI·보호 병합이다.
+현재 결과와 남은 Gate는 `docs/operations/2026-09-08_BIMU_CONSTRAINT_RUNTIME_EXECUTION_REPORT.md`
+및 current owner에서 읽는다. 전체 Blueprint 및 Human/Android 검수를 이 패키지로 닫지 않는다.
+
 10전 연속 구현의 완료 Gate는 종료 결과를 넣는 상태 회귀만으로 닫지 않는다.
 실제 전투 판정·AI·누적 자원·보상·36회 행로 → native UI 입력/렌더 → Blueprint
 콘텐츠 대조 → 보호된 CI/병합 순서로 검증한다. 사람 플레이·Android·출시 권리

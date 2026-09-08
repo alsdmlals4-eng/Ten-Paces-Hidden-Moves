@@ -16,6 +16,9 @@ on:
       - "docs/planning-data/approved_20260806_ten_manual_product_validation_gate_contract.json"
       - "tests/test_ten_manual_product_gate.py"
       - "tests/verify_ten_manual_product_gate.gd"
+      - "tests/verify_bimu_constraint_model.gd"
+      - "tests/verify_bimu_constraint_runtime.gd"
+      - "tests/verify_bimu_constraint_ui.gd"
       - "tests/verify_ten_manual_product_viewports.gd"
       - "tests/verify_combat_keyboard_accessibility.gd"
       - "tests/verify_combat_focus_order.gd"
@@ -81,6 +84,12 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_combat_action_selection_integration.gd
       - name: Verify sequential public-policy ten-duel campaign
         run: godot --headless --path . --script res://tests/probe_sequential_ten_duel_campaign.gd
+      - name: Verify bimu constraint catalog and model
+        run: godot --headless --path . --script res://tests/verify_bimu_constraint_model.gd
+      - name: Verify bimu constraint frozen receipt and engine enforcement
+        run: godot --headless --path . --script res://tests/verify_bimu_constraint_runtime.gd
+      - name: Verify bimu native selection and sealed action UI
+        run: godot --headless --path . --script res://tests/verify_bimu_constraint_ui.gd
       - name: Verify campaign state boundaries
         run: godot --headless --path . --script res://tests/verify_ten_duel_campaign.gd
       - name: Verify campaign failure and retry

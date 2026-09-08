@@ -6,6 +6,7 @@ signal screen_changed(previous_screen: String, current_screen: String)
 const PROGRESSION_SCRIPT := preload("res://src/run/vertical_slice_progression_state.gd")
 const ROUTE_MODEL_SCRIPT := preload("res://src/run/vertical_slice_route_model.gd")
 const STARTER_CATALOG_SCRIPT := preload("res://src/run/vertical_slice_starter_manual_catalog.gd")
+const CONSTRAINT_SCRIPT := preload("res://src/run/bimu_constraint_model.gd")
 
 const SCREEN_MAIN := "MAIN"
 const SCREEN_SETUP := "SETUP"
@@ -53,6 +54,49 @@ var _attempt_id: int = 0
 var _failure_receipt: Dictionary = {}
 var jianghu_step: int = 0
 var _pending_jianghu: Dictionary = {}
+var _pending_bimu_constraints: Array = []
+var _frozen_bimu_receipt: Dictionary = {}
+var _bimu_model = CONSTRAINT_SCRIPT.new()
+
+
+func select_bimu_constraints(selection: Array) -> bool:
+    if _current_screen != SCREEN_BRIEFING or not _frozen_bimu_receipt.is_empty():
+        return false
+    var receipt := validate_bimu_constraints(selection)
+    if not receipt.get("valid", false):
+        return false
+    _pending_bimu_constraints = receipt["selections"].duplicate(true)
+    return true
+
+
+func validate_bimu_constraints(selection: Array) -> Dictionary:
+    var manual_id := str(get_current_opponent().get("signature_manual_id", ""))
+    var enemy_ids: Array = [] if manual_id.is_empty() else [manual_id]
+    return _bimu_model.validate_selection(selection, get_player_manual_loadout(), enemy_ids)
+
+
+func get_pending_bimu_constraints() -> Array:
+    return _pending_bimu_constraints.duplicate(true)
+
+
+func get_frozen_bimu_receipt() -> Dictionary:
+    return _frozen_bimu_receipt.duplicate(true)
+
+
+func _freeze_bimu_constraints() -> bool:
+    var receipt := validate_bimu_constraints(_pending_bimu_constraints)
+    if not receipt.get("valid", false):
+        return false
+    receipt["duel_index"] = duel_index
+    receipt["run_seed"] = _run_seed
+    receipt["enemy_candidate_id"] = _current_opponent_id
+    _frozen_bimu_receipt = receipt.duplicate(true)
+    return true
+
+
+func _reset_bimu_constraints() -> void:
+    _pending_bimu_constraints.clear()
+    _frozen_bimu_receipt.clear()
 
 
 func get_jianghu_options() -> Array:
@@ -341,6 +385,7 @@ func get_reward_history() -> Array:
 func start_new_run() -> bool:
     if _current_screen != SCREEN_MAIN:
         return false
+    _reset_bimu_constraints()
     duel_index = 1
     completed_duels = 0
     route_visits = 0
@@ -378,6 +423,8 @@ func advance() -> bool:
         SCREEN_INTRO:
             return _transition_to(SCREEN_BRIEFING)
         SCREEN_BRIEFING:
+            if not _freeze_bimu_constraints():
+                return false
             _capture_pre_battle_snapshot_if_needed()
             return _transition_to(SCREEN_COMBAT)
         SCREEN_COMBAT:
@@ -421,6 +468,7 @@ func advance() -> bool:
                 return true
             duel_index += 1
             _promote_next_opponent_if_configured()
+            _reset_bimu_constraints()
             _pre_battle_snapshot.clear()
             _retry_count = 0
             _attempt_id = 0
@@ -440,6 +488,7 @@ func advance() -> bool:
             _pending_route_intel.clear()
             duel_index += 1
             _promote_next_opponent_if_configured()
+            _reset_bimu_constraints()
             _pre_battle_snapshot.clear()
             _retry_count = 0
             _attempt_id = 0
@@ -498,6 +547,7 @@ func retry_failed_duel() -> bool:
 func end_failed_run() -> bool:
     if _current_screen != SCREEN_FAILURE_RETRY:
         return false
+    _reset_bimu_constraints()
     last_combat_result.clear()
     _failure_receipt.clear()
     _pre_battle_snapshot.clear()
@@ -533,6 +583,7 @@ func _capture_pre_battle_snapshot_if_needed() -> void:
         "route_visits": route_visits,
         "current_opponent_id": _current_opponent_id,
         "next_opponent_id": _next_opponent_id,
+        "bimu_receipt": _frozen_bimu_receipt.duplicate(true),
         "progression": _progression.get_snapshot(),
         "duel_history": _duel_history.duplicate(true),
         "reward_history": _reward_history.duplicate(true),
@@ -551,8 +602,25 @@ func _restore_pre_battle_snapshot(snapshot: Dictionary) -> bool:
     var intel_value = snapshot.get("intel_by_candidate", {})
     if typeof(duel_history_value) != TYPE_ARRAY or typeof(reward_history_value) != TYPE_ARRAY or typeof(route_history_value) != TYPE_ARRAY or typeof(intel_value) != TYPE_DICTIONARY:
         return false
+    var receipt_value = snapshot.get("bimu_receipt", {})
+    if typeof(receipt_value) != TYPE_DICTIONARY:
+        return false
+    var restored_receipt: Dictionary = receipt_value
+    # Missing legacy receipt is only compatible with the explicit no-constraint default.
+    if restored_receipt.is_empty():
+        if not _pending_bimu_constraints.is_empty():
+            return false
+    else:
+        if restored_receipt.get("duel_index") != snapshot.get("duel_index") or restored_receipt.get("run_seed") != snapshot.get("run_seed") or restored_receipt.get("enemy_candidate_id") != snapshot.get("current_opponent_id"):
+            return false
+        if restored_receipt != _frozen_bimu_receipt or typeof(restored_receipt.get("selections")) != TYPE_ARRAY:
+            return false
+        if not validate_bimu_constraints(restored_receipt["selections"]).get("valid", false):
+            return false
     if not _progression.restore_snapshot(progression_snapshot):
         return false
+    _frozen_bimu_receipt = restored_receipt.duplicate(true)
+    _pending_bimu_constraints = restored_receipt.get("selections", []).duplicate(true)
     _run_seed = int(snapshot.get("run_seed", _run_seed))
     duel_index = int(snapshot.get("duel_index", duel_index))
     completed_duels = int(snapshot.get("completed_duels", completed_duels))

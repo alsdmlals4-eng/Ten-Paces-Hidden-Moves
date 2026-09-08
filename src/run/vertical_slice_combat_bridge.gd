@@ -10,6 +10,7 @@ signal terminal_review_confirmed(result: Dictionary)
 var _vertical_slice_terminal_result: Dictionary = {}
 var _vertical_slice_loadout_snapshot: Dictionary = {}
 var _battle_metrics_helper: VerticalSliceBattleMetrics
+var _bimu_ui_options: Array = preload("res://src/run/bimu_constraint_model.gd").new().get_options()
 
 
 func _ready() -> void:
@@ -26,7 +27,8 @@ func configure_vertical_slice_loadouts(
     enemy_mastery_by_manual: Dictionary,
     enemy_candidate_id: String,
     enemy_runtime_binding: Dictionary,
-    enemy_identity: Dictionary = {}
+    enemy_identity: Dictionary = {},
+    bimu_receipt: Dictionary = {}
 ) -> bool:
     var player_ids := _string_values(player_loadout)
     var enemy_ids := _string_values(enemy_loadout)
@@ -41,6 +43,15 @@ func configure_vertical_slice_loadouts(
         if int(enemy_mastery_by_manual.get(manual_id, 0)) <= 0:
             return false
 
+    if not bimu_receipt.is_empty() and (typeof(bimu_receipt.get("selections")) != TYPE_ARRAY or str(bimu_receipt.get("enemy_candidate_id", "")) != enemy_candidate_id):
+        return false
+    var engine: VerticalSliceMetricsCombatResolutionEngine = VERTICAL_SLICE_ENGINE_SCRIPT.new()
+    if not engine.configure_bimu_constraints(bimu_receipt.get("selections", []), player_ids, enemy_ids):
+        return false
+    if not engine.configure_enemy_runtime_binding(enemy_runtime_binding):
+        return false
+    var effective_enemy_mastery := engine.get_bimu_enemy_mastery(enemy_mastery_by_manual)
+    engine.configure_martial_loadouts(player_ids, player_mastery_by_manual.duplicate(true), enemy_ids, effective_enemy_mastery)
     _ten_manual_loadout_data = {
         "authority": "VERTICAL_SLICE_PHASE_V_RUNTIME_LOADOUT_METRICS_AND_RESOURCE_PERSISTENCE",
         "player": {
@@ -49,20 +60,11 @@ func configure_vertical_slice_loadouts(
         },
         "enemy": {
             "loadout": enemy_ids.duplicate(),
-            "mastery_by_manual": enemy_mastery_by_manual.duplicate(true),
+            "mastery_by_manual": effective_enemy_mastery.duplicate(true),
             "candidate_id": enemy_candidate_id
         }
     }
 
-    var engine: VerticalSliceMetricsCombatResolutionEngine = VERTICAL_SLICE_ENGINE_SCRIPT.new()
-    if not engine.configure_enemy_runtime_binding(enemy_runtime_binding):
-        return false
-    engine.configure_martial_loadouts(
-        player_ids,
-        player_mastery_by_manual.duplicate(true),
-        enemy_ids,
-        enemy_mastery_by_manual.duplicate(true)
-    )
     resolution_engine = engine
     combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
     var enemy_state: Dictionary = (combat_state.get("enemy", {}) as Dictionary).duplicate(true)
@@ -88,7 +90,9 @@ func configure_vertical_slice_loadouts(
         "enemy_candidate_id": enemy_candidate_id,
         "enemy_loadout": enemy_ids.duplicate(),
         "enemy_mastery_by_manual": enemy_mastery_by_manual.duplicate(true),
-        "enemy_runtime_binding": enemy_runtime_binding.duplicate(true)
+        "enemy_runtime_binding": enemy_runtime_binding.duplicate(true),
+        "effective_enemy_mastery_by_manual": effective_enemy_mastery.duplicate(true),
+        "bimu_receipt": bimu_receipt.duplicate(true)
     }
     set_meta("vertical_slice_runtime_loadout_bound", true)
     set_meta("vertical_slice_enemy_candidate_id", enemy_candidate_id)
@@ -138,6 +142,42 @@ func get_vertical_slice_player_resources() -> Dictionary:
 
 func get_vertical_slice_loadout_snapshot() -> Dictionary:
     return _vertical_slice_loadout_snapshot.duplicate(true)
+
+
+func _build_action_selection_runtime_context() -> Dictionary:
+    var context := super._build_action_selection_runtime_context()
+    if resolution_engine == null or not resolution_engine.has_method("get_bimu_receipt"):
+        return context
+    var reasons := {}
+    for card_id in resolution_engine.cards_by_id:
+        var reason: String = resolution_engine.get_action_lock_reason(str(card_id))
+        if not reason.is_empty():
+            reasons[str(card_id)] = reason
+    context["constraint_lock_reasons"] = reasons
+    var receipt: Dictionary = resolution_engine.get_bimu_receipt()
+    var effects: Array = receipt.get("disclosed_effects", [])
+    var names := PackedStringArray()
+    for selection in receipt.get("selections", []):
+        for option in _bimu_ui_options:
+            if str(option["constraint_id"]) == str(selection.get("constraint_id", "")):
+                var label := str(option["display_name_ko"])
+                var field := str((option.get("parameter_binding", {}) as Dictionary).get("field", ""))
+                if not field.is_empty():
+                    var target := str(selection.get(field, ""))
+                    label += " (%s)" % str(preload("res://src/ui/bimu_constraint_panel.gd").STAT_LABELS.get(target, resolution_engine.martial_registry.get_manual(target).get("manual_name", target)))
+                names.append(label)
+    context["constraint_summary"] = "이번 비무 · 제약 없음" if names.is_empty() else "이번 비무 · " + " / ".join(names)
+    context["constraint_details"] = "\n".join(effects)
+    return context
+
+
+func _on_progress_requested(context: Dictionary) -> void:
+    # Readiness may predate a receipt refresh; reject before commit/presentation mutation.
+    if resolution_engine == null or action_timing_panel == null:
+        return
+    if not resolution_engine.preview_player_plan(combat_state, action_timing_panel.get_resolution_placements()).get("valid", false):
+        return
+    await super._on_progress_requested(context)
 
 
 func _show_review_panel(terminal: bool) -> void:

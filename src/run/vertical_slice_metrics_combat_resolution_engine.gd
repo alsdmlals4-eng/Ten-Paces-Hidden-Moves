@@ -2,9 +2,70 @@ class_name VerticalSliceMetricsCombatResolutionEngine
 extends TenManualCombatResolutionEngine
 
 const METRICS_SCRIPT := preload("res://src/run/vertical_slice_battle_metrics.gd")
+const CONSTRAINT_SCRIPT := preload("res://src/run/bimu_constraint_model.gd")
 
 var battle_metrics: VerticalSliceBattleMetrics
 var _enemy_runtime_binding: Dictionary = {}
+var _bimu_model = CONSTRAINT_SCRIPT.new()
+var _bimu_receipt: Dictionary = {}
+
+
+func configure_bimu_constraints(selection: Array, player_manual_ids: Array, enemy_manual_ids: Array) -> bool:
+    for id in player_manual_ids + enemy_manual_ids:
+        if typeof(id) != TYPE_STRING or martial_registry.get_manual(id).is_empty():
+            return false
+    var receipt: Dictionary = _bimu_model.validate_selection(selection, player_manual_ids, enemy_manual_ids)
+    if not receipt.get("valid", false):
+        return false
+    _bimu_receipt = receipt.duplicate(true)
+    return true
+
+
+func get_bimu_receipt() -> Dictionary:
+    return _bimu_receipt.duplicate(true)
+
+
+func get_bimu_enemy_mastery(masteries: Dictionary) -> Dictionary:
+    return _bimu_model.enemy_mastery_overlay(masteries, _bimu_receipt)
+
+
+func get_action_lock_reason(card_id: String) -> String:
+    if card_id not in get_player_martial_card_ids():
+        return ""
+    return _bimu_model.action_lock_reason(cards_by_id.get(card_id, {}), _bimu_receipt)
+
+
+func _constraint_plan_rejection(placements: Array) -> Dictionary:
+    var anchors := PackedInt32Array()
+    var reasons: Array[String] = []
+    for value in placements:
+        if typeof(value) != TYPE_DICTIONARY:
+            continue
+        var placement: Dictionary = value
+        var definition_value = placement.get("definition", {})
+        var definition: Dictionary = definition_value if typeof(definition_value) == TYPE_DICTIONARY else {}
+        # Check both identities: caller-provided metadata must never disguise a sealed ID.
+        for id in [str(placement.get("card_id", "")), str(definition.get("id", ""))]:
+            var reason := get_action_lock_reason(id)
+            if not reason.is_empty():
+                anchors.append(int(placement.get("anchor_index", 1)))
+                reasons.append(reason)
+                break
+    return {"invalid_anchors": anchors, "reasons": reasons}
+
+
+func preview_player_plan(state_value: Dictionary, placements: Array) -> Dictionary:
+    var rejection := _constraint_plan_rejection(placements)
+    if not rejection["reasons"].is_empty():
+        return {"valid": false, "state": state_value.duplicate(true), "invalid_anchors": rejection["invalid_anchors"], "events": [], "constraint_reasons": rejection["reasons"]}
+    return super.preview_player_plan(state_value, placements)
+
+
+func resolve_martial_card(card_id: String, state: Dictionary, actor_key: String, context: Dictionary = {}) -> Dictionary:
+    var reason := get_action_lock_reason(card_id) if actor_key == "player" else ""
+    if not reason.is_empty():
+        return _martial_failure(state, reason)
+    return super.resolve_martial_card(card_id, state, actor_key, context)
 
 
 func _init() -> void:
@@ -37,11 +98,15 @@ func make_initial_state(hud_data: Dictionary, player_tile: int, enemy_tile: int)
         enemy["candidate_id"] = str(_enemy_runtime_binding.get("candidate_id", ""))
         enemy["stats"] = (_enemy_runtime_binding.get("stats", {}) as Dictionary).duplicate(true)
         state["enemy"] = enemy
+    state["enemy"] = _bimu_model.enemy_state_overlay(state.get("enemy", {}), _bimu_receipt)
     state["battle_metrics"] = battle_metrics.make_initial_metrics()
     return state
 
 
 func resolve_bundle(player_placements: Array, context: Dictionary, state_value: Dictionary) -> Dictionary:
+    var rejection := _constraint_plan_rejection(player_placements)
+    if not rejection["reasons"].is_empty():
+        return {"rejected": true, "valid": false, "failure_reason": "BIMU_CONSTRAINT_FORBIDDEN_ACTION", "constraint_reasons": rejection["reasons"], "invalid_anchors": rejection["invalid_anchors"], "state": state_value.duplicate(true), "resolved_actions": [], "logs": [], "presentation_events": []}
     var before := state_value.duplicate(true)
     var current: Dictionary = state_value.get("battle_metrics", battle_metrics.make_initial_metrics())
     var result := super.resolve_bundle(player_placements, context, state_value)
