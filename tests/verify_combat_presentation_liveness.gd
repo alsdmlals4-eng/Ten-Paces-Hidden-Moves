@@ -45,11 +45,6 @@ func _plan_first_bundle(board: CombatBoardPreview) -> void:
         failures.append("First bundle progress did not enable.")
         return
     board.combat_progress_button.request_progress()
-    await process_frame
-    if str(board.get_meta("presentation_state", "")) != "plan_locked":
-        failures.append("First bundle must visibly lock its plan before reveal playback.")
-        return
-    board.combat_progress_button.request_progress()
 
 func _plan_second_bundle(board: CombatBoardPreview) -> void:
     if str(board.get_meta("presentation_state", "")) != "next_bundle_ready":
@@ -74,11 +69,6 @@ func _plan_second_bundle(board: CombatBoardPreview) -> void:
         failures.append("Second bundle progress did not enable.")
         return
     board.combat_progress_button.request_progress()
-    await process_frame
-    if str(board.get_meta("presentation_state", "")) != "plan_locked":
-        failures.append("Second bundle must visibly lock its plan before reveal playback.")
-        return
-    board.combat_progress_button.request_progress()
 
 func _plan_final_bundle(board: CombatBoardPreview) -> void:
     if str(board.get_meta("presentation_state", "")) != "next_bundle_ready":
@@ -96,25 +86,14 @@ func _plan_final_bundle(board: CombatBoardPreview) -> void:
     if not board.action_timing_panel.is_current_bundle_complete() or not board.combat_progress_button.progress_enabled:
         failures.append("Final four-action bundle must enable the plan-lock CTA only after all four actions are ready.")
         return
-    if board.combat_progress_button.get_button_text() != "행동계획\n잠금":
-        failures.append("Final bundle must still start with the compact plan-lock CTA.")
+    if board.combat_progress_button.get_button_text() != "행동 실행":
+        failures.append("Final bundle must retain the approved single-execute CTA.")
         return
     var resolution_before := int(board.get_layout_snapshot().get("resolution_count", 0))
     board.combat_progress_button.request_progress()
     await process_frame
-    if str(board.get_meta("presentation_state", "")) != "plan_locked":
-        failures.append("Final four-action bundle must visibly lock before execution.")
-        return
-    if int(board.get_layout_snapshot().get("resolution_count", 0)) != resolution_before:
-        failures.append("Final bundle plan lock must not resolve any action.")
-        return
-    if board.combat_progress_button.get_button_text() != "4수 실행":
-        failures.append("Final locked bundle must expose exactly the current four-action count.")
-        return
-    board.combat_progress_button.request_progress()
-    await process_frame
     if int(board.get_layout_snapshot().get("resolution_count", 0)) != resolution_before + 1:
-        failures.append("Final four-action bundle second CTA must invoke exactly one resolution.")
+        failures.append("Final four-action bundle single CTA must invoke exactly one resolution.")
 
 func _wait_for_review_then_next_bundle(board: CombatBoardPreview, bundle_name: String) -> void:
     var review_seen := false

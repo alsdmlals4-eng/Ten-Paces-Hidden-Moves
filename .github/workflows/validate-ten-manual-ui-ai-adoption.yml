@@ -32,5 +32,15 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_ten_manual_ui_ai_adoption.gd
       - name: Verify existing action selection dock
         run: godot --headless --path . --script res://tests/verify_action_selection_dock.gd
+      - name: Verify action-dock context invalidation
+        run: |
+          set +e
+          output="$(godot --headless --path . --script res://tests/verify_action_dock_context_invalidation.gd 2>&1)"
+          native_status=$?
+          printf '%s\n' "$output"
+          if [ "$native_status" -ne 0 ]; then
+            exit "$native_status"
+          fi
+          printf '%s\n' "$output" | grep -q 'ACTION_DOCK_CONTEXT_INVALIDATION_OK'
       - name: Verify existing public-state AI
         run: godot --headless --path . --script res://tests/verify_ai_rival_tendency.gd

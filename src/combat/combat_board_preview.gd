@@ -1785,7 +1785,7 @@ func _configure_accessibility_semantics() -> void:
 			_set_accessibility_semantics(tile, "%d번 전장 타일" % tile.tile_index, "이동 또는 공격의 대상 타일입니다.")
 	_set_accessibility_semantics(range_readout_panel, "현재 거리", "두 인물의 공개 거리입니다. 거리 0에서는 밀착 상태입니다.")
 	if is_instance_valid(combat_progress_button) and is_instance_valid(combat_progress_button._button):
-		_set_accessibility_semantics(combat_progress_button._button, "행동계획 실행", "현재 행동계획을 실행해 대응부터 순서대로 판정합니다. 실행 뒤에는 복기까지 계획을 바꿀 수 없습니다.")
+		_set_accessibility_semantics(combat_progress_button._button, "행동 실행", "완성된 현재 행동 묶음을 한 번 실행해 대응부터 순서대로 판정합니다. 실행 뒤에는 복기까지 계획을 바꿀 수 없습니다.")
 	_set_accessibility_semantics(fast_replay_button, "빠른 재생", "전투 연출의 재생 시간을 짧게 전환합니다.")
 	_set_accessibility_semantics(reduced_motion_button, "모션 감소", "이동과 공격 모션을 줄이고 결과 텍스트와 로그를 유지합니다.")
 	_set_accessibility_semantics(restart_combat_button, "결전 다시 시작", "끝난 전투를 공개 거리 2의 초기 상태로 다시 시작합니다.")

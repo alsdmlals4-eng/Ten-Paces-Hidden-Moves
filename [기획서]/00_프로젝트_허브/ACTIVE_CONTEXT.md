@@ -41,6 +41,15 @@ Godot 입력 이벤트로 실제 버튼을 작동시킨 전체 캠페인은 10�
 사건 시각자료와 전체 Blueprint 대응·최종 검수는 남아 있다. 다음 package의 native-input 부분은
 위 증거까지 완료됐고, Blueprint 공백 대조 부분은 진행 중이다.
 
+2026-09-08 후속 로컬 구현: 승인된 단일 `행동 실행`으로 불필요한 확정 클릭을 제거했고,
+동일 무공/수련도 context의 반복 재구성만 생략했다. 동적 자원·제약·기세 갱신은 유지한다.
+두 변경을 포함한 controller native 재실행은 10승·10보상·36행로·343활성화, 실패 0이었다.
+반복 갱신 100회 비용은 약 0.54초에서 0.0012초로 감소했지만 headless 부분 측정이며 FPS 증거가 아니다.
+현재 분기 검증 단계로 아직 main 병합 완료가 아니다. 책임 기록:
+`docs/operations/2026-09-08_SINGLE_EXECUTE_BLUEPRINT_EXECUTION_REPORT.md`.
+실제 준비/해결 화면도 캡처했다. 해결 화면의 결과 텍스트 겹침은 다음 전투 화면 정리에서 교정해야 한다.
+별도 복기 화면 제거, 정탐 공개 범위의 충돌 교정, 보상 산식 계약, 상태창과 사건 콘텐츠/삽화는 남아 있다.
+
 2026-09-08 사용자 상시 승인: 관련 기존 open/draft/ready PR은 번호별 재승인 없이 검토·흡수·교정·검증·병합한다. 책임 결정은 `docs/decisions/2026-09-08_STANDING_PR_INTEGRATION_AUTHORIZATION.md`다. 기존 성공 CI만으로 병합하지 않고 최신 main·실제 diff·회귀·보호 규칙을 다시 확인한다. 이전 전투 UI 교정 증거는 `docs/operations/2026-09-08_PR_INTEGRATION_CORRECTIONS.md`를 참조한다. 당시 후속 범위였던 강호행로 4회 선택은 이후 PR 322로 구현·병합됐다.
 
 ```yaml

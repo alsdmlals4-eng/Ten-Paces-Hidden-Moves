@@ -85,9 +85,9 @@ func run_probe() -> void:
             if not failures.is_empty():
                 break
             _require(bridge.action_timing_panel.is_current_bundle_complete(), "native plan must be complete")
-            await _click(bridge.combat_progress_button._button, "lock plan")
-            _require(bool(bridge.get_meta("plan_locked", false)), "first progress must lock plan")
+            var resolution_before := int(bridge.get_meta("resolution_count", 0))
             await _click(bridge.combat_progress_button._button, "execute plan")
+            _require(int(bridge.get_meta("resolution_count", 0)) == resolution_before + 1, "one execute activation must start exactly one resolution")
             var deadline := Time.get_ticks_msec() + 30000
             while not bridge.combat_review_panel.is_visible_in_tree() and Time.get_ticks_msec() < deadline and Time.get_ticks_msec() - started_ms < WALL_TIMEOUT_MS:
                 await process_frame

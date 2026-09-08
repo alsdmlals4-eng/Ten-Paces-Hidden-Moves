@@ -1,0 +1,14 @@
+# Task 2 report — measured action-dock invalidation
+
+- Status: implementation and local evidence complete; controller review/capture/integration remain.
+- Baseline: `ea86c8fe88743d7fa0029bbaefdbc48776ec27f7` on `codex/single-execute-blueprint-20260908`.
+- Product change: `src/ui/action_selection/action_selection_dock.gd` now owns normalized loadout/mastery copies and rebuilds manual/ultimate view models only for first explicit context or genuine input change. All dynamic context paths remain outside the guard.
+- TDD behavioral RED fix round 1: in an isolated uncommitted baseline, kept the final helper/test instrumentation but temporarily removed only `_set_manual_context` invalidation/owned cache. The focused test parsed and ran, then reported identical empty `expected=1 actual=2`, identical populated `expected=2 actual=4`, dynamic-only `expected=2 actual=5`, warmed identical `expected=4 actual=308`, and `FAILED count=7`. The temporary baseline was discarded and exact production/test paths were read back equal to commit `a3b1ef11` before final GREEN.
+- Measurement: controller before `539854 / 563441 / 561096 µs`; behavioral RED baseline `543453 / 545626 / 540126 µs`; final GREEN `1207 / 1187 / 1188 µs` for three warmed synchronous headless samples of 100 identical updates. No FPS/device/Human claim.
+- Focused/adjacent Godot: action dock, martial panel, action-selection integration, bimu constraint UI/runtime, ultimate UI PASS; known ultimate ObjectDB warning remains.
+- Full Python: `474 passed in 17.73s`.
+- Operating/protected-path regression: project operating system PASS; 9/9 selected contract tests PASS.
+- Fail-closed review fix round 2: captured Godot output and `$LASTEXITCODE` immediately, returned native nonzero first, and reserved wrapper exit `42` for a false-zero `FAILED`/missing-`OK` marker. Guard-only RED returned native/wrapper status `1` with `FAILED count=7` and `[553713, 558264, 571180]`; restored GREEN returned native/wrapper status `0`, `OK`, and `[1198, 1349, 1348]`. Product/test paths were read back equal to `a3b1ef11` before GREEN.
+- Final CI-binding fix: added the focused verifier beside the existing dock step in `validate-ten-manual-ui-ai-adoption.yml`, preserving native exit status and requiring the explicit OK marker. Binding RED was 1 failed/exit 1; GREEN with current-discovery was 20 passed, and local CI-equivalent Godot returned OK/native 0 with `[1181, 1181, 1158]`. Controller final native on the same product bytes: 10 wins, 0 draws, 10 rewards, 36 routes, 343 activations, 133203ms, failures 0.
+- Durable evidence: `docs/operations/2026-09-08_SINGLE_EXECUTE_BLUEPRINT_EXECUTION_REPORT.md` optimization section. Approval and same-date BUILD records append the exact product path without replacing Task 1 scope.
+- Evidence ceiling: physical/Human/accessibility-user/Android/release and controller independent replay/CI/merge/readback remain `NOT_RUN`.

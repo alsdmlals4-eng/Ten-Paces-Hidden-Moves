@@ -185,10 +185,9 @@ func _refresh() -> void:
     if _button == null:
         return
     _button.text = get_button_text()
-    _button.tooltip_text = "%s · %s" % [
-        _button.text.replace("\n", " "),
-        "현재 잠긴 행동 묶음을 실행합니다." if plan_locked else "현재 행동 묶음을 잠그고 배치를 닫습니다."
-    ]
+    _button.tooltip_text = "행동 실행 · 완성된 현재 행동 묶음을 한 번 실행합니다."
+    _button.accessibility_name = "행동 실행"
+    _button.accessibility_description = "완성된 현재 행동 묶음을 한 번 실행합니다."
     _button.disabled = not progress_enabled
     if resolution_applied:
         _status_label.text = str(progress_data.get("requested_text", "판정 완료"))
@@ -202,13 +201,7 @@ func _refresh() -> void:
     queue_redraw()
 
 func get_button_text() -> String:
-    if not plan_locked:
-        return "행동계획\n잠금"
-    var sequence: Array = runtime_context.get("timing_sequence", [3, 3, 4])
-    var bundle_index := maxi(1, int(runtime_context.get("bundle_index", 1)))
-    var sequence_index := clampi(bundle_index - 1, 0, maxi(0, sequence.size() - 1))
-    var action_count := int(sequence[sequence_index]) if not sequence.is_empty() else 3
-    return "%d수 실행" % action_count
+    return "행동 실행"
 
 func _layout() -> void:
     if _button == null:
