@@ -32,6 +32,9 @@ Connect newly generated blue-ink courtyard to game; remove incompatible sepia fo
 where appropriate. Reuse and improve actor motion, hit/clash/evade/ultimate VFX and sound.
 Replace placeholder UI surfaces with atlas-compatible paper/ink hierarchy; no baked numbers.
 Test actual consumers and capture normal rendered viewport, preserve mute/reduced motion.
+Continue with always-visible preparation costs/slots/main effect and range summaries.
+Combat engine owns numerical previews; UI must not represent formula base as final power.
+Preserve two-row grid and validate native labels at 720p/800p before capture.
 
 ### Task 3: Combined verification
 

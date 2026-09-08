@@ -3,7 +3,22 @@
   "pr_integration_authority": "TEN-DEC-20260908-STANDING-PR-INTEGRATION-01",
   "pr_integration_policy": "RELATED_EXISTING_PRS_REVIEW_ABSORB_CORRECT_VERIFY_MERGE_WITHOUT_NAMED_REAPPROVAL",
   "project": "TEN_PACES",
-  "updated_date": "2026-09-04",
+  "updated_date": "2026-09-08",
+  "campaign_continuation": {
+    "branch": "codex/ten-duel-campaign-20260908",
+    "integration_status": "LOCAL_BRANCH_NOT_YET_MERGED",
+    "authority": "Latest explicit user continuation; ten duels, four next-node choices per interval, recreate and connect assets",
+    "implementation_record": "docs/operations/2026-09-08_TEN_DUEL_CAMPAIGN_IMPLEMENTATION.md",
+    "actual_sequential_probe": "tests/probe_sequential_ten_duel_campaign.gd",
+    "machine_runtime": "SEQUENTIAL_PROBE_RESOURCE_RESET_DEFECT_FOUND_COMPLETION_CLAIM_WITHDRAWN_FIX_PENDING",
+    "human_android_release": "NOT_RUN",
+    "remaining": [
+      "always-visible preparation summary",
+      "briefing constraints and status/intel levels",
+      "full Blueprint content and shared asset reconciliation",
+      "CI and protected merge"
+    ]
+  },
   "user_directed_planning_status": "THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_CTA_REVIEW_SURFACES_IMPLEMENTED_LEGACY_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN",
   "current_user_direction": "FRONTAL_SHARED_GROUND_DUEL_NO_VISIBLE_LOGICAL_BOARD_PLUS_3_BRANCH_4_PICK_JIANGHU_ROUTE_PLUS_SINGLE_PLAYER_FACING_ACTION_EXECUTE_CTA_PLUS_CURRENT_CARD_VS_COMPARE_RAIL_PLUS_INLINE_CAUSAL_RECAP_PLUS_UNIFIED_BLUE_GRAY_HANJI_INK_CANDIDATE_STYLE_WITHOUT_SPINE_RUNTIME",
   "frontal_duel_blueprint": "docs/design/2026-09-01_FRONTAL_DUEL_ACTION_FLOW_BLUEPRINT.md",

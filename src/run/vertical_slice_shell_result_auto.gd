@@ -13,7 +13,7 @@ func _ready() -> void:
     super._ready()
     set_meta("result_visual_status", "STRUCTURED_FUNCTIONAL_UI_NOT_FINAL_VISUAL")
     set_meta("grade_formula_status", "FORMULA_PENDING")
-    set_meta("reward_application_status", "DEFERRED_TO_PHASE_V")
+    set_meta("reward_application_status", "APPLIED_ON_RESULT_CONTINUE")
     _build_result_options_container()
     _render_current_screen()
 
@@ -67,7 +67,7 @@ func _render_result() -> void:
     _refresh_result_snapshot()
     var metrics: Dictionary = _result_snapshot.get("battle_metrics", {})
     var outcome_label := _outcome_label(str(_result_snapshot.get("outcome", "draw")))
-    var description := "승부 · %s\n등급 · 산식 미확정 (S/A/B/C 가중치·경계값 Decision 대기)\n\n원지표 · 회피 성공 %d · 합 승리 %d · 잃은 체력 %d · 전투 라운드 %d · 절초 사용 %d\n\n보상은 아래 세 유형 중 하나만 선택합니다. 선택 결과는 기록만 하며 실제 성장 적용은 다음 Phase에서 처리합니다." % [
+    var description := "승부 · %s\n등급 · 산식 미확정\n\n전투 기록 · 회피 성공 %d · 합 승리 %d · 잃은 체력 %d · 전투 라운드 %d · 절초 사용 %d\n\n보상을 하나 고른 뒤 확정하면 수련에 반영됩니다." % [
         outcome_label,
         int(metrics.get("successful_dodges", 0)),
         int(metrics.get("clash_wins", 0)),

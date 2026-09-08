@@ -148,3 +148,30 @@ choices retained. GREEN after binding; duplicate selection cannot heal twice. Ex
 shell regression also PASS. Actual 1280x800 capture reviewed: traveller unobscured, native
 Korean text and continuation visible. Synthetic terminal used to reach scene is NOT duel evidence.
 Final human visual approval, rights release review and Android runtime remain NOT_RUN.
+
+### Sequential probe independent review correction
+
+c11ad041/2904c9e9 initially reported ten wins with retained run history. Independent
+review found make_initial_state resets resource currents after the probe set its HUD
+values. Actual shell applies resources AFTER initialization. Thus that probe run proves
+resolver termination under reset resources, NOT accumulated-resource campaign completion.
+The initial completion claim is withdrawn. Required fix: post-initialization application
+and exact resource equality assertion before the first resolver in every duel/retry,
+then honest rerun. Prior independent and synthetic tests remain their bounded evidence.
+
+Correction f011c704: exact handoff equality initially RED at duel 2; post-init resources
+now match before all ten attempted entries. Corrected simple policy wins duels 1–8 then
+loses duel 9 and its legal retry (enemy 2 HP). Duel 10 NOT_REACHED; bounded public-policy
+improvement continues. This is not proof that the product is unwinnable.
+
+Route backdrop now uses one original mountain/river illustration, generated with the
+built-in image model and source/hash/brief retained. Native three choices remain separate.
+Rest→next route→briefing background transitions PASS, actual 1280×800 route capture reviewed.
+Window title no longer claims five-duel slice; reward copy no longer falsely defers existing
+progression to a future phase. Both copy regressions observed RED then GREEN; result test PASS.
+
+Capture tooling lesson: changing project.godot name while the editor is open left its
+in-memory name and userdata discovery stale. Game process existed but Hera could not find
+it. Exact-session stop and synchronization of the already-authorized project setting
+restored capture; no other editor or project was changed. Shared headless test logs are
+not reliable proof of the visible game's cleanliness; use exact runtime capture/identity.

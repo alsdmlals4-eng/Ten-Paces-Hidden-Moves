@@ -20,6 +20,7 @@ func _run() -> void:
         "player_resources": {"health": [12, 40], "stamina": [2, 5], "internal": [1, 4]}
     })
     shell.complete_review_for_runtime()
+    check(not shell.description_label.text.contains("다음 Phase"), "Reward copy must not falsely defer implemented progression.")
     shell.select_result_reward("free_training")
     shell.advance_noncombat()
     for step in range(2):
@@ -44,9 +45,13 @@ func _run() -> void:
     check(shell.run_state.get_player_run_resources() == resources, "Duplicate rest must not heal again.")
     shell.advance_noncombat()
     await process_frame
-    check(backdrop.texture.resource_path == "res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png", "Next choice must restore the route backdrop.")
+    check(backdrop.texture.resource_path == "res://assets/backgrounds/jianghu_blue_ink_landscape_v1.png", "Next choice must restore the mountain route backdrop, not the duel courtyard.")
     check(is_equal_approx(shell.content_panel.anchor_left, 0.14), "Next choice must restore the full choice layout.")
     check(shell.route_options_container.visible and shell.get_route_option_count() == 3, "Next step must expose three choices.")
+    var final_options: Array = shell.run_state.get_jianghu_options()
+    shell._choose_jianghu(str(final_options[0]["id"]), 3)
+    shell.advance_noncombat()
+    check(backdrop.texture.resource_path == "res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png", "Briefing must restore its own duel backdrop.")
     shell.queue_free()
     await process_frame
     await create_timer(0.1).timeout

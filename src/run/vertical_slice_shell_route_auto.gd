@@ -117,6 +117,8 @@ func _set_route_composition(resting: bool) -> void:
     var backdrop := get_node_or_null("ShellBackdrop") as TextureRect
     if backdrop != null:
         var path := "res://assets/backgrounds/jianghu_rest_inn_v1.png" if resting else "res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png"
+        if not resting and run_state != null and run_state.get_current_screen() == VerticalSliceRunState.SCREEN_JIANGHU:
+            path = "res://assets/backgrounds/jianghu_blue_ink_landscape_v1.png"
         backdrop.texture = load(path) as Texture2D
 
 
