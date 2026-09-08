@@ -92,6 +92,12 @@ evidence ceiling을 함께 재검토했다. 대표 finding은 검토 범위를 �
    base...HEAD committed diff를 읽으므로 검사를 약화하지 않고 commit 뒤 재실행으로 해결한다.
    이 실패를 제품·권한 실패와 구분했다. long-term 대안은 기존 committed evidence 경로 유지다.
    추가 비용/도구/제품 mutation 없이 정확 commit 검증을 다음 loop 입력으로 삼는다.
+5. 입력 committed `1fc748c3`: 전체 승인·실제 committed diff·untouched consumer·archive
+   복구와 current/history·비용·장기 적합성을 다시 검토했다. one-time lifecycle PASS,
+   전체 pytest 474 PASS (16.16s), CANON_LIFECYCLE_OK, exact Base contract PASS였다.
+   15개 변경 경로는 docs/skills/tests와 Active Context이며 제품 경로 변화는 0이다.
+   원격 검증은 controller 위임 경계를 유지한다. 추가 MUST_FIX/승인 SHOULD_FIX 0,
+   NO_MATERIAL_FOLLOWUP / 로컬 closeout 범위 CLEAN_REVIEW_EXIT.
 
 REMAINING_WORK_RECALCULATION_REQUIRED: docs closeout의 남은 작업은 exact committed
 lifecycle readback 및 controller의 remote delivery다. 제품 native-input/Blueprint gap은
