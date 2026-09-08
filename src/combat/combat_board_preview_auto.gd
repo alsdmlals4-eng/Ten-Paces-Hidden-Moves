@@ -382,7 +382,7 @@ func _layout_product_action_dock() -> void:
     # The summary-card continuation moves the planning ink frame only enough
     # to keep two readable rows at 720p while retaining the top HUD and a
     # distinct frontal duel field.
-    var planning_top := clampf(size.y * 0.535, 260.0, size.y - 232.0)
+    var planning_top := clampf(size.y * 0.50, 260.0, size.y - 242.0)
     var timing_height := clampf(size.y * 0.105, 70.0, 92.0)
     var timing_y := planning_top + 8.0
     var dock_y := timing_y + timing_height + 8.0

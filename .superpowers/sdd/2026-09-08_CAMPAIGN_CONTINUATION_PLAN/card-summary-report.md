@@ -2,7 +2,8 @@
 
 ## Result
 
-MACHINE_VERIFIED, ready for controller renderer capture and integration review.
+MACHINE_VERIFIED after actual-render correction, ready for controller recapture
+and integration review.
 
 Preparation cards now keep slot cost, stamina/internal cost, range, movement
 when present, and one truthful primary magnitude/effect visible without hover.
@@ -40,9 +41,13 @@ actor fallback, no state mutation, slot/resource/range/primary effect presence,
 illustration retention, 128 px text fit, the ten-card 5 by 2 grid, 1280x720 and
 1280x800 containment, and separation from HUD and battlefield.
 
-The first post-implementation run found a real 720p failure: row two exceeded
-the host by 2 px. The split was moved from 60% to 53.5%, the card height was
-bounded at 88 px, and the regression then passed.
+The first post-implementation run found a 720p host failure. The initial
+rectangle-only fix moved the split to 53.5% and used an 88 px card, but the
+controller's actual 1280x800 renderer capture then proved the test incomplete:
+the three 11 px labels require a 48 px content height, so the third line crossed
+the card border and rows visually collided. A second RED now checks each label
+rectangle against its card and checks line-to-line overlap. The final fix uses
+a 98 px card and a 50% planning split; both 720p and 800p pass the stricter test.
 
 ## Adopted implementation
 
@@ -56,7 +61,9 @@ Both accessors are read-only.
 CombatBoardPreview passes only current player stats and attack_power to the
 dock. The dock propagates that snapshot to all three source panels and detail.
 No enemy state, hidden plan, or unrevealed intent enters the preview path.
-Panels skip rebuilding when magnitude inputs are unchanged.
+Panels skip rebuilding when magnitude inputs are unchanged. ActionChoiceCard
+also shares one lazy resolver preview instance, avoiding JSON/AI initialization
+once per card; the detail panel retains its separate single instance.
 
 The retained card composition is existing illustration, native name, and three
 native 11 px summary rows: slot/resources, range/movement, and primary effect.
@@ -88,7 +95,8 @@ Godot 4.7.1 headless:
     ULTIMATE_UI_RESERVATION_VERIFY_OK
     FRONTAL_DUEL_PLAN_LOCK_VERIFY_OK
 
-Static owned-file diff check: PASS.
+Static owned-file diff check: PASS. The controller's first actual renderer
+capture is retained as failure evidence, not a final visual PASS.
 
 ## Five adversarial loops
 
@@ -98,8 +106,9 @@ Static owned-file diff check: PASS.
    no enemy private information is supplied.
 3. State/interaction: proved preview purity and reran lock, placement, dock, and
    ultimate reservation regressions.
-4. Viewport/accessibility: caught and fixed 720p overflow; retained art, native
-   text, hover/focus detail, and the 11 px minimum.
+4. Viewport/accessibility: actual renderer evidence exposed a false-positive
+   parent-only geometry check. The regression now verifies every label bottom
+   and sibling non-overlap; art, three lines, and 11 px minimum remain.
 5. Long-term consumer fit: centralized all source cards in the shared renderer,
    avoided unchanged-input rebuilds, and reran adjacent regressions.
 
@@ -112,7 +121,7 @@ AI, or hidden-information policy changed. Controller-owned route/state/docs/art
 and pre-existing import/cache churn were not staged.
 
 - Headless focused machine evidence: PASS
-- Controller renderer capture: NOT_RUN here by explicit task boundary
+- Controller corrected renderer recapture: NOT_RUN after final fix
 - Windows visible input/render: NOT_RUN
 - Android device: NOT_RUN
 - Human readability/player comprehension: HUMAN_NOT_RUN

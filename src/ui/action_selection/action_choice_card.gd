@@ -8,12 +8,13 @@ const RESTRAINED_GOLD := Color("b99254")
 const RESOLUTION_ENGINE_SCRIPT := preload("res://src/combat/combat_resolution_engine.gd")
 
 var action_definition: Dictionary = {}
+static var _shared_resolution_engine: RefCounted
 
 func configure_action(definition: Dictionary, illustration_policy: String, status_text: String = "", preview_actor: Dictionary = {}) -> void:
 	action_definition = definition.duplicate(true)
 	for child in get_children():
 		child.queue_free()
-	custom_minimum_size = Vector2(0.0, 88.0)
+	custom_minimum_size = Vector2(0.0, 98.0)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	focus_mode = Control.FOCUS_ALL
 	text = ""
@@ -73,7 +74,7 @@ func _add_summary(preview_actor: Dictionary) -> void:
 	summary.offset_left = 4.0
 	summary.offset_right = -4.0
 	summary.offset_top = 49.0
-	summary.offset_bottom = 86.0
+	summary.offset_bottom = 96.0
 	add_child(summary)
 	var momentum_text := " · 기세 %d" % int(action_definition.get("momentum_cost", 0)) if int(action_definition.get("momentum_cost", 0)) > 0 else ""
 	_add_summary_line(summary, "%d수 · 기력 %d · 내력 %d%s" % [int(action_definition.get("action_slots", 1)), int(action_definition.get("stamina_cost", 0)), int(action_definition.get("internal_cost", 0)), momentum_text])
@@ -97,7 +98,7 @@ func _add_summary_line(parent: VBoxContainer, value: String) -> void:
 	parent.add_child(label)
 
 func _primary_summary(preview_actor: Dictionary) -> String:
-	var preview: Dictionary = RESOLUTION_ENGINE_SCRIPT.new().preview_action_magnitude(action_definition, preview_actor)
+	var preview: Dictionary = _resolution_engine().preview_action_magnitude(action_definition, preview_actor)
 	if bool(preview.get("available", false)):
 		if _category() == "attack":
 			return "예상 위력 %d" % int(preview.get("value", 0))
@@ -105,6 +106,11 @@ func _primary_summary(preview_actor: Dictionary) -> String:
 	if _category() == "attack":
 		return _formula_baseline_text()
 	return "효과 조건부 · 상세 확인"
+
+func _resolution_engine() -> RefCounted:
+	if not is_instance_valid(_shared_resolution_engine):
+		_shared_resolution_engine = RESOLUTION_ENGINE_SCRIPT.new()
+	return _shared_resolution_engine
 
 func _formula_baseline_text() -> String:
 	var formula: Dictionary = action_definition.get("damage_formula", {}) as Dictionary

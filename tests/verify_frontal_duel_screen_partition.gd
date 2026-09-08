@@ -3,7 +3,7 @@ extends SceneTree
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
 const VIEWPORT_SIZE := Vector2(1440.0, 900.0)
 const TARGET_TOP_OVERLAY_RATIO := 0.20
-const TARGET_PLANNING_TOP_RATIO := 0.535
+const TARGET_PLANNING_TOP_RATIO := 0.50
 
 var failures: Array[String] = []
 

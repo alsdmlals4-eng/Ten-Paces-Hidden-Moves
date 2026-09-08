@@ -33,7 +33,7 @@ class ActionCardSourceUnificationContractTests(unittest.TestCase):
 
         self.assertIn('summary.name = "CardSummary"', renderer)
         self.assertIn('accessibility_description = _accessibility_description(status_text)', renderer)
-        self.assertIn('custom_minimum_size = Vector2(0.0, 88.0)', renderer)
+        self.assertIn('custom_minimum_size = Vector2(0.0, 98.0)', renderer)
         self.assertIn('"예상 위력 %d"', renderer)
         self.assertIn('"거리 %s"', renderer)
         self.assertIn('기력 %d · 내력 %d', renderer)

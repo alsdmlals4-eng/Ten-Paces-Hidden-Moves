@@ -81,7 +81,7 @@ func _verify_card_text_hierarchy(definition: Dictionary, illustration_policy: St
 	_check(is_instance_valid(summary) and (summary_text.contains(expected_tag) or summary_text.contains("효과") or summary_text.contains("위력")), "%s must expose a Korean primary effect inside the compact card." % label)
 	_check(summary_text.contains("기력") and summary_text.contains("내력") and summary_text.contains("거리"), "%s must keep costs and range always visible while richer detail remains in the dedicated panel." % label)
 	_check(is_instance_valid(illustration) == (illustration_policy != "forbidden"), "%s illustration presence must match the card policy." % label)
-	_check(card.custom_minimum_size.y <= 90.0, "%s card must remain compact enough for a 5 by 2 lower-screen grid." % label)
+	_check(card.custom_minimum_size.y <= 100.0, "%s card must remain compact enough for a 5 by 2 lower-screen grid." % label)
 	var summary_clips := is_instance_valid(summary)
 	if is_instance_valid(summary):
 		for summary_label in summary.find_children("*", "Label", true, false):

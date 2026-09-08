@@ -51,7 +51,7 @@ func _verify_card_contract_and_unknown_actor_fallback() -> void:
 		_check(text.contains("거리"), "Card summary must always show range.")
 		_check(text.contains("예상 위력") or text.contains("이동") or text.contains("효과"), "Card summary must show a primary magnitude, movement, or truthful effect fallback.")
 		_check(card.find_child("CardIllustration", false, false) != null, "Always-visible summaries must preserve illustrations.")
-		_check(card.custom_minimum_size.y <= 96.0, "Summary cards must remain within the bounded two-row geometry budget.")
+		_check(card.custom_minimum_size.y <= 100.0, "Summary cards must remain within the bounded two-row geometry budget.")
 		for summary_label in summary.find_children("*", "Label", true, false):
 			_check((summary_label as Label).get_combined_minimum_size().x <= 128.0, "Always-visible summary text must fit the 128px card lane without clipping.")
 		card.queue_free()
@@ -77,6 +77,15 @@ func _verify_board_context_and_geometry(viewport_size: Vector2) -> void:
 		var rect := (button as Control).get_global_rect()
 		var host_rect := dock.content_host.get_global_rect()
 		_check(rect.position.x >= host_rect.position.x - 0.5 and rect.end.x <= host_rect.end.x + 0.5 and rect.position.y >= host_rect.position.y - 0.5 and rect.end.y <= host_rect.end.y + 0.5, "Every summary card must remain inside the in-viewport content host at %s." % str(viewport_size))
+		var summary := (button as Control).find_child("CardSummary", false, false) as VBoxContainer
+		_check(is_instance_valid(summary), "Rendered cards must retain the summary container.")
+		if is_instance_valid(summary):
+			var prior_bottom := -INF
+			for summary_label in summary.find_children("*", "Label", true, false):
+				var label_rect := (summary_label as Label).get_global_rect()
+				_check(rect.encloses(label_rect), "Every rendered summary line must stay inside its card border at %s." % str(viewport_size))
+				_check(label_rect.position.y >= prior_bottom - 0.5, "Rendered summary lines must not overlap each other at %s." % str(viewport_size))
+				prior_bottom = label_rect.end.y
 	_check(dock.get_global_rect().position.y >= board.top_hud.get_global_rect().end.y, "Planning UI must not overlap the resource HUD.")
 	var duel_surface := board.get_node_or_null("DuelStageSurface") as Control
 	_check(is_instance_valid(duel_surface) and duel_surface.get_global_rect().end.y <= board.planning_surface.get_global_rect().position.y + 1.0, "Planning UI must not overlap the battlefield partition.")
