@@ -61,6 +61,14 @@
 
 ## 미검증과 다음 안전 작업
 
-post-correction native/독립 코드검토와 supplemental7캡처는 완료했고, 로컬 whole496PASS1문서FAIL 뒤 해당 owner/관련31검사 교정도 확인했다. freshness 정본 캡처, exact-head CI·정상 병합·main readback은 아직 PENDING이다. 사람 플레이·청음·실물 입력·Android·접근성 사용자·Release 성능·출시 권리는 NOT_RUN이다. UI 인물/카드 크기·빈 영역과 전체 승인 아틀라스 fidelity도 완료가 아니다.
+### 전달 직전 교정 readback
+
+정상 진입/실제 Peng execution 최소2장은 `docs/evidence/RUNTIME_VISUAL_CAPTURE_MANIFEST.json`의 `TEN-RVC-20260909-001/002`에 등록했다. 두 producer 실행 전 source-absent receipt를 만들고 등록 직전 fresh source `6dded6f1`을 독립 대조했다. 기존7장에 freshness를 소급 부여하지 않았다. 새 등록은 E `ff732f5f`에서 D `7dff0c6a`로 evidence3경로만 흡수했다. 정상1280×800과 Peng1280×800을 직접 검수했고, 실제run log/Debugger의0ERROR·17GDScriptWARN을 manifest에도0/17로 유지했다. 기존 경고의 수정이나 warning-free 실행은 주장하지 않는다. 캡처계약9검사PASS2.75s, 새 manifest 포함 보호wrapperPASS. 제품/스키마/승인원화/기존캡처는 불변이다.
+
+Controller의 마지막 전체 검사는496PASS1문서FAIL이며, 그 뒤 실제 owner 교정과 관련31PASS0.59s, 엔진 의존 두 모듈을 제외한 전체484PASS17.58s를 별도 기록한다. 독립 exact 제품 focused4PASS와 checkpoint/실제준비·방어probe를 보완 증거로 사용한다. 이들을 한 번의497PASS로 합쳐 쓰지 않는다. 최종 전달 exact checkout에서 전체검사·CI와 병합 후readback을 추가 확인한다.
+
+R5에서 발견한 캡처 등록 공백까지 해결한 후 정본/current순서·제품5경로·untouched v1 저장/AI/원화·비용·증거ceiling을 다시 검토했다. 범위 안 미해결 blocker는 없다. 등록 경고와 실제화면 배치 부족, domain execution공백은 기록된 후속이며 narrow feedback PASS로 덮지 않는다. 최소5회 전체 검토의 clean exit는 이 확인까지다.
+
+post-correction native/독립 코드검토와 정본2장/supplemental7캡처는 완료했고, 로컬 whole496PASS1문서FAIL 뒤 해당 owner/관련31검사 교정도 확인했다. exact-head CI·정상 병합·main readback은 아직 PENDING이다. 사람 플레이·청음·실물 입력·Android·접근성 사용자·Release 성능·출시 권리는 NOT_RUN이다. UI 인물/카드 크기·빈 영역과 전체 승인 아틀라스 fidelity도 완료가 아니다.
 
 표시 교정 뒤에는 별도 실행 계약으로 고유 대응·공통 피해/방어·첫 전조 비용/once/강건과 v1 저장 완주 호환을 교정한다. 그 다음 성장 지출/수련/해금, 사건표·선택·조건, 정탐/상태/보상과 적별 콘텐츠·아트/음향 완성도를 계속 다룬다. 이 보고서는 정의 분류나 자동10전 결과를 전체 Blueprint 구현 완료로 확대하지 않는다.

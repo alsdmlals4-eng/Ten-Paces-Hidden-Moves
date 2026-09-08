@@ -1,6 +1,7 @@
 # 전투 피드백 실제 캡처 · 2026-09-09
 
 분류: **MACHINE_RUNTIME_CAPTURE / SEEDED_FIXTURE**, 최종 UI·Human 승인 아님.
+이7장은 supplemental 진단이다. 사전 freshness receipt를 사용한 최소 정본2장은 `docs/evidence/RUNTIME_VISUAL_CAPTURE_MANIFEST.json`의 `TEN-RVC-20260909-001/002`에 별도로 등록했다. 이7장에 사전receipt 통과를 소급 주장하지 않는다.
 제품 기준: `6dded6f133e29a7deadfb3a623f23390439f1d4a`.
 실제 `combat_board_preview.tscn`, `VerticalSliceMetricsCombatResolutionEngine`과 현재 승인 자산을 사용했다.
 이미지 합성·그림 재생성·리사이즈·문구 덮어씌우기를 하지 않은 원본 viewport PNG다.
