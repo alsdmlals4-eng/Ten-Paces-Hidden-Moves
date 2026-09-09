@@ -13,3 +13,10 @@ def test_current_owners_route_to_direction():
     for path in ('docs/18_VISUAL_ART_STYLE_COMPONENT_SYSTEM_SPEC.md',
                  'docs/04_ROADMAP.md', '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md'):
         assert marker in (ROOT/path).read_text(encoding='utf-8'), path
+
+def test_weapon_coverage_is_not_a_universal_sword_contact():
+    text = (ROOT/'docs/decisions/2026-09-09_CLASH_STAGING_AND_OUTCOME_DIRECTION.md').read_text(encoding='utf-8')
+    for marker in ('무기·기법별 제작 범위', '양가창결', '천기암기록', '근접 비수',
+                   '투척', '권법', '장풍', '금속 접촉', '무기 상성',
+                   '기술별', '미지정', 'ASSET_REVISION_REQUIRED'):
+        assert marker in text, marker

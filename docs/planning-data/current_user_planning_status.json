@@ -1,5 +1,9 @@
 {
   "schema_version": 1,
+  "current_opponent_roster_growth_decision": "TEN-DEC-20260909-RUN-START-OPPONENT-ROSTER-GROWTH-01",
+  "opponent_roster_growth_status": "USER_DIRECTION_APPROVED_SPECIFICATION_IN_PROGRESS_RUNTIME_NOT_IMPLEMENTED",
+  "current_internal_review_cadence_decision": "TEN-DEC-20260909-TWO-ROUND-INTERNAL-REVIEW-01",
+  "internal_review_cadence": "EXACTLY_TWO_FULL_SCOPE_ROUNDS_NO_AUTOMATIC_THIRD",
   "pr_integration_authority": "TEN-DEC-20260908-STANDING-PR-INTEGRATION-01",
   "pr_integration_policy": "RELATED_EXISTING_PRS_REVIEW_ABSORB_CORRECT_VERIFY_MERGE_WITHOUT_NAMED_REAPPROVAL",
   "project": "TEN_PACES",

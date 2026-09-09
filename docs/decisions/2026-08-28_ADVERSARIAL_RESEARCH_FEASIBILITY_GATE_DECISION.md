@@ -43,7 +43,7 @@ approved intent
 ### 3. 적대적 검토 루프
 
 - 모든 작업·권장안·retained change는 최소 한 번 `EVERY_TASK_BASE_LOOP`를 수행한다.
-- material 계획·구현·문서·PR 변경은 `running-adversarial-review-and-refinement`의 최소 5회 full-scope loop와 `CLEAN_REVIEW_EXIT`를 따른다.
+- 당시 material 계획·구현·문서·PR 변경은 최소 5회 full-scope loop였다. **현재 회차 수는 `TEN-DEC-20260909-TWO-ROUND-INTERNAL-REVIEW-01` / `2026-09-09_TWO_ROUND_INTERNAL_REVIEW.md`의 정확히 2회로 대체됐다.** `running-adversarial-review-and-refinement`와 `CLEAN_REVIEW_EXIT` 등 나머지 기준은 유지한다.
 - 각 full loop는 사용자 의도, current canon/Decision, actual diff/consumer/test/runtime, security/safety, player value, scope/cost, alternatives, long-term fit, rollback/evidence ceiling을 함께 재공격한다.
 - 유효 finding만 최소 교정한다. 가짜 finding, 같은 finding의 표현만 바꾼 중복 계수, 불필요한 변경으로 loop 수를 채우지 않는다.
 

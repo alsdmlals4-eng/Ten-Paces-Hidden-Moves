@@ -20,7 +20,7 @@ class AdversarialResearchFeasibilityGateTests(unittest.TestCase):
         self.assertIn("external_research_policy: REQUIRED_EVERY_TASK_CURRENT_SOURCE_RELEVANCE_CHECK", text)
         self.assertIn("implementation_feasibility_policy: REQUIRED_BEFORE_MATERIAL_MUTATION", text)
         self.assertIn(
-            "adversarial_review_policy: EVERY_TASK_BASE_LOOP_PLUS_MINIMUM_FIVE_FULL_SCOPE_LOOPS_FOR_MATERIAL_CHANGE",
+            "adversarial_review_policy: EVERY_TASK_BASE_LOOP_PLUS_EXACTLY_TWO_FULL_SCOPE_LOOPS_FOR_MATERIAL_CHANGE",
             text,
         )
         self.assertIn(DECISION_ID, text)
