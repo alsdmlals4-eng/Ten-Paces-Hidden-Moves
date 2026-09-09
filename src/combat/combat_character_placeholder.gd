@@ -25,6 +25,8 @@ var visual_scale := 1.0
 var character_sprite: Texture2D
 var _character_art_path := ""
 var _sprite_foot_ratio := 0.94
+var _art_image_size := Vector2.ZERO
+var _art_used_rect := Rect2()
 var _motion_tween: Tween
 var _motion_sequence_id := 0
 
@@ -73,10 +75,14 @@ func _load_character_art() -> void:
     _character_art_path = next_path
     character_sprite = load(_character_art_path) as Texture2D
     _sprite_foot_ratio = 0.94
+    _art_image_size = Vector2.ZERO
+    _art_used_rect = Rect2()
     if character_sprite != null:
         var image := character_sprite.get_image()
         if image != null:
             var used := image.get_used_rect()
+            _art_image_size = Vector2(image.get_size())
+            _art_used_rect = Rect2(used)
             if used.size.y > 0:
                 _sprite_foot_ratio = clampf(float(used.position.y + used.size.y) / float(image.get_height()), 0.70, 1.0)
     set_meta("character_art_path", _character_art_path)
@@ -95,6 +101,50 @@ func set_dimensions(tile_width: float) -> void:
     custom_minimum_size = new_size
     size = new_size
     queue_redraw()
+
+func _sprite_rect_local() -> Rect2:
+    var sprite_height := size.y * 1.08
+    return Rect2(Vector2((size.x - sprite_height) * 0.5, size.y - sprite_height * _sprite_foot_ratio), Vector2.ONE * sprite_height)
+
+func get_idle_art_height_per_node_height() -> float:
+    if _art_image_size.y <= 0.0 or not _art_used_rect.has_area():
+        return 0.0
+    return 1.08 * _art_used_rect.size.y / _art_image_size.y
+
+func get_existing_motion_peak_scale() -> float:
+    return 1.12
+
+func get_visible_art_bounds_local(include_motion: bool = true) -> Rect2:
+    if _art_image_size.x <= 0.0 or _art_image_size.y <= 0.0 or not _art_used_rect.has_area():
+        return Rect2()
+    var sprite_rect := _sprite_rect_local()
+    var occupied := Rect2(sprite_rect.position + _art_used_rect.position / _art_image_size * sprite_rect.size, _art_used_rect.size / _art_image_size * sprite_rect.size)
+    var pivot := get_foot_anchor_local()
+    var draw_scale := Vector2.ONE * (visual_scale if include_motion else 1.0)
+    if role == "enemy" and facing < 0 and _character_art_path == DOGYEOM_ART_PATH:
+        draw_scale.x *= -1.0
+    var offset := visual_offset if include_motion else Vector2.ZERO
+    var transformed := Rect2(pivot + offset + (occupied.position - pivot) * draw_scale, Vector2.ZERO)
+    for point in [Vector2(occupied.end.x, occupied.position.y), occupied.end, Vector2(occupied.position.x, occupied.end.y)]:
+        transformed = transformed.expand(pivot + offset + (point - pivot) * draw_scale)
+    return transformed
+
+func get_visible_art_bounds_global(include_motion: bool = true) -> Rect2:
+    var local := get_visible_art_bounds_local(include_motion)
+    if not local.has_area():
+        return Rect2()
+    var transform := get_global_transform()
+    var result := Rect2(transform * local.position, Vector2.ZERO)
+    for point in [Vector2(local.end.x, local.position.y), local.end, Vector2(local.position.x, local.end.y)]:
+        result = result.expand(transform * point)
+    return result
+
+func snap_move_for_relayout(anchor: Vector2) -> void:
+    if motion_state != "move":
+        return
+    _stop_motion_tween()
+    set_idle()
+    place_foot_at(anchor)
 
 func place_foot_at(anchor: Vector2) -> void:
     position = anchor - Vector2(size.x * 0.5, size.y)
@@ -285,11 +335,8 @@ func _draw() -> void:
         if is_character_art_horizontally_mirrored():
             draw_scale.x *= -1.0
         draw_set_transform(visual_offset + ground_pivot, 0.0, draw_scale)
-        var sprite_height := height * 1.08
-        var sprite_rect := Rect2(
-            Vector2((width - sprite_height) * 0.5, height - sprite_height * _sprite_foot_ratio) - ground_pivot,
-            Vector2(sprite_height, sprite_height)
-        )
+        var sprite_rect := _sprite_rect_local()
+        sprite_rect.position -= ground_pivot
         draw_texture_rect(sprite, sprite_rect, false, Color.WHITE)
         draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
         return

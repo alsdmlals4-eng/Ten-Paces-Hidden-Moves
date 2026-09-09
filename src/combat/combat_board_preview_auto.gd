@@ -8,6 +8,8 @@ var action_placement_controller: ActionPlacementController
 var action_selection_dock: ActionSelectionDock
 var _pending_controller_definition: Dictionary = {}
 var _plan_locked := false
+var _last_applied_active_duel_rect := Rect2()
+var _has_applied_active_duel_rect := false
 
 func _ready() -> void:
     super._ready()
@@ -291,6 +293,7 @@ func _set_presentation_state(value: String) -> void:
     super._set_presentation_state(value)
     _sync_action_placement_controller_state()
     _sync_action_selection_dock()
+    _apply_state_derived_product_layout()
 
 func _inputs_locked() -> bool:
     return _plan_locked or super._inputs_locked()
@@ -301,6 +304,7 @@ func _set_resolution_surface_visible(value: bool) -> void:
         action_selection_dock.visible = value
     if is_instance_valid(observation_reveal_panel):
         observation_reveal_panel.visible = value
+    _apply_state_derived_product_layout()
 
 func _set_plan_locked_surface_visible(value: bool) -> void:
     if is_instance_valid(planning_surface):
@@ -316,29 +320,50 @@ func _set_plan_locked_surface_visible(value: bool) -> void:
     if value:
         _expand_locked_duel_stage()
         _layout_locked_plan_execute_prompt()
+    else:
+        _apply_state_derived_product_layout()
 
 func _expand_locked_duel_stage() -> void:
-    if size.x <= 0.0 or size.y <= 0.0:
+    _apply_state_derived_product_layout()
+
+func _uses_expanded_execution_layout() -> bool:
+    var planning_is_visible := is_instance_valid(planning_surface) and planning_surface.visible
+    return not planning_is_visible or _presentation_state not in ["planning", "next_bundle_ready"]
+
+func _apply_state_derived_product_layout() -> void:
+    if not _layout_ready or not is_instance_valid(action_selection_dock) or not is_instance_valid(top_hud) or not is_instance_valid(duel_stage_surface):
         return
-    var top_bottom := top_hud.position.y + top_hud.size.y + 8.0 if is_instance_valid(top_hud) else size.y * 0.20
-    var stage_gap := 5.0
-    var duel_rect := Rect2(
-        Vector2(0.0, top_bottom + stage_gap),
-        Vector2(size.x, maxf(1.0, size.y - top_bottom - stage_gap))
-    )
-    if is_instance_valid(duel_stage_surface):
-        duel_stage_surface.position = duel_rect.position
-        duel_stage_surface.size = duel_rect.size
-    var full_duel_visual_rect := Rect2(Vector2.ZERO, size)
-    if is_instance_valid(battle_background):
-        battle_background.set_stage_rect(full_duel_visual_rect)
-    if is_instance_valid(duel_foreground_banner):
-        duel_foreground_banner.set_stage_rect(full_duel_visual_rect)
-    if is_instance_valid(_background_readability_tint):
-        _background_readability_tint.position = duel_rect.position
-        _background_readability_tint.size = duel_rect.size
-    _apply_frontal_duel_composition()
-    set_meta("locked_duel_stage_expanded", true)
+    if not is_instance_valid(battle_background) or not is_instance_valid(duel_foreground_banner) or not is_instance_valid(_background_readability_tint):
+        return
+    if not size.is_finite() or size.x <= 0.0 or size.y <= 0.0:
+        return
+    var expanded := _uses_expanded_execution_layout()
+    var duel_y := top_hud.position.y + top_hud.size.y + 8.0 + 5.0
+    var planning_top := clampf(size.y * 0.50, 260.0, size.y - 242.0)
+    var active_rect := Rect2(0.0, duel_y, size.x, size.y - duel_y if expanded else planning_top - duel_y - 5.0)
+    if not active_rect.position.is_finite() or not active_rect.size.is_finite() or not active_rect.has_area():
+        return
+    # Compare only final successful layouts, not super's temporary planning rect.
+    var delta_position := (active_rect.position - _last_applied_active_duel_rect.position).abs()
+    var delta_size := (active_rect.size - _last_applied_active_duel_rect.size).abs()
+    var geometry_changed := _has_applied_active_duel_rect and maxf(maxf(delta_position.x, delta_position.y), maxf(delta_size.x, delta_size.y)) > 0.01
+    if not expanded:
+        _layout_product_action_dock()
+    duel_stage_surface.position = active_rect.position
+    duel_stage_surface.size = active_rect.size
+    battle_background.set_stage_rect(active_rect)
+    duel_foreground_banner.set_stage_rect(active_rect)
+    _background_readability_tint.position = active_rect.position
+    _background_readability_tint.size = active_rect.size
+    if not _apply_frontal_duel_composition():
+        return
+    if geometry_changed:
+        player_character.snap_move_for_relayout(_presentation_anchor_for_actor("player"))
+        enemy_character.snap_move_for_relayout(_presentation_anchor_for_actor("enemy"))
+    _last_applied_active_duel_rect = active_rect
+    _has_applied_active_duel_rect = true
+    set_meta("duel_stage_surface_rect", active_rect)
+    set_meta("locked_duel_stage_expanded", expanded)
 
 func _layout_locked_plan_execute_prompt() -> void:
     if not _plan_locked or not is_instance_valid(combat_progress_button):
@@ -359,9 +384,14 @@ func _refresh_ultimate_menu() -> void:
     _sync_action_selection_dock()
 
 func _layout_board() -> void:
+    var previous_defer := _defer_character_snap
+    # Base configures logical tiles; an ordinary relayout must not snap MOVE
+    # to those hidden tile anchors before the final frontal composition.
+    if is_instance_valid(player_character) and is_instance_valid(enemy_character):
+        _defer_character_snap = previous_defer or player_character.motion_state == "move" or enemy_character.motion_state == "move"
     super._layout_board()
-    _layout_product_action_dock()
-    _apply_frontal_duel_composition()
+    _defer_character_snap = previous_defer
+    _apply_state_derived_product_layout()
 
 func _layout_product_action_dock() -> void:
     if not is_instance_valid(action_selection_dock) or size.x <= 0.0 or size.y <= 0.0:
@@ -409,31 +439,42 @@ func _layout_product_action_dock() -> void:
             control.focus_mode = Control.FOCUS_NONE
     _hide_legacy_action_ui()
 
-func _apply_frontal_duel_composition() -> void:
+func _frontal_anchor_pair(player_tile: int, enemy_tile: int, floor_y: float) -> Dictionary:
+    var normalized_distance := clampf(float(absi(enemy_tile - player_tile)) / 4.0, 0.0, 1.0)
+    var separation := lerpf(size.x * 0.19, size.x * 0.255, normalized_distance)
+    var drift := clampf((float(player_tile + enemy_tile) * 0.5 - 5.5) * size.x * 0.014, -size.x * 0.05, size.x * 0.05)
+    return {"player": Vector2(size.x * 0.5 + drift - separation, floor_y), "enemy": Vector2(size.x * 0.5 + drift + separation, floor_y)}
+
+func _presentation_anchor_for_actor(actor_key: String) -> Vector2:
+    return _frontal_anchor_pair(_player_tile, _enemy_tile, battle_background.get_duel_floor_y(size))[actor_key]
+
+func _apply_frontal_duel_composition() -> bool:
     if not is_instance_valid(player_character) or not is_instance_valid(enemy_character) or tiles.is_empty():
-        return
+        return false
     _set_tactical_target_layer_visible(false)
     if is_instance_valid(_anchor_line):
         _anchor_line.visible = false
 
     var duel_rect := get_duel_stage_rect()
-    var timing_top := size.y - 16.0 if _plan_locked else (action_timing_panel.position.y if is_instance_valid(action_timing_panel) else size.y * 0.60)
     var hud_bottom := maxf(top_hud.position.y + top_hud.size.y, duel_rect.position.y) if is_instance_valid(top_hud) else duel_rect.position.y
-    var grounded_floor_y := battle_background.get_duel_floor_y(size) if is_instance_valid(battle_background) else size.y * 0.46
-    var player_foot_y := clampf(grounded_floor_y, hud_bottom + 32.0, timing_top - 16.0)
-    var normalized_distance := clampf(float(absi(_enemy_tile - _player_tile)) / 4.0, 0.0, 1.0)
-    var horizontal_separation := lerpf(size.x * 0.19, size.x * 0.255, normalized_distance)
-    var tile_center_drift := clampf((float(_player_tile + _enemy_tile) * 0.5 - 5.5) * size.x * 0.014, -size.x * 0.05, size.x * 0.05)
-    var duel_center_x := size.x * 0.5 + tile_center_drift
-
-    var distant_scale_width := minf(_tile_width * 0.76, maxf(54.0, duel_rect.size.y * 0.31))
-    player_character.set_dimensions(distant_scale_width)
-    enemy_character.set_dimensions(distant_scale_width)
+    var player_foot_y := battle_background.get_duel_floor_y(size)
+    var anchors := _frontal_anchor_pair(_player_tile, _enemy_tile, player_foot_y)
+    var duel_center_x: float = (anchors.player.x + anchors.enemy.x) * 0.5
+    for actor in [player_character, enemy_character]:
+        var factor: float = actor.get_idle_art_height_per_node_height()
+        var max_idle_ratio: float = minf(0.50, 0.52 / actor.get_existing_motion_peak_scale())
+        if factor <= 0.0 or actor.character_height_ratio <= 0.0 or max_idle_ratio < 0.46:
+            return false
+    for actor in [player_character, enemy_character]:
+        var node_height: float = duel_rect.size.y * 0.46 / actor.get_idle_art_height_per_node_height()
+        actor.set_dimensions(node_height / actor.character_height_ratio)
     player_character.z_index = 4
     enemy_character.z_index = 4
     if not _defer_character_snap:
-        player_character.place_foot_at(Vector2(duel_center_x - horizontal_separation, player_foot_y))
-        enemy_character.place_foot_at(Vector2(duel_center_x + horizontal_separation, player_foot_y))
+        if player_character.motion_state != "move":
+            player_character.place_foot_at(anchors.player)
+        if enemy_character.motion_state != "move":
+            enemy_character.place_foot_at(anchors.enemy)
 
     if is_instance_valid(range_readout_panel):
         var range_size := Vector2(clampf(size.x * 0.090, 104.0, 122.0), 44.0)
@@ -446,6 +487,7 @@ func _apply_frontal_duel_composition() -> void:
     set_meta("duel_floor_y", player_foot_y)
     set_meta("character_scale_profile", "distant_frontal_duel")
     set_meta("logical_board_default_visibility", "hidden")
+    return true
 
 func _set_tactical_target_layer_visible(_value: bool) -> void:
     if is_instance_valid(_tile_layer):
@@ -464,15 +506,8 @@ func _shift_battlefield_above(maximum_bottom: float) -> void:
     _board_top = maxf(145.0, _board_top - shift)
     for tile in tiles:
         tile.position.y = _board_top
-    if not _defer_character_snap:
-        var player_foot := get_tile_foot_anchor(_player_tile)
-        var enemy_foot := get_tile_foot_anchor(_enemy_tile)
-        if _player_tile == _enemy_tile:
-            var engage_offset := _tile_width * 0.18
-            player_foot.x -= engage_offset
-            enemy_foot.x += engage_offset
-        player_character.place_foot_at(player_foot)
-        enemy_character.place_foot_at(enemy_foot)
+    # Logical tile layout is hidden; only the final frontal composition places
+    # actors. In particular, this planning shift must not reposition live MOVE.
     if is_instance_valid(_anchor_line):
         var board_left := tiles[0].position.x
         var board_right := tiles[tiles.size() - 1].position.x + tiles[tiles.size() - 1].size.x

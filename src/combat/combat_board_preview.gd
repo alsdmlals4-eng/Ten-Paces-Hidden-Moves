@@ -710,15 +710,14 @@ func _layout_screen_surfaces(planning_top: float = -1.0) -> void:
 	if is_instance_valid(planning_surface):
 		planning_surface.position = planning_rect.position
 		planning_surface.size = planning_rect.size
-	var upper_visual_rect := Rect2(Vector2.ZERO, Vector2(size.x, resolved_planning_top))
 	if is_instance_valid(battle_background):
-		battle_background.set_stage_rect(upper_visual_rect)
+		battle_background.set_stage_rect(duel_rect)
 	if is_instance_valid(_background_readability_tint):
 		_background_readability_tint.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 		_background_readability_tint.position = duel_rect.position
 		_background_readability_tint.size = duel_rect.size
 	if is_instance_valid(duel_foreground_banner):
-		duel_foreground_banner.set_stage_rect(upper_visual_rect)
+		duel_foreground_banner.set_stage_rect(duel_rect)
 	set_meta("top_hud_surface_rect", top_rect)
 	set_meta("duel_stage_surface_rect", duel_rect)
 	set_meta("planning_surface_rect", planning_rect)
@@ -1305,6 +1304,12 @@ func _advance_to_next_bundle() -> void:
 	_configure_keyboard_focus_order()
 	_sync_progress_availability()
 
+func _presentation_anchor_for_actor(actor_key: String) -> Vector2:
+	var anchor := get_tile_foot_anchor(_player_tile if actor_key == "player" else _enemy_tile)
+	if _player_tile == _enemy_tile:
+		anchor.x += _tile_width * 0.18 * (-1.0 if actor_key == "player" else 1.0)
+	return anchor
+
 func _apply_timing_snapshot(state_value) -> void:
 	await _wait_for_session_resume()
 	if typeof(state_value) != TYPE_DICTIONARY:
@@ -1316,13 +1321,11 @@ func _apply_timing_snapshot(state_value) -> void:
 	_play_momentum_gain_sfx(state_before_snapshot, combat_state)
 	await get_tree().process_frame
 	await _wait_for_session_resume()
-	var player_target := get_tile_foot_anchor(_player_tile)
-	var enemy_target := get_tile_foot_anchor(_enemy_tile)
-	if _player_tile == _enemy_tile:
-		player_target.x -= _tile_width * 0.18
-		enemy_target.x += _tile_width * 0.18
-	var player_moves := is_instance_valid(player_character) and player_character.get_foot_anchor_global().distance_to(player_target) > 1.0
-	var enemy_moves := is_instance_valid(enemy_character) and enemy_character.get_foot_anchor_global().distance_to(enemy_target) > 1.0
+	var player_target := _presentation_anchor_for_actor("player")
+	var enemy_target := _presentation_anchor_for_actor("enemy")
+	var board_inverse := get_global_transform().affine_inverse()
+	var player_moves := is_instance_valid(player_character) and (board_inverse * player_character.get_global_transform() * player_character.get_foot_anchor_local()).distance_to(player_target) > 1.0
+	var enemy_moves := is_instance_valid(enemy_character) and (board_inverse * enemy_character.get_global_transform() * enemy_character.get_foot_anchor_local()).distance_to(enemy_target) > 1.0
 	if not _reduced_motion:
 		if player_moves:
 			player_character.animate_move_to(player_target)
