@@ -13,9 +13,12 @@
 최초 저장 공개 전 전투원별 성급 실행·복구 교정
 `TEN-DEC-20260909-MARTIAL-ACTOR-BINDING-CORRECTION-01`과 영속 저장은 PR #333으로 병합됐다.
 전투 표시·승패 음향 교정은 `TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01`이 소유하며 PR #335로 병합됐다.
+남은 무대/인물/현재 수/효과 배치 교정은 `TEN-DEC-20260909-COMBAT-LAYOUT-CORRECTION-01`의 독립 패키지로 검증한다.
 이후 실제 고유 대응·공통 피해/방어 해결 누락을 기존 공개 저장의 완주 호환과 함께 별도 명세·교정하고,
 그 뒤 `growth/events/status/reward` 정본 공백을 다룬다. 이는 전체 Blueprint 완료 주장이 아니다.
 상세 전달 순서는 `../../../docs/04_ROADMAP.md`, 현재 결과는 Active Context/current JSON을 따른다.
+
+아틀라스 품질 후속은 실제 관찰 설명/긴 한글/인물 중첩·접지/계획 여백을 포함한다. 배치 검증 통과를 최종 이미지·가독성 승인으로 대체하지 않으며 상세 항목과 순서는 위 제품 로드맵이 소유한다.
 
 영속 저장·이어하기 `TEN-DEC-20260908-DURABLE-RUN-CONTINUE-01`의 검증·전달 순서는
 `../../../docs/04_ROADMAP.md`에서 읽고 현재 결과는 Active Context/current JSON을 따른다.

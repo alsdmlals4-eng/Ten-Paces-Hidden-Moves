@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "477697842bf14d95e670f01b0fe815e384b53658",
+  "decision_ids": [
+    "TEN-DEC-20260909-COMBAT-LAYOUT-CORRECTION-01"
+  ],
+  "approved_paths": [
+    "src/combat/combat_board_preview_auto.gd",
+    "src/combat/combat_board_preview.gd",
+    "src/combat/combat_character_placeholder.gd"
+  ],
+  "approval_source": "Current user continuous Blueprint implementation and correction authorization; controller ratification of independently reviewed exact layout specification 0626f2956be878d16837cfabcf04d388b774a8fc8962f0055eefb0b119e47a61 after L1-L5/R1. New package-specific approval, not retired PR335 approval reuse.",
+  "approval_time": "2026-09-09T09:05:13+09:00",
+  "scope_summary": "Existing three product owners only: stage-only state-derived layout, cached occupied-alpha draw bounds and 46% idle with 52% peak ceiling, shared frontal movement anchors and genuine-geometry-only MOVE snap, separate current comparison/label/VFX lanes with honored fail-closed fitting. Preserve domain rules, authored data, AI, save v1, all assets, audio and nonmove animation values. Tests/workflow and current documentation accompany. No ordered-combat-v2, growth, new artwork or Human/device/release approval."
+}

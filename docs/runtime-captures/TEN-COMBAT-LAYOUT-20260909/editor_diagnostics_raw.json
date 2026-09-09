@@ -1,0 +1,169 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"source\":\"editor\",\"lines\":[{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":255,\"path\":\"res://src/combat/martial_effect_pipeline.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: The local variable \\\"reference\\\" is shadowing an already-declared method in the base class \\\"RefCounted\\\".\"},{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":304,\"path\":\"res://src/combat/martial_effect_pipeline.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: The parameter \\\"actor_key\\\" is never used in the function \\\"_condition_met()\\\". If this is intended, prefix it with an underscore: \\\"_actor_key\\\".\"},{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":41,\"path\":\"res://src/combat/battle_background.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: The local variable \\\"scale\\\" is shadowing an already-declared property in the base class \\\"Control\\\".\"},{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":65,\"path\":\"res://src/combat/combat_ai_planner.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: The variable \\\"seed\\\" has the same name as a built-in function.\"},{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":112,\"path\":\"res://src/combat/combat_ai_planner.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: The variable \\\"seed\\\" has the same name as a built-in function.\"},{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":141,\"path\":\"res://src/combat/combat_ai_planner.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: The function parameter \\\"seed\\\" has the same name as a built-in function.\"},{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":249,\"path\":\"res://src/ui/action_timing_panel.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: The parameter \\\"direction\\\" is never used in the function \\\"_format_target_text()\\\". If this is intended, prefix it with an underscore: \\\"_direction\\\".\"},{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":256,\"path\":\"res://src/ui/action_timing_panel.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: The local variable \\\"ready\\\" is shadowing an already-declared signal in the base class \\\"Node\\\".\"},{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":470,\"path\":\"res://src/ui/action_timing_panel.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: Integer used when an enum value is expected. If this is intended, cast the integer to the enum type using the \\\"as\\\" keyword.\"},{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":106,\"path\":\"res://src/ui/basic_card_tray_item.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: Integer used when an enum value is expected. If this is intended, cast the integer to the enum type using the \\\"as\\\" keyword.\"},{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":201,\"path\":\"res://src/ui/basic_card_tray.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: Integer used when an enum value is expected. If this is intended, cast the integer to the enum type using the \\\"as\\\" keyword.\"},{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":223,\"path\":\"res://src/ui/action_selection/action_choice_card.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: The local variable \\\"pressed\\\" is shadowing an already-declared signal in the base class \\\"BaseButton\\\".\"},{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":226,\"path\":\"res://src/ui/action_selection/action_choice_card.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: The local variable \\\"disabled\\\" is shadowing an already-declared property in the base class \\\"BaseButton\\\".\"},{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":17,\"path\":\"res://src/ui/duel_foreground_banner.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: Values of the ternary operator are not mutually compatible.\"},{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":14,\"path\":\"res://src/ui/combat_screen_surface.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: Values of the ternary operator are not mutually compatible.\"},{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":386,\"path\":\"res://src/combat/combat_board_preview.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: The local variable \\\"material\\\" is shadowing an already-declared property in the base class \\\"CanvasItem\\\".\"},{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":1378,\"path\":\"res://src/combat/combat_board_preview.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: The parameter \\\"timing\\\" is never used in the function \\\"_present_authoritative_events()\\\". If this is intended, prefix it with an underscore: \\\"_timing\\\".\"},{\"function\":\"GDScript::reload\",\"level\":\"warn\",\"line\":1012,\"path\":\"res://.superpowers/sdd/layout-capture-probe.gd\",\"source\":\"editor\",\"text\":\"GDScript::reload: The local variable \\\"owner\\\" is shadowing an already-declared property in the base class \\\"Node\\\".\"}],\"total_count\":18,\"returned_count\":18,\"offset\":0,\"limit\":100,\"has_more\":false,\"run_id\":\"\",\"is_running\":false,\"dropped_count\":0,\"stale_run_id\":false,\"next_cursor\":0,\"appended_total\":0}"
+    }
+  ],
+  "structuredContent": {
+    "source": "editor",
+    "lines": [
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 255,
+        "path": "res://src/combat/martial_effect_pipeline.gd",
+        "source": "editor",
+        "text": "GDScript::reload: The local variable \"reference\" is shadowing an already-declared method in the base class \"RefCounted\"."
+      },
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 304,
+        "path": "res://src/combat/martial_effect_pipeline.gd",
+        "source": "editor",
+        "text": "GDScript::reload: The parameter \"actor_key\" is never used in the function \"_condition_met()\". If this is intended, prefix it with an underscore: \"_actor_key\"."
+      },
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 41,
+        "path": "res://src/combat/battle_background.gd",
+        "source": "editor",
+        "text": "GDScript::reload: The local variable \"scale\" is shadowing an already-declared property in the base class \"Control\"."
+      },
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 65,
+        "path": "res://src/combat/combat_ai_planner.gd",
+        "source": "editor",
+        "text": "GDScript::reload: The variable \"seed\" has the same name as a built-in function."
+      },
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 112,
+        "path": "res://src/combat/combat_ai_planner.gd",
+        "source": "editor",
+        "text": "GDScript::reload: The variable \"seed\" has the same name as a built-in function."
+      },
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 141,
+        "path": "res://src/combat/combat_ai_planner.gd",
+        "source": "editor",
+        "text": "GDScript::reload: The function parameter \"seed\" has the same name as a built-in function."
+      },
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 249,
+        "path": "res://src/ui/action_timing_panel.gd",
+        "source": "editor",
+        "text": "GDScript::reload: The parameter \"direction\" is never used in the function \"_format_target_text()\". If this is intended, prefix it with an underscore: \"_direction\"."
+      },
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 256,
+        "path": "res://src/ui/action_timing_panel.gd",
+        "source": "editor",
+        "text": "GDScript::reload: The local variable \"ready\" is shadowing an already-declared signal in the base class \"Node\"."
+      },
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 470,
+        "path": "res://src/ui/action_timing_panel.gd",
+        "source": "editor",
+        "text": "GDScript::reload: Integer used when an enum value is expected. If this is intended, cast the integer to the enum type using the \"as\" keyword."
+      },
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 106,
+        "path": "res://src/ui/basic_card_tray_item.gd",
+        "source": "editor",
+        "text": "GDScript::reload: Integer used when an enum value is expected. If this is intended, cast the integer to the enum type using the \"as\" keyword."
+      },
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 201,
+        "path": "res://src/ui/basic_card_tray.gd",
+        "source": "editor",
+        "text": "GDScript::reload: Integer used when an enum value is expected. If this is intended, cast the integer to the enum type using the \"as\" keyword."
+      },
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 223,
+        "path": "res://src/ui/action_selection/action_choice_card.gd",
+        "source": "editor",
+        "text": "GDScript::reload: The local variable \"pressed\" is shadowing an already-declared signal in the base class \"BaseButton\"."
+      },
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 226,
+        "path": "res://src/ui/action_selection/action_choice_card.gd",
+        "source": "editor",
+        "text": "GDScript::reload: The local variable \"disabled\" is shadowing an already-declared property in the base class \"BaseButton\"."
+      },
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 17,
+        "path": "res://src/ui/duel_foreground_banner.gd",
+        "source": "editor",
+        "text": "GDScript::reload: Values of the ternary operator are not mutually compatible."
+      },
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 14,
+        "path": "res://src/ui/combat_screen_surface.gd",
+        "source": "editor",
+        "text": "GDScript::reload: Values of the ternary operator are not mutually compatible."
+      },
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 386,
+        "path": "res://src/combat/combat_board_preview.gd",
+        "source": "editor",
+        "text": "GDScript::reload: The local variable \"material\" is shadowing an already-declared property in the base class \"CanvasItem\"."
+      },
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 1378,
+        "path": "res://src/combat/combat_board_preview.gd",
+        "source": "editor",
+        "text": "GDScript::reload: The parameter \"timing\" is never used in the function \"_present_authoritative_events()\". If this is intended, prefix it with an underscore: \"_timing\"."
+      },
+      {
+        "function": "GDScript::reload",
+        "level": "warn",
+        "line": 1012,
+        "path": "res://.superpowers/sdd/layout-capture-probe.gd",
+        "source": "editor",
+        "text": "GDScript::reload: The local variable \"owner\" is shadowing an already-declared property in the base class \"Node\"."
+      }
+    ],
+    "total_count": 18,
+    "returned_count": 18,
+    "offset": 0,
+    "limit": 100,
+    "has_more": false,
+    "run_id": "",
+    "is_running": false,
+    "dropped_count": 0,
+    "stale_run_id": false,
+    "next_cursor": 0,
+    "appended_total": 0
+  },
+  "isError": false
+}

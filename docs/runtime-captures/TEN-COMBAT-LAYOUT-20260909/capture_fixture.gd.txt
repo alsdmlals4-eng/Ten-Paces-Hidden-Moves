@@ -1,0 +1,1116 @@
+extends Node
+
+## Ignored controller-side capture harness for the current CombatBoardPreview.
+## It creates the real Board scene and uses its real resolver/UI paths, but it
+## never creates a RunSession, touches a save, writes an image, or autostarts.
+
+signal checkpoint_ready(label: String, snapshot: Dictionary)
+signal probe_failed(code: String, detail: Dictionary)
+signal probe_complete(summary: Dictionary)
+signal checkpoint_released
+
+const BOARD_SCENE := preload("res://scenes/combat/combat_board_preview.tscn")
+const ENGINE := preload("res://src/run/vertical_slice_metrics_combat_resolution_engine.gd")
+
+const MAX_WAIT_FRAMES := 600
+const MAX_WAIT_MSEC := 5000
+# Three timing slots can each contain two resolver events.  Keep the short
+# phase gates above, but give the post-impact remainder one bounded budget.
+const WHOLE_SEQUENCE_MAX_WAIT_FRAMES := 1800
+const WHOLE_SEQUENCE_MAX_WAIT_MSEC := 15000
+const OVERLAY_SETTLED_ALPHA := 0.98
+const PRESENTATION_CAPTURE_ALPHA := 0.80
+const VIEWPORT_720 := Vector2(1280.0, 720.0)
+const VIEWPORT_800 := Vector2(1280.0, 800.0)
+const VIEWPORT_1080 := Vector2(1920.0, 1080.0)
+
+@onready var board_host: Control = $BoardHost
+
+var board: CombatBoardPreview
+var last_snapshot: Dictionary = {}
+var last_failure: Dictionary = {}
+
+var _running := false
+var _aborted := false
+var _release_requested := false
+var _paused_checkpoint := ""
+var _active_viewport := Vector2.ZERO
+var _active_scenario := ""
+var _case_source_kind := ""
+var _skip_requested := false
+
+var _waiting_for_peak := false
+var _peak_signal_seen := false
+var _peak_checkpoint_label := ""
+var _peak_tween: Tween
+
+var _resize_tween: Tween
+var _resize_vfx_scale := Vector2.ONE
+var _resize_vfx_alpha := 1.0
+var _resize_sfx_present := false
+var _resize_sfx_value := ""
+var _resize_contract_captured := false
+var _resize_contract_checkpoint := ""
+var _resize_contract_visible_viewport := Vector2.ZERO
+
+var _long_copy_signature := ""
+var _long_copy_stable_frames := 0
+
+
+func _ready() -> void:
+	# The controller may freeze the game tree to take a real screenshot.  The
+	# probe remains callable, while the real board deliberately remains pausable.
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	set_process(false)
+	_ensure_pause_inspectors_always()
+	if is_instance_valid(board_host):
+		board_host.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+
+## Public controller entry points.  The controller must first place the native
+## game window at the matching actual visible viewport; a mismatch fails rather
+## than resizing an off-screen synthetic surface.
+func begin_720_capture() -> void:
+	_run_ordinary_cta(VIEWPORT_720, "720")
+
+
+func begin_800_capture() -> void:
+	_run_ordinary_cta(VIEWPORT_800, "800")
+
+
+func begin_1080_capture() -> void:
+	_run_ordinary_cta(VIEWPORT_1080, "1080")
+
+
+## Uses the actual runtime Window only.  `content_scale_size = Vector2i.ZERO`
+## removes the project base-size override for this capture fixture; it does not
+## edit project.godot, create a canvas, or relayout a live Board by itself.
+func qa_set_native_viewport(width: int, height: int) -> Dictionary:
+	var target := Vector2i(width, height)
+	if target not in [Vector2i(1280, 720), Vector2i(1280, 800), Vector2i(1920, 1080)]:
+		return {"ok": false, "code": "UNSUPPORTED_NATIVE_VIEWPORT", "requested": target, "allowed": [Vector2i(1280, 720), Vector2i(1280, 800), Vector2i(1920, 1080)]}
+	var window := get_window()
+	if window == null:
+		return {"ok": false, "code": "WINDOW_UNAVAILABLE", "requested": target}
+	# A peak-step callback proves the authored 1.08 scale, but the callback can
+	# precede the final paused render state.  For the resize invariant, record the
+	# actual paused state immediately before this real Window mutation instead.
+	var pre_resize_contract := {}
+	if _should_capture_pre_resize_contract(target):
+		_capture_resize_contract()
+		pre_resize_contract = _resize_contract_snapshot()
+	window.content_scale_size = Vector2i.ZERO
+	window.size = target
+	var visible := _visible_viewport_size()
+	var target_visible := Vector2(float(target.x), float(target.y))
+	var content_scale_cleared := window.content_scale_size == Vector2i.ZERO
+	var window_matches_target := window.size == target
+	var visible_matches_target := _same_size(visible, target_visible)
+	var capture_eligible := content_scale_cleared and window_matches_target and visible_matches_target
+	return {
+		"ok": capture_eligible,
+		"code": "" if capture_eligible else "NATIVE_VIEWPORT_NOT_APPLIED",
+		"requested": target,
+		"window_size": window.size,
+		"content_scale_size": window.content_scale_size,
+		"visible_rect": visible,
+		"content_scale_cleared": content_scale_cleared,
+		"window_matches_requested": window_matches_target,
+		"visible_rect_matches_requested": visible_matches_target,
+		"capture_eligible": capture_eligible,
+		"stretch_mode": window.content_scale_mode,
+		"helper_called_board_layout": false,
+		"pre_resize_contract": pre_resize_contract
+	}
+
+
+func begin_800_peng_peak() -> void:
+	_run_ultimate_capture(VIEWPORT_800, "peng", false)
+
+
+func begin_800_legacy_peak() -> void:
+	_run_ultimate_capture(VIEWPORT_800, "legacy", false)
+
+
+func begin_800_muted_reduced_peng() -> void:
+	_run_ultimate_capture(VIEWPORT_800, "peng", true)
+
+
+func begin_800_dogyeom_enemy_variance() -> void:
+	_run_dogyeom_enemy_variance()
+
+
+func begin_800_long_copy_fixture() -> void:
+	_run_long_copy_fixture()
+
+
+## Release a signal-driven checkpoint after the controller has taken its own
+## screenshot.  There is intentionally no timer- or sleep-based auto-release.
+func resume_after_capture() -> bool:
+	if _paused_checkpoint.is_empty():
+		return false
+	_release_requested = true
+	get_tree().paused = false
+	checkpoint_released.emit()
+	return true
+
+
+func release_checkpoint() -> bool:
+	return resume_after_capture()
+
+
+func get_checkpoint_status() -> Dictionary:
+	return {
+		"running": _running,
+		"aborted": _aborted,
+		"scenario": _active_scenario,
+		"checkpoint": _paused_checkpoint,
+		"tree_paused": get_tree().paused,
+		"requested_viewport": _active_viewport,
+		"visible_viewport": _visible_viewport_size(),
+		"source_kind": _case_source_kind,
+		"resize_contract": _resize_contract_snapshot()
+	}
+
+
+func get_last_snapshot() -> Dictionary:
+	return last_snapshot.duplicate(true)
+
+
+## Persists the most recent probe failure until a later scenario is prepared.
+## Timeout details include the real yielded-frame count, elapsed deadline, and
+## current Board state so a controller can distinguish a slow presentation from
+## a false checkpoint predicate without rerunning a synthetic substitute.
+func get_last_failure() -> Dictionary:
+	return last_failure.duplicate(true)
+
+
+## Requests the Board's real skip behavior while a real presentation is
+## frozen.  The next checkpoint is still state-gated by next_bundle_ready.
+func request_skip_and_resume() -> bool:
+	if not _active_scenario.begins_with("ordinary_cta") or not is_instance_valid(board) or _paused_checkpoint.is_empty() or not board._inputs_locked():
+		probe_failed.emit("SKIP_NOT_AVAILABLE", _record_failure("SKIP_NOT_AVAILABLE", {"checkpoint": _paused_checkpoint}))
+		return false
+	_skip_requested = true
+	board._skip_presentation()
+	return resume_after_capture()
+
+
+## This does not resize a fake control.  The controller first performs a real
+## visible native-window resize, then calls this while the peak checkpoint is
+## still paused.  It verifies the real Board keeps its in-flight tween/state.
+func verify_visible_resize_to_1080() -> bool:
+	return _verify_visible_resize(VIEWPORT_1080)
+
+
+func abort_probe(reason: String = "controller_abort") -> void:
+	if not _running:
+		return
+	_fail("PROBE_ABORTED", {"reason": reason, "checkpoint": _paused_checkpoint})
+
+
+func _run_ordinary_cta(expected_viewport: Vector2, viewport_name: String) -> void:
+	if not await _prepare(expected_viewport, "ordinary_cta_%s" % viewport_name, "ACTUAL_PRODUCT_CTA"):
+		return
+	if not await _pause_checkpoint("%s_INITIAL_PLANNING" % viewport_name):
+		return
+	if not await _build_actual_ordinary_bundle():
+		return
+	if not await _wait_until("ordinary_current_compare", Callable(self, "_ordinary_compare_visible")):
+		return
+	if not await _pause_checkpoint("%s_ORDINARY_CURRENT_COMPARE" % viewport_name):
+		return
+	if _skip_requested:
+		await _finish_ordinary_after_skip(viewport_name)
+		return
+	if not await _wait_until("ordinary_real_move", Callable(self, "_ordinary_move_visible")):
+		return
+	if not await _pause_checkpoint("%s_ORDINARY_MOVE" % viewport_name):
+		return
+	if _skip_requested:
+		await _finish_ordinary_after_skip(viewport_name)
+		return
+	if not await _wait_until("ordinary_compare_impact", Callable(self, "_ordinary_impact_visible")):
+		return
+	if not await _pause_checkpoint("%s_ORDINARY_COMPARE_IMPACT" % viewport_name):
+		return
+	if _skip_requested:
+		await _finish_ordinary_after_skip(viewport_name)
+		return
+	if not await _wait_until("ordinary_next_planning", Callable(self, "_next_planning_visible"), WHOLE_SEQUENCE_MAX_WAIT_FRAMES, WHOLE_SEQUENCE_MAX_WAIT_MSEC):
+		return
+	if not await _pause_checkpoint("%s_ORDINARY_NEXT_PLANNING" % viewport_name):
+		return
+	_finish("ordinary_cta_%s" % viewport_name)
+
+
+func _finish_ordinary_after_skip(viewport_name: String) -> void:
+	if not await _wait_until("ordinary_next_planning_after_skip", Callable(self, "_next_planning_visible")):
+		return
+	if not await _pause_checkpoint("%s_ORDINARY_NEXT_PLANNING_AFTER_SKIP" % viewport_name):
+		return
+	_finish("ordinary_cta_%s_skipped" % viewport_name)
+
+
+func _run_ultimate_capture(expected_viewport: Vector2, kind: String, muted_reduced: bool) -> void:
+	var source_kind := "ACTUAL_RESOLVER_SEEDED_FIXTURE_MUTED_REDUCED" if muted_reduced else "ACTUAL_RESOLVER_SEEDED_FIXTURE"
+	if not await _prepare(expected_viewport, "%s_ultimate" % kind, source_kind):
+		return
+	var fixture := _actual_peng_fixture() if kind == "peng" else _actual_legacy_fixture()
+	var event: Dictionary = fixture.get("event", {})
+	if event.is_empty():
+		_fail("ACTUAL_RESOLVER_EVENT_MISSING", {"kind": kind, "fixture": fixture})
+		return
+	board.resolution_engine = fixture.get("engine")
+	board._sound_muted = muted_reduced
+	board._reduced_motion = muted_reduced
+	board._set_presentation_state("presenting_result")
+	board._set_resolution_surface_visible(false)
+	if not await _wait_until("ultimate_execution_lanes", Callable(self, "_execution_lanes_visible")):
+		return
+	var profile: Dictionary = board.call("_presentation_profile_for_event", event)
+	if str(profile.get("kind", "")) != "ultimate":
+		_fail("ACTUAL_EVENT_NOT_ELIGIBLE_ULTIMATE", {"kind": kind, "event": event, "profile": profile})
+		return
+	board.remove_meta("last_sfx_kind")
+	if muted_reduced:
+		board._present_resolved_event_feedback(event)
+		if not await _wait_until("muted_reduced_actual_impact", Callable(self, "_ordinary_impact_visible")):
+			return
+		if not await _pause_checkpoint("800_%s_MUTED_REDUCED_IMPACT" % kind.to_upper()):
+			return
+		if not await _wait_until("muted_reduced_recovery", Callable(self, "_feedback_settled")):
+			return
+		if not await _pause_checkpoint("800_%s_MUTED_REDUCED_RECOVERY" % kind.to_upper()):
+			return
+		_finish("%s_muted_reduced" % kind)
+		return
+
+	_waiting_for_peak = true
+	_peak_signal_seen = false
+	_peak_checkpoint_label = "800_%s_ULTIMATE_PEAK" % kind.to_upper()
+	board._present_resolved_event_feedback(event)
+	if not await _wait_until("ultimate_vfx_tween", Callable(self, "_ultimate_vfx_tween_ready")):
+		return
+	_peak_tween = board._presentation_vfx_tween
+	if _peak_tween == null or not _peak_tween.is_valid():
+		_fail("ULTIMATE_VFX_TWEEN_INVALID", {"kind": kind})
+		return
+	var peak_callable := Callable(self, "_on_vfx_tween_step")
+	if not _peak_tween.step_finished.is_connected(peak_callable):
+		_peak_tween.step_finished.connect(peak_callable)
+	if not await _wait_until("ultimate_peak_step_signal", Callable(self, "_peak_signal_or_abort")):
+		return
+	if not await _wait_for_checkpoint_release():
+		return
+	_disconnect_peak_signal()
+	if not await _wait_until("ultimate_recovery_settled", Callable(self, "_feedback_settled")):
+		return
+	if not await _pause_checkpoint("800_%s_ULTIMATE_RECOVERY" % kind.to_upper()):
+		return
+	_finish("%s_ultimate" % kind)
+
+
+func _run_dogyeom_enemy_variance() -> void:
+	if not await _prepare(VIEWPORT_800, "dogyeom_enemy_variance", "ACTUAL_ENEMY_DOGYEOM_VARIANCE"):
+		return
+	var original_enemy := _dictionary_copy(board.combat_state.get("enemy", {}))
+	board.combat_state.enemy["candidate_id"] = "slot1_dogyeom"
+	board._apply_combat_state_to_view()
+	if not await _wait_until("dogyeom_enemy_art_binding", Callable(self, "_dogyeom_enemy_bound")):
+		return
+	if not await _pause_checkpoint("800_DOGYEOM_ENEMY_VARIANCE_BOTH_ROLES"):
+		return
+	board.combat_state["enemy"] = original_enemy
+	board._apply_combat_state_to_view()
+	_finish("dogyeom_enemy_variance")
+
+
+func _run_long_copy_fixture() -> void:
+	if not await _prepare(VIEWPORT_800, "long_copy_fixture", "EXPLICIT_PRESENTATION_FIXTURE"):
+		return
+	board._set_presentation_state("presenting_result")
+	board._set_resolution_surface_visible(false)
+	var long_name := "창궁무애검법 연속 행동 조건과 방어 파괴 결과 확인"
+	var long_result := "파공검기 적중으로 상대의 다음 행동이 중단되어 전투 불능 직전입니다."
+	board.action_reveal_overlay.show_timing(3, "attack", [{
+		"type": "action_result",
+		"actor": "player",
+		"card_name": long_name,
+		"category": "attack",
+		"action_slots": 3,
+		"range_text": "1~3",
+		"raw_damage": 22,
+		"stamina_cost": 3,
+		"internal_cost": 2,
+		"damage": 9,
+		"outcome": "hit"
+	}], true)
+	board.presentation_label.text = long_result
+	board.presentation_label.visible = true
+	if not await _wait_for_long_copy_layout():
+		return
+	if not await _pause_checkpoint("800_LONG_COPY_PRESENTATION_FIXTURE"):
+		return
+	board._clear_presentation_feedback_visuals()
+	board._set_resolution_surface_visible(true)
+	_finish("long_copy_fixture")
+
+
+func _prepare(expected_viewport: Vector2, scenario: String, source_kind: String) -> bool:
+	if _running:
+		probe_failed.emit("PROBE_BUSY", _record_failure("PROBE_BUSY", {"active_scenario": _active_scenario, "requested_scenario": scenario}))
+		return false
+	_running = true
+	last_failure.clear()
+	_aborted = false
+	_release_requested = false
+	_paused_checkpoint = ""
+	_skip_requested = false
+	_waiting_for_peak = false
+	_peak_signal_seen = false
+	_peak_checkpoint_label = ""
+	_resize_tween = null
+	_resize_vfx_scale = Vector2.ONE
+	_resize_vfx_alpha = 1.0
+	_resize_sfx_present = false
+	_resize_sfx_value = ""
+	_resize_contract_captured = false
+	_resize_contract_checkpoint = ""
+	_resize_contract_visible_viewport = Vector2.ZERO
+	_disconnect_peak_signal()
+	_active_viewport = expected_viewport
+	_active_scenario = scenario
+	_case_source_kind = source_kind
+	if get_tree().paused:
+		_fail("TREE_ALREADY_PAUSED", {"scenario": scenario})
+		return false
+	var visible := _visible_viewport_size()
+	if not _same_size(visible, expected_viewport):
+		_fail("VIEWPORT_MISMATCH", {"scenario": scenario, "expected": expected_viewport, "actual": visible})
+		return false
+	if not is_instance_valid(board_host):
+		_fail("BOARD_HOST_MISSING", {"scenario": scenario})
+		return false
+	if is_instance_valid(board):
+		if board.get_parent() != null:
+			board.get_parent().remove_child(board)
+		board.queue_free()
+		board = null
+	board_host.size = expected_viewport
+	board = BOARD_SCENE.instantiate() as CombatBoardPreview
+	if board == null:
+		_fail("ACTUAL_BOARD_SCENE_MISSING", {"scenario": scenario})
+		return false
+	board.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	board.position = Vector2.ZERO
+	board.size = expected_viewport
+	board.process_mode = Node.PROCESS_MODE_PAUSABLE
+	board_host.add_child(board)
+	if not await _wait_until("board_layout_ready", Callable(self, "_board_is_ready")):
+		return false
+	if not await _wait_until("initial_planning_ready", Callable(self, "_initial_planning_visible")):
+		return false
+	return not _aborted
+
+
+func _build_actual_ordinary_bundle() -> bool:
+	var move := _basic_definition("basic_move")
+	var quick_attack := _basic_definition("basic_quick_attack")
+	var guard := _basic_definition("basic_guard")
+	if move.is_empty() or quick_attack.is_empty() or guard.is_empty():
+		_fail("ACTUAL_PRODUCT_CARD_MISSING", {"move": move, "quick_attack": quick_attack, "guard": guard})
+		return false
+	board._on_product_action_selected(move)
+	if not await _wait_until("move_semantic_targeting", Callable(self, "_move_semantic_targeting_active")):
+		return false
+	board._on_product_intent_selected({"intent": "approach", "resolver_direction": 1, "steps": 1, "name": "접근 1칸"})
+	if not await _wait_until("move_intent_committed", Callable(self, "_move_intent_committed")):
+		return false
+	board._on_product_action_selected(quick_attack)
+	if not await _wait_until("quick_attack_placed", Callable(self, "_quick_attack_placed")):
+		return false
+	board._on_product_action_selected(guard)
+	if not await _wait_until("ordinary_bundle_complete", Callable(self, "_ordinary_bundle_complete")):
+		return false
+	if not board.combat_progress_button.progress_enabled:
+		_fail("ACTUAL_CTA_NOT_ENABLED", {"layout": board.get_layout_snapshot()})
+		return false
+	board.combat_progress_button.request_progress()
+	return true
+
+
+func _on_vfx_tween_step(step: int) -> void:
+	if not _waiting_for_peak or step != 0 or not is_instance_valid(board):
+		return
+	_waiting_for_peak = false
+	var scale := board.presentation_vfx.scale
+	if scale != Vector2(1.08, 1.08):
+		_fail("ULTIMATE_PEAK_SCALE_MISMATCH", {"expected": Vector2(1.08, 1.08), "actual": scale, "event": board.get_meta("presentation_feedback_event", {})})
+		return
+	_peak_signal_seen = true
+	_enter_checkpoint(_peak_checkpoint_label)
+
+
+func _verify_visible_resize(expected_viewport: Vector2) -> bool:
+	if not is_instance_valid(board) or _paused_checkpoint.is_empty() or not get_tree().paused or not _peak_signal_seen or not _same_size(_active_viewport, VIEWPORT_800):
+		probe_failed.emit("VISIBLE_RESIZE_NOT_AT_FROZEN_CHECKPOINT", _record_failure("VISIBLE_RESIZE_NOT_AT_FROZEN_CHECKPOINT", {"expected": expected_viewport}))
+		return false
+	if not _resize_contract_captured or _resize_contract_checkpoint != _paused_checkpoint or not _same_size(_resize_contract_visible_viewport, VIEWPORT_800):
+		probe_failed.emit("VISIBLE_RESIZE_BASELINE_MISSING", _record_failure("VISIBLE_RESIZE_BASELINE_MISSING", {
+			"expected": expected_viewport,
+			"captured": _resize_contract_captured,
+			"captured_checkpoint": _resize_contract_checkpoint,
+			"captured_visible_viewport": _resize_contract_visible_viewport
+		}))
+		return false
+	if _resize_tween == null or not _resize_tween.is_valid():
+		probe_failed.emit("VISIBLE_RESIZE_TWEEN_MISSING", _record_failure("VISIBLE_RESIZE_TWEEN_MISSING", {"expected": expected_viewport}))
+		return false
+	var visible := _visible_viewport_size()
+	if not _same_size(visible, expected_viewport):
+		probe_failed.emit("VISIBLE_RESIZE_VIEWPORT_MISMATCH", _record_failure("VISIBLE_RESIZE_VIEWPORT_MISMATCH", {"expected": expected_viewport, "actual": visible}))
+		return false
+	board_host.size = expected_viewport
+	board.size = expected_viewport
+	board._layout_board()
+	var same_tween := board._presentation_vfx_tween == _resize_tween and _resize_tween.is_valid() and _resize_tween.is_running()
+	var same_scale := board.presentation_vfx.scale == _resize_vfx_scale
+	var same_alpha := board.presentation_vfx.modulate.a == _resize_vfx_alpha
+	var sfx_present := board.has_meta("last_sfx_kind")
+	var sfx_value := str(board.get_meta("last_sfx_kind", ""))
+	if not same_tween or not same_scale or not same_alpha or sfx_present != _resize_sfx_present or sfx_value != _resize_sfx_value:
+		_fail("VISIBLE_RESIZE_DID_NOT_PRESERVE_PRESENTATION", {
+			"same_tween": same_tween,
+			"same_scale": same_scale,
+			"same_alpha": same_alpha,
+			"same_sfx": sfx_present == _resize_sfx_present and sfx_value == _resize_sfx_value,
+			"before_scale": _resize_vfx_scale,
+			"after_scale": board.presentation_vfx.scale,
+			"before_alpha": _resize_vfx_alpha,
+			"after_alpha": board.presentation_vfx.modulate.a,
+			"pre_resize_contract": _resize_contract_snapshot()
+		})
+		return false
+	_active_viewport = expected_viewport
+	_emit_additional_frozen_checkpoint("VISIBLE_RESIZE_PRESERVED")
+	return true
+
+
+func _capture_resize_contract() -> void:
+	_resize_tween = board._presentation_vfx_tween
+	_resize_vfx_scale = board.presentation_vfx.scale
+	_resize_vfx_alpha = board.presentation_vfx.modulate.a
+	_resize_sfx_present = board.has_meta("last_sfx_kind")
+	_resize_sfx_value = str(board.get_meta("last_sfx_kind", ""))
+	_resize_contract_captured = true
+	_resize_contract_checkpoint = _paused_checkpoint
+	_resize_contract_visible_viewport = _visible_viewport_size()
+
+
+func _should_capture_pre_resize_contract(target: Vector2i) -> bool:
+	if target != Vector2i(1920, 1080) or not is_instance_valid(board) or not get_tree().paused or not _peak_signal_seen or not _same_size(_active_viewport, VIEWPORT_800):
+		return false
+	var tween: Tween = board._presentation_vfx_tween
+	return tween != null and tween.is_valid() and tween.is_running() and is_instance_valid(board.presentation_vfx)
+
+
+func _resize_contract_snapshot() -> Dictionary:
+	return {
+		"captured": _resize_contract_captured,
+		"checkpoint": _resize_contract_checkpoint,
+		"visible_viewport": _resize_contract_visible_viewport,
+		"tween_valid": _resize_tween != null and _resize_tween.is_valid(),
+		"tween_identity": _resize_tween.get_instance_id() if _resize_tween != null and _resize_tween.is_valid() else -1,
+		"vfx_scale": _resize_vfx_scale,
+		"vfx_alpha": _resize_vfx_alpha,
+		"sfx_present": _resize_sfx_present,
+		"sfx_value": _resize_sfx_value
+	}
+
+
+func _pause_checkpoint(label: String) -> bool:
+	_enter_checkpoint(label)
+	return await _wait_for_checkpoint_release()
+
+
+func _enter_checkpoint(label: String) -> void:
+	_paused_checkpoint = label
+	_release_requested = false
+	_ensure_pause_inspectors_always()
+	get_tree().paused = true
+	last_snapshot = _build_snapshot(label)
+	checkpoint_ready.emit(label, last_snapshot.duplicate(true))
+
+
+func _emit_additional_frozen_checkpoint(label: String) -> void:
+	_paused_checkpoint = label
+	last_snapshot = _build_snapshot(label)
+	checkpoint_ready.emit(label, last_snapshot.duplicate(true))
+
+
+func _wait_for_checkpoint_release() -> bool:
+	while not _release_requested and not _aborted:
+		await checkpoint_released
+	return not _aborted
+
+
+func _wait_until(label: String, predicate: Callable, frame_limit: int = MAX_WAIT_FRAMES, timeout_msec: int = MAX_WAIT_MSEC) -> bool:
+	var bounded_frame_limit := maxi(1, frame_limit)
+	var bounded_timeout_msec := maxi(1, timeout_msec)
+	var started_msec := Time.get_ticks_msec()
+	var deadline := started_msec + bounded_timeout_msec
+	var frames_observed := 0
+	for _frame in range(bounded_frame_limit):
+		if _aborted:
+			return false
+		if predicate.call():
+			return true
+		if Time.get_ticks_msec() >= deadline:
+			break
+		await get_tree().process_frame
+		frames_observed += 1
+	_fail("STATE_TIMEOUT", {
+		"label": label,
+		"frame_limit": bounded_frame_limit,
+		"timeout_ms": bounded_timeout_msec,
+		"elapsed_ms": Time.get_ticks_msec() - started_msec,
+		"frames_observed": frames_observed,
+		"deadline_reached": Time.get_ticks_msec() >= deadline
+	})
+	return false
+
+
+func _wait_for_long_copy_layout() -> bool:
+	var started_msec := Time.get_ticks_msec()
+	var deadline := started_msec + MAX_WAIT_MSEC
+	var frames_observed := 0
+	for _frame in range(MAX_WAIT_FRAMES):
+		if _aborted:
+			return false
+		if _long_copy_constraints_met():
+			var signature := _long_copy_layout_signature()
+			if signature == _long_copy_signature:
+				_long_copy_stable_frames += 1
+			else:
+				_long_copy_signature = signature
+				_long_copy_stable_frames = 0
+			if _long_copy_stable_frames >= 1:
+				return true
+		else:
+			_long_copy_signature = ""
+			_long_copy_stable_frames = 0
+		if Time.get_ticks_msec() >= deadline:
+			break
+		await get_tree().process_frame
+		frames_observed += 1
+	_fail("LONG_COPY_LAYOUT_NOT_SETTLED", {
+		"frame_limit": MAX_WAIT_FRAMES,
+		"timeout_ms": MAX_WAIT_MSEC,
+		"elapsed_ms": Time.get_ticks_msec() - started_msec,
+		"frames_observed": frames_observed,
+		"deadline_reached": Time.get_ticks_msec() >= deadline
+	})
+	return false
+
+
+func _board_is_ready() -> bool:
+	if not is_instance_valid(board):
+		return false
+	var layout := board.get_layout_snapshot()
+	return bool(layout.get("layout_ready", false)) and is_instance_valid(board.action_selection_dock) and is_instance_valid(board.action_selection_dock.basic_panel) and is_instance_valid(board.player_character) and is_instance_valid(board.enemy_character)
+
+
+func _move_semantic_targeting_active() -> bool:
+	return is_instance_valid(board) and int(board._targeting_anchor) == 1 and str(board._targeting_mode) == "move_intent"
+
+
+func _move_intent_committed() -> bool:
+	if not is_instance_valid(board):
+		return false
+	var placement: Dictionary = board.action_timing_panel.get_placement(1)
+	return bool(placement.get("target_ready", false)) and int(placement.get("target_tile", 0)) == 5 and int(board._targeting_anchor) == 0
+
+
+func _quick_attack_placed() -> bool:
+	if not is_instance_valid(board):
+		return false
+	return str(board.action_timing_panel.get_placement(2).get("card_id", "")) == "basic_quick_attack"
+
+
+func _ordinary_bundle_complete() -> bool:
+	return is_instance_valid(board) and board.action_timing_panel.is_current_bundle_complete() and board.action_timing_panel.are_current_bundle_targets_ready()
+
+
+func _ordinary_compare_visible() -> bool:
+	if not is_instance_valid(board) or not is_instance_valid(board.action_reveal_overlay):
+		return false
+	var layout := board.get_layout_snapshot()
+	var overlay_snapshot: Dictionary = board.action_reveal_overlay.get_snapshot()
+	var compare: Rect2 = layout.get("presentation_compare_rect", Rect2())
+	var label: Rect2 = layout.get("presentation_label_rect", Rect2())
+	var vfx: Rect2 = layout.get("presentation_vfx_rect", Rect2())
+	return _overlay_content_is_capture_ready(board.action_reveal_overlay) and int(overlay_snapshot.get("timing", 0)) == 1 and compare.has_area() and label.has_area() and vfx.has_area() and not compare.intersects(label) and not compare.intersects(vfx) and not label.intersects(vfx)
+
+
+func _initial_planning_visible() -> bool:
+	if not is_instance_valid(board):
+		return false
+	var layout := board.get_layout_snapshot()
+	return str(layout.get("presentation_state", "")) == "planning" and board.planning_surface.visible and board.action_selection_dock.visible and board.action_timing_panel.visible
+
+
+func _ordinary_move_visible() -> bool:
+	return is_instance_valid(board) and is_instance_valid(board.player_character) and str(board.player_character.motion_state) == "move"
+
+
+func _ordinary_impact_visible() -> bool:
+	if not is_instance_valid(board) or not is_instance_valid(board.presentation_vfx) or not is_instance_valid(board.presentation_label):
+		return false
+	var feedback_kind := str(board.get_meta("presentation_feedback_kind", ""))
+	if str(board.get_meta("presentation_feedback_phase", "")) != "impact" or feedback_kind not in ["attack", "clash", "ultimate"]:
+		return false
+	if not _control_is_capture_visible(board.presentation_vfx, PRESENTATION_CAPTURE_ALPHA) or not _control_is_capture_visible(board.presentation_label, PRESENTATION_CAPTURE_ALPHA):
+		return false
+	if board._reduced_motion:
+		return true
+	var vfx_tween: Tween = board._presentation_vfx_tween
+	var label_tween: Tween = board._presentation_label_tween
+	return vfx_tween != null and vfx_tween.is_valid() and vfx_tween.is_running() and label_tween != null and label_tween.is_valid() and label_tween.is_running()
+
+
+func _overlay_content_is_capture_ready(overlay: Control) -> bool:
+	if not overlay.is_visible_in_tree() or overlay.modulate.a < OVERLAY_SETTLED_ALPHA:
+		return false
+	var player_callout := overlay.get_node_or_null("PlayerActionCallout") as Control
+	var enemy_callout := overlay.get_node_or_null("EnemyActionCallout") as Control
+	return _control_has_rendered_area(player_callout) and _control_has_rendered_area(enemy_callout)
+
+
+func _control_is_capture_visible(control: Control, minimum_alpha: float) -> bool:
+	return _control_has_rendered_area(control) and control.modulate.a >= minimum_alpha
+
+
+func _control_has_rendered_area(control: Control) -> bool:
+	return is_instance_valid(control) and control.is_visible_in_tree() and control.size.x > 0.5 and control.size.y > 0.5
+
+
+func _next_planning_visible() -> bool:
+	return is_instance_valid(board) and str(board.get_meta("presentation_state", "")) == "next_bundle_ready" and board.planning_surface.visible and board.action_selection_dock.visible and board.action_timing_panel.visible
+
+
+func _execution_lanes_visible() -> bool:
+	if not is_instance_valid(board):
+		return false
+	var layout := board.get_layout_snapshot()
+	var compare: Rect2 = layout.get("presentation_compare_rect", Rect2())
+	var label: Rect2 = layout.get("presentation_label_rect", Rect2())
+	var vfx: Rect2 = layout.get("presentation_vfx_rect", Rect2())
+	return compare.has_area() and label.has_area() and vfx.has_area()
+
+
+func _ultimate_vfx_tween_ready() -> bool:
+	return is_instance_valid(board) and board._presentation_vfx_tween != null and board._presentation_vfx_tween.is_valid() and board.presentation_vfx.visible
+
+
+func _peak_signal_or_abort() -> bool:
+	return _peak_signal_seen or _aborted
+
+
+func _feedback_settled() -> bool:
+	return is_instance_valid(board) and str(board.get_meta("presentation_feedback_phase", "")) == "settled"
+
+
+func _dogyeom_enemy_bound() -> bool:
+	if not is_instance_valid(board) or not is_instance_valid(board.enemy_character) or not is_instance_valid(board.player_character):
+		return false
+	return str(board.enemy_character.get_meta("character_art_path", "")) == board.enemy_character.DOGYEOM_ART_PATH and str(board.player_character.get_meta("character_art_path", "")) == board.player_character.PLAYER_ART_PATH
+
+
+func _long_copy_constraints_met() -> bool:
+	if not is_instance_valid(board) or not is_instance_valid(board.action_reveal_overlay) or not is_instance_valid(board.presentation_label):
+		return false
+	if not board.action_reveal_overlay.visible or not board.presentation_label.visible:
+		return false
+	var compare := board.action_reveal_overlay as Control
+	return _execution_lanes_visible() and compare.size.y + 0.5 >= compare.get_combined_minimum_size().y and board.presentation_label.size.y + 0.5 >= board.presentation_label.get_combined_minimum_size().y
+
+
+func _long_copy_layout_signature() -> String:
+	var overlay := board.action_reveal_overlay as Control
+	return "%s|%s|%s|%s" % [overlay.get_global_rect(), overlay.get_combined_minimum_size(), board.presentation_label.get_global_rect(), board.presentation_label.get_combined_minimum_size()]
+
+
+func _basic_definition(card_id: String) -> Dictionary:
+	if not is_instance_valid(board) or not is_instance_valid(board.action_selection_dock) or not is_instance_valid(board.action_selection_dock.basic_panel):
+		return {}
+	for value in board.action_selection_dock.basic_panel.actions:
+		if typeof(value) == TYPE_DICTIONARY and str((value as Dictionary).get("id", "")) == card_id:
+			return (value as Dictionary).duplicate(true)
+	return {}
+
+
+func _actual_peng_fixture() -> Dictionary:
+	var manual_id := "hebei_peng_five_tigers_saber"
+	var engine = ENGINE.new()
+	engine.configure_martial_loadouts([manual_id], {manual_id: 10}, [], {})
+	engine.rules["enemy_bundles"] = {}
+	var definition: Dictionary = engine.get_actor_card_definition(manual_id + "_star10", "player")
+	if definition.is_empty():
+		return {"engine": engine, "event": {}}
+	var state := _fixture_state(engine)
+	state["ai_enabled"] = false
+	var result: Dictionary = engine.resolve_bundle([_fixture_placement(definition, state)], {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, state)
+	return {"engine": engine, "definition": definition, "result": result, "event": _event_for_card(result.get("presentation_events", []), definition.id)}
+
+
+func _actual_legacy_fixture() -> Dictionary:
+	var card_id := "ultimate_void_sword_qi"
+	var engine = ENGINE.new()
+	engine.rules["enemy_bundles"] = {}
+	var definition: Dictionary = engine.get_actor_card_definition(card_id, "player")
+	if definition.is_empty():
+		return {"engine": engine, "event": {}}
+	var state := _fixture_state(engine)
+	state["ai_enabled"] = false
+	var result: Dictionary = engine.resolve_bundle([_fixture_placement(definition, state)], {"round_number": 1, "bundle_index": 1, "timing_sequence": [3, 3, 4]}, state)
+	return {"engine": engine, "definition": definition, "result": result, "event": _event_for_card(result.get("presentation_events", []), card_id)}
+
+
+func _fixture_state(engine) -> Dictionary:
+	var actor := {
+		"name": "캡처 검증자",
+		"health": [100, 100],
+		"stamina": [30, 30],
+		"internal": [30, 30],
+		"momentum": [5, 5],
+		"stats": {"external": 10, "constitution": 10, "agility": 10, "internal_power": 10, "insight": 10}
+	}
+	return engine.make_initial_state({"player": actor, "enemy": actor}, 4, 5)
+
+
+func _fixture_placement(definition: Dictionary, state: Dictionary) -> Dictionary:
+	return {
+		"card_id": definition.id,
+		"definition": definition.duplicate(true),
+		"anchor_index": 1,
+		"span": maxi(1, int(definition.get("action_slots", 1))),
+		"target_ready": true,
+		"direction": 1,
+		"target_tile": int((state.enemy as Dictionary).get("tile", 5)),
+		"origin_tile": int((state.player as Dictionary).get("tile", 4))
+	}
+
+
+func _event_for_card(events_value, card_id: String) -> Dictionary:
+	if typeof(events_value) != TYPE_ARRAY:
+		return {}
+	for value in events_value:
+		if typeof(value) == TYPE_DICTIONARY:
+			var event: Dictionary = value
+			if str(event.get("card_id", "")) == card_id and str(event.get("action_stage", "execution")) == "execution":
+				return event.duplicate(true)
+	return {}
+
+
+func _build_snapshot(label: String) -> Dictionary:
+	var snapshot := {
+		"checkpoint": label,
+		"scenario": _active_scenario,
+		"source_kind": _case_source_kind,
+		"requested_viewport": _active_viewport,
+		"visible_viewport": _visible_viewport_size(),
+		"tree_paused": get_tree().paused,
+		"probe_process_mode": process_mode,
+		"pause_inspector_process_modes": _pause_inspector_process_modes(),
+		"board_process_mode": board.process_mode if is_instance_valid(board) else -1,
+		"peak_step_signal_seen": _peak_signal_seen,
+		"skip_requested": _skip_requested
+	}
+	if not is_instance_valid(board):
+		snapshot["board_valid"] = false
+		return snapshot
+	var layout := board.get_layout_snapshot()
+	snapshot["board_valid"] = true
+	snapshot["board_transform"] = board.get_global_transform()
+	snapshot["board_size"] = board.size
+	snapshot["layout_snapshot"] = layout
+	snapshot["surface_geometry"] = {
+		"stage": _control_snapshot(board.duel_stage_surface),
+		"hud": _control_snapshot(board.top_hud),
+		"background": _control_snapshot(board.battle_background),
+		"foreground_banner": _control_snapshot(board.duel_foreground_banner),
+		"background_tint": _control_snapshot(board._background_readability_tint),
+		"planning": _control_snapshot(board.planning_surface),
+		"lanes": {
+			"compare": _board_rect_snapshot(layout.get("presentation_compare_rect", Rect2())),
+			"label": _board_rect_snapshot(layout.get("presentation_label_rect", Rect2())),
+			"vfx": _board_rect_snapshot(layout.get("presentation_vfx_rect", Rect2()))
+		}
+	}
+	snapshot["actors"] = {
+		"player": _actor_snapshot(board.player_character),
+		"enemy": _actor_snapshot(board.enemy_character)
+	}
+	var presentation_state := str(board.get_meta("presentation_state", str(layout.get("presentation_state", ""))))
+	snapshot["presentation"] = {
+		"state": presentation_state,
+		"feedback_phase": str(board.get_meta("presentation_feedback_phase", "")),
+		"feedback_kind": str(board.get_meta("presentation_feedback_kind", "")),
+		"event": _dictionary_copy(board.get_meta("presentation_feedback_event", {})),
+		"overlay": _control_snapshot(board.action_reveal_overlay),
+		"overlay_snapshot": board.action_reveal_overlay.get_snapshot() if is_instance_valid(board.action_reveal_overlay) else {},
+		"overlay_visible_child_bounds": _visible_control_bounds(board.action_reveal_overlay),
+		"presentation_label": _control_snapshot(board.presentation_label),
+		"presentation_vfx": _control_snapshot(board.presentation_vfx),
+		"presentation_vfx_texture": _texture_description(board.presentation_vfx.texture) if is_instance_valid(board.presentation_vfx) else {},
+		"tween": _tween_snapshot()
+	}
+	snapshot["input"] = {
+		"inputs_locked": bool(layout.get("inputs_locked", false)),
+		"current_bundle_complete": bool(layout.get("current_bundle_complete", false)),
+		"targets_ready": bool(layout.get("targets_ready", false)),
+		"targeting_anchor": int(layout.get("targeting_anchor", 0)),
+		"targeting_mode": str(layout.get("targeting_mode", "")),
+		"planning_visible": board.planning_surface.visible if is_instance_valid(board.planning_surface) else false,
+		"dock_visible": board.action_selection_dock.visible if is_instance_valid(board.action_selection_dock) else false,
+		"timing_visible": board.action_timing_panel.visible if is_instance_valid(board.action_timing_panel) else false,
+		"progress_visible": board.combat_progress_button.visible if is_instance_valid(board.combat_progress_button) else false,
+		"focus_owner": _focus_owner_path()
+	}
+	snapshot["audio_motion_accessibility"] = {
+		"sound_muted": bool(board._sound_muted),
+		"reduced_motion": bool(board._reduced_motion),
+		"presentation_skip_requested": bool(board._presentation_skip_requested),
+		"last_sfx_present": board.has_meta("last_sfx_kind"),
+		"last_sfx_kind": str(board.get_meta("last_sfx_kind", "")),
+		"procedural_sfx_playing": board.procedural_sfx_player.playing if is_instance_valid(board.procedural_sfx_player) else false,
+		"momentum_sfx_playing": board.momentum_sfx_player.playing if is_instance_valid(board.momentum_sfx_player) else false
+	}
+	return snapshot
+
+
+func _actor_snapshot(actor) -> Dictionary:
+	if not is_instance_valid(actor):
+		return {"valid": false}
+	var motion_tween: Tween = actor._motion_tween
+	return {
+		"valid": true,
+		"role": str(actor.role),
+		"candidate_id": str(actor.candidate_id),
+		"art_path": str(actor.get_meta("character_art_path", "")),
+		"art_loaded": bool(actor.get_meta("character_art_loaded", false)),
+		"mirrored": bool(actor.get_meta("character_art_horizontally_mirrored", false)),
+		"occupied_ink_global": actor.get_visible_art_bounds_global(true),
+		"foot_global": actor.get_global_transform() * actor.get_foot_anchor_local(),
+		"motion_state": str(actor.motion_state),
+		"motion_phase": str(actor.motion_phase),
+		"motion_sequence_id": int(actor._motion_sequence_id),
+		"visual_offset": actor.visual_offset,
+		"visual_scale": actor.visual_scale,
+		"motion_tween_valid": motion_tween != null and motion_tween.is_valid(),
+		"motion_tween_running": motion_tween != null and motion_tween.is_valid() and motion_tween.is_running()
+	}
+
+
+func _tween_snapshot() -> Dictionary:
+	if not is_instance_valid(board):
+		return {}
+	var vfx_tween: Tween = board._presentation_vfx_tween
+	var label_tween: Tween = board._presentation_label_tween
+	return {
+		"vfx_valid": vfx_tween != null and vfx_tween.is_valid(),
+		"vfx_running": vfx_tween != null and vfx_tween.is_valid() and vfx_tween.is_running(),
+		"vfx_identity": vfx_tween.get_instance_id() if vfx_tween != null and vfx_tween.is_valid() else -1,
+		"label_valid": label_tween != null and label_tween.is_valid(),
+		"label_running": label_tween != null and label_tween.is_valid() and label_tween.is_running(),
+		"label_identity": label_tween.get_instance_id() if label_tween != null and label_tween.is_valid() else -1
+	}
+
+
+func _control_snapshot(control) -> Dictionary:
+	if not is_instance_valid(control) or not (control is Control):
+		return {"valid": false}
+	var value := control as Control
+	return {
+		"valid": true,
+		"name": value.name,
+		"path": str(value.get_path()),
+		"visible": value.visible,
+		"visible_in_tree": value.is_visible_in_tree(),
+		"modulate_alpha": value.modulate.a,
+		"self_modulate_alpha": value.self_modulate.a,
+		"size": value.size,
+		"minimum_size": value.get_combined_minimum_size(),
+		"global_bounds": _global_bounds_for_control(value)
+	}
+
+
+func _global_bounds_for_control(control: Control) -> Dictionary:
+	var corners := [Vector2.ZERO, Vector2(control.size.x, 0.0), control.size, Vector2(0.0, control.size.y)]
+	var transformed: Array = []
+	var transform := control.get_global_transform()
+	var bounds := Rect2(transform * corners[0], Vector2.ZERO)
+	for corner in corners:
+		var point: Vector2 = transform * corner
+		transformed.append(point)
+		bounds = bounds.expand(point)
+	return {"rect": bounds, "corners": transformed}
+
+
+func _board_rect_snapshot(value) -> Dictionary:
+	if not is_instance_valid(board) or typeof(value) != TYPE_RECT2:
+		return {"valid": false}
+	var rect: Rect2 = value
+	if not rect.has_area():
+		return {"valid": false, "local_rect": rect}
+	var corners := [rect.position, Vector2(rect.end.x, rect.position.y), rect.end, Vector2(rect.position.x, rect.end.y)]
+	var transformed: Array = []
+	var transform := board.get_global_transform()
+	var bounds := Rect2(transform * corners[0], Vector2.ZERO)
+	for corner in corners:
+		var point: Vector2 = transform * corner
+		transformed.append(point)
+		bounds = bounds.expand(point)
+	return {"valid": true, "local_rect": rect, "global_bounds": {"rect": bounds, "corners": transformed}}
+
+
+func _visible_control_bounds(root_node) -> Array:
+	var result: Array = []
+	if is_instance_valid(root_node):
+		_append_visible_control_bounds(root_node, result, 48)
+	return result
+
+
+func _append_visible_control_bounds(node: Node, result: Array, maximum: int) -> void:
+	if result.size() >= maximum:
+		return
+	for child in node.get_children():
+		if result.size() >= maximum:
+			return
+		if child is Control:
+			var control := child as Control
+			if not control.visible:
+				continue
+			result.append(_control_snapshot(control))
+		_append_visible_control_bounds(child, result, maximum)
+
+
+func _texture_description(texture: Texture2D) -> Dictionary:
+	if texture == null:
+		return {}
+	if texture is AtlasTexture:
+		var atlas := texture as AtlasTexture
+		return {"type": "AtlasTexture", "atlas_path": atlas.atlas.resource_path if atlas.atlas != null else "", "region": atlas.region}
+	return {"type": texture.get_class(), "resource_path": texture.resource_path}
+
+
+func _focus_owner_path() -> String:
+	var viewport := get_viewport()
+	if viewport == null or not viewport.has_method("gui_get_focus_owner"):
+		return ""
+	var owner = viewport.gui_get_focus_owner()
+	return str(owner.get_path()) if is_instance_valid(owner) else ""
+
+
+func _pause_inspector_process_modes() -> Dictionary:
+	var result := {}
+	for child in get_tree().root.get_children():
+		if child is Node and child.name in ["HeraGameInspector", "_mcp_game_helper"]:
+			result[str(child.name)] = (child as Node).process_mode
+	return result
+
+
+func _ensure_pause_inspectors_always() -> void:
+	for child in get_tree().root.get_children():
+		if child is Node and child.name in ["HeraGameInspector", "_mcp_game_helper"]:
+			(child as Node).process_mode = Node.PROCESS_MODE_ALWAYS
+
+
+func _visible_viewport_size() -> Vector2:
+	var viewport := get_viewport()
+	return viewport.get_visible_rect().size if viewport != null else Vector2.ZERO
+
+
+func _same_size(first: Vector2, second: Vector2) -> bool:
+	return absf(first.x - second.x) <= 0.5 and absf(first.y - second.y) <= 0.5
+
+
+func _dictionary_copy(value) -> Dictionary:
+	return (value as Dictionary).duplicate(true) if typeof(value) == TYPE_DICTIONARY else {}
+
+
+func _failure_detail(extra: Dictionary) -> Dictionary:
+	var detail := extra.duplicate(true)
+	detail["scenario"] = _active_scenario
+	detail["requested_viewport"] = _active_viewport
+	detail["visible_viewport"] = _visible_viewport_size()
+	detail["board_state"] = _failure_board_state()
+	detail["snapshot"] = _build_snapshot("FAILURE")
+	return detail
+
+
+func _failure_board_state() -> Dictionary:
+	if not is_instance_valid(board):
+		return {"valid": false}
+	var layout: Dictionary = board.get_layout_snapshot()
+	var timing: Dictionary = layout.get("action_timing_snapshot", {})
+	return {
+		"valid": true,
+		"presentation_state": str(board.get_meta("presentation_state", layout.get("presentation_state", ""))),
+		"feedback_phase": str(board.get_meta("presentation_feedback_phase", "")),
+		"feedback_kind": str(board.get_meta("presentation_feedback_kind", "")),
+		"current_bundle": int(timing.get("current_bundle", -1)),
+		"current_timing": int(timing.get("current_timing", -1)),
+		"inputs_locked": bool(layout.get("inputs_locked", false)),
+		"layout": layout.duplicate(true)
+	}
+
+
+func _record_failure(code: String, extra: Dictionary) -> Dictionary:
+	var detail := _failure_detail(extra)
+	detail["code"] = code
+	last_failure = detail.duplicate(true)
+	return detail
+
+
+func _fail(code: String, extra: Dictionary) -> void:
+	if _aborted and code != "PROBE_ABORTED":
+		return
+	_aborted = true
+	_waiting_for_peak = false
+	_disconnect_peak_signal()
+	probe_failed.emit(code, _record_failure(code, extra))
+	if is_instance_valid(board):
+		board._sound_muted = false
+		board._reduced_motion = false
+	_running = false
+	if get_tree().paused:
+		_release_requested = true
+		get_tree().paused = false
+		checkpoint_released.emit()
+
+
+func _disconnect_peak_signal() -> void:
+	if _peak_tween != null and _peak_tween.is_valid():
+		var peak_callable := Callable(self, "_on_vfx_tween_step")
+		if _peak_tween.step_finished.is_connected(peak_callable):
+			_peak_tween.step_finished.disconnect(peak_callable)
+	_peak_tween = null
+
+
+func _finish(result: String) -> void:
+	_disconnect_peak_signal()
+	if is_instance_valid(board):
+		board._sound_muted = false
+		board._reduced_motion = false
+	var completed_checkpoint := _paused_checkpoint
+	_running = false
+	_paused_checkpoint = ""
+	probe_complete.emit({
+		"result": result,
+		"scenario": _active_scenario,
+		"last_checkpoint": completed_checkpoint,
+		"last_snapshot": last_snapshot.duplicate(true),
+		"evidence_ceiling": "CONTROLLER_RUNTIME_CAPTURE_NOT_RUN_BY_HELPER"
+	})

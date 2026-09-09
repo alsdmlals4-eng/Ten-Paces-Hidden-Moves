@@ -1,0 +1,74 @@
+"""Controller-only evidence collector; never changes Godot product state beyond release."""
+import argparse
+import json
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+ROOT = Path(__file__).resolve().parents[2]
+HERA = r"C:/Users/user/AppData/Local/hera/bin/hera.exe"
+SOURCE = "eda26a97f25a931ac02ba739d5c4921720512d41"
+SCENE = "res://.superpowers/sdd/layout-capture-probe.tscn"
+LOG = []
+
+
+def run(*args):
+    result = subprocess.run(list(args), cwd=ROOT, capture_output=True, text=True, encoding="utf-8")
+    LOG.append({"args": list(args), "exit_code": result.returncode, "stdout": result.stdout, "stderr": result.stderr})
+    if result.returncode:
+        raise RuntimeError(result.stdout + result.stderr)
+    return result.stdout.strip()
+
+
+def hera(*args):
+    return json.loads(run(HERA, "--instance", "28152", *args))
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("number", type=int)
+    p.add_argument("checkpoint")
+    p.add_argument("--pid", type=int, required=True)
+    p.add_argument("--existing", action="store_true")
+    p.add_argument("--release", action="store_true")
+    a = p.parse_args()
+    if run("git", "rev-parse", "HEAD") != SOURCE:
+        raise RuntimeError("Source HEAD changed")
+    if run("git", "diff", "--name-only", SOURCE, "--", "src", "data", "scenes", "project.godot"):
+        raise RuntimeError("Product source changed")
+    instances = hera("game", "instances")["instances"]
+    if len(instances) != 1 or instances[0]["pid"] != a.pid or instances[0]["scene"] != SCENE:
+        raise RuntimeError(f"Exact runtime identity mismatch: {instances}")
+    deadline = time.monotonic() + 18.0
+    while True:
+        status = hera("game", "node", "call", "/root/LayoutCaptureProbe", "get_checkpoint_status")["result"]
+        if f'"checkpoint": "{a.checkpoint}"' in status or '"aborted": true' in status or time.monotonic() >= deadline:
+            break
+        time.sleep(0.15)
+    if f'"checkpoint": "{a.checkpoint}"' not in status or '"tree_paused": true' not in status:
+        raise RuntimeError(f"Expected live frozen checkpoint not found: {status}")
+    n = f"{a.number:03d}"
+    image = ROOT / f".superpowers/sdd/layout-{n}-{a.checkpoint.lower()}.png"
+    receipt = ROOT / f".superpowers/sdd/layout-{n}-receipt.json"
+    if a.existing:
+        if a.number == 3:
+            image = ROOT / ".superpowers/sdd/layout-003-planning-800.png"
+        if not image.is_file() or not receipt.is_file():
+            raise RuntimeError("Unexpected existing capture")
+    else:
+        run(sys.executable, "tools/prepare_runtime_visual_capture.py", "--project-root", ".", "--source-image", str(image), "--freshness-receipt", str(receipt), "--capture-run-id", f"TEN-RVC-RUN-20260909-{n}", "--source-commit", SOURCE)
+        produced = hera("game", "screenshot", "--path", str(image))
+        if produced["pid"] != a.pid or produced["scene"] != SCENE:
+            raise RuntimeError("Screenshot producer identity mismatch")
+    snapshot = hera("game", "node", "call", "/root/LayoutCaptureProbe", "get_last_snapshot")
+    run(sys.executable, "tools/register_runtime_visual_capture.py", "--project-root", ".", "--source-image", str(image), "--capture-id", f"TEN-RVC-20260909-{n}", "--capture-run-id", f"TEN-RVC-RUN-20260909-{n}", "--freshness-receipt", str(receipt), "--source-commit", SOURCE, "--expected-source-commit", SOURCE, "--scene-path", SCENE, "--capture-state", a.checkpoint, "--entry-route", "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save", "--work-item-id", "TEN-COMBAT-LAYOUT-20260909", "--consumer", "src/combat/combat_board_preview.gd", "--consumer", "src/combat/combat_board_preview_auto.gd", "--source-delta", "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN", "--diagnostics-errors", "0", "--diagnostics-warnings", "18", "--allow-additional-state", "--additional-state-reason", "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration")
+    if a.release:
+        hera("game", "node", "call", "/root/LayoutCaptureProbe", "resume_after_capture")
+    evidence = ROOT / f".superpowers/sdd/layout-{n}-evidence.json"
+    evidence.write_text(json.dumps({"source": SOURCE, "editor_pid": 28152, "game_pid": a.pid, "status": status, "snapshot": snapshot, "calls": LOG}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps({"capture": n, "checkpoint": a.checkpoint, "evidence": str(evidence), "image": str(image), "released": a.release}, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    main()
