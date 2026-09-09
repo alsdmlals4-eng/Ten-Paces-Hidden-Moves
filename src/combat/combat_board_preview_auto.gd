@@ -360,6 +360,20 @@ func _apply_state_derived_product_layout() -> void:
     if geometry_changed:
         player_character.snap_move_for_relayout(_presentation_anchor_for_actor("player"))
         enemy_character.snap_move_for_relayout(_presentation_anchor_for_actor("enemy"))
+    if expanded:
+        var gap := clampf(size.y * 0.015, 10.0, 18.0)
+        var compare_height := clampf(active_rect.size.y * 0.40, 270.0, 340.0)
+        var compare_rect := Rect2(active_rect.position, Vector2(active_rect.size.x, compare_height))
+        var inset := clampf(size.x * 0.04, 24.0, 72.0)
+        var impact_y := compare_rect.end.y + gap
+        var impact_height := active_rect.end.y - gap - impact_y
+        var impact_rect := Rect2(active_rect.position.x + inset, impact_y, active_rect.size.x - 2.0 * inset, impact_height)
+        var label_height := clampf(impact_height * 0.20, 64.0, 96.0)
+        var label_rect := Rect2(impact_rect.position.x + impact_rect.size.x * 0.15, impact_y, impact_rect.size.x * 0.70, label_height)
+        var vfx_y := label_rect.end.y + 8.0
+        _apply_presentation_layout_lanes(compare_rect, label_rect, Rect2(impact_rect.position.x, vfx_y, impact_rect.size.x, impact_rect.end.y - vfx_y))
+    else:
+        _clear_presentation_layout_lanes()
     _last_applied_active_duel_rect = active_rect
     _has_applied_active_duel_rect = true
     set_meta("duel_stage_surface_rect", active_rect)

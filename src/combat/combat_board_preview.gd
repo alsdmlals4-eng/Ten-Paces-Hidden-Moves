@@ -108,6 +108,11 @@ var _ultimate_vfx_sheet: Texture2D
 var _attack_clash_vfx_sheet: Texture2D
 var _presentation_vfx_tween: Tween
 var _presentation_label_tween: Tween
+var _presentation_compare_rect := Rect2()
+var _presentation_label_rect := Rect2()
+var _presentation_vfx_rect := Rect2()
+var _visible_vfx_event: Dictionary = {}
+var _visible_vfx_kind := ""
 var _presentation_feedback_phase_history := PackedStringArray()
 var _presentation_feedback_visibility_history: Array = []
 var _sound_muted := false
@@ -1637,6 +1642,47 @@ func _presentation_profile_for_event(event: Dictionary) -> Dictionary:
 		definition = resolution_engine.get_actor_card_definition(str(event.get("card_id", "")), actor)
 	return CombatPresentationProfileScript.for_event(definition, event)
 
+func _rect_in_canvas_space(rect: Rect2, from_item: CanvasItem, to_item: CanvasItem) -> Rect2:
+	var transform := to_item.get_global_transform().affine_inverse() * from_item.get_global_transform()
+	var result := Rect2(transform * rect.position, Vector2.ZERO)
+	for corner in [Vector2(rect.end.x, rect.position.y), rect.end, Vector2(rect.position.x, rect.end.y)]:
+		result = result.expand(transform * corner)
+	return result
+
+func _apply_presentation_layout_lanes(compare_rect: Rect2, label_rect: Rect2, vfx_rect: Rect2) -> bool:
+	var stage := duel_stage_surface.get_rect() if is_instance_valid(duel_stage_surface) else Rect2()
+	var valid := is_instance_valid(action_reveal_overlay) and is_instance_valid(presentation_label) and is_instance_valid(presentation_vfx)
+	for rect in [compare_rect, label_rect, vfx_rect]:
+		valid = valid and rect.position.is_finite() and rect.size.is_finite() and rect.size.x > 0.0 and rect.size.y > 0.0 and stage.grow(0.01).encloses(rect)
+	valid = valid and not compare_rect.intersects(label_rect) and not compare_rect.intersects(vfx_rect) and not label_rect.intersects(vfx_rect)
+	if not valid:
+		_presentation_compare_rect = Rect2()
+		_presentation_label_rect = Rect2()
+		_presentation_vfx_rect = Rect2()
+		_clear_presentation_vfx()
+		set_meta("presentation_vfx_layout_status", "LANE_INVALID")
+		return false
+	_presentation_compare_rect = compare_rect
+	_presentation_label_rect = label_rect
+	_presentation_vfx_rect = vfx_rect
+	action_reveal_overlay.configure_presentation_rect(_rect_in_canvas_space(compare_rect, self, action_reveal_overlay))
+	var local_label := _rect_in_canvas_space(label_rect, self, presentation_label.get_parent() as CanvasItem)
+	presentation_label.position = local_label.position
+	presentation_label.size = local_label.size
+	presentation_label.pivot_offset = presentation_label.size * 0.5
+	if presentation_vfx.visible and not _visible_vfx_kind.is_empty():
+		_place_feedback_vfx(_visible_vfx_event, _visible_vfx_kind)
+	return true
+
+func _clear_presentation_layout_lanes() -> void:
+	_presentation_compare_rect = Rect2()
+	_presentation_label_rect = Rect2()
+	_presentation_vfx_rect = Rect2()
+	_clear_presentation_feedback_visuals()
+	if is_instance_valid(action_reveal_overlay):
+		action_reveal_overlay.hide_reveal()
+	set_meta("presentation_vfx_layout_status", "INACTIVE")
+
 func _show_feedback_vfx(event: Dictionary, kind: String, recovery_duration: float = 0.0) -> void:
 	if kind == "ultimate":
 		_show_ultimate_vfx(event, recovery_duration)
@@ -1655,15 +1701,19 @@ func _show_feedback_vfx(event: Dictionary, kind: String, recovery_duration: floa
 	var band_index := 1 if kind == "clash" else 0
 	atlas.region = Rect2(0.0, float(band_index) * sheet_size.y / 2.0, sheet_size.x, sheet_size.y / 2.0)
 	presentation_vfx.texture = atlas
-	_place_feedback_vfx(event, kind)
+	if not _place_feedback_vfx(event, kind):
+		return
 	presentation_vfx.visible = true
 	_animate_feedback_vfx(0.90, recovery_duration, 0.90 if kind == "clash" else 0.94, 1.0)
 
-func _place_feedback_vfx(event: Dictionary, kind: String) -> void:
-	if not is_instance_valid(presentation_vfx):
-		return
-	var player_foot := player_character.get_foot_anchor_global() if is_instance_valid(player_character) else size * 0.5
-	var enemy_foot := enemy_character.get_foot_anchor_global() if is_instance_valid(enemy_character) else size * 0.5
+func _place_feedback_vfx(event: Dictionary, kind: String) -> bool:
+	if not is_instance_valid(presentation_vfx) or not _presentation_vfx_rect.has_area() or not _presentation_vfx_rect.position.is_finite() or not _presentation_vfx_rect.size.is_finite():
+		_clear_presentation_vfx()
+		set_meta("presentation_vfx_layout_status", "LANE_INVALID")
+		return false
+	var inverse := get_global_transform().affine_inverse()
+	var player_foot := inverse * player_character.get_global_transform() * player_character.get_foot_anchor_local() if is_instance_valid(player_character) else size * 0.5
+	var enemy_foot := inverse * enemy_character.get_global_transform() * enemy_character.get_foot_anchor_local() if is_instance_valid(enemy_character) else size * 0.5
 	var actor_foot := player_foot if str(event.get("actor", "")) == "player" else enemy_foot
 	var target_foot := enemy_foot if str(event.get("actor", "")) == "player" else player_foot
 	var profile := _presentation_profile_for_event(event)
@@ -1672,9 +1722,19 @@ func _place_feedback_vfx(event: Dictionary, kind: String) -> void:
 		clampf(size.x * (0.42 if kind == "ultimate" else 0.26), 250.0, 640.0),
 		clampf(size.y * (0.22 if kind == "ultimate" else 0.12), 90.0, 210.0)
 	)
-	presentation_vfx.size = effect_size
-	presentation_vfx.position = impact - Vector2(effect_size.x * 0.5, effect_size.y * 0.66)
-	presentation_vfx.pivot_offset = effect_size * 0.5
+	var peak := 1.08 if kind == "ultimate" else 1.0
+	var fit := minf(1.0, minf(_presentation_vfx_rect.size.x / (effect_size.x * peak), _presentation_vfx_rect.size.y / (effect_size.y * peak)))
+	effect_size *= fit
+	var half := effect_size * peak * 0.5
+	var center := Vector2(clampf(impact.x, _presentation_vfx_rect.position.x + half.x, _presentation_vfx_rect.end.x - half.x), clampf(impact.y, _presentation_vfx_rect.position.y + half.y, _presentation_vfx_rect.end.y - half.y))
+	var local_rect := _rect_in_canvas_space(Rect2(center - effect_size * 0.5, effect_size), self, presentation_vfx.get_parent() as CanvasItem)
+	presentation_vfx.size = local_rect.size
+	presentation_vfx.position = local_rect.position
+	presentation_vfx.pivot_offset = local_rect.size * 0.5
+	_visible_vfx_event = event.duplicate(true)
+	_visible_vfx_kind = kind
+	set_meta("presentation_vfx_layout_status", "OK")
+	return true
 
 func _show_ultimate_vfx(event: Dictionary, recovery_duration: float = 0.0) -> void:
 	if not is_instance_valid(presentation_vfx) or _ultimate_vfx_sheet == null:
@@ -1690,7 +1750,8 @@ func _show_ultimate_vfx(event: Dictionary, recovery_duration: float = 0.0) -> vo
 	atlas.atlas = _ultimate_vfx_sheet
 	atlas.region = Rect2(0.0, float(band_index) * sheet_size.y / 3.0, sheet_size.x, sheet_size.y / 3.0)
 	presentation_vfx.texture = atlas
-	_place_feedback_vfx(event, "ultimate")
+	if not _place_feedback_vfx(event, "ultimate"):
+		return
 	presentation_vfx.visible = true
 	presentation_vfx.pivot_offset = presentation_vfx.size * 0.5
 	_animate_feedback_vfx(0.96, recovery_duration, 0.90, 1.08)
@@ -1745,6 +1806,8 @@ func _stop_presentation_label_tween() -> void:
 
 func _clear_presentation_vfx() -> void:
 	_stop_presentation_vfx_tween()
+	_visible_vfx_event.clear()
+	_visible_vfx_kind = ""
 	if is_instance_valid(presentation_vfx):
 		presentation_vfx.visible = false
 		presentation_vfx.modulate = Color.WHITE
@@ -2224,6 +2287,9 @@ func get_layout_snapshot() -> Dictionary:
 		"ultimate_menu_ready": is_instance_valid(ultimate_menu),
 		"ultimate_vfx_ready": is_instance_valid(presentation_vfx) and _ultimate_vfx_sheet != null,
 		"ultimate_vfx_active": presentation_vfx.visible if is_instance_valid(presentation_vfx) else false,
+		"presentation_compare_rect": _presentation_compare_rect,
+		"presentation_label_rect": _presentation_label_rect,
+		"presentation_vfx_rect": _presentation_vfx_rect,
 		"action_reveal_snapshot": action_reveal_overlay.get_snapshot() if is_instance_valid(action_reveal_overlay) else {},
 		"ultimate_menu_text": ultimate_menu.text if is_instance_valid(ultimate_menu) else "",
 		"ultimate_available": bool(get_meta("ultimate_available", false)),
