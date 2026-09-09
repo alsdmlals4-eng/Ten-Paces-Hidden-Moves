@@ -1,0 +1,1605 @@
+{
+  "role": "BOUNDED_NATIVE_CI_COMMAND_READBACK_COMPANION_NOT_HUMAN_CANON",
+  "source_head": "508122f60e6b7ec46cc7deb44ef20754e120c900",
+  "dirty_test_path": "tests/verify_ultimate_ui.gd",
+  "dirty_test_sha256": "7D4BF552A0EE361DB1997178E65A176F4C81A88CCC00055C8615048C307EC2D8",
+  "original_results_sha256": "666298F5662E1C0D813D84E4ACBF39C9E658889A5E0E8AF6C071410F83331F4B",
+  "actual_results": {
+    "workflow_hashes": {
+      ".github\\workflows\\full-validation.yml": "b63dc07cabe7aff1816d0bf08c9d62d1e2d7942e5cb032bf73bd42b6017a1619",
+      ".github\\workflows\\validate-ten-manual-product-gate.yml": "948edc95c3bbc5a1e8465922262e8ecea01f86336edf196d99a0399cf2102b53"
+    },
+    "results": [
+      {
+        "index": 1,
+        "source_command": "godot --headless --path . --script res://tests/verify_step0.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_step0.gd"
+        ],
+        "source_sha256": "43f4903e236daa060c7a9b51a580fcb786ba7c3f5faf6f9252031c73271ca266",
+        "pid": 32824,
+        "exit": 0,
+        "seconds": 1.0171784000121988,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "STEP0_GODOT_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\01-verify_step0.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 2,
+        "source_command": "godot --headless --path . --script res://tests/verify_combat_board.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_combat_board.gd"
+        ],
+        "source_sha256": "aecacd5f879b703a4dd7f2f3dfef0169c3b757eb1d69f77cba035386e7a7d79d",
+        "pid": 2532,
+        "exit": 0,
+        "seconds": 5.228646100003971,
+        "timeout": false,
+        "errors": [],
+        "warnings": [
+          "WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+        ],
+        "markers": [
+          "COMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_TARGETING_10_5_START_4_6_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\02-verify_combat_board.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 3,
+        "source_command": "godot --headless --path . --script res://tests/verify_inline_combat_results.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_inline_combat_results.gd"
+        ],
+        "source_sha256": "0a4456812f0e131d527f6b7cd76f4828c347a8a259407dfa9e68bcc944a7cc3b",
+        "pid": 11768,
+        "exit": 0,
+        "seconds": 4.8292783999932,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "INLINE_COMBAT_RESULTS_PASS"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\03-verify_inline_combat_results.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 4,
+        "source_command": "godot --headless --path . --script res://tests/verify_response_rules.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_response_rules.gd"
+        ],
+        "source_sha256": "8b167c67e508def90c3023ee40760dad5e6c721d4f8b0b313e6e91981f899d4e",
+        "pid": 21256,
+        "exit": 0,
+        "seconds": 0.514105300011579,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "RESPONSE_RULES_10_6_CURRENT_START_4_6_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\04-verify_response_rules.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 5,
+        "source_command": "godot --headless --path . --script res://tests/verify_ultimate_interrupt_engagement.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_ultimate_interrupt_engagement.gd"
+        ],
+        "source_sha256": "811ec00463fe1aa6709f7b877eb0bb44abadd216f96bd92f4675100d022dc8d1",
+        "pid": 34492,
+        "exit": 0,
+        "seconds": 0.6140038000012282,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "ULTIMATE_INTERRUPT_ENGAGEMENT_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\05-verify_ultimate_interrupt_engagement.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 6,
+        "source_command": "godot --headless --path . --script res://tests/verify_ultimate_ui.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_ultimate_ui.gd"
+        ],
+        "source_sha256": "7d4bf552a0ee361db1997178e65a176f4c81a88ccc00055c8615048c307ec2d8",
+        "pid": 25860,
+        "exit": 0,
+        "seconds": 11.144487500016112,
+        "timeout": false,
+        "errors": [],
+        "warnings": [
+          "WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+        ],
+        "markers": [
+          "ULTIMATE_UI_RESERVATION_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\06-verify_ultimate_ui.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 7,
+        "source_command": "godot --headless --path . --script res://tests/verify_combat_presentation_liveness.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_combat_presentation_liveness.gd"
+        ],
+        "source_sha256": "830de8cd09851860ad08fc289abbdc1291f3b241b977215334f401331e0366d7",
+        "pid": 2236,
+        "exit": 0,
+        "seconds": 5.034381000004942,
+        "timeout": false,
+        "errors": [],
+        "warnings": [
+          "WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+        ],
+        "markers": [
+          "COMBAT_PRESENTATION_LIVENESS_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\07-verify_combat_presentation_liveness.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 8,
+        "source_command": "godot --headless --path . --script res://tests/verify_combat_terminal_presentation.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_combat_terminal_presentation.gd"
+        ],
+        "source_sha256": "5a47a0f47991ea14ad8e97dc06c168c092b4b7427f128a7360ef50ce223d0bc0",
+        "pid": 34872,
+        "exit": 0,
+        "seconds": 4.225184700015234,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "COMBAT_TERMINAL_PRESENTATION_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\08-verify_combat_terminal_presentation.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 9,
+        "source_command": "godot --headless --path . --script res://tests/verify_combat_focus_order.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_combat_focus_order.gd"
+        ],
+        "source_sha256": "a54d3d522bd8113bdadffe92785bdb0fb983f59aaff2e875da10d4bc8580b03b",
+        "pid": 36712,
+        "exit": 0,
+        "seconds": 2.320266000024276,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "COMBAT_FOCUS_ORDER_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\09-verify_combat_focus_order.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 10,
+        "source_command": "godot --headless --path . --script res://tests/verify_combat_keyboard_accessibility.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_combat_keyboard_accessibility.gd"
+        ],
+        "source_sha256": "c83c925507dd8508dad6b81c1bea71f76a7259ae6ab61a7b56ea5e89a76d11ba",
+        "pid": 26240,
+        "exit": 0,
+        "seconds": 2.5190971000120044,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "COMBAT_KEYBOARD_ACCESSIBILITY_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\10-verify_combat_keyboard_accessibility.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 11,
+        "source_command": "godot --headless --path . --script res://tests/verify_combat_layout_accessibility.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_combat_layout_accessibility.gd"
+        ],
+        "source_sha256": "94ea2a95702fefbc36a7c8b9747b4114e18d65e220ac468059a771114e093d56",
+        "pid": 33064,
+        "exit": 0,
+        "seconds": 4.7269311000127345,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "COMBAT_LAYOUT_ACCESSIBILITY_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\11-verify_combat_layout_accessibility.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 12,
+        "source_command": "godot --headless --path . --script res://tests/verify_ai_rival_tendency.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_ai_rival_tendency.gd"
+        ],
+        "source_sha256": "7e468b28f4fbfaba8fd44c0bd971e7db7d1917454bd710548a098d88c817eb74",
+        "pid": 28032,
+        "exit": 0,
+        "seconds": 0.5132981000060681,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "AI_RIVAL_TENDENCY_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\12-verify_ai_rival_tendency.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 13,
+        "source_command": "godot --headless --path . --script res://tests/verify_vertical_slice_opponent_runtime_binding.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_vertical_slice_opponent_runtime_binding.gd"
+        ],
+        "source_sha256": "12f44af0f84f3aee4533d9204bca55c24e1920119f2bc24e98750e45ce90575e",
+        "pid": 7048,
+        "exit": 0,
+        "seconds": 0.6135240999865346,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "VERTICAL_SLICE_OPPONENT_RUNTIME_BINDING_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\13-verify_vertical_slice_opponent_runtime_binding.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 14,
+        "source_command": "godot --headless --path . --script res://tests/verify_vertical_slice_balance_public_policy.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_vertical_slice_balance_public_policy.gd"
+        ],
+        "source_sha256": "a1bcf5ad1a0f8ee897fb50658513058368437902b92438194e160f890af08880",
+        "pid": 30992,
+        "exit": 0,
+        "seconds": 0.6136346000130288,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "VERTICAL_SLICE_BALANCE_PUBLIC_POLICY_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\14-verify_vertical_slice_balance_public_policy.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 15,
+        "source_command": "godot --headless --path . --script res://tests/verify_vertical_slice_balance_instrumentation.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_vertical_slice_balance_instrumentation.gd"
+        ],
+        "source_sha256": "5254030d29ac2ac9b73f2e0d070492325cfa43786ed82e72143b429373d8cea1",
+        "pid": 11084,
+        "exit": 0,
+        "seconds": 0.8136794999882113,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "VERTICAL_SLICE_BALANCE_INSTRUMENTATION_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\15-verify_vertical_slice_balance_instrumentation.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 16,
+        "source_command": "godot --headless --path . --script res://tests/verify_vertical_slice_balance_report_runner.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_vertical_slice_balance_report_runner.gd"
+        ],
+        "source_sha256": "25a021144fe4ab88f7922d024fbb8eaa6dbb68baa28956f883de929af3a2535e",
+        "pid": 29440,
+        "exit": 0,
+        "seconds": 0.8134988000092562,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "VERTICAL_SLICE_BALANCE_REPORT_RUNNER_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\16-verify_vertical_slice_balance_report_runner.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 17,
+        "source_command": "godot --headless --path . --script res://tests/verify_combat_review_summary.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_combat_review_summary.gd"
+        ],
+        "source_sha256": "4d2e4cd3e9760597baa3df36a5fe7eac071f67c68f967f302b87c0cc22deaf94",
+        "pid": 11140,
+        "exit": 0,
+        "seconds": 0.4124539000040386,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "COMBAT_REVIEW_SUMMARY_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\17-verify_combat_review_summary.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 18,
+        "source_command": "godot --headless --path . --script res://tests/verify_combat_review_ui.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_combat_review_ui.gd"
+        ],
+        "source_sha256": "4f2c90e05e766b6803630365f1a2bf1fca527f11439a1de52e63ed872c1c061a",
+        "pid": 14264,
+        "exit": 0,
+        "seconds": 4.529091400007019,
+        "timeout": false,
+        "errors": [],
+        "warnings": [
+          "WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+        ],
+        "markers": [
+          "COMBAT_REVIEW_UI_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\18-verify_combat_review_ui.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 19,
+        "source_command": "godot --headless --path . --script res://tests/verify_prepare_momentum.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_prepare_momentum.gd"
+        ],
+        "source_sha256": "fdb68fc4195ad14c6d1c9be806d32d1085e568c23adf2832e12ca86229beb3e2",
+        "pid": 18424,
+        "exit": 0,
+        "seconds": 0.5153438999841455,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "PREPARE_MOMENTUM_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\19-verify_prepare_momentum.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 20,
+        "source_command": "godot --headless --path . --script res://tests/verify_auto_card_placement.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_auto_card_placement.gd"
+        ],
+        "source_sha256": "444005346671422f4e8fd3bb9bcde608910388f78a901ee741b71dfca89baf51",
+        "pid": 36428,
+        "exit": 0,
+        "seconds": 4.123868499998935,
+        "timeout": false,
+        "errors": [],
+        "warnings": [
+          "WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+        ],
+        "markers": [
+          "AUTO_CARD_PLACEMENT_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\20-verify_auto_card_placement.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 21,
+        "source_command": "godot --headless --path . --script res://tests/verify_action_view_model_adapter.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_action_view_model_adapter.gd"
+        ],
+        "source_sha256": "819e9b22b5b54d9a3ef297f66fbbe4e8d280250c942472a525835fe397823e10",
+        "pid": 23408,
+        "exit": 0,
+        "seconds": 0.5127502000250388,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "verify_action_view_model_adapter: PASS"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\21-verify_action_view_model_adapter.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 22,
+        "source_command": "godot --headless --path . --script res://tests/verify_action_selection_dock.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_action_selection_dock.gd"
+        ],
+        "source_sha256": "f16f5f9948e8aa56c05f82332575807e858e5933447f2105737e496b4810417d",
+        "pid": 22380,
+        "exit": 0,
+        "seconds": 1.114609299984295,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "verify_action_selection_dock: PASS"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\22-verify_action_selection_dock.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 23,
+        "source_command": "godot --headless --path . --script res://tests/verify_basic_action_panel.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_basic_action_panel.gd"
+        ],
+        "source_sha256": "44e2ddacde1f81ed0b9fc76f14f936db7916fe16e01e041cf5d50d6f9b3bc975",
+        "pid": 26872,
+        "exit": 0,
+        "seconds": 0.8145195000106469,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "verify_basic_action_panel: PASS"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\23-verify_basic_action_panel.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 24,
+        "source_command": "godot --headless --path . --script res://tests/verify_martial_action_panel.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_martial_action_panel.gd"
+        ],
+        "source_sha256": "611dc0347919ee6705d4bfaad717191356f0f896c7aa2169dd84f534026a1aa2",
+        "pid": 31752,
+        "exit": 0,
+        "seconds": 0.8138327999913599,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "verify_martial_action_panel: PASS"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\24-verify_martial_action_panel.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 25,
+        "source_command": "godot --headless --path . --script res://tests/verify_ultimate_action_panel.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_ultimate_action_panel.gd"
+        ],
+        "source_sha256": "58ca19517deca360cf013177faaa72c93a6608741741a0ae950a0e89b02651dc",
+        "pid": 34784,
+        "exit": 0,
+        "seconds": 0.7127290000207722,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "verify_ultimate_action_panel: PASS"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\25-verify_ultimate_action_panel.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 26,
+        "source_command": "godot --headless --path . --script res://tests/verify_action_placement_controller.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_action_placement_controller.gd"
+        ],
+        "source_sha256": "5b2755a49ef385b1e2d5528dc5571165a1b80081b6691f32b6b6fdec180d69eb",
+        "pid": 33428,
+        "exit": 0,
+        "seconds": 0.8141487999819219,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "verify_action_placement_controller: PASS"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\26-verify_action_placement_controller.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 27,
+        "source_command": "godot --headless --path . --script res://tests/verify_linked_action_blocks.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_linked_action_blocks.gd"
+        ],
+        "source_sha256": "e2a78024b8fbf4d9a3f218ae8d9e68f58c2d167fbd17772286d1a510dc3a245e",
+        "pid": 29552,
+        "exit": 0,
+        "seconds": 0.8161337999918032,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "verify_linked_action_blocks: PASS"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\27-verify_linked_action_blocks.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 28,
+        "source_command": "godot --headless --path . --script res://tests/verify_action_repositioning.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_action_repositioning.gd"
+        ],
+        "source_sha256": "f4ca945bee3a4a0a7b62f85e1b19cacec983f4169459cbd8de9ae52f2f7b6c8e",
+        "pid": 24584,
+        "exit": 0,
+        "seconds": 0.9144725000078324,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "verify_action_repositioning: PASS"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\28-verify_action_repositioning.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 29,
+        "source_command": "godot --headless --path . --script res://tests/verify_action_detail_panel.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_action_detail_panel.gd"
+        ],
+        "source_sha256": "f81b6e1c0794fa364aa1eff907ab88f6ea2bb696bc0446cef3e5b5d94b152b60",
+        "pid": 15736,
+        "exit": 0,
+        "seconds": 1.1165226999728475,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "verify_action_detail_panel: PASS"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\29-verify_action_detail_panel.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 30,
+        "source_command": "godot --headless --path . --script res://tests/verify_integration_information_boundaries.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_integration_information_boundaries.gd"
+        ],
+        "source_sha256": "56639f4781534cb3b3059a7fce67af469ac3d209db4405e4f9d2ed8d0de9dfee",
+        "pid": 32408,
+        "exit": 0,
+        "seconds": 2.5255060000054073,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\30-verify_integration_information_boundaries.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 31,
+        "source_command": "godot --headless --path . --script res://tests/verify_combat_action_selection_integration.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_combat_action_selection_integration.gd"
+        ],
+        "source_sha256": "163fb333e10cbbfed08d74fb4a52466634b18410af61d6d7177755838e2621e1",
+        "pid": 1656,
+        "exit": 0,
+        "seconds": 3.4210300000268035,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "verify_combat_action_selection_integration: PASS"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\31-verify_combat_action_selection_integration.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 32,
+        "source_command": "godot --headless --path . --script res://tests/verify_frontal_duel_screen_partition.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_frontal_duel_screen_partition.gd"
+        ],
+        "source_sha256": "aa3e72f24d3886637cd83a8633da046ea0d98f4f65b07552b2fe97793bd1956c",
+        "pid": 18256,
+        "exit": 0,
+        "seconds": 20.365580399986356,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "FRONTAL_DUEL_SCREEN_PARTITION_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\32-verify_frontal_duel_screen_partition.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 33,
+        "source_command": "godot --headless --path . --script res://tests/verify_combat_action_reveal.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_combat_action_reveal.gd"
+        ],
+        "source_sha256": "605a08df2b47ad665eb771a6147f7b01e4564216e29c492aeee189b9932c8280",
+        "pid": 32904,
+        "exit": 0,
+        "seconds": 11.449452400003793,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "COMBAT_ACTION_REVEAL_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\33-verify_combat_action_reveal.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 34,
+        "source_command": "godot --headless --path . --script res://tests/verify_combat_outcome_feedback.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_combat_outcome_feedback.gd"
+        ],
+        "source_sha256": "9c716bc443780653bce2787d0b4b61edea5f0e82b301aa11b72cbbbfdb14fbe9",
+        "pid": 31784,
+        "exit": 0,
+        "seconds": 6.325653700012481,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "COMBAT_OUTCOME_FEEDBACK_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\34-verify_combat_outcome_feedback.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 35,
+        "source_command": "godot --headless --path . --script res://tests/verify_actor_ultimate_presentation.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_actor_ultimate_presentation.gd"
+        ],
+        "source_sha256": "c42d6a4b19df25e0865130e56e7a345d3aa9e6c5e22fcce8b889f08ccfb470a7",
+        "pid": 132,
+        "exit": 0,
+        "seconds": 10.643437799997628,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "ACTUAL_PRESENTATION_ROUTE manual=beggars_dragon_subduing_palm outcome=martial_completed facts={\"actual_hp_hits\":0,\"clash_won\":true,\"damage\":0,\"defense_outcome\":\"martial_pipeline\",\"evade_succeeded\":false,\"failure_reason\":\"\",\"martial_events\":[{\"from\":4,\"moved\":true,\"op\":\"MOVE_TOWARD\",\"status\":\"MOVED\",\"tiles\":1,\"to\":5},{\"distance\":0,\"max\":2,\"min\":1,\"op\":\"RECHECK_RANGE\",\"status\":\"OUT_OF_RANGE\"},{\"op\":\"SPECIAL_CLASH\",\"opponent_power\":0,\"power\":24,\"status\":\"WIN\"},{\"op\":\"REQUIRE_CLASH_WIN\",\"status\":\"PASSED\"},{\"after\":0,\"amount\":3,\"before\":0,\"op\":\"BREAK_DEFENSE\",\"status\":\"APPLIED\"},{\"attempt\":1,\"distance\":0,\"max\":2,\"min\":1,\"op\":\"ATTACK\",\"status\":\"SKIPPED_OUT_OF_RANGE\"},{\"from\":5,\"moved\":false,\"op\":\"PUSH_TARGET\",\"status\":\"STAYED\",\"tiles\":0,\"to\":5}]} profile={\"anchor\":\"impact\",\"band\":0,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}",
+          "ACTUAL_PRESENTATION_ROUTE manual=mount_hua_plum_blossom_sword outcome=martial_completed facts={\"actual_hp_hits\":0,\"clash_won\":false,\"damage\":0,\"defense_outcome\":\"martial_pipeline\",\"evade_succeeded\":false,\"failure_reason\":\"\",\"martial_events\":[{\"from\":4,\"moved\":true,\"op\":\"MOVE_TOWARD\",\"status\":\"MOVED\",\"tiles\":1,\"to\":5},{\"distance\":0,\"max\":1,\"min\":1,\"op\":\"RECHECK_RANGE\",\"status\":\"OUT_OF_RANGE\"},{\"attempt\":1,\"distance\":0,\"max\":1,\"min\":1,\"op\":\"INDEPENDENT_ATTACK\",\"status\":\"SKIPPED_OUT_OF_RANGE\"},{\"attempt\":2,\"distance\":0,\"max\":1,\"min\":1,\"op\":\"INDEPENDENT_ATTACK\",\"status\":\"SKIPPED_OUT_OF_RANGE\"},{\"attempt\":3,\"distance\":0,\"max\":1,\"min\":1,\"op\":\"INDEPENDENT_ATTACK\",\"status\":\"SKIPPED_OUT_OF_RANGE\"},{\"actual\":0,\"op\":\"REQUIRE_ACTUAL_HP_HITS\",\"required\":2,\"status\":\"FAILED\"},{\"op\":\"MOVE_TOWARD\",\"status\":\"SKIPPED_REQUIREMENT\"},{\"op\":\"RECHECK_RANGE\",\"status\":\"SKIPPED_REQUIREMENT\"},{\"op\":\"ATTACK\",\"status\":\"SKIPPED_REQUIREMENT\"}]} profile={\"anchor\":\"impact\",\"band\":-1,\"is_ultimate\":true,\"kind\":\"outcome\",\"motion\":\"\"}",
+          "ACTUAL_PRESENTATION_ROUTE manual=hebei_peng_five_tigers_saber outcome=martial_completed facts={\"actual_hp_hits\":3,\"clash_won\":false,\"damage\":28,\"defense_outcome\":\"martial_pipeline\",\"evade_succeeded\":false,\"failure_reason\":\"\",\"martial_events\":[{\"distance\":1,\"max\":1,\"min\":1,\"op\":\"RECHECK_RANGE\",\"status\":\"IN_RANGE\"},{\"attempt\":1,\"defense\":0,\"distance\":1,\"health_damage\":8,\"op\":\"ATTACK\",\"raw_power\":8,\"status\":\"HIT\"},{\"after\":0,\"amount\":2,\"before\":0,\"op\":\"BREAK_DEFENSE\",\"status\":\"APPLIED\"},{\"attempt\":2,\"defense\":0,\"distance\":1,\"health_damage\":8,\"op\":\"ATTACK\",\"raw_power\":8,\"status\":\"HIT\"},{\"after\":0,\"amount\":2,\"before\":0,\"op\":\"BREAK_DEFENSE\",\"status\":\"APPLIED\"},{\"defense\":0,\"op\":\"REQUIRE_DEFENSE_ZERO\",\"status\":\"PASSED\"},{\"attempt\":3,\"defense\":0,\"distance\":1,\"health_damage\":12,\"op\":\"ATTACK\",\"raw_power\":12,\"status\":\"HIT\"}]} profile={\"anchor\":\"impact\",\"band\":1,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}",
+          "ACTUAL_PRESENTATION_ROUTE manual=nangong_boundless_sky_sword outcome=martial_completed facts={\"actual_hp_hits\":1,\"clash_won\":true,\"damage\":12,\"defense_outcome\":\"martial_pipeline\",\"evade_succeeded\":false,\"failure_reason\":\"\",\"martial_events\":[{\"amount\":1,\"op\":\"GAIN_STATUS\",\"status\":\"APPLIED\",\"status_name\":\"telegraph\"},{\"distance\":1,\"max\":3,\"min\":1,\"op\":\"RECHECK_RANGE\",\"status\":\"IN_RANGE\"},{\"op\":\"SPECIAL_CLASH\",\"opponent_power\":0,\"power\":25,\"status\":\"WIN\"},{\"op\":\"REQUIRE_CLASH_WIN\",\"status\":\"PASSED\"},{\"after\":0,\"amount\":3,\"before\":0,\"op\":\"BREAK_DEFENSE\",\"status\":\"APPLIED\"},{\"attempt\":1,\"defense\":0,\"distance\":1,\"health_damage\":12,\"op\":\"ATTACK\",\"raw_power\":12,\"status\":\"HIT\"}]} profile={\"anchor\":\"impact\",\"band\":2,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}",
+          "ACTOR_ULTIMATE_PRESENTATION_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\35-verify_actor_ultimate_presentation.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 36,
+        "source_command": "godot --headless --path . --script res://tests/verify_ten_manual_product_gate.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_ten_manual_product_gate.gd"
+        ],
+        "source_sha256": "6122a1211881b95b77eef3086ff42d0dcbde67f5ebd81b55eede5bcaa97a80db",
+        "pid": 35548,
+        "exit": 0,
+        "seconds": 0.412133800011361,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\36-verify_ten_manual_product_gate.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 37,
+        "source_command": "godot --headless --path . --script res://tests/verify_ten_manual_product_viewports.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_ten_manual_product_viewports.gd"
+        ],
+        "source_sha256": "16def9e7b399154a61c0f59ab4b106640117280de5fb4617fca3ca917dcbb208",
+        "pid": 34864,
+        "exit": 0,
+        "seconds": 1.615736999985529,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\37-verify_ten_manual_product_viewports.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 38,
+        "source_command": "godot --headless --path . --script res://tests/probe_sequential_ten_duel_campaign.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/probe_sequential_ten_duel_campaign.gd"
+        ],
+        "source_sha256": "263c0d7d235b1ba15bbe9ba9fcd836855e89a1ca82faaa4c5a5f0e88e38761e8",
+        "pid": 5324,
+        "exit": 0,
+        "seconds": 0.9158579000213649,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\38-probe_sequential_ten_duel_campaign.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 39,
+        "source_command": "godot --headless --path . --script res://tests/probe_native_ten_duel_campaign.gd -- --run-save-dir=user://ci-native-durable-${{ github.run_id }}-${{ github.run_attempt }}",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/probe_native_ten_duel_campaign.gd",
+          "--",
+          "--run-save-dir=C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\isolated-campaign-save"
+        ],
+        "source_sha256": "4f03a412ad88feedeaab12763e45613b361d87eedceec0a0bc93a8cb6b139c82",
+        "pid": 32556,
+        "exit": 0,
+        "seconds": 111.90088180001476,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "NATIVE_HELPER_DISABLED PASS",
+          "NATIVE_HELPER_GUARDS PASS"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\39-probe_native_ten_duel_campaign.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 40,
+        "source_command": "godot --headless --path . --script res://tests/verify_bimu_constraint_model.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_bimu_constraint_model.gd"
+        ],
+        "source_sha256": "a82d7c7eb6b0460dc33db918d2735153ed28545c576e4784cc426938ee7edef8",
+        "pid": 18528,
+        "exit": 0,
+        "seconds": 0.4126562000019476,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\40-verify_bimu_constraint_model.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 41,
+        "source_command": "godot --headless --path . --script res://tests/verify_bimu_constraint_runtime.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_bimu_constraint_runtime.gd"
+        ],
+        "source_sha256": "087eecdce23b574e240255c1d076d58da5f710154b46b5c4040de46607a6ee63",
+        "pid": 34696,
+        "exit": 0,
+        "seconds": 3.6239780000178143,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\41-verify_bimu_constraint_runtime.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 42,
+        "source_command": "godot --headless --path . --script res://tests/verify_bimu_constraint_ui.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_bimu_constraint_ui.gd"
+        ],
+        "source_sha256": "bbd87074faf2f3067d6fe534086543cb237014a39747e988a13d9bbe3c9ba1b1",
+        "pid": 33048,
+        "exit": 0,
+        "seconds": 4.223801600019215,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\42-verify_bimu_constraint_ui.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 43,
+        "source_command": "godot --headless --path . --script res://tests/verify_ten_duel_campaign.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_ten_duel_campaign.gd"
+        ],
+        "source_sha256": "b50c0067f2d5aa30fcb76830b6571b77bc81cbd44ad5dc0f1684d06aa7eb1eea",
+        "pid": 34664,
+        "exit": 0,
+        "seconds": 0.6135889999859501,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\43-verify_ten_duel_campaign.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 44,
+        "source_command": "godot --headless --path . --script res://tests/verify_vertical_slice_failure_retry.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_vertical_slice_failure_retry.gd"
+        ],
+        "source_sha256": "27998c1a61e384c417e6c434cafb19940e83d423adba3c1bcbc819d6f54b64a6",
+        "pid": 28928,
+        "exit": 0,
+        "seconds": 0.6132331000117119,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "VERTICAL_SLICE_FAILURE_RETRY_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\44-verify_vertical_slice_failure_retry.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 45,
+        "source_command": "godot --headless --path . --script res://tests/verify_run_save_store.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_run_save_store.gd"
+        ],
+        "source_sha256": "5d18d9058ad297cfaebe0b63146fed014169e5299f9f011b9ed21955e61106dd",
+        "pid": 35116,
+        "exit": 0,
+        "seconds": 4.221474499994656,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "RUN_SAVE_STORE: PASS (0 failures)"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\45-verify_run_save_store.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 46,
+        "source_command": "godot --headless --path . --script res://tests/verify_run_save_cache.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_run_save_cache.gd"
+        ],
+        "source_sha256": "8a3534d47b190a2b66590832359744623f4ff07b72b34f101e58a0680f6cb6fe",
+        "pid": 30620,
+        "exit": 0,
+        "seconds": 17.45065290000639,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "RUN_SAVE_CACHE_CLEANUP: PASS (15 exact roots)",
+          "RUN_SAVE_CACHE: PASS (0 failures)"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\46-verify_run_save_cache.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 47,
+        "source_command": "godot --headless --path . --script res://tests/verify_martial_actor_binding.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_martial_actor_binding.gd"
+        ],
+        "source_sha256": "29749e9264e5b4bd2bf47f55ad53ea6dc2bde713da98ad9573da341b67601256",
+        "pid": 34344,
+        "exit": 0,
+        "seconds": 0.7136401000025216,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "MARTIAL_ACTOR_BINDING: PASS (0 failures)"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\47-verify_martial_actor_binding.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 48,
+        "source_command": "godot --headless --path . --script res://tests/verify_martial_effect_pipeline.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_martial_effect_pipeline.gd"
+        ],
+        "source_sha256": "c4c1088481f8203b9fd0d5b356ba921081c243bca1fc5a95a0149cae68f7c70f",
+        "pid": 34724,
+        "exit": 0,
+        "seconds": 0.5140729999984615,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "MARTIAL_EFFECT_PIPELINE_VERIFY_OK"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\48-verify_martial_effect_pipeline.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 49,
+        "source_command": "godot --headless --path . --script res://tests/verify_combat_checkpoint_resume.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_combat_checkpoint_resume.gd"
+        ],
+        "source_sha256": "3622a6ea69a76f61aec47e86f0da73f466d2d879093adab89b27315cdbb9f714",
+        "pid": 1196,
+        "exit": 0,
+        "seconds": 17.061565700016217,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "COMBAT_CHECKPOINT_RESUME: PASS (0 failures)"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\49-verify_combat_checkpoint_resume.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 50,
+        "source_command": "godot --headless --path . --script res://tests/verify_durable_run_continue.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_durable_run_continue.gd"
+        ],
+        "source_sha256": "bb77667bf55770fefdfcbb1f741f6b1193b03de8238c122f9cb3fb1755f1f955",
+        "pid": 10828,
+        "exit": 0,
+        "seconds": 12.944365599978482,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "DURABLE_CONTINUE PASS"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\50-verify_durable_run_continue.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 51,
+        "source_command": "godot --headless --path . --script res://tests/verify_action_card_summary.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_action_card_summary.gd"
+        ],
+        "source_sha256": "679f0a4aeb387b636fbe3775d7c2db980572f532a344a01df668db0ffd46c4d0",
+        "pid": 18888,
+        "exit": 0,
+        "seconds": 3.025574500003131,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [
+          "verify_action_card_summary: PASS"
+        ],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\51-verify_action_card_summary.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 52,
+        "source_command": "godot --headless --path . --script res://tests/verify_jianghu_rest_presentation.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_jianghu_rest_presentation.gd"
+        ],
+        "source_sha256": "7b6d7144e2b105300bfc1b1540e568387084c2575108b952faa2e872eb012043",
+        "pid": 2472,
+        "exit": 0,
+        "seconds": 3.6215916000073776,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\52-verify_jianghu_rest_presentation.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      },
+      {
+        "index": 53,
+        "source_command": "godot --headless --path . --script res://tests/verify_atlas_presentation_successor.gd",
+        "invocation": [
+          "C:\\Users\\user\\.cache\\omenward-tools\\godot-4.7.1\\Godot_v4.7.1-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909",
+          "--script",
+          "res://tests/verify_atlas_presentation_successor.gd"
+        ],
+        "source_sha256": "41cd12b6fc92aba18cc3f845b43cec0d97d695a885fb74c3ba6cf8936381b8cc",
+        "pid": 31952,
+        "exit": 0,
+        "seconds": 3.0235914000077173,
+        "timeout": false,
+        "errors": [],
+        "warnings": [],
+        "markers": [],
+        "log": "C:\\Users\\user\\Documents\\GitHub\\Ninza\\Ten-Paces-Hidden-Moves\\.worktrees\\combat-layout-20260909\\.superpowers\\sdd\\layout-native-batch-20260909-150320-467eb847\\53-verify_atlas_presentation_successor.log",
+        "result": "EXIT0_REQUIRES_MARKER_REVIEW"
+      }
+    ]
+  },
+  "full_logs": [
+    {
+      "index": 1,
+      "filename": "01-verify_step0.log",
+      "sha256": "29DC96E724149F9EE2B927FD303146DA69578BAEE2181D4639780650AB3E1CFD",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nSTEP0_GODOT_VERIFY_OK\r\n"
+    },
+    {
+      "index": 2,
+      "filename": "02-verify_combat_board.log",
+      "sha256": "79C8A81E82A1DF370790377B86959D80705F2075CF542D547B199DDA695D4299",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nINK_SCALE_NEGATIVE_CONTROL original=120.519996643066 scaled=96.4159927368164 mismatch_detected=true\r\nCOMBAT_BOARD_STEP1_STEP2_STEP3_STEP4_STEP5_STEP6_STEP7_STEP8_STEP9_STEP10_TARGETING_10_5_START_4_6_VERIFY_OK\r\nWARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).\r\n   at: cleanup (core/object/object.cpp:2536)\r\n"
+    },
+    {
+      "index": 3,
+      "filename": "03-verify_inline_combat_results.log",
+      "sha256": "B029AAA51E3B46AC1FA66FCF6D467BFC70C0BF873883A76E141D6BFCA5C52733",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nINLINE_COMBAT_RESULTS_PASS\r\n"
+    },
+    {
+      "index": 4,
+      "filename": "04-verify_response_rules.log",
+      "sha256": "1D496A8F662A09C5A4FDBD7C5AE6A64C176841C5F24A34E7F95000F2C4433338",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nRESPONSE_RULES_10_6_CURRENT_START_4_6_VERIFY_OK\r\n"
+    },
+    {
+      "index": 5,
+      "filename": "05-verify_ultimate_interrupt_engagement.log",
+      "sha256": "25A8468C00A46D61626BC9EECDE559133367D2B5224F531B9C743B09F0AA52CB",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nULTIMATE_INTERRUPT_ENGAGEMENT_VERIFY_OK\r\n"
+    },
+    {
+      "index": 6,
+      "filename": "06-verify_ultimate_ui.log",
+      "sha256": "6ABF223AF583F214BEC8B32E44DA53480B56E28C4C5CE9C8367D2459D421C296",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nULTIMATE_UI_LAWFUL_OPPONENT_FIXTURE id=ultimate_ten_paces_wave enemy=three_basic_meditate actual_CTA=true\r\nULTIMATE_UI_ACTUAL_PLAYBACK id=ultimate_ten_paces_wave timing=1 expected_band=0 actual_region=[P: (0.0, 0.0), S: (1774.0, 295.6667)] alpha=0.365714 effect=[P: (78.0, 283.3514), S: (585.7919, 191.7772)] lane=[P: (-422.4, 251.94), S: (1324.8, 314.56)]\r\nULTIMATE_UI_LAWFUL_OPPONENT_FIXTURE id=ultimate_cleave_peak enemy=three_basic_meditate actual_CTA=true\r\nULTIMATE_UI_ACTUAL_PLAYBACK id=ultimate_cleave_peak timing=2 expected_band=1 actual_region=[P: (0.0, 295.6667), S: (1774.0, 295.6667)] alpha=0.182857 effect=[P: (88.36798, 286.7457), S: (565.0559, 184.9886)] lane=[P: (-422.4, 251.94), S: (1324.8, 314.56)]\r\nULTIMATE_UI_LAWFUL_OPPONENT_FIXTURE id=ultimate_void_sword_qi enemy=three_basic_meditate actual_CTA=true\r\nULTIMATE_UI_ACTUAL_PLAYBACK id=ultimate_void_sword_qi timing=3 expected_band=2 actual_region=[P: (0.0, 591.3333), S: (1774.0, 295.6667)] alpha=0.094629 effect=[P: (93.37054, 288.3834), S: (555.0508, 181.7131)] lane=[P: (-422.4, 251.94), S: (1324.8, 314.56)]\r\nULTIMATE_UI_RESERVATION_VERIFY_OK\r\nWARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).\r\n   at: cleanup (core/object/object.cpp:2536)\r\n"
+    },
+    {
+      "index": 7,
+      "filename": "07-verify_combat_presentation_liveness.log",
+      "sha256": "E9D9BBFD0058828071525CD29531BAF05BE0A20511ACA4DC03E02B4A03530DA8",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nCOMBAT_PRESENTATION_LIVENESS_VERIFY_OK\r\nWARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).\r\n   at: cleanup (core/object/object.cpp:2536)\r\n"
+    },
+    {
+      "index": 8,
+      "filename": "08-verify_combat_terminal_presentation.log",
+      "sha256": "44164DB544559A5F12F81B3A77048D1BC371E7329C97FB346366DB34C56CE150",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nCOMBAT_TERMINAL_PRESENTATION_VERIFY_OK\r\n"
+    },
+    {
+      "index": 9,
+      "filename": "09-verify_combat_focus_order.log",
+      "sha256": "090C18E3264256976F43F0BE10CF1DFB3F782DBA887B62B79F4EFCD99EAF1265",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nCOMBAT_FOCUS_ORDER_VERIFY_OK\r\n"
+    },
+    {
+      "index": 10,
+      "filename": "10-verify_combat_keyboard_accessibility.log",
+      "sha256": "B00E33D6D2AAC105B5A82372AF9261B39EFE12D06150B93B4D9A744803235E5F",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nCOMBAT_KEYBOARD_ACCESSIBILITY_VERIFY_OK\r\n"
+    },
+    {
+      "index": 11,
+      "filename": "11-verify_combat_layout_accessibility.log",
+      "sha256": "AEB54E427E70FC96AAE9D1A43E7CA962F6FB60A058D7B86B9D529CE2466B794D",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nSETTLED_TEXT_BOUNDS viewport=(960.0, 640.0) compare=[P: (17.0, 174.0), S: (960.0, 270.0)] player=[P: (281.0, 238.0), S: (163.2, 168.0)] player_min=(68.0, 168.0) result=[P: (209.0, 410.0), S: (576.0, 34.0)] label=[P: (187.88, 454.0), S: (618.24, 64.0)] label_min=(1.0, 26.91667)\r\nSETTLED_TEXT_BOUNDS viewport=(1440.0, 900.0) compare=[P: (17.0, 206.0), S: (1440.0, 286.8)] player=[P: (451.0, 270.0), S: (214.0, 168.0)] player_min=(68.0, 168.0) result=[P: (305.0, 442.0), S: (864.0, 34.0)] label=[P: (273.32, 506.3), S: (927.36, 80.64001)] label_min=(1.0, 26.91667)\r\nSETTLED_TEXT_BOUNDS viewport=(1280.0, 720.0) compare=[P: (17.0, 174.0), S: (1280.0, 270.0)] player=[P: (372.6, 238.0), S: (214.0, 168.0)] player_min=(68.0, 168.0) result=[P: (273.0, 410.0), S: (768.0, 34.0)] label=[P: (244.84, 454.8), S: (824.3201, 64.0)] label_min=(1.0, 26.91667)\r\nSETTLED_TEXT_BOUNDS viewport=(1280.0, 800.0) compare=[P: (17.0, 188.0), S: (1280.0, 270.0)] player=[P: (372.6, 252.0), S: (214.0, 168.0)] player_min=(68.0, 168.0) result=[P: (273.0, 424.0), S: (768.0, 34.0)] label=[P: (244.84, 470.0), S: (824.3201, 68.20001)] label_min=(1.0, 26.91667)\r\nSETTLED_TEXT_BOUNDS viewport=(1920.0, 1080.0) compare=[P: (17.0, 206.0), S: (1920.0, 340.0)] player=[P: (691.0, 270.0), S: (214.0, 168.0)] player_min=(68.0, 168.0) result=[P: (401.0, 442.0), S: (1152.0, 34.0)] label=[P: (355.4, 562.2), S: (1243.2, 96.0)] label_min=(1.0, 26.91667)\r\nCOMBAT_LAYOUT_ACCESSIBILITY_VERIFY_OK\r\n"
+    },
+    {
+      "index": 12,
+      "filename": "12-verify_ai_rival_tendency.log",
+      "sha256": "8F0973B18CF9627D4B613A9FE61ECE7F01F2EBC9620EBCAA78A5D4C8ABFAB891",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nAI_RIVAL_TENDENCY_VERIFY_OK\r\n"
+    },
+    {
+      "index": 13,
+      "filename": "13-verify_vertical_slice_opponent_runtime_binding.log",
+      "sha256": "A843F99ADB11B756E9AC53933A6438996839FB33F0D63EA3A44265CF389CA1E7",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nVERTICAL_SLICE_OPPONENT_RUNTIME_BINDING_VERIFY_OK\r\n"
+    },
+    {
+      "index": 14,
+      "filename": "14-verify_vertical_slice_balance_public_policy.log",
+      "sha256": "43D6AD46A32FFCDE57543B808D2D9FC4E0EBA70CFDD6CDF2423F3FC71B6C055D",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nVERTICAL_SLICE_BALANCE_PUBLIC_POLICY_VERIFY_OK\r\n"
+    },
+    {
+      "index": 15,
+      "filename": "15-verify_vertical_slice_balance_instrumentation.log",
+      "sha256": "CA8FD74EA4FE22789EC73BFF933B71EBFDDDEB827DE4861E6C2327BD7C2C715D",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nVERTICAL_SLICE_BALANCE_INSTRUMENTATION_VERIFY_OK\r\n"
+    },
+    {
+      "index": 16,
+      "filename": "16-verify_vertical_slice_balance_report_runner.log",
+      "sha256": "37F003295BC9D17DFB9B667624E4518DB85EC3317594DED2A0D9922CDE3D47E9",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nVERTICAL_SLICE_BALANCE_REPORT_RUNNER_VERIFY_OK\r\n"
+    },
+    {
+      "index": 17,
+      "filename": "17-verify_combat_review_summary.log",
+      "sha256": "B8CC0AAFD9C98AC3F9580ADDAD70AB45E66AFD669993FE2E3647B43553EAC317",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nCOMBAT_REVIEW_SUMMARY_VERIFY_OK\r\n"
+    },
+    {
+      "index": 18,
+      "filename": "18-verify_combat_review_ui.log",
+      "sha256": "1782673805A1F2FE953296E0BA651BE628EF929BB6F5B686060DCDB6DA11E8D9",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nCOMBAT_REVIEW_UI_VERIFY_OK\r\nWARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).\r\n   at: cleanup (core/object/object.cpp:2536)\r\n"
+    },
+    {
+      "index": 19,
+      "filename": "19-verify_prepare_momentum.log",
+      "sha256": "590A1F9D5C1CF06D3563E919E5F4E14318E923651EBA41211252146E7BDA762C",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPREPARE_MOMENTUM_VERIFY_OK\r\n"
+    },
+    {
+      "index": 20,
+      "filename": "20-verify_auto_card_placement.log",
+      "sha256": "59172D071011DA4F8AEECB680228AB84274506BDA362401E73DE15CA9E8B93E3",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nAUTO_CARD_PLACEMENT_VERIFY_OK\r\nWARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).\r\n   at: cleanup (core/object/object.cpp:2536)\r\n"
+    },
+    {
+      "index": 21,
+      "filename": "21-verify_action_view_model_adapter.log",
+      "sha256": "86EF6F3EE506B99E40F2279562A877B960F5F109A811E3A788027F00CE07B860",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\nverify_action_view_model_adapter: PASS\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\n"
+    },
+    {
+      "index": 22,
+      "filename": "22-verify_action_selection_dock.log",
+      "sha256": "BBFC6EEC3B4F298B1B0E02E0F5BA1D79602827BB496B8AB1D0A6609147CD6342",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nverify_action_selection_dock: PASS\r\n"
+    },
+    {
+      "index": 23,
+      "filename": "23-verify_basic_action_panel.log",
+      "sha256": "BB5D356ECCEC5DE28E079655F063EE3DF5BF2F74AF26A35DC9B59BFE7FB7A4D1",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nverify_basic_action_panel: PASS\r\n"
+    },
+    {
+      "index": 24,
+      "filename": "24-verify_martial_action_panel.log",
+      "sha256": "1BC337145CA7886C7018A591735F902212FF19406759AA20DC1496188395C729",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nverify_martial_action_panel: PASS\r\n"
+    },
+    {
+      "index": 25,
+      "filename": "25-verify_ultimate_action_panel.log",
+      "sha256": "358CDDDBB15D7B0B1C6F9B5E49D9EB9C42E3C45AD9796403DBDC2D64A2F43EB3",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nverify_ultimate_action_panel: PASS\r\n"
+    },
+    {
+      "index": 26,
+      "filename": "26-verify_action_placement_controller.log",
+      "sha256": "1115529DB2452965BA9B58FE93B0B5A42A53DB820A936F12946B1ED7AA78E974",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nverify_action_placement_controller: PASS\r\n"
+    },
+    {
+      "index": 27,
+      "filename": "27-verify_linked_action_blocks.log",
+      "sha256": "88A012368E77A93AD888CAB5A561E41481CDD3D3C85903259778AB3822599F30",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nverify_linked_action_blocks: PASS\r\n"
+    },
+    {
+      "index": 28,
+      "filename": "28-verify_action_repositioning.log",
+      "sha256": "58F59E2FD80FE76379A739E2DDD198E2264CDE1EA696B031DAA708C88311E43D",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nverify_action_repositioning: PASS\r\n"
+    },
+    {
+      "index": 29,
+      "filename": "29-verify_action_detail_panel.log",
+      "sha256": "FC0E6179D8CD4EDDB84E0F6F97DDEAADBAC4F10898B125DE915F763B99D3BAAD",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nverify_action_detail_panel: PASS\r\n"
+    },
+    {
+      "index": 30,
+      "filename": "30-verify_integration_information_boundaries.log",
+      "sha256": "5701DE8992E5D826BFA068A2C9A6D3976F8A1B3B5CA684E48DFA38C423EBFB26",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nINTEGRATION_INFORMATION_BOUNDARIES_OK\r\n"
+    },
+    {
+      "index": 31,
+      "filename": "31-verify_combat_action_selection_integration.log",
+      "sha256": "2FC28B3777C006A06C4784A79BAFDAED3B9C899A37A56A562F1910F387603A5A",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nverify_combat_action_selection_integration: PASS\r\n"
+    },
+    {
+      "index": 32,
+      "filename": "32-verify_frontal_duel_screen_partition.log",
+      "sha256": "345A74DCA5830E843AAF08790B264BD23725C07DA09F641EBC4A74E9DF5B7DE9",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nBOUNDED_MOTION_NEGATIVE_OK role=player viewport=(1280.0, 720.0) frame_limit=3 deadline_samples=0\r\nBOUNDED_MOTION_NEGATIVE_OK role=player viewport=(1296.0, 816.0) frame_limit=3 deadline_samples=0\r\nBOUNDED_MOTION_NEGATIVE_OK role=player viewport=(1920.0, 1080.0) frame_limit=3 deadline_samples=0\r\nFRONTAL_DUEL_SCREEN_PARTITION_VERIFY_OK\r\n"
+    },
+    {
+      "index": 33,
+      "filename": "33-verify_combat_action_reveal.log",
+      "sha256": "1BD77987720F7CAB6CF4F49BB58198983432C827858B9943FF8ABB00AD84C6DA",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nCOMBAT_ACTION_REVEAL_VERIFY_OK\r\n"
+    },
+    {
+      "index": 34,
+      "filename": "34-verify_combat_outcome_feedback.log",
+      "sha256": "0B2EE0A6D0D95121091CA26836B125DC6D6DC193373857879D19672990DF79E7",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nORIGINAL_CUE_SHA256 metal_clash e5230544c35c30d62f3786feaa97695a0a4350ba56f2d13bdda8091a7697dd68\r\nORIGINAL_CUE_SHA256 sword_wind aee10c430f0050237342eca2c45c8e5a6ea1ee5fe17e887dea22970cc03b025e\r\nORIGINAL_CUE_SHA256 heavy_hit 73df6abfff4670aa58ba12fd7dafd3790f80cd67708672afd8d66c4aaea1ed26\r\nORIGINAL_CUE_SHA256 block 244900258f76b4f42738bfbe5f0e6d309643a982bdc7d6e725a4488dc96e5622\r\nORIGINAL_CUE_SHA256 evade a4d0cb2024cf09d4f18dc1916946165bc1d0a0a623b5dcf408659ef08794e041\r\nORIGINAL_CUE_SHA256 interrupt e1268da174616c96b59593ecc69cbd35d813670d50c4c99e5907c6aebd943097\r\nORIGINAL_CUE_SHA256 momentum_charge fe8d19c1e25b93a9da969f8ced39259082b741f594a9f94c4e1555524d87017b\r\nORIGINAL_CUE_SHA256 ultimate_reserve fd7c94a8a514f633126634b488a5b2c14c717a7e5baafb7855c5cfefbca13936\r\nORIGINAL_CUE_SHA256 defeat c955b34482975c5da92b83ef742cb0432a55512ecba54f72ac26c12ec725b275\r\nNEW_CUE_PCM_BYTES 49392\r\nCOMBAT_OUTCOME_FEEDBACK_VERIFY_OK\r\n"
+    },
+    {
+      "index": 35,
+      "filename": "35-verify_actor_ultimate_presentation.log",
+      "sha256": "A5980BC2ECFCF40741FF9ACCA929BD8C30517A888A0863B0EAF68724927ACCD7",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nSYNTHETIC_PROFILE_FIXTURE manual=beggars_dragon_subduing_palm purpose=nominal_mapping profile={\"anchor\":\"impact\",\"band\":0,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}\r\nSYNTHETIC_PROFILE_FIXTURE manual=hebei_peng_five_tigers_saber purpose=nominal_mapping profile={\"anchor\":\"impact\",\"band\":1,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}\r\nSYNTHETIC_PROFILE_FIXTURE manual=mount_hua_plum_blossom_sword purpose=nominal_mapping profile={\"anchor\":\"impact\",\"band\":1,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}\r\nSYNTHETIC_PROFILE_FIXTURE manual=mount_hua_purple_mist_art purpose=nominal_mapping profile={\"anchor\":\"self\",\"band\":0,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"\"}\r\nSYNTHETIC_PROFILE_FIXTURE manual=nangong_boundless_sky_sword purpose=nominal_mapping profile={\"anchor\":\"impact\",\"band\":2,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}\r\nSYNTHETIC_PROFILE_FIXTURE manual=shaolin_arhat_vajra_art purpose=nominal_mapping profile={\"anchor\":\"impact\",\"band\":0,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}\r\nSYNTHETIC_PROFILE_FIXTURE manual=sichuan_tang_hidden_weapons purpose=nominal_mapping profile={\"anchor\":\"impact\",\"band\":2,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}\r\nSYNTHETIC_PROFILE_FIXTURE manual=wudang_taiji_sword purpose=nominal_mapping profile={\"anchor\":\"impact\",\"band\":0,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}\r\nSYNTHETIC_PROFILE_FIXTURE manual=xiaoyao_lingbo_footwork purpose=nominal_mapping profile={\"anchor\":\"impact\",\"band\":2,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}\r\nSYNTHETIC_PROFILE_FIXTURE manual=yang_family_spear purpose=nominal_mapping profile={\"anchor\":\"impact\",\"band\":2,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}\r\nSYNTHETIC_PROFILE_FIXTURE purpose=requirement_unmet profile={\"anchor\":\"impact\",\"band\":-1,\"is_ultimate\":true,\"kind\":\"outcome\",\"motion\":\"\"}\r\nSYNTHETIC_PROFILE_FIXTURE purpose=unreachable_current_counter_success profile={\"anchor\":\"impact\",\"band\":0,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}\r\nACTUAL_PRESENTATION_ROUTE manual=beggars_dragon_subduing_palm outcome=martial_completed facts={\"actual_hp_hits\":0,\"clash_won\":true,\"damage\":0,\"defense_outcome\":\"martial_pipeline\",\"evade_succeeded\":false,\"failure_reason\":\"\",\"martial_events\":[{\"from\":4,\"moved\":true,\"op\":\"MOVE_TOWARD\",\"status\":\"MOVED\",\"tiles\":1,\"to\":5},{\"distance\":0,\"max\":2,\"min\":1,\"op\":\"RECHECK_RANGE\",\"status\":\"OUT_OF_RANGE\"},{\"op\":\"SPECIAL_CLASH\",\"opponent_power\":0,\"power\":24,\"status\":\"WIN\"},{\"op\":\"REQUIRE_CLASH_WIN\",\"status\":\"PASSED\"},{\"after\":0,\"amount\":3,\"before\":0,\"op\":\"BREAK_DEFENSE\",\"status\":\"APPLIED\"},{\"attempt\":1,\"distance\":0,\"max\":2,\"min\":1,\"op\":\"ATTACK\",\"status\":\"SKIPPED_OUT_OF_RANGE\"},{\"from\":5,\"moved\":false,\"op\":\"PUSH_TARGET\",\"status\":\"STAYED\",\"tiles\":0,\"to\":5}]} profile={\"anchor\":\"impact\",\"band\":0,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}\r\nACTUAL_PRESENTATION_ROUTE manual=shaolin_arhat_vajra_art outcome=martial_completed facts={\"actual_hp_hits\":1,\"clash_won\":false,\"damage\":12,\"defense_outcome\":\"martial_pipeline\",\"evade_succeeded\":false,\"failure_reason\":\"\",\"martial_events\":[{\"amount\":4,\"op\":\"GAIN_RESOURCE\",\"resource\":\"defense\",\"status\":\"APPLIED\"},{\"amount\":1,\"op\":\"GAIN_STATUS\",\"status\":\"APPLIED\",\"status_name\":\"fortitude\"},{\"defense\":4,\"op\":\"START_DEFENSE_LOSS_RECORD\",\"status\":\"STARTED\"},{\"distance\":1,\"max\":2,\"min\":1,\"op\":\"RECHECK_RANGE\",\"status\":\"IN_RANGE\"},{\"attempt\":1,\"defense\":0,\"distance\":1,\"health_damage\":12,\"op\":\"ATTACK\",\"raw_power\":12,\"status\":\"HIT\"},{\"bonus_cap\":6,\"op\":\"END_DEFENSE_LOSS_RECORD\",\"recorded_loss\":0,\"status\":\"ENDED\"}]} profile={\"anchor\":\"impact\",\"band\":0,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}\r\nACTUAL_PRESENTATION_ROUTE manual=mount_hua_plum_blossom_sword outcome=martial_completed facts={\"actual_hp_hits\":0,\"clash_won\":false,\"damage\":0,\"defense_outcome\":\"martial_pipeline\",\"evade_succeeded\":false,\"failure_reason\":\"\",\"martial_events\":[{\"from\":4,\"moved\":true,\"op\":\"MOVE_TOWARD\",\"status\":\"MOVED\",\"tiles\":1,\"to\":5},{\"distance\":0,\"max\":1,\"min\":1,\"op\":\"RECHECK_RANGE\",\"status\":\"OUT_OF_RANGE\"},{\"attempt\":1,\"distance\":0,\"max\":1,\"min\":1,\"op\":\"INDEPENDENT_ATTACK\",\"status\":\"SKIPPED_OUT_OF_RANGE\"},{\"attempt\":2,\"distance\":0,\"max\":1,\"min\":1,\"op\":\"INDEPENDENT_ATTACK\",\"status\":\"SKIPPED_OUT_OF_RANGE\"},{\"attempt\":3,\"distance\":0,\"max\":1,\"min\":1,\"op\":\"INDEPENDENT_ATTACK\",\"status\":\"SKIPPED_OUT_OF_RANGE\"},{\"actual\":0,\"op\":\"REQUIRE_ACTUAL_HP_HITS\",\"required\":2,\"status\":\"FAILED\"},{\"op\":\"MOVE_TOWARD\",\"status\":\"SKIPPED_REQUIREMENT\"},{\"op\":\"RECHECK_RANGE\",\"status\":\"SKIPPED_REQUIREMENT\"},{\"op\":\"ATTACK\",\"status\":\"SKIPPED_REQUIREMENT\"}]} profile={\"anchor\":\"impact\",\"band\":-1,\"is_ultimate\":true,\"kind\":\"outcome\",\"motion\":\"\"}\r\nACTUAL_PRESENTATION_ROUTE manual=hebei_peng_five_tigers_saber outcome=martial_completed facts={\"actual_hp_hits\":3,\"clash_won\":false,\"damage\":28,\"defense_outcome\":\"martial_pipeline\",\"evade_succeeded\":false,\"failure_reason\":\"\",\"martial_events\":[{\"distance\":1,\"max\":1,\"min\":1,\"op\":\"RECHECK_RANGE\",\"status\":\"IN_RANGE\"},{\"attempt\":1,\"defense\":0,\"distance\":1,\"health_damage\":8,\"op\":\"ATTACK\",\"raw_power\":8,\"status\":\"HIT\"},{\"after\":0,\"amount\":2,\"before\":0,\"op\":\"BREAK_DEFENSE\",\"status\":\"APPLIED\"},{\"attempt\":2,\"defense\":0,\"distance\":1,\"health_damage\":8,\"op\":\"ATTACK\",\"raw_power\":8,\"status\":\"HIT\"},{\"after\":0,\"amount\":2,\"before\":0,\"op\":\"BREAK_DEFENSE\",\"status\":\"APPLIED\"},{\"defense\":0,\"op\":\"REQUIRE_DEFENSE_ZERO\",\"status\":\"PASSED\"},{\"attempt\":3,\"defense\":0,\"distance\":1,\"health_damage\":12,\"op\":\"ATTACK\",\"raw_power\":12,\"status\":\"HIT\"}]} profile={\"anchor\":\"impact\",\"band\":1,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}\r\nACTUAL_PRESENTATION_ROUTE manual=nangong_boundless_sky_sword outcome=martial_completed facts={\"actual_hp_hits\":1,\"clash_won\":true,\"damage\":12,\"defense_outcome\":\"martial_pipeline\",\"evade_succeeded\":false,\"failure_reason\":\"\",\"martial_events\":[{\"amount\":1,\"op\":\"GAIN_STATUS\",\"status\":\"APPLIED\",\"status_name\":\"telegraph\"},{\"distance\":1,\"max\":3,\"min\":1,\"op\":\"RECHECK_RANGE\",\"status\":\"IN_RANGE\"},{\"op\":\"SPECIAL_CLASH\",\"opponent_power\":0,\"power\":25,\"status\":\"WIN\"},{\"op\":\"REQUIRE_CLASH_WIN\",\"status\":\"PASSED\"},{\"after\":0,\"amount\":3,\"before\":0,\"op\":\"BREAK_DEFENSE\",\"status\":\"APPLIED\"},{\"attempt\":1,\"defense\":0,\"distance\":1,\"health_damage\":12,\"op\":\"ATTACK\",\"raw_power\":12,\"status\":\"HIT\"}]} profile={\"anchor\":\"impact\",\"band\":2,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}\r\nACTUAL_PRESENTATION_ROUTE manual=sichuan_tang_hidden_weapons outcome=martial_completed facts={\"actual_hp_hits\":4,\"clash_won\":false,\"damage\":16,\"defense_outcome\":\"martial_pipeline\",\"evade_succeeded\":false,\"failure_reason\":\"\",\"martial_events\":[{\"distance\":1,\"max\":4,\"min\":1,\"op\":\"RECHECK_RANGE\",\"status\":\"IN_RANGE\"},{\"attempt\":1,\"defense\":0,\"distance\":1,\"health_damage\":4,\"op\":\"INDEPENDENT_ATTACK\",\"raw_power\":4,\"status\":\"HIT\"},{\"attempt\":2,\"defense\":0,\"distance\":1,\"health_damage\":4,\"op\":\"INDEPENDENT_ATTACK\",\"raw_power\":4,\"status\":\"HIT\"},{\"attempt\":3,\"defense\":0,\"distance\":1,\"health_damage\":4,\"op\":\"INDEPENDENT_ATTACK\",\"raw_power\":4,\"status\":\"HIT\"},{\"attempt\":4,\"defense\":0,\"distance\":1,\"health_damage\":4,\"op\":\"INDEPENDENT_ATTACK\",\"raw_power\":4,\"status\":\"HIT\"}]} profile={\"anchor\":\"impact\",\"band\":2,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}\r\nACTUAL_PRESENTATION_ROUTE manual=yang_family_spear outcome=martial_completed facts={\"actual_hp_hits\":1,\"clash_won\":false,\"damage\":9,\"defense_outcome\":\"martial_pipeline\",\"evade_succeeded\":false,\"failure_reason\":\"\",\"martial_events\":[{\"attempt\":1,\"defense\":0,\"distance\":1,\"health_damage\":9,\"op\":\"ATTACK\",\"raw_power\":9,\"status\":\"HIT\"},{\"from\":4,\"moved\":true,\"op\":\"MOVE_AWAY\",\"status\":\"MOVED\",\"tiles\":2,\"to\":2},{\"distance\":3,\"max\":2,\"min\":1,\"op\":\"RECHECK_RANGE\",\"status\":\"OUT_OF_RANGE\"},{\"attempt\":2,\"distance\":3,\"max\":2,\"min\":1,\"op\":\"ATTACK\",\"status\":\"SKIPPED_OUT_OF_RANGE\"}]} profile={\"anchor\":\"impact\",\"band\":2,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"ultimate\"}\r\nACTUAL_PRESENTATION_ROUTE manual=mount_hua_purple_mist_art outcome=martial_completed facts={\"actual_hp_hits\":0,\"clash_won\":false,\"evade_succeeded\":false,\"failure_reason\":\"\",\"martial_events\":[{\"key\":\"purple_mist_ultimate\",\"op\":\"CONSUME_ONCE_PER_BATTLE\",\"status\":\"CONSUMED\"},{\"amount\":4,\"op\":\"GAIN_RESOURCE\",\"resource\":\"internal\",\"status\":\"APPLIED\"},{\"amount\":3,\"op\":\"GAIN_RESOURCE\",\"resource\":\"stamina\",\"status\":\"APPLIED\"},{\"amount\":1,\"op\":\"GAIN_STATUS\",\"status\":\"APPLIED\",\"status_name\":\"fortitude\"},{\"amount\":3,\"op\":\"GAIN_RESOURCE\",\"resource\":\"defense\",\"status\":\"APPLIED\"},{\"op\":\"GAIN_RESOURCE\",\"status\":\"SKIPPED_CONDITION\"},{\"amount\":1,\"op\":\"GAIN_MOMENTUM_ON_COMPLETE\",\"status\":\"QUEUED\"}]} profile={\"anchor\":\"self\",\"band\":0,\"is_ultimate\":true,\"kind\":\"ultimate\",\"motion\":\"\"}\r\nACTUAL_PRESENTATION_ROUTE manual=wudang_taiji_sword outcome=response facts={} profile={\"anchor\":\"self\",\"band\":-1,\"is_ultimate\":true,\"kind\":\"outcome\",\"motion\":\"\"}\r\nACTUAL_PRESENTATION_ROUTE manual=xiaoyao_lingbo_footwork outcome=response facts={} profile={\"anchor\":\"self\",\"band\":-1,\"is_ultimate\":true,\"kind\":\"outcome\",\"motion\":\"\"}\r\nACTUAL_PRESENTATION_ROUTE manual=xiaoyao_lingbo_footwork star=3 outcome=response facts={} profile={\"anchor\":\"self\",\"band\":-1,\"is_ultimate\":false,\"kind\":\"outcome\",\"motion\":\"\"}\r\nACTUAL_PRESENTATION_ROUTE manual=xiaoyao_lingbo_footwork star=7 outcome=response facts={} profile={\"anchor\":\"self\",\"band\":-1,\"is_ultimate\":false,\"kind\":\"outcome\",\"motion\":\"\"}\r\nACTOR_ULTIMATE_PRESENTATION_VERIFY_OK\r\n"
+    },
+    {
+      "index": 36,
+      "filename": "36-verify_ten_manual_product_gate.log",
+      "sha256": "23544E42CB94FBED87DAD6D4D9ED5B8B0AB751EDB3A5FF415D65F5146AE06986",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nTEN_MANUAL_PRODUCT_GATE_50_SCENARIOS_OK\r\n"
+    },
+    {
+      "index": 37,
+      "filename": "37-verify_ten_manual_product_viewports.log",
+      "sha256": "C79CF3E0130FFC3DB96D1D84FB126DC1E99EE2824FE19BE5010C933C889A835A",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nTEN_MANUAL_PRODUCT_VIEWPORTS_OK\r\n"
+    },
+    {
+      "index": 38,
+      "filename": "38-probe_sequential_ten_duel_campaign.log",
+      "sha256": "DBE2B5C88E4FB5243BA7894E3891A27089A3A5053D1319DA28AB7289FC23675A",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nSEQUENTIAL_DUEL duel=1 candidate=slot1_dogyeom attempt_policy=0 outcome=win bundles=4 player_hp=21 enemy_hp=0 resources={ \"health\": [21, 30], \"stamina\": [0, 5], \"internal\": [0, 4] }\r\nSEQUENTIAL_PROGRESS duel=1 resources={ \"health\": [30, 30], \"stamina\": [2, 5], \"internal\": [3, 4] } progression={ \"owned_manual_ids\": [\"mount_hua_plum_blossom_sword\", \"shaolin_arhat_vajra_art\", \"wudang_taiji_sword\", \"yang_family_spear\"], \"mastery_by_manual\": { \"mount_hua_plum_blossom_sword\": 3, \"shaolin_arhat_vajra_art\": 5, \"wudang_taiji_sword\": 3, \"yang_family_spear\": 3 }, \"training_by_manual\": { \"mount_hua_plum_blossom_sword\": 0, \"shaolin_arhat_vajra_art\": 5, \"wudang_taiji_sword\": 0, \"yang_family_spear\": 0 }, \"free_training_pool\": 8, \"player_resources\": { \"health\": [30, 30], \"stamina\": [2, 5], \"internal\": [3, 4] }, \"pending_duplicate_transfers\": [] } reward_count=1 route_count=4\r\nSEQUENTIAL_DUEL duel=2 candidate=slot1_yeongyo attempt_policy=0 outcome=win bundles=5 player_hp=17 enemy_hp=0 resources={ \"health\": [17, 30], \"stamina\": [3, 5], \"internal\": [4, 4] }\r\nSEQUENTIAL_PROGRESS duel=2 resources={ \"health\": [30, 30], \"stamina\": [5, 5], \"internal\": [4, 4] } progression={ \"owned_manual_ids\": [\"mount_hua_plum_blossom_sword\", \"shaolin_arhat_vajra_art\", \"wudang_taiji_sword\", \"yang_family_spear\"], \"mastery_by_manual\": { \"mount_hua_plum_blossom_sword\": 3, \"shaolin_arhat_vajra_art\": 6, \"wudang_taiji_sword\": 3, \"yang_family_spear\": 3 }, \"training_by_manual\": { \"mount_hua_plum_blossom_sword\": 0, \"shaolin_arhat_vajra_art\": 10, \"wudang_taiji_sword\": 0, \"yang_family_spear\": 0 }, \"free_training_pool\": 13, \"player_resources\": { \"health\": [30, 30], \"stamina\": [5, 5], \"internal\": [4, 4] }, \"pending_duplicate_transfers\": [] } reward_count=2 route_count=8\r\nSEQUENTIAL_DUEL duel=3 candidate=slot2_mukjin attempt_policy=0 outcome=win bundles=4 player_hp=20 enemy_hp=0 resources={ \"health\": [20, 30], \"stamina\": [0, 5], \"internal\": [0, 4] }\r\nSEQUENTIAL_PROGRESS duel=3 resources={ \"health\": [30, 30], \"stamina\": [3, 5], \"internal\": [3, 4] } progression={ \"owned_manual_ids\": [\"mount_hua_plum_blossom_sword\", \"shaolin_arhat_vajra_art\", \"wudang_taiji_sword\", \"yang_family_spear\"], \"mastery_by_manual\": { \"mount_hua_plum_blossom_sword\": 3, \"shaolin_arhat_vajra_art\": 7, \"wudang_taiji_sword\": 3, \"yang_family_spear\": 3 }, \"training_by_manual\": { \"mount_hua_plum_blossom_sword\": 0, \"shaolin_arhat_vajra_art\": 15, \"wudang_taiji_sword\": 0, \"yang_family_spear\": 0 }, \"free_training_pool\": 19, \"player_resources\": { \"health\": [30, 30], \"stamina\": [3, 5], \"internal\": [3, 4] }, \"pending_duplicate_transfers\": [] } reward_count=3 route_count=12\r\nSEQUENTIAL_DUEL duel=4 candidate=slot2_danso attempt_policy=0 outcome=win bundles=4 player_hp=20 enemy_hp=0 resources={ \"health\": [20, 30], \"stamina\": [0, 5], \"internal\": [0, 4] }\r\nSEQUENTIAL_PROGRESS duel=4 resources={ \"health\": [30, 30], \"stamina\": [2, 5], \"internal\": [3, 4] } progression={ \"owned_manual_ids\": [\"mount_hua_plum_blossom_sword\", \"shaolin_arhat_vajra_art\", \"wudang_taiji_sword\", \"yang_family_spear\"], \"mastery_by_manual\": { \"mount_hua_plum_blossom_sword\": 3, \"shaolin_arhat_vajra_art\": 8, \"wudang_taiji_sword\": 3, \"yang_family_spear\": 3 }, \"training_by_manual\": { \"mount_hua_plum_blossom_sword\": 0, \"shaolin_arhat_vajra_art\": 20, \"wudang_taiji_sword\": 0, \"yang_family_spear\": 0 }, \"free_training_pool\": 27, \"player_resources\": { \"health\": [30, 30], \"stamina\": [2, 5], \"internal\": [3, 4] }, \"pending_duplicate_transfers\": [] } reward_count=4 route_count=16\r\nSEQUENTIAL_DUEL duel=5 candidate=slot3_seolha attempt_policy=0 outcome=win bundles=5 player_hp=9 enemy_hp=0 resources={ \"health\": [9, 30], \"stamina\": [0, 5], \"internal\": [0, 4] }\r\nSEQUENTIAL_PROGRESS duel=5 resources={ \"health\": [25, 30], \"stamina\": [2, 5], \"internal\": [3, 4] } progression={ \"owned_manual_ids\": [\"mount_hua_plum_blossom_sword\", \"shaolin_arhat_vajra_art\", \"wudang_taiji_sword\", \"yang_family_spear\"], \"mastery_by_manual\": { \"mount_hua_plum_blossom_sword\": 3, \"shaolin_arhat_vajra_art\": 8, \"wudang_taiji_sword\": 3, \"yang_family_spear\": 5 }, \"training_by_manual\": { \"mount_hua_plum_blossom_sword\": 0, \"shaolin_arhat_vajra_art\": 20, \"wudang_taiji_sword\": 0, \"yang_family_spear\": 5 }, \"free_training_pool\": 35, \"player_resources\": { \"health\": [25, 30], \"stamina\": [2, 5], \"internal\": [3, 4] }, \"pending_duplicate_transfers\": [] } reward_count=5 route_count=20\r\nSEQUENTIAL_DUEL duel=6 candidate=slot3_biyeon attempt_policy=0 outcome=win bundles=5 player_hp=11 enemy_hp=0 resources={ \"health\": [11, 30], \"stamina\": [0, 5], \"internal\": [0, 4] }\r\nSEQUENTIAL_PROGRESS duel=6 resources={ \"health\": [27, 30], \"stamina\": [2, 5], \"internal\": [3, 4] } progression={ \"owned_manual_ids\": [\"mount_hua_plum_blossom_sword\", \"shaolin_arhat_vajra_art\", \"wudang_taiji_sword\", \"yang_family_spear\"], \"mastery_by_manual\": { \"mount_hua_plum_blossom_sword\": 3, \"shaolin_arhat_vajra_art\": 8, \"wudang_taiji_sword\": 3, \"yang_family_spear\": 6 }, \"training_by_manual\": { \"mount_hua_plum_blossom_sword\": 0, \"shaolin_arhat_vajra_art\": 20, \"wudang_taiji_sword\": 0, \"yang_family_spear\": 10 }, \"free_training_pool\": 43, \"player_resources\": { \"health\": [27, 30], \"stamina\": [2, 5], \"internal\": [3, 4] }, \"pending_duplicate_transfers\": [] } reward_count=6 route_count=24\r\nSEQUENTIAL_DUEL duel=7 candidate=slot4_cheongheo attempt_policy=0 outcome=win bundles=5 player_hp=14 enemy_hp=0 resources={ \"health\": [14, 30], \"stamina\": [0, 5], \"internal\": [0, 4] }\r\nSEQUENTIAL_PROGRESS duel=7 resources={ \"health\": [30, 30], \"stamina\": [3, 5], \"internal\": [4, 4] } progression={ \"owned_manual_ids\": [\"mount_hua_plum_blossom_sword\", \"shaolin_arhat_vajra_art\", \"wudang_taiji_sword\", \"yang_family_spear\"], \"mastery_by_manual\": { \"mount_hua_plum_blossom_sword\": 3, \"shaolin_arhat_vajra_art\": 8, \"wudang_taiji_sword\": 3, \"yang_family_spear\": 7 }, \"training_by_manual\": { \"mount_hua_plum_blossom_sword\": 0, \"shaolin_arhat_vajra_art\": 20, \"wudang_taiji_sword\": 0, \"yang_family_spear\": 15 }, \"free_training_pool\": 48, \"player_resources\": { \"health\": [30, 30], \"stamina\": [3, 5], \"internal\": [4, 4] }, \"pending_duplicate_transfers\": [] } reward_count=7 route_count=28\r\nSEQUENTIAL_DUEL duel=8 candidate=slot4_jinryeo attempt_policy=0 outcome=win bundles=6 player_hp=19 enemy_hp=0 resources={ \"health\": [19, 30], \"stamina\": [1, 5], \"internal\": [1, 4] }\r\nSEQUENTIAL_PROGRESS duel=8 resources={ \"health\": [30, 30], \"stamina\": [4, 5], \"internal\": [4, 4] } progression={ \"owned_manual_ids\": [\"mount_hua_plum_blossom_sword\", \"shaolin_arhat_vajra_art\", \"wudang_taiji_sword\", \"yang_family_spear\"], \"mastery_by_manual\": { \"mount_hua_plum_blossom_sword\": 3, \"shaolin_arhat_vajra_art\": 8, \"wudang_taiji_sword\": 3, \"yang_family_spear\": 8 }, \"training_by_manual\": { \"mount_hua_plum_blossom_sword\": 0, \"shaolin_arhat_vajra_art\": 20, \"wudang_taiji_sword\": 0, \"yang_family_spear\": 20 }, \"free_training_pool\": 54, \"player_resources\": { \"health\": [30, 30], \"stamina\": [4, 5], \"internal\": [4, 4] }, \"pending_duplicate_transfers\": [] } reward_count=8 route_count=32\r\nSEQUENTIAL_DUEL duel=9 candidate=slot5_pungmok attempt_policy=0 outcome=win bundles=3 player_hp=17 enemy_hp=0 resources={ \"health\": [17, 30], \"stamina\": [1, 5], \"internal\": [1, 4] }\r\nSEQUENTIAL_PROGRESS duel=9 resources={ \"health\": [30, 30], \"stamina\": [3, 5], \"internal\": [4, 4] } progression={ \"owned_manual_ids\": [\"mount_hua_plum_blossom_sword\", \"shaolin_arhat_vajra_art\", \"wudang_taiji_sword\", \"yang_family_spear\"], \"mastery_by_manual\": { \"mount_hua_plum_blossom_sword\": 5, \"shaolin_arhat_vajra_art\": 8, \"wudang_taiji_sword\": 3, \"yang_family_spear\": 8 }, \"training_by_manual\": { \"mount_hua_plum_blossom_sword\": 5, \"shaolin_arhat_vajra_art\": 20, \"wudang_taiji_sword\": 0, \"yang_family_spear\": 20 }, \"free_training_pool\": 62, \"player_resources\": { \"health\": [30, 30], \"stamina\": [3, 5], \"internal\": [4, 4] }, \"pending_duplicate_transfers\": [] } reward_count=9 route_count=36\r\nSEQUENTIAL_DUEL duel=10 candidate=slot5_rajin attempt_policy=0 outcome=win bundles=3 player_hp=9 enemy_hp=0 resources={ \"health\": [9, 30], \"stamina\": [1, 5], \"internal\": [2, 4] }\r\nSEQUENTIAL_PROGRESS duel=10 resources={ \"health\": [9, 30], \"stamina\": [1, 5], \"internal\": [2, 4] } progression={ \"owned_manual_ids\": [\"mount_hua_plum_blossom_sword\", \"shaolin_arhat_vajra_art\", \"wudang_taiji_sword\", \"yang_family_spear\"], \"mastery_by_manual\": { \"mount_hua_plum_blossom_sword\": 6, \"shaolin_arhat_vajra_art\": 8, \"wudang_taiji_sword\": 3, \"yang_family_spear\": 8 }, \"training_by_manual\": { \"mount_hua_plum_blossom_sword\": 10, \"shaolin_arhat_vajra_art\": 20, \"wudang_taiji_sword\": 0, \"yang_family_spear\": 20 }, \"free_training_pool\": 65, \"player_resources\": { \"health\": [9, 30], \"stamina\": [1, 5], \"internal\": [2, 4] }, \"pending_duplicate_transfers\": [] } reward_count=10 route_count=36\r\nSEQUENTIAL_CAMPAIGN_SUMMARY {\"attempt_count\":10,\"attempts\":[{\"available_player_card_ids\":[\"mount_hua_plum_blossom_sword_star3\",\"shaolin_arhat_vajra_art_star3\",\"wudang_taiji_sword_star3\",\"yang_family_spear_star3\"],\"battle_metrics\":{\"clash_wins\":0,\"player_health_lost\":9,\"rounds_elapsed\":2,\"successful_dodges\":0,\"ultimate_uses\":1},\"bundles\":4,\"candidate_id\":\"slot1_dogyeom\",\"duel_index\":1,\"duel_public_player_card_ids\":[\"basic_guard\",\"basic_heavy_attack\",\"basic_move\",\"ultimate_void_sword_qi\"],\"enemy_health\":0,\"outcome\":\"win\",\"player_card_counts\":{\"basic_move\":3,\"ultimate_void_sword_qi\":1},\"player_health\":21,\"player_resources\":{\"health\":[21,30],\"internal\":[0,4],\"stamina\":[0,5]},\"policy\":\"public_guarded_pressure\",\"policy_mode\":0,\"terminal\":true},{\"available_player_card_ids\":[\"mount_hua_plum_blossom_sword_star3\",\"shaolin_arhat_vajra_art_star3\",\"wudang_taiji_sword_star3\",\"yang_family_spear_star3\"],\"battle_metrics\":{\"clash_wins\":0,\"player_health_lost\":13,\"rounds_elapsed\":2,\"successful_dodges\":0,\"ultimate_uses\":1},\"bundles\":5,\"candidate_id\":\"slot1_yeongyo\",\"duel_index\":2,\"duel_public_player_card_ids\":[\"basic_guard\",\"basic_heavy_attack\",\"basic_meditate\",\"basic_move\",\"basic_palm\",\"ultimate_cleave_peak\"],\"enemy_health\":0,\"outcome\":\"win\",\"player_card_counts\":{\"basic_guard\":1,\"basic_meditate\":2,\"ultimate_cleave_peak\":1},\"player_health\":17,\"player_resources\":{\"health\":[17,30],\"internal\":[4,4],\"stamina\":[3,5]},\"policy\":\"public_guarded_pressure\",\"policy_mode\":0,\"terminal\":true},{\"available_player_card_ids\":[\"mount_hua_plum_blossom_sword_star3\",\"shaolin_arhat_vajra_art_star3\",\"wudang_taiji_sword_star3\",\"yang_family_spear_star3\"],\"battle_metrics\":{\"clash_wins\":0,\"player_health_lost\":10,\"rounds_elapsed\":2,\"successful_dodges\":0,\"ultimate_uses\":1},\"bundles\":4,\"candidate_id\":\"slot2_mukjin\",\"duel_index\":3,\"duel_public_player_card_ids\":[\"basic_guard\",\"basic_heavy_attack\",\"basic_move\",\"ultimate_void_sword_qi\"],\"enemy_health\":0,\"outcome\":\"win\",\"player_card_counts\":{\"basic_move\":3,\"ultimate_void_sword_qi\":1},\"player_health\":20,\"player_resources\":{\"health\":[20,30],\"internal\":[0,4],\"stamina\":[0,5]},\"policy\":\"public_guarded_pressure\",\"policy_mode\":0,\"terminal\":true},{\"available_player_card_ids\":[\"mount_hua_plum_blossom_sword_star3\",\"shaolin_arhat_vajra_art_star3\",\"shaolin_arhat_vajra_art_star7\",\"wudang_taiji_sword_star3\",\"yang_family_spear_star3\"],\"battle_metrics\":{\"clash_wins\":0,\"player_health_lost\":10,\"rounds_elapsed\":2,\"successful_dodges\":0,\"ultimate_uses\":1},\"bundles\":4,\"candidate_id\":\"slot2_danso\",\"duel_index\":4,\"duel_public_player_card_ids\":[\"basic_guard\",\"basic_heavy_attack\",\"basic_move\",\"basic_palm\",\"ultimate_void_sword_qi\"],\"enemy_health\":0,\"outcome\":\"win\",\"player_card_counts\":{\"basic_move\":4,\"ultimate_void_sword_qi\":1},\"player_health\":20,\"player_resources\":{\"health\":[20,30],\"internal\":[0,4],\"stamina\":[0,5]},\"policy\":\"public_guarded_pressure\",\"policy_mode\":0,\"terminal\":true},{\"available_player_card_ids\":[\"mount_hua_plum_blossom_sword_star3\",\"shaolin_arhat_vajra_art_star3\",\"shaolin_arhat_vajra_art_star7\",\"wudang_taiji_sword_star3\",\"yang_family_spear_star3\"],\"battle_metrics\":{\"clash_wins\":0,\"player_health_lost\":21,\"rounds_elapsed\":2,\"successful_dodges\":0,\"ultimate_uses\":1},\"bundles\":5,\"candidate_id\":\"slot3_seolha\",\"duel_index\":5,\"duel_public_player_card_ids\":[\"basic_guard\",\"basic_heavy_attack\",\"basic_meditate\",\"basic_move\",\"basic_palm\",\"shaolin_arhat_vajra_art_star7\",\"ultimate_void_sword_qi\"],\"enemy_health\":0,\"outcome\":\"win\",\"player_card_counts\":{\"basic_meditate\":1,\"basic_move\":1,\"shaolin_arhat_vajra_art_star7\":1,\"ultimate_void_sword_qi\":1},\"player_health\":9,\"player_resources\":{\"health\":[9,30],\"internal\":[0,4],\"stamina\":[0,5]},\"policy\":\"public_guarded_pressure\",\"policy_mode\":0,\"terminal\":true},{\"available_player_card_ids\":[\"mount_hua_plum_blossom_sword_star3\",\"shaolin_arhat_vajra_art_star3\",\"shaolin_arhat_vajra_art_star7\",\"wudang_taiji_sword_star3\",\"yang_family_spear_star3\"],\"battle_metrics\":{\"clash_wins\":0,\"player_health_lost\":14,\"rounds_elapsed\":2,\"successful_dodges\":0,\"ultimate_uses\":1},\"bundles\":5,\"candidate_id\":\"slot3_biyeon\",\"duel_index\":6,\"duel_public_player_card_ids\":[\"basic_guard\",\"basic_heavy_attack\",\"basic_meditate\",\"basic_move\",\"basic_palm\",\"mount_hua_plum_blossom_sword_star3\",\"ultimate_void_sword_qi\"],\"enemy_health\":0,\"outcome\":\"win\",\"player_card_counts\":{\"basic_meditate\":1,\"basic_move\":2,\"mount_hua_plum_blossom_sword_star3\":1,\"ultimate_void_sword_qi\":1},\"player_health\":11,\"player_resources\":{\"health\":[11,30],\"internal\":[0,4],\"stamina\":[0,5]},\"policy\":\"public_guarded_pressure\",\"policy_mode\":0,\"terminal\":true},{\"available_player_card_ids\":[\"mount_hua_plum_blossom_sword_star3\",\"shaolin_arhat_vajra_art_star3\",\"shaolin_arhat_vajra_art_star7\",\"wudang_taiji_sword_star3\",\"yang_family_spear_star3\"],\"battle_metrics\":{\"clash_wins\":0,\"player_health_lost\":13,\"rounds_elapsed\":2,\"successful_dodges\":0,\"ultimate_uses\":1},\"bundles\":5,\"candidate_id\":\"slot4_cheongheo\",\"duel_index\":7,\"duel_public_player_card_ids\":[\"basic_guard\",\"basic_heavy_attack\",\"basic_meditate\",\"basic_move\",\"basic_palm\",\"mount_hua_plum_blossom_sword_star3\",\"ultimate_void_sword_qi\"],\"enemy_health\":0,\"outcome\":\"win\",\"player_card_counts\":{\"basic_guard\":1,\"basic_meditate\":1,\"basic_palm\":1,\"ultimate_void_sword_qi\":1},\"player_health\":14,\"player_resources\":{\"health\":[14,30],\"internal\":[0,4],\"stamina\":[0,5]},\"policy\":\"public_guarded_pressure\",\"policy_mode\":0,\"terminal\":true},{\"available_player_card_ids\":[\"mount_hua_plum_blossom_sword_star3\",\"shaolin_arhat_vajra_art_star3\",\"shaolin_arhat_vajra_art_star7\",\"wudang_taiji_sword_star3\",\"yang_family_spear_star3\",\"yang_family_spear_star7\"],\"battle_metrics\":{\"clash_wins\":0,\"player_health_lost\":11,\"rounds_elapsed\":2,\"successful_dodges\":0,\"ultimate_uses\":1},\"bundles\":6,\"candidate_id\":\"slot4_jinryeo\",\"duel_index\":8,\"duel_public_player_card_ids\":[\"basic_guard\",\"basic_meditate\",\"basic_move\",\"basic_palm\",\"mount_hua_plum_blossom_sword_star3\",\"ultimate_void_sword_qi\",\"yang_family_spear_star7\"],\"enemy_health\":0,\"outcome\":\"win\",\"player_card_counts\":{\"basic_meditate\":2,\"mount_hua_plum_blossom_sword_star3\":1,\"ultimate_void_sword_qi\":1},\"player_health\":19,\"player_resources\":{\"health\":[19,30],\"internal\":[1,4],\"stamina\":[1,5]},\"policy\":\"public_guarded_pressure\",\"policy_mode\":0,\"terminal\":true},{\"available_player_card_ids\":[\"mount_hua_plum_blossom_sword_star3\",\"shaolin_arhat_vajra_art_star3\",\"shaolin_arhat_vajra_art_star7\",\"wudang_taiji_sword_star3\",\"yang_family_spear_star3\",\"yang_family_spear_star7\"],\"battle_metrics\":{\"clash_wins\":1,\"player_health_lost\":13,\"rounds_elapsed\":1,\"successful_dodges\":0,\"ultimate_uses\":1},\"bundles\":3,\"candidate_id\":\"slot5_pungmok\",\"duel_index\":9,\"duel_public_player_card_ids\":[\"basic_guard\",\"basic_heavy_attack\",\"basic_meditate\",\"ultimate_void_sword_qi\"],\"enemy_health\":0,\"outcome\":\"win\",\"player_card_counts\":{\"basic_heavy_attack\":1,\"basic_meditate\":1,\"ultimate_void_sword_qi\":1},\"player_health\":17,\"player_resources\":{\"health\":[17,30],\"internal\":[1,4],\"stamina\":[1,5]},\"policy\":\"public_guarded_pressure\",\"policy_mode\":0,\"terminal\":true},{\"available_player_card_ids\":[\"mount_hua_plum_blossom_sword_star3\",\"shaolin_arhat_vajra_art_star3\",\"shaolin_arhat_vajra_art_star7\",\"wudang_taiji_sword_star3\",\"yang_family_spear_star3\",\"yang_family_spear_star7\"],\"battle_metrics\":{\"clash_wins\":0,\"player_health_lost\":21,\"rounds_elapsed\":1,\"successful_dodges\":0,\"ultimate_uses\":1},\"bundles\":3,\"candidate_id\":\"slot5_rajin\",\"duel_index\":10,\"duel_public_player_card_ids\":[\"basic_guard\",\"basic_heavy_attack\",\"basic_meditate\",\"basic_palm\",\"ultimate_void_sword_qi\"],\"enemy_health\":0,\"outcome\":\"win\",\"player_card_counts\":{\"basic_meditate\":1,\"basic_palm\":1,\"ultimate_void_sword_qi\":1},\"player_health\":9,\"player_resources\":{\"health\":[9,30],\"internal\":[2,4],\"stamina\":[1,5]},\"policy\":\"public_guarded_pressure\",\"policy_mode\":0,\"terminal\":true}],\"complete\":true,\"completed_duels\":10,\"duel_history_count\":10,\"progression\":{\"free_training_pool\":65,\"mastery_by_manual\":{\"mount_hua_plum_blossom_sword\":6,\"shaolin_arhat_vajra_art\":8,\"wudang_taiji_sword\":3,\"yang_family_spear\":8},\"owned_manual_ids\":[\"mount_hua_plum_blossom_sword\",\"shaolin_arhat_vajra_art\",\"wudang_taiji_sword\",\"yang_family_spear\"],\"pending_duplicate_transfers\":[],\"player_resources\":{\"health\":[9,30],\"internal\":[2,4],\"stamina\":[1,5]},\"training_by_manual\":{\"mount_hua_plum_blossom_sword\":10,\"shaolin_arhat_vajra_art\":20,\"wudang_taiji_sword\":0,\"yang_family_spear\":20}},\"publicly_used_player_card_ids\":[\"basic_guard\",\"basic_heavy_attack\",\"basic_meditate\",\"basic_move\",\"basic_palm\",\"mount_hua_plum_blossom_sword_star3\",\"shaolin_arhat_vajra_art_star7\",\"ultimate_cleave_peak\",\"ultimate_void_sword_qi\",\"yang_family_spear_star7\"],\"resources\":{\"health\":[9,30],\"internal\":[2,4],\"stamina\":[1,5]},\"reward_history_count\":10,\"route_choice_count\":36,\"route_choices\":[{\"effect\":\"자유 수련 포인트 +3\",\"id\":\"training\",\"label\":\"공터에서 수련\",\"node_id\":\"J1-1\",\"route_type\":\"training\"},{\"effect\":\"사건 해결 · 자유 수련 +2 · 내력 +1\",\"id\":\"event\",\"label\":\"길 잃은 행인 돕기\",\"node_id\":\"J1-2\",\"route_type\":\"event\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J1-3\",\"route_type\":\"rest\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J1-4\",\"route_type\":\"rest\"},{\"effect\":\"사건 해결 · 자유 수련 +2 · 내력 +1\",\"id\":\"event\",\"label\":\"길 잃은 행인 돕기\",\"node_id\":\"J2-1\",\"route_type\":\"event\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J2-2\",\"route_type\":\"rest\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J2-3\",\"route_type\":\"rest\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J2-4\",\"route_type\":\"rest\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J3-1\",\"route_type\":\"rest\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J3-2\",\"route_type\":\"rest\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J3-3\",\"route_type\":\"rest\"},{\"effect\":\"자유 수련 포인트 +3\",\"id\":\"training\",\"label\":\"공터에서 수련\",\"node_id\":\"J3-4\",\"route_type\":\"training\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J4-1\",\"route_type\":\"rest\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J4-2\",\"route_type\":\"rest\"},{\"effect\":\"자유 수련 포인트 +3\",\"id\":\"training\",\"label\":\"공터에서 수련\",\"node_id\":\"J4-3\",\"route_type\":\"training\"},{\"effect\":\"사건 해결 · 자유 수련 +2 · 내력 +1\",\"id\":\"event\",\"label\":\"길 잃은 행인 돕기\",\"node_id\":\"J4-4\",\"route_type\":\"event\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J5-1\",\"route_type\":\"rest\"},{\"effect\":\"자유 수련 포인트 +3\",\"id\":\"training\",\"label\":\"공터에서 수련\",\"node_id\":\"J5-2\",\"route_type\":\"training\"},{\"effect\":\"사건 해결 · 자유 수련 +2 · 내력 +1\",\"id\":\"event\",\"label\":\"길 잃은 행인 돕기\",\"node_id\":\"J5-3\",\"route_type\":\"event\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J5-4\",\"route_type\":\"rest\"},{\"effect\":\"자유 수련 포인트 +3\",\"id\":\"training\",\"label\":\"공터에서 수련\",\"node_id\":\"J6-1\",\"route_type\":\"training\"},{\"effect\":\"사건 해결 · 자유 수련 +2 · 내력 +1\",\"id\":\"event\",\"label\":\"길 잃은 행인 돕기\",\"node_id\":\"J6-2\",\"route_type\":\"event\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J6-3\",\"route_type\":\"rest\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J6-4\",\"route_type\":\"rest\"},{\"effect\":\"사건 해결 · 자유 수련 +2 · 내력 +1\",\"id\":\"event\",\"label\":\"길 잃은 행인 돕기\",\"node_id\":\"J7-1\",\"route_type\":\"event\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J7-2\",\"route_type\":\"rest\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J7-3\",\"route_type\":\"rest\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J7-4\",\"route_type\":\"rest\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J8-1\",\"route_type\":\"rest\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J8-2\",\"route_type\":\"rest\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J8-3\",\"route_type\":\"rest\"},{\"effect\":\"자유 수련 포인트 +3\",\"id\":\"training\",\"label\":\"공터에서 수련\",\"node_id\":\"J8-4\",\"route_type\":\"training\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J9-1\",\"route_type\":\"rest\"},{\"effect\":\"최대 체력 25% 회복 · 기력 +1 · 내력 +1\",\"id\":\"rest\",\"label\":\"주막에서 휴식\",\"node_id\":\"J9-2\",\"route_type\":\"rest\"},{\"effect\":\"자유 수련 포인트 +3\",\"id\":\"training\",\"label\":\"공터에서 수련\",\"node_id\":\"J9-3\",\"route_type\":\"training\"},{\"effect\":\"사건 해결 · 자유 수련 +2 · 내력 +1\",\"id\":\"event\",\"label\":\"길 잃은 행인 돕기\",\"node_id\":\"J9-4\",\"route_type\":\"event\"}],\"ultimate_use_count\":10}\r\n"
+    },
+    {
+      "index": 39,
+      "filename": "39-probe_native_ten_duel_campaign.log",
+      "sha256": "8479BABBD2299F80419979E1FE7BF7103B29866160D7C2D88CEE5E9CE36B391E",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nNATIVE_REJECT prerequisites button=@Button@2:<Button#38839256563> visible=true disabled=true focus_mode=2\r\nNATIVE_HELPER_DISABLED PASS\r\nNATIVE_REJECT signal button=@Button@3:<Button#38889588216> observed=2\r\nNATIVE_HELPER_GUARDS PASS\r\nNATIVE_BUNDLE duel=1 turn=1 player={ \"health\": [23, 30], \"stamina\": [3, 5], \"internal\": [2, 4] } enemy_hp=[19, 30] terminal=false\r\nNATIVE_BUNDLE duel=1 turn=2 player={ \"health\": [21, 30], \"stamina\": [1, 5], \"internal\": [0, 4] } enemy_hp=[8, 30] terminal=false\r\nNATIVE_BUNDLE duel=1 turn=3 player={ \"health\": [21, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[8, 30] terminal=false\r\nNATIVE_BUNDLE duel=1 turn=4 player={ \"health\": [21, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[0, 30] terminal=true\r\nNATIVE_BUNDLE duel=2 turn=1 player={ \"health\": [22, 30], \"stamina\": [0, 5], \"internal\": [1, 4] } enemy_hp=[19, 30] terminal=false\r\nNATIVE_BUNDLE duel=2 turn=2 player={ \"health\": [22, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[13, 30] terminal=false\r\nNATIVE_BUNDLE duel=2 turn=3 player={ \"health\": [17, 30], \"stamina\": [3, 5], \"internal\": [3, 4] } enemy_hp=[13, 30] terminal=false\r\nNATIVE_BUNDLE duel=2 turn=4 player={ \"health\": [17, 30], \"stamina\": [4, 5], \"internal\": [4, 4] } enemy_hp=[13, 30] terminal=false\r\nNATIVE_BUNDLE duel=2 turn=5 player={ \"health\": [17, 30], \"stamina\": [3, 5], \"internal\": [4, 4] } enemy_hp=[0, 30] terminal=true\r\nNATIVE_BUNDLE duel=3 turn=1 player={ \"health\": [28, 30], \"stamina\": [3, 5], \"internal\": [2, 4] } enemy_hp=[19, 30] terminal=false\r\nNATIVE_BUNDLE duel=3 turn=2 player={ \"health\": [20, 30], \"stamina\": [1, 5], \"internal\": [0, 4] } enemy_hp=[8, 30] terminal=false\r\nNATIVE_BUNDLE duel=3 turn=3 player={ \"health\": [20, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[8, 30] terminal=false\r\nNATIVE_BUNDLE duel=3 turn=4 player={ \"health\": [20, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[0, 30] terminal=true\r\nNATIVE_BUNDLE duel=4 turn=1 player={ \"health\": [28, 30], \"stamina\": [1, 5], \"internal\": [1, 4] } enemy_hp=[19, 30] terminal=false\r\nNATIVE_BUNDLE duel=4 turn=2 player={ \"health\": [20, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[13, 30] terminal=false\r\nNATIVE_BUNDLE duel=4 turn=3 player={ \"health\": [20, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[13, 30] terminal=false\r\nNATIVE_BUNDLE duel=4 turn=4 player={ \"health\": [20, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[0, 30] terminal=true\r\nNATIVE_BUNDLE duel=5 turn=1 player={ \"health\": [27, 30], \"stamina\": [0, 5], \"internal\": [1, 4] } enemy_hp=[19, 30] terminal=false\r\nNATIVE_BUNDLE duel=5 turn=2 player={ \"health\": [27, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[13, 30] terminal=false\r\nNATIVE_BUNDLE duel=5 turn=3 player={ \"health\": [16, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[13, 30] terminal=false\r\nNATIVE_BUNDLE duel=5 turn=4 player={ \"health\": [9, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[4, 30] terminal=false\r\nNATIVE_BUNDLE duel=5 turn=5 player={ \"health\": [9, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[0, 30] terminal=true\r\nNATIVE_BUNDLE duel=6 turn=1 player={ \"health\": [18, 30], \"stamina\": [0, 5], \"internal\": [1, 4] } enemy_hp=[19, 30] terminal=false\r\nNATIVE_BUNDLE duel=6 turn=2 player={ \"health\": [18, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[13, 30] terminal=false\r\nNATIVE_BUNDLE duel=6 turn=3 player={ \"health\": [11, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[13, 30] terminal=false\r\nNATIVE_BUNDLE duel=6 turn=4 player={ \"health\": [11, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[3, 30] terminal=false\r\nNATIVE_BUNDLE duel=6 turn=5 player={ \"health\": [11, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[0, 30] terminal=true\r\nNATIVE_BUNDLE duel=7 turn=1 player={ \"health\": [25, 30], \"stamina\": [0, 5], \"internal\": [1, 4] } enemy_hp=[19, 30] terminal=false\r\nNATIVE_BUNDLE duel=7 turn=2 player={ \"health\": [20, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[19, 30] terminal=false\r\nNATIVE_BUNDLE duel=7 turn=3 player={ \"health\": [14, 30], \"stamina\": [1, 5], \"internal\": [1, 4] } enemy_hp=[9, 30] terminal=false\r\nNATIVE_BUNDLE duel=7 turn=4 player={ \"health\": [14, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[7, 30] terminal=false\r\nNATIVE_BUNDLE duel=7 turn=5 player={ \"health\": [14, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[0, 30] terminal=true\r\nNATIVE_BUNDLE duel=8 turn=1 player={ \"health\": [30, 30], \"stamina\": [0, 5], \"internal\": [3, 4] } enemy_hp=[20, 30] terminal=false\r\nNATIVE_BUNDLE duel=8 turn=2 player={ \"health\": [30, 30], \"stamina\": [0, 5], \"internal\": [2, 4] } enemy_hp=[20, 30] terminal=false\r\nNATIVE_BUNDLE duel=8 turn=3 player={ \"health\": [30, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[14, 30] terminal=false\r\nNATIVE_BUNDLE duel=8 turn=4 player={ \"health\": [19, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[14, 30] terminal=false\r\nNATIVE_BUNDLE duel=8 turn=5 player={ \"health\": [19, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[4, 30] terminal=false\r\nNATIVE_BUNDLE duel=8 turn=6 player={ \"health\": [19, 30], \"stamina\": [1, 5], \"internal\": [1, 4] } enemy_hp=[0, 30] terminal=true\r\nNATIVE_BUNDLE duel=9 turn=1 player={ \"health\": [26, 30], \"stamina\": [2, 5], \"internal\": [2, 4] } enemy_hp=[19, 30] terminal=false\r\nNATIVE_BUNDLE duel=9 turn=2 player={ \"health\": [25, 30], \"stamina\": [0, 5], \"internal\": [0, 4] } enemy_hp=[19, 30] terminal=false\r\nNATIVE_BUNDLE duel=9 turn=3 player={ \"health\": [11, 30], \"stamina\": [1, 5], \"internal\": [1, 4] } enemy_hp=[0, 30] terminal=true\r\nNATIVE_BUNDLE duel=10 turn=1 player={ \"health\": [17, 30], \"stamina\": [1, 5], \"internal\": [2, 4] } enemy_hp=[19, 30] terminal=false\r\nNATIVE_BUNDLE duel=10 turn=2 player={ \"health\": [12, 30], \"stamina\": [0, 5], \"internal\": [1, 4] } enemy_hp=[19, 30] terminal=false\r\nNATIVE_BUNDLE duel=10 turn=3 player={ \"health\": [6, 30], \"stamina\": [1, 5], \"internal\": [2, 4] } enemy_hp=[0, 30] terminal=true\r\nNATIVE_CAMPAIGN_SUMMARY {\"activations\":299,\"cards\":[\"basic_guard\",\"basic_heavy_attack\",\"basic_move\",\"ultimate_void_sword_qi\",\"basic_palm\",\"basic_meditate\",\"ultimate_cleave_peak\",\"shaolin_arhat_vajra_art_star7\",\"mount_hua_plum_blossom_sword_star3\",\"yang_family_spear_star7\"],\"complete\":true,\"duels\":10,\"elapsed_ms\":109840,\"failures\":[],\"mode\":\"ordinary_defaults\",\"outcomes\":{\"draw\":0,\"win\":10},\"rewards\":10,\"routes\":36}\r\nNATIVE_DURABLE_TIMINGS_MS [68,50,52,72,78,85,85,83,86,88,87,96,94,151,92,77,66,60,58,73,134,108,63,56,58,64,80,114,208,86,92,95,88,91,93,87,91,91,88,88,91,72,64,58,57,56,55,58,56,57,58,57,79,90,91,90,91,94,89,94,99,91,98,92,76,71,65,57,56,58,58,57,59,63,59,80,93,96,93,95,98,98,105,98,96,97,99,85,80,72,64,64,63,63,65,66,65,66,88,104,107,102,97,99,104,151,221,191,113,121,117,108,115,86,83,154,139,70,70,70,79,76,70,72,95,106,110,212,112,109,117,111,115,100,104,104,106,103,102,83,82,70,67,66,68,68,72,68,67,78,90,103,106,102,104,105,103,107,108,102,108,108,105,103,104,88,85,73,70,69,69,71,72,70,69,71,102,106,107,105,109,110,113,109,109,110,115,114,105,110,109,112,108,110,91,87,83,71,69,70,72,70,76,71,73,99,109,117,110,111,112,110,114,112,93,91,78,72,72,72,74,76,73,74,73,102,113,115,115,116,117,112,118,116,98,93,99]\r\n"
+    },
+    {
+      "index": 40,
+      "filename": "40-verify_bimu_constraint_model.log",
+      "sha256": "5C4C2BA457632E5B0F22801B9524DC18AC0AA1CDA06DD03D485978582A2B28FA",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nBIMU_CONSTRAINT_MODEL_OK cases=45\r\n"
+    },
+    {
+      "index": 41,
+      "filename": "41-verify_bimu_constraint_runtime.log",
+      "sha256": "ABA5BB423E287B6E71FDECC2F7070F7A760E791ED8056465F3EB40754EEEC684",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nBIMU_CONSTRAINT_RUNTIME_OK\r\n"
+    },
+    {
+      "index": 42,
+      "filename": "42-verify_bimu_constraint_ui.log",
+      "sha256": "939E58557F73633A4521C448ACB1CB71D14180E99C2A4B83C9156227FC1B758D",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nBIMU_UI_IDENTICAL_UPDATES=10 CHANGED_MANUAL_LISTS=0\r\nBIMU_CONSTRAINT_UI_OK\r\n"
+    },
+    {
+      "index": 43,
+      "filename": "43-verify_ten_duel_campaign.log",
+      "sha256": "706B608FF0048B5E26314BB922AD898EA64386A74432E3A1F715BDD15BB01E45",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nTEN_DUEL_CAMPAIGN_STATE_OK (synthetic terminal results; not full battle playthrough)\r\n"
+    },
+    {
+      "index": 44,
+      "filename": "44-verify_vertical_slice_failure_retry.log",
+      "sha256": "26F02885BB015D157A080C8463BA5A7DC3CCEA5F7A92E80A5481415903728AAA",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nVERTICAL_SLICE_FAILURE_RETRY_VERIFY_OK\r\n"
+    },
+    {
+      "index": 45,
+      "filename": "45-verify_run_save_store.log",
+      "sha256": "DBEB9E13D8398D2107CA6281413A875962B9B9B6FEA0772B280B6F337D5FB3AA",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nRUN_SAVE_STORE: PASS (0 failures)\r\n"
+    },
+    {
+      "index": 46,
+      "filename": "46-verify_run_save_cache.log",
+      "sha256": "9767554906B86F32855CAABDF5A1139F86CB86AD000F4308DDF9D8268E5E993B",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nRUN_SAVE_CACHE_CLEANUP: PASS (15 exact roots)\r\nRUN_SAVE_CACHE: PASS (0 failures)\r\n"
+    },
+    {
+      "index": 47,
+      "filename": "47-verify_martial_actor_binding.log",
+      "sha256": "EB7181D002B52D731304CEC2919355E00A1D3CB070A43BBC5D23AB0CCDD7DC4F",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\nMARTIAL_ACTOR_BINDING: PASS (0 failures)\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\n"
+    },
+    {
+      "index": 48,
+      "filename": "48-verify_martial_effect_pipeline.log",
+      "sha256": "14383164C99FB1D34DFF6D5F51F544D221B60E3D02A60A696CF038566AF4C33D",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nMARTIAL_EFFECT_PIPELINE_VERIFY_OK\r\n"
+    },
+    {
+      "index": 49,
+      "filename": "49-verify_combat_checkpoint_resume.log",
+      "sha256": "965A895596C75C53C50BA8E35C91844C790D7112E84E9030CF1A67F1A59AC1E0",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nCOMBAT_CHECKPOINT_RESUME: PASS (0 failures)\r\n"
+    },
+    {
+      "index": 50,
+      "filename": "50-verify_durable_run_continue.log",
+      "sha256": "4C2E0D64174793F6E9882C2F30B1B2F271DF0F6E63FFFEA9D67D664ED3D7D8BD",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nDURABLE_CONTINUE integrated_write_ms=[97]\r\nDURABLE_CONTINUE PASS\r\n"
+    },
+    {
+      "index": 51,
+      "filename": "51-verify_action_card_summary.log",
+      "sha256": "7A8836425FA568EA2B460256B77E772D0D66348A4E9A317AE53D0BB0449327A9",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nverify_action_card_summary: PASS\r\n"
+    },
+    {
+      "index": 52,
+      "filename": "52-verify_jianghu_rest_presentation.log",
+      "sha256": "5093457C405404353DE6DE2204CFB62103E73F90923B6E4BA4E531221650EEAE",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nJIANGHU_REST_PRESENTATION_OK\r\n"
+    },
+    {
+      "index": 53,
+      "filename": "53-verify_atlas_presentation_successor.log",
+      "sha256": "E8834223F5F3524BB8F0AC78FE73C9D9E2CCD43FCD0E637AF8201A4FCC1A197A",
+      "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nSOUND_CACHE_MEASUREMENT cue_count=12 cold_us=53934 warm_lookup_count=1200 warm_us=604\r\nATLAS_PRESENTATION_SUCCESSOR_OK\r\n"
+    }
+  ]
+}

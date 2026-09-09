@@ -1,6 +1,6 @@
 # Combat Layout Correction Implementation Plan
 
-> Current state: TASKS_1_3_SOURCE_COMMITTED / MACHINE_AND_BOUNDED_NATIVE_VERIFIED / PROTECTED_DELIVERY_PENDING. Exact source eda26a97f25a931ac02ba739d5c4921720512d41:499PASS and policy captures003–035, with failed/limited captures explicitly separated in the execution report and capture companion. Controller ratified sections3–5 and Tasks1–3 under TEN-DEC-20260909-COMBAT-LAYOUT-CORRECTION-01. Historical draft qualifiers below describe pre-ratification provenance, not an extra approval pause or unperformed implementation.
+> Current state: TASKS_1_3_SOURCE_COMMITTED / MACHINE_AND_BOUNDED_NATIVE_VERIFIED / PROTECTED_DELIVERY_PENDING. Exact product source eda26a97f25a931ac02ba739d5c4921720512d41:499PASS and policy captures003–035. Two explicit test-only CI follow-ups corrected stale board/ultimate expectations; the final test candidate additionally completed all53 unique existing CI native commands, including a persisted actual10-duel/36-route campaign. Warning-bearing/failed/limited evidence is separated in the execution report and companions. Final exact-head CI and main readback remain pending. Controller ratified sections3–5 and Tasks1–3 under TEN-DEC-20260909-COMBAT-LAYOUT-CORRECTION-01. Historical draft qualifiers below describe pre-ratification provenance, not an extra approval pause or unperformed implementation.
 > Controller plan derived from the fully read and R1-corrected reviewed-working draft, SHA-256 `0626f2956be878d16837cfabcf04d388b774a8fc8962f0055eefb0b119e47a61`.
 > Implementation base: `544fcbbaff0448edf265e381c70ad3d48fd61b7b`; protected baseline: `477697842bf14d95e670f01b0fe815e384b53658`.
 > Decision: `docs/decisions/2026-09-09_COMBAT_LAYOUT_CORRECTION.md`.
@@ -10,7 +10,7 @@
 
 > Status: `CONTROLLER_RATIFIED_SCOPE_IMPLEMENTED_AND_BOUNDED_VERIFIED`. Separate independent review closed L1–5/R1 and a later final-source review completed five full-scope rounds. Task/evidence history is in `2026-09-09_COMBAT_LAYOUT_EXECUTION_REPORT.md`; final Human/asset approval is not implied.
 >
-> For agentic workers: use the controller-selected subagent-driven route. Controller dispatches one implementer and a different reviewer; no independent child dispatch, asset generation, push or merge. The initial 3-product/7-test-workflow scope is preserved as implementation history. The explicit PR337 CI follow-up adds only `tests/verify_combat_board.gd`, making the current scope 3-product/8-test-workflow paths. Actual Task RED/GREEN gates apply.
+> For agentic workers: use the controller-selected subagent-driven route. Controller dispatches one implementer and a different reviewer; no independent child dispatch, asset generation, push or merge. The initial 3-product/7-test-workflow scope is preserved as implementation history. Explicit PR337 CI follow-ups add only `tests/verify_combat_board.gd` and `tests/verify_ultimate_ui.gd`, making the current scope 3-product/9-test-workflow paths. Actual Task RED/GREEN gates apply.
 
 **Goal:** restore the approved three-surface frontal duel, retain one state-derived execution stage and shared actor anchors, and separate current-action text from animated feedback without changing combat or assets.
 
@@ -28,7 +28,7 @@
 - Hard **visible-ink battler height** cap:52% of active duel height, including existing animation peak. Proposed deterministic **idle visible-ink target:46%**. Proposed tuning band is `[0.46, min(0.50, 0.52 / 1.12)]`, approximately46–46.428571%; default46% peaks at51.52%. No48% default or unconstrained46–50% idle band remains.
 - Initial logical distance2 retains at least42% horizontal foot separation. Later existing distance mapping remains: distance0→38%, distance1→41.25%, distance2→44.5%, distance4+→51%. Existing presentation motions may transiently change separation; no always-42% rule.
 - Reference viewports:1280×720,1280×800,1920×1080. Retain960×640 minimum and1440×900 compatibility. At960 require positive geometry, text/ink containment and52% cap; the reference lower target is not forced when it cannot fit. Failure is not permission to crop assets/hide text.
-- Exactly 3 allowed product files, 6 native test files (including the explicit PR337 board-oracle follow-up), 1 Python test and 1 workflow (section6). The old two-product-file restriction is superseded only for renderer-owned bounds/cache and the explicit MOVE-only resize hook. No new file split/general refactor.
+- Exactly 3 allowed product files, 7 native test files (including the explicit PR337 board/ultimate-UI oracle follow-ups), 1 Python test and 1 workflow (section6). The old two-product-file restriction is superseded only for renderer-owned bounds/cache and the explicit MOVE-only resize hook. No new file split/general refactor.
 - Ratification, independent review, native/full-suite/capture and delivery remain controller-owned. Draft writing is not product approval.
 
 ## 2. Authority, source relevance and evidence ceiling
@@ -221,7 +221,7 @@ Require actual global positive rects, stage-only background/banner/tint, allowed
 2. `src/combat/combat_board_preview.gd`: common stage-only binding, snapshot anchor hook/base fallback, lane/snapshot methods, bool fit/callers and visible-resize VFX handling.
 3. `src/combat/combat_character_placeholder.gd`: current-texture used-alpha cache, shared draw/bounds rect math, peak getter and bounded MOVE-only resize snap. No art/nonmove-animation values changed.
 
-**Test/workflow files (8 after the explicit PR337 CI oracle correction):**
+**Test/workflow files (9 after the two explicit PR337 CI oracle corrections):**
 
 4. `tests/verify_frontal_duel_screen_partition.gd`
 5. `tests/verify_combat_action_reveal.gd`
@@ -231,6 +231,7 @@ Require actual global positive rects, stage-only background/banner/tint, allowed
 9. `.github/workflows/validate-ten-manual-product-gate.yml`
 10. `tests/verify_inline_combat_results.gd`: only current-visible-slot overlap guard plus positive/exact current visibility assertions, after actual six hidden-slot false positives were independently traced.
 11. `tests/verify_combat_board.gd`: exact-CI34313348268 exposed old Control-size equality. Replace only scale oracle with independently derived actual alpha/draw/global bounds, retain0.01 tolerance and52% current/envelope cap, and add reversible negative unequal-visible-scale control. Preserve all unrelated board/HUD/domain/anchor assertions. The Decision's PR337 refinement explicitly authorizes this additional test path before mutation; historical10-path review evidence is not retroactively relabeled11-path.
+12. `tests/verify_ultimate_ui.gd`: exact CI34315801612 exposed an old planning-state direct-VFX expectation. Preserve reservation/refund/slot/cancel semantics; assert no VFX during planning and verify all three legacy atlas bands through actual product-CTA playback with positive visible alpha, exact timing, positive geometry and lane containment. Do not replace actual playback with a synthetic state-only positive. Bounded frame/time failure must stay explicit. Product/assets/timing remain unchanged.
 
 Untouched regressions: all other inline-result assertions, frontal plan lock, presentation controls/SFX/terminal, both scenes, reveal overlay, background/banner scripts, domain/AI/manuals/data, all save/store/codec/campaign paths and assets. Controller separately owns canon/Decision/report/protected-approval changes; they are not covertly assigned to this10-file implementation package.
 
@@ -300,7 +301,7 @@ _expect(ink_global.size.y <= stage_global.size.y * 0.52 + 0.5, "animated ink exc
 ### Task4 — Bounded final verification and handoff
 
 - [ ] At final candidate repeat focused Tasks1–2 native and Task3 Python/checker commands; record exact commands/exits/time/Godot/actual warnings/failed assertions and candidate SHA. Never combine mixed revisions into one full PASS.
-- [ ] Read back10 allowed paths, six listed hashes and unchanged untouched consumers. Future implementation checks include `git diff --check` and status; those commands here do not authorize writer Git mutations.
+- [ ] Read back the current 12 allowed paths (the initial 10 plus two explicitly ratified CI verifier corrections), six listed hashes and unchanged untouched consumers. Future implementation checks include `git diff --check` and status; those commands here do not authorize writer Git mutations.
 - [ ] Hand off for independent implementation review and controller capture/full suite. Preserve imported sidecars as environment state and exclude from product commits; controller-only exact-path cleanup after ownership/capture, never broad glob.
 
 ## 8. Untouched-consumer and failure matrix
@@ -325,7 +326,7 @@ After candidate commit/review only, follow current runtime-visual-capture prepar
 3. Bind capture to actual event/timing/motion state, not arbitrary sleep. Record global viewport/HUD/stage/background/banner/tint, occupied ink/feet, comparison children/result, label, VFX peak and input state. Include long copy, mute, reduced, skip and visible resize.
 4. Re-read exact hashes/diff/identity. Helper geometry alone does not replace imagery. Controller owns whole suite/CI; implementer does not repeat or claim it.
 
-Completion requires real behavioral RED before each product correction, focused GREEN on one candidate, independent review, actual CI wiring/execution, allowed10-file scope, unchanged assets/untouched consumers, and policy-registered captures at3 sizes. Controller canon/protected approvals/publication are separate prerequisites.
+Completion requires real behavioral RED before each product correction, focused GREEN on one candidate, independent review, actual CI wiring/execution, the current explicit 12-file scope, unchanged assets/untouched consumers, and policy-registered captures at3 sizes. The complete existing Full Validation native command list must also run with per-command outcomes after the discovered coverage gap; Python 499 PASS alone does not establish those native verifiers ran. Controller canon/protected approvals/publication are separate prerequisites.
 
 Human preference/readability, physical input/audio, accessibility users, Android/device, shipping rights and release/performance remain NOT_RUN. The46% technical ratio is controller-ratified for scoped implementation by the linked Decision; native geometry cannot user-final-lock its visual result. No whole Blueprint/Human/Android/release PASS.
 

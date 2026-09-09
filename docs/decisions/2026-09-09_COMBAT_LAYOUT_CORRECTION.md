@@ -28,7 +28,7 @@ PR335 실제 화면에는 해결 중 하단의 큰 빈 영역, 숨긴 논리 칸
 - 실행 중 이번 수 비교, 결과 문구, VFX 영역을 분리한다. 준비 중에는 실행 전용 영역을 비우고 숨긴다. 양수 공간을 위조하거나 필요한 문구를 잘라내지 않는다. VFX는 기존 최대 확대까지 영역 안에 맞추며 배치 실패를 두 표시 호출부가 실제로 존중한다.
 - 음소거·모션 감소·skip·현재 수만 공개·3/3/4·AI·무공 수치·보상·10전/36행로·저장 schema1은 보존한다. 새 효과/음원/이미지/씬/노드/라이브러리나 전투 의미를 추가하지 않는다.
 
-구체적 수식·구현 경로·회귀와 전달 순서는 `docs/operations/2026-09-09_COMBAT_LAYOUT_IMPLEMENTATION_PLAN.md`가 소유한다. 최초 구현은 10개 경로이며, 아래 PR337의 실제 CI 실패 교정으로 기존 검사기 1개를 추가해 현재 범위는 11개다. 제품 경로는 기존 board 2개와 character renderer 1개뿐이다. 별도 ordered-combat-v2 명세는 이 화면 교정의 의존성이나 승인 대상이 아니다.
+구체적 수식·구현 경로·회귀와 전달 순서는 `docs/operations/2026-09-09_COMBAT_LAYOUT_IMPLEMENTATION_PLAN.md`가 소유한다. 최초 구현은 10개 경로이며, 아래 PR337의 실제 CI 실패 교정으로 기존 검사기 2개를 추가해 현재 범위는 12개다. 제품 경로는 기존 board 2개와 character renderer 1개뿐이다. 별도 ordered-combat-v2 명세는 이 화면 교정의 의존성이나 승인 대상이 아니다.
 
 ## 조사·대안·구현 가능성
 
@@ -50,6 +50,14 @@ prospective behavioral RED → 최소 GREEN → 별도 검토자 → 실제 nati
 
 Exact head6433e1f44fa119535360b3ba1c09709713e9ba9d의 Full Validation34313348268에서 `tests/verify_combat_board.gd:479–489`의 comparable-scale assertion1개가 실제실패했다. 이이전검사는 Control.size를실제인물높이로취급하지만 본Decision의alpha-normalized draw는두원본의알파여백이달라서node높이가달라지는것이정상이다. Controller와별도검토자가actualsource/CI원문을대조했다. 추가경로는이test1개뿐이며제품3경로/수치/이미지는그대로다. 같은SIZE_TOLERANCE0.01과52%상한을유지하고, 원본Image의get_used_rect와실제draw/global변환으로독립측정한idle ink를비교한다. 현재모션ink와idle×기존peak의상한을보호하고, 실제enemy.scale.y를0.8로잠시변경하는negative가불일치를검출한뒤즉시복원해야한다. 기존anchor/HUD/domain판정은그대로유지한다. 이는검증완화가아니라승인된책임단위로오래된oracle을교정하는것이며 CI실패는보존한다.
 
-## Task1 evidence-backed scope refinement — retained history
+## PR337 second exact-CI correction — planning VFX oracle
+
+Exact head `508122f60e6b7ec46cc7deb44ef20754e120c900`, run `34315801612`, job `102351681408`은 교정된 board 검사를 통과한 뒤 `verify_ultimate_ui.gd`에서 3개 실패를 보고했다. 실제 예약 검사 128–130행이 아직 준비 상태에서 직접 VFX를 호출하고 화면 표시를 기대한다. 그러나 본 계약은 준비 상태의 연출 영역을 비우고 실패한 배치 호출에서 연출을 시작하지 않도록 명시한다. Controller와 별도 검토자가 실제 검사·준비 상태·제품 호출부를 읽고 이 오래된 기대값을 확인했다.
+
+추가 경로 12는 `tests/verify_ultimate_ui.gd`뿐이다. 예약·환불·연속 슬롯·실행 후 취소 금지는 유지한다. 준비 중 직접 호출은 비표시/유효하지 않은 연출 영역/새 연출 없음으로 검사한다. 대신 세 legacy 절초 모두 실제 제품 CTA로 실행해 각 atlas band, 양수 크기, 확정된 timing, 표시 및 실제 연출 영역 포함을 검증한다. 현재 1개 절초의 실제 playback 검사를 삭제하거나 가짜 실행 상태로만 대체하지 않는다. 프레임/시간 상한을 두며 alpha=0을 보이는 효과로 세지 않는다. 제품·이미지·슬롯·비용·시간은 수정하지 않는다.
+
+이전 499 Python 검사에 포함되지 않았던 `full-validation.yml`의 native 목록 전체를 기존 명령 그대로 별도 실행한다. skip/필터/실패 억제 없이 성공·실패·경고를 각 명령별로 남기며, 추가 결함을 찾으면 책임 owner와 범위를 판정한 뒤 교정한다.
+
+## Task1 evidence-backed scope refinement details — retained history
 
 Actual untouched inline verifier reported six overlaps at720/800/1080, all on hidden previous-bundle TimingSlot02/03 (visible=false). Current src/ui/action_timing_panel.gd115–131 explicitly makes only current bundle slots visible. Controller independently read the real diagnostic and source, authorizing only the additional inline verifier path above: verify actual visibility equals current-index membership and exact positive count, then assert non-overlap on every visible slot. Existing timing panel/CTA/card checks remain unchanged. Never move hidden geometry or hide current slots to manufacture PASS. Three product paths, game behavior, fonts, assets and other scope remain unchanged. The old9-path plan hash remains independent-review history; actual tests and final full-scope review must cover this explicit10-path refinement.

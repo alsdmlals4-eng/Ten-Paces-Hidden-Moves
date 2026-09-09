@@ -115,3 +115,17 @@ Controller와 별도 검토자가 actual source/CI 원문을 대조했다. 승�
 보드 종료에서 ObjectDB 2개 경고가 양쪽 실행에 남았다. verbose로 AudioStreamWAV/AudioStreamPlaybackWAV 각 refcount1을 확인했지만 정확한 할당 원인은 미확정이다. 이미 제품 종료 시 stop/stream=null이 있으므로 정리 누락으로 단정하지 않는다. 최종 momentum cue와 한 프레임 후 프로세스 종료의 시점 차이는 source 기반 가설이며, 음소거/자연 재생 완료/제한된 종료 대기 반례는 아직 실행하지 않았다. 경고를 숨기거나 오디오 제품 범위를 이 CI 교정에 추가하지 않았다. 이전 원격 head는 30 SUCCESS/1 FAILURE로 종료했고 새 head CI는 아직 별도 확인이 필요하다.
 
 교정 후 non-engine 486검사 18.50s, 운영계약·참조신선도·보호 승인 wrapper는 모두 통과했다. G에 살아 있는 Godot 프로세스가 없음을 확인하고 임시 복원했던 metadata 3개만 다시 백업 SHA와 대조해 비재귀 제거했다. 기존 백업으로 복구 가능하며 원본 PNG·캡처·제품은 보존됐다. 최종 변경은 검사기 1개와 해당 범위·증거 문서뿐이다.
+
+## PR337 두 번째 CI 교정과 실제 53명령 회귀
+
+앞 교정은 commit `508122f60e6b7ec46cc7deb44ef20754e120c900`으로 push했다. 실제 run34315801612에서 board는 통과했으나 `verify_ultimate_ui.gd`가 준비 중 직접 VFX 표시를 기대해 legacy 3개에서 실패했다. Controller와 별도 검토자가 실제 전체 검사·제품 lane/caller·승인 명세를 대조하고 테스트 경로 12를 명시했다. 준비 상태의 비표시/무효 영역/연출 미실행을 검사하면서 예약·환불·연속 슬롯·실행 후 취소 금지를 그대로 유지했다.
+
+실제 CTA playback을 legacy 3종으로 확대했다. 최초 local count1/10.469043s는 조절하지 않은 상대의 다른 feedback band와 섞인 fixture 문제였다. 합법적인 명상 3개 상대 계획을 명시한 독립 실행 case에서 일반 resolver와 실제 제품 CTA를 사용해 timing1/2/3, atlas band0/1/2, 양의 alpha, 양수 global geometry/연출 영역 포함을 확인했다. 예약 검사 자체의 상대/의미는 바꾸지 않았다. 최종 focused exit0/10.464802s, 원본 제품 3개 및 앞 11개 구현 입력 hash는 동일하다. Controller가 전체 diff/기록을 독립 읽고 재실행해 exit0/11.3127669s와 세 실제 표식을 확인했다. 그 한 번은 경고가 없었으나 앞선 경고 실행은 보존한다.
+
+실제 Full Validation native 31명령과 기존 Product Gate의 고유 추가 22명령을 합친 53개를 각각 별도 프로세스로 실행했다. 모든 실제 exit0, ERROR0, timeout0이며 각 실행 시간 합계304.3907288s다. 전체 wall-clock이라고 바꾸지 않는다. 다섯 실행(board/ultimate/liveness/reviewUI/auto-placement)에서는 각각 ObjectDB2 경고가 있었다. 종료 표식과 structured summary를 원문으로 대조했고, generic marker 필터에 잡히지 않는 `_OK` 표식도 따로 확인했다.
+
+저장형 ordinary native 캠페인은 실제 UI 활성화299회, 10전·10승·10보상·36행로, failures[]로 완료했다. 내부 elapsed109840ms/외부111.9008818s이며, 새 격리 QA 저장 디렉터리만 사용했다. 같은 batch의 synthetic terminal state 검사는 이 실제 플레이 증거로 대체하거나 혼동하지 않는다. 원문 53개와 명령/입력 hash는 `docs/runtime-captures/TEN-COMBAT-LAYOUT-20260909/native_ci_readbacks.json`, 전체 교정 기록은 같은 폴더 `ultimate_ui_correction_review.md`에 보존한다. 새 exact-head 원격 CI와 main readback은 아직 후속이며, 전체 Blueprint/Human/기기/청음/출시 완료는 아니다.
+
+오디오 진단 후속은 같은 원본 board 검사를 상속한 ignored helper로 정상2회·bus mute2회·삭제 후 짧은 drain2회를 각각 실행했다. 여섯 실행 모두 실제 검사 exit0였으며 정상2회만 WAV/PlaybackWAV 각1 경고, 나머지는 경고0이었다. 정상 종료의 WAV ID가 종료 직전 실제 기세 플레이어의 stream ID와 일치했다. 이는 Dummy backend의 짧은 프로세스 수명과 정리 시점 상호작용을 지지하지만 실제 청음/장시간 보드 교체/엔진 할당 원인은 검증하지 않았다. 제품 음소거·지연·PCM 변경이나 경고 억제는 적용하지 않았다. 전체 진단과 재현 범위는 같은 companion의 `audio_teardown_diagnostic.md`에 보존한다.
+
+최종 테스트12 교정본의 non-engine486검사는16.93s에 PASS했고 운영계약·참조신선도·채택 보호 wrapper도 PASS했다. G의 native lane 반환과 실제 프로세스를 확인한 뒤 임시 background metadata3개만 기존 백업/receipt SHA와 대조해 비재귀 제거했다. 모두 복구 가능하고 원본 이미지는 유지했다. H에 남은 과거 실패 검사 프로세스는 별도로 소유권 조사하며 G 검증 성공과 혼동하지 않는다.
