@@ -28,8 +28,10 @@ minimum_viable_alternatives: 3
 better_alternative_search: REQUIRED_WHEN_NEW_EVIDENCE_OR_FINDING_APPEARS
 long_term_fit_and_revisit_conditions: REQUIRED
 market_success_failure_comparison: REQUIRED_WHEN_DECISION_RELEVANT
-adversarial_full_loop_minimum: 5
-adversarial_review_policy: EVERY_TASK_BASE_LOOP_PLUS_MINIMUM_FIVE_FULL_SCOPE_LOOPS_FOR_MATERIAL_CHANGE
+adversarial_full_loop_minimum: 2
+adversarial_full_loop_maximum: 2
+adversarial_review_policy: EVERY_TASK_BASE_LOOP_PLUS_EXACTLY_TWO_FULL_SCOPE_LOOPS_FOR_MATERIAL_CHANGE
+current_review_cadence_decision: TEN-DEC-20260909-TWO-ROUND-INTERNAL-REVIEW-01
 external_research_policy: REQUIRED_EVERY_TASK_CURRENT_SOURCE_RELEVANCE_CHECK
 prework_benchmark_reverse_engineering_gate: TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01
 prework_benchmark_minimum_game_comparables_for_new_l1_plus_package: 10
@@ -60,7 +62,7 @@ world_core_storyline_policy: REQUIRED_WHEN_PROJECT_HAS_WORLD_OR_NARRATIVE
 narrative_event_origin_policy: MESSAGE_OR_QUESTION_AND_CHARACTER_BEFORE_EVENT_PRESSURE
 multi_platform_shared_core_policy: SHARED_RULE_DATA_SAVE_ECONOMY_CORE_SEMANTICS
 slice_delivery_policy: PLAYABLE_MEANINGFUL_SLICE_INCREMENTAL_DELIVERY
-slice_benchmark_and_adversarial_policy: ONE_SUBSTANTIVE_RESEARCH_PACKAGE_PER_SLICE_WITH_FIVE_PLUS_FULL_LOOPS
+slice_benchmark_and_adversarial_policy: ONE_SUBSTANTIVE_RESEARCH_PACKAGE_PER_SLICE_WITH_EXACTLY_TWO_FULL_LOOPS
 slice_canonical_reflection_policy: AFTER_PLAY_VERIFICATION_REPOSITORY_STRUCTURED_AND_HUMAN_READBACK
 audio_visual_poc_policy: RUNTIME_FEEDBACK_ALIGNMENT_EVIDENCE_REQUIRED_WHEN_PLAYER_PROMISE_DEPENDS_ON_IT
 progress_measurement_policy: PLAYABLE_PROGRESS_NOT_DOCUMENT_VOLUME
@@ -150,7 +152,7 @@ historical_contracts:
 - 파일 존재·tool discovery·CI success를 runtime/Human/player PASS로 승격하지 않는다.
 - Windows visible, 실물 입력, Android actual device, accessibility user, release performance, Human/player experience를 실행하지 않았으면 `NOT_RUN` 또는 `BLOCKED_UNVERIFIED`다.
 - 중요 요구는 `requirement → owner → implementation/canon → evidence → completion`으로 추적한다.
-- 완료 후보는 최소 5회 full-scope adversarial loop와 clean exit 뒤에만 완료로 승격한다.
+- 완료 후보는 동일 승인 작업 계보에서 정확히 2회 full-scope adversarial loop와 clean exit 뒤에만 완료로 승격한다. 회차를 단계·세션·병합 전후에 초기화하지 않으며, 2회 뒤에는 결함별 교정·영향 검증·readback만 수행한다.
 - 활성 Skill·Work Mode·PR·CI·provider 개수는 영구 숫자로 고정하지 않는다. true invariant만 고정하고 current Registry/repository에서 유동적으로 발견한다.
 
 ### 4.1 r5.4 작업구조 비퇴행 locator
@@ -170,7 +172,7 @@ Base의 상세 절차를 여기 복제하지 않지만 다음 **프로젝트 실
 - material failure는 관련 Project/Base Case/Learning을 먼저 찾고, 재사용 가치가 있으면 Incident → Solution → Lesson → recurrence guard로 닫는다.
 - `TEN-DEC-20260828-ADVERSARIAL-RESEARCH-FEASIBILITY-GATE-01`에 따라 모든 작업은 `CURRENT_SOURCE_RELEVANCE_CHECK`를 먼저 남긴다. 최신 외부 사실·기술·플랫폼·권리·시장·접근성 근거가 판단을 바꿀 수 있으면 공식/1차 자료를 조사하고 source·freshness·relevance·한계를 기록한다. 관련 근거가 없으면 조사하지 않은 내용을 사실처럼 쓰지 않고 이유 있는 `NOT_APPLICABLE`로 남긴다.
 - `TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01`은 이 연구 게이트를 새 L1+ player-facing 또는 implementation package에 구체화한다. 새 package는 plan/mutation 전에 10개 이상의 유사·인접 게임을 포함한 역공학 packet을 남기며, 직접 비교 3개·인접 시스템 3개·부정/혼합 사례 1개 이상과 공식 제품 사실, 제한된 플레이어 반응 신호/공개된 공백, mechanism, transfer principle, `DO_NOT_COPY`, `ADOPT/ADAPT/AVOID/TEST`를 분리한다. 같은 decision dimension·current project state·source freshness가 모두 일치하는 bounded continuation만 packet을 재사용할 수 있고 `no silent bypass`다. 이 gate는 user approval이나 project core/공개-비공개 정보 경계·deck/hand/draw 금지를 대체하지 않는다.
-- 모든 작업·권장안·retained change는 적어도 한 번 전체 적대 검토를 거친다. material 계획·구현·문서·PR 변경은 Base `running-adversarial-review-and-refinement`의 최소 5회 full-scope loop, better-alternative search, long-term-fit recheck와 `CLEAN_REVIEW_EXIT`를 닫는다. 각 loop는 정본·actual implementation/diff·untouched consumer·실행 증거·비용·장기 유지성을 함께 공격하며, 가짜 finding/loop로 횟수를 채우지 않는다.
+- 모든 작업·권장안·retained change는 적어도 한 번 전체 적대 검토를 거친다. material 계획·구현·문서·PR 변경은 Base `running-adversarial-review-and-refinement`의 정확히 2회 full-scope loop, better-alternative search, long-term-fit recheck와 `CLEAN_REVIEW_EXIT`를 닫는다. 각 loop는 정본·actual implementation/diff·untouched consumer·실행 증거·비용·장기 유지성을 함께 공격하며, 가짜 finding/loop로 횟수를 채우지 않는다. `TEN-DEC-20260909-TWO-ROUND-INTERNAL-REVIEW-01`이 과거 5회 지시를 대체한다. 자동 세 번째 전체 검토는 없으며, 미해결 blocker가 있으면 완료·병합하지 않는다.
 - material mutation 전 `implementation feasibility record`는 project의 실제 경로·의존성·테스트/CI·target environment와 최신 외부 근거를 교차 대조해 `FEASIBLE / PARTIAL / BLOCKED_UNVERIFIED`로 판정한다. 검색 결과·snippet·모델 자신감은 구현 또는 Human/device/accessibility/release PASS가 아니다.
 
 ### 4.2 current Base receipt·구조 적용
@@ -270,7 +272,7 @@ UI/구조는 최소 `ko / en / ja / zh-*`를 수용할 localization-ready 구조
 - current-task 및 관련 기존 PR은 latest main·exact HEAD·required checks·review/thread/ruleset Gate 뒤 safe merge한다. draft 미완료 사유와 실패 검증을 먼저 해소한다.
 - direct main push, force push, admin/ruleset bypass는 금지한다.
 - CI check 이름과 required 상태는 live repository/ruleset에서 발견한다.
-- `REQUIRED_WORK_REMAINING: 0`은 completion candidate이며 correction rescan + 최소 5회 adversarial loop + postmerge repository readback 뒤에만 종료한다.
+- `REQUIRED_WORK_REMAINING: 0`은 completion candidate이며 correction rescan + 동일 작업 계보의 정확히 2회 adversarial loop + postmerge repository readback 뒤에만 종료한다. 이미 수행한 전체 회차를 중복 실행하지 않는다.
 - 승인된 작업 단위 closeout은 `repository 의미 동기화 → adversarial review → exact-head PR/CI/review/thread Gate → safe merge → new main + repository destination readback`까지 같은 승인 범위에서 닫는다.
 
 ## 9. r2 → r5.4 migration/non-regression
@@ -278,7 +280,7 @@ UI/구조는 최소 `ko / en / ja / zh-*`를 수용할 localization-ready 구조
 `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`의 프로젝트 고유 의미는 삭제하지 않는다.
 
 - Notion human canon은 `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`로 **SUPERSEDED_FOR_CURRENT_EXECUTION**; repository human/runtime canon / Sheet migration-only: **CURRENT**.
-- Base progressive-load / IRG / 5회 adversarial review: **PRESERVED**. 기존 open PR read-only는 관련 PR에 한해 `TEN-DEC-20260908-STANDING-PR-INTEGRATION-01`로 대체된다.
+- Base progressive-load / IRG: **PRESERVED**. 과거 5회 adversarial review는 `TEN-DEC-20260909-TWO-ROUND-INTERNAL-REVIEW-01`의 정확히 2회로 대체된다. 기존 open PR read-only는 관련 PR에 한해 `TEN-DEC-20260908-STANDING-PR-INTEGRATION-01`로 대체된다.
 - Whole-project audit / requirement traceability / bounded early checkpoint / playable Slice / decision-screen comprehension / Audio·Visual POC / Asset·Audio provenance / user-runnable play / CI supply-chain·cost / partial Skill absorption: **RESTORED/IMPROVED r5.4 project invariants**.
 - Fresh-Read GitHub+repository owner cold-start: **CURRENT**.
 - Visual exactly-one approval loop: **CURRENT r5.4 OVERRIDE**.
