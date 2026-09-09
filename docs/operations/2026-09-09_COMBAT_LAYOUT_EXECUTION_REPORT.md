@@ -101,3 +101,17 @@ Hera 설치CLI1.0은 최신 skill에 제시된 game --pid를 지원하지 않았
 독립 문서전달 검토 F90C52D71E5350A139A8D31F478667A159050FFF89C539CCD641E8D3B3A3C4D0는 실제33PNG/receipt/진단18행/자산6개와 current owners를 대조해 DELIVERY_PENDING 범위에서ACCEPT했다. metadata외 실제54개 문서/캡처만 commit01535fec023d38c7cc6080ad408d9fe994fa268c에 저장하고 clean branch를push했다. 현재작업 PR337을정상생성하고 exact head01535fec/base544/approved-protected-change label/OPEN/nonDraft/MERGEABLE을live확인했다. 최초원격검사는진행중이며 PASS로미리기록하지않는다.
 
 로컬 source·499기계검사·실제 Board native와5회 전체 소스/별도 캡처 검토는 완료했다. 현재 문구/파생 owner/보호 wrapper/정확한 PR head의 원격CI·병합·main readback은 후속 실제 결과로 갱신한다. ordered-v2/S1–S4는 별도 격리 작업으로 계속하고, 기존v1완주호환·성장·사건·정탐/상태·보상·아틀라스 품질은 남았다. 전체 Blueprint/Human/청음/실기기/접근성/권리/출시 완료가 아니다.
+
+## PR337 실제 CI 실패와 검사 기준 교정
+
+Current head `6433e1f44fa119535360b3ba1c09709713e9ba9d`의 Full Validation run `34313348268`, job `102344389343`에서 `verify_combat_board.gd`의 comparable-scale 검사 1개가 실제 실패했다. Godot 4.7.1의 종료 코드는 1이다. 이전 Python 전체 499 PASS는 이 별도 CI native 명령의 성공을 보장하지 않았으며 이 실패를 덮어쓰지 않는다.
+
+Controller와 별도 검토자가 actual source/CI 원문을 대조했다. 승인된 제품은 원본별 투명 여백을 제외한 실제 인물 높이를 정규화하지만, 오래된 검사는 Control.size를 비교했다. Decision과 계획에 검사기 1개를 명시적으로 추가하고 독립 알파/draw/global 변환 측정, 기존 0.01 tolerance 및 52%/1.12 상한, 실제 scale 변경 반례를 요구했다. 제품·자산·행동을 바꾸는 수정은 허용하지 않았다. 앞선 10개 경로의 5회 검토는 역사 증거로 보존하고 새 검사기 교정은 별도 diff 검토·회귀·최종 exact-head CI로 검증한다.
+
+새 import를 실행하지 않고, 이전에 백업한 G 전용 background metadata 3개를 경로·SHA로 확인해 임시 복원했다. H의 실행 lane을 명시적으로 반환받은 뒤 G의 이 좁은 native 검증만 허용했다.
+
+기존 native RED는 동일 assertion 1개/exit1/5.4536871s로 재현했다. 교정 후 board는 exit0/5.9002316s, untouched partition은 20.7887381s, accessibility는 5.8427054s에 통과했다. 실제 enemy scale 0.8 반례의 높이 120.519996643066→96.4159927368164에서 불일치를 검출하고 즉시 복원했다. 기존 10개 구현 경로의 해시는 전부 동일하다. Controller가 실제 diff·원본 renderer·검사 call chain·CI 명령과 전체 보고서를 독립 확인하고, 최종 frozen board를 다시 실행해 exit0/5.3382864s 및 같은 반례 검출을 확인했다. 근거는 capture companion의 `board_oracle_correction_review.md`다.
+
+보드 종료에서 ObjectDB 2개 경고가 양쪽 실행에 남았다. verbose로 AudioStreamWAV/AudioStreamPlaybackWAV 각 refcount1을 확인했지만 정확한 할당 원인은 미확정이다. 이미 제품 종료 시 stop/stream=null이 있으므로 정리 누락으로 단정하지 않는다. 최종 momentum cue와 한 프레임 후 프로세스 종료의 시점 차이는 source 기반 가설이며, 음소거/자연 재생 완료/제한된 종료 대기 반례는 아직 실행하지 않았다. 경고를 숨기거나 오디오 제품 범위를 이 CI 교정에 추가하지 않았다. 이전 원격 head는 30 SUCCESS/1 FAILURE로 종료했고 새 head CI는 아직 별도 확인이 필요하다.
+
+교정 후 non-engine 486검사 18.50s, 운영계약·참조신선도·보호 승인 wrapper는 모두 통과했다. G에 살아 있는 Godot 프로세스가 없음을 확인하고 임시 복원했던 metadata 3개만 다시 백업 SHA와 대조해 비재귀 제거했다. 기존 백업으로 복구 가능하며 원본 PNG·캡처·제품은 보존됐다. 최종 변경은 검사기 1개와 해당 범위·증거 문서뿐이다.

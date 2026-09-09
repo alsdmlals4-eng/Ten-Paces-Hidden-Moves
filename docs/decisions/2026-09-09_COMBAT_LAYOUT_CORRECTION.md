@@ -28,7 +28,7 @@ PR335 실제 화면에는 해결 중 하단의 큰 빈 영역, 숨긴 논리 칸
 - 실행 중 이번 수 비교, 결과 문구, VFX 영역을 분리한다. 준비 중에는 실행 전용 영역을 비우고 숨긴다. 양수 공간을 위조하거나 필요한 문구를 잘라내지 않는다. VFX는 기존 최대 확대까지 영역 안에 맞추며 배치 실패를 두 표시 호출부가 실제로 존중한다.
 - 음소거·모션 감소·skip·현재 수만 공개·3/3/4·AI·무공 수치·보상·10전/36행로·저장 schema1은 보존한다. 새 효과/음원/이미지/씬/노드/라이브러리나 전투 의미를 추가하지 않는다.
 
-구체적 수식·정확한10개 구현 경로·회귀와 전달 순서는 `docs/operations/2026-09-09_COMBAT_LAYOUT_IMPLEMENTATION_PLAN.md`가 소유한다. 제품 경로는 기존 board2개와 character renderer1개뿐이다. 별도 ordered-combat-v2 명세는 이 화면 교정의 의존성이나 승인 대상이 아니다.
+구체적 수식·구현 경로·회귀와 전달 순서는 `docs/operations/2026-09-09_COMBAT_LAYOUT_IMPLEMENTATION_PLAN.md`가 소유한다. 최초 구현은 10개 경로이며, 아래 PR337의 실제 CI 실패 교정으로 기존 검사기 1개를 추가해 현재 범위는 11개다. 제품 경로는 기존 board 2개와 character renderer 1개뿐이다. 별도 ordered-combat-v2 명세는 이 화면 교정의 의존성이나 승인 대상이 아니다.
 
 ## 조사·대안·구현 가능성
 
@@ -46,6 +46,10 @@ prospective behavioral RED → 최소 GREEN → 별도 검토자 → 실제 nati
 
 실패는 실제 영역·상태·출력으로 기록한다. 필요한 텍스트 숨김, 폰트 축소, 이미지 crop, 모션 배율 변경, 검증 완화로 통과시키지 않는다. rollback은 이번 배치 commit의 정상 revert이며 저장 migration이 없다. 전체 Blueprint, 사람 가독성/선호, 청음, Android/접근성 사용자/출시/권리 PASS는 별도다.
 
-## Task1 evidence-backed scope refinement
+## PR337 exact-CI oracle correction — additional test-only scope
+
+Exact head6433e1f44fa119535360b3ba1c09709713e9ba9d의 Full Validation34313348268에서 `tests/verify_combat_board.gd:479–489`의 comparable-scale assertion1개가 실제실패했다. 이이전검사는 Control.size를실제인물높이로취급하지만 본Decision의alpha-normalized draw는두원본의알파여백이달라서node높이가달라지는것이정상이다. Controller와별도검토자가actualsource/CI원문을대조했다. 추가경로는이test1개뿐이며제품3경로/수치/이미지는그대로다. 같은SIZE_TOLERANCE0.01과52%상한을유지하고, 원본Image의get_used_rect와실제draw/global변환으로독립측정한idle ink를비교한다. 현재모션ink와idle×기존peak의상한을보호하고, 실제enemy.scale.y를0.8로잠시변경하는negative가불일치를검출한뒤즉시복원해야한다. 기존anchor/HUD/domain판정은그대로유지한다. 이는검증완화가아니라승인된책임단위로오래된oracle을교정하는것이며 CI실패는보존한다.
+
+## Task1 evidence-backed scope refinement — retained history
 
 Actual untouched inline verifier reported six overlaps at720/800/1080, all on hidden previous-bundle TimingSlot02/03 (visible=false). Current src/ui/action_timing_panel.gd115–131 explicitly makes only current bundle slots visible. Controller independently read the real diagnostic and source, authorizing only the additional inline verifier path above: verify actual visibility equals current-index membership and exact positive count, then assert non-overlap on every visible slot. Existing timing panel/CTA/card checks remain unchanged. Never move hidden geometry or hide current slots to manufacture PASS. Three product paths, game behavior, fonts, assets and other scope remain unchanged. The old9-path plan hash remains independent-review history; actual tests and final full-scope review must cover this explicit10-path refinement.

@@ -10,7 +10,7 @@
 
 > Status: `CONTROLLER_RATIFIED_SCOPE_IMPLEMENTED_AND_BOUNDED_VERIFIED`. Separate independent review closed L1–5/R1 and a later final-source review completed five full-scope rounds. Task/evidence history is in `2026-09-09_COMBAT_LAYOUT_EXECUTION_REPORT.md`; final Human/asset approval is not implied.
 >
-> For agentic workers: use the controller-selected subagent-driven route. Controller dispatches one implementer and a different reviewer; no independent child dispatch, asset generation, push or merge. The 3-product/7-test-workflow scope and actual Task RED/GREEN gates apply.
+> For agentic workers: use the controller-selected subagent-driven route. Controller dispatches one implementer and a different reviewer; no independent child dispatch, asset generation, push or merge. The initial 3-product/7-test-workflow scope is preserved as implementation history. The explicit PR337 CI follow-up adds only `tests/verify_combat_board.gd`, making the current scope 3-product/8-test-workflow paths. Actual Task RED/GREEN gates apply.
 
 **Goal:** restore the approved three-surface frontal duel, retain one state-derived execution stage and shared actor anchors, and separate current-action text from animated feedback without changing combat or assets.
 
@@ -28,7 +28,7 @@
 - Hard **visible-ink battler height** cap:52% of active duel height, including existing animation peak. Proposed deterministic **idle visible-ink target:46%**. Proposed tuning band is `[0.46, min(0.50, 0.52 / 1.12)]`, approximately46–46.428571%; default46% peaks at51.52%. No48% default or unconstrained46–50% idle band remains.
 - Initial logical distance2 retains at least42% horizontal foot separation. Later existing distance mapping remains: distance0→38%, distance1→41.25%, distance2→44.5%, distance4+→51%. Existing presentation motions may transiently change separation; no always-42% rule.
 - Reference viewports:1280×720,1280×800,1920×1080. Retain960×640 minimum and1440×900 compatibility. At960 require positive geometry, text/ink containment and52% cap; the reference lower target is not forced when it cannot fit. Failure is not permission to crop assets/hide text.
-- Exactly3 allowed product files,5 native test files,1 Python test and1 workflow (section6). The old two-product-file restriction is superseded only for renderer-owned bounds/cache and the explicit MOVE-only resize hook. No new file split/general refactor.
+- Exactly 3 allowed product files, 6 native test files (including the explicit PR337 board-oracle follow-up), 1 Python test and 1 workflow (section6). The old two-product-file restriction is superseded only for renderer-owned bounds/cache and the explicit MOVE-only resize hook. No new file split/general refactor.
 - Ratification, independent review, native/full-suite/capture and delivery remain controller-owned. Draft writing is not product approval.
 
 ## 2. Authority, source relevance and evidence ceiling
@@ -221,7 +221,7 @@ Require actual global positive rects, stage-only background/banner/tint, allowed
 2. `src/combat/combat_board_preview.gd`: common stage-only binding, snapshot anchor hook/base fallback, lane/snapshot methods, bool fit/callers and visible-resize VFX handling.
 3. `src/combat/combat_character_placeholder.gd`: current-texture used-alpha cache, shared draw/bounds rect math, peak getter and bounded MOVE-only resize snap. No art/nonmove-animation values changed.
 
-**Test/workflow files (7):**
+**Test/workflow files (8 after the explicit PR337 CI oracle correction):**
 
 4. `tests/verify_frontal_duel_screen_partition.gd`
 5. `tests/verify_combat_action_reveal.gd`
@@ -230,6 +230,7 @@ Require actual global positive rects, stage-only background/banner/tint, allowed
 8. `tests/test_combat_feedback_correction.py`
 9. `.github/workflows/validate-ten-manual-product-gate.yml`
 10. `tests/verify_inline_combat_results.gd`: only current-visible-slot overlap guard plus positive/exact current visibility assertions, after actual six hidden-slot false positives were independently traced.
+11. `tests/verify_combat_board.gd`: exact-CI34313348268 exposed old Control-size equality. Replace only scale oracle with independently derived actual alpha/draw/global bounds, retain0.01 tolerance and52% current/envelope cap, and add reversible negative unequal-visible-scale control. Preserve all unrelated board/HUD/domain/anchor assertions. The Decision's PR337 refinement explicitly authorizes this additional test path before mutation; historical10-path review evidence is not retroactively relabeled11-path.
 
 Untouched regressions: all other inline-result assertions, frontal plan lock, presentation controls/SFX/terminal, both scenes, reveal overlay, background/banner scripts, domain/AI/manuals/data, all save/store/codec/campaign paths and assets. Controller separately owns canon/Decision/report/protected-approval changes; they are not covertly assigned to this10-file implementation package.
 
