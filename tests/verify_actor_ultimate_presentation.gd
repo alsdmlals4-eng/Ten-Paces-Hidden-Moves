@@ -212,6 +212,8 @@ func _verify_actual_routes_and_board_consumers() -> void:
 		return
 	board._sound_muted = true
 	board.procedural_sfx_player.stop()
+	board._set_presentation_state("presenting_result")
+	board._set_resolution_surface_visible(false)
 	_verify_actual_preparation_timings(board, actual_by_manual)
 	_verify_actual_sure_hit_guard(board)
 
@@ -235,9 +237,7 @@ func _verify_actual_routes_and_board_consumers() -> void:
 	if board.presentation_vfx.texture is AtlasTexture:
 		var atlas := board.presentation_vfx.texture as AtlasTexture
 		_expect(is_equal_approx(atlas.region.position.y, atlas.atlas.get_size().y / 3.0), "Hebei star10 selects locked atlas band 1.")
-	var impact_anchor := board.player_character.get_foot_anchor_global().lerp(board.enemy_character.get_foot_anchor_global(), 0.72)
-	var displayed_anchor := board.presentation_vfx.position + Vector2(board.presentation_vfx.size.x * 0.5, board.presentation_vfx.size.y * 0.66)
-	_expect(displayed_anchor.distance_to(impact_anchor) < 0.2, "Attack ultimate VFX remains impact anchored.")
+	_verify_fitted_vfx(board, event, "ultimate")
 	board._sound_muted = true
 	board._play_event_sfx(event)
 	_expect(str(board.get_meta("last_sfx_kind", "")) == "ultimate_release", "Successful eligible ultimate requests authored release cue even while muted.")
@@ -287,9 +287,8 @@ func _verify_actual_routes_and_board_consumers() -> void:
 	var recovery_event: Dictionary = (actual_recovery.get("event", {}) as Dictionary).duplicate(true)
 	board.resolution_engine = actual_recovery.get("engine")
 	board._show_presentation_feedback(recovery_event)
-	var self_anchor := board.player_character.get_foot_anchor_global()
-	var recovery_anchor := board.presentation_vfx.position + Vector2(board.presentation_vfx.size.x * 0.5, board.presentation_vfx.size.y * 0.66)
-	_expect(board.presentation_vfx.visible and recovery_anchor.distance_to(self_anchor) < 0.2, "Successful recovery VFX anchors at the actor's foot.")
+	_expect(board.presentation_vfx.visible, "Successful recovery retains self-preferred VFX.")
+	_verify_fitted_vfx(board, recovery_event, "ultimate")
 
 	board.resolution_engine = configured
 	var enemy_only: Dictionary = configured.get_actor_card_definition(str(event.get("card_id", "")), "enemy")
@@ -318,10 +317,138 @@ func _verify_actual_routes_and_board_consumers() -> void:
 		await process_frame
 	_expect(bool(board.get_meta("presentation_skipped", false)) and not board.presentation_vfx.visible, "Skip ends the transient presentation promptly.")
 	_expect(board.combat_state == state_before and configured.get_actor_cards_by_id("player") == definitions_before and configured.export_enemy_lock() == lock_before, "Motion, VFX, mute, reduced motion, and skip preserve state, definitions, and locks.")
+	for viewport in [Vector2(960, 640), Vector2(1440, 900), Vector2(1280, 720), Vector2(1280, 800), Vector2(1920, 1080)]:
+		await _verify_animated_lane_lifetime(board, actual_attack, viewport)
+		await _verify_animated_lane_lifetime(board, _actual_legacy_bundle("ultimate_void_sword_qi"), viewport)
 
 	board.queue_free()
 	await process_frame
 
+
+func _verify_fitted_vfx(board: CombatBoardPreview, event: Dictionary, kind: String) -> void:
+	var stage := board.duel_stage_surface.get_rect()
+	var gap := clampf(board.size.y * 0.015, 10, 18)
+	var compare_height := clampf(stage.size.y * 0.40, 270, 340)
+	var impact_height := stage.size.y - compare_height - 2 * gap
+	var label_height := clampf(impact_height * 0.20, 64, 96)
+	var inset := clampf(board.size.x * 0.04, 24, 72)
+	var safe := Rect2(inset, stage.position.y + compare_height + gap + label_height + 8, stage.size.x - 2 * inset, impact_height - label_height - 8)
+	var inverse := board.get_global_transform().affine_inverse()
+	var player: Vector2 = inverse * board.player_character.get_global_transform() * board.player_character.get_foot_anchor_local()
+	var enemy: Vector2 = inverse * board.enemy_character.get_global_transform() * board.enemy_character.get_foot_anchor_local()
+	var own: Vector2 = player if str(event.get("actor", "")) == "player" else enemy
+	var target: Vector2 = enemy if str(event.get("actor", "")) == "player" else player
+	var is_recovery := str(event.get("category", "")) == "recovery"
+	var preferred := (player + enemy) / 2 if kind == "clash" else (own if is_recovery else own.lerp(target, 0.72))
+	var desired := Vector2(clampf(board.size.x * (0.42 if kind == "ultimate" else 0.26), 250, 640), clampf(board.size.y * (0.22 if kind == "ultimate" else 0.12), 90, 210))
+	var peak := 1.08 if kind == "ultimate" else 1.0
+	var fit := minf(1, minf(safe.size.x / (desired.x * peak), safe.size.y / (desired.y * peak)))
+	var fitted := desired * fit
+	var half := fitted * peak / 2
+	var center := Vector2(clampf(preferred.x, safe.position.x + half.x, safe.end.x - half.x), clampf(preferred.y, safe.position.y + half.y, safe.end.y - half.y))
+	_expect(board.presentation_vfx.size.distance_to(fitted) < 0.5 and board.presentation_vfx.position.distance_to(center - fitted / 2) < 0.5, "VFX follows independent actor preference/peak-safe clamp at %s kind=%s." % [board.size, kind])
+	var transform := inverse * board.presentation_vfx.get_global_transform()
+	var actual := Rect2(transform * Vector2.ZERO, Vector2.ZERO)
+	for corner in [Vector2(board.presentation_vfx.size.x, 0), board.presentation_vfx.size, Vector2(0, board.presentation_vfx.size.y)]:
+		actual = actual.expand(transform * corner)
+	_expect(safe.grow(0.5).encloses(actual), "Actual animated VFX bounds remain in independent safe lane: %s / %s." % [actual, safe])
+	_expect(safe.grow(0.5).encloses(Rect2(center - half, half * 2)), "Complete1.08 envelope is contained, not only sampled frames.")
+
+func _verify_animated_lane_lifetime(board: CombatBoardPreview, actual: Dictionary, viewport: Vector2) -> void:
+	board.size = viewport
+	board.position = Vector2(17, 23)
+	board.scale = Vector2(0.95, 1.05)
+	board.resolution_engine = actual.engine
+	board.combat_state = (actual.get("state_before", _state(actual.engine)) as Dictionary).duplicate(true)
+	board._presentation_skip_requested = false
+	board._reduced_motion = false
+	board._set_presentation_state("presenting_result")
+	board._set_resolution_surface_visible(false)
+	board._layout_board()
+	for _frame in range(4):
+		await process_frame
+	var event: Dictionary = actual.event.duplicate(true)
+	var state := board.get_combat_state_snapshot()
+	var definitions: Dictionary = board.resolution_engine.get_actor_cards_by_id("player")
+	var enemy_lock: Dictionary = board.resolution_engine.export_enemy_lock()
+	var events_before := event.duplicate(true)
+	var seen_impact := false
+	var sampled_peak := 0.0
+	var exact_peak := {"observed": false, "scale": 0.0}
+	var peak_observer_connected := false
+	var resized := false
+	board._present_resolved_event_feedback(event)
+	for _frame in range(180):
+		await process_frame
+		if board.presentation_vfx.visible:
+			seen_impact = true
+			var atlas := board.presentation_vfx.texture as AtlasTexture
+			var band := 2 if str(event.get("card_id", "")) == "ultimate_void_sword_qi" else 1
+			_expect(atlas != null and is_equal_approx(atlas.region.position.y, atlas.atlas.get_size().y * band / 3.0), "Actual Peng/legacy execution retains its original locked atlas band.")
+			if not peak_observer_connected and is_instance_valid(board._presentation_vfx_tween):
+				peak_observer_connected = true
+				# A frame may advance into recovery in the same tick as reaching
+				# the peak. Observe the real existing tween's step boundary too;
+				# do not assign scale or change its durations to manufacture it.
+				board._presentation_vfx_tween.step_finished.connect(func(step: int) -> void:
+					if step == 0:
+						exact_peak.observed = true
+						exact_peak.scale = board.presentation_vfx.scale.x
+						_verify_fitted_vfx(board, event, "ultimate")
+				)
+			sampled_peak = maxf(sampled_peak, board.presentation_vfx.scale.x)
+			_verify_fitted_vfx(board, event, "ultimate")
+			if not resized and board.presentation_vfx.scale.x >= 1.07:
+				resized = true
+				var tween := board._presentation_vfx_tween
+				var alpha := board.presentation_vfx.modulate
+				var scale_before := board.presentation_vfx.scale
+				board.remove_meta("last_sfx_kind")
+				board.size += Vector2(16, 16)
+				board._layout_board()
+				_expect(board._presentation_vfx_tween == tween and tween.is_running() and board.presentation_vfx.modulate == alpha and board.presentation_vfx.scale == scale_before, "Visible resize preserves active tween/alpha/scale rather than restarting.")
+				_expect(not board.has_meta("last_sfx_kind"), "Visible resize never replays audio.")
+				_verify_fitted_vfx(board, event, "ultimate")
+		if str(board.get_meta("presentation_feedback_phase", "")) == "settled":
+			break
+	_expect(seen_impact and sampled_peak >= 1.07 and resized and exact_peak.observed and is_equal_approx(float(exact_peak.scale), 1.08), "Actual %s nonzero presentation reaches1.08 tween boundary and visible resize at %s sampled=%s exact=%s." % [event.get("card_id", ""), viewport, sampled_peak, exact_peak])
+	_expect(str(board.get_meta("presentation_feedback_phase", "")) == "settled", "Actual ultimate playback ends within180 frames.")
+	_expect(board.has_method("_apply_presentation_layout_lanes"), "Board requires bool lane application seam.")
+	if board.has_method("_apply_presentation_layout_lanes"):
+		for kind in ["attack", "ultimate"]:
+			board._layout_board()
+			board._show_feedback_vfx(event, kind, 0.35)
+			await process_frame
+			_verify_fitted_vfx(board, event, kind)
+			var invalid_result = board.call("_apply_presentation_layout_lanes", Rect2(), Rect2(), Rect2())
+			_expect(invalid_result == false, "Invalid lanes explicitly returnfalse.")
+			var placed = board.call("_place_feedback_vfx", event, kind)
+			_expect(placed == false, "Invalid VFX placement explicitly returnsfalse for " + kind)
+			board._show_feedback_vfx(event, kind, 0.35)
+			_expect(not board.presentation_vfx.visible and board._presentation_vfx_tween == null, "Both bool show callers reject invalid space without live tween: " + kind)
+			_expect(str(board.get_meta("presentation_vfx_layout_status", "")) == "LANE_INVALID", "Invalid lane records finite status.")
+			board._layout_board()
+			for _frame in range(3):
+				await process_frame
+			_expect(not board.presentation_vfx.visible, "Restored resize cannot resurrect failed old effect.")
+	board._show_feedback_vfx(event, "ultimate", 0.35)
+	board._skip_presentation()
+	board._layout_board()
+	_expect(not board.presentation_vfx.visible and not board.presentation_label.visible, "Skip/resize clears transients.")
+	board._presentation_skip_requested = false
+	board._reduced_motion = true
+	board._show_presentation_feedback(event)
+	_verify_fitted_vfx(board, event, "ultimate")
+	_expect(board.presentation_vfx.visible and board.presentation_label.visible and board.presentation_vfx.scale == Vector2.ONE, "Reduced motion preserves static identity and readable result in execution lanes.")
+	board._set_presentation_state("next_bundle_ready")
+	board._set_resolution_surface_visible(true)
+	for kind in ["attack", "ultimate"]:
+		board._show_feedback_vfx(event, kind, 0.35)
+		_expect(not board.presentation_vfx.visible, "Planning rejects direct " + kind + " display.")
+	board._layout_board()
+	_expect(not board.presentation_vfx.visible and not board.presentation_label.visible, "Planning layout does not resurrect cleared feedback.")
+	_expect(board.get_combat_state_snapshot() == state and event == events_before and board.resolution_engine.get_actor_cards_by_id("player") == definitions and board.resolution_engine.export_enemy_lock() == enemy_lock, "Lane lifecycle preserves actual state, input event, actor definitions and lock.")
+	board.scale = Vector2.ONE
 
 func _verify_actual_preparation_timings(board: CombatBoardPreview, actual_by_manual: Dictionary) -> void:
 	var sequences := [

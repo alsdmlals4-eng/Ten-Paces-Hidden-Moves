@@ -8,7 +8,13 @@
 
 이 문서는 **장기 로드맵·제품 증거 계보·다음 Gate의 순서**를 소유한다. 활성 PR, exact HEAD, 현재 Work Mode, 승인 수, 현재 stage, 다음 package/Decision 같은 mutable operating checkpoint는 복제하지 않는다. 작업 재개 시 Active Context/current JSON/GitHub live metadata/repository owners를 fresh-read한다.
 
+## 전투 화면과 후속 전투 실행 교정 순서
+
+`TEN-DEC-20260909-COMBAT-LAYOUT-CORRECTION-01`은 PR335에서 남은 실제 화면 배치 결함을 교정한다. 상태별 무대·캐릭터 렌더 경계·공유 바닥·현재 행동/효과 영역 → 실제 모션/긴 문구/native 캡처 → 전체 회귀와 보호 전달 순서다. 전투 규칙·저장·승인 원본 이미지 변경은 이 패키지 밖이다. 고유 무공 순차 실행과 기존 v1 여정 호환을 별도 계약으로 이어가고 성장·사건·정탐/상태·보상 공백을 다음에 다룬다. mutable 진행 상태는 위 current owners를 따른다.
+
 ## 1. 현재 단계 — 상태 읽기와 보존된 구현 계보
+
+화면 교정 뒤에도 계획 관찰 설명과 장식의 간섭, 긴 한글의 자연스러운 줄바꿈, 합 순간의 인물 식별성, portrait 비율/불투명 발·그림자의 접지감과1080 계획 여백은 아틀라스 품질 후속의 실제 검토 항목이다. bounded geometry/native 통과만으로 삭제하지 않는다. 순차 전투·성장/사건/상태/보상 정합성을 우선 연결한 뒤 실제 consumer별로 교정하고 같은 장면의 재캡처로 확인한다.
 
 현재 상태는 이 문서 안의 스냅샷으로 판정하지 않는다.
 

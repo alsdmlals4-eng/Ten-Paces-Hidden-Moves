@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "authority": "CURRENT_OPERATING_STATE",
-  "source_decision": "TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01",
-  "active_planning_work_mode": "REVIEW",
-  "active_planning_pr": "NONE",
+  "source_decision": "TEN-DEC-20260909-COMBAT-LAYOUT-CORRECTION-01",
+  "active_planning_work_mode": "BUILD",
+  "active_planning_pr": "337",
   "active_planning_parent_pr": "NONE",
   "active_approval_count": "SCOPED_BUILD_AUTHORIZED_HUMAN_FINAL_NOT_RUN",
-  "active_decision_state": "COMBAT_FEEDBACK_MAIN_MERGED_VERIFIED_PR335_NEXT_DOMAIN_SPEC_REVIEW",
-  "next_package": "SHARED_COMBAT_EXECUTION_WITH_V1_RUN_COMPATIBILITY_SPEC_REVIEW_THEN_GROWTH_EVENTS_STATUS_REWARDS",
-  "next_planning_decision": "TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01"
+  "active_decision_state": "COMBAT_LAYOUT_SOURCE_AND_BOUNDED_RUNTIME_VERIFIED_DELIVERY_PENDING",
+  "next_package": "COMBAT_LAYOUT_PROTECTED_DELIVERY_THEN_ORDERED_COMBAT_V1_COMPATIBILITY_GROWTH_EVENTS_STATUS_REWARDS",
+  "next_planning_decision": "TEN-DEC-20260909-COMBAT-LAYOUT-CORRECTION-01"
 }

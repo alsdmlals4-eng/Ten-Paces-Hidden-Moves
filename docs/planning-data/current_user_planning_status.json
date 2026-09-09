@@ -213,7 +213,7 @@
   "balance_measurement_representative_policy_coverage_postmerge_readback": "docs/operations/2026-08-30_PR293_REPRESENTATIVE_POLICY_COVERAGE_POSTMERGE_READBACK.md",
   "balance_measurement_representative_policy_coverage_scope": "ENGINE_DIRECT_NON_SHIPPING_OPENING_NO_ROUTE_15_CANDIDATES_15_LEGAL_STARTER_LOADOUTS_6_PUBLIC_POLICIES_5_AI_SEEDS_SCHEMA_3_SAFE_AGGREGATE_SELECTION_COUNTS",
   "long_horizon_user_direction": "IMPLEMENT_GDD_BY_APPROVED_VERIFIED_GODOT_PACKAGES_WITHOUT_SILENT_CORE_SCOPE_EXPANSION",
-  "next_product_execution_surface": "SHARED_COMBAT_EXECUTION_WITH_V1_RUN_COMPATIBILITY_SPEC_REVIEW_THEN_GROWTH_EVENTS_STATUS_REWARDS",
+  "next_product_execution_surface": "COMBAT_LAYOUT_PROTECTED_DELIVERY_THEN_ORDERED_COMBAT_V1_COMPATIBILITY_GROWTH_EVENTS_STATUS_REWARDS",
   "machine_runtime_readback_execution_report": "docs/operations/2026-08-30_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_COMPARISON_DEFERRED_EXECUTION_REPORT.md",
   "machine_runtime_readback_status": "PARTIAL_CURRENT_MAIN_GODOT_4_7_1_VISIBLE_COMBAT_SCREEN_AND_6750_ROW_REPORT_SHA_MATCHED_HUMAN_PLAYER_COMPARISON_DEFERRED",
   "machine_runtime_readback_report_sha256": "A0669A0727C9608B6A240910CE529263C1982C510E4B3C376BD58D8AB5F66558",
@@ -260,7 +260,7 @@
   "windows_android_adapter_implementation_authorized": false,
   "product_implementation_authorized": true,
   "implementation_gate": "SCOPED_PC_FIRST_VERTICAL_SLICE_GATE_PLUS_EXISTING_PLATFORM_EVIDENCE_CEILINGS",
-  "next_phase": "SHARED_COMBAT_EXECUTION_WITH_V1_RUN_COMPATIBILITY_SPEC_REVIEW_THEN_GROWTH_EVENTS_STATUS_REWARDS",
+  "next_phase": "COMBAT_LAYOUT_PROTECTED_DELIVERY_THEN_ORDERED_COMBAT_V1_COMPATIBILITY_GROWTH_EVENTS_STATUS_REWARDS",
   "current_screen_visual_coverage_inventory": "docs/planning-data/current_screen_visual_coverage_inventory_20260828.json",
   "next_image_generation": "WHOLE_SCENE_ATLAS_CANDIDATE_GENERATED; ACTUAL_RUNTIME_CONSUMER_BOUND_SPLIT_BRIEFS_REQUIRE_SEPARATE_GODOT_BUILD_PACKAGE_AND_USER_FINAL_LOCK",
   "next_visual_batch": [],
@@ -345,5 +345,18 @@
     "approved_reference_set_fails_repeated_asset_production",
     "visual_cta_label_change_implies_unapproved_combat_semantic_change",
     "new_visual_has_no_actual_game_consumer"
-  ]
+  ],
+  "combat_layout_continuation": {
+    "decision": "TEN-DEC-20260909-COMBAT-LAYOUT-CORRECTION-01",
+    "integration_status": "SOURCE_AND_BOUNDED_RUNTIME_VERIFIED_DELIVERY_PENDING",
+    "implementation_pr": 337,
+    "implementation_base": "544fcbbaff0448edf265e381c70ad3d48fd61b7b",
+    "implementation_plan": "docs/operations/2026-09-09_COMBAT_LAYOUT_IMPLEMENTATION_PLAN.md",
+    "implementation_record": "docs/operations/2026-09-09_COMBAT_LAYOUT_EXECUTION_REPORT.md",
+    "independent_spec_review": "APPROVED_AFTER_L1_L5_R1",
+    "runtime_verification": "BOUNDED_BOARD_NATIVE_720_800_1080_CAPTURED",
+    "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+    "machine_tests": "499_PASS_315_57_SECONDS",
+    "human_device_release": "NOT_RUN"
+  }
 }

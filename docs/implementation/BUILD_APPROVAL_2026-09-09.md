@@ -1,4 +1,15 @@
-# Combat feedback correction continuation
+# Current: combat layout correction continuation
+
+- Decision: `TEN-DEC-20260909-COMBAT-LAYOUT-CORRECTION-01`.
+- Source: current user continuous implementation/correction authorization; controller ratified the independently reviewed specification after L1–5/R1.
+- Implementation base: `544fcbbaff0448edf265e381c70ad3d48fd61b7b`; protected baseline: `477697842bf14d95e670f01b0fe815e384b53658`.
+- Exact three product paths: current `docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json`.
+- Handoff: `docs/operations/2026-09-09_COMBAT_LAYOUT_IMPLEMENTATION_PLAN.md`, Tasks1–3, RED before correction and separate review.
+- Preserve domain/AI/data/assets/audio/save/10duel/36route behavior. Human, device, accessibility-user, rights and release acceptance remain separate.
+
+## Historical: combat feedback correction continuation
+
+The following PR335 dated record is historical, not current execution authority. Its five-path manifest is archived at `docs/operations/2026-09-09_PR335_PROTECTED_CHANGE_APPROVAL_RECORD.md`; references to the active manifest below describe that historical state only.
 
 - Decision: `TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01`.
 - Approval source: the current user's continuous approved Blueprint implementation,

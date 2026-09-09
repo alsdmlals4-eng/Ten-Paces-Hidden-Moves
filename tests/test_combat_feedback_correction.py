@@ -51,16 +51,23 @@ class CombatFeedbackCorrectionTests(unittest.TestCase):
         job_start = workflow.index("  automated-product-evidence:")
         job_end = workflow.index("  windows-product-evidence:", job_start)
         job = workflow[job_start:job_end]
-        import_index = job.index("godot --headless --editor --path . --quit")
+        job_lines = job.splitlines()
+        import_index = job_lines.index("        run: godot --headless --editor --path . --quit")
+        push_start = workflow.index("  push:")
+        push_end = workflow.index("  pull_request:", push_start)
+        push_lines = workflow[push_start:push_end].splitlines()
         for script in (
             "tests/verify_combat_outcome_feedback.gd",
             "tests/verify_actor_ultimate_presentation.gd",
+            "tests/verify_frontal_duel_screen_partition.gd",
+            "tests/verify_combat_action_reveal.gd",
         ):
-            self.assertTrue((ROOT / script).is_file(), script)
-            command = "godot --headless --path . --script res://" + script
-            self.assertIn(command, job)
-            self.assertGreater(job.index(command), import_index)
-            self.assertIn(f'- "{script}"', workflow[:job_start])
+            with self.subTest(script=script):
+                self.assertTrue((ROOT / script).is_file(), script)
+                command = "        run: godot --headless --path . --script res://" + script
+                self.assertIn(command, job_lines)
+                self.assertGreater(job_lines.index(command), import_index)
+                self.assertIn(f'      - "{script}"', push_lines)
 
 
 if __name__ == "__main__":

@@ -36,6 +36,8 @@ on:
       - "tests/verify_combat_action_selection_integration.gd"
       - "tests/verify_combat_outcome_feedback.gd"
       - "tests/verify_actor_ultimate_presentation.gd"
+      - "tests/verify_frontal_duel_screen_partition.gd"
+      - "tests/verify_combat_action_reveal.gd"
       - "tests/probe_native_ten_duel_campaign.gd"
       - "tests/probe_sequential_ten_duel_campaign.gd"
       - ".github/workflows/validate-ten-manual-product-gate.yml"
@@ -84,6 +86,10 @@ jobs:
           include-templates: false
       - name: Import and parse project
         run: godot --headless --editor --path . --quit
+      - name: Verify frontal duel screen partition
+        run: godot --headless --path . --script res://tests/verify_frontal_duel_screen_partition.gd
+      - name: Verify combat action reveal
+        run: godot --headless --path . --script res://tests/verify_combat_action_reveal.gd
       - name: Verify shared terminal outcome feedback
         run: godot --headless --path . --script res://tests/verify_combat_outcome_feedback.gd
       - name: Verify actor-owned ultimate presentation

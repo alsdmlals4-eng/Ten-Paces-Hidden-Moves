@@ -644,6 +644,1523 @@
         "accessibility_user": "NOT_RUN",
         "release_performance": "NOT_RUN"
       }
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-004",
+      "recorded_at_utc": "2026-09-09T02:40:05.457881+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_ORDINARY_CURRENT_COMPARE",
+        "entry_route": "Exact editor 36628, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-004.png",
+        "sha256": "7cf43e83cac536002bd98095568e5ab82d9e80dad4073709f5b8e24b0604e248",
+        "bytes": 1443746,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-004",
+        "prepared_at_utc": "2026-09-09T02:38:41.691164+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "0f359202d3e3fc77d348b3292ea0e022",
+        "receipt_sha256": "c57d012ff661edab52aa3b030828ea4676c026271b974aebcfd2c32b76924880",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-005",
+      "recorded_at_utc": "2026-09-09T02:41:01.036007+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_ORDINARY_MOVE",
+        "entry_route": "Exact editor 36628, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-005.png",
+        "sha256": "b43317e6280abc6154b83d0ea35f10621178701b66212ea28cda116103b7880a",
+        "bytes": 1443481,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-005",
+        "prepared_at_utc": "2026-09-09T02:41:00.398214+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "19465772e1816d7fec4e39600cf08cb3",
+        "receipt_sha256": "9f864866a709ef67684917a4cf6861322464935d476a389801d4c7c5463f70aa",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-006",
+      "recorded_at_utc": "2026-09-09T02:41:58.084161+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_ORDINARY_COMPARE_IMPACT",
+        "entry_route": "Exact editor 36628, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-006.png",
+        "sha256": "c262111f2e5b29f82eed18db63b11f8ed3b7622d2bbbb5d1a41bd410db9e33f5",
+        "bytes": 1336674,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-006",
+        "prepared_at_utc": "2026-09-09T02:41:57.443479+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "b24e5e3014e6f421ebacc01b40a91812",
+        "receipt_sha256": "a8ea70fb7f09bcc9c89cfaa11f71c894332fb26ab9922aee9a0d12fbced9ddaf",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-003",
+      "recorded_at_utc": "2026-09-09T03:00:17.754406+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_INITIAL_PLANNING",
+        "entry_route": "Exact G editor36628/game3836 actual Board initial planning; nativeWindow content_scale_size ZERO actual1280x800; no RunSession/save",
+        "source_delta": "Exact eda product; ignored helper; initial planning checkpoint independently read before actual producer; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-003.png",
+        "sha256": "f0a6b77c16321d1958766d73e28b2feddec62710255461b4aa599fddce375f1c",
+        "bytes": 743639,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-003",
+        "prepared_at_utc": "2026-09-09T02:32:35.260516+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "19563f6f5f4c2359769959c38db127d5",
+        "receipt_sha256": "6baeb3eb9e775a4291cdce90e9331838ce96d3e43824f44ecde89d3dd97d25a6",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Required initial planning vs execution transition reference, not alternative artwork"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-007",
+      "recorded_at_utc": "2026-09-09T03:35:26.325563+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "720_INITIAL_PLANNING",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-007.png",
+        "sha256": "b3a76899d80a2c4c7b033cd7f1c5c29f9ab147b77a8ea22cb6ec3d7f3c706745",
+        "bytes": 674194,
+        "format": "PNG",
+        "width": 1280,
+        "height": 720
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-007",
+        "prepared_at_utc": "2026-09-09T03:35:25.863239+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "e1f1f3affaaac3598ebba0d9b20e7a11",
+        "receipt_sha256": "f516d9157e44a4ce8ff74baca4d74e2c550a7fd48a4be15659109d21f1fe2e22",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-008",
+      "recorded_at_utc": "2026-09-09T03:35:27.649982+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "720_ORDINARY_CURRENT_COMPARE",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-008.png",
+        "sha256": "da6abf5e787038bc061e2303bdceb52d155bf82e504bb48848e40a3bd2ef7b21",
+        "bytes": 1179947,
+        "format": "PNG",
+        "width": 1280,
+        "height": 720
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-008",
+        "prepared_at_utc": "2026-09-09T03:35:27.072046+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "b43cfac581da8eda63bf38db019e939c",
+        "receipt_sha256": "5c899bb9cb44474b7691e9bc49e2abdb99ab9774514129fc11a534c7c29395f7",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-009",
+      "recorded_at_utc": "2026-09-09T03:35:28.784176+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "720_ORDINARY_MOVE",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-009.png",
+        "sha256": "130a1873ec00dc2f1ab88555ff34a58a2258b2e619c618bc2f5f03b0e23aaa42",
+        "bytes": 1299066,
+        "format": "PNG",
+        "width": 1280,
+        "height": 720
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-009",
+        "prepared_at_utc": "2026-09-09T03:35:28.176515+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "d98f46ee584fe2ce71d8bf27c9b8f4aa",
+        "receipt_sha256": "25ebdbde3c7880a2d56880e0c9a9bc634af9f8d9a59db57b7d2332d851a1a90d",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-010",
+      "recorded_at_utc": "2026-09-09T03:35:30.111299+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "720_ORDINARY_COMPARE_IMPACT",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-010.png",
+        "sha256": "9f88264fb4ee0464434f4971a4e5cf2f21c837491fd34edfcecd2f5258557866",
+        "bytes": 1166051,
+        "format": "PNG",
+        "width": 1280,
+        "height": 720
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-010",
+        "prepared_at_utc": "2026-09-09T03:35:29.544044+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "a5d2efe6f0adc4ebe70fba550ea5dfc8",
+        "receipt_sha256": "74ad342becb0a7f8db025f1e0ff0819f760e2666ab6186fbcdf35aaf438aef1d",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-011",
+      "recorded_at_utc": "2026-09-09T03:35:32.265087+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "720_ORDINARY_NEXT_PLANNING",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-011.png",
+        "sha256": "171ac931d663b6829763114fa1d8daf008c3b36718228b892a381bc5865f73ec",
+        "bytes": 680850,
+        "format": "PNG",
+        "width": 1280,
+        "height": 720
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-011",
+        "prepared_at_utc": "2026-09-09T03:35:31.819460+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "0c1a301b7a56a63e20520fd9b66c3d79",
+        "receipt_sha256": "3bffa6845296bac6b60954d42f1b09fbafdd986710398147d5b016d0fbbd31d4",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-012",
+      "recorded_at_utc": "2026-09-09T03:36:43.356085+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_INITIAL_PLANNING",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-012.png",
+        "sha256": "f0a6b77c16321d1958766d73e28b2feddec62710255461b4aa599fddce375f1c",
+        "bytes": 743639,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-012",
+        "prepared_at_utc": "2026-09-09T03:36:42.890102+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "66265cf88342340b16841a165171f269",
+        "receipt_sha256": "8b4bce418fda9b52eead0339851f64dab38b9e0f7cdde09d611a14dfc427179e",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-013",
+      "recorded_at_utc": "2026-09-09T03:36:44.666641+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_ORDINARY_CURRENT_COMPARE",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-013.png",
+        "sha256": "bf375e3692b537f76cd7d99f978905d8543223934806495ab824caf042ae4d79",
+        "bytes": 1329937,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-013",
+        "prepared_at_utc": "2026-09-09T03:36:44.029370+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "e0849ff0322d5e8aef92ce75f589cafc",
+        "receipt_sha256": "a3125f5147a3a961781380a7762e0345ac43e89372c4a293a2b8bbbb42314a18",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-014",
+      "recorded_at_utc": "2026-09-09T03:36:45.809768+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_ORDINARY_MOVE",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-014.png",
+        "sha256": "b43317e6280abc6154b83d0ea35f10621178701b66212ea28cda116103b7880a",
+        "bytes": 1443481,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-014",
+        "prepared_at_utc": "2026-09-09T03:36:45.176443+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "a434d0160076dcf31bf880c368a212a8",
+        "receipt_sha256": "697ff6f545ccb4639128fc50033e97b0a18dde8173f3bc389c8df2c97edcee07",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-015",
+      "recorded_at_utc": "2026-09-09T03:36:47.193432+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_ORDINARY_COMPARE_IMPACT",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-015.png",
+        "sha256": "12b7340dbb3d8af3654a9736a218e12af287108e274084f2634f60eca0ff71bc",
+        "bytes": 1306379,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-015",
+        "prepared_at_utc": "2026-09-09T03:36:46.560117+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "f2e9dd76b06e9f5350cd95cefc3db649",
+        "receipt_sha256": "8000fa6c02c229d10e7118f4d108bfc4ca206898fdb5ba2956abcb6d186dd97c",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-016",
+      "recorded_at_utc": "2026-09-09T03:36:49.369686+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_ORDINARY_NEXT_PLANNING",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-016.png",
+        "sha256": "5464563da3e7c7b3c3a2acc2189653e9196757b34820b6bf2859557667ce4aed",
+        "bytes": 749957,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-016",
+        "prepared_at_utc": "2026-09-09T03:36:48.909694+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "853d455a0e78ba2b6c65f1dc1233537d",
+        "receipt_sha256": "dd03f754c16bded87d37b1201cfd1c16a8ed2d073d3af80d2ffb9f02da85d04d",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-017",
+      "recorded_at_utc": "2026-09-09T03:38:26.759837+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "1080_INITIAL_PLANNING",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-017.png",
+        "sha256": "e1a9e665592f15db6d98750eb9be038e9c57844f892baa9dae52ff8fa24c26c9",
+        "bytes": 1310050,
+        "format": "PNG",
+        "width": 1920,
+        "height": 1080
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-017",
+        "prepared_at_utc": "2026-09-09T03:38:26.133992+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "3667e36151447a2cb1bff81966866803",
+        "receipt_sha256": "852a096be6757bf4cdc75f678bfc6cadacbc820e5fb25e113dd10ffb7310f784",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-018",
+      "recorded_at_utc": "2026-09-09T03:38:28.621797+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "1080_ORDINARY_CURRENT_COMPARE",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-018.png",
+        "sha256": "6f6fe19e8239361f5a3350d88043c87166134634ab09cc1b66301bd8cf7a032b",
+        "bytes": 2513710,
+        "format": "PNG",
+        "width": 1920,
+        "height": 1080
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-018",
+        "prepared_at_utc": "2026-09-09T03:38:27.665004+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "e821c77f666a0e5c45ab1d291a56732a",
+        "receipt_sha256": "64ad4075e3035cf0a13b7770370191793bd59a278d6b2962f81b69d9babf8d1c",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-019",
+      "recorded_at_utc": "2026-09-09T03:38:30.136796+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "1080_ORDINARY_MOVE",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-019.png",
+        "sha256": "0c1bf3ff288da296dc138800d46c576a7c3e207f45d7f7407cb16475977f2fe9",
+        "bytes": 2694808,
+        "format": "PNG",
+        "width": 1920,
+        "height": 1080
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-019",
+        "prepared_at_utc": "2026-09-09T03:38:29.128799+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "eb7efe715e69918491c9a820be2c92c9",
+        "receipt_sha256": "b8bb3d323155a9c5f244cc4f06fb77442b50a4c10572035d413fde44feb74825",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-020",
+      "recorded_at_utc": "2026-09-09T03:40:14.114449+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "1080_ORDINARY_COMPARE_IMPACT",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-020.png",
+        "sha256": "e052f1a97659b855c8b606f29eb5bfaa62f32d7573eb5ef7da90f45a3be2365d",
+        "bytes": 2463250,
+        "format": "PNG",
+        "width": 1920,
+        "height": 1080
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-020",
+        "prepared_at_utc": "2026-09-09T03:40:13.160930+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "06abbc8581ec6aafdd53e831a380fef3",
+        "receipt_sha256": "bd6a5ace770e8fb5d1aafb55c46ef6def78e8871ff261e866917919409ac609d",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-021",
+      "recorded_at_utc": "2026-09-09T03:40:16.480399+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "1080_ORDINARY_NEXT_PLANNING",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-021.png",
+        "sha256": "b6f50a135f39ee86e6958b77281bc1ccbd4d98c81e318d7c296d6286121f7e91",
+        "bytes": 1316015,
+        "format": "PNG",
+        "width": 1920,
+        "height": 1080
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-021",
+        "prepared_at_utc": "2026-09-09T03:40:15.861231+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "bab82abbb7478ed3d5429fae9f0ae350",
+        "receipt_sha256": "e937b3a0a459b175a702bb32dee38b99690b653d44eae8354a688e652a81b1be",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-022",
+      "recorded_at_utc": "2026-09-09T03:40:18.313996+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_PENG_ULTIMATE_PEAK",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-022.png",
+        "sha256": "87c97a4a578e3aba6ee2944a981e0878645f0c471682664a36265bca81de7569",
+        "bytes": 1473789,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-022",
+        "prepared_at_utc": "2026-09-09T03:40:17.676243+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "7b65b714f05d10bf892ace1958c099ea",
+        "receipt_sha256": "59ba86d27bd8573a15e13c3979f492c67eb804704d00d90812ffc9b902b38014",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-023",
+      "recorded_at_utc": "2026-09-09T03:44:20.632435+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_PENG_ULTIMATE_PEAK",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-023.png",
+        "sha256": "5d1f58ec161348201992e662f556605d3cf9cde8b4a1b7294fde4d02775c0804",
+        "bytes": 1474429,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-023",
+        "prepared_at_utc": "2026-09-09T03:44:20.011482+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "379ada6a5a57c1357bea57e477e522c8",
+        "receipt_sha256": "424d0b5d9ee3ce2f592013d216592f04e08bf829f19f9cdc48e038769f40cbcc",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-024",
+      "recorded_at_utc": "2026-09-09T03:44:22.014449+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_PENG_ULTIMATE_RECOVERY",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-024.png",
+        "sha256": "4409c10fb0e804e90f7ed5fa6c4ae37cefc937ec9756db1032b499cab317fc1b",
+        "bytes": 1443748,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-024",
+        "prepared_at_utc": "2026-09-09T03:44:21.380805+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "a8322470f81371923836d5ea2ae704bf",
+        "receipt_sha256": "abbfa5a380af391e9d0c3cf3dc9d0385eb6c6c76bb98c638b124fbde4656615e",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-025",
+      "recorded_at_utc": "2026-09-09T03:44:23.728537+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_LEGACY_ULTIMATE_PEAK",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-025.png",
+        "sha256": "997269ac68e187a49aa79d134962daac47ff9ad3b19824bae5c89f62116f6c8d",
+        "bytes": 1468767,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-025",
+        "prepared_at_utc": "2026-09-09T03:44:23.106251+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "5f2d7da2a13de484e6c7fd8dead68120",
+        "receipt_sha256": "1b58f4a08fea23f8ad70a9d434576e3f01cbd833d6e460542930a02580d2ef7b",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-026",
+      "recorded_at_utc": "2026-09-09T03:44:25.114272+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_LEGACY_ULTIMATE_RECOVERY",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-026.png",
+        "sha256": "ac00cb1e047813a8773307d18b853e2e4ddde47873c6dc98f7499ccc1fd2d610",
+        "bytes": 1443781,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-026",
+        "prepared_at_utc": "2026-09-09T03:44:24.478944+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "65f49b4f23eb75dd525518ed14b8ba6f",
+        "receipt_sha256": "299e06e23de7c8c263736c057a5dbdeda416d0f05b6c8bccf6ef2ab82672d0c6",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-027",
+      "recorded_at_utc": "2026-09-09T03:44:26.614453+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_PENG_MUTED_REDUCED_IMPACT",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-027.png",
+        "sha256": "d32b98ddb2446974cb6e90af611aa44957d9423d5e72e94ced47289028f42359",
+        "bytes": 1466221,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-027",
+        "prepared_at_utc": "2026-09-09T03:44:25.979581+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "536c3b84910d62aebf05798e8dc5b037",
+        "receipt_sha256": "d5a3459799da62484046a15a66745d789cd73fc0ed514f155b82289cf1810711",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-028",
+      "recorded_at_utc": "2026-09-09T03:44:27.751970+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_PENG_MUTED_REDUCED_RECOVERY",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-028.png",
+        "sha256": "ac00cb1e047813a8773307d18b853e2e4ddde47873c6dc98f7499ccc1fd2d610",
+        "bytes": 1443781,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-028",
+        "prepared_at_utc": "2026-09-09T03:44:27.126375+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "0d020883f7a0db53b1b1a8ef72d99e49",
+        "receipt_sha256": "0da50c98399a7cb8fe872e46fe5063b2a95596cff1651a94209b08622474a943",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-029",
+      "recorded_at_utc": "2026-09-09T03:45:21.427362+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_DOGYEOM_ENEMY_VARIANCE_BOTH_ROLES",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-029.png",
+        "sha256": "ec19e67988a5d316f36786b4d433112eeec66569607d236193a7840077cdba66",
+        "bytes": 745096,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-029",
+        "prepared_at_utc": "2026-09-09T03:45:20.964495+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "00a5862fac1863252c3ba944bf1e7cd9",
+        "receipt_sha256": "f7ee0a26ac5913a8c0d9ac3e098596250d17ddf371cebd740ac268764c517f91",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-030",
+      "recorded_at_utc": "2026-09-09T03:45:22.988935+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_LONG_COPY_PRESENTATION_FIXTURE",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-030.png",
+        "sha256": "52f911f5f42ed774e96b6f3cc1a632594acd49335c25251853a115a6a3caf371",
+        "bytes": 1324476,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-030",
+        "prepared_at_utc": "2026-09-09T03:45:22.362785+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "864bfe64b41e196d42c8483a64040265",
+        "receipt_sha256": "b932007a60b06244c5a9035e1cfd4e30d2104ff7a8164c0c3a11c900afe0b6c5",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-031",
+      "recorded_at_utc": "2026-09-09T03:45:24.745693+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_ORDINARY_CURRENT_COMPARE",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-031.png",
+        "sha256": "69e7c6eeda2ebff003e316b64e818e5c4fe4f26aa2e719e54f19617be9f1a089",
+        "bytes": 1329781,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-031",
+        "prepared_at_utc": "2026-09-09T03:45:24.119268+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "cc95f916925d7434628fb2c95ed5ba43",
+        "receipt_sha256": "3c782fd7b8ff42c8ab1254962704d429c40930aa72bd57af448ba60c0712234c",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-032",
+      "recorded_at_utc": "2026-09-09T03:45:26.225380+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_ORDINARY_NEXT_PLANNING_AFTER_SKIP",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-032.png",
+        "sha256": "5464563da3e7c7b3c3a2acc2189653e9196757b34820b6bf2859557667ce4aed",
+        "bytes": 749957,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-032",
+        "prepared_at_utc": "2026-09-09T03:45:25.777653+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "1ca20e4ad41c54dd32d9f1ac8995aec6",
+        "receipt_sha256": "2bd706944eb843b707aedf80f6c4375cb2e6354f80093df62bd2c15f1aa92219",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-033",
+      "recorded_at_utc": "2026-09-09T03:50:35.077880+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_PENG_ULTIMATE_PEAK",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-033.png",
+        "sha256": "26d3cb2e366d08c31a9f944c321083691e8d455a5b082a20391c71b05e0f8aaf",
+        "bytes": 1474844,
+        "format": "PNG",
+        "width": 1280,
+        "height": 800
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-033",
+        "prepared_at_utc": "2026-09-09T03:50:34.434908+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "03615e9fc4084afb2a7861f1bdf2c8d8",
+        "receipt_sha256": "9712bddcddd34fb1b61538f075354cd642c05ee786066fbc9c446614266503ef",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-034",
+      "recorded_at_utc": "2026-09-09T03:50:36.704378+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "VISIBLE_RESIZE_PRESERVED",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-034.png",
+        "sha256": "73eb0e6775a7b15e29af93eb926cbc62b3fd8eff9d060082de9584442d7c1228",
+        "bytes": 2746269,
+        "format": "PNG",
+        "width": 1920,
+        "height": 1080
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-034",
+        "prepared_at_utc": "2026-09-09T03:50:35.682058+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "4b2dec1a70a509ba4ff849787da3dee7",
+        "receipt_sha256": "e2da2110d513662a9f79b84331c36571c6913627bd8adcffe89ed0c826b4e932",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
+    },
+    {
+      "capture_id": "TEN-RVC-20260909-035",
+      "recorded_at_utc": "2026-09-09T03:50:38.479677+00:00",
+      "work_item_id": "TEN-COMBAT-LAYOUT-20260909",
+      "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
+      "runtime": {
+        "scene_path": "res://.superpowers/sdd/layout-capture-probe.tscn",
+        "capture_state": "800_PENG_ULTIMATE_RECOVERY",
+        "entry_route": "Exact editor 28152, runtime-only capture fixture, actual Board/CTA or explicitly labelled resolver/presentation fixture; never RunSession/save",
+        "source_delta": "Task1+Task2+Task3 exact eda; no product source delta; ignored capture fixture only; debugger 0 errors/18 warnings incl 1 helper warning; Human UX NOT_RUN"
+      },
+      "consumers": [
+        "src/combat/combat_board_preview.gd",
+        "src/combat/combat_board_preview_auto.gd"
+      ],
+      "diagnostics": {
+        "error_count": 0,
+        "warning_count": 18
+      },
+      "image": {
+        "path": "docs/evidence/runtime-captures/TEN-RVC-20260909-035.png",
+        "sha256": "d604bfbe36c1d182b017c8f784aedc6ab11ad526b8f187d96d29a6900c58c8c0",
+        "bytes": 2694996,
+        "format": "PNG",
+        "width": 1920,
+        "height": 1080
+      },
+      "freshness": {
+        "mode": "PREPARED_ABSENT_THEN_PRESENT",
+        "capture_run_id": "TEN-RVC-RUN-20260909-035",
+        "prepared_at_utc": "2026-09-09T03:50:37.461330+00:00",
+        "source_absent_at_prepare": true,
+        "trusted_source_identity_match": true,
+        "receipt_nonce": "7a615a9ecd60a5f7cd3e9b34e79c4cdb",
+        "receipt_sha256": "8e699e57717201728d791f15d07b99234649ab3206d674fd32e0725093599689",
+        "claim_ceiling": "SAME_RUN_PATH_FRESHNESS_NOT_PRODUCER_AUTHENTICITY_OR_VISUAL_QUALITY"
+      },
+      "evidence_level": "MACHINE_RUNTIME_CAPTURE",
+      "evidence_ceiling": {
+        "human_usability": "NOT_RUN",
+        "android_actual_device": "NOT_RUN",
+        "accessibility_user": "NOT_RUN",
+        "release_performance": "NOT_RUN"
+      },
+      "additional_state_reason": "Distinct required layout/motion/compare/peak/recovery/viewport regression checkpoint, not an alternate illustration"
     }
   ]
 }

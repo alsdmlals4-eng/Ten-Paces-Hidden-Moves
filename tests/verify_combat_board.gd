@@ -24,6 +24,7 @@ const POSITION_TOLERANCE := 0.75
 const SIZE_TOLERANCE := 0.01
 
 var failures: Array[String] = []
+var _source_art_oracles: Dictionary = {}
 
 func _initialize() -> void:
     call_deferred("_run")
@@ -65,6 +66,7 @@ func _run() -> void:
     _verify_auto_attack_targeting(board)
     _verify_layout(board, board.get_layout_snapshot())
     _verify_character_anchors(board, board.get_layout_snapshot())
+    _verify_unequal_ink_negative_control(board, board.get_layout_snapshot())
     await _verify_second_bundle_returns_to_planning(board)
 
     board.queue_free()
@@ -476,17 +478,9 @@ func _verify_layout(board: CombatBoardPreview, snapshot: Dictionary) -> void:
             failures.append("Compact bundle execution control must not be covered by the combat-log toggle.")
 
 func _verify_character_anchors(board: CombatBoardPreview, snapshot: Dictionary) -> void:
-    var player_size: Vector2 = snapshot.get("player_size", Vector2.ZERO)
-    var enemy_size: Vector2 = snapshot.get("enemy_size", Vector2.ZERO)
-    if absf(player_size.y - enemy_size.y) > SIZE_TOLERANCE:
-        failures.append("Combat presentation must keep both battlers at a comparable frontal-duel scale.")
-    var duel_stage: Rect2 = snapshot.get("screen_surfaces", {}).get("duel_stage", Rect2())
+    failures.append_array(_character_ink_scale_errors(board, snapshot))
     if str(board.get_meta("character_scale_profile", "")) != "distant_frontal_duel":
         failures.append("Combat presentation must declare the approved distant frontal-duel scale profile.")
-    if duel_stage.size.y > 0.0 and player_size.y > duel_stage.size.y * 0.52 + SIZE_TOLERANCE:
-        failures.append("Player frontal-duel height must remain proportionate to the distant middle-stage surface.")
-    if duel_stage.size.y > 0.0 and enemy_size.y > duel_stage.size.y * 0.52 + SIZE_TOLERANCE:
-        failures.append("Enemy frontal-duel height must remain proportionate to the distant middle-stage surface.")
     var player_foot: Vector2 = snapshot.get("player_foot", Vector2.ZERO)
     var enemy_foot: Vector2 = snapshot.get("enemy_foot", Vector2.ZERO)
     if player_foot.x >= enemy_foot.x - POSITION_TOLERANCE:
@@ -497,6 +491,90 @@ func _verify_character_anchors(board: CombatBoardPreview, snapshot: Dictionary) 
         failures.append("Combat presentation must keep both battlers on one shared grounded frontal duel line.")
     if str(board.get_meta("duel_composition", "")) != "player_left|enemy_right|shared_ground|distance_center":
         failures.append("Combat presentation must report the approved shared-ground frontal duel composition.")
+
+func _character_ink_scale_errors(board: CombatBoardPreview, snapshot: Dictionary) -> Array[String]:
+    var errors: Array[String] = []
+    if not is_instance_valid(board.player_character) or not is_instance_valid(board.enemy_character):
+        errors.append("Both actual battlers must exist for visible-ink scale verification.")
+        return errors
+    var stage_local: Rect2 = snapshot.get("screen_surfaces", {}).get("duel_stage", Rect2())
+    var stage := _transformed_rect(stage_local, board.get_global_transform())
+    if not stage.has_area():
+        errors.append("A positive actual duel stage is required for visible-ink scale verification.")
+        return errors
+    var player_ink := _independent_character_ink(board.player_character, false)
+    var enemy_ink := _independent_character_ink(board.enemy_character, false)
+    if not player_ink.has_area() or not enemy_ink.has_area():
+        errors.append("Both source images must have positive visible-ink bounds.")
+        return errors
+    if absf(player_ink.size.y - enemy_ink.size.y) > SIZE_TOLERANCE:
+        errors.append("Combat presentation must keep both battlers at a comparable frontal-duel scale.")
+    for actor in [board.player_character, board.enemy_character]:
+        var idle := _independent_character_ink(actor, false)
+        var animated := _independent_character_ink(actor, true)
+        if not animated.has_area() or animated.size.y > stage.size.y * 0.52 + SIZE_TOLERANCE:
+            errors.append("Current visible-ink height must remain within the 52 percent stage cap: " + actor.role)
+        if idle.size.y * 1.12 > stage.size.y * 0.52 + SIZE_TOLERANCE:
+            errors.append("The complete existing 1.12 motion envelope must remain within the 52 percent stage cap: " + actor.role)
+    return errors
+
+func _independent_character_ink(actor: CombatCharacterPlaceholder, include_motion: bool) -> Rect2:
+    # Read source PNG alpha, not the renderer's cached bounds or production getter.
+    var path := str(actor.get_meta("character_art_path", ""))
+    if path.is_empty():
+        return Rect2()
+    if not _source_art_oracles.has(path):
+        var image := Image.load_from_file(ProjectSettings.globalize_path(path))
+        if image == null or image.is_empty():
+            return Rect2()
+        _source_art_oracles[path] = {"used": Rect2(image.get_used_rect()), "dimensions": Vector2(image.get_size())}
+    var source: Dictionary = _source_art_oracles[path]
+    var used: Rect2 = source.used
+    var dimensions: Vector2 = source.dimensions
+    if not used.has_area() or dimensions.x <= 0.0 or dimensions.y <= 0.0:
+        return Rect2()
+    var draw_height := actor.size.y * 1.08
+    var foot_ratio := clampf(used.end.y / dimensions.y, 0.70, 1.0)
+    var origin := Vector2((actor.size.x - draw_height) * 0.5, actor.size.y - draw_height * foot_ratio)
+    var pivot := Vector2(actor.size.x * 0.5, actor.size.y)
+    var mirror := -1.0 if actor.role == "enemy" and actor.facing < 0 and path.ends_with("dogyeom_combat_battler_01_v1.png") else 1.0
+    var draw_scale := Vector2(mirror, 1.0) * (actor.visual_scale if include_motion else 1.0)
+    var offset := actor.visual_offset if include_motion else Vector2.ZERO
+    var transform := actor.get_global_transform()
+    var bounds := Rect2()
+    var first := true
+    for corner in [used.position, Vector2(used.end.x, used.position.y), used.end, Vector2(used.position.x, used.end.y)]:
+        var local: Vector2 = origin + corner / dimensions * draw_height
+        var point: Vector2 = transform * (pivot + (local - pivot) * draw_scale + offset)
+        bounds = Rect2(point, Vector2.ZERO) if first else bounds.expand(point)
+        first = false
+    return bounds
+
+func _transformed_rect(rect: Rect2, transform: Transform2D) -> Rect2:
+    var bounds := Rect2(transform * rect.position, Vector2.ZERO)
+    for point in [Vector2(rect.end.x, rect.position.y), rect.end, Vector2(rect.position.x, rect.end.y)]:
+        bounds = bounds.expand(transform * point)
+    return bounds
+
+func _verify_unequal_ink_negative_control(board: CombatBoardPreview, snapshot: Dictionary) -> void:
+    if not is_instance_valid(board.enemy_character):
+        failures.append("Unequal-ink negative control requires the actual enemy battler.")
+        return
+    var actor := board.enemy_character
+    var original_scale := actor.scale
+    var original_ink := _independent_character_ink(actor, false)
+    actor.scale = original_scale * Vector2(1.0, 0.8)
+    var unequal_ink := _independent_character_ink(actor, false)
+    var negative_errors := _character_ink_scale_errors(board, snapshot)
+    actor.scale = original_scale # Synchronous test-only mutation; no frame/tween/domain advance.
+    if not original_ink.has_area() or absf(unequal_ink.size.y - original_ink.size.y * 0.8) > SIZE_TOLERANCE:
+        failures.append("Negative control must actually reduce the rendered enemy height to 80 percent.")
+    if not negative_errors.has("Combat presentation must keep both battlers at a comparable frontal-duel scale."):
+        failures.append("Visible-ink scale oracle must reject the actual unequal-height negative control.")
+    print("INK_SCALE_NEGATIVE_CONTROL original=%s scaled=%s mismatch_detected=%s" % [original_ink.size.y, unequal_ink.size.y, negative_errors.has("Combat presentation must keep both battlers at a comparable frontal-duel scale.")])
+    if actor.scale != original_scale or absf(_independent_character_ink(actor, false).size.y - original_ink.size.y) > SIZE_TOLERANCE:
+        failures.append("Negative control must restore the original enemy transform and visible height.")
+    failures.append_array(_character_ink_scale_errors(board, snapshot))
 
 func _finish() -> void:
     if failures.is_empty():

@@ -5,18 +5,26 @@ const BOARD_SCENE := preload("res://scenes/combat/combat_board_preview.tscn")
 const ATTACK_CLASH_VFX_PATH := "res://assets/vfx/attack_clash_ink_gold_atlas_rgba_v1.png"
 
 var failures: Array[String] = []
+var ordinary_final_reference: Dictionary = {}
 
 func _init() -> void:
 	call_deferred("_run")
 
 func _run() -> void:
+	await _verify_ordinary_cta(Vector2(960, 640), false)
+	for viewport in [Vector2(960, 640), Vector2(1440, 900), Vector2(1280, 720), Vector2(1280, 800), Vector2(1920, 1080)]:
+		await _verify_ordinary_cta(viewport)
+	await _verify_public_feedback_surface()
+	_finish()
+
+func _verify_ordinary_cta(viewport: Vector2, do_skip: bool = true) -> void:
 	var board := BOARD_SCENE.instantiate() as CombatBoardPreview
 	if board == null:
 		failures.append("Action reveal verification requires the combat board.")
 		_finish()
 		return
 	board.set_anchors_preset(Control.PRESET_TOP_LEFT)
-	board.size = Vector2(1440.0, 900.0)
+	board.size = viewport
 	root.add_child(board)
 	for _frame in range(6):
 		await process_frame
@@ -54,21 +62,30 @@ func _run() -> void:
 				_expect(not board.action_selection_dock.visible, "Planning dock must be hidden while the duel reveal is active.")
 				_expect(not board.action_timing_panel.visible and not board.combat_progress_button.visible, "Current bundle slots and execution control must be hidden while the duel reveal is active.")
 				_expect(not board.planning_surface.visible, "Duel reveal must hide the full planning surface so only top status and middle battle remain.")
+				var lanes := board.get_layout_snapshot()
+				var compare: Rect2 = lanes.get("presentation_compare_rect", Rect2())
+				var label: Rect2 = lanes.get("presentation_label_rect", Rect2())
+				var vfx: Rect2 = lanes.get("presentation_vfx_rect", Rect2())
+				_expect(compare.has_area() and label.has_area() and vfx.has_area() and not compare.intersects(label) and not compare.intersects(vfx) and not label.intersects(vfx), "Actual CTA publishes positive disjoint execution lanes at %s." % viewport)
 				break
 		await create_timer(0.05).timeout
 	_expect(reveal_seen, "A committed bundle must show a timing-1 action reveal overlay.")
 	_expect(int(board.get_layout_snapshot().get("resolution_count", 0)) == resolution_before + 1, "A reveal sequence must keep one authoritative resolver call per bundle.")
-	board._skip_presentation()
+	if do_skip:
+		board._skip_presentation()
 	for _attempt in range(80):
 		if str(board.get_meta("presentation_state", "")) == "next_bundle_ready":
 			break
 		await create_timer(0.05).timeout
 	_expect(str(board.get_meta("presentation_state", "")) == "next_bundle_ready", "Skip must preserve ordered snapshot completion and reopen planning without a review click.")
+	var final_state := board.get_combat_state_snapshot()
+	if ordinary_final_reference.is_empty():
+		ordinary_final_reference = final_state.duplicate(true)
+	else:
+		_expect(final_state == ordinary_final_reference, "Actual skipped CTA preserves the non-skipped960 reference domain snapshot at %s." % viewport)
 
 	board.queue_free()
 	await process_frame
-	await _verify_public_feedback_surface()
-	_finish()
 
 func _verify_public_feedback_surface() -> void:
 	var board := BOARD_SCENE.instantiate() as CombatBoardPreview
@@ -78,6 +95,11 @@ func _verify_public_feedback_surface() -> void:
 	for _frame in range(4):
 		await process_frame
 	_expect(ResourceLoader.exists(ATTACK_CLASH_VFX_PATH), "Resolved normal attack and clash feedback must ship a final-locked runtime VFX atlas.")
+	board._show_feedback_vfx({}, "attack")
+	_expect(not board.presentation_vfx.visible, "Planning cannot display execution VFX without an active lane.")
+	# Existing direct feedback fixtures explicitly enter presentation state.
+	board._set_presentation_state("presenting_result")
+	board._set_resolution_surface_visible(false)
 	board._show_feedback_vfx({}, "attack")
 	var attack_vfx := board.presentation_vfx.texture as AtlasTexture
 	_expect(board.presentation_vfx.visible and attack_vfx != null, "Resolved normal attack must render the attack VFX band.")

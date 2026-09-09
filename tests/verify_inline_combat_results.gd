@@ -99,8 +99,18 @@ func _run() -> void:
 			_expect(button.is_visible_in_tree(), "Each basic product action card remains visible at %s" % viewport_size)
 			_expect(not inline_rect.intersects(button.get_global_rect()), "Inline result does not intersect a visible product action card at %s" % viewport_size)
 			_expect(Rect2(Vector2.ZERO, viewport_size).encloses(button.get_global_rect()), "Visible product action card stays wholly inside viewport at %s" % viewport_size)
+		# Current-only planning retains hidden past/future nodes, not their old
+		# geometry as visible obstacles. Prove the exact live set before overlap.
+		var expected_indices: PackedInt32Array = board.action_timing_panel.get_visible_timing_indices()
+		_expect(expected_indices == PackedInt32Array([4, 5, 6]), "The completed first bundle exposes exactly the three second-bundle slots")
+		var tested_visible := 0
 		for slot in board.action_timing_panel.slots:
-			_expect(not inline_rect.intersects(slot.get_global_rect()), "Inline result does not intersect timing slots at %s" % viewport_size)
+			var expected_visible: bool = slot.timing_index in expected_indices
+			_expect(slot.is_visible_in_tree() == expected_visible, "Slot visibility matches the actual current bundle at %s" % viewport_size)
+			if slot.is_visible_in_tree():
+				tested_visible += 1
+				_expect(not inline_rect.intersects(slot.get_global_rect()), "Inline result does not intersect visible timing slots at %s" % viewport_size)
+		_expect(tested_visible == 3 and tested_visible == expected_indices.size(), "Overlap checks cover every expected visible slot, never an empty set")
 
 	board.queue_free()
 	await process_frame
