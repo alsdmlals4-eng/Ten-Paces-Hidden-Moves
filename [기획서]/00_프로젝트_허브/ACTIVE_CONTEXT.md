@@ -1,5 +1,7 @@
 # 십보강호 활성 컨텍스트
 
+2026-09-09 연출 제작 기준 보강: 사용자가 조사 후 제작과 상단 합, 합 승자·패자의 후속 반응 분리를 승인했다. 책임 결정은 `docs/decisions/2026-09-09_CLASH_STAGING_AND_OUTCOME_DIRECTION.md`다. 다음 Visual 작업은 상단 접촉 핵심 자세 → 양쪽 결과 반응·회복 → 효과 off/on·역할 반전 검토다. 새 모션 자산·Godot 적용·Human 증거는 `NOT_RUN`이며 기존 코드·승인 원본·Base adoption pin은 변경하지 않는다.
+
 > 전투 규칙 책임 원본: `docs/02_COMBAT_RULES.md`
 > 이 문서는 **변동 상태의 단독 책임 원본**이다. 제품 규칙 전문을 복제하지 않고 현재 상태, 검증 상태, 미완료 Gate, 다음 실행 순서를 연결한다. 후속 Decision 뒤에도 회귀가 찾아야 하는 제품·플랫폼·관찰 권위의 발견 표식은 별도 섹션으로 보존한다.
 > 핵심 결투 타이밍 discovery locator: `3/3/4`. 세부 전투 규칙은 `docs/02_COMBAT_RULES.md`가 책임진다.
