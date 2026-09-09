@@ -78,7 +78,7 @@ product_stage: COMBAT_LAYOUT_SOURCE_AND_BOUNDED_RUNTIME_VERIFIED_DELIVERY_PENDIN
 runtime_work_mode: BUILD
 historical_runtime_integration_pr: 65
 active_planning_work_mode: BUILD
-active_planning_pr: NONE
+active_planning_pr: 337
 active_planning_parent_pr: NONE
 active_approval_count: SCOPED_BUILD_AUTHORIZED_HUMAN_FINAL_NOT_RUN
 active_decision_state: COMBAT_LAYOUT_SOURCE_AND_BOUNDED_RUNTIME_VERIFIED_DELIVERY_PENDING

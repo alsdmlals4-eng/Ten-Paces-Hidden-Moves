@@ -349,6 +349,7 @@
   "combat_layout_continuation": {
     "decision": "TEN-DEC-20260909-COMBAT-LAYOUT-CORRECTION-01",
     "integration_status": "SOURCE_AND_BOUNDED_RUNTIME_VERIFIED_DELIVERY_PENDING",
+    "implementation_pr": 337,
     "implementation_base": "544fcbbaff0448edf265e381c70ad3d48fd61b7b",
     "implementation_plan": "docs/operations/2026-09-09_COMBAT_LAYOUT_IMPLEMENTATION_PLAN.md",
     "implementation_record": "docs/operations/2026-09-09_COMBAT_LAYOUT_EXECUTION_REPORT.md",
