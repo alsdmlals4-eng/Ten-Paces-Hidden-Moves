@@ -1,0 +1,24 @@
+{
+  "status": "APPROVED_DIRECTION_DETAIL_RECOMMENDATION_NOT_RUNTIME",
+  "resource_policy": "All stages keep the current enemy resource caps 30/5/4. Stage growth changes permanent-stat targets and mastery, not an invented stat-to-resource formula. Battle constraints remain separate.",
+  "stage_prefixes": ["초행", "유랑", "신예", "약진", "명성", "숙련", "절정", "고명", "대성", "완숙"],
+  "resource_caps": {"health":30,"stamina":5,"internal":4},
+  "portraits_status": "GENERATED_REVIEWED_CANDIDATES_FINAL_VISUAL_LOCK_PENDING",
+  "people": {
+    "slot1_yeongyo": {"epithet":"홍매검", "identity":"정면 매화 검객", "gender":"여성", "age_impression":28, "art":"yeongyo"},
+    "slot1_dogyeom": {"epithet":"반석장", "identity":"묵직한 강룡 장객", "gender":"남성", "age_impression":46, "art":"dogyeom"},
+    "slot1_chaeryeong": {"epithet":"청뢰검", "identity":"간격을 깨는 창궁 검객", "gender":"여성", "age_impression":25, "art":"chaeryeong"},
+    "slot2_mukjin": {"epithet":"금강수", "identity":"금강형 수련자", "gender":"남성", "age_impression":52, "art":"mukjin"},
+    "slot2_seokmu": {"epithet":"철산도", "identity":"버티며 받아치는 중량 도객", "gender":"여성", "age_impression":43, "art":"seokmu"},
+    "slot2_danso": {"epithet":"자운객", "identity":"자원을 지키는 호신가", "gender":"남성", "age_impression":34, "art":"danso"},
+    "slot3_seolha": {"epithet":"유룡장", "identity":"거리를 다스리는 장풍 고수", "gender":"여성", "age_impression":48, "art":"seolha"},
+    "slot3_uram": {"epithet":"장산창", "identity":"창끝 거리의 장병기 무인", "gender":"남성", "age_impression":38, "art":"uram"},
+    "slot3_biyeon": {"epithet":"비영수", "identity":"경공과 암기를 잇는 유랑객", "gender":"여성", "age_impression":27, "art":"biyeon"},
+    "slot4_cheongheo": {"epithet":"유운검", "identity":"공개 이력을 읽는 태극 검객", "gender":"남성", "age_impression":64, "art":"cheongheo"},
+    "slot4_damwol": {"epithet":"월영객", "identity":"소요보법 중심의 후수 고수", "gender":"여성", "age_impression":36, "art":"damwol"},
+    "slot4_jinryeo": {"epithet":"환뢰검", "identity":"보이는 틈으로 유인하는 검객", "gender":"남성", "age_impression":32, "art":"jinryeo"},
+    "slot5_jeogu": {"epithet":"낙홍검", "identity":"여러 수를 잇는 매화 검객", "gender":"남성", "age_impression":44, "art":"jeogu"},
+    "slot5_pungmok": {"epithet":"풍호도", "identity":"박자를 바꾸는 연환 도객", "gender":"남성", "age_impression":41, "art":"pungmok"},
+    "slot5_rajin": {"epithet":"연로창", "identity":"창과 보법을 잇는 설계자", "gender":"여성", "age_impression":31, "art":"rajin"}
+  }
+}

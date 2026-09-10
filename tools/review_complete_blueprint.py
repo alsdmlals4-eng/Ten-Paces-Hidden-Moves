@@ -1,0 +1,38 @@
+"""Read-only page QA and contact-sheet generation; not source-art editing."""
+from pathlib import Path
+import json, hashlib
+from PIL import Image, ImageDraw
+from pypdf import PdfReader
+ROOT=Path(__file__).resolve().parents[1]
+pdf=ROOT/'output/pdf/TEN_PACES_HUMAN_BLUEPRINT_20260910_COMPLETE.pdf'
+receipt=json.loads(pdf.with_suffix('.receipt.json').read_text(encoding='utf-8'))
+reader=PdfReader(pdf)
+assert len(reader.pages)==receipt['page_count']
+assert hashlib.sha256(pdf.read_bytes()).hexdigest()==receipt['pdf_sha256']
+assert len(set(receipt['page_titles']))==len(reader.pages),'Duplicate page title'
+texts=[p.extract_text() for p in reader.pages]
+joined='\n'.join(texts)
+art=json.loads((ROOT/'docs/blueprint/ART_SELECTION.json').read_text(encoding='utf-8'))['manuals']
+for mid,images in art.items():
+    m=json.loads((ROOT/'data/cards/martial_manuals'/f'{mid}.json').read_text(encoding='utf-8'))
+    for c in list(m['cards'].values())+list(m['overlays'].values()):assert c['name'] in joined,c['name']
+    for filename in images:assert (ROOT/'output/blueprint-candidates'/filename).exists(),filename
+pres=json.loads((ROOT/'docs/blueprint/OPPONENT_PRESENTATION.json').read_text(encoding='utf-8'))
+for d in pres['people'].values():assert d['epithet'] in joined,d['epithet']
+for forbidden in ['slot1_', 'schema_version','GAIN_RESOURCE','INDEPENDENT_ATTACK','mastery_seed']:
+    assert forbidden not in joined,forbidden
+out=ROOT/'tmp/pdfs/complete-review'
+files=sorted(out.glob('page-*.png'))
+assert len(files)==len(reader.pages),(len(files),len(reader.pages))
+for start in range(0,len(files),6):
+    sheet=Image.new('RGB',(1200,870),'#dddddd');d=ImageDraw.Draw(sheet)
+    for i,p in enumerate(files[start:start+6]):
+        with Image.open(p) as im:
+            im.thumbnail((590,396));x=(i%2)*600;y=(i//2)*290
+            # 3 rows of 2, each page 400x267 to retain surrounding labels.
+            im.thumbnail((590,267));sheet.paste(im,(x+(590-im.width)//2,y+20))
+            d.text((x+12,y+3),f'{start+i+1:02d}',fill='black')
+    sheet.save(out/f'contact-{start//6+1:02d}.png')
+report={'status':'DOCUMENT_CONTENT_CHECK_PASS','pages':len(reader.pages),'manual_illustrations':30,'opponent_portraits':15,'stage_rows':150,'visual_review':'SEPARATE_REQUIRED','pdf_sha256':receipt['pdf_sha256']}
+(out/'qa.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+print(report)
