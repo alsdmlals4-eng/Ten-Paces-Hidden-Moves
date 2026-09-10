@@ -1,0 +1,35 @@
+{
+  "status": "SPECIFIED_TUNING_BASELINE_HUMAN_BALANCE_NOT_RUN",
+  "cost_basis": "Additional training after acquiring a manual at mastery 3; acquisition opportunity cost is separate.",
+  "next_star_costs": {"4":2,"5":3,"6":4,"7":5,"8":6,"9":8,"10":10},
+  "stages": [
+    {"stage":1,"stat_total":20,"masteries":[3,3,3],"training_budget":0},
+    {"stage":2,"stat_total":22,"masteries":[4,3,3],"training_budget":2},
+    {"stage":3,"stat_total":24,"masteries":[5,3,3],"training_budget":5},
+    {"stage":4,"stat_total":26,"masteries":[5,4,3],"training_budget":7},
+    {"stage":5,"stat_total":28,"masteries":[6,5,3],"training_budget":14},
+    {"stage":6,"stat_total":30,"masteries":[7,5,3],"training_budget":19},
+    {"stage":7,"stat_total":32,"masteries":[8,5,4],"training_budget":27},
+    {"stage":8,"stat_total":34,"masteries":[9,5,4],"training_budget":35},
+    {"stage":9,"stat_total":37,"masteries":[9,7,4],"training_budget":44},
+    {"stage":10,"stat_total":40,"masteries":[10,7,5],"training_budget":57}
+  ],
+  "supports": {
+    "masked_baekmujin":["xiaoyao_lingbo_footwork","mount_hua_purple_mist_art"],
+    "slot1_yeongyo":["mount_hua_purple_mist_art","xiaoyao_lingbo_footwork"],
+    "slot1_dogyeom":["shaolin_arhat_vajra_art","mount_hua_purple_mist_art"],
+    "slot1_chaeryeong":["xiaoyao_lingbo_footwork","mount_hua_purple_mist_art"],
+    "slot2_mukjin":["beggars_dragon_subduing_palm","mount_hua_purple_mist_art"],
+    "slot2_seokmu":["shaolin_arhat_vajra_art","mount_hua_purple_mist_art"],
+    "slot2_danso":["mount_hua_plum_blossom_sword","xiaoyao_lingbo_footwork"],
+    "slot3_seolha":["xiaoyao_lingbo_footwork","mount_hua_purple_mist_art"],
+    "slot3_uram":["shaolin_arhat_vajra_art","xiaoyao_lingbo_footwork"],
+    "slot3_biyeon":["xiaoyao_lingbo_footwork","mount_hua_purple_mist_art"],
+    "slot4_cheongheo":["mount_hua_purple_mist_art","xiaoyao_lingbo_footwork"],
+    "slot4_damwol":["wudang_taiji_sword","mount_hua_purple_mist_art"],
+    "slot4_jinryeo":["mount_hua_plum_blossom_sword","xiaoyao_lingbo_footwork"],
+    "slot5_jeogu":["wudang_taiji_sword","mount_hua_purple_mist_art"],
+    "slot5_pungmok":["xiaoyao_lingbo_footwork","shaolin_arhat_vajra_art"],
+    "slot5_rajin":["xiaoyao_lingbo_footwork","mount_hua_purple_mist_art"]
+  }
+}

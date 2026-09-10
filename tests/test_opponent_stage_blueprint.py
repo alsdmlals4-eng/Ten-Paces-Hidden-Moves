@@ -9,7 +9,7 @@ class StageBlueprintTests(unittest.TestCase):
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
         people = mod.build()
-        self.assertEqual(len(people), 15)
+        self.assertEqual(len(people), 16)
         for person in people:
             rows = person['stages']
             self.assertEqual([r['stage'] for r in rows], list(range(10, 0, -1)))

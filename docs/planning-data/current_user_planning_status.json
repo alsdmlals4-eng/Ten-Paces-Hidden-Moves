@@ -1,5 +1,7 @@
 {
   "schema_version": 1,
+  "current_opponent_support_budget_decision": "TEN-DEC-20260910-OPPONENT-SUPPORT-BUDGET-READER-01",
+  "blueprint_revision_status": "USER_CORRECTION_IN_PROGRESS_81_PAGE_EDITION_NOT_FINAL",
   "current_opponent_roster_growth_decision": "TEN-DEC-20260909-RUN-START-OPPONENT-ROSTER-GROWTH-01",
   "opponent_roster_growth_status": "USER_DIRECTION_APPROVED_SPECIFICATION_IN_PROGRESS_RUNTIME_NOT_IMPLEMENTED",
   "current_internal_review_cadence_decision": "TEN-DEC-20260909-TWO-ROUND-INTERNAL-REVIEW-01",

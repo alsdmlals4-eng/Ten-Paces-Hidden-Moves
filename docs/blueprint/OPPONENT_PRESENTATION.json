@@ -5,6 +5,7 @@
   "resource_caps": {"health":30,"stamina":5,"internal":4},
   "portraits_status": "GENERATED_REVIEWED_CANDIDATES_FINAL_VISUAL_LOCK_PENDING",
   "people": {
+    "masked_baekmujin": {"epithet":"흑영검객", "identity":"가면을 쓴 역진입 검객", "gender":"남성", "age_impression":35, "art":"masked_baekmujin"},
     "slot1_yeongyo": {"epithet":"홍매검", "identity":"정면 매화 검객", "gender":"여성", "age_impression":28, "art":"yeongyo"},
     "slot1_dogyeom": {"epithet":"반석장", "identity":"묵직한 강룡 장객", "gender":"남성", "age_impression":46, "art":"dogyeom"},
     "slot1_chaeryeong": {"epithet":"청뢰검", "identity":"간격을 깨는 창궁 검객", "gender":"여성", "age_impression":25, "art":"chaeryeong"},

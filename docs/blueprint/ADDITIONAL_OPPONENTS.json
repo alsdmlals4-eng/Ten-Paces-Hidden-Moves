@@ -1,0 +1,18 @@
+{
+  "status":"SPECIFIED_RUNTIME_BINDING_PENDING_SAVE_COMPATIBILITY",
+  "visual_reference_source":"User attachment codex-clipboard-b7452629-eefb-4a7c-a3a0-17345a64fccd.png; unchanged runtime-screen crop, not a newly generated portrait",
+  "visual_reference_sha256":"f3da6ed0757192111aca02a0108e1b5757c8cca8c7e216f387820b5606794928",
+  "candidates":[{
+    "candidate_id":"masked_baekmujin",
+    "working_name":"백무진",
+    "martial_identity":"흑영검객",
+    "signature_manual_id":"mount_hua_plum_blossom_sword",
+    "runtime_archetype_id":"public_history_counter",
+    "basic_action_focus_ids":["basic_quick_attack","basic_evade","basic_move"],
+    "short_personality_hook":"말보다 한 번의 교차로 상대를 판단한다.",
+    "readable_habit":"상대의 지난 접근을 보고 간격을 비운 뒤 연격으로 되받는 경향이 있다.",
+    "ambiguity_or_counterexample":"추격이 멎으면 거리를 지키는 대신 먼저 한 걸음 압박한다.",
+    "visual_consumer":"Existing masked enemy sword-motion family; do not replace approved motion frames.",
+    "portrait":"docs/blueprint/evidence/masked-enemy-user-reference.png"
+  }]
+}
