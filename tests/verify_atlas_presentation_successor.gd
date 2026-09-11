@@ -24,11 +24,11 @@ func run_check() -> void:
     var background = board.battle_background
     check(background.texture.resource_path == "res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png", "combat must consume atlas successor")
     check(background.modulate == Color.WHITE, "do not tint blue source back to sepia")
-    check(not board.duel_foreground_banner.visible, "legacy sepia foreground must not cover atlas courtyard")
+    check(board.duel_foreground_banner.visible, "approved preparation foreground remains on the courtyard stage")
     var status = board.top_hud.player_panel
     check(status.get_node("StatusHudFrame").show_behind_parent, "resource fill must render above authored frame")
     check(not status.get_node("StatusHudFrame").visible, "retire duplicated baked bar wells in live status UI")
-    check(not status.get_node("CombatantInkPortrait").visible, "status reserves space for resources instead of portrait")
+    check(status.get_node("CombatantInkPortrait").visible, "status shows current battler portrait beside resources")
     check(board.top_hud.enemy_panel.call("get_visible_resource_ratio", "health") == -1.0, "hidden enemy resources must not leak through bar length")
     check(status.call("get_visible_resource_ratio", "health") == 1.0, "player bar shows actual fraction")
     status.size = Vector2(340.0, 128.0)

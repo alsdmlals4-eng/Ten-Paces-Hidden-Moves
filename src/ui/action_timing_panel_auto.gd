@@ -59,8 +59,8 @@ func get_anchor_rect(anchor_index: int) -> Rect2:
         return Rect2()
     var left := first_slot.position.x + 3.0
     var right := last_slot.position.x + last_slot.size.x - 3.0
-    var top := first_slot.position.y + 22.0
-    var bottom := first_slot.position.y + first_slot.size.y - 4.0
+    var top := first_slot.position.y + 1.0
+    var bottom := first_slot.position.y + first_slot.size.y - 1.0
     return Rect2(Vector2(left, top), Vector2(maxf(1.0, right - left), maxf(1.0, bottom - top)))
 
 func is_linked_block_inside_timing_bounds() -> bool:

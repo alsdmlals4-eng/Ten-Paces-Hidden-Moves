@@ -3,10 +3,11 @@ extends SceneTree
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
 const VIEWPORT_SIZE := Vector2(1440.0, 900.0)
 const TARGET_TOP_OVERLAY_RATIO := 0.20
-const TARGET_PLANNING_TOP_RATIO := 0.50
+const TARGET_PLANNING_TOP_RATIO := 0.60
 
 var failures: Array[String] = []
 var art_oracles: Dictionary = {}
+var source_hashes: Dictionary = {}
 var ordinary_reference_result: Dictionary = {}
 
 func _init() -> void:
@@ -50,7 +51,7 @@ func _verify_three_screen_surfaces(board: CombatBoardPreview) -> void:
 	var duel_rect := duel_surface.get_global_rect()
 	var planning_rect := planning_surface.get_global_rect()
 	var dock := board.get_node_or_null("ActionSelectionDock") as Control
-	_expect(top_rect.end.y <= duel_rect.position.y + 0.5, "Top status surface must end before the semantic duel stage begins.")
+	_expect(not top_surface.visible and duel_rect.encloses(board.top_hud.get_global_rect()), "HUD floats over the upper battle surface without a separate opaque strip.")
 	_expect(duel_rect.end.y <= planning_rect.position.y + 0.5, "Duel stage must end before the planning surface begins.")
 	_expect(absf(top_rect.size.y / board.size.y - TARGET_TOP_OVERLAY_RATIO) <= 0.035, "Top status overlay must occupy about 20 percent of the preparation view.")
 	_expect(absf((planning_rect.position.y - board.global_position.y) / board.size.y - TARGET_PLANNING_TOP_RATIO) <= 0.045, "The expanded 5 by 2 summary-card surface must preserve a bounded lower preparation split.")
@@ -71,25 +72,26 @@ func _verify_reference_preparation_hierarchy(board: CombatBoardPreview) -> void:
 	var player_rect := hud.player_panel.get_global_rect() if is_instance_valid(hud.player_panel) else Rect2()
 	var enemy_rect := hud.enemy_panel.get_global_rect() if is_instance_valid(hud.enemy_panel) else Rect2()
 	var round_rect := hud.round_panel.get_global_rect() if is_instance_valid(hud.round_panel) else Rect2()
-	_expect(player_rect.size.x / maxf(1.0, player_rect.size.y) >= 2.55, "Player status frame must preserve its wide ink-brush aspect instead of compressing text over the portrait.")
-	_expect(enemy_rect.size.x / maxf(1.0, enemy_rect.size.y) >= 2.55, "Enemy status frame must preserve its wide ink-brush aspect instead of compressing text over the portrait.")
+	_expect(player_rect.size.x / maxf(1.0, player_rect.size.y) >= 2.1, "Player portrait HUD preserves a wide readable resource lane.")
+	_expect(enemy_rect.size.x / maxf(1.0, enemy_rect.size.y) >= 2.1, "Enemy portrait HUD preserves the same resource lane.")
 	_expect(absf((round_rect.get_center().x - board.global_position.x) - board.size.x * 0.5) <= 4.0, "Round information must remain centered between the two wide status frames.")
 	_expect(round_rect.size.x <= minf(player_rect.size.x, enemy_rect.size.x) * 0.62, "Round information must be a compact center marker, not a third full-width panel.")
 	_expect(is_instance_valid(hud.player_momentum) and not hud.player_momentum.visible, "Momentum must live inside the player status frame, not in a detached top panel.")
 	_expect(is_instance_valid(hud.enemy_momentum) and not hud.enemy_momentum.visible, "Momentum must live inside the enemy status frame, not in a detached top panel.")
 	if is_instance_valid(hud.player_panel):
-		_expect(not hud.player_panel._portrait.visible, "Player live status reserves its width for resources, not a portrait.")
+		_expect(hud.player_panel._portrait.visible, "Player HUD shows the current battler portrait.")
 		_expect(player_rect.encloses(hud.player_panel._health_label.get_global_rect()), "Player resource label stays inside the status panel.")
 	if is_instance_valid(hud.enemy_panel):
-		_expect(not hud.enemy_panel._portrait.visible, "Enemy live status uses the same portrait-free hierarchy.")
+		_expect(hud.enemy_panel._portrait.visible, "Enemy HUD shows the current battler portrait.")
 		_expect(enemy_rect.encloses(hud.enemy_panel._health_label.get_global_rect()), "Enemy resource label stays inside the status panel.")
 
 	var planning_rect := board.planning_surface.get_global_rect() if is_instance_valid(board.planning_surface) else Rect2()
 	var timing_rect := board.action_timing_panel.get_global_rect() if is_instance_valid(board.action_timing_panel) else Rect2()
 	var progress_rect := board.combat_progress_button.get_global_rect() if is_instance_valid(board.combat_progress_button) else Rect2()
-	_expect(timing_rect.size.x + progress_rect.size.x <= planning_rect.size.x * 0.66, "Current action bundle and lock must form one compact left planning group, leaving room for details and observation.")
-	_expect(absf(progress_rect.get_center().y - timing_rect.get_center().y) <= 4.0 and progress_rect.position.x - timing_rect.end.x <= 12.0, "Action-plan lock must align immediately beside the current action bundle instead of floating at the far edge.")
-	_expect(not board.sound_toggle_button.visible and not board.sound_volume_slider.visible and not board.fast_replay_button.visible and not board.reduced_motion_button.visible and not board.combat_log_panel.visible, "Preparation view must not expose debug playback, sound, or record panels absent from the approved reference screen.")
+	_expect(timing_rect.size.x <= planning_rect.size.x * 0.55, "Current plan occupies the left column and leaves detail/observation lanes.")
+	var observation := board.observation_reveal_panel.get_global_rect()
+	_expect(absf(progress_rect.position.x - observation.position.x) <= 1.0 and progress_rect.position.y >= observation.end.y, "Execution is aligned below the right observation column.")
+	_expect(not board.sound_toggle_button.visible and not board.sound_volume_slider.visible and not board.fast_replay_button.visible and not board.combat_log_panel.visible and board.reduced_motion_button.visible, "Only the player-facing reduced-motion preference remains exposed.")
 
 func _verify_reference_information_columns(board: CombatBoardPreview) -> void:
 	var hud := board.top_hud
@@ -118,7 +120,7 @@ func _verify_reference_information_columns(board: CombatBoardPreview) -> void:
 	var content_rect := dock.content_host.get_global_rect()
 	var detail_rect := dock.detail_host.get_global_rect()
 	var observation_rect := observation.get_global_rect()
-	_expect(content_rect.position.x >= board.global_position.x + board.size.x * 0.07, "Current-plan cards must begin on the same intentional inset as the reference, not at the viewport edge.")
+	_expect(content_rect.position.x >= board.global_position.x + 10.0, "Current-plan cards keep a bounded viewport inset.")
 	_expect(content_rect.size.x <= planning_rect.size.x * 0.66, "The five-by-two card grid must leave a dedicated right-side detail and observation area.")
 	_expect(detail_rect.position.x >= content_rect.end.x + 6.0 and detail_rect.size.x >= planning_rect.size.x * 0.13, "Technique detail must occupy its own readable column beside the card grid.")
 	var detail_panel := dock.detail_host.get_node_or_null("ActionDetailPanel") as ActionDetailPanel
@@ -147,7 +149,7 @@ func _verify_reference_information_columns(board: CombatBoardPreview) -> void:
 			detail_panel.clear_detail()
 	_expect(observation.visible and planning_rect.encloses(observation_rect), "Observation must remain a visible lower-planning column even before a safe action type has been revealed.")
 	_expect(observation_rect.position.x >= detail_rect.end.x + 6.0, "Observation must sit beside, not on top of, the technique detail column.")
-	_expect(observation_rect.size.x / maxf(1.0, observation_rect.size.y) <= 1.02, "Observation must preserve the approved vertical frame instead of horizontally squeezing its text rows.")
+	_expect(observation_rect.size.x >= planning_rect.size.x * 0.23 and observation_rect.size.y >= planning_rect.size.y * 0.65, "Observation has a substantial dedicated column rather than a narrow strip.")
 	var detail_scene := load("res://scenes/ui/action_selection/action_detail_panel.tscn") as PackedScene
 	var reusable_detail := detail_scene.instantiate() as ActionDetailPanel if detail_scene != null else null
 	_expect(is_instance_valid(reusable_detail), "Technique detail must remain a reusable action-panel component.")
@@ -189,7 +191,7 @@ func _verify_distant_frontal_duel(board: CombatBoardPreview) -> void:
 	_expect(str(board.get_meta("character_scale_profile", "")) == "distant_frontal_duel", "Frontal combat must declare its distant character-scale profile.")
 	var player_foot := board.get_character_foot_anchor("player")
 	var enemy_foot := board.get_character_foot_anchor("enemy")
-	_expect(enemy_foot.x - player_foot.x >= board.size.x * 0.42, "Combatants must retain a readable distant frontal separation instead of a close-up confrontation.")
+	_expect(enemy_foot.x - player_foot.x >= board.size.x * 0.27, "Combatants retain distinct positions at the current public distance.")
 	var duel_surface := board.get_node_or_null("DuelStageSurface") as Control
 	if is_instance_valid(duel_surface):
 		for actor in [board.player_character, board.enemy_character]:
@@ -202,25 +204,54 @@ func _rect_near(a: Rect2, b: Rect2, tolerance: float = 0.5) -> bool:
 
 func _independent_ink(actor: CombatCharacterPlaceholder, motion: bool = true) -> Rect2:
 	var path := str(actor.get_meta("character_art_path", ""))
-	if not art_oracles.has(path):
-		var image := Image.load_from_file(ProjectSettings.globalize_path(path))
+	if not source_hashes.has(path):
+		source_hashes[path] = FileAccess.get_sha256(path)
+	var texture := actor.get_render_texture()
+	var key := ((texture as AtlasTexture).atlas.resource_path + str((texture as AtlasTexture).region)) if texture is AtlasTexture else path
+	if not art_oracles.has(key):
+		# Inspect the selected source frame, not the entire multi-pose sheet.
+		# Derive keyed visible bounds independently from source pixels.
+		var image := texture.get_image()
 		_expect(image != null and not image.is_empty(), "Source art must load for independent alpha bounds: " + path)
 		if image == null or image.is_empty():
 			return Rect2()
-		art_oracles[path] = {"used": image.get_used_rect(), "size": image.get_size(), "hash": FileAccess.get_sha256(path)}
-	var source: Dictionary = art_oracles[path]
+		var foot := clampf(float(image.get_used_rect().end.y) / image.get_height(), 0.70, 1.0)
+		var used := image.get_used_rect()
+		if texture is AtlasTexture:
+			var minimum := Vector2i(image.get_width(), image.get_height())
+			var maximum := Vector2i(-1, -1)
+			for row in range(image.get_height()):
+				for column in range(image.get_width()):
+					var sample := image.get_pixel(column, row)
+					if sample.a > 0.01 and sample.g - maxf(sample.r, sample.b) < 0.42:
+						minimum = minimum.min(Vector2i(column, row))
+						maximum = maximum.max(Vector2i(column, row))
+			used = Rect2i(minimum, maximum - minimum + Vector2i.ONE)
+			var found := false
+			for y in range(image.get_height() - 1, -1, -1):
+				for x in range(image.get_width()):
+					var pixel := image.get_pixel(x, y)
+					if pixel.a > 0.5 and pixel.g - maxf(pixel.r, pixel.b) < 0.1:
+						foot = float(y + 1) / image.get_height()
+						found = true
+						break
+				if found:
+					break
+		art_oracles[key] = {"used": used, "size": image.get_size(), "foot":foot, "hash": FileAccess.get_sha256(path)}
+	var source: Dictionary = art_oracles[key]
 	var used: Rect2 = Rect2(source.used)
 	var dimensions: Vector2 = Vector2(source.size)
 	var h := actor.size.y * 1.08
-	var foot_ratio := clampf(used.end.y / dimensions.y, 0.70, 1.0)
-	var origin := Vector2((actor.size.x - h) / 2.0, actor.size.y - h * foot_ratio)
+	var foot_ratio := float(source.foot)
+	var width := h * (dimensions.aspect() if texture is AtlasTexture else 1.0)
+	var origin := Vector2((actor.size.x - width) / 2.0, actor.size.y - h * foot_ratio)
 	var pivot := Vector2(actor.size.x / 2.0, actor.size.y)
 	var scale_value := actor.visual_scale if motion else 1.0
 	var mirror := -1.0 if actor.role == "enemy" and actor.facing < 0 and path.ends_with("dogyeom_combat_battler_01_v1.png") else 1.0
 	var result := Rect2()
 	var first := true
 	for corner in [used.position, Vector2(used.end.x, used.position.y), used.end, Vector2(used.position.x, used.end.y)]:
-		var local: Vector2 = origin + corner / dimensions * h
+		var local: Vector2 = origin + corner / dimensions * Vector2(width, h)
 		local = pivot + (local - pivot) * Vector2(mirror, 1.0) * scale_value + (actor.visual_offset if motion else Vector2.ZERO)
 		var point: Vector2 = actor.get_global_transform() * local
 		result = Rect2(point, Vector2.ZERO) if first else result.expand(point)
@@ -231,10 +262,12 @@ func _verify_ink(board: CombatBoardPreview, actor: CombatCharacterPlaceholder, i
 	var stage := board.duel_stage_surface.get_global_rect()
 	var ink := _independent_ink(actor)
 	_expect(ink.has_area() and stage.grow(0.5).encloses(ink), "Occupied ink must remain in stage: %s / %s (%s)" % [ink, stage, actor.role])
-	_expect(ink.size.y <= stage.size.y * 0.52 + 0.5, "Animated occupied ink exceeds 52 percent.")
+	# Authored poses change silhouette height, unlike the old one-image scale tween.
+	# Keep a bounded ceiling as well as the stricter actual stage containment below.
+	_expect(ink.size.y <= stage.size.y * 0.75 + 0.5, "Authored pose exceeds the bounded battle-first envelope: %s" % (ink.size.y / stage.size.y))
 	if idle:
-		_expect(absf(ink.size.y / stage.size.y - 0.46) <= 0.002, "Idle occupied ink must reach 46 percent at reference viewport, got %s" % (ink.size.y / stage.size.y))
-		_expect(ink.size.y * 1.12 <= stage.size.y * 0.52 + 0.5, "Complete existing motion envelope must obey 52 percent, not sampled frames alone.")
+		_expect(absf(ink.size.y / stage.size.y - 0.58) <= 0.002, "Idle source bounds must reach 58 percent at reference viewport, got %s" % (ink.size.y / stage.size.y))
+		_expect(ink.size.y * 1.12 <= stage.size.y * 0.66 + 0.5, "Complete motion envelope stays within the enlarged battle-first stage.")
 		var foot: Vector2 = actor.get_global_transform() * actor.get_foot_anchor_local()
 		var peak := Rect2(foot + (ink.position - foot) * 1.12, ink.size * 1.12)
 		# Conservative union of every unchanged horizontal visual offset (max .22w).
@@ -249,11 +282,11 @@ func _verify_stage(board: CombatBoardPreview, expanded: bool) -> void:
 	_expect(stage.has_area(), "Active stage must be positive.")
 	for surface in [board.battle_background, board.duel_foreground_banner, board._background_readability_tint]:
 		_expect(_rect_near(surface.get_global_rect(), stage), "Every background/banner/tint consumer must equal the final active stage.")
-	_expect(board.top_hud_surface.get_global_rect().end.y <= stage.position.y, "Stage must not occupy HUD.")
+	_expect(stage.encloses(board.top_hud.get_global_rect()), "HUD floats inside the active battle stage.")
 	if expanded:
 		_expect(absf(stage.end.y - (board.global_position.y + board.size.y)) <= 0.5, "CTA and every timing must use the full remaining execution stage.")
 	else:
-		_expect(absf(board.planning_surface.position.y / board.size.y - 0.50) <= 0.002, "Next planning restores the 50 percent split.")
+		_expect(absf(board.planning_surface.position.y / board.size.y - 0.60) <= 0.002, "Next planning restores the 60 percent split.")
 	for role in ["player", "enemy"]:
 		_expect(absf(board.get_character_foot_anchor(role).y - board.battle_background.get_duel_floor_y(board.size)) <= 0.5, "Feet must use displayed background floor, not hidden timing/tile anchor.")
 
@@ -361,7 +394,7 @@ func _verify_measured_execution(packed: PackedScene, viewport: Vector2) -> void:
 	board.rotation = 0.0
 	_expect(board.get_combat_state_snapshot() == resolved, "Geometry and motion must not mutate resolved domain state.")
 	await _verify_snapshot_movement(board)
-	_expect(FileAccess.get_sha256(board.player_character.PLAYER_ART_PATH) == art_oracles[board.player_character.PLAYER_ART_PATH].hash, "Layout leaves source art bytes unchanged.")
+	_expect(FileAccess.get_sha256(board.player_character.PLAYER_ART_PATH) == source_hashes[board.player_character.PLAYER_ART_PATH], "Layout leaves source art bytes unchanged.")
 	_expect(not baseline.is_empty(), "Immutable initial domain baseline retained.")
 	board.queue_free()
 	await process_frame
@@ -463,11 +496,11 @@ func _verify_snapshot_movement(board: CombatBoardPreview) -> void:
 	await create_timer(0.30).timeout
 	_verify_stage(board, true)
 	_expect(board.get_combat_state_snapshot() == changed and int(board.get_meta("resolution_count", 0)) == resolution_count, "Resize and original continuation cannot resolve again or alter timing domain state.")
-	_expect(absf((board.get_character_foot_anchor("enemy").x - board.get_character_foot_anchor("player").x) / board.size.x - 0.4125) < 0.001, "Distance1 retains its existing 41.25 percent mapping.")
+	_expect(absf((board.get_character_foot_anchor("enemy").x - board.get_character_foot_anchor("player").x) / board.size.x - (0.27 + 0.31 / 9.0)) < 0.001, "Distance1 uses the continuous full 0 through 9 mapping.")
 	changed.player.tile = 6
 	board._reduced_motion = true
 	await board._apply_timing_snapshot(changed)
-	_expect(absf((board.get_character_foot_anchor("enemy").x - board.get_character_foot_anchor("player").x) / board.size.x - 0.38) < 0.001, "Contact retains 38 percent; initial42 is not a permanent minimum.")
+	_expect(absf((board.get_character_foot_anchor("enemy").x - board.get_character_foot_anchor("player").x) / board.size.x - 0.27) < 0.001, "Contact uses the closest distinct actor anchors.")
 	_verify_stage(board, true)
 
 func _expect(condition: bool, message: String) -> void:

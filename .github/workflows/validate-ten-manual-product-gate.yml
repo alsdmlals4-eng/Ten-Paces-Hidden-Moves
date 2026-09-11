@@ -15,6 +15,25 @@ on:
       - "tools/validate_ten_manual_product_gate.py"
       - "docs/planning-data/approved_20260806_ten_manual_product_validation_gate_contract.json"
       - "tests/test_ten_manual_product_gate.py"
+      - "tests/test_visual_continuation.py"
+      - "tests/verify_motion_roster_integration.gd"
+      - "tests/verify_*layout.gd"
+      - "tests/verify_character_pose_animation.gd"
+      - "tests/verify_combat_impact_camera.gd"
+      - "tests/verify_compact_action_detail.gd"
+      - "tests/verify_execution_visual_contract.gd"
+      - "tests/verify_clash_alpha_vfx.gd"
+      - "tests/verify_clash_recovery_readability.gd"
+      - "tests/verify_wuxia_paper_surfaces.gd"
+      - "tests/verify_compact_timing_labels.gd"
+      - "tests/verify_preparation_art_fill.gd"
+      - "tests/verify_wuxia_sound_envelopes.gd"
+      - "tests/verify_flat_martial_grid.gd"
+      - "tests/verify_portrait_hud.gd"
+      - "tests/verify_pose_cache_ready.gd"
+      - "tests/verify_preparation_columns.gd"
+      - "tests/verify_visual_distance_spacing.gd"
+      - "tests/verify_dogyeom_status_portrait.gd"
       - "tests/verify_ten_manual_product_gate.gd"
       - "tests/verify_bimu_constraint_model.gd"
       - "tests/verify_run_save_store.gd"
@@ -88,6 +107,10 @@ jobs:
         run: godot --headless --editor --path . --quit
       - name: Verify frontal duel screen partition
         run: godot --headless --path . --script res://tests/verify_frontal_duel_screen_partition.gd
+      - name: Verify approved visual continuation contracts
+        env:
+          GODOT_BIN: godot
+        run: python -m unittest tests.test_visual_continuation -v
       - name: Verify combat action reveal
         run: godot --headless --path . --script res://tests/verify_combat_action_reveal.gd
       - name: Verify shared terminal outcome feedback

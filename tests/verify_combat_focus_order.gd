@@ -32,7 +32,6 @@ func _run() -> void:
         failures.append("Hidden legacy ultimate controls must not remain in the product focus order.")
     for removed_presentation_control in [
         board.fast_replay_button,
-        board.reduced_motion_button,
         board.sound_toggle_button,
         board.sound_volume_slider,
     ]:
@@ -79,7 +78,8 @@ func _run() -> void:
         var future_slot := board.action_timing_panel.get_slot(timing_index)
         if future_slot.visible or future_slot.focus_mode != Control.FOCUS_NONE:
             failures.append("Future timing slot %d must be hidden and removed from keyboard traversal." % timing_index)
-    _require_next(progress, basic_tab, "progress button")
+    _require_next(progress, board.reduced_motion_button, "progress button")
+    _require_next(board.reduced_motion_button, basic_tab, "reduced-motion preference")
 
     board.queue_free()
     await process_frame

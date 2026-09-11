@@ -128,7 +128,8 @@ func _build() -> void:
     _title = Label.new()
     _title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     _title.add_theme_font_size_override("font_size", 16)
-    _title.add_theme_color_override("font_color", Color("ead8b4"))
+    _title.add_theme_color_override("font_color", Color("211c17"))
+    preload("res://src/ui/wuxia_ui_style.gd").ink_heading(_title, 16)
     _title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     _title.clip_text = true
     header.add_child(_title)
@@ -195,10 +196,9 @@ func _apply_content() -> void:
         _:
             _title.text = "행동을 선택하세요"
             _source.text = ""
-    # Preserve all existing decision rows; large art is supplementary scroll content.
-    if detail_mode == "action":
-        _add_approved_illustration(APPROVED_ART.action_illustration(definition))
-    elif detail_mode == "manual":
+    # Action art is selected once before its decision rows; manual art follows
+    # the manual overview. Both remain inside the scrollable content.
+    if detail_mode == "manual":
         _add_approved_illustration(APPROVED_ART.manual_illustration(
             str(manual_definition.get("manual_id", "")), int(manual_definition.get("mastery", 0))))
     _refresh_mode_label()
@@ -222,7 +222,8 @@ func _add_approved_illustration(texture: Texture2D) -> void:
 
 func _apply_action() -> void:
     _title.text = str(definition.get("name", "행동"))
-    _source.text = str(definition.get("source_label", definition.get("category_label", "")))
+    _source.text = ""
+    _add_action_illustration()
     var source_kind := str(definition.get("source_kind", definition.get("source", "")))
     var detail: Dictionary = definition.get("detail", {})
     var action_slots := maxi(1, int(definition.get("action_slots", 1)))
@@ -234,18 +235,12 @@ func _apply_action() -> void:
     # The first viewport of this small right panel is the decision contract:
     # title, payment, result.  Provenance and advanced tactical facts remain
     # below it for scroll/keyboard inspection instead of invading the card grid.
-    _add_row("소모", "기력 %d · 내력 %d · %d수" % [stamina, internal, action_slots])
     if not effect_text.is_empty():
-        _add_section("효과", _primary_effect if _is_compact_layout() else effect_text)
-        if _is_compact_layout() and _primary_effect != effect_text:
-            _add_section("효과 상세", effect_text)
+        _add_section("효과", effect_text)
     var range_text := str(definition.get("range_text", ""))
     if not range_text.is_empty() and range_text != "-":
         _add_row("사거리", range_text)
 
-    _add_row("출처", str(definition.get("source_label", "-")))
-    if not str(definition.get("category_label", "")).is_empty() or not str(definition.get("category", "")).is_empty():
-        _add_row("계열", str(definition.get("category_label", definition.get("category", "-"))))
     _add_row("수 점유", "%d수" % action_slots)
     _add_row("전조", "%d수" % maxi(0, int(definition.get("telegraph_count", maxi(0, int(definition.get("action_slots", 1)) - 1)))))
     _add_row("실행", "%d수" % maxi(1, int(definition.get("execution_count", 1))))
@@ -282,6 +277,28 @@ func _apply_action() -> void:
     if not flavor.is_empty():
         _add_separator()
         _add_section("", flavor, true)
+
+func _add_action_illustration() -> void:
+    var approved_texture := APPROVED_ART.action_illustration(definition)
+    if approved_texture != null:
+        _add_approved_illustration(approved_texture)
+        return
+    var spec: Dictionary = definition.get("illustration", {})
+    var path := str(spec.get("atlas", ""))
+    var region: Array = spec.get("region", [])
+    if path.is_empty() or region.size() != 4 or not ResourceLoader.exists(path):
+        return
+    var texture := AtlasTexture.new()
+    texture.atlas = load(path) as Texture2D
+    texture.region = Rect2(float(region[0]), float(region[1]), float(region[2]), float(region[3]))
+    var illustration := TextureRect.new()
+    illustration.name = "DetailIllustration"
+    illustration.texture = texture
+    illustration.custom_minimum_size = Vector2(0, clampf(size.y * 0.34, 80, 150))
+    illustration.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+    illustration.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+    illustration.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    _content.add_child(illustration)
 
 func _apply_manual() -> void:
     _title.text = str(manual_definition.get("name", "무공서"))
@@ -351,7 +368,8 @@ func _compact_effect_text(value: Dictionary, effect_text: String) -> String:
         return effect_text
     if category == "strengthen":
         return "다음 비이동 강화"
-    var first_sentence := effect_text.split(".", false)[0].strip_edges()
+    var sentences := effect_text.split(".", false)
+    var first_sentence := sentences[0].strip_edges() if not sentences.is_empty() else ""
     return first_sentence.left(18) + "…" if first_sentence.length() > 18 else first_sentence
 
 func _movement_timing_text(value: Dictionary) -> String:
@@ -382,13 +400,13 @@ func _add_row(key: String, value: String) -> void:
     var key_label := Label.new()
     key_label.custom_minimum_size = Vector2(44.0 if compact else 54.0, 0.0)
     key_label.text = key
-    key_label.add_theme_color_override("font_color", Color("4d4032") if compact else Color("cda960"))
+    key_label.add_theme_color_override("font_color", Color("4d4032"))
     key_label.add_theme_font_size_override("font_size", 11 if compact else 12)
     var value_label := Label.new()
     value_label.text = value
     value_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     value_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    value_label.add_theme_color_override("font_color", Color("211c17") if compact else Color("e9dfcd"))
+    value_label.add_theme_color_override("font_color", Color("211c17"))
     value_label.add_theme_font_size_override("font_size", 11 if compact else 12)
     row.add_child(key_label)
     row.add_child(value_label)
@@ -400,14 +418,14 @@ func _add_section(title: String, value: String, muted := false) -> void:
         _section_titles.append(title)
         var label := Label.new()
         label.text = title
-        label.add_theme_color_override("font_color", Color("4d4032") if compact else Color("cda960"))
+        label.add_theme_color_override("font_color", Color("4d4032"))
         label.add_theme_font_size_override("font_size", 11 if compact else 12)
         _content.add_child(label)
     var body := Label.new()
     body.text = value
     body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     body.add_theme_font_size_override("font_size", 11 if compact else 12)
-    body.add_theme_color_override("font_color", (Color("6a5843") if muted else Color("211c17")) if compact else (Color("9f9484") if muted else Color("e9dfcd")))
+    body.add_theme_color_override("font_color", Color("6a5843") if muted else Color("211c17"))
     _content.add_child(body)
 
 func _add_separator() -> void:
@@ -429,24 +447,19 @@ func _string_list(values) -> Array[String]:
     return result
 
 func _panel_style() -> StyleBox:
-    var style := StyleBoxTexture.new()
-    style.texture = TECHNIQUE_DETAIL_FRAME
-    style.texture_margin_left = 42.0
-    style.texture_margin_top = 42.0
-    style.texture_margin_right = 42.0
-    style.texture_margin_bottom = 42.0
+    var style := preload("res://src/ui/wuxia_ui_style.gd").paper_surface().duplicate() as StyleBoxTexture
     # At a right-column width the source frame's decorative side rails need a
     # deliberate text safe area; the generic 28px inset allowed labels to sit
     # across those rails in the actual 1280px preparation viewport.
-    style.content_margin_left = 20
-    style.content_margin_right = 16
-    style.content_margin_top = 16
-    style.content_margin_bottom = 14
+    style.content_margin_left = 10
+    style.content_margin_right = 10
+    style.content_margin_top = 8
+    style.content_margin_bottom = 8
     return style
 
 func _contract_style() -> StyleBoxFlat:
     var style := StyleBoxFlat.new()
-    style.bg_color = Color("d8c39cf2")
+    style.bg_color = Color("e7d6b650")
     style.border_color = Color("8d6b35")
     style.set_border_width_all(1)
     style.set_corner_radius_all(2)

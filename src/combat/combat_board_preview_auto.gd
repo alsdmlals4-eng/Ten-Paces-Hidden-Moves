@@ -338,8 +338,9 @@ func _apply_state_derived_product_layout() -> void:
     if not size.is_finite() or size.x <= 0.0 or size.y <= 0.0:
         return
     var expanded := _uses_expanded_execution_layout()
-    var duel_y := top_hud.position.y + top_hud.size.y + 8.0 + 5.0
-    var planning_top := clampf(size.y * 0.50, 260.0, size.y - 242.0)
+    # The combat field is the primary surface; HUD panels float above it.
+    var duel_y := 0.0
+    var planning_top := clampf(size.y * 0.60, 260.0, size.y - 242.0)
     var active_rect := Rect2(0.0, duel_y, size.x, size.y - duel_y if expanded else planning_top - duel_y - 5.0)
     if not active_rect.position.is_finite() or not active_rect.size.is_finite() or not active_rect.has_area():
         return
@@ -351,6 +352,8 @@ func _apply_state_derived_product_layout() -> void:
         _layout_product_action_dock()
     duel_stage_surface.position = active_rect.position
     duel_stage_surface.size = active_rect.size
+    top_hud_surface.visible = false
+    top_hud.z_index = 10
     battle_background.set_stage_rect(active_rect)
     duel_foreground_banner.set_stage_rect(active_rect)
     _background_readability_tint.position = active_rect.position
@@ -361,6 +364,8 @@ func _apply_state_derived_product_layout() -> void:
         player_character.snap_move_for_relayout(_presentation_anchor_for_actor("player"))
         enemy_character.snap_move_for_relayout(_presentation_anchor_for_actor("enemy"))
     if expanded:
+        duel_foreground_banner.visible = false
+        top_hud.round_panel.visible = false
         var gap := clampf(size.y * 0.015, 10.0, 18.0)
         var compare_height := clampf(active_rect.size.y * 0.40, 270.0, 340.0)
         var compare_rect := Rect2(active_rect.position, Vector2(active_rect.size.x, compare_height))
@@ -369,10 +374,11 @@ func _apply_state_derived_product_layout() -> void:
         var impact_height := active_rect.end.y - gap - impact_y
         var impact_rect := Rect2(active_rect.position.x + inset, impact_y, active_rect.size.x - 2.0 * inset, impact_height)
         var label_height := clampf(impact_height * 0.20, 64.0, 96.0)
-        var label_rect := Rect2(impact_rect.position.x + impact_rect.size.x * 0.15, impact_y, impact_rect.size.x * 0.70, label_height)
-        var vfx_y := label_rect.end.y + 8.0
-        _apply_presentation_layout_lanes(compare_rect, label_rect, Rect2(impact_rect.position.x, vfx_y, impact_rect.size.x, impact_rect.end.y - vfx_y))
+        var label_rect := Rect2(impact_rect.position.x + impact_rect.size.x * 0.15, impact_rect.end.y - label_height, impact_rect.size.x * 0.70, label_height)
+        _apply_presentation_layout_lanes(compare_rect, label_rect, Rect2(impact_rect.position, Vector2(impact_rect.size.x, label_rect.position.y - gap - impact_y)))
     else:
+        duel_foreground_banner.visible = true
+        top_hud.round_panel.visible = true
         _clear_presentation_layout_lanes()
     _last_applied_active_duel_rect = active_rect
     _has_applied_active_duel_rect = true
@@ -410,52 +416,73 @@ func _layout_board() -> void:
 func _layout_product_action_dock() -> void:
     if not is_instance_valid(action_selection_dock) or size.x <= 0.0 or size.y <= 0.0:
         return
-    var lower_margin := maxf(18.0, size.x * 0.085)
-    var lower_bottom := maxf(8.0, size.y * 0.012)
+    var lower_margin := maxf(12.0, size.x * 0.012)
+    var lower_bottom := maxf(6.0, size.y * 0.0085)
     # The summary-card continuation moves the planning ink frame only enough
     # to keep two readable rows at 720p while retaining the top HUD and a
     # distinct frontal duel field.
-    var planning_top := clampf(size.y * 0.50, 260.0, size.y - 242.0)
-    var timing_height := clampf(size.y * 0.105, 70.0, 92.0)
-    var timing_y := planning_top + 8.0
-    var dock_y := timing_y + timing_height + 8.0
+    var planning_top := clampf(size.y * 0.60, 260.0, size.y - 242.0)
+    var timing_height := clampf(size.y * 0.20 - 88.0, 64.0, 100.0)
+    var timing_y := planning_top + 4.0
+    var dock_y := timing_y + timing_height + 4.0
     var dock_height := maxf(142.0, size.y - dock_y - lower_bottom)
+    var columns_width := size.x - lower_margin * 2.0 - 16.0
+    var source_width := columns_width * 0.52
+    var detail_width := columns_width * 0.23
+    var observation_width := columns_width * 0.25
+    var observation_x := lower_margin + source_width + detail_width + 16.0
     action_selection_dock.position = Vector2(lower_margin, dock_y)
-    action_selection_dock.size = Vector2(maxf(1.0, size.x - lower_margin * 2.0), dock_height)
+    action_selection_dock.size = Vector2(source_width + 8.0 + detail_width, dock_height)
+    action_selection_dock.configure_preparation_columns(source_width, detail_width, dock_y - timing_y)
 
     if is_instance_valid(action_timing_panel) and is_instance_valid(combat_progress_button):
-        var timing_width := clampf(size.x * 0.48, 540.0, 640.0)
-        var progress_width := clampf(size.x * 0.075, 78.0, 96.0)
+        var timing_width := source_width
         action_timing_panel.position = Vector2(lower_margin, timing_y)
         action_timing_panel.size = Vector2(timing_width, timing_height)
-        combat_progress_button.position.x = lower_margin + timing_width + 8.0
-        combat_progress_button.size = Vector2(progress_width, minf(timing_height, 60.0))
-        combat_progress_button.position.y = timing_y + (timing_height - combat_progress_button.size.y) * 0.5
+        combat_progress_button.size = Vector2(observation_width, 48.0)
+        combat_progress_button.position = Vector2(observation_x, size.y - lower_bottom - 48.0)
         _shift_battlefield_above(planning_top - 24.0)
         _layout_screen_surfaces(planning_top)
 
     if is_instance_valid(observation_reveal_panel):
-        var source_column_width := 660.0
-        var detail_column_width := 250.0
-        var column_gap := 8.0
-        var observation_x := lower_margin + source_column_width + detail_column_width + column_gap * 2.0
         # This source frame is portrait-oriented.  Preserve that visual lane so
         # its parchment rows stay readable rather than treating it as a short
         # horizontal tooltip beneath the detail column.
-        var observation_y := dock_y
-        observation_reveal_panel.position = Vector2(observation_x, observation_y)
-        observation_reveal_panel.size = Vector2(clampf(size.x * 0.13, 164.0, 190.0), dock_height)
+        observation_reveal_panel.position = Vector2(observation_x, timing_y)
+        observation_reveal_panel.size = Vector2(observation_width, size.y - lower_bottom - timing_y - 56.0)
 
-    for control_value in [sound_toggle_button, sound_volume_slider, fast_replay_button, reduced_motion_button, combat_log_panel]:
+    for control_value in [sound_toggle_button, sound_volume_slider, fast_replay_button, combat_log_panel]:
         if is_instance_valid(control_value):
             var control := control_value as Control
             control.visible = false
             control.focus_mode = Control.FOCUS_NONE
+    if is_instance_valid(reduced_motion_button):
+        reduced_motion_button.visible = true
+        reduced_motion_button.focus_mode = Control.FOCUS_ALL
+        reduced_motion_button.size = Vector2(148.0, 34.0)
+        reduced_motion_button.position = Vector2(size.x - lower_margin - 148.0, planning_top - 38.0)
+        reduced_motion_button.tooltip_text = "카메라 흔들림과 타격 정지를 끕니다. 판정과 결과 텍스트는 유지됩니다."
+    _settle_inline_result_row(38.0, 4.0)
     _hide_legacy_action_ui()
 
+func _settle_inline_result_row(row_height: float, row_gap: float) -> void:
+    if not _layout_ready:
+        super._settle_inline_result_row(row_height, row_gap)
+        return
+    if not is_instance_valid(inline_result_label):
+        return
+    var margin := maxf(12.0, size.x * 0.012)
+    var planning_top := clampf(size.y * 0.60, 260.0, size.y - 242.0)
+    # Previous-bundle cause and the reduced-motion preference own separate lanes.
+    inline_result_label.position = Vector2(margin, planning_top - 42.0)
+    inline_result_label.size = Vector2(size.x - margin * 2.0 - 164.0, 38.0)
+    set_meta("inline_result_row_bounded", true)
+
 func _frontal_anchor_pair(player_tile: int, enemy_tile: int, floor_y: float) -> Dictionary:
-    var normalized_distance := clampf(float(absi(enemy_tile - player_tile)) / 4.0, 0.0, 1.0)
-    var separation := lerpf(size.x * 0.19, size.x * 0.255, normalized_distance)
+    # Keep all ten logical distances distinguishable, including distances 5–9.
+    # This is a visual projection only; positions and range rules remain domain-owned.
+    var normalized_distance := clampf(float(absi(enemy_tile - player_tile)) / 9.0, 0.0, 1.0)
+    var separation := lerpf(size.x * 0.135, size.x * 0.29, normalized_distance)
     var drift := clampf((float(player_tile + enemy_tile) * 0.5 - 5.5) * size.x * 0.014, -size.x * 0.05, size.x * 0.05)
     return {"player": Vector2(size.x * 0.5 + drift - separation, floor_y), "enemy": Vector2(size.x * 0.5 + drift + separation, floor_y)}
 
@@ -476,11 +503,11 @@ func _apply_frontal_duel_composition() -> bool:
     var duel_center_x: float = (anchors.player.x + anchors.enemy.x) * 0.5
     for actor in [player_character, enemy_character]:
         var factor: float = actor.get_idle_art_height_per_node_height()
-        var max_idle_ratio: float = minf(0.50, 0.52 / actor.get_existing_motion_peak_scale())
-        if factor <= 0.0 or actor.character_height_ratio <= 0.0 or max_idle_ratio < 0.46:
+        var max_idle_ratio: float = minf(0.60, 0.67 / actor.get_existing_motion_peak_scale())
+        if factor <= 0.0 or actor.character_height_ratio <= 0.0 or max_idle_ratio < 0.58:
             return false
     for actor in [player_character, enemy_character]:
-        var node_height: float = duel_rect.size.y * 0.46 / actor.get_idle_art_height_per_node_height()
+        var node_height: float = duel_rect.size.y * 0.58 / actor.get_idle_art_height_per_node_height()
         actor.set_dimensions(node_height / actor.character_height_ratio)
     player_character.z_index = 4
     enemy_character.z_index = 4

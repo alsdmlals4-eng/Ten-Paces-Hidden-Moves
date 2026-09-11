@@ -114,8 +114,8 @@ func _selection_text(bundle_index: int, timing_sequence: Array) -> String:
 func _layout() -> void:
     if not is_instance_valid(player_panel):
         return
-    var side_width := clampf(size.x * 0.32, 340.0, 420.0)
-    var side_height := maxf(1.0, minf(size.y - 2.0, side_width / 2.65))
+    var side_width := clampf(size.x * 0.28, 330.0, 440.0)
+    var side_height := maxf(1.0, minf(size.y - 2.0, side_width / 2.15))
     var center_width := clampf(size.x * 0.11, 136.0, 156.0)
     var center_height := minf(54.0, side_height)
 

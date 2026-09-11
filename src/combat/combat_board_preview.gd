@@ -21,6 +21,7 @@ const COMBAT_SCREEN_SURFACE_SCRIPT := preload("res://src/ui/combat_screen_surfac
 const OBSERVATION_REVEAL_SCENE := preload("res://scenes/ui/observation_reveal_panel.tscn")
 const ULTIMATE_VFX_PATH := "res://assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png"
 const ATTACK_CLASH_VFX_PATH := "res://assets/vfx/attack_clash_ink_gold_atlas_rgba_v1.png"
+const CLASH_SPARKS_VFX_PATH := "res://assets/vfx/clash_sparks_ink_gold_v2.png"
 const ATTACK_CLASH_MATTE_SHADER := """
 shader_type canvas_item;
 
@@ -38,6 +39,65 @@ const CANVAS_COLOR := Color("171411")
 const GUIDE_COLOR := Color("b99254")
 
 var contract: Dictionary = {}
+var _impact_camera_elapsed := 0.0
+var _impact_camera_duration := 0.0
+var _impact_camera_strength := 0.0
+var _impact_camera_direction := 1.0
+
+func _start_impact_camera(event: Dictionary, kind: String) -> void:
+	_clear_impact_camera()
+	if _reduced_motion or _fast_replay or _presentation_skip_requested:
+		return
+	var outcome := str(event.get("outcome", ""))
+	var defense := str(event.get("defense_outcome", ""))
+	if str(event.get("action_stage", "")) == "preparation" or outcome in ["preparation", "evade", "evaded", "miss_range", "miss_direction", "interrupted", "martial_failed"] or defense == "evade":
+		return
+	var blocked := defense in ["block", "sure_hit_block"] or outcome in ["block", "blocked", "sure_hit_block"] or _event_all_attacks_blocked(event)
+	if kind == "clash":
+		_impact_camera_strength = 5.0
+	elif blocked:
+		_impact_camera_strength = 2.0
+	elif int(event.get("damage", 0)) > 0:
+		_impact_camera_strength = 7.0 if kind == "ultimate" else 3.5
+	else:
+		return
+	_impact_camera_duration = 0.18 if kind in ["clash", "ultimate"] else 0.12
+	_impact_camera_direction = -1.0 if str(event.get("actor", "player")) == "enemy" else 1.0
+
+func _process(delta: float) -> void:
+	if _impact_camera_duration <= 0.0:
+		return
+	if _reduced_motion or _fast_replay or _presentation_skip_requested:
+		_clear_impact_camera()
+		return
+	if session_suspended or get_tree().paused:
+		_apply_impact_camera_offset(Vector2.ZERO)
+		return
+	_impact_camera_elapsed += maxf(0.0, delta)
+	if _impact_camera_elapsed >= _impact_camera_duration:
+		_clear_impact_camera()
+		return
+	var progress := _impact_camera_elapsed / _impact_camera_duration
+	var amplitude := _impact_camera_strength * (1.0 - progress) * (1.0 - progress)
+	# Deterministic presentation oscillation never consumes the campaign/AI RNG.
+	var offset := Vector2(sin(progress * TAU * 3.0) * _impact_camera_direction, sin(progress * TAU * 2.0) * 0.35) * amplitude
+	_apply_impact_camera_offset(offset)
+
+func _apply_impact_camera_offset(offset: Vector2) -> void:
+	# Render-only transforms preserve logical placement, target anchors and fixed UI.
+	# Re-read the current transform so resize/layout cannot accumulate stale offsets.
+	for item in [battle_background, duel_foreground_banner, _character_layer, presentation_vfx]:
+		if is_instance_valid(item):
+			var transform: Transform2D = item.get_transform()
+			transform.origin += offset
+			RenderingServer.canvas_item_set_transform(item.get_canvas_item(), transform)
+	set_meta("impact_camera_offset", offset)
+
+func _clear_impact_camera() -> void:
+	_impact_camera_elapsed = 0.0
+	_impact_camera_duration = 0.0
+	_impact_camera_strength = 0.0
+	_apply_impact_camera_offset(Vector2.ZERO)
 var tiles: Array[CombatBoardTile] = []
 var battle_background: BattleBackground
 var duel_foreground_banner: DuelForegroundBanner
@@ -106,6 +166,8 @@ var _reduced_motion := false
 var _presentation_skip_requested := false
 var _ultimate_vfx_sheet: Texture2D
 var _attack_clash_vfx_sheet: Texture2D
+var _clash_sparks_vfx: Texture2D
+var _legacy_vfx_material: ShaderMaterial
 var _presentation_vfx_tween: Tween
 var _presentation_label_tween: Tween
 var _presentation_compare_rect := Rect2()
@@ -138,6 +200,8 @@ func _ready() -> void:
 	_ultimate_vfx_sheet = load(ULTIMATE_VFX_PATH) as Texture2D
 	if ResourceLoader.exists(ATTACK_CLASH_VFX_PATH):
 		_attack_clash_vfx_sheet = load(ATTACK_CLASH_VFX_PATH) as Texture2D
+	if ResourceLoader.exists(CLASH_SPARKS_VFX_PATH):
+		_clash_sparks_vfx = load(CLASH_SPARKS_VFX_PATH) as Texture2D
 	_configure_ultimate_menu()
 	combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
 	combat_state["ai_enabled"] = true
@@ -379,13 +443,6 @@ func _build_structure() -> void:
 	action_reveal_overlay.name = "CombatActionRevealOverlay"
 	action_reveal_overlay.z_index = 30
 	add_child(action_reveal_overlay)
-
-func _apply_attack_clash_vfx_matte() -> void:
-	var shader := Shader.new()
-	shader.code = ATTACK_CLASH_MATTE_SHADER
-	var material := ShaderMaterial.new()
-	material.shader = shader
-	presentation_vfx.material = material
 
 	fast_replay_button = Button.new()
 	fast_replay_button.name = "FastReplayButton"
@@ -1420,12 +1477,12 @@ func _wait_for_session_resume() -> void:
 func _event_presentation_duration(event: Dictionary) -> float:
 	var profile := _presentation_profile_for_event(event)
 	if str(profile.get("kind", "")) == "clash":
-		return 0.34
+		return 0.90
 	if str(profile.get("kind", "")) == "ultimate":
-		return 0.70
+		return 1.05
 	if int(event.get("damage", 0)) > 0:
-		return 0.24
-	return 0.16
+		return 0.48
+	return 0.30
 
 func _effective_event_presentation_duration(event: Dictionary) -> float:
 	var duration := _event_presentation_duration(event)
@@ -1440,7 +1497,7 @@ func _feedback_windup_duration(event: Dictionary, total_duration: float) -> floa
 		return 0.0
 	var motion := str(_presentation_profile_for_event(event).get("motion", ""))
 	if motion == "clash":
-		return total_duration * 0.25
+		return total_duration * 0.38
 	return total_duration * 0.42 if motion in ["attack", "ultimate"] else 0.0
 
 func _play_character_action_motion(event: Dictionary, duration: float = -1.0) -> void:
@@ -1449,7 +1506,7 @@ func _play_character_action_motion(event: Dictionary, duration: float = -1.0) ->
 	var motion_duration := _event_presentation_duration(event) if duration <= 0.0 else duration
 	var motion := str(_presentation_profile_for_event(event).get("motion", ""))
 	if motion == "clash":
-		_play_clash_motion(motion_duration)
+		_play_clash_motion(motion_duration, event)
 		return
 	if motion not in ["attack", "ultimate"]:
 		return
@@ -1465,7 +1522,7 @@ func _play_character_action_motion(event: Dictionary, duration: float = -1.0) ->
 		else:
 			enemy_character.play_attack_motion(motion_duration)
 
-func _play_clash_motion(duration: float) -> void:
+func _play_clash_motion(duration: float, event: Dictionary = {}) -> void:
 	if not is_instance_valid(player_character) or not is_instance_valid(enemy_character):
 		return
 	var player_foot := player_character.get_foot_anchor_global()
@@ -1479,8 +1536,12 @@ func _play_clash_motion(duration: float) -> void:
 		"enemy_foot_before": enemy_foot,
 		"shared_floor_y": clash_anchor.y
 	}
-	player_character.play_clash_motion(clash_anchor, duration)
-	enemy_character.play_clash_motion(clash_anchor, duration)
+	var outcome := str(event.get("outcome", ""))
+	var actor := str(event.get("actor", "player"))
+	var winner := actor if outcome == "clash_win" else ("enemy" if actor == "player" else "player")
+	var decided := outcome in ["clash_win", "clash_loss"]
+	player_character.play_clash_motion(clash_anchor, duration, ("win" if winner == "player" else "loss") if decided else "draw")
+	enemy_character.play_clash_motion(clash_anchor, duration, ("win" if winner == "enemy" else "loss") if decided else "draw")
 
 func _play_character_impact_motion(event: Dictionary, duration: float) -> void:
 	if _reduced_motion:
@@ -1539,7 +1600,8 @@ func _present_resolved_event_feedback(event: Dictionary) -> void:
 	_record_presentation_feedback_visibility()
 	_play_event_sfx(event)
 	if recovery_duration > 0.0:
-		await _wait_for_presentation_delay(recovery_duration)
+		# Local hit-stop pauses actor tweens, not the event clock. Let their recovery finish.
+		await _wait_for_presentation_delay(recovery_duration + (0.08 if _impact_camera_strength > 0.0 else 0.0))
 	if not _presentation_skip_requested:
 		_clear_presentation_feedback_visuals()
 		_set_presentation_feedback_phase("settled")
@@ -1600,7 +1662,13 @@ func _show_presentation_feedback(event: Dictionary) -> void:
 	_show_presentation_impact(event, kind, 0.0)
 
 func _show_presentation_impact(event: Dictionary, kind: String, recovery_duration: float) -> void:
+	_start_impact_camera(event, kind)
 	_play_character_impact_motion(event, maxf(0.18, recovery_duration))
+	if _impact_camera_strength > 0.0:
+		var hold_duration := 0.065 if kind in ["clash", "ultimate"] else 0.035
+		for actor in [player_character, enemy_character]:
+			if is_instance_valid(actor):
+				actor.hold_impact_pose(hold_duration)
 	_show_feedback_label(event, recovery_duration)
 	_show_feedback_vfx(event, kind, recovery_duration)
 
@@ -1683,6 +1751,14 @@ func _clear_presentation_layout_lanes() -> void:
 		action_reveal_overlay.hide_reveal()
 	set_meta("presentation_vfx_layout_status", "INACTIVE")
 
+func _apply_attack_clash_vfx_matte() -> void:
+	if _legacy_vfx_material == null:
+		var shader := Shader.new()
+		shader.code = ATTACK_CLASH_MATTE_SHADER
+		_legacy_vfx_material = ShaderMaterial.new()
+		_legacy_vfx_material.shader = shader
+	presentation_vfx.material = _legacy_vfx_material
+
 func _show_feedback_vfx(event: Dictionary, kind: String, recovery_duration: float = 0.0) -> void:
 	if kind == "ultimate":
 		_show_ultimate_vfx(event, recovery_duration)
@@ -1695,16 +1771,24 @@ func _show_feedback_vfx(event: Dictionary, kind: String, recovery_duration: floa
 		if is_instance_valid(presentation_vfx):
 			presentation_vfx.visible = false
 		return
-	var sheet_size := _attack_clash_vfx_sheet.get_size()
-	var atlas := AtlasTexture.new()
-	atlas.atlas = _attack_clash_vfx_sheet
-	var band_index := 1 if kind == "clash" else 0
-	atlas.region = Rect2(0.0, float(band_index) * sheet_size.y / 2.0, sheet_size.x, sheet_size.y / 2.0)
-	presentation_vfx.texture = atlas
+	if kind == "clash" and _clash_sparks_vfx != null:
+		# Authored alpha includes the white-hot core; never key white out of it.
+		presentation_vfx.material = null
+		presentation_vfx.texture = _clash_sparks_vfx
+	else:
+		_apply_attack_clash_vfx_matte()
+		var sheet_size := _attack_clash_vfx_sheet.get_size()
+		var atlas := AtlasTexture.new()
+		atlas.atlas = _attack_clash_vfx_sheet
+		var band_index := 1 if kind == "clash" else 0
+		atlas.region = Rect2(0.0, float(band_index) * sheet_size.y / 2.0, sheet_size.x, sheet_size.y / 2.0)
+		presentation_vfx.texture = atlas
 	if not _place_feedback_vfx(event, kind):
 		return
 	presentation_vfx.visible = true
-	_animate_feedback_vfx(0.90, recovery_duration, 0.90 if kind == "clash" else 0.94, 1.0)
+	# A flash marks contact, not the entire retreat: avoid a glowing cloud following recovery.
+	var effect_duration := minf(recovery_duration, 0.24) if kind == "clash" else recovery_duration
+	_animate_feedback_vfx(0.90, effect_duration, 0.90 if kind == "clash" else 0.94, 1.0)
 
 func _place_feedback_vfx(event: Dictionary, kind: String) -> bool:
 	if not is_instance_valid(presentation_vfx) or not _presentation_vfx_rect.has_area() or not _presentation_vfx_rect.position.is_finite() or not _presentation_vfx_rect.size.is_finite():
@@ -1718,11 +1802,16 @@ func _place_feedback_vfx(event: Dictionary, kind: String) -> bool:
 	var target_foot := enemy_foot if str(event.get("actor", "")) == "player" else player_foot
 	var profile := _presentation_profile_for_event(event)
 	var impact := (player_foot + enemy_foot) * 0.5 if kind == "clash" else (actor_foot if str(profile.get("anchor", "impact")) == "self" else actor_foot.lerp(target_foot, 0.72))
+	# The approved raised-guard poses meet above the torso, not at the floor anchor.
+	var body_height := minf(player_character.size.y, enemy_character.size.y)
+	impact.y -= body_height * (0.68 if kind == "clash" else 0.48)
 	var effect_size := Vector2(
 		clampf(size.x * (0.42 if kind == "ultimate" else 0.26), 250.0, 640.0),
 		clampf(size.y * (0.22 if kind == "ultimate" else 0.12), 90.0, 210.0)
 	)
 	var peak := 1.08 if kind == "ultimate" else 1.0
+	if kind == "clash" and _clash_sparks_vfx != null:
+		effect_size = Vector2.ONE * clampf(size.y * 0.28, 160.0, 280.0)
 	var fit := minf(1.0, minf(_presentation_vfx_rect.size.x / (effect_size.x * peak), _presentation_vfx_rect.size.y / (effect_size.y * peak)))
 	effect_size *= fit
 	var half := effect_size * peak * 0.5
@@ -1746,6 +1835,7 @@ func _show_ultimate_vfx(event: Dictionary, recovery_duration: float = 0.0) -> vo
 		presentation_vfx.visible = false
 		return
 	var sheet_size := _ultimate_vfx_sheet.get_size()
+	_apply_attack_clash_vfx_matte()
 	var atlas := AtlasTexture.new()
 	atlas.atlas = _ultimate_vfx_sheet
 	atlas.region = Rect2(0.0, float(band_index) * sheet_size.y / 3.0, sheet_size.x, sheet_size.y / 3.0)
@@ -1814,6 +1904,10 @@ func _clear_presentation_vfx() -> void:
 		presentation_vfx.scale = Vector2.ONE
 
 func _clear_presentation_feedback_visuals() -> void:
+	_clear_impact_camera()
+	for actor in [player_character, enemy_character]:
+		if is_instance_valid(actor):
+			actor.release_impact_pose()
 	_clear_presentation_vfx()
 	_stop_presentation_label_tween()
 	if is_instance_valid(presentation_label):
@@ -1883,6 +1977,11 @@ func restart_combat() -> void:
 
 func _toggle_reduced_motion() -> void:
 	_reduced_motion = not _reduced_motion
+	if _reduced_motion:
+		_clear_impact_camera()
+		for actor in [player_character, enemy_character]:
+			if is_instance_valid(actor):
+				actor.release_impact_pose()
 	if is_instance_valid(reduced_motion_button):
 		reduced_motion_button.text = "모션 감소: %s" % ("켬" if _reduced_motion else "끔")
 

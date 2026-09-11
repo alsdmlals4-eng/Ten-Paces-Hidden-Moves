@@ -12,6 +12,36 @@ human_playtest: NOT_RUN
 
 ## 실제 문제와 조사 한계
 
+### 2026-09-10 하단 카드·현재 계획·효과음 후속
+
+현재 동일 작업본의 확정 행동/시각·음향 피드백 차원에서 아래 10사례를 재사용한다.
+새 규칙이나 audio framework 없이 실제 GridContainer, LinkedActionBlock, CombatSoundBank를
+보강한다. 사용자가 제공한 최신 두 이미지의 기능적 계층을 적용하며 픽셀 복제는 하지 않는다.
+공식 GridContainer와 AudioStreamWAV 문서를 2026-09-10 재열람했다:
+https://docs.godotengine.org/en/stable/classes/class_gridcontainer.html
+https://docs.godotengine.org/en/stable/classes/class_audiostreamwav.html
+남는 세로 공간의 grid 행 배분과 native PCM cache는 ADAPT. 장식 때문에 해금/기력/대상
+정보를 지우거나 상단 전투60%를 축소하는 안은 REJECT. 선택 기술의 현재 삽화를 같은
+linked action consumer에서 재사용하는 안은 ADOPT. 초상 세로 그림을 얇게 잘라내는 COVERED는
+전체 동작 판독에 부적합해 KEEP_ASPECT_CENTERED로 교정한다.
+음색은 단일 공통 발진음에서 바람/금속/타격의 서로 다른 envelope·inharmonic partial로
+분리한다. 합성 원본이며 실제 검 녹음이나 청음 승인이라고 주장하지 않는다.
+FEASIBLE: 기존 상태/신호/캐시 사용, 저장·AI·도메인 수치 불변, 자산/계정 추가 비용 없음.
+
+### 2026-09-10 동일 판정→연출 차원 재사용
+
+현재 source 885c91ee + character-motion 작업본의 사용자 타격감 요청에 대해 아래
+10개 비교의 확정 사건/접근성 피드백 경계를 재사용한다. 새로운 전투 규칙·카메라 시스템
+도입이 아니라 기존 impact 소비자의 작은 연출 보강이다. fresh 공식 검토:
+[CanvasItem](https://docs.godotengine.org/en/stable/classes/class_canvasitem.html)의
+부모 변환 전파, [Tween](https://docs.godotengine.org/en/stable/classes/class_tween.html)의
+pause/play를 확인했다. 별도 접근성 지침 페이지는 열기 실패로 증거에서 제외했다.
+전체 viewport/Camera2D 흔들림은 HUD 영향으로 REJECT, 전장 render-only 변환은 ADAPT,
+새 카메라/후처리 프레임워크는 현 범위 대비 비용 때문에 REJECT한다.
+전역 time_scale/SceneTree 정지는 REJECT하고 실제 캐릭터 Tween·자세만 짧게 유지한다.
+UI/도메인/AI/save 변경 없이 구현 가능하며 가청 선호·멀미·실기기 성능은 미측정이다.
+Base remote fresh 관측 580a362db07b4b1a91a87300402969793784acff; 기존 adoption pin은 보존했다.
+
 `combat_board_preview.gd`는 모든 terminal 상태에 `defeat`를 요청한다. 실제 승리 회귀도 그 잘못된 cue를 기대한다. 같은 파일의 절초 판별은 `ultimate_` 접두사만 사용하지만, 실제 열 무공서의 10성 정의는 `<manual>_star10`과 actor-owned `source_kind=ultimate`다. 7개 공격·2개 대응·1개 회복 절초를 모두 공격으로 가정할 수도 없다. `combat_resolution_engine.gd`의 presentation projection은 이미 계산된 martial detail 일부를 버린다.
 
 아래는 제품 제작자의 설명/개발 기록을 직접 연 사례 비교이며, 게임 코드를 역공학하거나 플레이 테스트를 수행했다는 주장이 아니다. 기존 9월 1일 frontal-duel 비교의 같은 화면 책임을 재확인하되, 이번에는 **확정 사건과 음향·동작의 불일치**를 별도 검증 축으로 삼았다. 개별 플레이어 인터뷰·사용성/사운드 선호 표본은 전부 미수집이다. 판매 페이지의 평점은 해당 표현 방법의 인과 증거로 사용하지 않는다.

@@ -29,10 +29,23 @@ class ApprovedBlueprintArtTests(unittest.TestCase):
         manifest=read('assets/blueprint/APPROVED_ART_MANIFEST.json')
         central=read('assets/ASSET_MANIFEST.json')['assets']
         new_ids={a['id'] for a in manifest['assets']}
-        old=[a for a in central if a['id'] not in new_ids]
+        continuation_ids = {
+            'clash_sparks_ink_gold_v2', 'player_sword_sequence_v1',
+            'enemy_sword_sequence_v1', 'player_reactions_candidate_v2',
+            'enemy_reactions_candidate_v2',
+        }
+        self.assertEqual({a['id'] for a in central if a['id'] in continuation_ids}, continuation_ids)
+        self.assertEqual(len({a['id'] for a in central}), len(central))
+        # The frozen pre-Blueprint receipt still covers exactly its original
+        # records; later motion additions must not alter that receipt or those records.
+        old=[a for a in central if a['id'] not in new_ids | continuation_ids]
         digest=hashlib.sha256(json.dumps(old,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest()
         self.assertEqual(digest,manifest['preserved_existing_records_sha256'])
         self.assertEqual(len(old),manifest['preserved_existing_record_count'])
         self.assertEqual({a['id'] for a in central if a['id'] in new_ids},new_ids)
         self.assertEqual([a for a in central if a['id'] in new_ids],manifest['assets'])
+        for asset in central:
+            if asset['id'] in continuation_ids:
+                self.assertEqual(hashlib.sha256((ROOT / asset['path'].removeprefix('res://')).read_bytes()).hexdigest(), asset['source_png_sha256'])
+                self.assertTrue(asset['approval'])
 if __name__=='__main__': unittest.main()

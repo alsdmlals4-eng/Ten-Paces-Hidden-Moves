@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "current_opponent_support_budget_decision": "TEN-DEC-20260911-CHARACTER-VARIABLE-LOADOUT-APPROVAL-REVIEW-01",
-  "blueprint_revision_status": "USER_APPROVED_RUNTIME_IMPLEMENTED_MACHINE_VERIFIED_REMOTE_PENDING",
+  "blueprint_revision_status": "USER_APPROVED_RUNTIME_IMPLEMENTED_MACHINE_AND_REMOTE_VERIFIED_HUMAN_PENDING",
   "current_opponent_roster_growth_decision": "TEN-DEC-20260909-RUN-START-OPPONENT-ROSTER-GROWTH-01",
   "opponent_roster_growth_status": "V2_FROZEN_ROSTER_IMPLEMENTED_LEGACY_V1_PRESERVED",
   "current_internal_review_cadence_decision": "TEN-DEC-20260909-TWO-ROUND-INTERNAL-REVIEW-01",
@@ -9,7 +9,7 @@
   "pr_integration_authority": "TEN-DEC-20260908-STANDING-PR-INTEGRATION-01",
   "pr_integration_policy": "RELATED_EXISTING_PRS_REVIEW_ABSORB_CORRECT_VERIFY_MERGE_WITHOUT_NAMED_REAPPROVAL",
   "project": "TEN_PACES",
-  "updated_date": "2026-09-11",
+  "updated_date": "2026-09-12",
   "combat_feedback_continuation": {
     "decision": "TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01",
     "integration_status": "MAIN_MERGED_VERIFIED_PR335",
@@ -601,6 +601,20 @@
       "activations": 295,
       "elapsed_ms": 323911,
       "roster_seed": 145571664
+    }
+  },
+  "motion_ui_continuation": {
+    "status": "LOCAL_MACHINE_AND_WINDOWS_CAPTURE_VERIFIED_VISUAL_LOCK_AND_CI_PENDING",
+    "base_commit": "ed2104d98872c63eac27999830aeae9c15a00bdc",
+    "branch": "codex/motion-integration-20260912",
+    "execution_record": "docs/operations/2026-09-12_MOTION_UI_INTEGRATION.md",
+    "visual_lock": "FOUR_CHARACTER_SHEETS_PENDING_CLASH_PREVIOUSLY_APPROVED",
+    "human_android_release": "NOT_RUN",
+    "validation": {
+      "python_passed": 511,
+      "python_seconds": 676.07,
+      "native_cases_passed_after_targeted_corrections": 31,
+      "actual_execute_capture_frames": 71
     }
   }
 }

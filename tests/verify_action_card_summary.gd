@@ -88,12 +88,12 @@ func _verify_card_contract_and_unknown_actor_fallback() -> void:
 		var summary := card.find_child("CardSummary", false, false) as VBoxContainer
 		_check(is_instance_valid(summary), "Every preparation card must contain an always-visible summary.")
 		var text := _descendant_label_text(summary)
-		_check(text.contains("수") and text.contains("기력") and text.contains("내력"), "Card summary must always show slot, stamina, and internal costs.")
+		_check(str((card.get_node("ActionDurationBadge") as Label).text).contains("수") and text.contains("기력") and text.contains("내력"), "Card duration badge and summary must show slot, stamina, and internal costs without duplicate rows.")
 		_check(text.contains("거리"), "Card summary must always show range.")
 		_check(text.contains("예상 위력") or text.contains("이동") or text.contains("효과"), "Card summary must show a primary magnitude, movement, or truthful effect fallback.")
 		_check(card.find_child("CardIllustration", false, false) != null, "Always-visible summaries must preserve illustrations.")
 		_check(card.custom_minimum_size.y <= 112.0, "Summary cards must remain within the bounded two-row geometry budget across platform font fallbacks.")
-		_check(card.custom_minimum_size.y >= 49.0 + summary.get_combined_minimum_size().y + 4.0, "Card height must derive from the native summary line height plus bottom padding.")
+		_check(card.custom_minimum_size.y >= CARD_SCRIPT.CARD_CONTENT_TOP + summary.get_combined_minimum_size().y + 4.0, "Card height must derive from the native summary line height plus bottom padding.")
 		for summary_label in summary.find_children("*", "Label", true, false):
 			_check((summary_label as Label).get_combined_minimum_size().x <= 128.0, "Always-visible summary text must fit the 128px card lane without clipping.")
 		card.queue_free()
@@ -105,10 +105,12 @@ func _verify_card_contract_and_unknown_actor_fallback() -> void:
 	unknown.queue_free()
 
 func _verify_board_context_and_geometry(viewport_size: Vector2) -> void:
+	root.size = Vector2i(viewport_size)
 	var board := BOARD_SCENE.instantiate() as CombatBoardPreview
 	board.set_anchors_preset(Control.PRESET_TOP_LEFT)
 	board.size = viewport_size
 	root.add_child(board)
+	board.position = Vector2.ZERO
 	for _frame in range(5):
 		await process_frame
 	var dock := board.action_selection_dock as ActionSelectionDock
@@ -132,25 +134,15 @@ func _verify_board_context_and_geometry(viewport_size: Vector2) -> void:
 	for _frame in range(3):
 		await process_frame
 	var martial := dock.martial_panel as MartialActionPanel
-	_check(is_instance_valid(martial) and martial.manual_buttons.size() == 4, "The actual four-manual horizontal selector must render in the martial source.")
+	_check(is_instance_valid(martial) and martial.manuals.size() == 4, "The actual four owned manuals remain the aggregate data source.")
 	if is_instance_valid(martial):
-		var manual_viewport_rect := martial.manual_scroll.get_global_rect()
-		_check(host_rect.encloses(manual_viewport_rect), "The real manual selector viewport must stay inside the content host at %s." % str(viewport_size))
-		_check(martial.manual_scroll.clip_contents, "The horizontal manual selector must clip offscreen choices at %s." % str(viewport_size))
-		if not martial.manual_buttons.is_empty():
-			var first_manual := martial.manual_buttons.front() as Control
-			_check(manual_viewport_rect.encloses(first_manual.get_global_rect()), "The first real manual must be fully visible without left clipping at %s." % str(viewport_size))
-			var horizontal_bar := martial.manual_scroll.get_h_scroll_bar()
-			_check(horizontal_bar.max_value > horizontal_bar.page, "Four real manuals must remain horizontally scrollable at %s." % str(viewport_size))
-			martial.manual_scroll.scroll_horizontal = int(horizontal_bar.max_value)
-			await process_frame
-			var last_manual := martial.manual_buttons.back() as Control
-			_check(manual_viewport_rect.encloses(last_manual.get_global_rect()), "The last real manual must be fully reachable inside the selector viewport at %s." % str(viewport_size))
-			martial.manual_scroll.scroll_horizontal = 0
-			await process_frame
-			last_manual.grab_focus()
-			await process_frame
-			_check(manual_viewport_rect.encloses(last_manual.get_global_rect()), "Keyboard focus must automatically reveal the last manual at %s." % str(viewport_size))
+		_check(not martial.manual_scroll.visible, "Manual selector must not split the unlocked action grid.")
+		var expected_ids: Array[String] = []
+		for manual in martial.manuals:
+			for technique in manual.get("techniques", []):
+				if not bool(technique.get("locked", false)):
+					expected_ids.append(str(technique.get("id", "")))
+		_check(martial.get_panel_snapshot().technique_ids == expected_ids, "All unlocked techniques from every owned manual must be reachable.")
 		for button in martial.technique_buttons:
 			var technique_rect := (button as Control).get_global_rect()
 			_check(host_rect.encloses(technique_rect), "Every real martial technique card must stay inside the content host at %s." % str(viewport_size))

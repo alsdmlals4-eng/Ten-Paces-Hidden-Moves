@@ -215,8 +215,10 @@ def main() -> None:
         "player_wanderer_ink_v1",
         "enemy_masked_ink_v1",
         "dogyeom_status_portrait_01_v1",
-        "player_wanderer_battler_rgba_v2",
-        "enemy_masked_battler_rgba_v2",
+        "player_sword_sequence_v1",
+        "enemy_sword_sequence_v1",
+        "player_reactions_candidate_v2",
+        "enemy_reactions_candidate_v2",
         "dogyeom_combat_battler_01_v1",
         "basic_technique_ink_atlas_01_v1",
         "martial_ultimate_card_illustration_atlas_01_v1",
@@ -288,7 +290,7 @@ def main() -> None:
     assert attack_clash_source.exists()
     assert hashlib.sha256(attack_clash_source.read_bytes()).hexdigest() == attack_clash_vfx["source_png_sha256"]
     assert hashlib.sha256(res_file(attack_clash_vfx["path"]).read_bytes()).hexdigest() == attack_clash_vfx["source_png_sha256"]
-    for asset_id in ("player_wanderer_battler_rgba_v2", "dogyeom_combat_battler_01_v1", "enemy_masked_battler_rgba_v2"):
+    for asset_id in ("dogyeom_combat_battler_01_v1",):
         character_art = next(asset for asset in active_assets if asset["id"] == asset_id)
         audit = character_art["transparency_audit"]
         assert character_art.get("source_asset") or character_art.get("source_png_sha256")
@@ -296,6 +298,12 @@ def main() -> None:
         assert audit["alpha_extrema"] == [0, 255]
         assert audit["corner_alpha"] == [0, 0, 0, 0]
         assert audit["status"] == "APPROVED_ACTIVE"
+    for asset in active_assets:
+        if asset["path"].startswith("res://assets/characters/motion/"):
+            assert hashlib.sha256(res_file(asset["path"]).read_bytes()).hexdigest() == asset["source_png_sha256"]
+            assert asset["transparency_audit"]["status"] == "SOURCE_KEYED_AT_RUNTIME"
+            assert asset["transparency_audit"]["has_alpha"] is False
+            assert len(asset["grid"]) == 2 and min(asset["grid"]) > 0
     assert ultimate["requires_exact_momentum"] is True
     assert ultimate["reservation_consumes_momentum_immediately"] is True
     assert ultimate["reservation_cancellation_refund_before_progress"] is True
@@ -372,9 +380,9 @@ def main() -> None:
     required_files = [
         "assets/backgrounds/frontal_courtyard_duel_background_02_v1.png",
         "assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png",
-        "assets/characters/player_wanderer_battler_rgba_v2.png",
+        "assets/characters/motion/player_sword_sequence_v1.png",
         "assets/characters/dogyeom_combat_battler_01_v1.png",
-        "assets/characters/enemy_masked_battler_rgba_v2.png",
+        "assets/characters/motion/enemy_sword_sequence_v1.png",
         "assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
         "assets/reference/step_02_character_scale_and_tile_placement.svg",
         "scenes/combat/combat_board_preview.tscn",
@@ -448,9 +456,9 @@ def main() -> None:
         "action_reveal_snapshot",
     ))
     assert all(token in character_script for token in (
-        "player_wanderer_battler_rgba_v2.png",
+        "POSES.PLAYER_PATH",
         "dogyeom_combat_battler_01_v1.png",
-        "enemy_masked_battler_rgba_v2.png",
+        "POSES.ENEMY_PATH",
         "get_render_texture",
         "character_art_path",
     ))

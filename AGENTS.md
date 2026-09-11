@@ -154,3 +154,7 @@ project.godot
 - `TEN-DEC-20260811-LOCAL-EXECUTOR-BOOTSTRAP-01`의 CODEX_HOME·dedicated Godot/port checkpoint는 당시 역사 evidence이며 current 실행 route가 아니다.
 
 과거 Decision·review·snapshot의 당시 사실은 보존하되 current authority로 재사용하지 않는다.
+
+## 12. 로컬 정리와 수동 삭제
+
+사용자 2026-09-12 지시에 따라 삭제 가능한 파일·폴더는 직접 삭제하지 않고 `C:/Users/user/Documents/삭제대기` 아래 작업별 폴더로 옮긴 뒤 링크를 제공한다. 현재 소비처·미커밋 변경·원본 여부를 먼저 확인하고 원래 위치와 새 위치를 기록한다. 연결된 Git 작업 폴더는 이동 뒤 연결을 복구·검증한다. 불확실한 원본과 미완료 작업은 보존한다.

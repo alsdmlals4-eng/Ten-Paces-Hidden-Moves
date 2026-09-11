@@ -3,7 +3,7 @@ extends SceneTree
 
 const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placeholder.tscn")
 const DOGYEOM_BATTLER_PATH := "res://assets/characters/dogyeom_combat_battler_01_v1.png"
-const GENERIC_ENEMY_BATTLER_PATH := "res://assets/characters/enemy_masked_battler_rgba_v2.png"
+const GENERIC_ENEMY_BATTLER_PATH := "res://assets/characters/motion/enemy_sword_sequence_v1.png"
 
 var failures: Array[String] = []
 
@@ -25,6 +25,8 @@ func _require_enemy_art(candidate_id: String, expected_path: String, expected_mi
 	character.configure("enemy", -1, 7, 100.0, 1.5, 0.72, candidate_id)
 	var texture := character.get_render_texture()
 	var actual_path := texture.resource_path if texture != null else ""
+	if texture is AtlasTexture:
+		actual_path = texture.atlas.resource_path
 	_expect_eq(actual_path, expected_path, message)
 	_expect_eq(character.is_character_art_horizontally_mirrored(), expected_mirror, "Enemy-facing must be preserved for %s." % candidate_id)
 	_expect_eq(character.get_foot_anchor_local(), Vector2(character.size.x * 0.5, character.size.y), "Battler routing must preserve the local foot anchor.")
