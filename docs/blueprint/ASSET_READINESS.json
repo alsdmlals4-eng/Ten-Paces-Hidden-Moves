@@ -8,7 +8,7 @@
     1536
   ],
   "mode": "RGB",
-  "consumer": "opponent codex and pre-duel briefing portrait; proposed TextureRect in vertical_slice_shell.gd",
+  "consumer": "opponent codex and implemented pre-duel briefing TextureRect in vertical_slice_shell.gd",
   "runtime_destination_after_approval": "assets/characters/portraits/masked_baekmujin_portrait_v1.png",
   "runtime_implemented": true,
   "state_family": [
