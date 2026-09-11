@@ -2,7 +2,7 @@
 
 ID: TEN-DEC-20260911-CHARACTER-VARIABLE-LOADOUT-APPROVAL-REVIEW-01
 
-방향: 사용자 승인. 상세 수치·별호·원화: 최종 승인 후보.
+방향·상세 수치·별호·선정 원화: USER_APPROVED (2026-09-11).
 구현 상태: 기획 데이터·파생 도감·이미지 후보·구현 계약 준비. 새 게임 적용 NOT_IMPLEMENTED.
 
 ## 사용자 요청과 범위
@@ -33,3 +33,18 @@ ID: TEN-DEC-20260911-CHARACTER-VARIABLE-LOADOUT-APPROVAL-REVIEW-01
 상세 SWOT와 구현 순서는 IMPLEMENTATION_READINESS.json이 소유하고 Markdown/PDF는 파생본이다.
 기존 동일 승인 작업의 전체 검토2회를 초기화하지 않는다. 이번은 추가 지시의 표적 교정·영향 회귀로
 기록하며 테스트·렌더·권한·PR 검증은 그대로 수행한다. 기계 문서 PASS와 게임/Human PASS는 별개다.
+
+## 사용자 최종 확정 · 2026-09-11
+
+사용자 `좋아 확정하고&#x20; ㅈ`에서 명확한 최종 확정을 반영한다.
+승인 대상은 c95ec7e671b14cfa1e8954f1f495ba2833bbd101의112쪽 검토본이며
+PDF SHA-256은 fd5b93cb9cbce58cbacefe3d9953a88fb6e14a259c351c699bb5d9abc94832e3이다.
+인물16명160행·가변 무공·고유 별호·무공 삽화30장·상대 초상16장·합 설명 원화1장의
+문서상 선정 결과와 구현 계약을 확정했다. 미선정 대안과 전투 모션은 승인 대상에 추가하지 않는다.
+정확한 선정 파일47건의 승인 당시 해시는 current_user_planning_status.json의
+blueprint_final_approval.approved_visual_inputs에서 조회한다. 그림 자체를 다시 생성하거나 이동하지 않았다.
+기존 PDF와 receipt의 승인 대기 표시는 검토 당시 상태로 보존하며 이 승인 절이 현재 상태를 소유한다.
+ASSET_READINESS.json의 후보 상태도 검토 당시 자료이며 사용자 lock은 이 결정으로 해소됐다.
+제품 consumer 연결·정본 runtime 등록·플레이 밸런스·출시 권리는 별도 구현/검증이다.
+마지막 단독 자음의 후속 실행 뜻은 확인 중이며 새로운 제품 변경은 수행하지 않았다.
+이전 exact head의 원격 검사27SUCCESS/3SKIPPED, 실패·대기0을 새로 확인했다.

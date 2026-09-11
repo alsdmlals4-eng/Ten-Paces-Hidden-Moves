@@ -7,7 +7,9 @@
 인물16명·160행의 가변 무공·고유 별호, 백무진 전용 초상 후보, 상세 SWOT와 구현·저장 인수 계약을 포함한다.
 상세 결정은 `docs/decisions/2026-09-11_CHARACTER_VARIABLE_LOADOUT_APPROVAL_REVIEW.md`,
 구현 진입점은 `docs/blueprint/IMPLEMENTATION_HANDOFF.md`, 검증 증거는 `docs/blueprint/FINAL_REVIEW.md`다.
-기획 방향은 승인됐고 상세 수치·별호·신규 원화 final lock은 사용자 최종 검토 대상이다.
+2026-09-11 사용자가 상세 수치·별호·선정 원화를 최종 확정했다. 승인 revision은 c95ec7e6이며
+정확한 PDF·선정47개 이미지 해시는 current_user_planning_status.json의 blueprint_final_approval을 따른다.
+원래 승인 검토 PDF는 bytes를 보존한다. 현재 다음 작업은 IMPLEMENTATION_HANDOFF.md의 제품 연결이다.
 PR340은 Draft로 보존하며 새 제품 적용·runtime·Human 완료를 주장하지 않는다.
 아래81/87/91/92쪽 상태는 편집 경과로 보존한 역사 기록이며 현재 전달 대상을 덮어쓰지 않는다.
 

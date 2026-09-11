@@ -94,3 +94,13 @@ CI·병합·main readback은 별도 검증 전까지 완료로 주장하지 않�
 - 원본 JSON→기획 계산기→160행/112쪽→승인 후 catalog/shell/bridge/codec 흐름을 기존 Blueprint에 설명했다. 별도 대시보드를 만들지 않았다.
 - 자동화: 인물별 편성·비용·별호 회귀와 PDF 내용·source hash 검사 갱신. 공용 정책/메모리 mutation 없음.
 - 상세 수치·별호·후보 원화 최종 검토 후 실제 구현. Godot·Human·실기기·출시 NOT_RUN. 문서 검증 해시는 FINAL_REVIEW.md 참조.
+
+## 2026-09-11 사용자 최종 lock 기록
+
+기준c95ec7e6 / Work Mode PLAN / Skill project workflow-router·reference-freshness / Skill Mode approval-readback.
+사용자의 명확한 확정 부분을 기존 Decision·current planning JSON·Active Context에 반영했다.
+112쪽 PDF와 선정47개 원화의 SHA-256을 재검증하여 승인 snapshot을 남겼다. 기존 PDF/receipt와
+미선정 후보는 보존했다. 신규 외부 사실·설계 변경 없는 승인 기록이므로 CURRENT_SOURCE_RELEVANCE_CHECK=NOT_APPLICABLE.
+프로젝트 진입 계약 PASS, 승인 대상 exact remote head의27SUCCESS/3SKIPPED 확인.
+기존 두 차례 검토를 초기화하지 않고 승인 범위·원본 해시·현재 상태 참조를 표적 대조했다.
+제품 적용·Human·Android·출시 상태를 승격하지 않았다. 후속 실행 뜻은 사용자 확인 중.
