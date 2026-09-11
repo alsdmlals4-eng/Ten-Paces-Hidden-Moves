@@ -1,0 +1,19 @@
+{
+  "artifact_role": "OBSERVED_SUCCESS_INITIAL_SAVE_FIXTURE",
+  "source_product_revision": "e169bc2a73eb5e60f09bbe4f805351ef5a38f810",
+  "source_checkpoint_filename": "v2_f8f0f998e38742b352307a347834f1c2118e2b724e108a2e68deb22400cbfb96.json",
+  "fixture_sha256": "f8f0f998e38742b352307a347834f1c2118e2b724e108a2e68deb22400cbfb96",
+  "roster_seed": 145571664,
+  "source_log": "docs/blueprint/evidence/variable-runtime-20260911/variable-native-campaign.log",
+  "source_log_sha256": "b6cd8e187260937d529310d3f84ffc8db11ed7b1642a75e4687bfbb237c9ec8b",
+  "selection_policy": "Retained initial checkpoint of the previously observed actual 10-win native-input run. No seed search, new successful-roll selection, roster mutation, or synthetic terminal outcome.",
+  "prior_fixed_seed_attempt": {
+    "global_seed": 20260911,
+    "roster_seed": 2764325793,
+    "outcome": "LEGITIMATE_LOSS_DUEL_8",
+    "log": "docs/blueprint/evidence/variable-runtime-20260911/native-fixed-seed-defeat.log"
+  },
+  "evidence_limit": "Reproducible positive path from Continue at SETUP; fresh-random MainStart exploration and provider/shell generation tests cover new-run creation separately. Not proof all rosters are winnable by this policy.",
+  "source_log_hash_definition": "SHA256_GIT_BLOB_BYTES",
+  "fixture_hash_definition": "SHA256_RAW_FILE_BYTES"
+}

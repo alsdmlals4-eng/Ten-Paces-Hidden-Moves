@@ -1,0 +1,237 @@
+{
+  "status": "APPROVED_DIRECTION_DETAIL_RECOMMENDATION_NOT_RUNTIME",
+  "resource_policy": "All stages keep the current enemy resource caps 30/5/4. Stage growth changes permanent-stat targets and mastery, not an invented stat-to-resource formula. Battle constraints remain separate.",
+  "resource_caps": {
+    "health": 30,
+    "stamina": 5,
+    "internal": 4
+  },
+  "portraits_status": "GENERATED_REVIEWED_CANDIDATES_FINAL_VISUAL_LOCK_PENDING",
+  "people": {
+    "masked_baekmujin": {
+      "epithet": "묵면회영",
+      "identity": "가면을 쓴 역진입 검객",
+      "gender": "남성",
+      "age_impression": 35,
+      "art": "masked_baekmujin",
+      "epithet_bands": [
+        "묵면객",
+        "회영검객",
+        "단영검",
+        "묵면회영"
+      ],
+      "epithet_reason": "말 대신 교차 한 번으로 상대를 재는 검객. 검은 복면과 비운 간격으로 되돌아오는 습관을 별호로 삼았다."
+    },
+    "slot1_yeongyo": {
+      "epithet": "낙영홍매",
+      "identity": "정면 매화 검객",
+      "gender": "여성",
+      "age_impression": 28,
+      "art": "yeongyo",
+      "epithet_bands": [
+        "매지검",
+        "홍매일검",
+        "분향검객",
+        "낙영홍매"
+      ],
+      "epithet_reason": "매화 검로를 숨기지 않고 정면에서 붉은 꽃잎처럼 펼친다. 정면승부를 고집하는 성향에서 별호를 정했다."
+    },
+    "slot1_dogyeom": {
+      "epithet": "반석항룡",
+      "identity": "묵직한 강룡 장객",
+      "gender": "남성",
+      "age_impression": 46,
+      "art": "dogyeom",
+      "epithet_bands": [
+        "반석수",
+        "철근장객",
+        "쇄암장",
+        "반석항룡"
+      ],
+      "epithet_reason": "받아낸 뒤 중심을 회복하고 장력을 싣는 무인. 바위를 버티고 용을 제압하는 장법의 대비를 담았다."
+    },
+    "slot1_chaeryeong": {
+      "epithet": "파운검뢰",
+      "identity": "간격을 깨는 창궁 검객",
+      "gender": "여성",
+      "age_impression": 25,
+      "art": "chaeryeong",
+      "epithet_bands": [
+        "청봉검",
+        "질뢰검객",
+        "벽공청뢰",
+        "파운검뢰"
+      ],
+      "epithet_reason": "기다리는 간격을 깨는 도발적인 검객. 푸른 봉우리와 구름을 가르는 검뢰로 상승하는 명성을 표현한다."
+    },
+    "slot2_mukjin": {
+      "epithet": "불동금강",
+      "identity": "금강형 수련자",
+      "gender": "남성",
+      "age_impression": 52,
+      "art": "mukjin",
+      "epithet_bands": [
+        "묵석수",
+        "금강철수",
+        "불동장객",
+        "불동금강"
+      ],
+      "epithet_reason": "묵묵히 버티되 결단하면 장력을 내뻗는다. 불동은 태도의 별호이며 이동 불가나 피해 면역 규칙이 아니다."
+    },
+    "slot2_seokmu": {
+      "epithet": "침산단문",
+      "identity": "버티며 받아치는 중량 도객",
+      "gender": "여성",
+      "age_impression": 43,
+      "art": "seokmu",
+      "epithet_bands": [
+        "철등도",
+        "진산도객",
+        "쇄문철도",
+        "침산단문"
+      ],
+      "epithet_reason": "성급하게 쫓지 않고 묵직한 도로 길목을 닫는다. 잠긴 산처럼 기다리는 성품과 단문의 도법을 함께 담았다."
+    },
+    "slot2_danso": {
+      "epithet": "오식귀운",
+      "identity": "자원을 지키는 호신가",
+      "gender": "남성",
+      "age_impression": 34,
+      "art": "danso",
+      "epithet_bands": [
+        "자운객",
+        "오식유객",
+        "회운산인",
+        "오식귀운"
+      ],
+      "epithet_reason": "다섯 초식을 얕게 익혀 불리함을 피하는 유연한 호신가. 귀운은 흩어진 선택을 다시 거두는 습관이다."
+    },
+    "slot3_seolha": {
+      "epithet": "설하행룡",
+      "identity": "거리를 다스리는 장풍 고수",
+      "gender": "여성",
+      "age_impression": 48,
+      "art": "seolha",
+      "epithet_bands": [
+        "설풍장",
+        "유룡장객",
+        "회설유룡",
+        "설하행룡"
+      ],
+      "epithet_reason": "선을 긋듯 싸우는 장객. 물러남과 재진입을 눈보라와 용의 이동에 빗대되 실제 장풍과 근접 장타는 구분한다."
+    },
+    "slot3_uram": {
+      "epithet": "척천일창",
+      "identity": "창끝 거리의 장병기 무인",
+      "gender": "남성",
+      "age_impression": 38,
+      "art": "uram",
+      "epithet_bands": [
+        "장간창",
+        "척영창객",
+        "단로장창",
+        "척천일창"
+      ],
+      "epithet_reason": "반 보의 간격도 예의처럼 지키는 창객. 길이를 재는 척과 한 번의 곧은 창으로 정체성을 묶었다."
+    },
+    "slot3_biyeon": {
+      "epithet": "소영비연",
+      "identity": "경공과 암기를 잇는 유랑객",
+      "gender": "여성",
+      "age_impression": 27,
+      "art": "biyeon",
+      "epithet_bands": [
+        "비연수",
+        "추영비수",
+        "환영표객",
+        "소영비연"
+      ],
+      "epithet_reason": "비수의 수는 손이라는 뜻이다. 주무기는 투척 암기이며 근접 단검으로 바꾸지 않는다. 쫓으면 비는 그림자 같은 성향이다."
+    },
+    "slot4_cheongheo": {
+      "epithet": "청허귀원",
+      "identity": "공개 이력을 읽는 태극 검객",
+      "gender": "남성",
+      "age_impression": 64,
+      "art": "cheongheo",
+      "epithet_bands": [
+        "유운검",
+        "회운검객",
+        "청허유전",
+        "청허귀원"
+      ],
+      "epithet_reason": "온화하게 되돌려 보내는 태극과 자하의 회복을 한 줄기로 익혔다. 상대의 지난 습관을 잊지 않는 인물이다."
+    },
+    "slot4_damwol": {
+      "epithet": "담월무흔",
+      "identity": "소요보법 중심의 후수 고수",
+      "gender": "여성",
+      "age_impression": 36,
+      "art": "damwol",
+      "epithet_bands": [
+        "월하객",
+        "답월유객",
+        "회월검영",
+        "담월무흔"
+      ],
+      "epithet_reason": "먼저 뻗기보다 한 발 비우는 후수 고수. 발자국이 흐려지는 명성으로 보법의 정체성을 드러낸다."
+    },
+    "slot4_jinryeo": {
+      "epithet": "오변환뢰",
+      "identity": "보이는 틈으로 유인하는 검객",
+      "gender": "남성",
+      "age_impression": 32,
+      "art": "jinryeo",
+      "epithet_bands": [
+        "유극검",
+        "환뢰검객",
+        "오변검객",
+        "오변환뢰"
+      ],
+      "epithet_reason": "틈을 드러내는 척하다 검로를 바꾸는 다재 검객. 다섯 선택의 전환을 별호의 중심으로 삼았다."
+    },
+    "slot5_jeogu": {
+      "epithet": "낙홍무진",
+      "identity": "여러 수를 잇는 매화 검객",
+      "gender": "남성",
+      "age_impression": 44,
+      "art": "jeogu",
+      "epithet_bands": [
+        "잔홍검",
+        "첩화검객",
+        "회홍연검",
+        "낙홍무진"
+      ],
+      "epithet_reason": "여러 수를 잇되 유리하면 멈출 줄 아는 매화 검객. 낙화가 끝나지 않는 검로를 별호로 삼았다."
+    },
+    "slot5_pungmok": {
+      "epithet": "풍호연환",
+      "identity": "박자를 바꾸는 연환 도객",
+      "gender": "남성",
+      "age_impression": 41,
+      "art": "pungmok",
+      "epithet_bands": [
+        "풍산도",
+        "쇄풍도객",
+        "연환호도",
+        "풍호연환"
+      ],
+      "epithet_reason": "한 번 멈춘 듯하다 다시 잇는 도객. 바람의 끊김과 호랑이의 재도약을 도법의 리듬에 묶었다."
+    },
+    "slot5_rajin": {
+      "epithet": "구곡연로",
+      "identity": "창과 보법을 잇는 설계자",
+      "gender": "여성",
+      "age_impression": 31,
+      "art": "rajin",
+      "epithet_bands": [
+        "행로창",
+        "답풍창객",
+        "연로쇄창",
+        "구곡연로"
+      ],
+      "epithet_reason": "첫 걸음이 세 번째 창로의 이유가 되는 설계자. 구곡은 여러 경로를 엮는 별호이지 새 전장 지형이 아니다."
+    }
+  },
+  "epithet_policy": "Authored four reputation bands per character: stages 1-3 / 4-6 / 7-9 / 10. Stable name, no universal prefix, no lore death/resurrection inference."
+}

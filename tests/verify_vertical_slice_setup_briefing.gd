@@ -98,16 +98,18 @@ func _run() -> void:
     await process_frame
     _expect_eq(shell.run_state.get_current_screen(), "BRIEFING", "Run must enter Briefing before Combat.")
     var opponent: Dictionary = shell.run_state.get_current_opponent()
+    var encounter: Dictionary = shell.run_state.get_current_encounter()
     _expect_true(not opponent.is_empty(), "Briefing must have the already-locked current opponent.")
     var briefing_text := "%s\n%s" % [shell.title_label.text, shell.description_label.text]
     _expect_true(briefing_text.contains(str(opponent.get("working_name", ""))), "Briefing must show the locked opponent working name.")
-    _expect_true(briefing_text.contains(str(opponent.get("martial_identity", ""))), "Briefing must show the opponent martial identity.")
+    _expect_true(briefing_text.contains(str(opponent.get("epithet", ""))), "Briefing must show the approved current-stage epithet.")
     _expect_false(briefing_text.contains("최근 평"), "Briefing must omit the removed recent-rating section.")
     _expect_true(briefing_text.contains(str(opponent.get("readable_habit", ""))), "Briefing must expose the readable habit as a hypothesis input.")
     _expect_true(briefing_text.contains(str(opponent.get("ambiguity_or_counterexample", ""))), "Briefing must expose the counterexample/ambiguity instead of an answer key.")
     _expect_false(briefing_text.contains(str(opponent.get("candidate_id", ""))), "Briefing must not expose internal candidate IDs.")
     _expect_false(briefing_text.contains(str(opponent.get("runtime_archetype_id", ""))), "Briefing must not expose internal runtime archetype IDs.")
-    _expect_false(briefing_text.contains(str(opponent.get("behavior_focus", ""))), "Briefing must not expose internal behavior-focus keys.")
+    if not str(opponent.get("behavior_focus", "")).is_empty():
+        _expect_false(briefing_text.contains(str(opponent.behavior_focus)), "Briefing must not expose internal behavior-focus keys.")
     _expect_true(briefing_text.contains("상대의 다음 수는 아직 알 수 없습니다"), "Briefing must explicitly mark the hidden next action as unknown in player-facing language.")
 
     _expect_true(shell.advance_noncombat(), "Briefing must advance to Combat.")
@@ -116,17 +118,24 @@ func _run() -> void:
     var loadout_snapshot: Dictionary = shell.get_active_combat_loadout_snapshot()
     _expect_eq(loadout_snapshot.get("player_loadout", []), selected_before_advance, "Combat bridge must receive the four selected player manuals.")
     _expect_eq(loadout_snapshot.get("enemy_candidate_id", ""), str(opponent.get("candidate_id", "")), "Combat bridge must bind the locked opponent candidate.")
-    _expect_eq(loadout_snapshot.get("enemy_loadout", []), [str(opponent.get("signature_manual_id", ""))], "Combat bridge must use the candidate signature manual rather than the legacy PoC enemy loadout.")
-    _expect_eq(int((loadout_snapshot.get("enemy_mastery_by_manual", {}) as Dictionary).get(str(opponent.get("signature_manual_id", "")), 0)), int(opponent.get("signature_star_seed", 0)), "Combat bridge must use the candidate-approved signature mastery seed.")
+    var expected_enemy_ids: Array = []
+    var expected_enemy_mastery := {}
+    for owned in encounter.manuals:
+        expected_enemy_ids.append(owned.id)
+        expected_enemy_mastery[owned.id] = owned.mastery
+        _expect_true(briefing_text.contains("%s %d성" % [shell.manual_registry.get_manual(owned.id).manual_name, owned.mastery]), "Briefing must show every frozen owned manual and actual mastery.")
+    _expect_eq(loadout_snapshot.get("enemy_loadout", []), expected_enemy_ids, "Combat bridge must bind every approved manual from the frozen encounter.")
+    _expect_eq(loadout_snapshot.get("enemy_mastery_by_manual", {}), expected_enemy_mastery, "Combat bridge must preserve the exact encounter mastery map.")
+    _expect_eq(loadout_snapshot.get("resolved_encounter", {}), encounter, "Combat binding must preserve the encounter shown in briefing.")
     var binding = BindingScript.new()
     var expected_binding: Dictionary = binding.build(opponent)
     _expect_true(bool(expected_binding.get("valid", false)), "The locked opponent must produce a valid per-combat runtime binding.")
     var bound_runtime: Dictionary = loadout_snapshot.get("enemy_runtime_binding", {})
     _expect_eq(str(bound_runtime.get("archetype_id", "")), str(expected_binding.get("archetype_id", "")), "Bridge snapshot must retain the locked runtime archetype ID.")
-    _expect_eq(bound_runtime.get("stats", {}), expected_binding.get("stats", {}), "Bridge snapshot must retain only the derived enemy stats for test readback.")
+    _expect_eq(bound_runtime.get("stats", {}), encounter.get("stats", {}), "Bridge snapshot must retain the approved exact encounter stats for test readback.")
     var bridge = shell.combat_host.get_child(0)
     var combat_state: Dictionary = bridge.get("combat_state")
-    _expect_eq((combat_state.get("enemy", {}) as Dictionary).get("stats", {}), expected_binding.get("stats", {}), "Initial enemy state must use the locked candidate's derived stats.")
+    _expect_eq((combat_state.get("enemy", {}) as Dictionary).get("stats", {}), encounter.get("stats", {}), "Initial enemy state must use the frozen encounter stats without additional growth bonuses.")
     var snapshot_before_invalid: Dictionary = bridge.call("get_vertical_slice_loadout_snapshot")
     var state_before_invalid: Dictionary = combat_state.duplicate(true)
     var invalid_result = bridge.call(

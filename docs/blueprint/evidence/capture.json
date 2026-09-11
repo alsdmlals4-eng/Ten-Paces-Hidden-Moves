@@ -1,0 +1,943 @@
+{
+  "after": {
+    "ai_decision_seed": 0,
+    "ai_enabled": true,
+    "bundle_index": 2,
+    "enemy": {
+      "attack_power": 8.0,
+      "epithet": "무림 검사",
+      "fortitude_next_attack": false,
+      "health": [
+        25,
+        30
+      ],
+      "internal": [
+        3,
+        4
+      ],
+      "momentum": [
+        2,
+        5
+      ],
+      "name": "배외검객",
+      "next_attack_bonus": 0,
+      "prepare_active": false,
+      "stamina": [
+        5,
+        5
+      ],
+      "start_penalties": {
+        "health": 0.0,
+        "internal": 0.0,
+        "stamina": 0.0
+      },
+      "stats": {
+        "agility": 4,
+        "constitution": 4,
+        "external": 4,
+        "insight": 4,
+        "internal_power": 4
+      },
+      "statuses": [
+        {
+          "kind": "offense",
+          "label": "출"
+        },
+        {
+          "kind": "defense",
+          "label": "방"
+        }
+      ],
+      "tile": 6
+    },
+    "player": {
+      "attack_power": 8.0,
+      "epithet": "무명 검객",
+      "fortitude_next_attack": false,
+      "health": [
+        29,
+        30
+      ],
+      "internal": [
+        4,
+        4
+      ],
+      "momentum": [
+        1,
+        5
+      ],
+      "name": "강호낭인",
+      "next_attack_bonus": 0,
+      "prepare_active": false,
+      "stamina": [
+        3,
+        5
+      ],
+      "start_penalties": {
+        "health": 0.0,
+        "internal": 0.0,
+        "stamina": 0.0
+      },
+      "stats": {
+        "agility": 4,
+        "constitution": 4,
+        "external": 4,
+        "insight": 4,
+        "internal_power": 4
+      },
+      "statuses": [
+        {
+          "kind": "defense",
+          "label": "방"
+        }
+      ],
+      "tile": 5
+    },
+    "public_resolution_history": [
+      {
+        "actor": "player",
+        "bundle_index": 1,
+        "card_id": "basic_move",
+        "category": "move",
+        "outcome": "move",
+        "round_number": 1
+      },
+      {
+        "actor": "player",
+        "bundle_index": 1,
+        "card_id": "basic_quick_attack",
+        "category": "attack",
+        "outcome": "clash_loss",
+        "round_number": 1
+      },
+      {
+        "actor": "enemy",
+        "bundle_index": 1,
+        "card_id": "basic_palm",
+        "category": "attack",
+        "outcome": "clash_win",
+        "round_number": 1
+      },
+      {
+        "actor": "player",
+        "bundle_index": 1,
+        "card_id": "basic_quick_attack",
+        "category": "attack",
+        "outcome": "속공",
+        "round_number": 1
+      }
+    ],
+    "round_number": 1
+  },
+  "before": {
+    "ai_decision_seed": 0,
+    "ai_enabled": true,
+    "bundle_index": 1,
+    "enemy": {
+      "attack_power": 8.0,
+      "epithet": "무림 검사",
+      "fortitude_next_attack": false,
+      "health": [
+        30,
+        30
+      ],
+      "internal": [
+        4,
+        4
+      ],
+      "momentum": [
+        0.0,
+        5.0
+      ],
+      "name": "배외검객",
+      "next_attack_bonus": 0,
+      "prepare_active": false,
+      "stamina": [
+        5,
+        5
+      ],
+      "start_penalties": {
+        "health": 0.0,
+        "internal": 0.0,
+        "stamina": 0.0
+      },
+      "stats": {
+        "agility": 4,
+        "constitution": 4,
+        "external": 4,
+        "insight": 4,
+        "internal_power": 4
+      },
+      "statuses": [
+        {
+          "kind": "offense",
+          "label": "출"
+        },
+        {
+          "kind": "defense",
+          "label": "방"
+        }
+      ],
+      "tile": 6
+    },
+    "player": {
+      "attack_power": 8.0,
+      "epithet": "무명 검객",
+      "fortitude_next_attack": false,
+      "health": [
+        30,
+        30
+      ],
+      "internal": [
+        4,
+        4
+      ],
+      "momentum": [
+        0.0,
+        5.0
+      ],
+      "name": "강호낭인",
+      "next_attack_bonus": 0,
+      "prepare_active": false,
+      "stamina": [
+        5,
+        5
+      ],
+      "start_penalties": {
+        "health": 0.0,
+        "internal": 0.0,
+        "stamina": 0.0
+      },
+      "stats": {
+        "agility": 4,
+        "constitution": 4,
+        "external": 4,
+        "insight": 4,
+        "internal_power": 4
+      },
+      "statuses": [
+        {
+          "kind": "defense",
+          "label": "방"
+        }
+      ],
+      "tile": 4
+    },
+    "round_number": 1
+  },
+  "evidence": "ACTUAL_BOARD_EXECUTE_COMMAND_REAL_RESOLVER_DEFAULT_AI_NOT_FULL_CAMPAIGN",
+  "frames": [
+    {
+      "file": "execution-000.png",
+      "kind": "",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 1,
+      "usec": 3820423,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-001.png",
+      "kind": "",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 1,
+      "usec": 3866799,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-002.png",
+      "kind": "",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 1,
+      "usec": 3916313,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-003.png",
+      "kind": "",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 1,
+      "usec": 3966524,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-004.png",
+      "kind": "",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 1,
+      "usec": 4016516,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-005.png",
+      "kind": "",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 1,
+      "usec": 4066396,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-006.png",
+      "kind": "",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 1,
+      "usec": 4116315,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-007.png",
+      "kind": "",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 1,
+      "usec": 4163972,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-008.png",
+      "kind": "",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 1,
+      "usec": 4214068,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-009.png",
+      "kind": "",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 1,
+      "usec": 4264115,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-010.png",
+      "kind": "",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 1,
+      "usec": 4314722,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-011.png",
+      "kind": "",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 1,
+      "usec": 4364351,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-012.png",
+      "kind": "",
+      "reveal": false,
+      "state": "presenting_result",
+      "timing": 1,
+      "usec": 4414027,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-013.png",
+      "kind": "",
+      "reveal": false,
+      "state": "presenting_result",
+      "timing": 1,
+      "usec": 4464033,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-014.png",
+      "kind": "",
+      "reveal": false,
+      "state": "presenting_result",
+      "timing": 1,
+      "usec": 4514128,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-015.png",
+      "kind": "",
+      "reveal": false,
+      "state": "presenting_result",
+      "timing": 1,
+      "usec": 4564072,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-016.png",
+      "kind": "",
+      "reveal": false,
+      "state": "presenting_result",
+      "timing": 1,
+      "usec": 4613959,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-017.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 4663950,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-018.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 4714003,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-019.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 4764169,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-020.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 4814182,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-021.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 4864047,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-022.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 4914060,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-023.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 4963915,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    },
+    {
+      "file": "execution-024.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5014057,
+      "vfx": true,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-025.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5063916,
+      "vfx": true,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-026.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5114022,
+      "vfx": true,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-027.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5164591,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-028.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5214230,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-029.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5264425,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-030.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5314322,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-031.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5364518,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-032.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5414366,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-033.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5464538,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-034.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5514886,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-035.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5564872,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-036.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5614631,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-037.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5664387,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-038.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5714696,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-039.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5764493,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-040.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5814976,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-041.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5864754,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-042.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5914629,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-043.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 5966942,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-044.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 6017437,
+      "vfx": true,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-045.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 6067089,
+      "vfx": true,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-046.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 6117295,
+      "vfx": true,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-047.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 6165398,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-048.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 6213898,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-049.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 6265481,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-050.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 6315330,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-051.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 6365509,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-052.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 6413892,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-053.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 6463832,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-054.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 6514755,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-055.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 6563992,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-056.png",
+      "kind": "clash",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 6613397,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-057.png",
+      "kind": "clash",
+      "reveal": false,
+      "state": "presenting_result",
+      "timing": 2,
+      "usec": 6663341,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-058.png",
+      "kind": "attack",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 3,
+      "usec": 6706075,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-059.png",
+      "kind": "attack",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 3,
+      "usec": 6763500,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-060.png",
+      "kind": "attack",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 3,
+      "usec": 6813288,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-061.png",
+      "kind": "attack",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 3,
+      "usec": 6862862,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-062.png",
+      "kind": "attack",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 3,
+      "usec": 6914848,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-063.png",
+      "kind": "attack",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 3,
+      "usec": 6965251,
+      "vfx": true,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-064.png",
+      "kind": "attack",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 3,
+      "usec": 7012973,
+      "vfx": true,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-065.png",
+      "kind": "attack",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 3,
+      "usec": 7064986,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-066.png",
+      "kind": "attack",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 3,
+      "usec": 7113195,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-067.png",
+      "kind": "attack",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 3,
+      "usec": 7164879,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-068.png",
+      "kind": "attack",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 3,
+      "usec": 7214827,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-069.png",
+      "kind": "attack",
+      "reveal": true,
+      "state": "presenting_result",
+      "timing": 3,
+      "usec": 7262949,
+      "vfx": false,
+      "vfx_layout": "OK"
+    },
+    {
+      "file": "execution-070.png",
+      "kind": "attack",
+      "reveal": false,
+      "state": "next_bundle_ready",
+      "timing": 3,
+      "usec": 7385851,
+      "vfx": false,
+      "vfx_layout": "INACTIVE"
+    }
+  ],
+  "revealed": true,
+  "vfx_seen_with_reveal": true
+}

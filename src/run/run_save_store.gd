@@ -22,6 +22,7 @@ func _cache_context() -> Dictionary:
         "schema_version": CODEC.SCHEMA_VERSION,
         "semantic_contract_version": CODEC.SEMANTIC_CONTRACT_VERSION,
         "content_identity": codec.content_identity(),
+        "variable_content_identity": codec.content_identity_for_schema(CODEC.VARIABLE_SCHEMA_VERSION),
     }
 
 func _cached(bytes: PackedByteArray) -> Dictionary:
@@ -128,6 +129,14 @@ func _read(slot: String) -> Dictionary:
     }
 
 func load_checkpoint() -> Dictionary:
+    var pointer := _read_pointer()
+    if pointer.status != "ABSENT":
+        if not pointer.ok: return pointer
+        var resolved := _read(pointer.slot)
+        if resolved.status == "ABSENT": return CODEC.error("CORRUPT", "Active pointer target is missing")
+        if not resolved.ok: return resolved
+        if int(resolved.payload.schema_version) != CODEC.VARIABLE_SCHEMA_VERSION or pointer.slot != "v2_" + CODEC.digest(resolved.payload): return CODEC.error("CORRUPT", "Active pointer target mismatch")
+        return _loaded(resolved.payload, "VALID_PRIMARY")
     var primary := _read("primary")
     return _load_from_primary(primary)
 
@@ -171,6 +180,9 @@ func _physical_idempotent(primary: Dictionary, save_id: String, checkpoint_id: S
     return {"ok": true, "status": "SAVED", "revision": primary.payload.revision, "payload": primary.payload.duplicate(true), "idempotent": true}
 
 func _save(save_id: String, checkpoint_id: String, run_state: Dictionary, combat_checkpoint: Dictionary, active: bool, replace: bool) -> Dictionary:
+    if run_state.get("ruleset_id", "") == CODEC.VARIABLE_RULESET_ID or (not active and FileAccess.file_exists(root_path.path_join("active.json"))):
+        return _save_variable(save_id, checkpoint_id, run_state, combat_checkpoint, active, replace)
+    if FileAccess.file_exists(root_path.path_join("active.json")): return CODEC.error("INCOMPATIBLE", "Legacy writer cannot replace variable save")
     if not CODEC.json_safe([run_state, combat_checkpoint], 0, [0]): return CODEC.error("CORRUPT", "Unsupported payload")
     var identity := CODEC.digest({"save_id": save_id, "checkpoint_id": checkpoint_id, "run_state": run_state, "combat_checkpoint": combat_checkpoint, "active": active, "replace": replace})
     if not _pending.is_empty() and _pending.identity != identity:
@@ -219,6 +231,7 @@ func _save(save_id: String, checkpoint_id: String, run_state: Dictionary, combat
 
 func _write_slot(slot: String, text: String, expected_payload: Dictionary) -> bool:
     var temp := root_path.path_join(slot + "_temp.json")
+    if slot.begins_with("v2_") and not _allowed("write_primary", temp): return false
     if not _allowed("write_" + slot, temp): return false
     var file := FileAccess.open(temp, FileAccess.WRITE)
     if file == null: return false
@@ -244,3 +257,126 @@ func _preserve_evidence(slot: String) -> bool:
     var destination := root_path.path_join(slot + "_evidence_" + hash + ".json")
     if FileAccess.file_exists(destination): return FileAccess.get_sha256(destination) == hash
     return DirAccess.copy_absolute(source, destination) == OK and FileAccess.get_sha256(destination) == hash
+
+# V2 revisions are immutable files. Only this small, strictly validated pointer is
+# switched, after the entire new checkpoint has survived flush and readback.
+func _read_pointer(slot: String = "active") -> Dictionary:
+    var path := root_path.path_join(slot + ".json")
+    if not FileAccess.file_exists(path):
+        if DirAccess.dir_exists_absolute(path): return CODEC.error("IO_FAILURE", "Active pointer is a directory")
+        return CODEC.error("ABSENT", "No active pointer")
+    if not _allowed("read_" + slot, path): return CODEC.error("IO_FAILURE", "Pointer read blocked")
+    var file := FileAccess.open(path, FileAccess.READ)
+    if file == null: return CODEC.error("IO_FAILURE", "Cannot read pointer")
+    if file.get_length() > 1024:
+        file.close()
+        return CODEC.error("CORRUPT", "Pointer exceeds bound")
+    var length := file.get_length()
+    var bytes := file.get_buffer(length)
+    file.close()
+    if bytes.size() != length or not _valid_utf8(bytes): return CODEC.error("CORRUPT", "Malformed pointer encoding")
+    var text := bytes.get_string_from_utf8()
+    var cursor := [0]
+    if not codec._strict_value(text, cursor, 0, [0]): return CODEC.error("CORRUPT", "Malformed pointer JSON")
+    codec._skip_space(text, cursor)
+    if cursor[0] != text.length(): return CODEC.error("CORRUPT", "Trailing pointer content")
+    var parsed = JSON.parse_string(text)
+    if typeof(parsed) != TYPE_DICTIONARY or parsed.size() != 3 or not parsed.has("schema_version") or not parsed.has("slot") or not parsed.has("integrity_hash"): return CODEC.error("CORRUPT", "Malformed pointer fields")
+    if not CODEC.integer(parsed.schema_version, 1): return CODEC.error("CORRUPT", "Malformed pointer version")
+    if parsed.schema_version != 2: return CODEC.error("INCOMPATIBLE", "Unknown pointer version")
+    if typeof(parsed.slot) != TYPE_STRING or RegEx.create_from_string("^v2_[0-9a-f]{64}$").search(parsed.slot) == null: return CODEC.error("CORRUPT", "Untrusted pointer path")
+    if typeof(parsed.integrity_hash) != TYPE_STRING or parsed.integrity_hash != CODEC.digest({"schema_version": 2, "slot": parsed.slot}): return CODEC.error("CORRUPT", "Pointer integrity mismatch")
+    return {"ok": true, "status": "VALID", "slot": parsed.slot, "source_bytes": bytes}
+
+func _switch_pointer(slot: String) -> bool:
+    var payload := {"schema_version": 2, "slot": slot}
+    payload["integrity_hash"] = CODEC.digest(payload)
+    var bytes := JSON.stringify(payload).to_utf8_buffer()
+    var temp := root_path.path_join("active_temp.json")
+    if not _allowed("write_active", temp): return false
+    var file := FileAccess.open(temp, FileAccess.WRITE)
+    if file == null: return false
+    file.store_buffer(bytes)
+    file.flush()
+    var write_error := file.get_error()
+    file.close()
+    if write_error != OK: return false
+    var readback := _read_pointer("active_temp")
+    if not readback.ok or readback.source_bytes != bytes: return false
+    var destination := root_path.path_join("active.json")
+    if FileAccess.file_exists(destination) and not _read_pointer().ok and not _preserve_evidence("active"): return false
+    if not _allowed("rename_active", destination) or DirAccess.rename_absolute(temp, destination) != OK: return false
+    readback = _read_pointer()
+    return readback.ok and readback.source_bytes == bytes
+
+func _save_variable(save_id: String, checkpoint_id: String, run_state: Dictionary, combat_checkpoint: Dictionary, active: bool, replace: bool) -> Dictionary:
+    if not CODEC.json_safe([run_state, combat_checkpoint], 0, [0]): return CODEC.error("CORRUPT", "Unsupported payload")
+    var identity := CODEC.digest({"save_id": save_id, "checkpoint_id": checkpoint_id, "run_state": run_state, "combat_checkpoint": combat_checkpoint, "active": active, "replace": replace})
+    if not _pending.is_empty() and _pending.identity != identity: return CODEC.error("IO_FAILURE", "Retry pending immutable checkpoint")
+    var current := load_checkpoint()
+    if current.status == "IO_FAILURE" or (not replace and current.status in ["INCOMPATIBLE", "CORRUPT"]): return current
+    var previous: Dictionary = current.get("payload", {})
+    if not replace and not previous.is_empty() and (previous.save_id != save_id or not previous.active): return CODEC.error("INCOMPATIBLE", "Generation replacement requires explicit operation")
+    if _pending.is_empty():
+        if not previous.is_empty() and int(previous.schema_version) == 2 and _matches_request(previous, save_id, checkpoint_id, run_state, combat_checkpoint, active):
+            return {"ok": true, "status": "SAVED", "revision": previous.revision, "payload": previous.duplicate(true), "idempotent": true}
+        var encoded: Dictionary = codec.encode(save_id, checkpoint_id, int(previous.get("revision", 0)) + 1, run_state, combat_checkpoint, active, CODEC.VARIABLE_SCHEMA_VERSION)
+        if not encoded.ok: return encoded
+        _pending = {"identity": identity, "encoded": encoded, "replace": replace}
+    var envelope: Dictionary = _pending.encoded.payload
+    var failed := CODEC.error("IO_FAILURE", "Checkpoint not acknowledged; retry unchanged payload")
+    failed["revision"] = envelope.revision
+    failed["pending_payload"] = envelope.duplicate(true)
+    if not _allowed("mkdir", root_path) or DirAccess.make_dir_recursive_absolute(root_path) != OK: return failed
+    # Legacy originals and their byte-identical archives remain available to v1 builds.
+    for legacy in ["primary", "backup"]:
+        if FileAccess.file_exists(root_path.path_join(legacy + ".json")) and not _preserve_evidence(legacy): return failed
+    var slot := "v2_" + CODEC.digest(envelope)
+    var existing := _read(slot)
+    if existing.status == "ABSENT":
+        if not _write_slot(slot, _pending.encoded.text, envelope): return failed
+    elif not existing.ok or existing.payload != envelope:
+        return failed
+    if not _switch_pointer(slot): return failed
+    var readback := load_checkpoint()
+    if not readback.ok or readback.get("payload", {}) != envelope: return failed
+    _pending.clear()
+    _cleanup_variable_history(envelope)
+    return {"ok": true, "status": "SAVED", "revision": envelope.revision, "payload": envelope.duplicate(true)}
+
+# Retention touches only strict, canonical v2 checkpoints of this save identity.
+# Cleanup is best effort after acknowledgment; legacy, corrupt, foreign and
+# unrecognized files remain evidence and cannot become deletion candidates.
+func _cleanup_variable_history(active_payload: Dictionary) -> void:
+    var pointer := _read_pointer()
+    var active_slot := "v2_" + CODEC.digest(active_payload)
+    if not pointer.ok or pointer.slot != active_slot: return
+    var revisions: Array[Dictionary] = []
+    var slot_pattern := RegEx.create_from_string("^v2_[0-9a-f]{64}$")
+    for filename in DirAccess.get_files_at(root_path):
+        if not filename.ends_with(".json"): continue
+        var slot := filename.trim_suffix(".json")
+        if slot_pattern.search(slot) == null: continue
+        var checked := _read(slot)
+        if not checked.ok or int(checked.payload.schema_version) != 2 or checked.payload.save_id != active_payload.save_id: continue
+        if int(checked.payload.revision) > int(active_payload.revision): continue
+        if "v2_" + CODEC.digest(checked.payload) != slot or "v2_" + checked.source_text.sha256_text() != slot: continue
+        revisions.append({"slot": slot, "revision": int(checked.payload.revision)})
+    revisions.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.revision < b.revision if a.revision != b.revision else a.slot < b.slot)
+    if revisions.size() <= 3: return
+    var retained := {active_slot: true, str(revisions[0].slot): true}
+    for index in range(revisions.size() - 1, -1, -1):
+        if revisions[index].revision < int(active_payload.revision):
+            retained[str(revisions[index].slot)] = true
+            break
+    for entry in revisions:
+        if retained.has(entry.slot): continue
+        pointer = _read_pointer()
+        if not pointer.ok or pointer.slot != active_slot: return
+        var path := root_path.path_join(str(entry.slot) + ".json")
+        if not _allowed("cleanup_" + str(entry.slot), path): continue
+        # Revalidate immediately before deletion, including exact byte hash.
+        var current := _read(str(entry.slot))
+        if not current.ok or int(current.payload.schema_version) != 2 or current.payload.save_id != active_payload.save_id: continue
+        if "v2_" + current.source_text.sha256_text() != entry.slot or "v2_" + CODEC.digest(current.payload) != entry.slot: continue
+        DirAccess.remove_absolute(path)

@@ -1,6 +1,8 @@
 class_name ActionDetailPanel
 extends PanelContainer
 
+const APPROVED_ART := preload("res://src/ui/approved_blueprint_art.gd")
+
 const TECHNIQUE_DETAIL_FRAME := preload("res://assets/ui/duel/technique_detail_frame_01_v1.png")
 const RESOLUTION_ENGINE_SCRIPT := preload("res://src/combat/combat_resolution_engine.gd")
 
@@ -193,11 +195,30 @@ func _apply_content() -> void:
         _:
             _title.text = "행동을 선택하세요"
             _source.text = ""
+    # Preserve all existing decision rows; large art is supplementary scroll content.
+    if detail_mode == "action":
+        _add_approved_illustration(APPROVED_ART.action_illustration(definition))
+    elif detail_mode == "manual":
+        _add_approved_illustration(APPROVED_ART.manual_illustration(
+            str(manual_definition.get("manual_id", "")), int(manual_definition.get("mastery", 0))))
     _refresh_mode_label()
     set_meta("detail_mode", detail_mode)
     set_meta("pinned", pinned)
     set_meta("card_id", str(definition.get("id", "")))
     set_meta("manual_id", str(manual_definition.get("manual_id", "")))
+
+func _add_approved_illustration(texture: Texture2D) -> void:
+    if texture == null:
+        return
+    var illustration := TextureRect.new()
+    illustration.name = "ApprovedManualIllustration"
+    illustration.texture = texture
+    illustration.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+    illustration.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+    illustration.custom_minimum_size = Vector2(0.0, 160.0)
+    illustration.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    illustration.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    _content.add_child(illustration)
 
 func _apply_action() -> void:
     _title.text = str(definition.get("name", "행동"))

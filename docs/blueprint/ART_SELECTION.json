@@ -1,0 +1,16 @@
+{
+  "role": "human_blueprint_illustration_selection_not_runtime_manifest",
+  "directory": "output/blueprint-candidates",
+  "manuals": {
+    "mount_hua_plum_blossom_sword": ["plum-star3-framing-v2.png", "plum-star7-candidate.png", "plum-star10-candidate.png"],
+    "shaolin_arhat_vajra_art": ["arhat-star3-candidate.png", "arhat-star7-candidate.png", "arhat-star10-candidate.png"],
+    "wudang_taiji_sword": ["taiji-star3-candidate.png", "taiji-star7-candidate.png", "taiji-star10-candidate.png"],
+    "yang_family_spear": ["spear-star3-candidate.png", "spear-star7-structure-v2.png", "spear-star10-hands-v2.png"],
+    "mount_hua_purple_mist_art": ["mist-star3-candidate.png", "mist-star7-candidate.png", "mist-star10-candidate.png"],
+    "xiaoyao_lingbo_footwork": ["foot-star3-candidate.png", "foot-star7-candidate.png", "foot-star10-candidate.png"],
+    "beggars_dragon_subduing_palm": ["dragon-star3-candidate.png", "dragon-star7-candidate.png", "dragon-star10-candidate.png"],
+    "sichuan_tang_hidden_weapons": ["tang-star3-candidate.png", "tang-star7-candidate.png", "tang-star10-candidate.png"],
+    "hebei_peng_five_tigers_saber": ["saber-star3-grip-v2.png", "saber-star7-candidate.png", "saber-star10-grip-v2.png"],
+    "nangong_boundless_sky_sword": ["sky-star3-tip-v3.png", "sky-star7-candidate.png", "sky-star10-candidate.png"]
+  }
+}

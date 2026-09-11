@@ -117,6 +117,10 @@ func _run() -> void:
         shell.session.store.io_guard = Callable()
         check(await shell.retry_durable_save(), "retry recovers exact pending payload")
         check(shell.run_state.get_current_screen() == "COMBAT", "retry publishes combat")
+        if shell._combat_view == null:
+            printerr("Failed combat retry: ", shell.session.status, "; ", failures)
+            quit(1)
+            return
         var dto: Dictionary = shell._combat_view.get_last_stable_checkpoint()
         check(dto.phase == "PLANNING", "first combat checkpoint stable")
         shell.queue_free()
@@ -224,6 +228,24 @@ func _run() -> void:
         print("DURABLE_CONTINUE integrated_write_ms=", shell.session.write_msec)
     shell.queue_free()
     await process_frame
+    # A corrupt selected v2 checkpoint must not revive a preserved old generation.
+    var pointer: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(storage.path_join("active.json")))
+    var selected := storage.path_join(str(pointer.slot) + ".json")
+    var corrupt_v2 := FileAccess.open(selected, FileAccess.WRITE)
+    corrupt_v2.store_string("{truncated")
+    corrupt_v2.close()
+    shell = await make_shell()
+    check(shell.session.status == "CORRUPT", "corrupt active v2 fails closed without resurrecting old generation")
+    check(not shell.find_child("MainContinueButton", true, false).visible, "corrupt v2 cannot continue")
+    shell.queue_free()
+    await process_frame
+    # Keep legacy backup recovery on an independent genuine v1 fixture.
+    storage += "_legacy_recovery"
+    var legacy_run = load("res://src/run/vertical_slice_run_state.gd").new()
+    legacy_run.configure_opponents(load("res://src/run/vertical_slice_opponent_catalog.gd").new(), 83)
+    legacy_run.start_new_run()
+    var legacy_store = load("res://src/run/run_save_store.gd").new(storage)
+    check(legacy_store.replace_run("legacy-fixture", "setup", legacy_run.export_snapshot()).ok, "prepare genuine v1 recovery fixture")
     # Invalid/incompatible slots preserve evidence before explicit replacement.
     var primary := storage.path_join("primary.json")
     var backup := storage.path_join("backup.json")

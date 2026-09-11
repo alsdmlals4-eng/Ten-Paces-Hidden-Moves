@@ -1,0 +1,424 @@
+{
+  "status": "SPECIFIED_CHARACTER_VARIABLE_LOADOUT_PROPOSAL_FINAL_USER_APPROVAL_PENDING",
+  "cost_basis": "Additional training after acquiring a manual at mastery 3; acquisition opportunity cost is separate.",
+  "next_star_costs": {
+    "4": 2,
+    "5": 3,
+    "6": 4,
+    "7": 5,
+    "8": 6,
+    "9": 8,
+    "10": 10
+  },
+  "stage_budget_fraction_percent": [
+    0,
+    4,
+    10,
+    17,
+    25,
+    36,
+    49,
+    64,
+    81,
+    100
+  ],
+  "allocation_policy": "Start every authored manual at 3; spend each stage budget on the least-complete affordable manual relative to its authored total training cost; ties follow authored order; carry remaining budget, no power-equivalence claim.",
+  "stat_totals": [
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    37,
+    40
+  ],
+  "loadouts": {
+    "slot1_yeongyo": {
+      "manuals": [
+        {
+          "id": "mount_hua_plum_blossom_sword",
+          "final_mastery": 10
+        },
+        {
+          "id": "mount_hua_purple_mist_art",
+          "final_mastery": 5
+        }
+      ],
+      "role": "집중 연격형",
+      "tactics": {
+        "combination": "매화 연격으로 회피 횟수와 방어의 빈틈을 시험하고 자하토납으로 다음 공격 자원을 마련한다.",
+        "weakness": "수련을 검 하나에 몰아 회피·거리 재배치의 고급 선택이 적다.",
+        "counterplay": "연격의 타격 단위와 사거리 이탈을 비교하고, 자원 정비 뒤 재진입 시점을 바꾼다."
+      },
+      "acquisition_count": 2,
+      "acquisition_policy": "All authored manuals exist at 3 from encounter stage 1. Count is an opportunity-cost axis, not free player acquisition or a loadout cap."
+    },
+    "slot1_dogyeom": {
+      "manuals": [
+        {
+          "id": "beggars_dragon_subduing_palm",
+          "final_mastery": 10
+        },
+        {
+          "id": "shaolin_arhat_vajra_art",
+          "final_mastery": 7
+        }
+      ],
+      "role": "안정 후 장격형",
+      "tactics": {
+        "combination": "금강호체로 버틸 조건을 마련하고 강룡장결의 장타로 압박한다. 두 맨손 무공이 전진과 안정의 역할을 나눈다.",
+        "weakness": "보법 고급기 없이 공격 후 정비가 필요하다. 강건은 피해 면제가 아니다.",
+        "counterplay": "강건을 무적으로 오해하지 말고 자원과 공개 전조를 함께 읽어 정비 수를 노린다."
+      },
+      "acquisition_count": 2,
+      "acquisition_policy": "All authored manuals exist at 3 from encounter stage 1. Count is an opportunity-cost axis, not free player acquisition or a loadout cap."
+    },
+    "slot1_chaeryeong": {
+      "manuals": [
+        {
+          "id": "nangong_boundless_sky_sword",
+          "final_mastery": 10
+        },
+        {
+          "id": "xiaoyao_lingbo_footwork",
+          "final_mastery": 7
+        },
+        {
+          "id": "mount_hua_purple_mist_art",
+          "final_mastery": 3
+        }
+      ],
+      "role": "역진입 검뢰형",
+      "tactics": {
+        "combination": "창궁검뢰와 소요환위의 위치 변화로 접근·이탈 시점을 바꾼다. 자하는 낮은 성수의 자원 보조다.",
+        "weakness": "주력에 비해 호신 수련이 얕아 맞교환을 반복하면 자원이 흔들린다.",
+        "counterplay": "지난 역진입 뒤의 거리와 잔여 자원을 보고 기다리기와 짧은 압박을 섞는다."
+      },
+      "acquisition_count": 3,
+      "acquisition_policy": "All authored manuals exist at 3 from encounter stage 1. Count is an opportunity-cost axis, not free player acquisition or a loadout cap."
+    },
+    "slot2_mukjin": {
+      "manuals": [
+        {
+          "id": "shaolin_arhat_vajra_art",
+          "final_mastery": 10
+        },
+        {
+          "id": "beggars_dragon_subduing_palm",
+          "final_mastery": 10
+        }
+      ],
+      "role": "쌍절초 맨손형",
+      "tactics": {
+        "combination": "나한의 방어·장격과 강룡의 공격에 수련을 집중한다. 절초 두 종류를 해금하지만 같은 기세·자원을 공유한다.",
+        "weakness": "추가 수련76점의 고비용형. 두 절초가 동시에 공짜 발동하지 않고 고급 보법도 없다.",
+        "counterplay": "절초 해금 수보다 실제 기세와 발동 조건을 읽는다. 거리를 어긋나게 만들어 큰 수의 비용을 드러낸다."
+      },
+      "acquisition_count": 2,
+      "acquisition_policy": "All authored manuals exist at 3 from encounter stage 1. Count is an opportunity-cost axis, not free player acquisition or a loadout cap."
+    },
+    "slot2_seokmu": {
+      "manuals": [
+        {
+          "id": "hebei_peng_five_tigers_saber",
+          "final_mastery": 9
+        },
+        {
+          "id": "shaolin_arhat_vajra_art",
+          "final_mastery": 9
+        },
+        {
+          "id": "mount_hua_purple_mist_art",
+          "final_mastery": 5
+        }
+      ],
+      "role": "중량 응수형",
+      "tactics": {
+        "combination": "팽가의 7성 공격과 9성 강화, 나한의 호체·장격을 엮어 큰 전조에 대응한다.",
+        "weakness": "절초가 없으며 정면 내구를 우회하는 거리 변화에 매번 답할 수 없다.",
+        "counterplay": "짧은 수를 반복할 때 먼저 압박한다는 반례를 이용해 타이밍을 바꾼다."
+      },
+      "acquisition_count": 3,
+      "acquisition_policy": "All authored manuals exist at 3 from encounter stage 1. Count is an opportunity-cost axis, not free player acquisition or a loadout cap."
+    },
+    "slot2_danso": {
+      "manuals": [
+        {
+          "id": "mount_hua_purple_mist_art",
+          "final_mastery": 7
+        },
+        {
+          "id": "mount_hua_plum_blossom_sword",
+          "final_mastery": 5
+        },
+        {
+          "id": "xiaoyao_lingbo_footwork",
+          "final_mastery": 5
+        },
+        {
+          "id": "shaolin_arhat_vajra_art",
+          "final_mastery": 5
+        },
+        {
+          "id": "wudang_taiji_sword",
+          "final_mastery": 5
+        }
+      ],
+      "role": "다섯 갈래 호신형",
+      "tactics": {
+        "combination": "자하회천을 중심으로 기초 연격·보법·호체·태극 응수를 선택한다. 다섯 권을 소유해도 배치 수와 자원은 늘지 않는다.",
+        "weakness": "선택은 넓지만 주력 외 7성 응용과 모든 절초가 없다. 조합 탐색 비용도 크다.",
+        "counterplay": "만능 적이라 가정하지 말고 공개된 자원 고갈 뒤의 공격 전환과 짧은 수의 빈틈을 읽는다."
+      },
+      "acquisition_count": 5,
+      "acquisition_policy": "All authored manuals exist at 3 from encounter stage 1. Count is an opportunity-cost axis, not free player acquisition or a loadout cap."
+    },
+    "slot3_seolha": {
+      "manuals": [
+        {
+          "id": "beggars_dragon_subduing_palm",
+          "final_mastery": 9
+        },
+        {
+          "id": "xiaoyao_lingbo_footwork",
+          "final_mastery": 9
+        },
+        {
+          "id": "mount_hua_purple_mist_art",
+          "final_mastery": 7
+        }
+      ],
+      "role": "거리 장풍형",
+      "tactics": {
+        "combination": "강룡의 거리 조건을 소요의 재배치로 맞추고 자하회천으로 지속력을 보완한다.",
+        "weakness": "절초가 없고 코너에서는 선호 거리를 유지하기 어렵다.",
+        "counterplay": "장풍 이미지 대신 실제 사거리·이동 가능 공간을 보고 코너의 짧은 맞교환 반례를 시험한다."
+      },
+      "acquisition_count": 3,
+      "acquisition_policy": "All authored manuals exist at 3 from encounter stage 1. Count is an opportunity-cost axis, not free player acquisition or a loadout cap."
+    },
+    "slot3_uram": {
+      "manuals": [
+        {
+          "id": "yang_family_spear",
+          "final_mastery": 10
+        },
+        {
+          "id": "shaolin_arhat_vajra_art",
+          "final_mastery": 5
+        }
+      ],
+      "role": "창끝 집중형",
+      "tactics": {
+        "combination": "양가창결의 사거리 끝과 회마창을 중심으로 금강호체를 최소 보험으로 둔다.",
+        "weakness": "고급 보법 없이 가까운 거리에서 재배치 비용을 치른다.",
+        "counterplay": "창끝 조건을 비켜 들어가되 반드시 후퇴할 것이라는 단정을 피한다."
+      },
+      "acquisition_count": 2,
+      "acquisition_policy": "All authored manuals exist at 3 from encounter stage 1. Count is an opportunity-cost axis, not free player acquisition or a loadout cap."
+    },
+    "slot3_biyeon": {
+      "manuals": [
+        {
+          "id": "sichuan_tang_hidden_weapons",
+          "final_mastery": 7
+        },
+        {
+          "id": "xiaoyao_lingbo_footwork",
+          "final_mastery": 7
+        },
+        {
+          "id": "mount_hua_purple_mist_art",
+          "final_mastery": 5
+        },
+        {
+          "id": "mount_hua_plum_blossom_sword",
+          "final_mastery": 5
+        }
+      ],
+      "role": "경공 암기 연계형",
+      "tactics": {
+        "combination": "추혼표·폭우이화침과 소요환위를 축으로, 근접 매화 초식은 추격에 대한 제한된 대응으로 둔다.",
+        "weakness": "절초가 없고 높은 관찰 강화가 적에게 권한을 주어서는 안 된다. 투척과 근접의 모션 전환이 필요하다.",
+        "counterplay": "추격을 멈췄을 때 역진입하는지 지난 결과로 확인한다. 원거리 연타에는 타격 단위 방어를 비교한다."
+      },
+      "acquisition_count": 4,
+      "acquisition_policy": "All authored manuals exist at 3 from encounter stage 1. Count is an opportunity-cost axis, not free player acquisition or a loadout cap."
+    },
+    "slot4_cheongheo": {
+      "manuals": [
+        {
+          "id": "wudang_taiji_sword",
+          "final_mastery": 10
+        },
+        {
+          "id": "mount_hua_purple_mist_art",
+          "final_mastery": 10
+        }
+      ],
+      "role": "쌍심 후수형",
+      "tactics": {
+        "combination": "태극의 응수와 자하의 회복 두 축을 깊게 익힌다. 큰 수 둘은 자원과 기세 때문에 서로 기회비용을 갖는다.",
+        "weakness": "76점의 고비용 집중형이며 고급 보법·연격 선택은 적다. 회복이 공격 기회를 소비한다.",
+        "counterplay": "같은 성공 패턴을 반복하지 않고, 실제 회복 뒤 자원과 준비 상태를 보고 공격 순서를 바꾼다."
+      },
+      "acquisition_count": 2,
+      "acquisition_policy": "All authored manuals exist at 3 from encounter stage 1. Count is an opportunity-cost axis, not free player acquisition or a loadout cap."
+    },
+    "slot4_damwol": {
+      "manuals": [
+        {
+          "id": "xiaoyao_lingbo_footwork",
+          "final_mastery": 10
+        },
+        {
+          "id": "wudang_taiji_sword",
+          "final_mastery": 7
+        },
+        {
+          "id": "mount_hua_purple_mist_art",
+          "final_mastery": 5
+        }
+      ],
+      "role": "월하 후수형",
+      "tactics": {
+        "combination": "능파미보와 태극 응수로 큰 전조를 흘리고 자하토납으로 정비한다. 보법이 대표이며 검은 대응 수단이다.",
+        "weakness": "기세 없는 초반에는 절초 회피를 기대할 수 없고 선제 압박력이 제한된다.",
+        "counterplay": "큰 수만 던지지 말고 짧은 압박과 기다림을 섞어 남은 회피 횟수를 읽는다."
+      },
+      "acquisition_count": 3,
+      "acquisition_policy": "All authored manuals exist at 3 from encounter stage 1. Count is an opportunity-cost axis, not free player acquisition or a loadout cap."
+    },
+    "slot4_jinryeo": {
+      "manuals": [
+        {
+          "id": "nangong_boundless_sky_sword",
+          "final_mastery": 7
+        },
+        {
+          "id": "mount_hua_plum_blossom_sword",
+          "final_mastery": 7
+        },
+        {
+          "id": "wudang_taiji_sword",
+          "final_mastery": 5
+        },
+        {
+          "id": "xiaoyao_lingbo_footwork",
+          "final_mastery": 5
+        },
+        {
+          "id": "mount_hua_purple_mist_art",
+          "final_mastery": 5
+        }
+      ],
+      "role": "유인 다재형",
+      "tactics": {
+        "combination": "창궁·매화의 7성 응용을 서로 다른 접근으로 쓰고 태극·소요·자하의 기초로 흔든다.",
+        "weakness": "모든 절초가 없고 9성 강화도 없다. 넓은 후보가 곧 높은 위력이나 무제한 행동 수를 뜻하지 않는다.",
+        "counterplay": "보이는 틈을 확정 의도로 해석하지 않고 지난 공개 패턴과 잔여 수를 함께 비교한다."
+      },
+      "acquisition_count": 5,
+      "acquisition_policy": "All authored manuals exist at 3 from encounter stage 1. Count is an opportunity-cost axis, not free player acquisition or a loadout cap."
+    },
+    "slot5_jeogu": {
+      "manuals": [
+        {
+          "id": "mount_hua_plum_blossom_sword",
+          "final_mastery": 10
+        },
+        {
+          "id": "wudang_taiji_sword",
+          "final_mastery": 9
+        },
+        {
+          "id": "xiaoyao_lingbo_footwork",
+          "final_mastery": 5
+        }
+      ],
+      "role": "낙화 연환형",
+      "tactics": {
+        "combination": "매화 연격 뒤 태극 응수를 배치해 역공을 견디고 낮은 소요보법으로 재배치한다.",
+        "weakness": "기력 소모와 사거리 이탈로 연계가 끊길 수 있고 보법 고급기는 없다.",
+        "counterplay": "연격이 끝났다고 단정하지 말고 남은 수·방어·회피를 보고 안전한 단독 수의 반례를 읽는다."
+      },
+      "acquisition_count": 3,
+      "acquisition_policy": "All authored manuals exist at 3 from encounter stage 1. Count is an opportunity-cost axis, not free player acquisition or a loadout cap."
+    },
+    "slot5_pungmok": {
+      "manuals": [
+        {
+          "id": "hebei_peng_five_tigers_saber",
+          "final_mastery": 10
+        },
+        {
+          "id": "beggars_dragon_subduing_palm",
+          "final_mastery": 7
+        },
+        {
+          "id": "shaolin_arhat_vajra_art",
+          "final_mastery": 5
+        }
+      ],
+      "role": "박자 변환형",
+      "tactics": {
+        "combination": "도법의 큰 궤적과 강룡의 장타로 같은 공격의 반복을 피하고 나한의 기초 호체를 섞는다.",
+        "weakness": "검·도·장풍의 겉모습만 바꾼 동일 동작으로는 인물이 읽히지 않는다. 자원 부족시 연환 선택이 줄어든다.",
+        "counterplay": "박자 변화 뒤 실제 남은 수를 확인하고 체력 우위에서 안전한 수로 전환하는 경향을 비교한다."
+      },
+      "acquisition_count": 3,
+      "acquisition_policy": "All authored manuals exist at 3 from encounter stage 1. Count is an opportunity-cost axis, not free player acquisition or a loadout cap."
+    },
+    "slot5_rajin": {
+      "manuals": [
+        {
+          "id": "yang_family_spear",
+          "final_mastery": 9
+        },
+        {
+          "id": "xiaoyao_lingbo_footwork",
+          "final_mastery": 9
+        },
+        {
+          "id": "mount_hua_purple_mist_art",
+          "final_mastery": 5
+        }
+      ],
+      "role": "창로 설계형",
+      "tactics": {
+        "combination": "양가 7성 연환과 소요 7성 재배치를 9성까지 다듬어 거리와 순서를 연결한다.",
+        "weakness": "절초가 없으며 진입이 막히면 공격 계획의 효율이 떨어진다.",
+        "counterplay": "첫 이동을 쫓는 대신 최종 사거리와 남은 수를 보고 방어 전환의 반례를 확인한다."
+      },
+      "acquisition_count": 3,
+      "acquisition_policy": "All authored manuals exist at 3 from encounter stage 1. Count is an opportunity-cost axis, not free player acquisition or a loadout cap."
+    },
+    "masked_baekmujin": {
+      "manuals": [
+        {
+          "id": "mount_hua_plum_blossom_sword",
+          "final_mastery": 9
+        },
+        {
+          "id": "xiaoyao_lingbo_footwork",
+          "final_mastery": 7
+        },
+        {
+          "id": "wudang_taiji_sword",
+          "final_mastery": 7
+        }
+      ],
+      "role": "가면 역진입형",
+      "tactics": {
+        "combination": "매화 연격을 소요 재진입과 태극 응수로 보완한다. 공개된 지난 접근에만 반응한다.",
+        "weakness": "절초·자하 회복이 없고 방어와 재진입을 연속 소비하면 자원이 마른다.",
+        "counterplay": "추격을 멈춘 뒤 먼저 압박하는 반례를 관찰한다. 복면이 숨은 계획 열람 능력을 뜻하지 않는다."
+      },
+      "acquisition_count": 3,
+      "acquisition_policy": "All authored manuals exist at 3 from encounter stage 1. Count is an opportunity-cost axis, not free player acquisition or a loadout cap."
+    }
+  }
+}

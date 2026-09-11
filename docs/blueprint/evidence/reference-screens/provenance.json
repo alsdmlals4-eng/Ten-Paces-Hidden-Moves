@@ -1,0 +1,73 @@
+{
+  "source": "C:\\Users\\user\\Desktop\\비교샷\\십보강호\\블루스크린 ver.1(최신)",
+  "source_sha256": "c3919a8b34c5bb98378cc619694674f1a48efa83d761abd6c30551b8cd896529",
+  "source_page": 4,
+  "status": "HISTORICAL_VISUAL_REFERENCE_NOT_RUNTIME_OR_RULE_CANON",
+  "operation": "Lossless extraction of existing embedded image bytes; no generated or repainted content.",
+  "images": [
+    {
+      "file": "158cb5092d39d1960f9c973de2cdf344.png",
+      "sha256": "79ec0532fcd62256bc3952b23d0bcb13929b3a5c1925a46e439ae38c2341b100",
+      "size": [
+        525,
+        282
+      ]
+    },
+    {
+      "file": "17c9efce59e2c227496b4e2d55111800.png",
+      "sha256": "03837e0ccb461b5426eee06ce5c5a3ceabd2af1b99655e9169a4bd0ad5780541",
+      "size": [
+        1672,
+        941
+      ]
+    },
+    {
+      "file": "54d7b849fff7d6b9a639007f08147401.png",
+      "sha256": "dd3af977dbaa5a086af37b85aab01b8f8224699be6c42c17841c7dd96b107692",
+      "size": [
+        1672,
+        941
+      ]
+    },
+    {
+      "file": "68229fae70621ec758545b00e8624af9.png",
+      "sha256": "514d17afc5c78fae7156d53d66a1141eba9b472e24ecd82131279e48debac900",
+      "size": [
+        1672,
+        941
+      ]
+    },
+    {
+      "file": "939bf00a7266c6197d592f93b3fae1a0.png",
+      "sha256": "d6e344c2a982f8d50ad6a9340924637ab980a639163c0c7e27107ae804514bb7",
+      "size": [
+        1672,
+        941
+      ]
+    },
+    {
+      "file": "b0f620fd6acfe845360e15ce3114a03b.png",
+      "sha256": "cde49087651722cb7d7a0a700cee5deec9f8c93271f2c68fca49867ea127bb7a",
+      "size": [
+        1672,
+        941
+      ]
+    },
+    {
+      "file": "bc5285da653d3e1abd24486b2cf20ffc.png",
+      "sha256": "7381913d7ddc9abcdbec4746cc398bf4168f15e42d416bc11d2a9002b6bd95fd",
+      "size": [
+        1672,
+        941
+      ]
+    },
+    {
+      "file": "df7871ed4f554e76167d50b9bd0a5ffb.png",
+      "sha256": "56cc5420a5e763c899a08d34931e9e021f949a9584ee7f9570b8acf1559cc07a",
+      "size": [
+        1672,
+        941
+      ]
+    }
+  ]
+}

@@ -1,13 +1,15 @@
 {
   "schema_version": 1,
+  "current_opponent_support_budget_decision": "TEN-DEC-20260911-CHARACTER-VARIABLE-LOADOUT-APPROVAL-REVIEW-01",
+  "blueprint_revision_status": "USER_APPROVED_RUNTIME_IMPLEMENTED_MACHINE_VERIFIED_REMOTE_PENDING",
   "current_opponent_roster_growth_decision": "TEN-DEC-20260909-RUN-START-OPPONENT-ROSTER-GROWTH-01",
-  "opponent_roster_growth_status": "USER_DIRECTION_APPROVED_SPECIFICATION_IN_PROGRESS_RUNTIME_NOT_IMPLEMENTED",
+  "opponent_roster_growth_status": "V2_FROZEN_ROSTER_IMPLEMENTED_LEGACY_V1_PRESERVED",
   "current_internal_review_cadence_decision": "TEN-DEC-20260909-TWO-ROUND-INTERNAL-REVIEW-01",
   "internal_review_cadence": "EXACTLY_TWO_FULL_SCOPE_ROUNDS_NO_AUTOMATIC_THIRD",
   "pr_integration_authority": "TEN-DEC-20260908-STANDING-PR-INTEGRATION-01",
   "pr_integration_policy": "RELATED_EXISTING_PRS_REVIEW_ABSORB_CORRECT_VERIFY_MERGE_WITHOUT_NAMED_REAPPROVAL",
   "project": "TEN_PACES",
-  "updated_date": "2026-09-09",
+  "updated_date": "2026-09-11",
   "combat_feedback_continuation": {
     "decision": "TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01",
     "integration_status": "MAIN_MERGED_VERIFIED_PR335",
@@ -362,5 +364,230 @@
     "source_commit": "eda26a97f25a931ac02ba739d5c4921720512d41",
     "machine_tests": "499_PASS_315_57_SECONDS",
     "human_device_release": "NOT_RUN"
+  },
+  "current_blueprint_artifact": "output/pdf/TEN_PACES_HUMAN_BLUEPRINT_20260911_APPROVAL_REVIEW.pdf",
+  "blueprint_readiness_owner": "docs/blueprint/IMPLEMENTATION_HANDOFF.md",
+  "blueprint_final_approval": {
+    "status": "USER_APPROVED",
+    "date": "2026-09-11",
+    "user_message": "좋아 확정하고&#x20; ㅈ",
+    "approved_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101",
+    "artifact": "output/pdf/TEN_PACES_HUMAN_BLUEPRINT_20260911_APPROVAL_REVIEW.pdf",
+    "artifact_sha256": "fd5b93cb9cbce58cbacefe3d9953a88fb6e14a259c351c699bb5d9abc94832e3",
+    "scope": [
+      "16 character loadouts and 160 growth rows",
+      "character-specific four-band epithets",
+      "30 manual illustrations and 16 opponent portraits",
+      "one clash explanatory keyscene, not a combat animation",
+      "SWOT and implementation handoff specification"
+    ],
+    "approved_visual_inputs": [
+      {
+        "path": "output/blueprint-candidates/plum-star3-framing-v2.png",
+        "sha256": "a952582b93f2aec38e7bff89f2c2ae79b8e093c348a403bcd1e4e403d69385e5"
+      },
+      {
+        "path": "output/blueprint-candidates/clash-keyscene-v1.png",
+        "sha256": "19c1fba9dce789acb55f863dc3902cc1828adf11b72366f1e8430d9e63fa884f"
+      },
+      {
+        "path": "output/blueprint-candidates/sky-star3-tip-v3.png",
+        "sha256": "fc92f63e04fe0a30b5984712209bb6ad596024507326afd4fc4556889ff0ea93"
+      },
+      {
+        "path": "output/blueprint-candidates/dragon-star10-candidate.png",
+        "sha256": "7f0290daf316525366d393268ebf758be953c14b0d337ed3aa7b8738b7a19f06"
+      },
+      {
+        "path": "output/blueprint-candidates/opponent-yeongyo.png",
+        "sha256": "581208eb52b61a352c1b5864bd514943b7ddb9f3c54eae40d695ed918bdaf5f4"
+      },
+      {
+        "path": "output/blueprint-candidates/opponent-dogyeom.png",
+        "sha256": "fe9aa7f3929b2dd01e04df308129f1f73672b36101ab91f68b785761779df8f9"
+      },
+      {
+        "path": "output/blueprint-candidates/opponent-chaeryeong.png",
+        "sha256": "1f6ef29e8090d1adcfb0ef4ddec80bce4c948c18c5443943ad87f20c33b85b97"
+      },
+      {
+        "path": "output/blueprint-candidates/opponent-mukjin.png",
+        "sha256": "cad7c70d41a5c77f9b04e4833dba0ebd3edc4989c9b5a0be7924b588040ef92b"
+      },
+      {
+        "path": "output/blueprint-candidates/opponent-seokmu.png",
+        "sha256": "58005db0fb336cebc9716fed57fe998b9e6edf05119700c020f334fe2aaaeeec"
+      },
+      {
+        "path": "output/blueprint-candidates/opponent-danso.png",
+        "sha256": "fcaedfae89465e8e5cb7d190ef0630656658b3f284080ff477bbc623e34ee133"
+      },
+      {
+        "path": "output/blueprint-candidates/opponent-seolha.png",
+        "sha256": "10c32f5bb55c443427b8469ceba2f8f0f25a69038d247a5bf53aee716065992b"
+      },
+      {
+        "path": "output/blueprint-candidates/opponent-uram.png",
+        "sha256": "b526ae90d4a0c9dd7c3dcba646e50be086071e1f043ecce5c9dd547e197ffc52"
+      },
+      {
+        "path": "output/blueprint-candidates/opponent-biyeon.png",
+        "sha256": "f147658c486db7b398828a22339ca74bd638f5e6f31af6a20d456f387e6ba15e"
+      },
+      {
+        "path": "output/blueprint-candidates/opponent-cheongheo.png",
+        "sha256": "6d6bdb582b64573cc6dd019617d09a0e07683ab48bd89bd7269844cacc2a9753"
+      },
+      {
+        "path": "output/blueprint-candidates/opponent-damwol.png",
+        "sha256": "53037d9654d8c991e0779001989309c71ddb107985752a3d20c358d3055247f5"
+      },
+      {
+        "path": "output/blueprint-candidates/opponent-jinryeo.png",
+        "sha256": "020ebfb46c12921674532d29dd079456d130ec383c720563ffa59f7362079944"
+      },
+      {
+        "path": "output/blueprint-candidates/opponent-jeogu.png",
+        "sha256": "46a46e89c9c24169fb4b0510d5151f931912b895f607737f10986fe28b4692c5"
+      },
+      {
+        "path": "output/blueprint-candidates/opponent-pungmok.png",
+        "sha256": "8eb4255f0c135e9dd9bdfe5502f350c88e9755ea1b1575768cf4a43d32c8d5e1"
+      },
+      {
+        "path": "output/blueprint-candidates/opponent-rajin.png",
+        "sha256": "6b6a3ef762e910766a487f46d04c0d757552338f72685a0da1956fd2ffd1da04"
+      },
+      {
+        "path": "output/blueprint-candidates/opponent-baekmujin-v1.png",
+        "sha256": "ec373989585c1959fe09b0d850a41a64605b5e237d961aca832337a73daf34d7"
+      },
+      {
+        "path": "output/blueprint-candidates/plum-star7-candidate.png",
+        "sha256": "3110b02a85b42efb38cf6e7830e44662b95878ca3411937497f5a9a63f229c7c"
+      },
+      {
+        "path": "output/blueprint-candidates/plum-star10-candidate.png",
+        "sha256": "fbb369cf1687ebeb91a45a57f6e48040d67c8506fa93bb21276dc8f311ecd0a6"
+      },
+      {
+        "path": "output/blueprint-candidates/arhat-star3-candidate.png",
+        "sha256": "a6af1d7c5ea12f01e3e2a6025b3baa9b12da07d728954ee88459669f3568cf91"
+      },
+      {
+        "path": "output/blueprint-candidates/arhat-star7-candidate.png",
+        "sha256": "44e39c6542be6395476c9851f2c3fc743533c2b5ab8cda6cab5fcde740f9b0b6"
+      },
+      {
+        "path": "output/blueprint-candidates/arhat-star10-candidate.png",
+        "sha256": "37adb7365c1f532d8dad6d91d127daf3f91499f8d00723d9e60527ec7801bc2c"
+      },
+      {
+        "path": "output/blueprint-candidates/taiji-star3-candidate.png",
+        "sha256": "48775772c82903ab17161b1ec8ae46cbf0e3ab86f40b1ab389607ae7fa1a407e"
+      },
+      {
+        "path": "output/blueprint-candidates/taiji-star7-candidate.png",
+        "sha256": "f137cf97768749a139b58e8910d6a22de0871a1c0e6773dd4b880ef047d9974e"
+      },
+      {
+        "path": "output/blueprint-candidates/taiji-star10-candidate.png",
+        "sha256": "db4b4d2ff000ac3763e15b85f377de58d517b1299d2a09c81acb4c6794224878"
+      },
+      {
+        "path": "output/blueprint-candidates/spear-star3-candidate.png",
+        "sha256": "6f4e099f0e1ba1bcfb6902c17797e734c874a5e7f11c01bd3e2b77174513c276"
+      },
+      {
+        "path": "output/blueprint-candidates/spear-star7-structure-v2.png",
+        "sha256": "27d66382d85306c241e1f264921e9b2d85888e3dd611bc3fda5cac66fb783688"
+      },
+      {
+        "path": "output/blueprint-candidates/spear-star10-hands-v2.png",
+        "sha256": "8e598f271e12880ae5075e468ae305f45aa433e81a714a30f89bcb009f96f6e9"
+      },
+      {
+        "path": "output/blueprint-candidates/mist-star3-candidate.png",
+        "sha256": "004e36f7c0257604b1c402cbedae00c9014552f866657a60f4d12cb06b09b7d7"
+      },
+      {
+        "path": "output/blueprint-candidates/mist-star7-candidate.png",
+        "sha256": "c4980258d84203a7d8c3f37db58a327037f53316454564ddd81bdb87596793bc"
+      },
+      {
+        "path": "output/blueprint-candidates/mist-star10-candidate.png",
+        "sha256": "1a9b8de2a8c3e942f167d8d823887f622f2e2b55b1c6ac6f9db73bf946c734ec"
+      },
+      {
+        "path": "output/blueprint-candidates/foot-star3-candidate.png",
+        "sha256": "7ebe09b25094dcf90c3d070256a4f0a68afae07f3be56a9ef3362dd1124d5ac6"
+      },
+      {
+        "path": "output/blueprint-candidates/foot-star7-candidate.png",
+        "sha256": "b3a04756df98e9248ca9771591e62e68e3766d3c02f43c12196d86f73d35192a"
+      },
+      {
+        "path": "output/blueprint-candidates/foot-star10-candidate.png",
+        "sha256": "1028a443d91e511503170dd3046745280ba0746ef8b12d1a954a144490159a5a"
+      },
+      {
+        "path": "output/blueprint-candidates/dragon-star3-candidate.png",
+        "sha256": "615e1534f195cc380b7c10c792f23459c6acaa8a663bb366cf91da1a0f5ae5d5"
+      },
+      {
+        "path": "output/blueprint-candidates/dragon-star7-candidate.png",
+        "sha256": "1cb18f2f7d7442088824d3d17db280e246ea907300f14c1d0afcfd623b007c60"
+      },
+      {
+        "path": "output/blueprint-candidates/tang-star3-candidate.png",
+        "sha256": "4c31cc0e859d5a3b373d39e3daa5c54570c2f531bcad4dde5bbc319455563124"
+      },
+      {
+        "path": "output/blueprint-candidates/tang-star7-candidate.png",
+        "sha256": "46274f6c84822512c8212116e39ca217217a267bbf747baf2ad7814dd5839638"
+      },
+      {
+        "path": "output/blueprint-candidates/tang-star10-candidate.png",
+        "sha256": "e532b66be720b2cd67ea57b521a442a0d58fbf5b973860d851cf61a3eefa1f30"
+      },
+      {
+        "path": "output/blueprint-candidates/saber-star3-grip-v2.png",
+        "sha256": "6c9c3d268566ac7d439acbfa294eb5beaa448f3d63769a3c7d008cfd062d8219"
+      },
+      {
+        "path": "output/blueprint-candidates/saber-star7-candidate.png",
+        "sha256": "141b1aeb560abe8a6edafd317d723d4a92d1749adc67ab47169cf200a6c3bc7e"
+      },
+      {
+        "path": "output/blueprint-candidates/saber-star10-grip-v2.png",
+        "sha256": "9379005eb2c70b50566eb1137b77f60206d11ebba4a34bfc6352cbdfceaf308e"
+      },
+      {
+        "path": "output/blueprint-candidates/sky-star7-candidate.png",
+        "sha256": "d068c9eb90b98259ef5f647bef788845608b49cd8d346722e1fed3df772d5723"
+      },
+      {
+        "path": "output/blueprint-candidates/sky-star10-candidate.png",
+        "sha256": "d7f0d05d98b994168e9bc3668611710a286e9402465369a2abad96b532b6b384"
+      }
+    ],
+    "runtime_implemented": true,
+    "human_balance_verified": false,
+    "approval_owner": "docs/decisions/2026-09-11_CHARACTER_VARIABLE_LOADOUT_APPROVAL_REVIEW.md"
+  },
+  "variable_roster_implementation": {
+    "status": "LOCAL_MACHINE_VERIFIED_REMOTE_PENDING",
+    "report": "docs/operations/2026-09-11_VARIABLE_ROSTER_IMPLEMENTATION.md",
+    "legacy_v1": "PRESERVED",
+    "native_campaign": {
+      "duels": 10,
+      "wins": 10,
+      "rewards": 10,
+      "routes": 36,
+      "activations": 295,
+      "elapsed_ms": 201094
+    },
+    "human_balance": "NOT_RUN",
+    "android": "NOT_RUN"
   }
 }

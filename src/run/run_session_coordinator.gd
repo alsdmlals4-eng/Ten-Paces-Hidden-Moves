@@ -39,12 +39,14 @@ func accepts_commands() -> bool:
 func transact(command: Callable, replace: bool = false) -> bool:
     if not accepts_commands(): return false
     busy = true
+    var previous_save_id := save_id
+    if replace:
+        save_id = "%d-%d-%d" % [Time.get_unix_time_from_system(), OS.get_process_id(), Time.get_ticks_usec()]
     if not bool(command.call()):
+        save_id = previous_save_id
         busy = false
         shell._publish_session_screen()
         return false
-    if replace:
-        save_id = "%d-%d-%d" % [Time.get_unix_time_from_system(), OS.get_process_id(), Time.get_ticks_usec()]
     _prepare_combat()
     _apply_queued_terminal()
     var ok := _stage_current("replace" if replace else "save")

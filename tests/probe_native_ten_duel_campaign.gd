@@ -6,6 +6,8 @@ var started_ms := 0
 var last_input := "none"
 var terminal_outcomes := {"win": 0, "draw": 0}
 const WALL_TIMEOUT_MS := 900000
+const POSITIVE_FIXTURE_PATH := "res://tests/fixtures/native_variable_initial_v2.json"
+const POSITIVE_FIXTURE_SHA256 := "f8f0f998e38742b352307a347834f1c2118e2b724e108a2e68deb22400cbfb96"
 
 func run_probe() -> void:
     var disabled := Button.new()
@@ -52,12 +54,40 @@ func run_probe() -> void:
             printerr("NATIVE_GUARD_FAIL: ", failure)
         quit(1)
         return
+    var fresh_random := "--fresh-random" in OS.get_cmdline_user_args()
+    var fixture_storage := "user://native-positive-fixture-%d-%d" % [OS.get_process_id(), Time.get_ticks_usec()]
+    for argument in OS.get_cmdline_user_args():
+        if argument.begins_with("--run-save-dir="): fixture_storage = argument.trim_prefix("--run-save-dir=")
+    if not fresh_random:
+        var codec = load("res://src/run/run_checkpoint_codec.gd").new()
+        _require(FileAccess.get_sha256(POSITIVE_FIXTURE_PATH) == POSITIVE_FIXTURE_SHA256, "observed success fixture bytes must remain exact")
+        var decoded: Dictionary = codec.decode(FileAccess.get_file_as_string(POSITIVE_FIXTURE_PATH))
+        _require(decoded.get("ok", false), "observed initial fixture must pass current strict codec: " + str(decoded.get("error", "")))
+        if failures.is_empty():
+            var initial: Dictionary = decoded.payload
+            _require(initial.schema_version == 2 and initial.revision == 1 and initial.run_state.current_screen == "SETUP" and initial.roster_seed == 145571664 and initial.combat_checkpoint.is_empty(), "fixture must be the retained initial v2 SETUP, never a completed run")
+            var store = load("res://src/run/run_save_store.gd").new(fixture_storage)
+            var staged: Dictionary = store.replace_run(initial.save_id, initial.checkpoint_id, initial.run_state, initial.combat_checkpoint)
+            _require(staged.get("ok", false), "stage exact initial payload through real save store")
+            if staged.get("ok", false):
+                _require(staged.payload.run_state == initial.run_state and staged.payload.combat_checkpoint == initial.combat_checkpoint, "fixture staging must not modify the frozen run or combat payload")
+        if not failures.is_empty():
+            for failure in failures: printerr("NATIVE_FIXTURE_FAIL: ", failure)
+            quit(1)
+            return
     shell = load("res://scenes/run/vertical_slice_shell.tscn").instantiate()
+    shell.configure_save_storage(fixture_storage)
     root.add_child(shell)
     await process_frame
     await process_frame
     started_ms = Time.get_ticks_msec()
-    await _click(shell.find_child("MainStartButton", true, false), "title start")
+    # Positive path restores a prior real success's initial state through native Continue.
+    # Fresh-random remains explicit exploratory evidence and can legitimately lose.
+    await _click(shell.find_child("MainStartButton" if fresh_random else "MainContinueButton", true, false), "title start" if fresh_random else "title continue observed initial fixture")
+    var frozen: Dictionary = shell.run_state.export_snapshot()
+    var candidate_ids: Array = []
+    for encounter in frozen.get("resolved_encounters", []): candidate_ids.append(encounter.candidate_id)
+    print("NATIVE_FIXTURE ", JSON.stringify({"mode": "fresh_random_exploration" if fresh_random else "observed_success_initial_continue", "source_fixture_sha256": "" if fresh_random else POSITIVE_FIXTURE_SHA256, "roster_seed": frozen.get("roster_seed"), "candidate_ids": candidate_ids}))
     _require(shell.run_state.get_current_screen() == VerticalSliceRunState.SCREEN_SETUP, "title must reach setup")
     for manual_id in STARTERS:
         await _click(_meta_button(shell, "manual_id", manual_id), "starter " + manual_id)

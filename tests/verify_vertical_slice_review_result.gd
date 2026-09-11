@@ -199,7 +199,10 @@ func _verify_result_and_reward_contract() -> void:
     _expect_eq(shell.run_state.get_reward_history().size(), 1, "Confirmed reward receipt must move into RunState history exactly once.")
     var next_opponent: Dictionary = shell.run_state.get_route_target_opponent()
     _expect_true(not next_opponent.is_empty(), "Next opponent must lock when confirmed Result leaves for Route.")
-    _expect_eq(int(next_opponent.get("duel_slot", 0)), 1, "After Duel 1 Result the locked target must be the second Slot-1 campaign opponent.")
+    var next_encounter: Dictionary = shell.run_state.export_snapshot().resolved_encounters[1]
+    _expect_eq(int(next_opponent.get("stage", 0)), 2, "After Duel 1 Result the next target must be frozen encounter Stage 2.")
+    _expect_eq(next_opponent.get("encounter_id", ""), next_encounter.encounter_id, "Route target must retain the preselected encounter identity.")
+    _expect_eq(next_opponent.get("candidate_id", ""), next_encounter.candidate_id, "Route target must match the preselected candidate even when candidates repeat.")
     _expect_eq(str(opponent.get("candidate_id", "")), str(shell.run_state.get_current_opponent().get("candidate_id", "")), "Current opponent must remain Duel 1 until Route promotion.")
 
     shell.queue_free()

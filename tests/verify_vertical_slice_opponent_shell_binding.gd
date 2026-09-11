@@ -37,13 +37,18 @@ func _run() -> void:
     _expect_true(shell.start_new_run(), "Runtime shell must start a configured run.")
     var current: Dictionary = shell.run_state.get_current_opponent()
     _expect_true(not current.is_empty(), "Runtime shell must lock a Duel 1 candidate at run start.")
-    _expect_eq(int(current.get("duel_slot", 0)), 1, "Runtime shell Duel 1 candidate must belong to Slot 1.")
+    var encounter: Dictionary = shell.run_state.get_current_encounter()
+    _expect_eq(int(encounter.get("stage", 0)), 1, "New v2 run must start with the frozen Stage 1 encounter.")
+    _expect_eq(str(encounter.get("candidate_id", "")), str(current.get("candidate_id", "")), "Current candidate must match the frozen encounter, independent of its historical v1 slot.")
+    _expect_true(not str(encounter.get("encounter_id", "")).is_empty(), "Frozen encounter must have a distinct save/stage identity.")
 
     for manual_id in DEFAULT_STARTERS:
         _expect_true(shell.toggle_setup_manual(manual_id), "Starter selection must succeed before leaving Setup: %s" % manual_id)
     _expect_true(shell.advance_noncombat(), "SETUP → INTRO")
     _expect_true(shell.advance_noncombat(), "INTRO → BRIEFING")
     _expect_eq(str(shell.run_state.get_current_opponent().get("candidate_id", "")), str(current.get("candidate_id", "")), "Briefing must use the opponent already locked at run start.")
+
+    _expect_eq(shell.run_state.get_current_encounter(), encounter, "Briefing must preserve the complete frozen encounter without reroll or mastery changes.")
 
     shell.queue_free()
     await process_frame
