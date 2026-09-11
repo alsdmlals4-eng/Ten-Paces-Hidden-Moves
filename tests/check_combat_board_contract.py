@@ -196,7 +196,16 @@ def main() -> None:
         asset["path"]: asset["sha256"] for asset in approved["approved_visual_inputs"]
     }
     assert [asset for asset in asset_manifest["assets"] if asset["id"] in blueprint_ids] == blueprint_assets
-    original_assets = [asset for asset in asset_manifest["assets"] if asset["id"] not in blueprint_ids]
+    continuation_ids = {
+        "clash_sparks_ink_gold_v2", "player_sword_sequence_v1", "enemy_sword_sequence_v1",
+        "player_reactions_candidate_v2", "enemy_reactions_candidate_v2",
+    }
+    continuation_assets = [asset for asset in asset_manifest["assets"] if asset["id"] in continuation_ids]
+    assert {asset["id"] for asset in continuation_assets} == continuation_ids
+    assert len(continuation_assets) == len(continuation_ids)
+    for asset in continuation_assets:
+        assert hashlib.sha256(res_file(asset["path"]).read_bytes()).hexdigest() == asset["source_png_sha256"]
+    original_assets = [asset for asset in asset_manifest["assets"] if asset["id"] not in blueprint_ids | continuation_ids]
     assert len(original_assets) == blueprint["preserved_existing_record_count"] == 24
     original_digest = hashlib.sha256(json.dumps(original_assets, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     assert original_digest == blueprint["preserved_existing_records_sha256"]
@@ -213,7 +222,9 @@ def main() -> None:
         "frontal_courtyard_duel_background_02_v1",
         "frontal_courtyard_banner_overlay_01_v1",
         "player_wanderer_ink_v1",
+        "player_wanderer_battler_rgba_v2",
         "enemy_masked_ink_v1",
+        "enemy_masked_battler_rgba_v2",
         "dogyeom_status_portrait_01_v1",
         "player_sword_sequence_v1",
         "enemy_sword_sequence_v1",
@@ -224,6 +235,7 @@ def main() -> None:
         "martial_ultimate_card_illustration_atlas_01_v1",
         "ten_paces_hidden_moves_title_logo_01_v1",
         "attack_clash_ink_gold_atlas_01_v1",
+        "clash_sparks_ink_gold_v2",
         "ultimate_ink_gold_sprite_sheet_rgba",
         "status_hud_frame_01_v1",
         "current_action_slot_frame_01_v1",
@@ -457,7 +469,7 @@ def main() -> None:
     ))
     assert all(token in character_script for token in (
         "POSES.PLAYER_PATH",
-        "dogyeom_combat_battler_01_v1.png",
+        "POSES.DOGYEOM_PATH",
         "POSES.ENEMY_PATH",
         "get_render_texture",
         "character_art_path",
