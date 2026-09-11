@@ -74,3 +74,12 @@ GitHub main readback: ed2104d9. 기존 open PR199(문서 진입점), PR200(Base 
 실제 제품 결함도 분리해 교정했다. 카드가 생성된 뒤 native 글꼴 높이를 변경하면 설명이 카드 바깥으로 나가는 RED를 재현했다. summary 최소 높이 변경을 관찰해 그림 영역 50px와 설명 하단 여백을 함께 보존하도록 다시 배치한다. 720p 실행 버튼은 요청48px보다 scene 최소56px가 커 하단이 잘렸다. 실제 최소 높이로 버튼 및 관찰 패널 공간을 배분해 같은 경계 검사 RED→GREEN을 확인했다. Linux CI 결과는 별도 원격 readback 전까지 완료로 표시하지 않는다.
 
 Godot 4.7.1 Windows의 동일 native 검사와 1280x720/1280x800/1920x1080 영향 회귀 증거는 기존 validation 폴더에 보관한다. 1800프레임 제한으로 완료 문자열 이전 종료된 frontal partition 실행은 PASS가 아니며, 제한 없이 다시 실행한다. context invalidation은 전용 성공 문자열 ACTION_DOCK_CONTEXT_INVALIDATION_OK로 판정한다.
+
+
+## 현재 전달본과 재개 방법
+
+검토 PR: https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/342 . Draft 이유는 원장에 남은 캐릭터 시트의 최종 확정이다. CI 결과는 PR의 최신 head 검사를 직접 읽는다.
+
+4.7.1의 Full Validation native31개를 전부 실행했다. 최초30PASS/1FAIL은 선택 무공서별1개 해금/1개 잠금을 기대한 구형 무공 fixture였다. 전체 보유 무공의 해금 기술3개와 선택 무공서가 바뀌어도 유지되는 목록, 미해금 기술 실행 차단, 비무 제약의 비활성·접근성 설명·교차 무공 실행을 검사하도록 이관한 뒤 동일 검사 PASS. 원격 product-evidence의 구형 합 VFX atlas 하단 기대값도 이미 최종 확정된 독립 alpha 불꽃과 흰 핵 보존을 확인하도록 교정해 동일 검사 PASS. 공격용 legacy matte 검사는 유지했다.
+
+카드 높이와 실행 버튼 수정 이후 Windows4.7.1 GPU 준비3화면을 다시 캡처했다. 경로: C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/final-471 . 기존71프레임 실행 증거는 이전 제품 revision의 motion/VFX 증거이며 최신 준비 배치 캡처와 구분한다.

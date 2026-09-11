@@ -604,9 +604,11 @@
     }
   },
   "motion_ui_continuation": {
-    "status": "LOCAL_MACHINE_AND_WINDOWS_CAPTURE_VERIFIED_VISUAL_LOCK_AND_CI_PENDING",
+    "status": "LOCAL_MACHINE_AND_WINDOWS_CAPTURE_VERIFIED_VISUAL_LOCK_PENDING_CI_LIVE",
     "base_commit": "ed2104d98872c63eac27999830aeae9c15a00bdc",
     "branch": "codex/motion-integration-20260912",
+    "review_pr": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/342",
+    "ci_status_source": "LATEST_PR_HEAD_CHECKS",
     "execution_record": "docs/operations/2026-09-12_MOTION_UI_INTEGRATION.md",
     "visual_lock": "FOUR_CHARACTER_SHEETS_PENDING_CLASH_PREVIOUSLY_APPROVED",
     "human_android_release": "NOT_RUN",
