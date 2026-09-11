@@ -576,7 +576,7 @@
     "approval_owner": "docs/decisions/2026-09-11_CHARACTER_VARIABLE_LOADOUT_APPROVAL_REVIEW.md"
   },
   "variable_roster_implementation": {
-    "status": "LOCAL_MACHINE_VERIFIED_REMOTE_PENDING",
+    "status": "MERGED_MAIN_PR340_REMOTE_CI_PASS_ONE_TIME_APPROVAL_ARCHIVED",
     "report": "docs/operations/2026-09-11_VARIABLE_ROSTER_IMPLEMENTATION.md",
     "legacy_v1": "PRESERVED",
     "native_campaign": {
@@ -588,6 +588,19 @@
       "elapsed_ms": 201094
     },
     "human_balance": "NOT_RUN",
-    "android": "NOT_RUN"
+    "android": "NOT_RUN",
+    "implementation_merge_commit": "201af9e99e4ce7e7b58e3ea63e6edc37d8c037ff",
+    "tested_head": "b2a456e2bac4b4fd6a6d33dfa1644e2149061d3f",
+    "remote_checks_passed": 34,
+    "approval_archive": "docs/operations/2026-09-11_PR340_PROTECTED_CHANGE_APPROVAL_RECORD.md",
+    "native_continue_replay": {
+      "duels": 10,
+      "wins": 10,
+      "rewards": 10,
+      "routes": 36,
+      "activations": 295,
+      "elapsed_ms": 323911,
+      "roster_seed": 145571664
+    }
   }
 }

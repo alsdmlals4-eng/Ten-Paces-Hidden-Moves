@@ -101,3 +101,23 @@ strictdecode→동일 identity 저장→실제 이어하기 입력으로 재현�
 
 최종 독립 프로세스 저장 회귀 GREEN:17개write+34개read, 전체 run/combat/summary digest 일치,
 1test424.896s PASS. 로그 durable-independent-process.log. 앞선9개 중 나머지8개 PASS와 구분한다.
+
+## 병합과 최종 readback
+
+PR340 exact `b2a456e2bac4b4fd6a6d33dfa1644e2149061d3f`의 원격34개 검사 모두SUCCESS, 실패·대기0을 확인했다.
+main `201af9e99e4ce7e7b58e3ea63e6edc37d8c037ff`에2026-09-11T11:56:47Z 일반 병합했고 전체 tracked tree가 검증본과 동일하다.
+동일b2a456e2의 import 전 작업 공간에서 보호wrapper·운영·일회승인 lifecycle PASS.
+원래 작업 공간의 import sidecar·후보 파일과 별도 사용자/staging 변경은 보존했다.
+
+보존 초기v2 저장의 실제 Continue 재현:10승/10보상/36행로/295입력/323911ms/실패0/exit0.
+로그 native-observed-positive-replay.log. 첫 실제MainStart 성공201094ms와 구분한다.
+추가 고정시드 실패274981ms도 삭제하지 않는다. 이 결과는 승인 수치의 전면 밸런스 검증이 아니다.
+
+현재 일회 승인 원문은2026-09-11_PR340_PROTECTED_CHANGE_APPROVAL_RECORD.md와 archive JSON에
+exact Git bytes로 보존하고 active manifest를 제거했다. 동일 승인 작업의2회 전체검토를 반복하지 않고
+범위·원문·생성물·미변경 제품을 표적 검증한다. 후속 closeout 검증 결과는 아래에 기록한다.
+
+승인 수명주기 후속 검증: 비엔진 pytest498건 PASS26.04s. 엔진 의존 durable/feedback 두 모듈은
+제품 무변경인 이번 정리에서 재실행하지 않았다. 해당 제품 검증은 PR340의34개 CI 및 앞선 실행을 따른다.
+공식 wrapper, 생성물, 프로젝트 운영, canonical reference, archive governance 모두 PASS.
+adapter는 baseline 한 값만 변경하고 기존 표현 형식을 보존한 뒤4개 파생물을 재생성했다.

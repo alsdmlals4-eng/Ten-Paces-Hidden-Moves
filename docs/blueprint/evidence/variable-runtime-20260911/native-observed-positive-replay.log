@@ -1,0 +1,54 @@
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+NATIVE_REJECT prerequisites button=@Button@2:<Button#38839256563> visible=true disabled=true focus_mode=2
+NATIVE_HELPER_DISABLED PASS
+NATIVE_REJECT signal button=@Button@3:<Button#38889588216> observed=2
+NATIVE_HELPER_GUARDS PASS
+NATIVE_FIXTURE {"candidate_ids":["slot5_pungmok","masked_baekmujin","slot1_yeongyo","slot1_chaeryeong","slot3_uram","slot1_dogyeom","slot1_yeongyo","slot4_jinryeo","slot2_seokmu","slot3_seolha"],"mode":"observed_success_initial_continue","roster_seed":145571664,"source_fixture_sha256":"f8f0f998e38742b352307a347834f1c2118e2b724e108a2e68deb22400cbfb96"}
+NATIVE_BUNDLE duel=1 turn=1 player={ "health": [28, 30], "stamina": [3, 5], "internal": [2, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=1 turn=2 player={ "health": [28, 30], "stamina": [1, 5], "internal": [0, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=1 turn=3 player={ "health": [25, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[0, 30] terminal=true
+NATIVE_BUNDLE duel=2 turn=1 player={ "health": [28, 30], "stamina": [0, 5], "internal": [1, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=2 turn=2 player={ "health": [24, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=2 turn=3 player={ "health": [18, 30], "stamina": [1, 5], "internal": [1, 4] } enemy_hp=[9, 30] terminal=false
+NATIVE_BUNDLE duel=2 turn=4 player={ "health": [18, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[3, 30] terminal=false
+NATIVE_BUNDLE duel=2 turn=5 player={ "health": [18, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[0, 30] terminal=true
+NATIVE_BUNDLE duel=3 turn=1 player={ "health": [21, 30], "stamina": [1, 5], "internal": [2, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=3 turn=2 player={ "health": [21, 30], "stamina": [0, 5], "internal": [1, 4] } enemy_hp=[13, 30] terminal=false
+NATIVE_BUNDLE duel=3 turn=3 player={ "health": [15, 30], "stamina": [0, 5], "internal": [1, 4] } enemy_hp=[2, 30] terminal=false
+NATIVE_BUNDLE duel=3 turn=4 player={ "health": [9, 30], "stamina": [1, 5], "internal": [1, 4] } enemy_hp=[0, 30] terminal=true
+NATIVE_BUNDLE duel=4 turn=1 player={ "health": [21, 30], "stamina": [2, 5], "internal": [2, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=4 turn=2 player={ "health": [21, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[8, 30] terminal=false
+NATIVE_BUNDLE duel=4 turn=3 player={ "health": [21, 30], "stamina": [1, 5], "internal": [1, 4] } enemy_hp=[0, 30] terminal=true
+NATIVE_BUNDLE duel=5 turn=1 player={ "health": [23, 30], "stamina": [1, 5], "internal": [2, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=5 turn=2 player={ "health": [23, 30], "stamina": [0, 5], "internal": [1, 4] } enemy_hp=[13, 30] terminal=false
+NATIVE_BUNDLE duel=5 turn=3 player={ "health": [23, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[7, 30] terminal=false
+NATIVE_BUNDLE duel=5 turn=4 player={ "health": [23, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[7, 30] terminal=false
+NATIVE_BUNDLE duel=5 turn=5 player={ "health": [23, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[0, 30] terminal=true
+NATIVE_BUNDLE duel=6 turn=1 player={ "health": [21, 30], "stamina": [0, 5], "internal": [1, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=6 turn=2 player={ "health": [20, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=6 turn=3 player={ "health": [13, 30], "stamina": [1, 5], "internal": [1, 4] } enemy_hp=[9, 30] terminal=false
+NATIVE_BUNDLE duel=6 turn=4 player={ "health": [13, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[7, 30] terminal=false
+NATIVE_BUNDLE duel=6 turn=5 player={ "health": [13, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[0, 30] terminal=true
+NATIVE_BUNDLE duel=7 turn=1 player={ "health": [18, 30], "stamina": [0, 5], "internal": [1, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=7 turn=2 player={ "health": [18, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[13, 30] terminal=false
+NATIVE_BUNDLE duel=7 turn=3 player={ "health": [11, 30], "stamina": [3, 5], "internal": [3, 4] } enemy_hp=[13, 30] terminal=false
+NATIVE_BUNDLE duel=7 turn=4 player={ "health": [10, 30], "stamina": [4, 5], "internal": [4, 4] } enemy_hp=[13, 30] terminal=false
+NATIVE_BUNDLE duel=7 turn=5 player={ "health": [9, 30], "stamina": [3, 5], "internal": [4, 4] } enemy_hp=[0, 30] terminal=true
+NATIVE_BUNDLE duel=8 turn=1 player={ "health": [30, 30], "stamina": [2, 5], "internal": [3, 4] } enemy_hp=[20, 30] terminal=false
+NATIVE_BUNDLE duel=8 turn=2 player={ "health": [30, 30], "stamina": [0, 5], "internal": [3, 4] } enemy_hp=[13, 30] terminal=false
+NATIVE_BUNDLE duel=8 turn=3 player={ "health": [28, 30], "stamina": [0, 5], "internal": [1, 4] } enemy_hp=[7, 30] terminal=false
+NATIVE_BUNDLE duel=8 turn=4 player={ "health": [28, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[5, 30] terminal=false
+NATIVE_BUNDLE duel=8 turn=5 player={ "health": [28, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[0, 30] terminal=true
+NATIVE_BUNDLE duel=9 turn=1 player={ "health": [26, 30], "stamina": [1, 5], "internal": [1, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=9 turn=2 player={ "health": [16, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[13, 30] terminal=false
+NATIVE_BUNDLE duel=9 turn=3 player={ "health": [16, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[13, 30] terminal=false
+NATIVE_BUNDLE duel=9 turn=4 player={ "health": [16, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[0, 30] terminal=true
+NATIVE_BUNDLE duel=10 turn=1 player={ "health": [24, 30], "stamina": [0, 5], "internal": [1, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=10 turn=2 player={ "health": [24, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[13, 30] terminal=false
+NATIVE_BUNDLE duel=10 turn=3 player={ "health": [11, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[13, 30] terminal=false
+NATIVE_BUNDLE duel=10 turn=4 player={ "health": [1, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[3, 30] terminal=false
+NATIVE_BUNDLE duel=10 turn=5 player={ "health": [1, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[0, 30] terminal=true
+NATIVE_CAMPAIGN_SUMMARY {"activations":295,"cards":["basic_guard","basic_heavy_attack","ultimate_void_sword_qi","basic_palm","basic_move","basic_meditate","mount_hua_plum_blossom_sword_star3","basic_quick_attack","shaolin_arhat_vajra_art_star7","ultimate_cleave_peak","yang_family_spear_star7","yang_family_spear_star3"],"complete":true,"duels":10,"elapsed_ms":323911,"failures":[],"mode":"ordinary_defaults","outcomes":{"draw":0,"win":10},"rewards":10,"routes":36}
+NATIVE_DURABLE_TIMINGS_MS [311,305,705,914,1013,997,1002,1015,1014,1028,1064,868,820,783,798,739,738,747,726,771,770,767,853,1065,1000,1037,1020,1053,1015,1008,1009,1036,1057,1153,1043,1057,1032,917,840,814,782,734,739,740,778,862,757,757,879,1042,1236,1096,1122,1133,1103,1095,1108,1024,1035,1038,903,853,763,741,759,738,729,727,774,830,738,874,1012,1013,1032,1037,1087,1079,1044,1066,918,848,767,746,749,754,753,741,759,757,775,936,1004,1083,1061,1065,1088,1106,1041,1040,1052,1053,1086,1073,1064,1043,929,876,782,772,780,785,835,795,857,874,991,906,981,1067,1069,1045,1055,1190,1131,1125,1089,1100,1191,1131,1126,1130,957,902,933,861,821,801,784,789,816,1233,841,975,1186,1237,1088,1065,1086,1146,1100,1104,1085,1084,1212,1167,1148,1095,1004,895,840,849,832,808,780,797,942,822,786,931,1046,1208,1251,1124,1196,1135,1175,1212,1173,1136,1205,1214,1178,1145,1094,1043,919,847,907,835,869,822,814,817,774,1018,1090,1202,1312,1100,1269,1089,1125,1123,1145,1117,1088,984,1324,833,817,790,784,789,792,836,890,816,975,991,1179,1163,1299,1155,1317,1535,1263,1306,1514,1149,1222,1184,1154,1015,949,937]

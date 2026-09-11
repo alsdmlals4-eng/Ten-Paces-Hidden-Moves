@@ -1,6 +1,6 @@
 # 최종 승인 후 구현 인수 계약
 
-상태: `USER_APPROVED / CODEX_IMPLEMENTATION_VALIDATING`.
+상태: `USER_APPROVED / IMPLEMENTED_MERGED_MAIN_PR340_MACHINE_RUNTIME_VERIFIED`.
 2026-09-11 사용자의 최종 확정과 `맞아 진행해`에 따라 아래 계약을 실제 구현했다.
 현재 실행 증거는 docs/operations/2026-09-11_VARIABLE_ROSTER_IMPLEMENTATION.md를 따른다.
 이하 승인 전 문구는 원래 계약의 조건 설명이며 이미 기록된 사용자 확정을 취소하지 않는다.
