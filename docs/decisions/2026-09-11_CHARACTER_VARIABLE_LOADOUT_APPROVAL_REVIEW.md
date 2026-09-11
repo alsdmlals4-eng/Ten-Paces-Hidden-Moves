@@ -3,7 +3,7 @@
 ID: TEN-DEC-20260911-CHARACTER-VARIABLE-LOADOUT-APPROVAL-REVIEW-01
 
 방향·상세 수치·별호·선정 원화: USER_APPROVED (2026-09-11).
-구현 상태: 기획 데이터·파생 도감·이미지 후보·구현 계약 준비. 새 게임 적용 NOT_IMPLEMENTED.
+구현 상태: 기획 데이터·파생 도감·이미지 후보·구현 계약 준비. 새 게임 적용 구현·기계 검증, 원격 CI 확인 중.
 
 ## 사용자 요청과 범위
 
@@ -46,5 +46,5 @@ blueprint_final_approval.approved_visual_inputs에서 조회한다. 그림 자�
 기존 PDF와 receipt의 승인 대기 표시는 검토 당시 상태로 보존하며 이 승인 절이 현재 상태를 소유한다.
 ASSET_READINESS.json의 후보 상태도 검토 당시 자료이며 사용자 lock은 이 결정으로 해소됐다.
 제품 consumer 연결·정본 runtime 등록·플레이 밸런스·출시 권리는 별도 구현/검증이다.
-마지막 단독 자음의 후속 실행 뜻은 확인 중이며 새로운 제품 변경은 수행하지 않았다.
+사용자가 `맞아 진행해`로 게임 구현을 명시했다. 가변 편성과 새 저장·승인 원화를 연결했고 실행 증거는 2026-09-11_VARIABLE_ROSTER_IMPLEMENTATION.md에서 확인한다.
 이전 exact head의 원격 검사27SUCCESS/3SKIPPED, 실패·대기0을 새로 확인했다.

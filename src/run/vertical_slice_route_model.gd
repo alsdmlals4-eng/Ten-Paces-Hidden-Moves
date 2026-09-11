@@ -109,7 +109,7 @@ func build_public_intel(category: String, candidate: Dictionary) -> String:
     var ambiguity := str(candidate.get("ambiguity_or_counterexample", ""))
     var identity := str(candidate.get("martial_identity", ""))
     var hook := str(candidate.get("public_briefing_hook", ""))
-    var mastery := int(candidate.get("signature_star_seed", 0))
+    var mastery := int(candidate.get("mastery", candidate.get("signature_star_seed", 0)))
     var unlocked: Array = manual_registry.build_unlocked_cards(manual_id, mastery) if manual_registry != null else []
     var technique_names: Array[String] = []
     var range_fragments: Array[String] = []

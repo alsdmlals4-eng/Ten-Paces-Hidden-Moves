@@ -23,6 +23,7 @@ var _combat_view: Control
 var _combat_view_duel_index: int = 0
 var _setup_buttons: Dictionary = {}
 var _setup_selected_manual_ids: Array[String] = []
+var _approved_portrait: TextureRect
 var _briefing_body: HBoxContainer
 var _briefing_description_scroll: ScrollContainer
 var _bimu_constraint_panel: VBoxContainer
@@ -41,7 +42,7 @@ func _ready() -> void:
     set_meta("technical_shell", true)
     set_meta("final_visual_reference_pending", false)
     set_meta("visual_evidence_ceiling", "TECHNICAL_SHELL_NOT_HUMAN_VISUAL_PASS")
-    set_meta("run_seed_policy", "PHASE_II_TECHNICAL_FIXED_SEED_REPLACE_WITH_SAVE_STATE_LATER")
+    set_meta("run_seed_policy", "NEW_RUN_V2_FROZEN_ROSTER_LEGACY_CONTINUE_PRESERVED")
     set_meta("setup_visual_status", "STRUCTURED_FUNCTIONAL_UI_NOT_FINAL_VISUAL")
     set_meta("briefing_visual_status", "STRUCTURED_FUNCTIONAL_UI_NOT_FINAL_VISUAL")
 
@@ -73,7 +74,7 @@ func start_new_run(replacement_confirmed: bool = false) -> bool:
         return false
     _setup_selected_manual_ids.clear()
     _refresh_setup_selection_ui()
-    return session.transact(Callable(run_state, "start_new_run"), true)
+    return session.transact(func(): return run_state.start_new_variable_run(randi(), session.save_id), true)
 
 
 func advance_noncombat() -> bool:
@@ -428,8 +429,13 @@ func _render_briefing() -> void:
     var manual_id := str(opponent.get("signature_manual_id", ""))
     var manual: Dictionary = manual_registry.get_manual(manual_id) if manual_registry != null else {}
     var manual_label := "[%s] %s" % [str(manual.get("faction", "")), str(manual.get("manual_name", ""))]
+    if opponent.has("manuals"):
+        var labels: Array[String] = []
+        for owned in opponent.manuals:
+            labels.append("%s %d성" % [manual_registry.get_manual(owned.id).get("manual_name", owned.id), owned.mastery])
+        manual_label = " · ".join(labels)
     var description := "무인상 · %s\n공개 무공 · %s\n알려진 습관 · %s\n의심할 점 · %s\n\n상대의 다음 수는 아직 알 수 없습니다. 공개된 단서로 대비하세요.\n\n나의 보유 무공\n%s" % [
-        str(opponent.get("martial_identity", "")),
+        str(opponent.get("epithet", opponent.get("martial_identity", ""))),
         manual_label,
         str(opponent.get("readable_habit", "")),
         str(opponent.get("ambiguity_or_counterexample", "")),
@@ -441,6 +447,8 @@ func _render_briefing() -> void:
         "비무 시작"
     )
     _show_bimu_briefing()
+    _approved_portrait.texture = preload("res://src/ui/approved_blueprint_art.gd").portrait(str(opponent.get("candidate_id", ""))) if opponent.has("manuals") else null
+    _approved_portrait.visible = _approved_portrait.texture != null
     # _set_content temporarily hides the briefing. Keep focus only when configure
     # retained the same widget; a new opponent/loadout must not revive old nodes.
     if is_instance_valid(focused) and _bimu_constraint_panel.is_ancestor_of(focused): focused.grab_focus()
@@ -459,6 +467,15 @@ func _show_bimu_briefing() -> void:
         _briefing_body.add_theme_constant_override("separation", 24)
         stack.add_child(_briefing_body)
         stack.move_child(_briefing_body, 1)
+        _approved_portrait = TextureRect.new()
+        _approved_portrait.name = "ApprovedOpponentPortrait"
+        _approved_portrait.custom_minimum_size = Vector2(144, 180)
+        _approved_portrait.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        _approved_portrait.size_flags_stretch_ratio = 0.65
+        _approved_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+        _approved_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+        _approved_portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+        _briefing_body.add_child(_approved_portrait)
         _briefing_description_scroll = ScrollContainer.new()
         _briefing_description_scroll.name = "PublicOpponentBriefing"
         _briefing_description_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -536,27 +553,45 @@ func _ensure_combat_view() -> void:
     combat_host.add_child(_combat_view)
 
     var opponent: Dictionary = run_state.get_current_opponent()
+    var current_encounter: Dictionary = run_state.get_current_encounter()
+    if not current_encounter.is_empty():
+        var approved_total := 0
+        for value in current_encounter.stats.values(): approved_total += int(value)
+        opponent["final_stat_total_seed"] = approved_total
     var runtime_binding_adapter = OpponentRuntimeBindingScript.new()
     var enemy_runtime_binding: Dictionary = runtime_binding_adapter.build(opponent) if runtime_binding_adapter.is_valid() else {"valid": false}
     var signature_manual_id := str(opponent.get("signature_manual_id", ""))
     var enemy_mastery := {}
     if not signature_manual_id.is_empty():
         enemy_mastery[signature_manual_id] = int(opponent.get("signature_star_seed", 0))
+    var enemy_ids: Array = [signature_manual_id]
+    var encounter: Dictionary = run_state.get_current_encounter()
+    if not encounter.is_empty():
+        enemy_ids.clear()
+        enemy_mastery.clear()
+        for owned in encounter.manuals:
+            enemy_ids.append(owned.id)
+            enemy_mastery[owned.id] = owned.mastery
+        enemy_runtime_binding["stats"] = encounter.stats.duplicate(true)
+        var stat_total := 0
+        for value in encounter.stats.values(): stat_total += int(value)
+        enemy_runtime_binding["final_stat_total_seed"] = stat_total
     var runtime_loadout_bound := false
     if _combat_view.has_method("configure_vertical_slice_loadouts"):
         runtime_loadout_bound = bool(_combat_view.call(
             "configure_vertical_slice_loadouts",
             run_state.get_player_manual_loadout(),
             run_state.get_player_mastery_by_manual(),
-            [signature_manual_id],
+            enemy_ids,
             enemy_mastery,
             str(opponent.get("candidate_id", "")),
             enemy_runtime_binding,
             {
                 "name": str(opponent.get("working_name", "")),
-                "epithet": str(opponent.get("martial_identity", ""))
+                "epithet": str(opponent.get("epithet", opponent.get("martial_identity", "")))
             },
-            run_state.get_frozen_bimu_receipt()
+            run_state.get_frozen_bimu_receipt(),
+            encounter
         ))
     _combat_view.set_meta("vertical_slice_runtime_loadout_bound_from_shell", runtime_loadout_bound)
     if not runtime_loadout_bound:

@@ -147,3 +147,12 @@ robes; anatomically correct hands; no text/UI/logos/extra limbs/sexualized armor
 도감/브리핑용 후보이며 전투 스프라이트·모션은 아니다. 사용자 final lock과 runtime 연결은 미완료다.
 SHA-256·원본/참고 입력·소비처·상태군·승격 경로는 `ASSET_READINESS.json`이 소유한다.
 이전 저해상도 이미지와 승인된 제품 자산은 보존한다.
+
+## 2026-09-11 최종 승인 후 등록 readback
+
+이전 문단의 final lock 대기는 제작 당시 기록이다. 현재47개 선정 원화는
+`current_user_planning_status.json`의 `blueprint_final_approval`로 사용자 승인됐으며,
+`assets/blueprint/APPROVED_ART_MANIFEST.json`에 원본 SHA-256과 byte-identical 제품 경로를 등록했다.
+무공30개·도감16명·합 설명1개를 구분하고, 기존 후보·참고·플레이어·전투 모션을 보존한다.
+실제 표시 함수는 `src/ui/approved_blueprint_art.gd`;47개 texture 조회 검사는 PASS다.
+도감·브리핑 화면 검증과 최종 배포 권리 검증은 별도이며 전체 구현 실행 기록을 따른다.

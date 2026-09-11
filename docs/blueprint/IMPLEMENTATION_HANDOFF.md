@@ -1,6 +1,9 @@
 # 최종 승인 후 구현 인수 계약
 
-상태: `SPECIFIED / FINAL_USER_APPROVAL_PENDING / PRODUCT_NOT_IMPLEMENTED`.
+상태: `USER_APPROVED / CODEX_IMPLEMENTATION_VALIDATING`.
+2026-09-11 사용자의 최종 확정과 `맞아 진행해`에 따라 아래 계약을 실제 구현했다.
+현재 실행 증거는 docs/operations/2026-09-11_VARIABLE_ROSTER_IMPLEMENTATION.md를 따른다.
+이하 승인 전 문구는 원래 계약의 조건 설명이며 이미 기록된 사용자 확정을 취소하지 않는다.
 2026-09-11 사용자는 이전 권장안의 기획·자산 후보·검증 준비 작업을 계속하도록 승인했고,
 다른 프로젝트 Blueprint 참고를 요구에서 제외했다. 게임의 새 기획 적용과 신규 원화 final lock은 최종 검토 뒤다.
 기준 main `885c91ee934a6f096c79c7d0cfb5f31db4de7f5c`, 문서 분기 시작 `6d84832dedeba4c66097bdfd061891a8fdffc108`.

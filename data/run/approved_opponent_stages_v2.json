@@ -1,0 +1,5849 @@
+{
+  "schema_version": 2,
+  "ruleset_id": "ten-duel-variable-roster-v2",
+  "roster_version": 1,
+  "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101",
+  "candidates": [
+    {
+      "candidate": {
+        "candidate_id": "masked_baekmujin",
+        "working_name": "백무진",
+        "martial_identity": "흑영검객",
+        "signature_manual_id": "mount_hua_plum_blossom_sword",
+        "runtime_archetype_id": "public_history_counter",
+        "basic_action_focus_ids": [
+          "basic_quick_attack",
+          "basic_evade",
+          "basic_move"
+        ],
+        "short_personality_hook": "말보다 한 번의 교차로 상대를 판단한다.",
+        "readable_habit": "상대의 지난 접근을 보고 간격을 비운 뒤 연격으로 되받는 경향이 있다.",
+        "ambiguity_or_counterexample": "추격이 멎으면 거리를 지키는 대신 먼저 한 걸음 압박한다.",
+        "visual_consumer": "Existing masked enemy sword-motion family; do not replace approved motion frames.",
+        "portrait": "output/blueprint-candidates/opponent-baekmujin-v1.png",
+        "presentation": {
+          "epithet": "묵면회영",
+          "identity": "가면을 쓴 역진입 검객",
+          "gender": "남성",
+          "age_impression": 35,
+          "art": "masked_baekmujin",
+          "epithet_bands": [
+            "묵면객",
+            "회영검객",
+            "단영검",
+            "묵면회영"
+          ],
+          "epithet_reason": "말 대신 교차 한 번으로 상대를 재는 검객. 검은 복면과 비운 간격으로 되돌아오는 습관을 별호로 삼았다."
+        }
+      },
+      "stages": [
+        {
+          "stage": 1,
+          "candidate_id": "masked_baekmujin",
+          "stats": {
+            "external": 3,
+            "constitution": 3,
+            "agility": 4,
+            "internal_power": 4,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 3
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "masked_baekmujin.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 2,
+          "candidate_id": "masked_baekmujin",
+          "stats": {
+            "external": 3,
+            "constitution": 3,
+            "agility": 4,
+            "internal_power": 5,
+            "insight": 7
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "masked_baekmujin.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 3,
+          "candidate_id": "masked_baekmujin",
+          "stats": {
+            "external": 3,
+            "constitution": 4,
+            "agility": 5,
+            "internal_power": 5,
+            "insight": 7
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "masked_baekmujin.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 4,
+          "candidate_id": "masked_baekmujin",
+          "stats": {
+            "external": 4,
+            "constitution": 4,
+            "agility": 5,
+            "internal_power": 5,
+            "insight": 8
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 5
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "masked_baekmujin.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 5,
+          "candidate_id": "masked_baekmujin",
+          "stats": {
+            "external": 4,
+            "constitution": 4,
+            "agility": 6,
+            "internal_power": 6,
+            "insight": 8
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 5
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 5
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "masked_baekmujin.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 6,
+          "candidate_id": "masked_baekmujin",
+          "stats": {
+            "external": 4,
+            "constitution": 5,
+            "agility": 6,
+            "internal_power": 6,
+            "insight": 9
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 6
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 5
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "masked_baekmujin.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 7,
+          "candidate_id": "masked_baekmujin",
+          "stats": {
+            "external": 5,
+            "constitution": 5,
+            "agility": 6,
+            "internal_power": 6,
+            "insight": 10
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 7
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 5
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "masked_baekmujin.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 8,
+          "candidate_id": "masked_baekmujin",
+          "stats": {
+            "external": 5,
+            "constitution": 5,
+            "agility": 7,
+            "internal_power": 7,
+            "insight": 10
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 7
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 6
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 6
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "masked_baekmujin.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 9,
+          "candidate_id": "masked_baekmujin",
+          "stats": {
+            "external": 6,
+            "constitution": 6,
+            "agility": 7,
+            "internal_power": 7,
+            "insight": 11
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 8
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 7
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 6
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "masked_baekmujin.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 10,
+          "candidate_id": "masked_baekmujin",
+          "stats": {
+            "external": 6,
+            "constitution": 6,
+            "agility": 8,
+            "internal_power": 8,
+            "insight": 12
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 9
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 7
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 7
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "masked_baekmujin.reputation.4",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "candidate_id": "slot1_chaeryeong",
+        "duel_slot": 1,
+        "working_name": "채령",
+        "martial_identity": "가벼운 도객",
+        "readable_habit": "상대가 전진하면 맞받아치는 경향이 강하다.",
+        "ambiguity_or_counterexample": "플레이어가 기다리면 먼저 간격을 깨러 들어온다.",
+        "public_briefing_hook": "물러서는 사람을 오래 두고 보지 않는다는 소문.",
+        "short_personality_hook": "도발적이지만 무모하지 않다.",
+        "review_tags": [
+          "clash",
+          "counter_entry"
+        ],
+        "signature_manual_id": "nangong_boundless_sky_sword",
+        "available_manual_card_ids": [
+          "nangong_boundless_sky_sword_star3"
+        ],
+        "basic_action_focus_ids": [
+          "basic_move",
+          "basic_quick_attack",
+          "basic_evade"
+        ],
+        "runtime_archetype_id": "initiative_exchange",
+        "behavior_focus": "meet_forward_movement_or_break_waiting_distance",
+        "final_stat_total_seed": 20,
+        "signature_star_seed": 3,
+        "presentation": {
+          "epithet": "파운검뢰",
+          "identity": "간격을 깨는 창궁 검객",
+          "gender": "여성",
+          "age_impression": 25,
+          "art": "chaeryeong",
+          "epithet_bands": [
+            "청봉검",
+            "질뢰검객",
+            "벽공청뢰",
+            "파운검뢰"
+          ],
+          "epithet_reason": "기다리는 간격을 깨는 도발적인 검객. 푸른 봉우리와 구름을 가르는 검뢰로 상승하는 명성을 표현한다."
+        }
+      },
+      "stages": [
+        {
+          "stage": 1,
+          "candidate_id": "slot1_chaeryeong",
+          "stats": {
+            "external": 5,
+            "constitution": 4,
+            "agility": 5,
+            "internal_power": 3,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 3
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_chaeryeong.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 2,
+          "candidate_id": "slot1_chaeryeong",
+          "stats": {
+            "external": 6,
+            "constitution": 4,
+            "agility": 6,
+            "internal_power": 3,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_chaeryeong.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 3,
+          "candidate_id": "slot1_chaeryeong",
+          "stats": {
+            "external": 6,
+            "constitution": 5,
+            "agility": 6,
+            "internal_power": 3,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_chaeryeong.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 4,
+          "candidate_id": "slot1_chaeryeong",
+          "stats": {
+            "external": 6,
+            "constitution": 5,
+            "agility": 7,
+            "internal_power": 4,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 5
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_chaeryeong.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 5,
+          "candidate_id": "slot1_chaeryeong",
+          "stats": {
+            "external": 7,
+            "constitution": 6,
+            "agility": 7,
+            "internal_power": 4,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 6
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_chaeryeong.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 6,
+          "candidate_id": "slot1_chaeryeong",
+          "stats": {
+            "external": 8,
+            "constitution": 6,
+            "agility": 8,
+            "internal_power": 4,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 6
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_chaeryeong.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 7,
+          "candidate_id": "slot1_chaeryeong",
+          "stats": {
+            "external": 8,
+            "constitution": 6,
+            "agility": 8,
+            "internal_power": 5,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 7
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_chaeryeong.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 8,
+          "candidate_id": "slot1_chaeryeong",
+          "stats": {
+            "external": 8,
+            "constitution": 7,
+            "agility": 9,
+            "internal_power": 5,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 8
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_chaeryeong.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 9,
+          "candidate_id": "slot1_chaeryeong",
+          "stats": {
+            "external": 9,
+            "constitution": 7,
+            "agility": 9,
+            "internal_power": 6,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 9
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 7
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_chaeryeong.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 10,
+          "candidate_id": "slot1_chaeryeong",
+          "stats": {
+            "external": 10,
+            "constitution": 8,
+            "agility": 10,
+            "internal_power": 6,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 10
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 7
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_chaeryeong.reputation.4",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "candidate_id": "slot1_dogyeom",
+        "duel_slot": 1,
+        "working_name": "도겸",
+        "martial_identity": "묵직한 권객",
+        "readable_habit": "공격 뒤 다음 수를 안정 행동으로 잇는 경향이 높다.",
+        "ambiguity_or_counterexample": "체력이 밀리면 연속 압박으로 전환한다.",
+        "public_briefing_hook": "한 번 부딪친 뒤 자세를 고치는 무인으로 알려졌다.",
+        "short_personality_hook": "상대의 한 수를 받아본 뒤 판단한다.",
+        "review_tags": [
+          "clash",
+          "stabilize"
+        ],
+        "signature_manual_id": "beggars_dragon_subduing_palm",
+        "available_manual_card_ids": [
+          "beggars_dragon_subduing_palm_star3"
+        ],
+        "basic_action_focus_ids": [
+          "basic_quick_attack",
+          "basic_guard",
+          "basic_stance"
+        ],
+        "runtime_archetype_id": "stabilize_then_pressure",
+        "behavior_focus": "post_attack_stabilize_then_pressure_when_behind",
+        "final_stat_total_seed": 20,
+        "signature_star_seed": 3,
+        "presentation": {
+          "epithet": "반석항룡",
+          "identity": "묵직한 강룡 장객",
+          "gender": "남성",
+          "age_impression": 46,
+          "art": "dogyeom",
+          "epithet_bands": [
+            "반석수",
+            "철근장객",
+            "쇄암장",
+            "반석항룡"
+          ],
+          "epithet_reason": "받아낸 뒤 중심을 회복하고 장력을 싣는 무인. 바위를 버티고 용을 제압하는 장법의 대비를 담았다."
+        }
+      },
+      "stages": [
+        {
+          "stage": 1,
+          "candidate_id": "slot1_dogyeom",
+          "stats": {
+            "external": 4,
+            "constitution": 6,
+            "agility": 3,
+            "internal_power": 4,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 3
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_dogyeom.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 2,
+          "candidate_id": "slot1_dogyeom",
+          "stats": {
+            "external": 4,
+            "constitution": 7,
+            "agility": 3,
+            "internal_power": 5,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 4
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_dogyeom.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 3,
+          "candidate_id": "slot1_dogyeom",
+          "stats": {
+            "external": 5,
+            "constitution": 7,
+            "agility": 3,
+            "internal_power": 5,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 4
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_dogyeom.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 4,
+          "candidate_id": "slot1_dogyeom",
+          "stats": {
+            "external": 5,
+            "constitution": 8,
+            "agility": 4,
+            "internal_power": 5,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 5
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_dogyeom.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 5,
+          "candidate_id": "slot1_dogyeom",
+          "stats": {
+            "external": 6,
+            "constitution": 8,
+            "agility": 4,
+            "internal_power": 6,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 6
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_dogyeom.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 6,
+          "candidate_id": "slot1_dogyeom",
+          "stats": {
+            "external": 6,
+            "constitution": 9,
+            "agility": 4,
+            "internal_power": 6,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 6
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 6
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_dogyeom.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 7,
+          "candidate_id": "slot1_dogyeom",
+          "stats": {
+            "external": 6,
+            "constitution": 10,
+            "agility": 5,
+            "internal_power": 6,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 7
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 6
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_dogyeom.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 8,
+          "candidate_id": "slot1_dogyeom",
+          "stats": {
+            "external": 7,
+            "constitution": 10,
+            "agility": 5,
+            "internal_power": 7,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 8
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 6
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_dogyeom.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 9,
+          "candidate_id": "slot1_dogyeom",
+          "stats": {
+            "external": 7,
+            "constitution": 11,
+            "agility": 6,
+            "internal_power": 7,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 9
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 7
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_dogyeom.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 10,
+          "candidate_id": "slot1_dogyeom",
+          "stats": {
+            "external": 8,
+            "constitution": 12,
+            "agility": 6,
+            "internal_power": 8,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 10
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 7
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_dogyeom.reputation.4",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "candidate_id": "slot1_yeongyo",
+        "duel_slot": 1,
+        "working_name": "연교",
+        "martial_identity": "정면 검객",
+        "readable_habit": "안전거리가 맞으면 빠른 공격으로 주도권을 잡으려 한다.",
+        "ambiguity_or_counterexample": "같은 거리에서도 때때로 막거나 기다려 합을 피한다.",
+        "public_briefing_hook": "먼저 칼끝을 들이미는 편이라는 최근 비무 평.",
+        "short_personality_hook": "군더더기 없는 정면승부를 선호한다.",
+        "review_tags": [
+          "clash",
+          "interrupt"
+        ],
+        "signature_manual_id": "mount_hua_plum_blossom_sword",
+        "available_manual_card_ids": [
+          "mount_hua_plum_blossom_sword_star3"
+        ],
+        "basic_action_focus_ids": [
+          "basic_quick_attack",
+          "basic_guard",
+          "basic_move"
+        ],
+        "runtime_archetype_id": "initiative_exchange",
+        "behavior_focus": "direct_proactive_with_defensive_counterexample",
+        "final_stat_total_seed": 20,
+        "signature_star_seed": 3,
+        "presentation": {
+          "epithet": "낙영홍매",
+          "identity": "정면 매화 검객",
+          "gender": "여성",
+          "age_impression": 28,
+          "art": "yeongyo",
+          "epithet_bands": [
+            "매지검",
+            "홍매일검",
+            "분향검객",
+            "낙영홍매"
+          ],
+          "epithet_reason": "매화 검로를 숨기지 않고 정면에서 붉은 꽃잎처럼 펼친다. 정면승부를 고집하는 성향에서 별호를 정했다."
+        }
+      },
+      "stages": [
+        {
+          "stage": 1,
+          "candidate_id": "slot1_yeongyo",
+          "stats": {
+            "external": 5,
+            "constitution": 4,
+            "agility": 5,
+            "internal_power": 3,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_yeongyo.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 2,
+          "candidate_id": "slot1_yeongyo",
+          "stats": {
+            "external": 6,
+            "constitution": 4,
+            "agility": 6,
+            "internal_power": 3,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_yeongyo.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 3,
+          "candidate_id": "slot1_yeongyo",
+          "stats": {
+            "external": 6,
+            "constitution": 5,
+            "agility": 6,
+            "internal_power": 3,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_yeongyo.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 4,
+          "candidate_id": "slot1_yeongyo",
+          "stats": {
+            "external": 6,
+            "constitution": 5,
+            "agility": 7,
+            "internal_power": 4,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 5
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_yeongyo.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 5,
+          "candidate_id": "slot1_yeongyo",
+          "stats": {
+            "external": 7,
+            "constitution": 6,
+            "agility": 7,
+            "internal_power": 4,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 5
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_yeongyo.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 6,
+          "candidate_id": "slot1_yeongyo",
+          "stats": {
+            "external": 8,
+            "constitution": 6,
+            "agility": 8,
+            "internal_power": 4,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_yeongyo.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 7,
+          "candidate_id": "slot1_yeongyo",
+          "stats": {
+            "external": 8,
+            "constitution": 6,
+            "agility": 8,
+            "internal_power": 5,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 7
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_yeongyo.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 8,
+          "candidate_id": "slot1_yeongyo",
+          "stats": {
+            "external": 8,
+            "constitution": 7,
+            "agility": 9,
+            "internal_power": 5,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 8
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_yeongyo.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 9,
+          "candidate_id": "slot1_yeongyo",
+          "stats": {
+            "external": 9,
+            "constitution": 7,
+            "agility": 9,
+            "internal_power": 6,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 9
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_yeongyo.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 10,
+          "candidate_id": "slot1_yeongyo",
+          "stats": {
+            "external": 10,
+            "constitution": 8,
+            "agility": 10,
+            "internal_power": 6,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 10
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot1_yeongyo.reputation.4",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "candidate_id": "slot2_danso",
+        "duel_slot": 2,
+        "working_name": "단소",
+        "martial_identity": "유연한 호신가",
+        "readable_habit": "체력보다 방어 자원 보존을 우선한다.",
+        "ambiguity_or_counterexample": "방어 자원이 낮아지면 예상보다 공격적이 된다.",
+        "public_briefing_hook": "처음부터 끝까지 같은 자세는 아니라는 평.",
+        "short_personality_hook": "차분하지만 불리하면 결단이 빠르다.",
+        "review_tags": [
+          "resource",
+          "defense"
+        ],
+        "signature_manual_id": "mount_hua_purple_mist_art",
+        "available_manual_card_ids": [
+          "mount_hua_purple_mist_art_star3",
+          "mount_hua_purple_mist_art_star7"
+        ],
+        "basic_action_focus_ids": [
+          "basic_guard",
+          "basic_meditate",
+          "basic_quick_attack"
+        ],
+        "runtime_archetype_id": "stabilize_then_pressure",
+        "behavior_focus": "preserve_defense_resource_then_turn_aggressive",
+        "final_stat_total_seed": 22,
+        "signature_star_seed": 7,
+        "presentation": {
+          "epithet": "오식귀운",
+          "identity": "자원을 지키는 호신가",
+          "gender": "남성",
+          "age_impression": 34,
+          "art": "danso",
+          "epithet_bands": [
+            "자운객",
+            "오식유객",
+            "회운산인",
+            "오식귀운"
+          ],
+          "epithet_reason": "다섯 초식을 얕게 익혀 불리함을 피하는 유연한 호신가. 귀운은 흩어진 선택을 다시 거두는 습관이다."
+        }
+      },
+      "stages": [
+        {
+          "stage": 1,
+          "candidate_id": "slot2_danso",
+          "stats": {
+            "external": 4,
+            "constitution": 6,
+            "agility": 3,
+            "internal_power": 4,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 3
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 3
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_danso.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 2,
+          "candidate_id": "slot2_danso",
+          "stats": {
+            "external": 4,
+            "constitution": 7,
+            "agility": 3,
+            "internal_power": 5,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 3
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 3
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_danso.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 3,
+          "candidate_id": "slot2_danso",
+          "stats": {
+            "external": 5,
+            "constitution": 7,
+            "agility": 3,
+            "internal_power": 5,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 3
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 3
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_danso.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 4,
+          "candidate_id": "slot2_danso",
+          "stats": {
+            "external": 5,
+            "constitution": 8,
+            "agility": 4,
+            "internal_power": 5,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 3
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_danso.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 5,
+          "candidate_id": "slot2_danso",
+          "stats": {
+            "external": 6,
+            "constitution": 8,
+            "agility": 4,
+            "internal_power": 6,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 4
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_danso.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 6,
+          "candidate_id": "slot2_danso",
+          "stats": {
+            "external": 6,
+            "constitution": 9,
+            "agility": 4,
+            "internal_power": 6,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 4
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_danso.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 7,
+          "candidate_id": "slot2_danso",
+          "stats": {
+            "external": 6,
+            "constitution": 10,
+            "agility": 5,
+            "internal_power": 6,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 5
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 4
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_danso.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 8,
+          "candidate_id": "slot2_danso",
+          "stats": {
+            "external": 7,
+            "constitution": 10,
+            "agility": 5,
+            "internal_power": 7,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 5
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 4
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_danso.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 9,
+          "candidate_id": "slot2_danso",
+          "stats": {
+            "external": 7,
+            "constitution": 11,
+            "agility": 6,
+            "internal_power": 7,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 5
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 5
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 5
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_danso.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 10,
+          "candidate_id": "slot2_danso",
+          "stats": {
+            "external": 8,
+            "constitution": 12,
+            "agility": 6,
+            "internal_power": 8,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 7
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 5
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 5
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 5
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_danso.reputation.4",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "candidate_id": "slot2_mukjin",
+        "duel_slot": 2,
+        "working_name": "묵진",
+        "martial_identity": "금강형 수련자",
+        "readable_habit": "피해 직후 방어와 강건으로 흐름을 끊는 경향이 있다.",
+        "ambiguity_or_counterexample": "자원이 충분하면 방어 대신 큰 전조 공격을 선택한다.",
+        "public_briefing_hook": "맞고도 자세가 무너지지 않는다는 평.",
+        "short_personality_hook": "참는 것이 공격보다 중요하다고 믿는다.",
+        "review_tags": [
+          "defense",
+          "telegraph"
+        ],
+        "signature_manual_id": "shaolin_arhat_vajra_art",
+        "available_manual_card_ids": [
+          "shaolin_arhat_vajra_art_star3",
+          "shaolin_arhat_vajra_art_star7"
+        ],
+        "basic_action_focus_ids": [
+          "basic_guard",
+          "basic_stance",
+          "basic_heavy_attack"
+        ],
+        "runtime_archetype_id": "stabilize_then_pressure",
+        "behavior_focus": "defense_resource_then_heavy_telegraph",
+        "final_stat_total_seed": 22,
+        "signature_star_seed": 7,
+        "presentation": {
+          "epithet": "불동금강",
+          "identity": "금강형 수련자",
+          "gender": "남성",
+          "age_impression": 52,
+          "art": "mukjin",
+          "epithet_bands": [
+            "묵석수",
+            "금강철수",
+            "불동장객",
+            "불동금강"
+          ],
+          "epithet_reason": "묵묵히 버티되 결단하면 장력을 내뻗는다. 불동은 태도의 별호이며 이동 불가나 피해 면역 규칙이 아니다."
+        }
+      },
+      "stages": [
+        {
+          "stage": 1,
+          "candidate_id": "slot2_mukjin",
+          "stats": {
+            "external": 4,
+            "constitution": 6,
+            "agility": 3,
+            "internal_power": 4,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 3
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_mukjin.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 2,
+          "candidate_id": "slot2_mukjin",
+          "stats": {
+            "external": 4,
+            "constitution": 7,
+            "agility": 3,
+            "internal_power": 5,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 4
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_mukjin.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 3,
+          "candidate_id": "slot2_mukjin",
+          "stats": {
+            "external": 5,
+            "constitution": 7,
+            "agility": 3,
+            "internal_power": 5,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 5
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_mukjin.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 4,
+          "candidate_id": "slot2_mukjin",
+          "stats": {
+            "external": 5,
+            "constitution": 8,
+            "agility": 4,
+            "internal_power": 5,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 5
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_mukjin.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 5,
+          "candidate_id": "slot2_mukjin",
+          "stats": {
+            "external": 6,
+            "constitution": 8,
+            "agility": 4,
+            "internal_power": 6,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 6
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 6
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_mukjin.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 6,
+          "candidate_id": "slot2_mukjin",
+          "stats": {
+            "external": 6,
+            "constitution": 9,
+            "agility": 4,
+            "internal_power": 6,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 7
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 6
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_mukjin.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 7,
+          "candidate_id": "slot2_mukjin",
+          "stats": {
+            "external": 6,
+            "constitution": 10,
+            "agility": 5,
+            "internal_power": 6,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 8
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 7
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_mukjin.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 8,
+          "candidate_id": "slot2_mukjin",
+          "stats": {
+            "external": 7,
+            "constitution": 10,
+            "agility": 5,
+            "internal_power": 7,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 9
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 8
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_mukjin.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 9,
+          "candidate_id": "slot2_mukjin",
+          "stats": {
+            "external": 7,
+            "constitution": 11,
+            "agility": 6,
+            "internal_power": 7,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 9
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 9
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_mukjin.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 10,
+          "candidate_id": "slot2_mukjin",
+          "stats": {
+            "external": 8,
+            "constitution": 12,
+            "agility": 6,
+            "internal_power": 8,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 10
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 10
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_mukjin.reputation.4",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "candidate_id": "slot2_seokmu",
+        "duel_slot": 2,
+        "working_name": "석무",
+        "martial_identity": "철장 권객",
+        "readable_habit": "상대의 긴 전조가 보이면 버티며 받아치는 선택을 선호한다.",
+        "ambiguity_or_counterexample": "짧은 공격이 반복되면 먼저 압박한다.",
+        "public_briefing_hook": "큰 수를 두려워하지 않는다는 평.",
+        "short_personality_hook": "과묵하고 상대의 조급함을 기다린다.",
+        "review_tags": [
+          "guard_break",
+          "telegraph"
+        ],
+        "signature_manual_id": "hebei_peng_five_tigers_saber",
+        "available_manual_card_ids": [
+          "hebei_peng_five_tigers_saber_star3",
+          "hebei_peng_five_tigers_saber_star7"
+        ],
+        "basic_action_focus_ids": [
+          "basic_guard",
+          "basic_stance",
+          "basic_heavy_attack"
+        ],
+        "runtime_archetype_id": "stabilize_then_pressure",
+        "behavior_focus": "endure_long_telegraph_then_pressure_short_repetition",
+        "final_stat_total_seed": 22,
+        "signature_star_seed": 7,
+        "presentation": {
+          "epithet": "침산단문",
+          "identity": "버티며 받아치는 중량 도객",
+          "gender": "여성",
+          "age_impression": 43,
+          "art": "seokmu",
+          "epithet_bands": [
+            "철등도",
+            "진산도객",
+            "쇄문철도",
+            "침산단문"
+          ],
+          "epithet_reason": "성급하게 쫓지 않고 묵직한 도로 길목을 닫는다. 잠긴 산처럼 기다리는 성품과 단문의 도법을 함께 담았다."
+        }
+      },
+      "stages": [
+        {
+          "stage": 1,
+          "candidate_id": "slot2_seokmu",
+          "stats": {
+            "external": 4,
+            "constitution": 6,
+            "agility": 3,
+            "internal_power": 4,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 3
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_seokmu.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 2,
+          "candidate_id": "slot2_seokmu",
+          "stats": {
+            "external": 4,
+            "constitution": 7,
+            "agility": 3,
+            "internal_power": 5,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 4
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_seokmu.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 3,
+          "candidate_id": "slot2_seokmu",
+          "stats": {
+            "external": 5,
+            "constitution": 7,
+            "agility": 3,
+            "internal_power": 5,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 4
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_seokmu.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 4,
+          "candidate_id": "slot2_seokmu",
+          "stats": {
+            "external": 5,
+            "constitution": 8,
+            "agility": 4,
+            "internal_power": 5,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 5
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_seokmu.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 5,
+          "candidate_id": "slot2_seokmu",
+          "stats": {
+            "external": 6,
+            "constitution": 8,
+            "agility": 4,
+            "internal_power": 6,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 5
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 5
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_seokmu.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 6,
+          "candidate_id": "slot2_seokmu",
+          "stats": {
+            "external": 6,
+            "constitution": 9,
+            "agility": 4,
+            "internal_power": 6,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 6
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 5
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_seokmu.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 7,
+          "candidate_id": "slot2_seokmu",
+          "stats": {
+            "external": 6,
+            "constitution": 10,
+            "agility": 5,
+            "internal_power": 6,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 7
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_seokmu.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 8,
+          "candidate_id": "slot2_seokmu",
+          "stats": {
+            "external": 7,
+            "constitution": 10,
+            "agility": 5,
+            "internal_power": 7,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 8
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 7
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_seokmu.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 9,
+          "candidate_id": "slot2_seokmu",
+          "stats": {
+            "external": 7,
+            "constitution": 11,
+            "agility": 6,
+            "internal_power": 7,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 8
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 8
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_seokmu.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 10,
+          "candidate_id": "slot2_seokmu",
+          "stats": {
+            "external": 8,
+            "constitution": 12,
+            "agility": 6,
+            "internal_power": 8,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 9
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 9
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot2_seokmu.reputation.4",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "candidate_id": "slot3_biyeon",
+        "duel_slot": 3,
+        "working_name": "비연",
+        "martial_identity": "경공형 유랑객",
+        "readable_habit": "상대 공격 사거리 밖으로 벗어나는 이동을 자주 선택한다.",
+        "ambiguity_or_counterexample": "추격을 예상하면 이동 반복 대신 역진입한다.",
+        "public_briefing_hook": "쫓으면 비고, 기다리면 들어온다는 평.",
+        "short_personality_hook": "장난스러우나 관찰이 빠르다.",
+        "review_tags": [
+          "range",
+          "reverse_entry"
+        ],
+        "signature_manual_id": "sichuan_tang_hidden_weapons",
+        "available_manual_card_ids": [
+          "sichuan_tang_hidden_weapons_star3"
+        ],
+        "basic_action_focus_ids": [
+          "basic_move",
+          "basic_footwork",
+          "basic_evade"
+        ],
+        "runtime_archetype_id": "range_control",
+        "behavior_focus": "leave_attack_range_then_reverse_enter_on_chase_expectation",
+        "final_stat_total_seed": 24,
+        "signature_star_seed": 4,
+        "presentation": {
+          "epithet": "소영비연",
+          "identity": "경공과 암기를 잇는 유랑객",
+          "gender": "여성",
+          "age_impression": 27,
+          "art": "biyeon",
+          "epithet_bands": [
+            "비연수",
+            "추영비수",
+            "환영표객",
+            "소영비연"
+          ],
+          "epithet_reason": "비수의 수는 손이라는 뜻이다. 주무기는 투척 암기이며 근접 단검으로 바꾸지 않는다. 쫓으면 비는 그림자 같은 성향이다."
+        }
+      },
+      "stages": [
+        {
+          "stage": 1,
+          "candidate_id": "slot3_biyeon",
+          "stats": {
+            "external": 3,
+            "constitution": 3,
+            "agility": 6,
+            "internal_power": 5,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "sichuan_tang_hidden_weapons",
+              "mastery": 3
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_biyeon.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 2,
+          "candidate_id": "slot3_biyeon",
+          "stats": {
+            "external": 3,
+            "constitution": 3,
+            "agility": 7,
+            "internal_power": 6,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "sichuan_tang_hidden_weapons",
+              "mastery": 3
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_biyeon.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 3,
+          "candidate_id": "slot3_biyeon",
+          "stats": {
+            "external": 3,
+            "constitution": 4,
+            "agility": 7,
+            "internal_power": 6,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "sichuan_tang_hidden_weapons",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_biyeon.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 4,
+          "candidate_id": "slot3_biyeon",
+          "stats": {
+            "external": 4,
+            "constitution": 4,
+            "agility": 8,
+            "internal_power": 6,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "sichuan_tang_hidden_weapons",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_biyeon.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 5,
+          "candidate_id": "slot3_biyeon",
+          "stats": {
+            "external": 4,
+            "constitution": 4,
+            "agility": 9,
+            "internal_power": 7,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "sichuan_tang_hidden_weapons",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_biyeon.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 6,
+          "candidate_id": "slot3_biyeon",
+          "stats": {
+            "external": 4,
+            "constitution": 4,
+            "agility": 9,
+            "internal_power": 8,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "sichuan_tang_hidden_weapons",
+              "mastery": 5
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_biyeon.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 7,
+          "candidate_id": "slot3_biyeon",
+          "stats": {
+            "external": 5,
+            "constitution": 5,
+            "agility": 9,
+            "internal_power": 8,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "sichuan_tang_hidden_weapons",
+              "mastery": 6
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 5
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_biyeon.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 8,
+          "candidate_id": "slot3_biyeon",
+          "stats": {
+            "external": 5,
+            "constitution": 5,
+            "agility": 10,
+            "internal_power": 9,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "sichuan_tang_hidden_weapons",
+              "mastery": 6
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_biyeon.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 9,
+          "candidate_id": "slot3_biyeon",
+          "stats": {
+            "external": 5,
+            "constitution": 6,
+            "agility": 11,
+            "internal_power": 9,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "sichuan_tang_hidden_weapons",
+              "mastery": 6
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_biyeon.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 10,
+          "candidate_id": "slot3_biyeon",
+          "stats": {
+            "external": 6,
+            "constitution": 6,
+            "agility": 12,
+            "internal_power": 10,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "sichuan_tang_hidden_weapons",
+              "mastery": 7
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 7
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_biyeon.reputation.4",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "candidate_id": "slot3_seolha",
+        "duel_slot": 3,
+        "working_name": "설하",
+        "martial_identity": "장풍·보법형",
+        "readable_habit": "선호 거리대를 유지하려고 이동을 먼저 계산한다.",
+        "ambiguity_or_counterexample": "코너나 불리한 위치에서는 거리를 버리고 짧게 맞받아친다.",
+        "public_briefing_hook": "닿지 않는 거리에서 싸움을 시작한다는 평.",
+        "short_personality_hook": "싸움도 선을 긋는 일이라 생각한다.",
+        "review_tags": [
+          "range",
+          "position"
+        ],
+        "signature_manual_id": "beggars_dragon_subduing_palm",
+        "available_manual_card_ids": [
+          "beggars_dragon_subduing_palm_star3",
+          "beggars_dragon_subduing_palm_star7"
+        ],
+        "basic_action_focus_ids": [
+          "basic_move",
+          "basic_footwork",
+          "basic_palm"
+        ],
+        "runtime_archetype_id": "range_control",
+        "behavior_focus": "maintain_signature_range_with_close_counterexample",
+        "final_stat_total_seed": 24,
+        "signature_star_seed": 7,
+        "presentation": {
+          "epithet": "설하행룡",
+          "identity": "거리를 다스리는 장풍 고수",
+          "gender": "여성",
+          "age_impression": 48,
+          "art": "seolha",
+          "epithet_bands": [
+            "설풍장",
+            "유룡장객",
+            "회설유룡",
+            "설하행룡"
+          ],
+          "epithet_reason": "선을 긋듯 싸우는 장객. 물러남과 재진입을 눈보라와 용의 이동에 빗대되 실제 장풍과 근접 장타는 구분한다."
+        }
+      },
+      "stages": [
+        {
+          "stage": 1,
+          "candidate_id": "slot3_seolha",
+          "stats": {
+            "external": 3,
+            "constitution": 3,
+            "agility": 6,
+            "internal_power": 5,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 3
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_seolha.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 2,
+          "candidate_id": "slot3_seolha",
+          "stats": {
+            "external": 3,
+            "constitution": 3,
+            "agility": 7,
+            "internal_power": 6,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_seolha.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 3,
+          "candidate_id": "slot3_seolha",
+          "stats": {
+            "external": 3,
+            "constitution": 4,
+            "agility": 7,
+            "internal_power": 6,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_seolha.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 4,
+          "candidate_id": "slot3_seolha",
+          "stats": {
+            "external": 4,
+            "constitution": 4,
+            "agility": 8,
+            "internal_power": 6,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 5
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_seolha.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 5,
+          "candidate_id": "slot3_seolha",
+          "stats": {
+            "external": 4,
+            "constitution": 4,
+            "agility": 9,
+            "internal_power": 7,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 5
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 5
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_seolha.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 6,
+          "candidate_id": "slot3_seolha",
+          "stats": {
+            "external": 4,
+            "constitution": 4,
+            "agility": 9,
+            "internal_power": 8,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 6
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_seolha.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 7,
+          "candidate_id": "slot3_seolha",
+          "stats": {
+            "external": 5,
+            "constitution": 5,
+            "agility": 9,
+            "internal_power": 8,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 7
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 7
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_seolha.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 8,
+          "candidate_id": "slot3_seolha",
+          "stats": {
+            "external": 5,
+            "constitution": 5,
+            "agility": 10,
+            "internal_power": 9,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 8
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 7
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 6
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_seolha.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 9,
+          "candidate_id": "slot3_seolha",
+          "stats": {
+            "external": 5,
+            "constitution": 6,
+            "agility": 11,
+            "internal_power": 9,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 8
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 8
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 7
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_seolha.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 10,
+          "candidate_id": "slot3_seolha",
+          "stats": {
+            "external": 6,
+            "constitution": 6,
+            "agility": 12,
+            "internal_power": 10,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 9
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 9
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 7
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_seolha.reputation.4",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "candidate_id": "slot3_uram",
+        "duel_slot": 3,
+        "working_name": "우람",
+        "martial_identity": "장병기 무인",
+        "readable_habit": "사거리 끝에서 공격이 성립하는 위치를 선호한다.",
+        "ambiguity_or_counterexample": "접근을 허용한 뒤 후퇴 대신 맞교환할 때가 있다.",
+        "public_briefing_hook": "창끝보다 반 보 멀리 서려 한다는 평.",
+        "short_personality_hook": "거리 계산을 예의처럼 엄격히 지킨다.",
+        "review_tags": [
+          "range",
+          "trade"
+        ],
+        "signature_manual_id": "yang_family_spear",
+        "available_manual_card_ids": [
+          "yang_family_spear_star3",
+          "yang_family_spear_star7"
+        ],
+        "basic_action_focus_ids": [
+          "basic_move",
+          "basic_footwork",
+          "basic_guard"
+        ],
+        "runtime_archetype_id": "range_control",
+        "behavior_focus": "spear_tip_range_with_trade_counterexample",
+        "final_stat_total_seed": 24,
+        "signature_star_seed": 7,
+        "presentation": {
+          "epithet": "척천일창",
+          "identity": "창끝 거리의 장병기 무인",
+          "gender": "남성",
+          "age_impression": 38,
+          "art": "uram",
+          "epithet_bands": [
+            "장간창",
+            "척영창객",
+            "단로장창",
+            "척천일창"
+          ],
+          "epithet_reason": "반 보의 간격도 예의처럼 지키는 창객. 길이를 재는 척과 한 번의 곧은 창으로 정체성을 묶었다."
+        }
+      },
+      "stages": [
+        {
+          "stage": 1,
+          "candidate_id": "slot3_uram",
+          "stats": {
+            "external": 3,
+            "constitution": 3,
+            "agility": 6,
+            "internal_power": 5,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 3
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_uram.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 2,
+          "candidate_id": "slot3_uram",
+          "stats": {
+            "external": 3,
+            "constitution": 3,
+            "agility": 7,
+            "internal_power": 6,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 3
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_uram.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 3,
+          "candidate_id": "slot3_uram",
+          "stats": {
+            "external": 3,
+            "constitution": 4,
+            "agility": 7,
+            "internal_power": 6,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 4
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_uram.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 4,
+          "candidate_id": "slot3_uram",
+          "stats": {
+            "external": 4,
+            "constitution": 4,
+            "agility": 8,
+            "internal_power": 6,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 5
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_uram.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 5,
+          "candidate_id": "slot3_uram",
+          "stats": {
+            "external": 4,
+            "constitution": 4,
+            "agility": 9,
+            "internal_power": 7,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 5
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_uram.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 6,
+          "candidate_id": "slot3_uram",
+          "stats": {
+            "external": 4,
+            "constitution": 4,
+            "agility": 9,
+            "internal_power": 8,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 6
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_uram.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 7,
+          "candidate_id": "slot3_uram",
+          "stats": {
+            "external": 5,
+            "constitution": 5,
+            "agility": 9,
+            "internal_power": 8,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 7
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_uram.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 8,
+          "candidate_id": "slot3_uram",
+          "stats": {
+            "external": 5,
+            "constitution": 5,
+            "agility": 10,
+            "internal_power": 9,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 8
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_uram.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 9,
+          "candidate_id": "slot3_uram",
+          "stats": {
+            "external": 5,
+            "constitution": 6,
+            "agility": 11,
+            "internal_power": 9,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 9
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_uram.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 10,
+          "candidate_id": "slot3_uram",
+          "stats": {
+            "external": 6,
+            "constitution": 6,
+            "agility": 12,
+            "internal_power": 10,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 10
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot3_uram.reputation.4",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "candidate_id": "slot4_cheongheo",
+        "duel_slot": 4,
+        "working_name": "청허",
+        "martial_identity": "유전검 사용자",
+        "readable_habit": "플레이어가 반복한 성공 패턴에 공개 이력 기반 대응을 맞추려 한다.",
+        "ambiguity_or_counterexample": "같은 상황에서도 자원과 회피 횟수에 따라 정면 대응한다.",
+        "public_briefing_hook": "같은 수를 두 번 보여주면 기억한다는 평.",
+        "short_personality_hook": "온화하지만 상대 습관을 놓치지 않는다.",
+        "review_tags": [
+          "public_history",
+          "counter"
+        ],
+        "signature_manual_id": "wudang_taiji_sword",
+        "available_manual_card_ids": [
+          "wudang_taiji_sword_star3",
+          "wudang_taiji_sword_star7"
+        ],
+        "basic_action_focus_ids": [
+          "basic_evade",
+          "basic_stance",
+          "basic_guard"
+        ],
+        "runtime_archetype_id": "public_history_counter",
+        "behavior_focus": "adapt_to_resolved_repetition_only",
+        "final_stat_total_seed": 26,
+        "signature_star_seed": 7,
+        "presentation": {
+          "epithet": "청허귀원",
+          "identity": "공개 이력을 읽는 태극 검객",
+          "gender": "남성",
+          "age_impression": 64,
+          "art": "cheongheo",
+          "epithet_bands": [
+            "유운검",
+            "회운검객",
+            "청허유전",
+            "청허귀원"
+          ],
+          "epithet_reason": "온화하게 되돌려 보내는 태극과 자하의 회복을 한 줄기로 익혔다. 상대의 지난 습관을 잊지 않는 인물이다."
+        }
+      },
+      "stages": [
+        {
+          "stage": 1,
+          "candidate_id": "slot4_cheongheo",
+          "stats": {
+            "external": 3,
+            "constitution": 3,
+            "agility": 4,
+            "internal_power": 4,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_cheongheo.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 2,
+          "candidate_id": "slot4_cheongheo",
+          "stats": {
+            "external": 3,
+            "constitution": 3,
+            "agility": 4,
+            "internal_power": 5,
+            "insight": 7
+          },
+          "manuals": [
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_cheongheo.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 3,
+          "candidate_id": "slot4_cheongheo",
+          "stats": {
+            "external": 3,
+            "constitution": 4,
+            "agility": 5,
+            "internal_power": 5,
+            "insight": 7
+          },
+          "manuals": [
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 5
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_cheongheo.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 4,
+          "candidate_id": "slot4_cheongheo",
+          "stats": {
+            "external": 4,
+            "constitution": 4,
+            "agility": 5,
+            "internal_power": 5,
+            "insight": 8
+          },
+          "manuals": [
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 5
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_cheongheo.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 5,
+          "candidate_id": "slot4_cheongheo",
+          "stats": {
+            "external": 4,
+            "constitution": 4,
+            "agility": 6,
+            "internal_power": 6,
+            "insight": 8
+          },
+          "manuals": [
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 6
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_cheongheo.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 6,
+          "candidate_id": "slot4_cheongheo",
+          "stats": {
+            "external": 4,
+            "constitution": 5,
+            "agility": 6,
+            "internal_power": 6,
+            "insight": 9
+          },
+          "manuals": [
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 7
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 6
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_cheongheo.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 7,
+          "candidate_id": "slot4_cheongheo",
+          "stats": {
+            "external": 5,
+            "constitution": 5,
+            "agility": 6,
+            "internal_power": 6,
+            "insight": 10
+          },
+          "manuals": [
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 8
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 7
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_cheongheo.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 8,
+          "candidate_id": "slot4_cheongheo",
+          "stats": {
+            "external": 5,
+            "constitution": 5,
+            "agility": 7,
+            "internal_power": 7,
+            "insight": 10
+          },
+          "manuals": [
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 9
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 8
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_cheongheo.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 9,
+          "candidate_id": "slot4_cheongheo",
+          "stats": {
+            "external": 6,
+            "constitution": 6,
+            "agility": 7,
+            "internal_power": 7,
+            "insight": 11
+          },
+          "manuals": [
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 9
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 9
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_cheongheo.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 10,
+          "candidate_id": "slot4_cheongheo",
+          "stats": {
+            "external": 6,
+            "constitution": 6,
+            "agility": 8,
+            "internal_power": 8,
+            "insight": 12
+          },
+          "manuals": [
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 10
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 10
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_cheongheo.reputation.4",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "candidate_id": "slot4_damwol",
+        "duel_slot": 4,
+        "working_name": "담월",
+        "martial_identity": "반격 중심 검객",
+        "readable_habit": "먼저 공격하기보다 상대의 뚜렷한 전조에 대응하려 한다.",
+        "ambiguity_or_counterexample": "상대가 지나치게 기다리면 스스로 압박 수를 만든다.",
+        "public_briefing_hook": "선수보다 후수를 좋아한다는 평.",
+        "short_personality_hook": "승부를 대화처럼 여긴다.",
+        "review_tags": [
+          "evade",
+          "counter"
+        ],
+        "signature_manual_id": "xiaoyao_lingbo_footwork",
+        "available_manual_card_ids": [
+          "xiaoyao_lingbo_footwork_star3",
+          "xiaoyao_lingbo_footwork_star7"
+        ],
+        "basic_action_focus_ids": [
+          "basic_evade",
+          "basic_footwork",
+          "basic_quick_attack"
+        ],
+        "runtime_archetype_id": "public_history_counter",
+        "behavior_focus": "second_mover_counter_then_pressure_excessive_waiting",
+        "final_stat_total_seed": 26,
+        "signature_star_seed": 7,
+        "presentation": {
+          "epithet": "담월무흔",
+          "identity": "소요보법 중심의 후수 고수",
+          "gender": "여성",
+          "age_impression": 36,
+          "art": "damwol",
+          "epithet_bands": [
+            "월하객",
+            "답월유객",
+            "회월검영",
+            "담월무흔"
+          ],
+          "epithet_reason": "먼저 뻗기보다 한 발 비우는 후수 고수. 발자국이 흐려지는 명성으로 보법의 정체성을 드러낸다."
+        }
+      },
+      "stages": [
+        {
+          "stage": 1,
+          "candidate_id": "slot4_damwol",
+          "stats": {
+            "external": 3,
+            "constitution": 3,
+            "agility": 4,
+            "internal_power": 4,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_damwol.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 2,
+          "candidate_id": "slot4_damwol",
+          "stats": {
+            "external": 3,
+            "constitution": 3,
+            "agility": 4,
+            "internal_power": 5,
+            "insight": 7
+          },
+          "manuals": [
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_damwol.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 3,
+          "candidate_id": "slot4_damwol",
+          "stats": {
+            "external": 3,
+            "constitution": 4,
+            "agility": 5,
+            "internal_power": 5,
+            "insight": 7
+          },
+          "manuals": [
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_damwol.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 4,
+          "candidate_id": "slot4_damwol",
+          "stats": {
+            "external": 4,
+            "constitution": 4,
+            "agility": 5,
+            "internal_power": 5,
+            "insight": 8
+          },
+          "manuals": [
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 5
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_damwol.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 5,
+          "candidate_id": "slot4_damwol",
+          "stats": {
+            "external": 4,
+            "constitution": 4,
+            "agility": 6,
+            "internal_power": 6,
+            "insight": 8
+          },
+          "manuals": [
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 6
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_damwol.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 6,
+          "candidate_id": "slot4_damwol",
+          "stats": {
+            "external": 4,
+            "constitution": 5,
+            "agility": 6,
+            "internal_power": 6,
+            "insight": 9
+          },
+          "manuals": [
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 6
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_damwol.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 7,
+          "candidate_id": "slot4_damwol",
+          "stats": {
+            "external": 5,
+            "constitution": 5,
+            "agility": 6,
+            "internal_power": 6,
+            "insight": 10
+          },
+          "manuals": [
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 7
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_damwol.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 8,
+          "candidate_id": "slot4_damwol",
+          "stats": {
+            "external": 5,
+            "constitution": 5,
+            "agility": 7,
+            "internal_power": 7,
+            "insight": 10
+          },
+          "manuals": [
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 8
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_damwol.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 9,
+          "candidate_id": "slot4_damwol",
+          "stats": {
+            "external": 6,
+            "constitution": 6,
+            "agility": 7,
+            "internal_power": 7,
+            "insight": 11
+          },
+          "manuals": [
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 9
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_damwol.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 10,
+          "candidate_id": "slot4_damwol",
+          "stats": {
+            "external": 6,
+            "constitution": 6,
+            "agility": 8,
+            "internal_power": 8,
+            "insight": 12
+          },
+          "manuals": [
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 10
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 7
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_damwol.reputation.4",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "candidate_id": "slot4_jinryeo",
+        "duel_slot": 4,
+        "working_name": "진려",
+        "martial_identity": "속임수형 권객",
+        "readable_habit": "한 번 성공한 유인을 다시 제시해 플레이어의 반복 반응을 시험한다.",
+        "ambiguity_or_counterexample": "유인을 반복할 것처럼 보이다 즉시 공격으로 전환한다.",
+        "public_briefing_hook": "같은 틈을 다시 보여주는 버릇이 있다는 평.",
+        "short_personality_hook": "상대가 자신을 읽었다고 믿는 순간을 노린다.",
+        "review_tags": [
+          "telegraph",
+          "bait"
+        ],
+        "signature_manual_id": "nangong_boundless_sky_sword",
+        "available_manual_card_ids": [
+          "nangong_boundless_sky_sword_star3",
+          "nangong_boundless_sky_sword_star7"
+        ],
+        "basic_action_focus_ids": [
+          "basic_stance",
+          "basic_move",
+          "basic_heavy_attack"
+        ],
+        "runtime_archetype_id": "public_history_counter",
+        "behavior_focus": "repeat_visible_bait_then_immediate_attack_counterexample",
+        "final_stat_total_seed": 26,
+        "signature_star_seed": 7,
+        "presentation": {
+          "epithet": "오변환뢰",
+          "identity": "보이는 틈으로 유인하는 검객",
+          "gender": "남성",
+          "age_impression": 32,
+          "art": "jinryeo",
+          "epithet_bands": [
+            "유극검",
+            "환뢰검객",
+            "오변검객",
+            "오변환뢰"
+          ],
+          "epithet_reason": "틈을 드러내는 척하다 검로를 바꾸는 다재 검객. 다섯 선택의 전환을 별호의 중심으로 삼았다."
+        }
+      },
+      "stages": [
+        {
+          "stage": 1,
+          "candidate_id": "slot4_jinryeo",
+          "stats": {
+            "external": 3,
+            "constitution": 3,
+            "agility": 4,
+            "internal_power": 4,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 3
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 3
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_jinryeo.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 2,
+          "candidate_id": "slot4_jinryeo",
+          "stats": {
+            "external": 3,
+            "constitution": 3,
+            "agility": 4,
+            "internal_power": 5,
+            "insight": 7
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 3
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 3
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_jinryeo.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 3,
+          "candidate_id": "slot4_jinryeo",
+          "stats": {
+            "external": 3,
+            "constitution": 4,
+            "agility": 5,
+            "internal_power": 5,
+            "insight": 7
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 4
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 3
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_jinryeo.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 4,
+          "candidate_id": "slot4_jinryeo",
+          "stats": {
+            "external": 4,
+            "constitution": 4,
+            "agility": 5,
+            "internal_power": 5,
+            "insight": 8
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 4
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_jinryeo.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 5,
+          "candidate_id": "slot4_jinryeo",
+          "stats": {
+            "external": 4,
+            "constitution": 4,
+            "agility": 6,
+            "internal_power": 6,
+            "insight": 8
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 4
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_jinryeo.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 6,
+          "candidate_id": "slot4_jinryeo",
+          "stats": {
+            "external": 4,
+            "constitution": 5,
+            "agility": 6,
+            "internal_power": 6,
+            "insight": 9
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 5
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 4
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_jinryeo.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 7,
+          "candidate_id": "slot4_jinryeo",
+          "stats": {
+            "external": 5,
+            "constitution": 5,
+            "agility": 6,
+            "internal_power": 6,
+            "insight": 10
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 5
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_jinryeo.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 8,
+          "candidate_id": "slot4_jinryeo",
+          "stats": {
+            "external": 5,
+            "constitution": 5,
+            "agility": 7,
+            "internal_power": 7,
+            "insight": 10
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 6
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 5
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_jinryeo.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 9,
+          "candidate_id": "slot4_jinryeo",
+          "stats": {
+            "external": 6,
+            "constitution": 6,
+            "agility": 7,
+            "internal_power": 7,
+            "insight": 11
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 6
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 5
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 5
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_jinryeo.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 10,
+          "candidate_id": "slot4_jinryeo",
+          "stats": {
+            "external": 6,
+            "constitution": 6,
+            "agility": 8,
+            "internal_power": 8,
+            "insight": 12
+          },
+          "manuals": [
+            {
+              "id": "nangong_boundless_sky_sword",
+              "mastery": 7
+            },
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 7
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 5
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 5
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot4_jinryeo.reputation.4",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "candidate_id": "slot5_jeogu",
+        "duel_slot": 5,
+        "working_name": "적우",
+        "martial_identity": "연검형 검객",
+        "readable_habit": "여러 수를 하나의 압박 흐름으로 연결하려 한다.",
+        "ambiguity_or_counterexample": "첫 수가 불리하면 후속 흐름을 보수적으로 바꾼다.",
+        "public_briefing_hook": "첫 칼보다 이어지는 칼이 무섭다는 평.",
+        "short_personality_hook": "계획 전체를 한 호흡으로 본다.",
+        "review_tags": [
+          "sequence",
+          "interrupt"
+        ],
+        "signature_manual_id": "mount_hua_plum_blossom_sword",
+        "available_manual_card_ids": [
+          "mount_hua_plum_blossom_sword_star3",
+          "mount_hua_plum_blossom_sword_star7"
+        ],
+        "basic_action_focus_ids": [
+          "basic_move",
+          "basic_stance",
+          "basic_evade"
+        ],
+        "runtime_archetype_id": "sequence_pressure",
+        "behavior_focus": "linked_pressure_then_conservative_followup_after_bad_first_action",
+        "final_stat_total_seed": 28,
+        "signature_star_seed": 9,
+        "presentation": {
+          "epithet": "낙홍무진",
+          "identity": "여러 수를 잇는 매화 검객",
+          "gender": "남성",
+          "age_impression": 44,
+          "art": "jeogu",
+          "epithet_bands": [
+            "잔홍검",
+            "첩화검객",
+            "회홍연검",
+            "낙홍무진"
+          ],
+          "epithet_reason": "여러 수를 잇되 유리하면 멈출 줄 아는 매화 검객. 낙화가 끝나지 않는 검로를 별호로 삼았다."
+        }
+      },
+      "stages": [
+        {
+          "stage": 1,
+          "candidate_id": "slot5_jeogu",
+          "stats": {
+            "external": 5,
+            "constitution": 3,
+            "agility": 4,
+            "internal_power": 5,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 3
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 3
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_jeogu.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 2,
+          "candidate_id": "slot5_jeogu",
+          "stats": {
+            "external": 6,
+            "constitution": 3,
+            "agility": 4,
+            "internal_power": 6,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 4
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 3
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_jeogu.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 3,
+          "candidate_id": "slot5_jeogu",
+          "stats": {
+            "external": 6,
+            "constitution": 3,
+            "agility": 5,
+            "internal_power": 6,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 4
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_jeogu.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 4,
+          "candidate_id": "slot5_jeogu",
+          "stats": {
+            "external": 6,
+            "constitution": 4,
+            "agility": 5,
+            "internal_power": 7,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 5
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 5
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_jeogu.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 5,
+          "candidate_id": "slot5_jeogu",
+          "stats": {
+            "external": 7,
+            "constitution": 4,
+            "agility": 6,
+            "internal_power": 7,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 6
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 5
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_jeogu.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 6,
+          "candidate_id": "slot5_jeogu",
+          "stats": {
+            "external": 8,
+            "constitution": 4,
+            "agility": 6,
+            "internal_power": 8,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 7
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 6
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_jeogu.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 7,
+          "candidate_id": "slot5_jeogu",
+          "stats": {
+            "external": 8,
+            "constitution": 5,
+            "agility": 6,
+            "internal_power": 8,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 7
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 7
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_jeogu.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 8,
+          "candidate_id": "slot5_jeogu",
+          "stats": {
+            "external": 8,
+            "constitution": 5,
+            "agility": 7,
+            "internal_power": 9,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 8
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 8
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_jeogu.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 9,
+          "candidate_id": "slot5_jeogu",
+          "stats": {
+            "external": 9,
+            "constitution": 6,
+            "agility": 7,
+            "internal_power": 9,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 9
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 8
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_jeogu.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 10,
+          "candidate_id": "slot5_jeogu",
+          "stats": {
+            "external": 10,
+            "constitution": 6,
+            "agility": 8,
+            "internal_power": 10,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "mount_hua_plum_blossom_sword",
+              "mastery": 10
+            },
+            {
+              "id": "wudang_taiji_sword",
+              "mastery": 9
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_jeogu.reputation.4",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "candidate_id": "slot5_pungmok",
+        "duel_slot": 5,
+        "working_name": "풍목",
+        "martial_identity": "연환 압박형 중량 무인",
+        "readable_habit": "짧은 수를 이어 상대의 중단 타이밍을 흔든다.",
+        "ambiguity_or_counterexample": "체력 우위에서는 연환보다 안전한 단독 수를 섞는다.",
+        "public_briefing_hook": "한 번 멈춘 것처럼 보여도 끝이 아닐 수 있다는 평.",
+        "short_personality_hook": "박자를 바꾸는 것을 즐긴다.",
+        "review_tags": [
+          "sequence",
+          "rhythm"
+        ],
+        "signature_manual_id": "hebei_peng_five_tigers_saber",
+        "available_manual_card_ids": [
+          "hebei_peng_five_tigers_saber_star3",
+          "hebei_peng_five_tigers_saber_star7"
+        ],
+        "basic_action_focus_ids": [
+          "basic_guard",
+          "basic_stance",
+          "basic_quick_attack"
+        ],
+        "runtime_archetype_id": "sequence_pressure",
+        "behavior_focus": "rhythm_change_with_safe_single_action_counterexample",
+        "final_stat_total_seed": 28,
+        "signature_star_seed": 9,
+        "presentation": {
+          "epithet": "풍호연환",
+          "identity": "박자를 바꾸는 연환 도객",
+          "gender": "남성",
+          "age_impression": 41,
+          "art": "pungmok",
+          "epithet_bands": [
+            "풍산도",
+            "쇄풍도객",
+            "연환호도",
+            "풍호연환"
+          ],
+          "epithet_reason": "한 번 멈춘 듯하다 다시 잇는 도객. 바람의 끊김과 호랑이의 재도약을 도법의 리듬에 묶었다."
+        }
+      },
+      "stages": [
+        {
+          "stage": 1,
+          "candidate_id": "slot5_pungmok",
+          "stats": {
+            "external": 5,
+            "constitution": 3,
+            "agility": 4,
+            "internal_power": 5,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 3
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 3
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_pungmok.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 2,
+          "candidate_id": "slot5_pungmok",
+          "stats": {
+            "external": 6,
+            "constitution": 3,
+            "agility": 4,
+            "internal_power": 6,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 4
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 3
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_pungmok.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 3,
+          "candidate_id": "slot5_pungmok",
+          "stats": {
+            "external": 6,
+            "constitution": 3,
+            "agility": 5,
+            "internal_power": 6,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 4
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 4
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_pungmok.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 4,
+          "candidate_id": "slot5_pungmok",
+          "stats": {
+            "external": 6,
+            "constitution": 4,
+            "agility": 5,
+            "internal_power": 7,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 5
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 4
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_pungmok.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 5,
+          "candidate_id": "slot5_pungmok",
+          "stats": {
+            "external": 7,
+            "constitution": 4,
+            "agility": 6,
+            "internal_power": 7,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 6
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 4
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_pungmok.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 6,
+          "candidate_id": "slot5_pungmok",
+          "stats": {
+            "external": 8,
+            "constitution": 4,
+            "agility": 6,
+            "internal_power": 8,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 6
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 6
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_pungmok.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 7,
+          "candidate_id": "slot5_pungmok",
+          "stats": {
+            "external": 8,
+            "constitution": 5,
+            "agility": 6,
+            "internal_power": 8,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 7
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 6
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_pungmok.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 8,
+          "candidate_id": "slot5_pungmok",
+          "stats": {
+            "external": 8,
+            "constitution": 5,
+            "agility": 7,
+            "internal_power": 9,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 8
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 6
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_pungmok.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 9,
+          "candidate_id": "slot5_pungmok",
+          "stats": {
+            "external": 9,
+            "constitution": 6,
+            "agility": 7,
+            "internal_power": 9,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 9
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 6
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_pungmok.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 10,
+          "candidate_id": "slot5_pungmok",
+          "stats": {
+            "external": 10,
+            "constitution": 6,
+            "agility": 8,
+            "internal_power": 10,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "hebei_peng_five_tigers_saber",
+              "mastery": 10
+            },
+            {
+              "id": "beggars_dragon_subduing_palm",
+              "mastery": 7
+            },
+            {
+              "id": "shaolin_arhat_vajra_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_pungmok.reputation.4",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "candidate_id": "slot5_rajin",
+        "duel_slot": 5,
+        "working_name": "라진",
+        "martial_identity": "창·보법 연계형",
+        "readable_habit": "위치 이동과 공격을 연속 계획으로 엮는 경향이 있다.",
+        "ambiguity_or_counterexample": "접근이 막히면 잔여 수를 단독 방어나 견제로 전환한다.",
+        "public_briefing_hook": "세 번째 수가 첫 번째 수의 이유가 된다는 평.",
+        "short_personality_hook": "승부를 미리 짠 길처럼 생각한다.",
+        "review_tags": [
+          "sequence",
+          "position"
+        ],
+        "signature_manual_id": "yang_family_spear",
+        "available_manual_card_ids": [
+          "yang_family_spear_star3",
+          "yang_family_spear_star7"
+        ],
+        "basic_action_focus_ids": [
+          "basic_move",
+          "basic_footwork",
+          "basic_guard"
+        ],
+        "runtime_archetype_id": "sequence_pressure",
+        "behavior_focus": "movement_attack_sequence_then_safe_conversion_when_blocked",
+        "final_stat_total_seed": 28,
+        "signature_star_seed": 9,
+        "presentation": {
+          "epithet": "구곡연로",
+          "identity": "창과 보법을 잇는 설계자",
+          "gender": "여성",
+          "age_impression": 31,
+          "art": "rajin",
+          "epithet_bands": [
+            "행로창",
+            "답풍창객",
+            "연로쇄창",
+            "구곡연로"
+          ],
+          "epithet_reason": "첫 걸음이 세 번째 창로의 이유가 되는 설계자. 구곡은 여러 경로를 엮는 별호이지 새 전장 지형이 아니다."
+        }
+      },
+      "stages": [
+        {
+          "stage": 1,
+          "candidate_id": "slot5_rajin",
+          "stats": {
+            "external": 5,
+            "constitution": 3,
+            "agility": 4,
+            "internal_power": 5,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 3
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_rajin.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 2,
+          "candidate_id": "slot5_rajin",
+          "stats": {
+            "external": 6,
+            "constitution": 3,
+            "agility": 4,
+            "internal_power": 6,
+            "insight": 3
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 3
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 3
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_rajin.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 3,
+          "candidate_id": "slot5_rajin",
+          "stats": {
+            "external": 6,
+            "constitution": 3,
+            "agility": 5,
+            "internal_power": 6,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 4
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_rajin.reputation.1",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 4,
+          "candidate_id": "slot5_rajin",
+          "stats": {
+            "external": 6,
+            "constitution": 4,
+            "agility": 5,
+            "internal_power": 7,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 5
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 4
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 4
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_rajin.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 5,
+          "candidate_id": "slot5_rajin",
+          "stats": {
+            "external": 7,
+            "constitution": 4,
+            "agility": 6,
+            "internal_power": 7,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 5
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 5
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_rajin.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 6,
+          "candidate_id": "slot5_rajin",
+          "stats": {
+            "external": 8,
+            "constitution": 4,
+            "agility": 6,
+            "internal_power": 8,
+            "insight": 4
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 6
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 5
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_rajin.reputation.2",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 7,
+          "candidate_id": "slot5_rajin",
+          "stats": {
+            "external": 8,
+            "constitution": 5,
+            "agility": 6,
+            "internal_power": 8,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 7
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 6
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_rajin.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 8,
+          "candidate_id": "slot5_rajin",
+          "stats": {
+            "external": 8,
+            "constitution": 5,
+            "agility": 7,
+            "internal_power": 9,
+            "insight": 5
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 8
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 7
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_rajin.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 9,
+          "candidate_id": "slot5_rajin",
+          "stats": {
+            "external": 9,
+            "constitution": 6,
+            "agility": 7,
+            "internal_power": 9,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 8
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 8
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_rajin.reputation.3",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        },
+        {
+          "stage": 10,
+          "candidate_id": "slot5_rajin",
+          "stats": {
+            "external": 10,
+            "constitution": 6,
+            "agility": 8,
+            "internal_power": 10,
+            "insight": 6
+          },
+          "manuals": [
+            {
+              "id": "yang_family_spear",
+              "mastery": 9
+            },
+            {
+              "id": "xiaoyao_lingbo_footwork",
+              "mastery": 9
+            },
+            {
+              "id": "mount_hua_purple_mist_art",
+              "mastery": 5
+            }
+          ],
+          "resource_caps": {
+            "health": 30,
+            "stamina": 5,
+            "internal": 4
+          },
+          "epithet_key": "slot5_rajin.reputation.4",
+          "source_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101"
+        }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "status": "REVIEWED_CANDIDATE_FINAL_USER_LOCK_PENDING",
+  "status": "USER_APPROVED__CANON_REGISTERED",
   "asset_id": "BAEKMUJIN_CODEX_PORTRAIT_V1",
   "path": "output/blueprint-candidates/opponent-baekmujin-v1.png",
   "sha256": "ec373989585c1959fe09b0d850a41a64605b5e237d961aca832337a73daf34d7",
@@ -10,7 +10,7 @@
   "mode": "RGB",
   "consumer": "opponent codex and pre-duel briefing portrait; proposed TextureRect in vertical_slice_shell.gd",
   "runtime_destination_after_approval": "assets/characters/portraits/masked_baekmujin_portrait_v1.png",
-  "runtime_implemented": false,
+  "runtime_implemented": true,
   "state_family": [
     "normal",
     "hover",
@@ -32,5 +32,8 @@
   ],
   "prompt_summary": "Original masked adult swordsman, charcoal-black and muted crimson robes, red headband, ordinary sheathed straight sword; warm ivory paper and blue ink wash; full body portrait, no text. Jinryeo reference is style only; historical masked image is costume identity.",
   "review": "Head and boots present; two hands, coherent sheathed sword, mask and crimson costume retained. Static codex/briefing only.",
-  "rights": "AI service exact model/version/plan terms unverified; not shipping rights approval"
+  "rights": "AI service exact model/version/plan terms unverified; not shipping rights approval",
+  "approval_owner": "docs/planning-data/current_user_planning_status.json#blueprint_final_approval",
+  "registered_runtime_manifest": "assets/blueprint/APPROVED_ART_MANIFEST.json",
+  "runtime_evidence": "docs/blueprint/evidence/variable-runtime-20260911; verify_variable_shell.gd; static portrait only"
 }

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "current_opponent_support_budget_decision": "TEN-DEC-20260911-CHARACTER-VARIABLE-LOADOUT-APPROVAL-REVIEW-01",
-  "blueprint_revision_status": "112_PAGE_USER_APPROVED_DESIGN_AND_VISUAL_LOCK_RUNTIME_NOT_IMPLEMENTED",
+  "blueprint_revision_status": "USER_APPROVED_RUNTIME_IMPLEMENTED_MACHINE_VERIFIED_REMOTE_PENDING",
   "current_opponent_roster_growth_decision": "TEN-DEC-20260909-RUN-START-OPPONENT-ROSTER-GROWTH-01",
-  "opponent_roster_growth_status": "USER_APPROVED_SPECIFICATION_RUNTIME_NOT_IMPLEMENTED",
+  "opponent_roster_growth_status": "V2_FROZEN_ROSTER_IMPLEMENTED_LEGACY_V1_PRESERVED",
   "current_internal_review_cadence_decision": "TEN-DEC-20260909-TWO-ROUND-INTERNAL-REVIEW-01",
   "internal_review_cadence": "EXACTLY_TWO_FULL_SCOPE_ROUNDS_NO_AUTOMATIC_THIRD",
   "pr_integration_authority": "TEN-DEC-20260908-STANDING-PR-INTEGRATION-01",
@@ -571,8 +571,23 @@
         "sha256": "d7f0d05d98b994168e9bc3668611710a286e9402465369a2abad96b532b6b384"
       }
     ],
-    "runtime_implemented": false,
+    "runtime_implemented": true,
     "human_balance_verified": false,
     "approval_owner": "docs/decisions/2026-09-11_CHARACTER_VARIABLE_LOADOUT_APPROVAL_REVIEW.md"
+  },
+  "variable_roster_implementation": {
+    "status": "LOCAL_MACHINE_VERIFIED_REMOTE_PENDING",
+    "report": "docs/operations/2026-09-11_VARIABLE_ROSTER_IMPLEMENTATION.md",
+    "legacy_v1": "PRESERVED",
+    "native_campaign": {
+      "duels": 10,
+      "wins": 10,
+      "rewards": 10,
+      "routes": 36,
+      "activations": 295,
+      "elapsed_ms": 201094
+    },
+    "human_balance": "NOT_RUN",
+    "android": "NOT_RUN"
   }
 }

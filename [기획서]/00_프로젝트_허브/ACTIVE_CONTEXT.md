@@ -9,8 +9,9 @@
 구현 진입점은 `docs/blueprint/IMPLEMENTATION_HANDOFF.md`, 검증 증거는 `docs/blueprint/FINAL_REVIEW.md`다.
 2026-09-11 사용자가 상세 수치·별호·선정 원화를 최종 확정했다. 승인 revision은 c95ec7e6이며
 정확한 PDF·선정47개 이미지 해시는 current_user_planning_status.json의 blueprint_final_approval을 따른다.
-원래 승인 검토 PDF는 bytes를 보존한다. 현재 다음 작업은 IMPLEMENTATION_HANDOFF.md의 제품 연결이다.
-PR340은 Draft로 보존하며 새 제품 적용·runtime·Human 완료를 주장하지 않는다.
+원래 승인 검토 PDF는 bytes를 보존한다. 현재 가변 편성·별호·원화·v2 저장 제품 연결과 로컬 기계 검증을 완료했으며 원격 CI를 확인한다.
+실행 기록: docs/operations/2026-09-11_VARIABLE_ROSTER_IMPLEMENTATION.md. 실제 입력10전10승·36행로 PASS, Human/Android NOT_RUN.
+PR340은 구현 검증 후 동일 승인 범위에서 ready·안전 병합한다. 실제 제품 evidence와 Human 승인은 분리한다.
 아래81/87/91/92쪽 상태는 편집 경과로 보존한 역사 기록이며 현재 전달 대상을 덮어쓰지 않는다.
 
 ## 최신 편집 지시 · 아틀라스 우선 / 유사 주제 인접 배치

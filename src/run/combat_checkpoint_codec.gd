@@ -41,8 +41,10 @@ func validate(dto: Dictionary, expected_binding: Dictionary = {}) -> Dictionary:
     bad.error = "Combat binding mismatch"
     var engine = _engine(dto.binding)
     if engine == null: return bad
+    if dto.binding.has("resolved_encounter") and dto.binding.resolved_encounter.stage != dto.duel_index: return bad
     bad.error = "Combat state or timing context malformed"
     if not _state(dto.state) or not _context(dto.context, dto.state): return bad
+    if dto.binding.has("resolved_encounter") and not _variable_enemy_state(dto.state.enemy, dto.binding.resolved_encounter, dto.binding.bimu_receipt): return bad
     bad.error = "Enemy lock malformed"
     if not _lock(dto.enemy_lock, dto.state, engine, dto.phase == "PLANNING"): return bad
     if dto.state.enemy.get("candidate_id", "") != dto.binding.enemy_candidate_id: return bad
@@ -58,6 +60,7 @@ func validate(dto: Dictionary, expected_binding: Dictionary = {}) -> Dictionary:
     else:
         bad.error = "Committed source state malformed"
         if not _state(dto.state_before) or not _context(dto.context, dto.state_before): return bad
+        if dto.binding.has("resolved_encounter") and not _variable_enemy_state(dto.state_before.enemy, dto.binding.resolved_encounter, dto.binding.bimu_receipt): return bad
         if dto.phase == "BUNDLE_COMMITTED" and portable(dto.state) != portable(dto.state_before): return bad
         bad.error = "Committed plan malformed"
         if not _plan(dto.player_plan, dto.context, engine): return bad
@@ -72,19 +75,37 @@ func validate(dto: Dictionary, expected_binding: Dictionary = {}) -> Dictionary:
     return {"ok": true, "status": "VALID"}
 
 func _engine(binding: Dictionary):
-    if not _keys(binding, ["player_loadout", "player_mastery_by_manual", "enemy_candidate_id", "enemy_loadout", "enemy_mastery_by_manual", "enemy_runtime_binding", "effective_enemy_mastery_by_manual", "bimu_receipt"]): return null
+    if not _keys(binding, ["player_loadout", "player_mastery_by_manual", "enemy_candidate_id", "enemy_loadout", "enemy_mastery_by_manual", "enemy_runtime_binding", "effective_enemy_mastery_by_manual", "bimu_receipt"], ["resolved_encounter"]): return null
     for field in ["player_loadout", "enemy_loadout"]:
         if typeof(binding[field]) != TYPE_ARRAY: return null
     for field in ["player_mastery_by_manual", "enemy_mastery_by_manual", "enemy_runtime_binding", "effective_enemy_mastery_by_manual", "bimu_receipt"]:
         if typeof(binding[field]) != TYPE_DICTIONARY: return null
-    if binding.player_loadout.size() != 4 or binding.enemy_loadout.size() != 1 or typeof(binding.enemy_candidate_id) != TYPE_STRING: return null
-    var catalog = load("res://src/run/vertical_slice_opponent_catalog.gd").new()
-    var opponent: Dictionary = catalog.get_candidate(binding.enemy_candidate_id)
-    if opponent.is_empty() or binding.enemy_loadout != [opponent.signature_manual_id]: return null
-    if binding.enemy_mastery_by_manual != {opponent.signature_manual_id: int(opponent.signature_star_seed)}: return null
+    if binding.player_loadout.size() != 4 or typeof(binding.enemy_candidate_id) != TYPE_STRING: return null
+    var opponent: Dictionary
+    if binding.has("resolved_encounter"):
+        var provider = load("res://src/run/variable_opponent_roster.gd").new()
+        if not provider.validate_encounter(binding.resolved_encounter): return null
+        opponent = provider.get_encounter_candidate(binding.resolved_encounter)
+        var expected_loadout: Array = []
+        var expected_mastery := {}
+        for manual in binding.resolved_encounter.manuals:
+            expected_loadout.append(manual.id)
+            expected_mastery[manual.id] = manual.mastery
+        if binding.enemy_candidate_id != opponent.candidate_id or binding.enemy_loadout != expected_loadout or binding.enemy_mastery_by_manual != expected_mastery: return null
+    else:
+        var catalog = load("res://src/run/vertical_slice_opponent_catalog.gd").new()
+        opponent = catalog.get_candidate(binding.enemy_candidate_id)
+        if opponent.is_empty() or binding.enemy_loadout != [opponent.signature_manual_id]: return null
+        if binding.enemy_mastery_by_manual != {opponent.signature_manual_id: int(opponent.signature_star_seed)}: return null
     var adapter = load("res://src/run/vertical_slice_opponent_runtime_binding.gd").new()
-    if portable(adapter.build(opponent)) != portable(binding.enemy_runtime_binding): return null
+    var runtime: Dictionary = adapter.build(opponent)
+    if binding.has("resolved_encounter"):
+        runtime["stats"] = binding.resolved_encounter.stats.duplicate(true)
+        runtime["final_stat_total_seed"] = 0
+        for value in runtime.stats.values(): runtime.final_stat_total_seed += int(value)
+    if portable(runtime) != portable(binding.enemy_runtime_binding): return null
     var engine = load("res://src/run/vertical_slice_metrics_combat_resolution_engine.gd").new()
+    engine.variable_opponent_rules = binding.has("resolved_encounter")
     for field in ["player_mastery_by_manual", "enemy_mastery_by_manual"]:
         for id in binding[field]:
             if typeof(id) != TYPE_STRING or engine.martial_registry.get_manual(id).is_empty() or not integer(binding[field][id], 1, 10): return null
@@ -205,4 +226,12 @@ func _summary(summary: Dictionary) -> bool:
         if typeof(summary.get(key)) != TYPE_STRING: return false
     for key in ["decisive_timing", "distance_before", "distance_after", "player_plan_count"]:
         if not integer(summary.get(key)): return false
+    return true
+
+func _variable_enemy_state(enemy: Dictionary, encounter: Dictionary, receipt: Dictionary) -> bool:
+    var expected: Dictionary = load("res://src/run/bimu_constraint_model.gd").new().enemy_state_overlay({"stats": encounter.stats.duplicate(true)}, receipt)
+    if portable(enemy.stats) != portable(expected.stats): return false
+    for resource in ["health", "stamina", "internal"]:
+        if enemy[resource][1] != encounter.resource_caps[resource]: return false
+    if enemy.get("observation_points", 0) != 0 or enemy.get("observation_reveal_index", 0) != 0 or not enemy.get("observation_reveals", []).is_empty(): return false
     return true

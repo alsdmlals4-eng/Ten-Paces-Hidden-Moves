@@ -6,9 +6,13 @@ const MAX_DEPTH := 64
 const MAX_NODES := 100000
 const MAX_SAFE_INTEGER := 9007199254740991
 const SCHEMA_VERSION := 1
+const VARIABLE_SCHEMA_VERSION := 2
+const VARIABLE_RULESET_ID := "ten-duel-variable-roster-v2"
+const ROSTER_FIELDS := ["ruleset_id", "roster_version", "roster_seed", "resolved_encounters", "roster_digest"]
 # Bump for code-owned combat/reward/route/save semantics; presentation changes do not bump it.
 const SEMANTIC_CONTRACT_VERSION := "ten-duel-four-route-one-retry-bimu-actor-bound-save-v1"
 var _content_identity: String = ""
+var _variable_content_identity: String = ""
 var _number_pattern := RegEx.create_from_string("-?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?")
 
 static func integer(value, minimum: int = 0, maximum: int = MAX_SAFE_INTEGER) -> bool:
@@ -55,6 +59,18 @@ static func digest(value) -> String:
 static func error(status: String, detail: String) -> Dictionary:
     return {"ok": false, "status": status, "error": detail}
 
+func content_identity_for_schema(schema_version: int) -> String:
+    if schema_version == VARIABLE_SCHEMA_VERSION:
+        if not _variable_content_identity.is_empty(): return _variable_content_identity
+        var provider = load("res://src/run/variable_opponent_roster.gd").new()
+        if not provider.is_valid() or content_identity().is_empty(): return ""
+        var rows: Array = []
+        for candidate in provider.get_all_candidates():
+            for stage in range(1, 11): rows.append(provider.get_stage(candidate.candidate_id, stage))
+        _variable_content_identity = digest({"legacy": content_identity(), "ruleset": VARIABLE_RULESET_ID, "version": provider.ROSTER_VERSION, "source_revision": provider.SOURCE_REVISION, "candidates": provider.get_all_candidates(), "stages": rows})
+        return _variable_content_identity
+    return content_identity() if schema_version == SCHEMA_VERSION else ""
+
 func content_identity() -> String:
     if _content_identity.is_empty():
         var manuals = load("res://src/combat/martial_manual_registry.gd").new()
@@ -83,6 +99,12 @@ func validate_payload(run_state, combat_checkpoint = {}) -> Dictionary:
     if not validation.get("ok", false): return validation
     if not combat_checkpoint.is_empty():
         if run_state.current_screen != "COMBAT": return error("CORRUPT", "Combat payload outside combat")
+        if typeof(combat_checkpoint.get("binding")) != TYPE_DICTIONARY: return error("CORRUPT", "Malformed combat binding")
+        var variable_run: bool = run_state.get("ruleset_id", "") == VARIABLE_RULESET_ID
+        if variable_run:
+            if normalized(combat_checkpoint.get("binding", {}).get("resolved_encounter", {})) != normalized(run_state.resolved_encounters[int(run_state.duel_index) - 1]): return error("CORRUPT", "Combat does not match current resolved encounter")
+        elif combat_checkpoint.get("binding", {}).has("resolved_encounter"):
+            return error("CORRUPT", "Legacy combat cannot acquire a variable encounter")
         var combat_validation: Dictionary = load("res://src/run/combat_checkpoint_codec.gd").new().validate(combat_checkpoint)
         if not combat_validation.ok: return combat_validation
         var s: Dictionary = normalized(run_state)
@@ -97,16 +119,22 @@ func validate_payload(run_state, combat_checkpoint = {}) -> Dictionary:
         return error("CORRUPT", "Not a durable run-only boundary")
     return {"ok": true, "status": "VALID", "run_state": normalized(run_state), "combat_checkpoint": {}}
 
-func encode(save_id: String, checkpoint_id: String, revision: int, run_state: Dictionary, combat_checkpoint: Dictionary = {}, active: bool = true) -> Dictionary:
-    if save_id.is_empty() or checkpoint_id.is_empty() or not integer(revision, 1) or content_identity().is_empty():
+func encode(save_id: String, checkpoint_id: String, revision: int, run_state: Dictionary, combat_checkpoint: Dictionary = {}, active: bool = true, schema_version: int = SCHEMA_VERSION) -> Dictionary:
+    if active: schema_version = VARIABLE_SCHEMA_VERSION if run_state.get("ruleset_id", "") == VARIABLE_RULESET_ID else SCHEMA_VERSION
+    if schema_version not in [SCHEMA_VERSION, VARIABLE_SCHEMA_VERSION]: return error("INCOMPATIBLE", "Unsupported schema")
+    if active and schema_version == VARIABLE_SCHEMA_VERSION and run_state.get("roster_save_id") != save_id: return error("CORRUPT", "Roster/save identity mismatch")
+    if save_id.is_empty() or checkpoint_id.is_empty() or not integer(revision, 1) or content_identity_for_schema(schema_version).is_empty():
         return error("CORRUPT", "Missing checkpoint identity")
     if active:
         var validation := validate_payload(run_state, combat_checkpoint)
         if not validation.ok: return validation
     elif not run_state.is_empty() or not combat_checkpoint.is_empty():
         return error("CORRUPT", "Tombstone contains active state")
-    var envelope := {"schema_version": SCHEMA_VERSION, "save_id": save_id, "checkpoint_id": checkpoint_id, "revision": revision, "active": active, "written_at_utc": Time.get_datetime_string_from_system(true) + "Z", "app_version": str(ProjectSettings.get_setting("application/config/version", "1")), "content_identity": content_identity(), "run_state": run_state.duplicate(true), "combat_checkpoint": combat_checkpoint.duplicate(true)}
+    var envelope := {"schema_version": schema_version, "save_id": save_id, "checkpoint_id": checkpoint_id, "revision": revision, "active": active, "written_at_utc": Time.get_datetime_string_from_system(true) + "Z", "app_version": str(ProjectSettings.get_setting("application/config/version", "1")), "content_identity": content_identity_for_schema(schema_version), "run_state": run_state.duplicate(true), "combat_checkpoint": combat_checkpoint.duplicate(true)}
     if envelope.app_version.is_empty(): envelope.app_version = "unversioned-schema1"
+    if schema_version == VARIABLE_SCHEMA_VERSION:
+        for field in ROSTER_FIELDS:
+            envelope[field] = run_state.get(field) if active else {"ruleset_id": VARIABLE_RULESET_ID, "roster_version": 1, "roster_seed": 0, "resolved_encounters": [], "roster_digest": digest([])}[field]
     envelope["integrity_hash"] = digest(envelope)
     var normalized_envelope = normalized(envelope)
     var text := JSON.stringify(normalized_envelope, "", true, true)
@@ -143,9 +171,10 @@ func decode(text: String) -> Dictionary:
     if not integer(envelope.get("schema_version"), 1):
         return error("CORRUPT", "Malformed schema version")
     # An explicit future numeric schema owns the slot even when its format is unknown.
-    if envelope.schema_version != SCHEMA_VERSION:
+    if int(envelope.schema_version) not in [SCHEMA_VERSION, VARIABLE_SCHEMA_VERSION]:
         return error("INCOMPATIBLE", "Unsupported schema")
     var keys := ["schema_version", "save_id", "checkpoint_id", "revision", "active", "written_at_utc", "app_version", "content_identity", "run_state", "combat_checkpoint", "integrity_hash"]
+    if envelope.schema_version == VARIABLE_SCHEMA_VERSION: keys.append_array(ROSTER_FIELDS)
     if envelope.size() != keys.size(): return error("CORRUPT", "Unexpected envelope fields")
     for key in keys:
         if not envelope.has(key): return error("CORRUPT", "Missing envelope field")
@@ -158,8 +187,18 @@ func decode(text: String) -> Dictionary:
     if typeof(envelope.run_state) != TYPE_DICTIONARY or typeof(envelope.combat_checkpoint) != TYPE_DICTIONARY: return error("CORRUPT", "Malformed payload")
     # Current-schema metadata damage must recover from backup, not masquerade as
     # a genuinely incompatible, intact checkpoint and suppress recovery.
-    if envelope.content_identity != content_identity() or content_identity().is_empty():
+    if envelope.content_identity != content_identity_for_schema(int(envelope.schema_version)) or content_identity_for_schema(int(envelope.schema_version)).is_empty():
         return error("INCOMPATIBLE", "Incompatible content")
+    if envelope.schema_version == VARIABLE_SCHEMA_VERSION:
+        if envelope.ruleset_id != VARIABLE_RULESET_ID or not integer(envelope.roster_version, 1, 1) or not integer(envelope.roster_seed, 0) or typeof(envelope.resolved_encounters) != TYPE_ARRAY or typeof(envelope.roster_digest) != TYPE_STRING: return error("CORRUPT", "Malformed roster envelope")
+        if digest(envelope.resolved_encounters) != envelope.roster_digest: return error("CORRUPT", "Roster digest mismatch")
+        if envelope.active:
+            if envelope.run_state.get("roster_save_id") != envelope.save_id: return error("CORRUPT", "Roster/save identity mismatch")
+            for field in ROSTER_FIELDS:
+                if normalized(envelope.run_state.get(field)) != normalized(envelope[field]): return error("CORRUPT", "Roster envelope/state mismatch")
+        elif envelope.roster_seed != 0 or not envelope.resolved_encounters.is_empty(): return error("CORRUPT", "Tombstone contains roster data")
+    elif envelope.run_state.has("ruleset_id"):
+        return error("CORRUPT", "Legacy envelope contains variable state")
     if envelope.active:
         var validation := validate_payload(envelope.run_state, envelope.combat_checkpoint)
         if not validation.ok: return validation

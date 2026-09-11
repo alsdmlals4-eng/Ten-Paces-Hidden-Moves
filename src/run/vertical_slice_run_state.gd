@@ -18,16 +18,23 @@ const SNAPSHOT_FIELDS := {
 }
 
 
+const ROSTER_FIELDS := ["ruleset_id", "roster_version", "roster_seed", "roster_save_id", "resolved_encounters", "roster_digest"]
+var _roster: Dictionary = {}
+
 func export_snapshot() -> Dictionary:
     var snapshot := {"progression": _progression.get_snapshot()}
     for key in SNAPSHOT_FIELDS: snapshot[key] = get(SNAPSHOT_FIELDS[key])
+    snapshot.merge(_roster, true)
     return snapshot.duplicate(true)
 
 
 func validate_snapshot(snapshot: Dictionary) -> Dictionary:
     var bad := CHECKPOINT_CODEC.error("CORRUPT", "Invalid run snapshot")
-    if not CHECKPOINT_CODEC.json_safe(snapshot, 0, [0]) or snapshot.size() != SNAPSHOT_FIELDS.size() + 1: return bad
-    var template := export_snapshot()
+    var variable: bool = snapshot.has("ruleset_id")
+    if not CHECKPOINT_CODEC.json_safe(snapshot, 0, [0]) or snapshot.size() != SNAPSHOT_FIELDS.size() + 1 + (ROSTER_FIELDS.size() if variable else 0): return bad
+    if variable and not _valid_roster(snapshot): return bad
+    var template := {"progression": _progression.get_snapshot()}
+    for key in SNAPSHOT_FIELDS: template[key] = get(SNAPSHOT_FIELDS[key])
     for key in template:
         if not snapshot.has(key): return bad
         if typeof(template[key]) == TYPE_INT:
@@ -41,7 +48,7 @@ func validate_snapshot(snapshot: Dictionary) -> Dictionary:
     if not CHECKPOINT_CODEC.integer(s.duel_index, 1, MAX_DUELS) or not CHECKPOINT_CODEC.integer(s.completed_duels, 0, MAX_DUELS) or not CHECKPOINT_CODEC.integer(s.route_visits, 0, 36) or not CHECKPOINT_CODEC.integer(s.jianghu_step, 0, 4): return bad
     if not CHECKPOINT_CODEC.integer(s.retry_count, 0, 1) or s.attempt_id != s.retry_count: return bad
     if not _progression.validate_snapshot(s.progression).ok: return bad
-    var catalog = load("res://src/run/vertical_slice_opponent_catalog.gd").new()
+    var catalog = _catalog_for_snapshot(snapshot)
     if not catalog.is_valid(): return bad
     if s.current_screen != SCREEN_MAIN and s.current_opponent_id != catalog.select_campaign_candidate_id(s.duel_index): return bad
     if not s.next_opponent_id.is_empty() and (s.completed_duels >= MAX_DUELS or s.next_opponent_id != catalog.select_campaign_candidate_id(s.completed_duels + 1)): return bad
@@ -86,8 +93,9 @@ func validate_snapshot(snapshot: Dictionary) -> Dictionary:
         if receipt.get("id") in ["recon", "investigate"]: intel_candidate._record_candidate_intel(receipt)
     if s.pending_jianghu.get("id") in ["recon", "investigate"]: intel_candidate._record_candidate_intel(s.pending_jianghu)
     if intel_candidate._intel_by_candidate != s.intel_by_candidate: return bad
-    var enemy_manual: String = catalog.get_candidate(s.current_opponent_id).get("signature_manual_id", "")
-    var receipt: Dictionary = _bimu_model.validate_selection(s.pending_bimu_constraints, s.player_manual_loadout, [] if enemy_manual.is_empty() else [enemy_manual])
+    var enemy_candidate: Dictionary = catalog.get_candidate(s.current_opponent_id)
+    if variable: enemy_candidate = catalog.for_stage(s.duel_index)
+    var receipt: Dictionary = _bimu_model.validate_selection(s.pending_bimu_constraints, s.player_manual_loadout, _manual_ids(enemy_candidate))
     if not receipt.valid or receipt.selections != s.pending_bimu_constraints: return bad
     if not s.frozen_bimu_receipt.is_empty():
         receipt["duel_index"] = s.duel_index
@@ -120,6 +128,8 @@ func _valid_progression_history(s: Dictionary, catalog) -> bool:
     # Validate accounting in a disposable domain model. Import never replays effects on live state.
     var audit = get_script().new()
     audit.configure_opponents(catalog, s.run_seed)
+    if s.has("ruleset_id"):
+        for key in ROSTER_FIELDS: audit._roster[key] = s[key]
     if not s.player_manual_loadout.is_empty():
         audit.start_new_run()
         if not audit.confirm_setup_loadout(s.player_manual_loadout, s.player_mastery_by_manual): return false
@@ -152,7 +162,8 @@ func _valid_jianghu_receipt(receipt: Dictionary, duel: int, step: int, catalog) 
         if option.id == receipt.get("id"): expected = option.duplicate(true)
     if expected.is_empty(): return false
     if expected.id in ["recon", "investigate"]:
-        var candidate: Dictionary = catalog.get_candidate(catalog.select_campaign_candidate_id(duel + 1))
+        var candidate: Dictionary = catalog.for_stage(duel + 1) if catalog.has_method("for_stage") else catalog.get_candidate(catalog.select_campaign_candidate_id(duel + 1))
+        if candidate.has("encounter_id"): expected["encounter_id"] = candidate.encounter_id
         expected["category"] = "MANUAL_RUMOR" if expected.id == "recon" else "FOOTWORK_SIGHTING"
         expected["candidate_id"] = candidate.candidate_id
         expected["text"] = _route_model.build_public_intel(expected.category, candidate)
@@ -194,7 +205,7 @@ func import_snapshot(snapshot: Dictionary) -> Dictionary:
     var next: Dictionary = CHECKPOINT_CODEC.normalized(snapshot)
     var progression = PROGRESSION_SCRIPT.new()
     progression.import_snapshot(next.progression)
-    var catalog = load("res://src/run/vertical_slice_opponent_catalog.gd").new()
+    var catalog = _catalog_for_snapshot(snapshot)
     # All validation/model reconstruction precedes live assignment. No signals or effects replay.
     for key in SNAPSHOT_FIELDS:
         var property: String = SNAPSHOT_FIELDS[key]
@@ -203,6 +214,9 @@ func import_snapshot(snapshot: Dictionary) -> Dictionary:
         else:
             set(property, next[key])
     _progression = progression
+    _roster = {}
+    if snapshot.has("ruleset_id"):
+        for key in ROSTER_FIELDS: _roster[key] = next[key]
     _opponent_catalog = catalog
     return {"ok": true, "status": "VALID"}
 
@@ -268,8 +282,7 @@ func select_bimu_constraints(selection: Array) -> bool:
 
 
 func validate_bimu_constraints(selection: Array) -> Dictionary:
-    var manual_id := str(get_current_opponent().get("signature_manual_id", ""))
-    var enemy_ids: Array = [] if manual_id.is_empty() else [manual_id]
+    var enemy_ids: Array = _manual_ids(get_current_opponent())
     return _bimu_model.validate_selection(selection, get_player_manual_loadout(), enemy_ids)
 
 
@@ -341,6 +354,7 @@ func select_jianghu_node(node_id: String, expected_step: int) -> bool:
                 return false
             selected["text"] = text
             selected["candidate_id"] = candidate["candidate_id"]
+            if candidate.has("encounter_id"): selected["encounter_id"] = candidate.encounter_id
             selected["category"] = category
             if node_id == "investigate":
                 if not _progression.add_free_training(1):
@@ -399,13 +413,13 @@ func configure_opponents(catalog, run_seed: int) -> bool:
 func get_current_opponent() -> Dictionary:
     if _opponent_catalog == null or _current_opponent_id.is_empty():
         return {}
-    return _opponent_catalog.get_candidate(_current_opponent_id)
+    return _opponent_catalog.for_stage(duel_index) if not _roster.is_empty() else _opponent_catalog.get_candidate(_current_opponent_id)
 
 
 func get_route_target_opponent() -> Dictionary:
     if _opponent_catalog == null or _next_opponent_id.is_empty():
         return {}
-    return _opponent_catalog.get_candidate(_next_opponent_id)
+    return _opponent_catalog.for_stage(completed_duels + 1) if not _roster.is_empty() else _opponent_catalog.get_candidate(_next_opponent_id)
 
 
 func confirm_setup_loadout(loadout, mastery_by_manual: Dictionary) -> bool:
@@ -547,9 +561,10 @@ func get_pending_route_intel() -> Dictionary:
 
 
 func get_current_opponent_intel() -> Dictionary:
-    if _current_opponent_id.is_empty() or not _intel_by_candidate.has(_current_opponent_id):
+    var intel_key := str(get_current_encounter().get("encounter_id", _current_opponent_id))
+    if intel_key.is_empty() or not _intel_by_candidate.has(intel_key):
         return {}
-    return (_intel_by_candidate[_current_opponent_id] as Dictionary).duplicate(true)
+    return (_intel_by_candidate[intel_key] as Dictionary).duplicate(true)
 
 
 func get_route_history() -> Array:
@@ -856,7 +871,8 @@ func _record_candidate_intel(receipt: Dictionary) -> void:
     if candidate_id.is_empty() or receipt_text.is_empty():
         return
     var entries: Array = []
-    var existing_value = _intel_by_candidate.get(candidate_id, {})
+    var intel_key := str(receipt.get("encounter_id", candidate_id))
+    var existing_value = _intel_by_candidate.get(intel_key, {})
     if typeof(existing_value) == TYPE_DICTIONARY:
         var existing: Dictionary = existing_value
         var existing_entries = existing.get("entries", [])
@@ -878,7 +894,7 @@ func _record_candidate_intel(receipt: Dictionary) -> void:
             texts.append(text)
     combined["entries"] = entries
     combined["text"] = "\n".join(texts)
-    _intel_by_candidate[candidate_id] = combined
+    _intel_by_candidate[intel_key] = combined
 
 
 func _has_valid_result_resources(result: Dictionary) -> bool:
@@ -967,3 +983,42 @@ func _transition_to(next_screen: String) -> bool:
     _flow_history.append(next_screen)
     screen_changed.emit(previous_screen, next_screen)
     return true
+
+
+static func _manual_ids(candidate: Dictionary) -> Array:
+    var ids: Array = []
+    if candidate.has("manuals"):
+        for item in candidate.manuals: ids.append(item.id)
+    elif not str(candidate.get("signature_manual_id", "")).is_empty():
+        ids.append(candidate.signature_manual_id)
+    return ids
+
+func get_current_encounter() -> Dictionary:
+    if _roster.is_empty() or duel_index < 1 or duel_index > 10: return {}
+    return _roster.resolved_encounters[duel_index - 1].duplicate(true)
+
+static func _valid_roster(s: Dictionary) -> bool:
+    for key in ROSTER_FIELDS:
+        if not s.has(key): return false
+    if s.ruleset_id != "ten-duel-variable-roster-v2" or not CHECKPOINT_CODEC.integer(s.roster_version, 1, 1): return false
+    if not CHECKPOINT_CODEC.integer(s.roster_seed) or s.roster_seed != s.run_seed: return false
+    if typeof(s.roster_save_id) != TYPE_STRING or s.roster_save_id.is_empty() or typeof(s.resolved_encounters) != TYPE_ARRAY: return false
+    if typeof(s.roster_digest) != TYPE_STRING or s.roster_digest != CHECKPOINT_CODEC.digest(s.resolved_encounters): return false
+    var provider = load("res://src/run/variable_opponent_roster.gd").new()
+    return provider.validate(s.resolved_encounters, s.roster_seed, s.roster_save_id)
+
+static func _catalog_for_snapshot(s: Dictionary):
+    if s.has("ruleset_id"):
+        return load("res://src/run/frozen_opponent_catalog.gd").new(s.resolved_encounters)
+    return load("res://src/run/vertical_slice_opponent_catalog.gd").new()
+
+func start_new_variable_run(seed_value: int, save_identity: String) -> bool:
+    if _current_screen != SCREEN_MAIN or seed_value < 0 or save_identity.is_empty(): return false
+    var provider = load("res://src/run/variable_opponent_roster.gd").new()
+    var encounters: Array = provider.generate(seed_value, save_identity)
+    if not provider.validate(encounters, seed_value, save_identity): return false
+    var catalog = load("res://src/run/frozen_opponent_catalog.gd").new(encounters)
+    if not configure_opponents(catalog, seed_value): return false
+    _roster = {"ruleset_id": "ten-duel-variable-roster-v2", "roster_version": 1, "roster_seed": seed_value,
+        "roster_save_id": save_identity, "resolved_encounters": encounters, "roster_digest": CHECKPOINT_CODEC.digest(encounters)}
+    return start_new_run()

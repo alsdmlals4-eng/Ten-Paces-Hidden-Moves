@@ -118,6 +118,24 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_bimu_constraint_runtime.gd
       - name: Verify bimu native selection and sealed action UI
         run: godot --headless --path . --script res://tests/verify_bimu_constraint_ui.gd
+      - name: Verify verify_variable_opponent_roster
+        run: godot --headless --path . --script res://tests/verify_variable_opponent_roster.gd
+      - name: Verify verify_variable_run_state
+        run: godot --headless --path . --script res://tests/verify_variable_run_state.gd
+      - name: Verify verify_variable_recon
+        run: godot --headless --path . --script res://tests/verify_variable_recon.gd
+      - name: Verify verify_variable_enemy_information
+        run: godot --headless --path . --script res://tests/verify_variable_enemy_information.gd
+      - name: Verify verify_variable_save_compat
+        run: godot --headless --path . --script res://tests/verify_variable_save_compat.gd
+      - name: Verify verify_variable_combat_codec
+        run: godot --headless --path . --script res://tests/verify_variable_combat_codec.gd
+      - name: Verify verify_variable_shell
+        run: godot --headless --path . --script res://tests/verify_variable_shell.gd
+      - name: Verify verify_approved_blueprint_art
+        run: godot --headless --path . --script res://tests/verify_approved_blueprint_art.gd
+      - name: Verify verify_approved_manual_art_consumer
+        run: godot --headless --path . --script res://tests/verify_approved_manual_art_consumer.gd
       - name: Verify campaign state boundaries
         run: godot --headless --path . --script res://tests/verify_ten_duel_campaign.gd
       - name: Verify campaign failure and retry

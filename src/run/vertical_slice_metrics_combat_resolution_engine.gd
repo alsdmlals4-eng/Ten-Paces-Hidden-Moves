@@ -143,3 +143,25 @@ func _is_valid_enemy_runtime_binding(binding: Dictionary) -> bool:
             return false
         stat_total += int((stats as Dictionary).get(stat_id, 0))
     return stat_total == int(binding.get("final_stat_total_seed", 0))
+
+
+# Legacy v1 execution is unchanged; v2 excludes whole forbidden definitions.
+var variable_opponent_rules := false
+
+func _enemy_information_forbidden(definition: Dictionary) -> bool:
+    if definition.get("category") == "observation" or int(definition.get("observation_points", 0)) > 0: return true
+    for step in definition.get("effect_steps", []):
+        if step is Dictionary and step.get("status", step.get("resource", "")) in ["observation", "observation_points"]: return true
+    return false
+
+func get_actor_card_definition(card_id: String, actor_key: String) -> Dictionary:
+    var definition := super.get_actor_card_definition(card_id, actor_key)
+    if variable_opponent_rules and actor_key == "enemy" and _enemy_information_forbidden(definition): return {}
+    return definition
+
+func get_actor_cards_by_id(actor_key: String) -> Dictionary:
+    var definitions := super.get_actor_cards_by_id(actor_key)
+    if variable_opponent_rules and actor_key == "enemy":
+        for id in definitions.keys():
+            if _enemy_information_forbidden(definitions[id]): definitions.erase(id)
+    return definitions

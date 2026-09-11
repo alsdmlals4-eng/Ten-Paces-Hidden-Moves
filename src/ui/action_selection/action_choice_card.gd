@@ -1,6 +1,8 @@
 class_name ActionChoiceCard
 extends Button
 
+const APPROVED_ART := preload("res://src/ui/approved_blueprint_art.gd")
+
 const PAPER_SURFACE := Color("d9ccb1")
 const PAPER_HOVER := Color("eee2c9")
 const CHARCOAL_INK := Color("211c17")
@@ -29,7 +31,7 @@ func configure_action(definition: Dictionary, illustration_policy: String, statu
 	set_meta("action_id", str(action_definition.get("id", "")))
 	set_meta("locked", bool(action_definition.get("locked", false)))
 	set_meta("keyboard_focus_ring", true)
-	var has_illustration := illustration_policy in ["basic_atlas_only", "semantic_atlas"] and _has_illustration_spec()
+	var has_illustration := illustration_policy in ["basic_atlas_only", "semantic_atlas"] and (not APPROVED_ART.action_illustration_path(action_definition).is_empty() or _has_illustration_spec())
 	if has_illustration:
 		_add_illustration()
 	_add_name_label()
@@ -38,11 +40,12 @@ func configure_action(definition: Dictionary, illustration_policy: String, statu
 func _add_illustration() -> void:
 	var illustration := TextureRect.new()
 	illustration.name = "CardIllustration"
-	illustration.texture = _texture_from_spec(action_definition.get("illustration", {}))
+	var approved_texture := APPROVED_ART.action_illustration(action_definition)
+	illustration.texture = approved_texture if approved_texture != null else _texture_from_spec(action_definition.get("illustration", {}))
 	illustration.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	illustration.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	illustration.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED if approved_texture != null else TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	illustration.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	illustration.modulate = Color(0.30, 0.27, 0.23, 0.94)
+	illustration.modulate = Color.WHITE if approved_texture != null else Color(0.30, 0.27, 0.23, 0.94)
 	illustration.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	illustration.offset_left = 7.0
 	illustration.offset_top = 5.0
