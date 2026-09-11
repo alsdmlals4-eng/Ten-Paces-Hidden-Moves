@@ -38,6 +38,17 @@ func run_fixture() -> void:
     action_kind = "terminal" if phase.begins_with("terminal_") else ("martial" if phase.begins_with("martial_") else ("ultimate" if phase.begins_with("ultimate_") else "basic"))
     boundary = phase.trim_prefix("martial_").trim_prefix("ultimate_").trim_prefix("terminal_")
     directory = args[2]
+    # Every interruption branch must start from the SAME actual new journey.
+    # V2 intentionally randomizes new rosters and gives them distinct save IDs;
+    # comparing independent journeys against one uninterrupted baseline is invalid.
+    var initial_path := directory.path_join("initial-v2.json")
+    var replay_initial := mode == "write" and FileAccess.file_exists(initial_path)
+    if replay_initial:
+        var initial_codec = preload("res://src/run/run_checkpoint_codec.gd").new()
+        var initial: Dictionary = initial_codec.decode(FileAccess.get_file_as_string(initial_path))
+        if not require(initial.ok, "shared initial fixture validates without normalization bypass"): return
+        var fixture_store = preload("res://src/run/run_save_store.gd").new(directory.path_join(phase))
+        if not require(fixture_store.replace_run(initial.payload.save_id, "shared-initial", initial.payload.run_state).ok, "persist identical initial journey for interruption branch"): return
     shell = SHELL.instantiate()
     shell.configure_save_storage(directory.path_join(phase))
     root.add_child(shell)
@@ -58,7 +69,13 @@ func run_fixture() -> void:
         await process_frame
         quit(0)
         return
-    if not require(shell.start_new_run(), "start"): return
+    if replay_initial:
+        if not require(shell.continue_saved_run(), "continue shared initial fixture"): return
+    else:
+        if not require(shell.start_new_run(), "start"): return
+        var initial_file := FileAccess.open(initial_path, FileAccess.WRITE)
+        initial_file.store_string(JSON.stringify(shell.session.last_durable))
+        initial_file.close()
     for option in shell.starter_manual_catalog.get_options().slice(0, 4): shell.toggle_setup_manual(str(option.manual_id))
     if not require(shell.advance_noncombat() and shell.advance_noncombat() and shell.advance_noncombat(), "setup to combat"): return
     if boundary in ["committed", "resolved", "baseline", "gap"]:

@@ -1,0 +1,45 @@
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+NATIVE_REJECT prerequisites button=@Button@2:<Button#38839256563> visible=true disabled=true focus_mode=2
+NATIVE_HELPER_DISABLED PASS
+NATIVE_REJECT signal button=@Button@3:<Button#38889588216> observed=2
+NATIVE_HELPER_GUARDS PASS
+NATIVE_FIXTURE {"candidate_ids":["slot1_yeongyo","slot2_mukjin","slot5_pungmok","masked_baekmujin","slot1_yeongyo","slot5_pungmok","slot1_dogyeom","slot5_jeogu","slot4_cheongheo","slot4_cheongheo"],"global_seed":20260911,"roster_seed":2764325793}
+NATIVE_BUNDLE duel=1 turn=1 player={ "health": [22, 30], "stamina": [3, 5], "internal": [2, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=1 turn=2 player={ "health": [22, 30], "stamina": [1, 5], "internal": [0, 4] } enemy_hp=[8, 30] terminal=false
+NATIVE_BUNDLE duel=1 turn=3 player={ "health": [22, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[0, 30] terminal=true
+NATIVE_BUNDLE duel=2 turn=1 player={ "health": [23, 30], "stamina": [0, 5], "internal": [1, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=2 turn=2 player={ "health": [23, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=2 turn=3 player={ "health": [18, 30], "stamina": [1, 5], "internal": [1, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=2 turn=4 player={ "health": [18, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[13, 30] terminal=false
+NATIVE_BUNDLE duel=2 turn=5 player={ "health": [13, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[0, 30] terminal=true
+NATIVE_BUNDLE duel=3 turn=1 player={ "health": [27, 30], "stamina": [1, 5], "internal": [2, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=3 turn=2 player={ "health": [23, 30], "stamina": [0, 5], "internal": [1, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=3 turn=3 player={ "health": [10, 30], "stamina": [1, 5], "internal": [2, 4] } enemy_hp=[0, 30] terminal=true
+NATIVE_BUNDLE duel=4 turn=1 player={ "health": [28, 30], "stamina": [2, 5], "internal": [2, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=4 turn=2 player={ "health": [21, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[8, 30] terminal=false
+NATIVE_BUNDLE duel=4 turn=3 player={ "health": [21, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[8, 30] terminal=false
+NATIVE_BUNDLE duel=4 turn=4 player={ "health": [21, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[0, 30] terminal=true
+NATIVE_BUNDLE duel=5 turn=1 player={ "health": [20, 30], "stamina": [0, 5], "internal": [1, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=5 turn=2 player={ "health": [20, 30], "stamina": [0, 5], "internal": [0, 4] } enemy_hp=[13, 30] terminal=false
+NATIVE_BUNDLE duel=5 turn=3 player={ "health": [14, 30], "stamina": [3, 5], "internal": [3, 4] } enemy_hp=[13, 30] terminal=false
+NATIVE_BUNDLE duel=5 turn=4 player={ "health": [13, 30], "stamina": [4, 5], "internal": [4, 4] } enemy_hp=[13, 30] terminal=false
+NATIVE_BUNDLE duel=5 turn=5 player={ "health": [12, 30], "stamina": [3, 5], "internal": [4, 4] } enemy_hp=[0, 30] terminal=true
+NATIVE_BUNDLE duel=6 turn=1 player={ "health": [23, 30], "stamina": [3, 5], "internal": [2, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=6 turn=2 player={ "health": [22, 30], "stamina": [1, 5], "internal": [1, 4] } enemy_hp=[10, 30] terminal=false
+NATIVE_BUNDLE duel=6 turn=3 player={ "health": [21, 30], "stamina": [1, 5], "internal": [1, 4] } enemy_hp=[8, 30] terminal=false
+NATIVE_BUNDLE duel=6 turn=4 player={ "health": [21, 30], "stamina": [0, 5], "internal": [1, 4] } enemy_hp=[0, 30] terminal=true
+NATIVE_BUNDLE duel=7 turn=1 player={ "health": [21, 30], "stamina": [0, 5], "internal": [2, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=7 turn=2 player={ "health": [20, 30], "stamina": [0, 5], "internal": [1, 4] } enemy_hp=[19, 30] terminal=false
+NATIVE_BUNDLE duel=7 turn=3 player={ "health": [19, 30], "stamina": [0, 5], "internal": [1, 4] } enemy_hp=[14, 30] terminal=false
+NATIVE_BUNDLE duel=7 turn=4 player={ "health": [9, 30], "stamina": [1, 5], "internal": [1, 4] } enemy_hp=[8, 30] terminal=false
+NATIVE_BUNDLE duel=7 turn=5 player={ "health": [9, 30], "stamina": [0, 5], "internal": [1, 4] } enemy_hp=[0, 30] terminal=true
+NATIVE_BUNDLE duel=8 turn=1 player={ "health": [19, 30], "stamina": [0, 5], "internal": [3, 4] } enemy_hp=[20, 30] terminal=false
+NATIVE_BUNDLE duel=8 turn=2 player={ "health": [4, 30], "stamina": [0, 5], "internal": [2, 4] } enemy_hp=[14, 30] terminal=false
+NATIVE_CAMPAIGN_SUMMARY {"activations":215,"cards":["basic_guard","basic_heavy_attack","basic_meditate","mount_hua_plum_blossom_sword_star3","basic_palm","basic_move","ultimate_void_sword_qi","ultimate_cleave_peak","shaolin_arhat_vajra_art_star7","basic_quick_attack","yang_family_spear_star7"],"complete":false,"duels":7,"elapsed_ms":274981,"failures":["terminal HP/result/history must consistently prove success: {\"bundle\":3,\"duel\":8,\"last_input\":\"execute plan\",\"presentation_state\":\"terminal_result_ready\",\"save_error\":\"\",\"save_status\":\"SAVED\",\"screen\":\"FAILURE_RETRY\"}","ten real terminal successes required","ten earned rewards required","36 native route choices required"],"mode":"ordinary_defaults","outcomes":{"draw":0,"win":7},"rewards":7,"routes":28}
+NATIVE_DURABLE_TIMINGS_MS [501,423,394,862,1197,1181,1163,1170,1177,1214,1375,1249,1255,1154,1024,980,1012,1082,1310,936,949,834,922,950,1128,1172,1463,1243,1304,1707,1981,1817,1347,1302,1213,1214,1339,1271,1119,922,1400,1090,1056,1293,977,941,973,912,852,1058,1357,1337,1230,1188,1202,1287,1249,1197,1076,963,691,805,914,1186,1066,1079,995,1027,968,1113,1296,1373,1389,1335,1197,1170,1220,1325,1301,1172,1156,1019,1031,1063,1004,945,894,660,877,878,957,841,990,1019,1232,1231,1255,1220,1234,1129,1351,1257,1206,1227,1118,1276,1163,1039,990,881,807,794,866,842,833,829,910,963,1164,1129,1320,989,1193,1233,1297,1211,1467,1129,1305,1320,1159,1030,939,882,936,921,906,801,775,936,1095,941,1546,1294,1194,1538,1503,1274,1122,1259,1370,1136,1271,1656,1203,1222,1086,973,1007,863,815,908,945,803,1287,944,826,1041,1133,1141,1337,1228,1301,1223,1284,1118,1097]
+NATIVE_CAMPAIGN_FAIL: terminal HP/result/history must consistently prove success: {"bundle":3,"duel":8,"last_input":"execute plan","presentation_state":"terminal_result_ready","save_error":"","save_status":"SAVED","screen":"FAILURE_RETRY"}
+NATIVE_CAMPAIGN_FAIL: ten real terminal successes required
+NATIVE_CAMPAIGN_FAIL: ten earned rewards required
+NATIVE_CAMPAIGN_FAIL: 36 native route choices required

@@ -1,0 +1,6 @@
+test_actual_continue_across_real_process_exits (tests.test_durable_save_contract.DurableSaveContractTests.test_actual_continue_across_real_process_exits) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 424.896s
+
+OK

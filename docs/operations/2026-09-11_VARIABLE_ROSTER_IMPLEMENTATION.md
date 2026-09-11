@@ -70,3 +70,34 @@ Human/Android/접근성 사용자/출시: NOT_RUN.
 표시 별호는 현재 encounter.epithet, v1은 기존 martial_identity를 대조한다. 비무 제약 fixture는
 플레이어 숙련도 변경 시 적의 현재 resolved_encounter를 유지하고 정탐은 v2 만남ID를 사용한다.
 기존 검사를 삭제하지 않았으며 각각 실제 실패 후 동일검사 GREEN을 확인했다.
+
+추가 native UI readback: 실제 새 여정→시작 무공 선택→브리핑→전투→무공 탭→기술 상세를
+Windows OpenGL 1280×800에서 실행했다. approved-manual-ui.png와 approved-manual-ui-art.png를
+같은 evidence 폴더에 보존했다. 기존 비용·범위·효과 표시와 스크롤 안의 원화 전체 구도를 확인했다.
+26px 카드 그림과160px 상세 그림의 실제 표시 증거이며 사람 가독성·접근성 최종 승인을 뜻하지 않는다.
+
+후속 vertical-slice fixture는 역사적 duel_slot이 아니라 사전 확정된 encounter의 현재 stage·ID·무공·성수·능력치를
+검사한다. 첫 만남의 브리핑 불변과 다음 만남의 stage2를 확인하며 v1 전용 검사는 유지한다.
+setup/briefing의3FAIL 및 review/result의1FAIL 후 동일 검사와 route/completion을 포함한5개 검사가 PASS했다.
+
+최신 표적 회귀: durable 독립 프로세스 검사9건 중8PASS/1FAIL(484.690s)을 확인했다.
+실패는 실제 Continue 성공 뒤 서로 다른 새 여정의 전체 digest를 비교하던 fixture였다.
+초기 실제v2 저장 하나를 엄격 decode하여 각 중단 분기의 독립 저장소에 재생하고,
+기존 전체 run/combat/summary digest 단언과 별도v1 actor 검사를 보존했다. committed 재현은 RED→GREEN이다.
+최종51프로세스 검사 결과는 아래 후속 검증 기록으로 판정한다.
+
+추가 pytest499건 PASS55.13s 및 campaign CI 연결3건 PASS0.20s. 전자는
+별도 긴 durable 모듈과 campaign CI 연결 모듈을 제외한 실행이며 전체511건 통과라고 합산 주장하지 않는다.
+원격 무작위 자동 플레이는8전에서 정상 패배했다. 이를 제품 오류나 밸런스 PASS로 바꾸지 않는다.
+10전 성공 통합 fixture는 테스트에서만 global seed20260911을 고정하고 실제 roster seed/ID를 기록하여
+재현성을 확보한다. 제품의 새 여정 RNG와 수치·적 AI·실제 입력·승리 단언은 변경하지 않는다.
+
+고정20260911 첫 실행도8전 저구에서 정상 패배했다(7승/7보상/28행로/215입력/274981ms).
+그 실패 로그를 native-fixed-seed-defeat.log로 보존한다. 성공하는 새 seed를 반복 탐색하지 않는다.
+CI의 완료 경로는 이미 실제 새 여정으로10승한 roster_seed145571664의 원본 초기v2 저장을
+strictdecode→동일 identity 저장→실제 이어하기 입력으로 재현한다. 전체10성공 단언은 유지한다.
+이는 선택된 긍정 회귀 fixture의 완료 가능성을 검사하며, 모든 무작위 상대에서 자동정책이 이긴다는 뜻은 아니다.
+새 여정 입력과 RNG는 별도 실제 shell/provider 검사 및 최초 native 성공·이번 실패 실행에서 검증했다.
+
+최종 독립 프로세스 저장 회귀 GREEN:17개write+34개read, 전체 run/combat/summary digest 일치,
+1test424.896s PASS. 로그 durable-independent-process.log. 앞선9개 중 나머지8개 PASS와 구분한다.
