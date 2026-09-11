@@ -23,6 +23,7 @@ func _verify_size(viewport_size: Vector2i) -> bool:
 	var last = panel.buttons.back()
 	var art = panel.buttons[0].get_node("CardIllustration")
 	if art.stretch_mode != TextureRect.STRETCH_KEEP_ASPECT_CENTERED or art.size.y < 50.0:
+		print("CARD_METRICS viewport=", viewport_size, " card=", panel.buttons[0].size, " art=", art.size, " summary=", panel.buttons[0].get_node("CardSummary").get_combined_minimum_size())
 		push_error("CARD_ART_STILL_CROPPED_OR_SHALLOW")
 		return false
 	if absf(panel.get_global_rect().end.y - last.get_global_rect().end.y) > 8.0:
@@ -54,5 +55,16 @@ func _verify_size(viewport_size: Vector2i) -> bool:
 		if four_block == null or board.action_timing_panel._title_label.get_global_rect().intersects(four_block.get_global_rect()) or board.action_timing_panel._sequence_label.get_global_rect().intersects(four_block.get_global_rect()):
 			push_error("FOUR_MOVE_PLAN_OCCLUDED")
 			return false
+	# Font fallback metrics may arrive after a card has entered its container.
+	# Increase native label metrics late; the image must keep its 50px band.
+	var late_card = panel.buttons[0]
+	for line in late_card.get_node("CardSummary").get_children():
+		line.add_theme_font_size_override("font_size", 14)
+	for i in range(10):
+		await process_frame
+	print("LATE_CARD_METRICS ", late_card.size, " art=", late_card.get_node("CardIllustration").get_rect(), " summary=", late_card.get_node("CardSummary").get_rect(), " native=", late_card.get_node("CardSummary").get_combined_minimum_size())
+	if late_card.get_node("CardIllustration").size.y < 50.0 or late_card.get_node("CardSummary").get_rect().end.y > late_card.size.y - 3.5:
+		push_error("LATE_FONT_METRICS_SHRINK_CARD_ART")
+		return false
 	board.free()
 	return true

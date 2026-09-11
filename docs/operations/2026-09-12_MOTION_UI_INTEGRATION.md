@@ -65,3 +65,12 @@ GitHub main readback: ed2104d9. 기존 open PR199(문서 진입점), PR200(Base 
 `GODOT_BIN`을 승인 로컬4.7.2 console에 고정한 pytest: **511PASS / 676.07초**. 별도 실행한 `test_visual_continuation.py`만 제외된 결과다. 명령에 없는 파일명 `test_durable_continue_process.py`를 ignore로 지정했으나 실제 durable 모듈 이름은 `test_durable_save_contract.py`이므로 긴9개 저장 회귀도 실제 포함됐다. 성공 개수를 부풀리지 않는다. 실행 중 HUD 및 관련 fixture 교정이 있었으므로 한 번의 frozen-exact-HEAD 전체 실행이라고 주장하지 않는다. 해당 HUD/직접 native31 및 원장2건의 후속 영향 검증을 별도로 보존했다.
 
 원격 첫 검사에서 `check_combat_board_contract.py`의 추가 자산/공용 도겸 경로 fixture와 이번 diff의 날짜별 BUILD 승인 기록 누락을 확인했다. 기존 원본24개·승인47개의 해시와 실제 역할별 native 검사를 유지해 같은 checker를 GREEN으로 교정했고, 현재 사용자의 연속 구현 지시를 지정된 BUILD_APPROVAL_2026-09-12.md 경로에 기록했다. 승인/보호 검사를 제거하거나 우회하지 않았다.
+
+
+## CI 영향 회귀 교정
+
+509ab721 원격 검사29SUCCESS/5FAILURE를 확인했다. 두 줄 요약, 현재 모션 프레임 HUD, 오른쪽 관찰 열 하단 실행 버튼으로 변경된 소비처의 기존 fixture를 갱신했다. 전투 캐릭터 크기는 선택된 원본 프레임의 픽셀과 key 제거 조건으로 독립 측정한다. 실제 적군을 80%로 축소해 불균형을 탐지하는 negative control과 원상복구 검사는 유지한다. 이미 별도 정본 검사에 존재하는 idle 66%/authored pose 75% stage 상한을 적용한다.
+
+실제 제품 결함도 분리해 교정했다. 카드가 생성된 뒤 native 글꼴 높이를 변경하면 설명이 카드 바깥으로 나가는 RED를 재현했다. summary 최소 높이 변경을 관찰해 그림 영역 50px와 설명 하단 여백을 함께 보존하도록 다시 배치한다. 720p 실행 버튼은 요청48px보다 scene 최소56px가 커 하단이 잘렸다. 실제 최소 높이로 버튼 및 관찰 패널 공간을 배분해 같은 경계 검사 RED→GREEN을 확인했다. Linux CI 결과는 별도 원격 readback 전까지 완료로 표시하지 않는다.
+
+Godot 4.7.1 Windows의 동일 native 검사와 1280x720/1280x800/1920x1080 영향 회귀 증거는 기존 validation 폴더에 보관한다. 1800프레임 제한으로 완료 문자열 이전 종료된 frontal partition 실행은 PASS가 아니며, 제한 없이 다시 실행한다. context invalidation은 전용 성공 문자열 ACTION_DOCK_CONTEXT_INVALIDATION_OK로 판정한다.

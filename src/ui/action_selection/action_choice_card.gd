@@ -23,6 +23,8 @@ func _layout_card_content() -> void:
 	if summary == null:
 		return
 	var summary_height := maxf(28.0, summary.get_combined_minimum_size().y)
+	# Refit after native fallback font metrics settle, not only at creation.
+	custom_minimum_size.y = maxf(CROSS_PLATFORM_CARD_HEIGHT, ceilf(CARD_CONTENT_TOP + summary_height + CARD_BOTTOM_PADDING))
 	summary.offset_top = -summary_height - CARD_BOTTOM_PADDING
 	summary.offset_bottom = -CARD_BOTTOM_PADDING
 	var art := get_node_or_null("CardIllustration") as TextureRect
@@ -116,6 +118,7 @@ func _add_summary(preview_actor: Dictionary) -> void:
 	summary.offset_top = -32.0
 	summary.offset_bottom = -CARD_BOTTOM_PADDING
 	add_child(summary)
+	summary.minimum_size_changed.connect(_layout_card_content, CONNECT_DEFERRED)
 	var momentum_text := " · 기세 %d" % int(action_definition.get("momentum_cost", 0)) if int(action_definition.get("momentum_cost", 0)) > 0 else ""
 	_add_summary_line(summary, "기력%d · 내력%d · 거리%s%s" % [int(action_definition.get("stamina_cost", 0)), int(action_definition.get("internal_cost", 0)), str(action_definition.get("range_text", "-")), momentum_text])
 	var movement := maxi(0, int(action_definition.get("move_range", 0)))
@@ -127,14 +130,8 @@ func _add_summary(preview_actor: Dictionary) -> void:
 	_add_summary_line(summary, effect)
 	_fit_card_to_summary(summary)
 
-func _fit_card_to_summary(summary: VBoxContainer) -> void:
-	# Linux and Windows can resolve the Korean fallback font to different line
-	# heights. Size from the actual native labels, with a small cross-platform
-	# floor, so the third line never relies on one platform's fallback metrics.
-	var required_height := ceilf(CARD_CONTENT_TOP + summary.get_combined_minimum_size().y + CARD_BOTTOM_PADDING)
-	custom_minimum_size.y = maxf(CROSS_PLATFORM_CARD_HEIGHT, required_height)
-	summary.offset_top = -summary.get_combined_minimum_size().y - CARD_BOTTOM_PADDING
-	summary.offset_bottom = -CARD_BOTTOM_PADDING
+func _fit_card_to_summary(_summary: VBoxContainer) -> void:
+	_layout_card_content()
 
 func _add_summary_line(parent: VBoxContainer, value: String) -> void:
 	var label := Label.new()

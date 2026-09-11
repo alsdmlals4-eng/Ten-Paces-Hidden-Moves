@@ -435,12 +435,13 @@ func _layout_product_action_dock() -> void:
     action_selection_dock.size = Vector2(source_width + 8.0 + detail_width, dock_height)
     action_selection_dock.configure_preparation_columns(source_width, detail_width, dock_y - timing_y)
 
+    var execute_height := maxf(48.0, combat_progress_button.get_combined_minimum_size().y) if is_instance_valid(combat_progress_button) else 48.0
     if is_instance_valid(action_timing_panel) and is_instance_valid(combat_progress_button):
         var timing_width := source_width
         action_timing_panel.position = Vector2(lower_margin, timing_y)
         action_timing_panel.size = Vector2(timing_width, timing_height)
-        combat_progress_button.size = Vector2(observation_width, 48.0)
-        combat_progress_button.position = Vector2(observation_x, size.y - lower_bottom - 48.0)
+        combat_progress_button.size = Vector2(observation_width, execute_height)
+        combat_progress_button.position = Vector2(observation_x, size.y - lower_bottom - execute_height)
         _shift_battlefield_above(planning_top - 24.0)
         _layout_screen_surfaces(planning_top)
 
@@ -449,7 +450,7 @@ func _layout_product_action_dock() -> void:
         # its parchment rows stay readable rather than treating it as a short
         # horizontal tooltip beneath the detail column.
         observation_reveal_panel.position = Vector2(observation_x, timing_y)
-        observation_reveal_panel.size = Vector2(observation_width, size.y - lower_bottom - timing_y - 56.0)
+        observation_reveal_panel.size = Vector2(observation_width, size.y - lower_bottom - timing_y - execute_height - 8.0)
 
     for control_value in [sound_toggle_button, sound_volume_slider, fast_replay_button, combat_log_panel]:
         if is_instance_valid(control_value):

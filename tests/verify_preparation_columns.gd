@@ -26,6 +26,12 @@ func _run() -> void:
             board.free()
             quit(1)
             return
+        var progress: Rect2 = board.combat_progress_button.get_global_rect()
+        if not board.get_global_rect().encloses(progress) or progress.intersects(observation):
+            push_error("EXECUTE_BUTTON_CLIPPED_OR_COVERS_OBSERVATION")
+            board.free()
+            quit(1)
+            return
         var grid = board.action_selection_dock.basic_panel.get_node("PanelColumn/ActionGrid")
         var art = grid.get_child(0).get_node("CardIllustration")
         print("CARD_GEOMETRY card=", grid.get_child(0).size, " art=", art.size, " summary=", grid.get_child(0).get_node("CardSummary").size)
