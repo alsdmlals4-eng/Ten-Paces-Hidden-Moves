@@ -62,3 +62,11 @@ Human/Android/접근성 사용자/출시: NOT_RUN.
 별도 통합 검토에서 새 blocker 없음. 기존 긴 저장 회귀와160행 codec를 독립 재실행했다.
 로컬 보호 wrapper는 Godot import가 만든 범위 밖 sidecar/EOL까지 읽어 불일치했으므로 이를 삭제하거나 승인 목록에 추가하지 않았다.
 동일 commit의 새 import 전 검증 작업 공간에서 wrapper를 재검증한다. 원래 사용자·staging 작업은 그대로 보존한다.
+
+## 원격 검사에서 드러난 역사 fixture 교정
+
+첫 e169bc2a CI는 이전 active자산17개만 허용하던 단언과 옛 martial_identity 표시 단언 때문에 실패했다.
+기존24개 자산 레코드 해시를 보존하고 정확한 신규47개 승인집합을 함께 검사하도록 갱신했다.
+표시 별호는 현재 encounter.epithet, v1은 기존 martial_identity를 대조한다. 비무 제약 fixture는
+플레이어 숙련도 변경 시 적의 현재 resolved_encounter를 유지하고 정탐은 v2 만남ID를 사용한다.
+기존 검사를 삭제하지 않았으며 각각 실제 실패 후 동일검사 GREEN을 확인했다.

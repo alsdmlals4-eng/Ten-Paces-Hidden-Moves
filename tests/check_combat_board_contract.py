@@ -184,6 +184,30 @@ def main() -> None:
     ultimate = contract["ultimate_skills"]
     assert ultimate["activation_momentum"] == 5
     assert res_file(ultimate["asset_manifest"]).exists()
+    # The original combat assets and the approved static Blueprint additions have
+    # separate evidence. Registration must not imply animation/runtime approval.
+    blueprint = load_json("assets/blueprint/APPROVED_ART_MANIFEST.json")
+    approved = load_json("docs/planning-data/current_user_planning_status.json")["blueprint_final_approval"]
+    blueprint_assets = blueprint["assets"]
+    blueprint_ids = {asset["id"] for asset in blueprint_assets}
+    assert len(blueprint_assets) == len(blueprint_ids) == 47
+    assert approved["status"] == "USER_APPROVED"
+    assert {asset["source_asset"]: asset["source_png_sha256"] for asset in blueprint_assets} == {
+        asset["path"]: asset["sha256"] for asset in approved["approved_visual_inputs"]
+    }
+    assert [asset for asset in asset_manifest["assets"] if asset["id"] in blueprint_ids] == blueprint_assets
+    original_assets = [asset for asset in asset_manifest["assets"] if asset["id"] not in blueprint_ids]
+    assert len(original_assets) == blueprint["preserved_existing_record_count"] == 24
+    original_digest = hashlib.sha256(json.dumps(original_assets, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    assert original_digest == blueprint["preserved_existing_records_sha256"]
+    for asset in blueprint_assets:
+        assert asset["status"] == "USER_APPROVED__CANON_REGISTERED"
+        assert hashlib.sha256(res_file(asset["path"]).read_bytes()).hexdigest() == asset["source_png_sha256"]
+    assert sum(asset["usage"] == "static_manual_illustration" for asset in blueprint_assets) == 30
+    assert sum(asset["usage"] == "static_opponent_codex_and_briefing_portrait" for asset in blueprint_assets) == 16
+    clash = [asset for asset in blueprint_assets if asset["usage"] == "static_clash_explanation_not_animation"]
+    assert len(clash) == 1 and clash[0]["path"] == blueprint["clash_explanation"]
+    assert clash[0]["runtime_evidence"] == "NOT_RUN"
     active_assets = [asset for asset in asset_manifest["assets"] if asset["active"]]
     assert {asset["id"] for asset in active_assets} == {
         "frontal_courtyard_duel_background_02_v1",
@@ -203,7 +227,7 @@ def main() -> None:
         "current_action_slot_frame_01_v1",
         "technique_detail_frame_01_v1",
         "observation_reveal_frame_01_v1",
-    }
+    } | blueprint_ids
     for asset in active_assets:
         assert res_file(asset["path"]).exists(), asset["path"]
         assert asset.get("prompt") or asset.get("source_png_sha256"), asset["id"]

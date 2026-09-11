@@ -83,7 +83,9 @@ func _briefing(shell) -> void:
             check(_contrast(focus.border_color, normal.bg_color) >= 3.0 and focus.border_width_left >= 2, "focus boundary contrast >= 3")
             check(_contrast(focus.border_color, pressed.bg_color) >= 3.0, "selected focus boundary contrast >= 3")
     var intel: Dictionary = shell.run_state.get("_intel_by_candidate")
-    intel[str(shell.run_state.get_current_opponent()["candidate_id"])] = {"text": "공개 단서 회귀 검증"}
+    # v2 knowledge belongs to this encounter; legacy runs retain candidate keys.
+    var intel_key := str(shell.run_state.get_current_encounter().get("encounter_id", shell.run_state.get_current_opponent()["candidate_id"]))
+    intel[intel_key] = {"text": "공개 단서 회귀 검증"}
     shell.call("_render_current_screen")
     check(shell.description_label.text.contains("행로에서 얻은 단서 · 공개 단서 회귀 검증"), "actual route shell intel preserved")
     var public_copy: String = shell.description_label.text
@@ -162,10 +164,11 @@ func _briefing(shell) -> void:
     dock.request_action({"id": blocked_id, "source": "basic"})
     check(bridge.action_timing_panel.get_resolution_placements() == placements, "dock injection cannot place")
     var snapshot: Dictionary = bridge.get_vertical_slice_loadout_snapshot()
+    # Rebind only player mastery/constraint selection; preserve the exact resolved enemy.
     var full_mastery := {}
     for id in STARTERS: full_mastery[id] = 10
     var receipt := {"selections": [{"constraint_id": "CST_TECH_ULTIMATE_SEAL"}], "enemy_candidate_id": snapshot["enemy_candidate_id"]}
-    check(bridge.configure_vertical_slice_loadouts(STARTERS, full_mastery, snapshot["enemy_loadout"], snapshot["enemy_mastery_by_manual"], snapshot["enemy_candidate_id"], snapshot["enemy_runtime_binding"], {}, receipt), "changed receipt and mastery binds")
+    check(bridge.configure_vertical_slice_loadouts(STARTERS, full_mastery, snapshot["enemy_loadout"], snapshot["enemy_mastery_by_manual"], snapshot["enemy_candidate_id"], snapshot["enemy_runtime_binding"], {}, receipt, snapshot.get("resolved_encounter", {})), "changed receipt and mastery binds")
     bridge.combat_state["player"]["momentum"] = [5, 5]
     bridge.call("_sync_action_selection_dock")
     await process_frame
