@@ -139,3 +139,11 @@ robes; anatomically correct hands; no text/UI/logos/extra limbs/sexualized armor
 `clash-keyscene-v1.png`: built-in image generation. 기존 player/enemy sword sequence를 인물 일관성 참고로 사용했다. 두 사람만, 좌우 공간 유지, 상체 높이 검 교차점의 금속 불꽃, 젖은 석조 마당과 청색 산수, 글자·UI 없는 구도를 요청했다. 실행 화면 배치와 합 설명용 **생성 원화 후보**이며 실제 게임 촬영·모션 프레임이 아니다. 원본 생성 파일은 `exec-7b77aeee-13b8-4a00-9bff-1285b3070ff5.png`로 보존한다.
 
 최종 팽가도결 10성은 `saber-star10-grip-v2.png`를 사용한다. 양손 그립·손목 분리를 교정했고 이전 파일은 보존했다. PDF 내부 JPEG 인코딩은 파생 문서 최적화일 뿐 선택 PNG를 교체하지 않는다. 새 원화의 최종 사용자 lock·runtime 등록은 아직 별도다.
+
+## 2026-09-11 백무진 전용 초상 후보
+
+`opponent-baekmujin-v1.png`:1024×1536, 검은 천 가면·붉은 띠·먹색 장포의 전용 전신 도감 원화.
+기존 진려 원화와 역사 가면 검객 화면을 참고하여 built-in 이미지 모델로 제작하고 직접 시각 검토했다.
+도감/브리핑용 후보이며 전투 스프라이트·모션은 아니다. 사용자 final lock과 runtime 연결은 미완료다.
+SHA-256·원본/참고 입력·소비처·상태군·승격 경로는 `ASSET_READINESS.json`이 소유한다.
+이전 저해상도 이미지와 승인된 제품 자산은 보존한다.

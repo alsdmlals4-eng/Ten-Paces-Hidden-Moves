@@ -19,8 +19,9 @@ class StageBlueprintTests(unittest.TestCase):
             for r in rows:
                 self.assertEqual(sum(r['stats']), r['stat_total'])
                 self.assertEqual(r['ultimate_unlocked'], r['mastery'] == 10)
-            self.assertEqual(rows[0]['mastery'], 10)
-            self.assertEqual(len({r['epithet'] for r in rows}), 10)
+            self.assertGreaterEqual(rows[0]['mastery'], 5)
+            self.assertEqual(len({r['epithet'] for r in rows}), 4)
+            self.assertTrue(person['epithet_reason'])
             for r in rows:
                 self.assertEqual(r['resource_caps'], {'health':30,'stamina':5,'internal':4})
             self.assertTrue((ROOT / person['portrait']).is_file())

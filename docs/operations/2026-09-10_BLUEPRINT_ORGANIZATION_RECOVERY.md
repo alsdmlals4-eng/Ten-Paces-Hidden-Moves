@@ -80,3 +80,17 @@ CI·병합·main readback은 별도 검증 전까지 완료로 주장하지 않�
   적 금지 관찰 강화, 제약·정탐·측정 소비자가 남아 있다. 기존 제품 미커밋 상태와 저장을 보존했다.
 - 현재 PR340에는 외부 approved-protected-change metadata가 없다(실제 GitHub labels=[] 확인).
   문서 수정의 승인·검사는 제품 보호 경로 승인이나 저장 호환 검증을 대신하지 않는다.
+
+## 2026-09-11 상세 기획 승인 검토본 재개
+
+- 기준 SHA6d84832d / Work Mode PLAN·BUILD(문서) / Skill game-design·combat-implementation-handoff·pdf·TDD / Skill Mode balance-review·implementation-spec·artifact-review.
+- 최신 사용자 지시로 타 프로젝트 참고 대기 해제. main885c91ee, Base remote2f93e872를 읽었으며 채택 계약을 임의 갱신하지 않았다.
+- 원래 dirty6개 문서/도구를 tmp/resume-preservation-20260911에 해시와 함께 보존한 후 같은 Draft PR340의 문서 분기에서 계속했다.
+- 고정3권·공통 접두어를 인물별2~5권·고유4단계 별호로 교체. 비용곡선 회귀 RED2건 관측 후 GREEN. 현재 관련 회귀6건+복구 owner1건 PASS.
+- 상세 SWOT4면·인물별 전술8면·구현 인수8면 추가. 저장 schema/content identity/한 권 제한 실제 소비자를 읽고 v1 보존·v2 새 여정 계약을 작성했다.
+- 백무진 전용1024×1536 후보1장 생성·시각 검토. 출처·해시·소비처·상태군은 ASSET_READINESS.json에 기록, 정본/제품 승격 안 함.
+- CURRENT_SOURCE_RELEVANCE_CHECK: 저장·RNG는 공식 Godot 본문 조회; 무공 수/성장 의사결정의 기존11개 비교를 현재 차원에 재대조. 별도 프로젝트 작업 자료는 사용하지 않았다. 제한은 RESEARCH_20260910.md에 기록했다.
+- 표적 검토 발견: 옛 초상15+기존1, 고정3권, 천기비성술5성 오기, 검증하지 않은 적 필터 위치 단정. 각 표현을 교정하고 내용 검사·렌더로 재검증했다.
+- 원본 JSON→기획 계산기→160행/112쪽→승인 후 catalog/shell/bridge/codec 흐름을 기존 Blueprint에 설명했다. 별도 대시보드를 만들지 않았다.
+- 자동화: 인물별 편성·비용·별호 회귀와 PDF 내용·source hash 검사 갱신. 공용 정책/메모리 mutation 없음.
+- 상세 수치·별호·후보 원화 최종 검토 후 실제 구현. Godot·Human·실기기·출시 NOT_RUN. 문서 검증 해시는 FINAL_REVIEW.md 참조.

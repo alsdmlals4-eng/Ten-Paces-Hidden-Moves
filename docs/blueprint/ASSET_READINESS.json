@@ -1,0 +1,36 @@
+{
+  "status": "REVIEWED_CANDIDATE_FINAL_USER_LOCK_PENDING",
+  "asset_id": "BAEKMUJIN_CODEX_PORTRAIT_V1",
+  "path": "output/blueprint-candidates/opponent-baekmujin-v1.png",
+  "sha256": "ec373989585c1959fe09b0d850a41a64605b5e237d961aca832337a73daf34d7",
+  "size": [
+    1024,
+    1536
+  ],
+  "mode": "RGB",
+  "consumer": "opponent codex and pre-duel briefing portrait; proposed TextureRect in vertical_slice_shell.gd",
+  "runtime_destination_after_approval": "assets/characters/portraits/masked_baekmujin_portrait_v1.png",
+  "runtime_implemented": false,
+  "state_family": [
+    "normal",
+    "hover",
+    "selected",
+    "disabled"
+  ],
+  "state_method": "same portrait with existing UI focus/border/opacity; no duplicated art",
+  "motion_scope": "not a combat sprite; existing approved motion remains unchanged",
+  "source": "built-in image_gen 2026-09-11",
+  "references": [
+    {
+      "path": "output/blueprint-candidates/opponent-jinryeo.png",
+      "sha256": "020ebfb46c12921674532d29dd079456d130ec383c720563ffa59f7362079944"
+    },
+    {
+      "path": "docs/blueprint/evidence/masked-enemy-user-reference.png",
+      "sha256": "f3da6ed0757192111aca02a0108e1b5757c8cca8c7e216f387820b5606794928"
+    }
+  ],
+  "prompt_summary": "Original masked adult swordsman, charcoal-black and muted crimson robes, red headband, ordinary sheathed straight sword; warm ivory paper and blue ink wash; full body portrait, no text. Jinryeo reference is style only; historical masked image is costume identity.",
+  "review": "Head and boots present; two hands, coherent sheathed sword, mask and crimson costume retained. Static codex/briefing only.",
+  "rights": "AI service exact model/version/plan terms unverified; not shipping rights approval"
+}

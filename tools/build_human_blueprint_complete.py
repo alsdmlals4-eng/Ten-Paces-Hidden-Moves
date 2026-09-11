@@ -10,7 +10,13 @@ W,H=1200,800
 layout.W,layout.H=W,H
 INK=HexColor('#18292e'); PAPER=HexColor('#f1ebdd'); GOLD=HexColor('#aa7c37')
 LIGHT=HexColor('#e3d8c2'); BLUE=HexColor('#325f70'); MUTED=HexColor('#61706c')
-OUT=ROOT/'output/pdf/TEN_PACES_HUMAN_BLUEPRINT_20260910_COMPLETE.pdf'
+OUT=ROOT/'output/pdf/TEN_PACES_HUMAN_BLUEPRINT_20260911_APPROVAL_REVIEW.pdf'
+# Stable source-page identities; final reading order is verified as a permutation.
+PAGE_ORDER=[6,2,1,3,88,*range(93,97),90,89,92,91,4,5,7,8,*range(9,15),15,28,29,16,17,18,82,19,20,21,83,*range(22,28),30,31,32]
+for group in range(8): PAGE_ORDER += [*range(33+group*4,37+group*4),97+group]
+PAGE_ORDER += [*range(65,81),*range(105,113),81,*range(84,88)]
+assert sorted(PAGE_ORDER)==list(range(1,113))
+PAGE_NUMBER={old:new for new,old in enumerate(PAGE_ORDER,1)}
 CAP=ROOT/'docs/blueprint/evidence'
 ART=ROOT/'output/blueprint-candidates'
 REF=CAP/'reference-screens'
@@ -46,7 +52,7 @@ class Edition(Book):
         self.p(title,36,764,W-72,25,PAPER,True)
         self.p(subtitle,36,730,W-72,10,PAPER)
         self.c.setStrokeColor(GOLD);self.c.line(36,35,W-36,35)
-        self.p(f'{self.n:02d}  ·  2026.09.10  ·  '+state,36,26,W-72,9,MUTED,floor=0)
+        self.p(f'{PAGE_NUMBER[self.n]:02d}  ·  2026.09.11  ·  '+state,36,26,W-72,9,MUTED,floor=0)
         self.c.bookmarkPage('page'+str(self.n));self.c.addOutlineEntry(title,'page'+str(self.n),0)
     def table(self,headers,rows,widths,top=688,size=12):
         return super().table(headers,rows,widths,top,size)
@@ -106,7 +112,7 @@ def main():
     bg=ROOT/'assets/backgrounds/jianghu_blue_ink_landscape_v1.png'
     inn=ROOT/'assets/backgrounds/jianghu_rest_inn_v1.png'
     courtyard=ROOT/'assets/backgrounds/atlas_blue_ink_courtyard_v1.png'
-    b=Edition(OUT);b.c.setTitle('십보강호 · 사람용 블루프린트 · 통합 완성 편집판 2026.09.10')
+    b=Edition(OUT);b.c.setTitle('십보강호 · 사람용 블루프린트 · 최종 승인 검토판 2026.09.11')
     b.page('열 칸의 거리, 세 번의 결단','기획 · 시각 경험 · 강호행로 · 전투 · 상대 · 무공 · 구현 지도')
     b.p('상대의 수를 읽고,\n나의 무공으로 답한다.',70,637,1060,39,bold=True)
     b.p('1대1 무협 전술 게임 · 10칸의 일자 전장 · 열 번의 비무',70,498,1060,22)
@@ -114,7 +120,7 @@ def main():
     b.p('기획의 설명과 게임의 실제 구현을 구분한 통합 블루프린트다. 도감 후보·시각 목표·실제 촬영은 각각 표시하며, 문서 완성을 게임 개발 완료로 취급하지 않는다.',70,188,1060,16)
 
     b.page('읽는 순서와 문서의 경계','같은 규칙을 여러 곳에 복제하지 않고, 역할별 책임 페이지로 나눴다.')
-    sections=[('1부 · 게임 기획','핵심 재미와 경험 / 전체 플로우 / 화면 아틀라스'),('2부 · 강호행로','비전투 선택 / 사건 / 휴식 / 조사·정탐 / 비무 브리핑'),('3부 · 전투 시스템','준비와 계획 / 거리·관찰 / 합·연격·회피·방어 / 절초·결과'),('4부 · 강호의 상대','16명 / 주력+보조2권 / 전력 예산 / 10→1전 표'),('5부 · 무공과 데이터','10권 × 기술·절초 3종 / 5·9성 강화 / 기본 행동 / 제작 예산'),('6부 · 구현 이해와 체크','기획→상세→자산→구현→검증 / 한글 연결 지도 / 검수와 출처')]
+    sections=[('1부 · 게임 기획','첫 장 아틀라스 / 핵심 경험 / SWOT·독창성 / 개선 항목 / 시스템·흐름'),('2부 · 강호행로','비전투 선택 / 사건 / 휴식 / 조사·정탐 / 수련'),('3부 · 전투 시스템','브리핑·제약 / 준비·계획·실제 화면 / 거리 / 합·연격·회피 / 결과'),('4부 · 강호의 상대','16명 / 인물별 가변 편성 / 전력 예산 / 10→1전 표'),('5부 · 무공과 데이터','10권 × 기술·절초 3종 / 5·9성 강화 / 기본 행동 / 제작 예산'),('6부 · 구현 이해와 체크','기획→상세→자산→구현→검증 / 한글 연결 지도 / 검수와 출처')]
     b.table(['종류','찾을 내용'],sections,[240,900],size=15)
     b.panel('표시의 뜻','시각 목표 = 도달하려는 구도  /  실제 촬영 = 해당 시점의 실행 화면  /  권장안 = 구체화한 설계, 게임 연결은 별도\n신규 원화 = 제작·검수한 도감 후보, 최종 시각 채택과 전투용 투명 모션은 별도',36,205,1128,138)
 
@@ -196,7 +202,7 @@ def main():
     b.panel('추가 기획의 경계','고유 NPC 대사·선택 분기·실패 연출은 별도 콘텐츠 명세로 다듬을 항목이다. 현재 다섯 효과에 없는 수치 보상이나 새 전투를 이미지 설명만으로 추가하지 않는다.',614,405,550,210)
     b.note('후속 검수: 포인트 사용 전후, 해금된 기술 목록, 5·9성 강화 반영, 저장 복구 후 같은 상태를 유지하는지 확인한다.',130)
 
-    b.page('비무 브리핑 · 상대를 읽고 제약을 정한다','정탐으로 확보한 정보와 미확인 정보를 구분한다. 그림은 이전 시각 목표이며 수치 정본은 본문이다.')
+    b.page('비무 브리핑 · 상대를 읽고 제약을 정한다','3부 · 전투 시작 / 정탐으로 확보한 정보와 미확인을 구분한다. 그림은 이전 시각 목표이며 수치 정본은 본문이다.')
     b.photo(REF/SCREENS['brief'],36,208,830,478)
     b.panel('좌우의 같은 정보 순서','현재/최대 자원 → 영구 능력 → 보유 무공·성수. 상대는 정탐으로 허용된 범위만 공개하며 미확인은 ?로 남긴다.',887,680,277,202)
     b.panel('제약은 시작 전에','0~2개 · 총 3점 이내 · 상대 강화 최대 1개. 대상이 필요한 경우 무공/능력까지 확정한다. 전투 중 변경하지 않는다.',887,450,277,202)
@@ -343,29 +349,30 @@ def main():
     b.page('상대의 성장과 등장 규칙','10전 완성형에서 하위 단계로 약화한다. 인물 자체와 이번 만남의 난도를 분리한다.')
     b.table(['항목','이번 상세 권장안','보호 기준'],[
         ['단계 능력 합계','1→10전: 20·22·24·26·28·30·32·34·37·40','기존 성향 배분을 유지, 성장 보너스를 다시 더하지 않음'],
-        ['보유 무공','주력 1권 + 보조 2권. 10전은 10·7·5성','거리·방어·회복·보조 공격의 조합. 동일 무공 중복 금지'],
+        ['보유 무공','인물별2~5권. 집중·연계·다재형의 다른 성수','거리·방어·회복·보조 공격의 조합. 동일 무공 중복 금지'],
         ['공통 자원 상한','체력 30 · 기력 5 · 내력 4','현재 자원 상한 유지. 능력→자원 새 공식은 추가하지 않음'],
-        ['성장 별호','고유 별호 + 단계별 성장 수식','같은 인물의 이름·성별·주력 무공 유지'],
+        ['성장 별호','인물별 고유별호4단계: 1~3 / 4~6 / 7~9 / 10전','같은 인물의 이름·성별·주력 무공 유지'],
         ['상대 확정','새 게임 시작에 10건 일괄 확정·저장','이어하기·재도전·정탐에서 재추첨 금지'],
-        ['중복 정책','연속 같은 타입 편중을 줄이는 방향','중복 제한의 정확한 추첨 규칙은 후속 구현 명세에서 검증']
+        ['중복 정책','연속 같은 타입 편중을 줄이는 방향','같은 인물25%, 같은 유형50% 가중 완화; 반복 허용']
     ],[165,480,495],size=13)
     b.note('160행은 인물별 등장 설계표다. 현재 게임이 이 수치를 사용한다는 뜻이 아니다. 사람 밸런스·추첨 분포·저장 호환 검증은 6부에 남겼다.',122)
 
     budget_plan=read('docs/blueprint/OPPONENT_BUDGET.json')
     b.page('전별 전력 예산 · 플레이어 성장과 비교','추가 수련은 3성 취득 후 비용. 총 성수·위력·능력 포인트와 혼합하지 않는다.')
     rows=[]
-    for r in reversed(budget_plan['stages']):
-        n=r['stage']-1
-        rows.append([str(r['stage'])+'전',str(r['stat_total']), ' / '.join(map(str,r['masteries'])), str(r['training_budget']), str(6*n),str(12*n),str(20*n)])
-    b.table(['비무','능력 합계','주력 / 보조1 / 보조2 성수','상대 추가 수련','승리 자유수련만','승리+행로2수련','최대 획득 상계'],rows,[65,115,280,160,175,175,170],size=12)
+    for stage in range(10,0,-1):
+        n=stage-1; stage_rows=[p['stages'][10-stage] for p in people]
+        costs=[r['training_spent'] for r in stage_rows]
+        rows.append([str(stage)+'전',str(budget_plan['stat_totals'][stage-1]),'인물별 상세표 참조',str(min(costs))+'~'+str(max(costs)),str(6*n),str(12*n),str(20*n)])
+    b.table(['비무','능력 합계','가변 편성','상대 추가 수련 범위','승리 자유수련만','승리+행로2수련','최대 획득 상계'],rows,[65,115,240,170,185,180,185],size=12)
     b.p('비교 경로',36,223,1128,16,bold=True)
     b.p('승리 자유수련만: 이전 승리당6. 보통 비교: 승리6 + 행로4회 중 수련2회×3. 최대 상계: 집중보상8 + 행로 수련4회×3이며, 집중분은 지정 무공에만 사용한다. 전수·휴식·조사를 고르면 수련량은 줄어든다.',36,187,1128,13)
-    b.note('플레이어 시작4권·상대3권의 선택지 폭도 비교해야 한다. 10·5·3성=43점 대안은 완만한 난도 후보. 채택 시작값은57점이며 사람 대전 검증 전이다.',100)
+    b.note('플레이어 시작4권과 상대별2~5권의 취득·선택 폭은 별도다. 10/10은76점, 5성5권은25점이다. 수련 비용 차이를 동일 전투력이나 공정성으로 해석하지 않는다.',100)
     b.note('능력 합계는 성장 보너스 포함 최종 목표다. 플레이어의 영구 능력 성장 적용 범위가 일치하기 전에는 위 표만으로 공정한 대전이 입증되지 않는다.',65)
 
     for p in people:
         c=bycandidate[p['id']];m=bymanual[c['signature_manual_id']];top=p['stages'][0]
-        b.page(p['name']+' · '+top['epithet'],'10전 최고 성장 기준  /  '+p['identity'],('기존 가면 검객 실행 이미지 참고 · 인물 연결 전' if p['id']=='masked_baekmujin' else '신규 초상 · 수치 상세 권장안 / 게임 연결 전'))
+        b.page(p['name']+' · '+top['epithet'],'10전 최고 성장 기준  /  '+p['identity'],'도감 원화 후보 · 상세 권장안 / 게임 연결 전')
         b.photo(ROOT/p['portrait'],36,68,433,628)
         b.p(p['personality'],505,677,657,23,BLUE,True)
         b.box(505,543,659,42,LIGHT)
@@ -375,19 +382,19 @@ def main():
         b.p('능력 합계 40   /   체력 30 · 기력 5 · 내력 4',505,527,657,14)
         b.p('보유 무공 · 추가 수련 '+str(top['training_spent'])+'점',505,480,650,18,BLUE,True)
         for oi,owned in enumerate(top['owned_manuals']):
-            b.p(['주력','보조1','보조2'][oi]+'  '+owned['name']+' '+str(owned['mastery'])+'성',505,445-oi*32,650,15,bold=True)
-        b.p('관찰 포인트',505,332,650,18,bold=True)
-        b.p(p['habit'],505,296,650,15)
-        b.p('습관이 깨지는 경우',505,228,650,18,bold=True)
-        b.p(p['counterexample'],505,192,650,15)
+            b.p(('대표' if oi==0 else '연계'+str(oi))+'  '+owned['name']+' '+str(owned['mastery'])+'성',505,450-oi*25,650,14,bold=True)
+        b.p('관찰 포인트',505,306,650,17,bold=True)
+        b.p(p['habit'],505,273,650,13)
+        b.p('습관이 깨지는 경우',505,213,650,17,bold=True)
+        b.p(p['counterexample'],505,180,650,13)
         b.p('주력 무공의 자세한 비용·조건·처리 순서는 5부 '+p['manual']+' 참조.',505,107,650,11,MUTED)
-        b.page(p['name']+' · 단계별 등장표','10전 → 1전. 세 권의 성장 예산을 함께 적용한다. 자원 상한: 체력30·기력5·내력4.','단계별 수치 권장안 / 런타임·사람 밸런스 검증 전')
+        b.page(p['name']+' · 단계별 등장표','10전 → 1전. 인물별 가변 편성의 성장 비용을 적용한다. 자원 상한: 체력30·기력5·내력4.','단계별 수치 권장안 / 런타임·사람 밸런스 검증 전')
         rows=[]
         for r in p['stages']:
             scope='기술 1'+(' + 기술 2' if r['mastery']>=7 else '')+(' + 절초' if r['ultimate_unlocked'] else '')
             upgrade='5·9성' if r['mastery']>=9 else '5성' if r['mastery']>=5 else '없음'
             rows.append([str(r['stage'])+'전',r['epithet'],' / '.join(map(str,r['stats'])),str(r['stat_total']), ' / '.join(str(m['mastery']) for m in r['owned_manuals']),str(r['training_spent']),scope])
-        b.table(['비무','등장 별호','외공 / 근골 / 신법 / 내공 / 심안','합계','주력 / 보조1 / 보조2','수련 점수','주력 해금'],rows,[60,185,300,65,190,110,230],size=11.5)
+        b.table(['비무','등장 별호','외공 / 근골 / 신법 / 내공 / 심안','합계','보유 순서별 성수','수련 점수','주력 해금'],rows,[60,185,300,65,190,110,230],size=11.5)
         b.p('보유 순서: '+' / '.join(m['name'] for m in top['owned_manuals']),36,221,1128,13,BLUE,True)
         b.p('기술 1: '+m['cards']['star3']['name']+'  /  기술 2: '+m['cards']['star7']['name']+'  /  절초: '+m['cards']['star10']['name'],36,171,1128,13,bold=True)
         b.note('각 권은3성 기술1·5성 강화·7성 기술2·9성 강화·10성 절초를 적용한다. 해금 후에도 자원·기세·거리 조건을 충족해야 한다.',125)
@@ -453,23 +460,23 @@ def main():
         ['10칸 / 3·3·4 / 기본 판정','확정','있음','있음','기존 구현','후속 전체 회귀'],
         ['무공10권 / 기술30종 / 강화20종','확정','있음','새 삽화30','기술 데이터 연결','새 원화 연결·촬영 전'],
         ['강호행로 5종 / 4회 선택','확정','있음','배경 있음','현재 순환 방식','완주·중복지급 재검증'],
-        ['상대16명 / 여성·백무진 포함','확정 방향','인물별 정리','초상15+기존1','기존15명 소비','가면 검객 신규 연결 전'],
-        ['10전별 능력·세 권 성수·별호','확정 방향','160행·수련 예산','도감 있음','미연결','밸런스·저장 검증 전'],
-        ['시작 시 상대10건 추첨','확정 방향','반복 정책 보완','해당 없음','현재 고정 순서','추첨·저장·완주 전'],
+        ['상대16명 / 여성·백무진 포함','확정 방향','인물별 정리','전용 초상16','기존15명 소비','가면 검객 신규 연결 전'],
+        ['10전별 능력·가변 성수·별호','확정 방향','160행·수련 예산','도감 있음','미연결','밸런스·저장 검증 전'],
+        ['시작 시 상대10건 추첨','확정 방향','반복·저장 명세','해당 없음','현재 고정 순서','추첨·저장·완주 전'],
         ['전장60% / 5×2 / 현재 계획','확정','구조도 있음','시각 목표 있음','로컬 부분 교정','최종 가독성 미승인'],
         ['무기별 모션 / 합 승패 / VFX','확정 방향','제작표 있음','검 중심 부분','공통 임시 표현 남음','무기별 실행·청감 전']]
     b.table(['항목','기획','상세','자산','구현','검증'],checklist,[255,115,155,150,210,255],size=11)
-    b.note('주의: 천기비성술5성의 관찰 강화는 적 허용 범위와 충돌한다. 해금표와 실제 적이 사용할 수 있는 기술 목록을 구분하고 정보 차단 회귀를 수행해야 한다.',188)
+    b.note('주의: 천기암기록5성의 관찰 강화는 적 허용 범위와 충돌한다. 해금표와 실제 적이 사용할 수 있는 기술 목록을 구분하고 정보 차단 회귀를 수행해야 한다.',188)
     b.note('단계: 아이디어 → 조사 → 구현 가능 → 상세화 → 자산 준비 → 구현 → 기계 검증 → 실행 검증 → 사용자 승인.',145)
     b.note('이 책의 신규 그림은 도감 원화다. 투명 전신·공격·피격·회피·방어·합·승패 모션을 새로 만든 것으로 세지 않는다.',95)
 
     if (CAP/'preparation-plan.png').exists():
-        b.picture_page('실제 구현 대조 · 준비 화면','2026.09.10 로컬 Godot 촬영 / 시각 목표와 비교하는 실행 근거',CAP/'preparation-plan.png','삽화 비중·작은 글자·장식 간섭·패널 여백의 추가 검수가 남아 있다. 새 도감 원화가 모두 연결된 화면이 아니다.')
+        b.picture_page('실제 구현 대조 · 준비 화면','2026.09.11 로컬 Godot 촬영 / 시각 목표와 비교하는 실행 근거',CAP/'preparation-plan.png','삽화 비중·작은 글자·장식 간섭·패널 여백의 추가 검수가 남아 있다. 새 도감 원화가 모두 연결된 화면이 아니다.')
     if (CAP/'capture.json').exists():
         rec=json.loads(source(CAP/'capture.json').read_text(encoding='utf-8'))['frames']
         r=next((r for r in rec if r.get('vfx') and r.get('kind')=='clash'),None)
         if r:
-            b.picture_page('실제 구현 대조 · 카드 공개와 합','2026.09.10 로컬 Godot 촬영 / 최종 연출 품질 승인 아님',CAP/r['file'],'남은 차이: 장풍에도 검 접촉을 쓰는 임시 모션, 인물 중첩, 불꽃 가시성·접점. 실제 결과를 과장하거나 생성 이미지로 대체하지 않았다.')
+            b.picture_page('실제 구현 대조 · 카드 공개와 합','2026.09.11 로컬 Godot 촬영 / 최종 연출 품질 승인 아님',CAP/r['file'],'남은 차이: 장풍에도 검 접촉을 쓰는 임시 모션, 인물 중첩, 불꽃 가시성·접점. 실제 결과를 과장하거나 생성 이미지로 대체하지 않았다.')
 
     b.page('최종 구현 검수표 · 종료 조건','이 체크가 모두 충족되어야 “블루프린트 전체 구현 완료”라고 말할 수 있다.')
     checks=[['새 회차와 저장','시작 즉시 상대10건 확정 / 이어하기 불변 / 중간 재시작 / 제약 복원'],['10전 완주','각 전의 상대·수치·무공·보상 일치 / 9개 행로 / 최종 종료'],['양측 모션','대기·이동·공격·피격·회피·방어·합 승패·비무 승패 / 발 기준과 무기 연속성'],['실행 화면','카드 공개와 함께 재생 / UI 고정 / 거리 변화 / 효과 접점 / skip·resize'],['미술과 음향','새 원화 최종 확정 / 무기별 VFX / 소리 on·off / 실제 장치 청감'],['증거와 전달','자동 검사 / 실제 촬영·GIF / 정확한 변경의 CI / 안전한 병합 / main 재확인'],['사람·기기','가독성·타격감·접근성 / Android 실기기 / 성능 / 출시 권리']]
@@ -487,9 +494,9 @@ def main():
     ],[390,750],size=14)
     b.note('공용 교훈은 Base의 해당 책임 규칙과 중복 여부를 확인한 뒤 반영한다. 이 문서가 Base 병합 완료를 뜻하지 않는다.',140)
 
-    b.page('출처와 검증 범위','2026.09.10 확인 기준. 기획·구현·이미지의 책임 원본을 보존했다.')
+    b.page('출처와 검증 범위','2026.09.11 확인 기준. 기획·구현·이미지의 책임 원본을 보존했다.')
     b.panel('프로젝트 기준','현재 프로젝트 규칙·활성 문맥·승인 결정, 전투 규칙과 UI·연출 명세, 기본 행동10종·무공10권·기존 상대15명과 가면 검객 추가 명세, 행로·보상·저장 소비자. 상세 출처 해시는 문서와 함께 보존한 검증 기록에 남긴다.',36,689,550,226)
-    b.panel('시각 기준','사용자 기존 36쪽 블루프린트는 보존. 화면 아틀라스·행로 배경·기본 행동 아틀라스를 구분해 재사용하고, 무공30장·상대15장 신규 도감 원화를 제작했다. 생성 이미지와 실제 Godot 캡처는 별도 표시했다.',614,689,550,226)
+    b.panel('시각 기준','사용자 기존 36쪽 블루프린트는 보존. 화면 아틀라스·행로 배경·기본 행동 아틀라스를 구분해 재사용하고, 무공30장·상대16장 도감 원화를 제작했다. 생성 이미지와 실제 Godot 캡처는 별도 표시했다.',614,689,550,226)
     b.panel('외부 비교의 한계','공식 제품 설명에서 위치·행동 연계·반복 회차·성장 선택 구조를 비교했다. 타 게임 수치나 성공 사례를 복제하지 않았고, 직접 플레이 테스트·통계적 밸런스 검증을 했다고 주장하지 않는다.',36,430,550,190)
     b.panel('완성 범위','이 파일은 6개 부를 갖춘 사람용 통합 편집판이다. 새 이미지 최종 채택, 무작위 상대·단계 성장의 게임 연결, 전 무기 모션, 실기기·청감·사람 체감·출시는 각각 후속 확인 대상이다.',614,430,550,190)
     b.note('외부 참고: Yomi 2 공식 소개 · Shogun Showdown · Into the Breach · Hades · FTL · Slay the Spire · Battle Brothers · Dead Cells · Spelunky 2 · Darkest Dungeon · Monster Train.',170)
@@ -499,8 +506,75 @@ def main():
     for i,(name,url,note) in enumerate(refs):
         yy=690-i*55;b.p(name,36,yy,190,13,BLUE,True);b.p(note,232,yy,924,12)
         b.p(url,232,yy-23,924,9,MUTED);b.c.linkURL(url,(232,yy-40,1136,yy-20),relative=0)
+    b.page('추가 검토 · SWOT와 개선 우선순위','기존11개 비교 사례와 개발자 공개 자료를 바탕으로 한 프로젝트 평가. 시장 성공을 검증한 결과는 아니다.')
+    b.panel('S · 유지할 강점','열 칸의 거리와 3·3·4수는 판단의 단위를 명확히 한다. 공개 이력에서 상대를 추론하고 합의 결과를 몸짓으로 읽는 연결이 핵심 경험이다.\n\n유지: 공유 전투 코어, 숨은 계획 보호, 승인된 플레이어·검 모션.',36,687,548,249)
+    b.panel('W · 먼저 고칠 약점','기획의 다중 무공·단계 성장과 게임의 단일 주력 소비자가 불일치한다. 현재 촬영에는 작은 글자·인물 중첩·무기와 맞지 않는 공통 연출이 남아 있다.\n\n개선: 소비자 일치 → 판정 가독성 → 무기별 표현.',616,687,548,249)
+    b.panel('O · 차별화 기회','같은 인물의 이름·주력 무공은 유지하고 단계별 별호·보조 무공으로 성장한 상대를 보여 준다. 무작위 만남 속에서도 기억할 수 있는 라이벌 경험을 목표로 한다.\n\n가설: 숫자 상승보다 대응 방식 변화가 재도전 동기를 높인다.',36,403,548,263)
+    b.panel('T · 관리할 위험','성장 예산이 플레이어의 실제 성장과 어긋나면 부당한 난도가 된다. 효과가 정보를 가리거나 회차 재추첨이 저장을 흔들면 추론의 신뢰가 무너진다.\n\n대응: 성수 비용·해금·저장·정보 경계 회귀와 사람 플레이를 분리 검증.',616,403,548,263)
+    b.note('판단 근거: 전투 파트의 실제 구현 대조, 상대 파트의 단계 예산, 마지막 출처의 사례 비교. 강점·기회는 경험 가설이며 사용자 테스트 PASS가 아니다.',99)
+
+    b.page('기존 요소 판단표 · 무엇을 남기고 바꾸는가','유지·개선·교체·추가를 구분한다. 새 기능을 많이 넣는 것을 품질 향상으로 간주하지 않는다.')
+    b.table(['요소','판정','적용 내용','확인할 증거'],[
+        ['10칸 / 3·3·4 / 공개 이력','유지','계획과 결과의 인과를 보존','기존 전투 회귀·숨은 정보 차단'],
+        ['고정 상대 / 단일 주력','교체 방향 승인','새 여정에만10건 확정 + 인물별 가변 무공','브리핑·전투·보상·저장 일치'],
+        ['단계별 능력·성수','개선','인물별 완성형부터 약화. 비용은 전투력 등가 아님','플레이어 성장 대조·편성별 승패/자원'],
+        ['강호행로 네 번 선택','유지·보완','각 선택의 효과·포기 기회·상태 변화 명시','선택 중복 지급0 · 이해도 확인'],
+        ['준비 UI / 기술 삽화','개선','전장60% 유지. 현재 계획·5×2·상세·관찰 분리','글자·삽화·선택 상태의 실화면 검수'],
+        ['합 / 카메라 / VFX','개선','상단 접점·역할별 반동·공간 분리·안정된 UI','양측 역할 반전·효과 off/on 비교'],
+        ['장식 이미지·중복 설명','삭제·정리','설명에 필요 없는 그림 제거. 핵심장면은 보존','아틀라스·흐름·브리핑 누락0'],
+        ['성장 별호·복기','추가·보완','인물 식별 유지, 결과와 다음 대응을 연결','이름 인지·패배 원인 설명 가능 여부']
+    ],[215,135,430,360],size=12)
+    b.note('위 표는 승인 방향과 확인 기준이다. 제품 연결 상태는 6부 구현 체크를 따른다. 화면을 바꾸는 작업과 게임 규칙 변경을 혼동하지 않는다.',109)
+
+    b.page('독창성과 창의성 · 무협 판단을 장면으로','작품의 외형을 모방하지 않고, 이 게임의 거리·수·관찰에 맞는 경험을 만든다.')
+    b.panel('인물의 성장 = 다시 읽어야 하는 상대','이름·주력의 정체성은 남긴다. 보조 무공은 사거리 보완, 압박 후 복귀, 방어와 재진입 같은 전술 역할을 갖게 한다. 모든 상대에게 같은 만능 조합을 주지 않는다.\n\n확인: 주력만 쓸 때와 보조를 쓰는 때의 선택 차이가 실제 판정으로 보이는가?',36,684,548,240)
+    b.panel('합의 승패 = 다음 공간의 변화','접촉을 상체 높이에서 읽게 하고 승자는 제어된 회복, 패자는 더 큰 반동으로 구분한다. 논리 거리와 화면 위치를 연결하되 연출이 규칙상 이동을 새로 만들지 않는다.\n\n확인: 좌우 역할을 바꾸어도 접점·반동·결과를 오해하지 않는가?',616,684,548,240)
+    b.panel('판정을 가리지 않는 타격감','예비 동작 → 접촉 → 짧은 강조 → 반동 → 대기 복귀. 흔들림은 전장 중심에 적용하고 카드·수치 판독은 안정시킨다. 검·창·권장·투척은 접촉 방식부터 구분한다.\n\n확인: 느린 재생과 정상 재생, 효과 제거 상태에서도 동작과 판정이 이어지는가?',36,414,548,253)
+    b.panel('복기 = 결과를 다음 판단으로','연격은 각 타격의 조건과 중단 이유를 보여 주고, 회피는 피해량과 다른 단위로 설명한다. 상대의 습관과 반례는 이미 공개된 이력에서만 가져온다.\n\n배제: 숨은 수의 정답 공개, 유사작 덱·손패 도입, 장식만 늘리는 시스템 확장.',616,414,548,253)
+    b.note('독창성은 법적 독점성 또는 시장 유일성을 주장하는 말이 아니다. 이 프로젝트의 고유 규칙에 맞춘 조합·표현의 설계 기준이다.',113)
+
+    b.page('실무 근거와 적용 순서','2026.09.11 원문 페이지 확인. GDC는 공개 세션 개요 범위이며 전체 강연 시청·직접 인터뷰를 했다는 뜻이 아니다.')
+    practice=[
+        ('Into the Breach · 설계 회고','https://www.gdcvault.com/play/1025772/-Into-the-Breach-Design','공개 개요: 기능 삭제·독창성·난도·무작위성의 설계 문제. 적용 판단: 전면 교체보다 핵심 판단을 흐리는 요소부터 정리한다.'),
+        ('Slay the Spire · 지표 기반 밸런스','https://www.gdcvault.com/play/1025731/-Slay-the-Spire-Metrics%EF%BB%BF','공개 개요: 개발 지표와 커뮤니티 피드백을 함께 사용. 적용 판단: 예산표만으로 공정성을 확정하지 않고 전별·편성별 결과와 체감 원인을 함께 본다.'),
+        ('Darkest Dungeon · 개발자 인터뷰','https://www.gamedeveloper.com/business/-i-darkest-dungeon-i-designing-for-despair-and-kicking-you-when-you-re-down','개발자 설명: 기능마다 비중이 다르며 강점에 집중했다. 적용 판단: 전투 판단과 연출에 우선 투자하고 무관한 부가 시스템 확장은 보류한다.')]
+    for i,(title,url,body) in enumerate(practice):
+        yy=688-i*137
+        b.p(title,36,yy,1128,17,BLUE,True)
+        b.p(body,36,yy-35,1128,13)
+        b.p(url,36,yy-91,1128,8,MUTED)
+        b.c.linkURL(url,(36,yy-108,1164,yy-89),relative=0)
+    b.panel('승인된 적용 순서와 기존 저장 보호','최신 사용자 승인: 기존 저장은 보존하고 새 편성은 새 여정부터 적용한다. 현재는 수정 블루프린트를 우선 전달한다.\n후속 순서: 공통 상대·만남 데이터 → 게임 소비자·저장 호환 → 실제 전투·회귀 → 연출 교정 → 사람 체감 검수. 이 PDF 생성은 제품 변경·저장 호환 완료가 아니다.',36,250,1128,145)
+    b.note('추가 실무 조사·사람 반응 표본 수집·정량 밸런스 실험은 후속이다. 기존11개 사례 비교를 재사용하되, 외부 사례의 숫자를 이 게임의 정답으로 가져오지 않는다.',82)
+    b.page('강화·개선·보완 실행 항목','1부 · 방향을 실제 수정 단위로 연결한다. 새 규칙의 확정이나 제품 구현 완료를 뜻하지 않는다.')
+    b.table(['우선순위 / 대상','강화·개선·보완할 내용','완료 판단'],[
+        ['1 · 상대·성장 일치','브리핑·정탐·전투가 같은 가변 편성과 단계별 능력을 사용. 전수 보상은 주력 기준을 유지.','실제 만남과 표시·판정·보상 일치'],
+        ['1 · 저장·재도전 보호','새 여정에서 확정한10전 편성을 유지. 기존 저장을 새 수치로 조용히 덮어쓰지 않음.','이어하기·재도전 불변 / 기존 저장 보존'],
+        ['2 · 준비 화면 가독성','현재 계획의 삽화·수 비용·교체 상태 강화. 상세 효과의 중복 라벨 축소, 관찰 패널의 미확인과 공개 정보 구별.','5×2 선택·전체 효과·공개 범위 판독'],
+        ['2 · 합과 무기별 타격감','상단 접점, 승자·패자의 분리 동작, 충분한 예비·회복 시간. 무기별 궤적과 VFX 중심을 맞춤.','좌우 역할 반전 / 효과 off·on / 실제 재생'],
+        ['2 · 행로 선택 피드백','후보의 효과와 포기 기회, 회복 상한에 따른 실제 변화, 수련 획득과 성수 상승의 차이를 나란히 설명.','선택 전후 변화 일치 / 중복 지급 없음'],
+        ['3 · 성장·난도 조정','단계 예산을 실제 플레이어 성장과 대조. 무공 수뿐 아니라 거리 대응·자원 지속력·해금 조건까지 비교.','편성별 결과와 패배 원인의 사람 검수'],
+        ['3 · 설명과 재사용','화면→관련 규칙→예시·실제 대조를 인접 배치. 원화와 모션, 설계와 구현을 분리해 수정 영향 추적.','누락·중복·잘못된 쪽수 연결 없음']
+    ],[200,610,330],size=12)
+    b.note('상세 수치와 규칙은 각 책임 파트에서 한 번만 정의한다. 이 표는 작업 순서이며, 기능 추가량이나 문서 분량으로 진행률을 계산하지 않는다.',115)
+    from blueprint_readiness_pages import append_pages
+    source(ROOT/'tools/blueprint_readiness_pages.py')
+    source(ROOT/'docs/blueprint/IMPLEMENTATION_HANDOFF.md')
+    source(ROOT/'docs/blueprint/ASSET_READINESS.json')
+    append_pages(b, people)
     b.c.save()
-    receipt={'status':'COMPLETE_READER_EDITION_NOT_PRODUCT_COMPLETION','page_count':b.n,'page_titles':b.titles,'base_head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'pdf_sha256':hashlib.sha256(OUT.read_bytes()).hexdigest(),'source_sha256':SOURCES,'counts':{'manuals':10,'manual_illustrations':30,'opponents':len(people),'opponent_portraits':15,'reused_masked_enemy':1,'stage_rows':len(people)*10},'visual_lock':'NEW_ASSETS_PENDING_FINAL_USER_LOCK','runtime':'UNCHANGED_BY_THIS_BUILDER','human_test':'NOT_RUN'}
+    from pypdf import PdfReader, PdfWriter
+    from io import BytesIO
+    reader=PdfReader(BytesIO(OUT.read_bytes()));writer=PdfWriter()
+    assert len(reader.pages)==len(PAGE_ORDER)
+    original_titles=list(b.titles)
+    for position,old in enumerate(PAGE_ORDER):
+        writer.add_page(reader.pages[old-1])
+        writer.add_outline_item(original_titles[old-1],position)
+    writer.add_metadata({'/Title':'십보강호 · 아틀라스 우선 주제별 통합 블루프린트 2026.09.11'})
+    with OUT.open('wb') as stream:writer.write(stream)
+    b.titles=[original_titles[i-1] for i in PAGE_ORDER]
+    receipt={'status':'APPROVAL_REVIEW_SPECIFIED_NOT_PRODUCT_COMPLETION','page_count':b.n,'page_titles':b.titles,'base_head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'pdf_sha256':hashlib.sha256(OUT.read_bytes()).hexdigest(),'source_sha256':SOURCES,'counts':{'manuals':10,'manual_illustrations':30,'opponents':len(people),'opponent_portraits':16,'reused_masked_enemy':0,'stage_rows':len(people)*10},'visual_lock':'NEW_ASSETS_PENDING_FINAL_USER_LOCK','runtime':'UNCHANGED_BY_THIS_BUILDER','human_test':'NOT_RUN'}
     receipt['pdf_image_encoding']='JPEG quality93 4:4:4, original resolution; source PNGs unchanged'
     OUT.with_suffix('.receipt.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print('COMPLETE_READER_EDITION_CREATED',b.n,'pages',OUT)

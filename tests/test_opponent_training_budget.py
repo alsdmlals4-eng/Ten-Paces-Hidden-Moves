@@ -22,19 +22,30 @@ class TrainingBudgetTests(unittest.TestCase):
         self.assertEqual(plan.training_cost([10, 5, 3]), 43)
         self.assertEqual(plan.training_cost([10, 7, 5]), 57)
 
-    def test_every_stage_has_three_distinct_resolved_manuals(self):
-        for person in plan.build():
+    def test_every_stage_has_character_specific_distinct_resolved_manuals(self):
+        people = plan.build()
+        self.assertEqual({len(p['stages'][0]['owned_manuals']) for p in people}, {2, 3, 4, 5})
+        for person in people:
             previous = None
             for row in reversed(person['stages']):
                 owned = row['owned_manuals']
-                self.assertEqual(len(owned), 3)
-                self.assertEqual(len({m['id'] for m in owned}), 3)
+                self.assertGreaterEqual(len(owned), 2)
+                self.assertEqual(len({m['id'] for m in owned}), len(owned))
                 self.assertEqual(row['training_spent'], plan.training_cost([m['mastery'] for m in owned]))
                 self.assertLessEqual(row['training_spent'], row['training_budget'])
                 self.assertTrue(any(m['techniques'] for m in owned))
                 if previous:
                     self.assertTrue(all(a['mastery'] >= b['mastery'] for a,b in zip(owned,previous)))
                 previous = owned
-            self.assertEqual([m['mastery'] for m in person['stages'][0]['owned_manuals']], [10,7,5])
+            self.assertTrue(person['tactics']['weakness'])
+            self.assertTrue(person['tactics']['counterplay'])
+            self.assertEqual(person['acquisition_count'], len(previous))
+
+    def test_diversity_is_not_equal_power_or_forced_ultimate(self):
+        people = plan.build()
+        self.assertGreater(len({tuple(m['mastery'] for m in p['stages'][0]['owned_manuals']) for p in people}), 6)
+        self.assertTrue(any(not p['stages'][0]['ultimate_unlocked'] for p in people))
+        self.assertEqual(plan.training_cost([10, 10]), 76)
+        self.assertEqual(plan.training_cost([5, 5, 5, 5, 5]), 25)
 
 if __name__ == '__main__': unittest.main()
