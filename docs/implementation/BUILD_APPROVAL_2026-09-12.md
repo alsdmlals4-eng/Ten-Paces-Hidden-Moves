@@ -20,3 +20,14 @@ their input/geometry regression coverage, and correcting the observed Linux 720p
 native-font overflow. No new asset generation, combat semantics or save migration.
 Preflight and alternatives: `docs/operations/2026-09-12_PRESENTATION_CONTROLS_WORK_CONTRACT_RECEIPT.json`.
 This continuation does not fabricate Human/device testing or individual image final lock.
+
+## 2026-09-13 approved preference persistence continuation
+
+User explicitly approved the recommended plan: `좋아 권장안대로 작업진행해`.
+The approved scope is plan-first baseline clarification and persisting the existing mute,
+SFX volume and reduced-motion preferences across combats and application restarts,
+independently of run progress. Codex fresh-read the same exact working branch before
+implementation. Plan, source HEAD, alternatives and evidence live in
+`docs/operations/2026-09-13_PRESENTATION_PREFERENCES.md`.
+This extends the exact protected paths to the shell and the small presentation settings
+owner. No core change, progress-save migration, paid dependency or new visual approval.

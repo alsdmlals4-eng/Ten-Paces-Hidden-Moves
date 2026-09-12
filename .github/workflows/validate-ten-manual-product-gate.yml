@@ -37,6 +37,9 @@ on:
       - "tests/verify_ten_manual_product_gate.gd"
       - "tests/verify_bimu_constraint_model.gd"
       - "tests/verify_run_save_store.gd"
+      - "tests/verify_presentation_preferences.gd"
+      - "tests/verify_presentation_preferences_runtime.gd"
+      - "tests/test_presentation_preferences_restart.py"
       - "tests/verify_run_save_cache.gd"
       - "tests/verify_martial_actor_binding.gd"
       - "tests/verify_martial_effect_pipeline.gd"
@@ -166,6 +169,12 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_vertical_slice_failure_retry.gd
       - name: Verify durable run snapshot and recoverable local store
         run: godot --headless --path . --script res://tests/verify_run_save_store.gd
+      - name: Verify independent presentation preferences and failure fallback
+        run: godot --headless --path . --script res://tests/verify_presentation_preferences.gd
+      - name: Verify native preference input and independent process restart
+        env:
+          GODOT_BIN: godot
+        run: python tests/test_presentation_preferences_restart.py
       - name: Verify bounded raw-byte save validation cache
         run: godot --headless --path . --script res://tests/verify_run_save_cache.gd
       - name: Verify actor-owned martial execution and preserved old save identity

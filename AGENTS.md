@@ -32,6 +32,8 @@
 
 ## 3. Mutable state
 
+사용자 2026-09-13 지시에 따라 구현·수정 전에 현재 owner에 범위, 순서, 완료 기준과 검증 계획을 먼저 기록한 뒤 실행한다. 같은 승인 범위의 기계적 선택에 반복 승인을 요구하지 않는다.
+
 활성 PR·exact HEAD·현재 Work Mode·제품 단계·구현 상태·승인 수·다음 package/Decision·device/Human evidence는 `ACTIVE_CONTEXT.md`, current structured JSON, GitHub metadata, repository human-facing owners에서 fresh-read한다. 이 AGENTS에 mutable snapshot을 고정하지 않는다.
 
 ## 4. Work Mode·Skill

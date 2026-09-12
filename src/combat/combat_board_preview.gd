@@ -179,6 +179,7 @@ var _presentation_feedback_phase_history := PackedStringArray()
 var _presentation_feedback_visibility_history: Array = []
 var _sound_muted := false
 var _sound_volume := 0.65
+var presentation_preferences: RefCounted
 var _defer_character_snap := false
 var _committed_player_plan_snapshot: Array = []
 var _committed_state_before: Dictionary = {}
@@ -190,6 +191,10 @@ var session_input_blocked := false
 var session_suspended := false
 
 func _ready() -> void:
+	if presentation_preferences != null:
+		_sound_muted = presentation_preferences.sound_muted
+		_sound_volume = presentation_preferences.sound_volume
+		_reduced_motion = presentation_preferences.reduced_motion
 	mouse_filter = Control.MOUSE_FILTER_PASS
 	contract = _load_contract()
 	_player_tile = int(contract.get("player_start_tile", 4))
@@ -460,14 +465,14 @@ func _build_structure() -> void:
 	add_child(restart_combat_button)
 	reduced_motion_button = Button.new()
 	reduced_motion_button.name = "ReducedMotionButton"
-	reduced_motion_button.text = "모션 감소: 끔"
+	reduced_motion_button.text = "모션 감소: %s" % ("켬" if _reduced_motion else "끔")
 	_apply_keyboard_focus_ring(reduced_motion_button)
 	reduced_motion_button.pressed.connect(_toggle_reduced_motion)
 	reduced_motion_button.z_index = 40
 	add_child(reduced_motion_button)
 	sound_toggle_button = Button.new()
 	sound_toggle_button.name = "SoundToggleButton"
-	sound_toggle_button.text = "소리: 켬"
+	sound_toggle_button.text = "소리: %s" % ("끔" if _sound_muted else "켬")
 	_apply_keyboard_focus_ring(sound_toggle_button)
 	sound_toggle_button.pressed.connect(_toggle_sound)
 	add_child(sound_toggle_button)
@@ -482,9 +487,11 @@ func _build_structure() -> void:
 	add_child(sound_volume_slider)
 	procedural_sfx_player = AudioStreamPlayer.new()
 	procedural_sfx_player.name = "ProceduralSfxPlayer"
+	procedural_sfx_player.volume_linear = _sound_volume
 	add_child(procedural_sfx_player)
 	momentum_sfx_player = AudioStreamPlayer.new()
 	momentum_sfx_player.name = "MomentumSfxPlayer"
+	momentum_sfx_player.volume_linear = _sound_volume
 	add_child(momentum_sfx_player)
 	# Warm once during scene construction, never synthesize on the first hit.
 	for cue in preload("res://src/ui/combat_sound_bank.gd").CUES:
@@ -1984,6 +1991,7 @@ func _toggle_reduced_motion() -> void:
 				actor.release_impact_pose()
 	if is_instance_valid(reduced_motion_button):
 		reduced_motion_button.text = "모션 감소: %s" % ("켬" if _reduced_motion else "끔")
+	_persist_presentation_preferences()
 
 func _toggle_sound() -> void:
 	_sound_muted = not _sound_muted
@@ -1993,12 +2001,22 @@ func _toggle_sound() -> void:
 		procedural_sfx_player.stop()
 	if is_instance_valid(sound_toggle_button):
 		sound_toggle_button.text = "소리: %s" % ("끔" if _sound_muted else "켬")
+	_persist_presentation_preferences()
 
 func _set_sound_volume(value: float) -> void:
 	_sound_volume = clampf(value, 0.0, 1.0)
 	for player in [procedural_sfx_player, momentum_sfx_player]:
 		if is_instance_valid(player):
 			player.volume_linear = _sound_volume
+	_persist_presentation_preferences()
+
+func _persist_presentation_preferences() -> void:
+	if presentation_preferences == null: return
+	var error: Error = presentation_preferences.update(_sound_muted, _sound_volume, _reduced_motion)
+	var message := "설정 저장됨" if error == OK else "이번 실행에는 적용됨 · 저장 실패, 다음 설정 변경 시 다시 시도"
+	for control in [sound_toggle_button, sound_volume_slider, reduced_motion_button]:
+		if is_instance_valid(control): control.tooltip_text = message
+	set_meta("presentation_settings_save_error", error)
 
 func _apply_keyboard_focus_ring(control: Control) -> void:
 	if control == null:

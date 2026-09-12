@@ -629,5 +629,16 @@
       }
     },
     "presentation_controls_receipt": "docs/operations/2026-09-12_PRESENTATION_CONTROLS_WORK_CONTRACT_RECEIPT.json"
+  },
+  "presentation_preferences_continuation": {
+    "status": "IMPLEMENTED_WORKING_BRANCH_MACHINE_AND_WINDOWS_RUNTIME_VERIFIED",
+    "plan": "docs/operations/2026-09-13_PRESENTATION_PREFERENCES.md",
+    "settings": [
+      "sound_muted",
+      "sound_volume",
+      "reduced_motion"
+    ],
+    "run_save_schema_change": false,
+    "human_android_release": "NOT_RUN"
   }
 }

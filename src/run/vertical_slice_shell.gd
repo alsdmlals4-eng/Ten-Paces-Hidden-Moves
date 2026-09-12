@@ -29,6 +29,8 @@ var _briefing_description_scroll: ScrollContainer
 var _bimu_constraint_panel: VBoxContainer
 var session
 var _save_storage_override := ""
+var presentation_preferences = preload("res://src/ui/presentation_preferences.gd").new()
+var _presentation_storage_override := ""
 var _retained_combat_view: Control
 var _recovery_panel: PanelContainer
 var _recovery_label: Label
@@ -39,6 +41,11 @@ var _application_suspended := false
 
 
 func _ready() -> void:
+    var script_entry := "--script" in OS.get_cmdline_args() or "-s" in OS.get_cmdline_args()
+    var preferences_path := _presentation_storage_override
+    if preferences_path.is_empty() and not script_entry:
+        preferences_path = "user://presentation_settings.cfg"
+    presentation_preferences.configure(preferences_path)
     set_meta("technical_shell", true)
     set_meta("final_visual_reference_pending", false)
     set_meta("visual_evidence_ceiling", "TECHNICAL_SHELL_NOT_HUMAN_VISUAL_PASS")
@@ -546,6 +553,7 @@ func _ensure_combat_view() -> void:
     if _combat_view == null:
         push_error("Vertical Slice shell could not instantiate the combat bridge.")
         return
+    _combat_view.presentation_preferences = presentation_preferences
     _combat_view_duel_index = run_state.duel_index
     _combat_view.set_meta("shell_attempt", run_state._attempt_id)
     _combat_view.visible = session == null or not session.busy
@@ -636,6 +644,11 @@ func _on_terminal_review_confirmed(_result: Dictionary) -> void:
 func configure_save_storage(path: String) -> void:
     assert(not is_inside_tree(), "Configure isolated storage before adding the shell")
     _save_storage_override = path
+
+
+func configure_presentation_storage(path: String) -> void:
+    assert(not is_inside_tree(), "Configure isolated preferences before adding the shell")
+    _presentation_storage_override = path
 
 
 func _initialize_run_session() -> void:
