@@ -109,6 +109,36 @@ func _run() -> void:
     for forbidden in ["공격형 플레이어", "정답 빌드", "다음 회차의 정답", "ai_weight", "selector_seed", "hidden_plan"]:
         _expect_false(serialized.contains(forbidden), "Completion must not expose diagnosis, answer-build advice, or hidden implementation data: %s" % forbidden)
 
+    var shell = load("res://scenes/run/vertical_slice_shell.tscn").instantiate()
+    root.add_child(shell)
+    await process_frame
+    shell.run_state = run
+    shell._render_current_screen()
+    var completion_text: String = shell.description_label.text
+    _expect_true(completion_text.contains("[합]에서 공격력 차이가 승부를 갈랐다. · 3회"), "Completion must connect counted clashes to canonical player-readable explanation.")
+    _expect_true(completion_text.contains("실행 순간 거리가 공격 사거리 밖이었다. · 3회"), "Completion must connect counted ranges to canonical player-readable explanation.")
+    _expect_false(completion_text.contains("clash ·"), "Completion must not display raw cause identifiers.")
+    _expect_eq(shell.get_completion_snapshot(), snapshot, "Rendering must preserve the original counted history.")
+    root.content_scale_size = Vector2i(1280, 720)
+    root.size = Vector2i(1280, 720)
+    for i in range(5): await process_frame
+    _expect_true(root.get_visible_rect().encloses(shell.content_panel.get_global_rect()), "Completion panel must remain within 720p viewport.")
+    _expect_true(root.get_visible_rect().encloses(shell.primary_button.get_global_rect()), "Completion footer must remain within 720p viewport.")
+    _expect_true(shell.description_label.get_parent() is ScrollContainer, "Long completion history must remain scrollable.")
+    if shell.description_label.get_parent() is ScrollContainer:
+        var scroll: ScrollContainer = shell.description_label.get_parent()
+        scroll.scroll_vertical = 10000
+        await process_frame
+        _expect_true(scroll.scroll_vertical > 0, "All ten duel rows and closing line must be reachable by scrolling.")
+    var capture_args := OS.get_cmdline_user_args()
+    if DisplayServer.get_name() != "headless" and not capture_args.is_empty():
+        await RenderingServer.frame_post_draw
+        root.get_texture().get_image().save_png(capture_args[0])
+    shell._set_content("Other screen", "Restored description", "Continue")
+    _expect_eq(shell.description_label.get_parent(), shell.primary_button.get_parent(), "Leaving completion must restore the shared description parent.")
+    shell.queue_free()
+    await process_frame
+
     var malformed_snapshot: Dictionary = model.build_snapshot([null, [], {"outcome": "win"}], [null, []], [null, []], {})
     _expect_eq((malformed_snapshot.get("duel_rows", []) as Array).size(), 1, "Completion sanitization must skip unexpected array members without indexing them.")
     _expect_true((malformed_snapshot.get("reward_history", []) as Array).is_empty(), "Malformed reward rows must be skipped safely.")

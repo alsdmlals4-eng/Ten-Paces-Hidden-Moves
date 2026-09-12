@@ -4,9 +4,9 @@ extends SceneTree
 const BOARD_SCENE := preload("res://scenes/combat/combat_board_preview.tscn")
 const BACKGROUND_PATH := "res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png"
 const BANNER_PATH := "res://assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png"
-const PLAYER_BATTLER_PATH := "res://assets/characters/player_wanderer_battler_rgba_v2.png"
+const PLAYER_BATTLER_PATH := "res://assets/characters/motion/player_sword_sequence_v1.png"
 const DOGYEOM_BATTLER_PATH := "res://assets/characters/dogyeom_combat_battler_01_v1.png"
-const GENERIC_ENEMY_BATTLER_PATH := "res://assets/characters/enemy_masked_battler_rgba_v2.png"
+const GENERIC_ENEMY_BATTLER_PATH := "res://assets/characters/motion/enemy_sword_sequence_v1.png"
 const BASIC_ATLAS_PATH := "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png"
 const EXPECTED_IDS := [
 	"basic_move", "basic_footwork", "basic_guard", "basic_evade", "basic_quick_attack",

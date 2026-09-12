@@ -8,11 +8,28 @@ const PAPER_HOVER := Color("eee2c9")
 const CHARCOAL_INK := Color("211c17")
 const RESTRAINED_GOLD := Color("b99254")
 const RESOLUTION_ENGINE_SCRIPT := preload("res://src/combat/combat_resolution_engine.gd")
-const CARD_CONTENT_TOP := 49.0
+const CARD_CONTENT_TOP := 52.0
 const CARD_BOTTOM_PADDING := 4.0
-const CROSS_PLATFORM_CARD_HEIGHT := 104.0
+const CROSS_PLATFORM_CARD_HEIGHT := 88.0
 
 var action_definition: Dictionary = {}
+
+func _ready() -> void:
+	resized.connect(_layout_card_content)
+	call_deferred("_layout_card_content")
+
+func _layout_card_content() -> void:
+	var summary := get_node_or_null("CardSummary") as VBoxContainer
+	if summary == null:
+		return
+	var summary_height := maxf(28.0, summary.get_combined_minimum_size().y)
+	# Refit after native fallback font metrics settle, not only at creation.
+	custom_minimum_size.y = maxf(CROSS_PLATFORM_CARD_HEIGHT, ceilf(CARD_CONTENT_TOP + summary_height + CARD_BOTTOM_PADDING))
+	summary.offset_top = -summary_height - CARD_BOTTOM_PADDING
+	summary.offset_bottom = -CARD_BOTTOM_PADDING
+	var art := get_node_or_null("CardIllustration") as TextureRect
+	if art != null:
+		art.offset_bottom = -summary_height - CARD_BOTTOM_PADDING
 
 func configure_action(definition: Dictionary, illustration_policy: String, status_text: String = "", preview_actor: Dictionary = {}) -> void:
 	action_definition = definition.duplicate(true)
@@ -20,6 +37,7 @@ func configure_action(definition: Dictionary, illustration_policy: String, statu
 		child.queue_free()
 	custom_minimum_size = Vector2(0.0, CROSS_PLATFORM_CARD_HEIGHT)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	size_flags_vertical = Control.SIZE_EXPAND_FILL
 	focus_mode = Control.FOCUS_ALL
 	text = ""
 	tooltip_text = _tooltip_text(status_text)
@@ -35,6 +53,7 @@ func configure_action(definition: Dictionary, illustration_policy: String, statu
 	if has_illustration:
 		_add_illustration()
 	_add_name_label()
+	_add_duration_badge()
 	_add_summary(preview_actor)
 
 func _add_illustration() -> void:
@@ -43,63 +62,76 @@ func _add_illustration() -> void:
 	var approved_texture := APPROVED_ART.action_illustration(action_definition)
 	illustration.texture = approved_texture if approved_texture != null else _texture_from_spec(action_definition.get("illustration", {}))
 	illustration.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	illustration.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED if approved_texture != null else TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	illustration.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	illustration.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	illustration.modulate = Color.WHITE if approved_texture != null else Color(0.30, 0.27, 0.23, 0.94)
-	illustration.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	illustration.modulate = Color.WHITE
+	illustration.set_anchors_preset(Control.PRESET_FULL_RECT)
 	illustration.offset_left = 7.0
-	illustration.offset_top = 5.0
+	illustration.offset_top = 2.0
 	illustration.offset_right = -7.0
-	illustration.offset_bottom = 31.0
+	illustration.offset_bottom = -34.0
 	add_child(illustration)
 
 func _add_name_label() -> void:
 	var label := Label.new()
 	label.name = "CardName"
-	label.text = "%s  %d수" % [str(action_definition.get("name", "")), int(action_definition.get("action_slots", 1))]
+	label.text = str(action_definition.get("name", ""))
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.clip_text = true
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.add_theme_font_size_override("font_size", 12)
 	label.add_theme_color_override("font_color", CHARCOAL_INK)
+	label.add_theme_color_override("font_shadow_color", PAPER_SURFACE)
+	label.add_theme_constant_override("outline_size", 2)
+	label.add_theme_color_override("font_outline_color", PAPER_SURFACE)
 	label.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	label.offset_left = 5.0
-	label.offset_right = -5.0
-	label.offset_top = 31.0
-	label.offset_bottom = 49.0
+	label.offset_right = -31.0
+	label.offset_top = 2.0
+	label.offset_bottom = 20.0
 	add_child(label)
+
+func _add_duration_badge() -> void:
+	var badge := Label.new()
+	badge.name = "ActionDurationBadge"
+	badge.text = "%d수" % int(action_definition.get("action_slots", 1))
+	badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	badge.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	badge.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	badge.offset_left = -29.0
+	badge.offset_right = -3.0
+	badge.offset_top = 2.0
+	badge.offset_bottom = 21.0
+	preload("res://src/ui/wuxia_ui_style.gd").ink_heading(badge, 11)
+	add_child(badge)
 
 func _add_summary(preview_actor: Dictionary) -> void:
 	var summary := VBoxContainer.new()
 	summary.name = "CardSummary"
 	summary.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	summary.add_theme_constant_override("separation", 0)
-	summary.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	summary.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	summary.offset_left = 4.0
 	summary.offset_right = -4.0
-	summary.offset_top = CARD_CONTENT_TOP
-	summary.offset_bottom = CROSS_PLATFORM_CARD_HEIGHT - CARD_BOTTOM_PADDING
+	summary.offset_top = -32.0
+	summary.offset_bottom = -CARD_BOTTOM_PADDING
 	add_child(summary)
+	summary.minimum_size_changed.connect(_layout_card_content, CONNECT_DEFERRED)
 	var momentum_text := " · 기세 %d" % int(action_definition.get("momentum_cost", 0)) if int(action_definition.get("momentum_cost", 0)) > 0 else ""
-	_add_summary_line(summary, "%d수 · 기력 %d · 내력 %d%s" % [int(action_definition.get("action_slots", 1)), int(action_definition.get("stamina_cost", 0)), int(action_definition.get("internal_cost", 0)), momentum_text])
-	var range_line := "거리 %s" % str(action_definition.get("range_text", "-"))
+	_add_summary_line(summary, "기력%d · 내력%d · 거리%s%s" % [int(action_definition.get("stamina_cost", 0)), int(action_definition.get("internal_cost", 0)), str(action_definition.get("range_text", "-")), momentum_text])
 	var movement := maxi(0, int(action_definition.get("move_range", 0)))
 	if bool(action_definition.get("dash_before_attack", false)):
 		movement = maxi(movement, 1)
-	if movement > 0:
-		range_line += " · 이동 %d칸" % movement
-	_add_summary_line(summary, range_line)
-	_add_summary_line(summary, _primary_summary(preview_actor))
+	var effect := _primary_summary(preview_actor)
+	if movement > 0 and not effect.contains("이동"):
+		effect = "이동%d칸 · %s" % [movement, effect]
+	_add_summary_line(summary, effect)
 	_fit_card_to_summary(summary)
 
-func _fit_card_to_summary(summary: VBoxContainer) -> void:
-	# Linux and Windows can resolve the Korean fallback font to different line
-	# heights. Size from the actual native labels, with a small cross-platform
-	# floor, so the third line never relies on one platform's fallback metrics.
-	var required_height := ceilf(CARD_CONTENT_TOP + summary.get_combined_minimum_size().y + CARD_BOTTOM_PADDING)
-	custom_minimum_size.y = maxf(CROSS_PLATFORM_CARD_HEIGHT, required_height)
-	summary.offset_bottom = custom_minimum_size.y - CARD_BOTTOM_PADDING
+func _fit_card_to_summary(_summary: VBoxContainer) -> void:
+	_layout_card_content()
 
 func _add_summary_line(parent: VBoxContainer, value: String) -> void:
 	var label := Label.new()

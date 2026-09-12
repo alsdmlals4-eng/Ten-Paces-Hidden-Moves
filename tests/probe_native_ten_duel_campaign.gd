@@ -253,8 +253,11 @@ func _place(bridge, placement: Dictionary) -> void:
         _require(dock.active_source == source, "source must switch")
     if source == "martial":
         var manual_id := str(definition.get("manual_id", ""))
-        await _click(_meta_button(dock.martial_panel, "manual_id", manual_id), "manual " + manual_id)
-        _require(dock.martial_panel.selected_manual_id == manual_id, "manual must switch")
+        # Current product shows every unlocked technique in one native grid.
+        # Never try to activate the hidden historical manual selector.
+        _require(not dock.martial_panel.manual_scroll.is_visible_in_tree(), "flat martial source must omit the manual selector")
+        var technique := _meta_button(dock.martial_panel, "action_id", card_id)
+        _require(technique != null and str((technique.get("action_definition") as Dictionary).get("manual_id", "")) == manual_id, "visible technique must belong to the intended manual")
     await _click(_meta_button(dock, "action_id", card_id), "action " + card_id)
     var actual: Dictionary = bridge.action_timing_panel.get_placement(int(placement.anchor_index))
     _require(str(actual.get("card_id", "")) == card_id, "native action must occupy expected anchor: " + card_id)

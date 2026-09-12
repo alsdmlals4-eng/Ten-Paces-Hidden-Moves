@@ -61,8 +61,8 @@ func set_manuals(values: Array[Dictionary]) -> void:
         selected_manual_id = str(manuals[0].get("manual_id", ""))
     _rebuild_manuals()
     _rebuild_techniques()
-    manual_row.visible = manuals.size() > 1
-    manual_scroll.visible = manuals.size() > 1
+    manual_row.visible = false
+    manual_scroll.visible = false
     manual_scroll.scroll_horizontal = 0
 
 func select_manual(manual_id: String) -> bool:
@@ -283,28 +283,24 @@ func _selected_manual() -> Dictionary:
     return _find_manual(selected_manual_id)
 
 func _find_selected_technique(technique_id: String) -> Dictionary:
-    var manual := _selected_manual()
-    for value in manual.get("techniques", []):
-        if typeof(value) != TYPE_DICTIONARY:
-            continue
-        var technique: Dictionary = value
+    for technique in _ordered_selected_techniques():
         if str(technique.get("id", "")) == technique_id:
             return technique
     return {}
 
 func _ordered_selected_techniques() -> Array[Dictionary]:
     var unlocked: Array[Dictionary] = []
-    var locked: Array[Dictionary] = []
-    var manual := _selected_manual()
-    for value in manual.get("techniques", []):
-        if typeof(value) != TYPE_DICTIONARY:
-            continue
-        var technique: Dictionary = value
-        if bool(technique.get("locked", false)):
-            locked.append(technique)
-        else:
+    var seen: Dictionary = {}
+    for manual in manuals:
+        for value in manual.get("techniques", []):
+            if typeof(value) != TYPE_DICTIONARY:
+                continue
+            var technique: Dictionary = value
+            var id := str(technique.get("id", ""))
+            if bool(technique.get("locked", false)) or id.is_empty() or seen.has(id):
+                continue
+            seen[id] = true
             unlocked.append(technique)
-    unlocked.append_array(locked)
     return unlocked
 
 func _manual_button_text(manual: Dictionary) -> String:

@@ -45,5 +45,5 @@ func get_duel_floor_y(viewport_size: Vector2) -> float:
 	# A wide central stage crops much of the original vertical image. Keep the
 	# contact line in the visible foreground stone band rather than letting the
 	# battlers drift into the horizon after that crop.
-	var foreground_floor_y := rendered_viewport.y * 0.72
+	var foreground_floor_y := rendered_viewport.y * 0.91
 	return position.y + maxf(image_floor_y, foreground_floor_y)

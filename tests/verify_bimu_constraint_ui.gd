@@ -159,7 +159,8 @@ func _briefing(shell) -> void:
     check(martial.technique_buttons[0].disabled, "sealed manual card disabled")
     check(martial.technique_buttons[0].tooltip_text.contains("문파 단절"), "actual engine reason in card")
     check(not martial.activate_technique(blocked_id), "normal activation forbidden")
-    check(martial.get_panel_snapshot().get("unlocked_technique_count") == 0, "snapshot reports constraint locked techniques")
+    check(martial.get_panel_snapshot().get("locked_technique_count") > 0, "snapshot reports sealed manual techniques")
+    check(martial.get_panel_snapshot().get("unlocked_technique_count") > 0, "other manuals remain available in the aggregate grid")
     var placements: Array = bridge.action_timing_panel.get_resolution_placements()
     dock.request_action({"id": blocked_id, "source": "basic"})
     check(bridge.action_timing_panel.get_resolution_placements() == placements, "dock injection cannot place")
@@ -195,7 +196,7 @@ func _unchanged_panels() -> void:
     root.add_child(martial)
     root.add_child(ultimate)
     martial.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-    martial.size = Vector2(600, 340)
+    martial.size = Vector2(600, 180)
     await process_frame
 
     check(ultimate.action_buttons.size() > 0, "default momentum initializes actions")
@@ -209,12 +210,13 @@ func _unchanged_panels() -> void:
     var manual_id: int = martial.manual_buttons[0].get_instance_id()
     var technique_id: int = martial.technique_buttons[0].get_instance_id()
     var ultimate_id: int = ultimate.action_buttons[0].get_instance_id()
-    martial.manual_buttons[0].grab_focus()
+    martial.technique_buttons[0].grab_focus()
     await process_frame
-    martial.manual_scroll.scroll_horizontal = 35
+    var technique_scroll: ScrollContainer = martial.get_node("PanelColumn/TechniqueScroll")
+    technique_scroll.scroll_vertical = 35
     await process_frame
     var focus_id: int = root.gui_get_focus_owner().get_instance_id()
-    var scroll: int = martial.manual_scroll.scroll_horizontal
+    var scroll: int = technique_scroll.scroll_vertical
     check(scroll > 0, "nonzero scroll fixture")
     var changed := 0
     var no_reservations: Array[Dictionary] = []
@@ -230,7 +232,7 @@ func _unchanged_panels() -> void:
     check(martial.technique_buttons[0].get_instance_id() == technique_id, "identical techniques identity preserved")
     check(ultimate.action_buttons[0].get_instance_id() == ultimate_id, "identical ultimate identity preserved")
     check(root.gui_get_focus_owner() != null and root.gui_get_focus_owner().get_instance_id() == focus_id, "same-data focus preserved")
-    check(martial.manual_scroll.scroll_horizontal == scroll, "same-data scroll preserved")
+    check(technique_scroll.scroll_vertical == scroll, "same-data technique scroll preserved")
     mastery[STARTERS[0]] = 3
     martial.set_manuals(Adapter.new().build_owned_manuals(STARTERS, mastery))
     ultimate.set_martial_context(STARTERS, mastery)

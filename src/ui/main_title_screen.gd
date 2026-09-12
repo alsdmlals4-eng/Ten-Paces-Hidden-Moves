@@ -6,8 +6,9 @@ signal continue_requested
 signal reread_requested
 
 const BACKGROUND_PATH := "res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png"
-const PLAYER_PATH := "res://assets/characters/player_wanderer_battler_rgba_v2.png"
-const ENEMY_PATH := "res://assets/characters/enemy_masked_battler_rgba_v2.png"
+const POSES := preload("res://src/combat/character_pose_library.gd")
+const PLAYER_PATH := POSES.PLAYER_PATH
+const ENEMY_PATH := POSES.ENEMY_PATH
 const TITLE_LOGO_PATH := "res://assets/ui/logo/ten_paces_hidden_moves_title_logo_01_v1.png"
 const DUEL_FOREGROUND_BANNER_SCRIPT := preload("res://src/ui/duel_foreground_banner.gd")
 const PAPER := Color("eadfc9")
@@ -129,7 +130,8 @@ func configure_continue(payload: Dictionary, status: String) -> void:
 func _add_battler(node_name: String, path: String, is_left: bool) -> void:
 	var battler := TextureRect.new()
 	battler.name = node_name
-	battler.texture = load(path) as Texture2D
+	battler.texture = POSES.frame(path)
+	battler.material = POSES.chroma_material()
 	battler.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	battler.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	battler.mouse_filter = Control.MOUSE_FILTER_IGNORE

@@ -15,9 +15,33 @@ on:
       - "tools/validate_ten_manual_product_gate.py"
       - "docs/planning-data/approved_20260806_ten_manual_product_validation_gate_contract.json"
       - "tests/test_ten_manual_product_gate.py"
+      - "tests/test_visual_continuation.py"
+      - "tests/verify_motion_roster_integration.gd"
+      - "tests/verify_*layout.gd"
+      - "tests/verify_character_pose_animation.gd"
+      - "tests/verify_combat_impact_camera.gd"
+      - "tests/verify_compact_action_detail.gd"
+      - "tests/verify_execution_visual_contract.gd"
+      - "tests/verify_clash_alpha_vfx.gd"
+      - "tests/verify_clash_recovery_readability.gd"
+      - "tests/verify_wuxia_paper_surfaces.gd"
+      - "tests/verify_compact_timing_labels.gd"
+      - "tests/verify_preparation_art_fill.gd"
+      - "tests/verify_wuxia_sound_envelopes.gd"
+      - "tests/verify_flat_martial_grid.gd"
+      - "tests/verify_portrait_hud.gd"
+      - "tests/verify_pose_cache_ready.gd"
+      - "tests/verify_preparation_columns.gd"
+      - "tests/verify_visual_distance_spacing.gd"
+      - "tests/verify_dogyeom_status_portrait.gd"
       - "tests/verify_ten_manual_product_gate.gd"
       - "tests/verify_bimu_constraint_model.gd"
       - "tests/verify_run_save_store.gd"
+      - "tests/verify_game_menu.gd"
+      - "tests/verify_vertical_slice_completion_summary.gd"
+      - "tests/verify_presentation_preferences.gd"
+      - "tests/verify_presentation_preferences_runtime.gd"
+      - "tests/test_presentation_preferences_restart.py"
       - "tests/verify_run_save_cache.gd"
       - "tests/verify_martial_actor_binding.gd"
       - "tests/verify_martial_effect_pipeline.gd"
@@ -72,7 +96,8 @@ jobs:
 
   automated-product-evidence:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # Full presentation regressions plus the ordinary-speed native campaign.
+    timeout-minutes: 15
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -88,6 +113,10 @@ jobs:
         run: godot --headless --editor --path . --quit
       - name: Verify frontal duel screen partition
         run: godot --headless --path . --script res://tests/verify_frontal_duel_screen_partition.gd
+      - name: Verify approved visual continuation contracts
+        env:
+          GODOT_BIN: godot
+        run: python -m unittest tests.test_visual_continuation -v
       - name: Verify combat action reveal
         run: godot --headless --path . --script res://tests/verify_combat_action_reveal.gd
       - name: Verify shared terminal outcome feedback
@@ -142,6 +171,16 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_vertical_slice_failure_retry.gd
       - name: Verify durable run snapshot and recoverable local store
         run: godot --headless --path . --script res://tests/verify_run_save_store.gd
+      - name: Verify independent presentation preferences and failure fallback
+        run: godot --headless --path . --script res://tests/verify_presentation_preferences.gd
+      - name: Verify native preference input and independent process restart
+        env:
+          GODOT_BIN: godot
+        run: python tests/test_presentation_preferences_restart.py
+      - name: Verify canonical and scrollable ten-duel completion history
+        run: godot --headless --path . --script res://tests/verify_vertical_slice_completion_summary.gd
+      - name: Verify optional game menu, native focus and settings boundaries
+        run: godot --headless --path . --script res://tests/verify_game_menu.gd
       - name: Verify bounded raw-byte save validation cache
         run: godot --headless --path . --script res://tests/verify_run_save_cache.gd
       - name: Verify actor-owned martial execution and preserved old save identity

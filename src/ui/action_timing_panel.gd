@@ -25,6 +25,7 @@ var _sequence_label: Label
 var _progress_label: Label
 var _group_labels: Array[Label] = []
 var _separator_x: Array[float] = []
+var _flow_arrows: Array[Label] = []
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_PASS
@@ -484,8 +485,9 @@ func _refresh() -> void:
     var sequence: Array = timing_data.get("timing_sequence", [3, 3, 4])
     var current_bundle := clampi(int(timing_data.get("current_bundle", 1)), 1, sequence.size())
     var current_count := int(sequence[current_bundle - 1]) if current_bundle - 1 < sequence.size() else 1
-    _title_label.text = "현재 계획 · %d수" % current_count
-    _sequence_label.text = ""
+    _title_label.text = "현재 계획\n제%d묶음 · %d수" % [current_bundle, current_count]
+    preload("res://src/ui/wuxia_ui_style.gd").ink_heading(_title_label, 12)
+    _sequence_label.text = "3수 → 해결 → 3수 → 해결 → 4수 → 해결"
     _progress_label.text = ""
     _refresh_slot_visibility()
     _update_group_colors()
@@ -495,9 +497,17 @@ func _layout() -> void:
         return
     var side_margin := 12.0
     var width := maxf(1.0, size.x - side_margin * 2.0)
+    var compact := size.y < 112.0
+    var title_width := 92.0 if compact else 0.0
     _title_label.position = Vector2(side_margin, 5.0)
-    _title_label.size = Vector2(width, 19.0)
-    _sequence_label.visible = false
+    _title_label.size = Vector2(width, 36.0)
+    if compact:
+        _title_label.size.x = title_width
+        _title_label.size.y = 36.0
+        _title_label.position.y = maxf(2.0, (size.y - 19.0 - 36.0) * 0.5)
+    _sequence_label.visible = true
+    _sequence_label.position = Vector2(side_margin, size.y - 19.0)
+    _sequence_label.size = Vector2(width, 18.0)
     _progress_label.visible = false
 
     var visible_indices := get_visible_timing_indices()
@@ -506,11 +516,20 @@ func _layout() -> void:
     _refresh_slot_visibility()
     var base_gap := 8.0
     var total_gap := base_gap * float(maxi(0, visible_indices.size() - 1))
-    var slot_width := maxf(48.0, (width - total_gap) / float(visible_indices.size()))
-    var slot_y := 28.0
-    var slot_height := maxf(48.0, size.y - slot_y - 7.0)
-    var x := side_margin
+    var slot_width := maxf(48.0, (width - title_width - total_gap) / float(visible_indices.size()))
+    var slot_y := 3.0 if compact else 44.0
+    var slot_height := maxf(1.0, size.y - slot_y - 21.0)
+    var x := side_margin + title_width
     _separator_x.clear()
+    while _flow_arrows.size() < visible_indices.size() - 1:
+        var arrow := _make_label(12, GOLD, HORIZONTAL_ALIGNMENT_CENTER)
+        arrow.name = "PlanFlowArrow%d" % _flow_arrows.size()
+        arrow.text = "→"
+        _flow_arrows.append(arrow)
+    for index in range(_flow_arrows.size()):
+        _flow_arrows[index].visible = index < visible_indices.size() - 1
+        _flow_arrows[index].position = Vector2(x + slot_width + (slot_width + base_gap) * index, slot_y)
+        _flow_arrows[index].size = Vector2(base_gap, slot_height)
     for timing_value in visible_indices:
         var slot := get_slot(int(timing_value))
         if slot == null:
@@ -563,7 +582,7 @@ func _notification(what: int) -> void:
         queue_redraw()
 
 func _draw() -> void:
-    draw_rect(Rect2(Vector2.ZERO, size), PANEL, true)
+    draw_style_box(preload("res://src/ui/wuxia_ui_style.gd").paper_surface(), Rect2(Vector2.ZERO, size))
     draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color("211c17"), false, 2.0)
     draw_rect(Rect2(Vector2(4.0, 4.0), size - Vector2(8.0, 8.0)), Color(GOLD, 0.62), false, 1.0)
     draw_line(Vector2(12.0, 25.0), Vector2(maxf(12.0, size.x - 12.0), 25.0), Color(GOLD, 0.38), 1.0)
