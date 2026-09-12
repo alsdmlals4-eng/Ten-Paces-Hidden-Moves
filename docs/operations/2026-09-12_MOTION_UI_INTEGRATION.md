@@ -83,3 +83,8 @@ Godot 4.7.1 Windows의 동일 native 검사와 1280x720/1280x800/1920x1080 영�
 4.7.1의 Full Validation native31개를 전부 실행했다. 최초30PASS/1FAIL은 선택 무공서별1개 해금/1개 잠금을 기대한 구형 무공 fixture였다. 전체 보유 무공의 해금 기술3개와 선택 무공서가 바뀌어도 유지되는 목록, 미해금 기술 실행 차단, 비무 제약의 비활성·접근성 설명·교차 무공 실행을 검사하도록 이관한 뒤 동일 검사 PASS. 원격 product-evidence의 구형 합 VFX atlas 하단 기대값도 이미 최종 확정된 독립 alpha 불꽃과 흰 핵 보존을 확인하도록 교정해 동일 검사 PASS. 공격용 legacy matte 검사는 유지했다.
 
 카드 높이와 실행 버튼 수정 이후 Windows4.7.1 GPU 준비3화면을 다시 캡처했다. 경로: C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/final-471 . 기존71프레임 실행 증거는 이전 제품 revision의 motion/VFX 증거이며 최신 준비 배치 캡처와 구분한다.
+
+
+## 플랫폼별 표본 누락으로 발견된 절초 확대 결함
+
+dced1b70 원격33SUCCESS/1FAILURE. 실패한 frontal partition은 Linux의 특정 프레임에서 적 절초의 높이가 stage75%를 넘었다(75.075%). 단순 오차 허용 확대 대신 실제 tween의 최대 확대에 모든 원본 공격 자세를 대입하는 결정적 검사를 추가했다. enemy frame2/3가 세 화면 크기 모두77.684%로 RED였다. 절초의 추가 확대를1.12에서1.08로 제한하면 동일 원본의 보수적 최대는74.910%다. idle58%, 원본 이미지, frame 순서, 접지, 판정·피해·AI·저장은 유지한다. 기존1.12 상한 반환값은 다른 보수적 envelope 검사와의 호환을 위해 유지한다. 전체 자세 최대값 검사와 실제 시간 진행 검사를 함께 사용해 빠른/느린 host의 표본 누락을 막는다.

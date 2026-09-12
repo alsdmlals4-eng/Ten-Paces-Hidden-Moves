@@ -264,7 +264,7 @@ func _verify_ink(board: CombatBoardPreview, actor: CombatCharacterPlaceholder, i
 	_expect(ink.has_area() and stage.grow(0.5).encloses(ink), "Occupied ink must remain in stage: %s / %s (%s)" % [ink, stage, actor.role])
 	# Authored poses change silhouette height, unlike the old one-image scale tween.
 	# Keep a bounded ceiling as well as the stricter actual stage containment below.
-	_expect(ink.size.y <= stage.size.y * 0.75 + 0.5, "Authored pose exceeds the bounded battle-first envelope: %s" % (ink.size.y / stage.size.y))
+	_expect(ink.size.y <= stage.size.y * 0.75 + 0.5, "Authored pose exceeds the bounded battle-first envelope: ratio=%s role=%s frame=%s scale=%s" % [ink.size.y / stage.size.y, actor.role, actor.get_meta("pose_frame", -1), actor.visual_scale])
 	if idle:
 		_expect(absf(ink.size.y / stage.size.y - 0.58) <= 0.002, "Idle source bounds must reach 58 percent at reference viewport, got %s" % (ink.size.y / stage.size.y))
 		_expect(ink.size.y * 1.12 <= stage.size.y * 0.66 + 0.5, "Complete motion envelope stays within the enlarged battle-first stage.")
@@ -276,6 +276,21 @@ func _verify_ink(board: CombatBoardPreview, actor: CombatCharacterPlaceholder, i
 	if actor.has_method("get_visible_art_bounds_global"):
 		_expect(_rect_near(actor.call("get_visible_art_bounds_global", true), ink), "Renderer bounds must match independent source alpha/draw/global transform oracle.")
 		_expect(_rect_near(actor.call("get_visible_art_bounds_global", false), _independent_ink(actor, false)), "Idle getter must exclude motion without changing node transform/mirroring.")
+
+func _verify_authored_peak_envelope(board: CombatBoardPreview, actor: CombatCharacterPlaceholder) -> void:
+	# Exercise every source pose at the real ultimate tween peak. Ordinary
+	# frame sampling can miss a brief overshoot on a faster/slower machine.
+	actor.play_ultimate_motion(1.0)
+	actor.set_process(false)
+	var tween := actor._motion_tween
+	tween.pause()
+	tween.custom_step(0.60)
+	_expect(actor.visual_scale > 1.0, "Peak envelope probe must advance the actual ultimate tween.")
+	for frame_index in range(7 if actor.role == "player" else 8):
+		actor._set_pose_frame(frame_index)
+		_verify_ink(board, actor)
+	actor._stop_motion_tween()
+	actor.set_idle()
 
 func _verify_stage(board: CombatBoardPreview, expanded: bool) -> void:
 	var stage := board.duel_stage_surface.get_global_rect()
@@ -303,6 +318,7 @@ func _verify_measured_execution(packed: PackedScene, viewport: Vector2) -> void:
 		for method in ["get_visible_art_bounds_local", "get_visible_art_bounds_global", "get_idle_art_height_per_node_height", "get_existing_motion_peak_scale"]:
 			_expect(actor.has_method(method), "Missing measured-art renderer interface: " + method)
 		_verify_ink(board, actor, true)
+		_verify_authored_peak_envelope(board, actor)
 	# A real actor binding selects Dogyeom; no substitute texture or altered art.
 	board.combat_state.enemy["candidate_id"] = "slot1_dogyeom"
 	board._layout_board()

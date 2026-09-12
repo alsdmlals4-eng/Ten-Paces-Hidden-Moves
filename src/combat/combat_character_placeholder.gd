@@ -226,7 +226,9 @@ func play_ultimate_motion(duration: float = 0.42) -> void:
         Vector2(-size.x * 0.075 * float(facing), 0.0),
         Vector2(size.x * 0.22 * float(facing), 0.0),
         0.94,
-        1.12,
+        # The tallest masked sword pose reaches 74.91% of the stage at
+        # this peak; 1.12 exceeded the 75% authored-pose envelope.
+        1.08,
         duration
     )
 
