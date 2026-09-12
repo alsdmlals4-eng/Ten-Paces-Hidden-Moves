@@ -37,6 +37,8 @@ on:
       - "tests/verify_ten_manual_product_gate.gd"
       - "tests/verify_bimu_constraint_model.gd"
       - "tests/verify_run_save_store.gd"
+      - "tests/verify_game_menu.gd"
+      - "tests/verify_vertical_slice_completion_summary.gd"
       - "tests/verify_presentation_preferences.gd"
       - "tests/verify_presentation_preferences_runtime.gd"
       - "tests/test_presentation_preferences_restart.py"
@@ -175,6 +177,10 @@ jobs:
         env:
           GODOT_BIN: godot
         run: python tests/test_presentation_preferences_restart.py
+      - name: Verify canonical and scrollable ten-duel completion history
+        run: godot --headless --path . --script res://tests/verify_vertical_slice_completion_summary.gd
+      - name: Verify optional game menu, native focus and settings boundaries
+        run: godot --headless --path . --script res://tests/verify_game_menu.gd
       - name: Verify bounded raw-byte save validation cache
         run: godot --headless --path . --script res://tests/verify_run_save_cache.gd
       - name: Verify actor-owned martial execution and preserved old save identity

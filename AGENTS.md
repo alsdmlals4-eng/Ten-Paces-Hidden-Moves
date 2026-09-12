@@ -62,6 +62,7 @@
 - `TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01` / `PREWORK_BENCHMARK_REVERSE_ENGINEERING_GATE`: 사용자 지시에 따라 새 L1+ 기획·시스템·UX·콘텐츠·구현 패키지는 계획 또는 mutation 전에 유사·인접 장르 게임 **10개 이상**을 역공학한다. 직접 비교 3개 이상, 인접 시스템 3개 이상, 부정/혼합 사례 1개 이상을 포함하고, 각 사례에서 공식 제품 사실·제한된 플레이어 반응 신호 또는 공개된 공백·mechanism·transfer principle·`DO_NOT_COPY` 경계·`ADOPT/ADAPT/AVOID/TEST` 판정을 남긴다. 같은 decision dimension과 project state가 일치할 때만 재사용할 수 있으며 `no silent bypass`다. 외부 사례는 프로젝트 core, 공개/비공개 정보 경계, deck/hand/draw 금지를 덮어쓰지 않는다.
 - `EVERY_TASK_BASE_LOOP`: 모든 작업·권장안·retained change는 최소 한 번의 전체 적대 검토를 거친다. material 계획·구현·문서·PR 변경은 `running-adversarial-review-and-refinement`의 정확히 2회 full-scope loop와 clean exit를 수행한다. 같은 승인 작업의 단계·세션·커밋·병합 전후에 회차를 초기화하지 않는다. 2회 뒤에는 결함별 수정·영향 회귀검증·readback만 수행하며 자동으로 세 번째 전체 검토를 추가하지 않는다. 각 loop는 정본·실제 diff·untouched consumer·실행 증거·비용·장기 적합성을 함께 공격하며 가짜 finding/loop로 횟수를 채우지 않는다. 근거: `docs/decisions/2026-09-09_TWO_ROUND_INTERNAL_REVIEW.md`. 검토 횟수는 CI·독립 승인·안전한 병합·미해결 결함 검증을 면제하지 않는다.
 - material mutation 전에는 repository 실제 경로·의존성·테스트 환경과 최신 외부 근거를 교차 대조해 `FEASIBLE / PARTIAL / BLOCKED_UNVERIFIED`로 구현 가능성을 판정한다. 자동 검증 가능성은 Human·실기기·접근성·출시 증거를 대체하지 않는다.
+- 사용자 2026-09-13 지시의 개선 루프는 유사 게임 조사 → 현재 기획 구체화·연결 → 구현 → 실제 검증 → 남은 구현 공백 재점검의 개발 반복을 뜻한다. 같은 승인 작업의 전체 적대 검토 2회를 초기화하는 지시가 아니다. 각 새 구현은 먼저 계획을 기록하고 같은 승인 범위의 안전한 작업을 재승인 없이 이어간다.
 - `진행해`/`계속해`는 이미 승인된 같은 계약의 continuation이며 새 코어·범위·비용 권한을 만들지 않는다.
 
 ## 5. 프로젝트 코어

@@ -31,6 +31,7 @@
     "src/combat/combat_board_preview_auto.gd",
     "src/combat/combat_character_placeholder.gd",
     "src/run/vertical_slice_shell.gd",
+    "src/run/vertical_slice_shell_completion_auto.gd",
     "src/ui/action_selection/action_choice_card.gd",
     "src/ui/action_selection/action_detail_panel.gd",
     "src/ui/action_selection/action_selection_dock.gd",
@@ -44,6 +45,8 @@
     "src/ui/combat_sound_bank.gd",
     "src/ui/combat_sound_bank.gd.uid",
     "src/ui/combatant_status_panel.gd",
+    "src/ui/game_menu.gd",
+    "src/ui/game_menu.gd.uid",
     "src/ui/main_title_screen.gd",
     "src/ui/observation_reveal_panel.gd",
     "src/ui/presentation_preferences.gd",
@@ -53,7 +56,7 @@
     "src/ui/wuxia_ui_style.gd",
     "src/ui/wuxia_ui_style.gd.uid"
   ],
-  "approval_source": "Current user instruction on 2026-09-12: 앞으로도 옮겨주고 프로젝트 남은 작업 확인 후 진행해. Continuation of previously authorized character motion/UI implementation, integration and verification. This authorizes the bounded working-branch change, not final visual approval of four character sheets. 2026-09-13: user approved recommended plan for independent persistent presentation settings and baseline clarification; see BUILD approval continuation and dated implementation plan.",
+  "approval_source": "Current user instruction on 2026-09-12: 앞으로도 옮겨주고 프로젝트 남은 작업 확인 후 진행해. Continuation of previously authorized character motion/UI implementation, integration and verification. This authorizes the bounded working-branch change, not final visual approval of four character sheets. 2026-09-13: user approved recommended plan for independent persistent presentation settings and baseline clarification; see BUILD approval continuation and dated implementation plan. 2026-09-13 latest user explicitly authorizes plan-first autonomous comparable-game implementation loops: optional pause/menu/guide and player-readable scrollable completion history, preserving core and save schema.",
   "approval_time": "2026-09-12T06:45:31+09:00",
   "scope_summary": "Integrate preserved motion/UI work with main ed2104d9; retain variable roster, v1/v2 saves and all47 approved static-art inputs. Review branch only until four character sheets final visual lock. No original asset deletions, no game-rule or save-schema change, no Human/device/release claim."
 }

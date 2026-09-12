@@ -640,5 +640,19 @@
     ],
     "run_save_schema_change": false,
     "human_android_release": "NOT_RUN"
+  },
+  "playable_flow_continuation": {
+    "status": "IMPLEMENTED_LOCAL_VERIFIED_REMOTE_CHECKS_PENDING",
+    "plan": "docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md",
+    "receipt": "docs/operations/2026-09-13_PLAYABLE_FLOW_RECEIPT.json",
+    "implemented": [
+      "optional_pause_menu",
+      "precombat_and_live_preferences",
+      "optional_canonical_rules_guide",
+      "canonical_completion_cause_labels",
+      "scrollable_completion_history"
+    ],
+    "run_save_schema_change": false,
+    "human_android_release": "NOT_RUN"
   }
 }

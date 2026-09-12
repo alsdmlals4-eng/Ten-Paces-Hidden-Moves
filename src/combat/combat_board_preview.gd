@@ -191,10 +191,7 @@ var session_input_blocked := false
 var session_suspended := false
 
 func _ready() -> void:
-	if presentation_preferences != null:
-		_sound_muted = presentation_preferences.sound_muted
-		_sound_volume = presentation_preferences.sound_volume
-		_reduced_motion = presentation_preferences.reduced_motion
+	apply_presentation_preferences()
 	mouse_filter = Control.MOUSE_FILTER_PASS
 	contract = _load_contract()
 	_player_tile = int(contract.get("player_start_tile", 4))
@@ -2017,6 +2014,24 @@ func _persist_presentation_preferences() -> void:
 	for control in [sound_toggle_button, sound_volume_slider, reduced_motion_button]:
 		if is_instance_valid(control): control.tooltip_text = message
 	set_meta("presentation_settings_save_error", error)
+
+func apply_presentation_preferences() -> void:
+	if presentation_preferences == null: return
+	var was_reduced := _reduced_motion
+	_sound_muted = presentation_preferences.sound_muted
+	_sound_volume = presentation_preferences.sound_volume
+	_reduced_motion = presentation_preferences.reduced_motion
+	if is_instance_valid(sound_toggle_button): sound_toggle_button.text = "소리: %s" % ("끔" if _sound_muted else "켬")
+	if is_instance_valid(reduced_motion_button): reduced_motion_button.text = "모션 감소: %s" % ("켬" if _reduced_motion else "끔")
+	if is_instance_valid(sound_volume_slider): sound_volume_slider.set_value_no_signal(_sound_volume)
+	for player in [procedural_sfx_player, momentum_sfx_player]:
+		if is_instance_valid(player):
+			player.volume_linear = _sound_volume
+			if _sound_muted: player.stop()
+	if _reduced_motion and not was_reduced and is_node_ready():
+		_clear_impact_camera()
+		for actor in [player_character, enemy_character]:
+			if is_instance_valid(actor): actor.release_impact_pose()
 
 func _apply_keyboard_focus_ring(control: Control) -> void:
 	if control == null:

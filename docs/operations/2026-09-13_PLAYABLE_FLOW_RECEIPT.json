@@ -1,0 +1,250 @@
+{
+  "work_level": "L1",
+  "authorization": "User 2026-09-13 explicitly requests autonomous comparable-game research, planning, implementation and improvement loops without routine reapproval.",
+  "source_head_sha": "3bebe3c2428a2aa34d15edf8feca7268a76e7305",
+  "base_remote_sha": "d830c0f6967678eed3c208ac6b24f9cd1b262ec3",
+  "benchmark_preflight_receipt": {
+    "state": "PASS",
+    "entries": [
+      {
+        "game": "Shogun Showdown",
+        "comparison_class": "DIRECT_MIXED",
+        "source_and_evidence": "https://steamcommunity.com/app/2084000/announcements/",
+        "observed_pattern": "2024-05 패치의 메뉴 재구성·튜토리얼 개편·키 재설정, reward 도중 gamepad give-up 수정; 09월 alt-tab/continue 결함 수정",
+        "project_fit_and_difference": "메뉴·전투·저장 사이 연결을 실제 입력으로 검사",
+        "do_not_copy": "덱·쿨다운·재시작 규칙 제외 / ADAPT",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer public documentation/patch evidence only; no representative player experiment. Body read 2026-09-13."
+      },
+      {
+        "game": "Tactical Breach Wizards",
+        "comparison_class": "DIRECT_MIXED",
+        "source_and_evidence": "https://store.steampowered.com/app/1043810/Tactical_Breach_Wizards/",
+        "observed_pattern": "공식 소개의 자유 rewind 실험과 다시 읽는 conspiracy map",
+        "project_fit_and_difference": "학습을 사용자가 다시 열 수 있게 하되 확정 결과는 보호",
+        "do_not_copy": "rewind/적 예고 도입 금지 / ADAPT",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer public documentation/patch evidence only; no representative player experiment. Body read 2026-09-13."
+      },
+      {
+        "game": "Fights in Tight Spaces",
+        "comparison_class": "DIRECT_MIXED",
+        "source_and_evidence": "https://store.epicgames.com/p/fights-in-tight-spaces--early-access-faq?lang=en-US",
+        "observed_pattern": "역사 EA FAQ: controller 지원과 remapping 부재를 별도로 명시, 구조 변경 시 진행 유지 한계",
+        "project_fit_and_difference": "키 하나 존재를 완전한 입력 지원으로 과장하지 않음",
+        "do_not_copy": "덱·모멘텀 금지, 당시 FAQ를 현재 기능표로 쓰지 않음 / ADAPT",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer public documentation/patch evidence only; no representative player experiment. Body read 2026-09-13."
+      },
+      {
+        "game": "Into the Breach",
+        "comparison_class": "DIRECT_MIXED",
+        "source_and_evidence": "https://www.subsetgames.com/itb.html",
+        "observed_pattern": "공식 소개는 모든 적 공격 예고를 전략 핵심으로 설명",
+        "project_fit_and_difference": "우리 안내에 공개/비공개 경계를 명시해야 함",
+        "do_not_copy": "전체 적 계획 공개 금지 / AVOID",
+        "disposition": "REJECT",
+        "reaction_or_gap": "Developer public documentation/patch evidence only; no representative player experiment. Body read 2026-09-13."
+      },
+      {
+        "game": "Knights in Tight Spaces",
+        "comparison_class": "ADJACENT_MIXED",
+        "source_and_evidence": "https://steamcommunity.com/app/2315400/allnews/",
+        "observed_pattern": "2025-07 Advanced Tutorial 마지막 단계 멈춤 수정, 06월 두 모드 공유 save slot 주의",
+        "project_fit_and_difference": "의무 튜토리얼 대신 언제든 닫는 안내, pause/복귀 중 domain 불변",
+        "do_not_copy": "모드·파티·장비·공유 새 슬롯 제외 / ADAPT",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer public documentation/patch evidence only; no representative player experiment. Body read 2026-09-13."
+      },
+      {
+        "game": "Celeste",
+        "comparison_class": "ADJACENT_MIXED",
+        "source_and_evidence": "https://www.celestegame.com/changelog.html",
+        "observed_pattern": "pause 입력 버퍼, 메뉴 키 충돌 방지, Options에서 pause overlay 숨김 및 스크롤 결함 수정",
+        "project_fit_and_difference": "Esc 중복/echo, focus trap/복귀, 작은 화면 검증",
+        "do_not_copy": "플랫폼 물리·assist 난도·quick restart 미도입 / ADAPT",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer public documentation/patch evidence only; no representative player experiment. Body read 2026-09-13."
+      },
+      {
+        "game": "Hades",
+        "comparison_class": "ADJACENT_MIXED",
+        "source_and_evidence": "https://www.supergiantgames.com/faqs/hades/",
+        "observed_pattern": "공식 지원은 Profile1.sjson 설정을 다룸; 메뉴 pause 구현은 해당 문서에 공개하지 않음",
+        "project_fit_and_difference": "기존 독립 preferences owner 재사용, 알 수 없는 pause 구현 추정 금지",
+        "do_not_copy": "진행/보상 구조 복사 금지 / ADAPT",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer public documentation/patch evidence only; no representative player experiment. Body read 2026-09-13."
+      },
+      {
+        "game": "The Last of Us Part II",
+        "comparison_class": "ADJACENT_MIXED",
+        "source_and_evidence": "https://www.playstation.com/en-us/games/the-last-of-us-part-ii/accessibility/",
+        "observed_pattern": "공식 접근성의 선택형 hints·dodge prompt 빈도와 별도 조작 설정",
+        "project_fit_and_difference": "안내는 선택적으로 다시 열며 강제 진행/자동 정답을 만들지 않음",
+        "do_not_copy": "전투 자동화·적 탐지 보조 제외 / ADAPT",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer public documentation/patch evidence only; no representative player experiment. Body read 2026-09-13."
+      },
+      {
+        "game": "Ratchet & Clank Rift Apart",
+        "comparison_class": "ADJACENT_MIXED",
+        "source_and_evidence": "https://support.insomniac.games/hc/en-us/articles/46716208107795-What-Accessibility-options-does-Ratchet-Clank-Rift-Apart-feature",
+        "observed_pattern": "pause-menu parallax 끄기, 화면 흔들림과 SFX/UI 음량 구분",
+        "project_fit_and_difference": "설정 메뉴 자체는 정지한 레이아웃, 현재 구현된 소리 채널만 조절",
+        "do_not_copy": "새 채널·게임속도·공격 shortcut 미도입 / ADAPT",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer public documentation/patch evidence only; no representative player experiment. Body read 2026-09-13."
+      },
+      {
+        "game": "Slay the Spire",
+        "comparison_class": "ADJACENT_MIXED",
+        "source_and_evidence": "https://store.steampowered.com/app/646570/Slay_the_Spire/",
+        "observed_pattern": "공식 소개는 위험/안전 경로 선택과 매번 달라지는 경로를 명시",
+        "project_fit_and_difference": "비무→행로→성장→다음 비무 연결을 규칙 안내에 포함",
+        "do_not_copy": "덱/손패/드로우/유물 미도입 / ADAPT",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer public documentation/patch evidence only; no representative player experiment. Body read 2026-09-13."
+      }
+    ]
+  },
+  "context_configuration_hygiene": {
+    "scope": "Playable-flow menu and optional rules guide; preserve run schemas and current images",
+    "inventory": [
+      {
+        "path": "src/run/vertical_slice_shell.gd",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Current shell pause service has no user entry",
+        "references_and_consumers": "run session coordinator and combat bridge",
+        "removal_proposed": false
+      },
+      {
+        "path": "src/ui/presentation_preferences.gd",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Previous approved persistent settings implementation",
+        "references_and_consumers": "shell and combat board; connect menu as second consumer",
+        "removal_proposed": false
+      }
+    ]
+  },
+  "project_work_kanban": {
+    "goal_or_slice_issue_ref": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/342",
+    "source_main_sha": "ed2104d98872c63eac27999830aeae9c15a00bdc",
+    "work_item_refs": [
+      "PLAYABLE-FLOW"
+    ],
+    "active_work_item_ref": "PLAYABLE-FLOW",
+    "next_action": "Exact working-head CI and remaining completion transition owner audit",
+    "work_items": [
+      {
+        "work_item_id": "PLAYABLE-FLOW",
+        "title": "Connect optional game menu, precombat settings and rules guide",
+        "status": "VERIFY_REVIEW",
+        "canon_owner": "docs/UX_UI_SYSTEM.md",
+        "actual_consumers": [
+          "src/run/vertical_slice_shell.gd",
+          "src/combat/combat_board_preview.gd",
+          "src/ui/game_menu.gd",
+          "src/run/vertical_slice_shell_completion_auto.gd"
+        ],
+        "depends_on": [],
+        "acceptance_criteria": [
+          "MENU-01",
+          "MENU-02",
+          "GUIDE-01",
+          "COMPLETION-01"
+        ],
+        "required_evidence": [
+          "E2_TEST",
+          "E3_RUNTIME"
+        ],
+        "checklist": [
+          {
+            "id": "MENU-01",
+            "text": "Native pause entry, background input lock and focus restoration",
+            "status": "PASS",
+            "evidence": [
+              "tests/verify_game_menu.gd",
+              "C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/game-menu-visible.log"
+            ]
+          },
+          {
+            "id": "MENU-02",
+            "text": "Settings before first combat and current board match shared stored values",
+            "status": "PASS",
+            "evidence": [
+              "tests/verify_game_menu.gd",
+              "C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/game-menu-visible.log"
+            ]
+          },
+          {
+            "id": "GUIDE-01",
+            "text": "Optional canonical rules guide remains readable and closeable without domain mutation",
+            "status": "PASS",
+            "evidence": [
+              "tests/verify_game_menu.gd",
+              "C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/game-menu-visible.log"
+            ]
+          },
+          {
+            "id": "COMPLETION-01",
+            "text": "Canonical cause descriptions and scrollable ten-duel history without source mutation",
+            "status": "PASS",
+            "evidence": [
+              "tests/verify_vertical_slice_completion_summary.gd",
+              "C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/completion-visible.log"
+            ]
+          }
+        ],
+        "verification": [
+          {
+            "level": "E2_TEST",
+            "status": "PASS",
+            "evidence": [
+              "docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md",
+              "C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/game-menu-visible.log",
+              "C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/completion-visible.log"
+            ]
+          },
+          {
+            "level": "E3_RUNTIME",
+            "status": "PASS",
+            "evidence": [
+              "docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md",
+              "C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/game-menu-visible.log",
+              "C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/completion-visible.log"
+            ]
+          }
+        ],
+        "next_action": "Exact working-head CI and remaining completion transition owner audit"
+      }
+    ]
+  },
+  "feasibility": "FEASIBLE: existing pause/flush/preferences and Godot Control consumers, no save migration",
+  "alternatives": [
+    {
+      "option": "Shared shell menu and optional guide",
+      "verdict": "ADOPT",
+      "reason": "Connect existing services throughout the playable flow"
+    },
+    {
+      "option": "Combat-only settings dialog",
+      "verdict": "REJECT",
+      "reason": "Cannot adjust preferences before first combat"
+    },
+    {
+      "option": "Mandatory tutorial progression",
+      "verdict": "REJECT",
+      "reason": "Unnecessary new progression/save and soft-lock edges"
+    }
+  ],
+  "reuse": {
+    "mode": "REUSE_EXISTING_PROJECT_IMPLEMENTATION",
+    "modules": [
+      "Existing mute, volume and reduced motion handlers",
+      "Existing shell lifetime and script-entry isolation pattern",
+      "Native Godot ConfigFile"
+    ],
+    "base_promotion": "Project-only adaptation; no new shared module justified."
+  }
+}
