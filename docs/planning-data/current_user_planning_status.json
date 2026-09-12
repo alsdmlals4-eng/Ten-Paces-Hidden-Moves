@@ -616,7 +616,18 @@
       "python_passed": 511,
       "python_seconds": 676.07,
       "native_cases_passed_after_targeted_corrections": 31,
-      "actual_execute_capture_frames": 71
-    }
+      "actual_execute_capture_frames": 71,
+      "native_campaign": {
+        "routes": 36,
+        "duels": 10,
+        "activations": 288,
+        "failures": 0,
+        "rewards": 10,
+        "elapsed_ms": 383223,
+        "wins": 10,
+        "source": "ba9b615a"
+      }
+    },
+    "presentation_controls_receipt": "docs/operations/2026-09-12_PRESENTATION_CONTROLS_WORK_CONTRACT_RECEIPT.json"
   }
 }

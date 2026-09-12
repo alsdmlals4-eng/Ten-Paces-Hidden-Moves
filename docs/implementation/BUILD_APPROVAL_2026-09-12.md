@@ -10,3 +10,13 @@
 - Boundary: four character sheets still require final visual lock. This dated BUILD authorization is for the review branch and is not their visual approval or release-rights clearance. Keep PR draft until that decision is resolved. Clash sparks retain their earlier explicit user lock.
 - Preserve main/user dirty work, the source branch, v1/v2 identity and saves, existing art originals and the approved47 static images. Move confirmed disposable artifacts into the manual-deletion folder and provide links.
 - Human/device/accessibility/audio-device/release evidence remains NOT_RUN.
+
+## Same-day continued improvement authorization
+
+The latest user explicitly requested fresh-reading Base, benchmarking comparable games,
+and continuing implementation and improvement without separate routine approval.
+This authorizes restoring the existing sound/mute controls to the product surface,
+their input/geometry regression coverage, and correcting the observed Linux 720p
+native-font overflow. No new asset generation, combat semantics or save migration.
+Preflight and alternatives: `docs/operations/2026-09-12_PRESENTATION_CONTROLS_WORK_CONTRACT_RECEIPT.json`.
+This continuation does not fabricate Human/device testing or individual image final lock.

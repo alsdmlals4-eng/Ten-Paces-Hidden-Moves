@@ -114,6 +114,13 @@ func _verify_board_context_and_geometry(viewport_size: Vector2) -> void:
 	for _frame in range(5):
 		await process_frame
 	var dock := board.action_selection_dock as ActionSelectionDock
+	# Exercise the observed Linux fallback metric on every host: two 17px rows.
+	# Child minimum growth must be accommodated by the actual 720p content host.
+	for panel in [dock.basic_panel, dock.martial_panel]:
+		for summary in panel.find_children("CardSummary", "VBoxContainer", true, false):
+			(summary as Control).custom_minimum_size.y = 34.0
+	for _frame in range(5):
+		await process_frame
 	var host_rect := dock.content_host.get_global_rect()
 	_check(typeof(dock.runtime_context.get("preview_actor", {})) == TYPE_DICTIONARY and not (dock.runtime_context.get("preview_actor", {}) as Dictionary).is_empty(), "Combat board must connect the current player snapshot to card previews.")
 	var cards := dock.basic_panel.buttons

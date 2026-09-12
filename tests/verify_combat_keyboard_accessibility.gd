@@ -52,17 +52,59 @@ func _run() -> void:
         failures.append("The progress button must participate in keyboard focus traversal.")
     for retired_presentation_control in [
         board.fast_replay_button,
-        board.sound_toggle_button,
-        board.sound_volume_slider,
     ]:
         if retired_presentation_control.visible or retired_presentation_control.focus_mode != Control.FOCUS_NONE:
             failures.append("The reference preparation surface must exclude retired presentation controls from keyboard traversal.")
     if not board.reduced_motion_button.visible or board.reduced_motion_button.focus_mode != Control.FOCUS_ALL:
         failures.append("Reduced-motion preference must remain keyboard accessible.")
 
+    for viewport in [Vector2(1280, 720), Vector2(1280, 800), Vector2(1920, 1080)]:
+        board.size = viewport
+        board._layout_board()
+        for _frame in range(3):
+            await process_frame
+        var controls: Array[Control] = [board.sound_toggle_button, board.sound_volume_slider, board.reduced_motion_button]
+        for control in controls:
+            if not control.visible or control.focus_mode != Control.FOCUS_ALL:
+                failures.append("Presentation controls must be visible and keyboard reachable at %s." % viewport)
+            if not board.get_global_rect().encloses(control.get_global_rect()):
+                failures.append("Presentation controls must remain inside the viewport.")
+            if control.get_global_rect().intersects(board.inline_result_label.get_global_rect()):
+                failures.append("Presentation controls must not cover the recap text.")
+        for index in range(controls.size() - 1):
+            if controls[index].get_global_rect().intersects(controls[index + 1].get_global_rect()):
+                failures.append("Presentation controls must not overlap one another.")
+
+    if board.sound_toggle_button.visible and board.sound_volume_slider.visible:
+        var state_before: Dictionary = board.combat_state.duplicate(true)
+        var muted_before: bool = board._sound_muted
+        board.sound_toggle_button.grab_focus()
+        await _key(KEY_ENTER)
+        if board._sound_muted == muted_before:
+            failures.append("Native Enter must toggle effects mute.")
+        var volume_before: float = board._sound_volume
+        board.sound_volume_slider.grab_focus()
+        await _key(KEY_LEFT)
+        if not board._sound_volume < volume_before:
+            failures.append("Native Left must lower effects volume.")
+        if board.combat_state != state_before:
+            failures.append("Presentation preferences must not mutate combat state.")
+
     board.queue_free()
     await process_frame
     _finish()
+
+func _key(code: Key) -> void:
+    var event := InputEventKey.new()
+    event.keycode = code
+    event.pressed = true
+    Input.parse_input_event(event)
+    await process_frame
+    event = InputEventKey.new()
+    event.keycode = code
+    event.pressed = false
+    Input.parse_input_event(event)
+    await process_frame
 
 func _finish() -> void:
     if failures.is_empty():

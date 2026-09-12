@@ -340,7 +340,7 @@ func _apply_state_derived_product_layout() -> void:
     var expanded := _uses_expanded_execution_layout()
     # The combat field is the primary surface; HUD panels float above it.
     var duel_y := 0.0
-    var planning_top := clampf(size.y * 0.60, 260.0, size.y - 242.0)
+    var planning_top := clampf(size.y * 0.60, 260.0, size.y - 296.0)
     var active_rect := Rect2(0.0, duel_y, size.x, size.y - duel_y if expanded else planning_top - duel_y - 5.0)
     if not active_rect.position.is_finite() or not active_rect.size.is_finite() or not active_rect.has_area():
         return
@@ -421,7 +421,7 @@ func _layout_product_action_dock() -> void:
     # The summary-card continuation moves the planning ink frame only enough
     # to keep two readable rows at 720p while retaining the top HUD and a
     # distinct frontal duel field.
-    var planning_top := clampf(size.y * 0.60, 260.0, size.y - 242.0)
+    var planning_top := clampf(size.y * 0.60, 260.0, size.y - 296.0)
     var timing_height := clampf(size.y * 0.20 - 88.0, 64.0, 100.0)
     var timing_y := planning_top + 4.0
     var dock_y := timing_y + timing_height + 4.0
@@ -452,11 +452,24 @@ func _layout_product_action_dock() -> void:
         observation_reveal_panel.position = Vector2(observation_x, timing_y)
         observation_reveal_panel.size = Vector2(observation_width, size.y - lower_bottom - timing_y - execute_height - 8.0)
 
-    for control_value in [sound_toggle_button, sound_volume_slider, fast_replay_button, combat_log_panel]:
+    for control_value in [fast_replay_button, combat_log_panel]:
         if is_instance_valid(control_value):
             var control := control_value as Control
             control.visible = false
             control.focus_mode = Control.FOCUS_NONE
+    if is_instance_valid(sound_toggle_button) and is_instance_valid(sound_volume_slider):
+        sound_toggle_button.visible = true
+        sound_toggle_button.focus_mode = Control.FOCUS_ALL
+        sound_toggle_button.size = Vector2(94.0, 34.0)
+        sound_toggle_button.position = Vector2(size.x - lower_margin - 392.0, planning_top - 38.0)
+        sound_toggle_button.z_index = 40
+        sound_toggle_button.tooltip_text = "전투 효과음을 켜거나 끕니다. 결과 텍스트와 판정은 유지됩니다."
+        sound_volume_slider.visible = true
+        sound_volume_slider.focus_mode = Control.FOCUS_ALL
+        sound_volume_slider.size = Vector2(134.0, 34.0)
+        sound_volume_slider.position = Vector2(size.x - lower_margin - 290.0, planning_top - 38.0)
+        sound_volume_slider.z_index = 40
+        sound_volume_slider.tooltip_text = "효과음 음량 · 좌우 화살표로 조절"
     if is_instance_valid(reduced_motion_button):
         reduced_motion_button.visible = true
         reduced_motion_button.focus_mode = Control.FOCUS_ALL
@@ -473,10 +486,10 @@ func _settle_inline_result_row(row_height: float, row_gap: float) -> void:
     if not is_instance_valid(inline_result_label):
         return
     var margin := maxf(12.0, size.x * 0.012)
-    var planning_top := clampf(size.y * 0.60, 260.0, size.y - 242.0)
-    # Previous-bundle cause and the reduced-motion preference own separate lanes.
+    var planning_top := clampf(size.y * 0.60, 260.0, size.y - 296.0)
+    # Previous-bundle cause and presentation preferences own separate lanes.
     inline_result_label.position = Vector2(margin, planning_top - 42.0)
-    inline_result_label.size = Vector2(size.x - margin * 2.0 - 164.0, 38.0)
+    inline_result_label.size = Vector2(size.x - margin * 2.0 - 408.0, 38.0)
     set_meta("inline_result_row_bounded", true)
 
 func _frontal_anchor_pair(player_tile: int, enemy_tile: int, floor_y: float) -> Dictionary:

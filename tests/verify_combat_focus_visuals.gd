@@ -34,11 +34,10 @@ func _run() -> void:
         failures.append("The retired immediate-complete control must not remain in the focusable surface.")
     for retired_presentation_control in [
         board.fast_replay_button,
-        board.reduced_motion_button,
-        board.sound_toggle_button,
-        board.sound_volume_slider,
     ]:
         _require_excluded_from_focus(retired_presentation_control, "retired presentation control")
+    for preference in [board.reduced_motion_button, board.sound_toggle_button, board.sound_volume_slider]:
+        _require_focus_ring(preference, "presentation preference")
     _require_focus_ring(board.combat_progress_button._button, "progress")
 
     board.queue_free()

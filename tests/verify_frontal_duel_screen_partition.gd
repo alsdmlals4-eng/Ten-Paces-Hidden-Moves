@@ -91,7 +91,7 @@ func _verify_reference_preparation_hierarchy(board: CombatBoardPreview) -> void:
 	_expect(timing_rect.size.x <= planning_rect.size.x * 0.55, "Current plan occupies the left column and leaves detail/observation lanes.")
 	var observation := board.observation_reveal_panel.get_global_rect()
 	_expect(absf(progress_rect.position.x - observation.position.x) <= 1.0 and progress_rect.position.y >= observation.end.y, "Execution is aligned below the right observation column.")
-	_expect(not board.sound_toggle_button.visible and not board.sound_volume_slider.visible and not board.fast_replay_button.visible and not board.combat_log_panel.visible and board.reduced_motion_button.visible, "Only the player-facing reduced-motion preference remains exposed.")
+	_expect(board.sound_toggle_button.visible and board.sound_volume_slider.visible and not board.fast_replay_button.visible and not board.combat_log_panel.visible and board.reduced_motion_button.visible, "Sound and reduced-motion preferences remain exposed without legacy replay controls.")
 
 func _verify_reference_information_columns(board: CombatBoardPreview) -> void:
 	var hud := board.top_hud
@@ -301,7 +301,12 @@ func _verify_stage(board: CombatBoardPreview, expanded: bool) -> void:
 	if expanded:
 		_expect(absf(stage.end.y - (board.global_position.y + board.size.y)) <= 0.5, "CTA and every timing must use the full remaining execution stage.")
 	else:
-		_expect(absf(board.planning_surface.position.y / board.size.y - 0.60) <= 0.002, "Next planning restores the 60 percent split.")
+		_expect(absf(board.planning_surface.position.y - board.size.y * 0.60) <= 8.5, "Planning stays within eight pixels of the 60 percent split to fit native 720p font metrics.")
+		if not board.has_meta("verified_planning_top"):
+			board.set_meta("verified_planning_top", board.planning_surface.position.y)
+			board.set_meta("verified_planning_size", board.size)
+		if board.size == board.get_meta("verified_planning_size"):
+			_expect(absf(board.planning_surface.position.y - float(board.get_meta("verified_planning_top"))) <= 0.5, "Next planning restores the exact original split when the viewport is unchanged.")
 	for role in ["player", "enemy"]:
 		_expect(absf(board.get_character_foot_anchor(role).y - board.battle_background.get_duel_floor_y(board.size)) <= 0.5, "Feet must use displayed background floor, not hidden timing/tile anchor.")
 

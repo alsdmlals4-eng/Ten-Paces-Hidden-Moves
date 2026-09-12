@@ -96,3 +96,22 @@ f671f1d9 원격33SUCCESS/1FAILURE. 절초 최대 자세·Windows·일반 headles
 
 
 원격 실행 로그에서 runner 시작00:30:38→native10전 시작00:35:14(4분37초)를 측정했다. 기존 로컬 native 전체약5분35초만 더해도 후속 저장/편성 검사 전에10분을 넘으므로, 제품 evidence job 제한을10→15분으로 조정했다. Windows job과 같은 유한 제한이며 native 자체 wall deadline, 실패 조건, 기본 재생 속도와 전체 검사를 유지한다. 이 조정은 timeout을 PASS로 처리하지 않으며 최신 원격 결과를 따로 확인한다.
+
+## 사용자 최신 연속 개선 지시 · Base fresh-read와 실제 적용
+
+- 새 지시: Base fresh-read 후 벤치마킹·실무조사·구현·개선을 별도 반복 승인 없이 계속한다.
+- Base 현재 원격 `d830c0f6967678eed3c208ac6b24f9cd1b262ec3`의 AGENTS, intake/continuous/review owners, 재사용 handoff·TEN_PACES profile·registry를 확인했다. 로컬 Base HEAD `68792fc38340a19945ba6b15eedef39f55d50705`와 구분하며 프로젝트9.4.4 채택 pin은 유지했다.
+- Work Mode BUILD/REVIEW; Skill `managing-project-intake-and-work-contract` start/resume, `continuous-work-execution`, `combat-ux-and-accessibility` runtime-review. 현재 Base validator 두 파일을 별도 검증 폴더에 읽기 전용 원본에서 추출했다. root receipt 실행 start PASS; 기록 검사는 구현 증거와 별개다.
+- 외부 게임10개 직접 원출처를 읽고 비교했다. 직접 전술 비교4개, 인접6개, 혼합 사례 포함. 출처·관측·적용·복사 금지·공개 정보 한계는 `2026-09-12_PRESENTATION_CONTROLS_WORK_CONTRACT_RECEIPT.json`의 단일 benchmark owner에 기록했다. 비공개 제작 과정이나 대표 플레이어 반응은 추정하지 않았다.
+- 실무 채택: Tactical Breach Wizards의 작은 화면 레이아웃/방향키 조작 개선과 인증 후 별도 플레이어 검증, Mario+Rabbids의 효과음·카메라 조절, Celeste의 단축키 충돌 교정 사례를 기존 버튼·슬라이더·포커스에 ADAPT했다. 대형 설정 창과 단축키 전용안은 현재 두 컨트롤의 비용·발견성 비교로 제외했다. 다른 로컬 프로젝트는 조사하지 않았다.
+- 실제 구현: 제품 화면에서 숨겨졌던 소리와 효과음 음량을 모션 감소 옆에 복원했다. native Enter로 mute, Left로 volume 감소, 전투 상태 불변, 세 해상도 경계·복기 문장 비중첩을 검사한다. 기존 SFX와 입력 처리 재사용, 새 게임 규칙·이미지·비용·저장 schema 변경은 없다.
+- RED: `audio-controls-red.log`, 숨겨진 컨트롤6실패. GREEN: `verify_combat_keyboard_accessibility-final-audio.log`, 실제 입력 포함 PASS. 포커스 순서/링/보조 이름도 해당 실제 컨트롤로 검증한다.
+- 원격4499e9ee의 native10전은 PASS지만 뒤의 카드 geometry 검사12실패로 job 전체 FAIL이었다. 이를 성공으로 보고하지 않았다. Linux 두 줄17px 글꼴 조건을 로컬 테스트에 주입해 같은12실패를 재현했다(`card-native-metrics-red.log`). 준비 영역 최소296px로720p 경계만8px 조정해 카드185px 높이를 수용했다. 같은 카드 검사 GREEN. 전투 실행 후 원래 responsive 경계 복귀 검사는 오차를 넓히는 대신 최초 실제 경계와 재진입 경계의 일치를 추가했다.
+- 로컬 실제 native 캠페인 ba9b615a: 288입력,10전10승,보상10,행로36,383223ms,failures0. 4499 변경은 CI제한/문서뿐이었다. 이는 특정 보존 v2 fixture의 자동 입력 증거이며 사람 난이도/전체 밸런스 증거가 아니다.
+- 실제4.7.1 OpenGL 캡처: `C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/audio-controls/preparation-plan.png`. 이미지 모델 시안이 아닌 게임 GPU 화면이며 새 소리/음량/모션 조절을 시각 확인했다.
+- 기존 승인 계보의 정확히2회 전체 검토는 유지한다. 이번 후속은 발견 결함별 정본·코드·untouched consumer·경계·회귀와 더 작은 대안 재확인이며 세 번째 전체 검토로 이름을 바꾸어 추가하지 않는다. 불필요한 새 설정 프레임워크/자산/저장 마이그레이션을 제외했고, 카드공간 회귀와 오래된 숨김/60% 고정 fixture를 교정했다.
+- 영향 Python 검사9PASS/76.47초(한 항목 안의 native visual18개 포함), 실제 카드/키보드/포커스/보조 이름/복기/레이아웃 검사 증거를 validation 폴더에 보존한다. 최신 head CI 상태는 GitHub를 직접 조회한다.
+- 재사용 교훈: 접근성 컨트롤은 노드/label 존재만으로 완료가 아니며 실제 visible+focus+input+domain 불변을 검사해야 한다. 글꼴 최소크기는 개별 카드뿐 아니라 부모의 두 행 높이에도 반영해야 한다. 프로젝트 owner/회귀에 반영했고, Base 공용 승격은 검증된 다른 소비처가 없어 후보로만 둔다.
+- 미검증: 설정의 앱 재실행 간 저장, 실제 음향 장치, Human/Android/실물게임패드/접근성 사용자/출시. 현재 설정은 해당 전투 화면 인스턴스 안에서 유지된다. 이미지4장의 최종 visual lock은 별개로 유지하며 이 작업에서 승인 문자열을 만들지 않았다.
+
+최종 국소 확인: 전투 판넬/접지/모든 공격 프레임 peak/화면 복귀 검사 PASS(frontal-final-audio-2.log), 복기·레이아웃·focus 순서·focus ring·보조 이름 PASS. resize를 의도적으로 수행하는 fixture에서는 변경 전 viewport 좌표와 비교하지 않고 새 viewport의 bounded partition을 검사하며, 크기 불변 경로의 복귀 위치는 처음과0.5px 이내 일치한다. 정리 보조181개 이동·해시 확인, 삭제 대기 총800파일(목록 포함).

@@ -1,5 +1,16 @@
 # Ten Paces: Hidden Moves UX/UI 시스템
 
+## 2026-09-12 전투 연출 조절 복원
+
+현재 전투 화면은 준비 영역 바로 위에 `소리: 켬/끔`, 효과음 음량, `모션 감소: 켬/끔`을 표시한다.
+Enter로 소리를 전환하고 음량 슬라이더에서 좌우 화살표로 조절한다. 결과 텍스트·공개 정보·전투 판정은 그대로 유지한다.
+기존 버튼·슬라이더·효과음 플레이어·포커스 링을 재사용하며 새 설정 창이나 추가 오디오 채널은 만들지 않는다.
+복기 문장과 조절 요소는 서로 다른 영역을 사용한다. 720p에서는 플랫폼별 글꼴 높이로 두 행 카드가 잘리지 않도록
+준비 영역에 최소296px를 확보한다(통상60% 경계에서 최대8px 조정). 실행 후 같은 경계로 복귀한다.
+이 설정의 현재 수명은 전투 화면 인스턴스이며 재실행 간 저장은 아직 구현되지 않았다.
+근거·대안·검증: `docs/operations/2026-09-12_PRESENTATION_CONTROLS_WORK_CONTRACT_RECEIPT.json`,
+`docs/operations/2026-09-12_MOTION_UI_INTEGRATION.md`. 사람 접근성·실물 게임패드·음향 장치 검증은 NOT_RUN이다.
+
 > Base 공용 기준: `alsdmlals4-eng/Base`의 `auditing-and-refining-ui-art`  
 > Base content commit: `a728712cb776ec98f4875914a580fcf7d0156593`  
 > 프로젝트 상태: `DESIGN_CONTRACT_ADOPTED`  
