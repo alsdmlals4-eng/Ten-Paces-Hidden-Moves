@@ -157,7 +157,11 @@
           {
             "id": "AUDIO-01",
             "text": "At supported viewports, sound controls are visible, nonoverlapping and keyboard operable; audio changes leave combat state intact.",
-            "status": "PASS"
+            "status": "PASS",
+            "evidence": [
+              "docs/operations/2026-09-12_MOTION_UI_INTEGRATION.md",
+              "C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/verify_combat_keyboard_accessibility-final-audio.log"
+            ]
           }
         ],
         "verification": [
