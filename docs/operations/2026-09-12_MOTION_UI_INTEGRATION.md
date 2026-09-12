@@ -93,3 +93,6 @@ dced1b70 원격33SUCCESS/1FAILURE. 실패한 frontal partition은 Linux의 특�
 ## 실제 입력 캠페인 경로 이관
 
 f671f1d9 원격33SUCCESS/1FAILURE. 절초 최대 자세·Windows·일반 headless 검사는 통과했고 실제 입력10전 probe가 숨겨진 옛 무공서 버튼을 누르다 중단됐다. 현재 UI는 모든 해금 기술을 한 목록에서 선택하므로 probe는 목록의 실제 버튼과 그 무공ID를 검증하고 기존 native 입력 helper로 활성화한다. 미해금/제약 차단, 실제 슬롯 점유, terminal HP/이력 대조, 보상10회·행로36회·가짜 성공 거부는 유지한다. 제품 규칙이나 정책, 보존된 초기 fixture bytes는 변경하지 않는다. 10전 완료는 새 exact HEAD 원격 재실행으로 확인한다.
+
+
+원격 실행 로그에서 runner 시작00:30:38→native10전 시작00:35:14(4분37초)를 측정했다. 기존 로컬 native 전체약5분35초만 더해도 후속 저장/편성 검사 전에10분을 넘으므로, 제품 evidence job 제한을10→15분으로 조정했다. Windows job과 같은 유한 제한이며 native 자체 wall deadline, 실패 조건, 기본 재생 속도와 전체 검사를 유지한다. 이 조정은 timeout을 PASS로 처리하지 않으며 최신 원격 결과를 따로 확인한다.

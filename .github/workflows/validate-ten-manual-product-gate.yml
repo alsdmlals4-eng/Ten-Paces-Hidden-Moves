@@ -91,7 +91,8 @@ jobs:
 
   automated-product-evidence:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # Full presentation regressions plus the ordinary-speed native campaign.
+    timeout-minutes: 15
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
