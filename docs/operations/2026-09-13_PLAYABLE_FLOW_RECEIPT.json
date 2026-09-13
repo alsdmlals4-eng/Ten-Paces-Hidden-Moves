@@ -1,7 +1,7 @@
 {
   "work_level": "L1",
   "authorization": "User 2026-09-13 explicitly requests autonomous comparable-game research, planning, implementation and improvement loops without routine reapproval.",
-  "source_head_sha": "a5dcb9db1f6f8b4e61a7704701f9f4feddc48ced",
+  "source_head_sha": "58385c2a2cb77b8a3f8ca1c73ccd3077ac144d90",
   "base_remote_sha": "d830c0f6967678eed3c208ac6b24f9cd1b262ec3",
   "benchmark_preflight_receipt": {
     "state": "PASS",
@@ -143,7 +143,7 @@
         "title": "Keep every result reward readable and keyboard reachable",
         "status": "VERIFY_REVIEW",
         "canon_owner": "docs/UX_UI_SYSTEM.md",
-        "actual_consumers": ["src/run/vertical_slice_shell_result_auto.gd"],
+        "actual_consumers": ["src/run/vertical_slice_shell_result_auto.gd", "src/run/vertical_slice_shell_route_auto.gd"],
         "depends_on": ["COMPLETION-RETURN"],
         "acceptance_criteria": ["RESULT-01"],
         "required_evidence": ["E2_TEST", "E3_RUNTIME"],

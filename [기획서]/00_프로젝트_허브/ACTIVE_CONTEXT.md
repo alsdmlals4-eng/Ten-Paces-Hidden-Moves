@@ -2,6 +2,8 @@
 
 ## 현재 후속 반복 · 결과 보상 탐색
 
+후속 표적 교정으로 current JIANGHU의 성공한 선택→진행 버튼, 다음 단계→첫 선택지의 키보드 초점을 연결했다. 실제 Enter 연속 입력과 중단/중복 휴식 방지를 검증하며 기존 행로 효과·저장 의미는 유지한다.
+
 사용자의 `작업 계속진행해`에 따라 a5dcb9db의34CI를 확인하고 결과 화면의 전체 보상 스크롤·안정된 버튼 초점·기존 첫 선택 잠금 표시·중복 전수 설명을 구현했다. `vertical_slice_shell_result_auto.gd`가 표현을 소유하고 RunState/progression의 보상·저장 규칙은 유지한다. 계획과 실행 증거는 `docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md`, 현재 exact HEAD/CI는 PR342를 직접 읽는다.
 
 ## 현재 후속 반복 · 완주 기록 보존과 제목 복귀

@@ -1,5 +1,15 @@
 # 플레이 흐름 개선 루프 — 구현 계획과 실행 기록
 
+## 후속 표적 교정 계획: 행로 선택에서 다음 단계까지의 초점
+
+실행: `route-focus-red.log`에서 실제 Enter 선택 뒤 continuation 초점 부재를 확인했다. 기존 성공 transaction 반환값을 사용해 초점을 인계하고, 같은 행로 내 성공한 다음 단계에서 첫 선택지를 연결했다. `route-focus-green.log` PASS 후 Windows4.7.1 actual 입력22검사 PASS, stderr empty. root result는 synthetic terminal fixture이며 실제 전투 승리 증거가 아니다. 선택/다음단계/휴식에 실제 key event를 사용하고, 중단 선택은 초점·자원을 유지하며 중복 휴식은 추가 회복0이다. `route-focus-rest.png`의 실제 GPU 화면을 직접 확인했다. legacy ROUTE_GROWTH/INFO에 무관한 구현을 추가하지 않았다. 새로운 전체 검토가 아니라 같은 승인 흐름의 후속 결함 교정이다.
+
+기준58385c2a / 동일main·Base·10개 비교. 결과 보상 다음의 실제 current 소비처는 `JIANGHU`이며 과거 ROUTE_GROWTH/ROUTE_INFO 화면을 새 기본으로 복원하지 않는다. `VerticalSliceRouteShell._choose_jianghu`는 선택 결과를 게시하면서 선택 버튼을 제거/숨기고, 다음 단계에서는 같은 확정 버튼을 비활성화한다. 두 경계에서 키보드 사용자의 다음 조작 위치가 사라질 수 있다.
+
+동일 선택/확정·focus dimension의 위10개 공식 비교를 재사용한다. Shogun/Celeste의 메뉴 변경·focus 가림 교정에서 전달한 원칙이다. FEASIBLE: 기존 성공한 transaction 이후에만 다음 활성 Control로 focus를 전달한다. 규칙·행로 추첨·선택 즉시 적용·4회/3갈래·저장 변경 없음. 대안: 성공 경계의 명시적 focus ADOPT; 매 프레임 자동 focus REJECT(사용자 탐색을 훔침); 화면 전체 재구성 REJECT(불필요).
+
+순서: 기존 inn/route fixture의 실제 Enter 연속 입력과 선택/휴식 중복0 RED → 성공한 선택 뒤 continuation, 성공한 다음 단계 뒤 첫 선택지로 focus → 메뉴/결과/행로 경계 영향 회귀 → owner와 CI. 실패하거나 중단된 transaction은 focus를 이동하지 않는다. 기존 전체 검토2회를 초기화하지 않는다.
+
 ## 후속 개발 반복: 결과 보상 탐색 (구현 전 계획)
 
 ### execution-report
