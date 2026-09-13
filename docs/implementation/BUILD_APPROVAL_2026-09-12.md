@@ -34,4 +34,6 @@ owner. No core change, progress-save migration, paid dependency or new visual ap
 
 ## 2026-09-13 playable-flow development continuation
 
+The repeated latest user instruction authorizes the recommended next loop: completed-record return to the existing title and reread through the existing checkpoint loader. `TEN-DEC-20260913-COMPLETION-RECORD-RETURN-01` specifies the view lifecycle while preserving the existing explicit new-generation replacement confirmation, save schemas and terminal domain completion. This is not permanent history retention or new progression.
+
 User explicitly clarified that improvement loops mean comparable-game research, planning detail and connections, implementation, verification and the next actual implementation gap, without separate routine approval. This covers the optional menu/guide, shared preference controls, native pause/focus corrections and canonical, scrollable completion history. Plan and receipts: `docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md`, `docs/operations/2026-09-13_PLAYABLE_FLOW_RECEIPT.json`. The original two full reviews are not reset. No new combat semantics, save migration, completed-run replacement policy or image final lock is inferred.

@@ -121,6 +121,9 @@ func configure_continue(payload: Dictionary, status: String) -> void:
 		elif not payload.combat_checkpoint.is_empty(): place += " · %d번째 묶음" % int(payload.combat_checkpoint.state.bundle_index)
 		button.text = "이어하기 · " + place
 		notice.text = "마지막으로 확정된 진행부터 이어집니다.\n확정 전 배치는 다시 고릅니다."
+		if run.current_screen == "COMPLETION":
+			button.text = "완주 기록 보기"
+			notice.text = "열 번의 비무와 성장 기록을 다시 봅니다.\n새 여정을 확정하면 현재 완주 기록을 교체합니다."
 		if status == "RECOVERED_BACKUP": notice.text = "백업에서 진행을 복구했습니다.\n" + notice.text
 	else:
 		button.text = "저장 다시 읽기"

@@ -38,6 +38,7 @@ on:
       - "tests/verify_bimu_constraint_model.gd"
       - "tests/verify_run_save_store.gd"
       - "tests/verify_game_menu.gd"
+      - "tests/verify_completion_return.gd"
       - "tests/verify_vertical_slice_completion_summary.gd"
       - "tests/verify_presentation_preferences.gd"
       - "tests/verify_presentation_preferences_runtime.gd"
@@ -181,6 +182,10 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_vertical_slice_completion_summary.gd
       - name: Verify optional game menu, native focus and settings boundaries
         run: godot --headless --path . --script res://tests/verify_game_menu.gd
+      - name: Verify legacy completed record title return and replacement boundaries
+        run: godot --headless --path . --script res://tests/verify_completion_return.gd
+      - name: Verify variable completed record title return and replacement boundaries
+        run: godot --headless --path . --script res://tests/verify_completion_return.gd -- --variable-fixture
       - name: Verify bounded raw-byte save validation cache
         run: godot --headless --path . --script res://tests/verify_run_save_cache.gd
       - name: Verify actor-owned martial execution and preserved old save identity

@@ -9,7 +9,15 @@
   "pr_integration_authority": "TEN-DEC-20260908-STANDING-PR-INTEGRATION-01",
   "pr_integration_policy": "RELATED_EXISTING_PRS_REVIEW_ABSORB_CORRECT_VERIFY_MERGE_WITHOUT_NAMED_REAPPROVAL",
   "project": "TEN_PACES",
-  "updated_date": "2026-09-12",
+  "updated_date": "2026-09-13",
+  "completion_record_return": {
+    "decision": "TEN-DEC-20260913-COMPLETION-RECORD-RETURN-01",
+    "status": "WORKING_BRANCH_IMPLEMENTED_LOCAL_BOUNDARY_TESTED_CI_LIVE",
+    "execution_record": "docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md",
+    "domain_save_schema_change": false,
+    "human_android_release": "NOT_RUN",
+    "known_visible_diagnostic": "Existing title confirmation also reproduces Godot _sub_window_grab_focus index diagnostic"
+  },
   "combat_feedback_continuation": {
     "decision": "TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01",
     "integration_status": "MAIN_MERGED_VERIFIED_PR335",

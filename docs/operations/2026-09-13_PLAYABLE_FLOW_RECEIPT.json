@@ -1,7 +1,7 @@
 {
   "work_level": "L1",
   "authorization": "User 2026-09-13 explicitly requests autonomous comparable-game research, planning, implementation and improvement loops without routine reapproval.",
-  "source_head_sha": "3bebe3c2428a2aa34d15edf8feca7268a76e7305",
+  "source_head_sha": "c5d82e3a1d64b4e138abd7992db1d016c672e7f0",
   "base_remote_sha": "d830c0f6967678eed3c208ac6b24f9cd1b262ec3",
   "benchmark_preflight_receipt": {
     "state": "PASS",
@@ -39,7 +39,7 @@
       {
         "game": "Into the Breach",
         "comparison_class": "DIRECT_MIXED",
-        "source_and_evidence": "https://www.subsetgames.com/itb.html",
+        "source_and_evidence": "https://store.steampowered.com/app/590380/Into_the_Breach/",
         "observed_pattern": "공식 소개는 모든 적 공격 예고를 전략 핵심으로 설명",
         "project_fit_and_difference": "우리 안내에 공개/비공개 경계를 명시해야 함",
         "do_not_copy": "전체 적 계획 공개 금지 / AVOID",
@@ -131,15 +131,36 @@
     "goal_or_slice_issue_ref": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/342",
     "source_main_sha": "ed2104d98872c63eac27999830aeae9c15a00bdc",
     "work_item_refs": [
-      "PLAYABLE-FLOW"
+      "PLAYABLE-FLOW",
+      "COMPLETION-RETURN"
     ],
-    "active_work_item_ref": "PLAYABLE-FLOW",
-    "next_action": "Exact working-head CI and remaining completion transition owner audit",
+    "active_work_item_ref": "COMPLETION-RETURN",
+    "next_action": "Verify completion return to title without retiring its saved record",
     "work_items": [
+      {
+        "work_item_id": "COMPLETION-RETURN",
+        "title": "Connect saved completion to title and existing record review",
+        "status": "VERIFY_REVIEW",
+        "canon_owner": "docs/UX_UI_SYSTEM.md",
+        "actual_consumers": ["src/run/vertical_slice_shell_completion_auto.gd", "src/ui/main_title_screen.gd"],
+        "depends_on": ["PLAYABLE-FLOW"],
+        "acceptance_criteria": ["RETURN-01"],
+        "required_evidence": ["E2_TEST", "E3_RUNTIME"],
+        "checklist": [{"id": "RETURN-01", "text": "Native title return, record review and existing new-run confirmation preserve completed checkpoint", "status": "PASS", "evidence": ["tests/verify_completion_return.gd", "C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/completion-return-visible-root-input.log"]}],
+        "verification": [{"level": "E2_TEST", "status": "PASS", "evidence": ["tests/verify_completion_return.gd"]}, {"level": "E3_RUNTIME", "status": "PASS", "evidence": ["C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/completion-return-visible-root-input.log", "docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md"]}],
+        "next_action": "Exact-head CI; preserve independently reproduced baseline embedded-dialog diagnostic"
+      },
       {
         "work_item_id": "PLAYABLE-FLOW",
         "title": "Connect optional game menu, precombat settings and rules guide",
-        "status": "VERIFY_REVIEW",
+        "status": "DONE",
+        "verified_head_sha": "c5d82e3a1d64b4e138abd7992db1d016c672e7f0",
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0,
+        "repository_readback": "PASS",
+        "readback_evidence": ["C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/PLAYABLE_FLOW_READBACK.json"],
+        "rollback": "Revert bounded menu/completion presentation commit while preserving settings and run files. Product slice only; unrelated art/Human gates remain separate.",
         "canon_owner": "docs/UX_UI_SYSTEM.md",
         "actual_consumers": [
           "src/run/vertical_slice_shell.gd",

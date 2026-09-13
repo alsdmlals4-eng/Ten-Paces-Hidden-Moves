@@ -1,5 +1,39 @@
 # 플레이 흐름 개선 루프 — 구현 계획과 실행 기록
 
+## 후속 개발 반복: 완주 기록 보존과 제목 복귀 (구현 전 계획)
+
+### 후속 execution-report
+
+- 최신 사용자 범위 재확인: 게임 전체 완성·구현까지 개선 루프를 계속한다. 개별 패키지는 전체 게임 완료 선언이 아니라 계획→구현→검증을 추적하는 단위다. 자동으로 해결할 수 있는 잔여 구현을 계속 찾고 처리하며 Human/실기기/출시 증거는 별도로 유지한다.
+- 최종 관련 회귀: completion return33, game menu60, variable save compatibility, save entry isolation, durable continue 모두 종료 코드0. 보호 변경 계약 검사 PASS. 생성 sidecar184개와 이번 완료 복귀 테스트의 격리 폴더13개(파일53개)를 수동 삭제 대기 `C:/Users/user/Documents/삭제대기/십보강호_모션통합_20260912_064614/completion-return-20260913`로 이동하고237개 파일 SHA-256 readback을 확인했다. 원래 경로·복원 목적지는 CSV에 기록했고 실제 삭제는 수행하지 않았다.
+- 실제 구현: `VerticalSliceCompletionShell.return_to_title`는 완료 상태·저장 확인 뒤 기존 scene을 새 제목 인스턴스로 교체한다. 저장과 현재 설정 owner를 이어주고 이전 인스턴스를 해제한다. domain MAIN/retire는 호출하지 않는다. 제목의 완료 체크포인트는 `완주 기록 보기`로 표시하고 새 여정 확정 시 교체되는 한계를 안내한다.
+- RED: `completion-return-red.log`에서 실제 완료 checkpoint를 로드한 뒤 복귀 진입점 부재를 확인했다. GREEN에서 기록 열람/취소/확정19개 검사 PASS. 취소 입력은 main root와 실제 확인 Window를 구분해야 하므로 기존 native 회귀처럼 Viewport의 입력 경로로 전달했다. 버튼 신호를 직접 발행해 통과시키지 않았다.
+- 추가 RED: `completion-return-late-pause-red.log`에서 복귀 예약 직후 pause가 들어오면 화면이 바뀌는 문제를 재현했다. deferred 실행 직전 accepts_commands와 완료 상태를 재확인해 교정했다.
+- 확장 검사: v1/v2 완료 fixture, 저장 실패·복구, pause, 늦은 pause, 중복 복귀, 제목 포커스, 기록/보상 불변, 새 여정 취소/확정/새 generation, 미완료 복귀 거절, 정상 및 쓰기 실패 설정 유지. v1 최종33개 PASS; v2 Windows33개 PASS. GPU720p/1080p 제목 캡처를 직접 확인했다. 로그/이미지 root: `C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/`의 validation/completion-return-*와 completion-return/.
+- Windows 미해결 진단: embedded ConfirmationDialog 취소/확정에 Godot `_sub_window_grab_focus` index 진단이 발생한다. `--dialog-baseline`으로 새 복귀를 실행하지 않은 기존 제목의 확인창에서도 재현했다(`completion-return-dialog-baseline-open.log`). 상태/저장 검사는 성공하지만 무진단 runtime/Human PASS가 아니다. 원본 engine source와 Window 문서를 확인했으며 검증되지 않은 엔진 패치를 적용하지 않았다. 별도 회귀 fixture를 남겼다.
+- 학습/자동화: 완료 domain을 MAIN으로 바꾸는 것이 저장 retire로 이어진다는 consumer 차이를 찾아 기존 scene 진입점 재사용을 선택했다. 비동기 화면 교체는 요청 시점뿐 아니라 실행 직전에도 lifecycle guard가 필요하다. v1/v2 실제 입력 검사를 기존 product CI에 각각 연결했다. 새 저장 Schema나 유료 의존성은 없다. 기존 전체 검토2회는 초기화하지 않았다.
+- Python governance/retry-save22개와 canonical reference freshness PASS. 원격 latest HEAD 결과는 PR342를 직접 읽는다. 캐릭터4장 최종 확정, Human/Android/실물 입력·음향/출시와 기존 편집기 종료45 ObjectDB/22resource 진단은 별도다.
+
+기준 c5d82e3a1d64b4e138abd7992db1d016c672e7f0 / main ed2104d9 / Base d830c0f6, 채택9.4.4 유지. 이전 변경34CI PASS 확인. 최신 사용자 지시는 계획·연결·구현·개선을 재승인 없이 이어가는 것이다. PLAN→BUILD→REVIEW, project UX ui-contract/runtime-review, implementation-contract/build, verification regression-validation, writing-plans/TDD를 사용한다.
+
+CURRENT_SOURCE_RELEVANCE_CHECK: 아래10개 공식 출처의 본문을 다시 확인했다. 직접 Shogun Showdown/Tactical Breach Wizards/Fights in Tight Spaces/Into the Breach, 인접 Knights in Tight Spaces/Celeste/Hades/TLOU2/Ratchet & Clank/Slay the Spire. 같은 메뉴/재학습/저장 경계 차원을 재사용하며 다음 새 근거로 복귀 동작을 구체화한다. 반응은 개발자 수정 이력과 공개 공백에 한정한다.
+
+- Shogun1.0: 종료 후 Restart/Back to camp 분리, 메뉴에서 ending 재열람. 결과 열람과 새 여정 생성 분리 ADAPT. 덱/쿨다운/영구 성장 복사 금지.
+- Knights 공식 패치: pause→level-end 사이 quit 저장 손상과 완료 직후 재시작 lock-up 수정. 중복 활성화/해제 순서/저장 보존 회귀 ADAPT. 다중 모드/공유 슬롯 도입 금지.
+- Hades 공식 FAQ: .sav/.sav.bak 복구 안내와 별도 설정. 기존 검증된 완료 기록 보존 ADAPT. 공개되지 않은 내부 상태 머신 추정 금지.
+- Into the Breach 제작사 페이지 재조회 실패. 공식 Steam About This Game으로 대체: https://store.steampowered.com/app/590380/Into_the_Breach/ . 새 시도와 전체 적 공격 예고가 설명되지만 시간 되감기/예고 복사는 REJECT.
+- 나머지6개는 아래 비교표의 실제 공개 사실과 DO_NOT_COPY를 유지한다. 새 회차 저장 기능이 공개되지 않은 문서에서 해당 기능을 추정하지 않는다.
+
+FEASIBLE: 저장 owner는 active COMPLETION을 이미 복원한다. run_state를 MAIN으로 바꾸면 coordinator가 retire로 쓰므로 이 방식은 사용하지 않는다. 저장 성공 확인 뒤 기존 shell scene을 새 타이틀 인스턴스로 교체하고 동일 저장/설정 경로를 전달한다. 기존 새 여정 확인과 generation 교체는 재사용한다.
+
+대안: 새 shell 복귀 ADOPT(기존 진입점 재사용); domain은 완료인데 UI flag만 제목으로 전환 REJECT(파생 화면과 이중 상태); domain MAIN 전환 REJECT(기존 retire 의미). 모델·Schema·보상·재도전·코어·다중 슬롯은 변경하지 않는다.
+
+구현 순서: 저장된10전 fixture→완주→실제 Enter 제목 복귀→완주 기록 재열람→새 여정 취소/확정 RED; 최소 구현; 파일/generation/보상 횟수 보존과 중복 클릭·중단·저장 실패 guard; v1/v2/메뉴/이어하기 회귀; Windows720p/1080p 캡처; owner·보호 경로·CI·readback·수동 삭제 대기 정리.
+
+완료 기준: 기록을 보는 동작은 새 여정이나 보상을 생성하지 않는다. 제목 복귀·취소에는 기존 완료 저장이 남고 기존 확인 후에만 새 generation을 생성한다. 다른 화면/중단/저장 실패에서는 복귀를 거절한다. 별도 기록관·메타 성장·영구 보상은 추가하지 않는다. 두 차례 전체 적대 검토 계보를 초기화하지 않고 이번 범위의 실제 결함/consumer/실행/장기 적합성을 표적 검토한다.
+
+AgentMemory 도구는 현재 노출되지 않아 현행 저장소와 직전 실행 기록으로 재개했다. Hera status의 editor는 다른 프로젝트(GRIMOIRE)이므로 연결하지 않았다. 본 프로젝트의 격리된 Godot 실행으로 검증한다. 묶음 문서 갱신 실행이 자동 검토에서 사유 없이 차단되어 읽기와 파일 패치로 분리했다.
+
 사용자 2026-09-13: 유사 장르 조사로 기획을 구체화·연결하고 구현/개선을 연속 수행하며 별도 승인을 요청하지 말라는 지시. 이 기록은 다음 실행 가능한 간극을 선택하는 현재 개선 큐다. 원화 최종 승인/Human 증거를 자동 생성하지 않는다.
 
 - source HEAD: 3bebe3c2428a2aa34d15edf8feca7268a76e7305; main ed2104d98872c63eac27999830aeae9c15a00bdc; Base d830c0f6967678eed3c208ac6b24f9cd1b262ec3. 채택9.4.4 유지.

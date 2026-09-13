@@ -1,5 +1,10 @@
 # 십보강호 활성 컨텍스트
 
+## 현재 후속 반복 · 완주 기록 보존과 제목 복귀
+
+사용자 반복 개선 지시에 따라 c5d82e3a의34CI를 확인하고 제목 복귀를 후속 구현했다. 현재 소비처는 `VerticalSliceCompletionShell`과 `MainTitleScreen`, 계약은 `docs/decisions/2026-09-13_COMPLETION_RECORD_RETURN.md`다. 완료 기록을 보존한 채 제목→기록 재열람→기존 새 여정 취소/확정을 연결한다. 늦은 중단·중복 요청·저장 실패·설정 유지와 v1/v2 저장을 검증한다. 현재 exact HEAD/원격 검증은 PR342를 직접 읽고 실행 기록을 확인한다.
+Windows 확인창의 `_sub_window_grab_focus` 진단은 새 복귀를 거치지 않는 기존 제목에서도 재현됐다. 동작 검증 성공과 별도로 보존하며 무진단 runtime 또는 Human 완료를 주장하지 않는다.
+
 ## 현재 재개 지점 · 2026-09-13 플레이 흐름 개선 루프
 
 최신 사용자는 유사 장르 비교→기획 연결→구현→실행 검증→다음 구현 공백 확인을 재승인 없이 계속하도록 명시했다. 작업 전 계획과 실제 개발 반복 결과는 `docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md`, 상태는 `docs/operations/2026-09-13_PLAYABLE_FLOW_RECEIPT.json`을 따른다.

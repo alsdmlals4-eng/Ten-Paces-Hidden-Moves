@@ -12,6 +12,7 @@ const STARTERS := [
 const REVIEW_CAUSES := ["clash", "range", "clash", "order", "range", "clash", "timing", "range", "order", "timing"]
 
 var failures: Array[String] = []
+var completed_run_snapshot: Dictionary = {}
 
 
 func _initialize() -> void:
@@ -29,7 +30,8 @@ func _run() -> void:
     var catalog = OPPONENT_CATALOG_SCRIPT.new()
     _expect_true(catalog.is_valid(), "Opponent catalog must remain valid for completion history.")
     _expect_true(run.configure_opponents(catalog, 20260820), "Completion run must configure deterministic opponents.")
-    _expect_true(run.start_new_run(), "Completion run must start.")
+    var started: bool = run.start_new_variable_run(145571664, "completed-fixture") if "--variable-fixture" in OS.get_cmdline_user_args() else run.start_new_run()
+    _expect_true(started, "Completion run must start.")
     _expect_true(run.confirm_setup_loadout(STARTERS, _starter_mastery()), "Completion run must preserve exact-four starter Setup.")
     _expect_true(run.advance(), "Setup must enter Intro.")
     _expect_true(run.advance(), "Intro must enter Briefing.")
@@ -87,6 +89,7 @@ func _run() -> void:
             _expect_eq(str((history[duel - 1] as Dictionary).get("opponent_candidate_id", "")), str(opponent.get("candidate_id", "")), "Each duel row must retain its actual opponent.")
 
     _expect_true(run.is_complete(), "Ten-duel campaign must reach Completion.")
+    completed_run_snapshot = run.export_snapshot()
     _expect_eq(run.get_duel_history().size(), 10, "Completion requires ten duel-history rows.")
     _expect_eq(run.get_reward_history().size(), 10, "Completion must retain ten reward receipts.")
     _expect_eq(run.get_route_history().size(), 36, "Completion must retain thirty-six Route receipts.")
@@ -131,7 +134,7 @@ func _run() -> void:
         await process_frame
         _expect_true(scroll.scroll_vertical > 0, "All ten duel rows and closing line must be reachable by scrolling.")
     var capture_args := OS.get_cmdline_user_args()
-    if DisplayServer.get_name() != "headless" and not capture_args.is_empty():
+    if DisplayServer.get_name() != "headless" and not capture_args.is_empty() and not capture_args[0].begins_with("--"):
         await RenderingServer.frame_post_draw
         root.get_texture().get_image().save_png(capture_args[0])
     shell._set_content("Other screen", "Restored description", "Continue")
