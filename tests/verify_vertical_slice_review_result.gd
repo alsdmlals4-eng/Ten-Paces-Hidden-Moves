@@ -12,6 +12,7 @@ const DEFAULT_STARTERS := [
 ]
 
 var failures: Array[String] = []
+var checks := 0
 
 
 func _initialize() -> void:
@@ -185,8 +186,67 @@ func _verify_result_and_reward_contract() -> void:
     _expect_true(result_text.contains(str(review_summary.get("cause_label", ""))), "Result must show the actual terminal cause.")
     _expect_false(result_text.contains("다음에는"), "Result must not auto-prescribe the next action.")
 
+    # Presentation stress fixture: grant the remaining canonical manuals through
+    # the progression owner. This is not a durable-save/history fixture.
+    for manual_id in shell.manual_registry.get_manual_ids():
+        if manual_id not in shell.run_state.get_player_manual_loadout():
+            shell.run_state._progression.apply_reward_receipt({"reward_type": "faction_transfer", "manual_id": manual_id, "mastery": 3})
+    shell.run_state._player_manual_loadout.assign(shell.run_state._progression.get_snapshot().owned_manual_ids)
+    shell._render_current_screen()
+    root.content_scale_size = Vector2i.ZERO
+    root.size = Vector2i(1280, 720)
+    shell.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+    for i in range(5): await process_frame
+    _expect_eq(shell.result_options_container.get_child_count(), 12, "All ten owned manuals and two other reward choices must remain available.")
+    _expect_true(root.get_visible_rect().encloses(shell.content_panel.get_global_rect()), "Ten-manual result panel must fit 720p.")
+    _expect_true(root.get_visible_rect().encloses(shell.primary_button.get_global_rect()), "Reward confirmation must fit 720p.")
+    _expect_true(shell.result_options_container.get_parent() is ScrollContainer, "The complete reward list must scroll instead of enlarging the panel.")
+    var progression_before: Dictionary = shell.run_state.get_progression_snapshot()
+    var transfer_button: Button = shell.result_options_container.get_child(11)
+    _expect_false(transfer_button.text.contains("receipt"), "Reward copy must not expose internal receipt terminology.")
+    _expect_true(transfer_button.text.contains("이미 보유") and transfer_button.text.contains("기록"), "Duplicate transfer must disclose record-only behavior before confirmation.")
+    shell.result_options_container.get_child(0).grab_focus()
+    for i in range(11): await _reward_key(KEY_DOWN)
+    _expect_eq(root.gui_get_focus_owner(), transfer_button, "All reward choices must be reachable with down navigation.")
+    if shell.result_options_container.get_parent() is ScrollContainer:
+        var scroll: ScrollContainer = shell.result_options_container.get_parent()
+        for i in range(3): await process_frame
+        _expect_true(scroll.get_global_rect().encloses(transfer_button.get_global_rect()), "Keyboard focus must bring the final reward into view.")
+    for viewport in [Vector2i(960, 640), Vector2i(1920, 1080), Vector2i(1280, 720)]:
+        root.size = viewport
+        for i in range(4): await process_frame
+        _expect_true(root.get_visible_rect().encloses(shell.content_panel.get_global_rect()), "Reward panel must fit %s." % viewport)
+        _expect_true(root.get_visible_rect().encloses(shell.primary_button.get_global_rect()), "Confirmation must fit %s." % viewport)
+    var selected_button: Button = shell.result_options_container.get_child(1)
+    selected_button.grab_focus()
+    await _reward_key(KEY_ENTER)
+    _expect_true(is_instance_valid(selected_button) and root.gui_get_focus_owner() == selected_button, "Selecting a reward must preserve its live keyboard focus.")
+    _expect_eq(shell.run_state.get_progression_snapshot(), progression_before, "Reward selection must not apply growth.")
+    _expect_true(shell.run_state.get_reward_history().is_empty(), "Selection alone must not append a reward receipt.")
+    _expect_true(transfer_button.disabled, "Other rewards must show the existing first-selection lock.")
+    _expect_false(shell.select_result_reward("faction_transfer"), "A second selection must preserve the first receipt.")
+    _expect_true(shell.description_label.text.contains("선택을 저장"), "The selected state must explain the next confirmation action.")
+    var chosen_receipt: Dictionary = shell.run_state.get_pending_result_reward()
+    await _reward_key(KEY_ESCAPE)
+    _expect_true(shell.game_menu.visible, "Menu must open from the focused reward.")
+    _expect_false(shell.select_result_reward("free_training"), "Suspended result cannot accept another reward.")
+    await _reward_key(KEY_ESCAPE)
+    for i in range(3): await process_frame
+    _expect_eq(root.gui_get_focus_owner(), selected_button, "Menu close must return to the preserved reward button.")
+    _expect_eq(shell.run_state.get_pending_result_reward(), chosen_receipt, "Menu suspension must preserve the first selection.")
+    await _reward_key(KEY_TAB)
+    _expect_eq(root.gui_get_focus_owner(), shell.primary_button, "Tab from the selected choice must reach confirmation.")
+    var args := OS.get_cmdline_user_args()
+    if DisplayServer.get_name() != "headless" and not args.is_empty():
+        await RenderingServer.frame_post_draw
+        root.get_texture().get_image().save_png(args[0])
+        root.size = Vector2i(1920, 1080)
+        for i in range(4): await process_frame
+        await RenderingServer.frame_post_draw
+        root.get_texture().get_image().save_png(args[0].get_basename() + "-1080p.png")
+
     var focus_manual := DEFAULT_STARTERS[0]
-    _expect_true(shell.select_result_reward("focused_training", focus_manual), "Focused training reward must be selectable for an owned manual.")
+    _expect_eq(str(shell.run_state.get_pending_result_reward().get("target_manual_id", "")), focus_manual, "Native input must select the focused training target.")
     var receipt: Dictionary = shell.run_state.get_pending_result_reward()
     _expect_eq(str(receipt.get("reward_type", "")), "focused_training", "RunState must retain selected reward type.")
     _expect_eq(str(receipt.get("target_manual_id", "")), focus_manual, "Focused reward must retain its selected manual target.")
@@ -194,7 +254,8 @@ func _verify_result_and_reward_contract() -> void:
     _expect_eq(int(receipt.get("free_training", 0)), 3, "Focused reward must preserve the approved +3 free value.")
     _expect_false(shell.primary_button.disabled, "Result CTA must enable after a valid reward selection.")
 
-    _expect_true(shell.advance_noncombat(), "Confirmed Result reward must advance to the Jianghu interval.")
+    shell.primary_button.grab_focus()
+    await _reward_key(KEY_ENTER)
     _expect_eq(shell.run_state.get_current_screen(), "JIANGHU", "Result must leave for the first of four Jianghu choices.")
     _expect_eq(shell.run_state.get_reward_history().size(), 1, "Confirmed reward receipt must move into RunState history exactly once.")
     var next_opponent: Dictionary = shell.run_state.get_route_target_opponent()
@@ -204,27 +265,45 @@ func _verify_result_and_reward_contract() -> void:
     _expect_eq(next_opponent.get("encounter_id", ""), next_encounter.encounter_id, "Route target must retain the preselected encounter identity.")
     _expect_eq(next_opponent.get("candidate_id", ""), next_encounter.candidate_id, "Route target must match the preselected candidate even when candidates repeat.")
     _expect_eq(str(opponent.get("candidate_id", "")), str(shell.run_state.get_current_opponent().get("candidate_id", "")), "Current opponent must remain Duel 1 until Route promotion.")
+    _expect_false(shell.result_options_container.is_visible_in_tree(), "Reward choices must be hidden after confirmation.")
 
     shell.queue_free()
     await process_frame
 
 
+func _reward_key(code: Key) -> void:
+    var event := InputEventKey.new()
+    event.keycode = code
+    event.pressed = true
+    root.push_input(event)
+    await process_frame
+    event = InputEventKey.new()
+    event.keycode = code
+    event.pressed = false
+    root.push_input(event)
+    await process_frame
+
+
 func _expect_true(value: bool, message: String) -> void:
+    checks += 1
     if not value:
         failures.append(message)
 
 
 func _expect_false(value: bool, message: String) -> void:
+    checks += 1
     if value:
         failures.append(message)
 
 
 func _expect_eq(actual, expected, message: String) -> void:
+    checks += 1
     if actual != expected:
         failures.append("%s expected=%s actual=%s" % [message, str(expected), str(actual)])
 
 
 func _finish() -> void:
+    print("RESULT_REWARD_NAVIGATION checks=", checks)
     if failures.is_empty():
         print("VERTICAL_SLICE_REVIEW_RESULT_VERIFY_OK")
         quit(0)

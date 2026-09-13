@@ -1,7 +1,7 @@
 {
   "work_level": "L1",
   "authorization": "User 2026-09-13 explicitly requests autonomous comparable-game research, planning, implementation and improvement loops without routine reapproval.",
-  "source_head_sha": "c5d82e3a1d64b4e138abd7992db1d016c672e7f0",
+  "source_head_sha": "a5dcb9db1f6f8b4e61a7704701f9f4feddc48ced",
   "base_remote_sha": "d830c0f6967678eed3c208ac6b24f9cd1b262ec3",
   "benchmark_preflight_receipt": {
     "state": "PASS",
@@ -132,15 +132,36 @@
     "source_main_sha": "ed2104d98872c63eac27999830aeae9c15a00bdc",
     "work_item_refs": [
       "PLAYABLE-FLOW",
-      "COMPLETION-RETURN"
+      "COMPLETION-RETURN",
+      "RESULT-REWARD-NAVIGATION"
     ],
-    "active_work_item_ref": "COMPLETION-RETURN",
-    "next_action": "Verify completion return to title without retiring its saved record",
+    "active_work_item_ref": "RESULT-REWARD-NAVIGATION",
+    "next_action": "Verify all reward choices, stable focus and existing first-selection lock at exact HEAD",
     "work_items": [
+      {
+        "work_item_id": "RESULT-REWARD-NAVIGATION",
+        "title": "Keep every result reward readable and keyboard reachable",
+        "status": "VERIFY_REVIEW",
+        "canon_owner": "docs/UX_UI_SYSTEM.md",
+        "actual_consumers": ["src/run/vertical_slice_shell_result_auto.gd"],
+        "depends_on": ["COMPLETION-RETURN"],
+        "acceptance_criteria": ["RESULT-01"],
+        "required_evidence": ["E2_TEST", "E3_RUNTIME"],
+        "checklist": [{"id": "RESULT-01", "text": "All-owned-manual scrolling, focus, menu suspension, first-selection lock and confirmation preserve domain rules", "status": "PASS", "evidence": ["tests/verify_vertical_slice_review_result.gd", "C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/result-navigation-visible.log"]}],
+        "verification": [{"level": "E2_TEST", "status": "PASS", "evidence": ["C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/verify_vertical_slice_review_result-result-final.log"]}, {"level": "E3_RUNTIME", "status": "PASS", "evidence": ["C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/result-rewards-720p.png", "docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md"]}],
+        "next_action": "Exact-head CI and readback; existing first-selection and pending-duplicate policies preserved"
+      },
       {
         "work_item_id": "COMPLETION-RETURN",
         "title": "Connect saved completion to title and existing record review",
-        "status": "VERIFY_REVIEW",
+        "status": "DONE",
+        "verified_head_sha": "a5dcb9db1f6f8b4e61a7704701f9f4feddc48ced",
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0,
+        "repository_readback": "PASS",
+        "readback_evidence": ["C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/COMPLETION_RETURN_READBACK.json"],
+        "rollback": "Revert bounded completed-record title navigation without modifying saved files; independently reproduced baseline confirmation diagnostic remains separate.",
         "canon_owner": "docs/UX_UI_SYSTEM.md",
         "actual_consumers": ["src/run/vertical_slice_shell_completion_auto.gd", "src/ui/main_title_screen.gd"],
         "depends_on": ["PLAYABLE-FLOW"],
@@ -148,7 +169,7 @@
         "required_evidence": ["E2_TEST", "E3_RUNTIME"],
         "checklist": [{"id": "RETURN-01", "text": "Native title return, record review and existing new-run confirmation preserve completed checkpoint", "status": "PASS", "evidence": ["tests/verify_completion_return.gd", "C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/completion-return-visible-root-input.log"]}],
         "verification": [{"level": "E2_TEST", "status": "PASS", "evidence": ["tests/verify_completion_return.gd"]}, {"level": "E3_RUNTIME", "status": "PASS", "evidence": ["C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/completion-return-visible-root-input.log", "docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md"]}],
-        "next_action": "Exact-head CI; preserve independently reproduced baseline embedded-dialog diagnostic"
+        "next_action": "Result/reward navigation continuation; baseline embedded-dialog diagnostic remains tracked"
       },
       {
         "work_item_id": "PLAYABLE-FLOW",

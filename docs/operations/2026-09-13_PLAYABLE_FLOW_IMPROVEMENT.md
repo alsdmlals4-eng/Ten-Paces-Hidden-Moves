@@ -1,5 +1,44 @@
 # 플레이 흐름 개선 루프 — 구현 계획과 실행 기록
 
+## 후속 개발 반복: 결과 보상 탐색 (구현 전 계획)
+
+### execution-report
+
+- 보호 변경 계약·canonical reference freshness·work receipt resume PASS. 검증 중 되돌린 생성 sidecar184개는 원래 삭제 대기로 반환하고 전부 기존 SHA-256과 일치함을 확인했다. 새 격리 저장 fixture1폴더/7파일은 `C:/Users/user/Documents/삭제대기/십보강호_모션통합_20260912_064614/result-rewards-20260913`에 이동하고 original/destination/hash manifest를 남겼다. 실제 삭제0, outer checkout 사용자 변경 보존.
+- RED: `result-navigation-red.log`에서720p panel/footer 넘침, 비스크롤 목록, 선택 후 focus 소실, receipt/중복 전수 의미 누락을 확인했다. 초기 탐색 테스트는 이미 선택한 뒤 다른 보상을 고르려 해 실패했으며, `RunState.set_pending_result_reward`와 `verify_ten_duel_campaign.gd`의 첫 receipt 보존 계약을 읽고 이 기대를 교정했다. 도메인 규칙은 수정하지 않았다. 선택 전 변경 불가 안내와 선택 후 다른 버튼 잠금을 UI에 반영했다.
+- 구현: 기존 Result shell에 ScrollContainer와 안정된 reward key 기반 버튼 재사용. 선택 문구만 갱신해 focus 유지. 마지막 버튼의 하단1px가 잘리는 actual rect RED를 재현하고 컨테이너 layout 다음 프레임에 focus-ring 여백을 포함한 가시 영역으로 보정했다. 이전 deferred 호출은 실제 focus owner가 바뀌면 무시한다. 내부 receipt 문구를 제거하고 이미 보유한 무공의 전수는 기록 보관만 한다는 실제 처리를 설명한다.
+- 검증: 최종 result regression76개 PASS. 10권/12선택은 progression owner를 이용한 명시적 화면 stress fixture이며 유효한 전체 저장 이력을 주장하지 않는다. 960×640/1280×720/1920×1080 bounds, 방향키/Tab/Enter, 선택·메뉴 중단·복귀·다른 보상 잠금·실제 확정 후 행로 진입과 보상1회 PASS. Windows4.7.1 실제 GPU720p/1080p 캡처를 직접 확인했고 해당 실행 stderr는 비어 있다. 카운터 합산 수정 전 visible 로그의37은 true 검사만 센 표시이며, 최종 전체76은 true/false/equality를 모두 센 수다.
+- 인접 회귀: completion summary, menu60, synthetic ten-duel state, failure/retry, completed-record return33 모두 exit0. Python governance/retry-save22개 PASS. 이 결과를 물리 gamepad/접근성 사용자/Human/Android/Release PASS로 승격하지 않는다. 기존34CI는 a5dcb9db 기준이고 이번 exact HEAD는 PR342 live metadata로 확인한다.
+- 실제 evidence root: `C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/`의 result-rewards-720p.png, result-rewards-720p-1080p.png 및 validation/result-navigation-*.log, validation/*-result-final.log. Godot4.7.1 binary bytes/version만 재사용했으며 다른 프로젝트의 editor/scene에는 연결하지 않았다.
+- 학습: 선택 가능한 UI와 실제 첫 선택 고정 계약을 함께 검증해야 한다. 스크롤 존재만으로 마지막 focus ring 가시성을 보장하지 않으므로 실제 rect와 입력 검사를 기존 mandatory `validate-vertical-slice-run-state` 회귀에 추가했다. 버튼 수/저장 Schema/규칙을 늘리는 추상화 없이 기존 소비처를 교정했다. 기존 전체 검토2회를 초기화하지 않고 이 결함별 증거와 untouched 도메인/저장/행로/완주 회귀를 추가했다.
+
+기준 a5dcb9db1f6f8b4e61a7704701f9f4feddc48ced / main ed2104d9 / Base d830c0f6. PR342의34개 exact 검사 PASS, 다른 PR199/200은 해당 보상 UI와 무관한 문서·adapter diff로 보존한다. 사용자 `작업 계속진행해`와 전체 완성 연속 구현 지시 범위. PLAN→BUILD→REVIEW. Skill: project UX ui-contract/runtime-review, implementation-contract/build, verification/regression; brainstorming bounded, writing-plans, systematic-debugging/TDD. 기존 전체 검토2회 계보를 유지하고 결함별 회귀를 수행한다.
+
+CURRENT_SOURCE_RELEVANCE_CHECK: 같은 공개 결과·선택 탐색·pause/저장 경계 비교의10개 공식 본문을 다시 읽었다(2026-09-13). 아래 기존 비교표의 직접4/인접6을 유지하며 새 소비처에 다음과 같이 적용한다. 반응 근거는 개발자 패치 및 공개 문서의 한계이며 대표 플레이어 조사는 아니다.
+
+| 사례 | 공식 사실·공백 | 결과 보상 소비처 판정 / DO_NOT_COPY |
+|---|---|---|
+| Shogun Showdown / 직접·혼합 | 1.0에서 상점 긴 설명이 선택 기술을 가리던 문제 교정, 보유 기술 강화 단계 표시; reward 중 gamepad/map 결함 수정 | 선택 항목 가림·보유 상태 설명 ADAPT / 덱·상점·재추첨 제외 |
+| Tactical Breach Wizards / 직접 | 공식 소개에 자유 rewind를 명시, 보상 화면 초점 구현은 공개 안 됨 | 확정 전 비교와 확정 구분 ADAPT / 전투 rewind 제외 |
+| Fights in Tight Spaces / 직접·혼합 | 역사 EA FAQ의 controller 지원과 remap 부재 별도 명시 | 키보드 회귀와 실제 기기 증거 분리 ADAPT / 역사 기능을 현행 보증으로 쓰지 않음, 덱 제외 |
+| Into the Breach / 직접 | 공식 Steam 설명의 적 공격 예고·결과 대응 구조, 보상 내부 UI 미공개 | 공개 결과만 설명 TEST / 적 숨은 계획 예고 AVOID |
+| Knights in Tight Spaces / 인접·혼합 | 종료/pause 사이 저장 손상과 너무 빠른 재시작 정지 수정, 상태 문구 명료화 | 보상 선택과 확정·중단 경계 ADAPT / 보상 수치·파티·모드 제외 |
+| Celeste / 인접·혼합 | 긴 메뉴에서 조작 안내 유지, pause 스크롤 결함과 입력 충돌 교정 | 긴 목록·Tab/방향키·메뉴 복귀 ADAPT / 이동·assist 규칙 제외 |
+| Hades / 인접 | 공식 FAQ의 저장 복구와 입력 문제 안내; 내부 reward 초점 구현 미공개 | 기존 저장 owner 보호 ADAPT / 내부 구현 추정 및 새 저장 슬롯 제외 |
+| TLOU2 / 인접 | HUD 크기·배경·명암 조절과 음향 정보의 시각 대체 | 글자를 줄여 목록을 억지 수용하지 않음 ADAPT / 자동 조준·게임 보조 제외 |
+| Ratchet & Clank / 인접 | 상호작용 대상 대비와 메뉴 parallax 끄기 | 선택 체크와 정지 레이아웃 ADAPT / 신규 shader·게임속도 제외 |
+| Slay the Spire / 인접 | 공식 소개의 조합 선택과 경로 위험 선택; 이 문서에 초점 구현 미공개 | 기존 모든 성장 선택지 보존 ADAPT / 덱·손패·드로우·유물 제외 |
+
+출처는 아래10개 URL과 Into the Breach 대체 Steam URL을 따른다. 기술 근거: https://docs.godotengine.org/en/stable/classes/class_scrollcontainer.html 의 follow_focus/ensure_control_visible와 https://docs.godotengine.org/en/stable/tutorials/ui/gui_navigation.html 의 명시적 focus 및 숨김 시 focus 손실. stable 설명을 exact4.7.1 검증으로 대신하지 않는다.
+
+FEASIBLE: `vertical_slice_shell_result_auto.gd`는 결과 버튼을 매 렌더마다 remove/queue_free하여 선택 직후 초점 소유자가 사라진다. 보유 무공 수+2개 버튼을 비스크롤 VBox에 넣어 작은 화면에서 높이가 늘어난다. `VerticalSliceProgressionState.apply_reward_receipt`는 이미 보유한 전수를 pending_duplicate_transfers에만 보관한다. 모델/저장 Schema/보상 수치는 그대로 두고 이 실제 의미를 표시한다.
+
+대안3개: (1) 기존 목록에 ScrollContainer와 안정된 버튼 식별·초점 보존 ADOPT — 모든 선택지와 현행 2단계 선택/확정 재사용. (2) 페이지/별도 팝업 REJECT — 새 탐색 상태·닫기 경계 증가. (3) 보유 무공 일부만 노출 또는 글자 축소 REJECT — 선택지/가독성 손실.
+
+구현 순서: 기존 실제 Result fixture에서720p10권/12선택과 입력 후 초점·성장 불변 RED → 스크롤과 동일 구성 버튼 재사용 → 내부 receipt 문구 제거 및 중복 전수의 현행 보관 의미 명시 → 실제 Tab/Enter와 메뉴 중단·다음 행로 화면 복귀·중복 보상 방지 → 기존 review/result·completion·menu·저장 회귀 및 visible720p/1080p → owner/보호 경로/CI/readback.
+
+완료 기준: 보상 선택 전/후/확정 후를 구분하며 선택만으로 자원·수련·보상 이력이 증가하지 않는다. 모든 현재 무공 보상이 키보드/스크롤로 도달 가능하고 확정 버튼이 화면 안에 남는다. 현재 선택은 체크와 초점으로 구분하며 새 전투/로드 시 유효 목록만 반영한다. grade 산식과 중복 전수 변환은 새로 만들지 않는다. 원화 생성 불필요. 다른 프로젝트 Hera editor에는 연결하지 않고 격리된 해당 프로젝트 Godot 실행으로 검증한다.
+
 ## 후속 개발 반복: 완주 기록 보존과 제목 복귀 (구현 전 계획)
 
 ### 후속 execution-report

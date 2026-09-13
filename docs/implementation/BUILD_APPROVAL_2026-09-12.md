@@ -1,5 +1,7 @@
 # Preserved motion/UI integration — current BUILD authorization
 
+2026-09-13 latest `작업 계속진행해` continues the previously recommended result/reward UI correction: preserve all owned-manual options with scrolling, stable focus, existing first-selection lock and honest duplicate-transfer wording. The result model, reward amounts, pending-duplicate policy, grade formula and save schema are unchanged. Preimplementation plan and evidence: `docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md`.
+
 - User source, 2026-09-12: `좋아 앞으로도 옮겨주고 프로젝트 남은 작업 확인 후 진행해`.
 - This continues the previously authorized, locally implemented character/UI work recorded in `docs/operations/2026-09-09_CHARACTER_MOTION_INTEGRATION.md`. The prior source and all uncertain originals are preserved.
 - Baseline: main `ed2104d98872c63eac27999830aeae9c15a00bdc`; current integration report: `docs/operations/2026-09-12_MOTION_UI_INTEGRATION.md`.

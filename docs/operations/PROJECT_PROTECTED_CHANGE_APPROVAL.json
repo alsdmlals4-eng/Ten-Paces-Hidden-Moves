@@ -32,6 +32,7 @@
     "src/combat/combat_character_placeholder.gd",
     "src/run/vertical_slice_shell.gd",
     "src/run/vertical_slice_shell_completion_auto.gd",
+    "src/run/vertical_slice_shell_result_auto.gd",
     "src/ui/action_selection/action_choice_card.gd",
     "src/ui/action_selection/action_detail_panel.gd",
     "src/ui/action_selection/action_selection_dock.gd",
