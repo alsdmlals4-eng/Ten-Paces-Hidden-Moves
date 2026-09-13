@@ -23,7 +23,7 @@ func configure(run_state: VerticalSliceRunState, registry: MartialManualRegistry
     _awaiting_acknowledgment = false
     var opponent := run_state.get_current_opponent()
     var context := [run_state.duel_index, opponent.get("candidate_id", ""),
-        opponent.get("signature_manual_id", ""), run_state.get_player_manual_loadout()]
+        opponent.get("signature_manual_id", ""), run_state.get_owned_player_manuals()]
     if run_state == _run_state and registry == _manual_registry and context == _widget_context:
         # Acknowledged selection changes do not replace the focused widgets or
         # scroll container. New duel/opponent/loadout contexts still rebuild.
@@ -85,7 +85,7 @@ func configure(run_state: VerticalSliceRunState, registry: MartialManualRegistry
             var field := str(binding.get("field", ""))
             var values: Array = binding.get("allowed_values", [])
             if field == "target_manual_id":
-                values = _run_state.get_player_manual_loadout()
+                values = _run_state.get_owned_player_manuals()
             elif field == "target_enemy_manual_id":
                 values = [_run_state.get_current_opponent().get("signature_manual_id", "")]
             for value in values:

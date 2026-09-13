@@ -12,7 +12,7 @@
   "updated_date": "2026-09-14",
   "remaining_implementation_spec": {
     "owner": "docs/implementation/REMAINING_GAME_IMPLEMENTATION_SPEC.md",
-    "status": "SPECIFIED_PROPOSAL_NOT_PRODUCT_IMPLEMENTATION",
+    "status": "APPROVED_CONTINUATION_P01_LOCAL_RUNTIME_VERIFIED_CI_PENDING",
     "baseline_product_head": "fb565eb1d2fbc2e1896695c58e6be08c475577cc",
     "priority": [
       "P01 acquired manual combat binding",
@@ -682,5 +682,24 @@
     ],
     "run_save_schema_change": false,
     "human_android_release": "NOT_RUN"
+  },
+  "acquired_manual_continuation": {
+    "decision": "TEN-DEC-20260914-ACQUIRED-MANUAL-COMBAT-COMPATIBILITY-01",
+    "execution_record": "docs/operations/2026-09-14_ACQUIRED_MANUAL_IMPLEMENTATION.md",
+    "status": "WORKING_BRANCH_IMPLEMENTED_LOCAL_RUNTIME_VERIFIED_CI_PENDING",
+    "starter_provenance": "IMMUTABLE_FOUR",
+    "legacy_save": "V1_V2_VALIDATED_DECODE_CONVERSION_ORIGINAL_BYTES_PRESERVED",
+    "next_package": "P02 free training allocation and explicit version contract",
+    "human_android_release": "NOT_RUN",
+    "local_evidence": {
+      "acquisition_flow_checks": 472,
+      "legacy_process_checks_each": 21,
+      "new_5_10_manual_process_checks_each": 21,
+      "windows_gpu_checks": 22,
+      "python_tests": 41,
+      "native_campaign_wins": 10,
+      "native_route_choices": 36,
+      "native_activations": 286
+    }
   }
 }

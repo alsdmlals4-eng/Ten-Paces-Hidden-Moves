@@ -92,6 +92,9 @@ func content_identity() -> String:
     return _content_identity
 
 func validate_payload(run_state, combat_checkpoint = {}) -> Dictionary:
+    return _validate_payload(run_state, combat_checkpoint, false)
+
+func _validate_payload(run_state, combat_checkpoint, legacy_starters: bool) -> Dictionary:
     if typeof(run_state) != TYPE_DICTIONARY or typeof(combat_checkpoint) != TYPE_DICTIONARY or not json_safe([run_state, combat_checkpoint], 0, [0]):
         return error("CORRUPT", "Unsupported or unbounded payload")
     var candidate = load("res://src/run/vertical_slice_run_state.gd").new()
@@ -105,11 +108,12 @@ func validate_payload(run_state, combat_checkpoint = {}) -> Dictionary:
             if normalized(combat_checkpoint.get("binding", {}).get("resolved_encounter", {})) != normalized(run_state.resolved_encounters[int(run_state.duel_index) - 1]): return error("CORRUPT", "Combat does not match current resolved encounter")
         elif combat_checkpoint.get("binding", {}).has("resolved_encounter"):
             return error("CORRUPT", "Legacy combat cannot acquire a variable encounter")
-        var combat_validation: Dictionary = load("res://src/run/combat_checkpoint_codec.gd").new().validate(combat_checkpoint)
+        var combat_validation: Dictionary = load("res://src/run/combat_checkpoint_codec.gd").new().validate(combat_checkpoint, {}, legacy_starters)
         if not combat_validation.ok: return combat_validation
         var s: Dictionary = normalized(run_state)
         var c: Dictionary = normalized(combat_checkpoint)
-        if c.duel_index != s.duel_index or c.attempt_id != s.attempt_id or c.binding.enemy_candidate_id != s.current_opponent_id or c.binding.player_loadout != s.player_manual_loadout or c.binding.player_mastery_by_manual != s.progression.mastery_by_manual or c.binding.bimu_receipt != s.frozen_bimu_receipt:
+        var expected_owned: Array = s.player_manual_loadout if legacy_starters else s.progression.owned_manual_ids
+        if c.duel_index != s.duel_index or c.attempt_id != s.attempt_id or c.binding.enemy_candidate_id != s.current_opponent_id or c.binding.player_loadout != expected_owned or c.binding.player_mastery_by_manual != s.progression.mastery_by_manual or c.binding.bimu_receipt != s.frozen_bimu_receipt:
             return error("CORRUPT", "Combat/run identity mismatch")
         if c.phase == "PLANNING" and c.state.player.health[0] == 0:
             if c.state.player.health != s.progression.player_resources.health or c.state.player.health != s.pre_battle_snapshot.progression.player_resources.health:
@@ -200,6 +204,17 @@ func decode(text: String) -> Dictionary:
     elif envelope.run_state.has("ruleset_id"):
         return error("CORRUPT", "Legacy envelope contains variable state")
     if envelope.active:
+        var checkpoint: Dictionary = envelope.combat_checkpoint
+        if not checkpoint.is_empty() and typeof(checkpoint.get("binding")) == TYPE_DICTIONARY and not checkpoint.binding.has("owned_binding_version") and typeof(envelope.run_state.get("progression")) == TYPE_DICTIONARY and typeof(envelope.run_state.progression.get("owned_manual_ids")) == TYPE_ARRAY and envelope.run_state.progression.owned_manual_ids.size() > 4:
+            # Verify old four-starter combat fully before changing the available pool.
+            # State, locked enemy plan, committed player plan and receipts stay exact.
+            var legacy := _validate_payload(envelope.run_state, checkpoint, true)
+            if not legacy.ok: return legacy
+            checkpoint.binding.player_loadout = envelope.run_state.progression.owned_manual_ids.duplicate()
+            checkpoint.binding["owned_binding_version"] = 1
+            envelope.combat_checkpoint = checkpoint
+            envelope.erase("integrity_hash")
+            envelope["integrity_hash"] = digest(envelope)
         var validation := validate_payload(envelope.run_state, envelope.combat_checkpoint)
         if not validation.ok: return validation
     elif not envelope.run_state.is_empty() or not envelope.combat_checkpoint.is_empty():

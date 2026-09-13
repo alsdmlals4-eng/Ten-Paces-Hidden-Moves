@@ -55,7 +55,7 @@ WHAT: 아래 P00~P14의 작은 인수 단위로 연결하고 각 완료를 정�
 | ID | 인수 단위 | 우선순위 | 선행 | 준비/권한 경계 |
 |---|---|---|---|---|
 | P00 | 현재 문서·미완료 상태·통합 정합성 | P0 | 없음 | FEASIBLE, 문서 교정 |
-| P01 | 전수받은 모든 무공의 실제 전투 연결 | P0 | P00 | FEASIBLE, 승인 코어와 현재 구현 충돌 교정 |
+| P01 | 전수받은 모든 무공의 실제 전투 연결 | P0 | P00 | RUNTIME_VERIFIED(로컬 자동), 원격 CI 별도; 아래 현재 기록 참조 |
 | P02 | 자유 수련 소비·저장·해금 연결 | P0 | P01, 저장 의미 결정 | PARTIAL, UI 시점/호환 Decision 초안 필요 |
 | P03 | 시작 능력 분배·성장 영구 능력 | P0 | P02의 버전 계약 | PARTIAL, 승인 수치의 실제 consumer 정합성 |
 | P04 | 중복 전수 보상 마무리 | P1 | P01/P02 | PARTIAL, 보상 의미 Decision 필요 |
@@ -81,15 +81,19 @@ WHAT: 아래 P00~P14의 작은 인수 단위로 연결하고 각 완료를 정�
 
 ## 5. P01 — 전수 무공을 다음 전투에서 사용
 
+**현재 실행(2026-09-14):** 사용자 권장안 실행 승인에 따라 구현했다. 현재 getter/bridge/codec은 보유 전체를 연결한다. 아래 사실은 수정 전 기준이며 시작4권 이력은 유지한다. 저장 호환 결정은 `docs/decisions/2026-09-14_ACQUIRED_MANUAL_COMBAT_COMPATIBILITY.md`, 실제 결과는 `docs/operations/2026-09-14_ACQUIRED_MANUAL_IMPLEMENTATION.md`다. 구형 v1/v2는 검증 후 decode 변환하고 원본 파일 identity를 별도 보존한다. P02의 새 성장 버전과 구분한다.
+
 **기존 파일:** `src/run/vertical_slice_run_state.gd`, `vertical_slice_progression_state.gd`, `vertical_slice_shell.gd`, `vertical_slice_combat_bridge.gd`, `combat_checkpoint_codec.gd`; `src/ui/action_selection/action_view_model_adapter.gd`와 `martial_action_panel.gd`.
-**사실:** `get_player_manual_loadout()`는 시작 배열을 반환한다. `configure_vertical_slice_loadouts()`와 전투codec은4권을 요구한다. 시작 배열을 progression 전체로 덮어쓰면 `validate_snapshot()`의 시작4권 계약까지 깨진다.
+**수정 전 사실:** `get_player_manual_loadout()`는 시작 배열을 반환한다. `configure_vertical_slice_loadouts()`와 전투codec은4권을 요구한다. 시작 배열을 progression 전체로 덮어쓰면 `validate_snapshot()`의 시작4권 계약까지 깨진다.
 **설계:** 시작 배열/시작성수는 불변 이력으로 남긴다. 별도 `get_owned_player_manuals() -> Array[String]` view를 progression owner에서 복사하여 bridge/선택도크/보상대상에 전달한다. `_player_manual_loadout`의 의미를 바꾸지 않는다. 보유 ID는 고유·registry 실재·성수집합과 일치. 승인 catalog의 전체10권은 검증 상한이고 장착 제한이 아니다.
 **저장:** 전투 binding.player_loadout과 checkpoint의 run.progression.owned_manual_ids가 일치해야 한다. 단순 `!=4` 삭제나1~10길이만으로 검증을 끝내지 않는다. 전수 receipt에서 재구성한 보유집합이 아닌 임의 무공 삽입은 거부. 기존 v1/v2 identity·시작조건·resolved roster 고정 유지. 기존 상태로 이미 합법인 전수5권을 복구하는 validator 교정과 새 규칙 변경을 분리해 판단한다.
 **RED/인수:**
-- [ ] 기존 actual shell에서 미보유 대표무공 전수→확정→4행로→다음비무. 전수 기술이 도크에 존재하고 실제 합법 수에 배치되어 해결됨.
-- [ ] 4/5/10권을 각각 실제 보상 이력으로 구성하여 save→새 프로세스 Continue→동일 기술/성수. UI stress fixture로 대체 금지.
-- [ ] 중복/미등록/미취득 무공·성수 변조 거부, 시작3/5권 선택은 계속 거부.
-- [ ] 봉인 제약·기력/내력·절초·AI 공개정보·v1/v2 회귀, 실제 전수 선택을 포함한10전 캠페인.
+- [x] 기존 actual shell에서 미보유 대표무공 전수→확정→4행로→다음비무. 전수 기술이 도크에 존재하고 실제 합법 수에 배치되어 해결됨.
+- [x] 4/5/10권을 각각 실제 보상 이력으로 구성하여 save→새 프로세스 Continue→동일 기술/성수. UI stress fixture로 대체 금지.
+- [x] 중복/미등록/미취득 무공·성수 변조 거부, 시작3/5권 선택은 계속 거부.
+- [x] 봉인 제약·기력/내력·절초·AI 공개정보·v1/v2 회귀, 실제 전수 선택을 포함한10전 캠페인.
+**현재 인수 증거:** 보유/봉인472검사, 독립 프로세스5/10권 기술 실행, 구형 v1/v2 실제 파일 복구, 전수 보상을 선택한 native10승/36행로. 자동·Windows 실행 범위이며 Human/Android/출시 승인이 아니다.
+
 **검증 파일:** 기존 `tests/verify_variable_shell.gd`, `verify_variable_combat_codec.gd`, `verify_variable_save_compat.gd` 확장; 새 `tests/verify_acquired_manual_flow.gd` 제안.
 **실패/롤백:** 새로운 checkpoint가 유효하지 않으면 진행 차단·원본 보존. 정상4권 경로를 유지하고 실패 증거를 기록한다. 새 이미지 없음.
 

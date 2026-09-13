@@ -520,7 +520,7 @@ func _player_manual_names_text() -> String:
     if manual_registry == null:
         return "미확정"
     var mastery := run_state.get_player_mastery_by_manual()
-    for manual_id_value in run_state.get_player_manual_loadout():
+    for manual_id_value in run_state.get_owned_player_manuals():
         var manual: Dictionary = manual_registry.get_manual(str(manual_id_value))
         var name := str(manual.get("manual_name", ""))
         if not name.is_empty():
@@ -592,7 +592,7 @@ func _ensure_combat_view() -> void:
     if _combat_view.has_method("configure_vertical_slice_loadouts"):
         runtime_loadout_bound = bool(_combat_view.call(
             "configure_vertical_slice_loadouts",
-            run_state.get_player_manual_loadout(),
+            run_state.get_owned_player_manuals(),
             run_state.get_player_mastery_by_manual(),
             enemy_ids,
             enemy_mastery,

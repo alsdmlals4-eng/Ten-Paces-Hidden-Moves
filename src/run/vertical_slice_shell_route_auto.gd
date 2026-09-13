@@ -172,7 +172,7 @@ func _render_growth_route() -> void:
 
     route_focus_target = OptionButton.new()
     route_focus_target.name = "FocusedTrainingTarget"
-    for manual_id_value in run_state.get_player_manual_loadout():
+    for manual_id_value in run_state.get_owned_player_manuals():
         var manual_id := str(manual_id_value)
         var manual := manual_registry.get_manual(manual_id) if manual_registry != null else {}
         route_focus_target.add_item(str(manual.get("manual_name", manual_id)))

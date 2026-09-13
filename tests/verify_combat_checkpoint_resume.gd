@@ -249,6 +249,7 @@ func _actor_owned_actions(board, committed: Dictionary) -> void:
     if player_only.is_empty() or enemy_only.is_empty(): return
     var shared: Dictionary = _json(committed)
     var shared_manual: String = shared.binding.enemy_loadout[0]
+    shared.binding.player_mastery_by_manual.erase(shared.binding.player_loadout[0])
     shared.binding.player_loadout[0] = shared_manual
     shared.binding.player_mastery_by_manual[shared_manual] = shared.binding.enemy_mastery_by_manual[shared_manual]
     var shared_codec = load("res://src/run/combat_checkpoint_codec.gd").new()

@@ -47,7 +47,7 @@ func configure_vertical_slice_loadouts(
 ) -> bool:
     var player_ids := _string_values(player_loadout)
     var enemy_ids := _string_values(enemy_loadout)
-    if player_ids.size() != 4 or enemy_ids.is_empty() or (resolved_encounter.is_empty() and enemy_ids.size() != 1) or enemy_candidate_id.is_empty() or not _is_valid_enemy_runtime_binding(enemy_runtime_binding, enemy_candidate_id):
+    if player_ids.is_empty() or player_ids.size() != player_loadout.size() or player_mastery_by_manual.size() != player_ids.size() or enemy_ids.is_empty() or (resolved_encounter.is_empty() and enemy_ids.size() != 1) or enemy_candidate_id.is_empty() or not _is_valid_enemy_runtime_binding(enemy_runtime_binding, enemy_candidate_id):
         return false
     if not resolved_encounter.is_empty():
         var roster = load("res://src/run/variable_opponent_roster.gd").new()
@@ -122,6 +122,8 @@ func configure_vertical_slice_loadouts(
     }
     if not resolved_encounter.is_empty():
         _vertical_slice_loadout_snapshot["resolved_encounter"] = resolved_encounter.duplicate(true)
+    if player_ids.size() > 4:
+        _vertical_slice_loadout_snapshot["owned_binding_version"] = 1
     set_meta("vertical_slice_runtime_loadout_bound", true)
     set_meta("vertical_slice_enemy_candidate_id", enemy_candidate_id)
     set_meta("vertical_slice_battle_metrics_bound", true)

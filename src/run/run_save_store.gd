@@ -36,6 +36,7 @@ func _cached(bytes: PackedByteArray) -> Dictionary:
                 "payload": entry.payload.duplicate(true),
                 "source_bytes": entry.source_bytes.duplicate(),
                 "source_text": str(entry.source_text),
+                "source_envelope_digest": entry.source_envelope_digest,
             }
     return {}
 
@@ -54,6 +55,7 @@ func _remember_validated(bytes: PackedByteArray, text: String, payload: Dictiona
         "source_bytes": bytes.duplicate(),
         "source_text": text,
         "payload": payload.duplicate(true),
+        "source_envelope_digest": CODEC.digest(JSON.parse_string(text)),
     })
     _validated_cache_bytes += bytes.size()
 
@@ -126,6 +128,7 @@ func _read(slot: String) -> Dictionary:
         "payload": decoded.payload.duplicate(true),
         "source_bytes": bytes.duplicate(),
         "source_text": text,
+        "source_envelope_digest": CODEC.digest(JSON.parse_string(text)),
     }
 
 func load_checkpoint() -> Dictionary:
@@ -135,7 +138,7 @@ func load_checkpoint() -> Dictionary:
         var resolved := _read(pointer.slot)
         if resolved.status == "ABSENT": return CODEC.error("CORRUPT", "Active pointer target is missing")
         if not resolved.ok: return resolved
-        if int(resolved.payload.schema_version) != CODEC.VARIABLE_SCHEMA_VERSION or pointer.slot != "v2_" + CODEC.digest(resolved.payload): return CODEC.error("CORRUPT", "Active pointer target mismatch")
+        if int(resolved.payload.schema_version) != CODEC.VARIABLE_SCHEMA_VERSION or pointer.slot != "v2_" + resolved.source_envelope_digest: return CODEC.error("CORRUPT", "Active pointer target mismatch")
         return _loaded(resolved.payload, "VALID_PRIMARY")
     var primary := _read("primary")
     return _load_from_primary(primary)

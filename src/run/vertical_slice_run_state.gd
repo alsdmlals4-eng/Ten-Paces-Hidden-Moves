@@ -81,8 +81,8 @@ func validate_snapshot(snapshot: Dictionary) -> Dictionary:
     if not s.pending_growth_route.is_empty() or not s.pending_route_intel.is_empty(): return bad # Retired two-node flow is not schema 1.
     for i in range(s.reward_history.size()):
         var row: Dictionary = s.reward_history[i]
-        if row.get("duel_index") != i + 1 or row.get("opponent_candidate_id") != catalog.select_campaign_candidate_id(i + 1) or not _valid_reward(row, s.player_manual_loadout, catalog.get_candidate(catalog.select_campaign_candidate_id(i + 1))): return bad
-    if not s.pending_result_reward.is_empty() and (s.current_screen != SCREEN_RESULT or not _valid_reward(s.pending_result_reward, s.player_manual_loadout, catalog.get_candidate(s.current_opponent_id))): return bad
+        if row.get("duel_index") != i + 1 or row.get("opponent_candidate_id") != catalog.select_campaign_candidate_id(i + 1): return bad
+    if not s.pending_result_reward.is_empty() and (s.current_screen != SCREEN_RESULT or not _valid_reward(s.pending_result_reward, s.progression.owned_manual_ids, catalog.get_candidate(s.current_opponent_id))): return bad
     for i in range(s.route_history.size()):
         if not _valid_jianghu_receipt(s.route_history[i], i / 4 + 1, i % 4, catalog): return bad
     if not s.pending_jianghu.is_empty() and (s.current_screen != SCREEN_JIANGHU or not _valid_jianghu_receipt(s.pending_jianghu, s.completed_duels, s.jianghu_step, catalog)): return bad
@@ -95,7 +95,7 @@ func validate_snapshot(snapshot: Dictionary) -> Dictionary:
     if intel_candidate._intel_by_candidate != s.intel_by_candidate: return bad
     var enemy_candidate: Dictionary = catalog.get_candidate(s.current_opponent_id)
     if variable: enemy_candidate = catalog.for_stage(s.duel_index)
-    var receipt: Dictionary = _bimu_model.validate_selection(s.pending_bimu_constraints, s.player_manual_loadout, _manual_ids(enemy_candidate))
+    var receipt: Dictionary = _bimu_model.validate_selection(s.pending_bimu_constraints, s.progression.owned_manual_ids, _manual_ids(enemy_candidate))
     if not receipt.valid or receipt.selections != s.pending_bimu_constraints: return bad
     if not s.frozen_bimu_receipt.is_empty():
         receipt["duel_index"] = s.duel_index
@@ -134,6 +134,8 @@ func _valid_progression_history(s: Dictionary, catalog) -> bool:
         audit.start_new_run()
         if not audit.confirm_setup_loadout(s.player_manual_loadout, s.player_mastery_by_manual): return false
     for row in s.reward_history:
+        # Validate against ownership at this point, never borrow a later transfer.
+        if not _valid_reward(row, audit.get_owned_player_manuals(), catalog.get_candidate(row.opponent_candidate_id)): return false
         var receipt: Dictionary = row.duplicate(true)
         receipt.erase("duel_index")
         receipt.erase("opponent_candidate_id")
@@ -283,7 +285,7 @@ func select_bimu_constraints(selection: Array) -> bool:
 
 func validate_bimu_constraints(selection: Array) -> Dictionary:
     var enemy_ids: Array = _manual_ids(get_current_opponent())
-    return _bimu_model.validate_selection(selection, get_player_manual_loadout(), enemy_ids)
+    return _bimu_model.validate_selection(selection, get_owned_player_manuals(), enemy_ids)
 
 
 func get_pending_bimu_constraints() -> Array:
@@ -450,6 +452,11 @@ func confirm_setup_loadout(loadout, mastery_by_manual: Dictionary) -> bool:
 
 func get_player_manual_loadout() -> Array:
     return _player_manual_loadout.duplicate()
+
+
+func get_owned_player_manuals() -> Array[String]:
+    # Starter selection remains immutable provenance; earned manuals belong to progression.
+    return _progression.owned_manual_ids.duplicate() if _progression != null else _player_manual_loadout.duplicate()
 
 
 func get_player_mastery_by_manual() -> Dictionary:

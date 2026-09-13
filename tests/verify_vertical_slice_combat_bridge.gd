@@ -65,10 +65,18 @@ func _run() -> void:
     _expect_eq(str(enemy.get("epithet", "")), str(current_opponent.get("epithet", current_opponent.get("martial_identity", ""))), "Combat status must show the locked opponent martial identity instead of the default HUD epithet.")
     var portrait := bridge.top_hud.enemy_panel.get_node_or_null("CombatantInkPortrait") as TextureRect
     if str(enemy.get("candidate_id", "")) == "slot1_dogyeom":
-        _expect_true(portrait != null and portrait.texture != null and portrait.texture.resource_path == "res://assets/characters/dogyeom_combat_battler_01_v1.png", "Dogyeom runtime bridge must route the approved status portrait.")
+        _expect_true(portrait != null and portrait.texture is AtlasTexture and (portrait.texture as AtlasTexture).atlas.resource_path == "res://assets/characters/dogyeom_combat_battler_01_v1.png", "Dogyeom runtime bridge must crop the approved status portrait.")
         _expect_true(bridge.enemy_character != null and str(bridge.enemy_character.get_meta("character_art_path", "")) == "res://assets/characters/dogyeom_combat_battler_01_v1.png", "Dogyeom runtime bridge must route the approved frontal combat battler.")
     else:
         _expect_true(portrait != null and portrait.texture != null and portrait.texture is AtlasTexture and (portrait.texture as AtlasTexture).atlas.resource_path == "res://assets/characters/motion/enemy_sword_sequence_v1.png", "Non-Dogyeom runtime bridge must retain the generic enemy portrait.")
+    # Exercise both portrait identities regardless of the generated opponent.
+    for candidate_id in ["slot1_dogyeom", "slot2_mukjin"]:
+        var portrait_actor := enemy.duplicate(true)
+        portrait_actor["candidate_id"] = candidate_id
+        bridge.top_hud.enemy_panel.configure("enemy", portrait_actor)
+        var expected := "res://assets/characters/dogyeom_combat_battler_01_v1.png" if candidate_id == "slot1_dogyeom" else "res://assets/characters/motion/enemy_sword_sequence_v1.png"
+        _expect_true(portrait.texture is AtlasTexture and (portrait.texture as AtlasTexture).atlas.resource_path == expected, "Both approved portrait source identities must resolve deterministically.")
+    bridge.top_hud.enemy_panel.configure("enemy", enemy)
     player["health"] = [10, 30]
     player["stamina"] = [2, 5]
     player["internal"] = [1, 4]

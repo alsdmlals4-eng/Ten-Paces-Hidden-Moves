@@ -149,11 +149,17 @@ func run_probe() -> void:
             break
         var target := _reward_target_for_duel(run.duel_index)
         var manual_name := str(shell.manual_registry.get_manual(target).get("manual_name", target))
-        await _click(_text_button(shell.result_options_container, "집중 수련 · " + manual_name), "earned focused reward")
-        _require(str(run.get_pending_result_reward().get("target_manual_id", "")) == target, "reward target must match")
+        var signature: String = run.get_current_opponent().signature_manual_id
+        if "--acquired-rewards" in OS.get_cmdline_user_args() and signature not in run.get_owned_player_manuals():
+            await _click(_text_button(shell.result_options_container, "문파 전수 ·"), "earned new manual")
+            _require(str(run.get_pending_result_reward().get("manual_id", "")) == signature, "transfer targets current opponent signature")
+        else:
+            await _click(_text_button(shell.result_options_container, "집중 수련 · " + manual_name), "earned focused reward")
+            _require(str(run.get_pending_result_reward().get("target_manual_id", "")) == target, "reward target must match")
         var count := run.get_reward_history().size()
         await _click(shell.primary_button, "reward continue")
         _require(run.get_reward_history().size() == count + 1, "reward must be applied once")
+        if "--acquired-rewards" in OS.get_cmdline_user_args(): print("NATIVE_ACQUIRED duel=%d owned=%d" % [run.duel_index, run.get_owned_player_manuals().size()])
         if run.is_complete():
             break
         for step in range(4):
@@ -170,13 +176,18 @@ func run_probe() -> void:
     _require(run.is_complete() and run.get_duel_history().size() == 10, "ten real terminal successes required")
     _require(run.get_reward_history().size() == 10, "ten earned rewards required")
     _require(run.get_route_history().size() == 36, "36 native route choices required")
-    _require(publicly_used_player_cards.has("shaolin_arhat_vajra_art_star7"), "Shaolin seven star must resolve")
-    _require(publicly_used_player_cards.has("yang_family_spear_star7"), "Yang seven star must resolve")
+    if "--acquired-rewards" in OS.get_cmdline_user_args():
+        _require(run.get_owned_player_manuals().size() > 4, "Native transfers must expand usable ownership")
+        _require(run.get_player_manual_loadout() == STARTERS, "Native acquisition must preserve starter provenance")
+        _require(run.get_reward_history().any(func(row): return row.get("reward_type", "") == "faction_transfer"), "Native campaign must confirm actual transfer receipts")
+    else:
+        _require(publicly_used_player_cards.has("shaolin_arhat_vajra_art_star7"), "Shaolin seven star must resolve")
+        _require(publicly_used_player_cards.has("yang_family_spear_star7"), "Yang seven star must resolve")
     var ultimate_used := false
     for card_id in BASIC_ULTIMATES:
         ultimate_used = ultimate_used or publicly_used_player_cards.has(card_id)
     _require(ultimate_used, "base ultimate must resolve")
-    print("NATIVE_CAMPAIGN_SUMMARY ", JSON.stringify({"complete": run.is_complete(), "duels": run.get_duel_history().size(), "outcomes": terminal_outcomes, "rewards": run.get_reward_history().size(), "routes": run.get_route_history().size(), "activations": activations, "cards": publicly_used_player_cards.keys(), "elapsed_ms": Time.get_ticks_msec() - started_ms, "mode": "ordinary_defaults", "failures": failures}))
+    print("NATIVE_CAMPAIGN_SUMMARY ", JSON.stringify({"complete": run.is_complete(), "duels": run.get_duel_history().size(), "outcomes": terminal_outcomes, "rewards": run.get_reward_history().size(), "routes": run.get_route_history().size(), "activations": activations, "cards": publicly_used_player_cards.keys(), "elapsed_ms": Time.get_ticks_msec() - started_ms, "mode": "ordinary_defaults", "reward_policy": "acquired" if "--acquired-rewards" in OS.get_cmdline_user_args() else "focused", "failures": failures}))
     if shell.session.enabled:
         print("NATIVE_DURABLE_TIMINGS_MS ", JSON.stringify(shell.session.write_msec))
     shell.queue_free()

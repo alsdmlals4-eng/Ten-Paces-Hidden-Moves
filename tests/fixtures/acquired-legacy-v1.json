@@ -1,0 +1,587 @@
+{
+  "active": true,
+  "app_version": "unversioned-schema1",
+  "checkpoint_id": "legacy-combat",
+  "combat_checkpoint": {
+    "attempt_id": 0,
+    "binding": {
+      "bimu_receipt": {
+        "disclosed_effects": [],
+        "duel_index": 2,
+        "enemy_candidate_id": "slot1_yeongyo",
+        "errors": [],
+        "run_seed": 42,
+        "selection_point_spent": 0,
+        "selections": [],
+        "valid": true
+      },
+      "effective_enemy_mastery_by_manual": {
+        "mount_hua_plum_blossom_sword": 3
+      },
+      "enemy_candidate_id": "slot1_yeongyo",
+      "enemy_loadout": [
+        "mount_hua_plum_blossom_sword"
+      ],
+      "enemy_mastery_by_manual": {
+        "mount_hua_plum_blossom_sword": 3
+      },
+      "enemy_runtime_binding": {
+        "ai_profile": {
+          "history_policy": {
+            "mode": "none"
+          },
+          "id": "initiative_exchange",
+          "max_actions_per_bundle": 1,
+          "movement_policy": {
+            "mode": "approach"
+          },
+          "score_weights": {
+            "approach": 1,
+            "heavy_prepare": 0.4,
+            "quick_pressure": 1.5,
+            "recover_low_resource": 0.6,
+            "response_low_health": 1,
+            "ultimate_ready": 1
+          },
+          "stat_weights": {
+            "agility": 5,
+            "constitution": 4,
+            "external": 5,
+            "insight": 3,
+            "internal_power": 3
+          }
+        },
+        "archetype_id": "initiative_exchange",
+        "basic_action_focus_ids": [
+          "basic_quick_attack",
+          "basic_guard",
+          "basic_move"
+        ],
+        "candidate_id": "slot1_yeongyo",
+        "final_stat_total_seed": 20,
+        "stats": {
+          "agility": 5,
+          "constitution": 4,
+          "external": 5,
+          "insight": 3,
+          "internal_power": 3
+        },
+        "valid": true
+      },
+      "player_loadout": [
+        "mount_hua_plum_blossom_sword",
+        "shaolin_arhat_vajra_art",
+        "wudang_taiji_sword",
+        "yang_family_spear"
+      ],
+      "player_mastery_by_manual": {
+        "beggars_dragon_subduing_palm": 3,
+        "mount_hua_plum_blossom_sword": 3,
+        "shaolin_arhat_vajra_art": 3,
+        "wudang_taiji_sword": 3,
+        "yang_family_spear": 3
+      }
+    },
+    "context": {
+      "bundle_index": 1,
+      "current_timing": 1,
+      "round_number": 1,
+      "timing_sequence": [
+        3,
+        3,
+        4
+      ],
+      "total_timings": 10
+    },
+    "duel_index": 2,
+    "enemy_lock": {
+      "actions": [],
+      "key": ""
+    },
+    "phase": "PLANNING",
+    "player_plan": [],
+    "reservation_anchors": [],
+    "review_summary": {},
+    "state": {
+      "ai_decision_seed": 0,
+      "ai_enabled": true,
+      "battle_metrics": {
+        "clash_wins": 0,
+        "player_health_lost": 0,
+        "rounds_elapsed": 0,
+        "successful_dodges": 0,
+        "ultimate_uses": 0
+      },
+      "bundle_index": 1,
+      "enemy": {
+        "attack_power": 8,
+        "candidate_id": "slot1_yeongyo",
+        "epithet": "정면 검객",
+        "fortitude_next_attack": false,
+        "health": [
+          30,
+          30
+        ],
+        "internal": [
+          4,
+          4
+        ],
+        "momentum": [
+          0,
+          5
+        ],
+        "name": "연교",
+        "next_attack_bonus": 0,
+        "prepare_active": false,
+        "stamina": [
+          5,
+          5
+        ],
+        "start_penalties": {
+          "health": 0,
+          "internal": 0,
+          "stamina": 0
+        },
+        "stats": {
+          "agility": 5,
+          "constitution": 4,
+          "external": 5,
+          "insight": 3,
+          "internal_power": 3
+        },
+        "statuses": [
+          {
+            "kind": "offense",
+            "label": "출"
+          },
+          {
+            "kind": "defense",
+            "label": "방"
+          }
+        ],
+        "tile": 6
+      },
+      "player": {
+        "attack_power": 8,
+        "epithet": "무명 검객",
+        "fortitude_next_attack": false,
+        "health": [
+          30,
+          30
+        ],
+        "internal": [
+          4,
+          4
+        ],
+        "momentum": [
+          0,
+          5
+        ],
+        "name": "강호낭인",
+        "next_attack_bonus": 0,
+        "prepare_active": false,
+        "stamina": [
+          5,
+          5
+        ],
+        "start_penalties": {
+          "health": 0,
+          "internal": 0,
+          "stamina": 0
+        },
+        "stats": {
+          "agility": 4,
+          "constitution": 4,
+          "external": 4,
+          "insight": 4,
+          "internal_power": 4
+        },
+        "statuses": [
+          {
+            "kind": "defense",
+            "label": "방"
+          }
+        ],
+        "tile": 4
+      },
+      "round_number": 1
+    },
+    "state_before": {}
+  },
+  "content_identity": "7f89ee55e89a47c52c9eb851bada78d552e55eb8e77efecbb09c8fbefdd771bf",
+  "integrity_hash": "f1dacb1e34587694914278797233051ac0dffaa00fc32772bf41aecadcad98c1",
+  "revision": 2,
+  "run_state": {
+    "attempt_id": 0,
+    "completed_duels": 1,
+    "current_opponent_id": "slot1_yeongyo",
+    "current_screen": "COMBAT",
+    "duel_history": [
+      {
+        "battle_metrics": {
+          "clash_wins": 0,
+          "player_health_lost": 0,
+          "rounds_elapsed": 0,
+          "successful_dodges": 0,
+          "ultimate_uses": 0
+        },
+        "duel_index": 1,
+        "opponent_candidate_id": "slot1_dogyeom",
+        "opponent_working_name": "도겸",
+        "outcome": "win",
+        "review_summary": {
+          "cause_code": "",
+          "cause_label": "",
+          "review_focus": ""
+        }
+      }
+    ],
+    "duel_index": 2,
+    "failure_receipt": {},
+    "flow_history": [
+      "MAIN",
+      "SETUP",
+      "INTRO",
+      "BRIEFING",
+      "COMBAT",
+      "REVIEW",
+      "RESULT",
+      "JIANGHU",
+      "BRIEFING",
+      "COMBAT"
+    ],
+    "frozen_bimu_receipt": {
+      "disclosed_effects": [],
+      "duel_index": 2,
+      "enemy_candidate_id": "slot1_yeongyo",
+      "errors": [],
+      "run_seed": 42,
+      "selection_point_spent": 0,
+      "selections": [],
+      "valid": true
+    },
+    "intel_by_candidate": {
+      "slot1_yeongyo": {
+        "candidate_id": "slot1_yeongyo",
+        "category": "FOOTWORK_SIGHTING",
+        "effect": "다음 상대의 보법 단서 확인 · 자유 수련 +1",
+        "entries": [
+          {
+            "candidate_id": "slot1_yeongyo",
+            "category": "MANUAL_RUMOR",
+            "effect": "다음 상대의 보유 무공 단서 확인",
+            "id": "recon",
+            "label": "상대 무공 조사",
+            "node_id": "J1-2",
+            "route_type": "recon",
+            "text": "[화산파] 매화검결을 쓰며 현재 알려진 기술 범위는 매화삼첩이다."
+          },
+          {
+            "candidate_id": "slot1_yeongyo",
+            "category": "FOOTWORK_SIGHTING",
+            "effect": "다음 상대의 보법 단서 확인 · 자유 수련 +1",
+            "id": "investigate",
+            "label": "남겨진 발자국 조사",
+            "node_id": "J1-4",
+            "route_type": "investigate",
+            "text": "목격담은 위치 운용을 이렇게 묘사한다: 안전거리가 맞으면 빠른 공격으로 주도권을 잡으려 한다."
+          }
+        ],
+        "id": "investigate",
+        "label": "남겨진 발자국 조사",
+        "node_id": "J1-4",
+        "route_type": "investigate",
+        "text": "[화산파] 매화검결을 쓰며 현재 알려진 기술 범위는 매화삼첩이다.\n목격담은 위치 운용을 이렇게 묘사한다: 안전거리가 맞으면 빠른 공격으로 주도권을 잡으려 한다."
+      }
+    },
+    "jianghu_step": 4,
+    "last_combat_result": {
+      "attempt_id": 0,
+      "enemy_health": 0,
+      "outcome": "win",
+      "player_health": 30,
+      "player_resources": {
+        "health": [
+          30,
+          30
+        ],
+        "internal": [
+          4,
+          4
+        ],
+        "stamina": [
+          5,
+          5
+        ]
+      }
+    },
+    "next_opponent_id": "",
+    "pending_bimu_constraints": [],
+    "pending_growth_route": {},
+    "pending_jianghu": {},
+    "pending_result_reward": {},
+    "pending_route_intel": {},
+    "player_manual_loadout": [
+      "mount_hua_plum_blossom_sword",
+      "shaolin_arhat_vajra_art",
+      "wudang_taiji_sword",
+      "yang_family_spear"
+    ],
+    "player_mastery_by_manual": {
+      "mount_hua_plum_blossom_sword": 3,
+      "shaolin_arhat_vajra_art": 3,
+      "wudang_taiji_sword": 3,
+      "yang_family_spear": 3
+    },
+    "pre_battle_snapshot": {
+      "bimu_receipt": {
+        "disclosed_effects": [],
+        "duel_index": 2,
+        "enemy_candidate_id": "slot1_yeongyo",
+        "errors": [],
+        "run_seed": 42,
+        "selection_point_spent": 0,
+        "selections": [],
+        "valid": true
+      },
+      "completed_duels": 1,
+      "current_opponent_id": "slot1_yeongyo",
+      "duel_history": [
+        {
+          "battle_metrics": {
+            "clash_wins": 0,
+            "player_health_lost": 0,
+            "rounds_elapsed": 0,
+            "successful_dodges": 0,
+            "ultimate_uses": 0
+          },
+          "duel_index": 1,
+          "opponent_candidate_id": "slot1_dogyeom",
+          "opponent_working_name": "도겸",
+          "outcome": "win",
+          "review_summary": {
+            "cause_code": "",
+            "cause_label": "",
+            "review_focus": ""
+          }
+        }
+      ],
+      "duel_index": 2,
+      "intel_by_candidate": {
+        "slot1_yeongyo": {
+          "candidate_id": "slot1_yeongyo",
+          "category": "FOOTWORK_SIGHTING",
+          "effect": "다음 상대의 보법 단서 확인 · 자유 수련 +1",
+          "entries": [
+            {
+              "candidate_id": "slot1_yeongyo",
+              "category": "MANUAL_RUMOR",
+              "effect": "다음 상대의 보유 무공 단서 확인",
+              "id": "recon",
+              "label": "상대 무공 조사",
+              "node_id": "J1-2",
+              "route_type": "recon",
+              "text": "[화산파] 매화검결을 쓰며 현재 알려진 기술 범위는 매화삼첩이다."
+            },
+            {
+              "candidate_id": "slot1_yeongyo",
+              "category": "FOOTWORK_SIGHTING",
+              "effect": "다음 상대의 보법 단서 확인 · 자유 수련 +1",
+              "id": "investigate",
+              "label": "남겨진 발자국 조사",
+              "node_id": "J1-4",
+              "route_type": "investigate",
+              "text": "목격담은 위치 운용을 이렇게 묘사한다: 안전거리가 맞으면 빠른 공격으로 주도권을 잡으려 한다."
+            }
+          ],
+          "id": "investigate",
+          "label": "남겨진 발자국 조사",
+          "node_id": "J1-4",
+          "route_type": "investigate",
+          "text": "[화산파] 매화검결을 쓰며 현재 알려진 기술 범위는 매화삼첩이다.\n목격담은 위치 운용을 이렇게 묘사한다: 안전거리가 맞으면 빠른 공격으로 주도권을 잡으려 한다."
+        }
+      },
+      "next_opponent_id": "",
+      "progression": {
+        "free_training_pool": 6,
+        "mastery_by_manual": {
+          "beggars_dragon_subduing_palm": 3,
+          "mount_hua_plum_blossom_sword": 3,
+          "shaolin_arhat_vajra_art": 3,
+          "wudang_taiji_sword": 3,
+          "yang_family_spear": 3
+        },
+        "owned_manual_ids": [
+          "mount_hua_plum_blossom_sword",
+          "shaolin_arhat_vajra_art",
+          "wudang_taiji_sword",
+          "yang_family_spear",
+          "beggars_dragon_subduing_palm"
+        ],
+        "pending_duplicate_transfers": [],
+        "player_resources": {
+          "health": [
+            30,
+            30
+          ],
+          "internal": [
+            4,
+            4
+          ],
+          "stamina": [
+            5,
+            5
+          ]
+        },
+        "training_by_manual": {
+          "beggars_dragon_subduing_palm": 0,
+          "mount_hua_plum_blossom_sword": 0,
+          "shaolin_arhat_vajra_art": 0,
+          "wudang_taiji_sword": 0,
+          "yang_family_spear": 0
+        }
+      },
+      "reward_history": [
+        {
+          "application_status": "APPLIED",
+          "duel_index": 1,
+          "manual_id": "beggars_dragon_subduing_palm",
+          "mastery": 3,
+          "opponent_candidate_id": "slot1_dogyeom",
+          "reward_type": "faction_transfer",
+          "target_manual_id": ""
+        }
+      ],
+      "route_history": [
+        {
+          "effect": "자유 수련 포인트 +3",
+          "id": "training",
+          "label": "공터에서 수련",
+          "node_id": "J1-1",
+          "route_type": "training"
+        },
+        {
+          "candidate_id": "slot1_yeongyo",
+          "category": "MANUAL_RUMOR",
+          "effect": "다음 상대의 보유 무공 단서 확인",
+          "id": "recon",
+          "label": "상대 무공 조사",
+          "node_id": "J1-2",
+          "route_type": "recon",
+          "text": "[화산파] 매화검결을 쓰며 현재 알려진 기술 범위는 매화삼첩이다."
+        },
+        {
+          "effect": "사건 해결 · 자유 수련 +2 · 내력 +1",
+          "id": "event",
+          "label": "길 잃은 행인 돕기",
+          "node_id": "J1-3",
+          "route_type": "event"
+        },
+        {
+          "candidate_id": "slot1_yeongyo",
+          "category": "FOOTWORK_SIGHTING",
+          "effect": "다음 상대의 보법 단서 확인 · 자유 수련 +1",
+          "id": "investigate",
+          "label": "남겨진 발자국 조사",
+          "node_id": "J1-4",
+          "route_type": "investigate",
+          "text": "목격담은 위치 운용을 이렇게 묘사한다: 안전거리가 맞으면 빠른 공격으로 주도권을 잡으려 한다."
+        }
+      ],
+      "route_visits": 4,
+      "run_seed": 42
+    },
+    "progression": {
+      "free_training_pool": 6,
+      "mastery_by_manual": {
+        "beggars_dragon_subduing_palm": 3,
+        "mount_hua_plum_blossom_sword": 3,
+        "shaolin_arhat_vajra_art": 3,
+        "wudang_taiji_sword": 3,
+        "yang_family_spear": 3
+      },
+      "owned_manual_ids": [
+        "mount_hua_plum_blossom_sword",
+        "shaolin_arhat_vajra_art",
+        "wudang_taiji_sword",
+        "yang_family_spear",
+        "beggars_dragon_subduing_palm"
+      ],
+      "pending_duplicate_transfers": [],
+      "player_resources": {
+        "health": [
+          30,
+          30
+        ],
+        "internal": [
+          4,
+          4
+        ],
+        "stamina": [
+          5,
+          5
+        ]
+      },
+      "training_by_manual": {
+        "beggars_dragon_subduing_palm": 0,
+        "mount_hua_plum_blossom_sword": 0,
+        "shaolin_arhat_vajra_art": 0,
+        "wudang_taiji_sword": 0,
+        "yang_family_spear": 0
+      }
+    },
+    "retry_count": 0,
+    "reward_history": [
+      {
+        "application_status": "APPLIED",
+        "duel_index": 1,
+        "manual_id": "beggars_dragon_subduing_palm",
+        "mastery": 3,
+        "opponent_candidate_id": "slot1_dogyeom",
+        "reward_type": "faction_transfer",
+        "target_manual_id": ""
+      }
+    ],
+    "route_history": [
+      {
+        "effect": "자유 수련 포인트 +3",
+        "id": "training",
+        "label": "공터에서 수련",
+        "node_id": "J1-1",
+        "route_type": "training"
+      },
+      {
+        "candidate_id": "slot1_yeongyo",
+        "category": "MANUAL_RUMOR",
+        "effect": "다음 상대의 보유 무공 단서 확인",
+        "id": "recon",
+        "label": "상대 무공 조사",
+        "node_id": "J1-2",
+        "route_type": "recon",
+        "text": "[화산파] 매화검결을 쓰며 현재 알려진 기술 범위는 매화삼첩이다."
+      },
+      {
+        "effect": "사건 해결 · 자유 수련 +2 · 내력 +1",
+        "id": "event",
+        "label": "길 잃은 행인 돕기",
+        "node_id": "J1-3",
+        "route_type": "event"
+      },
+      {
+        "candidate_id": "slot1_yeongyo",
+        "category": "FOOTWORK_SIGHTING",
+        "effect": "다음 상대의 보법 단서 확인 · 자유 수련 +1",
+        "id": "investigate",
+        "label": "남겨진 발자국 조사",
+        "node_id": "J1-4",
+        "route_type": "investigate",
+        "text": "목격담은 위치 운용을 이렇게 묘사한다: 안전거리가 맞으면 빠른 공격으로 주도권을 잡으려 한다."
+      }
+    ],
+    "route_visits": 4,
+    "run_seed": 42
+  },
+  "save_id": "acquisition",
+  "schema_version": 1,
+  "written_at_utc": "2026-09-13T21:55:56Z"
+}

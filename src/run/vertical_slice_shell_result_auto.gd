@@ -34,7 +34,7 @@ func select_result_reward(reward_type: String, target_manual_id: String = "") ->
     var receipt := result_model.build_reward_receipt(
         reward_type,
         target_manual_id,
-        run_state.get_player_manual_loadout(),
+        run_state.get_owned_player_manuals(),
         opponent
     )
     if receipt.is_empty(): return false
@@ -125,7 +125,7 @@ func _refresh_result_snapshot() -> void:
         return
     _result_snapshot = result_model.build_snapshot(
         run_state.last_combat_result,
-        run_state.get_player_manual_loadout(),
+        run_state.get_owned_player_manuals(),
         run_state.get_current_opponent()
     )
 
@@ -134,7 +134,7 @@ func _rebuild_result_reward_buttons() -> void:
     if result_options_container == null:
         return
     var choices: Array[Dictionary] = [{"key": "free_training", "type": "free_training", "target": "", "label": "자유 수련 · 자유 수련 +6"}]
-    for manual_id_value in run_state.get_player_manual_loadout():
+    for manual_id_value in run_state.get_owned_player_manuals():
         var manual_id := str(manual_id_value)
         var manual := manual_registry.get_manual(manual_id) if manual_registry != null else {}
         var manual_name := str(manual.get("manual_name", manual_id))
@@ -144,7 +144,7 @@ func _rebuild_result_reward_buttons() -> void:
     var signature_manual := manual_registry.get_manual(signature_manual_id) if manual_registry != null else {}
     var transfer_name := str(signature_manual.get("manual_name", signature_manual_id))
     var transfer_label := "문파 전수 · %s 3성" % transfer_name
-    if signature_manual_id in run_state.get_player_manual_loadout():
+    if signature_manual_id in run_state.get_owned_player_manuals():
         transfer_label = "문파 전수 · %s · 이미 보유 (전수 기록만 보관)" % transfer_name
     choices.append({"key": "faction_transfer:" + signature_manual_id, "type": "faction_transfer", "target": "", "label": transfer_label})
     var keys: Array[String] = []
