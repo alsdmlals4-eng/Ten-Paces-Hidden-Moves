@@ -2,7 +2,7 @@
 
 ## 현재 실행 · 2026-09-14 P01 전수 무공 연결
 
-사용자가 권장 명세 실행을 승인했다. P01을 구현하여 시작4권 이력과 실제 보유 전체를 분리하고, 전투·집중 수련·봉인 선택·저장에 연결했다. 구형 v1/v2 전투 저장은 전체 검증 후 보유 연결만 복원하며 원문 파일과 v2 pointer identity를 보존한다. 보유/봉인472검사, 구형/신형 저장의 실제 이어하기·기술 실행, Windows22검사, Python41검사와 전수 보상을 선택한 native10승/36행로를 로컬 검증했다. 새 HEAD 원격 CI는 아직 별도 확인 대상이며 전체 게임 완료가 아니다. 결정은 `docs/decisions/2026-09-14_ACQUIRED_MANUAL_COMBAT_COMPATIBILITY.md`, 계획·증거는 `docs/operations/2026-09-14_ACQUIRED_MANUAL_IMPLEMENTATION.md`다. 다음 직렬 작업은 P02 자유 수련 소비와 명시적 저장 버전 계약이다. 네 모션 시트 최종 lock 및 Human/Android/출시 미검증은 유지한다.
+사용자가 권장 명세 실행을 승인했다. P01을 구현하여 시작4권 이력과 실제 보유 전체를 분리하고, 전투·집중 수련·봉인 선택·저장에 연결했다. 구형 v1/v2 전투 저장은 전체 검증 후 보유 연결만 복원하며 원문 파일과 v2 pointer identity를 보존한다. 보유/봉인472검사, 구형/신형 저장의 실제 이어하기·기술 실행, Windows22검사, Python41검사와 전수 보상을 선택한 native10승/36행로를 로컬 검증했다. 원격 CI의 현재 상태는 PR342 최신 HEAD에서 확인한다. 전체 게임 완료가 아니다. 결정은 `docs/decisions/2026-09-14_ACQUIRED_MANUAL_COMBAT_COMPATIBILITY.md`, 계획·증거는 `docs/operations/2026-09-14_ACQUIRED_MANUAL_IMPLEMENTATION.md`다. 다음 직렬 작업은 P02 자유 수련 소비와 명시적 저장 버전 계약이다. 네 모션 시트 최종 lock 및 Human/Android/출시 미검증은 유지한다.
 
 ## 명세 준비 당시 · 2026-09-14 남은 작업 명세 준비
 

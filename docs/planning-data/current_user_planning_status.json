@@ -12,7 +12,7 @@
   "updated_date": "2026-09-14",
   "remaining_implementation_spec": {
     "owner": "docs/implementation/REMAINING_GAME_IMPLEMENTATION_SPEC.md",
-    "status": "APPROVED_CONTINUATION_P01_LOCAL_RUNTIME_VERIFIED_CI_PENDING",
+    "status": "APPROVED_CONTINUATION_P01_LOCAL_RUNTIME_VERIFIED_CI_LIVE",
     "baseline_product_head": "fb565eb1d2fbc2e1896695c58e6be08c475577cc",
     "priority": [
       "P01 acquired manual combat binding",
@@ -686,7 +686,7 @@
   "acquired_manual_continuation": {
     "decision": "TEN-DEC-20260914-ACQUIRED-MANUAL-COMBAT-COMPATIBILITY-01",
     "execution_record": "docs/operations/2026-09-14_ACQUIRED_MANUAL_IMPLEMENTATION.md",
-    "status": "WORKING_BRANCH_IMPLEMENTED_LOCAL_RUNTIME_VERIFIED_CI_PENDING",
+    "status": "WORKING_BRANCH_IMPLEMENTED_LOCAL_RUNTIME_VERIFIED_CI_LIVE",
     "starter_provenance": "IMMUTABLE_FOUR",
     "legacy_save": "V1_V2_VALIDATED_DECODE_CONVERSION_ORIGINAL_BYTES_PRESERVED",
     "next_package": "P02 free training allocation and explicit version contract",
@@ -700,6 +700,7 @@
       "native_campaign_wins": 10,
       "native_route_choices": 36,
       "native_activations": 286
-    }
+    },
+    "remote_evidence_owner": "GitHub PR342 exact current HEAD checks; local evidence is not remote PASS"
   }
 }

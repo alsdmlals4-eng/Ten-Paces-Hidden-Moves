@@ -41,7 +41,7 @@ Evidence root: `C:/Users/user/.codex/visualizations/tenpaces-motion-integration-
 - 정리: 복원했던184 sidecar 모두 원래 삭제대기 위치로 SHA-256 대조 후 반환. 새 task 임시42파일은 `C:/Users/user/Documents/삭제대기/십보강호_모션통합_20260912_064614/acquired-manual-20260914/files.csv`에 원래/현재 경로·hash를 기록해 이동했다. 원본·실패 로그·GPU 캡처·tracked compatibility fixtures는 보존했다. 정리 작업은 이동만 수행했다.
 - 정리 후 approved project operating contract 및 canonical reference freshness PASS. latest main은 ed2104d98872c63eac27999830aeae9c15a00bdc이고, 통합 branch가 main을 모두 포함함(behind0)을 확인했다. PR342 기존0fb63dbd는 portrait 회귀1FAIL/33SUCCESS였다. 이번 교정의 remote 결과와 섞지 않는다.
 
-로컬 제품/회귀 검증은 완료했다. 새 HEAD 원격 CI는 push 후 직접 읽으며 아직 PASS로 기록하지 않는다.
+로컬 제품/회귀 검증은 완료했다. planning-data 추가24검사 PASS. 제품 구현 commit은59f7245561e6214240ae9cfca04c7daaf3a7133d다. 원격 CI 상태는 PR342 최신 HEAD의 GitHub metadata에서 직접 읽는다. JSON은 CI_LIVE로 그 owner를 가리키며 이 문서의 로컬 PASS로 원격 PASS를 대체하지 않는다.
 
 ## 자동화와 제한
 
