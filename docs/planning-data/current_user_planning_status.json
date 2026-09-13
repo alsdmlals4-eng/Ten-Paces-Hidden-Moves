@@ -9,7 +9,15 @@
   "pr_integration_authority": "TEN-DEC-20260908-STANDING-PR-INTEGRATION-01",
   "pr_integration_policy": "RELATED_EXISTING_PRS_REVIEW_ABSORB_CORRECT_VERIFY_MERGE_WITHOUT_NAMED_REAPPROVAL",
   "project": "TEN_PACES",
-  "updated_date": "2026-09-13",
+  "updated_date": "2026-09-14",
+  "remaining_implementation_spec": {
+    "owner": "docs/implementation/REMAINING_GAME_IMPLEMENTATION_SPEC.md",
+    "status": "SPECIFIED_PROPOSAL_NOT_PRODUCT_IMPLEMENTATION",
+    "baseline_product_head": "fb565eb1d2fbc2e1896695c58e6be08c475577cc",
+    "priority": ["P01 acquired manual combat binding", "P02 free training allocation", "P03 player growth and unlocks"],
+    "new_rules_or_schema_approved": false,
+    "runtime_human_android_release": "NOT_RUN_FOR_THIS_SPEC"
+  },
   "result_reward_navigation": {
     "route_focus_continuation": "CURRENT_JIANGHU_SUCCESS_ONLY_FOCUS_HANDOFF_LOCAL_RUNTIME_VERIFIED",
     "status": "WORKING_BRANCH_IMPLEMENTED_LOCAL_BOUNDARY_TESTED_CI_LIVE",
