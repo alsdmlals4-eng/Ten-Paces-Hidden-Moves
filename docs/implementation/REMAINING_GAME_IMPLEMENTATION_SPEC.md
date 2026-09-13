@@ -261,6 +261,8 @@ CURRENT_SOURCE_RELEVANCE_CHECK: REQUIRED. 2026-09-14 공식본문재조회. 비�
 
 문서 검사: canonical reference freshness PASS, governance/retry-save22개 PASS, JSON parse PASS, git diff whitespace 검사 PASS. 운영 계약 진입 검사 PASS. 이들은 명세/기존 계약 검사이고 새 P01~P14 제품의 실행 검증이 아니다. 이번 제품·자산 보호 경로 diff는0이다.
 
+후속 원격 검사에서 current JSON의 새 priority 배열을 한 줄로 작성한 형식 오류가 검출됐다. 규칙/값 변경 없이 기존 canonical pretty-print 형식으로 교정하고 `tests.test_poc_planning_data`의 동일 검사를 재실행한다. 이 교정은 전체 검토 회차를 초기화하지 않는 문서 형식 회귀이며, 이후 JSON owner 편집의 필수 관련 검사에 포함한다.
+
 ### 구현자가 공통으로 실행할 검증
 
 ```text

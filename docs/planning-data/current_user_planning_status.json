@@ -14,7 +14,11 @@
     "owner": "docs/implementation/REMAINING_GAME_IMPLEMENTATION_SPEC.md",
     "status": "SPECIFIED_PROPOSAL_NOT_PRODUCT_IMPLEMENTATION",
     "baseline_product_head": "fb565eb1d2fbc2e1896695c58e6be08c475577cc",
-    "priority": ["P01 acquired manual combat binding", "P02 free training allocation", "P03 player growth and unlocks"],
+    "priority": [
+      "P01 acquired manual combat binding",
+      "P02 free training allocation",
+      "P03 player growth and unlocks"
+    ],
     "new_rules_or_schema_approved": false,
     "runtime_human_android_release": "NOT_RUN_FOR_THIS_SPEC"
   },
