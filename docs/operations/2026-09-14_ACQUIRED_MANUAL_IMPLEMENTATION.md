@@ -45,6 +45,8 @@ Evidence root: `C:/Users/user/.codex/visualizations/tenpaces-motion-integration-
 
 ## 자동화와 제한
 
+- CI 후속 교정: d8e003792376488f7be85ac34a2de1da300012e0에서 33 checks SUCCESS, automated-product-evidence의 비무 UI cache 검사 1 check FAILURE를 확인했다(run34786716806/job103803452109). 테스트가 과거 시작 목록을 뒤집어 현재 보유 selector의 재구성을 기대한 것이 원인이다. `p01-bimu-context-red.log`에서 같은 두 인수 실패를 재현하고, 시작 이력 변경은 selector를 재구성하지 않으며 현재 보유 순서 변경은 재구성한다는 두 경계를 검사했다. `p01-bimu-context-green.log` exit0/BIMU_CONSTRAINT_UI_OK, stderr 비어 있음. 제품 코드는 변경하지 않았다. 이 교정은 기존 두 차례 전체 검토 이후 발견된 결함의 표적 회귀다. 검증용184 sidecar를 SHA-256 대조 후 다시 삭제대기로 반환했다. 후속 commit의 원격 검증은 GitHub live metadata에서 확인한다.
+
 신규 전수 이력/구형 저장/실제 저장소/native 입력 회귀를 기존 run-state CI에 연결했다. 원본 저장 identity와 변환 gameplay identity를 별도 검증한다는 교훈을 cache/pointer 회귀에 반영했다. Base 공용 정책을 수정하지 않았다. 다른 프로젝트 editor/작업트리와 원본 파일을 보존한다.
 
 Human 재미·접근성/Android/실물 입력/음향 장치/출시 NOT_RUN. 네 모션 이미지 최종 lock은 그대로 남으며 PR342는 Draft다. 다음 구현 단위는 P02이며 자유 수련 소비와 새 저장 의미를 명시적 Decision으로 연결한 뒤 수행한다.

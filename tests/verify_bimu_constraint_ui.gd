@@ -60,8 +60,11 @@ func _panel_context_refresh(shell) -> void:
     button = panel.option_buttons.CST_TECH_MANUAL_SEAL
     run._player_manual_loadout.reverse()
     panel.configure(run, shell.manual_registry)
-    check(panel.option_buttons.CST_TECH_MANUAL_SEAL != button, "changed loadout rebuilds bindings")
-    check(panel.target_selectors.CST_TECH_MANUAL_SEAL.get_item_metadata(0) == run.get_player_manual_loadout()[0], "changed loadout has current player target order")
+    check(panel.option_buttons.CST_TECH_MANUAL_SEAL == button, "starter provenance is not current ownership context")
+    run._progression.owned_manual_ids.reverse()
+    panel.configure(run, shell.manual_registry)
+    check(panel.option_buttons.CST_TECH_MANUAL_SEAL != button, "changed ownership rebuilds bindings")
+    check(panel.target_selectors.CST_TECH_MANUAL_SEAL.get_item_metadata(0) == run.get_owned_player_manuals()[0], "changed ownership has current player target order")
     panel.queue_free()
     await process_frame
 
