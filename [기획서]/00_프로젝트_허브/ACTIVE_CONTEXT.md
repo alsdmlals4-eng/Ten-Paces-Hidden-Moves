@@ -1,5 +1,9 @@
 # 십보강호 활성 컨텍스트
 
+## 사용자 추가 운영 지시 · 2026-09-14
+
+승인된 남은 명세의 조사·설계·구현 반복을 계속한다. 새 이미지 후보는 크로마키 배경 생성 후 제거하고 alpha/가장자리를 검수한다. 기존 이미지 owner `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md`에 반영했다. 월간 AI 활용 작업일지·증빙집은 Blueprint와 분리한 파생 보고이며 `docs/operations/AI_USAGE_EVIDENCE_REPORTING.md`가 운영을 소유한다. 9월12~14일 근거로7쪽 PDF와 원본11건을 `C:/Users/user/Documents/증빙서류/9월 증빙서류`에 생성·대조했다. 사용자 제공 메일/협약 설명은 원문 확인 사실이 아니며 계정·입력 화면·영수증 미첨부를 표시했다. 원래 작업일/사후 작성일/캡처일/발행일을 분리하고 제출이나 승인을 추정하지 않는다.
+
 ## 현재 실행 · 2026-09-14 P01 전수 무공 연결
 
 사용자가 권장 명세 실행을 승인했다. P01을 구현하여 시작4권 이력과 실제 보유 전체를 분리하고, 전투·집중 수련·봉인 선택·저장에 연결했다. 구형 v1/v2 전투 저장은 전체 검증 후 보유 연결만 복원하며 원문 파일과 v2 pointer identity를 보존한다. 보유/봉인472검사, 구형/신형 저장의 실제 이어하기·기술 실행, Windows22검사, Python41검사와 전수 보상을 선택한 native10승/36행로를 로컬 검증했다. 원격 CI의 현재 상태는 PR342 최신 HEAD에서 확인한다. 전체 게임 완료가 아니다. 결정은 `docs/decisions/2026-09-14_ACQUIRED_MANUAL_COMBAT_COMPATIBILITY.md`, 계획·증거는 `docs/operations/2026-09-14_ACQUIRED_MANUAL_IMPLEMENTATION.md`다. 다음 직렬 작업은 P02 자유 수련 소비와 명시적 저장 버전 계약이다. 네 모션 시트 최종 lock 및 Human/Android/출시 미검증은 유지한다.
