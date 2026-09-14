@@ -12,14 +12,17 @@
   "updated_date": "2026-09-14",
   "remaining_implementation_spec": {
     "owner": "docs/implementation/REMAINING_GAME_IMPLEMENTATION_SPEC.md",
-    "status": "APPROVED_CONTINUATION_P01_LOCAL_RUNTIME_VERIFIED_CI_LIVE",
+    "status": "APPROVED_CONTINUATION_P01_P02_LOCAL_RUNTIME_VERIFIED_CI_LIVE",
     "baseline_product_head": "fb565eb1d2fbc2e1896695c58e6be08c475577cc",
     "priority": [
       "P01 acquired manual combat binding",
       "P02 free training allocation",
       "P03 player growth and unlocks"
     ],
-    "new_rules_or_schema_approved": false,
+    "new_rules_or_schema_approved": true,
+    "approved_rules_or_schema_decisions": [
+      "TEN-DEC-20260914-FREE-TRAINING-GROWTH-V3-01"
+    ],
     "runtime_human_android_release": "NOT_RUN_FOR_THIS_SPEC"
   },
   "result_reward_navigation": {
@@ -689,7 +692,7 @@
     "status": "WORKING_BRANCH_IMPLEMENTED_LOCAL_RUNTIME_VERIFIED_CI_LIVE",
     "starter_provenance": "IMMUTABLE_FOUR",
     "legacy_save": "V1_V2_VALIDATED_DECODE_CONVERSION_ORIGINAL_BYTES_PRESERVED",
-    "next_package": "P02 free training allocation and explicit version contract",
+    "next_package": "P03 starting allocation and milestone stat grants; P02 locally implemented",
     "human_android_release": "NOT_RUN",
     "local_evidence": {
       "acquisition_flow_checks": 472,
@@ -701,6 +704,20 @@
       "native_route_choices": 36,
       "native_activations": 286
     },
+    "remote_evidence_owner": "GitHub PR342 exact current HEAD checks; local evidence is not remote PASS"
+  },
+  "free_training_continuation": {
+    "decision": "TEN-DEC-20260914-FREE-TRAINING-GROWTH-V3-01",
+    "execution_record": "docs/operations/2026-09-14_TRAINING_ALLOCATION_IMPLEMENTATION.md",
+    "status": "WORKING_BRANCH_IMPLEMENTED_LOCAL_RUNTIME_VERIFIED_CI_LIVE",
+    "new_run_schema_version": 3,
+    "legacy_save": "V1_V2_RULES_IDENTITIES_AND_SOURCE_BYTES_PRESERVED_NO_FORCED_MIGRATION",
+    "windows_gpu_checks": 55,
+    "mixed_accounting_store_checks": 239,
+    "independent_process_session_checks": 14,
+    "synthetic_accounting_is_native_win_evidence": false,
+    "next_package": "P03 starting allocation and milestone stat grants",
+    "human_android_release": "NOT_RUN",
     "remote_evidence_owner": "GitHub PR342 exact current HEAD checks; local evidence is not remote PASS"
   }
 }

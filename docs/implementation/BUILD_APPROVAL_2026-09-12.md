@@ -45,3 +45,7 @@ User explicitly clarified that improvement loops mean comparable-game research, 
 
 User approved the recommended remaining-work specification: `좋아 권장안대로 작업진행해`.
 P01 now covers the full owned-manual combat/reward/constraint consumers, strict v1/v2 historical combat decode conversion, physical source identity preservation, regression and native input verification. Compatibility decision: `docs/decisions/2026-09-14_ACQUIRED_MANUAL_COMBAT_COMPATIBILITY.md`. No P02 allocation economics or new major save schema is introduced. The existing visual lock and release boundaries remain.
+
+## 2026-09-14 P02 recommended-spec continuation
+
+The latest user explicitly requests continuing through the approved remaining specification in order without routine reapproval. P02 implements the specified free-training allocation, explicit new-run v3 progression ordering, durable retry/legacy preservation and actual UI/unlocked-technique consumers. Decision: `TEN-DEC-20260914-FREE-TRAINING-GROWTH-V3-01`. The separate prior P01 commit retains its original v1/v2-only scope. No core combat rule, P03 ability numbers, paid tool, release action or visual final approval is inferred.

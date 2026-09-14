@@ -5,7 +5,8 @@
   "protected_base_commit": "201af9e99e4ce7e7b58e3ea63e6edc37d8c037ff",
   "decision_ids": [
     "TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01",
-    "TEN-DEC-20260914-ACQUIRED-MANUAL-COMBAT-COMPATIBILITY-01"
+    "TEN-DEC-20260914-ACQUIRED-MANUAL-COMBAT-COMPATIBILITY-01",
+    "TEN-DEC-20260914-FREE-TRAINING-GROWTH-V3-01"
   ],
   "approved_paths": [
     "assets/ASSET_MANIFEST.json",
@@ -36,6 +37,9 @@
     "src/run/run_save_store.gd",
     "src/run/vertical_slice_combat_bridge.gd",
     "src/run/vertical_slice_run_state.gd",
+    "src/run/vertical_slice_progression_state.gd",
+    "src/run/training_progression_ledger.gd",
+    "src/ui/training_allocation_panel.gd",
     "src/run/vertical_slice_shell.gd",
     "src/run/vertical_slice_shell_completion_auto.gd",
     "src/run/vertical_slice_shell_result_auto.gd",

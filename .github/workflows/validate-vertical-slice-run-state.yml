@@ -6,6 +6,8 @@ on:
       - "src/run/**"
       - "src/ui/combatant_status_panel.gd"
       - "src/ui/bimu_constraint_panel.gd"
+      - "src/ui/training_allocation_panel.gd"
+      - "tests/verify_training_*.gd"
       - "tests/verify_acquired_manual_flow.gd"
       - "tests/fixtures/acquired-legacy-*.json"
       - "assets/portraits/**"
@@ -80,6 +82,12 @@ jobs:
           done
       - name: Verify native campaign with earned manuals
         run: godot --headless --path . --script res://tests/probe_native_ten_duel_campaign.gd -- --acquired-rewards --run-save-dir=user://ci-acquired-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Verify free training and process-boundary recovery
+        run: |
+          godot --headless --path . --script res://tests/verify_training_allocation.gd
+          godot --headless --path . --script res://tests/verify_training_growth_v3.gd -- --store-root /tmp/ten-growth-${{ github.run_id }}-${{ github.run_attempt }}
+          godot --headless --path . --script res://tests/verify_training_growth_v3.gd -- --resume-root /tmp/ten-growth-${{ github.run_id }}-${{ github.run_attempt }}
+          godot --headless --path . --script res://tests/verify_training_allocation_ui.gd
       - name: Verify Route persistence and intel binding
         run: godot --headless --path . --script res://tests/verify_vertical_slice_route_state.gd
       - name: Verify Completion Summary binding

@@ -42,6 +42,8 @@ var game_menu: Control
 var menu_button: Button
 var _menu_previous_focus: WeakRef
 var _menu_focus_epoch := 0
+var training_button: Button
+var training_panel: Control
 
 
 func _ready() -> void:
@@ -53,7 +55,7 @@ func _ready() -> void:
     set_meta("technical_shell", true)
     set_meta("final_visual_reference_pending", false)
     set_meta("visual_evidence_ceiling", "TECHNICAL_SHELL_NOT_HUMAN_VISUAL_PASS")
-    set_meta("run_seed_policy", "NEW_RUN_V2_FROZEN_ROSTER_LEGACY_CONTINUE_PRESERVED")
+    set_meta("run_seed_policy", "NEW_RUN_V3_GROWTH_FROZEN_ROSTER_LEGACY_CONTINUE_PRESERVED")
     set_meta("setup_visual_status", "STRUCTURED_FUNCTIONAL_UI_NOT_FINAL_VISUAL")
     set_meta("briefing_visual_status", "STRUCTURED_FUNCTIONAL_UI_NOT_FINAL_VISUAL")
 
@@ -85,7 +87,7 @@ func start_new_run(replacement_confirmed: bool = false) -> bool:
         return false
     _setup_selected_manual_ids.clear()
     _refresh_setup_selection_ui()
-    return session.transact(func(): return run_state.start_new_variable_run(randi(), session.save_id), true)
+    return session.transact(func(): return run_state.start_new_growth_run(randi(), session.save_id), true)
 
 
 func advance_noncombat() -> bool:
@@ -680,6 +682,7 @@ func _initialize_run_session() -> void:
     add_child(_replacement_dialog)
     _build_save_recovery()
     _build_game_menu()
+    _build_training_panel()
     _publish_session_screen()
 
 
@@ -706,6 +709,7 @@ func _build_game_menu() -> void:
 
 func toggle_game_menu() -> void:
     if game_menu == null or session == null or session.busy or _replacement_dialog.visible: return
+    if is_instance_valid(training_panel) and training_panel.visible: return
     if game_menu.visible:
         close_game_menu()
         return
@@ -743,6 +747,10 @@ func _on_menu_preferences_changed(muted: bool, volume: float, motion: bool) -> v
 func _unhandled_input(event: InputEvent) -> void:
     if event.is_action_pressed("ui_cancel") and not event.is_echo():
         if _replacement_dialog != null and _replacement_dialog.visible: return
+        if is_instance_valid(training_panel) and training_panel.visible:
+            close_training_panel()
+            get_viewport().set_input_as_handled()
+            return
         toggle_game_menu()
         get_viewport().set_input_as_handled()
 
@@ -806,7 +814,8 @@ func _build_save_recovery() -> void:
 
 func _apply_session_input_lock() -> void:
     if session == null: return
-    var locked: bool = not session.accepts_commands()
+    var training_open := is_instance_valid(training_panel) and training_panel.visible
+    var locked: bool = not session.accepts_commands() or training_open
     for host in [content_panel, main_title_screen, combat_host]: _lock_session_buttons(host, locked)
     if is_instance_valid(_combat_view):
         _combat_view.session_input_blocked = locked
@@ -818,6 +827,59 @@ func _apply_session_input_lock() -> void:
         _save_retry_button.visible = session.blocked
         _save_retry_button.disabled = session.suspended
         _recovery_panel.find_child("ResumeSessionButton", true, false).visible = _explicit_pause
+    if is_instance_valid(training_button):
+        training_button.visible = run_state.get_current_screen() in ["BRIEFING", "JIANGHU"]
+        training_button.disabled = locked or not run_state.can_allocate_training()
+        training_button.tooltip_text = "보유 무공에 자유 수련을 배분합니다." if run_state.is_growth_run() else "수련 배분은 새로 시작한 비무행에서 사용할 수 있습니다. 기존 여정은 원래 성장 규칙을 유지합니다."
+    if is_instance_valid(training_panel): training_panel.set_available(session.accepts_commands())
+    if is_instance_valid(menu_button): menu_button.disabled = training_open
+
+
+func _build_training_panel() -> void:
+    training_button = Button.new()
+    training_button.name = "OpenTrainingButton"
+    training_button.text = "무공 수련"
+    training_button.anchor_left = 0.5
+    training_button.anchor_right = 0.5
+    training_button.offset_left = -80
+    training_button.offset_right = 85
+    training_button.offset_top = 12
+    training_button.offset_bottom = 56
+    training_button.pressed.connect(open_training_panel)
+    add_child(training_button)
+    training_panel = preload("res://src/ui/training_allocation_panel.gd").new()
+    training_panel.name = "TrainingAllocationPanel"
+    training_panel.z_index = 90
+    add_child(training_panel)
+    training_panel.close_requested.connect(close_training_panel)
+    training_panel.apply_requested.connect(_submit_training)
+
+
+func open_training_panel() -> void:
+    if session == null or not session.accepts_commands() or not run_state.can_allocate_training(): return
+    if game_menu.visible or _replacement_dialog.visible or training_panel.visible: return
+    training_panel.configure(run_state, manual_registry)
+    training_panel.show()
+    _apply_session_input_lock()
+    training_panel.focus_first()
+
+
+func close_training_panel() -> void:
+    if not is_instance_valid(training_panel) or not training_panel.visible: return
+    training_panel.hide()
+    training_panel.allocations.clear()
+    _apply_session_input_lock()
+    if training_button.is_visible_in_tree() and not training_button.disabled: training_button.grab_focus()
+
+
+func _submit_training(allocations: Dictionary, revision: int) -> void:
+    if not training_panel.visible or not session.accepts_commands(): return
+    if revision != run_state.get_training_revision() or not run_state.preview_training(allocations).get("ok",false):
+        training_panel.configure(run_state, manual_registry)
+        training_panel.status_label.text = "진행 상태가 바뀌어 배분을 새로 확인합니다."
+        return
+    close_training_panel()
+    session.transact(func(): return run_state.commit_training(allocations,revision))
 
 
 func _lock_session_buttons(node: Node, locked: bool) -> void:

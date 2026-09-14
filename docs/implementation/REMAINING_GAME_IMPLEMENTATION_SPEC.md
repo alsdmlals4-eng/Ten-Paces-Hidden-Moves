@@ -56,7 +56,7 @@ WHAT: 아래 P00~P14의 작은 인수 단위로 연결하고 각 완료를 정�
 |---|---|---|---|---|
 | P00 | 현재 문서·미완료 상태·통합 정합성 | P0 | 없음 | FEASIBLE, 문서 교정 |
 | P01 | 전수받은 모든 무공의 실제 전투 연결 | P0 | P00 | RUNTIME_VERIFIED(로컬 자동), 원격 CI 별도; 아래 현재 기록 참조 |
-| P02 | 자유 수련 소비·저장·해금 연결 | P0 | P01, 저장 의미 결정 | PARTIAL, UI 시점/호환 Decision 초안 필요 |
+| P02 | 자유 수련 소비·저장·해금 연결 | P0 | P01, 저장 의미 결정 | RUNTIME_VERIFIED(로컬 자동), v3 Decision/실행 owner: `docs/operations/2026-09-14_TRAINING_ALLOCATION_IMPLEMENTATION.md`; 원격·Human 별도 |
 | P03 | 시작 능력 분배·성장 영구 능력 | P0 | P02의 버전 계약 | PARTIAL, 승인 수치의 실제 consumer 정합성 |
 | P04 | 중복 전수 보상 마무리 | P1 | P01/P02 | PARTIAL, 보상 의미 Decision 필요 |
 | P05 | 등급 유효 입력·산식·표시 | P1 | P12 기초 측정 | PARTIAL, 집계는 승인 계약; 최종 산식은 후보 |
