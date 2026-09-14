@@ -227,11 +227,14 @@ func _verify_actual_routes_and_board_consumers() -> void:
 	var state_before: Dictionary = board.combat_state.duplicate(true)
 	var profile: Dictionary = board.call("_presentation_profile_for_event", event)
 	_expect(str(profile.get("kind", "")) == "ultimate", "Board uses actor-owned definition for actual Hebei event.")
-	_expect(is_equal_approx(board._event_presentation_duration(event), 0.70), "Successful actor-owned ultimate retains 0.70 presentation duration.")
+	_expect(is_equal_approx(board._event_presentation_duration(event), 1.05), "Successful actor-owned ultimate uses the approved readable 1.05 second duration.")
 	_expect(is_equal_approx(board._feedback_windup_duration(event, 0.70), 0.294), "Successful actor-owned ultimate retains the existing windup proportion.")
 	board._play_character_action_motion(event, 0.50)
 	_expect(str(board.player_character.motion_state) == "ultimate", "Actual eligible ultimate selects ultimate actor motion.")
+	board._show_feedback_vfx({"actor": "player"}, "clash")
+	_expect(board.presentation_vfx.material == null, "Approved clash preserves authored white core before ultimate.")
 	board._show_presentation_feedback(event)
+	_expect(board.presentation_vfx.material != null, "Ultimate restores cached legacy matte after alpha clash.")
 	_expect(str(board.get_meta("presentation_feedback_kind", "")) == "ultimate", "Board publishes ultimate feedback kind from shared profile.")
 	_expect(board.presentation_vfx.visible and board.presentation_vfx.texture is AtlasTexture, "Mapped actual ultimate displays the existing atlas.")
 	if board.presentation_vfx.texture is AtlasTexture:
@@ -332,7 +335,8 @@ func _verify_fitted_vfx(board: CombatBoardPreview, event: Dictionary, kind: Stri
 	var impact_height := stage.size.y - compare_height - 2 * gap
 	var label_height := clampf(impact_height * 0.20, 64, 96)
 	var inset := clampf(board.size.x * 0.04, 24, 72)
-	var safe := Rect2(inset, stage.position.y + compare_height + gap + label_height + 8, stage.size.x - 2 * inset, impact_height - label_height - 8)
+	# Current contract: comparison above, result label below, unobstructed impact lane between.
+	var safe := Rect2(inset, stage.position.y + compare_height + gap, stage.size.x - 2 * inset, impact_height - label_height - gap)
 	var inverse := board.get_global_transform().affine_inverse()
 	var player: Vector2 = inverse * board.player_character.get_global_transform() * board.player_character.get_foot_anchor_local()
 	var enemy: Vector2 = inverse * board.enemy_character.get_global_transform() * board.enemy_character.get_foot_anchor_local()
@@ -340,6 +344,7 @@ func _verify_fitted_vfx(board: CombatBoardPreview, event: Dictionary, kind: Stri
 	var target: Vector2 = enemy if str(event.get("actor", "")) == "player" else player
 	var is_recovery := str(event.get("category", "")) == "recovery"
 	var preferred := (player + enemy) / 2 if kind == "clash" else (own if is_recovery else own.lerp(target, 0.72))
+	preferred.y -= minf(board.player_character.size.y, board.enemy_character.size.y) * (0.68 if kind == "clash" else 0.48)
 	var desired := Vector2(clampf(board.size.x * (0.42 if kind == "ultimate" else 0.26), 250, 640), clampf(board.size.y * (0.22 if kind == "ultimate" else 0.12), 90, 210))
 	var peak := 1.08 if kind == "ultimate" else 1.0
 	var fit := minf(1, minf(safe.size.x / (desired.x * peak), safe.size.y / (desired.y * peak)))
@@ -479,7 +484,7 @@ func _verify_actual_preparation_timings(board: CombatBoardPreview, actual_by_man
 			var profile: Dictionary = board.call("_presentation_profile_for_event", event)
 			_expect(bool(profile.get("is_ultimate", false)) == expected_ultimate_identity, "Preparation retains canonical identity without granting it by stage: " + card_id)
 			_expect(str(profile.get("kind", "sentinel")) == "" and str(profile.get("motion", "sentinel")) == "" and int(profile.get("band", 0)) == -1, "Actual preparation never claims successful ultimate release: " + card_id)
-			_expect(is_equal_approx(board._event_presentation_duration(event), 0.16), "Preparation keeps the ordinary bounded wait instead of 0.70 success duration: " + card_id)
+			_expect(is_equal_approx(board._event_presentation_duration(event), 0.30), "Preparation keeps the ordinary bounded wait instead of the ultimate success duration: " + card_id)
 			board.player_character.motion_state = "idle"
 			board._play_character_action_motion(event, 0.50)
 			_expect(str(board.player_character.motion_state) == "idle", "Preparation does not trigger ultimate attack motion: " + card_id)

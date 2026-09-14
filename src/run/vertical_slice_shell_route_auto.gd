@@ -127,7 +127,16 @@ func _set_route_composition(resting: bool) -> void:
 
 func _choose_jianghu(node_id: String, step: int) -> void:
     _initialize_run_session()
-    session.transact(func(): return run_state.select_jianghu_node(node_id, step))
+    if session.transact(func(): return run_state.select_jianghu_node(node_id, step)):
+        primary_button.grab_focus()
+
+
+func advance_noncombat() -> bool:
+    var from_route := run_state != null and run_state.get_current_screen() == VerticalSliceRunState.SCREEN_JIANGHU
+    var advanced := super.advance_noncombat()
+    if advanced and from_route and run_state.get_current_screen() == VerticalSliceRunState.SCREEN_JIANGHU and route_options_container.get_child_count() > 0:
+        route_options_container.get_child(0).grab_focus()
+    return advanced
 
 
 func _render_briefing() -> void:
@@ -163,7 +172,7 @@ func _render_growth_route() -> void:
 
     route_focus_target = OptionButton.new()
     route_focus_target.name = "FocusedTrainingTarget"
-    for manual_id_value in run_state.get_player_manual_loadout():
+    for manual_id_value in run_state.get_owned_player_manuals():
         var manual_id := str(manual_id_value)
         var manual := manual_registry.get_manual(manual_id) if manual_registry != null else {}
         route_focus_target.add_item(str(manual.get("manual_name", manual_id)))

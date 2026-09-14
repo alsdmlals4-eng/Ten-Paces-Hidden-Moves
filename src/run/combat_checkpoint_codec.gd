@@ -27,7 +27,7 @@ static func _keys(value, required: Array, optional: Array = []) -> bool:
         if key not in required and key not in optional: return false
     return true
 
-func validate(dto: Dictionary, expected_binding: Dictionary = {}) -> Dictionary:
+func validate(dto: Dictionary, expected_binding: Dictionary = {}, legacy_starters: bool = false) -> Dictionary:
     var bad := {"ok": false, "status": "CORRUPT", "error": "Malformed combat checkpoint"}
     if not load("res://src/run/run_checkpoint_codec.gd").json_safe(dto, 0, [0]): return bad
     dto = portable(dto)
@@ -39,7 +39,7 @@ func validate(dto: Dictionary, expected_binding: Dictionary = {}) -> Dictionary:
         if typeof(dto[field]) != TYPE_ARRAY: return bad
     if not expected_binding.is_empty() and portable(dto.binding) != portable(expected_binding): return bad
     bad.error = "Combat binding mismatch"
-    var engine = _engine(dto.binding)
+    var engine = _engine(dto.binding, legacy_starters)
     if engine == null: return bad
     if dto.binding.has("resolved_encounter") and dto.binding.resolved_encounter.stage != dto.duel_index: return bad
     bad.error = "Combat state or timing context malformed"
@@ -74,13 +74,17 @@ func validate(dto: Dictionary, expected_binding: Dictionary = {}) -> Dictionary:
         if dto.phase == "BUNDLE_RESOLVED" and not _summary(dto.review_summary): return bad
     return {"ok": true, "status": "VALID"}
 
-func _engine(binding: Dictionary):
-    if not _keys(binding, ["player_loadout", "player_mastery_by_manual", "enemy_candidate_id", "enemy_loadout", "enemy_mastery_by_manual", "enemy_runtime_binding", "effective_enemy_mastery_by_manual", "bimu_receipt"], ["resolved_encounter"]): return null
+func _engine(binding: Dictionary, legacy_starters: bool = false):
+    if not _keys(binding, ["player_loadout", "player_mastery_by_manual", "enemy_candidate_id", "enemy_loadout", "enemy_mastery_by_manual", "enemy_runtime_binding", "effective_enemy_mastery_by_manual", "bimu_receipt"], ["resolved_encounter", "owned_binding_version"]): return null
     for field in ["player_loadout", "enemy_loadout"]:
         if typeof(binding[field]) != TYPE_ARRAY: return null
     for field in ["player_mastery_by_manual", "enemy_mastery_by_manual", "enemy_runtime_binding", "effective_enemy_mastery_by_manual", "bimu_receipt"]:
         if typeof(binding[field]) != TYPE_DICTIONARY: return null
-    if binding.player_loadout.size() != 4 or typeof(binding.enemy_candidate_id) != TYPE_STRING: return null
+    if binding.player_loadout.is_empty() or typeof(binding.enemy_candidate_id) != TYPE_STRING: return null
+    if binding.has("owned_binding_version") and not integer(binding.owned_binding_version, 1, 1): return null
+    if legacy_starters:
+        if binding.has("owned_binding_version") or binding.player_loadout.size() != 4: return null
+    elif binding.player_mastery_by_manual.size() != binding.player_loadout.size(): return null
     var opponent: Dictionary
     if binding.has("resolved_encounter"):
         var provider = load("res://src/run/variable_opponent_roster.gd").new()
@@ -109,8 +113,10 @@ func _engine(binding: Dictionary):
     for field in ["player_mastery_by_manual", "enemy_mastery_by_manual"]:
         for id in binding[field]:
             if typeof(id) != TYPE_STRING or engine.martial_registry.get_manual(id).is_empty() or not integer(binding[field][id], 1, 10): return null
+    var owned_seen := {}
     for id in binding.player_loadout:
-        if typeof(id) != TYPE_STRING or not binding.player_mastery_by_manual.has(id): return null
+        if typeof(id) != TYPE_STRING or owned_seen.has(id) or not binding.player_mastery_by_manual.has(id): return null
+        owned_seen[id] = true
     for id in binding.enemy_loadout:
         if typeof(id) != TYPE_STRING or not binding.enemy_mastery_by_manual.has(id): return null
     if typeof(binding.bimu_receipt.get("selections")) != TYPE_ARRAY: return null

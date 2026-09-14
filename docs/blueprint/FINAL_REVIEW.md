@@ -1,5 +1,12 @@
 # 이전 81쪽 통합 편집판 검수 · 최신 추가 요구 전의 역사 기록
 
+> 현재 구현 상태 안내 · 2026-09-13: 아래 검수 당시의 미구현/승인 대기 문구는 역사 기록이다.
+> 112쪽 상세와 선정47개 정적 이미지는 이후 승인됐고 가변 편성·별호·v2 저장은 PR340으로 구현·병합됐다.
+> 현재 구현 증거는 `docs/operations/2026-09-11_VARIABLE_ROSTER_IMPLEMENTATION.md`,
+> 진행 중인 모션/UI와 사용자 설정은 `docs/operations/2026-09-12_MOTION_UI_INTEGRATION.md`와
+> `docs/operations/2026-09-13_PRESENTATION_PREFERENCES.md`를 따른다.
+> 모션 캐릭터4장 최종 승인, Human/Android/출시 증거는 별개이며 아래 PDF 해시와 역사 판정을 변경하지 않는다.
+
 ## 현재 검토본 · 2026-09-11 · 112쪽
 
 - 전달 파일: `output/pdf/TEN_PACES_HUMAN_BLUEPRINT_20260911_APPROVAL_REVIEW.pdf`.

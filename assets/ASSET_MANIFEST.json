@@ -64,8 +64,18 @@
       "transparency_audit": {
         "mode": "RGBA",
         "has_alpha": true,
-        "alpha_bounds_at_threshold_16": [340, 8, 684, 1528],
-        "corner_alpha": [0, 0, 0, 0],
+        "alpha_bounds_at_threshold_16": [
+          340,
+          8,
+          684,
+          1528
+        ],
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ],
         "status": "APPROVED_ACTIVE"
       },
       "active": true,
@@ -99,11 +109,24 @@
       "transparency_audit": {
         "mode": "RGBA",
         "has_alpha": true,
-        "alpha_extrema": [0, 255],
+        "alpha_extrema": [
+          0,
+          255
+        ],
         "transparent_pixels": 922489,
         "partially_transparent_pixels": 650375,
-        "corner_alpha": [0, 0, 0, 0],
-        "alpha_bounds_at_threshold_16": [56, 120, 984, 1412],
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "alpha_bounds_at_threshold_16": [
+          56,
+          120,
+          984,
+          1412
+        ],
         "foot_safe_bottom_margin_px": 123,
         "status": "APPROVED_ACTIVE"
       },
@@ -138,11 +161,24 @@
       "transparency_audit": {
         "mode": "RGBA",
         "has_alpha": true,
-        "alpha_extrema": [0, 255],
+        "alpha_extrema": [
+          0,
+          255
+        ],
         "transparent_pixels": 970318,
         "partially_transparent_pixels": 602546,
-        "corner_alpha": [0, 0, 0, 0],
-        "alpha_bounds_at_threshold_16": [88, 124, 1000, 1428],
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "alpha_bounds_at_threshold_16": [
+          88,
+          124,
+          1000,
+          1428
+        ],
         "foot_safe_bottom_margin_px": 107,
         "status": "APPROVED_ACTIVE"
       },
@@ -174,10 +210,18 @@
       "transparency_audit": {
         "mode": "RGBA",
         "has_alpha": true,
-        "alpha_extrema": [0, 255],
+        "alpha_extrema": [
+          0,
+          255
+        ],
         "transparent_pixels": 1168818,
         "partially_transparent_pixels": 8764,
-        "corner_alpha": [0, 0, 0, 0],
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ],
         "status": "APPROVED_ACTIVE"
       },
       "runtime_consumer": "src/combat/combat_character_placeholder.gd PLAYER_ART_PATH",
@@ -212,10 +256,18 @@
       "transparency_audit": {
         "mode": "RGBA",
         "has_alpha": true,
-        "alpha_extrema": [0, 255],
+        "alpha_extrema": [
+          0,
+          255
+        ],
         "transparent_pixels": 1131257,
         "partially_transparent_pixels": 10451,
-        "corner_alpha": [0, 0, 0, 0],
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ],
         "status": "APPROVED_ACTIVE"
       },
       "active": false,
@@ -248,10 +300,18 @@
       "transparency_audit": {
         "mode": "RGBA",
         "has_alpha": true,
-        "alpha_extrema": [0, 255],
+        "alpha_extrema": [
+          0,
+          255
+        ],
         "transparent_pixels": 1021220,
         "partially_transparent_pixels": 550720,
-        "corner_alpha": [0, 0, 0, 0],
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ],
         "status": "APPROVED_ACTIVE"
       },
       "runtime_consumer": "src/combat/combat_character_placeholder.gd DOGYEOM_ART_PATH for slot1_dogyeom",
@@ -315,9 +375,17 @@
       "transparency_audit": {
         "mode": "RGBA",
         "has_alpha": true,
-        "alpha_extrema": [0, 255],
+        "alpha_extrema": [
+          0,
+          255
+        ],
         "transparent_pixels": 1077162,
-        "corner_alpha": [0, 0, 0, 0],
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ],
         "status": "APPROVED_ACTIVE"
       },
       "active": true
@@ -342,9 +410,17 @@
       "source_alpha_audit": {
         "mode": "RGBA",
         "has_alpha": true,
-        "alpha_extrema": [255, 255],
+        "alpha_extrema": [
+          255,
+          255
+        ],
         "transparent_pixels": 0,
-        "corner_alpha": [255, 255, 255, 255],
+        "corner_alpha": [
+          255,
+          255,
+          255,
+          255
+        ],
         "status": "OPAQUE_SOURCE_RUNTIME_MATTE_REQUIRED"
       },
       "runtime_matte": "ShaderMaterial removes only bright near-neutral source backdrop; gold and ink detail are retained.",
@@ -361,7 +437,10 @@
       "transparency_audit": {
         "mode": "RGBA",
         "has_alpha": true,
-        "alpha_extrema": [0, 255],
+        "alpha_extrema": [
+          0,
+          255
+        ],
         "transparent_pixels": 1318410,
         "status": "APPROVED_ACTIVE"
       },
@@ -414,12 +493,25 @@
       "transparency_audit": {
         "mode": "RGBA",
         "has_alpha": true,
-        "alpha_extrema": [0, 255],
+        "alpha_extrema": [
+          0,
+          255
+        ],
         "transparent_pixels": 634665,
         "partially_transparent_pixels": 937553,
-        "corner_alpha": [0, 0, 0, 0],
-        "alpha_bounds_at_threshold_16": [5, 7, 2171, 712],
-      "status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_VERIFIED"
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "alpha_bounds_at_threshold_16": [
+          5,
+          7,
+          2171,
+          712
+        ],
+        "status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_VERIFIED"
       },
       "active": true
     },
@@ -442,12 +534,25 @@
       "transparency_audit": {
         "mode": "RGBA",
         "has_alpha": true,
-        "alpha_extrema": [0, 255],
+        "alpha_extrema": [
+          0,
+          255
+        ],
         "transparent_pixels": 845300,
         "partially_transparent_pixels": 727900,
-        "corner_alpha": [0, 0, 0, 0],
-        "alpha_bounds_at_threshold_16": [28, 74, 1798, 725],
-      "status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_VERIFIED"
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "alpha_bounds_at_threshold_16": [
+          28,
+          74,
+          1798,
+          725
+        ],
+        "status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_VERIFIED"
       },
       "active": true
     },
@@ -470,12 +575,25 @@
       "transparency_audit": {
         "mode": "RGBA",
         "has_alpha": true,
-        "alpha_extrema": [0, 255],
+        "alpha_extrema": [
+          0,
+          255
+        ],
         "transparent_pixels": 297765,
         "partially_transparent_pixels": 1274472,
-        "corner_alpha": [0, 0, 0, 0],
-        "alpha_bounds_at_threshold_16": [34, 2, 1013, 1475],
-      "status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_VERIFIED"
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "alpha_bounds_at_threshold_16": [
+          34,
+          2,
+          1013,
+          1475
+        ],
+        "status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_VERIFIED"
       },
       "active": true
     },
@@ -498,12 +616,25 @@
       "transparency_audit": {
         "mode": "RGBA",
         "has_alpha": true,
-        "alpha_extrema": [0, 255],
+        "alpha_extrema": [
+          0,
+          255
+        ],
         "transparent_pixels": 481085,
         "partially_transparent_pixels": 1091666,
-        "corner_alpha": [0, 0, 0, 0],
-        "alpha_bounds_at_threshold_16": [82, 15, 1073, 1308],
-      "status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_VERIFIED"
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "alpha_bounds_at_threshold_16": [
+          82,
+          15,
+          1073,
+          1308
+        ],
+        "status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_VERIFIED"
       },
       "active": true
     },
@@ -1382,6 +1513,115 @@
       "rights_review": "RELEASE_BLOCKED_UNVERIFIED: exact service/model/account terms and reference input rights are not established by visual approval",
       "active": true,
       "transparency_required": false
+    },
+    {
+      "id": "clash_sparks_ink_gold_v2",
+      "path": "res://assets/vfx/clash_sparks_ink_gold_v2.png",
+      "active": true,
+      "generator": "OpenAI built-in image generation",
+      "generation_output_id": "exec-7380a131-26e2-4277-b70b-9e1ecdc8088f",
+      "source_png_sha256": "9f0f5a55eb09308a176c78b460d8c6fefac841b2bc911440f52603843a2a6e8f",
+      "approval": "2026-09-10 current user final lock: 확정해서 진행해 / 네 권장안대로 다 승인해",
+      "runtime_consumer": "src/combat/combat_board_preview.gd::_show_feedback_vfx",
+      "lifecycle_status": "USER_APPROVED_RUNTIME_VERIFIED_WORKING_BRANCH",
+      "license": "AI-generated project asset; release rights evidence remains separately unverified.",
+      "transparency_audit": {
+        "has_alpha": true,
+        "mode": "Native alpha; no white-matte shader",
+        "dimensions": [
+          1254,
+          1254
+        ]
+      },
+      "evidence": "docs/operations/2026-09-09_CHARACTER_MOTION_INTEGRATION.md"
+    },
+    {
+      "id": "player_sword_sequence_v1",
+      "path": "res://assets/characters/motion/player_sword_sequence_v1.png",
+      "active": true,
+      "generator": "OpenAI built-in image generation",
+      "generation_output_id": "exec-bb7fddda-65af-4dfa-bbbf-fc385d663e2a",
+      "source_png_sha256": "9083a1e41cb1ad9d9390e64f81ef6d47e358335f0a4f5e9b2d31f05a38ff3ca0",
+      "license": "Project-original AI-generated working asset; final Human and release-rights review pending.",
+      "approval": "User authorized replacement and runtime implementation; new reaction final visual lock pending.",
+      "runtime_consumer": "src/combat/character_pose_library.gd; src/combat/combat_character_placeholder.gd; src/ui/combatant_status_panel.gd; src/ui/main_title_screen.gd",
+      "lifecycle_status": "IMPLEMENTED_WORKING_BRANCH__HUMAN_PENDING",
+      "grid": [
+        3,
+        3
+      ],
+      "transparency_audit": {
+        "mode": "RGB chroma source; canvas shader alpha at runtime",
+        "has_alpha": false,
+        "status": "SOURCE_KEYED_AT_RUNTIME"
+      },
+      "evidence": "docs/operations/2026-09-09_CHARACTER_MOTION_INTEGRATION.md"
+    },
+    {
+      "id": "enemy_sword_sequence_v1",
+      "path": "res://assets/characters/motion/enemy_sword_sequence_v1.png",
+      "active": true,
+      "generator": "OpenAI built-in image generation",
+      "generation_output_id": "exec-0c53bc94-7b5d-4546-b7a1-6610273746ca",
+      "source_png_sha256": "d5ed98df6eb0cc8298ee2996fb8d8deb6bd383d18ccf428c90b0b77704b57a88",
+      "license": "Project-original AI-generated working asset; final Human and release-rights review pending.",
+      "approval": "User authorized replacement and runtime implementation; new reaction final visual lock pending.",
+      "runtime_consumer": "src/combat/character_pose_library.gd; src/combat/combat_character_placeholder.gd; src/ui/combatant_status_panel.gd; src/ui/main_title_screen.gd",
+      "lifecycle_status": "IMPLEMENTED_WORKING_BRANCH__HUMAN_PENDING",
+      "grid": [
+        4,
+        3
+      ],
+      "transparency_audit": {
+        "mode": "RGB chroma source; canvas shader alpha at runtime",
+        "has_alpha": false,
+        "status": "SOURCE_KEYED_AT_RUNTIME"
+      },
+      "evidence": "docs/operations/2026-09-09_CHARACTER_MOTION_INTEGRATION.md"
+    },
+    {
+      "id": "player_reactions_candidate_v2",
+      "path": "res://assets/characters/motion/player_reactions_candidate_v2.png",
+      "active": true,
+      "generator": "OpenAI built-in image generation",
+      "generation_output_id": "exec-ae548d74-0ce8-4369-b62e-b66be32db535",
+      "source_png_sha256": "6d2bd0113bb7524622033d770ce20518515d44f4d4cda46dc39406aae205f7f4",
+      "license": "Project-original AI-generated working asset; final Human and release-rights review pending.",
+      "approval": "User authorized replacement and runtime implementation; new reaction final visual lock pending.",
+      "runtime_consumer": "src/combat/character_pose_library.gd; src/combat/combat_character_placeholder.gd",
+      "lifecycle_status": "IMPLEMENTED_WORKING_BRANCH__HUMAN_PENDING",
+      "grid": [
+        2,
+        2
+      ],
+      "transparency_audit": {
+        "mode": "RGB chroma source; canvas shader alpha at runtime",
+        "has_alpha": false,
+        "status": "SOURCE_KEYED_AT_RUNTIME"
+      },
+      "evidence": "docs/operations/2026-09-09_CHARACTER_MOTION_INTEGRATION.md"
+    },
+    {
+      "id": "enemy_reactions_candidate_v2",
+      "path": "res://assets/characters/motion/enemy_reactions_candidate_v2.png",
+      "active": true,
+      "generator": "OpenAI built-in image generation",
+      "generation_output_id": "exec-c5f87b0c-a490-4fb3-bca1-a49e461b6f90",
+      "source_png_sha256": "6738eced1649e23a3f4b4e67f64665a40e74b73dba275f11466739eab658062f",
+      "license": "Project-original AI-generated working asset; final Human and release-rights review pending.",
+      "approval": "User authorized replacement and runtime implementation; new reaction final visual lock pending.",
+      "runtime_consumer": "src/combat/character_pose_library.gd; src/combat/combat_character_placeholder.gd",
+      "lifecycle_status": "IMPLEMENTED_WORKING_BRANCH__HUMAN_PENDING",
+      "grid": [
+        2,
+        2
+      ],
+      "transparency_audit": {
+        "mode": "RGB chroma source; canvas shader alpha at runtime",
+        "has_alpha": false,
+        "status": "SOURCE_KEYED_AT_RUNTIME"
+      },
+      "evidence": "docs/operations/2026-09-09_CHARACTER_MOTION_INTEGRATION.md"
     }
   ],
   "fallback": "기존 SVG UI와 텍스트·도형 기반 결과 연출은 유지한다. 투명 RGBA 검수를 통과한 절초 원화가 준비되기 전에는 후보 원화를 활성 VFX로 참조하지 않는다."

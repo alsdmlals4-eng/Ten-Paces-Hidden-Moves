@@ -1,9 +1,9 @@
-## 도겸 상태 패널 초상 라우팅과 일반 적군 fallback을 검증한다.
+## 현재 검 적군의 HUD가 실제 전투 캐릭터와 같은 원본을 사용하는지 검증한다.
 extends SceneTree
 
 const STATUS_PANEL_SCRIPT := preload("res://src/ui/combatant_status_panel.gd")
-const DOGYEOM_PORTRAIT_PATH := "res://assets/portraits/dogyeom_status_portrait_01_v1.png"
-const GENERIC_ENEMY_PORTRAIT_PATH := "res://assets/portraits/enemy_masked_ink_v1.png"
+const DOGYEOM_PORTRAIT_PATH := "res://assets/characters/dogyeom_combat_battler_01_v1.png"
+const GENERIC_ENEMY_PORTRAIT_PATH := "res://assets/characters/motion/enemy_sword_sequence_v1.png"
 
 var failures: Array[String] = []
 
@@ -17,7 +17,7 @@ func _run() -> void:
 	_expect_eq(
 		_portrait_path(dogyeom_panel),
 		DOGYEOM_PORTRAIT_PATH,
-		"Dogyeom must use the approved status portrait asset."
+		"Dogyeom must share the current approved sword battler identity."
 	)
 	_expect_eq(
 		_portrait_stretch_mode(dogyeom_panel),
@@ -64,6 +64,8 @@ func _portrait_path(panel) -> String:
 	var portrait := panel.get_node_or_null("CombatantInkPortrait") as TextureRect
 	if portrait == null or portrait.texture == null:
 		return ""
+	if portrait.texture is AtlasTexture:
+		return (portrait.texture as AtlasTexture).atlas.resource_path
 	return portrait.texture.resource_path
 
 

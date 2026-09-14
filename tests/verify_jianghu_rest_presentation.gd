@@ -1,6 +1,7 @@
 extends SceneTree
 
 var failures: Array[String] = []
+var checks := 0
 
 func _initialize() -> void:
     call_deferred("_run")
@@ -25,11 +26,27 @@ func _run() -> void:
     shell.advance_noncombat()
     for step in range(2):
         var options: Array = shell.run_state.get_jianghu_options()
-        shell._choose_jianghu(str(options[0]["id"]), step)
-        shell.advance_noncombat()
+        var choice: Button = shell.find_child("Jianghu_" + str(options[0]["id"]), true, false)
+        choice.grab_focus()
+        await enter()
+        check(root.gui_get_focus_owner() == shell.primary_button, "A successful route choice must focus continuation.")
+        if root.gui_get_focus_owner() != shell.primary_button:
+            shell.queue_free()
+            await process_frame
+            finish()
+            return
+        await enter()
+        check(root.gui_get_focus_owner() == shell.route_options_container.get_child(0), "Next route step must focus its first visible choice.")
     var before_rest: Dictionary = shell.run_state.get_player_run_resources()
     check(before_rest == {"health": [12, 40], "stamina": [2, 5], "internal": [1, 4]}, "Rest fixture must reach the inn with damaged valid resources.")
+    shell.menu_button.grab_focus()
+    shell.set_session_paused(true)
     shell._choose_jianghu("rest", 2)
+    check(root.gui_get_focus_owner() == shell.menu_button, "Rejected suspended choice must not steal focus.")
+    check(shell.run_state.get_pending_jianghu().is_empty() and shell.run_state.get_player_run_resources() == before_rest, "Suspended route choice must not apply rest.")
+    shell.set_session_paused(false)
+    shell.find_child("Jianghu_rest", true, false).grab_focus()
+    await enter()
     await process_frame
     var backdrop = shell.get_node("ShellBackdrop")
     check(backdrop.texture.resource_path == "res://assets/backgrounds/jianghu_rest_inn_v1.png", "Rest must consume the original inn illustration.")
@@ -41,9 +58,14 @@ func _run() -> void:
     check(resources["health"][0] < resources["health"][1], "Rest fixture health must remain below cap before duplicate input.")
     check(resources["stamina"][0] < resources["stamina"][1], "Rest fixture stamina must remain below cap before duplicate input.")
     check(resources["internal"][0] < resources["internal"][1], "Rest fixture internal power must remain below cap before duplicate input.")
+    var args := OS.get_cmdline_user_args()
+    if DisplayServer.get_name() != "headless" and not args.is_empty():
+        await RenderingServer.frame_post_draw
+        root.get_texture().get_image().save_png(args[0])
     shell._choose_jianghu("rest", 2)
     check(shell.run_state.get_player_run_resources() == resources, "Duplicate rest must not heal again.")
-    shell.advance_noncombat()
+    check(root.gui_get_focus_owner() == shell.primary_button, "Rest outcome must keep a usable continuation focus after rejected duplicate input.")
+    await enter()
     await process_frame
     check(backdrop.texture.resource_path == "res://assets/backgrounds/jianghu_blue_ink_landscape_v1.png", "Next choice must restore the mountain route backdrop, not the duel courtyard.")
     check(is_equal_approx(shell.content_panel.anchor_left, 0.14), "Next choice must restore the full choice layout.")
@@ -55,11 +77,27 @@ func _run() -> void:
     shell.queue_free()
     await process_frame
     await create_timer(0.1).timeout
+    finish()
+
+func enter() -> void:
+    var event := InputEventKey.new()
+    event.keycode = KEY_ENTER
+    event.pressed = true
+    root.push_input(event)
+    await process_frame
+    event = InputEventKey.new()
+    event.keycode = KEY_ENTER
+    root.push_input(event)
+    await process_frame
+
+func finish() -> void:
     for failure in failures:
         push_error(failure)
     print("JIANGHU_REST_PRESENTATION_OK" if failures.is_empty() else "JIANGHU_REST_PRESENTATION_FAILED")
+    print("JIANGHU_ROUTE_FOCUS checks=", checks)
     quit(0 if failures.is_empty() else 1)
 
 func check(value: bool, message: String) -> void:
+    checks += 1
     if not value:
         failures.append(message)

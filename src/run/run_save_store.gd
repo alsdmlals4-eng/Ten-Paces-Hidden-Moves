@@ -23,6 +23,7 @@ func _cache_context() -> Dictionary:
         "semantic_contract_version": CODEC.SEMANTIC_CONTRACT_VERSION,
         "content_identity": codec.content_identity(),
         "variable_content_identity": codec.content_identity_for_schema(CODEC.VARIABLE_SCHEMA_VERSION),
+        "growth_content_identity": codec.content_identity_for_schema(CODEC.GROWTH_SCHEMA_VERSION),
     }
 
 func _cached(bytes: PackedByteArray) -> Dictionary:
@@ -36,6 +37,7 @@ func _cached(bytes: PackedByteArray) -> Dictionary:
                 "payload": entry.payload.duplicate(true),
                 "source_bytes": entry.source_bytes.duplicate(),
                 "source_text": str(entry.source_text),
+                "source_envelope_digest": entry.source_envelope_digest,
             }
     return {}
 
@@ -54,6 +56,7 @@ func _remember_validated(bytes: PackedByteArray, text: String, payload: Dictiona
         "source_bytes": bytes.duplicate(),
         "source_text": text,
         "payload": payload.duplicate(true),
+        "source_envelope_digest": CODEC.digest(JSON.parse_string(text)),
     })
     _validated_cache_bytes += bytes.size()
 
@@ -126,6 +129,7 @@ func _read(slot: String) -> Dictionary:
         "payload": decoded.payload.duplicate(true),
         "source_bytes": bytes.duplicate(),
         "source_text": text,
+        "source_envelope_digest": CODEC.digest(JSON.parse_string(text)),
     }
 
 func load_checkpoint() -> Dictionary:
@@ -135,7 +139,7 @@ func load_checkpoint() -> Dictionary:
         var resolved := _read(pointer.slot)
         if resolved.status == "ABSENT": return CODEC.error("CORRUPT", "Active pointer target is missing")
         if not resolved.ok: return resolved
-        if int(resolved.payload.schema_version) != CODEC.VARIABLE_SCHEMA_VERSION or pointer.slot != "v2_" + CODEC.digest(resolved.payload): return CODEC.error("CORRUPT", "Active pointer target mismatch")
+        if int(resolved.payload.schema_version) != int(pointer.schema_version) or pointer.slot != "v%d_" % int(pointer.schema_version) + resolved.source_envelope_digest: return CODEC.error("CORRUPT", "Active pointer target mismatch")
         return _loaded(resolved.payload, "VALID_PRIMARY")
     var primary := _read("primary")
     return _load_from_primary(primary)
@@ -180,7 +184,7 @@ func _physical_idempotent(primary: Dictionary, save_id: String, checkpoint_id: S
     return {"ok": true, "status": "SAVED", "revision": primary.payload.revision, "payload": primary.payload.duplicate(true), "idempotent": true}
 
 func _save(save_id: String, checkpoint_id: String, run_state: Dictionary, combat_checkpoint: Dictionary, active: bool, replace: bool) -> Dictionary:
-    if run_state.get("ruleset_id", "") == CODEC.VARIABLE_RULESET_ID or (not active and FileAccess.file_exists(root_path.path_join("active.json"))):
+    if run_state.get("ruleset_id", "") in [CODEC.VARIABLE_RULESET_ID, CODEC.GROWTH_RULESET_ID] or (not active and FileAccess.file_exists(root_path.path_join("active.json"))):
         return _save_variable(save_id, checkpoint_id, run_state, combat_checkpoint, active, replace)
     if FileAccess.file_exists(root_path.path_join("active.json")): return CODEC.error("INCOMPATIBLE", "Legacy writer cannot replace variable save")
     if not CODEC.json_safe([run_state, combat_checkpoint], 0, [0]): return CODEC.error("CORRUPT", "Unsupported payload")
@@ -231,7 +235,7 @@ func _save(save_id: String, checkpoint_id: String, run_state: Dictionary, combat
 
 func _write_slot(slot: String, text: String, expected_payload: Dictionary) -> bool:
     var temp := root_path.path_join(slot + "_temp.json")
-    if slot.begins_with("v2_") and not _allowed("write_primary", temp): return false
+    if (slot.begins_with("v2_") or slot.begins_with("v3_")) and not _allowed("write_primary", temp): return false
     if not _allowed("write_" + slot, temp): return false
     var file := FileAccess.open(temp, FileAccess.WRITE)
     if file == null: return false
@@ -283,13 +287,15 @@ func _read_pointer(slot: String = "active") -> Dictionary:
     var parsed = JSON.parse_string(text)
     if typeof(parsed) != TYPE_DICTIONARY or parsed.size() != 3 or not parsed.has("schema_version") or not parsed.has("slot") or not parsed.has("integrity_hash"): return CODEC.error("CORRUPT", "Malformed pointer fields")
     if not CODEC.integer(parsed.schema_version, 1): return CODEC.error("CORRUPT", "Malformed pointer version")
-    if parsed.schema_version != 2: return CODEC.error("INCOMPATIBLE", "Unknown pointer version")
-    if typeof(parsed.slot) != TYPE_STRING or RegEx.create_from_string("^v2_[0-9a-f]{64}$").search(parsed.slot) == null: return CODEC.error("CORRUPT", "Untrusted pointer path")
-    if typeof(parsed.integrity_hash) != TYPE_STRING or parsed.integrity_hash != CODEC.digest({"schema_version": 2, "slot": parsed.slot}): return CODEC.error("CORRUPT", "Pointer integrity mismatch")
-    return {"ok": true, "status": "VALID", "slot": parsed.slot, "source_bytes": bytes}
+    var pointer_version := int(parsed.schema_version)
+    if pointer_version not in [2, 3]: return CODEC.error("INCOMPATIBLE", "Unknown pointer version")
+    if typeof(parsed.slot) != TYPE_STRING or RegEx.create_from_string("^v%d_[0-9a-f]{64}$" % pointer_version).search(parsed.slot) == null: return CODEC.error("CORRUPT", "Untrusted pointer path")
+    if typeof(parsed.integrity_hash) != TYPE_STRING or parsed.integrity_hash != CODEC.digest({"schema_version": pointer_version, "slot": parsed.slot}): return CODEC.error("CORRUPT", "Pointer integrity mismatch")
+    return {"ok": true, "status": "VALID", "schema_version": pointer_version, "slot": parsed.slot, "source_bytes": bytes}
 
 func _switch_pointer(slot: String) -> bool:
-    var payload := {"schema_version": 2, "slot": slot}
+    if RegEx.create_from_string("^v[23]_[0-9a-f]{64}$").search(slot) == null: return false
+    var payload := {"schema_version": int(slot.substr(1, 1)), "slot": slot}
     payload["integrity_hash"] = CODEC.digest(payload)
     var bytes := JSON.stringify(payload).to_utf8_buffer()
     var temp := root_path.path_join("active_temp.json")
@@ -317,10 +323,14 @@ func _save_variable(save_id: String, checkpoint_id: String, run_state: Dictionar
     if current.status == "IO_FAILURE" or (not replace and current.status in ["INCOMPATIBLE", "CORRUPT"]): return current
     var previous: Dictionary = current.get("payload", {})
     if not replace and not previous.is_empty() and (previous.save_id != save_id or not previous.active): return CODEC.error("INCOMPATIBLE", "Generation replacement requires explicit operation")
+    var requested_schema := CODEC.GROWTH_SCHEMA_VERSION if run_state.get("ruleset_id", "") == CODEC.GROWTH_RULESET_ID else CODEC.VARIABLE_SCHEMA_VERSION
+    if not active: requested_schema = int(previous.get("schema_version", CODEC.VARIABLE_SCHEMA_VERSION))
+    if not replace and active and not previous.is_empty() and (requested_schema == CODEC.GROWTH_SCHEMA_VERSION or int(previous.schema_version) == CODEC.GROWTH_SCHEMA_VERSION) and int(previous.schema_version) != requested_schema:
+        return CODEC.error("INCOMPATIBLE", "Growth rules require a new explicit generation")
     if _pending.is_empty():
-        if not previous.is_empty() and int(previous.schema_version) == 2 and _matches_request(previous, save_id, checkpoint_id, run_state, combat_checkpoint, active):
+        if not previous.is_empty() and int(previous.schema_version) == requested_schema and _matches_request(previous, save_id, checkpoint_id, run_state, combat_checkpoint, active):
             return {"ok": true, "status": "SAVED", "revision": previous.revision, "payload": previous.duplicate(true), "idempotent": true}
-        var encoded: Dictionary = codec.encode(save_id, checkpoint_id, int(previous.get("revision", 0)) + 1, run_state, combat_checkpoint, active, CODEC.VARIABLE_SCHEMA_VERSION)
+        var encoded: Dictionary = codec.encode(save_id, checkpoint_id, int(previous.get("revision", 0)) + 1, run_state, combat_checkpoint, active, requested_schema)
         if not encoded.ok: return encoded
         _pending = {"identity": identity, "encoded": encoded, "replace": replace}
     var envelope: Dictionary = _pending.encoded.payload
@@ -331,7 +341,7 @@ func _save_variable(save_id: String, checkpoint_id: String, run_state: Dictionar
     # Legacy originals and their byte-identical archives remain available to v1 builds.
     for legacy in ["primary", "backup"]:
         if FileAccess.file_exists(root_path.path_join(legacy + ".json")) and not _preserve_evidence(legacy): return failed
-    var slot := "v2_" + CODEC.digest(envelope)
+    var slot := "v%d_" % int(envelope.schema_version) + CODEC.digest(envelope)
     var existing := _read(slot)
     if existing.status == "ABSENT":
         if not _write_slot(slot, _pending.encoded.text, envelope): return failed
@@ -344,23 +354,25 @@ func _save_variable(save_id: String, checkpoint_id: String, run_state: Dictionar
     _cleanup_variable_history(envelope)
     return {"ok": true, "status": "SAVED", "revision": envelope.revision, "payload": envelope.duplicate(true)}
 
-# Retention touches only strict, canonical v2 checkpoints of this save identity.
+# Retention touches only strict, canonical checkpoints of this version/save identity.
 # Cleanup is best effort after acknowledgment; legacy, corrupt, foreign and
 # unrecognized files remain evidence and cannot become deletion candidates.
 func _cleanup_variable_history(active_payload: Dictionary) -> void:
     var pointer := _read_pointer()
-    var active_slot := "v2_" + CODEC.digest(active_payload)
+    var version := int(active_payload.schema_version)
+    var prefix := "v%d_" % version
+    var active_slot := prefix + CODEC.digest(active_payload)
     if not pointer.ok or pointer.slot != active_slot: return
     var revisions: Array[Dictionary] = []
-    var slot_pattern := RegEx.create_from_string("^v2_[0-9a-f]{64}$")
+    var slot_pattern := RegEx.create_from_string("^v%d_[0-9a-f]{64}$" % version)
     for filename in DirAccess.get_files_at(root_path):
         if not filename.ends_with(".json"): continue
         var slot := filename.trim_suffix(".json")
         if slot_pattern.search(slot) == null: continue
         var checked := _read(slot)
-        if not checked.ok or int(checked.payload.schema_version) != 2 or checked.payload.save_id != active_payload.save_id: continue
+        if not checked.ok or int(checked.payload.schema_version) != version or checked.payload.save_id != active_payload.save_id: continue
         if int(checked.payload.revision) > int(active_payload.revision): continue
-        if "v2_" + CODEC.digest(checked.payload) != slot or "v2_" + checked.source_text.sha256_text() != slot: continue
+        if prefix + CODEC.digest(checked.payload) != slot or prefix + checked.source_text.sha256_text() != slot: continue
         revisions.append({"slot": slot, "revision": int(checked.payload.revision)})
     revisions.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.revision < b.revision if a.revision != b.revision else a.slot < b.slot)
     if revisions.size() <= 3: return
@@ -377,6 +389,6 @@ func _cleanup_variable_history(active_payload: Dictionary) -> void:
         if not _allowed("cleanup_" + str(entry.slot), path): continue
         # Revalidate immediately before deletion, including exact byte hash.
         var current := _read(str(entry.slot))
-        if not current.ok or int(current.payload.schema_version) != 2 or current.payload.save_id != active_payload.save_id: continue
-        if "v2_" + current.source_text.sha256_text() != entry.slot or "v2_" + CODEC.digest(current.payload) != entry.slot: continue
+        if not current.ok or int(current.payload.schema_version) != version or current.payload.save_id != active_payload.save_id: continue
+        if prefix + current.source_text.sha256_text() != entry.slot or prefix + CODEC.digest(current.payload) != entry.slot: continue
         DirAccess.remove_absolute(path)

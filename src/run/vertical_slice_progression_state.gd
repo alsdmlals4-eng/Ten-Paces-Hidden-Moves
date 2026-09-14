@@ -104,6 +104,49 @@ func add_free_training(amount: int) -> bool:
     return true
 
 
+func preview_training(allocations: Dictionary) -> Dictionary:
+    var invalid := {"ok": false, "error": "INVALID_ALLOCATION"}
+    if allocations.is_empty() or allocations.size() > owned_manual_ids.size(): return invalid
+    var remaining := free_training_pool
+    var next_training := training_by_manual.duplicate(true)
+    var next_mastery := mastery_by_manual.duplicate(true)
+    for manual_id in allocations:
+        if typeof(manual_id) != TYPE_STRING or manual_id not in owned_manual_ids: return invalid
+        var amount = allocations[manual_id]
+        var capacity := _minimum_training_for_mastery(MAX_MASTERY) - int(training_by_manual[manual_id])
+        if not CHECKPOINT_CODEC.integer(amount, 1, maxi(0, mini(remaining, capacity))): return invalid
+        remaining -= int(amount)
+        next_training[manual_id] = int(next_training[manual_id]) + int(amount)
+        next_mastery[manual_id] = _mastery_after_total_training(next_training[manual_id])
+    return {"ok": true, "pool_before": free_training_pool, "pool_after": remaining,
+        "training_by_manual": next_training, "mastery_by_manual": next_mastery}
+
+
+func commit_training(allocations: Dictionary) -> bool:
+    var preview := preview_training(allocations)
+    if not preview.ok: return false
+    # No effect is assigned until every target and the complete budget validate.
+    free_training_pool = int(preview.pool_after)
+    training_by_manual = preview.training_by_manual
+    mastery_by_manual = preview.mastery_by_manual
+    return true
+
+
+func get_training_options(allocations: Dictionary = {}) -> Dictionary:
+    var preview := {"ok": true, "pool_after": free_training_pool, "training_by_manual": training_by_manual, "mastery_by_manual": mastery_by_manual} if allocations.is_empty() else preview_training(allocations)
+    if not preview.ok: return preview
+    var rows: Array = []
+    for id in owned_manual_ids:
+        var mastery := int(preview.mastery_by_manual[id])
+        var training := int(preview.training_by_manual[id])
+        var capacity := maxi(0, _minimum_training_for_mastery(MAX_MASTERY) - training)
+        var next_cost := 0 if mastery >= MAX_MASTERY else _minimum_training_for_mastery(mastery + 1) - training
+        rows.append({"id": id, "current_mastery": mastery_by_manual[id], "mastery": mastery,
+            "training": training, "allocated": int(allocations.get(id, 0)), "remaining_capacity": capacity,
+            "next_amount": mini(int(preview.pool_after), next_cost), "next_cost": next_cost})
+    return {"ok": true, "pool_before": free_training_pool, "pool_after": preview.pool_after, "manuals": rows}
+
+
 func apply_recovery(health_fraction: float, stamina_amount: int, internal_amount: int) -> Dictionary:
     var next := _normalize_resources(player_resources)
     var health: Array = next.get("health", [0, 0])
