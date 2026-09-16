@@ -1,5 +1,9 @@
 # 십보강호 활성 컨텍스트
 
+## 현재 마무리 · 2026-09-16
+
+사용자가 진행 중 작업 마무리와 GitHub 동기화를 요청했다. 기존 월간 작업일지 파일에 날짜별 요약을 누적하며 같은 날 작업은 합친다. 새 버전 PDF를 계속 만들지 않는다. 현재 v1.1 경로에 요약1쪽과 보존된 상세11쪽을 두고, 운영 owner는 `docs/operations/AI_USAGE_EVIDENCE_REPORTING.md`다. 이번 변경은 문서·증빙 정리이며 P03은 아직 미구현이다. P01/P02 구현의 원격 exact HEAD 검증은 PR342에서 확인한다. 최종 시각 lock4건 전 Draft 및 Human/Android/출시 미검증 경계는 유지한다.
+
 ## 사용자 추가 운영 지시 · 2026-09-14
 
 승인된 남은 명세의 조사·설계·구현 반복을 계속한다. 새 이미지 후보는 크로마키 배경 생성 후 제거하고 alpha/가장자리를 검수한다. 기존 이미지 owner `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md`에 반영했다. 월간 AI 활용 작업일지·증빙집은 Blueprint와 분리한 파생 보고이며 `docs/operations/AI_USAGE_EVIDENCE_REPORTING.md`가 운영을 소유한다. 9월12~14일 근거로7쪽 PDF와 원본11건을 `C:/Users/user/Documents/증빙서류/9월 증빙서류`에 생성·대조했다. 사용자 제공 메일/협약 설명은 원문 확인 사실이 아니며 계정·입력 화면·영수증 미첨부를 표시했다. 원래 작업일/사후 작성일/캡처일/발행일을 분리하고 제출이나 승인을 추정하지 않는다.
