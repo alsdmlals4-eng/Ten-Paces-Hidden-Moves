@@ -2,17 +2,15 @@ class_name CombatantStatusPanel
 extends Control
 
 const PANEL := Color(0.055, 0.047, 0.039, 0.94)
-const PAPER := Color("dbc9a4")
-const MUTED := Color("a7977e")
+const PAPER := Color("231e18")
+const MUTED := Color("655945")
 const PLAYER_ACCENT := Color("377fb2")
 const ENEMY_ACCENT := Color("b44d43")
 const HEALTH_COLOR := Color("b54d44")
 const STAMINA_COLOR := Color("4c74a9")
 const INTERNAL_COLOR := Color("398d91")
-const PLAYER_PORTRAIT := preload("res://assets/portraits/player_wanderer_ink_v1.png")
-const ENEMY_PORTRAIT := preload("res://assets/portraits/enemy_masked_ink_v1.png")
-const DOGYEOM_STATUS_PORTRAIT := preload("res://assets/portraits/dogyeom_status_portrait_01_v1.png")
-const DOGYEOM_CANDIDATE_ID := "slot1_dogyeom"
+const POSES := preload("res://src/combat/character_pose_library.gd")
+static var _portrait_cache: Dictionary = {}
 const STATUS_HUD_FRAME := preload("res://assets/ui/duel/status_hud_frame_01_v1.png")
 
 var side: String = "player"
@@ -27,6 +25,7 @@ var _internal_label: Label
 var _status_labels: Array[Label] = []
 var _portrait: TextureRect
 var _status_hud_frame: TextureRect
+var _chroma_material: ShaderMaterial
 var show_numeric_values := true
 
 func _ready() -> void:
@@ -43,7 +42,9 @@ func _ready() -> void:
     add_child(_status_hud_frame)
     _portrait = TextureRect.new()
     _portrait.name = "CombatantInkPortrait"
-    _portrait.visible = false
+    _portrait.visible = true
+    _chroma_material = POSES.chroma_material()
+    _portrait.material = _chroma_material
     _portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
     _portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
     _portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -79,9 +80,7 @@ func _make_label(font_size: int, color: Color) -> Label:
     label.mouse_filter = Control.MOUSE_FILTER_IGNORE
     label.add_theme_font_size_override("font_size", font_size)
     label.add_theme_color_override("font_color", color)
-    label.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.85))
-    label.add_theme_constant_override("shadow_offset_x", 1)
-    label.add_theme_constant_override("shadow_offset_y", 1)
+    label.add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
     add_child(label)
     return label
 
@@ -122,11 +121,21 @@ func _refresh() -> void:
             _status_labels.append(chip)
 
 func _portrait_for_current_combatant() -> Texture2D:
-    if side == "player":
-        return PLAYER_PORTRAIT
-    if str(combatant.get("candidate_id", "")) == DOGYEOM_CANDIDATE_ID:
-        return DOGYEOM_STATUS_PORTRAIT
-    return ENEMY_PORTRAIT
+    # Share the approved battler identity without baking a separate portrait.
+    var path := POSES.battler_path(side, str(combatant.get("candidate_id", "")))
+    _portrait.material = null if path == POSES.DOGYEOM_PATH else _chroma_material
+    _portrait.flip_h = path == POSES.DOGYEOM_PATH
+    if not _portrait_cache.has(path):
+        var sheet := load(path) as Texture2D
+        var region := Rect2(Vector2.ZERO, sheet.get_size())
+        if path != POSES.DOGYEOM_PATH:
+            region = POSES.frame(path).region
+        var portrait := AtlasTexture.new()
+        portrait.atlas = sheet
+        portrait.region = Rect2(region.position + region.size * Vector2(0.15, 0.04), region.size * Vector2(0.70, 0.55))
+        portrait.filter_clip = true
+        _portrait_cache[path] = portrait
+    return _portrait_cache[path]
 
 func _format_resource(label: String, key: String) -> String:
     var pair := _resource_pair(key)
@@ -148,23 +157,23 @@ func _layout() -> void:
     if _name_label == null:
         return
 
-    # Keep legacy portrait resources addressable, but the live status surface
-    # reserves its width for actual resources instead of a baked portrait frame.
-    var portrait_size := minf(size.x * 0.232, size.y * 0.70)
-    var portrait_x := size.x * 0.105 if side == "player" else size.x - size.x * 0.105 - portrait_size
+    var portrait_size := size.x * 0.31
+    var portrait_x := 5.0 if side == "player" else size.x - portrait_size - 5.0
     var resource_layout := get_resource_layout_snapshot()
     var resource_x := float(resource_layout.get("resource_x", 0.0))
     var resource_width := float(resource_layout.get("resource_width", 0.0))
     var label_rects: Array = resource_layout.get("label_rects", [])
 
     if is_instance_valid(_portrait):
-        _portrait.position = Vector2(portrait_x, size.y * 0.125)
-        _portrait.size = Vector2(portrait_size, minf(size.y * 0.72, portrait_size * 1.10))
+        _portrait.position = Vector2(portrait_x, 5.0)
+        _portrait.size = Vector2(portrait_size, size.y - 10.0)
 
     _name_label.visible = true
-    _name_label.position = Vector2(16.0, 5.0)
-    _name_label.size = Vector2(size.x - 32.0, 22.0)
-    _name_label.add_theme_font_size_override("font_size", 16)
+    _name_label.position = Vector2(resource_x, 17.0)
+    _name_label.add_theme_font_size_override("font_size", 14)
+    _name_label.size = Vector2(resource_width, 20.0)
+    _name_label.clip_text = true
+    _name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT if side == "player" else HORIZONTAL_ALIGNMENT_RIGHT
     _epithet_label.visible = false
 
     var labels := [_health_label, _stamina_label, _internal_label]
@@ -193,7 +202,7 @@ func _notification(what: int) -> void:
 
 func _draw() -> void:
     # Native live UI, not an illustration: no baked values or duplicate wells.
-    draw_rect(Rect2(Vector2.ZERO, size), Color(0.025, 0.045, 0.06, 0.94))
+    draw_style_box(preload("res://src/ui/wuxia_ui_style.gd").paper_surface(), Rect2(Vector2.ZERO, size))
     draw_rect(Rect2(Vector2.ONE, size - Vector2(2.0, 2.0)), Color("ae8c55"), false, 1.0)
     var resource_layout := get_resource_layout_snapshot()
     var resource_x := float(resource_layout.get("resource_x", 0.0))
@@ -206,14 +215,15 @@ func _draw() -> void:
     _draw_momentum(resource_x, resource_x + resource_width)
 
 func get_resource_layout_snapshot() -> Dictionary:
-    var resource_x := 16.0
-    var resource_width := maxf(30.0, size.x - 32.0)
+    var portrait_lane := size.x * 0.31 + 13.0
+    var resource_x := portrait_lane if side == "player" else 12.0
+    var resource_width := maxf(30.0, size.x - portrait_lane - 12.0)
     var label_rects: Array[Rect2] = []
     var bar_rects: Array[Rect2] = []
     for index in range(3):
-        var label_y := 29.0 + float(index) * 20.0
+        var label_y := 40.0 + float(index) * 18.0
         label_rects.append(Rect2(resource_x, label_y, resource_width, 13.0))
-        bar_rects.append(Rect2(resource_x, label_y + 15.0, resource_width, 5.0))
+        bar_rects.append(Rect2(resource_x, label_y + 13.0, resource_width, 3.0))
     return {
         "resource_x": resource_x,
         "resource_width": resource_width,
@@ -223,7 +233,8 @@ func get_resource_layout_snapshot() -> Dictionary:
 
 func get_momentum_rect() -> Rect2:
     var center_y := minf(116.0, size.y - 30.0)
-    return Rect2(16.0, center_y - 7.0, maxf(30.0, size.x - 32.0), 12.0)
+    var layout := get_resource_layout_snapshot()
+    return Rect2(float(layout.resource_x), center_y - 7.0, float(layout.resource_width), 12.0)
 
 func _draw_momentum(content_x: float, content_right: float) -> void:
     var center_y := get_momentum_rect().position.y + 7.0

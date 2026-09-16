@@ -5,6 +5,11 @@ on:
     paths:
       - "src/run/**"
       - "src/ui/combatant_status_panel.gd"
+      - "src/ui/bimu_constraint_panel.gd"
+      - "src/ui/training_allocation_panel.gd"
+      - "tests/verify_training_*.gd"
+      - "tests/verify_acquired_manual_flow.gd"
+      - "tests/fixtures/acquired-legacy-*.json"
       - "assets/portraits/**"
       - "assets/ASSET_MANIFEST.json"
       - "src/combat/combat_review_summary_builder.gd"
@@ -34,6 +39,7 @@ permissions:
 jobs:
   vertical-slice-run-state:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -67,6 +73,21 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_vertical_slice_setup_briefing.gd
       - name: Verify Review and Result runtime binding
         run: godot --headless --path . --script res://tests/verify_vertical_slice_review_result.gd
+      - name: Verify acquired manuals and restart
+        run: |
+          mkdir -p /tmp/ten-acquired-fixtures
+          godot --headless --path . --script res://tests/verify_acquired_manual_flow.gd -- --fixtures /tmp/ten-acquired-fixtures
+          for fixture in /tmp/ten-acquired-fixtures/*.json tests/fixtures/acquired-legacy-*.json; do
+            godot --headless --path . --script res://tests/verify_acquired_manual_flow.gd -- --resume "$fixture"
+          done
+      - name: Verify native campaign with earned manuals
+        run: godot --headless --path . --script res://tests/probe_native_ten_duel_campaign.gd -- --acquired-rewards --run-save-dir=user://ci-acquired-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Verify free training and process-boundary recovery
+        run: |
+          godot --headless --path . --script res://tests/verify_training_allocation.gd
+          godot --headless --path . --script res://tests/verify_training_growth_v3.gd -- --store-root /tmp/ten-growth-${{ github.run_id }}-${{ github.run_attempt }}
+          godot --headless --path . --script res://tests/verify_training_growth_v3.gd -- --resume-root /tmp/ten-growth-${{ github.run_id }}-${{ github.run_attempt }}
+          godot --headless --path . --script res://tests/verify_training_allocation_ui.gd
       - name: Verify Route persistence and intel binding
         run: godot --headless --path . --script res://tests/verify_vertical_slice_route_state.gd
       - name: Verify Completion Summary binding

@@ -41,6 +41,27 @@ var constraint_summary: Label
 var _manual_context_initialized := false
 var _manual_loadout_cache: Array[String] = []
 var _manual_mastery_cache: Dictionary = {}
+var _source_width := 660.0
+var _detail_width := 250.0
+var _detail_extension := 0.0
+
+func configure_preparation_columns(source_width: float, detail_width: float, extension: float) -> void:
+    _source_width = source_width
+    _detail_width = detail_width
+    _detail_extension = extension
+    call_deferred("_layout_preparation_columns")
+
+func _layout_preparation_columns() -> void:
+    if not is_instance_valid(content_host):
+        return
+    var body := content_host.get_parent() as Control
+    content_host.position = Vector2.ZERO
+    content_host.size = Vector2(_source_width, body.size.y)
+    detail_host.position = Vector2(_source_width + 8.0, -body.position.y - _detail_extension)
+    detail_host.size = Vector2(_detail_width, size.y + _detail_extension)
+    for panel in [basic_panel, martial_panel, ultimate_panel, action_intent_panel]:
+        if is_instance_valid(panel):
+            panel.custom_minimum_size.x = 0.0
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_PASS
@@ -314,7 +335,8 @@ func _on_intent_selected(intent: Dictionary) -> void:
 func _set_tab_state(button: Button, source: String, label: String) -> void:
     var selected := active_source == source
     button.button_pressed = selected
-    button.text = ("● " if selected else "○ ") + label
+    button.text = label
+    button.add_theme_font_override("font", preload("res://src/ui/wuxia_ui_style.gd").heading_font())
     button.accessibility_name = "%s 탭%s" % [label, " 선택됨" if selected else ""]
     _apply_tab_presentation(button, selected)
 
@@ -354,5 +376,6 @@ func _apply_tab_presentation(button: Button, selected: bool) -> void:
 
 func _notification(what: int) -> void:
     if what == NOTIFICATION_RESIZED:
+        call_deferred("_layout_preparation_columns")
         if is_instance_valid(_backdrop):
             _backdrop.queue_redraw()

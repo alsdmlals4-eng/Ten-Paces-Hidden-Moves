@@ -15,7 +15,8 @@ func _run() -> void:
         return
     var panel = packed.instantiate()
     root.add_child(panel)
-    await process_frame
+    for frame in range(5):
+        await process_frame
 
     var snapshot: Dictionary = panel.get_panel_snapshot()
     _check(int(snapshot.get("action_count", 0)) == 10, "Basic panel must expose ten actions.")
@@ -39,18 +40,19 @@ func _run() -> void:
         var summary := button.get_node_or_null("CardSummary") as VBoxContainer
         var illustration := button.get_node_or_null("CardIllustration") as TextureRect
         var name_label := button.get_node_or_null("CardName") as Label
-        _check(is_instance_valid(summary), "Every basic card must retain its three-line summary.")
+        _check(is_instance_valid(summary), "Every basic card must retain its two-line summary.")
         _check(is_instance_valid(illustration), "Every basic card must retain its illustration.")
         _check(is_instance_valid(name_label), "Every basic card must retain its readable name.")
         _check(button.custom_minimum_size.y <= 112.0, "Every basic card must fit the cross-platform two-row height budget.")
         if is_instance_valid(summary):
-            _check(summary.get_child_count() == 3, "Every basic card must retain exactly three summary lines.")
-            _check(button.custom_minimum_size.y >= summary.offset_top + summary.get_combined_minimum_size().y + 4.0, "Basic card height must contain native summary metrics plus bottom padding.")
+            _check(summary.get_child_count() == 2, "Every basic card must retain exactly two summary lines.")
+            _check(button.custom_minimum_size.y >= 52.0 + summary.get_combined_minimum_size().y + 4.0, "Basic card height must contain native summary metrics plus bottom padding.")
         if is_instance_valid(illustration):
-            _check(illustration.offset_bottom - illustration.offset_top >= 24.0, "Basic card illustration must retain a readable visual band.")
-            _check(illustration.offset_top >= 0.0 and illustration.offset_bottom <= button.custom_minimum_size.y, "Basic card illustration must stay inside the card.")
+            _check(illustration.size.y >= 50.0, "Basic card illustration must retain a readable visual band.")
+            _check(Rect2(Vector2.ZERO, button.size).encloses(illustration.get_rect()), "Basic card illustration must stay inside the card.")
         if is_instance_valid(illustration) and is_instance_valid(name_label):
-            _check(illustration.offset_bottom <= name_label.offset_top, "Illustration and card name must not overlap.")
+            _check(name_label.get_rect().end.y <= illustration.get_rect().end.y, "The outlined name overlay must stay inside the illustration band.")
+            _check(button.get_node_or_null("ActionDurationBadge") != null, "Duration must remain separate from the two summary lines.")
 
     panel.set_interaction_enabled(false)
     _check(not bool(panel.get_panel_snapshot().get("interaction_enabled", true)), "Basic panel must report disabled interaction.")

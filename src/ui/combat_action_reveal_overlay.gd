@@ -33,8 +33,8 @@ func show_timing(timing: int, phase: String, events_value: Array, reduced_motion
 	var enemy_events := _actor_events(events_value, "enemy")
 	_fill_callout(_player_widgets, player_events, "강호낭인", PLAYER_ACCENT)
 	_fill_callout(_enemy_widgets, enemy_events, "상대", ENEMY_ACCENT)
-	_heading.text = "대응" if phase == "response" else "%d번째 행동 공개" % timing
-	_phase.text = "대응 확인" if phase == "response" else "한 수씩 겨룬다"
+	_heading.text = "대응" if phase == "response" else "제 %d수 · 공개" % timing
+	_phase.text = "대응 확인" if phase == "response" else "승부를 가르는 한 수"
 	_result.text = _result_text(player_events, enemy_events)
 	_snapshot = {
 		"timing": timing,
@@ -83,6 +83,7 @@ func _build() -> void:
 	_heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_heading.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_heading.add_theme_font_size_override("font_size", 28)
+	_heading.add_theme_font_override("font", preload("res://src/ui/wuxia_ui_style.gd").heading_font())
 	_heading.add_theme_color_override("font_color", GOLD)
 	_heading.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_heading)
@@ -126,7 +127,7 @@ func _make_action_callout(node_name: String) -> Dictionary:
 	panel.name = node_name
 	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(INK, 0.84)
+	style.bg_color = PAPER
 	style.border_color = PAPER_DARK
 	style.set_border_width_all(1)
 	style.set_corner_radius_all(3)
@@ -156,16 +157,23 @@ func _make_action_callout(node_name: String) -> Dictionary:
 	action_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	action_name.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	action_name.add_theme_font_size_override("font_size", 17)
-	action_name.add_theme_color_override("font_color", PAPER)
+	action_name.add_theme_color_override("font_color", INK)
 	action_name.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(action_name)
+	var illustration := TextureRect.new()
+	illustration.name = "ActionIllustration"
+	illustration.custom_minimum_size = Vector2(0, 92)
+	illustration.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	illustration.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	illustration.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	column.add_child(illustration)
 
 	var facts := Label.new()
 	facts.name = "Facts"
 	facts.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	facts.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	facts.add_theme_font_size_override("font_size", 11)
-	facts.add_theme_color_override("font_color", Color("c4b391"))
+	facts.add_theme_color_override("font_color", INK)
 	facts.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(facts)
 
@@ -174,11 +182,11 @@ func _make_action_callout(node_name: String) -> Dictionary:
 	outcome.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	outcome.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	outcome.add_theme_font_size_override("font_size", 11)
-	outcome.add_theme_color_override("font_color", Color("e8d8b7"))
+	outcome.add_theme_color_override("font_color", INK)
 	outcome.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(outcome)
 
-	return {"panel": panel, "style": style, "side": side, "name": action_name, "facts": facts, "outcome": outcome}
+	return {"panel": panel, "style": style, "side": side, "name": action_name, "illustration": illustration, "facts": facts, "outcome": outcome}
 
 func _fill_callout(widgets: Dictionary, events: Array, side_name: String, accent: Color) -> void:
 	var style := widgets.get("style") as StyleBoxFlat
@@ -188,6 +196,9 @@ func _fill_callout(widgets: Dictionary, events: Array, side_name: String, accent
 	var action_name := widgets.get("name") as Label
 	var facts := widgets.get("facts") as Label
 	var outcome := widgets.get("outcome") as Label
+	var illustration := widgets.get("illustration") as TextureRect
+	illustration.texture = null
+	illustration.visible = false
 	if side != null:
 		side.text = side_name
 	if events.is_empty():
@@ -199,6 +210,15 @@ func _fill_callout(widgets: Dictionary, events: Array, side_name: String, accent
 			outcome.text = "상대의 다음 수는 공개하지 않습니다"
 		return
 	var first: Dictionary = events[0]
+	var spec: Dictionary = first.get("illustration", {})
+	var atlas_path := str(spec.get("atlas", ""))
+	var region: Array = spec.get("region", [])
+	if not atlas_path.is_empty() and ResourceLoader.exists(atlas_path) and region.size() == 4:
+		var texture := AtlasTexture.new()
+		texture.atlas = load(atlas_path) as Texture2D
+		texture.region = Rect2(float(region[0]), float(region[1]), float(region[2]), float(region[3]))
+		illustration.texture = texture
+		illustration.visible = true
 	if action_name != null:
 		action_name.text = str(first.get("card_name", "행동"))
 	if facts != null:

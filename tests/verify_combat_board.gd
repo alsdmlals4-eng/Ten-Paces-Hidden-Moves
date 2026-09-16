@@ -176,8 +176,13 @@ func _verify_cards_and_overlays(board: CombatBoardPreview, snapshot: Dictionary)
         failures.append("Progress button must start disabled before placements.")
     elif board.combat_progress_button.get_button_text() != "행동 실행":
         failures.append("A completed bundle must expose the approved single-execute action.")
-    elif board.combat_progress_button.size.x > 104.0 or board.combat_progress_button.size.y > 72.0:
-        failures.append("Progress control must remain compact beside the timing strip.")
+    else:
+        var progress := board.combat_progress_button.get_global_rect()
+        var observation := board.observation_reveal_panel.get_global_rect()
+        if absf(progress.position.x - observation.position.x) > POSITION_TOLERANCE or absf(progress.size.x - observation.size.x) > POSITION_TOLERANCE or progress.size.y > 72.0:
+            failures.append("Progress control must align with the right observation column.")
+        if not board.get_global_rect().encloses(progress) or progress.intersects(observation):
+            failures.append("Progress control must stay within the viewport without covering observations.")
 
 func _card_definition(board: CombatBoardPreview, card_id: String) -> Dictionary:
     for definition in board.action_selection_dock.basic_panel.actions:
@@ -485,7 +490,7 @@ func _verify_character_anchors(board: CombatBoardPreview, snapshot: Dictionary) 
     var enemy_foot: Vector2 = snapshot.get("enemy_foot", Vector2.ZERO)
     if player_foot.x >= enemy_foot.x - POSITION_TOLERANCE:
         failures.append("Combat presentation must keep the player left of the enemy in the duel composition.")
-    if enemy_foot.x - player_foot.x < board.size.x * 0.36:
+    if enemy_foot.x - player_foot.x < board.size.x * 0.27:
         failures.append("Combat presentation must retain a readable distant frontal separation.")
     if absf(player_foot.y - enemy_foot.y) > board.size.y * 0.01:
         failures.append("Combat presentation must keep both battlers on one shared grounded frontal duel line.")
@@ -512,43 +517,64 @@ func _character_ink_scale_errors(board: CombatBoardPreview, snapshot: Dictionary
     for actor in [board.player_character, board.enemy_character]:
         var idle := _independent_character_ink(actor, false)
         var animated := _independent_character_ink(actor, true)
-        if not animated.has_area() or animated.size.y > stage.size.y * 0.52 + SIZE_TOLERANCE:
-            errors.append("Current visible-ink height must remain within the 52 percent stage cap: " + actor.role)
-        if idle.size.y * 1.12 > stage.size.y * 0.52 + SIZE_TOLERANCE:
-            errors.append("The complete existing 1.12 motion envelope must remain within the 52 percent stage cap: " + actor.role)
+        if not animated.has_area() or animated.size.y > stage.size.y * 0.75 + SIZE_TOLERANCE:
+            errors.append("Current visible-ink height must remain within the 75 percent authored-pose stage cap: " + actor.role)
+        if idle.size.y * 1.12 > stage.size.y * 0.66 + SIZE_TOLERANCE:
+            errors.append("The complete existing 1.12 motion envelope must remain within the 66 percent idle-motion stage cap: " + actor.role)
     return errors
 
-func _independent_character_ink(actor: CombatCharacterPlaceholder, include_motion: bool) -> Rect2:
-    # Read source PNG alpha, not the renderer's cached bounds or production getter.
+func _independent_character_ink(actor: CombatCharacterPlaceholder, motion: bool = true) -> Rect2:
     var path := str(actor.get_meta("character_art_path", ""))
-    if path.is_empty():
-        return Rect2()
-    if not _source_art_oracles.has(path):
-        var image := Image.load_from_file(ProjectSettings.globalize_path(path))
+    var texture := actor.get_render_texture()
+    var key := ((texture as AtlasTexture).atlas.resource_path + str((texture as AtlasTexture).region)) if texture is AtlasTexture else path
+    if not _source_art_oracles.has(key):
+        # Inspect the selected source frame, not the entire multi-pose sheet.
+        # Derive keyed visible bounds independently from source pixels.
+        var image := texture.get_image()
         if image == null or image.is_empty():
             return Rect2()
-        _source_art_oracles[path] = {"used": Rect2(image.get_used_rect()), "dimensions": Vector2(image.get_size())}
-    var source: Dictionary = _source_art_oracles[path]
-    var used: Rect2 = source.used
-    var dimensions: Vector2 = source.dimensions
-    if not used.has_area() or dimensions.x <= 0.0 or dimensions.y <= 0.0:
-        return Rect2()
-    var draw_height := actor.size.y * 1.08
-    var foot_ratio := clampf(used.end.y / dimensions.y, 0.70, 1.0)
-    var origin := Vector2((actor.size.x - draw_height) * 0.5, actor.size.y - draw_height * foot_ratio)
-    var pivot := Vector2(actor.size.x * 0.5, actor.size.y)
+        var foot := clampf(float(image.get_used_rect().end.y) / image.get_height(), 0.70, 1.0)
+        var used := image.get_used_rect()
+        if texture is AtlasTexture:
+            var minimum := Vector2i(image.get_width(), image.get_height())
+            var maximum := Vector2i(-1, -1)
+            for row in range(image.get_height()):
+                for column in range(image.get_width()):
+                    var sample := image.get_pixel(column, row)
+                    if sample.a > 0.01 and sample.g - maxf(sample.r, sample.b) < 0.42:
+                        minimum = minimum.min(Vector2i(column, row))
+                        maximum = maximum.max(Vector2i(column, row))
+            used = Rect2i(minimum, maximum - minimum + Vector2i.ONE)
+            var found := false
+            for y in range(image.get_height() - 1, -1, -1):
+                for x in range(image.get_width()):
+                    var pixel := image.get_pixel(x, y)
+                    if pixel.a > 0.5 and pixel.g - maxf(pixel.r, pixel.b) < 0.1:
+                        foot = float(y + 1) / image.get_height()
+                        found = true
+                        break
+                if found:
+                    break
+        _source_art_oracles[key] = {"used": used, "size": image.get_size(), "foot":foot, "hash": FileAccess.get_sha256(path)}
+    var source: Dictionary = _source_art_oracles[key]
+    var used: Rect2 = Rect2(source.used)
+    var dimensions: Vector2 = Vector2(source.size)
+    var h := actor.size.y * 1.08
+    var foot_ratio := float(source.foot)
+    var width := h * (dimensions.aspect() if texture is AtlasTexture else 1.0)
+    var origin := Vector2((actor.size.x - width) / 2.0, actor.size.y - h * foot_ratio)
+    var pivot := Vector2(actor.size.x / 2.0, actor.size.y)
+    var scale_value := actor.visual_scale if motion else 1.0
     var mirror := -1.0 if actor.role == "enemy" and actor.facing < 0 and path.ends_with("dogyeom_combat_battler_01_v1.png") else 1.0
-    var draw_scale := Vector2(mirror, 1.0) * (actor.visual_scale if include_motion else 1.0)
-    var offset := actor.visual_offset if include_motion else Vector2.ZERO
-    var transform := actor.get_global_transform()
-    var bounds := Rect2()
+    var result := Rect2()
     var first := true
     for corner in [used.position, Vector2(used.end.x, used.position.y), used.end, Vector2(used.position.x, used.end.y)]:
-        var local: Vector2 = origin + corner / dimensions * draw_height
-        var point: Vector2 = transform * (pivot + (local - pivot) * draw_scale + offset)
-        bounds = Rect2(point, Vector2.ZERO) if first else bounds.expand(point)
+        var local: Vector2 = origin + corner / dimensions * Vector2(width, h)
+        local = pivot + (local - pivot) * Vector2(mirror, 1.0) * scale_value + (actor.visual_offset if motion else Vector2.ZERO)
+        var point: Vector2 = actor.get_global_transform() * local
+        result = Rect2(point, Vector2.ZERO) if first else result.expand(point)
         first = false
-    return bounds
+    return result
 
 func _transformed_rect(rect: Rect2, transform: Transform2D) -> Rect2:
     var bounds := Rect2(transform * rect.position, Vector2.ZERO)

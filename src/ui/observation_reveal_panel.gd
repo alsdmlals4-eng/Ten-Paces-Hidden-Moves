@@ -21,15 +21,24 @@ func _ready() -> void:
 	_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(_frame)
+	_frame.visible = false
+	var paper := Panel.new()
+	paper.name = "ObservationPaperSurface"
+	paper.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	paper.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var paper_style := preload("res://src/ui/wuxia_ui_style.gd").paper_surface()
+	paper.add_theme_stylebox_override("panel", paper_style)
+	add_child(paper)
 
-	_title = _make_label(16, Color("ead8b4"))
+	_title = _make_label(18, Color("211c17"))
 	_title.name = "ObservationTitle"
 	_title.text = "상대 행동 관찰"
-	_hint = _make_label(11, Color("aa977c"))
+	preload("res://src/ui/wuxia_ui_style.gd").ink_heading(_title, 16)
+	_hint = _make_label(12, Color("655543"))
 	_hint.name = "ObservationHint"
 	_hint.text = "공개된 행동 유형만 표시"
 	for index in range(MAX_VISIBLE_TYPES):
-		var row := _make_label(14, Color("f0dfbc"))
+		var row := _make_label(18, Color("211c17"))
 		row.name = "ObservationType%02d" % (index + 1)
 		_rows.append(row)
 	set_meta("observation_frame_path", "res://assets/ui/duel/observation_reveal_frame_01_v1.png")
@@ -92,8 +101,8 @@ func _make_label(font_size: int, color: Color) -> Label:
 func _refresh() -> void:
 	for index in range(_rows.size()):
 		var row := _rows[index]
-		row.text = "[%s]" % _revealed_types[index] if index < _revealed_types.size() else ""
-		row.visible = index < _revealed_types.size()
+		row.text = "[%s]" % _revealed_types[index] if index < _revealed_types.size() else "?"
+		row.visible = true
 	tooltip_text = "상대의 잠긴 행동 유형만 표시합니다. 기술명, 목표, 피해, 방향, 비용, 숨은 계획은 공개하지 않습니다."
 	accessibility_name = "상대 행동 관찰"
 	accessibility_description = tooltip_text
@@ -109,11 +118,12 @@ func _layout() -> void:
 	# owns the title/hint, while the lower three parchment strips own the public
 	# action-type rows.  Match those dedicated lanes instead of stretching every
 	# label across the decorative central seal.
-	_title.position = Vector2(width * 0.17, height * 0.13)
-	_title.size = Vector2(width * 0.66, height * 0.08)
-	_hint.position = Vector2(width * 0.17, height * 0.22)
-	_hint.size = Vector2(width * 0.66, height * 0.07)
+	_title.position = Vector2(10, 8)
+	_title.size = Vector2(width - 20, 28)
+	_hint.position = Vector2(10, 38)
+	_hint.size = Vector2(width - 20, 20)
 	for index in range(_rows.size()):
 		var row := _rows[index]
-		row.position = Vector2(width * 0.40, height * (0.445 + float(index) * 0.15))
-		row.size = Vector2(width * 0.41, height * 0.085)
+		var row_height := maxf(30, (height - 70) / 3.0)
+		row.position = Vector2(14, 64 + float(index) * row_height)
+		row.size = Vector2(width - 28, row_height)

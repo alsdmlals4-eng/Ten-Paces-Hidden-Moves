@@ -1,0 +1,215 @@
+{
+  "work_level": "L1",
+  "authorization": "2026-09-13 user approved independent presentation preferences and baseline clarification; plan recorded before implementation",
+  "source_head_sha": "3dffd457b0b26bd729cc868acf54d285abbadb2c",
+  "base_remote_sha": "d830c0f6967678eed3c208ac6b24f9cd1b262ec3",
+  "benchmark_preflight_receipt": {
+    "state": "PASS",
+    "entries": [
+      {
+        "game": "Shogun Showdown",
+        "comparison_class": "DIRECT",
+        "source_and_evidence": "https://steamcommunity.com/app/2084000/announcements/",
+        "observed_pattern": "2024-09-05 developer release notes: hide long shop descriptions when they obscure held skills; add keyboard/gamepad map prompts.",
+        "project_fit_and_difference": "Reserve independent control and explanation space; test overlap.",
+        "do_not_copy": "Do not copy tiles, cooldown rules or artwork.",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer/public documentation only; no representative player outcome or private implementation evidence."
+      },
+      {
+        "game": "Fights in Tight Spaces",
+        "comparison_class": "DIRECT_MIXED",
+        "source_and_evidence": "https://store.epicgames.com/p/fights-in-tight-spaces--early-access-faq?lang=en-US",
+        "observed_pattern": "Historical early-access FAQ separates controller support from absent remapping, combines tactics with animated combat and iterative community feedback.",
+        "project_fit_and_difference": "Test the actual input path; controller support alone is not accessibility proof. Historical FAQ is not current feature inventory.",
+        "do_not_copy": "No deck, hand or momentum rule adoption.",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer/public documentation only; no representative player outcome or private implementation evidence."
+      },
+      {
+        "game": "Tactical Breach Wizards",
+        "comparison_class": "DIRECT",
+        "source_and_evidence": "https://steamcommunity.com/app/1043810/allnews/",
+        "observed_pattern": "2024-12-13 beta and later release: larger UI, bounded panels, directional menu navigation; asks players to test despite Deck verification.",
+        "project_fit_and_difference": "Visible focusable controls and real input tests; machine verification remains separate from people.",
+        "do_not_copy": "No enemy intent disclosure or rewind rule adoption.",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer/public documentation only; no representative player outcome or private implementation evidence."
+      },
+      {
+        "game": "Into the Breach",
+        "comparison_class": "DIRECT",
+        "source_and_evidence": "https://subsetgames.com/faq.html",
+        "observed_pattern": "Advanced Edition FAQ offers a pre-run additional-content toggle while noting some balance changes still apply. Page includes contradictory historical platform/language entries.",
+        "project_fit_and_difference": "Make control scope explicit: our switches affect presentation only. Treat undated historical FAQ carefully; no audio claim inferred.",
+        "do_not_copy": "No full-intent forecast or grid rules.",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer/public documentation only; no representative player outcome or private implementation evidence."
+      },
+      {
+        "game": "Knights in Tight Spaces",
+        "comparison_class": "ADJACENT_MIXED",
+        "source_and_evidence": "https://steamcommunity.com/app/2315400/allnews/",
+        "observed_pattern": "2025 developer updates distinguish delivered fixes from future UI/accessibility roadmap and incorporate feedback.",
+        "project_fit_and_difference": "Separate implemented controls from future settings persistence; do not label roadmap as shipped.",
+        "do_not_copy": "No equipment/deck/party system.",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer/public documentation only; no representative player outcome or private implementation evidence."
+      },
+      {
+        "game": "Mario + Rabbids Sparks of Hope",
+        "comparison_class": "ADJACENT",
+        "source_and_evidence": "https://news.ubisoft.com/en-gb/article/3geL8IbYETmgHk6W017HpS/mario-rabbids-sparks-of-hope-accessibility-spotlight",
+        "observed_pattern": "2022-10-14 senior UX interview: camera shake toggle, sound categories, directional menus and accessibility designed early.",
+        "project_fit_and_difference": "Reuse existing sound and motion handlers, maintain semantic output without sound.",
+        "do_not_copy": "No invulnerability, difficulty or auto-targeting changes.",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer/public documentation only; no representative player outcome or private implementation evidence."
+      },
+      {
+        "game": "Celeste",
+        "comparison_class": "ADJACENT_MIXED",
+        "source_and_evidence": "https://www.celestegame.com/changelog.html",
+        "observed_pattern": "Official changelog: screen shake options, menu rebinding, removal of conflicting fixed restart shortcut.",
+        "project_fit_and_difference": "Discoverable controls and focus traversal instead of new hard-coded hotkeys.",
+        "do_not_copy": "No movement physics, assist difficulty or art.",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer/public documentation only; no representative player outcome or private implementation evidence."
+      },
+      {
+        "game": "Hades",
+        "comparison_class": "ADJACENT",
+        "source_and_evidence": "https://www.supergiantgames.com/faqs/hades/",
+        "observed_pattern": "Developer support distinguishes settings file from progress save and documents platform-specific controller issues.",
+        "project_fit_and_difference": "Preserve progress schema; persistence is a separate future preference-lifecycle slice, not bundled into this visibility repair.",
+        "do_not_copy": "No save-file reset performed; no action-game mechanics.",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer/public documentation only; no representative player outcome or private implementation evidence."
+      },
+      {
+        "game": "The Last of Us Part II",
+        "comparison_class": "ADJACENT",
+        "source_and_evidence": "https://www.playstation.com/en-us/games/the-last-of-us-part-ii/accessibility/",
+        "observed_pattern": "Official accessibility page documents separate effects, dialogue, music and accessibility audio volume sliders.",
+        "project_fit_and_difference": "Give the existing SFX slider an explicit effect-volume name; avoid unsupported extra channels.",
+        "do_not_copy": "No combat assists, cues disclosing hidden state or UI imitation.",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer/public documentation only; no representative player outcome or private implementation evidence."
+      },
+      {
+        "game": "Ratchet & Clank: Rift Apart",
+        "comparison_class": "ADJACENT",
+        "source_and_evidence": "https://support.insomniac.games/hc/en-us/articles/46716208107795-What-Accessibility-options-does-Ratchet-Clank-Rift-Apart-feature",
+        "observed_pattern": "Developer support describes master/music/speech/SFX/UI volume and transferring accessible features between games.",
+        "project_fit_and_difference": "Reuse existing UI/SFX components, adapt only the available SFX consumer.",
+        "do_not_copy": "No new audio engine or unimplemented channel controls.",
+        "disposition": "ADAPT",
+        "reaction_or_gap": "Developer/public documentation only; no representative player outcome or private implementation evidence."
+      }
+    ],
+    "reuse_scope": "Same presentation dimension; persistence supplemented by Hades and Godot ConfigFile official body read 2026-09-13; see plan"
+  },
+  "context_configuration_hygiene": {
+    "scope": "Presentation settings ownership and baseline entrypoint clarification; preserve historical and user work",
+    "inventory": [
+      {
+        "path": "src/run/vertical_slice_shell.gd",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Current product entrypoint at source HEAD",
+        "references_and_consumers": "Owns preference lifetime and injects before combat ready",
+        "removal_proposed": false
+      },
+      {
+        "path": "docs/blueprint/FINAL_REVIEW.md",
+        "classification": "ARCHIVE",
+        "owner_or_provenance": "Preserved PDF review records",
+        "references_and_consumers": "New current-status notice points readers to later implementation owners",
+        "removal_proposed": false
+      }
+    ]
+  },
+  "project_work_kanban": {
+    "goal_or_slice_issue_ref": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/342",
+    "source_main_sha": "ed2104d98872c63eac27999830aeae9c15a00bdc",
+    "work_item_refs": [
+      "PRESENTATION-PREFERENCES"
+    ],
+    "active_work_item_ref": "PRESENTATION-PREFERENCES",
+    "next_action": "Read exact pushed HEAD CI; preserve final visual lock",
+    "work_items": [
+      {
+        "work_item_id": "PRESENTATION-PREFERENCES",
+        "title": "Persist presentation settings independently of run saves",
+        "status": "VERIFY_REVIEW",
+        "canon_owner": "docs/UX_UI_SYSTEM.md",
+        "actual_consumers": [
+          "src/run/vertical_slice_shell.gd",
+          "src/combat/combat_board_preview.gd"
+        ],
+        "depends_on": [],
+        "acceptance_criteria": [
+          "PREF-01"
+        ],
+        "required_evidence": [
+          "E2_TEST",
+          "E3_RUNTIME"
+        ],
+        "checklist": [
+          {
+            "id": "PREF-01",
+            "text": "Survive combat replacement and process restart; malformed settings and write errors preserve progress",
+            "status": "PASS",
+            "evidence": [
+              "docs/operations/2026-09-13_PRESENTATION_PREFERENCES.md"
+            ]
+          }
+        ],
+        "verification": [
+          {
+            "level": "E2_TEST",
+            "status": "PASS",
+            "evidence": [
+              "docs/operations/2026-09-13_PRESENTATION_PREFERENCES.md"
+            ]
+          },
+          {
+            "level": "E3_RUNTIME",
+            "status": "PASS",
+            "evidence": [
+              "C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/preferences-restored.png",
+              "C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/validation/preferences-visible.log"
+            ]
+          }
+        ],
+        "next_action": "Read exact pushed HEAD CI; preserve final visual lock"
+      }
+    ]
+  },
+  "feasibility": "FEASIBLE: shell-owned ConfigFile and existing controls; isolated test paths",
+  "alternatives": [
+    {
+      "option": "Independent ConfigFile",
+      "verdict": "ADOPT",
+      "reason": "Native storage with separate preference lifetime"
+    },
+    {
+      "option": "Run save fields",
+      "verdict": "REJECT",
+      "reason": "Requires unrelated progress compatibility changes"
+    },
+    {
+      "option": "Memory only",
+      "verdict": "REJECT",
+      "reason": "Does not survive restart"
+    }
+  ],
+  "reuse": {
+    "mode": "REUSE_EXISTING_PROJECT_IMPLEMENTATION",
+    "modules": [
+      "Existing mute, volume and reduced motion handlers",
+      "Existing shell lifetime and script-entry isolation pattern",
+      "Native Godot ConfigFile"
+    ],
+    "base_promotion": "Project-only adaptation; no new shared module justified."
+  }
+}
