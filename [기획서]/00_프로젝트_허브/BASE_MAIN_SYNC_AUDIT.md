@@ -1,6 +1,6 @@
 # Base current main 상세 동기화·프로젝트식 적용 감사
 
-## 2026-09-20 승인된 경량화 적용 — 진행 중
+## 2026-09-20 승인된 경량화·재미 검증 적용
 
 사용자 승인: 현재 대화의 “승인할게”; 앞서 제시한 관련 owner·스킬·검사 동시 교정안 전체. 기준 Project main ed2104d98872c63eac27999830aeae9c15a00bdc. Base는 다시 fetch한 main 23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef이며 #883 병합 ebfc6c80을 포함한다. #885의 경험→효과·시각·UI 명세는 해당 기능 작업에만 조건부 참조한다. 이 SHA는 관측·재현 증거이며 영구 current authority가 아니다. v9.4.4 release lock bytes는 보존한다.
 
@@ -17,10 +17,10 @@ CURRENT_SOURCE_RELEVANCE_CHECK: 직접 읽은 Base #883/main owner 및 실제 �
 ### 실행·검토 기록 (동일 승인 계약)
 
 - 사용자 추가 승인: Base #885 재미 검증 생명주기를 기존 통합 계약 §6.1 및 기획/UX/QA 스킬에 연결했다. 공개 거리·해결 이력으로 다음 선택을 바꾸는 가설과 반례, 판정 엔진/전투 preview/action dock의 실제 파일을 연결한다. 인간 재미·최종 자산·기기·출시 증거는 이번 작업 범위가 아니다.
-- RED: 최초 경량화 회귀6개 중5실패/1오류로 구형 인계·quota·연결 누락을 확인했다. 추가 재미/고정quota 재도입 반례2개도 교정 전 실패했다. GREEN: 새 계약 회귀10개 및 비런타임 Python 회귀484개 통과. 프로젝트 운영·참조 freshness·스킬 무결성·work governance·Base23ecad5 승인계약 validator PASS. generated views는 공식 생성기로 재생성, adapter LF bytes 일치. protected path diff0.
+- RED: 최초 경량화 회귀6개 중5실패/1오류로 구형 인계·quota·연결 누락을 확인했다. 추가 재미/고정quota 재도입 반례2개도 교정 전 실패했다. GREEN: 교정 전 새 계약 회귀10개를 포함한 비런타임 Python 회귀484개 통과; 마지막 메타데이터 회귀 추가 뒤 관련24개 통과(새 계약11개 포함). 프로젝트 운영·참조 freshness·스킬 무결성·work governance·Base23ecad5 승인계약 validator PASS. generated views는 공식 생성기로 재생성, adapter LF bytes 일치. protected path diff0.
 - 확대 discover는 임포트 준비 없는 격리 폴더에서 native Godot 테스트를 함께 실행하여 지연/실패했고 task-owned 실행만 중단했다. 이 실행은 PASS가 아니다. 후속484개는 native runtime 모듈2개를 제외한 문서/정책/정적 회귀이며 Godot·Human PASS로 사용하지 않는다. Windows 출력 인코딩 오류는 이번 검사 프로세스 UTF-8로 재실행했고 전역 설정은 바꾸지 않았다.
 - 전체 독립 검토1/2: P0/P1 없음, P2 3건(START_HERE 강제 인계, 새 Decision에 옛 PR287 증거 귀속, 문서-only 변경에서 새 회귀 제외)을 발견·교정했다. 시작 문서 전체 블록을 교체하고 역사7필드를 분리했으며 새 회귀는 항상 실행되는 governance 단계로 옮겼다. 관련 반례를 추가했다. 플랫폼·복구 보호 문구는 유지하고 예전 제목에 의존한 검사만 새 위치로 교정했다.
-- 전체 독립 검토2/2 완료: P0/P1 없음. P2 2건(본문과 다른 PowerShell YAML, current benchmark gate가 옛 Decision을 가리킴)을 발견했고 두 owner·연계 검사의 effective 값과 회귀를 교정했다. 이후는 결함별 readback/검사로 종료하며 전체 회차를 초기화하지 않는다. exact-head 원격 검사·main readback은 후속 확인한다.
+- 전체 독립 검토2/2 완료: P0/P1 없음. P2 2건(본문과 다른 PowerShell YAML, current benchmark gate가 옛 Decision을 가리킴)을 발견했고 두 owner·연계 검사의 effective 값과 회귀를 교정했다. 이후는 결함별 readback/검사로 종료하며 전체 회차를 초기화하지 않는다. 두 결함의 독립 readback 8검사 PASS, 미해결 P0/P1/P2 없음. 최종 메타데이터 영향 회귀24개 PASS. 원격 exact-head 검사·병합·main readback의 최신 결과는 [PR #343](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/343)의 head/check/merge와 본문 closeout을 대조한다.
 - PR199 유효 delta(Human/device packet 라우팅/준비≠PASS)는 양쪽 시작 문서와 AGENTS에 반영했다. PR200 v9.4.4 채택은 이미 main에 존재한다. 두 역사 draft는 원본을 보존하며 이번 PR에서 대체 의미를 기록한다. PR342 제품·저장·모션 작업은 이 운영 변경에 흡수하지 않는다.
 
 ## 1. 이전 2026-09-01 기준과 범위
