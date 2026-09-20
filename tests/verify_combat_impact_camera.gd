@@ -1,6 +1,7 @@
 extends SceneTree
 
 func _initialize() -> void:
+    create_timer(20.0).timeout.connect(func(): printerr("COMBAT_IMPACT_CAMERA_TIMEOUT"); quit(1))
     call_deferred("_run")
 
 func _run() -> void:
@@ -20,7 +21,7 @@ func _run() -> void:
     var before: Dictionary = board.combat_state.duplicate(true)
     var hud_position: Vector2 = board.top_hud.position
     var target_position: Vector2 = board.player_character.position
-    var hit := {"type": "action_result", "actor": "player", "category": "attack", "damage": 5}
+    var hit := {"type": "action_result", "actor": "player", "card_id":"basic_quick_attack", "category": "attack", "outcome":"hit", "damage": 5}
     if not board.player_character.has_method("hold_impact_pose"):
         push_error("LOCAL_IMPACT_HOLD_MISSING")
         board.free()
@@ -53,7 +54,7 @@ func _run() -> void:
     board._process(0.02)
     assert(board.get_meta("impact_camera_offset") == Vector2.ZERO, "Reduced motion disables shake")
     board._reduced_motion = false
-    board._play_clash_motion(0.34)
+    board._play_clash_motion(0.34, {"actor":"player", "card_id":"basic_quick_attack", "opponent_card_id":"basic_heavy_attack", "actor_tile_after_action":3, "target_tile_at_action":4, "outcome":"clash_draw"})
     board.player_character._motion_tween.custom_step(0.34 * 0.38)
     board.enemy_character._motion_tween.custom_step(0.34 * 0.38)
     var contact_gap: float = board.enemy_character.get_foot_anchor_global().x - board.player_character.get_foot_anchor_global().x
@@ -65,6 +66,11 @@ func _run() -> void:
     board._start_impact_camera(hit, "attack")
     board._process(1.0)
     assert(board.get_meta("impact_camera_offset") == Vector2.ZERO, "Camera must settle exactly")
+    var unknown := hit.duplicate(true)
+    unknown.card_id = "unknown"
+    board._start_impact_camera(unknown, "attack")
+    board._process(0.02)
+    assert(board.get_meta("impact_camera_offset") == Vector2.ZERO, "Unknown card cannot borrow an authored impact preset")
     board.free()
     print("COMBAT_IMPACT_CAMERA_PASS")
     quit(0)

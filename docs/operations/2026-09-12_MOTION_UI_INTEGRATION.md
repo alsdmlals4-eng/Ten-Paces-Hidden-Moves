@@ -139,3 +139,7 @@ f671f1d9 원격33SUCCESS/1FAILURE. 절초 최대 자세·Windows·일반 headles
 - 증거 root: `C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/card-motion-20260921`. 기존 월간 작업일지 동일 파일에9월21일 추가,13쪽(요약2+보존11); 문서 발행은 runtime 검증과 별개다.
 
 정리: 이번 실행이 만든 미추적 import/uid200개만 paired source·절대경로·SHA-256을 확인해 `C:/Users/user/Documents/삭제대기/십보강호_모션통합_20260912_064614/card-motion-20260921`로 이동했다. restore-manifest.json에 원위치와 해시가 있으며 사용자가 직접 삭제한다. 원본 자산과 다른 editor/작업 폴더는 삭제하지 않았다.
+
+원격 후속 결함 교정: 최초4d2055f4의 automated-product-evidence가 camera fixture120초 timeout으로 실패했다. 로컬에서 `Real impact consumer must start camera feedback` assertion을 재현했다(camera-local-red.log). fixture에 card_id가 없어 새 unknown preset의 camera0을 사용한 원인이며 제품 카메라를 강제 활성화하지 않고 실제 basic_quick_attack ID와 명시적 검 접촉 사실로 교정했다. unknown card의 shake0 반례와20초 fixture watchdog도 추가했다. 같은 camera 검사 GREEN; 실패한 최초 HEAD를 원격 전체 PASS로 보고하지 않는다. 기존2회 전체 검토를 초기화하지 않는 결함별 후속 교정이다.
+
+카메라 교정 뒤 동일 approved visual continuation18개 그룹 전체 PASS(80.693초). 테스트를 위해 잠시 복원한200개 sidecar는 해시가 같음을 확인해 같은 삭제 대기 위치로 반환했다. 제품 파일/빌드 bytes는4d2055f4와 동일하며 후속 커밋은 fixture와 실행 기록만 변경한다.
