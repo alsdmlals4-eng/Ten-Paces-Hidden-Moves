@@ -1,5 +1,11 @@
 # 십보강호 활성 컨텍스트
 
+## 현재 운영 구조 교정 · 2026-09-20
+
+사용자가 Base 경량화 적용안과 재미 검증 연결을 승인했다. 운영 owner는 `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`, 최신 기준·실행 증거는 `BASE_MAIN_SYNC_AUDIT.md`의2026-09-20절이다. UNIFIED_WORK_EXECUTION·조건부 인계·유효 근거 재사용·정확히2회 검토를 적용한다. 아래 날짜별 기록은 당시 이력이며 현재 고정10게임 quota·무조건 인계 지시로 재사용하지 않는다. 게임 제품은 변경하지 않는다. PR342 P01/P02 구현은 별도 branch에서 보존되며 main 완료로 표시하지 않는다. 작업일지는 기존 월간 PDF에 날짜별로 누적한다. 로컬 검사와 전체 독립 검토2회를 완료하고 지적5건을 교정했다. 운영 변경 PR은 #343이며 병합/원격 검사 여부는 GitHub live metadata와 BASE_MAIN_SYNC_AUDIT 링크에서 확인한다. 다음 게임 작업은 원래 승인된 PR342의 현재 head·최종 자산 gate·미커밋 변경을 별도 fresh-read한 뒤 계속한다.
+
+
+
 ## 현재 마무리 · 2026-09-16
 
 사용자가 진행 중 작업 마무리와 GitHub 동기화를 요청했다. 기존 월간 작업일지 파일에 날짜별 요약을 누적하며 같은 날 작업은 합친다. 새 버전 PDF를 계속 만들지 않는다. 현재 v1.1 경로에 요약1쪽과 보존된 상세11쪽을 두고, 운영 owner는 `docs/operations/AI_USAGE_EVIDENCE_REPORTING.md`다. 이번 변경은 문서·증빙 정리이며 P03은 아직 미구현이다. P01/P02 구현의 원격 exact HEAD 검증은 PR342에서 확인한다. 최종 시각 lock4건 전 Draft 및 Human/Android/출시 미검증 경계는 유지한다.

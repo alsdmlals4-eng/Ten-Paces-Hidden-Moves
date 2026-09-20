@@ -23,6 +23,9 @@ Base 동기화·채택 이력의 프로젝트 감사 진입점은 `[기획서]/0
 
 ## 2. 현재 호환 pin과 current-main 감사
 
+2026-09-20 채택: Base main 관측 `23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef` (#883·#885 포함). 현재 실행·fun/표현 검증의 프로젝트 적용은 `docs/decisions/2026-09-20_LEAN_WORK_EXECUTION.md`와 기존 감사 최신 절을 따른다. 아래9월1일 관측값과 release lock은 역사·재현 근거다. 매 작업 최신 main을 fetch하고 필요한 owner의 변경만 재평가하며, 검증용 exact revision을 permanent current 기준으로 삼지 않는다.
+
+
 ```yaml
 base_repository: alsdmlals4-eng/Base
 base_release_version: 9.4.4
@@ -89,15 +92,15 @@ product_contract_baseline: TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-0
 previous_project_contract: TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01
 previous_project_contract_status: SUPERSEDED_HISTORICAL_EVIDENCE
 local_codex_orchestration: RETIRED_NOT_USED
-codex_product_implementation: INDEPENDENT_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF_ONLY
-powershell: LOCAL_GODOT_OR_VALIDATION_ONLY_NOT_CODEX_LAUNCHER
+codex_product_implementation: UNIFIED_WORK_EXECUTION
+powershell: APPROVED_SCOPE_EXECUTION_NOT_CODEX_LAUNCHER
 visual_generation: TEXT_BRIEF_THEN_SCOPED_SINGLE_GENERATION_THEN_USER_FINAL_LOCK
 localization_minimum: [ko, en, ja, zh-*]
 chinese_variant: UNKNOWN_UNVERIFIED
 responsive_minimum: [pc_standard, pc_wide_or_ultrawide, mobile_landscape]
 ```
 
-- 실제 Godot 제품 구현은 `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF` 뒤 Codex가 Project GitHub + repository owners를 독립 fresh-read한다.
+- 승인 구현은 현재 실제 능력으로 수행한다. `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF`는 능력 부족 또는 사용자 지정 때만 적용한다.
 - GPT→PowerShell→local Codex, project-specific CODEX_HOME, 과거 dedicated port checkpoint를 current readiness로 사용하지 않는다.
 - 호환 가능한 host에서는 shared approved exact Godot pin + Godot AI 기본 포트 + exact project/editor/session identity를 기본으로 한다.
 - 새 이미지 생성은 scoped single generation 뒤 user final lock이다. 2026-08-25 max-three 메모와 pre-generation approval은 history다.
@@ -117,7 +120,7 @@ exact Project/Base source readback
 ```
 
 - Base의 `PROJECT_START_CANON_CHECKLIST_REQUIRED`, `REUSE_FIRST_PREFLIGHT_REQUIRED`, `LEGACY_CONTEXT_CONFIGURATION_HYGIENE_REQUIRED`를 채택한다.
-- 게임 규칙·UI·시각 자산처럼 player-facing package에는 기존 `TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01`의 10개 이상 비교 gate를 보존한다. 운영 문서·adapter-only 변경은 현재 Base owner와 exact project consumer의 `REUSED_EVIDENCE`로 한정하며, 무관한 게임 사례를 형식적으로 늘리지 않는다.
+- 과거 `TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01`의 고정10개 quota는 2026-09-20 승인으로 대체했다. 현재는 DECISION_RELEVANT_COMPARISON이며 유효한 동일 범위 근거는 REUSED_EVIDENCE로 재사용한다.
 - Base의 feature contract 모듈화는 새/변경 기능에서만 `owner → contract → code/data/Scene → consumer → test`를 같은 변경 단위로 연결하는 방식으로 적용한다. 기존 전투 모듈을 일괄 재구성하지 않는다.
 - conditional Blueprint/wireframe은 연결된 player-facing 시스템 변경의 이해·구현 gate가 실제로 필요할 때만 만든다. 이 운영계약 갱신 자체에는 새 화면 consumer가 없으므로 `NOT_APPLICABLE_WITH_REASON`이다.
 - 화면이 실제로 바뀌는 경우에만 project-local runtime capture manifest/capture를 갱신한다. 이번 문서·adapter 작업은 제품 화면을 바꾸지 않아 새 Godot capture를 만들지 않는다.

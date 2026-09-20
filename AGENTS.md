@@ -1,163 +1,56 @@
 # 십보강호 협업 규칙
 
-이 파일은 `alsdmlals4-eng/Ten-Paces-Hidden-Moves`의 repository-wide **항상 적용되는 프로젝트 불변식**만 소유한다. 변동 상태와 Base 상세 playbook을 여기에 복제하지 않는다.
+이 파일은 항상 필요한 프로젝트 경계와 읽기 경로만 소유한다. 설명은 한국어로 결과·작동 방식·직접 확인 방법을 먼저 제시한다.
 
-## 1. 권위·시작 순서
+## 시작과 정본
 
 ```text
-사용자의 최신 명시 지시
-→ 보안·플랫폼 제약 + 이 AGENTS.md
+최신 사용자 지시 → 보안·플랫폼 제약 + AGENTS.md
 → docs/BASE_RULES_VERSION.md
 → docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md
-   / TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01
-→ [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md
-→ current planning JSON + GitHub live metadata + repository human-facing owners
-→ skills/SKILL_REGISTRY.json
-→ 최신 관련 Decision + 질문별 책임 원본
-→ 실제 code/data/scene/resource/asset/test/runtime
-→ 프로젝트 compatibility/adoption pin
-→ 최신 Base completed main의 필요한 owner
-→ 검증된 외부 근거 → 추론 → 역사 자료
+→ [기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md + 최신 main·관련 PR
+→ 현재 결정·질문별 owner·실제 코드/데이터/consumer
+→ skills/SKILL_REGISTRY.json의 필요한 Skill Mode
+→ 채택 Base 계약과 최신 Base main의 필요한 owner
 ```
 
-`docs/BASE_RULES_VERSION.md`는 Base의 과거 프로젝트 채택 pin과 current Base remote owner를 구분하는 compatibility/adoption evidence entrypoint다. `skills/SKILL_REGISTRY.json`이 현재 project-local Skill authority이며 legacy registry는 기본 자동 discovery 대상이 아니다. 실제 구현과 승인 정본이 다르면 자동으로 한쪽을 진실로 만들지 않고 `CANON_CONFLICT`로 판정한다.
+GitHub의 REPOSITORY_HUMAN_FACING_CANON / REPOSITORY_STRUCTURED_CANON / REPOSITORY_RUNTIME_TRUTH가 정본이다. `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`을 따른다. Notion은 역사·이관 입력, Google Sheets는 MIGRATION_ONLY_UNTIL_REMOVAL이다. 과거 채팅·PDF·pin·닫힌 PR은 현재 상태를 대신하지 않는다. 충돌은 CANON_CONFLICT로 확인하고 임의의 정본을 만들지 않는다.
 
-새 채팅은 과거 대화를 current truth로 요구하지 않는다. Project GitHub + repository human-facing owner를 fresh-read해 현재 품질·보호 범위·다음 안전 작업·evidence ceiling을 재구성한다. `TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01`에 따라 Notion은 migration/history input일 뿐 current conflict surface가 아니다.
+## 승인된 작업 실행
 
-## 2. DOMAIN SPLIT
+- PLAN / BUILD / REVIEW와 Skill Mode를 구분한다. 새 변경은 의도·현재 상태·변경/보호·구현 방향·완료/검증 기준을 설명하고 승인받는다. 같은 범위는 REUSED_APPROVAL로 이어가며 단계·세션마다 재계획·재승인하지 않는다.
+- UNIFIED_WORK_EXECUTION: 현재 세션의 실제 능력과 승인으로 설계·구현·자산 연결·검증·교정·정본 갱신·허용된 정상 PR 병합과 main readback까지 수행한다. 인계는 실제 capability gap 또는 사용자 지정일 때만 한다. 도구 가용성은 새 권한이 아니다.
+- 새 방향·범위·비용·보안·파괴적 변경·게임 핵심 의미는 별도 결정이다. `진행해`는 같은 승인 계약의 continuation이다.
+- 작업 전 CURRENT_SOURCE_RELEVANCE_CHECK로 기존 구현·승인 자산·Base 사례부터 확인한다. 유효한 동일 근거는 REUSED_EVIDENCE로 재사용하고 중요한 새 판단에 필요한 공식 자료만 추가한다. 비교 수 채우기·허수 대안·매 수정의 새 보고서를 만들지 않는다.
+- SOURCE_DEPENDENCY_SCOPED_BLOCKER: 필수 근거 실패는 의존 작업만 BLOCKED_UNVERIFIED로 둔다. 별도 승인·근거가 있는 독립 작업은 계속한다. 사용자가 전체 중단을 지시하면 중단한다.
+- RECOVERY_ONLY: 생성 라우터의 무결성 검사 실패를 무시하지 않는다. 읽기 전용 진단과 승인된 제한적 복구만 진행하고 원 실패·범위를 보존한다. 같은 승인에서는 반복 승인을 요청하지 않는다. 생성 라우터는 채택한 Base 출력으로 유지하며 승인 조작·검사 약화를 금지한다. 복구 뒤 같은 검사와 영향 회귀를 통과하기 전 차단된 일반 실행은 재개하지 않는다.
+- 전체 적대 검토는 동일 승인 후보 전체에서 정확히 2회이며 단계마다 초기화하지 않는다. 이후는 결함별 교정과 영향 검증이다. `docs/decisions/2026-09-09_TWO_ROUND_INTERNAL_REVIEW.md` 참조. 개수만 채워 PASS로 하지 않는다.
+- Base와 설치 스킬의 접수·계획·검토를 중복 실행하지 않는다. 현재 주 책임 owner와 승인 참조를 한 번 연결한다. 설치 플러그인·전역 설정은 변경하지 않는다.
+- L1+ 실행은 기존 execution-report에 기준 SHA / Work Mode / Skill / Skill Mode / 수행 / 결과 / 증거 / 미검증을 짧게 남긴다. 경로·ID·schema 변경은 reference-freshness로 실제 참조와 생성물을 확인한다.
 
-- `REPOSITORY_HUMAN_FACING_CANON`: 사람이 읽고 비교·수정하는 Project Home equivalent, Flow/Storyboard, Visual, 세계관·캐릭터·핵심 시스템 설명, 핵심 표.
-- `REPOSITORY_STRUCTURED_CANON` / `REPOSITORY_RUNTIME_TRUTH`: Markdown, JSON, game data, code, Scene, Resource, tracked asset, tests, CI, runtime evidence.
-- Google Sheets: `MIGRATION_ONLY_UNTIL_REMOVAL`. 고유 미이관 자료를 찾는 compatibility source이며 신규 기획·승인·current state 작업면이 아니다.
+## 제품 불변식
 
-## 3. Mutable state
+- 1대1 10칸 일자형 논리 전장, 시작 공개 거리 2, 거리 0 `[밀착]`, 화면은 `거리 N` 중심.
+- `3수 → 해결 → 3수 → 해결 → 4수 → 해결`. 공개 상태·해결 이력 기반 상대 추론. AI는 미확정 계획·숨은 기술 배치·UI 의도를 읽지 않는다.
+- 덱·손패·드로우·장착 기술 제한 없음. 현재 해금 기술을 수에 배치한다. 합·방어도·회피·중단·강건·복기를 보존한다. 성장은 파훼 선택지를 확장한다.
+- platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01; design_platforms: WINDOWS_ANDROID; platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS; android_runtime_evidence: NOT_RUN.
+- 전투 규칙·AI·콘텐츠·ID·수치·저장 Schema는 하나의 공유 코어이며 UI/VFX/audio가 재계산하지 않는다. localization `ko/en/ja/zh-*`, Chinese variant 미확정. responsive `pc_standard / pc_wide_or_ultrawide / mobile_landscape` 의미 동등성을 보호한다.
+- 제품 보호 경로: `data/`, `src/`, `scenes/`, `assets/`, `addons/`, `project.godot`. 핵심 의미·저장 호환성 변경은 Decision이 필요하다.
 
-사용자 2026-09-13 지시에 따라 구현·수정 전에 현재 owner에 범위, 순서, 완료 기준과 검증 계획을 먼저 기록한 뒤 실행한다. 같은 승인 범위의 기계적 선택에 반복 승인을 요구하지 않는다.
+## 검증·Git·정리
 
-활성 PR·exact HEAD·현재 Work Mode·제품 단계·구현 상태·승인 수·다음 package/Decision·device/Human evidence는 `ACTIVE_CONTEXT.md`, current structured JSON, GitHub metadata, repository human-facing owners에서 fresh-read한다. 이 AGENTS에 mutable snapshot을 고정하지 않는다.
+- 사용자 dirty 변경과 다른 작업을 보존하고 격리 branch/PR에서 수정한다. direct main push, force push, admin/ruleset bypass 금지.
+- 관련 열린 PR은 `docs/decisions/2026-09-08_STANDING_PR_INTEGRATION_AUTHORIZATION.md` 범위에서 실제 diff·중복·동시성을 확인한 뒤 통합한다. 무관한 PR을 흡수하지 않는다. Draft 미완료 사유와 필수 CI·review/thread/ruleset을 해소한 뒤 정상 병합하고 main을 다시 읽는다.
+- 동작·계약 변경은 실패 회귀 RED → 최소 GREEN → 영향 회귀. 문서·정적·자동·Godot runtime·Human·최종 자산 승인·병합·출시를 구분한다. 실행하지 않은 것은 NOT_RUN이다.
+- Godot authoring/runtime이 필요한 작업만 정확한 project.godot·채택 엔진·현재 editor/session을 확인한다. 문서 작업에 엔진 실행을 강제하지 않는다. 과거 PID/port/CODEX_HOME/local Codex launcher를 준비 완료 증거로 사용하지 않는다.
+- 삭제 가능한 자료는 참조·원본·사용처를 확인한 후 `C:/Users/user/Documents/삭제대기`로 복구 가능하게 이동하고 링크·원래 경로·hash를 남긴다. 사용자가 직접 삭제한다.
+- 진행/다음 작업은 기존 Active Context에 누적한다. 월간 작업일지는 기존 PDF 한 파일에 날짜별로 요약하며 같은 날짜는 합친다. 전체 대화·중복 추적표를 만들지 않는다.
 
-## 4. Work Mode·Skill
+## 조건부 owner
 
-### 승인된 진입 실패 복구 (생성 라우터보다 우선)
-
-사용자의 2026-09-10 상시 복구 승인에 따라 `RECOVERY_ONLY`를 허용한다.
-생성 라우터의 검사 실패 시 일괄 중단 문구는 일반 실행을 차단하는 뜻이며,
-읽기 전용 진단과 승인된 원인의 제한적·가역적 복구를 막지 않는다.
-같은 승인 범위에서는 반복 승인을 요청하지 않는다. 실패 출력·기준 revision·
-복구 범위·남은 실패를 기존 실행 기록에 남기고 같은 검사와 영향 회귀를 재실행한다.
-필수 진입 검사 통과 전 일반 실행은 재개하지 않는다. 알 수 없는 권한·비용·위험은
-기존 승인으로 추정하지 않는다. 승인 조작, 검사 삭제, baseline 임의 교체, 사용자
-변경 폐기, direct main push, force push, ruleset 우회는 금지한다.
-생성 라우터는 채택한 Base 출력 그대로 유지하고 이 프로젝트 owner에서 예외를
-소유한다. 복구 승인과 GitHub 외부 승인·CI·이미지 최종 확정은 별개다.
-
-
-- `PLAN`: 요구·근거·대안·설계·Decision.
-- `BUILD`: 승인된 범위의 구현.
-- `REVIEW`: 정본·실제 변경·untouched consumer·test·readback을 적대적으로 검토.
-- `skills/SKILL_REGISTRY.json` trigger로 필요한 최소 Skill과 **Skill Mode**만 사용한다.
-- L1 이상 작업은 `기준 SHA / Work Mode / Skill / Skill Mode / 수행 / 결과 / 증거 / 미검증`을 `execution-report`에 남긴다.
-- 경로·ID·Schema·정본 변경은 `reference-freshness`로 활성 consumer와 파생본을 확인한다.
-- `TEN-DEC-20260828-ADVERSARIAL-RESEARCH-FEASIBILITY-GATE-01`: 모든 작업은 시작 전에 `CURRENT_SOURCE_RELEVANCE_CHECK`를 수행한다. 최신 외부 근거가 판단을 바꿀 수 있으면 공식/1차 자료를 조사하고 source·freshness·relevance·한계를 기록한다. 관련 외부 근거가 없을 때만 이유와 함께 `NOT_APPLICABLE`로 남기며, 검색하지 않은 사실이나 검색 snippet을 정본 증거로 발명하지 않는다.
-- `TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01` / `PREWORK_BENCHMARK_REVERSE_ENGINEERING_GATE`: 사용자 지시에 따라 새 L1+ 기획·시스템·UX·콘텐츠·구현 패키지는 계획 또는 mutation 전에 유사·인접 장르 게임 **10개 이상**을 역공학한다. 직접 비교 3개 이상, 인접 시스템 3개 이상, 부정/혼합 사례 1개 이상을 포함하고, 각 사례에서 공식 제품 사실·제한된 플레이어 반응 신호 또는 공개된 공백·mechanism·transfer principle·`DO_NOT_COPY` 경계·`ADOPT/ADAPT/AVOID/TEST` 판정을 남긴다. 같은 decision dimension과 project state가 일치할 때만 재사용할 수 있으며 `no silent bypass`다. 외부 사례는 프로젝트 core, 공개/비공개 정보 경계, deck/hand/draw 금지를 덮어쓰지 않는다.
-- `EVERY_TASK_BASE_LOOP`: 모든 작업·권장안·retained change는 최소 한 번의 전체 적대 검토를 거친다. material 계획·구현·문서·PR 변경은 `running-adversarial-review-and-refinement`의 정확히 2회 full-scope loop와 clean exit를 수행한다. 같은 승인 작업의 단계·세션·커밋·병합 전후에 회차를 초기화하지 않는다. 2회 뒤에는 결함별 수정·영향 회귀검증·readback만 수행하며 자동으로 세 번째 전체 검토를 추가하지 않는다. 각 loop는 정본·실제 diff·untouched consumer·실행 증거·비용·장기 적합성을 함께 공격하며 가짜 finding/loop로 횟수를 채우지 않는다. 근거: `docs/decisions/2026-09-09_TWO_ROUND_INTERNAL_REVIEW.md`. 검토 횟수는 CI·독립 승인·안전한 병합·미해결 결함 검증을 면제하지 않는다.
-- material mutation 전에는 repository 실제 경로·의존성·테스트 환경과 최신 외부 근거를 교차 대조해 `FEASIBLE / PARTIAL / BLOCKED_UNVERIFIED`로 구현 가능성을 판정한다. 자동 검증 가능성은 Human·실기기·접근성·출시 증거를 대체하지 않는다.
-- 사용자 2026-09-13 지시의 개선 루프는 유사 게임 조사 → 현재 기획 구체화·연결 → 구현 → 실제 검증 → 남은 구현 공백 재점검의 개발 반복을 뜻한다. 같은 승인 작업의 전체 적대 검토 2회를 초기화하는 지시가 아니다. 각 새 구현은 먼저 계획을 기록하고 같은 승인 범위의 안전한 작업을 재승인 없이 이어간다.
-- `진행해`/`계속해`는 이미 승인된 같은 계약의 continuation이며 새 코어·범위·비용 권한을 만들지 않는다.
-
-## 5. 프로젝트 코어
-
-- 1대1 10칸 일자형 논리 전장.
-- 시작 공개 거리 2, 거리 0 `[밀착]`.
-- 플레이어 화면은 절대 번호보다 `거리 N` 중심.
-- `3수 → 해결 → 3수 → 해결 → 4수 → 해결`.
-- 공개 상태·해결 이력 기반 상대 추론.
-- AI는 플레이어의 미확정 계획·숨은 기술 배치·UI 의도 신호를 읽지 않는다.
-- 덱·손패·드로우·장착 기술 제한 없음.
-- 무공서가 아니라 현재 해금 기술을 수에 배치.
-- 순차 `[합]`, 방어도, 회피, 중단, 강건, 복기.
-- 성장은 판단을 대체하지 않고 파훼 선택지를 확장한다.
-
-코어·Core Loop·주요 UX·콘텐츠 의미·저장 호환성을 바꾸는 변경은 새 Decision으로 승격한다.
-
-## 6. 행동 선택·화면·플랫폼 보호
-
-```yaml
-platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
-design_platforms: WINDOWS_ANDROID
-platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS
-android_runtime_evidence: NOT_RUN
-```
-
-- 행동 선택 Decision: `TEN-DEC-20260801-MARTIAL-TECHNIQUE-UX-01`.
-- 화면 구조 Decision: `TEN-DEC-20260801-SITUATION-SCREEN-01`.
-- 전투 규칙·AI·콘텐츠·ID·수치·저장 Schema는 하나의 공유 코어를 사용하고, 플랫폼 차이는 Adapter에 한정한다.
-- Android 실제 export·설치·실기기·터치·back·safe-area·lifecycle·저장·성능 evidence가 없으면 Android 런타임 지원 완료를 주장하지 않는다.
-- UI는 전투·보상·저장 규칙을 재계산하지 않는다.
-- localization-ready 최소 계획은 `ko / en / ja / zh-*`이며 중국어 variant는 별도 프로젝트 Decision 전 `UNKNOWN_UNVERIFIED`다.
-- responsive 최소 계획은 `pc_standard / pc_wide_or_ultrawide / mobile_landscape`이며 동일 정보 위계·행동·상태·피드백 의미를 보호한다.
-
-## 7. 구현·검증
-
-제품 보호 경로:
-
-```text
-data/
-src/
-scenes/
-assets/
-addons/
-project.godot
-```
-
-- 격리 Branch/PR에서 구현한다. direct main push, force push, ruleset/admin bypass는 금지한다.
-- 코드·정책·계약 동작 변경은 실패 회귀를 먼저 작성하고 RED를 확인한 뒤 최소 GREEN과 관련 회귀를 수행한다.
-- 자동 검증은 로컬 Windows visible, 실물 게임패드, 실제 Android 기기, 접근성 사용자, Release 성능, 사람 플레이를 대체하지 않는다.
-- 실행하지 않은 검증은 `NOT_RUN` 또는 `BLOCKED_UNVERIFIED`다.
-
-### Godot·Codex 역할 경계
-
-- GPT는 기획·조사·검수·Base·repository 문서·Visual을 담당한다.
-- 실제 Godot 제품 구현이 필요하면 `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF` 뒤 Codex가 Project GitHub + repository owners를 독립 fresh-read해 자신의 구현환경에서 수행한다.
-- GPT→PowerShell→local Codex launcher, 프로젝트 필수 `CODEX_HOME`, 과거 dedicated port readiness는 current 실행 경로가 아니다.
-- PowerShell은 사용자 PC에서 Godot 실행·검증이 실제 필요할 때만 사용하며 Codex launcher가 아니다.
-- 호환 가능한 host에서는 shared approved exact Godot pin + Godot AI 기본 포트 + exact project/editor/session identity를 기본으로 한다.
-
-## 8. Open PR·동시성
-
-- 사용자 상시 승인에 따라 이 프로젝트의 현재 승인 작업과 관련되거나 겹치는 pre-existing open/draft/ready PR도 검토·흡수·교정·검증·병합 범위에 포함한다. PR 번호별 재승인은 요구하지 않는다. 근거: `docs/decisions/2026-09-08_STANDING_PR_INTEGRATION_AUTHORIZATION.md`.
-- 먼저 모든 열린 PR의 실제 diff·소유 경계·동시 변경을 fresh-read한다. 관련 변경은 원본 branch와 사용자 미커밋 작업을 보존하며 통합하고, 중복 반영·의미 충돌·누락을 교정한다. 무관한 변경은 흡수하지 않는다.
-- current-task 및 위 상시 승인 대상 PR은 latest-main reconciliation → exact HEAD → required checks → review/thread/ruleset → safe merge → postmerge main readback까지 진행한다. draft는 미완료 사유를 해소한 뒤에만 ready로 전환한다. 실패 검증, 보호 규칙 우회, direct main push, force push를 허용하는 승인이 아니다.
-
-## 9. 출시·자산 권리 owner
-
-출시, 외부 자산, reference 기반 제작, 스토어 제출을 다루는 작업은 다음 프로젝트 owner를 추가로 읽는다.
-
-- `docs/PLATFORM_RELEASE_AND_ASSET_RIGHTS_PROFILE.md`
-- `docs/ASSET_RIGHTS_AND_PROVENANCE_RECORD.md`
-- `docs/GAME_RELEASE_COMPLIANCE_EVIDENCE_PACK.md`
-
-실제 build/store/trailer/questionnaire와 자산 권리 증거가 일치하지 않으면 release 완료를 주장하지 않는다. 외부 reference 또는 AI 변환 결과가 보인다는 사실만으로 독립 shipping asset 권리를 만들지 않는다.
-
-## 10. 시각 자산
-
-새 이미지 생성·스타일 변경은 current r5.4 계약에서 `canon review → text brief → scoped single generation → 사용자 final lock → repository destination readback` 순서다. reference-only/chat exploration을 승인 자산으로 승격하지 않는다. 사용자 최신 지시에 따라 생성 전 별도 이미지 승인요청은 하지 않고, 생성 후 최종 확정만 요청한다. 승인 Visual의 Notion 전달은 요구하지 않는다.
-
-2026-08-25의 `한번에 최대 3장`은 당시 Visual-production history로 보존하지만 current 실행 approval로 사용하지 않는다.
-
-## 11. 역사·호환
-
-- PR #7과 Issue #13은 T0 `STEP 0~13` 구현 계보다.
-- PR #45는 v6 계획 통합 이력이다.
-- PR #65는 ActionSelectionDock/화면 구조 구현 이력이다.
-- PR #92는 초기 10권 무공 런타임·UI/AI·자동 제품 검증 이력이다.
-- `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`은 `SUPERSEDED_HISTORICAL_EVIDENCE`다.
-- `TEN-DEC-20260811-INTEGRATED-WORK-CONTRACT-V4-5-R2-01`은 `SUPERSEDED_HISTORICAL_EVIDENCE`다.
-- Base release pin은 프로젝트 채택·회귀 증거이며 current Base remote truth가 아니다.
-- `TEN-DEC-20260811-LOCAL-EXECUTOR-BOOTSTRAP-01`의 CODEX_HOME·dedicated Godot/port checkpoint는 당시 역사 evidence이며 current 실행 route가 아니다.
-
-과거 Decision·review·snapshot의 당시 사실은 보존하되 current authority로 재사용하지 않는다.
-
-## 12. 로컬 정리와 수동 삭제
-
-사용자 2026-09-12 지시에 따라 삭제 가능한 파일·폴더는 직접 삭제하지 않고 `C:/Users/user/Documents/삭제대기` 아래 작업별 폴더로 옮긴 뒤 링크를 제공한다. 현재 소비처·미커밋 변경·원본 여부를 먼저 확인하고 원래 위치와 새 위치를 기록한다. 연결된 Git 작업 폴더는 이동 뒤 연결을 복구·검증한다. 불확실한 원본과 미완료 작업은 보존한다.
+- 재미·효과·비주얼·UI 검증: 통합 계약 §6.1의 경험 가설·반례·실제 consumer·교정 기준을 사용한다. 자동 검사와 HUMAN_NOT_RUN을 구분하며 같은 작업의 기존 기록에 연결한다.
+- 새 게임 설계·조사: `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` §4. 과거 PREWORK_BENCHMARK_REVERSE_ENGINEERING_GATE / TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01의 자료는 역사이며 고정10개 quota는 2026-09-20 승인으로 대체했다.
+- 이미지: `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md`. 정본·consumer·규격을 확인하고 실제 이미지 도구로 크로마키 생성→배경 제거→alpha/edge 검수. 후보·사용자 final lock·정본 등록·runtime 적용·실행 검증을 구분한다. 승인 자산을 임의 교체하지 않는다.
+- 출시·외부 자산 권리: `docs/PLATFORM_RELEASE_AND_ASSET_RIGHTS_PROFILE.md`, `docs/ASSET_RIGHTS_AND_PROVENANCE_RECORD.md`, `docs/GAME_RELEASE_COMPLIANCE_EVIDENCE_PACK.md`.
+- Human/기기/접근성 검수: `docs/planning-data/current_issue54_human_device_validation_packet.json`. 준비 상태는 Human/Device PASS가 아니며 현재 artifact를 먼저 대조한다.
+- 최신 Base 읽기·채택·드리프트: `docs/BASE_RULES_VERSION.md`와 `[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md`. release pin은 재현 근거이고 permanent current 기준이 아니다.

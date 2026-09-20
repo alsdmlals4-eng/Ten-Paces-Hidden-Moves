@@ -4,6 +4,7 @@
 
 ```text
 ../../../AGENTS.md
+→ ../../../docs/BASE_RULES_VERSION.md
 → ../../../docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md
 → ACTIVE_CONTEXT.md
 → DOCUMENTATION_MAP.md
@@ -17,7 +18,7 @@
 - 이전 `TEN-DEC-20260824-INTEGRATED-WORK-CONTRACT-V4-8-R2-01`은 `SUPERSEDED_HISTORICAL_EVIDENCE`다.
 - 프로젝트 Skill authority: `../../../skills/SKILL_REGISTRY.json`.
 - 이 디렉터리의 `SKILL_REGISTRY.json`은 legacy compatibility reference이며 기본 자동 discovery 대상이 아니다.
-- Base 동기화/채택의 current audit와 compatibility evidence는 `BASE_MAIN_SYNC_AUDIT.md`, `../../../docs/BASE_RULES_VERSION.md`에서 읽고, 새 L1+ 작업은 repository-owned work receipt를 먼저 만든다.
+- Base 동기화/채택의 current audit와 compatibility evidence는 `BASE_MAIN_SYNC_AUDIT.md`, `../../../docs/BASE_RULES_VERSION.md`에서 읽고, L1+ 작업은 기존 repository 작업 기록에 승인·변경·검증 근거를 연결한다.
 
 ## 현재 상태 authority
 
@@ -62,3 +63,7 @@ current_work_contract: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
 - 16권 절초 개별 설계, 주요 비무 6~10 런타임, 천하제일인·비동기 기능, 최종 아트/오디오 폴리싱은 별도 current Decision 없이는 자동 실행하지 않는다.
 
 자동 검증은 Windows visible Godot, 실제 Android, 접근성 사용자, Release 성능, 사람 플레이를 증명하지 않는다.
+
+## 조건부 검수와 통합 실행
+
+작업 절차는 AGENTS.md와 통합 작업 계약의 UNIFIED_WORK_EXECUTION을 따른다. 같은 승인 계약을 다시 접수하지 않는다. Human/기기/접근성/최종 시각·음향 검수에만 `docs/planning-data/current_issue54_human_device_validation_packet.json`을 읽는다. 준비 표시는 실제 검수 PASS가 아니며 현재 artifact freshness를 확인한다.

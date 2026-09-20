@@ -29,7 +29,7 @@ REQUIRED_COMPARABLE_FIELDS = [
     "DO_NOT_COPY_BOUNDARY",
     "ADOPT_ADAPT_AVOID_OR_TEST_DISPOSITION",
 ]
-PREWORK_BENCHMARK_GATE_DECISION = "TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01"
+PREWORK_BENCHMARK_GATE_DECISION = "TEN-DEC-20260920-LEAN-WORK-EXECUTION-01"
 REQUIRED_ADVERSARIAL_CHECKS = {
     "CORE_FUN_ALIGNMENT", "CANON_CONFLICT", "MISSING_REQUIREMENT",
     "EXPLOIT_OR_ABUSE_PATH", "LEGACY_REFERENCE_DRIFT", "VALIDATION_OVERCLAIM",
@@ -85,11 +85,9 @@ def validate(contract: dict[str, Any]) -> None:
     _require(benchmark.get("recommendation_required") is True, "benchmark recommendation is required")
     source_order = benchmark.get("preferred_source_order", [])
     _require(source_order[:3] == REQUIRED_SOURCE_ORDER_PREFIX, "benchmark source order must prefer official and primary evidence")
-    _require(benchmark.get("minimum_reliable_comparables_when_available") >= 2, "benchmark comparable coverage is insufficient")
-    _require(benchmark.get("minimum_unique_game_comparables_for_new_l1_plus_package") == 10, "new L1+ work must retain the approved 10-game minimum")
-    _require(benchmark.get("minimum_direct_comparables") == 3, "benchmark direct-comparable coverage differs")
-    _require(benchmark.get("minimum_adjacent_system_comparables") == 3, "benchmark adjacent-system coverage differs")
-    _require(benchmark.get("minimum_negative_or_mixed_case") == 1, "benchmark negative-or-mixed coverage differs")
+    _require(benchmark.get("comparison_policy") == "DECISION_RELEVANT_COMPARISON", "benchmark comparison policy differs")
+    _require(benchmark.get("fixed_game_quota") is False and not any(k.startswith("minimum_") for k in benchmark), "obsolete benchmark quota must not be active")
+    _require(benchmark.get("research_packet_policy") == "REUSE_EXISTING_OWNER_OR_VALID_EVIDENCE_NO_NEW_REPORT_PER_TASK", "benchmark record reuse differs")
     _require(benchmark.get("per_comparable_required_fields") == REQUIRED_COMPARABLE_FIELDS, "benchmark per-comparable evidence fields differ")
     _require(
         benchmark.get("reuse_or_refresh_rule")

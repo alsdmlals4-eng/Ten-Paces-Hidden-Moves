@@ -288,7 +288,7 @@
       "repository_destination": "src/run/vertical_slice_run_state.gd; src/run/vertical_slice_shell.gd; src/run/vertical_slice_shell_result_auto.gd",
       "notion_destination": "Project Home / 03 · UI · 전투 Flow Map after merged runtime evidence",
       "blockers": [
-        "single consolidated implementation contract and CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF are required before runtime work",
+        "approved implementation contract and exact runtime capability are required; CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF only for capability gap or explicit request",
         "Windows visible, Human Player Experience, accessibility, and Android evidence remain NOT_RUN"
       ]
     },

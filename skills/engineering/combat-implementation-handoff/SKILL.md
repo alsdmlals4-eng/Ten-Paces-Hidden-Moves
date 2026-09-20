@@ -9,6 +9,8 @@ description: Use when approved Ten Paces design must be audited against the real
 
 승인된 십보강호 규칙·UI 계약을 실제 Godot 파일·데이터·씬·자산·테스트 변경으로 변환하고, 사용자 작업과 기존 동작을 보존한 상태로 런타임 증거를 인계한다.
 
+UNIFIED_WORK_EXECUTION: 승인 구현은 현재 세션에서 수행한다. HANDOFF_ONLY_FOR_CAPABILITY_GAP_OR_EXPLICIT_REQUEST일 때만 별도 인계한다.
+
 ## Skill Modes
 
 - `implementation-contract`: 실제 경로·데이터 소유·호환성·테스트 Plan.
@@ -37,21 +39,7 @@ description: Use when approved Ten Paces design must be audited against the real
 - 테스트: `docs/08_TEST_CHECKLIST.md`.
 - 아키텍처: `docs/09_COMBAT_SYSTEM_ARCHITECTURE.md`.
 - 구현: `data/`, `scenes/`, `src/`, `assets/`, `tests/`, `project.godot`.
-- 현재 기준: 허브 `ACTIVE_CONTEXT.md`, PR #7, 활성 Issue.
-
-## 절차
-
-1. Git branch·HEAD·status·remote와 사용자 변경을 확인한다.
-2. 기준 SHA에서 격리 브랜치 또는 worktree를 만든다.
-3. 문서·Registry·실제 파일의 차이를 기록한다.
-4. 변경 정본에서 데이터·fallback·state·AI·씬·UI·자산·테스트·Context 영향 지도를 만든다.
-5. 공개 ID·Resource UID·세이브 포맷·노드·신호·입력 경로의 보호 범위를 정한다.
-6. 결과·의존성·완료·검증·롤백 단위로 계획한다.
-7. 승인 범위를 가장 작은 검증 가능한 변경으로 구현한다.
-8. 좁은 정적·단위 검사부터 Godot 파싱·headless·Windows 렌더·입력으로 확장한다.
-9. 정상·실패·경계·반례·회귀를 확인한다.
-10. 실제 결과를 Context·Roadmap·Handoff·PR에 기록한다.
-11. 기준 SHA 대비 변경 파일을 확인해 사용자/Codex 작업 유실이 없는지 검증한다.
+- 현재 기준: 허브 `ACTIVE_CONTEXT.md`, 현재 관련 PR, 활성 Issue.
 
 ## 영향 지도 최소 범위
 
@@ -101,23 +89,7 @@ contract-check
 → baseline diff and evidence report
 ```
 
-## 출력
-
-```yaml
-baseline_branch:
-baseline_sha:
-work_branch:
-approved_scope:
-protected_paths:
-changed_files:
-untouched_consumers:
-static_evidence:
-runtime_evidence:
-windows_evidence:
-human_evidence:
-rollback:
-result: PASS | PARTIAL | FAIL | NOT_RUN | BLOCKED
-```
+공용 승인·격리·검토·보고 절차는 `AGENTS.md`와 `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`를 재사용한다. 기존 실행 기록에 주장·변경·검증·미검증·다음 작업을 누적하며 단계마다 새 보고서를 만들지 않는다.
 
 ## 완료 기준
 
