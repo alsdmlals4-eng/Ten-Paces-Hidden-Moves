@@ -9,8 +9,8 @@ ROOT = Path(__file__).resolve().parents[1]
 class CombatUiTopLevelAuthorityTests(unittest.TestCase):
     def test_agents_core_uses_public_distance_without_runtime_snapshot_duplication(self) -> None:
         text = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
-        core = text.split("## 5. 프로젝트 코어", 1)[1].split(
-            "## 6. 행동 선택·화면·플랫폼 보호", 1
+        core = text.split("## 제품 불변식", 1)[1].split(
+            "## 검증·Git·정리", 1
         )[0]
 
         self.assertIn("시작 공개 거리 2", core)

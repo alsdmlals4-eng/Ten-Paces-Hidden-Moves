@@ -61,20 +61,6 @@ Base 공용 `auditing-and-refining-ui-art`의 방법·패턴·Godot 계약을 �
 
 현재 구현·증거 상태는 허브 `ACTIVE_CONTEXT.md`에서 읽는다.
 
-## 절차
-
-1. `docs/UX_UI_SYSTEM.md`의 플레이어 경험·보호 대상·패턴 판정을 먼저 읽는다.
-2. 화면마다 첫 시선과 중심 질문을 하나씩 정한다.
-3. 상시 정보·선택 상세·실행 전 예상·로그·결과 요약의 역할을 분리한다.
-4. 구조화된 state·event만 표현하고 피해·보상·저장을 재계산하지 않는다.
-5. 기본·선택·잠금·준비·실행·중단·자원 부족·예약·종료 상태를 색 외 채널로 구분한다.
-6. 위치·거리 변경 시 캐릭터·타일·점유·대상·로그·접근성 이름을 함께 검수한다.
-7. 합·방어·회피·필중은 적용 순서와 최종 결과를 분리해 보여 준다.
-8. 키보드·마우스·게임패드·포커스·긴 한국어·최소 해상도·모션·음향·자산 누락 폴백을 확인한다.
-9. 실제 렌더가 있으면 전후 캡처와 입력으로 검수한다.
-10. 실제 사용자·보조기기 검증을 실행하지 않았으면 `HUMAN_NOT_RUN`으로 유지한다.
-11. 목표 플랫폼 성능 영향이 있으면 별도 performance-profile을 실행한다.
-
 ## 정보 계약
 
 플레이어가 다음을 설명할 수 있어야 한다.
@@ -112,22 +98,7 @@ Base 공용 `auditing-and-refining-ui-art`의 방법·패턴·Godot 계약을 �
 - 빈 에디터 장면·정적 패턴·평균 FPS 하나로 통과 판정.
 - Base 공용 패턴을 전투 코어보다 높은 권한으로 사용.
 
-## 출력
-
-```yaml
-screen_question:
-first_attention:
-selected_patterns:
-state_source:
-information_channels:
-input_paths:
-accessibility_barriers:
-fallbacks:
-runtime_evidence:
-human_evidence:
-performance_impact:
-result: PASS | PARTIAL | FAIL | NOT_RUN | BLOCKED
-```
+공용 승인·격리·검토·보고 절차는 `AGENTS.md`와 `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`를 재사용한다. 기존 실행 기록에 주장·변경·검증·미검증·다음 작업을 누적하며 단계마다 새 보고서를 만들지 않는다.
 
 ## 완료 기준
 
@@ -136,3 +107,7 @@ result: PASS | PARTIAL | FAIL | NOT_RUN | BLOCKED
 - UI와 도메인 상태 소유자가 명시된다.
 - Base 공용 원칙과 십보강호 고유 3/3/4·거리·합 규칙이 분리된다.
 - 실제 런타임·접근성·성능을 실행하지 않았으면 검증 완료로 쓰지 않는다.
+
+## 재미·표현 검증 연결
+
+FUN_VERIFICATION_LIFECYCLE은 `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` §6.1을 따른다. 변경 기능의 기존 owner에 가설·반례·입력/상태/정보·실제 consumer·검증·교정을 연결한다. 이해 실패·규칙/선택 실패·피드백 부족·반복 피로를 구분한다. HUMAN_NOT_RUN을 자동 테스트나 AI 검토로 FUN_PASS로 바꾸지 않으며 승인된 독립 구현은 계속한다. 작은 변경은 기존 기록에 짧게 적고 새 재미 보고서·보편 점수·가상 감독을 만들지 않는다.

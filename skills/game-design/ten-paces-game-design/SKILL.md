@@ -43,20 +43,7 @@ description: Use for Ten Paces combat, tournament, martial-art, growth, balance,
    - 성장: `docs/06_STARTING_FACTION_MASTERY_DATA.md`
    - 시스템 경계: `docs/09_COMBAT_SYSTEM_ARCHITECTURE.md`
    - 검증: `docs/08_TEST_CHECKLIST.md`
-4. 관련 `data/`, `src/`, `tests/`, PR #7·활성 Issue.
-
-## 절차
-
-1. 플레이어에게 전달할 경험과 유도할 행동을 `WHY`로 적는다.
-2. 목표를 만드는 전략·제약·상호작용을 `HOW`로 적는다.
-3. 실제 규칙·수치·화면·콘텐츠를 `WHAT`으로 적는다.
-4. 확정·기술 검증·사람 미검증·가설·보류를 분리한다.
-5. 프로젝트 코어·뾰족한 재미·제약에 미치는 영향을 확인한다.
-6. 규칙→도메인 상태·이벤트→UI·연출→QA 소비자를 추적한다.
-7. 대안은 장점·비용·위험·검증 방법으로 비교한다.
-8. POC는 가장 위험한 가설만 검증하고 Vertical Slice로 팽창시키지 않는다.
-9. 결과를 `KEEP / AMPLIFY / CHANGE / REMOVE / DEFER / RETEST`로 기록한다.
-10. 관련 본책·Roadmap·Test·Context를 같은 작업에서 동기화한다.
+4. 관련 `data/`, `src/`, `tests/`, 현재 관련 PR·활성 Issue.
 
 ## 프로젝트 고유 품질 게이트
 
@@ -76,22 +63,7 @@ description: Use for Ten Paces combat, tournament, martial-art, growth, balance,
 - 외부 게임 기능을 의도·근거 없이 복사.
 - `[집중]`, 행동력, 덱/손패 등 제외 요소 재도입.
 
-## 출력
-
-```yaml
-why:
-how:
-what:
-status:
-canonical_owner:
-player_decision:
-changed_rules:
-affected_consumers:
-alternatives:
-validation:
-human_evidence:
-decision: KEEP | AMPLIFY | CHANGE | REMOVE | DEFER | RETEST
-```
+공용 승인·격리·검토·보고 절차는 `AGENTS.md`와 `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`를 재사용한다. 기존 실행 기록에 주장·변경·검증·미검증·다음 작업을 누적하며 단계마다 새 보고서를 만들지 않는다.
 
 ## 완료 기준
 
@@ -100,3 +72,7 @@ decision: KEEP | AMPLIFY | CHANGE | REMOVE | DEFER | RETEST
 - T0·T1·T2·전체판 범위가 구분된다.
 - 테스트 가능한 완료 기준이 있다.
 - 실제 구현과 untouched 소비자를 확인했다.
+
+## 재미·표현 검증 연결
+
+FUN_VERIFICATION_LIFECYCLE은 `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` §6.1을 따른다. WHY(의도한 경험) → HOW(규칙·선택·정보가 경험을 만드는 방식) → WHAT(관찰 가능한 결과)을 설명하고, 변경 기능의 기존 owner에 가설·반례·입력/상태/정보·실제 consumer·검증·교정을 연결한다. 이해 실패·규칙/선택 실패·피드백 부족·반복 피로를 구분한다. HUMAN_NOT_RUN을 자동 테스트나 AI 검토로 FUN_PASS로 바꾸지 않으며 승인된 독립 구현은 계속한다. 작은 변경은 기존 기록에 짧게 적고 새 재미 보고서·보편 점수·가상 감독을 만들지 않는다.

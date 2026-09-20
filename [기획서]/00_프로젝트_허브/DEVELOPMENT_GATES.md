@@ -93,7 +93,7 @@ base_remote_policy: LATEST_COMPLETED_MAIN_PROGRESSIVE_LOAD
 - 변경 파일뿐 아니라 untouched owner·active consumer·derived JSON·cold-start router·test·repository destination을 공격 검토한다.
 - 핵심 시스템·보조 시스템·핵심 재미·목표 정렬을 검증한다.
 - normal·failure·edge·counterexample·regression·information-leak·accessibility/responsive/save/commit 경계를 적용 범위만큼 검토한다.
-- minimum 5 full adversarial loops 뒤 새 blocking finding이 0이어야 한다.
+- 동일 승인 후보 전체에서 정확히 2회 full adversarial loops 뒤 새 blocking finding이 0이어야 한다.
 - 사람 usability, Windows visible, Android actual device, 접근성 사용자, release performance를 수행하지 않았으면 `NOT_RUN`을 유지한다.
 - 이미지 생성물 자체는 REVIEW_COMPLETE의 필수 선행조건이 아니다.
 

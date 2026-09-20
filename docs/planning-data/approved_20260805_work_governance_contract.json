@@ -39,6 +39,70 @@
     "failure_must_be_relevant": true
   },
   "benchmark_policy": {
+    "prework_benchmark_reverse_engineering_gate_decision": "TEN-DEC-20260920-LEAN-WORK-EXECUTION-01",
+    "required_for_material_questions_and_tasks": true,
+    "required_before_every_project_task": true,
+    "research_depth": "PROPORTIONAL_TO_TASK_RISK_AND_SCOPE",
+    "timing": "PRE_WORK_BEFORE_PLAN_OR_MUTATION",
+    "research_packet_required_before_task": true,
+    "required_prework_sequence": [
+      "FRESH_PROJECT_AUTHORITY_READ",
+      "BENCHMARK_AND_INDUSTRY_RESEARCH",
+      "PROJECT_FIT_RECOMMENDATION",
+      "PLAN_TDD_OR_MUTATION"
+    ],
+    "material_scope": [
+      "GAME_DESIGN",
+      "SYSTEM_DESIGN",
+      "BALANCE",
+      "UX_UI",
+      "IMPLEMENTATION_ARCHITECTURE",
+      "WORKFLOW_GOVERNANCE",
+      "TOOLS_AND_PLATFORM_CHOICES"
+    ],
+    "compare_current_or_proposed_approach": true,
+    "industry_comparison_required": true,
+    "recommendation_required": true,
+    "preferred_source_order": [
+      "OFFICIAL_DOCUMENTATION_OR_STANDARD",
+      "PRIMARY_RESEARCH_OR_FIRST_PARTY_TECHNICAL_PAPER",
+      "FIRST_PARTY_CASE_STUDY_OR_POSTMORTEM",
+      "REPUTABLE_SECONDARY_SYNTHESIS"
+    ],
+    "per_comparable_required_fields": [
+      "OFFICIAL_PRODUCT_FACT_SOURCE",
+      "PLAYER_RESPONSE_SIGNAL_OR_DISCLOSED_GAP",
+      "MECHANISM",
+      "TRANSFER_PRINCIPLE",
+      "DO_NOT_COPY_BOUNDARY",
+      "ADOPT_ADAPT_AVOID_OR_TEST_DISPOSITION"
+    ],
+    "reuse_or_refresh_rule": "NO_SILENT_BYPASS_REUSE_ONLY_WHEN_DECISION_DIMENSION_AND_CURRENT_PROJECT_STATE_MATCH",
+    "when_no_reliable_comparable": "DISCLOSE_GAP_AND_USE_EXPLICIT_INTERNAL_ASSUMPTIONS",
+    "current_verification_required_when_fact_may_have_changed": true,
+    "benchmark_must_not_override_project_core": true,
+    "comparison_policy": "DECISION_RELEVANT_COMPARISON",
+    "research_packet_policy": "REUSE_EXISTING_OWNER_OR_VALID_EVIDENCE_NO_NEW_REPORT_PER_TASK",
+    "external_research_trigger": "MISSING_STALE_OR_DECISION_CHANGING_EVIDENCE",
+    "fixed_game_quota": false
+  },
+  "adversarial_review": {
+    "required": true,
+    "must_check": [
+      "CORE_FUN_ALIGNMENT",
+      "CANON_CONFLICT",
+      "MISSING_REQUIREMENT",
+      "EXPLOIT_OR_ABUSE_PATH",
+      "LEGACY_REFERENCE_DRIFT",
+      "VALIDATION_OVERCLAIM"
+    ]
+  },
+  "validation_boundary": {
+    "static_validation": "REQUIRED",
+    "human_validation": "NOT_RUN_UNLESS_EXECUTED",
+    "runtime_validation": "NOT_RUN_UNLESS_EXECUTED"
+  },
+  "historical_benchmark_policy_20260830": {
     "prework_benchmark_reverse_engineering_gate_decision": "TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01",
     "required_for_material_questions_and_tasks": true,
     "required_before_every_project_task": true,
@@ -86,21 +150,5 @@
     "when_no_reliable_comparable": "DISCLOSE_GAP_AND_USE_EXPLICIT_INTERNAL_ASSUMPTIONS",
     "current_verification_required_when_fact_may_have_changed": true,
     "benchmark_must_not_override_project_core": true
-  },
-  "adversarial_review": {
-    "required": true,
-    "must_check": [
-      "CORE_FUN_ALIGNMENT",
-      "CANON_CONFLICT",
-      "MISSING_REQUIREMENT",
-      "EXPLOIT_OR_ABUSE_PATH",
-      "LEGACY_REFERENCE_DRIFT",
-      "VALIDATION_OVERCLAIM"
-    ]
-  },
-  "validation_boundary": {
-    "static_validation": "REQUIRED",
-    "human_validation": "NOT_RUN_UNLESS_EXECUTED",
-    "runtime_validation": "NOT_RUN_UNLESS_EXECUTED"
   }
 }

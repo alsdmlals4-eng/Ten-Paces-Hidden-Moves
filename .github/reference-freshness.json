@@ -185,10 +185,11 @@
     "AGENTS.md": [
       "Skill Mode",
       "execution-report",
-      "PR #7",
-      "Issue #13",
       "reference-freshness",
-      "기준 SHA"
+      "기준 SHA",
+      "UNIFIED_WORK_EXECUTION",
+      "REUSED_APPROVAL",
+      "SOURCE_DEPENDENCY_SCOPED_BLOCKER"
     ],
     "docs/ACTIVE_CONTEXT.md": [
       "DEPRECATED_ENTRYPOINT",
@@ -350,18 +351,18 @@
       "playtest-recalibration"
     ],
     "skills/engineering/combat-implementation-handoff/SKILL.md": [
-      "baseline_sha",
-      "protected_paths",
+      "UNIFIED_WORK_EXECUTION",
+      "HANDOFF_ONLY_FOR_CAPABILITY_GAP_OR_EXPLICIT_REQUEST",
       "runtime-handoff"
     ],
     "skills/ux-ui-accessibility/combat-ux-and-accessibility/SKILL.md": [
-      "information_channels",
+      "FUN_VERIFICATION_LIFECYCLE",
       "accessibility-review",
       "HUMAN_NOT_RUN"
     ],
     "skills/qa/ten-paces-verification/SKILL.md": [
       "counterexample",
-      "baseline_diff",
+      "FUN_VERIFICATION_LIFECYCLE",
       "evidence-report"
     ],
     "[기획서]/DESIGN_DOCUMENT_REGISTRY.json": [

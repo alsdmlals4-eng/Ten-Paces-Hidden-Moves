@@ -4,7 +4,6 @@
 
 ```text
 최신 사용자 지시
-→ 최신 Base completed main / Base root AGENTS.md
 → AGENTS.md
 → docs/BASE_RULES_VERSION.md
 → docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md
@@ -14,6 +13,7 @@
 → 최신 관련 Decision
 → 질문별 책임 원본
 → 실제 코드·데이터·Scene·테스트·GitHub metadata
+→ 채택 계약 확인 후 최신 Base main의 필요한 owner
 → repository human-facing owner when planning/visual/state is relevant
 ```
 
@@ -75,17 +75,12 @@ Notion은 historical migration input이며 새 output·attachment·sync·destina
 
 ## Godot·Codex 현재 실행 경계
 
-```text
-GPT → 기획 / 조사 / 검수 / Base / repository 문서 / Visual
-실제 Godot 제품 구현 필요 → CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
-Codex → Project GitHub + repository owner 독립 fresh-read → 자신의 구현환경에서 구현/test/runtime evidence
-GPT → 최종 검수/정본/PR closeout
-```
+UNIFIED_WORK_EXECUTION: 승인된 작업은 현재 세션의 실제 능력으로 설계·구현·검증·정상 PR 병합까지 수행한다. HANDOFF_ONLY_FOR_CAPABILITY_GAP_OR_EXPLICIT_REQUEST: 능력·권한 부족 또는 사용자 지정일 때만 CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF로 인계한다. 같은 승인 계약을 단계마다 재승인하지 않는다.
 
 - GPT→PowerShell→local Codex launcher는 current route가 아니다.
 - project-specific `CODEX_HOME`, 과거 dedicated Godot/8003/9503 checkpoint를 current readiness로 사용하지 않는다.
-- PowerShell은 Godot 로컬 실행·검증이 실제 필요할 때만 사용한다.
-- 호환 가능한 host에서는 shared approved exact Godot pin + Godot AI 기본 포트 + exact project/editor/session identity를 기본으로 한다.
+- PowerShell은 승인된 저장소·문서·테스트·엔진 작업의 실행 수단이다.
+- 실제 Godot authoring/runtime 때만 shared approved exact Godot pin과 project/editor/session identity를 확인한다.
 
 ## Visual 현재 실행 경계
 
@@ -113,3 +108,7 @@ GPT → 최종 검수/정본/PR closeout
 - `TEN-DEC-20260811-LOCAL-EXECUTOR-BOOTSTRAP-01`의 CODEX_HOME·dedicated port 상태는 역사 evidence다.
 
 자동·정적·CI 검증은 Windows visible, 실물 입력, Android 실제 기기, 접근성 사용자, Release 성능, 사람 플레이를 증명하지 않는다. 실행하지 않은 항목은 `NOT_RUN`이다.
+
+## 조건부 검수와 통합 실행
+
+작업 절차는 AGENTS.md와 통합 작업 계약의 UNIFIED_WORK_EXECUTION을 따른다. 같은 승인 계약을 다시 접수하지 않는다. Human/기기/접근성/최종 시각·음향 검수에만 `docs/planning-data/current_issue54_human_device_validation_packet.json`을 읽는다. 준비 표시는 실제 검수 PASS가 아니며 현재 artifact freshness를 확인한다.

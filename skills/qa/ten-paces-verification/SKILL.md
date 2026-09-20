@@ -9,7 +9,7 @@ description: Use when Ten Paces design, implementation, UI, data, save, build, p
 
 십보강호 고유 규칙·데이터·Godot·UI·빌드·플레이어 이해 주장을 재현 가능한 증거로 판정한다. 일반 변경 검증·정본 최신성 방법은 Base Skill을 사용하고, 이 Skill은 프로젝트 고유 반례와 증거 기준을 제공한다.
 
-이 Skill은 current r5.4 역할 경계를 따른다. **GPT가 PowerShell로 local Codex를 실행하는 과거 executor bootstrap은 current 검증 모드가 아니다.** 실제 Godot 제품 구현은 Base `maintaining-project-context-and-handoff`의 `codex-godot-implementation-handoff`로 넘기고, 이 Skill은 그 결과의 프로젝트 고유 evidence를 검수한다.
+UNIFIED_WORK_EXECUTION: 현재 실행자가 승인 범위의 구현·검증을 수행한다. HANDOFF_ONLY_FOR_CAPABILITY_GAP_OR_EXPLICIT_REQUEST에만 CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF로 연결한다. 과거 local Codex launcher는 사용하지 않는다.
 
 ## Skill Modes
 
@@ -30,7 +30,7 @@ description: Use when Ten Paces design, implementation, UI, data, save, build, p
 - 정본 변경 뒤 프로젝트 고유 소비자 누락을 확인한다.
 - 사람 플레이·접근성·성능의 증거 상태를 판정한다.
 - 사용자 PC에서 local Godot 실행/검증이 실제 필요하고 exact project/editor/session readiness를 확인해야 한다.
-- Codex가 실제 Godot 제품 구현 결과를 반환했고 GPT final review에서 프로젝트 고유 runtime evidence를 검수해야 한다.
+- 현재 실행자 또는 조건부 인계 결과의 프로젝트 고유 runtime evidence를 검수한다.
 
 사용하지 않는다.
 
@@ -69,18 +69,6 @@ claim and failure condition
 → evidence report
 ```
 
-## 절차
-
-1. 검증할 주장과 실패 조건을 적는다.
-2. 기준 SHA·환경·도구·권한·버전·입력을 기록한다.
-3. 파일 존재·정적·자동·Godot·Windows·Android actual device·사람 검수를 분리한다.
-4. 변경 정본에서 데이터·fallback·코드·씬·자산·테스트·문서·Skill·Context 영향 지도를 만든다.
-5. changed 파일뿐 아니라 갱신됐어야 할 untouched 소비자를 확인한다.
-6. 정상 경로와 함께 원래 실패해야 하는 반례를 실행한다.
-7. 수정 전 반례 실패·수정 후 통과를 가능한 범위에서 확인한다.
-8. 기준 SHA 대비 보호 경로 변경을 검사한다.
-9. 통과·실패·미실행·환경 차이를 분리 보고한다.
-
 ## `local-godot-validation-readiness` 계약
 
 현재 host 기본은 프로젝트별 동일 Godot binary와 dedicated port를 증식시키는 방식이 아니라 **현재 승인된 shared exact Godot pin + Godot AI 기본 포트 + exact project/editor/session identity**다. 정확한 pin/version은 프로젝트 current adoption record와 공식 upstream freshness Gate를 읽고 발견한다.
@@ -103,7 +91,7 @@ REPO_NO_UNINTENDED_MUTATION: pre/post repository delta classification
 - external process 존재만으로 editor/session/project identity PASS를 주장하지 않는다.
 - read-only readiness 중 제품 파일 변경을 만들지 않는다.
 - 어느 한 항목이라도 실제 호출/조회가 되지 않으면 `NOT_RUN` 또는 `BLOCKED`이며 `PASS`로 승격하지 않는다.
-- actual Godot product implementation이 필요하면 이 mode에서 구현하지 않고 `CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF`로 전환한다.
+- 읽기 전용 readiness에서 제품을 수정하지 않는다. 구현 승인이 있으면 같은 세션에서 build로 전환할 수 있으며 실제 능력 부족일 때만 인계한다.
 
 ## 프로젝트 고유 계약군
 
@@ -157,27 +145,7 @@ REPO_NO_UNINTENDED_MUTATION: pre/post repository delta classification
 - 다른 open PR/branch를 확인 없이 reset·rebase·force push.
 - local Codex launcher를 current 제품 구현 route로 사용.
 
-## 출력
-
-```yaml
-claim:
-baseline_sha:
-environment:
-static:
-automated:
-godot_runtime:
-windows_visible:
-android_actual_device:
-human_playtest:
-accessibility_user:
-release_performance:
-baseline_diff:
-counterexamples:
-result: PASS | PARTIAL | FAIL | NOT_RUN | BLOCKED
-remaining_risks:
-```
-
-`local-godot-validation-readiness`에서는 필요하면 `PROJECT_IDENTITY`, `GODOT_COMPATIBILITY`, `EDITOR_IDENTITY`, `GODOT_AI_SESSION`, `GUT`, `HERA`, `REPO_NO_UNINTENDED_MUTATION`, `OVERALL`을 추가한다.
+공용 승인·격리·검토·보고 절차는 `AGENTS.md`와 `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`를 재사용한다. 기존 실행 기록에 주장·변경·검증·미검증·다음 작업을 누적하며 단계마다 새 보고서를 만들지 않는다.
 
 ## 완료 기준
 
@@ -187,3 +155,7 @@ remaining_risks:
 - 기준 전후 결과와 파일을 비교할 수 있다.
 - 사람 이해와 자동 테스트를 분리한다.
 - historical executor evidence와 current Godot validation route를 분리한다.
+
+## 재미·표현 검증 연결
+
+FUN_VERIFICATION_LIFECYCLE은 `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` §6.1을 따른다. 변경 기능의 기존 owner에 가설·반례·입력/상태/정보·실제 consumer·검증·교정을 연결한다. 이해 실패·규칙/선택 실패·피드백 부족·반복 피로를 구분한다. HUMAN_NOT_RUN을 자동 테스트나 AI 검토로 FUN_PASS로 바꾸지 않으며 승인된 독립 구현은 계속한다. 작은 변경은 기존 기록에 짧게 적고 새 재미 보고서·보편 점수·가상 감독을 만들지 않는다.
