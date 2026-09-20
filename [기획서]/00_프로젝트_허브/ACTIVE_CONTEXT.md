@@ -1,5 +1,9 @@
 # 십보강호 활성 컨텍스트
 
+## 현재 작업 · 2026-09-21 무공별 연출 연결
+
+사용자가 카드별 프리셋과 합→승패→후속 동작 및 필요한 연관 작업을 승인했다. 명세는 `docs/10_COMBAT_PRESENTATION_PLAN.md` §5.2, 실제 코드/검증·교정은 기존 `docs/operations/2026-09-12_MOTION_UI_INTEGRATION.md`의9월21일 절이다.43카드 표현 데이터와 확정 사건 기반 연결을 구현했고 pure134/Windows22/정적485/관련 회귀·export50시나리오를 검증했으며 판정/저장/AI/승인 자산은 보호한다. 비검 무기 고유 자세는 중립 fallback으로 명시한다. PR342와4장 final lock 전 Draft/Human·Android·출시 미검증 경계 유지. 이번 승인 단위를 끝낸 뒤 기존 P05/P06 계획으로 이어간다.
+
 ## 현재 구현 · 2026-09-20 P04/P06a
 
 사용자 계속 지시에 따라 새 중복 전수 선택을 차단하고 자유/집중 보상을 유지했다. v1~v4의 이미 저장된 중복 선택·확정 이력은 원래 의미로 복원한다. 행로 기존5종에 실제 상태 기준 효과·상한·반복 단서와 적용 결과를 연결했고36경계/저장 복원을 검증했다. 과거 자원 경계가 없는 저장은 회복량 미확인을 명시하며 수련량은 표시한다. schema/기존 수치/행로 공급/승인 자산은 그대로다. Decision: `docs/decisions/2026-09-20_REWARD_CHOICE_AVAILABILITY.md`; 실행은 기존 `docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md`의9월20일 절. PR342 현재 HEAD CI는 GitHub live metadata가 소유한다. 네 모션 final lock 전 Draft, Human/Android/출시 NOT_RUN 유지. 다음은 P05 승인된 유효 지표 집계(등급 최종 산식은 미정), P06 영구능력 공급 결정 및 사람의 성장 선택 관찰이다.

@@ -115,3 +115,27 @@ f671f1d9 원격33SUCCESS/1FAILURE. 절초 최대 자세·Windows·일반 headles
 - 미검증: 설정의 앱 재실행 간 저장, 실제 음향 장치, Human/Android/실물게임패드/접근성 사용자/출시. 현재 설정은 해당 전투 화면 인스턴스 안에서 유지된다. 이미지4장의 최종 visual lock은 별개로 유지하며 이 작업에서 승인 문자열을 만들지 않았다.
 
 최종 국소 확인: 전투 판넬/접지/모든 공격 프레임 peak/화면 복귀 검사 PASS(frontal-final-audio-2.log), 복기·레이아웃·focus 순서·focus ring·보조 이름 PASS. resize를 의도적으로 수행하는 fixture에서는 변경 전 viewport 좌표와 비교하지 않고 새 viewport의 bounded partition을 검사하며, 크기 불변 경로의 복귀 위치는 처음과0.5px 이내 일치한다. 정리 보조181개 이동·해시 확인, 삭제 대기 총800파일(목록 포함).
+
+
+## 2026-09-21 · 무공별 프리셋과 합 후속 동작 (진행 중)
+
+- 승인: 현재 대화의 “좋아 권장안대로 필요한 연관 작업까지 계속 진행해”. 기준 HEAD c83fba125ddcc8952cf567b5ee8dc5ac85c27d13, main e5ec55e6, Base 최신 main23ecad5a (#883/#885), PR342 Draft. 다른 PR199/200은 운영 변경이며 제품 연출을 흡수하지 않는다.
+- Work Mode BUILD; Skill combat-implementation-handoff/build, combat-ux-and-accessibility/ui-contract, executing-plans. 운영 계약 validator PASS. 기존 합 방향/사용자 참조와 Godot 공식 Tween 순차·병렬·ease·중단 규약 재사용(직전 설계 턴 확인); 새 게임 규칙/외부 제작법 검증으로 확대하지 않는다.
+- 계획/FEASIBLE: 카드 ID→표현 JSON→pure preset/sequence→기존 board/character 소비. 상호 합 두 기록은 동일 합 조건에서 한 번, 무공은 SPECIAL_CLASH 및 실제 HIT/BLOCKED만 순서대로 표시. 합 후 이어지는 타격은 대기 자세 리셋 없이 연결한다. 사거리 실패/미실행 타격은 새 공격으로 만들지 않는다. 기간/이동 폭/정지/곡선은 표현용이며 판정/AI/저장/승인 이미지 bytes를 보존한다.
+- 보호/한계: 원거리/맨손/무기 불명 합은 검 접촉을 강제하지 않는다. 비검 무공의 고유 자세 자산은 아직 없으므로 명시적인 중립 자세 대체이며 고유 모션/최종 자산 완료가 아니다. 새 생성 이미지는 이 작업의 필수가 아니며 기존 미승인 모션4장의 final lock을 대체하지 않는다.
+- 검증 계획: pure pair/ordered facts/원본 불변/43카드 매핑, 실제 Godot 연결/복귀/skip/reduced/fast, 역할 반전·장풍·상쇄·중단/실패와 관련 회귀. WHY는 기술 구분과 합 이후 인과 판독, 반례는 두 번 격돌/없는 추가타/중간 대기 복귀/반복 지연이다. 사람 재미 판단은 HUMAN_NOT_RUN.
+- 최초 RED: verify_card_motion_presets.gd 미구현 choreography 확인1실패. 초기 코드형 추론2오류를 명시형으로 교정, pure16검사 PASS. 최초 board 실행은 정리된 import sidecar 부재로 asset loader 실패하여 PASS가 아니며 editor import 후 재검증한다.
+
+
+### 9월21일 검증·전체 검토 완료
+
+- 구현:43기술 ID를 실제 actor-owned definitions에 대조했다. 카드/무공 family/override를 기존 board·character에 연결하고5-key profile 계약은 보존했다. 확정 무공 SPECIAL_CLASH/HIT/BLOCKED 및 일반 합 mirror만 disposable cue로 변환한다. 실제 engine10무공 결과의 표시 피해 합과 원본 불변을 검사한다.
+- 전체 검토1: fresh-context 독립 검토로 중간skip의 패자/상쇄 위치 잔류와 overkill 표시 피해를 발견했다. 실제 Windows 캡처에서 VS/공개 거리 중첩도 확인했다. 결함별 실패 회귀5건을 `*-review-red.log`에 보존하고, 모든 참여자 원점 저장/실제 HP손실 예산 분배/장식 VS 양보로 교정했다. 독립 probe에서도 앞의2건 GREEN.
+- 전체 검토2: root가 정본·전체 diff·그대로인 resolution/martial pipeline/5-key profile/AI/save 및 실제 consumer·코스트·검증·자산 한계를 재대조했다. 양측 역할/상쇄·unknown contact·누락 자산/미실행 공격·초기/중간 skip·fast/reduced·단독/연타·회복 경로를 확인했다. 신규 확정 P1/P2 없음. 이 승인 단위의 전체 검토2회를 완료하며 이후 결함만 집중 교정한다.
+- 최종 로컬: pure134검사 PASS; Windows GPU22검사 PASS; 신규 pure 포함 headless9개 묶음(actor ultimate 실제10무공/합 alpha/공개 flow/skip/terminal/SFX/합 반동/inline 결과) PASS; 설정별도프로세스 write/read PASS; 저장호환/전투checkpoint/획득무공3그룹 PASS; Python static485/실패0 PASS. native 캡처 clash-result.png/follow-through.png를 직접 확인했다. 단독 synthetic choreography 화면이며 실제 플레이 승리/사람 재미 증거로 과장하지 않는다.
+- 초기 실패 구분: 이미지 import 부재·동적형 추론 오류는 교정했다. native test의 최초 복귀 좌표5실패는 planning→resolution 배치 변경 전 좌표와 비교한 fixture 문제로, 실제 resolution 배치를 확정한 뒤 비교하도록 고쳤다. preferences 최초 인자 없는 실행은 실행방법 오류이며 write/read와 격리 경로로 재실행했다. 예전 universal sword/고정 windup fixture는 승인한 카드별 계약/명시적 검 대 검 사실로 교정했다. 원 실패 로그를 삭제하지 않는다.
+- 도구/실행: exact project.godot와 Hera editor18016/4.7.1·UI guidance 확인. 다른 프로젝트 editor는 사용하지 않았다. Hera diagnostics의 마지막 공용 로그는 의도한 RED 실행을 가리켜 clean으로 표시하지 않는다. 성공 증거는 격리 APPDATA 실행의 원본 로그와 실제 GPU PNG다. editor import/export의 기존45 ObjectDB·22resource 종료 진단은 남아 있어 무진단 종료라고 보고하지 않는다.
+- 사용자 검증용 export: `card-motion-20260921/windows-test-build/TenPacesHiddenMoves.exe`와 같은 폴더 PCK. export exit0 및 그 실제 binary의 TEN_MANUAL_EXPORTED_PRODUCT_VALIDATION_OK/50시나리오 PASS. 원격 exact HEAD는 GitHub live metadata로 별도 확인한다. 기존4장 final lock 전 PR342 Draft와 비검 고유 자세/사람 재미/Android/출시 미검증은 유지한다.
+- 증거 root: `C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/card-motion-20260921`. 기존 월간 작업일지 동일 파일에9월21일 추가,13쪽(요약2+보존11); 문서 발행은 runtime 검증과 별개다.
+
+정리: 이번 실행이 만든 미추적 import/uid200개만 paired source·절대경로·SHA-256을 확인해 `C:/Users/user/Documents/삭제대기/십보강호_모션통합_20260912_064614/card-motion-20260921`로 이동했다. restore-manifest.json에 원위치와 해시가 있으며 사용자가 직접 삭제한다. 원본 자산과 다른 editor/작업 폴더는 삭제하지 않았다.

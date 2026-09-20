@@ -2,6 +2,8 @@ class_name CombatBoardPreview
 extends Control
 
 const CombatPresentationProfileScript := preload("res://src/ui/combat_presentation_profile.gd")
+const MotionPresets := preload("res://src/ui/combat_motion_presets.gd")
+const MotionSequence := preload("res://src/ui/combat_motion_sequence.gd")
 
 const CONTRACT_PATH := "res://data/combat/combat_board_poc.json"
 const BACKGROUND_SCENE := preload("res://scenes/combat/battle_background.tscn")
@@ -62,6 +64,8 @@ func _start_impact_camera(event: Dictionary, kind: String) -> void:
 	else:
 		return
 	_impact_camera_duration = 0.18 if kind in ["clash", "ultimate"] else 0.12
+	if kind != "clash":
+		_impact_camera_strength *= float(_motion_preset_for_event(event).get("camera", 1.0))
 	_impact_camera_direction = -1.0 if str(event.get("actor", "player")) == "enemy" else 1.0
 
 func _process(delta: float) -> void:
@@ -445,6 +449,7 @@ func _build_structure() -> void:
 	action_reveal_overlay.name = "CombatActionRevealOverlay"
 	action_reveal_overlay.z_index = 30
 	add_child(action_reveal_overlay)
+	action_reveal_overlay.reserve_center_for_distance()
 
 	fast_replay_button = Button.new()
 	fast_replay_button.name = "FastReplayButton"
@@ -1261,7 +1266,9 @@ func _present_timing_duel(events_value: Array, timing: int, phase: String) -> vo
 		action_reveal_overlay.show_timing(timing, phase, events_value, _reduced_motion)
 	set_meta("action_reveal_snapshot", action_reveal_overlay.get_snapshot() if is_instance_valid(action_reveal_overlay) else {})
 	var presented_event_count := 0
-	for value in events_value:
+	var motion_cues := MotionSequence.compile(events_value)
+	set_meta("motion_cues", motion_cues.duplicate(true))
+	for value in motion_cues:
 		if typeof(value) != TYPE_DICTIONARY:
 			continue
 		var event: Dictionary = value
@@ -1271,6 +1278,7 @@ func _present_timing_duel(events_value: Array, timing: int, phase: String) -> vo
 		await _present_resolved_event_feedback(event)
 		if _presentation_skip_requested:
 			break
+	_reset_character_choreography()
 	if presented_event_count == 0 and not _presentation_skip_requested:
 		var duration := _timing_reveal_duration(events_value)
 		if _fast_replay:
@@ -1444,7 +1452,9 @@ func _present_authoritative_events(events_value: Array, timing: int) -> void:
 	_presentation_feedback_visibility_history.clear()
 	_clear_presentation_feedback_visuals()
 	var summary := "판정 완료"
-	for value in events_value:
+	var motion_cues := MotionSequence.compile(events_value)
+	set_meta("motion_cues", motion_cues.duplicate(true))
+	for value in motion_cues:
 		if typeof(value) != TYPE_DICTIONARY:
 			continue
 		var event: Dictionary = value
@@ -1454,6 +1464,7 @@ func _present_authoritative_events(events_value: Array, timing: int) -> void:
 		await _present_resolved_event_feedback(event)
 		if _presentation_skip_requested:
 			break
+	_reset_character_choreography()
 	presentation_label.text = summary
 	presentation_label.visible = not _presentation_skip_requested
 	presentation_label.modulate = Color.WHITE if _reduced_motion else Color(1.0, 0.88, 0.50, 1.0)
@@ -1484,8 +1495,8 @@ func _event_presentation_duration(event: Dictionary) -> float:
 		return 0.90
 	if str(profile.get("kind", "")) == "ultimate":
 		return 1.05
-	if int(event.get("damage", 0)) > 0:
-		return 0.48
+	if str(profile.get("motion", "")) == "attack" or event.get("motion_cue", "") == "strike":
+		return float(_motion_preset_for_event(event).get("duration", 0.48))
 	return 0.30
 
 func _effective_event_presentation_duration(event: Dictionary) -> float:
@@ -1502,7 +1513,7 @@ func _feedback_windup_duration(event: Dictionary, total_duration: float) -> floa
 	var motion := str(_presentation_profile_for_event(event).get("motion", ""))
 	if motion == "clash":
 		return total_duration * 0.38
-	return total_duration * 0.42 if motion in ["attack", "ultimate"] else 0.0
+	return total_duration * float(_motion_preset_for_event(event).get("windup", 0.42)) if motion in ["attack", "ultimate"] or event.get("motion_cue", "") == "strike" else 0.0
 
 func _play_character_action_motion(event: Dictionary, duration: float = -1.0) -> void:
 	if _reduced_motion:
@@ -1512,19 +1523,35 @@ func _play_character_action_motion(event: Dictionary, duration: float = -1.0) ->
 	if motion == "clash":
 		_play_clash_motion(motion_duration, event)
 		return
-	if motion not in ["attack", "ultimate"]:
+	if motion not in ["attack", "ultimate"] and event.get("motion_cue", "") != "strike":
 		return
 	var actor := str(event.get("actor", ""))
-	if actor == "player" and is_instance_valid(player_character):
-		if motion == "ultimate":
-			player_character.play_ultimate_motion(motion_duration)
-		else:
-			player_character.play_attack_motion(motion_duration)
-	elif actor == "enemy" and is_instance_valid(enemy_character):
-		if motion == "ultimate":
-			enemy_character.play_ultimate_motion(motion_duration)
-		else:
-			enemy_character.play_attack_motion(motion_duration)
+	var character := player_character if actor == "player" else enemy_character
+	if actor in ["player", "enemy"] and is_instance_valid(character):
+		var preset := _motion_preset_for_event(event)
+		preset["motion"] = "ultimate" if motion == "ultimate" else "attack"
+		character.play_preset_motion(preset, motion_duration, bool(event.get("motion_continue", false)))
+
+func _motion_preset_for_event(event: Dictionary) -> Dictionary:
+	var actor := str(event.get("actor", "player"))
+	var card_id := str(event.get("card_id", ""))
+	if resolution_engine == null or resolution_engine.get_actor_card_definition(card_id, actor).is_empty():
+		return MotionPresets.for_card("")
+	return MotionPresets.for_card(card_id)
+
+func _clash_has_physical_contact(event: Dictionary) -> bool:
+	if str(_motion_preset_for_event(event).get("contact", "none")) != "metal":
+		return false
+	var other_id := str(event.get("opponent_card_id", ""))
+	if other_id.is_empty() or str(MotionPresets.for_card(other_id).get("pose", "neutral")) != "sword" or str(_motion_preset_for_event(event).get("pose", "neutral")) != "sword":
+		return false
+	# Only explicit current action coordinates prove proximity. Bundle-start tiles may be stale.
+	return event.has("actor_tile_after_action") and event.has("target_tile_at_action") and absi(int(event.actor_tile_after_action) - int(event.target_tile_at_action)) <= 2
+
+func _reset_character_choreography() -> void:
+	for character in [player_character, enemy_character]:
+		if is_instance_valid(character):
+			character.reset_choreography()
 
 func _play_clash_motion(duration: float, event: Dictionary = {}) -> void:
 	if not is_instance_valid(player_character) or not is_instance_valid(enemy_character):
@@ -1544,8 +1571,10 @@ func _play_clash_motion(duration: float, event: Dictionary = {}) -> void:
 	var actor := str(event.get("actor", "player"))
 	var winner := actor if outcome == "clash_win" else ("enemy" if actor == "player" else "player")
 	var decided := outcome in ["clash_win", "clash_loss"]
-	player_character.play_clash_motion(clash_anchor, duration, ("win" if winner == "player" else "loss") if decided else "draw")
-	enemy_character.play_clash_motion(clash_anchor, duration, ("win" if winner == "enemy" else "loss") if decided else "draw")
+	var contact := _clash_has_physical_contact(event)
+	var continues := bool(event.get("motion_continue", false))
+	player_character.play_clash_motion(clash_anchor, duration, ("win" if winner == "player" else "loss") if decided else "draw", continues and str(event.get("actor", "")) == "player", contact)
+	enemy_character.play_clash_motion(clash_anchor, duration, ("win" if winner == "enemy" else "loss") if decided else "draw", continues and str(event.get("actor", "")) == "enemy", contact)
 
 func _play_character_impact_motion(event: Dictionary, duration: float) -> void:
 	if _reduced_motion:
@@ -1616,8 +1645,12 @@ func _presentation_summary_for_event(event: Dictionary, fallback: String) -> Str
 	if outcome == "clash_draw":
 		return "합 상쇄 · 양측 피해 없음"
 	if outcome == "clash_win":
+		if event.get("motion_cue", "") == "clash":
+			return "합 승리 · 다음 동작 연결" if bool(event.get("motion_continue", false)) else "합 승리"
 		return "합 승리 · 차이 피해 %d" % int(event.get("damage", 0))
 	if outcome == "clash_loss":
+		if event.get("motion_cue", "") == "clash":
+			return "합 패배 · 다음 동작 유지" if bool(event.get("motion_continue", false)) else "합 패배"
 		return "합 패배 · 차이 피해 %d" % int(event.get("damage", 0))
 	if outcome == "interrupted":
 		return "중단 · 이 수 행동 취소"
@@ -1669,7 +1702,7 @@ func _show_presentation_impact(event: Dictionary, kind: String, recovery_duratio
 	_start_impact_camera(event, kind)
 	_play_character_impact_motion(event, maxf(0.18, recovery_duration))
 	if _impact_camera_strength > 0.0:
-		var hold_duration := 0.065 if kind in ["clash", "ultimate"] else 0.035
+		var hold_duration := 0.065 if kind == "clash" else float(_motion_preset_for_event(event).get("hit_stop", 0.035))
 		for actor in [player_character, enemy_character]:
 			if is_instance_valid(actor):
 				actor.hold_impact_pose(hold_duration)
@@ -1764,6 +1797,9 @@ func _apply_attack_clash_vfx_matte() -> void:
 	presentation_vfx.material = _legacy_vfx_material
 
 func _show_feedback_vfx(event: Dictionary, kind: String, recovery_duration: float = 0.0) -> void:
+	if kind == "clash" and not _clash_has_physical_contact(event):
+		_clear_presentation_vfx()
+		return
 	if kind == "ultimate":
 		_show_ultimate_vfx(event, recovery_duration)
 		return
@@ -1926,6 +1962,7 @@ func _toggle_fast_replay() -> void:
 
 func _skip_presentation() -> void:
 	_presentation_skip_requested = true
+	_reset_character_choreography()
 	_clear_presentation_feedback_visuals()
 	if is_instance_valid(action_reveal_overlay):
 		action_reveal_overlay.hide_reveal()
@@ -1934,6 +1971,7 @@ func _skip_presentation() -> void:
 	set_meta("presentation_skipped", true)
 
 func restart_combat() -> void:
+	_reset_character_choreography()
 	_presentation_skip_requested = false
 	_presentation_events.clear()
 	_presentation_state_history = PackedStringArray(["planning"])
@@ -2134,7 +2172,8 @@ func _play_event_sfx(event: Dictionary) -> void:
 		return
 	var profile := _presentation_profile_for_event(event)
 	if str(profile.get("kind", "")) == "clash":
-		_play_procedural_sfx("metal_clash")
+		if _clash_has_physical_contact(event):
+			_play_procedural_sfx("metal_clash")
 	elif outcome == "interrupted":
 		_play_procedural_sfx("interrupt")
 	elif str(event.get("defense_outcome", "")) == "evade" or outcome in ["evade", "evaded"]:

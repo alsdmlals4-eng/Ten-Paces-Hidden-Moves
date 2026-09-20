@@ -165,6 +165,13 @@ func _verify_actual_routes_and_board_consumers() -> void:
 		if not entry.is_empty():
 			var event: Dictionary = entry.get("event", {})
 			var definition: Dictionary = entry.get("definition", {})
+			var original_event := event.duplicate(true)
+			var cues: Array = load("res://src/ui/combat_motion_sequence.gd").compile([event])
+			var shown_damage := 0
+			for cue in cues:
+				shown_damage += int(cue.get("damage",0))
+			_expect(shown_damage == int(event.get("damage",0)), "Actual resolved route preserves total HP loss: "+str(manual_id))
+			_expect(event == original_event, "Actual event remains unchanged after choreography.")
 			print("ACTUAL_PRESENTATION_ROUTE manual=%s outcome=%s facts=%s profile=%s" % [entry.get("manual", ""), event.get("outcome", ""), JSON.stringify(_fact_presence(event)), JSON.stringify(_profile(definition, event))])
 
 	var actual_attack: Dictionary = actual_by_manual.get("hebei_peng_five_tigers_saber", {})
@@ -228,10 +235,10 @@ func _verify_actual_routes_and_board_consumers() -> void:
 	var profile: Dictionary = board.call("_presentation_profile_for_event", event)
 	_expect(str(profile.get("kind", "")) == "ultimate", "Board uses actor-owned definition for actual Hebei event.")
 	_expect(is_equal_approx(board._event_presentation_duration(event), 1.05), "Successful actor-owned ultimate uses the approved readable 1.05 second duration.")
-	_expect(is_equal_approx(board._feedback_windup_duration(event, 0.70), 0.294), "Successful actor-owned ultimate retains the existing windup proportion.")
+	_expect(is_equal_approx(board._feedback_windup_duration(event, 0.70), 0.28), "Saber preset owns its 0.40 windup proportion; timing remains presentation-only.")
 	board._play_character_action_motion(event, 0.50)
 	_expect(str(board.player_character.motion_state) == "ultimate", "Actual eligible ultimate selects ultimate actor motion.")
-	board._show_feedback_vfx({"actor": "player"}, "clash")
+	board._show_feedback_vfx({"actor": "player", "card_id": "basic_quick_attack", "opponent_card_id": "basic_heavy_attack", "actor_tile_after_action": 3, "target_tile_at_action": 4}, "clash")
 	_expect(board.presentation_vfx.material == null, "Approved clash preserves authored white core before ultimate.")
 	board._show_presentation_feedback(event)
 	_expect(board.presentation_vfx.material != null, "Ultimate restores cached legacy matte after alpha clash.")
@@ -261,7 +268,7 @@ func _verify_actual_routes_and_board_consumers() -> void:
 		[{"defense_outcome": "evade", "damage": 0}, "evade"],
 		[{"defense_outcome": "block", "damage": 0}, "block"],
 		[{"outcome": "interrupted", "damage": 0}, "interrupt"],
-		[{"type": "clash", "outcome": "clash_win", "damage": 4}, "metal_clash"],
+		[{"type": "clash", "outcome": "clash_win", "damage": 4, "card_id":"basic_quick_attack", "opponent_card_id":"basic_heavy_attack", "actor_tile_after_action":3, "target_tile_at_action":4}, "metal_clash"],
 	]:
 		var priority_event := _merged(event, priority_case[0])
 		board._play_event_sfx(priority_event)

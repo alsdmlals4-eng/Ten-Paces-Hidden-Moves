@@ -8,7 +8,8 @@
     "TEN-DEC-20260914-ACQUIRED-MANUAL-COMBAT-COMPATIBILITY-01",
     "TEN-DEC-20260914-FREE-TRAINING-GROWTH-V3-01",
     "TEN-DEC-20260920-PERMANENT-PLAYER-GROWTH-V4-01",
-    "TEN-DEC-20260920-REWARD-CHOICE-AVAILABILITY-01"
+    "TEN-DEC-20260920-REWARD-CHOICE-AVAILABILITY-01",
+    "TEN-DEC-20260909-CLASH-STAGING-OUTCOME-01"
   ],
   "approved_paths": [
     "assets/ASSET_MANIFEST.json",
@@ -74,9 +75,12 @@
     "src/run/player_growth_state.gd",
     "src/run/vertical_slice_metrics_combat_resolution_engine.gd",
     "src/ui/starting_stats_panel.gd",
-    "src/run/vertical_slice_result_model.gd"
+    "src/run/vertical_slice_result_model.gd",
+    "data/presentation/combat_motion_presets.json",
+    "src/ui/combat_motion_presets.gd",
+    "src/ui/combat_motion_sequence.gd"
   ],
-  "approval_source": "Current user instruction on 2026-09-12: 앞으로도 옮겨주고 프로젝트 남은 작업 확인 후 진행해. Continuation of previously authorized character motion/UI implementation, integration and verification. This authorizes the bounded working-branch change, not final visual approval of four character sheets. 2026-09-13: user approved recommended plan for independent persistent presentation settings and baseline clarification; see BUILD approval continuation and dated implementation plan. 2026-09-13 latest user explicitly authorizes plan-first autonomous comparable-game implementation loops: optional pause/menu/guide and player-readable scrollable completion history, preserving core and save schema. 2026-09-14: user explicitly approved the recommended remaining-work plan; P01 acquired-manual combat/save binding is authorized. See docs/operations/2026-09-14_ACQUIRED_MANUAL_IMPLEMENTATION.md. 2026-09-20: user approved latest-main reconciliation, P03 starting allocation/permanent growth and first-growth-loop verification with 작업진행해.",
+  "approval_source": "Current user instruction on 2026-09-12: 앞으로도 옮겨주고 프로젝트 남은 작업 확인 후 진행해. Continuation of previously authorized character motion/UI implementation, integration and verification. This authorizes the bounded working-branch change, not final visual approval of four character sheets. 2026-09-13: user approved recommended plan for independent persistent presentation settings and baseline clarification; see BUILD approval continuation and dated implementation plan. 2026-09-13 latest user explicitly authorizes plan-first autonomous comparable-game implementation loops: optional pause/menu/guide and player-readable scrollable completion history, preserving core and save schema. 2026-09-14: user explicitly approved the recommended remaining-work plan; P01 acquired-manual combat/save binding is authorized. See docs/operations/2026-09-14_ACQUIRED_MANUAL_IMPLEMENTATION.md. 2026-09-20: user approved latest-main reconciliation, P03 starting allocation/permanent growth and first-growth-loop verification with 작업진행해. 2026-09-21: user approves proposed per-card choreography and necessary related integration. See presentation plan section5.2 and existing clash direction follow-up.",
   "approval_time": "2026-09-12T06:45:31+09:00",
-  "scope_summary": "Integrate preserved motion/UI work with main ed2104d9; retain variable roster, v1/v2 saves and all47 approved static-art inputs. Review branch only until four character sheets final visual lock. No original asset deletions, no game-rule or save-schema change, no Human/device/release claim. P01 separates immutable starter provenance from earned ownership and validates combat ownership against reconstructed reward history, without a new save schema or reward rule. Subsequent P02/v3 and P03/v4 are explicitly authorized by their listed Decisions; earlier no-schema-change statements describe the earlier presentation/P01 scope only. P03 preserves v1/v2/v3 content identities and adds stats-v4 only for new runs."
+  "scope_summary": "Integrate preserved motion/UI work with main ed2104d9; retain variable roster, v1/v2 saves and all47 approved static-art inputs. Review branch only until four character sheets final visual lock. No original asset deletions, no game-rule or save-schema change, no Human/device/release claim. P01 separates immutable starter provenance from earned ownership and validates combat ownership against reconstructed reward history, without a new save schema or reward rule. Subsequent P02/v3 and P03/v4 are explicitly authorized by their listed Decisions; earlier no-schema-change statements describe the earlier presentation/P01 scope only. P03 preserves v1/v2/v3 content identities and adds stats-v4 only for new runs. Card presets and disposable resolved-event choreography are presentation-only. Preserve domain/save/AI/approved-art bytes and final-art gate."
 }

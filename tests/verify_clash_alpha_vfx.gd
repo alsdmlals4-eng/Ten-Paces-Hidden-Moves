@@ -12,7 +12,7 @@ func _run() -> void:
 	board._set_resolution_surface_visible(false)
 	await process_frame
 	var original_children: int = board.get_child_count()
-	board._show_feedback_vfx({"actor": "player"}, "clash")
+	board._show_feedback_vfx({"actor": "player", "card_id": "basic_quick_attack", "opponent_card_id": "basic_heavy_attack", "actor_tile_after_action": 3, "target_tile_at_action": 4}, "clash")
 	var effect = board.presentation_vfx
 	var valid: bool = effect.visible and effect.material == null
 	valid = valid and effect.texture.resource_path == "res://assets/vfx/clash_sparks_ink_gold_v2.png"
@@ -29,7 +29,7 @@ func _run() -> void:
 		quit(1)
 		return
 	var material_before = effect.material
-	board._show_feedback_vfx({"actor": "player"}, "clash")
+	board._show_feedback_vfx({"actor": "player", "card_id": "basic_quick_attack", "opponent_card_id": "basic_heavy_attack", "actor_tile_after_action": 3, "target_tile_at_action": 4}, "clash")
 	board._show_feedback_vfx({"actor": "player"}, "attack")
 	if effect.material != material_before or board.get_child_count() != original_children:
 		push_error("REPEATED_EFFECT_REBUILDS_MATERIAL_OR_SCENE")

@@ -36,6 +36,53 @@ var _pose_elapsed := 0.0
 var _pose_duration := 1.0
 var _pose_frames: Dictionary = {}
 var _impact_hold_remaining := 0.0
+var _preset_pose_control := false
+var _has_chain_origin := false
+var _chain_origin := Vector2.ZERO
+
+func reset_choreography() -> void:
+    _stop_motion_tween()
+    set_idle()
+
+func play_preset_motion(preset: Dictionary, duration: float, continue_motion: bool = false) -> void:
+    var linked_offset := visual_offset
+    var linked := motion_phase == "link"
+    _begin_motion(str(preset.get("motion", "attack")), "windup", linked)
+    _preset_pose_control = true
+    if linked:
+        visual_offset = linked_offset
+    set_meta("motion_preset", preset.duplicate(true))
+    var use_sword := str(preset.get("pose", "neutral")) == "sword"
+    var travel := float(preset.get("travel", 0.0)) * size.x * float(facing)
+    var windup := clampf(float(preset.get("windup", 0.4)), 0.15, 0.65)
+    var safe_duration := maxf(0.04, duration)
+    var tween := create_tween()
+    _motion_tween = tween
+    var curve := str(preset.get("curve", "sine"))
+    tween.set_trans(Tween.TRANS_QUINT if curve == "quint" else (Tween.TRANS_QUAD if curve == "quad" else Tween.TRANS_SINE))
+    tween.set_ease(Tween.EASE_IN)
+    if not linked:
+        _set_pose_frame(1 if use_sword else 0)
+    tween.tween_property(self, "visual_offset", Vector2(travel, 0), safe_duration * windup)
+    tween.tween_callback(func():
+        _set_motion_phase("active")
+        _set_pose_frame(3 if use_sword else 0)
+    )
+    tween.tween_interval(safe_duration * 0.18)
+    tween.tween_callback(func():
+        _set_motion_phase("recovery")
+        _set_pose_frame(5 if use_sword else 0)
+    )
+    tween.set_ease(Tween.EASE_OUT)
+    tween.tween_property(self, "visual_offset", Vector2(travel * 0.35, 0) if continue_motion else Vector2.ZERO, safe_duration * (1.0 - windup - 0.18))
+    if _has_chain_origin and not continue_motion:
+        tween.parallel().tween_property(self, "position", _chain_origin, safe_duration * (1.0 - windup - 0.18))
+    tween.tween_callback(func():
+        if continue_motion:
+            _set_motion_phase("link")
+        else:
+            set_idle()
+    )
 
 func hold_impact_pose(duration: float) -> void:
     if motion_state == "idle" or not is_instance_valid(_motion_tween):
@@ -232,7 +279,7 @@ func play_ultimate_motion(duration: float = 0.42) -> void:
         duration
     )
 
-func play_clash_motion(clash_anchor: Vector2, duration: float = 0.90, result_role: String = "draw") -> void:
+func play_clash_motion(clash_anchor: Vector2, duration: float = 0.90, result_role: String = "draw", continue_motion: bool = false, physical_contact: bool = true) -> void:
     _begin_motion("clash", "windup")
     set_meta("clash_role", result_role)
     var start_position := position
@@ -240,6 +287,12 @@ func play_clash_motion(clash_anchor: Vector2, duration: float = 0.90, result_rol
     var contact_foot_x := clash_anchor.x - float(facing) * size.x * 0.5
     var horizontal_travel := contact_foot_x - get_foot_anchor_global().x
     var target_position := Vector2(start_position.x + horizontal_travel, start_position.y)
+    if not physical_contact:
+        target_position = start_position
+        _set_pose_frame(0)
+    # Every transient clash participant needs a cancel origin, including the loser/draw.
+    _chain_origin = start_position
+    _has_chain_origin = true
     set_meta("last_clash_anchor", clash_anchor)
     set_meta("last_clash_target_position", target_position)
     var tween := create_tween()
@@ -257,7 +310,8 @@ func play_clash_motion(clash_anchor: Vector2, duration: float = 0.90, result_rol
     tween.tween_interval(contact_hold_duration)
     tween.tween_callback(func():
         _set_motion_phase("clash_" + result_role)
-        _set_pose_frame(0 if result_role == "loss" else 3, true)
+        if physical_contact:
+            _set_pose_frame(0 if result_role == "loss" else 3, true)
     )
     # Both regain space without altering logical tiles; the loser yields earlier.
     var yield_ratio := 0.62 if result_role == "loss" else (0.18 if result_role == "win" else 0.38)
@@ -265,6 +319,10 @@ func play_clash_motion(clash_anchor: Vector2, duration: float = 0.90, result_rol
     tween.set_ease(Tween.EASE_OUT)
     tween.tween_property(self, "position", target_position.lerp(start_position, yield_ratio), recoil_duration)
     tween.parallel().tween_property(self, "visual_scale", 0.96 if result_role == "loss" else 1.025, recoil_duration)
+    if continue_motion:
+        tween.tween_interval(return_duration)
+        tween.tween_callback(func(): _set_motion_phase("link"))
+        return
     tween.tween_callback(func(): _set_motion_phase("recovery"))
     tween.set_ease(Tween.EASE_IN_OUT)
     tween.tween_property(self, "position", start_position, return_duration)
@@ -315,13 +373,16 @@ func _play_windup_motion(
     tween.parallel().tween_property(self, "visual_scale", 1.0, recovery_duration)
     tween.tween_callback(set_idle)
 
-func _begin_motion(next_state: String, next_phase: String) -> void:
+func _begin_motion(next_state: String, next_phase: String, preserve_pose: bool = false) -> void:
     _stop_motion_tween()
+    _preset_pose_control = false
     _motion_sequence_id += 1
     _pose_elapsed = 0.0
     motion_state = next_state
     var reaction_indices := {"block": 0, "hit": 1, "evade": 2, "clash": 3}
-    if reaction_indices.has(next_state):
+    if preserve_pose:
+        pass
+    elif reaction_indices.has(next_state):
         _set_pose_frame(reaction_indices[next_state], true)
     else:
         _set_pose_frame(0)
@@ -358,6 +419,10 @@ func _stop_motion_tween() -> void:
     _motion_tween = null
 
 func set_idle() -> void:
+    if _has_chain_origin:
+        position = _chain_origin
+        _has_chain_origin = false
+    _preset_pose_control = false
     _impact_hold_remaining = 0.0
     _motion_tween = null
     motion_state = "idle"
@@ -392,7 +457,7 @@ func _process(_delta: float) -> void:
             _impact_hold_remaining -= maxf(0.0, _delta)
         return
     _pose_elapsed += _delta
-    if motion_state in ["attack", "ultimate"]:
+    if motion_state in ["attack", "ultimate"] and not _preset_pose_control:
         _set_pose_frame(POSES.attack_frame(role, _pose_elapsed / _pose_duration))
     queue_redraw()
 

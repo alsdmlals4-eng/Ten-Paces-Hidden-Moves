@@ -57,3 +57,8 @@ User “작업진행해” approves latest-main reconciliation, the P03 starting
 ## 2026-09-20 P04/P06a continuation
 
 User “좋아 작업 계속 진행해” continues the recommended remaining specification. TEN-DEC-20260920-REWARD-CHOICE-AVAILABILITY-01 adopts unavailable duplicate transfers for new commands, preserving historical pending/history and all v1-v4 identities. P06a connects existing five route effects to state-specific preview/result views; no new rewards, permanent-stat supply, schema, core, assets or final visual lock. Existing source/readback/verification boundaries remain.
+
+
+## 2026-09-21 card choreography continuation
+
+User approved the proposed per-card presets and related work. Scope:43 current card mappings, paired-clash deduplication, factual special-clash/hit sequencing, continuous pose/recovery/cancellation, distance-readout overlap correction, tests/CI and existing evidence owners. Presentation numbers only; no new combat/save schema, plugins/global settings or implicit final-art approval. Plan: docs/10_COMBAT_PRESENTATION_PLAN.md section5.2.

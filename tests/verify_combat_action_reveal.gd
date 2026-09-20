@@ -107,7 +107,7 @@ func _verify_public_feedback_surface() -> void:
 	if attack_vfx != null:
 		_expect(attack_vfx.atlas.resource_path == ATTACK_CLASH_VFX_PATH, "Normal attack feedback must consume the final-locked attack/clash VFX atlas.")
 		_expect(attack_vfx.region.position.y == 0.0, "Normal attack feedback must consume the upper VFX band.")
-	board._show_feedback_vfx({}, "clash")
+	board._show_feedback_vfx({"actor": "player", "card_id": "basic_quick_attack", "opponent_card_id": "basic_heavy_attack", "actor_tile_after_action": 3, "target_tile_at_action": 4}, "clash")
 	var clash_vfx := board.presentation_vfx.texture
 	_expect(board.presentation_vfx.visible and clash_vfx != null, "Resolved clash must render the approved alpha sparks.")
 	if clash_vfx != null:
@@ -150,8 +150,11 @@ func _verify_feedback_choreography(board: CombatBoardPreview) -> void:
 
 	var clash_event := {
 		"type": "clash",
-		"card_id": "basic_guard",
-		"card_name": "막기",
+		"card_id": "basic_quick_attack",
+		"card_name": "속공",
+		"opponent_card_id": "basic_heavy_attack",
+		"actor_tile_after_action": 3,
+		"target_tile_at_action": 4,
 		"actor": "enemy",
 		"damage": 0,
 		"outcome": "clash_draw"

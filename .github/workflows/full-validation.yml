@@ -187,6 +187,10 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_combat_board.gd
       - name: Verify inline combat results
         run: godot --headless --path . --script res://tests/verify_inline_combat_results.gd
+      - name: Validate card motion presets
+        run: godot --headless --path . --script res://tests/verify_card_motion_presets.gd
+      - name: Validate card motion runtime
+        run: godot --headless --path . --script res://tests/verify_card_motion_runtime.gd
       - name: Verify response rules
         run: godot --headless --path . --script res://tests/verify_response_rules.gd
       - name: Verify ultimate interruption engagement

@@ -28,6 +28,11 @@ func _ready() -> void:
 	resized.connect(_layout_cards)
 	hide_reveal()
 
+func reserve_center_for_distance() -> void:
+	# The board's public distance occupies the center gap; decorative VS yields to it.
+	if is_instance_valid(_versus):
+		_versus.visible = false
+
 func show_timing(timing: int, phase: String, events_value: Array, reduced_motion: bool) -> void:
 	var player_events := _actor_events(events_value, "player")
 	var enemy_events := _actor_events(events_value, "enemy")

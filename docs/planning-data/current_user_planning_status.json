@@ -9,7 +9,7 @@
   "pr_integration_authority": "TEN-DEC-20260908-STANDING-PR-INTEGRATION-01",
   "pr_integration_policy": "RELATED_EXISTING_PRS_REVIEW_ABSORB_CORRECT_VERIFY_MERGE_WITHOUT_NAMED_REAPPROVAL",
   "project": "TEN_PACES",
-  "updated_date": "2026-09-14",
+  "updated_date": "2026-09-21",
   "remaining_implementation_spec": {
     "owner": "docs/implementation/REMAINING_GAME_IMPLEMENTATION_SPEC.md",
     "status": "P01_P02_P03_P04_P06A_LOCAL_RUNTIME_VERIFIED_CI_LIVE",
@@ -740,5 +740,14 @@
     "fun_observation": "HUMAN_NOT_RUN_MACHINE_CONSUMER_AND_NATIVE_INPUT_VERIFIED",
     "next_package": "P04 duplicate transfer decision and P06 route supply clarification; first growth Human observation",
     "remote_evidence_owner": "GitHub PR342 exact current HEAD checks"
+  },
+  "card_motion_presets": {
+    "owner": "docs/10_COMBAT_PRESENTATION_PLAN.md",
+    "execution": "docs/operations/2026-09-12_MOTION_UI_INTEGRATION.md",
+    "status": "IMPLEMENTED_LOCAL_AND_WINDOWS_VERIFIED_REMOTE_CI_LIVE",
+    "data": "data/presentation/combat_motion_presets.json",
+    "card_count": 43,
+    "non_sword_pose": "NEUTRAL_FALLBACK_ASSET_WORK_PENDING",
+    "human_fun": "NOT_RUN"
   }
 }
