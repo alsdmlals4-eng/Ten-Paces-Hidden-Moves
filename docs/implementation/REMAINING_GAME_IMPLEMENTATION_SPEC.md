@@ -57,7 +57,7 @@ WHAT: 아래 P00~P14의 작은 인수 단위로 연결하고 각 완료를 정�
 | P00 | 현재 문서·미완료 상태·통합 정합성 | P0 | 없음 | FEASIBLE, 문서 교정 |
 | P01 | 전수받은 모든 무공의 실제 전투 연결 | P0 | P00 | RUNTIME_VERIFIED(로컬 자동), 원격 CI 별도; 아래 현재 기록 참조 |
 | P02 | 자유 수련 소비·저장·해금 연결 | P0 | P01, 저장 의미 결정 | RUNTIME_VERIFIED(로컬 자동), v3 Decision/실행 owner: `docs/operations/2026-09-14_TRAINING_ALLOCATION_IMPLEMENTATION.md`; 원격·Human 별도 |
-| P03 | 시작 능력 분배·성장 영구 능력 | P0 | P02의 버전 계약 | PARTIAL, 승인 수치의 실제 consumer 정합성 |
+| P03 | 시작 능력 분배·성장 영구 능력 | P0 | P02의 버전 계약 | PR342 WORKING_BRANCH 구현·로컬 native 검증; v4 Decision과 기존 수련 실행 기록9월20일 절 참조, 원격·Human 별도 |
 | P04 | 중복 전수 보상 마무리 | P1 | P01/P02 | PARTIAL, 보상 의미 Decision 필요 |
 | P05 | 등급 유효 입력·산식·표시 | P1 | P12 기초 측정 | PARTIAL, 집계는 승인 계약; 최종 산식은 후보 |
 | P06 | 행로 사건·정탐·영구 능력 보상 | P1 | P02/P03 | PARTIAL, 36선택 공급량·콘텐츠 결정 필요 |
@@ -118,6 +118,18 @@ WHAT: 아래 P00~P14의 작은 인수 단위로 연결하고 각 완료를 정�
 **기존 경로:** `vertical_slice_shell.gd` setup, `vertical_slice_combat_bridge.gd`, `martial_manual_registry.gd`, `combat_resolution_engine_ten_manuals.gd`, 두 checkpoint codec.
 **인수:** 시작합20·분배6정확, 잘못된키/음수/미소진 거부; 3→8 한 번/여러번 결과동일; 주/보조 매핑10권 전수대조; 조건미달 기술만 잠김·수련은 유지; 영구 충족 후 임시감소로 재잠금 안 됨; 현재코어 공식·상대능력 중복가산0. 새 `tests/verify_player_growth_flow.gd` + 기존 registry/codec 회귀.
 **준비한 결정:** 지급 이벤트 순서는 시작분배→시작4권보너스→회차취득/성장→행로능력→전투임시효과. 충돌하는 effect를 실제엔진에서 발견하면 정본과 함께 CANON_CONFLICT로 승격한다.
+
+### P03 실행 계획 · 2026-09-20
+
+사용자 승인: 앞서 제시한 최신 main 정합성 → P03 → 첫 성장 구간 검증에 대해 “작업진행해”. 기준 제품 a07d85fe, main e5ec55e6, reconciliation f6bdebb7. 기존 계약 실행이며 새 재미 점수·게임 코어·자산 교체를 추가하지 않는다.
+
+계획: (1) 기존 v1/v2/v3 저장 의미와 실제 능력 소비처를 fixture로 보존 (2) 분배/짝수성 보너스/기술 조건 불일치 RED (3) 순수 성장 계산 + 새 여정의 명시적 능력 ruleset/저장 버전 + setup/bridge/codec 연결 (4) 배분·수련·전수·저장/재도전·임시효과 경계 GREEN (5) 실제 첫 성장 구간의 화면/입력·자동 검증과 사람 재미 미실시 구분 (6) 동일 후보 전체 검토2회, 원격 exact-head 검사, 기존 모션4장 final lock 경계 유지.
+
+Ruling: P02의 v3에는 이미 영구 저장이 있으므로 P03 능력 의미를 조용히 덮어쓰지 않는다. 새 여정은 stats-v4로 구분하고 v1/v2/v3는 당시 능력·원문 identity를 유지한다. 수련 ledger/보유 목록에서 짝수성 지급을 순수 재구성하여 로드마다 가산하는 별도 mutable 보너스 원장을 만들지 않는다. P06 행로 영구능력은 이번 범위에 포함하지 않는다.
+
+재미 가설: 시작 배분과 성수 상승이 사용할 수 있는 기술과 다음 전투 선택을 바꾼다. 반례: 화면 능력과 실제 해금 불일치, 수련해도 선택 변화 없음, 원인 설명 불가. 기계는 수치/해금/저장 일치·실제 입력을 검사하고 사람의 선택 이유/재미는 HUMAN_NOT_RUN으로 남긴다.
+
+CURRENT_SOURCE_RELEVANCE_CHECK: 명세 §20의 성장 선택/원인학습/저장복구 비교를 같은 판단 범위에서 재사용한다. FEASIBLE: 기존 run/session/codec/registry, 승인 Godot 4.7.1 및 native 검증 경로 사용. 공급량·등급·온라인·이미지 생성은 별도 범위다. 확인된 미구현 연결을 우선 교정하고 새로운 게임 사례 수를 채우지 않는다.
 
 ## 8. P04 — 중복 전수 보상
 

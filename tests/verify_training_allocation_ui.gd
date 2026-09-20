@@ -31,7 +31,7 @@ func _run() -> void:
     check(shell.start_new_run(), "title starts new run")
     check(shell.run_state.is_growth_run(), "title uses new growth contract")
     var ids: Array = load("res://src/run/vertical_slice_starter_manual_catalog.gd").STARTER_MANUAL_IDS.slice(0,4)
-    shell._setup_selected_manual_ids.assign(ids)
+    for id in ids: check(shell.toggle_setup_manual(id), "select actual starter " + id)
     check(shell.advance_noncombat() and shell.advance_noncombat() and shell.advance_noncombat(), "first combat")
     check(shell.run_state.mark_combat_finished({"outcome":"win","player_health":30,"enemy_health":0,"player_resources":shell.run_state.get_player_run_resources()}), "synthetic accounting terminal")
     check(shell.run_state.advance(), "result")
@@ -124,6 +124,9 @@ func _run() -> void:
             for button in dock.find_children("*","Button",true,false):
                 if button.is_visible_in_tree() and button.get_meta("action_id","") == "basic_guard":
                     button.grab_focus(); await key(KEY_ENTER); break
+        var committed_boundaries: Array = []
+        bridge.stable_checkpoint_changed.connect(func(dto: Dictionary):
+            if dto.phase in ["BUNDLE_COMMITTED","BUNDLE_RESOLVED"]: committed_boundaries.append(dto.duplicate(true)))
         var count: int = bridge.get_meta("resolution_count",0)
         bridge.combat_progress_button._button.grab_focus()
         await key(KEY_ENTER)
@@ -132,6 +135,13 @@ func _run() -> void:
         while bridge._presentation_state not in ["next_bundle_ready","terminal_result_ready"] and Time.get_ticks_msec()<deadline: await process_frame
         check(bridge._presentation_state in ["next_bundle_ready","terminal_result_ready"], "new technique presentation finishes")
         check(load("res://src/run/run_checkpoint_codec.gd").new().validate_payload(shell.run_state.export_snapshot(),bridge.get_last_stable_checkpoint()).ok, "grown combat checkpoint remains valid")
+        check(committed_boundaries.size() == 2,"capture actual committed and resolved boundaries before next planning")
+        for boundary in committed_boundaries:
+            check(load("res://src/run/combat_checkpoint_codec.gd").new().validate(boundary).ok,"real boundary validates " + boundary.phase)
+            for field in ["state","state_before"]:
+                var forged: Dictionary = boundary.duplicate(true)
+                forged[field].player.stats.external += 1
+                check(not load("res://src/run/combat_checkpoint_codec.gd").new().validate(forged).ok,"checkpoint rejects forged " + boundary.phase + " " + field + " permanent stats")
     shell.queue_free()
     await process_frame
     print("TRAINING_UI checks=%d failures=%d" % [checks,failures.size()])

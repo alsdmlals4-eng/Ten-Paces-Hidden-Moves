@@ -139,6 +139,13 @@ func _refresh() -> void:
         status_label.text = "현재는 수련할 수 없습니다. 닫은 뒤 진행 상태를 확인하세요."
     else:
         pool_label.text = "자유 수련 %d → 적용 후 %d" % [options.pool_before,options.pool_after]
+        if options.has("stat_growth"):
+            var growth = preload("res://src/run/player_growth_state.gd").new()
+            var changes := PackedStringArray()
+            for key in growth.KEYS:
+                if options.stat_growth.before[key] != options.stat_growth.after[key]: changes.append("%s %d→%d" % [growth.rules.stat_labels[key], options.stat_growth.before[key], options.stat_growth.after[key]])
+            pool_label.text += "\n영구 능력 · " + ("변화 없음" if changes.is_empty() else " · ".join(changes))
+            if not options.stat_growth.unlocked.is_empty(): pool_label.text += "\n새 기술 사용 가능 · " + " / ".join(options.stat_growth.unlocked)
         for item in options.manuals:
             var row: Dictionary = manual_rows[item.id]
             row.status.text = "%d성 → %d성 · 배분 %d · 누적 수련 %d · %s" % [item.current_mastery,item.mastery,item.allocated,item.training,"최고 성수" if item.mastery == 10 else "다음 성까지 %d" % item.next_cost]

@@ -1,5 +1,10 @@
 # 십보강호 활성 컨텍스트
 
+## 현재 구현 · 2026-09-20 P03 영구 성장
+
+최신 main e5ec55e6(Base 경량화/재미 연결 PR343)을 기존 PR342 branch에 병합했다. 사용자 “작업진행해”에 따라 새 여정만 stats-v4로 시작 배분/총20·짝수성 영구 보너스·기술 능력 요구치를 연결했다. v1/v2/v3는 원문 identity와 당시 규칙을 유지한다. Decision은 `docs/decisions/2026-09-20_PERMANENT_PLAYER_GROWTH_V4.md`, 실행/검증은 기존 `docs/operations/2026-09-14_TRAINING_ALLOCATION_IMPLEMENTATION.md`의9월20일 절이다. 현재 제품은 PR342 작업 branch이며 main 제품 완료가 아니다. exact HEAD CI는 live metadata에서 확인한다. 네 모션 final lock 전 Draft, Human/Android/출시 NOT_RUN은 유지한다. 다음은 P04 중복 전수 정책과 P06 행로 공급의 결정 공백 및 첫 성장 선택의 사람 관찰이다.
+
+
 ## 현재 운영 구조 교정 · 2026-09-20
 
 사용자가 Base 경량화 적용안과 재미 검증 연결을 승인했다. 운영 owner는 `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`, 최신 기준·실행 증거는 `BASE_MAIN_SYNC_AUDIT.md`의2026-09-20절이다. UNIFIED_WORK_EXECUTION·조건부 인계·유효 근거 재사용·정확히2회 검토를 적용한다. 아래 날짜별 기록은 당시 이력이며 현재 고정10게임 quota·무조건 인계 지시로 재사용하지 않는다. 게임 제품은 변경하지 않는다. PR342 P01/P02 구현은 별도 branch에서 보존되며 main 완료로 표시하지 않는다. 작업일지는 기존 월간 PDF에 날짜별로 누적한다. 로컬 검사와 전체 독립 검토2회를 완료하고 지적5건을 교정했다. 운영 변경 PR은 #343이며 병합/원격 검사 여부는 GitHub live metadata와 BASE_MAIN_SYNC_AUDIT 링크에서 확인한다. 다음 게임 작업은 원래 승인된 PR342의 현재 head·최종 자산 gate·미커밋 변경을 별도 fresh-read한 뒤 계속한다.

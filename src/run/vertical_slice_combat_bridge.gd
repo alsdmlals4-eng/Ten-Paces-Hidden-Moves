@@ -43,7 +43,8 @@ func configure_vertical_slice_loadouts(
     enemy_runtime_binding: Dictionary,
     enemy_identity: Dictionary = {},
     bimu_receipt: Dictionary = {},
-    resolved_encounter: Dictionary = {}
+    resolved_encounter: Dictionary = {},
+    player_growth_stats: Dictionary = {}
 ) -> bool:
     var player_ids := _string_values(player_loadout)
     var enemy_ids := _string_values(enemy_loadout)
@@ -71,6 +72,7 @@ func configure_vertical_slice_loadouts(
         return false
     var engine: VerticalSliceMetricsCombatResolutionEngine = VERTICAL_SLICE_ENGINE_SCRIPT.new()
     engine.variable_opponent_rules = not resolved_encounter.is_empty()
+    if not player_growth_stats.is_empty() and not engine.configure_player_growth_stats(player_growth_stats): return false
     if not engine.configure_bimu_constraints(bimu_receipt.get("selections", []), player_ids, enemy_ids):
         return false
     if not engine.configure_enemy_runtime_binding(enemy_runtime_binding):
@@ -120,6 +122,8 @@ func configure_vertical_slice_loadouts(
         "effective_enemy_mastery_by_manual": effective_enemy_mastery.duplicate(true),
         "bimu_receipt": bimu_receipt.duplicate(true)
     }
+    if not player_growth_stats.is_empty():
+        _vertical_slice_loadout_snapshot["player_growth_stats"] = player_growth_stats.duplicate(true)
     if not resolved_encounter.is_empty():
         _vertical_slice_loadout_snapshot["resolved_encounter"] = resolved_encounter.duplicate(true)
     if player_ids.size() > 4:

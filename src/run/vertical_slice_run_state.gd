@@ -21,10 +21,20 @@ const SNAPSHOT_FIELDS := {
 const ROSTER_FIELDS := ["ruleset_id", "roster_version", "roster_seed", "roster_save_id", "resolved_encounters", "roster_digest"]
 var _roster: Dictionary = {}
 const GROWTH_RULESET_ID := "ten-duel-growth-v3"
+const STATS_RULESET_ID := "ten-duel-stats-v4"
+const PLAYER_GROWTH := preload("res://src/run/player_growth_state.gd")
+var _starting_stat_allocation: Dictionary = {}
 var _progression_events: Array = []
 
 func is_growth_run() -> bool:
-    return _roster.get("ruleset_id", "") == GROWTH_RULESET_ID
+    return _roster.get("ruleset_id", "") in [GROWTH_RULESET_ID, STATS_RULESET_ID]
+
+func is_stat_growth_run() -> bool:
+    return _roster.get("ruleset_id", "") == STATS_RULESET_ID
+
+func get_player_growth_stats() -> Dictionary:
+    if not is_stat_growth_run(): return {}
+    return PLAYER_GROWTH.new().project(_starting_stat_allocation, get_player_mastery_by_manual()).get("stats", {})
 
 func get_training_revision() -> int:
     return _progression_events.size()
@@ -38,7 +48,12 @@ func preview_training(allocations: Dictionary) -> Dictionary:
 
 func get_training_options(allocations: Dictionary = {}) -> Dictionary:
     if not can_allocate_training(): return {"ok": false, "error": "TRAINING_UNAVAILABLE"}
-    return _progression.get_training_options(allocations)
+    var options: Dictionary = _progression.get_training_options(allocations)
+    if options.get("ok", false) and is_stat_growth_run():
+        var next_masteries := get_player_mastery_by_manual()
+        for item in options.manuals: next_masteries[item.id] = item.mastery
+        options["stat_growth"] = PLAYER_GROWTH.new().describe_change(_starting_stat_allocation, get_player_mastery_by_manual(), next_masteries)
+    return options
 
 func commit_training(allocations: Dictionary, expected_revision: int) -> bool:
     if expected_revision != get_training_revision() or not can_allocate_training(): return false
@@ -60,15 +75,23 @@ func export_snapshot() -> Dictionary:
     for key in SNAPSHOT_FIELDS: snapshot[key] = get(SNAPSHOT_FIELDS[key])
     snapshot.merge(_roster, true)
     if is_growth_run(): snapshot["progression_events"] = _progression_events
+    if is_stat_growth_run(): snapshot["starting_stat_allocation"] = _starting_stat_allocation
     return snapshot.duplicate(true)
 
 
 func validate_snapshot(snapshot: Dictionary) -> Dictionary:
     var bad := CHECKPOINT_CODEC.error("CORRUPT", "Invalid run snapshot")
     var variable: bool = snapshot.has("ruleset_id")
-    var growth: bool = snapshot.get("ruleset_id", "") == GROWTH_RULESET_ID
-    if not CHECKPOINT_CODEC.json_safe(snapshot, 0, [0]) or snapshot.size() != SNAPSHOT_FIELDS.size() + 1 + (ROSTER_FIELDS.size() if variable else 0) + (1 if growth else 0): return bad
+    var growth: bool = snapshot.get("ruleset_id", "") in [GROWTH_RULESET_ID, STATS_RULESET_ID]
+    var stats_growth: bool = snapshot.get("ruleset_id", "") == STATS_RULESET_ID
+    if not CHECKPOINT_CODEC.json_safe(snapshot, 0, [0]) or snapshot.size() != SNAPSHOT_FIELDS.size() + 1 + (ROSTER_FIELDS.size() if variable else 0) + (1 if growth else 0) + (1 if stats_growth else 0): return bad
     if growth and typeof(snapshot.get("progression_events")) != TYPE_ARRAY: return bad
+    if stats_growth:
+        if typeof(snapshot.get("starting_stat_allocation")) != TYPE_DICTIONARY: return bad
+        if typeof(snapshot.get("player_manual_loadout")) != TYPE_ARRAY: return bad
+        if snapshot.player_manual_loadout.is_empty():
+            if not snapshot.starting_stat_allocation.is_empty(): return bad
+        elif not PLAYER_GROWTH.new().valid_allocation(snapshot.starting_stat_allocation): return bad
     if variable and not _valid_roster(snapshot): return bad
     var template := {"progression": _progression.get_snapshot()}
     for key in SNAPSHOT_FIELDS: template[key] = get(SNAPSHOT_FIELDS[key])
@@ -162,7 +185,7 @@ func _valid_reward(receipt: Dictionary, loadout: Array, opponent: Dictionary) ->
 
 
 func _valid_progression_history(s: Dictionary, catalog) -> bool:
-    if s.get("ruleset_id", "") == GROWTH_RULESET_ID:
+    if s.get("ruleset_id", "") in [GROWTH_RULESET_ID, STATS_RULESET_ID]:
         return load("res://src/run/training_progression_ledger.gd").validate(self, s, catalog)
     # Validate accounting in a disposable domain model. Import never replays effects on live state.
     var audit = get_script().new()
@@ -256,6 +279,7 @@ func import_snapshot(snapshot: Dictionary) -> Dictionary:
             set(property, next[key])
     _progression = progression
     _progression_events.assign(next.get("progression_events", []))
+    _starting_stat_allocation = next.get("starting_stat_allocation", {}).duplicate(true)
     _roster = {}
     if snapshot.has("ruleset_id"):
         for key in ROSTER_FIELDS: _roster[key] = next[key]
@@ -465,7 +489,9 @@ func get_route_target_opponent() -> Dictionary:
     return _opponent_catalog.for_stage(completed_duels + 1) if not _roster.is_empty() else _opponent_catalog.get_candidate(_next_opponent_id)
 
 
-func confirm_setup_loadout(loadout, mastery_by_manual: Dictionary) -> bool:
+func confirm_setup_loadout(loadout, mastery_by_manual: Dictionary, stat_allocation: Dictionary = {}) -> bool:
+    if is_stat_growth_run() and not PLAYER_GROWTH.new().valid_allocation(stat_allocation): return false
+    if not is_stat_growth_run() and not stat_allocation.is_empty(): return false
     if _current_screen != SCREEN_SETUP:
         return false
     if _starter_catalog == null or not _starter_catalog.is_valid() or not _starter_catalog.validate_selection(loadout):
@@ -486,6 +512,7 @@ func confirm_setup_loadout(loadout, mastery_by_manual: Dictionary) -> bool:
         next_loadout.append(manual_id)
     if not _progression.initialize_from_setup(next_loadout, mastery_by_manual):
         return false
+    _starting_stat_allocation = CHECKPOINT_CODEC.normalized(stat_allocation)
     _player_manual_loadout = next_loadout
     _player_mastery_by_manual = mastery_by_manual.duplicate(true)
     return true
@@ -648,6 +675,7 @@ func start_new_run() -> bool:
         return false
     _reset_bimu_constraints()
     _progression_events.clear()
+    _starting_stat_allocation.clear()
     duel_index = 1
     completed_duels = 0
     route_visits = 0
@@ -681,6 +709,7 @@ func start_new_run() -> bool:
 func advance() -> bool:
     match _current_screen:
         SCREEN_SETUP:
+            if is_stat_growth_run() and (_player_manual_loadout.size() != STARTER_SELECTION_COUNT or not PLAYER_GROWTH.new().valid_allocation(_starting_stat_allocation)): return false
             return _transition_to(SCREEN_INTRO)
         SCREEN_INTRO:
             return _transition_to(SCREEN_BRIEFING)
@@ -814,6 +843,7 @@ func end_failed_run() -> bool:
     _failure_receipt.clear()
     _pre_battle_snapshot.clear()
     _progression_events.clear()
+    _starting_stat_allocation.clear()
     _pending_result_reward.clear()
     _pending_growth_route.clear()
     _pending_route_intel.clear()
@@ -1051,7 +1081,7 @@ func get_current_encounter() -> Dictionary:
 static func _valid_roster(s: Dictionary) -> bool:
     for key in ROSTER_FIELDS:
         if not s.has(key): return false
-    if s.ruleset_id not in ["ten-duel-variable-roster-v2", GROWTH_RULESET_ID] or not CHECKPOINT_CODEC.integer(s.roster_version, 1, 1): return false
+    if s.ruleset_id not in ["ten-duel-variable-roster-v2", GROWTH_RULESET_ID, STATS_RULESET_ID] or not CHECKPOINT_CODEC.integer(s.roster_version, 1, 1): return false
     if not CHECKPOINT_CODEC.integer(s.roster_seed) or s.roster_seed != s.run_seed: return false
     if typeof(s.roster_save_id) != TYPE_STRING or s.roster_save_id.is_empty() or typeof(s.resolved_encounters) != TYPE_ARRAY: return false
     if typeof(s.roster_digest) != TYPE_STRING or s.roster_digest != CHECKPOINT_CODEC.digest(s.resolved_encounters): return false
@@ -1077,4 +1107,9 @@ func start_new_variable_run(seed_value: int, save_identity: String) -> bool:
 func start_new_growth_run(seed_value: int, save_identity: String) -> bool:
     if not start_new_variable_run(seed_value, save_identity): return false
     _roster["ruleset_id"] = GROWTH_RULESET_ID
+    return true
+
+func start_new_stats_run(seed_value: int, save_identity: String) -> bool:
+    if not start_new_growth_run(seed_value, save_identity): return false
+    _roster["ruleset_id"] = STATS_RULESET_ID
     return true

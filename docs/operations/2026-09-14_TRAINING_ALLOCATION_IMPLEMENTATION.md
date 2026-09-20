@@ -75,3 +75,30 @@ FEASIBLE: `vertical_slice_progression_state.gd`에 누적수련/성수 산출, `
 `training-write-guard-red.log`239검사1실패→공유 gate에 v3를 추가→`training-write-guard-green.log`239검사0실패, stderr 비어 있음. 별도 표적 readback에서 이 교정/종료 reset/CI 연결에 추가 확정 결함 없음. 검토자의 독립 재실행으로 과장하지 않는다. 거버넌스·기획·보호 변경 Python47검사 PASS. 실제 여러 프로세스의 전체 durable lifecycle/Continue 영향 회귀는 `p02-durable-full-green.log`에서 최종 exit를 확인한다.
 
 테스트 저장5폴더23파일은 `C:/Users/user/Documents/삭제대기/십보강호_모션통합_20260912_064614/training-allocation-20260914`로 옮기고 원본/목적지/SHA-256 manifest를 검증했다. 사용자 저장/월간 증빙/승인 원화를 이동하지 않았다. 실행 로그와 실제 화면은 증거 root에 유지한다.
+
+
+## 2026-09-20 P03 시작 능력·영구 성장 구현
+
+기준 f6bdebb7 / Work Mode BUILD→REVIEW / Skill executing-plans, combat-implementation-handoff(build), live-editor, systematic-debugging. 기존 P02 기록에 날짜별로 이어 쓴다. 사전 계획은 남은 구현 명세 §7의 P03 실행 계획, 호환 결정은 `docs/decisions/2026-09-20_PERMANENT_PLAYER_GROWTH_V4.md`다. CURRENT_SOURCE_RELEVANCE_CHECK=REUSED_EVIDENCE: 같은 승인 수치와 기존 §20의 성장/선택 비교 차원을 재사용한다. 새 조사나 사람 검증을 했다고 주장하지 않는다.
+
+변경: 새 여정 v4만 시작 배분6점/총20, 현재10권의 짝수성 증분, 영구 주능력 요구치4/8/12를 적용한다. 유효 성수/보유에서 순수 계산하므로 전수·여러성 상승·복원 때 중복 지급이 없다. 실제 setup·briefing·수련 preview·전투 선택/판정·strict checkpoint·독립 프로세스 Continue에 연결했다. 수련 preview가 영구 능력 변화와 새 사용 가능 기술을 보여준다. v1/v2/v3의 identity와 세이브 원문, 기존 HP/기력/내력 최대치·AI/보상/행로 경제·승인 자산은 보존한다.
+
+RED/교정: 최초 explicit v4 entry 검사1실패와 영구 능력 전투 consumer 부재1실패를 확인했다. 실제 저장 검사에서 v4 pointer 전환이 실패했고, 쓰기 경로의 v2/v3 정규식 및 공통 write_primary 실패 gate에 v4가 빠진 원인을 교정했다. 구형 v3와 같은 엄격한 경로 규칙을 유지하며 검사 약화/강제 성공을 하지 않았다. 엔진 getter 확장 때 기존 enemy 정보보호 override와 중복 선언한 parse 오류를 확인해 하나의 override로 합치고 재실행했다.
+
+검증 root: `C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/player-growth-20260920`. 초기 지역 결과: 성장/실제 저장87검사, 독립프로세스 Continue·session 실패/재시도15검사, Windows GPU setup/전투22검사, headless 수련/새7성 기술 실제 실행58검사 통과. v3 회계227검사 통과. setup720p/1080p 경계와720p PNG를 확인했다. 완료 숫자는 후속 최종 로그로 대조한다.
+
+Hera editor7432의 exact4.7.1와 작업 경로를 확인했고 실제 script 게임PID도 발견했다. 설치 CLI가 문서의 --pid 옵션을 지원하지 않아 다른 게임으로 자동 우회하지 않았다. native script의 실제 InputEvent/renderer/스크린샷/도메인 readback으로 확인하며 Hera 게임별 UI검사 성공을 주장하지 않는다. 전역/플러그인 변경은 없다.
+
+남은 마감: 관련 회귀·전체 검토2회·보호 경로 manifest·exact HEAD CI·기존 월간 PDF의9월20일 요약 누적. PR342의 네 모션 시트 final lock 전 Draft 경계 유지. 사용자 재미/Android/실물 입력/출시 NOT_RUN. 첫 비무 승리는 회계 fixture이므로 native10승 증거로 표시하지 않는다.
+
+
+### P03 검토·마감 결과
+
+1. 전체 검토1(독립 fresh context): 현재 정본·전체 변경·미변경 ledger/session/registry/선택 UI·저장/복원·비용·장기 호환·실제 증거를 대조했다. binding은 정상이어도 실제 전투 `state.player.stats`를999로 바꾸면 복원되는 P2를 발견했다. 당시 후보는 CLEAN이 아니었다. actual state와 committed source state 모두 binding의 영구값과 대조하도록 교정하고 원 재현 거부·원본5 유지까지 독립 재확인했다. 현재 임시효과는 status_counts 등 별도 상태를 사용하므로 영구 stats 대조와 충돌하지 않는다. 새 UI/test 단독 변경의 CI 누락 경로도 보강했다.
+2. 전체 검토2(root 교정본): 시작 배분·모든 시작 조합·10권 매핑/15초과 성장·3/7/10 기술 문턱·전수/수련 ledger·상대 정보 격리·v1/v2/v3 호환·v4 pointer/cache/tombstone·미변경 resource carry/session/완주·실제 UI·문서/월간 PDF·보호 범위·비용을 다시 대조했다. 최신 main의 정적 테스트가 예전 단일 계산식 문자열에 고정된 불일치는 PR342의 기존 native-font 계산식에 맞추고 실제 카드의 높이/내용 경계 native 검사 PASS를 유지했다. 새 resolved 검사는 마지막 checkpoint가 다음 PLANNING으로 바뀌는 시점을 잘못 가정해 실패했다. 실제 committed/resolved signal의 DTO를 보존한 뒤 두 필드를 각각 검사하도록 교정했고 native66검사가 통과했다. 추가 확정 P1/P2는 남지 않았다. 이후 변경은 이 결함들의 영향 확인이며 전체 검토 횟수를 초기화하지 않는다.
+
+최종 지역 증거: `static-final.log`485검사 실패0; `native-regression.json`14개 관련 Godot 회귀 모두 PASS(구형 v3 회계227, 전수472, 메뉴60, 완주33 포함); 추가 성장 단위157검사(모든 시작4권 조합·기술 요구 경계·10권 최대 합126 포함); `training-native-corrected.log`Windows GPU66검사(실제 새7성 선택/해결·committed/resolved 양쪽 위조 거부); `growth-ui-final.log`headless22검사; `setup-native.log`Windows22검사와 stderr 비어 있음; `card-summary-final.log`실제 renderer 카드 경계 PASS. 초기 저장/독립 프로세스87/15검사도 통과했다. 실제 native setup·수련 PNG를 직접 확인했다. 이전 실패/timeout 로그는 성공에 포함하지 않고 보존했다.
+
+운영 검사 중 오래된 Base checkout에 finalization index가 없고 editor가 생성한 미추적 sidecar가 보호 경로에 잡혔다. 승인된 RECOVERY_ONLY로 task editor만 종료하고190개 생성 sidecar를 SHA-256/복원 목록과 함께 기존 삭제대기에 이동했다. latest completed Base23ecad5(v9.4.4 재현 index 포함)로 동일 exact protected 검사 PASS를 확인했다. 제품 승인 범위에 생성 sidecar를 무차별 추가하지 않았다. 실제 UI 재검사를 위해3개 background sidecar만 검증 후 잠시 복원했고 마지막에 같은 위치로 반환한다.
+
+기존 월간 PDF의9월20일 항목에 Base 작업을 보존하며 P03을 추가했다. 요약1쪽+기존 상세11쪽=12쪽, 상세 content stream 동일, 요약과 다음 역사 첫쪽 직접 렌더 확인. 원본 근거 `monthly-update.json`과 내부 복원본을 유지한다. GitHub exact HEAD 결과는 PR342 live checks가 책임 원본이며 작업 branch 구현을 main 병합으로 표시하지 않는다. 네 모션 final lock 전 Draft 유지.

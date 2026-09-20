@@ -44,6 +44,7 @@ func validate(dto: Dictionary, expected_binding: Dictionary = {}, legacy_starter
     if dto.binding.has("resolved_encounter") and dto.binding.resolved_encounter.stage != dto.duel_index: return bad
     bad.error = "Combat state or timing context malformed"
     if not _state(dto.state) or not _context(dto.context, dto.state): return bad
+    if dto.binding.has("player_growth_stats") and dto.state.player.stats != dto.binding.player_growth_stats: return bad
     if dto.binding.has("resolved_encounter") and not _variable_enemy_state(dto.state.enemy, dto.binding.resolved_encounter, dto.binding.bimu_receipt): return bad
     bad.error = "Enemy lock malformed"
     if not _lock(dto.enemy_lock, dto.state, engine, dto.phase == "PLANNING"): return bad
@@ -60,6 +61,7 @@ func validate(dto: Dictionary, expected_binding: Dictionary = {}, legacy_starter
     else:
         bad.error = "Committed source state malformed"
         if not _state(dto.state_before) or not _context(dto.context, dto.state_before): return bad
+        if dto.binding.has("player_growth_stats") and dto.state_before.player.stats != dto.binding.player_growth_stats: return bad
         if dto.binding.has("resolved_encounter") and not _variable_enemy_state(dto.state_before.enemy, dto.binding.resolved_encounter, dto.binding.bimu_receipt): return bad
         if dto.phase == "BUNDLE_COMMITTED" and portable(dto.state) != portable(dto.state_before): return bad
         bad.error = "Committed plan malformed"
@@ -75,7 +77,7 @@ func validate(dto: Dictionary, expected_binding: Dictionary = {}, legacy_starter
     return {"ok": true, "status": "VALID"}
 
 func _engine(binding: Dictionary, legacy_starters: bool = false):
-    if not _keys(binding, ["player_loadout", "player_mastery_by_manual", "enemy_candidate_id", "enemy_loadout", "enemy_mastery_by_manual", "enemy_runtime_binding", "effective_enemy_mastery_by_manual", "bimu_receipt"], ["resolved_encounter", "owned_binding_version"]): return null
+    if not _keys(binding, ["player_loadout", "player_mastery_by_manual", "enemy_candidate_id", "enemy_loadout", "enemy_mastery_by_manual", "enemy_runtime_binding", "effective_enemy_mastery_by_manual", "bimu_receipt"], ["resolved_encounter", "owned_binding_version", "player_growth_stats"]): return null
     for field in ["player_loadout", "enemy_loadout"]:
         if typeof(binding[field]) != TYPE_ARRAY: return null
     for field in ["player_mastery_by_manual", "enemy_mastery_by_manual", "enemy_runtime_binding", "effective_enemy_mastery_by_manual", "bimu_receipt"]:
@@ -110,6 +112,8 @@ func _engine(binding: Dictionary, legacy_starters: bool = false):
     if portable(runtime) != portable(binding.enemy_runtime_binding): return null
     var engine = load("res://src/run/vertical_slice_metrics_combat_resolution_engine.gd").new()
     engine.variable_opponent_rules = binding.has("resolved_encounter")
+    if binding.has("player_growth_stats"):
+        if not load("res://src/run/player_growth_state.gd").valid_stats(binding.player_growth_stats) or not engine.configure_player_growth_stats(binding.player_growth_stats): return null
     for field in ["player_mastery_by_manual", "enemy_mastery_by_manual"]:
         for id in binding[field]:
             if typeof(id) != TYPE_STRING or engine.martial_registry.get_manual(id).is_empty() or not integer(binding[field][id], 1, 10): return null

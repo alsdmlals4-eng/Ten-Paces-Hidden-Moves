@@ -24,6 +24,7 @@ func _cache_context() -> Dictionary:
         "content_identity": codec.content_identity(),
         "variable_content_identity": codec.content_identity_for_schema(CODEC.VARIABLE_SCHEMA_VERSION),
         "growth_content_identity": codec.content_identity_for_schema(CODEC.GROWTH_SCHEMA_VERSION),
+        "stats_content_identity": codec.content_identity_for_schema(CODEC.STATS_SCHEMA_VERSION),
     }
 
 func _cached(bytes: PackedByteArray) -> Dictionary:
@@ -184,7 +185,7 @@ func _physical_idempotent(primary: Dictionary, save_id: String, checkpoint_id: S
     return {"ok": true, "status": "SAVED", "revision": primary.payload.revision, "payload": primary.payload.duplicate(true), "idempotent": true}
 
 func _save(save_id: String, checkpoint_id: String, run_state: Dictionary, combat_checkpoint: Dictionary, active: bool, replace: bool) -> Dictionary:
-    if run_state.get("ruleset_id", "") in [CODEC.VARIABLE_RULESET_ID, CODEC.GROWTH_RULESET_ID] or (not active and FileAccess.file_exists(root_path.path_join("active.json"))):
+    if run_state.get("ruleset_id", "") in [CODEC.VARIABLE_RULESET_ID, CODEC.GROWTH_RULESET_ID, CODEC.STATS_RULESET_ID] or (not active and FileAccess.file_exists(root_path.path_join("active.json"))):
         return _save_variable(save_id, checkpoint_id, run_state, combat_checkpoint, active, replace)
     if FileAccess.file_exists(root_path.path_join("active.json")): return CODEC.error("INCOMPATIBLE", "Legacy writer cannot replace variable save")
     if not CODEC.json_safe([run_state, combat_checkpoint], 0, [0]): return CODEC.error("CORRUPT", "Unsupported payload")
@@ -235,7 +236,7 @@ func _save(save_id: String, checkpoint_id: String, run_state: Dictionary, combat
 
 func _write_slot(slot: String, text: String, expected_payload: Dictionary) -> bool:
     var temp := root_path.path_join(slot + "_temp.json")
-    if (slot.begins_with("v2_") or slot.begins_with("v3_")) and not _allowed("write_primary", temp): return false
+    if (slot.begins_with("v2_") or slot.begins_with("v3_") or slot.begins_with("v4_")) and not _allowed("write_primary", temp): return false
     if not _allowed("write_" + slot, temp): return false
     var file := FileAccess.open(temp, FileAccess.WRITE)
     if file == null: return false
@@ -288,13 +289,13 @@ func _read_pointer(slot: String = "active") -> Dictionary:
     if typeof(parsed) != TYPE_DICTIONARY or parsed.size() != 3 or not parsed.has("schema_version") or not parsed.has("slot") or not parsed.has("integrity_hash"): return CODEC.error("CORRUPT", "Malformed pointer fields")
     if not CODEC.integer(parsed.schema_version, 1): return CODEC.error("CORRUPT", "Malformed pointer version")
     var pointer_version := int(parsed.schema_version)
-    if pointer_version not in [2, 3]: return CODEC.error("INCOMPATIBLE", "Unknown pointer version")
+    if pointer_version not in [2, 3, 4]: return CODEC.error("INCOMPATIBLE", "Unknown pointer version")
     if typeof(parsed.slot) != TYPE_STRING or RegEx.create_from_string("^v%d_[0-9a-f]{64}$" % pointer_version).search(parsed.slot) == null: return CODEC.error("CORRUPT", "Untrusted pointer path")
     if typeof(parsed.integrity_hash) != TYPE_STRING or parsed.integrity_hash != CODEC.digest({"schema_version": pointer_version, "slot": parsed.slot}): return CODEC.error("CORRUPT", "Pointer integrity mismatch")
     return {"ok": true, "status": "VALID", "schema_version": pointer_version, "slot": parsed.slot, "source_bytes": bytes}
 
 func _switch_pointer(slot: String) -> bool:
-    if RegEx.create_from_string("^v[23]_[0-9a-f]{64}$").search(slot) == null: return false
+    if RegEx.create_from_string("^v[234]_[0-9a-f]{64}$").search(slot) == null: return false
     var payload := {"schema_version": int(slot.substr(1, 1)), "slot": slot}
     payload["integrity_hash"] = CODEC.digest(payload)
     var bytes := JSON.stringify(payload).to_utf8_buffer()
@@ -323,9 +324,9 @@ func _save_variable(save_id: String, checkpoint_id: String, run_state: Dictionar
     if current.status == "IO_FAILURE" or (not replace and current.status in ["INCOMPATIBLE", "CORRUPT"]): return current
     var previous: Dictionary = current.get("payload", {})
     if not replace and not previous.is_empty() and (previous.save_id != save_id or not previous.active): return CODEC.error("INCOMPATIBLE", "Generation replacement requires explicit operation")
-    var requested_schema := CODEC.GROWTH_SCHEMA_VERSION if run_state.get("ruleset_id", "") == CODEC.GROWTH_RULESET_ID else CODEC.VARIABLE_SCHEMA_VERSION
+    var requested_schema := CODEC.STATS_SCHEMA_VERSION if run_state.get("ruleset_id", "") == CODEC.STATS_RULESET_ID else CODEC.GROWTH_SCHEMA_VERSION if run_state.get("ruleset_id", "") == CODEC.GROWTH_RULESET_ID else CODEC.VARIABLE_SCHEMA_VERSION
     if not active: requested_schema = int(previous.get("schema_version", CODEC.VARIABLE_SCHEMA_VERSION))
-    if not replace and active and not previous.is_empty() and (requested_schema == CODEC.GROWTH_SCHEMA_VERSION or int(previous.schema_version) == CODEC.GROWTH_SCHEMA_VERSION) and int(previous.schema_version) != requested_schema:
+    if not replace and active and not previous.is_empty() and (requested_schema >= CODEC.GROWTH_SCHEMA_VERSION or int(previous.schema_version) >= CODEC.GROWTH_SCHEMA_VERSION) and int(previous.schema_version) != requested_schema:
         return CODEC.error("INCOMPATIBLE", "Growth rules require a new explicit generation")
     if _pending.is_empty():
         if not previous.is_empty() and int(previous.schema_version) == requested_schema and _matches_request(previous, save_id, checkpoint_id, run_state, combat_checkpoint, active):

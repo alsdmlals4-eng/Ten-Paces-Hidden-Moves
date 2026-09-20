@@ -3,6 +3,8 @@ name: Validate Vertical Slice Run State
 on:
   pull_request:
     paths:
+      - 'src/ui/starting_stats_panel.gd'
+      - 'tests/verify_player_growth_*.gd'
       - "src/run/**"
       - "src/ui/combatant_status_panel.gd"
       - "src/ui/bimu_constraint_panel.gd"
@@ -92,3 +94,9 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_vertical_slice_route_state.gd
       - name: Verify Completion Summary binding
         run: godot --headless --path . --script res://tests/verify_vertical_slice_completion_summary.gd
+
+      - name: Verify permanent player growth and restart
+        run: |
+          godot --headless --path . --script res://tests/verify_player_growth_flow.gd -- --store-root /tmp/ten-stats-${{ github.run_id }}-${{ github.run_attempt }}
+          godot --headless --path . --script res://tests/verify_player_growth_flow.gd -- --resume-root /tmp/ten-stats-${{ github.run_id }}-${{ github.run_attempt }}
+          godot --headless --path . --script res://tests/verify_player_growth_ui.gd

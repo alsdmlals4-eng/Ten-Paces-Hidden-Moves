@@ -8,6 +8,17 @@ var battle_metrics: VerticalSliceBattleMetrics
 var _enemy_runtime_binding: Dictionary = {}
 var _bimu_model = CONSTRAINT_SCRIPT.new()
 var _bimu_receipt: Dictionary = {}
+var _player_growth_stats: Dictionary = {}
+var _player_growth = preload("res://src/run/player_growth_state.gd").new()
+
+func configure_player_growth_stats(stats: Dictionary) -> bool:
+    if not _player_growth.valid_stats(stats): return false
+    _player_growth_stats = stats.duplicate(true)
+    return true
+
+func get_player_growth_stats() -> Dictionary:
+    return _player_growth_stats.duplicate(true)
+
 
 
 func configure_bimu_constraints(selection: Array, player_manual_ids: Array, enemy_manual_ids: Array) -> bool:
@@ -30,6 +41,8 @@ func get_bimu_enemy_mastery(masteries: Dictionary) -> Dictionary:
 
 
 func get_action_lock_reason(card_id: String) -> String:
+    var growth_reason: String = _player_growth.lock_reason(super.get_actor_card_definition(card_id, "player"), _player_growth_stats)
+    if not growth_reason.is_empty(): return growth_reason
     if card_id not in get_player_martial_card_ids():
         return ""
     return _bimu_model.action_lock_reason(get_actor_card_definition(card_id, "player"), _bimu_receipt)
@@ -96,6 +109,7 @@ func configure_enemy_runtime_binding(binding: Dictionary) -> bool:
 
 func make_initial_state(hud_data: Dictionary, player_tile: int, enemy_tile: int) -> Dictionary:
     var state := super.make_initial_state(hud_data, player_tile, enemy_tile)
+    if not _player_growth_stats.is_empty(): state.player.stats = _player_growth_stats.duplicate(true)
     if not _enemy_runtime_binding.is_empty():
         var enemy: Dictionary = (state.get("enemy", {}) as Dictionary).duplicate(true)
         enemy["candidate_id"] = str(_enemy_runtime_binding.get("candidate_id", ""))
@@ -156,11 +170,15 @@ func _enemy_information_forbidden(definition: Dictionary) -> bool:
 
 func get_actor_card_definition(card_id: String, actor_key: String) -> Dictionary:
     var definition := super.get_actor_card_definition(card_id, actor_key)
+    if actor_key == "player" and not _player_growth.lock_reason(definition, _player_growth_stats).is_empty(): return {}
     if variable_opponent_rules and actor_key == "enemy" and _enemy_information_forbidden(definition): return {}
     return definition
 
 func get_actor_cards_by_id(actor_key: String) -> Dictionary:
     var definitions := super.get_actor_cards_by_id(actor_key)
+    if actor_key == "player" and not _player_growth_stats.is_empty():
+        for id in definitions.keys():
+            if not _player_growth.lock_reason(definitions[id], _player_growth_stats).is_empty(): definitions.erase(id)
     if variable_opponent_rules and actor_key == "enemy":
         for id in definitions.keys():
             if _enemy_information_forbidden(definitions[id]): definitions.erase(id)

@@ -33,8 +33,8 @@ class ActionCardSourceUnificationContractTests(unittest.TestCase):
 
         self.assertIn('summary.name = "CardSummary"', renderer)
         self.assertIn('accessibility_description = _accessibility_description(status_text)', renderer)
-        self.assertIn('summary.get_combined_minimum_size().y + CARD_BOTTOM_PADDING', renderer)
-        self.assertIn('custom_minimum_size.y = maxf(CROSS_PLATFORM_CARD_HEIGHT, required_height)', renderer)
+        self.assertIn('var summary_height := maxf(28.0, summary.get_combined_minimum_size().y)', renderer)
+        self.assertIn('custom_minimum_size.y = maxf(CROSS_PLATFORM_CARD_HEIGHT, ceilf(CARD_CONTENT_TOP + summary_height + CARD_BOTTOM_PADDING))', renderer)
         self.assertIn('summary.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)', renderer)
         self.assertIn('summary.offset_bottom = -CARD_BOTTOM_PADDING', renderer)
         self.assertIn('resized.connect(_layout_card_content)', renderer)

@@ -18,6 +18,8 @@ var description_label: Label
 var primary_button: Button
 var failure_end_button: Button
 var setup_options_container: VBoxContainer
+var setup_body: HBoxContainer
+var starting_stats_panel: VBoxContainer
 
 var _combat_view: Control
 var _combat_view_duel_index: int = 0
@@ -55,7 +57,7 @@ func _ready() -> void:
     set_meta("technical_shell", true)
     set_meta("final_visual_reference_pending", false)
     set_meta("visual_evidence_ceiling", "TECHNICAL_SHELL_NOT_HUMAN_VISUAL_PASS")
-    set_meta("run_seed_policy", "NEW_RUN_V3_GROWTH_FROZEN_ROSTER_LEGACY_CONTINUE_PRESERVED")
+    set_meta("run_seed_policy", "NEW_RUN_V4_STATS_FROZEN_ROSTER_LEGACY_CONTINUE_PRESERVED")
     set_meta("setup_visual_status", "STRUCTURED_FUNCTIONAL_UI_NOT_FINAL_VISUAL")
     set_meta("briefing_visual_status", "STRUCTURED_FUNCTIONAL_UI_NOT_FINAL_VISUAL")
 
@@ -86,8 +88,9 @@ func start_new_run(replacement_confirmed: bool = false) -> bool:
         _replacement_dialog.popup_centered(Vector2i(520, 200))
         return false
     _setup_selected_manual_ids.clear()
+    starting_stats_panel.reset()
     _refresh_setup_selection_ui()
-    return session.transact(func(): return run_state.start_new_growth_run(randi(), session.save_id), true)
+    return session.transact(func(): return run_state.start_new_stats_run(randi(), session.save_id), true)
 
 
 func advance_noncombat() -> bool:
@@ -103,7 +106,7 @@ func _advance_noncombat_domain() -> bool:
         if starter_manual_catalog == null or not starter_manual_catalog.validate_selection(_setup_selected_manual_ids):
             return false
         var mastery := starter_manual_catalog.build_mastery(_setup_selected_manual_ids)
-        if not run_state.confirm_setup_loadout(_setup_selected_manual_ids, mastery):
+        if not run_state.confirm_setup_loadout(_setup_selected_manual_ids, mastery, starting_stats_panel.allocation if run_state.is_stat_growth_run() else {}):
             return false
     return run_state.advance()
 
@@ -232,7 +235,23 @@ func _build_shell() -> void:
     setup_options_container.name = "SetupManualOptions"
     setup_options_container.add_theme_constant_override("separation", 6)
     setup_options_container.visible = false
-    stack.add_child(setup_options_container)
+    setup_body = HBoxContainer.new()
+    setup_body.add_theme_constant_override("separation",16)
+    setup_body.visible = false
+    stack.add_child(setup_body)
+    var setup_scroll := ScrollContainer.new()
+    setup_scroll.name = "SetupManualScroll"
+    setup_scroll.custom_minimum_size.y = 280
+    setup_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    setup_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+    setup_scroll.follow_focus = true
+    setup_body.add_child(setup_scroll)
+    setup_options_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    setup_scroll.add_child(setup_options_container)
+    starting_stats_panel = preload("res://src/ui/starting_stats_panel.gd").new()
+    starting_stats_panel.name = "StartingStatsPanel"
+    setup_body.add_child(starting_stats_panel)
+    starting_stats_panel.allocation_changed.connect(_refresh_setup_selection_ui)
 
     primary_button = Button.new()
     primary_button.custom_minimum_size = Vector2(260.0, 52.0)
@@ -262,8 +281,9 @@ func _build_setup_options() -> void:
         var button := Button.new()
         button.name = "Starter_%s" % manual_id
         button.toggle_mode = true
-        button.custom_minimum_size = Vector2(680.0, 40.0)
-        button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+        button.custom_minimum_size = Vector2(0,40)
+        button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
         button.text = "[%s] %s · 3성 %s · %s/%s" % [
             str(option.get("faction", "")),
             str(option.get("manual_name", "")),
@@ -271,6 +291,8 @@ func _build_setup_options() -> void:
             str(option.get("primary_stat", "")),
             str(option.get("secondary_stat", ""))
         ]
+        button.tooltip_text = button.text
+        button.accessibility_name = button.text
         button.set_meta("manual_id", manual_id)
         button.toggled.connect(_on_setup_manual_toggled.bind(manual_id))
         setup_options_container.add_child(button)
@@ -328,7 +350,10 @@ func _refresh_setup_selection_ui() -> void:
         return
     var count := _setup_selected_manual_ids.size()
     description_label.text = "강호에 들고 갈 무공 4권을 고릅니다. 선택 %d/4\n각 무공은 3성 기술 하나로 시작하며, 선택한 네 권이 이번 비무행의 전투 정체성이 됩니다." % count
-    primary_button.disabled = count != VerticalSliceRunState.STARTER_SELECTION_COUNT
+    starting_stats_panel.configure(_setup_selected_manual_ids)
+    if run_state.is_stat_growth_run():
+        description_label.text = "시작 무공 %d/4권 · 모두 3성\n자유 능력 6점을 배분하세요. 전수한 무공은 이후에도 모두 사용할 수 있습니다." % count
+    primary_button.disabled = count != VerticalSliceRunState.STARTER_SELECTION_COUNT or (run_state.is_stat_growth_run() and not starting_stats_panel.growth.valid_allocation(starting_stats_panel.allocation))
 
 
 func _on_screen_changed(_previous_screen: String, _current_screen: String) -> void:
@@ -356,6 +381,9 @@ func _render_current_screen() -> void:
         main_title_screen.visible = showing_main
     if setup_options_container != null:
         setup_options_container.visible = screen == VerticalSliceRunState.SCREEN_SETUP
+        setup_body.visible = setup_options_container.visible
+        starting_stats_panel.visible = setup_options_container.visible and run_state.is_stat_growth_run()
+        description_label.custom_minimum_size.y = 64 if setup_options_container.visible else 100
     if failure_end_button != null:
         failure_end_button.visible = screen == VerticalSliceRunState.SCREEN_FAILURE_RETRY and run_state.get_retry_remaining() > 0
 
@@ -454,6 +482,8 @@ func _render_briefing() -> void:
         str(opponent.get("ambiguity_or_counterexample", "")),
         _player_manual_names_text()
     ]
+    if run_state.is_stat_growth_run():
+        description += "\n\n영구 능력\n" + preload("res://src/run/player_growth_state.gd").new().stats_text(run_state.get_player_growth_stats())
     _set_content(
         "비무 %d · %s" % [run_state.duel_index, str(opponent.get("working_name", ""))],
         description,
@@ -605,7 +635,8 @@ func _ensure_combat_view() -> void:
                 "epithet": str(opponent.get("epithet", opponent.get("martial_identity", "")))
             },
             run_state.get_frozen_bimu_receipt(),
-            encounter
+            encounter,
+            run_state.get_player_growth_stats()
         ))
     _combat_view.set_meta("vertical_slice_runtime_loadout_bound_from_shell", runtime_loadout_bound)
     if not runtime_loadout_bound:

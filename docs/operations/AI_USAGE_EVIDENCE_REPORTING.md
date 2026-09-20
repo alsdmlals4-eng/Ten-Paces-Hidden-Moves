@@ -50,3 +50,8 @@ CURRENT_SOURCE_RELEVANCE_CHECK: 이번 파생 보고의 작업 날짜/검사 성
 최신 사용자 요청에 따라 이번 범위는 진행 중 변경 정리와 GitHub 동기화로 한정한다. P03 새 제품 구현은 시작하지 않았다. 기존 v1.1 PDF 같은 경로에 날짜별 요약 1쪽을 반영하고 상세 증빙 11쪽을 보존했다(총12쪽). 9월12·13일은 사후 정리, 14일은 기존 실행 근거 재요약, 16일은 당일 문서 정리로 구분했다. PDF 본문 content stream 대조로 기존11쪽 보존을 검증했고 새 요약을 렌더링하여 한글·여백·줄바꿈·날짜·상태를 직접 확인했다. 기존 파일은 내부 근거 이력으로 복원 가능하다. 같은 갱신 방식의 후속 실행은 기존 요약 페이지를 교체하여 중복을 만들지 않는다. 상세 기록과 실패 근거는 삭제하지 않는다.
 
 수행 기준 ac224e08 / Skill pdf(edit), verification-before-completion / CURRENT_SOURCE_RELEVANCE_CHECK: 파생 기록 갱신과 GitHub 동기화는 현재 로컬·원격 기록으로 판정하며 신규 게임 설계 비교 NOT_APPLICABLE. 기존 전체검토2회는 유지하고 날짜·기존 증빙 보존·파일 중복·참조 경계의 변경 부분만 검토했다. 게임 런타임과 Human 검사를 이번 문서 변경으로 재실행하거나 새 PASS로 주장하지 않는다. 원격 동기화의 exact HEAD·CI는 PR342 live metadata가 소유한다. 네 모션 시트 최종 lock 전 Draft를 유지한다.
+
+
+### 2026-09-20 게임 구현 추가
+
+기존 v1.1 고정 파일의9월20일 요약에 Base 경량화/재미 연결 결과를 보존하고 P03 실제 시작 배분·영구 성장·v4 저장·검증 결과를 누적했다. 12쪽(요약1+보존 상세11), 상세 stream 동일, 수정 요약과 역사 첫쪽 렌더 readback PASS. 최종 SHA-256 `55eb2aa31ca3cccf58f54267db73c2fc19c20f9d328d5ea46b4a3cc37568fabe`. 작업일·캡처일은9월20일이고 발행 시각은 PDF metadata와 companion monthly-update.json이 소유한다. 새 제출용 파일이나 별도 날짜별 작업일지를 늘리지 않았다. 원격 CI는 PR342 live metadata, 사람 재미/Android/출시·모션 final lock은 별도 상태다.

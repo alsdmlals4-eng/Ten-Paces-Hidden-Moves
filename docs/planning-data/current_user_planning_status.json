@@ -686,7 +686,7 @@
     "status": "WORKING_BRANCH_IMPLEMENTED_LOCAL_RUNTIME_VERIFIED_CI_LIVE",
     "starter_provenance": "IMMUTABLE_FOUR",
     "legacy_save": "V1_V2_VALIDATED_DECODE_CONVERSION_ORIGINAL_BYTES_PRESERVED",
-    "next_package": "P03 starting allocation and milestone stat grants; P02 locally implemented",
+    "next_package": "See player_stat_growth_continuation",
     "human_android_release": "NOT_RUN",
     "local_evidence": {
       "acquisition_flow_checks": 472,
@@ -704,15 +704,16 @@
     "decision": "TEN-DEC-20260914-FREE-TRAINING-GROWTH-V3-01",
     "execution_record": "docs/operations/2026-09-14_TRAINING_ALLOCATION_IMPLEMENTATION.md",
     "status": "WORKING_BRANCH_IMPLEMENTED_LOCAL_RUNTIME_VERIFIED_CI_LIVE",
-    "new_run_schema_version": 3,
+    "new_run_schema_version": 4,
     "legacy_save": "V1_V2_RULES_IDENTITIES_AND_SOURCE_BYTES_PRESERVED_NO_FORCED_MIGRATION",
     "windows_gpu_checks": 55,
     "mixed_accounting_store_checks": 239,
     "independent_process_session_checks": 14,
     "synthetic_accounting_is_native_win_evidence": false,
-    "next_package": "P03 starting allocation and milestone stat grants",
+    "next_package": "P03 working-branch implemented; see player_stat_growth_continuation",
     "human_android_release": "NOT_RUN",
-    "remote_evidence_owner": "GitHub PR342 exact current HEAD checks; local evidence is not remote PASS"
+    "remote_evidence_owner": "GitHub PR342 exact current HEAD checks; local evidence is not remote PASS",
+    "original_implementation_schema_version": 3
   },
   "prework_benchmark_current_owner": "docs/decisions/2026-09-20_LEAN_WORK_EXECUTION.md",
   "prework_benchmark_historical_gate_status": "IMPLEMENTED_MERGED_MAIN_PR287_REMOTE_CI_PASS_EXACT_MAIN_POSTMERGE_READBACK",
@@ -724,5 +725,17 @@
   "prework_benchmark_historical_evidence_ceiling": "DESK_RESEARCH_SYNTHESIZED_NO_TEN_PACES_HUMAN_PLAYTEST_OR_RUNTIME_CHANGE",
   "prework_benchmark_historical_gate_decision": "TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01",
   "current_execution_policy": "UNIFIED_WORK_EXECUTION",
-  "operating_adoption_owner": "[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md"
+  "operating_adoption_owner": "[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md",
+  "player_stat_growth_continuation": {
+    "decision": "TEN-DEC-20260920-PERMANENT-PLAYER-GROWTH-V4-01",
+    "decision_record": "docs/decisions/2026-09-20_PERMANENT_PLAYER_GROWTH_V4.md",
+    "execution_record": "docs/operations/2026-09-14_TRAINING_ALLOCATION_IMPLEMENTATION.md",
+    "status": "WORKING_BRANCH_IMPLEMENTED_LOCAL_RUNTIME_VERIFIED_CI_LIVE",
+    "new_run_schema_version": 4,
+    "legacy_save": "V1_V2_V3_IDENTITIES_AND_SOURCE_BYTES_PRESERVED",
+    "human_android_release": "NOT_RUN",
+    "fun_observation": "HUMAN_NOT_RUN_MACHINE_CONSUMER_AND_NATIVE_INPUT_VERIFIED",
+    "next_package": "P04 duplicate transfer decision and P06 route supply clarification; first growth Human observation",
+    "remote_evidence_owner": "GitHub PR342 exact current HEAD checks"
+  }
 }
