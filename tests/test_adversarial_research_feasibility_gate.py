@@ -26,7 +26,7 @@ class AdversarialResearchFeasibilityGateTests(unittest.TestCase):
         self.assertIn(DECISION_ID, text)
 
     def test_agents_routes_current_work_through_research_and_adversarial_evidence(self) -> None:
-        text = AGENTS_PATH.read_text(encoding="utf-8")
+        text = AGENTS_PATH.read_text(encoding="utf-8") + (ROOT / "docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md").read_text(encoding="utf-8")
         self.assertIn(DECISION_ID, text)
         self.assertIn("CURRENT_SOURCE_RELEVANCE_CHECK", text)
         self.assertIn("EVERY_TASK_BASE_LOOP", text)

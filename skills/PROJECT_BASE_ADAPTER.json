@@ -122,6 +122,23 @@
     "managing-design-documents": {},
     "managing-game-project-operating-system": {},
     "managing-project-intake-and-work-contract": {
+      "lean_work_execution": {
+        "decision": "TEN-DEC-20260920-LEAN-WORK-EXECUTION-01",
+        "project_owner": "docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md",
+        "base_main_observed": "23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef",
+        "base_pr_883_merge": "ebfc6c807a0d1582a2df27c518ef60398bf8486c",
+        "freshness_policy": "FETCH_CURRENT_MAIN_THEN_IMPACT_RECHECK",
+        "execution_policy": "UNIFIED_WORK_EXECUTION",
+        "benchmark_policy": "DECISION_RELEVANT_COMPARISON",
+        "handoff": "HANDOFF_ONLY_FOR_CAPABILITY_GAP_OR_EXPLICIT_REQUEST",
+        "scope_blocker": "SOURCE_DEPENDENCY_SCOPED_BLOCKER",
+        "review_rounds_per_approved_lineage": 2,
+        "base_sources": [
+          "docs/GPT_CODEX_WORKFLOW_POLICY.md",
+          "skills/managing-project-intake-and-work-contract/SKILL.md",
+          "skills/simplifying-skill-bodies/SKILL.md"
+        ]
+      },
       "planning_first_governance": {
         "actual_project_batch_execution": "NOT_RUN",
         "base_contract_source": "docs/PLANNING_FIRST_GRILL_ME_BATCH_POLICY.md",

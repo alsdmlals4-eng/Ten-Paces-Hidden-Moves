@@ -1,6 +1,29 @@
 # Base current main 상세 동기화·프로젝트식 적용 감사
 
-## 1. 기준과 범위
+## 2026-09-20 승인된 경량화 적용 — 진행 중
+
+사용자 승인: 현재 대화의 “승인할게”; 앞서 제시한 관련 owner·스킬·검사 동시 교정안 전체. 기준 Project main ed2104d98872c63eac27999830aeae9c15a00bdc. Base는 다시 fetch한 main 23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef이며 #883 병합 ebfc6c80을 포함한다. #885의 경험→효과·시각·UI 명세는 해당 기능 작업에만 조건부 참조한다. 이 SHA는 관측·재현 증거이며 영구 current authority가 아니다. v9.4.4 release lock bytes는 보존한다.
+
+PLAN→BUILD→REVIEW / Skill: project operating audit, simplifying-skill-bodies, reference-freshness, verification-before-completion / mode: reconcile-legacy + validate-disclosure. 승인 후 순서: 기존 지침 반례 RED → 활성 owner와 로컬 Skill 교정 → 같은 소비처 검사 GREEN → generated view 재생성·검사 → 동일 계약 전체검토2회 → exact-head CI·정상 PR 병합·main readback. 새 게임 구현은 제외한다.
+
+범위: AGENTS·양쪽 START_HERE·통합 실행 계약·Base version/audit·프로젝트4개 Skill·adapter/generated views·직접 연결된 current JSON/테스트/CI. 보호: data/src/scenes/assets/addons/project.godot, 엔진·저장·게임 의미·승인 자산, 기본 checkout의45개 변경, PR342 제품 delta, 설치 플러그인·전역 설정. PR199의 유효한 Human 검증 연결과 PR200의 이미 채택된 v9.4.4 delta를 비교하되 오래된 base/Notion 지시를 되살리지 않는다.
+
+CURRENT_SOURCE_RELEVANCE_CHECK: 직접 읽은 Base #883/main owner 및 실제 프로젝트 소비처를 재사용한다. 신규 게임 설계가 아니므로 무관한10게임 사례 추가는 NOT_APPLICABLE. 비교: 문구만 수정(REJECT: 검사/라우팅 drift 유지), owner+consumer 함께 정비(ADOPT), Base 전체 이식(REJECT: 제품·도구 범위 확대). FEASIBLE: 기존 JSON adapter, generator, Python 검증과 격리 Git 작업 사용. 외부 비용·플러그인 설치 없음.
+
+적용: UNIFIED_WORK_EXECUTION, 승인 재사용, 조건부 상세 로드·인계·Godot 검사, 국소 source blocker, 유효 benchmark 재사용. 고정10게임 gate는 역사로 보존하고 새 판단에 필요한 비교를 수행한다. 검토2회는 같은 후보 계보에서 공유한다. 생성 라우터 bytes는 Base 생성기를 유지하며 프로젝트 복구 예외는 AGENTS owner가 소유한다.
+
+검증 기준: 읽기 순서 일치, 같은 승인 재개/문서 작업/실제 Godot/근거 미확인 시나리오의 필요한 참조 발견, 과거 필수 인계·고정10게임 active 전파 제거, 역사 증거 보존, protected diff0, 테스트/CI 통과. 문서 검증을 Godot/Human/device/release PASS로 주장하지 않는다. 실행 결과는 아래에 누적한다.
+
+### 실행·검토 기록 (동일 승인 계약)
+
+- 사용자 추가 승인: Base #885 재미 검증 생명주기를 기존 통합 계약 §6.1 및 기획/UX/QA 스킬에 연결했다. 공개 거리·해결 이력으로 다음 선택을 바꾸는 가설과 반례, 판정 엔진/전투 preview/action dock의 실제 파일을 연결한다. 인간 재미·최종 자산·기기·출시 증거는 이번 작업 범위가 아니다.
+- RED: 최초 경량화 회귀6개 중5실패/1오류로 구형 인계·quota·연결 누락을 확인했다. 추가 재미/고정quota 재도입 반례2개도 교정 전 실패했다. GREEN: 새 계약 회귀10개 및 비런타임 Python 회귀484개 통과. 프로젝트 운영·참조 freshness·스킬 무결성·work governance·Base23ecad5 승인계약 validator PASS. generated views는 공식 생성기로 재생성, adapter LF bytes 일치. protected path diff0.
+- 확대 discover는 임포트 준비 없는 격리 폴더에서 native Godot 테스트를 함께 실행하여 지연/실패했고 task-owned 실행만 중단했다. 이 실행은 PASS가 아니다. 후속484개는 native runtime 모듈2개를 제외한 문서/정책/정적 회귀이며 Godot·Human PASS로 사용하지 않는다. Windows 출력 인코딩 오류는 이번 검사 프로세스 UTF-8로 재실행했고 전역 설정은 바꾸지 않았다.
+- 전체 독립 검토1/2: P0/P1 없음, P2 3건(START_HERE 강제 인계, 새 Decision에 옛 PR287 증거 귀속, 문서-only 변경에서 새 회귀 제외)을 발견·교정했다. 시작 문서 전체 블록을 교체하고 역사7필드를 분리했으며 새 회귀는 항상 실행되는 governance 단계로 옮겼다. 관련 반례를 추가했다. 플랫폼·복구 보호 문구는 유지하고 예전 제목에 의존한 검사만 새 위치로 교정했다.
+- 전체 독립 검토2/2 완료: P0/P1 없음. P2 2건(본문과 다른 PowerShell YAML, current benchmark gate가 옛 Decision을 가리킴)을 발견했고 두 owner·연계 검사의 effective 값과 회귀를 교정했다. 이후는 결함별 readback/검사로 종료하며 전체 회차를 초기화하지 않는다. exact-head 원격 검사·main readback은 후속 확인한다.
+- PR199 유효 delta(Human/device packet 라우팅/준비≠PASS)는 양쪽 시작 문서와 AGENTS에 반영했다. PR200 v9.4.4 채택은 이미 main에 존재한다. 두 역사 draft는 원본을 보존하며 이번 PR에서 대체 의미를 기록한다. PR342 제품·저장·모션 작업은 이 운영 변경에 흡수하지 않는다.
+
+## 1. 이전 2026-09-01 기준과 범위
 
 | 항목 | 확인한 값 | 역할 |
 |---|---|---|

@@ -24,7 +24,7 @@ legacy_surface_retirement_policy: ABSORB_UNIQUE_VERIFY_DESTINATION_ZERO_ACTIVE_R
 approved_unit_closeout_policy: ADVERSARIAL_REVIEW_REPOSITORY_SYNC_PR_CHECK_MERGE_POSTMERGE_READBACK
 primary_work_goal: BEST_LONG_TERM_EFFICIENT_METHOD
 quality_priority: QUALITY_OVER_RESPONSE_SPEED
-minimum_viable_alternatives: 3
+minimum_viable_alternatives: 3  # IMPORTANT_NEW_DECISIONS_ONLY; no fabricated options for approved fixes
 better_alternative_search: REQUIRED_WHEN_NEW_EVIDENCE_OR_FINDING_APPEARS
 long_term_fit_and_revisit_conditions: REQUIRED
 market_success_failure_comparison: REQUIRED_WHEN_DECISION_RELEVANT
@@ -33,8 +33,9 @@ adversarial_full_loop_maximum: 2
 adversarial_review_policy: EVERY_TASK_BASE_LOOP_PLUS_EXACTLY_TWO_FULL_SCOPE_LOOPS_FOR_MATERIAL_CHANGE
 current_review_cadence_decision: TEN-DEC-20260909-TWO-ROUND-INTERNAL-REVIEW-01
 external_research_policy: REQUIRED_EVERY_TASK_CURRENT_SOURCE_RELEVANCE_CHECK
-prework_benchmark_reverse_engineering_gate: TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01
-prework_benchmark_minimum_game_comparables_for_new_l1_plus_package: 10
+historical_prework_benchmark_reverse_engineering_gate: TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01
+prework_benchmark_reverse_engineering_gate: TEN-DEC-20260920-LEAN-WORK-EXECUTION-01
+prework_benchmark_comparison_policy: DECISION_RELEVANT_COMPARISON
 implementation_feasibility_policy: REQUIRED_BEFORE_MATERIAL_MUTATION
 current_adversarial_research_feasibility_decision: TEN-DEC-20260828-ADVERSARIAL-RESEARCH-FEASIBILITY-GATE-01
 implementation_reality_gate: REQUIRED
@@ -48,8 +49,8 @@ notion_image_readback_policy: NOT_REQUIRED_FOR_CURRENT_EXECUTION
 human_visible_image_claim_policy: CLIENT_OBSERVATION_REQUIRED_WHEN_RENDERING_IS_PART_OF_CLAIM
 local_codex_policy: RETIRED_NOT_USED
 gpt_local_codex_orchestration_policy: RETIRED
-codex_execution_policy: INDEPENDENT_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF_ONLY
-powershell_policy: LOCAL_GODOT_OR_VALIDATION_ONLY_NOT_CODEX_LAUNCHER
+codex_execution_policy: UNIFIED_WORK_EXECUTION
+powershell_policy: APPROVED_SCOPE_EXECUTION_NOT_CODEX_LAUNCHER
 fresh_read_bootstrap_policy: PROJECT_GITHUB_REPOSITORY_OWNER_RECONSTRUCTION_REQUIRED
 past_conversation_dependency_policy: NOT_REQUIRED_FOR_NEW_CHAT_RESUME
 entry_state_reconciliation_policy: REQUIRED_BEFORE_MATERIAL_MUTATION
@@ -171,60 +172,27 @@ Base의 상세 절차를 여기 복제하지 않지만 다음 **프로젝트 실
 - CI는 live required checks와 current Base supply-chain owner를 읽고 immutable pin 요구를 지키며, 기존 zero-incremental-cost route를 먼저 사용한다. 비용 절감은 required regression 삭제가 아니라 실행 계층 선택으로 해결한다.
 - material failure는 관련 Project/Base Case/Learning을 먼저 찾고, 재사용 가치가 있으면 Incident → Solution → Lesson → recurrence guard로 닫는다.
 - `TEN-DEC-20260828-ADVERSARIAL-RESEARCH-FEASIBILITY-GATE-01`에 따라 모든 작업은 `CURRENT_SOURCE_RELEVANCE_CHECK`를 먼저 남긴다. 최신 외부 사실·기술·플랫폼·권리·시장·접근성 근거가 판단을 바꿀 수 있으면 공식/1차 자료를 조사하고 source·freshness·relevance·한계를 기록한다. 관련 근거가 없으면 조사하지 않은 내용을 사실처럼 쓰지 않고 이유 있는 `NOT_APPLICABLE`로 남긴다.
-- `TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01`은 이 연구 게이트를 새 L1+ player-facing 또는 implementation package에 구체화한다. 새 package는 plan/mutation 전에 10개 이상의 유사·인접 게임을 포함한 역공학 packet을 남기며, 직접 비교 3개·인접 시스템 3개·부정/혼합 사례 1개 이상과 공식 제품 사실, 제한된 플레이어 반응 신호/공개된 공백, mechanism, transfer principle, `DO_NOT_COPY`, `ADOPT/ADAPT/AVOID/TEST`를 분리한다. 같은 decision dimension·current project state·source freshness가 모두 일치하는 bounded continuation만 packet을 재사용할 수 있고 `no silent bypass`다. 이 gate는 user approval이나 project core/공개-비공개 정보 경계·deck/hand/draw 금지를 대체하지 않는다.
+고정 사례 수 대신 §4.2의 DECISION_RELEVANT_COMPARISON과 유효 근거 재사용을 적용한다.
 - 모든 작업·권장안·retained change는 적어도 한 번 전체 적대 검토를 거친다. material 계획·구현·문서·PR 변경은 Base `running-adversarial-review-and-refinement`의 정확히 2회 full-scope loop, better-alternative search, long-term-fit recheck와 `CLEAN_REVIEW_EXIT`를 닫는다. 각 loop는 정본·actual implementation/diff·untouched consumer·실행 증거·비용·장기 유지성을 함께 공격하며, 가짜 finding/loop로 횟수를 채우지 않는다. `TEN-DEC-20260909-TWO-ROUND-INTERNAL-REVIEW-01`이 과거 5회 지시를 대체한다. 자동 세 번째 전체 검토는 없으며, 미해결 blocker가 있으면 완료·병합하지 않는다.
 - material mutation 전 `implementation feasibility record`는 project의 실제 경로·의존성·테스트/CI·target environment와 최신 외부 근거를 교차 대조해 `FEASIBLE / PARTIAL / BLOCKED_UNVERIFIED`로 판정한다. 검색 결과·snippet·모델 자신감은 구현 또는 Human/device/accessibility/release PASS가 아니다.
 
-### 4.2 current Base receipt·구조 적용
+### 4.2 현재 승인된 경량 작업 계약
 
-Base의 `WORK_PROJECT_START_CANON_CHECKLIST` 전체를 이 문서에 복사하지 않는다. 십보강호는 아래 순서와 경계만 project-local contract로 채택한다.
+`docs/planning-data/approved_20260826_integrated_work_contract_v4_8_r5_4_binding.json`의 당시 승인 문구·역할 분리는 역사 증거다. 현재 실행 절차는 이 절과 §5, 재미·표현은 §6.1을 적용하며 제품 안전 의미는 유지한다.
 
-```text
-current Project/Base exact readback
-→ repository-owned benchmark/reuse receipt
-→ scope-limited hygiene classification
-→ current owner confusion·stale entrypoint 최소 교정
-→ approval-bound execution sequence
-→ changed contract/code/asset and its consumer/test together
-→ exact-head verification and reuse-learning closeout
-```
+2026-09-20 승인 `TEN-DEC-20260920-LEAN-WORK-EXECUTION-01`은 이전 고정 비교 quota와 무조건 실행자 분리를 대체한다. DECISION_RELEVANT_COMPARISON: 기존 구현·승인 자산·유효한 조사→Base 축적 근거→필요한 공식 외부 자료 순으로 확인한다. 같은 판단·범위·consumer·freshness면 REUSED_EVIDENCE로 재사용한다. 중요한 새 게임 판단에는 직접·인접·실패 사례의 mechanism·차이·DO_NOT_COPY·ADOPT/ADAPT/REJECT와 공개된 근거 한계를 남기되 숫자 채우기를 강제하지 않는다. 단일 정답 수정·승인 구현에 허수 대안이나 반복 인터뷰를 만들지 않는다. 과거 10개 비교 자료와 승인 이력은 보존한다.
 
-- `PROJECT_START_CANON_CHECKLIST_REQUIRED`: L1+ work는 `benchmark_preflight_receipt`와 `context_configuration_hygiene`을 repository에 기록하고, resolved Base checkout의 receipt validator를 실행한다. receipt는 second canon이 아니라 시작 근거·교정·proof의 bounded record다.
-- `REUSE_FIRST_PREFLIGHT_REQUIRED`: 같은 project consumer와 최신 source가 유지되면 `REUSED_EVIDENCE`를 사용할 수 있다. 다르면 project canon → approved reference/benchmark → Base reuse profile/registry → targeted cross-project evidence → decision-relevant external source 순으로 다시 검토한다.
-- `MANDATORY_BENCHMARK_REVERSE_ENGINEERING_PREFLIGHT`: player-facing L1+ package에는 현재의 10개 이상 game packet을 적용한다. 순수 operating contract/adapter update에는 Base current owner와 project actual consumer 비교를 task-appropriate receipt로 남기며, 무관한 장르 사례를 강제하지 않는다.
-- `LEGACY_CONTEXT_CONFIGURATION_HYGIENE_REQUIRED`: 이번 scope 안의 entrypoint/configuration/generated view만 `ACTIVE_OWNER / COMPATIBILITY / ARCHIVE / OBSOLETE_CANDIDATE / UNKNOWN_UNVERIFIED`로 분류한다. 이름·날짜만으로 광범위 삭제하지 않고, active reference/consumer 0 및 Git recovery/readback을 확인할 때만 제거한다.
-- feature-level module/contract 분리는 새 또는 materially changed feature에만 적용한다. 십보강호의 공유 전투 코어·10칸·3/3/4·공개 정보 AI·저장 의미는 user Decision 없이 Base 구조에 맞추어 재설계하지 않는다.
-- conditional Blueprint/wireframe은 연결된 player-facing system의 이해나 구현 위험이 실제로 높을 때만 만든다. runtime capture는 실제 화면 consumer가 바뀐 경우에만 project asset/evidence owner에 추가한다.
+PROJECT_START_CANON_CHECKLIST_REQUIRED / REUSE_FIRST_PREFLIGHT_REQUIRED / LEGACY_CONTEXT_CONFIGURATION_HYGIENE_REQUIRED는 영향 경로의 확인과 기존 기록 재사용으로 충족한다. 읽기 전용 설명에 새 receipt를 요구하지 않는다. SOURCE_DEPENDENCY_SCOPED_BLOCKER는 근거 실패의 의존 작업만 차단하며 실패를 PASS로 바꾸지 않는다. 승인된 독립 작업은 active scope를 명시해 계속한다. 동일 작업의 전체 검토는 정확히2회이며 단계마다 초기화하지 않는다.
 
-## 5. Godot·Codex·PowerShell 현재 역할
+계약 변경은 owner→실제 consumer→검사까지 같이 전파한다. conditional Blueprint/wireframe·Godot 화면 검수는 실제 사용자 화면 또는 기능 연결을 바꿀 때만 수행한다. Base #885의 `docs/knowledge/game-development/EXPERIENCE_TO_PRESENTATION_GUIDE.md`는 경험·효과·시각·UI 명세가 필요한 기능 작업에만 읽는다. 이번 운영 문서 교정에는 게임 실행·이미지 생성·설치를 추가하지 않는다.
 
-현재 실행 경계는 다음이다.
+## 5. 통합 실행과 조건부 인계
 
-```text
-GPT
-→ 기획 / 조사 / 검수 / Base / repository 문서 / Visual
+UNIFIED_WORK_EXECUTION / CAPABILITY_BASED_EXECUTOR_SELECTION: 현재 세션의 실제 능력·승인으로 설계부터 구현·검증·정상 PR 병합·main readback까지 잇는다. 앱 이름과 파일 확장자는 강제 인계 사유가 아니다. HANDOFF_ONLY_FOR_CAPABILITY_GAP_OR_EXPLICIT_REQUEST: 능력·권한이 부족하거나 사용자가 다른 실행자를 지정한 범위에만 인계한다. CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF는 그때만 사용하는 호환 상태명이다. 같은 세션에 빈 인계 문서를 만들지 않는다.
 
-실제 Godot 제품 구현 없음
-→ GPT가 정본 readback 후 닫음
+현재 Base `docs/GPT_CODEX_WORKFLOW_POLICY.md`와 `skills/maintaining-project-context-and-handoff/SKILL.md`가 공용 절차 owner다. CAPABILITY_IS_NOT_AUTHORIZATION을 유지한다. GPT → PowerShell → local Codex one-shot launcher는 금지한다. project-specific CODEX_HOME·과거 PID/port를 준비 완료로 취급하지 않는다. PowerShell은 허용된 저장소·문서·테스트·엔진 작업의 실행 수단이며 Codex launcher가 아니다.
 
-실제 Godot 제품 구현 있음
-→ CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
-→ Codex가 프로젝트 GitHub + repository owners를 독립 fresh-read
-→ Codex 자신의 구현환경에서 Godot 제품 구현/test/runtime evidence
-→ READY_FOR_GPT_REVIEW
-→ GPT 최종 검수/정본/PR closeout
-```
-
-현재 실행 경로에서 금지한다.
-
-- GPT → PowerShell → local Codex one-shot launcher.
-- 프로젝트별 `CODEX_HOME`을 필수 준비조건으로 사용.
-- 과거 dedicated Godot binary/HTTP 8003/WS 9503 같은 checkpoint를 current readiness로 재사용.
-- process/port 존재만으로 exact project/session readiness PASS 주장.
-
-PowerShell은 사용자 PC의 **Godot 실행·검증·환경 확인이 실제 필요할 때만** 사용하며 Codex launcher가 아니다.
-
-호환 가능한 host에서는 프로젝트별 동일 Godot binary/port를 증식하지 않고 **검증된 shared exact Godot pin + Godot AI 기본 포트 + exact project/editor/session identity**를 기본으로 한다. 프로젝트 정본의 engine compatibility가 shared pin과 맞지 않으면 자동으로 열지 않고 compatibility Gate를 다시 판정한다. Godot authoring/runtime 작업에서는 exact Editor를 open/reuse하고 current Godot AI session identity를 readback한다. alternate port는 실제 충돌이 확인된 예외 recovery일 때만 사용한다.
+실제 Godot 작업에만 exact project.godot, project/editor/session identity와 shared approved exact Godot pin을 대조한다. 새 provider 설치나 엔진 변경을 이 계약으로 승인하지 않는다. 실행할 수 없는 Human·기기 검사는 NOT_RUN으로 남기고 독립된 승인 작업은 계속한다.
 
 ## 6. Visual·UI·Localization
 
@@ -250,6 +218,24 @@ UI/구조는 최소 `ko / en / ja / zh-*`를 수용할 localization-ready 구조
 반응형 최소 계획은 `pc_standard / pc_wide_or_ultrawide / mobile_landscape`이며 pixel-identical이 아니라 동일 정보 위계·행동 의미·상태 의미·피드백 의미를 보호한다.
 
 승인 Visual은 repository source/provenance/consumer record에 반영하고 exact destination readback한다. historical Notion attachment는 runtime/release evidence가 아니다.
+
+### 6.1 재미 가설·효과·비주얼·UI 검증
+
+FUN_VERIFICATION_LIFECYCLE: 기능을 변경할 때 기존 기능 owner에 경험 가설→설계→실제 구현→검증→교정을 연결한다. 소규모 변경은 기존 기록에 목적·상태/표현·consumer·확인 방법을 짧게 적는다. 별도 재미 감독 Skill/서버/보고서나 보편 재미 점수·보상 빈도를 만들지 않는다.
+
+| 단계 | 십보강호에서 확인할 내용 |
+|---|---|
+| 기획 | 공개 거리·상태·해결 이력으로 상대 가능성을 추론하고 다음 수를 바꾸는 경험. counterevidence: 결과 원인을 설명하지 못함, 정보와 무관하게 같은 행동만 반복, 입력 대기나 반복 연출을 피하려는 행동. 이는 검증할 가설이며 실제 관찰 결과가 아니다. |
+| 설계 | 입력·상태·규칙·선택·공개 정보·피드백을 연결한다. 상대의 숨은 계획을 보여 이해도를 높이는 해법은 금지한다. 첫 이해와 반복 플레이의 숙련·변주·피로를 따로 본다. |
+| 구현 | GAMEPLAY_EFFECT는 `src/combat/combat_resolution_engine.gd`의 결과를 따른다. PRESENTATION_EFFECT는 `src/combat/combat_board_preview_auto.gd` 및 `src/ui/action_selection/action_selection_dock.gd`의 실제 해당 consumer를 확인한다. 효과 표시가 피해·보상·저장을 재계산하지 않는다. 새 경로는 PLANNED다. |
+| 검증 | DOC / MACHINE / RUNTIME / HUMAN / USER_APPROVAL / RELEASE를 구분한다. 자동 회귀는 상태·결과 일치, 실제 실행은 입력·취소·중단·복귀와 표시, 사람 관찰은 이해·선택 변경·감각·피로를 확인한다. HUMAN_NOT_RUN은 FUN_PASS가 아니다. |
+| 교정 | 이해 실패, 규칙/선택 실패, 피드백/감각 실패, 반복 피로, 환경 결함을 분류한다. 로그·행동·자기보고가 다르면 반례와 대안 설명을 보존한다. 승인된 안전한 교정은 계속하고 핵심 의미/정보 공개/비용 변경만 결정받는다. |
+
+효과·비주얼·UI 명세는 기존 `docs/UX_UI_SYSTEM.md`, `docs/07_COMBAT_UI_SPEC.md`, Visual/asset owner를 참조한다. 같은 requirement에 발동 조건·state_owner·공개/비공개 정보·상태군·입력/취소/복귀·시점/강도/반복·승인 자산/규격·runtime_consumer·실패 복구·검증 장면을 연결한다. 값은 기존 확정 값/계산식을 참조하고 미정값은 HYPOTHESIS 또는 PLANNED와 의존 범위를 남긴다. 예: 방어 감소 결과는 전투 판정에서 읽고, 방어 표시는 실패/빗나감과 구분하며, 위험 신호를 가리거나 중복 보상을 적용하지 않아야 한다. 사람이 원인을 이해했는지는 별도 관찰한다.
+
+BIDIRECTIONAL_REQUIREMENT_TRACE: 요구→코드/씬/데이터/자산→검증, 화면/검증→구현→승인 원본을 모두 확인한다. 파일 존재나 링크 검사만으로 호출·runtime·재미 검증 완료라 하지 않는다. 사람 증거 부족은 사람 검증·승격만 NOT_RUN으로 남기고 승인된 구현을 순환 차단하지 않는다.
+
+공용 상세는 현재 Base `skills/analyzing-and-refining-game-concepts/references/concept-evidence-and-gates.md#fun-verification-lifecycle`, `docs/knowledge/game-development/EXPERIENCE_TO_PRESENTATION_GUIDE.md`, `skills/auditing-and-refining-ui-art/references/project-adapter-contract.md`를 기능/표현 작업일 때만 읽는다. 같은 조사·검토 예산은 재사용하며 단순 운영 문서 수정은 게임 경험 실증이 아니다.
 
 ## 7. 현재 제품·시각 상태 해석
 
@@ -284,7 +270,7 @@ UI/구조는 최소 `ko / en / ja / zh-*`를 수용할 localization-ready 구조
 - Whole-project audit / requirement traceability / bounded early checkpoint / playable Slice / decision-screen comprehension / Audio·Visual POC / Asset·Audio provenance / user-runnable play / CI supply-chain·cost / partial Skill absorption: **RESTORED/IMPROVED r5.4 project invariants**.
 - Fresh-Read GitHub+repository owner cold-start: **CURRENT**.
 - Visual exactly-one approval loop: **CURRENT r5.4 OVERRIDE**.
-- GPT→PowerShell→local Codex, project CODEX_HOME, dedicated port readiness: **INTENTIONALLY SUPERSEDED** by independent Codex Godot product handoff + local Godot validation-only PowerShell.
+- GPT→PowerShell→local Codex, project CODEX_HOME, dedicated port readiness: **INTENTIONALLY SUPERSEDED** by UNIFIED_WORK_EXECUTION + capability-based conditional handoff; PowerShell은 승인 범위의 실행 수단이다.
 - dated/fixed Skill·PR·CI/tool counts: **INTENTIONALLY SUPERSEDED** by live discovery.
 
 r2 Decision과 structured record는 historical evidence로 보존한다. 이 r5.4 adapter 변경 자체는 제품 코드·Scene·Resource·Asset·전투 규칙을 변경하지 않는다.

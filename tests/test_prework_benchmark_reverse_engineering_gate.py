@@ -34,9 +34,9 @@ EXPECTED_GAMES = {
 
 
 class PreworkBenchmarkReverseEngineeringGateTests(unittest.TestCase):
-    def test_contract_requires_ten_or_more_cross_genre_comparables_before_new_work(self) -> None:
+    def test_historical_contract_preserves_original_ten_game_evidence(self) -> None:
         contract = json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
-        policy = contract["benchmark_policy"]
+        policy = contract["historical_benchmark_policy_20260830"]
 
         self.assertTrue(policy["required_before_every_project_task"])
         self.assertEqual(DECISION_ID, policy["prework_benchmark_reverse_engineering_gate_decision"])
@@ -60,7 +60,7 @@ class PreworkBenchmarkReverseEngineeringGateTests(unittest.TestCase):
             policy["reuse_or_refresh_rule"],
         )
 
-    def test_project_entrypoints_route_new_l1_plus_work_through_the_ten_game_gate(self) -> None:
+    def test_project_entrypoints_preserve_historical_decision_reference(self) -> None:
         agents = AGENTS_PATH.read_text(encoding="utf-8")
         project_contract = PROJECT_CONTRACT_PATH.read_text(encoding="utf-8")
 
@@ -74,20 +74,20 @@ class PreworkBenchmarkReverseEngineeringGateTests(unittest.TestCase):
         self.assertIn(DECISION_ID, document_map)
         self.assertIn("2026-08-30_TEN_PACES_BENCHMARK_REVERSE_ENGINEERING.md", document_map)
 
-    def test_current_state_exposes_the_user_directed_gate_and_initial_report(self) -> None:
+    def test_current_state_separates_historical_initial_report(self) -> None:
         planning = json.loads(PLANNING_PATH.read_text(encoding="utf-8"))
-        self.assertEqual(DECISION_ID, planning["prework_benchmark_gate_decision"])
-        self.assertEqual(12, planning["prework_benchmark_initial_unique_game_count"])
-        self.assertEqual(str(REPORT_PATH.relative_to(ROOT)).replace("\\", "/"), planning["prework_benchmark_current_report"])
-        self.assertEqual(287, planning["prework_benchmark_gate_pr"])
-        self.assertEqual(MERGED_MAIN, planning["prework_benchmark_gate_merge_commit"])
+        self.assertEqual(DECISION_ID, planning["prework_benchmark_historical_gate_decision"])
+        self.assertEqual(12, planning["prework_benchmark_historical_initial_unique_game_count"])
+        self.assertEqual(str(REPORT_PATH.relative_to(ROOT)).replace("\\", "/"), planning["prework_benchmark_historical_current_report"])
+        self.assertEqual(287, planning["prework_benchmark_historical_gate_pr"])
+        self.assertEqual(MERGED_MAIN, planning["prework_benchmark_historical_gate_merge_commit"])
         self.assertEqual(
             "IMPLEMENTED_MERGED_MAIN_PR287_REMOTE_CI_PASS_EXACT_MAIN_POSTMERGE_READBACK",
-            planning["prework_benchmark_gate_status"],
+            planning["prework_benchmark_historical_gate_status"],
         )
         self.assertEqual(
             "DESK_RESEARCH_SYNTHESIZED_NO_TEN_PACES_HUMAN_PLAYTEST_OR_RUNTIME_CHANGE",
-            planning["prework_benchmark_evidence_ceiling"],
+            planning["prework_benchmark_historical_evidence_ceiling"],
         )
 
     def test_decision_and_execution_report_preserve_scope_and_evidence_boundary(self) -> None:
