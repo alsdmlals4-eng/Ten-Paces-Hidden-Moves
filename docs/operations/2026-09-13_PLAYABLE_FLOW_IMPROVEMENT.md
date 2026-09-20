@@ -177,3 +177,21 @@ FEASIBLE: 현재 shell의 pause/flush/recovery, preferences owner, Godot PanelCo
 미검증: Human 접근성/밸런스, Android 실기기, 실물 게임패드/음향 장치, 출시. 캐릭터4장 최종 확정은 기존 상태 그대로다. 완료 후 새 여정 전환/기록 보존의 승인 의미는 다음 정본 대조 대상이며, 비활성 CTA만 보고 저장을 교체하도록 바꾸지 않았다.
 
 최종 로컬 확인: 독립 프로세스 설정 write26/read24 PASS. Godot4.7.1 editor import exit0, 기존 baseline과 동일한45 ObjectDB/22resource 종료 진단이 남아 무진단 editor PASS로 표현하지 않는다. 프로젝트 보호 계약 PASS. 검증용180 sidecar는 SHA-256 일치 확인 후 원래 삭제 대기 위치로 반환했고, 이번 부산물은 동일 폴더 `playable-flow-20260913/files.csv`에 원래 경로/해시와 함께 모았다. 실제 삭제는 없다.
+
+
+## 2026-09-20 P04/P06a 보상 선택과 행로 효과
+
+기준 aa7f91c0 / Work Mode PLAN→BUILD→REVIEW / Skill combat-implementation-handoff(build), executing-plans, live-editor, systematic-debugging, requesting-code-review, pdf(edit). 사용자의 계속 지시와 명세 §8 권장A를 적용했다. Decision `docs/decisions/2026-09-20_REWARD_CHOICE_AVAILABILITY.md`, 계획은 기존 REMAINING_GAME_IMPLEMENTATION_SPEC.md의9월20일 절. 현재 Base23ecad5 및 main e5ec55e6를 재확인했고 관련 PR342/무관PR199·200 경계를 유지했다. CURRENT_SOURCE_RELEVANCE_CHECK: 기존 비교 재사용과 공식 제품/엔진 focus 문서 재조회; 내부 게임 구현·사람 재미 근거로 과장하지 않는다.
+
+변경: 새 보상 선택은 이미 보유한 전수를 model/domain에서 거부한다. 선택불가 이유, disabled 초점 제외, 기존 자유6/집중5+자유3을 유지한다. 과거 pending/history v1~v4는 원래 방식으로 읽고 확정하며 소급 보상0. 행로5종의 실제 적용과 disposable 미리보기는 같은 progression helper를 사용한다. 기존 receipt/36선택/수치/상대 공개 범위/schema/content identity를 보존한다. pending 결과는 기존 전투·행로 기록에서 재구성하고 영구능력 공급/새 사건 의미는 추가하지 않는다.
+
+RED와 교정: 중복 view·새 명령 방어 부재를 실패 검사로 확인했다. 초기 fixture의 v4 배분 누락으로 무제한 advance 반복이 생겨 task test만 중단하고 bounded 반복으로 교정했다. save_id 불일치·이미 누적된 pool을0으로 가정한 fixture도 현재 계약에 맞췄다. 이는 제품 결함 통과 증거로 세지 않는다. 행로 view 부재1실패→공유 계산/소비처 구현→1315검사0실패. 관련 과거 테스트는 중복 대신 현재 가능한 대안을 고르도록 바꾸되 역사 중복의 복원 검사를 별도로 유지했다.
+
+전체 검토1(독립 fresh context): 정본·전체 diff·미변경 ledger/session/roster/codec·실제 비용/장기 호환/초점을 대조하고, 과거 player_resources 생략 저장에서 결과 설명이{}로 사라지는 P2를 v1~v4로 실제 재현했다. 교정은 resource_delta_known=false로 불명 자원량을 표시하고 결정 가능한 수련/단서는 유지하는 방식이다. 네 버전 선택/확정/복원 추가검사가 통과했다.
+전체 검토2(root 교정본): 전체 변경과 과거 pending/확정·strict codec·공유5효과·36지점/3갈래·보유10권·반복단서 encounter 격리·상한·회복 불명·선택잠금/메뉴 복귀·CI trigger/기존 consumer/실제 캡처·보고 경계를 대조했다. 추가 확정 P1/P2는 없다. 큰 새 정책/상점/환율/엔진/이미지 제작 대신 기존 owner 연결을 유지했다. 자동/합성 결과를 Human 재미 또는 실제 승리로 취급하지 않는다.
+
+증거 root: `C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/reward-route-20260920`. 최종 중복/역사 저장352검사, 행로36지점×3선택·적용/복원1315검사, Windows GPU 보상80검사와 행로41검사(960×640/1280×720/1920×1080), 정적485검사 통과. 전수·v3성장·저장·행로·P03성장·구형호환 관련 회귀7개가 통과했고 cache는 무출력 비정상종료1회 후 단독재실행 PASS(0실패); 원인 미확정 실행 실패를 제품 PASS로 숨기지 않는다. 정적 선택기 이름 오기로 불필요한 장시간 durable 묶음이 포함된 실행은 task process identity 확인 뒤 중단하고 올바른 정적485묶음만 재실행했다. 새 회귀는 CI에도 연결했다.
+
+실제 편집기19824의 exact4.7.1/project 경로와 Hera UI guidance를 확인했다. Windows native InputEvent/renderer로 선택불가 건너뛰기·과거 선택 표시·메뉴복귀·행로 결과/화면 경계를 확인하고 PNG를 직접 검수했다. 신규 이미지 생성이나 최종 미감 승인은 아니다. task editor 종료 뒤 생성 sidecar195개를 `C:/Users/user/Documents/삭제대기/십보강호_모션통합_20260912_064614/reward-route-20260920`에 원본/목적지/hash manifest와 함께 이동했다. 원본 코드·자산과 다른 작업 폴더는 보존했다.
+
+같은 월간 PDF/9월20일 항목에 누적했고 기존 상세11쪽을 보존했다. 최초 렌더에서 부연 문장이 혼자 새쪽으로 밀려 간격만 조정해12쪽을 유지하고 재검수했다. 실제 미실시 Human/Android/기기/출시와 네 모션 final lock은 그대로다. GitHub exact HEAD 검사와 branch/main은 PR342 live metadata가 책임 원본이다. 계획+편집기 실행 복합 요청의 자동 검토 거절은 세부 이유 없이 policy blocked였고, 한정된 문서 diff와 별도 실행으로 검토 가능한 형태로 진행했다.

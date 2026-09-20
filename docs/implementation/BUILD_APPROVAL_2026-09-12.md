@@ -53,3 +53,7 @@ The latest user explicitly requests continuing through the approved remaining sp
 ## 2026-09-20 P03 continuation
 
 User “작업진행해” approves latest-main reconciliation, the P03 starting-stat/permanent-growth implementation and first-growth-loop verification. TEN-DEC-20260920-PERMANENT-PLAYER-GROWTH-V4-01 records explicit new-run v4 semantics and preserves existing v1/v2/v3 identity and source bytes. The approved original stat/grant/requirement numbers, current ten-manual mapping and existing transaction/codec/UI owners are connected. No new core, route reward economy, engine, approved art, plugin/global configuration or visual final lock is inferred. Execution is appended to the existing training implementation record by date.
+
+## 2026-09-20 P04/P06a continuation
+
+User “좋아 작업 계속 진행해” continues the recommended remaining specification. TEN-DEC-20260920-REWARD-CHOICE-AVAILABILITY-01 adopts unavailable duplicate transfers for new commands, preserving historical pending/history and all v1-v4 identities. P06a connects existing five route effects to state-specific preview/result views; no new rewards, permanent-stat supply, schema, core, assets or final visual lock. Existing source/readback/verification boundaries remain.

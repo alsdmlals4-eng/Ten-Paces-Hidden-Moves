@@ -7,7 +7,8 @@
     "TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01",
     "TEN-DEC-20260914-ACQUIRED-MANUAL-COMBAT-COMPATIBILITY-01",
     "TEN-DEC-20260914-FREE-TRAINING-GROWTH-V3-01",
-    "TEN-DEC-20260920-PERMANENT-PLAYER-GROWTH-V4-01"
+    "TEN-DEC-20260920-PERMANENT-PLAYER-GROWTH-V4-01",
+    "TEN-DEC-20260920-REWARD-CHOICE-AVAILABILITY-01"
   ],
   "approved_paths": [
     "assets/ASSET_MANIFEST.json",
@@ -72,7 +73,8 @@
     "data/run/player_growth_rules.json",
     "src/run/player_growth_state.gd",
     "src/run/vertical_slice_metrics_combat_resolution_engine.gd",
-    "src/ui/starting_stats_panel.gd"
+    "src/ui/starting_stats_panel.gd",
+    "src/run/vertical_slice_result_model.gd"
   ],
   "approval_source": "Current user instruction on 2026-09-12: 앞으로도 옮겨주고 프로젝트 남은 작업 확인 후 진행해. Continuation of previously authorized character motion/UI implementation, integration and verification. This authorizes the bounded working-branch change, not final visual approval of four character sheets. 2026-09-13: user approved recommended plan for independent persistent presentation settings and baseline clarification; see BUILD approval continuation and dated implementation plan. 2026-09-13 latest user explicitly authorizes plan-first autonomous comparable-game implementation loops: optional pause/menu/guide and player-readable scrollable completion history, preserving core and save schema. 2026-09-14: user explicitly approved the recommended remaining-work plan; P01 acquired-manual combat/save binding is authorized. See docs/operations/2026-09-14_ACQUIRED_MANUAL_IMPLEMENTATION.md. 2026-09-20: user approved latest-main reconciliation, P03 starting allocation/permanent growth and first-growth-loop verification with 작업진행해.",
   "approval_time": "2026-09-12T06:45:31+09:00",

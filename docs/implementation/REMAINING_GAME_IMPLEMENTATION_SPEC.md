@@ -58,7 +58,7 @@ WHAT: 아래 P00~P14의 작은 인수 단위로 연결하고 각 완료를 정�
 | P01 | 전수받은 모든 무공의 실제 전투 연결 | P0 | P00 | RUNTIME_VERIFIED(로컬 자동), 원격 CI 별도; 아래 현재 기록 참조 |
 | P02 | 자유 수련 소비·저장·해금 연결 | P0 | P01, 저장 의미 결정 | RUNTIME_VERIFIED(로컬 자동), v3 Decision/실행 owner: `docs/operations/2026-09-14_TRAINING_ALLOCATION_IMPLEMENTATION.md`; 원격·Human 별도 |
 | P03 | 시작 능력 분배·성장 영구 능력 | P0 | P02의 버전 계약 | PR342 WORKING_BRANCH 구현·로컬 native 검증; v4 Decision과 기존 수련 실행 기록9월20일 절 참조, 원격·Human 별도 |
-| P04 | 중복 전수 보상 마무리 | P1 | P01/P02 | PARTIAL, 보상 의미 Decision 필요 |
+| P04 | 중복 전수 보상 마무리 | P1 | P01/P02 | LOCAL_RUNTIME_VERIFIED; 2026-09-20 Decision, exact HEAD CI 별도 |
 | P05 | 등급 유효 입력·산식·표시 | P1 | P12 기초 측정 | PARTIAL, 집계는 승인 계약; 최종 산식은 후보 |
 | P06 | 행로 사건·정탐·영구 능력 보상 | P1 | P02/P03 | PARTIAL, 36선택 공급량·콘텐츠 결정 필요 |
 | P07 | 도감·조사·완주 기록의 회차 밖 보존 | P1 | P00, 별도 profile 계약 | PARTIAL, 범위 확정 후 구현 |
@@ -137,6 +137,23 @@ CURRENT_SOURCE_RELEVANCE_CHECK: 명세 §20의 성장 선택/원인학습/저장
 **세 대안:** (A) 중복이면 선택불가, 이유와 다른2보상 유지 — 권장, 새 환율 없음. (B) 현행 자유수련6으로 대체 — 후보, 선택명/receipt와 경제 변경 필요. (C) 해당무공 수련으로 전환 — 보류, 환율·10성초과·효율 설계 비용 큼. 문파전수 비교가치10을 포인트10으로 사용하지 않는다.
 **권장 구현:** result model에 `available:bool`, `unavailable_reason_key:String`을 view로 제공; shell은 `이미 보유한 무공`을 표시. domain receipt builder도 unavailable을 거부해 UI 우회 차단. 자유/집중 보상은 현재값 유지. 과거 pending receipt는 역사로 보존하고 소급보상0. 10권보유 상태에도 유효한 보상 존재.
 **파일/검증:** `vertical_slice_result_model.gd`, `vertical_slice_shell_result_auto.gd`, progression, `tests/verify_vertical_slice_review_result.gd`. 중복전수 기존저장읽기, unavailable확정거부, 키보드disabled건너뛰기, 선택잠금, 명령중복,10권화면. 의미 변경 Decision 후 새여정 적용범위를 명시한다.
+
+### 2026-09-20 P04/P06a 실행 계획 및 결과
+
+승인: 사용자 “좋아 작업 계속 진행해”와 기존 명세 권장안의 연속 실행. 기준 aa7f91c0 / PLAN→BUILD / combat-implementation-handoff(build), executing-plans. P04 대안A를 채택한다. P06은 기존5종의 예상/실제 효과 표시(P06a)만 수행하며 영구능력 공급/새 사건 의미는 추가하지 않는다.
+
+1. 중복 전수 view/명령 거부, 비중복 전수·다른보상 유지, 기존 pending/history 저장 복원 RED.
+2. result model의 availability와 domain 명령 경계를 연결. UI는 읽은 availability를 표시하고 비활성 항목을 초점 경로에서 제외.
+3. P06a는 기존 domain 효과를 복제하지 않는 미리보기/적용 결과를 만들고 실제 receipt와 화면을 연결. 만자원/부분회복/수련/단서 반복/36경계의 불변성을 확인.
+4. 관련 자동·실제 Windows 입력/화면·저장 회귀, 전체 후보 검토2회, 정본/기존 날짜별 일지/PDF 누적, GitHub exact HEAD 확인. PR342 모션 final lock 전 Draft 유지.
+
+Ruling: P04는 새 선택 명령에만 적용한다(v1~v4의 미선택 RESULT 포함). 이미 선택해 저장한 중복 전수는 기존대로 확정·이력 보존하며 소급 보상0. 저장 재생/decoder에는 새 선택 금지를 넣지 않는다. schema/content identity 변경0. 과거 미선택 화면에도 선택 제한이 적용되지만 원본 저장이나 확정 보상 의미는 바뀌지 않는다.
+
+재미 가설: 아무 성장도 없는 중복 전수에 보상을 소모하지 않고, 현재 상태에서 실제 얻을 이득을 보고 판단할 수 있다. 반례: 선택불가 이유를 못 찾음, 초점 막힘, 표시와 실제 적용량 불일치. 자동/Windows 입력과 사람의 이해/재미(HUMAN_NOT_RUN)는 구분한다.
+
+CURRENT_SOURCE_RELEVANCE_CHECK: 기존 §20 비교 재사용 + 2026-09-20 공식 Slay the Spire 제품 소개의 위험/안전 경로와 조합 선택, Godot focus 문서 재조회. 외부 제품은 상태별 선택 가치를 비교하는 근거이며 우리 중복 전수 정책/수치나 내부 구현의 증거는 아니다. 출처: https://store.steampowered.com/app/646570/Slay_the_Spire/ ; https://docs.godotengine.org/en/stable/tutorials/ui/gui_navigation.html . 덱/드로우/유물경제는 도입하지 않는다. FEASIBLE: 기존 result/run/progression/route/session/strict codec와 native 테스트를 재사용한다.
+
+P04/P06a 지역 결과: 중복/역사 저장352검사, 행로36지점·3선택·복원1315검사, Windows 보상80/행로41검사, 정적485검사 통과. P06a는 기존 효과 표시만 완료이며 영구능력 공급 및 authored 사건 확장은 미완료다. 실행·검토는 기존 PLAYABLE_FLOW_IMPROVEMENT.md의9월20일 절.
 
 ## 9. P05 — 등급 집계와 최종 산식
 

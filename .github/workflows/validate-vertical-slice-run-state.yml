@@ -29,6 +29,8 @@ on:
       - "tests/verify_vertical_slice_candidate_ids.gd"
       - "tests/verify_vertical_slice_setup_briefing.gd"
       - "tests/verify_vertical_slice_review_result.gd"
+      - "tests/verify_reward_availability.gd"
+      - "tests/verify_jianghu_effect_view.gd"
       - "tests/verify_vertical_slice_route_state.gd"
       - "tests/verify_vertical_slice_completion_summary.gd"
       - "docs/implementation/BUILD_APPROVAL_2026-08-20.md"
@@ -57,6 +59,10 @@ jobs:
         run: godot --headless --editor --path . --quit
       - name: Verify first five-duel run state
         run: godot --headless --path . --script res://tests/verify_vertical_slice_run_state.gd
+      - name: Verify reward availability and preserved historical selections
+        run: godot --headless --path . --script res://tests/verify_reward_availability.gd
+      - name: Verify route previews against all campaign boundaries
+        run: godot --headless --path . --script res://tests/verify_jianghu_effect_view.gd
       - name: Verify Vertical Slice shell
         run: godot --headless --path . --script res://tests/verify_vertical_slice_shell.gd
       - name: Verify terminal combat bridge

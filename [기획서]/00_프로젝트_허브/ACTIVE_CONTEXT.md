@@ -1,5 +1,10 @@
 # 십보강호 활성 컨텍스트
 
+## 현재 구현 · 2026-09-20 P04/P06a
+
+사용자 계속 지시에 따라 새 중복 전수 선택을 차단하고 자유/집중 보상을 유지했다. v1~v4의 이미 저장된 중복 선택·확정 이력은 원래 의미로 복원한다. 행로 기존5종에 실제 상태 기준 효과·상한·반복 단서와 적용 결과를 연결했고36경계/저장 복원을 검증했다. 과거 자원 경계가 없는 저장은 회복량 미확인을 명시하며 수련량은 표시한다. schema/기존 수치/행로 공급/승인 자산은 그대로다. Decision: `docs/decisions/2026-09-20_REWARD_CHOICE_AVAILABILITY.md`; 실행은 기존 `docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md`의9월20일 절. PR342 현재 HEAD CI는 GitHub live metadata가 소유한다. 네 모션 final lock 전 Draft, Human/Android/출시 NOT_RUN 유지. 다음은 P05 승인된 유효 지표 집계(등급 최종 산식은 미정), P06 영구능력 공급 결정 및 사람의 성장 선택 관찰이다.
+
+
 ## 현재 구현 · 2026-09-20 P03 영구 성장
 
 최신 main e5ec55e6(Base 경량화/재미 연결 PR343)을 기존 PR342 branch에 병합했다. 사용자 “작업진행해”에 따라 새 여정만 stats-v4로 시작 배분/총20·짝수성 영구 보너스·기술 능력 요구치를 연결했다. v1/v2/v3는 원문 identity와 당시 규칙을 유지한다. Decision은 `docs/decisions/2026-09-20_PERMANENT_PLAYER_GROWTH_V4.md`, 실행/검증은 기존 `docs/operations/2026-09-14_TRAINING_ALLOCATION_IMPLEMENTATION.md`의9월20일 절이다. 현재 제품은 PR342 작업 branch이며 main 제품 완료가 아니다. exact HEAD CI는 live metadata에서 확인한다. 네 모션 final lock 전 Draft, Human/Android/출시 NOT_RUN은 유지한다. 다음은 P04 중복 전수 정책과 P06 행로 공급의 결정 공백 및 첫 성장 선택의 사람 관찰이다.

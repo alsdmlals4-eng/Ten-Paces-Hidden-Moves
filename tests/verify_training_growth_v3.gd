@@ -175,6 +175,7 @@ func _full_accounting_journey(ids: Array) -> void:
         if not check(run.mark_combat_finished({"outcome":"win","player_health":30,"enemy_health":0,"player_resources":run.get_player_run_resources()}) and run.advance(), "mixed accounting terminal %d" % duel): return
         var kind: String = ["free_training","faction_transfer","focused_training"][duel % 3]
         var receipt: Dictionary = rewards.build_reward_receipt(kind,ids[0] if kind == "focused_training" else "",run.get_owned_player_manuals(),run.get_current_opponent())
+        if receipt.is_empty(): receipt = rewards.build_reward_receipt("free_training","",run.get_owned_player_manuals(),run.get_current_opponent())
         if not check(run.set_pending_result_reward(receipt) and run.advance(), "mixed reward %d" % duel): return
         check(run.validate_snapshot(run.export_snapshot()).ok, "mixed post-reward ledger %d" % duel)
         if duel == 9: break

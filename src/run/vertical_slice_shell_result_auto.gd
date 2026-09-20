@@ -144,9 +144,16 @@ func _rebuild_result_reward_buttons() -> void:
     var signature_manual := manual_registry.get_manual(signature_manual_id) if manual_registry != null else {}
     var transfer_name := str(signature_manual.get("manual_name", signature_manual_id))
     var transfer_label := "문파 전수 · %s 3성" % transfer_name
-    if signature_manual_id in run_state.get_owned_player_manuals():
-        transfer_label = "문파 전수 · %s · 이미 보유 (전수 기록만 보관)" % transfer_name
-    choices.append({"key": "faction_transfer:" + signature_manual_id, "type": "faction_transfer", "target": "", "label": transfer_label})
+    var transfer_view: Dictionary = _result_snapshot.reward_options[2]
+    var transfer_available: bool = transfer_view.get("available", false)
+    var historical_selected: bool = run_state.get_pending_result_reward().get("reward_type", "") == "faction_transfer"
+    if not transfer_available:
+        transfer_label = "문파 전수 · %s · 이미 보유한 무공 (선택 불가)" % transfer_name
+        if transfer_view.get("unavailable_reason_key", "") == "MISSING_MANUAL":
+            transfer_label = "문파 전수 · 전수할 무공 없음 (선택 불가)"
+        if historical_selected:
+            transfer_label = "문파 전수 · %s · 이전 선택 유지 (전수 기록만 보관)" % transfer_name
+    choices.append({"key": "faction_transfer:" + signature_manual_id, "type": "faction_transfer", "target": "", "label": transfer_label, "available": transfer_available or historical_selected})
     var keys: Array[String] = []
     for choice in choices: keys.append(choice.key)
     # Stable identities retain focus and scroll when only selection changes.
@@ -170,10 +177,16 @@ func _rebuild_result_reward_buttons() -> void:
         var button := buttons[index] as Button
         var selected_prefix := _selected_prefix(pending, choice.type, choice.target)
         button.text = selected_prefix + str(choice.label)
-        button.disabled = not pending.is_empty() and selected_prefix.is_empty()
+        button.disabled = not choice.get("available", true) or (not pending.is_empty() and selected_prefix.is_empty())
+        button.focus_mode = Control.FOCUS_NONE if button.disabled else Control.FOCUS_ALL
         button.accessibility_name = button.text
-        var previous: Control = buttons[index - 1] if index > 0 and pending.is_empty() else menu_button
-        var following: Control = primary_button if not pending.is_empty() else (buttons[index + 1] if index + 1 < buttons.size() else menu_button)
+    var available: Array[Control] = []
+    for button in buttons:
+        if not button.disabled: available.append(button)
+    for index in range(available.size()):
+        var button := available[index]
+        var previous: Control = available[index - 1] if index > 0 else menu_button
+        var following: Control = available[index + 1] if index + 1 < available.size() else (primary_button if not primary_button.disabled else menu_button)
         if previous != null:
             button.focus_previous = button.get_path_to(previous)
             button.focus_neighbor_top = button.focus_previous

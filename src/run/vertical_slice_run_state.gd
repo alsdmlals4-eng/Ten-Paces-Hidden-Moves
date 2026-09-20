@@ -386,6 +386,39 @@ func get_pending_jianghu() -> Dictionary:
     return _pending_jianghu.duplicate(true)
 
 
+func get_jianghu_effect_view(node_id: String, applied: bool = false) -> Dictionary:
+    if _current_screen != SCREEN_JIANGHU or completed_duels >= MAX_DUELS: return {}
+    if applied and _pending_jianghu.get("id", "") != node_id: return {}
+    if not applied and (not _pending_jianghu.is_empty() or not get_jianghu_options().any(func(row): return row.id == node_id)): return {}
+    var projection = PROGRESSION_SCRIPT.new()
+    if not projection.restore_snapshot(_progression.get_snapshot()): return {}
+    var resource_delta_known: bool = not applied or last_combat_result.has("player_resources")
+    if applied and resource_delta_known:
+        # Reconstruct this interval's resource boundary from existing saved facts.
+        # No new persistent reward receipt, replay on live state, or schema change.
+        var prior: Dictionary = last_combat_result.player_resources
+        if not projection.set_player_resources(prior): return {}
+        for index in range((completed_duels - 1) * JIANGHU_CHOICES, _route_history.size()):
+            projection.apply_jianghu_effect(str(_route_history[index].id))
+    var view: Dictionary = projection.apply_jianghu_effect(node_id)
+    if view.is_empty(): return {}
+    view["resource_delta_known"] = resource_delta_known
+    if not resource_delta_known:
+        # Old saves may omit the combat resource boundary; deterministic training
+        # and public intel still have evidence, but capped recovery cannot be inferred.
+        view.gains = {"health":0, "stamina":0, "internal":0}
+        view.capped = []
+    view["repeated_intel"] = false
+    if node_id in ["recon", "investigate"]:
+        var candidate := get_route_target_opponent()
+        var category := "MANUAL_RUMOR" if node_id == "recon" else "FOOTWORK_SIGHTING"
+        var identity: String = candidate.get("encounter_id", candidate.get("candidate_id", ""))
+        for row in _route_history:
+            if row.get("category", "") == category and row.get("encounter_id", row.get("candidate_id", "")) == identity:
+                view.repeated_intel = true
+    return view
+
+
 func select_jianghu_node(node_id: String, expected_step: int) -> bool:
     if _current_screen != SCREEN_JIANGHU or _progression == null or _route_model == null:
         return false
@@ -401,32 +434,17 @@ func select_jianghu_node(node_id: String, expected_step: int) -> bool:
     if selected.is_empty():
         return false
     var candidate := get_route_target_opponent()
-    match node_id:
-        "rest":
-            _progression.apply_recovery(0.25, 1, 1)
-        "training":
-            if not _progression.add_free_training(3):
-                return false
-        "event":
-            if not _progression.add_free_training(2):
-                return false
-            _progression.apply_recovery(0.0, 0, 1)
-        "recon", "investigate":
-            if candidate.is_empty():
-                return false
-            var category := "MANUAL_RUMOR" if node_id == "recon" else "FOOTWORK_SIGHTING"
-            var text: String = _route_model.build_public_intel(category, candidate)
-            if text.is_empty():
-                return false
-            selected["text"] = text
-            selected["candidate_id"] = candidate["candidate_id"]
-            if candidate.has("encounter_id"): selected["encounter_id"] = candidate.encounter_id
-            selected["category"] = category
-            if node_id == "investigate":
-                if not _progression.add_free_training(1):
-                    return false
-        _:
-            return false
+    if node_id in ["recon", "investigate"]:
+        if candidate.is_empty(): return false
+        var category := "MANUAL_RUMOR" if node_id == "recon" else "FOOTWORK_SIGHTING"
+        var text: String = _route_model.build_public_intel(category, candidate)
+        if text.is_empty(): return false
+        selected["text"] = text
+        selected["candidate_id"] = candidate["candidate_id"]
+        if candidate.has("encounter_id"): selected["encounter_id"] = candidate.encounter_id
+        selected["category"] = category
+    if _progression.apply_jianghu_effect(node_id).is_empty():
+        return false
     selected["route_type"] = node_id
     selected["node_id"] = "J%d-%d" % [completed_duels, jianghu_step + 1]
     if node_id in ["recon", "investigate"]:
@@ -653,7 +671,10 @@ func set_pending_result_reward(receipt: Dictionary) -> bool:
     if _current_screen != SCREEN_RESULT or receipt.is_empty() or not _pending_result_reward.is_empty():
         return false
     var reward_type := str(receipt.get("reward_type", ""))
-    if reward_type not in ["free_training", "focused_training", "faction_transfer"]:
+    # New commands are guarded; historical pending/history replay keeps its meaning.
+    if not _valid_reward(receipt, get_owned_player_manuals(), get_current_opponent()):
+        return false
+    if reward_type == "faction_transfer" and str(receipt.get("manual_id", "")) in get_owned_player_manuals():
         return false
     _pending_result_reward = receipt.duplicate(true)
     return true

@@ -147,6 +147,31 @@ func get_training_options(allocations: Dictionary = {}) -> Dictionary:
     return {"ok": true, "pool_before": free_training_pool, "pool_after": preview.pool_after, "manuals": rows}
 
 
+func apply_jianghu_effect(node_id: String) -> Dictionary:
+    # Shared by actual application and disposable previews; no UI reward arithmetic.
+    var requested := {"health":0, "stamina":0, "internal":0}
+    var before := get_player_resources()
+    var pool_before := free_training_pool
+    match node_id:
+        "rest":
+            requested = {"health":int(round(float(before.health[1]) * 0.25)), "stamina":1, "internal":1}
+            apply_recovery(0.25, 1, 1)
+        "training": add_free_training(3)
+        "event":
+            add_free_training(2)
+            requested.internal = 1
+            apply_recovery(0.0, 0, 1)
+        "investigate": add_free_training(1)
+        "recon": pass
+        _: return {}
+    var gains := {}
+    var capped: Array[String] = []
+    for key in requested:
+        gains[key] = int(player_resources[key][0]) - int(before[key][0])
+        if gains[key] < requested[key]: capped.append(key)
+    return {"gains":gains, "capped":capped, "free_training":free_training_pool - pool_before}
+
+
 func apply_recovery(health_fraction: float, stamina_amount: int, internal_amount: int) -> Dictionary:
     var next := _normalize_resources(player_resources)
     var health: Array = next.get("health", [0, 0])

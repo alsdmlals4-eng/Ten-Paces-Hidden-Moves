@@ -204,14 +204,31 @@ func _verify_result_and_reward_contract() -> void:
     var progression_before: Dictionary = shell.run_state.get_progression_snapshot()
     var transfer_button: Button = shell.result_options_container.get_child(11)
     _expect_false(transfer_button.text.contains("receipt"), "Reward copy must not expose internal receipt terminology.")
-    _expect_true(transfer_button.text.contains("이미 보유") and transfer_button.text.contains("기록"), "Duplicate transfer must disclose record-only behavior before confirmation.")
+    _expect_true(transfer_button.text.contains("이미 보유") and transfer_button.text.contains("선택 불가") and transfer_button.disabled, "Duplicate transfer must disclose why it is unavailable.")
+    _expect_false(shell.select_result_reward("faction_transfer"), "Unavailable selection must not lock the result.")
+    shell.run_state._pending_result_reward = {"reward_type":"faction_transfer", "manual_id":opponent.signature_manual_id, "mastery":3}
+    shell._render_current_screen()
+    _expect_false(transfer_button.disabled, "Historical selected duplicate remains confirmable.")
+    _expect_true(transfer_button.text.contains("이전 선택 유지"), "Historical selection explains its preserved behavior.")
+    shell.run_state._pending_result_reward.clear()
+    shell._render_current_screen()
     shell.result_options_container.get_child(0).grab_focus()
-    for i in range(11): await _reward_key(KEY_DOWN)
-    _expect_eq(root.gui_get_focus_owner(), transfer_button, "All reward choices must be reachable with down navigation.")
+    for i in range(10): await _reward_key(KEY_DOWN)
+    var last_available: Button = shell.result_options_container.get_child(10)
+    _expect_eq(root.gui_get_focus_owner(), last_available, "Every available focused-training target remains reachable.")
     if shell.result_options_container.get_parent() is ScrollContainer:
         var scroll: ScrollContainer = shell.result_options_container.get_parent()
         for i in range(3): await process_frame
-        _expect_true(scroll.get_global_rect().encloses(transfer_button.get_global_rect()), "Keyboard focus must bring the final reward into view.")
+        _expect_true(scroll.get_global_rect().encloses(last_available.get_global_rect()), "Keyboard focus must bring the final available reward into view.")
+    await _reward_key(KEY_DOWN)
+    _expect_eq(root.gui_get_focus_owner(), shell.menu_button, "Navigation skips unavailable transfer and unconfirmed CTA.")
+    var preview_args := OS.get_cmdline_user_args()
+    if DisplayServer.get_name() != "headless" and not preview_args.is_empty():
+        var reward_scroll := shell.result_options_container.get_parent() as ScrollContainer
+        reward_scroll.scroll_vertical = 10000
+        for frame in range(3): await process_frame
+        await RenderingServer.frame_post_draw
+        root.get_texture().get_image().save_png(preview_args[0].get_basename() + "-unavailable.png")
     for viewport in [Vector2i(960, 640), Vector2i(1920, 1080), Vector2i(1280, 720)]:
         root.size = viewport
         for i in range(4): await process_frame

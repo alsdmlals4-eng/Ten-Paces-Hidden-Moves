@@ -28,6 +28,8 @@ func build_reward_options(player_loadout, opponent: Dictionary) -> Array:
     var result: Array = [
         {
             "reward_type": "free_training",
+            "available": true,
+            "unavailable_reason_key": "",
             "label": "자유 수련",
             "free_training": 6,
             "focused_training": 0,
@@ -36,6 +38,8 @@ func build_reward_options(player_loadout, opponent: Dictionary) -> Array:
         },
         {
             "reward_type": "focused_training",
+            "available": true,
+            "unavailable_reason_key": "",
             "label": "집중 수련",
             "free_training": 3,
             "focused_training": 5,
@@ -45,8 +49,11 @@ func build_reward_options(player_loadout, opponent: Dictionary) -> Array:
         }
     ]
     var signature_manual_id := str(opponent.get("signature_manual_id", ""))
+    var unavailable_reason := "MISSING_MANUAL" if signature_manual_id.is_empty() else ("ALREADY_OWNED" if signature_manual_id in _string_values(player_loadout) else "")
     result.append({
         "reward_type": "faction_transfer",
+        "available": unavailable_reason.is_empty(),
+        "unavailable_reason_key": unavailable_reason,
         "label": "문파 전수",
         "manual_id": signature_manual_id,
         "mastery": 3,
@@ -79,7 +86,7 @@ func build_reward_receipt(reward_type: String, target_manual_id: String, player_
             }
         "faction_transfer":
             var signature_manual_id := str(opponent.get("signature_manual_id", ""))
-            if signature_manual_id.is_empty():
+            if signature_manual_id.is_empty() or signature_manual_id in _string_values(player_loadout):
                 return {}
             return {
                 "reward_type": "faction_transfer",

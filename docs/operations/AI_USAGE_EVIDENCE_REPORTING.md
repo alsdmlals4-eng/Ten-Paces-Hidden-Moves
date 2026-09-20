@@ -55,3 +55,5 @@ CURRENT_SOURCE_RELEVANCE_CHECK: 이번 파생 보고의 작업 날짜/검사 성
 ### 2026-09-20 게임 구현 추가
 
 기존 v1.1 고정 파일의9월20일 요약에 Base 경량화/재미 연결 결과를 보존하고 P03 실제 시작 배분·영구 성장·v4 저장·검증 결과를 누적했다. 12쪽(요약1+보존 상세11), 상세 stream 동일, 수정 요약과 역사 첫쪽 렌더 readback PASS. 최종 SHA-256 `55eb2aa31ca3cccf58f54267db73c2fc19c20f9d328d5ea46b4a3cc37568fabe`. 작업일·캡처일은9월20일이고 발행 시각은 PDF metadata와 companion monthly-update.json이 소유한다. 새 제출용 파일이나 별도 날짜별 작업일지를 늘리지 않았다. 원격 CI는 PR342 live metadata, 사람 재미/Android/출시·모션 final lock은 별도 상태다.
+
+같은9월20일 후속 P04/P06a도 동일 날짜 요약에 합쳤다. 중복 전수 새 선택 차단·과거 저장 복원, 행로 효과/상한/반복 단서와 실제 적용 표시, 검증352/1315/Windows80·41/정적485를 누적했다. 요약1+기존 상세11=12쪽이며 기존 상세 stream 보존과 최종 요약/다음 상세쪽 렌더 readback PASS. 최신 PDF SHA-256 `6cb89625412d288f32710217b97dd4883a98185fe8b00e2bb3c272d4c8d0197f`; 앞선 P03 hash는 해당 시점 이력이다.

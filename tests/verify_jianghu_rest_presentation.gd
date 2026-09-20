@@ -24,6 +24,19 @@ func _run() -> void:
     check(not shell.description_label.text.contains("다음 Phase"), "Reward copy must not falsely defer implemented progression.")
     shell.select_result_reward("free_training")
     shell.advance_noncombat()
+    root.content_scale_size = Vector2i.ZERO
+    for viewport in [Vector2i(960,640), Vector2i(1280,720), Vector2i(1920,1080)]:
+        root.size = viewport
+        for frame in range(4): await process_frame
+        check(root.get_visible_rect().encloses(shell.primary_button.get_global_rect()), "Route CTA fits %s" % viewport)
+        for button in shell.route_options_container.get_children():
+            check(shell.content_panel.get_global_rect().encloses(button.get_global_rect()), "Route choice fits %s" % viewport)
+    root.size = Vector2i(1280,720)
+    for frame in range(4): await process_frame
+    var capture_args := OS.get_cmdline_user_args()
+    if DisplayServer.get_name() != "headless" and not capture_args.is_empty():
+        await RenderingServer.frame_post_draw
+        root.get_texture().get_image().save_png(capture_args[0].get_basename() + "-choices.png")
     for step in range(2):
         var options: Array = shell.run_state.get_jianghu_options()
         var choice: Button = shell.find_child("Jianghu_" + str(options[0]["id"]), true, false)
@@ -54,6 +67,14 @@ func _run() -> void:
     check(not shell.route_options_container.visible, "Resolved rest must not retain disabled choice cards.")
     check(not shell.primary_button.disabled, "Rest must expose a working continuation.")
     var resources: Dictionary = shell.run_state.get_player_run_resources()
+    check(shell.description_label.text.contains("실제 적용") and shell.description_label.text.contains("체력 +10"), "Rest shows actual domain gain")
+    for viewport in [Vector2i(960,640), Vector2i(1280,720), Vector2i(1920,1080)]:
+        root.size = viewport
+        for frame in range(4): await process_frame
+        check(root.get_visible_rect().encloses(shell.primary_button.get_global_rect()), "Rest CTA fits %s" % viewport)
+        check(shell.content_panel.get_global_rect().encloses(shell.description_label.get_global_rect()), "Rest explanation fits %s" % viewport)
+    root.size = Vector2i(1280,720)
+    for frame in range(4): await process_frame
     check(resources == {"health": [22, 40], "stamina": [3, 5], "internal": [2, 4]}, "One rest must heal 25% max health and restore one stamina and internal power exactly once.")
     check(resources["health"][0] < resources["health"][1], "Rest fixture health must remain below cap before duplicate input.")
     check(resources["stamina"][0] < resources["stamina"][1], "Rest fixture stamina must remain below cap before duplicate input.")
