@@ -247,3 +247,9 @@ export: `windows-test-build/TenPacesHiddenMoves.exe`와 pck. 첫 격리 APPDATA 
 Windows export exit0, export된 파일의50무공 시나리오 PASS. exe SHA256 `5bf89f938102f0e3119a5fdaafac4f55884c877681667d0dce844509c8bd8752`, pck `afefc8ebe81acf4c6b0f0ef76e862571e1b500eef5240adf6f05a08a8911e50e`. 실행 방법은 같은 폴더 `실행안내.txt`. 현재 제품 tree는 이 build와 일치하며 이후 기록-only 마감은 별도로 구분한다. 처음 smoke metadata의84031051은 수정 전 baseline이므로 해당 source identity를 빌드 commit으로 인용하지 않고 commit 확정 후 receipt에서 바로잡는다.
 
 제품 구현 commit: 52e1ce4e1b6311557808184b9bc6eb0d7fe0be0e. 이 commit의 product tree에 맞춰 export smoke metadata를 재발행했고50건을 확인했다. 로컬/원격 작업 branch 일치와 clean worktree를 확인했다. 이후 정본의 무공 표시명 교정은 문서-only이며 제품 파일은 같다. 최종 원격 상태와 build SHA/트리는 외부 evidence의 delivery-receipt.json 및 PR342 exact HEAD live checks를 대조한다.
+
+### 원격 검사에서 발견한 전수 fixture 의존성 교정
+
+첫 원격 run35546542990의 standalone acquired-manual 검사는 실패했다. 저장/전투 기능의 실패가 아니라 과거 추첨 seed34가 새 첫5 고유 정책에서도6종 비시작 무공을 모두 제공한다는 테스트 가정이 원인이었다(`ci-failure.log`, owned7/expected10). 로컬500개 suite는 이 standalone CI 진입점을 포함하지 않으므로 그 PASS로 덮지 않는다.
+
+`verify_acquired_manual_flow.gd`는 실제 generator에서 최대4096개 seed를 확인해 마지막 전투 전에 실제6종 전수가 가능한 편성을 선택한다. 실제 보상 receipt로10종을 얻고 전투/저장/이어하기에서 쓰는 기존 인수는 그대로이며, 테스트를 통과시키려고 제품 추첨·전수 규칙·기존 legacy fixture를 변경하지 않았다. 현재 찾은 seed39에서 기본473검사·fixture 생성479검사가 통과했다. 새 v1/5권·v2/5권·v2/10권과 기존 legacy v1/v2의 독립 프로세스 Continue는 각21검사로 확인한다. 이는 synthetic terminal을 사용하는 전수/저장 계약 검사이고 실제 전투5승 근거와 별개다. 제품 tree는52e1ce4e 및 배포물과 동일하다. 새 전체 검토를 시작하지 않고 실패한 소비처의 표적 교정/회귀로 처리했다.

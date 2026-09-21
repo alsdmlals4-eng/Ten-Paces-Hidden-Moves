@@ -30,11 +30,27 @@ func _run() -> void:
     print("ACQUIRED_MANUAL_FLOW checks=%d failures=%d" % [checks, failures.size()])
     quit(0 if failures.is_empty() else 1)
 
+func _seed_covering_all_transfers() -> int:
+    var provider = load("res://src/run/variable_opponent_roster.gd").new()
+    var registry = REGISTRY.new()
+    for candidate_seed in range(4096):
+        var rows: Array = provider.generate(candidate_seed,"acquisition")
+        if rows.size()!=10: continue
+        var owned := {}
+        for id in load("res://src/run/vertical_slice_starter_manual_catalog.gd").STARTER_MANUAL_IDS:
+            if id!=rows[0].manuals[0].id and owned.size()<4: owned[id]=true
+        for row in rows.slice(0,9): owned[row.manuals[0].id]=true
+        if owned.size()==registry.get_manual_ids().size(): return candidate_seed
+    return -1
+
 func _campaign(variable: bool) -> void:
     var run = RUN.new()
     if variable:
-        # Fixed approved generator seed: six non-starter signatures occur before duel ten.
-        check(run.start_new_variable_run(34, "acquisition"), "Initialize v2")
+        # This test needs all ten before final combat, not one historical RNG draw.
+        var acquisition_seed := _seed_covering_all_transfers()
+        if not check(acquisition_seed>=0,"A bounded real draw covers all six non-starter transfers"): return
+        print("ACQUISITION_SEED ",acquisition_seed)
+        check(run.start_new_variable_run(acquisition_seed, "acquisition"), "Initialize v2")
     else:
         run.configure_opponents(load("res://src/run/vertical_slice_opponent_catalog.gd").new(), 42)
         check(run.start_new_run(), "Initialize v1")
