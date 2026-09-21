@@ -14,6 +14,9 @@
   ],
   "approved_paths": [
     "assets/ASSET_MANIFEST.json",
+    "assets/backgrounds/atlas_blue_ink_courtyard_v1.png.import",
+    "assets/backgrounds/jianghu_blue_ink_landscape_v1.png.import",
+    "assets/backgrounds/jianghu_rest_inn_v1.png.import",
     "assets/characters/motion/enemy_reactions_candidate_v2.png",
     "assets/characters/motion/enemy_reactions_candidate_v2.png.import",
     "assets/characters/motion/enemy_sword_sequence_v1.png",

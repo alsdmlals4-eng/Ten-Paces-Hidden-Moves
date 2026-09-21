@@ -1631,7 +1631,7 @@
       "source_png_sha256": "79ec0532fcd62256bc3952b23d0bcb13929b3a5c1925a46e439ae38c2341b100",
       "runtime_consumer": "MainTitleScreen in src/ui/main_title_screen.gd",
       "approval": "2026-09-21 user explicitly requested restoration of attached image 2 composition",
-      "limits": "525x282 historical composition reused byte-for-byte; no new artwork approval claimed; real controls own input",
+      "limits": "525x282 historical composition reused byte-for-byte; no new artwork approval claimed; real controls own input; UI atlas excludes top32px reference page caption without changing source bytes",
       "active": true
     }
   ],

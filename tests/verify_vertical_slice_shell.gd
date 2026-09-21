@@ -41,7 +41,7 @@ func _run() -> void:
     var title_art := shell.find_child("JourneyTitleArtwork", true, false) as TextureRect
     _expect_true(title_art != null and title_art.visible and title_art.texture != null, "MAIN must render the user-restored travel title.")
     if title_art != null and title_art.texture != null:
-        _expect_eq(title_art.texture.resource_path, "res://assets/ui/logo/journey_title_reference_v1.png", "MAIN must consume the requested reference composition.")
+        _expect_eq(title_art.texture.atlas.resource_path, "res://assets/ui/logo/journey_title_reference_v1.png", "MAIN must consume the requested reference composition.")
     var start_button := shell.find_child("MainStartButton", true, false) as Button
     _expect_true(start_button != null and not start_button.disabled, "MAIN must expose one enabled real start action.")
     _expect_false(shell.find_child("VisualReferenceStatus", true, false) != null, "MAIN must not expose technical visual-reference status copy to players.")

@@ -33,6 +33,7 @@ class ApprovedBlueprintArtTests(unittest.TestCase):
             'clash_sparks_ink_gold_v2', 'player_sword_sequence_v1',
             'enemy_sword_sequence_v1', 'player_reactions_candidate_v2',
             'enemy_reactions_candidate_v2',
+            'journey_title_reference_v1',
         }
         self.assertEqual({a['id'] for a in central if a['id'] in continuation_ids}, continuation_ids)
         self.assertEqual(len({a['id'] for a in central}), len(central))

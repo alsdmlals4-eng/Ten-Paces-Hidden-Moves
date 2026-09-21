@@ -262,7 +262,7 @@ Windows export exit0, export된 파일의50무공 시나리오 PASS. exe SHA256 
 ### 계획·보호·실행
 1. 승인된 상대 초상16종을 HUD candidate_id와 연결한다. 전신 provider는 도겸 외 공용 검객이라는 별도 자산 공백을 숨기지 않는다.
 2. 시작6무공의 실제 authored effect_steps/비용/수/능력 요구치를 선택 전에 보여준다. 능력 설명은 현재 resolver 소비와 일치시키며 새 능력 효과를 만들지 않는다. 좌우 스크롤을 사용해720p에서 출발 버튼을 유지한다.
-3. 사용자가 지정한 여정형 참조를 재사용하고 새 여정·이어하기·설정은 실제 키보드/마우스 제어로 연결한다. 기존525×282 이미지의 주석/해상도는 원본 한계이며 고해상도 승인 artwork로 과장하지 않는다. 손상/비호환/IO/백업 복구 안내와 저장 위치 설명을 유지한다.
+3. 사용자가 지정한 여정형 참조를 재사용하고 새 여정·이어하기·설정은 실제 키보드/마우스 제어로 연결한다. 기존525×282 이미지의 해상도는 원본 한계이며 고해상도 승인 artwork로 과장하지 않는다. 손상/비호환/IO/백업 복구 안내와 저장 위치 설명을 유지한다.
 4. timed martial ATTACK/EVADED가 시각 cue에서 누락되는 원인을 수정한다. 혼합 적중/회피의 순서·피해0을 보존한다. 비검 원거리 시전은 검 베기 대신 기존 neutral 상태의 준비/회복 scale을 적용하고 skip/reset을 검증한다. 무기별 고유 포즈 제작 완료가 아니다.
 
 전투 판정, 상대 추첨/저장, 숨은 정보, 승인 이미지 원본, 전역 설정/다른 PR/outer dirty checkout은 수정하지 않았다. title의 참조 재사용만 새 runtime asset으로 명시하며 생성 캐릭터는 별도 후보다.
@@ -276,3 +276,5 @@ native-ui.log는 실제 Windows GPU에서 설정→닫기→새 여정→4권 �
 적 HUD16종은 연결됐으나 전투장 전신 중복은 아직 해결되지 않았다. 우람·담월·비연·풍목 후보는 기존 승인 초상을 인물 reference로 사용했다. 첫 출력의 비크로마 배경은 실패 이력이며 재교정했다. 크로마 원본과 실제 alpha 결과를 함께 보관하고 포즈 방향/무기와 프레임 경계/피벗을 추가 검수해야 한다. 후보 자동 승인/제품 연결은 하지 않는다. PR342는 기존4모션 final lock과 이 미완료 범위를 포함한 Draft로 유지한다. Human 재미/Android/출시는 NOT_RUN.
 
 추가 closeout:18종 기존 visual suite 중17종 통과, 하나는 ID미지정fallback 기대를 이름있는 Yeongyo와 함께 바꾼 테스트 오류를 분리해 단독GREEN으로 교정했다. 승인 보호계약/referencefreshness/정적combatboardPASS. 새4전신 RGBA의 완전투명 픽셀과불투명피사체를 확인하고 Windows candidate-preview.png에서 실제 alpha 렌더를 확인했다. 장창/도 등은 정방격자영역을 넘으므로 고유region/피벗 연결 검증 전이다. 후보원본8개와상태는 docs/visual-assets/candidates/TEN-OPPONENT-FEEDBACK-20260921/candidates.json, .gdignore로제품export에서제외. Windows export exit0 및배포물50시나리오PASS. 기존45ObjectDB/22resource editor종료진단은기록유지. editor생성sidecar211개를 삭제대기feedback-20260921로해시대조이동, 삭제0.
+
+최종 표적 교정: 참조의 상단32px 기획서 caption은 Atlas 표시 영역에서 제외해 실제 제목에 ‘① 메인 화면’이 보이지 않게 했다. 원본 PNG byte는 그대로다. 회귀41개 및 실제 Windows 제목/설정/새여정 입력과 shell 검사를 다시 통과했다. 일반Python 확장검사에서 새 제목을 역사 자산24개에 잘못 포함한 검사1건을 발견, 후속 추가분으로 분리해 원래 해시를 그대로 검증했다. 또한 초기 부산물 정리 중 필요한 배경.import3개까지 이동되어 native검사2FAIL/1ERROR가 발생했다. 즉시 원위치/동일해시복원하고3개를 추적하여 재발 방지했다. 재검증 선택489개 PASS(독립프로세스 장기 저장matrix/설정restart/별도visual18종 제외). 전체 무제한suite는 중단/미완료이며 전체PASS로 말하지 않는다. 실제 삭제대기는208개이며 복구manifest에3개RESTORED_ACTIVE_RUNTIME_IMPORT를 남겼다. 두 독립 지적은재검토RESOLVED.

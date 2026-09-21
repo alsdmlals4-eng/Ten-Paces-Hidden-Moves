@@ -9,6 +9,8 @@ signal settings_requested
 const PAPER := Color("eadfc9")
 const INK := Color("211c17")
 const GOLD := Color("b99254")
+const ART_SIZE := Vector2(525,250)
+const REFERENCE_CAPTION_HEIGHT := 32
 
 func _ready() -> void:
     set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -24,12 +26,25 @@ func _build_surface() -> void:
     add_child(matte)
     var background := TextureRect.new()
     background.name = "JourneyTitleArtwork"
-    background.texture = load("res://assets/ui/logo/journey_title_reference_v1.png")
+    var artwork := AtlasTexture.new()
+    artwork.atlas = load("res://assets/ui/logo/journey_title_reference_v1.png")
+    # Exclude the reference page caption without modifying its source pixels.
+    artwork.region = Rect2(Vector2(0,REFERENCE_CAPTION_HEIGHT),ART_SIZE)
+    background.texture = artwork
     background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
     background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
     background.mouse_filter = Control.MOUSE_FILTER_IGNORE
     background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     add_child(background)
+    var frame := Panel.new()
+    frame.name = "JourneyTitleFrame"
+    frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    var border := StyleBoxFlat.new()
+    border.bg_color = Color.TRANSPARENT
+    border.border_color = GOLD
+    border.set_border_width_all(2)
+    frame.add_theme_stylebox_override("panel",border)
+    add_child(frame)
     for item in [["MainStartButton","새 여정"],["MainContinueButton","이어하기"],["MainSettingsButton","설정"]]:
         var button := Button.new()
         button.name = item[0]
@@ -55,13 +70,17 @@ func _build_surface() -> void:
 func _fit_title() -> void:
     # Retain the user-selected composition. Buttons are live, keyboard accessible
     # controls covering the reference labels; the image never handles input.
-    var scale_factor := minf(size.x / 525.0,size.y / 282.0)
-    var origin := (size - Vector2(525,282) * scale_factor) * 0.5
+    var scale_factor := minf(size.x / ART_SIZE.x,size.y / ART_SIZE.y)
+    var origin := (size - ART_SIZE * scale_factor) * 0.5
+    var frame := get_node_or_null("JourneyTitleFrame") as Control
+    if frame != null:
+        frame.position = origin
+        frame.size = ART_SIZE * scale_factor
     var names := ["MainStartButton","MainContinueButton","MainSettingsButton"]
     for i in range(names.size()):
         var button := get_node_or_null(names[i]) as Button
         if button == null: continue
-        button.position = origin + Vector2(249,153 + 35*i) * scale_factor
+        button.position = origin + Vector2(249,153 - REFERENCE_CAPTION_HEIGHT + 35*i) * scale_factor
         button.size = Vector2(124,31) * scale_factor
         button.add_theme_font_size_override("font_size",int(clampf(17*scale_factor,18,36)))
         button.focus_next = button.get_path_to(get_node(names[(i+1)%3]))

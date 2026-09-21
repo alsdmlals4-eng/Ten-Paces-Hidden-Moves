@@ -40,6 +40,7 @@ func run() -> void:
     expect(title.find_child("MainContinueButton",true,false).visible, "Three reference menu actions stay visible without a save.")
     var artwork := title.find_child("JourneyTitleArtwork",true,false) as TextureRect
     expect(artwork != null and artwork.texture != null, "Restored title artwork must actually load.")
+    expect(artwork.texture is AtlasTexture and artwork.texture.region.position.y == 32, "Title excludes the reference-only page caption.")
     title.configure_continue({"run_state":{"duel_index":3,"current_screen":"JIANGHU","jianghu_step":1},"combat_checkpoint":{}}, "VALID")
     expect("비무 3" in title.get_node("MainContinueButton").tooltip_text and "행로 2/4" in title.get_node("MainContinueButton").tooltip_text, "Continue retains saved location.")
     title.free()
