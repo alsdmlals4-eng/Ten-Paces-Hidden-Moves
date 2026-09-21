@@ -215,7 +215,7 @@ RED: 256 seeds,170 repeated first-five rosters; P05 executable aggregator absent
 - 표적 후속: 대응 절초의 damage/non-cost 기록 누락을 발견·교정했다. 공격 없는 소요10의 잠깐 회피 grant를 유효절초로 세지 않는다. 태극10/소요7·10의 실제 반격, 자기 실행 수, 비용1회, 다음 묶음 JSON 복원 경계, legacy 대응의 상태 동등성을 추가 검증했다. 전체 검토를 재시작하지 않았다.
 - 전체 검토2/2(root): 승인/Decision/consumer/diff/관련 미수정 AI·저장·연출·효과 pipeline/실행 로그/비용·유지 부담을 대조했다. 새 확장 프레임워크 대신 v4 전용 작은 timed-response adapter와 기존 pipeline을 연결한다. 저장에는 transient/callable이 없으며 원화·기존v1~v3 identity·그림 lock 경계를 보존한다. 최종 등급/경제를 구현으로 위장하지 않고 다음 P06·P12를 남긴다.
 
-Windows4.7.1 NVIDIA GPU 실제 UI 자동 입력(seed1, accelerated replay/reduced motion는 probe에만 적용): **5승·16행로·실패0 / 174871ms**. 승패·체력 결과를 주입하지 않았다. 도겸(항룡장법)→풍목(오호단문도)→우람(양가창)→담월(소요보)→비연(당가암기) 각각 대표3성 프로그램의 타격/이동/회피준비 효과를 기록했다. 담월 후속 회피 조건이 실패하면 보너스 이동·기세가 실행되지 않는 사건도 보존했다. 매 결과 경계의 실제 저장 readback과 확정 상대10행 일치를 확인했다. `result-5.png`에서 집계 설명·선택지·확정 버튼의 겹침 없이 보이는 것을 직접 확인했다. 이 seed는 가능한 플레이 경로의 증거이지 모든 전략의 승리/균형 보장이 아니다.
+Windows4.7.1 NVIDIA GPU 실제 UI 자동 입력(seed1, accelerated replay/reduced motion는 probe에만 적용): **5승·16행로·실패0 / 174871ms**. 승패·체력 결과를 주입하지 않았다. 도겸(강룡장결)→풍목(팽가도결)→우람(양가창결)→담월(소요보결)→비연(천기암기록) 각각 대표3성 프로그램의 타격/이동/회피준비 효과를 기록했다. 담월 후속 회피 조건이 실패하면 보너스 이동·기세가 실행되지 않는 사건도 보존했다. 매 결과 경계의 실제 저장 readback과 확정 상대10행 일치를 확인했다. `result-5.png`에서 집계 설명·선택지·확정 버튼의 겹침 없이 보이는 것을 직접 확인했다. 이 seed는 가능한 플레이 경로의 증거이지 모든 전략의 승리/균형 보장이 아니다.
 
 검증 근거 root: `C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/five-duels-20260921/`.
 
@@ -245,3 +245,5 @@ export: `windows-test-build/TenPacesHiddenMoves.exe`와 pck. 첫 격리 APPDATA 
 참조 freshness/project operating PASS. 보호 계약의 첫 검사는 import가 재생성한 미추적 sidecar 때문에 exact approved-path 불일치였고, 이를 승인 경로에 덧붙여 우회하지 않았다. 실제 검사에서 생성된 `.uid/.import`208개를 사용자 지시대로 `C:/Users/user/Documents/삭제대기/십보강호_모션통합_20260912_064614/first-five-20260921`에 이동했다. 전체 원래 경로·크기·SHA256·복구 안내를 `restore-manifest.json`에 기록하고 이동 후 해시를 대조했다. 기존 원본/이전 삭제대기 폴더는 보존했으며 파일 삭제0. 정리 후 같은 승인 보호 계약 PASS. task-created editor17356만 종료하고 기존 편집기/다른 프로젝트는 보존했다.
 
 Windows export exit0, export된 파일의50무공 시나리오 PASS. exe SHA256 `5bf89f938102f0e3119a5fdaafac4f55884c877681667d0dce844509c8bd8752`, pck `afefc8ebe81acf4c6b0f0ef76e862571e1b500eef5240adf6f05a08a8911e50e`. 실행 방법은 같은 폴더 `실행안내.txt`. 현재 제품 tree는 이 build와 일치하며 이후 기록-only 마감은 별도로 구분한다. 처음 smoke metadata의84031051은 수정 전 baseline이므로 해당 source identity를 빌드 commit으로 인용하지 않고 commit 확정 후 receipt에서 바로잡는다.
+
+제품 구현 commit: 52e1ce4e1b6311557808184b9bc6eb0d7fe0be0e. 이 commit의 product tree에 맞춰 export smoke metadata를 재발행했고50건을 확인했다. 로컬/원격 작업 branch 일치와 clean worktree를 확인했다. 이후 정본의 무공 표시명 교정은 문서-only이며 제품 파일은 같다. 최종 원격 상태와 build SHA/트리는 외부 evidence의 delivery-receipt.json 및 PR342 exact HEAD live checks를 대조한다.
