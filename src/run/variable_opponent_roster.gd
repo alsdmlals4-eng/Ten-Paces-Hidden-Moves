@@ -82,21 +82,30 @@ func generate(run_seed: int, save_id: String = "run") -> Array:
     var result: Array = []
     var previous_id := ""
     var previous_type := ""
+    # New journeys: five distinct people AND signature manuals before repeats.
+    # Persisted encounters remain authoritative; validate() intentionally accepts old draws.
+    var opening_people := {}
+    var opening_manuals := {}
     for stage in range(1, 11):
         var weights: Array[int] = []
         var total := 0
         for id in _ids:
             var weight := 100
+            if stage <= 5 and (opening_people.has(id) or opening_manuals.has(_candidates[id].signature_manual_id)):
+                weight = 0
             if id == previous_id: weight = int(weight * 25 / 100)
             if _candidates[id].runtime_archetype_id == previous_type: weight = int(weight * 50 / 100)
             weights.append(weight)
             total += weight
+        if total <= 0: return []
         var draw := rng.randi_range(0, total - 1)
         for i in range(_ids.size()):
             draw -= weights[i]
             if draw < 0:
                 previous_id = _ids[i]
                 previous_type = _candidates[previous_id].runtime_archetype_id
+                opening_people[previous_id] = true
+                opening_manuals[_candidates[previous_id].signature_manual_id] = true
                 var row := get_stage(previous_id, stage)
                 row["encounter_id"] = "%s:%02d" % [save_id, stage]
                 result.append(row)

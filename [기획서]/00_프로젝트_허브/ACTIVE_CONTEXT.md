@@ -1,5 +1,9 @@
 # 십보강호 활성 컨텍스트
 
+## 현재 작업 · 2026-09-21 첫 5전 실제 무공과 유효 성과
+
+사용자 요청에 따라 새 여정 첫5 인물·대표무공 고유 추첨, stats-v4 공개정보 AI의 합법 대표 기술 선택, 태극/소요 대응의 실제 타이밍·조건부 후속 효과를 연결했다. Windows 자동 입력 seed1에서 도겸→풍목→우람→담월→비연과 5승·16행로, 각각 대표 무공 효과와 결과 저장 readback을 확인했다. 이전 저장 상대는 다시 뽑지 않는다. P05 원시/유효/제외 이유 집계는 구현했고 최종 등급·경제는 미정이다. 결정: `docs/decisions/2026-09-21_FIRST_FIVE_DUELS_AND_GRADE_EVIDENCE.md`. 실행·두 검토·한계·사용자 build는 기존 `docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md`의9월21일 절. GitHub exact HEAD 검사는 live metadata를 확인한다. PR342는 네 모션 final lock 전 Draft이며 Human/Android/출시는 NOT_RUN. 다음은 P06 사건·영구능력 공급 계약과 P12 정책별 균형/사람 선택 관찰이다.
+
 ## 현재 작업 · 2026-09-21 무공별 연출 연결
 
 사용자가 카드별 프리셋과 합→승패→후속 동작 및 필요한 연관 작업을 승인했다. 명세는 `docs/10_COMBAT_PRESENTATION_PLAN.md` §5.2, 실제 코드/검증·교정은 기존 `docs/operations/2026-09-12_MOTION_UI_INTEGRATION.md`의9월21일 절이다.43카드 표현 데이터와 확정 사건 기반 연결을 구현했고 pure134/Windows22/정적485/관련 회귀·export50시나리오를 검증했으며 판정/저장/AI/승인 자산은 보호한다. 비검 무기 고유 자세는 중립 fallback으로 명시한다. PR342와4장 final lock 전 Draft/Human·Android·출시 미검증 경계 유지. 이번 승인 단위를 끝낸 뒤 기존 P05/P06 계획으로 이어간다.

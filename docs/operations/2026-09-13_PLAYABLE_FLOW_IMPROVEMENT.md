@@ -195,3 +195,53 @@ RED와 교정: 중복 view·새 명령 방어 부재를 실패 검사로 확인�
 실제 편집기19824의 exact4.7.1/project 경로와 Hera UI guidance를 확인했다. Windows native InputEvent/renderer로 선택불가 건너뛰기·과거 선택 표시·메뉴복귀·행로 결과/화면 경계를 확인하고 PNG를 직접 검수했다. 신규 이미지 생성이나 최종 미감 승인은 아니다. task editor 종료 뒤 생성 sidecar195개를 `C:/Users/user/Documents/삭제대기/십보강호_모션통합_20260912_064614/reward-route-20260920`에 원본/목적지/hash manifest와 함께 이동했다. 원본 코드·자산과 다른 작업 폴더는 보존했다.
 
 같은 월간 PDF/9월20일 항목에 누적했고 기존 상세11쪽을 보존했다. 최초 렌더에서 부연 문장이 혼자 새쪽으로 밀려 간격만 조정해12쪽을 유지하고 재검수했다. 실제 미실시 Human/Android/기기/출시와 네 모션 final lock은 그대로다. GitHub exact HEAD 검사와 branch/main은 PR342 live metadata가 책임 원본이다. 계획+편집기 실행 복합 요청의 자동 검토 거절은 세부 이유 없이 policy blocked였고, 한정된 문서 diff와 별도 실행으로 검토 가능한 형태로 진행했다.
+# 2026-09-21 continuation — first five diverse duels and P05
+
+Approval: latest user `좋아 작업 진행해 / 강호행로 및 5 전째까지 각기 다른 상대,무공과 겨룰 수 있는상태`. Baseline `8403105196ad8d68bd484636be48d255b4d92ca3`; PLAN→BUILD; project implementation-contract/build + verification runtime/regression; executing-plans inline and TDD. Main `e5ec55e6`, Base `23ecad5a` freshly read; contract validator PASS. PR342 is still Draft for four final motion locks; unrelated PR199/200 preserved.
+
+Plan: (1) new-run first five candidate AND signature-manual uniqueness with deterministic weighted draw; preserve persisted rosters, source rows, all existing save identities and stages6–10 repeat policy. (2) P05 raw/effective/reason aggregation, no final S/A/B/C formula or economic reward change; optional versioned grade evidence in combat checkpoint, missing old evidence explicitly unavailable. (3) real first-five combat/16 intervening route choices, actual enemy manual use, restore boundaries, native UI captures and user build. (4) two whole-scope reviews total, focused defect correction, existing canon/monthly evidence update and PR checks. No new art, no core/AI privacy/resource changes.
+
+CURRENT_SOURCE_RELEVANCE_CHECK: reuse existing P05 guardrail and remaining-spec benchmark. Godot official RandomNumberGenerator documentation read 2026-09-21 confirms seed reproducibility but internal algorithm is not a stable cross-version contract: https://docs.godotengine.org/en/stable/classes/class_randomnumbergenerator.html . Therefore stored resolved encounters remain authoritative; no load-time re-roll. No new game comparison quota or unrelated source expansion. Feasibility: FEASIBLE local code/headless/native; Human fun/Android/final art/release NOT_RUN.
+
+Experience hypothesis: first five distinct people and signature styles make each duel present a new observation/response problem. Counterexamples: different names but same signature, signature never available/executed, route unable to reach next opponent, loading changes opponent, repetitive choices despite diversity. Machine evidence tests the first four; player experience still needs Human observation.
+
+RED: 256 seeds,170 repeated first-five rosters; P05 executable aggregator absent. Ruling: opening variety is a new-generation policy, not a roster schema change. Old repeated frozen rosters remain valid; users need a new journey for guaranteed opening diversity.
+
+### 2026-09-21 구현·실제 5전 인수
+
+- 책임 결정: `docs/decisions/2026-09-21_FIRST_FIVE_DUELS_AND_GRADE_EVIDENCE.md`. 변경은 같은 승인 PR342이며 다른 worktree/PR199·200, Base·설치 플러그인·전역 설정·승인 원화와 기존 단계별 수치를 보호했다.
+- 실제 AI 감사: 초기 탐색에서 대표 무공이 보유만 되고 실사용은0이었다. 합법 대표 기술 소개 선택을 stats-v4에 연결했다. 기존 공개 이력6건을 재사용하며 숨은 플레이어 계획/입력 의도는 읽지 않는다. 대표 기술을 반드시 사용하게 피해·사거리·중단을 우회하지 않는다.
+- 독립 전체 검토1/2: 대응 무공이 일반 막기로 바뀌는 기존 결함, 비공격 상대의 특별합 유효가점, native 인수의 이름만 확인하는 거짓 양성을 발견했다. 태극·소요 프로그램을 실제 실행 수의 준비/성공 후 효과로 연결하고, 비용1회·미사용 회피 만료·실제 피해/효과를 기록했다. 명상/이동/막기 상대 합은 원시 지표 보존·유효 성과 제외. native 검사는 대표 무공의 실제 효과 사건을 필수로 요구한다. 당가3성은 순수공격이고 관찰은5성 overlay라는 데이터 재확인으로 검토자의 초기 stage1 불가 판단을 정정했으며 테스트 면제를 제거했다.
+- 표적 후속: 대응 절초의 damage/non-cost 기록 누락을 발견·교정했다. 공격 없는 소요10의 잠깐 회피 grant를 유효절초로 세지 않는다. 태극10/소요7·10의 실제 반격, 자기 실행 수, 비용1회, 다음 묶음 JSON 복원 경계, legacy 대응의 상태 동등성을 추가 검증했다. 전체 검토를 재시작하지 않았다.
+- 전체 검토2/2(root): 승인/Decision/consumer/diff/관련 미수정 AI·저장·연출·효과 pipeline/실행 로그/비용·유지 부담을 대조했다. 새 확장 프레임워크 대신 v4 전용 작은 timed-response adapter와 기존 pipeline을 연결한다. 저장에는 transient/callable이 없으며 원화·기존v1~v3 identity·그림 lock 경계를 보존한다. 최종 등급/경제를 구현으로 위장하지 않고 다음 P06·P12를 남긴다.
+
+Windows4.7.1 NVIDIA GPU 실제 UI 자동 입력(seed1, accelerated replay/reduced motion는 probe에만 적용): **5승·16행로·실패0 / 174871ms**. 승패·체력 결과를 주입하지 않았다. 도겸(항룡장법)→풍목(오호단문도)→우람(양가창)→담월(소요보)→비연(당가암기) 각각 대표3성 프로그램의 타격/이동/회피준비 효과를 기록했다. 담월 후속 회피 조건이 실패하면 보너스 이동·기세가 실행되지 않는 사건도 보존했다. 매 결과 경계의 실제 저장 readback과 확정 상대10행 일치를 확인했다. `result-5.png`에서 집계 설명·선택지·확정 버튼의 겹침 없이 보이는 것을 직접 확인했다. 이 seed는 가능한 플레이 경로의 증거이지 모든 전략의 승리/균형 보장이 아니다.
+
+검증 근거 root: `C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/five-duels-20260921/`.
+
+| 검증 | 결과/로그 |
+|---|---|
+| 첫5 고유·재현·기존 중복 저장 수용 | 256seeds / 16후보, verify_first_five_diversity.log |
+| 기존 전체 편성 검사 | 10000seeds / VARIABLE_OPPONENT_ROSTER_PASS |
+| 공개정보·대표 기술 선택 | 176checks / verify_signature_ai.log |
+| 유효 집계 | 19checks / verify_battle_grade_aggregator.log; 비공격 source RED3건 후 GREEN |
+| 실제 대응 효과·고성 반격·legacy | verify_timed_martial_response.log PASS; 첫 RED19건은 -red.log 보존 |
+| 저장·성장·결과·행로 | checkpoint resume, variable save compat, actor binding,160row codec, growth157, result80, route PASS |
+| 연출·정보 경계 | card motion Windows22, integration information boundaries PASS |
+| 실제5전 | probe_native_first_five-native.log 및 briefing/result1~5, route.png |
+
+탐색 한계: `campaign-exploration.json`은 AI 소개 수정 뒤/대응 최종 교정 전 10seed의 공개 정책 탐색이다. 9/10이5전에 도달했고 seed34는 재도전 포함2전에서 패배했다. 균형 PASS나 최신 전체 플레이 결과로 승격하지 않는다. 초기 seed42 native 실패도 일반 정책/이전 후보의 결과다. 최종 native 인수는 위 seed1이며 별도로 구분한다.
+
+export: `windows-test-build/TenPacesHiddenMoves.exe`와 pck. 첫 격리 APPDATA export는 템플릿 경로 부재로 실패했고, 설치된 정확한4.7.1 템플릿을 사용하는 정상 경로로 재실행해 성공했다. 프로젝트/플러그인 전역 설정은 변경하지 않았다. import/export 종료의 기존 플러그인 ObjectDB45/resource22 진단은 이전 모션 작업에서도 있던 환경 진단으로 보존한다. 게임 native5전 로그의 스크립트 오류와 구분한다.
+
+월간 기존 PDF의9월21일 항목에 병합했다. 13쪽 유지(요약2+기존 상세11), 기존 상세 content stream 동일, 새 요약2쪽 렌더 직접 검수. 발행 SHA256 `ac9910515d285ea43f71f7b7a622d366134624a1e2fe50669f78925b41347e2f`. 입력 화면/계정/결제 증빙은 미첨부이며 과거 작업일과 오늘 기록·캡처일을 구분한다.
+
+자동/실제 실행은 Human 재미·Android·접근성 사용자·final art·release가 아니다. PR342 Draft의 네 모션 최종 lock은 그대로이며 main 병합 완료를 주장하지 않는다. 원격 exact HEAD/빌드 연결·최종 회귀·복구 가능한 정리 readback은 아래 마감 기록에서 확정한다.
+
+### 9월21일 첫5전 마감 readback
+
+전체 Python/Godot 회귀 `python-suite.log`: **500개 대상,2 skipped,실패0 / 802.951초**. 별도 프로세스의 실제 저장·이어하기 계약을 포함한다. 신규 대응/집계 표적 회귀는 추가 실행 로그에 분리했다. 독립 검토자의 마지막 표적 확인은 남은 확정P1/P2 없음이며, 대응 단위 검사의 저장 부분은 새 엔진 검증이 아닌 **JSON 왕복 후 같은 엔진의 다음 묶음**임을 주석에 정확히 고쳤다. 별도 프로세스 checkpoint 근거는 전체 회귀와 연결한다.
+
+참조 freshness/project operating PASS. 보호 계약의 첫 검사는 import가 재생성한 미추적 sidecar 때문에 exact approved-path 불일치였고, 이를 승인 경로에 덧붙여 우회하지 않았다. 실제 검사에서 생성된 `.uid/.import`208개를 사용자 지시대로 `C:/Users/user/Documents/삭제대기/십보강호_모션통합_20260912_064614/first-five-20260921`에 이동했다. 전체 원래 경로·크기·SHA256·복구 안내를 `restore-manifest.json`에 기록하고 이동 후 해시를 대조했다. 기존 원본/이전 삭제대기 폴더는 보존했으며 파일 삭제0. 정리 후 같은 승인 보호 계약 PASS. task-created editor17356만 종료하고 기존 편집기/다른 프로젝트는 보존했다.
+
+Windows export exit0, export된 파일의50무공 시나리오 PASS. exe SHA256 `5bf89f938102f0e3119a5fdaafac4f55884c877681667d0dce844509c8bd8752`, pck `afefc8ebe81acf4c6b0f0ef76e862571e1b500eef5240adf6f05a08a8911e50e`. 실행 방법은 같은 폴더 `실행안내.txt`. 현재 제품 tree는 이 build와 일치하며 이후 기록-only 마감은 별도로 구분한다. 처음 smoke metadata의84031051은 수정 전 baseline이므로 해당 source identity를 빌드 commit으로 인용하지 않고 commit 확정 후 receipt에서 바로잡는다.

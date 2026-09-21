@@ -53,6 +53,9 @@ func accumulate(current_value: Dictionary, state_before: Dictionary, result_valu
 
         if actor == "player" and _is_executed_ultimate(action):
             next["ultimate_uses"] = int(next["ultimate_uses"]) + 1
+        if actor == "enemy":
+            for event in action.get("martial_events",[]):
+                if event.get("status")=="EVADED": next.successful_dodges+=1
 
     return next
 

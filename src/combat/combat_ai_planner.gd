@@ -7,6 +7,10 @@ const RIVAL_PATH := "res://data/combat/combat_rival_tendency_poc.json"
 var _rival_data: Dictionary = {}
 var _last_trace: Dictionary = {}
 var _runtime_binding: Dictionary = {}
+var _signature_manual_id := ""
+
+func set_signature_manual(manual_id: String) -> void:
+    _signature_manual_id = manual_id
 
 func _init() -> void:
     _rival_data = _load_json(RIVAL_PATH)
@@ -91,6 +95,7 @@ func _build_bound_bundle_actions(state: Dictionary, bundle_index: int, cards_by_
     var candidates := _build_candidates(snapshot, profile, cards_by_id, public_history)
     _apply_focus_bonuses(candidates, _runtime_binding.get("basic_action_focus_ids", []))
     _apply_public_history_counter(candidates, profile, public_history)
+    _introduce_signature(candidates,state,snapshot)
     if candidates.is_empty():
         _last_trace = _bound_trace(snapshot, profile, [], {}, "", _scoped_seed(snapshot), [], public_history.size())
         return []
@@ -239,6 +244,10 @@ func _apply_public_history_counter(candidates: Array, profile: Dictionary, publi
             candidate["reason_codes"] = reasons
 
 func _selection_candidates(rational_candidates: Array, cards_by_id: Dictionary) -> Array:
+    var introductions: Array = []
+    for candidate in rational_candidates:
+        if "signature_style" in candidate.get("reason_codes",[]): introductions.append(candidate)
+    if not introductions.is_empty(): return introductions
     var legacy_candidates: Array = []
     var martial_candidates: Array = []
     for value in rational_candidates:
@@ -364,12 +373,31 @@ func _append_martial_candidates(candidates: Array, snapshot: Dictionary, cards_b
         _append_candidate(candidates, card_id, score, reason_codes, cards_by_id, definition)
 
 func _martial_distance_is_reachable(definition: Dictionary, distance: int) -> bool:
+    if not _signature_manual_id.is_empty() and str(definition.get("targeting_mode",""))=="self" and not _has_target_attack(definition): return true
     var profile := _martial_range_profile(definition, distance)
     return profile.x >= profile.y and profile.x <= profile.z
 
 func _martial_is_at_preferred_distance(definition: Dictionary, distance: int) -> bool:
+    if not _signature_manual_id.is_empty() and str(definition.get("targeting_mode",""))=="self" and not _has_target_attack(definition): return true
     var profile := _martial_range_profile(definition, distance)
     return profile.x == profile.z
+
+func _has_target_attack(definition: Dictionary) -> bool:
+    for step in definition.get("effect_steps",[]):
+        if step.get("op") in ["ATTACK","INDEPENDENT_ATTACK","SPECIAL_CLASH"]: return true
+    return false
+
+func _introduce_signature(candidates: Array, state: Dictionary, snapshot: Dictionary) -> void:
+    if _signature_manual_id.is_empty() or int(snapshot.enemy_health)*3<=int(snapshot.enemy_health_max): return
+    if int(snapshot.enemy_stamina)<=0 or int(snapshot.enemy_internal)<=0: return
+    for action in state.get("public_resolution_history",[]):
+        if action.get("actor")=="enemy" and str(action.get("card_id","")).begins_with(_signature_manual_id+"_star") and action.get("outcome") not in ["interrupted","martial_failed"]: return
+    var best := 0.0
+    for candidate in candidates: best=maxf(best,float(candidate.score))
+    for candidate in candidates:
+        if str(candidate.card_id).begins_with(_signature_manual_id+"_star"):
+            candidate.score=maxf(float(candidate.score),best+1.1)
+            candidate.reason_codes.append("signature_style")
 
 func _martial_range_profile(definition: Dictionary, distance: int) -> Vector3i:
     var minimum := 0

@@ -112,6 +112,7 @@ func _engine(binding: Dictionary, legacy_starters: bool = false):
     if portable(runtime) != portable(binding.enemy_runtime_binding): return null
     var engine = load("res://src/run/vertical_slice_metrics_combat_resolution_engine.gd").new()
     engine.variable_opponent_rules = binding.has("resolved_encounter")
+    if binding.has("player_growth_stats"): engine.ai_planner.set_signature_manual(str(binding.enemy_loadout[0]))
     if binding.has("player_growth_stats"):
         if not load("res://src/run/player_growth_state.gd").valid_stats(binding.player_growth_stats) or not engine.configure_player_growth_stats(binding.player_growth_stats): return null
     for field in ["player_mastery_by_manual", "enemy_mastery_by_manual"]:
@@ -137,7 +138,8 @@ func _context(context: Dictionary, state: Dictionary) -> bool:
     return context.timing_sequence == [3, 3, 4] and context.total_timings == 10 and integer(context.current_timing, 1, 10) and context.current_timing == [1, 4, 7][int(context.bundle_index) - 1]
 
 func _state(state: Dictionary) -> bool:
-    if not _keys(state, ["round_number", "bundle_index", "player", "enemy", "ai_decision_seed", "ai_enabled", "battle_metrics"], ["public_resolution_history"]): return false
+    if not _keys(state, ["round_number", "bundle_index", "player", "enemy", "ai_decision_seed", "ai_enabled", "battle_metrics"], ["public_resolution_history", "grade_ledger"]): return false
+    if state.has("grade_ledger") and not preload("res://src/run/battle_grade_aggregator.gd").valid_ledger(state.grade_ledger): return false
     if not integer(state.round_number, 1) or not integer(state.bundle_index, 1, 3) or not integer(state.ai_decision_seed, -9007199254740991) or typeof(state.ai_enabled) != TYPE_BOOL: return false
     if not _actor(state.player) or not _actor(state.enemy): return false
     if not _keys(state.battle_metrics, ["successful_dodges", "clash_wins", "player_health_lost", "rounds_elapsed", "ultimate_uses"]): return false

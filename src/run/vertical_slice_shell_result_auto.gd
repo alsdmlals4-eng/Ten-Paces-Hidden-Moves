@@ -107,6 +107,7 @@ func _render_result() -> void:
         int(metrics.get("ultimate_uses", 0))
     ]
     description += "\n첫 선택은 변경할 수 없으며, 확정할 때 적용됩니다." if run_state.get_pending_result_reward().is_empty() else "\n선택을 저장했습니다. 아래 확정 버튼으로 진행하세요."
+    description += "\n\n" + preload("res://src/run/battle_grade_aggregator.gd").explanation(_result_snapshot.get("grade_summary",{}))
     var next_label := "보상 확정 후 완주 정리" if run_state.completed_duels >= VerticalSliceRunState.MAX_DUELS else "보상 확정 후 강호행로로"
     _set_content("비무 %d 결과" % run_state.completed_duels, description, next_label)
     primary_button.disabled = run_state.get_pending_result_reward().is_empty()

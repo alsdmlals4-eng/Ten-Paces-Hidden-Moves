@@ -108,3 +108,7 @@ windows_validation: NOT_RUN
 human_validation: NOT_RUN
 balance_validation: NOT_RUN
 ```
+
+## 2026-09-21 승인 후속 연결
+
+`TEN-DEC-20260921-FIRST-FIVE-DUELS-GRADE-EVIDENCE-01` / `docs/decisions/2026-09-21_FIRST_FIVE_DUELS_AND_GRADE_EVIDENCE.md`에 따라 P05 유효 집계·결과 표시 및 첫5 실제 무공 연결을 구현한다. 기존 PLANNING_ONLY 등 역사 범위는 당시 권한이며 이번 명시 승인과 구분한다. 최종 등급 산식/보상 경제는 여전히 미정. 기존 실행 기록 PLAYABLE_FLOW_IMPROVEMENT의9월21일 절과 현재 GitHub PR342 HEAD를 대조한다.

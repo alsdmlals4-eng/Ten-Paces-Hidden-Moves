@@ -72,6 +72,7 @@ func configure_vertical_slice_loadouts(
         return false
     var engine: VerticalSliceMetricsCombatResolutionEngine = VERTICAL_SLICE_ENGINE_SCRIPT.new()
     engine.variable_opponent_rules = not resolved_encounter.is_empty()
+    if not player_growth_stats.is_empty(): engine.ai_planner.set_signature_manual(str(enemy_ids[0]))
     if not player_growth_stats.is_empty() and not engine.configure_player_growth_stats(player_growth_stats): return false
     if not engine.configure_bimu_constraints(bimu_receipt.get("selections", []), player_ids, enemy_ids):
         return false
@@ -432,6 +433,7 @@ func _build_vertical_slice_terminal_result() -> Dictionary:
         "enemy_health": enemy_health,
         "player_resources": _player_resource_snapshot(),
         "battle_metrics": metrics.duplicate(true),
+        "grade_summary": preload("res://src/run/battle_grade_aggregator.gd").summarize(metrics,combat_state.get("grade_ledger",{})),
         "review_summary": _last_review_summary.duplicate(true),
         "presentation_state": _presentation_state
     }

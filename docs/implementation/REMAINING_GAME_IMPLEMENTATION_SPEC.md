@@ -59,7 +59,7 @@ WHAT: 아래 P00~P14의 작은 인수 단위로 연결하고 각 완료를 정�
 | P02 | 자유 수련 소비·저장·해금 연결 | P0 | P01, 저장 의미 결정 | RUNTIME_VERIFIED(로컬 자동), v3 Decision/실행 owner: `docs/operations/2026-09-14_TRAINING_ALLOCATION_IMPLEMENTATION.md`; 원격·Human 별도 |
 | P03 | 시작 능력 분배·성장 영구 능력 | P0 | P02의 버전 계약 | PR342 WORKING_BRANCH 구현·로컬 native 검증; v4 Decision과 기존 수련 실행 기록9월20일 절 참조, 원격·Human 별도 |
 | P04 | 중복 전수 보상 마무리 | P1 | P01/P02 | LOCAL_RUNTIME_VERIFIED; 2026-09-20 Decision, exact HEAD CI 별도 |
-| P05 | 등급 유효 입력·산식·표시 | P1 | P12 기초 측정 | PARTIAL, 집계는 승인 계약; 최종 산식은 후보 |
+| P05 | 등급 유효 입력·산식·표시 | P1 | P12 기초 측정 | 유효 집계·실제 결과 표시 LOCAL_RUNTIME_VERIFIED(9월21일); 최종 산식은 후보 |
 | P06 | 행로 사건·정탐·영구 능력 보상 | P1 | P02/P03 | PARTIAL, 36선택 공급량·콘텐츠 결정 필요 |
 | P07 | 도감·조사·완주 기록의 회차 밖 보존 | P1 | P00, 별도 profile 계약 | PARTIAL, 범위 확정 후 구현 |
 | P08 | 첫 플레이 이해·전체 화면·입력/확인창 | P1 | P01~P03 결과 반영 | FEASIBLE, 기존 화면 우선 |
@@ -156,6 +156,8 @@ CURRENT_SOURCE_RELEVANCE_CHECK: 기존 §20 비교 재사용 + 2026-09-20 공식
 P04/P06a 지역 결과: 중복/역사 저장352검사, 행로36지점·3선택·복원1315검사, Windows 보상80/행로41검사, 정적485검사 통과. P06a는 기존 효과 표시만 완료이며 영구능력 공급 및 authored 사건 확장은 미완료다. 실행·검토는 기존 PLAYABLE_FLOW_IMPROVEMENT.md의9월20일 절.
 
 ## 9. P05 — 등급 집계와 최종 산식
+
+**2026-09-21 구현:** raw5 원자료와 optional version1 사건 근거를 보존하며 유효 합/회피/절초·제외 이유를 실제 결과/저장에 연결했다. 첫5 다양성 및 실제 무공 대응 결함도 같은 승인으로 교정했다. 결정은 `docs/decisions/2026-09-21_FIRST_FIVE_DUELS_AND_GRADE_EVIDENCE.md`, 실행은 기존 PLAYABLE_FLOW_IMPROVEMENT의9월21일 절. 최종 S/A/B/C·경제·Human 검증은 계속 미완료다. 아래 설계의 집계 부분은 이제 실제 consumer가 있고 산식 부분은 후보 상태다.
 
 **현재:** raw5지표는 존재하며 S/A/B/C는 빈값이다. 최종가중치와컷은 승인되지 않았다.
 **기존 owner:** `src/run/vertical_slice_battle_metrics.gd`, `vertical_slice_result_model.gd`, `src/combat/combat_review_summary_builder.gd`; `docs/02_COMBAT_RULES_GRADE_FARMING_GUARDRAILS_AMENDMENT.md`와 `approved_20260805_grade_farming_guardrails_contract.json`.

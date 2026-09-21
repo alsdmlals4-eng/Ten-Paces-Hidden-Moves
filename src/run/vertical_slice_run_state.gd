@@ -127,6 +127,7 @@ func validate_snapshot(snapshot: Dictionary) -> Dictionary:
         var row: Dictionary = s.duel_history[i]
         if row.get("duel_index") != i + 1 or not CHECKPOINT_CODEC.integer(row.get("duel_index"), 1, 10) or row.get("opponent_candidate_id") != catalog.select_campaign_candidate_id(i + 1) or row.get("outcome") not in ["win", "draw"]: return bad
         if typeof(row.get("battle_metrics")) != TYPE_DICTIONARY or typeof(row.get("review_summary")) != TYPE_DICTIONARY: return bad
+        if row.has("grade_summary") and not preload("res://src/run/battle_grade_aggregator.gd").valid_summary(row.grade_summary): return bad
         for value in row.battle_metrics.values():
             if not CHECKPOINT_CODEC.integer(value): return bad
     var terminal_success: bool = s.current_screen in [SCREEN_RESULT, SCREEN_JIANGHU, SCREEN_COMPLETION] or (s.current_screen == SCREEN_REVIEW and s.last_combat_result.get("outcome") in ["win", "draw"])
@@ -168,6 +169,7 @@ func validate_snapshot(snapshot: Dictionary) -> Dictionary:
         if s.last_combat_result.get("outcome") != "loss" or s.failure_receipt.get("duel_index") != s.duel_index or s.failure_receipt.get("attempt_id") != s.attempt_id or s.failure_receipt.get("retry_count") != s.retry_count or typeof(s.failure_receipt.get("review_causes")) != TYPE_ARRAY: return bad
     elif not s.failure_receipt.is_empty(): return bad
     if not s.last_combat_result.is_empty():
+        if s.last_combat_result.has("grade_summary") and not preload("res://src/run/battle_grade_aggregator.gd").valid_summary(s.last_combat_result.grade_summary): return bad
         if s.last_combat_result.get("outcome") not in ["win", "loss", "draw"] or not CHECKPOINT_CODEC.integer(s.last_combat_result.get("attempt_id"), 0, 1): return bad
         if s.last_combat_result.has("player_resources") and not PROGRESSION_SCRIPT.validate_resource_snapshot(s.last_combat_result.player_resources): return bad
     return {"ok": true, "status": "VALID"}
@@ -1021,7 +1023,7 @@ func _build_duel_history_row(result: Dictionary) -> Dictionary:
     var review: Dictionary = review_source if typeof(review_source) == TYPE_DICTIONARY else {}
     var metrics_source = result.get("battle_metrics", {})
     var metrics: Dictionary = metrics_source if typeof(metrics_source) == TYPE_DICTIONARY else {}
-    return {
+    var history := {
         "duel_index": duel_index,
         "opponent_candidate_id": _current_opponent_id,
         "opponent_working_name": str(opponent.get("working_name", "")),
@@ -1039,6 +1041,9 @@ func _build_duel_history_row(result: Dictionary) -> Dictionary:
             "ultimate_uses": maxi(0, int(metrics.get("ultimate_uses", 0)))
         }
     }
+    if preload("res://src/run/battle_grade_aggregator.gd").valid_summary(result.get("grade_summary")):
+        history["grade_summary"] = result.grade_summary.duplicate(true)
+    return history
 
 
 func _confirm_pending_result_reward() -> bool:

@@ -12,12 +12,12 @@
   "updated_date": "2026-09-21",
   "remaining_implementation_spec": {
     "owner": "docs/implementation/REMAINING_GAME_IMPLEMENTATION_SPEC.md",
-    "status": "P01_P02_P03_P04_P06A_LOCAL_RUNTIME_VERIFIED_CI_LIVE",
+    "status": "P01_P02_P03_P04_P05_AGGREGATION_P06A_FIRST_FIVE_LOCAL_RUNTIME_VERIFIED_CI_LIVE",
     "baseline_product_head": "fb565eb1d2fbc2e1896695c58e6be08c475577cc",
     "priority": [
-      "P05 explainable grade aggregation before unapproved final formula",
-      "P06 remaining permanent-stat supply decision and authored event expansion",
-      "P08 first-play clarity and P12 human growth-choice observation"
+      "P06 remaining permanent-stat supply and authored event expansion",
+      "P12 broader public-policy balance and human choice observation",
+      "P05 final grade formula remains pending; P08 first-play clarity"
     ],
     "new_rules_or_schema_approved": true,
     "approved_rules_or_schema_decisions": [
@@ -26,7 +26,7 @@
       "TEN-DEC-20260920-REWARD-CHOICE-AVAILABILITY-01"
     ],
     "runtime_human_android_release": "NOT_RUN_FOR_THIS_SPEC",
-    "current_continuation": "docs/decisions/2026-09-20_REWARD_CHOICE_AVAILABILITY.md"
+    "current_continuation": "docs/decisions/2026-09-21_FIRST_FIVE_DUELS_AND_GRADE_EVIDENCE.md"
   },
   "result_reward_navigation": {
     "route_focus_continuation": "CURRENT_JIANGHU_SUCCESS_ONLY_FOCUS_HANDOFF_LOCAL_RUNTIME_VERIFIED",
@@ -749,5 +749,16 @@
     "card_count": 43,
     "non_sword_pose": "NEUTRAL_FALLBACK_ASSET_WORK_PENDING",
     "human_fun": "NOT_RUN"
+  },
+  "first_five_duels": {
+    "decision": "TEN-DEC-20260921-FIRST-FIVE-DUELS-GRADE-EVIDENCE-01",
+    "status": "WORKING_BRANCH_WINDOWS_5_WINS_16_ROUTES_VERIFIED",
+    "native_seed": 1,
+    "distinct_opponents": 5,
+    "distinct_signature_manuals": 5,
+    "actual_signature_effects": true,
+    "legacy_saved_rosters": "PRESERVED_NO_REROLL",
+    "source_evidence": "docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md",
+    "human_android_release": "NOT_RUN"
   }
 }

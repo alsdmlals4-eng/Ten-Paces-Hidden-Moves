@@ -106,3 +106,11 @@ jobs:
           godot --headless --path . --script res://tests/verify_player_growth_flow.gd -- --store-root /tmp/ten-stats-${{ github.run_id }}-${{ github.run_attempt }}
           godot --headless --path . --script res://tests/verify_player_growth_flow.gd -- --resume-root /tmp/ten-stats-${{ github.run_id }}-${{ github.run_attempt }}
           godot --headless --path . --script res://tests/verify_player_growth_ui.gd
+
+      - name: Verify first-five variety, authored responses and grade evidence
+        run: |
+          godot --headless --path . --script res://tests/verify_first_five_diversity.gd
+          godot --headless --path . --script res://tests/verify_signature_ai.gd
+          godot --headless --path . --script res://tests/verify_timed_martial_response.gd
+          godot --headless --path . --script res://tests/verify_battle_grade_aggregator.gd
+          godot --headless --path . --script res://tests/probe_native_first_five.gd
