@@ -276,7 +276,9 @@ func _verify_campaign_snapshots() -> void:
         campaign.mark_combat_finished({"outcome": "win", "player_resources": {"health": [20, 30], "stamina": [2, 5], "internal": [1, 4]}})
         campaign.advance()
         var model = load("res://src/run/vertical_slice_result_model.gd").new()
-        campaign.set_pending_result_reward(model.build_reward_receipt("faction_transfer", "", campaign.get_player_manual_loadout(), campaign.get_current_opponent()))
+        var reward: Dictionary = model.build_reward_receipt("faction_transfer", "", campaign.get_owned_player_manuals(), campaign.get_current_opponent())
+        if reward.is_empty(): reward = model.build_reward_receipt("free_training", "", campaign.get_owned_player_manuals(), campaign.get_current_opponent())
+        check(campaign.set_pending_result_reward(reward), "Campaign available reward %d" % duel)
         check(target.import_snapshot(JSON.parse_string(JSON.stringify(campaign.export_snapshot()))).get("ok", false), "Campaign result snapshot %d" % duel)
         campaign.advance()
         if duel == 10: break

@@ -10,7 +10,7 @@ func _ready() -> void:
     super._ready()
     set_meta("route_visual_status", "STRUCTURED_FUNCTIONAL_UI_NOT_FINAL_VISUAL")
     set_meta("recovery_rounding_policy", "REVERSIBLE_NEAREST_INTEGER")
-    set_meta("faction_transfer_duplicate_policy", "PENDING_DUPLICATE_POLICY")
+    set_meta("faction_transfer_duplicate_policy", "UNAVAILABLE_NEW_SELECTION_PRESERVE_HISTORY")
     _build_route_options_container()
     _render_current_screen()
 
@@ -96,12 +96,14 @@ func _render_jianghu() -> void:
         var stamina: Array = resources.get("stamina", [0, 0])
         var internal: Array = resources.get("internal", [0, 0])
         description_label.text = "빗소리를 들으며 잠시 몸을 추스릅니다.\n\n%s\n\n현재 체력 %d/%d\n기력 %d/%d · 내력 %d/%d\n\n휴식을 마쳤습니다. 다음 갈림길로 나아갑니다." % [pending.get("effect", ""), health[0], health[1], stamina[0], stamina[1], internal[0], internal[1]]
+    if not pending.is_empty():
+        description_label.text += "\n\n" + _jianghu_effect_text(run_state.get_jianghu_effect_view(str(pending.id), true), true)
     var options := run_state.get_jianghu_options()
     _route_logical_option_count = options.size()
     for option in options:
         var button := Button.new()
         button.name = "Jianghu_" + str(option["id"])
-        button.text = "%s\n%s" % [option["label"], option["effect"]]
+        button.text = "%s\n%s\n%s" % [option["label"], option["effect"], _jianghu_effect_text(run_state.get_jianghu_effect_view(str(option.id)), false)]
         button.custom_minimum_size.y = 64
         button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
         button.disabled = not pending.is_empty()
@@ -110,6 +112,19 @@ func _render_jianghu() -> void:
     primary_button.text = "다음 갈림길" if step < 3 else "다음 비무 브리핑"
     primary_button.disabled = pending.is_empty()
     _apply_session_input_lock()
+
+
+func _jianghu_effect_text(view: Dictionary, applied: bool) -> String:
+    if view.is_empty(): return ""
+    var parts: Array[String] = []
+    var labels := {"health":"체력", "stamina":"기력", "internal":"내력"}
+    for key in labels:
+        if int(view.gains[key]) > 0 or key in view.capped:
+            parts.append("%s +%d%s" % [labels[key], int(view.gains[key]), " (상한 적용)" if key in view.capped else ""])
+    if int(view.free_training) > 0: parts.append("자유 수련 +%d" % int(view.free_training))
+    if not view.get("resource_delta_known", true): parts.append("회복 적용량 · 이전 자원 기록 없음")
+    if view.get("repeated_intel", false): parts.append("이미 확인한 단서 · 새 정보 없음")
+    return ("실제 적용 · " if applied else "현재 상태 기준 · ") + (" / ".join(parts) if not parts.is_empty() else "단서 확인")
 
 
 func _set_route_composition(resting: bool) -> void:
@@ -127,7 +142,16 @@ func _set_route_composition(resting: bool) -> void:
 
 func _choose_jianghu(node_id: String, step: int) -> void:
     _initialize_run_session()
-    session.transact(func(): return run_state.select_jianghu_node(node_id, step))
+    if session.transact(func(): return run_state.select_jianghu_node(node_id, step)):
+        primary_button.grab_focus()
+
+
+func advance_noncombat() -> bool:
+    var from_route := run_state != null and run_state.get_current_screen() == VerticalSliceRunState.SCREEN_JIANGHU
+    var advanced := super.advance_noncombat()
+    if advanced and from_route and run_state.get_current_screen() == VerticalSliceRunState.SCREEN_JIANGHU and route_options_container.get_child_count() > 0:
+        route_options_container.get_child(0).grab_focus()
+    return advanced
 
 
 func _render_briefing() -> void:
@@ -163,7 +187,7 @@ func _render_growth_route() -> void:
 
     route_focus_target = OptionButton.new()
     route_focus_target.name = "FocusedTrainingTarget"
-    for manual_id_value in run_state.get_player_manual_loadout():
+    for manual_id_value in run_state.get_owned_player_manuals():
         var manual_id := str(manual_id_value)
         var manual := manual_registry.get_manual(manual_id) if manual_registry != null else {}
         route_focus_target.add_item(str(manual.get("manual_name", manual_id)))

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "current_opponent_support_budget_decision": "TEN-DEC-20260911-CHARACTER-VARIABLE-LOADOUT-APPROVAL-REVIEW-01",
-  "blueprint_revision_status": "USER_APPROVED_RUNTIME_IMPLEMENTED_MACHINE_VERIFIED_REMOTE_PENDING",
+  "blueprint_revision_status": "USER_APPROVED_RUNTIME_IMPLEMENTED_MACHINE_AND_REMOTE_VERIFIED_HUMAN_PENDING",
   "current_opponent_roster_growth_decision": "TEN-DEC-20260909-RUN-START-OPPONENT-ROSTER-GROWTH-01",
   "opponent_roster_growth_status": "V2_FROZEN_ROSTER_IMPLEMENTED_LEGACY_V1_PRESERVED",
   "current_internal_review_cadence_decision": "TEN-DEC-20260909-TWO-ROUND-INTERNAL-REVIEW-01",
@@ -9,7 +9,41 @@
   "pr_integration_authority": "TEN-DEC-20260908-STANDING-PR-INTEGRATION-01",
   "pr_integration_policy": "RELATED_EXISTING_PRS_REVIEW_ABSORB_CORRECT_VERIFY_MERGE_WITHOUT_NAMED_REAPPROVAL",
   "project": "TEN_PACES",
-  "updated_date": "2026-09-11",
+  "updated_date": "2026-09-21",
+  "remaining_implementation_spec": {
+    "owner": "docs/implementation/REMAINING_GAME_IMPLEMENTATION_SPEC.md",
+    "status": "P01_P02_P03_P04_P05_AGGREGATION_P06A_FIRST_FIVE_LOCAL_RUNTIME_VERIFIED_CI_LIVE",
+    "baseline_product_head": "fb565eb1d2fbc2e1896695c58e6be08c475577cc",
+    "priority": [
+      "P06 remaining permanent-stat supply and authored event expansion",
+      "P12 broader public-policy balance and human choice observation",
+      "P05 final grade formula remains pending; P08 first-play clarity"
+    ],
+    "new_rules_or_schema_approved": true,
+    "approved_rules_or_schema_decisions": [
+      "TEN-DEC-20260914-FREE-TRAINING-GROWTH-V3-01",
+      "TEN-DEC-20260920-PERMANENT-PLAYER-GROWTH-V4-01",
+      "TEN-DEC-20260920-REWARD-CHOICE-AVAILABILITY-01"
+    ],
+    "runtime_human_android_release": "NOT_RUN_FOR_THIS_SPEC",
+    "current_continuation": "docs/decisions/2026-09-21_FIRST_FIVE_DUELS_AND_GRADE_EVIDENCE.md"
+  },
+  "result_reward_navigation": {
+    "route_focus_continuation": "CURRENT_JIANGHU_SUCCESS_ONLY_FOCUS_HANDOFF_LOCAL_RUNTIME_VERIFIED",
+    "status": "WORKING_BRANCH_IMPLEMENTED_LOCAL_BOUNDARY_TESTED_CI_LIVE",
+    "canon_owner": "docs/UX_UI_SYSTEM.md",
+    "execution_record": "docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md",
+    "domain_reward_or_save_change": false,
+    "human_android_release": "NOT_RUN"
+  },
+  "completion_record_return": {
+    "decision": "TEN-DEC-20260913-COMPLETION-RECORD-RETURN-01",
+    "status": "WORKING_BRANCH_IMPLEMENTED_LOCAL_BOUNDARY_TESTED_CI_LIVE",
+    "execution_record": "docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md",
+    "domain_save_schema_change": false,
+    "human_android_release": "NOT_RUN",
+    "known_visible_diagnostic": "Existing title confirmation also reproduces Godot _sub_window_grab_focus index diagnostic"
+  },
   "combat_feedback_continuation": {
     "decision": "TEN-DEC-20260909-COMBAT-FEEDBACK-CORRECTION-01",
     "integration_status": "MAIN_MERGED_VERIFIED_PR335",
@@ -139,14 +173,6 @@
   "adversarial_research_feasibility_gate_status": "REQUIRED_EVERY_TASK_WITH_EVIDENCE_SCALED_RECORD",
   "prework_benchmark_gate_decision": "TEN-DEC-20260920-LEAN-WORK-EXECUTION-01",
   "prework_benchmark_gate_status": "IMPLEMENTED_LOCAL_VERIFIED_REVIEW_2_OF_2_REMOTE_STATUS_GITHUB_PR343",
-  "prework_benchmark_current_owner": "docs/decisions/2026-09-20_LEAN_WORK_EXECUTION.md",
-  "prework_benchmark_historical_gate_status": "IMPLEMENTED_MERGED_MAIN_PR287_REMOTE_CI_PASS_EXACT_MAIN_POSTMERGE_READBACK",
-  "prework_benchmark_historical_initial_unique_game_count": 12,
-  "prework_benchmark_historical_gate_pr": 287,
-  "prework_benchmark_historical_gate_merge_commit": "ba4fed201f4c2e37f9ed5fbc32027344ccb9a56d",
-  "prework_benchmark_historical_current_report": "docs/reviews/2026-08-30_TEN_PACES_BENCHMARK_REVERSE_ENGINEERING.md",
-  "prework_benchmark_historical_execution_report": "docs/operations/2026-08-30_PREWORK_BENCHMARK_REVERSE_ENGINEERING_GATE_EXECUTION_REPORT.md",
-  "prework_benchmark_historical_evidence_ceiling": "DESK_RESEARCH_SYNTHESIZED_NO_TEN_PACES_HUMAN_PLAYTEST_OR_RUNTIME_CHANGE",
   "prework_benchmark_reuse_rule": "REUSE_ONLY_SAME_DECISION_DIMENSION_CURRENT_PROJECT_STATE_AND_FRESH_SOURCE_OTHERWISE_REFRESH_NO_SILENT_BYPASS",
   "product_safety_contract_baseline": "TEN-DEC-20260826-INTEGRATED-WORK-CONTRACT-V4-8-R5-4-01",
   "current_visual_production_decision": "TEN-DEC-20260826-VISUAL-CONSUMER-ASSET-PRODUCTION-01",
@@ -605,7 +631,134 @@
       "roster_seed": 145571664
     }
   },
+  "motion_ui_continuation": {
+    "status": "LOCAL_MACHINE_AND_WINDOWS_CAPTURE_VERIFIED_VISUAL_LOCK_PENDING_CI_LIVE",
+    "base_commit": "ed2104d98872c63eac27999830aeae9c15a00bdc",
+    "branch": "codex/motion-integration-20260912",
+    "review_pr": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/342",
+    "ci_status_source": "LATEST_PR_HEAD_CHECKS",
+    "execution_record": "docs/operations/2026-09-12_MOTION_UI_INTEGRATION.md",
+    "visual_lock": "FOUR_CHARACTER_SHEETS_PENDING_CLASH_PREVIOUSLY_APPROVED",
+    "human_android_release": "NOT_RUN",
+    "validation": {
+      "python_passed": 511,
+      "python_seconds": 676.07,
+      "native_cases_passed_after_targeted_corrections": 31,
+      "actual_execute_capture_frames": 71,
+      "native_campaign": {
+        "routes": 36,
+        "duels": 10,
+        "activations": 288,
+        "failures": 0,
+        "rewards": 10,
+        "elapsed_ms": 383223,
+        "wins": 10,
+        "source": "ba9b615a"
+      }
+    },
+    "presentation_controls_receipt": "docs/operations/2026-09-12_PRESENTATION_CONTROLS_WORK_CONTRACT_RECEIPT.json"
+  },
+  "presentation_preferences_continuation": {
+    "status": "IMPLEMENTED_WORKING_BRANCH_MACHINE_AND_WINDOWS_RUNTIME_VERIFIED",
+    "plan": "docs/operations/2026-09-13_PRESENTATION_PREFERENCES.md",
+    "settings": [
+      "sound_muted",
+      "sound_volume",
+      "reduced_motion"
+    ],
+    "run_save_schema_change": false,
+    "human_android_release": "NOT_RUN"
+  },
+  "playable_flow_continuation": {
+    "status": "IMPLEMENTED_LOCAL_VERIFIED_REMOTE_CHECKS_PENDING",
+    "plan": "docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md",
+    "receipt": "docs/operations/2026-09-13_PLAYABLE_FLOW_RECEIPT.json",
+    "implemented": [
+      "optional_pause_menu",
+      "precombat_and_live_preferences",
+      "optional_canonical_rules_guide",
+      "canonical_completion_cause_labels",
+      "scrollable_completion_history"
+    ],
+    "run_save_schema_change": false,
+    "human_android_release": "NOT_RUN"
+  },
+  "acquired_manual_continuation": {
+    "decision": "TEN-DEC-20260914-ACQUIRED-MANUAL-COMBAT-COMPATIBILITY-01",
+    "execution_record": "docs/operations/2026-09-14_ACQUIRED_MANUAL_IMPLEMENTATION.md",
+    "status": "WORKING_BRANCH_IMPLEMENTED_LOCAL_RUNTIME_VERIFIED_CI_LIVE",
+    "starter_provenance": "IMMUTABLE_FOUR",
+    "legacy_save": "V1_V2_VALIDATED_DECODE_CONVERSION_ORIGINAL_BYTES_PRESERVED",
+    "next_package": "See player_stat_growth_continuation",
+    "human_android_release": "NOT_RUN",
+    "local_evidence": {
+      "acquisition_flow_checks": 472,
+      "legacy_process_checks_each": 21,
+      "new_5_10_manual_process_checks_each": 21,
+      "windows_gpu_checks": 22,
+      "python_tests": 41,
+      "native_campaign_wins": 10,
+      "native_route_choices": 36,
+      "native_activations": 286
+    },
+    "remote_evidence_owner": "GitHub PR342 exact current HEAD checks; local evidence is not remote PASS"
+  },
+  "free_training_continuation": {
+    "decision": "TEN-DEC-20260914-FREE-TRAINING-GROWTH-V3-01",
+    "execution_record": "docs/operations/2026-09-14_TRAINING_ALLOCATION_IMPLEMENTATION.md",
+    "status": "WORKING_BRANCH_IMPLEMENTED_LOCAL_RUNTIME_VERIFIED_CI_LIVE",
+    "new_run_schema_version": 4,
+    "legacy_save": "V1_V2_RULES_IDENTITIES_AND_SOURCE_BYTES_PRESERVED_NO_FORCED_MIGRATION",
+    "windows_gpu_checks": 55,
+    "mixed_accounting_store_checks": 239,
+    "independent_process_session_checks": 14,
+    "synthetic_accounting_is_native_win_evidence": false,
+    "next_package": "P03 working-branch implemented; see player_stat_growth_continuation",
+    "human_android_release": "NOT_RUN",
+    "remote_evidence_owner": "GitHub PR342 exact current HEAD checks; local evidence is not remote PASS",
+    "original_implementation_schema_version": 3
+  },
+  "prework_benchmark_current_owner": "docs/decisions/2026-09-20_LEAN_WORK_EXECUTION.md",
+  "prework_benchmark_historical_gate_status": "IMPLEMENTED_MERGED_MAIN_PR287_REMOTE_CI_PASS_EXACT_MAIN_POSTMERGE_READBACK",
+  "prework_benchmark_historical_initial_unique_game_count": 12,
+  "prework_benchmark_historical_gate_pr": 287,
+  "prework_benchmark_historical_gate_merge_commit": "ba4fed201f4c2e37f9ed5fbc32027344ccb9a56d",
+  "prework_benchmark_historical_current_report": "docs/reviews/2026-08-30_TEN_PACES_BENCHMARK_REVERSE_ENGINEERING.md",
+  "prework_benchmark_historical_execution_report": "docs/operations/2026-08-30_PREWORK_BENCHMARK_REVERSE_ENGINEERING_GATE_EXECUTION_REPORT.md",
+  "prework_benchmark_historical_evidence_ceiling": "DESK_RESEARCH_SYNTHESIZED_NO_TEN_PACES_HUMAN_PLAYTEST_OR_RUNTIME_CHANGE",
   "prework_benchmark_historical_gate_decision": "TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01",
   "current_execution_policy": "UNIFIED_WORK_EXECUTION",
-  "operating_adoption_owner": "[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md"
+  "operating_adoption_owner": "[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md",
+  "player_stat_growth_continuation": {
+    "decision": "TEN-DEC-20260920-PERMANENT-PLAYER-GROWTH-V4-01",
+    "decision_record": "docs/decisions/2026-09-20_PERMANENT_PLAYER_GROWTH_V4.md",
+    "execution_record": "docs/operations/2026-09-14_TRAINING_ALLOCATION_IMPLEMENTATION.md",
+    "status": "WORKING_BRANCH_IMPLEMENTED_LOCAL_RUNTIME_VERIFIED_CI_LIVE",
+    "new_run_schema_version": 4,
+    "legacy_save": "V1_V2_V3_IDENTITIES_AND_SOURCE_BYTES_PRESERVED",
+    "human_android_release": "NOT_RUN",
+    "fun_observation": "HUMAN_NOT_RUN_MACHINE_CONSUMER_AND_NATIVE_INPUT_VERIFIED",
+    "next_package": "P04 duplicate transfer decision and P06 route supply clarification; first growth Human observation",
+    "remote_evidence_owner": "GitHub PR342 exact current HEAD checks"
+  },
+  "card_motion_presets": {
+    "owner": "docs/10_COMBAT_PRESENTATION_PLAN.md",
+    "execution": "docs/operations/2026-09-12_MOTION_UI_INTEGRATION.md",
+    "status": "IMPLEMENTED_LOCAL_AND_WINDOWS_VERIFIED_REMOTE_CI_LIVE",
+    "data": "data/presentation/combat_motion_presets.json",
+    "card_count": 43,
+    "non_sword_pose": "NEUTRAL_FALLBACK_ASSET_WORK_PENDING",
+    "human_fun": "NOT_RUN"
+  },
+  "first_five_duels": {
+    "decision": "TEN-DEC-20260921-FIRST-FIVE-DUELS-GRADE-EVIDENCE-01",
+    "status": "WORKING_BRANCH_WINDOWS_5_WINS_16_ROUTES_VERIFIED",
+    "native_seed": 1,
+    "distinct_opponents": 5,
+    "distinct_signature_manuals": 5,
+    "actual_signature_effects": true,
+    "legacy_saved_rosters": "PRESERVED_NO_REROLL",
+    "source_evidence": "docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md",
+    "human_android_release": "NOT_RUN"
+  }
 }

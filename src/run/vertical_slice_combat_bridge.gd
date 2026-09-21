@@ -43,11 +43,12 @@ func configure_vertical_slice_loadouts(
     enemy_runtime_binding: Dictionary,
     enemy_identity: Dictionary = {},
     bimu_receipt: Dictionary = {},
-    resolved_encounter: Dictionary = {}
+    resolved_encounter: Dictionary = {},
+    player_growth_stats: Dictionary = {}
 ) -> bool:
     var player_ids := _string_values(player_loadout)
     var enemy_ids := _string_values(enemy_loadout)
-    if player_ids.size() != 4 or enemy_ids.is_empty() or (resolved_encounter.is_empty() and enemy_ids.size() != 1) or enemy_candidate_id.is_empty() or not _is_valid_enemy_runtime_binding(enemy_runtime_binding, enemy_candidate_id):
+    if player_ids.is_empty() or player_ids.size() != player_loadout.size() or player_mastery_by_manual.size() != player_ids.size() or enemy_ids.is_empty() or (resolved_encounter.is_empty() and enemy_ids.size() != 1) or enemy_candidate_id.is_empty() or not _is_valid_enemy_runtime_binding(enemy_runtime_binding, enemy_candidate_id):
         return false
     if not resolved_encounter.is_empty():
         var roster = load("res://src/run/variable_opponent_roster.gd").new()
@@ -71,6 +72,8 @@ func configure_vertical_slice_loadouts(
         return false
     var engine: VerticalSliceMetricsCombatResolutionEngine = VERTICAL_SLICE_ENGINE_SCRIPT.new()
     engine.variable_opponent_rules = not resolved_encounter.is_empty()
+    if not player_growth_stats.is_empty(): engine.ai_planner.set_signature_manual(str(enemy_ids[0]))
+    if not player_growth_stats.is_empty() and not engine.configure_player_growth_stats(player_growth_stats): return false
     if not engine.configure_bimu_constraints(bimu_receipt.get("selections", []), player_ids, enemy_ids):
         return false
     if not engine.configure_enemy_runtime_binding(enemy_runtime_binding):
@@ -120,8 +123,12 @@ func configure_vertical_slice_loadouts(
         "effective_enemy_mastery_by_manual": effective_enemy_mastery.duplicate(true),
         "bimu_receipt": bimu_receipt.duplicate(true)
     }
+    if not player_growth_stats.is_empty():
+        _vertical_slice_loadout_snapshot["player_growth_stats"] = player_growth_stats.duplicate(true)
     if not resolved_encounter.is_empty():
         _vertical_slice_loadout_snapshot["resolved_encounter"] = resolved_encounter.duplicate(true)
+    if player_ids.size() > 4:
+        _vertical_slice_loadout_snapshot["owned_binding_version"] = 1
     set_meta("vertical_slice_runtime_loadout_bound", true)
     set_meta("vertical_slice_enemy_candidate_id", enemy_candidate_id)
     set_meta("vertical_slice_battle_metrics_bound", true)
@@ -426,6 +433,7 @@ func _build_vertical_slice_terminal_result() -> Dictionary:
         "enemy_health": enemy_health,
         "player_resources": _player_resource_snapshot(),
         "battle_metrics": metrics.duplicate(true),
+        "grade_summary": preload("res://src/run/battle_grade_aggregator.gd").summarize(metrics,combat_state.get("grade_ledger",{})),
         "review_summary": _last_review_summary.duplicate(true),
         "presentation_state": _presentation_state
     }

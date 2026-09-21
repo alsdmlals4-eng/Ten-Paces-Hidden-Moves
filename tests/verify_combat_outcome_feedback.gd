@@ -147,9 +147,14 @@ func _verify_sound_bank() -> void:
         var stream := SOUND_BANK.get_stream(cue)
         _assert(stream != null, "Original cue must remain available: %s" % cue)
         if stream != null:
-            var expected := _synthesize_original_cue(cue, ORIGINAL_CUES[cue])
-            _assert(stream.data == expected, "Original cue PCM bytes must remain unchanged: %s" % cue)
-            print("ORIGINAL_CUE_SHA256 %s %s" % [cue, _sha256(stream.data)])
+            # User-approved 2026-09-10 sound redesign preserves cue identity, not old PCM.
+            _assert(stream.format == AudioStreamWAV.FORMAT_16_BITS and stream.mix_rate == 22050 and not stream.stereo, "Existing cue format must remain compatible: %s" % cue)
+            _assert(stream.data.size() == int(float(SOUND_BANK.CUES[cue][0]) * SOUND_BANK.RATE) * 2, "Cue PCM must match its authored duration: %s" % cue)
+            _assert(SOUND_BANK.get_stream(cue) == stream, "Existing cue must remain cached: %s" % cue)
+            var original_bytes: PackedByteArray = stream.data.duplicate()
+            SOUND_BANK._streams.erase(cue)
+            _assert(SOUND_BANK.get_stream(cue).data == original_bytes, "Cue regeneration must remain deterministic: %s" % cue)
+            print("CURRENT_CUE_SHA256 %s %s" % [cue, _sha256(stream.data)])
     var new_data := {}
     var total_pcm_bytes := 0
     for cue in ["victory", "draw", "ultimate_release"]:

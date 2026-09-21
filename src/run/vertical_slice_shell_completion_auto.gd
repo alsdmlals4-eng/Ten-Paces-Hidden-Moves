@@ -5,6 +5,8 @@ const COMPLETION_MODEL_SCRIPT := preload("res://src/run/vertical_slice_completio
 
 var completion_model: VerticalSliceCompletionModel
 var _completion_snapshot: Dictionary = {}
+var _completion_scroll: ScrollContainer
+var _returning_to_title := false
 
 
 func _ready() -> void:
@@ -57,7 +59,8 @@ func _render_completion() -> void:
         for value in causes:
             if typeof(value) == TYPE_DICTIONARY:
                 var cause: Dictionary = value
-                lines.append("%s · %d회" % [str(cause.get("cause_code", "")), int(cause.get("count", 0))])
+                var cause_label := str(CombatReviewSummaryBuilder.CAUSE_LABELS.get(str(cause.get("cause_code", "")), "기록된 전투 흐름을 다시 확인하세요."))
+                lines.append("%s · %d회" % [cause_label, int(cause.get("count", 0))])
 
     var growth: Array = _completion_snapshot.get("focused_growth", [])
     if not growth.is_empty():
@@ -86,9 +89,89 @@ func _render_completion() -> void:
     _set_content(
         "첫 강호 비무행 완주",
         "\n".join(lines),
-        "기록 확인 완료"
+        "제목으로 돌아가기"
     )
+    primary_button.disabled = session == null or not session.enabled or _returning_to_title
+    var stack := primary_button.get_parent()
+    if _completion_scroll == null:
+        _completion_scroll = ScrollContainer.new()
+        _completion_scroll.name = "CompletionHistoryScroll"
+        _completion_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+        _completion_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+        _completion_scroll.focus_mode = Control.FOCUS_ALL
+        _completion_scroll.accessibility_name = "열 번의 비무 결과와 복기 · 위아래로 스크롤"
+        stack.add_child(_completion_scroll)
+        stack.move_child(_completion_scroll, 1)
+    _completion_scroll.show()
+    description_label.reparent(_completion_scroll)
+    description_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    description_label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+    content_panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+    content_panel.anchor_left = 0.14
+    content_panel.anchor_top = 0.08
+    content_panel.anchor_right = 0.86
+    content_panel.anchor_bottom = 0.92
+
+
+func _set_content(title: String, description: String, button_text: String) -> void:
+    if is_instance_valid(_completion_scroll):
+        _completion_scroll.hide()
+        if description_label.get_parent() == _completion_scroll:
+            var stack := primary_button.get_parent()
+            description_label.reparent(stack)
+            stack.move_child(description_label, 1)
+            description_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+    super._set_content(title, description, button_text)
+
+
+func _on_primary_button_pressed() -> void:
+    if run_state != null and run_state.get_current_screen() == "COMPLETION":
+        return_to_title()
+        return
+    super._on_primary_button_pressed()
+
+
+func return_to_title() -> bool:
+    if _returning_to_title or run_state == null or run_state.get_current_screen() != "COMPLETION":
+        return false
+    if session == null or not session.enabled or not session.accepts_commands() or _replacement_dialog.visible:
+        return false
+    if session.last_durable.is_empty() or session.last_durable.run_state.current_screen != "COMPLETION":
+        return false
+    if not session.flush_stable():
+        _apply_session_input_lock()
+        return false
+    _returning_to_title = true
     primary_button.disabled = true
+    call_deferred("_replace_with_saved_title")
+    return true
+
+
+func _replace_with_saved_title() -> void:
+    if not session.accepts_commands() or run_state.get_current_screen() != "COMPLETION":
+        _returning_to_title = false
+        _publish_session_screen()
+        return
+    # Reopen the existing entry point, not the domain MAIN retirement transition.
+    var next_shell = (load(scene_file_path) as PackedScene).instantiate()
+    next_shell.configure_save_storage(session.store.root_path)
+    next_shell.configure_presentation_storage(_presentation_storage_override)
+    var tree := get_tree()
+    get_parent().add_child(next_shell)
+    # Session-only values also survive a previously failed preference write.
+    next_shell.presentation_preferences = presentation_preferences
+    if tree.current_scene == self:
+        tree.current_scene = next_shell
+    next_shell.call_deferred("_focus_saved_title")
+    queue_free()
+
+
+func _focus_saved_title() -> void:
+    _initialize_run_session()
+    var button := main_title_screen.find_child("MainContinueButton", true, false) as Button
+    if not button.visible or button.disabled:
+        button = main_title_screen.find_child("MainStartButton", true, false) as Button
+    button.grab_focus()
 
 
 func _refresh_completion_snapshot() -> void:

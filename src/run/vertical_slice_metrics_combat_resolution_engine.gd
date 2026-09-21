@@ -1,13 +1,26 @@
 class_name VerticalSliceMetricsCombatResolutionEngine
-extends TenManualCombatResolutionEngine
+extends "res://src/combat/timed_martial_response_engine.gd"
 
 const METRICS_SCRIPT := preload("res://src/run/vertical_slice_battle_metrics.gd")
 const CONSTRAINT_SCRIPT := preload("res://src/run/bimu_constraint_model.gd")
+const GRADE = preload("res://src/run/battle_grade_aggregator.gd")
 
 var battle_metrics: VerticalSliceBattleMetrics
 var _enemy_runtime_binding: Dictionary = {}
 var _bimu_model = CONSTRAINT_SCRIPT.new()
 var _bimu_receipt: Dictionary = {}
+var _player_growth_stats: Dictionary = {}
+var _player_growth = preload("res://src/run/player_growth_state.gd").new()
+
+func configure_player_growth_stats(stats: Dictionary) -> bool:
+    if not _player_growth.valid_stats(stats): return false
+    _player_growth_stats = stats.duplicate(true)
+    timed_martial_responses = true
+    return true
+
+func get_player_growth_stats() -> Dictionary:
+    return _player_growth_stats.duplicate(true)
+
 
 
 func configure_bimu_constraints(selection: Array, player_manual_ids: Array, enemy_manual_ids: Array) -> bool:
@@ -30,6 +43,8 @@ func get_bimu_enemy_mastery(masteries: Dictionary) -> Dictionary:
 
 
 func get_action_lock_reason(card_id: String) -> String:
+    var growth_reason: String = _player_growth.lock_reason(super.get_actor_card_definition(card_id, "player"), _player_growth_stats)
+    if not growth_reason.is_empty(): return growth_reason
     if card_id not in get_player_martial_card_ids():
         return ""
     return _bimu_model.action_lock_reason(get_actor_card_definition(card_id, "player"), _bimu_receipt)
@@ -68,7 +83,33 @@ func resolve_martial_card(card_id: String, state: Dictionary, actor_key: String,
     var reason := get_action_lock_reason(card_id) if actor_key == "player" else ""
     if not reason.is_empty():
         return _martial_failure(state, reason)
-    return super.resolve_martial_card(card_id, state, actor_key, context)
+    var result := super.resolve_martial_card(card_id, state, actor_key, context)
+    result["grade_non_cost_applied"] = result.get("completed",false) and _non_cost_change(state,result.get("state",state),actor_key)
+    return result
+
+func _resolved_record(action: Dictionary, timing: int, outcome: String) -> Dictionary:
+    var record := super._resolved_record(action,timing,outcome)
+    if action.has("martial_result"):
+        record["grade_non_cost_applied"] = bool(action.martial_result.get("grade_non_cost_applied",false))
+    return record
+
+func _non_cost_change(before: Dictionary, after: Dictionary, actor: String) -> bool:
+    var target := "enemy" if actor=="player" else "player"
+    var old: Dictionary = before.get(actor,{})
+    var now: Dictionary = after.get(actor,{})
+    if old.get("tile",0)!=now.get("tile",0): return true
+    for resource in ["health","stamina","internal","momentum"]:
+        if int(now.get(resource,[0])[0])>int(old.get(resource,[0])[0]): return true
+    var counts: Dictionary = now.get("status_counts",{})
+    for key in counts:
+        if int(counts[key])>int(old.get("status_counts",{}).get(key,0)): return true
+    if int(now.get("defense",0))>int(old.get("defense",0)): return true
+    var enemy_before: Dictionary = before.get(target,{})
+    var enemy_after: Dictionary = after.get(target,{})
+    return int(enemy_after.get("health",[0])[0])<int(enemy_before.get("health",[0])[0]) or enemy_after.get("tile",0)!=enemy_before.get("tile",0)
+
+func _response_effect_applied(before: Dictionary, after: Dictionary, actor: String) -> bool:
+    return _non_cost_change(before,after,actor)
 
 
 func _init() -> void:
@@ -96,6 +137,7 @@ func configure_enemy_runtime_binding(binding: Dictionary) -> bool:
 
 func make_initial_state(hud_data: Dictionary, player_tile: int, enemy_tile: int) -> Dictionary:
     var state := super.make_initial_state(hud_data, player_tile, enemy_tile)
+    if not _player_growth_stats.is_empty(): state.player.stats = _player_growth_stats.duplicate(true)
     if not _enemy_runtime_binding.is_empty():
         var enemy: Dictionary = (state.get("enemy", {}) as Dictionary).duplicate(true)
         enemy["candidate_id"] = str(_enemy_runtime_binding.get("candidate_id", ""))
@@ -103,6 +145,7 @@ func make_initial_state(hud_data: Dictionary, player_tile: int, enemy_tile: int)
         state["enemy"] = enemy
     state["enemy"] = _bimu_model.enemy_state_overlay(state.get("enemy", {}), _bimu_receipt)
     state["battle_metrics"] = battle_metrics.make_initial_metrics()
+    state["grade_ledger"] = GRADE.initial()
     return state
 
 
@@ -122,6 +165,7 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
     var next_metrics := battle_metrics.accumulate(current, before, result)
     var next_state: Dictionary = result.get("state", {})
     next_state["battle_metrics"] = next_metrics.duplicate(true)
+    next_state["grade_ledger"] = GRADE.record(before,result)
     result["state"] = next_state
     result["battle_metrics"] = next_metrics.duplicate(true)
     return result
@@ -156,11 +200,15 @@ func _enemy_information_forbidden(definition: Dictionary) -> bool:
 
 func get_actor_card_definition(card_id: String, actor_key: String) -> Dictionary:
     var definition := super.get_actor_card_definition(card_id, actor_key)
+    if actor_key == "player" and not _player_growth.lock_reason(definition, _player_growth_stats).is_empty(): return {}
     if variable_opponent_rules and actor_key == "enemy" and _enemy_information_forbidden(definition): return {}
     return definition
 
 func get_actor_cards_by_id(actor_key: String) -> Dictionary:
     var definitions := super.get_actor_cards_by_id(actor_key)
+    if actor_key == "player" and not _player_growth_stats.is_empty():
+        for id in definitions.keys():
+            if not _player_growth.lock_reason(definitions[id], _player_growth_stats).is_empty(): definitions.erase(id)
     if variable_opponent_rules and actor_key == "enemy":
         for id in definitions.keys():
             if _enemy_information_forbidden(definitions[id]): definitions.erase(id)

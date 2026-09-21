@@ -17,8 +17,8 @@ func _run() -> void:
     for _index in range(4):
         await process_frame
 
-    _require_role_art(board.player_character, "player", "res://assets/characters/player_wanderer_battler_rgba_v2.png")
-    _require_role_art(board.enemy_character, "enemy", "res://assets/characters/enemy_masked_battler_rgba_v2.png")
+    _require_role_art(board.player_character, "player", "res://assets/characters/motion/player_sword_sequence_v1.png")
+    _require_role_art(board.enemy_character, "enemy", "res://assets/characters/motion/enemy_sword_sequence_v1.png")
     _require_anchor(board, "player")
     _require_anchor(board, "enemy")
     await _require_art_motion(board.player_character, "player")
@@ -132,8 +132,12 @@ func _require_grounded_presentation_motions(board: CombatBoardPreview) -> void:
     var enemy_foot_at_clash := enemy.get_foot_anchor_global()
     if player.motion_state != "clash" or enemy.motion_state != "clash":
         failures.append("A clash must animate both combatants toward the shared contact point.")
-    if player_foot_at_clash.distance_to(enemy_foot_at_clash) > 4.0:
-        failures.append("A clash must visibly converge both combatants on one common action point.")
+    var before_gap := enemy_foot_before.x - player_foot_before.x
+    var contact_gap := enemy_foot_at_clash.x - player_foot_at_clash.x
+    if contact_gap >= before_gap or contact_gap < minf(player.size.x, enemy.size.x) * 0.8:
+        failures.append("A clash must approach a shared contact without collapsing both bodies onto one foot point.")
+    if player_foot_at_clash.x <= player_foot_before.x or enemy_foot_at_clash.x >= enemy_foot_before.x:
+        failures.append("Both combatants must move toward the contact from their own side.")
     if absf(player_foot_at_clash.y - player_foot_before.y) > 0.1 or absf(enemy_foot_at_clash.y - enemy_foot_before.y) > 0.1:
         failures.append("A clash must preserve both combatants on the shared ground line.")
     var clash_snapshot: Dictionary = board.get_presentation_motion_snapshot()

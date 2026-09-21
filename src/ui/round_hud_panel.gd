@@ -16,6 +16,7 @@ var _order_label: Label
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_IGNORE
     _round_label = _make_label(17, PAPER)
+    _round_label.add_theme_font_override("font", preload("res://src/ui/wuxia_ui_style.gd").heading_font())
     _bundle_label = _make_label(12, GOLD)
     _selection_label = _make_label(14, PAPER)
     _order_label = _make_label(13, MUTED)

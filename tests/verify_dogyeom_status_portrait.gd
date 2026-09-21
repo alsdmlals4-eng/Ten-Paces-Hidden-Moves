@@ -1,9 +1,10 @@
-## 도겸 상태 패널 초상 라우팅과 일반 적군 fallback을 검증한다.
+## 알려진 적의 승인 초상과 ID 미지정 fallback을 구분한다.
 extends SceneTree
 
 const STATUS_PANEL_SCRIPT := preload("res://src/ui/combatant_status_panel.gd")
-const DOGYEOM_PORTRAIT_PATH := "res://assets/portraits/dogyeom_status_portrait_01_v1.png"
-const GENERIC_ENEMY_PORTRAIT_PATH := "res://assets/portraits/enemy_masked_ink_v1.png"
+const DOGYEOM_PORTRAIT_PATH := "res://assets/characters/portraits/slot1_dogyeom_portrait_v1.png"
+const YEONGYO_PORTRAIT_PATH := "res://assets/characters/portraits/slot1_yeongyo_portrait_v1.png"
+const GENERIC_ENEMY_PORTRAIT_PATH := "res://assets/characters/motion/enemy_sword_sequence_v1.png"
 
 var failures: Array[String] = []
 
@@ -17,7 +18,7 @@ func _run() -> void:
 	_expect_eq(
 		_portrait_path(dogyeom_panel),
 		DOGYEOM_PORTRAIT_PATH,
-		"Dogyeom must use the approved status portrait asset."
+		"Dogyeom HUD uses the approved portrait identity."
 	)
 	_expect_eq(
 		_portrait_stretch_mode(dogyeom_panel),
@@ -29,8 +30,8 @@ func _run() -> void:
 	var generic_enemy_panel = _make_enemy_panel("slot1_yeongyo")
 	_expect_eq(
 		_portrait_path(generic_enemy_panel),
-		GENERIC_ENEMY_PORTRAIT_PATH,
-		"Non-Dogyeom enemies must retain the generic enemy portrait."
+		YEONGYO_PORTRAIT_PATH,
+		"Yeongyo uses her own approved portrait."
 	)
 	generic_enemy_panel.queue_free()
 
@@ -64,6 +65,8 @@ func _portrait_path(panel) -> String:
 	var portrait := panel.get_node_or_null("CombatantInkPortrait") as TextureRect
 	if portrait == null or portrait.texture == null:
 		return ""
+	if portrait.texture is AtlasTexture:
+		return (portrait.texture as AtlasTexture).atlas.resource_path
 	return portrait.texture.resource_path
 
 

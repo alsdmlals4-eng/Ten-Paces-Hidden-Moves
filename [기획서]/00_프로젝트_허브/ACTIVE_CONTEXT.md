@@ -1,9 +1,89 @@
 # 십보강호 활성 컨텍스트
 
+## 최신 사용자 결함 교정 · 2026-09-21
+
+사용자 스크린샷4항목을 우선한다. 적 HUD를 승인16초상으로 교정하고, 시작 무공 비용·효과·사용 조건/능력 설명, 여정형 제목의 새 여정·이어하기·설정, 무공 회피 사건과 비검 준비 동작을 연결했다. 제목은 사용자가 지정한525×282 참조를 보존해 재사용한 것이며 고해상도 재제작 완료가 아니다. 전투장 전신은 도겸 외 다수의 공용 검객 fallback이 남아 미완료다. 우람·담월·비연·풍목 새 전신 후보는 생성/alpha/포즈 검수와 사용자 final lock을 구분한다. 현재 결과·실행로그·자산 한계는 `docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md`의 사용자 화면 결함 교정 절. PR342 Draft 유지, 다음 작업은 이 시각 정체성 공백을 먼저 마무리하며 P06으로 넘기지 않는다.
+
+## 현재 작업 · 2026-09-21 첫 5전 실제 무공과 유효 성과
+
+사용자 요청에 따라 새 여정 첫5 인물·대표무공 고유 추첨, stats-v4 공개정보 AI의 합법 대표 기술 선택, 태극/소요 대응의 실제 타이밍·조건부 후속 효과를 연결했다. Windows 자동 입력 seed1에서 도겸→풍목→우람→담월→비연과 5승·16행로, 각각 대표 무공 효과와 결과 저장 readback을 확인했다. 이전 저장 상대는 다시 뽑지 않는다. P05 원시/유효/제외 이유 집계는 구현했고 최종 등급·경제는 미정이다. 결정: `docs/decisions/2026-09-21_FIRST_FIVE_DUELS_AND_GRADE_EVIDENCE.md`. 실행·두 검토·한계·사용자 build는 기존 `docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md`의9월21일 절. GitHub exact HEAD 검사는 live metadata를 확인한다. PR342는 네 모션 final lock 전 Draft이며 Human/Android/출시는 NOT_RUN. 다음은 P06 사건·영구능력 공급 계약과 P12 정책별 균형/사람 선택 관찰이다.
+
+## 현재 작업 · 2026-09-21 무공별 연출 연결
+
+사용자가 카드별 프리셋과 합→승패→후속 동작 및 필요한 연관 작업을 승인했다. 명세는 `docs/10_COMBAT_PRESENTATION_PLAN.md` §5.2, 실제 코드/검증·교정은 기존 `docs/operations/2026-09-12_MOTION_UI_INTEGRATION.md`의9월21일 절이다.43카드 표현 데이터와 확정 사건 기반 연결을 구현했고 pure134/Windows22/정적485/관련 회귀·export50시나리오를 검증했으며 판정/저장/AI/승인 자산은 보호한다. 비검 무기 고유 자세는 중립 fallback으로 명시한다. PR342와4장 final lock 전 Draft/Human·Android·출시 미검증 경계 유지. 이번 승인 단위를 끝낸 뒤 기존 P05/P06 계획으로 이어간다.
+
+## 현재 구현 · 2026-09-20 P04/P06a
+
+사용자 계속 지시에 따라 새 중복 전수 선택을 차단하고 자유/집중 보상을 유지했다. v1~v4의 이미 저장된 중복 선택·확정 이력은 원래 의미로 복원한다. 행로 기존5종에 실제 상태 기준 효과·상한·반복 단서와 적용 결과를 연결했고36경계/저장 복원을 검증했다. 과거 자원 경계가 없는 저장은 회복량 미확인을 명시하며 수련량은 표시한다. schema/기존 수치/행로 공급/승인 자산은 그대로다. Decision: `docs/decisions/2026-09-20_REWARD_CHOICE_AVAILABILITY.md`; 실행은 기존 `docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md`의9월20일 절. PR342 현재 HEAD CI는 GitHub live metadata가 소유한다. 네 모션 final lock 전 Draft, Human/Android/출시 NOT_RUN 유지. 다음은 P05 승인된 유효 지표 집계(등급 최종 산식은 미정), P06 영구능력 공급 결정 및 사람의 성장 선택 관찰이다.
+
+
+## 현재 구현 · 2026-09-20 P03 영구 성장
+
+최신 main e5ec55e6(Base 경량화/재미 연결 PR343)을 기존 PR342 branch에 병합했다. 사용자 “작업진행해”에 따라 새 여정만 stats-v4로 시작 배분/총20·짝수성 영구 보너스·기술 능력 요구치를 연결했다. v1/v2/v3는 원문 identity와 당시 규칙을 유지한다. Decision은 `docs/decisions/2026-09-20_PERMANENT_PLAYER_GROWTH_V4.md`, 실행/검증은 기존 `docs/operations/2026-09-14_TRAINING_ALLOCATION_IMPLEMENTATION.md`의9월20일 절이다. 현재 제품은 PR342 작업 branch이며 main 제품 완료가 아니다. exact HEAD CI는 live metadata에서 확인한다. 네 모션 final lock 전 Draft, Human/Android/출시 NOT_RUN은 유지한다. 다음은 P04 중복 전수 정책과 P06 행로 공급의 결정 공백 및 첫 성장 선택의 사람 관찰이다.
+
+
 ## 현재 운영 구조 교정 · 2026-09-20
 
 사용자가 Base 경량화 적용안과 재미 검증 연결을 승인했다. 운영 owner는 `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`, 최신 기준·실행 증거는 `BASE_MAIN_SYNC_AUDIT.md`의2026-09-20절이다. UNIFIED_WORK_EXECUTION·조건부 인계·유효 근거 재사용·정확히2회 검토를 적용한다. 아래 날짜별 기록은 당시 이력이며 현재 고정10게임 quota·무조건 인계 지시로 재사용하지 않는다. 게임 제품은 변경하지 않는다. PR342 P01/P02 구현은 별도 branch에서 보존되며 main 완료로 표시하지 않는다. 작업일지는 기존 월간 PDF에 날짜별로 누적한다. 로컬 검사와 전체 독립 검토2회를 완료하고 지적5건을 교정했다. 운영 변경 PR은 #343이며 병합/원격 검사 여부는 GitHub live metadata와 BASE_MAIN_SYNC_AUDIT 링크에서 확인한다. 다음 게임 작업은 원래 승인된 PR342의 현재 head·최종 자산 gate·미커밋 변경을 별도 fresh-read한 뒤 계속한다.
 
+
+
+## 현재 마무리 · 2026-09-16
+
+사용자가 진행 중 작업 마무리와 GitHub 동기화를 요청했다. 기존 월간 작업일지 파일에 날짜별 요약을 누적하며 같은 날 작업은 합친다. 새 버전 PDF를 계속 만들지 않는다. 현재 v1.1 경로에 요약1쪽과 보존된 상세11쪽을 두고, 운영 owner는 `docs/operations/AI_USAGE_EVIDENCE_REPORTING.md`다. 이번 변경은 문서·증빙 정리이며 P03은 아직 미구현이다. P01/P02 구현의 원격 exact HEAD 검증은 PR342에서 확인한다. 최종 시각 lock4건 전 Draft 및 Human/Android/출시 미검증 경계는 유지한다.
+
+## 사용자 추가 운영 지시 · 2026-09-14
+
+승인된 남은 명세의 조사·설계·구현 반복을 계속한다. 새 이미지 후보는 크로마키 배경 생성 후 제거하고 alpha/가장자리를 검수한다. 기존 이미지 owner `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md`에 반영했다. 월간 AI 활용 작업일지·증빙집은 Blueprint와 분리한 파생 보고이며 `docs/operations/AI_USAGE_EVIDENCE_REPORTING.md`가 운영을 소유한다. 9월12~14일 근거로7쪽 PDF와 원본11건을 `C:/Users/user/Documents/증빙서류/9월 증빙서류`에 생성·대조했다. 사용자 제공 메일/협약 설명은 원문 확인 사실이 아니며 계정·입력 화면·영수증 미첨부를 표시했다. 원래 작업일/사후 작성일/캡처일/발행일을 분리하고 제출이나 승인을 추정하지 않는다.
+
+## 현재 실행 · 2026-09-14 P02 자유 수련 연결
+
+새 여정에 명시적 성장 v3를 적용하여 전투 전/강호에서 보유 무공에 자유 수련을 배분하고 실제 성수·기술 해금·다음 전투·저장에 연결했다. 기존 v1/v2는 당시 규칙과 원문을 보존한다. 결정은 `docs/decisions/2026-09-14_FREE_TRAINING_GROWTH_V3.md`, 계획·실행 증거는 `docs/operations/2026-09-14_TRAINING_ALLOCATION_IMPLEMENTATION.md`다. Windows 실제 수련/새 7성 기술 실행55검사, 독립 프로세스 Continue·저장실패/재시도14검사, 10전36행로 synthetic 회계227검사와 기존8묶음 회귀가 로컬 통과했다. remote exact HEAD와 배포 package는 별도 확인한다. 다음 직렬 작업은 P03 시작 능력 분배·성수 능력 보너스다. Human/Android/출시 및 모션4장 최종 lock 경계는 유지한다.
+
+## 이전 실행 · 2026-09-14 P01 전수 무공 연결
+
+사용자가 권장 명세 실행을 승인했다. P01을 구현하여 시작4권 이력과 실제 보유 전체를 분리하고, 전투·집중 수련·봉인 선택·저장에 연결했다. 구형 v1/v2 전투 저장은 전체 검증 후 보유 연결만 복원하며 원문 파일과 v2 pointer identity를 보존한다. 보유/봉인472검사, 구형/신형 저장의 실제 이어하기·기술 실행, Windows22검사, Python41검사와 전수 보상을 선택한 native10승/36행로를 로컬 검증했다. 원격 CI의 현재 상태는 PR342 최신 HEAD에서 확인한다. 전체 게임 완료가 아니다. 결정은 `docs/decisions/2026-09-14_ACQUIRED_MANUAL_COMBAT_COMPATIBILITY.md`, 계획·증거는 `docs/operations/2026-09-14_ACQUIRED_MANUAL_IMPLEMENTATION.md`다. 다음 직렬 작업은 P02 자유 수련 소비와 명시적 저장 버전 계약이다. 네 모션 시트 최종 lock 및 Human/Android/출시 미검증은 유지한다.
+
+## 명세 준비 당시 · 2026-09-14 남은 작업 명세 준비
+
+사용자가 남은 작업과 구현·설계 명세 준비를 요청했다. 새 진입점은 `docs/implementation/REMAINING_GAME_IMPLEMENTATION_SPEC.md`다. P00~P14에 실제 공백·기존 소비처·구현 인터페이스·저장/실패/롤백·인수 조건을 연결했다. 기준 제품은 PR342의 fb565eb1이며 34개 검사가 통과한 상태를 다시 확인했다. 이번 작업은 문서 준비이며 새 제품 구현이나 전체 게임 완료가 아니다.
+
+우선 공백은 progression에 추가된 전수 무공과 시작4권만 받는 bridge/codec의 연결, 누적 자유 수련 pool의 소비 경로, 플레이어 회차 성장의 저장·기술 해금 연결이다. 이미 구현된 가변 상대·v1/v2 저장·10전 완주·결과/행로 탐색은 재구현 목록에서 제외한다. 산식·중복 전수·36행로의 능력 보상 공급·회차 밖 보존 범위·새 저장 버전은 후보와 승인 상태를 분리해 준비했다. 모션4장 최종 확정과 Human/Android/출시 미검증도 유지한다.
+
+## 현재 후속 반복 · 결과 보상 탐색
+
+후속 표적 교정으로 current JIANGHU의 성공한 선택→진행 버튼, 다음 단계→첫 선택지의 키보드 초점을 연결했다. 실제 Enter 연속 입력과 중단/중복 휴식 방지를 검증하며 기존 행로 효과·저장 의미는 유지한다.
+
+사용자의 `작업 계속진행해`에 따라 a5dcb9db의34CI를 확인하고 결과 화면의 전체 보상 스크롤·안정된 버튼 초점·기존 첫 선택 잠금 표시·중복 전수 설명을 구현했다. `vertical_slice_shell_result_auto.gd`가 표현을 소유하고 RunState/progression의 보상·저장 규칙은 유지한다. 계획과 실행 증거는 `docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md`, 현재 exact HEAD/CI는 PR342를 직접 읽는다.
+
+## 현재 후속 반복 · 완주 기록 보존과 제목 복귀
+
+사용자 반복 개선 지시에 따라 c5d82e3a의34CI를 확인하고 제목 복귀를 후속 구현했다. 현재 소비처는 `VerticalSliceCompletionShell`과 `MainTitleScreen`, 계약은 `docs/decisions/2026-09-13_COMPLETION_RECORD_RETURN.md`다. 완료 기록을 보존한 채 제목→기록 재열람→기존 새 여정 취소/확정을 연결한다. 늦은 중단·중복 요청·저장 실패·설정 유지와 v1/v2 저장을 검증한다. 현재 exact HEAD/원격 검증은 PR342를 직접 읽고 실행 기록을 확인한다.
+Windows 확인창의 `_sub_window_grab_focus` 진단은 새 복귀를 거치지 않는 기존 제목에서도 재현됐다. 동작 검증 성공과 별도로 보존하며 무진단 runtime 또는 Human 완료를 주장하지 않는다.
+
+## 현재 재개 지점 · 2026-09-13 플레이 흐름 개선 루프
+
+최신 사용자는 유사 장르 비교→기획 연결→구현→실행 검증→다음 구현 공백 확인을 재승인 없이 계속하도록 명시했다. 작업 전 계획과 실제 개발 반복 결과는 `docs/operations/2026-09-13_PLAYABLE_FLOW_IMPROVEMENT.md`, 상태는 `docs/operations/2026-09-13_PLAYABLE_FLOW_RECEIPT.json`을 따른다.
+`.worktrees/motion-integration-20260912` / PR342에서 메뉴·일시정지·첫 전투 전 설정·선택형 비무 안내·완주 복기의 한국어 설명과 긴 기록 스크롤을 구현했다. 메뉴 포커스 경합과720p 완료 기록 넘침을 RED→GREEN으로 교정했다. 현재 원격 검증은 PR342 latest HEAD를 직접 읽는다.
+기존 두 차례 전체 검토를 반복 초기화하지 않는다. 모션4장 최종 확정·Human·Android·실물 입력/음향·출시 증거는 별개이며, 이 대기 때문에 승인 범위의 안전한 개발 전체를 멈추지 않는다.
+
+
+## 현재 재개 지점 · 2026-09-13 사용자 설정 유지
+
+사용자가 권장안을 승인했다. 구현 전 계획과 후속 증거는 `docs/operations/2026-09-13_PRESENTATION_PREFERENCES.md`를 따른다.
+실제 작업 위치는 `.worktrees/motion-integration-20260912`, PR342다. 바깥 루트의 이전 checkout과 사용자 변경은 보존한다.
+게임 shell이 소리·음량·모션 감소를 여정 저장과 분리해 복원하고 새 전투에 전달한다. 실제 검증 범위는 실행 기록을 확인한다.
+AGENTS에 구현/수정 계획 선행 원칙을 반영했다. 역사 Blueprint 검수 기록에는 이후 구현 상태 안내를 추가했다.
+캐릭터 모션4장 최종 확정 대기와 Human/Android/출시 NOT_RUN 경계는 유지한다.
+
+## 현재 재개 지점 · 2026-09-12 모션·화면 통합 검토
+
+최신 main ed2104d9에 보존된 모션/UI 작업을 격리 통합했다. 112쪽 승인 편성·저장·정적 원화는 유지한다.
+현재 작업과 미완료 이미지 확정·검증 경계는 `docs/operations/2026-09-12_MOTION_UI_INTEGRATION.md`를 따른다.
+검토 PR342는 캐릭터 시트 최종 확정 대기 Draft이며 CI는 최신 PR head 검사를 직접 읽는다.
+삭제 가능 파일은 사용자 지시에 따라 삭제 대기로 이동하고 링크를 제공한다.
+최신 연속 개선 지시에 따라 Base fresh-read·10개 게임 비교 후 소리/음량 조절 복원과720p 글꼴 경계 교정을 구현했다. 검사·범위는 위 실행 기록과 presentation controls receipt를 따른다.
+아래 9월11일 구현 완료 기록은 해당 승인 범위의 완료 이력이다.
 
 ## 현재 재개 지점 · 2026-09-11 승인 설계 구현·병합 완료
 

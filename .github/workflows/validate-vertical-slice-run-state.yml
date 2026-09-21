@@ -3,8 +3,15 @@ name: Validate Vertical Slice Run State
 on:
   pull_request:
     paths:
+      - 'src/ui/starting_stats_panel.gd'
+      - 'tests/verify_player_growth_*.gd'
       - "src/run/**"
       - "src/ui/combatant_status_panel.gd"
+      - "src/ui/bimu_constraint_panel.gd"
+      - "src/ui/training_allocation_panel.gd"
+      - "tests/verify_training_*.gd"
+      - "tests/verify_acquired_manual_flow.gd"
+      - "tests/fixtures/acquired-legacy-*.json"
       - "assets/portraits/**"
       - "assets/ASSET_MANIFEST.json"
       - "src/combat/combat_review_summary_builder.gd"
@@ -22,6 +29,8 @@ on:
       - "tests/verify_vertical_slice_candidate_ids.gd"
       - "tests/verify_vertical_slice_setup_briefing.gd"
       - "tests/verify_vertical_slice_review_result.gd"
+      - "tests/verify_reward_availability.gd"
+      - "tests/verify_jianghu_effect_view.gd"
       - "tests/verify_vertical_slice_route_state.gd"
       - "tests/verify_vertical_slice_completion_summary.gd"
       - "docs/implementation/BUILD_APPROVAL_2026-08-20.md"
@@ -34,6 +43,7 @@ permissions:
 jobs:
   vertical-slice-run-state:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -49,6 +59,10 @@ jobs:
         run: godot --headless --editor --path . --quit
       - name: Verify first five-duel run state
         run: godot --headless --path . --script res://tests/verify_vertical_slice_run_state.gd
+      - name: Verify reward availability and preserved historical selections
+        run: godot --headless --path . --script res://tests/verify_reward_availability.gd
+      - name: Verify route previews against all campaign boundaries
+        run: godot --headless --path . --script res://tests/verify_jianghu_effect_view.gd
       - name: Verify Vertical Slice shell
         run: godot --headless --path . --script res://tests/verify_vertical_slice_shell.gd
       - name: Verify terminal combat bridge
@@ -67,7 +81,36 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_vertical_slice_setup_briefing.gd
       - name: Verify Review and Result runtime binding
         run: godot --headless --path . --script res://tests/verify_vertical_slice_review_result.gd
+      - name: Verify acquired manuals and restart
+        run: |
+          mkdir -p /tmp/ten-acquired-fixtures
+          godot --headless --path . --script res://tests/verify_acquired_manual_flow.gd -- --fixtures /tmp/ten-acquired-fixtures
+          for fixture in /tmp/ten-acquired-fixtures/*.json tests/fixtures/acquired-legacy-*.json; do
+            godot --headless --path . --script res://tests/verify_acquired_manual_flow.gd -- --resume "$fixture"
+          done
+      - name: Verify native campaign with earned manuals
+        run: godot --headless --path . --script res://tests/probe_native_ten_duel_campaign.gd -- --acquired-rewards --run-save-dir=user://ci-acquired-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Verify free training and process-boundary recovery
+        run: |
+          godot --headless --path . --script res://tests/verify_training_allocation.gd
+          godot --headless --path . --script res://tests/verify_training_growth_v3.gd -- --store-root /tmp/ten-growth-${{ github.run_id }}-${{ github.run_attempt }}
+          godot --headless --path . --script res://tests/verify_training_growth_v3.gd -- --resume-root /tmp/ten-growth-${{ github.run_id }}-${{ github.run_attempt }}
+          godot --headless --path . --script res://tests/verify_training_allocation_ui.gd
       - name: Verify Route persistence and intel binding
         run: godot --headless --path . --script res://tests/verify_vertical_slice_route_state.gd
       - name: Verify Completion Summary binding
         run: godot --headless --path . --script res://tests/verify_vertical_slice_completion_summary.gd
+
+      - name: Verify permanent player growth and restart
+        run: |
+          godot --headless --path . --script res://tests/verify_player_growth_flow.gd -- --store-root /tmp/ten-stats-${{ github.run_id }}-${{ github.run_attempt }}
+          godot --headless --path . --script res://tests/verify_player_growth_flow.gd -- --resume-root /tmp/ten-stats-${{ github.run_id }}-${{ github.run_attempt }}
+          godot --headless --path . --script res://tests/verify_player_growth_ui.gd
+
+      - name: Verify first-five variety, authored responses and grade evidence
+        run: |
+          godot --headless --path . --script res://tests/verify_first_five_diversity.gd
+          godot --headless --path . --script res://tests/verify_signature_ai.gd
+          godot --headless --path . --script res://tests/verify_timed_martial_response.gd
+          godot --headless --path . --script res://tests/verify_battle_grade_aggregator.gd
+          godot --headless --path . --script res://tests/probe_native_first_five.gd

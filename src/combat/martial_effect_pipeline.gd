@@ -40,7 +40,10 @@ func execute(definition: Dictionary, state_value: Dictionary, actor_key: String,
 
     var events: Array = []
     var runtime := _initial_runtime(state, actor_key, target_key, context)
-    var pending_completion_momentum := 0
+    if context.has("resume_runtime"):
+        runtime = context.resume_runtime.duplicate(true)
+        runtime.evade_succeeded = bool(context.get("evade_succeeded",false))
+    var pending_completion_momentum := int(context.get("pending_completion_momentum",0))
     var gate_open := true
     var steps_value = definition.get("effect_steps", [])
     if typeof(steps_value) != TYPE_ARRAY:
@@ -58,6 +61,8 @@ func execute(definition: Dictionary, state_value: Dictionary, actor_key: String,
             return _failure(original_state, events, "INVALID_EFFECT_STEP")
         var step: Dictionary = step_value
         var op := str(step.get("op", ""))
+        if op == "REQUIRE_EVADE_SUCCESS" and context.get("defer_evade",false):
+            return {"state":state,"events":events,"completed":false,"failure_reason":"", "response_pending":true,"resume_runtime":runtime,"remaining_steps":steps.slice(index),"pending_completion_momentum":pending_completion_momentum}
         if op not in ALLOWED_OPS:
             return _failure(original_state, events, "UNKNOWN_EFFECT_OP")
 
@@ -177,7 +182,7 @@ func _execute_operation(op: String, step: Dictionary, state: Dictionary, actor_k
             runtime["at_max_range"] = distance == maximum
             return {"event": _event(op, "IN_RANGE" if valid else "OUT_OF_RANGE", {"distance": distance, "min": minimum, "max": maximum})}
         "ATTACK", "INDEPENDENT_ATTACK":
-            return {"event": _execute_attack(op, step, state, actor_key, target_key, runtime)}
+            return {"event": _execute_attack(op, step, state, actor_key, target_key, runtime, context)}
         "SPECIAL_CLASH":
             return {"event": _execute_clash(step, state, actor_key, target_key, runtime, context)}
         "BREAK_DEFENSE":
@@ -220,7 +225,7 @@ func _execute_operation(op: String, step: Dictionary, state: Dictionary, actor_k
             return {"event": _event(op, "ENDED", {"recorded_loss": mini(recorded, cap), "bonus_cap": cap})}
     return {"event": _event(op, "UNKNOWN"), "failure_reason": "UNKNOWN_EFFECT_OP"}
 
-func _execute_attack(op: String, step: Dictionary, state: Dictionary, actor_key: String, target_key: String, runtime: Dictionary) -> Dictionary:
+func _execute_attack(op: String, step: Dictionary, state: Dictionary, actor_key: String, target_key: String, runtime: Dictionary, context: Dictionary = {}) -> Dictionary:
     runtime["attack_attempts"] = int(runtime.get("attack_attempts", 0)) + 1
     var attempt := int(runtime.get("attack_attempts", 0))
     if bool(step.get("counter", false)):
@@ -232,6 +237,11 @@ func _execute_attack(op: String, step: Dictionary, state: Dictionary, actor_key:
     if distance < minimum or distance > maximum:
         return _event(op, "SKIPPED_OUT_OF_RANGE", {"attempt": attempt, "distance": distance, "min": minimum, "max": maximum})
 
+    var defended := {"damage":maxi(0,int(step.get("power",0))),"outcome":"hit"}
+    if context.has("defense_resolver"):
+        defended = context.defense_resolver.call(state,actor_key,target_key,int(defended.damage),bool(step.get("sure_hit",false)),int(context.get("timing",0)))
+        if defended.outcome == "evade":
+            return _event(op,"EVADED",{"attempt":attempt,"health_damage":0,"distance":distance})
     runtime["attacks_landed"] = int(runtime.get("attacks_landed", 0)) + 1
     if attempt == 1:
         runtime["first_attack_hit"] = true
@@ -240,7 +250,7 @@ func _execute_attack(op: String, step: Dictionary, state: Dictionary, actor_key:
     var target: Dictionary = state.get(target_key, {})
     var raw_power := maxi(0, int(step.get("power", 0)))
     var defense := maxi(0, int(target.get("defense", 0)))
-    var health_damage := maxi(0, raw_power - defense)
+    var health_damage := maxi(0, int(defended.damage) - defense)
     if health_damage > 0:
         var health := _resource_pair(target, "health")
         _set_resource(target, "health", maxi(0, health.x - health_damage), health.y)

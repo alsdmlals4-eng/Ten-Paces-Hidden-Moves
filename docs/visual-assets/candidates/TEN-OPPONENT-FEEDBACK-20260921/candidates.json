@@ -1,0 +1,66 @@
+{
+  "source": "Existing approved portrait identity; built-in image generation, chroma correction then alpha edit. No source portrait bytes changed.",
+  "asset_role": "REVIEW_ONLY_NOT_PRODUCT_APPROVAL",
+  "candidates": [
+    {
+      "candidate_id": "slot3_biyeon",
+      "alpha": "biyeon-alpha-v1.png",
+      "chroma": "biyeon-chroma-v1.png",
+      "sha256": "06ef7552feb0c2de11acc4b956fbd6f56256faa4d1a4c8ab90ecdb12050be3bb",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_zero_pixels": 953925,
+      "alpha_near_opaque_pixels": 503067,
+      "status": "GENERATED_CANDIDATE_PENDING_FINAL_LOCK",
+      "runtime": "NOT_CONNECTED",
+      "pose_qa": "Six poses; facing/pivot alignment and custom frame boundaries require consumer validation. Spear/saber exceed uniform cell bounds. Not a drop-in uniform atlas."
+    },
+    {
+      "candidate_id": "slot3_uram",
+      "alpha": "uram-alpha-v1.png",
+      "chroma": "uram-chroma-v1.png",
+      "sha256": "9479acfdc510683cd97087b50d7e28fbf8fdae1d33ac391042a882667f771aab",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_zero_pixels": 1011142,
+      "alpha_near_opaque_pixels": 433492,
+      "status": "GENERATED_CANDIDATE_PENDING_FINAL_LOCK",
+      "runtime": "NOT_CONNECTED",
+      "pose_qa": "Six poses; facing/pivot alignment and custom frame boundaries require consumer validation. Spear/saber exceed uniform cell bounds. Not a drop-in uniform atlas."
+    },
+    {
+      "candidate_id": "slot4_damwol",
+      "alpha": "damwol-alpha-v1.png",
+      "chroma": "damwol-chroma-v1.png",
+      "sha256": "d5e3ac59df8992dd42b679b5435d1d3afab383171f3fd55ce0a5cc49874266a1",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_zero_pixels": 869414,
+      "alpha_near_opaque_pixels": 579160,
+      "status": "GENERATED_CANDIDATE_PENDING_FINAL_LOCK",
+      "runtime": "NOT_CONNECTED",
+      "pose_qa": "Six poses; facing/pivot alignment and custom frame boundaries require consumer validation. Spear/saber exceed uniform cell bounds. Not a drop-in uniform atlas."
+    },
+    {
+      "candidate_id": "slot5_pungmok",
+      "alpha": "pungmok-alpha-v1.png",
+      "chroma": "pungmok-chroma-v1.png",
+      "sha256": "0ff0cc64da829f632ce22082b7d0ef586668e22b230f68f192ed3b4543a705c3",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_zero_pixels": 858757,
+      "alpha_near_opaque_pixels": 624573,
+      "status": "GENERATED_CANDIDATE_PENDING_FINAL_LOCK",
+      "runtime": "NOT_CONNECTED",
+      "pose_qa": "Six poses; facing/pivot alignment and custom frame boundaries require consumer validation. Spear/saber exceed uniform cell bounds. Not a drop-in uniform atlas."
+    }
+  ]
+}

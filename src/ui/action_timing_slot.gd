@@ -295,12 +295,26 @@ func _layout() -> void:
     if _timing_label == null:
         return
     var width := maxf(1.0, size.x - 8.0)
+    var compact := size.y < 76.0
+    _timing_label.add_theme_font_size_override("font_size", 11 if compact else 13)
+    _placeholder_label.add_theme_font_size_override("font_size", 12 if compact else 16)
+    _status_label.add_theme_font_size_override("font_size", 11)
     _timing_label.position = Vector2(4.0, 3.0)
     _timing_label.size = Vector2(width, 20.0)
-    _placeholder_label.position = Vector2(4.0, 21.0)
-    _placeholder_label.size = Vector2(width, maxf(20.0, size.y - 45.0))
-    _status_label.position = Vector2(4.0, maxf(39.0, size.y - 22.0))
+    _placeholder_label.position = Vector2(4.0, 24.0)
+    _placeholder_label.size = Vector2(width, maxf(20.0, size.y - 48.0))
+    _status_label.position = Vector2(4.0, maxf(39.0, size.y - 21.0))
     _status_label.size = Vector2(width, 18.0)
+    if compact:
+        # Keep target/resource feedback readable: two rows, not three clipped rows.
+        var line_height := (size.y - 4.0) * 0.5
+        var badge_width := minf(36.0, width * 0.3)
+        _timing_label.position = Vector2(4.0, 2.0)
+        _timing_label.size = Vector2(badge_width, line_height)
+        _placeholder_label.position = Vector2(4.0 + badge_width, 2.0)
+        _placeholder_label.size = Vector2(width - badge_width, line_height)
+        _status_label.position = Vector2(4.0, 2.0 + line_height)
+        _status_label.size = Vector2(width, line_height)
     queue_redraw()
 
 func _notification(what: int) -> void:

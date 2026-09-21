@@ -38,10 +38,10 @@ func _run() -> void:
     var main_title_screen := shell.find_child("MainTitleScreen", true, false) as Control
     _expect_true(main_title_screen != null and main_title_screen.visible, "MAIN must render the player-facing title screen.")
     _expect_true(ResourceLoader.exists(TITLE_LOGO_PATH), "MAIN must ship the final-locked title logo as a runtime asset.")
-    var title_logo := shell.find_child("GameTitleLogo", true, false) as TextureRect
-    _expect_true(title_logo != null and title_logo.visible and title_logo.texture != null, "MAIN must render the final-locked game title logo.")
-    if title_logo != null and title_logo.texture != null:
-        _expect_eq(title_logo.texture.resource_path, TITLE_LOGO_PATH, "MAIN title logo must consume the final-locked runtime PNG.")
+    var title_art := shell.find_child("JourneyTitleArtwork", true, false) as TextureRect
+    _expect_true(title_art != null and title_art.visible and title_art.texture != null, "MAIN must render the user-restored travel title.")
+    if title_art != null and title_art.texture != null:
+        _expect_eq(title_art.texture.atlas.resource_path, "res://assets/ui/logo/journey_title_reference_v1.png", "MAIN must consume the requested reference composition.")
     var start_button := shell.find_child("MainStartButton", true, false) as Button
     _expect_true(start_button != null and not start_button.disabled, "MAIN must expose one enabled real start action.")
     _expect_false(shell.find_child("VisualReferenceStatus", true, false) != null, "MAIN must not expose technical visual-reference status copy to players.")

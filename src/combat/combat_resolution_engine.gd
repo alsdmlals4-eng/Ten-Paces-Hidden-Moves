@@ -293,6 +293,7 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
             logs.append("[%d수] 양측 모두 행동하지 않았다." % timing)
             continue
 
+        _begin_timing_responses(state, timing_actions, defenses, logs, timing, resolved_actions, actions)
         var deferred_attacks: Array = []
         var quick_actions := _filter_phase(timing_actions, "quick_attack")
         _execute_attack_phase(state, quick_actions, defenses, logs, timing, "속공", resolved_actions, actions, deferred_attacks)
@@ -321,6 +322,7 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
             _execute_utility(state, action, logs, timing)
             resolved_actions.append(_resolved_record(action, timing, "general"))
 
+        _finish_timing_responses(state, logs, timing, resolved_actions)
         var timing_resolved_actions: Array = []
         var timing_logs: Array[String] = []
         for index in range(action_start, resolved_actions.size()):
@@ -350,6 +352,12 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
     }
     result["presentation_events"] = _build_presentation_events(state_before_resolution, state, resolved_actions, logs)
     return result
+
+func _begin_timing_responses(_state: Dictionary, _timing_actions: Array, _defenses: Dictionary, _logs: Array[String], _timing: int, _resolved: Array, _all_actions: Array) -> void:
+    pass
+
+func _finish_timing_responses(_state: Dictionary, _logs: Array[String], _timing: int, _resolved: Array) -> void:
+    pass
 
 func _bundle_bounds(bundle_index: int, sequence: Array) -> Vector2i:
     var start := 1

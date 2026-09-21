@@ -27,7 +27,7 @@ static func _keys(value, required: Array, optional: Array = []) -> bool:
         if key not in required and key not in optional: return false
     return true
 
-func validate(dto: Dictionary, expected_binding: Dictionary = {}) -> Dictionary:
+func validate(dto: Dictionary, expected_binding: Dictionary = {}, legacy_starters: bool = false) -> Dictionary:
     var bad := {"ok": false, "status": "CORRUPT", "error": "Malformed combat checkpoint"}
     if not load("res://src/run/run_checkpoint_codec.gd").json_safe(dto, 0, [0]): return bad
     dto = portable(dto)
@@ -39,11 +39,12 @@ func validate(dto: Dictionary, expected_binding: Dictionary = {}) -> Dictionary:
         if typeof(dto[field]) != TYPE_ARRAY: return bad
     if not expected_binding.is_empty() and portable(dto.binding) != portable(expected_binding): return bad
     bad.error = "Combat binding mismatch"
-    var engine = _engine(dto.binding)
+    var engine = _engine(dto.binding, legacy_starters)
     if engine == null: return bad
     if dto.binding.has("resolved_encounter") and dto.binding.resolved_encounter.stage != dto.duel_index: return bad
     bad.error = "Combat state or timing context malformed"
     if not _state(dto.state) or not _context(dto.context, dto.state): return bad
+    if dto.binding.has("player_growth_stats") and dto.state.player.stats != dto.binding.player_growth_stats: return bad
     if dto.binding.has("resolved_encounter") and not _variable_enemy_state(dto.state.enemy, dto.binding.resolved_encounter, dto.binding.bimu_receipt): return bad
     bad.error = "Enemy lock malformed"
     if not _lock(dto.enemy_lock, dto.state, engine, dto.phase == "PLANNING"): return bad
@@ -60,6 +61,7 @@ func validate(dto: Dictionary, expected_binding: Dictionary = {}) -> Dictionary:
     else:
         bad.error = "Committed source state malformed"
         if not _state(dto.state_before) or not _context(dto.context, dto.state_before): return bad
+        if dto.binding.has("player_growth_stats") and dto.state_before.player.stats != dto.binding.player_growth_stats: return bad
         if dto.binding.has("resolved_encounter") and not _variable_enemy_state(dto.state_before.enemy, dto.binding.resolved_encounter, dto.binding.bimu_receipt): return bad
         if dto.phase == "BUNDLE_COMMITTED" and portable(dto.state) != portable(dto.state_before): return bad
         bad.error = "Committed plan malformed"
@@ -74,13 +76,17 @@ func validate(dto: Dictionary, expected_binding: Dictionary = {}) -> Dictionary:
         if dto.phase == "BUNDLE_RESOLVED" and not _summary(dto.review_summary): return bad
     return {"ok": true, "status": "VALID"}
 
-func _engine(binding: Dictionary):
-    if not _keys(binding, ["player_loadout", "player_mastery_by_manual", "enemy_candidate_id", "enemy_loadout", "enemy_mastery_by_manual", "enemy_runtime_binding", "effective_enemy_mastery_by_manual", "bimu_receipt"], ["resolved_encounter"]): return null
+func _engine(binding: Dictionary, legacy_starters: bool = false):
+    if not _keys(binding, ["player_loadout", "player_mastery_by_manual", "enemy_candidate_id", "enemy_loadout", "enemy_mastery_by_manual", "enemy_runtime_binding", "effective_enemy_mastery_by_manual", "bimu_receipt"], ["resolved_encounter", "owned_binding_version", "player_growth_stats"]): return null
     for field in ["player_loadout", "enemy_loadout"]:
         if typeof(binding[field]) != TYPE_ARRAY: return null
     for field in ["player_mastery_by_manual", "enemy_mastery_by_manual", "enemy_runtime_binding", "effective_enemy_mastery_by_manual", "bimu_receipt"]:
         if typeof(binding[field]) != TYPE_DICTIONARY: return null
-    if binding.player_loadout.size() != 4 or typeof(binding.enemy_candidate_id) != TYPE_STRING: return null
+    if binding.player_loadout.is_empty() or typeof(binding.enemy_candidate_id) != TYPE_STRING: return null
+    if binding.has("owned_binding_version") and not integer(binding.owned_binding_version, 1, 1): return null
+    if legacy_starters:
+        if binding.has("owned_binding_version") or binding.player_loadout.size() != 4: return null
+    elif binding.player_mastery_by_manual.size() != binding.player_loadout.size(): return null
     var opponent: Dictionary
     if binding.has("resolved_encounter"):
         var provider = load("res://src/run/variable_opponent_roster.gd").new()
@@ -106,11 +112,16 @@ func _engine(binding: Dictionary):
     if portable(runtime) != portable(binding.enemy_runtime_binding): return null
     var engine = load("res://src/run/vertical_slice_metrics_combat_resolution_engine.gd").new()
     engine.variable_opponent_rules = binding.has("resolved_encounter")
+    if binding.has("player_growth_stats"): engine.ai_planner.set_signature_manual(str(binding.enemy_loadout[0]))
+    if binding.has("player_growth_stats"):
+        if not load("res://src/run/player_growth_state.gd").valid_stats(binding.player_growth_stats) or not engine.configure_player_growth_stats(binding.player_growth_stats): return null
     for field in ["player_mastery_by_manual", "enemy_mastery_by_manual"]:
         for id in binding[field]:
             if typeof(id) != TYPE_STRING or engine.martial_registry.get_manual(id).is_empty() or not integer(binding[field][id], 1, 10): return null
+    var owned_seen := {}
     for id in binding.player_loadout:
-        if typeof(id) != TYPE_STRING or not binding.player_mastery_by_manual.has(id): return null
+        if typeof(id) != TYPE_STRING or owned_seen.has(id) or not binding.player_mastery_by_manual.has(id): return null
+        owned_seen[id] = true
     for id in binding.enemy_loadout:
         if typeof(id) != TYPE_STRING or not binding.enemy_mastery_by_manual.has(id): return null
     if typeof(binding.bimu_receipt.get("selections")) != TYPE_ARRAY: return null
@@ -127,7 +138,8 @@ func _context(context: Dictionary, state: Dictionary) -> bool:
     return context.timing_sequence == [3, 3, 4] and context.total_timings == 10 and integer(context.current_timing, 1, 10) and context.current_timing == [1, 4, 7][int(context.bundle_index) - 1]
 
 func _state(state: Dictionary) -> bool:
-    if not _keys(state, ["round_number", "bundle_index", "player", "enemy", "ai_decision_seed", "ai_enabled", "battle_metrics"], ["public_resolution_history"]): return false
+    if not _keys(state, ["round_number", "bundle_index", "player", "enemy", "ai_decision_seed", "ai_enabled", "battle_metrics"], ["public_resolution_history", "grade_ledger"]): return false
+    if state.has("grade_ledger") and not preload("res://src/run/battle_grade_aggregator.gd").valid_ledger(state.grade_ledger): return false
     if not integer(state.round_number, 1) or not integer(state.bundle_index, 1, 3) or not integer(state.ai_decision_seed, -9007199254740991) or typeof(state.ai_enabled) != TYPE_BOOL: return false
     if not _actor(state.player) or not _actor(state.enemy): return false
     if not _keys(state.battle_metrics, ["successful_dodges", "clash_wins", "player_health_lost", "rounds_elapsed", "ultimate_uses"]): return false

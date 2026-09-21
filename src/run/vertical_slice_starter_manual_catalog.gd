@@ -88,6 +88,11 @@ func _build_options() -> void:
             "primary_stat": str(manual.get("primary_stat", "")),
             "secondary_stat": str(manual.get("secondary_stat", "")),
             "mastery": STARTER_MASTERY,
+            "effect_text": preload("res://src/ui/martial_effect_description.gd").describe(star3),
+            "stamina_cost": int(star3.get("stamina_cost",0)),
+            "internal_cost": int(star3.get("internal_cost",0)),
+            "action_slots": int(star3.get("action_slots",1)),
+            "card": star3.duplicate(true),
             "star3_card_id": str(star3.get("id", "")),
             "star3_card_name": str(star3.get("name", ""))
         })
