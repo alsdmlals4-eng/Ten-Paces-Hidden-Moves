@@ -64,17 +64,23 @@ func play_preset_motion(preset: Dictionary, duration: float, continue_motion: bo
     if not linked:
         _set_pose_frame(1 if use_sword else 0)
     tween.tween_property(self, "visual_offset", Vector2(travel, 0), safe_duration * windup)
+    if not use_sword:
+        tween.parallel().tween_property(self, "visual_scale", 0.96, safe_duration * windup)
     tween.tween_callback(func():
         _set_motion_phase("active")
         _set_pose_frame(3 if use_sword else 0)
     )
-    tween.tween_interval(safe_duration * 0.18)
+    if use_sword:
+        tween.tween_interval(safe_duration * 0.18)
+    else:
+        tween.tween_property(self, "visual_scale", 1.04, safe_duration * 0.18)
     tween.tween_callback(func():
         _set_motion_phase("recovery")
         _set_pose_frame(5 if use_sword else 0)
     )
     tween.set_ease(Tween.EASE_OUT)
     tween.tween_property(self, "visual_offset", Vector2(travel * 0.35, 0) if continue_motion else Vector2.ZERO, safe_duration * (1.0 - windup - 0.18))
+    tween.parallel().tween_property(self, "visual_scale", 1.0, safe_duration * (1.0 - windup - 0.18))
     if _has_chain_origin and not continue_motion:
         tween.parallel().tween_property(self, "position", _chain_origin, safe_duration * (1.0 - windup - 0.18))
     tween.tween_callback(func():

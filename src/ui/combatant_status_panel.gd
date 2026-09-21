@@ -121,6 +121,20 @@ func _refresh() -> void:
             _status_labels.append(chip)
 
 func _portrait_for_current_combatant() -> Texture2D:
+    if side == "enemy":
+        var approved := preload("res://src/ui/approved_blueprint_art.gd")
+        var identity_path: String = approved.portrait_path(str(combatant.get("candidate_id", "")))
+        if not identity_path.is_empty():
+            _portrait.material = null
+            _portrait.flip_h = false
+            if not _portrait_cache.has(identity_path):
+                var source: Texture2D = approved.portrait(str(combatant.get("candidate_id", "")))
+                var crop := AtlasTexture.new()
+                crop.atlas = source
+                crop.region = Rect2(Vector2.ZERO, Vector2(source.get_width(), source.get_height() * 0.58))
+                crop.filter_clip = true
+                _portrait_cache[identity_path] = crop
+            return _portrait_cache[identity_path]
     # Share the approved battler identity without baking a separate portrait.
     var path := POSES.battler_path(side, str(combatant.get("candidate_id", "")))
     _portrait.material = null if path == POSES.DOGYEOM_PATH else _chroma_material

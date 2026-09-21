@@ -21,6 +21,10 @@ func _run() -> void:
 	board._fast_replay = false
 	board._reduced_motion = false
 	board._set_presentation_state("presenting_result")
+	var dodge_event := {"type":"action_result","actor":"player","card_id":"basic_quick_attack","outcome":"evaded","defense_outcome":"evade","damage":0,"motion_cue":"strike"}
+	board._play_character_impact_motion(dodge_event,0.3)
+	expect(board.enemy_character.motion_state == "evade", "Compiled martial evasion reaches defender motion.")
+	board._reset_character_choreography()
 	board._set_resolution_surface_visible(false)
 	for i in range(5):
 		await process_frame

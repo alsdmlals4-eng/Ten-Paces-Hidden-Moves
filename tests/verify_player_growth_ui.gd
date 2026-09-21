@@ -45,9 +45,13 @@ func _run() -> void:
         root.size = viewport
         for i in range(5): await process_frame
         var bounds := Rect2(Vector2.ZERO,Vector2(viewport))
-        for control in [shell.content_panel,panel,shell.primary_button,panel.recommend]:
+        for control in [shell.content_panel,panel.get_parent(),shell.primary_button,panel.recommend]:
             check(bounds.encloses(control.get_global_rect()), "setup stays on screen " + control.name)
         check(shell.content_panel.get_global_rect().encloses(shell.primary_button.get_global_rect()), "continue stays within content")
+        panel.get_parent().ensure_control_visible(panel.get_node("StatEffects"))
+        for i in range(3): await process_frame
+        check(panel.get_parent().get_global_rect().intersects(panel.get_node("StatEffects").get_global_rect()), "stat effects reachable by scrolling")
+        panel.get_parent().scroll_vertical = 0
     root.content_scale_size = Vector2i(1280,720)
     root.size = Vector2i(1280,720)
     for i in range(4): await process_frame

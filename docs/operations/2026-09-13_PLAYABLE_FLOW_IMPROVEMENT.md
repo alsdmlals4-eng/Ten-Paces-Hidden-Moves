@@ -253,3 +253,26 @@ Windows export exit0, export된 파일의50무공 시나리오 PASS. exe SHA256 
 첫 원격 run35546542990의 standalone acquired-manual 검사는 실패했다. 저장/전투 기능의 실패가 아니라 과거 추첨 seed34가 새 첫5 고유 정책에서도6종 비시작 무공을 모두 제공한다는 테스트 가정이 원인이었다(`ci-failure.log`, owned7/expected10). 로컬500개 suite는 이 standalone CI 진입점을 포함하지 않으므로 그 PASS로 덮지 않는다.
 
 `verify_acquired_manual_flow.gd`는 실제 generator에서 최대4096개 seed를 확인해 마지막 전투 전에 실제6종 전수가 가능한 편성을 선택한다. 실제 보상 receipt로10종을 얻고 전투/저장/이어하기에서 쓰는 기존 인수는 그대로이며, 테스트를 통과시키려고 제품 추첨·전수 규칙·기존 legacy fixture를 변경하지 않았다. 현재 찾은 seed39에서 기본473검사·fixture 생성479검사가 통과했다. 새 v1/5권·v2/5권·v2/10권과 기존 legacy v1/v2의 독립 프로세스 Continue는 각21검사로 확인한다. 이는 synthetic terminal을 사용하는 전수/저장 계약 검사이고 실제 전투5승 근거와 별개다. 제품 tree는52e1ce4e 및 배포물과 동일하다. 새 전체 검토를 시작하지 않고 실패한 소비처의 표적 교정/회귀로 처리했다.
+
+
+## 2026-09-21 사용자 화면 결함 교정
+
+기준 branch8e8b2a0 / main e5ec55e6 / 최신 Base23ecad5a. Work Mode PLAN→BUILD→REVIEW; Skill workflow-router, combat-ux-and-accessibility(build), ten-paces-verification(review), systematic-debugging, test-driven-development, requesting-code-review, imagegen(edit), pdf(edit). 외부 유사 사례를 새 판단 근거로 추가할 작업이 아닌 기존 사용자 지정 화면/확정 효과/실제 consumer 결함 교정이므로 CURRENT_SOURCE_RELEVANCE_CHECK는 내부 근거 재사용이다. 기존 전체 검토 예산을 초기화하지 않고 이번 실제 diff를 독립 검토하고 지적을 표적 교정했다.
+
+### 계획·보호·실행
+1. 승인된 상대 초상16종을 HUD candidate_id와 연결한다. 전신 provider는 도겸 외 공용 검객이라는 별도 자산 공백을 숨기지 않는다.
+2. 시작6무공의 실제 authored effect_steps/비용/수/능력 요구치를 선택 전에 보여준다. 능력 설명은 현재 resolver 소비와 일치시키며 새 능력 효과를 만들지 않는다. 좌우 스크롤을 사용해720p에서 출발 버튼을 유지한다.
+3. 사용자가 지정한 여정형 참조를 재사용하고 새 여정·이어하기·설정은 실제 키보드/마우스 제어로 연결한다. 기존525×282 이미지의 주석/해상도는 원본 한계이며 고해상도 승인 artwork로 과장하지 않는다. 손상/비호환/IO/백업 복구 안내와 저장 위치 설명을 유지한다.
+4. timed martial ATTACK/EVADED가 시각 cue에서 누락되는 원인을 수정한다. 혼합 적중/회피의 순서·피해0을 보존한다. 비검 원거리 시전은 검 베기 대신 기존 neutral 상태의 준비/회복 scale을 적용하고 skip/reset을 검증한다. 무기별 고유 포즈 제작 완료가 아니다.
+
+전투 판정, 상대 추첨/저장, 숨은 정보, 승인 이미지 원본, 전역 설정/다른 PR/outer dirty checkout은 수정하지 않았다. title의 참조 재사용만 새 runtime asset으로 명시하며 생성 캐릭터는 별도 후보다.
+
+### 검증과 발견한 실패
+증거 폴더: `C:/Users/user/.codex/visualizations/tenpaces-motion-integration-20260912/user-feedback-20260921`. 초기 회귀34실패→교정. 독립 검토에서 천공 조건부 준비 소비/특수 합 설명 누락과 이어하기 위치 tooltip 덮어쓰기를 발견, review-red.log40검사2실패→review-green.log40검사0실패. timed response 실제 resolver 회피 cue, 프리셋134, headless/Windows GPU card-motion23, shell/bridge/durable continue 회귀를 확인했다.
+
+native-ui.log는 실제 Windows GPU에서 설정→닫기→새 여정→4권 선택→720p 확인0실패. 최초 probe는 물리 창 크기와 stretch 논리좌표를 혼용해 거짓 overflow를 보고했고 좌표/scale을 일치시켜 재검증했다. growth UI는 스크롤 콘텐츠 전체가 창 안이어야 한다는 구형 인수를 viewport+스크롤 도달성으로 교정해24검사0실패. 관련 native 캡처는 title.png/setup-720.png/setup-selected.png. UI 자동 입력과 사람이 이해/재미를 느꼈다는 검증은 별개다.
+
+### 아직 미완료인 시각 범위
+적 HUD16종은 연결됐으나 전투장 전신 중복은 아직 해결되지 않았다. 우람·담월·비연·풍목 후보는 기존 승인 초상을 인물 reference로 사용했다. 첫 출력의 비크로마 배경은 실패 이력이며 재교정했다. 크로마 원본과 실제 alpha 결과를 함께 보관하고 포즈 방향/무기와 프레임 경계/피벗을 추가 검수해야 한다. 후보 자동 승인/제품 연결은 하지 않는다. PR342는 기존4모션 final lock과 이 미완료 범위를 포함한 Draft로 유지한다. Human 재미/Android/출시는 NOT_RUN.
+
+추가 closeout:18종 기존 visual suite 중17종 통과, 하나는 ID미지정fallback 기대를 이름있는 Yeongyo와 함께 바꾼 테스트 오류를 분리해 단독GREEN으로 교정했다. 승인 보호계약/referencefreshness/정적combatboardPASS. 새4전신 RGBA의 완전투명 픽셀과불투명피사체를 확인하고 Windows candidate-preview.png에서 실제 alpha 렌더를 확인했다. 장창/도 등은 정방격자영역을 넘으므로 고유region/피벗 연결 검증 전이다. 후보원본8개와상태는 docs/visual-assets/candidates/TEN-OPPONENT-FEEDBACK-20260921/candidates.json, .gdignore로제품export에서제외. Windows export exit0 및배포물50시나리오PASS. 기존45ObjectDB/22resource editor종료진단은기록유지. editor생성sidecar211개를 삭제대기feedback-20260921로해시대조이동, 삭제0.

@@ -1622,7 +1622,25 @@
         "status": "SOURCE_KEYED_AT_RUNTIME"
       },
       "evidence": "docs/operations/2026-09-09_CHARACTER_MOTION_INTEGRATION.md"
+    },
+    {
+      "id": "journey_title_reference_v1",
+      "path": "res://assets/ui/logo/journey_title_reference_v1.png",
+      "status": "APPROVED_ACTIVE",
+      "source_asset": "docs/blueprint/evidence/reference-screens/158cb5092d39d1960f9c973de2cdf344.png",
+      "source_png_sha256": "79ec0532fcd62256bc3952b23d0bcb13929b3a5c1925a46e439ae38c2341b100",
+      "runtime_consumer": "MainTitleScreen in src/ui/main_title_screen.gd",
+      "approval": "2026-09-21 user explicitly requested restoration of attached image 2 composition",
+      "limits": "525x282 historical composition reused byte-for-byte; no new artwork approval claimed; real controls own input",
+      "active": true
     }
   ],
-  "fallback": "기존 SVG UI와 텍스트·도형 기반 결과 연출은 유지한다. 투명 RGBA 검수를 통과한 절초 원화가 준비되기 전에는 후보 원화를 활성 VFX로 참조하지 않는다."
+  "fallback": "기존 SVG UI와 텍스트·도형 기반 결과 연출은 유지한다. 투명 RGBA 검수를 통과한 절초 원화가 준비되기 전에는 후보 원화를 활성 VFX로 참조하지 않는다.",
+  "current_consumer_overrides": {
+    "ten_paces_hidden_moves_title_logo_01_v1": {
+      "status": "PRESERVED_APPROVED_SOURCE_NOT_CURRENT_TITLE_CONSUMER",
+      "replacement": "journey_title_reference_v1",
+      "reason": "2026-09-21 explicit user restore request; original record and approved bytes preserved"
+    }
+  }
 }

@@ -54,13 +54,13 @@ static func compile(events: Array) -> Array:
 					var piece := _piece(event)
 					piece.merge({"type":"clash", "outcome":"clash_" + status.to_lower(), "damage":0, "motion_cue":"clash"}, true)
 					pieces.append(piece)
-				elif op in ["ATTACK", "INDEPENDENT_ATTACK"] and status in ["HIT", "BLOCKED"]:
+				elif op in ["ATTACK", "INDEPENDENT_ATTACK"] and status in ["HIT", "BLOCKED", "EVADED"]:
 					var piece := _piece(event)
 					# Effect facts report potential post-defense damage, even past HP zero.
 					# The original aggregate owns actual HP loss; distribute, never mint damage.
 					var actual_damage := mini(remaining_damage, maxi(0, int(fact.get("health_damage", 0)))) if status == "HIT" else 0
 					remaining_damage -= actual_damage
-					piece.merge({"type":"action_result", "outcome":"hit", "damage":actual_damage, "defense_outcome":"block" if status == "BLOCKED" else "hit", "motion_cue":"strike"}, true)
+					piece.merge({"type":"action_result", "outcome":"evaded" if status == "EVADED" else "hit", "damage":actual_damage, "defense_outcome":"evade" if status == "EVADED" else ("block" if status == "BLOCKED" else "hit"), "motion_cue":"strike"}, true)
 					piece["martial_events"] = [fact.duplicate(true)]
 					pieces.append(piece)
 		if pieces.is_empty():

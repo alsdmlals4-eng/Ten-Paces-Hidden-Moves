@@ -66,3 +66,8 @@ User approved the proposed per-card presets and related work. Scope:43 current c
 ## 2026-09-21 승인 후속 연결
 
 `TEN-DEC-20260921-FIRST-FIVE-DUELS-GRADE-EVIDENCE-01` / `docs/decisions/2026-09-21_FIRST_FIVE_DUELS_AND_GRADE_EVIDENCE.md`에 따라 P05 유효 집계·결과 표시 및 첫5 실제 무공 연결을 구현한다. 기존 PLANNING_ONLY 등 역사 범위는 당시 권한이며 이번 명시 승인과 구분한다. 최종 등급 산식/보상 경제는 여전히 미정. 기존 실행 기록 PLAYABLE_FLOW_IMPROVEMENT의9월21일 절과 현재 GitHub PR342 HEAD를 대조한다.
+
+
+## 2026-09-21 사용자 화면 결함 교정
+
+최신 사용자 요청의 적 이미지 중복, 시작 능력/무공 설명, 기존 여정형 제목 화면 복원, 카드 연출 연결을 같은 작업 branch에서 교정한다. 기존 승인 초상16종과 사용자 지정 제목 참조를 재사용한다. 새 상대 전신은 크로마키→배경 제거 후보로 준비하며 final lock 없이 승인 자산/런타임 정본으로 승격하지 않는다. 판정·공개정보·기존 저장·엔진·전역 설정은 보호한다. 실행/재개 기준은 기존 PLAYABLE_FLOW_IMPROVEMENT 기록의 사용자 화면 결함 절이다.

@@ -191,6 +191,8 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_card_motion_presets.gd
       - name: Validate card motion runtime
         run: godot --headless --path . --script res://tests/verify_card_motion_runtime.gd
+      - name: Validate player feedback corrections
+        run: godot --headless --path . --script res://tests/verify_player_feedback_corrections.gd
       - name: Verify response rules
         run: godot --headless --path . --script res://tests/verify_response_rules.gd
       - name: Verify ultimate interruption engagement

@@ -143,3 +143,7 @@ f671f1d9 원격33SUCCESS/1FAILURE. 절초 최대 자세·Windows·일반 headles
 원격 후속 결함 교정: 최초4d2055f4의 automated-product-evidence가 camera fixture120초 timeout으로 실패했다. 로컬에서 `Real impact consumer must start camera feedback` assertion을 재현했다(camera-local-red.log). fixture에 card_id가 없어 새 unknown preset의 camera0을 사용한 원인이며 제품 카메라를 강제 활성화하지 않고 실제 basic_quick_attack ID와 명시적 검 접촉 사실로 교정했다. unknown card의 shake0 반례와20초 fixture watchdog도 추가했다. 같은 camera 검사 GREEN; 실패한 최초 HEAD를 원격 전체 PASS로 보고하지 않는다. 기존2회 전체 검토를 초기화하지 않는 결함별 후속 교정이다.
 
 카메라 교정 뒤 동일 approved visual continuation18개 그룹 전체 PASS(80.693초). 테스트를 위해 잠시 복원한200개 sidecar는 해시가 같음을 확인해 같은 삭제 대기 위치로 반환했다. 제품 파일/빌드 bytes는4d2055f4와 동일하며 후속 커밋은 fixture와 실행 기록만 변경한다.
+
+
+### 2026-09-21 사용자 지적 후 표적 교정
+무공 ATTACK/EVADED가 일반 피해 cue로 빠지던 경로와 비검 travel0의 정지 동작을 수정했다. 실제 timed response→evade 연결, 혼합 hit/evade, 중립 준비/복귀 및 취소를 검사했다. Windows card-motion23검사PASS는 연결 근거이며 무기별 고유 그림 완료가 아니다. 적 HUD는 승인16초상 연결, 전신은 여전히 다수공용이미지이며4인 생성후보/alpha 검수와최종확정이 별도다. 최신 코드·독립검토 지적2건·실행·화면·PDF·미완료는 기존PLAYABLE_FLOW_IMPROVEMENT 사용자결함절 참조.

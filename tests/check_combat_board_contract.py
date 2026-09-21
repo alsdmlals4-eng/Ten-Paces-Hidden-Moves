@@ -197,7 +197,7 @@ def main() -> None:
     }
     assert [asset for asset in asset_manifest["assets"] if asset["id"] in blueprint_ids] == blueprint_assets
     continuation_ids = {
-        "clash_sparks_ink_gold_v2", "player_sword_sequence_v1", "enemy_sword_sequence_v1",
+        "journey_title_reference_v1", "clash_sparks_ink_gold_v2", "player_sword_sequence_v1", "enemy_sword_sequence_v1",
         "player_reactions_candidate_v2", "enemy_reactions_candidate_v2",
     }
     continuation_assets = [asset for asset in asset_manifest["assets"] if asset["id"] in continuation_ids]
@@ -234,6 +234,7 @@ def main() -> None:
         "basic_technique_ink_atlas_01_v1",
         "martial_ultimate_card_illustration_atlas_01_v1",
         "ten_paces_hidden_moves_title_logo_01_v1",
+        "journey_title_reference_v1",
         "attack_clash_ink_gold_atlas_01_v1",
         "clash_sparks_ink_gold_v2",
         "ultimate_ink_gold_sprite_sheet_rgba",
@@ -288,6 +289,9 @@ def main() -> None:
     title_logo = next(asset for asset in active_assets if asset["id"] == "ten_paces_hidden_moves_title_logo_01_v1")
     assert title_logo["source_asset"] == "docs/visual-assets/approved/TEN_PACES_HIDDEN_MOVES_TITLE_LOGO_01_v1.png"
     assert title_logo["runtime_consumer"] == "MainTitleScreen in src/ui/main_title_screen.gd"
+    assert asset_manifest["current_consumer_overrides"][title_logo["id"]]["replacement"] == "journey_title_reference_v1"
+    travel_title = next(asset for asset in active_assets if asset["id"] == "journey_title_reference_v1")
+    assert hashlib.sha256(res_file(travel_title["path"]).read_bytes()).hexdigest() == travel_title["source_png_sha256"]
     assert title_logo["transparency_audit"]["alpha_extrema"] == [0, 255]
     title_logo_source = ROOT / title_logo["source_asset"]
     assert title_logo_source.exists()

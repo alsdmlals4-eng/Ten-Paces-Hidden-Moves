@@ -48,6 +48,13 @@ func _ready() -> void:
     recommend.text = "선택 무공에 맞춰 추천 배분"
     recommend.pressed.connect(reset_recommendation)
     add_child(recommend)
+    var effects := Label.new()
+    effects.name = "StatEffects"
+    effects.text = "능력의 효과\n외공 · 속공·강공 위력, 외공 무공의 사용 조건\n근골 · 팽가도결 등 근골 무공의 사용 조건\n신법 · 매화검결·소요보결의 사용 조건\n내공 · 장풍·천공 특수 합 위력, 내공 무공의 사용 조건\n심안 · 태극검결·천기암기록 사용 조건, 태극 특수 합 위력\n\n근골이 체력, 신법이 이동 거리, 심안이 관찰량을 자동으로 늘리지는 않습니다. 무공별 효과를 함께 확인하세요."
+    effects.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+    effects.add_theme_font_size_override("font_size",16)
+    effects.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    add_child(effects)
     refresh()
 
 func configure(ids: Array) -> void:

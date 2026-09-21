@@ -13,6 +13,10 @@ func _initialize() -> void:
             var state: Dictionary = engine.make_initial_state(hud,4,5)
             state.enemy.internal=[5,10]
             var result: Dictionary = engine.resolve_bundle([{"card_id":attack,"anchor_index":1,"target_ready":true,"target_tile":5,"targeting_mode":"enemy","direction":1}],{},state)
+            if attack == "sichuan_tang_hidden_weapons_star3":
+                var cues: Array = load("res://src/ui/combat_motion_sequence.gd").compile(result.presentation_events)
+                var dodges: Array = cues.filter(func(e): return e.get("actor") == "player" and e.get("defense_outcome") == "evade")
+                if dodges.size()!=1 or dodges[0].get("damage",-1)!=0: failures.append("real martial evade lost between engine and choreography: "+manual)
             var records: Array = result.resolved_actions.filter(func(a): return a.actor=="enemy" and a.get("action_stage")=="execution")
             if records.is_empty() or records[0].get("martial_events",[]).is_empty(): failures.append(manual+" lacks authored response events")
             if int(result.defenses.enemy.guard_block)!=0: failures.append("martial response becomes generic guard")

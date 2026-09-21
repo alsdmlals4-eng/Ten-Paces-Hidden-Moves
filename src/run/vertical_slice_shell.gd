@@ -177,6 +177,7 @@ func _build_shell() -> void:
     main_title_screen.name = "MainTitleScreen"
     main_title_screen.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     main_title_screen.connect("start_requested", Callable(self, "_on_primary_button_pressed"))
+    main_title_screen.connect("settings_requested", Callable(self, "toggle_game_menu"))
     add_child(main_title_screen)
 
     combat_host = Control.new()
@@ -236,6 +237,7 @@ func _build_shell() -> void:
     setup_options_container.add_theme_constant_override("separation", 6)
     setup_options_container.visible = false
     setup_body = HBoxContainer.new()
+    setup_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
     setup_body.add_theme_constant_override("separation",16)
     setup_body.visible = false
     stack.add_child(setup_body)
@@ -245,12 +247,21 @@ func _build_shell() -> void:
     setup_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     setup_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
     setup_scroll.follow_focus = true
+    setup_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
     setup_body.add_child(setup_scroll)
     setup_options_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     setup_scroll.add_child(setup_options_container)
     starting_stats_panel = preload("res://src/ui/starting_stats_panel.gd").new()
     starting_stats_panel.name = "StartingStatsPanel"
-    setup_body.add_child(starting_stats_panel)
+    var stats_scroll := ScrollContainer.new()
+    stats_scroll.name = "SetupStatsScroll"
+    stats_scroll.custom_minimum_size = Vector2(310,280)
+    stats_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+    stats_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+    stats_scroll.follow_focus = true
+    setup_body.add_child(stats_scroll)
+    starting_stats_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    stats_scroll.add_child(starting_stats_panel)
     starting_stats_panel.allocation_changed.connect(_refresh_setup_selection_ui)
 
     primary_button = Button.new()
@@ -281,6 +292,7 @@ func _build_setup_options() -> void:
         var button := Button.new()
         button.name = "Starter_%s" % manual_id
         button.toggle_mode = true
+        button.add_theme_font_size_override("font_size",18)
         button.custom_minimum_size = Vector2(0,40)
         button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
         button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -297,6 +309,19 @@ func _build_setup_options() -> void:
         button.toggled.connect(_on_setup_manual_toggled.bind(manual_id))
         setup_options_container.add_child(button)
         _setup_buttons[manual_id] = button
+        var detail := Label.new()
+        detail.name = "StarterDetails_" + manual_id
+        detail.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+        detail.add_theme_font_size_override("font_size",16)
+        detail.add_theme_color_override("font_color",Color("eadfc9"))
+        detail.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        detail.text = "%d수 · 기력 %d · 내력 %d\n%s" % [option.action_slots,option.stamina_cost,option.internal_cost,option.effect_text]
+        setup_options_container.add_child(detail)
+        var requirement := Label.new()
+        requirement.name = "StarterRequirement_" + manual_id
+        requirement.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+        requirement.add_theme_font_size_override("font_size",16)
+        setup_options_container.add_child(requirement)
 
 
 func _on_primary_button_pressed() -> void:
@@ -351,6 +376,14 @@ func _refresh_setup_selection_ui() -> void:
     var count := _setup_selected_manual_ids.size()
     description_label.text = "강호에 들고 갈 무공 4권을 고릅니다. 선택 %d/4\n각 무공은 3성 기술 하나로 시작하며, 선택한 네 권이 이번 비무행의 전투 정체성이 됩니다." % count
     starting_stats_panel.configure(_setup_selected_manual_ids)
+    var masteries := {}
+    for id in _setup_selected_manual_ids: masteries[id] = 3
+    var projected: Dictionary = starting_stats_panel.growth.project(starting_stats_panel.allocation,masteries,true)
+    for option in starter_manual_catalog.get_options():
+        var requirement := setup_options_container.get_node("StarterRequirement_" + str(option.manual_id)) as Label
+        var reason: String = starting_stats_panel.growth.lock_reason(option.card,projected.stats)
+        requirement.text = "%s %d 필요 · %s%s" % [option.primary_stat,starting_stats_panel.growth.rules.primary_requirements["3"],"현재 충족" if reason.is_empty() else reason," · 시작 시 주능력 +1" if option.manual_id not in _setup_selected_manual_ids else " · 선택됨"]
+        requirement.add_theme_color_override("font_color",Color("9fc6a9") if reason.is_empty() else Color("efbe79"))
     if run_state.is_stat_growth_run():
         description_label.text = "시작 무공 %d/4권 · 모두 3성\n자유 능력 6점을 배분하세요. 전수한 무공은 이후에도 모두 사용할 수 있습니다." % count
     primary_button.disabled = count != VerticalSliceRunState.STARTER_SELECTION_COUNT or (run_state.is_stat_growth_run() and not starting_stats_panel.growth.valid_allocation(starting_stats_panel.allocation))
@@ -375,6 +408,7 @@ func _render_current_screen() -> void:
     )
 
     var showing_main := screen == VerticalSliceRunState.SCREEN_MAIN
+    if is_instance_valid(menu_button): menu_button.visible = not showing_main
     combat_host.visible = keeps_combat_visible
     content_panel.visible = not keeps_combat_visible and not showing_main
     if is_instance_valid(main_title_screen):
