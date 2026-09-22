@@ -351,7 +351,7 @@
       "docs/blueprint/HTML_MIGRATION_SPEC.md"
     ],
     "not_run": [
-      "new Godot execution",
+      "new visible Godot execution",
       "Claude/cloud browser",
       "Android",
       "human fun",
@@ -406,6 +406,8 @@
       "failed": 0
     },
     "tree_matches_reviewed_head": true,
-    "local_full_regression": "Additional prepared run pending; required scoped and remote checks passed. Not claimed as full local PASS."
+    "local_full_regression": "PASS: 523 tests in473.650s after exact Godot4.7.1 initial import. Cache-less first attempt interrupted, not PASS. output/blueprint/python-regression-prepared.log",
+    "postmerge_main_workflows": "PASS: Full Validation35736437860, platform rights35736437854, HTML Blueprint35736437858, GodotLiveEditorPilot35736438751",
+    "recoverable_cleanup": "186 generated metadata files backed up/moved with SHA256 manifest under output/blueprint/manual-delete-candidates/godot-import-20260922; tracked metadata restored to HEAD, no product change."
   }
 }
