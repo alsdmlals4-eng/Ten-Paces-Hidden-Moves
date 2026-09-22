@@ -21,6 +21,7 @@ UNIFIED_WORK_EXECUTION: 현재 실행자가 승인 범위의 구현·검증을 �
 - `performance-profile`: 목표 플랫폼 예산·baseline 비교.
 - `regression`: 정상·실패·경계·반례·기존 동작.
 - `evidence-report`: 통과·실패·미실행 증거 보고.
+- `html-blueprint-review`: HTML 블루프린트·구조도·자산 탐색·AI 직접 브라우저 검수. 이 모드에서만 [HTML 검수 연결](references/html-blueprint.md)을 읽는다.
 
 ## 사용 조건
 

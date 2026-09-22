@@ -8,3 +8,6 @@ __pycache__/
 
 # Local asset vault
 .asset-vault/
+
+# Regenerable local Blueprint and its scoped preview-session receipt.
+output/blueprint/

@@ -221,7 +221,7 @@
   "balance_measurement_representative_policy_coverage_postmerge_readback": "docs/operations/2026-08-30_PR293_REPRESENTATIVE_POLICY_COVERAGE_POSTMERGE_READBACK.md",
   "balance_measurement_representative_policy_coverage_scope": "ENGINE_DIRECT_NON_SHIPPING_OPENING_NO_ROUTE_15_CANDIDATES_15_LEGAL_STARTER_LOADOUTS_6_PUBLIC_POLICIES_5_AI_SEEDS_SCHEMA_3_SAFE_AGGREGATE_SELECTION_COUNTS",
   "long_horizon_user_direction": "IMPLEMENT_GDD_BY_APPROVED_VERIFIED_GODOT_PACKAGES_WITHOUT_SILENT_CORE_SCOPE_EXPANSION",
-  "next_product_execution_surface": "COMBAT_LAYOUT_PROTECTED_DELIVERY_THEN_ORDERED_COMBAT_V1_COMPATIBILITY_GROWTH_EVENTS_STATUS_REWARDS",
+  "next_product_execution_surface": "HTML_CONTENT_ASSETS_PM_RUNTIME_VERIFY_DELIVER",
   "machine_runtime_readback_execution_report": "docs/operations/2026-08-30_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_COMPARISON_DEFERRED_EXECUTION_REPORT.md",
   "machine_runtime_readback_status": "PARTIAL_CURRENT_MAIN_GODOT_4_7_1_VISIBLE_COMBAT_SCREEN_AND_6750_ROW_REPORT_SHA_MATCHED_HUMAN_PLAYER_COMPARISON_DEFERRED",
   "machine_runtime_readback_report_sha256": "A0669A0727C9608B6A240910CE529263C1982C510E4B3C376BD58D8AB5F66558",
@@ -268,7 +268,7 @@
   "windows_android_adapter_implementation_authorized": false,
   "product_implementation_authorized": true,
   "implementation_gate": "SCOPED_PC_FIRST_VERTICAL_SLICE_GATE_PLUS_EXISTING_PLATFORM_EVIDENCE_CEILINGS",
-  "next_phase": "COMBAT_LAYOUT_PROTECTED_DELIVERY_THEN_ORDERED_COMBAT_V1_COMPATIBILITY_GROWTH_EVENTS_STATUS_REWARDS",
+  "next_phase": "HTML_CONTENT_ASSETS_PM_RUNTIME_VERIFY_DELIVER",
   "current_screen_visual_coverage_inventory": "docs/planning-data/current_screen_visual_coverage_inventory_20260828.json",
   "next_image_generation": "WHOLE_SCENE_ATLAS_CANDIDATE_GENERATED; ACTUAL_RUNTIME_CONSUMER_BOUND_SPLIT_BRIEFS_REQUIRE_SEPARATE_GODOT_BUILD_PACKAGE_AND_USER_FINAL_LOCK",
   "next_visual_batch": [],
@@ -607,5 +607,38 @@
   },
   "prework_benchmark_historical_gate_decision": "TEN-DEC-20260830-PREWORK-BENCHMARK-REVERSE-ENGINEERING-GATE-01",
   "current_execution_policy": "UNIFIED_WORK_EXECUTION",
-  "operating_adoption_owner": "[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md"
+  "operating_adoption_owner": "[기획서]/00_프로젝트_허브/BASE_MAIN_SYNC_AUDIT.md",
+  "opponent_appearance_approval_20260922": {
+    "status": "USER_APPROVED_APPEARANCE_ONLY",
+    "date": "2026-09-22",
+    "user_message": "확정할게. 그리고 추가로 십보강호 HTML 블루프린트 전환 작업을 이어가줘.",
+    "scope": "비연·우람·담월·풍목 전신 외형; 프레임 분할/방향/모션/런타임 승인은 별도",
+    "candidate_revision": "d2e1edae7930c11e6c04cfbe269a06c4d3075f14",
+    "files": [
+      {
+        "candidate_id": "slot3_biyeon",
+        "name": "비연",
+        "path": "docs/visual-assets/candidates/TEN-OPPONENT-FEEDBACK-20260921/biyeon-alpha-v1.png",
+        "sha256": "06ef7552feb0c2de11acc4b956fbd6f56256faa4d1a4c8ab90ecdb12050be3bb"
+      },
+      {
+        "candidate_id": "slot3_uram",
+        "name": "우람",
+        "path": "docs/visual-assets/candidates/TEN-OPPONENT-FEEDBACK-20260921/uram-alpha-v1.png",
+        "sha256": "9479acfdc510683cd97087b50d7e28fbf8fdae1d33ac391042a882667f771aab"
+      },
+      {
+        "candidate_id": "slot4_damwol",
+        "name": "담월",
+        "path": "docs/visual-assets/candidates/TEN-OPPONENT-FEEDBACK-20260921/damwol-alpha-v1.png",
+        "sha256": "d5e3ac59df8992dd42b679b5435d1d3afab383171f3fd55ce0a5cc49874266a1"
+      },
+      {
+        "candidate_id": "slot5_pungmok",
+        "name": "풍목",
+        "path": "docs/visual-assets/candidates/TEN-OPPONENT-FEEDBACK-20260921/pungmok-alpha-v1.png",
+        "sha256": "0ff0cc64da829f632ce22082b7d0ef586668e22b230f68f192ed3b4543a705c3"
+      }
+    ]
+  }
 }

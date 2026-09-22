@@ -44,7 +44,7 @@ GitHub의 REPOSITORY_HUMAN_FACING_CANON / REPOSITORY_STRUCTURED_CANON / REPOSITO
 - 동작·계약 변경은 실패 회귀 RED → 최소 GREEN → 영향 회귀. 문서·정적·자동·Godot runtime·Human·최종 자산 승인·병합·출시를 구분한다. 실행하지 않은 것은 NOT_RUN이다.
 - Godot authoring/runtime이 필요한 작업만 정확한 project.godot·채택 엔진·현재 editor/session을 확인한다. 문서 작업에 엔진 실행을 강제하지 않는다. 과거 PID/port/CODEX_HOME/local Codex launcher를 준비 완료 증거로 사용하지 않는다.
 - 삭제 가능한 자료는 참조·원본·사용처를 확인한 후 `C:/Users/user/Documents/삭제대기`로 복구 가능하게 이동하고 링크·원래 경로·hash를 남긴다. 사용자가 직접 삭제한다.
-- 진행/다음 작업은 기존 Active Context에 누적한다. 월간 작업일지는 기존 PDF 한 파일에 날짜별로 요약하며 같은 날짜는 합친다. 전체 대화·중복 추적표를 만들지 않는다.
+- 진행/다음 작업은 기존 Active Context에 누적한다. 월간 작업일지는 기존 `docs/operations/AI_USAGE_EVIDENCE_2026_09.json`에 날짜별로 요약하고 같은 날짜는 합친다. 검증된 HTML 전환 이후 블루프린트·월간 작업일지 PDF를 정기 재발행하지 않으며 기존 승인 PDF·원화를 보존한다. 전환 상태는 `docs/blueprint/HTML_MIGRATION_SPEC.md`를 따른다. 전체 대화·중복 추적표를 만들지 않는다.
 
 ## 조건부 owner
 

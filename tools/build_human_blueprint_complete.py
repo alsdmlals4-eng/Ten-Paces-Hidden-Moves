@@ -89,10 +89,8 @@ class Edition(Book):
         self.c.drawImage(str(path),dx-rx*scale,dy-(ih-ry-rh)*scale,iw*scale,ih*scale,mask='auto')
         self.c.restoreState()
 
-def main():
-    for n,f in [('K','malgun.ttf'),('KB','malgunbd.ttf')]:pdfmetrics.registerFont(TTFont(n,'C:/Windows/Fonts/'+f))
-    OUT.parent.mkdir(parents=True,exist_ok=True)
-    source(Path(__file__));source(ROOT/'tools/blueprint_layout.py');source(ROOT/'tools/build_opponent_stage_blueprint.py')
+def compose(b):
+    """Shared narrative, tables and images for PDF and HTML; no publication side effects."""
     arts=read('docs/blueprint/ART_SELECTION.json')['manuals']
     pres=read('docs/blueprint/OPPONENT_PRESENTATION.json')
     manuals=[read('data/cards/martial_manuals/'+mid+'.json') for mid in arts]
@@ -112,7 +110,7 @@ def main():
     bg=ROOT/'assets/backgrounds/jianghu_blue_ink_landscape_v1.png'
     inn=ROOT/'assets/backgrounds/jianghu_rest_inn_v1.png'
     courtyard=ROOT/'assets/backgrounds/atlas_blue_ink_courtyard_v1.png'
-    b=Edition(OUT);b.c.setTitle('십보강호 · 사람용 블루프린트 · 최종 승인 검토판 2026.09.11')
+    b.c.setTitle('십보강호 · 사람용 블루프린트 · 최종 승인 검토판 2026.09.11')
     b.page('열 칸의 거리, 세 번의 결단','기획 · 시각 경험 · 강호행로 · 전투 · 상대 · 무공 · 구현 지도')
     b.p('상대의 수를 읽고,\n나의 무공으로 답한다.',70,637,1060,39,bold=True)
     b.p('1대1 무협 전술 게임 · 10칸의 일자 전장 · 열 번의 비무',70,498,1060,22)
@@ -562,6 +560,14 @@ def main():
     source(ROOT/'docs/blueprint/IMPLEMENTATION_HANDOFF.md')
     source(ROOT/'docs/blueprint/ASSET_READINESS.json')
     append_pages(b, people)
+    return people
+
+def main():
+    for n,f in [('K','malgun.ttf'),('KB','malgunbd.ttf')]:pdfmetrics.registerFont(TTFont(n,'C:/Windows/Fonts/'+f))
+    OUT.parent.mkdir(parents=True,exist_ok=True)
+    source(Path(__file__));source(ROOT/'tools/blueprint_layout.py');source(ROOT/'tools/build_opponent_stage_blueprint.py')
+    b=Edition(OUT)
+    people=compose(b)
     b.c.save()
     from pypdf import PdfReader, PdfWriter
     from io import BytesIO
