@@ -130,3 +130,18 @@ h1{font-size:28px}
 
 
 .approved-page img{display:block;width:100%;height:auto}
+
+.movies{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:20px}
+.movie video{display:block;width:100%;aspect-ratio:8/5;background:#172c30;border-radius:6px}
+.movie .row{flex-wrap:wrap;gap:12px;margin-top:12px}
+.movie .card{padding:0}
+.manual-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px}
+.manual-cards .movie{padding:8px;border:0}
+.scroll-chapter{border-top:2px solid var(--line);margin-top:48px;padding-top:24px;content-visibility:auto;contain-intrinsic-size:auto 800px}
+.stage-detail{scroll-margin-top:100px;border-top:3px solid #ac8748;padding-top:24px;outline:none}
+.stage-next,.atlas-text-links,.overview-jumps{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0}
+.stage-next a,.atlas-text-links a,.overview-jumps a{padding:10px 14px;border:1px solid var(--line);border-radius:6px;background:#fffdf8}
+.overview-jumps{position:sticky;top:78px;z-index:3;background:#f4efe4;padding:8px}
+[id^="overview-"]{scroll-margin-top:170px;margin-top:50px}
+.atlas-diagram{min-width:760px}
+@media(max-width:700px){.overview-jumps{position:static}.stage-detail{scroll-margin-top:84px}.manual-cards{display:block}.movie{margin-bottom:20px}}

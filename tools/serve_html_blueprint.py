@@ -10,6 +10,7 @@ import mimetypes
 import os
 from pathlib import Path
 import secrets
+import re
 import threading
 from urllib.parse import unquote, urlsplit
 import webbrowser
@@ -78,14 +79,37 @@ def create_server(allowed, token, port=0):
             mime = mimetypes.guess_type(path.name)[0] or 'text/plain'
             if path.suffix in {'.md', '.gd', '.tscn', '.tres', '.godot', '.py'}:
                 mime = 'text/plain'
-            self.send_response(200)
+            size = len(data)
+            start, end = 0, size-1
+            requested = self.headers.get('Range') if not head else None
+            if requested:
+                match = re.fullmatch(r'bytes=(\d*)-(\d*)',requested)
+                if match and any(match.groups()):
+                    left,right = match.groups()
+                    if left:
+                        start=int(left);end=min(int(right),size-1) if right else size-1
+                    else:
+                        start=max(0,size-int(right))
+                else:
+                    start=size
+                if start >= size or end < start:
+                    self.send_response(416)
+                    self.send_header('Content-Range',f'bytes */{size}')
+                    self.send_header('Content-Length','0')
+                    self.end_headers()
+                    return
+                data=data[start:end+1]
+            self.send_response(206 if requested else 200)
+            self.send_header('Accept-Ranges','bytes')
+            if requested:
+                self.send_header('Content-Range',f'bytes {start}-{end}/{size}')
             self.send_header('Content-Type', mime+('; charset=utf-8' if mime.startswith('text/') or mime=='application/json' else ''))
             self.send_header('Content-Length', str(len(data)))
             self.send_header('Cache-Control', 'no-store')
             self.send_header('X-Content-Type-Options', 'nosniff')
             self.send_header('Cross-Origin-Resource-Policy', 'same-origin')
             self.send_header('Referrer-Policy', 'no-referrer')
-            self.send_header('Content-Security-Policy', "default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'")
+            self.send_header('Content-Security-Policy', "default-src 'none'; img-src 'self'; media-src 'self'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'")
             self.end_headers()
             if not head:
                 self.wfile.write(data)

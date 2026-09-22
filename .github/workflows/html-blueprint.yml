@@ -26,7 +26,7 @@ jobs:
           candidate=$(python -c 'import json; print(json.load(open("docs/blueprint/HTML_SOURCE_OBSERVATIONS.json"))["prs"]["342"]["headRefOid"])')
           git fetch origin "$candidate"
       - name: Verify publication, preservation and preview boundaries
-        run: python -m unittest tests.test_html_blueprint tests.test_html_blueprint_preview tests.test_html_blueprint_diagrams tests.test_html_blueprint_publication
+        run: python -m unittest tests.test_html_blueprint tests.test_html_blueprint_preview tests.test_html_blueprint_diagrams tests.test_html_blueprint_publication tests.test_html_blueprint_experience
       - name: Build complete derived view
         run: python tools/build_html_blueprint.py
       - name: Check all display views and local links

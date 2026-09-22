@@ -173,6 +173,9 @@ def build(out=OUT, include_candidate=True):
     from PIL import Image
     art = model.read(ROOT, 'docs/blueprint/ART_SELECTION.json')
     manuals = [model.read(ROOT, f'data/cards/martial_manuals/{mid}.json') for mid in art['manuals']]
+    for manual in manuals:
+        for card in manual['cards'].values():
+            card['effect_descriptions'] = [narrative.describe(step) for step in card.get('effect_steps',[])]
     from html_blueprint_diagrams import build as diagram_views
     diagrams = diagram_views()
     for asset in assets:
@@ -186,6 +189,8 @@ def build(out=OUT, include_candidate=True):
             if block['kind'] == 'image':
                 with Image.open(model.local_path(ROOT, block['path'])) as im:
                     block['size'] = list(im.size)
+    import html_blueprint_experience as experience_model
+    experience = experience_model.build(pages)
     inputs = {Path(path).resolve().relative_to(ROOT).as_posix(): digest for path, digest in SOURCES.items()}
     source_paths = ['tools/blueprint_layout.py', 'tools/blueprint_readiness_pages.py', 'tools/build_opponent_stage_blueprint.py', 'tools/build_human_blueprint_complete.py', 'tools/html_blueprint.py', 'tools/build_html_blueprint.py',
                     'tools/html_blueprint_ui/app.js', 'tools/html_blueprint_ui/style.css',
@@ -200,6 +205,14 @@ def build(out=OUT, include_candidate=True):
             for path in node['sources']:
                 inputs[path] = model.sha(model.local_path(ROOT, path))
     inputs['tools/html_blueprint_diagrams.py'] = model.sha(ROOT/'tools/html_blueprint_diagrams.py')
+    experience_paths = ['tools/html_blueprint_experience.py','tools/html_blueprint_ui/experience.js',
+        'tools/capture_blueprint_motion.gd','tools/encode_blueprint_motion.py',experience_model.MOTION_MANIFEST,
+        'data/run/bimu_constraints.json','data/cards/basic_cards.json']
+    experience_paths.extend(c['preview']['path'] for c in experience['contexts'].values())
+    for clip in experience['clips']:
+        experience_paths.extend([clip['path'],clip['poster']])
+    for path in experience_paths:
+        inputs[path] = model.sha(model.local_path(ROOT,path))
     for item in pm['items']:
         if item.get('scope') != 'PR342_CANDIDATE':
             inputs[item['source']] = model.sha(model.local_path(ROOT, item['source']))
@@ -226,14 +239,15 @@ def build(out=OUT, include_candidate=True):
                'dirty_paths': model.git('status', '--short'), 'inputs': inputs,
                'journal': model.read(ROOT, 'docs/operations/AI_USAGE_EVIDENCE_2026_09.json'),
                'pages': pages, 'assets': assets, 'people': people(), 'manuals': manuals, 'art_selection': art,
-               'pm': pm, 'candidate': candidate_info, 'diagrams': diagrams,
+               'pm': pm, 'candidate': candidate_info, 'diagrams': diagrams, 'experience': experience,
                'active_context': (ROOT/'[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md').read_text(encoding='utf-8').split('## 현재 운영 구조')[0],
                'roadmap': (ROOT/'docs/04_ROADMAP.md').read_text(encoding='utf-8'),
                'historical_reader': {'approval_date': '2026-09-11', 'approved_revision': model.read(ROOT, 'docs/planning-data/current_user_planning_status.json')['blueprint_final_approval']['approved_revision']}}
     css = (ROOT/'tools/html_blueprint_ui/style.css').read_text(encoding='utf-8')
     js = (ROOT/'tools/html_blueprint_ui/app.js').read_text(encoding='utf-8')
+    js = js.removesuffix('render();\n') + (ROOT/'tools/html_blueprint_ui/experience.js').read_text(encoding='utf-8') + '\nrender();\n'
     html = '''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>십보강호 · 살아 있는 블루프린트</title><style>''' + css + '''</style></head><body>
-<a class="skip" id="skip-content" href="#main">본문으로</a><header><a href="#home" class="brand">십보강호 <small>숨은 수의 비무</small></a><span class="edition">프로젝트 블루프린트</span><button id="resume-copy">재개 요청 복사</button></header>
+<a class="skip" id="skip-content" href="#main">본문으로</a><header><a href="#maps" class="brand">십보강호 <small>숨은 수의 비무</small></a><span class="edition">프로젝트 블루프린트</span><button id="resume-copy">재개 요청 복사</button></header>
 <div class="shell"><aside><nav aria-label="주요 메뉴" id="nav"></nav><label class="search-label" for="search">내용 찾기</label><input id="search" type="search" placeholder="인물 · 무공 · 자산 · 작업"><p id="freshness"></p><a href="../../AGENTS.md">작업 규칙 원본 ↗</a></aside><main id="main" tabindex="-1"></main></div>
 <dialog id="viewer"><button id="close-viewer" autofocus>닫기 · Esc</button><div id="viewer-body"></div></dialog><div id="notice" role="status" aria-live="polite"></div>
 <script id="blueprint-data" type="application/json">''' + model.script_json(payload) + '</script><script>' + js + '</script></body></html>'

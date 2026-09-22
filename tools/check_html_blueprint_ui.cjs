@@ -6,7 +6,7 @@ const elements=new Map();
 function element(id){if(!elements.has(id))elements.set(id,{value:'',textContent:'',innerHTML:'',dataset:{},addEventListener(){},classList:{toggle(){}},setAttribute(){},removeAttribute(){}});return elements.get(id);}
 element('blueprint-data').textContent=JSON.stringify(data);
 const env={document:{getElementById:element,querySelectorAll:()=>[],addEventListener(){}},window:{addEventListener(){},scrollTo(){}},location:{hash:'#home'},navigator:{},setTimeout,clearInterval,setInterval,console};
-vm.createContext(env);vm.runInContext(fs.readFileSync(path.join(root,'tools/html_blueprint_ui/app.js'),'utf8'),env);
+vm.createContext(env);vm.runInContext(html.slice(html.lastIndexOf('<script>')+8,html.lastIndexOf('</script>')),env);
 const manifest=JSON.parse(fs.readFileSync(path.join(root,'output/blueprint/manifest.json'),'utf8'));
 for(const dependency of ['tools/blueprint_layout.py','tools/build_opponent_stage_blueprint.py','tools/blueprint_readiness_pages.py'])assert(manifest.inputs[dependency],'Untracked display dependency: '+dependency);
 const allow=new Set([...Object.keys(manifest.inputs),...Object.keys(manifest.media),'output/blueprint/index.html','output/blueprint/manifest.json','output/blueprint/resume-index.json']);
@@ -24,6 +24,13 @@ function check(expression){const result=vm.runInContext(expression,env);assert.e
  renders++;return result;
 }
 for(const expression of ['home()','reader()','people()','assets()','pm()','evidence()','resume()'])check(expression);
+const all=check('home()');
+for(const page of data.pages)assert(all.includes(`data-reader="${page.id}"`),'Overview omits explanation '+page.id);
+for(const person of data.people)assert(all.includes(person.name),'Overview omits person');
+for(const manual of data.manuals)for(const card of Object.values(manual.cards))assert(all.includes(`data-card="${card.id}"`),'Overview omits card');
+assert(vm.runInContext('nav[0][0]',env)==='maps','Atlas must be the first navigation');
+for(const id of ['menu','starter','brief','plan','resolve'])assert(check(`maps('game-loop','${id}')`).includes('id="stage-detail"'),'Missing usable atlas content');
+for(const clip of data.experience.clips)assert(check(`movies('test',[${JSON.stringify(clip.id)}])`).includes('<video '),'Missing real movie');
 for(const g of data.diagrams){check(`maps(${JSON.stringify(g.id)})`);for(const n of g.nodes)check(`maps(${JSON.stringify(g.id)},${JSON.stringify(n.id)})`);}
 assert(data.pages.every(p=>p.approved_page?.url),'Missing approved page layout');
 for(const t of data.pm.items)check(`pm(${JSON.stringify(t.work_item_id)})`);
@@ -32,6 +39,12 @@ for(const a of data.assets)check(`asset(${JSON.stringify(a.id)})`);
 for(const p of data.people)check(`people(${JSON.stringify(p.id)})`);
 assert(vm.runInContext(`E('<img src=x onerror=alert(1)>')`,env).startsWith('&lt;'));
 const initial=check('assets()');element('search').value='no-such-item-673990';assert(check('assets()').includes('검색에 맞는 자산이 없습니다.'));element('search').value='';assert.equal(check('assets()'),initial);
+element('search').value='no-such-item-673990';
+const completeOverview=check('home()');
+for(const item of data.pm.items)assert(completeOverview.includes(item.title??item.work_item_id),'Overview must ignore another page search');
+const completeBrief=check("maps('game-loop','brief')");
+for(const person of data.people)assert(completeBrief.includes(person.name),'Brief must ignore another page search');
+element('search').value='';
 assert(!check('evidence()').includes('브라우저 실행 통과'));
 assert(check(`asset(${JSON.stringify(data.assets.find(a=>a.sequence?.length)?.id)})`).includes('motion-play'),'No playable source sequence');
 console.log(JSON.stringify({result:'PASS',rendered_views:renders,checked_local_links:links,evidence_level:'SOURCE_RENDERING_NOT_BROWSER'},null,2));

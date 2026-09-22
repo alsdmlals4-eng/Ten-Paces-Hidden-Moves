@@ -186,6 +186,13 @@
       "work": "승인 112개 설명·이미지·표를 공유 원본으로 HTML에 연결하고 자산·모션 도감, 원본 사용처, PM, 다음 AI 재개 경로를 구현했다. Archify의 유형별 관계·안정 ID·원본 근거·가독성 검사를 조사해 3개 구조도와 기존 QA 스킬에 적용했다. AI 브라우저용 읽기 전용 로컬 미리보기를 구현했다.",
       "result": "사용자 첫 화면·도감 확인, Codex 실제 브라우저 기능/작은 화면 검수, 관련58개 회귀와334표시/1603로컬 링크 검사, 전체 검토2회 및 지적 교정을 완료했다. PR344 main 병합/원격29검사 PASS·3조건부 SKIP와 tree 일치를 확인했다. PDF 정기 생성은 중단하고 기존 승인본/원화를 보존한다. 추가 로컬 전체회귀523개도 exact Godot4.7.1 import 준비 후 통과했다. 준비 전 중단한 검사는 통과로 세지 않았다. 생성 metadata186개는 해시·복구 안내와 함께 삭제 후보 폴더에 보관했다. 새 visible Godot·Claude/클라우드 접속·사람 재미·출시 검수는 수행하지 않았다.",
       "evidence": "docs/blueprint/HTML_MIGRATION_SPEC.md; docs/operations/2026-09-22_HTML_BLUEPRINT_WORK_CONTRACT_RECEIPT.json; tests/test_html_blueprint*.py; 원본 입력: 현재 Codex 대화. 실제 작업/기록 작성 2026-09-22 KST, 기존 캡처는 각 capture.json의 시각을 따른다."
+    },
+    {
+      "date": "2026-09-23",
+      "record_type": "당일 구현·촬영·검수 기록",
+      "work": "사용자 재확인 승인에 따라 화면 아틀라스를 구조도 상자에 통합하고 클릭 상세/다음 화면을 연결했다. 전체112본문·16인·30기술·자산·PM을 연속 표시했다. 실제 Godot 장면의 고정 상황6개와 무공30개 이벤트를 촬영해 무음 MP4로 연결했다.",
+      "result": "게임 규칙·저장·승인 원화/PDF·PR342·다른 dirty 폴더는 보존했다. 정적 표현 위주의 main 연출은 고유 모션 완료로 표시하지 않는다. 독립 집중 검토의 검색 상태 누출과 합 패배 actor 오류를 교정하고 재촬영했다. 자동·브라우저·병합 증거는 기존 HTML 명세와 GitHub 실제 기록을 따른다. 캠페인·사람 재미·Android·출시·클라우드 AI 검수는 새로 수행하지 않았다.",
+      "evidence": "docs/blueprint/HTML_MIGRATION_SPEC.md#15; docs/blueprint/evidence/motion/manifest.json; 기존 HTML WORK_CONTRACT_RECEIPT.json. 실제 작업/촬영/기록9월23일 KST. 촬영 완료와 인코딩 시각은 manifest에 구분. 원본 입력: 현재 Codex 대화."
     }
   ],
   "integration_provenance": {
