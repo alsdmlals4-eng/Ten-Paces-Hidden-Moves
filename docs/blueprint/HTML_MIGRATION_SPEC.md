@@ -1,6 +1,6 @@
 # 십보강호 HTML 블루프린트 전환 설계
 
-상태: APPROVED_BUILD_IN_PROGRESS — 2026-09-22 사용자 “좋아 확인했어 진행해”. HTML 구현·전환·병합 완료는 별도 검증한다.
+상태: HTML_MIGRATION_VERIFIED — 2026-09-22 승인 범위 구현·검수 후 PR344 main 병합 및 tree 일치 확인. 신규 게임 전체 완성/사람 재미/출시 승인을 뜻하지 않는다.
 관측일: 2026-09-22. 방향 승인: “HTML에서 PM과 구현 확인”, “완전 이동 후 PDF 별도 생성 안 함”, “십보강호로 가자”.
 이번 산출물은 위 방향의 프로젝트별 구체 설계다. 게임 규칙·자산의 새 승인이나 공개 배포 승인을 만들지 않는다.
 
@@ -276,3 +276,18 @@ Archify를 다이어그램 기술로 상세 확인·흡수한다. 구현 스코�
 - PR344 첫 원격 검사에서 Active Context YAML의 PR337이 남아 PM JSON과 불일치하는 문제를 발견했다. 두 현재 owner를 PR344로 교정했고 해당3개 계약과 discovery56개 회귀가 통과했다. 과거337 병합 이력은 별도 보존한다.
 
 - 기존 current_operating_state의 엄격한10필드 schema를 유지하도록 과거337 checkpoint와 관련 후보342 기록을 작업 receipt/관측 원본에 보존했다. schema 검사를 완화하거나 게임 계약을 변경하지 않았다.
+
+
+## 14. 전환 완료와 이후 운영
+
+PR344는2026-09-22T13:52:49Z에 main `b6c63cd4ed7333d51168f077d199b1b69ec84daf`로 정상 병합됐다.
+검토 head c24719ac와 병합 main의 전체 tree 내용이 일치하며 exact-head 원격29검사 PASS/3조건부 SKIP/실패0, 미해결 review thread0을 확인했다.
+브라우저에서 승인 페이지 펼침·모션 조작·구조도/원본·검색·복사와 작은 화면을 확인했다. PDF와 코드의 HTTP 실제 응답200도 확인했다.
+이후 블루프린트·월간 일지 PDF는 정기 생성하지 않는다. 기존 승인 PDF/원화는 유지하고 날짜별 요약을 기존 월간 JSON에 누적해 HTML로 읽는다.
+
+작업 후 기존 owner/Active Context/일지를 갱신 → `python tools/build_html_blueprint.py` → 관련 검사 → `python tools/serve_html_blueprint.py --no-build`로 실제 브라우저를 확인한다.
+서버 주소는 매번 preview-session.json에서 읽으며, 저장된 옛 주소를 준비 완료 증거로 사용하지 않는다.
+다음 게임 작업은 PR342의 실제 head와 원래 dirty 작업 폴더·승인 자산/모션 gate를 독립적으로 fresh-read한다. HTML 전환을 그 제품 후보의 main 병합으로 오인하지 않는다.
+
+추가 로컬 전체 회귀는 초기 import cache가 없는 상태에서 시작되어 중단했다. 이 폴더에 exact Godot4.7.1 초기 import를 실행한 뒤 재검증 중이다.
+초기 import는 종료 code0이지만 기존 editor/addon resource cleanup 경고가 있었다. 신규 visible 게임 실행/Human/Android/출시 검수로 세지 않는다.

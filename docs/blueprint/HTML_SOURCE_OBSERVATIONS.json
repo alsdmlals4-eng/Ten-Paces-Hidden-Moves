@@ -1,6 +1,6 @@
 {
-  "observed_at": "2026-09-22T13:35:26.432199+00:00",
-  "main_sha": "e5ec55e622d7c050e885e5bbdb698df9fd9bb8d3",
+  "observed_at": "2026-09-22T13:54:55.852145+00:00",
+  "main_sha": "b6c63cd4ed7333d51168f077d199b1b69ec84daf",
   "prs": {
     "337": {
       "baseRefName": "main",
@@ -76,12 +76,14 @@
     },
     "344": {
       "baseRefName": "main",
-      "headRefOid": "74c647f963eae404e316dea5d15aad015c1144d9",
+      "headRefOid": "c24719acc89d1f3a0be367494c4e4a4acccd52ed",
       "isDraft": false,
-      "mergeCommit": null,
-      "mergedAt": null,
+      "mergeCommit": {
+        "oid": "b6c63cd4ed7333d51168f077d199b1b69ec84daf"
+      },
+      "mergedAt": "2026-09-22T13:52:49Z",
       "number": 344,
-      "state": "OPEN",
+      "state": "MERGED",
       "title": "feat: preserve full blueprint in source-linked HTML with AI preview",
       "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/344"
     }

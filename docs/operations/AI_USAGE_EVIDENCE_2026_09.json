@@ -134,7 +134,8 @@
       "원본 증빙"
     ],
     "owner": "docs/operations/AI_USAGE_EVIDENCE_REPORTING.md",
-    "initial_manifest_scope": "Historical initial edition; do not use this initial report body as a new edition for each task."
+    "initial_manifest_scope": "Historical initial edition; do not use this initial report body as a new edition for each task.",
+    "current_delivery": "Append existing daily_summaries; derived HTML is regular view; keep historical PDF unchanged."
   },
   "daily_summaries": [
     {
@@ -183,7 +184,7 @@
       "date": "2026-09-22",
       "record_type": "당일 실제 작업·기존 일지 누적",
       "work": "승인 112개 설명·이미지·표를 공유 원본으로 HTML에 연결하고 자산·모션 도감, 원본 사용처, PM, 다음 AI 재개 경로를 구현했다. Archify의 유형별 관계·안정 ID·원본 근거·가독성 검사를 조사해 3개 구조도와 기존 QA 스킬에 적용했다. AI 브라우저용 읽기 전용 로컬 미리보기를 구현했다.",
-      "result": "사용자가 첫 화면과 도감의 정상 표시를 확인했다. Codex 브라우저에서 HTTP 접속과 구조도 선택·원본 연결을 확인했다. 자동 회귀와 추가 브라우저 검수·정상 PR 전달을 진행 중이다. Godot 신규 실행·Claude/클라우드 접속·사람 재미·출시 검수는 수행하지 않았다.",
+      "result": "사용자 첫 화면·도감 확인, Codex 실제 브라우저 기능/작은 화면 검수, 관련58개 회귀와334표시/1603로컬 링크 검사, 전체 검토2회 및 지적 교정을 완료했다. PR344 main 병합/원격29검사 PASS·3조건부 SKIP와 tree 일치를 확인했다. PDF 정기 생성은 중단하고 기존 승인본/원화를 보존한다. 추가 로컬 전체회귀는 import 준비 후 진행 중이다. 새 visible Godot·Claude/클라우드 접속·사람 재미·출시 검수는 수행하지 않았다.",
       "evidence": "docs/blueprint/HTML_MIGRATION_SPEC.md; docs/operations/2026-09-22_HTML_BLUEPRINT_WORK_CONTRACT_RECEIPT.json; tests/test_html_blueprint*.py; 원본 입력: 현재 Codex 대화. 실제 작업/기록 작성 2026-09-22 KST, 기존 캡처는 각 capture.json의 시각을 따른다."
     }
   ],
