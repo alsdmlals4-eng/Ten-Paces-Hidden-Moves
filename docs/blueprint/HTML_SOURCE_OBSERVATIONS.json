@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-09-22T12:38:00.948543+00:00",
+  "observed_at": "2026-09-22T13:35:26.432199+00:00",
   "main_sha": "e5ec55e622d7c050e885e5bbdb698df9fd9bb8d3",
   "prs": {
     "337": {
@@ -73,6 +73,17 @@
       "state": "OPEN",
       "title": "chore: adopt Base v9.4.4 reuse-first intake",
       "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/200"
+    },
+    "344": {
+      "baseRefName": "main",
+      "headRefOid": "74c647f963eae404e316dea5d15aad015c1144d9",
+      "isDraft": false,
+      "mergeCommit": null,
+      "mergedAt": null,
+      "number": 344,
+      "state": "OPEN",
+      "title": "feat: preserve full blueprint in source-linked HTML with AI preview",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/344"
     }
   },
   "freshness": "SNAPSHOT_NOT_LIVE"

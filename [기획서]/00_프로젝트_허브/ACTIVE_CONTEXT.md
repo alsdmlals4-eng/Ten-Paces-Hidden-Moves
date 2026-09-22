@@ -12,7 +12,7 @@ AI 직접 검수: `python tools/serve_html_blueprint.py` → `output/blueprint/p
 현재 HTTP 주소를 같은 PC의 브라우저 도구로 연다. Codex IAB 접속·구조도 선택/원본 연결을 확인했다.
 file URL은 차단됐으므로 재시도하지 않는다. 이 경로는 manifest 파일만 제공하는 별도 읽기 전용 preview다.
 클라우드 GPT/Claude의 localhost는 이 PC가 아니며 해당 환경 검수는 NOT_RUN이다.
-사용자는 첫 화면·도감 정상 표시를 직접 확인했다. 전체 후속 브라우저/독립 검토/병합은 진행 중이다.
+사용자는 첫 화면·도감 정상 표시를 직접 확인했다. 브라우저 대표 동작/좁은 화면 검수와 전체 검토2회를 마쳤다. PR344 원격 검사와 병합은 진행 중이다.
 
 Archify 다이어그램 방법은 기존 QA Skill의 `html-blueprint-review`에 연결했다.
 PR337은 실제 병합 이력을 PM에 교정했다. PR342는 정확한 후보 SHA로 구분하고 다른 작업 폴더는 보호한다.
@@ -182,14 +182,14 @@ current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN
 base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
 live_exact_sha_authority: NONE_REFETCH_REQUIRED
 active_project_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
-product_stage: HTML_BLUEPRINT_APPROVED_BUILD_IN_PROGRESS
+product_stage: HTML_BLUEPRINT_LOCAL_VERIFIED_PR_DELIVERY
 runtime_work_mode: BUILD
 historical_runtime_integration_pr: 65
 active_planning_work_mode: BUILD
-active_planning_pr: 337
+active_planning_pr: 344
 active_planning_parent_pr: NONE
 active_approval_count: SCOPED_BUILD_AUTHORIZED_HUMAN_FINAL_NOT_RUN
-active_decision_state: HTML_BLUEPRINT_APPROVED_BUILD_IN_PROGRESS
+active_decision_state: HTML_BLUEPRINT_LOCAL_VERIFIED_PR_DELIVERY
 source_decision: USER-APPROVED-TEN-HTML-PILOT-20260922
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01

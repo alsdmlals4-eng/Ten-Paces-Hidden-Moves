@@ -51,13 +51,13 @@
       "TEN-HTML-MIGRATE",
       "TEN-HTML-DELIVER"
     ],
-    "active_work_item_ref": "TEN-HTML-SPEC",
-    "next_action": "Complete browser coverage, independent full-scope review, remote checks and normal PR merge/readback.",
+    "active_work_item_ref": "TEN-HTML-MIGRATE",
+    "next_action": "PR344 exact-head checks → safe merge → merged main readback → activate verified HTML cadence.",
     "work_items": [
       {
         "work_item_id": "TEN-HTML-SPEC",
         "title": "십보강호 HTML 전환의 원본·범위·검증 설계",
-        "status": "VERIFY_REVIEW",
+        "status": "DONE",
         "canon_owner": "docs/blueprint/HTML_MIGRATION_SPEC.md",
         "actual_consumers": [
           "tools/build_human_blueprint_complete.py"
@@ -88,12 +88,21 @@
             ]
           }
         ],
-        "next_action": "Implementation present; verify committed candidate and close sequentially after independent review."
+        "next_action": "Local accepted scope verified; later source changes require regeneration.",
+        "verified_head_sha": "74c647f963eae404e316dea5d15aad015c1144d9",
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0,
+        "repository_readback": "PASS",
+        "readback_evidence": [
+          "74c647f963eae404e316dea5d15aad015c1144d9: committed files + local58 regressions +334 views/1603 allowlisted links + Codex IAB"
+        ],
+        "rollback": "Revert HTML publication commit only; approved PDF/art and product files unchanged."
       },
       {
         "work_item_id": "TEN-HTML-CONTENT",
         "title": "승인된 전체 설명·이미지와 원본 추적 연결",
-        "status": "BACKLOG",
+        "status": "DONE",
         "canon_owner": "docs/blueprint/READING_STRUCTURE.md",
         "actual_consumers": [
           "tools/build_human_blueprint_complete.py"
@@ -126,12 +135,21 @@
             ]
           }
         ],
-        "next_action": "Implementation present; verify committed candidate and close sequentially after independent review."
+        "next_action": "Local accepted scope verified; later source changes require regeneration.",
+        "verified_head_sha": "74c647f963eae404e316dea5d15aad015c1144d9",
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0,
+        "repository_readback": "PASS",
+        "readback_evidence": [
+          "74c647f963eae404e316dea5d15aad015c1144d9: committed files + local58 regressions +334 views/1603 allowlisted links + Codex IAB"
+        ],
+        "rollback": "Revert HTML publication commit only; approved PDF/art and product files unchanged."
       },
       {
         "work_item_id": "TEN-HTML-PM",
         "title": "현재 PM·일정·차단과 main/후보 구분",
-        "status": "BACKLOG",
+        "status": "DONE",
         "canon_owner": "docs/04_ROADMAP.md",
         "actual_consumers": [
           "docs/planning-data/current_operating_state.json"
@@ -164,12 +182,21 @@
             ]
           }
         ],
-        "next_action": "Implementation present; verify committed candidate and close sequentially after independent review."
+        "next_action": "Local accepted scope verified; later source changes require regeneration.",
+        "verified_head_sha": "74c647f963eae404e316dea5d15aad015c1144d9",
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0,
+        "repository_readback": "PASS",
+        "readback_evidence": [
+          "74c647f963eae404e316dea5d15aad015c1144d9: committed files + local58 regressions +334 views/1603 allowlisted links + Codex IAB"
+        ],
+        "rollback": "Revert HTML publication commit only; approved PDF/art and product files unchanged."
       },
       {
         "work_item_id": "TEN-HTML-RUNTIME",
         "title": "기능·자산 미리보기와 실제 실행 확인 경로",
-        "status": "BACKLOG",
+        "status": "DONE",
         "canon_owner": "docs/blueprint/IMPLEMENTATION_HANDOFF.md",
         "actual_consumers": [
           "scenes/run/vertical_slice_shell.tscn"
@@ -202,12 +229,21 @@
             ]
           }
         ],
-        "next_action": "Implementation present; verify committed candidate and close sequentially after independent review."
+        "next_action": "Local accepted scope verified; later source changes require regeneration.",
+        "verified_head_sha": "74c647f963eae404e316dea5d15aad015c1144d9",
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0,
+        "repository_readback": "PASS",
+        "readback_evidence": [
+          "74c647f963eae404e316dea5d15aad015c1144d9: committed files + local58 regressions +334 views/1603 allowlisted links + Codex IAB"
+        ],
+        "rollback": "Revert HTML publication commit only; approved PDF/art and product files unchanged."
       },
       {
         "work_item_id": "TEN-HTML-MIGRATE",
         "title": "내용·브라우저 검수 후 PDF 정기 생성 전환",
-        "status": "BACKLOG",
+        "status": "VERIFY_REVIEW",
         "canon_owner": "AGENTS.md",
         "actual_consumers": [
           "docs/blueprint/READING_STRUCTURE.md"
@@ -320,7 +356,7 @@
         "Workflow omitted nonterminal bundle continuation",
         "Display dependency source hashes missing"
       ],
-      "correction": "All four corrected with focused regressions; final post-fix checks and browser narrow-screen page preview pending"
+      "correction": "Four findings corrected; focused regressions pass. Approved-page expanded at390×844 and844×390, image loaded without document horizontal overflow."
     }
   }
 }
