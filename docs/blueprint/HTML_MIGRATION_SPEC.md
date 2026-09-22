@@ -1,6 +1,6 @@
 # 십보강호 HTML 블루프린트 전환 설계
 
-상태: APPROVED_BUILD_IN_PROGRESS — 2026-09-22 사용자 “좋아 확인했어 진행해”. HTML 구현·전환·병합 완료는 별도 검증한다.
+상태: HTML_MIGRATION_VERIFIED — 2026-09-22 승인 범위 구현·검수 후 PR344 main 병합 및 tree 일치 확인. 신규 게임 전체 완성/사람 재미/출시 승인을 뜻하지 않는다.
 관측일: 2026-09-22. 방향 승인: “HTML에서 PM과 구현 확인”, “완전 이동 후 PDF 별도 생성 안 함”, “십보강호로 가자”.
 이번 산출물은 위 방향의 프로젝트별 구체 설계다. 게임 규칙·자산의 새 승인이나 공개 배포 승인을 만들지 않는다.
 
@@ -265,7 +265,7 @@ Archify를 다이어그램 기술로 상세 확인·흡수한다. 구현 스코�
 - 자동: HTML/preview/diagram/publication + 관련 discovery/vertical-slice/opponent/lean 회귀54개 통과(후속 source-approval 회귀 추가). 원본 렌더311뷰/1470로컬 링크 통과. 실제 브라우저와 별도 증거다.
 - 브라우저: Codex IAB HTTP 접속, 포즈 다음/재생(프레임 변화)/정지/배속, 이미지 확대·Esc, 검색과 빈 상태, 구조도 노드 선택/직접 연결/원본 링크, 키보드 Enter, 재개 요청 복사 성공. 844×390/390×844에서 전체 페이지 가로 넘침 없음; 구조도는 자체 가로 스크롤을 사용한다.
 - 사용자: 첫 화면·도감 정상 표시와 인물 갤러리 연결을 직접 확인했다. 모든 세부 페이지/게임 재미까지 승인한 것으로 확대하지 않는다.
-- Godot: 기존 capture.json·09-11 실제 입력10전/36행로 근거·project.godot 실행 경로를 재사용한다. 현재 새 Godot 실행은 NOT_RUN이며 HTML 모션을 runtime 증거로 대체하지 않는다.
+- Godot: 기존 capture.json·09-11 실제 입력10전/36행로 근거·project.godot 실행 경로를 재사용한다. 현재 새 visible Godot 실행은 NOT_RUN이며 HTML 모션을 runtime 증거로 대체하지 않는다.
 - 전체 검토1/2: 정본·실제 변경·untouched 소비처·실행 근거·유지 비용을 함께 검토. 발행 일관성, 공간 학습자료 누락, 파생 자산 승인 연결 누락, 오래된 현재 상태 문구를 교정했다. 독립 검토2와 원격 검사/병합은 진행 중이다.
 - 일지: PR342의 기존 `AI_USAGE_EVIDENCE_2026_09.json`을 같은 경로로 선택 보존하고09-22 요약을 누적했다. 과거 제품 작업을 main 완료로 승격하지 않는다.
 
@@ -276,3 +276,23 @@ Archify를 다이어그램 기술로 상세 확인·흡수한다. 구현 스코�
 - PR344 첫 원격 검사에서 Active Context YAML의 PR337이 남아 PM JSON과 불일치하는 문제를 발견했다. 두 현재 owner를 PR344로 교정했고 해당3개 계약과 discovery56개 회귀가 통과했다. 과거337 병합 이력은 별도 보존한다.
 
 - 기존 current_operating_state의 엄격한10필드 schema를 유지하도록 과거337 checkpoint와 관련 후보342 기록을 작업 receipt/관측 원본에 보존했다. schema 검사를 완화하거나 게임 계약을 변경하지 않았다.
+
+
+## 14. 전환 완료와 이후 운영
+
+PR344는2026-09-22T13:52:49Z에 main `b6c63cd4ed7333d51168f077d199b1b69ec84daf`로 정상 병합됐다.
+검토 head c24719ac와 병합 main의 전체 tree 내용이 일치하며 exact-head 원격29검사 PASS/3조건부 SKIP/실패0, 미해결 review thread0을 확인했다.
+브라우저에서 승인 페이지 펼침·모션 조작·구조도/원본·검색·복사와 작은 화면을 확인했다. PDF와 코드의 HTTP 실제 응답200도 확인했다.
+이후 블루프린트·월간 일지 PDF는 정기 생성하지 않는다. 기존 승인 PDF/원화는 유지하고 날짜별 요약을 기존 월간 JSON에 누적해 HTML로 읽는다.
+
+작업 후 기존 owner/Active Context/일지를 갱신 → `python tools/build_html_blueprint.py` → 관련 검사 → `python tools/serve_html_blueprint.py --no-build`로 실제 브라우저를 확인한다.
+서버 주소는 매번 preview-session.json에서 읽으며, 저장된 옛 주소를 준비 완료 증거로 사용하지 않는다.
+다음 게임 작업은 PR342의 실제 head와 원래 dirty 작업 폴더·승인 자산/모션 gate를 독립적으로 fresh-read한다. HTML 전환을 그 제품 후보의 main 병합으로 오인하지 않는다.
+
+추가 로컬 전체 회귀는 초기 import cache가 없는 상태에서 시작되어 중단했다. 이 폴더에 exact Godot4.7.1 초기 import를 실행한 뒤 전체523개 검사를473.650초에 통과했다. 근거: `output/blueprint/python-regression-prepared.log`.
+초기 import는 종료 code0이지만 기존 editor/addon resource cleanup 경고가 있었다. 신규 visible 게임 실행/Human/Android/출시 검수로 세지 않는다.
+
+병합 main의 Full Validation·platform rights·HTML Blueprint·GodotLiveEditorPilot 워크플로도 통과했다.
+초기 import가 만든 metadata186개는 SHA256/원래 경로/복구 안내와 함께 `output/blueprint/manual-delete-candidates/godot-import-20260922`로 보관했다. tracked metadata는 HEAD로 복원했고 원래 프로젝트 폴더와 게임 자산은 건드리지 않았다.
+
+Closeout PR345 첫 최종 head의 원격 product job은 전체10분 한도로 마지막 행로 검사 중 취소됐다(run35738191421). 10전 native 입력은10승/36행로/failures[]로 완료했지만 전체 job PASS로 세지 않았다. 모든 검사/판정/명령을 유지한 채 Linux job 한도를 기존 Windows와 같은15분으로 교정했다. 이 설정만 바꾼 집중 diff 검토 후 새 head 전체 원격 검사를 수행한다.

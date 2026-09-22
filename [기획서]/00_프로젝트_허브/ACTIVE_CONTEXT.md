@@ -12,12 +12,12 @@ AI 직접 검수: `python tools/serve_html_blueprint.py` → `output/blueprint/p
 현재 HTTP 주소를 같은 PC의 브라우저 도구로 연다. Codex IAB 접속·구조도 선택/원본 연결을 확인했다.
 file URL은 차단됐으므로 재시도하지 않는다. 이 경로는 manifest 파일만 제공하는 별도 읽기 전용 preview다.
 클라우드 GPT/Claude의 localhost는 이 PC가 아니며 해당 환경 검수는 NOT_RUN이다.
-사용자는 첫 화면·도감 정상 표시를 직접 확인했다. 브라우저 대표 동작/좁은 화면 검수와 전체 검토2회를 마쳤다. PR344 원격 검사와 병합은 진행 중이다.
+사용자는 첫 화면·도감 정상 표시를 직접 확인했다. 브라우저 대표 동작/좁은 화면 검수와 전체 검토2회를 마쳤다. PR344가 main b6c63cd4에 병합됐고 검토한 tree와 일치한다. 원격29개 PASS/3개 조건부 SKIP이며 신규 사람 게임 검수가 아니다.
 
 Archify 다이어그램 방법은 기존 QA Skill의 `html-blueprint-review`에 연결했다.
 PR337은 실제 병합 이력을 PM에 교정했다. PR342는 정확한 후보 SHA로 구분하고 다른 작업 폴더는 보호한다.
-신규 Godot 실행을 하지 않았으며 기존 캡처·실행 근거와 실행 경로를 연결한다.
-승인 PDF/원화는 보존한다. PDF 정기 생성 중단은 전체 전환 gate와 정상 병합 검증 이후 적용한다.
+신규 visible Godot 실행은 하지 않았다. 기존 캡처·실행 경로를 연결하고, exact Godot4.7.1 초기 import 후 headless 검사를 포함한 로컬 전체523개 회귀를 통과했다. 준비 전 중단한 첫 시도는 PASS로 세지 않는다.
+승인 PDF/원화는 보존한다. HTML 전환을 검증했으므로 블루프린트·월간 일지 PDF의 정기 생성을 중단했다. 일지는 기존 월간 JSON에 날짜별로 누적한다. 다음 게임 작업은 PR342와 원래 dirty 폴더를 fresh-read한 뒤 같은 승인 범위에서 계속한다.
 아래 날짜별 기록은 당시 상태이며 현재 상태는 이 절·receipt·GitHub live metadata로 대조한다.
 
 ## 현재 운영 구조 교정 · 2026-09-20
@@ -182,14 +182,14 @@ current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN
 base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
 live_exact_sha_authority: NONE_REFETCH_REQUIRED
 active_project_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
-product_stage: HTML_BLUEPRINT_LOCAL_VERIFIED_PR_DELIVERY
+product_stage: HTML_BLUEPRINT_MIGRATION_VERIFIED
 runtime_work_mode: BUILD
 historical_runtime_integration_pr: 65
-active_planning_work_mode: BUILD
-active_planning_pr: 344
+active_planning_work_mode: REVIEW
+active_planning_pr: NONE
 active_planning_parent_pr: NONE
 active_approval_count: SCOPED_BUILD_AUTHORIZED_HUMAN_FINAL_NOT_RUN
-active_decision_state: HTML_BLUEPRINT_LOCAL_VERIFIED_PR_DELIVERY
+active_decision_state: HTML_BLUEPRINT_MIGRATION_VERIFIED
 source_decision: USER-APPROVED-TEN-HTML-PILOT-20260922
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
@@ -208,11 +208,11 @@ accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
 performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 phase_i_vi_implementation: AUTHORIZED_AND_MERGED
 future_product_mutation_authorized: false_NEW_PRODUCT_MUTATION_REQUIRES_FRESH_APPROVED_CONTRACT
-next_package: HTML_CONTENT_ASSETS_PM_RUNTIME_VERIFY_DELIVER
+next_package: PR342_PRODUCT_CANDIDATE_FRESH_READ_AND_CONTINUE
 next_planning_decision: USER-APPROVED-TEN-HTML-PILOT-20260922
 user_directed_planning_work_mode: REVIEW_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_COMPARISON_DEFERRED
 user_directed_planning_decision: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
-user_directed_planning_next_package: HTML_CONTENT_ASSETS_PM_RUNTIME_VERIFY_DELIVER
+user_directed_planning_next_package: PR342_PRODUCT_CANDIDATE_FRESH_READ_AND_CONTINUE
 user_directed_planning_next_decision: USER-APPROVED-TEN-HTML-PILOT-20260922
 user_directed_planning_status: THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_SINGLE_EXECUTE_INLINE_CAUSAL_AND_TERMINAL_RESULT_SURFACES_MAIN_MERGED_VERIFIED_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN
 user_directed_planning_single_execute_status: IMPLEMENTED_MERGED_MAIN_PR329_REMOTE_CI_32_SUCCESS_POSTMERGE_APPROVAL_LIFECYCLE_IN_PROGRESS_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN
