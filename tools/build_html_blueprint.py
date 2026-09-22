@@ -243,9 +243,13 @@ def build(out=OUT, include_candidate=True):
                'active_context': (ROOT/'[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md').read_text(encoding='utf-8').split('## 현재 운영 구조')[0],
                'roadmap': (ROOT/'docs/04_ROADMAP.md').read_text(encoding='utf-8'),
                'historical_reader': {'approval_date': '2026-09-11', 'approved_revision': model.read(ROOT, 'docs/planning-data/current_user_planning_status.json')['blueprint_final_approval']['approved_revision']}}
+    from html_blueprint_inspection import build as inspection_index
+    payload['inspection'] = inspection_index(payload)
+    for path in ['tools/html_blueprint_inspection.py','tools/html_blueprint_ui/inspection.js']:
+        inputs[path] = model.sha(ROOT/path)
     css = (ROOT/'tools/html_blueprint_ui/style.css').read_text(encoding='utf-8')
     js = (ROOT/'tools/html_blueprint_ui/app.js').read_text(encoding='utf-8')
-    js = js.removesuffix('render();\n') + (ROOT/'tools/html_blueprint_ui/experience.js').read_text(encoding='utf-8') + '\nrender();followLocation();\n'
+    js = js.removesuffix('render();\n') + (ROOT/'tools/html_blueprint_ui/experience.js').read_text(encoding='utf-8') + (ROOT/'tools/html_blueprint_ui/inspection.js').read_text(encoding='utf-8') + '\nrender();followLocation();\n'
     html = '''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>십보강호 · 살아 있는 블루프린트</title><style>''' + css + '''</style></head><body>
 <a class="skip" id="skip-content" href="#main">본문으로</a><header><a href="#maps" class="brand">십보강호 <small>숨은 수의 비무</small></a><span class="edition">프로젝트 블루프린트</span><button id="resume-copy">재개 요청 복사</button></header>
 <div class="shell"><aside><nav aria-label="주요 메뉴" id="nav"></nav><label class="search-label" for="search">내용 찾기</label><input id="search" type="search" placeholder="인물 · 무공 · 자산 · 작업"><p id="freshness"></p><a href="../../AGENTS.md">작업 규칙 원본 ↗</a></aside><main id="main" tabindex="-1"></main></div>
@@ -259,7 +263,8 @@ def build(out=OUT, include_candidate=True):
     resume = {'role': 'DERIVED_VIEW_NOT_CANON', 'source_revision': payload['source_revision'],
         'generated_at': payload['generated_at'], 'read_order': ['AGENTS.md', 'docs/BASE_RULES_VERSION.md', 'docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md', '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md'],
         'assets': [{k:a.get(k) for k in ['id','path','scope','revision','approval','owner','consumers']} for a in assets],
-        'work_items': pm['items']}
+        'work_items': pm['items'], 'inspection': payload['inspection'],
+        'motion_evidence': [{'id':c['id'],'path':c['path'],'timeline':c.get('timeline',[]),'freshness':c['freshness']} for c in experience['clips']]}
     encoded = lambda obj: (json.dumps(obj, ensure_ascii=False, indent=2)+'\n').encode('utf-8')
     bundle = {'index.html': html.encode('utf-8'), 'resume-index.json': encoded(resume)}
     manifest['outputs'] = {name: hashlib.sha256(data).hexdigest() for name, data in bundle.items()}

@@ -1,6 +1,6 @@
 {
-  "observed_at": "2026-09-22T15:30:13.524845+00:00",
-  "main_sha": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+  "observed_at": "2026-09-22T17:46:39.185305+00:00",
+  "main_sha": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
   "prs": {
     "337": {
       "baseRefName": "main",
@@ -86,6 +86,19 @@
       "state": "MERGED",
       "title": "feat: preserve full blueprint in source-linked HTML with AI preview",
       "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/344"
+    },
+    "346": {
+      "baseRefName": "main",
+      "headRefOid": "d9674d9c5a3499f3bc2f183a6a4e4cdd454c3c4b",
+      "isDraft": false,
+      "mergeCommit": {
+        "oid": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c"
+      },
+      "mergedAt": "2026-09-22T15:51:15Z",
+      "number": 346,
+      "state": "MERGED",
+      "title": "Connect screen atlas navigation, full overview and Godot motion videos",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/346"
     }
   },
   "freshness": "SNAPSHOT_NOT_LIVE"

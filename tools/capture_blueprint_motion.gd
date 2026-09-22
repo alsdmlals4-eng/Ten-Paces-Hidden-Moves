@@ -5,6 +5,7 @@ var board
 var records: Array = []
 var frames: Array = []
 var recording := false
+var event_index := -1
 
 func _initialize() -> void:
 	RenderingServer.frame_post_draw.connect(capture_frame)
@@ -59,9 +60,12 @@ func record_clips() -> void:
 
 func clip(id: String, events: Array) -> void:
 	board._clear_presentation_feedback_visuals()
+	event_index = -1
+	board._set_presentation_feedback_phase("idle")
 	var start := frames.size()
 	await create_timer(0.55).timeout
 	for item in events:
+		event_index += 1
 		await board._present_resolved_event_feedback(item)
 		await create_timer(0.28).timeout
 	await create_timer(0.75).timeout
@@ -77,7 +81,8 @@ func capture_frame() -> void:
 	if error != OK:
 		push_error("Capture write failed")
 		quit(1)
-	frames.append({"file": "frame%06d.jpg" % index, "ms": Time.get_ticks_msec()})
+	frames.append({"file": "frame%06d.jpg" % index, "ms": Time.get_ticks_msec(),
+		"phase": str(board.get_meta("presentation_feedback_phase", "unknown")), "event_index": event_index})
 
 func manual_clip(manual: String, star: int) -> void:
 	var engine = load("res://src/run/vertical_slice_metrics_combat_resolution_engine.gd").new()

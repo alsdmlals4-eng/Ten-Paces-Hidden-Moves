@@ -5,7 +5,7 @@ const data=JSON.parse(html.match(/<script id="blueprint-data" type="application\
 const elements=new Map();
 function element(id){if(!elements.has(id))elements.set(id,{value:'',textContent:'',innerHTML:'',dataset:{},addEventListener(){},classList:{toggle(){}},setAttribute(){},removeAttribute(){}});return elements.get(id);}
 element('blueprint-data').textContent=JSON.stringify(data);
-const env={document:{getElementById:element,querySelectorAll:()=>[],addEventListener(){}},window:{addEventListener(){},scrollTo(){}},location:{hash:'#home'},navigator:{},setTimeout,clearInterval,setInterval,console};
+const env={document:{getElementById:element,querySelector:()=>null,querySelectorAll:()=>[],addEventListener(){}},window:{addEventListener(){},scrollTo(){}},location:{hash:'#home'},navigator:{},setTimeout,clearTimeout,clearInterval,setInterval,console};
 vm.createContext(env);vm.runInContext(html.slice(html.lastIndexOf('<script>')+8,html.lastIndexOf('</script>')),env);
 const manifest=JSON.parse(fs.readFileSync(path.join(root,'output/blueprint/manifest.json'),'utf8'));
 for(const dependency of ['tools/blueprint_layout.py','tools/build_opponent_stage_blueprint.py','tools/blueprint_readiness_pages.py'])assert(manifest.inputs[dependency],'Untracked display dependency: '+dependency);
@@ -23,7 +23,24 @@ function check(expression){const result=vm.runInContext(expression,env);assert.e
  }
  renders++;return result;
 }
-for(const expression of ['home()','reader()','people()','assets()','pm()','evidence()','resume()'])check(expression);
+for(const expression of ['home()','reader()','people()','assets()','pm()','evidence()','resume()','inspect()','changes()','searchResults()'])check(expression);
+for(const r of data.inspection.records)check(`inspect(${JSON.stringify(r.id)})`);
+assert(check("maps('game-loop','menu')").includes('atlas-workbench'));
+assert(check("maps('game-loop','menu')").includes('screen-actions'));
+for(const clip of data.experience.clips){
+ const result=check(`movie(${JSON.stringify(clip)})`);
+ assert(result.includes('data-inspect-copy'));
+ if(clip.timeline?.length)assert(result.includes('data-phase-video'));
+}
+const first=data.inspection.records[0];
+assert.equal(vm.runInContext("typeof reviewSeekTime",env),'function','Short review loops need a frame-level boundary');
+assert.equal(vm.runInContext("reviewSeekTime(1.31,{start:1.01,end:1.16},true)",env),1.01);
+assert.equal(vm.runInContext("reviewSeekTime(1.31,{start:1.01,end:1.16},false)",env),null);
+assert(vm.runInContext(`changedRecords({${JSON.stringify(first.id)}:'old'}).some(r=>r.id===${JSON.stringify(first.id)})`,env));
+assert(vm.runInContext(`changedRecords({retired:'old'}).some(r=>r.change==='added')`,env),'New entries must be visible');
+assert(vm.runInContext(`changedRecords({retired:'old'}).some(r=>r.id==='retired'&&r.change==='removed')`,env),'Removed entries must be visible');
+assert(vm.runInContext(`requestFor(recordById('clip:clash-lose'),.5)`,env).includes('0.500초'));
+assert(vm.runInContext(`requestFor(recordById('clip:clash-lose'),.5)`,env).includes('사용자 검수=항목별 사용자 검수 미기록'));
 const all=check('home()');
 for(const page of data.pages)assert(all.includes(`data-reader="${page.id}"`),'Overview omits explanation '+page.id);
 for(const person of data.people)assert(all.includes(person.name),'Overview omits person');

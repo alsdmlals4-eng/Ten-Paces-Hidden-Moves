@@ -9,8 +9,46 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import re
 from PIL import Image
 from html_blueprint import ROOT, git, sha
+from html_blueprint_experience import observed_timeline
+
+
+def capture_dependencies(available):
+    """Follow literal resources; keep all data/combat code for dynamic lookup safety.
+
+    Unknown expressions are not evidence that a resource is unused. All captured
+    data and combat modules remain in scope; referenced scene art follows literals.
+    """
+    classes = {}
+    for path in available:
+        if path.endswith('.gd'):
+            match = re.search(r'^class_name\s+(\w+)', (ROOT/path).read_text(encoding='utf-8'), re.M)
+            if match: classes[match.group(1)] = path
+    pending = ['project.godot','tools/capture_blueprint_motion.gd',
+               'scenes/combat/combat_board_preview.tscn',
+               'src/run/vertical_slice_metrics_combat_resolution_engine.gd']
+    pending += [p for p in available if p.startswith(('data/', 'src/combat/'))]
+    seen = set()
+    while pending:
+        path = pending.pop()
+        if path in seen: continue
+        seen.add(path)
+        file = ROOT/path
+        if file.is_file() and file.suffix in {'.gd','.json','.tscn','.tres','.godot'}:
+            text = file.read_text(encoding='utf-8')
+            pending.extend(classes[name] for name in set(re.findall(r'\b[A-Za-z_]\w*\b',text)) & classes.keys() if classes[name] not in seen)
+            for target in re.findall(r'res://([^"\s)]+)', text):
+                if target in available and target not in seen: pending.append(target)
+                elif (ROOT/target).is_dir():
+                    pending.extend(p for p in available if p.startswith(target.rstrip('/')+'/'))
+            for target in re.findall(r'extends\s+"([^"\n]+)"', text):
+                relative = (file.parent/target).resolve()
+                if relative.is_relative_to(ROOT):
+                    target = relative.relative_to(ROOT).as_posix()
+                    if target in available: pending.append(target)
+    return sorted(seen & set(available))
 
 
 def encode(ffmpeg, log='stderr-5.log'):
@@ -60,6 +98,8 @@ def encode(ffmpeg, log='stderr-5.log'):
             'card_ids':sorted({e['card_id'] for e in clip['events']}), 'events':clip['events'],
             'path':movie.relative_to(ROOT).as_posix(),'path_sha256':sha(movie),
             'poster':poster.relative_to(ROOT).as_posix(),'poster_sha256':sha(poster),
+            'timeline': observed_timeline(frames),
+            'timeline_basis': 'ENGINE_PHASE_AT_RENDERED_FRAME',
             'frames':len(frames),'distinct_frames':distinct,'arena_distinct_frames':len(arena_distinct),
             'visual_status':'FRAME_CHANGES_OBSERVED' if len(arena_distinct)>5 else 'STATIC_OR_EFFECT_ONLY',
             'duration_seconds':round((frames[-1]['ms']-frames[0]['ms'])/1000+1/30,3),
@@ -74,7 +114,8 @@ def encode(ffmpeg, log='stderr-5.log'):
             text_hashes[path] = hashlib.sha256(file.read_text(encoding='utf-8').encode('utf-8')).hexdigest()
         elif file.suffix in {'.png','.jpg','.webp','.wav','.ogg'}:
             binary_hashes[path] = sha(file)
-    manifest = {'encoded_at':datetime.now(timezone.utc).isoformat(),
+    dependencies = capture_dependencies({**text_hashes, **binary_hashes})
+    manifest = {'capture_dependencies':dependencies, 'dynamic_roots':['data/','src/combat/'], 'encoded_at':datetime.now(timezone.utc).isoformat(),
         'capture_finished_at':datetime.fromtimestamp((capture/'frames.json').stat().st_mtime,timezone.utc).isoformat(),
         'capture_time_basis':'frames.json filesystem timestamp written at the end of the Godot capture',
         'engine':record['engine'],
