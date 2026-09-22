@@ -195,11 +195,11 @@ current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN
 base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
 live_exact_sha_authority: NONE_REFETCH_REQUIRED
 active_project_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
-product_stage: HTML_BLUEPRINT_MIGRATION_VERIFIED
+product_stage: HTML_INSPECTION_IMPLEMENTED_VERIFIED
 runtime_work_mode: BUILD
 historical_runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
-active_planning_pr: 347
+active_planning_pr: NONE
 active_planning_parent_pr: NONE
 active_approval_count: SCOPED_BUILD_AUTHORIZED_HUMAN_FINAL_NOT_RUN
 active_decision_state: HTML_INSPECTION_IMPLEMENTED_VERIFIED

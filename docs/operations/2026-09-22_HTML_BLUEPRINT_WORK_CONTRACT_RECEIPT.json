@@ -528,7 +528,8 @@
       "html_links": "PASS661 rendered views/6725 local links",
       "full_regression": "533 run,532 passed,1 owner mismatch corrected and focused rerun passed; initial missing-import run aborted, not PASS",
       "browser": "Same-PC Codex: desktop/narrow layouts, hotspot to30 cards, recorded phase repeat, actual-time item copy, candidate exact revision/PM, search/back, baseline changes,112 chapters and36 videos",
-      "human": "NOT_RUN for new item-level game/fun approval"
+      "human": "NOT_RUN for new item-level game/fun approval",
+      "governance": "PASS84 after product_stage/active_decision_state reconciliation; prior5ac9b2bf remote mismatch preserved in spec"
     }
   }
 }

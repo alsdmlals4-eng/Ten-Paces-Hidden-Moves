@@ -357,3 +357,7 @@ BUILD / executing-plans + ten-paces-verification(html-blueprint-review, referenc
 최종 집중 확인: 실패한 owner 일치 검사를 포함한37개 Python 검사 PASS, project operating system PASS, 재생성 HTML의661개 표시/6725개 로컬 링크 PASS. 실제 브라우저 후보 자산 요청에서 d2e1edae7930c11e6c04cfbe269a06c4d3075f14 원본3개와 PRESENTATION-PREFERENCES PM을 확인했고, 한국어 효과 이름·현재 메뉴 aria-current 단일 지정·수평 넘침 없음을 확인했다. 같은 기반 전체533개 중532개 통과 및 owner 교정 후 관련 재검증이 최종 로컬 증거다. 전체533개를 교정 후 다시 수행했다고 주장하지 않는다. 원격 exact-head 검사와 병합 여부는 PR347에서 조회한다.
 
 검사 종료 후 임시 메타데이터223개와 인코딩 완료 원시 프레임3353개를 `C:/Users/user/Documents/삭제대기/Ten-Paces-Hidden-Moves/html-inspection-20260923/final-cleanup`으로 옮겼다. 파일마다 original/stored/SHA256 복구 명세를 남겼다. MP4/포스터·승인 원본은 보존했고 프로젝트 운영 계약 검사 PASS다. 이후 Godot 검사는 먼저 import를 복원/재생성해야 한다.
+
+최종 원격5ac9b2bf의 PR Validation에서 Active Context의 product_stage와 JSON active_decision_state 불일치를 발견했다. 두 의미 상태를 HTML_INSPECTION_IMPLEMENTED_VERIFIED로 맞췄다. 함께 active_planning_pr는 기존 NONE으로 유지하고 전달 PR347은 날짜별 관측/receipt로 연결했다. 검사를 완화하지 않고 발견 항목을 포함한 전체 governance 묶음을 재검증한다.
+
+상태 owner 교정 후 원격과 같은 governance 묶음 및 다음 작업 검사84개 PASS, project operating system PASS. 이 후속은 문서/상태 일치만 변경하며 HTML 동작이나 제품 코드는 바꾸지 않았다.
