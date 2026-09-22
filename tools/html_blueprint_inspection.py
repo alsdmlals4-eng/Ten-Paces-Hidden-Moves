@@ -19,6 +19,14 @@ def related_work_items(tasks, sources, scope=None, revision=None):
 def build(payload):
     records = []
     assets, clips = payload['assets'], payload['experience']['clips']
+    names = {'static_clash_explanation_not_animation':'합 설명 삽화 · 정지 이미지',
+             'clash-keyscene-v1':'격돌 장면 시안', 'atlas_blue_ink_courtyard_v1':'비무 안뜰 배경',
+             'jianghu_blue_ink_landscape_v1':'강호행로 산수 배경','jianghu_rest_inn_v1':'휴식 주막 배경',
+             'DOGYEOM_STATUS_PORTRAIT_01_v1':'도겸 · 상태창 초상','KakaoTalk_20260826_193205188_11':'사용자 제공 참고 이미지',
+             'clash_sparks_ink_gold_v2':'격돌 불꽃 · 금빛 먹 효과','player_sword_sequence_v1':'플레이어 검술 포즈',
+             'enemy_sword_sequence_v1':'상대 검술 포즈','player_reactions_candidate_v2':'플레이어 피격·대응 포즈 후보',
+             'enemy_reactions_candidate_v2':'상대 피격·대응 포즈 후보','journey_title_reference_v1':'새 여정 제목 화면 참고'}
+    for a in assets: a['name'] = names.get(a['name'],a['name'])
     tasks = payload['pm']['items']
     def record(id, kind, name, route, sources, linked_assets=(), clip_ids=(), planning='원본 기록 있음', match_sources=None, scope=None, revision=None):
         sources = sorted(set(sources))
@@ -62,7 +70,8 @@ def build(payload):
         mid = manual['manual_id']
         for card in manual['cards'].values():
             selected = card_art_paths(payload['art_selection'], mid, card)
-            pictures = [a for a in assets if a['path'] in selected]
+            pictures = [a for a in assets if a['path'] in selected or
+                        (a['path'].startswith('assets/blueprint/manuals/') and card['id'] in a['path'])]
             for a in pictures: a['name'] = card['name']+' · 무공 삽화'
             record('card:'+card['id'],'무공',card['name'],'#inspect/card:'+card['id'],
                    ['data/cards/martial_manuals/'+mid+'.json','src/combat/combat_board_preview.gd'],

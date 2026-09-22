@@ -41,6 +41,9 @@ assert(vm.runInContext(`changedRecords({retired:'old'}).some(r=>r.change==='adde
 assert(vm.runInContext(`changedRecords({retired:'old'}).some(r=>r.id==='retired'&&r.change==='removed')`,env),'Removed entries must be visible');
 assert(vm.runInContext(`requestFor(recordById('clip:clash-lose'),.5)`,env).includes('0.500초'));
 assert(vm.runInContext(`requestFor(recordById('clip:clash-lose'),.5)`,env).includes('사용자 검수=항목별 사용자 검수 미기록'));
+const candidateRecord=data.inspection.records.find(r=>r.id==='asset:pr342-clash_sparks_ink_gold_v2');
+assert(candidateRecord.tasks.some(t=>t.id==='PRESENTATION-PREFERENCES'&&t.scope==='PR342_CANDIDATE'),'Candidate asset lost its candidate PM');
+assert(vm.runInContext(`requestFor(recordById(${JSON.stringify(candidateRecord.id)}))`,env).includes(data.candidate.revision),'Candidate request lost exact source revision');
 const all=check('home()');
 for(const page of data.pages)assert(all.includes(`data-reader="${page.id}"`),'Overview omits explanation '+page.id);
 for(const person of data.people)assert(all.includes(person.name),'Overview omits person');

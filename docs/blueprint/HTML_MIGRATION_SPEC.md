@@ -344,10 +344,16 @@ BUILD / executing-plans + ten-paces-verification(html-blueprint-review, referenc
 
 설계 판단: 브라우저 저장은 포트/브라우저 경계를 넘지 않는다. 다른 AI에는 source-bound resume-index와 항목 요청을 사용한다. 촬영 의존성은 리터럴 resource closure와 동적 조회 보호를 위한 전체 data/combat modules를 유지하며, 검증하지 않은 최소 의존성을 단정하지 않는다. 영상 단계는 프레임 단위 관측이며 캐릭터 고유 동작·사람 재미 PASS가 아니다.
 
-진행: 구현·대표 자동 검사 완료, 브라우저 및 독립 검토/병합 진행 중. 최종 결과는 이 절에 누적한다.
+구현·대표 자동 검사·브라우저 검수와 전체 검토2회를 완료했다. 전달 PR347의 병합/원격 검사/최신 main은 GitHub live metadata로 확인한다. 아래에는 실제 확인한 증거만 누적한다.
 
 
 독립 전체 검토2/2: P1 이상0, P2 네 항목(전역 클래스 상속 입력 누락, 변경 목록의 추가/삭제 누락, 후보 자산 PM 누락, 짧은 구간 반복 overshoot)을 확인했다. 각 재현을 먼저 실패시킨 뒤 교정했다. 상속/class 참조 closure 및 동적 data/combat 신규 파일 감지, 추가/수정/삭제 표시, 후보 scope+exact revision PM 매칭, 프레임 경계·영상끝 반복을 적용했다. 후보 요청문에는 경로와 exact SHA도 추가했다. 새로운 전체 검토는 시작하지 않는다.
 브라우저 중간 확인: 1440px 구조도와 상세 병렬, 화면 속 새 여정→10권/30기술, 매화삼첩 승인 삽화와 단계/후보 설정 비교, 짧은 타격구간 반복 유지(time1.157s/ready4/재생중), 실제 재생시점1.123s를 담은 요청 복사, 검색어 복귀, 미연결 필터122개, 비교 기준 저장을 확인했다. 전체112본문/30기술/36영상/중복DOM ID0과 이어가기 하단 도달을 확인했다.390px에서 문서375px이며 목차가 구역 제목을 일부 가려 scroll margin225px로 교정했다. 최종 재확인은 아래 누적한다.
 
 추가 전체 회귀 첫 실행은 임시 import8개를 검사 전에 옮긴 영향으로 배경 텍스처/부모 script를 로드하지 못하고 durable continuation timeout이 발생해 중단했다. 해당 보관본의 hash를 대조해 복원 후 같은 durable 실행의 DURABLE_CONTINUE PASS를 확인했다. 전체 회귀는 복원 상태에서 다시 시작했다. 임시 metadata 정리는 모든 Godot 검사가 끝난 뒤로 미룬다. 제품 코드 결함 교정이나 첫 실행 PASS로 기록하지 않는다.
+
+복원 후 전체533개 회귀(465.008초)는 게임 실행을 포함한532개 PASS, 다음 작업 owner 불일치1개 FAIL이었다. HTML 병합 확인이라는 단기 단계를 current next_package에 넣으면서 기존 사용자 상태의 다음 제품 작업과 달라졌다. 두 owner가 기존 PR342 fresh-read continuation을 유지하도록 교정하고 실패 검사를 포함한 관련 검사를 다시 실행한다. 전체 첫 실패를 숨기거나 전체 재실행 PASS로 바꾸지 않는다. 좁은 화면 최종 확인은 목차 bottom208px/구역 heading225px, 문서375px로 가림과 수평 넘침이 없었다. 후보 자산의 원본 경로·정확한 SHA·PM 연결, 기술 삽화의 사람이 읽을 이름, 메뉴 현재 위치 표기도 교정했다.
+
+최종 집중 확인: 실패한 owner 일치 검사를 포함한37개 Python 검사 PASS, project operating system PASS, 재생성 HTML의661개 표시/6725개 로컬 링크 PASS. 실제 브라우저 후보 자산 요청에서 d2e1edae7930c11e6c04cfbe269a06c4d3075f14 원본3개와 PRESENTATION-PREFERENCES PM을 확인했고, 한국어 효과 이름·현재 메뉴 aria-current 단일 지정·수평 넘침 없음을 확인했다. 같은 기반 전체533개 중532개 통과 및 owner 교정 후 관련 재검증이 최종 로컬 증거다. 전체533개를 교정 후 다시 수행했다고 주장하지 않는다. 원격 exact-head 검사와 병합 여부는 PR347에서 조회한다.
+
+검사 종료 후 임시 메타데이터223개와 인코딩 완료 원시 프레임3353개를 `C:/Users/user/Documents/삭제대기/Ten-Paces-Hidden-Moves/html-inspection-20260923/final-cleanup`으로 옮겼다. 파일마다 original/stored/SHA256 복구 명세를 남겼다. MP4/포스터·승인 원본은 보존했고 프로젝트 운영 계약 검사 PASS다. 이후 Godot 검사는 먼저 import를 복원/재생성해야 한다.

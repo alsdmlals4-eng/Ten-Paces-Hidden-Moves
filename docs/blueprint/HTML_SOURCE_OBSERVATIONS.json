@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-09-22T17:46:39.185305+00:00",
+  "observed_at": "2026-09-22T18:12:24.695503+00:00",
   "main_sha": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
   "prs": {
     "337": {
@@ -99,6 +99,17 @@
       "state": "MERGED",
       "title": "Connect screen atlas navigation, full overview and Godot motion videos",
       "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/346"
+    },
+    "347": {
+      "baseRefName": "main",
+      "headRefOid": "c8ae1a2bf56f7e945beeda4ee871ba720fa70683",
+      "isDraft": false,
+      "mergeCommit": null,
+      "mergedAt": null,
+      "number": 347,
+      "state": "OPEN",
+      "title": "feat: make blueprint screens and motions directly inspectable",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/347"
     }
   },
   "freshness": "SNAPSHOT_NOT_LIVE"
