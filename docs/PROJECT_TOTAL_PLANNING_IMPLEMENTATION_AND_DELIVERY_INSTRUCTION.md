@@ -274,3 +274,14 @@ BIDIRECTIONAL_REQUIREMENT_TRACE: 요구→코드/씬/데이터/자산→검증, 
 - dated/fixed Skill·PR·CI/tool counts: **INTENTIONALLY SUPERSEDED** by live discovery.
 
 r2 Decision과 structured record는 historical evidence로 보존한다. 이 r5.4 adapter 변경 자체는 제품 코드·Scene·Resource·Asset·전투 규칙을 변경하지 않는다.
+
+
+## HTML 파생 화면과 누적 일지 · 2026-09-22 사용자 승인
+
+기획·코드·데이터·승인·기존 작업 기록이 정본이며 `output/blueprint/index.html`은 생성한 파생 화면이다.
+HTML 내용/자산/링크/실제 검수 경로와 정상 병합 검증이 끝나면 블루프린트·월간 작업일지 PDF의 정기 생성을 중단한다.
+기존 승인 PDF와 원화는 보존하고, 지원사업 별도 제출 요구가 생기면 필요한 시점의 파생 출력으로 처리한다.
+월간 일지는 기존 `docs/operations/AI_USAGE_EVIDENCE_2026_09.json`에 날짜별 요약을 누적하며 새 일지를 매번 만들지 않는다.
+작업 단위 종료 시 해당 기록과 Active Context를 갱신한 뒤 HTML을 재생성한다. 자동 실시간 동기화로 표현하지 않는다.
+직접 브라우저 검수는 project-local 읽기 전용 preview 경로를 사용한다. 권한 확대·공개 서버·게임의 JS 재구현은 포함하지 않는다.
+전환/검증 상태와 실패 시 유지 기준은 `docs/blueprint/HTML_MIGRATION_SPEC.md`, 절차는 QA Skill의 `html-blueprint-review`가 소유한다.

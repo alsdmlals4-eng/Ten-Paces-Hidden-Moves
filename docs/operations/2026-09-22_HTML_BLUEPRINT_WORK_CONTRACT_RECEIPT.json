@@ -1,0 +1,326 @@
+{
+  "work_level": "L3",
+  "work_mode": "BUILD",
+  "approval_reference": "2026-09-22 current conversation: user approved detailed HTML implementation; approved all confirmed assets/motions + PM + cross-chat continuation; explicitly requested AI direct browser inspection and detailed Archify diagram-method adoption. No global installation/public hosting/game-core changes.",
+  "base_main_observed": "23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef",
+  "benchmark_preflight_receipt": {
+    "state": "PASS",
+    "entries": [
+      {
+        "source_and_evidence": "Project main e5ec55e622d7c050e885e5bbdb698df9fd9bb8d3: tools/build_human_blueprint_complete.py, docs/blueprint/READING_STRUCTURE.md, docs/PROJECT_OPERATING_DASHBOARD.html; Godot official Web export and Storybook Controls read 2026-09-22.",
+        "observed_pattern": "Existing structured sources and full narrative PDF builder; existing HTML is operating-health only. Web execution requires an actual export, not JavaScript imitation.",
+        "project_fit_and_difference": "Reuse source ownership and content; add a derived human HTML with evidence-bound PM and actual Godot test links. No new service or duplicated gameplay.",
+        "disposition": "ADAPT"
+      }
+    ]
+  },
+  "context_configuration_hygiene": {
+    "scope": "Blueprint publication and PM entrypoints only; preserve dirty main, PR342, approved PDF/art, adopted generated router.",
+    "inventory": [
+      {
+        "path": "docs/blueprint/READING_STRUCTURE.md",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Existing reader order, historical approval wording conflicts with later recorded lock",
+        "references_and_consumers": "tools/build_human_blueprint_complete.py; current_user_planning_status.json",
+        "removal_proposed": false
+      },
+      {
+        "path": "docs/planning-data/current_operating_state.json",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "PM owner contains old PR337; GitHub reports merged",
+        "references_and_consumers": "docs/04_ROADMAP.md; Active Context and live PR metadata must reconcile",
+        "removal_proposed": false
+      },
+      {
+        "path": "output/pdf/TEN_PACES_HUMAN_BLUEPRINT_20260911_APPROVAL_REVIEW.pdf",
+        "classification": "ARCHIVE",
+        "owner_or_provenance": "Immutable approved reader snapshot, retain during and after migration",
+        "references_and_consumers": "current_user_planning_status.json blueprint_final_approval; HTML content coverage must preserve semantics",
+        "removal_proposed": false
+      }
+    ]
+  },
+  "project_work_kanban": {
+    "goal_or_slice_issue_ref": "USER-APPROVED-TEN-HTML-PILOT-20260922",
+    "source_main_sha": "e5ec55e622d7c050e885e5bbdb698df9fd9bb8d3",
+    "work_item_refs": [
+      "TEN-HTML-SPEC",
+      "TEN-HTML-CONTENT",
+      "TEN-HTML-PM",
+      "TEN-HTML-RUNTIME",
+      "TEN-HTML-MIGRATE",
+      "TEN-HTML-DELIVER"
+    ],
+    "active_work_item_ref": "TEN-HTML-SPEC",
+    "next_action": "Complete browser coverage, independent full-scope review, remote checks and normal PR merge/readback.",
+    "work_items": [
+      {
+        "work_item_id": "TEN-HTML-SPEC",
+        "title": "십보강호 HTML 전환의 원본·범위·검증 설계",
+        "status": "VERIFY_REVIEW",
+        "canon_owner": "docs/blueprint/HTML_MIGRATION_SPEC.md",
+        "actual_consumers": [
+          "tools/build_human_blueprint_complete.py"
+        ],
+        "depends_on": [],
+        "acceptance_criteria": [
+          "TEN-HTML-SPEC-AC"
+        ],
+        "required_evidence": [
+          "E0_CONTRACT"
+        ],
+        "checklist": [
+          {
+            "id": "TEN-HTML-SPEC-AC",
+            "text": "자산·모션 전체 열람과 다음 채팅/AI 재개 목적, 원본·파생 화면·검증 경계를 구체 설계로 제시하고 사용자 검토를 받는다.",
+            "status": "PASS",
+            "evidence": [
+              "docs/blueprint/HTML_MIGRATION_SPEC.md#13-누적-검증-기록"
+            ]
+          }
+        ],
+        "verification": [
+          {
+            "level": "E0_CONTRACT",
+            "status": "PASS",
+            "evidence": [
+              "docs/blueprint/HTML_MIGRATION_SPEC.md#13-누적-검증-기록"
+            ]
+          }
+        ],
+        "next_action": "Implementation present; verify committed candidate and close sequentially after independent review."
+      },
+      {
+        "work_item_id": "TEN-HTML-CONTENT",
+        "title": "승인된 전체 설명·이미지와 원본 추적 연결",
+        "status": "BACKLOG",
+        "canon_owner": "docs/blueprint/READING_STRUCTURE.md",
+        "actual_consumers": [
+          "tools/build_human_blueprint_complete.py"
+        ],
+        "depends_on": [
+          "TEN-HTML-SPEC"
+        ],
+        "acceptance_criteria": [
+          "TEN-HTML-CONTENT-AC"
+        ],
+        "required_evidence": [
+          "E2_TEST"
+        ],
+        "checklist": [
+          {
+            "id": "TEN-HTML-CONTENT-AC",
+            "text": "승인 112쪽의 고유 내용과 현행 승인 이미지·모션 전체를 대조해 누락 없이 열람한다. 후보/역사 자산과 분리하며 각 항목의 파일·해시·승인 범위·사용처를 추적한다. 정적 포즈를 승인 모션으로 표시하지 않는다.",
+            "status": "PASS",
+            "evidence": [
+              "docs/blueprint/HTML_MIGRATION_SPEC.md#13-누적-검증-기록"
+            ]
+          }
+        ],
+        "verification": [
+          {
+            "level": "E2_TEST",
+            "status": "PASS",
+            "evidence": [
+              "docs/blueprint/HTML_MIGRATION_SPEC.md#13-누적-검증-기록"
+            ]
+          }
+        ],
+        "next_action": "Implementation present; verify committed candidate and close sequentially after independent review."
+      },
+      {
+        "work_item_id": "TEN-HTML-PM",
+        "title": "현재 PM·일정·차단과 main/후보 구분",
+        "status": "BACKLOG",
+        "canon_owner": "docs/04_ROADMAP.md",
+        "actual_consumers": [
+          "docs/planning-data/current_operating_state.json"
+        ],
+        "depends_on": [
+          "TEN-HTML-CONTENT"
+        ],
+        "acceptance_criteria": [
+          "TEN-HTML-PM-AC"
+        ],
+        "required_evidence": [
+          "E2_TEST"
+        ],
+        "checklist": [
+          {
+            "id": "TEN-HTML-PM-AC",
+            "text": "PR337의 실제 병합 상태를 교정하고 main/PR342 후보를 분리한다. 작업·의존성·일정·검증·다음 작업을 같은 ID로 연결하며 없는 완료율/일정을 발명하지 않는다.",
+            "status": "PASS",
+            "evidence": [
+              "docs/blueprint/HTML_MIGRATION_SPEC.md#13-누적-검증-기록"
+            ]
+          }
+        ],
+        "verification": [
+          {
+            "level": "E2_TEST",
+            "status": "PASS",
+            "evidence": [
+              "docs/blueprint/HTML_MIGRATION_SPEC.md#13-누적-검증-기록"
+            ]
+          }
+        ],
+        "next_action": "Implementation present; verify committed candidate and close sequentially after independent review."
+      },
+      {
+        "work_item_id": "TEN-HTML-RUNTIME",
+        "title": "기능·자산 미리보기와 실제 실행 확인 경로",
+        "status": "BACKLOG",
+        "canon_owner": "docs/blueprint/IMPLEMENTATION_HANDOFF.md",
+        "actual_consumers": [
+          "scenes/run/vertical_slice_shell.tscn"
+        ],
+        "depends_on": [
+          "TEN-HTML-PM"
+        ],
+        "acceptance_criteria": [
+          "TEN-HTML-RUNTIME-AC"
+        ],
+        "required_evidence": [
+          "E3_RUNTIME"
+        ],
+        "checklist": [
+          {
+            "id": "TEN-HTML-RUNTIME-AC",
+            "text": "원본 프레임 데이터가 있는 모션은 재생/정지/프레임 이동/배속을 검증한다. 실제 카드 연출은 Godot 실행 근거로 연결하며 웹 자산 재생과 구분한다. 사용자 PC 또는 검증된 Web 실행 경로를 확인한다.",
+            "status": "PASS",
+            "evidence": [
+              "docs/blueprint/HTML_MIGRATION_SPEC.md#13-누적-검증-기록"
+            ]
+          }
+        ],
+        "verification": [
+          {
+            "level": "E3_RUNTIME",
+            "status": "PASS",
+            "evidence": [
+              "docs/blueprint/HTML_MIGRATION_SPEC.md#13-누적-검증-기록"
+            ]
+          }
+        ],
+        "next_action": "Implementation present; verify committed candidate and close sequentially after independent review."
+      },
+      {
+        "work_item_id": "TEN-HTML-MIGRATE",
+        "title": "내용·브라우저 검수 후 PDF 정기 생성 전환",
+        "status": "BACKLOG",
+        "canon_owner": "AGENTS.md",
+        "actual_consumers": [
+          "docs/blueprint/READING_STRUCTURE.md"
+        ],
+        "depends_on": [
+          "TEN-HTML-RUNTIME"
+        ],
+        "acceptance_criteria": [
+          "TEN-HTML-MIGRATE-AC"
+        ],
+        "required_evidence": [
+          "E4_VISUAL"
+        ],
+        "checklist": [
+          {
+            "id": "TEN-HTML-MIGRATE-AC",
+            "text": "전체 내용·승인 자산 대조와 브라우저 탐색·미리보기·근거 링크 검수를 통과한 뒤 PDF 정기 생성 정책을 전환한다. 기존 승인 PDF와 원화는 보존한다.",
+            "status": "NOT_RUN"
+          }
+        ],
+        "verification": [
+          {
+            "level": "E4_VISUAL",
+            "status": "NOT_RUN",
+            "evidence": []
+          }
+        ],
+        "next_action": "Implementation present; verify committed candidate and close sequentially after independent review."
+      },
+      {
+        "work_item_id": "TEN-HTML-DELIVER",
+        "title": "검토·정상 병합·사용 가능한 HTML 전달",
+        "status": "BACKLOG",
+        "canon_owner": "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+        "actual_consumers": [
+          "docs/04_ROADMAP.md"
+        ],
+        "depends_on": [
+          "TEN-HTML-MIGRATE"
+        ],
+        "acceptance_criteria": [
+          "TEN-HTML-DELIVER-AC"
+        ],
+        "required_evidence": [
+          "E1_STATIC"
+        ],
+        "checklist": [
+          {
+            "id": "TEN-HTML-DELIVER-AC",
+            "text": "검토·필수 검사·정상 병합·main 재확인 후 고정 HTML 진입점을 전달한다. 원본 revision/미커밋 입력/PR/보호 범위와 재개 경로를 확인하고 작업 단위 종료 시 재생성 절차를 연결한다.",
+            "status": "NOT_RUN"
+          }
+        ],
+        "verification": [
+          {
+            "level": "E1_STATIC",
+            "status": "NOT_RUN",
+            "evidence": []
+          }
+        ],
+        "next_action": "Implementation present; verify committed candidate and close sequentially after independent review."
+      }
+    ]
+  },
+  "execution_report": {
+    "base_sha": "e5ec55e622d7c050e885e5bbdb698df9fd9bb8d3",
+    "work_mode": "BUILD",
+    "skills": [
+      "building-project-visual-dashboards",
+      "managing-design-documents",
+      "ten-paces-verification/html-blueprint-review",
+      "executing-plans",
+      "pdf/read-only-render"
+    ],
+    "result": "IMPLEMENTED_LOCAL_VERIFICATION_IN_PROGRESS",
+    "evidence": [
+      "docs/blueprint/HTML_MIGRATION_SPEC.md"
+    ],
+    "not_run": [
+      "new Godot execution",
+      "Claude/cloud browser",
+      "Android",
+      "human fun",
+      "release"
+    ]
+  },
+  "adversarial_review": {
+    "budget": 2,
+    "completed_full_scope": 2,
+    "round_1": {
+      "scope": "Approved spec, all implementation/untracked files, preserved narrative/PDF/art, source+candidate ownership, untouched game consumers, tests+browser evidence, publication cost and maintainability",
+      "findings": [
+        "Publication could mix HTML/index generations on I/O failure",
+        "Original geometry-only learning material needed preserved page renders",
+        "Registered derivative approval/name lost relation to exact approved source",
+        "Current receipt/Active Context still described pre-approval and blocked browser"
+      ],
+      "correction": "Rollback and output hash binding; read-only approved-page renders; exact source approval/related-asset mapping; current records reconciled",
+      "remaining": "Independent second review, final browser coverage and delivery"
+    },
+    "round_2": {
+      "reviewer": "independent html_final_review",
+      "scope": "whole approved branch including untracked files, sources/consumers, contracts, tests, runtime evidence ceiling, cost",
+      "p0": 0,
+      "p1": 0,
+      "p2": 4,
+      "findings": [
+        "PDF link excluded from HTTP allowlist",
+        "Candidate consumer descriptions emitted as invalid file paths",
+        "Workflow omitted nonterminal bundle continuation",
+        "Display dependency source hashes missing"
+      ],
+      "correction": "All four corrected with focused regressions; final post-fix checks and browser narrow-screen page preview pending"
+    }
+  }
+}

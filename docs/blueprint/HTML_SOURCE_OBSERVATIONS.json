@@ -1,0 +1,79 @@
+{
+  "observed_at": "2026-09-22T12:38:00.948543+00:00",
+  "main_sha": "e5ec55e622d7c050e885e5bbdb698df9fd9bb8d3",
+  "prs": {
+    "337": {
+      "baseRefName": "main",
+      "headRefOid": "5ad310a5b0cd10a932948c4e68bdb10129091a6b",
+      "isDraft": false,
+      "mergeCommit": {
+        "oid": "6ea28301029875fb9e606bab3b8bb5b61801822b"
+      },
+      "mergedAt": "2026-09-09T07:01:32Z",
+      "number": 337,
+      "state": "MERGED",
+      "title": "fix: restore grounded combat layout and preserve live presentation",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/337"
+    },
+    "340": {
+      "baseRefName": "main",
+      "headRefOid": "b2a456e2bac4b4fd6a6d33dfa1644e2149061d3f",
+      "isDraft": false,
+      "mergeCommit": {
+        "oid": "201af9e99e4ce7e7b58e3ea63e6edc37d8c037ff"
+      },
+      "mergedAt": "2026-09-11T11:56:47Z",
+      "number": 340,
+      "state": "MERGED",
+      "title": "feat: implement approved variable opponents and durable new runs",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/340"
+    },
+    "342": {
+      "baseRefName": "main",
+      "headRefOid": "d2e1edae7930c11e6c04cfbe269a06c4d3075f14",
+      "isDraft": true,
+      "mergeCommit": null,
+      "mergedAt": null,
+      "number": 342,
+      "state": "OPEN",
+      "title": "Connect diverse opening duels, durable growth and martial presentation",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/342"
+    },
+    "343": {
+      "baseRefName": "main",
+      "headRefOid": "35116a9f66569daab1e59ef4e948b8f01595f997",
+      "isDraft": false,
+      "mergeCommit": {
+        "oid": "e5ec55e622d7c050e885e5bbdb698df9fd9bb8d3"
+      },
+      "mergedAt": "2026-09-20T00:15:09Z",
+      "number": 343,
+      "state": "MERGED",
+      "title": "Streamline Base adoption and connect game experience verification",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/343"
+    },
+    "199": {
+      "baseRefName": "main",
+      "headRefOid": "9d106dbde9ed0c80858a170cde213772946cfd4b",
+      "isDraft": true,
+      "mergeCommit": null,
+      "mergedAt": null,
+      "number": 199,
+      "state": "OPEN",
+      "title": "docs: route front doors to human device validation packet",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/199"
+    },
+    "200": {
+      "baseRefName": "main",
+      "headRefOid": "6ca6f3bc2634e8be43f88f1cc8f060ba1541f8ab",
+      "isDraft": true,
+      "mergeCommit": null,
+      "mergedAt": null,
+      "number": 200,
+      "state": "OPEN",
+      "title": "chore: adopt Base v9.4.4 reuse-first intake",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/200"
+    }
+  },
+  "freshness": "SNAPSHOT_NOT_LIVE"
+}

@@ -1,5 +1,25 @@
 # 십보강호 활성 컨텍스트
 
+## HTML 블루프린트 · 2026-09-22
+
+사용자가 구체 설계·구현과 승인/후보 자산·모션·PM 연결을 승인했다.
+현재 `output/blueprint/index.html`에서 112개 설명, 인물/무공, 자산/포즈/모션, PM, 누적 일지,
+3개 원본 연결 구조도, 다음 AI 재개 경로를 확인한다. HTML은 정적 파생본이며 수정 후 재생성한다.
+설계·검증 누적: `docs/blueprint/HTML_MIGRATION_SPEC.md`.
+잔여 작업: `docs/operations/2026-09-22_HTML_BLUEPRINT_WORK_CONTRACT_RECEIPT.json`.
+
+AI 직접 검수: `python tools/serve_html_blueprint.py` → `output/blueprint/preview-session.json`의
+현재 HTTP 주소를 같은 PC의 브라우저 도구로 연다. Codex IAB 접속·구조도 선택/원본 연결을 확인했다.
+file URL은 차단됐으므로 재시도하지 않는다. 이 경로는 manifest 파일만 제공하는 별도 읽기 전용 preview다.
+클라우드 GPT/Claude의 localhost는 이 PC가 아니며 해당 환경 검수는 NOT_RUN이다.
+사용자는 첫 화면·도감 정상 표시를 직접 확인했다. 전체 후속 브라우저/독립 검토/병합은 진행 중이다.
+
+Archify 다이어그램 방법은 기존 QA Skill의 `html-blueprint-review`에 연결했다.
+PR337은 실제 병합 이력을 PM에 교정했다. PR342는 정확한 후보 SHA로 구분하고 다른 작업 폴더는 보호한다.
+신규 Godot 실행을 하지 않았으며 기존 캡처·실행 근거와 실행 경로를 연결한다.
+승인 PDF/원화는 보존한다. PDF 정기 생성 중단은 전체 전환 gate와 정상 병합 검증 이후 적용한다.
+아래 날짜별 기록은 당시 상태이며 현재 상태는 이 절·receipt·GitHub live metadata로 대조한다.
+
 ## 현재 운영 구조 교정 · 2026-09-20
 
 사용자가 Base 경량화 적용안과 재미 검증 연결을 승인했다. 운영 owner는 `docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`, 최신 기준·실행 증거는 `BASE_MAIN_SYNC_AUDIT.md`의2026-09-20절이다. UNIFIED_WORK_EXECUTION·조건부 인계·유효 근거 재사용·정확히2회 검토를 적용한다. 아래 날짜별 기록은 당시 이력이며 현재 고정10게임 quota·무조건 인계 지시로 재사용하지 않는다. 게임 제품은 변경하지 않는다. PR342 P01/P02 구현은 별도 branch에서 보존되며 main 완료로 표시하지 않는다. 작업일지는 기존 월간 PDF에 날짜별로 누적한다. 로컬 검사와 전체 독립 검토2회를 완료하고 지적5건을 교정했다. 운영 변경 PR은 #343이며 병합/원격 검사 여부는 GitHub live metadata와 BASE_MAIN_SYNC_AUDIT 링크에서 확인한다. 다음 게임 작업은 원래 승인된 PR342의 현재 head·최종 자산 gate·미커밋 변경을 별도 fresh-read한 뒤 계속한다.
@@ -162,15 +182,15 @@ current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN
 base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
 live_exact_sha_authority: NONE_REFETCH_REQUIRED
 active_project_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
-product_stage: COMBAT_LAYOUT_SOURCE_AND_BOUNDED_RUNTIME_VERIFIED_DELIVERY_PENDING
+product_stage: HTML_BLUEPRINT_APPROVED_BUILD_IN_PROGRESS
 runtime_work_mode: BUILD
 historical_runtime_integration_pr: 65
 active_planning_work_mode: BUILD
 active_planning_pr: 337
 active_planning_parent_pr: NONE
 active_approval_count: SCOPED_BUILD_AUTHORIZED_HUMAN_FINAL_NOT_RUN
-active_decision_state: COMBAT_LAYOUT_SOURCE_AND_BOUNDED_RUNTIME_VERIFIED_DELIVERY_PENDING
-source_decision: TEN-DEC-20260909-COMBAT-LAYOUT-CORRECTION-01
+active_decision_state: HTML_BLUEPRINT_APPROVED_BUILD_IN_PROGRESS
+source_decision: USER-APPROVED-TEN-HTML-PILOT-20260922
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
 platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
@@ -188,12 +208,12 @@ accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
 performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 phase_i_vi_implementation: AUTHORIZED_AND_MERGED
 future_product_mutation_authorized: false_NEW_PRODUCT_MUTATION_REQUIRES_FRESH_APPROVED_CONTRACT
-next_package: COMBAT_LAYOUT_PROTECTED_DELIVERY_THEN_ORDERED_COMBAT_V1_COMPATIBILITY_GROWTH_EVENTS_STATUS_REWARDS
-next_planning_decision: TEN-DEC-20260909-COMBAT-LAYOUT-CORRECTION-01
+next_package: HTML_CONTENT_ASSETS_PM_RUNTIME_VERIFY_DELIVER
+next_planning_decision: USER-APPROVED-TEN-HTML-PILOT-20260922
 user_directed_planning_work_mode: REVIEW_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_COMPARISON_DEFERRED
 user_directed_planning_decision: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
-user_directed_planning_next_package: COMBAT_LAYOUT_PROTECTED_DELIVERY_THEN_ORDERED_COMBAT_V1_COMPATIBILITY_GROWTH_EVENTS_STATUS_REWARDS
-user_directed_planning_next_decision: TEN-DEC-20260909-COMBAT-LAYOUT-CORRECTION-01
+user_directed_planning_next_package: HTML_CONTENT_ASSETS_PM_RUNTIME_VERIFY_DELIVER
+user_directed_planning_next_decision: USER-APPROVED-TEN-HTML-PILOT-20260922
 user_directed_planning_status: THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_SINGLE_EXECUTE_INLINE_CAUSAL_AND_TERMINAL_RESULT_SURFACES_MAIN_MERGED_VERIFIED_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN
 user_directed_planning_single_execute_status: IMPLEMENTED_MERGED_MAIN_PR329_REMOTE_CI_32_SUCCESS_POSTMERGE_APPROVAL_LIFECYCLE_IN_PROGRESS_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN
 user_directed_planning_current_direction: FRONTAL_SHARED_GROUND_DUEL_NO_VISIBLE_LOGICAL_BOARD_PLUS_3_BRANCH_4_PICK_JIANGHU_ROUTE_PLUS_SINGLE_PLAYER_FACING_ACTION_EXECUTE_CTA_PLUS_CURRENT_CARD_VS_COMPARE_RAIL_PLUS_INLINE_CAUSAL_RECAP_PLUS_UNIFIED_BLUE_GRAY_HANJI_INK_CANDIDATE_STYLE_WITHOUT_SPINE_RUNTIME

@@ -1,5 +1,13 @@
 # 십보강호 시작 지점
 
+## 사용자·AI용 HTML 진입점
+
+`output/blueprint/index.html`은 기존 설명·자산·모션·PM·구조도·재개 경로의 파생 화면이다.
+`python tools/serve_html_blueprint.py`로 생성/로컬 미리보기를 시작하고
+`output/blueprint/preview-session.json`에서 이번 실행 주소를 확인한다.
+사용자는 루트의 `블루프린트 열기.cmd`도 사용할 수 있다.
+원본 읽기 순서가 우선이며 상태·승인·전환 근거는 `docs/blueprint/HTML_MIGRATION_SPEC.md`와 Active Context를 따른다.
+
 ## 기본 읽기
 
 ```text
