@@ -294,3 +294,5 @@ PR344는2026-09-22T13:52:49Z에 main `b6c63cd4ed7333d51168f077d199b1b69ec84daf`�
 
 병합 main의 Full Validation·platform rights·HTML Blueprint·GodotLiveEditorPilot 워크플로도 통과했다.
 초기 import가 만든 metadata186개는 SHA256/원래 경로/복구 안내와 함께 `output/blueprint/manual-delete-candidates/godot-import-20260922`로 보관했다. tracked metadata는 HEAD로 복원했고 원래 프로젝트 폴더와 게임 자산은 건드리지 않았다.
+
+Closeout PR345 첫 최종 head의 원격 product job은 전체10분 한도로 마지막 행로 검사 중 취소됐다(run35738191421). 10전 native 입력은10승/36행로/failures[]로 완료했지만 전체 job PASS로 세지 않았다. 모든 검사/판정/명령을 유지한 채 Linux job 한도를 기존 Windows와 같은15분으로 교정했다. 이 설정만 바꾼 집중 diff 검토 후 새 head 전체 원격 검사를 수행한다.
