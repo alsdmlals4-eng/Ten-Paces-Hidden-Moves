@@ -245,7 +245,7 @@ def build(out=OUT, include_candidate=True):
                'historical_reader': {'approval_date': '2026-09-11', 'approved_revision': model.read(ROOT, 'docs/planning-data/current_user_planning_status.json')['blueprint_final_approval']['approved_revision']}}
     css = (ROOT/'tools/html_blueprint_ui/style.css').read_text(encoding='utf-8')
     js = (ROOT/'tools/html_blueprint_ui/app.js').read_text(encoding='utf-8')
-    js = js.removesuffix('render();\n') + (ROOT/'tools/html_blueprint_ui/experience.js').read_text(encoding='utf-8') + '\nrender();\n'
+    js = js.removesuffix('render();\n') + (ROOT/'tools/html_blueprint_ui/experience.js').read_text(encoding='utf-8') + '\nrender();followLocation();\n'
     html = '''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>십보강호 · 살아 있는 블루프린트</title><style>''' + css + '''</style></head><body>
 <a class="skip" id="skip-content" href="#main">본문으로</a><header><a href="#maps" class="brand">십보강호 <small>숨은 수의 비무</small></a><span class="edition">프로젝트 블루프린트</span><button id="resume-copy">재개 요청 복사</button></header>
 <div class="shell"><aside><nav aria-label="주요 메뉴" id="nav"></nav><label class="search-label" for="search">내용 찾기</label><input id="search" type="search" placeholder="인물 · 무공 · 자산 · 작업"><p id="freshness"></p><a href="../../AGENTS.md">작업 규칙 원본 ↗</a></aside><main id="main" tabindex="-1"></main></div>
