@@ -8,6 +8,11 @@
 
 이 문서는 **장기 로드맵·제품 증거 계보·다음 Gate의 순서**를 소유한다. 활성 PR, exact HEAD, 현재 Work Mode, 승인 수, 현재 stage, 다음 package/Decision 같은 mutable operating checkpoint는 복제하지 않는다. 작업 재개 시 Active Context/current JSON/GitHub live metadata/repository owners를 fresh-read한다.
 
+## 블루프린트와 구현 확인 경로
+
+`USER-APPROVED-TEN-HTML-PILOT-20260922`의 [HTML 전환 설계](blueprint/HTML_MIGRATION_SPEC.md)는 기존 전체 설명·원화·모션·PM·검수·재개 경로를 하나의 파생 화면으로 연결한다.
+장기 게임 작업의 의미·우선순위는 아래 원본을 유지하며 HTML에서 동일 기록을 찾아간다. 출력은 `output/blueprint/index.html`, AI 직접 검수는 project-local preview를 사용한다. 전환 완료·활성 PR과 다음 작업은 위 current owners와 GitHub metadata에서 확인한다.
+
 ## 전투 화면과 후속 전투 실행 교정 순서
 
 적 제작은 [회차 시작 상대 추첨·성장·별호](decisions/2026-09-09_RUN_START_OPPONENT_ROSTER_AND_GROWTH.md)의 타입/단계 정의 → 시작 시 10전 일괄 확정·저장 호환 → 검 대표 모션 → 무기·무공별 확대 순서를 따른다. 고정 순서 완주 증거를 새 무작위 회차의 구현 증거로 재사용하지 않는다.
