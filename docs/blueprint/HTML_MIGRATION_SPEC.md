@@ -349,3 +349,5 @@ BUILD / executing-plans + ten-paces-verification(html-blueprint-review, referenc
 
 독립 전체 검토2/2: P1 이상0, P2 네 항목(전역 클래스 상속 입력 누락, 변경 목록의 추가/삭제 누락, 후보 자산 PM 누락, 짧은 구간 반복 overshoot)을 확인했다. 각 재현을 먼저 실패시킨 뒤 교정했다. 상속/class 참조 closure 및 동적 data/combat 신규 파일 감지, 추가/수정/삭제 표시, 후보 scope+exact revision PM 매칭, 프레임 경계·영상끝 반복을 적용했다. 후보 요청문에는 경로와 exact SHA도 추가했다. 새로운 전체 검토는 시작하지 않는다.
 브라우저 중간 확인: 1440px 구조도와 상세 병렬, 화면 속 새 여정→10권/30기술, 매화삼첩 승인 삽화와 단계/후보 설정 비교, 짧은 타격구간 반복 유지(time1.157s/ready4/재생중), 실제 재생시점1.123s를 담은 요청 복사, 검색어 복귀, 미연결 필터122개, 비교 기준 저장을 확인했다. 전체112본문/30기술/36영상/중복DOM ID0과 이어가기 하단 도달을 확인했다.390px에서 문서375px이며 목차가 구역 제목을 일부 가려 scroll margin225px로 교정했다. 최종 재확인은 아래 누적한다.
+
+추가 전체 회귀 첫 실행은 임시 import8개를 검사 전에 옮긴 영향으로 배경 텍스처/부모 script를 로드하지 못하고 durable continuation timeout이 발생해 중단했다. 해당 보관본의 hash를 대조해 복원 후 같은 durable 실행의 DURABLE_CONTINUE PASS를 확인했다. 전체 회귀는 복원 상태에서 다시 시작했다. 임시 metadata 정리는 모든 Godot 검사가 끝난 뒤로 미룬다. 제품 코드 결함 교정이나 첫 실행 PASS로 기록하지 않는다.
