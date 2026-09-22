@@ -333,6 +333,51 @@
           "PR344 merged main b6c63cd4ed7333d51168f077d199b1b69ec84daf equals reviewed tree c24719ac; remote29 PASS/3 conditional SKIP; local source/browser evidence in HTML_MIGRATION_SPEC.md"
         ],
         "rollback": "Revert HTML publication/policy only through normal PR; preserve approved PDF/art and product rules."
+      },
+      {
+        "work_item_id": "TEN-HTML-INSPECT",
+        "title": "화면·연출·상태·PM을 연결한 항목별 검수와 재개",
+        "status": "DONE",
+        "canon_owner": "docs/blueprint/HTML_MIGRATION_SPEC.md",
+        "actual_consumers": [
+          "tools/html_blueprint_inspection.py",
+          "tools/html_blueprint_ui/inspection.js",
+          "tools/html_blueprint_experience.py"
+        ],
+        "depends_on": [
+          "TEN-HTML-DELIVER"
+        ],
+        "acceptance_criteria": [
+          "TEN-HTML-INSPECT-AC"
+        ],
+        "required_evidence": [
+          "E1_STATIC"
+        ],
+        "checklist": [
+          {
+            "id": "TEN-HTML-INSPECT-AC",
+            "text": "승인한 여섯 개선, 원본·후보 분리, 자동·브라우저 검증과 교정을 확인한다. 병합 상태는 PR347 live metadata를 따른다.",
+            "status": "PASS",
+            "evidence": [
+              "docs/blueprint/HTML_MIGRATION_SPEC.md"
+            ]
+          }
+        ],
+        "verification": [
+          {
+            "level": "E1_STATIC",
+            "status": "PASS",
+            "evidence": [
+              "tests/test_html_blueprint_inspection.py",
+              "tools/check_html_blueprint_ui.cjs"
+            ]
+          }
+        ],
+        "next_action": "PR347의 exact-head 검사·정상 병합/main을 확인한 뒤 PR342 제품 후보를 별도 fresh-read한다.",
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0,
+        "rollback": "정상 PR로 HTML 표시·촬영 도구 변경만 되돌리고 승인 원본과 게임을 보존한다."
       }
     ]
   },
@@ -453,5 +498,38 @@
     },
     "delivery_authority": "GitHub live PR/checks/merged main; no self-referential commit hash in this file",
     "remaining_product_boundary": "Existing main has static/effect-only presentations; thirty card-linked videos do not certify thirty unique character animations."
+  },
+  "inspection_followup": {
+    "approval": "2026-09-23 user: 좋아 다 적용해줘; six recommended improvements",
+    "source_main": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
+    "work_mode": "REVIEW",
+    "skill": "executing-plans + ten-paces-verification/html-blueprint-review",
+    "status": "IMPLEMENTED_VERIFIED",
+    "scope": [
+      "atlas detail panel",
+      "recorded phase timeline",
+      "separate evidence statuses",
+      "per-item resume/PM",
+      "change and freshness visibility",
+      "complete overview navigation"
+    ],
+    "review": "Full scope1 self and2 independent complete. Four P2 findings corrected with regressions; focused checks only afterwards.",
+    "evidence": "docs/blueprint/HTML_MIGRATION_SPEC.md#16",
+    "not_run": [
+      "new game human review",
+      "cloud AI access",
+      "Android",
+      "release"
+    ],
+    "pull_request": 347,
+    "delivery_authority": "GitHub PR347 live state, exact-head checks and merged main; local observations are timestamped evidence, not permanent remote status.",
+    "verification": {
+      "focused": "PASS37 incl corrected owner regression; HTML35 included",
+      "html_links": "PASS661 rendered views/6725 local links",
+      "full_regression": "533 run,532 passed,1 owner mismatch corrected and focused rerun passed; initial missing-import run aborted, not PASS",
+      "browser": "Same-PC Codex: desktop/narrow layouts, hotspot to30 cards, recorded phase repeat, actual-time item copy, candidate exact revision/PM, search/back, baseline changes,112 chapters and36 videos",
+      "human": "NOT_RUN for new item-level game/fun approval",
+      "governance": "PASS84 after product_stage/active_decision_state reconciliation; prior5ac9b2bf remote mismatch preserved in spec"
+    }
   }
 }

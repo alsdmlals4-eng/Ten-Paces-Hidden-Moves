@@ -1,9 +1,9 @@
 {
-  "encoded_at": "2026-09-22T15:28:14.017599+00:00",
-  "capture_finished_at": "2026-09-22T15:26:57.541909+00:00",
+  "encoded_at": "2026-09-22T17:37:57.639296+00:00",
+  "capture_finished_at": "2026-09-22T17:34:13.634114+00:00",
   "capture_time_basis": "frames.json filesystem timestamp written at the end of the Godot capture",
   "engine": "4.7.1-stable (official)",
-  "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+  "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
   "source_hashes": {
     "assets/backgrounds/atlas_blue_ink_courtyard_v1.png": "608d67e244ab3bc0c579ff04b359682a20c5189236117ff5390b0d7182dd092c",
     "assets/backgrounds/frontal_courtyard_duel_background_01_v1.png": "27778369c3896d7d6237990ec70620c54ad0d636f660c9aa80322b0632262d06",
@@ -215,7 +215,7 @@
     "src/validation/vertical_slice_balance_public_policy.gd": "a8f8b540a58dc865bdbc45ff296e1018b654f2fa6586b176749f942a7d4e2bee",
     "src/validation/vertical_slice_balance_report_runner.gd": "cde87deda73456b59df296c97f97bfa16e480320ef5a7c54d1b1e1df56e512c8",
     "project.godot": "7bb6dabd2d7104a1c218a99a88a806f22050aab2f36365f60e5a2ed51f87008d",
-    "tools/capture_blueprint_motion.gd": "d86839133c02b4be2d71391681a6397900f36325c6e843e8f2cb64e4cf8f7d3e"
+    "tools/capture_blueprint_motion.gd": "b6a4f3b6e93beb0549326a3a82b56d2a92672757ce661429d853b6c68c41b59a"
   },
   "text_hash_policy": "UTF8_UNIVERSAL_NEWLINES",
   "method": "Godot viewport frames after rendering; original wall-clock intervals encoded at 30 fps.",
@@ -250,18 +250,63 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/clash-win.mp4",
-      "path_sha256": "1fbc0f1fddb0300373cf1d78f87cef1eee005ace7b25cb4053f1fab08c5677f4",
+      "path_sha256": "8d21ea7040d3bbc0d39928a26b7f573a6dadfe71078918b889ea328c0a6bd53c",
       "poster": "docs/blueprint/evidence/motion/clash-win.jpg",
-      "poster_sha256": "3a7e58ee9dab8e5322796967b47c517d9d467cd9d6c702da862ac67bd851b93c",
-      "frames": 42,
-      "distinct_frames": 11,
-      "arena_distinct_frames": 11,
+      "poster_sha256": "34f778520e12729c8275e6db26a7e499faa0e99f9aded7dbe8121df2de5159bd",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.405
+        },
+        {
+          "phase": "windup",
+          "event_index": 0,
+          "start": 0.405,
+          "end": 0.522
+        },
+        {
+          "phase": "impact",
+          "event_index": 0,
+          "start": 0.522,
+          "end": 0.776
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.776,
+          "end": 1.025
+        },
+        {
+          "phase": "windup",
+          "event_index": 1,
+          "start": 1.025,
+          "end": 1.143
+        },
+        {
+          "phase": "impact",
+          "event_index": 1,
+          "start": 1.143,
+          "end": 1.305
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 1.305,
+          "end": 2.343
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 89,
+      "distinct_frames": 22,
+      "arena_distinct_frames": 22,
       "visual_status": "FRAME_CHANGES_OBSERVED",
-      "duration_seconds": 2.345,
+      "duration_seconds": 2.343,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "clash_win",
         "hit"
@@ -296,18 +341,63 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/clash-lose.mp4",
-      "path_sha256": "f07fad2c5cb487ced001d1d4306a85d5adfc45cc05b791b5958aa769c8400ba3",
+      "path_sha256": "f85f1ccbca6f2ef0353c754d5f35aef6d748e192276f07b8037819394b8af2af",
       "poster": "docs/blueprint/evidence/motion/clash-lose.jpg",
-      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 46,
-      "distinct_frames": 9,
-      "arena_distinct_frames": 9,
+      "poster_sha256": "df4a4d6bf01b5685d498cae8228a9643881015e872f24b21c5e98813dc39928b",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.57
+        },
+        {
+          "phase": "windup",
+          "event_index": 0,
+          "start": 0.57,
+          "end": 0.672
+        },
+        {
+          "phase": "impact",
+          "event_index": 0,
+          "start": 0.672,
+          "end": 0.936
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.936,
+          "end": 1.198
+        },
+        {
+          "phase": "windup",
+          "event_index": 1,
+          "start": 1.198,
+          "end": 1.306
+        },
+        {
+          "phase": "impact",
+          "event_index": 1,
+          "start": 1.306,
+          "end": 1.462
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 1.462,
+          "end": 2.499
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 111,
+      "distinct_frames": 26,
+      "arena_distinct_frames": 26,
       "visual_status": "FRAME_CHANGES_OBSERVED",
-      "duration_seconds": 2.501,
+      "duration_seconds": 2.499,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "clash_loss",
         "hit"
@@ -332,18 +422,45 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/hit.mp4",
-      "path_sha256": "b2b2640ee1fb78e467e1e0b4a5ce504469564e65dad246f228c10be5dd506419",
+      "path_sha256": "490c5e3797bc587b1bd52002d7a819e4c8530cac8f42342e1ff09917e3323293",
       "poster": "docs/blueprint/evidence/motion/hit.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 33,
-      "distinct_frames": 5,
-      "arena_distinct_frames": 5,
-      "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 1.833,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.582
+        },
+        {
+          "phase": "windup",
+          "event_index": 0,
+          "start": 0.582,
+          "end": 0.708
+        },
+        {
+          "phase": "impact",
+          "event_index": 0,
+          "start": 0.708,
+          "end": 0.857
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.857,
+          "end": 1.885
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 82,
+      "distinct_frames": 12,
+      "arena_distinct_frames": 12,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 1.885,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "hit"
       ]
@@ -367,18 +484,39 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/block.mp4",
-      "path_sha256": "823711bb6c6096aa358fff1639a71ee81e47b43375215b644f199e60da8a1b3b",
+      "path_sha256": "10e8735b49bc5ade31f085aecebbc6ea15a9504286b7be4f45c4fca992c53773",
       "poster": "docs/blueprint/evidence/motion/block.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 34,
-      "distinct_frames": 4,
-      "arena_distinct_frames": 4,
-      "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 1.927,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.566
+        },
+        {
+          "phase": "impact",
+          "event_index": 0,
+          "start": 0.566,
+          "end": 0.831
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.831,
+          "end": 1.89
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 79,
+      "distinct_frames": 11,
+      "arena_distinct_frames": 11,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 1.89,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "block"
       ]
@@ -402,18 +540,39 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/evade.mp4",
-      "path_sha256": "08ccc1dbbf5e465832f2dc28573ce71b07c5c0c906f29bc741cae6441f125132",
+      "path_sha256": "9c4a26e6561ed6c4d983f5f59ed0781fcd9d201110cb38a6e6911ae15a20d508",
       "poster": "docs/blueprint/evidence/motion/evade.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 30,
-      "distinct_frames": 4,
-      "arena_distinct_frames": 4,
-      "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 1.714,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.553
+        },
+        {
+          "phase": "impact",
+          "event_index": 0,
+          "start": 0.553,
+          "end": 0.734
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.734,
+          "end": 1.778
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 71,
+      "distinct_frames": 7,
+      "arena_distinct_frames": 7,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 1.778,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "evade"
       ]
@@ -437,18 +596,45 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/ultimate.mp4",
-      "path_sha256": "0055947f5da33931fb01f19140c4c8e33198732094e490d7025b6ccfc157a95c",
+      "path_sha256": "5646bfd376ff8d6a1d408686576f7f848414cdb4c827d202f72a149da000fb87",
       "poster": "docs/blueprint/evidence/motion/ultimate.jpg",
-      "poster_sha256": "4e0e032ee674d082941b9b3ff632e6bae49a512841030a5459b61f120d97cf3a",
-      "frames": 41,
-      "distinct_frames": 12,
-      "arena_distinct_frames": 12,
+      "poster_sha256": "8b5e4e50b5a5e8eb27a9fbfd9566a550be56f294c49892ba9faf3741f85e05c1",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.557
+        },
+        {
+          "phase": "windup",
+          "event_index": 0,
+          "start": 0.557,
+          "end": 0.861
+        },
+        {
+          "phase": "impact",
+          "event_index": 0,
+          "start": 0.861,
+          "end": 1.272
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 1.272,
+          "end": 2.315
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 103,
+      "distinct_frames": 32,
+      "arena_distinct_frames": 32,
       "visual_status": "FRAME_CHANGES_OBSERVED",
-      "duration_seconds": 2.369,
+      "duration_seconds": 2.315,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "hit"
       ]
@@ -559,18 +745,57 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/mount_hua_plum_blossom_sword_star3.mp4",
-      "path_sha256": "2ddabfb933703c64bffc89129f0112008928f227cea388cf9b0d56bb48b9d295",
+      "path_sha256": "289d04cca63376b8a77ed4325aa4b9c22eba4e46ce80e2388bf4a5b4cf7b0e62",
       "poster": "docs/blueprint/evidence/motion/mount_hua_plum_blossom_sword_star3.jpg",
-      "poster_sha256": "5caf22d2919cdcc641fcb947908f77bc520599d0d48acd389cc38b073a9c352d",
-      "frames": 38,
-      "distinct_frames": 5,
-      "arena_distinct_frames": 5,
-      "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 2.179,
+      "poster_sha256": "ec8e5f6c0b55ffd1f43847b91cb5718175deb11c82a481764f2fd388f403ccd7",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.471
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.471,
+          "end": 0.635
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.635,
+          "end": 0.904
+        },
+        {
+          "phase": "windup",
+          "event_index": 1,
+          "start": 0.904,
+          "end": 1.009
+        },
+        {
+          "phase": "impact",
+          "event_index": 1,
+          "start": 1.009,
+          "end": 1.158
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 1.158,
+          "end": 2.207
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 102,
+      "distinct_frames": 13,
+      "arena_distinct_frames": 13,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 2.207,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
@@ -664,18 +889,57 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/mount_hua_plum_blossom_sword_star7.mp4",
-      "path_sha256": "7e21ba86e7fc4b9c17bfcb6e4a9fe3eee597d0ff5aea4bc0d2f3c49ae17617d9",
+      "path_sha256": "77fc6cc451655fbc41f60484d099b176f1caf9c41610d4fa3986973de832374e",
       "poster": "docs/blueprint/evidence/motion/mount_hua_plum_blossom_sword_star7.jpg",
-      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 40,
-      "distinct_frames": 3,
-      "arena_distinct_frames": 3,
-      "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 2.221,
+      "poster_sha256": "b323fd4ff106a330f699686018300b0a24a47bc3e9c0165cfe6b72c587235c1c",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.523
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.523,
+          "end": 0.695
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.695,
+          "end": 0.972
+        },
+        {
+          "phase": "windup",
+          "event_index": 1,
+          "start": 0.972,
+          "end": 1.044
+        },
+        {
+          "phase": "impact",
+          "event_index": 1,
+          "start": 1.044,
+          "end": 1.142
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 1.142,
+          "end": 2.193
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 88,
+      "distinct_frames": 6,
+      "arena_distinct_frames": 6,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 2.193,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
@@ -829,18 +1093,57 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/mount_hua_plum_blossom_sword_star10.mp4",
-      "path_sha256": "002e489ef96c6fbffcc04ccaa4480285f6d6ab3132135a0a17eaaa5cd5c74dca",
+      "path_sha256": "b45deaa5d7a1436a0a1082e2f4b3480441217337d704a7737997c883abc114d5",
       "poster": "docs/blueprint/evidence/motion/mount_hua_plum_blossom_sword_star10.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 44,
-      "distinct_frames": 2,
-      "arena_distinct_frames": 2,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.548
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.548,
+          "end": 0.724
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.724,
+          "end": 0.991
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 0.991,
+          "end": 1.45
+        },
+        {
+          "phase": "impact",
+          "event_index": 2,
+          "start": 1.45,
+          "end": 1.632
+        },
+        {
+          "phase": "settled",
+          "event_index": 2,
+          "start": 1.632,
+          "end": 2.65
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 105,
+      "distinct_frames": 5,
+      "arena_distinct_frames": 5,
       "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 2.53,
+      "duration_seconds": 2.65,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
@@ -900,15 +1203,36 @@
       "path_sha256": "14f740560908cd143ed6a326a8b94bf393c23da8f0c03457e6c25e32d0716974",
       "poster": "docs/blueprint/evidence/motion/shaolin_arhat_vajra_art_star3.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 31,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.556
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.556,
+          "end": 0.733
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.733,
+          "end": 1.762
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 71,
       "distinct_frames": 1,
       "arena_distinct_frames": 1,
       "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 1.747,
+      "duration_seconds": 1.762,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed"
       ]
@@ -1019,18 +1343,57 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/shaolin_arhat_vajra_art_star7.mp4",
-      "path_sha256": "f69d55d7fe9a3542df506967c38c23bdccde2d3d66fd19bd2f77b46b7bc8a8d6",
+      "path_sha256": "0df22014feff253e90304367614bd1b0c6e271fd5851813cf7e6a415d6986947",
       "poster": "docs/blueprint/evidence/motion/shaolin_arhat_vajra_art_star7.jpg",
-      "poster_sha256": "cac3519f56622fa7f0bd1853beeb56653bef3f115f25dfae5969d6a11ee7efcd",
-      "frames": 39,
-      "distinct_frames": 5,
-      "arena_distinct_frames": 5,
-      "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 2.229,
+      "poster_sha256": "08443c27fddfb31258b06a5768ad4ebdc8d780ff893f0b5f0318161161b8cce3",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.541
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.541,
+          "end": 0.712
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.712,
+          "end": 0.981
+        },
+        {
+          "phase": "windup",
+          "event_index": 1,
+          "start": 0.981,
+          "end": 1.104
+        },
+        {
+          "phase": "impact",
+          "event_index": 1,
+          "start": 1.104,
+          "end": 1.251
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 1.251,
+          "end": 2.296
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 93,
+      "distinct_frames": 12,
+      "arena_distinct_frames": 12,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 2.296,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
@@ -1166,18 +1529,63 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/shaolin_arhat_vajra_art_star10.mp4",
-      "path_sha256": "f16349066f11dfad1db9bd96ee3d4d09b5613d8c6f5baec86ad30e1dc2a7f896",
+      "path_sha256": "2b000481f5cdab31b1b2df596c8426011dc8c64e0929997c6566ee479dd99731",
       "poster": "docs/blueprint/evidence/motion/shaolin_arhat_vajra_art_star10.jpg",
-      "poster_sha256": "5c86627fceb8d0a4822aaf345abda59828ef510324c144374874d2dfae765c05",
-      "frames": 55,
-      "distinct_frames": 13,
-      "arena_distinct_frames": 13,
+      "poster_sha256": "75f6d6214e02d51e057fb3b88e3d5f00711b14a55cf5f15bdf30faacabdb26b1",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.541
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.541,
+          "end": 0.718
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.718,
+          "end": 0.998
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 0.998,
+          "end": 1.416
+        },
+        {
+          "phase": "windup",
+          "event_index": 2,
+          "start": 1.416,
+          "end": 1.723
+        },
+        {
+          "phase": "impact",
+          "event_index": 2,
+          "start": 1.723,
+          "end": 2.149
+        },
+        {
+          "phase": "settled",
+          "event_index": 2,
+          "start": 2.149,
+          "end": 3.181
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 126,
+      "distinct_frames": 27,
+      "arena_distinct_frames": 27,
       "visual_status": "FRAME_CHANGES_OBSERVED",
-      "duration_seconds": 3.164,
+      "duration_seconds": 3.181,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
@@ -1216,18 +1624,39 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/wudang_taiji_sword_star3.mp4",
-      "path_sha256": "6f51e7967d87be32377334811027139e8bfa8395d0860be68959c3107e1e8aff",
+      "path_sha256": "7e08264d703a708b1e8a8c23433abac9895f4fc5f35fb251ff66d4d7142a00e9",
       "poster": "docs/blueprint/evidence/motion/wudang_taiji_sword_star3.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 31,
-      "distinct_frames": 2,
-      "arena_distinct_frames": 2,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.544
+        },
+        {
+          "phase": "impact",
+          "event_index": 0,
+          "start": 0.544,
+          "end": 0.719
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.719,
+          "end": 1.751
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 71,
+      "distinct_frames": 5,
+      "arena_distinct_frames": 5,
       "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 1.76,
+      "duration_seconds": 1.751,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "response"
       ]
@@ -1328,18 +1757,57 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/wudang_taiji_sword_star7.mp4",
-      "path_sha256": "fa76721d683c6e1301f328407e442d771bc82c1de0b86cf9ff464aff3672f94e",
+      "path_sha256": "e9c6fa0ee6f41a1de6cdc1440a517029fb407427ed48041fc8731f7c6cf5e82c",
       "poster": "docs/blueprint/evidence/motion/wudang_taiji_sword_star7.jpg",
-      "poster_sha256": "093571574e444dd06168c2739e470daac78a87cc3a9578e485b7ea50e3f4332e",
-      "frames": 38,
-      "distinct_frames": 3,
-      "arena_distinct_frames": 3,
-      "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 2.166,
+      "poster_sha256": "cec481b0db42a1ec7180bb486eeebd6c814e8c9bcd1ad83c96f6a4e577cb05b7",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.561
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.561,
+          "end": 0.734
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.734,
+          "end": 1.009
+        },
+        {
+          "phase": "windup",
+          "event_index": 1,
+          "start": 1.009,
+          "end": 1.087
+        },
+        {
+          "phase": "impact",
+          "event_index": 1,
+          "start": 1.087,
+          "end": 1.185
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 1.185,
+          "end": 2.218
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 90,
+      "distinct_frames": 6,
+      "arena_distinct_frames": 6,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 2.218,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
@@ -1426,18 +1894,51 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/wudang_taiji_sword_star10.mp4",
-      "path_sha256": "6629b78ff983e67d6f7253910084ce19b2e177975a7d1a209c945bb07784bbba",
+      "path_sha256": "473e7b07885d99cfa4c60e6c1fb7829a3626934871bf0186ff461f8bdc9ebec2",
       "poster": "docs/blueprint/evidence/motion/wudang_taiji_sword_star10.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 44,
-      "distinct_frames": 2,
-      "arena_distinct_frames": 2,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.542
+        },
+        {
+          "phase": "impact",
+          "event_index": 0,
+          "start": 0.542,
+          "end": 0.715
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.715,
+          "end": 0.984
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 0.984,
+          "end": 1.423
+        },
+        {
+          "phase": "settled",
+          "event_index": 2,
+          "start": 1.423,
+          "end": 2.649
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 107,
+      "distinct_frames": 5,
+      "arena_distinct_frames": 5,
       "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 2.545,
+      "duration_seconds": 2.649,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "preparation",
         "response"
@@ -1513,18 +2014,45 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/yang_family_spear_star3.mp4",
-      "path_sha256": "695f62e21e16c5b5607467d9788cb88873e78e36f4c5ab56cf23cf74f8e863e5",
+      "path_sha256": "062fa9ba4dfeec9ce59c878a98ee0d1c1dd6b360c8c0ba7d9666fb14647b2166",
       "poster": "docs/blueprint/evidence/motion/yang_family_spear_star3.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 32,
-      "distinct_frames": 3,
-      "arena_distinct_frames": 3,
-      "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 1.823,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.541
+        },
+        {
+          "phase": "windup",
+          "event_index": 0,
+          "start": 0.541,
+          "end": 0.622
+        },
+        {
+          "phase": "impact",
+          "event_index": 0,
+          "start": 0.622,
+          "end": 0.721
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.721,
+          "end": 1.757
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 69,
+      "distinct_frames": 6,
+      "arena_distinct_frames": 6,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 1.757,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed"
       ]
@@ -1635,18 +2163,57 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/yang_family_spear_star7.mp4",
-      "path_sha256": "816e1e0ba73bc0f8b74376699b5b99a523940d9fe6336096d35a254ab1e2a784",
+      "path_sha256": "f9eddb9eed686e1f7fb712f2c1c2f2f76e580817c1d2a2456b1c93688e10a4b9",
       "poster": "docs/blueprint/evidence/motion/yang_family_spear_star7.jpg",
-      "poster_sha256": "764273f928d84910199372d669e1da42d4be19547af05987619c5cb75be97114",
-      "frames": 40,
-      "distinct_frames": 4,
-      "arena_distinct_frames": 4,
-      "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 2.312,
+      "poster_sha256": "537dded422572c30287b11164efd08b32926c856268b6bb496930f21dce67a0d",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.541
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.541,
+          "end": 0.717
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.717,
+          "end": 0.998
+        },
+        {
+          "phase": "windup",
+          "event_index": 1,
+          "start": 0.998,
+          "end": 1.142
+        },
+        {
+          "phase": "impact",
+          "event_index": 1,
+          "start": 1.142,
+          "end": 1.293
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 1.293,
+          "end": 2.325
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 93,
+      "distinct_frames": 11,
+      "arena_distinct_frames": 11,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 2.325,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
@@ -1775,18 +2342,63 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/yang_family_spear_star10.mp4",
-      "path_sha256": "ebde44d1517081033345fe8d129ffef27fead1b41922b8ee6fcc37536fbd0819",
+      "path_sha256": "fb0f9bb101c0265fe5a1921602fc77caf0dc79b253bed89b88cf975a94535a2d",
       "poster": "docs/blueprint/evidence/motion/yang_family_spear_star10.jpg",
-      "poster_sha256": "8891d19bb04b3dd409fa70d8c92c69b3b033b250bc224e2fa7c96e12bcb104ce",
-      "frames": 55,
-      "distinct_frames": 12,
-      "arena_distinct_frames": 12,
+      "poster_sha256": "1f25edbdd73bb29be3d5313417e5b26ad0e31d6ebefcdb1578fcbca6e118c084",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.546
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.546,
+          "end": 0.714
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.714,
+          "end": 0.987
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 0.987,
+          "end": 1.437
+        },
+        {
+          "phase": "windup",
+          "event_index": 2,
+          "start": 1.437,
+          "end": 1.748
+        },
+        {
+          "phase": "impact",
+          "event_index": 2,
+          "start": 1.748,
+          "end": 2.157
+        },
+        {
+          "phase": "settled",
+          "event_index": 2,
+          "start": 2.157,
+          "end": 3.167
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 126,
+      "distinct_frames": 27,
+      "arena_distinct_frames": 27,
       "visual_status": "FRAME_CHANGES_OBSERVED",
-      "duration_seconds": 3.16,
+      "duration_seconds": 3.167,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
@@ -1848,15 +2460,36 @@
       "path_sha256": "14f740560908cd143ed6a326a8b94bf393c23da8f0c03457e6c25e32d0716974",
       "poster": "docs/blueprint/evidence/motion/mount_hua_purple_mist_art_star3.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 31,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.564
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.564,
+          "end": 0.742
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.742,
+          "end": 1.757
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 69,
       "distinct_frames": 1,
       "arena_distinct_frames": 1,
       "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 1.758,
+      "duration_seconds": 1.757,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed"
       ]
@@ -1942,18 +2575,45 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/mount_hua_purple_mist_art_star7.mp4",
-      "path_sha256": "4d236522588f9cd8737f1277db3c3d9a0d32c151d6a9b5f2d549b19aca4b526b",
+      "path_sha256": "85c9789f83f529e461c6f2fd5d30171ac398f5231035f3920047eb1dcf32de94",
       "poster": "docs/blueprint/evidence/motion/mount_hua_purple_mist_art_star7.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 37,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.55
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.55,
+          "end": 0.726
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.726,
+          "end": 0.998
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 0.998,
+          "end": 2.213
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 86,
       "distinct_frames": 1,
       "arena_distinct_frames": 1,
       "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 2.117,
+      "duration_seconds": 2.213,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
@@ -2084,18 +2744,57 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/mount_hua_purple_mist_art_star10.mp4",
-      "path_sha256": "02b07710db999309efbc142932759f46bd80956460110c86d67380a5d28369a3",
+      "path_sha256": "8b9d226b0ac8c2a377d29b0756d31dd2e80837d789dc93f05f40f1c6801703fa",
       "poster": "docs/blueprint/evidence/motion/mount_hua_purple_mist_art_star10.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 54,
-      "distinct_frames": 3,
-      "arena_distinct_frames": 3,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.564
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.564,
+          "end": 0.727
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.727,
+          "end": 0.993
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 0.993,
+          "end": 1.46
+        },
+        {
+          "phase": "impact",
+          "event_index": 2,
+          "start": 1.46,
+          "end": 2.168
+        },
+        {
+          "phase": "settled",
+          "event_index": 2,
+          "start": 2.168,
+          "end": 3.21
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 121,
+      "distinct_frames": 6,
+      "arena_distinct_frames": 5,
       "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 3.119,
+      "duration_seconds": 3.21,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
@@ -2134,18 +2833,39 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/xiaoyao_lingbo_footwork_star3.mp4",
-      "path_sha256": "1f72de7bc0ffd270a0db5ec6c10b0c751616cb0ecb1d43d67f67667747e49f87",
+      "path_sha256": "b125e5b672b04995ebc876bbe221ee818137db101c11eae5a0ff3a00ed8512bd",
       "poster": "docs/blueprint/evidence/motion/xiaoyao_lingbo_footwork_star3.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 30,
-      "distinct_frames": 2,
-      "arena_distinct_frames": 2,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.544
+        },
+        {
+          "phase": "impact",
+          "event_index": 0,
+          "start": 0.544,
+          "end": 0.722
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.722,
+          "end": 1.76
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 70,
+      "distinct_frames": 5,
+      "arena_distinct_frames": 5,
       "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 1.71,
+      "duration_seconds": 1.76,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "response"
       ]
@@ -2207,18 +2927,45 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/xiaoyao_lingbo_footwork_star7.mp4",
-      "path_sha256": "15c76c768d16d3779b3557c9d9ff24b60ef09c33a0f42605cdf22f03815133b2",
+      "path_sha256": "1cccc3ee62d753826880d63222d0b8d0a5dd77daa5bc48f2c40953b53d535029",
       "poster": "docs/blueprint/evidence/motion/xiaoyao_lingbo_footwork_star7.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 38,
-      "distinct_frames": 2,
-      "arena_distinct_frames": 2,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.558
+        },
+        {
+          "phase": "impact",
+          "event_index": 0,
+          "start": 0.558,
+          "end": 0.733
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.733,
+          "end": 1.007
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 1.007,
+          "end": 2.222
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 88,
+      "distinct_frames": 5,
+      "arena_distinct_frames": 5,
       "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 2.166,
+      "duration_seconds": 2.222,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "preparation",
         "response"
@@ -2305,18 +3052,51 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/xiaoyao_lingbo_footwork_star10.mp4",
-      "path_sha256": "a01e7d781a6d3cfce1d32a74d643f4150b2a6d48d016ec590ad63dd0bf265438",
+      "path_sha256": "72557ae4c5d01665b68835ea516971de14ce159b94bcc802606b1431902d5eba",
       "poster": "docs/blueprint/evidence/motion/xiaoyao_lingbo_footwork_star10.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 45,
-      "distinct_frames": 2,
-      "arena_distinct_frames": 2,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.552
+        },
+        {
+          "phase": "impact",
+          "event_index": 0,
+          "start": 0.552,
+          "end": 0.727
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.727,
+          "end": 0.983
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 0.983,
+          "end": 1.42
+        },
+        {
+          "phase": "settled",
+          "event_index": 2,
+          "start": 1.42,
+          "end": 2.637
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 104,
+      "distinct_frames": 5,
+      "arena_distinct_frames": 5,
       "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 2.57,
+      "duration_seconds": 2.637,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "preparation",
         "response"
@@ -2381,18 +3161,45 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/beggars_dragon_subduing_palm_star3.mp4",
-      "path_sha256": "afd0bb40f8cabcf01fb6f77f2b3d923a49ff37108c7fd60e29611d72194e3480",
+      "path_sha256": "cc6045a5e67e644d0e8dff26e30d853b52463865ffb063a0a0b3caaac1611523",
       "poster": "docs/blueprint/evidence/motion/beggars_dragon_subduing_palm_star3.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 32,
-      "distinct_frames": 4,
-      "arena_distinct_frames": 4,
-      "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 1.824,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.549
+        },
+        {
+          "phase": "windup",
+          "event_index": 0,
+          "start": 0.549,
+          "end": 0.685
+        },
+        {
+          "phase": "impact",
+          "event_index": 0,
+          "start": 0.685,
+          "end": 0.842
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.842,
+          "end": 1.867
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 72,
+      "distinct_frames": 11,
+      "arena_distinct_frames": 11,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 1.867,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed"
       ]
@@ -2497,18 +3304,57 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/beggars_dragon_subduing_palm_star7.mp4",
-      "path_sha256": "c75e21889cd1bd9dd2ae0bf5866aac0fb8287fadddac4dbc1bce92132c6d8a50",
+      "path_sha256": "7c5e9aca7075a442689097a1968c7701a4c89c68bbafb46655b7764e74fb5eb0",
       "poster": "docs/blueprint/evidence/motion/beggars_dragon_subduing_palm_star7.jpg",
-      "poster_sha256": "13b9ded6bcba33f6faf7978dbb6690e300b5827a31aa1bcf014e361b8263e9f3",
-      "frames": 38,
-      "distinct_frames": 3,
-      "arena_distinct_frames": 3,
-      "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 2.175,
+      "poster_sha256": "c0ffeea77a8851107d543076d24c5281c6ec59e2628f74d427205cba42f41453",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.533
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.533,
+          "end": 0.707
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.707,
+          "end": 0.984
+        },
+        {
+          "phase": "windup",
+          "event_index": 1,
+          "start": 0.984,
+          "end": 1.063
+        },
+        {
+          "phase": "impact",
+          "event_index": 1,
+          "start": 1.063,
+          "end": 1.164
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 1.164,
+          "end": 2.199
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 86,
+      "distinct_frames": 6,
+      "arena_distinct_frames": 6,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 2.199,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
@@ -2653,18 +3499,63 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/beggars_dragon_subduing_palm_star10.mp4",
-      "path_sha256": "f28152e519df46731c431f7a9b9765d5d58d16659ad9390cf6f96b5fad87bf5f",
+      "path_sha256": "32d66fcd0b502bee7eb974342e0c39e8ed181b50f61548acbd051c67703461aa",
       "poster": "docs/blueprint/evidence/motion/beggars_dragon_subduing_palm_star10.jpg",
-      "poster_sha256": "729d147fed02bc000197f1fcb4388c9a1091e01b0febef22a7218d8c64a41e5b",
-      "frames": 54,
-      "distinct_frames": 11,
-      "arena_distinct_frames": 11,
+      "poster_sha256": "83f57fc1520ac19fce5aff8d5f756431ae80c17ef3f526a3d294c8a6d3920ca7",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.548
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.548,
+          "end": 0.733
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.733,
+          "end": 0.99
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 0.99,
+          "end": 1.423
+        },
+        {
+          "phase": "windup",
+          "event_index": 2,
+          "start": 1.423,
+          "end": 1.735
+        },
+        {
+          "phase": "impact",
+          "event_index": 2,
+          "start": 1.735,
+          "end": 2.141
+        },
+        {
+          "phase": "settled",
+          "event_index": 2,
+          "start": 2.141,
+          "end": 3.182
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 125,
+      "distinct_frames": 27,
+      "arena_distinct_frames": 27,
       "visual_status": "FRAME_CHANGES_OBSERVED",
-      "duration_seconds": 3.128,
+      "duration_seconds": 3.182,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
@@ -2736,18 +3627,45 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/sichuan_tang_hidden_weapons_star3.mp4",
-      "path_sha256": "2f717b4ff579dba988155ad00aa3b48409fa370d6c040b40e4343f4874b7cb15",
+      "path_sha256": "a34ef3696b88f7aab4a7e08a28cdc0973532e1a40023b4ce202bb0f632303168",
       "poster": "docs/blueprint/evidence/motion/sichuan_tang_hidden_weapons_star3.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 33,
-      "distinct_frames": 5,
-      "arena_distinct_frames": 5,
-      "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 1.882,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.558
+        },
+        {
+          "phase": "windup",
+          "event_index": 0,
+          "start": 0.558,
+          "end": 0.666
+        },
+        {
+          "phase": "impact",
+          "event_index": 0,
+          "start": 0.666,
+          "end": 0.817
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.817,
+          "end": 1.851
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 73,
+      "distinct_frames": 10,
+      "arena_distinct_frames": 10,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 1.851,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed"
       ]
@@ -2846,18 +3764,57 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/sichuan_tang_hidden_weapons_star7.mp4",
-      "path_sha256": "d8bce8022c66277222fea1b224c5c84a5fea89f1be9c6bbd6310c567cee14df8",
+      "path_sha256": "7f5f7f969d2f8bf068c6b87f6491922688f093ebba7718be178eb3aa7f182b66",
       "poster": "docs/blueprint/evidence/motion/sichuan_tang_hidden_weapons_star7.jpg",
-      "poster_sha256": "a5bcc1c74f5dfb79b79842ab61ed01f6f6c7df2082d63a213d4c3b74df38f6c2",
-      "frames": 38,
-      "distinct_frames": 3,
-      "arena_distinct_frames": 3,
-      "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 2.188,
+      "poster_sha256": "d2e763c7317c7520e35679a40193f1e174771bb2c926331fa6cec1719e7f9dc5",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.558
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.558,
+          "end": 0.732
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.732,
+          "end": 1.007
+        },
+        {
+          "phase": "windup",
+          "event_index": 1,
+          "start": 1.007,
+          "end": 1.092
+        },
+        {
+          "phase": "impact",
+          "event_index": 1,
+          "start": 1.092,
+          "end": 1.201
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 1.201,
+          "end": 2.222
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 87,
+      "distinct_frames": 6,
+      "arena_distinct_frames": 6,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 2.222,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
@@ -2997,18 +3954,63 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/sichuan_tang_hidden_weapons_star10.mp4",
-      "path_sha256": "3697e10b9827a54355e92bd5e1a030624d45179731ca534e12ed2e9b2262fbb1",
+      "path_sha256": "ddeae6ad2b2006b1b1ec1295c1eeefb3ae576370a7705895a1f01def46a7865e",
       "poster": "docs/blueprint/evidence/motion/sichuan_tang_hidden_weapons_star10.jpg",
-      "poster_sha256": "b05ecef3536cca6d8bacdb22c0c6dc69128bab7200512490875f1fa39b7df647",
-      "frames": 56,
-      "distinct_frames": 13,
-      "arena_distinct_frames": 13,
+      "poster_sha256": "1f25edbdd73bb29be3d5313417e5b26ad0e31d6ebefcdb1578fcbca6e118c084",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.551
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.551,
+          "end": 0.726
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.726,
+          "end": 1.0
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 1.0,
+          "end": 1.45
+        },
+        {
+          "phase": "windup",
+          "event_index": 2,
+          "start": 1.45,
+          "end": 1.753
+        },
+        {
+          "phase": "impact",
+          "event_index": 2,
+          "start": 1.753,
+          "end": 2.161
+        },
+        {
+          "phase": "settled",
+          "event_index": 2,
+          "start": 2.161,
+          "end": 3.204
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 126,
+      "distinct_frames": 27,
+      "arena_distinct_frames": 27,
       "visual_status": "FRAME_CHANGES_OBSERVED",
-      "duration_seconds": 3.233,
+      "duration_seconds": 3.204,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
@@ -3080,18 +4082,45 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/hebei_peng_five_tigers_saber_star3.mp4",
-      "path_sha256": "82a135c30307187a65cc5fb08c402c5b1dcdcb23097580e8cd425e3c520831b1",
+      "path_sha256": "36da3dd02bec5a50b3b31d1a51a8fa603f91c90d57012ded2a979809b65c4619",
       "poster": "docs/blueprint/evidence/motion/hebei_peng_five_tigers_saber_star3.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 32,
-      "distinct_frames": 4,
-      "arena_distinct_frames": 4,
-      "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 1.839,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.545
+        },
+        {
+          "phase": "windup",
+          "event_index": 0,
+          "start": 0.545,
+          "end": 0.659
+        },
+        {
+          "phase": "impact",
+          "event_index": 0,
+          "start": 0.659,
+          "end": 0.812
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.812,
+          "end": 1.853
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 72,
+      "distinct_frames": 10,
+      "arena_distinct_frames": 10,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 1.853,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed"
       ]
@@ -3200,18 +4229,57 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/hebei_peng_five_tigers_saber_star7.mp4",
-      "path_sha256": "1af115e8b4a04bf836a0e6bcb258a78a4388638e3722e0c99a9879f02f0977e4",
+      "path_sha256": "ba2415ecc52ebeee5afe6019316e2143be3b75693c1c1e8bf3518ddd3e2b660a",
       "poster": "docs/blueprint/evidence/motion/hebei_peng_five_tigers_saber_star7.jpg",
-      "poster_sha256": "8c3226687139415f06586d30047e79b1f5b71062fb5347a7239c037b0baeb128",
-      "frames": 39,
-      "distinct_frames": 5,
-      "arena_distinct_frames": 5,
-      "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 2.25,
+      "poster_sha256": "3bbc78a30a8e706b343bd183b393e27b4bb6907f290d3a705ea3a1ceffd37845",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.547
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.547,
+          "end": 0.724
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.724,
+          "end": 0.984
+        },
+        {
+          "phase": "windup",
+          "event_index": 1,
+          "start": 0.984,
+          "end": 1.116
+        },
+        {
+          "phase": "impact",
+          "event_index": 1,
+          "start": 1.116,
+          "end": 1.268
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 1.268,
+          "end": 2.308
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 91,
+      "distinct_frames": 11,
+      "arena_distinct_frames": 11,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 2.308,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
@@ -3361,18 +4429,63 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/hebei_peng_five_tigers_saber_star10.mp4",
-      "path_sha256": "861df51c4ecb042ecf8d732f90c6b13695c34b4838b32dd8dee69258cea8ddec",
+      "path_sha256": "06622b5a87acef591a0d7d98fae7e1f9a1575c5cbae7b20c2e3de9e582c0ac5c",
       "poster": "docs/blueprint/evidence/motion/hebei_peng_five_tigers_saber_star10.jpg",
-      "poster_sha256": "729d147fed02bc000197f1fcb4388c9a1091e01b0febef22a7218d8c64a41e5b",
-      "frames": 54,
-      "distinct_frames": 12,
-      "arena_distinct_frames": 12,
+      "poster_sha256": "c6c86e661f7ba4555b2e53b740bdd575c3b7b77449bce84f7e2efe1bd0219a19",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.552
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.552,
+          "end": 0.725
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.725,
+          "end": 1.0
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 1.0,
+          "end": 1.435
+        },
+        {
+          "phase": "windup",
+          "event_index": 2,
+          "start": 1.435,
+          "end": 1.739
+        },
+        {
+          "phase": "impact",
+          "event_index": 2,
+          "start": 1.739,
+          "end": 2.166
+        },
+        {
+          "phase": "settled",
+          "event_index": 2,
+          "start": 2.166,
+          "end": 3.199
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 127,
+      "distinct_frames": 27,
+      "arena_distinct_frames": 27,
       "visual_status": "FRAME_CHANGES_OBSERVED",
-      "duration_seconds": 3.121,
+      "duration_seconds": 3.199,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
@@ -3447,18 +4560,45 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/nangong_boundless_sky_sword_star3.mp4",
-      "path_sha256": "154724874b8b4cbab9ca1bacad267141b111edd1f17ff478a8314b2e33bb43d9",
+      "path_sha256": "8e0755a42672a0e53061596a4b5fa8b30ca39e1d53d12003296e0f2bba7eecf1",
       "poster": "docs/blueprint/evidence/motion/nangong_boundless_sky_sword_star3.jpg",
       "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
-      "frames": 32,
-      "distinct_frames": 3,
-      "arena_distinct_frames": 3,
-      "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 1.817,
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.56
+        },
+        {
+          "phase": "windup",
+          "event_index": 0,
+          "start": 0.56,
+          "end": 0.641
+        },
+        {
+          "phase": "impact",
+          "event_index": 0,
+          "start": 0.641,
+          "end": 0.745
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.745,
+          "end": 1.763
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 69,
+      "distinct_frames": 6,
+      "arena_distinct_frames": 6,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 1.763,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed"
       ]
@@ -3549,18 +4689,57 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/nangong_boundless_sky_sword_star7.mp4",
-      "path_sha256": "57c955af28202879dd1e97efb518a7fd7f4b15caaf268803e3d29700a1f8cb67",
+      "path_sha256": "5189e52edb79bcef3d7ee1d16a5b7c4bc45dcf3a6aa58a8e08a3f8b556674fde",
       "poster": "docs/blueprint/evidence/motion/nangong_boundless_sky_sword_star7.jpg",
-      "poster_sha256": "917744ca7bbb6d994cd010cc060247c62f1746ff47f40670ebb0f9cfe102dc9f",
-      "frames": 38,
-      "distinct_frames": 3,
-      "arena_distinct_frames": 3,
-      "visual_status": "STATIC_OR_EFFECT_ONLY",
-      "duration_seconds": 2.18,
+      "poster_sha256": "4b4d1b339e20c7da3678dd0fc73614901acde772a66ca4a1d0198aa036f5b1e1",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.556
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.556,
+          "end": 0.738
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.738,
+          "end": 0.991
+        },
+        {
+          "phase": "windup",
+          "event_index": 1,
+          "start": 0.991,
+          "end": 1.073
+        },
+        {
+          "phase": "impact",
+          "event_index": 1,
+          "start": 1.073,
+          "end": 1.177
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 1.177,
+          "end": 2.204
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 86,
+      "distinct_frames": 6,
+      "arena_distinct_frames": 6,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 2.204,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
@@ -3696,22 +4875,273 @@
         }
       ],
       "path": "docs/blueprint/evidence/motion/nangong_boundless_sky_sword_star10.mp4",
-      "path_sha256": "407f0c5b4923b82207ffdbb63ef9d3249158e45ba6f6aad0b6258375d72b4dcd",
+      "path_sha256": "95514aa7443289d9199f7746cfda08452641e3e3a071bfb5137f021d5cd1b233",
       "poster": "docs/blueprint/evidence/motion/nangong_boundless_sky_sword_star10.jpg",
-      "poster_sha256": "d77dbeaddf4942d819993e3734be7d7a5cdcc16dd87604162bff5565ec72ecb2",
-      "frames": 56,
-      "distinct_frames": 12,
-      "arena_distinct_frames": 12,
+      "poster_sha256": "a529c1124c4b60d7aecf07bcc8bc006576f50636492ccfad618fb6eec75a640a",
+      "timeline": [
+        {
+          "phase": "idle",
+          "event_index": -1,
+          "start": 0.0,
+          "end": 0.552
+        },
+        {
+          "phase": "idle",
+          "event_index": 0,
+          "start": 0.552,
+          "end": 0.726
+        },
+        {
+          "phase": "settled",
+          "event_index": 0,
+          "start": 0.726,
+          "end": 1.001
+        },
+        {
+          "phase": "settled",
+          "event_index": 1,
+          "start": 1.001,
+          "end": 1.436
+        },
+        {
+          "phase": "windup",
+          "event_index": 2,
+          "start": 1.436,
+          "end": 1.743
+        },
+        {
+          "phase": "impact",
+          "event_index": 2,
+          "start": 1.743,
+          "end": 2.159
+        },
+        {
+          "phase": "settled",
+          "event_index": 2,
+          "start": 2.159,
+          "end": 3.2
+        }
+      ],
+      "timeline_basis": "ENGINE_PHASE_AT_RENDERED_FRAME",
+      "frames": 125,
+      "distinct_frames": 27,
+      "arena_distinct_frames": 27,
       "visual_status": "FRAME_CHANGES_OBSERVED",
-      "duration_seconds": 3.206,
+      "duration_seconds": 3.2,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "source_revision": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
       "outcomes": [
         "martial_completed",
         "preparation"
       ]
     }
+  ],
+  "dependency_basis": "Literal resources and global class references, plus conservative dynamic data/combat modules. Corrected inheritance closure; capture bytes and timestamps unchanged.",
+  "dynamic_roots": [
+    "data/",
+    "src/combat/"
+  ],
+  "capture_dependencies": [
+    "assets/ASSET_MANIFEST.json",
+    "assets/backgrounds/atlas_blue_ink_courtyard_v1.png",
+    "assets/backgrounds/frontal_courtyard_duel_background_01_v1.png",
+    "assets/backgrounds/frontal_courtyard_duel_background_02_v1.png",
+    "assets/backgrounds/jianghu_blue_ink_landscape_v1.png",
+    "assets/backgrounds/jianghu_rest_inn_v1.png",
+    "assets/blueprint/clash_explanation_v1.png",
+    "assets/blueprint/manuals/beggars_dragon_subduing_palm_star10_v1.png",
+    "assets/blueprint/manuals/beggars_dragon_subduing_palm_star3_v1.png",
+    "assets/blueprint/manuals/beggars_dragon_subduing_palm_star7_v1.png",
+    "assets/blueprint/manuals/hebei_peng_five_tigers_saber_star10_v1.png",
+    "assets/blueprint/manuals/hebei_peng_five_tigers_saber_star3_v1.png",
+    "assets/blueprint/manuals/hebei_peng_five_tigers_saber_star7_v1.png",
+    "assets/blueprint/manuals/mount_hua_plum_blossom_sword_star10_v1.png",
+    "assets/blueprint/manuals/mount_hua_plum_blossom_sword_star3_v1.png",
+    "assets/blueprint/manuals/mount_hua_plum_blossom_sword_star7_v1.png",
+    "assets/blueprint/manuals/mount_hua_purple_mist_art_star10_v1.png",
+    "assets/blueprint/manuals/mount_hua_purple_mist_art_star3_v1.png",
+    "assets/blueprint/manuals/mount_hua_purple_mist_art_star7_v1.png",
+    "assets/blueprint/manuals/nangong_boundless_sky_sword_star10_v1.png",
+    "assets/blueprint/manuals/nangong_boundless_sky_sword_star3_v1.png",
+    "assets/blueprint/manuals/nangong_boundless_sky_sword_star7_v1.png",
+    "assets/blueprint/manuals/shaolin_arhat_vajra_art_star10_v1.png",
+    "assets/blueprint/manuals/shaolin_arhat_vajra_art_star3_v1.png",
+    "assets/blueprint/manuals/shaolin_arhat_vajra_art_star7_v1.png",
+    "assets/blueprint/manuals/sichuan_tang_hidden_weapons_star10_v1.png",
+    "assets/blueprint/manuals/sichuan_tang_hidden_weapons_star3_v1.png",
+    "assets/blueprint/manuals/sichuan_tang_hidden_weapons_star7_v1.png",
+    "assets/blueprint/manuals/wudang_taiji_sword_star10_v1.png",
+    "assets/blueprint/manuals/wudang_taiji_sword_star3_v1.png",
+    "assets/blueprint/manuals/wudang_taiji_sword_star7_v1.png",
+    "assets/blueprint/manuals/xiaoyao_lingbo_footwork_star10_v1.png",
+    "assets/blueprint/manuals/xiaoyao_lingbo_footwork_star3_v1.png",
+    "assets/blueprint/manuals/xiaoyao_lingbo_footwork_star7_v1.png",
+    "assets/blueprint/manuals/yang_family_spear_star10_v1.png",
+    "assets/blueprint/manuals/yang_family_spear_star3_v1.png",
+    "assets/blueprint/manuals/yang_family_spear_star7_v1.png",
+    "assets/characters/dogyeom_combat_battler_01_v1.png",
+    "assets/characters/enemy_masked_battler_chroma_v1.png",
+    "assets/characters/enemy_masked_battler_rgba_v1.png",
+    "assets/characters/enemy_masked_battler_rgba_v2.png",
+    "assets/characters/player_wanderer_battler_chroma_v1.png",
+    "assets/characters/player_wanderer_battler_rgba_v1.png",
+    "assets/characters/player_wanderer_battler_rgba_v2.png",
+    "assets/characters/portraits/masked_baekmujin_portrait_v1.png",
+    "assets/characters/portraits/slot1_chaeryeong_portrait_v1.png",
+    "assets/characters/portraits/slot1_dogyeom_portrait_v1.png",
+    "assets/characters/portraits/slot1_yeongyo_portrait_v1.png",
+    "assets/characters/portraits/slot2_danso_portrait_v1.png",
+    "assets/characters/portraits/slot2_mukjin_portrait_v1.png",
+    "assets/characters/portraits/slot2_seokmu_portrait_v1.png",
+    "assets/characters/portraits/slot3_biyeon_portrait_v1.png",
+    "assets/characters/portraits/slot3_seolha_portrait_v1.png",
+    "assets/characters/portraits/slot3_uram_portrait_v1.png",
+    "assets/characters/portraits/slot4_cheongheo_portrait_v1.png",
+    "assets/characters/portraits/slot4_damwol_portrait_v1.png",
+    "assets/characters/portraits/slot4_jinryeo_portrait_v1.png",
+    "assets/characters/portraits/slot5_jeogu_portrait_v1.png",
+    "assets/characters/portraits/slot5_pungmok_portrait_v1.png",
+    "assets/characters/portraits/slot5_rajin_portrait_v1.png",
+    "assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png",
+    "assets/portraits/dogyeom_status_portrait_01_v1.png",
+    "assets/portraits/enemy_masked_ink_v1.png",
+    "assets/portraits/player_wanderer_ink_v1.png",
+    "assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+    "assets/ui/cards/martial_ultimate_card_illustration_atlas_01_v1.png",
+    "assets/ui/duel/current_action_slot_frame_01_v1.png",
+    "assets/ui/duel/observation_reveal_frame_01_v1.png",
+    "assets/ui/duel/status_hud_frame_01_v1.png",
+    "assets/ui/duel/technique_detail_frame_01_v1.png",
+    "assets/ui/logo/ten_paces_hidden_moves_title_logo_01_v1.png",
+    "assets/vfx/attack_clash_ink_gold_atlas_rgba_v1.png",
+    "assets/vfx/ultimate_ink_gold_sprite_sheet.png",
+    "assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png",
+    "assets/vfx/ultimate_ink_gold_sprite_sheet_transparency_candidate.png",
+    "data/cards/basic_cards.json",
+    "data/cards/martial_manual_cards.json",
+    "data/cards/martial_manuals/beggars_dragon_subduing_palm.json",
+    "data/cards/martial_manuals/hebei_peng_five_tigers_saber.json",
+    "data/cards/martial_manuals/mount_hua_plum_blossom_sword.json",
+    "data/cards/martial_manuals/mount_hua_purple_mist_art.json",
+    "data/cards/martial_manuals/nangong_boundless_sky_sword.json",
+    "data/cards/martial_manuals/shaolin_arhat_vajra_art.json",
+    "data/cards/martial_manuals/sichuan_tang_hidden_weapons.json",
+    "data/cards/martial_manuals/wudang_taiji_sword.json",
+    "data/cards/martial_manuals/xiaoyao_lingbo_footwork.json",
+    "data/cards/martial_manuals/yang_family_spear.json",
+    "data/cards/ultimate_cards.json",
+    "data/combat/combat_action_timing_preview.json",
+    "data/combat/combat_board_poc.json",
+    "data/combat/combat_hud_preview.json",
+    "data/combat/combat_log_preview.json",
+    "data/combat/combat_progress_preview.json",
+    "data/combat/combat_resolution_preview.json",
+    "data/combat/combat_rival_tendency_poc.json",
+    "data/combat/mastery_ultimate_poc.json",
+    "data/combat/ten_manual_loadout_poc.json",
+    "data/run/approved_opponent_stages_v2.json",
+    "data/run/bimu_constraints.json",
+    "data/run/vertical_slice_opponent_archetypes.json",
+    "data/run/vertical_slice_opponents.json",
+    "data/validation/vertical_slice_balance_instrumentation_matrix.json",
+    "project.godot",
+    "scenes/combat/battle_background.tscn",
+    "scenes/combat/combat_board_preview.tscn",
+    "scenes/combat/combat_board_tile.tscn",
+    "scenes/combat/combat_character_placeholder.tscn",
+    "scenes/run/vertical_slice_combat_bridge.tscn",
+    "scenes/run/vertical_slice_shell.tscn",
+    "scenes/ui/action_selection/action_detail_panel.tscn",
+    "scenes/ui/action_selection/action_selection_dock.tscn",
+    "scenes/ui/action_selection/basic_action_panel.tscn",
+    "scenes/ui/action_selection/linked_action_block.tscn",
+    "scenes/ui/action_selection/martial_action_panel.tscn",
+    "scenes/ui/action_selection/ultimate_action_panel.tscn",
+    "scenes/ui/action_timing_panel.tscn",
+    "scenes/ui/action_timing_slot.tscn",
+    "scenes/ui/basic_card_tray.tscn",
+    "scenes/ui/basic_card_tray_item.tscn",
+    "scenes/ui/card_detail_panel.tscn",
+    "scenes/ui/combat_log_panel.tscn",
+    "scenes/ui/combat_progress_button.tscn",
+    "scenes/ui/combat_review_panel.tscn",
+    "scenes/ui/combatant_status_panel.tscn",
+    "scenes/ui/main_title_screen.tscn",
+    "scenes/ui/momentum_gauge.tscn",
+    "scenes/ui/observation_reveal_panel.tscn",
+    "scenes/ui/round_hud_panel.tscn",
+    "scenes/ui/top_combat_hud.tscn",
+    "src/combat/battle_background.gd",
+    "src/combat/combat_ai_planner.gd",
+    "src/combat/combat_board_preview.gd",
+    "src/combat/combat_board_preview_auto.gd",
+    "src/combat/combat_board_preview_ten_manuals_auto.gd",
+    "src/combat/combat_board_tile.gd",
+    "src/combat/combat_character_placeholder.gd",
+    "src/combat/combat_resolution_engine.gd",
+    "src/combat/combat_resolution_engine_prepare.gd",
+    "src/combat/combat_resolution_engine_ten_manuals.gd",
+    "src/combat/combat_review_summary_builder.gd",
+    "src/combat/martial_effect_pipeline.gd",
+    "src/combat/martial_manual_registry.gd",
+    "src/run/bimu_constraint_model.gd",
+    "src/run/combat_checkpoint_codec.gd",
+    "src/run/frozen_opponent_catalog.gd",
+    "src/run/run_checkpoint_codec.gd",
+    "src/run/run_save_store.gd",
+    "src/run/run_session_coordinator.gd",
+    "src/run/variable_opponent_roster.gd",
+    "src/run/vertical_slice_battle_metrics.gd",
+    "src/run/vertical_slice_combat_bridge.gd",
+    "src/run/vertical_slice_completion_model.gd",
+    "src/run/vertical_slice_metrics_combat_resolution_engine.gd",
+    "src/run/vertical_slice_opponent_catalog.gd",
+    "src/run/vertical_slice_opponent_runtime_binding.gd",
+    "src/run/vertical_slice_progression_state.gd",
+    "src/run/vertical_slice_result_model.gd",
+    "src/run/vertical_slice_route_model.gd",
+    "src/run/vertical_slice_run_state.gd",
+    "src/run/vertical_slice_shell.gd",
+    "src/run/vertical_slice_shell_completion_auto.gd",
+    "src/run/vertical_slice_shell_result_auto.gd",
+    "src/run/vertical_slice_shell_route_auto.gd",
+    "src/run/vertical_slice_starter_manual_catalog.gd",
+    "src/ui/action_selection/action_choice_card.gd",
+    "src/ui/action_selection/action_detail_panel.gd",
+    "src/ui/action_selection/action_intent_panel.gd",
+    "src/ui/action_selection/action_placement_controller.gd",
+    "src/ui/action_selection/action_selection_dock.gd",
+    "src/ui/action_selection/action_view_model_adapter.gd",
+    "src/ui/action_selection/basic_action_panel.gd",
+    "src/ui/action_selection/linked_action_block.gd",
+    "src/ui/action_selection/martial_action_panel.gd",
+    "src/ui/action_selection/ultimate_action_panel.gd",
+    "src/ui/action_timing_panel.gd",
+    "src/ui/action_timing_panel_auto.gd",
+    "src/ui/action_timing_slot.gd",
+    "src/ui/approved_blueprint_art.gd",
+    "src/ui/basic_card_tray.gd",
+    "src/ui/basic_card_tray_item.gd",
+    "src/ui/bimu_constraint_panel.gd",
+    "src/ui/card_detail_panel.gd",
+    "src/ui/combat_action_reveal_overlay.gd",
+    "src/ui/combat_log_panel.gd",
+    "src/ui/combat_presentation_profile.gd",
+    "src/ui/combat_progress_button.gd",
+    "src/ui/combat_review_panel.gd",
+    "src/ui/combat_screen_surface.gd",
+    "src/ui/combat_sound_bank.gd",
+    "src/ui/combatant_status_panel.gd",
+    "src/ui/duel_foreground_banner.gd",
+    "src/ui/main_title_screen.gd",
+    "src/ui/momentum_gauge.gd",
+    "src/ui/observation_reveal_panel.gd",
+    "src/ui/round_hud_panel.gd",
+    "src/ui/top_combat_hud.gd",
+    "src/validation/ten_manual_product_scenario_validator.gd",
+    "src/validation/ten_manual_product_validation_bootstrap.gd",
+    "tools/capture_blueprint_motion.gd"
   ]
 }

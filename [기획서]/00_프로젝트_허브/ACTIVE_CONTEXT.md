@@ -1,5 +1,11 @@
 # 십보강호 활성 컨텍스트
 
+## HTML 항목별 검수·재개 개선 · 2026-09-23
+
+사용자가 권장한 여섯 개선 전체를 승인했다. 구조도/화면 상세 패널, 실제 촬영 단계의 이동·반복, 다섯 가지 증거 상태와 필터, 항목별 PM/수정·재개 요청, 변경·촬영 갱신 확인, 전체보기 목차/검색/위치 복원을 구현했다.
+원본/실행/교정 기록은 `docs/blueprint/HTML_MIGRATION_SPEC.md`16절과 기존 HTML receipt의 `inspection_followup`, `TEN-HTML-INSPECT`를 따른다. 전체 검토2회와 집중 교정을 마쳤다. 이번 전달 PR은347이며 병합 여부·원격 검사·최신 main은 GitHub live metadata가 소유한다. 다음 제품 작업은 PR342를 별도 fresh-read한다. 게임제품·PR342·외부 dirty45개는 변경하지 않는다.
+같은 브라우저·주소의 비교 기준 저장은 사용자 검수 승인이 아니다. 새 AI는 `output/blueprint/resume-index.json`의 inspection records와 motion_evidence를 읽고 최신 원본을 재대조한다. 이전 포트/토큰 대신 preview-session.json을 다시 읽는다.
+
 ## HTML 아틀라스 후속 교정 · 2026-09-23
 
 사용자가 구조도 상자와 화면 아틀라스를 합치는 구현안을 확인·승인했다. 첫 화면8개 상자에서 실제 아틀라스/무공 효과/상대·비무 제약/행동·전투/연출로 이어진다. 전체보기는112본문·16인·30기술·151자산·PM·누적 일지를 스크롤로 열람한다.
@@ -189,14 +195,14 @@ current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN
 base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
 live_exact_sha_authority: NONE_REFETCH_REQUIRED
 active_project_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
-product_stage: HTML_BLUEPRINT_MIGRATION_VERIFIED
+product_stage: HTML_INSPECTION_IMPLEMENTED_VERIFIED
 runtime_work_mode: BUILD
 historical_runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
 active_planning_pr: NONE
 active_planning_parent_pr: NONE
 active_approval_count: SCOPED_BUILD_AUTHORIZED_HUMAN_FINAL_NOT_RUN
-active_decision_state: HTML_BLUEPRINT_MIGRATION_VERIFIED
+active_decision_state: HTML_INSPECTION_IMPLEMENTED_VERIFIED
 source_decision: USER-APPROVED-TEN-HTML-PILOT-20260922
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
