@@ -8,6 +8,10 @@
 
 이 문서는 **운영 방향·완료 계보·후속 Gate 의존 관계**를 보여 주는 stable router다. 활성 PR, exact SHA, Work Mode, 승인 수, 제품 stage, 현재 decision state, next package/Decision 같은 mutable checkpoint는 여기에 복제하지 않는다.
 
+## HTML로 작업 확인·재개
+
+`USER-APPROVED-TEN-HTML-PILOT-20260922`는 기존 전체 설명·자산·모션·PM을 HTML 파생 화면에서 읽고 다른 AI가 원본으로 이어가도록 한다. 상세 설계와 검증 경로는 `docs/blueprint/HTML_MIGRATION_SPEC.md`, 실제 진입점은 `output/blueprint/index.html`이다. 현재 진행·전환·PR 상태는 Active Context/current JSON/GitHub를 따른다.
+
 ## 현재 단계
 
 최초 저장 공개 전 전투원별 성급 실행·복구 교정
