@@ -130,6 +130,7 @@ h1{font-size:28px}
 
 
 .approved-page img{display:block;width:100%;height:auto}
+main :is(p,h1,h2,h3,a,small){overflow-wrap:anywhere}
 
 .movies{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:20px}
 .movie video{display:block;width:100%;aspect-ratio:8/5;background:#172c30;border-radius:6px}

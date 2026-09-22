@@ -318,3 +318,5 @@ Closeout PR345 첫 최종 head의 원격 product job은 전체10분 한도로 �
 검증 결과(2026-09-23): Python 집중 회귀29개 PASS, Node378개 화면/4,968개 로컬 링크 PASS. 독립 검토의2개 지적은 수정 후 해당3개 회귀와 Node 검사를 다시 통과해 잔여0건이다. 새 브라우저 주소에서 교정 영상36개, 합 패배 MP4 실제 재생(paused=false/time 증가), 390px 문서 가로 넘침 없음과 readyState4 완료를 확인했다. 기존 데스크톱 검수는1440×1000에서 상자8개/메인·무공·브리핑·수 배치, 영상재생/0.5배속, 전체112본문·16인·30카드·36영상/중복ID0/하단 이어가기 도달을 확인했다. 브라우저 직접 검수는 같은 PC Codex IAB이며 클라우드GPT/Claude 접속은 미실시다.
 
 Godot import가 생성한 untracked metadata187개는 `C:/Users/user/Documents/삭제대기/Ten-Paces-Hidden-Moves/html-atlas-motion-20260923`에 원래 경로·SHA256·복구 안내와 함께 이동했다. 직접 삭제는 하지 않았다. 원본 main/다른 작업 폴더와 승인 자산은 보존했다. 재촬영 시 `output/blueprint/motion-capture` 폴더를 먼저 만들고 Godot import 준비를 확인한다.
+
+마지막 좁은 화면 점검에서 전체보기 Active Context의 긴 경로/자산명이 문서를 가로로 밀어내는 문제를 발견해 일반 본문·제목의 긴 단어 줄바꿈을 적용했다. 교정 후390px에서 문서375px, 전체112본문, 하단 이어가기 위치170px을 실제 브라우저로 확인했다. 깊은 링크를 처음 열 때도 해당 상세/전체보기 구역으로 이동한다. 추가 중간 프레임/실패 AVI1670개(504,841,193bytes)는 같은 삭제대기 폴더 raw-capture 아래 원래 경로·SHA256과 함께 이동했고 최종36MP4/포스터/로그/촬영 기록은 보존했다.
