@@ -296,3 +296,27 @@ PR344는2026-09-22T13:52:49Z에 main `b6c63cd4ed7333d51168f077d199b1b69ec84daf`�
 초기 import가 만든 metadata186개는 SHA256/원래 경로/복구 안내와 함께 `output/blueprint/manual-delete-candidates/godot-import-20260922`로 보관했다. tracked metadata는 HEAD로 복원했고 원래 프로젝트 폴더와 게임 자산은 건드리지 않았다.
 
 Closeout PR345 첫 최종 head의 원격 product job은 전체10분 한도로 마지막 행로 검사 중 취소됐다(run35738191421). 10전 native 입력은10승/36행로/failures[]로 완료했지만 전체 job PASS로 세지 않았다. 모든 검사/판정/명령을 유지한 채 Linux job 한도를 기존 Windows와 같은15분으로 교정했다. 이 설정만 바꾼 집중 diff 검토 후 새 head 전체 원격 검사를 수행한다.
+
+## 15. 사용자 검수 후 화면 아틀라스·영상 교정 · 2026-09-23
+
+승인: 사용자가 구현 전 이해·계획 재확인을 요청했고, “맞아. 구조도 상자와 아틀라스가 합쳐졌다고 생각하면 될거같아”라고 확정했다. 최초 실패 회귀·설계 초안 이후 이 확정을 받고 UI/영상 구현을 진행했다. 기준 main `28b689cc5889afbe761bdbfd2e7537f9ebfadcaa`.
+
+- 첫 진입은 화면 이미지가 들어간 구조도 8개 상자다. 클릭하면 메인 아틀라스, 시작 무공 10권/30기술의 한국어 효과·영상, 상대 16명/비무 제약, 기초 행동 10개/수 배치, 합·해결, 결과·행로·종료의 본문과 실제 구현 원본을 연다. 다음 화면/브라우저 뒤로가기로 연결한다.
+- 전체보기는 112개 설명 본문, 16인 전술·성장, 30기술, 자산151개, PM, 실행 기록, 누적 일지, 재개 정보를 스크롤로 전부 읽는다. 원본 표시 함수를 재사용하며 이미지 지연 로딩·화면 밖 설명 렌더 지연으로 부담을 줄인다. 다른 메뉴의 검색어는 전체보기·상대 브리핑을 제한하지 않는다.
+- 실제 Godot4.7.1 기존 장면의 viewport를 렌더 후 기록하고 실제 프레임 시각 간격으로 MP4 36개를 만들었다. 기본6개는 격돌/합 승패/피격/방어/회피/절초의 고정 결과 상황이며, 나머지30개는 기존 판정 코어가 생성한 무공별 이벤트를 사용한다. 기존 포즈 도감과 영상은 구분한다. 재생·정지·배속·구간 탐색을 제공한다.
+- 영상은 현재 main의 촬영용 상황이며 실제 캠페인 진행·사람 재미·PR342 추가 연출의 검증이 아니다. 무음이다. 실패/조건 미충족과 정적 표시 위주인 연출도 그대로 드러낸다. 영상36개가36종 고유 캐릭터 애니메이션 완성을 뜻하지 않는다. 미병합 PR342의 접근/타격/복귀 프리셋은 해당 제품 작업에서 별도 확인한다.
+- 원본: `tools/html_blueprint_experience.py`의 화면 연결, `tools/html_blueprint_ui/experience.js`, `docs/blueprint/evidence/motion/manifest.json`. 미디어 SHA·제품 입력 해시·촬영 완료 시각과 인코딩 시각을 분리한다. 텍스트 입력 해시는 UTF-8/universal-newline 기준으로 Windows/Linux 차이를 제거한다. 제품 입력이 바뀌면 촬영 근거 재확인 전 발행을 거절한다.
+- 보호: 게임 코드/규칙/저장/승인 원화/PDF/PR342/원래 dirty checkout/플러그인·전역 설정. HTML에 게임 판정을 다시 구현하지 않는다.
+- CURRENT_SOURCE_RELEVANCE_CHECK: 기존 Archify 조사와 승인 구조도 설계를 재사용. 공식 Godot 촬영 문서 https://docs.godotengine.org/en/stable/tutorials/animation/creating_movies.html 를 확인했다. 기존 연출이 wall-clock 지연을 사용하므로 고정시간 MovieMaker 대신 실제 viewport 프레임/실제 시각 간격을 사용했다. 신규 장르 기획이 아닌 승인 HTML 피드백 교정이다.
+- FEASIBLE: 승인 Godot binary/실제 scene/함수로 렌더·촬영 성공. live editor 연결은 없으며 독립 촬영 프로세스다. 첫 import 누락 시도와 잘못된 engine 클래스를 사용한 시도는 stderr 오류로 배제했고 성공으로 세지 않았다. main의 일부 정적 연출은 HTML에서 새 게임 동작으로 꾸미지 않았다.
+- 기존 계약의 전체 검토2회는 재사용한다. 이번 집중 독립 검토에서 검색 상태 누출과 합 패배 주체 오류를 발견했다. 검색 독립 렌더, 패배 actor=player→후속 actor=enemy로 교정하고 재촬영·의미 회귀를 추가했다.
+
+검증 명령: `python -m unittest tests.test_html_blueprint tests.test_html_blueprint_preview tests.test_html_blueprint_diagrams tests.test_html_blueprint_publication tests.test_html_blueprint_experience`, `node tools/check_html_blueprint_ui.cjs`. HTTP 영상 Range206/416, 미디어 CSP, source-hash 변경 거절도 포함한다. CI는 같은 검사를 실행하며 ffmpeg/Godot 재촬영을 매 HTML 발행마다 요구하지 않는다.
+
+촬영 재현은 `tools/capture_blueprint_motion.gd`를 승인 Godot로 일반 렌더 실행 → stderr 오류없음/36개 완료 확인 → `tools/encode_blueprint_motion.py --ffmpeg <로컬 ffmpeg> --log <해당 stderr 로그>` → HTML 생성 순서다. 프레임·로그는 `output/blueprint/motion-capture`에 기록하며 실패 시 발행하지 않는다. ffmpeg는 이번 작업의 무시된 도구 폴더에만 준비했고 전역 설치/설정은 바꾸지 않았다.
+
+검증 결과(2026-09-23): Python 집중 회귀29개 PASS, Node378개 화면/4,968개 로컬 링크 PASS. 독립 검토의2개 지적은 수정 후 해당3개 회귀와 Node 검사를 다시 통과해 잔여0건이다. 새 브라우저 주소에서 교정 영상36개, 합 패배 MP4 실제 재생(paused=false/time 증가), 390px 문서 가로 넘침 없음과 readyState4 완료를 확인했다. 기존 데스크톱 검수는1440×1000에서 상자8개/메인·무공·브리핑·수 배치, 영상재생/0.5배속, 전체112본문·16인·30카드·36영상/중복ID0/하단 이어가기 도달을 확인했다. 브라우저 직접 검수는 같은 PC Codex IAB이며 클라우드GPT/Claude 접속은 미실시다.
+
+Godot import가 생성한 untracked metadata187개는 `C:/Users/user/Documents/삭제대기/Ten-Paces-Hidden-Moves/html-atlas-motion-20260923`에 원래 경로·SHA256·복구 안내와 함께 이동했다. 직접 삭제는 하지 않았다. 원본 main/다른 작업 폴더와 승인 자산은 보존했다. 재촬영 시 `output/blueprint/motion-capture` 폴더를 먼저 만들고 Godot import 준비를 확인한다.
+
+마지막 좁은 화면 점검에서 전체보기 Active Context의 긴 경로/자산명이 문서를 가로로 밀어내는 문제를 발견해 일반 본문·제목의 긴 단어 줄바꿈을 적용했다. 교정 후390px에서 문서375px, 전체112본문, 하단 이어가기 위치170px을 실제 브라우저로 확인했다. 깊은 링크를 처음 열 때도 해당 상세/전체보기 구역으로 이동한다. 추가 중간 프레임/실패 AVI1670개(504,841,193bytes)는 같은 삭제대기 폴더 raw-capture 아래 원래 경로·SHA256과 함께 이동했고 최종36MP4/포스터/로그/촬영 기록은 보존했다.

@@ -53,5 +53,26 @@ class PreviewBoundaryTests(unittest.TestCase):
         self.assertFalse(subject.valid_peer('evil.test:1234',None,1234))
         self.assertFalse(subject.valid_peer('127.0.0.1:1234','https://evil.test',1234))
 
+    def test_video_seek_range_and_media_policy(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);(root/'sample.mp4').write_bytes(b'0123456789')
+            with patch.object(subject,'ROOT',root):
+                server=subject.create_server({'sample.mp4':hashlib.sha256(b'0123456789').hexdigest()},'token')
+                thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+                try:
+                    for value,status,body in [('bytes=2-5',206,b'2345'),('bytes=7-',206,b'789'),('bytes=-3',206,b'789'),('bytes=99-',416,None),('bytes=1-2,4-5',416,None)]:
+                        connection=http.client.HTTPConnection('127.0.0.1',server.server_port)
+                        connection.request('GET','/p/token/sample.mp4',headers={'Range':value})
+                        response=connection.getresponse()
+                        self.assertEqual(response.status,status)
+                        actual=response.read()
+                        if body is not None:
+                            self.assertEqual(actual,body)
+                            self.assertIn("media-src 'self'",response.getheader('Content-Security-Policy'))
+                            self.assertEqual(response.getheader('Accept-Ranges'),'bytes')
+                        connection.close()
+                finally:
+                    server.shutdown();server.server_close();thread.join()
+
 
 if __name__=='__main__':unittest.main()

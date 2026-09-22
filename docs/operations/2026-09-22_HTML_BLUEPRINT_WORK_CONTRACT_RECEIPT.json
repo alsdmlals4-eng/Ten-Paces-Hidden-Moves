@@ -409,5 +409,49 @@
     "local_full_regression": "PASS: 523 tests in473.650s after exact Godot4.7.1 initial import. Cache-less first attempt interrupted, not PASS. output/blueprint/python-regression-prepared.log",
     "postmerge_main_workflows": "PASS: Full Validation35736437860, platform rights35736437854, HTML Blueprint35736437858, GodotLiveEditorPilot35736438751",
     "recoverable_cleanup": "186 generated metadata files backed up/moved with SHA256 manifest under output/blueprint/manual-delete-candidates/godot-import-20260922; tracked metadata restored to HEAD, no product change."
+  },
+  "interactive_atlas_followup": {
+    "date": "2026-09-23",
+    "approval": "User reconfirmed: 구조도 상자와 아틀라스가 합쳐졌다고 생각하면 될거같아",
+    "source_main": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+    "work_mode": "BUILD_REVIEW",
+    "skill_mode": "ten-paces-verification/html-blueprint-review",
+    "scope": "8 screen atlas boxes with actual details; all112 explanations and full catalogs by scroll;36 Godot presentation recordings; HTTP seeking",
+    "implementation": [
+      "tools/html_blueprint_experience.py",
+      "tools/html_blueprint_ui/experience.js",
+      "tools/capture_blueprint_motion.gd",
+      "tools/encode_blueprint_motion.py",
+      "docs/blueprint/evidence/motion/manifest.json"
+    ],
+    "review": {
+      "kind": "focused delta review under existing approved contract",
+      "full_scope_budget_reused": 2,
+      "independent_reviewer": "atlas_motion_focused_review",
+      "findings": [
+        "Search state hid embedded people/PM",
+        "Clash-loss fixture attributed loss to enemy before enemy attack"
+      ],
+      "corrections": [
+        "Embedded all-content ignores unrelated search",
+        "Player loss followed by enemy hit; recaptured and event regression added"
+      ],
+      "remaining_findings": 0
+    },
+    "verification": {
+      "automated": "PASS: Python29; Node378 views/4968 local links. Same-head Actions records remote validation.",
+      "browser": "Same-PC Codex IAB: atlas nodes, manuals30, constraints, actions10, all112 chapters/16people/30cards/36videos with no duplicate IDs; MP4 readyState4/end2.4s/0.5x playback observed. Final corrected snapshot recheck recorded in spec. Corrected final loss MP4 playback observed at390px with no document overflow.",
+      "godot": "4.7.1 actual rendered fixture capture; stdout36 complete/stderr empty; source/frame hashes checked",
+      "not_run": [
+        "Actual campaign for this change",
+        "PR342 new presentation runtime",
+        "Human fun",
+        "Android",
+        "Claude/cloud browser",
+        "Release"
+      ]
+    },
+    "delivery_authority": "GitHub live PR/checks/merged main; no self-referential commit hash in this file",
+    "remaining_product_boundary": "Existing main has static/effect-only presentations; thirty card-linked videos do not certify thirty unique character animations."
   }
 }

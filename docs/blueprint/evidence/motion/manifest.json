@@ -1,0 +1,3717 @@
+{
+  "encoded_at": "2026-09-22T15:28:14.017599+00:00",
+  "capture_finished_at": "2026-09-22T15:26:57.541909+00:00",
+  "capture_time_basis": "frames.json filesystem timestamp written at the end of the Godot capture",
+  "engine": "4.7.1-stable (official)",
+  "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+  "source_hashes": {
+    "assets/backgrounds/atlas_blue_ink_courtyard_v1.png": "608d67e244ab3bc0c579ff04b359682a20c5189236117ff5390b0d7182dd092c",
+    "assets/backgrounds/frontal_courtyard_duel_background_01_v1.png": "27778369c3896d7d6237990ec70620c54ad0d636f660c9aa80322b0632262d06",
+    "assets/backgrounds/frontal_courtyard_duel_background_02_v1.png": "1f36bb1b853cf6008ca9d54bf71ebe1ce3916ce90db75a8caca1e62e5ad076fd",
+    "assets/backgrounds/jianghu_blue_ink_landscape_v1.png": "768f2137f8cb4e586a3a8aacd63d433d50f784a5b4c6978d483a4ce9372a252f",
+    "assets/backgrounds/jianghu_rest_inn_v1.png": "80aa7da962884c75c9fbb71f0d555b79a41b63e8e3b79bffce74577951b04902",
+    "assets/blueprint/clash_explanation_v1.png": "19c1fba9dce789acb55f863dc3902cc1828adf11b72366f1e8430d9e63fa884f",
+    "assets/blueprint/manuals/beggars_dragon_subduing_palm_star10_v1.png": "7f0290daf316525366d393268ebf758be953c14b0d337ed3aa7b8738b7a19f06",
+    "assets/blueprint/manuals/beggars_dragon_subduing_palm_star3_v1.png": "615e1534f195cc380b7c10c792f23459c6acaa8a663bb366cf91da1a0f5ae5d5",
+    "assets/blueprint/manuals/beggars_dragon_subduing_palm_star7_v1.png": "1cb18f2f7d7442088824d3d17db280e246ea907300f14c1d0afcfd623b007c60",
+    "assets/blueprint/manuals/hebei_peng_five_tigers_saber_star10_v1.png": "9379005eb2c70b50566eb1137b77f60206d11ebba4a34bfc6352cbdfceaf308e",
+    "assets/blueprint/manuals/hebei_peng_five_tigers_saber_star3_v1.png": "6c9c3d268566ac7d439acbfa294eb5beaa448f3d63769a3c7d008cfd062d8219",
+    "assets/blueprint/manuals/hebei_peng_five_tigers_saber_star7_v1.png": "141b1aeb560abe8a6edafd317d723d4a92d1749adc67ab47169cf200a6c3bc7e",
+    "assets/blueprint/manuals/mount_hua_plum_blossom_sword_star10_v1.png": "fbb369cf1687ebeb91a45a57f6e48040d67c8506fa93bb21276dc8f311ecd0a6",
+    "assets/blueprint/manuals/mount_hua_plum_blossom_sword_star3_v1.png": "a952582b93f2aec38e7bff89f2c2ae79b8e093c348a403bcd1e4e403d69385e5",
+    "assets/blueprint/manuals/mount_hua_plum_blossom_sword_star7_v1.png": "3110b02a85b42efb38cf6e7830e44662b95878ca3411937497f5a9a63f229c7c",
+    "assets/blueprint/manuals/mount_hua_purple_mist_art_star10_v1.png": "1a9b8de2a8c3e942f167d8d823887f622f2e2b55b1c6ac6f9db73bf946c734ec",
+    "assets/blueprint/manuals/mount_hua_purple_mist_art_star3_v1.png": "004e36f7c0257604b1c402cbedae00c9014552f866657a60f4d12cb06b09b7d7",
+    "assets/blueprint/manuals/mount_hua_purple_mist_art_star7_v1.png": "c4980258d84203a7d8c3f37db58a327037f53316454564ddd81bdb87596793bc",
+    "assets/blueprint/manuals/nangong_boundless_sky_sword_star10_v1.png": "d7f0d05d98b994168e9bc3668611710a286e9402465369a2abad96b532b6b384",
+    "assets/blueprint/manuals/nangong_boundless_sky_sword_star3_v1.png": "fc92f63e04fe0a30b5984712209bb6ad596024507326afd4fc4556889ff0ea93",
+    "assets/blueprint/manuals/nangong_boundless_sky_sword_star7_v1.png": "d068c9eb90b98259ef5f647bef788845608b49cd8d346722e1fed3df772d5723",
+    "assets/blueprint/manuals/shaolin_arhat_vajra_art_star10_v1.png": "37adb7365c1f532d8dad6d91d127daf3f91499f8d00723d9e60527ec7801bc2c",
+    "assets/blueprint/manuals/shaolin_arhat_vajra_art_star3_v1.png": "a6af1d7c5ea12f01e3e2a6025b3baa9b12da07d728954ee88459669f3568cf91",
+    "assets/blueprint/manuals/shaolin_arhat_vajra_art_star7_v1.png": "44e39c6542be6395476c9851f2c3fc743533c2b5ab8cda6cab5fcde740f9b0b6",
+    "assets/blueprint/manuals/sichuan_tang_hidden_weapons_star10_v1.png": "e532b66be720b2cd67ea57b521a442a0d58fbf5b973860d851cf61a3eefa1f30",
+    "assets/blueprint/manuals/sichuan_tang_hidden_weapons_star3_v1.png": "4c31cc0e859d5a3b373d39e3daa5c54570c2f531bcad4dde5bbc319455563124",
+    "assets/blueprint/manuals/sichuan_tang_hidden_weapons_star7_v1.png": "46274f6c84822512c8212116e39ca217217a267bbf747baf2ad7814dd5839638",
+    "assets/blueprint/manuals/wudang_taiji_sword_star10_v1.png": "db4b4d2ff000ac3763e15b85f377de58d517b1299d2a09c81acb4c6794224878",
+    "assets/blueprint/manuals/wudang_taiji_sword_star3_v1.png": "48775772c82903ab17161b1ec8ae46cbf0e3ab86f40b1ab389607ae7fa1a407e",
+    "assets/blueprint/manuals/wudang_taiji_sword_star7_v1.png": "f137cf97768749a139b58e8910d6a22de0871a1c0e6773dd4b880ef047d9974e",
+    "assets/blueprint/manuals/xiaoyao_lingbo_footwork_star10_v1.png": "1028a443d91e511503170dd3046745280ba0746ef8b12d1a954a144490159a5a",
+    "assets/blueprint/manuals/xiaoyao_lingbo_footwork_star3_v1.png": "7ebe09b25094dcf90c3d070256a4f0a68afae07f3be56a9ef3362dd1124d5ac6",
+    "assets/blueprint/manuals/xiaoyao_lingbo_footwork_star7_v1.png": "b3a04756df98e9248ca9771591e62e68e3766d3c02f43c12196d86f73d35192a",
+    "assets/blueprint/manuals/yang_family_spear_star10_v1.png": "8e598f271e12880ae5075e468ae305f45aa433e81a714a30f89bcb009f96f6e9",
+    "assets/blueprint/manuals/yang_family_spear_star3_v1.png": "6f4e099f0e1ba1bcfb6902c17797e734c874a5e7f11c01bd3e2b77174513c276",
+    "assets/blueprint/manuals/yang_family_spear_star7_v1.png": "27d66382d85306c241e1f264921e9b2d85888e3dd611bc3fda5cac66fb783688",
+    "assets/characters/dogyeom_combat_battler_01_v1.png": "064a8772406c743bbe6b252c138b4333c88b00b90a0ba905cce9ea18773539c9",
+    "assets/characters/enemy_masked_battler_chroma_v1.png": "05fd4475463a702d5144779ef9bcce5df054021917e0812b953c51a622035920",
+    "assets/characters/enemy_masked_battler_rgba_v1.png": "c79b5f2cc5250b091cc6c5fbca55f1f4532e5df0a7dfc0cd0455d00408468179",
+    "assets/characters/enemy_masked_battler_rgba_v2.png": "0841505d275ca970d7d085d7ab206788276517d2290a63960d829e657dfbe17f",
+    "assets/characters/player_wanderer_battler_chroma_v1.png": "7b4ffbe0491277a640fdfab4dbf2a36418c90a04189dd099906307bf76603d87",
+    "assets/characters/player_wanderer_battler_rgba_v1.png": "2e8274cb11fc3af0c4841a47918b58bdf8ea9dd93c0333d826e4d87dd61178f6",
+    "assets/characters/player_wanderer_battler_rgba_v2.png": "383fd9a62de43d1b9c5c6c38f1ad9d537d8f088c08e4f25e23e974b87dc08864",
+    "assets/characters/portraits/masked_baekmujin_portrait_v1.png": "ec373989585c1959fe09b0d850a41a64605b5e237d961aca832337a73daf34d7",
+    "assets/characters/portraits/slot1_chaeryeong_portrait_v1.png": "1f6ef29e8090d1adcfb0ef4ddec80bce4c948c18c5443943ad87f20c33b85b97",
+    "assets/characters/portraits/slot1_dogyeom_portrait_v1.png": "fe9aa7f3929b2dd01e04df308129f1f73672b36101ab91f68b785761779df8f9",
+    "assets/characters/portraits/slot1_yeongyo_portrait_v1.png": "581208eb52b61a352c1b5864bd514943b7ddb9f3c54eae40d695ed918bdaf5f4",
+    "assets/characters/portraits/slot2_danso_portrait_v1.png": "fcaedfae89465e8e5cb7d190ef0630656658b3f284080ff477bbc623e34ee133",
+    "assets/characters/portraits/slot2_mukjin_portrait_v1.png": "cad7c70d41a5c77f9b04e4833dba0ebd3edc4989c9b5a0be7924b588040ef92b",
+    "assets/characters/portraits/slot2_seokmu_portrait_v1.png": "58005db0fb336cebc9716fed57fe998b9e6edf05119700c020f334fe2aaaeeec",
+    "assets/characters/portraits/slot3_biyeon_portrait_v1.png": "f147658c486db7b398828a22339ca74bd638f5e6f31af6a20d456f387e6ba15e",
+    "assets/characters/portraits/slot3_seolha_portrait_v1.png": "10c32f5bb55c443427b8469ceba2f8f0f25a69038d247a5bf53aee716065992b",
+    "assets/characters/portraits/slot3_uram_portrait_v1.png": "b526ae90d4a0c9dd7c3dcba646e50be086071e1f043ecce5c9dd547e197ffc52",
+    "assets/characters/portraits/slot4_cheongheo_portrait_v1.png": "6d6bdb582b64573cc6dd019617d09a0e07683ab48bd89bd7269844cacc2a9753",
+    "assets/characters/portraits/slot4_damwol_portrait_v1.png": "53037d9654d8c991e0779001989309c71ddb107985752a3d20c358d3055247f5",
+    "assets/characters/portraits/slot4_jinryeo_portrait_v1.png": "020ebfb46c12921674532d29dd079456d130ec383c720563ffa59f7362079944",
+    "assets/characters/portraits/slot5_jeogu_portrait_v1.png": "46a46e89c9c24169fb4b0510d5151f931912b895f607737f10986fe28b4692c5",
+    "assets/characters/portraits/slot5_pungmok_portrait_v1.png": "8eb4255f0c135e9dd9bdfe5502f350c88e9755ea1b1575768cf4a43d32c8d5e1",
+    "assets/characters/portraits/slot5_rajin_portrait_v1.png": "6b6a3ef762e910766a487f46d04c0d757552338f72685a0da1956fd2ffd1da04",
+    "assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png": "56667318d441f7e74accfc08f7038500e5d3b313bc68a15387f9c3c62608d7e2",
+    "assets/portraits/dogyeom_status_portrait_01_v1.png": "0672dfb9938c65f88ade27b90f3bc558a0a3588ccf19a70f5412fc74dd11143c",
+    "assets/portraits/enemy_masked_ink_v1.png": "71951e187efd72ddbb356535acb0a4f5c3dfe808239a625d9b208ecb545d2e96",
+    "assets/portraits/player_wanderer_ink_v1.png": "7920ebf2fd1858fdb275bffca458ab8867c3ae44f6d335e0d3552a1d82ad615e",
+    "assets/ui/cards/basic_technique_ink_atlas_01_v1.png": "a047a81c92d51cfa3c0b0d81ac2edf53b9a15e262420753a08bc2ed473ed7998",
+    "assets/ui/cards/martial_ultimate_card_illustration_atlas_01_v1.png": "227a0492399d287fec073d7bccb36dc84eae1dd0c6d11247302e24ca87c3750e",
+    "assets/ui/duel/current_action_slot_frame_01_v1.png": "1df3a70457d45e82716910452a9744f0a0cc8807c3fc6e5d03671131b72e81d6",
+    "assets/ui/duel/observation_reveal_frame_01_v1.png": "b6b71742da3621449dd8ac9aeaf0827af3f199dcb0ac578435e4a87120d1d2ea",
+    "assets/ui/duel/status_hud_frame_01_v1.png": "f2a428e9717b9fa3661ab8ede92df8a7398bb597254e56c1b23b85bd414d1226",
+    "assets/ui/duel/technique_detail_frame_01_v1.png": "37324331c8aeb6dfce499a61b3b4e4ddc784b608dfd477bc510f34ca4d836f09",
+    "assets/ui/logo/ten_paces_hidden_moves_title_logo_01_v1.png": "5c75edbbe02770ddb1d41868a1beb4a55e802bc53295381d3b204238a3842e13",
+    "assets/vfx/attack_clash_ink_gold_atlas_rgba_v1.png": "0859c714728608744b3f016e03c02f7b0e18d86b0b0ced191a2d5ec25ce2553f",
+    "assets/vfx/ultimate_ink_gold_sprite_sheet.png": "f99d1f33a072f443fdf6ba7aaa025ef0a2c7909f0cbbfd52ea0054947ca030d2",
+    "assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png": "1e2dd00742be39cc6de66fa6b464bba4c37b6035b97a7e318c6211d9b835a1f4",
+    "assets/vfx/ultimate_ink_gold_sprite_sheet_transparency_candidate.png": "b6f9bc5eec8969728e08a3fee7caa607743f3b2e9c81913f584922d534fc3853"
+  },
+  "source_text_hashes": {
+    "assets/ASSET_MANIFEST.json": "be4b8ab6049a2b97e4319e1d66aee49bbd536e73f35d483ccbc100cd772e5c63",
+    "assets/blueprint/APPROVED_ART_MANIFEST.json": "2598227367591e53d2868228471f9b5771c8d4682b99e554ccc0f910b2c8da1f",
+    "assets/ui/cards/card_asset_manifest.json": "790dedc4519e70b0cb5cb8393a133837e7ece145399fba6be386f9be0b9c8605",
+    "data/cards/basic_cards.json": "c7700956fc273816ec30a6aa100334c1834d2a2564f01a41a1a3d28b3583ae23",
+    "data/cards/martial_manual_cards.json": "1f6f6dafd5a60e955b1b19f2332279108889a139bf0106861ae5e6f610dce1ff",
+    "data/cards/martial_manuals/beggars_dragon_subduing_palm.json": "56977f050a212238023b9112f09813133d3eb411a6e63b5fe8bc0ebdeb1af1c8",
+    "data/cards/martial_manuals/hebei_peng_five_tigers_saber.json": "791f84270d5ffb729ef0f4cb1222145df2e148e7e3ce331e6cc044481e7371f8",
+    "data/cards/martial_manuals/mount_hua_plum_blossom_sword.json": "93fa7c936e95c2525b07737ac55c418d5b5b2e8963c1b67db6254e99363df8ef",
+    "data/cards/martial_manuals/mount_hua_purple_mist_art.json": "e67c49173a4ee12b26c0713b4ca76c39de5de816e6e29aca2580ae0ca25fbb0e",
+    "data/cards/martial_manuals/nangong_boundless_sky_sword.json": "285d75aa7f5bbcad86d344a6a994dd26ee3b9bca11c9a4f21458089092864042",
+    "data/cards/martial_manuals/shaolin_arhat_vajra_art.json": "436be020a47ec4fa8f5916b617958b9176e9ece8a84451096c28d8bc6d712a7c",
+    "data/cards/martial_manuals/sichuan_tang_hidden_weapons.json": "cbbfcdf520b12ed645fde6316f6d505d9afdc818afe0de2a3efc2c06ce1875ff",
+    "data/cards/martial_manuals/wudang_taiji_sword.json": "25a6cc9e0528692cd4ba7ced09998bfadf2033252a02c45b57b86754576350b8",
+    "data/cards/martial_manuals/xiaoyao_lingbo_footwork.json": "97bebaeb4cab2542a93db734c66cf64921f765b8678659c4e610a3c7ef9dace0",
+    "data/cards/martial_manuals/yang_family_spear.json": "dcd375662bdf71f9e0c9afa54b94f1f08d98a19d225f0c2a01062b03eeb1f3ee",
+    "data/cards/ultimate_cards.json": "cff2b7217812ee36a691cb4902a08fbd1ca555f8529d0742fd46add5954aebed",
+    "data/combat/combat_action_timing_preview.json": "e237c7127c98cc95e792a63cd202b162007726f3dbd3ef1f6ff9bde4839a595d",
+    "data/combat/combat_board_poc.json": "484f5012b16be0438792e41dd1f154ec82d591bffcdc7416bbbebeaf5f315a58",
+    "data/combat/combat_hud_preview.json": "4c59dc7db615904fb020a043a1b03271d55472121de4e4f8973e8d55c5305296",
+    "data/combat/combat_log_preview.json": "29f1bbddfcd55b00bcfc99c526439d54e2c52a61414bb666955a8fda14715e95",
+    "data/combat/combat_progress_preview.json": "58dd9d60466497fdc837d65092a2c5b8984bc8cb3ea4e5ecb2ed082be82844a6",
+    "data/combat/combat_resolution_preview.json": "7055cebefc08eed67d6beb9fd032a32b890e6fa755b2f5eb019eb6a07ca8f5d6",
+    "data/combat/combat_rival_tendency_poc.json": "3aa1730501b644e582b48c309d5f9e5bd4f9f3ba08965187663ec29430822895",
+    "data/combat/mastery_ultimate_poc.json": "712d3f6cddfeaa0a45442f011fa3e1698abd616dcd86c28ffdcddad4d3309f23",
+    "data/combat/ten_manual_loadout_poc.json": "b6137429d6a5032c60f644abfd4e12ad6d6ad406205f86c23d4fbb46ab228166",
+    "data/run/approved_opponent_stages_v2.json": "0637d5edc26998758612f19fe429af8b3f060f089f882f91ba71ede6badb47a8",
+    "data/run/bimu_constraints.json": "fd9303e6fc2da04afbe57477cbc67232259b5a0caba2c972d6e2be6d47699cd0",
+    "data/run/vertical_slice_opponent_archetypes.json": "1f14f54f9ec0b3c13a2e33cdd31dfb39ac0b411c2992ffcd03025ddb1132e879",
+    "data/run/vertical_slice_opponents.json": "31b19f8862184b7239432cbaae40d12afddfaa9d175263f9d75cc3e1fbc70d20",
+    "data/validation/vertical_slice_balance_instrumentation_matrix.json": "66c80781ab28e615a3bb0e96b81e4d58fda5e99d32a767acc614e0214542ce4c",
+    "scenes/combat/battle_background.tscn": "984e75f182d3d82dd1cfd833fccf144388a044a933614fa1a5ca1f98fecfc05e",
+    "scenes/combat/combat_board_preview.tscn": "b4b4bcf29189b34ab467da34b50b3eb97ab525d6ccb0f9a2d2f99f3db61ba099",
+    "scenes/combat/combat_board_tile.tscn": "6125f1e1f9a628b3534572b42c2343f1a9d15a60a0de9e9d76ab54978d5ab060",
+    "scenes/combat/combat_character_placeholder.tscn": "876acb80b4f673dc165bf9abecc44b401f44e2e09dd2f9ddceb702964543d8c5",
+    "scenes/run/vertical_slice_combat_bridge.tscn": "4050f34a0a957b6e96bb4437c139ffab39ed68b144291e71a0f275b1a833c1cb",
+    "scenes/run/vertical_slice_shell.tscn": "394d4367c34459023ba953142eefa72dbd5e217533ae69ff07ba647f6228e99b",
+    "scenes/ui/action_selection/action_detail_panel.tscn": "7c91f49f6cbab58b4d4cb52cb7141b409e415e85cc81973b3f93c513a7debcb9",
+    "scenes/ui/action_selection/action_selection_dock.tscn": "6b25839a3180e3ce2b7f75b500a790a87a294f5f5c5d7a0807ffd60d72b1e262",
+    "scenes/ui/action_selection/basic_action_panel.tscn": "b19bb85a5348386cd1bde2eab8d541b14bcef4dd2eff9cf21669ea3f6bc84cd4",
+    "scenes/ui/action_selection/linked_action_block.tscn": "2baf151e6d4298d3ee5d6dadd6a83ee1bf6f77b86c27e5f2084a0a69ac50929c",
+    "scenes/ui/action_selection/martial_action_panel.tscn": "e83db351f5c96fbb50de916b98517581ba6fbcea893f8c02d84d84d43195c64d",
+    "scenes/ui/action_selection/ultimate_action_panel.tscn": "d67304b5ac809d7175f6d493b708a2ed9702c4b53cee93a2824ec2cad0f01b6e",
+    "scenes/ui/action_timing_panel.tscn": "5b8920e41f31b3dddde88669df14a1ef19cd556d95685737715f8f716774627f",
+    "scenes/ui/action_timing_slot.tscn": "1a75b46539949cf44f4d6132d63650b6b8e8620b487ce42fb5e4061362858cd6",
+    "scenes/ui/basic_card_tray.tscn": "037344ca86df08b900a6d33389ecc2b4ccb9499dad779015fa99f5625ab532f2",
+    "scenes/ui/basic_card_tray_item.tscn": "cb12710bc608015c9b0d238b15760980ed2a6bf8b270336f3d8013f1c68d3f16",
+    "scenes/ui/card_component_preview.tscn": "b78cc41258dfe8ac80f4e747fad5499fe1a2747103b3d54f5f3663b858914e1d",
+    "scenes/ui/card_detail_panel.tscn": "03f334e71664227282165555d634b67a40ecf2053f1d209289ea054636725d78",
+    "scenes/ui/card_view.tscn": "a6e11d4cf8ef30d779887f1b16b6654440436b02852c644555bb9248b62fc8f1",
+    "scenes/ui/combat_log_panel.tscn": "cc773bef7ccaf2eb4d02802e0cbe276e42f20a49426d45acf7eb8831609e08b0",
+    "scenes/ui/combat_progress_button.tscn": "20ab0343897a9b35fa730a3402691ac4e9e10b359183310572809ed671961a37",
+    "scenes/ui/combat_review_panel.tscn": "86d72b25231c0eb15bc61815a9552e63c07a844ffde8449ad8dc76baefc13aed",
+    "scenes/ui/combatant_status_panel.tscn": "53d17b3fe0d78c5e5f7f44f41c0535539701d9d573dd38d50be0c48f33001f75",
+    "scenes/ui/main_title_screen.tscn": "4bd5768e7d9bf45ec5b6f2ef966d06dc586f6fc7ba5af6b0ebff9cfc99005d28",
+    "scenes/ui/momentum_gauge.tscn": "05f1a31b06c7dea197765fa0989009934d3b90ad178c2aff3e879f6377d051bd",
+    "scenes/ui/observation_reveal_panel.tscn": "0644becec855d596bd19a910f845d7fc7bda7da8157bca2917c98f72a3140c02",
+    "scenes/ui/round_hud_panel.tscn": "a5cc58a7eb29afa9b900a3a6e1f5167bab1c45576e6b850d73bb6aa7dc12495d",
+    "scenes/ui/top_combat_hud.tscn": "c3650572bc322a070955f4eeb76620495aa23a82759c8f5d4039d919f57e2eaa",
+    "src/combat/battle_background.gd": "e103a004167d3aa7b2a7169263287dc04a6de0a18d277bfd1505e95562a825e4",
+    "src/combat/combat_ai_planner.gd": "a61c3515601fe12a7e56bd3b18e62932552ee8ec59fcc87c38bd7e9d19c3e2de",
+    "src/combat/combat_board_preview.gd": "d88346b42163a716201f9316cb65202f423a2d11d4493e0e0679504d9414f851",
+    "src/combat/combat_board_preview_auto.gd": "afd7dfd02e9e786aff6ea0dcde777ac9edb01f92ad746f8b3e9bdfc930e542e8",
+    "src/combat/combat_board_preview_ten_manuals_auto.gd": "7f83ccf8412dc86094b8960ffefe2515da304588d62da229c7ff28c2508c48ed",
+    "src/combat/combat_board_tile.gd": "7340e356fbc3573ae551ccc7d02cb644dae860987f3dcf3f16e815448603d2e8",
+    "src/combat/combat_character_placeholder.gd": "710f68e6caac79ec50395a0389b007ee6cf96e692f102ca0b6a2e5d5f0a953de",
+    "src/combat/combat_resolution_engine.gd": "7682cec5b1ec8ea4da4f3d2d1978328a9d7703227e3cf41650b1556f2544a407",
+    "src/combat/combat_resolution_engine_prepare.gd": "d20e5fe55d90dc4b49197b148914409fef5026787fb4e0f3c6feccc6ccba7e9e",
+    "src/combat/combat_resolution_engine_ten_manuals.gd": "1a45851d3c6430246cc422ee64e5dc67e44d7fd64376492930273a7dc714d6a4",
+    "src/combat/combat_review_summary_builder.gd": "0081bfab6732e8c8014e1ce3bb3df68568cc1e26857b34597103d22af93cbceb",
+    "src/combat/martial_effect_pipeline.gd": "5c3325cc96bfb9abe3d2f1e4eee431723cf206862ce0526ea49e2b4f4ed29913",
+    "src/combat/martial_manual_registry.gd": "536c9319dcc027a7c130f02ffe603794abc32bc8b6d6f28f74d0cf3f18b8c579",
+    "src/run/bimu_constraint_model.gd": "051230077adee3752834040f451d690921e0c9d4aab2cc542667eb9492dd8966",
+    "src/run/combat_checkpoint_codec.gd": "2993b7de194f0255ac9559b3ebea2061d52d63e447d1c87096f9507a3ce6087b",
+    "src/run/frozen_opponent_catalog.gd": "77381cfa98f3597001e5aef216f04de390a8aa6565267f4c98f001ad1f13b42f",
+    "src/run/run_checkpoint_codec.gd": "0f1549d4c21b05e5cae45ee5c23e78e25af72f9c7577ed0ac01ae6f8d12b24bd",
+    "src/run/run_save_store.gd": "5bfa903bb7b910bd882a53265ff44df741437c6eb4b31e9964b3178fe67f0c78",
+    "src/run/run_session_coordinator.gd": "7d2f95a0d846341563d56bdb7d1b337f661af5a2d2d8ad58b0970f5a78e83e57",
+    "src/run/variable_opponent_roster.gd": "97bad28b1cd9dfbbffd78e32246c7dad412bad4a0f039baaa9a5b6dd014b24a0",
+    "src/run/vertical_slice_battle_metrics.gd": "678d509dce7c3c237fb1827330c9f42a929997cd43b9813a46637e07bd555826",
+    "src/run/vertical_slice_combat_bridge.gd": "a9f6c949e41eff1695a1d1ee6cb3333b21c41cd51ab53a366e4ccdbacdf8dafb",
+    "src/run/vertical_slice_completion_model.gd": "dd624588c319b0fcb3cb55927a05a45149af87853ebf9d1c52bec9a74a1e4d23",
+    "src/run/vertical_slice_metrics_combat_resolution_engine.gd": "db8ca4b209f82abe764f61d1a75d1d97b9bda727f373825d503b1555f915539a",
+    "src/run/vertical_slice_opponent_catalog.gd": "4c26b46ce76d705f9c3f577162711e1763e768edd67ab652dafb482c9bb17627",
+    "src/run/vertical_slice_opponent_runtime_binding.gd": "835a9f47689aaa3e41bee57a063dcc703a32ee5a5455817963f58398b1db5399",
+    "src/run/vertical_slice_progression_state.gd": "d7b01c042ccde398b58b90f3a3934b327bfc2523c65fca358a9f4600b8c7374c",
+    "src/run/vertical_slice_result_model.gd": "099555a5b3044d286d06a332bead1c1dc1479d35d9c44a8884ef76c1d4255a2b",
+    "src/run/vertical_slice_route_model.gd": "03abaa39117424078a54c7aa50fb5a528f933deb40c9705e928ae1bd3379cda3",
+    "src/run/vertical_slice_run_state.gd": "b9a80d19500f6e7444fa3ae624977139f4d328f8aa02d3f16ed149379d638c16",
+    "src/run/vertical_slice_shell.gd": "e12d0188f365845138256d7e81c92ba66201d8faaffeb24f32933fc7f99b84d0",
+    "src/run/vertical_slice_shell_completion_auto.gd": "b587987082e8d3da107bf04f37c9ca2c910d83f52579bdb415f75f100ab64aba",
+    "src/run/vertical_slice_shell_result_auto.gd": "7a9bd39cbed943de17b5aed9bfca6a4bb33f897cf5410f3c630d45e0c48e14ac",
+    "src/run/vertical_slice_shell_route_auto.gd": "64f2eedcec420e25d3b24ed13967e6f76701d35ee18782b1bfc8cea582f89fbe",
+    "src/run/vertical_slice_starter_manual_catalog.gd": "7af5baa4cc5dfb6584cad37d3410a719b47a391a058f8a0274e52b57817a713b",
+    "src/ui/action_selection/action_choice_card.gd": "584592e0ac351063d716f989ae4e2a4ec314c205b8ebc657a6afe92e2dda9dd6",
+    "src/ui/action_selection/action_detail_panel.gd": "be4bb4dbd6a83ff920474453e64a49563d05c243b3336499d3f596bad46c3b90",
+    "src/ui/action_selection/action_intent_panel.gd": "7835319efd914b436acd8e422c8e6876da20746df7c850f6deb020eb5fc1275b",
+    "src/ui/action_selection/action_placement_controller.gd": "d90b14a39311bd99ad2cdefa8db2605660915b6b86def9ef68a3ab37712a55b2",
+    "src/ui/action_selection/action_selection_dock.gd": "5f7a2c91444909ba0e0f4fce5f40af424f880e191663f46b3a20373018bdb94a",
+    "src/ui/action_selection/action_view_model_adapter.gd": "aabc6fcd884eaaa9ea68b7d8d861685949181cb961326ce6419cc803f7f423b5",
+    "src/ui/action_selection/basic_action_panel.gd": "04c4bda1268733ce8488593dd4a60ce006ab0973d53a4b80ef91cf113c69611a",
+    "src/ui/action_selection/linked_action_block.gd": "77ce885708671699f78337413e54125865b9aa054674ba4cd440da1796540ee4",
+    "src/ui/action_selection/martial_action_panel.gd": "11c0227f043e37073c93dbd5a2f01d6cc2e2459a2d176bb9b9f4d30d82c36d66",
+    "src/ui/action_selection/ultimate_action_panel.gd": "37fd449d5ef2b29bbf4ddaa2139e8833f44997d2e2b32e5cb95f13f61431db40",
+    "src/ui/action_timing_panel.gd": "4357742bd6b85f163e096d3590b8f59df23b402a740e730bc46cc758811db4a3",
+    "src/ui/action_timing_panel_auto.gd": "6e835497e980b3efdf199d7f01cbe11c1058bb399fda85baf726d65bd70aa324",
+    "src/ui/action_timing_slot.gd": "3139b280300b3bba1e25640cd9d5bf7eb357384078d574688e276e334eadfe05",
+    "src/ui/approved_blueprint_art.gd": "e3539c323cc31eb9885f515173087c011fd1e7e8a61ed2725a6118be3439637d",
+    "src/ui/basic_card_tray.gd": "df7a7d1bfc05584d650b156dc0d78e10aa4a84db95fdfaf178e05e5253fc0640",
+    "src/ui/basic_card_tray_item.gd": "8cc8a2c57efb963129b3ad3756a97b1819679c13e87f04ddbb666653d582f89f",
+    "src/ui/bimu_constraint_panel.gd": "61a6accda8d3d7774d7f8bb3f0a2a970ce583d8a3778c9215b7e9d36feb21ff1",
+    "src/ui/card_catalog.gd": "b17f5fff9f086125b95e6aab3284ee3d30a2fcf0a130f3cead5cf7c23c22f5cb",
+    "src/ui/card_component_preview.gd": "f9566c9426a034564993e5bb3f7edadd89fd5a3d1002fc569147ed9ff7ff5bf7",
+    "src/ui/card_detail_panel.gd": "7f2d945ecdd70fc5453c66ea060bebf4dee876af54469344966fd8afc3d724a2",
+    "src/ui/card_view.gd": "41ddc2c0b679ffd3bfe42e635443f7106030e2017bb088fe916d73bf03134e14",
+    "src/ui/combat_action_reveal_overlay.gd": "282f63d45582945b9c2c04581cf6946c12b149a41ab90c307c05dcf767258392",
+    "src/ui/combat_log_panel.gd": "eaeeb6296b792644716f41ae88383d03266a990c832f345a0d21b3a821a9cf9c",
+    "src/ui/combat_presentation_profile.gd": "6839c5fd9cc1e3adf33c066d01b4e7b7c3f52ba5767f0600871a55ca30844b10",
+    "src/ui/combat_progress_button.gd": "e772c5a85e9c953aed55031a18343c79afbc146152562bb8676b79e3a2f0f100",
+    "src/ui/combat_review_panel.gd": "3c37c2246cbf4b3b00ed7cbecba273cd61d7f87602e8d2c3f1d632a724e14081",
+    "src/ui/combat_screen_surface.gd": "117f679c37cd299e10ed9177837124a110b6bdc4ceaa086879546012e6b77b1d",
+    "src/ui/combat_sound_bank.gd": "caf6667d62d6794e6ce6d6ff143c5d50ebb584faa5bef06e1f7d5a1e4ef5c698",
+    "src/ui/combatant_status_panel.gd": "9330a4d24dc5edecba0ade2e8eed8b8424385a0ec6b5fe029d25facf27447ce7",
+    "src/ui/duel_foreground_banner.gd": "242194d34e29b195469b12772c0a0d251cc078fe304b841633e06d02f4c76d86",
+    "src/ui/main_title_screen.gd": "333acbaab7785e13ae2223e288bd8ebc6e8678b67b22eb5dae8a2ab7c9c6220a",
+    "src/ui/momentum_gauge.gd": "8782255377aafc78aa006009795a3599d1fd19346025f0f7931729696678672b",
+    "src/ui/observation_reveal_panel.gd": "53773e24753d1415afaa951f9bafe420bee070f94694a4f9712798008f249105",
+    "src/ui/round_hud_panel.gd": "9e6d34a1f1f9fb2e6020711369e59c9d03e2c3eff9290d0d1851af1f9539832e",
+    "src/ui/top_combat_hud.gd": "39c3cd308ea844ca4aa4535c95c78af36318dfbee9dcab5c2b381c47dae598ee",
+    "src/validation/ten_manual_product_scenario_validator.gd": "7c6cde0fb8f1d3fa309214fd95c3ae443767e0a787bd82cf7d6f9a280c0cb4d1",
+    "src/validation/ten_manual_product_validation_bootstrap.gd": "bd886ce67a9b1d01c22db793b7b922c295facc5967226c7bdaaedee901cdb826",
+    "src/validation/vertical_slice_balance_instrumentation.gd": "14c961c0a2c04a90e6a862a43f6283c3fd9361748870239f525f344814045829",
+    "src/validation/vertical_slice_balance_public_policy.gd": "a8f8b540a58dc865bdbc45ff296e1018b654f2fa6586b176749f942a7d4e2bee",
+    "src/validation/vertical_slice_balance_report_runner.gd": "cde87deda73456b59df296c97f97bfa16e480320ef5a7c54d1b1e1df56e512c8",
+    "project.godot": "7bb6dabd2d7104a1c218a99a88a806f22050aab2f36365f60e5a2ed51f87008d",
+    "tools/capture_blueprint_motion.gd": "d86839133c02b4be2d71391681a6397900f36325c6e843e8f2cb64e4cf8f7d3e"
+  },
+  "text_hash_policy": "UTF8_UNIVERSAL_NEWLINES",
+  "method": "Godot viewport frames after rendering; original wall-clock intervals encoded at 30 fps.",
+  "limits": "Silent fixed-situation presentation captures; not campaign, balance, human fun, or PR342 validation.",
+  "clips": [
+    {
+      "id": "clash-win",
+      "title": "격돌 → 합 승리 → 공격",
+      "card_ids": [
+        "basic_heavy_attack"
+      ],
+      "events": [
+        {
+          "actor": "player",
+          "card_id": "basic_heavy_attack",
+          "card_name": "강공",
+          "category": "attack",
+          "damage": 6,
+          "defense_outcome": "",
+          "outcome": "clash_win",
+          "type": "clash"
+        },
+        {
+          "actor": "player",
+          "card_id": "basic_heavy_attack",
+          "card_name": "강공",
+          "category": "attack",
+          "damage": 6,
+          "defense_outcome": "",
+          "outcome": "hit",
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/clash-win.mp4",
+      "path_sha256": "1fbc0f1fddb0300373cf1d78f87cef1eee005ace7b25cb4053f1fab08c5677f4",
+      "poster": "docs/blueprint/evidence/motion/clash-win.jpg",
+      "poster_sha256": "3a7e58ee9dab8e5322796967b47c517d9d467cd9d6c702da862ac67bd851b93c",
+      "frames": 42,
+      "distinct_frames": 11,
+      "arena_distinct_frames": 11,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 2.345,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "clash_win",
+        "hit"
+      ]
+    },
+    {
+      "id": "clash-lose",
+      "title": "격돌 → 합 패배 → 피격",
+      "card_ids": [
+        "basic_heavy_attack"
+      ],
+      "events": [
+        {
+          "actor": "player",
+          "card_id": "basic_heavy_attack",
+          "card_name": "강공",
+          "category": "attack",
+          "damage": 6,
+          "defense_outcome": "",
+          "outcome": "clash_loss",
+          "type": "clash"
+        },
+        {
+          "actor": "enemy",
+          "card_id": "basic_heavy_attack",
+          "card_name": "강공",
+          "category": "attack",
+          "damage": 6,
+          "defense_outcome": "",
+          "outcome": "hit",
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/clash-lose.mp4",
+      "path_sha256": "f07fad2c5cb487ced001d1d4306a85d5adfc45cc05b791b5958aa769c8400ba3",
+      "poster": "docs/blueprint/evidence/motion/clash-lose.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 46,
+      "distinct_frames": 9,
+      "arena_distinct_frames": 9,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 2.501,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "clash_loss",
+        "hit"
+      ]
+    },
+    {
+      "id": "hit",
+      "title": "공격 · 피격 · 복귀",
+      "card_ids": [
+        "basic_heavy_attack"
+      ],
+      "events": [
+        {
+          "actor": "player",
+          "card_id": "basic_heavy_attack",
+          "card_name": "강공",
+          "category": "attack",
+          "damage": 6,
+          "defense_outcome": "",
+          "outcome": "hit",
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/hit.mp4",
+      "path_sha256": "b2b2640ee1fb78e467e1e0b4a5ce504469564e65dad246f228c10be5dd506419",
+      "poster": "docs/blueprint/evidence/motion/hit.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 33,
+      "distinct_frames": 5,
+      "arena_distinct_frames": 5,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 1.833,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "hit"
+      ]
+    },
+    {
+      "id": "block",
+      "title": "방어 결과 표시",
+      "card_ids": [
+        "basic_heavy_attack"
+      ],
+      "events": [
+        {
+          "actor": "enemy",
+          "card_id": "basic_heavy_attack",
+          "card_name": "강공",
+          "category": "attack",
+          "damage": 2,
+          "defense_outcome": "block",
+          "outcome": "block",
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/block.mp4",
+      "path_sha256": "823711bb6c6096aa358fff1639a71ee81e47b43375215b644f199e60da8a1b3b",
+      "poster": "docs/blueprint/evidence/motion/block.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 34,
+      "distinct_frames": 4,
+      "arena_distinct_frames": 4,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 1.927,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "block"
+      ]
+    },
+    {
+      "id": "evade",
+      "title": "회피 결과 표시",
+      "card_ids": [
+        "basic_quick_attack"
+      ],
+      "events": [
+        {
+          "actor": "enemy",
+          "card_id": "basic_quick_attack",
+          "card_name": "속공",
+          "category": "attack",
+          "damage": 0,
+          "defense_outcome": "evade",
+          "outcome": "evade",
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/evade.mp4",
+      "path_sha256": "08ccc1dbbf5e465832f2dc28573ce71b07c5c0c906f29bc741cae6441f125132",
+      "poster": "docs/blueprint/evidence/motion/evade.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 30,
+      "distinct_frames": 4,
+      "arena_distinct_frames": 4,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 1.714,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "evade"
+      ]
+    },
+    {
+      "id": "ultimate",
+      "title": "절초 · 타격 · 복귀",
+      "card_ids": [
+        "ultimate_void_sword_qi"
+      ],
+      "events": [
+        {
+          "actor": "player",
+          "card_id": "ultimate_void_sword_qi",
+          "card_name": "파공검기",
+          "category": "attack",
+          "damage": 12,
+          "defense_outcome": "",
+          "outcome": "hit",
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/ultimate.mp4",
+      "path_sha256": "0055947f5da33931fb01f19140c4c8e33198732094e490d7025b6ccfc157a95c",
+      "poster": "docs/blueprint/evidence/motion/ultimate.jpg",
+      "poster_sha256": "4e0e032ee674d082941b9b3ff632e6bae49a512841030a5459b61f120d97cf3a",
+      "frames": 41,
+      "distinct_frames": 12,
+      "arena_distinct_frames": 12,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 2.369,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "hit"
+      ]
+    },
+    {
+      "id": "mount_hua_plum_blossom_sword_star3",
+      "title": "매화삼첩",
+      "card_ids": [
+        "mount_hua_plum_blossom_sword_star3"
+      ],
+      "events": [
+        {
+          "action_slots": 2,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "mount_hua_plum_blossom_sword_star3",
+          "card_name": "매화삼첩",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 1,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 3,
+          "card_id": "mount_hua_plum_blossom_sword_star3",
+          "card_name": "매화삼첩",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": false,
+          "damage": 10,
+          "damage_after_block": 10,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 1,
+          "martial_events": [
+            {
+              "attempt": 1,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 4,
+              "op": "INDEPENDENT_ATTACK",
+              "raw_power": 4,
+              "status": "HIT"
+            },
+            {
+              "actual": 1,
+              "op": "REQUIRE_ACTUAL_HP_HITS",
+              "required": 1,
+              "status": "PASSED"
+            },
+            {
+              "attempt": 2,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 3,
+              "op": "INDEPENDENT_ATTACK",
+              "raw_power": 3,
+              "status": "HIT"
+            },
+            {
+              "actual": 2,
+              "op": "REQUIRE_ACTUAL_HP_HITS",
+              "required": 2,
+              "status": "PASSED"
+            },
+            {
+              "attempt": 3,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 3,
+              "op": "INDEPENDENT_ATTACK",
+              "raw_power": 3,
+              "status": "HIT"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/mount_hua_plum_blossom_sword_star3.mp4",
+      "path_sha256": "2ddabfb933703c64bffc89129f0112008928f227cea388cf9b0d56bb48b9d295",
+      "poster": "docs/blueprint/evidence/motion/mount_hua_plum_blossom_sword_star3.jpg",
+      "poster_sha256": "5caf22d2919cdcc641fcb947908f77bc520599d0d48acd389cc38b073a9c352d",
+      "frames": 38,
+      "distinct_frames": 5,
+      "arena_distinct_frames": 5,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 2.179,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    },
+    {
+      "id": "mount_hua_plum_blossom_sword_star7",
+      "title": "낙매추영",
+      "card_ids": [
+        "mount_hua_plum_blossom_sword_star7"
+      ],
+      "events": [
+        {
+          "action_slots": 2,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "mount_hua_plum_blossom_sword_star7",
+          "card_name": "낙매추영",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 1,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 0,
+          "card_id": "mount_hua_plum_blossom_sword_star7",
+          "card_name": "낙매추영",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": true,
+          "damage": 0,
+          "damage_after_block": 0,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 1,
+          "martial_events": [
+            {
+              "from": 4,
+              "moved": true,
+              "op": "MOVE_TOWARD",
+              "status": "MOVED",
+              "tiles": 1,
+              "to": 5
+            },
+            {
+              "distance": 0,
+              "max": 2,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "OUT_OF_RANGE"
+            },
+            {
+              "op": "SPECIAL_CLASH",
+              "opponent_power": 0,
+              "power": 18,
+              "status": "WIN"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/mount_hua_plum_blossom_sword_star7.mp4",
+      "path_sha256": "7e21ba86e7fc4b9c17bfcb6e4a9fe3eee597d0ff5aea4bc0d2f3c49ae17617d9",
+      "poster": "docs/blueprint/evidence/motion/mount_hua_plum_blossom_sword_star7.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 40,
+      "distinct_frames": 3,
+      "arena_distinct_frames": 3,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 2.221,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    },
+    {
+      "id": "mount_hua_plum_blossom_sword_star10",
+      "title": "이십사수매화검법",
+      "card_ids": [
+        "mount_hua_plum_blossom_sword_star10"
+      ],
+      "events": [
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "mount_hua_plum_blossom_sword_star10",
+          "card_name": "이십사수매화검법",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 3,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 3,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "mount_hua_plum_blossom_sword_star10",
+          "card_name": "이십사수매화검법",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 3,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 3,
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 0,
+          "card_id": "mount_hua_plum_blossom_sword_star10",
+          "card_name": "이십사수매화검법",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": false,
+          "damage": 0,
+          "damage_after_block": 0,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 3,
+          "martial_events": [
+            {
+              "from": 4,
+              "moved": true,
+              "op": "MOVE_TOWARD",
+              "status": "MOVED",
+              "tiles": 1,
+              "to": 5
+            },
+            {
+              "distance": 0,
+              "max": 1,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "OUT_OF_RANGE"
+            },
+            {
+              "attempt": 1,
+              "distance": 0,
+              "max": 1,
+              "min": 1,
+              "op": "INDEPENDENT_ATTACK",
+              "status": "SKIPPED_OUT_OF_RANGE"
+            },
+            {
+              "attempt": 2,
+              "distance": 0,
+              "max": 1,
+              "min": 1,
+              "op": "INDEPENDENT_ATTACK",
+              "status": "SKIPPED_OUT_OF_RANGE"
+            },
+            {
+              "attempt": 3,
+              "distance": 0,
+              "max": 1,
+              "min": 1,
+              "op": "INDEPENDENT_ATTACK",
+              "status": "SKIPPED_OUT_OF_RANGE"
+            },
+            {
+              "actual": 0,
+              "op": "REQUIRE_ACTUAL_HP_HITS",
+              "required": 2,
+              "status": "FAILED"
+            },
+            {
+              "op": "MOVE_TOWARD",
+              "status": "SKIPPED_REQUIREMENT"
+            },
+            {
+              "op": "RECHECK_RANGE",
+              "status": "SKIPPED_REQUIREMENT"
+            },
+            {
+              "op": "ATTACK",
+              "status": "SKIPPED_REQUIREMENT"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 3,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 3,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/mount_hua_plum_blossom_sword_star10.mp4",
+      "path_sha256": "002e489ef96c6fbffcc04ccaa4480285f6d6ab3132135a0a17eaaa5cd5c74dca",
+      "poster": "docs/blueprint/evidence/motion/mount_hua_plum_blossom_sword_star10.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 44,
+      "distinct_frames": 2,
+      "arena_distinct_frames": 2,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 2.53,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    },
+    {
+      "id": "shaolin_arhat_vajra_art_star3",
+      "title": "금강호체",
+      "card_ids": [
+        "shaolin_arhat_vajra_art_star3"
+      ],
+      "events": [
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 0,
+          "card_id": "shaolin_arhat_vajra_art_star3",
+          "card_name": "금강호체",
+          "category": "strengthen",
+          "category_label": "strengthen",
+          "clash_won": false,
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 1,
+          "martial_events": [
+            {
+              "amount": 3,
+              "op": "GAIN_RESOURCE",
+              "resource": "defense",
+              "status": "APPLIED"
+            },
+            {
+              "amount": 1,
+              "op": "GAIN_STATUS",
+              "status": "APPLIED",
+              "status_name": "fortitude"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "0",
+          "source_label": "",
+          "stamina_cost": 0,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/shaolin_arhat_vajra_art_star3.mp4",
+      "path_sha256": "14f740560908cd143ed6a326a8b94bf393c23da8f0c03457e6c25e32d0716974",
+      "poster": "docs/blueprint/evidence/motion/shaolin_arhat_vajra_art_star3.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 31,
+      "distinct_frames": 1,
+      "arena_distinct_frames": 1,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 1.747,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed"
+      ]
+    },
+    {
+      "id": "shaolin_arhat_vajra_art_star7",
+      "title": "대력금강장",
+      "card_ids": [
+        "shaolin_arhat_vajra_art_star7"
+      ],
+      "events": [
+        {
+          "action_slots": 2,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "shaolin_arhat_vajra_art_star7",
+          "card_name": "대력금강장",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 1,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 1,
+          "card_id": "shaolin_arhat_vajra_art_star7",
+          "card_name": "대력금강장",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": false,
+          "damage": 9,
+          "damage_after_block": 9,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 1,
+          "martial_events": [
+            {
+              "amount": 1,
+              "op": "GAIN_STATUS",
+              "status": "APPLIED",
+              "status_name": "fortitude"
+            },
+            {
+              "amount": 2,
+              "op": "GAIN_RESOURCE",
+              "resource": "defense",
+              "status": "APPLIED"
+            },
+            {
+              "defense": 2,
+              "op": "START_DEFENSE_LOSS_RECORD",
+              "status": "STARTED"
+            },
+            {
+              "distance": 1,
+              "max": 1,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "IN_RANGE"
+            },
+            {
+              "attempt": 1,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 9,
+              "op": "ATTACK",
+              "raw_power": 9,
+              "status": "HIT"
+            },
+            {
+              "bonus_cap": 4,
+              "op": "END_DEFENSE_LOSS_RECORD",
+              "recorded_loss": 0,
+              "status": "ENDED"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/shaolin_arhat_vajra_art_star7.mp4",
+      "path_sha256": "f69d55d7fe9a3542df506967c38c23bdccde2d3d66fd19bd2f77b46b7bc8a8d6",
+      "poster": "docs/blueprint/evidence/motion/shaolin_arhat_vajra_art_star7.jpg",
+      "poster_sha256": "cac3519f56622fa7f0bd1853beeb56653bef3f115f25dfae5969d6a11ee7efcd",
+      "frames": 39,
+      "distinct_frames": 5,
+      "arena_distinct_frames": 5,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 2.229,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    },
+    {
+      "id": "shaolin_arhat_vajra_art_star10",
+      "title": "여래신장",
+      "card_ids": [
+        "shaolin_arhat_vajra_art_star10"
+      ],
+      "events": [
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "shaolin_arhat_vajra_art_star10",
+          "card_name": "여래신장",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 3,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "shaolin_arhat_vajra_art_star10",
+          "card_name": "여래신장",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 3,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 1,
+          "card_id": "shaolin_arhat_vajra_art_star10",
+          "card_name": "여래신장",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": false,
+          "damage": 12,
+          "damage_after_block": 12,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 3,
+          "martial_events": [
+            {
+              "amount": 4,
+              "op": "GAIN_RESOURCE",
+              "resource": "defense",
+              "status": "APPLIED"
+            },
+            {
+              "amount": 1,
+              "op": "GAIN_STATUS",
+              "status": "APPLIED",
+              "status_name": "fortitude"
+            },
+            {
+              "defense": 4,
+              "op": "START_DEFENSE_LOSS_RECORD",
+              "status": "STARTED"
+            },
+            {
+              "distance": 1,
+              "max": 2,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "IN_RANGE"
+            },
+            {
+              "attempt": 1,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 12,
+              "op": "ATTACK",
+              "raw_power": 12,
+              "status": "HIT"
+            },
+            {
+              "bonus_cap": 6,
+              "op": "END_DEFENSE_LOSS_RECORD",
+              "recorded_loss": 0,
+              "status": "ENDED"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 3,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/shaolin_arhat_vajra_art_star10.mp4",
+      "path_sha256": "f16349066f11dfad1db9bd96ee3d4d09b5613d8c6f5baec86ad30e1dc2a7f896",
+      "poster": "docs/blueprint/evidence/motion/shaolin_arhat_vajra_art_star10.jpg",
+      "poster_sha256": "5c86627fceb8d0a4822aaf345abda59828ef510324c144374874d2dfae765c05",
+      "frames": 55,
+      "distinct_frames": 13,
+      "arena_distinct_frames": 13,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 3.164,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    },
+    {
+      "id": "wudang_taiji_sword_star3",
+      "title": "운수검식",
+      "card_ids": [
+        "wudang_taiji_sword_star3"
+      ],
+      "events": [
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "player",
+          "card_id": "wudang_taiji_sword_star3",
+          "card_name": "운수검식",
+          "category": "response",
+          "category_label": "response",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 1,
+          "outcome": "response",
+          "phase": "response",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "0",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/wudang_taiji_sword_star3.mp4",
+      "path_sha256": "6f51e7967d87be32377334811027139e8bfa8395d0860be68959c3107e1e8aff",
+      "poster": "docs/blueprint/evidence/motion/wudang_taiji_sword_star3.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 31,
+      "distinct_frames": 2,
+      "arena_distinct_frames": 2,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 1.76,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "response"
+      ]
+    },
+    {
+      "id": "wudang_taiji_sword_star7",
+      "title": "사량발천근",
+      "card_ids": [
+        "wudang_taiji_sword_star7"
+      ],
+      "events": [
+        {
+          "action_slots": 2,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "wudang_taiji_sword_star7",
+          "card_name": "사량발천근",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 1,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 0,
+          "card_id": "wudang_taiji_sword_star7",
+          "card_name": "사량발천근",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": true,
+          "damage": 0,
+          "damage_after_block": 0,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 1,
+          "martial_events": [
+            {
+              "distance": 1,
+              "max": 1,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "IN_RANGE"
+            },
+            {
+              "op": "SPECIAL_CLASH",
+              "opponent_power": 0,
+              "power": 18,
+              "status": "WIN"
+            },
+            {
+              "op": "REQUIRE_CLASH_WIN",
+              "status": "PASSED"
+            },
+            {
+              "amount": 2,
+              "op": "GAIN_RESOURCE",
+              "resource": "defense",
+              "status": "APPLIED"
+            },
+            {
+              "amount": 1,
+              "op": "GAIN_RESOURCE",
+              "resource": "internal",
+              "status": "APPLIED"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/wudang_taiji_sword_star7.mp4",
+      "path_sha256": "fa76721d683c6e1301f328407e442d771bc82c1de0b86cf9ff464aff3672f94e",
+      "poster": "docs/blueprint/evidence/motion/wudang_taiji_sword_star7.jpg",
+      "poster_sha256": "093571574e444dd06168c2739e470daac78a87cc3a9578e485b7ea50e3f4332e",
+      "frames": 38,
+      "distinct_frames": 3,
+      "arena_distinct_frames": 3,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 2.166,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    },
+    {
+      "id": "wudang_taiji_sword_star10",
+      "title": "태극혜검",
+      "card_ids": [
+        "wudang_taiji_sword_star10"
+      ],
+      "events": [
+        {
+          "action_slots": 3,
+          "action_stage": "execution",
+          "actor": "player",
+          "card_id": "wudang_taiji_sword_star10",
+          "card_name": "태극혜검",
+          "category": "response",
+          "category_label": "response",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 3,
+          "outcome": "response",
+          "phase": "response",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target_tile": 5,
+          "timing": 3,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "wudang_taiji_sword_star10",
+          "card_name": "태극혜검",
+          "category": "response",
+          "category_label": "response",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 3,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "wudang_taiji_sword_star10",
+          "card_name": "태극혜검",
+          "category": "response",
+          "category_label": "response",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 3,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/wudang_taiji_sword_star10.mp4",
+      "path_sha256": "6629b78ff983e67d6f7253910084ce19b2e177975a7d1a209c945bb07784bbba",
+      "poster": "docs/blueprint/evidence/motion/wudang_taiji_sword_star10.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 44,
+      "distinct_frames": 2,
+      "arena_distinct_frames": 2,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 2.545,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "preparation",
+        "response"
+      ]
+    },
+    {
+      "id": "yang_family_spear_star3",
+      "title": "추풍일섬",
+      "card_ids": [
+        "yang_family_spear_star3"
+      ],
+      "events": [
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 0,
+          "card_id": "yang_family_spear_star3",
+          "card_name": "추풍일섬",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": false,
+          "damage": 0,
+          "damage_after_block": 0,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 0,
+          "martial_events": [
+            {
+              "from": 4,
+              "moved": true,
+              "op": "MOVE_TOWARD",
+              "status": "MOVED",
+              "tiles": 1,
+              "to": 5
+            },
+            {
+              "distance": 0,
+              "max": 2,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "OUT_OF_RANGE"
+            },
+            {
+              "attempt": 1,
+              "distance": 0,
+              "max": 2,
+              "min": 1,
+              "op": "ATTACK",
+              "status": "SKIPPED_OUT_OF_RANGE"
+            },
+            {
+              "op": "BREAK_DEFENSE",
+              "status": "SKIPPED_CONDITION"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/yang_family_spear_star3.mp4",
+      "path_sha256": "695f62e21e16c5b5607467d9788cb88873e78e36f4c5ab56cf23cf74f8e863e5",
+      "poster": "docs/blueprint/evidence/motion/yang_family_spear_star3.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 32,
+      "distinct_frames": 3,
+      "arena_distinct_frames": 3,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 1.823,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed"
+      ]
+    },
+    {
+      "id": "yang_family_spear_star7",
+      "title": "연환쇄로",
+      "card_ids": [
+        "yang_family_spear_star7"
+      ],
+      "events": [
+        {
+          "action_slots": 2,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "yang_family_spear_star7",
+          "card_name": "연환쇄로",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 1,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 2,
+          "card_id": "yang_family_spear_star7",
+          "card_name": "연환쇄로",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": false,
+          "damage": 10,
+          "damage_after_block": 10,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 1,
+          "martial_events": [
+            {
+              "distance": 1,
+              "max": 2,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "IN_RANGE"
+            },
+            {
+              "attempt": 1,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 5,
+              "op": "INDEPENDENT_ATTACK",
+              "raw_power": 5,
+              "status": "HIT"
+            },
+            {
+              "attempt": 2,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 5,
+              "op": "INDEPENDENT_ATTACK",
+              "raw_power": 5,
+              "status": "HIT"
+            },
+            {
+              "actual": 2,
+              "op": "REQUIRE_ACTUAL_HP_HITS",
+              "required": 1,
+              "status": "PASSED"
+            },
+            {
+              "from": 4,
+              "moved": true,
+              "op": "MOVE_AWAY",
+              "status": "MOVED",
+              "tiles": 1,
+              "to": 3
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/yang_family_spear_star7.mp4",
+      "path_sha256": "816e1e0ba73bc0f8b74376699b5b99a523940d9fe6336096d35a254ab1e2a784",
+      "poster": "docs/blueprint/evidence/motion/yang_family_spear_star7.jpg",
+      "poster_sha256": "764273f928d84910199372d669e1da42d4be19547af05987619c5cb75be97114",
+      "frames": 40,
+      "distinct_frames": 4,
+      "arena_distinct_frames": 4,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 2.312,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    },
+    {
+      "id": "yang_family_spear_star10",
+      "title": "회마창",
+      "card_ids": [
+        "yang_family_spear_star10"
+      ],
+      "events": [
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "yang_family_spear_star10",
+          "card_name": "회마창",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 3,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 3,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "yang_family_spear_star10",
+          "card_name": "회마창",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 3,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 3,
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 1,
+          "card_id": "yang_family_spear_star10",
+          "card_name": "회마창",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": false,
+          "damage": 9,
+          "damage_after_block": 9,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 3,
+          "martial_events": [
+            {
+              "attempt": 1,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 9,
+              "op": "ATTACK",
+              "raw_power": 9,
+              "status": "HIT"
+            },
+            {
+              "from": 4,
+              "moved": true,
+              "op": "MOVE_AWAY",
+              "status": "MOVED",
+              "tiles": 2,
+              "to": 2
+            },
+            {
+              "distance": 3,
+              "max": 2,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "OUT_OF_RANGE"
+            },
+            {
+              "attempt": 2,
+              "distance": 3,
+              "max": 2,
+              "min": 1,
+              "op": "ATTACK",
+              "status": "SKIPPED_OUT_OF_RANGE"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 3,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 3,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/yang_family_spear_star10.mp4",
+      "path_sha256": "ebde44d1517081033345fe8d129ffef27fead1b41922b8ee6fcc37536fbd0819",
+      "poster": "docs/blueprint/evidence/motion/yang_family_spear_star10.jpg",
+      "poster_sha256": "8891d19bb04b3dd409fa70d8c92c69b3b033b250bc224e2fa7c96e12bcb104ce",
+      "frames": 55,
+      "distinct_frames": 12,
+      "arena_distinct_frames": 12,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 3.16,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    },
+    {
+      "id": "mount_hua_purple_mist_art_star3",
+      "title": "자하토납",
+      "card_ids": [
+        "mount_hua_purple_mist_art_star3"
+      ],
+      "events": [
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 0,
+          "card_id": "mount_hua_purple_mist_art_star3",
+          "card_name": "자하토납",
+          "category": "recovery",
+          "category_label": "recovery",
+          "clash_won": false,
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 0,
+          "martial_events": [
+            {
+              "amount": 2,
+              "op": "GAIN_RESOURCE",
+              "resource": "internal",
+              "status": "APPLIED"
+            },
+            {
+              "op": "GAIN_RESOURCE",
+              "status": "SKIPPED_CONDITION"
+            },
+            {
+              "op": "GAIN_RESOURCE",
+              "status": "SKIPPED_CONDITION"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "0",
+          "source_label": "",
+          "stamina_cost": 0,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/mount_hua_purple_mist_art_star3.mp4",
+      "path_sha256": "14f740560908cd143ed6a326a8b94bf393c23da8f0c03457e6c25e32d0716974",
+      "poster": "docs/blueprint/evidence/motion/mount_hua_purple_mist_art_star3.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 31,
+      "distinct_frames": 1,
+      "arena_distinct_frames": 1,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 1.758,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed"
+      ]
+    },
+    {
+      "id": "mount_hua_purple_mist_art_star7",
+      "title": "자하회천",
+      "card_ids": [
+        "mount_hua_purple_mist_art_star7"
+      ],
+      "events": [
+        {
+          "action_slots": 2,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "mount_hua_purple_mist_art_star7",
+          "card_name": "자하회천",
+          "category": "recovery",
+          "category_label": "recovery",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 2,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "0",
+          "source_label": "",
+          "stamina_cost": 0,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 0,
+          "card_id": "mount_hua_purple_mist_art_star7",
+          "card_name": "자하회천",
+          "category": "recovery",
+          "category_label": "recovery",
+          "clash_won": false,
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 2,
+          "martial_events": [
+            {
+              "amount": 3,
+              "op": "GAIN_RESOURCE",
+              "resource": "internal",
+              "status": "APPLIED"
+            },
+            {
+              "op": "GAIN_STATUS",
+              "status": "SKIPPED_CONDITION"
+            },
+            {
+              "op": "GAIN_RESOURCE",
+              "status": "SKIPPED_CONDITION"
+            },
+            {
+              "op": "GAIN_RESOURCE",
+              "status": "SKIPPED_CONDITION"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "0",
+          "source_label": "",
+          "stamina_cost": 0,
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/mount_hua_purple_mist_art_star7.mp4",
+      "path_sha256": "4d236522588f9cd8737f1277db3c3d9a0d32c151d6a9b5f2d549b19aca4b526b",
+      "poster": "docs/blueprint/evidence/motion/mount_hua_purple_mist_art_star7.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 37,
+      "distinct_frames": 1,
+      "arena_distinct_frames": 1,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 2.117,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    },
+    {
+      "id": "mount_hua_purple_mist_art_star10",
+      "title": "자하신공",
+      "card_ids": [
+        "mount_hua_purple_mist_art_star10"
+      ],
+      "events": [
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "mount_hua_purple_mist_art_star10",
+          "card_name": "자하신공",
+          "category": "recovery",
+          "category_label": "recovery",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 0,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "0",
+          "source_label": "",
+          "stamina_cost": 0,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "mount_hua_purple_mist_art_star10",
+          "card_name": "자하신공",
+          "category": "recovery",
+          "category_label": "recovery",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 0,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "0",
+          "source_label": "",
+          "stamina_cost": 0,
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 0,
+          "card_id": "mount_hua_purple_mist_art_star10",
+          "card_name": "자하신공",
+          "category": "recovery",
+          "category_label": "recovery",
+          "clash_won": false,
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 0,
+          "martial_events": [
+            {
+              "key": "purple_mist_ultimate",
+              "op": "CONSUME_ONCE_PER_BATTLE",
+              "status": "CONSUMED"
+            },
+            {
+              "amount": 4,
+              "op": "GAIN_RESOURCE",
+              "resource": "internal",
+              "status": "APPLIED"
+            },
+            {
+              "amount": 3,
+              "op": "GAIN_RESOURCE",
+              "resource": "stamina",
+              "status": "APPLIED"
+            },
+            {
+              "amount": 1,
+              "op": "GAIN_STATUS",
+              "status": "APPLIED",
+              "status_name": "fortitude"
+            },
+            {
+              "amount": 3,
+              "op": "GAIN_RESOURCE",
+              "resource": "defense",
+              "status": "APPLIED"
+            },
+            {
+              "op": "GAIN_RESOURCE",
+              "status": "SKIPPED_CONDITION"
+            },
+            {
+              "amount": 1,
+              "op": "GAIN_MOMENTUM_ON_COMPLETE",
+              "status": "QUEUED"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "0",
+          "source_label": "",
+          "stamina_cost": 0,
+          "target_tile": 5,
+          "timing": 3,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/mount_hua_purple_mist_art_star10.mp4",
+      "path_sha256": "02b07710db999309efbc142932759f46bd80956460110c86d67380a5d28369a3",
+      "poster": "docs/blueprint/evidence/motion/mount_hua_purple_mist_art_star10.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 54,
+      "distinct_frames": 3,
+      "arena_distinct_frames": 3,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 3.119,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    },
+    {
+      "id": "xiaoyao_lingbo_footwork_star3",
+      "title": "미진환보",
+      "card_ids": [
+        "xiaoyao_lingbo_footwork_star3"
+      ],
+      "events": [
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "player",
+          "card_id": "xiaoyao_lingbo_footwork_star3",
+          "card_name": "미진환보",
+          "category": "response",
+          "category_label": "response",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 1,
+          "outcome": "response",
+          "phase": "response",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "0",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/xiaoyao_lingbo_footwork_star3.mp4",
+      "path_sha256": "1f72de7bc0ffd270a0db5ec6c10b0c751616cb0ecb1d43d67f67667747e49f87",
+      "poster": "docs/blueprint/evidence/motion/xiaoyao_lingbo_footwork_star3.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 30,
+      "distinct_frames": 2,
+      "arena_distinct_frames": 2,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 1.71,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "response"
+      ]
+    },
+    {
+      "id": "xiaoyao_lingbo_footwork_star7",
+      "title": "소요환위",
+      "card_ids": [
+        "xiaoyao_lingbo_footwork_star7"
+      ],
+      "events": [
+        {
+          "action_slots": 2,
+          "action_stage": "execution",
+          "actor": "player",
+          "card_id": "xiaoyao_lingbo_footwork_star7",
+          "card_name": "소요환위",
+          "category": "response",
+          "category_label": "response",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 2,
+          "outcome": "response",
+          "phase": "response",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "xiaoyao_lingbo_footwork_star7",
+          "card_name": "소요환위",
+          "category": "response",
+          "category_label": "response",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 2,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/xiaoyao_lingbo_footwork_star7.mp4",
+      "path_sha256": "15c76c768d16d3779b3557c9d9ff24b60ef09c33a0f42605cdf22f03815133b2",
+      "poster": "docs/blueprint/evidence/motion/xiaoyao_lingbo_footwork_star7.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 38,
+      "distinct_frames": 2,
+      "arena_distinct_frames": 2,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 2.166,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "preparation",
+        "response"
+      ]
+    },
+    {
+      "id": "xiaoyao_lingbo_footwork_star10",
+      "title": "능파미보",
+      "card_ids": [
+        "xiaoyao_lingbo_footwork_star10"
+      ],
+      "events": [
+        {
+          "action_slots": 3,
+          "action_stage": "execution",
+          "actor": "player",
+          "card_id": "xiaoyao_lingbo_footwork_star10",
+          "card_name": "능파미보",
+          "category": "response",
+          "category_label": "response",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 3,
+          "outcome": "response",
+          "phase": "response",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 4,
+          "target_tile": 5,
+          "timing": 3,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "xiaoyao_lingbo_footwork_star10",
+          "card_name": "능파미보",
+          "category": "response",
+          "category_label": "response",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 3,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 4,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "xiaoyao_lingbo_footwork_star10",
+          "card_name": "능파미보",
+          "category": "response",
+          "category_label": "response",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 3,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 4,
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/xiaoyao_lingbo_footwork_star10.mp4",
+      "path_sha256": "a01e7d781a6d3cfce1d32a74d643f4150b2a6d48d016ec590ad63dd0bf265438",
+      "poster": "docs/blueprint/evidence/motion/xiaoyao_lingbo_footwork_star10.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 45,
+      "distinct_frames": 2,
+      "arena_distinct_frames": 2,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 2.57,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "preparation",
+        "response"
+      ]
+    },
+    {
+      "id": "beggars_dragon_subduing_palm_star3",
+      "title": "견룡재전",
+      "card_ids": [
+        "beggars_dragon_subduing_palm_star3"
+      ],
+      "events": [
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 1,
+          "card_id": "beggars_dragon_subduing_palm_star3",
+          "card_name": "견룡재전",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": false,
+          "damage": 8,
+          "damage_after_block": 8,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 2,
+          "martial_events": [
+            {
+              "distance": 1,
+              "max": 2,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "IN_RANGE"
+            },
+            {
+              "attempt": 1,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 8,
+              "op": "ATTACK",
+              "raw_power": 8,
+              "status": "HIT"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/beggars_dragon_subduing_palm_star3.mp4",
+      "path_sha256": "afd0bb40f8cabcf01fb6f77f2b3d923a49ff37108c7fd60e29611d72194e3480",
+      "poster": "docs/blueprint/evidence/motion/beggars_dragon_subduing_palm_star3.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 32,
+      "distinct_frames": 4,
+      "arena_distinct_frames": 4,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 1.824,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed"
+      ]
+    },
+    {
+      "id": "beggars_dragon_subduing_palm_star7",
+      "title": "비룡재천",
+      "card_ids": [
+        "beggars_dragon_subduing_palm_star7"
+      ],
+      "events": [
+        {
+          "action_slots": 2,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "beggars_dragon_subduing_palm_star7",
+          "card_name": "비룡재천",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 4,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 0,
+          "card_id": "beggars_dragon_subduing_palm_star7",
+          "card_name": "비룡재천",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": true,
+          "damage": 0,
+          "damage_after_block": 0,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 4,
+          "martial_events": [
+            {
+              "from": 4,
+              "moved": true,
+              "op": "MOVE_TOWARD",
+              "status": "MOVED",
+              "tiles": 1,
+              "to": 5
+            },
+            {
+              "distance": 0,
+              "max": 2,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "OUT_OF_RANGE"
+            },
+            {
+              "op": "SPECIAL_CLASH",
+              "opponent_power": 0,
+              "power": 21,
+              "status": "WIN"
+            },
+            {
+              "op": "REQUIRE_CLASH_WIN",
+              "status": "PASSED"
+            },
+            {
+              "from": 5,
+              "moved": false,
+              "op": "PUSH_TARGET",
+              "status": "STAYED",
+              "tiles": 0,
+              "to": 5
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/beggars_dragon_subduing_palm_star7.mp4",
+      "path_sha256": "c75e21889cd1bd9dd2ae0bf5866aac0fb8287fadddac4dbc1bce92132c6d8a50",
+      "poster": "docs/blueprint/evidence/motion/beggars_dragon_subduing_palm_star7.jpg",
+      "poster_sha256": "13b9ded6bcba33f6faf7978dbb6690e300b5827a31aa1bcf014e361b8263e9f3",
+      "frames": 38,
+      "distinct_frames": 3,
+      "arena_distinct_frames": 3,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 2.175,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    },
+    {
+      "id": "beggars_dragon_subduing_palm_star10",
+      "title": "항룡십팔장",
+      "card_ids": [
+        "beggars_dragon_subduing_palm_star10"
+      ],
+      "events": [
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "beggars_dragon_subduing_palm_star10",
+          "card_name": "항룡십팔장",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 4,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "beggars_dragon_subduing_palm_star10",
+          "card_name": "항룡십팔장",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 4,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 0,
+          "card_id": "beggars_dragon_subduing_palm_star10",
+          "card_name": "항룡십팔장",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": true,
+          "damage": 0,
+          "damage_after_block": 0,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 4,
+          "martial_events": [
+            {
+              "from": 4,
+              "moved": true,
+              "op": "MOVE_TOWARD",
+              "status": "MOVED",
+              "tiles": 1,
+              "to": 5
+            },
+            {
+              "distance": 0,
+              "max": 2,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "OUT_OF_RANGE"
+            },
+            {
+              "op": "SPECIAL_CLASH",
+              "opponent_power": 0,
+              "power": 24,
+              "status": "WIN"
+            },
+            {
+              "op": "REQUIRE_CLASH_WIN",
+              "status": "PASSED"
+            },
+            {
+              "after": 0,
+              "amount": 3,
+              "before": 0,
+              "op": "BREAK_DEFENSE",
+              "status": "APPLIED"
+            },
+            {
+              "attempt": 1,
+              "distance": 0,
+              "max": 2,
+              "min": 1,
+              "op": "ATTACK",
+              "status": "SKIPPED_OUT_OF_RANGE"
+            },
+            {
+              "from": 5,
+              "moved": false,
+              "op": "PUSH_TARGET",
+              "status": "STAYED",
+              "tiles": 0,
+              "to": 5
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 3,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/beggars_dragon_subduing_palm_star10.mp4",
+      "path_sha256": "f28152e519df46731c431f7a9b9765d5d58d16659ad9390cf6f96b5fad87bf5f",
+      "poster": "docs/blueprint/evidence/motion/beggars_dragon_subduing_palm_star10.jpg",
+      "poster_sha256": "729d147fed02bc000197f1fcb4388c9a1091e01b0febef22a7218d8c64a41e5b",
+      "frames": 54,
+      "distinct_frames": 11,
+      "arena_distinct_frames": 11,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 3.128,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    },
+    {
+      "id": "sichuan_tang_hidden_weapons_star3",
+      "title": "추혼표",
+      "card_ids": [
+        "sichuan_tang_hidden_weapons_star3"
+      ],
+      "events": [
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 1,
+          "card_id": "sichuan_tang_hidden_weapons_star3",
+          "card_name": "추혼표",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": false,
+          "damage": 6,
+          "damage_after_block": 6,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 1,
+          "martial_events": [
+            {
+              "distance": 1,
+              "max": 3,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "IN_RANGE"
+            },
+            {
+              "attempt": 1,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 6,
+              "op": "ATTACK",
+              "raw_power": 6,
+              "status": "HIT"
+            },
+            {
+              "after": 0,
+              "amount": 1,
+              "before": 0,
+              "op": "BREAK_DEFENSE",
+              "status": "APPLIED"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~3",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/sichuan_tang_hidden_weapons_star3.mp4",
+      "path_sha256": "2f717b4ff579dba988155ad00aa3b48409fa370d6c040b40e4343f4874b7cb15",
+      "poster": "docs/blueprint/evidence/motion/sichuan_tang_hidden_weapons_star3.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 33,
+      "distinct_frames": 5,
+      "arena_distinct_frames": 5,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 1.882,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed"
+      ]
+    },
+    {
+      "id": "sichuan_tang_hidden_weapons_star7",
+      "title": "폭우이화침",
+      "card_ids": [
+        "sichuan_tang_hidden_weapons_star7"
+      ],
+      "events": [
+        {
+          "action_slots": 2,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "sichuan_tang_hidden_weapons_star7",
+          "card_name": "폭우이화침",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 3,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "2~4",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 0,
+          "card_id": "sichuan_tang_hidden_weapons_star7",
+          "card_name": "폭우이화침",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": false,
+          "damage": 0,
+          "damage_after_block": 0,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 3,
+          "martial_events": [
+            {
+              "distance": 1,
+              "max": 4,
+              "min": 2,
+              "op": "RECHECK_RANGE",
+              "status": "OUT_OF_RANGE"
+            },
+            {
+              "attempt": 1,
+              "distance": 1,
+              "max": 4,
+              "min": 2,
+              "op": "INDEPENDENT_ATTACK",
+              "status": "SKIPPED_OUT_OF_RANGE"
+            },
+            {
+              "op": "BREAK_DEFENSE",
+              "status": "SKIPPED_CONDITION"
+            },
+            {
+              "attempt": 2,
+              "distance": 1,
+              "max": 4,
+              "min": 2,
+              "op": "INDEPENDENT_ATTACK",
+              "status": "SKIPPED_OUT_OF_RANGE"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "2~4",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/sichuan_tang_hidden_weapons_star7.mp4",
+      "path_sha256": "d8bce8022c66277222fea1b224c5c84a5fea89f1be9c6bbd6310c567cee14df8",
+      "poster": "docs/blueprint/evidence/motion/sichuan_tang_hidden_weapons_star7.jpg",
+      "poster_sha256": "a5bcc1c74f5dfb79b79842ab61ed01f6f6c7df2082d63a213d4c3b74df38f6c2",
+      "frames": 38,
+      "distinct_frames": 3,
+      "arena_distinct_frames": 3,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 2.188,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    },
+    {
+      "id": "sichuan_tang_hidden_weapons_star10",
+      "title": "만천화우",
+      "card_ids": [
+        "sichuan_tang_hidden_weapons_star10"
+      ],
+      "events": [
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "sichuan_tang_hidden_weapons_star10",
+          "card_name": "만천화우",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 4,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~4",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "sichuan_tang_hidden_weapons_star10",
+          "card_name": "만천화우",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 4,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~4",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 4,
+          "card_id": "sichuan_tang_hidden_weapons_star10",
+          "card_name": "만천화우",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": false,
+          "damage": 16,
+          "damage_after_block": 16,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 4,
+          "martial_events": [
+            {
+              "distance": 1,
+              "max": 4,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "IN_RANGE"
+            },
+            {
+              "attempt": 1,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 4,
+              "op": "INDEPENDENT_ATTACK",
+              "raw_power": 4,
+              "status": "HIT"
+            },
+            {
+              "attempt": 2,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 4,
+              "op": "INDEPENDENT_ATTACK",
+              "raw_power": 4,
+              "status": "HIT"
+            },
+            {
+              "attempt": 3,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 4,
+              "op": "INDEPENDENT_ATTACK",
+              "raw_power": 4,
+              "status": "HIT"
+            },
+            {
+              "attempt": 4,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 4,
+              "op": "INDEPENDENT_ATTACK",
+              "raw_power": 4,
+              "status": "HIT"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~4",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 3,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/sichuan_tang_hidden_weapons_star10.mp4",
+      "path_sha256": "3697e10b9827a54355e92bd5e1a030624d45179731ca534e12ed2e9b2262fbb1",
+      "poster": "docs/blueprint/evidence/motion/sichuan_tang_hidden_weapons_star10.jpg",
+      "poster_sha256": "b05ecef3536cca6d8bacdb22c0c6dc69128bab7200512490875f1fa39b7df647",
+      "frames": 56,
+      "distinct_frames": 13,
+      "arena_distinct_frames": 13,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 3.233,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    },
+    {
+      "id": "hebei_peng_five_tigers_saber_star3",
+      "title": "맹호출림",
+      "card_ids": [
+        "hebei_peng_five_tigers_saber_star3"
+      ],
+      "events": [
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 1,
+          "card_id": "hebei_peng_five_tigers_saber_star3",
+          "card_name": "맹호출림",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": false,
+          "damage": 8,
+          "damage_after_block": 8,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 0,
+          "martial_events": [
+            {
+              "distance": 1,
+              "max": 1,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "IN_RANGE"
+            },
+            {
+              "attempt": 1,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 8,
+              "op": "ATTACK",
+              "raw_power": 8,
+              "status": "HIT"
+            },
+            {
+              "after": 0,
+              "amount": 2,
+              "before": 0,
+              "op": "BREAK_DEFENSE",
+              "status": "APPLIED"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/hebei_peng_five_tigers_saber_star3.mp4",
+      "path_sha256": "82a135c30307187a65cc5fb08c402c5b1dcdcb23097580e8cd425e3c520831b1",
+      "poster": "docs/blueprint/evidence/motion/hebei_peng_five_tigers_saber_star3.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 32,
+      "distinct_frames": 4,
+      "arena_distinct_frames": 4,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 1.839,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed"
+      ]
+    },
+    {
+      "id": "hebei_peng_five_tigers_saber_star7",
+      "title": "백호단문",
+      "card_ids": [
+        "hebei_peng_five_tigers_saber_star7"
+      ],
+      "events": [
+        {
+          "action_slots": 2,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "hebei_peng_five_tigers_saber_star7",
+          "card_name": "백호단문",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 1,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 2,
+          "card_id": "hebei_peng_five_tigers_saber_star7",
+          "card_name": "백호단문",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": false,
+          "damage": 17,
+          "damage_after_block": 17,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 1,
+          "martial_events": [
+            {
+              "distance": 1,
+              "max": 1,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "IN_RANGE"
+            },
+            {
+              "attempt": 1,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 8,
+              "op": "ATTACK",
+              "raw_power": 8,
+              "status": "HIT"
+            },
+            {
+              "after": 0,
+              "amount": 2,
+              "before": 0,
+              "op": "BREAK_DEFENSE",
+              "status": "APPLIED"
+            },
+            {
+              "defense": 0,
+              "op": "REQUIRE_DEFENSE_ZERO",
+              "status": "PASSED"
+            },
+            {
+              "attempt": 2,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 9,
+              "op": "ATTACK",
+              "raw_power": 9,
+              "status": "HIT"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/hebei_peng_five_tigers_saber_star7.mp4",
+      "path_sha256": "1af115e8b4a04bf836a0e6bcb258a78a4388638e3722e0c99a9879f02f0977e4",
+      "poster": "docs/blueprint/evidence/motion/hebei_peng_five_tigers_saber_star7.jpg",
+      "poster_sha256": "8c3226687139415f06586d30047e79b1f5b71062fb5347a7239c037b0baeb128",
+      "frames": 39,
+      "distinct_frames": 5,
+      "arena_distinct_frames": 5,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 2.25,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    },
+    {
+      "id": "hebei_peng_five_tigers_saber_star10",
+      "title": "오호단문도",
+      "card_ids": [
+        "hebei_peng_five_tigers_saber_star10"
+      ],
+      "events": [
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "hebei_peng_five_tigers_saber_star10",
+          "card_name": "오호단문도",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 2,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 3,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "hebei_peng_five_tigers_saber_star10",
+          "card_name": "오호단문도",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 2,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 3,
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 3,
+          "card_id": "hebei_peng_five_tigers_saber_star10",
+          "card_name": "오호단문도",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": false,
+          "damage": 28,
+          "damage_after_block": 28,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 2,
+          "martial_events": [
+            {
+              "distance": 1,
+              "max": 1,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "IN_RANGE"
+            },
+            {
+              "attempt": 1,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 8,
+              "op": "ATTACK",
+              "raw_power": 8,
+              "status": "HIT"
+            },
+            {
+              "after": 0,
+              "amount": 2,
+              "before": 0,
+              "op": "BREAK_DEFENSE",
+              "status": "APPLIED"
+            },
+            {
+              "attempt": 2,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 8,
+              "op": "ATTACK",
+              "raw_power": 8,
+              "status": "HIT"
+            },
+            {
+              "after": 0,
+              "amount": 2,
+              "before": 0,
+              "op": "BREAK_DEFENSE",
+              "status": "APPLIED"
+            },
+            {
+              "defense": 0,
+              "op": "REQUIRE_DEFENSE_ZERO",
+              "status": "PASSED"
+            },
+            {
+              "attempt": 3,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 12,
+              "op": "ATTACK",
+              "raw_power": 12,
+              "status": "HIT"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 3,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 3,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/hebei_peng_five_tigers_saber_star10.mp4",
+      "path_sha256": "861df51c4ecb042ecf8d732f90c6b13695c34b4838b32dd8dee69258cea8ddec",
+      "poster": "docs/blueprint/evidence/motion/hebei_peng_five_tigers_saber_star10.jpg",
+      "poster_sha256": "729d147fed02bc000197f1fcb4388c9a1091e01b0febef22a7218d8c64a41e5b",
+      "frames": 54,
+      "distinct_frames": 12,
+      "arena_distinct_frames": 12,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 3.121,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    },
+    {
+      "id": "nangong_boundless_sky_sword_star3",
+      "title": "철검십식",
+      "card_ids": [
+        "nangong_boundless_sky_sword_star3"
+      ],
+      "events": [
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 0,
+          "card_id": "nangong_boundless_sky_sword_star3",
+          "card_name": "철검십식",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": true,
+          "damage": 0,
+          "damage_after_block": 0,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 2,
+          "martial_events": [
+            {
+              "op": "CONSUME_STATUS",
+              "status": "OPTIONAL_MISSING",
+              "status_name": "prepared"
+            },
+            {
+              "op": "GAIN_RESOURCE",
+              "status": "SKIPPED_CONDITION"
+            },
+            {
+              "distance": 1,
+              "max": 1,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "IN_RANGE"
+            },
+            {
+              "op": "SPECIAL_CLASH",
+              "opponent_power": 0,
+              "power": 18,
+              "status": "WIN"
+            },
+            {
+              "op": "BREAK_DEFENSE",
+              "status": "SKIPPED_CONDITION"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/nangong_boundless_sky_sword_star3.mp4",
+      "path_sha256": "154724874b8b4cbab9ca1bacad267141b111edd1f17ff478a8314b2e33bb43d9",
+      "poster": "docs/blueprint/evidence/motion/nangong_boundless_sky_sword_star3.jpg",
+      "poster_sha256": "252f4b9b037843bec3bb716ea5b35b3312e1f6f3a8bce67a65c9d890a830d711",
+      "frames": 32,
+      "distinct_frames": 3,
+      "arena_distinct_frames": 3,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 1.817,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed"
+      ]
+    },
+    {
+      "id": "nangong_boundless_sky_sword_star7",
+      "title": "창궁검뢰",
+      "card_ids": [
+        "nangong_boundless_sky_sword_star7"
+      ],
+      "events": [
+        {
+          "action_slots": 2,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "nangong_boundless_sky_sword_star7",
+          "card_name": "창궁검뢰",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 4,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~3",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 0,
+          "card_id": "nangong_boundless_sky_sword_star7",
+          "card_name": "창궁검뢰",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": true,
+          "damage": 0,
+          "damage_after_block": 0,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 4,
+          "martial_events": [
+            {
+              "amount": 1,
+              "op": "GAIN_STATUS",
+              "status": "APPLIED",
+              "status_name": "telegraph"
+            },
+            {
+              "distance": 1,
+              "max": 3,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "IN_RANGE"
+            },
+            {
+              "op": "SPECIAL_CLASH",
+              "opponent_power": 0,
+              "power": 22,
+              "status": "WIN"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~3",
+          "source_label": "",
+          "stamina_cost": 1,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/nangong_boundless_sky_sword_star7.mp4",
+      "path_sha256": "57c955af28202879dd1e97efb518a7fd7f4b15caaf268803e3d29700a1f8cb67",
+      "poster": "docs/blueprint/evidence/motion/nangong_boundless_sky_sword_star7.jpg",
+      "poster_sha256": "917744ca7bbb6d994cd010cc060247c62f1746ff47f40670ebb0f9cfe102dc9f",
+      "frames": 38,
+      "distinct_frames": 3,
+      "arena_distinct_frames": 3,
+      "visual_status": "STATIC_OR_EFFECT_ONLY",
+      "duration_seconds": 2.18,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    },
+    {
+      "id": "nangong_boundless_sky_sword_star10",
+      "title": "제왕검형",
+      "card_ids": [
+        "nangong_boundless_sky_sword_star10"
+      ],
+      "events": [
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "nangong_boundless_sky_sword_star10",
+          "card_name": "제왕검형",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 4,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~3",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target_tile": 5,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "nangong_boundless_sky_sword_star10",
+          "card_name": "제왕검형",
+          "category": "attack",
+          "category_label": "attack",
+          "direction": 1,
+          "illustration": {},
+          "internal_cost": 4,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~3",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target_tile": 5,
+          "timing": 2,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 3,
+          "action_stage": "execution",
+          "actor": "player",
+          "actual_hp_hits": 1,
+          "card_id": "nangong_boundless_sky_sword_star10",
+          "card_name": "제왕검형",
+          "category": "attack",
+          "category_label": "attack",
+          "clash_won": true,
+          "damage": 12,
+          "damage_after_block": 12,
+          "defense_outcome": "martial_pipeline",
+          "direction": 1,
+          "evade_succeeded": false,
+          "failure_reason": "",
+          "illustration": {},
+          "internal_cost": 4,
+          "martial_events": [
+            {
+              "amount": 1,
+              "op": "GAIN_STATUS",
+              "status": "APPLIED",
+              "status_name": "telegraph"
+            },
+            {
+              "distance": 1,
+              "max": 3,
+              "min": 1,
+              "op": "RECHECK_RANGE",
+              "status": "IN_RANGE"
+            },
+            {
+              "op": "SPECIAL_CLASH",
+              "opponent_power": 0,
+              "power": 25,
+              "status": "WIN"
+            },
+            {
+              "op": "REQUIRE_CLASH_WIN",
+              "status": "PASSED"
+            },
+            {
+              "after": 0,
+              "amount": 3,
+              "before": 0,
+              "op": "BREAK_DEFENSE",
+              "status": "APPLIED"
+            },
+            {
+              "attempt": 1,
+              "defense": 0,
+              "distance": 1,
+              "health_damage": 12,
+              "op": "ATTACK",
+              "raw_power": 12,
+              "status": "HIT"
+            }
+          ],
+          "outcome": "martial_completed",
+          "phase": "martial_completed",
+          "positions_before_bundle": {
+            "enemy": 5,
+            "player": 4
+          },
+          "range_text": "1~3",
+          "source_label": "",
+          "stamina_cost": 2,
+          "target": "enemy",
+          "target_tile": 5,
+          "timing": 3,
+          "type": "action_result"
+        }
+      ],
+      "path": "docs/blueprint/evidence/motion/nangong_boundless_sky_sword_star10.mp4",
+      "path_sha256": "407f0c5b4923b82207ffdbb63ef9d3249158e45ba6f6aad0b6258375d72b4dcd",
+      "poster": "docs/blueprint/evidence/motion/nangong_boundless_sky_sword_star10.jpg",
+      "poster_sha256": "d77dbeaddf4942d819993e3734be7d7a5cdcc16dd87604162bff5565ec72ecb2",
+      "frames": 56,
+      "distinct_frames": 12,
+      "arena_distinct_frames": 12,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 3.206,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "GODOT_PRESENTATION_FIXTURE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "28b689cc5889afbe761bdbfd2e7537f9ebfadcaa",
+      "outcomes": [
+        "martial_completed",
+        "preparation"
+      ]
+    }
+  ]
+}
