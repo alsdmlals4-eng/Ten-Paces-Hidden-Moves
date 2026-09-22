@@ -16,7 +16,7 @@ file URL은 차단됐으므로 재시도하지 않는다. 이 경로는 manifest
 
 Archify 다이어그램 방법은 기존 QA Skill의 `html-blueprint-review`에 연결했다.
 PR337은 실제 병합 이력을 PM에 교정했다. PR342는 정확한 후보 SHA로 구분하고 다른 작업 폴더는 보호한다.
-신규 Godot 실행을 하지 않았으며 기존 캡처·실행 근거와 실행 경로를 연결한다.
+신규 visible Godot 실행은 하지 않았다. 기존 캡처·실행 경로를 연결하고, exact Godot4.7.1 초기 import 후 headless 검사를 포함한 로컬 전체523개 회귀를 통과했다. 준비 전 중단한 첫 시도는 PASS로 세지 않는다.
 승인 PDF/원화는 보존한다. HTML 전환을 검증했으므로 블루프린트·월간 일지 PDF의 정기 생성을 중단했다. 일지는 기존 월간 JSON에 날짜별로 누적한다. 다음 게임 작업은 PR342와 원래 dirty 폴더를 fresh-read한 뒤 같은 승인 범위에서 계속한다.
 아래 날짜별 기록은 당시 상태이며 현재 상태는 이 절·receipt·GitHub live metadata로 대조한다.
 
