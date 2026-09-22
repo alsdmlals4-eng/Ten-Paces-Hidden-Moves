@@ -358,5 +358,15 @@
       ],
       "correction": "Four findings corrected; focused regressions pass. Approved-page expanded at390×844 and844×390, image loaded without document horizontal overflow."
     }
-  }
+  },
+  "preserved_previous_checkpoint": {
+    "source_decision": "TEN-DEC-20260909-COMBAT-LAYOUT-CORRECTION-01",
+    "active_planning_pr": "337",
+    "active_decision_state": "COMBAT_LAYOUT_SOURCE_AND_BOUNDED_RUNTIME_VERIFIED_DELIVERY_PENDING",
+    "next_package": "COMBAT_LAYOUT_PROTECTED_DELIVERY_THEN_ORDERED_COMBAT_V1_COMPATIBILITY_GROWTH_EVENTS_STATUS_REWARDS",
+    "state": "MERGED",
+    "merge_commit": "6ea28301029875fb9e606bab3b8bb5b61801822b",
+    "merged_at": "2026-09-09T07:01:32Z"
+  },
+  "related_product_candidate_pr": "342"
 }
