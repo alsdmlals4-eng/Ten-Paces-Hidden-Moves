@@ -88,4 +88,20 @@ for(let attempt=0;attempt<3;attempt++){
  notice.child.onclick({preventDefault(){},stopPropagation(){}});
  assert(!notice,'Retry clears only the previous notice');
 }
+
+assert.equal(vm.runInContext('typeof userReviewPanel',env),'function','Missing user status/comment editing');
+assert(check('reviewQueue()').includes('코멘트'));
+assert(check('auditGallery()').includes('정리'));
+assert(check("intentPanel(recordById('screen:menu'))").includes('만든 이유'));
+assert(vm.runInContext("requestFor(recordById('screen:menu'))",env).includes('만든 이유'));
+assert(check("userReviewPanel(recordById('screen:menu'))").includes('textarea'));
+assert(!check("userReviewPanel(recordById('screen:menu'))").includes('value="approved"'));
+assert(vm.runInContext("feedbackText({status:'changes',comment:'<script>x</script>'})",env).includes('&lt;script&gt;'));
+
+const candidateDocAsset=data.assets.find(a=>a.scope==='PR342_CANDIDATE'&&a.audit.document_references.length);
+assert(candidateDocAsset,'Candidate document references must be inventoried');
+const candidateAudit=check(`auditDetail(${JSON.stringify(candidateDocAsset)})`);
+assert(candidateAudit.includes('/blob/'+candidateDocAsset.revision+'/'),'Candidate document must use candidate revision');
+assert(!candidateDocAsset.audit.flags.includes('unreferenced'));
+assert(check('auditGallery()').includes('종류 · 같은 캐릭터'));
 console.log(JSON.stringify({result:'PASS',rendered_views:renders,checked_local_links:links,evidence_level:'SOURCE_RENDERING_NOT_BROWSER'},null,2));

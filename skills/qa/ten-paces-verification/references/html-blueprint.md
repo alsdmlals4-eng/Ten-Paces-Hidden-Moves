@@ -20,13 +20,13 @@ authoring/delivery/viewer-runtime 계약, workflow readable-v2 배치 계약, pr
 
 ## AI가 직접 열고 검사하는 경로
 
-1. `python tools/serve_html_blueprint.py`는 생성 후 127.0.0.1에만 읽기 전용 미리보기를 시작한다. 기존 출력만 확인할 때는 `--no-build`.
+1. `python tools/serve_html_blueprint.py`는 생성 후 127.0.0.1에만 프로젝트 읽기 전용 미리보기를 시작한다. 사용자 검토 저장 예외는 아래 계약을 따른다. 기존 출력만 확인할 때는 `--no-build`.
 2. 현재 주소·PID·출력 해시는 무시된 `output/blueprint/preview-session.json`에서 읽는다. 같은 PC/네트워크 공간에 연결된 브라우저 도구로 해당 HTTP 주소를 연다.
 3. 실제 브라우저에서 목차/검색/상태 필터/인물 상세/이미지 확대·Esc/모션 재생·정지/구조도 선택·원본/PM/재개 요청을 확인한다. 작은 화면과 키보드 이동을 포함한다.
 4. 자동 테스트: `python -m unittest tests.test_html_blueprint tests.test_html_blueprint_preview tests.test_html_blueprint_diagrams tests.test_html_blueprint_publication`; 소스 렌더·링크: `node tools/check_html_blueprint_ui.cjs`. 이 검사는 실제 브라우저 증거를 대체하지 않는다.
 5. 브라우저 정책이 요청을 거절하면 같은 요청을 다른 도구로 우회하지 않는다. 안전하게 범위를 줄인 별도 열람 방식도 차단되면 해당 검사만 BLOCKED_UNVERIFIED로 남긴다.
 
-서버는 발행 manifest의 파일만 해시 대조 후 제공하며 디렉터리 목록·임의 파일·쓰기·명령 실행·외부 바인딩을 허용하지 않는다.
+서버는 발행 manifest의 파일만 해시 대조 후 제공하며 디렉터리 목록·임의 파일 쓰기·명령 실행·외부 바인딩을 허용하지 않는다. 사용자 승인에 따른 `/_review`만 고정된 로컬 검토 JSON의 상태/코멘트 이력을 저장한다. 자세한 경계·백업·충돌·이관은 HTML_MIGRATION_SPEC.md18절을 따른다.
 클라우드 GPT/Claude 등의 localhost는 사용자 PC가 아니다. 그 환경에서 접속하지 않았다면 호환 완료를 주장하지 않는다. 공개 터널·업로드·인증·전역 설정 변경은 별도 범위다.
 검수 중 원본을 바꾸면 재생성하고 본 작업이 시작한 서버만 종료/재시작한다. 기본 120분 뒤 종료되며 주소·PID를 다음 세션의 상시 준비 상태로 재사용하지 않는다.
 
@@ -38,3 +38,5 @@ Python3.12+와 Pillow/reportlab, Poppler의 pdftoppm이 필요하다. Node는 �
 관측한 PR342 commit이 로컬 Git에 없으면 명시된 SHA를 origin에서 fetch한 뒤 생성한다. 다른 작업 폴더를 읽어 대체하지 않는다.
 PDF 페이지 렌더는 승인 PDF의 SHA별로 캐시하고112쪽 coverage와 캐시 hash를 대조한다. 문서 수정은 공유 원본에 반영한다.
 HTML 원본 항목의 기존 페이지 비교 이미지는 역사 승인 배치이며 최신 runtime과 혼동하지 않는다.
+
+검토 입력 변경 시 tests.test_blueprint_review와 기존 HTML 회귀를 실행하고, 브라우저 저장·재열기·충돌 시 입력 보존·내보내기/합치기를 확인한다. 새 대화는 resume-index.user_review의 원본도 읽으며 사용자 체크와 자산 최종 승인을 합치지 않는다.

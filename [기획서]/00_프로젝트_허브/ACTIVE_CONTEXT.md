@@ -1,5 +1,9 @@
 # 십보강호 활성 컨텍스트
 
+## 의도·이미지 정리·사용자 코멘트 · 2026-09-23
+
+승인된 구현은 HTML_MIGRATION_SPEC.md18절과 기존 HTML receipt의 intent_review_followup을 따른다. 목적/성공 기준과 이미지 사용·승인·교체·보존을 연결하고, HTML에서 항목별 사용자 상태/수정 코멘트를 저장한다. 새 AI는 output/blueprint/resume-index.json → user_review.path의 로컬 reviews.json을 함께 읽는다. 저장은 git common dir에 누적되어 포트/작업 폴더가 바뀌어도 유지된다. 다른 PC에는 JSON 내보내기/불러오기로 전달한다. 이 사용자 기록은 최종 자산 승인이나 구현 검증을 자동 변경하지 않는다. 검토/병합 상태는 receipt와 GitHub live metadata를 다시 확인한다. 원래 dirty45와 PR342를 보존하며 확정된 이미지 이동 대상은 아직 없다. 아래 읽기 전용 서버 설명은 당시 기준이고 현재는 고정 검토 JSON에 한정한 승인된 쓰기 경로가 있다.
+
 ## 기연·기획서·외부 HTML 검수 · 2026-09-23
 
 현재 승인 범위는 `docs/decisions/2026-09-23_GIYUN_DDD_BLUEPRINT.md`와 기존 HTML receipt의 `giyun_ddd_followup`이다. DDD=사용자가 정의한 도파민 중심 개발. 새 회차에 4활동/6사건/6기연 및 schema5를 연결하고, HTML 첫 게임 설명에 기획서·상세 SWOT·성수/기술 표·기연 도감을 파생한다. 기존 저장1/2, 승인 원화/PDF, PR342 후보와 원래 dirty45는 보존한다. 아래 이전 HTML 작업의 “게임 제품 변경 없음”은 당시 기록이다.

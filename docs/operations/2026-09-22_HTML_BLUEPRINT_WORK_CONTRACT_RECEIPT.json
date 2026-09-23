@@ -49,7 +49,8 @@
       "TEN-HTML-PM",
       "TEN-HTML-RUNTIME",
       "TEN-HTML-MIGRATE",
-      "TEN-HTML-DELIVER"
+      "TEN-HTML-DELIVER",
+      "TEN-HTML-INTENT-REVIEW"
     ],
     "active_work_item_ref": null,
     "next_action": "STOP_APPROVED_SCOPE_COMPLETE",
@@ -393,6 +394,61 @@
         ],
         "next_action": "사용자가 새 여정의 기연 조합 재미를 검수한다. 다음 제품 변경은 PR342 후보와 최신 main을 별도 fresh-read한다.",
         "pull_request": 348
+      },
+      {
+        "work_item_id": "TEN-HTML-INTENT-REVIEW",
+        "title": "의도·캐릭터/화면별 이미지 비교와 사용자 체크·코멘트 저장",
+        "status": "DONE",
+        "canon_owner": "docs/blueprint/HTML_MIGRATION_SPEC.md",
+        "actual_consumers": [
+          "tools/blueprint_review_store.py",
+          "tools/html_blueprint_audit.py",
+          "tools/html_blueprint_ui/review.js"
+        ],
+        "depends_on": [],
+        "acceptance_criteria": [
+          "TEN-HTML-INTENT-REVIEW-AC"
+        ],
+        "required_evidence": [
+          "E2_TEST",
+          "E4_VISUAL"
+        ],
+        "checklist": [
+          {
+            "id": "TEN-HTML-INTENT-REVIEW-AC",
+            "text": "의도 원본·종류별 이미지/승인/사용/보존 비교 및 사용자 상태·코멘트 저장/복원/충돌/파일 이관을 검증한다. 최종 원화 승인과 게임 검증은 자동 변경하지 않는다.",
+            "status": "PASS",
+            "evidence": [
+              "docs/blueprint/HTML_MIGRATION_SPEC.md#18"
+            ]
+          }
+        ],
+        "verification": [
+          {
+            "level": "E2_TEST",
+            "status": "PASS",
+            "evidence": [
+              "docs/blueprint/HTML_MIGRATION_SPEC.md#18"
+            ]
+          },
+          {
+            "level": "E4_VISUAL",
+            "status": "PASS",
+            "evidence": [
+              "docs/blueprint/HTML_MIGRATION_SPEC.md#18"
+            ]
+          }
+        ],
+        "next_action": "구현·브라우저 검수 완료. 이후 작업은 로컬 user_review 원본과 최신 원본/PR을 대조한다. 병합 상태는 intent_review_followup과 GitHub live metadata를 확인한다.",
+        "verified_head_sha": "387d7ac193131a12a49ab5bd7eb2cdd52a2b60f9",
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0,
+        "repository_readback": "PASS",
+        "readback_evidence": [
+          "50 focused tests,129 governance tests; actual Chrome and390px IAB;2 full reviews/P2 corrected; source rendering1036/link10677"
+        ],
+        "rollback": "Normal PR revert of HTML tools only; preserve user reviews.json and backup, original art/PDF and product."
       }
     ]
   },
@@ -573,5 +629,30 @@
       "browser": "External Chrome images/tables/Giyun, launcher/recovery and repeat image error contract",
       "human": "NOT_RUN"
     }
+  },
+  "intent_review_followup": {
+    "approval": "2026-09-23 user approved intent/gallery and explicitly requested editable status/comments",
+    "baseline": "47d7fdb30c0faa7c0a9b206a9c6228784de4043c",
+    "scope": [
+      "source-linked intent and goals",
+      "tracked image audit and conservative retention",
+      "user review persistence/history/conflict/import-export",
+      "browser and source checks / normal PR integration"
+    ],
+    "status": "IMPLEMENTED_VERIFIED_DELIVERY_GITHUB_LIVE",
+    "owner": "docs/blueprint/HTML_MIGRATION_SPEC.md#18",
+    "review_rounds_completed": 2,
+    "human_game_review": "NOT_RUN",
+    "image_moves": 0,
+    "review_result": "Own full review1 plus independent full review2; candidate document-reference P2 reproduced RED and corrected; no unresolved P1/P2",
+    "verification": {
+      "focused": "50 HTML/review tests PASS;1036 source-rendered views/10677 links before adding PM record",
+      "browser": "External Chrome save/reload/two-port sharing/conflict draft preservation/HTTP attachment export/JSON merge; IAB390px document375px input301px",
+      "governance": "129 tests PASS; operating-system/reference-freshness/skill-integrity PASS",
+      "new_game_runtime": "NOT_RUN; no product changes"
+    },
+    "implementation_commit": "387d7ac193131a12a49ab5bd7eb2cdd52a2b60f9",
+    "delivery_authority": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/350 : refresh exact-head checks, merge state and latest main on resume; status above means implementation verification, not an invented pre-merge result.",
+    "pull_request": 350
   }
 }
