@@ -556,8 +556,8 @@
             ]
           }
         ],
-        "next_action": "구현·브라우저·전체검토2회 완료. 정상 PR 검사/병합/main은 autosave_cleanup_followup과 GitHub live 확인. 다음 사용자 코멘트/폐기 요청을 실제 사용처와 대조한다.",
-        "verified_head_sha": "ed84ee31dc1674d0ef96fd2711a4cac72531c569",
+        "next_action": "PR353 정상 병합 및 main tree 일치 확인. 새 작업은 최신 main/관련 PR과 공용 사용자 코멘트·폐기 요청을 fresh-read한다.",
+        "verified_head_sha": "fa546542befbcd8b76a7e5659e622d7a84aca3fe",
         "must_fix_remaining": 0,
         "blocked_unverified_remaining": 0,
         "user_decision_required_remaining": 0,
@@ -835,7 +835,7 @@
     "approval": "2026-09-23: 맞아 진행해줘; 폐기 요청 버튼과 요청 대상 이동; 아틀라스/행로/전투/플레이어/상대/이미지 여섯 분류",
     "baseline": "ed84ee31dc1674d0ef96fd2711a4cac72531c569",
     "owner": "docs/blueprint/HTML_MIGRATION_SPEC.md#20",
-    "status": "IMPLEMENTED_VERIFIED_AWAITING_INTEGRATION",
+    "status": "IMPLEMENTED_VERIFIED_MERGED",
     "work_mode": "BUILD_TO_REVIEW",
     "skills": [
       "ten-paces-verification",
@@ -853,7 +853,7 @@
     "verification": {
       "python": "59 related tests PASS",
       "node_autosave": "PASS: actual debounce and IME, durable drafts/no-op/discard/concurrency/conflict/in-flight edit/offline/reload/import/late read",
-      "browser": "External Chrome fixture:316 autosave scroll279630/top404.953125/caret34/focus stable +reload restored;317 scroll425129/top404.984375/caret25/focus stable. Discard button saved discard. Same item duplicates synchronized. Two windows preserved conflict draft and displayed other latest record. Fresh first route jump190.15625/menu169.75; image group190.0625. 960px:document945px/no overflow,heading244.71875/menu224.5. Real review revision3/3 records unchanged. Images919→588/forms921→591; this is DOM reduction, not FPS measurement.",
+      "browser": "External Chrome fixture:316 autosave scroll279630/top404.953125/caret34/focus stable +reload restored;317 scroll425129/top404.984375/caret25/focus stable. Discard button saved discard. Same item duplicates synchronized. Two windows preserved conflict draft and displayed other latest record. Fresh first route jump190.15625/menu169.75; image group190.0625. 960px:document945px/no overflow,heading244.71875/menu224.5. Real review revision3/3 records unchanged. Images919→588/forms921→591; this is DOM reduction, not FPS measurement. Conflict draft explicit retry also saved. Temporary viewport reset and fixture tabs closed.",
       "governance": "82 related governance tests PASS; project operating system, canonical reference freshness, skill package and adopted Base operating contract PASS",
       "source_views": "1061 views / 13863 local links PASS",
       "node_panel": "Focused pristine late GET and active draft preservation PASS"
@@ -866,15 +866,26 @@
       "status": "MOVED_TO_DELETE_QUEUE",
       "location": "C:/Users/user/Documents/삭제대기/Ten-Paces-Hidden-Moves/blueprint-requested-20260923",
       "manifest": "RESTORE_MANIFEST.json",
-      "user_review_modified": false
+      "user_review_modified": false,
+      "temporary_verification_files": 11,
+      "temporary_location": "C:/Users/user/Documents/삭제대기/Ten-Paces-Hidden-Moves/blueprint-requested-20260923/검수용_임시파일"
     },
     "not_verified": [
-      "new Godot runtime",
+      "new visible Godot product scenario",
       "Human fun",
       "Android",
       "release",
       "cloud AI browser"
     ],
-    "review2": "Independent full candidate review: one P2 late initial GET left a focused pristine field blank. Reproduced actual sync function RED and corrected with selection-preserving clean field sync; active draft stays protected. Independent focused15 tests and both Node behavioral tests PASS. No remaining P0/P1/P2; subsequent checks are defect-specific only."
+    "review2": "Independent full candidate review: one P2 late initial GET left a focused pristine field blank. Reproduced actual sync function RED and corrected with selection-preserving clean field sync; active draft stays protected. Independent focused15 tests and both Node behavioral tests PASS. No remaining P0/P1/P2; subsequent checks are defect-specific only.",
+    "pull_request": 353,
+    "implementation_commit": "fa546542befbcd8b76a7e5659e622d7a84aca3fe",
+    "merge_commit": "7a5090ef71b2c434619428819eb14dc91b9c178b",
+    "merged_at": "2026-09-23T13:59:00Z",
+    "remote_checks": {
+      "SUCCESS": 26,
+      "SKIPPED": 3
+    },
+    "postmerge_tree_readback": "EXACT_MATCH_TO_REVIEWED_IMPLEMENTATION"
   }
 }

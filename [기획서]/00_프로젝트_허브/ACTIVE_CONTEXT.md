@@ -2,6 +2,8 @@
 
 ## HTML 자동 저장·여섯 분류·폐기 요청 후속 · 2026-09-23
 
+PR353을 7a5090ef71b2c434619428819eb14dc91b9c178b에 정상 병합했고 검토 후보와 main tree가 일치한다. 원격 검사 결과와 브라우저 검수는 기존 receipt에 누적했다. 다음 시작은 현재 main과 공용 코멘트/폐기 요청을 읽고 「블루프린트 열기.cmd」로 재생성·접속한다. 게임 제품 다음 작업은 기존 PR342 fresh-read 흐름을 유지한다.
+
 승인 범위와 현재 결과는 docs/blueprint/HTML_MIGRATION_SPEC.md20절 및 기존 HTML receipt.autosave_cleanup_followup을 따른다. 아틀라스·기획서 / 강호행로·비전투 / 전투 / 플레이어 / 상대·적 / 이미지 모음, 공통 PM·검수·재개로 정리한다. 댓글 자동 저장·위치/초안 보존, 이미지149 다음 행로 통합표, 브리핑/정탐 오연결 교정이 이번 작업이다. 실제 사용자316·317 폐기 의견을 읽고 두 참고 캡처만 삭제대기로 이동했으며 번호와 코멘트는 보존했다. 처리 owner=IMPLEMENTATION_READINESS.retired_images, 복구 폴더=C:/Users/user/Documents/삭제대기/Ten-Paces-Hidden-Moves/blueprint-requested-20260923. 아래 ‘확정 이동0개’는 이전 시점이다.
 
 새 AI는 최신 main/관련 PR과 이 receipt → .git/blueprint-review/reviews.json의 최신 코멘트/폐기 요청 → 실제 사용처/대체/retired_images → 블루프린트 열기.cmd의 현재 주소를 읽는다. 버튼은 요청 기록이며 AI가 실제 사용처를 확인해 이동한다. 게임 규칙·원래 dirty45·PR342는 보호한다. 작업일지는 기존9월23일 행에 합쳐 기록한다. 실제 검수·PR 병합은 receipt/GitHub live에서 확인한다.
