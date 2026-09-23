@@ -397,3 +397,5 @@ Execution-report: 기준47d7fdb3 / BUILD→REVIEW / executing-plans·test-driven
 브라우저 후속 확인: 외부 Chrome의 일반 HTTP attachment 내보내기 다운로드 이벤트와 JSON 합치기 완료 메시지/중복 이력 보존을 확인했다. 같은 fixture를 새 발행본에 열면 원본 변경·재검토 안내가 표시된다. Chrome viewport 도구는 실제 폭1920px을 유지해 좁은 화면 PASS로 세지 않았다. Codex IAB에서 실제390px/문서375px, 코멘트 입력301px을 확인했다. 검수용 JSON은 output/blueprint/review-browser-fixture에만 저장했고 실제 사용자 검토 파일에 시험 의견을 넣지 않았다.
 
 독립 전체 검토2/2: P1없음/P2후보 문서 참조 누락1건. 후보 전용 문서 fixture를 먼저 실패시킨 뒤 정확한 후보 revision의 모든 관련 텍스트를 일괄 읽고 문서/실행 참조를 구분하도록 교정했다. 후보 문서는 해당 revision의 GitHub 파일로 연결한다. 관련 회귀11개 PASS. 검토자가 유보한 브라우저 조작은 위 직접 확인 증거로 보충했고, 최종 원화/동일 인물/동적·미커밋 사용 여부는 자동 승인·삭제 근거로 삼지 않는다. Godot·사람 재미·Android·출시·클라우드 AI 검수는 이번 범위 밖이며 NOT_RUN을 유지한다. 원격 검사·정상 병합은 이후 GitHub 현재 상태로 확인한다. 새로운 전체 검토는 시작하지 않는다.
+
+최종 교정 후 로컬50개 HTML/검토 회귀 PASS, 표시1036개/로컬 링크10677개 PASS, 운영 규칙129개 PASS 및 운영 계약/참조/스킬 패키지 검사 PASS. PM에 TEN-HTML-INTENT-REVIEW로 연결한다. 초기318개 목록의3개 SVG는 Windows 줄바꿈만 다른 동일 Git 원본이어서 후보 중복으로 만들지 않도록 정리되어 최종315개 이미지다. 승인 파일을 삭제한 것이 아니다. 제품 보호 경로 diff0, 원래 dirty45개 및 PR342 head 불변을 확인했다. 구현 커밋과 현재 병합 권위는 기존 receipt에 연결한다.
