@@ -1104,12 +1104,12 @@
     }
   },
   "event_checks_readability_followup": {
-    "status": "VERIFIED_READY_FOR_GUARDED_PR",
+    "status": "IMPLEMENTATION_MERGED_VERIFIED_APPROVAL_ARCHIVED",
     "approval": "2026-09-24 user approved event-by-event three choices, stat-based success, rare conditional Giyun, and researched HTML readability/performance work. Same approved scope; no new service/global configuration.",
     "decision": "docs/decisions/2026-09-24_EVENT_CHECKS_AND_HTML_READABILITY.md",
     "baseline": "2e3bf285352556eeae16452403cef2368676035c",
     "branch": "codex/event-checks-html-readability-20260924",
-    "work_mode": "BUILD -> REVIEW",
+    "work_mode": "BUILD -> REVIEW -> GUARDED_MERGE -> TARGETED_CLOSEOUT",
     "skill_modes": [
       "project workflow router",
       "game-design BUILD",
@@ -1189,7 +1189,8 @@
         "verify_run_save_cache",
         "verify_variable_save_compat",
         "verify_vertical_slice_route_state",
-        "verify_combat_checkpoint_resume"
+        "verify_combat_checkpoint_resume",
+        "verify_vertical_slice_combat_bridge (exact seed2/one recovery/next duel resources)"
       ],
       "html_pass": "Full Python suite595PASS in543.51s; after final capture-link metadata changes12 focused PythonPASS. Three Node behavior suitesPASS after review corrections;1089 views/18697 linksPASS. Reference freshness, skill integrity, operating-system and approved operating-contract checksPASS.",
       "browser_pass": {
@@ -1207,7 +1208,8 @@
         "actual_pixels": "960x600",
         "fixture": "Visible Windows/OpenGL3.3 native UI with synthetic pending cloud_hermit event;50% success/10% conditional/5% total. Not campaign or Human play."
       },
-      "import_note": "Initial UI/combat bridge failed from missing imports. Headless editor import exited0 with45 ObjectDB/22 resource teardown warnings. Subsequent focused runtime/UI passed; import teardown is not reported as clean."
+      "import_note": "Initial UI/combat bridge failed from missing imports. Headless editor import exited0 with45 ObjectDB/22 resource teardown warnings. Subsequent focused runtime/UI passed; import teardown is not reported as clean.",
+      "post_correction_pass": "502 non-Blueprint regressionsPASS in526.25s after complete mutable consumer sync; exact seeded native combat bridgePASS;595 full earlier and12 final focused HTML remain separate evidence snapshots."
     },
     "full_scope_review_budget": 2,
     "full_scope_reviews": [
@@ -1226,18 +1228,33 @@
     "cleanup": {
       "import_sidecars": 229,
       "restore_manifest": "C:/Users/user/Documents/삭제대기/십보강호_사건_HTML_20260924_import/restore-manifest.json",
-      "boundary": "Only task-created untracked Godot import sidecars moved with hashes. New module/test UIDs retained; user data and original art untouched."
+      "boundary": "Only task-created untracked Godot import sidecars moved with hashes. New module/test UIDs retained; user data and original art untouched.",
+      "runtime_imports": "Three exact image-import sidecars were temporarily restored for native502 regressions and returned to the same verified recovery location. Clean direct CLI runtime needs Godot editor import first; no source image/settings bytes were adopted."
     },
     "integration": {
-      "status": "CI_PENDING_AFTER_STATE_SYNC_CORRECTION",
+      "status": "MERGED_VERIFIED",
       "remote_main_rechecked": "2e3bf285352556eeae16452403cef2368676035c",
-      "next": "Commit scoped candidate; required exact-head CI/review/thread/ruleset, normal merge and main readback; archive one-time protected approval in a follow-up cleanup PR.",
+      "next": "Normal cleanup PR checks and merge; final exact cleanup state is GitHub live metadata plus the immutable approval archive. After delivery, fresh-read PR342 without adopting its unmerged growth.",
       "pr": 357,
       "initial_ci_failure": "98ec07c4: after the595PASS snapshot, final current_operating_state changed without updating the existing Active Context YAML state block. Five governance workflows caught mismatched mutable state. Product tests are not the failure; synchronize both actual owners, rerun affected governance regressions and exact-head CI. No validator weakening.",
       "correction_verification": "Existing Active Context state block synchronized with current JSON; both stable roadmaps link the current Decision without copying mutable checkpoints.65 affected governance regressionsPASS; canonical reference freshnessPASS. No product/test/validator behavior changed.",
       "followup_ci_failure": "682ee08d: the next discovery suite also identified three existing Active Context aliases and two user-planning next-phase pointers. These consumers are synchronized with the same current JSON; historical completed-scope and human limits remain unchanged.",
       "native_ci_correction": "Existing combat bridge fixture set private seed2 before shell.start_new_run replaced it with randi(), making the Step2 rest expectation intermittent. Test now creates seed2 through the same public run/session transaction; four-step/one-recovery/next-combat resource assertions unchanged. Native GodotPASS and independent defect-only reviewPASS; public shell start remains separately tested.",
-      "runtime_import_note": "Local runtime retest requires three generated background image import sidecars. Restored from verified recovery hashes for native tests; these are local engine artifacts outside the protected product diff and are excluded from commit. Engine import must precede direct command-line runtime from a clean checkout."
+      "runtime_import_note": "Local runtime retest requires three generated background image import sidecars. Restored from verified recovery hashes for native tests; these are local engine artifacts outside the protected product diff and are excluded from commit. Engine import must precede direct command-line runtime from a clean checkout.",
+      "exact_head": "1aea1fe8b77525dff9ed4daf5fb48ccfdbec4884",
+      "merge_commit": "27d1a3a94bd820d9ed840ca80f6175e090b1df05",
+      "merged_at": "2026-09-23T18:48:51Z",
+      "remote_checks": {
+        "success": 33,
+        "failure": 0,
+        "pending": 0
+      },
+      "unresolved_review_threads": 0,
+      "tested_and_merged_tree": "a5ba5d649a32a09ec79ad2e26afd4c9b1f6a647f",
+      "approval_archive": "docs/operations/2026-09-24_PR357_PROTECTED_CHANGE_APPROVAL_RECORD.md",
+      "approval_blob_sha256": "3de044f4d2219bede17efceb622e332a0bb503e08b3e6a3fd26e5f2e33ee1238",
+      "cleanup_branch": "codex/event-checks-closeout-20260924",
+      "cleanup_validation": "84 state/governance plus14 approval/adapter regressionsPASS; exact1109-byte approval Base64 equals merged Git blob/hash; product paths diff0; adopted Base regenerated4 dependent views and operating contract/reference freshness/skill integrity/project systemPASS. Cleanup exact-head CI and final main are independently read from GitHub."
     },
     "protected": {
       "default_checkout_dirty_count": 45,

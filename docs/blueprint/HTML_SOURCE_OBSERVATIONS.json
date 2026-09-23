@@ -1,6 +1,6 @@
 {
-  "observed_at": "2026-09-23T18:07:12.480609+00:00",
-  "main_sha": "2e3bf285352556eeae16452403cef2368676035c",
+  "observed_at": "2026-09-23T18:48:51Z",
+  "main_sha": "27d1a3a94bd820d9ed840ca80f6175e090b1df05",
   "prs": {
     "199": {
       "baseRefName": "main",
@@ -216,6 +216,19 @@
       "state": "MERGED",
       "title": "fix: 블루프린트 비교표 정리와 이미지·영상 연결 유지",
       "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/356"
+    },
+    "357": {
+      "baseRefName": "main",
+      "headRefOid": "1aea1fe8b77525dff9ed4daf5fb48ccfdbec4884",
+      "isDraft": false,
+      "mergeCommit": {
+        "oid": "27d1a3a94bd820d9ed840ca80f6175e090b1df05"
+      },
+      "mergedAt": "2026-09-23T18:48:51Z",
+      "number": 357,
+      "state": "MERGED",
+      "title": "강호행로 사건 확률 판정과 HTML 가독성·응답 개선",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/357"
     }
   },
   "freshness": "SNAPSHOT_NOT_LIVE"
