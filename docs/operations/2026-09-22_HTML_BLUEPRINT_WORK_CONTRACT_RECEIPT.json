@@ -1013,7 +1013,10 @@
     "integration": {
       "status": "CHECK_GITHUB_LIVE",
       "branch": "codex/blueprint-action-art-20260923",
-      "policy": "Normal PR merge only after current exact-head required checks and review; no direct main push."
+      "policy": "Normal PR merge only after current exact-head required checks and review; no direct main push.",
+      "pull_request": 355,
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/355",
+      "implementation_commit": "b3d19a2a"
     },
     "independent_focused_readback": "PASS: all three P2 and deletion wording resolved; remaining P0/P1/P2 zero. No third full review."
   }
