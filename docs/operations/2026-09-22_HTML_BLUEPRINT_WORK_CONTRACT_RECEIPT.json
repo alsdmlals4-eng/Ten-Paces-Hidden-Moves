@@ -51,10 +51,11 @@
       "TEN-HTML-MIGRATE",
       "TEN-HTML-DELIVER",
       "TEN-HTML-INTENT-REVIEW",
-      "TEN-HTML-AUTOSAVE-CLEANUP-20260923"
+      "TEN-HTML-AUTOSAVE-CLEANUP-20260923",
+      "TEN-HTML-ACTION-ART-20260923"
     ],
-    "active_work_item_ref": null,
-    "next_action": "STOP_APPROVED_SCOPE_COMPLETE",
+    "active_work_item_ref": "TEN-HTML-ACTION-ART-20260923",
+    "next_action": "구현 검수 완료. 현재 PR/main 상태와 사용자142 최종 이미지 검토를 각각 확인한다. 새 작업은 같은 번호·공용 사용자 코멘트·실제 consumer에서 재개한다.",
     "work_items": [
       {
         "work_item_id": "TEN-HTML-SPEC",
@@ -566,6 +567,63 @@
           "59 Python +82 governance +Node behavioral/panel/render/link checks; actual Chrome fixture saving/conflict and1920/960px; two full reviews; real review untouched; disposal hashes verified"
         ],
         "rollback": "Normal PR revert; restore two reference images from hash manifest or original commit; preserve real review JSON and approved assets."
+      },
+      {
+        "work_item_id": "TEN-HTML-ACTION-ART-20260923",
+        "title": "141 삭제·실제 시작화면 연결·142 여백 교정·기초행동 삽화 통합",
+        "status": "DONE",
+        "canon_owner": "docs/blueprint/HTML_MIGRATION_SPEC.md",
+        "actual_consumers": [
+          "tools/html_blueprint_experience.py",
+          "tools/html_blueprint_ui/experience.js",
+          "tools/html_blueprint_ui/inline.js",
+          "tools/html_blueprint_reader.py"
+        ],
+        "depends_on": [],
+        "acceptance_criteria": [
+          "TEN-HTML-ACTION-ART-AC"
+        ],
+        "required_evidence": [
+          "E2_TEST",
+          "E4_VISUAL"
+        ],
+        "checklist": [
+          {
+            "id": "TEN-HTML-ACTION-ART-AC",
+            "text": "141/옛142 파일 삭제 및 오연결 교정, 동일142/코멘트ID, 실제 삽화10종과 데이터 설명, 편집 참고·Godot 촬영 구분",
+            "status": "PASS",
+            "evidence": [
+              "docs/blueprint/HTML_MIGRATION_SPEC.md#21"
+            ]
+          }
+        ],
+        "verification": [
+          {
+            "level": "E2_TEST",
+            "status": "PASS",
+            "evidence": [
+              "tests/test_blueprint_reader_cleanup.py",
+              "tools/check_html_blueprint_ui.cjs"
+            ]
+          },
+          {
+            "level": "E4_VISUAL",
+            "status": "PASS",
+            "evidence": [
+              "docs/blueprint/HTML_MIGRATION_SPEC.md#21",
+              "docs/blueprint/evidence/current-ui/starter-selection-1280.png"
+            ]
+          }
+        ],
+        "next_action": "구현 검수 완료. 현재 PR/main 상태와 사용자142 최종 이미지 검토를 각각 확인한다. 새 작업은 같은 번호·공용 사용자 코멘트·실제 consumer에서 재개한다.",
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0,
+        "repository_readback": "PASS",
+        "readback_evidence": [
+          "62 related Python PASS; source-rendered1068 views/13867 links; actual Chrome source regions/inline form/desktop960px; actual Godot SETUP fixture; two full reviews followed by focused corrections."
+        ],
+        "rollback": "Normal PR revert if requested; never restore deleted141/old142 into active view silently. Preserve user comment store."
       }
     ]
   },
@@ -887,5 +945,80 @@
       "SKIPPED": 3
     },
     "postmerge_tree_readback": "EXACT_MATCH_TO_REVIEWED_IMPLEMENTATION"
+  },
+  "action_art_followup": {
+    "status": "IMPLEMENTED_VERIFIED",
+    "approval": "현재 사용자141 삭제/142 여백 교정/실제 기초행동 삽화 통합 + 보존하지말고 삭제 지시",
+    "baseline": "05a704a058d9f6d6fa760d9c67ce0936cd30be72",
+    "work_mode": "BUILD_TO_REVIEW",
+    "skills": [
+      "ten-paces-verification:html-blueprint-review",
+      "systematic-debugging",
+      "imagegen",
+      "requesting-code-review"
+    ],
+    "intent": "잘못된 화면과 낱장 삽화의 공간 낭비를 없애고 실제 데이터와 그림을 함께 검토",
+    "source_relevance": "REUSED_EVIDENCE / same local HTML consumer corrections",
+    "deleted_numbers": [
+      141
+    ],
+    "replaced_number": 142,
+    "same_review_id": "asset:inventory-87037bee971699a6",
+    "recorded_at": "2026-09-23T14:44:11.752100+00:00",
+    "new_image_final_approval": "USER_REVIEW_PENDING",
+    "starter_capture": {
+      "engine": "4.7.1-stable (official)",
+      "kind": "GODOT_RENDERED_SETUP_FIXTURE",
+      "path": "res://docs/blueprint/evidence/current-ui/starter-selection-1280.png",
+      "project": "C:/Users/user/Documents/GitHub/Ninza/Ten-Paces-Hidden-Moves/.worktrees/html-blueprint-design-20260922/",
+      "save_isolation": "res://output/blueprint/starter-capture-save.json",
+      "screen": "SETUP",
+      "size": [
+        1280,
+        800
+      ],
+      "sha256": "1b92dc93c1219916153015ca2bf77dfece7508ab70e6678c61b52b548d397fd3"
+    },
+    "tests": {
+      "red": "2 failures reproduced before implementation",
+      "python": "62 related tests PASS",
+      "node": "autosave/review synchronization PASS; 1068 source-rendered views /13867 local links PASS",
+      "review_regression": "RED shared image19 inline comment missing; GREEN shared form, clipped atlas preview and deletion status; starter still evidence omission RED to verified receipt identity/hash GREEN",
+      "browser": "External Chrome:10 correct source atlas regions with no adjacent art bleed;5 desktop columns/3 at960px; one shared inline comment; document945<viewport960px; media errors0;142 same record ID with edited upper viewport; starter connects actual SETUP capture. Temporary viewport reset; real user comments untouched."
+    },
+    "full_scope_reviews": [
+      {
+        "round": 1,
+        "scope": "Full approved candidate/source/diff/untouched consumers/evidence/retention boundaries",
+        "findings_corrected": "Actual starter source; no legacy141/142 candidate resurrection; neighboring atlas crop bleed fixed by bounded nested SVG; shared data/number/comment identity protected."
+      },
+      {
+        "round": 2,
+        "reviewer": "Independent action_art_review",
+        "findings_corrected": "3 P2:atlas thumbnail region, shared image19 comment, legacy PDF edited reference label; minor deletion-vs-move label. Subsequent checks are focused only."
+      }
+    ],
+    "not_verified": [
+      "Human fun",
+      "Android",
+      "full gameplay",
+      "new edited image final art approval"
+    ],
+    "cleanup": {
+      "generated_metadata_count": 226,
+      "path": "C:/Users/user/Documents/삭제대기/Ten-Paces-Hidden-Moves/blueprint-action-art-20260923-generated",
+      "manifest": "RESTORE_MANIFEST.json",
+      "scope": "New task-owned Godot import/UID metadata only. Deleted141/old142 images were not moved here."
+    },
+    "integration": {
+      "status": "CHECK_GITHUB_LIVE",
+      "branch": "codex/blueprint-action-art-20260923",
+      "policy": "Normal PR merge only after current exact-head required checks and review; no direct main push.",
+      "pull_request": 355,
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/355",
+      "initial_implementation_commit": "b3d19a2a"
+    },
+    "independent_focused_readback": "PASS: all three P2 and deletion wording resolved; remaining P0/P1/P2 zero. No third full review.",
+    "final_focused_correction": "2026-09-24 KST: browser showed the actual starter still but generic inspection said no capture. Wire receipt-verified SETUP/path/SHA256 to screen and asset inspection; keep142 edited reference out of runtime capture. Short atlas captions fit their nodes."
   }
 }

@@ -201,3 +201,11 @@ main :is(p,h1,h2,h3,a,small){overflow-wrap:anywhere}
 .reader-block img{height:auto}.scroll-chapter>h2{margin-bottom:12px}
 .overview-group{border-top:3px solid var(--gold);margin-top:52px;padding-top:20px}.group-heading{font-size:28px}
 @media(max-width:680px){.clash-explanation{grid-template-columns:1fr}.current-visual{padding:10px}}
+
+.basic-action-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+.basic-action{padding:12px;min-width:0}.basic-action figure{margin:0}.basic-action figure>svg{display:block;width:100%;height:235px;background:#eee3cc}
+.basic-action figcaption{font-size:12px;margin:8px 0;color:var(--muted)}.basic-action h3{margin:10px 0}.basic-action p{font-size:14px;line-height:1.6}.basic-action details{font-size:12px;padding:8px}
+@media(max-width:1100px){.basic-action-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:680px){.basic-action-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.basic-action figure>svg{height:180px}}
+
+.reference-surface svg{display:block;width:100%;height:auto;max-height:none}.inline-image .tile>svg{width:100%;height:auto}

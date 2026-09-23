@@ -28,6 +28,21 @@ def clip_freshness(clip, manifest, current):
             'basis': 'CAPTURE_DEPENDENCIES' if clip.get('dependencies') or manifest.get('capture_dependencies') else 'CONSERVATIVE_CAPTURE_INPUTS'}
 
 MOTION_MANIFEST = 'docs/blueprint/evidence/motion/manifest.json'
+HUD_REFERENCE = 'docs/blueprint/evidence/reference-screens/preparation-hud-edited-v2.png'
+
+
+def basic_actions():
+    from PIL import Image
+    cards = read(ROOT, 'data/cards/basic_cards.json')['cards']
+    for card in cards:
+        art = card['illustration']
+        art['path'] = art['atlas'].removeprefix('res://')
+        with Image.open(local_path(ROOT, art['path'])) as image:
+            art['size'] = list(image.size)
+        x, y, w, h = art['region']
+        if min(x, y) < 0 or min(w, h) <= 0 or x+w > art['size'][0] or y+h > art['size'][1]:
+            raise ValueError('Invalid game illustration region: ' + card['id'])
+    return cards
 
 
 def build_contexts():
@@ -84,14 +99,24 @@ def build(pages):
             raise ValueError('Atlas context links to an unknown explanation')
         context['preview'] = images[context['atlas_image_index']]
         context['preview_kind'] = '승인 기획의 화면 자료'
-    contexts['starter']['preview'] = {'kind':'image', 'path':'docs/runtime-captures/TEN-ATLAS-SUCCESSOR-20260908/martial-summary-fixed-1280x800.png','size':[1280,800]}
-    contexts['starter']['preview_kind'] = '과거 Godot 무공 선택 화면'
-    contexts['plan']['preview'] = {'kind':'image', 'path':'docs/blueprint/evidence/preparation-plan.png', 'size':[1280,800]}
-    contexts['plan']['preview_kind'] = '기존 수 배치 참고 촬영 · 최신 재촬영 미확인'
+    contexts['starter']['preview'] = {'kind':'image', 'path':'docs/blueprint/evidence/current-ui/starter-selection-1280.png','size':[1280,800]}
+    contexts['starter']['preview_kind'] = '실제 Godot 시작 무공 선택 · 격리 촬영'
+    receipt_path = 'docs/operations/2026-09-22_HTML_BLUEPRINT_WORK_CONTRACT_RECEIPT.json'
+    still = read(ROOT, receipt_path)['action_art_followup']['starter_capture']
+    still_path = still['path'].removeprefix('res://')
+    if still_path != contexts['starter']['preview']['path'] or still['screen'] != 'SETUP':
+        raise ValueError('Starter capture identity mismatch')
+    verified_file(ROOT, still_path, still['sha256'])
+    contexts['starter']['still_capture'] = dict(still, path=still_path, source=receipt_path)
+    from PIL import Image
+    with Image.open(local_path(ROOT, HUD_REFERENCE)) as image:
+        width, height = image.size
+    contexts['plan']['preview'] = {'kind':'image', 'path':HUD_REFERENCE, 'size':[width,height], 'region':[0,0,width,round(height*.60)]}
+    contexts['plan']['preview_kind'] = '상태창 여백 편집 참고안 · 실제 재촬영 아님'
     contexts['resolve']['preview'] = {'kind':'image', 'path':'assets/blueprint/clash_explanation_v1.png', 'size':[1672,940]}
     contexts['resolve']['preview_kind'] = '현재 승인 그림체 · 합 설명 삽화'
     for key, context in contexts.items():
         context['preview'] = dict(context['preview'], page_id='screen:'+key)
     return {'contexts': contexts, 'clips': load_clips(),
             'constraints': read(ROOT, 'data/run/bimu_constraints.json'),
-            'actions': read(ROOT, 'data/cards/basic_cards.json')['cards']}
+            'actions': basic_actions()}

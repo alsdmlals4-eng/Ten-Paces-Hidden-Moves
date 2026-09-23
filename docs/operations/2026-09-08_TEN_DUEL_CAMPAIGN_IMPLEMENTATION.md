@@ -222,7 +222,7 @@ Controller's actual martial-tab capture then found left-offscreen clipping cause
 four-manual selector's minimum width. de71c6cd adds native horizontal scrolling without
 shrinking fonts or deleting manual information. Six RED containment assertions now pass
 at 720p/800p, including first/last selectable manual and technique card bounds. Corrected
-actual capture reviewed: `docs/runtime-captures/TEN-ATLAS-SUCCESSOR-20260908/martial-summary-fixed-1280x800.png`.
+당시 무공 선택 캡처 검토 기록. 해당 PNG는 2026-09-23 사용자 명시 요청으로 삭제했고 시작 무공 화면과 구분한다. 현재 HTML은 새 시작 무공 촬영을 연결한다.
 The earlier offscreen capture is not final evidence. The six new campaign/presentation
 checks now execute in the product CI job after import; a Python contract guards that wiring.
 

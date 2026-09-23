@@ -166,18 +166,24 @@ def build(out=OUT, include_candidate=True):
         pm['items'].extend(candidate_info['work_items'])
     import html_blueprint_audit as audit_model
     audit_model.extend_inventory(ROOT, assets, candidate_info['revision'] if candidate_info else None, out)
+    decisions = model.read(ROOT, 'docs/blueprint/IMPLEMENTATION_READINESS.json')
+    for replacement in decisions.get('image_replacements', []):
+        asset = next(a for a in assets if a['scope']=='MAIN_SOURCE' and a['path']==replacement['path'])
+        asset.update(id=replacement['id'], name=replacement['name'], approval='APPROVAL_UNVERIFIED',
+                     approval_record=replacement['description'], details={'reference_edit':True, 'usage':replacement['usage'], 'provenance':replacement},
+                     owner='docs/blueprint/IMPLEMENTATION_READINESS.json')
     asset_audit = audit_model.build(ROOT, assets)
     retired = model.read(ROOT, 'docs/blueprint/IMPLEMENTATION_READINESS.json').get('retired_images', [])
     if retired:
-        asset_audit['move_status'] = f'사용자 폐기 요청 {len(retired)}개는 삭제대기로 이동 · 번호와 이력 보존 · 나머지는 요청별 사용처 확인 후 처리'
+        asset_audit['move_status'] = f'사용자 폐기 요청 {len(retired)}개 처리 · 개별 삭제/이동 결과는 폐기 이력에서 확인'
     for entry in retired:
         assets.append({**entry, 'scope':'MAIN_SOURCE', 'revision':None, 'available':False, 'active':False,
             'details':{'retired':True,'disposal':entry}, 'consumers':[], 'approval':'USER_DISCARDED',
-            'approval_record':'사용자 폐기 요청 처리 · 삭제대기 폴더로 이동',
+            'approval_record':'사용자 요청으로 파일 삭제' if entry['status']=='DELETED_BY_USER_REQUEST' else '사용자 폐기 요청 처리 · 삭제대기 폴더로 이동',
             'owner':'docs/blueprint/IMPLEMENTATION_READINESS.json',
             'audit':{'flags':['discarded'], 'reasons':[entry['reason']], 'safe_to_move':False,
                 'runtime_references':[], 'document_references':[], 'replacement_ids':[], 'duplicate_ids':[],
-                'disposition':'삭제대기 이동 완료 · 사용자가 최종 삭제', 'category':'폐기 이력'}})
+                'disposition':'삭제 완료' if entry['status']=='DELETED_BY_USER_REQUEST' else '삭제대기 이동 완료 · 사용자가 최종 삭제', 'category':'폐기 이력'}})
     for asset in assets:
         asset['related_work'] = [item['work_item_id'] for item in pm['items']
             if set(item.get('actual_consumers', [])) & {asset['path'], *asset['consumers']}
@@ -275,15 +281,19 @@ def build(out=OUT, include_candidate=True):
         inputs[path] = model.sha(ROOT/path)
     from html_blueprint_inspection import build as inspection_index
     audit_model.group_assets(assets, payload['people'], manuals, art)
+    for asset in assets:
+        if asset['details'].get('reference_edit'):
+            asset['group'] = {'id':'screen:plan','label':'전투 · 수 배치','role':'상태창 여백 편집 참고안','basis':'사용자142 수정 요청'}
     for a in assets:
         if a.get('details',{}).get('retired'):
-            a['group']={'id':'retired','label':'폐기 처리 · 삭제대기','role':'이동 완료 이력','basis':'사용자 요청·원본 사용처 확인'}
+            a['group']={'id':'retired','label':'폐기 처리 이력','role':a['audit']['disposition'],'basis':'사용자 요청·원본 사용처 확인'}
     payload['inspection'] = inspection_index(payload)
     from html_blueprint_numbers import attach as attach_image_numbers, REGISTRY as image_numbers_path
     attach_image_numbers(payload, ROOT)
     audit_model.attach_intents(payload, model.read(ROOT, 'docs/blueprint/IMPLEMENTATION_READINESS.json')['intent_catalog'])
     payload['asset_audit'] = asset_audit
     payload['retired_images'] = retired
+    payload['image_replacements'] = decisions.get('image_replacements', [])
     payload['reader_groups'] = reader_groups(pages)
     from blueprint_review_store import shared_directory
     payload['review_location'] = str(shared_directory(ROOT) / 'reviews.json')

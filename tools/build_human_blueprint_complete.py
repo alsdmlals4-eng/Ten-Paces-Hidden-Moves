@@ -102,7 +102,7 @@ def compose(b):
     source(ROOT/'src/run/vertical_slice_run_state.gd')
     source(ROOT/'docs/blueprint/OPPONENT_BUDGET.json')
     source(REF/'provenance.json')
-    for required in ['preparation-plan.png','execution-024.png','capture.json']:
+    for required in ['reference-screens/preparation-hud-edited-v2.png','execution-024.png','capture.json']:
         if not (CAP/required).is_file():raise FileNotFoundError(CAP/required)
     for rel in ['src/run/vertical_slice_route_model.gd','src/run/vertical_slice_opponent_catalog.gd','src/run/vertical_slice_result_model.gd','data/combat/combat_hud_preview.json','docs/02_COMBAT_RULES.md','docs/07_COMBAT_UI_SPEC.md','docs/10_COMBAT_PRESENTATION_PLAN.md','docs/decisions/2026-09-09_RUN_START_OPPONENT_ROSTER_AND_GROWTH.md']:
         source(ROOT/rel)
@@ -137,7 +137,7 @@ def compose(b):
     b.page('한 회차 전체 플로우맵','새 여정과 이어하기, 비무 승패, 행로 복귀를 한 지도에서 읽는다.')
     b.flow([('메인','새 여정 / 이어하기'),('시작 무공','시작 후보 6권 중 4권'),('브리핑','상대·보유 무공·제약'),('전투 준비','거리·관찰·기술 배치'),('전투 실행','3수 / 3수 / 4수 해결')],y=500,h=155)
     for i,key in enumerate(['menu',None,'brief','prep','compare']):
-        if key:b.photo(CAP/'preparation-plan.png' if key=='prep' else REF/SCREENS[key],43+i*230.6,506,198,62)
+        if key:b.photo(CAP/'reference-screens/preparation-hud-edited-v2.png' if key=='prep' else REF/SCREENS[key],43+i*230.6,506,198,62)
     b.flow([('승리·보상','수련 또는 무공 전수'),('강호행로','3후보 중 1개 × 4회'),('다음 비무','2전부터 10전까지')],y=285,x=180,w=840,h=145)
     for i,key in enumerate(['result','route','brief']):b.photo(REF/SCREENS[key],190+i*288.3,290,250,62)
     b.arrow([(1050,500),(1050,451),(315,451),(315,400)])
@@ -151,7 +151,7 @@ def compose(b):
         xx=36+(i%3)*380;yy=77+(2-i//3)*206
         b.box(xx,yy,368,196,INK)
         if key=='status':b.region(REF/SCREENS['route'],[1070,0,602,941],xx+6,yy+30,356,160)
-        else:b.photo(CAP/'preparation-plan.png' if key=='prep' else REF/SCREENS[key],xx+6,yy+30,356,160)
+        else:b.photo(CAP/'reference-screens/preparation-hud-edited-v2.png' if key=='prep' else REF/SCREENS[key],xx+6,yy+30,356,160)
         b.p(label,xx+12,yy+23,342,12,PAPER,True)
     screens=[('메인','새 여정·이어하기','저장 상태 확인','시작 무공 / 저장 지점'),('시작 무공','6권 후보','4권 선택과 확인','브리핑'),('성장','보유 무공·수련 자원','어떤 기술을 열 것인가','행로 / 다음 비무'),('강호행로','현재 1~4번째 선택','회복·수련·정보의 기회비용','결과 / 다음 후보'),('브리핑','상대 인물·무공·제약','알려진 사실과 소문 구분','전투 준비'),('준비','거리·자원·현재 계획','해금된 기술을 수에 배치','실행'),('공개·합','이번 수 양측 행동','접촉과 승패·잔여 흐름 읽기','다음 수 / 결과'),('절초','발동 조건을 충족한 기술','고유 무공의 결정적 장면','해결 흐름 복귀'),('결과·복기','승패·원인·보상','다음 성장 또는 재도전','행로 / 메인')]
     for j in range(0,9,5):
@@ -216,10 +216,10 @@ def compose(b):
     # Exact 60/40 structural wireframe, atlas artwork is placed without rewriting pixels.
     b.page('준비 화면 · 전장 60%, 판단 영역 40%','현재 계획·5×2 기술·상세 효과·상대 관찰을 동시에 읽는 목표 구조','설명용 와이어프레임 / 현재 구현과 차이는 6부')
     x,y,fw,fh=36,62,1128,630;bottom=fh*.4;top=fh*.6
-    if (CAP/'preparation-plan.png').exists():
+    if (CAP/'reference-screens/preparation-hud-edited-v2.png').exists():
         from PIL import Image
-        with Image.open(CAP/'preparation-plan.png') as capture:iw,ih=capture.size
-        b.region(CAP/'preparation-plan.png',[0,0,iw,ih*.6],x,y+bottom,fw,top)
+        with Image.open(CAP/'reference-screens/preparation-hud-edited-v2.png') as capture:iw,ih=capture.size
+        b.region(CAP/'reference-screens/preparation-hud-edited-v2.png',[0,0,iw,ih*.6],x,y+bottom,fw,top)
     else:b.photo(courtyard,x,y+bottom,fw,top)
     b.box(36,62,650,252,LIGHT);b.p('현재 계획  /  현재 행동 묶음 1 · 3수',48,306,620,12,bold=True)
     for i,ci in enumerate([4,0,2]):
@@ -468,8 +468,8 @@ def compose(b):
     b.note('단계: 아이디어 → 조사 → 구현 가능 → 상세화 → 자산 준비 → 구현 → 기계 검증 → 실행 검증 → 사용자 승인.',145)
     b.note('이 책의 신규 그림은 도감 원화다. 투명 전신·공격·피격·회피·방어·합·승패 모션을 새로 만든 것으로 세지 않는다.',95)
 
-    if (CAP/'preparation-plan.png').exists():
-        b.picture_page('실제 구현 대조 · 준비 화면','2026.09.11 로컬 Godot 촬영 / 시각 목표와 비교하는 실행 근거',CAP/'preparation-plan.png','삽화 비중·작은 글자·장식 간섭·패널 여백의 추가 검수가 남아 있다. 새 도감 원화가 모두 연결된 화면이 아니다.')
+    if (CAP/'reference-screens/preparation-hud-edited-v2.png').exists():
+        b.picture_page('준비 화면 · 상태창 가독성 수정안','2026.09.23 이미지 편집 참고안 / 실제 게임 촬영과 구분',CAP/'reference-screens/preparation-hud-edited-v2.png','양쪽 상태창에 이름과 자원 문구를 위한 위쪽 여백을 확보했다. 이미지 편집 참고안이며 현재 게임의 수치·구현 검증은 아니다.')
     if (CAP/'capture.json').exists():
         rec=json.loads(source(CAP/'capture.json').read_text(encoding='utf-8'))['frames']
         r=next((r for r in rec if r.get('vfx') and r.get('kind')=='clash'),None)

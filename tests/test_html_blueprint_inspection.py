@@ -10,6 +10,15 @@ import html_blueprint_experience as experience
 
 
 class InspectionTests(unittest.TestCase):
+    def test_starter_still_has_verified_capture_evidence(self):
+        import html_blueprint as model
+        context=experience.build(model.collect_reader())['contexts']['starter']
+        still=context.get('still_capture')
+        self.assertIsNotNone(still, 'Actual setup screenshot must not report missing runtime evidence')
+        self.assertEqual(still['path'],context['preview']['path'])
+        self.assertEqual(still['sha256'],model.sha(model.ROOT/still['path']))
+        self.assertEqual(still['screen'],'SETUP')
+
     def test_stale_source_keeps_history_but_corrupt_video_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory)
