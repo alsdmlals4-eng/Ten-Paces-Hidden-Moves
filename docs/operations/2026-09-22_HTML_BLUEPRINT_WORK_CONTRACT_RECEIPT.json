@@ -1098,7 +1098,9 @@
     "integration": {
       "status": "CHECK_GITHUB_LIVE",
       "branch": "codex/blueprint-media-tables-20260924",
-      "policy": "Normal PR exact-head checks and merge; original checkout remains untouched."
+      "policy": "Normal PR exact-head checks and merge; original checkout remains untouched.",
+      "pr": 356,
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/356"
     }
   }
 }
