@@ -2,7 +2,7 @@
 
 ## 본문 이동·이미지 번호·바로 코멘트 · 2026-09-23
 
-사용자 확인·승인된 범위는 HTML_MIGRATION_SPEC.md19절과 기존 receipt inline_review_followup이다. 종류·고정 이미지 번호·쓰임새를 이미지 하단에 표시하고 항목 바로 아래에서 검토한다. 번호 정본은 docs/blueprint/IMAGE_NUMBERS.json, 의견은 기존 resume-index.user_review 경로다. 과거 참고 원본은 보존하고 현재 합 삽화/실제 UI 촬영을 구분한다. 관찰 패널의 제목·안내 겹침과 기술 상세 제목의 장식 위 가독성만 제품 코드에서 교정한다. 검증/검토/PR 상태는 receipt 및 GitHub live metadata를 새로 읽는다. 원래 dirty45·PR342와 승인 PDF/원화는 보호한다.
+사용자 확인·승인된 범위는 HTML_MIGRATION_SPEC.md19절과 기존 receipt inline_review_followup이다. 종류·고정 이미지 번호·쓰임새를 이미지 하단에 표시하고 항목 바로 아래에서 검토한다. 번호 정본은 docs/blueprint/IMAGE_NUMBERS.json, 의견은 기존 resume-index.user_review 경로다. 과거 참고 원본은 보존하고 현재 합 삽화/실제 UI 촬영을 구분한다. 관찰 패널의 제목·안내 겹침과 기술 상세 제목의 장식 위 가독성만 제품 코드에서 교정한다. PR351 구현 병합 완료. 기존 receipt inline_review_followup과 PR351 승인 종료 기록, GitHub live metadata에서 이후 병합 상태를 새로 읽는다. 원래 dirty45·PR342와 승인 PDF/원화는 보호한다.
 
 ## 의도·이미지 정리·사용자 코멘트 · 2026-09-23
 

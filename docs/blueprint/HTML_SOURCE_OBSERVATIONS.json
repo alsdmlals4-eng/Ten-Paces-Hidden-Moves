@@ -1,6 +1,6 @@
 {
-  "observed_at": "2026-09-23T00:46:13.809088+00:00",
-  "main_sha": "66a8b0dcbcff4d127eee42dca11b194cea37f3d4",
+  "observed_at": "2026-09-23T11:53:05.776690+00:00",
+  "main_sha": "c061d0f93d77900bd4ee5a636860d647fd750ee8",
   "prs": {
     "199": {
       "baseRefName": "main",
@@ -125,6 +125,45 @@
       "state": "MERGED",
       "title": "feat: 강호행로 기연과 HTML 기획·검수 연결",
       "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/348"
+    },
+    "349": {
+      "baseRefName": "main",
+      "headRefOid": "5c8a6e07a1930bb4795cb6f55cd044167ae107d4",
+      "isDraft": false,
+      "mergeCommit": {
+        "oid": "47d7fdb30c0faa7c0a9b206a9c6228784de4043c"
+      },
+      "mergedAt": "2026-09-23T00:58:25Z",
+      "number": 349,
+      "state": "MERGED",
+      "title": "docs: 기연·HTML 완료 기록과 일회 승인 종료",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/349"
+    },
+    "350": {
+      "baseRefName": "main",
+      "headRefOid": "0120d2e719d155b3dee84053d722673ae7f05403",
+      "isDraft": false,
+      "mergeCommit": {
+        "oid": "c2fbdd7ead403974d9b82bbc51bf3abffd51b1a5"
+      },
+      "mergedAt": "2026-09-23T05:08:01Z",
+      "number": 350,
+      "state": "MERGED",
+      "title": "feat: add grouped image review, intent and persistent blueprint feedback",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/350"
+    },
+    "351": {
+      "baseRefName": "main",
+      "headRefOid": "2ef99596558aab70f437c19ebd5fa0d5db05cba6",
+      "isDraft": false,
+      "mergeCommit": {
+        "oid": "c061d0f93d77900bd4ee5a636860d647fd750ee8"
+      },
+      "mergedAt": "2026-09-23T11:52:49Z",
+      "number": 351,
+      "state": "MERGED",
+      "title": "feat: 이미지 종류·번호·쓰임새와 항목 바로 코멘트",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/351"
     }
   },
   "freshness": "SNAPSHOT_NOT_LIVE"
