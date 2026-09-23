@@ -1254,6 +1254,7 @@
       "approval_archive": "docs/operations/2026-09-24_PR357_PROTECTED_CHANGE_APPROVAL_RECORD.md",
       "approval_blob_sha256": "3de044f4d2219bede17efceb622e332a0bb503e08b3e6a3fd26e5f2e33ee1238",
       "cleanup_branch": "codex/event-checks-closeout-20260924",
+      "cleanup_ci_correction": "PR358 head2a04e188: cleanup adapter was saved with CRLF although its existing .gitattributes requires LF; locally generated raw-byte hashes therefore differed from the Linux checkout. Normalize the adapter working copy to existing LF policy and regenerate all four dependent views with the adopted Base generator. Approved contract and focused adapter/lifecycle regressions pass; no validator relaxation or product-path change.",
       "cleanup_validation": "84 state/governance plus14 approval/adapter regressionsPASS; exact1109-byte approval Base64 equals merged Git blob/hash; product paths diff0; adopted Base regenerated4 dependent views and operating contract/reference freshness/skill integrity/project systemPASS. Cleanup exact-head CI and final main are independently read from GitHub."
     },
     "protected": {
