@@ -453,7 +453,7 @@
       {
         "work_item_id": "TEN-HTML-INLINE-REVIEW-20260923",
         "title": "이미지 종류·고정 번호·쓰임새와 항목 바로 코멘트",
-        "status": "IN_PROGRESS",
+        "status": "DONE",
         "canon_owner": "docs/blueprint/HTML_MIGRATION_SPEC.md",
         "actual_consumers": [
           "tools/html_blueprint_numbers.py",
@@ -496,8 +496,8 @@
             ]
           }
         ],
-        "next_action": "동일 승인 범위의 정상 PR/보호 승인 종료/병합 후 main 확인. 사용자 플레이 검수는 별도.",
-        "verified_head_sha": null,
+        "next_action": "이미지 하단 종류·번호·쓰임새로 요청하고 항목 코멘트를 기존 파일에 누적한다. 사용자 실제 플레이 검수는 별도. PR351 병합 완료; 승인 종료 PR 상태는 GitHub live 확인.",
+        "verified_head_sha": "2ef99596558aab70f437c19ebd5fa0d5db05cba6",
         "must_fix_remaining": 0,
         "blocked_unverified_remaining": 0,
         "user_decision_required_remaining": 0,
@@ -715,7 +715,7 @@
   "inline_review_followup": {
     "approval": "2026-09-23 user: 맞아 정확해. 진행해줘; image caption order: 종류, 이미지 번호, 쓰임새",
     "baseline": "c2fbdd7ead403974d9b82bbc51bf3abffd51b1a5",
-    "status": "IMPLEMENTED_VERIFIED_INTEGRATION_PENDING",
+    "status": "IMPLEMENTED_VERIFIED_MERGED",
     "owner": "docs/blueprint/HTML_MIGRATION_SPEC.md#19",
     "work_mode": "BUILD",
     "skills": [
@@ -753,15 +753,22 @@
     "review2": "Independent full review: 0 P1, five P2 corrected: registry reference pollution, number search, SVG captions, courtyard usage, missing changes navigation. No further full review; targeted checks only.",
     "verification": {
       "html": "55 focused Python PASS; 1053 source-rendered views / 13989 local links PASS; 33 governance PASS; canonical reference freshness and approved operating contract PASS",
-      "browser": "External Chrome: 318 entries, exact number search, same-image 3 forms synchronized, fixture save/reload, 1920/960px no horizontal overflow; actual user reviews untouched",
+      "browser": "External Chrome: 318 entries, exact number search, same-image 3 forms synchronized, fixture save/reload, 1920/960px no horizontal overflow; actual user reviews untouched; SVG cropped images carry captions/forms; corrected initial asynchronous load anchor measured section190px below sticky menu169px.",
       "godot": "4.7.1 three actual captures, final stderr empty; observation/detail regression RED to GREEN and modular UI final PASS. Premature import cleanup caused an extra load failure; three background import descriptors restored for rerun then returned to recovery folder.",
-      "human": "NOT_RUN"
+      "human": "NOT_RUN",
+      "integration_correction": "First remote adversarial-gate found missing date BUILD approval connection; appended actual same-scope user approval to existing record, did not weaken gate."
     },
     "cleanup": {
       "files": 228,
       "location": "C:/Users/user/Documents/삭제대기/Ten-Paces-Hidden-Moves/html-inline-review-20260923",
       "manifest": "RESTORE_MANIFEST.json",
       "scope": "only newly generated untracked import/UID files; no images deleted"
+    },
+    "pull_request": 351,
+    "implementation_commit": "2ef99596558aab70f437c19ebd5fa0d5db05cba6",
+    "merge_commit": "c061d0f93d77900bd4ee5a636860d647fd750ee8",
+    "remote_checks": {
+      "SUCCESS": 32
     }
   }
 }
