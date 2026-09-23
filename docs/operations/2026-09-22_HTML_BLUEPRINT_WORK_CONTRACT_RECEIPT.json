@@ -382,7 +382,7 @@
       {
         "work_item_id": "TEN-GIYUN-DDD",
         "title": "강호행로·기연과 DDD 기획서·HTML 검수",
-        "status": "IMPLEMENTATION_VALIDATING",
+        "status": "IMPLEMENTED_VERIFIED_MERGED",
         "canon_owner": "docs/decisions/2026-09-23_GIYUN_DDD_BLUEPRINT.md",
         "actual_consumers": [
           "data/run/giyun_rules.json",
@@ -391,7 +391,8 @@
           "src/run/vertical_slice_metrics_combat_resolution_engine.gd",
           "tools/html_blueprint_ui/design.js"
         ],
-        "next_action": "전투·저장·브라우저 실행 검증과 전체 검토2회 → 정상 PR / main readback"
+        "next_action": "사용자가 새 여정의 기연 조합 재미를 검수한다. 다음 제품 변경은 PR342 후보와 최신 main을 별도 fresh-read한다.",
+        "pull_request": 348
       }
     ]
   },
@@ -549,7 +550,7 @@
   "giyun_ddd_followup": {
     "approval": "2026-09-23 user approved the concrete recommendation",
     "decision": "docs/decisions/2026-09-23_GIYUN_DDD_BLUEPRINT.md",
-    "status": "IMPLEMENTATION_VALIDATING",
+    "status": "IMPLEMENTED_VERIFIED_MERGED",
     "baseline": "2dfa2a6a9b846276869a8084f7be3a3ab3ef7f67",
     "review_rounds_completed": 2,
     "human": "NOT_RUN",
@@ -561,6 +562,16 @@
       "run-limited giyun and events / schema5 compatibility",
       "HTML/runtime evidence and safe integration"
     ],
-    "review_result": "2 full independent reviews completed; 5+3 findings corrected, focused verification and final CI ongoing"
+    "review_result": "2 full independent reviews; all 5+3 findings corrected, focused regressions passed",
+    "pull_request": 348,
+    "merge_commit": "66a8b0dcbcff4d127eee42dca11b194cea37f3d4",
+    "verification": {
+      "local_full": "538 PASS / 489.700s / no skips",
+      "remote": "33 SUCCESS on 0f50575f; merge tree equal",
+      "html": "39 tests; 676 views / 6876 links",
+      "runtime": "Actual Godot event fixture, save/process restore, legacy native campaign CI; new Giyun human campaign NOT_RUN",
+      "browser": "External Chrome images/tables/Giyun, launcher/recovery and repeat image error contract",
+      "human": "NOT_RUN"
+    }
   }
 }

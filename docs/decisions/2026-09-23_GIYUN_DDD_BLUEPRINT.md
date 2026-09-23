@@ -1,6 +1,6 @@
 # 강호행로·기연·DDD와 HTML 검수 통합
 
-상태: USER_APPROVED_IMPLEMENTATION_IN_PROGRESS. 승인: 2026-09-23 사용자의 “좋아 권장안대로 진행해”. 기준 main: 2dfa2a6a9b846276869a8084f7be3a3ab3ef7f67. Base 최신 main 관측: 23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef. 특정 SHA를 영구 기준으로 사용하지 않는다.
+상태: IMPLEMENTED_VERIFIED_MERGED. 승인: 2026-09-23 사용자의 “좋아 권장안대로 진행해”. 기준 main: 2dfa2a6a9b846276869a8084f7be3a3ab3ef7f67. Base 최신 main 관측: 23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef. 특정 SHA를 영구 기준으로 사용하지 않는다.
 
 ## 승인 범위와 보호
 
@@ -60,3 +60,12 @@ HTML39검사 PASS, 676표시/6876내부 링크 PASS(실제 브라우저 증거�
 첫 원격 검사(35802372158)는 기존 combat bridge fixture가 휴식1회를 가정하면서 새 경로의 첫 선택지인 휴식을 반복해 자원 기대값3건이 실패했다. 제품 자원 전달을 바꾸지 않고 새 시드 경로에서 수련/정탐과 휴식1회를 명시적으로 선택하도록 교정했다. 같은 실제 bridge 검사와 이후9개 native 검사를 로컬 재실행해 PASS, SCRIPT ERROR 없음. 이 실패는 초기 원격 결과로 보존한다.
 
 Windows 더블클릭 실행 진입점은 검증한 Python 환경을 사용하도록 `python`으로 맞췄다. 실제 cmd 실행에서 HTML 재생성·서버 복구·외부 Chrome 열기와 종료코드0을 확인했다. `py -3`가 선택한 별도 Python의 PIL 누락은 제품 실패와 구분하며 전역 패키지/설정을 바꾸지 않았다.
+
+
+### 최종 구현 검증 및 main 전달
+
+제품 고정본 fde298f9의 로컬 전체538검사 PASS(489.700초, 건너뜀0). 이후 0f50575f는 시험 경로·Windows 실행 진입점·기록만 교정했다. 해당 bridge와 후속9개 native 검사는 별도 PASS. 원격 최종33개 SUCCESS/0FAIL/0PENDING 후 PR348을 `66a8b0dcbcff4d127eee42dca11b194cea37f3d4`에 정상 병합했고 검토 head와 병합 tracked tree가 동일하다. 원격 캠페인은 기존 schema2 초기 저장 fixture의 자동 회귀이며 신규 기연 회차의 사람 재미/실제10전 승인으로 승격하지 않는다.
+
+일회 승인 종료·기준 승격은 `docs/operations/2026-09-23_PR348_PROTECTED_CHANGE_APPROVAL_RECORD.md`를 따른다. HTML39검사/676표시/6876링크·실제 Chrome·Godot 사건 fixture·프로세스 종료/복원은 앞 절과 각 로그를 따른다. 이후 문서/계약 closeout은 제품이 바뀌지 않았음을 대조하고 관련 검사만 수행한다.
+
+임시 import/uid223개는 `C:/Users/user/Documents/삭제대기/Ten-Paces-Hidden-Moves/giyun-import-metadata-20260923-final`에 원래 경로/SHA256/복원 명세와 보존했다. 처음 보관 후 검증에 필요해 복원한 사본은 앞선 giyun-import-metadata-20260923 폴더에 남아 있다. 사용자가 직접 삭제하며 자동 삭제하지 않는다. 이후 Godot 실행은 editor import를 먼저 수행한다. 원래 프로젝트 dirty45와 PR342 후보는 그대로 보존했다.

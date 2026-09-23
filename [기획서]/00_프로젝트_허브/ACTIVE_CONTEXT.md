@@ -4,7 +4,7 @@
 
 현재 승인 범위는 `docs/decisions/2026-09-23_GIYUN_DDD_BLUEPRINT.md`와 기존 HTML receipt의 `giyun_ddd_followup`이다. DDD=사용자가 정의한 도파민 중심 개발. 새 회차에 4활동/6사건/6기연 및 schema5를 연결하고, HTML 첫 게임 설명에 기획서·상세 SWOT·성수/기술 표·기연 도감을 파생한다. 기존 저장1/2, 승인 원화/PDF, PR342 후보와 원래 dirty45는 보존한다. 아래 이전 HTML 작업의 “게임 제품 변경 없음”은 당시 기록이다.
 
-재개 경로: 최신 main/PR → 위 Decision → 기존 receipt/PM → 실제 data/run/giyun_rules.json·src/run/giyun_rules.gd·run/codec/전투 consumer → `블루프린트 열기.cmd` 또는 `python tools/open_html_blueprint.py --no-open` → 출력 주소와 resume-index. 오래된 포트/토큰을 재사용하지 않는다. 현재 구현 검증 및 전체 검토 진행 중이며 병합 상태는 GitHub live metadata를 확인한다. 사람 재미·Android·출시는 NOT_RUN.
+재개 경로: 최신 main/PR → 위 Decision → 기존 receipt/PM → 실제 data/run/giyun_rules.json·src/run/giyun_rules.gd·run/codec/전투 consumer → `블루프린트 열기.cmd` 또는 `python tools/open_html_blueprint.py --no-open` → 출력 주소와 resume-index. 오래된 포트/토큰을 재사용하지 않는다. 구현·전체 검토2회·로컬538개·원격33개 검사를 완료하고 PR348을 정상 병합했다. 일회 승인 종료는 PR348 approval record를 따르며 이후 최신 main/후속 PR 상태는 GitHub live metadata로 확인한다. 사람 재미·Android·출시는 NOT_RUN.
 
 ## HTML 항목별 검수·재개 개선 · 2026-09-23
 
