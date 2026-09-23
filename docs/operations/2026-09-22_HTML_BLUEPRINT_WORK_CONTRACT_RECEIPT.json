@@ -1229,9 +1229,12 @@
       "boundary": "Only task-created untracked Godot import sidecars moved with hashes. New module/test UIDs retained; user data and original art untouched."
     },
     "integration": {
-      "status": "PENDING_GUARDED_PR",
+      "status": "CI_PENDING_AFTER_STATE_SYNC_CORRECTION",
       "remote_main_rechecked": "2e3bf285352556eeae16452403cef2368676035c",
-      "next": "Commit scoped candidate; required exact-head CI/review/thread/ruleset, normal merge and main readback; archive one-time protected approval in a follow-up cleanup PR."
+      "next": "Commit scoped candidate; required exact-head CI/review/thread/ruleset, normal merge and main readback; archive one-time protected approval in a follow-up cleanup PR.",
+      "pr": 357,
+      "initial_ci_failure": "98ec07c4: after the595PASS snapshot, final current_operating_state changed without updating the existing Active Context YAML state block. Five governance workflows caught mismatched mutable state. Product tests are not the failure; synchronize both actual owners, rerun affected governance regressions and exact-head CI. No validator weakening.",
+      "correction_verification": "Existing Active Context state block synchronized with current JSON; both stable roadmaps link the current Decision without copying mutable checkpoints.65 affected governance regressionsPASS; canonical reference freshnessPASS. No product/test/validator behavior changed."
     },
     "protected": {
       "default_checkout_dirty_count": 45,

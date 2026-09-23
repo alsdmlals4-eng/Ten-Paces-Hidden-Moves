@@ -240,11 +240,11 @@ product_stage: HTML_INSPECTION_IMPLEMENTED_VERIFIED
 runtime_work_mode: BUILD
 historical_runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
-active_planning_pr: NONE
+active_planning_pr: 357
 active_planning_parent_pr: NONE
 active_approval_count: SCOPED_BUILD_AUTHORIZED_HUMAN_FINAL_NOT_RUN
-active_decision_state: HTML_INSPECTION_IMPLEMENTED_VERIFIED
-source_decision: USER-APPROVED-TEN-HTML-PILOT-20260922
+active_decision_state: EVENT_CHECKS_HTML_VERIFIED_READY_FOR_GUARDED_PR
+source_decision: TEN-DEC-20260924-EVENT-CHECKS-HTML-01
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
 platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
@@ -262,8 +262,8 @@ accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
 performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 phase_i_vi_implementation: AUTHORIZED_AND_MERGED
 future_product_mutation_authorized: false_NEW_PRODUCT_MUTATION_REQUIRES_FRESH_APPROVED_CONTRACT
-next_package: PR342_PRODUCT_CANDIDATE_FRESH_READ_AND_CONTINUE
-next_planning_decision: USER-APPROVED-TEN-HTML-PILOT-20260922
+next_package: EVENT_CHECKS_HTML_GUARDED_PR_AND_APPROVAL_CLOSEOUT
+next_planning_decision: TEN-DEC-20260924-EVENT-CHECKS-HTML-01
 user_directed_planning_work_mode: REVIEW_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_COMPARISON_DEFERRED
 user_directed_planning_decision: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
 user_directed_planning_next_package: PR342_PRODUCT_CANDIDATE_FRESH_READ_AND_CONTINUE
