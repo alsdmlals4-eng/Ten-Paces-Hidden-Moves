@@ -43,7 +43,8 @@ func configure_vertical_slice_loadouts(
     enemy_runtime_binding: Dictionary,
     enemy_identity: Dictionary = {},
     bimu_receipt: Dictionary = {},
-    resolved_encounter: Dictionary = {}
+    resolved_encounter: Dictionary = {},
+    giyun_state: Dictionary = {}
 ) -> bool:
     var player_ids := _string_values(player_loadout)
     var enemy_ids := _string_values(enemy_loadout)
@@ -71,6 +72,7 @@ func configure_vertical_slice_loadouts(
         return false
     var engine: VerticalSliceMetricsCombatResolutionEngine = VERTICAL_SLICE_ENGINE_SCRIPT.new()
     engine.variable_opponent_rules = not resolved_encounter.is_empty()
+    if not engine.configure_giyun(giyun_state.get("owned", [])): return false
     if not engine.configure_bimu_constraints(bimu_receipt.get("selections", []), player_ids, enemy_ids):
         return false
     if not engine.configure_enemy_runtime_binding(enemy_runtime_binding):
@@ -122,6 +124,7 @@ func configure_vertical_slice_loadouts(
     }
     if not resolved_encounter.is_empty():
         _vertical_slice_loadout_snapshot["resolved_encounter"] = resolved_encounter.duplicate(true)
+    if not giyun_state.is_empty(): _vertical_slice_loadout_snapshot["giyun_ids"] = giyun_state.owned.duplicate()
     set_meta("vertical_slice_runtime_loadout_bound", true)
     set_meta("vertical_slice_enemy_candidate_id", enemy_candidate_id)
     set_meta("vertical_slice_battle_metrics_bound", true)

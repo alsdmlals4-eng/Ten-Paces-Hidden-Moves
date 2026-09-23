@@ -53,14 +53,28 @@ func _run() -> void:
                 check(codec._engine(strengthened) != null, "Constraint applies to auxiliary owned manual")
     check(checked == 160 and sizes.size() == 4, "All 160 approved rows and 2/3/4/5 manual sizes validated")
     await _bridge_roundtrip(player_mastery)
+    await _bridge_roundtrip(player_mastery, true)
     print("VARIABLE_COMBAT_CODEC: %s (%d rows)" % ["PASS" if failures.is_empty() else "FAIL", checked])
     quit(0 if failures.is_empty() else 1)
-func _bridge_roundtrip(player_mastery: Dictionary) -> void:
+func _bridge_roundtrip(player_mastery: Dictionary, with_giyun: bool = false) -> void:
     var run = load("res://src/run/vertical_slice_run_state.gd").new()
-    check(run.start_new_variable_run(12345, "combat"), "Initialize variable combat run")
+    var seed_value := 0
+    var rules = load("res://src/run/giyun_rules.gd").new()
+    while rules.event_for(seed_value,1,0).giyun_id != "jade_guard": seed_value += 1
+    check(run.start_new_giyun_run(seed_value,"combat") if with_giyun else run.start_new_variable_run(12345, "combat"), "Initialize variable combat run")
     check(run.confirm_setup_loadout(STARTERS, player_mastery), "Confirm player loadout")
     for _step in range(3): check(run.advance(), "Advance to v2 combat")
-    var encounter: Dictionary = run.export_snapshot().resolved_encounters[0]
+    if with_giyun:
+        check(run.mark_combat_finished({"outcome":"win","player_resources":{"health":[30,30],"stamina":[5,5],"internal":[4,4]}}), "Complete first duel fixture")
+        check(run.advance(), "Review result")
+        check(run.set_pending_result_reward({"reward_type":"free_training","free_training":6}), "Reward fixture")
+        check(run.advance(), "Enter route")
+        for step in range(4):
+            check(run.select_jianghu_node("event",step), "Open seeded event")
+            check(run.select_jianghu_node("event.accept" if step == 0 else "event.study",step), "Resolve event")
+            check(run.advance(), "Advance route")
+        check(run.advance(), "Enter second duel with owned giyun")
+    var encounter: Dictionary = run.export_snapshot().resolved_encounters[run.duel_index-1]
     var opponent: Dictionary = run.get_current_opponent()
     var runtime: Dictionary = load("res://src/run/vertical_slice_opponent_runtime_binding.gd").new().build(opponent)
     runtime.stats = encounter.stats.duplicate(true)
@@ -74,9 +88,10 @@ func _bridge_roundtrip(player_mastery: Dictionary) -> void:
     var board = load("res://scenes/run/vertical_slice_combat_bridge.tscn").instantiate()
     root.add_child(board)
     await process_frame
-    check(board.configure_vertical_slice_loadouts(STARTERS, player_mastery, ids, mastery, opponent.candidate_id, runtime, {"name":opponent.working_name,"epithet":opponent.epithet}, run.get_frozen_bimu_receipt(), encounter), "Actual bridge binds v2 encounter")
+    check(board.configure_vertical_slice_loadouts(STARTERS, player_mastery, ids, mastery, opponent.candidate_id, runtime, {"name":opponent.working_name,"epithet":opponent.epithet}, run.get_frozen_bimu_receipt(), encounter, run.get_giyun_state()), "Actual bridge binds v2 encounter")
     board.apply_vertical_slice_player_resources(run.get_player_run_resources())
-    board.configure_checkpoint_identity(1, 0)
+    board.configure_checkpoint_identity(run.duel_index, 0)
+    if with_giyun: board.combat_state.player["giyun_attack_bonus"] = 2
     check(board.capture_planning_checkpoint(), "Capture v2 planning boundary")
     var dto: Dictionary = board.get_last_stable_checkpoint()
     var codec = load("res://src/run/run_checkpoint_codec.gd").new()
@@ -85,7 +100,15 @@ func _bridge_roundtrip(player_mastery: Dictionary) -> void:
     if not validation.ok: print(validation)
     var encoded: Dictionary = codec.encode("combat", "planning", 1, run.export_snapshot(), dto)
     check(encoded.ok, "V2 combat envelope encodes")
-    if encoded.ok: check(codec.decode(encoded.text).ok, "V2 combat envelope JSON roundtrip")
+    if encoded.ok:
+        var restored: Dictionary = codec.decode(encoded.text)
+        check(restored.ok, "Combat envelope JSON roundtrip")
+        if with_giyun:
+            check(restored.payload.combat_checkpoint.state.player.giyun_attack_bonus == 2, "Giyun bonus survives checkpoint transport")
+    for invalid_actor in [null, [], "bad"]:
+        var malformed: Dictionary = dto.duplicate(true)
+        malformed.state_before = {"player":invalid_actor}
+        check(not load("res://src/run/combat_checkpoint_codec.gd").new().validate(malformed).ok, "Malformed prior actor safely rejected")
     var forged := dto.duplicate(true)
     forged.state.enemy.observation_points = 1
     check(not codec.validate_payload(run.export_snapshot(), forged).ok, "V2 forbids persisted enemy observation")

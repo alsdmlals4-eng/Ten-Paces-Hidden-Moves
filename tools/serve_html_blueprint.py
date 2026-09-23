@@ -14,10 +14,37 @@ import re
 import threading
 from urllib.parse import unquote, urlsplit
 import webbrowser
+import http.client
 
 import html_blueprint as model
 
 ROOT = model.ROOT
+
+
+def healthy_session_url(receipt, index):
+    """Only reuse a live loopback session serving these exact published bytes."""
+    connection = None
+    try:
+        url = receipt.get('url', '')
+        parsed = urlsplit(url)
+        if (parsed.scheme != 'http' or parsed.hostname != '127.0.0.1'
+                or parsed.username or parsed.password or not parsed.port
+                or parsed.query or parsed.fragment
+                or not re.fullmatch(r'/p/[A-Za-z0-9_-]+/output/blueprint/index\.html', parsed.path)):
+            return None
+        expected = model.sha(index)
+        if receipt.get('index_sha256') != expected:
+            return None
+        connection = http.client.HTTPConnection('127.0.0.1', parsed.port, timeout=2)
+        connection.request('GET', parsed.path)
+        response = connection.getresponse()
+        data = response.read(index.stat().st_size + 1)
+        return url if response.status == 200 and hashlib.sha256(data).hexdigest() == expected else None
+    except (OSError, ValueError, http.client.HTTPException):
+        return None
+    finally:
+        if connection:
+            connection.close()
 
 
 def valid_peer(host, origin, port):

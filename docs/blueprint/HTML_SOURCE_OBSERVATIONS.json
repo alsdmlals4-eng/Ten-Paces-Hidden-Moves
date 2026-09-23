@@ -1,7 +1,29 @@
 {
-  "observed_at": "2026-09-22T18:12:24.695503+00:00",
-  "main_sha": "6398f2687d9995b81c446e36b00e6a6f8a6a5c0c",
+  "observed_at": "2026-09-23T00:26:34.861578+00:00",
+  "main_sha": "2dfa2a6a9b846276869a8084f7be3a3ab3ef7f67",
   "prs": {
+    "199": {
+      "baseRefName": "main",
+      "headRefOid": "9d106dbde9ed0c80858a170cde213772946cfd4b",
+      "isDraft": true,
+      "mergeCommit": null,
+      "mergedAt": null,
+      "number": 199,
+      "state": "OPEN",
+      "title": "docs: route front doors to human device validation packet",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/199"
+    },
+    "200": {
+      "baseRefName": "main",
+      "headRefOid": "6ca6f3bc2634e8be43f88f1cc8f060ba1541f8ab",
+      "isDraft": true,
+      "mergeCommit": null,
+      "mergedAt": null,
+      "number": 200,
+      "state": "OPEN",
+      "title": "chore: adopt Base v9.4.4 reuse-first intake",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/200"
+    },
     "337": {
       "baseRefName": "main",
       "headRefOid": "5ad310a5b0cd10a932948c4e68bdb10129091a6b",
@@ -52,28 +74,6 @@
       "title": "Streamline Base adoption and connect game experience verification",
       "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/343"
     },
-    "199": {
-      "baseRefName": "main",
-      "headRefOid": "9d106dbde9ed0c80858a170cde213772946cfd4b",
-      "isDraft": true,
-      "mergeCommit": null,
-      "mergedAt": null,
-      "number": 199,
-      "state": "OPEN",
-      "title": "docs: route front doors to human device validation packet",
-      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/199"
-    },
-    "200": {
-      "baseRefName": "main",
-      "headRefOid": "6ca6f3bc2634e8be43f88f1cc8f060ba1541f8ab",
-      "isDraft": true,
-      "mergeCommit": null,
-      "mergedAt": null,
-      "number": 200,
-      "state": "OPEN",
-      "title": "chore: adopt Base v9.4.4 reuse-first intake",
-      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/200"
-    },
     "344": {
       "baseRefName": "main",
       "headRefOid": "c24719acc89d1f3a0be367494c4e4a4acccd52ed",
@@ -102,12 +102,14 @@
     },
     "347": {
       "baseRefName": "main",
-      "headRefOid": "c8ae1a2bf56f7e945beeda4ee871ba720fa70683",
+      "headRefOid": "2615a0671b572d85c9bbd6653266c7394b2b8d86",
       "isDraft": false,
-      "mergeCommit": null,
-      "mergedAt": null,
+      "mergeCommit": {
+        "oid": "2dfa2a6a9b846276869a8084f7be3a3ab3ef7f67"
+      },
+      "mergedAt": "2026-09-22T18:25:32Z",
       "number": 347,
-      "state": "OPEN",
+      "state": "MERGED",
       "title": "feat: make blueprint screens and motions directly inspectable",
       "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/347"
     }

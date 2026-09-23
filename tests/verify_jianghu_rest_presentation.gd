@@ -9,7 +9,7 @@ func _run() -> void:
     var shell = load("res://scenes/run/vertical_slice_shell.tscn").instantiate()
     root.add_child(shell)
     await process_frame
-    shell.start_new_run()
+    shell.run_state.start_new_run() # Preserve the legacy authored-rest fixture.
     for manual in ["mount_hua_plum_blossom_sword", "shaolin_arhat_vajra_art", "wudang_taiji_sword", "yang_family_spear"]:
         shell.toggle_setup_manual(manual)
     for step in range(3):

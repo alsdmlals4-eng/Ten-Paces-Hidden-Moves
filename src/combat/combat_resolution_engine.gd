@@ -626,6 +626,9 @@ func _execute_attack_phase(state: Dictionary, actions: Array, _defenses: Diction
         var bonus := int(actor.get("next_attack_bonus", 0))
         damage += bonus
         actor["next_attack_bonus"] = 0
+        if actor.has("giyun_attack_bonus") and definition.get("source") == "basic":
+            damage += int(actor.giyun_attack_bonus)
+            actor.giyun_attack_bonus = 0
         state[actor_key] = actor
 
         var attack_record := _resolved_record(action, timing, phase_label)

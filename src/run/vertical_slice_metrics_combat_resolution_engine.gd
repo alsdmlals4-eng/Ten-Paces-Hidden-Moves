@@ -8,6 +8,13 @@ var battle_metrics: VerticalSliceBattleMetrics
 var _enemy_runtime_binding: Dictionary = {}
 var _bimu_model = CONSTRAINT_SCRIPT.new()
 var _bimu_receipt: Dictionary = {}
+var giyun_ids: Array = []
+var _giyun_rules = preload("res://src/run/giyun_rules.gd").new()
+
+func configure_giyun(ids: Array) -> bool:
+    if not _giyun_rules.valid_owned(ids): return false
+    giyun_ids = ids.duplicate()
+    return true
 
 
 func configure_bimu_constraints(selection: Array, player_manual_ids: Array, enemy_manual_ids: Array) -> bool:
@@ -124,6 +131,9 @@ func resolve_bundle(player_placements: Array, context: Dictionary, state_value: 
     next_state["battle_metrics"] = next_metrics.duplicate(true)
     result["state"] = next_state
     result["battle_metrics"] = next_metrics.duplicate(true)
+    _giyun_rules.apply_bundle(giyun_ids, before, result)
+    if not giyun_ids.is_empty():
+        result["presentation_events"] = _build_presentation_events(before, result.state, result.resolved_actions, result.logs)
     return result
 
 

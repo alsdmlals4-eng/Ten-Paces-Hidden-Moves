@@ -4,6 +4,9 @@ extends VerticalSliceResultShell
 var route_options_container: VBoxContainer
 var route_focus_target: OptionButton
 var _route_logical_option_count: int = 0
+var _route_scroll: ScrollContainer
+var _route_stack: VBoxContainer
+var _route_margin: Control
 
 
 func _ready() -> void:
@@ -61,6 +64,10 @@ func _render_current_screen() -> void:
         _apply_session_input_lock()
         return
     _set_route_composition(false)
+    if _route_scroll != null and run_state.get_current_screen() != VerticalSliceRunState.SCREEN_JIANGHU:
+        _route_stack.reparent(_route_margin)
+        _route_scroll.queue_free()
+        _route_scroll = null
     super._render_current_screen()
     if route_options_container == null or run_state == null:
         return
@@ -81,6 +88,15 @@ func _render_jianghu() -> void:
         _apply_session_input_lock()
         return
     _clear_route_options()
+    if _route_scroll == null:
+        _route_stack = primary_button.get_parent()
+        _route_margin = _route_stack.get_parent()
+        _route_scroll = ScrollContainer.new()
+        _route_scroll.name = "RouteScroll"
+        _route_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+        _route_margin.add_child(_route_scroll)
+        _route_stack.reparent(_route_scroll)
+        _route_stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     var pending := run_state.get_pending_jianghu()
     var resting := str(pending.get("route_type", "")) == "rest"
     _set_route_composition(resting)
@@ -96,6 +112,17 @@ func _render_jianghu() -> void:
         var stamina: Array = resources.get("stamina", [0, 0])
         var internal: Array = resources.get("internal", [0, 0])
         description_label.text = "빗소리를 들으며 잠시 몸을 추스릅니다.\n\n%s\n\n현재 체력 %d/%d\n기력 %d/%d · 내력 %d/%d\n\n휴식을 마쳤습니다. 다음 갈림길로 나아갑니다." % [pending.get("effect", ""), health[0], health[1], stamina[0], stamina[1], internal[0], internal[1]]
+    var giyun := run_state.get_giyun_state()
+    if not giyun.is_empty():
+        var rules = preload("res://src/run/giyun_rules.gd").new()
+        if not giyun.pending_event.is_empty():
+            title_label.text = giyun.pending_event.title
+            description_label.text = giyun.pending_event.text+"\n\n선택 전 대가와 보상을 확인하세요. 체력 %d/%d" % [health[0],health[1]]
+        var owned: Array[String] = []
+        for id in giyun.owned:
+            var item: Dictionary = rules.definition(id)
+            owned.append(item.name+": "+item.description)
+        description_label.text += "\n\n보유 기연 · 이번 회차\n"+("\n".join(owned) if not owned.is_empty() else "아직 없음")
     var options := run_state.get_jianghu_options()
     _route_logical_option_count = options.size()
     for option in options:
@@ -104,7 +131,7 @@ func _render_jianghu() -> void:
         button.text = "%s\n%s" % [option["label"], option["effect"]]
         button.custom_minimum_size.y = 64
         button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-        button.disabled = not pending.is_empty()
+        button.disabled = not pending.is_empty() or bool(option.get("disabled", false))
         button.pressed.connect(_choose_jianghu.bind(str(option["id"]), step))
         route_options_container.add_child(button)
     primary_button.text = "다음 갈림길" if step < 3 else "다음 비무 브리핑"
@@ -134,6 +161,13 @@ func _render_briefing() -> void:
     super._render_briefing()
     if run_state == null or description_label == null:
         return
+    var giyun := run_state.get_giyun_state()
+    if not giyun.is_empty() and not giyun.owned.is_empty():
+        var rules = preload("res://src/run/giyun_rules.gd").new()
+        description_label.text += "\n\n이번 비무에 적용되는 기연"
+        for id in giyun.owned:
+            var item: Dictionary = rules.definition(id)
+            description_label.text += "\n"+item.name+" · "+item.description
     var intel := run_state.get_current_opponent_intel()
     var intel_text := str(intel.get("text", ""))
     if not intel_text.is_empty():
