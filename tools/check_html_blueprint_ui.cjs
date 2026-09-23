@@ -49,6 +49,28 @@ for(const page of data.pages)assert(all.includes(`data-reader="${page.id}"`),'Ov
 for(const person of data.people)assert(all.includes(person.name),'Overview omits person');
 for(const manual of data.manuals)for(const card of Object.values(manual.cards))assert(all.includes(`data-card="${card.id}"`),'Overview omits card');
 assert(vm.runInContext('nav[0][0]',env)==='maps','Atlas must be the first navigation');
+assert(!html.includes('<aside>'),'Persistent sidebar wastes the reading area');
+assert(element('nav').innerHTML.includes('#home/audit'),'Image navigation must jump to its complete section');
+const firstNumbered=data.assets.find(a=>a.image_number===1);
+assert(element('nav').innerHTML.includes('#changes'),'Change comparison must remain reachable');
+for(const n of [50,300]){
+ element('search').value='이미지 '+n;
+ const row=data.image_catalog.find(r=>r.number===n);
+ assert(check('searchResults()').includes(encodeURIComponent(row.record_id)),'Exact image number search missing');
+}
+element('search').value='';
+const cropped=data.pages.flatMap(p=>p.blocks).find(b=>b.region);
+assert(check('block('+JSON.stringify(cropped)+')').includes('data-image-number='),'Cropped image caption missing');
+assert(firstNumbered,'The numbered image catalog must start at one');
+const firstTile=check(`tile(${JSON.stringify(firstNumbered)})`);
+assert(firstTile.includes('data-image-number="1"'));
+assert(firstTile.includes('data-user-review="asset:'+firstNumbered.id+'"'),'Inline image comment missing');
+assert(data.image_catalog.every(r=>r.kind&&r.usage&&r.usage_evidence),'Image captions need kind, number and evidenced usage');
+assert.equal(new Set(data.image_catalog.map(r=>r.number)).size,data.image_catalog.length,'Image numbers collide');
+assert(check('home()').includes('id="overview-audit"'));
+assert(check('home()').includes('id="overview-reviews"'));
+const replacement=check(`block({kind:'image',path:'docs/blueprint/evidence/reference-screens/54d7b849fff7d6b9a639007f08147401.png'})`);
+assert(replacement.includes('assets/blueprint/clash_explanation_v1.png')&&replacement.includes('이전 참고 이미지'));
 for(const id of ['menu','starter','brief','plan','resolve'])assert(check(`maps('game-loop','${id}')`).includes('id="stage-detail"'),'Missing usable atlas content');
 for(const clip of data.experience.clips)assert(check(`movies('test',[${JSON.stringify(clip.id)}])`).includes('<video '),'Missing real movie');
 for(const g of data.diagrams){check(`maps(${JSON.stringify(g.id)})`);for(const n of g.nodes)check(`maps(${JSON.stringify(g.id)},${JSON.stringify(n.id)})`);}

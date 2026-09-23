@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "66a8b0dcbcff4d127eee42dca11b194cea37f3d4",
+  "decision_ids": [
+    "TEN-HTML-INLINE-REVIEW-20260923"
+  ],
+  "approved_paths": [
+    "src/ui/observation_reveal_panel.gd",
+    "src/ui/action_selection/action_detail_panel.gd"
+  ],
+  "approval_source": "User approved concrete five-part plan on 2026-09-23: 맞아 정확해. 진행해줘. Text/frame correction only; HTML_MIGRATION_SPEC.md19.",
+  "approval_time": "2026-09-23T11:20:12.880321+00:00",
+  "scope_summary": "Correct observation header/hint fit and action detail title readability within existing frames; no rules, asset or save changes."
+}

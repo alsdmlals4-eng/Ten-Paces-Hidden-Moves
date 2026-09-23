@@ -254,16 +254,22 @@ def build(out=OUT, include_candidate=True):
         inputs[path] = model.sha(ROOT/path)
     payload['current_design'] = (ROOT/'docs/01_GAME_DESIGN.md').read_text(encoding='utf-8').split('## 2026-09-23 · 현재 게임 설명과 DDD', 1)[1]
     payload['current_swot'] = model.read(ROOT, 'docs/blueprint/IMPLEMENTATION_READINESS.json')['current_swot']
+    payload['visual_revisions'] = model.read(ROOT, 'docs/blueprint/IMPLEMENTATION_READINESS.json').get('visual_revisions', {})
+    for row in payload['visual_revisions'].values():
+        for path in row['current_images']:
+            inputs[path] = model.sha(ROOT/path)
     for path in ['docs/01_GAME_DESIGN.md','docs/06_STARTING_FACTION_MASTERY_DATA.md','docs/blueprint/IMPLEMENTATION_READINESS.json','src/run/vertical_slice_progression_state.gd','tools/html_blueprint_ui/design.js','tools/open_html_blueprint.py','tools/serve_html_blueprint.py']:
         inputs[path] = model.sha(ROOT/path)
     from html_blueprint_inspection import build as inspection_index
     audit_model.group_assets(assets, payload['people'], manuals, art)
     payload['inspection'] = inspection_index(payload)
+    from html_blueprint_numbers import attach as attach_image_numbers, REGISTRY as image_numbers_path
+    attach_image_numbers(payload, ROOT)
     audit_model.attach_intents(payload, model.read(ROOT, 'docs/blueprint/IMPLEMENTATION_READINESS.json')['intent_catalog'])
     payload['asset_audit'] = asset_audit
     from blueprint_review_store import shared_directory
     payload['review_location'] = str(shared_directory(ROOT) / 'reviews.json')
-    for path in ['tools/html_blueprint_audit.py', 'tools/blueprint_review_store.py', 'tools/html_blueprint_ui/review.js']:
+    for path in ['tools/html_blueprint_audit.py', 'tools/blueprint_review_store.py', 'tools/html_blueprint_ui/review.js', 'tools/html_blueprint_numbers.py', image_numbers_path, 'tools/html_blueprint_ui/inline.js']:
         inputs[path] = model.sha(ROOT/path)
     for a in assets:
         for path in a['audit']['document_references'] + a['audit']['runtime_references']:
@@ -272,10 +278,10 @@ def build(out=OUT, include_candidate=True):
         inputs[path] = model.sha(ROOT/path)
     css = (ROOT/'tools/html_blueprint_ui/style.css').read_text(encoding='utf-8')
     js = (ROOT/'tools/html_blueprint_ui/app.js').read_text(encoding='utf-8')
-    js = js.removesuffix('render();\n') + (ROOT/'tools/html_blueprint_ui/experience.js').read_text(encoding='utf-8') + (ROOT/'tools/html_blueprint_ui/inspection.js').read_text(encoding='utf-8') + (ROOT/'tools/html_blueprint_ui/design.js').read_text(encoding='utf-8') + (ROOT/'tools/html_blueprint_ui/review.js').read_text(encoding='utf-8') + '\nrender();followLocation();\n'
+    js = js.removesuffix('render();\n') + ''.join((ROOT/'tools/html_blueprint_ui'/name).read_text(encoding='utf-8') for name in ['experience.js','inspection.js','design.js','review.js','inline.js']) + '\nrender();followLocation();\n'
     html = '''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>십보강호 · 살아 있는 블루프린트</title><style>''' + css + '''</style></head><body>
 <a class="skip" id="skip-content" href="#main">본문으로</a><header><a href="#maps" class="brand">십보강호 <small>숨은 수의 비무</small></a><span class="edition">프로젝트 블루프린트</span><button id="resume-copy">재개 요청 복사</button></header>
-<div class="shell"><aside><nav aria-label="주요 메뉴" id="nav"></nav><label class="search-label" for="search">내용 찾기</label><input id="search" type="search" placeholder="인물 · 무공 · 자산 · 작업"><p id="freshness"></p><a href="../../AGENTS.md">작업 규칙 원본 ↗</a></aside><main id="main" tabindex="-1"></main></div>
+<div class="shell"><div class="section-navigation"><nav aria-label="본문 구역 바로가기" id="nav"></nav><div class="navigation-tools"><label class="search-label" for="search">내용 찾기</label><input id="search" type="search" placeholder="번호 · 인물 · 무공 · 자산 · 작업"><details><summary>발행 정보</summary><p id="freshness"></p><a href="../../AGENTS.md">작업 규칙 원본 ↗</a></details></div></div><main id="main" tabindex="-1"></main></div>
 <dialog id="viewer"><button id="close-viewer" autofocus>닫기 · Esc</button><div id="viewer-body"></div></dialog><div id="notice" role="status" aria-live="polite"></div>
 <script id="blueprint-data" type="application/json">''' + model.script_json(payload) + '</script><script>' + js + '</script></body></html>'
     manifest = {'role': 'DERIVED_VIEW_NOT_CANON', 'source_revision': payload['source_revision'],
@@ -288,6 +294,7 @@ def build(out=OUT, include_candidate=True):
         'generated_at': payload['generated_at'], 'read_order': ['AGENTS.md', 'docs/BASE_RULES_VERSION.md', 'docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md', '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md'],
         'assets': [{k:a.get(k) for k in ['id','path','scope','revision','approval','owner','consumers','audit','group']} for a in assets],
         'user_review': {'path': payload['review_location'], 'role': 'USER_AUTHORED_REVIEW_NOT_IMPLEMENTATION_PROOF', 'read_on_resume': True},
+        'image_catalog': payload['image_catalog'],
         'work_items': pm['items'], 'inspection': payload['inspection'],
         'motion_evidence': [{'id':c['id'],'path':c['path'],'timeline':c.get('timeline',[]),'freshness':c['freshness']} for c in experience['clips']]}
     encoded = lambda obj: (json.dumps(obj, ensure_ascii=False, indent=2)+'\n').encode('utf-8')

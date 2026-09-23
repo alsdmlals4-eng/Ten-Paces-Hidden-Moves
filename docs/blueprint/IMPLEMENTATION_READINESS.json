@@ -349,5 +349,52 @@
       }
     },
     "policy": "확인 가능한 기존 기획·결정만 요약. 개별 의도 미기록을 공통 목표나 추론으로 덮지 않음."
+  },
+  "visual_revisions": {
+    "docs/blueprint/evidence/reference-screens/939bf00a7266c6197d592f93b3fae1a0.png": {
+      "title": "수 배치 화면 · 현재 Godot 글자 배치",
+      "description": "과거 참고 화면의 잘린 이름과 설명 대신 현재 실행 화면을 연결합니다. 관찰 패널의 제목과 안내가 장식 경계에 걸리던 문제를 교정했습니다.",
+      "current_images": [
+        "docs/blueprint/evidence/current-ui/planning-1440.png",
+        "docs/blueprint/evidence/current-ui/planning-960.png"
+      ],
+      "steps": [
+        [
+          "상태",
+          "이름·체력·기력·내력을 프레임 내부에서 읽습니다."
+        ],
+        [
+          "행동 설명",
+          "기술 효과는 현재 데이터에서 표시하며 긴 내용은 상세 영역에서 스크롤합니다."
+        ]
+      ],
+      "evidence": "Godot 4.7.1의 실제 고정 상황 촬영입니다. 과거 금색 종이 HUD와 현재 main의 배치는 다릅니다. 모든 화면을 과거 배치로 복원한 결과가 아닙니다.",
+      "next": "#maps/game-loop/plan",
+      "next_label": "수 배치 설명과 구현 확인"
+    },
+    "docs/blueprint/evidence/reference-screens/54d7b849fff7d6b9a639007f08147401.png": {
+      "title": "격돌과 합 · 현재 승인 그림체의 설명",
+      "description": "기존 승인 검객과 합 삽화를 재사용해 인물의 선·채색을 맞췄습니다. 설명 문구는 이미지 밖의 수정 가능한 영역에 배치합니다.",
+      "current_images": [
+        "assets/blueprint/clash_explanation_v1.png"
+      ],
+      "steps": [
+        [
+          "격돌",
+          "양측 기술이 맞부딪치는 순간을 보여줍니다."
+        ],
+        [
+          "합 승리 · 패배",
+          "판정 결과를 먼저 알려 어느 쪽의 수가 이어지는지 읽게 합니다."
+        ],
+        [
+          "카드 효과 · 복귀",
+          "이후 공격·방어·피격과 복귀는 실제 Godot 연출 영상에서 확인합니다."
+        ]
+      ],
+      "evidence": "승인 삽화와 HTML 설명의 조합입니다. 게임 실행 화면이나 새 모션의 검증 증거가 아닙니다. 과거 목업의 15 대 10 수치와 가상의 기술명은 현재 규칙으로 재사용하지 않습니다.",
+      "next": "#motion/clash-win",
+      "next_label": "실제 격돌·합 승리 영상"
+    }
   }
 }

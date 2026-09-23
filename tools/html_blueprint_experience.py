@@ -86,6 +86,10 @@ def build(pages):
         context['preview_kind'] = '승인 기획의 화면 자료'
     contexts['starter']['preview'] = {'kind':'image', 'path':'docs/runtime-captures/TEN-ATLAS-SUCCESSOR-20260908/martial-summary-fixed-1280x800.png','size':[1280,800]}
     contexts['starter']['preview_kind'] = '과거 Godot 무공 선택 화면'
+    contexts['plan']['preview'] = {'kind':'image', 'path':'docs/blueprint/evidence/current-ui/planning-1440.png', 'size':[1440,900]}
+    contexts['plan']['preview_kind'] = '2026-09-23 Godot 실제 수 배치 촬영'
+    contexts['resolve']['preview'] = {'kind':'image', 'path':'assets/blueprint/clash_explanation_v1.png', 'size':[1672,940]}
+    contexts['resolve']['preview_kind'] = '현재 승인 그림체 · 합 설명 삽화'
     return {'contexts': contexts, 'clips': load_clips(),
             'constraints': read(ROOT, 'data/run/bimu_constraints.json'),
             'actions': read(ROOT, 'data/cards/basic_cards.json')['cards']}

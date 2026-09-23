@@ -75,7 +75,8 @@ people=function(id,unfiltered=false){const r=recordById('person:'+id);return (r?
 const baseCardSummary=cardSummary;
 cardSummary=function(card){return baseCardSummary(card)+recordControls(recordById('card:'+card.id));};
 function searchResults(){const q=search.value.trim();if(!q)return title('SEARCH','내용 찾기','화면·인물·무공·자산·작업을 함께 찾습니다.');
- const rows=[...inspections.map(r=>({kind:r.kind,name:r.name,href:'#inspect/'+encodeURIComponent(r.id),text:r})),...D.pages.map(p=>({kind:'설명',name:p.title,href:'#reader/'+p.id,text:p})),...D.pm.items.map(t=>({kind:'작업',name:t.title||t.work_item_id,href:'#pm/'+t.work_item_id,text:t}))].filter(r=>match(r.text));
+ const numbered=q.match(/^(?:이미지\s*)?#?([1-9][0-9]*)$/);
+ const rows=[...inspections.map(r=>({kind:r.image_number?r.image_kind+' · 이미지 '+r.image_number:r.kind,name:r.image_usage||r.name,href:'#inspect/'+encodeURIComponent(r.id),text:r})),...D.pages.map(p=>({kind:'설명',name:p.title,href:'#reader/'+p.id,text:p})),...D.pm.items.map(t=>({kind:'작업',name:t.title||t.work_item_id,href:'#pm/'+t.work_item_id,text:t}))].filter(r=>numbered?r.text.image_number===Number(numbered[1]):match(r.text));
  return title('SEARCH','통합 검색',q+' · '+rows.length+'개')+`<div class="grid">${rows.map(r=>`<a class="card" href="${E(r.href)}"><small>${E(r.kind)}</small><h3>${E(r.name)}</h3></a>`).join('')}</div>`+(rows.length?'':missing('검색 결과가 없습니다.'));
 }
 function changedRecords(previous=previousFingerprints){
