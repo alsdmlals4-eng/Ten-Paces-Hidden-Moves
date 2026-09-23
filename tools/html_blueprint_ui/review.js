@@ -1,27 +1,58 @@
 /* User review is editable; source implementation and approval evidence stay separate. */
-const userStatuses={pending:'미검토',checked:'확인 완료',changes:'수정 요청',hold:'보류'};
+const userStatuses={pending:'미검토',checked:'확인 완료',changes:'수정 요청',hold:'보류',discard:'폐기 요청'};
 let userReviews={schema_version:1,project:'ten-paces-hidden-moves',revision:0,items:{}},reviewLoaded=false,reviewLoading=false,reviewMessage='검토 기록을 불러오는 중입니다.';
-const reviewDrafts=new Map();
+const reviewPanels=new Map();
+const reviewMessages={pending:'작성 중 · 잠시 멈추면 자동 저장',saving:'저장 중…',saved:'저장됨',error:'저장 실패 · 입력을 보존했습니다.',conflict:'다른 창에서 이 항목을 수정했습니다. 입력을 보존했습니다.', 'temporary-error':'임시 보관 실패 · 창을 닫지 말고 저장 결과를 확인하세요.'};
+let draftStorageKey='',draftStorageError='';
+function recoverReviewDrafts(){try{
+ const key='tenpaces-review-tab';let client=sessionStorage.getItem(key);
+ if(!client){client=Date.now().toString(36)+Math.random().toString(36).slice(2);sessionStorage.setItem(key,client);}
+ draftStorageKey='tenpaces-review-drafts:'+D.review_location+':'+client;
+ const items=JSON.parse(localStorage.getItem(draftStorageKey)||'{}');
+ return Object.fromEntries(Object.entries(items).filter(([id,d])=>recordById(id)&&d&&d.status in userStatuses&&typeof d.comment==='string'&&d.comment.length<=10000));
+ }catch(error){draftStorageError=error.message;return {};}}
+const reviewAutosave=new ReviewAutosave({drafts:recoverReviewDrafts(),read:()=>reviewRequest(),write:body=>reviewRequest(body),
+ persist:items=>{if(!draftStorageKey)throw Error(draftStorageError||'브라우저 임시 보관을 사용할 수 없습니다.');if(Object.keys(items).length)localStorage.setItem(draftStorageKey,JSON.stringify(items));else localStorage.removeItem(draftStorageKey);},
+ changed:value=>{userReviews=value;syncReviewPanels();},notify:(id,state,error)=>updateReviewState(id,state,error)});
+const reviewDrafts=reviewAutosave.drafts;
 let noteFilter='all',auditFilter='all',auditGroup='all';
-const auditNames={all:'전체 이미지',runtime:'게임 참조 있음',documents:'문서·기획·테스트 참조',unverified:'승인 근거 미확인',approval_gap:'승인 미확인 · 게임 참조',replaced:'교체 이력 있음',duplicate:'동일 파일 있음',unreferenced:'직접 참조 미확인',retain:'보존 필요'};
+const auditNames={discarded:'폐기 처리 · 이동 완료',all:'전체 이미지',runtime:'게임 참조 있음',documents:'문서·기획·테스트 참조',unverified:'승인 근거 미확인',approval_gap:'승인 미확인 · 게임 참조',replaced:'교체 이력 있음',duplicate:'동일 파일 있음',unreferenced:'직접 참조 미확인',retain:'보존 필요'};
 function lastReview(id){return userReviews.items[id]?.at(-1);}
 function feedbackText(row){return row?`${E(userStatuses[row.status]||row.status)} · ${E(row.comment||'코멘트 없음')}`:'미검토 · 코멘트 없음';}
 function intentPanel(r){const i=r?.intent;if(!i)return '';
  const pairs=[['만든 이유',i.purpose],['의도한 경험',i.experience],['설계 이유',i.rationale],['성공 기준',i.success],['실패 징후',i.failure]].filter(x=>x[1]);
  return `<section class="panel intent-panel"><h3>의도 · 목표</h3><p>${E(i.status)}</p>${pairs.length?table(['관점','내용'],pairs):'<p>이 항목의 제작 의도를 확정한 기록이 없습니다. 용도·파일 이름으로 의도를 추정하지 않습니다.</p>'}<div class="links">${(i.sources||[]).map(p=>link(p,'기획·결정 원본')).join('')}${(i.related_items||[]).map(id=>`<a href="#inspect/${encodeURIComponent(id)}">연결된 ${E(recordById(id)?.name||id)}의 목적 →</a>`).join('')}</div></section>`;
 }
+function reviewHistory(id){return (userReviews.items[id]||[]).slice().reverse().map(row=>`<article class="review-history"><small>${E(row.updated_at)} · 기준 ${E(row.source_revision)}</small><p>${feedbackText(row)}</p></article>`).join('');}
 function userReviewPanel(r){if(!r?.id)return '';const last=lastReview(r.id),draft=reviewDrafts.get(r.id),current=draft||last||{status:'pending',comment:''};
- const history=userReviews.items[r.id]||[];
- return `<section class="panel user-review" data-user-review="${E(r.id)}"><h3>내 검토 상태 · 코멘트</h3><p>사용자가 남기는 검토 기록입니다. 구현 완료·자산 최종 승인·테스트 결과는 위 원본 근거와 구분합니다.</p>${last&&last.fingerprint!==r.fingerprint?'<p class="notice">기록 이후 원본이 바뀌었습니다. 이전 코멘트를 보존했으며 재검토가 필요합니다.</p>':''}<label>검토 상태 <select data-user-status>${Object.entries(userStatuses).map(([v,t])=>`<option value="${v}" ${v===current.status?'selected':''}>${t}</option>`).join('')}</select></label><label>수정할 점 · 원하는 모습<textarea data-user-comment maxlength="10000" rows="4" placeholder="어떤 문제가 있고, 어떻게 바꾸고 싶은지 남겨 주세요.">${E(current.comment)}</textarea></label><button data-user-save ${reviewLoaded?'':'disabled'}>상태·코멘트 저장</button><button data-user-refresh>최신 기록 불러오기 · 입력 유지</button><output data-user-result aria-live="polite">${E(draft?'아직 저장하지 않은 입력입니다.':reviewMessage)}</output>${history.length?`<details><summary>변경 이력 · ${history.length}개</summary>${history.slice().reverse().map(row=>`<article class="review-history"><small>${E(row.updated_at)} · 기준 ${E(row.source_revision)}</small><p>${feedbackText(row)}</p></article>`).join('')}</details>`:''}</section>`;
+ return `<section class="user-review" data-user-review="${E(r.id)}"><div class="review-toolbar"><label>검토 상태 <select data-user-status>${Object.entries(userStatuses).map(([v,t])=>`<option value="${v}" ${v===current.status?'selected':''}>${t}</option>`).join('')}</select></label>${r.kind==='자산'||r.id.startsWith('asset:')||r.kind==='설명 이미지'?`<button data-user-discard ${byId(r.id.replace('asset:',''))?.details?.retired?'disabled':''}>${byId(r.id.replace('asset:',''))?.details?.retired?'이동 완료':'폐기 요청'}</button>`:''}</div><label>코멘트<textarea data-user-comment maxlength="10000" rows="2" placeholder="수정할 점이나 원하는 모습을 쓰면 자동 저장됩니다.">${E(current.comment)}</textarea></label><output data-user-result aria-live="polite">${E(draft?'작성 중 · 자동 저장 대기':last?'저장됨':'입력하면 자동 저장됩니다.')}</output><p data-user-conflict class="review-conflict" hidden></p><button data-user-retry hidden>내 입력으로 다시 저장</button><small data-user-stale ${last&&last.fingerprint!==r.fingerprint?'':'hidden'}>기록 이후 원본 변경 · 이전 의견을 보존했습니다.</small><details data-user-history><summary>변경 이력 · <span data-history-count>${(userReviews.items[r.id]||[]).length}</span>개</summary><div data-history-body></div></details></section>`;
 }
-function reviewQueue(){const rows=inspections.filter(r=>match(r)&&(noteFilter==='all'||(lastReview(r.id)?.status||'pending')===noteFilter));
+function syncReviewPanels(){for(const [id,panels] of reviewPanels){const draft=reviewDrafts.get(id),last=lastReview(id),current=draft||last||{status:'pending',comment:''};for(const panel of panels){
+ if(!draft){panel.querySelector('[data-user-status]').value=current.status;const input=panel.querySelector('[data-user-comment]');if(input.value!==current.comment){const selection=[input.selectionStart,input.selectionEnd,input.selectionDirection];input.value=current.comment;if(input===document.activeElement)input.setSelectionRange(...selection);}}
+ panel.querySelector('[data-history-count]').textContent=String((userReviews.items[id]||[]).length);
+ panel.querySelector('[data-user-stale]').hidden=!(last&&last.fingerprint!==recordById(id)?.fingerprint);
+ const history=panel.querySelector('[data-user-history]');if(history.open)panel.querySelector('[data-history-body]').innerHTML=reviewHistory(id);
+ if(!draft&&!reviewAutosave.states.has(id))panel.querySelector('[data-user-result]').textContent=last?'저장됨':'입력하면 자동 저장됩니다.';
+ }}
+ refreshReviewQueue();
+}
+function updateReviewState(id,state,error=''){for(const panel of reviewPanels.get(id)||[]){
+ panel.querySelector('[data-user-result]').textContent=reviewMessages[state]+(error?' · '+error:'');
+ const conflict=panel.querySelector('[data-user-conflict]');conflict.hidden=state!=='conflict';
+ conflict.textContent=state==='conflict'?'다른 창의 최신 기록: '+(lastReview(id)?.comment||userStatuses[lastReview(id)?.status]||'없음'):'';
+ panel.querySelector('[data-user-retry]').hidden=!['error','conflict'].includes(state);
+ }}
+function reviewQueueRows(compact){return inspections.filter(r=>(!compact||lastReview(r.id)||reviewDrafts.has(r.id))&&match(r)&&(noteFilter==='all'||(lastReview(r.id)?.status||'pending')===noteFilter));}
+function reviewQueueCards(rows){return rows.map(r=>`<article class="card"><small>${E(r.kind)}</small><h3><a href="#inspect/${encodeURIComponent(r.id)}">${E(r.name)}</a></h3><p class="review-comment" data-review-feedback="${E(r.id)}">${feedbackText(lastReview(r.id))}</p>${lastReview(r.id)&&lastReview(r.id).fingerprint!==r.fingerprint?'<p>원본 변경 · 재검토 필요</p>':''}</article>`).join('');}
+function refreshReviewQueue(){document.querySelectorAll('[data-review-rows]').forEach(el=>{const rows=reviewQueueRows(el.dataset.reviewRows==='compact');el.innerHTML=reviewQueueCards(rows);});document.querySelectorAll('[data-review-count]').forEach(el=>{el.textContent=reviewQueueRows(el.dataset.reviewCount==='compact').length+'개 · 입력 중 '+reviewDrafts.size+'개';});}
+function reviewQueue(compact=false){const rows=reviewQueueRows(compact);
  const missingIds=Object.keys(userReviews.items).filter(id=>!recordById(id));
- return title('USER REVIEW','내 체크 · 코멘트','기능·화면·이미지의 검토 상태와 수정 의견을 모아 봅니다.')+`<div class="panel"><p data-review-message>${E(reviewMessage)}</p><p>저장 위치: <code>${E(D.review_location)}</code><br>같은 프로젝트의 작업 폴더와 포트가 달라도 이 파일을 함께 사용합니다. GitHub에 자동 업로드하지 않습니다.</p><button data-user-refresh>최신 기록 불러오기</button><a id="review-export" href="${E(reviewEndpoint()?reviewEndpoint()+'/export':'#reviews')}" download="ten-paces-user-review.json">저장된 검토 내보내기</a><label>검토 파일 합쳐 불러오기 <input id="review-import" type="file" accept="application/json,.json"></label><p>불러오기는 기존 이력을 지우지 않고 합칩니다. 다른 PC·AI에는 내보낸 JSON과 프로젝트를 함께 전달하세요.</p></div><label>사용자 상태 <select id="note-filter">${[['all','전체'],...Object.entries(userStatuses)].map(([v,t])=>`<option value="${v}" ${v===noteFilter?'selected':''}>${t}</option>`).join('')}</select></label><p>${rows.length}개 · 입력 중 ${reviewDrafts.size}개</p><div class="grid">${rows.map(r=>`<article class="card"><small>${E(r.kind)}</small><h3><a href="#inspect/${encodeURIComponent(r.id)}">${E(r.name)}</a></h3><p class="review-comment">${feedbackText(lastReview(r.id))}</p>${lastReview(r.id)&&lastReview(r.id).fingerprint!==r.fingerprint?'<p>원본 변경 · 재검토 필요</p>':''}</article>`).join('')}</div>${missingIds.length?`<h2>현재 목록에서 사라진 항목의 기록</h2><p>이전 이력을 삭제하지 않았습니다.</p>${missingIds.map(id=>`<article class="card"><h3>${E(id)}</h3>${(userReviews.items[id]||[]).map(r=>`<p>${E(r.updated_at)} · ${feedbackText(r)}</p>`).join('')}</article>`).join('')}`:''}`;
+ return title('USER REVIEW','내 체크 · 코멘트','기능·화면·이미지의 의견과 폐기 요청을 모아 봅니다. 폐기는 사용처 확인 후 삭제대기로 이동하며 자동 영구 삭제하지 않습니다.')+`<div class="panel"><p data-review-message>${E(reviewMessage)}</p><p>저장 위치: <code>${E(D.review_location)}</code><br>같은 프로젝트의 작업 폴더와 포트가 달라도 이 파일을 함께 사용합니다. GitHub에 자동 업로드하지 않습니다.</p><button data-user-refresh>최신 기록 불러오기</button><a id="review-export" href="${E(reviewEndpoint()?reviewEndpoint()+'/export':'#reviews')}" download="ten-paces-user-review.json">저장된 검토 내보내기</a><label>검토 파일 합쳐 불러오기 <input id="review-import" type="file" accept="application/json,.json"></label><p>불러오기는 기존 이력을 지우지 않고 합칩니다. 다른 PC·AI에는 내보낸 JSON과 프로젝트를 함께 전달하세요.</p></div><label>사용자 상태 <select id="note-filter">${[['all','전체'],...Object.entries(userStatuses)].map(([v,t])=>`<option value="${v}" ${v===noteFilter?'selected':''}>${t}</option>`).join('')}</select></label><p data-review-count="${compact?'compact':'all'}">${rows.length}개 · 입력 중 ${reviewDrafts.size}개</p>${compact?'<p><a href="#reviews">모든 항목의 검토 상태 보기 →</a></p>':''}<div class="grid" data-review-rows="${compact?'compact':'all'}">${reviewQueueCards(rows)}</div>${missingIds.length?`<h2>현재 목록에서 사라진 항목의 기록</h2><p>이전 이력을 삭제하지 않았습니다.</p>${missingIds.map(id=>`<article class="card"><h3>${E(id)}</h3>${(userReviews.items[id]||[]).map(r=>`<p>${E(r.updated_at)} · ${feedbackText(r)}</p>`).join('')}</article>`).join('')}`:''}`;
 }
-function auditGallery(){
+function auditGallery(unfiltered=false){
  const groupNumber=g=>Math.min(...D.assets.filter(a=>a.group.id===g.id).map(a=>a.image_number));
  const groups=[...new Map(D.assets.map(a=>[a.group.id,a.group])).values()].sort((a,b)=>groupNumber(a)-groupNumber(b));
- const list=D.assets.filter(a=>match(a)&&(auditFilter==='all'||a.audit.flags.includes(auditFilter))&&(auditGroup==='all'||a.group.id===auditGroup));
+ const list=D.assets.filter(a=>(unfiltered||match(a))&&(auditFilter==='all'||a.audit.flags.includes(auditFilter))&&(auditGroup==='all'||a.group.id===auditGroup));
  const sections=groups.map(g=>({group:g,items:list.filter(a=>a.group.id===g.id)})).filter(g=>g.items.length);
  return title('ASSET AUDIT','사용 이미지 · 종류별 정리',D.asset_audit.policy)+`<p>${E(D.asset_audit.coverage)}</p><div class="audit-filters"><label>종류 · 같은 캐릭터 <select id="audit-group"><option value="all">모든 종류</option>${groups.map(g=>`<option value="${E(g.id)}" ${g.id===auditGroup?'selected':''}>${E(g.label)}</option>`).join('')}</select></label><label>확인할 상태 <select id="audit-filter">${Object.entries(auditNames).map(([v,t])=>`<option value="${v}" ${v===auditFilter?'selected':''}>${t}</option>`).join('')}</select></label></div><p>${list.length}개 / 전체 ${D.assets.length}개 · ${sections.length}묶음</p><p>같은 캐릭터·화면의 이미지를 나란히 비교합니다. 경로에 따른 탐색 분류이며 승인/동일 인물/교체 확정 근거와 구분합니다. 모호한 분류는 이미지 코멘트에 남겨 주세요.</p><p class="notice">${E(D.asset_audit.move_status)}. ‘참조 없음’이나 ‘승인 미확인’ 표시는 삭제 허가가 아닙니다.</p><div class="links">${sections.map(g=>`<button data-audit-jump="${E(g.group.id)}">${E(g.group.label)} · ${g.items.length}</button>`).join('')}</div>${sections.map(({group:g,items})=>`<section class="audit-group" data-audit-section="${E(g.id)}"><h2>${E(g.label)} <small>${items.length}개</small></h2><div class="gallery">${items.map(a=>`<article>${tile(a)}<p><strong>${E(a.group.role)}</strong> · ${E(a.audit.disposition)}</p><p>${a.audit.flags.map(f=>badge(auditNames[f])).join('')}</p><small>${E(a.path)}</small><p><a href="#inspect/${encodeURIComponent('asset:'+a.id)}">의도·상태·코멘트 →</a></p></article>`).join('')}</div></section>`).join('')}`;
 }
@@ -34,10 +65,15 @@ function reviewNotice(message){reviewMessage=message;document.querySelectorAll('
 async function reviewRequest(body){const endpoint=reviewEndpoint();if(!endpoint)throw Error('블루프린트 열기.cmd로 열면 검토 기록을 저장할 수 있습니다.');
  const response=await fetch(endpoint,{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json','X-Blueprint-Review':'1'}:{},body:body?JSON.stringify(body):undefined,cache:'no-store'});
  const raw=await response.text();let value;try{value=JSON.parse(raw);}catch{throw Error('검토 서버가 종료되었거나 이전 버전입니다. 실행 파일로 다시 열어 주세요. 입력은 이 창에 유지됩니다.');}
- if(!response.ok)throw Error(value.error||'검토 저장 실패');return value;
+ if(!response.ok){const error=Error(value.error||'검토 저장 실패');error.status=response.status;throw error;}return value;
 }
-async function loadUserReviews(){if(reviewLoading)return;reviewLoading=true;try{const value=await reviewRequest();if(value.project!=='ten-paces-hidden-moves'||value.schema_version!==1||!value.items)throw Error('다른 프로젝트의 검토 응답입니다.');const initialLoad=!reviewLoaded;userReviews=value;reviewLoaded=true;reviewMessage='로컬 파일에서 불러왔습니다. 저장 버튼을 눌러야 변경이 기록됩니다.';render();if(initialLoad)followLocation();}catch(error){reviewLoaded=false;reviewNotice(error.message);document.querySelectorAll('[data-user-save]').forEach(b=>b.disabled=true);}finally{reviewLoading=false;}}
-function captureReviewDraft(panel){const draft={status:panel.querySelector('[data-user-status]').value,comment:panel.querySelector('[data-user-comment]').value};reviewDrafts.set(panel.dataset.userReview,draft);document.querySelectorAll('[data-user-review]').forEach(other=>{if(other.dataset.userReview===panel.dataset.userReview){other.querySelector('[data-user-status]').value=draft.status;other.querySelector('[data-user-comment]').value=draft.comment;other.querySelector('[data-user-result]').textContent='아직 저장하지 않은 입력입니다.';}});return draft;}
+async function loadUserReviews(){if(reviewLoading)return;reviewLoading=true;try{await reviewAutosave.load();reviewLoaded=true;reviewMessage='자동 저장 · 같은 프로젝트의 로컬 검토 파일에 기록합니다.';document.querySelectorAll('[data-review-message]').forEach(el=>el.textContent=reviewMessage);syncReviewPanels();}catch(error){reviewNotice(error.message);}finally{reviewLoading=false;}}
+function captureReviewDraft(panel,event={}){const id=panel.dataset.userReview,r=recordById(id);if(!r)return;
+ const draft={status:panel.querySelector('[data-user-status]').value,comment:panel.querySelector('[data-user-comment]').value,fingerprint:r.fingerprint,source_revision:D.source_revision};
+ reviewAutosave.edit(id,draft,{compose:event.isComposing});
+ for(const other of reviewPanels.get(id)||[]){if(other===panel)continue;other.querySelector('[data-user-status]').value=draft.status;other.querySelector('[data-user-comment]').value=draft.comment;}
+ return draft;
+}
 const intentSummary=inspectionSummary;
 inspectionSummary=function(r){return intentSummary(r)+intentPanel(r);};
 const auditedAsset=asset;
@@ -51,14 +87,21 @@ bind=function(){reviewBind();
  document.querySelectorAll('[data-audit-jump]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-audit-section]').forEach(s=>{if(s.dataset.auditSection===b.dataset.auditJump)s.scrollIntoView({behavior:'smooth',block:'start'});});});
  document.getElementById('audit-filter')?.addEventListener('change',e=>{auditFilter=e.target.value;render();});
  document.querySelectorAll('[data-user-refresh]').forEach(b=>b.onclick=()=>loadUserReviews());
- document.querySelectorAll('[data-user-review]').forEach(panel=>{
-  panel.querySelector('[data-user-status]').onchange=()=>captureReviewDraft(panel);
-  panel.querySelector('[data-user-comment]').oninput=()=>captureReviewDraft(panel);
-  panel.querySelector('[data-user-save]').onclick=async()=>{const id=panel.dataset.userReview,r=recordById(id),draft=captureReviewDraft(panel),button=panel.querySelector('[data-user-save]');button.disabled=true;try{userReviews=await reviewRequest({revision:userReviews.revision,item_id:id,...draft,fingerprint:r.fingerprint,source_revision:D.source_revision});if(reviewDrafts.get(id)===draft)reviewDrafts.delete(id);reviewMessage='저장했습니다. 다른 대화·포트에서도 로컬 기록이 유지됩니다.';render();}catch(error){reviewNotice(error.message);button.disabled=false;}};
- });
- document.getElementById('review-import')?.addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{if(!reviewLoaded)throw Error('먼저 최신 기록을 불러와 주세요.');if(file.size>2097152)throw Error('검토 파일은 2MB 이하만 불러올 수 있습니다.');const document=JSON.parse(await file.text());userReviews=await reviewRequest({action:'import',revision:userReviews.revision,document});reviewMessage='기존 이력을 보존하고 검토 파일을 합쳤습니다.';render();}catch(error){reviewNotice(error.message);}});
+ reviewPanels.clear();document.querySelectorAll('[data-user-review]').forEach(panel=>{const id=panel.dataset.userReview;if(!reviewPanels.has(id))reviewPanels.set(id,[]);reviewPanels.get(id).push(panel);panel.querySelector('[data-user-history]').ontoggle=e=>{if(e.currentTarget.open)panel.querySelector('[data-history-body]').innerHTML=reviewHistory(id);};});
+ syncReviewPanels();for(const [id,state] of reviewAutosave.states)updateReviewState(id,state);
+ document.getElementById('review-import')?.addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{if(!reviewLoaded)throw Error('먼저 최신 기록을 불러와 주세요.');if(file.size>2097152)throw Error('검토 파일은 2MB 이하만 불러올 수 있습니다.');const document=JSON.parse(await file.text());await reviewAutosave.flush();reviewAutosave.accept(await reviewRequest({action:'import',revision:userReviews.revision,document}));reviewMessage='기존 이력을 보존하고 검토 파일을 합쳤습니다.';syncReviewPanels();}catch(error){reviewNotice(error.message);}});
 };
 document.getElementById('nav').innerHTML+='<a href="#asset-audit" data-nav="asset-audit">사용 이미지 · 정리</a><a href="#reviews" data-nav="reviews">내 체크 · 코멘트</a>';
+// Delegation keeps typing work proportional to occurrences of this item, not all forms.
+main.addEventListener('input',e=>{if(e.target.matches('[data-user-comment]'))captureReviewDraft(e.target.closest('[data-user-review]'),e);});
+main.addEventListener('compositionend',e=>{if(e.target.matches('[data-user-comment]'))captureReviewDraft(e.target.closest('[data-user-review]'));});
+main.addEventListener('change',e=>{if(e.target.matches('[data-user-status]')){const panel=e.target.closest('[data-user-review]');captureReviewDraft(panel);void reviewAutosave.flush(panel.dataset.userReview);}});
+main.addEventListener('focusout',e=>{if(e.target.matches('[data-user-comment]')&&!e.isComposing)void reviewAutosave.flush(e.target.closest('[data-user-review]').dataset.userReview);});
+main.addEventListener('click',async e=>{const panel=e.target.closest('[data-user-review]');if(!panel)return;const id=panel.dataset.userReview;
+ if(e.target.matches('[data-user-discard]')){panel.querySelector('[data-user-status]').value='discard';captureReviewDraft(panel);await reviewAutosave.flush(id);}
+ if(e.target.matches('[data-user-retry]')){await loadUserReviews();reviewAutosave.retry(id);await reviewAutosave.flush(id);}
+});
+window.addEventListener('online',()=>void loadUserReviews());
 if(typeof fetch==='function'&&reviewEndpoint())loadUserReviews();
 
 const userResumeText=resumeText;

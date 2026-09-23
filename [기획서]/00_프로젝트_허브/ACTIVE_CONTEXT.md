@@ -1,5 +1,11 @@
 # 십보강호 활성 컨텍스트
 
+## HTML 자동 저장·여섯 분류·폐기 요청 후속 · 2026-09-23
+
+승인 범위와 현재 결과는 docs/blueprint/HTML_MIGRATION_SPEC.md20절 및 기존 HTML receipt.autosave_cleanup_followup을 따른다. 아틀라스·기획서 / 강호행로·비전투 / 전투 / 플레이어 / 상대·적 / 이미지 모음, 공통 PM·검수·재개로 정리한다. 댓글 자동 저장·위치/초안 보존, 이미지149 다음 행로 통합표, 브리핑/정탐 오연결 교정이 이번 작업이다. 실제 사용자316·317 폐기 의견을 읽고 두 참고 캡처만 삭제대기로 이동했으며 번호와 코멘트는 보존했다. 처리 owner=IMPLEMENTATION_READINESS.retired_images, 복구 폴더=C:/Users/user/Documents/삭제대기/Ten-Paces-Hidden-Moves/blueprint-requested-20260923. 아래 ‘확정 이동0개’는 이전 시점이다.
+
+새 AI는 최신 main/관련 PR과 이 receipt → .git/blueprint-review/reviews.json의 최신 코멘트/폐기 요청 → 실제 사용처/대체/retired_images → 블루프린트 열기.cmd의 현재 주소를 읽는다. 버튼은 요청 기록이며 AI가 실제 사용처를 확인해 이동한다. 게임 규칙·원래 dirty45·PR342는 보호한다. 작업일지는 기존9월23일 행에 합쳐 기록한다. 실제 검수·PR 병합은 receipt/GitHub live에서 확인한다.
+
 ## 본문 이동·이미지 번호·바로 코멘트 · 2026-09-23
 
 사용자 확인·승인된 범위는 HTML_MIGRATION_SPEC.md19절과 기존 receipt inline_review_followup이다. 종류·고정 이미지 번호·쓰임새를 이미지 하단에 표시하고 항목 바로 아래에서 검토한다. 번호 정본은 docs/blueprint/IMAGE_NUMBERS.json, 의견은 기존 resume-index.user_review 경로다. 과거 참고 원본은 보존하고 현재 합 삽화/실제 UI 촬영을 구분한다. 관찰 패널의 제목·안내 겹침과 기술 상세 제목의 장식 위 가독성만 제품 코드에서 교정한다. PR351 구현 병합 완료. 기존 receipt inline_review_followup과 PR351 승인 종료 기록, GitHub live metadata에서 이후 병합 상태를 새로 읽는다. 원래 dirty45·PR342와 승인 PDF/원화는 보호한다.

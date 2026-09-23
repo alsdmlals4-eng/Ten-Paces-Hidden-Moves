@@ -154,6 +154,8 @@ def build(out=OUT, include_candidate=True):
     originals = archive_pages(out, len(pages))
     for page, original in zip(pages, originals):
         page['approved_page'] = original
+    from html_blueprint_reader import refine, reader_groups
+    refine(pages, model.read(ROOT, 'data/run/giyun_rules.json'))
     assets = model.collect_assets(ROOT)
     pm = model.collect_pm(ROOT)
     candidate_info = None
@@ -165,6 +167,17 @@ def build(out=OUT, include_candidate=True):
     import html_blueprint_audit as audit_model
     audit_model.extend_inventory(ROOT, assets, candidate_info['revision'] if candidate_info else None, out)
     asset_audit = audit_model.build(ROOT, assets)
+    retired = model.read(ROOT, 'docs/blueprint/IMPLEMENTATION_READINESS.json').get('retired_images', [])
+    if retired:
+        asset_audit['move_status'] = f'사용자 폐기 요청 {len(retired)}개는 삭제대기로 이동 · 번호와 이력 보존 · 나머지는 요청별 사용처 확인 후 처리'
+    for entry in retired:
+        assets.append({**entry, 'scope':'MAIN_SOURCE', 'revision':None, 'available':False, 'active':False,
+            'details':{'retired':True,'disposal':entry}, 'consumers':[], 'approval':'USER_DISCARDED',
+            'approval_record':'사용자 폐기 요청 처리 · 삭제대기 폴더로 이동',
+            'owner':'docs/blueprint/IMPLEMENTATION_READINESS.json',
+            'audit':{'flags':['discarded'], 'reasons':[entry['reason']], 'safe_to_move':False,
+                'runtime_references':[], 'document_references':[], 'replacement_ids':[], 'duplicate_ids':[],
+                'disposition':'삭제대기 이동 완료 · 사용자가 최종 삭제', 'category':'폐기 이력'}})
     for asset in assets:
         asset['related_work'] = [item['work_item_id'] for item in pm['items']
             if set(item.get('actual_consumers', [])) & {asset['path'], *asset['consumers']}
@@ -196,7 +209,7 @@ def build(out=OUT, include_candidate=True):
     import html_blueprint_experience as experience_model
     experience = experience_model.build(pages)
     inputs = {Path(path).resolve().relative_to(ROOT).as_posix(): digest for path, digest in SOURCES.items()}
-    source_paths = ['tools/blueprint_layout.py', 'tools/blueprint_readiness_pages.py', 'tools/build_opponent_stage_blueprint.py', 'tools/build_human_blueprint_complete.py', 'tools/html_blueprint.py', 'tools/build_html_blueprint.py',
+    source_paths = ['tools/blueprint_layout.py', 'tools/blueprint_readiness_pages.py', 'tools/build_opponent_stage_blueprint.py', 'tools/build_human_blueprint_complete.py', 'tools/html_blueprint.py', 'tools/html_blueprint_reader.py', 'tools/build_html_blueprint.py',
                     'tools/html_blueprint_ui/app.js', 'tools/html_blueprint_ui/style.css',
                     'docs/blueprint/HTML_MIGRATION_SPEC.md', 'docs/blueprint/HTML_SOURCE_OBSERVATIONS.json',
                     'docs/operations/AI_USAGE_EVIDENCE_2026_09.json',
@@ -262,14 +275,19 @@ def build(out=OUT, include_candidate=True):
         inputs[path] = model.sha(ROOT/path)
     from html_blueprint_inspection import build as inspection_index
     audit_model.group_assets(assets, payload['people'], manuals, art)
+    for a in assets:
+        if a.get('details',{}).get('retired'):
+            a['group']={'id':'retired','label':'폐기 처리 · 삭제대기','role':'이동 완료 이력','basis':'사용자 요청·원본 사용처 확인'}
     payload['inspection'] = inspection_index(payload)
     from html_blueprint_numbers import attach as attach_image_numbers, REGISTRY as image_numbers_path
     attach_image_numbers(payload, ROOT)
     audit_model.attach_intents(payload, model.read(ROOT, 'docs/blueprint/IMPLEMENTATION_READINESS.json')['intent_catalog'])
     payload['asset_audit'] = asset_audit
+    payload['retired_images'] = retired
+    payload['reader_groups'] = reader_groups(pages)
     from blueprint_review_store import shared_directory
     payload['review_location'] = str(shared_directory(ROOT) / 'reviews.json')
-    for path in ['tools/html_blueprint_audit.py', 'tools/blueprint_review_store.py', 'tools/html_blueprint_ui/review.js', 'tools/html_blueprint_numbers.py', image_numbers_path, 'tools/html_blueprint_ui/inline.js']:
+    for path in ['tools/html_blueprint_audit.py', 'tools/blueprint_review_store.py', 'tools/html_blueprint_ui/review_state.js', 'tools/html_blueprint_ui/review.js', 'tools/html_blueprint_numbers.py', image_numbers_path, 'tools/html_blueprint_ui/inline.js']:
         inputs[path] = model.sha(ROOT/path)
     for a in assets:
         for path in a['audit']['document_references'] + a['audit']['runtime_references']:
@@ -278,7 +296,7 @@ def build(out=OUT, include_candidate=True):
         inputs[path] = model.sha(ROOT/path)
     css = (ROOT/'tools/html_blueprint_ui/style.css').read_text(encoding='utf-8')
     js = (ROOT/'tools/html_blueprint_ui/app.js').read_text(encoding='utf-8')
-    js = js.removesuffix('render();\n') + ''.join((ROOT/'tools/html_blueprint_ui'/name).read_text(encoding='utf-8') for name in ['experience.js','inspection.js','design.js','review.js','inline.js']) + '\nrender();followLocation();\n'
+    js = js.removesuffix('render();\n') + ''.join((ROOT/'tools/html_blueprint_ui'/name).read_text(encoding='utf-8') for name in ['experience.js','inspection.js','design.js','review_state.js','review.js','inline.js']) + '\nrender();followLocation();\n'
     html = '''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>십보강호 · 살아 있는 블루프린트</title><style>''' + css + '''</style></head><body>
 <a class="skip" id="skip-content" href="#main">본문으로</a><header><a href="#maps" class="brand">십보강호 <small>숨은 수의 비무</small></a><span class="edition">프로젝트 블루프린트</span><button id="resume-copy">재개 요청 복사</button></header>
 <div class="shell"><div class="section-navigation"><nav aria-label="본문 구역 바로가기" id="nav"></nav><div class="navigation-tools"><label class="search-label" for="search">내용 찾기</label><input id="search" type="search" placeholder="번호 · 인물 · 무공 · 자산 · 작업"><details><summary>발행 정보</summary><p id="freshness"></p><a href="../../AGENTS.md">작업 규칙 원본 ↗</a></details></div></div><main id="main" tabindex="-1"></main></div>
@@ -293,7 +311,9 @@ def build(out=OUT, include_candidate=True):
     resume = {'role': 'DERIVED_VIEW_NOT_CANON', 'source_revision': payload['source_revision'],
         'generated_at': payload['generated_at'], 'read_order': ['AGENTS.md', 'docs/BASE_RULES_VERSION.md', 'docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md', '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md'],
         'assets': [{k:a.get(k) for k in ['id','path','scope','revision','approval','owner','consumers','audit','group']} for a in assets],
-        'user_review': {'path': payload['review_location'], 'role': 'USER_AUTHORED_REVIEW_NOT_IMPLEMENTATION_PROOF', 'read_on_resume': True},
+        'user_review': {'path': payload['review_location'], 'role': 'USER_AUTHORED_REVIEW_NOT_IMPLEMENTATION_PROOF', 'read_on_resume': True,
+                        'disposal_requests':'status=discard; inspect references before recoverable move; preserve comments and stable IDs'},
+        'retired_images': retired,
         'image_catalog': payload['image_catalog'],
         'work_items': pm['items'], 'inspection': payload['inspection'],
         'motion_evidence': [{'id':c['id'],'path':c['path'],'timeline':c.get('timeline',[]),'freshness':c['freshness']} for c in experience['clips']]}

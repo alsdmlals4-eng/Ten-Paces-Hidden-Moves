@@ -1,7 +1,8 @@
 
 /* Inspection controls read repository evidence. They do not approve or simulate gameplay. */
 const inspections=D.inspection.records;
-const recordById=id=>inspections.find(r=>r.id===id);
+const inspectionById=new Map(inspections.map(r=>[r.id,r]));
+const recordById=id=>inspectionById.get(id);
 const statusNames={planning:'기획',asset:'자산 승인',implementation:'구현 연결',runtime:'실행 근거',human:'사용자 검수'};
 const reviewNav=[['inspect','항목별 검수'],['changes','변경 · 갱신 확인']];
 document.getElementById('nav').innerHTML+=reviewNav.map(([id,name])=>`<a href="#${id}" data-nav="${id}">${name}</a>`).join('');
@@ -88,11 +89,14 @@ function changes(){const changed=changedRecords(),stale=D.experience.clips.filte
  return title('CHANGES & FRESHNESS','변경 · 갱신 확인',D.inspection.freshness_policy)+`<p>HTML 발행 ${E(D.generated_at)} · 기준 ${E(D.source_revision.slice(0,10))}</p><p>비교 기준: ${Object.keys(previousFingerprints).length?'같은 브라우저·주소에서 마지막으로 확인 기준을 저장한 항목':'저장된 이전 확인 기준 없음'}. 저장은 검수 승인과 다릅니다.</p><button id="save-baseline">현재 항목을 다음 비교 기준으로 저장</button><h2>이전 기준 이후 변경 · ${changed.length}개</h2>${changed.map(r=>r.change==='removed'?`<p>삭제·이름 변경 · ${E(r.name)} · 이전 원본과 비교 필요</p>`:`<p><a href="#inspect/${encodeURIComponent(r.id)}">${r.change==='added'?'추가':'수정'} · ${E(r.kind)} · ${E(r.name)}</a></p>`).join('')||'<p>비교할 변경 항목이 없습니다.</p>'}<h2>촬영 갱신 필요 · ${stale.length}개</h2>${stale.map(c=>`<p><a href="#motion/${c.id}">${E(c.title)}</a></p>`).join('')||'<p>발행 시점에 기록된 촬영 입력과 일치합니다.</p>'}<div class="notice">브라우저 저장은 이 주소와 브라우저에 한정됩니다. 포트가 바뀌거나 다른 AI를 사용하면 기존 비교 기준이 없을 수 있습니다. 원본 재개 인덱스와 항목별 요청은 별도로 제공됩니다.</div><p><a href="resume-index.json">다른 AI용 항목·영상·PM 인덱스</a></p>`;
 }
 const underlyingRender=render;
-render=function(){const route=location.hash||'#maps';if(lastRoute&&route!==lastRoute){rememberPosition();const state=visit.routes?.[route];search.value=state?.search||'';assetFilter=state?.assetFilter||'all';assetCategory=state?.assetCategory||'all';reviewFilter=state?.reviewFilter||'all';restoreRoute=state?route:null;}lastRoute=route;
+render=function(){const route=location.hash||'#maps',previousRoute=lastRoute;if(lastRoute&&route!==lastRoute){rememberPosition();const state=visit.routes?.[route];search.value=state?.search||'';assetFilter=state?.assetFilter||'all';assetCategory=state?.assetCategory||'all';reviewFilter=state?.reviewFilter||'all';restoreRoute=state?route:null;}lastRoute=route;
  const [section,id]=decodeURIComponent(route.slice(1)).split('/');
+ if(section==='home'&&previousRoute!==route&&previousRoute.split('/')[0]==='#home'&&document.querySelector('.overview-group')){
+  document.querySelectorAll('[data-nav]').forEach(a=>{const active=a.dataset.nav===(id||'home');a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});return;
+ }
  if(['inspect','search','changes','giyun','reviews','asset-audit'].includes(section)){clearInterval(motionTimer);main.innerHTML=section==='inspect'?inspect(id):section==='search'?searchResults():section==='giyun'?giyunCatalog(id):section==='reviews'?reviewQueue():section==='asset-audit'?auditGallery():changes();bind();document.querySelectorAll('[data-nav]').forEach(a=>{const active=a.dataset.nav===section;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});}else underlyingRender();
 };
-followLocation=function(){const [section,id,focus]=decodeURIComponent((location.hash||'#maps').slice(1)).split('/');const saved=visit.routes?.[lastRoute];if(restoreRoute===lastRoute&&saved){window.scrollTo(0,saved.y);restoreRoute=null;return;}
+followLocation=function(){const [section,id,focus]=decodeURIComponent((location.hash||'#maps').slice(1)).split('/');const saved=visit.routes?.[lastRoute];if(restoreRoute===lastRoute&&saved&&!(section==='home'&&id)){window.scrollTo(0,saved.y);restoreRoute=null;return;}
  const target=section==='maps'&&focus?'stage-detail':section==='home'&&id?'overview-'+id:null;const node=target?document.getElementById(target):null;
  if(node){node.scrollIntoView({behavior:'instant',block:'start'});if(section==='maps')node.focus({preventScroll:true});}else window.scrollTo(0,0);
 };

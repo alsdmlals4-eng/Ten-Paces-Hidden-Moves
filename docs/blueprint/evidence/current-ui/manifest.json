@@ -9,7 +9,10 @@
         1440,
         900
       ],
-      "sha256": "4e38c3e2b9552d43ea8ef25eb42e34eac05c81683727d1b5898d1e0ca3706c80"
+      "sha256": "4e38c3e2b9552d43ea8ef25eb42e34eac05c81683727d1b5898d1e0ca3706c80",
+      "disposition": "MOVED_TO_DELETE_QUEUE",
+      "restore_revision": "ed84ee31dc1674d0ef96fd2711a4cac72531c569",
+      "moved_to": "C:/Users/user/Documents/삭제대기/Ten-Paces-Hidden-Moves/blueprint-requested-20260923/planning-1440.png"
     },
     {
       "kind": "GODOT_RENDERED_FIXTURE",
@@ -27,7 +30,10 @@
         960,
         600
       ],
-      "sha256": "5d3dcc40482908e0491c0452d9ed8e486ca057c43f676d6618a83d00dde897bb"
+      "sha256": "5d3dcc40482908e0491c0452d9ed8e486ca057c43f676d6618a83d00dde897bb",
+      "disposition": "MOVED_TO_DELETE_QUEUE",
+      "restore_revision": "ed84ee31dc1674d0ef96fd2711a4cac72531c569",
+      "moved_to": "C:/Users/user/Documents/삭제대기/Ten-Paces-Hidden-Moves/blueprint-requested-20260923/planning-960.png"
     }
   ],
   "baseline": "c2fbdd7ead403974d9b82bbc51bf3abffd51b1a5",

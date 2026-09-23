@@ -86,7 +86,7 @@ dialog button{margin-bottom:12px}
 .skip:focus{top:8px;left:8px;background:white;padding:8px}
 textarea{width:100%;min-height:180px;font:13px/1.7 inherit;padding:12px}
 .scene-links a{display:block;margin:8px 0}
-img[loading=lazy]{content-visibility:auto}
+/* Native lazy loading retains image dimensions; layout skipping shifts deep anchors. */
 @media(max-width:1000px){main{padding:24px}
 .hero,.split{grid-template-columns:1fr}
 .hero img{max-height:280px}
@@ -138,7 +138,7 @@ main :is(p,h1,h2,h3,a,small){overflow-wrap:anywhere}
 .movie .card{padding:0}
 .manual-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px}
 .manual-cards .movie{padding:8px;border:0}
-.scroll-chapter{border-top:2px solid var(--line);margin-top:48px;padding-top:24px;content-visibility:auto;contain-intrinsic-size:auto 800px}
+.scroll-chapter{border-top:2px solid var(--line);margin-top:48px;padding-top:24px;}
 .stage-detail{scroll-margin-top:100px;border-top:3px solid #ac8748;padding-top:24px;outline:none}
 .stage-next,.atlas-text-links,.overview-jumps{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0}
 .stage-next a,.atlas-text-links a,.overview-jumps a{padding:10px 14px;border:1px solid var(--line);border-radius:6px;background:#fffdf8}
@@ -190,4 +190,14 @@ main :is(p,h1,h2,h3,a,small){overflow-wrap:anywhere}
 .clash-explanation{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:18px;background:#e8dcc1;border:2px solid #9a6b2b;color:#292317}
 .clash-explanation strong{font-size:18px}.clash-explanation p{margin-bottom:0}
 .current-visual{border:1px solid var(--line);padding:18px;margin:20px 0}.current-visual figure{margin:12px 0}
+.user-review{padding:10px 0;margin:8px 0 18px;border-top:1px solid var(--line)}
+.review-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.review-toolbar label{margin:0}
+.user-review textarea{display:block;width:100%;min-height:64px;resize:vertical}
+.user-review [data-user-result]{display:block;min-height:2.5em;font-size:12px;line-height:1.6}
+.user-review [hidden]{display:none!important}.user-review details{font-size:12px;margin:0}
+.review-conflict{border-left:3px solid #b66b35;padding:8px;background:#f7e6cf;white-space:pre-wrap}
+[data-user-discard]{font-size:12px;padding:6px 10px;color:#813b22}
+.table-wrap td{vertical-align:top}.table-wrap td:first-child{font-weight:600}
+.reader-block img{height:auto}.scroll-chapter>h2{margin-bottom:12px}
+.overview-group{border-top:3px solid var(--gold);margin-top:52px;padding-top:20px}.group-heading{font-size:28px}
 @media(max-width:680px){.clash-explanation{grid-template-columns:1fr}.current-visual{padding:10px}}

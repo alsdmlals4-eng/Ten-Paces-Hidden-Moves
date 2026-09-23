@@ -1,0 +1,15 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const source=fs.readFileSync('tools/html_blueprint_ui/review.js','utf8');
+const start=source.indexOf('function syncReviewPanels()'),end=source.indexOf('function updateReviewState',start);
+const input={value:'',selectionStart:0,selectionEnd:0,selectionDirection:'none',setSelectionRange(a,b,d){this.selectionStart=a;this.selectionEnd=b;this.selectionDirection=d;}};
+const fields={'[data-user-comment]':input,'[data-user-status]':{},'[data-history-count]':{},'[data-user-stale]':{},'[data-user-history]':{open:false},'[data-user-result]':{}};
+const draft=new Map(),last={id:'stored',status:'changes',comment:'기존 사용자 코멘트',fingerprint:'f'};
+const env={reviewPanels:new Map([['asset:a',[{querySelector:s=>fields[s]}]]]),reviewDrafts:draft,lastReview:()=>last,userReviews:{items:{'asset:a':[last]}},recordById:()=>({fingerprint:'f'}),reviewAutosave:{states:new Map()},document:{activeElement:input},refreshReviewQueue(){}};
+vm.createContext(env);vm.runInContext(source.slice(start,end),env);
+vm.runInContext('syncReviewPanels()',env);
+assert.equal(input.value,last.comment,'A focused but pristine field must receive the late initial saved comment');
+assert.equal(input.selectionStart,0);
+input.value='사용자가 작성 중';draft.set('asset:a',{comment:input.value});
+vm.runInContext('syncReviewPanels()',env);
+assert.equal(input.value,'사용자가 작성 중','A dirty focused field must not be replaced by a server read');
+console.log('Review panel synchronization passed: late initial response and active draft protection');

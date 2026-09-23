@@ -3,6 +3,15 @@ from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"tools"))
 
 class ReviewStoreTests(unittest.TestCase):
+    def test_discard_request_is_durable_and_identical_save_is_noop(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            store=self.store(Path(tmp))
+            body={"revision":0,"item_id":"asset:old","status":"discard","comment":"폐기 요청","fingerprint":"f","source_revision":"h"}
+            saved=store.save(body)
+            again=store.save({**body,"revision":saved["revision"]})
+            self.assertEqual(again["revision"],saved["revision"])
+            self.assertEqual(len(again["items"]["asset:old"]),1)
+            self.assertEqual(store.read()["items"]["asset:old"][-1]["status"],"discard")
     def store(self, root):
         from blueprint_review_store import ReviewStore
         return ReviewStore(root)

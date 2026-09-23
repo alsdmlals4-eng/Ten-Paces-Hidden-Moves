@@ -11,7 +11,7 @@ import uuid
 
 PROJECT = 'ten-paces-hidden-moves'
 LIMIT = 2 * 1024 * 1024
-STATUSES = {'pending', 'checked', 'changes', 'hold'}
+STATUSES = {'pending', 'checked', 'changes', 'hold', 'discard'}
 
 
 class Conflict(ValueError):
@@ -132,6 +132,9 @@ class ReviewStore:
             data = self._read()
             self._revision(request.get('revision'), data)
             entry = {k: request[k] for k in ['status', 'comment', 'fingerprint', 'source_revision']}
+            last = data['items'].get(request['item_id'], [])
+            if last and all(last[-1][key] == value for key, value in entry.items()):
+                return data
             entry.update(id=uuid.uuid4().hex, updated_at=datetime.now(timezone.utc).isoformat())
             data['items'].setdefault(request['item_id'], []).append(entry)
             return self._write(data)

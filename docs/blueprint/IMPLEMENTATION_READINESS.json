@@ -351,27 +351,6 @@
     "policy": "확인 가능한 기존 기획·결정만 요약. 개별 의도 미기록을 공통 목표나 추론으로 덮지 않음."
   },
   "visual_revisions": {
-    "docs/blueprint/evidence/reference-screens/939bf00a7266c6197d592f93b3fae1a0.png": {
-      "title": "수 배치 화면 · 현재 Godot 글자 배치",
-      "description": "과거 참고 화면의 잘린 이름과 설명 대신 현재 실행 화면을 연결합니다. 관찰 패널의 제목과 안내가 장식 경계에 걸리던 문제를 교정했습니다.",
-      "current_images": [
-        "docs/blueprint/evidence/current-ui/planning-1440.png",
-        "docs/blueprint/evidence/current-ui/planning-960.png"
-      ],
-      "steps": [
-        [
-          "상태",
-          "이름·체력·기력·내력을 프레임 내부에서 읽습니다."
-        ],
-        [
-          "행동 설명",
-          "기술 효과는 현재 데이터에서 표시하며 긴 내용은 상세 영역에서 스크롤합니다."
-        ]
-      ],
-      "evidence": "Godot 4.7.1의 실제 고정 상황 촬영입니다. 과거 금색 종이 HUD와 현재 main의 배치는 다릅니다. 모든 화면을 과거 배치로 복원한 결과가 아닙니다.",
-      "next": "#maps/game-loop/plan",
-      "next_label": "수 배치 설명과 구현 확인"
-    },
     "docs/blueprint/evidence/reference-screens/54d7b849fff7d6b9a639007f08147401.png": {
       "title": "격돌과 합 · 현재 승인 그림체의 설명",
       "description": "기존 승인 검객과 합 삽화를 재사용해 인물의 선·채색을 맞췄습니다. 설명 문구는 이미지 밖의 수정 가능한 영역에 배치합니다.",
@@ -394,7 +373,39 @@
       ],
       "evidence": "승인 삽화와 HTML 설명의 조합입니다. 게임 실행 화면이나 새 모션의 검증 증거가 아닙니다. 과거 목업의 15 대 10 수치와 가상의 기술명은 현재 규칙으로 재사용하지 않습니다.",
       "next": "#motion/clash-win",
-      "next_label": "실제 격돌·합 승리 영상"
+      "next_label": "실제 격돌·합 승리 영상",
+      "page_ids": [
+        "reader-006",
+        "reader-024"
+      ]
     }
-  }
+  },
+  "retired_images": [
+    {
+      "id": "inventory-13fcfaaa5d6cee4a",
+      "path": "docs/blueprint/evidence/current-ui/planning-1440.png",
+      "number": 316,
+      "name": "폐기 처리 · 수 배치 참고 316",
+      "sha256": "4e38c3e2b9552d43ea8ef25eb42e34eac05c81683727d1b5898d1e0ca3706c80",
+      "reason": "폐기된 버전임 삭제.",
+      "status": "MOVED_TO_DELETE_QUEUE",
+      "moved_to": "C:/Users/user/Documents/삭제대기/Ten-Paces-Hidden-Moves/blueprint-requested-20260923/planning-1440.png",
+      "restore_revision": "ed84ee31dc1674d0ef96fd2711a4cac72531c569",
+      "processed_at": "2026-09-23",
+      "source": "사용자 이미지 코멘트 + 현재 대화의 폐기 처리 승인"
+    },
+    {
+      "id": "inventory-a43e21b63fb41740",
+      "path": "docs/blueprint/evidence/current-ui/planning-960.png",
+      "number": 317,
+      "name": "폐기 처리 · 수 배치 참고 317",
+      "sha256": "5d3dcc40482908e0491c0452d9ed8e486ca057c43f676d6618a83d00dde897bb",
+      "reason": "삭제된버전임,폐기",
+      "status": "MOVED_TO_DELETE_QUEUE",
+      "moved_to": "C:/Users/user/Documents/삭제대기/Ten-Paces-Hidden-Moves/blueprint-requested-20260923/planning-960.png",
+      "restore_revision": "ed84ee31dc1674d0ef96fd2711a4cac72531c569",
+      "processed_at": "2026-09-23",
+      "source": "사용자 이미지 코멘트 + 현재 대화의 폐기 처리 승인"
+    }
+  ]
 }

@@ -50,7 +50,8 @@
       "TEN-HTML-RUNTIME",
       "TEN-HTML-MIGRATE",
       "TEN-HTML-DELIVER",
-      "TEN-HTML-INTENT-REVIEW"
+      "TEN-HTML-INTENT-REVIEW",
+      "TEN-HTML-AUTOSAVE-CLEANUP-20260923"
     ],
     "active_work_item_ref": null,
     "next_action": "STOP_APPROVED_SCOPE_COMPLETE",
@@ -506,6 +507,65 @@
           "Chrome fixture save/reload, duplicate forms and image number search; Godot 3 captures; two full reviews corrected"
         ],
         "rollback": "Normal PR revert; preserve original art, historical images and real user review file."
+      },
+      {
+        "work_item_id": "TEN-HTML-AUTOSAVE-CLEANUP-20260923",
+        "title": "자동 저장·위치 유지·여섯 분류·강호행로 표·폐기 요청",
+        "status": "DONE",
+        "canon_owner": "docs/blueprint/HTML_MIGRATION_SPEC.md",
+        "actual_consumers": [
+          "tools/html_blueprint_ui/review_state.js",
+          "tools/html_blueprint_ui/review.js",
+          "tools/html_blueprint_reader.py",
+          "tools/html_blueprint_ui/experience.js"
+        ],
+        "depends_on": [],
+        "acceptance_criteria": [
+          "TEN-HTML-AUTOSAVE-AC"
+        ],
+        "required_evidence": [
+          "E2_TEST",
+          "E4_VISUAL"
+        ],
+        "checklist": [
+          {
+            "id": "TEN-HTML-AUTOSAVE-AC",
+            "text": "입력 자동 저장/스크롤·초안 보존, 종류별 전체112설명, 실제 데이터 표와 이미지 의미, 요청316/317 복구 가능한 이동을 검증한다.",
+            "status": "PASS",
+            "evidence": [
+              "docs/blueprint/HTML_MIGRATION_SPEC.md#20"
+            ]
+          }
+        ],
+        "verification": [
+          {
+            "level": "E2_TEST",
+            "status": "PASS",
+            "evidence": [
+              "tests/test_blueprint_reader_cleanup.py",
+              "tests/test_blueprint_review.py",
+              "tests/blueprint_autosave.cjs",
+              "tests/blueprint_review_sync.cjs"
+            ]
+          },
+          {
+            "level": "E4_VISUAL",
+            "status": "PASS",
+            "evidence": [
+              "docs/blueprint/HTML_MIGRATION_SPEC.md#20"
+            ]
+          }
+        ],
+        "next_action": "구현·브라우저·전체검토2회 완료. 정상 PR 검사/병합/main은 autosave_cleanup_followup과 GitHub live 확인. 다음 사용자 코멘트/폐기 요청을 실제 사용처와 대조한다.",
+        "verified_head_sha": "ed84ee31dc1674d0ef96fd2711a4cac72531c569",
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0,
+        "repository_readback": "PASS",
+        "readback_evidence": [
+          "59 Python +82 governance +Node behavioral/panel/render/link checks; actual Chrome fixture saving/conflict and1920/960px; two full reviews; real review untouched; disposal hashes verified"
+        ],
+        "rollback": "Normal PR revert; restore two reference images from hash manifest or original commit; preserve real review JSON and approved assets."
       }
     ]
   },
@@ -770,5 +830,51 @@
     "remote_checks": {
       "SUCCESS": 32
     }
+  },
+  "autosave_cleanup_followup": {
+    "approval": "2026-09-23: 맞아 진행해줘; 폐기 요청 버튼과 요청 대상 이동; 아틀라스/행로/전투/플레이어/상대/이미지 여섯 분류",
+    "baseline": "ed84ee31dc1674d0ef96fd2711a4cac72531c569",
+    "owner": "docs/blueprint/HTML_MIGRATION_SPEC.md#20",
+    "status": "IMPLEMENTED_VERIFIED_AWAITING_INTEGRATION",
+    "work_mode": "BUILD_TO_REVIEW",
+    "skills": [
+      "ten-paces-verification",
+      "executing-plans",
+      "systematic-debugging"
+    ],
+    "skill_modes": [
+      "html-blueprint-review",
+      "reference-freshness",
+      "execution-report"
+    ],
+    "source_relevance": "REUSED_EVIDENCE: existing HTML/Archify/same-origin research and actual user defect examples; no new game rules or dependency",
+    "review_rounds_completed": 2,
+    "review1": "Full candidate review corrected stale draft after import, old response rollback, initially empty compact comment queue, full render on section navigation. Existing content/IDs/art/PDF/game/main-candidate boundaries retained.",
+    "verification": {
+      "python": "59 related tests PASS",
+      "node_autosave": "PASS: actual debounce and IME, durable drafts/no-op/discard/concurrency/conflict/in-flight edit/offline/reload/import/late read",
+      "browser": "External Chrome fixture:316 autosave scroll279630/top404.953125/caret34/focus stable +reload restored;317 scroll425129/top404.984375/caret25/focus stable. Discard button saved discard. Same item duplicates synchronized. Two windows preserved conflict draft and displayed other latest record. Fresh first route jump190.15625/menu169.75; image group190.0625. 960px:document945px/no overflow,heading244.71875/menu224.5. Real review revision3/3 records unchanged. Images919→588/forms921→591; this is DOM reduction, not FPS measurement.",
+      "governance": "82 related governance tests PASS; project operating system, canonical reference freshness, skill package and adopted Base operating contract PASS",
+      "source_views": "1061 views / 13863 local links PASS",
+      "node_panel": "Focused pristine late GET and active draft preservation PASS"
+    },
+    "cleanup": {
+      "image_numbers": [
+        316,
+        317
+      ],
+      "status": "MOVED_TO_DELETE_QUEUE",
+      "location": "C:/Users/user/Documents/삭제대기/Ten-Paces-Hidden-Moves/blueprint-requested-20260923",
+      "manifest": "RESTORE_MANIFEST.json",
+      "user_review_modified": false
+    },
+    "not_verified": [
+      "new Godot runtime",
+      "Human fun",
+      "Android",
+      "release",
+      "cloud AI browser"
+    ],
+    "review2": "Independent full candidate review: one P2 late initial GET left a focused pristine field blank. Reproduced actual sync function RED and corrected with selection-preserving clean field sync; active draft stays protected. Independent focused15 tests and both Node behavioral tests PASS. No remaining P0/P1/P2; subsequent checks are defect-specific only."
   }
 }
