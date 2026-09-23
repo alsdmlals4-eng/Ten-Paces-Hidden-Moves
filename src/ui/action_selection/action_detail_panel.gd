@@ -121,21 +121,25 @@ func _build() -> void:
     column.add_theme_constant_override("separation", 3)
     add_child(column)
 
+    var header_surface := PanelContainer.new()
+    header_surface.name = "ActionDetailHeaderSurface"
+    header_surface.add_theme_stylebox_override("panel", _contract_style())
+    column.add_child(header_surface)
     var header := HBoxContainer.new()
     header.name = "ActionDetailHeader"
-    column.add_child(header)
+    header_surface.add_child(header)
 
     _title = Label.new()
     _title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     _title.add_theme_font_size_override("font_size", 16)
-    _title.add_theme_color_override("font_color", Color("ead8b4"))
+    _title.add_theme_color_override("font_color", Color("30291f"))
     _title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     _title.clip_text = true
     header.add_child(_title)
 
     _source = Label.new()
     _source.add_theme_font_size_override("font_size", 11)
-    _source.add_theme_color_override("font_color", Color("d6b36c"))
+    _source.add_theme_color_override("font_color", Color("51402a"))
     _source.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
     header.add_child(_source)
 

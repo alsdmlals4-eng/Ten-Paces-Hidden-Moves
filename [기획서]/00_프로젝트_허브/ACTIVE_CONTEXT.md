@@ -1,5 +1,9 @@
 # 십보강호 활성 컨텍스트
 
+## 본문 이동·이미지 번호·바로 코멘트 · 2026-09-23
+
+사용자 확인·승인된 범위는 HTML_MIGRATION_SPEC.md19절과 기존 receipt inline_review_followup이다. 종류·고정 이미지 번호·쓰임새를 이미지 하단에 표시하고 항목 바로 아래에서 검토한다. 번호 정본은 docs/blueprint/IMAGE_NUMBERS.json, 의견은 기존 resume-index.user_review 경로다. 과거 참고 원본은 보존하고 현재 합 삽화/실제 UI 촬영을 구분한다. 관찰 패널의 제목·안내 겹침과 기술 상세 제목의 장식 위 가독성만 제품 코드에서 교정한다. 검증/검토/PR 상태는 receipt 및 GitHub live metadata를 새로 읽는다. 원래 dirty45·PR342와 승인 PDF/원화는 보호한다.
+
 ## 의도·이미지 정리·사용자 코멘트 · 2026-09-23
 
 승인된 구현은 HTML_MIGRATION_SPEC.md18절과 기존 HTML receipt의 intent_review_followup을 따른다. 목적/성공 기준과 이미지 사용·승인·교체·보존을 연결하고, HTML에서 항목별 사용자 상태/수정 코멘트를 저장한다. 새 AI는 output/blueprint/resume-index.json → user_review.path의 로컬 reviews.json을 함께 읽는다. 저장은 git common dir에 누적되어 포트/작업 폴더가 바뀌어도 유지된다. 다른 PC에는 JSON 내보내기/불러오기로 전달한다. 이 사용자 기록은 최종 자산 승인이나 구현 검증을 자동 변경하지 않는다. 검토/병합 상태는 receipt와 GitHub live metadata를 다시 확인한다. 원래 dirty45와 PR342를 보존하며 확정된 이미지 이동 대상은 아직 없다. 아래 읽기 전용 서버 설명은 당시 기준이고 현재는 고정 검토 JSON에 한정한 승인된 쓰기 경로가 있다.

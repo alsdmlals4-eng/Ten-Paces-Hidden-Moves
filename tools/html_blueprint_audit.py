@@ -105,7 +105,8 @@ def inventory_digest(root):
 
 def revision_texts(root, revision):
     paths = [p for p in tracked(root, revision) if Path(p).suffix.lower() in TEXT_TYPES
-             and p not in {'assets/ASSET_MANIFEST.json', 'assets/blueprint/APPROVED_ART_MANIFEST.json'}]
+             and p not in {'assets/ASSET_MANIFEST.json', 'assets/blueprint/APPROVED_ART_MANIFEST.json',
+                           'docs/blueprint/IMAGE_NUMBERS.json'}]
     batch = ''.join(f'{revision}:{p}\n' for p in paths).encode('utf-8')
     blobs = subprocess.check_output(['git', 'cat-file', '--batch'], input=batch, cwd=root)
     offset, result = 0, []
@@ -155,7 +156,8 @@ def build(root, assets):
     texts = []
     for rel in tracked(root):
         if Path(rel).suffix.lower() in TEXT_TYPES and rel not in {
-            'assets/ASSET_MANIFEST.json', 'assets/blueprint/APPROVED_ART_MANIFEST.json'}:
+            'assets/ASSET_MANIFEST.json', 'assets/blueprint/APPROVED_ART_MANIFEST.json',
+            'docs/blueprint/IMAGE_NUMBERS.json'}:
             if (root / rel).is_file():
                 texts.append((rel, (root / rel).read_text(encoding='utf-8', errors='replace')))
     candidate_texts = {}

@@ -11,7 +11,7 @@ header{height:78px;position:sticky;top:0;z-index:10;background:var(--ink);color:
 .brand small{font-size:11px;display:block;letter-spacing:.2em;font-weight:400}
 .edition{font-size:13px;color:#c6d1c9}
 header button{margin-left:auto;color:#f4e8d1;border-color:#72837b;background:transparent}
-.shell{display:grid;grid-template-columns:240px minmax(0,1fr);max-width:1720px;margin:auto}
+.shell{display:block;max-width:1720px;margin:auto}
 aside{padding:30px 22px;height:calc(100vh - 78px);position:sticky;top:78px;border-right:1px solid var(--line);overflow:auto}
 nav a{display:block;text-decoration:none;padding:11px 14px;margin:4px 0;border-radius:7px;color:var(--ink)}
 nav a.active{background:var(--ink);color:#f7e3b6}
@@ -170,3 +170,24 @@ main :is(p,h1,h2,h3,a,small){overflow-wrap:anywhere}
 .user-review label{display:block;margin:14px 0}.user-review textarea{display:block;width:100%;min-height:110px;margin-top:8px;padding:12px;resize:vertical;font:inherit}.user-review output{display:block;margin:12px 0}.user-review button{margin:4px 8px 4px 0}.review-history{border-top:1px solid var(--line);padding:10px 0}.review-history p,.review-comment{white-space:pre-wrap;overflow-wrap:anywhere}.intent-panel td{vertical-align:top}.user-review select{margin-left:8px}
 
 .audit-filters{display:flex;gap:18px;flex-wrap:wrap}.audit-filters label{display:flex;flex-direction:column;gap:8px}.audit-group{scroll-margin-top:90px;border-top:2px solid var(--line);padding-top:16px;margin-top:30px}.audit-group article{min-width:0}.audit-group small{overflow-wrap:anywhere}.audit-group .gallery{grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+/* Full-width navigation and local review controls. */
+.section-navigation{padding:12px 24px;border-bottom:1px solid var(--line)}
+.section-navigation nav{display:flex;flex-wrap:wrap;gap:4px}
+.section-navigation nav a{padding:5px 10px;margin:0;font-size:13px}
+.navigation-tools{display:flex;gap:12px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.navigation-tools .search-label{margin:0}.navigation-tools input{width:min(420px,100%)}
+.navigation-tools details{font-size:12px}.navigation-tools #freshness{margin:8px 0}
+.atlas-workbench.atlas-stacked{display:block}.atlas-stacked .atlas-map-column{position:static}
+.image-caption{padding:10px 0;border-top:1px solid var(--line);overflow-wrap:anywhere;line-height:1.6}
+.image-caption strong,.image-caption small{display:block}
+.inline-image{min-width:0}.inline-image>.tile{display:block}
+.inline-image .user-review{padding:12px;margin:8px 0 20px}
+.inline-image .user-review h3{font-size:14px}.inline-image .user-review textarea{min-height:74px}
+.inline-image .user-review>p{font-size:11px}.user-review{overflow-wrap:anywhere}
+.user-review label{max-width:100%}.user-review select{max-width:100%;margin-left:0}
+#main [id^=overview-],#main .audit-group{scroll-margin-top:190px}
+@media(max-width:680px){.section-navigation{padding:10px 14px}.section-navigation nav{max-height:120px;overflow:auto}.inline-image .user-review{padding:8px}.inline-image .user-review button{padding:6px;font-size:12px}}
+.clash-explanation{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:18px;background:#e8dcc1;border:2px solid #9a6b2b;color:#292317}
+.clash-explanation strong{font-size:18px}.clash-explanation p{margin-bottom:0}
+.current-visual{border:1px solid var(--line);padding:18px;margin:20px 0}.current-visual figure{margin:12px 0}
+@media(max-width:680px){.clash-explanation{grid-template-columns:1fr}.current-visual{padding:10px}}

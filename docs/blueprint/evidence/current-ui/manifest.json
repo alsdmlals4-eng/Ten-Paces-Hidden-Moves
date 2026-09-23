@@ -1,0 +1,42 @@
+{
+  "engine": "4.7.1-stable (official)",
+  "project": "C:/Users/user/Documents/GitHub/Ninza/Ten-Paces-Hidden-Moves/.worktrees/html-blueprint-design-20260922/",
+  "shots": [
+    {
+      "kind": "GODOT_RENDERED_FIXTURE",
+      "path": "docs/blueprint/evidence/current-ui/planning-1440.png",
+      "size": [
+        1440,
+        900
+      ],
+      "sha256": "4e38c3e2b9552d43ea8ef25eb42e34eac05c81683727d1b5898d1e0ca3706c80"
+    },
+    {
+      "kind": "GODOT_RENDERED_FIXTURE",
+      "path": "docs/blueprint/evidence/current-ui/clash-1440.png",
+      "size": [
+        1440,
+        900
+      ],
+      "sha256": "e9e2a09e2ddf66e4b9b25285e8ac664f944512cb89422ec7a090bef88a4845e8"
+    },
+    {
+      "kind": "GODOT_RENDERED_FIXTURE",
+      "path": "docs/blueprint/evidence/current-ui/planning-960.png",
+      "size": [
+        960,
+        600
+      ],
+      "sha256": "5d3dcc40482908e0491c0452d9ed8e486ca057c43f676d6618a83d00dde897bb"
+    }
+  ],
+  "captured_at": "2026-09-23T11:34:39.792125+00:00",
+  "baseline": "c2fbdd7ead403974d9b82bbc51bf3abffd51b1a5",
+  "evidence": "GODOT_RENDERED_FIXTURE; not human gameplay or art approval",
+  "initial_failed_capture": "Rejected before missing assets were imported; final capture stderr empty",
+  "source_hashes": {
+    "tools/capture_blueprint_current_ui.gd": "71726ef75932e962202c5860986cb10089e2858713a5a69547cf668e713c3496",
+    "src/ui/observation_reveal_panel.gd": "e5d136113437e1cae1ea67b9b88a5799ea3be743f6c0fcd35bfd99827fad6a3a",
+    "src/ui/action_selection/action_detail_panel.gd": "eb7d43c9bef05da2358a34aeae0d69d2ea0b8f7e399e4a72f982ba7324dfc6a5"
+  }
+}

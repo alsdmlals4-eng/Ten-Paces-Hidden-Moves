@@ -27,7 +27,7 @@ func _ready() -> void:
 	_title.text = "상대 행동 관찰"
 	_hint = _make_label(11, Color("aa977c"))
 	_hint.name = "ObservationHint"
-	_hint.text = "공개된 행동 유형만 표시"
+	_hint.text = "공개 행동 유형"
 	for index in range(MAX_VISIBLE_TYPES):
 		var row := _make_label(14, Color("f0dfbc"))
 		row.name = "ObservationType%02d" % (index + 1)
@@ -109,10 +109,10 @@ func _layout() -> void:
 	# owns the title/hint, while the lower three parchment strips own the public
 	# action-type rows.  Match those dedicated lanes instead of stretching every
 	# label across the decorative central seal.
-	_title.position = Vector2(width * 0.17, height * 0.13)
-	_title.size = Vector2(width * 0.66, height * 0.08)
-	_hint.position = Vector2(width * 0.17, height * 0.22)
-	_hint.size = Vector2(width * 0.66, height * 0.07)
+	_title.position = Vector2(width * 0.17, height * 0.115)
+	_title.size = Vector2(width * 0.66, height * 0.06)
+	_hint.position = Vector2(width * 0.17, height * 0.19)
+	_hint.size = Vector2(width * 0.66, height * 0.05)
 	for index in range(_rows.size()):
 		var row := _rows[index]
 		row.position = Vector2(width * 0.40, height * (0.445 + float(index) * 0.15))
