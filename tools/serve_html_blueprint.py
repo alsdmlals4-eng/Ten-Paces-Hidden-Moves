@@ -12,6 +12,7 @@ from pathlib import Path
 import secrets
 import re
 import threading
+import time
 from urllib.parse import unquote, urlsplit
 import webbrowser
 import http.client
@@ -19,6 +20,19 @@ import http.client
 import html_blueprint as model
 
 ROOT = model.ROOT
+
+
+class PreviewLease:
+    """Idle timeout: a visible reader heartbeat keeps the local preview alive."""
+    def __init__(self, seconds, clock=time.monotonic):
+        self.seconds, self.clock = seconds, clock
+        self.last_activity = clock()
+
+    def touch(self):
+        self.last_activity = self.clock()
+
+    def expired(self):
+        return self.clock() - self.last_activity >= self.seconds
 
 
 def healthy_session_url(receipt, index):
@@ -82,7 +96,7 @@ def load_allowlist():
     return allowed
 
 
-def create_server(allowed, token, port=0, review_store=None):
+def create_server(allowed, token, port=0, review_store=None, lease=None):
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self):
             self.respond(False)
@@ -110,6 +124,7 @@ def create_server(allowed, token, port=0, review_store=None):
                 if not isinstance(request, dict): raise ValueError('Expected review object')
                 data = (review_store.import_document(request['document'], request.get('revision'))
                         if request.get('action') == 'import' else review_store.save(request))
+                if lease: lease.touch()
                 self.review_response(200, data)
             except Conflict as error:
                 self.review_response(409, {'error': str(error)})
@@ -132,6 +147,19 @@ def create_server(allowed, token, port=0, review_store=None):
         def respond(self, head):
             if not valid_peer(self.headers.get('Host'), self.headers.get('Origin'), self.server.server_port):
                 self.send_error(403, 'Loopback preview only')
+                return
+            if self.path == '/p/'+token+'/_session':
+                if lease: lease.touch()
+                index = ROOT/'output/blueprint/index.html'
+                current = index.is_file() and model.sha(index) == allowed.get('output/blueprint/index.html')
+                latest = None
+                if not current:
+                    try:
+                        receipt = model.read(ROOT, 'output/blueprint/preview-session.json')
+                        latest = healthy_session_url(receipt, index)
+                    except (OSError, ValueError):
+                        pass
+                self.review_response(200, {'state':'CURRENT' if current else 'SUPERSEDED', 'latest_url':latest}, head)
                 return
             if self.path in {'/p/'+token+'/_review', '/p/'+token+'/_review/export'} and review_store is not None:
                 try:
@@ -173,6 +201,7 @@ def create_server(allowed, token, port=0, review_store=None):
                     return
                 data=data[start:end+1]
             self.send_response(206 if requested else 200)
+            if lease: lease.touch()
             self.send_header('Accept-Ranges','bytes')
             if requested:
                 self.send_header('Content-Range',f'bytes {start}-{end}/{size}')
@@ -200,7 +229,7 @@ def main():
     parser.add_argument('--open', action='store_true', help='Open the verified preview in the default browser')
     parser.add_argument('--no-build', action='store_true', help='Serve an already generated, hash-checked snapshot')
     parser.add_argument('--port', type=int, default=0, help='0 selects a free local port')
-    parser.add_argument('--minutes', type=int, default=120, help='Bounded lifetime; reopen the launcher to restart')
+    parser.add_argument('--minutes', type=int, default=120, help='Idle timeout; active reading keeps this local session alive')
     args = parser.parse_args()
     if args.minutes <= 0 or args.minutes > 720:
         parser.error('Preview lifetime must be between 1 and 720 minutes')
@@ -215,10 +244,12 @@ def main():
             resolve_request(ROOT, allowed, '/p/'+token+'/'+rel, token)
     from blueprint_review_store import ReviewStore, shared_directory
     review_store = ReviewStore(shared_directory(ROOT))
-    server = create_server(allowed, token, args.port, review_store=review_store)
+    lease = PreviewLease(args.minutes*60)
+    server = create_server(allowed, token, args.port, review_store=review_store, lease=lease)
     url = f'http://127.0.0.1:{server.server_port}/p/{token}/output/blueprint/index.html'
     receipt = {'url': url, 'pid': os.getpid(), 'started_at': datetime.now(timezone.utc).isoformat(),
-               'lifetime_minutes': args.minutes, 'binding': '127.0.0.1', 'allowed_files': len(allowed),
+               'idle_timeout_minutes': args.minutes, 'lifetime_policy':'ACTIVE_READER_HEARTBEAT',
+               'binding': '127.0.0.1', 'allowed_files': len(allowed),
                'index_sha256': model.sha(ROOT/'output/blueprint/index.html'), 'read_only': False,
                'repository_files_read_only': True, 'review_file': str(review_store.path),
                'write_scope': 'USER_REVIEW_ONLY'}
@@ -226,15 +257,16 @@ def main():
     print(url, flush=True)
     if args.open:
         webbrowser.open(url)
-    timer = threading.Timer(args.minutes*60, server.shutdown)
-    timer.daemon = True
-    timer.start()
+    def close_when_idle():
+        while not lease.expired():
+            time.sleep(min(30, args.minutes*60))
+        server.shutdown()
+    threading.Thread(target=close_when_idle, daemon=True).start()
     try:
         server.serve_forever()
     except KeyboardInterrupt:
         pass
     finally:
-        timer.cancel()
         server.server_close()
 
 

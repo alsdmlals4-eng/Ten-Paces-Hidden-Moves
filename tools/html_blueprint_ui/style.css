@@ -209,3 +209,33 @@ main :is(p,h1,h2,h3,a,small){overflow-wrap:anywhere}
 @media(max-width:680px){.basic-action-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.basic-action figure>svg{height:180px}}
 
 .reference-surface svg{display:block;width:100%;height:auto;max-height:none}.inline-image .tile>svg{width:100%;height:auto}
+
+/* A screen and its caption/review stay in the same medium-size comparison cell. */
+.screen-gallery,.motion-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:18px 0}
+.screen-card,.motion-card{padding:14px;min-width:0}.screen-card>h3{margin:0 0 12px}.screen-card .reader-block{margin:0}
+.screen-card .reader-block img,.screen-card .reader-block svg,.screen-card .reference-surface svg{display:block;width:100%;height:210px;object-fit:contain;max-height:210px}
+.screen-card .reader-block figcaption{display:none}.screen-card .image-caption{padding:8px 0;font-size:13px}
+.screen-card .user-review{margin:0 0 8px}.screen-card .user-review label{margin:6px 0}.screen-card .user-review textarea{min-height:52px;margin-top:4px;padding:8px}
+.screen-card .user-review [data-user-result]{min-height:1.6em;margin:5px 0}.screen-card .user-review details{padding:6px 10px}.screen-card>.notice{font-size:12px}
+.screen-card .current-visual{padding:0;margin:0;border:0}.screen-card .clash-explanation{display:none}.screen-card .historical-image{padding:8px;font-size:12px}
+.motion-card>a img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:contain}.motion-card h3{font-size:16px;margin:12px 0}.motion-card p{font-size:12px}
+.play-link{display:inline-block;padding:8px 12px;background:#172c30;color:#fff8e8;border-radius:5px;text-decoration:none;font-size:13px}
+.selected-movie{max-width:880px;margin:auto}.video-message{font-size:13px;min-height:1.6em;margin:10px 0}
+.technique-table{table-layout:fixed}.technique-table th:first-child{width:28%}.technique-table th:nth-child(2){width:38%}
+.technique-table td{font-weight:normal!important}.technique-table h3{font-size:16px;margin:0 0 10px}.technique-table ol{padding-left:20px;margin:8px 0}.technique-table li{margin:5px 0}
+.technique-art img{display:block;width:100%;height:170px;object-fit:contain}.technique-art .image-caption{font-size:12px}.technique-table .user-review label{margin:7px 0}.technique-table .user-review textarea{min-height:52px;padding:8px;margin-top:4px}.technique-table .user-review details{padding:7px}
+.manual-summary{padding:12px;background:#e7e1d2}.manual-tables .table-wrap{margin-top:10px}.event-table th:first-child{width:27%}.event-start>*{border-top:2px solid #b5a585}.event-table tbody th{font-weight:600;background:#eee8da}
+.sprite-window{position:relative;overflow:hidden;width:min(100%,calc(235px * var(--art-ratio)));margin:auto;background:#eee3cc}.sprite-window img{position:absolute;max-width:none!important;max-height:none!important;height:auto!important;object-fit:fill!important}.sprite-window+.media-recovery{display:block}
+.preview-status{position:fixed;top:78px;left:16px;right:16px;z-index:30;padding:12px 18px;background:#f8e3bb;border:1px solid #9a6b2b;box-shadow:0 3px 8px #0002;font-size:14px}.preview-status[hidden]{display:none}
+@media(max-width:1100px){.screen-gallery,.motion-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.technique-table{min-width:720px}}
+@media(max-width:680px){.screen-gallery,.motion-gallery{grid-template-columns:1fr}.screen-card .reader-block img,.screen-card .reader-block svg{height:180px}.technique-art img{height:150px}.sprite-window{width:min(100%,calc(180px * var(--art-ratio)))}.preview-status{top:72px;font-size:12px}.event-table table{min-width:720px}}
+
+.portrait-gallery{grid-template-columns:repeat(4,minmax(0,1fr))}.portrait-gallery .reader-block img{height:180px}
+.tactics-table{table-layout:fixed;min-width:1100px}.tactics-table th:first-child{width:20%}.tactics-table th:last-child{width:22%}.tactics-table td{font-weight:normal!important}.tactics-table h3{font-size:15px}
+.tactics-table .reader-block,.image-comparison-table .reader-block,.comparison-picture .reader-block{margin:8px 0}.tactics-table .reader-block img{max-height:170px}
+.tactics-table .reader-block figcaption,.image-comparison-table .reader-block figcaption,.comparison-picture .reader-block figcaption{display:none}
+.tactics-table .user-review textarea{min-height:52px}.tactics-table .user-review details{padding:6px}.tactics-table .user-review label{margin:6px 0}
+.image-comparison-table th:first-child{width:36%}.image-comparison-table th:last-child{width:34%}.image-comparison-table .reader-block img{max-height:210px}.image-comparison-table{table-layout:fixed}
+.sequence-comparison{display:grid;grid-template-columns:minmax(200px,28%) minmax(0,1fr);gap:20px}.comparison-picture .reader-block img{max-height:210px}
+@media(max-width:1100px){.portrait-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:680px){.portrait-gallery{grid-template-columns:1fr}.sequence-comparison{grid-template-columns:1fr}.image-comparison-table{min-width:620px}}

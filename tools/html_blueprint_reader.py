@@ -54,6 +54,33 @@ def refine(pages, giyun):
     for page in pages:
         page['original_blocks'] = deepcopy(page['blocks'])
         page['blocks'] = compact(page['blocks'])
+    # The PDF emits picture then label. Keep them in one card so a label cannot
+    # appear to describe the next, unrelated full-width picture.
+    # Similar long image lists retain their source order and text in compact views.
+    comparison_layouts = {'reader-005': 'image_runs', 'reader-020': 'image_table',
+                          'reader-022': 'sequence_table', 'reader-030': 'portrait_gallery'}
+    comparison_layouts.update({f'reader-{i:03}': 'tactics_table' for i in range(97, 105)})
+    for page_id, layout in comparison_layouts.items():
+        by_id[page_id]['layout'] = layout
+    # These are whole-screen progress/result labels, not opponent-card text.
+    by_id['reader-020']['shared_text_indices'] = [
+        i for i, b in enumerate(by_id['reader-020']['blocks'])
+        if b['kind'] == 'text' and (b['text'] == '대' or b['text'].startswith('현재 계획'))]
+    atlas_page = by_id['reader-006']
+    atlas_page['layout'] = 'screen_gallery'
+    contexts = iter(['menu','route','status','brief','rest','plan','resolve','evade','result'])
+    categories = {'menu': ('메인 메뉴', '새 여정·이어하기'), 'route': ('강호행로', '행로 선택'),
+                  'status': ('플레이어', '상태창'), 'brief': ('전투', '비무 브리핑'),
+                  'rest': ('강호행로', '주막·휴식'), 'plan': ('전투', '전투 준비 화면'),
+                  'resolve': ('전투', '합·해결 설명'), 'evade': ('전투', '회피 연출'), 'result': ('전투', '결과·복기')}
+    for index, block in enumerate(atlas_page['blocks']):
+        if block['kind'] == 'image':
+            label = atlas_page['blocks'][index+1]
+            if label['kind'] != 'text':
+                raise ValueError('Atlas picture lost its source label')
+            context = next(contexts)
+            block.update(screen_context=context, screen_label=label['text'],
+                         screen_kind=categories[context][0], screen_usage=categories[context][1])
     # The PDF's tiny placement examples must not become 13 full-width pictures.
     atlas = 'assets/ui/cards/basic_technique_ink_atlas_01_v1.png'
     plan = by_id['reader-017']
@@ -93,6 +120,7 @@ def refine(pages, giyun):
         blocks=[table(['사건·상황', '종류', '선택지', '대가·조건', '효과'], events),
                 note('기연은 회차 한정·자동 적용·동일 기연 중복 없음. 발동 상한과 사용처는 기연 도감에서 확인합니다. 사건을 선택한 뒤 결과가 이어하기로 바뀌지 않습니다.')],
         historical_state='현재 main 기연·사건 데이터와 실제 GiyunRules 설명')
+    by_id['reader-011']['blocks'][0]['group_first_column'] = True
     for id in ['reader-013', 'reader-014']:
         # Keep original identifiers and the full original description, but share one
         # current table instead of repeating old five-event rewards as current data.

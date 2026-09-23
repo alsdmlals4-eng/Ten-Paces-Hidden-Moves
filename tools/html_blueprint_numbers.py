@@ -77,6 +77,11 @@ def attach(payload, root):
                          'usage_sources': ['tools/build_human_blueprint_complete.py'],
                          'record_id': 'reader:image-' + hashlib.sha256(key.encode()).hexdigest()[:16]}
             order.append(key)
+    # Context belongs to the specific atlas screen, not a neighboring text caption.
+    for page in payload['pages']:
+        for b in page['blocks']:
+            if b.get('screen_kind') and not b.get('region') and b['path'] in rows:
+                rows[b['path']].update(kind=b['screen_kind'], usage=b['screen_usage'])
     allocated = allocate(registry, order)
     for key, row in rows.items():
         row['number'] = allocated[key]
