@@ -51,6 +51,14 @@ for(const manual of data.manuals)for(const card of Object.values(manual.cards))a
 assert(vm.runInContext('nav[0][0]',env)==='maps','Atlas must be the first navigation');
 assert(!html.includes('<aside>'),'Persistent sidebar wastes the reading area');
 assert(element('nav').innerHTML.includes('#home/audit'),'Image navigation must jump to its complete section');
+for(const g of data.reader_groups)assert(element('nav').innerHTML.includes('#home/'+g.id));
+assert.equal((all.match(/class="overview-group"/g)||[]).length,6);
+const beforeQuery=env.document.querySelector;
+env.document.querySelector=selector=>selector==='.overview-group'?{}:null;
+env.location.hash='#home/route';element('main').innerHTML='keep-mounted-items';
+vm.runInContext("lastRoute='#home';render()",env);
+assert.equal(element('main').innerHTML,'keep-mounted-items','Section jump must preserve mounted forms, focus and image layout');
+env.document.querySelector=beforeQuery;env.location.hash='#home';vm.runInContext('render()',env);
 const firstNumbered=data.assets.find(a=>a.image_number===1);
 assert(element('nav').innerHTML.includes('#changes'),'Change comparison must remain reachable');
 for(const n of [50,300]){
@@ -69,8 +77,17 @@ assert(data.image_catalog.every(r=>r.kind&&r.usage&&r.usage_evidence),'Image cap
 assert.equal(new Set(data.image_catalog.map(r=>r.number)).size,data.image_catalog.length,'Image numbers collide');
 assert(check('home()').includes('id="overview-audit"'));
 assert(check('home()').includes('id="overview-reviews"'));
-const replacement=check(`block({kind:'image',path:'docs/blueprint/evidence/reference-screens/54d7b849fff7d6b9a639007f08147401.png'})`);
+const replacement=check(`block({kind:'image',path:'docs/blueprint/evidence/reference-screens/54d7b849fff7d6b9a639007f08147401.png',page_id:'reader-006'})`);
 assert(replacement.includes('assets/blueprint/clash_explanation_v1.png')&&replacement.includes('이전 참고 이미지'));
+for(const id of ['reader-013','reader-015']){
+ const html=check(`reader('${id}')`);assert(!html.includes('planning-1440.png')&&!html.includes('planning-960.png'),'Unrelated battle image in '+id);
+}
+assert(!check("block({kind:'image',path:'docs/blueprint/evidence/reference-screens/54d7b849fff7d6b9a639007f08147401.png',page_id:'reader-013'})").includes('clash_explanation_v1'),'Replacement must be scoped to a semantic page');
+const whole=check('home()');assert(whole.indexOf('id="all-reader-010"')<whole.indexOf('id="all-reader-009"'));
+assert.equal((whole.match(/data-numbered-image="inventory-13fcfaaa5d6cee4a"/g)||[]).length,1,'Disposal tombstone appears once in the overview');
+assert(check('userReviewPanel(inspections[0])').includes('자동 저장'));
+assert(check('auditGallery()').includes('폐기 요청'));
+
 for(const id of ['menu','starter','brief','plan','resolve'])assert(check(`maps('game-loop','${id}')`).includes('id="stage-detail"'),'Missing usable atlas content');
 for(const clip of data.experience.clips)assert(check(`movies('test',[${JSON.stringify(clip.id)}])`).includes('<video '),'Missing real movie');
 for(const g of data.diagrams){check(`maps(${JSON.stringify(g.id)})`);for(const n of g.nodes)check(`maps(${JSON.stringify(g.id)},${JSON.stringify(n.id)})`);}

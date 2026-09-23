@@ -1,0 +1,110 @@
+"""Compact HTML reading view; approved PDF content remains attached by stable ID."""
+from copy import deepcopy
+
+
+def reader_groups(pages):
+    groups = [
+        {'id':'screens','label':'아틀라스·기획서','pages':[]},
+        {'id':'route','label':'강호행로 · 비전투','pages':[]},
+        {'id':'combat','label':'전투 관련','pages':[]},
+        {'id':'player','label':'플레이어 관련','pages':[]},
+        {'id':'characters','label':'상대·적 관련','pages':[]},
+        {'id':'audit','label':'이미지 모음','pages':[]},
+    ]
+    for page in pages:
+        n = int(page['id'].split('-')[-1])
+        group = (1 if 9 <= n <= 14 else 2 if 15 <= n <= 29 or n in {76,77,78,82,83,108}
+                 else 3 if 65 <= n <= 75 or n == 79 else 4 if 30 <= n <= 64 or 97 <= n <= 106
+                 else 5 if n == 109 else 0)
+        groups[group]['pages'].append(page['id'])
+    return groups
+
+
+def table(headers, rows):
+    return {'kind': 'table', 'headers': headers, 'rows': rows}
+
+
+def note(text):
+    return {'kind': 'note', 'text': text}
+
+
+def compact(blocks):
+    result, panels = [], []
+    def flush():
+        if len(panels) > 1:
+            result.append(table(['항목', '내용'], [[p['title'], p['text']] for p in panels]))
+        else:
+            result.extend(panels)
+        panels.clear()
+    for block in blocks:
+        if block['kind'] == 'geometry':
+            continue
+        if block['kind'] == 'panel':
+            panels.append(block)
+            continue
+        flush()
+        result.append(table(['단계', '선택·피드백'], block['items']) if block['kind'] == 'flow' else block)
+    flush()
+    return result
+
+
+def refine(pages, giyun):
+    """An HTML-only layout adapter. It describes the existing GiyunRules contract."""
+    by_id = {p['id']: p for p in pages}
+    for page in pages:
+        page['original_blocks'] = deepcopy(page['blocks'])
+        page['blocks'] = compact(page['blocks'])
+    wire = by_id['reader-010']
+    wire['blocks'] = [wire['blocks'][0], note('정보 배치 참고용 와이어프레임입니다. 아래 네 번의 선택·활동·사건 표는 현재 게임 데이터와 구현을 따릅니다.')]
+    followup = {
+        'rest': ('자원 부족을 회복', '상한 안에서 실제 회복량 표시'),
+        'training': ('성장 선택에 쓸 점수 확보', '포인트 획득과 성수 상승은 별개 · 무공 성장에서 사용'),
+        'recon': ('다음 상대를 읽을 단서 확보', '미확정 계획·숨은 기술은 공개하지 않음'),
+        'event': ('대가·성장·기연 중 선택', '사건별 3선택 · 아래 표에서 비교'),
+    }
+    by_id['reader-009']['blocks'] = [table(['종류', '선택지', '효과', '선택 목적', '조건·다음 흐름'], [
+        [{'rest':'휴식','training':'수련','recon':'정탐','event':'무작위 사건'}[a['id']], a['label'], a['effect'], *followup[a['id']]]
+        for a in giyun['activities']]),
+        note('비무 사이 9구간 × 4회 = 한 회차 최대 36회 선택. 네 활동 중 세 후보를 제시하며 사건은 포함됩니다. 나머지 휴식·수련·정탐 중 하나를 회차 시드에 따라 제외합니다. 같은 단계에서 고르지 않은 두 후보의 효과는 얻지 않습니다.'),
+        table(['현재 화면에서 확인', '읽을 정보'], [
+            ['선택 전', '현재 1~4회차 · 후보 셋의 효과·대가 · 나의 자원·보유 무공'],
+            ['선택 확정', '선택 결과와 실제 증가량 · 미리보기와 적용 완료를 구분'],
+            ['다음 단계', '결과를 보고 자원·단서를 재판단 · 4회 후 다음 비무 브리핑'],
+            ['이어하기', '시드·사건·확정 결과를 보존 · 재추첨이나 중복 지급 금지']])]
+    by_id['reader-009']['historical_state'] = '현재 main 데이터·구현에서 설명 파생 / 사람 재미 별도'
+    events = []
+    items = {g['id']:g for g in giyun['giyun']}
+    for event in giyun['events']:
+        item = items[event['giyun_id']]
+        for choice in event['choices']:
+            cid = choice['id']
+            effect = (item['name']+' 획득 · '+item['description']+' / 이미 보유하면 자유 수련 +3') if cid == 'accept' else ('자유 수련 +2' if cid == 'study' else '기력 +1')
+            events.append([event['title']+' — '+event['text'], {'accept':'기연 획득','study':'수련','leave':'이동·회복'}[cid], choice['label'],
+                           f"체력 -{event['health_cost']} · 현재 체력이 대가보다 커야 선택 가능" if cid == 'accept' else '추가 체력 대가 없음', effect])
+    by_id['reader-011'].update(title='행로 사건 목록 · 6개 사건의 선택지와 효과', subtitle='현재 데이터의 사건·선택지 18개를 한곳에서 비교합니다.',
+        blocks=[table(['사건·상황', '종류', '선택지', '대가·조건', '효과'], events),
+                note('기연은 회차 한정·자동 적용·동일 기연 중복 없음. 발동 상한과 사용처는 기연 도감에서 확인합니다. 사건을 선택한 뒤 결과가 이어하기로 바뀌지 않습니다.')],
+        historical_state='현재 main 기연·사건 데이터와 실제 GiyunRules 설명')
+    for id in ['reader-013', 'reader-014']:
+        # Keep original identifiers and the full original description, but share one
+        # current table instead of repeating old five-event rewards as current data.
+        by_id[id]['merged_into'] = 'reader-009'
+        by_id[id]['blocks'] = [note('현재 선택지·효과는 강호행로 통합 표에 모았습니다. 원래 설명은 승인 당시 자료에서 비교할 수 있습니다.')]
+    by_id['reader-013']['blocks'] += [table(['정보 종류', '해석·활용', '현재 구현과 구분'], [
+        ['무공 조사·정탐', '공개된 보유 무공·기술 범위로 거리·수 운용을 예상하고 다음 브리핑에 활용', '다음 상대의 단서만 사용 · 숨은 다음 행동을 보장하지 않음'],
+        ['발자국·습관 해석', '이동·위치 습관과 깨진 반례로 추격·대기·역진입을 비교', '과거 설명용 예시 · 신규 회차의 독립 활동이나 추가 보상으로 표시하지 않음'],
+        ['정보 흐름', '흔적 발견 → 단서 확인 → 알려진 사실과 반례 해석 → 다음 비무 대비', '정탐 전용 최신 촬영 미확인 · 전투 화면을 대신 붙이지 않음']])]
+    by_id['reader-014']['blocks'] += [table(['구분', '게임에 남는 변화', '확인할 것'], [
+        ['수련', '자유 수련 포인트를 무공 성장에서 소비', '대상·비용·해금, 5·9성 강화, 저장 후 복구'],
+        ['사건·기연', '표의 선택 결과만 한 번 적용', '체력 대가·획득 중복·사건 고정'],
+        ['과거 행인·발자국 사례', '원래 다섯 사건의 설명은 승인 당시 기록에 보존', '현재 6사건·18선택과 혼합하지 않음']])]
+    # Wireframe first, then current choices, events, rest and information flow.
+    ordered = ['reader-010','reader-009','reader-011','reader-012','reader-013','reader-014']
+    first = min(i for i,p in enumerate(pages) if p['id'] in ordered)
+    pages[:] = [p for p in pages if p['id'] not in ordered]
+    pages[first:first] = [by_id[id] for id in ordered]
+    # Explicit page ownership makes replacement selection independent of shared paths.
+    for page in pages:
+        for block in page['blocks']:
+            block['page_id'] = page['id']
+    return pages

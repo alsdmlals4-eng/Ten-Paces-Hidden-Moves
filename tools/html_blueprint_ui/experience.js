@@ -29,13 +29,14 @@ maps=function(id,focus){const g=D.diagrams.find(d=>d.id===id)||D.diagrams[0];if(
  ${g.nodes.map(n=>{const c=D.experience.contexts[n.id],y=n.y*scale;return `<a href="#maps/game-loop/${n.id}" aria-label="${E(c.title)} 화면과 내용 열기"><rect x="${n.x}" y="${y}" width="${n.w}" height="${n.h*scale}" rx="10" fill="${n.id===focus?'#e8d5ae':'#fffdf8'}" stroke="#aa956c" stroke-width="2"/><text x="${n.x+12}" y="${y+23}" font-size="18" fill="#172c30" font-weight="700">${E(n.label)}</text><image href="${E(src(c.preview.path))}" x="${n.x+8}" y="${y+32}" width="${n.w-16}" height="88" preserveAspectRatio="xMidYMid meet"/><text x="${n.x+12}" y="${y+135}" font-size="11" fill="#64716c">${E(c.preview_kind)} · 눌러서 보기</text></a>`;}).join('')}</svg></div>
  <nav class="atlas-text-links" aria-label="화면 목록">${g.nodes.map(n=>`<a href="#maps/game-loop/${n.id}">${E(n.label)}</a>`).join('')}</nav>${focus?stagePanel(focus):'<p>상자 또는 화면 목록을 선택하세요. 키보드 Tab과 Enter로도 열 수 있습니다.</p>'}`;
 };
-home=function(){return originalHome()+`<nav class="overview-jumps" aria-label="전체 보기 바로가기">${[['screens','화면 연결'],['chapters','게임 이해'],['characters','인물'],['manuals','무공'],['giyun','기연·사건'],['library','자산·영상'],['work','PM'],['proof','검수'],['continue','이어가기'],['audit','이미지 정리'],['reviews','내 코멘트']].map(([id,name])=>`<a href="#home/${id}">${name}</a>`).join('')}</nav>
- <section id="overview-screens">${maps('game-loop')}</section>
- <section id="overview-chapters"><h2>게임 이해 · 전체 ${D.pages.length}개 항목</h2>${D.pages.map(p=>explanation(p.id,'all')).join('')}</section>
- <section id="overview-characters"><h2>인물 · 전체 성장과 전술</h2>${D.people.map(p=>people(p.id)).join('')}</section>
- <section id="overview-manuals"><h2>무공 · 효과와 연출</h2>${manualCatalog('all-manual')}</section>
- <section id="overview-library"><h2>자산 · 전체 도감</h2><div class="gallery">${D.assets.map(tile).join('')}</div><h2>격돌·합·피격 영상</h2>${movies('all-base',['clash-win','clash-lose','hit','block','evade','ultimate'])}</section>
- <section id="overview-work">${pm(null,true)}</section><section id="overview-proof">${originalEvidence()}</section><section id="overview-continue">${resume()}</section>`;};
+home=function(){return originalHome()+`<nav class="overview-jumps" aria-label="전체 보기 바로가기">${[...D.reader_groups.map(g=>[g.id,g.label]),['work','작업·일정'],['proof','검수'],['continue','이어가기'],['reviews','내 코멘트']].map(([id,name])=>`<a href="#home/${id}">${E(name)}</a>`).join('')}</nav>`+
+ D.reader_groups.map(g=>`<section id="overview-${g.id}" class="overview-group"><h2 class="group-heading">${E(g.label)}</h2>${g.id==='screens'?maps('game-loop')+'<div id="overview-chapters"></div>':''}${g.pages.map(id=>explanation(id,'all')).join('')}
+ ${g.id==='route'?`<section id="overview-giyun">${giyunCatalog()}</section>`:''}
+ ${g.id==='player'?`<section id="overview-manuals"><h2>보유 무공 · 성장 효과와 기술 연출</h2>${manualCatalog('all-manual')}</section>`:''}
+ ${g.id==='characters'?`<h2>상대별 현재 데이터 · 성장과 전술</h2>${D.people.map(p=>people(p.id)).join('')}`:''}
+ ${g.id==='combat'?`<section id="overview-library"><h2>격돌·합·피격 영상</h2>${movies('all-base',['clash-win','clash-lose','hit','block','evade','ultimate'])}</section>`:''}
+ ${g.id==='audit'?auditGallery(true):''}</section>`).join('')+
+ `<section id="overview-work">${pm(null,true)}</section><section id="overview-proof">${originalEvidence()}</section><section id="overview-continue">${resume()}</section>`;};
 assets=function(){return `<p><a href="#motion">실제 격돌·합·카드 연출 영상 ${D.experience.clips.length}개 보기 →</a></p>`+originalAssets();};
 evidence=function(){return `<p><a href="#motion">실제 Godot 연출 영상과 촬영 근거 보기 →</a></p>`+originalEvidence();};
 const originalBind=bind;
