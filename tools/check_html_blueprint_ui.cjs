@@ -45,6 +45,12 @@ const candidateRecord=data.inspection.records.find(r=>r.id==='asset:pr342-clash_
 assert(candidateRecord.tasks.some(t=>t.id==='PRESENTATION-PREFERENCES'&&t.scope==='PR342_CANDIDATE'),'Candidate asset lost its candidate PM');
 assert(vm.runInContext(`requestFor(recordById(${JSON.stringify(candidateRecord.id)}))`,env).includes(data.candidate.revision),'Candidate request lost exact source revision');
 const all=check('home()');
+const starterEvidence=data.inspection.records.find(r=>r.id==='screen:starter');
+assert(starterEvidence.states.runtime.includes('정지화면 촬영'),'Starter screen must show its verified still capture');
+assert(!starterEvidence.flags.includes('capture'));
+const starterAsset=data.inspection.records.find(r=>r.image_number===319);
+assert(starterAsset.states.runtime.includes('정지화면 촬영'),'Starter asset must retain the same evidence');
+assert(data.inspection.records.find(r=>r.id==='screen:plan').flags.includes('capture'),'AI-edited reference must not count as runtime capture');
 const actionCatalog=check('basicActionCards()');
 const basicArt=data.image_catalog.find(r=>r.number===19);
 assert.equal((actionCatalog.match(/data-basic-action=/g)||[]).length,10);

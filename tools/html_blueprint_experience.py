@@ -101,6 +101,13 @@ def build(pages):
         context['preview_kind'] = '승인 기획의 화면 자료'
     contexts['starter']['preview'] = {'kind':'image', 'path':'docs/blueprint/evidence/current-ui/starter-selection-1280.png','size':[1280,800]}
     contexts['starter']['preview_kind'] = '실제 Godot 시작 무공 선택 · 격리 촬영'
+    receipt_path = 'docs/operations/2026-09-22_HTML_BLUEPRINT_WORK_CONTRACT_RECEIPT.json'
+    still = read(ROOT, receipt_path)['action_art_followup']['starter_capture']
+    still_path = still['path'].removeprefix('res://')
+    if still_path != contexts['starter']['preview']['path'] or still['screen'] != 'SETUP':
+        raise ValueError('Starter capture identity mismatch')
+    verified_file(ROOT, still_path, still['sha256'])
+    contexts['starter']['still_capture'] = dict(still, path=still_path, source=receipt_path)
     from PIL import Image
     with Image.open(local_path(ROOT, HUD_REFERENCE)) as image:
         width, height = image.size

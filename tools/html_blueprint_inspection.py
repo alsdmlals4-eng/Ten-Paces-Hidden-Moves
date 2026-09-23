@@ -28,7 +28,9 @@ def build(payload):
              'enemy_reactions_candidate_v2':'상대 피격·대응 포즈 후보','journey_title_reference_v1':'새 여정 제목 화면 참고'}
     for a in assets: a['name'] = names.get(a['name'],a['name'])
     tasks = payload['pm']['items']
-    def record(id, kind, name, route, sources, linked_assets=(), clip_ids=(), planning='원본 기록 있음', match_sources=None, scope=None, revision=None):
+    stills = {c['still_capture']['path']:c['still_capture'] for c in payload['experience']['contexts'].values() if c.get('still_capture')}
+    def record(id, kind, name, route, sources, linked_assets=(), clip_ids=(), planning='원본 기록 있음', match_sources=None, scope=None, revision=None, still=None):
+        if still: sources = list(sources) + [still['path'], still['source']]
         sources = sorted(set(sources))
         related = related_work_items(tasks, sources if match_sources is None else match_sources, scope, revision)
         media = [c for c in clips if c['id'] in clip_ids]
@@ -36,13 +38,13 @@ def build(payload):
         stale = any(c['freshness']['status'] == 'STALE' for c in media)
         flags = ['human']
         if art and any(not a['consumers'] for a in art): flags.append('unlinked')
-        if not media or stale: flags.append('capture')
+        if (not media and not still) or stale: flags.append('capture')
         if any(c['visual_status'] == 'STATIC_OR_EFFECT_ONLY' for c in media): flags.append('motion')
         states = {
             'planning': planning,
             'asset': '승인 기록 있음' if art and all(a['approval']=='USER_APPROVED' for a in art) else '승인 범위 개별 확인',
             'implementation': '원본 연결 있음 · 실행과 별도' if sources else '직접 연결 미확인',
-            'runtime': '촬영 갱신 필요' if stale else '고정 상황 촬영 있음' if media else '이 항목의 현재 촬영 근거 없음',
+            'runtime': '촬영 갱신 필요' if stale else '고정 상황 촬영 있음' if media else 'Godot 시작 설정 정지화면 촬영 · 전체 플레이 검증과 별도' if still else '이 항목의 현재 촬영 근거 없음',
             'human': '항목별 사용자 검수 미기록',
         }
         row = {'id':id, 'kind':kind, 'name':name, 'route':route, 'sources':sources,
@@ -65,7 +67,7 @@ def build(payload):
         n = next(n for n in payload['diagrams'][0]['nodes'] if n['id']==id)
         record('screen:'+id,'화면',c['title'],'#maps/game-loop/'+id,
                n['sources']+['docs/blueprint/HTML_MIGRATION_SPEC.md'],
-               clip_ids=[c['id'] for c in clips] if id=='resolve' else [], planning='승인 화면 설명 연결')
+               clip_ids=[c['id'] for c in clips] if id=='resolve' else [], planning='승인 화면 설명 연결', still=c.get('still_capture'))
     for manual in payload['manuals']:
         mid = manual['manual_id']
         for card in manual['cards'].values():
@@ -89,7 +91,8 @@ def build(payload):
         row = record('asset:'+a['id'],'자산',a['name'],'#asset/'+a['id'],
                      ([a['owner']] if a['scope']=='MAIN_SOURCE' else []) +
                      (a['consumers'] if a['scope']=='MAIN_SOURCE' else []),[a['id']], planning='자산 등록 원본 연결',
-                     match_sources=[a['path'],*a['consumers']],scope=a['scope'],revision=a.get('revision') if a['scope']=='PR342_CANDIDATE' else None)
+                     match_sources=[a['path'],*a['consumers']],scope=a['scope'],revision=a.get('revision') if a['scope']=='PR342_CANDIDATE' else None,
+                     still=stills.get(a['path']) if a['scope']=='MAIN_SOURCE' else None)
         row['scope']=a['scope']
         row['candidate_sources'] = ([{'path':p,'revision':a['revision']} for p in [a['owner'],a['path'],*a['consumers']]]
                                     if a['scope']=='PR342_CANDIDATE' else [])

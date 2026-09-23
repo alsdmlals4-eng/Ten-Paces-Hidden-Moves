@@ -621,7 +621,7 @@
         "user_decision_required_remaining": 0,
         "repository_readback": "PASS",
         "readback_evidence": [
-          "61 related Python PASS; source-rendered1068 views/13856 links; actual Chrome source regions/inline form/desktop960px; actual Godot SETUP fixture; two full reviews followed by focused corrections."
+          "62 related Python PASS; source-rendered1068 views/13867 links; actual Chrome source regions/inline form/desktop960px; actual Godot SETUP fixture; two full reviews followed by focused corrections."
         ],
         "rollback": "Normal PR revert if requested; never restore deleted141/old142 into active view silently. Preserve user comment store."
       }
@@ -981,9 +981,9 @@
     },
     "tests": {
       "red": "2 failures reproduced before implementation",
-      "python": "61 related tests PASS",
-      "node": "autosave/review synchronization PASS; 1068 source-rendered views /13856 local links PASS",
-      "review_regression": "RED shared image19 inline comment missing; GREEN shared form, clipped atlas preview and deletion status",
+      "python": "62 related tests PASS",
+      "node": "autosave/review synchronization PASS; 1068 source-rendered views /13867 local links PASS",
+      "review_regression": "RED shared image19 inline comment missing; GREEN shared form, clipped atlas preview and deletion status; starter still evidence omission RED to verified receipt identity/hash GREEN",
       "browser": "External Chrome:10 correct source atlas regions with no adjacent art bleed;5 desktop columns/3 at960px; one shared inline comment; document945<viewport960px; media errors0;142 same record ID with edited upper viewport; starter connects actual SETUP capture. Temporary viewport reset; real user comments untouched."
     },
     "full_scope_reviews": [
@@ -1016,8 +1016,9 @@
       "policy": "Normal PR merge only after current exact-head required checks and review; no direct main push.",
       "pull_request": 355,
       "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/355",
-      "implementation_commit": "b3d19a2a"
+      "initial_implementation_commit": "b3d19a2a"
     },
-    "independent_focused_readback": "PASS: all three P2 and deletion wording resolved; remaining P0/P1/P2 zero. No third full review."
+    "independent_focused_readback": "PASS: all three P2 and deletion wording resolved; remaining P0/P1/P2 zero. No third full review.",
+    "final_focused_correction": "2026-09-24 KST: browser showed the actual starter still but generic inspection said no capture. Wire receipt-verified SETUP/path/SHA256 to screen and asset inspection; keep142 edited reference out of runtime capture. Short atlas captions fit their nodes."
   }
 }
