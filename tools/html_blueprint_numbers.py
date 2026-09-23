@@ -7,6 +7,8 @@ REGISTRY = 'docs/blueprint/IMAGE_NUMBERS.json'
 
 
 def usage_label(asset):
+    if asset.get('details', {}).get('reference_edit'):
+        return asset['details']['usage']
     path = asset['path'].lower()
     known = [('jianghu_rest_inn', '휴식 장소의 주막 배경'),
              ('jianghu_blue_ink', '강호행로 산수 배경'),

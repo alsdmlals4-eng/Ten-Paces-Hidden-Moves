@@ -406,6 +406,38 @@
       "restore_revision": "ed84ee31dc1674d0ef96fd2711a4cac72531c569",
       "processed_at": "2026-09-23",
       "source": "사용자 이미지 코멘트 + 현재 대화의 폐기 처리 승인"
+    },
+    {
+      "id": "inventory-69e77642d7624cc4",
+      "path": "docs/runtime-captures/TEN-ATLAS-SUCCESSOR-20260908/martial-summary-fixed-1280x800.png",
+      "number": 141,
+      "name": "삭제 완료 · 잘못 연결된 과거 전투 화면 141",
+      "sha256": "ce27be2206895c9c51ac1d70ed546aea250302f278d53c9f4ad3b9ee2e1d93d0",
+      "reason": "시작 무공 화면이 아닌 옛 전투 무공 선택 캡처. 사용자가 삭제를 명시했으며 보존하지 말라고 재확인.",
+      "status": "DELETED_BY_USER_REQUEST",
+      "processed_at": "2026-09-23",
+      "restore_revision": "05a704a058d9f6d6fa760d9c67ce0936cd30be72",
+      "source": "현재 사용자 직접 지시"
+    }
+  ],
+  "image_replacements": [
+    {
+      "path": "docs/blueprint/evidence/reference-screens/preparation-hud-edited-v2.png",
+      "previous_path": "docs/blueprint/evidence/preparation-plan.png",
+      "id": "inventory-87037bee971699a6",
+      "number": 142,
+      "name": "수 배치 · 양쪽 상태창 여백 수정안",
+      "kind": "AI_EDITED_REFERENCE_MOCKUP",
+      "approval": "USER_REVIEW_PENDING",
+      "usage": "이름·자원 글자가 틀 안에 들어오는 상태창 배치 참고",
+      "description": "상단 상태창의 글자 가림 교정. 이미지 생성 도구로 편집한 참고안이며 실제 게임 재촬영이나 현재 수치 증거가 아니다. 하단 수치는 현재 카드 데이터의 HTML 설명을 따른다.",
+      "source": "현재 사용자 이미지142 교정 요청 및 원본 삭제 지시",
+      "generated_at": "2026-09-23",
+      "tool": "image_gen",
+      "previous_sha256": "ca423f615af7bcd605ffada6d27c74f097c60b0884d52138107fbfbb72006211",
+      "sha256": "0ae0200d1d97bf4b72dca826ef09625c1d2e64c633588cac5568ee251bb72976",
+      "display_fraction": 0.6,
+      "previous_file_deleted": true
     }
   ]
 }

@@ -3,6 +3,31 @@ from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 
 class ReaderCleanupTests(unittest.TestCase):
+    def test_basic_illustrations_are_compact_and_use_game_card_regions(self):
+        import html_blueprint as model
+        from html_blueprint_reader import refine
+        pages=model.collect_reader()
+        refine(pages,model.read(model.ROOT,'data/run/giyun_rules.json'))
+        page=next(p for p in pages if p['id']=='reader-017')
+        self.assertEqual(sum(b['kind']=='basic_actions' for b in page['blocks']),1)
+        self.assertFalse(any(b.get('path','').endswith('basic_technique_ink_atlas_01_v1.png') for b in page['blocks']))
+        from html_blueprint_experience import basic_actions
+        cards=basic_actions()
+        source=model.read(model.ROOT,'data/cards/basic_cards.json')['cards']
+        self.assertEqual(len(cards),10)
+        for row,original in zip(cards,source):
+            self.assertEqual(row['illustration']['region'],original['illustration']['region'])
+            self.assertEqual(row['illustration']['size'],[1536,1024])
+            self.assertEqual(row['effect_text'],original['effect_text'])
+
+    def test_retired_start_image_is_not_an_active_preview(self):
+        import html_blueprint as model
+        from html_blueprint_experience import build
+        c=build(model.collect_reader())['contexts']
+        self.assertIn('starter',c['starter']['preview']['path'])
+        self.assertNotIn('martial-summary',c['starter']['preview']['path'])
+        self.assertIn('편집',c['plan']['preview_kind'])
+
     def test_route_order_tables_sources_and_preserved_ids(self):
         import html_blueprint as model
         from html_blueprint_reader import refine

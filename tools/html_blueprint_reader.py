@@ -54,6 +54,14 @@ def refine(pages, giyun):
     for page in pages:
         page['original_blocks'] = deepcopy(page['blocks'])
         page['blocks'] = compact(page['blocks'])
+    # The PDF's tiny placement examples must not become 13 full-width pictures.
+    atlas = 'assets/ui/cards/basic_technique_ink_atlas_01_v1.png'
+    plan = by_id['reader-017']
+    plan['blocks'] = [b for b in plan['blocks'] if b.get('path') != atlas]
+    plan['blocks'].insert(1, {'kind':'basic_actions'})
+    for id, start in [('reader-076',0), ('reader-077',5)]:
+        by_id[id]['blocks'] = [{'kind':'basic_actions','start':start,'count':5},
+            note('게임의 실제 삽화 영역과 기초 행동 데이터를 연결했습니다. 효과·조건은 삽화 아래에서 바로 확인합니다.')]
     wire = by_id['reader-010']
     wire['blocks'] = [wire['blocks'][0], note('정보 배치 참고용 와이어프레임입니다. 아래 네 번의 선택·활동·사건 표는 현재 게임 데이터와 구현을 따릅니다.')]
     followup = {

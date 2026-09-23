@@ -124,6 +124,9 @@ def revision_texts(root, revision):
 def extend_inventory(root, assets, revision, out):
     """Include unregistered tracked images, including historical evidence and tool icons."""
     known = {(a['scope'], a['path']) for a in assets}
+    decisions = json.loads((root/'docs/blueprint/IMPLEMENTATION_READINESS.json').read_text(encoding='utf-8'))
+    excluded = {row['path'] for row in decisions.get('retired_images', [])}
+    excluded.update(row['previous_path'] for row in decisions.get('image_replacements', []))
     main_hashes = {a['path']: a['sha256'] for a in assets if a['scope'] == 'MAIN_SOURCE'}
     for ref, scope in [(None, 'MAIN_SOURCE'), (revision, 'PR342_CANDIDATE')]:
         if scope != 'MAIN_SOURCE' and not ref: continue
@@ -132,6 +135,7 @@ def extend_inventory(root, assets, revision, out):
             for args in [('HEAD', ref), ('HEAD',)]:
                 different.update(subprocess.check_output(['git', '-c', 'core.quotepath=false', 'diff', '--name-only', *args], cwd=root).decode('utf-8').splitlines())
         for rel in tracked(root, ref):
+            if rel in excluded: continue
             if Path(rel).suffix.lower() not in IMAGE_TYPES or (scope, rel) in known: continue
             if ref and rel not in different and (root / rel).is_file(): continue
             data = subprocess.check_output(['git', 'show', f'{ref}:{rel}'], cwd=root) if ref else (root / rel).read_bytes()

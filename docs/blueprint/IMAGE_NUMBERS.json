@@ -140,7 +140,6 @@
   "docs/blueprint/evidence/variable-runtime-20260911/approved-manual-ui-art.png": 139,
   "docs/blueprint/evidence/variable-runtime-20260911/approved-manual-ui.png": 140,
   "docs/runtime-captures/TEN-ATLAS-SUCCESSOR-20260908/martial-summary-fixed-1280x800.png": 141,
-  "docs/blueprint/evidence/preparation-plan.png": 142,
   "docs/blueprint/evidence/reference-screens/158cb5092d39d1960f9c973de2cdf344.png": 143,
   "docs/blueprint/evidence/reference-screens/17c9efce59e2c227496b4e2d55111800.png": 144,
   "docs/blueprint/evidence/reference-screens/54d7b849fff7d6b9a639007f08147401.png": 145,
@@ -316,5 +315,7 @@
   "candidate:pr342-unregistered-d7b9f76235dea7ec": 315,
   "docs/blueprint/evidence/current-ui/planning-1440.png": 316,
   "docs/blueprint/evidence/current-ui/planning-960.png": 317,
-  "docs/blueprint/evidence/current-ui/clash-1440.png": 318
+  "docs/blueprint/evidence/current-ui/clash-1440.png": 318,
+  "docs/blueprint/evidence/reference-screens/preparation-hud-edited-v2.png": 142,
+  "docs/blueprint/evidence/current-ui/starter-selection-1280.png": 319
 }
