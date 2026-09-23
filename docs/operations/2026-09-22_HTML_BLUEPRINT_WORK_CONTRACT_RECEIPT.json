@@ -1102,5 +1102,161 @@
       "pr": 356,
       "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/356"
     }
+  },
+  "event_checks_readability_followup": {
+    "status": "VERIFIED_READY_FOR_GUARDED_PR",
+    "approval": "2026-09-24 user approved event-by-event three choices, stat-based success, rare conditional Giyun, and researched HTML readability/performance work. Same approved scope; no new service/global configuration.",
+    "decision": "docs/decisions/2026-09-24_EVENT_CHECKS_AND_HTML_READABILITY.md",
+    "baseline": "2e3bf285352556eeae16452403cef2368676035c",
+    "branch": "codex/event-checks-html-readability-20260924",
+    "work_mode": "BUILD -> REVIEW",
+    "skill_modes": [
+      "project workflow router",
+      "game-design BUILD",
+      "qa REVIEW",
+      "reference-freshness REVIEW",
+      "execution-report BUILD",
+      "dispatching-parallel-agents bounded HTML implementation",
+      "requesting-code-review"
+    ],
+    "intent": "사건 설명과 선택 결과를 한눈에 비교하며 안전 선택/능력치 위험/드문 기연의 차이를 알 수 있게 한다. HTML 읽기와 의견 작성 비용을 줄이고 원본·번호·댓글·전체 읽기를 이어간다.",
+    "feasibility": "FEASIBLE: isolated worktree, Godot 4.7.1 a13da4feb, actual current player-stat consumer, strict legacy/save replay and existing HTML modules verified. PR342 permanent stat growth remains separate.",
+    "source_relevance": {
+      "status": "REUSED_EVIDENCE_PLUS_OFFICIAL_RESEARCH",
+      "sources": [
+        {
+          "url": "https://docs.godotengine.org/en/stable/tutorials/math/random_number_generation.html",
+          "use": "Seed/replay requirements; implement separately domain-keyed deterministic outcome receipt in Godot, never in HTML."
+        },
+        {
+          "url": "https://web.dev/learn/design/responsive-images",
+          "use": "ADAPT: size-selected derived previews, srcset/sizes, explicit dimensions, async decoding, preserve full original zoom."
+        },
+        {
+          "url": "https://web.dev/articles/dom-size-and-interactivity",
+          "use": "ADAPT: update affected review panels only. Do not hide content/paginate because continuous complete reading is approved."
+        },
+        {
+          "url": "https://developer.mozilla.org/en-US/docs/Web/API/InputEvent/isComposing",
+          "use": "ADAPT: avoid intermediate Korean composition searches."
+        },
+        {
+          "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html",
+          "use": "ADAPT: text reflows; inherently wide tables scroll within named keyboard-focusable regions."
+        },
+        {
+          "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/overflow#accessibility",
+          "use": "ADAPT: only overflowing tables have a tab stop and visible focus."
+        }
+      ],
+      "limitations": "Official implementation guidance supports design choice, not a measured FPS or human accessibility/fun approval. Existing project sources and approved Archify/content structure reused; no repeated game benchmark quota."
+    },
+    "implementation": {
+      "events": "10 events / 30 options, four ordinary events; stat check clamp(50+(stat-difficulty)*10,10,90), independent 10% rare bonus after success on six eligible choices. Safe exit has no roll/cost/reward.",
+      "save": "New Giyun v2/schema6. Schema1/2/5 and frozen v1 catalog continue unchanged; legacy schema5 hash preserved. PR342 schema3/4 not adopted. Replay verifies roll/outcome and prevents reroll/doublegrant.",
+      "html": "10 separate event sections with situation once and three compact choice/result rows; Godot rules remain the owner. Existing112 reader IDs/order, asset numbers, deep links and comments retained.",
+      "performance": "480/960 WebP previews with412 final generated variants; original zoom/hash retained. Immutable publication search cache, Korean composition handling, targeted review-panel updates and overflow-table keyboard access."
+    },
+    "measurements": {
+      "type": "SOURCE_REFERENCE_SIZE_COMPARISON_NOT_INITIAL_NETWORK_OR_FPS",
+      "home_original_bytes": 630125046,
+      "home_largest_preview_bytes": 167437851,
+      "audit_original_bytes": 575592298,
+      "audit_largest_preview_bytes": 25840582,
+      "all_preview_variant_bytes": 30527928,
+      "source_markup_elements_home": 27951,
+      "review_panels_home": 500,
+      "images_home": 577,
+      "mounted_videos_home": 0,
+      "html_before_bytes": 2419088,
+      "html_after_bytes": 2643088,
+      "limit": "Measurements were taken on the same current body before final evidence links. Responsive selection changes actual bytes; metadata grows HTML by about224KB. No speedup percentage claimed."
+    },
+    "tests": {
+      "red": [
+        "Missing event success API in native regression",
+        "Missing event_catalog reader adapter (2 failures)",
+        "Stale autosave draft count/unrelated panel refresh/repeated search serialization"
+      ],
+      "native_pass": [
+        "verify_event_checks",
+        "verify_event_run (36 route choices/save replay/forgery rejection)",
+        "verify_giyun",
+        "verify_giyun_run (legacy36)",
+        "verify_variable_combat_codec",
+        "verify_giyun_ui",
+        "verify_run_save_store",
+        "verify_run_save_cache",
+        "verify_variable_save_compat",
+        "verify_vertical_slice_route_state",
+        "verify_combat_checkpoint_resume"
+      ],
+      "html_pass": "Full Python suite595PASS in543.51s; after final capture-link metadata changes12 focused PythonPASS. Three Node behavior suitesPASS after review corrections;1089 views/18697 linksPASS. Reference freshness, skill integrity, operating-system and approved operating-contract checksPASS.",
+      "browser_pass": {
+        "events": "IAB1440px and390px:10 event sections/30 choices. Narrow tables scroll inside their own named keyboard regions; page itself has no horizontal overflow.",
+        "images": "External Chrome loaded all9 plum-manual WebP previews. IAB visual preview and original1254x1254PNG zoom verified; original identifiers/numbers remain stable.",
+        "autosave": "Isolated fixture review store only: typing and autosave kept scrollY286488, panel top415.578125, caret32 and focus. Saved comment restored after reload. Real shared review store was never used for test writes.",
+        "media": "All877 permitted image/video URLs returned206 with expected MIME:36MP4/412WebP. IAB clash-win played to2.4s/end withreadyState4 anderror=null.",
+        "limitations": "Chrome screenshot API timed out; Chrome image loading uses DOM evidence and IAB supplies visual evidence. Existing combat clip remains historical footage, not a new combat recording. Browser checks are not Human accessibility or Release performance approval."
+      },
+      "legacy_fixture": "tests/fixtures/giyun_v1: captured before product mutation; frozen schema5 identity5363363676e6c1e66ac36bb4725dea1b2918c6f35744c50e453999d61e442884",
+      "native_capture": {
+        "path": "docs/blueprint/evidence/jianghu-events-v2-native-20260924.png",
+        "sha256": "f888c731ba544e7e1d98975448e0732d95541bbf811ec9fa3ef2f600e1843cde",
+        "engine": "4.7.1.stable.official.a13da4feb",
+        "actual_pixels": "960x600",
+        "fixture": "Visible Windows/OpenGL3.3 native UI with synthetic pending cloud_hermit event;50% success/10% conditional/5% total. Not campaign or Human play."
+      },
+      "import_note": "Initial UI/combat bridge failed from missing imports. Headless editor import exited0 with45 ObjectDB/22 resource teardown warnings. Subsequent focused runtime/UI passed; import teardown is not reported as clean."
+    },
+    "full_scope_review_budget": 2,
+    "full_scope_reviews": [
+      {
+        "round": 1,
+        "scope": "Entire candidate: canon, actual diff, untouched gameplay/save/UI/HTML consumers, runtime evidence, cost and long-term fit.",
+        "findings": "TwoP2: review import shadowed global document after successful server write; conflict notice rendered older server text because state notification preceded userReviews update.",
+        "resolution": "Both fixed with failure-first behavioral regressions. Import success feedback and latest conflict content nowPASS; targeted refresh preserves active edits."
+      },
+      {
+        "round": 2,
+        "scope": "Independent read-only final whole-candidate review, including prior corrections and frozen legacy catalog/save identity.",
+        "result": "CLEAN_EXIT:0new actionable findings,0MUST_FIX,0SHOULD_FIX. Three Node suites independently rerunPASS; source/data/capture/hash/412preview linkage checked. Parent595Python/native/browser evidence reused, not falsely repeated."
+      }
+    ],
+    "cleanup": {
+      "import_sidecars": 229,
+      "restore_manifest": "C:/Users/user/Documents/삭제대기/십보강호_사건_HTML_20260924_import/restore-manifest.json",
+      "boundary": "Only task-created untracked Godot import sidecars moved with hashes. New module/test UIDs retained; user data and original art untouched."
+    },
+    "integration": {
+      "status": "CI_PENDING_AFTER_STATE_SYNC_CORRECTION",
+      "remote_main_rechecked": "2e3bf285352556eeae16452403cef2368676035c",
+      "next": "Commit scoped candidate; required exact-head CI/review/thread/ruleset, normal merge and main readback; archive one-time protected approval in a follow-up cleanup PR.",
+      "pr": 357,
+      "initial_ci_failure": "98ec07c4: after the595PASS snapshot, final current_operating_state changed without updating the existing Active Context YAML state block. Five governance workflows caught mismatched mutable state. Product tests are not the failure; synchronize both actual owners, rerun affected governance regressions and exact-head CI. No validator weakening.",
+      "correction_verification": "Existing Active Context state block synchronized with current JSON; both stable roadmaps link the current Decision without copying mutable checkpoints.65 affected governance regressionsPASS; canonical reference freshnessPASS. No product/test/validator behavior changed.",
+      "followup_ci_failure": "682ee08d: the next discovery suite also identified three existing Active Context aliases and two user-planning next-phase pointers. These consumers are synchronized with the same current JSON; historical completed-scope and human limits remain unchanged.",
+      "native_ci_correction": "Existing combat bridge fixture set private seed2 before shell.start_new_run replaced it with randi(), making the Step2 rest expectation intermittent. Test now creates seed2 through the same public run/session transaction; four-step/one-recovery/next-combat resource assertions unchanged. Native GodotPASS and independent defect-only reviewPASS; public shell start remains separately tested.",
+      "runtime_import_note": "Local runtime retest requires three generated background image import sidecars. Restored from verified recovery hashes for native tests; these are local engine artifacts outside the protected product diff and are excluded from commit. Engine import must precede direct command-line runtime from a clean checkout."
+    },
+    "protected": {
+      "default_checkout_dirty_count": 45,
+      "review_store_revision": 3,
+      "review_store_items": 3,
+      "review_store_sha256": "a7203a3457862381fb9b17e8076b588ef10eff128f9b4ab0d29021a3c89b324b",
+      "unrelated_prs": [
+        342,
+        199,
+        200
+      ],
+      "combat_giyun_effects": "UNCHANGED"
+    },
+    "not_verified": [
+      "HUMAN_FUN_BALANCE_NOT_RUN",
+      "ANDROID_NOT_RUN",
+      "HUMAN_ACCESSIBILITY_NOT_RUN",
+      "RELEASE_PERFORMANCE_NOT_RUN",
+      "PR342_PERMANENT_STAT_GROWTH_NOT_ADOPTED"
+    ]
   }
 }

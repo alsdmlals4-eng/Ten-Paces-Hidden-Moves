@@ -4,23 +4,39 @@ extends RefCounted
 const DATA_PATH := "res://data/run/giyun_rules.json"
 var catalog: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(DATA_PATH))
 
-func initial() -> Dictionary:
-    return {"version": 1, "owned": [], "pending_event": {}}
+var legacy_catalog: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/run/giyun_rules_v1.json"))
+var _event_checks = preload("res://src/run/jianghu_event_checks.gd").new(catalog)
+
+func catalog_for(version: int) -> Dictionary:
+    return legacy_catalog if version == 1 else catalog
+
+func initial(version: int = 2) -> Dictionary:
+    return {"version": version, "owned": [], "pending_event": {}}
+
+func player_stats() -> Dictionary:
+    return _event_checks.player_stats()
+
+func outcome_text(outcome: Dictionary) -> String:
+    return _event_checks.outcome_text(outcome)
+
+func success_chance(choice: Dictionary, stats: Dictionary) -> int:
+    return _event_checks.success_chance(choice, stats)
 
 func index_for(seed_value: int, duel: int, step: int, salt: String, count: int) -> int:
     var key := "%d:%d:%d:%s" % [seed_value, duel, step, salt]
     return int(key.sha256_text().substr(0, 7).hex_to_int()) % count
 
-func options(seed_value: int, duel: int, step: int) -> Array:
+func options(seed_value: int, duel: int, step: int, version: int = 2) -> Array:
     if duel < 1 or duel >= 10 or step < 0 or step >= 4: return []
     var omitted := index_for(seed_value, duel, step, "activity", 3)
     var result: Array = []
     for i in range(4):
-        if i != omitted: result.append(catalog.activities[i].duplicate(true))
+        if i != omitted: result.append(catalog_for(version).activities[i].duplicate(true))
     return result
 
-func event_for(seed_value: int, duel: int, step: int) -> Dictionary:
-    return catalog.events[index_for(seed_value, duel, step, "event", catalog.events.size())].duplicate(true)
+func event_for(seed_value: int, duel: int, step: int, version: int = 2) -> Dictionary:
+    var events: Array = catalog_for(version).events
+    return events[index_for(seed_value, duel, step, "event", events.size())].duplicate(true)
 
 func definition(id: String) -> Dictionary:
     for item in catalog.giyun:
@@ -35,7 +51,8 @@ func valid_owned(ids) -> bool:
         seen[id] = true
     return true
 
-func event_options(event: Dictionary, owned: Array, health: int) -> Array:
+func event_options(event: Dictionary, owned: Array, health: int, stats: Dictionary = {}) -> Array:
+    if not event.has("health_cost"): return _event_checks.options(event, owned, health, stats)
     var result: Array = []
     var item := definition(str(event.giyun_id))
     for choice in event.choices:
@@ -46,7 +63,8 @@ func event_options(event: Dictionary, owned: Array, health: int) -> Array:
             "disabled": choice.id == "accept" and health <= int(event.health_cost)})
     return result
 
-func resolve_event(event: Dictionary, choice: String, owned: Array) -> Dictionary:
+func resolve_event(event: Dictionary, choice: String, owned: Array, stats: Dictionary = {}, seed_value: int = 0, duel: int = 1, step: int = 0) -> Dictionary:
+    if not event.has("health_cost"): return _event_checks.resolve(event, choice, owned, stats, seed_value, duel, step)
     if choice not in ["accept", "study", "leave"]: return {}
     var result := {"choice": choice, "event_id": event.id, "training": 0, "health_cost": 0, "stamina": 0, "giyun_id": ""}
     if choice == "accept":

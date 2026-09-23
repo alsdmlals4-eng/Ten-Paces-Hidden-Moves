@@ -1,6 +1,6 @@
 {
-  "schema_version": 1,
-  "ruleset": "jianghu-giyun-v1",
+  "schema_version": 2,
+  "ruleset": "jianghu-giyun-v2",
   "activities": [
     {
       "id": "rest",
@@ -20,7 +20,7 @@
     {
       "id": "event",
       "label": "무작위 사건",
-      "effect": "인물·무림 사건에서 대가와 보상을 선택"
+      "effect": "능력치·성공률·실패 결과를 비교해 선택 · 일부 선택에만 희귀 기연"
     }
   ],
   "giyun": [
@@ -89,128 +89,436 @@
     {
       "id": "cloud_hermit",
       "title": "절벽 아래의 은자",
-      "text": "낡은 보법을 아는 은자가 발을 헛디뎠다. 몸을 던져 구하면 그 비결을 전해 준다.",
-      "giyun_id": "cloud_step",
-      "health_cost": 2,
+      "text": "산길 아래에서 도움을 청하는 목소리가 들린다. 몸을 던져 붙잡거나, 안전한 길을 찾아 안내할 수 있다. 은자는 오래된 보법의 흔적을 품고 있다.",
       "choices": [
         {
           "id": "accept",
-          "label": "힘을 보태고 비결을 받는다"
+          "label": "몸을 날려 은자를 구한다",
+          "success": {
+            "training": 2
+          },
+          "failure": {
+            "health_cost": 2
+          },
+          "check": {
+            "stat": "agility",
+            "difficulty": 4
+          },
+          "rare_bonus": {
+            "giyun_id": "cloud_step",
+            "chance": 10
+          }
         },
         {
           "id": "study",
-          "label": "이야기에서 배운다"
+          "label": "안전한 구조 경로를 찾는다",
+          "success": {
+            "training": 1
+          },
+          "failure": {},
+          "check": {
+            "stat": "insight",
+            "difficulty": 3
+          }
         },
         {
           "id": "leave",
-          "label": "인사하고 길을 간다"
+          "label": "안전하게 길을 떠난다",
+          "success": {},
+          "failure": {}
         }
       ]
     },
     {
       "id": "broken_escort",
       "title": "부서진 표행",
-      "text": "습격을 견딘 표사가 마지막 짐을 지킨다. 함께 짐을 옮기면 오래된 옥패를 내어준다.",
-      "giyun_id": "jade_guard",
-      "health_cost": 2,
+      "text": "습격을 견딘 표사가 쓰러진 짐수레를 지킨다. 함께 수레를 들어 올리거나 흩어진 짐을 정리할 수 있다. 짐 속에는 낡은 옥패가 섞여 있다.",
       "choices": [
         {
           "id": "accept",
-          "label": "힘을 보태고 비결을 받는다"
+          "label": "무너진 수레를 들어 올린다",
+          "success": {
+            "training": 2
+          },
+          "failure": {
+            "health_cost": 2
+          },
+          "check": {
+            "stat": "external",
+            "difficulty": 4
+          },
+          "rare_bonus": {
+            "giyun_id": "jade_guard",
+            "chance": 10
+          }
         },
         {
           "id": "study",
-          "label": "이야기에서 배운다"
+          "label": "흩어진 짐을 나누어 운반한다",
+          "success": {
+            "training": 1
+          },
+          "failure": {
+            "stamina": -1
+          },
+          "check": {
+            "stat": "constitution",
+            "difficulty": 3
+          }
         },
         {
           "id": "leave",
-          "label": "인사하고 길을 간다"
+          "label": "안전하게 길을 떠난다",
+          "success": {},
+          "failure": {}
         }
       ]
     },
     {
       "id": "plum_garden",
       "title": "폐원의 검흔",
-      "text": "매화나무에 남은 검흔이 연속된 초식을 가리킨다. 가시덤불을 헤치면 향낭이 걸려 있다.",
-      "giyun_id": "plum_chain",
-      "health_cost": 2,
+      "text": "버려진 정원에 초식의 흔적이 남아 있다. 검흔을 깊이 살피거나 멀리서 동선을 따라 배울 수 있다. 덤불 사이로 작은 향낭이 언뜻 보인다.",
       "choices": [
         {
           "id": "accept",
-          "label": "힘을 보태고 비결을 받는다"
+          "label": "가시덤불 속 검흔을 해독한다",
+          "success": {
+            "training": 2
+          },
+          "failure": {
+            "health_cost": 2
+          },
+          "check": {
+            "stat": "insight",
+            "difficulty": 4
+          },
+          "rare_bonus": {
+            "giyun_id": "plum_chain",
+            "chance": 10
+          }
         },
         {
           "id": "study",
-          "label": "이야기에서 배운다"
+          "label": "발자국을 따라 보법을 익힌다",
+          "success": {
+            "training": 1
+          },
+          "failure": {
+            "stamina": -1
+          },
+          "check": {
+            "stat": "agility",
+            "difficulty": 3
+          }
         },
         {
           "id": "leave",
-          "label": "인사하고 길을 간다"
+          "label": "안전하게 길을 떠난다",
+          "success": {},
+          "failure": {}
         }
       ]
     },
     {
       "id": "tiger_shrine",
       "title": "산군의 사당",
-      "text": "쓰러진 석상 아래 작은 인장이 보인다. 무거운 돌을 밀어야 손에 넣을 수 있다.",
-      "giyun_id": "tiger_seal",
-      "health_cost": 2,
+      "text": "낡은 사당의 석상이 무너져 있다. 아래에 무언가 묻혔지만 무리해서 버티면 몸을 다칠 수 있다. 돌을 치우거나 남은 권법 도상을 읽어 본다.",
       "choices": [
         {
           "id": "accept",
-          "label": "힘을 보태고 비결을 받는다"
+          "label": "석상을 버티며 받침을 고친다",
+          "success": {
+            "training": 3
+          },
+          "failure": {
+            "health_cost": 2
+          },
+          "check": {
+            "stat": "constitution",
+            "difficulty": 5
+          },
+          "rare_bonus": {
+            "giyun_id": "tiger_seal",
+            "chance": 10
+          }
         },
         {
           "id": "study",
-          "label": "이야기에서 배운다"
+          "label": "권법 도상의 힘 쓰는 법을 따라 한다",
+          "success": {
+            "training": 1
+          },
+          "failure": {
+            "stamina": -1
+          },
+          "check": {
+            "stat": "external",
+            "difficulty": 3
+          }
         },
         {
           "id": "leave",
-          "label": "인사하고 길을 간다"
+          "label": "안전하게 길을 떠난다",
+          "success": {},
+          "failure": {}
         }
       ]
     },
     {
       "id": "spring_healer",
-      "title": "산길의 약사",
-      "text": "약사가 급류 건너 약초를 찾는다. 물살을 건너 도우면 귀한 약병을 나눈다.",
-      "giyun_id": "clear_spring",
-      "health_cost": 2,
+      "title": "샘가의 의원",
+      "text": "의원이 샘물에 약초를 달이며 기운을 조절한다. 운기에 힘을 보태거나 약초를 구별해 도울 수 있다. 잘 마무리하면 드문 약병을 얻을지도 모른다.",
       "choices": [
         {
           "id": "accept",
-          "label": "힘을 보태고 비결을 받는다"
+          "label": "운기로 약탕의 기운을 다스린다",
+          "success": {
+            "training": 2
+          },
+          "failure": {
+            "stamina": -1
+          },
+          "check": {
+            "stat": "internal_power",
+            "difficulty": 4
+          },
+          "rare_bonus": {
+            "giyun_id": "clear_spring",
+            "chance": 10
+          }
         },
         {
           "id": "study",
-          "label": "이야기에서 배운다"
+          "label": "약초의 성질을 구별한다",
+          "success": {
+            "stamina": 1
+          },
+          "failure": {},
+          "check": {
+            "stat": "insight",
+            "difficulty": 3
+          }
         },
         {
           "id": "leave",
-          "label": "인사하고 길을 간다"
+          "label": "안전하게 길을 떠난다",
+          "success": {},
+          "failure": {}
         }
       ]
     },
     {
       "id": "ember_duelist",
-      "title": "꺼져 가는 모닥불",
-      "text": "부상당한 협객이 심결을 지킨다. 밤새 경계를 대신 서면 비결을 전한다.",
-      "giyun_id": "last_ember",
-      "health_cost": 2,
+      "title": "잔불 곁의 무인",
+      "text": "밤길의 무인이 꺼져 가는 불을 지킨다. 호흡을 맞추며 수련을 돕거나 굳은 어깨를 풀어 줄 수 있다. 오래된 심결 이야기는 아직 속내에 남아 있다.",
       "choices": [
         {
           "id": "accept",
-          "label": "힘을 보태고 비결을 받는다"
+          "label": "끝까지 호흡을 맞추며 수련한다",
+          "success": {
+            "training": 3
+          },
+          "failure": {
+            "health_cost": 2
+          },
+          "check": {
+            "stat": "internal_power",
+            "difficulty": 5
+          },
+          "rare_bonus": {
+            "giyun_id": "last_ember",
+            "chance": 10
+          }
         },
         {
           "id": "study",
-          "label": "이야기에서 배운다"
+          "label": "함께 장작을 옮기며 몸을 푼다",
+          "success": {
+            "training": 1
+          },
+          "failure": {
+            "stamina": -1
+          },
+          "check": {
+            "stat": "external",
+            "difficulty": 3
+          }
         },
         {
           "id": "leave",
-          "label": "인사하고 길을 간다"
+          "label": "안전하게 길을 떠난다",
+          "success": {},
+          "failure": {}
+        }
+      ]
+    },
+    {
+      "id": "swollen_stream",
+      "title": "불어난 개울",
+      "text": "밤새 내린 비로 징검다리가 잠겼다. 가볍게 건너거나 통나무를 옮겨 길을 만들 수 있다. 멀리 돌아가는 길도 남아 있다.",
+      "choices": [
+        {
+          "id": "accept",
+          "label": "물살 사이를 가볍게 건넌다",
+          "success": {
+            "training": 2
+          },
+          "failure": {
+            "health_cost": 2
+          },
+          "check": {
+            "stat": "agility",
+            "difficulty": 4
+          }
+        },
+        {
+          "id": "study",
+          "label": "통나무를 옮겨 다리를 놓는다",
+          "success": {
+            "training": 2
+          },
+          "failure": {
+            "stamina": -1
+          },
+          "check": {
+            "stat": "external",
+            "difficulty": 4
+          }
+        },
+        {
+          "id": "leave",
+          "label": "안전하게 길을 떠난다",
+          "success": {},
+          "failure": {}
+        }
+      ]
+    },
+    {
+      "id": "hill_porter",
+      "title": "고갯길의 짐꾼",
+      "text": "지친 짐꾼의 짐이 고개 아래에 쏟아졌다. 짐을 대신 지거나 바람을 피해 갈 길을 살펴볼 수 있다. 사례보다 작은 경험을 얻는 만남이다.",
+      "choices": [
+        {
+          "id": "accept",
+          "label": "무거운 짐을 메고 고개를 오른다",
+          "success": {
+            "training": 2
+          },
+          "failure": {
+            "stamina": -1
+          },
+          "check": {
+            "stat": "constitution",
+            "difficulty": 4
+          }
+        },
+        {
+          "id": "study",
+          "label": "덜 가파른 길을 찾아 알려 준다",
+          "success": {
+            "training": 1
+          },
+          "failure": {},
+          "check": {
+            "stat": "insight",
+            "difficulty": 3
+          }
+        },
+        {
+          "id": "leave",
+          "label": "안전하게 길을 떠난다",
+          "success": {},
+          "failure": {}
+        }
+      ]
+    },
+    {
+      "id": "rain_shelter",
+      "title": "비바람 속 정자",
+      "text": "비바람이 정자의 지붕을 흔든다. 기둥을 받쳐 나그네를 돕거나 숨을 고르며 비가 잦아들기를 기다린다. 오래 머물수록 다음 길은 늦어진다.",
+      "choices": [
+        {
+          "id": "accept",
+          "label": "흔들리는 기둥을 받쳐 준다",
+          "success": {
+            "training": 2
+          },
+          "failure": {
+            "stamina": -1
+          },
+          "check": {
+            "stat": "external",
+            "difficulty": 4
+          }
+        },
+        {
+          "id": "study",
+          "label": "흩어진 호흡을 가다듬는다",
+          "success": {
+            "stamina": 1
+          },
+          "failure": {},
+          "check": {
+            "stat": "internal_power",
+            "difficulty": 3
+          }
+        },
+        {
+          "id": "leave",
+          "label": "안전하게 길을 떠난다",
+          "success": {},
+          "failure": {}
+        }
+      ]
+    },
+    {
+      "id": "market_dispute",
+      "title": "장터의 시비",
+      "text": "장터에서 물건 주인을 두고 말다툼이 벌어졌다. 자초지종을 살피거나 떨어지는 짐을 받아 다툼을 멈출 수 있다. 끼어들지 않고 떠나도 된다.",
+      "choices": [
+        {
+          "id": "accept",
+          "label": "엇갈린 말을 맞춰 진상을 찾는다",
+          "success": {
+            "training": 2
+          },
+          "failure": {
+            "stamina": -1
+          },
+          "check": {
+            "stat": "insight",
+            "difficulty": 4
+          }
+        },
+        {
+          "id": "study",
+          "label": "넘어지는 짐을 재빨리 받는다",
+          "success": {
+            "training": 1
+          },
+          "failure": {
+            "health_cost": 1
+          },
+          "check": {
+            "stat": "agility",
+            "difficulty": 3
+          }
+        },
+        {
+          "id": "leave",
+          "label": "안전하게 길을 떠난다",
+          "success": {},
+          "failure": {}
         }
       ]
     }
-  ]
+  ],
+  "chance_rule": {
+    "base": 50,
+    "per_stat": 10,
+    "minimum": 10,
+    "maximum": 90,
+    "rare_after_success": 10,
+    "duplicate_training": 3
+  }
 }

@@ -10,11 +10,9 @@ func run_tests() -> void:
     check(run.has_method("start_new_giyun_run"), "New journey needs opt-in giyun rules")
     if not run.has_method("start_new_giyun_run"): quit(1); return
     check(run.start_new_giyun_run(99, "giyun-test"), "Start new giyun journey")
-    # Construct a historical v1 campaign; new v2 runs have their own regression.
-    run._giyun = run._giyun_rules.initial(1)
     var codec = load("res://src/run/run_checkpoint_codec.gd").new()
     var encoded: Dictionary = codec.encode("giyun-test", "setup", 1, run.export_snapshot())
-    check(encoded.get("ok",false) and encoded.get("payload",{}).get("schema_version") == 5, "Legacy schema5 remains distinct from PR342 v3/v4 and new v6")
+    check(encoded.get("ok",false) and encoded.get("payload",{}).get("schema_version") == 6, "New events use schema6 without colliding with v3/v4/v5")
     var masteries := {}
     for id in STARTERS: masteries[id] = 3
     check(run.confirm_setup_loadout(STARTERS, masteries), "Select starter manuals")
@@ -32,7 +30,15 @@ func run_tests() -> void:
     check(restored.get_jianghu_options() == run.get_jianghu_options(), "Continue does not reroll")
     check(restored.select_jianghu_node("event.accept",0), "Accept shown reward")
     check(not restored.select_jianghu_node("event.accept",0), "Repeated click cannot grant twice")
-    check(restored.get_giyun_state().owned.size() == 1, "One unique giyun")
+    check(restored.get_giyun_state().owned.size() <= 1, "At most one rare reward for one choice")
+    check(restored.get_pending_jianghu().event_outcome.has("chance"), "Receipt records the actual check")
+    var cloned = script.new()
+    check(cloned.import_snapshot(snapshot).ok, "Second continuation imports exact pending event")
+    check(cloned.select_jianghu_node("event.accept",0), "Second continuation resolves same choice")
+    check(cloned.get_pending_jianghu() == restored.get_pending_jianghu(), "Fresh model continuation does not reroll result")
+    var forged_roll: Dictionary = restored.export_snapshot()
+    forged_roll.pending_jianghu.event_outcome.roll += 1
+    check(not restored.validate_snapshot(forged_roll).ok, "Forged result roll is rejected by replay")
     check(restored.validate_snapshot(restored.export_snapshot()).ok, "Applied event receipt validates")
     for original in [snapshot, restored.export_snapshot()]:
         for invalid in [null, "bad", {}, {"health":[99,30],"stamina":[5,5],"internal":[4,4]}]:
@@ -43,8 +49,8 @@ func run_tests() -> void:
         missing.duel_history[0].erase("route_start_resources")
         check(not restored.validate_snapshot(missing).ok, "Missing route resource receipt rejected")
     var cost_forgery: Dictionary = restored.export_snapshot()
-    cost_forgery.progression.player_resources.health[0] += 2
-    check(not restored.validate_snapshot(cost_forgery).ok, "Event cost cannot be reverted in current resources")
+    cost_forgery.progression.free_training_pool += 1
+    check(not restored.validate_snapshot(cost_forgery).ok, "Event reward cannot be forged in progression")
     for invalid_id in [null, {}, 42]:
         var malformed: Dictionary = restored.export_snapshot()
         malformed.pending_jianghu.id = invalid_id
@@ -60,7 +66,7 @@ func run_tests() -> void:
     var store = load("res://src/run/run_save_store.gd").new(folder)
     var transported: Dictionary = codec.encode("giyun-test", "route", 1, restored.export_snapshot())
     var decoded: Dictionary = codec.decode(transported.text)
-    check(decoded.ok, "Schema5 transport: "+str(decoded.get("error", "")))
+    check(decoded.ok, "Schema6 transport: "+str(decoded.get("error", "")))
     var saved: Dictionary = store.replace_run("giyun-test", "route", restored.export_snapshot())
     check(saved.ok, "New schema persists through immutable store: "+str(saved.get("error", "")))
     if saved.ok:
@@ -83,5 +89,5 @@ func run_tests() -> void:
     check(legacy.start_new_variable_run(99,"legacy-test"), "Legacy route remains constructible")
     check(not legacy.export_snapshot().has("giyun"), "Legacy save gains no giyun silently")
     check(legacy.validate_snapshot(legacy.export_snapshot()).ok, "Legacy valid")
-    print("GIYUN_RUN: ", "PASS" if failures.is_empty() else "FAIL")
+    print("EVENT_RUN: ", "PASS" if failures.is_empty() else "FAIL")
     quit(0 if failures.is_empty() else 1)

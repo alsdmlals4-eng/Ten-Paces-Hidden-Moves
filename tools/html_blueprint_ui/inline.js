@@ -19,7 +19,7 @@ asset=function(id){const a=byId(id),revision=a?D.visual_revisions?.[a.path]:null
 // Number any source image embedded in a reader, screen or character view too.
 function attachImageReviews(){
  document.querySelectorAll('#main img').forEach(img=>{
-  const address=img.getAttribute('src');
+  const address=img.getAttribute('data-original-src')||img.getAttribute('src');
   const row=imageByUrl.get(address);
   if(!row)return;
   if(row.size){img.setAttribute('width',row.size[0]);img.setAttribute('height',row.size[1]);}

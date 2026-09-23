@@ -1,5 +1,13 @@
 # 십보강호 활성 컨텍스트
 
+## 사건 확률·HTML 가독성 후속 · 2026-09-24
+
+사용자가 사건별 설명/세 선택지, 능력치에 따른 성공과 드문 기연, HTML 전반의 조사·최적화를 승인했다. Decision은 `docs/decisions/2026-09-24_EVENT_CHECKS_AND_HTML_READABILITY.md`, 실행·검토·통합 근거는 기존 HTML receipt의 `event_checks_readability_followup`에 누적한다. 기준 main2e3bf285, 격리 branch `codex/event-checks-html-readability-20260924`의 구현·검증과 두 전체 검토를 완료했다. 다음은 필수 검사/정상 PR 병합과 일회 승인 종료다.
+
+새 회차는10사건/30선택지와 성공률10~90%, 일부 선택의 성공 후 추가10% 기연 판정을 사용한다. 일반 사건4개와 안전하게 떠나기를 구분한다. 기존schema1/2/5 저장은 당시 규칙을 계속 쓰고 새규칙은schema6으로 분리한다. 현재 실제 전투 능력치는 각4이며 PR342의 영구 능력치 성장을 반영했다고 주장하지 않는다. HTML은 같은 데이터에서 사건별 표를 파생하며 게임 판정을 복제하지 않는다.
+
+목록용480/960 미리보기·한글조합 검색·변경 항목만 코멘트 갱신·키보드 표 이동을 적용했다. 전체112본문/원본 확대/번호/사용자코멘트를 유지한다. 전체595검사와 최종 집중12검사, Node3종,1089표시/18697링크,877미디어 연결을 통과했다. IAB390/1440px, Chrome미리보기, 원본 확대와 격돌영상 재생을 확인했다. 격리된 검수용 의견 저장에서 자동저장/재접속/스크롤·초점 유지가 확인됐으며 실제 의견3건은 불변이다. 실제 Windows 사건 UI 캡처는 `docs/blueprint/evidence/jianghu-events-v2-native-20260924.png`; 자동 fixture 촬영이며 사람 재미·Android·출시 성능은 NOT_RUN이다. 원래checkout dirty45개/사용자리뷰revision3·3항목을 보호한다. 최종 통합 상태는 receipt 및 GitHub live를 따른다.
+
 ## HTML 화면 묶음·무공 표·영상 연결 후속 · 2026-09-24
 
 사용자7항목 교정은 HTML_MIGRATION_SPEC.md22절과 기존 receipt.media_tables_followup에 누적한다. 화면9개를 중간 크기 칸에 그림/종류/번호/코멘트로 묶고, 공용 성장표1개와 무공10권/30기술·5/9성 추가 효과 표·해당 연출 버튼으로 정리한다. 사건6개는 설명 셀을 합쳐18선택지/대가/효과를 표시한다.142는 전투 준비, 주막144는 강호행로로 구분한다. 번호와 리뷰ID는 바꾸지 않는다. 추가로 사용자 지목은 연결구조도 자체가 아닌 본문 이미지 목록임을 확인했다. 같은 패턴의12쪽(회차 흐름·전투 실행·연격·상대16명·전술 비교)도 그림/내용/바로 코멘트를 비교 칸과 표로 정리한다.
@@ -228,15 +236,15 @@ current_main_policy: ALWAYS_REFETCH_GITHUB_MAIN
 base_remote_main_policy: ALWAYS_REFETCH_CURRENT_MAIN
 live_exact_sha_authority: NONE_REFETCH_REQUIRED
 active_project_pr: GITHUB_PR_METADATA_REFETCH_REQUIRED
-product_stage: HTML_INSPECTION_IMPLEMENTED_VERIFIED
+product_stage: EVENT_CHECKS_HTML_VERIFIED_READY_FOR_GUARDED_PR
 runtime_work_mode: BUILD
 historical_runtime_integration_pr: 65
 active_planning_work_mode: REVIEW
-active_planning_pr: NONE
+active_planning_pr: 357
 active_planning_parent_pr: NONE
 active_approval_count: SCOPED_BUILD_AUTHORIZED_HUMAN_FINAL_NOT_RUN
-active_decision_state: HTML_INSPECTION_IMPLEMENTED_VERIFIED
-source_decision: USER-APPROVED-TEN-HTML-PILOT-20260922
+active_decision_state: EVENT_CHECKS_HTML_VERIFIED_READY_FOR_GUARDED_PR
+source_decision: TEN-DEC-20260924-EVENT-CHECKS-HTML-01
 product_gate: PARTIAL_AUTOMATED_COMPLETE
 platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01
 platform_adapter_decision: TEN-DEC-20260806-WINDOWS-ANDROID-ADAPTER-ARCHITECTURE-01
@@ -254,12 +262,12 @@ accessibility_validation: AUTOMATED_PASS_USER_NOT_RUN
 performance_validation: BASELINE_CAPTURED_RELEASE_NOT_RUN
 phase_i_vi_implementation: AUTHORIZED_AND_MERGED
 future_product_mutation_authorized: false_NEW_PRODUCT_MUTATION_REQUIRES_FRESH_APPROVED_CONTRACT
-next_package: PR342_PRODUCT_CANDIDATE_FRESH_READ_AND_CONTINUE
-next_planning_decision: USER-APPROVED-TEN-HTML-PILOT-20260922
+next_package: EVENT_CHECKS_HTML_GUARDED_PR_AND_APPROVAL_CLOSEOUT
+next_planning_decision: TEN-DEC-20260924-EVENT-CHECKS-HTML-01
 user_directed_planning_work_mode: REVIEW_MACHINE_RUNTIME_READBACK_HUMAN_PLAYER_COMPARISON_DEFERRED
 user_directed_planning_decision: TEN-DEC-20260828-REPOSITORY-ONLY-CANONICAL-WORKSPACE-01
-user_directed_planning_next_package: PR342_PRODUCT_CANDIDATE_FRESH_READ_AND_CONTINUE
-user_directed_planning_next_decision: USER-APPROVED-TEN-HTML-PILOT-20260922
+user_directed_planning_next_package: EVENT_CHECKS_HTML_GUARDED_PR_AND_APPROVAL_CLOSEOUT
+user_directed_planning_next_decision: TEN-DEC-20260924-EVENT-CHECKS-HTML-01
 user_directed_planning_status: THREE_BRANCH_FOUR_CHOICE_JIANGHU_USER_APPROVED_CURRENT_DOCUMENTATION_AND_CANDIDATE_ATLAS_MACHINE_VERIFIED_RUNTIME_ROUTE_SINGLE_EXECUTE_INLINE_CAUSAL_AND_TERMINAL_RESULT_SURFACES_MAIN_MERGED_VERIFIED_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN
 user_directed_planning_single_execute_status: IMPLEMENTED_MERGED_MAIN_PR329_REMOTE_CI_32_SUCCESS_POSTMERGE_APPROVAL_LIFECYCLE_IN_PROGRESS_HUMAN_ANDROID_ACCESSIBILITY_RELEASE_NOT_RUN
 user_directed_planning_current_direction: FRONTAL_SHARED_GROUND_DUEL_NO_VISIBLE_LOGICAL_BOARD_PLUS_3_BRANCH_4_PICK_JIANGHU_ROUTE_PLUS_SINGLE_PLAYER_FACING_ACTION_EXECUTE_CTA_PLUS_CURRENT_CARD_VS_COMPARE_RAIL_PLUS_INLINE_CAUSAL_RECAP_PLUS_UNIFIED_BLUE_GRAY_HANJI_INK_CANDIDATE_STYLE_WITHOUT_SPINE_RUNTIME

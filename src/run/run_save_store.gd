@@ -24,6 +24,7 @@ func _cache_context() -> Dictionary:
         "content_identity": codec.content_identity(),
         "variable_content_identity": codec.content_identity_for_schema(CODEC.VARIABLE_SCHEMA_VERSION),
         "giyun_content_identity": codec.content_identity_for_schema(CODEC.GIYUN_SCHEMA_VERSION),
+        "event_content_identity": codec.content_identity_for_schema(CODEC.EVENT_SCHEMA_VERSION),
     }
 
 func _cached(bytes: PackedByteArray) -> Dictionary:
@@ -136,7 +137,7 @@ func load_checkpoint() -> Dictionary:
         var resolved := _read(pointer.slot)
         if resolved.status == "ABSENT": return CODEC.error("CORRUPT", "Active pointer target is missing")
         if not resolved.ok: return resolved
-        if int(resolved.payload.schema_version) not in [CODEC.VARIABLE_SCHEMA_VERSION, CODEC.GIYUN_SCHEMA_VERSION] or pointer.slot != "v2_" + CODEC.digest(resolved.payload): return CODEC.error("CORRUPT", "Active pointer target mismatch")
+        if int(resolved.payload.schema_version) not in [CODEC.VARIABLE_SCHEMA_VERSION, CODEC.GIYUN_SCHEMA_VERSION, CODEC.EVENT_SCHEMA_VERSION] or pointer.slot != "v2_" + CODEC.digest(resolved.payload): return CODEC.error("CORRUPT", "Active pointer target mismatch")
         return _loaded(resolved.payload, "VALID_PRIMARY")
     var primary := _read("primary")
     return _load_from_primary(primary)
@@ -319,7 +320,7 @@ func _save_variable(save_id: String, checkpoint_id: String, run_state: Dictionar
     var previous: Dictionary = current.get("payload", {})
     if not replace and not previous.is_empty() and (previous.save_id != save_id or not previous.active): return CODEC.error("INCOMPATIBLE", "Generation replacement requires explicit operation")
     if _pending.is_empty():
-        if not previous.is_empty() and int(previous.schema_version) in [2, 5] and _matches_request(previous, save_id, checkpoint_id, run_state, combat_checkpoint, active):
+        if not previous.is_empty() and int(previous.schema_version) in [2, 5, 6] and _matches_request(previous, save_id, checkpoint_id, run_state, combat_checkpoint, active):
             return {"ok": true, "status": "SAVED", "revision": previous.revision, "payload": previous.duplicate(true), "idempotent": true}
         var encoded: Dictionary = codec.encode(save_id, checkpoint_id, int(previous.get("revision", 0)) + 1, run_state, combat_checkpoint, active, int(previous.get("schema_version", CODEC.VARIABLE_SCHEMA_VERSION)))
         if not encoded.ok: return encoded

@@ -3,17 +3,19 @@ const assert=require('node:assert/strict');
 const {ReviewAutosave}=require('../tools/html_blueprint_ui/review_state.js');
 const pause=()=>new Promise(resolve=>setImmediate(resolve));
 async function run(){
- let doc={revision:0,items:{}}, writes=[], notices=[], durable={};
+ let doc={revision:0,items:{}}, writes=[], notices=[], durable={},changes=[];
  const client=new ReviewAutosave({delay:100000,read:async()=>structuredClone(doc),
   write:async body=>{if(body.revision!==doc.revision){const e=Error('conflict');e.status=409;throw e;}
    writes.push(body);doc.revision++;(doc.items[body.item_id]??=[]).push({...body,id:String(doc.revision)});return structuredClone(doc);},
-  persist:items=>durable=structuredClone(items), notify:(id,state)=>notices.push([id,state]),changed:()=>{}});
+  persist:items=>durable=structuredClone(items), notify:(id,state)=>notices.push([id,state]),changed:(value,ids)=>changes.push({ids,drafts:client.drafts.size})});
  await client.load();
  client.edit('asset:a',{status:'changes',comment:'한글 초안',fingerprint:'f',source_revision:'h'});
  assert.equal(durable['asset:a'].comment,'한글 초안','Input must be durable before debounce');
  client.edit('asset:a',{status:'changes',comment:'한글 완성',fingerprint:'f',source_revision:'h'});
  await client.flush();assert.equal(writes.length,1);assert.equal(doc.items['asset:a'][0].comment,'한글 완성');
  assert.equal(Object.keys(durable).length,0);assert(notices.some(x=>x[1]==='saved'));
+ assert.equal(changes.at(-1).drafts,0,'A saved response must update the queue after its draft is cleared');
+ assert.deepEqual(changes.at(-1).ids,['asset:a'],'A save must identify only changed review items');
  client.edit('asset:a',{status:'changes',comment:'한글 완성',fingerprint:'f',source_revision:'h'});
  await client.flush();assert.equal(writes.length,1,'Unchanged input must not append history');
  client.edit('asset:a',{status:'discard',comment:'폐기',fingerprint:'f',source_revision:'h'});
@@ -50,6 +52,16 @@ async function run(){
  timed.edit('x',{status:'changes',comment:'한글',fingerprint:'f',source_revision:'h'});
  await new Promise(r=>setTimeout(r,40));assert.equal(timerWrites,1,'Pause in typing must save without a button or blur');
  timed.cancelTimers();
- console.log('Autosave behavioral checks passed: debounce, durable drafts, no-op, discard, concurrency, conflict, in-flight edit, offline, reload');
+ let reloadServer={revision:1,items:{'asset:reload':[{id:'old',status:'changes',comment:'OLD',fingerprint:'f',source_revision:'h'}]}},visibleDocument,conflictComment;
+ const reloaded=new ReviewAutosave({delay:100000,read:async()=>structuredClone(reloadServer),write:async()=>{throw Error('A conflicted draft must not write');},persist:()=>{},
+  changed:value=>{visibleDocument=value;},notify:(id,state)=>{if(state==='conflict')conflictComment=visibleDocument.items[id].at(-1).comment;}});
+ await reloaded.load();
+ reloaded.edit('asset:reload',{status:'changes',comment:'LOCAL',fingerprint:'f',source_revision:'h'},{compose:true});
+ reloadServer={revision:2,items:{'asset:reload':[...reloadServer.items['asset:reload'],{id:'new',status:'hold',comment:'NEW',fingerprint:'f',source_revision:'h'}]}};
+ await reloaded.load();reloaded.cancelTimers();
+ assert.equal(reloaded.drafts.get('asset:reload').comment,'LOCAL','Loading a competing server change must retain the local draft');
+ assert.equal(reloaded.states.get('asset:reload'),'conflict');
+ assert.equal(conflictComment,'NEW','The conflict notice must see the newly accepted server comment without requiring a render');
+ console.log('Autosave behavioral checks passed: debounce, durable drafts, no-op, discard, concurrency, conflict, in-flight edit, offline, reload and current conflict notice');
 }
 run().catch(e=>{console.error(e);process.exitCode=1;});

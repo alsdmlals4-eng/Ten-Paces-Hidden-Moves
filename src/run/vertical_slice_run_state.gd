@@ -138,7 +138,7 @@ func _valid_progression_history(s: Dictionary, catalog) -> bool:
     if not s.player_manual_loadout.is_empty():
         audit.start_new_run()
         if not audit.confirm_setup_loadout(s.player_manual_loadout, s.player_mastery_by_manual): return false
-    if s.has("giyun"): audit._giyun = _giyun_rules.initial()
+    if s.has("giyun"): audit._giyun = _giyun_rules.initial(int(s.giyun.version))
     for row in s.reward_history:
         var receipt: Dictionary = row.duplicate(true)
         receipt.erase("duel_index")
@@ -340,8 +340,8 @@ func get_jianghu_options() -> Array:
         return []
     if not _giyun.is_empty():
         if not _giyun.pending_event.is_empty():
-            return _giyun_rules.event_options(_giyun.pending_event, _giyun.owned, int(get_player_run_resources().health[0]))
-        return _giyun_rules.options(_run_seed, completed_duels, jianghu_step)
+            return _giyun_rules.event_options(_giyun.pending_event, _giyun.owned, int(get_player_run_resources().health[0]), _giyun_rules.player_stats())
+        return _giyun_rules.options(_run_seed, completed_duels, jianghu_step, int(_giyun.version))
     return _route_model.get_jianghu_options(completed_duels, jianghu_step)
 
 
@@ -374,7 +374,7 @@ func select_jianghu_node(node_id: String, expected_step: int) -> bool:
                 return false
         "event":
             if not _giyun.is_empty():
-                _giyun.pending_event = _giyun_rules.event_for(_run_seed, completed_duels, jianghu_step)
+                _giyun.pending_event = _giyun_rules.event_for(_run_seed, completed_duels, jianghu_step, int(_giyun.version))
                 return true
             if not _progression.add_free_training(2):
                 return false
@@ -1070,30 +1070,43 @@ func get_giyun_state() -> Dictionary:
 
 func _valid_giyun(s: Dictionary) -> bool:
     var g = s.giyun
-    if typeof(g) != TYPE_DICTIONARY or g.size() != 3 or not CHECKPOINT_CODEC.integer(g.get("version"), 1, 1) or not _giyun_rules.valid_owned(g.get("owned")) or typeof(g.get("pending_event")) != TYPE_DICTIONARY: return false
+    if typeof(g) != TYPE_DICTIONARY or g.size() != 3 or not CHECKPOINT_CODEC.integer(g.get("version"), 1, 2) or not _giyun_rules.valid_owned(g.get("owned")) or typeof(g.get("pending_event")) != TYPE_DICTIONARY: return false
     if not g.pending_event.is_empty():
         if s.get("current_screen") != SCREEN_JIANGHU or not s.get("pending_jianghu", {}).is_empty(): return false
         if not CHECKPOINT_CODEC.integer(s.get("completed_duels"), 1, 9) or not CHECKPOINT_CODEC.integer(s.get("jianghu_step"), 0, 3) or not CHECKPOINT_CODEC.integer(s.get("run_seed")): return false
-        if g.pending_event != _giyun_rules.event_for(int(s.run_seed), int(s.completed_duels), int(s.jianghu_step)): return false
+        if g.pending_event != _giyun_rules.event_for(int(s.run_seed), int(s.completed_duels), int(s.jianghu_step), int(g.version)): return false
     return true
 
 func _resolve_giyun_event(node_id: String, step: int) -> bool:
     if not node_id.begins_with("event."): return false
     var event: Dictionary = _giyun.pending_event
-    var outcome: Dictionary = _giyun_rules.resolve_event(event, node_id.trim_prefix("event."), _giyun.owned)
+    # Affordability is checked before the roll, so an unsafe choice cannot reveal
+    # its fixed result and leave the event open for a different attempt.
+    var offered := false
+    for option in get_jianghu_options():
+        if option.id == node_id and not option.get("disabled", false): offered = true
+    if not offered: return false
+    var outcome: Dictionary = _giyun_rules.resolve_event(event, node_id.trim_prefix("event."), _giyun.owned, _giyun_rules.player_stats(), _run_seed, completed_duels, step)
     if outcome.is_empty(): return false
     var resources := get_player_run_resources()
+    var stamina_before := int(resources.stamina[0])
     if int(resources.health[0]) <= int(outcome.health_cost) and int(outcome.health_cost) > 0: return false
     resources.health[0] -= int(outcome.health_cost)
     _progression.player_resources = resources
     if outcome.training > 0: _progression.add_free_training(outcome.training)
     if outcome.stamina > 0: _progression.apply_recovery(0.0, outcome.stamina, 0)
+    elif outcome.stamina < 0:
+        _progression.player_resources.stamina[0] = maxi(0, int(_progression.player_resources.stamina[0]) + int(outcome.stamina))
     if not outcome.giyun_id.is_empty(): _giyun.owned.append(outcome.giyun_id)
-    var selected: Dictionary = _giyun_rules.catalog.activities[3].duplicate(true)
+    var selected: Dictionary = _giyun_rules.catalog_for(int(_giyun.version)).activities[3].duplicate(true)
     selected["event_outcome"] = outcome
     selected["event_title"] = event.title
     selected["effect"] = "자유 수련 +%d · 기력 +%d · 체력 -%d" % [outcome.training, outcome.stamina, outcome.health_cost]
     if not outcome.giyun_id.is_empty(): selected.effect += " · 기연: "+str(_giyun_rules.definition(outcome.giyun_id).name)
+    if int(_giyun.version) == 2:
+        outcome["actual_stamina"] = int(_progression.player_resources.stamina[0]) - stamina_before
+        selected["effect"] = _giyun_rules.outcome_text(outcome)
+        selected["text"] = event.title + " · " + str(outcome.choice_label)
     selected["route_type"] = "event"
     selected["node_id"] = "J%d-%d" % [completed_duels, step+1]
     _pending_jianghu = selected

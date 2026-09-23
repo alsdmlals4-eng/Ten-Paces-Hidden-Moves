@@ -10,6 +10,8 @@
 
 ## HTML로 작업 확인·재개
 
+`TEN-DEC-20260924-EVENT-CHECKS-HTML-01`의 사건 판정·희귀 기연·HTML 가독성 계약은 `../../../docs/decisions/2026-09-24_EVENT_CHECKS_AND_HTML_READABILITY.md`에서 읽는다. 현재 상태는 Active Context/current JSON, 실행·검토 근거는 기존 HTML 작업 receipt가 소유한다.
+
 `USER-APPROVED-TEN-HTML-PILOT-20260922`는 기존 전체 설명·자산·모션·PM을 HTML 파생 화면에서 읽고 다른 AI가 원본으로 이어가도록 한다. 상세 설계와 검증 경로는 `docs/blueprint/HTML_MIGRATION_SPEC.md`, 실제 진입점은 `output/blueprint/index.html`이다. 현재 진행·전환·PR 상태는 Active Context/current JSON/GitHub를 따른다.
 
 ## 현재 단계

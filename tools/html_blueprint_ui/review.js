@@ -13,7 +13,7 @@ function recoverReviewDrafts(){try{
  }catch(error){draftStorageError=error.message;return {};}}
 const reviewAutosave=new ReviewAutosave({drafts:recoverReviewDrafts(),read:()=>reviewRequest(),write:body=>reviewRequest(body),
  persist:items=>{if(!draftStorageKey)throw Error(draftStorageError||'브라우저 임시 보관을 사용할 수 없습니다.');if(Object.keys(items).length)localStorage.setItem(draftStorageKey,JSON.stringify(items));else localStorage.removeItem(draftStorageKey);},
- changed:value=>{userReviews=value;syncReviewPanels();},notify:(id,state,error)=>updateReviewState(id,state,error)});
+ changed:(value,ids)=>{userReviews=value;syncReviewPanels(ids);},notify:(id,state,error)=>{updateReviewState(id,state,error);refreshReviewCounts();}});
 const reviewDrafts=reviewAutosave.drafts;
 let noteFilter='all',auditFilter='all',auditGroup='all';
 const auditNames={discarded:'폐기 처리 완료',all:'전체 이미지',runtime:'게임 참조 있음',documents:'문서·기획·테스트 참조',unverified:'승인 근거 미확인',approval_gap:'승인 미확인 · 게임 참조',replaced:'교체 이력 있음',duplicate:'동일 파일 있음',unreferenced:'직접 참조 미확인',retain:'보존 필요'};
@@ -27,14 +27,14 @@ function reviewHistory(id){return (userReviews.items[id]||[]).slice().reverse().
 function userReviewPanel(r){if(!r?.id)return '';const last=lastReview(r.id),draft=reviewDrafts.get(r.id),current=draft||last||{status:'pending',comment:''};
  return `<section class="user-review" data-user-review="${E(r.id)}"><div class="review-toolbar"><label>검토 상태 <select data-user-status>${Object.entries(userStatuses).map(([v,t])=>`<option value="${v}" ${v===current.status?'selected':''}>${t}</option>`).join('')}</select></label>${r.kind==='자산'||r.id.startsWith('asset:')||r.kind==='설명 이미지'?`<button data-user-discard ${byId(r.id.replace('asset:',''))?.details?.retired?'disabled':''}>${byId(r.id.replace('asset:',''))?.details?.retired?(byId(r.id.replace('asset:','')).details.disposal.status==='DELETED_BY_USER_REQUEST'?'삭제 완료':'이동 완료'):'폐기 요청'}</button>`:''}</div><label>코멘트<textarea data-user-comment maxlength="10000" rows="2" placeholder="수정할 점이나 원하는 모습을 쓰면 자동 저장됩니다.">${E(current.comment)}</textarea></label><output data-user-result aria-live="polite">${E(draft?'작성 중 · 자동 저장 대기':last?'저장됨':'입력하면 자동 저장됩니다.')}</output><p data-user-conflict class="review-conflict" hidden></p><button data-user-retry hidden>내 입력으로 다시 저장</button><small data-user-stale ${last&&last.fingerprint!==r.fingerprint?'':'hidden'}>기록 이후 원본 변경 · 이전 의견을 보존했습니다.</small><details data-user-history><summary>변경 이력 · <span data-history-count>${(userReviews.items[r.id]||[]).length}</span>개</summary><div data-history-body></div></details></section>`;
 }
-function syncReviewPanels(){for(const [id,panels] of reviewPanels){const draft=reviewDrafts.get(id),last=lastReview(id),current=draft||last||{status:'pending',comment:''};for(const panel of panels){
+function syncReviewPanels(ids=null){for(const id of ids??reviewPanels.keys()){const panels=reviewPanels.get(id)||[],draft=reviewDrafts.get(id),last=lastReview(id),current=draft||last||{status:'pending',comment:''};for(const panel of panels){
  if(!draft){panel.querySelector('[data-user-status]').value=current.status;const input=panel.querySelector('[data-user-comment]');if(input.value!==current.comment){const selection=[input.selectionStart,input.selectionEnd,input.selectionDirection];input.value=current.comment;if(input===document.activeElement)input.setSelectionRange(...selection);}}
  panel.querySelector('[data-history-count]').textContent=String((userReviews.items[id]||[]).length);
  panel.querySelector('[data-user-stale]').hidden=!(last&&last.fingerprint!==recordById(id)?.fingerprint);
  const history=panel.querySelector('[data-user-history]');if(history.open)panel.querySelector('[data-history-body]').innerHTML=reviewHistory(id);
  if(!draft&&!reviewAutosave.states.has(id))panel.querySelector('[data-user-result]').textContent=last?'저장됨':'입력하면 자동 저장됩니다.';
  }}
- refreshReviewQueue();
+ refreshReviewQueue(ids);
 }
 function updateReviewState(id,state,error=''){for(const panel of reviewPanels.get(id)||[]){
  panel.querySelector('[data-user-result]').textContent=reviewMessages[state]+(error?' · '+error:'');
@@ -43,8 +43,21 @@ function updateReviewState(id,state,error=''){for(const panel of reviewPanels.ge
  panel.querySelector('[data-user-retry]').hidden=!['error','conflict'].includes(state);
  }}
 function reviewQueueRows(compact){return inspections.filter(r=>(!compact||lastReview(r.id)||reviewDrafts.has(r.id))&&match(r)&&(noteFilter==='all'||(lastReview(r.id)?.status||'pending')===noteFilter));}
-function reviewQueueCards(rows){return rows.map(r=>`<article class="card"><small>${E(r.kind)}</small><h3><a href="#inspect/${encodeURIComponent(r.id)}">${E(r.name)}</a></h3><p class="review-comment" data-review-feedback="${E(r.id)}">${feedbackText(lastReview(r.id))}</p>${lastReview(r.id)&&lastReview(r.id).fingerprint!==r.fingerprint?'<p>원본 변경 · 재검토 필요</p>':''}</article>`).join('');}
-function refreshReviewQueue(){document.querySelectorAll('[data-review-rows]').forEach(el=>{const rows=reviewQueueRows(el.dataset.reviewRows==='compact');el.innerHTML=reviewQueueCards(rows);});document.querySelectorAll('[data-review-count]').forEach(el=>{el.textContent=reviewQueueRows(el.dataset.reviewCount==='compact').length+'개 · 입력 중 '+reviewDrafts.size+'개';});}
+function reviewQueueCard(r){return `<small>${E(r.kind)}</small><h3><a href="#inspect/${encodeURIComponent(r.id)}">${E(r.name)}</a></h3><p class="review-comment" data-review-feedback="${E(r.id)}">${feedbackText(lastReview(r.id))}</p>${lastReview(r.id)&&lastReview(r.id).fingerprint!==r.fingerprint?'<p>원본 변경 · 재검토 필요</p>':''}`;}
+function reviewQueueCards(rows){return rows.map(r=>`<article class="card" data-review-row="${E(r.id)}">${reviewQueueCard(r)}</article>`).join('');}
+function refreshReviewCounts(){document.querySelectorAll('[data-review-count]').forEach(el=>{el.textContent=reviewQueueRows(el.dataset.reviewCount==='compact').length+'개 · 입력 중 '+reviewDrafts.size+'개';});}
+function refreshReviewQueue(ids=null){document.querySelectorAll('[data-review-rows]').forEach(el=>{
+ const rows=reviewQueueRows(el.dataset.reviewRows==='compact');
+ if(ids===null){el.innerHTML=reviewQueueCards(rows);return;}
+ const changed=new Set(ids),included=new Set(rows.map(r=>r.id)),mounted=new Map([...el.children].map(c=>[c.dataset.reviewRow,c]));
+ for(const id of changed)if(!included.has(id)){mounted.get(id)?.remove();mounted.delete(id);}
+ let next=null;
+ for(let i=rows.length-1;i>=0;i--){const r=rows[i];let card=mounted.get(r.id);
+  if(changed.has(r.id)){if(!card){card=document.createElement('article');card.className='card';card.dataset.reviewRow=r.id;el.insertBefore(card,next);}
+   const body=reviewQueueCard(r);if(card.innerHTML!==body)card.innerHTML=body;}
+  if(card)next=card;
+ }
+ });refreshReviewCounts();}
 function reviewQueue(compact=false){const rows=reviewQueueRows(compact);
  const missingIds=Object.keys(userReviews.items).filter(id=>!recordById(id));
  return title('USER REVIEW','내 체크 · 코멘트','기능·화면·이미지의 의견과 폐기 요청을 모아 봅니다. 폐기는 사용처 확인 후 삭제대기로 이동하며 자동 영구 삭제하지 않습니다.')+`<div class="panel"><p data-review-message>${E(reviewMessage)}</p><p>저장 위치: <code>${E(D.review_location)}</code><br>같은 프로젝트의 작업 폴더와 포트가 달라도 이 파일을 함께 사용합니다. GitHub에 자동 업로드하지 않습니다.</p><button data-user-refresh>최신 기록 불러오기</button><a id="review-export" href="${E(reviewEndpoint()?reviewEndpoint()+'/export':'#reviews')}" download="ten-paces-user-review.json">저장된 검토 내보내기</a><label>검토 파일 합쳐 불러오기 <input id="review-import" type="file" accept="application/json,.json"></label><p>불러오기는 기존 이력을 지우지 않고 합칩니다. 다른 PC·AI에는 내보낸 JSON과 프로젝트를 함께 전달하세요.</p></div><label>사용자 상태 <select id="note-filter">${[['all','전체'],...Object.entries(userStatuses)].map(([v,t])=>`<option value="${v}" ${v===noteFilter?'selected':''}>${t}</option>`).join('')}</select></label><p data-review-count="${compact?'compact':'all'}">${rows.length}개 · 입력 중 ${reviewDrafts.size}개</p>${compact?'<p><a href="#reviews">모든 항목의 검토 상태 보기 →</a></p>':''}<div class="grid" data-review-rows="${compact?'compact':'all'}">${reviewQueueCards(rows)}</div>${missingIds.length?`<h2>현재 목록에서 사라진 항목의 기록</h2><p>이전 이력을 삭제하지 않았습니다.</p>${missingIds.map(id=>`<article class="card"><h3>${E(id)}</h3>${(userReviews.items[id]||[]).map(r=>`<p>${E(r.updated_at)} · ${feedbackText(r)}</p>`).join('')}</article>`).join('')}`:''}`;
@@ -67,7 +80,7 @@ async function reviewRequest(body){const endpoint=reviewEndpoint();if(!endpoint)
  const raw=await response.text();let value;try{value=JSON.parse(raw);}catch{throw Error('검토 서버가 종료되었거나 이전 버전입니다. 실행 파일로 다시 열어 주세요. 입력은 이 창에 유지됩니다.');}
  if(!response.ok){const error=Error(value.error||'검토 저장 실패');error.status=response.status;throw error;}return value;
 }
-async function loadUserReviews(){if(reviewLoading)return;reviewLoading=true;try{await reviewAutosave.load();reviewLoaded=true;reviewMessage='자동 저장 · 같은 프로젝트의 로컬 검토 파일에 기록합니다.';document.querySelectorAll('[data-review-message]').forEach(el=>el.textContent=reviewMessage);syncReviewPanels();}catch(error){reviewNotice(error.message);}finally{reviewLoading=false;}}
+async function loadUserReviews(){if(reviewLoading)return;reviewLoading=true;try{await reviewAutosave.load();reviewLoaded=true;reviewMessage='자동 저장 · 같은 프로젝트의 로컬 검토 파일에 기록합니다.';document.querySelectorAll('[data-review-message]').forEach(el=>el.textContent=reviewMessage);}catch(error){reviewNotice(error.message);}finally{reviewLoading=false;}}
 function captureReviewDraft(panel,event={}){const id=panel.dataset.userReview,r=recordById(id);if(!r)return;
  const draft={status:panel.querySelector('[data-user-status]').value,comment:panel.querySelector('[data-user-comment]').value,fingerprint:r.fingerprint,source_revision:D.source_revision};
  reviewAutosave.edit(id,draft,{compose:event.isComposing});
@@ -89,7 +102,7 @@ bind=function(){reviewBind();
  document.querySelectorAll('[data-user-refresh]').forEach(b=>b.onclick=()=>loadUserReviews());
  reviewPanels.clear();document.querySelectorAll('[data-user-review]').forEach(panel=>{const id=panel.dataset.userReview;if(!reviewPanels.has(id))reviewPanels.set(id,[]);reviewPanels.get(id).push(panel);panel.querySelector('[data-user-history]').ontoggle=e=>{if(e.currentTarget.open)panel.querySelector('[data-history-body]').innerHTML=reviewHistory(id);};});
  syncReviewPanels();for(const [id,state] of reviewAutosave.states)updateReviewState(id,state);
- document.getElementById('review-import')?.addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{if(!reviewLoaded)throw Error('먼저 최신 기록을 불러와 주세요.');if(file.size>2097152)throw Error('검토 파일은 2MB 이하만 불러올 수 있습니다.');const document=JSON.parse(await file.text());await reviewAutosave.flush();reviewAutosave.accept(await reviewRequest({action:'import',revision:userReviews.revision,document}));reviewMessage='기존 이력을 보존하고 검토 파일을 합쳤습니다.';syncReviewPanels();}catch(error){reviewNotice(error.message);}});
+ document.getElementById('review-import')?.addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{if(!reviewLoaded)throw Error('먼저 최신 기록을 불러와 주세요.');if(file.size>2097152)throw Error('검토 파일은 2MB 이하만 불러올 수 있습니다.');const importedDocument=JSON.parse(await file.text());await reviewAutosave.flush();reviewAutosave.accept(await reviewRequest({action:'import',revision:userReviews.revision,document:importedDocument}));reviewMessage='기존 이력을 보존하고 검토 파일을 합쳤습니다.';document.querySelectorAll('[data-review-message]').forEach(el=>el.textContent=reviewMessage);}catch(error){reviewNotice(error.message);}});
 };
 document.getElementById('nav').innerHTML+='<a href="#asset-audit" data-nav="asset-audit">사용 이미지 · 정리</a><a href="#reviews" data-nav="reviews">내 체크 · 코멘트</a>';
 // Delegation keeps typing work proportional to occurrences of this item, not all forms.

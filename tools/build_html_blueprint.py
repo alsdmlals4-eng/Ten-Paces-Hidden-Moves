@@ -217,6 +217,10 @@ def build(out=OUT, include_candidate=True):
     inputs = {Path(path).resolve().relative_to(ROOT).as_posix(): digest for path, digest in SOURCES.items()}
     source_paths = ['tools/blueprint_layout.py', 'tools/blueprint_readiness_pages.py', 'tools/build_opponent_stage_blueprint.py', 'tools/build_human_blueprint_complete.py', 'tools/html_blueprint.py', 'tools/html_blueprint_reader.py', 'tools/build_html_blueprint.py',
                     'tools/html_blueprint_ui/app.js', 'tools/html_blueprint_ui/style.css',
+                    'tools/html_blueprint_ui/event_catalog.js', 'tools/html_blueprint_ui/event_catalog.css',
+                    'src/run/jianghu_event_checks.gd', 'data/run/giyun_rules_v1.json',
+                    'docs/decisions/2026-09-24_EVENT_CHECKS_AND_HTML_READABILITY.md',
+                    'docs/blueprint/evidence/jianghu-events-v2-native-20260924.png',
                     'docs/blueprint/HTML_MIGRATION_SPEC.md', 'docs/blueprint/HTML_SOURCE_OBSERVATIONS.json',
                     'docs/operations/AI_USAGE_EVIDENCE_2026_09.json',
                     'assets/ASSET_MANIFEST.json', 'docs/planning-data/current_operating_state.json',
@@ -295,6 +299,10 @@ def build(out=OUT, include_candidate=True):
     payload['retired_images'] = retired
     payload['image_replacements'] = decisions.get('image_replacements', [])
     payload['reader_groups'] = reader_groups(pages)
+    # Display derivatives must not change the source fingerprints used by saved reviews.
+    from html_blueprint_previews import asset_previews
+    preview_media = asset_previews(ROOT, out, assets)
+    inputs['tools/html_blueprint_previews.py'] = model.sha(ROOT/'tools/html_blueprint_previews.py')
     from blueprint_review_store import shared_directory
     payload['review_location'] = str(shared_directory(ROOT) / 'reviews.json')
     for path in ['tools/html_blueprint_audit.py', 'tools/blueprint_review_store.py', 'tools/html_blueprint_ui/review_state.js', 'tools/html_blueprint_ui/review.js', 'tools/html_blueprint_numbers.py', image_numbers_path, 'tools/html_blueprint_ui/inline.js']:
@@ -304,9 +312,9 @@ def build(out=OUT, include_candidate=True):
             if a['scope'] == 'MAIN_SOURCE': inputs[path] = model.sha(ROOT/path)
     for path in ['tools/html_blueprint_inspection.py','tools/html_blueprint_ui/inspection.js']:
         inputs[path] = model.sha(ROOT/path)
-    css = (ROOT/'tools/html_blueprint_ui/style.css').read_text(encoding='utf-8')
+    css = ''.join((ROOT/'tools/html_blueprint_ui'/name).read_text(encoding='utf-8') for name in ['style.css','event_catalog.css'])
     js = (ROOT/'tools/html_blueprint_ui/app.js').read_text(encoding='utf-8')
-    js = js.removesuffix('render();\n') + ''.join((ROOT/'tools/html_blueprint_ui'/name).read_text(encoding='utf-8') for name in ['experience.js','inspection.js','design.js','review_state.js','review.js','inline.js']) + '\nrender();followLocation();\n'
+    js = js.removesuffix('render();\n') + ''.join((ROOT/'tools/html_blueprint_ui'/name).read_text(encoding='utf-8') for name in ['experience.js','inspection.js','design.js','review_state.js','review.js','inline.js','event_catalog.js']) + '\nrender();followLocation();\n'
     html = '''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>십보강호 · 살아 있는 블루프린트</title><style>''' + css + '''</style></head><body>
 <a class="skip" id="skip-content" href="#main">본문으로</a><header><a href="#maps" class="brand">십보강호 <small>숨은 수의 비무</small></a><span class="edition">프로젝트 블루프린트</span><button id="resume-copy">재개 요청 복사</button></header>
 <div class="shell"><div class="section-navigation"><nav aria-label="본문 구역 바로가기" id="nav"></nav><div class="navigation-tools"><label class="search-label" for="search">내용 찾기</label><input id="search" type="search" placeholder="번호 · 인물 · 무공 · 자산 · 작업"><details><summary>발행 정보</summary><p id="freshness"></p><a href="../../AGENTS.md">작업 규칙 원본 ↗</a></details></div></div><main id="main" tabindex="-1"></main></div>
@@ -316,7 +324,7 @@ def build(out=OUT, include_candidate=True):
                 'image_inventory_digest': audit_model.inventory_digest(ROOT),
                 'generated_at': payload['generated_at'], 'inputs': inputs, 'reader_ids': [p['id'] for p in pages],
                 'asset_ids': [a['id'] for a in assets], 'candidate_revision': candidate_info['revision'] if candidate_info else None,
-                'media': {**{'output/blueprint/'+a['url']:a['sha256'] for a in assets if a['scope']=='PR342_CANDIDATE'},
+                'media': {**preview_media, **{'output/blueprint/'+a['url']:a['sha256'] for a in assets if a['scope']=='PR342_CANDIDATE'},
                           **{'output/blueprint/'+p['url']:p['sha256'] for p in originals}}}
     resume = {'role': 'DERIVED_VIEW_NOT_CANON', 'source_revision': payload['source_revision'],
         'generated_at': payload['generated_at'], 'read_order': ['AGENTS.md', 'docs/BASE_RULES_VERSION.md', 'docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md', '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md'],

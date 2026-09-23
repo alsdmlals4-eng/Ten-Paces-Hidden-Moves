@@ -61,7 +61,12 @@ assert.equal((manualComparison.match(/data-common-growth/g)||[]).length,1,'Growt
 assert.equal((manualComparison.match(/data-card=/g)||[]).length,30);
 assert(!manualComparison.includes('<video '),'Catalog must open a chosen clip without mounting30players');
 for(const m of data.manuals)for(const c of Object.values(m.cards))assert(manualComparison.includes('href="#motion/'+c.id+'"'));
-assert.equal((check("reader('reader-011')").match(/rowspan="3"/g)||[]).length,6);
+const eventReading=check("reader('reader-011')");
+assert.equal((eventReading.match(/data-event-id=/g)||[]).length,10,'Each event is a separately titled situation');
+assert.equal((eventReading.match(/class="choice-number"/g)||[]).length,30,'Three outcomes stay visible per event');
+assert(eventReading.includes('일반 사건 · 기연 없음')&&eventReading.includes('성공 후 추가 10%'));
+const escapedEvent=vm.runInContext(`eventCatalogView({chance_rule:D.giyun.chance_rule,events:[{id:'evil',title:'<img onerror=alert(1)>',text:'<script>',choices:[]}]})`,env);
+assert(!escapedEvent.includes('<img onerror')&&!escapedEvent.includes('<script>'),'Event source text must be escaped');
 assert(!check('movies()').includes('<video '),'Clip index should use selectable medium thumbnails');
 assert(check('basicActionCards()').includes('sprite-window'),'Crop real img elements to recover clear image errors');
 const growthOverview=check('home()');

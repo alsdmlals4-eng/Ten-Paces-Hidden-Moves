@@ -10,6 +10,8 @@
 
 ## 블루프린트와 구현 확인 경로
 
+`TEN-DEC-20260924-EVENT-CHECKS-HTML-01`의 [사건 판정과 HTML 가독성](decisions/2026-09-24_EVENT_CHECKS_AND_HTML_READABILITY.md)은 능력치 선택·희귀 기연·기존 저장 호환과 파생 화면의 읽기 비용을 다룬다. 구현·검수·통합 상태는 Active Context/current JSON과 기존 HTML 작업 receipt에서 읽는다.
+
 `USER-APPROVED-TEN-HTML-PILOT-20260922`의 [HTML 전환 설계](blueprint/HTML_MIGRATION_SPEC.md)는 기존 전체 설명·원화·모션·PM·검수·재개 경로를 하나의 파생 화면으로 연결한다.
 장기 게임 작업의 의미·우선순위는 아래 원본을 유지하며 HTML에서 동일 기록을 찾아간다. 출력은 `output/blueprint/index.html`, AI 직접 검수는 project-local preview를 사용한다. 전환 완료·활성 PR과 다음 작업은 위 current owners와 GitHub metadata에서 확인한다.
 

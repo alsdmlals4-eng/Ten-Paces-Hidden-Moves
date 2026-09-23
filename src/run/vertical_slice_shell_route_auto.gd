@@ -117,7 +117,12 @@ func _render_jianghu() -> void:
         var rules = preload("res://src/run/giyun_rules.gd").new()
         if not giyun.pending_event.is_empty():
             title_label.text = giyun.pending_event.title
-            description_label.text = giyun.pending_event.text+"\n\n선택 전 대가와 보상을 확인하세요. 체력 %d/%d" % [health[0],health[1]]
+            var choice_hint := "선택 전 성공률·성공/실패 결과를 확인하세요." if int(giyun.version) == 2 else "이 회차는 이전 사건 규칙을 이어갑니다. 선택의 대가·효과를 확인하세요."
+            description_label.text = giyun.pending_event.text+"\n\n%s 체력 %d/%d" % [choice_hint,health[0],health[1]]
+            if int(giyun.version) == 2:
+                var stats: Dictionary = rules.player_stats()
+                description_label.text += "\n외공 %d · 근골 %d · 신법 %d · 내공 %d · 심안 %d" % [stats.external, stats.constitution, stats.agility, stats.internal_power, stats.insight]
+                description_label.text += "\n기연은 표시된 선택이 성공했을 때만 추가 10% 확률입니다."
         var owned: Array[String] = []
         for id in giyun.owned:
             var item: Dictionary = rules.definition(id)

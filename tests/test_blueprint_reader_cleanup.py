@@ -39,7 +39,7 @@ class ReaderCleanupTests(unittest.TestCase):
         self.assertEqual(by_id['reader-010']['blocks'][0]['kind'],'image')
         rows=by_id['reader-009']['blocks'][0]['rows']
         self.assertEqual(len(rows),4)
-        self.assertEqual(len(by_id['reader-011']['blocks'][0]['rows']),18)
+        self.assertEqual(len(by_id['reader-011']['blocks'][0]['events']),10)
         self.assertTrue(all(b['kind']!='image' for b in by_id['reader-013']['blocks']))
         self.assertNotIn('planning-1440',json.dumps(by_id['reader-015']))
         self.assertIn('939bf00',json.dumps(by_id['reader-015']))

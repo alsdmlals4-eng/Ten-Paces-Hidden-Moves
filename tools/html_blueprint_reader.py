@@ -28,6 +28,31 @@ def note(text):
     return {'kind': 'note', 'text': text}
 
 
+def event_catalog(source):
+    """Render source meanings, not game checks. Godot alone computes live odds."""
+    stats = {'external':'외공', 'constitution':'근골', 'agility':'신법', 'internal_power':'내공', 'insight':'심안'}
+    items = {g['id']: g for g in source['giyun']}
+    def effect(row):
+        parts = []
+        if row.get('training'): parts.append(f"자유 수련 +{row['training']}")
+        if row.get('health_cost'): parts.append(f"체력 -{row['health_cost']}")
+        if row.get('stamina'): parts.append(f"기력 {row['stamina']:+}")
+        return ' · '.join(parts) or '보상·손실 없음'
+    events = []
+    for event in source['events']:
+        choices = []
+        for choice in event['choices']:
+            check = choice.get('check')
+            rare = choice.get('rare_bonus')
+            choices.append(dict(id=choice['id'], label=choice['label'],
+                check_text=f"{stats[check['stat']]} · 난도 {check['difficulty']}" if check else '안전 선택 · 판정 없음',
+                success_text=effect(choice['success']), failure_text=effect(choice['failure']) if check else '실패 판정 없음',
+                rare_text=(f"성공 후 추가 {rare['chance']}% · {items[rare['giyun_id']]['name']} / 이미 보유: 당첨 시 수련 +{source['chance_rule']['duplicate_training']}" if rare else '기연 없음'),
+                giyun_id=rare['giyun_id'] if rare else ''))
+        events.append(dict(id=event['id'], title=event['title'], text=event['text'], choices=choices))
+    return dict(kind='event_catalog', events=events, chance_rule=deepcopy(source['chance_rule']))
+
+
 def compact(blocks):
     result, panels = [], []
     def flush():
@@ -95,7 +120,7 @@ def refine(pages, giyun):
         'rest': ('자원 부족을 회복', '상한 안에서 실제 회복량 표시'),
         'training': ('성장 선택에 쓸 점수 확보', '포인트 획득과 성수 상승은 별개 · 무공 성장에서 사용'),
         'recon': ('다음 상대를 읽을 단서 확보', '미확정 계획·숨은 기술은 공개하지 않음'),
-        'event': ('대가·성장·기연 중 선택', '사건별 3선택 · 아래 표에서 비교'),
+        'event': ('능력치·위험·보상 비교', '사건별 3선택 · 일부 성공 선택에만 희귀 기연'),
     }
     by_id['reader-009']['blocks'] = [table(['종류', '선택지', '효과', '선택 목적', '조건·다음 흐름'], [
         [{'rest':'휴식','training':'수련','recon':'정탐','event':'무작위 사건'}[a['id']], a['label'], a['effect'], *followup[a['id']]]
@@ -107,20 +132,10 @@ def refine(pages, giyun):
             ['다음 단계', '결과를 보고 자원·단서를 재판단 · 4회 후 다음 비무 브리핑'],
             ['이어하기', '시드·사건·확정 결과를 보존 · 재추첨이나 중복 지급 금지']])]
     by_id['reader-009']['historical_state'] = '현재 main 데이터·구현에서 설명 파생 / 사람 재미 별도'
-    events = []
-    items = {g['id']:g for g in giyun['giyun']}
-    for event in giyun['events']:
-        item = items[event['giyun_id']]
-        for choice in event['choices']:
-            cid = choice['id']
-            effect = (item['name']+' 획득 · '+item['description']+' / 이미 보유하면 자유 수련 +3') if cid == 'accept' else ('자유 수련 +2' if cid == 'study' else '기력 +1')
-            events.append([event['title']+' — '+event['text'], {'accept':'기연 획득','study':'수련','leave':'이동·회복'}[cid], choice['label'],
-                           f"체력 -{event['health_cost']} · 현재 체력이 대가보다 커야 선택 가능" if cid == 'accept' else '추가 체력 대가 없음', effect])
-    by_id['reader-011'].update(title='행로 사건 목록 · 6개 사건의 선택지와 효과', subtitle='현재 데이터의 사건·선택지 18개를 한곳에서 비교합니다.',
-        blocks=[table(['사건·상황', '종류', '선택지', '대가·조건', '효과'], events),
-                note('기연은 회차 한정·자동 적용·동일 기연 중복 없음. 발동 상한과 사용처는 기연 도감에서 확인합니다. 사건을 선택한 뒤 결과가 이어하기로 바뀌지 않습니다.')],
-        historical_state='현재 main 기연·사건 데이터와 실제 GiyunRules 설명')
-    by_id['reader-011']['blocks'][0]['group_first_column'] = True
+    by_id['reader-011'].update(title=f"행로 사건 목록 · {len(giyun['events'])}개 사건의 선택과 결과", subtitle='사건의 상황을 읽고, 세 선택지의 성공·실패·희귀 보상을 비교합니다.',
+        blocks=[event_catalog(giyun),
+                note('기연은 회차 한정·자동 적용·동일 기연 중복 없음. 실패 비용을 내고 체력이 남지 않는 선택은 잠깁니다. 자원은 상한·하한 내에서 적용됩니다. 같은 회차의 사건·선택 결과는 이어하기로 다시 추첨되지 않습니다.')],
+        historical_state='기연 규칙v2 · 기존 v1 저장은 당시 규칙 유지 · 사람 재미 별도')
     for id in ['reader-013', 'reader-014']:
         # Keep original identifiers and the full original description, but share one
         # current table instead of repeating old five-event rewards as current data.
@@ -132,8 +147,8 @@ def refine(pages, giyun):
         ['정보 흐름', '흔적 발견 → 단서 확인 → 알려진 사실과 반례 해석 → 다음 비무 대비', '정탐 전용 최신 촬영 미확인 · 전투 화면을 대신 붙이지 않음']])]
     by_id['reader-014']['blocks'] += [table(['구분', '게임에 남는 변화', '확인할 것'], [
         ['수련', '자유 수련 포인트를 무공 성장에서 소비', '대상·비용·해금, 5·9성 강화, 저장 후 복구'],
-        ['사건·기연', '표의 선택 결과만 한 번 적용', '체력 대가·획득 중복·사건 고정'],
-        ['과거 행인·발자국 사례', '원래 다섯 사건의 설명은 승인 당시 기록에 보존', '현재 6사건·18선택과 혼합하지 않음']])]
+        ['사건·기연', '성공·실패 결과를 한 번 적용 · 일부 성공 선택 뒤 추가 희귀 판정', '능력치·실패 대가·기연 확률·중복·사건 고정'],
+        ['과거 행인·발자국 사례', '원래 다섯 사건의 설명은 승인 당시 기록에 보존', '현재 사건 목록과 혼합하지 않음']])]
     # Wireframe first, then current choices, events, rest and information flow.
     ordered = ['reader-010','reader-009','reader-011','reader-012','reader-013','reader-014']
     first = min(i for i,p in enumerate(pages) if p['id'] in ordered)
