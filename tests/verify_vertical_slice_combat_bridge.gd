@@ -30,8 +30,9 @@ func _run() -> void:
     for _index in range(4):
         await process_frame
 
-    shell.run_state.set("_run_seed", 2)
-    _expect_true(shell.start_new_run(), "Shell must start a new run.")
+    # The public shell command deliberately draws a fresh seed. Use the same
+    # transaction boundary with an explicit seed for this fixed recovery fixture.
+    _expect_true(shell.session.transact(func(): return shell.run_state.start_new_giyun_run(2, shell.session.save_id), true), "Bridge fixture must start an exact seeded new run.")
     _select_default_setup(shell)
     _expect_true(shell.advance_noncombat(), "SETUP with four selected manuals must advance to INTRO.")
     _expect_true(shell.advance_noncombat(), "INTRO must advance to BRIEFING.")

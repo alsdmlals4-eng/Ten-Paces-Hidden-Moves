@@ -1234,7 +1234,10 @@
       "next": "Commit scoped candidate; required exact-head CI/review/thread/ruleset, normal merge and main readback; archive one-time protected approval in a follow-up cleanup PR.",
       "pr": 357,
       "initial_ci_failure": "98ec07c4: after the595PASS snapshot, final current_operating_state changed without updating the existing Active Context YAML state block. Five governance workflows caught mismatched mutable state. Product tests are not the failure; synchronize both actual owners, rerun affected governance regressions and exact-head CI. No validator weakening.",
-      "correction_verification": "Existing Active Context state block synchronized with current JSON; both stable roadmaps link the current Decision without copying mutable checkpoints.65 affected governance regressionsPASS; canonical reference freshnessPASS. No product/test/validator behavior changed."
+      "correction_verification": "Existing Active Context state block synchronized with current JSON; both stable roadmaps link the current Decision without copying mutable checkpoints.65 affected governance regressionsPASS; canonical reference freshnessPASS. No product/test/validator behavior changed.",
+      "followup_ci_failure": "682ee08d: the next discovery suite also identified three existing Active Context aliases and two user-planning next-phase pointers. These consumers are synchronized with the same current JSON; historical completed-scope and human limits remain unchanged.",
+      "native_ci_correction": "Existing combat bridge fixture set private seed2 before shell.start_new_run replaced it with randi(), making the Step2 rest expectation intermittent. Test now creates seed2 through the same public run/session transaction; four-step/one-recovery/next-combat resource assertions unchanged. Native GodotPASS and independent defect-only reviewPASS; public shell start remains separately tested.",
+      "runtime_import_note": "Local runtime retest requires three generated background image import sidecars. Restored from verified recovery hashes for native tests; these are local engine artifacts outside the protected product diff and are excluded from commit. Engine import must precede direct command-line runtime from a clean checkout."
     },
     "protected": {
       "default_checkout_dirty_count": 45,
