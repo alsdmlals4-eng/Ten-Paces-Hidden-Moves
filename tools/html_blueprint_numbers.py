@@ -59,7 +59,7 @@ def attach(payload, root):
         label = a['group']['label']
         kind = label.split(' · ', 1)[-1] if label.startswith(('캐릭터 · ', '무공 · ')) else label.split(' · ', 1)[0]
         evidence = ('후보 코드 참조' if a['scope'] != 'MAIN_SOURCE' else '게임 코드 참조') if refs else '기획·설명 자료' if docs else '사용처 미확인'
-        rows[key] = {'key': key, 'url': a['url'], 'path': a['path'], 'name': a['name'],
+        rows[key] = {'key': key, 'url': a['url'], 'path': a['path'], 'name': a['name'], 'size': a.get('size'),
                      'kind': kind, 'usage': usage_label(a), 'usage_evidence': evidence, 'usage_detail': use,
                      'usage_sources': refs or docs, 'record_id': 'asset:' + a['id']}
     # Start with the same group order shown in the complete image audit.

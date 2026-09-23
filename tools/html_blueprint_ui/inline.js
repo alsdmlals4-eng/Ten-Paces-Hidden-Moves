@@ -16,10 +16,11 @@ asset=function(id){const a=byId(id),revision=a?D.visual_revisions?.[a.path]:null
 // Number any source image embedded in a reader, screen or character view too.
 function attachImageReviews(){
  document.querySelectorAll('#main img').forEach(img=>{
-  if(img.closest('[data-numbered-image]')||img.dataset.numberAttached)return;
   const address=img.getAttribute('src');
   const row=imageRows.find(r=>r.url===address);
   if(!row)return;
+  if(row.size){img.setAttribute('width',row.size[0]);img.setAttribute('height',row.size[1]);}
+  if(img.closest('[data-numbered-image]')||img.dataset.numberAttached)return;
   img.dataset.numberAttached='true';
   const anchor=img.closest('button.media-button, a.tile')||img;
   anchor.insertAdjacentHTML('afterend',imageCaption(row)+userReviewPanel(recordById(row.record_id)));
