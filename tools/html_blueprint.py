@@ -129,6 +129,39 @@ class Reader:
         self.add('geometry', shape='line', coordinates=args)
 
 
+def manual_readable_tables(manual):
+    """Describe source data, never execute combat rules in the browser."""
+    from blueprint_layout import describe
+    progression = (ROOT/'src/run/vertical_slice_progression_state.gd').read_text(encoding='utf-8')
+    costs_text = re.search(r'const NEXT_STAR_COSTS := \{([^}]+)', progression).group(1)
+    costs = {int(k): int(v) for k, v in re.findall(r'(\d+):\s*(\d+)', costs_text)}
+    growth_owner = (ROOT/'docs/06_STARTING_FACTION_MASTERY_DATA.md').read_text(encoding='utf-8')
+    planned = {int(star): effect.strip() for star, effect in re.findall(r'\| (\d+)성 \| ([^|]+)\|', growth_owner)}
+    growth = []
+    for star in range(1, 11):
+        card = next((c for c in manual['cards'].values() if c['unlock_star'] == star), None)
+        overlay = next((o for o in manual.get('overlays', {}).values() if o['unlock_star'] == star), None)
+        if card:
+            effect, condition, state = card['name']+' 해금', '해금 후 해당 기술 조건 적용', '기술 데이터·판정 연결'
+        elif overlay:
+            effect = overlay['name']+' · '+manual['cards'][overlay['target']]['name']+' 강화'
+            condition = '조건·순서: '+' → '.join(describe(s) for s in overlay.get('effect_steps', []))
+            state = '성수별 조건 효과 연결'
+        else:
+            effect = planned.get(star, '신규 기술 해금 없음')
+            condition = '주 능력치 '+manual['primary_stat']+' / 보조 '+manual['secondary_stat']
+            state = '기획 효과 · 현재 main 영구 능력치 지급 미연결' if star in [2,4,6,8] else '기획 단계 / 시작 선택은 3성'
+        growth.append([f'{star}성', str(costs[star])+'점' if star in costs else '시작 3성 / 개별 수련 비용 없음', effect, condition, state])
+    techniques = []
+    for card in manual['cards'].values():
+        distance = card.get('range', {})
+        techniques.append([card['name'], str(card['unlock_star'])+'성', str(card['action_slots'])+'수',
+            f"기력 {card.get('stamina_cost',0)} / 내력 {card.get('internal_cost',0)}",
+            f"{distance.get('min','—')}~{distance.get('max','—')}",
+            ' → '.join(describe(s) for s in card.get('effect_steps', []))])
+    return {'growth': growth, 'techniques': techniques}
+
+
 def collect_reader():
     import build_human_blueprint_complete as source
     book = Reader()

@@ -361,3 +361,12 @@ BUILD / executing-plans + ten-paces-verification(html-blueprint-review, referenc
 최종 원격5ac9b2bf의 PR Validation에서 Active Context의 product_stage와 JSON active_decision_state 불일치를 발견했다. 두 의미 상태를 HTML_INSPECTION_IMPLEMENTED_VERIFIED로 맞췄다. 함께 active_planning_pr는 기존 NONE으로 유지하고 전달 PR347은 날짜별 관측/receipt로 연결했다. 검사를 완화하지 않고 발견 항목을 포함한 전체 governance 묶음을 재검증한다.
 
 상태 owner 교정 후 원격과 같은 governance 묶음 및 다음 작업 검사84개 PASS, project operating system PASS. 이 후속은 문서/상태 일치만 변경하며 HTML 동작이나 제품 코드는 바꾸지 않았다.
+
+
+## 17. 기연·DDD·상세 기획서 및 외부 재접속 (2026-09-23)
+
+승인·설계·제품 구현·검증의 책임 원본은 `docs/decisions/2026-09-23_GIYUN_DDD_BLUEPRINT.md`이다. 기존112개 설명을 보존하면서 reader-001과 전체보기의 첫 게임 설명에 현재 기획서·대상·DDD·상세 SWOT을 먼저 제공한다. 원본 무공 데이터/기획의 성수별 표와 실제 main 지급 여부, PR342 후보를 분리한다. 새 회차의6기연/6사건을 실제 공용 코어 및 도감/행로/PM/검수 인덱스에 연결한다.
+
+`블루프린트 열기.cmd` → `tools/open_html_blueprint.py`는 현재 발행본 전체 무결성 확인, 필요 시 재생성, 건강한 서버 재사용, 종료 서버 복구, 외부 브라우저 열기를 맡는다. AI는 `--no-open`으로 주소를 받고 같은 PC 브라우저로 직접 검수한다. 한 주소가 영구 URL인 것은 아니며 클라우드 AI 접속을 입증하지 않는다. 연속 동시 실행은 같은 서버 주소를 반환하도록 확인했다. 이미지의 반복 실패에도 복구 안내를 유지한다.
+
+실제 Chrome에서 기획서/무공 표/기연 도감과 원본 이미지 로딩을 확인했다. 실제 Godot의6개 보유 사건 화면은 fixture 캡처로 구분하여 도감에 연결했다. 최종 검사·PR·병합 증거는 위 Decision과 기존 receipt의 giyun_ddd_followup에 누적한다. 기존 작업일지9월23일 행에 추가했으며 별도 PDF나 일지를 만들지 않는다.

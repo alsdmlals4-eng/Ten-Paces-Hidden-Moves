@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "ruleset": "jianghu-giyun-v1",
+  "activities": [
+    {
+      "id": "rest",
+      "label": "주막에서 휴식",
+      "effect": "최대 체력 25% 회복 · 기력 +1 · 내력 +1"
+    },
+    {
+      "id": "training",
+      "label": "공터에서 수련",
+      "effect": "자유 수련 포인트 +3"
+    },
+    {
+      "id": "recon",
+      "label": "상대 정탐",
+      "effect": "다음 상대의 공개된 무공 단서 확인"
+    },
+    {
+      "id": "event",
+      "label": "무작위 사건",
+      "effect": "인물·무림 사건에서 대가와 보상을 선택"
+    }
+  ],
+  "giyun": [
+    {
+      "id": "cloud_step",
+      "name": "유운 잔결",
+      "trigger": "evade",
+      "resource": "internal",
+      "amount": 1,
+      "description": "회피 성공 시 해결 묶음 종료에 내력 +1",
+      "limit": "해결 묶음당 각 1회 · 같은 기연 중복 없음",
+      "next_attack_cap": 4
+    },
+    {
+      "id": "jade_guard",
+      "name": "반진 옥패",
+      "trigger": "block",
+      "resource": "next_attack_bonus",
+      "amount": 2,
+      "description": "실제로 피해를 줄여 막으면 해결 묶음 종료에 다음 기초 공격 위력 +2 (기연 보너스 최대 4)",
+      "limit": "해결 묶음당 각 1회 · 같은 기연 중복 없음",
+      "next_attack_cap": 4
+    },
+    {
+      "id": "plum_chain",
+      "name": "낙화 향낭",
+      "trigger": "chain",
+      "resource": "stamina",
+      "amount": 1,
+      "description": "한 묶음에서 실제 체력 타격 2회 이상이면 기력 +1",
+      "limit": "해결 묶음당 각 1회 · 같은 기연 중복 없음",
+      "next_attack_cap": 4
+    },
+    {
+      "id": "tiger_seal",
+      "name": "복호 인장",
+      "trigger": "clash",
+      "resource": "internal",
+      "amount": 1,
+      "description": "합 승리 시 해결 묶음 종료에 내력 +1",
+      "limit": "해결 묶음당 각 1회 · 같은 기연 중복 없음",
+      "next_attack_cap": 4
+    },
+    {
+      "id": "clear_spring",
+      "name": "청천 약병",
+      "trigger": "clean_hit",
+      "resource": "health",
+      "amount": 2,
+      "description": "한 묶음에서 적중하고 체력을 잃지 않으면 체력 +2",
+      "limit": "해결 묶음당 각 1회 · 같은 기연 중복 없음",
+      "next_attack_cap": 4
+    },
+    {
+      "id": "last_ember",
+      "name": "잔화 심결",
+      "trigger": "low_health_hit",
+      "resource": "stamina",
+      "amount": 2,
+      "description": "묶음 종료 체력이 절반 이하이고 적중했으면 기력 +2",
+      "limit": "해결 묶음당 각 1회 · 같은 기연 중복 없음",
+      "next_attack_cap": 4
+    }
+  ],
+  "events": [
+    {
+      "id": "cloud_hermit",
+      "title": "절벽 아래의 은자",
+      "text": "낡은 보법을 아는 은자가 발을 헛디뎠다. 몸을 던져 구하면 그 비결을 전해 준다.",
+      "giyun_id": "cloud_step",
+      "health_cost": 2,
+      "choices": [
+        {
+          "id": "accept",
+          "label": "힘을 보태고 비결을 받는다"
+        },
+        {
+          "id": "study",
+          "label": "이야기에서 배운다"
+        },
+        {
+          "id": "leave",
+          "label": "인사하고 길을 간다"
+        }
+      ]
+    },
+    {
+      "id": "broken_escort",
+      "title": "부서진 표행",
+      "text": "습격을 견딘 표사가 마지막 짐을 지킨다. 함께 짐을 옮기면 오래된 옥패를 내어준다.",
+      "giyun_id": "jade_guard",
+      "health_cost": 2,
+      "choices": [
+        {
+          "id": "accept",
+          "label": "힘을 보태고 비결을 받는다"
+        },
+        {
+          "id": "study",
+          "label": "이야기에서 배운다"
+        },
+        {
+          "id": "leave",
+          "label": "인사하고 길을 간다"
+        }
+      ]
+    },
+    {
+      "id": "plum_garden",
+      "title": "폐원의 검흔",
+      "text": "매화나무에 남은 검흔이 연속된 초식을 가리킨다. 가시덤불을 헤치면 향낭이 걸려 있다.",
+      "giyun_id": "plum_chain",
+      "health_cost": 2,
+      "choices": [
+        {
+          "id": "accept",
+          "label": "힘을 보태고 비결을 받는다"
+        },
+        {
+          "id": "study",
+          "label": "이야기에서 배운다"
+        },
+        {
+          "id": "leave",
+          "label": "인사하고 길을 간다"
+        }
+      ]
+    },
+    {
+      "id": "tiger_shrine",
+      "title": "산군의 사당",
+      "text": "쓰러진 석상 아래 작은 인장이 보인다. 무거운 돌을 밀어야 손에 넣을 수 있다.",
+      "giyun_id": "tiger_seal",
+      "health_cost": 2,
+      "choices": [
+        {
+          "id": "accept",
+          "label": "힘을 보태고 비결을 받는다"
+        },
+        {
+          "id": "study",
+          "label": "이야기에서 배운다"
+        },
+        {
+          "id": "leave",
+          "label": "인사하고 길을 간다"
+        }
+      ]
+    },
+    {
+      "id": "spring_healer",
+      "title": "산길의 약사",
+      "text": "약사가 급류 건너 약초를 찾는다. 물살을 건너 도우면 귀한 약병을 나눈다.",
+      "giyun_id": "clear_spring",
+      "health_cost": 2,
+      "choices": [
+        {
+          "id": "accept",
+          "label": "힘을 보태고 비결을 받는다"
+        },
+        {
+          "id": "study",
+          "label": "이야기에서 배운다"
+        },
+        {
+          "id": "leave",
+          "label": "인사하고 길을 간다"
+        }
+      ]
+    },
+    {
+      "id": "ember_duelist",
+      "title": "꺼져 가는 모닥불",
+      "text": "부상당한 협객이 심결을 지킨다. 밤새 경계를 대신 서면 비결을 전한다.",
+      "giyun_id": "last_ember",
+      "health_cost": 2,
+      "choices": [
+        {
+          "id": "accept",
+          "label": "힘을 보태고 비결을 받는다"
+        },
+        {
+          "id": "study",
+          "label": "이야기에서 배운다"
+        },
+        {
+          "id": "leave",
+          "label": "인사하고 길을 간다"
+        }
+      ]
+    }
+  ]
+}

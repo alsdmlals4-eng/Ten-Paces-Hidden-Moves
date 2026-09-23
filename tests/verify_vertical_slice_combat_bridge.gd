@@ -124,7 +124,14 @@ func _run() -> void:
         var route_options: Array = shell.run_state.get_jianghu_options()
         _expect_eq(route_options.size(), 3, "Jianghu must expose exactly three choices at each step.")
         if route_options.size() == 3:
-            var route_id := "rest" if step == 2 else str((route_options[0] as Dictionary).get("id", ""))
+            # Exercise the new seeded route while taking exactly one recovery.
+            # First option is no longer a guaranteed non-resource authored node.
+            var route_id := "rest" if step == 2 else ""
+            if step != 2:
+                for option in route_options:
+                    if str(option.get("id", "")) in ["training", "recon"]:
+                        route_id = str(option["id"])
+                        break
             _expect_true(shell.run_state.select_jianghu_node(route_id, step), "Bridge flow must select one offered Jianghu choice.")
         _expect_true(shell.advance_noncombat(), "Confirmed Jianghu choice must advance Step %d." % step)
         await process_frame

@@ -76,6 +76,9 @@ def build(payload):
             record('card:'+card['id'],'무공',card['name'],'#inspect/card:'+card['id'],
                    ['data/cards/martial_manuals/'+mid+'.json','src/combat/combat_board_preview.gd'],
                    [a['id'] for a in pictures], [card['id']], '현재 무공 데이터 연결')
+    for item in payload.get('giyun', {}).get('giyun', []):
+        record('giyun:'+item['id'],'기연',item['name'],'#giyun/'+item['id'],
+               ['data/run/giyun_rules.json','src/run/giyun_rules.gd','src/run/vertical_slice_run_state.gd','src/run/vertical_slice_metrics_combat_resolution_engine.gd'],planning='2026-09-23 승인 회차 한정 효과')
     for person in payload['people']:
         art = [a for a in assets if a['path']==person['portrait']]
         for a in art: a['name'] = person['name']+' · 인물 원화'

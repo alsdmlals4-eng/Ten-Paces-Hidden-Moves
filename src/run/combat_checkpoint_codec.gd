@@ -44,6 +44,11 @@ func validate(dto: Dictionary, expected_binding: Dictionary = {}) -> Dictionary:
     if dto.binding.has("resolved_encounter") and dto.binding.resolved_encounter.stage != dto.duel_index: return bad
     bad.error = "Combat state or timing context malformed"
     if not _state(dto.state) or not _context(dto.context, dto.state): return bad
+    for candidate in [dto.state, dto.state_before]:
+        if candidate.is_empty(): continue
+        if typeof(candidate.get("player", {})) != TYPE_DICTIONARY or typeof(candidate.get("enemy", {})) != TYPE_DICTIONARY: return bad
+        if candidate.get("enemy", {}).has("giyun_attack_bonus"): return bad
+        if candidate.get("player", {}).has("giyun_attack_bonus") and "jade_guard" not in dto.binding.get("giyun_ids", []): return bad
     if dto.binding.has("resolved_encounter") and not _variable_enemy_state(dto.state.enemy, dto.binding.resolved_encounter, dto.binding.bimu_receipt): return bad
     bad.error = "Enemy lock malformed"
     if not _lock(dto.enemy_lock, dto.state, engine, dto.phase == "PLANNING"): return bad
@@ -75,7 +80,7 @@ func validate(dto: Dictionary, expected_binding: Dictionary = {}) -> Dictionary:
     return {"ok": true, "status": "VALID"}
 
 func _engine(binding: Dictionary):
-    if not _keys(binding, ["player_loadout", "player_mastery_by_manual", "enemy_candidate_id", "enemy_loadout", "enemy_mastery_by_manual", "enemy_runtime_binding", "effective_enemy_mastery_by_manual", "bimu_receipt"], ["resolved_encounter"]): return null
+    if not _keys(binding, ["player_loadout", "player_mastery_by_manual", "enemy_candidate_id", "enemy_loadout", "enemy_mastery_by_manual", "enemy_runtime_binding", "effective_enemy_mastery_by_manual", "bimu_receipt"], ["resolved_encounter", "giyun_ids"]): return null
     for field in ["player_loadout", "enemy_loadout"]:
         if typeof(binding[field]) != TYPE_ARRAY: return null
     for field in ["player_mastery_by_manual", "enemy_mastery_by_manual", "enemy_runtime_binding", "effective_enemy_mastery_by_manual", "bimu_receipt"]:
@@ -106,6 +111,9 @@ func _engine(binding: Dictionary):
     if portable(runtime) != portable(binding.enemy_runtime_binding): return null
     var engine = load("res://src/run/vertical_slice_metrics_combat_resolution_engine.gd").new()
     engine.variable_opponent_rules = binding.has("resolved_encounter")
+    if binding.has("giyun_ids"):
+        if not binding.has("resolved_encounter") or not load("res://src/run/giyun_rules.gd").new().valid_owned(binding.giyun_ids): return null
+        if not engine.configure_giyun(binding.giyun_ids): return null
     for field in ["player_mastery_by_manual", "enemy_mastery_by_manual"]:
         for id in binding[field]:
             if typeof(id) != TYPE_STRING or engine.martial_registry.get_manual(id).is_empty() or not integer(binding[field][id], 1, 10): return null
@@ -141,7 +149,8 @@ func _state(state: Dictionary) -> bool:
     return true
 
 func _actor(actor) -> bool:
-    if not _keys(actor, ["name", "epithet", "health", "stamina", "internal", "momentum", "attack_power", "stats", "start_penalties", "statuses", "tile", "next_attack_bonus", "fortitude_next_attack", "prepare_active"], ["candidate_id", "observation_points", "observation_reveal_index", "observation_reveals", "status_counts", "battle_uses", "defense"]): return false
+    if not _keys(actor, ["name", "epithet", "health", "stamina", "internal", "momentum", "attack_power", "stats", "start_penalties", "statuses", "tile", "next_attack_bonus", "fortitude_next_attack", "prepare_active"], ["candidate_id", "observation_points", "observation_reveal_index", "observation_reveals", "status_counts", "battle_uses", "defense", "giyun_attack_bonus"]): return false
+    if actor.has("giyun_attack_bonus") and not integer(actor.giyun_attack_bonus, 0, 4): return false
     for key in ["name", "epithet"]:
         if typeof(actor[key]) != TYPE_STRING: return false
     for key in ["health", "stamina", "internal", "momentum"]:

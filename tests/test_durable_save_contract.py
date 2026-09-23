@@ -31,6 +31,11 @@ class DurableSaveContractTests(unittest.TestCase):
         self.assertNotIn("SCRIPT ERROR", output)
         self.assertIn(marker, output)
 
+    def test_giyun_effects_and_full_route_save_contract(self):
+        self.native(script="verify_giyun.gd", marker="GIYUN_RULES: PASS")
+        self.native(script="verify_giyun_run.gd", marker="GIYUN_RUN: PASS")
+        self.native(script="verify_giyun_ui.gd", marker="GIYUN_UI: PASS")
+
     def test_combat_boundaries_restore_in_independent_process(self):
         with tempfile.TemporaryDirectory(prefix="ten-paces-independent-combat-") as directory:
             for mode in ["--checkpoint-write", "--checkpoint-read"]:

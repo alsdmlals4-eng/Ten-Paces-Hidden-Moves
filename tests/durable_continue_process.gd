@@ -23,7 +23,9 @@ func _initialize() -> void:
 
 func require(value: bool, message: String) -> bool:
     if not value:
-        printerr("FRESH_SHELL_FAIL ", message)
+        printerr("FRESH_SHELL_FAIL ", phase, " ", message)
+        if shell != null and shell.session != null:
+            printerr("screen=",shell.run_state.get_current_screen()," duel=",shell.run_state.duel_index," status=",shell.session.status," error=",shell.session.error)
         quit(1)
     return value
 

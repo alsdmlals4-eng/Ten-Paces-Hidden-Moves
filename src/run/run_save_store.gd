@@ -23,6 +23,7 @@ func _cache_context() -> Dictionary:
         "semantic_contract_version": CODEC.SEMANTIC_CONTRACT_VERSION,
         "content_identity": codec.content_identity(),
         "variable_content_identity": codec.content_identity_for_schema(CODEC.VARIABLE_SCHEMA_VERSION),
+        "giyun_content_identity": codec.content_identity_for_schema(CODEC.GIYUN_SCHEMA_VERSION),
     }
 
 func _cached(bytes: PackedByteArray) -> Dictionary:
@@ -135,7 +136,7 @@ func load_checkpoint() -> Dictionary:
         var resolved := _read(pointer.slot)
         if resolved.status == "ABSENT": return CODEC.error("CORRUPT", "Active pointer target is missing")
         if not resolved.ok: return resolved
-        if int(resolved.payload.schema_version) != CODEC.VARIABLE_SCHEMA_VERSION or pointer.slot != "v2_" + CODEC.digest(resolved.payload): return CODEC.error("CORRUPT", "Active pointer target mismatch")
+        if int(resolved.payload.schema_version) not in [CODEC.VARIABLE_SCHEMA_VERSION, CODEC.GIYUN_SCHEMA_VERSION] or pointer.slot != "v2_" + CODEC.digest(resolved.payload): return CODEC.error("CORRUPT", "Active pointer target mismatch")
         return _loaded(resolved.payload, "VALID_PRIMARY")
     var primary := _read("primary")
     return _load_from_primary(primary)
@@ -318,9 +319,9 @@ func _save_variable(save_id: String, checkpoint_id: String, run_state: Dictionar
     var previous: Dictionary = current.get("payload", {})
     if not replace and not previous.is_empty() and (previous.save_id != save_id or not previous.active): return CODEC.error("INCOMPATIBLE", "Generation replacement requires explicit operation")
     if _pending.is_empty():
-        if not previous.is_empty() and int(previous.schema_version) == 2 and _matches_request(previous, save_id, checkpoint_id, run_state, combat_checkpoint, active):
+        if not previous.is_empty() and int(previous.schema_version) in [2, 5] and _matches_request(previous, save_id, checkpoint_id, run_state, combat_checkpoint, active):
             return {"ok": true, "status": "SAVED", "revision": previous.revision, "payload": previous.duplicate(true), "idempotent": true}
-        var encoded: Dictionary = codec.encode(save_id, checkpoint_id, int(previous.get("revision", 0)) + 1, run_state, combat_checkpoint, active, CODEC.VARIABLE_SCHEMA_VERSION)
+        var encoded: Dictionary = codec.encode(save_id, checkpoint_id, int(previous.get("revision", 0)) + 1, run_state, combat_checkpoint, active, int(previous.get("schema_version", CODEC.VARIABLE_SCHEMA_VERSION)))
         if not encoded.ok: return encoded
         _pending = {"identity": identity, "encoded": encoded, "replace": replace}
     var envelope: Dictionary = _pending.encoded.payload
@@ -358,7 +359,7 @@ func _cleanup_variable_history(active_payload: Dictionary) -> void:
         var slot := filename.trim_suffix(".json")
         if slot_pattern.search(slot) == null: continue
         var checked := _read(slot)
-        if not checked.ok or int(checked.payload.schema_version) != 2 or checked.payload.save_id != active_payload.save_id: continue
+        if not checked.ok or int(checked.payload.schema_version) != int(active_payload.schema_version) or checked.payload.save_id != active_payload.save_id: continue
         if int(checked.payload.revision) > int(active_payload.revision): continue
         if "v2_" + CODEC.digest(checked.payload) != slot or "v2_" + checked.source_text.sha256_text() != slot: continue
         revisions.append({"slot": slot, "revision": int(checked.payload.revision)})
@@ -377,6 +378,6 @@ func _cleanup_variable_history(active_payload: Dictionary) -> void:
         if not _allowed("cleanup_" + str(entry.slot), path): continue
         # Revalidate immediately before deletion, including exact byte hash.
         var current := _read(str(entry.slot))
-        if not current.ok or int(current.payload.schema_version) != 2 or current.payload.save_id != active_payload.save_id: continue
+        if not current.ok or int(current.payload.schema_version) != int(active_payload.schema_version) or current.payload.save_id != active_payload.save_id: continue
         if "v2_" + current.source_text.sha256_text() != entry.slot or "v2_" + CODEC.digest(current.payload) != entry.slot: continue
         DirAccess.remove_absolute(path)

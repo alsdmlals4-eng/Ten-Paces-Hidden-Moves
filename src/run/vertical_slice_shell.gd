@@ -74,7 +74,7 @@ func start_new_run(replacement_confirmed: bool = false) -> bool:
         return false
     _setup_selected_manual_ids.clear()
     _refresh_setup_selection_ui()
-    return session.transact(func(): return run_state.start_new_variable_run(randi(), session.save_id), true)
+    return session.transact(func(): return run_state.start_new_giyun_run(randi(), session.save_id), true)
 
 
 func advance_noncombat() -> bool:
@@ -591,7 +591,8 @@ func _ensure_combat_view() -> void:
                 "epithet": str(opponent.get("epithet", opponent.get("martial_identity", "")))
             },
             run_state.get_frozen_bimu_receipt(),
-            encounter
+            encounter,
+            run_state.get_giyun_state()
         ))
     _combat_view.set_meta("vertical_slice_runtime_loadout_bound_from_shell", runtime_loadout_bound)
     if not runtime_loadout_bound:

@@ -378,6 +378,20 @@
         "blocked_unverified_remaining": 0,
         "user_decision_required_remaining": 0,
         "rollback": "정상 PR로 HTML 표시·촬영 도구 변경만 되돌리고 승인 원본과 게임을 보존한다."
+      },
+      {
+        "work_item_id": "TEN-GIYUN-DDD",
+        "title": "강호행로·기연과 DDD 기획서·HTML 검수",
+        "status": "IMPLEMENTATION_VALIDATING",
+        "canon_owner": "docs/decisions/2026-09-23_GIYUN_DDD_BLUEPRINT.md",
+        "actual_consumers": [
+          "data/run/giyun_rules.json",
+          "src/run/giyun_rules.gd",
+          "src/run/vertical_slice_run_state.gd",
+          "src/run/vertical_slice_metrics_combat_resolution_engine.gd",
+          "tools/html_blueprint_ui/design.js"
+        ],
+        "next_action": "전투·저장·브라우저 실행 검증과 전체 검토2회 → 정상 PR / main readback"
       }
     ]
   },
@@ -531,5 +545,22 @@
       "human": "NOT_RUN for new item-level game/fun approval",
       "governance": "PASS84 after product_stage/active_decision_state reconciliation; prior5ac9b2bf remote mismatch preserved in spec"
     }
+  },
+  "giyun_ddd_followup": {
+    "approval": "2026-09-23 user approved the concrete recommendation",
+    "decision": "docs/decisions/2026-09-23_GIYUN_DDD_BLUEPRINT.md",
+    "status": "IMPLEMENTATION_VALIDATING",
+    "baseline": "2dfa2a6a9b846276869a8084f7be3a3ab3ef7f67",
+    "review_rounds_completed": 2,
+    "human": "NOT_RUN",
+    "scope": [
+      "external reopen and image recovery",
+      "current GDD/SWOT/DDD",
+      "source-derived manual tables",
+      "four route categories / 3 offers x 4 choices",
+      "run-limited giyun and events / schema5 compatibility",
+      "HTML/runtime evidence and safe integration"
+    ],
+    "review_result": "2 full independent reviews completed; 5+3 findings corrected, focused verification and final CI ongoing"
   }
 }

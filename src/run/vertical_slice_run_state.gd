@@ -20,18 +20,22 @@ const SNAPSHOT_FIELDS := {
 
 const ROSTER_FIELDS := ["ruleset_id", "roster_version", "roster_seed", "roster_save_id", "resolved_encounters", "roster_digest"]
 var _roster: Dictionary = {}
+var _giyun: Dictionary = {}
+var _giyun_rules = preload("res://src/run/giyun_rules.gd").new()
 
 func export_snapshot() -> Dictionary:
     var snapshot := {"progression": _progression.get_snapshot()}
     for key in SNAPSHOT_FIELDS: snapshot[key] = get(SNAPSHOT_FIELDS[key])
     snapshot.merge(_roster, true)
+    if not _giyun.is_empty(): snapshot["giyun"] = _giyun.duplicate(true)
     return snapshot.duplicate(true)
 
 
 func validate_snapshot(snapshot: Dictionary) -> Dictionary:
     var bad := CHECKPOINT_CODEC.error("CORRUPT", "Invalid run snapshot")
     var variable: bool = snapshot.has("ruleset_id")
-    if not CHECKPOINT_CODEC.json_safe(snapshot, 0, [0]) or snapshot.size() != SNAPSHOT_FIELDS.size() + 1 + (ROSTER_FIELDS.size() if variable else 0): return bad
+    if not CHECKPOINT_CODEC.json_safe(snapshot, 0, [0]) or snapshot.size() != SNAPSHOT_FIELDS.size() + 1 + (ROSTER_FIELDS.size() if variable else 0) + (1 if snapshot.has("giyun") else 0): return bad
+    if snapshot.has("giyun") and (not variable or not _valid_giyun(snapshot)): return bad
     if variable and not _valid_roster(snapshot): return bad
     var template := {"progression": _progression.get_snapshot()}
     for key in SNAPSHOT_FIELDS: template[key] = get(SNAPSHOT_FIELDS[key])
@@ -67,6 +71,7 @@ func validate_snapshot(snapshot: Dictionary) -> Dictionary:
         var row: Dictionary = s.duel_history[i]
         if row.get("duel_index") != i + 1 or not CHECKPOINT_CODEC.integer(row.get("duel_index"), 1, 10) or row.get("opponent_candidate_id") != catalog.select_campaign_candidate_id(i + 1) or row.get("outcome") not in ["win", "draw"]: return bad
         if typeof(row.get("battle_metrics")) != TYPE_DICTIONARY or typeof(row.get("review_summary")) != TYPE_DICTIONARY: return bad
+        if s.has("giyun") and not PROGRESSION_SCRIPT.validate_resource_snapshot(row.get("route_start_resources")): return bad
         for value in row.battle_metrics.values():
             if not CHECKPOINT_CODEC.integer(value): return bad
     var terminal_success: bool = s.current_screen in [SCREEN_RESULT, SCREEN_JIANGHU, SCREEN_COMPLETION] or (s.current_screen == SCREEN_REVIEW and s.last_combat_result.get("outcome") in ["win", "draw"])
@@ -84,8 +89,8 @@ func validate_snapshot(snapshot: Dictionary) -> Dictionary:
         if row.get("duel_index") != i + 1 or row.get("opponent_candidate_id") != catalog.select_campaign_candidate_id(i + 1) or not _valid_reward(row, s.player_manual_loadout, catalog.get_candidate(catalog.select_campaign_candidate_id(i + 1))): return bad
     if not s.pending_result_reward.is_empty() and (s.current_screen != SCREEN_RESULT or not _valid_reward(s.pending_result_reward, s.player_manual_loadout, catalog.get_candidate(s.current_opponent_id))): return bad
     for i in range(s.route_history.size()):
-        if not _valid_jianghu_receipt(s.route_history[i], i / 4 + 1, i % 4, catalog): return bad
-    if not s.pending_jianghu.is_empty() and (s.current_screen != SCREEN_JIANGHU or not _valid_jianghu_receipt(s.pending_jianghu, s.completed_duels, s.jianghu_step, catalog)): return bad
+        if not s.has("giyun") and not _valid_jianghu_receipt(s.route_history[i], i / 4 + 1, i % 4, catalog): return bad
+    if not s.pending_jianghu.is_empty() and (s.current_screen != SCREEN_JIANGHU or (not s.has("giyun") and not _valid_jianghu_receipt(s.pending_jianghu, s.completed_duels, s.jianghu_step, catalog))): return bad
     if not _valid_progression_history(s, catalog): return bad
     # Rebuild accumulated public intel from saved receipts, without applying their effects.
     var intel_candidate = get_script().new()
@@ -133,6 +138,7 @@ func _valid_progression_history(s: Dictionary, catalog) -> bool:
     if not s.player_manual_loadout.is_empty():
         audit.start_new_run()
         if not audit.confirm_setup_loadout(s.player_manual_loadout, s.player_mastery_by_manual): return false
+    if s.has("giyun"): audit._giyun = _giyun_rules.initial()
     for row in s.reward_history:
         var receipt: Dictionary = row.duplicate(true)
         receipt.erase("duel_index")
@@ -141,16 +147,34 @@ func _valid_progression_history(s: Dictionary, catalog) -> bool:
     var routes: Array = s.route_history.duplicate(true)
     if not s.pending_jianghu.is_empty(): routes.append(s.pending_jianghu)
     for index in range(routes.size()):
+        if typeof(routes[index].get("id")) != TYPE_STRING: return false
         var duel := index / JIANGHU_CHOICES + 1
         var step := index % JIANGHU_CHOICES
         audit._current_screen = SCREEN_JIANGHU
         audit.completed_duels = duel
         audit.duel_index = duel
         audit.jianghu_step = step
+        if s.has("giyun") and step == 0:
+            if not audit._progression.set_player_resources(s.duel_history[duel - 1].route_start_resources): return false
         audit._next_opponent_id = catalog.select_campaign_candidate_id(duel + 1)
         audit._pending_jianghu.clear()
         if not audit.select_jianghu_node(routes[index].id, step): return false
+        if s.has("giyun"):
+            if routes[index].id == "event":
+                if typeof(routes[index].get("event_outcome")) != TYPE_DICTIONARY: return false
+                if not audit.select_jianghu_node("event."+str(routes[index].event_outcome.get("choice", "")), step): return false
+            if audit._pending_jianghu != routes[index]: return false
+    if s.has("giyun") and audit._giyun.owned != s.giyun.owned: return false
     var expected: Dictionary = audit.get_progression_snapshot()
+    if s.has("giyun"):
+        var expected_resources: Dictionary = expected.player_resources
+        if s.completed_duels == s.duel_index and s.completed_duels > 0:
+            var last_start: Dictionary = s.duel_history[-1].route_start_resources
+            if s.last_combat_result.has("player_resources") and last_start != s.last_combat_result.player_resources: return false
+            if s.current_screen != SCREEN_JIANGHU or routes.size() == (s.completed_duels - 1) * 4:
+                expected_resources = last_start
+        if expected_resources != s.progression.player_resources: return false
+        if not s.pre_battle_snapshot.is_empty() and s.pre_battle_snapshot.duel_index == s.duel_index and s.completed_duels < s.duel_index and s.pre_battle_snapshot.progression.player_resources != expected_resources: return false
     for key in ["owned_manual_ids", "mastery_by_manual", "training_by_manual", "free_training_pool", "pending_duplicate_transfers"]:
         if expected[key] != s.progression[key]: return false
     return true
@@ -218,6 +242,7 @@ func import_snapshot(snapshot: Dictionary) -> Dictionary:
     if snapshot.has("ruleset_id"):
         for key in ROSTER_FIELDS: _roster[key] = next[key]
     _opponent_catalog = catalog
+    _giyun = next.get("giyun", {}).duplicate(true)
     return {"ok": true, "status": "VALID"}
 
 const SCREEN_MAIN := "MAIN"
@@ -313,6 +338,10 @@ func _reset_bimu_constraints() -> void:
 func get_jianghu_options() -> Array:
     if _current_screen != SCREEN_JIANGHU or _route_model == null:
         return []
+    if not _giyun.is_empty():
+        if not _giyun.pending_event.is_empty():
+            return _giyun_rules.event_options(_giyun.pending_event, _giyun.owned, int(get_player_run_resources().health[0]))
+        return _giyun_rules.options(_run_seed, completed_duels, jianghu_step)
     return _route_model.get_jianghu_options(completed_duels, jianghu_step)
 
 
@@ -327,6 +356,8 @@ func select_jianghu_node(node_id: String, expected_step: int) -> bool:
         return false
     if expected_step != jianghu_step or expected_step < 0 or expected_step >= JIANGHU_CHOICES or not _pending_jianghu.is_empty():
         return false
+    if not _giyun.is_empty() and not _giyun.pending_event.is_empty():
+        return _resolve_giyun_event(node_id, expected_step)
     var selected: Dictionary = {}
     for option in get_jianghu_options():
         if typeof(option) == TYPE_DICTIONARY and str((option as Dictionary).get("id", "")) == node_id:
@@ -342,6 +373,9 @@ func select_jianghu_node(node_id: String, expected_step: int) -> bool:
             if not _progression.add_free_training(3):
                 return false
         "event":
+            if not _giyun.is_empty():
+                _giyun.pending_event = _giyun_rules.event_for(_run_seed, completed_duels, jianghu_step)
+                return true
             if not _progression.add_free_training(2):
                 return false
             _progression.apply_recovery(0.0, 0, 1)
@@ -599,6 +633,7 @@ func start_new_run() -> bool:
     if _current_screen != SCREEN_MAIN:
         return false
     _reset_bimu_constraints()
+    _giyun.clear()
     duel_index = 1
     completed_duels = 0
     route_visits = 0
@@ -739,6 +774,7 @@ func mark_combat_finished(result: Dictionary) -> bool:
     if typeof(resources) == TYPE_DICTIONARY and not _progression.set_player_resources(resources as Dictionary):
         return false
     _duel_history.append(_build_duel_history_row(result))
+    if not _giyun.is_empty(): _duel_history[-1]["route_start_resources"] = _progression.get_player_resources()
     _pending_result_reward.clear()
     completed_duels += 1
     return _transition_to(SCREEN_REVIEW)
@@ -1022,3 +1058,44 @@ func start_new_variable_run(seed_value: int, save_identity: String) -> bool:
     _roster = {"ruleset_id": "ten-duel-variable-roster-v2", "roster_version": 1, "roster_seed": seed_value,
         "roster_save_id": save_identity, "resolved_encounters": encounters, "roster_digest": CHECKPOINT_CODEC.digest(encounters)}
     return start_new_run()
+
+
+func start_new_giyun_run(seed_value: int, save_identity: String) -> bool:
+    if not start_new_variable_run(seed_value, save_identity): return false
+    _giyun = _giyun_rules.initial()
+    return true
+
+func get_giyun_state() -> Dictionary:
+    return _giyun.duplicate(true)
+
+func _valid_giyun(s: Dictionary) -> bool:
+    var g = s.giyun
+    if typeof(g) != TYPE_DICTIONARY or g.size() != 3 or not CHECKPOINT_CODEC.integer(g.get("version"), 1, 1) or not _giyun_rules.valid_owned(g.get("owned")) or typeof(g.get("pending_event")) != TYPE_DICTIONARY: return false
+    if not g.pending_event.is_empty():
+        if s.get("current_screen") != SCREEN_JIANGHU or not s.get("pending_jianghu", {}).is_empty(): return false
+        if not CHECKPOINT_CODEC.integer(s.get("completed_duels"), 1, 9) or not CHECKPOINT_CODEC.integer(s.get("jianghu_step"), 0, 3) or not CHECKPOINT_CODEC.integer(s.get("run_seed")): return false
+        if g.pending_event != _giyun_rules.event_for(int(s.run_seed), int(s.completed_duels), int(s.jianghu_step)): return false
+    return true
+
+func _resolve_giyun_event(node_id: String, step: int) -> bool:
+    if not node_id.begins_with("event."): return false
+    var event: Dictionary = _giyun.pending_event
+    var outcome: Dictionary = _giyun_rules.resolve_event(event, node_id.trim_prefix("event."), _giyun.owned)
+    if outcome.is_empty(): return false
+    var resources := get_player_run_resources()
+    if int(resources.health[0]) <= int(outcome.health_cost) and int(outcome.health_cost) > 0: return false
+    resources.health[0] -= int(outcome.health_cost)
+    _progression.player_resources = resources
+    if outcome.training > 0: _progression.add_free_training(outcome.training)
+    if outcome.stamina > 0: _progression.apply_recovery(0.0, outcome.stamina, 0)
+    if not outcome.giyun_id.is_empty(): _giyun.owned.append(outcome.giyun_id)
+    var selected: Dictionary = _giyun_rules.catalog.activities[3].duplicate(true)
+    selected["event_outcome"] = outcome
+    selected["event_title"] = event.title
+    selected["effect"] = "자유 수련 +%d · 기력 +%d · 체력 -%d" % [outcome.training, outcome.stamina, outcome.health_cost]
+    if not outcome.giyun_id.is_empty(): selected.effect += " · 기연: "+str(_giyun_rules.definition(outcome.giyun_id).name)
+    selected["route_type"] = "event"
+    selected["node_id"] = "J%d-%d" % [completed_duels, step+1]
+    _pending_jianghu = selected
+    _giyun.pending_event = {}
+    return true

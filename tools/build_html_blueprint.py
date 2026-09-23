@@ -174,6 +174,7 @@ def build(out=OUT, include_candidate=True):
     art = model.read(ROOT, 'docs/blueprint/ART_SELECTION.json')
     manuals = [model.read(ROOT, f'data/cards/martial_manuals/{mid}.json') for mid in art['manuals']]
     for manual in manuals:
+        manual['readable_tables'] = model.manual_readable_tables(manual)
         for card in manual['cards'].values():
             card['effect_descriptions'] = [narrative.describe(step) for step in card.get('effect_steps',[])]
     from html_blueprint_diagrams import build as diagram_views
@@ -243,13 +244,22 @@ def build(out=OUT, include_candidate=True):
                'active_context': (ROOT/'[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md').read_text(encoding='utf-8').split('## 현재 운영 구조')[0],
                'roadmap': (ROOT/'docs/04_ROADMAP.md').read_text(encoding='utf-8'),
                'historical_reader': {'approval_date': '2026-09-11', 'approved_revision': model.read(ROOT, 'docs/planning-data/current_user_planning_status.json')['blueprint_final_approval']['approved_revision']}}
+    payload['giyun'] = model.read(ROOT, 'data/run/giyun_rules.json')
+    payload['giyun_capture'] = 'docs/blueprint/evidence/giyun-route-20260923.png'
+    inputs[payload['giyun_capture']] = model.sha(ROOT/payload['giyun_capture'])
+    for path in ['data/run/giyun_rules.json','src/run/giyun_rules.gd','src/run/vertical_slice_metrics_combat_resolution_engine.gd','src/run/vertical_slice_run_state.gd','docs/decisions/2026-09-23_GIYUN_DDD_BLUEPRINT.md']:
+        inputs[path] = model.sha(ROOT/path)
+    payload['current_design'] = (ROOT/'docs/01_GAME_DESIGN.md').read_text(encoding='utf-8').split('## 2026-09-23 · 현재 게임 설명과 DDD', 1)[1]
+    payload['current_swot'] = model.read(ROOT, 'docs/blueprint/IMPLEMENTATION_READINESS.json')['current_swot']
+    for path in ['docs/01_GAME_DESIGN.md','docs/06_STARTING_FACTION_MASTERY_DATA.md','docs/blueprint/IMPLEMENTATION_READINESS.json','src/run/vertical_slice_progression_state.gd','tools/html_blueprint_ui/design.js','tools/open_html_blueprint.py','tools/serve_html_blueprint.py']:
+        inputs[path] = model.sha(ROOT/path)
     from html_blueprint_inspection import build as inspection_index
     payload['inspection'] = inspection_index(payload)
     for path in ['tools/html_blueprint_inspection.py','tools/html_blueprint_ui/inspection.js']:
         inputs[path] = model.sha(ROOT/path)
     css = (ROOT/'tools/html_blueprint_ui/style.css').read_text(encoding='utf-8')
     js = (ROOT/'tools/html_blueprint_ui/app.js').read_text(encoding='utf-8')
-    js = js.removesuffix('render();\n') + (ROOT/'tools/html_blueprint_ui/experience.js').read_text(encoding='utf-8') + (ROOT/'tools/html_blueprint_ui/inspection.js').read_text(encoding='utf-8') + '\nrender();followLocation();\n'
+    js = js.removesuffix('render();\n') + (ROOT/'tools/html_blueprint_ui/experience.js').read_text(encoding='utf-8') + (ROOT/'tools/html_blueprint_ui/inspection.js').read_text(encoding='utf-8') + (ROOT/'tools/html_blueprint_ui/design.js').read_text(encoding='utf-8') + '\nrender();followLocation();\n'
     html = '''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>십보강호 · 살아 있는 블루프린트</title><style>''' + css + '''</style></head><body>
 <a class="skip" id="skip-content" href="#main">본문으로</a><header><a href="#maps" class="brand">십보강호 <small>숨은 수의 비무</small></a><span class="edition">프로젝트 블루프린트</span><button id="resume-copy">재개 요청 복사</button></header>
 <div class="shell"><aside><nav aria-label="주요 메뉴" id="nav"></nav><label class="search-label" for="search">내용 찾기</label><input id="search" type="search" placeholder="인물 · 무공 · 자산 · 작업"><p id="freshness"></p><a href="../../AGENTS.md">작업 규칙 원본 ↗</a></aside><main id="main" tabindex="-1"></main></div>

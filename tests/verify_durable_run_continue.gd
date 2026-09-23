@@ -209,12 +209,12 @@ func _run() -> void:
         shell.session.store.io_guard = Callable()
         check(await shell.retry_durable_save(), "reward confirmation retry")
         check(shell.run_state.get_reward_history().size() == 1, "reward retry grants exactly once")
-        # Rest is an authored choice at the third node in the first interval.
+        # Frozen new-run offers differ by seed; every route has a stable event.
         for step in range(2):
             shell._choose_jianghu(str(shell.run_state.get_jianghu_options()[0].id), step)
             check(shell.advance_noncombat(), "reach authored rest choice")
-        for option in shell.run_state.get_jianghu_options():
-            if option.id == "rest": shell._choose_jianghu(str(option.id), 2)
+        shell._choose_jianghu("event", 2)
+        shell._choose_jianghu("event.leave", 2)
         var route_snapshot: Dictionary = shell.run_state.export_snapshot()
         check(not shell.run_state.get_pending_jianghu().is_empty(), "rest effect and receipt saved together")
         shell.queue_free()

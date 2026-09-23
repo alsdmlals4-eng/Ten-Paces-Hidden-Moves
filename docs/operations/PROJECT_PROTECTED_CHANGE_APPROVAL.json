@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "201af9e99e4ce7e7b58e3ea63e6edc37d8c037ff",
+  "decision_ids": [
+    "TEN-DEC-20260923-GIYUN-DDD-BLUEPRINT-01"
+  ],
+  "approved_paths": [
+    "data/run/giyun_rules.json",
+    "src/combat/combat_resolution_engine.gd",
+    "src/run/combat_checkpoint_codec.gd",
+    "src/run/giyun_rules.gd",
+    "src/run/giyun_rules.gd.uid",
+    "src/run/run_checkpoint_codec.gd",
+    "src/run/run_save_store.gd",
+    "src/run/vertical_slice_combat_bridge.gd",
+    "src/run/vertical_slice_metrics_combat_resolution_engine.gd",
+    "src/run/vertical_slice_run_state.gd",
+    "src/run/vertical_slice_shell.gd",
+    "src/run/vertical_slice_shell_route_auto.gd"
+  ],
+  "approval_source": "2026-09-23 user: 좋아 권장안대로 진행해; approved concrete Giyun/DDD/HTML plan and BUILD_APPROVAL_2026-09-23.md",
+  "approval_time": "2026-09-23T09:14:03.346534+09:00",
+  "scope_summary": "New-run Giyun, seeded events, schema5 compatibility, actual consumers and source-derived HTML. Preserve old1/2, PR342 and root dirty45."
+}
