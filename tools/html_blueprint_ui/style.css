@@ -166,3 +166,7 @@ main :is(p,h1,h2,h3,a,small){overflow-wrap:anywhere}
 @media(max-width:1150px){.atlas-workbench{display:block}.atlas-map-column{position:static;max-height:none}.atlas-map-column .atlas-diagram{min-width:680px}.atlas-detail-column{margin-top:20px}}
 @media(max-width:700px){.overview-jumps{position:sticky;top:78px;max-height:130px;overflow:auto;margin:12px 0}.overview-jumps a{padding:4px 6px;font-size:11px}.atlas-detail-column .stage-detail{padding:10px}.inspection-controls button{width:100%}.status-strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){[id^="overview-"]{scroll-margin-top:225px}}
+
+.user-review label{display:block;margin:14px 0}.user-review textarea{display:block;width:100%;min-height:110px;margin-top:8px;padding:12px;resize:vertical;font:inherit}.user-review output{display:block;margin:12px 0}.user-review button{margin:4px 8px 4px 0}.review-history{border-top:1px solid var(--line);padding:10px 0}.review-history p,.review-comment{white-space:pre-wrap;overflow-wrap:anywhere}.intent-panel td{vertical-align:top}.user-review select{margin-left:8px}
+
+.audit-filters{display:flex;gap:18px;flex-wrap:wrap}.audit-filters label{display:flex;flex-direction:column;gap:8px}.audit-group{scroll-margin-top:90px;border-top:2px solid var(--line);padding-top:16px;margin-top:30px}.audit-group article{min-width:0}.audit-group small{overflow-wrap:anywhere}.audit-group .gallery{grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}

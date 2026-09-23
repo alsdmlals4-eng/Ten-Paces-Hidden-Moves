@@ -162,6 +162,9 @@ def build(out=OUT, include_candidate=True):
         added, candidate_info = candidate(candidate_sha, assets, out)
         assets.extend(added)
         pm['items'].extend(candidate_info['work_items'])
+    import html_blueprint_audit as audit_model
+    audit_model.extend_inventory(ROOT, assets, candidate_info['revision'] if candidate_info else None, out)
+    asset_audit = audit_model.build(ROOT, assets)
     for asset in assets:
         asset['related_work'] = [item['work_item_id'] for item in pm['items']
             if set(item.get('actual_consumers', [])) & {asset['path'], *asset['consumers']}
@@ -254,25 +257,37 @@ def build(out=OUT, include_candidate=True):
     for path in ['docs/01_GAME_DESIGN.md','docs/06_STARTING_FACTION_MASTERY_DATA.md','docs/blueprint/IMPLEMENTATION_READINESS.json','src/run/vertical_slice_progression_state.gd','tools/html_blueprint_ui/design.js','tools/open_html_blueprint.py','tools/serve_html_blueprint.py']:
         inputs[path] = model.sha(ROOT/path)
     from html_blueprint_inspection import build as inspection_index
+    audit_model.group_assets(assets, payload['people'], manuals, art)
     payload['inspection'] = inspection_index(payload)
+    audit_model.attach_intents(payload, model.read(ROOT, 'docs/blueprint/IMPLEMENTATION_READINESS.json')['intent_catalog'])
+    payload['asset_audit'] = asset_audit
+    from blueprint_review_store import shared_directory
+    payload['review_location'] = str(shared_directory(ROOT) / 'reviews.json')
+    for path in ['tools/html_blueprint_audit.py', 'tools/blueprint_review_store.py', 'tools/html_blueprint_ui/review.js']:
+        inputs[path] = model.sha(ROOT/path)
+    for a in assets:
+        for path in a['audit']['document_references'] + a['audit']['runtime_references']:
+            if a['scope'] == 'MAIN_SOURCE': inputs[path] = model.sha(ROOT/path)
     for path in ['tools/html_blueprint_inspection.py','tools/html_blueprint_ui/inspection.js']:
         inputs[path] = model.sha(ROOT/path)
     css = (ROOT/'tools/html_blueprint_ui/style.css').read_text(encoding='utf-8')
     js = (ROOT/'tools/html_blueprint_ui/app.js').read_text(encoding='utf-8')
-    js = js.removesuffix('render();\n') + (ROOT/'tools/html_blueprint_ui/experience.js').read_text(encoding='utf-8') + (ROOT/'tools/html_blueprint_ui/inspection.js').read_text(encoding='utf-8') + (ROOT/'tools/html_blueprint_ui/design.js').read_text(encoding='utf-8') + '\nrender();followLocation();\n'
+    js = js.removesuffix('render();\n') + (ROOT/'tools/html_blueprint_ui/experience.js').read_text(encoding='utf-8') + (ROOT/'tools/html_blueprint_ui/inspection.js').read_text(encoding='utf-8') + (ROOT/'tools/html_blueprint_ui/design.js').read_text(encoding='utf-8') + (ROOT/'tools/html_blueprint_ui/review.js').read_text(encoding='utf-8') + '\nrender();followLocation();\n'
     html = '''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>십보강호 · 살아 있는 블루프린트</title><style>''' + css + '''</style></head><body>
 <a class="skip" id="skip-content" href="#main">본문으로</a><header><a href="#maps" class="brand">십보강호 <small>숨은 수의 비무</small></a><span class="edition">프로젝트 블루프린트</span><button id="resume-copy">재개 요청 복사</button></header>
 <div class="shell"><aside><nav aria-label="주요 메뉴" id="nav"></nav><label class="search-label" for="search">내용 찾기</label><input id="search" type="search" placeholder="인물 · 무공 · 자산 · 작업"><p id="freshness"></p><a href="../../AGENTS.md">작업 규칙 원본 ↗</a></aside><main id="main" tabindex="-1"></main></div>
 <dialog id="viewer"><button id="close-viewer" autofocus>닫기 · Esc</button><div id="viewer-body"></div></dialog><div id="notice" role="status" aria-live="polite"></div>
 <script id="blueprint-data" type="application/json">''' + model.script_json(payload) + '</script><script>' + js + '</script></body></html>'
     manifest = {'role': 'DERIVED_VIEW_NOT_CANON', 'source_revision': payload['source_revision'],
+                'image_inventory_digest': audit_model.inventory_digest(ROOT),
                 'generated_at': payload['generated_at'], 'inputs': inputs, 'reader_ids': [p['id'] for p in pages],
                 'asset_ids': [a['id'] for a in assets], 'candidate_revision': candidate_info['revision'] if candidate_info else None,
                 'media': {**{'output/blueprint/'+a['url']:a['sha256'] for a in assets if a['scope']=='PR342_CANDIDATE'},
                           **{'output/blueprint/'+p['url']:p['sha256'] for p in originals}}}
     resume = {'role': 'DERIVED_VIEW_NOT_CANON', 'source_revision': payload['source_revision'],
         'generated_at': payload['generated_at'], 'read_order': ['AGENTS.md', 'docs/BASE_RULES_VERSION.md', 'docs/PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md', '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md'],
-        'assets': [{k:a.get(k) for k in ['id','path','scope','revision','approval','owner','consumers']} for a in assets],
+        'assets': [{k:a.get(k) for k in ['id','path','scope','revision','approval','owner','consumers','audit','group']} for a in assets],
+        'user_review': {'path': payload['review_location'], 'role': 'USER_AUTHORED_REVIEW_NOT_IMPLEMENTATION_PROOF', 'read_on_resume': True},
         'work_items': pm['items'], 'inspection': payload['inspection'],
         'motion_evidence': [{'id':c['id'],'path':c['path'],'timeline':c.get('timeline',[]),'freshness':c['freshness']} for c in experience['clips']]}
     encoded = lambda obj: (json.dumps(obj, ensure_ascii=False, indent=2)+'\n').encode('utf-8')

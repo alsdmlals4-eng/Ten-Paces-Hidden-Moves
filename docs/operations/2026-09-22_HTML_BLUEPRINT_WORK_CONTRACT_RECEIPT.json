@@ -573,5 +573,27 @@
       "browser": "External Chrome images/tables/Giyun, launcher/recovery and repeat image error contract",
       "human": "NOT_RUN"
     }
+  },
+  "intent_review_followup": {
+    "approval": "2026-09-23 user approved intent/gallery and explicitly requested editable status/comments",
+    "baseline": "47d7fdb30c0faa7c0a9b206a9c6228784de4043c",
+    "scope": [
+      "source-linked intent and goals",
+      "tracked image audit and conservative retention",
+      "user review persistence/history/conflict/import-export",
+      "browser and source checks / normal PR integration"
+    ],
+    "status": "IMPLEMENTED_VERIFIED_PENDING_MERGE",
+    "owner": "docs/blueprint/HTML_MIGRATION_SPEC.md#18",
+    "review_rounds_completed": 2,
+    "human_game_review": "NOT_RUN",
+    "image_moves": 0,
+    "review_result": "Own full review1 plus independent full review2; candidate document-reference P2 reproduced RED and corrected; no unresolved P1/P2",
+    "verification": {
+      "focused": "11 store/audit/HTTP tests PASS; combined HTML suite rerun below",
+      "browser": "External Chrome save/reload/two-port sharing/conflict draft preservation/HTTP attachment export/JSON merge; IAB390px document375px input301px",
+      "governance": "129 tests PASS; operating-system/reference-freshness/skill-integrity PASS",
+      "new_game_runtime": "NOT_RUN; no product changes"
+    }
   }
 }

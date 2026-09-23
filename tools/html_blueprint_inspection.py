@@ -99,5 +99,15 @@ def build(payload):
         record('clip:'+clip['id'],'연출',clip['title'],'#motion/'+clip['id'],
                ['src/combat/combat_board_preview.gd','docs/blueprint/evidence/motion/manifest.json'],
                clip_ids=[clip['id']],planning='촬영 상황·사건 기록 연결')
+    for task in tasks:
+        scope = task.get('scope', 'MAIN_SOURCE')
+        identifier = 'task:' + ('candidate:' if scope != 'MAIN_SOURCE' else '') + task['work_item_id']
+        row = record(identifier, 'PM 작업', task.get('title', task['work_item_id']), '#pm/' + task['work_item_id'],
+                     [task['source']] if scope == 'MAIN_SOURCE' else [],
+                     planning='PM 원본의 상태·완료 조건 연결', scope=scope)
+        if scope != 'MAIN_SOURCE':
+            row['candidate_sources'] = [{'path':task['source'], 'revision':task.get('revision')}]
+        row['intent'] = {'status':'PM 원본 요약', 'purpose':task.get('title', task['work_item_id']),
+                         'success':' / '.join(c['text'] for c in task.get('checklist', []) if c.get('text')) or '원본의 완료 조건 확인', 'sources':[task['source']] if scope == 'MAIN_SOURCE' else []}
     return {'records':records, 'freshness_policy':'발행 시점의 원본 대조. 브라우저는 로컬 파일의 이후 변경을 자동 감시하지 않습니다.',
             'filters':{'all':'전체','unlinked':'미연결 자산','capture':'촬영 없음·갱신 필요','motion':'정적 표시·움직임 검토','human':'사용자 확인 미기록'}}
