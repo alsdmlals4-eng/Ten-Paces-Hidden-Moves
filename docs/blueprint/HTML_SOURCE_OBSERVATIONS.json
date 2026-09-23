@@ -1,6 +1,6 @@
 {
-  "observed_at": "2026-09-23T00:26:34.861578+00:00",
-  "main_sha": "2dfa2a6a9b846276869a8084f7be3a3ab3ef7f67",
+  "observed_at": "2026-09-23T00:46:13.809088+00:00",
+  "main_sha": "66a8b0dcbcff4d127eee42dca11b194cea37f3d4",
   "prs": {
     "199": {
       "baseRefName": "main",
@@ -112,6 +112,19 @@
       "state": "MERGED",
       "title": "feat: make blueprint screens and motions directly inspectable",
       "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/347"
+    },
+    "348": {
+      "baseRefName": "main",
+      "headRefOid": "0f50575f2b0433b67784e9a2c91bd747395a20a5",
+      "isDraft": false,
+      "mergeCommit": {
+        "oid": "66a8b0dcbcff4d127eee42dca11b194cea37f3d4"
+      },
+      "mergedAt": "2026-09-23T00:45:53Z",
+      "number": 348,
+      "state": "MERGED",
+      "title": "feat: 강호행로 기연과 HTML 기획·검수 연결",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/348"
     }
   },
   "freshness": "SNAPSHOT_NOT_LIVE"
