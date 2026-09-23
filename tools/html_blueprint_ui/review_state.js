@@ -11,19 +11,21 @@ class ReviewAutosave {
  persistDrafts(){try{this.persist(Object.fromEntries(this.drafts));}catch(error){return error.message;}return '';}
  async load(){
   if(this.loading)return this.loading;
-  this.loading=(async()=>{const value=await this.read();this.accept(value);this.loaded=true;
+  this.loading=(async()=>{const value=await this.read(),draftIds=[...this.drafts.keys()],ids=this.accept(value,false),states=[];this.loaded=true;
    for(const [id,draft] of this.drafts){
-    if(this.equal(draft,this.last(id))){this.drafts.delete(id);this.state(id,'saved');}
-    else if(draft.base_id!==(this.last(id)?.id??null))this.state(id,'conflict');
-    else {this.state(id,'pending');this.schedule(id);}
-   }this.persistDrafts();})();
+    if(this.equal(draft,this.last(id))){this.drafts.delete(id);states.push([id,'saved']);}
+    else if(draft.base_id!==(this.last(id)?.id??null))states.push([id,'conflict']);
+    else {states.push([id,'pending']);this.schedule(id);}
+   }this.persistDrafts();this.changed(this.document,[...new Set([...ids,...draftIds])]);
+   for(const [id,state] of states)this.state(id,state);})();
   try{await this.loading;}finally{this.loading=null;}
  }
- accept(value){
+ accept(value,notify=true){
   if(value.project&&value.project!=='ten-paces-hidden-moves')throw Error('다른 프로젝트의 검토 응답입니다.');
   if(!Number.isInteger(value.revision)||!value.items)throw Error('검토 응답을 확인할 수 없습니다.');
-  if(value.revision<this.document.revision)return;
-  this.document=value;this.changed(value);
+  if(value.revision<this.document.revision)return [];
+  const ids=[...new Set([...Object.keys(this.document.items),...Object.keys(value.items)])].filter(id=>JSON.stringify(this.document.items[id]||[])!==JSON.stringify(value.items[id]||[]));
+  this.document=value;if(notify)this.changed(value,ids);return ids;
  }
  edit(id,entry,{compose=false}={}){
   const previous=this.drafts.get(id);
@@ -46,7 +48,7 @@ class ReviewAutosave {
   const ids=only?[only]:[...this.drafts.keys()];
   this.active=(async()=>{for(const id of ids){
    const draft=this.drafts.get(id);if(!draft||this.states.get(id)==='conflict')continue;
-   if(this.equal(draft,this.last(id))){this.drafts.delete(id);this.state(id,'saved');this.persistDrafts();continue;}
+   if(this.equal(draft,this.last(id))){this.drafts.delete(id);this.state(id,'saved');this.persistDrafts();this.changed(this.document,[id]);continue;}
    if(draft.base_id!==(this.last(id)?.id??null)){this.state(id,'conflict');continue;}
    this.state(id,'saving');
    try{
@@ -61,10 +63,11 @@ class ReviewAutosave {
      }
     }
     if(!result)continue;
-    this.accept(result);
+    const changedIds=this.accept(result,false);
     if(this.drafts.get(id)===draft){this.drafts.delete(id);this.state(id,'saved');}
     else {this.drafts.get(id).base_id=this.last(id)?.id??null;this.state(id,'pending');}
     this.persistDrafts();
+    this.changed(this.document,[...new Set([...changedIds,id])]);
    }catch(error){this.state(id,'error',error.message);}
   }})();
   try{await this.active;}finally{this.active=null;}

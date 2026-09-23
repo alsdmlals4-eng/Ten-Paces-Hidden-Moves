@@ -2,7 +2,7 @@
 import hashlib
 import json
 import re
-from html_blueprint import ROOT, local_path, sha
+from html_blueprint import ROOT, local_path, sha, read
 
 
 def card_art_paths(selection, manual_id, card):
@@ -25,10 +25,16 @@ def build(payload):
              'DOGYEOM_STATUS_PORTRAIT_01_v1':'도겸 · 상태창 초상','KakaoTalk_20260826_193205188_11':'사용자 제공 참고 이미지',
              'clash_sparks_ink_gold_v2':'격돌 불꽃 · 금빛 먹 효과','player_sword_sequence_v1':'플레이어 검술 포즈',
              'enemy_sword_sequence_v1':'상대 검술 포즈','player_reactions_candidate_v2':'플레이어 피격·대응 포즈 후보',
-             'enemy_reactions_candidate_v2':'상대 피격·대응 포즈 후보','journey_title_reference_v1':'새 여정 제목 화면 참고'}
+             'enemy_reactions_candidate_v2':'상대 피격·대응 포즈 후보','journey_title_reference_v1':'새 여정 제목 화면 참고',
+             'jianghu-events-v2-native-20260924':'능력치 사건 선택 · 실제 Godot 검수 화면'}
     for a in assets: a['name'] = names.get(a['name'],a['name'])
     tasks = payload['pm']['items']
     stills = {c['still_capture']['path']:c['still_capture'] for c in payload['experience']['contexts'].values() if c.get('still_capture')}
+    receipt_path = 'docs/operations/2026-09-22_HTML_BLUEPRINT_WORK_CONTRACT_RECEIPT.json'
+    event_still = read(ROOT, receipt_path)['event_checks_readability_followup']['tests']['native_capture']
+    if sha(local_path(ROOT, event_still['path'])) != event_still['sha256']:
+        raise ValueError('Event capture identity mismatch')
+    stills[event_still['path']] = dict(event_still, source=receipt_path, label='Godot 사건 선택 정지화면 촬영 · 전체 플레이 검증과 별도')
     def record(id, kind, name, route, sources, linked_assets=(), clip_ids=(), planning='원본 기록 있음', match_sources=None, scope=None, revision=None, still=None):
         if still: sources = list(sources) + [still['path'], still['source']]
         sources = sorted(set(sources))
@@ -44,7 +50,7 @@ def build(payload):
             'planning': planning,
             'asset': '승인 기록 있음' if art and all(a['approval']=='USER_APPROVED' for a in art) else '승인 범위 개별 확인',
             'implementation': '원본 연결 있음 · 실행과 별도' if sources else '직접 연결 미확인',
-            'runtime': '촬영 갱신 필요' if stale else '고정 상황 촬영 있음' if media else 'Godot 시작 설정 정지화면 촬영 · 전체 플레이 검증과 별도' if still else '이 항목의 현재 촬영 근거 없음',
+            'runtime': '촬영 갱신 필요' if stale else '고정 상황 촬영 있음' if media else still.get('label','Godot 시작 설정 정지화면 촬영 · 전체 플레이 검증과 별도') if still else '이 항목의 현재 촬영 근거 없음',
             'human': '항목별 사용자 검수 미기록',
         }
         row = {'id':id, 'kind':kind, 'name':name, 'route':route, 'sources':sources,

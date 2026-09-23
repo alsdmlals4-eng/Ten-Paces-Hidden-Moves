@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "authority": "CURRENT_OPERATING_STATE",
-  "source_decision": "USER-APPROVED-TEN-HTML-PILOT-20260922",
+  "source_decision": "TEN-DEC-20260924-EVENT-CHECKS-HTML-01",
   "active_planning_work_mode": "REVIEW",
   "active_planning_pr": "NONE",
   "active_planning_parent_pr": "NONE",
   "active_approval_count": "SCOPED_BUILD_AUTHORIZED_HUMAN_FINAL_NOT_RUN",
-  "active_decision_state": "HTML_INSPECTION_IMPLEMENTED_VERIFIED",
-  "next_package": "PR342_PRODUCT_CANDIDATE_FRESH_READ_AND_CONTINUE",
-  "next_planning_decision": "USER-APPROVED-TEN-HTML-PILOT-20260922"
+  "active_decision_state": "EVENT_CHECKS_HTML_VERIFIED_READY_FOR_GUARDED_PR",
+  "next_package": "EVENT_CHECKS_HTML_GUARDED_PR_AND_APPROVAL_CLOSEOUT",
+  "next_planning_decision": "TEN-DEC-20260924-EVENT-CHECKS-HTML-01"
 }

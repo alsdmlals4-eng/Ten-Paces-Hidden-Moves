@@ -1,6 +1,6 @@
 {
-  "observed_at": "2026-09-23T13:59:37.177112+00:00",
-  "main_sha": "7a5090ef71b2c434619428819eb14dc91b9c178b",
+  "observed_at": "2026-09-23T18:07:12.480609+00:00",
+  "main_sha": "2e3bf285352556eeae16452403cef2368676035c",
   "prs": {
     "199": {
       "baseRefName": "main",
@@ -190,6 +190,32 @@
       "state": "MERGED",
       "title": "HTML 블루프린트 자동 저장과 종류별 정리·폐기 요청",
       "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/353"
+    },
+    "355": {
+      "baseRefName": "main",
+      "headRefOid": "c15016a091e7890af82898c5b8f40f5e62303762",
+      "isDraft": false,
+      "mergeCommit": {
+        "oid": "d4dc0c18a7970bee64be860772ae7aca34116f87"
+      },
+      "mergedAt": "2026-09-23T15:20:32Z",
+      "number": 355,
+      "state": "MERGED",
+      "title": "fix: 블루프린트 옛 화면 삭제와 행동 삽화 통합",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/355"
+    },
+    "356": {
+      "baseRefName": "main",
+      "headRefOid": "c8894bbc589437bcaaa16ef33c4cab17479a4c98",
+      "isDraft": false,
+      "mergeCommit": {
+        "oid": "2e3bf285352556eeae16452403cef2368676035c"
+      },
+      "mergedAt": "2026-09-23T17:04:01Z",
+      "number": 356,
+      "state": "MERGED",
+      "title": "fix: 블루프린트 비교표 정리와 이미지·영상 연결 유지",
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/356"
     }
   },
   "freshness": "SNAPSHOT_NOT_LIVE"

@@ -10,6 +10,22 @@ import html_blueprint_experience as experience
 
 
 class InspectionTests(unittest.TestCase):
+    def test_event_capture_is_a_route_still_not_missing_or_starter_evidence(self):
+        import html_blueprint_inspection as inspection
+        from html_blueprint_audit import group_assets
+        path='docs/blueprint/evidence/jianghu-events-v2-native-20260924.png'
+        asset={'id':'event-still','path':path,'name':'jianghu-events-v2-native-20260924',
+               'scope':'MAIN_SOURCE','owner':path,'consumers':[],'approval':'UNVERIFIED',
+               'sha256':inspection.sha(inspection.ROOT/path)}
+        payload={'assets':[asset],'experience':{'clips':[],'contexts':{}},'pm':{'items':[]},
+                 'manuals':[],'people':[]}
+        result=inspection.build(payload)['records'][0]
+        self.assertIn('사건 선택', result['states']['runtime'])
+        self.assertNotIn('capture', result['flags'])
+        self.assertNotIn('시작 설정', result['states']['runtime'])
+        group_assets([asset],[],[])
+        self.assertEqual(asset['group']['id'],'screen:route')
+
     def test_starter_still_has_verified_capture_evidence(self):
         import html_blueprint as model
         context=experience.build(model.collect_reader())['contexts']['starter']

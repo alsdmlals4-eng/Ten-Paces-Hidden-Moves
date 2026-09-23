@@ -30,9 +30,10 @@ class MediaTableTests(unittest.TestCase):
     def test_event_effects_keep_all_choices_but_group_repeated_event_context(self):
         pages = reader.refine(model.collect_reader(), model.read(model.ROOT, 'data/run/giyun_rules.json'))
         table = next(p for p in pages if p['id'] == 'reader-011')['blocks'][0]
-        self.assertTrue(table.get('group_first_column'))
-        self.assertEqual(len(table['rows']), 18)
-        self.assertEqual(len(set(r[0] for r in table['rows'])), 6)
+        self.assertEqual(table['kind'], 'event_catalog')
+        self.assertEqual(len(table['events']), 10)
+        self.assertEqual(len(set(e['id'] for e in table['events'])), 10)
+        self.assertTrue(all(len(e['choices']) == 3 for e in table['events']))
 
     def test_similar_image_lists_and_comparisons_share_compact_layouts(self):
         pages = {p['id']: p for p in reader.refine(model.collect_reader(), model.read(model.ROOT, 'data/run/giyun_rules.json'))}

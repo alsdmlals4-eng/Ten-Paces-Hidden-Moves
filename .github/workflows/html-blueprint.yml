@@ -29,8 +29,11 @@ jobs:
         run: python -m unittest tests.test_blueprint_image_numbers tests.test_html_blueprint tests.test_html_blueprint_preview tests.test_html_blueprint_diagrams tests.test_html_blueprint_publication tests.test_html_blueprint_experience tests.test_html_blueprint_inspection tests.test_blueprint_launcher tests.test_blueprint_design_tables tests.test_blueprint_review tests.test_blueprint_reader_cleanup tests.test_blueprint_media_tables
       - name: Build complete derived view
         run: python tools/build_html_blueprint.py
+      - name: Verify event descriptions and derived image previews
+        run: python -m unittest tests.test_blueprint_event_catalog tests.test_blueprint_previews
       - name: Check all display views and local links
         run: |
           node tools/check_html_blueprint_ui.cjs
           node tests/blueprint_autosave.cjs
           node tests/blueprint_review_sync.cjs
+          node tests/blueprint_ui_performance.cjs

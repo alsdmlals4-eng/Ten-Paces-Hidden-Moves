@@ -60,7 +60,11 @@ func _bridge_roundtrip(player_mastery: Dictionary, with_giyun: bool = false) -> 
     var run = load("res://src/run/vertical_slice_run_state.gd").new()
     var seed_value := 0
     var rules = load("res://src/run/giyun_rules.gd").new()
-    while rules.event_for(seed_value,1,0).giyun_id != "jade_guard": seed_value += 1
+    while seed_value < 10000:
+        var event: Dictionary = rules.event_for(seed_value,1,0)
+        if rules.resolve_event(event,"accept",[],rules.player_stats(),seed_value,1,0).giyun_id == "jade_guard": break
+        seed_value += 1
+    check(seed_value < 10000, "Find a deterministic awarded jade_guard fixture")
     check(run.start_new_giyun_run(seed_value,"combat") if with_giyun else run.start_new_variable_run(12345, "combat"), "Initialize variable combat run")
     check(run.confirm_setup_loadout(STARTERS, player_mastery), "Confirm player loadout")
     for _step in range(3): check(run.advance(), "Advance to v2 combat")

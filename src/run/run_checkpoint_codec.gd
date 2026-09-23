@@ -8,6 +8,7 @@ const MAX_SAFE_INTEGER := 9007199254740991
 const SCHEMA_VERSION := 1
 const VARIABLE_SCHEMA_VERSION := 2
 const GIYUN_SCHEMA_VERSION := 5 # v3/v4 belong to the separate growth candidate.
+const EVENT_SCHEMA_VERSION := 6
 const VARIABLE_RULESET_ID := "ten-duel-variable-roster-v2"
 const ROSTER_FIELDS := ["ruleset_id", "roster_version", "roster_seed", "resolved_encounters", "roster_digest"]
 # Bump for code-owned combat/reward/route/save semantics; presentation changes do not bump it.
@@ -61,8 +62,11 @@ static func error(status: String, detail: String) -> Dictionary:
     return {"ok": false, "status": status, "error": detail}
 
 func content_identity_for_schema(schema_version: int) -> String:
+    if schema_version == EVENT_SCHEMA_VERSION:
+        var rules = load("res://src/run/giyun_rules.gd").new()
+        return digest({"base": content_identity_for_schema(VARIABLE_SCHEMA_VERSION), "contract": "jianghu-giyun-v2", "data": rules.catalog, "player_stats": rules.player_stats()})
     if schema_version == GIYUN_SCHEMA_VERSION:
-        return digest({"base": content_identity_for_schema(VARIABLE_SCHEMA_VERSION), "contract": "jianghu-giyun-v1", "data": load("res://src/run/giyun_rules.gd").new().catalog})
+        return digest({"base": content_identity_for_schema(VARIABLE_SCHEMA_VERSION), "contract": "jianghu-giyun-v1", "data": load("res://src/run/giyun_rules.gd").new().legacy_catalog})
     if schema_version == VARIABLE_SCHEMA_VERSION:
         if not _variable_content_identity.is_empty(): return _variable_content_identity
         var provider = load("res://src/run/variable_opponent_roster.gd").new()
@@ -126,9 +130,10 @@ func validate_payload(run_state, combat_checkpoint = {}) -> Dictionary:
     return {"ok": true, "status": "VALID", "run_state": normalized(run_state), "combat_checkpoint": {}}
 
 func encode(save_id: String, checkpoint_id: String, revision: int, run_state: Dictionary, combat_checkpoint: Dictionary = {}, active: bool = true, schema_version: int = SCHEMA_VERSION) -> Dictionary:
-    if active: schema_version = GIYUN_SCHEMA_VERSION if run_state.has("giyun") else (VARIABLE_SCHEMA_VERSION if run_state.get("ruleset_id", "") == VARIABLE_RULESET_ID else SCHEMA_VERSION)
-    if schema_version not in [SCHEMA_VERSION, VARIABLE_SCHEMA_VERSION, GIYUN_SCHEMA_VERSION]: return error("INCOMPATIBLE", "Unsupported schema")
-    if active and schema_version in [VARIABLE_SCHEMA_VERSION, GIYUN_SCHEMA_VERSION] and run_state.get("roster_save_id") != save_id: return error("CORRUPT", "Roster/save identity mismatch")
+    if active and run_state.has("giyun") and typeof(run_state.giyun) != TYPE_DICTIONARY: return error("CORRUPT", "Malformed giyun state")
+    if active: schema_version = (EVENT_SCHEMA_VERSION if run_state.giyun.get("version") == 2 else GIYUN_SCHEMA_VERSION) if run_state.has("giyun") else (VARIABLE_SCHEMA_VERSION if run_state.get("ruleset_id", "") == VARIABLE_RULESET_ID else SCHEMA_VERSION)
+    if schema_version not in [SCHEMA_VERSION, VARIABLE_SCHEMA_VERSION, GIYUN_SCHEMA_VERSION, EVENT_SCHEMA_VERSION]: return error("INCOMPATIBLE", "Unsupported schema")
+    if active and schema_version in [VARIABLE_SCHEMA_VERSION, GIYUN_SCHEMA_VERSION, EVENT_SCHEMA_VERSION] and run_state.get("roster_save_id") != save_id: return error("CORRUPT", "Roster/save identity mismatch")
     if save_id.is_empty() or checkpoint_id.is_empty() or not integer(revision, 1) or content_identity_for_schema(schema_version).is_empty():
         return error("CORRUPT", "Missing checkpoint identity")
     if active:
@@ -138,7 +143,7 @@ func encode(save_id: String, checkpoint_id: String, revision: int, run_state: Di
         return error("CORRUPT", "Tombstone contains active state")
     var envelope := {"schema_version": schema_version, "save_id": save_id, "checkpoint_id": checkpoint_id, "revision": revision, "active": active, "written_at_utc": Time.get_datetime_string_from_system(true) + "Z", "app_version": str(ProjectSettings.get_setting("application/config/version", "1")), "content_identity": content_identity_for_schema(schema_version), "run_state": run_state.duplicate(true), "combat_checkpoint": combat_checkpoint.duplicate(true)}
     if envelope.app_version.is_empty(): envelope.app_version = "unversioned-schema1"
-    if schema_version in [VARIABLE_SCHEMA_VERSION, GIYUN_SCHEMA_VERSION]:
+    if schema_version in [VARIABLE_SCHEMA_VERSION, GIYUN_SCHEMA_VERSION, EVENT_SCHEMA_VERSION]:
         for field in ROSTER_FIELDS:
             envelope[field] = run_state.get(field) if active else {"ruleset_id": VARIABLE_RULESET_ID, "roster_version": 1, "roster_seed": 0, "resolved_encounters": [], "roster_digest": digest([])}[field]
     envelope["integrity_hash"] = digest(envelope)
@@ -177,10 +182,10 @@ func decode(text: String) -> Dictionary:
     if not integer(envelope.get("schema_version"), 1):
         return error("CORRUPT", "Malformed schema version")
     # An explicit future numeric schema owns the slot even when its format is unknown.
-    if int(envelope.schema_version) not in [SCHEMA_VERSION, VARIABLE_SCHEMA_VERSION, GIYUN_SCHEMA_VERSION]:
+    if int(envelope.schema_version) not in [SCHEMA_VERSION, VARIABLE_SCHEMA_VERSION, GIYUN_SCHEMA_VERSION, EVENT_SCHEMA_VERSION]:
         return error("INCOMPATIBLE", "Unsupported schema")
     var keys := ["schema_version", "save_id", "checkpoint_id", "revision", "active", "written_at_utc", "app_version", "content_identity", "run_state", "combat_checkpoint", "integrity_hash"]
-    if int(envelope.schema_version) in [VARIABLE_SCHEMA_VERSION, GIYUN_SCHEMA_VERSION]: keys.append_array(ROSTER_FIELDS)
+    if int(envelope.schema_version) in [VARIABLE_SCHEMA_VERSION, GIYUN_SCHEMA_VERSION, EVENT_SCHEMA_VERSION]: keys.append_array(ROSTER_FIELDS)
     if envelope.size() != keys.size(): return error("CORRUPT", "Unexpected envelope fields")
     for key in keys:
         if not envelope.has(key): return error("CORRUPT", "Missing envelope field")
@@ -195,7 +200,7 @@ func decode(text: String) -> Dictionary:
     # a genuinely incompatible, intact checkpoint and suppress recovery.
     if envelope.content_identity != content_identity_for_schema(int(envelope.schema_version)) or content_identity_for_schema(int(envelope.schema_version)).is_empty():
         return error("INCOMPATIBLE", "Incompatible content")
-    if int(envelope.schema_version) in [VARIABLE_SCHEMA_VERSION, GIYUN_SCHEMA_VERSION]:
+    if int(envelope.schema_version) in [VARIABLE_SCHEMA_VERSION, GIYUN_SCHEMA_VERSION, EVENT_SCHEMA_VERSION]:
         if envelope.ruleset_id != VARIABLE_RULESET_ID or not integer(envelope.roster_version, 1, 1) or not integer(envelope.roster_seed, 0) or typeof(envelope.resolved_encounters) != TYPE_ARRAY or typeof(envelope.roster_digest) != TYPE_STRING: return error("CORRUPT", "Malformed roster envelope")
         if digest(envelope.resolved_encounters) != envelope.roster_digest: return error("CORRUPT", "Roster digest mismatch")
         if envelope.active:
@@ -205,7 +210,10 @@ func decode(text: String) -> Dictionary:
         elif envelope.roster_seed != 0 or not envelope.resolved_encounters.is_empty(): return error("CORRUPT", "Tombstone contains roster data")
     elif envelope.run_state.has("ruleset_id"):
         return error("CORRUPT", "Legacy envelope contains variable state")
-    if envelope.active and (envelope.schema_version == GIYUN_SCHEMA_VERSION) != envelope.run_state.has("giyun"): return error("CORRUPT", "Giyun schema/state mismatch")
+    if envelope.active and (int(envelope.schema_version) in [GIYUN_SCHEMA_VERSION, EVENT_SCHEMA_VERSION]) != envelope.run_state.has("giyun"): return error("CORRUPT", "Giyun schema/state mismatch")
+    if envelope.active and envelope.run_state.has("giyun"):
+        var expected_version := 2 if envelope.schema_version == EVENT_SCHEMA_VERSION else 1
+        if typeof(envelope.run_state.giyun) != TYPE_DICTIONARY or envelope.run_state.giyun.get("version") != expected_version: return error("CORRUPT", "Event rules/schema mismatch")
     if envelope.active:
         var validation := validate_payload(envelope.run_state, envelope.combat_checkpoint)
         if not validation.ok: return validation

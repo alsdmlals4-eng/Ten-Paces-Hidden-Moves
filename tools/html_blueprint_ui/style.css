@@ -239,3 +239,6 @@ main :is(p,h1,h2,h3,a,small){overflow-wrap:anywhere}
 .sequence-comparison{display:grid;grid-template-columns:minmax(200px,28%) minmax(0,1fr);gap:20px}.comparison-picture .reader-block img{max-height:210px}
 @media(max-width:1100px){.portrait-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:680px){.portrait-gallery{grid-template-columns:1fr}.sequence-comparison{grid-template-columns:1fr}.image-comparison-table{min-width:620px}}
+
+.table-wrap[data-scrollable="true"]{box-shadow:inset -3px 0 0 var(--gold)}
+.table-wrap:focus-visible{outline:3px solid #237784;outline-offset:3px}
