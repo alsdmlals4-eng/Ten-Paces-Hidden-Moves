@@ -159,7 +159,21 @@ def manual_readable_tables(manual):
             f"기력 {card.get('stamina_cost',0)} / 내력 {card.get('internal_cost',0)}",
             f"{distance.get('min','—')}~{distance.get('max','—')}",
             ' → '.join(describe(s) for s in card.get('effect_steps', []))])
-    return {'growth': growth, 'techniques': techniques}
+    shared = []
+    generic = {3:'첫 기술 획득', 5:'3성 기술에 추가 효과', 7:'두 번째 기술 획득',
+               9:'7성 기술에 추가 효과', 10:'절초 획득'}
+    for row in growth:
+        star = int(row[0].removesuffix('성'))
+        shared.append([row[0], row[1], generic.get(star, planned.get(star, '신규 기술 해금 없음')),
+                       '현재 기술·강화 데이터 연결' if star in generic else row[4]])
+    cards = []
+    for key, card in manual['cards'].items():
+        overlay = next((o for o in manual.get('overlays', {}).values() if o['target'] == key), None)
+        cards.append({'id':card['id'], 'name':card['name'], 'unlock_star':card['unlock_star'],
+                      'effects':[describe(step) for step in card.get('effect_steps', [])],
+                      'enhancement':dict(name=overlay['name'], unlock_star=overlay['unlock_star'],
+                                         effects=[describe(s) for s in overlay.get('effect_steps',[])]) if overlay else None})
+    return {'growth': growth, 'techniques': techniques, 'shared_growth': shared, 'card_rows': cards}
 
 
 def collect_reader():

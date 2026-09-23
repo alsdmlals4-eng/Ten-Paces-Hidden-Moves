@@ -51,6 +51,30 @@ assert(!starterEvidence.flags.includes('capture'));
 const starterAsset=data.inspection.records.find(r=>r.image_number===319);
 assert(starterAsset.states.runtime.includes('정지화면 촬영'),'Starter asset must retain the same evidence');
 assert(data.inspection.records.find(r=>r.id==='screen:plan').flags.includes('capture'),'AI-edited reference must not count as runtime capture');
+// Approved media/table correction: compact overview, shared progression and exact card playback.
+const screenCards=check("reader('reader-006')");
+assert(screenCards.includes('screen-gallery'),'Atlas must group screen/label/comment in one card');
+assert.equal((screenCards.match(/data-screen-context=/g)||[]).length,9);
+assert(screenCards.includes('전투 준비 화면'));
+const manualComparison=check('manualCatalog()');
+assert.equal((manualComparison.match(/data-common-growth/g)||[]).length,1,'Growth belongs in one common table');
+assert.equal((manualComparison.match(/data-card=/g)||[]).length,30);
+assert(!manualComparison.includes('<video '),'Catalog must open a chosen clip without mounting30players');
+for(const m of data.manuals)for(const c of Object.values(m.cards))assert(manualComparison.includes('href="#motion/'+c.id+'"'));
+assert.equal((check("reader('reader-011')").match(/rowspan="3"/g)||[]).length,6);
+assert(!check('movies()').includes('<video '),'Clip index should use selectable medium thumbnails');
+assert(check('basicActionCards()').includes('sprite-window'),'Crop real img elements to recover clear image errors');
+const growthOverview=check('home()');
+assert(growthOverview.indexOf('id="overview-manuals"')<growthOverview.indexOf('data-common-growth'),'Existing growth links must land before the common table');
+assert.equal((check("reader('reader-030')").match(/class="screen-card card"/g)||[]).length,16,'Portrait list should use16compact cells');
+for(let n=97;n<=104;n++){const comparison=check('reader('+JSON.stringify('reader-'+String(n).padStart(3,'0'))+')');assert(comparison.includes('class="tactics-table"'));assert(comparison.includes('약점')&&comparison.includes('대응'));}
+assert(check("reader('reader-005')").includes('screen-gallery'));
+assert(check("reader('reader-020')").includes('image-comparison-table'));
+const executionComparison=check("reader('reader-020')");
+assert(executionComparison.includes('common-screen-info'),'Shared progress/result needs its own screen-wide row');
+assert(!executionComparison.split('</tbody>')[0].includes('현재 계획  1 / 3'),'Whole-screen result must not be attached to opponent card');
+
+const sequence=check("reader('reader-022')");assert(sequence.includes('sequence-comparison'));assert(sequence.includes('첫째 타격')&&sequence.includes('셋째 타격'));
 const actionCatalog=check('basicActionCards()');
 const basicArt=data.image_catalog.find(r=>r.number===19);
 assert.equal((actionCatalog.match(/data-basic-action=/g)||[]).length,10);

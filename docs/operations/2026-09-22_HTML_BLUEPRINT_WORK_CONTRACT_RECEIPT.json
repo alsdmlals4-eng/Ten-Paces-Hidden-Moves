@@ -1020,5 +1020,85 @@
     },
     "independent_focused_readback": "PASS: all three P2 and deletion wording resolved; remaining P0/P1/P2 zero. No third full review.",
     "final_focused_correction": "2026-09-24 KST: browser showed the actual starter still but generic inspection said no capture. Wire receipt-verified SETUP/path/SHA256 to screen and asset inspection; keep142 edited reference out of runtime capture. Short atlas captions fit their nodes."
+  },
+  "media_tables_followup": {
+    "status": "IMPLEMENTED_VERIFIED",
+    "approval": "Latest user seven HTML media/table/layout corrections; same approved contract; clarified target=long body image/comment list (not connection diagram); requested analogous comparisons throughout",
+    "baseline": "d4dc0c18a7970bee64be860772ae7aca34116f87",
+    "work_mode": "BUILD_TO_REVIEW",
+    "skill_modes": [
+      "ten-paces-verification:html-blueprint-review",
+      "systematic-debugging"
+    ],
+    "intent": "Compact source-backed comparisons; correct context labels and persistent image/video access without changing game rules",
+    "feasibility": "FEASIBLE",
+    "source_relevance": {
+      "status": "REUSED_EVIDENCE_AND_FOCUSED_PRIMARY_CHECK",
+      "sources": [
+        "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Range_requests",
+        "https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Formats/Video_codecs"
+      ],
+      "limit": "Codec compatibility guidance; local Chrome/IAB actual playback establishes this artifact behavior"
+    },
+    "tests": {
+      "red": "5 regressions failed before implementation (3 failures,2 missing API errors)",
+      "baseline_browser": "Expired previous preview connection refused. Fresh PNG/MP4 HTTP206 and actual Chrome2.4s complete/IAB advancing playback.",
+      "python": "69related HTML/preview/review testsPASS, new lease origin/token assertions included",
+      "node": "1087source-rendered views/12733local linksPASS; autosave/syncPASS",
+      "http": "464 actual published image/video range requests, including36MP4:206 and proper MIME, errors0",
+      "browser": "Chrome exact 매화삼첩 link plays matchingMP4 through2.233s; IAB clash-win plays through2.4s.5source atlas crops/fullart235px no bleed.9screen image cards correct142combat/144rest labels;6events/18choices. FinalChrome #home/manuals anchor190.8px; common growth1/table30cards/mounted video0.",
+      "review_regression": "RED existing #home/manuals anchor below tables; corrected before reader065; independent source and final generated HTML GREEN",
+      "responsive": "Actual IAB390px: page375px; atlas1column and317px comment; technique720px inside347px horizontal-scroll container without page overflow.960px: page945px/atlas2columns. Temporary viewport reset.",
+      "final_publication": "New publication opened in IAB: clash-win ready4/advancing. Existing Chrome page visibly reports SUPERSEDED and offers validated new session URL retaining its #reader/reader-011 path; no automatic navigation or draft mutation.",
+      "operating": "Project operating contract / canonical reference freshness / skill package integrity PASS"
+    },
+    "protected": {
+      "original_dirty": 45,
+      "user_review_revision": 3,
+      "user_review_sha256": "a7203a3457862381fb9b17e8076b588ef10eff128f9b4ab0d29021a3c89b324b",
+      "unrelated_prs": [
+        342,
+        199,
+        200
+      ],
+      "product_paths": "DIFF_ZERO",
+      "final_user_review_sha256": "a7203a3457862381fb9b17e8076b588ef10eff128f9b4ab0d29021a3c89b324b"
+    },
+    "full_scope_review_budget": 2,
+    "full_scope_reviews": [
+      {
+        "round": 1,
+        "reviewer": "Author full scope",
+        "scope": "Current canon/spec/diff/untouched reader/inspection/review/launcher/CI consumers, actual media tests, cost and preservation boundaries",
+        "findings_corrected": "Removed old fixed-timer cleanup reference; clipped normal-img atlas uses proportional width at fixed maximum height, preventing cropped feet/neighbor bleed; keep card and image comments distinctly accessible; no duplicate full video catalog/30manual cards in overview. Exact IDs and runtime versus reference remain unchanged."
+      },
+      {
+        "round": 2,
+        "reviewer": "Independent media_tables_review",
+        "scope": "Full approved spec/diff/unchanged reader+review+phase-playback+launcher consumers, boundaries, evidence, retention cost",
+        "finding": "P2 existing home/manuals link landed below common table after deduplication",
+        "correction": "RED regression and anchor moved immediately before reader065. Focused source readback: unique anchor before common growth;112reader IDs,30card rows/exactlinks,one common table preserved. Independent12focusedPython and HTTP lease/origin/token probes PASS. No remainingP0/P1/P2. No third full review."
+      }
+    ],
+    "not_verified": [
+      "Human fun",
+      "Android",
+      "full gameplay",
+      "new final art approval"
+    ],
+    "browser_capture_limit": "Chrome CDP screenshot timed out twice; DOM/playback were available. Actual visual screenshots inspected via IAB. No false Chrome screenshot PASS.",
+    "similar_cases_followup": {
+      "scope": "12additional source pages:005flow,020execution,022sequence,030portrait roster,097-104tactics",
+      "implementation": "Original blocks/ordering preserved; compact image runs and16portrait cells; image+caption+review same row; shared sequence image once; tactics4fields/table",
+      "tests": "69relatedPythonPASS; final11focused reader/mediaPASS;1087display/12733linksPASS. Independentfocused6tests and119text/45image-use preservationPASS.",
+      "focused_finding": "Whole-screen progress/result under opponent card; RED first, explicitsharedtextindices -> own common-screen-info. No new full review.",
+      "browser": "Actual IAB tactics table: separate same-row review and same IDs,369px rows; page1265<viewport1280px; all4fields visible. FinalIABreader020opponentrow only ownlabel,3image rows/3reviews and separatecommoninfo.390px: page375px,1100px tactics table inside347px scroller; sequence1image/1review/3steps and no pageoverflow. Viewportreset.",
+      "focused_review": "No remainingP0/P1/P2 after commonprogress/result separated from opponentcard. Same16tactics IDs/forms once each; same source sequence image/form once and3steps."
+    },
+    "integration": {
+      "status": "CHECK_GITHUB_LIVE",
+      "branch": "codex/blueprint-media-tables-20260924",
+      "policy": "Normal PR exact-head checks and merge; original checkout remains untouched."
+    }
   }
 }
