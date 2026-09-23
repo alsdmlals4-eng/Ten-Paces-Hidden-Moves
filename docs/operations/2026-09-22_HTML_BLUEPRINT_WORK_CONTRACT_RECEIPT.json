@@ -639,7 +639,7 @@
       "user review persistence/history/conflict/import-export",
       "browser and source checks / normal PR integration"
     ],
-    "status": "IMPLEMENTED_VERIFIED_PENDING_MERGE",
+    "status": "IMPLEMENTED_VERIFIED_DELIVERY_GITHUB_LIVE",
     "owner": "docs/blueprint/HTML_MIGRATION_SPEC.md#18",
     "review_rounds_completed": 2,
     "human_game_review": "NOT_RUN",
@@ -652,6 +652,7 @@
       "new_game_runtime": "NOT_RUN; no product changes"
     },
     "implementation_commit": "387d7ac193131a12a49ab5bd7eb2cdd52a2b60f9",
-    "delivery_authority": "This followup implementation is verified. Current PR exact-head checks, merge state and main readback are owned by GitHub live metadata; refresh on resume."
+    "delivery_authority": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/350 : refresh exact-head checks, merge state and latest main on resume; status above means implementation verification, not an invented pre-merge result.",
+    "pull_request": 350
   }
 }
