@@ -13,7 +13,7 @@
     "version": "9.4.4"
   },
   "canonical_source": "skills/PROJECT_BASE_ADAPTER.json",
-  "canonical_source_sha256": "0a65e3a889a2366baeff54d677e1370fc43783a8a7ca04997e8210658297dfec",
+  "canonical_source_sha256": "c0ffddeeca233ac6c5f763360b9d859e3b62791bb46bf702aa5a4dd7923a242e",
   "canonical_sources": [
     "docs/01_GAME_DESIGN.md",
     "docs/02_COMBAT_RULES.md",
