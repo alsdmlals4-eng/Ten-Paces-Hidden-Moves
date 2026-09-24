@@ -17,7 +17,8 @@ func shot(key: String, source := "ordinary_screen_navigation") -> void:
 func capture() -> void:
 	DirAccess.make_dir_recursive_absolute(OUT)
 	shell = load("res://scenes/run/vertical_slice_shell.tscn").instantiate()
-	shell._save_storage_override = "res://output/ink-screen-validation/fixture-save.json"
+	# Each capture starts at a clean title; a prior test save is never user data.
+	shell._save_storage_override = "res://output/ink-screen-validation/fixture-save-%d.json" % OS.get_process_id()
 	root.add_child(shell)
 	await create_timer(0.5).timeout
 	await shot("main")

@@ -3,12 +3,12 @@
   "fixture_seed": 1,
   "opponent": "slot1_dogyeom",
   "project": "C:/Users/user/.codex/worktrees/ink-screen-refresh-20260925/Ten-Paces-Hidden-Moves/",
-  "save_isolation": "res://output/ink-screen-validation/fixture-save.json",
+  "save_isolation": "res://output/ink-screen-validation/fixture-save-26416.json",
   "shots": [
     {
       "key": "main",
       "path": "res://docs/blueprint/evidence/ink-screens-20260925/main.png",
-      "sha256": "122938601c4877c3f8267c59a3e71423c4e9d5b04bc86874c44624935e34409a",
+      "sha256": "fd0ea164093c0c23f8bca99e57a0181bb189882ab12e725b7964e223796cd39b",
       "size": [
         1440,
         900
