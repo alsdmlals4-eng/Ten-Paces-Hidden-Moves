@@ -1276,5 +1276,56 @@
       "RELEASE_PERFORMANCE_NOT_RUN",
       "PR342_PERMANENT_STAT_GROWTH_NOT_ADOPTED"
     ]
+  },
+  "reusable_html_skill_followup": {
+    "date": "2026-09-24",
+    "base_sha": "ec7240633e21aec448f9426781a7acbf294aa748",
+    "work_mode": "BUILD / REVIEW",
+    "work_level": "L1",
+    "approval_reference": "User explicitly requested skillizing the HTML work for later Base and other-project examples; same-scope execution approval reused.",
+    "skills": [
+      {
+        "name": "skill-creator",
+        "mode": "create and validate"
+      },
+      {
+        "name": "ten-paces-hidden-moves-workflow-router",
+        "mode": "source/reference review"
+      }
+    ],
+    "source_relevance": "REUSED_EVIDENCE: current HTML generator, inline/review state, media previews, preview server, existing Base visual dashboard skill. New GIF sources are documented in the separate candidate README.",
+    "feasibility": "FEASIBLE: Python standard-library scaffold plus static HTML example; installed skill and portable snapshot.",
+    "result": "PERSONAL_SKILL_INSTALLED_PORTABLE_EXAMPLE_VALIDATED",
+    "installed_skill": "C:/Users/user/.codex/skills/building-reviewable-html-blueprints/SKILL.md",
+    "delivery": [
+      "docs/blueprint/reuse-kit/README.md",
+      "docs/blueprint/reuse-kit/example/index.html",
+      "docs/blueprint/reuse-kit/html-blueprint-skill-v1.zip"
+    ],
+    "zip_sha256": "48860e1c387a091aa6337ff1d04d6980ad332e810e074d2710af17e0aa9111e8",
+    "review": "New motion + HTML reuse candidate reviewed twice across its full scope; source ownership/protected consumers/cost/evidence limits covered. Thereafter only identified defects were retested. Original 10-style review budget was not restarted.",
+    "corrections": [
+      "Explicit origin/port limitation for localStorage-only example",
+      "Readable JSON fallback when IAB download event is not observable",
+      "Scaffold rejects existing directories and file targets without overwrite",
+      "Scoped LF attributes preserve snapshot/ZIP hash consistency across Windows checkouts"
+    ],
+    "validation": {
+      "skill_quick_validate": "PASS",
+      "scaffold": "PASS: isolated generation; script-tag escaping and JS syntax; existing directory/file protection; invalid project ID rejection",
+      "source_snapshot_zip": "PASS: matching bytes/hashes for installed source, repository snapshot and ZIP; ZIP integrity test",
+      "preview_regressions": "PASS: 5 existing tests, including allowlist/hash rejection and video Range",
+      "browser_example": "PASS: inline Korean input preserves textarea top 305.640625px and focus; comment/status restored after reload; literal script text stays text; discard request changes state only; export JSON contents read back; keyboard clear survives reload",
+      "responsive": "PASS: 1440px 3 columns, normal 671px 2 columns, 390px 1 column; document width equals viewport at checked widths; viewport override reset",
+      "browser_download": "NOT_CONFIRMED: IAB download event timed out; export JSON fallback contains the current review and can be copied. No saved-file claim.",
+      "game_product_paths": "UNCHANGED in this candidate",
+      "actual_user_reviews": "No writes; preview server used review_store=None and example has its own project-local browser key"
+    },
+    "boundaries": [
+      "Base/other-project adoption NOT_APPLIED",
+      "Demo is origin-local browser storage, not permanent project file storage",
+      "Final generated animation/art lock, Godot integration, human flow judgment, Android, release NOT_RUN"
+    ],
+    "related_animation": "docs/visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v1/README.md"
   }
 }

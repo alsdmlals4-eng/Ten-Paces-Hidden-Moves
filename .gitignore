@@ -11,3 +11,8 @@ __pycache__/
 
 # Regenerable local Blueprint and its scoped preview-session receipt.
 output/blueprint/
+
+# Reproducible offline animation frames and isolated skill QA runtime.
+output/ink-clash-v1/
+output/html-skill-demo/
+output/skill-validation-deps/

@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "created": "2026-09-24",
+  "source": "installed personal skill snapshot",
+  "base_promotion": "NOT_APPLIED",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "66f96c67cc7c91ed99790fc94fab8b30f4a968ded766d58f14a469baac7a78b6"
+    },
+    {
+      "path": "building-reviewable-html-blueprints/agents/openai.yaml",
+      "sha256": "943dfd437779c25a40da51c263a379a798347a47b227be4b9c658a14b3cf27bb"
+    },
+    {
+      "path": "building-reviewable-html-blueprints/assets/review-board.html",
+      "sha256": "a7cc779f3fd2b5dd7e8aa6fd10969385ac58dfe41eeba68fb0ce1bbe0c122bea"
+    },
+    {
+      "path": "building-reviewable-html-blueprints/references/review-media-contract.md",
+      "sha256": "81e6a27d1a68e2ba3d97e4501b7fba56b6041a0c6ec17ae7b53169ee7d56bfe0"
+    },
+    {
+      "path": "building-reviewable-html-blueprints/references/ten-paces-example.md",
+      "sha256": "ceaa54b77536e173d87c26583939274d7a66be736c7964dfb990325d460442ef"
+    },
+    {
+      "path": "building-reviewable-html-blueprints/scripts/scaffold.py",
+      "sha256": "0991f96e46c2ba5942909bf000a1316f5a173b87d22ce9c7b5bca107cb44c49a"
+    },
+    {
+      "path": "building-reviewable-html-blueprints/SKILL.md",
+      "sha256": "440bcaebaea82e4b6ec3e5c81a065ee7a932f88c9d941508768b29abc222241a"
+    },
+    {
+      "path": "example/index.html",
+      "sha256": "36a29fd0b2109425519dff195f577548c2d0e8d21fd0bf0804d1d2f501ded549"
+    },
+    {
+      "path": "README.md",
+      "sha256": "1510dc702c888e1ee1e7709cb7b85aebd5b082cae09c8108388a32242f503308"
+    }
+  ]
+}
