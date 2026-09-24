@@ -226,10 +226,10 @@
     "resolution": "이동·발놀림·공격·합·회피·실제 반격과 다음 자세를 끊김 없이 연결하며 하단에서 같은 사건의 결과를 읽는다.",
     "visibility": "안개는 원경에, 강한 대비는 인물·검·핵심 공격 궤적에 사용한다.",
     "protection": "실제 판정 결과만 연출하며 적의 미확정 계획을 자세나 효과로 노출하지 않는다.",
-    "evidence": "STYLE_REFERENCE_GENERATED; ANIMATION_IMPLEMENTATION_NOT_RUN"
+    "evidence": "USER_APPROVED_V2_DIRECTION; OFFLINE_RESULT_PANEL_PREVIEW; PRODUCT_UI_INTEGRATION_NOT_RUN"
   },
   "motion": {
-    "status": "OFFLINE_REVISION_CANDIDATE_AWAITING_USER_REVIEW",
+    "status": "USER_APPROVED_ART_AND_CHOREOGRAPHY_BASELINE_WITH_RESULT_PANEL_PREVIEW",
     "id": "ink-clash-v2",
     "duration_seconds": 6.4,
     "fps": 30,
@@ -240,18 +240,18 @@
     "files": [
       {
         "file": "clash-v2/ink-clash-v2.mp4",
-        "sha256": "a37745731b19d3419a701d2861b7c46ac2e8978653590bd28a6c9fb68b03ca75",
-        "bytes": 3997030
+        "sha256": "257497267f40544510c894d329c71d21af3c773813ebf1080ceca8e564202cd5",
+        "bytes": 4038449
       },
       {
         "file": "clash-v2/ink-clash-v2.gif",
-        "sha256": "cb7ab3802e5c97004661a272c58e0faddaea632033599564028321db6b4c2320",
-        "bytes": 27687399
+        "sha256": "983f68ce87cca4fc422ca07160b703f59f864694b6bfe401f68840fd1e0329ec",
+        "bytes": 26069984
       },
       {
         "file": "clash-v2/poster.png",
-        "sha256": "12e91c8a444df342856168d0228f8fadf3ab1df8902d7cc27db6b552b21a40e6",
-        "bytes": 1965670
+        "sha256": "dd017a4a1b2269e4d865e8dfb4a3d898acc136bc188c514b28036a53b82bb5dd",
+        "bytes": 1882163
       },
       {
         "file": "clash-v2/hero-clash.png",
@@ -281,7 +281,31 @@
         "bytes": 832826
       }
     ],
-    "gif_fps": 20
+    "gif_fps": 20,
+    "approval": {
+      "date": "2026-09-24",
+      "user_confirmation": "좋아 기준으로잡아줘. 하단에 이미지처럼 데이터적으로 어떻게 됐는지도 표시돼야 해.",
+      "scope": "V2_ART_AND_CHOREOGRAPHY_DIRECTION",
+      "baseline_commit": "9ffed8198c2985dad2310d60ed731188731e8377",
+      "game_runtime_applied": false
+    },
+    "video_size": [
+      1280,
+      928
+    ],
+    "gif_size": [
+      800,
+      580
+    ],
+    "result_panel": {
+      "revision": 1,
+      "fixture": "clash-v2/result-fixtures.json",
+      "source": "ACTUAL_PRODUCT_RESOLVER_FIXED_INPUTS",
+      "animation_case": "clash_win",
+      "case_count": 6,
+      "game_ui_integration": "NOT_RUN",
+      "rules_modified": false
+    }
   },
   "previous_motion": {
     "status": "USER_REVISION_REQUIRED_SUPERSEDED",

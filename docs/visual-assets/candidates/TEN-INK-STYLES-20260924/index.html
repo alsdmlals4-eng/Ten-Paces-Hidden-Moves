@@ -23,9 +23,10 @@ dialog{width:min(1480px,calc(100vw - 36px));max-height:calc(100vh - 32px);paddin
 @media(max-width:600px){.gallery,.gallery.compact{grid-template-columns:1fr}.shell{padding:20px 12px}.toolbar{align-items:flex-start;gap:10px}.view-switch{display:none}.caption h2{font-size:18px}header{margin-bottom:14px}.intro{font-size:13px}.dialog-head{padding:9px;align-items:flex-start}.dialog-head h2{font-size:14px}.dialog-actions{gap:3px}.dialog-actions button{padding:6px 9px;font-size:12px}#large-image{max-height:65vh}.dialog-copy{grid-template-columns:1fr;gap:12px;padding:14px}.dialog-foot,footer{flex-direction:column;gap:8px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
-.motion{margin:0 0 28px;background:#fffdf8;border:1px solid #d9d2c2}.motion video,.motion .gif-stage img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;background:#e9e4d8}.motion-copy{padding:16px 20px}.motion-copy h2{font-family:Batang,serif;margin:0 0 8px}.motion-copy p{font-size:14px;margin:8px 0}.motion-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.motion-controls button,.motion-controls a{font:inherit;font-size:13px;background:#f6f1e8;border:1px solid #c5bcaa;padding:9px 13px;color:#252823;min-height:44px;text-decoration:none;cursor:pointer}.motion-controls button[aria-pressed=true]{background:#293d35;color:#fff}.motion .gif-stage[hidden]{display:none}.motion-status{min-height:24px;color:#706c5e;font-size:13px}.motion details{margin:12px 0 0;font-size:13px}.motion summary{cursor:pointer;min-height:32px}
+.motion{margin:0 0 28px;background:#fffdf8;border:1px solid #d9d2c2}.motion video,.motion .gif-stage img{display:block;width:100%;height:auto;aspect-ratio:40/29;object-fit:contain;background:#e9e4d8}.motion-copy{padding:16px 20px}.motion-copy h2{font-family:Batang,serif;margin:0 0 8px}.motion-copy p{font-size:14px;margin:8px 0}.motion-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.motion-controls button,.motion-controls a{font:inherit;font-size:13px;background:#f6f1e8;border:1px solid #c5bcaa;padding:9px 13px;color:#252823;min-height:44px;text-decoration:none;cursor:pointer}.motion-controls button[aria-pressed=true]{background:#293d35;color:#fff}.motion .gif-stage[hidden]{display:none}.motion-status{min-height:24px;color:#706c5e;font-size:13px}.motion details{margin:12px 0 0;font-size:13px}.motion summary{cursor:pointer;min-height:32px}
 
 .motion video[hidden]{display:none}
+.result-examples .table-scroll{overflow-x:auto}.result-examples table{width:100%;border-collapse:collapse;min-width:560px;font-size:13px}.result-examples th,.result-examples td{padding:10px 12px;text-align:left;border-bottom:1px solid #d3c6ad;vertical-align:top}.result-examples thead{background:#e9e0cd}.result-examples th[scope=row]{width:22%;font-weight:600}.result-examples p{color:#5d5b50}
 </style>
 </head>
 <body>
@@ -33,14 +34,22 @@ dialog{width:min(1480px,calc(100vw - 36px));max-height:calc(100vh - 32px);paddin
 <header><div><p class="eyebrow">십보강호 · 선택한 화풍</p><h1>수 싸움 뒤, 먹으로 흐르는 무협</h1><p class="intro">8번의 인물과 선에 3번의 명암 대비, 9번의 안개와 여백을 합쳤습니다.</p></div><span class="status">8 + 3 + 9 · 방향 선택 완료</span></header>
 
 <section class="motion" id="clash-preview" aria-labelledby="motion-title">
-<video id="clash-video" controls playsinline muted loop preload="metadata" width="1280" height="720" poster="clash-v2/poster.png" aria-label="먹으로 잇는 합 연출 6.4초"><source src="clash-v2/ink-clash-v2.mp4" type="video/mp4"></video>
+<video id="clash-video" controls playsinline muted loop preload="metadata" width="1280" height="928" poster="clash-v2/poster.png" aria-label="먹으로 잇는 합 연출 6.4초"><source src="clash-v2/ink-clash-v2.mp4" type="video/mp4"></video>
 <div class="gif-stage" id="gif-stage" hidden></div>
-<div class="motion-copy"><h2 id="motion-title">전투 · 연출 시안 02 · 검로에 먹을 싣다</h2>
-<p>정적 → 낮고 빠른 진입 → 받아치고 되받아치는 검 → 결정적인 합 → 베기와 회수. 인물을 크게, 자세를 힘 있게, 먹은 검로에 붙였습니다.</p>
-<div class="motion-controls"><button id="motion-play" type="button">처음부터 재생</button><button id="motion-half" type="button" aria-pressed="false">느리게 · 0.5배</button><button id="motion-gif" type="button" aria-pressed="false">GIF로 보기</button><a href="clash-v2/ink-clash-v2.gif" download>GIF 받기</a><a href="clash-v2/ink-clash-v2.mp4" download>영상 받기</a><a href="clash-v2/hero-clash.png" target="_blank" rel="noopener">새 원화 크게 보기</a></div>
-<p class="motion-status" id="motion-status" role="status">6.4초 · GIF 800×450 · 20fps / 영상 1280×720 · 30fps · 무음</p>
+<div class="motion-copy"><h2 id="motion-title">전투 · 확정한 연출 기준 · 검로와 결과를 함께 읽다</h2>
+<p>정적 → 낮고 빠른 진입 → 받아치고 되받아치는 검 → 결정적인 합 → 베기와 회수. 승인한 2차 시안의 원화와 흐름을 유지하고, 하단에 양측 행동·소모 자원·합 위력·체력과 기세 변화를 연결했습니다.</p>
+<div class="motion-controls"><button id="motion-play" type="button">처음부터 재생</button><button id="motion-result" type="button">결과 멈춰 보기</button><button id="motion-half" type="button" aria-pressed="false">느리게 · 0.5배</button><button id="motion-gif" type="button" aria-pressed="false">GIF로 보기</button><a href="clash-v2/ink-clash-v2.gif" download>GIF 받기</a><a href="clash-v2/ink-clash-v2.mp4" download>영상 받기</a><a href="clash-v2/poster.png" target="_blank" rel="noopener">결과 크게 보기</a><a href="clash-v2/hero-clash.png" target="_blank" rel="noopener">기준 원화 크게 보기</a></div>
+<p class="motion-status" id="motion-status" role="status">6.4초 · GIF 800×580 · 20fps / 영상 1280×928 · 30fps · 무음</p>
 <p><strong>핵심 재미 1 · 행동설계:</strong> 상대의 수를 읽고 내 수를 고르는 재미.<br><strong>핵심 재미 2 · 전투진행:</strong> 선택한 수가 멋진 무협 액션으로 펼쳐지는 것을 보는 재미.</p>
-<p class="intent">새로 그린 동작과 근접 원화 컷, 붓자국을 합성한 무음 연출 시안입니다. 모든 중간 동작을 그린 최종 애니메이션은 아니며, 세 번의 검 교환은 하나의 합을 표현하는 구성입니다.</p>
+<p class="intent">화풍과 합의 연출 방향은 사용자 확정 기준입니다. 동작과 근접 원화 컷, 붓자국을 합성한 무음 연출이며, 하단 수치는 실제 게임 판정 코드로 만든 고정 상황의 기록입니다. 실제 게임 화면에 연결한 녹화는 아닙니다. 모든 중간 동작을 그린 최종 애니메이션은 아니며, 세 번의 검 교환은 하나의 합을 표현하는 구성입니다.</p>
+<!-- result-examples:start -->
+<details class="result-examples"><summary>결과를 글로 보기 · 합·회피·막기 표시 예시</summary><p>동일한 게임 판정 코드에 고정된 입력을 넣어 얻은 기록입니다. 아래 표는 정지 결과이며, 위 영상은 첫 번째 합 승리 상황의 연출입니다.</p><div class="table-scroll" tabindex="0" role="region" aria-label="판정별 결과 표"><table><thead><tr><th>판정</th><th>비교·원인</th><th>실제 변화</th></tr></thead><tbody><tr><th scope="row">내 합 승리</th><td>11 대 9</td><td>내 합 승리 · 상대 체력 30 → 28 (피해 2) · 내 절초 기세 +1</td></tr>
+<tr><th scope="row">상대 합 승리</th><td>11 대 15</td><td>상대 합 승리 · 내 체력 30 → 26 (피해 4) · 상대 절초 기세 +1</td></tr>
+<tr><th scope="row">합 상쇄</th><td>11 대 11</td><td>합 상쇄 · 피해 0</td></tr>
+<tr><th scope="row">상대 회피 성공</th><td>공격 위력 11 / 같은 수 회피</td><td>상대 회피 성공 · 피해 0 · 상대 절초 기세 +1</td></tr>
+<tr><th scope="row">상대 막기 적용</th><td>공격 11 → 방어도 후 7 → 같은 수 막기</td><td>상대 막기 적용 · 상대 체력 30 → 27 (피해 3) · 상대 절초 기세 +1</td></tr>
+<tr><th scope="row">사거리 밖</th><td>거리 3 / 강공 사거리 1~2</td><td>사거리 밖 · 피해 0</td></tr></tbody></table></div><p>강공 소모: 양측 기력 1 · 내력 2. 회피·막기는 상대 기력 1 · 내력 0. 기세는 해당 수에서 실제 늘어난 양이며 묶음 완료 보상은 포함하지 않습니다. 회피는 위력 숫자의 대소 비교가 아닙니다.</p></details>
+<!-- result-examples:end -->
 <details><summary>참고한 연출과 이번 시안의 의도</summary><p><a href="https://www.youtube.com/watch?v=Jnn33aGz3UE" target="_blank" rel="noopener">림버스 공식 합 소개</a>: 양측 공격의 맞대결과 승패 뒤 공격 연결을 참고했습니다. 출시 전 영상의 표현 참고이며 현재 수치 규칙을 가져오지 않습니다.</p><p><a href="https://www.arcsystemworks.com/game/library-of-ruina/" target="_blank" rel="noopener">루이나 공식 전투 설명</a>: 계획한 행동과 맞대결 결과가 구별되도록 구성했습니다.</p><p><a href="https://store.steampowered.com/app/1809540/Nine_Sols/" target="_blank" rel="noopener">Nine Sols 개발사 소개</a>: 손그림 동작과 튕겨내기의 리듬을 참고하는 방향입니다. 이번 멈춤 길이·먹 궤적은 십보강호용으로 정한 시안입니다.</p><p><a href="https://pbz.s-game.com/en-US/news/year-of-the-snake-trailer/" target="_blank" rel="noopener">Phantom Blade Zero 공식 제작 설명</a>: 무술가와 액션 안무가가 동작 제작에 참여했다는 설명을 참고했습니다. 몸의 중심·발의 접지·검의 연결을 먼저 다듬는 것은 이번 시안의 제작 판단입니다.</p></details>
 </div></section>
 
@@ -131,7 +140,7 @@ dialog{width:min(1480px,calc(100vw - 36px));max-height:calc(100vh - 32px);paddin
   <p>빛과 옷의 부피를 사실적으로 표현하고 먹의 질감을 남깁니다.</p><p class="strength">영화 같은 공간감과 성숙한 인물</p></div>
 </article>
 </section>
-<footer><p>이번에는 화풍을 고릅니다. 인물 크기·거리·배경의 세부는 시안마다 조금 다릅니다. 선택한 화풍을 기준으로 행동설계·전투진행 화면과 나머지 시각 요소를 다듬습니다.</p><a href="#top" id="back-top">맨 위로 ↑</a></footer>
+<footer><p>화풍은 8번의 인물·선, 3번의 대비, 9번의 안개로 확정했습니다. 상단의 2차 합 연출이 후속 제작 기준이며, 아래 10개는 선택 과정을 비교하는 자료입니다.</p><a href="#top" id="back-top">맨 위로 ↑</a></footer>
 </main>
 <dialog aria-labelledby="large-title" id="art-dialog">
 <div class="dialog-head"><h2 id="large-title"></h2><div class="dialog-actions"><button type="button" id="previous" aria-label="이전 시안">← 이전</button><button type="button" id="next" aria-label="다음 시안">다음 →</button><button type="button" id="close-dialog" autofocus>닫기 · Esc</button></div></div>
@@ -182,10 +191,11 @@ document.getElementById('back-top').addEventListener('click',event=>{event.preve
 </script>
 <script>
 const motionVideo=document.querySelector('#clash-video'),motionStatus=document.querySelector('#motion-status'),gifStage=document.querySelector('#gif-stage'),gifButton=document.querySelector('#motion-gif');
-function exitGif(){gifStage.replaceChildren();gifStage.hidden=true;motionVideo.hidden=false;gifButton.setAttribute('aria-pressed','false');motionStatus.textContent='영상으로 돌아왔습니다. 재생 버튼으로 다시 볼 수 있습니다.';}
+function exitGif(){motionVideo.controls=true;gifStage.replaceChildren();gifStage.hidden=true;motionVideo.hidden=false;gifButton.setAttribute('aria-pressed','false');motionStatus.textContent='영상으로 돌아왔습니다. 재생 버튼으로 다시 볼 수 있습니다.';}
 document.querySelector('#motion-play').addEventListener('click',async()=>{exitGif();motionVideo.currentTime=0;try{await motionVideo.play();motionStatus.textContent='재생 중 · 하단 결과와 검의 접점을 함께 확인하세요.';}catch(e){motionStatus.textContent='영상 재생을 시작하지 못했습니다. 재생 버튼이나 GIF로 보기를 사용하세요.';}});
+document.querySelector('#motion-result').addEventListener('click',()=>{exitGif();motionVideo.pause();motionVideo.controls=false;motionVideo.currentTime=4.2;motionStatus.textContent='결과 정지 · 합 위력 11 대 9, 상대 체력 30 → 28, 내 절초 기세 +1';});
 document.querySelector('#motion-half').addEventListener('click',function(){exitGif();motionVideo.playbackRate=motionVideo.playbackRate===.5?1:.5;this.setAttribute('aria-pressed',String(motionVideo.playbackRate===.5));motionStatus.textContent=motionVideo.playbackRate+'배 영상 · 재생 버튼으로 움직임을 확인하세요.';});
-gifButton.addEventListener('click',()=>{if(!gifStage.hidden){exitGif();return;}motionVideo.pause();motionVideo.hidden=true;const img=new Image();img.src='clash-v2/ink-clash-v2.gif';img.alt='먹의 공격 흐름과 검의 합을 보여주는 반복 GIF';img.width=800;img.height=450;img.addEventListener('error',()=>{motionStatus.textContent='GIF를 읽지 못했습니다. 현재 미리보기 주소를 다시 열어 주세요.';});gifStage.replaceChildren(img);gifStage.hidden=false;gifButton.setAttribute('aria-pressed','true');motionStatus.textContent='GIF 반복 재생 · 느린 재생과 정지는 영상으로 확인할 수 있습니다.';});
+gifButton.addEventListener('click',()=>{if(!gifStage.hidden){exitGif();return;}motionVideo.pause();motionVideo.hidden=true;const img=new Image();img.src='clash-v2/ink-clash-v2.gif';img.alt='먹의 공격 흐름과 검의 합을 보여주는 반복 GIF';img.width=800;img.height=580;img.addEventListener('error',()=>{motionStatus.textContent='GIF를 읽지 못했습니다. 현재 미리보기 주소를 다시 열어 주세요.';});gifStage.replaceChildren(img);gifStage.hidden=false;gifButton.setAttribute('aria-pressed','true');motionStatus.textContent='GIF 반복 재생 · 느린 재생과 정지는 영상으로 확인할 수 있습니다.';});
 motionVideo.addEventListener('error',()=>{motionStatus.textContent='영상을 읽지 못했습니다. 현재 미리보기 주소를 다시 열어 주세요.';});
 </script>
 </body>

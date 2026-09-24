@@ -15,7 +15,7 @@ def run():
     frames=ROOT/"output/ink-clash-v2/frames"
     ff=[str(a.ffmpeg.resolve()),"-hide_banner","-loglevel","error","-y","-framerate","30","-i",str(frames/"%04d.png")]
     subprocess.run(ff+["-c:v","libx264","-crf","20","-pix_fmt","yuv420p","-movflags","+faststart","-an",str(HERE/"ink-clash-v2.mp4")],check=True)
-    subprocess.run(ff+["-filter_complex","[0:v]fps=20,scale=800:450:flags=lanczos,split[a][b];[a]palettegen=max_colors=96:stats_mode=full[p];[b][p]paletteuse=dither=none:diff_mode=rectangle","-loop","0",str(HERE/"ink-clash-v2.gif")],check=True)
+    subprocess.run(ff+["-filter_complex","[0:v]fps=20,scale=800:580:flags=lanczos,split[a][b];[a]palettegen=max_colors=96:stats_mode=full[p];[b][p]paletteuse=dither=none:diff_mode=rectangle","-loop","0",str(HERE/"ink-clash-v2.gif")],check=True)
     with Image.open(HERE/"ink-clash-v2.gif") as gif:
         distinct=set()
         duration=0
