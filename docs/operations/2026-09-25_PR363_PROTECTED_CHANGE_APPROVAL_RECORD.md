@@ -10,6 +10,8 @@ CURRENT_SOURCE_RELEVANCE_CHECK: REUSED_EVIDENCE. 기존 PR361/362 승인 종료 
 
 문서 화면의 메인 예시는 촬영 실행마다 별도 임시 저장 경로를 사용하도록 교정해 새 여정 상태로 다시 촬영했다. 이전 촬영 과정에서 만든 호환성 오류 fixture가 메인 예시에 남지 않게 하는 캡처 도구/문서 교정이며, 실제 게임 저장·제품·영상은 변경하지 않는다.
 
+초기 closeout 검사에서는 Windows dirty adapter의 줄바꿈 bytes로 만든 입력 해시가 commit 이후의 정규 Git bytes와 달라 파생4문서가 stale이었다. 채택 Base 생성기를 committed adapter 기준으로 다시 실행해 복구했다. 최초 실패는 `output/ink-screen-validation/ci-closeout-adapter-failed.log`에 남기고 검사를 약화하지 않았다. 원본 adapter 내용과 제품은 그대로다.
+
 검증: 전체 로컬602검사, 추가 HTML/저장 호환 회귀, Windows export50/50, native9화면 및3/3/4 녹화686프레임/28.583초, 인앱 브라우저 끝 재생/오류0. 새 이미지 최종 시각 품질·사람의 반복 관람 재미·Android·출시 성능/권리는 별도다. 실행 보고서: `docs/operations/2026-09-09_CLASH_DIRECTION_EXECUTION_REPORT.md`.
 
 ## 승인 원문
