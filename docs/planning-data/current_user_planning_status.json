@@ -654,7 +654,7 @@
   },
   "ink_combat_runtime": {
     "decision": "TEN-DEC-20260924-INK-WUXIA-STYLE-AND-FLOW-01",
-    "status": "IMPLEMENTED_WINDOWS_NATIVE_VERIFIED_DELIVERY_PENDING",
+    "status": "LOCAL_600_TESTS_WINDOWS_50_SCENARIOS_PASS_PR361_CHECKS_PENDING",
     "record": "docs/operations/2026-09-09_CLASH_DIRECTION_EXECUTION_REPORT.md",
     "preserves_existing_preparation": true,
     "human_android_release": "NOT_RUN",

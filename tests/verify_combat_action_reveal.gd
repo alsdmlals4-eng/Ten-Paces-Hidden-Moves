@@ -46,26 +46,26 @@ func _verify_ordinary_cta(viewport: Vector2, do_skip: bool = true) -> void:
 
 	var reveal_seen := false
 	for _attempt in range(80):
-		var overlay := board.get_node_or_null("CombatActionRevealOverlay") as Control
-		if overlay != null and overlay is Control and overlay.visible and overlay.has_method("get_snapshot"):
-			var snapshot: Dictionary = overlay.call("get_snapshot")
+		var overlay := board.get_node_or_null("InkCombatPresentation") as Control
+		if overlay != null and overlay.visible:
+			var snapshot: Dictionary = overlay.snapshot
 			if int(snapshot.get("timing", 0)) == 1:
 				reveal_seen = true
-				_expect(not bool(snapshot.get("future_action_visible", true)), "Timing 1 reveal must not expose later timing actions.")
-				_expect(int(snapshot.get("event_count", 0)) > 0, "Timing 1 reveal must expose its authoritative events.")
-				_expect(not bool(snapshot.get("selection_cards_visible", true)), "Battle reveal must remove planning-card surfaces so the duel animation remains the focus.")
-				_expect(bool(snapshot.get("action_callouts_visible", false)), "Battle reveal must retain compact per-action callouts after selection cards disappear.")
+				for slot in snapshot.slots:
+					if int(slot.timing) > 1:
+						_expect(slot.enemy == "미공개", "Timing 1 reveal must not expose later enemy actions.")
+				_expect(not overlay.step.actions.player.event.is_empty(), "Timing 1 reveal must expose its authoritative player event.")
+				_expect(overlay.left.visible and overlay.right.visible, "Battle reveal must retain compact per-action callouts after selection cards disappear.")
 				_expect(overlay.get_node_or_null("PlayerActionCard") == null and overlay.get_node_or_null("EnemyActionCard") == null, "Battle reveal must not recreate the preparation-screen card components.")
-				_expect(overlay.get_node_or_null("PlayerActionCallout") != null and overlay.get_node_or_null("EnemyActionCallout") != null, "Battle reveal must expose one compact callout for each combatant.")
+				_expect(overlay.left.text.contains("이동") and not overlay.right.text.is_empty(), "Battle reveal must show the current resolved actions for both combatants.")
 				var player: Dictionary = board.combat_state.get("player", {})
 				_expect(int(player.get("tile", 0)) == 4, "Timing 1 state must not apply before its reveal resolves.")
 				_expect(not board.action_selection_dock.visible, "Planning dock must be hidden while the duel reveal is active.")
 				_expect(not board.action_timing_panel.visible and not board.combat_progress_button.visible, "Current bundle slots and execution control must be hidden while the duel reveal is active.")
 				_expect(not board.planning_surface.visible, "Duel reveal must hide the full planning surface so only top status and middle battle remain.")
-				var lanes := board.get_layout_snapshot()
-				var compare: Rect2 = lanes.get("presentation_compare_rect", Rect2())
-				var label: Rect2 = lanes.get("presentation_label_rect", Rect2())
-				var vfx: Rect2 = lanes.get("presentation_vfx_rect", Rect2())
+				var compare: Rect2 = overlay.comparison.get_global_rect()
+				var label: Rect2 = overlay.result_label.get_global_rect()
+				var vfx: Rect2 = overlay.stage.get_global_rect()
 				_expect(compare.has_area() and label.has_area() and vfx.has_area() and not compare.intersects(label) and not compare.intersects(vfx) and not label.intersects(vfx), "Actual CTA publishes positive disjoint execution lanes at %s." % viewport)
 				break
 		await create_timer(0.05).timeout
@@ -73,7 +73,8 @@ func _verify_ordinary_cta(viewport: Vector2, do_skip: bool = true) -> void:
 	_expect(int(board.get_layout_snapshot().get("resolution_count", 0)) == resolution_before + 1, "A reveal sequence must keep one authoritative resolver call per bundle.")
 	if do_skip:
 		board._skip_presentation()
-	for _attempt in range(80):
+	# Ordinary playback now includes the full ink choreography; allow its bounded bundle duration.
+	for _attempt in range(480):
 		if str(board.get_meta("presentation_state", "")) == "next_bundle_ready":
 			break
 		await create_timer(0.05).timeout

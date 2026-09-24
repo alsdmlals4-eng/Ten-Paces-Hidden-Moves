@@ -40,3 +40,10 @@
 - 전달: 로컬 Windows 빌드/전체 회귀/원격 CI와 정상 병합은 아래 최종 readback에 갱신한다. 현재 원격 성공이나 main 반영을 추정하지 않는다.
 
 집중 교정 기록: 전체 검사 도중 불필요한 생성 sidecar를 정리하면서 기존 배경의 미등록 import3개가 로딩 의존성임을 확인했다. 해당 최초 실행은 parse 실패/검사 중단으로 보존하고, 원본 해시가 같은 import/UID8개를 복원해 승인 범위에 명시·등록했다. 원화 bytes나 기존 소스는 바꾸지 않았다. 이후 native710프레임/29.58초 촬영과 신규6개 검사·canonical consumer 검사·승인 계약을 다시 PASS했다. 최초 전체 검사나 실패 촬영을 성공으로 취급하지 않는다. 현재 consumer로 바뀐 타이밍 snapshot 계약 검사는 새 consumer의 실제 state 복사를 확인하도록 갱신했다.
+
+### 로컬 전달 검증 · PR361
+
+- 제품 구현 기준 `3aab20f0665fc97a7b8704edd26836efca35c119`: 전체 pytest **600 passed / 595.73초**, Windows release export 성공, 해당 실행 파일의 제품 시나리오 **50/50·실패0**. 실행 파일과 PCK는 작업 폴더 `build/windows/`에 함께 둔다. 로컬 로그는 `output/ink-validation/full-pytest-final.log`, `export-final.log`, `exported-product/`에 보존한다.
+- 최초 PR361 CI에서 BUILD 승인 링크 파일 누락과 교체 전 `CombatActionRevealOverlay`만 찾는 회귀를 확인했다. 기존 사용자 승인 근거를 `docs/implementation/BUILD_APPROVAL_2026-09-25.md`에 연결하고, 같은 실제 CTA의 새 화면에서 미래 수 비공개·현재 사실·판정 전 상태·준비 숨김·서로 겹치지 않는 영역·skip/domain parity를 확인하도록 옮겼다. 6 viewport 실행과 구 직접 feedback consumer 회귀 모두 `COMBAT_ACTION_REVEAL_VERIFY_OK`. 검사 요구 삭제나 승인 범위 확대는 없다.
+- 인앱 브라우저에서 실제 녹화29.583초가 끝까지 재생되고 오류 없이 종료됨을 확인했다. 첫 탭은 브라우저 renderer가 종료되어 새 검수 탭으로 복구했다. 녹화 후 제품 포커스 버튼의 글자색을 명확히 하는 미세 교정이 있으며 영상의 동작·수치는 동일하다.
+- PR: https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/361. exact-head 원격 검사 및 정상 병합 여부는 GitHub live metadata를 따르며 아래 최종 main readback에서 확정한다.
