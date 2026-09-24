@@ -125,4 +125,26 @@ async function main(){fs.mkdirSync(path.join(OUT,'frames'),{recursive:true});fs.
  for(let n=0;n<7;n++){const x=(rand(n+6)*1500-t*(14+rand(n)*16)+1600)%1500-100,y=592+rand(n+10)*49+Math.sin(t*1.7+n)*3;q.save();q.translate(x,y);q.rotate(t*.5+n);q.fillStyle='rgba(30,30,25,.36)';q.beginPath();q.ellipse(0,0,3.4,1.3,0,0,Math.PI*2);q.fill();q.restore();}
  captions(q,t);const bytes=c.toBuffer('image/png');const filename=String(f).padStart(4,'0')+'.png';if(!only)fs.writeFileSync(path.join(OUT,'frames',filename),bytes);if(sample.has(f))fs.writeFileSync(path.join(OUT,'qa',filename),bytes);if(f===126)fs.writeFileSync(path.join(HERE,'poster.png'),bytes);frames.push({frame:f,time:t,p:s.p,e:s.e,sha256:crypto.createHash('sha256').update(bytes).digest('hex')});}
  const report={result_panel:{fixture:'result-fixtures.json',case_id:resultModel.id,source:'actual product resolver fixed-input capture',timeline:{reveal:1.10,verdict:2.50,damage:3.12,next_planning:5.12},protects_original_arena:[W,ARENA_H]},method:'OFFLINE_KEYPOSE_AND_COMPOSITING_PREVIEW_NOT_GAME_CAPTURE',fps:FPS,seconds:SECONDS,size:[W,H],frame_count:frames.length,samples_only:only,distinct_frames:new Set(frames.map(f=>f.sha256)).size,contacts:checks,hero_insert:{start:2.5,end:2.7,original_key_art:true},art_pose_count:{player:P.length,opponent:E.length},used_pose_count:{player:new Set(frames.map(f=>f.p)).size,opponent:new Set(frames.map(f=>f.e)).size},frames_directory:path.relative(ROOT,path.join(OUT,'frames')).replaceAll('\\','/'),frames};fs.writeFileSync((only?path.join(OUT,'qa/sample-check.json'):path.join(HERE,'render-check.json')),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({frames:frames.length,output:OUT,contacts:checks.map(v=>({time:v.time,point:v.intersection}))}));}
-main().catch(e=>{console.error(e);process.exitCode=1;});
+// The bundle preview reuses the approved art, contact geometry and brush renderer.
+async function loadStage(){
+ for(const [p,n] of [['C:/Windows/Fonts/batang.ttc','Book'],['C:/Windows/Fonts/malgun.ttf','Korean']])if(fs.existsSync(p))GlobalFonts.registerFromPath(p,n);
+ const [bg,player,enemy,hero,ink]=await Promise.all(['background.png','player-poses.png','opponent-poses.png','hero-clash.png','ink-brush.png'].map(n=>loadImage(path.join(HERE,n))));
+ brushTexture=ink;const bc=createCanvas(ink.width,ink.height),bq=bc.getContext('2d');bq.drawImage(ink,0,0);brushPixels=bq.getImageData(0,0,ink.width,ink.height).data;
+ prepare(player,P);prepare(enemy,E);
+ const checks=hits.map(time=>{const g=geometry(state(time));return {time,intersection:crossing(g.ph,g.pt,g.eh,g.et),...g};});
+ if(checks.some(c=>!c.intersection))throw new Error('Missing blade contact');
+ return {bg,hero,checks};
+}
+function drawStage(q,art,s,{clock=0,effectTime=null,hero=true}={}){
+ q.save();q.beginPath();q.rect(0,0,W,ARENA_H);q.clip();
+ let shake=0;if(effectTime!==null)for(const hit of hits){const d=effectTime-hit;if(d>=0&&d<.13)shake=3.8*Math.sin(d*100)*(1-d/.13);}
+ q.translate(W/2+shake,360+shake*.35);q.scale(s.zoom,s.zoom);q.translate(-W/2,-360);q.drawImage(art.bg,0,0,W,ARENA_H);
+ for(const [x,y,r] of [[s.px,s.py,80],[s.ex,s.ey,69]]){q.fillStyle='rgba(21,23,20,.14)';q.beginPath();q.ellipse(x,y+1,r,6,0,0,Math.PI*2);q.fill();}
+ actor(q,E[s.e],s.ex,s.ey,1.10,s.er,clock,-1);actor(q,P[s.p],s.px,s.py,1.22,s.pr,clock,1);
+ if(effectTime!==null){for(const sw of swings)slash(q,effectTime,sw);impact(q,effectTime,art.checks);sweepLines(q,effectTime);}
+ q.restore();
+ if(hero&&effectTime>=2.50&&effectTime<2.70){q.save();q.drawImage(art.hero,0,0,W,ARENA_H);q.restore();}
+ for(let n=0;n<7;n++){const x=(rand(n+6)*1500-clock*(14+rand(n)*16)+1600)%1500-100,y=592+rand(n+10)*49+Math.sin(clock*1.7+n)*3;q.save();q.translate(x,y);q.rotate(clock*.5+n);q.fillStyle='rgba(30,30,25,.36)';q.beginPath();q.ellipse(0,0,3.4,1.3,0,0,Math.PI*2);q.fill();q.restore();}
+}
+module.exports={loadStage,drawStage,state,createCanvas,inkBar};
+if(require.main===module)main().catch(e=>{console.error(e);process.exitCode=1;});
