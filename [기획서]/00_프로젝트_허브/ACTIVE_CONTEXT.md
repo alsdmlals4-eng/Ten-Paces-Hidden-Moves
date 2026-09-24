@@ -4,6 +4,8 @@
 
 추가 승인에 따라 ProjectMoon 공식 합 자료와 Nine Sols 개발사 설명을 조사하고 8+3+9 화풍의 실제 GIF/MP4를 제작했다. `docs/visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v1/README.md`에 의도·출처·원화·검수·한계를 기록했다. 검객별6자세를 잇는8.4초 시안이며 브라우저 재생을 확인했다. 세 번의 검 교환은 연출 구성으로 새 피해 판정이 아니다. 앞 절의 정지 참조만 존재하던 상태에서 오프라인 움직임 후보까지 진행했으며, Godot 연결·최종 모션 확정·사람의 자연스러움 평가는 별도다.
 
+전달 변경안은 [Draft PR359](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/359)다. 시안 검토 단계로 main에 병합하지 않았으며 최신 HEAD/자동 검사는 GitHub live metadata를 읽는다.
+
 이번 HTML의 분류/번호/용도/의도, 인라인 코멘트·저장 위치 유지, 표화, 미디어 재생/발행 복구를 `building-reviewable-html-blueprints` 개인 스킬로 만들었다. `docs/blueprint/reuse-kit/README.md`에 설치본 전달 스냅샷·실행 예시·ZIP·Base 적용 경계를 연결한다. 기존 HTML receipt의 `reusable_html_skill_followup`에 실제 검증을 누적하며 Base와 다른 프로젝트에는 아직 적용하지 않는다. 사용자 실제 리뷰 파일·게임 제품 경로는 이번 추가 범위에서 변경하지 않는다.
 
 ## 무협 화풍 8+3+9와 연속 연출 목표 확정 · 2026-09-24
