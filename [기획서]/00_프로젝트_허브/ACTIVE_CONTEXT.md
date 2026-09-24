@@ -2,6 +2,8 @@
 
 ## 승인 수묵 합과 먹 VFX 실제 게임 연결 · 2026-09-25
 
+PR361이 main `53b007e3ad1b1dd7eb3b1ef574a2391bb7abf8cb`에 정상 병합됐다. 로컬600검사·Windows export50/50·원격35검사 PASS와 병합 tree 일치를 확인했다. 일회 승인은 `docs/operations/2026-09-25_PR361_PROTECTED_CHANGE_APPROVAL_RECORD.md`로 종료한다. 기존 준비 화면은 유지하고 확정 뒤 먹 연출을 적용했다.
+
 최신 사용자 승인으로 `ca2ce2d7`에서 격리한 제품 적용을 진행했다. 기존 준비 화면과 규칙·AI·저장은 유지하며, 확정 뒤 `src/ui/ink/` consumer가3/3/4 전체 묶음·승인18자세·먹 궤적·실제 하단 결과를 연결한다. 현재 Windows native 촬영과 준비 복귀/정보 경계/건너뛰기·중단 회귀를 확인했다. 관련 PR342에서 순수 표시3파일만 재사용하고 게임 성장·AI·저장 변경은 흡수하지 않았다.
 
 실제 게임 녹화는 `docs/visual-assets/candidates/TEN-INK-STYLES-20260924/index.html#clash-preview`. 구현/두 전체 검토/검증/PR 전달 상태는 기존 `docs/operations/2026-09-09_CLASH_DIRECTION_EXECUTION_REPORT.md`의2026-09-25 절이 소유한다. 모든 상대·무기별 고유 자세와 사용자 자연스러움·Android·출시 성능 검수는 별도다. 아래 시안 기록의 runtime NOT_RUN은 당시 상태다.
