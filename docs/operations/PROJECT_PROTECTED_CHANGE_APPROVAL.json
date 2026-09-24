@@ -83,6 +83,7 @@
     "src/combat/battle_background.gd",
     "src/combat/combat_character_placeholder.gd",
     "src/run/vertical_slice_shell.gd",
+    "src/run/run_checkpoint_codec.gd",
     "src/run/vertical_slice_shell_route_auto.gd",
     "src/ui/approved_blueprint_art.gd",
     "src/ui/bimu_constraint_panel.gd",

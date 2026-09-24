@@ -72,3 +72,5 @@
 - 실제 사용자 시각 검수·키보드/마우스 체감·반복 관람의 멋·Android·실기기·출시 권리/성능은 별도다. 이번 정상 PR/원격 exact-head/merge 및 일회 승인 종료는 아래 전달 readback에 기록한다.
 
 - 검토2 영향 교정: 상대 export 정본 재생성 검사에서 배외검객 portrait의 상위 ADDITIONAL_OPPONENTS owner가 구 삭제 파일을 가리키는 실제 drift를 발견했다. owner를 현재 등록 초상으로 연결하고 export --check 회귀를 추가했다. 기존 제품 data의 동일 경로를 재생성해 일치시켰으며 능력치·명칭·로스터·저장 ID는 바꾸지 않았다.
+
+- PR363 CI의 영향 교정: 표시용 초상 경로까지 과거 저장 fingerprint에 포함된 탓에 schema2/5/6 고정 저장 회귀가 RED였다. 명시된 배외검객 신·구 경로 한 쌍만 identity 계산에서 호환 처리해 과거 bytes를 유지하며 live 경로·나머지 필드 검사는 보존했다. 기존 pending/applied 저장 decode와 게임 내용 변경 거부가 GREEN이다. HTML 링크 검사는 fragment를 파일명으로 취급하던 오류 및 구319 정지화면 기대값을 현재 실제 캡처로 교정했고 **1266 views / 21590 local links PASS**, 자동 저장/충돌·리뷰 동기화·검색3종도 PASS. native terminal 검사는 긴 묶음의 완료를 최대20초의 실제 시간 제한 내 기다리도록 교정했다. 실제 연출 속도·종료 규칙은 변경하지 않았다.
