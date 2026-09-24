@@ -4,9 +4,9 @@ extends RefCounted
 ## Paths are derived from assets/blueprint/APPROVED_ART_MANIFEST.json; tests detect drift.
 
 const PORTRAITS: Dictionary = {
-    "masked_baekmujin": "res://assets/characters/portraits/masked_baekmujin_portrait_v1.png",
+    "masked_baekmujin": "res://assets/characters/portraits/masked_baekmujin_ink_20260925.png",
     "slot1_yeongyo": "res://assets/characters/portraits/slot1_yeongyo_portrait_v1.png",
-    "slot1_dogyeom": "res://assets/characters/portraits/slot1_dogyeom_portrait_v1.png",
+    "slot1_dogyeom": "res://assets/characters/portraits/slot1_dogyeom_ink_20260925.png",
     "slot1_chaeryeong": "res://assets/characters/portraits/slot1_chaeryeong_portrait_v1.png",
     "slot2_mukjin": "res://assets/characters/portraits/slot2_mukjin_portrait_v1.png",
     "slot2_seokmu": "res://assets/characters/portraits/slot2_seokmu_portrait_v1.png",

@@ -1,0 +1,1379 @@
+{
+  "engine": "4.7.1-stable (official)",
+  "source_revision": "7f549217ea4b2496613b9b4cf3176bccfede2c58",
+  "source_state": "working tree source hashes are authoritative for this capture",
+  "source_hashes": {
+    "assets/backgrounds/frontal_courtyard_duel_background_01_v1.png": "27778369c3896d7d6237990ec70620c54ad0d636f660c9aa80322b0632262d06",
+    "assets/backgrounds/frontal_courtyard_duel_background_02_v1.png": "1f36bb1b853cf6008ca9d54bf71ebe1ce3916ce90db75a8caca1e62e5ad076fd",
+    "assets/backgrounds/ink_wuxia/briefing.png": "e3b8ad6341631ec21f9e251ea1eba4907c57346b10034acc6e05f0c6d5007368",
+    "assets/backgrounds/ink_wuxia/journey.png": "3bd349fca20ecba370eddc26ad1c0b1c96652d9edfc81f137bbf5fdde7afdf45",
+    "assets/backgrounds/ink_wuxia/main.png": "b25af94defb32c10dc74a84565c12a2355154f13c0a6d167010ac465d81a2ba6",
+    "assets/backgrounds/ink_wuxia/rest.png": "e9dd9677ef5723f5c3b5506fb7b16cff93e5f01ec4bbf2e2fce2d904af5ef7aa",
+    "assets/backgrounds/ink_wuxia/result.png": "dc0e57753636676b90b043fbf5d5f1a7a02437aaf0261c22ebba5c7e6d38d506",
+    "assets/backgrounds/ink_wuxia/setup.png": "e941c103f9835921ca810ec98cb391ec86d6f9afaaf1084b0dd42b8899b99712",
+    "assets/blueprint/clash_explanation_v1.png": "19c1fba9dce789acb55f863dc3902cc1828adf11b72366f1e8430d9e63fa884f",
+    "assets/blueprint/manuals/beggars_dragon_subduing_palm_star10_v1.png": "7f0290daf316525366d393268ebf758be953c14b0d337ed3aa7b8738b7a19f06",
+    "assets/blueprint/manuals/beggars_dragon_subduing_palm_star3_v1.png": "615e1534f195cc380b7c10c792f23459c6acaa8a663bb366cf91da1a0f5ae5d5",
+    "assets/blueprint/manuals/beggars_dragon_subduing_palm_star7_v1.png": "1cb18f2f7d7442088824d3d17db280e246ea907300f14c1d0afcfd623b007c60",
+    "assets/blueprint/manuals/hebei_peng_five_tigers_saber_star10_v1.png": "9379005eb2c70b50566eb1137b77f60206d11ebba4a34bfc6352cbdfceaf308e",
+    "assets/blueprint/manuals/hebei_peng_five_tigers_saber_star3_v1.png": "6c9c3d268566ac7d439acbfa294eb5beaa448f3d63769a3c7d008cfd062d8219",
+    "assets/blueprint/manuals/hebei_peng_five_tigers_saber_star7_v1.png": "141b1aeb560abe8a6edafd317d723d4a92d1749adc67ab47169cf200a6c3bc7e",
+    "assets/blueprint/manuals/mount_hua_plum_blossom_sword_star10_v1.png": "fbb369cf1687ebeb91a45a57f6e48040d67c8506fa93bb21276dc8f311ecd0a6",
+    "assets/blueprint/manuals/mount_hua_plum_blossom_sword_star3_v1.png": "a952582b93f2aec38e7bff89f2c2ae79b8e093c348a403bcd1e4e403d69385e5",
+    "assets/blueprint/manuals/mount_hua_plum_blossom_sword_star7_v1.png": "3110b02a85b42efb38cf6e7830e44662b95878ca3411937497f5a9a63f229c7c",
+    "assets/blueprint/manuals/mount_hua_purple_mist_art_star10_v1.png": "1a9b8de2a8c3e942f167d8d823887f622f2e2b55b1c6ac6f9db73bf946c734ec",
+    "assets/blueprint/manuals/mount_hua_purple_mist_art_star3_v1.png": "004e36f7c0257604b1c402cbedae00c9014552f866657a60f4d12cb06b09b7d7",
+    "assets/blueprint/manuals/mount_hua_purple_mist_art_star7_v1.png": "c4980258d84203a7d8c3f37db58a327037f53316454564ddd81bdb87596793bc",
+    "assets/blueprint/manuals/nangong_boundless_sky_sword_star10_v1.png": "d7f0d05d98b994168e9bc3668611710a286e9402465369a2abad96b532b6b384",
+    "assets/blueprint/manuals/nangong_boundless_sky_sword_star3_v1.png": "fc92f63e04fe0a30b5984712209bb6ad596024507326afd4fc4556889ff0ea93",
+    "assets/blueprint/manuals/nangong_boundless_sky_sword_star7_v1.png": "d068c9eb90b98259ef5f647bef788845608b49cd8d346722e1fed3df772d5723",
+    "assets/blueprint/manuals/shaolin_arhat_vajra_art_star10_v1.png": "37adb7365c1f532d8dad6d91d127daf3f91499f8d00723d9e60527ec7801bc2c",
+    "assets/blueprint/manuals/shaolin_arhat_vajra_art_star3_v1.png": "a6af1d7c5ea12f01e3e2a6025b3baa9b12da07d728954ee88459669f3568cf91",
+    "assets/blueprint/manuals/shaolin_arhat_vajra_art_star7_v1.png": "44e39c6542be6395476c9851f2c3fc743533c2b5ab8cda6cab5fcde740f9b0b6",
+    "assets/blueprint/manuals/sichuan_tang_hidden_weapons_star10_v1.png": "e532b66be720b2cd67ea57b521a442a0d58fbf5b973860d851cf61a3eefa1f30",
+    "assets/blueprint/manuals/sichuan_tang_hidden_weapons_star3_v1.png": "4c31cc0e859d5a3b373d39e3daa5c54570c2f531bcad4dde5bbc319455563124",
+    "assets/blueprint/manuals/sichuan_tang_hidden_weapons_star7_v1.png": "46274f6c84822512c8212116e39ca217217a267bbf747baf2ad7814dd5839638",
+    "assets/blueprint/manuals/wudang_taiji_sword_star10_v1.png": "db4b4d2ff000ac3763e15b85f377de58d517b1299d2a09c81acb4c6794224878",
+    "assets/blueprint/manuals/wudang_taiji_sword_star3_v1.png": "48775772c82903ab17161b1ec8ae46cbf0e3ab86f40b1ab389607ae7fa1a407e",
+    "assets/blueprint/manuals/wudang_taiji_sword_star7_v1.png": "f137cf97768749a139b58e8910d6a22de0871a1c0e6773dd4b880ef047d9974e",
+    "assets/blueprint/manuals/xiaoyao_lingbo_footwork_star10_v1.png": "1028a443d91e511503170dd3046745280ba0746ef8b12d1a954a144490159a5a",
+    "assets/blueprint/manuals/xiaoyao_lingbo_footwork_star3_v1.png": "7ebe09b25094dcf90c3d070256a4f0a68afae07f3be56a9ef3362dd1124d5ac6",
+    "assets/blueprint/manuals/xiaoyao_lingbo_footwork_star7_v1.png": "b3a04756df98e9248ca9771591e62e68e3766d3c02f43c12196d86f73d35192a",
+    "assets/blueprint/manuals/yang_family_spear_star10_v1.png": "8e598f271e12880ae5075e468ae305f45aa433e81a714a30f89bcb009f96f6e9",
+    "assets/blueprint/manuals/yang_family_spear_star3_v1.png": "6f4e099f0e1ba1bcfb6902c17797e734c874a5e7f11c01bd3e2b77174513c276",
+    "assets/blueprint/manuals/yang_family_spear_star7_v1.png": "27d66382d85306c241e1f264921e9b2d85888e3dd611bc3fda5cac66fb783688",
+    "assets/characters/enemy_masked_battler_chroma_v1.png": "05fd4475463a702d5144779ef9bcce5df054021917e0812b953c51a622035920",
+    "assets/characters/enemy_masked_battler_rgba_v1.png": "c79b5f2cc5250b091cc6c5fbca55f1f4532e5df0a7dfc0cd0455d00408468179",
+    "assets/characters/enemy_masked_battler_rgba_v2.png": "0841505d275ca970d7d085d7ab206788276517d2290a63960d829e657dfbe17f",
+    "assets/characters/player_wanderer_battler_chroma_v1.png": "7b4ffbe0491277a640fdfab4dbf2a36418c90a04189dd099906307bf76603d87",
+    "assets/characters/player_wanderer_battler_rgba_v1.png": "2e8274cb11fc3af0c4841a47918b58bdf8ea9dd93c0333d826e4d87dd61178f6",
+    "assets/characters/portraits/masked_baekmujin_ink_20260925.png": "aefeaabd403f4739b5980a8215bc226fa359e7372f03722367ef2b607a9567e6",
+    "assets/characters/portraits/slot1_chaeryeong_portrait_v1.png": "1f6ef29e8090d1adcfb0ef4ddec80bce4c948c18c5443943ad87f20c33b85b97",
+    "assets/characters/portraits/slot1_dogyeom_ink_20260925.png": "a7ccb97a726ad08a8f1e0bec96831b4dccf755a06b32149f2d31e3ddbfa16abc",
+    "assets/characters/portraits/slot1_yeongyo_portrait_v1.png": "581208eb52b61a352c1b5864bd514943b7ddb9f3c54eae40d695ed918bdaf5f4",
+    "assets/characters/portraits/slot2_danso_portrait_v1.png": "fcaedfae89465e8e5cb7d190ef0630656658b3f284080ff477bbc623e34ee133",
+    "assets/characters/portraits/slot2_mukjin_portrait_v1.png": "cad7c70d41a5c77f9b04e4833dba0ebd3edc4989c9b5a0be7924b588040ef92b",
+    "assets/characters/portraits/slot2_seokmu_portrait_v1.png": "58005db0fb336cebc9716fed57fe998b9e6edf05119700c020f334fe2aaaeeec",
+    "assets/characters/portraits/slot3_biyeon_portrait_v1.png": "f147658c486db7b398828a22339ca74bd638f5e6f31af6a20d456f387e6ba15e",
+    "assets/characters/portraits/slot3_seolha_portrait_v1.png": "10c32f5bb55c443427b8469ceba2f8f0f25a69038d247a5bf53aee716065992b",
+    "assets/characters/portraits/slot3_uram_portrait_v1.png": "b526ae90d4a0c9dd7c3dcba646e50be086071e1f043ecce5c9dd547e197ffc52",
+    "assets/characters/portraits/slot4_cheongheo_portrait_v1.png": "6d6bdb582b64573cc6dd019617d09a0e07683ab48bd89bd7269844cacc2a9753",
+    "assets/characters/portraits/slot4_damwol_portrait_v1.png": "53037d9654d8c991e0779001989309c71ddb107985752a3d20c358d3055247f5",
+    "assets/characters/portraits/slot4_jinryeo_portrait_v1.png": "020ebfb46c12921674532d29dd079456d130ec383c720563ffa59f7362079944",
+    "assets/characters/portraits/slot5_jeogu_portrait_v1.png": "46a46e89c9c24169fb4b0510d5151f931912b895f607737f10986fe28b4692c5",
+    "assets/characters/portraits/slot5_pungmok_portrait_v1.png": "8eb4255f0c135e9dd9bdfe5502f350c88e9755ea1b1575768cf4a43d32c8d5e1",
+    "assets/characters/portraits/slot5_rajin_portrait_v1.png": "6b6a3ef762e910766a487f46d04c0d757552338f72685a0da1956fd2ffd1da04",
+    "assets/combat/ink_wuxia/background.png": "f29159f4aabce642234428df0fe7fc807128f5ab739680754db01f4bf87b1e9c",
+    "assets/combat/ink_wuxia/enemy-0.png": "f9f3343f66ca7d681402f05bf7d1e859a9ba773a8bed3d9b42558a40a7636030",
+    "assets/combat/ink_wuxia/enemy-1.png": "2e0089335f3fff74c2140d2140e8435830e4659efdd3f1ce959ab177e64fda3e",
+    "assets/combat/ink_wuxia/enemy-2.png": "432ad02cb6bf43f5c869e237386ef2e91e68bdb9e672ad1a0ba0578facb7ba85",
+    "assets/combat/ink_wuxia/enemy-3.png": "0969fa29be31da35c7e36cd999a079c6e23117fd7bb89c79b3016568f0367100",
+    "assets/combat/ink_wuxia/enemy-4.png": "e7d97e80c1eead41347b1c26cf8822949619d687d3c893813be39f70ea33e536",
+    "assets/combat/ink_wuxia/enemy-5.png": "4b2a3c0531e6079957bf476786e49e658c7d6d09ca12f493f97a2472e05031bc",
+    "assets/combat/ink_wuxia/enemy-6.png": "7f4076f2ca1a9ce19736531749561431c17ec9b65d5acf697d8cbe3aa78931ee",
+    "assets/combat/ink_wuxia/enemy-7.png": "d64690e1628ec5ee152257cabc837ba4d8cc2d7e30c140c9c4fc737fb92caae5",
+    "assets/combat/ink_wuxia/enemy-8.png": "18436ce88567d7caca3638f593641bfdfa4454720b215725aabc3d2d5738cc03",
+    "assets/combat/ink_wuxia/hero-clash.png": "794fd63bd98e53c113b28e0b74e952b854c91530cd81313610dae0a23be9d782",
+    "assets/combat/ink_wuxia/ink-brush.png": "c794af0ae4c9aa34693889201b8c8216f2be593d1344ebf542c30b02f6658fd6",
+    "assets/combat/ink_wuxia/masked_baekmujin/enemy-0.png": "72b2c149512b5cb065e05de13a88f1c0c3e698b5b9772dc33ab149677199a681",
+    "assets/combat/ink_wuxia/masked_baekmujin/enemy-1.png": "3938f20d7252736cc074279697fc57d1a0e86484c2fac0b6b7510a994dfbcb14",
+    "assets/combat/ink_wuxia/masked_baekmujin/enemy-2.png": "e4cfcfb9718be27dbf96cabedc7f3d2890b6b7dcb319f4288fbd44e02e425695",
+    "assets/combat/ink_wuxia/masked_baekmujin/enemy-3.png": "e2fd510c0ef065ebae59c678f67e42bc602b014351dd7b05c01d28c65a30ba5b",
+    "assets/combat/ink_wuxia/masked_baekmujin/enemy-4.png": "ac4d3425f89a57c55814361a120c6aa9b83eff8e7835d5afac81f1040b9ebc4c",
+    "assets/combat/ink_wuxia/masked_baekmujin/enemy-5.png": "65f32c84f7594b6d82e6049da4faad4a419f5f0ad6e20de0928ee1bb93cb6bc3",
+    "assets/combat/ink_wuxia/masked_baekmujin/enemy-6.png": "80a03787179244477a428f173887ed832db9bb2e4b25190c0ae27e6cee17b7f2",
+    "assets/combat/ink_wuxia/masked_baekmujin/enemy-7.png": "1fdb598d0eb56fc0d434edabd3cfaa4cd0bd1cf48be2256fdf7f6e1d99366fd9",
+    "assets/combat/ink_wuxia/masked_baekmujin/enemy-8.png": "32c8c924acb908aedc7b41f145be1fa33af0788e688ad990739951571434410e",
+    "assets/combat/ink_wuxia/masked_baekmujin/hero-clash.png": "fcb3299a20d8159d1e08951382e17950b7bcac668b622bc42932710b1c418da3",
+    "assets/combat/ink_wuxia/player-0.png": "9f53690f24d12e44267c0edd47b990dd15c3cb86d91503d9afeac9b7e9e521b2",
+    "assets/combat/ink_wuxia/player-1.png": "1de4362bc5f9c6141f79fce6a03d8a2106c9019b39789d178e62c8c9d6ee2bd7",
+    "assets/combat/ink_wuxia/player-2.png": "3e7678bbaaeb7cfc7477589ff0a79c4b0cb9504b820d2af22bf42478f5779330",
+    "assets/combat/ink_wuxia/player-3.png": "1143c8e7dc5dae23c68cb1b2a4a6c0a7138805e73a6c5bccb542eec493e4b215",
+    "assets/combat/ink_wuxia/player-4.png": "200424b83863d95e5315432748dffe236f00d37abab887b3bf7bc8d647cb8eef",
+    "assets/combat/ink_wuxia/player-5.png": "5163f5de9ab003365ae65fc57a2870d1682af9f4c22e3b20811608b946e20e8b",
+    "assets/combat/ink_wuxia/player-6.png": "a7b0c2db4ee8caa746c44e013136e4eec694c5daf72b27efe6e0adb809e8795d",
+    "assets/combat/ink_wuxia/player-7.png": "f7a71d280081bea9ccb005ffcc1697d93557a32e4c5523cc569327c059d0c52f",
+    "assets/combat/ink_wuxia/player-8.png": "1758c7933b6f683a5792374bf0c52276d46340448a596e1d5ffa046544bdda48",
+    "assets/combat/ink_wuxia/slot1_dogyeom/enemy-0.png": "e4529bb40fe7585db1777934fcacbe852ba2cf97cecdacdaff27af0cb3aa568b",
+    "assets/combat/ink_wuxia/slot1_dogyeom/enemy-1.png": "42650b87f613a67b08b34a9490da5e510eb7c83cd89063417bec0a60ecdc28fd",
+    "assets/combat/ink_wuxia/slot1_dogyeom/enemy-2.png": "8555a67be0d23dc150e9a7ff56d8faef9b770c93d85d915d639a39919d6dbf28",
+    "assets/combat/ink_wuxia/slot1_dogyeom/enemy-3.png": "e0e3564a0bf3db5e9318dd55815c9e346f865b5b2bf1c2868ed3bd8b2aecfc52",
+    "assets/combat/ink_wuxia/slot1_dogyeom/enemy-4.png": "2eb0ef07ecafec695763a80592f8bcf049398d5dc0ec68052f40c4643623812d",
+    "assets/combat/ink_wuxia/slot1_dogyeom/enemy-5.png": "9aeff892ab1617d52b49eb8ace69a5b641b75127ca50a7fd40591b69aea06e49",
+    "assets/combat/ink_wuxia/slot1_dogyeom/enemy-6.png": "31f9679840fdc793122ac1312fe3c53ed867d54331ae3cbcca65152ad37ec572",
+    "assets/combat/ink_wuxia/slot1_dogyeom/enemy-7.png": "d7eeab3e0833d06e5a927682221c09829eaa7ec830a12517a8210f9682a4b58b",
+    "assets/combat/ink_wuxia/slot1_dogyeom/enemy-8.png": "38be20626f61c6eacf7149102d2eace63486abacefa02fa15479d8c764c24039",
+    "assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png": "56667318d441f7e74accfc08f7038500e5d3b313bc68a15387f9c3c62608d7e2",
+    "assets/portraits/dogyeom_status_portrait_01_v1.png": "0672dfb9938c65f88ade27b90f3bc558a0a3588ccf19a70f5412fc74dd11143c",
+    "assets/portraits/enemy_masked_ink_v1.png": "71951e187efd72ddbb356535acb0a4f5c3dfe808239a625d9b208ecb545d2e96",
+    "assets/portraits/player_wanderer_ink_v1.png": "7920ebf2fd1858fdb275bffca458ab8867c3ae44f6d335e0d3552a1d82ad615e",
+    "assets/ui/cards/basic_technique_ink_atlas_01_v1.png": "a047a81c92d51cfa3c0b0d81ac2edf53b9a15e262420753a08bc2ed473ed7998",
+    "assets/ui/cards/martial_ultimate_card_illustration_atlas_01_v1.png": "227a0492399d287fec073d7bccb36dc84eae1dd0c6d11247302e24ca87c3750e",
+    "assets/ui/duel/current_action_slot_frame_01_v1.png": "1df3a70457d45e82716910452a9744f0a0cc8807c3fc6e5d03671131b72e81d6",
+    "assets/ui/duel/observation_reveal_frame_01_v1.png": "b6b71742da3621449dd8ac9aeaf0827af3f199dcb0ac578435e4a87120d1d2ea",
+    "assets/ui/duel/status_hud_frame_01_v1.png": "f2a428e9717b9fa3661ab8ede92df8a7398bb597254e56c1b23b85bd414d1226",
+    "assets/ui/duel/technique_detail_frame_01_v1.png": "37324331c8aeb6dfce499a61b3b4e4ddc784b608dfd477bc510f34ca4d836f09",
+    "assets/ui/logo/ten_paces_hidden_moves_title_logo_01_v1.png": "5c75edbbe02770ddb1d41868a1beb4a55e802bc53295381d3b204238a3842e13",
+    "assets/vfx/attack_clash_ink_gold_atlas_rgba_v1.png": "0859c714728608744b3f016e03c02f7b0e18d86b0b0ced191a2d5ec25ce2553f",
+    "assets/vfx/ultimate_ink_gold_sprite_sheet.png": "f99d1f33a072f443fdf6ba7aaa025ef0a2c7909f0cbbfd52ea0054947ca030d2",
+    "assets/vfx/ultimate_ink_gold_sprite_sheet_rgba.png": "1e2dd00742be39cc6de66fa6b464bba4c37b6035b97a7e318c6211d9b835a1f4",
+    "assets/vfx/ultimate_ink_gold_sprite_sheet_transparency_candidate.png": "b6f9bc5eec8969728e08a3fee7caa607743f3b2e9c81913f584922d534fc3853"
+  },
+  "source_text_hashes": {
+    "src/combat/battle_background.gd": "2dcafeb991a7888378c9fe30ad84857ab08be461db4161bb76fb7bafd5cc2d17",
+    "src/combat/combat_ai_planner.gd": "a61c3515601fe12a7e56bd3b18e62932552ee8ec59fcc87c38bd7e9d19c3e2de",
+    "src/combat/combat_board_preview.gd": "4870bbbd207c6156c02d64927d184b9085b7ecb2bb6a5d27faca6b9e5f7ddc5d",
+    "src/combat/combat_board_preview_auto.gd": "afd7dfd02e9e786aff6ea0dcde777ac9edb01f92ad746f8b3e9bdfc930e542e8",
+    "src/combat/combat_board_preview_ten_manuals_auto.gd": "7f83ccf8412dc86094b8960ffefe2515da304588d62da229c7ff28c2508c48ed",
+    "src/combat/combat_board_tile.gd": "7340e356fbc3573ae551ccc7d02cb644dae860987f3dcf3f16e815448603d2e8",
+    "src/combat/combat_character_placeholder.gd": "4cf88ea7e5197d66541db2fe382b08c05068f032319ef0e6c2104dd3495d45ff",
+    "src/combat/combat_resolution_engine.gd": "f8f7c90bcd1ba57e1fbf77c3f0fddddf1d93980cd2055ead14176bc6369c7dc1",
+    "src/combat/combat_resolution_engine_prepare.gd": "d20e5fe55d90dc4b49197b148914409fef5026787fb4e0f3c6feccc6ccba7e9e",
+    "src/combat/combat_resolution_engine_ten_manuals.gd": "1a45851d3c6430246cc422ee64e5dc67e44d7fd64376492930273a7dc714d6a4",
+    "src/combat/combat_review_summary_builder.gd": "0081bfab6732e8c8014e1ce3bb3df68568cc1e26857b34597103d22af93cbceb",
+    "src/combat/martial_effect_pipeline.gd": "5c3325cc96bfb9abe3d2f1e4eee431723cf206862ce0526ea49e2b4f4ed29913",
+    "src/combat/martial_manual_registry.gd": "536c9319dcc027a7c130f02ffe603794abc32bc8b6d6f28f74d0cf3f18b8c579",
+    "src/run/bimu_constraint_model.gd": "051230077adee3752834040f451d690921e0c9d4aab2cc542667eb9492dd8966",
+    "src/run/combat_checkpoint_codec.gd": "f24ec41b683245ba8acfd6c2d0ec14d1a7f7da5e14a70902940d47fb49f0f363",
+    "src/run/frozen_opponent_catalog.gd": "77381cfa98f3597001e5aef216f04de390a8aa6565267f4c98f001ad1f13b42f",
+    "src/run/giyun_rules.gd": "1cdeb10d06178bed8dc91fb573f6fd55fb40f18cdb668917e231d0f794cc99cd",
+    "src/run/jianghu_event_checks.gd": "5f86a8ffbe619fd1b2fe28ffb69dbda6c129ffaa1f169457c0c74d174331247d",
+    "src/run/run_checkpoint_codec.gd": "cb1c58ce0b69248704d35ec99bda26f865e892d113e3e9337077db2d57803f89",
+    "src/run/run_save_store.gd": "ecb6a665a6892799311c25578bd8cf3138ecba35f51eeb8c0cc33fcc9479bae7",
+    "src/run/run_session_coordinator.gd": "7d2f95a0d846341563d56bdb7d1b337f661af5a2d2d8ad58b0970f5a78e83e57",
+    "src/run/variable_opponent_roster.gd": "97bad28b1cd9dfbbffd78e32246c7dad412bad4a0f039baaa9a5b6dd014b24a0",
+    "src/run/vertical_slice_battle_metrics.gd": "678d509dce7c3c237fb1827330c9f42a929997cd43b9813a46637e07bd555826",
+    "src/run/vertical_slice_combat_bridge.gd": "044879cdae5b619b23667d84852df1edcd054da21b3cfcd4b6e83695eb1b2312",
+    "src/run/vertical_slice_completion_model.gd": "dd624588c319b0fcb3cb55927a05a45149af87853ebf9d1c52bec9a74a1e4d23",
+    "src/run/vertical_slice_metrics_combat_resolution_engine.gd": "94ecfde91b95f738c7f8a4ee4b239535125f1bca5fe44f9c51646cea7fee597a",
+    "src/run/vertical_slice_opponent_catalog.gd": "4c26b46ce76d705f9c3f577162711e1763e768edd67ab652dafb482c9bb17627",
+    "src/run/vertical_slice_opponent_runtime_binding.gd": "835a9f47689aaa3e41bee57a063dcc703a32ee5a5455817963f58398b1db5399",
+    "src/run/vertical_slice_progression_state.gd": "d7b01c042ccde398b58b90f3a3934b327bfc2523c65fca358a9f4600b8c7374c",
+    "src/run/vertical_slice_result_model.gd": "099555a5b3044d286d06a332bead1c1dc1479d35d9c44a8884ef76c1d4255a2b",
+    "src/run/vertical_slice_route_model.gd": "03abaa39117424078a54c7aa50fb5a528f933deb40c9705e928ae1bd3379cda3",
+    "src/run/vertical_slice_run_state.gd": "c7452ba55f86d6d4c98104f65ca5eda5a874c8feeb0e1c9546130b13434c3e52",
+    "src/run/vertical_slice_shell.gd": "3c816d6961b7ac6ff7461aa2aefd0a89b5093e84ce02e954abf844457d46c91e",
+    "src/run/vertical_slice_shell_completion_auto.gd": "b587987082e8d3da107bf04f37c9ca2c910d83f52579bdb415f75f100ab64aba",
+    "src/run/vertical_slice_shell_result_auto.gd": "7a9bd39cbed943de17b5aed9bfca6a4bb33f897cf5410f3c630d45e0c48e14ac",
+    "src/run/vertical_slice_shell_route_auto.gd": "d8c4110f1bfb1d74d3ad68318420163010e17ebfe34e2599d4602ed0a6b1a5ff",
+    "src/run/vertical_slice_starter_manual_catalog.gd": "7af5baa4cc5dfb6584cad37d3410a719b47a391a058f8a0274e52b57817a713b",
+    "src/ui/action_selection/action_choice_card.gd": "584592e0ac351063d716f989ae4e2a4ec314c205b8ebc657a6afe92e2dda9dd6",
+    "src/ui/action_selection/action_detail_panel.gd": "eb7d43c9bef05da2358a34aeae0d69d2ea0b8f7e399e4a72f982ba7324dfc6a5",
+    "src/ui/action_selection/action_intent_panel.gd": "7835319efd914b436acd8e422c8e6876da20746df7c850f6deb020eb5fc1275b",
+    "src/ui/action_selection/action_placement_controller.gd": "d90b14a39311bd99ad2cdefa8db2605660915b6b86def9ef68a3ab37712a55b2",
+    "src/ui/action_selection/action_selection_dock.gd": "5f7a2c91444909ba0e0f4fce5f40af424f880e191663f46b3a20373018bdb94a",
+    "src/ui/action_selection/action_view_model_adapter.gd": "aabc6fcd884eaaa9ea68b7d8d861685949181cb961326ce6419cc803f7f423b5",
+    "src/ui/action_selection/basic_action_panel.gd": "04c4bda1268733ce8488593dd4a60ce006ab0973d53a4b80ef91cf113c69611a",
+    "src/ui/action_selection/linked_action_block.gd": "77ce885708671699f78337413e54125865b9aa054674ba4cd440da1796540ee4",
+    "src/ui/action_selection/martial_action_panel.gd": "11c0227f043e37073c93dbd5a2f01d6cc2e2459a2d176bb9b9f4d30d82c36d66",
+    "src/ui/action_selection/ultimate_action_panel.gd": "37fd449d5ef2b29bbf4ddaa2139e8833f44997d2e2b32e5cb95f13f61431db40",
+    "src/ui/action_timing_panel.gd": "4357742bd6b85f163e096d3590b8f59df23b402a740e730bc46cc758811db4a3",
+    "src/ui/action_timing_panel_auto.gd": "6e835497e980b3efdf199d7f01cbe11c1058bb399fda85baf726d65bd70aa324",
+    "src/ui/action_timing_slot.gd": "3139b280300b3bba1e25640cd9d5bf7eb357384078d574688e276e334eadfe05",
+    "src/ui/approved_blueprint_art.gd": "67b9ba3922a5af4ca31d27b11c0c10c94e0fd11ec1e8fcfafcd3b9dc67eae553",
+    "src/ui/basic_card_tray.gd": "df7a7d1bfc05584d650b156dc0d78e10aa4a84db95fdfaf178e05e5253fc0640",
+    "src/ui/basic_card_tray_item.gd": "8cc8a2c57efb963129b3ad3756a97b1819679c13e87f04ddbb666653d582f89f",
+    "src/ui/bimu_constraint_panel.gd": "117a48d1c606b63b10fd937ca3cf1573df4b92d0f63ae33872117f1a16ca41c8",
+    "src/ui/card_catalog.gd": "b17f5fff9f086125b95e6aab3284ee3d30a2fcf0a130f3cead5cf7c23c22f5cb",
+    "src/ui/card_component_preview.gd": "f9566c9426a034564993e5bb3f7edadd89fd5a3d1002fc569147ed9ff7ff5bf7",
+    "src/ui/card_detail_panel.gd": "7f2d945ecdd70fc5453c66ea060bebf4dee876af54469344966fd8afc3d724a2",
+    "src/ui/card_view.gd": "41ddc2c0b679ffd3bfe42e635443f7106030e2017bb088fe916d73bf03134e14",
+    "src/ui/combat_action_reveal_overlay.gd": "282f63d45582945b9c2c04581cf6946c12b149a41ab90c307c05dcf767258392",
+    "src/ui/combat_log_panel.gd": "eaeeb6296b792644716f41ae88383d03266a990c832f345a0d21b3a821a9cf9c",
+    "src/ui/combat_motion_presets.gd": "476a22207a5684a07340d527b89e5caabb36d55d1918cee5d25ddb5f33c3fab6",
+    "src/ui/combat_motion_sequence.gd": "8f368066c3f49cf1b880cdc7e79a7b1f86ec524e63ebd6e4ff9a7451dd82ef42",
+    "src/ui/combat_presentation_profile.gd": "6839c5fd9cc1e3adf33c066d01b4e7b7c3f52ba5767f0600871a55ca30844b10",
+    "src/ui/combat_progress_button.gd": "e772c5a85e9c953aed55031a18343c79afbc146152562bb8676b79e3a2f0f100",
+    "src/ui/combat_review_panel.gd": "3c37c2246cbf4b3b00ed7cbecba273cd61d7f87602e8d2c3f1d632a724e14081",
+    "src/ui/combat_screen_surface.gd": "117f679c37cd299e10ed9177837124a110b6bdc4ceaa086879546012e6b77b1d",
+    "src/ui/combat_sound_bank.gd": "caf6667d62d6794e6ce6d6ff143c5d50ebb584faa5bef06e1f7d5a1e4ef5c698",
+    "src/ui/combatant_status_panel.gd": "9330a4d24dc5edecba0ade2e8eed8b8424385a0ec6b5fe029d25facf27447ce7",
+    "src/ui/duel_foreground_banner.gd": "242194d34e29b195469b12772c0a0d251cc078fe304b841633e06d02f4c76d86",
+    "src/ui/ink/ink_combat_presentation.gd": "e081e9b1690edbfbe6b80ba0b44bf1d2518ec3d0feb17db59e387d286df01d51",
+    "src/ui/ink/ink_combat_stage.gd": "97546e1769fec8b3b616471c3395201fdbed08ca1611f55b218ee4bc0af42ab3",
+    "src/ui/ink/ink_resolution_model.gd": "dad6080756dca9d8b9cafc99f3513fe2a515112a9ca59bb541e8af04e87e64f6",
+    "src/ui/ink/ink_screen_art.gd": "eefaaf6756753f7f9dbaf84de6282e48cd183e94a67138082db04791b5682995",
+    "src/ui/main_title_screen.gd": "b855d951b159364a4b723e9f9908903cecb061e4e283a28f62c7bcb9b917a554",
+    "src/ui/momentum_gauge.gd": "8782255377aafc78aa006009795a3599d1fd19346025f0f7931729696678672b",
+    "src/ui/observation_reveal_panel.gd": "e5d136113437e1cae1ea67b9b88a5799ea3be743f6c0fcd35bfd99827fad6a3a",
+    "src/ui/round_hud_panel.gd": "9e6d34a1f1f9fb2e6020711369e59c9d03e2c3eff9290d0d1851af1f9539832e",
+    "src/ui/top_combat_hud.gd": "39c3cd308ea844ca4aa4535c95c78af36318dfbee9dcab5c2b381c47dae598ee",
+    "src/validation/ten_manual_product_scenario_validator.gd": "7c6cde0fb8f1d3fa309214fd95c3ae443767e0a787bd82cf7d6f9a280c0cb4d1",
+    "src/validation/ten_manual_product_validation_bootstrap.gd": "bd886ce67a9b1d01c22db793b7b922c295facc5967226c7bdaaedee901cdb826",
+    "src/validation/vertical_slice_balance_instrumentation.gd": "14c961c0a2c04a90e6a862a43f6283c3fd9361748870239f525f344814045829",
+    "src/validation/vertical_slice_balance_public_policy.gd": "a8f8b540a58dc865bdbc45ff296e1018b654f2fa6586b176749f942a7d4e2bee",
+    "src/validation/vertical_slice_balance_report_runner.gd": "cde87deda73456b59df296c97f97bfa16e480320ef5a7c54d1b1e1df56e512c8",
+    "data/cards/basic_cards.json": "c7700956fc273816ec30a6aa100334c1834d2a2564f01a41a1a3d28b3583ae23",
+    "data/cards/martial_manual_cards.json": "1f6f6dafd5a60e955b1b19f2332279108889a139bf0106861ae5e6f610dce1ff",
+    "data/cards/martial_manuals/beggars_dragon_subduing_palm.json": "56977f050a212238023b9112f09813133d3eb411a6e63b5fe8bc0ebdeb1af1c8",
+    "data/cards/martial_manuals/hebei_peng_five_tigers_saber.json": "791f84270d5ffb729ef0f4cb1222145df2e148e7e3ce331e6cc044481e7371f8",
+    "data/cards/martial_manuals/mount_hua_plum_blossom_sword.json": "93fa7c936e95c2525b07737ac55c418d5b5b2e8963c1b67db6254e99363df8ef",
+    "data/cards/martial_manuals/mount_hua_purple_mist_art.json": "e67c49173a4ee12b26c0713b4ca76c39de5de816e6e29aca2580ae0ca25fbb0e",
+    "data/cards/martial_manuals/nangong_boundless_sky_sword.json": "285d75aa7f5bbcad86d344a6a994dd26ee3b9bca11c9a4f21458089092864042",
+    "data/cards/martial_manuals/shaolin_arhat_vajra_art.json": "436be020a47ec4fa8f5916b617958b9176e9ece8a84451096c28d8bc6d712a7c",
+    "data/cards/martial_manuals/sichuan_tang_hidden_weapons.json": "cbbfcdf520b12ed645fde6316f6d505d9afdc818afe0de2a3efc2c06ce1875ff",
+    "data/cards/martial_manuals/wudang_taiji_sword.json": "25a6cc9e0528692cd4ba7ced09998bfadf2033252a02c45b57b86754576350b8",
+    "data/cards/martial_manuals/xiaoyao_lingbo_footwork.json": "97bebaeb4cab2542a93db734c66cf64921f765b8678659c4e610a3c7ef9dace0",
+    "data/cards/martial_manuals/yang_family_spear.json": "dcd375662bdf71f9e0c9afa54b94f1f08d98a19d225f0c2a01062b03eeb1f3ee",
+    "data/cards/ultimate_cards.json": "cff2b7217812ee36a691cb4902a08fbd1ca555f8529d0742fd46add5954aebed",
+    "data/combat/combat_action_timing_preview.json": "e237c7127c98cc95e792a63cd202b162007726f3dbd3ef1f6ff9bde4839a595d",
+    "data/combat/combat_board_poc.json": "484f5012b16be0438792e41dd1f154ec82d591bffcdc7416bbbebeaf5f315a58",
+    "data/combat/combat_hud_preview.json": "4c59dc7db615904fb020a043a1b03271d55472121de4e4f8973e8d55c5305296",
+    "data/combat/combat_log_preview.json": "29f1bbddfcd55b00bcfc99c526439d54e2c52a61414bb666955a8fda14715e95",
+    "data/combat/combat_progress_preview.json": "58dd9d60466497fdc837d65092a2c5b8984bc8cb3ea4e5ecb2ed082be82844a6",
+    "data/combat/combat_resolution_preview.json": "7055cebefc08eed67d6beb9fd032a32b890e6fa755b2f5eb019eb6a07ca8f5d6",
+    "data/combat/combat_rival_tendency_poc.json": "3aa1730501b644e582b48c309d5f9e5bd4f9f3ba08965187663ec29430822895",
+    "data/combat/mastery_ultimate_poc.json": "712d3f6cddfeaa0a45442f011fa3e1698abd616dcd86c28ffdcddad4d3309f23",
+    "data/combat/ten_manual_loadout_poc.json": "b6137429d6a5032c60f644abfd4e12ad6d6ad406205f86c23d4fbb46ab228166",
+    "data/presentation/combat_motion_presets.json": "5f2f0179bd606d78fecd815edca442d91361df80fe95ad560485609fca30ec58",
+    "data/presentation/dogyeom_ink_opponent.json": "d06cd3ac108d120f93c02a1eb9a0532ef5c582ab6466affe5c735d1e3fe18577",
+    "data/presentation/ink_combat_stage.json": "74cc73cbb6264c2a473b9cc723b444e3ba4b00cf9cb9bd23eaa7b73cd4d16196",
+    "data/presentation/masked_ink_opponent.json": "6e3480305d15b1ad2c2139e859bf8152da8d18d23e900d0691c2acae5460c409",
+    "data/run/approved_opponent_stages_v2.json": "9b4dc969b10d6e232c9d0e15207a76db967f247e2fc04b04fe53abc37aafbdcc",
+    "data/run/bimu_constraints.json": "fd9303e6fc2da04afbe57477cbc67232259b5a0caba2c972d6e2be6d47699cd0",
+    "data/run/giyun_rules.json": "ee7ad288bab15277af30c88938afdc65444b7f060fac013cc5d3664045fcc9e2",
+    "data/run/giyun_rules_v1.json": "2b82f28176f83d4739b606799a55cbf3cca235353226873a96b6cbeaa3c801de",
+    "data/run/vertical_slice_opponent_archetypes.json": "1f14f54f9ec0b3c13a2e33cdd31dfb39ac0b411c2992ffcd03025ddb1132e879",
+    "data/run/vertical_slice_opponents.json": "31b19f8862184b7239432cbaae40d12afddfaa9d175263f9d75cc3e1fbc70d20",
+    "data/validation/vertical_slice_balance_instrumentation_matrix.json": "66c80781ab28e615a3bb0e96b81e4d58fda5e99d32a767acc614e0214542ce4c",
+    "scenes/combat/battle_background.tscn": "984e75f182d3d82dd1cfd833fccf144388a044a933614fa1a5ca1f98fecfc05e",
+    "scenes/combat/combat_board_preview.tscn": "b4b4bcf29189b34ab467da34b50b3eb97ab525d6ccb0f9a2d2f99f3db61ba099",
+    "scenes/combat/combat_board_tile.tscn": "6125f1e1f9a628b3534572b42c2343f1a9d15a60a0de9e9d76ab54978d5ab060",
+    "scenes/combat/combat_character_placeholder.tscn": "876acb80b4f673dc165bf9abecc44b401f44e2e09dd2f9ddceb702964543d8c5",
+    "scenes/run/vertical_slice_combat_bridge.tscn": "4050f34a0a957b6e96bb4437c139ffab39ed68b144291e71a0f275b1a833c1cb",
+    "scenes/run/vertical_slice_shell.tscn": "394d4367c34459023ba953142eefa72dbd5e217533ae69ff07ba647f6228e99b",
+    "scenes/ui/action_selection/action_detail_panel.tscn": "7c91f49f6cbab58b4d4cb52cb7141b409e415e85cc81973b3f93c513a7debcb9",
+    "scenes/ui/action_selection/action_selection_dock.tscn": "6b25839a3180e3ce2b7f75b500a790a87a294f5f5c5d7a0807ffd60d72b1e262",
+    "scenes/ui/action_selection/basic_action_panel.tscn": "b19bb85a5348386cd1bde2eab8d541b14bcef4dd2eff9cf21669ea3f6bc84cd4",
+    "scenes/ui/action_selection/linked_action_block.tscn": "2baf151e6d4298d3ee5d6dadd6a83ee1bf6f77b86c27e5f2084a0a69ac50929c",
+    "scenes/ui/action_selection/martial_action_panel.tscn": "e83db351f5c96fbb50de916b98517581ba6fbcea893f8c02d84d84d43195c64d",
+    "scenes/ui/action_selection/ultimate_action_panel.tscn": "d67304b5ac809d7175f6d493b708a2ed9702c4b53cee93a2824ec2cad0f01b6e",
+    "scenes/ui/action_timing_panel.tscn": "5b8920e41f31b3dddde88669df14a1ef19cd556d95685737715f8f716774627f",
+    "scenes/ui/action_timing_slot.tscn": "1a75b46539949cf44f4d6132d63650b6b8e8620b487ce42fb5e4061362858cd6",
+    "scenes/ui/basic_card_tray.tscn": "037344ca86df08b900a6d33389ecc2b4ccb9499dad779015fa99f5625ab532f2",
+    "scenes/ui/basic_card_tray_item.tscn": "cb12710bc608015c9b0d238b15760980ed2a6bf8b270336f3d8013f1c68d3f16",
+    "scenes/ui/card_component_preview.tscn": "b78cc41258dfe8ac80f4e747fad5499fe1a2747103b3d54f5f3663b858914e1d",
+    "scenes/ui/card_detail_panel.tscn": "03f334e71664227282165555d634b67a40ecf2053f1d209289ea054636725d78",
+    "scenes/ui/card_view.tscn": "a6e11d4cf8ef30d779887f1b16b6654440436b02852c644555bb9248b62fc8f1",
+    "scenes/ui/combat_log_panel.tscn": "cc773bef7ccaf2eb4d02802e0cbe276e42f20a49426d45acf7eb8831609e08b0",
+    "scenes/ui/combat_progress_button.tscn": "20ab0343897a9b35fa730a3402691ac4e9e10b359183310572809ed671961a37",
+    "scenes/ui/combat_review_panel.tscn": "86d72b25231c0eb15bc61815a9552e63c07a844ffde8449ad8dc76baefc13aed",
+    "scenes/ui/combatant_status_panel.tscn": "53d17b3fe0d78c5e5f7f44f41c0535539701d9d573dd38d50be0c48f33001f75",
+    "scenes/ui/main_title_screen.tscn": "4bd5768e7d9bf45ec5b6f2ef966d06dc586f6fc7ba5af6b0ebff9cfc99005d28",
+    "scenes/ui/momentum_gauge.tscn": "05f1a31b06c7dea197765fa0989009934d3b90ad178c2aff3e879f6377d051bd",
+    "scenes/ui/observation_reveal_panel.tscn": "0644becec855d596bd19a910f845d7fc7bda7da8157bca2917c98f72a3140c02",
+    "scenes/ui/round_hud_panel.tscn": "a5cc58a7eb29afa9b900a3a6e1f5167bab1c45576e6b850d73bb6aa7dc12495d",
+    "scenes/ui/top_combat_hud.tscn": "c3650572bc322a070955f4eeb76620495aa23a82759c8f5d4039d919f57e2eaa",
+    "assets/ui/cards/card_asset_manifest.json": "790dedc4519e70b0cb5cb8393a133837e7ece145399fba6be386f9be0b9c8605",
+    "project.godot": "7bb6dabd2d7104a1c218a99a88a806f22050aab2f36365f60e5a2ed51f87008d",
+    "tests/verify_ink_combat_runtime.gd": "ffea937f4505b096a23271dc27c3183ad500af3f7e92083e8423108ba37a981b",
+    "tools/capture_ink_screen_refresh.gd": "57b6970f2c2a0cbb7201cf8e6c2c7ffb764b4fc7dabab196afebec145791cad4",
+    "docs/visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v2/bundle-fixtures.json": "9989217638aa185b742dd23a8a456477ada8ac0f400f4ee337cbb5cbb057ee76"
+  },
+  "text_hash_policy": "UTF8_UNIVERSAL_NEWLINES",
+  "clips": [
+    {
+      "id": "ink-current-3-3-4",
+      "title": "수묵 합 · 실제 3수 / 3수 / 4수 연속 진행",
+      "card_ids": [
+        "basic_guard",
+        "basic_heavy_attack",
+        "basic_meditate",
+        "basic_move",
+        "basic_observe",
+        "basic_quick_attack"
+      ],
+      "events": [
+        {
+          "action_slots": 2,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "basic_heavy_attack",
+          "card_name": "강공",
+          "category": "attack",
+          "category_label": "공격",
+          "direction": 1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              0.0,
+              515.0,
+              303.0,
+              509.0
+            ]
+          },
+          "internal_cost": 2,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "기초",
+          "stamina_cost": 1,
+          "target_tile": 6,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "preparation",
+          "actor": "enemy",
+          "card_id": "basic_heavy_attack",
+          "card_name": "강공",
+          "category": "attack",
+          "category_label": "공격",
+          "direction": -1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              0.0,
+              515.0,
+              303.0,
+              509.0
+            ]
+          },
+          "internal_cost": 2,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "source_label": "기초",
+          "stamina_cost": 1,
+          "target_tile": 0,
+          "timing": 1,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "execution",
+          "actor": "player",
+          "actor_tile_after_action": 4,
+          "card_id": "basic_heavy_attack",
+          "card_name": "강공",
+          "category": "attack",
+          "category_label": "공격",
+          "clash": true,
+          "clash_difference": 2,
+          "clash_opponent_raw_damage": 9,
+          "damage": 2,
+          "damage_after_block": 2,
+          "defense_outcome": "hit",
+          "direction": 1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              0.0,
+              515.0,
+              303.0,
+              509.0
+            ]
+          },
+          "internal_cost": 2,
+          "outcome": "clash_win",
+          "phase": "clash_win",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "raw_damage": 11,
+          "source_label": "기초",
+          "stamina_cost": 1,
+          "sure_hit": false,
+          "target": "enemy",
+          "target_tile": 6,
+          "target_tile_at_action": 6,
+          "timing": 2,
+          "type": "clash"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "execution",
+          "actor": "enemy",
+          "actor_tile_after_action": 6,
+          "card_id": "basic_heavy_attack",
+          "card_name": "강공",
+          "category": "attack",
+          "category_label": "공격",
+          "clash": true,
+          "clash_difference": 2,
+          "clash_opponent_raw_damage": 11,
+          "damage": 2,
+          "damage_after_block": 2,
+          "defense_outcome": "hit",
+          "direction": -1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              0.0,
+              515.0,
+              303.0,
+              509.0
+            ]
+          },
+          "internal_cost": 2,
+          "outcome": "clash_loss",
+          "phase": "clash_loss",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 4
+          },
+          "range_text": "1~2",
+          "raw_damage": 9,
+          "source_label": "기초",
+          "stamina_cost": 1,
+          "sure_hit": false,
+          "target": "player",
+          "target_tile": 0,
+          "target_tile_at_action": 4,
+          "timing": 2,
+          "type": "clash"
+        },
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "player",
+          "card_id": "basic_meditate",
+          "card_name": "명상",
+          "category": "recovery",
+          "category_label": "회복",
+          "direction": 1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              616.0,
+              515.0,
+              303.0,
+              509.0
+            ]
+          },
+          "internal_cost": 0,
+          "outcome": "general",
+          "phase": "general",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 4
+          },
+          "range_text": "-",
+          "source_label": "기초",
+          "stamina_cost": 0,
+          "target_tile": 6,
+          "timing": 3,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "enemy",
+          "card_id": "basic_meditate",
+          "card_name": "명상",
+          "category": "recovery",
+          "category_label": "회복",
+          "direction": -1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              616.0,
+              515.0,
+              303.0,
+              509.0
+            ]
+          },
+          "internal_cost": 0,
+          "outcome": "general",
+          "phase": "general",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 4
+          },
+          "range_text": "-",
+          "source_label": "기초",
+          "stamina_cost": 0,
+          "target_tile": 0,
+          "timing": 3,
+          "type": "action_result"
+        },
+        {
+          "enemy": {
+            "attack_power": 8.0,
+            "epithet": "무림 검사",
+            "fortitude_next_attack": false,
+            "health": [
+              28,
+              30
+            ],
+            "internal": [
+              3,
+              4
+            ],
+            "momentum": [
+              1,
+              5
+            ],
+            "name": "배외검객",
+            "next_attack_bonus": 0,
+            "stamina": [
+              5,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 2,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "offense",
+                "label": "출"
+              },
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 6
+          },
+          "logs": [
+            "[1라운드 1묶음 판정]",
+            "판정 순서: 대응 → 속공 → 이동 → 일반 공격",
+            "[1수 · 준비] 강호낭인이(가) 강공의 준비를 이어 간다.",
+            "[1수 · 준비] 배외검객이(가) 강공의 준비를 이어 간다.",
+            "[2수 · 합] 공격력 11 대 9, 차이 2.",
+            "[2수 · 절초 기세] 합 승리 강호낭인 기세 +1 (1/5).",
+            "[3수 · 일반] 강호낭인이(가) 명상해 기력과 내력을 회복했다.",
+            "[3수 · 일반] 배외검객이(가) 명상해 기력과 내력을 회복했다.",
+            "[묶음 완료 · 절초 기세] 강호낭인 기세 +1 (2/5).",
+            "[묶음 완료 · 절초 기세] 배외검객 기세 +1 (1/5)."
+          ],
+          "phase": "result",
+          "player": {
+            "attack_power": 8.0,
+            "epithet": "무명 검객",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              3,
+              4
+            ],
+            "momentum": [
+              2,
+              5
+            ],
+            "name": "강호낭인",
+            "next_attack_bonus": 0,
+            "stamina": [
+              5,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 4
+          },
+          "type": "bundle_state"
+        },
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "player",
+          "card_id": "basic_guard",
+          "card_name": "막기",
+          "category": "response",
+          "category_label": "대응",
+          "direction": 1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              616.0,
+              0.0,
+              303.0,
+              509.0
+            ]
+          },
+          "internal_cost": 0,
+          "outcome": "response",
+          "phase": "response",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 4
+          },
+          "range_text": "-",
+          "source_label": "기초",
+          "stamina_cost": 1,
+          "target_tile": 6,
+          "timing": 6,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "player",
+          "card_id": "basic_move",
+          "card_name": "이동",
+          "category": "move",
+          "category_label": "이동",
+          "direction": 1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              0.0,
+              0.0,
+              303.0,
+              509.0
+            ]
+          },
+          "internal_cost": 0,
+          "outcome": "move",
+          "phase": "move",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 4
+          },
+          "range_text": "1",
+          "source_label": "기초",
+          "stamina_cost": 0,
+          "target_tile": 5,
+          "timing": 4,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "enemy",
+          "card_id": "basic_observe",
+          "card_name": "관찰",
+          "category": "observation",
+          "category_label": "관찰",
+          "direction": -1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              309.0,
+              515.0,
+              301.0,
+              509.0
+            ]
+          },
+          "internal_cost": 0,
+          "outcome": "general",
+          "phase": "general",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 4
+          },
+          "range_text": "-",
+          "source_label": "기초",
+          "stamina_cost": 0,
+          "target_tile": 0,
+          "timing": 4,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "player",
+          "actor_tile_after_action": 5,
+          "card_id": "basic_quick_attack",
+          "card_name": "속공",
+          "category": "attack",
+          "category_label": "공격",
+          "clash": true,
+          "clash_difference": 1,
+          "clash_opponent_raw_damage": 4,
+          "damage": 1,
+          "damage_after_block": 1,
+          "defense_outcome": "hit",
+          "direction": 1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              1231.0,
+              0.0,
+              305.0,
+              509.0
+            ]
+          },
+          "internal_cost": 0,
+          "outcome": "clash_win",
+          "phase": "clash_win",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 4
+          },
+          "range_text": "1",
+          "raw_damage": 5,
+          "source_label": "기초",
+          "stamina_cost": 1,
+          "sure_hit": false,
+          "target": "enemy",
+          "target_tile": 6,
+          "target_tile_at_action": 6,
+          "timing": 5,
+          "type": "clash"
+        },
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "enemy",
+          "actor_tile_after_action": 6,
+          "card_id": "basic_quick_attack",
+          "card_name": "속공",
+          "category": "attack",
+          "category_label": "공격",
+          "clash": true,
+          "clash_difference": 1,
+          "clash_opponent_raw_damage": 5,
+          "damage": 1,
+          "damage_after_block": 1,
+          "defense_outcome": "hit",
+          "direction": -1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              1231.0,
+              0.0,
+              305.0,
+              509.0
+            ]
+          },
+          "internal_cost": 0,
+          "outcome": "clash_loss",
+          "phase": "clash_loss",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 4
+          },
+          "range_text": "1",
+          "raw_damage": 4,
+          "source_label": "기초",
+          "stamina_cost": 1,
+          "sure_hit": false,
+          "target": "player",
+          "target_tile": 0,
+          "target_tile_at_action": 5,
+          "timing": 5,
+          "type": "clash"
+        },
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "enemy",
+          "actor_tile_after_action": 6,
+          "card_id": "basic_quick_attack",
+          "card_name": "속공",
+          "category": "attack",
+          "category_label": "공격",
+          "damage": 0,
+          "damage_after_block": 0,
+          "defense_outcome": "block",
+          "direction": -1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              1231.0,
+              0.0,
+              305.0,
+              509.0
+            ]
+          },
+          "internal_cost": 0,
+          "outcome": "속공",
+          "phase": "속공",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 4
+          },
+          "range_text": "1",
+          "raw_damage": 4,
+          "source_label": "기초",
+          "stamina_cost": 1,
+          "sure_hit": false,
+          "target": "player",
+          "target_tile": 0,
+          "target_tile_at_action": 5,
+          "timing": 6,
+          "type": "action_result"
+        },
+        {
+          "enemy": {
+            "attack_power": 8.0,
+            "epithet": "무림 검사",
+            "fortitude_next_attack": false,
+            "health": [
+              27,
+              30
+            ],
+            "internal": [
+              3,
+              4
+            ],
+            "momentum": [
+              2,
+              5
+            ],
+            "name": "배외검객",
+            "next_attack_bonus": 0,
+            "stamina": [
+              3,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 2,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "offense",
+                "label": "출"
+              },
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 6
+          },
+          "logs": [
+            "[1라운드 2묶음 판정]",
+            "판정 순서: 대응 → 속공 → 이동 → 일반 공격",
+            "[6수 · 대응] 강호낭인이(가) 현재 묶음에 방어도 4를 준비했다.",
+            "[4수 · 이동] 강호낭인이(가) 4번에서 5번 칸으로 이동했다.",
+            "[4수 · 일반] 배외검객이(가) 관찰을(를) 실행했다.",
+            "[5수 · 합] 공격력 5 대 4, 차이 1.",
+            "[5수 · 절초 기세] 합 승리 강호낭인 기세 +1 (3/5).",
+            "[6수 · 절초 기세] 막기 성공 강호낭인 기세 +1 (4/5).",
+            "[묶음 완료 · 절초 기세] 강호낭인 기세 +1 (5/5).",
+            "[묶음 완료 · 절초 기세] 배외검객 기세 +1 (2/5)."
+          ],
+          "phase": "result",
+          "player": {
+            "attack_power": 8.0,
+            "epithet": "무명 검객",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              3,
+              4
+            ],
+            "momentum": [
+              5,
+              5
+            ],
+            "name": "강호낭인",
+            "next_attack_bonus": 0,
+            "stamina": [
+              3,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 5
+          },
+          "type": "bundle_state"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "preparation",
+          "actor": "player",
+          "card_id": "basic_heavy_attack",
+          "card_name": "강공",
+          "category": "attack",
+          "category_label": "공격",
+          "direction": 1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              0.0,
+              515.0,
+              303.0,
+              509.0
+            ]
+          },
+          "internal_cost": 2,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 5
+          },
+          "range_text": "1~2",
+          "source_label": "기초",
+          "stamina_cost": 1,
+          "target_tile": 6,
+          "timing": 7,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "preparation",
+          "actor": "enemy",
+          "card_id": "basic_heavy_attack",
+          "card_name": "강공",
+          "category": "attack",
+          "category_label": "공격",
+          "direction": -1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              0.0,
+              515.0,
+              303.0,
+              509.0
+            ]
+          },
+          "internal_cost": 2,
+          "outcome": "preparation",
+          "phase": "preparation",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 5
+          },
+          "range_text": "1~2",
+          "source_label": "기초",
+          "stamina_cost": 1,
+          "target_tile": 0,
+          "timing": 7,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "execution",
+          "actor": "player",
+          "actor_tile_after_action": 5,
+          "card_id": "basic_heavy_attack",
+          "card_name": "강공",
+          "category": "attack",
+          "category_label": "공격",
+          "clash": true,
+          "clash_difference": 2,
+          "clash_opponent_raw_damage": 9,
+          "damage": 2,
+          "damage_after_block": 2,
+          "defense_outcome": "hit",
+          "direction": 1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              0.0,
+              515.0,
+              303.0,
+              509.0
+            ]
+          },
+          "internal_cost": 2,
+          "outcome": "clash_win",
+          "phase": "clash_win",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 5
+          },
+          "range_text": "1~2",
+          "raw_damage": 11,
+          "source_label": "기초",
+          "stamina_cost": 1,
+          "sure_hit": false,
+          "target": "enemy",
+          "target_tile": 6,
+          "target_tile_at_action": 6,
+          "timing": 8,
+          "type": "clash"
+        },
+        {
+          "action_slots": 2,
+          "action_stage": "execution",
+          "actor": "enemy",
+          "actor_tile_after_action": 6,
+          "card_id": "basic_heavy_attack",
+          "card_name": "강공",
+          "category": "attack",
+          "category_label": "공격",
+          "clash": true,
+          "clash_difference": 2,
+          "clash_opponent_raw_damage": 11,
+          "damage": 2,
+          "damage_after_block": 2,
+          "defense_outcome": "hit",
+          "direction": -1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              0.0,
+              515.0,
+              303.0,
+              509.0
+            ]
+          },
+          "internal_cost": 2,
+          "outcome": "clash_loss",
+          "phase": "clash_loss",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 5
+          },
+          "range_text": "1~2",
+          "raw_damage": 9,
+          "source_label": "기초",
+          "stamina_cost": 1,
+          "sure_hit": false,
+          "target": "player",
+          "target_tile": 0,
+          "target_tile_at_action": 5,
+          "timing": 8,
+          "type": "clash"
+        },
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "player",
+          "actor_tile_after_action": 5,
+          "card_id": "basic_quick_attack",
+          "card_name": "속공",
+          "category": "attack",
+          "category_label": "공격",
+          "clash": true,
+          "clash_difference": 1,
+          "clash_opponent_raw_damage": 4,
+          "damage": 1,
+          "damage_after_block": 1,
+          "defense_outcome": "hit",
+          "direction": 1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              1231.0,
+              0.0,
+              305.0,
+              509.0
+            ]
+          },
+          "internal_cost": 0,
+          "outcome": "clash_win",
+          "phase": "clash_win",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 5
+          },
+          "range_text": "1",
+          "raw_damage": 5,
+          "source_label": "기초",
+          "stamina_cost": 1,
+          "sure_hit": false,
+          "target": "enemy",
+          "target_tile": 6,
+          "target_tile_at_action": 6,
+          "timing": 9,
+          "type": "clash"
+        },
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "enemy",
+          "actor_tile_after_action": 6,
+          "card_id": "basic_quick_attack",
+          "card_name": "속공",
+          "category": "attack",
+          "category_label": "공격",
+          "clash": true,
+          "clash_difference": 1,
+          "clash_opponent_raw_damage": 5,
+          "damage": 1,
+          "damage_after_block": 1,
+          "defense_outcome": "hit",
+          "direction": -1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              1231.0,
+              0.0,
+              305.0,
+              509.0
+            ]
+          },
+          "internal_cost": 0,
+          "outcome": "clash_loss",
+          "phase": "clash_loss",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 5
+          },
+          "range_text": "1",
+          "raw_damage": 4,
+          "source_label": "기초",
+          "stamina_cost": 1,
+          "sure_hit": false,
+          "target": "player",
+          "target_tile": 0,
+          "target_tile_at_action": 5,
+          "timing": 9,
+          "type": "clash"
+        },
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "player",
+          "card_id": "basic_meditate",
+          "card_name": "명상",
+          "category": "recovery",
+          "category_label": "회복",
+          "direction": 1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              616.0,
+              515.0,
+              303.0,
+              509.0
+            ]
+          },
+          "internal_cost": 0,
+          "outcome": "general",
+          "phase": "general",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 5
+          },
+          "range_text": "-",
+          "source_label": "기초",
+          "stamina_cost": 0,
+          "target_tile": 6,
+          "timing": 10,
+          "type": "action_result"
+        },
+        {
+          "action_slots": 1,
+          "action_stage": "execution",
+          "actor": "enemy",
+          "card_id": "basic_meditate",
+          "card_name": "명상",
+          "category": "recovery",
+          "category_label": "회복",
+          "direction": -1,
+          "illustration": {
+            "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+            "region": [
+              616.0,
+              515.0,
+              303.0,
+              509.0
+            ]
+          },
+          "internal_cost": 0,
+          "outcome": "general",
+          "phase": "general",
+          "positions_before_bundle": {
+            "enemy": 6,
+            "player": 5
+          },
+          "range_text": "-",
+          "source_label": "기초",
+          "stamina_cost": 0,
+          "target_tile": 0,
+          "timing": 10,
+          "type": "action_result"
+        },
+        {
+          "enemy": {
+            "attack_power": 8.0,
+            "epithet": "무림 검사",
+            "fortitude_next_attack": false,
+            "health": [
+              24,
+              30
+            ],
+            "internal": [
+              2,
+              4
+            ],
+            "momentum": [
+              3,
+              5
+            ],
+            "name": "배외검객",
+            "next_attack_bonus": 0,
+            "stamina": [
+              2,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 2,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "offense",
+                "label": "출"
+              },
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 6
+          },
+          "logs": [
+            "[1라운드 3묶음 판정]",
+            "판정 순서: 대응 → 속공 → 이동 → 일반 공격",
+            "[7수 · 준비] 강호낭인이(가) 강공의 준비를 이어 간다.",
+            "[7수 · 준비] 배외검객이(가) 강공의 준비를 이어 간다.",
+            "[8수 · 합] 공격력 11 대 9, 차이 2.",
+            "[9수 · 합] 공격력 5 대 4, 차이 1.",
+            "[10수 · 일반] 강호낭인이(가) 명상해 기력과 내력을 회복했다.",
+            "[10수 · 일반] 배외검객이(가) 명상해 기력과 내력을 회복했다.",
+            "[묶음 완료 · 절초 기세] 배외검객 기세 +1 (3/5)."
+          ],
+          "phase": "result",
+          "player": {
+            "attack_power": 8.0,
+            "epithet": "무명 검객",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              2,
+              4
+            ],
+            "momentum": [
+              5,
+              5
+            ],
+            "name": "강호낭인",
+            "next_attack_bonus": 0,
+            "stamina": [
+              2,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 5
+          },
+          "type": "bundle_state"
+        }
+      ],
+      "path": "docs/visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v2/runtime-bundles.mp4",
+      "path_sha256": "ed39e1093c836e67a629cd8737856f0925c749be8991dab9e7eb82449e85856f",
+      "poster": "docs/blueprint/evidence/ink-screens-20260925/resolution.png",
+      "poster_sha256": "66fa282fc4687749ef2b97e125f027be15b7104c754ef51eec3ab3b48ca99688",
+      "timeline": [],
+      "timeline_basis": "NATIVE_FIXED_FPS_24",
+      "frames": 706,
+      "distinct_frames": 491,
+      "visual_status": "FRAME_CHANGES_OBSERVED",
+      "duration_seconds": 29.417,
+      "audio": "NOT_CAPTURED",
+      "evidence_kind": "ACTUAL_RESOLVER_FIXED_PLAN_NATIVE_CAPTURE",
+      "scope": "MAIN_SOURCE",
+      "source_revision": "7f549217ea4b2496613b9b4cf3176bccfede2c58",
+      "outcomes": [
+        "clash_loss",
+        "clash_win",
+        "general",
+        "move",
+        "preparation",
+        "response",
+        "속공"
+      ],
+      "caption": "현재 수묵 적용 · 실제 판정기 3/3/4수 고정 계획 녹화"
+    }
+  ],
+  "method": "Actual CombatBoardPreview with actual resolver fixed plans; not offline compositing",
+  "native_receipt": {
+    "captures": {
+      "bundle-1-complete": 200,
+      "bundle-2-complete": 411,
+      "bundle-3-complete": 706,
+      "clash-contact": 59,
+      "clash-keyshot": 95,
+      "four-slots": 543,
+      "preparation-before": 0,
+      "resolved-damage": 127
+    },
+    "engine": "4.7.1-stable (official)",
+    "fps": 24,
+    "frames": 706,
+    "source": "Actual CombatBoardPreview with actual resolver fixed plans; not offline compositing"
+  },
+  "limits": "Silent fixed plans; seven native UI fixtures. Result/rest do not prove a won campaign. Human/Android NOT_RUN."
+}

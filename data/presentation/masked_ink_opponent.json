@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "candidate_id": "masked_baekmujin",
+  "preview_name": "배외검객",
+  "source": "docs/visual-assets/candidates/TEN-INK-SCREENS-20260925/masked-poses.png",
+  "source_sha256": "6130e210a7c6f659b93ccd124b4a235e0fb1210cff70a3218e3b902f7b69d38f",
+  "poses": [
+    {
+      "path": "res://assets/combat/ink_wuxia/masked_baekmujin/enemy-0.png",
+      "size": [
+        440,
+        422
+      ],
+      "foot": [
+        218,
+        414
+      ],
+      "hilt": [
+        117,
+        231
+      ],
+      "tip": [
+        9,
+        354
+      ],
+      "sha256": "72b2c149512b5cb065e05de13a88f1c0c3e698b5b9772dc33ab149677199a681"
+    },
+    {
+      "path": "res://assets/combat/ink_wuxia/masked_baekmujin/enemy-1.png",
+      "size": [
+        386,
+        421
+      ],
+      "foot": [
+        186,
+        413
+      ],
+      "hilt": [
+        88,
+        115
+      ],
+      "tip": [
+        298,
+        24
+      ],
+      "sha256": "3938f20d7252736cc074279697fc57d1a0e86484c2fac0b6b7510a994dfbcb14"
+    },
+    {
+      "path": "res://assets/combat/ink_wuxia/masked_baekmujin/enemy-2.png",
+      "size": [
+        435,
+        349
+      ],
+      "foot": [
+        236,
+        340
+      ],
+      "hilt": [
+        247,
+        87
+      ],
+      "tip": [
+        386,
+        22
+      ],
+      "sha256": "e4cfcfb9718be27dbf96cabedc7f3d2890b6b7dcb319f4288fbd44e02e425695"
+    },
+    {
+      "path": "res://assets/combat/ink_wuxia/masked_baekmujin/enemy-3.png",
+      "size": [
+        437,
+        425
+      ],
+      "foot": [
+        217,
+        417
+      ],
+      "hilt": [
+        96,
+        84
+      ],
+      "tip": [
+        14,
+        2
+      ],
+      "sha256": "e2fd510c0ef065ebae59c678f67e42bc602b014351dd7b05c01d28c65a30ba5b"
+    },
+    {
+      "path": "res://assets/combat/ink_wuxia/masked_baekmujin/enemy-4.png",
+      "size": [
+        435,
+        394
+      ],
+      "foot": [
+        188,
+        387
+      ],
+      "hilt": [
+        129,
+        121
+      ],
+      "tip": [
+        8,
+        5
+      ],
+      "sha256": "ac4d3425f89a57c55814361a120c6aa9b83eff8e7835d5afac81f1040b9ebc4c"
+    },
+    {
+      "path": "res://assets/combat/ink_wuxia/masked_baekmujin/enemy-5.png",
+      "size": [
+        517,
+        357
+      ],
+      "foot": [
+        323,
+        344
+      ],
+      "hilt": [
+        164,
+        86
+      ],
+      "tip": [
+        4,
+        86
+      ],
+      "sha256": "65f32c84f7594b6d82e6049da4faad4a419f5f0ad6e20de0928ee1bb93cb6bc3"
+    },
+    {
+      "path": "res://assets/combat/ink_wuxia/masked_baekmujin/enemy-6.png",
+      "size": [
+        431,
+        434
+      ],
+      "foot": [
+        215,
+        416
+      ],
+      "hilt": [
+        177,
+        46
+      ],
+      "tip": [
+        238,
+        0
+      ],
+      "sha256": "80a03787179244477a428f173887ed832db9bb2e4b25190c0ae27e6cee17b7f2"
+    },
+    {
+      "path": "res://assets/combat/ink_wuxia/masked_baekmujin/enemy-7.png",
+      "size": [
+        475,
+        374
+      ],
+      "foot": [
+        246,
+        360
+      ],
+      "hilt": [
+        177,
+        220
+      ],
+      "tip": [
+        8,
+        324
+      ],
+      "sha256": "1fdb598d0eb56fc0d434edabd3cfaa4cd0bd1cf48be2256fdf7f6e1d99366fd9"
+    },
+    {
+      "path": "res://assets/combat/ink_wuxia/masked_baekmujin/enemy-8.png",
+      "size": [
+        427,
+        417
+      ],
+      "foot": [
+        233,
+        403
+      ],
+      "hilt": [
+        101,
+        228
+      ],
+      "tip": [
+        3,
+        336
+      ],
+      "sha256": "32c8c924acb908aedc7b41f145be1fa33af0788e688ad990739951571434410e"
+    }
+  ],
+  "hero": "res://assets/combat/ink_wuxia/masked_baekmujin/hero-clash.png"
+}

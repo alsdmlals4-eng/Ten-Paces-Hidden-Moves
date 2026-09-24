@@ -37,7 +37,7 @@ ASSETS = {
     "reveal_sequence_candidate": ROOT / "docs/visual-assets/candidates/FRONTAL_DUEL_REVEAL_SEQUENCE_VISUAL_BOARD_20260902_v1.png",
     "background": ROOT / "docs/visual-assets/approved/FRONTAL_COURTYARD_DUEL_BACKGROUND_02_v1.png",
     "banner": ROOT / "docs/visual-assets/approved/FRONTAL_COURTYARD_BANNER_OVERLAY_01_v1.png",
-    "player": ROOT / "docs/visual-assets/approved/WANDERER_COMBAT_BATTLER_02_20260902_v2.png",
+    "player": ROOT / "assets/combat/ink_wuxia/player-0.png",
     "opponent": ROOT / "docs/visual-assets/approved/MASKED_SWORDSMAN_COMBAT_BATTLER_02_20260902_v2.png",
     "card_atlas": ROOT / "assets/ui/cards/martial_ultimate_card_illustration_atlas_01_v1.png",
 }

@@ -14,6 +14,8 @@ var progress := 0.0
 var effect_time := -1.0
 var reduced := false
 var _world := Transform2D.IDENTITY
+var opponent_id := "__unset__"
+var unarmed_enemy := false
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -27,6 +29,23 @@ func _ready() -> void:
 		for spec in catalog.poses[role]:
 			textures[role].append(load(spec.path))
 	entry_pose = pose.duplicate()
+
+func configure_opponent(candidate_id: String) -> void:
+	if candidate_id == opponent_id:
+		return
+	opponent_id = candidate_id
+	var profile: Dictionary = {}
+	if candidate_id in ["","masked_baekmujin"]:
+		profile = JSON.parse_string(FileAccess.get_file_as_string("res://data/presentation/masked_ink_opponent.json"))
+	elif candidate_id == "slot1_dogyeom":
+		profile = JSON.parse_string(FileAccess.get_file_as_string("res://data/presentation/dogyeom_ink_opponent.json"))
+	unarmed_enemy = bool(profile.get("unarmed",false))
+	var original: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(DATA))
+	catalog.poses.enemy = profile.poses if not profile.is_empty() else original.poses.enemy
+	textures.enemy = []
+	for spec in catalog.poses.enemy:
+		textures.enemy.append(load(spec.path))
+	hero = null if unarmed_enemy else load(profile.hero if not profile.is_empty() else "res://assets/combat/ink_wuxia/hero-clash.png")
 
 func begin(value: Dictionary) -> void:
 	entry_pose = pose.duplicate()
@@ -146,7 +165,7 @@ func _draw() -> void:
 			var tip := origin.lerp(target,reach)
 			var side := (tip-origin).normalized().orthogonal()*22
 			draw_polygon(PackedVector2Array([origin-side,origin+side,tip+side,tip-side]),PackedColorArray([Color(1,1,1,0.75*(1.0-clampf((progress-0.65)/0.20,0,1)))]),PackedVector2Array([Vector2(0,0),Vector2(0,1),Vector2(1,1),Vector2(1,0)]),brush)
-	if cue.get("kind") == "clash" and not reduced and effect_time >= 2.50 and effect_time < 2.68:
+	if hero != null and cue.get("kind") == "clash" and not reduced and effect_time >= 2.50 and effect_time < 2.68:
 		draw_texture_rect(hero,Rect2(0,0,1280,720),false)
 	draw_set_transform_matrix(Transform2D.IDENTITY)
 

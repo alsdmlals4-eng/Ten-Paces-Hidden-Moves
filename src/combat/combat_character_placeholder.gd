@@ -8,9 +8,10 @@ const ENEMY_OUTLINE := Color("bd6558")
 const INK := Color("1d1a17")
 const PAPER := Color("d8c9aa")
 const GOLD := Color("b99254")
-const PLAYER_ART_PATH := "res://assets/characters/player_wanderer_battler_rgba_v2.png"
+const PLAYER_ART_PATH := "res://assets/combat/ink_wuxia/player-0.png"
+const MASKED_INK_ART_PATH := "res://assets/combat/ink_wuxia/masked_baekmujin/enemy-0.png"
 const ENEMY_ART_PATH := "res://assets/characters/enemy_masked_battler_rgba_v2.png"
-const DOGYEOM_ART_PATH := "res://assets/characters/dogyeom_combat_battler_01_v1.png"
+const DOGYEOM_ART_PATH := "res://assets/combat/ink_wuxia/slot1_dogyeom/enemy-0.png"
 
 var role: String = "player"
 var facing: int = 1
@@ -65,7 +66,7 @@ func get_render_texture() -> Texture2D:
 
 func is_character_art_horizontally_mirrored() -> bool:
     _load_character_art()
-    return role == "enemy" and facing < 0 and _character_art_path == DOGYEOM_ART_PATH
+    return false # New ink opponent poses already face left.
 
 
 func _load_character_art() -> void:
@@ -91,6 +92,8 @@ func _load_character_art() -> void:
 
 
 func _enemy_art_path() -> String:
+    if candidate_id in ["", "masked_baekmujin"]:
+        return MASKED_INK_ART_PATH
     return DOGYEOM_ART_PATH if candidate_id == "slot1_dogyeom" else ENEMY_ART_PATH
 
 func set_dimensions(tile_width: float) -> void:
@@ -104,7 +107,10 @@ func set_dimensions(tile_width: float) -> void:
 
 func _sprite_rect_local() -> Rect2:
     var sprite_height := size.y * 1.08
-    return Rect2(Vector2((size.x - sprite_height) * 0.5, size.y - sprite_height * _sprite_foot_ratio), Vector2.ONE * sprite_height)
+    var sprite_width := sprite_height
+    if _character_art_path.begins_with("res://assets/combat/ink_wuxia/") and _art_image_size.y > 0:
+        sprite_width *= _art_image_size.x / _art_image_size.y
+    return Rect2(Vector2((size.x - sprite_width) * 0.5, size.y - sprite_height * _sprite_foot_ratio), Vector2(sprite_width,sprite_height))
 
 func get_idle_art_height_per_node_height() -> float:
     if _art_image_size.y <= 0.0 or not _art_used_rect.has_area():
@@ -121,7 +127,7 @@ func get_visible_art_bounds_local(include_motion: bool = true) -> Rect2:
     var occupied := Rect2(sprite_rect.position + _art_used_rect.position / _art_image_size * sprite_rect.size, _art_used_rect.size / _art_image_size * sprite_rect.size)
     var pivot := get_foot_anchor_local()
     var draw_scale := Vector2.ONE * (visual_scale if include_motion else 1.0)
-    if role == "enemy" and facing < 0 and _character_art_path == DOGYEOM_ART_PATH:
+    if is_character_art_horizontally_mirrored():
         draw_scale.x *= -1.0
     var offset := visual_offset if include_motion else Vector2.ZERO
     var transformed := Rect2(pivot + offset + (occupied.position - pivot) * draw_scale, Vector2.ZERO)

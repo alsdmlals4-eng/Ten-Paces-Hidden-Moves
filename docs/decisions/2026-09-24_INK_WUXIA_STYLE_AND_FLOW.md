@@ -114,3 +114,15 @@ CURRENT_SOURCE_RELEVANCE_CHECK: 동일 패키지의 10개 실제 시안·사용�
 실행 증거는 [실제 게임 녹화](../visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v2/runtime-bundles.mp4), [하단 결과](../visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v2/runtime-result.png), [4수 진행](../visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v2/runtime-four-slots.png)다. Godot4.7.1의 실제 CombatBoardPreview와 판정기에 고정 계획3묶음을 입력한 무음 촬영이며 일반 AI 대전 전체 녹화와 구분한다. 자동·Windows 실행·병합 증거와 미검증은 기존 `docs/operations/2026-09-09_CLASH_DIRECTION_EXECUTION_REPORT.md`에 누적한다.
 
 CURRENT_SOURCE_RELEVANCE_CHECK: 기존 ProjectMoon·Nine Sols 공식 연출 조사와 v2/묶음 승인, main의 실제 consumer를 REUSED_EVIDENCE로 사용했다. 새 구현은 [Godot CanvasItem 공식 문서](https://docs.godotengine.org/en/stable/classes/class_canvasitem.html)의 textured polygon/UV와 [AtlasTexture 공식 문서](https://docs.godotengine.org/en/stable/classes/class_atlastexture.html)의 영역 재사용을 확인했다(2026-09-24). runtime은 승인 합성기로 영역을 내보낸 Texture2D를 사용한다. FEASIBLE: 기존 Godot·승인 원화·로컬 도구로 구현/검증; 새 서비스·외부 자산·추가 비용 없음. Android·실기기·사용자 재미·반복 관람 피로·출시 성능/권리는 NOT_RUN 또는 기존 미확정이다.
+
+## 화면별 수묵 통일·하단 확대 · 2026-09-25 추가 승인
+
+최신 제작·게임 연결·구현·HTML 반영·구 이미지 폐기 승인은 같은 날 BUILD 승인 문서에 원문으로 연결한다. 기존 준비 **행동 방식**을 보존하면서 배경·인물만 승인된 화풍으로 교체한다. 내장 이미지 도구9회로 배경6장, 배외검객9자세/접점 원화, 도겸 맨손9자세를 제작했다. 플레이어는 이미 승인된 원화를 재사용했다. 결과 화면은 승리·패배 양쪽에서 쓸 수 있는 비어 있는 무대로 만들었다.
+
+실제 시작 상대는 seed에 따라 달라진다. 이번에 연결한 상대는 현재 미리보기의 배외검객과 새 여정에서 확인한 도겸 두 명이다. 다른14명은 유지한다. 도겸은 검객 포즈나 복면 근접 컷을 사용하지 않으며 맨손 손끝에서 먹 흐름을 이어간다. 촬영용 seed1은 도겸 재현만 위한 격리 fixture이고 일반 시작의 무작위 규칙은 바꾸지 않는다.
+
+하단은 현재 3/4수 슬롯, 양측 행동/합 수치, 실제 자원 변화의 세 영역으로 확대한다. 경험 가설은 영상을 확대하지 않아도 현재 수와 승패 원인·결과를 읽으며 무협 움직임을 계속 볼 수 있다는 것이다. 반례는 결과/재생 버튼 겹침, 판정 전 결과 공개, 새 상대와 다른 얼굴·무기 컷, 새 배경 위 낮은 글자 대비다. 960×640·1280×720·1440×900·1920×1080 기하 및 실제1440×900 촬영으로 교정하고, 사람의 읽기 속도·멋·반복 관람 평가는 별도로 남긴다.
+
+소비자는 `src/ui/ink/ink_screen_art.gd`, `src/ui/main_title_screen.gd`, `src/run/vertical_slice_shell.gd`, 준비 배경/인물과 `src/ui/ink/`다. 원본·파생·교체 표는 `TEN-INK-SCREENS-20260925/generation.json`, `replacement-map.json` 및 자산 manifest에 연결한다. 구 이미지13개는 교체 사용처와 해시 확인 뒤 실제 삭제하고, PDF 역사와 삭제 기록만 유지한다. HTML은 현재 Godot 촬영9장을 사용하고 이전36개 기술 녹화는 역사 촬영으로 명시한다.
+
+CURRENT_SOURCE_RELEVANCE_CHECK: 이미 승인된 동일 화풍·ProjectMoon/Nine Sols 조사·CanvasItem 구현 근거를 REUSED_EVIDENCE로 사용한다. 새 게임 규칙이나 외부 기술 판단은 없다. FEASIBLE: 현재 내장 생성 도구·동일 Godot4.7.1·기존 renderer/HTML 발행기를 재사용한다. 추가 설치·전역 설정 변경 없음.

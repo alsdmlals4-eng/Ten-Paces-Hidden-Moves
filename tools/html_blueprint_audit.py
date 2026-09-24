@@ -22,6 +22,10 @@ def group_assets(assets, people, manuals, art_selection=None):
                ('shared', '공용 UI · 프레임·아이콘', ['frame', 'panel', 'button', '/ui/', 'technique_ink_atlas', 'card_illustration_atlas'])]
     for a in assets:
         path = a['path'].lower()
+        explicit = a.get('details', {}).get('screen_group')
+        if explicit:
+            a['group'] = {'id':'screen:'+explicit,'label':a['details']['screen_kind'],'basis':'화면 consumer에 명시된 종류','role':a['details']['usage']}
+            continue
         tokens = path + ' ' + str(a.get('details', {}).get('source_art', '')).lower()
         role = ('실행·검증 화면' if '/evidence/' in path or '/runtime-captures/' in path else
                 '모션·포즈' if any(x in path for x in ['/motion/', 'sequence', 'reaction', 'pose']) else

@@ -36,6 +36,7 @@ def build():
     presentation=read('docs/blueprint/OPPONENT_PRESENTATION.json')
     budget=read('docs/blueprint/OPPONENT_BUDGET.json')
     profiles = {p['id']:p for p in read('data/run/vertical_slice_opponent_archetypes.json')['profiles']}
+    portraits = read('assets/blueprint/APPROVED_ART_MANIFEST.json')['portraits']
     result=[]
     candidates=read('data/run/vertical_slice_opponents.json')['candidates']+read('docs/blueprint/ADDITIONAL_OPPONENTS.json')['candidates']
     for candidate in candidates:
@@ -79,7 +80,7 @@ def build():
                            tactics=authored['tactics'],role=authored['role'],
                            acquisition_count=authored['acquisition_count'],epithet_reason=detail['epithet_reason'],
                            personality=candidate['short_personality_hook'],
-                           portrait=candidate.get('portrait','output/blueprint-candidates/opponent-'+detail['art']+'.png'),
+                           portrait=portraits[candidate['candidate_id']].removeprefix('res://'),
                            manual=manual['manual_name'],habit=candidate['readable_habit'],
                            counterexample=candidate['ambiguity_or_counterexample'],stages=stages))
     return result

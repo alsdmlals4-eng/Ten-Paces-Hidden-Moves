@@ -6,7 +6,7 @@ const src=p=>'../../'+encodeURI(p).replace(/#/g,'%23').replace(/\?/g,'%3F');
 const nav=[['maps','화면 연결 · 아틀라스'],['home','전체 보기'],['reader','게임 이해 · 112개 항목'],['people','인물 · 무공'],['assets','자산 · 모션 도감'],['motion','연출 영상'],['pm','작업 · 일정'],['evidence','실행 · 검수 기록'],['resume','다음 작업 이어가기']];
 const badge=(s,w=false)=>`<span class="badge ${w?'warn':''}">${E(s)}</span>`;
 const scope=a=>a.scope==='PR342_CANDIDATE'?'PR #342 후보':'main 원본';
-const approval=a=>a.details?.retired?(a.details.disposal.status==='DELETED_BY_USER_REQUEST'?'삭제 완료':'폐기 처리 · 삭제대기'):a.approval==='USER_APPROVED'?(a.details?.appearance_only?'외형 확정 · 모션 별도':'승인 기록 있음'):'최종 시각 승인 미확인';
+const approval=a=>a.details?.retired?(a.details.disposal.status==='DELETED_BY_USER_REQUEST'?'삭제 완료':'폐기 처리 · 삭제대기'):a.details?.status==='IMPLEMENTATION_AUTHORIZED__CANON_REGISTERED'?'제작·게임 적용 승인 · 새 이미지 검수 전':a.approval==='USER_APPROVED'?(a.details?.appearance_only?'외형 확정 · 모션 별도':'승인 기록 있음'):'최종 시각 승인 미확인';
 const assetById=new Map(D.assets.map(a=>[a.id,a]));
 const byId=id=>assetById.get(id);
 // Only immutable publication records belong in this cache; editable review data does not.

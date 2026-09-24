@@ -55,3 +55,18 @@
 검토 HEAD `2bdf345f5110baccaab335994ec6475391be8602`, 원격 35SUCCESS/0FAIL/0PENDING, 미해결 검토0을 확인하고 2026-09-24T15:56:35Z에 main `53b007e3ad1b1dd7eb3b1ef574a2391bb7abf8cb`로 정상 병합했다. 전체 tracked tree가 검수 후보와 동일하다. 일회 승인 종료와 보호 기준선/파생본 동기화는 같은 날짜 PR361 승인 종료 기록에 연결한다. 제품 코드/원화/영상은 이 closeout에서 바꾸지 않는다. 원래 checkout45dirty와 사용자 리뷰 SHA256 `afd73518d7bf507728e500045733ef5b9c7a466dc3feeba3c62331455cdd2dac`은 보호했다.
 
 원격 native 입력 검사는 일반 연출 속도 `ordinary_defaults`에서 453094ms 동안 295번의 실제 버튼 입력으로 비무10승·보상10회·행로36회를 완료했다. 실패0이며 공개 정책으로 선택한12종 행동을 사용했다. 근거는 [PR361 제품 검사](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/actions/runs/36022075768/job/107709315719)의 `NATIVE_CAMPAIGN_SUMMARY`다. import 종료 때 자원22개 경고는 남아 있으며 실행 실패나 누수 없음으로 바꾸어 보고하지 않는다.
+
+
+## 화면별 수묵 이미지·하단 확대 · 2026-09-25 추가 승인
+
+- 기준 SHA `7f549217ea4b2496613b9b4cf3176bccfede2c58`; Work Mode BUILD/REVIEW; Skill/Mode: 프로젝트 router·imagegen·HTML blueprint·Hera live/UI·전투 UX·reference-freshness/verification, 같은 승인 continuation. 최신 제작·게임 연결·HTML·직접 폐기 지시를 BUILD 승인/기존 Decision에 연결했다.
+- 생성9회: 배경6장·복면9자세·복면 접점1장·도겸 맨손9자세. 신규 runtime25파일+기존 stable ID 초상2파일 교체, 플레이어 승인 원화 재사용. 구13파일/import 실제 삭제, PDF 역사·해시 ledger만 유지. 변경 전후 사용자 코멘트 해시는 별도 확인한다.
+- RED: 새 하단 검사가 폰트/결과 영역/배경13항목에서 실패했다. 최소 구현 뒤 네 화면 크기에서 GREEN. 1차 전체 pytest는584통과/16실패였으며 실패 대부분은 삭제된 초상 원본을 여전히 부르는 HTML/역사 기대값이다. 구 파일을 복구하지 않고 현재 manifest consumer와 해시 있는 명시 폐기 계약으로 교정했다.
+- 전체 검토1: 정본/승인·제품 전체 diff·규칙/AI/저장 미변경·untouched 적14명·준비 조작·원본/파생/삭제·HTML·실행 증거·비용·재사용을 대조했다. 실제 여정이 무작위여서 미리보기 배외검객만 교체하면 도겸이 옛 그림으로 나오는 결함, 밝은 브리핑 위 저대비 글자, 자동 tooltip의 결과 가림, HTML의 옛 시작/준비 이미지 override를 확인해 교정했다. 촬영 실패의 빈 save_id/seed 재현은 fixture에서만 고쳤다. 새 게임 규칙·전역 도구 설치는 없다.
+- Windows native 캡처: 실제 Godot4.7.1,1440×900. 메인/시작/브리핑/준비는 격리 정상 이동, 결과/행로/휴식은 명시 UI fixture다. 전투 녹화는 실제 resolver 고정3/3/4계획,706프레임/24fps/29.417초·서로 다른 전체 프레임491개·오류0. 일반 AI 대전 녹화나 승리 증명으로 과장하지 않는다.
+- 현재 적/투명 alpha/배경/인물 비율/준비 구획/휴식/도감 소비자·브리지가 native8종 PASS. 사용자 시각 품질·반복 관람 체감·Android·출시 성능/권리는 NOT_RUN/기존 미확정이다. 전체 검토2와 전달 결과는 아래에 누적한다.
+
+- 전체 검토2: 수정된 전체 후보의 정본/실제 diff/기존 preparation·resolver·AI·save·14명 미변경/생성 source/동작/HTML/비용과 유지보수를 대조했다. 옛 flow·briefing·preparation 예시가 일부 남는 연결, 4수 링크가 회피 구 영상으로 가는 연결, 이전 영상 해시/710프레임 metadata, byte-identical 구 이미지3중복을 추가 발견했다. 현재 native 예시/정확한3/3/4영상/706프레임 해시로 고치고 중복3개도 명시 ledger 뒤 삭제했다. 상태창/행로 와이어프레임과 역사 회피 설명은 현재 영상인 것처럼 바꾸지 않는다. 전체 검토는 정확히2회; 이후 확인은 이 결함들의 영향 검사다.
+- 최종 로컬: pytest **602 passed / 583.45초**; 확대·상대 binding 포함 focused native8종 PASS; Windows export와 내보낸 실행 파일 제품 시나리오 **50/50·실패0**. export 종료의 기존 resource22 경고는 남아 있으며 무경고로 주장하지 않는다. 공개 게임의 첫 상대는 계속 무작위다.
+- 인앱 브라우저: 새 화면 목록3열·종류/안정 번호/용도/inline 코멘트 확인, 로딩 완료 이미지 깨짐0. native MP41440×900/29.416667초가 실제로 끝까지 재생되어 ended=true/readyState4/error없음; 브라우저 오류로그0. 기존 자동 저장 코드는 미수정이고 사용자 코멘트 원본 SHA256 `afd73518d7bf507728e500045733ef5b9c7a466dc3feeba3c62331455cdd2dac` 동일함을 확인했다.
+- 실제 사용자 시각 검수·키보드/마우스 체감·반복 관람의 멋·Android·실기기·출시 권리/성능은 별도다. 이번 정상 PR/원격 exact-head/merge 및 일회 승인 종료는 아래 전달 readback에 기록한다.

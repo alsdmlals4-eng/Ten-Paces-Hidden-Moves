@@ -27,11 +27,18 @@ class HtmlBlueprintTests(unittest.TestCase):
         subject.collect_reader()
         self.assertEqual(subject.sha(ROOT / approval['artifact']), approval['artifact_sha256'])
 
-    def test_approved_gallery_preserves_exact_47_inputs(self):
+    def test_approved_gallery_preserves_inputs_or_explicit_hashed_retirement(self):
         gallery = subject.collect_assets(ROOT)
         approval = json.loads((ROOT / 'docs/planning-data/current_user_planning_status.json').read_text(encoding='utf-8'))['blueprint_final_approval']
         by_path = {x['path']: x for x in gallery}
+        retired = {x['path']:x for x in subject.read(ROOT,'docs/blueprint/IMPLEMENTATION_READINESS.json')['retired_images']}
         for item in approval['approved_visual_inputs']:
+            if item['path'] in retired:
+                self.assertEqual(retired[item['path']]['status'],'DELETED_BY_USER_REQUEST')
+                self.assertEqual(retired[item['path']]['sha256'],item['sha256'])
+                self.assertFalse((ROOT/item['path']).exists())
+                self.assertTrue((ROOT/retired[item['path']]['replacement']).is_file())
+                continue
             self.assertEqual(by_path[item['path']]['sha256'], item['sha256'])
             self.assertEqual(by_path[item['path']]['approval'], 'USER_APPROVED')
         self.assertTrue(any('background' in x['path'] for x in gallery))
@@ -39,9 +46,10 @@ class HtmlBlueprintTests(unittest.TestCase):
     def test_registered_derivative_keeps_exact_source_approval_and_relationship(self):
         rows=subject.collect_assets(ROOT)
         derived=next(a for a in rows if a['id']=='asset-blueprint_portrait_masked_baekmujin_v1')
-        self.assertEqual(derived['approval'],'USER_APPROVED')
+        self.assertEqual(derived['approval'],'APPROVAL_UNVERIFIED')
+        self.assertEqual(derived['details']['status'],'IMPLEMENTATION_AUTHORIZED__CANON_REGISTERED')
         self.assertIn('백무진',derived['name'])
-        self.assertTrue(derived['related_assets'])
+        self.assertEqual(derived['details']['prior_source_asset'],'output/blueprint-candidates/opponent-baekmujin-v1.png')
 
     def test_path_escape_and_external_urls_rejected(self):
         for rel in ['../outside.png', 'C:/private.png', '//host/secret', 'https://host/a', 'javascript:alert(1)']:

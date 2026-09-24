@@ -74,7 +74,7 @@ func configure(run_state: VerticalSliceRunState, registry: MartialManualRegistry
         effect.text = str(option["effect_summary_ko"])
         effect.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
         effect.add_theme_font_size_override("font_size", 15)
-        effect.add_theme_color_override("font_color", Color("c9bca8"))
+        effect.add_theme_color_override("font_color", Color("403d35"))
         row.add_child(effect)
         var binding: Dictionary = option.get("parameter_binding", {})
         if not binding.is_empty():

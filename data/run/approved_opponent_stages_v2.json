@@ -20,7 +20,7 @@
         "readable_habit": "상대의 지난 접근을 보고 간격을 비운 뒤 연격으로 되받는 경향이 있다.",
         "ambiguity_or_counterexample": "추격이 멎으면 거리를 지키는 대신 먼저 한 걸음 압박한다.",
         "visual_consumer": "Existing masked enemy sword-motion family; do not replace approved motion frames.",
-        "portrait": "output/blueprint-candidates/opponent-baekmujin-v1.png",
+        "portrait": "assets/characters/portraits/masked_baekmujin_ink_20260925.png",
         "presentation": {
           "epithet": "묵면회영",
           "identity": "가면을 쓴 역진입 검객",

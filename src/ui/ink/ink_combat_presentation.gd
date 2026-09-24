@@ -36,12 +36,16 @@ func _ready() -> void:
 	heading = label("RoundAndBundle",26,HORIZONTAL_ALIGNMENT_CENTER)
 	player_hud = label("PlayerPublicState",17)
 	enemy_hud = label("EnemyPublicState",17,HORIZONTAL_ALIGNMENT_RIGHT)
-	left = label("PlayerResolvedAction",18)
-	right = label("EnemyResolvedAction",18,HORIZONTAL_ALIGNMENT_RIGHT)
-	comparison = label("AuthoritativeComparison",22,HORIZONTAL_ALIGNMENT_CENTER)
-	result_label = label("AuthoritativeResourceChanges",17,HORIZONTAL_ALIGNMENT_CENTER)
+	left = label("PlayerResolvedAction",24,HORIZONTAL_ALIGNMENT_CENTER)
+	right = label("EnemyResolvedAction",24,HORIZONTAL_ALIGNMENT_CENTER)
+	comparison = label("AuthoritativeComparison",32,HORIZONTAL_ALIGNMENT_CENTER)
+	result_label = label("AuthoritativeResourceChanges",21,HORIZONTAL_ALIGNMENT_CENTER)
+	for node in [left,right,comparison,result_label]:
+		node.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	for node in [left,right,result_label]:
+		node.add_theme_color_override("font_color",PAPER)
 	for i in range(4):
-		slots.append(label("TimingSlot%d" % (i+1),16,HORIZONTAL_ALIGNMENT_CENTER))
+		slots.append(label("TimingSlot%d" % (i+1),18,HORIZONTAL_ALIGNMENT_CENTER))
 	controls = HBoxContainer.new()
 	controls.add_theme_constant_override("separation",10)
 	add_child(controls)
@@ -91,7 +95,7 @@ func label(node_name: String, font_size: int, align := HORIZONTAL_ALIGNMENT_LEFT
 	node.autowrap_mode = TextServer.AUTOWRAP_OFF
 	node.clip_text = true
 	node.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	node.mouse_filter = Control.MOUSE_FILTER_PASS
+	node.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	node.add_theme_color_override("font_color",INK)
 	node.add_theme_font_size_override("font_size",font_size)
 	node.add_theme_font_override("font",typeface)
@@ -101,6 +105,7 @@ func label(node_name: String, font_size: int, align := HORIZONTAL_ALIGNMENT_LEFT
 func begin(value: Dictionary, owner_board: Control) -> void:
 	bundle = value
 	board = owner_board
+	stage.configure_opponent(str(bundle.before.get("enemy",{}).get("candidate_id","")))
 	current = -1
 	completed = false
 	verdict = false
@@ -136,10 +141,11 @@ func refresh() -> void:
 		slots[i].visible = i < public.size()
 		if i < public.size():
 			var item: Dictionary = public[i]
-			slots[i].text = "%d수 · %s\n내 %s  /  상대 %s" % [item.timing,item.status,item.player,item.enemy]
+			slots[i].text = "%d수 · %s\n내 %s\n상대 %s" % [item.timing,item.status,item.player,item.enemy]
+			slots[i].add_theme_color_override("font_color",PAPER if i == current else INK)
 			slots[i].tooltip_text = slots[i].text
-	left.text = "내 확정 행동" if step.is_empty() else "플레이어 · %s\n%s" % [step.actions.player.label,cost_text("player")]
-	right.text = "상대 · 미공개" if step.is_empty() else "상대 · %s\n%s" % [step.actions.enemy.label,cost_text("enemy")]
+	left.text = "내 확정 행동" if step.is_empty() else "플레이어\n%s\n%s" % [step.actions.player.label,cost_text("player")]
+	right.text = "상대 · 미공개" if step.is_empty() else "상대\n%s\n%s" % [step.actions.enemy.label,cost_text("enemy")]
 	comparison.text = compare_text()
 	result_label.text = "내 대응 선지불 · " + Model.changes({"player":bundle.response_delta.player}) if step.is_empty() else Model.changes(step.delta) if applied else "행동 공개 · 이 수를 해결하고 있습니다"
 	if applied and not step.is_empty() and step.delta.player.health >= 0 and step.delta.enemy.health >= 0 and step.cues.any(func(c): return c.kind in ["clash","attack","block","evade","miss"]):
@@ -193,24 +199,27 @@ func compare_text() -> String:
 			return summary + "\n위력 %s → 피해 %s" % [event.raw_damage,event.get("damage",0)]
 	return summary
 
+func panel_height() -> float:
+	return clampf(size.y * 0.36,306.0,370.0)
+
 func layout() -> void:
 	if stage == null:
 		return
 	var w := size.x
-	var bottom := size.y-240.0
+	var bottom := size.y-panel_height()
 	stage.position = Vector2(0,76)
-	stage.size = Vector2(w,maxf(230,bottom-80))
+	stage.size = Vector2(w,maxf(1,bottom-80))
 	place(heading,Rect2(w*0.33,4,w*0.34,72))
 	place(player_hud,Rect2(24,6,w*0.32-24,64))
 	place(enemy_hud,Rect2(w*0.67,6,w*0.33-24,64))
 	var count := maxi(3,int(bundle.get("steps",[]).size()))
 	var cell := (w-48.0)/float(count)
 	for i in range(4):
-		place(slots[i],Rect2(26+i*cell,bottom+6,cell-8,62))
-	place(left,Rect2(28,bottom+81,w*0.32-28,76))
-	place(right,Rect2(w*0.68,bottom+81,w*0.32-28,76))
-	place(comparison,Rect2(w*0.33,bottom+77,w*0.34,82))
-	place(result_label,Rect2(24,bottom+160,w-48,42))
+		place(slots[i],Rect2(26+i*cell,bottom+6,cell-8,76))
+	place(left,Rect2(32,bottom+95,w*0.31-40,90))
+	place(right,Rect2(w*0.69+8,bottom+95,w*0.31-40,90))
+	place(comparison,Rect2(w*0.32,bottom+90,w*0.36,100))
+	place(result_label,Rect2(32,bottom+202,w-64,panel_height()-248))
 	controls.position = Vector2(w-654,size.y-34)
 	controls.size = Vector2(630,30)
 	queue_redraw()
@@ -221,13 +230,24 @@ func place(node: Control, rect: Rect2) -> void:
 
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO,size),PAPER)
-	var y := size.y-240.0
+	var y := size.y-panel_height()
 	draw_line(Vector2(24,y),Vector2(size.x-24,y),GOLD,2)
 	var count := maxi(3,int(bundle.get("steps",[]).size()))
 	var cell := (size.x-48)/float(count)
 	for i in range(count):
-		var box := Rect2(24+i*cell,y+5,cell-4,66)
-		draw_rect(box,Color("d0c3a4") if i == current else Color("e0d6be"))
+		var box := Rect2(24+i*cell,y+5,cell-4,78)
+		draw_rect(box,Color("304c4d") if i == current else Color("e0d6be"))
 		draw_rect(box,GOLD if i == current else Color("c0b69f"),false,2 if i == current else 1)
-	draw_line(Vector2(24,y+75),Vector2(size.x-24,y+75),GOLD,1)
-	draw_rect(Rect2(20,y+162,size.x-40,40),Color("d7ccb2"))
+	draw_line(Vector2(24,y+87),Vector2(size.x-24,y+87),GOLD,1)
+	brush_band(Rect2(24,y+95,size.x*0.31-24,90),Color("284b59"))
+	brush_band(Rect2(size.x*0.69,y+95,size.x*0.31-24,90),Color("7c3c32"))
+	brush_band(Rect2(20,y+200,size.x-40,panel_height()-244),INK)
+
+func brush_band(rect: Rect2, color: Color) -> void:
+	# Native UI brush edge, independent of damage/VFX timing.
+	var points := PackedVector2Array()
+	for i in range(25):
+		points.append(rect.position + Vector2(rect.size.x*i/24.0,2.0+fmod(i*7.0,5.0)))
+	for i in range(24,-1,-1):
+		points.append(rect.position + Vector2(rect.size.x*i/24.0,rect.size.y-fmod(i*11.0,4.0)))
+	draw_colored_polygon(points,color)

@@ -192,7 +192,7 @@ def main() -> None:
     blueprint_ids = {asset["id"] for asset in blueprint_assets}
     assert len(blueprint_assets) == len(blueprint_ids) == 47
     assert approved["status"] == "USER_APPROVED"
-    assert {asset["source_asset"]: asset["source_png_sha256"] for asset in blueprint_assets} == {
+    assert {asset.get("prior_source_asset",asset["source_asset"]): asset.get("prior_source_png_sha256",asset["source_png_sha256"]) for asset in blueprint_assets} == {
         asset["path"]: asset["sha256"] for asset in approved["approved_visual_inputs"]
     }
     assert [asset for asset in asset_manifest["assets"] if asset["id"] in blueprint_ids] == blueprint_assets
@@ -204,12 +204,19 @@ def main() -> None:
         assert asset["active"] and asset["runtime_consumer"] == "src/ui/ink/ink_combat_stage.gd"
         assert hashlib.sha256(res_file(asset["path"]).read_bytes()).hexdigest() == asset["sha256"]
         assert hashlib.sha256((ROOT / asset["source_asset"]).read_bytes()).hexdigest() == asset["source_png_sha256"]
-    original_assets = [asset for asset in asset_manifest["assets"] if asset["id"] not in blueprint_ids | ink_ids]
-    assert len(original_assets) == blueprint["preserved_existing_record_count"] == 24
+    refresh = load_json("docs/visual-assets/candidates/TEN-INK-SCREENS-20260925/replacement-map.json")
+    refresh_ids = set(refresh["added_asset_ids"])
+    refresh_assets = [a for a in asset_manifest["assets"] if a["id"] in refresh_ids]
+    assert len(refresh_assets) == len(refresh_ids) == 25
+    for asset in refresh_assets:
+        assert res_file(asset["path"]).exists()
+        assert hashlib.sha256(res_file(asset["path"]).read_bytes()).hexdigest() == asset["sha256"]
+    original_assets = [asset for asset in asset_manifest["assets"] if asset["id"] not in blueprint_ids | ink_ids | refresh_ids]
+    assert len(original_assets) == blueprint["preserved_existing_record_count"] == 22
     original_digest = hashlib.sha256(json.dumps(original_assets, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     assert original_digest == blueprint["preserved_existing_records_sha256"]
     for asset in blueprint_assets:
-        assert asset["status"] == "USER_APPROVED__CANON_REGISTERED"
+        assert asset["status"] == ("IMPLEMENTATION_AUTHORIZED__CANON_REGISTERED" if asset.get("prior_source_asset") else "USER_APPROVED__CANON_REGISTERED")
         assert hashlib.sha256(res_file(asset["path"]).read_bytes()).hexdigest() == asset["source_png_sha256"]
     assert sum(asset["usage"] == "static_manual_illustration" for asset in blueprint_assets) == 30
     assert sum(asset["usage"] == "static_opponent_codex_and_briefing_portrait" for asset in blueprint_assets) == 16
@@ -223,9 +230,7 @@ def main() -> None:
         "player_wanderer_ink_v1",
         "enemy_masked_ink_v1",
         "dogyeom_status_portrait_01_v1",
-        "player_wanderer_battler_rgba_v2",
         "enemy_masked_battler_rgba_v2",
-        "dogyeom_combat_battler_01_v1",
         "basic_technique_ink_atlas_01_v1",
         "martial_ultimate_card_illustration_atlas_01_v1",
         "ten_paces_hidden_moves_title_logo_01_v1",
@@ -235,7 +240,7 @@ def main() -> None:
         "current_action_slot_frame_01_v1",
         "technique_detail_frame_01_v1",
         "observation_reveal_frame_01_v1",
-    } | blueprint_ids | ink_ids
+    } | blueprint_ids | ink_ids | refresh_ids
     for asset in active_assets:
         assert res_file(asset["path"]).exists(), asset["path"]
         assert asset.get("prompt") or asset.get("source_png_sha256"), asset["id"]
@@ -296,7 +301,7 @@ def main() -> None:
     assert attack_clash_source.exists()
     assert hashlib.sha256(attack_clash_source.read_bytes()).hexdigest() == attack_clash_vfx["source_png_sha256"]
     assert hashlib.sha256(res_file(attack_clash_vfx["path"]).read_bytes()).hexdigest() == attack_clash_vfx["source_png_sha256"]
-    for asset_id in ("player_wanderer_battler_rgba_v2", "dogyeom_combat_battler_01_v1", "enemy_masked_battler_rgba_v2"):
+    for asset_id in ("enemy_masked_battler_rgba_v2",):
         character_art = next(asset for asset in active_assets if asset["id"] == asset_id)
         audit = character_art["transparency_audit"]
         assert character_art.get("source_asset") or character_art.get("source_png_sha256")
@@ -380,8 +385,8 @@ def main() -> None:
     required_files = [
         "assets/backgrounds/frontal_courtyard_duel_background_02_v1.png",
         "assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png",
-        "assets/characters/player_wanderer_battler_rgba_v2.png",
-        "assets/characters/dogyeom_combat_battler_01_v1.png",
+        "assets/combat/ink_wuxia/player-0.png",
+        "assets/combat/ink_wuxia/slot1_dogyeom/enemy-0.png",
         "assets/characters/enemy_masked_battler_rgba_v2.png",
         "assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
         "assets/reference/step_02_character_scale_and_tile_placement.svg",
@@ -456,8 +461,8 @@ def main() -> None:
         "action_reveal_snapshot",
     ))
     assert all(token in character_script for token in (
-        "player_wanderer_battler_rgba_v2.png",
-        "dogyeom_combat_battler_01_v1.png",
+        "ink_wuxia/player-0.png",
+        "slot1_dogyeom/enemy-0.png",
         "enemy_masked_battler_rgba_v2.png",
         "get_render_texture",
         "character_art_path",

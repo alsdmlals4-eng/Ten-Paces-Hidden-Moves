@@ -117,3 +117,5 @@ reference_similarity_status:
 ## 2026-09-25 승인 수묵 합 원화의 제품 연결
 
 사용자2026-09-24 “지금 느낌으로 전투쪽 이미지,연출등을 변경…먹 v.fx 연결”에 따라 `TEN-INK-STYLES-20260924/clash-v2`의 승인 원화5개를 재사용했다. 기존 renderer의18자세 영역/alpha 정리와 원본3개를 `assets/combat/ink_wuxia/`에 내보냈다. source·destination 해시는 `data/presentation/ink_combat_stage.json`, 각각의 등록과 실제 consumer는 `assets/ASSET_MANIFEST.json`이다. 신규 생성/외부 게임 픽셀/참고 이미지 직접 복사는 없다. 사용자 적용 승인과 Windows 실행 증거는 자산 배포권 증거를 대체하지 않으므로 출시 권리 상태는 RELEASE_BLOCKED_UNVERIFIED를 유지한다.
+
+같은 날 추가 제작·교체 승인으로 내장 이미지 도구9회를 사용했다. 참조는 프로젝트의 승인8+3+9 원화와 교체 전 두 상대의 정체성이며 외부 게임 픽셀을 복제하지 않았다. 배경6개·상대18자세·근접 원화1개·초상2개의 현재 파일/해시는 자산 manifest, 생성 원문/입력/결과는 `docs/visual-assets/candidates/TEN-INK-SCREENS-20260925/generation.json`이 소유한다. 제작·적용은 명시 승인 범위이고 새 이미지의 사용자 시각 검수는 별도다. 구13개 파일은 `replacement-map.json`과 폐기 ledger에 대응하며 직접 삭제 요청으로 제거했다. 이 기록은 출시 권리 미확정 상태를 해소하지 않는다.

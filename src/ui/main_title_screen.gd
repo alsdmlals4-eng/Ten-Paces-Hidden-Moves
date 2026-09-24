@@ -5,9 +5,9 @@ signal start_requested
 signal continue_requested
 signal reread_requested
 
-const BACKGROUND_PATH := "res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png"
-const PLAYER_PATH := "res://assets/characters/player_wanderer_battler_rgba_v2.png"
-const ENEMY_PATH := "res://assets/characters/enemy_masked_battler_rgba_v2.png"
+const BACKGROUND_PATH := "res://assets/backgrounds/ink_wuxia/main.png"
+const PLAYER_PATH := "res://assets/combat/ink_wuxia/player-0.png"
+const ENEMY_PATH := "res://assets/combat/ink_wuxia/masked_baekmujin/enemy-0.png"
 const TITLE_LOGO_PATH := "res://assets/ui/logo/ten_paces_hidden_moves_title_logo_01_v1.png"
 const DUEL_FOREGROUND_BANNER_SCRIPT := preload("res://src/ui/duel_foreground_banner.gd")
 const PAPER := Color("eadfc9")
@@ -16,6 +16,7 @@ const GOLD := Color("b99254")
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	theme = preload("res://src/ui/ink/ink_screen_art.gd").theme()
 	_build_surface()
 	resized.connect(_fit_title)
 	_fit_title()
@@ -33,7 +34,7 @@ func _build_surface() -> void:
 	add_child(background)
 	var shade := ColorRect.new()
 	shade.name = "InkVeil"
-	shade.color = Color(0.025, 0.045, 0.065, 0.20)
+	shade.color = Color(0.93, 0.90, 0.83, 0.04)
 	shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(shade)
@@ -54,7 +55,7 @@ func _build_surface() -> void:
 	center.alignment = BoxContainer.ALIGNMENT_CENTER
 	center.add_theme_constant_override("separation", 8)
 	add_child(center)
-	var eyebrow := _make_label("숨은 수로 겨루는 일대일 비무", 16, Color("e7d9bc"))
+	var eyebrow := _make_label("숨은 수로 겨루는 일대일 비무", 16, INK)
 	eyebrow.name = "TitleEyebrow"
 	center.add_child(eyebrow)
 	var title_logo := TextureRect.new()
@@ -68,7 +69,7 @@ func _build_surface() -> void:
 	title_logo.accessibility_name = "십보강호: 숨은 수의 비무"
 	title_logo.accessibility_description = "열 걸음 안에서 숨은 수를 읽는 일대일 비무."
 	center.add_child(title_logo)
-	var promise := _make_label("세 수를 고르고, 한 수씩 드러나는 승부를 읽으십시오.", 17, Color("eadfc9"))
+	var promise := _make_label("세 수를 고르고, 한 수씩 드러나는 승부를 읽으십시오.", 17, INK)
 	promise.name = "GamePromise"
 	promise.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	promise.custom_minimum_size = Vector2(0.0, 46.0)
@@ -94,11 +95,11 @@ func _build_surface() -> void:
 		else: continue_requested.emit())
 	continue_button.visible = false
 	center.add_child(continue_button)
-	var save_notice := _make_label("", 14, PAPER)
+	var save_notice := _make_label("", 14, INK)
 	save_notice.name = "SaveContinueNotice"
 	save_notice.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	center.add_child(save_notice)
-	var hint := _make_label("거리와 공개된 행동 기록으로 다음 수를 읽습니다", 13, Color("d6c4a2"))
+	var hint := _make_label("거리와 공개된 행동 기록으로 다음 수를 읽습니다", 13, Color("504739"))
 	hint.name = "TitleHint"
 	center.add_child(hint)
 
@@ -133,11 +134,11 @@ func _add_battler(node_name: String, path: String, is_left: bool) -> void:
 	battler.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	battler.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	battler.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	battler.modulate = Color(1.0, 1.0, 1.0, 0.90)
-	battler.anchor_left = 0.0 if is_left else 0.56
-	battler.anchor_top = 0.18
-	battler.anchor_right = 0.44 if is_left else 1.0
-	battler.anchor_bottom = 0.90
+	battler.modulate = Color.WHITE
+	battler.anchor_left = 0.02 if is_left else 0.71
+	battler.anchor_top = 0.38
+	battler.anchor_right = 0.30 if is_left else 0.99
+	battler.anchor_bottom = 0.95
 	battler.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	battler.grow_vertical = Control.GROW_DIRECTION_BOTH
 	add_child(battler)

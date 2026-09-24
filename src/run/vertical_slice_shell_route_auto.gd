@@ -147,14 +147,8 @@ func _render_jianghu() -> void:
 func _set_route_composition(resting: bool) -> void:
     if content_panel == null:
         return
-    content_panel.anchor_left = 0.54 if resting else 0.14
-    content_panel.anchor_right = 0.94 if resting else 0.86
-    var backdrop := get_node_or_null("ShellBackdrop") as TextureRect
-    if backdrop != null:
-        var path := "res://assets/backgrounds/jianghu_rest_inn_v1.png" if resting else "res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png"
-        if not resting and run_state != null and run_state.get_current_screen() == VerticalSliceRunState.SCREEN_JIANGHU:
-            path = "res://assets/backgrounds/jianghu_blue_ink_landscape_v1.png"
-        backdrop.texture = load(path) as Texture2D
+    if run_state != null:
+        _apply_screen_art(run_state.get_current_screen(), resting)
 
 
 func _choose_jianghu(node_id: String, step: int) -> void:
