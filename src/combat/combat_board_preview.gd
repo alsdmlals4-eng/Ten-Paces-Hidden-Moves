@@ -2,6 +2,8 @@ class_name CombatBoardPreview
 extends Control
 
 const CombatPresentationProfileScript := preload("res://src/ui/combat_presentation_profile.gd")
+const InkResolutionModel := preload("res://src/ui/ink/ink_resolution_model.gd")
+const InkCombatPresentation := preload("res://src/ui/ink/ink_combat_presentation.gd")
 
 const CONTRACT_PATH := "res://data/combat/combat_board_poc.json"
 const BACKGROUND_SCENE := preload("res://scenes/combat/battle_background.tscn")
@@ -126,6 +128,8 @@ var _presentation_motion_snapshot: Dictionary = {}
 
 var session_input_blocked := false
 var session_suspended := false
+var ink_presentation: Control
+var _ink_generation := 0
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_PASS
@@ -151,6 +155,7 @@ func _ready() -> void:
 	call_deferred("_sync_progress_availability")
 
 func _exit_tree() -> void:
+	_ink_generation += 1
 	if is_instance_valid(momentum_sfx_player):
 		momentum_sfx_player.stop()
 		momentum_sfx_player.stream = null
@@ -1141,24 +1146,88 @@ func _resolve_and_present(context: Dictionary) -> void:
 	_append_resolution_logs(result.get("logs", []))
 	_presentation_skip_requested = false
 
-	var timing_results: Array = result.get("timing_results", [])
-	for timing_value in timing_results:
-		if typeof(timing_value) != TYPE_DICTIONARY:
-			continue
-		var timing_result: Dictionary = timing_value
-		set_meta("presentation_timing", int(timing_result.get("timing", 0)))
-		await _present_timing_duel(
-			timing_result.get("events", []),
-			int(timing_result.get("timing", 0)),
-			str(timing_result.get("phase", "timing"))
-		)
-		await _apply_timing_snapshot(timing_result.get("state", combat_state))
-		await _wait_for_session_resume()
+	if not await _present_ink_bundle(result):
+		return
 
 	var state_before_bundle_rewards := combat_state.duplicate(true)
 	combat_state = (result.get("state", combat_state) as Dictionary).duplicate(true)
 	_play_momentum_gain_sfx(state_before_bundle_rewards, combat_state)
 	_finalize_resolved_bundle()
+
+func _present_ink_bundle(result: Dictionary) -> bool:
+	_ink_generation += 1
+	var generation := _ink_generation
+	if not is_instance_valid(ink_presentation):
+		ink_presentation = InkCombatPresentation.new()
+		ink_presentation.name = "InkCombatPresentation"
+		add_child(ink_presentation)
+	var model := InkResolutionModel.build(result, _committed_state_before, _committed_player_plan_snapshot, resolution_engine.cards_by_id)
+	_set_resolution_surface_visible(false)
+	_clear_presentation_feedback_visuals()
+	action_reveal_overlay.hide_reveal()
+	ink_presentation.begin(model,self)
+	set_meta("ink_bundle_size",model.steps.size())
+	set_meta("ink_timing_history",[])
+	_set_presentation_state("presenting_result")
+	# Response costs are already resolved. Do not expose which future enemy slots own them.
+	for timing_value in result.get("timing_results",[]):
+		if int(timing_value.get("timing",-1)) == 0:
+			combat_state = timing_value.state.duplicate(true)
+	for index in range(model.steps.size()):
+		if generation != _ink_generation or not is_inside_tree():
+			return false
+		ink_presentation.begin_step(index)
+		var step: Dictionary = model.steps[index]
+		set_meta("presentation_timing",step.timing)
+		set_meta("presentation_future_action_exposed",false)
+		for cue_index in range(step.cues.size()):
+			var cue: Dictionary = step.cues[cue_index]
+			ink_presentation.stage.begin(cue)
+			var elapsed := 0.0
+			var played_cue := false
+			while elapsed < float(cue.duration) and not _presentation_skip_requested:
+				await _wait_for_session_resume()
+				if generation != _ink_generation or not is_inside_tree():
+					return false
+				await get_tree().process_frame
+				if generation != _ink_generation or not is_inside_tree():
+					return false
+				if session_suspended or get_tree().paused:
+					continue
+				elapsed += get_process_delta_time() * (12.0 if _fast_replay else 2.0 if _reduced_motion else 1.0)
+				var ratio := minf(elapsed/float(cue.duration),1.0)
+				ink_presentation.stage.sample(ratio,_reduced_motion)
+				if not played_cue and ratio >= 0.65:
+					played_cue = true
+					if cue.kind == "clash":
+						_play_procedural_sfx("metal_clash")
+					elif cue.kind == "pressure":
+						_play_procedural_sfx("sword_wind")
+					elif cue.kind not in ["preparation","neutral"] and not cue.event.is_empty():
+						_play_event_sfx(cue.event)
+				if ratio >= (0.9 if cue.kind == "clash" else 0.8):
+					ink_presentation.verdict = true
+					if cue_index == step.cues.size()-1:
+						ink_presentation.applied = true
+				ink_presentation.refresh()
+		ink_presentation.verdict = true
+		ink_presentation.applied = true
+		ink_presentation.refresh()
+		var before := combat_state.duplicate(true)
+		combat_state = step.after.duplicate(true)
+		_play_momentum_gain_sfx(before,combat_state)
+		_apply_combat_state_to_view()
+		var history: Array = get_meta("ink_timing_history",[])
+		history.append(ink_presentation.snapshot.duplicate(true))
+		set_meta("ink_timing_history",history)
+	ink_presentation.completed = true
+	ink_presentation.refresh()
+	set_meta("ink_completed_snapshot",ink_presentation.snapshot.duplicate(true))
+	await _wait_for_presentation_delay(0.12 if _fast_replay else 0.8)
+	if generation != _ink_generation or not is_inside_tree():
+		return false
+	ink_presentation.hide()
+	return true
 
 func _finalize_resolved_bundle() -> void:
 	set_meta("last_review_summary", _last_review_summary.duplicate(true))
@@ -1828,6 +1897,8 @@ func _toggle_fast_replay() -> void:
 
 func _skip_presentation() -> void:
 	_presentation_skip_requested = true
+	if is_instance_valid(ink_presentation):
+		ink_presentation.hide()
 	_clear_presentation_feedback_visuals()
 	if is_instance_valid(action_reveal_overlay):
 		action_reveal_overlay.hide_reveal()
@@ -1836,6 +1907,9 @@ func _skip_presentation() -> void:
 	set_meta("presentation_skipped", true)
 
 func restart_combat() -> void:
+	_ink_generation += 1
+	if is_instance_valid(ink_presentation):
+		ink_presentation.hide()
 	_presentation_skip_requested = false
 	_presentation_events.clear()
 	_presentation_state_history = PackedStringArray(["planning"])

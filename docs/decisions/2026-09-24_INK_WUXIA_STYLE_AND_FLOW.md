@@ -100,3 +100,17 @@ CURRENT_SOURCE_RELEVANCE_CHECK: REUSED_EVIDENCE. 사용자 최신 범위, 현재
 정지 참조 다음으로 2026-09-24 사용자 요청에 따라 [먹으로 잇는 합 GIF 시안](../visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v1/README.md)을 제작했다. 검객별 6자세와 위치·회전·먹 효과를 연결한 오프라인 8.4초/25fps 애니메이션이며 실제 GIF 프레임·MP4 브라우저 재생을 확인했다. 공식 Limbus Company·Library of Ruina·Nine Sols 조사와 적용 경계는 같은 시안 README에 기록했다. 이는 Godot 실행 녹화가 아니며 게임 연결·사람이 느끼는 흐름·Android·출시 성능·최종 모션 승인은 `NOT_RUN`/미확정이다. 화풍 방향 확정과 움직임의 성공 판정은 분리한다.
 
 CURRENT_SOURCE_RELEVANCE_CHECK: 동일 패키지의 10개 실제 시안·사용자 선택·기존 수묵/전투 연출 owner를 REUSED_EVIDENCE로 사용한다. 이번 혼합 비율과 경험 의도는 외부 사실이 아니라 사용자가 직접 선택한 방향이므로 추가 검색으로 바꾸지 않는다. FEASIBLE: 내장 생성 도구의 다중 참조와 기존 HTML 미리보기를 재사용해 통합 참조를 제작했다. 모션 제작의 구체적 비용과 실행 가능성은 실제 consumer 단계에서 검증한다.
+
+## 실제 게임 적용 승인과 결과 · 2026-09-25
+
+2026-09-24 최신 사용자 지시 “좋아 지금 느낌으로 전투쪽 이미지,연출등을 변경하자. 먹 v.fx 연출도 연결하고”를 제품 적용 승인으로 기록한다. 기준 main `ca2ce2d7242913a775267343b54d87575b2c4375`. 앞 절들의 NOT_RUN은 당시 오프라인 시안 상태이며, 이번 실제 적용은 아래 consumer와 실행 증거로 구분한다.
+
+- 승인 원화5개를 재생성하지 않고 기존 합성기의18자세 영역·배경·접점 원화·붓 텍스처를 제품 자산21개로 연결했다. 원본과 파생 해시는 `data/presentation/ink_combat_stage.json`, 등록은 `assets/ASSET_MANIFEST.json`이다. 기존 준비 화면의 승인 자산은 계속 그 화면에서 사용한다.
+- `src/ui/ink/ink_resolution_model.gd`가 실제 resolver의 수별 상태·사건을 읽고 `ink_combat_presentation.gd`와 `ink_combat_stage.gd`가 표시한다. `CombatBoardPreview._present_ink_bundle`은 확정 뒤에만 진입한다. 기존 선택·배치·방향·실행·저장·AI·비용·피해 계산은 바꾸지 않았다.
+- 검 대 검의 실제 합만 승인된 검 교환/근접 컷으로 연출한다. 다른 계열의 합은 기세·먹 흐름이며 가짜 검 접촉을 넣지 않는다. 각 타격 사실·실제 실패를 소비하고, mirrored 합의 피해·반격·기세를 새로 만들지 않는다. 현재3/4칸과 하단 실제 변화가 유지된다.
+- 빠르게/모션 감소/건너뛰기, 일시정지·재시작·기존 체크포인트 복구를 보존한다. 전조와 실행 비용은 현재 실제 resolver의 상태 변화 시점 그대로 표시한다. 앞 비용 서술의 CANON_CONFLICT는 규칙을 바꿔 해결하지 않았으며 `docs/07_COMBAT_UI_SPEC.md`에 실제 표시 기준을 병기한다.
+- 시각 범위: 현재 승인된 두 검객의 공통 무대 자세를 사용한다. 모든 상대 얼굴·무기별 고유 중간 자세, 전용 장풍/창/암기 원화, 모든 절초의 독자 안무 완성을 주장하지 않는다. 해당 계열은 실제 사건에 맞는 보수적 표현으로 연결한다.
+
+실행 증거는 [실제 게임 녹화](../visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v2/runtime-bundles.mp4), [하단 결과](../visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v2/runtime-result.png), [4수 진행](../visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v2/runtime-four-slots.png)다. Godot4.7.1의 실제 CombatBoardPreview와 판정기에 고정 계획3묶음을 입력한 무음 촬영이며 일반 AI 대전 전체 녹화와 구분한다. 자동·Windows 실행·병합 증거와 미검증은 기존 `docs/operations/2026-09-09_CLASH_DIRECTION_EXECUTION_REPORT.md`에 누적한다.
+
+CURRENT_SOURCE_RELEVANCE_CHECK: 기존 ProjectMoon·Nine Sols 공식 연출 조사와 v2/묶음 승인, main의 실제 consumer를 REUSED_EVIDENCE로 사용했다. 새 구현은 [Godot CanvasItem 공식 문서](https://docs.godotengine.org/en/stable/classes/class_canvasitem.html)의 textured polygon/UV와 [AtlasTexture 공식 문서](https://docs.godotengine.org/en/stable/classes/class_atlastexture.html)의 영역 재사용을 확인했다(2026-09-24). runtime은 승인 합성기로 영역을 내보낸 Texture2D를 사용한다. FEASIBLE: 기존 Godot·승인 원화·로컬 도구로 구현/검증; 새 서비스·외부 자산·추가 비용 없음. Android·실기기·사용자 재미·반복 관람 피로·출시 성능/권리는 NOT_RUN 또는 기존 미확정이다.

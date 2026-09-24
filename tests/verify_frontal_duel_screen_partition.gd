@@ -293,23 +293,27 @@ func _verify_measured_execution(packed: PackedScene, viewport: Vector2) -> void:
 	var seen_timings: Dictionary = {}
 	while board._inputs_locked() and count < 1200:
 		await process_frame
-		var reveal: Dictionary = board.action_reveal_overlay.get_snapshot()
-		if board.action_reveal_overlay.visible:
+		var presentation = board.ink_presentation
+		var reveal: Dictionary = presentation.snapshot if is_instance_valid(presentation) else {}
+		if is_instance_valid(presentation) and presentation.visible:
 			seen_timings[int(reveal.get("timing", 0))] = true
-		if board.player_character.motion_state == "move" and not actual_move_checked:
+		if is_instance_valid(presentation) and presentation.stage.cue.get("kind") == "move" and not actual_move_checked:
 			actual_move_checked = true
-			var moving_actor := board.player_character
-			var sequence := moving_actor._motion_sequence_id
+			var stage = presentation.stage
+			var sequence: Dictionary = stage.cue.duplicate(true)
+			var progress: float = stage.progress
 			var before_layout := board.get_combat_state_snapshot()
 			board._layout_board()
-			_expect(moving_actor.motion_state == "move" and moving_actor._motion_sequence_id == sequence, "Real resolver MOVE survives direct same-size layout.")
+			_expect(stage.cue == sequence and stage.progress == progress, "Real resolver MOVE survives direct same-size layout.")
 			board._apply_combat_state_to_view()
 			await process_frame
-			_expect(moving_actor.motion_state == "move" and moving_actor._motion_sequence_id == sequence, "Real resolver MOVE survives deferred same-size layout.")
+			_expect(stage.cue == sequence and stage.progress >= progress, "Real resolver MOVE survives deferred same-size layout.")
 			if viewport.y == 800:
 				board.size += Vector2(16, 16)
 				board._layout_board()
-				_expect(moving_actor.motion_state == "idle", "Real resolver MOVE snaps on a genuinely different final stage rect.")
+				presentation.layout()
+				_expect(stage.cue == sequence and stage.progress >= progress, "Resize preserves the approved ink timeline without replaying movement.")
+				_expect(stage.size.x == presentation.size.x, "Ink scene follows its resized presentation width.")
 			_expect(board.get_combat_state_snapshot() == before_layout, "Actual movement relayout cannot change authoritative snapshot.")
 			if viewport.y == 1080:
 				board._skip_presentation()

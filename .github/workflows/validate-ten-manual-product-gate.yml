@@ -36,6 +36,9 @@ on:
       - "tests/verify_combat_action_selection_integration.gd"
       - "tests/verify_combat_outcome_feedback.gd"
       - "tests/verify_actor_ultimate_presentation.gd"
+      - "tests/verify_ink_resolution_model.gd"
+      - "tests/verify_ink_combat_runtime.gd"
+      - "tests/verify_card_motion_presets.gd"
       - "tests/verify_frontal_duel_screen_partition.gd"
       - "tests/verify_combat_action_reveal.gd"
       - "tests/probe_native_ten_duel_campaign.gd"
@@ -94,6 +97,12 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_combat_outcome_feedback.gd
       - name: Verify actor-owned ultimate presentation
         run: godot --headless --path . --script res://tests/verify_actor_ultimate_presentation.gd
+      - name: Verify ink result projection and concealed future actions
+        run: godot --headless --path . --script res://tests/verify_ink_resolution_model.gd
+      - name: Verify complete ink bundles and preserved planning
+        run: godot --headless --path . --script res://tests/verify_ink_combat_runtime.gd
+      - name: Verify card motion facts and fallback
+        run: godot --headless --path . --script res://tests/verify_card_motion_presets.gd
       - name: Verify fifty ten-manual product scenarios
         run: godot --headless --path . --script res://tests/verify_ten_manual_product_gate.gd
       - name: Verify product viewport matrix

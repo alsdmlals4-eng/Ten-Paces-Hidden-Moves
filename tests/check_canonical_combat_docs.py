@@ -250,7 +250,7 @@ def verify_documents() -> None:
     assert "## 제품 계약" not in docs["legacy"]
     assert "## 현재 상태" not in docs["legacy"]
 
-    all_tokens(runtime["board"], ("var _player_tile := 4", "var _enemy_tile := 6", "resolution_engine.resolve_bundle", "await _apply_timing_snapshot"), "board")
+    all_tokens(runtime["board"], ("var _player_tile := 4", "var _enemy_tile := 6", "resolution_engine.resolve_bundle", "await _present_ink_bundle", "combat_state = step.after.duplicate(true)"), "board")
     all_tokens(runtime["board_test"], ("EXPECTED_PLAYER_TILE := 4", "EXPECTED_ENEMY_TILE := 6"), "board test")
     all_tokens(runtime["response_test"], ("PLAYER_START_TILE := 4", "ENEMY_START_TILE := 6"), "response test")
     all_tokens(runtime["ai"], ("class_name CombatAiPlanner", "get_last_trace", "public_snapshot", "candidate_ids", "ai_decision_seed"), "AI")

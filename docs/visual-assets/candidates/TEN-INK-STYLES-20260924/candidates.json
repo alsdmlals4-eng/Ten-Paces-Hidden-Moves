@@ -273,6 +273,26 @@
         "file": "clash-v2/bundle-poster.png",
         "sha256": "dff6eefa20d557122216c606dac4a521704dd977be5f4b19ea011d0d83d3fcbb",
         "bytes": 1852299
+      },
+      {
+        "file": "clash-v2/runtime-bundles.mp4",
+        "sha256": "6c24c9eca66fa73b16bd55042fa101f7d0f8ff039a761e423f06f05c7a713051",
+        "bytes": 5524662
+      },
+      {
+        "file": "clash-v2/runtime-contact.png",
+        "sha256": "71160da6f1251c5063169ba23211dd564985dc880d8415cf401268f1c6f7673f",
+        "bytes": 1484603
+      },
+      {
+        "file": "clash-v2/runtime-result.png",
+        "sha256": "f42fe346bbdb81279064908fd13abe6ef349acaa5d43148e1dd3f95ca1144261",
+        "bytes": 1493256
+      },
+      {
+        "file": "clash-v2/runtime-four-slots.png",
+        "sha256": "3a87fc2385ecd58c75f62cb3706f4bde1fcdf5830fd488af20d88ea0e0aaa6a7",
+        "bytes": 1488259
       }
     ],
     "source_art": [
@@ -339,6 +359,24 @@
       "rules_modified": false,
       "future_enemy_actions_hidden": true,
       "game_runtime_applied": false
+    },
+    "runtime_application": {
+      "status": "IMPLEMENTED_WINDOWS_NATIVE_VERIFIED",
+      "recorded_at": "2026-09-25",
+      "user_approval": "좋아 지금 느낌으로 전투쪽 이미지,연출등을 변경하자. 먹 v.fx 연출도 연결하고",
+      "consumer": "src/combat/combat_board_preview.gd -> src/ui/ink/ink_combat_presentation.gd",
+      "capture": "clash-v2/runtime-capture.json",
+      "video": "clash-v2/runtime-bundles.mp4",
+      "source": "Actual Godot CombatBoardPreview and resolver with fixed committed plans; silent automated capture",
+      "frames": 710,
+      "fps": 24,
+      "duration_seconds": 29.583333333333332,
+      "preserves_existing_preparation": true,
+      "rules_modified": false,
+      "save_modified": false,
+      "future_enemy_actions_hidden": true,
+      "human_flow_approval": "NOT_RUN",
+      "all_opponent_and_weapon_specific_pose_art": "NOT_COMPLETE"
     }
   },
   "previous_motion": {

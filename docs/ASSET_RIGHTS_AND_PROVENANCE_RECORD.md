@@ -113,3 +113,7 @@ reference_similarity_status:
 텍스트 뒤에만 표시한다. 원화 전체를 보이도록 비율을 유지하며 기본기와 기본 절초는 기존 atlas를 유지한다.
 `verify_approved_manual_art_consumer.gd` RED→GREEN30개 실제 adapter 기술 인스턴스 검사와
 기존 카드 통합·상세·무공·절초·UI/AI 채택5개 회귀가 PASS다. Windows visible/사람 검수는 별도다.
+
+## 2026-09-25 승인 수묵 합 원화의 제품 연결
+
+사용자2026-09-24 “지금 느낌으로 전투쪽 이미지,연출등을 변경…먹 v.fx 연결”에 따라 `TEN-INK-STYLES-20260924/clash-v2`의 승인 원화5개를 재사용했다. 기존 renderer의18자세 영역/alpha 정리와 원본3개를 `assets/combat/ink_wuxia/`에 내보냈다. source·destination 해시는 `data/presentation/ink_combat_stage.json`, 각각의 등록과 실제 consumer는 `assets/ASSET_MANIFEST.json`이다. 신규 생성/외부 게임 픽셀/참고 이미지 직접 복사는 없다. 사용자 적용 승인과 Windows 실행 증거는 자산 배포권 증거를 대체하지 않으므로 출시 권리 상태는 RELEASE_BLOCKED_UNVERIFIED를 유지한다.
