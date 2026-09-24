@@ -1,0 +1,6083 @@
+{
+  "method": "OFFLINE_APPROVED_ART_COMPOSITING_WITH_ACTUAL_RESOLVER_RECORDS",
+  "fps": 20,
+  "size": [
+    1280,
+    1104
+  ],
+  "duration_seconds": 37.4,
+  "frame_count": 748,
+  "samples_only": false,
+  "sequence": [
+    {
+      "index": 1,
+      "start": 0,
+      "end": 10.4,
+      "slots": 3,
+      "timings": [
+        {
+          "timing": 1,
+          "start": 1.2,
+          "end": 2.5999999999999996,
+          "kind": "preparation"
+        },
+        {
+          "timing": 2,
+          "start": 2.5999999999999996,
+          "end": 7,
+          "kind": "clash"
+        },
+        {
+          "timing": 3,
+          "start": 7,
+          "end": 8.8,
+          "kind": "utility"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "start": 12,
+      "end": 22.2,
+      "slots": 3,
+      "timings": [
+        {
+          "timing": 4,
+          "start": 13.2,
+          "end": 15,
+          "kind": "move"
+        },
+        {
+          "timing": 5,
+          "start": 15,
+          "end": 18.2,
+          "kind": "clash"
+        },
+        {
+          "timing": 6,
+          "start": 18.2,
+          "end": 20.599999999999998,
+          "kind": "guard"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "start": 23.8,
+      "end": 37.4,
+      "slots": 4,
+      "timings": [
+        {
+          "timing": 7,
+          "start": 25,
+          "end": 26.4,
+          "kind": "preparation"
+        },
+        {
+          "timing": 8,
+          "start": 26.4,
+          "end": 30.799999999999997,
+          "kind": "clash"
+        },
+        {
+          "timing": 9,
+          "start": 30.799999999999997,
+          "end": 34,
+          "kind": "clash"
+        },
+        {
+          "timing": 10,
+          "start": 34,
+          "end": 35.8,
+          "kind": "utility"
+        }
+      ]
+    }
+  ],
+  "frames": [
+    {
+      "frame": 0,
+      "time": 0,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "86a56d5d24e465ff8521992268426d958c84324cd0c5bd4864ff9e50a5244dfe"
+    },
+    {
+      "frame": 1,
+      "time": 0.05,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "fb6022eac465a05dce08676cdff1545efffbae8b1562a30796303b44db507f04"
+    },
+    {
+      "frame": 2,
+      "time": 0.1,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "975957ed562b8bbd66299e6449ac7e30aa3473c5c44c63bec13cf7386bc1f2a9"
+    },
+    {
+      "frame": 3,
+      "time": 0.15,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "0b58371ed91d6b72a3d4de2e829a73474ad2c89cc7d9012aca0f6976f6dedfe1"
+    },
+    {
+      "frame": 4,
+      "time": 0.2,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "f637ef05dd55308e1a835afe45106a9d8d0e505fc942fae63d85f909f3d24dc4"
+    },
+    {
+      "frame": 5,
+      "time": 0.25,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "4d153850b6bf9ecd3fa951efd96d002478851a2f4b425448a313040b344e9097"
+    },
+    {
+      "frame": 6,
+      "time": 0.3,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "e2b81aa2381c9cf3cda2232c0a419a9825f52c30d6833f79f542ce80783b70fd"
+    },
+    {
+      "frame": 7,
+      "time": 0.35,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "599469460c1b0ea5e3d03de7967d1d12d19d83d171f38882797464197a176852"
+    },
+    {
+      "frame": 8,
+      "time": 0.4,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "2df1657e72f0696b1e1205ca91f6dcaedf8937bab8bb92c2ff6c4517dcfb387c"
+    },
+    {
+      "frame": 9,
+      "time": 0.45,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "0e57511e84b90c534c4d0da27a495c69e647195682931410f792df98bbad781a"
+    },
+    {
+      "frame": 10,
+      "time": 0.5,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "7e983807caaedb18a8cbec67ec66a8586b2181b4f9104a2894f07127397f7e2a"
+    },
+    {
+      "frame": 11,
+      "time": 0.55,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "5ae01eb5f6a9a909f70bf8be2eb82d85ce93271e44de7346f065eb7b67cbfe6b"
+    },
+    {
+      "frame": 12,
+      "time": 0.6,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "6eb8e874cc0e504e85d8af1273fdefdb87738bc264066e74ebea34f42bde572f"
+    },
+    {
+      "frame": 13,
+      "time": 0.65,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "0e1f2854d628d53801803d8716a88e527bbf7b719e2854a3b69d3b99b147ce08"
+    },
+    {
+      "frame": 14,
+      "time": 0.7,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "21ceaedbb9a4d7cbf9498e9de156483004e75642218657508f6f349636b37374"
+    },
+    {
+      "frame": 15,
+      "time": 0.75,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "e23bb601ed78dde0aaf837dfc8a8e713b37f64821d448c7e194e411ab0dbe23c"
+    },
+    {
+      "frame": 16,
+      "time": 0.8,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "edf58e001e6d6e285055c8a06cd8f8d916fbb235afe2190274b8760666580f7f"
+    },
+    {
+      "frame": 17,
+      "time": 0.85,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "a2235810e5bfba61f63d9f58739fbcf82824ad46485ff254d23e2a79965c2ca3"
+    },
+    {
+      "frame": 18,
+      "time": 0.9,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "b2ecb90ad42311bf5459ac3e69e9aa974cffbfb6ed11a1648bfdbd6a4df3d2d1"
+    },
+    {
+      "frame": 19,
+      "time": 0.95,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "bd21f1a3e9b7be61b0b9098aa900add77dc4f881fb3c30192f3340698aa5a53d"
+    },
+    {
+      "frame": 20,
+      "time": 1,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "d3dd9d26331009ce363b08a39a552a26ddc1290977f82e6d2817d705ed4095a0"
+    },
+    {
+      "frame": 21,
+      "time": 1.05,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "e87839ddca6ba1dfb787801c72eba40c2cc305f6fb93d16d0364c67bb1b106d4"
+    },
+    {
+      "frame": 22,
+      "time": 1.1,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "9e0ecf1b0e97732d7a88e7aa17de7a791f5d31883c4df5729e5972690d40e7f5"
+    },
+    {
+      "frame": 23,
+      "time": 1.15,
+      "bundle": 1,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "46a478321304d605e787756769656402ea4d654cb445ba2d69d1d4e5e0831806"
+    },
+    {
+      "frame": 24,
+      "time": 1.2,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "1a568ceeb5a13a267d177f54726edbb8d19c043a84dd1900d22ef6cb8d9e04ef"
+    },
+    {
+      "frame": 25,
+      "time": 1.25,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "fae967f6501ebcb7c79e60294998f91901e9fdb4ccb684902bfb483f78ebeb33"
+    },
+    {
+      "frame": 26,
+      "time": 1.3,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "aef43711f64a9f36f4cc4ba8966d0ff6054afffcfda9fbb205e21784ecab02c7"
+    },
+    {
+      "frame": 27,
+      "time": 1.35,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "c7e599493dc3b08f9501d9de07aa0bb259970e44a250a8e289b1a873beeae86f"
+    },
+    {
+      "frame": 28,
+      "time": 1.4,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "87737fed133f17d2de896cb4eab7272f4206837b3a09e0852b4d1cf966c00b50"
+    },
+    {
+      "frame": 29,
+      "time": 1.45,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "244456c8b9ab1f3505fd208ce4c5bae560b07def8063b677e13084755737a3ad"
+    },
+    {
+      "frame": 30,
+      "time": 1.5,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "12f0683443ee6c178e51f4722a22bcd297c2c7fbf543b2218e765a1a7599a743"
+    },
+    {
+      "frame": 31,
+      "time": 1.55,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "44be5b35e4d4c6b42fb5d6398cf98dfdd5ec0af5a3a128e247ba21afebf1bfe6"
+    },
+    {
+      "frame": 32,
+      "time": 1.6,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "6a20af56c6554d7405841a8511b6303abf99a5aef8ddb5c5e84579216a152cef"
+    },
+    {
+      "frame": 33,
+      "time": 1.65,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "72c56072b3fadc5a08a3b5ac53f9633f1701257de0c8d1b29612b37f62c285c9"
+    },
+    {
+      "frame": 34,
+      "time": 1.7,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "193345bba6080ea438d9fbbafdf3b88c55a74a12b05086510044d3e1fb380fb8"
+    },
+    {
+      "frame": 35,
+      "time": 1.75,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "32d9a1d83f3bc48bc2b910acf2aa41d393ae37fe8ab0284855ddf5cc37ebd01b"
+    },
+    {
+      "frame": 36,
+      "time": 1.8,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "ab39ab763972d3b6c1a2fcf6818758cc9b350ce6f74163cb6a779dd07ef85789"
+    },
+    {
+      "frame": 37,
+      "time": 1.85,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "37fc1732b6bf515e16d56abf0ed9db90d726494d9441ca4a8253d7172cfe6747"
+    },
+    {
+      "frame": 38,
+      "time": 1.9,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "54b26b6d363c33667616d5d5c644a292014872a9a240e0eb4adc71ccd48dbd4f"
+    },
+    {
+      "frame": 39,
+      "time": 1.95,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "ca93ab7bc1e67d660665608667793519ee8e70fb0fa1a6a7951e9bc93fde5d9c"
+    },
+    {
+      "frame": 40,
+      "time": 2,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "521aefa116e21d7a2f0981a84f093682a65879af50005812666bb97f72020666"
+    },
+    {
+      "frame": 41,
+      "time": 2.05,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "fbf5289936b706f4ff3bfb7cc386d176e7ba733204fe47ed0d7933ae559bafb0"
+    },
+    {
+      "frame": 42,
+      "time": 2.1,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "4e450e46d4ad54ba77638715e0ade566875bf716ceb3a9edc747e16b66715964"
+    },
+    {
+      "frame": 43,
+      "time": 2.15,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "62986f7abe960ef83fe126b08a425f8d7b75b355536b872b7dbcdf2fdb1fc213"
+    },
+    {
+      "frame": 44,
+      "time": 2.2,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "3b1ac48a3c28639566a167bad95de0727107fc4dc8d28b9209ffd45417f1f0d6"
+    },
+    {
+      "frame": 45,
+      "time": 2.25,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "ff4360af80a8b88cb0fc6854a449bd65eafc8cedf8e41fc1d3e62685a4f268de"
+    },
+    {
+      "frame": 46,
+      "time": 2.3,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "ff9fea1e8164980aa8a70d69ee2a968207f8b940c45c569eaf262687acbd97ca"
+    },
+    {
+      "frame": 47,
+      "time": 2.35,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "1a3e89fb224fed760188e30a3fe643f7e087c17806cb23405d39fdeed5733c86"
+    },
+    {
+      "frame": 48,
+      "time": 2.4,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "fb60f5cca0c84193562a03a14dd939ccdaed4c9ae071edd4fca47ae52d9cbce1"
+    },
+    {
+      "frame": 49,
+      "time": 2.45,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "f5c9ac99c87cad15f08fac4adcdd04a7501252debd269f5f0d634f941bf5bbaf"
+    },
+    {
+      "frame": 50,
+      "time": 2.5,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "6e76e58b79ecf3e06d2e9e08960dc6b61a8cc04e191887bef2cedc6f14e566e5"
+    },
+    {
+      "frame": 51,
+      "time": 2.55,
+      "bundle": 1,
+      "timing": 1,
+      "phase": "전투진행",
+      "sha256": "0b608a647fa64acf8a1b9ebd27b51adad6add9fa47dfd18741d606f9679d9485"
+    },
+    {
+      "frame": 52,
+      "time": 2.6,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "82c215115b6dc4aee00cf0fa3310bd3d1bfdc2fdf248f6bf69cc47e868712db8"
+    },
+    {
+      "frame": 53,
+      "time": 2.65,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "9f23d62d5287a177b851c7b96ef082251f11a56580358217106f0e19a97df965"
+    },
+    {
+      "frame": 54,
+      "time": 2.7,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "93ef036b18c698e666add5a464ee6200edf9eb3399d8fc3fd49d688336bd9326"
+    },
+    {
+      "frame": 55,
+      "time": 2.75,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "e8a6fe47fd103c4ad0e06dad192cc61a441dced0bcfe2cdf000ccdfcec388dd7"
+    },
+    {
+      "frame": 56,
+      "time": 2.8,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "23dabf6f6e93a9ef56325c716e98ad7a281001f13d8745c62907a9753f178197"
+    },
+    {
+      "frame": 57,
+      "time": 2.85,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "57c46bfae76821b4234265dce6abb8967e26b8b38c4911e1484a827b6b2047ee"
+    },
+    {
+      "frame": 58,
+      "time": 2.9,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "bcc065275f2faed73d385f454b3aca080c71a3dd1e75e6475459991c62ebf3bd"
+    },
+    {
+      "frame": 59,
+      "time": 2.95,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "337f79d50bd60b2e3f55ea773a4cb2e946e28b02e4e724b3b9c06ce1c2e02f48"
+    },
+    {
+      "frame": 60,
+      "time": 3,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "79ff5c547fc754dbd4181c4d7c5aca95053175817b46c2381a359e99ba8be7ac"
+    },
+    {
+      "frame": 61,
+      "time": 3.05,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "6d7e29681307d04dd65542346615c8e11bc196a0d47f696fea6dbedf89cfadec"
+    },
+    {
+      "frame": 62,
+      "time": 3.1,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "cb893818ad07979263e6e4c290490be32ec420cd044a564c5d07365a4e535c34"
+    },
+    {
+      "frame": 63,
+      "time": 3.15,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "0294cef30f7340289e6c0c04d8af32f10c3ad803c6fb8391dd4957745d21b3f9"
+    },
+    {
+      "frame": 64,
+      "time": 3.2,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "869bbcf32be3f58c16dee10e64a47ef82ffb67b82d58ec772a6423c305f99e02"
+    },
+    {
+      "frame": 65,
+      "time": 3.25,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "9f1413f5eb25c07dd1aa231f1e7215c8d09d4d19407f6d7a4681c9b2aaa58df5"
+    },
+    {
+      "frame": 66,
+      "time": 3.3,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "08ecbb6e04e0c3490cd303be08e6e7028adc6a59a1bcb5442fe8393216703faf"
+    },
+    {
+      "frame": 67,
+      "time": 3.35,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "585c651f7db3e08006da53dd7916dcb820b65e423ca155cc280153044f6559a8"
+    },
+    {
+      "frame": 68,
+      "time": 3.4,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "1b10cc34a953b4fad90b7fc1218165bd946789efbc62120e20f12bca8e6f69fe"
+    },
+    {
+      "frame": 69,
+      "time": 3.45,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "93739c93a66b135bba8b56e52858987ee48e9153f5a985823754568c1a22a03d"
+    },
+    {
+      "frame": 70,
+      "time": 3.5,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "af837712085a0631268384a7512088be4db37e9f007bf6b8b981010b8344cbee"
+    },
+    {
+      "frame": 71,
+      "time": 3.55,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "7098069eda1562524f0ab51771916dbe8bada8aff553dae8e9a5a7675e81c755"
+    },
+    {
+      "frame": 72,
+      "time": 3.6,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "95fdc8258b1f723ebf63e1c74b07a1ebba9e377e7e97c59bcf23b0ba52ce4ee0"
+    },
+    {
+      "frame": 73,
+      "time": 3.65,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "3c0cb64697bfeb7b7aa27cdbee9fceb99c0f7190a90f65efd8c046abf9a2c747"
+    },
+    {
+      "frame": 74,
+      "time": 3.7,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "71f7f1186659cf0ce7f66ff361634eb94e70202ad792eb082fd8292ea6e4a856"
+    },
+    {
+      "frame": 75,
+      "time": 3.75,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "6a16967684a1fe27bcaef10b164ff6b3439e441f464d193c807e62a2abea37a5"
+    },
+    {
+      "frame": 76,
+      "time": 3.8,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "1999df666a961041ff0c1b56149913362966df0f23eb5e2c5d9a4021a2115922"
+    },
+    {
+      "frame": 77,
+      "time": 3.85,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "7170a47912d30d8452b648ea16eccf582b066f1bb1451bda781cf792927a7f18"
+    },
+    {
+      "frame": 78,
+      "time": 3.9,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "b024f3128c0b084e08b39b96b1e005f7ddac8353136df4fcbacbe2c6ba0ac0c6"
+    },
+    {
+      "frame": 79,
+      "time": 3.95,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "97ac58bfe3254ee6f0144f6928d0a5d48195c1eb07df07aeb47e8d9b47503f64"
+    },
+    {
+      "frame": 80,
+      "time": 4,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "f1b9d9d024ffd5dd04fd3e33e50f197ceb8b6db8e25697f01ad642528f02b4b2"
+    },
+    {
+      "frame": 81,
+      "time": 4.05,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "d28a07fcd6a44595d8d36703894033fe5b3af355fd3afd40992368642effe83f"
+    },
+    {
+      "frame": 82,
+      "time": 4.1,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "1751706ea487c7d609fe2922de646127632b06f4111a760d8a8a86fd68f313c1"
+    },
+    {
+      "frame": 83,
+      "time": 4.15,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "b0b59eeff8880b862abbd748a360c4687bb77ca4eac316aec7b5bf1ddff0ce74"
+    },
+    {
+      "frame": 84,
+      "time": 4.2,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "2eed5a5536706549ca9bcb6c56e4a960f3f62b709bfce89d362ce23238759563"
+    },
+    {
+      "frame": 85,
+      "time": 4.25,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "448559f1d19b7b945e7ce8681dfe5f8b41d16eb3a9ecded67ceaeeda66efffbb"
+    },
+    {
+      "frame": 86,
+      "time": 4.3,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "d556aa627dabb52885a0bcf6de00f20457f4f37e7d9888a798c8cbd67b6745fd"
+    },
+    {
+      "frame": 87,
+      "time": 4.35,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "ccd87d060262830862a491406a02521b3a50b237fcc9bdd34de06857b5ad5486"
+    },
+    {
+      "frame": 88,
+      "time": 4.4,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "8da1624a36586208dc31c225df23c5431a50f8782de96c6ff937aa85cd5193b7"
+    },
+    {
+      "frame": 89,
+      "time": 4.45,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "08f5cab10c45bb7ba8c1078c12e04c4941c190631453580150f0283ab6e452d4"
+    },
+    {
+      "frame": 90,
+      "time": 4.5,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "5074ece51411f71c5ec9a710b96b754478e589e32e1b386380477ab5d6430e9f"
+    },
+    {
+      "frame": 91,
+      "time": 4.55,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "1d4463f827a576351e57257a89fb045cddefcd0eb75fbb22ebd13b424fb0a31c"
+    },
+    {
+      "frame": 92,
+      "time": 4.6,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "22e4bafff0f1afdd5c3402805d4219699056fef86cccc4a29e691d41d04f8af9"
+    },
+    {
+      "frame": 93,
+      "time": 4.65,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "7ed1d6d4e9993c1b6818f2e20646c9763d497985d14d6d026c68a759fc928064"
+    },
+    {
+      "frame": 94,
+      "time": 4.7,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "f63cc63e35bf1386a2ca20f0b13b500a91dce19dce28e84ede84f72926bda7cf"
+    },
+    {
+      "frame": 95,
+      "time": 4.75,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "a9f644257284dc487c51fa6dfa24aa6274006b9be9a8388c2a07014564a3b7ee"
+    },
+    {
+      "frame": 96,
+      "time": 4.8,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "e8a4420174da9d229a5cd265ade97a1fa51f4d2d58c9f94603fc83f148814a22"
+    },
+    {
+      "frame": 97,
+      "time": 4.85,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "a1b82453ebc24d24c07efd4b066987fa4c7c298a9ba8ee62669798d6a610034f"
+    },
+    {
+      "frame": 98,
+      "time": 4.9,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "be7ee9cdd0ab23e1a577dc9140b5c63c5ce4906cac813038c8257af51c918b91"
+    },
+    {
+      "frame": 99,
+      "time": 4.95,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "67ae45ce407e4a9b1e94580dc8291afe2cf96b1b7fbaad526f8308dffd91f575"
+    },
+    {
+      "frame": 100,
+      "time": 5,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "7ebc90be9d266786e19965d412c681a95bf37529c6245470bc8af95bc4b813b7"
+    },
+    {
+      "frame": 101,
+      "time": 5.05,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "c2c817141b91fe62ce2e2d18e533af0159dd55682586e6a67d3f2ac0436f403d"
+    },
+    {
+      "frame": 102,
+      "time": 5.1,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "2a3182269e6ccb0f327d6dec60352bccd76a3e02b9fa6f3489f1fc4102db6c32"
+    },
+    {
+      "frame": 103,
+      "time": 5.15,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "e7af4ed62be1178954cb0deb96956046b38b014b19ee6a1223e936ffa85e7a20"
+    },
+    {
+      "frame": 104,
+      "time": 5.2,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "99a07924034cbf83c37ddf7ffd944ba21f293bb1f51c733d5c0772e69a3dd522"
+    },
+    {
+      "frame": 105,
+      "time": 5.25,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "27e924f9c2fba6a1cd69ff2104e763f5c1f706aedd5735ebdc597e4f1a2eef28"
+    },
+    {
+      "frame": 106,
+      "time": 5.3,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "babf51f69a8c0783c679237019a3da4c453794e3c5c5d9f4d6e33074dcddc42c"
+    },
+    {
+      "frame": 107,
+      "time": 5.35,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "331f8d7ff9d42370ed57ff6192609a3777cca22fbc7514a896fd2e6d28d3ed55"
+    },
+    {
+      "frame": 108,
+      "time": 5.4,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "cabcd441d6f2ee0c920bb26cdf64e8b40f1ddcd2b09ad287a4d49d57c40bb4ca"
+    },
+    {
+      "frame": 109,
+      "time": 5.45,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "a35d5b68a9dc18fadd4a5ae832fecd2c364258a317078088f55a1016a9cbe67f"
+    },
+    {
+      "frame": 110,
+      "time": 5.5,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "ca85dbdcac0d60556d88bbcb5e38816662495db248ad7982b6036e407cc3051f"
+    },
+    {
+      "frame": 111,
+      "time": 5.55,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "b81cebdcb3a55e6a8a518be128c6234c57704a444ba55d78649f82b71a9ec834"
+    },
+    {
+      "frame": 112,
+      "time": 5.6,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "601a0b8f730ec50a51c2c11a63ee432c6541d6d218e73c16c98d22183e2c4979"
+    },
+    {
+      "frame": 113,
+      "time": 5.65,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "133803aaa08c876583066e0e257be02cde807f42ae3540e02f7201ff5cbb5d5a"
+    },
+    {
+      "frame": 114,
+      "time": 5.7,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "6d2bf3011e9a0f6a6328286876d14dba3f88c5a60f431e1820b5eaab97f99100"
+    },
+    {
+      "frame": 115,
+      "time": 5.75,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "ac86a17f1b030fafb962aaa97c6e5d84acc67419a6153648398a74df728b7e34"
+    },
+    {
+      "frame": 116,
+      "time": 5.8,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "83795c80ec08ca6d94ec286fb061f265674ac43386a3963f4b51e4aa2d1465c1"
+    },
+    {
+      "frame": 117,
+      "time": 5.85,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "172894beb887504bdf2198b0faaafda06482b43b121a79624bf891cc3ee51497"
+    },
+    {
+      "frame": 118,
+      "time": 5.9,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "b9965cfffda3e17d4d87677dec029ce6090da4e8435a4a6b957250e608996f64"
+    },
+    {
+      "frame": 119,
+      "time": 5.95,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "c0e9d652a44808cf8107ac0f64a35f71cebde2f242565ba0c7e7e29e9955798a"
+    },
+    {
+      "frame": 120,
+      "time": 6,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "def9f1bde89f1ac611a66573086c793c6b22378cc49ffb9d65c5037b5a848ac1"
+    },
+    {
+      "frame": 121,
+      "time": 6.05,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "8966a4998be09a2a1d47dfe82376d61d02d304a3dd7d3cbdc295a23e55efb7ce"
+    },
+    {
+      "frame": 122,
+      "time": 6.1,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "8f1639c2d464cb825dce32ae1a727904e2b8217e25ad187a8581cf23cd0aaba4"
+    },
+    {
+      "frame": 123,
+      "time": 6.15,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "f1ec4bf7ab7952f61aab38513f14d5a67216f5e070e5c1e0f9222e87cd16a806"
+    },
+    {
+      "frame": 124,
+      "time": 6.2,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "ad4f26d36605b3b8e6f81bfdda608ad9391ce8b359772d5c32b6c9edcaa047e0"
+    },
+    {
+      "frame": 125,
+      "time": 6.25,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "5ba9892027e77be4a07cdd2d0329f63366de0ebdd88e45889f622077c2b6069b"
+    },
+    {
+      "frame": 126,
+      "time": 6.3,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "f25769583248b7fb07c170f345b3683146c38b2ee7c67d237e6d0aae936398e2"
+    },
+    {
+      "frame": 127,
+      "time": 6.35,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "68f123c5aaf82bedc95d58397ebcf04c36bace996d2d8b1f5ee5ae260c3b6693"
+    },
+    {
+      "frame": 128,
+      "time": 6.4,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "d5724a58e58bb60c3636a46eadae7b0c7f9ef586054ae104df0f7ce471524454"
+    },
+    {
+      "frame": 129,
+      "time": 6.45,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "7f1467fc05f348346f08ce8423a6969ac22b4fa72f3831846f2dece1b158f8b1"
+    },
+    {
+      "frame": 130,
+      "time": 6.5,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "cc3d806f7203786f0a3a6cb50c6c26b8d937c36e3bba23127dae430e732c463e"
+    },
+    {
+      "frame": 131,
+      "time": 6.55,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "9e50f5bf9ce8d2a0934b3f18c402f2f4d05e3ec1178227e690861ee31de78321"
+    },
+    {
+      "frame": 132,
+      "time": 6.6,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "8af69c399fc2ef9c026466c3acd654657059875afd1ad9db5aafd79a80b4ef42"
+    },
+    {
+      "frame": 133,
+      "time": 6.65,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "28d7948c5281794ad431e387b368b31c545267d5454a61cd3387c16b77f440a2"
+    },
+    {
+      "frame": 134,
+      "time": 6.7,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "453ad0fa8611af51da79568113428b72a9718b6cb6f84c116ac481788f644349"
+    },
+    {
+      "frame": 135,
+      "time": 6.75,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "bd3cc055219e79ffdd80c11c96707583b967c0d61a921828559a1312bf7e0c24"
+    },
+    {
+      "frame": 136,
+      "time": 6.8,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "72fa5bbfd46becc75966a0be6cc95a87e708cf2e46986b7f1591dea1a09c5d19"
+    },
+    {
+      "frame": 137,
+      "time": 6.85,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "5308123eb0efa0321a32563c93d8d4c85198178ce15b573505288d219cf38388"
+    },
+    {
+      "frame": 138,
+      "time": 6.9,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "82aa822d14369153b3151eaba459c8c516d730f2be6f968ec0a209f123f49015"
+    },
+    {
+      "frame": 139,
+      "time": 6.95,
+      "bundle": 1,
+      "timing": 2,
+      "phase": "전투진행",
+      "sha256": "cca245b0ec25b2c32c14bf49cfc948368c12f506ba81b11deb192010772653e1"
+    },
+    {
+      "frame": 140,
+      "time": 7,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "d19cb679d2b49668221653213c05d936a00d0784b4693ea34eaab794db239922"
+    },
+    {
+      "frame": 141,
+      "time": 7.05,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "c63650b97877ca1a337df4bf26fc3397c1693a2d01fe904faf1e425a02c023b7"
+    },
+    {
+      "frame": 142,
+      "time": 7.1,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "42269499c3a4a267102dad428fb39d8f34ebbf5734398f38b3ddcbf6f69e5fd4"
+    },
+    {
+      "frame": 143,
+      "time": 7.15,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "7fdeff8047726542aa8c947f1da003b6ba2dc24d6a22a737e09100d220182f62"
+    },
+    {
+      "frame": 144,
+      "time": 7.2,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "c9a4346fdd45f60f351c50b4bd6fa7085043a72787582deecff0c964cfddcff0"
+    },
+    {
+      "frame": 145,
+      "time": 7.25,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "3fdd88a1055e8c74d518fa743e6f1d3126353adbc84a48bb5a8f2772f978bb29"
+    },
+    {
+      "frame": 146,
+      "time": 7.3,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "dd4abae5af81029804e700311e779fa6630a8ef10875c434a18091eee205793e"
+    },
+    {
+      "frame": 147,
+      "time": 7.35,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "36ab8c67e5ca064bab089248a437135faeea5a9aad52e9af4531c629b595fb32"
+    },
+    {
+      "frame": 148,
+      "time": 7.4,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "2d8dc2ac126a115e37ddd9a64dac2854d561d3317c16b3f869df4a11ffc15dad"
+    },
+    {
+      "frame": 149,
+      "time": 7.45,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "edb5e17f3f35573ea400503a1f3f3e8e76d85060694468956167555c88036a97"
+    },
+    {
+      "frame": 150,
+      "time": 7.5,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "51dbc27d52b9c315b6b2361eb89e1cedc78e8a27122e059859cf72f7ede91ec4"
+    },
+    {
+      "frame": 151,
+      "time": 7.55,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "0765311563b672d80b562dc8c1ef87e9f00bbd312ed03e9ef421a369d8e957c0"
+    },
+    {
+      "frame": 152,
+      "time": 7.6,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "ebb130f685cc2571ae001f3da9e3699445fe643f4ba03c81fc0b0f1cac7a4435"
+    },
+    {
+      "frame": 153,
+      "time": 7.65,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "c8a903983a62f7e303db08878cd68a8fae7d58dca467a391e1df532d3e72be1b"
+    },
+    {
+      "frame": 154,
+      "time": 7.7,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "d50455b91ce62752f715ebba422e92c08b378bbd58214e0885dacd7608bf0ae2"
+    },
+    {
+      "frame": 155,
+      "time": 7.75,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "6199c20f1338230c6abdec2f739b64a665d7e253b88f609bfe4dd60d0e3fc870"
+    },
+    {
+      "frame": 156,
+      "time": 7.8,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "16f369634d13814b40dc2cd5812c7aff13bbfab8cdd6259b3609f5071ceaf9e7"
+    },
+    {
+      "frame": 157,
+      "time": 7.85,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "88f7fefc528c481058a0e7a410a29e23c3d15bf9985e8615128ccf27f1dcbe63"
+    },
+    {
+      "frame": 158,
+      "time": 7.9,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "ace0d83160174665a4c41cbe4b19f5c1a01cf71f0e7e13f6785593262b52d9c8"
+    },
+    {
+      "frame": 159,
+      "time": 7.95,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "cd80da64aca2cebed5641af8169cc767dafb900f0bc2ea255a20c0a3a6079efb"
+    },
+    {
+      "frame": 160,
+      "time": 8,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "72d94c04d6b41c97ea45aaba61e5e25beee501d97668e0207bf39977084efdd0"
+    },
+    {
+      "frame": 161,
+      "time": 8.05,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "430a0287b001b043ae94a7449378636f2663938f207fcd0ca30dc009ad7cc51c"
+    },
+    {
+      "frame": 162,
+      "time": 8.1,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "6b09f88385bc71d40524d1741232ad5679eb3dfd2b31a29625dde033aa06c33b"
+    },
+    {
+      "frame": 163,
+      "time": 8.15,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "9a20b11343c1623b5ae90d6b074d5bbcc195662555e90184e1bd7c98c5418abb"
+    },
+    {
+      "frame": 164,
+      "time": 8.2,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "717fa52103778334cea487c61c653b34c0572e12da635af908e2ae5b5b197c7f"
+    },
+    {
+      "frame": 165,
+      "time": 8.25,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "562bc7acef64102fc0139c918ca8ddddac36a15ae675fc63e8e6082bce37fac9"
+    },
+    {
+      "frame": 166,
+      "time": 8.3,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "1a56f65697d719688f85b05d326c0ef57e93d47c445211afaa96dd66871ae30d"
+    },
+    {
+      "frame": 167,
+      "time": 8.35,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "b3941aa5994140360fc8a88939238f53b828bb3141344210e8437982ad7de168"
+    },
+    {
+      "frame": 168,
+      "time": 8.4,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "d5611405b880b649449281917c9b0ac0c6ddae09adba857ca872ea0394292421"
+    },
+    {
+      "frame": 169,
+      "time": 8.45,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "678944511c5b2347894942656d524a5a4a4c61a679e20c224a76b56a7044e6ad"
+    },
+    {
+      "frame": 170,
+      "time": 8.5,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "f04e33e223c7f547bc27967ed8c1e20d5b2b52421d8a78a87a4ebdfb3f672ec1"
+    },
+    {
+      "frame": 171,
+      "time": 8.55,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "f03db94562386e54234dbd871161adf940194eed67652abd7d2b87932a73925d"
+    },
+    {
+      "frame": 172,
+      "time": 8.6,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "3791c63a02682132fb90fb03bae7789f0177a6b3a4e8247336bbd953fa6eb1c3"
+    },
+    {
+      "frame": 173,
+      "time": 8.65,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "9efdd8ac88582ba7cf35406c97b143531d32a7a0feeaceffce05204a33fce479"
+    },
+    {
+      "frame": 174,
+      "time": 8.7,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "df9267113a721eff7dcd04669df55bcb7017731f5e3c0690627d495753414122"
+    },
+    {
+      "frame": 175,
+      "time": 8.75,
+      "bundle": 1,
+      "timing": 3,
+      "phase": "전투진행",
+      "sha256": "aa1501c86cabb7fe7b5ac0ef506c2a9780a820fc33c9bf2aff00dd2891105ed1"
+    },
+    {
+      "frame": 176,
+      "time": 8.8,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "d257bedcb3470078f8874ba438d966f2c6465d6a4f3dd97adf4f8a49f61f0c58"
+    },
+    {
+      "frame": 177,
+      "time": 8.85,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "b1121db8448299e8fa03919f42629a4451a3c69accc27874899af83cef62d42e"
+    },
+    {
+      "frame": 178,
+      "time": 8.9,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "604f8196d892e494bacb09dbd066f3811a11848228be9920ea22616308c1a9d1"
+    },
+    {
+      "frame": 179,
+      "time": 8.95,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "e3dab477dc07d3a1a600778fd1e36be58ce905e85ac84fc5f425cb906aced80f"
+    },
+    {
+      "frame": 180,
+      "time": 9,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "8f4c11471bdc449c9491afa668e8a08425a73e3cb4cde7d3a75e1fd8a0e4e97b"
+    },
+    {
+      "frame": 181,
+      "time": 9.05,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "87bb6b82229361848d77d2d4211649ceeaaf0f37a2c27aec68ac9ab9a0bd39de"
+    },
+    {
+      "frame": 182,
+      "time": 9.1,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "e8bf3daa96e16aa43abf68080c4b5d93af600cf59f09c9457ef1230bc92447cb"
+    },
+    {
+      "frame": 183,
+      "time": 9.15,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "93a5d2167983cd9a1e7b7f33c9b53da9c20551097ca24d5eb1124b74f4a5c954"
+    },
+    {
+      "frame": 184,
+      "time": 9.2,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "0f23af435e6ab5d61dd36019750a3a7dbef3342462337682e660fa515d37ea46"
+    },
+    {
+      "frame": 185,
+      "time": 9.25,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "a88c75488521d74def142ce048a7432a9ab33359c0e5c9eb748b01e27db83c01"
+    },
+    {
+      "frame": 186,
+      "time": 9.3,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "c6210d919048ffbfb4b5f445ac3cb380d3892f5b0e6f202b5c67ee24666282ad"
+    },
+    {
+      "frame": 187,
+      "time": 9.35,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "ad80e1a61c5e6f792715884717083e89057e26dd2c3b6a5b9edaa0de704a13c7"
+    },
+    {
+      "frame": 188,
+      "time": 9.4,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "7ae78d2689ea2769a585fb6936ec69a4a61e5ae78b72d7848f5a9bafef2c968a"
+    },
+    {
+      "frame": 189,
+      "time": 9.45,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "5c817a1ca9f935517e800dfd7ea645453d20d153a1c96439f6f59f6d3939e120"
+    },
+    {
+      "frame": 190,
+      "time": 9.5,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "9c36e1999f037ed42f376f59eb85e8de1bb4a05bdb2281fd7d0b9336eb09fe03"
+    },
+    {
+      "frame": 191,
+      "time": 9.55,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "7dfd5ec289cfbcac6d352ad32bd7d82a2fa34bb2220ba3b6287dd1a3aba6690e"
+    },
+    {
+      "frame": 192,
+      "time": 9.6,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "367ee0d6c9a3628a7ad8fcf94e5c173a95072e9319ca045be051ea0c2589f242"
+    },
+    {
+      "frame": 193,
+      "time": 9.65,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "c8c04d3b91357e8d0221f9dd0b98891398cdef69085859f72633df48045ce230"
+    },
+    {
+      "frame": 194,
+      "time": 9.7,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "deaa486a1432a544c22929d74e8298b7200936ff0a6e14c0bfdb9f644ca8dd62"
+    },
+    {
+      "frame": 195,
+      "time": 9.75,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "10887068e66f46ba3e9e8cd39ef337cec07b0a4517088b19384d5322d364d130"
+    },
+    {
+      "frame": 196,
+      "time": 9.8,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "e992181007935e3ecf583194a650679989dda6d7f4da275efeed131da291df19"
+    },
+    {
+      "frame": 197,
+      "time": 9.85,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "c12101d529bba228c6125f495560d33846124e88791bdd1231e41ba977c516b9"
+    },
+    {
+      "frame": 198,
+      "time": 9.9,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "fbd1f7341dd8d38e0fa3f9a747404206e6507734ad79e65be9a0cedab29fc7b1"
+    },
+    {
+      "frame": 199,
+      "time": 9.95,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "371593a22cfd161edc6a145d9af333de3b6d433020d853229485d7d9ef9cf4ae"
+    },
+    {
+      "frame": 200,
+      "time": 10,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "b41f6be3c78a8f61d29c522bbbe2cdaff2cf2a1ec381d029d6dd82e4b87200fe"
+    },
+    {
+      "frame": 201,
+      "time": 10.05,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "0b86b7d7819495fe73e5bdf9264b813d72b2863e670336c5504651e1cfacb960"
+    },
+    {
+      "frame": 202,
+      "time": 10.1,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "ed75d9b7f665871567408f5d1e76767691fbd912e597cb95ac845772879b99ec"
+    },
+    {
+      "frame": 203,
+      "time": 10.15,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "0351ee3e27981b9f0a6ccda716d2f5762e586a07f211f5b3bbeb868521a43f83"
+    },
+    {
+      "frame": 204,
+      "time": 10.2,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "a1df6271fd9c32333900d79ab21e2205cb9a1901caefb54b90d352b52895f8c7"
+    },
+    {
+      "frame": 205,
+      "time": 10.25,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "51bd29bb2ec5f99f48c38262967246f9d5c3353049997f0871d989a10bd010c3"
+    },
+    {
+      "frame": 206,
+      "time": 10.3,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "ac0f7eff80e7d32d20633d804076d58902c81cb3b30037417c2735ad72a017fb"
+    },
+    {
+      "frame": 207,
+      "time": 10.35,
+      "bundle": 1,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "c4889d333907bf857b6824657b2aa4f604c5434d683aa281621b541b79b6878a"
+    },
+    {
+      "frame": 208,
+      "time": 10.4,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "50c4b13d6b3465a441228ef3341478f558dcd739560cc7832ac40b32b7a698cb"
+    },
+    {
+      "frame": 209,
+      "time": 10.45,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "beb380acc5dee26cadccaf0a8a2dfd474b7350f371f34f506e5079e32d5ce76a"
+    },
+    {
+      "frame": 210,
+      "time": 10.5,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "498d836a6d0184bb8179c4a8f02681997d46960c6da279448b15328dcdedbf2e"
+    },
+    {
+      "frame": 211,
+      "time": 10.55,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "590a4ab41273d89b1c84ca8e4af09883aa40b6ff3af9f4585dc8d68e7ad038a5"
+    },
+    {
+      "frame": 212,
+      "time": 10.6,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "01a5990af085526ebb3a180c7309ff8f7638bb818aae7984694d2ef121e5b012"
+    },
+    {
+      "frame": 213,
+      "time": 10.65,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "eaac2a9bd89794bea4c8c997fc4ac70f4728d34bdf35d11a58efdeb5bb5f69e6"
+    },
+    {
+      "frame": 214,
+      "time": 10.7,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "d64392725ee81eb8367878f07eb894343f8f7ad76536c3b971fbd7d3a44a976f"
+    },
+    {
+      "frame": 215,
+      "time": 10.75,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "68989416c6d75b431112fad09d9e2a52dccb52fcf8678c00d1a1edf15e95da66"
+    },
+    {
+      "frame": 216,
+      "time": 10.8,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "c4e14ea169f9462b618aeb7b2f60209a111bbdfd9ce44fb692a6f08261b7d90a"
+    },
+    {
+      "frame": 217,
+      "time": 10.85,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "e49c32574087046c03a6ac3e440a027ac8831c3e053a98625e3a54e77fc132f7"
+    },
+    {
+      "frame": 218,
+      "time": 10.9,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "f7aac5143a9656321f79b3167467c67c347aaaddd0fa2e326f792efd3c0afcbf"
+    },
+    {
+      "frame": 219,
+      "time": 10.95,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "b2e57e2357adbb7f4cf97574c4327a3350f6db36979383601af175752988c986"
+    },
+    {
+      "frame": 220,
+      "time": 11,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "bccfb92f62228416b53904712bee206101a4bb8bb8dc30a758ede5ab449aedc1"
+    },
+    {
+      "frame": 221,
+      "time": 11.05,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "f637d3357c09c73a7e2229896ce15e00d8229335724526ce56be713af5f5653a"
+    },
+    {
+      "frame": 222,
+      "time": 11.1,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "4511566193d159cb99249a966a52224c06c927b2abb1310261f8ce21eb2aad3a"
+    },
+    {
+      "frame": 223,
+      "time": 11.15,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "6ea237951a3e1d4f48eb39d42f6a91dcd82118c95b946d8274c149932cc1c77e"
+    },
+    {
+      "frame": 224,
+      "time": 11.2,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "85c92411797d09478573c8c9b8756f7e38214fe308341be33d189f33c9b6cdb0"
+    },
+    {
+      "frame": 225,
+      "time": 11.25,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "1d0df85ed9bec5863beb35df223546535b3de34cc4d685c9fca0b57019799141"
+    },
+    {
+      "frame": 226,
+      "time": 11.3,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "3b029231fdb1f5a8d620f88577eebf32d1356492b39871b89fcd362daad5e59a"
+    },
+    {
+      "frame": 227,
+      "time": 11.35,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "198d51ff71944f10830f8bf07cb0789fcbdcf3e97148d17423ea4e1801abe915"
+    },
+    {
+      "frame": 228,
+      "time": 11.4,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "ea0db7d9ee6961c7cf51e2251c9aae700962dbf3cceb615fed43e53268162682"
+    },
+    {
+      "frame": 229,
+      "time": 11.45,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "b12eb40d81ac2b79812d3bbab291e115b9b5a55c1222142ba031725ce31c034d"
+    },
+    {
+      "frame": 230,
+      "time": 11.5,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "b4e1252eda8864e4c22ece164809a8008d609c0e26dffcaebf7b382b4716c15c"
+    },
+    {
+      "frame": 231,
+      "time": 11.55,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "cfc20200345b8dd8b1cc5536f7b5af6221320dbd426de406c3685455d63e67c5"
+    },
+    {
+      "frame": 232,
+      "time": 11.6,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "c944a2012fd771b4e6c52983eaae1d8e7234fae31a9f725c51e3a23db2f2ec8e"
+    },
+    {
+      "frame": 233,
+      "time": 11.65,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "a2542be58760ab51378e197bb9c0ad9328607fec01c450b126105638a0a30662"
+    },
+    {
+      "frame": 234,
+      "time": 11.7,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "d27c08600e3a0d9380645f32263ef92bec8906b1a81fd65895ca879094af91d4"
+    },
+    {
+      "frame": 235,
+      "time": 11.75,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "1290996d8c59b07228f101f67e8efc417c72492090e76b3f3eac0711fc99af4d"
+    },
+    {
+      "frame": 236,
+      "time": 11.8,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "0d247150d205d96e353ca552ab7a89f0319c3e3c448511925848cba8d596f0fe"
+    },
+    {
+      "frame": 237,
+      "time": 11.85,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "f61a2ffd4a144f39619aea41c56d446ccef6dd7922836b245991b9f0a14d56e3"
+    },
+    {
+      "frame": 238,
+      "time": 11.9,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "1f6468e84a0d30f06530517fe484c8a1b88613d06d60bf92747fbae319ded398"
+    },
+    {
+      "frame": 239,
+      "time": 11.95,
+      "bundle": 1,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "50d66927b27b9b66049922265dee4f8cfb48967016a7f972d661423e93f46bf9"
+    },
+    {
+      "frame": 240,
+      "time": 12,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "a3863425d01838e0c7b42efb892be54a63cf65aeaf36b2d6e91bf3ad78303976"
+    },
+    {
+      "frame": 241,
+      "time": 12.05,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "d66162187304d504076eda7fb2706b2bce35aa1741db3ab3cbfb77875006426e"
+    },
+    {
+      "frame": 242,
+      "time": 12.1,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "2a104d1ddf4302e6d69e2bdd230e811be2500b4ed1e1941d5a10c887925d2771"
+    },
+    {
+      "frame": 243,
+      "time": 12.15,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "3cf63422f82f2b106f9b309e30e66cecaeadd3521959b93aee82fdae242310dc"
+    },
+    {
+      "frame": 244,
+      "time": 12.2,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "05a312ec609d49d91f12fc300f59c6beb3dee9776bdc45b27ba7646c7f81528a"
+    },
+    {
+      "frame": 245,
+      "time": 12.25,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "6fd75dd16f3ffac1c615455c449d07d67d26b714d388ef1bb3835421287a39c6"
+    },
+    {
+      "frame": 246,
+      "time": 12.3,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "89eb9ca8615daec8f2c881719b131b30cdcc2251e5e454781d1a0367925937cd"
+    },
+    {
+      "frame": 247,
+      "time": 12.35,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "a97d10583b0241f26dc440ac515480bd334fc2170c03adb92d8e7981a3d1e03e"
+    },
+    {
+      "frame": 248,
+      "time": 12.4,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "09be72466ed40baa962a452dee2ca85bde4d2cd19978a65ab1f5570413a65a74"
+    },
+    {
+      "frame": 249,
+      "time": 12.45,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "166f65e9cf7c9d5c94155c311459400faea4184f6bebea618e21617f648cce7c"
+    },
+    {
+      "frame": 250,
+      "time": 12.5,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "7bc17856e31c0256e8a1f679a1203749d1b080bd6d4919868014bf1913dfca6e"
+    },
+    {
+      "frame": 251,
+      "time": 12.55,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "cbc133f68e879b452d3745bfd66cb45d795301bd68968f714dd4f7e68d2bde41"
+    },
+    {
+      "frame": 252,
+      "time": 12.6,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "4e6ea85c52d172e508d2f52865b4a195a569c5f17e9aecf837485c766f1252d4"
+    },
+    {
+      "frame": 253,
+      "time": 12.65,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "259c0ce1d5dffda7848ffd0574a4adac3043fb1357c69bd1fde951cd3ac21cf3"
+    },
+    {
+      "frame": 254,
+      "time": 12.7,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "0945904f4d42314f013df96417b1c29b381e1d0c8802b41d7696e6796d449c06"
+    },
+    {
+      "frame": 255,
+      "time": 12.75,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "6355f78f4215e51d95fbf96076efe1e0093b3194f8aabd689d53e42f6b6c1394"
+    },
+    {
+      "frame": 256,
+      "time": 12.8,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "5f0e06dac0d8afcf2fe686118fccaf218a336fc5b42ae815efc2542bf72ff02f"
+    },
+    {
+      "frame": 257,
+      "time": 12.85,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "ba718f13dac6b602607be11c72f66c0360aae80a5fd2b892657e779f70ce3548"
+    },
+    {
+      "frame": 258,
+      "time": 12.9,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "f3b96ef311e4635e8a939914e315986357466927017ce9b4a146875b60949a8c"
+    },
+    {
+      "frame": 259,
+      "time": 12.95,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "0b4428e8b70b5e7e98c82634fff9f39faec14c12fcc5dfe84623fb92ca98d6d5"
+    },
+    {
+      "frame": 260,
+      "time": 13,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "a0d453cfb92214575febe8414a03b69705409071ff11160bd404ddf503191749"
+    },
+    {
+      "frame": 261,
+      "time": 13.05,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "a05f53353e446a5c1ed80c7e1e0f4c44537f86ef98993de7179793ef66666508"
+    },
+    {
+      "frame": 262,
+      "time": 13.1,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "3353d32b9fb2cbae9329313ba8df9dbf102c40b3d873b024e3e44201f8cb68df"
+    },
+    {
+      "frame": 263,
+      "time": 13.15,
+      "bundle": 2,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "0ef114581bf0e24ac07600a64c3b6a1011f98f7f82fbf5055d050d1736df2af0"
+    },
+    {
+      "frame": 264,
+      "time": 13.2,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "01ad51d41e67ca2024e41cdf2747e003946e0f17ccfef768ccf3e8efab0d4bc5"
+    },
+    {
+      "frame": 265,
+      "time": 13.25,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "49a70928de8f416fcc10d2ac5984bfa6499161732e6933db854a74aebb20006d"
+    },
+    {
+      "frame": 266,
+      "time": 13.3,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "ef0d4338dab7cfabd0220dc3526a25b76e4809a39ad0c073403ec673f7235427"
+    },
+    {
+      "frame": 267,
+      "time": 13.35,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "412a21321cedab01325b2ad59738cbb4110847a36112d769acfb5dbe3ea06b37"
+    },
+    {
+      "frame": 268,
+      "time": 13.4,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "fa8020c3626a4c6965923fc0b527a3b517d63d3cffaa48ca8d0dac1315cd1293"
+    },
+    {
+      "frame": 269,
+      "time": 13.45,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "b7315601682cbb008250cf3fc821fa2734f805b2c43894204ae8e29d74ed4df0"
+    },
+    {
+      "frame": 270,
+      "time": 13.5,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "a3c068a1b307de06a0e1ce7ef7670ae340ee8acf76516e216a9a1585319811ca"
+    },
+    {
+      "frame": 271,
+      "time": 13.55,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "a3c7e65bf1299687df3f86e5c236e1cbd39e8211f03672d382285c9643db9561"
+    },
+    {
+      "frame": 272,
+      "time": 13.6,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "586b6001d2556e5ea1e871550721807de25abd1b62917177d143277057225a6c"
+    },
+    {
+      "frame": 273,
+      "time": 13.65,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "7d046d9f3e7949d9ff572cfff6979d92ecd5c9a180bcf16336b6d85439262dc4"
+    },
+    {
+      "frame": 274,
+      "time": 13.7,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "e0b04a315c26207f5020506b4d561882e82737394d85773c57cba2b0fbc783b7"
+    },
+    {
+      "frame": 275,
+      "time": 13.75,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "40eb7e8d372e525a49d65062a421a77f0f9ce598532be010271a94dbbee43beb"
+    },
+    {
+      "frame": 276,
+      "time": 13.8,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "8b3045662e50d8c9309cae242beff917203022a586977d96e34e699f825c1fab"
+    },
+    {
+      "frame": 277,
+      "time": 13.85,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "fadf4f4e17f32c8e46984484e97d3ea1ba136ee4ffcc8a96bc37b959a0a2f431"
+    },
+    {
+      "frame": 278,
+      "time": 13.9,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "f48adf104b4682ba8e1a5a442ea8c85c1a321feb1db75d95e732118f8a23dccc"
+    },
+    {
+      "frame": 279,
+      "time": 13.95,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "271c212879dab7c8422d72d851ee60f7ae2e6a879adab7f5ded1f4313b112c33"
+    },
+    {
+      "frame": 280,
+      "time": 14,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "1b591b60a9ab79d90f3f17098916535264b7eb5b50ae9e4d874793f115efbb37"
+    },
+    {
+      "frame": 281,
+      "time": 14.05,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "e480f1da4362f6800656517f92c9f0153c43d88f345283492a184f97eb7ca4dc"
+    },
+    {
+      "frame": 282,
+      "time": 14.1,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "eba3e3a9c2a49f6c26046f1843b38062f8325482cad7eb72af09370970ec1123"
+    },
+    {
+      "frame": 283,
+      "time": 14.15,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "8867db3b10b292c2ed102c05c31d03330b38fdd24e98f4f1d0cda36f0480ba23"
+    },
+    {
+      "frame": 284,
+      "time": 14.2,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "fcda12166b36bea3fc0292ee16ce898d4d52db62d384810738827aa3b9bab5aa"
+    },
+    {
+      "frame": 285,
+      "time": 14.25,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "7c12975e0543e0011139957499d03e8a3fa5fe0eea7c1d22bbb76392cbf7aa95"
+    },
+    {
+      "frame": 286,
+      "time": 14.3,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "4f88fa242ed3efc3360f2cdb7abf1a68a335362f8c5ce4d27b18fa8c98758fb7"
+    },
+    {
+      "frame": 287,
+      "time": 14.35,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "58cd3dc773aa0153fb3c394e0dc7ef01ed98c6490b62eb0f1a828cc738297e48"
+    },
+    {
+      "frame": 288,
+      "time": 14.4,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "7b329af82e879ae05c5016c03be56a9ce1fea1458cf5e149e679497ce296abfe"
+    },
+    {
+      "frame": 289,
+      "time": 14.45,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "a593cdbffc5d5c2815f718ef57a7ecb6f996970ef508c0b85b6bda0d042b8f5a"
+    },
+    {
+      "frame": 290,
+      "time": 14.5,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "fd86edb6742f399f0d0ad87237489e8c50f2248c8558c4c196d5ee47d9acc7dd"
+    },
+    {
+      "frame": 291,
+      "time": 14.55,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "f2520d3d2d3a6a834406f4eda1d682d74f3692f2fb4acf29c0fa665c36609375"
+    },
+    {
+      "frame": 292,
+      "time": 14.6,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "47e102394e3d286947139ee17c07c98c340653e76253013253b33a78768219bd"
+    },
+    {
+      "frame": 293,
+      "time": 14.65,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "79f5f5cbc9b220bd2fb4293bb18699d6f67303bfda3a03bb1dfa78704294df5b"
+    },
+    {
+      "frame": 294,
+      "time": 14.7,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "efd0c571145e6339b39c7fa748fe70479bcf321714148f702506467f39cd2be8"
+    },
+    {
+      "frame": 295,
+      "time": 14.75,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "4ac5d89ea5ff16a0880f9854a1ea1be4ed17d2fa817d4cd74ef239b4c3351be2"
+    },
+    {
+      "frame": 296,
+      "time": 14.8,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "80c293a12db1a60495b9a48dc3fd67df88530e03c7a336aa416fc788f7f42828"
+    },
+    {
+      "frame": 297,
+      "time": 14.85,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "a0fa5ba4925bfa43234f3c1d245ae6131d06b64d622ba1791ab221b1a4829786"
+    },
+    {
+      "frame": 298,
+      "time": 14.9,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "9b58c3163ed4c286e907b5b4334de2a9805b777b0f144940ae81acdcfb2222d1"
+    },
+    {
+      "frame": 299,
+      "time": 14.95,
+      "bundle": 2,
+      "timing": 4,
+      "phase": "전투진행",
+      "sha256": "5bacf1e1865a7d9dc07c7caa04a84d94b7ad3411d13de1afb1ed3940392baccb"
+    },
+    {
+      "frame": 300,
+      "time": 15,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "67c9bdf428c08f3979c4ee27a17bcfa0609575486f9256026ad1da1234dcf024"
+    },
+    {
+      "frame": 301,
+      "time": 15.05,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "4370ab9262f8a4579dfcb232a5fcd82eb17347fe11a90cab90e8d837dfacd56d"
+    },
+    {
+      "frame": 302,
+      "time": 15.1,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "99ee58c6b8bd8dba3e2315d7bd60b403483363758d3e2ff932a09ad49d191b14"
+    },
+    {
+      "frame": 303,
+      "time": 15.15,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "ee5331b447b8257fae3cd065db9a4140abbf61c3aea81e68418c3e547978dfd3"
+    },
+    {
+      "frame": 304,
+      "time": 15.2,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "1158918499835a671aff5b6bfaf6c8d4c7755282c6992b32ce0a4a932fb470d5"
+    },
+    {
+      "frame": 305,
+      "time": 15.25,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "3e72bef813cf156020a1689a0a9187f852c19b4f6b0f55f62e825251eac6c247"
+    },
+    {
+      "frame": 306,
+      "time": 15.3,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "f6947344ef64f4f2ea41b386883087a6212629141e3838edaf6dd3772026f18b"
+    },
+    {
+      "frame": 307,
+      "time": 15.35,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "7b8c891fbaf63e2fe606120ac6c6fdf12f647d00d81ff1b4a92dae5230d893a1"
+    },
+    {
+      "frame": 308,
+      "time": 15.4,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "2c919963518d9a54f5a5dfb3c14335e7da4e2a2a07881ea9859a4b617c3ffa5d"
+    },
+    {
+      "frame": 309,
+      "time": 15.45,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "9ce6a5aa537433aca3c335e5cfdaf9b51cd4d75513d4d923ae14e9cbe9418af1"
+    },
+    {
+      "frame": 310,
+      "time": 15.5,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "75a34ab75079469215073a7caf656f8efaaf08716bf47503639110a8f9cf4967"
+    },
+    {
+      "frame": 311,
+      "time": 15.55,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "58514b4634e8bb19187c170c6e787b0d346e19a1e9d0cf53691728129b9b0d47"
+    },
+    {
+      "frame": 312,
+      "time": 15.6,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "8c262262cbf1e4bf59f137883c6bae83d10942af30d9de9caf409217a4bb2bba"
+    },
+    {
+      "frame": 313,
+      "time": 15.65,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "d1413005221e1e18546f6bdbadfe163f03c9c5a194038122a787bd9fba606ded"
+    },
+    {
+      "frame": 314,
+      "time": 15.7,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "c0731590c3553c5213708f77248da80af5820b8ad0df4777ff64744e370934dd"
+    },
+    {
+      "frame": 315,
+      "time": 15.75,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "b14088adedf718b1c202223b9baf2814d7f83ba328995d48ba977310952d79f3"
+    },
+    {
+      "frame": 316,
+      "time": 15.8,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "f68407a8f022a858ed48e39bf0b3ebe2f806b1ed1a7d84b327e5e5c44952f197"
+    },
+    {
+      "frame": 317,
+      "time": 15.85,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "bc81d540d07856f1d25f1e305a83dca4db254c256c207b610c4637a83c1e16c9"
+    },
+    {
+      "frame": 318,
+      "time": 15.9,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "540c1cc8bb0c7d422ff5145359a74ea16766050e774eff4198ff5a3230cfa1d0"
+    },
+    {
+      "frame": 319,
+      "time": 15.95,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "fa7b1398d7b478ecc99ba3389666c1c8e1afcdce51d9a0d22f6b216b601df10e"
+    },
+    {
+      "frame": 320,
+      "time": 16,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "c217168fa956d3354141d89f8c1f2a4f4026544c51503940ac026944c9d27ee9"
+    },
+    {
+      "frame": 321,
+      "time": 16.05,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "3bc1d4d8e65545d641cfd0d947d143e19daa53da9fef3566bb93b005f5d7a31f"
+    },
+    {
+      "frame": 322,
+      "time": 16.1,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "548535a1bae2a2af61d52c872beda0f2a300eabe4a50f665dba14f09a0a7c23d"
+    },
+    {
+      "frame": 323,
+      "time": 16.15,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "d3d8d71848a9366854e4c651035cca55fb3ee696dd7cf4384172ba9a5f009ed7"
+    },
+    {
+      "frame": 324,
+      "time": 16.2,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "7a9c78e6787e119b48999496e21b19912c95f17448420f1b50acb45c0a9a7b84"
+    },
+    {
+      "frame": 325,
+      "time": 16.25,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "55688dbc067a3b98c58efaf9dd33dd8186a8c0c57580031ccad37268ad7de3a3"
+    },
+    {
+      "frame": 326,
+      "time": 16.3,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "7d303b7c5396f6f89c816f4434dfbb2588fd21e00be10952cdbb4fc0a802d22b"
+    },
+    {
+      "frame": 327,
+      "time": 16.35,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "f45cf999bb777d6ad3f90555b7a89e8bd9e66578b7da98754776c27a9899fcb0"
+    },
+    {
+      "frame": 328,
+      "time": 16.4,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "6aa7ba21d5fd46d5b7381bae3e8b534e582d2fa9c2dd7250538b04ed9f0151e9"
+    },
+    {
+      "frame": 329,
+      "time": 16.45,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "aefdcc037fd5eb6291e2609097b55913d59abbee465db52533182dcc3ee8b703"
+    },
+    {
+      "frame": 330,
+      "time": 16.5,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "5ef48a28bc018f1c4b745d80d4acc0618776db8bcf788c8e0abd8d19714c7adc"
+    },
+    {
+      "frame": 331,
+      "time": 16.55,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "b0fe14cb9398c090d141e7b1e6b5de062c2b16eeb09c29dc7f91f4cea7a5770a"
+    },
+    {
+      "frame": 332,
+      "time": 16.6,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "bbf5257047e8be72bfe1aca121686079be5baf962673aa13dfc100e6f20e5e9e"
+    },
+    {
+      "frame": 333,
+      "time": 16.65,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "4f66c1cf85895c64062f717b8fe4f039afc317eb9e10e884c0191a006cfc126c"
+    },
+    {
+      "frame": 334,
+      "time": 16.7,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "6a48a20ce5eb1b376dcd444f383b60d21c57b68eb5b2c454d8f365a9bf252a13"
+    },
+    {
+      "frame": 335,
+      "time": 16.75,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "bd6b02d99ec636433a97385bf7ac222b01693d45238fb5bbe24b2e4e76ee5a75"
+    },
+    {
+      "frame": 336,
+      "time": 16.8,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "43c70582dc334891ebc5f2b553f5057831bc276d3c2a4a70bef3e1673756e5ca"
+    },
+    {
+      "frame": 337,
+      "time": 16.85,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "8de0f95117dbfcab890a206817e23b39b76ec510761f62d579377b7b462f5583"
+    },
+    {
+      "frame": 338,
+      "time": 16.9,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "1cda9dc63c555d9d2c0094e74afe2a599452ee4499bdff423e352d28da35bb38"
+    },
+    {
+      "frame": 339,
+      "time": 16.95,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "2e64bb2c3a9c08e8e51d8ee4a4adee4d4d339bb266b582d2cedb41736f8218d6"
+    },
+    {
+      "frame": 340,
+      "time": 17,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "5e79b17426ce63bce18b3c02b00afbc914441b37f9f8ad10487cb21691b04ae7"
+    },
+    {
+      "frame": 341,
+      "time": 17.05,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "d758a1f96eb90958ed5c44f2526f62eb06c9ce4097e4e195c034c1024ac3a841"
+    },
+    {
+      "frame": 342,
+      "time": 17.1,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "576750358d1b49e62be7fa959faa11f50667e0c9f371c04eb54047b7a406f9ff"
+    },
+    {
+      "frame": 343,
+      "time": 17.15,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "b41e1907785762f4e552407ab9148bb38f94212f15f28fc492f06858209183ed"
+    },
+    {
+      "frame": 344,
+      "time": 17.2,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "021893fdfbfebd06b5e194f25683b324dc7e47b050dfa6831d9fe02d378c7152"
+    },
+    {
+      "frame": 345,
+      "time": 17.25,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "d73d60d71f1d35a93b7d69dc6d25f06abe7cf8e0fe0f313d9d6df4c881b434cb"
+    },
+    {
+      "frame": 346,
+      "time": 17.3,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "99677f733d3103c37f1af27246f742643e3e83b10fc5b67ca33bce50c1457769"
+    },
+    {
+      "frame": 347,
+      "time": 17.35,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "2f72b4bd0cd778cf08bdc7d199764fd3833b1d20b143c39a0340227cd1326c24"
+    },
+    {
+      "frame": 348,
+      "time": 17.4,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "b1ccb048cc1a8110c5c4312f2938497b392bb5634e40bea0beb540d3a2fca665"
+    },
+    {
+      "frame": 349,
+      "time": 17.45,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "eb580ec4db99bb4b2524acfad8fd3adba54d94561c2b650ad4dc2bc36a1adc84"
+    },
+    {
+      "frame": 350,
+      "time": 17.5,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "95c9ca9ba733a2930ebd0474724840c06e97b729e3f721ec26b81b46d7f08dc0"
+    },
+    {
+      "frame": 351,
+      "time": 17.55,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "cf68df1e94fca6fe028f42f8f96b31db20f1931c010d22f104f9adb0cd0232ea"
+    },
+    {
+      "frame": 352,
+      "time": 17.6,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "4e6e5d42c45cb0f38ac127c4065dec99f42a83112fd5075b833c1f22d2b6ef6c"
+    },
+    {
+      "frame": 353,
+      "time": 17.65,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "57afa4ee9ef39a6557f01ecd02b74a5f1ddc3c42eee293d01d2b9b766ae5ddea"
+    },
+    {
+      "frame": 354,
+      "time": 17.7,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "7e9b20c6fd87d97c56f49e359981a2f194ecf4ceb072e96025e1d9f2be16a539"
+    },
+    {
+      "frame": 355,
+      "time": 17.75,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "f1be2102e29e6772060bec0917bb99f4c67f0770b60cd68f419a8e7caf7c03c1"
+    },
+    {
+      "frame": 356,
+      "time": 17.8,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "85d657856e50655ef43e0c8f4e2ebd9869135d33acd6852e9444590d4d260a32"
+    },
+    {
+      "frame": 357,
+      "time": 17.85,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "a2142bac137ab0b70f63dda3d6afe32cff5da95cda2f1d2343d3a1232211b339"
+    },
+    {
+      "frame": 358,
+      "time": 17.9,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "ea5b6b07c087441dc0561f58609e98c936c1a584d9a9565ddb1569bee3c52f59"
+    },
+    {
+      "frame": 359,
+      "time": 17.95,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "6e807fe0a86196521567c8f63671fd53e948341f6110d12a55ea9a765bebfcb0"
+    },
+    {
+      "frame": 360,
+      "time": 18,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "a16ca2b61f0d53772e4048f7972c5b237da523904a45012eb98359c590f135cd"
+    },
+    {
+      "frame": 361,
+      "time": 18.05,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "5d63c7d6edd4df66428b47d2297b933ad6b7c5cbacd897cbc978994a180b7a96"
+    },
+    {
+      "frame": 362,
+      "time": 18.1,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "5a91e0b823de05f52aeed29bf6062da8d2d6486446041e1a648d5daf6b2b10c2"
+    },
+    {
+      "frame": 363,
+      "time": 18.15,
+      "bundle": 2,
+      "timing": 5,
+      "phase": "전투진행",
+      "sha256": "8f9b9d3d0c354ef61301de0f6a9dc261d791918165ec1a726c7ee5f47ce07c13"
+    },
+    {
+      "frame": 364,
+      "time": 18.2,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "c3101732d406572a32bcd5fa66b8944e777df8618a926cc3f70aec01f59a84cb"
+    },
+    {
+      "frame": 365,
+      "time": 18.25,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "dc7dc29a5d2e921f7926c400987ff6952a1f70f0481eeced6358e80281591fcf"
+    },
+    {
+      "frame": 366,
+      "time": 18.3,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "9fc2de4f966dfb3aec6c0d296d0ef2e5244a1899ba1388f8d0d4bb1a55d4f009"
+    },
+    {
+      "frame": 367,
+      "time": 18.35,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "a46fe6aba3a6a682efcf01d32d73518fd74c5f717ec82fc47bf56198c516d99a"
+    },
+    {
+      "frame": 368,
+      "time": 18.4,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "3eba29d26fdaa066afa07cb6914a576eb41527e3a408de333b4019d8aa761b6d"
+    },
+    {
+      "frame": 369,
+      "time": 18.45,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "51fcf2c70b34f194bf91a7f1834203bdddfe941cda42c33f9477a6baacf48545"
+    },
+    {
+      "frame": 370,
+      "time": 18.5,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "bf5e96c7d65d471976a0b4ae698e0725ec90a3074ab9cd4cd86d58c568d4dd3e"
+    },
+    {
+      "frame": 371,
+      "time": 18.55,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "635ac35ed72bcc6135ba7897ceb20a484b1d65542d38105e530d9c660f0cde5b"
+    },
+    {
+      "frame": 372,
+      "time": 18.6,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "eb37a82b4e1a944cbae16eda58270e4a51ae1c2987473711e4a3da03e2d609dd"
+    },
+    {
+      "frame": 373,
+      "time": 18.65,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "a810f8604e246ce1a310bc6db2e49b7166120aef34ee412357e3bd59f12b615b"
+    },
+    {
+      "frame": 374,
+      "time": 18.7,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "c056cc09fc1ea5d7584a08f47c2ba54886d03c114dedd9e2a4baf1a5a5a1c25e"
+    },
+    {
+      "frame": 375,
+      "time": 18.75,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "c81341f388e34d3ff5580dc9eb21179bab8a650cd2307eb6d52d148307bb2170"
+    },
+    {
+      "frame": 376,
+      "time": 18.8,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "1b8ca606c54aa082d255e4017ab6983dd92bf475161136c2051240a2f8157be3"
+    },
+    {
+      "frame": 377,
+      "time": 18.85,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "83972509d851add51ac56314b0f9fb9d486fc798f48af5af61fb013cb1688d05"
+    },
+    {
+      "frame": 378,
+      "time": 18.9,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "01cc5619b4fc8871b7fee35f07d293ee545845d1ebfffe62c2369bc532be7414"
+    },
+    {
+      "frame": 379,
+      "time": 18.95,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "29a6e61ba3b2b4a7154ddcf63ac9ae6365d21d4e569b6aa037665f6bac311b26"
+    },
+    {
+      "frame": 380,
+      "time": 19,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "cfac362bd673a280ca07b06e5a1039288a7d66cc53c350e9c381afbc27b0da31"
+    },
+    {
+      "frame": 381,
+      "time": 19.05,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "ce1f4124784d368186cc08664efe97f60e23849cb8ada985d27241181fbb880e"
+    },
+    {
+      "frame": 382,
+      "time": 19.1,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "586c108fe8fc354d452a2449d72027fd2f5fa380450dd43bac8ad41f978c5da9"
+    },
+    {
+      "frame": 383,
+      "time": 19.15,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "3789c6dc84447a31711db59e6659af8f841e72e3318649cf5df747a9bf1f4061"
+    },
+    {
+      "frame": 384,
+      "time": 19.2,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "fda97a31c0884f453d92b45ce4c72c5cfb460758f2a18bd9968f0f970198cd6b"
+    },
+    {
+      "frame": 385,
+      "time": 19.25,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "3d0ab852dc120994fb94f1c8dbc3a180c46e37d55a379a34bd0fa2cdb2333613"
+    },
+    {
+      "frame": 386,
+      "time": 19.3,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "3cf09fdc55fc5a5190baa574f0165468338fb9f93b6619f7306bf464a2af59fe"
+    },
+    {
+      "frame": 387,
+      "time": 19.35,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "11e3f8d79f34673fdccf2713f903ab286b1932e9ca92addc72b13b57e20aff44"
+    },
+    {
+      "frame": 388,
+      "time": 19.4,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "6d1b4593e64d925d0b0a88152c84427eb4dde0f89dc1570b22937df6d63329f3"
+    },
+    {
+      "frame": 389,
+      "time": 19.45,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "1435124ee62aad477c465e57dace002f548cada192745161eb0a79a9c1881da4"
+    },
+    {
+      "frame": 390,
+      "time": 19.5,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "7e9e0207e376bdb4f9c2b67ac60c7e1957685dc1c9d50e73b9c370537df59bff"
+    },
+    {
+      "frame": 391,
+      "time": 19.55,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "80e3f30035c5b6b6ab13c02bda599dfb5eabc3b151dd780c1c49ea72abe618ee"
+    },
+    {
+      "frame": 392,
+      "time": 19.6,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "3ceac3d2a5b9656ed4670c1093d72761f5c68228a02cef75be64cd64f25b32e1"
+    },
+    {
+      "frame": 393,
+      "time": 19.65,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "613af389133a73c3241430d65d9296a91c4a8617f0fe6469fcf2567818ad1474"
+    },
+    {
+      "frame": 394,
+      "time": 19.7,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "42f354ddf0f701d3557cdaf92953d4be83fa3ebe507d2730cbf982fc9f4eb898"
+    },
+    {
+      "frame": 395,
+      "time": 19.75,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "8546be409bc3a8996589186707f50602da09209380e366e70f8aa3067335abd7"
+    },
+    {
+      "frame": 396,
+      "time": 19.8,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "a22f97b0f5ce593bbb1ecdea56e5bc01d7110b4f077bab613783f8124c8f5838"
+    },
+    {
+      "frame": 397,
+      "time": 19.85,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "254538da2cce197a838329a28f278203b16b2aab310c289a1953163bbb595364"
+    },
+    {
+      "frame": 398,
+      "time": 19.9,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "0cee31a8118a00498dffcb66dc53365c34ab082cedc2668166810a0b3da33ac3"
+    },
+    {
+      "frame": 399,
+      "time": 19.95,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "ce59fbde78289da432b1c519a1b4f0b8254630865c1f29e4183d95f2d42c8d37"
+    },
+    {
+      "frame": 400,
+      "time": 20,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "0566a918a1eeba3d73a01f1a3128cb7f7223e8a390ba885a405b717c127049ec"
+    },
+    {
+      "frame": 401,
+      "time": 20.05,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "0a1deb3842b50fc43a17ebb4328354d12e17d5476921704dca25e661d9465811"
+    },
+    {
+      "frame": 402,
+      "time": 20.1,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "cd3f29e36a3027b6fc6eeb7b04df33967c34266416afaf32da70a792b635759b"
+    },
+    {
+      "frame": 403,
+      "time": 20.15,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "2dfcfcb2fe9f39576c8e1f15c6fcbf417b93123f2f45f94be99c6ef2a7f83b8f"
+    },
+    {
+      "frame": 404,
+      "time": 20.2,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "7c09e46d241933fa3f2a3213c719989335a7de2770087b4a155868f887d37476"
+    },
+    {
+      "frame": 405,
+      "time": 20.25,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "11c577e8b8d7e6ed45ffdb69acf19cb22cc2c4be397e3827489b3f22c87e3529"
+    },
+    {
+      "frame": 406,
+      "time": 20.3,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "c4d21ec395f6bd465e86830b38bdc01f901774e6e72cefad929de510751a1a9e"
+    },
+    {
+      "frame": 407,
+      "time": 20.35,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "e60cdb0bb61929e595f17f67e8f034b919e9c75743c183ede38c323d0babfc0d"
+    },
+    {
+      "frame": 408,
+      "time": 20.4,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "ece1c60c3e422f065d51ef7ff7e50210de31d6c3889db206de69f5cf1ed391ef"
+    },
+    {
+      "frame": 409,
+      "time": 20.45,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "3f30dfc45a72e854ea58238f4e231c609b94a6910a75d841651d85abb4dd15e8"
+    },
+    {
+      "frame": 410,
+      "time": 20.5,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "04d15df15135a5f46744daaa29c37d20bb8f7317d77e76a352f092b74f5137a3"
+    },
+    {
+      "frame": 411,
+      "time": 20.55,
+      "bundle": 2,
+      "timing": 6,
+      "phase": "전투진행",
+      "sha256": "e37d751f4afd747537eb68073c122e6d508a6b980bca80464deb5e8f2d192e2e"
+    },
+    {
+      "frame": 412,
+      "time": 20.6,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "cf4d30b85dd197fdac4b456a1abf51ad3013fae7e7f001ad36f873f422082a47"
+    },
+    {
+      "frame": 413,
+      "time": 20.65,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "af254e2e6bcb8bb9f7c5ec1106d7901e8a15a37b6ea84ba869cd3df46ed46b2d"
+    },
+    {
+      "frame": 414,
+      "time": 20.7,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "d41a375adc25f18ed9186601f2a65bfd814778b2dabf372c0b1b06bcb2503ca4"
+    },
+    {
+      "frame": 415,
+      "time": 20.75,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "9670d272c653b3f379a0216914e17ad274ed0992e0363e34fe8d734f13b7afea"
+    },
+    {
+      "frame": 416,
+      "time": 20.8,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "9830603c435134c9a5890bc7b0e4a8598721757050b7e419856e2b377cded59a"
+    },
+    {
+      "frame": 417,
+      "time": 20.85,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "f0a81e1a5e0420ea0f02dd5497f6787732e9797f3bda26c4f9552441be336556"
+    },
+    {
+      "frame": 418,
+      "time": 20.9,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "9cd7dc503bae8101a790f91fa109caccf0208ddf423322f708deb1db2107e049"
+    },
+    {
+      "frame": 419,
+      "time": 20.95,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "2c488b863dde5850708ce4906b5cffe36df078cc67522c9e0ba576265ced5f30"
+    },
+    {
+      "frame": 420,
+      "time": 21,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "bf9f864593b73ed18a56075f774a6919636ae1fe0e303bb428e15f3493e05bcf"
+    },
+    {
+      "frame": 421,
+      "time": 21.05,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "9daeed45f54192997466dec5354b13b9a5537108f5d9cb98cbcde7cd0501330a"
+    },
+    {
+      "frame": 422,
+      "time": 21.1,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "382827540a3265b341996a0d2df01f891def9cb84e5155bf727c7ccf01fa8ef4"
+    },
+    {
+      "frame": 423,
+      "time": 21.15,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "275b3cb82af1d266bfd8a3771b903df9b7ac7514e530b31b4aa670201c35c360"
+    },
+    {
+      "frame": 424,
+      "time": 21.2,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "65744f96c94f8b1389c7bde2528779b2c097c11352ccffa7ad1df99351e634e6"
+    },
+    {
+      "frame": 425,
+      "time": 21.25,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "4df5f6a09efb3ee093914b58c43544e90122dc394e812dad4a310fd6094250bb"
+    },
+    {
+      "frame": 426,
+      "time": 21.3,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "f153d0497db4d6476e4e185b384128d576427fb2340c9dca3b09a84a6127b0bb"
+    },
+    {
+      "frame": 427,
+      "time": 21.35,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "c350b0a859b3d60b0365578d8f579970ba3fdb33f8da19a27b898823948b4c1b"
+    },
+    {
+      "frame": 428,
+      "time": 21.4,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "12bd09e98d2ba89be43132cfe30a849a07143bf4aa4d378bd8c489132257451e"
+    },
+    {
+      "frame": 429,
+      "time": 21.45,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "04037bfa97bf30dc7a2c4d3836dc1b60ed36cf971f8d82f539779d4b4cab0129"
+    },
+    {
+      "frame": 430,
+      "time": 21.5,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "ad78956c4a526c51525b1c89af24cd66f35aeb140bcba8c7f5dbfb26a7f4451c"
+    },
+    {
+      "frame": 431,
+      "time": 21.55,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "97b033b2a5fd636c181aa29d91dde98b34843bd36672be449b4b14f945dd4208"
+    },
+    {
+      "frame": 432,
+      "time": 21.6,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "b114881bfdd60d98fac6d54c356a7479d41c5d81900fa2d7b0c2c8d26f0e0780"
+    },
+    {
+      "frame": 433,
+      "time": 21.65,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "54d36c0130df0aeaf4b6ea308fb117f11f0bf5a79b838c8d96d5580eda6f96a1"
+    },
+    {
+      "frame": 434,
+      "time": 21.7,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "b2ed881fb452a12af2402650343b5970b65f8c5b03f87feb9141bf0269bec762"
+    },
+    {
+      "frame": 435,
+      "time": 21.75,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "a0e83a1e70c37497ad2cfec373d7d01043ef432e535eec185b16869298cbbac5"
+    },
+    {
+      "frame": 436,
+      "time": 21.8,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "e6af3296e0a5a1d0ebdfea6c8653a938c97e670214116987432660ffed14b04b"
+    },
+    {
+      "frame": 437,
+      "time": 21.85,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "2e78cd2476dc61469f2dc9d1cf2d387ee4b1aa106b3612a25ccc6db6abf789d0"
+    },
+    {
+      "frame": 438,
+      "time": 21.9,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "5ddca488b7bf0854e7e68875cf8e56403874b7ea1c3a0fbfd3c1e8c5b6ba1576"
+    },
+    {
+      "frame": 439,
+      "time": 21.95,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "e775efba89e08ef76c6fa3d8b2d1667c4d3a351eb07875a59852dc9f6547ad67"
+    },
+    {
+      "frame": 440,
+      "time": 22,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "62bcd0b5921d348023c61fccb50ceb798b60cec33cc7f1e3437afb8316fab49c"
+    },
+    {
+      "frame": 441,
+      "time": 22.05,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "1f5d9f3cc058f1f2208f2eef8bc0d96a7c73ae1b88dedf08d133dcb9fe9859ee"
+    },
+    {
+      "frame": 442,
+      "time": 22.1,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "e90790fdd5add8ddca9851b84f68194c10d49944ef963665d8cc13fe91a044ce"
+    },
+    {
+      "frame": 443,
+      "time": 22.15,
+      "bundle": 2,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "04a79103b5413fdfe40b480ee8fbae28198bfbe9365599d2cdabb5e6dfd357ca"
+    },
+    {
+      "frame": 444,
+      "time": 22.2,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "2b0f214bf03af9bb6b00ac26d1f0d3964a2b9653ed7f19597d0ef5086f91282d"
+    },
+    {
+      "frame": 445,
+      "time": 22.25,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "8c23149c3695d00d14e437c27c26819f3a129dc549128766df3e0c7257b48705"
+    },
+    {
+      "frame": 446,
+      "time": 22.3,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "1c2989d1544330fb7a311366014608736adc63f6d35b0e474db50e53e4e02904"
+    },
+    {
+      "frame": 447,
+      "time": 22.35,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "27c504206bef2ed921280daabe2d6a03ec8cf93d5f5f75ab7f19d59f007d0084"
+    },
+    {
+      "frame": 448,
+      "time": 22.4,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "ade7f1362b09b5101881144d14a3b07f0a843c76d199ad0055cf64aaefbfbbaf"
+    },
+    {
+      "frame": 449,
+      "time": 22.45,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "b134370ee6ab16263a7f3bc99e903bc6d92f1b04e1eebec82abbb0de6b53bf00"
+    },
+    {
+      "frame": 450,
+      "time": 22.5,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "1f3f87281d57343fc9062bc96017faacae3b885eabffcbfa312b2cd258abc5d4"
+    },
+    {
+      "frame": 451,
+      "time": 22.55,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "56d9f5621c11a684337ba081318789fb82421333d598b67e9a7c4190147ea250"
+    },
+    {
+      "frame": 452,
+      "time": 22.6,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "869cefdb58cc13d1313debb558966f3a9dd0b7d722fbb97af88d871bd2bb96c9"
+    },
+    {
+      "frame": 453,
+      "time": 22.65,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "29ebddd18df4bba6b514eee991461102881464573b908f918f6b3c63b1b0cbb2"
+    },
+    {
+      "frame": 454,
+      "time": 22.7,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "528f2c83755ede824f71fa0dcdb9e2ab204f3ac661103643cf50fb7e60414306"
+    },
+    {
+      "frame": 455,
+      "time": 22.75,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "f76f363cf81f683fceff48a30693bc5dd7fbd1b21924f072d407ec30016e389b"
+    },
+    {
+      "frame": 456,
+      "time": 22.8,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "419db280ffb5181c87b463b55d93d8c8c9b62bd35e03a191e0bbedd2bc7359e1"
+    },
+    {
+      "frame": 457,
+      "time": 22.85,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "b3a04d31f473a0c6da2906ce1c9960ac22b0626218a1c493bbfd760ee50a865a"
+    },
+    {
+      "frame": 458,
+      "time": 22.9,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "7bf0c5e6d7a0a099e127027ccd19a6868d286cbe163d15e3d2a65a2c7d505e42"
+    },
+    {
+      "frame": 459,
+      "time": 22.95,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "56f81d10d8ff88103af8e25e6ced58de5c40b106a101a53d59054b0619afc2ae"
+    },
+    {
+      "frame": 460,
+      "time": 23,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "f9779f876005108c050fc0a7f0e69202887422819d4f28554fb23d5c024ae875"
+    },
+    {
+      "frame": 461,
+      "time": 23.05,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "a174f70c4c2405779da87b40700833fae7c35c6a1610807d7439e7fa0c8fea41"
+    },
+    {
+      "frame": 462,
+      "time": 23.1,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "0910dc73b6d3ec2ec52e7ddade32da9f89eab94e34b729f94c3e9d51cb87b6e7"
+    },
+    {
+      "frame": 463,
+      "time": 23.15,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "abc81f09e6a3945ebb1b2e25169d766549aef70de6936b460cae8de72f371e33"
+    },
+    {
+      "frame": 464,
+      "time": 23.2,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "646df6bc2de478f80e583666d0f8c644155754e17afbe4a7b78b38823542c9f4"
+    },
+    {
+      "frame": 465,
+      "time": 23.25,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "e361608d369a232efc69720541725f43fec59ce2a56a7456515287e0a09d8236"
+    },
+    {
+      "frame": 466,
+      "time": 23.3,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "663636183a97d0bf7b4f8a3cf707e83c3c276dca74bf53df00c4de8f38a75fa8"
+    },
+    {
+      "frame": 467,
+      "time": 23.35,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "907efca37eb637994de887dd39e3fe72ac5d35d1f12350aa97198466dccfdc0e"
+    },
+    {
+      "frame": 468,
+      "time": 23.4,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "804342f2a3f1eb9a2849df52eacbff8ff732bd96d0190b2c31a0f625b7d3c35d"
+    },
+    {
+      "frame": 469,
+      "time": 23.45,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "19373352434f43b091a3e4215fa77bb70c17e53f61163d1f4d77823507fc50da"
+    },
+    {
+      "frame": 470,
+      "time": 23.5,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "64964096a51ed14950958cc16bee7c004d82f4d7ad01d3851623a12f78aaec7e"
+    },
+    {
+      "frame": 471,
+      "time": 23.55,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "8eb58182984bcea1c3e08de360a0e69fc61e575751a1a400878c9536d3480c15"
+    },
+    {
+      "frame": 472,
+      "time": 23.6,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "1b451c82f61030effc14bfd373e45f6200cb1669112eed5cc960405c0a21e92c"
+    },
+    {
+      "frame": 473,
+      "time": 23.65,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "c038ba5b8b5d4e9b0fdc77512a24c9d7c897a1496256f77362c6f445ac325e7e"
+    },
+    {
+      "frame": 474,
+      "time": 23.7,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "2c5042eaf1b72c16bc0dfcd2711afeb45ce6cd6df2390d51500d65d8cae32e75"
+    },
+    {
+      "frame": 475,
+      "time": 23.75,
+      "bundle": 2,
+      "timing": null,
+      "phase": "다음 묶음 준비",
+      "sha256": "f60bd7d5eaf1a0c4ca16a0868f695083c799e2ed019c8cf016e86a6b175d5d61"
+    },
+    {
+      "frame": 476,
+      "time": 23.8,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "6a8cc901f8c38a98b727bc571b4652efc16feb9ee15c19459948e341779f3b9b"
+    },
+    {
+      "frame": 477,
+      "time": 23.85,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "7e9a88519e91da1a88744b163da2ea383eac76eee84586b45c3796cbdc9a5e46"
+    },
+    {
+      "frame": 478,
+      "time": 23.9,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "979de5d3391b7ba4b299ee4a1d3cf23ed9a0649ec8f436867d2dff9dfd2eb594"
+    },
+    {
+      "frame": 479,
+      "time": 23.95,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "f125ae41ff1a170c4a09b19ca081217cbda7a5af33fe65c5250568de8be8101a"
+    },
+    {
+      "frame": 480,
+      "time": 24,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "92a31b70205c20b947702b54d0f73a9121559aaebcd09d610cda650fc96171b7"
+    },
+    {
+      "frame": 481,
+      "time": 24.05,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "fa55cb89aa144289a9fbbc155ddb5a1f72be9ccdc08a230ead9320542e43adb0"
+    },
+    {
+      "frame": 482,
+      "time": 24.1,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "640a1f1430abb08e2d4cdb4cb91e83ccf6a4613c5caec6a870f75232bc086a07"
+    },
+    {
+      "frame": 483,
+      "time": 24.15,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "dcab5597d953ca54d66b113f2caa486caeed495c9f4ebe6f184c4ac5333860ac"
+    },
+    {
+      "frame": 484,
+      "time": 24.2,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "0bcc2036dbf33c4d22caa05ef68b2423e079ff69569dc641842b119823b2d704"
+    },
+    {
+      "frame": 485,
+      "time": 24.25,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "0ac575d1d69f874635a678a05317244abfbe12cd3ddf602a331ab432ed6cdd00"
+    },
+    {
+      "frame": 486,
+      "time": 24.3,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "424d9f9e71dd984bafc0af468660a0beaf5937b8e4b72423dfb69995040a3aea"
+    },
+    {
+      "frame": 487,
+      "time": 24.35,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "5a9987f62fcb318252c48266eaf08b159bd599351a2365d11872fa497b0fcd3c"
+    },
+    {
+      "frame": 488,
+      "time": 24.4,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "712910cf3832b36b8523f3a9500c7df74a06ef764920f385c694364cdbdbeeee"
+    },
+    {
+      "frame": 489,
+      "time": 24.45,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "eeb468913b8b0dab97aca6321f4b036248f247159b05419c6cb54d39bf955825"
+    },
+    {
+      "frame": 490,
+      "time": 24.5,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "ba0b59ae64eb42dadd244d5899db89d9dc1cfd9105509781207e9a5575afe2ff"
+    },
+    {
+      "frame": 491,
+      "time": 24.55,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "0aff7fe02d8b0557355517a90550489b24bd37c0eec05dc8659af3b54409cb56"
+    },
+    {
+      "frame": 492,
+      "time": 24.6,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "b9078446ebf9c0b2d33b24aefd8bb79d989922f87e146bd419fa14d293eb1254"
+    },
+    {
+      "frame": 493,
+      "time": 24.65,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "962fe4e17c7243b4875f7fda45c86fa21d6ad961f3031ab777cb8b1ffee2894a"
+    },
+    {
+      "frame": 494,
+      "time": 24.7,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "63270fd0b0e72f1987bbd621b0515e83b6a84430df130e39fbc12266df71c733"
+    },
+    {
+      "frame": 495,
+      "time": 24.75,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "0819047362ced2667cdac75e7fbb6c3b7e94680b486fb63541020856c8999ce8"
+    },
+    {
+      "frame": 496,
+      "time": 24.8,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "14adc328940006344c57ccf53951b9d0409e43566247984352cdc56ddf7ba328"
+    },
+    {
+      "frame": 497,
+      "time": 24.85,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "abb23fc95ca7aac969dda51b4422ae90972b3463e44466d8419a81db79bf1d6d"
+    },
+    {
+      "frame": 498,
+      "time": 24.9,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "edb3e73c97e748bdacda1be2bf1e7330546a8a1aa97b2229c2cec35737ddbc78"
+    },
+    {
+      "frame": 499,
+      "time": 24.95,
+      "bundle": 3,
+      "timing": null,
+      "phase": "전투진행",
+      "sha256": "377c330d551937caa0eb52f631680e893ae305030b7811093688b1f920a7c30c"
+    },
+    {
+      "frame": 500,
+      "time": 25,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "347485bbb60c6d73fd62797a798d8a911beafc3525f3926d15004dffbb8a8f25"
+    },
+    {
+      "frame": 501,
+      "time": 25.05,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "b13762c45f995400a4d1bf4ee9ca15017173295be0a90a23e13627918bf2225a"
+    },
+    {
+      "frame": 502,
+      "time": 25.1,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "40eb96f14a2fb1dbe0524bd678d5662c52848ebf6a4b6b2adad8238fdf2243ea"
+    },
+    {
+      "frame": 503,
+      "time": 25.15,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "b253df7834d1073e1566fc25d29e0f3de6dc07c13312fcd07c4b9eb22455ae67"
+    },
+    {
+      "frame": 504,
+      "time": 25.2,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "15789f725ed7a1b644908ebcf2ad1ef0a6e819f46e044e53b527c4ec40d10f73"
+    },
+    {
+      "frame": 505,
+      "time": 25.25,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "3efe5b7a729d4a0eb207e3c2a90e347c208ba7955461d4deab0761f448d87d95"
+    },
+    {
+      "frame": 506,
+      "time": 25.3,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "a18a8b227629268b25a16e6ceb8b061b29aab2bdb983d47e050c34b21e3f4ebe"
+    },
+    {
+      "frame": 507,
+      "time": 25.35,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "a6316650aa9a8202985003db4b6512c8d5bacab574b9d4489f9965a148a76e42"
+    },
+    {
+      "frame": 508,
+      "time": 25.4,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "5be08eddd5f6da164506d89dab99cebb8912e8e0685e8d2ac5e72c6040c1d58b"
+    },
+    {
+      "frame": 509,
+      "time": 25.45,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "f8387ee85409b1d5cd3146feb95b8350ed1d110358e318b6306ad4aad4452a69"
+    },
+    {
+      "frame": 510,
+      "time": 25.5,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "243e34a8d8ba404462b2e55fcf6ee9ed17b6ea9dc5c8d795127d26e9fc21d6c7"
+    },
+    {
+      "frame": 511,
+      "time": 25.55,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "4a7a631f3a893d38b951d9d68988a1892402d7ff8d8b8cc29f67422929505a0d"
+    },
+    {
+      "frame": 512,
+      "time": 25.6,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "15c0baf47f820b4ead9ed37a6a2972aef994a372826b58c7c4df29c816cbf1be"
+    },
+    {
+      "frame": 513,
+      "time": 25.65,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "a1eb883121868da738af47e2f3334ad6351160f7a86890d8a5c900b09d2f4406"
+    },
+    {
+      "frame": 514,
+      "time": 25.7,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "a0cd636a5f712043aa9d63bed93edf3516eead736aee278d163440c110ebc134"
+    },
+    {
+      "frame": 515,
+      "time": 25.75,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "c536b413c8b64fa0c8329990b12e890f75425295e8cfff132e1d3787a7f6a487"
+    },
+    {
+      "frame": 516,
+      "time": 25.8,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "86ec6ff25270b317e690f268c477afc189e2c284e8ac30fa6fc802c2e29160f9"
+    },
+    {
+      "frame": 517,
+      "time": 25.85,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "fcd3319de361210c8a902a606449c307b0e9fac8abb887d9075f6c0979b2b67a"
+    },
+    {
+      "frame": 518,
+      "time": 25.9,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "22f92fa054c2d9cc154102a22daa0b46059d72f213099eb46397f95a65d0e858"
+    },
+    {
+      "frame": 519,
+      "time": 25.95,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "8a842942f80282541dfc8ad0f5b9237a8cdbff22414fb9ab60a9000ec2bfc660"
+    },
+    {
+      "frame": 520,
+      "time": 26,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "87723c634a2e1e2a80f90d5c7622d5d99b2ee41486e515a40a550b21ba376539"
+    },
+    {
+      "frame": 521,
+      "time": 26.05,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "2452a54ebfb8ed2d1d27079c903bb1b04f0c05fc4f6ca36914e39bc72f0a13d8"
+    },
+    {
+      "frame": 522,
+      "time": 26.1,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "08e2e6c01cf7ae5f1502addba5a67dbaccbb70442e4ca2244bfbc6d26fe0a629"
+    },
+    {
+      "frame": 523,
+      "time": 26.15,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "3ac923ae51617e39dc4347c4961089fbfef9698d3c423c7f55c065a7791b0367"
+    },
+    {
+      "frame": 524,
+      "time": 26.2,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "051e41ba65128630052779eabc24f23dabcbbc15cac2479f62e6d8cd949f1e89"
+    },
+    {
+      "frame": 525,
+      "time": 26.25,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "706785c10470475fd8f2798b93973d111e736c26d565d562a34d149d6ecd7674"
+    },
+    {
+      "frame": 526,
+      "time": 26.3,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "f6647e88fffb9b614312174778bec183cdad35ba79f9d3e9397bcb79bba0846f"
+    },
+    {
+      "frame": 527,
+      "time": 26.35,
+      "bundle": 3,
+      "timing": 7,
+      "phase": "전투진행",
+      "sha256": "fd2b25a08d199d0fb5dfa7db2e82059f3fa3002036ff55eb98c83408b5df909d"
+    },
+    {
+      "frame": 528,
+      "time": 26.4,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "6b77ade27a5ffde707c5055923b0e4cf6d4562eb468ddcc1471e3352549b4234"
+    },
+    {
+      "frame": 529,
+      "time": 26.45,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "99f8f832a7c2aba351ceeef8db0eea36350b0eae20e6a567920e2fcb59f03679"
+    },
+    {
+      "frame": 530,
+      "time": 26.5,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "bcab3bfc0908bcae261ad4469ff2899542524bbab6dd62489127cc3ad0d71a6d"
+    },
+    {
+      "frame": 531,
+      "time": 26.55,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "eb3ab47bf212ebab03649e33056f056c5337e3bac7b752862552c49454c6549b"
+    },
+    {
+      "frame": 532,
+      "time": 26.6,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "39845753e099692b12cde70b59f938466e0a6a768108b51cd476298b1642f73b"
+    },
+    {
+      "frame": 533,
+      "time": 26.65,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "c011b8be2b5dd186844da65afc8ca7ec5627c4ced77b2254d0fc937711a5400e"
+    },
+    {
+      "frame": 534,
+      "time": 26.7,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "0b1d197fda69fce64b58a965c8432b660becd43059ef128ed62242e9f4a3ff82"
+    },
+    {
+      "frame": 535,
+      "time": 26.75,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "2b6926c47d7ff2e079b2491c7a65e9540cb91bae6c308703697a4ca58c42b262"
+    },
+    {
+      "frame": 536,
+      "time": 26.8,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "8702cb8f50f669403196a71bff6a0663089b0687fdd7b76ec95c1650180b0c27"
+    },
+    {
+      "frame": 537,
+      "time": 26.85,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "168a6d81cc167437bf95ef3519d7d4f91fe48b8a67954e84192a75f5d6a7c96c"
+    },
+    {
+      "frame": 538,
+      "time": 26.9,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "d0daf2bbb8277abfe94c66d3106a36bbf7f342294a72e521083e1c79c8d66438"
+    },
+    {
+      "frame": 539,
+      "time": 26.95,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "3f2de8c44fe5433b98c522ded503b20b2ad40ff5c9dae8a6ab6f7b4c2a7dd913"
+    },
+    {
+      "frame": 540,
+      "time": 27,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "23c242beee05017c3ced799e175c98ea8161f481f58f42576c303f8931a74fa9"
+    },
+    {
+      "frame": 541,
+      "time": 27.05,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "8833efd4f604f357c40addb126a500c7dee50aa5fd6a70c5deba325255a92109"
+    },
+    {
+      "frame": 542,
+      "time": 27.1,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "2370c72e3683f80827a23868f1816d3c742dd8a15e58499e00876c1668c4990b"
+    },
+    {
+      "frame": 543,
+      "time": 27.15,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "76d2879c72c3efc37922ca659d1ef80a00d46a439af9e1892efbd6810b4c802d"
+    },
+    {
+      "frame": 544,
+      "time": 27.2,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "bc1f155acdc6fcf1971a6fd816fd8efd56a2de4c82c53dc734a6147d9ec8a1d8"
+    },
+    {
+      "frame": 545,
+      "time": 27.25,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "c061227e598ff3ebbcf18701318bf33d1be732dd95fa7d49125de0a4e05ceb22"
+    },
+    {
+      "frame": 546,
+      "time": 27.3,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "af8f286179b95f704ecf3ccd049f051420bc6eba192ba515212cd72885f1673a"
+    },
+    {
+      "frame": 547,
+      "time": 27.35,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "b76614fc23a6b998ff2c9fc18859ef272f80e3ad1f37e0839c73024e0c63c673"
+    },
+    {
+      "frame": 548,
+      "time": 27.4,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "33e56205cef93b831a2e36f76a6ce684f68de324f34acf620cb858d2a39f4015"
+    },
+    {
+      "frame": 549,
+      "time": 27.45,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "f5b11fac5e95aab6fa3ce306ab615e7101edc37304fb861f84cdb12e9832be2e"
+    },
+    {
+      "frame": 550,
+      "time": 27.5,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "00338811e69ba14de33f4ea99e75f92e64de56b1e9bdb847185db8dbfdcd3ef9"
+    },
+    {
+      "frame": 551,
+      "time": 27.55,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "821bba90e0b6b9cc0b63406a0c598fff4fbb3e1807395ef5f5d44fd86c46025e"
+    },
+    {
+      "frame": 552,
+      "time": 27.6,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "059d85b1bfb070ee1a981dd4a8938a1117a3ef3e8bf398c76088ca7d11fe2f14"
+    },
+    {
+      "frame": 553,
+      "time": 27.65,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "35b9b8811b5b50553cb73b03c7a4d3a866538bf0f708c60e2f08fd5dfb873e98"
+    },
+    {
+      "frame": 554,
+      "time": 27.7,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "834f7d959e6d30c8330d8a1e2d28d759415b92d44ded091f98ae69092282c8ac"
+    },
+    {
+      "frame": 555,
+      "time": 27.75,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "9f74c35474cc894221dc9f78abb65d7fa6c0f88d11c1d0b8710620ce62ed675d"
+    },
+    {
+      "frame": 556,
+      "time": 27.8,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "eefa0a9183dfbc5951518a4f53b916be180e7a29367cbfc22ea756702478962f"
+    },
+    {
+      "frame": 557,
+      "time": 27.85,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "a1071d82f438bf2787b64bad8104984299aa8fae940007b7b0a8455d96eaeed6"
+    },
+    {
+      "frame": 558,
+      "time": 27.9,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "a601b132a2ee8bc01bc7a2431af110b71b99bbc0b6e6a41a18b2fbe3bd122e01"
+    },
+    {
+      "frame": 559,
+      "time": 27.95,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "2d9e07160fad16ed85d062fb6899e25395fe10bfa85d6be48fe994683ef0c16f"
+    },
+    {
+      "frame": 560,
+      "time": 28,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "0675294cf141cde1b86a1adf1a4933f99327fc5d84e962c576a0ecc0884c5b87"
+    },
+    {
+      "frame": 561,
+      "time": 28.05,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "406e3f77e07f4a373628384afe21865445e1985df3fd4534500c6f833b6fee17"
+    },
+    {
+      "frame": 562,
+      "time": 28.1,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "4c1c20eeface659b8a5d6ad36d1094c0527a623cf03ffbb35760ed8a6a3e3a47"
+    },
+    {
+      "frame": 563,
+      "time": 28.15,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "2bfb3786a6e3750decb1ac076eb392ca5d28253061c34b23c01dfcc92d74b778"
+    },
+    {
+      "frame": 564,
+      "time": 28.2,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "dbe884cb06b6cb3ffad1a5a24ee675b809dd809757b5cf008bd653ae896a0c55"
+    },
+    {
+      "frame": 565,
+      "time": 28.25,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "84ab004adc6c41b2811cd1a4f005cb8fb3787fa834d3e3ed9106f2271aa7ef52"
+    },
+    {
+      "frame": 566,
+      "time": 28.3,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "886bb621e9a6e82c6701823ed6037d5347b0f07d0026c59e727bbae81d81c706"
+    },
+    {
+      "frame": 567,
+      "time": 28.35,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "3bdde95bb6eac0afab1b1fde1933c8f85449125882527c16b8351886cfa6b428"
+    },
+    {
+      "frame": 568,
+      "time": 28.4,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "652e2716e2331d9f2089b9d1ea627759a1ecd491e30e4caeb483a56aaf782c69"
+    },
+    {
+      "frame": 569,
+      "time": 28.45,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "37ff4e98d5df7e50b9e09529b9a8cf9b4e15efa6c2888d2727a2ce0eb9607f0b"
+    },
+    {
+      "frame": 570,
+      "time": 28.5,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "115aad9a2c35c5a5b9c71717f8875286a2e533ddde9bd488115e91da9786594b"
+    },
+    {
+      "frame": 571,
+      "time": 28.55,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "e0c2c32c48f965b310dda7c37fd3f5648a92b292df32f06c369bfaa21c46f065"
+    },
+    {
+      "frame": 572,
+      "time": 28.6,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "740b4dbe39ad91aaad2f33a4cb2edac64800adbdb85ed4a8d3408cdc56c2e53a"
+    },
+    {
+      "frame": 573,
+      "time": 28.65,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "6a4b7c639bc09395b77d9b29f12630bbde050feccf6090cadfaf9b209a3c1389"
+    },
+    {
+      "frame": 574,
+      "time": 28.7,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "c62e156df8a03660c26171a36e7abed9b29df9701923ea243ac154dada6f9d54"
+    },
+    {
+      "frame": 575,
+      "time": 28.75,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "4fde9b316b6626a6775320a895676a7663c66b5f8adfc5bd3591eb581b0c1219"
+    },
+    {
+      "frame": 576,
+      "time": 28.8,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "0320f9fc3f8bc67310eb95cc22ae6fc4f65b6a7a86399d914761b887a79309d1"
+    },
+    {
+      "frame": 577,
+      "time": 28.85,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "d754c3e92786afb8667c77b1d99bd811ab2b342ad932cc8403b8b5cf3819ae0e"
+    },
+    {
+      "frame": 578,
+      "time": 28.9,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "87d8c4306d8065f0740629acdbfecba6ef14cfd892b7dbce99b72c203fc219be"
+    },
+    {
+      "frame": 579,
+      "time": 28.95,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "598e201562abe1dfa770f593983fcc4b0bf15fea01102380f6d5874b5e180b89"
+    },
+    {
+      "frame": 580,
+      "time": 29,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "603c37ecfee4001d48719934ab24fb1e365289f4e6a3ea87e5208b60350247e1"
+    },
+    {
+      "frame": 581,
+      "time": 29.05,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "010cd09e65b03466581ec7a324924a9fef67fd33d8ab98cd5ad431b78eee2d68"
+    },
+    {
+      "frame": 582,
+      "time": 29.1,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "1867777915e82841c29a6023ec6911caf05724c542dab04326535add66f51d6f"
+    },
+    {
+      "frame": 583,
+      "time": 29.15,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "6b2e508b94c45ffe7eadac12b5f93edba7cf05c97a889f6a64492cb01cf22775"
+    },
+    {
+      "frame": 584,
+      "time": 29.2,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "a383784cd0a53372da462cfbcaab810ae9d73eaf1512382fb03f7465fa951852"
+    },
+    {
+      "frame": 585,
+      "time": 29.25,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "c64bb5149c2cb82dfe9f2434be31e022935c02e62415153c794bda2cacf5d686"
+    },
+    {
+      "frame": 586,
+      "time": 29.3,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "34bf597b078b557d2f42f930981d4ac9d8b6df522b91ab472ab7726a27a4c9de"
+    },
+    {
+      "frame": 587,
+      "time": 29.35,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "9f446272ebe1516787cb4e6b8b031431057c7d16afb134bee7351837d48eb264"
+    },
+    {
+      "frame": 588,
+      "time": 29.4,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "25380de317066e60203dcb271fbf5224e3580a943b072ec346d73f45f489667f"
+    },
+    {
+      "frame": 589,
+      "time": 29.45,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "9f4098cab34ddf98ebe34c02cf1b463722e6730c56abe34ebbe2c7224cd14361"
+    },
+    {
+      "frame": 590,
+      "time": 29.5,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "55f15b2a685cece70eb2e2c4ac998a39d3107a2adab771841cf513e3975138e0"
+    },
+    {
+      "frame": 591,
+      "time": 29.55,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "c328a4a2d3bdbbf7e997275f0026f1e7de61debc354e7a63523e5c0332c5c841"
+    },
+    {
+      "frame": 592,
+      "time": 29.6,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "2808b713e19aadbdb835a977422acf375f022b29cb9575c16f78527a61935821"
+    },
+    {
+      "frame": 593,
+      "time": 29.65,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "e3f1247c3bac58c2f9c6ae57a5fea1ab4e69b8a58da9a339c55c583f19bbd530"
+    },
+    {
+      "frame": 594,
+      "time": 29.7,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "c9ccd882a0fd4a6b280289785e3d13a65a2250811ceba648dbf21a49859c3917"
+    },
+    {
+      "frame": 595,
+      "time": 29.75,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "90fe6f07ce19e1f58c8e47c190f99a328d2bb109e44c1a011b740b09a0cb450a"
+    },
+    {
+      "frame": 596,
+      "time": 29.8,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "da09cc67679745ca6d9c31ac33d0f5a8f58f8db71076b8d0071a8bd757ff7fd6"
+    },
+    {
+      "frame": 597,
+      "time": 29.85,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "76f5a893664f787b29ffa37434f84352613dc4fe184d116f0d158286296289fb"
+    },
+    {
+      "frame": 598,
+      "time": 29.9,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "dff6eefa20d557122216c606dac4a521704dd977be5f4b19ea011d0d83d3fcbb"
+    },
+    {
+      "frame": 599,
+      "time": 29.95,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "dc2235dc5fbbe063b92f1ccd7ed7c2f8e4317207aa48b86a5cf0a6fc7635b5aa"
+    },
+    {
+      "frame": 600,
+      "time": 30,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "7171ce27a8d1c71004909e15ed52654e87beeb94feeb5b037778cb612f968e8a"
+    },
+    {
+      "frame": 601,
+      "time": 30.05,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "1e2b2bb2ffd38e6b38f87a9b87d916dbde3da4bd154c5cb4dac12482bdef96c0"
+    },
+    {
+      "frame": 602,
+      "time": 30.1,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "a4e074aabfb67a4a4928cce49e3d7cc25f7f837abc47d4f122927677304881e1"
+    },
+    {
+      "frame": 603,
+      "time": 30.15,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "8426571ab7fd0c66e62bd0f83c5e1ccfdc894debdfcb667b3b16e8ef831de0f6"
+    },
+    {
+      "frame": 604,
+      "time": 30.2,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "f47cc8c088ab1ed013553f11e6152505933ed9f43903b1d13a353f5e297059a1"
+    },
+    {
+      "frame": 605,
+      "time": 30.25,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "edb4236c59346cc0b7229113150c5e1f6b8824115102a49db4bdf3cbc3085b6b"
+    },
+    {
+      "frame": 606,
+      "time": 30.3,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "ada41dc651ca4d769fbd623c09069c23f29615ba687641247905b956b38d5078"
+    },
+    {
+      "frame": 607,
+      "time": 30.35,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "d3a6562400d73eddca5b9d60d30bf36352f384df98c779ad924a7d98ee369df1"
+    },
+    {
+      "frame": 608,
+      "time": 30.4,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "f6c116fb221da4504a99a72703bceaa90b0ab292524ede034c5a777bc9b9d51f"
+    },
+    {
+      "frame": 609,
+      "time": 30.45,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "54afdbe02a4427c951fc51d3b5d60a8401b773a3dc726e3f52db1c482a4b1fa2"
+    },
+    {
+      "frame": 610,
+      "time": 30.5,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "756de0a6044de55ce21055d0e07baa1c4c1bcaef53e84d4b65db12ed6045ec24"
+    },
+    {
+      "frame": 611,
+      "time": 30.55,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "ef59d49394d61c34b997b2dd9430da2f342f9997842e114d6484a834b3fc6d4a"
+    },
+    {
+      "frame": 612,
+      "time": 30.6,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "26061be8e5b223184e8f6b52519ea6ca21e6f4de9f4ab0d4e5add7dcba875e39"
+    },
+    {
+      "frame": 613,
+      "time": 30.65,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "5ea10ab12e85ebe5f305a04af8119c3a7a4c4ac13abf0dd20a469bcaef7e07c1"
+    },
+    {
+      "frame": 614,
+      "time": 30.7,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "564a63c6b2edd99efa5f415e63174c74db1c7d3bf073494e326a31b9041d2186"
+    },
+    {
+      "frame": 615,
+      "time": 30.75,
+      "bundle": 3,
+      "timing": 8,
+      "phase": "전투진행",
+      "sha256": "1e5bf6e134f6398b9226e1e5aabc71839a2057941767141fea0533cc6530a797"
+    },
+    {
+      "frame": 616,
+      "time": 30.8,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "570c991b37b9d2097ca2065f7bcc05b9e4554e0b0c89787d6ecaa33c4ed9b2fe"
+    },
+    {
+      "frame": 617,
+      "time": 30.85,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "fbd7352a725f540742b881065bd06107b2487e45b2349eba3728096746423dad"
+    },
+    {
+      "frame": 618,
+      "time": 30.9,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "6ff85f5fcc615f2baf8c124825ec8b44f1eb9b154e8aec16894e0d414fb13406"
+    },
+    {
+      "frame": 619,
+      "time": 30.95,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "d10ec762285e760905375022a95a2db457641f4dde688a7dd11358f49d72e382"
+    },
+    {
+      "frame": 620,
+      "time": 31,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "065117e150a70d499bcc38e9a07b71bffa02796200fd9ae6bf9eb1e711fcaeea"
+    },
+    {
+      "frame": 621,
+      "time": 31.05,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "4816c1c1b60606ff3913f53e717d539db2f83bf9107256a60f0b8979b7aebfad"
+    },
+    {
+      "frame": 622,
+      "time": 31.1,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "8a574ef1331bc5ebd42957d93b5cd617c5eaa9c7af96098421767ce9f8a0a1fd"
+    },
+    {
+      "frame": 623,
+      "time": 31.15,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "ebadcf678217ddb72d419e8b79c90ce9713d28f5e7a9357ddc9e97f9282435b4"
+    },
+    {
+      "frame": 624,
+      "time": 31.2,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "1db7ee3d07149c3a24265d49f96ac921454812111bab92ea359913561811d45c"
+    },
+    {
+      "frame": 625,
+      "time": 31.25,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "68cd8f7a1ddb4f66b675ae0cb724f584b68d70d152dbd6271944b161aed5c576"
+    },
+    {
+      "frame": 626,
+      "time": 31.3,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "85ec1dc4567397504a2db523711c17fa4d7599963fcb82dbada2a47bbca842a1"
+    },
+    {
+      "frame": 627,
+      "time": 31.35,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "a747e9b84b3ac485a60a953700b8caa789d70a1d85a05f91f01e89c346c6a5d7"
+    },
+    {
+      "frame": 628,
+      "time": 31.4,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "1dff4fd5c059d0d564621f1e06e6620a4107fc6baefbfe1598525e024062fa1c"
+    },
+    {
+      "frame": 629,
+      "time": 31.45,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "cd6d63e0d7c82385a3b12b622e6017e86ceb4adbcaf18f49664478af892e1461"
+    },
+    {
+      "frame": 630,
+      "time": 31.5,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "9c23386ad1d218dc9ccb08fd877026db1ece39ca0373bead14ac54432da39a36"
+    },
+    {
+      "frame": 631,
+      "time": 31.55,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "84b00d1cd0be49dd4324e3654f7f1d55cd28b3f6668375804e64b02627998404"
+    },
+    {
+      "frame": 632,
+      "time": 31.6,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "0b698f31cd3be610654876bd512e2a81eea2f4b7b0b7c90711e77d274d015a18"
+    },
+    {
+      "frame": 633,
+      "time": 31.65,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "27358a14cbbbfc48f267ade28c98cb11bb9e8acb80d9ac28741974d3b1908a7e"
+    },
+    {
+      "frame": 634,
+      "time": 31.7,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "b20905ea1251deb17dc9d50a240baab61fa780598376a34676ed51048abd98ff"
+    },
+    {
+      "frame": 635,
+      "time": 31.75,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "3a2352ef5f2e850bfe4f96bfa85d885499c36b9fbbfa82b08806c86a42f43be3"
+    },
+    {
+      "frame": 636,
+      "time": 31.8,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "6d99db9ec70b664db690f62a1a82abda43fbee873f705cc1b900d53a7d8c5693"
+    },
+    {
+      "frame": 637,
+      "time": 31.85,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "253b091dfcaa33a650b0a47a6ff04783c58847be1cc46ebb4f6d17371223f706"
+    },
+    {
+      "frame": 638,
+      "time": 31.9,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "6b022af4ba1543e310de995dfba8aea14fe5c1656e470722a2edb492841634b0"
+    },
+    {
+      "frame": 639,
+      "time": 31.95,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "54e9e932189e6d10681dc8486f7da09d0a0aa1601e0ffc5ab26d464764a600cd"
+    },
+    {
+      "frame": 640,
+      "time": 32,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "97d0071527ac7354cf1dfff78f57bd202425f75d92174a2c8bf155b1ea505a42"
+    },
+    {
+      "frame": 641,
+      "time": 32.05,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "53f884b79e4e5ab5a4ff0642bfefb0fa3f148de024f6bd6b55b5c09f153b2566"
+    },
+    {
+      "frame": 642,
+      "time": 32.1,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "7ca2f70dcafb205d3ac4debb59f2f90b7b54ee88091dc785b26d19d779f0c9e7"
+    },
+    {
+      "frame": 643,
+      "time": 32.15,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "bdeacd15eb999285b81ef86b64c4de6ddd8716710d91ab7f8882af6fd0ed4bb2"
+    },
+    {
+      "frame": 644,
+      "time": 32.2,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "443d2e1ab7c31acd88813f1898c04f1850e35113041c750c97d3f642ce561ecb"
+    },
+    {
+      "frame": 645,
+      "time": 32.25,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "f76eb7566811fc64e4034896563fc4533e2d2cb3ba82d97e9a23792440621af2"
+    },
+    {
+      "frame": 646,
+      "time": 32.3,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "c6fe7e28666f2818e420556ef6ba79c8094285435c2b67a12d9b6fcc6531b793"
+    },
+    {
+      "frame": 647,
+      "time": 32.35,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "d1bb3ed13c4b186e5009cfdae09e88194073acdbdb690c577025a0cf531c0467"
+    },
+    {
+      "frame": 648,
+      "time": 32.4,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "4c1f909871c77a81207bd8e24b3488cd1ce608bb1eb5e054f17052116a3b937a"
+    },
+    {
+      "frame": 649,
+      "time": 32.45,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "d8c514e6d6a874c93204fd51a89248738360f742afe16a8d5fb1f41392ca6124"
+    },
+    {
+      "frame": 650,
+      "time": 32.5,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "bd67a0235f7f2b68cb8bd8ea49a8538d011deb8d6288d5b76d2b8276a9dacfef"
+    },
+    {
+      "frame": 651,
+      "time": 32.55,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "a0d596cfd465928db971987b4dfd9172890404928da188e6f18636463b1e629d"
+    },
+    {
+      "frame": 652,
+      "time": 32.6,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "7238708396ab7690e88c91ebb8e4674291326a071ba36cc26d8b6bd7fee8eee4"
+    },
+    {
+      "frame": 653,
+      "time": 32.65,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "193260af51239f9e4f2875ec329ba33a9fc01545e6386f16dd0a717b5faf79b7"
+    },
+    {
+      "frame": 654,
+      "time": 32.7,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "a8f1dc2d1e7a93e9fb9f8820cc59bd0d5ae46b68e0e5f9a571965280a238357e"
+    },
+    {
+      "frame": 655,
+      "time": 32.75,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "77ecd390db1afbc63949497c0451b013202d783b73388887cf8e4735ef8ce26d"
+    },
+    {
+      "frame": 656,
+      "time": 32.8,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "a76aaf7234385ce91f50e8cd70e9df6b5bd9c1545c1243a04beadb8b762f8552"
+    },
+    {
+      "frame": 657,
+      "time": 32.85,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "ddf6bb104c934933a6235c0e21865010dabf730a98ce026e9784ed7c4cd6d362"
+    },
+    {
+      "frame": 658,
+      "time": 32.9,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "252b2112bcd6bdea84090b594ebd3ff1bb0e35a8a429bc2c00f1156e797283f3"
+    },
+    {
+      "frame": 659,
+      "time": 32.95,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "1868e91529bb7e3dc850ccb45a14dd4c5a4d328e9890e04e85b219556648bef5"
+    },
+    {
+      "frame": 660,
+      "time": 33,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "93a65612e5bdc0cad404d5941912ace6405d4325ea7b895d8477a5f7e0bc7a00"
+    },
+    {
+      "frame": 661,
+      "time": 33.05,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "ff1d2a7eaa5831359782875f83df3c6312e891db38bac197e0d396f686d5b0bb"
+    },
+    {
+      "frame": 662,
+      "time": 33.1,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "c525ce6fd4d1c5f8017d8218a05cadfec388d13292a7d89e3a81a33464832692"
+    },
+    {
+      "frame": 663,
+      "time": 33.15,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "9896201d4ccf6542a792e5ea5c2987ec816a0215c3de3d09a44e55256d80677d"
+    },
+    {
+      "frame": 664,
+      "time": 33.2,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "e4e33fdcd196f883fed268200d80b911afd80622a071d9795306ad8964e57df8"
+    },
+    {
+      "frame": 665,
+      "time": 33.25,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "0ce51ba1292a0cde4c653b794e02dc39a59ef6ebaab1d7cacbf6faf862a317df"
+    },
+    {
+      "frame": 666,
+      "time": 33.3,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "57938f1f28138b3083a30bae8b0a1317a24259725c64bb1a4dedeb4f32e8bc11"
+    },
+    {
+      "frame": 667,
+      "time": 33.35,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "edd203f2f0ff0df2c1594c01273f3c14fd413c377a18dcb61b1cb311eba8808f"
+    },
+    {
+      "frame": 668,
+      "time": 33.4,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "e171aaa08ce91e7fe5b33755a552e316fd4c85816b7b30a8995c36362f04bf85"
+    },
+    {
+      "frame": 669,
+      "time": 33.45,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "47f4256733c92c65d34a94cf420cb196aa91f786c79b73ce4e648ebc3e8d6d7d"
+    },
+    {
+      "frame": 670,
+      "time": 33.5,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "7b4e555fceba34be17cee492a26100e120091223934a71f255a515ab83d98346"
+    },
+    {
+      "frame": 671,
+      "time": 33.55,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "0b59298b607be39c67687afd5ed41489a7fdba8d122a3dfb4ae0cde4e77e0cdd"
+    },
+    {
+      "frame": 672,
+      "time": 33.6,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "2b548ee8d95e6ecce7ffe5680a5f9d20fb59230f472b976fc875bdfdd6435126"
+    },
+    {
+      "frame": 673,
+      "time": 33.65,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "0912ddcfbffd7e6b2ff50424e48b2f0389aace4971ec91c890db70f2425179c0"
+    },
+    {
+      "frame": 674,
+      "time": 33.7,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "a09f8f239b353b5113ba17fc8faaee9b7a1b1c524b0f87c9b85c6a024cce732e"
+    },
+    {
+      "frame": 675,
+      "time": 33.75,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "5a69ae0d4b40a02208766c9ecd37de260ebb477be994db1f1fc4d3144f8ceec1"
+    },
+    {
+      "frame": 676,
+      "time": 33.8,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "90a347ebc61dc40e57d81ff69117995463d931295c4a872b2b5643129ba5f568"
+    },
+    {
+      "frame": 677,
+      "time": 33.85,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "bd5a373c6da115d045ed442c9071abe828eee08f8b236cf634bfef47b620c87a"
+    },
+    {
+      "frame": 678,
+      "time": 33.9,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "7e0f08a412bb35571130abbcf8b0afdb14a8bd4028a1a795f3a0559f4e47f1c1"
+    },
+    {
+      "frame": 679,
+      "time": 33.95,
+      "bundle": 3,
+      "timing": 9,
+      "phase": "전투진행",
+      "sha256": "fb4028869750564e3d83f3057f76cbf14973008a034e00211d638a2479cf04f5"
+    },
+    {
+      "frame": 680,
+      "time": 34,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "d1709c9a2a6b83fec03482856b0b215b4ae4503bef5c1523a8d27ae3f8db89fd"
+    },
+    {
+      "frame": 681,
+      "time": 34.05,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "b4db075f9c298132e4c2a24bf7be3d1d9976c03141d4fe8d6c4e5800f779a0c3"
+    },
+    {
+      "frame": 682,
+      "time": 34.1,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "01d80d438bf8f0102cf639a3ffd4b75abf8a4be0a69ca20deb5a718d281590f1"
+    },
+    {
+      "frame": 683,
+      "time": 34.15,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "a97222cfd878abd8921e97f9dd901db49a0ea2268a0d16f47f9652e61c089713"
+    },
+    {
+      "frame": 684,
+      "time": 34.2,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "71b18608b55ecc3a04254cca95eef20028789ca784f10c30caeec31387cd7500"
+    },
+    {
+      "frame": 685,
+      "time": 34.25,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "4d7e7c5d7e190c2936ab5750da324f8c97128ce49d835b3997dd02a659818a25"
+    },
+    {
+      "frame": 686,
+      "time": 34.3,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "0a898ad4577e3b08c9783b409ba03afe1cdcac6da81c84905d03c252c3cfd1ea"
+    },
+    {
+      "frame": 687,
+      "time": 34.35,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "b75b80afc6a446708110dd0f22f0806010a554866e1b9c5eb9d9f381271e3b36"
+    },
+    {
+      "frame": 688,
+      "time": 34.4,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "f5d2dc3db8e5238047ae591aea231cf9328416135f65075e77e27ce43a835931"
+    },
+    {
+      "frame": 689,
+      "time": 34.45,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "d70db35ccff3a20bd110fb964a0697d0e19ad062b119510b8cb697665d3e177e"
+    },
+    {
+      "frame": 690,
+      "time": 34.5,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "044e3c0d2c4ecaab1dde044770c6e1fe70750f352e1b88ec4b9b3a10f6200d29"
+    },
+    {
+      "frame": 691,
+      "time": 34.55,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "62611fc9ed1213fcea362c6959bde79c1b5e3d6028d7667941302f9b507a9dec"
+    },
+    {
+      "frame": 692,
+      "time": 34.6,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "bf34b290d44946e3d10e7f542465cfe8ee744201b98648b5a1bca1c57bd0d29e"
+    },
+    {
+      "frame": 693,
+      "time": 34.65,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "7456da9f523448fb7339c437424c4126ba258ab1fdbb51beed706382bdad9567"
+    },
+    {
+      "frame": 694,
+      "time": 34.7,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "16d25b3cb006974d2a2264407f0828a1b62b052c6d048237558d5abd73295781"
+    },
+    {
+      "frame": 695,
+      "time": 34.75,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "571145cfdeb50da68fe8c85c6826c41106661e9fcf1aa7c07ef303c45143ebb9"
+    },
+    {
+      "frame": 696,
+      "time": 34.8,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "9f6efb5ee35cc311f8bc8d3f81e39c86724b0bc2b0c9a6f2a862b6fe35da1e91"
+    },
+    {
+      "frame": 697,
+      "time": 34.85,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "6313dac4ca1e6c124e9be4063a580958da4072a28c074169d1cba309511271d8"
+    },
+    {
+      "frame": 698,
+      "time": 34.9,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "279fbec817c0a3e98a2255007fba7a7d095b348e42a2c3a5800e64bd4bb7c56d"
+    },
+    {
+      "frame": 699,
+      "time": 34.95,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "359329f80f486ad7b5f9988d48eb5851c44ff25f3647ca309bf8355ed02e3d61"
+    },
+    {
+      "frame": 700,
+      "time": 35,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "e41cefa438bff13df7a5a90ef7dd33ff717ef8d0acc44827dc9c2d83bdd22faf"
+    },
+    {
+      "frame": 701,
+      "time": 35.05,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "5f5824fcffe82c4858fc3f3eee0c59e4cb218ea10ddac5cefcbb432a8f6804cd"
+    },
+    {
+      "frame": 702,
+      "time": 35.1,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "526d883975371ad0aad0b76277cb2457a4f75e8843c563e8690f3ab13aabe93c"
+    },
+    {
+      "frame": 703,
+      "time": 35.15,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "9a8e966a04f56742ffa928a71e4d6472c38483a9e497bd13e808970eeab99cfb"
+    },
+    {
+      "frame": 704,
+      "time": 35.2,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "9689aefe36f35bcf4e3afeb782fd58c82216802f3bfc317d015ce098132e964b"
+    },
+    {
+      "frame": 705,
+      "time": 35.25,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "6ee85f553fcaa00ccb326c542a5d5c7e4d87bfc367182d59318b9859ebc7afe5"
+    },
+    {
+      "frame": 706,
+      "time": 35.3,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "7ed3ba0430b271a5ea71f3a1bbb0c5759f0f1dc38ed0985f0659ecf74fad6ba6"
+    },
+    {
+      "frame": 707,
+      "time": 35.35,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "7bb33676ce1c14bddd42a7fe0e4542115cc97e37c201d9efc8551d5f23bd7900"
+    },
+    {
+      "frame": 708,
+      "time": 35.4,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "6e08680e86eff3e789f96f36c0cbf9ff8fb3cc116afecc0db063cd5d798e09a7"
+    },
+    {
+      "frame": 709,
+      "time": 35.45,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "0f9385dc3457b4b19c488e5bbe3f5d908580d2e8608fd0cefe740040e9f9e98b"
+    },
+    {
+      "frame": 710,
+      "time": 35.5,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "65f262c275183d2ccff1745820bcc61099244e388d193086276fb7675cdfdd96"
+    },
+    {
+      "frame": 711,
+      "time": 35.55,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "1343b88909d595233e747e98641abc7e18276ffdd69a237d2d6dc8744de0ff3d"
+    },
+    {
+      "frame": 712,
+      "time": 35.6,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "79da3555b6599517aa34316ed0d732e765dcf16ec972d45b441421514509ad21"
+    },
+    {
+      "frame": 713,
+      "time": 35.65,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "1b17b943e21554ff21f1c7a555ef58423561bbf4a92f75bf1eaf479b4c244eec"
+    },
+    {
+      "frame": 714,
+      "time": 35.7,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "948f0f210304827eafc460ef0394fef976edc7a0386b0877b3bb6b6b4a921a73"
+    },
+    {
+      "frame": 715,
+      "time": 35.75,
+      "bundle": 3,
+      "timing": 10,
+      "phase": "전투진행",
+      "sha256": "15628ea2ce88e88f6c68cf57f118d13d026a49a1bc1cc7e1fc978a7ddd458f68"
+    },
+    {
+      "frame": 716,
+      "time": 35.8,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "299bbadd482e649cddaf0f9745fdb787b8a875a0b6f55c384f2103ab55320d88"
+    },
+    {
+      "frame": 717,
+      "time": 35.85,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "3674543a5fdfc7d29533b4796ddf06e63c665e02e84f346bd39bb5c977f657c8"
+    },
+    {
+      "frame": 718,
+      "time": 35.9,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "a8d715c2c24086b768b31c2f9cab620b3c274f229c6dff71e43c4a09cd030c99"
+    },
+    {
+      "frame": 719,
+      "time": 35.95,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "fc04f047415d1cd53a9987d4842fab7319444efeb8a4d636a5418d2b9f76c95f"
+    },
+    {
+      "frame": 720,
+      "time": 36,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "bc134ab6688f51b5883604ec294388fa87435e85cb0f50181a8d5c090be91c65"
+    },
+    {
+      "frame": 721,
+      "time": 36.05,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "477ac1f6752a88521384a759789906d22735e9aac8964ce54ed3293984e1e7e4"
+    },
+    {
+      "frame": 722,
+      "time": 36.1,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "b3d27bd417f952cf6d33367754bc54555ad14045d06ab868dc8758df4aae6583"
+    },
+    {
+      "frame": 723,
+      "time": 36.15,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "cf47d7b289c4d24980e58de371cda9c55f8ce75ca0c12176b57834360cfce180"
+    },
+    {
+      "frame": 724,
+      "time": 36.2,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "9243a49def07263154e64a2b3851d68ebe109518074cab6e95004212fee444ba"
+    },
+    {
+      "frame": 725,
+      "time": 36.25,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "2b2837f3cb426025be9a1b2774666197ff2b94d4598bd68f8d50be872a4e3dc3"
+    },
+    {
+      "frame": 726,
+      "time": 36.3,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "8d5519ea6b861c058315c45fd1cc6eee8f157a0f4098e266e72016074b833b0c"
+    },
+    {
+      "frame": 727,
+      "time": 36.35,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "6a53000965df5e2d9522778750ca642a5ed7a3b7e3b3cb8039ec7d6096c551f3"
+    },
+    {
+      "frame": 728,
+      "time": 36.4,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "32db82daab35f213e69cee3ebc2c1597937bb48495313d59bde99c99de61ad4e"
+    },
+    {
+      "frame": 729,
+      "time": 36.45,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "21e75dc4fac0752fe84851bb5fe5be4ee93781c8f5b4e3fee0db8adeb7186f11"
+    },
+    {
+      "frame": 730,
+      "time": 36.5,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "43e8b66fe0a52f9b314d5a41e65e3ee6c0ade86c12a95b7a3f2b521e6bcd21b6"
+    },
+    {
+      "frame": 731,
+      "time": 36.55,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "a97bcd38d73c413e862555c9eabcd2d81b29c9f29c30c12735d3eaa5af847708"
+    },
+    {
+      "frame": 732,
+      "time": 36.6,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "0137670f3a8969266a5eb0aec828aaabb731e1be795af919b7f83baeafa3a0b7"
+    },
+    {
+      "frame": 733,
+      "time": 36.65,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "bfd5f2963fad56c4a3cc6cb68f668b7d1476964800a8fef81097469bcf9d92a7"
+    },
+    {
+      "frame": 734,
+      "time": 36.7,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "22f4a59afcdcac32f87443d7d8564eb6b992baa6ff922f609933f769291fcca7"
+    },
+    {
+      "frame": 735,
+      "time": 36.75,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "0b9296b3a891e052ffa983ca7140cf3bfb6bea98b620fcd5d3768ab32ca40e14"
+    },
+    {
+      "frame": 736,
+      "time": 36.8,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "243340d81829203065c3504ff468fce913f06f8a97e40d22c263707cd4c5ad88"
+    },
+    {
+      "frame": 737,
+      "time": 36.85,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "dab7e136b787367b0437ae1458e2f22b2f9e28cbebb0ba3fb86a334f5a8db89c"
+    },
+    {
+      "frame": 738,
+      "time": 36.9,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "be1d502b7cda1121e5572be7b3e66611d3b4f135e723b3babb0e89461453cedb"
+    },
+    {
+      "frame": 739,
+      "time": 36.95,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "22b1ffa0f26da91573a2e787d0f472f0e9c26e8717879c9523de3851611bdeb4"
+    },
+    {
+      "frame": 740,
+      "time": 37,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "be6206f91ccb81fc777a067ecba24501fd7d4d37908bb7a3819d1a4845109a32"
+    },
+    {
+      "frame": 741,
+      "time": 37.05,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "806ddddc2c4a3e0c983979fc86816a61e56f48631de21c3ad12cf0c6d98f7c5a"
+    },
+    {
+      "frame": 742,
+      "time": 37.1,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "03f6b5e82d58bfc48846d34fe4ae035920c933c4c3ffa007c80de64bcbd63af3"
+    },
+    {
+      "frame": 743,
+      "time": 37.15,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "1b33cfa63e7eeac038d33d3ef5559dbe89e039db1bb8dafebd8c43c7ea5765d9"
+    },
+    {
+      "frame": 744,
+      "time": 37.2,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "86412674895597e0317571745e6bcb0f21b10f14efdebf5943b10dbe6f9605d3"
+    },
+    {
+      "frame": 745,
+      "time": 37.25,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "1f80fe715d05d67f621afaac2236e26a71cce7c459b56023b70f8619267f4366"
+    },
+    {
+      "frame": 746,
+      "time": 37.3,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "f67127aebb6e90eab4c0fc1bd6bfe3464e1c8328de3283c368c81aebabb9a0db"
+    },
+    {
+      "frame": 747,
+      "time": 37.35,
+      "bundle": 3,
+      "timing": null,
+      "phase": "묶음 완료",
+      "sha256": "cff02b6a6b6bf76e64257f3e0afc06779a62ed90db6202a9784d8c83616c5975"
+    }
+  ]
+}

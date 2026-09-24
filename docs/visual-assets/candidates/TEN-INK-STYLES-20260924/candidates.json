@@ -222,11 +222,12 @@
       "행동설계",
       "전투진행"
     ],
-    "planning": "대각선으로 대치하며 공개 정보로 3수/3수/4수를 설계한다.",
-    "resolution": "이동·발놀림·공격·합·회피·실제 반격과 다음 자세를 끊김 없이 연결하며 하단에서 같은 사건의 결과를 읽는다.",
+    "planning": "기존 전투 준비 화면의 선택·배치·대상·취소·확정 방식을 유지한다.",
+    "resolution": "확정 뒤 현재 묶음의 3수/4수를 나란히 표시하고 완료·진행·대기를 구분하며 실제 해결 순서대로 움직임과 하단 결과를 이어간다. 묶음 전체 해결 뒤 기존 준비로 복귀한다.",
     "visibility": "안개는 원경에, 강한 대비는 인물·검·핵심 공격 궤적에 사용한다.",
     "protection": "실제 판정 결과만 연출하며 적의 미확정 계획을 자세나 효과로 노출하지 않는다.",
-    "evidence": "USER_APPROVED_V2_DIRECTION; OFFLINE_RESULT_PANEL_PREVIEW; PRODUCT_UI_INTEGRATION_NOT_RUN"
+    "evidence": "USER_APPROVED_V2_DIRECTION; OFFLINE_3_3_4_BUNDLE_PREVIEW; PRODUCT_PREPARATION_UNCHANGED; PRODUCT_UI_INTEGRATION_NOT_RUN",
+    "scope_confirmation": "좋아 기존 전투 준비 방식은 유지하고 전투 합 연출만 바꾸는거야. 한 수만 보여주는 게 아니라 해당 행동 묶음(3,3,4)도 나란히 보여준다."
   },
   "motion": {
     "status": "USER_APPROVED_ART_AND_CHOREOGRAPHY_BASELINE_WITH_RESULT_PANEL_PREVIEW",
@@ -257,6 +258,21 @@
         "file": "clash-v2/hero-clash.png",
         "sha256": "794fd63bd98e53c113b28e0b74e952b854c91530cd81313610dae0a23be9d782",
         "bytes": 3194266
+      },
+      {
+        "file": "clash-v2/ink-bundles.mp4",
+        "sha256": "6eaa61d65a02230ef724a7ebcd08757686ec8b8516afcd2e5058805052d6ea88",
+        "bytes": 15718597
+      },
+      {
+        "file": "clash-v2/ink-bundles.gif",
+        "sha256": "e3200fe983fb86f4ac7a35bd80f10012443c2278cac5d590b977e62eba459709",
+        "bytes": 36805942
+      },
+      {
+        "file": "clash-v2/bundle-poster.png",
+        "sha256": "dff6eefa20d557122216c606dac4a521704dd977be5f4b19ea011d0d83d3fcbb",
+        "bytes": 1852299
       }
     ],
     "source_art": [
@@ -305,6 +321,24 @@
       "case_count": 6,
       "game_ui_integration": "NOT_RUN",
       "rules_modified": false
+    },
+    "bundle_preview": {
+      "status": "IMPLEMENTED_OFFLINE_PREVIEW_PENDING_HUMAN_FLOW_REVIEW",
+      "duration_seconds": 37.4,
+      "video": "clash-v2/ink-bundles.mp4",
+      "gif": "clash-v2/ink-bundles.gif",
+      "poster": "clash-v2/bundle-poster.png",
+      "fixture": "clash-v2/bundle-fixtures.json",
+      "sequence": [
+        3,
+        3,
+        4
+      ],
+      "preserves_existing_preparation": true,
+      "source_art_regenerated": false,
+      "rules_modified": false,
+      "future_enemy_actions_hidden": true,
+      "game_runtime_applied": false
     }
   },
   "previous_motion": {

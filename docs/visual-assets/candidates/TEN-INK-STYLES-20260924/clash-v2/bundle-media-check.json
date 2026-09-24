@@ -1,0 +1,29 @@
+{
+  "gif": {
+    "size": [
+      640,
+      552
+    ],
+    "frames": 374,
+    "loop": 0,
+    "duration_ms": 37400,
+    "distinct_arena_frames": 374
+  },
+  "files": [
+    {
+      "file": "ink-bundles.mp4",
+      "sha256": "6eaa61d65a02230ef724a7ebcd08757686ec8b8516afcd2e5058805052d6ea88",
+      "bytes": 15718597
+    },
+    {
+      "file": "ink-bundles.gif",
+      "sha256": "e3200fe983fb86f4ac7a35bd80f10012443c2278cac5d590b977e62eba459709",
+      "bytes": 36805942
+    },
+    {
+      "file": "bundle-poster.png",
+      "sha256": "dff6eefa20d557122216c606dac4a521704dd977be5f4b19ea011d0d83d3fcbb",
+      "bytes": 1852299
+    }
+  ]
+}

@@ -1365,5 +1365,53 @@
         "Release performance"
       ]
     }
+  },
+  "bundle_presentation_followup": {
+    "date": "2026-09-24",
+    "base_sha": "539c1b4e35877aec358b5dfdd3ffa54bb176a4fd",
+    "work_mode": "BUILD / VISUAL_PROTOTYPE / REVIEW",
+    "work_level": "L1",
+    "approval": "REUSED_APPROVAL: User explicitly keeps existing combat preparation and changes only the clash presentation, showing each 3/3/4 bundle side by side.",
+    "skill_modes": [
+      "ten-paces-hidden-moves-workflow-router / approved continuation",
+      "combat-ux-and-accessibility / planning-mockup-review",
+      "building-reviewable-html-blueprints / media verification"
+    ],
+    "source_relevance": "REUSED_EVIDENCE: latest user scope, actual current resolver/cards/UI owners, existing official ProjectMoon/Nine Sols/S-GAME presentation references. External research does not own 3/3/4 or game outcomes.",
+    "feasibility": "FEASIBLE with existing approved art, renderer, exact Godot pin and loopback preview. No new external service or cost.",
+    "changes": [
+      "Preserve all existing preparation controls and layout; narrow earlier diagonal-planning proposal",
+      "Display 3/3/4 slots with preparation/execution and completed/current/waiting states",
+      "Hide future enemy names; keep current results until next timing",
+      "Chain actual state across three fixed plans; separate response prepayment, timing outcomes and bundle completion",
+      "37.4-second GIF/MP4, chapter navigation, pause/result freeze and text recap"
+    ],
+    "result": "OFFLINE_BUNDLE_PREVIEW_IMPLEMENTED_PRODUCT_UI_UNCHANGED",
+    "validation": {
+      "resolver": "Godot4.7.1 actual three consecutive bundles / 10 timings; source hashes stored",
+      "tests": "5 new RED-to-GREEN model tests plus 1 focused contact/reveal regression + 5 existing result tests + 5 preview tests PASS",
+      "frames": "748 source frame hashes verified before encoding; 374 GIF frames / 37400ms / 374 distinct arena frames",
+      "browser": "IAB 37.4s/1280x1104 time progression; 2/3 bundle seek; pause29.9s/controls hidden; GIF640x552 with video paused/hidden;390/656/1440px no page overflow; viewport reset",
+      "HTTP": "MP4 Range206/1024 bytes; GIFHEAD200/image-gif",
+      "references": "canonical reference freshness PASS",
+      "approved_art": "5 source images unchanged; 22 original/media hashes verified",
+      "protected_paths": "diff0",
+      "default_checkout": "dirty45 preserved",
+      "review_store_sha256": "afd73518d7bf507728e500045733ef5b9c7a466dc3feeba3c62331455cdd2dac"
+    },
+    "review": "Focused continuation of the already twice-reviewed approved motion candidate; full review budget not restarted. Checked current canon, real diff, untouched preparation/product consumers, data source/privacy, playback, costs and evidence ceiling. Corrected response cost ambiguity and premature verdict reveal.",
+    "evidence": "docs/visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v2/README.md",
+    "delivery": {
+      "branch": "codex/clash-bundle-flow-20260924",
+      "owner": "GitHub live metadata for exact head, required checks and merge"
+    },
+    "not_run": [
+      "Live Godot presentation UI integration",
+      "All techniques/cancellations/empty slots/insufficient-resource choreography",
+      "Human naturalness and repeated-viewing fun",
+      "Android",
+      "Sound",
+      "Release performance"
+    ]
   }
 }
