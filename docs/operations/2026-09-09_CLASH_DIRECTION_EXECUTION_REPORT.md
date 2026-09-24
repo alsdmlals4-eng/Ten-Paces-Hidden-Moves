@@ -49,3 +49,9 @@
 - PR: https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/361. exact-head 원격 검사 및 정상 병합 여부는 GitHub live metadata를 따르며 아래 최종 main readback에서 확정한다.
 
 추가 원격 full-validation의 실제 게임 회귀도 대조했다. 기존 5초 reveal 제한은 승인된 긴 안무의 전체 묶음을 기다리지 못해 RED였고 24초의 유한 한도로 교정했다. 구 절초 atlas 전용 playback 검사는 새 먹 consumer의 실제 card/actor/execution timing·계열·승인 붓·양의 표시 기하·결과 영역 분리를 검증하도록 옮겼다. 기존 예약·취소·기세·잠금 검사는 유지했다. full-validation의 native31종 중30종이 먼저 통과했고 남은 절초 회귀는 집중 교정 후 `ULTIMATE_UI_RESERVATION_VERIFY_OK`; 게임 제품 bytes 추가 변경 없이 모두 검증됐다. 정상 속도 실제 CTA와 별도 전용 소비자 회귀를 함께 유지하며 미래 행동/일반 자원 판정 요구를 낮추지 않는다.
+
+### 최종 main readback · PR361
+
+검토 HEAD `2bdf345f5110baccaab335994ec6475391be8602`, 원격 35SUCCESS/0FAIL/0PENDING, 미해결 검토0을 확인하고 2026-09-24T15:56:35Z에 main `53b007e3ad1b1dd7eb3b1ef574a2391bb7abf8cb`로 정상 병합했다. 전체 tracked tree가 검수 후보와 동일하다. 일회 승인 종료와 보호 기준선/파생본 동기화는 같은 날짜 PR361 승인 종료 기록에 연결한다. 제품 코드/원화/영상은 이 closeout에서 바꾸지 않는다. 원래 checkout45dirty와 사용자 리뷰 SHA256 `afd73518d7bf507728e500045733ef5b9c7a466dc3feeba3c62331455cdd2dac`은 보호했다.
+
+원격 native 입력 검사는 일반 연출 속도 `ordinary_defaults`에서 453094ms 동안 295번의 실제 버튼 입력으로 비무10승·보상10회·행로36회를 완료했다. 실패0이며 공개 정책으로 선택한12종 행동을 사용했다. 근거는 [PR361 제품 검사](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/actions/runs/36022075768/job/107709315719)의 `NATIVE_CAMPAIGN_SUMMARY`다. import 종료 때 자원22개 경고는 남아 있으며 실행 실패나 누수 없음으로 바꾸어 보고하지 않는다.
