@@ -351,7 +351,8 @@ func _verify_targeting_10_5_and_step10_resolution(board: CombatBoardPreview) -> 
     if str(presenting_snapshot.get("presentation_state", "")) not in ["resolving", "presenting_result"]:
         failures.append("Resolution must enter resolving or presenting_result before the next bundle is ready.")
     var next_ready := false
-    for _attempt in range(100):
+    # Full ink choreography replaces the old short reveal; keep a finite 24-second bound.
+    for _attempt in range(480):
         if str(board.get_meta("presentation_state", "")) == "next_bundle_ready":
             next_ready = true
             break
@@ -416,7 +417,7 @@ func _verify_second_bundle_returns_to_planning(board: CombatBoardPreview) -> voi
         failures.append("A complete second bundle must enable progress.")
         return
     board.combat_progress_button.request_progress()
-    for _attempt in range(100):
+    for _attempt in range(480):
         var state_value := str(board.get_meta("presentation_state", ""))
         if state_value == "next_bundle_ready":
             if board.combat_review_panel != null and board.combat_review_panel.visible:

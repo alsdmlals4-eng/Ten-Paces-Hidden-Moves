@@ -47,3 +47,5 @@
 - 최초 PR361 CI에서 BUILD 승인 링크 파일 누락과 교체 전 `CombatActionRevealOverlay`만 찾는 회귀를 확인했다. 기존 사용자 승인 근거를 `docs/implementation/BUILD_APPROVAL_2026-09-25.md`에 연결하고, 같은 실제 CTA의 새 화면에서 미래 수 비공개·현재 사실·판정 전 상태·준비 숨김·서로 겹치지 않는 영역·skip/domain parity를 확인하도록 옮겼다. 6 viewport 실행과 구 직접 feedback consumer 회귀 모두 `COMBAT_ACTION_REVEAL_VERIFY_OK`. 검사 요구 삭제나 승인 범위 확대는 없다.
 - 인앱 브라우저에서 실제 녹화29.583초가 끝까지 재생되고 오류 없이 종료됨을 확인했다. 첫 탭은 브라우저 renderer가 종료되어 새 검수 탭으로 복구했다. 녹화 후 제품 포커스 버튼의 글자색을 명확히 하는 미세 교정이 있으며 영상의 동작·수치는 동일하다.
 - PR: https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/361. exact-head 원격 검사 및 정상 병합 여부는 GitHub live metadata를 따르며 아래 최종 main readback에서 확정한다.
+
+추가 원격 full-validation의 실제 게임 회귀도 대조했다. 기존 5초 reveal 제한은 승인된 긴 안무의 전체 묶음을 기다리지 못해 RED였고 24초의 유한 한도로 교정했다. 구 절초 atlas 전용 playback 검사는 새 먹 consumer의 실제 card/actor/execution timing·계열·승인 붓·양의 표시 기하·결과 영역 분리를 검증하도록 옮겼다. 기존 예약·취소·기세·잠금 검사는 유지했다. full-validation의 native31종 중30종이 먼저 통과했고 남은 절초 회귀는 집중 교정 후 `ULTIMATE_UI_RESERVATION_VERIFY_OK`; 게임 제품 bytes 추가 변경 없이 모두 검증됐다. 정상 속도 실제 CTA와 별도 전용 소비자 회귀를 함께 유지하며 미래 행동/일반 자원 판정 요구를 낮추지 않는다.
