@@ -147,9 +147,10 @@ func get_active_combat_loadout_snapshot() -> Dictionary:
 
 
 func _build_shell() -> void:
+    theme = preload("res://src/ui/ink/ink_screen_art.gd").theme()
     var background := TextureRect.new()
     background.name = "ShellBackdrop"
-    background.texture = preload("res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png")
+    background.texture = preload("res://assets/backgrounds/ink_wuxia/setup.png")
     background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
     background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
     background.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -182,7 +183,7 @@ func _build_shell() -> void:
     add_child(content_panel)
 
     var panel_style := StyleBoxFlat.new()
-    panel_style.bg_color = Color(0.025, 0.045, 0.062, 0.93)
+    panel_style.bg_color = Color(0.93, 0.895, 0.81, 0.92)
     panel_style.border_color = Color("ae8c55")
     panel_style.set_border_width_all(2)
     panel_style.set_corner_radius_all(2)
@@ -202,7 +203,7 @@ func _build_shell() -> void:
 
     title_label = Label.new()
     title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    title_label.add_theme_color_override("font_color", Color("eadfc9"))
+    title_label.add_theme_color_override("font_color", Color("272920"))
     title_label.add_theme_font_size_override("font_size", 30)
     stack.add_child(title_label)
 
@@ -211,7 +212,7 @@ func _build_shell() -> void:
     description_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
     description_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     description_label.custom_minimum_size = Vector2(0.0, 100.0)
-    description_label.add_theme_color_override("font_color", Color("c9bca8"))
+    description_label.add_theme_color_override("font_color", Color("403d35"))
     description_label.add_theme_font_size_override("font_size", 17)
     stack.add_child(description_label)
 
@@ -249,8 +250,9 @@ func _build_setup_options() -> void:
         var button := Button.new()
         button.name = "Starter_%s" % manual_id
         button.toggle_mode = true
-        button.custom_minimum_size = Vector2(680.0, 40.0)
-        button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+        button.custom_minimum_size = Vector2(0.0, 48.0)
+        button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
         button.text = "[%s] %s · 3성 %s · %s/%s" % [
             str(option.get("faction", "")),
             str(option.get("manual_name", "")),
@@ -331,6 +333,7 @@ func _render_current_screen() -> void:
         return
 
     var screen := run_state.get_current_screen()
+    _apply_screen_art(screen)
     var keeps_combat_visible := (
         screen == VerticalSliceRunState.SCREEN_COMBAT
         or screen == VerticalSliceRunState.SCREEN_REVIEW
@@ -360,7 +363,7 @@ func _render_current_screen() -> void:
             )
         VerticalSliceRunState.SCREEN_SETUP:
             _set_content(
-                "시작 설정 · 나의 무공 6중4",
+                "출사 · 나의 무공 네 권",
                 "강호에 들고 갈 무공 4권을 고릅니다. 선택 0/4\n각 무공은 3성 기술 하나로 시작하며, 선택은 이번 비무행의 전투 정체성을 정합니다.",
                 "이 네 권으로 출발"
             )
@@ -783,3 +786,12 @@ func _notification(what: int) -> void:
     elif what == NOTIFICATION_WM_CLOSE_REQUEST:
         if session.flush_stable(): get_tree().quit()
         else: _apply_session_input_lock()
+
+
+func _apply_screen_art(screen: String, resting := false) -> void:
+    var backdrop := get_node_or_null("ShellBackdrop") as TextureRect
+    if backdrop != null:
+        backdrop.texture = preload("res://src/ui/ink/ink_screen_art.gd").backdrop(screen,resting)
+    var side_panel := resting or screen == VerticalSliceRunState.SCREEN_SETUP
+    content_panel.anchor_left = 0.52 if resting else 0.42 if side_panel else 0.14
+    content_panel.anchor_right = 0.96 if side_panel else 0.86

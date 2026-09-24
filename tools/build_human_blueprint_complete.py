@@ -107,9 +107,9 @@ def compose(b):
     for rel in ['src/run/vertical_slice_route_model.gd','src/run/vertical_slice_opponent_catalog.gd','src/run/vertical_slice_result_model.gd','data/combat/combat_hud_preview.json','docs/02_COMBAT_RULES.md','docs/07_COMBAT_UI_SPEC.md','docs/10_COMBAT_PRESENTATION_PLAN.md','docs/decisions/2026-09-09_RUN_START_OPPONENT_ROSTER_AND_GROWTH.md']:
         source(ROOT/rel)
     atlas=ROOT/'docs/visual-assets/candidates/TEN-HUMAN-BLUEPRINT-20260904/TEN_PACES_3X3_SCREEN_ATLAS_20260904_v1.png'
-    bg=ROOT/'assets/backgrounds/jianghu_blue_ink_landscape_v1.png'
-    inn=ROOT/'assets/backgrounds/jianghu_rest_inn_v1.png'
-    courtyard=ROOT/'assets/backgrounds/atlas_blue_ink_courtyard_v1.png'
+    bg=ROOT/'assets/backgrounds/ink_wuxia/journey.png'
+    inn=ROOT/'assets/backgrounds/ink_wuxia/rest.png'
+    courtyard=ROOT/'assets/combat/ink_wuxia/background.png'
     b.c.setTitle('십보강호 · 사람용 블루프린트 · 최종 승인 검토판 2026.09.11')
     b.page('열 칸의 거리, 세 번의 결단','기획 · 시각 경험 · 강호행로 · 전투 · 상대 · 무공 · 구현 지도')
     b.p('상대의 수를 읽고,\n나의 무공으로 답한다.',70,637,1060,39,bold=True)

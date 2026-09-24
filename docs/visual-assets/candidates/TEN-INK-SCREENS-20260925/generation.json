@@ -1,0 +1,110 @@
+{
+  "style": "8 main + 3 contrast + 9 mist",
+  "approval": "2026-09-25 latest user: 필요한 이미지 제작,게임에 연결,구현까지 진행하고 html에도 다 반영; 이미지 변경하고 기존이미지 폐기",
+  "reference_paths": [
+    "assets/combat/ink_wuxia/hero-clash.png",
+    "assets/combat/ink_wuxia/background.png"
+  ],
+  "visual_review": "USER_QUALITY_REVIEW_PENDING",
+  "assets": [
+    {
+      "key": "main",
+      "prompt": "New game MAIN TITLE background, panoramic 16:9, intended at 2048x1152. Majestic Jianghu mountain passes, an old Chinese tiled-roof mountain gate on the far right, near-black windswept pine at the far left, winding footpath disappearing into white fog and elegant high peaks. Keep the central 44% calm, very pale and low detail for live Korean title and menu overlay. Rich narrative illustration on outer thirds, no big characters because separate character sprites will be placed over it. No text, letters, glyphs, logos, watermarks, cards, UI, tables, interface borders. Painterly cinematic opening to a martial arts animation. Landscape fills the whole image, no panels or montage.",
+      "tool_output": "Generated images are saved to C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa as C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa\\exec-4cabb724-7524-4574-be24-ec982157ee17.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "path": "assets/backgrounds/ink_wuxia/main.png",
+      "sha256": "b25af94defb32c10dc74a84565c12a2355154f13c0a6d167010ac465d81a2ba6",
+      "dimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "key": "setup",
+      "prompt": "Create ONE new 16:9 game background for choosing martial arts before a journey. An original Chinese wuxia scholar-warrior study, low viewpoint across a weathered wooden table on the LEFT THIRD, six closed stitched manuals with blank unmarked covers, one sheathed jian, inkstone, brush and a muted cinnabar seal. Open lattice window on the far left reveals cloud mountains and pine. Pale paper mist and quiet empty space across the RIGHT 60% for an actual live selection menu. Detailed tactile brushwork at left, subdued spacious wash at right. NO text, NO calligraphy, NO numbers, NO interface, NO frames, NO people. Warm ivory and black, a tiny rust-red ribbon only. Original narrative still-life, single full-bleed landscape, intended 2048x1152.",
+      "tool_output": "Generated images are saved to C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa as C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa\\exec-07e4f108-db15-4f9c-8036-29b7d83a72ba.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "path": "assets/backgrounds/ink_wuxia/setup.png",
+      "sha256": "e941c103f9835921ca810ec98cb391ec86d6f9afaaf1084b0dd42b8899b99712",
+      "dimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "key": "briefing",
+      "prompt": "Create ONE new 16:9 environment background for a wuxia duel briefing, moments before crossing into the arena. Old timber pavilion and rain-washed stone steps on far LEFT, a slender unmarked vermilion pennant at far right, immense grey mountain fog and faint tiled temple rooflines. A low stone balustrade across lower edge. Calm ritual tension. Keep the CENTER 55% very pale low-detail mist, and moderate open area at left middle for a separate character portrait. NO characters, NO combat, NO weapons, NO writing, NO symbols, NO UI, NO text, NO frames. Single full-bleed narrative landscape, 2048x1152 target.",
+      "tool_output": "Generated images are saved to C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa as C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa\\exec-748d73e1-6869-4e5a-986f-4187bba99d1d.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "path": "assets/backgrounds/ink_wuxia/briefing.png",
+      "sha256": "e3b8ad6341631ec21f9e251ea1eba4907c57346b10034acc6e05f0c6d5007368",
+      "dimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "key": "journey",
+      "prompt": "Original approved 8+3+9 ink-wuxia art: warm ivory xuan paper, expressive dry-brush contours, deep black foregrounds, delicate greys and mist depth, restrained vermilion accents. Adult elegant Chinese martial-world ink painting. No glossy 3D, neon, photorealism, UI or baked-in lettering. Use the references ONLY for continuity of palette and brushwork, not composition. Landscape 16:9. Create a new Jianghu journey background. A sweeping mountain route winds from lower-left pine roots towards a modest inn with tiny red lanterns near the LEFT midground, a small stone training clearing to the right distance, a bamboo path disappearing into mist. Painterly quiet adventure and depth. Detailed narrative LEFT third, calm pale wash through CENTER and RIGHT for live event choices. No map icons, no labels, no characters, no graphic route lines. One landscape.",
+      "tool_output": "Generated images are saved to C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa as C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa\\exec-882d718b-c4f7-48e3-8328-ebc6ab4d1398.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "path": "assets/backgrounds/ink_wuxia/journey.png",
+      "sha256": "3bd349fca20ecba370eddc26ad1c0b1c96652d9edfc81f137bbf5fdde7afdf45",
+      "dimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "key": "rest",
+      "prompt": "Original approved 8+3+9 ink-wuxia art: warm ivory xuan paper, expressive dry-brush contours, deep black foregrounds, delicate greys and mist depth, restrained vermilion accents. Adult elegant Chinese martial-world ink painting. No glossy 3D, neon, photorealism, UI or baked-in lettering. Use the references ONLY for continuity of palette and brushwork, not composition. Landscape 16:9. Create a new wuxia roadside inn interior for resting. Warm timber beams, a low tea table with ceramic cup and kettle, a single dim red lantern, folded travelling cloak, and a rain streaked window looking into misty bamboo. Beautiful interior scene concentrated LEFT half; RIGHT half and centre dissolve into low contrast pale ivory wash to carry live recovery menu. Welcoming, reflective, martial traveller atmosphere. No people, no lettering, no calligraphy.",
+      "tool_output": "Generated images are saved to C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa as C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa\\exec-a181ee2c-5a10-4ebd-b764-3b5bf343ecdb.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "path": "assets/backgrounds/ink_wuxia/rest.png",
+      "sha256": "e9dd9677ef5723f5c3b5506fb7b16cff93e5f01ec4bbf2e2fce2d904af5ef7aa",
+      "dimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "key": "result",
+      "prompt": "Original approved 8+3+9 ink-wuxia art: warm ivory xuan paper, expressive dry-brush contours, deep black foregrounds, delicate greys and mist depth, restrained vermilion accents. Adult elegant Chinese martial-world ink painting. No glossy 3D, neon, photorealism, UI or baked-in lettering. Use the references ONLY for continuity of palette and brushwork, not composition. Landscape 16:9. Create a new background for the end of a wuxia duel, usable for both victory and defeat. An empty stone terrace after rain, fallen pine needles, a sheathed jian and folded dark cloak discreetly at far LEFT bottom, clouds part beyond a mountain pavilion at far RIGHT. Elegant quiet release after action. Large pale centre 60 percent for live result and reward text. No actors, no triumph symbols, no writing or UI. Neutral reflective atmosphere; confident ink texture and soft fog.",
+      "tool_output": "Generated images are saved to C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa as C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa\\exec-ba4c5455-050a-4bea-b520-7308a73f552d.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "path": "assets/backgrounds/ink_wuxia/result.png",
+      "sha256": "dc0e57753636676b90b043fbf5d5f1a7a02437aaf0261c22ebba5c7e6d38d506",
+      "dimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "key": "masked_atlas",
+      "prompt": "Edit this exact original 3 by 3 animation pose sheet for a masked wuxia swordsman. Preserve all nine poses, the exact same arrangement, scale, swords, feet, silhouette and transparent background. All nine figures are the SAME man. Add a plain black cloth face covering over the nose and mouth of every figure, leaving the eyes and brow visible. Keep the existing off-white robe, charcoal overcoat and muted teal sash and ink dry-brush style; no new ornaments. Hair still topknot and flowing black. This is a dignified mysterious masked wandering swordsman. NO TEXT, NO borders, NO grid lines, NO shadows or background, true alpha transparency. Do not combine or drop any figure, preserve blade tips and full feet. Return the exact same canvas dimensions and pose registration as the source so it can replace an animation atlas.",
+      "tool_output": "Generated images are saved to C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa as C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa\\exec-9b0d67f2-0509-41f2-a5bf-bcf57f5e0e3b.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "path": "docs/visual-assets/candidates/TEN-INK-SCREENS-20260925/masked-poses.png",
+      "sha256": "6130e210a7c6f659b93ccd124b4a235e0fb1210cff70a3218e3b902f7b69d38f",
+      "dimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "key": "masked_hero",
+      "prompt": "Edit this exact approved ink-wuxia clash scene. Preserve the entire original painting, composition, blade contact, both bodies, ink trails, palette, mist and the red-sashed swordsman on the LEFT. Change ONLY the RIGHT white-and-teal-robed opponent's face: add a plain black cloth mask over nose and mouth, eyes and brow still visible. Keep his clothing and hairstyle. No other changes, no lettering or UI. This is the same masked opponent across briefing, preparation and combat. Preserve source aspect ratio and size.",
+      "tool_output": "Generated images are saved to C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa as C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa\\exec-72ea1eef-7e80-40d2-b186-55ef2ddbec17.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "path": "assets/combat/ink_wuxia/masked_baekmujin/hero-clash.png",
+      "sha256": "fcb3299a20d8159d1e08951382e17950b7bcac668b622bc42932710b1c418da3",
+      "dimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "key": "dogyeom_atlas",
+      "prompt": "Create a production animation sheet by editing the FIRST supplied 3x3 pose sheet. Keep its exact 1254x1254 transparent canvas, nine cell composition, feet registration, character scale and action directions. Replace every character with the SAME man from reference2: Dogyeom, a mature broad-shouldered unarmed wuxia martial artist with short beard, rugged eyebrows, small high topknot, dark charcoal patched tunic, ivory sleeves, brown cloth belt, wrapped forearms and boots. His face is UNMASKED. All nine poses must be UNARMED: replace every sword grip with an expressive fist or open palm, remove ALL swords/scabbards. Motion row1 ready stance / raised palm anticipation / low forward rush; row2 sweeping palm / crossed-arm block / straight left punch; row3 recoil guard / low palm follow-through / recovered ready stance. Adapt arms naturally to martial arts, no weapons in any pose. Style must match the FIRST sheet's bold broken dry ink brush outlines, flowing robe, ivory-black manhua anatomy with restrained muted brown, no photorealistic texture. Transparent background with no floor, labels, grids, shadows or effects; complete hands and feet, no clipping. Reference3 supplies existing character silhouette only. Keep separated cells for extraction.",
+      "tool_output": "Generated images are saved to C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa as C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa\\exec-746e4eaf-e54d-4911-b073-a46ca2ffa79f.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "path": "docs/visual-assets/candidates/TEN-INK-SCREENS-20260925/dogyeom-poses.png",
+      "sha256": "5963412b63c0805fbe59bc8f20dac61a4afea46ab729fcf75cbaaaf2a8a8375b",
+      "dimensions": [
+        1254,
+        1254
+      ]
+    }
+  ]
+}

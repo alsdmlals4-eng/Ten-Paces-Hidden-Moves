@@ -58,6 +58,16 @@ static func normalized(value):
 static func digest(value) -> String:
     return JSON.stringify(normalized(value), "", true, true).sha256_text()
 
+static func compatible_candidate_identity(candidates: Array) -> Array:
+    # Schema 2/5/6 already fingerprinted this display-only path. Preserve its
+    # historical bytes for save identity; live art still uses the current path.
+    # Do not omit candidate fields or accept other gameplay/content changes.
+    var result: Array = candidates.duplicate(true)
+    for candidate in result:
+        if candidate.get("candidate_id") == "masked_baekmujin" and candidate.get("portrait") == "assets/characters/portraits/masked_baekmujin_ink_20260925.png":
+            candidate["portrait"] = "output/blueprint-candidates/opponent-baekmujin-v1.png"
+    return result
+
 static func error(status: String, detail: String) -> Dictionary:
     return {"ok": false, "status": status, "error": detail}
 
@@ -74,7 +84,7 @@ func content_identity_for_schema(schema_version: int) -> String:
         var rows: Array = []
         for candidate in provider.get_all_candidates():
             for stage in range(1, 11): rows.append(provider.get_stage(candidate.candidate_id, stage))
-        _variable_content_identity = digest({"legacy": content_identity(), "ruleset": VARIABLE_RULESET_ID, "version": provider.ROSTER_VERSION, "source_revision": provider.SOURCE_REVISION, "candidates": provider.get_all_candidates(), "stages": rows})
+        _variable_content_identity = digest({"legacy": content_identity(), "ruleset": VARIABLE_RULESET_ID, "version": provider.ROSTER_VERSION, "source_revision": provider.SOURCE_REVISION, "candidates": compatible_candidate_identity(provider.get_all_candidates()), "stages": rows})
         return _variable_content_identity
     return content_identity() if schema_version == SCHEMA_VERSION else ""
 

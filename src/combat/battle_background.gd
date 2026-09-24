@@ -1,8 +1,8 @@
 class_name BattleBackground
 extends TextureRect
 
-const BACKGROUND_SOURCE_PATH := "res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png"
-const BACKGROUND_TEXTURE := preload("res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png")
+const BACKGROUND_SOURCE_PATH := "res://assets/combat/ink_wuxia/background.png"
+const BACKGROUND_TEXTURE := preload("res://assets/combat/ink_wuxia/background.png")
 # Foreground stone band where both frontal-duel battlers make visual contact.
 const DUEL_FLOOR_IMAGE_RATIO := 0.46
 

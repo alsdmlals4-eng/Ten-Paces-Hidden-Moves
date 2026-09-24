@@ -57,6 +57,13 @@ func run_tests() -> void:
     check(won > 1750 and won < 2250 and failed > 0, "Deterministic seed sample matches roughly 50 percent success")
     check(rare > 130 and rare < 270, "Independent ten percent bonus after success yields roughly five percent overall")
     var legacy = load("res://src/run/run_checkpoint_codec.gd").new()
+    var art_candidate := {"candidate_id":"masked_baekmujin", "portrait":"assets/characters/portraits/masked_baekmujin_ink_20260925.png", "signature_manual_id":"plum_sword"}
+    var identity_candidate: Array = legacy.compatible_candidate_identity([art_candidate])
+    check(art_candidate.portrait.ends_with("ink_20260925.png"), "Save compatibility must not replace the live art path")
+    check(identity_candidate[0].portrait == "output/blueprint-candidates/opponent-baekmujin-v1.png", "Only the approved portrait alias keeps historical identity bytes")
+    var changed_rules := art_candidate.duplicate(true)
+    changed_rules.signature_manual_id = "different_manual"
+    check(legacy.digest(identity_candidate) != legacy.digest(legacy.compatible_candidate_identity([changed_rules])), "Art compatibility must still reject changed gameplay content")
     check(legacy.content_identity_for_schema(5) == "5363363676e6c1e66ac36bb4725dea1b2918c6f35744c50e453999d61e442884", "Schema5 content identity remains byte-compatible")
     for boundary in ["pending","applied"]:
         var decoded: Dictionary = legacy.decode(FileAccess.get_file_as_string("res://tests/fixtures/giyun_v1/"+boundary+".json"))

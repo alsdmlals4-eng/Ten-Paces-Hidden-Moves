@@ -1,16 +1,16 @@
 {
-	"captures": {
-		"bundle-1-complete": 202,
-		"bundle-2-complete": 411,
-		"bundle-3-complete": 710,
-		"clash-contact": 59,
-		"clash-keyshot": 95,
-		"four-slots": 543,
-		"preparation-before": 0,
-		"resolved-damage": 127
-	},
-	"engine": "4.7.1-stable (official)",
-	"fps": 24,
-	"frames": 710,
-	"source": "Actual CombatBoardPreview with actual resolver fixed plans; not offline compositing"
+  "captures": {
+    "bundle-1-complete": 195,
+    "bundle-2-complete": 395,
+    "bundle-3-complete": 686,
+    "clash-contact": 59,
+    "clash-keyshot": 95,
+    "four-slots": 527,
+    "preparation-before": 0,
+    "resolved-damage": 127
+  },
+  "engine": "4.7.1-stable (official)",
+  "fps": 24,
+  "frames": 686,
+  "source": "Actual CombatBoardPreview with actual resolver fixed plans; not offline compositing"
 }

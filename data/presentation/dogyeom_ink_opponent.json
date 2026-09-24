@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "candidate_id": "slot1_dogyeom",
+  "unarmed": true,
+  "source": "docs/visual-assets/candidates/TEN-INK-SCREENS-20260925/dogyeom-poses.png",
+  "source_sha256": "5963412b63c0805fbe59bc8f20dac61a4afea46ab729fcf75cbaaaf2a8a8375b",
+  "poses": [
+    {
+      "path": "res://assets/combat/ink_wuxia/slot1_dogyeom/enemy-0.png",
+      "size": [
+        440,
+        422
+      ],
+      "foot": [
+        218,
+        414
+      ],
+      "hilt": [
+        104,
+        255
+      ],
+      "tip": [
+        86,
+        270
+      ],
+      "sha256": "e4529bb40fe7585db1777934fcacbe852ba2cf97cecdacdaff27af0cb3aa568b"
+    },
+    {
+      "path": "res://assets/combat/ink_wuxia/slot1_dogyeom/enemy-1.png",
+      "size": [
+        386,
+        421
+      ],
+      "foot": [
+        186,
+        413
+      ],
+      "hilt": [
+        87,
+        126
+      ],
+      "tip": [
+        83,
+        84
+      ],
+      "sha256": "42650b87f613a67b08b34a9490da5e510eb7c83cd89063417bec0a60ecdc28fd"
+    },
+    {
+      "path": "res://assets/combat/ink_wuxia/slot1_dogyeom/enemy-2.png",
+      "size": [
+        435,
+        349
+      ],
+      "foot": [
+        236,
+        340
+      ],
+      "hilt": [
+        82,
+        179
+      ],
+      "tip": [
+        59,
+        185
+      ],
+      "sha256": "8555a67be0d23dc150e9a7ff56d8faef9b770c93d85d915d639a39919d6dbf28"
+    },
+    {
+      "path": "res://assets/combat/ink_wuxia/slot1_dogyeom/enemy-3.png",
+      "size": [
+        437,
+        425
+      ],
+      "foot": [
+        217,
+        417
+      ],
+      "hilt": [
+        63,
+        72
+      ],
+      "tip": [
+        41,
+        46
+      ],
+      "sha256": "e0e3564a0bf3db5e9318dd55815c9e346f865b5b2bf1c2868ed3bd8b2aecfc52"
+    },
+    {
+      "path": "res://assets/combat/ink_wuxia/slot1_dogyeom/enemy-4.png",
+      "size": [
+        435,
+        394
+      ],
+      "foot": [
+        188,
+        387
+      ],
+      "hilt": [
+        168,
+        119
+      ],
+      "tip": [
+        136,
+        95
+      ],
+      "sha256": "2eb0ef07ecafec695763a80592f8bcf049398d5dc0ec68052f40c4643623812d"
+    },
+    {
+      "path": "res://assets/combat/ink_wuxia/slot1_dogyeom/enemy-5.png",
+      "size": [
+        517,
+        357
+      ],
+      "foot": [
+        323,
+        344
+      ],
+      "hilt": [
+        164,
+        73
+      ],
+      "tip": [
+        119,
+        70
+      ],
+      "sha256": "9aeff892ab1617d52b49eb8ace69a5b641b75127ca50a7fd40591b69aea06e49"
+    },
+    {
+      "path": "res://assets/combat/ink_wuxia/slot1_dogyeom/enemy-6.png",
+      "size": [
+        431,
+        434
+      ],
+      "foot": [
+        215,
+        416
+      ],
+      "hilt": [
+        191,
+        47
+      ],
+      "tip": [
+        213,
+        33
+      ],
+      "sha256": "31f9679840fdc793122ac1312fe3c53ed867d54331ae3cbcca65152ad37ec572"
+    },
+    {
+      "path": "res://assets/combat/ink_wuxia/slot1_dogyeom/enemy-7.png",
+      "size": [
+        475,
+        374
+      ],
+      "foot": [
+        246,
+        360
+      ],
+      "hilt": [
+        190,
+        274
+      ],
+      "tip": [
+        168,
+        310
+      ],
+      "sha256": "d7eeab3e0833d06e5a927682221c09829eaa7ec830a12517a8210f9682a4b58b"
+    },
+    {
+      "path": "res://assets/combat/ink_wuxia/slot1_dogyeom/enemy-8.png",
+      "size": [
+        427,
+        417
+      ],
+      "foot": [
+        233,
+        403
+      ],
+      "hilt": [
+        114,
+        203
+      ],
+      "tip": [
+        93,
+        224
+      ],
+      "sha256": "38be20626f61c6eacf7149102d2eace63486abacefa02fa15479d8c764c24039"
+    }
+  ],
+  "hero": ""
+}

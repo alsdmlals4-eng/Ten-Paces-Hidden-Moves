@@ -276,23 +276,23 @@
       },
       {
         "file": "clash-v2/runtime-bundles.mp4",
-        "sha256": "6c24c9eca66fa73b16bd55042fa101f7d0f8ff039a761e423f06f05c7a713051",
-        "bytes": 5524662
+        "sha256": "4c98407e384ad7f8d86f8722104c918690e481caea7b5a4260f23b2b17283e75",
+        "bytes": 6627000
       },
       {
         "file": "clash-v2/runtime-contact.png",
-        "sha256": "71160da6f1251c5063169ba23211dd564985dc880d8415cf401268f1c6f7673f",
-        "bytes": 1484603
+        "sha256": "fc75017842325c3f1e5944d6061d04e7fb2b81ce43982bc1495071d12301a627",
+        "bytes": 1563312
       },
       {
         "file": "clash-v2/runtime-result.png",
-        "sha256": "f42fe346bbdb81279064908fd13abe6ef349acaa5d43148e1dd3f95ca1144261",
-        "bytes": 1493256
+        "sha256": "66fa282fc4687749ef2b97e125f027be15b7104c754ef51eec3ab3b48ca99688",
+        "bytes": 1567631
       },
       {
         "file": "clash-v2/runtime-four-slots.png",
-        "sha256": "3a87fc2385ecd58c75f62cb3706f4bde1fcdf5830fd488af20d88ea0e0aaa6a7",
-        "bytes": 1488259
+        "sha256": "7fb7e4538dc56496df455ce8c4708fa157ea2eed7c307733a674f988475fdfad",
+        "bytes": 1564563
       }
     ],
     "source_art": [
@@ -368,15 +368,20 @@
       "capture": "clash-v2/runtime-capture.json",
       "video": "clash-v2/runtime-bundles.mp4",
       "source": "Actual Godot CombatBoardPreview and resolver with fixed committed plans; silent automated capture",
-      "frames": 710,
+      "frames": 686,
       "fps": 24,
-      "duration_seconds": 29.583333333333332,
+      "duration_seconds": 28.583,
       "preserves_existing_preparation": true,
       "rules_modified": false,
       "save_modified": false,
       "future_enemy_actions_hidden": true,
       "human_flow_approval": "NOT_RUN",
-      "all_opponent_and_weapon_specific_pose_art": "NOT_COMPLETE"
+      "all_opponent_and_weapon_specific_pose_art": "NOT_COMPLETE",
+      "current_capture_manifest": "docs/blueprint/evidence/ink-screens-20260925/manifest.json",
+      "current_opponents": [
+        "masked_baekmujin",
+        "slot1_dogyeom"
+      ]
     }
   },
   "previous_motion": {

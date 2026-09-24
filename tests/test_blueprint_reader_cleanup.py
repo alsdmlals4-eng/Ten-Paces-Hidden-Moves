@@ -24,9 +24,10 @@ class ReaderCleanupTests(unittest.TestCase):
         import html_blueprint as model
         from html_blueprint_experience import build
         c=build(model.collect_reader())['contexts']
-        self.assertIn('starter',c['starter']['preview']['path'])
+        self.assertTrue(c['starter']['preview']['path'].endswith('/setup.png'))
         self.assertNotIn('martial-summary',c['starter']['preview']['path'])
-        self.assertIn('편집',c['plan']['preview_kind'])
+        self.assertIn('실제 Godot',c['plan']['preview_kind'])
+        self.assertNotIn('region',c['plan']['preview'])
 
     def test_route_order_tables_sources_and_preserved_ids(self):
         import html_blueprint as model

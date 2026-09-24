@@ -34,3 +34,5 @@
 2. 프로젝트 로컬 비런타임 보관소: `docs/visual-assets/approved/<승인-ID>/`에 원본과 SHA-256 manifest를 보관한다.
 
 실제 런타임 `assets/`로의 복사와 게임 연결은 이 보관 규칙에 포함되지 않는다.
+
+2026-09-25: 표6의 도겸 전신 원본은 새 수묵 도겸으로 교체한 파일과 동일한 중복본이어서 사용자 직접 폐기 요청으로 삭제했다. 현재 파일은 `assets/combat/ink_wuxia/slot1_dogyeom/enemy-0.png`; 위 SHA256은 삭제 전 역사 기록이다.

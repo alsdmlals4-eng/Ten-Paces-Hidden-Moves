@@ -79,6 +79,22 @@ def refine(pages, giyun):
     for page in pages:
         page['original_blocks'] = deepcopy(page['blocks'])
         page['blocks'] = compact(page['blocks'])
+    # Refresh active screen examples together. The original PDF remains the
+    # historical source; a route wireframe and an outcome-specific evade diagram
+    # must not be replaced by an unrelated battle screenshot.
+    from build_human_blueprint_complete import SCREENS
+    current = {'menu':'main','route':'journey','rest':'rest','brief':'briefing','compare':'resolution','result':'result'}
+    screen_files = {SCREENS[k]:v for k,v in current.items()}
+    screen_files['preparation-hud-edited-v2.png'] = 'preparation'
+    for page_id in ['reader-005','reader-015','reader-017','reader-082']:
+        for block in by_id[page_id]['blocks']:
+            file = block.get('path','').rsplit('/',1)[-1]
+            if block['kind']=='image' and file in screen_files:
+                block['path']='docs/blueprint/evidence/ink-screens-20260925/'+screen_files[file]+'.png'
+                block.pop('region',None)
+    by_id['reader-082']['title']='준비 화면 · 현재 수묵 배경과 인물'
+    by_id['reader-082']['subtitle']='실제 Godot 화면 · 기존 행동 선택·배치·확정 유지'
+    by_id['reader-082']['blocks']=[b for b in by_id['reader-082']['blocks'] if b['kind']=='image']+[note('승인 수묵 화풍의 배경·인물을 적용한 현재 준비 화면입니다. 조작과 공개 정보·게임 규칙은 유지합니다.')]
     # The PDF emits picture then label. Keep them in one card so a label cannot
     # appear to describe the next, unrelated full-width picture.
     # Similar long image lists retain their source order and text in compact views.
@@ -93,11 +109,12 @@ def refine(pages, giyun):
         if b['kind'] == 'text' and (b['text'] == '대' or b['text'].startswith('현재 계획'))]
     atlas_page = by_id['reader-006']
     atlas_page['layout'] = 'screen_gallery'
+    atlas_page['subtitle'] = '현재 수묵 화면의 실제 Godot 촬영입니다. 나의 상태는 기존 배치 참고안이며, 결과·행로·휴식은 격리된 UI 확인 상황입니다.'
     contexts = iter(['menu','route','status','brief','rest','plan','resolve','evade','result'])
     categories = {'menu': ('메인 메뉴', '새 여정·이어하기'), 'route': ('강호행로', '행로 선택'),
                   'status': ('플레이어', '상태창'), 'brief': ('전투', '비무 브리핑'),
                   'rest': ('강호행로', '주막·휴식'), 'plan': ('전투', '전투 준비 화면'),
-                  'resolve': ('전투', '합·해결 설명'), 'evade': ('전투', '회피 연출'), 'result': ('전투', '결과·복기')}
+                  'resolve': ('전투', '합·해결 설명'), 'evade': ('전투', '4수 행동 묶음 진행'), 'result': ('전투', '결과·복기')}
     for index, block in enumerate(atlas_page['blocks']):
         if block['kind'] == 'image':
             label = atlas_page['blocks'][index+1]
@@ -106,6 +123,12 @@ def refine(pages, giyun):
             context = next(contexts)
             block.update(screen_context=context, screen_label=label['text'],
                          screen_kind=categories[context][0], screen_usage=categories[context][1])
+            current_screens = {'menu':'main','route':'journey','brief':'briefing','rest':'rest','plan':'preparation','resolve':'resolution','evade':'four-slots','result':'result'}
+            if context in current_screens:
+                block['path'] = 'docs/blueprint/evidence/ink-screens-20260925/' + current_screens[context] + '.png'
+                block.pop('region', None)
+                block['screen_label'] = categories[context][1] + ' · 수묵 화풍 실제 화면'
+                label['text'] = block['screen_label']
     # The PDF's tiny placement examples must not become 13 full-width pictures.
     atlas = 'assets/ui/cards/basic_technique_ink_atlas_01_v1.png'
     plan = by_id['reader-017']

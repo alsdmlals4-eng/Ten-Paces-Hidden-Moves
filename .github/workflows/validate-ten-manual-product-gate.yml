@@ -101,6 +101,8 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_ink_resolution_model.gd
       - name: Verify complete ink bundles and preserved planning
         run: godot --headless --path . --script res://tests/verify_ink_combat_runtime.gd
+      - name: Verify enlarged ink results and current opponent routing
+        run: godot --headless --path . --script res://tests/verify_ink_screen_refresh.gd
       - name: Verify card motion facts and fallback
         run: godot --headless --path . --script res://tests/verify_card_motion_presets.gd
       - name: Verify fifty ten-manual product scenarios

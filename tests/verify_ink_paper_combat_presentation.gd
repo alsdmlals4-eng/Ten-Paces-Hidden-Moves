@@ -2,7 +2,7 @@ extends SceneTree
 
 const BOARD_SCENE := preload("res://scenes/combat/combat_board_preview.tscn")
 const VIEWPORT_SIZE := Vector2(1440.0, 900.0)
-const APPROVED_BACKGROUND_PATH := "res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png"
+const APPROVED_BACKGROUND_PATH := "res://assets/combat/ink_wuxia/background.png"
 
 var failures: Array[String] = []
 

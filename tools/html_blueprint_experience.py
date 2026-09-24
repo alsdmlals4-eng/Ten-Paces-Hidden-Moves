@@ -28,6 +28,8 @@ def clip_freshness(clip, manifest, current):
             'basis': 'CAPTURE_DEPENDENCIES' if clip.get('dependencies') or manifest.get('capture_dependencies') else 'CONSERVATIVE_CAPTURE_INPUTS'}
 
 MOTION_MANIFEST = 'docs/blueprint/evidence/motion/manifest.json'
+INK_MANIFEST = 'docs/blueprint/evidence/ink-screens-20260925/manifest.json'
+SCREEN_CAPTURE = 'docs/blueprint/evidence/ink-screens-20260925/capture.json'
 HUD_REFERENCE = 'docs/blueprint/evidence/reference-screens/preparation-hud-edited-v2.png'
 
 
@@ -62,8 +64,9 @@ def build_contexts():
             for key,(title,pages,image,following) in rows.items()}
 
 
-def load_clips():
-    manifest = read(ROOT, MOTION_MANIFEST)
+def load_clips(manifest_path=None):
+    manifest_path = manifest_path or MOTION_MANIFEST
+    manifest = read(ROOT, manifest_path)
     current = {}
     for path, digest in manifest['source_hashes'].items():
         file = local_path(ROOT, path)
@@ -82,6 +85,7 @@ def load_clips():
     clips = manifest['clips']
     unique_ids(clips)
     for clip in clips:
+        clip['manifest'] = manifest_path
         clip['freshness'] = clip_freshness(clip, manifest, current)
         for field in ['path','poster']:
             verified_file(ROOT, clip[field], clip[field+'_sha256'])
@@ -99,24 +103,20 @@ def build(pages):
             raise ValueError('Atlas context links to an unknown explanation')
         context['preview'] = images[context['atlas_image_index']]
         context['preview_kind'] = '승인 기획의 화면 자료'
-    contexts['starter']['preview'] = {'kind':'image', 'path':'docs/blueprint/evidence/current-ui/starter-selection-1280.png','size':[1280,800]}
-    contexts['starter']['preview_kind'] = '실제 Godot 시작 무공 선택 · 격리 촬영'
-    receipt_path = 'docs/operations/2026-09-22_HTML_BLUEPRINT_WORK_CONTRACT_RECEIPT.json'
-    still = read(ROOT, receipt_path)['action_art_followup']['starter_capture']
-    still_path = still['path'].removeprefix('res://')
-    if still_path != contexts['starter']['preview']['path'] or still['screen'] != 'SETUP':
-        raise ValueError('Starter capture identity mismatch')
-    verified_file(ROOT, still_path, still['sha256'])
-    contexts['starter']['still_capture'] = dict(still, path=still_path, source=receipt_path)
-    from PIL import Image
-    with Image.open(local_path(ROOT, HUD_REFERENCE)) as image:
-        width, height = image.size
-    contexts['plan']['preview'] = {'kind':'image', 'path':HUD_REFERENCE, 'size':[width,height], 'region':[0,0,width,round(height*.60)]}
-    contexts['plan']['preview_kind'] = '상태창 여백 편집 참고안 · 실제 재촬영 아님'
-    contexts['resolve']['preview'] = {'kind':'image', 'path':'assets/blueprint/clash_explanation_v1.png', 'size':[1672,940]}
-    contexts['resolve']['preview_kind'] = '현재 승인 그림체 · 합 설명 삽화'
+    stills = {s['key']:s for s in read(ROOT, SCREEN_CAPTURE)['shots']}
+    for key, shot in {'menu':'main','starter':'setup','brief':'briefing','plan':'preparation',
+                      'resolve':'resolution','result':'result','route':'journey','end':'result'}.items():
+        still = stills[shot]
+        path = still['path'].removeprefix('res://')
+        verified_file(ROOT, path, still['sha256'])
+        contexts[key]['preview'] = dict(kind='image',path=path,size=still['size'])
+        contexts[key]['still_capture'] = dict(still,path=path,screen='SETUP' if key=='starter' else shot.upper(),source=SCREEN_CAPTURE)
+        contexts[key]['preview_kind'] = '현재 수묵 화면 · 실제 Godot 격리 촬영'
+    for key in ['result','route','end']:
+        contexts[key]['preview_kind'] = '현재 수묵 화면 · 결과·행로 UI 확인용 고정 상황 촬영'
+    contexts['end']['preview_kind'] = '비무 결과 화면 참고 · 여정 종료 전용 캡처는 별도'
     for key, context in contexts.items():
         context['preview'] = dict(context['preview'], page_id='screen:'+key)
-    return {'contexts': contexts, 'clips': load_clips(),
+    return {'contexts': contexts, 'clips': load_clips(INK_MANIFEST)+load_clips(),
             'constraints': read(ROOT, 'data/run/bimu_constraints.json'),
             'actions': basic_actions()}

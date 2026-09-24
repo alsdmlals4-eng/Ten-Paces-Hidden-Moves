@@ -20,12 +20,13 @@ class MediaTableTests(unittest.TestCase):
         self.assertEqual(atlas.get('layout'), 'screen_gallery')
         pictures = [b for b in atlas['blocks'] if b['kind'] == 'image']
         self.assertEqual(len(pictures), 9)
-        combat = next(b for b in pictures if 'preparation-hud' in b['path'])
+        combat = next(b for b in pictures if b['path'].endswith('/preparation.png'))
         self.assertEqual(combat['screen_context'], 'plan')
-        self.assertEqual(combat['screen_label'], '전투 준비 · 현재 계획')
+        self.assertIn('전투 준비',combat['screen_label'])
+        self.assertEqual(combat['screen_kind'],'전투')
         for page in pages:
             if page['id'] in {'reader-009','reader-010','reader-011','reader-012','reader-013','reader-014'}:
-                self.assertFalse(any('preparation-hud' in b.get('path', '') for b in page['blocks']))
+                self.assertFalse(any(b.get('path','') == combat['path'] or 'preparation-hud' in b.get('path','') for b in page['blocks']))
 
     def test_event_effects_keep_all_choices_but_group_repeated_event_context(self):
         pages = reader.refine(model.collect_reader(), model.read(model.ROOT, 'data/run/giyun_rules.json'))

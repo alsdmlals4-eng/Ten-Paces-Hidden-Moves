@@ -189,6 +189,7 @@ def collect_reader():
 
 def collect_assets(root):
     approval = read(root, 'docs/planning-data/current_user_planning_status.json')['blueprint_final_approval']
+    retired = {row['path']: row for row in read(root, 'docs/blueprint/IMPLEMENTATION_READINESS.json').get('retired_images', [])}
     verified_file(root, approval['artifact'], approval['artifact_sha256'])
     by_path = {}
     for entry in read(root, 'assets/ASSET_MANIFEST.json')['assets']:
@@ -209,6 +210,10 @@ def collect_assets(root):
                 raise FileNotFoundError(f'Approved asset missing: {path}')
         by_path[path] = item
     for entry in approval['approved_visual_inputs']:
+        if entry['path'] in retired and retired[entry['path']]['status'] == 'DELETED_BY_USER_REQUEST':
+            if retired[entry['path']]['sha256'] != entry['sha256']:
+                raise ValueError('Retired source differs from its historical approval: ' + entry['path'])
+            continue
         path, digest = verified_file(root, entry['path'], entry['sha256'])
         item = by_path.setdefault(entry['path'], {'id': 'asset-' + hashlib.sha256(entry['path'].encode()).hexdigest()[:16],
             'path': entry['path'], 'name': path.stem, 'scope': 'MAIN_SOURCE', 'active': None, 'consumers': [], 'details': {}})

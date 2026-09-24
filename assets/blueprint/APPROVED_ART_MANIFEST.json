@@ -4,12 +4,12 @@
   "approved_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101",
   "status": "USER_APPROVED__CANON_REGISTERED",
   "runtime_evidence": "47 texture loads;30 actual card/detail bindings; native briefing+combat capture; explanatory clash remains document-only",
-  "preserved_existing_records_sha256": "5f2ff1653001d5591b27f22abe8d07ba130874562191cd2f22c092aad02475ad",
-  "preserved_existing_record_count": 24,
+  "preserved_existing_records_sha256": "ace684fbed189fe9fbf0b53d3207dd25dd4b22f9d42cb52e7b50c7dff4a67b4f",
+  "preserved_existing_record_count": 22,
   "portraits": {
-    "masked_baekmujin": "res://assets/characters/portraits/masked_baekmujin_portrait_v1.png",
+    "masked_baekmujin": "res://assets/characters/portraits/masked_baekmujin_ink_20260925.png",
     "slot1_yeongyo": "res://assets/characters/portraits/slot1_yeongyo_portrait_v1.png",
-    "slot1_dogyeom": "res://assets/characters/portraits/slot1_dogyeom_portrait_v1.png",
+    "slot1_dogyeom": "res://assets/characters/portraits/slot1_dogyeom_ink_20260925.png",
     "slot1_chaeryeong": "res://assets/characters/portraits/slot1_chaeryeong_portrait_v1.png",
     "slot2_mukjin": "res://assets/characters/portraits/slot2_mukjin_portrait_v1.png",
     "slot2_seokmu": "res://assets/characters/portraits/slot2_seokmu_portrait_v1.png",
@@ -80,21 +80,25 @@
   "assets": [
     {
       "id": "blueprint_portrait_masked_baekmujin_v1",
-      "path": "res://assets/characters/portraits/masked_baekmujin_portrait_v1.png",
-      "source_asset": "output/blueprint-candidates/opponent-baekmujin-v1.png",
-      "source_png_sha256": "ec373989585c1959fe09b0d850a41a64605b5e237d961aca832337a73daf34d7",
-      "dimensions": "1024x1536",
+      "path": "res://assets/characters/portraits/masked_baekmujin_ink_20260925.png",
+      "source_asset": "assets/characters/portraits/masked_baekmujin_ink_20260925.png",
+      "source_png_sha256": "aefeaabd403f4739b5980a8215bc226fa359e7372f03722367ef2b607a9567e6",
+      "dimensions": "340x330",
       "usage": "static_opponent_codex_and_briefing_portrait",
       "role": "static_opponent_codex_and_briefing_portrait",
       "generator": "OpenAI built-in image generation",
-      "provenance_owner": "docs/blueprint/ILLUSTRATION_CANDIDATES.md",
-      "approval": "docs/planning-data/current_user_planning_status.json#blueprint_final_approval",
-      "status": "USER_APPROVED__CANON_REGISTERED",
+      "provenance_owner": "docs/visual-assets/candidates/TEN-INK-SCREENS-20260925/generation.json",
+      "approval": "2026-09-25 latest user: 필요한 이미지 제작,게임에 연결,구현까지 진행하고 html에도 다 반영; 이미지 변경하고 기존이미지 폐기",
+      "status": "IMPLEMENTATION_AUTHORIZED__CANON_REGISTERED",
       "runtime_consumer": "src/ui/approved_blueprint_art.gd; src/run/vertical_slice_shell.gd",
-      "runtime_evidence": "NOT_RUN",
+      "runtime_evidence": "docs/blueprint/evidence/ink-screens-20260925/manifest.json",
       "rights_review": "RELEASE_BLOCKED_UNVERIFIED: exact service/model/account terms and reference input rights are not established by visual approval",
       "active": true,
-      "transparency_required": false
+      "transparency_required": false,
+      "prior_source_asset": "output/blueprint-candidates/opponent-baekmujin-v1.png",
+      "prior_source_png_sha256": "ec373989585c1959fe09b0d850a41a64605b5e237d961aca832337a73daf34d7",
+      "sha256": "aefeaabd403f4739b5980a8215bc226fa359e7372f03722367ef2b607a9567e6",
+      "visual_review": "USER_QUALITY_REVIEW_PENDING"
     },
     {
       "id": "blueprint_portrait_slot1_yeongyo_v1",
@@ -116,21 +120,25 @@
     },
     {
       "id": "blueprint_portrait_slot1_dogyeom_v1",
-      "path": "res://assets/characters/portraits/slot1_dogyeom_portrait_v1.png",
-      "source_asset": "output/blueprint-candidates/opponent-dogyeom.png",
-      "source_png_sha256": "fe9aa7f3929b2dd01e04df308129f1f73672b36101ab91f68b785761779df8f9",
-      "dimensions": "1024x1536",
+      "path": "res://assets/characters/portraits/slot1_dogyeom_ink_20260925.png",
+      "source_asset": "assets/characters/portraits/slot1_dogyeom_ink_20260925.png",
+      "source_png_sha256": "a7ccb97a726ad08a8f1e0bec96831b4dccf755a06b32149f2d31e3ddbfa16abc",
+      "dimensions": "340x330",
       "usage": "static_opponent_codex_and_briefing_portrait",
       "role": "static_opponent_codex_and_briefing_portrait",
       "generator": "OpenAI built-in image generation",
-      "provenance_owner": "docs/blueprint/ILLUSTRATION_CANDIDATES.md",
-      "approval": "docs/planning-data/current_user_planning_status.json#blueprint_final_approval",
-      "status": "USER_APPROVED__CANON_REGISTERED",
+      "provenance_owner": "docs/visual-assets/candidates/TEN-INK-SCREENS-20260925/generation.json",
+      "approval": "2026-09-25 latest user: 필요한 이미지 제작,게임에 연결,구현까지 진행하고 html에도 다 반영; 이미지 변경하고 기존이미지 폐기",
+      "status": "IMPLEMENTATION_AUTHORIZED__CANON_REGISTERED",
       "runtime_consumer": "src/ui/approved_blueprint_art.gd; src/run/vertical_slice_shell.gd",
-      "runtime_evidence": "NOT_RUN",
+      "runtime_evidence": "docs/blueprint/evidence/ink-screens-20260925/manifest.json",
       "rights_review": "RELEASE_BLOCKED_UNVERIFIED: exact service/model/account terms and reference input rights are not established by visual approval",
       "active": true,
-      "transparency_required": false
+      "transparency_required": false,
+      "prior_source_asset": "output/blueprint-candidates/opponent-dogyeom.png",
+      "prior_source_png_sha256": "fe9aa7f3929b2dd01e04df308129f1f73672b36101ab91f68b785761779df8f9",
+      "sha256": "a7ccb97a726ad08a8f1e0bec96831b4dccf755a06b32149f2d31e3ddbfa16abc",
+      "visual_review": "USER_QUALITY_REVIEW_PENDING"
     },
     {
       "id": "blueprint_portrait_slot1_chaeryeong_v1",
@@ -954,5 +962,13 @@
       "active": true,
       "transparency_required": false
     }
-  ]
+  ],
+  "refresh_20260925": {
+    "approval": "2026-09-25 latest user: 필요한 이미지 제작,게임에 연결,구현까지 진행하고 html에도 다 반영; 이미지 변경하고 기존이미지 폐기",
+    "manifest": "docs/visual-assets/candidates/TEN-INK-SCREENS-20260925/generation.json",
+    "replaced_portraits": [
+      "masked_baekmujin",
+      "slot1_dogyeom"
+    ]
+  }
 }

@@ -22,7 +22,7 @@ func run_check() -> void:
     await process_frame
     await process_frame
     var background = board.battle_background
-    check(background.texture.resource_path == "res://assets/backgrounds/atlas_blue_ink_courtyard_v1.png", "combat must consume atlas successor")
+    check(background.texture.resource_path == "res://assets/combat/ink_wuxia/background.png", "combat must consume atlas successor")
     check(background.modulate == Color.WHITE, "do not tint blue source back to sepia")
     check(not board.duel_foreground_banner.visible, "legacy sepia foreground must not cover atlas courtyard")
     var status = board.top_hud.player_panel

@@ -212,15 +212,16 @@ func _independent_ink(actor: CombatCharacterPlaceholder, motion: bool = true) ->
 	var used: Rect2 = Rect2(source.used)
 	var dimensions: Vector2 = Vector2(source.size)
 	var h := actor.size.y * 1.08
+	var w := h * dimensions.x / dimensions.y if path.begins_with("res://assets/combat/ink_wuxia/") else h
 	var foot_ratio := clampf(used.end.y / dimensions.y, 0.70, 1.0)
-	var origin := Vector2((actor.size.x - h) / 2.0, actor.size.y - h * foot_ratio)
+	var origin := Vector2((actor.size.x - w) / 2.0, actor.size.y - h * foot_ratio)
 	var pivot := Vector2(actor.size.x / 2.0, actor.size.y)
 	var scale_value := actor.visual_scale if motion else 1.0
-	var mirror := -1.0 if actor.role == "enemy" and actor.facing < 0 and path.ends_with("dogyeom_combat_battler_01_v1.png") else 1.0
+	var mirror := 1.0 # Current generated enemy poses already face left.
 	var result := Rect2()
 	var first := true
 	for corner in [used.position, Vector2(used.end.x, used.position.y), used.end, Vector2(used.position.x, used.end.y)]:
-		var local: Vector2 = origin + corner / dimensions * h
+		var local: Vector2 = origin + corner / dimensions * Vector2(w,h)
 		local = pivot + (local - pivot) * Vector2(mirror, 1.0) * scale_value + (actor.visual_offset if motion else Vector2.ZERO)
 		var point: Vector2 = actor.get_global_transform() * local
 		result = Rect2(point, Vector2.ZERO) if first else result.expand(point)

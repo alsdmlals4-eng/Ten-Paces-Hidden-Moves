@@ -30,6 +30,7 @@ def candidate(revision, assets, out):
     prefix = 'docs/visual-assets/candidates/TEN-OPPONENT-FEEDBACK-20260921/'
     appearance = model.read(ROOT, 'docs/planning-data/current_user_planning_status.json').get('opponent_appearance_approval_20260922', {})
     entries = list(manifest['assets'])
+    retired = {r['path'] for r in model.read(ROOT, 'docs/blueprint/IMPLEMENTATION_READINESS.json').get('retired_images', [])}
     for item in appearance.get('files', []):
         entries.append({'id': 'appearance-' + item['candidate_id'], 'path': item['path'], 'role': item['name'] + ' · 전신 외형',
                         'appearance_sha256': item['sha256'], 'appearance_only': True, 'active': False,
@@ -41,6 +42,8 @@ def candidate(revision, assets, out):
     candidate_paths = set(model.git('ls-tree', '-r', '--name-only', revision).splitlines())
     for entry in entries:
         path = entry['path'].removeprefix('res://')
+        if path in retired:
+            continue
         data = blob(revision, path)
         digest = hashlib.sha256(data).hexdigest()
         if entry.get('appearance_sha256') and entry['appearance_sha256'] != digest:
@@ -234,12 +237,18 @@ def build(out=OUT, include_candidate=True):
     inputs['tools/html_blueprint_diagrams.py'] = model.sha(ROOT/'tools/html_blueprint_diagrams.py')
     experience_paths = ['tools/html_blueprint_experience.py','tools/html_blueprint_ui/experience.js',
         'tools/capture_blueprint_motion.gd','tools/encode_blueprint_motion.py',experience_model.MOTION_MANIFEST,
+        experience_model.INK_MANIFEST,experience_model.SCREEN_CAPTURE,
         'data/run/bimu_constraints.json','data/cards/basic_cards.json']
     experience_paths.extend(c['preview']['path'] for c in experience['contexts'].values())
     for clip in experience['clips']:
         experience_paths.extend([clip['path'],clip['poster']])
     for path in experience_paths:
         inputs[path] = model.sha(model.local_path(ROOT,path))
+    # The selected style comparison is a reviewed local page, with an explicit
+    # media allowlist under its public artifact directory.
+    for path in (ROOT/'docs/visual-assets/candidates/TEN-INK-STYLES-20260924').rglob('*'):
+        if path.is_file() and path.suffix in {'.html','.png','.jpg','.gif','.mp4','.json','.md'}:
+            inputs[path.relative_to(ROOT).as_posix()] = model.sha(path)
     for item in pm['items']:
         if item.get('scope') != 'PR342_CANDIDATE':
             inputs[item['source']] = model.sha(model.local_path(ROOT, item['source']))
