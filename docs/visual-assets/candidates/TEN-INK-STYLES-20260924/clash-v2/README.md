@@ -101,3 +101,9 @@ GIF는 요청할 때만 읽으며 기본 재생은 작은 MP4를 사용한다. �
 4. `publish-result-examples.cjs`로 HTML의 판정 예시를 갱신한다. 생성된 실제 해시로 상위 `candidates.json.motion`을 갱신하고 `open_preview.py`로 현재 발행본을 연다.
 
 게임 제품 경로·실제 사용자 코멘트는 변경하지 않는다. 다음 게임 적용은 이번 확정 기준과 기존 실제 consumer/PR342를 대조해 진행한다. 기준 채택 때문에 관련 없는 제품 구현이나 PR을 병합하지 않는다.
+
+## 실제 게임 적용 · 2026-09-25
+
+상위 HTML의 최신 `#clash-preview`에는 `runtime-bundles.mp4`를 연결했다. Godot4.7.1의 실제 CombatBoardPreview와 실제 판정기로 고정 세 묶음을 진행한 무음 촬영이다. `runtime-capture.json`에 프레임·촬영 출처, `candidates.json.motion.runtime_application`에 적용 범위가 있다. 위 기존 오프라인 시안의 미적용 기록은 당시 이력으로 보존한다.
+
+원화5개를 재생성하지 않고 `tools/export_approved_ink_stage.cjs`로18자세/원본3개를 제품 경로에 내보냈다. 각 수의 판정·하단 변화, 다음 적 행동 은폐, 모션 감소/건너뛰기·일시정지·재시작, 준비 화면 복귀를 실제 consumer에서 확인한다. 모든 상대·무기별 고유 원화와 사람의 액션 관람 평가는 별도다. 실제 코드·검토·필수 검사·병합 근거는 `docs/operations/2026-09-09_CLASH_DIRECTION_EXECUTION_REPORT.md`의2026-09-25 후속을 따른다.

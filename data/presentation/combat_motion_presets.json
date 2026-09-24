@@ -1,0 +1,337 @@
+{
+  "schema_version": 1,
+  "purpose": "PRESENTATION_ONLY_NO_DOMAIN_NUMBERS",
+  "pose_gap": "Non-sword families use neutral existing pose until their own final-locked art exists.",
+  "families": {
+    "neutral": {
+      "duration": 0.4,
+      "travel": 0.0,
+      "windup": 0.4,
+      "hit_stop": 0.0,
+      "pose": "neutral",
+      "contact": "none",
+      "curve": "sine",
+      "camera": 0.0
+    },
+    "sword_quick": {
+      "duration": 0.42,
+      "travel": 0.12,
+      "windup": 0.3,
+      "hit_stop": 0.025,
+      "pose": "sword",
+      "contact": "metal",
+      "curve": "quad",
+      "camera": 0.8
+    },
+    "sword_heavy": {
+      "duration": 0.68,
+      "travel": 0.2,
+      "windup": 0.48,
+      "hit_stop": 0.055,
+      "pose": "sword",
+      "contact": "metal",
+      "curve": "quint",
+      "camera": 1.1
+    },
+    "sword_flow": {
+      "duration": 0.5,
+      "travel": 0.14,
+      "windup": 0.34,
+      "hit_stop": 0.035,
+      "pose": "sword",
+      "contact": "metal",
+      "curve": "sine",
+      "camera": 0.9
+    },
+    "spear": {
+      "duration": 0.56,
+      "travel": 0.12,
+      "windup": 0.38,
+      "hit_stop": 0.035,
+      "pose": "neutral",
+      "contact": "unknown",
+      "curve": "quad",
+      "camera": 0.8
+    },
+    "palm": {
+      "duration": 0.56,
+      "travel": 0.0,
+      "windup": 0.46,
+      "hit_stop": 0.04,
+      "pose": "neutral",
+      "contact": "energy",
+      "curve": "sine",
+      "camera": 0.8
+    },
+    "throw": {
+      "duration": 0.44,
+      "travel": 0.0,
+      "windup": 0.32,
+      "hit_stop": 0.02,
+      "pose": "neutral",
+      "contact": "projectile",
+      "curve": "quad",
+      "camera": 0.6
+    },
+    "body": {
+      "duration": 0.5,
+      "travel": 0.07,
+      "windup": 0.4,
+      "hit_stop": 0.035,
+      "pose": "neutral",
+      "contact": "body",
+      "curve": "quad",
+      "camera": 0.8
+    },
+    "self": {
+      "duration": 0.44,
+      "travel": 0.0,
+      "windup": 0.5,
+      "hit_stop": 0.0,
+      "pose": "neutral",
+      "contact": "none",
+      "curve": "sine",
+      "camera": 0.0
+    },
+    "saber": {
+      "duration": 0.64,
+      "travel": 0.14,
+      "windup": 0.4,
+      "hit_stop": 0.035,
+      "pose": "neutral",
+      "contact": "metal",
+      "curve": "quad",
+      "camera": 0.8
+    }
+  },
+  "cards": {
+    "basic_move": {
+      "family": "self"
+    },
+    "basic_footwork": {
+      "family": "self"
+    },
+    "basic_guard": {
+      "family": "self"
+    },
+    "basic_evade": {
+      "family": "self"
+    },
+    "basic_quick_attack": {
+      "family": "sword_quick"
+    },
+    "basic_heavy_attack": {
+      "family": "sword_heavy"
+    },
+    "basic_observe": {
+      "family": "self"
+    },
+    "basic_meditate": {
+      "family": "self"
+    },
+    "basic_stance": {
+      "family": "self"
+    },
+    "basic_palm": {
+      "family": "palm"
+    },
+    "beggars_dragon_subduing_palm_star3": {
+      "family": "palm",
+      "overrides": {
+        "duration": 0.56
+      }
+    },
+    "beggars_dragon_subduing_palm_star7": {
+      "family": "palm",
+      "overrides": {
+        "duration": 0.59
+      }
+    },
+    "beggars_dragon_subduing_palm_star10": {
+      "family": "palm",
+      "overrides": {
+        "duration": 0.66
+      }
+    },
+    "hebei_peng_five_tigers_saber_star3": {
+      "family": "saber",
+      "overrides": {
+        "duration": 0.5
+      }
+    },
+    "hebei_peng_five_tigers_saber_star7": {
+      "family": "saber",
+      "overrides": {
+        "duration": 0.53
+      }
+    },
+    "hebei_peng_five_tigers_saber_star10": {
+      "family": "saber",
+      "overrides": {
+        "duration": 0.6
+      }
+    },
+    "mount_hua_plum_blossom_sword_star3": {
+      "family": "sword_flow",
+      "overrides": {
+        "duration": 0.5
+      }
+    },
+    "mount_hua_plum_blossom_sword_star7": {
+      "family": "sword_flow",
+      "overrides": {
+        "duration": 0.53
+      }
+    },
+    "mount_hua_plum_blossom_sword_star10": {
+      "family": "sword_flow",
+      "overrides": {
+        "duration": 0.6
+      }
+    },
+    "mount_hua_purple_mist_art_star3": {
+      "family": "self",
+      "overrides": {
+        "duration": 0.44
+      }
+    },
+    "mount_hua_purple_mist_art_star7": {
+      "family": "self",
+      "overrides": {
+        "duration": 0.47
+      }
+    },
+    "mount_hua_purple_mist_art_star10": {
+      "family": "self",
+      "overrides": {
+        "duration": 0.54
+      }
+    },
+    "nangong_boundless_sky_sword_star3": {
+      "family": "sword_heavy",
+      "overrides": {
+        "duration": 0.68
+      }
+    },
+    "nangong_boundless_sky_sword_star7": {
+      "family": "sword_heavy",
+      "overrides": {
+        "duration": 0.71
+      }
+    },
+    "nangong_boundless_sky_sword_star10": {
+      "family": "sword_heavy",
+      "overrides": {
+        "duration": 0.78
+      }
+    },
+    "shaolin_arhat_vajra_art_star3": {
+      "family": "self",
+      "overrides": {
+        "duration": 0.44
+      }
+    },
+    "shaolin_arhat_vajra_art_star7": {
+      "family": "body",
+      "overrides": {
+        "duration": 0.53
+      }
+    },
+    "shaolin_arhat_vajra_art_star10": {
+      "family": "body",
+      "overrides": {
+        "duration": 0.6
+      }
+    },
+    "sichuan_tang_hidden_weapons_star3": {
+      "family": "throw",
+      "overrides": {
+        "duration": 0.44
+      }
+    },
+    "sichuan_tang_hidden_weapons_star7": {
+      "family": "throw",
+      "overrides": {
+        "duration": 0.47
+      }
+    },
+    "sichuan_tang_hidden_weapons_star10": {
+      "family": "throw",
+      "overrides": {
+        "duration": 0.54
+      }
+    },
+    "wudang_taiji_sword_star3": {
+      "family": "self",
+      "overrides": {
+        "duration": 0.44
+      }
+    },
+    "wudang_taiji_sword_star7": {
+      "family": "sword_flow",
+      "overrides": {
+        "duration": 0.53
+      }
+    },
+    "wudang_taiji_sword_star10": {
+      "family": "sword_flow",
+      "overrides": {
+        "duration": 0.6
+      }
+    },
+    "xiaoyao_lingbo_footwork_star3": {
+      "family": "self",
+      "overrides": {
+        "duration": 0.44
+      }
+    },
+    "xiaoyao_lingbo_footwork_star7": {
+      "family": "body",
+      "overrides": {
+        "duration": 0.53
+      }
+    },
+    "xiaoyao_lingbo_footwork_star10": {
+      "family": "body",
+      "overrides": {
+        "duration": 0.6
+      }
+    },
+    "yang_family_spear_star3": {
+      "family": "spear",
+      "overrides": {
+        "duration": 0.56
+      }
+    },
+    "yang_family_spear_star7": {
+      "family": "spear",
+      "overrides": {
+        "duration": 0.59
+      }
+    },
+    "yang_family_spear_star10": {
+      "family": "spear",
+      "overrides": {
+        "duration": 0.66
+      }
+    },
+    "ultimate_ten_paces_wave": {
+      "family": "palm",
+      "overrides": {
+        "duration": 1.05
+      }
+    },
+    "ultimate_cleave_peak": {
+      "family": "sword_heavy",
+      "overrides": {
+        "duration": 1.05
+      }
+    },
+    "ultimate_void_sword_qi": {
+      "family": "palm",
+      "overrides": {
+        "duration": 1.05
+      }
+    }
+  }
+}

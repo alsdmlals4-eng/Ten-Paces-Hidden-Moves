@@ -16,5 +16,8 @@ output/blueprint/
 output/ink-clash-v1/
 output/ink-clash-v2/
 output/ink-clash-bundles/
+output/ink-runtime/
+output/ink-import.log
+output/ink-validation/
 output/html-skill-demo/
 output/skill-validation-deps/

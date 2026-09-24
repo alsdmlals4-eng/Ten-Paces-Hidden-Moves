@@ -651,5 +651,13 @@
     "spec": "docs/blueprint/HTML_MIGRATION_SPEC.md",
     "ai_preview": "tools/serve_html_blueprint.py",
     "human_check": "User confirmed first screen and gallery; not full game approval"
+  },
+  "ink_combat_runtime": {
+    "decision": "TEN-DEC-20260924-INK-WUXIA-STYLE-AND-FLOW-01",
+    "status": "LOCAL_600_TESTS_WINDOWS_50_SCENARIOS_PASS_PR361_CHECKS_PENDING",
+    "record": "docs/operations/2026-09-09_CLASH_DIRECTION_EXECUTION_REPORT.md",
+    "preserves_existing_preparation": true,
+    "human_android_release": "NOT_RUN",
+    "specific_opponent_weapon_poses": "NOT_COMPLETE"
   }
 }

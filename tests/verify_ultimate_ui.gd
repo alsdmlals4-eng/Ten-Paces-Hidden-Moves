@@ -3,9 +3,9 @@ extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
 const CASES := [
-    ["ultimate_ten_paces_wave", 1, 0],
-    ["ultimate_cleave_peak", 2, 1],
-    ["ultimate_void_sword_qi", 3, 2]
+    ["ultimate_ten_paces_wave", 1, "palm"],
+    ["ultimate_cleave_peak", 2, "sword_heavy"],
+    ["ultimate_void_sword_qi", 3, "palm"]
 ]
 
 var failures: Array[String] = []
@@ -20,7 +20,7 @@ func _run() -> void:
         await _verify_reservation(str(case[0]), int(case[1]))
     for case_value in CASES:
         var case: Array = case_value
-        await _verify_ultimate_playback_visibility(str(case[0]), int(case[1]), int(case[2]))
+        await _verify_ultimate_playback_visibility(str(case[0]), int(case[1]), str(case[2]))
     _finish()
 
 func _verify_disabled_reason_copy() -> void:
@@ -152,7 +152,7 @@ func _verify_reservation(card_id: String, span: int) -> void:
     board.queue_free()
     await process_frame
 
-func _verify_ultimate_playback_visibility(card_id: String, execution_timing: int, expected_band: int) -> void:
+func _verify_ultimate_playback_visibility(card_id: String, execution_timing: int, expected_family: String) -> void:
     var packed := load(BOARD_SCENE_PATH) as PackedScene
     var board := packed.instantiate() as CombatBoardPreview
     board.set_anchors_preset(Control.PRESET_TOP_LEFT)
@@ -161,7 +161,7 @@ func _verify_ultimate_playback_visibility(card_id: String, execution_timing: int
     for _index in range(4):
         await process_frame
 
-    # Legal nonattacking opponent isolates successful atlas routing. The real
+    # Legal nonattacking opponent isolates successful ink routing. The real
     # dock, lock, resolver and CTA playback still execute; no outcome is injected.
     board.combat_state["ai_enabled"] = false
     board.resolution_engine.rules["enemy_bundles"] = {"1": [
@@ -192,33 +192,30 @@ func _verify_ultimate_playback_visibility(card_id: String, execution_timing: int
         else:
             board.combat_progress_button.request_progress()
             var ultimate_timing_seen := false
-            var deadline := Time.get_ticks_msec() + 8000
-            for _attempt in range(320):
+            var deadline := Time.get_ticks_msec() + 24000
+            for _attempt in range(960):
                 await process_frame
-                var event: Dictionary = board.get_meta("presentation_feedback_event", {})
-                if int(board.get_meta("presentation_timing", -1)) == execution_timing and str(event.get("card_id", "")) == card_id and str(event.get("actor", "")) == "player" and str(event.get("action_stage", "")) == "execution" and str(board.get_meta("presentation_feedback_kind", "")) == "ultimate" and str(board._visible_vfx_event.get("card_id", "")) == card_id and board._visible_vfx_kind == "ultimate" and board.presentation_vfx.is_visible_in_tree() and board.presentation_vfx.modulate.a > 0.0:
-                    ultimate_timing_seen = true
-                    break
+                if is_instance_valid(board.ink_presentation) and board.ink_presentation.visible:
+                    var stage: Control = board.ink_presentation.stage
+                    var event: Dictionary = stage.cue.get("event", {})
+                    if int(board.get_meta("presentation_timing", -1)) == execution_timing and str(event.get("card_id", "")) == card_id and str(event.get("actor", "")) == "player" and str(event.get("action_stage", "")) == "execution" and stage.cue.kind == "attack" and stage.progress > 0.40 and stage.progress < 0.60 and stage.is_visible_in_tree() and stage.modulate.a > 0.0:
+                        ultimate_timing_seen = true
+                        if stage.cue.family != expected_family:
+                            failures.append("Actual ultimate must use its authored ink motion family: %s" % card_id)
+                        if stage.brush == null or stage.brush.resource_path != "res://assets/combat/ink_wuxia/ink-brush.png" or stage.effect_time < 0.0 or stage.reduced:
+                            failures.append("Actual ultimate must use the loaded approved brush in its active drawing interval: %s" % card_id)
+                        var global_effect: Rect2 = stage.get_global_rect()
+                        var global_surface: Rect2 = board.ink_presentation.get_global_rect()
+                        var global_result: Rect2 = board.ink_presentation.result_label.get_global_rect()
+                        if not _positive_finite_rect(global_effect) or not global_surface.encloses(global_effect) or global_effect.intersects(global_result):
+                            failures.append("Actual ultimate ink must have positive geometry inside the stage, away from results: %s" % card_id)
+                        print("ULTIMATE_UI_ACTUAL_PLAYBACK id=%s timing=%d family=%s brush=%s alpha=%.6f effect=%s" % [card_id, execution_timing, stage.cue.family, stage.brush.resource_path, stage.modulate.a, global_effect])
+                        break
                 if Time.get_ticks_msec() >= deadline:
                     break
                 await create_timer(0.025).timeout
             if not ultimate_timing_seen:
-                failures.append("Ultimate playback must show positive-alpha execution VFX at timing %d within the bounded wait: %s" % [execution_timing, card_id])
-            else:
-                var atlas := board.presentation_vfx.texture as AtlasTexture
-                if atlas == null or atlas.atlas == null:
-                    failures.append("Actual ultimate playback must use the loaded atlas: %s" % card_id)
-                else:
-                    var sheet_size := atlas.atlas.get_size()
-                    var expected_region := Rect2(0.0, float(expected_band) * sheet_size.y / 3.0, sheet_size.x, sheet_size.y / 3.0)
-                    if not atlas.region.is_equal_approx(expected_region):
-                        failures.append("Actual ultimate playback must select band %d: %s" % [expected_band, card_id])
-                var lane: Rect2 = board.get_layout_snapshot().get("presentation_vfx_rect", Rect2())
-                var global_lane := _transformed_rect(lane, board.get_global_transform())
-                var global_effect := _transformed_rect(Rect2(Vector2.ZERO, board.presentation_vfx.size), board.presentation_vfx.get_global_transform())
-                if not _positive_finite_rect(global_lane) or not _positive_finite_rect(global_effect) or not global_lane.grow(0.01).encloses(global_effect):
-                    failures.append("Actual ultimate VFX must have positive global geometry contained in its execution lane: %s" % card_id)
-                print("ULTIMATE_UI_ACTUAL_PLAYBACK id=%s timing=%d expected_band=%d actual_region=%s alpha=%.6f effect=%s lane=%s" % [card_id, int(board.get_meta("presentation_timing", -1)), expected_band, atlas.region if atlas != null else Rect2(), board.presentation_vfx.modulate.a, global_effect, global_lane])
+                failures.append("Ultimate playback must show approved execution ink at timing %d within the bounded wait: %s" % [execution_timing, card_id])
             if board.action_selection_dock.switching_enabled:
                 failures.append("The product action dock must remain locked during authoritative playback.")
 

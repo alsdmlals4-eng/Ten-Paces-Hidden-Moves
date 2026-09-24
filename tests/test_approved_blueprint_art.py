@@ -29,7 +29,10 @@ class ApprovedBlueprintArtTests(unittest.TestCase):
         manifest=read('assets/blueprint/APPROVED_ART_MANIFEST.json')
         central=read('assets/ASSET_MANIFEST.json')['assets']
         new_ids={a['id'] for a in manifest['assets']}
-        old=[a for a in central if a['id'] not in new_ids]
+        ink_names=['background','hero_clash','ink_brush']+[f'{actor}_{i}' for actor in ('player','enemy') for i in range(9)]
+        ink_ids={f'ink_wuxia_{name}_20260924' for name in ink_names}
+        self.assertEqual({a['id'] for a in central if a['id'] in ink_ids},ink_ids)
+        old=[a for a in central if a['id'] not in new_ids | ink_ids]
         digest=hashlib.sha256(json.dumps(old,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest()
         self.assertEqual(digest,manifest['preserved_existing_records_sha256'])
         self.assertEqual(len(old),manifest['preserved_existing_record_count'])

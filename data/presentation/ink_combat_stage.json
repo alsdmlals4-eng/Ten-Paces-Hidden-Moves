@@ -1,0 +1,727 @@
+{
+  "schema_version": 1,
+  "style": "8+3contrast+9mist",
+  "approval": "2026-09-24 user: 지금 느낌으로 전투쪽 이미지,연출등을 변경하자. 먹 VFX 연결",
+  "source_directory": "docs/visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v2",
+  "source_renderer_sha256": "9869467a05f290cad0a8c3a8256c7fc93479ac026b3ad7b0994391dcb863c9db",
+  "poses": {
+    "player": [
+      {
+        "path": "res://assets/combat/ink_wuxia/player-0.png",
+        "size": [
+          464,
+          409
+        ],
+        "foot": [
+          228,
+          393
+        ],
+        "hilt": [
+          332,
+          249
+        ],
+        "tip": [
+          458,
+          359
+        ],
+        "sha256": "9f53690f24d12e44267c0edd47b990dd15c3cb86d91503d9afeac9b7e9e521b2"
+      },
+      {
+        "path": "res://assets/combat/ink_wuxia/player-1.png",
+        "size": [
+          370,
+          413
+        ],
+        "foot": [
+          181,
+          404
+        ],
+        "hilt": [
+          239,
+          96
+        ],
+        "tip": [
+          48,
+          14
+        ],
+        "sha256": "1de4362bc5f9c6141f79fce6a03d8a2106c9019b39789d178e62c8c9d6ee2bd7"
+      },
+      {
+        "path": "res://assets/combat/ink_wuxia/player-2.png",
+        "size": [
+          435,
+          337
+        ],
+        "foot": [
+          271,
+          323
+        ],
+        "hilt": [
+          161,
+          84
+        ],
+        "tip": [
+          19,
+          47
+        ],
+        "sha256": "3e7678bbaaeb7cfc7477589ff0a79c4b0cb9504b820d2af22bf42478f5779330"
+      },
+      {
+        "path": "res://assets/combat/ink_wuxia/player-3.png",
+        "size": [
+          453,
+          389
+        ],
+        "foot": [
+          208,
+          377
+        ],
+        "hilt": [
+          353,
+          81
+        ],
+        "tip": [
+          447,
+          4
+        ],
+        "sha256": "1143c8e7dc5dae23c68cb1b2a4a6c0a7138805e73a6c5bccb542eec493e4b215"
+      },
+      {
+        "path": "res://assets/combat/ink_wuxia/player-4.png",
+        "size": [
+          399,
+          372
+        ],
+        "foot": [
+          213,
+          363
+        ],
+        "hilt": [
+          275,
+          106
+        ],
+        "tip": [
+          374,
+          0
+        ],
+        "sha256": "200424b83863d95e5315432748dffe236f00d37abab887b3bf7bc8d647cb8eef"
+      },
+      {
+        "path": "res://assets/combat/ink_wuxia/player-5.png",
+        "size": [
+          466,
+          316
+        ],
+        "foot": [
+          235,
+          301
+        ],
+        "hilt": [
+          339,
+          93
+        ],
+        "tip": [
+          461,
+          94
+        ],
+        "sha256": "5163f5de9ab003365ae65fc57a2870d1682af9f4c22e3b20811608b946e20e8b"
+      },
+      {
+        "path": "res://assets/combat/ink_wuxia/player-6.png",
+        "size": [
+          395,
+          451
+        ],
+        "foot": [
+          181,
+          420
+        ],
+        "hilt": [
+          215,
+          72
+        ],
+        "tip": [
+          70,
+          4
+        ],
+        "sha256": "a7b0c2db4ee8caa746c44e013136e4eec694c5daf72b27efe6e0adb809e8795d"
+      },
+      {
+        "path": "res://assets/combat/ink_wuxia/player-7.png",
+        "size": [
+          486,
+          437
+        ],
+        "foot": [
+          255,
+          416
+        ],
+        "hilt": [
+          340,
+          240
+        ],
+        "tip": [
+          483,
+          373
+        ],
+        "sha256": "f7a71d280081bea9ccb005ffcc1697d93557a32e4c5523cc569327c059d0c52f"
+      },
+      {
+        "path": "res://assets/combat/ink_wuxia/player-8.png",
+        "size": [
+          387,
+          442
+        ],
+        "foot": [
+          199,
+          427
+        ],
+        "hilt": [
+          278,
+          239
+        ],
+        "tip": [
+          379,
+          363
+        ],
+        "sha256": "1758c7933b6f683a5792374bf0c52276d46340448a596e1d5ffa046544bdda48"
+      }
+    ],
+    "enemy": [
+      {
+        "path": "res://assets/combat/ink_wuxia/enemy-0.png",
+        "size": [
+          440,
+          422
+        ],
+        "foot": [
+          218,
+          414
+        ],
+        "hilt": [
+          117,
+          231
+        ],
+        "tip": [
+          9,
+          354
+        ],
+        "sha256": "f9f3343f66ca7d681402f05bf7d1e859a9ba773a8bed3d9b42558a40a7636030"
+      },
+      {
+        "path": "res://assets/combat/ink_wuxia/enemy-1.png",
+        "size": [
+          386,
+          421
+        ],
+        "foot": [
+          186,
+          413
+        ],
+        "hilt": [
+          88,
+          115
+        ],
+        "tip": [
+          298,
+          24
+        ],
+        "sha256": "2e0089335f3fff74c2140d2140e8435830e4659efdd3f1ce959ab177e64fda3e"
+      },
+      {
+        "path": "res://assets/combat/ink_wuxia/enemy-2.png",
+        "size": [
+          435,
+          349
+        ],
+        "foot": [
+          236,
+          340
+        ],
+        "hilt": [
+          247,
+          87
+        ],
+        "tip": [
+          386,
+          22
+        ],
+        "sha256": "432ad02cb6bf43f5c869e237386ef2e91e68bdb9e672ad1a0ba0578facb7ba85"
+      },
+      {
+        "path": "res://assets/combat/ink_wuxia/enemy-3.png",
+        "size": [
+          437,
+          425
+        ],
+        "foot": [
+          217,
+          417
+        ],
+        "hilt": [
+          96,
+          84
+        ],
+        "tip": [
+          14,
+          2
+        ],
+        "sha256": "0969fa29be31da35c7e36cd999a079c6e23117fd7bb89c79b3016568f0367100"
+      },
+      {
+        "path": "res://assets/combat/ink_wuxia/enemy-4.png",
+        "size": [
+          435,
+          394
+        ],
+        "foot": [
+          188,
+          387
+        ],
+        "hilt": [
+          129,
+          121
+        ],
+        "tip": [
+          8,
+          5
+        ],
+        "sha256": "e7d97e80c1eead41347b1c26cf8822949619d687d3c893813be39f70ea33e536"
+      },
+      {
+        "path": "res://assets/combat/ink_wuxia/enemy-5.png",
+        "size": [
+          517,
+          357
+        ],
+        "foot": [
+          323,
+          344
+        ],
+        "hilt": [
+          164,
+          86
+        ],
+        "tip": [
+          4,
+          86
+        ],
+        "sha256": "4b2a3c0531e6079957bf476786e49e658c7d6d09ca12f493f97a2472e05031bc"
+      },
+      {
+        "path": "res://assets/combat/ink_wuxia/enemy-6.png",
+        "size": [
+          431,
+          434
+        ],
+        "foot": [
+          215,
+          416
+        ],
+        "hilt": [
+          177,
+          46
+        ],
+        "tip": [
+          238,
+          0
+        ],
+        "sha256": "7f4076f2ca1a9ce19736531749561431c17ec9b65d5acf697d8cbe3aa78931ee"
+      },
+      {
+        "path": "res://assets/combat/ink_wuxia/enemy-7.png",
+        "size": [
+          475,
+          374
+        ],
+        "foot": [
+          246,
+          360
+        ],
+        "hilt": [
+          177,
+          220
+        ],
+        "tip": [
+          8,
+          324
+        ],
+        "sha256": "d64690e1628ec5ee152257cabc837ba4d8cc2d7e30c140c9c4fc737fb92caae5"
+      },
+      {
+        "path": "res://assets/combat/ink_wuxia/enemy-8.png",
+        "size": [
+          427,
+          417
+        ],
+        "foot": [
+          233,
+          403
+        ],
+        "hilt": [
+          101,
+          228
+        ],
+        "tip": [
+          3,
+          336
+        ],
+        "sha256": "18436ce88567d7caca3638f593641bfdfa4454720b215725aabc3d2d5738cc03"
+      }
+    ]
+  },
+  "keyframes": [
+    [
+      0,
+      0,
+      0,
+      338,
+      622,
+      968,
+      590,
+      0,
+      0,
+      1
+    ],
+    [
+      0.63,
+      0,
+      0,
+      338,
+      622,
+      968,
+      590,
+      0,
+      0,
+      1.025
+    ],
+    [
+      0.78,
+      1,
+      1,
+      344,
+      626,
+      961,
+      593,
+      -3,
+      3,
+      1.035
+    ],
+    [
+      1.04,
+      1,
+      1,
+      345,
+      626,
+      958,
+      593,
+      -3,
+      3,
+      1.045
+    ],
+    [
+      1.13,
+      2,
+      2,
+      358,
+      624,
+      946,
+      594,
+      -2,
+      2,
+      1.065
+    ],
+    [
+      1.27,
+      2,
+      2,
+      429,
+      620,
+      866,
+      588,
+      -1,
+      1,
+      1.095
+    ],
+    [
+      1.34,
+      3,
+      4,
+      450,
+      616,
+      877,
+      589,
+      0,
+      0,
+      1.1
+    ],
+    [
+      1.47,
+      3,
+      4,
+      450,
+      616,
+      877,
+      589,
+      0,
+      0,
+      1.1
+    ],
+    [
+      1.61,
+      4,
+      1,
+      426,
+      622,
+      888,
+      593,
+      -2,
+      4,
+      1.07
+    ],
+    [
+      1.77,
+      4,
+      1,
+      430,
+      622,
+      861,
+      594,
+      -2,
+      2,
+      1.07
+    ],
+    [
+      1.91,
+      4,
+      3,
+      457,
+      616,
+      800,
+      589,
+      0,
+      0,
+      1.1
+    ],
+    [
+      2.01,
+      4,
+      3,
+      457,
+      616,
+      800,
+      589,
+      0,
+      0,
+      1.1
+    ],
+    [
+      2.15,
+      6,
+      4,
+      453,
+      622,
+      842,
+      589,
+      -3,
+      1,
+      1.075
+    ],
+    [
+      2.35,
+      6,
+      4,
+      455,
+      624,
+      842,
+      589,
+      -3,
+      1,
+      1.085
+    ],
+    [
+      2.47,
+      3,
+      4,
+      472,
+      616,
+      899,
+      589,
+      0,
+      0,
+      1.115
+    ],
+    [
+      2.73,
+      3,
+      4,
+      472,
+      616,
+      899,
+      589,
+      0,
+      0,
+      1.115
+    ],
+    [
+      2.82,
+      6,
+      6,
+      494,
+      620,
+      906,
+      590,
+      -3,
+      5,
+      1.09
+    ],
+    [
+      2.98,
+      7,
+      6,
+      541,
+      621,
+      936,
+      591,
+      1,
+      9,
+      1.075
+    ],
+    [
+      3.12,
+      7,
+      6,
+      551,
+      621,
+      966,
+      596,
+      1,
+      12,
+      1.075
+    ],
+    [
+      3.34,
+      7,
+      6,
+      551,
+      621,
+      991,
+      599,
+      0,
+      9,
+      1.06
+    ],
+    [
+      3.53,
+      8,
+      8,
+      534,
+      619,
+      1002,
+      594,
+      0,
+      2,
+      1.045
+    ],
+    [
+      4.12,
+      8,
+      8,
+      512,
+      620,
+      1012,
+      590,
+      0,
+      0,
+      1.025
+    ],
+    [
+      5.1,
+      8,
+      8,
+      489,
+      620,
+      1008,
+      590,
+      0,
+      0,
+      1.015
+    ],
+    [
+      6.4,
+      8,
+      8,
+      489,
+      620,
+      1008,
+      590,
+      0,
+      0,
+      1
+    ]
+  ],
+  "contacts": [
+    1.36,
+    1.93,
+    2.5
+  ],
+  "swings": [
+    {
+      "a": 1.1,
+      "b": 1.36,
+      "side": "player",
+      "width": 22
+    },
+    {
+      "a": 1.11,
+      "b": 1.36,
+      "side": "enemy",
+      "width": 14
+    },
+    {
+      "a": 1.73,
+      "b": 1.93,
+      "side": "enemy",
+      "width": 27
+    },
+    {
+      "a": 2.28,
+      "b": 2.5,
+      "side": "player",
+      "width": 34
+    },
+    {
+      "a": 2.82,
+      "b": 3.1,
+      "side": "player",
+      "width": 42
+    }
+  ],
+  "provenance": [
+    {
+      "source": "background.png",
+      "path": "res://assets/combat/ink_wuxia/background.png",
+      "sha256": "f29159f4aabce642234428df0fe7fc807128f5ab739680754db01f4bf87b1e9c"
+    },
+    {
+      "source": "hero-clash.png",
+      "path": "res://assets/combat/ink_wuxia/hero-clash.png",
+      "sha256": "794fd63bd98e53c113b28e0b74e952b854c91530cd81313610dae0a23be9d782"
+    },
+    {
+      "source": "ink-brush.png",
+      "path": "res://assets/combat/ink_wuxia/ink-brush.png",
+      "sha256": "c794af0ae4c9aa34693889201b8c8216f2be593d1344ebf542c30b02f6658fd6"
+    },
+    {
+      "source": "player-poses.png",
+      "sha256": "85df1d543357995cd8dd49cac06658daeca79c5062a62beb874153d7c30baa83",
+      "derivation": "Approved render.cjs prepare: region crop and disconnected neighbouring-cell alpha removal"
+    },
+    {
+      "source": "opponent-poses.png",
+      "sha256": "b622c65d071196a97484a1192e66aa1b067e8da7408afebc30ca67d9ee7fc137",
+      "derivation": "Approved render.cjs prepare: region crop and disconnected neighbouring-cell alpha removal"
+    }
+  ]
+}

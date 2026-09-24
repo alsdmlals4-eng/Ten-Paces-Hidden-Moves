@@ -196,7 +196,15 @@ def main() -> None:
         asset["path"]: asset["sha256"] for asset in approved["approved_visual_inputs"]
     }
     assert [asset for asset in asset_manifest["assets"] if asset["id"] in blueprint_ids] == blueprint_assets
-    original_assets = [asset for asset in asset_manifest["assets"] if asset["id"] not in blueprint_ids]
+    ink_names = ["background", "hero_clash", "ink_brush"] + [f"{actor}_{i}" for actor in ("player", "enemy") for i in range(9)]
+    ink_ids = {f"ink_wuxia_{name}_20260924" for name in ink_names}
+    ink_assets = [asset for asset in asset_manifest["assets"] if asset["id"] in ink_ids]
+    assert len(ink_assets) == 21 and {asset["id"] for asset in ink_assets} == ink_ids
+    for asset in ink_assets:
+        assert asset["active"] and asset["runtime_consumer"] == "src/ui/ink/ink_combat_stage.gd"
+        assert hashlib.sha256(res_file(asset["path"]).read_bytes()).hexdigest() == asset["sha256"]
+        assert hashlib.sha256((ROOT / asset["source_asset"]).read_bytes()).hexdigest() == asset["source_png_sha256"]
+    original_assets = [asset for asset in asset_manifest["assets"] if asset["id"] not in blueprint_ids | ink_ids]
     assert len(original_assets) == blueprint["preserved_existing_record_count"] == 24
     original_digest = hashlib.sha256(json.dumps(original_assets, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     assert original_digest == blueprint["preserved_existing_records_sha256"]
@@ -227,7 +235,7 @@ def main() -> None:
         "current_action_slot_frame_01_v1",
         "technique_detail_frame_01_v1",
         "observation_reveal_frame_01_v1",
-    } | blueprint_ids
+    } | blueprint_ids | ink_ids
     for asset in active_assets:
         assert res_file(asset["path"]).exists(), asset["path"]
         assert asset.get("prompt") or asset.get("source_png_sha256"), asset["id"]
