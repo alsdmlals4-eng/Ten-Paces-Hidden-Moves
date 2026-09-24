@@ -74,3 +74,5 @@
 - 검토2 영향 교정: 상대 export 정본 재생성 검사에서 배외검객 portrait의 상위 ADDITIONAL_OPPONENTS owner가 구 삭제 파일을 가리키는 실제 drift를 발견했다. owner를 현재 등록 초상으로 연결하고 export --check 회귀를 추가했다. 기존 제품 data의 동일 경로를 재생성해 일치시켰으며 능력치·명칭·로스터·저장 ID는 바꾸지 않았다.
 
 - PR363 CI의 영향 교정: 표시용 초상 경로까지 과거 저장 fingerprint에 포함된 탓에 schema2/5/6 고정 저장 회귀가 RED였다. 명시된 배외검객 신·구 경로 한 쌍만 identity 계산에서 호환 처리해 과거 bytes를 유지하며 live 경로·나머지 필드 검사는 보존했다. 기존 pending/applied 저장 decode와 게임 내용 변경 거부가 GREEN이다. HTML 링크 검사는 fragment를 파일명으로 취급하던 오류 및 구319 정지화면 기대값을 현재 실제 캡처로 교정했고 **1266 views / 21590 local links PASS**, 자동 저장/충돌·리뷰 동기화·검색3종도 PASS. native terminal 검사는 긴 묶음의 완료를 최대20초의 실제 시간 제한 내 기다리도록 교정했다. 실제 연출 속도·종료 규칙은 변경하지 않았다.
+
+- 저장 호환 교정 후 `9d555ffbfde6fafda7707ba9f641492eb777419a`에서 Windows 빌드를 다시 만들어50/50 PASS했다. terminal/event checks/event run/legacy giyun run/variable save compat도 PASS했다. 전체 소스 해시가 교정 전 상태로 남지 않도록 native9화면과3/3/4 영상을 재촬영했다. **현재 전달 영상은686프레임/24fps/28.583초**, distinct491·runtime오류0이다. 위706프레임 기록은 교정 전 촬영 이력이며 현재 clip/manifest는 새 촬영으로 갱신했다.
