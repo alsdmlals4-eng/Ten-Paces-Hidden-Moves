@@ -1,6 +1,6 @@
 {
   "engine": "4.7.1-stable (official)",
-  "source_revision": "9d555ffbfde6fafda7707ba9f641492eb777419a",
+  "source_revision": "0af72791199b41bbefdcbdf2bd43de4920eb8f26",
   "source_state": "working tree source hashes are authoritative for this capture",
   "source_hashes": {
     "assets/backgrounds/frontal_courtyard_duel_background_01_v1.png": "27778369c3896d7d6237990ec70620c54ad0d636f660c9aa80322b0632262d06",
@@ -267,7 +267,7 @@
     "assets/ui/cards/card_asset_manifest.json": "790dedc4519e70b0cb5cb8393a133837e7ece145399fba6be386f9be0b9c8605",
     "project.godot": "7bb6dabd2d7104a1c218a99a88a806f22050aab2f36365f60e5a2ed51f87008d",
     "tests/verify_ink_combat_runtime.gd": "ffea937f4505b096a23271dc27c3183ad500af3f7e92083e8423108ba37a981b",
-    "tools/capture_ink_screen_refresh.gd": "57b6970f2c2a0cbb7201cf8e6c2c7ffb764b4fc7dabab196afebec145791cad4",
+    "tools/capture_ink_screen_refresh.gd": "36aecdf8097fee99dee4c818122825bbcf3868a0fabec6cb869cde9e1835eade",
     "docs/visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v2/bundle-fixtures.json": "9989217638aa185b742dd23a8a456477ada8ac0f400f4ee337cbb5cbb057ee76"
   },
   "text_hash_policy": "UTF8_UNIVERSAL_NEWLINES",
@@ -1345,7 +1345,7 @@
       "audio": "NOT_CAPTURED",
       "evidence_kind": "ACTUAL_RESOLVER_FIXED_PLAN_NATIVE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "9d555ffbfde6fafda7707ba9f641492eb777419a",
+      "source_revision": "0af72791199b41bbefdcbdf2bd43de4920eb8f26",
       "outcomes": [
         "clash_loss",
         "clash_win",

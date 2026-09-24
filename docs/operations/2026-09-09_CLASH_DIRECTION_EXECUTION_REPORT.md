@@ -76,3 +76,11 @@
 - PR363 CI의 영향 교정: 표시용 초상 경로까지 과거 저장 fingerprint에 포함된 탓에 schema2/5/6 고정 저장 회귀가 RED였다. 명시된 배외검객 신·구 경로 한 쌍만 identity 계산에서 호환 처리해 과거 bytes를 유지하며 live 경로·나머지 필드 검사는 보존했다. 기존 pending/applied 저장 decode와 게임 내용 변경 거부가 GREEN이다. HTML 링크 검사는 fragment를 파일명으로 취급하던 오류 및 구319 정지화면 기대값을 현재 실제 캡처로 교정했고 **1266 views / 21590 local links PASS**, 자동 저장/충돌·리뷰 동기화·검색3종도 PASS. native terminal 검사는 긴 묶음의 완료를 최대20초의 실제 시간 제한 내 기다리도록 교정했다. 실제 연출 속도·종료 규칙은 변경하지 않았다.
 
 - 저장 호환 교정 후 `9d555ffbfde6fafda7707ba9f641492eb777419a`에서 Windows 빌드를 다시 만들어50/50 PASS했다. terminal/event checks/event run/legacy giyun run/variable save compat도 PASS했다. 전체 소스 해시가 교정 전 상태로 남지 않도록 native9화면과3/3/4 영상을 재촬영했다. **현재 전달 영상은686프레임/24fps/28.583초**, distinct491·runtime오류0이다. 위706프레임 기록은 교정 전 촬영 이력이며 현재 clip/manifest는 새 촬영으로 갱신했다.
+
+### 최종 전달 readback · PR363
+
+추가 저장/상위 owner 회귀12개는517.69초에 모두 PASS했다. 메인 촬영 도구는 실행마다 별도 임시 저장을 써 오래된 테스트 저장 안내가 예시에 섞이지 않게 했다. 새 여정 화면 재촬영7장 중 실제 변화는 메인1장이며 전투 영상/제품 bytes는 동일하다.
+
+검토 HEAD `0af72791199b41bbefdcbdf2bd43de4920eb8f26`, 최신 workflow별 34SUCCESS/실패0/진행0, 미해결 검토0을 확인하고 2026-09-24T19:49:31Z에 main `df3b7538f16e66208e29f4f4c04c85567c34ff5c`로 정상 병합했다. 전체 tracked tree가 동일하다. 최종 HTML1266화면/21595내부링크 PASS와 브라우저28.583333초 ended=true/error없음을 확인했다. Windows 검수 ZIP의 실행 파일/PCK bytes와 CRC를 검증했다. 기존 사용자 코멘트 SHA256 `afd73518d7bf507728e500045733ef5b9c7a466dc3feeba3c62331455cdd2dac`은 동일하다. 일회 승인 종료는 `docs/operations/2026-09-25_PR363_PROTECTED_CHANGE_APPROVAL_RECORD.md`로 연결한다.
+
+원격 ordinary_defaults native 캠페인은447829ms 동안295회 실제 입력으로 비무10승·보상10회·행로36회를 완료했고 실패0이다. [원격 제품 검사](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/actions/runs/36049087231/job/107800173797)의 NATIVE_CAMPAIGN_SUMMARY를 근거로 한다. 사람 플레이의 재미나 최종 시각 승인을 대신하지 않는다.
