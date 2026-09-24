@@ -1,0 +1,5949 @@
+{
+  "cases": [
+    {
+      "id": "clash_win",
+      "input": {
+        "before": {
+          "ai_decision_seed": 0,
+          "ai_enabled": false,
+          "bundle_index": 1,
+          "enemy": {
+            "attack_power": 8.0,
+            "epithet": "무림 검사",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              4,
+              4
+            ],
+            "momentum": [
+              0.0,
+              5.0
+            ],
+            "name": "배외검객",
+            "next_attack_bonus": 0,
+            "stamina": [
+              5,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 2,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "offense",
+                "label": "출"
+              },
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 6
+          },
+          "player": {
+            "attack_power": 8.0,
+            "epithet": "무명 검객",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              4,
+              4
+            ],
+            "momentum": [
+              0.0,
+              5.0
+            ],
+            "name": "강호낭인",
+            "next_attack_bonus": 0,
+            "stamina": [
+              5,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 4
+          },
+          "round_number": 1
+        },
+        "context": {
+          "bundle_index": 1,
+          "round_number": 1,
+          "timing_sequence": [
+            3,
+            3,
+            4
+          ]
+        },
+        "enemy_plan": {
+          "1": [
+            {
+              "card_id": "basic_heavy_attack",
+              "direction": -1,
+              "timing": 1
+            }
+          ]
+        }
+      },
+      "result": {
+        "bundle_end": 3,
+        "bundle_index": 1,
+        "bundle_start": 1,
+        "defenses": {
+          "enemy": {
+            "evade_bundle": false,
+            "evade_timings": [],
+            "guard_block": 0,
+            "guard_bundle_enhanced": false,
+            "guard_timings": []
+          },
+          "player": {
+            "evade_bundle": false,
+            "evade_timings": [],
+            "guard_block": 0,
+            "guard_bundle_enhanced": false,
+            "guard_timings": []
+          }
+        },
+        "logs": [
+          "[1라운드 1묶음 판정]",
+          "판정 순서: 대응 → 속공 → 이동 → 일반 공격",
+          "[1수 · 준비] 강호낭인이(가) 강공의 준비를 이어 간다.",
+          "[1수 · 준비] 배외검객이(가) 강공의 준비를 이어 간다.",
+          "[2수 · 합] 공격력 11 대 9, 차이 2.",
+          "[2수 · 절초 기세] 합 승리 강호낭인 기세 +1 (1/5).",
+          "[3수] 양측 모두 행동하지 않았다.",
+          "[묶음 완료 · 절초 기세] 강호낭인 기세 +1 (2/5).",
+          "[묶음 완료 · 절초 기세] 배외검객 기세 +1 (1/5)."
+        ],
+        "presentation_events": [
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "player",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "phase": "preparation",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 6,
+            "timing": 1,
+            "type": "action_result"
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "enemy",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "phase": "preparation",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 0,
+            "timing": 1,
+            "type": "action_result"
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "player",
+            "actor_tile_after_action": 4,
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "clash": true,
+            "clash_difference": 2,
+            "clash_opponent_raw_damage": 9,
+            "damage": 2,
+            "damage_after_block": 2,
+            "defense_outcome": "hit",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "clash_win",
+            "phase": "clash_win",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "raw_damage": 11,
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "sure_hit": false,
+            "target": "enemy",
+            "target_tile": 6,
+            "target_tile_at_action": 6,
+            "timing": 2,
+            "type": "clash"
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "enemy",
+            "actor_tile_after_action": 6,
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "clash": true,
+            "clash_difference": 2,
+            "clash_opponent_raw_damage": 11,
+            "damage": 2,
+            "damage_after_block": 2,
+            "defense_outcome": "hit",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "clash_loss",
+            "phase": "clash_loss",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "raw_damage": 9,
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "sure_hit": false,
+            "target": "player",
+            "target_tile": 0,
+            "target_tile_at_action": 4,
+            "timing": 2,
+            "type": "clash"
+          },
+          {
+            "enemy": {
+              "attack_power": 8.0,
+              "epithet": "무림 검사",
+              "fortitude_next_attack": false,
+              "health": [
+                28,
+                30
+              ],
+              "internal": [
+                2,
+                4
+              ],
+              "momentum": [
+                1,
+                5
+              ],
+              "name": "배외검객",
+              "next_attack_bonus": 0,
+              "stamina": [
+                4,
+                5
+              ],
+              "start_penalties": {
+                "health": 0.0,
+                "internal": 0.0,
+                "stamina": 0.0
+              },
+              "stats": {
+                "agility": 4,
+                "constitution": 4,
+                "external": 2,
+                "insight": 4,
+                "internal_power": 4
+              },
+              "statuses": [
+                {
+                  "kind": "offense",
+                  "label": "출"
+                },
+                {
+                  "kind": "defense",
+                  "label": "방"
+                }
+              ],
+              "tile": 6
+            },
+            "logs": [
+              "[1라운드 1묶음 판정]",
+              "판정 순서: 대응 → 속공 → 이동 → 일반 공격",
+              "[1수 · 준비] 강호낭인이(가) 강공의 준비를 이어 간다.",
+              "[1수 · 준비] 배외검객이(가) 강공의 준비를 이어 간다.",
+              "[2수 · 합] 공격력 11 대 9, 차이 2.",
+              "[2수 · 절초 기세] 합 승리 강호낭인 기세 +1 (1/5).",
+              "[3수] 양측 모두 행동하지 않았다.",
+              "[묶음 완료 · 절초 기세] 강호낭인 기세 +1 (2/5).",
+              "[묶음 완료 · 절초 기세] 배외검객 기세 +1 (1/5)."
+            ],
+            "phase": "result",
+            "player": {
+              "attack_power": 8.0,
+              "epithet": "무명 검객",
+              "fortitude_next_attack": false,
+              "health": [
+                30,
+                30
+              ],
+              "internal": [
+                2,
+                4
+              ],
+              "momentum": [
+                2,
+                5
+              ],
+              "name": "강호낭인",
+              "next_attack_bonus": 0,
+              "stamina": [
+                4,
+                5
+              ],
+              "start_penalties": {
+                "health": 0.0,
+                "internal": 0.0,
+                "stamina": 0.0
+              },
+              "stats": {
+                "agility": 4,
+                "constitution": 4,
+                "external": 4,
+                "insight": 4,
+                "internal_power": 4
+              },
+              "statuses": [
+                {
+                  "kind": "defense",
+                  "label": "방"
+                }
+              ],
+              "tile": 4
+            },
+            "type": "bundle_state"
+          }
+        ],
+        "resolution_order": [
+          "response",
+          "quick_attack",
+          "move",
+          "general"
+        ],
+        "resolved_actions": [
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "player",
+            "ai_reason": "",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 6,
+            "timing": 1
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "enemy",
+            "ai_reason": "fixture",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 0,
+            "timing": 1
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "player",
+            "actor_tile_after_action": 4,
+            "ai_reason": "",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "clash": true,
+            "clash_difference": 2,
+            "clash_opponent_raw_damage": 9,
+            "damage": 2,
+            "damage_after_block": 2,
+            "defense_outcome": "hit",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "clash_win",
+            "range_text": "1~2",
+            "raw_damage": 11,
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "sure_hit": false,
+            "target": "enemy",
+            "target_tile": 6,
+            "target_tile_at_action": 6,
+            "timing": 2
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "enemy",
+            "actor_tile_after_action": 6,
+            "ai_reason": "fixture",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "clash": true,
+            "clash_difference": 2,
+            "clash_opponent_raw_damage": 11,
+            "damage": 2,
+            "damage_after_block": 2,
+            "defense_outcome": "hit",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "clash_loss",
+            "range_text": "1~2",
+            "raw_damage": 9,
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "sure_hit": false,
+            "target": "player",
+            "target_tile": 0,
+            "target_tile_at_action": 4,
+            "timing": 2
+          }
+        ],
+        "round_number": 1,
+        "state": {
+          "ai_decision_seed": 0,
+          "ai_enabled": false,
+          "bundle_index": 1,
+          "enemy": {
+            "attack_power": 8.0,
+            "epithet": "무림 검사",
+            "fortitude_next_attack": false,
+            "health": [
+              28,
+              30
+            ],
+            "internal": [
+              2,
+              4
+            ],
+            "momentum": [
+              1,
+              5
+            ],
+            "name": "배외검객",
+            "next_attack_bonus": 0,
+            "stamina": [
+              4,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 2,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "offense",
+                "label": "출"
+              },
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 6
+          },
+          "player": {
+            "attack_power": 8.0,
+            "epithet": "무명 검객",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              2,
+              4
+            ],
+            "momentum": [
+              2,
+              5
+            ],
+            "name": "강호낭인",
+            "next_attack_bonus": 0,
+            "stamina": [
+              4,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 4
+          },
+          "public_resolution_history": [
+            {
+              "actor": "player",
+              "bundle_index": 1,
+              "card_id": "basic_heavy_attack",
+              "category": "attack",
+              "outcome": "clash_win",
+              "round_number": 1
+            },
+            {
+              "actor": "enemy",
+              "bundle_index": 1,
+              "card_id": "basic_heavy_attack",
+              "category": "attack",
+              "outcome": "clash_loss",
+              "round_number": 1
+            }
+          ],
+          "round_number": 1
+        },
+        "timing_results": [
+          {
+            "events": [
+              {
+                "action_slots": 2,
+                "action_stage": "preparation",
+                "actor": "player",
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "direction": 1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "preparation",
+                "phase": "preparation",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "target_tile": 6,
+                "timing": 1,
+                "type": "action_result"
+              },
+              {
+                "action_slots": 2,
+                "action_stage": "preparation",
+                "actor": "enemy",
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "direction": -1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "preparation",
+                "phase": "preparation",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "target_tile": 0,
+                "timing": 1,
+                "type": "action_result"
+              }
+            ],
+            "phase": "timing",
+            "state": {
+              "ai_decision_seed": 0,
+              "ai_enabled": false,
+              "bundle_index": 1,
+              "enemy": {
+                "attack_power": 8.0,
+                "epithet": "무림 검사",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "배외검객",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  5,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 2,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "offense",
+                    "label": "출"
+                  },
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 6
+              },
+              "player": {
+                "attack_power": 8.0,
+                "epithet": "무명 검객",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "강호낭인",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  5,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 4
+              },
+              "round_number": 1
+            },
+            "timing": 1
+          },
+          {
+            "events": [
+              {
+                "action_slots": 2,
+                "action_stage": "execution",
+                "actor": "player",
+                "actor_tile_after_action": 4,
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "clash": true,
+                "clash_difference": 2,
+                "clash_opponent_raw_damage": 9,
+                "damage": 2,
+                "damage_after_block": 2,
+                "defense_outcome": "hit",
+                "direction": 1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "clash_win",
+                "phase": "clash_win",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "raw_damage": 11,
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "sure_hit": false,
+                "target": "enemy",
+                "target_tile": 6,
+                "target_tile_at_action": 6,
+                "timing": 2,
+                "type": "clash"
+              },
+              {
+                "action_slots": 2,
+                "action_stage": "execution",
+                "actor": "enemy",
+                "actor_tile_after_action": 6,
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "clash": true,
+                "clash_difference": 2,
+                "clash_opponent_raw_damage": 11,
+                "damage": 2,
+                "damage_after_block": 2,
+                "defense_outcome": "hit",
+                "direction": -1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "clash_loss",
+                "phase": "clash_loss",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "raw_damage": 9,
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "sure_hit": false,
+                "target": "player",
+                "target_tile": 0,
+                "target_tile_at_action": 4,
+                "timing": 2,
+                "type": "clash"
+              }
+            ],
+            "phase": "timing",
+            "state": {
+              "ai_decision_seed": 0,
+              "ai_enabled": false,
+              "bundle_index": 1,
+              "enemy": {
+                "attack_power": 8.0,
+                "epithet": "무림 검사",
+                "fortitude_next_attack": false,
+                "health": [
+                  28,
+                  30
+                ],
+                "internal": [
+                  2,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "배외검객",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  4,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 2,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "offense",
+                    "label": "출"
+                  },
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 6
+              },
+              "player": {
+                "attack_power": 8.0,
+                "epithet": "무명 검객",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  2,
+                  4
+                ],
+                "momentum": [
+                  1,
+                  5
+                ],
+                "name": "강호낭인",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  4,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 4
+              },
+              "round_number": 1
+            },
+            "timing": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "clash_loss",
+      "input": {
+        "before": {
+          "ai_decision_seed": 0,
+          "ai_enabled": false,
+          "bundle_index": 1,
+          "enemy": {
+            "attack_power": 8.0,
+            "epithet": "무림 검사",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              4,
+              4
+            ],
+            "momentum": [
+              0.0,
+              5.0
+            ],
+            "name": "배외검객",
+            "next_attack_bonus": 0,
+            "stamina": [
+              5,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 8,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "offense",
+                "label": "출"
+              },
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 6
+          },
+          "player": {
+            "attack_power": 8.0,
+            "epithet": "무명 검객",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              4,
+              4
+            ],
+            "momentum": [
+              0.0,
+              5.0
+            ],
+            "name": "강호낭인",
+            "next_attack_bonus": 0,
+            "stamina": [
+              5,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 4
+          },
+          "round_number": 1
+        },
+        "context": {
+          "bundle_index": 1,
+          "round_number": 1,
+          "timing_sequence": [
+            3,
+            3,
+            4
+          ]
+        },
+        "enemy_plan": {
+          "1": [
+            {
+              "card_id": "basic_heavy_attack",
+              "direction": -1,
+              "timing": 1
+            }
+          ]
+        }
+      },
+      "result": {
+        "bundle_end": 3,
+        "bundle_index": 1,
+        "bundle_start": 1,
+        "defenses": {
+          "enemy": {
+            "evade_bundle": false,
+            "evade_timings": [],
+            "guard_block": 0,
+            "guard_bundle_enhanced": false,
+            "guard_timings": []
+          },
+          "player": {
+            "evade_bundle": false,
+            "evade_timings": [],
+            "guard_block": 0,
+            "guard_bundle_enhanced": false,
+            "guard_timings": []
+          }
+        },
+        "logs": [
+          "[1라운드 1묶음 판정]",
+          "판정 순서: 대응 → 속공 → 이동 → 일반 공격",
+          "[1수 · 준비] 강호낭인이(가) 강공의 준비를 이어 간다.",
+          "[1수 · 준비] 배외검객이(가) 강공의 준비를 이어 간다.",
+          "[2수 · 합] 공격력 11 대 15, 차이 4.",
+          "[2수 · 절초 기세] 합 승리 배외검객 기세 +1 (1/5).",
+          "[3수] 양측 모두 행동하지 않았다.",
+          "[묶음 완료 · 절초 기세] 강호낭인 기세 +1 (1/5).",
+          "[묶음 완료 · 절초 기세] 배외검객 기세 +1 (2/5)."
+        ],
+        "presentation_events": [
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "player",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "phase": "preparation",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 6,
+            "timing": 1,
+            "type": "action_result"
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "enemy",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "phase": "preparation",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 0,
+            "timing": 1,
+            "type": "action_result"
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "player",
+            "actor_tile_after_action": 4,
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "clash": true,
+            "clash_difference": 4,
+            "clash_opponent_raw_damage": 15,
+            "damage": 4,
+            "damage_after_block": 4,
+            "defense_outcome": "hit",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "clash_loss",
+            "phase": "clash_loss",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "raw_damage": 11,
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "sure_hit": false,
+            "target": "enemy",
+            "target_tile": 6,
+            "target_tile_at_action": 6,
+            "timing": 2,
+            "type": "clash"
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "enemy",
+            "actor_tile_after_action": 6,
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "clash": true,
+            "clash_difference": 4,
+            "clash_opponent_raw_damage": 11,
+            "damage": 4,
+            "damage_after_block": 4,
+            "defense_outcome": "hit",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "clash_win",
+            "phase": "clash_win",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "raw_damage": 15,
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "sure_hit": false,
+            "target": "player",
+            "target_tile": 0,
+            "target_tile_at_action": 4,
+            "timing": 2,
+            "type": "clash"
+          },
+          {
+            "enemy": {
+              "attack_power": 8.0,
+              "epithet": "무림 검사",
+              "fortitude_next_attack": false,
+              "health": [
+                30,
+                30
+              ],
+              "internal": [
+                2,
+                4
+              ],
+              "momentum": [
+                2,
+                5
+              ],
+              "name": "배외검객",
+              "next_attack_bonus": 0,
+              "stamina": [
+                4,
+                5
+              ],
+              "start_penalties": {
+                "health": 0.0,
+                "internal": 0.0,
+                "stamina": 0.0
+              },
+              "stats": {
+                "agility": 4,
+                "constitution": 4,
+                "external": 8,
+                "insight": 4,
+                "internal_power": 4
+              },
+              "statuses": [
+                {
+                  "kind": "offense",
+                  "label": "출"
+                },
+                {
+                  "kind": "defense",
+                  "label": "방"
+                }
+              ],
+              "tile": 6
+            },
+            "logs": [
+              "[1라운드 1묶음 판정]",
+              "판정 순서: 대응 → 속공 → 이동 → 일반 공격",
+              "[1수 · 준비] 강호낭인이(가) 강공의 준비를 이어 간다.",
+              "[1수 · 준비] 배외검객이(가) 강공의 준비를 이어 간다.",
+              "[2수 · 합] 공격력 11 대 15, 차이 4.",
+              "[2수 · 절초 기세] 합 승리 배외검객 기세 +1 (1/5).",
+              "[3수] 양측 모두 행동하지 않았다.",
+              "[묶음 완료 · 절초 기세] 강호낭인 기세 +1 (1/5).",
+              "[묶음 완료 · 절초 기세] 배외검객 기세 +1 (2/5)."
+            ],
+            "phase": "result",
+            "player": {
+              "attack_power": 8.0,
+              "epithet": "무명 검객",
+              "fortitude_next_attack": false,
+              "health": [
+                26,
+                30
+              ],
+              "internal": [
+                2,
+                4
+              ],
+              "momentum": [
+                1,
+                5
+              ],
+              "name": "강호낭인",
+              "next_attack_bonus": 0,
+              "stamina": [
+                4,
+                5
+              ],
+              "start_penalties": {
+                "health": 0.0,
+                "internal": 0.0,
+                "stamina": 0.0
+              },
+              "stats": {
+                "agility": 4,
+                "constitution": 4,
+                "external": 4,
+                "insight": 4,
+                "internal_power": 4
+              },
+              "statuses": [
+                {
+                  "kind": "defense",
+                  "label": "방"
+                }
+              ],
+              "tile": 4
+            },
+            "type": "bundle_state"
+          }
+        ],
+        "resolution_order": [
+          "response",
+          "quick_attack",
+          "move",
+          "general"
+        ],
+        "resolved_actions": [
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "player",
+            "ai_reason": "",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 6,
+            "timing": 1
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "enemy",
+            "ai_reason": "fixture",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 0,
+            "timing": 1
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "player",
+            "actor_tile_after_action": 4,
+            "ai_reason": "",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "clash": true,
+            "clash_difference": 4,
+            "clash_opponent_raw_damage": 15,
+            "damage": 4,
+            "damage_after_block": 4,
+            "defense_outcome": "hit",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "clash_loss",
+            "range_text": "1~2",
+            "raw_damage": 11,
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "sure_hit": false,
+            "target": "enemy",
+            "target_tile": 6,
+            "target_tile_at_action": 6,
+            "timing": 2
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "enemy",
+            "actor_tile_after_action": 6,
+            "ai_reason": "fixture",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "clash": true,
+            "clash_difference": 4,
+            "clash_opponent_raw_damage": 11,
+            "damage": 4,
+            "damage_after_block": 4,
+            "defense_outcome": "hit",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "clash_win",
+            "range_text": "1~2",
+            "raw_damage": 15,
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "sure_hit": false,
+            "target": "player",
+            "target_tile": 0,
+            "target_tile_at_action": 4,
+            "timing": 2
+          }
+        ],
+        "round_number": 1,
+        "state": {
+          "ai_decision_seed": 0,
+          "ai_enabled": false,
+          "bundle_index": 1,
+          "enemy": {
+            "attack_power": 8.0,
+            "epithet": "무림 검사",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              2,
+              4
+            ],
+            "momentum": [
+              2,
+              5
+            ],
+            "name": "배외검객",
+            "next_attack_bonus": 0,
+            "stamina": [
+              4,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 8,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "offense",
+                "label": "출"
+              },
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 6
+          },
+          "player": {
+            "attack_power": 8.0,
+            "epithet": "무명 검객",
+            "fortitude_next_attack": false,
+            "health": [
+              26,
+              30
+            ],
+            "internal": [
+              2,
+              4
+            ],
+            "momentum": [
+              1,
+              5
+            ],
+            "name": "강호낭인",
+            "next_attack_bonus": 0,
+            "stamina": [
+              4,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 4
+          },
+          "public_resolution_history": [
+            {
+              "actor": "player",
+              "bundle_index": 1,
+              "card_id": "basic_heavy_attack",
+              "category": "attack",
+              "outcome": "clash_loss",
+              "round_number": 1
+            },
+            {
+              "actor": "enemy",
+              "bundle_index": 1,
+              "card_id": "basic_heavy_attack",
+              "category": "attack",
+              "outcome": "clash_win",
+              "round_number": 1
+            }
+          ],
+          "round_number": 1
+        },
+        "timing_results": [
+          {
+            "events": [
+              {
+                "action_slots": 2,
+                "action_stage": "preparation",
+                "actor": "player",
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "direction": 1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "preparation",
+                "phase": "preparation",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "target_tile": 6,
+                "timing": 1,
+                "type": "action_result"
+              },
+              {
+                "action_slots": 2,
+                "action_stage": "preparation",
+                "actor": "enemy",
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "direction": -1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "preparation",
+                "phase": "preparation",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "target_tile": 0,
+                "timing": 1,
+                "type": "action_result"
+              }
+            ],
+            "phase": "timing",
+            "state": {
+              "ai_decision_seed": 0,
+              "ai_enabled": false,
+              "bundle_index": 1,
+              "enemy": {
+                "attack_power": 8.0,
+                "epithet": "무림 검사",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "배외검객",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  5,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 8,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "offense",
+                    "label": "출"
+                  },
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 6
+              },
+              "player": {
+                "attack_power": 8.0,
+                "epithet": "무명 검객",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "강호낭인",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  5,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 4
+              },
+              "round_number": 1
+            },
+            "timing": 1
+          },
+          {
+            "events": [
+              {
+                "action_slots": 2,
+                "action_stage": "execution",
+                "actor": "player",
+                "actor_tile_after_action": 4,
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "clash": true,
+                "clash_difference": 4,
+                "clash_opponent_raw_damage": 15,
+                "damage": 4,
+                "damage_after_block": 4,
+                "defense_outcome": "hit",
+                "direction": 1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "clash_loss",
+                "phase": "clash_loss",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "raw_damage": 11,
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "sure_hit": false,
+                "target": "enemy",
+                "target_tile": 6,
+                "target_tile_at_action": 6,
+                "timing": 2,
+                "type": "clash"
+              },
+              {
+                "action_slots": 2,
+                "action_stage": "execution",
+                "actor": "enemy",
+                "actor_tile_after_action": 6,
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "clash": true,
+                "clash_difference": 4,
+                "clash_opponent_raw_damage": 11,
+                "damage": 4,
+                "damage_after_block": 4,
+                "defense_outcome": "hit",
+                "direction": -1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "clash_win",
+                "phase": "clash_win",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "raw_damage": 15,
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "sure_hit": false,
+                "target": "player",
+                "target_tile": 0,
+                "target_tile_at_action": 4,
+                "timing": 2,
+                "type": "clash"
+              }
+            ],
+            "phase": "timing",
+            "state": {
+              "ai_decision_seed": 0,
+              "ai_enabled": false,
+              "bundle_index": 1,
+              "enemy": {
+                "attack_power": 8.0,
+                "epithet": "무림 검사",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  2,
+                  4
+                ],
+                "momentum": [
+                  1,
+                  5
+                ],
+                "name": "배외검객",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  4,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 8,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "offense",
+                    "label": "출"
+                  },
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 6
+              },
+              "player": {
+                "attack_power": 8.0,
+                "epithet": "무명 검객",
+                "fortitude_next_attack": false,
+                "health": [
+                  26,
+                  30
+                ],
+                "internal": [
+                  2,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "강호낭인",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  4,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 4
+              },
+              "round_number": 1
+            },
+            "timing": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "clash_draw",
+      "input": {
+        "before": {
+          "ai_decision_seed": 0,
+          "ai_enabled": false,
+          "bundle_index": 1,
+          "enemy": {
+            "attack_power": 8.0,
+            "epithet": "무림 검사",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              4,
+              4
+            ],
+            "momentum": [
+              0.0,
+              5.0
+            ],
+            "name": "배외검객",
+            "next_attack_bonus": 0,
+            "stamina": [
+              5,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "offense",
+                "label": "출"
+              },
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 6
+          },
+          "player": {
+            "attack_power": 8.0,
+            "epithet": "무명 검객",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              4,
+              4
+            ],
+            "momentum": [
+              0.0,
+              5.0
+            ],
+            "name": "강호낭인",
+            "next_attack_bonus": 0,
+            "stamina": [
+              5,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 4
+          },
+          "round_number": 1
+        },
+        "context": {
+          "bundle_index": 1,
+          "round_number": 1,
+          "timing_sequence": [
+            3,
+            3,
+            4
+          ]
+        },
+        "enemy_plan": {
+          "1": [
+            {
+              "card_id": "basic_heavy_attack",
+              "direction": -1,
+              "timing": 1
+            }
+          ]
+        }
+      },
+      "result": {
+        "bundle_end": 3,
+        "bundle_index": 1,
+        "bundle_start": 1,
+        "defenses": {
+          "enemy": {
+            "evade_bundle": false,
+            "evade_timings": [],
+            "guard_block": 0,
+            "guard_bundle_enhanced": false,
+            "guard_timings": []
+          },
+          "player": {
+            "evade_bundle": false,
+            "evade_timings": [],
+            "guard_block": 0,
+            "guard_bundle_enhanced": false,
+            "guard_timings": []
+          }
+        },
+        "logs": [
+          "[1라운드 1묶음 판정]",
+          "판정 순서: 대응 → 속공 → 이동 → 일반 공격",
+          "[1수 · 준비] 강호낭인이(가) 강공의 준비를 이어 간다.",
+          "[1수 · 준비] 배외검객이(가) 강공의 준비를 이어 간다.",
+          "[2수 · 합] 양측 공격력 11가 맞부딪혀 상쇄됐다.",
+          "[3수] 양측 모두 행동하지 않았다.",
+          "[묶음 완료 · 절초 기세] 강호낭인 기세 +1 (1/5).",
+          "[묶음 완료 · 절초 기세] 배외검객 기세 +1 (1/5)."
+        ],
+        "presentation_events": [
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "player",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "phase": "preparation",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 6,
+            "timing": 1,
+            "type": "action_result"
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "enemy",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "phase": "preparation",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 0,
+            "timing": 1,
+            "type": "action_result"
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "player",
+            "actor_tile_after_action": 4,
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "clash": true,
+            "clash_opponent_raw_damage": 11,
+            "damage": 0,
+            "defense_outcome": "clash_draw",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "clash_draw",
+            "phase": "clash_draw",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "raw_damage": 11,
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target": "enemy",
+            "target_tile": 6,
+            "target_tile_at_action": 6,
+            "timing": 2,
+            "type": "clash"
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "enemy",
+            "actor_tile_after_action": 6,
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "clash": true,
+            "clash_opponent_raw_damage": 11,
+            "damage": 0,
+            "defense_outcome": "clash_draw",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "clash_draw",
+            "phase": "clash_draw",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "raw_damage": 11,
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target": "player",
+            "target_tile": 0,
+            "target_tile_at_action": 4,
+            "timing": 2,
+            "type": "clash"
+          },
+          {
+            "enemy": {
+              "attack_power": 8.0,
+              "epithet": "무림 검사",
+              "fortitude_next_attack": false,
+              "health": [
+                30,
+                30
+              ],
+              "internal": [
+                2,
+                4
+              ],
+              "momentum": [
+                1,
+                5
+              ],
+              "name": "배외검객",
+              "next_attack_bonus": 0,
+              "stamina": [
+                4,
+                5
+              ],
+              "start_penalties": {
+                "health": 0.0,
+                "internal": 0.0,
+                "stamina": 0.0
+              },
+              "stats": {
+                "agility": 4,
+                "constitution": 4,
+                "external": 4,
+                "insight": 4,
+                "internal_power": 4
+              },
+              "statuses": [
+                {
+                  "kind": "offense",
+                  "label": "출"
+                },
+                {
+                  "kind": "defense",
+                  "label": "방"
+                }
+              ],
+              "tile": 6
+            },
+            "logs": [
+              "[1라운드 1묶음 판정]",
+              "판정 순서: 대응 → 속공 → 이동 → 일반 공격",
+              "[1수 · 준비] 강호낭인이(가) 강공의 준비를 이어 간다.",
+              "[1수 · 준비] 배외검객이(가) 강공의 준비를 이어 간다.",
+              "[2수 · 합] 양측 공격력 11가 맞부딪혀 상쇄됐다.",
+              "[3수] 양측 모두 행동하지 않았다.",
+              "[묶음 완료 · 절초 기세] 강호낭인 기세 +1 (1/5).",
+              "[묶음 완료 · 절초 기세] 배외검객 기세 +1 (1/5)."
+            ],
+            "phase": "result",
+            "player": {
+              "attack_power": 8.0,
+              "epithet": "무명 검객",
+              "fortitude_next_attack": false,
+              "health": [
+                30,
+                30
+              ],
+              "internal": [
+                2,
+                4
+              ],
+              "momentum": [
+                1,
+                5
+              ],
+              "name": "강호낭인",
+              "next_attack_bonus": 0,
+              "stamina": [
+                4,
+                5
+              ],
+              "start_penalties": {
+                "health": 0.0,
+                "internal": 0.0,
+                "stamina": 0.0
+              },
+              "stats": {
+                "agility": 4,
+                "constitution": 4,
+                "external": 4,
+                "insight": 4,
+                "internal_power": 4
+              },
+              "statuses": [
+                {
+                  "kind": "defense",
+                  "label": "방"
+                }
+              ],
+              "tile": 4
+            },
+            "type": "bundle_state"
+          }
+        ],
+        "resolution_order": [
+          "response",
+          "quick_attack",
+          "move",
+          "general"
+        ],
+        "resolved_actions": [
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "player",
+            "ai_reason": "",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 6,
+            "timing": 1
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "enemy",
+            "ai_reason": "fixture",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 0,
+            "timing": 1
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "player",
+            "actor_tile_after_action": 4,
+            "ai_reason": "",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "clash": true,
+            "clash_opponent_raw_damage": 11,
+            "damage": 0,
+            "defense_outcome": "clash_draw",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "clash_draw",
+            "range_text": "1~2",
+            "raw_damage": 11,
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target": "enemy",
+            "target_tile": 6,
+            "target_tile_at_action": 6,
+            "timing": 2
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "enemy",
+            "actor_tile_after_action": 6,
+            "ai_reason": "fixture",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "clash": true,
+            "clash_opponent_raw_damage": 11,
+            "damage": 0,
+            "defense_outcome": "clash_draw",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "clash_draw",
+            "range_text": "1~2",
+            "raw_damage": 11,
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target": "player",
+            "target_tile": 0,
+            "target_tile_at_action": 4,
+            "timing": 2
+          }
+        ],
+        "round_number": 1,
+        "state": {
+          "ai_decision_seed": 0,
+          "ai_enabled": false,
+          "bundle_index": 1,
+          "enemy": {
+            "attack_power": 8.0,
+            "epithet": "무림 검사",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              2,
+              4
+            ],
+            "momentum": [
+              1,
+              5
+            ],
+            "name": "배외검객",
+            "next_attack_bonus": 0,
+            "stamina": [
+              4,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "offense",
+                "label": "출"
+              },
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 6
+          },
+          "player": {
+            "attack_power": 8.0,
+            "epithet": "무명 검객",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              2,
+              4
+            ],
+            "momentum": [
+              1,
+              5
+            ],
+            "name": "강호낭인",
+            "next_attack_bonus": 0,
+            "stamina": [
+              4,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 4
+          },
+          "public_resolution_history": [
+            {
+              "actor": "player",
+              "bundle_index": 1,
+              "card_id": "basic_heavy_attack",
+              "category": "attack",
+              "outcome": "clash_draw",
+              "round_number": 1
+            },
+            {
+              "actor": "enemy",
+              "bundle_index": 1,
+              "card_id": "basic_heavy_attack",
+              "category": "attack",
+              "outcome": "clash_draw",
+              "round_number": 1
+            }
+          ],
+          "round_number": 1
+        },
+        "timing_results": [
+          {
+            "events": [
+              {
+                "action_slots": 2,
+                "action_stage": "preparation",
+                "actor": "player",
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "direction": 1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "preparation",
+                "phase": "preparation",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "target_tile": 6,
+                "timing": 1,
+                "type": "action_result"
+              },
+              {
+                "action_slots": 2,
+                "action_stage": "preparation",
+                "actor": "enemy",
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "direction": -1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "preparation",
+                "phase": "preparation",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "target_tile": 0,
+                "timing": 1,
+                "type": "action_result"
+              }
+            ],
+            "phase": "timing",
+            "state": {
+              "ai_decision_seed": 0,
+              "ai_enabled": false,
+              "bundle_index": 1,
+              "enemy": {
+                "attack_power": 8.0,
+                "epithet": "무림 검사",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "배외검객",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  5,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "offense",
+                    "label": "출"
+                  },
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 6
+              },
+              "player": {
+                "attack_power": 8.0,
+                "epithet": "무명 검객",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "강호낭인",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  5,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 4
+              },
+              "round_number": 1
+            },
+            "timing": 1
+          },
+          {
+            "events": [
+              {
+                "action_slots": 2,
+                "action_stage": "execution",
+                "actor": "player",
+                "actor_tile_after_action": 4,
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "clash": true,
+                "clash_opponent_raw_damage": 11,
+                "damage": 0,
+                "defense_outcome": "clash_draw",
+                "direction": 1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "clash_draw",
+                "phase": "clash_draw",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "raw_damage": 11,
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "target": "enemy",
+                "target_tile": 6,
+                "target_tile_at_action": 6,
+                "timing": 2,
+                "type": "clash"
+              },
+              {
+                "action_slots": 2,
+                "action_stage": "execution",
+                "actor": "enemy",
+                "actor_tile_after_action": 6,
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "clash": true,
+                "clash_opponent_raw_damage": 11,
+                "damage": 0,
+                "defense_outcome": "clash_draw",
+                "direction": -1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "clash_draw",
+                "phase": "clash_draw",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "raw_damage": 11,
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "target": "player",
+                "target_tile": 0,
+                "target_tile_at_action": 4,
+                "timing": 2,
+                "type": "clash"
+              }
+            ],
+            "phase": "timing",
+            "state": {
+              "ai_decision_seed": 0,
+              "ai_enabled": false,
+              "bundle_index": 1,
+              "enemy": {
+                "attack_power": 8.0,
+                "epithet": "무림 검사",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  2,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "배외검객",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  4,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "offense",
+                    "label": "출"
+                  },
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 6
+              },
+              "player": {
+                "attack_power": 8.0,
+                "epithet": "무명 검객",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  2,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "강호낭인",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  4,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 4
+              },
+              "round_number": 1
+            },
+            "timing": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "evade",
+      "input": {
+        "before": {
+          "ai_decision_seed": 0,
+          "ai_enabled": false,
+          "bundle_index": 1,
+          "enemy": {
+            "attack_power": 8.0,
+            "epithet": "무림 검사",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              4,
+              4
+            ],
+            "momentum": [
+              0.0,
+              5.0
+            ],
+            "name": "배외검객",
+            "next_attack_bonus": 0,
+            "stamina": [
+              5,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "offense",
+                "label": "출"
+              },
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 6
+          },
+          "player": {
+            "attack_power": 8.0,
+            "epithet": "무명 검객",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              4,
+              4
+            ],
+            "momentum": [
+              0.0,
+              5.0
+            ],
+            "name": "강호낭인",
+            "next_attack_bonus": 0,
+            "stamina": [
+              5,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 4
+          },
+          "round_number": 1
+        },
+        "context": {
+          "bundle_index": 1,
+          "round_number": 1,
+          "timing_sequence": [
+            3,
+            3,
+            4
+          ]
+        },
+        "enemy_plan": {
+          "1": [
+            {
+              "card_id": "basic_evade",
+              "direction": -1,
+              "timing": 2
+            }
+          ]
+        }
+      },
+      "result": {
+        "bundle_end": 3,
+        "bundle_index": 1,
+        "bundle_start": 1,
+        "defenses": {
+          "enemy": {
+            "evade_bundle": false,
+            "evade_timings": [
+              2
+            ],
+            "guard_block": 0,
+            "guard_bundle_enhanced": false,
+            "guard_timings": []
+          },
+          "player": {
+            "evade_bundle": false,
+            "evade_timings": [],
+            "guard_block": 0,
+            "guard_bundle_enhanced": false,
+            "guard_timings": []
+          }
+        },
+        "logs": [
+          "[1라운드 1묶음 판정]",
+          "판정 순서: 대응 → 속공 → 이동 → 일반 공격",
+          "[2수 · 대응] 배외검객이(가) 같은 수의 공격을 완전 회피한다.",
+          "[1수 · 준비] 강호낭인이(가) 강공의 준비를 이어 간다.",
+          "[2수 · 절초 기세] 회피 성공 배외검객 기세 +1 (1/5).",
+          "[3수] 양측 모두 행동하지 않았다.",
+          "[묶음 완료 · 절초 기세] 강호낭인 기세 +1 (1/5).",
+          "[묶음 완료 · 절초 기세] 배외검객 기세 +1 (2/5)."
+        ],
+        "presentation_events": [
+          {
+            "action_slots": 1,
+            "action_stage": "execution",
+            "actor": "enemy",
+            "card_id": "basic_evade",
+            "card_name": "회피",
+            "category": "response",
+            "category_label": "대응",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                925.0,
+                0.0,
+                300.0,
+                509.0
+              ]
+            },
+            "internal_cost": 0,
+            "outcome": "response",
+            "phase": "response",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "-",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 0,
+            "timing": 2,
+            "type": "action_result"
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "player",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "phase": "preparation",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 6,
+            "timing": 1,
+            "type": "action_result"
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "player",
+            "actor_tile_after_action": 4,
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "damage": 0,
+            "damage_after_block": 11,
+            "defense_outcome": "evade",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "일반 공격",
+            "phase": "일반 공격",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "raw_damage": 11,
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "sure_hit": false,
+            "target": "enemy",
+            "target_tile": 6,
+            "target_tile_at_action": 6,
+            "timing": 2,
+            "type": "action_result"
+          },
+          {
+            "enemy": {
+              "attack_power": 8.0,
+              "epithet": "무림 검사",
+              "fortitude_next_attack": false,
+              "health": [
+                30,
+                30
+              ],
+              "internal": [
+                4,
+                4
+              ],
+              "momentum": [
+                2,
+                5
+              ],
+              "name": "배외검객",
+              "next_attack_bonus": 0,
+              "stamina": [
+                4,
+                5
+              ],
+              "start_penalties": {
+                "health": 0.0,
+                "internal": 0.0,
+                "stamina": 0.0
+              },
+              "stats": {
+                "agility": 4,
+                "constitution": 4,
+                "external": 4,
+                "insight": 4,
+                "internal_power": 4
+              },
+              "statuses": [
+                {
+                  "kind": "offense",
+                  "label": "출"
+                },
+                {
+                  "kind": "defense",
+                  "label": "방"
+                }
+              ],
+              "tile": 6
+            },
+            "logs": [
+              "[1라운드 1묶음 판정]",
+              "판정 순서: 대응 → 속공 → 이동 → 일반 공격",
+              "[2수 · 대응] 배외검객이(가) 같은 수의 공격을 완전 회피한다.",
+              "[1수 · 준비] 강호낭인이(가) 강공의 준비를 이어 간다.",
+              "[2수 · 절초 기세] 회피 성공 배외검객 기세 +1 (1/5).",
+              "[3수] 양측 모두 행동하지 않았다.",
+              "[묶음 완료 · 절초 기세] 강호낭인 기세 +1 (1/5).",
+              "[묶음 완료 · 절초 기세] 배외검객 기세 +1 (2/5)."
+            ],
+            "phase": "result",
+            "player": {
+              "attack_power": 8.0,
+              "epithet": "무명 검객",
+              "fortitude_next_attack": false,
+              "health": [
+                30,
+                30
+              ],
+              "internal": [
+                2,
+                4
+              ],
+              "momentum": [
+                1,
+                5
+              ],
+              "name": "강호낭인",
+              "next_attack_bonus": 0,
+              "stamina": [
+                4,
+                5
+              ],
+              "start_penalties": {
+                "health": 0.0,
+                "internal": 0.0,
+                "stamina": 0.0
+              },
+              "stats": {
+                "agility": 4,
+                "constitution": 4,
+                "external": 4,
+                "insight": 4,
+                "internal_power": 4
+              },
+              "statuses": [
+                {
+                  "kind": "defense",
+                  "label": "방"
+                }
+              ],
+              "tile": 4
+            },
+            "type": "bundle_state"
+          }
+        ],
+        "resolution_order": [
+          "response",
+          "quick_attack",
+          "move",
+          "general"
+        ],
+        "resolved_actions": [
+          {
+            "action_slots": 1,
+            "action_stage": "execution",
+            "actor": "enemy",
+            "ai_reason": "fixture",
+            "base_card_id": "basic_evade",
+            "card_id": "basic_evade",
+            "card_name": "회피",
+            "category": "response",
+            "category_label": "대응",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                925.0,
+                0.0,
+                300.0,
+                509.0
+              ]
+            },
+            "internal_cost": 0,
+            "outcome": "response",
+            "range_text": "-",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 0,
+            "timing": 2
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "player",
+            "ai_reason": "",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 6,
+            "timing": 1
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "player",
+            "actor_tile_after_action": 4,
+            "ai_reason": "",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "damage": 0,
+            "damage_after_block": 11,
+            "defense_outcome": "evade",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "일반 공격",
+            "range_text": "1~2",
+            "raw_damage": 11,
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "sure_hit": false,
+            "target": "enemy",
+            "target_tile": 6,
+            "target_tile_at_action": 6,
+            "timing": 2
+          }
+        ],
+        "round_number": 1,
+        "state": {
+          "ai_decision_seed": 0,
+          "ai_enabled": false,
+          "bundle_index": 1,
+          "enemy": {
+            "attack_power": 8.0,
+            "epithet": "무림 검사",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              4,
+              4
+            ],
+            "momentum": [
+              2,
+              5
+            ],
+            "name": "배외검객",
+            "next_attack_bonus": 0,
+            "stamina": [
+              4,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "offense",
+                "label": "출"
+              },
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 6
+          },
+          "player": {
+            "attack_power": 8.0,
+            "epithet": "무명 검객",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              2,
+              4
+            ],
+            "momentum": [
+              1,
+              5
+            ],
+            "name": "강호낭인",
+            "next_attack_bonus": 0,
+            "stamina": [
+              4,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 4
+          },
+          "public_resolution_history": [
+            {
+              "actor": "enemy",
+              "bundle_index": 1,
+              "card_id": "basic_evade",
+              "category": "response",
+              "outcome": "response",
+              "round_number": 1
+            },
+            {
+              "actor": "player",
+              "bundle_index": 1,
+              "card_id": "basic_heavy_attack",
+              "category": "attack",
+              "outcome": "일반 공격",
+              "round_number": 1
+            }
+          ],
+          "round_number": 1
+        },
+        "timing_results": [
+          {
+            "events": [
+              {
+                "action_slots": 1,
+                "action_stage": "execution",
+                "actor": "enemy",
+                "card_id": "basic_evade",
+                "card_name": "회피",
+                "category": "response",
+                "category_label": "대응",
+                "direction": -1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    925.0,
+                    0.0,
+                    300.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 0,
+                "outcome": "response",
+                "phase": "response",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "-",
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "target_tile": 0,
+                "timing": 2,
+                "type": "action_result"
+              }
+            ],
+            "phase": "response",
+            "state": {
+              "ai_decision_seed": 0,
+              "ai_enabled": false,
+              "bundle_index": 1,
+              "enemy": {
+                "attack_power": 8.0,
+                "epithet": "무림 검사",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "배외검객",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  4,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "offense",
+                    "label": "출"
+                  },
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 6
+              },
+              "player": {
+                "attack_power": 8.0,
+                "epithet": "무명 검객",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "강호낭인",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  5,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 4
+              },
+              "round_number": 1
+            },
+            "timing": 0
+          },
+          {
+            "events": [
+              {
+                "action_slots": 2,
+                "action_stage": "preparation",
+                "actor": "player",
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "direction": 1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "preparation",
+                "phase": "preparation",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "target_tile": 6,
+                "timing": 1,
+                "type": "action_result"
+              }
+            ],
+            "phase": "timing",
+            "state": {
+              "ai_decision_seed": 0,
+              "ai_enabled": false,
+              "bundle_index": 1,
+              "enemy": {
+                "attack_power": 8.0,
+                "epithet": "무림 검사",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "배외검객",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  4,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "offense",
+                    "label": "출"
+                  },
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 6
+              },
+              "player": {
+                "attack_power": 8.0,
+                "epithet": "무명 검객",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "강호낭인",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  5,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 4
+              },
+              "round_number": 1
+            },
+            "timing": 1
+          },
+          {
+            "events": [
+              {
+                "action_slots": 2,
+                "action_stage": "execution",
+                "actor": "player",
+                "actor_tile_after_action": 4,
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "damage": 0,
+                "damage_after_block": 11,
+                "defense_outcome": "evade",
+                "direction": 1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "일반 공격",
+                "phase": "일반 공격",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "raw_damage": 11,
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "sure_hit": false,
+                "target": "enemy",
+                "target_tile": 6,
+                "target_tile_at_action": 6,
+                "timing": 2,
+                "type": "action_result"
+              }
+            ],
+            "phase": "timing",
+            "state": {
+              "ai_decision_seed": 0,
+              "ai_enabled": false,
+              "bundle_index": 1,
+              "enemy": {
+                "attack_power": 8.0,
+                "epithet": "무림 검사",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  1,
+                  5
+                ],
+                "name": "배외검객",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  4,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "offense",
+                    "label": "출"
+                  },
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 6
+              },
+              "player": {
+                "attack_power": 8.0,
+                "epithet": "무명 검객",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  2,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "강호낭인",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  4,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 4
+              },
+              "round_number": 1
+            },
+            "timing": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "guard",
+      "input": {
+        "before": {
+          "ai_decision_seed": 0,
+          "ai_enabled": false,
+          "bundle_index": 1,
+          "enemy": {
+            "attack_power": 8.0,
+            "epithet": "무림 검사",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              4,
+              4
+            ],
+            "momentum": [
+              0.0,
+              5.0
+            ],
+            "name": "배외검객",
+            "next_attack_bonus": 0,
+            "stamina": [
+              5,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "offense",
+                "label": "출"
+              },
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 6
+          },
+          "player": {
+            "attack_power": 8.0,
+            "epithet": "무명 검객",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              4,
+              4
+            ],
+            "momentum": [
+              0.0,
+              5.0
+            ],
+            "name": "강호낭인",
+            "next_attack_bonus": 0,
+            "stamina": [
+              5,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 4
+          },
+          "round_number": 1
+        },
+        "context": {
+          "bundle_index": 1,
+          "round_number": 1,
+          "timing_sequence": [
+            3,
+            3,
+            4
+          ]
+        },
+        "enemy_plan": {
+          "1": [
+            {
+              "card_id": "basic_guard",
+              "direction": -1,
+              "timing": 2
+            }
+          ]
+        }
+      },
+      "result": {
+        "bundle_end": 3,
+        "bundle_index": 1,
+        "bundle_start": 1,
+        "defenses": {
+          "enemy": {
+            "evade_bundle": false,
+            "evade_timings": [],
+            "guard_block": 4,
+            "guard_bundle_enhanced": false,
+            "guard_timings": [
+              2
+            ]
+          },
+          "player": {
+            "evade_bundle": false,
+            "evade_timings": [],
+            "guard_block": 0,
+            "guard_bundle_enhanced": false,
+            "guard_timings": []
+          }
+        },
+        "logs": [
+          "[1라운드 1묶음 판정]",
+          "판정 순서: 대응 → 속공 → 이동 → 일반 공격",
+          "[2수 · 대응] 배외검객이(가) 현재 묶음에 방어도 4를 준비했다.",
+          "[1수 · 준비] 강호낭인이(가) 강공의 준비를 이어 간다.",
+          "[2수 · 공격] 강공의 공격이 적중했다. 피해 3.",
+          "[2수 · 중단] 배외검객의 아직 실행되지 않은 이 수 행동이 실제 피해로 취소됐다.",
+          "[2수 · 절초 기세] 막기 성공 배외검객 기세 +1 (1/5).",
+          "[3수] 양측 모두 행동하지 않았다.",
+          "[묶음 완료 · 절초 기세] 강호낭인 기세 +1 (1/5).",
+          "[묶음 완료 · 절초 기세] 배외검객 기세 +1 (2/5)."
+        ],
+        "presentation_events": [
+          {
+            "action_slots": 1,
+            "action_stage": "execution",
+            "actor": "enemy",
+            "card_id": "basic_guard",
+            "card_name": "막기",
+            "category": "response",
+            "category_label": "대응",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                616.0,
+                0.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 0,
+            "outcome": "response",
+            "phase": "response",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "-",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 0,
+            "timing": 2,
+            "type": "action_result"
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "player",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "phase": "preparation",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 6,
+            "timing": 1,
+            "type": "action_result"
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "player",
+            "actor_tile_after_action": 4,
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "damage": 3,
+            "damage_after_block": 7,
+            "defense_outcome": "block",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "일반 공격",
+            "phase": "일반 공격",
+            "positions_before_bundle": {
+              "enemy": 6,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "raw_damage": 11,
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "sure_hit": false,
+            "target": "enemy",
+            "target_tile": 6,
+            "target_tile_at_action": 6,
+            "timing": 2,
+            "type": "action_result"
+          },
+          {
+            "enemy": {
+              "attack_power": 8.0,
+              "epithet": "무림 검사",
+              "fortitude_next_attack": false,
+              "health": [
+                27,
+                30
+              ],
+              "internal": [
+                4,
+                4
+              ],
+              "momentum": [
+                2,
+                5
+              ],
+              "name": "배외검객",
+              "next_attack_bonus": 0,
+              "stamina": [
+                4,
+                5
+              ],
+              "start_penalties": {
+                "health": 0.0,
+                "internal": 0.0,
+                "stamina": 0.0
+              },
+              "stats": {
+                "agility": 4,
+                "constitution": 4,
+                "external": 4,
+                "insight": 4,
+                "internal_power": 4
+              },
+              "statuses": [
+                {
+                  "kind": "offense",
+                  "label": "출"
+                },
+                {
+                  "kind": "defense",
+                  "label": "방"
+                }
+              ],
+              "tile": 6
+            },
+            "logs": [
+              "[1라운드 1묶음 판정]",
+              "판정 순서: 대응 → 속공 → 이동 → 일반 공격",
+              "[2수 · 대응] 배외검객이(가) 현재 묶음에 방어도 4를 준비했다.",
+              "[1수 · 준비] 강호낭인이(가) 강공의 준비를 이어 간다.",
+              "[2수 · 공격] 강공의 공격이 적중했다. 피해 3.",
+              "[2수 · 중단] 배외검객의 아직 실행되지 않은 이 수 행동이 실제 피해로 취소됐다.",
+              "[2수 · 절초 기세] 막기 성공 배외검객 기세 +1 (1/5).",
+              "[3수] 양측 모두 행동하지 않았다.",
+              "[묶음 완료 · 절초 기세] 강호낭인 기세 +1 (1/5).",
+              "[묶음 완료 · 절초 기세] 배외검객 기세 +1 (2/5)."
+            ],
+            "phase": "result",
+            "player": {
+              "attack_power": 8.0,
+              "epithet": "무명 검객",
+              "fortitude_next_attack": false,
+              "health": [
+                30,
+                30
+              ],
+              "internal": [
+                2,
+                4
+              ],
+              "momentum": [
+                1,
+                5
+              ],
+              "name": "강호낭인",
+              "next_attack_bonus": 0,
+              "stamina": [
+                4,
+                5
+              ],
+              "start_penalties": {
+                "health": 0.0,
+                "internal": 0.0,
+                "stamina": 0.0
+              },
+              "stats": {
+                "agility": 4,
+                "constitution": 4,
+                "external": 4,
+                "insight": 4,
+                "internal_power": 4
+              },
+              "statuses": [
+                {
+                  "kind": "defense",
+                  "label": "방"
+                }
+              ],
+              "tile": 4
+            },
+            "type": "bundle_state"
+          }
+        ],
+        "resolution_order": [
+          "response",
+          "quick_attack",
+          "move",
+          "general"
+        ],
+        "resolved_actions": [
+          {
+            "action_slots": 1,
+            "action_stage": "execution",
+            "actor": "enemy",
+            "ai_reason": "fixture",
+            "base_card_id": "basic_guard",
+            "card_id": "basic_guard",
+            "card_name": "막기",
+            "category": "response",
+            "category_label": "대응",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                616.0,
+                0.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 0,
+            "outcome": "response",
+            "range_text": "-",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 0,
+            "timing": 2
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "player",
+            "ai_reason": "",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 6,
+            "timing": 1
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "player",
+            "actor_tile_after_action": 4,
+            "ai_reason": "",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "damage": 3,
+            "damage_after_block": 7,
+            "defense_outcome": "block",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "일반 공격",
+            "range_text": "1~2",
+            "raw_damage": 11,
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "sure_hit": false,
+            "target": "enemy",
+            "target_tile": 6,
+            "target_tile_at_action": 6,
+            "timing": 2
+          }
+        ],
+        "round_number": 1,
+        "state": {
+          "ai_decision_seed": 0,
+          "ai_enabled": false,
+          "bundle_index": 1,
+          "enemy": {
+            "attack_power": 8.0,
+            "epithet": "무림 검사",
+            "fortitude_next_attack": false,
+            "health": [
+              27,
+              30
+            ],
+            "internal": [
+              4,
+              4
+            ],
+            "momentum": [
+              2,
+              5
+            ],
+            "name": "배외검객",
+            "next_attack_bonus": 0,
+            "stamina": [
+              4,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "offense",
+                "label": "출"
+              },
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 6
+          },
+          "player": {
+            "attack_power": 8.0,
+            "epithet": "무명 검객",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              2,
+              4
+            ],
+            "momentum": [
+              1,
+              5
+            ],
+            "name": "강호낭인",
+            "next_attack_bonus": 0,
+            "stamina": [
+              4,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 4
+          },
+          "public_resolution_history": [
+            {
+              "actor": "enemy",
+              "bundle_index": 1,
+              "card_id": "basic_guard",
+              "category": "response",
+              "outcome": "response",
+              "round_number": 1
+            },
+            {
+              "actor": "player",
+              "bundle_index": 1,
+              "card_id": "basic_heavy_attack",
+              "category": "attack",
+              "outcome": "일반 공격",
+              "round_number": 1
+            }
+          ],
+          "round_number": 1
+        },
+        "timing_results": [
+          {
+            "events": [
+              {
+                "action_slots": 1,
+                "action_stage": "execution",
+                "actor": "enemy",
+                "card_id": "basic_guard",
+                "card_name": "막기",
+                "category": "response",
+                "category_label": "대응",
+                "direction": -1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    616.0,
+                    0.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 0,
+                "outcome": "response",
+                "phase": "response",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "-",
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "target_tile": 0,
+                "timing": 2,
+                "type": "action_result"
+              }
+            ],
+            "phase": "response",
+            "state": {
+              "ai_decision_seed": 0,
+              "ai_enabled": false,
+              "bundle_index": 1,
+              "enemy": {
+                "attack_power": 8.0,
+                "epithet": "무림 검사",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "배외검객",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  4,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "offense",
+                    "label": "출"
+                  },
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 6
+              },
+              "player": {
+                "attack_power": 8.0,
+                "epithet": "무명 검객",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "강호낭인",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  5,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 4
+              },
+              "round_number": 1
+            },
+            "timing": 0
+          },
+          {
+            "events": [
+              {
+                "action_slots": 2,
+                "action_stage": "preparation",
+                "actor": "player",
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "direction": 1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "preparation",
+                "phase": "preparation",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "target_tile": 6,
+                "timing": 1,
+                "type": "action_result"
+              }
+            ],
+            "phase": "timing",
+            "state": {
+              "ai_decision_seed": 0,
+              "ai_enabled": false,
+              "bundle_index": 1,
+              "enemy": {
+                "attack_power": 8.0,
+                "epithet": "무림 검사",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "배외검객",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  4,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "offense",
+                    "label": "출"
+                  },
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 6
+              },
+              "player": {
+                "attack_power": 8.0,
+                "epithet": "무명 검객",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "강호낭인",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  5,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 4
+              },
+              "round_number": 1
+            },
+            "timing": 1
+          },
+          {
+            "events": [
+              {
+                "action_slots": 2,
+                "action_stage": "execution",
+                "actor": "player",
+                "actor_tile_after_action": 4,
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "damage": 3,
+                "damage_after_block": 7,
+                "defense_outcome": "block",
+                "direction": 1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "일반 공격",
+                "phase": "일반 공격",
+                "positions_before_bundle": {
+                  "enemy": 6,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "raw_damage": 11,
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "sure_hit": false,
+                "target": "enemy",
+                "target_tile": 6,
+                "target_tile_at_action": 6,
+                "timing": 2,
+                "type": "action_result"
+              }
+            ],
+            "phase": "timing",
+            "state": {
+              "ai_decision_seed": 0,
+              "ai_enabled": false,
+              "bundle_index": 1,
+              "enemy": {
+                "attack_power": 8.0,
+                "epithet": "무림 검사",
+                "fortitude_next_attack": false,
+                "health": [
+                  27,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  1,
+                  5
+                ],
+                "name": "배외검객",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  4,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "offense",
+                    "label": "출"
+                  },
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 6
+              },
+              "player": {
+                "attack_power": 8.0,
+                "epithet": "무명 검객",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  2,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "강호낭인",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  4,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 4
+              },
+              "round_number": 1
+            },
+            "timing": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "miss_range",
+      "input": {
+        "before": {
+          "ai_decision_seed": 0,
+          "ai_enabled": false,
+          "bundle_index": 1,
+          "enemy": {
+            "attack_power": 8.0,
+            "epithet": "무림 검사",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              4,
+              4
+            ],
+            "momentum": [
+              0.0,
+              5.0
+            ],
+            "name": "배외검객",
+            "next_attack_bonus": 0,
+            "stamina": [
+              5,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 2,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "offense",
+                "label": "출"
+              },
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 7
+          },
+          "player": {
+            "attack_power": 8.0,
+            "epithet": "무명 검객",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              4,
+              4
+            ],
+            "momentum": [
+              0.0,
+              5.0
+            ],
+            "name": "강호낭인",
+            "next_attack_bonus": 0,
+            "stamina": [
+              5,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 4
+          },
+          "round_number": 1
+        },
+        "context": {
+          "bundle_index": 1,
+          "round_number": 1,
+          "timing_sequence": [
+            3,
+            3,
+            4
+          ]
+        },
+        "enemy_plan": {
+          "1": [
+            {
+              "card_id": "basic_heavy_attack",
+              "direction": -1,
+              "timing": 1
+            }
+          ]
+        }
+      },
+      "result": {
+        "bundle_end": 3,
+        "bundle_index": 1,
+        "bundle_start": 1,
+        "defenses": {
+          "enemy": {
+            "evade_bundle": false,
+            "evade_timings": [],
+            "guard_block": 0,
+            "guard_bundle_enhanced": false,
+            "guard_timings": []
+          },
+          "player": {
+            "evade_bundle": false,
+            "evade_timings": [],
+            "guard_block": 0,
+            "guard_bundle_enhanced": false,
+            "guard_timings": []
+          }
+        },
+        "logs": [
+          "[1라운드 1묶음 판정]",
+          "판정 순서: 대응 → 속공 → 이동 → 일반 공격",
+          "[1수 · 준비] 강호낭인이(가) 강공의 준비를 이어 간다.",
+          "[1수 · 준비] 배외검객이(가) 강공의 준비를 이어 간다.",
+          "[2수 · 일반 공격] 강호낭인의 강공은(는) 사거리가 닿지 않았다.",
+          "[2수 · 일반 공격] 배외검객의 강공은(는) 사거리가 닿지 않았다.",
+          "[3수] 양측 모두 행동하지 않았다.",
+          "[묶음 완료 · 절초 기세] 강호낭인 기세 +1 (1/5).",
+          "[묶음 완료 · 절초 기세] 배외검객 기세 +1 (1/5)."
+        ],
+        "presentation_events": [
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "player",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "phase": "preparation",
+            "positions_before_bundle": {
+              "enemy": 7,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 7,
+            "timing": 1,
+            "type": "action_result"
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "enemy",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "phase": "preparation",
+            "positions_before_bundle": {
+              "enemy": 7,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 0,
+            "timing": 1,
+            "type": "action_result"
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "player",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "miss_range",
+            "phase": "result",
+            "positions_before_bundle": {
+              "enemy": 7,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 7,
+            "timing": 2,
+            "type": "action_result"
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "enemy",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "miss_range",
+            "phase": "result",
+            "positions_before_bundle": {
+              "enemy": 7,
+              "player": 4
+            },
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 0,
+            "timing": 2,
+            "type": "action_result"
+          },
+          {
+            "enemy": {
+              "attack_power": 8.0,
+              "epithet": "무림 검사",
+              "fortitude_next_attack": false,
+              "health": [
+                30,
+                30
+              ],
+              "internal": [
+                2,
+                4
+              ],
+              "momentum": [
+                1,
+                5
+              ],
+              "name": "배외검객",
+              "next_attack_bonus": 0,
+              "stamina": [
+                4,
+                5
+              ],
+              "start_penalties": {
+                "health": 0.0,
+                "internal": 0.0,
+                "stamina": 0.0
+              },
+              "stats": {
+                "agility": 4,
+                "constitution": 4,
+                "external": 2,
+                "insight": 4,
+                "internal_power": 4
+              },
+              "statuses": [
+                {
+                  "kind": "offense",
+                  "label": "출"
+                },
+                {
+                  "kind": "defense",
+                  "label": "방"
+                }
+              ],
+              "tile": 7
+            },
+            "logs": [
+              "[1라운드 1묶음 판정]",
+              "판정 순서: 대응 → 속공 → 이동 → 일반 공격",
+              "[1수 · 준비] 강호낭인이(가) 강공의 준비를 이어 간다.",
+              "[1수 · 준비] 배외검객이(가) 강공의 준비를 이어 간다.",
+              "[2수 · 일반 공격] 강호낭인의 강공은(는) 사거리가 닿지 않았다.",
+              "[2수 · 일반 공격] 배외검객의 강공은(는) 사거리가 닿지 않았다.",
+              "[3수] 양측 모두 행동하지 않았다.",
+              "[묶음 완료 · 절초 기세] 강호낭인 기세 +1 (1/5).",
+              "[묶음 완료 · 절초 기세] 배외검객 기세 +1 (1/5)."
+            ],
+            "phase": "result",
+            "player": {
+              "attack_power": 8.0,
+              "epithet": "무명 검객",
+              "fortitude_next_attack": false,
+              "health": [
+                30,
+                30
+              ],
+              "internal": [
+                2,
+                4
+              ],
+              "momentum": [
+                1,
+                5
+              ],
+              "name": "강호낭인",
+              "next_attack_bonus": 0,
+              "stamina": [
+                4,
+                5
+              ],
+              "start_penalties": {
+                "health": 0.0,
+                "internal": 0.0,
+                "stamina": 0.0
+              },
+              "stats": {
+                "agility": 4,
+                "constitution": 4,
+                "external": 4,
+                "insight": 4,
+                "internal_power": 4
+              },
+              "statuses": [
+                {
+                  "kind": "defense",
+                  "label": "방"
+                }
+              ],
+              "tile": 4
+            },
+            "type": "bundle_state"
+          }
+        ],
+        "resolution_order": [
+          "response",
+          "quick_attack",
+          "move",
+          "general"
+        ],
+        "resolved_actions": [
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "player",
+            "ai_reason": "",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 7,
+            "timing": 1
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "preparation",
+            "actor": "enemy",
+            "ai_reason": "fixture",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "preparation",
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 0,
+            "timing": 1
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "player",
+            "ai_reason": "",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": 1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "miss_range",
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 7,
+            "timing": 2
+          },
+          {
+            "action_slots": 2,
+            "action_stage": "execution",
+            "actor": "enemy",
+            "ai_reason": "fixture",
+            "base_card_id": "basic_heavy_attack",
+            "card_id": "basic_heavy_attack",
+            "card_name": "강공",
+            "category": "attack",
+            "category_label": "공격",
+            "direction": -1,
+            "illustration": {
+              "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+              "region": [
+                0.0,
+                515.0,
+                303.0,
+                509.0
+              ]
+            },
+            "internal_cost": 2,
+            "outcome": "miss_range",
+            "range_text": "1~2",
+            "source_label": "기초",
+            "stamina_cost": 1,
+            "target_tile": 0,
+            "timing": 2
+          }
+        ],
+        "round_number": 1,
+        "state": {
+          "ai_decision_seed": 0,
+          "ai_enabled": false,
+          "bundle_index": 1,
+          "enemy": {
+            "attack_power": 8.0,
+            "epithet": "무림 검사",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              2,
+              4
+            ],
+            "momentum": [
+              1,
+              5
+            ],
+            "name": "배외검객",
+            "next_attack_bonus": 0,
+            "stamina": [
+              4,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 2,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "offense",
+                "label": "출"
+              },
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 7
+          },
+          "player": {
+            "attack_power": 8.0,
+            "epithet": "무명 검객",
+            "fortitude_next_attack": false,
+            "health": [
+              30,
+              30
+            ],
+            "internal": [
+              2,
+              4
+            ],
+            "momentum": [
+              1,
+              5
+            ],
+            "name": "강호낭인",
+            "next_attack_bonus": 0,
+            "stamina": [
+              4,
+              5
+            ],
+            "start_penalties": {
+              "health": 0.0,
+              "internal": 0.0,
+              "stamina": 0.0
+            },
+            "stats": {
+              "agility": 4,
+              "constitution": 4,
+              "external": 4,
+              "insight": 4,
+              "internal_power": 4
+            },
+            "statuses": [
+              {
+                "kind": "defense",
+                "label": "방"
+              }
+            ],
+            "tile": 4
+          },
+          "public_resolution_history": [
+            {
+              "actor": "player",
+              "bundle_index": 1,
+              "card_id": "basic_heavy_attack",
+              "category": "attack",
+              "outcome": "miss_range",
+              "round_number": 1
+            },
+            {
+              "actor": "enemy",
+              "bundle_index": 1,
+              "card_id": "basic_heavy_attack",
+              "category": "attack",
+              "outcome": "miss_range",
+              "round_number": 1
+            }
+          ],
+          "round_number": 1
+        },
+        "timing_results": [
+          {
+            "events": [
+              {
+                "action_slots": 2,
+                "action_stage": "preparation",
+                "actor": "player",
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "direction": 1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "preparation",
+                "phase": "preparation",
+                "positions_before_bundle": {
+                  "enemy": 7,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "target_tile": 7,
+                "timing": 1,
+                "type": "action_result"
+              },
+              {
+                "action_slots": 2,
+                "action_stage": "preparation",
+                "actor": "enemy",
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "direction": -1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "preparation",
+                "phase": "preparation",
+                "positions_before_bundle": {
+                  "enemy": 7,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "target_tile": 0,
+                "timing": 1,
+                "type": "action_result"
+              }
+            ],
+            "phase": "timing",
+            "state": {
+              "ai_decision_seed": 0,
+              "ai_enabled": false,
+              "bundle_index": 1,
+              "enemy": {
+                "attack_power": 8.0,
+                "epithet": "무림 검사",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "배외검객",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  5,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 2,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "offense",
+                    "label": "출"
+                  },
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 7
+              },
+              "player": {
+                "attack_power": 8.0,
+                "epithet": "무명 검객",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  4,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "강호낭인",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  5,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 4
+              },
+              "round_number": 1
+            },
+            "timing": 1
+          },
+          {
+            "events": [
+              {
+                "action_slots": 2,
+                "action_stage": "execution",
+                "actor": "player",
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "direction": 1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "miss_range",
+                "phase": "result",
+                "positions_before_bundle": {
+                  "enemy": 7,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "target_tile": 7,
+                "timing": 2,
+                "type": "action_result"
+              },
+              {
+                "action_slots": 2,
+                "action_stage": "execution",
+                "actor": "enemy",
+                "card_id": "basic_heavy_attack",
+                "card_name": "강공",
+                "category": "attack",
+                "category_label": "공격",
+                "direction": -1,
+                "illustration": {
+                  "atlas": "res://assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
+                  "region": [
+                    0.0,
+                    515.0,
+                    303.0,
+                    509.0
+                  ]
+                },
+                "internal_cost": 2,
+                "outcome": "miss_range",
+                "phase": "result",
+                "positions_before_bundle": {
+                  "enemy": 7,
+                  "player": 4
+                },
+                "range_text": "1~2",
+                "source_label": "기초",
+                "stamina_cost": 1,
+                "target_tile": 0,
+                "timing": 2,
+                "type": "action_result"
+              }
+            ],
+            "phase": "timing",
+            "state": {
+              "ai_decision_seed": 0,
+              "ai_enabled": false,
+              "bundle_index": 1,
+              "enemy": {
+                "attack_power": 8.0,
+                "epithet": "무림 검사",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  2,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "배외검객",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  4,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 2,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "offense",
+                    "label": "출"
+                  },
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 7
+              },
+              "player": {
+                "attack_power": 8.0,
+                "epithet": "무명 검객",
+                "fortitude_next_attack": false,
+                "health": [
+                  30,
+                  30
+                ],
+                "internal": [
+                  2,
+                  4
+                ],
+                "momentum": [
+                  0.0,
+                  5.0
+                ],
+                "name": "강호낭인",
+                "next_attack_bonus": 0,
+                "stamina": [
+                  4,
+                  5
+                ],
+                "start_penalties": {
+                  "health": 0.0,
+                  "internal": 0.0,
+                  "stamina": 0.0
+                },
+                "stats": {
+                  "agility": 4,
+                  "constitution": 4,
+                  "external": 4,
+                  "insight": 4,
+                  "internal_power": 4
+                },
+                "statuses": [
+                  {
+                    "kind": "defense",
+                    "label": "방"
+                  }
+                ],
+                "tile": 4
+              },
+              "round_number": 1
+            },
+            "timing": 2
+          }
+        ]
+      }
+    }
+  ],
+  "engine_version": "4.7.1-stable (official)",
+  "evidence_kind": "ACTUAL_PRODUCT_RESOLVER_WITH_FIXED_INPUTS_NOT_GAME_CAPTURE",
+  "schema_version": 1,
+  "sources": [
+    {
+      "path": "src/combat/combat_resolution_engine.gd",
+      "sha256": "2c69409a254f0a9b1acf7c4756ee8bb4e2b091caeeb9378a55a3767148df0355"
+    },
+    {
+      "path": "src/combat/combat_ai_planner.gd",
+      "sha256": "3b6e577fea59234e82650d94fb7a47bb88035240433d82c6b5a8a81c4672e0da"
+    },
+    {
+      "path": "data/cards/basic_cards.json",
+      "sha256": "848519850109428f1fd6ce7d933631d8b680d3691dc40d93e5e4a7db2be7f366"
+    },
+    {
+      "path": "data/cards/ultimate_cards.json",
+      "sha256": "b2f9998508b0b13a9c38d854c1e1feb521024c551580fe9cc0dde2d2f87b82d5"
+    },
+    {
+      "path": "data/combat/combat_resolution_preview.json",
+      "sha256": "83773004368efbbf8b14c257f34db893559c946d123adf7172efbd4451190f25"
+    },
+    {
+      "path": "data/combat/combat_hud_preview.json",
+      "sha256": "7704c029975164192291ff37202fe56a788af2dcac37e1a3ab1ea040450b4862"
+    }
+  ]
+}

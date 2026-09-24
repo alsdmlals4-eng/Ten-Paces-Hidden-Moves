@@ -1,0 +1,29 @@
+{
+  "gif": {
+    "size": [
+      800,
+      580
+    ],
+    "frames": 128,
+    "loop": 0,
+    "duration_ms": 6400,
+    "distinct_arena_frames": 128
+  },
+  "assets": [
+    {
+      "file": "ink-clash-v2.mp4",
+      "sha256": "257497267f40544510c894d329c71d21af3c773813ebf1080ceca8e564202cd5",
+      "bytes": 4038449
+    },
+    {
+      "file": "ink-clash-v2.gif",
+      "sha256": "983f68ce87cca4fc422ca07160b703f59f864694b6bfe401f68840fd1e0329ec",
+      "bytes": 26069984
+    },
+    {
+      "file": "poster.png",
+      "sha256": "dd017a4a1b2269e4d865e8dfb4a3d898acc136bc188c514b28036a53b82bb5dd",
+      "bytes": 1882163
+    }
+  ]
+}

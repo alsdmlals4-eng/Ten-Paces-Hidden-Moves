@@ -1,5 +1,25 @@
 # 십보강호 활성 컨텍스트
 
+## v2 연출 기준 확정·하단 판정 표시 · 2026-09-24
+
+사용자가 v2를 “기준으로잡아줘”로 확인하고 하단 수치 결과를 요청했다. `docs/decisions/2026-09-24_INK_WUXIA_STYLE_AND_FLOW.md`에 기준 채택·양측 행동/소모/비교/실제 변화의 표시 계약을 기록했다. 원화와 검의 흐름을 유지한 GIF/MP4에 실제 Godot 판정 코드의 고정 상황 기록을 연결한다. 승리/패배/상쇄/회피/막기/사거리 실패6개를 대조하며, 피해 이중 합산과 묶음 완료 기세 혼입을 막는다. 시안의 화풍·연출 방향 승인과 전체 기술의 최종 모션·게임 실시간 UI 적용은 구분한다. 검증·전달 상태는 기존 v2 README와 PR359를 따른다.
+
+## 핵심 재미 두 축과 합 연출 재작업 · 2026-09-24
+
+사용자는 핵심 재미를 **수싸움(행동설계)**과 **무협 액션을 보며 멋을 느끼는 연출(전투진행)**로 명시했다. 책임 원본은 `docs/decisions/2026-09-24_INK_WUXIA_STYLE_AND_FLOW.md`의 의도이며 두 경험을 판단→관람→다음 판단으로 연결한다. 1차 합 GIF는 멋이 부족하다는 사용자 피드백으로 `USER_REVISION_REQUIRED`다. 같은 8+3+9 방향 안에서 2차 원화·검객별9자세·먹 붓자국·6.4초 GIF/MP4 후보를 제작했고 `docs/visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v2/README.md`에 실제 검수 결과를 누적한다. 자동 재생과 최종 모션 승인·사람의 재미를 구분한다. 실제 제품 경로와 사용자 코멘트는 그대로 보호한다.
+
+## 합 GIF 시안과 HTML 작업 방식 재사용 · 2026-09-24
+
+추가 승인에 따라 ProjectMoon 공식 합 자료와 Nine Sols 개발사 설명을 조사하고 8+3+9 화풍의 실제 GIF/MP4를 제작했다. `docs/visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v1/README.md`에 의도·출처·원화·검수·한계를 기록했다. 검객별6자세를 잇는8.4초 시안이며 브라우저 재생을 확인했다. 세 번의 검 교환은 연출 구성으로 새 피해 판정이 아니다. 앞 절의 정지 참조만 존재하던 상태에서 오프라인 움직임 후보까지 진행했으며, Godot 연결·최종 모션 확정·사람의 자연스러움 평가는 별도다.
+
+전달 변경안은 [Draft PR359](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/359)다. 시안 검토 단계로 main에 병합하지 않았으며 최신 HEAD/자동 검사는 GitHub live metadata를 읽는다.
+
+이번 HTML의 분류/번호/용도/의도, 인라인 코멘트·저장 위치 유지, 표화, 미디어 재생/발행 복구를 `building-reviewable-html-blueprints` 개인 스킬로 만들었다. `docs/blueprint/reuse-kit/README.md`에 설치본 전달 스냅샷·실행 예시·ZIP·Base 적용 경계를 연결한다. 기존 HTML receipt의 `reusable_html_skill_followup`에 실제 검증을 누적하며 Base와 다른 프로젝트에는 아직 적용하지 않는다. 사용자 실제 리뷰 파일·게임 제품 경로는 이번 추가 범위에서 변경하지 않는다.
+
+## 무협 화풍 8+3+9와 연속 연출 목표 확정 · 2026-09-24
+
+10개 비교 뒤 사용자는 **8번을 주 화풍,3번을 명암 대비,9번을 안개**로 선택했고, “무협 애니메이션을 보듯 수 싸움 후 먹+붓의 공격 흐름이 물 흐르듯 이어지는 연출”을 목표로 명시했다. 책임 원본은 `docs/decisions/2026-09-24_INK_WUXIA_STYLE_AND_FLOW.md`이며 Visual 명세와 UX owner에서 연결한다. 통합 참조는 `docs/visual-assets/candidates/TEN-INK-STYLES-20260924/hybrid-8-3-9-v1.png`; 같은 폴더의 HTML/README/candidates.json에서 비교·의도·프롬프트·해시·검증을 확인한다. 스타일 방향은 사용자 확인 완료, 인물이 합쳐진 정지 참조 자체의 runtime 승격은 하지 않았다. 다음 작업은 실제 consumer와 PR342 후보를 대조해 행동설계/전투진행의 두 표현 단계·연속 움직임·동기화된 하단 결과를 구현/검증하는 것이다. 3/3/4·논리 전장·정보 경계는 보호하며 실제 모션/게임 적용은 NOT_RUN이다.
+
 ## 사건 확률·HTML 가독성 후속 · 2026-09-24
 
 사용자가 사건별 설명/세 선택지, 능력치에 따른 성공과 드문 기연, HTML 전반의 조사·최적화를 승인했다. Decision은 `docs/decisions/2026-09-24_EVENT_CHECKS_AND_HTML_READABILITY.md`, 실행·검토·통합 근거는 기존 HTML receipt의 `event_checks_readability_followup`에 누적한다. PR357 최종 `1aea1fe8`의 원격33검사가 통과했고 main `27d1a3a94bd820d9ed840ca80f6175e090b1df05`로 정상 병합됐다. 검수한 tracked tree와 병합본이 동일하다. 일회 승인은 `docs/operations/2026-09-24_PR357_PROTECTED_CHANGE_APPROVAL_RECORD.md`에 보존·종료하며 다음 제품 작업은 PR342의 최신 후보/승인 범위를 다시 대조한다.

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>블루프린트 검토 예시</title>
+<style>
+:root{--bg:#f4f0e7;--ink:#27322e;--muted:#5d6861;--line:#d7d0bd;--accent:#376a61}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,sans-serif}main{max-width:1160px;margin:auto;padding:32px 22px}
+h1{font-size:30px;line-height:1.25;margin:6px 0 14px}h2{font-size:22px;margin:26px 0 10px}h3{font-size:17px;margin:0}
+header{border-bottom:2px solid var(--ink);padding-bottom:20px}.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--accent);font-weight:700}
+p{margin:8px 0}.muted,small{color:var(--muted);font-size:13px}nav{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}nav a,button{border:1px solid var(--line);background:#fffdf7;color:var(--ink);padding:9px 14px;font:inherit;border-radius:3px;cursor:pointer;text-decoration:none;min-height:44px}
+a{color:var(--accent)}button:hover,nav a:hover{border-color:var(--accent)}button:focus-visible,a:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #498679;outline-offset:2px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{background:#fffdf7;border:1px solid var(--line);padding:14px;scroll-margin-top:18px;min-width:0}
+figure{margin:0 0 14px}svg{display:block;width:100%;height:170px;background:#e8e4d8}figcaption{font-size:13px;font-weight:700;margin-top:9px}
+.meta{font-size:13px;min-height:110px}.controls{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:13px 0}
+label{font-size:13px}select,textarea{font:inherit;color:inherit;background:#fff;border:1px solid #b7b9ad;padding:9px;border-radius:3px;max-width:100%}textarea{width:100%;display:block;margin-top:5px;min-height:108px;resize:vertical}
+.save{font-size:12px;min-height:22px;color:var(--accent)}.delete{font-size:12px;color:#904535}.sample{display:inline-block;font-size:11px;border:1px solid var(--line);padding:1px 6px;margin-bottom:8px}
+.notice{padding:12px 15px;background:#e8eee9;border-left:3px solid var(--accent);font-size:13px}.event{background:#fffdf7;padding:16px;border:1px solid var(--line);margin:12px 0}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:450px;font-size:14px}th,td{text-align:left;border-bottom:1px solid var(--line);padding:10px;vertical-align:top}th{background:#eeeadd}
+footer{border-top:1px solid var(--line);margin-top:28px;padding-top:18px}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+@media(max-width:850px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:550px){main{padding:22px 12px}.cards{grid-template-columns:1fr}.meta{min-height:0}h1{font-size:25px}.toolbar{align-items:flex-start;flex-direction:column}}
+</style>
+<main>
+<header><div class="eyebrow">재사용 예시 · 검토 가능한 HTML</div><h1 id="title"></h1><p>관련 그림은 함께 보고, 의견은 대상 바로 아래에 남깁니다.</p><p class="muted">여기 보이는 그림과 내용은 동작 설명용 예시입니다. 실제 프로젝트 자료는 원본 어댑터로 연결합니다.</p></header>
+<nav aria-label="본문 바로가기"><a href="#images">이미지 목록</a><a href="#events">사건·선택지</a><a href="#how">저장 방식</a></nav>
+<section id="images"><div class="toolbar"><h2>이미지 목록</h2><button id="export" type="button">코멘트 JSON 내보내기</button></div><details id="export-fallback" hidden><summary>파일 저장이 열리지 않으면 내보낼 내용 보기</summary><p class="muted">아래 내용을 복사하여 .json 파일로 보관할 수도 있습니다.</p><textarea id="export-data" aria-label="내보낼 코멘트 JSON" readonly></textarea></details><div class="cards" id="cards"></div></section>
+<section id="events"><h2>설명은 한 번, 선택지는 한 표로</h2>
+<article class="event"><span class="sample">구조 예시 · 게임 규칙 아님</span><h3>사건 1 · 길 위의 만남</h3><p>같은 사건의 상황은 이곳에서 한 번 설명합니다.</p><div class="table-wrap" tabindex="0" role="region" aria-label="사건 1 선택지"><table><thead><tr><th>선택</th><th>종류</th><th>확인할 결과</th></tr></thead><tbody><tr><td>선택지 1</td><td>교류</td><td>성공·실패·희귀 결과를 원본에서 가져옴</td></tr><tr><td>선택지 2</td><td>조사</td><td>조건·비용·정보 공개 범위를 함께 표시</td></tr><tr><td>선택지 3</td><td>진행</td><td>안전 선택의 효과를 따로 표시</td></tr></tbody></table></div></article></section>
+<footer id="how"><h2>저장 방식</h2><p class="notice">이 예시는 현재 미리보기 주소의 브라우저에만 자동 보관합니다. 서버 파일 저장은 연결되어 있지 않습니다. 주소·포트가 바뀌거나 다른 브라우저·PC로 옮기기 전 JSON으로 내보내세요. 폐기 요청은 표시만 남기며 원본 파일을 지우지 않습니다.</p><p id="global-status" role="status"></p><p class="muted">실제 프로젝트에서는 기존 영구 리뷰 저장소, 발행 복구, 원본 미디어 재생 검증을 연결합니다.</p></footer>
+</main>
+<script>
+const PROJECT={"id": "tenpaces-review-demo", "name": "블루프린트 검토 패턴"};
+document.title=PROJECT.name+' · 검토 예시';document.querySelector('#title').textContent=PROJECT.name;
+const examples=[
+{id:'explore-rest',number:1,kind:'탐험',usage:'휴식 지점의 배경',intent:'회복 선택을 쉽게 알아보게 한다.',source:'연결할 실제 휴식 화면',icon:'route'},
+{id:'battle-exchange',number:2,kind:'전투',usage:'행동 결과 설명',intent:'공격과 대응이 왜 이 결과로 이어졌는지 보여준다.',source:'연결할 실제 전투 화면',icon:'duel'},
+{id:'actor-expression',number:3,kind:'인물',usage:'동일 캐릭터의 표정 비교',intent:'같은 인물이 장면마다 다르게 보이는지 확인한다.',source:'연결할 캐릭터 원화와 사용 화면',icon:'face'}
+];
+const KEY='review-blueprint-example:'+PROJECT.id+':v1';
+const states=['미검토','수정 요청','승인','폐기 요청'];let doc={schema:1,project:PROJECT.id,items:{}},storageError='';
+try{const previous=JSON.parse(localStorage.getItem(KEY)||'null');if(previous&&previous.project===PROJECT.id&&previous.schema===1&&previous.items&&typeof previous.items==='object')doc=previous;}catch(e){storageError='이전 보관 내용을 읽지 못했습니다. 현재 입력은 JSON으로 내보낼 수 있습니다.';}
+const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function diagram(type){
+const paths=type==='route'?'<path d="M45 135Q90 30 150 100T285 45" fill="none" stroke="#526e60" stroke-width="4"/><circle cx="45" cy="135" r="12" fill="#ac8051"/><circle cx="150" cy="100" r="12" fill="#ac8051"/><circle cx="285" cy="45" r="12" fill="#ac8051"/>':type==='duel'?'<path d="M65 135L223 30M105 30L265 135" stroke="#354c4c" stroke-width="9"/><circle cx="165" cy="80" r="22" fill="none" stroke="#b28147" stroke-width="3"/>':'<circle cx="160" cy="63" r="33" fill="#718677"/><path d="M90 147Q100 91 160 91T230 147" fill="#4f665b"/>';
+return '<svg viewBox="0 0 330 170" role="img" aria-label="구조를 보여주는 예시 도식">'+paths+'</svg>';
+}
+document.querySelector('#cards').innerHTML=examples.map(x=>{
+const saved=doc.items[x.id]||{},status=states.includes(saved.status)?saved.status:states[0];
+return '<article class="card" id="'+x.id+'" data-id="'+x.id+'"><figure>'+diagram(x.icon)+'<figcaption>'+esc(x.kind)+' · 이미지 '+x.number+' · '+esc(x.usage)+'</figcaption></figure><div class="meta"><span class="sample">예시 도식</span><p><b>목적</b> '+esc(x.intent)+'</p><p class="muted"><b>사용처</b> '+esc(x.source)+'</p></div><div class="controls"><label>검토 상태 <select aria-label="이미지 '+x.number+' 검토 상태">'+states.map(s=>'<option'+(s===status?' selected':'')+'>'+s+'</option>').join('')+'</select></label><button class="delete" type="button">폐기 요청</button></div><label>코멘트<textarea placeholder="수정할 점이나 바꾸고 싶은 모습을 남기세요." aria-label="이미지 '+x.number+' 코멘트">'+esc(typeof saved.comment==='string'?saved.comment:'')+'</textarea></label><div class="save" role="status">'+(saved.updated_at?'브라우저 보관 내용 복원됨':'입력하면 이 브라우저에 바로 보관합니다.')+'</div></article>';
+}).join('');
+function record(card){
+const id=card.dataset.id;doc.items[id]={status:card.querySelector('select').value,comment:card.querySelector('textarea').value,updated_at:new Date().toISOString()};
+try{localStorage.setItem(KEY,JSON.stringify(doc));card.querySelector('.save').textContent='이 브라우저에 보관됨';}
+catch(e){card.querySelector('.save').textContent='브라우저 보관 실패 · 지금 JSON으로 내보내세요.';document.querySelector('#global-status').textContent='입력은 현재 화면에 유지됩니다. 파일 저장은 연결되지 않았습니다.';}
+}
+for(const card of document.querySelectorAll('.card')){
+card.querySelector('textarea').addEventListener('input',()=>record(card));
+card.querySelector('select').addEventListener('change',()=>record(card));
+card.querySelector('.delete').addEventListener('click',()=>{card.querySelector('select').value='폐기 요청';record(card);});
+}
+document.querySelector('#export').addEventListener('click',()=>{
+const serialized=JSON.stringify(doc,null,2);document.querySelector('#export-data').value=serialized;document.querySelector('#export-fallback').hidden=false;
+const a=document.createElement('a'),url=URL.createObjectURL(new Blob([serialized],{type:'application/json'}));a.href=url;a.download=PROJECT.id+'-comments.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+document.querySelector('#global-status').textContent='내보낼 내용이 준비됐습니다. 다운로드 목록을 확인하거나 위의 내보낼 내용 보기를 이용하세요.';
+});
+document.querySelector('#global-status').textContent=storageError;
+</script></html>

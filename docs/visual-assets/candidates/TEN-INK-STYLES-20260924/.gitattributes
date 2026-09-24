@@ -1,0 +1,10 @@
+.gitattributes text eol=lf
+.gdignore text eol=lf
+*.md text eol=lf
+*.html text eol=lf
+*.json text eol=lf
+*.py text eol=lf
+*.cjs text eol=lf
+*.png binary
+*.gif binary
+*.mp4 binary

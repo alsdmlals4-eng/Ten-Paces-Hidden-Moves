@@ -1276,5 +1276,94 @@
       "RELEASE_PERFORMANCE_NOT_RUN",
       "PR342_PERMANENT_STAT_GROWTH_NOT_ADOPTED"
     ]
+  },
+  "reusable_html_skill_followup": {
+    "date": "2026-09-24",
+    "base_sha": "ec7240633e21aec448f9426781a7acbf294aa748",
+    "work_mode": "BUILD / REVIEW",
+    "work_level": "L1",
+    "approval_reference": "User explicitly requested skillizing the HTML work for later Base and other-project examples; same-scope execution approval reused.",
+    "skills": [
+      {
+        "name": "skill-creator",
+        "mode": "create and validate"
+      },
+      {
+        "name": "ten-paces-hidden-moves-workflow-router",
+        "mode": "source/reference review"
+      }
+    ],
+    "source_relevance": "REUSED_EVIDENCE: current HTML generator, inline/review state, media previews, preview server, existing Base visual dashboard skill. New GIF sources are documented in the separate candidate README.",
+    "feasibility": "FEASIBLE: Python standard-library scaffold plus static HTML example; installed skill and portable snapshot.",
+    "result": "PERSONAL_SKILL_INSTALLED_PORTABLE_EXAMPLE_VALIDATED",
+    "installed_skill": "C:/Users/user/.codex/skills/building-reviewable-html-blueprints/SKILL.md",
+    "delivery": [
+      "docs/blueprint/reuse-kit/README.md",
+      "docs/blueprint/reuse-kit/example/index.html",
+      "docs/blueprint/reuse-kit/html-blueprint-skill-v1.zip"
+    ],
+    "zip_sha256": "48860e1c387a091aa6337ff1d04d6980ad332e810e074d2710af17e0aa9111e8",
+    "review": "New motion + HTML reuse candidate reviewed twice across its full scope; source ownership/protected consumers/cost/evidence limits covered. Thereafter only identified defects were retested. Original 10-style review budget was not restarted.",
+    "corrections": [
+      "Explicit origin/port limitation for localStorage-only example",
+      "Readable JSON fallback when IAB download event is not observable",
+      "Scaffold rejects existing directories and file targets without overwrite",
+      "Scoped LF attributes preserve snapshot/ZIP hash consistency across Windows checkouts"
+    ],
+    "validation": {
+      "skill_quick_validate": "PASS",
+      "scaffold": "PASS: isolated generation; script-tag escaping and JS syntax; existing directory/file protection; invalid project ID rejection",
+      "source_snapshot_zip": "PASS: matching bytes/hashes for installed source, repository snapshot and ZIP; ZIP integrity test",
+      "preview_regressions": "PASS: 5 existing tests, including allowlist/hash rejection and video Range",
+      "browser_example": "PASS: inline Korean input preserves textarea top 305.640625px and focus; comment/status restored after reload; literal script text stays text; discard request changes state only; export JSON contents read back; keyboard clear survives reload",
+      "responsive": "PASS: 1440px 3 columns, normal 671px 2 columns, 390px 1 column; document width equals viewport at checked widths; viewport override reset",
+      "browser_download": "NOT_CONFIRMED: IAB download event timed out; export JSON fallback contains the current review and can be copied. No saved-file claim.",
+      "game_product_paths": "UNCHANGED in this candidate",
+      "actual_user_reviews": "No writes; preview server used review_store=None and example has its own project-local browser key"
+    },
+    "boundaries": [
+      "Base/other-project adoption NOT_APPLIED",
+      "Demo is origin-local browser storage, not permanent project file storage",
+      "User approved v2 art/choreography direction as the baseline on 2026-09-24. Six actual fixed-input resolver outcomes support the offline result panel. Godot UI integration, final all-technique motion, Android and release NOT_RUN."
+    ],
+    "related_animation": "docs/visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v2/README.md",
+    "delivery_review": {
+      "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/359",
+      "stage": "READY_AFTER_USER_DIRECTION_APPROVAL_AND_CURRENT_CHECKS",
+      "main_merge": "NOT_PERFORMED",
+      "latest_head_and_checks": "GitHub live metadata"
+    },
+    "result_panel_followup": {
+      "date": "2026-09-24",
+      "base_sha": "9ffed8198c2985dad2310d60ed731188731e8377",
+      "work_mode": "BUILD / VISUAL_PROTOTYPE / REVIEW",
+      "skill": "combat-ux-and-accessibility",
+      "skill_mode": "planning-mockup-review",
+      "approval": "User confirms v2 as baseline and requests bottom data panel; REUSED_APPROVAL for delivery",
+      "source_relevance": "REUSED_EVIDENCE: user confirmation, unchanged repository resolver/card data, existing primary-source choreography research",
+      "feasibility": "FEASIBLE: existing compositor, read-only domain fixture export and existing tokenized preview; no new cost/service",
+      "implementation": "Approved five art sources unchanged; actual fixed-input resolver data drives both MP4/GIF bottom panel; verdict and health/resource outcomes revealed on separate beats; result pause avoids native controls overlay; six text examples",
+      "validation": {
+        "domain": "Godot4.7.1 a13da4feb executed six fixed-input cases through unchanged CombatResolutionEngine",
+        "semantics": "5 Node tests RED missing presentation module -> GREEN; duplicate damage, losing side, bundle reward exclusion, defensive/range meanings, reveal timeline and source hash checks",
+        "media": "192 frame hashes; GIF128 frames/6400ms/128 distinct arena frames; MP41280x928/GIF800x580; 19 media/art hashes",
+        "browser": "IAB play time progression, pause4.2s/control bar absent, play restores controls, GIF800x580 loads/video hidden and paused;1440/671/390px no page overflow; temporary viewport reset",
+        "preview_boundary": "5 tests PASS; MP4 Range206/1024 bytes/video-mp4; GIFHEAD200/image-gif",
+        "canonical": "reference freshness PASS",
+        "approved_art": "5 source images equal prior approved baseline bytes",
+        "review_store": "SHA256 afd73518d7bf507728e500045733ef5b9c7a466dc3feeba3c62331455cdd2dac unchanged",
+        "product_paths": "diff0 from baseline"
+      },
+      "review": "Focused follow-up within the already completed two full-scope reviews; corrected native-controls occlusion and ambiguous frame-count metadata. Approval/data authority/untouched product sources/preview boundary checked.",
+      "evidence": "docs/visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v2/README.md",
+      "not_run": [
+        "Live Godot result panel UI integration",
+        "Android",
+        "All-technique final motion",
+        "Sound",
+        "Repeated human fun/accessibility",
+        "Release performance"
+      ]
+    }
   }
 }

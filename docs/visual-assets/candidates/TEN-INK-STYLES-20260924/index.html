@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>십보강호 — 통합 화풍 8 + 3 + 9</title>
+<style>
+.hybrid{background:#fffdf8;border:1px solid #d9d2c2;margin:0 0 28px}.hybrid img{display:block;width:100%;height:auto;max-height:72vh;object-fit:contain;background:#f3efe5}.hybrid-copy{padding:18px 20px}.hybrid-copy h2{font:700 23px Batang,serif;margin:0 0 9px}.hybrid-copy p{margin:7px 0;font-size:14px}.hybrid-copy .intent{border-left:3px solid #8d342a;padding-left:12px;color:#65675e}.hybrid-copy a{font-size:13px}
+:root{--paper:#f3efe5;--card:#fffdf8;--ink:#252823;--muted:#65675e;--line:#d9d2c2;--accent:#8d342a}
+*{box-sizing:border-box}html{scroll-behavior:auto;scroll-padding-top:1rem}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;line-height:1.55}
+button,a{-webkit-tap-highlight-color:transparent}a{color:inherit}button{font:inherit}button:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+.shell{max-width:1660px;margin:auto;padding:30px 30px 48px}header{border-bottom:2px solid var(--ink);padding-bottom:20px;margin-bottom:20px;display:flex;align-items:flex-end;gap:30px;justify-content:space-between}.eyebrow{font-size:12px;font-weight:700;letter-spacing:.17em;color:var(--accent);margin:0 0 6px}
+h1{font-family:Batang,"Noto Serif KR",Georgia,serif;font-size:clamp(26px,3vw,40px);font-weight:700;letter-spacing:-.04em;line-height:1.2;margin:0 0 12px}.intro{max-width:790px;margin:0;color:var(--muted);font-size:14px}.status{font-size:12px;border:1px solid var(--line);padding:7px 12px;white-space:nowrap;background:var(--card)}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:0 0 18px}.toolbar p{font-size:13px;color:var(--muted);margin:0}.view-switch{display:flex;gap:5px}.view-switch button,dialog button{border:1px solid var(--line);padding:9px 15px;background:var(--card);color:var(--ink);cursor:pointer;min-height:44px}.view-switch button[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}.gallery.compact{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{min-width:0;border:1px solid var(--line);background:var(--card);scroll-margin-top:20px}.art-link{position:relative;display:block;background:#e6e0d4;cursor:zoom-in;overflow:hidden}.art-link img{width:100%;height:auto;aspect-ratio:1672/941;object-fit:contain;display:block}
+.zoom-hint{position:absolute;right:10px;bottom:10px;background:#fffdf8ed;padding:4px 9px;border:1px solid #c4bdab;font-size:11px;opacity:0;transition:opacity .15s}.art-link:hover .zoom-hint,.art-link:focus-visible .zoom-hint{opacity:1}
+.caption{padding:15px 17px 16px}.caption-title{display:flex;gap:12px;align-items:center}.number{background:var(--accent);color:#fffdf8;min-width:36px;height:30px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;font-variant-numeric:tabular-nums}.caption h2{font-family:Batang,Georgia,serif;font-size:19px;margin:0;letter-spacing:-.02em}.caption p{font-size:13px;margin:10px 0 0}.caption .strength{font-size:12px;color:var(--muted);margin:5px 0 0}
+footer{border-top:1px solid var(--line);padding-top:16px;margin-top:28px;display:flex;justify-content:space-between;gap:18px;font-size:12px;color:var(--muted)}footer p{margin:0;max-width:950px}footer a{white-space:nowrap}
+dialog{width:min(1480px,calc(100vw - 36px));max-height:calc(100vh - 32px);padding:0;border:1px solid var(--line);background:var(--card);color:var(--ink);overflow:auto}dialog::backdrop{background:#151a17dd}.dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;background:var(--card);position:sticky;top:0;z-index:1;border-bottom:1px solid var(--line)}.dialog-head h2{font-size:18px;margin:0;font-family:Batang,Georgia,serif}.dialog-actions{display:flex;gap:6px}#large-image{display:block;width:100%;height:auto;max-height:calc(100vh - 230px);object-fit:contain;background:var(--paper)}.dialog-copy{padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:18px;font-size:13px}.dialog-copy p{margin:0}.dialog-copy b{display:block;margin-bottom:4px}.dialog-copy .check{color:var(--muted)}.dialog-foot{padding:0 20px 16px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
+@media(min-width:1450px){.shell{padding-left:40px;padding-right:40px}}
+@media(max-width:980px){.gallery.compact{grid-template-columns:repeat(2,minmax(0,1fr))}.shell{padding:22px 18px}header{align-items:flex-start}.status{display:none}}
+@media(max-width:600px){.gallery,.gallery.compact{grid-template-columns:1fr}.shell{padding:20px 12px}.toolbar{align-items:flex-start;gap:10px}.view-switch{display:none}.caption h2{font-size:18px}header{margin-bottom:14px}.intro{font-size:13px}.dialog-head{padding:9px;align-items:flex-start}.dialog-head h2{font-size:14px}.dialog-actions{gap:3px}.dialog-actions button{padding:6px 9px;font-size:12px}#large-image{max-height:65vh}.dialog-copy{grid-template-columns:1fr;gap:12px;padding:14px}.dialog-foot,footer{flex-direction:column;gap:8px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.motion{margin:0 0 28px;background:#fffdf8;border:1px solid #d9d2c2}.motion video,.motion .gif-stage img{display:block;width:100%;height:auto;aspect-ratio:40/29;object-fit:contain;background:#e9e4d8}.motion-copy{padding:16px 20px}.motion-copy h2{font-family:Batang,serif;margin:0 0 8px}.motion-copy p{font-size:14px;margin:8px 0}.motion-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.motion-controls button,.motion-controls a{font:inherit;font-size:13px;background:#f6f1e8;border:1px solid #c5bcaa;padding:9px 13px;color:#252823;min-height:44px;text-decoration:none;cursor:pointer}.motion-controls button[aria-pressed=true]{background:#293d35;color:#fff}.motion .gif-stage[hidden]{display:none}.motion-status{min-height:24px;color:#706c5e;font-size:13px}.motion details{margin:12px 0 0;font-size:13px}.motion summary{cursor:pointer;min-height:32px}
+
+.motion video[hidden]{display:none}
+.result-examples .table-scroll{overflow-x:auto}.result-examples table{width:100%;border-collapse:collapse;min-width:560px;font-size:13px}.result-examples th,.result-examples td{padding:10px 12px;text-align:left;border-bottom:1px solid #d3c6ad;vertical-align:top}.result-examples thead{background:#e9e0cd}.result-examples th[scope=row]{width:22%;font-weight:600}.result-examples p{color:#5d5b50}
+</style>
+</head>
+<body>
+<main class="shell">
+<header><div><p class="eyebrow">십보강호 · 선택한 화풍</p><h1>수 싸움 뒤, 먹으로 흐르는 무협</h1><p class="intro">8번의 인물과 선에 3번의 명암 대비, 9번의 안개와 여백을 합쳤습니다.</p></div><span class="status">8 + 3 + 9 · 방향 선택 완료</span></header>
+
+<section class="motion" id="clash-preview" aria-labelledby="motion-title">
+<video id="clash-video" controls playsinline muted loop preload="metadata" width="1280" height="928" poster="clash-v2/poster.png" aria-label="먹으로 잇는 합 연출 6.4초"><source src="clash-v2/ink-clash-v2.mp4" type="video/mp4"></video>
+<div class="gif-stage" id="gif-stage" hidden></div>
+<div class="motion-copy"><h2 id="motion-title">전투 · 확정한 연출 기준 · 검로와 결과를 함께 읽다</h2>
+<p>정적 → 낮고 빠른 진입 → 받아치고 되받아치는 검 → 결정적인 합 → 베기와 회수. 승인한 2차 시안의 원화와 흐름을 유지하고, 하단에 양측 행동·소모 자원·합 위력·체력과 기세 변화를 연결했습니다.</p>
+<div class="motion-controls"><button id="motion-play" type="button">처음부터 재생</button><button id="motion-result" type="button">결과 멈춰 보기</button><button id="motion-half" type="button" aria-pressed="false">느리게 · 0.5배</button><button id="motion-gif" type="button" aria-pressed="false">GIF로 보기</button><a href="clash-v2/ink-clash-v2.gif" download>GIF 받기</a><a href="clash-v2/ink-clash-v2.mp4" download>영상 받기</a><a href="clash-v2/poster.png" target="_blank" rel="noopener">결과 크게 보기</a><a href="clash-v2/hero-clash.png" target="_blank" rel="noopener">기준 원화 크게 보기</a></div>
+<p class="motion-status" id="motion-status" role="status">6.4초 · GIF 800×580 · 20fps / 영상 1280×928 · 30fps · 무음</p>
+<p><strong>핵심 재미 1 · 행동설계:</strong> 상대의 수를 읽고 내 수를 고르는 재미.<br><strong>핵심 재미 2 · 전투진행:</strong> 선택한 수가 멋진 무협 액션으로 펼쳐지는 것을 보는 재미.</p>
+<p class="intent">화풍과 합의 연출 방향은 사용자 확정 기준입니다. 동작과 근접 원화 컷, 붓자국을 합성한 무음 연출이며, 하단 수치는 실제 게임 판정 코드로 만든 고정 상황의 기록입니다. 실제 게임 화면에 연결한 녹화는 아닙니다. 모든 중간 동작을 그린 최종 애니메이션은 아니며, 세 번의 검 교환은 하나의 합을 표현하는 구성입니다.</p>
+<!-- result-examples:start -->
+<details class="result-examples"><summary>결과를 글로 보기 · 합·회피·막기 표시 예시</summary><p>동일한 게임 판정 코드에 고정된 입력을 넣어 얻은 기록입니다. 아래 표는 정지 결과이며, 위 영상은 첫 번째 합 승리 상황의 연출입니다.</p><div class="table-scroll" tabindex="0" role="region" aria-label="판정별 결과 표"><table><thead><tr><th>판정</th><th>비교·원인</th><th>실제 변화</th></tr></thead><tbody><tr><th scope="row">내 합 승리</th><td>11 대 9</td><td>내 합 승리 · 상대 체력 30 → 28 (피해 2) · 내 절초 기세 +1</td></tr>
+<tr><th scope="row">상대 합 승리</th><td>11 대 15</td><td>상대 합 승리 · 내 체력 30 → 26 (피해 4) · 상대 절초 기세 +1</td></tr>
+<tr><th scope="row">합 상쇄</th><td>11 대 11</td><td>합 상쇄 · 피해 0</td></tr>
+<tr><th scope="row">상대 회피 성공</th><td>공격 위력 11 / 같은 수 회피</td><td>상대 회피 성공 · 피해 0 · 상대 절초 기세 +1</td></tr>
+<tr><th scope="row">상대 막기 적용</th><td>공격 11 → 방어도 후 7 → 같은 수 막기</td><td>상대 막기 적용 · 상대 체력 30 → 27 (피해 3) · 상대 절초 기세 +1</td></tr>
+<tr><th scope="row">사거리 밖</th><td>거리 3 / 강공 사거리 1~2</td><td>사거리 밖 · 피해 0</td></tr></tbody></table></div><p>강공 소모: 양측 기력 1 · 내력 2. 회피·막기는 상대 기력 1 · 내력 0. 기세는 해당 수에서 실제 늘어난 양이며 묶음 완료 보상은 포함하지 않습니다. 회피는 위력 숫자의 대소 비교가 아닙니다.</p></details>
+<!-- result-examples:end -->
+<details><summary>참고한 연출과 이번 시안의 의도</summary><p><a href="https://www.youtube.com/watch?v=Jnn33aGz3UE" target="_blank" rel="noopener">림버스 공식 합 소개</a>: 양측 공격의 맞대결과 승패 뒤 공격 연결을 참고했습니다. 출시 전 영상의 표현 참고이며 현재 수치 규칙을 가져오지 않습니다.</p><p><a href="https://www.arcsystemworks.com/game/library-of-ruina/" target="_blank" rel="noopener">루이나 공식 전투 설명</a>: 계획한 행동과 맞대결 결과가 구별되도록 구성했습니다.</p><p><a href="https://store.steampowered.com/app/1809540/Nine_Sols/" target="_blank" rel="noopener">Nine Sols 개발사 소개</a>: 손그림 동작과 튕겨내기의 리듬을 참고하는 방향입니다. 이번 멈춤 길이·먹 궤적은 십보강호용으로 정한 시안입니다.</p><p><a href="https://pbz.s-game.com/en-US/news/year-of-the-snake-trailer/" target="_blank" rel="noopener">Phantom Blade Zero 공식 제작 설명</a>: 무술가와 액션 안무가가 동작 제작에 참여했다는 설명을 참고했습니다. 몸의 중심·발의 접지·검의 연결을 먼저 다듬는 것은 이번 시안의 제작 판단입니다.</p></details>
+</div></section>
+
+<section class="hybrid" aria-labelledby="hybrid-title">
+<a href="hybrid-8-3-9-v1.png" target="_blank" rel="noopener" aria-label="통합 화풍 원본 크게 보기"><img src="hybrid-8-3-9-v1.png" alt="8번 수묵 무협 만화 인물에 3번의 짙은 대비와 9번의 안개를 합친 두 검객의 대각선 대치" width="1672" height="941" decoding="async"></a>
+<div class="hybrid-copy"><h2 id="hybrid-title">통합 화풍 · 8 + 3 + 9</h2><p><strong>인물·선은 8번</strong> · <strong>대비는 3번</strong> · <strong>안개는 9번</strong></p><p class="intent">목표는 무협 애니메이션을 보듯, 수 싸움 후에 먹과 붓의 공격 흐름이 자연스럽게 이어지는 경험입니다. 인물과 검은 또렷하게, 원경은 안개 속으로 물러나게 합니다.</p><p>행동설계: 대각선 대치와 수읽기 → 전투진행: 발놀림·공격·합·회피·다음 자세의 연결. 하단 결과는 같은 사건의 원인을 짧게 보여줍니다.</p><a href="hybrid-8-3-9-v1.png" target="_blank" rel="noopener">통합 시안 원본 크게 보기 ↗</a></div>
+</section>
+<div class="toolbar"><p>처음 비교한 화풍 10개입니다. 그림을 누르면 크게 볼 수 있습니다.</p><div class="view-switch" aria-label="그림 크기"><button type="button" id="view-large" aria-pressed="true">넓게 비교</button><button type="button" id="view-compact" aria-pressed="false">한눈에 모아 보기</button></div></div>
+<section class="gallery" aria-label="화풍 시안 1번부터 10번">
+<article class="card" id="style-1">
+  <a class="art-link" href="01-danmuk.png" data-style="1" aria-label="1번 정통 담묵 산수 크게 보기">
+    <img src="01-danmuk.png" alt="1번 정통 담묵 산수 화풍으로 그린 두 검객의 대각선 대치 장면" width="1672" height="941" loading="eager" decoding="async">
+    <span class="zoom-hint" aria-hidden="true">크게 보기 ↗</span>
+  </a>
+  <div class="caption"><div class="caption-title"><span class="number">01</span><h2>정통 담묵 산수</h2></div>
+  <p>옅은 먹과 여백으로 차분한 강호를 표현합니다.</p><p class="strength">수묵의 여운과 고요한 분위기</p></div>
+</article>
+<article class="card" id="style-2">
+  <a class="art-link" href="02-celadon.png" data-style="2" aria-label="2번 청록 담채 수묵 크게 보기">
+    <img src="02-celadon.png" alt="2번 청록 담채 수묵 화풍으로 그린 두 검객의 대각선 대치 장면" width="1672" height="941" loading="eager" decoding="async">
+    <span class="zoom-hint" aria-hidden="true">크게 보기 ↗</span>
+  </a>
+  <div class="caption"><div class="caption-title"><span class="number">02</span><h2>청록 담채 수묵</h2></div>
+  <p>먹선에 청록색을 은은하게 얹어 산수의 깊이를 살립니다.</p><p class="strength">무협 분위기와 절제된 색감의 균형</p></div>
+</article>
+<article class="card" id="style-3">
+  <a class="art-link" href="03-dense-ink.png" data-style="3" aria-label="3번 농묵 흑백 크게 보기">
+    <img src="03-dense-ink.png" alt="3번 농묵 흑백 화풍으로 그린 두 검객의 대각선 대치 장면" width="1672" height="941" loading="lazy" decoding="async">
+    <span class="zoom-hint" aria-hidden="true">크게 보기 ↗</span>
+  </a>
+  <div class="caption"><div class="caption-title"><span class="number">03</span><h2>농묵 흑백</h2></div>
+  <p>짙은 먹과 밝은 종이의 대비로 대치의 긴장감을 강조합니다.</p><p class="strength">묵직하고 강렬한 첫인상</p></div>
+</article>
+<article class="card" id="style-4">
+  <a class="art-link" href="04-fine-line.png" data-style="4" aria-label="4번 백묘 세필 크게 보기">
+    <img src="04-fine-line.png" alt="4번 백묘 세필 화풍으로 그린 두 검객의 대각선 대치 장면" width="1672" height="941" loading="lazy" decoding="async">
+    <span class="zoom-hint" aria-hidden="true">크게 보기 ↗</span>
+  </a>
+  <div class="caption"><div class="caption-title"><span class="number">04</span><h2>백묘 세필</h2></div>
+  <p>가는 붓선으로 옷주름과 산수를 섬세하게 묘사합니다.</p><p class="strength">우아한 선과 정교한 묘사</p></div>
+</article>
+<article class="card" id="style-5">
+  <a class="art-link" href="05-gongbi.png" data-style="5" aria-label="5번 공필 담채 크게 보기">
+    <img src="05-gongbi.png" alt="5번 공필 담채 화풍으로 그린 두 검객의 대각선 대치 장면" width="1672" height="941" loading="lazy" decoding="async">
+    <span class="zoom-hint" aria-hidden="true">크게 보기 ↗</span>
+  </a>
+  <div class="caption"><div class="caption-title"><span class="number">05</span><h2>공필 담채</h2></div>
+  <p>정교한 선에 차분한 광물색 느낌의 담채를 더합니다.</p><p class="strength">고풍스러운 삽화와 풍부한 색의 층</p></div>
+</article>
+<article class="card" id="style-6">
+  <a class="art-link" href="06-woodblock.png" data-style="6" aria-label="6번 목판화 수묵 크게 보기">
+    <img src="06-woodblock.png" alt="6번 목판화 수묵 화풍으로 그린 두 검객의 대각선 대치 장면" width="1672" height="941" loading="lazy" decoding="async">
+    <span class="zoom-hint" aria-hidden="true">크게 보기 ↗</span>
+  </a>
+  <div class="caption"><div class="caption-title"><span class="number">06</span><h2>목판화 수묵</h2></div>
+  <p>굵은 검은 면과 새긴 듯한 선으로 강한 인상을 만듭니다.</p><p class="strength">분명한 형태와 독자적인 개성</p></div>
+</article>
+<article class="card" id="style-7">
+  <a class="art-link" href="07-dry-brush.png" data-style="7" aria-label="7번 거친 건필 크게 보기">
+    <img src="07-dry-brush.png" alt="7번 거친 건필 화풍으로 그린 두 검객의 대각선 대치 장면" width="1672" height="941" loading="lazy" decoding="async">
+    <span class="zoom-hint" aria-hidden="true">크게 보기 ↗</span>
+  </a>
+  <div class="caption"><div class="caption-title"><span class="number">07</span><h2>거친 건필</h2></div>
+  <p>갈라지는 붓끝과 번지는 먹으로 거친 기세를 표현합니다.</p><p class="strength">무공의 속도감과 거친 질감</p></div>
+</article>
+<article class="card" id="style-8">
+  <a class="art-link" href="08-ink-manhua.png" data-style="8" aria-label="8번 수묵 무협 만화 크게 보기">
+    <img src="08-ink-manhua.png" alt="8번 수묵 무협 만화 화풍으로 그린 두 검객의 대각선 대치 장면" width="1672" height="941" loading="lazy" decoding="async">
+    <span class="zoom-hint" aria-hidden="true">크게 보기 ↗</span>
+  </a>
+  <div class="caption"><div class="caption-title"><span class="number">08</span><h2>수묵 무협 만화</h2></div>
+  <p>정돈된 만화 인물과 수묵 산수를 함께 사용합니다.</p><p class="strength">인물의 표정·동작과 무협 감성의 균형</p></div>
+</article>
+<article class="card" id="style-9">
+  <a class="art-link" href="09-mist-wash.png" data-style="9" aria-label="9번 안개 몰골 수묵 크게 보기">
+    <img src="09-mist-wash.png" alt="9번 안개 몰골 수묵 화풍으로 그린 두 검객의 대각선 대치 장면" width="1672" height="941" loading="lazy" decoding="async">
+    <span class="zoom-hint" aria-hidden="true">크게 보기 ↗</span>
+  </a>
+  <div class="caption"><div class="caption-title"><span class="number">09</span><h2>안개 몰골 수묵</h2></div>
+  <p>윤곽을 줄이고 옅게 번지는 먹과 큰 여백을 사용합니다.</p><p class="strength">시적인 풍경과 가장 담백한 수묵 느낌</p></div>
+</article>
+<article class="card" id="style-10">
+  <a class="art-link" href="10-semi-realistic.png" data-style="10" aria-label="10번 반실사 수묵 무협 크게 보기">
+    <img src="10-semi-realistic.png" alt="10번 반실사 수묵 무협 화풍으로 그린 두 검객의 대각선 대치 장면" width="1672" height="941" loading="lazy" decoding="async">
+    <span class="zoom-hint" aria-hidden="true">크게 보기 ↗</span>
+  </a>
+  <div class="caption"><div class="caption-title"><span class="number">10</span><h2>반실사 수묵 무협</h2></div>
+  <p>빛과 옷의 부피를 사실적으로 표현하고 먹의 질감을 남깁니다.</p><p class="strength">영화 같은 공간감과 성숙한 인물</p></div>
+</article>
+</section>
+<footer><p>화풍은 8번의 인물·선, 3번의 대비, 9번의 안개로 확정했습니다. 상단의 2차 합 연출이 후속 제작 기준이며, 아래 10개는 선택 과정을 비교하는 자료입니다.</p><a href="#top" id="back-top">맨 위로 ↑</a></footer>
+</main>
+<dialog aria-labelledby="large-title" id="art-dialog">
+<div class="dialog-head"><h2 id="large-title"></h2><div class="dialog-actions"><button type="button" id="previous" aria-label="이전 시안">← 이전</button><button type="button" id="next" aria-label="다음 시안">다음 →</button><button type="button" id="close-dialog" autofocus>닫기 · Esc</button></div></div>
+<img id="large-image" alt="" width="1672" height="941">
+<div class="dialog-copy"><p><b>화풍의 특징</b><span id="large-description"></span></p><p class="check"><b>게임에 적용할 때 살펴볼 점</b><span id="large-check"></span></p></div>
+<div class="dialog-foot"><span id="large-count"></span><a id="original-link" target="_blank" rel="noopener">원본 이미지 열기 ↗</a></div>
+</dialog>
+<script>
+const variants=[{"number":1,"name":"정통 담묵 산수","file":"01-danmuk.png","description":"옅은 먹과 여백으로 차분한 강호를 표현합니다.","next_check":"작게 표시할 때 인물의 옅은 경계를 보강할 필요가 있습니다."},{"number":2,"name":"청록 담채 수묵","file":"02-celadon.png","description":"먹선에 청록색을 은은하게 얹어 산수의 깊이를 살립니다.","next_check":"전투 효과의 색이 배경에 묻히지 않도록 대비를 조절해야 합니다."},{"number":3,"name":"농묵 흑백","file":"03-dense-ink.png","description":"짙은 먹과 밝은 종이의 대비로 대치의 긴장감을 강조합니다.","next_check":"검은 옷과 어두운 배경이 겹치는 부분을 구분해야 합니다."},{"number":4,"name":"백묘 세필","file":"04-fine-line.png","description":"가는 붓선으로 옷주름과 산수를 섬세하게 묘사합니다.","next_check":"카드처럼 작은 크기에서는 잔선을 줄이는 편이 좋습니다."},{"number":5,"name":"공필 담채","file":"05-gongbi.png","description":"정교한 선에 차분한 광물색 느낌의 담채를 더합니다.","next_check":"전투 배경은 세부 묘사를 덜어 인물을 돋보이게 해야 합니다."},{"number":6,"name":"목판화 수묵","file":"06-woodblock.png","description":"굵은 검은 면과 새긴 듯한 선으로 강한 인상을 만듭니다.","next_check":"작은 표정과 부드러운 감정 표현은 별도 조정이 필요합니다."},{"number":7,"name":"거친 건필","file":"07-dry-brush.png","description":"갈라지는 붓끝과 번지는 먹으로 거친 기세를 표현합니다.","next_check":"정지 화면의 먹 튐을 줄여 정보와 인물을 구분해야 합니다."},{"number":8,"name":"수묵 무협 만화","file":"08-ink-manhua.png","description":"정돈된 만화 인물과 수묵 산수를 함께 사용합니다.","next_check":"UI와 효과도 같은 붓선과 제한된 색으로 맞추면 좋습니다."},{"number":9,"name":"안개 몰골 수묵","file":"09-mist-wash.png","description":"윤곽을 줄이고 옅게 번지는 먹과 큰 여백을 사용합니다.","next_check":"무기·손·피격 동작에는 선명한 선을 선택적으로 보강해야 합니다."},{"number":10,"name":"반실사 수묵 무협","file":"10-semi-realistic.png","description":"빛과 옷의 부피를 사실적으로 표현하고 먹의 질감을 남깁니다.","next_check":"게임 전체를 통일할 때 인물별 묘사 수준을 일정하게 맞춰야 합니다."}];
+const gallery=document.querySelector('.gallery'),modal=document.getElementById('art-dialog'),largeImage=document.getElementById('large-image');
+let current=0;
+function showStyle(index){
+ current=(index+variants.length)%variants.length;
+ const item=variants[current];
+ document.getElementById('large-title').textContent=item.number+'번 · '+item.name;
+ largeImage.src=item.file;largeImage.alt=item.number+'번 '+item.name+' 화풍 시안';
+ document.getElementById('large-description').textContent=item.description;
+ document.getElementById('large-check').textContent=item.next_check;
+ document.getElementById('large-count').textContent=item.number+' / '+variants.length+' · 좌우 방향키로 이동';
+ document.getElementById('original-link').href=item.file;
+ if(!modal.open)modal.showModal();
+}
+gallery.addEventListener('click',event=>{
+ const link=event.target.closest('[data-style]');if(!link)return;
+ if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+ event.preventDefault();showStyle(Number(link.dataset.style)-1);
+});
+document.getElementById('previous').addEventListener('click',()=>showStyle(current-1));
+document.getElementById('next').addEventListener('click',()=>showStyle(current+1));
+document.getElementById('close-dialog').addEventListener('click',()=>modal.close());
+modal.addEventListener('keydown',event=>{
+ if(event.key==='ArrowLeft'){event.preventDefault();showStyle(current-1);}
+ if(event.key==='ArrowRight'){event.preventDefault();showStyle(current+1);}
+});
+modal.addEventListener('click',event=>{
+ if(event.target!==modal)return;
+ const bounds=modal.getBoundingClientRect();
+ if(event.clientX<bounds.left||event.clientX>bounds.right||event.clientY<bounds.top||event.clientY>bounds.bottom)modal.close();
+});
+for(const [id,compact] of [['view-large',false],['view-compact',true]]){
+ document.getElementById(id).addEventListener('click',()=>{
+  gallery.classList.toggle('compact',compact);
+  document.getElementById('view-large').setAttribute('aria-pressed',String(!compact));
+  document.getElementById('view-compact').setAttribute('aria-pressed',String(compact));
+ });
+}
+document.getElementById('back-top').addEventListener('click',event=>{event.preventDefault();window.scrollTo({top:0,behavior:'instant'});});
+</script>
+<script>
+const motionVideo=document.querySelector('#clash-video'),motionStatus=document.querySelector('#motion-status'),gifStage=document.querySelector('#gif-stage'),gifButton=document.querySelector('#motion-gif');
+function exitGif(){motionVideo.controls=true;gifStage.replaceChildren();gifStage.hidden=true;motionVideo.hidden=false;gifButton.setAttribute('aria-pressed','false');motionStatus.textContent='영상으로 돌아왔습니다. 재생 버튼으로 다시 볼 수 있습니다.';}
+document.querySelector('#motion-play').addEventListener('click',async()=>{exitGif();motionVideo.currentTime=0;try{await motionVideo.play();motionStatus.textContent='재생 중 · 하단 결과와 검의 접점을 함께 확인하세요.';}catch(e){motionStatus.textContent='영상 재생을 시작하지 못했습니다. 재생 버튼이나 GIF로 보기를 사용하세요.';}});
+document.querySelector('#motion-result').addEventListener('click',()=>{exitGif();motionVideo.pause();motionVideo.controls=false;motionVideo.currentTime=4.2;motionStatus.textContent='결과 정지 · 합 위력 11 대 9, 상대 체력 30 → 28, 내 절초 기세 +1';});
+document.querySelector('#motion-half').addEventListener('click',function(){exitGif();motionVideo.playbackRate=motionVideo.playbackRate===.5?1:.5;this.setAttribute('aria-pressed',String(motionVideo.playbackRate===.5));motionStatus.textContent=motionVideo.playbackRate+'배 영상 · 재생 버튼으로 움직임을 확인하세요.';});
+gifButton.addEventListener('click',()=>{if(!gifStage.hidden){exitGif();return;}motionVideo.pause();motionVideo.hidden=true;const img=new Image();img.src='clash-v2/ink-clash-v2.gif';img.alt='먹의 공격 흐름과 검의 합을 보여주는 반복 GIF';img.width=800;img.height=580;img.addEventListener('error',()=>{motionStatus.textContent='GIF를 읽지 못했습니다. 현재 미리보기 주소를 다시 열어 주세요.';});gifStage.replaceChildren(img);gifStage.hidden=false;gifButton.setAttribute('aria-pressed','true');motionStatus.textContent='GIF 반복 재생 · 느린 재생과 정지는 영상으로 확인할 수 있습니다.';});
+motionVideo.addEventListener('error',()=>{motionStatus.textContent='영상을 읽지 못했습니다. 현재 미리보기 주소를 다시 열어 주세요.';});
+</script>
+</body>
+</html>

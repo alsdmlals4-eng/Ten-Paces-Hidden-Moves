@@ -1,0 +1,4 @@
+interface:
+  display_name: "검토 가능한 HTML 블루프린트"
+  short_description: "이미지 분류·인라인 코멘트·자동 저장·재생 검수 HTML 만들기"
+  default_prompt: "Use $building-reviewable-html-blueprints to make a compact project blueprint with grouped images, inline comments, autosave, and verified media."
