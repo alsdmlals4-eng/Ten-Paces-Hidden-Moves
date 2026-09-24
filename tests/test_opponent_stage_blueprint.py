@@ -4,6 +4,11 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 
 class StageBlueprintTests(unittest.TestCase):
+    def test_runtime_projection_matches_current_portrait_owner(self):
+        import subprocess, sys
+        result = subprocess.run([sys.executable, str(ROOT/'tools/export_approved_opponent_stages.py'), '--check'],cwd=ROOT,capture_output=True,text=True)
+        self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+
     def test_all_people_have_ten_monotone_stages(self):
         spec = importlib.util.spec_from_file_location('stage_plan', ROOT / 'tools/build_opponent_stage_blueprint.py')
         mod = importlib.util.module_from_spec(spec)

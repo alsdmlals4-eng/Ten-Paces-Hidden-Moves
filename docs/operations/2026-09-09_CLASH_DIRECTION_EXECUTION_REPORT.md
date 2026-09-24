@@ -70,3 +70,5 @@
 - 최종 로컬: pytest **602 passed / 583.45초**; 확대·상대 binding 포함 focused native8종 PASS; Windows export와 내보낸 실행 파일 제품 시나리오 **50/50·실패0**. export 종료의 기존 resource22 경고는 남아 있으며 무경고로 주장하지 않는다. 공개 게임의 첫 상대는 계속 무작위다.
 - 인앱 브라우저: 새 화면 목록3열·종류/안정 번호/용도/inline 코멘트 확인, 로딩 완료 이미지 깨짐0. native MP41440×900/29.416667초가 실제로 끝까지 재생되어 ended=true/readyState4/error없음; 브라우저 오류로그0. 기존 자동 저장 코드는 미수정이고 사용자 코멘트 원본 SHA256 `afd73518d7bf507728e500045733ef5b9c7a466dc3feeba3c62331455cdd2dac` 동일함을 확인했다.
 - 실제 사용자 시각 검수·키보드/마우스 체감·반복 관람의 멋·Android·실기기·출시 권리/성능은 별도다. 이번 정상 PR/원격 exact-head/merge 및 일회 승인 종료는 아래 전달 readback에 기록한다.
+
+- 검토2 영향 교정: 상대 export 정본 재생성 검사에서 배외검객 portrait의 상위 ADDITIONAL_OPPONENTS owner가 구 삭제 파일을 가리키는 실제 drift를 발견했다. owner를 현재 등록 초상으로 연결하고 export --check 회귀를 추가했다. 기존 제품 data의 동일 경로를 재생성해 일치시켰으며 능력치·명칭·로스터·저장 ID는 바꾸지 않았다.
