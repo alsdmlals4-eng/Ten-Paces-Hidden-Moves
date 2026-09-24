@@ -1324,9 +1324,9 @@
     "boundaries": [
       "Base/other-project adoption NOT_APPLIED",
       "Demo is origin-local browser storage, not permanent project file storage",
-      "Final generated animation/art lock, Godot integration, human flow judgment, Android, release NOT_RUN"
+      "User rejected v1 visual quality; v2 remains a preview awaiting final motion approval. Godot integration, Android and release NOT_RUN."
     ],
-    "related_animation": "docs/visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v1/README.md",
+    "related_animation": "docs/visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v2/README.md",
     "delivery_review": {
       "url": "https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/pull/359",
       "stage": "DRAFT_CANDIDATE",

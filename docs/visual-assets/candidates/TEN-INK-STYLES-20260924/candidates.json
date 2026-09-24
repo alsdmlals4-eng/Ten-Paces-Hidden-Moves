@@ -229,7 +229,62 @@
     "evidence": "STYLE_REFERENCE_GENERATED; ANIMATION_IMPLEMENTATION_NOT_RUN"
   },
   "motion": {
-    "status": "OFFLINE_ANIMATION_CANDIDATE",
+    "status": "OFFLINE_REVISION_CANDIDATE_AWAITING_USER_REVIEW",
+    "id": "ink-clash-v2",
+    "duration_seconds": 6.4,
+    "fps": 30,
+    "core_fun": [
+      "수싸움 · 행동설계",
+      "무협 액션 관람 · 전투진행"
+    ],
+    "files": [
+      {
+        "file": "clash-v2/ink-clash-v2.mp4",
+        "sha256": "a37745731b19d3419a701d2861b7c46ac2e8978653590bd28a6c9fb68b03ca75",
+        "bytes": 3997030
+      },
+      {
+        "file": "clash-v2/ink-clash-v2.gif",
+        "sha256": "cb7ab3802e5c97004661a272c58e0faddaea632033599564028321db6b4c2320",
+        "bytes": 27687399
+      },
+      {
+        "file": "clash-v2/poster.png",
+        "sha256": "12e91c8a444df342856168d0228f8fadf3ab1df8902d7cc27db6b552b21a40e6",
+        "bytes": 1965670
+      },
+      {
+        "file": "clash-v2/hero-clash.png",
+        "sha256": "794fd63bd98e53c113b28e0b74e952b854c91530cd81313610dae0a23be9d782",
+        "bytes": 3194266
+      }
+    ],
+    "source_art": [
+      {
+        "file": "clash-v2/player-poses.png",
+        "sha256": "85df1d543357995cd8dd49cac06658daeca79c5062a62beb874153d7c30baa83",
+        "bytes": 1858623
+      },
+      {
+        "file": "clash-v2/opponent-poses.png",
+        "sha256": "b622c65d071196a97484a1192e66aa1b067e8da7408afebc30ca67d9ee7fc137",
+        "bytes": 2106860
+      },
+      {
+        "file": "clash-v2/background.png",
+        "sha256": "f29159f4aabce642234428df0fe7fc807128f5ab739680754db01f4bf87b1e9c",
+        "bytes": 2819500
+      },
+      {
+        "file": "clash-v2/ink-brush.png",
+        "sha256": "c794af0ae4c9aa34693889201b8c8216f2be593d1344ebf542c30b02f6658fd6",
+        "bytes": 832826
+      }
+    ],
+    "gif_fps": 20
+  },
+  "previous_motion": {
+    "status": "USER_REVISION_REQUIRED_SUPERSEDED",
     "id": "ink-clash-v1",
     "duration_seconds": 8.4,
     "fps": 25,

@@ -37,7 +37,7 @@ def main():
         allowed[path.relative_to(PROJECT).as_posix()] = digest
     for media in manifest.get("motion", {}).get("files", []):
         path = (PACKAGE / media["file"]).resolve()
-        if not path.is_relative_to(PACKAGE / "clash-v1") or path.suffix not in {".png", ".gif", ".mp4"}:
+        if path.parent not in {PACKAGE / "clash-v1", PACKAGE / "clash-v2"} or path.suffix not in {".png", ".gif", ".mp4"}:
             raise ValueError("Unexpected motion path")
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
         if digest != media["sha256"]:

@@ -14,5 +14,6 @@ output/blueprint/
 
 # Reproducible offline animation frames and isolated skill QA runtime.
 output/ink-clash-v1/
+output/ink-clash-v2/
 output/html-skill-demo/
 output/skill-validation-deps/
