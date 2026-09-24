@@ -1412,6 +1412,11 @@
       "Android",
       "Sound",
       "Release performance"
-    ]
+    ],
+    "canon_conflict": {
+      "status": "CANON_CONFLICT_RECORDED_NOT_CHANGED",
+      "owner": "docs/07_COMBAT_UI_SPEC.md section5",
+      "finding": "Text says multi-slot cost is paid at first preparation; unchanged main resolver fixture charges heavy attack at execution timings2/8. Preview reads actual captured timing states; no rule/preparation mutation. Reconcile before product UI integration."
+    }
   }
 }
