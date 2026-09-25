@@ -102,3 +102,5 @@
 - HTML1268 view/21499 local link PASS. 인앱 브라우저에서30.125초 MP4가 readyState4, ended=true, media error없음으로 끝까지 재생됐다. 브라우저 error log0. 구조도 하단에 남던 옛 준비 참고안/합 삽화 표기도 현재 촬영 근거를 읽도록 교정했다.
 
 - PR365 원격 영향 교정: full-validation의 기존 카드 상단 band/양 검객 동일 높이·같은 바닥선 검사가 승인된 좌측 삽화/대각선3:2구도와 충돌했다. 실제 source-alpha 독립 측정 및80% 축소 negative control은 유지하고 새3:2비율·깊이·모션 envelope90%상한·카드 내부 영역/글자 비중첩으로 검사했다. 해당 workflow native31종 전부 로컬 PASS; 제품 bytes는 추가 변경하지 않았다. Windows50/50·ZIP해시/CRC PASS, 최종 HTML1270view/21563local link PASS.
+
+- 같은 원격 제품 job의 일반속도 캠페인은452225ms/실제 입력295회/비무10승/보상10회/행로36회/실패0으로 완료됐다. 근거는 [PR365 native 캠페인](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/actions/runs/36077007132/job/107890430945)의 NATIVE_CAMPAIGN_SUMMARY다. 이후 Linux에서 네 무공이 모두 들어가는데도 스크롤을 필수로 기대한 구 검사가 실패했다. 전부 보이는 상태를 검사하고 시험용 넓은 버튼으로 실제 overflow/마지막 항목 접근/키보드 자동 스크롤을 강제 검증하도록 고쳤다. 강제 overflow의 경계 좌표 오차0.00005px는 다른 기하 검사와 같은0.5px 허용으로 다뤘다. 세 viewport를 포함한 해당 검사와 휴식/atlas 후속 검사는 PASS이며 제품 bytes는 그대로다. 원격 job 전체 성공은 새 exact-head 결과에서 확인한다.
