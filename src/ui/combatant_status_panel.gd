@@ -351,8 +351,13 @@ func _layout_reference_preparation() -> void:
     var labels := [_health_label, _stamina_label, _internal_label]
     for i in range(3):
         labels[i].position = Vector2(x,61 + i * 27)
+        var resource_font_size := 20
+        labels[i].add_theme_font_size_override("font_size",resource_font_size)
+        # Fit actual fallback-font metrics to the reference's text-above-bar lane.
+        while labels[i].get_combined_minimum_size().y > 23.0 and resource_font_size > 12:
+            resource_font_size -= 1
+            labels[i].add_theme_font_size_override("font_size",resource_font_size)
         labels[i].size = Vector2(193,23)
-        labels[i].add_theme_font_size_override("font_size",20)
     for label in [_name_label,_health_label,_stamina_label,_internal_label]:
         label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT if left else HORIZONTAL_ALIGNMENT_RIGHT
         label.add_theme_color_override("font_color",Color("25251f"))
