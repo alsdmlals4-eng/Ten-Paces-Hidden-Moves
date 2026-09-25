@@ -217,7 +217,20 @@ def main() -> None:
     for asset in reference_assets:
         assert asset["lifecycle_status"] == "USER_REQUESTED_REFERENCE_IMPLEMENTATION__FINAL_VISUAL_REVIEW_PENDING"
         assert hashlib.sha256(res_file(asset["path"]).read_bytes()).hexdigest() == asset["source_png_sha256"]
-    original_assets = [asset for asset in asset_manifest["assets"] if asset["id"] not in blueprint_ids | ink_ids | refresh_ids | reference_ids]
+    frame_ids = {f"ink_frame_{name}_background_20260925" for name in ("main", "prologue", "preparation")}
+    frame_assets = {asset["id"]: asset for asset in asset_manifest["assets"] if asset["id"] in frame_ids}
+    frame_provenance = load_json("assets/ui/ink_frame/provenance.json")
+    assert len(frame_assets) == 3 and set(frame_assets) == frame_ids
+    assert {f"ink_frame_{layer['id']}_20260925" for layer in frame_provenance["assets"]} == frame_ids
+    for layer in frame_provenance["assets"]:
+        asset = frame_assets[f"ink_frame_{layer['id']}_20260925"]
+        assert asset["provenance"] == "assets/ui/ink_frame/provenance.json"
+        assert asset["path"].removeprefix("res://") == layer["path"]
+        assert hashlib.sha256(res_file(asset["path"]).read_bytes()).hexdigest() == asset["source_png_sha256"] == layer["sha256"]
+        assert asset["dimensions"] == f"{layer['width']}x{layer['height']}"
+        assert asset["prompt"] == layer["prompts"][-1]["text"]
+        assert hashlib.sha256((ROOT / asset["source_asset"]).read_bytes()).hexdigest() == layer["source"]["sha256"]
+    original_assets = [asset for asset in asset_manifest["assets"] if asset["id"] not in blueprint_ids | ink_ids | refresh_ids | reference_ids | frame_ids]
     assert len(original_assets) == blueprint["preserved_existing_record_count"] == 21
     original_digest = hashlib.sha256(json.dumps(original_assets, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     assert original_digest == blueprint["preserved_existing_records_sha256"]
@@ -245,7 +258,7 @@ def main() -> None:
         "current_action_slot_frame_01_v1",
         "technique_detail_frame_01_v1",
         "observation_reveal_frame_01_v1",
-    } | blueprint_ids | ink_ids | refresh_ids | reference_ids
+    } | blueprint_ids | ink_ids | refresh_ids | reference_ids | frame_ids
     for asset in active_assets:
         assert res_file(asset["path"]).exists(), asset["path"]
         assert asset.get("prompt") or asset.get("source_png_sha256") or (asset["id"] in reference_ids and asset.get("prompt_summary")), asset["id"]
