@@ -159,3 +159,7 @@ Python unittest 전체579검사의 첫 실행은577PASS/1FAIL/1ERROR였다. 신�
 최종 브라우저에서735프레임 영상이30.625초 끝까지 재생된 ended=true/readyState4/media error=null/console errors0과 준비 원본1086×1448의 정상 확대를 확인했다. Godot AI run15 LIVE/fresh framebuffer/현재 실행 오류없음, addon313해시와 사용자 리뷰 해시 보존을 다시 확인했다. HTML1276view/21682연결 PASS. 로컬 readback은 `output/prep-layout/reference-browser-final.json`이다.
 
 f0901652 원격 검사32개는 PASS했다. 제품 job은 원래15분 제한으로 취소됐지만, 그 직전 실제 normal-speed 캠페인은295입력·비무10승·보상10회·행로36회·545748ms·실패0으로 완료됐다. 후속 단계와 근거 업로드는 취소되어 PASS로 간주하지 않는다. 원인인 job 전체 한도만25분으로 늘려, 캠페인 자체의15분 유한 한도와 사전 import/나머지 검사를 모두 수용한다. 실제 판정·일반 연출 속도·반례·검사 항목은 줄이지 않는다. 새 HEAD 원격 결과는 동일 PR367의 live metadata가 소유한다.
+
+취소된 이후23검사를 로컬에서 실행해 제약 안내 영역의 탭 경계4px 교차, 옛 초상 숨김 기대, 정수 스크롤의 변환 후0.552px 반올림을0.5px로 제한한 기대를 확인했다. ce56315d에서 안내의 오른쪽 기준을 유지하고 영역만12px 좁혔다. 초상 검사는 실제 참조 AtlasTexture 표시와 자원바 비중첩을 확인하도록 옮겼으며, 키보드 자동 스크롤은 최대1 native pixel을 부모 transform으로 변환한 유한 오차만 허용한다. 제약 UI·카드 요약·atlas consumer·참조 배치 집중 재검사 PASS, 나머지21개도 실행 PASS다. 새 round/전투/저장 규칙은 없다. 준비 PNG bytes는 이전 후보와 동일하다.
+
+전달 최종 제품 ce56315d에서 Windows50/50·실패0, 새11화면,708프레임/24fps/29.5초/고유511프레임을 다시 생성·발행했다. ZIP188681969bytes, SHA256 `304f02793f706abaf924e8d6fffc8c1bf1269239324b73d52f59ab9f7135a85a`, 압축 CRC/구성 파일 해시 일치 PASS다. `output/prep-layout/reference-delivery.json`과 `reference-windows-current/`가 최신 로컬 실행본을 식별한다. 첫 Windows helper 실행은 구 PowerShell의 빈 ExitCode 때문에 보고 단계가 실패했지만 실제50시나리오는 성공했으며, 현재 PowerShell7로 재검증해 실제 종료0과 근거 생성을 확인했다. 원격 최종 통과 전에는 CI 전체 PASS를 주장하지 않는다.

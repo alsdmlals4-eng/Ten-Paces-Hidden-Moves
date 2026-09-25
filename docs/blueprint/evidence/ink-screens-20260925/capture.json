@@ -3,55 +3,55 @@
   "fixture_seed": 1,
   "opponent": "slot1_dogyeom",
   "project": "C:/Users/user/.codex/worktrees/ink-preparation-layout-20260925/Ten-Paces-Hidden-Moves/",
-  "save_isolation": "res://output/ink-screen-validation/fixture-save-18716.json",
+  "save_isolation": "res://output/ink-screen-validation/fixture-save-33340.json",
   "shots": [
     {
       "key": "main",
       "path": "res://docs/blueprint/evidence/ink-screens-20260925/main.png",
-      "sha256": "172fbf9989682e5710b9f2cde23e2f293fddadf6a9be7ea24329950e03c3e1f0",
+      "sha256": "46210afc43de2886129dffb7b8cb0e0603194e3f23394695e9b8476f97e9c01e",
       "size": [
-        1280,
-        800
+        1440,
+        900
       ],
       "source": "ordinary_screen_navigation"
     },
     {
       "key": "library",
       "path": "res://docs/blueprint/evidence/ink-screens-20260925/library.png",
-      "sha256": "7166cc538c67f20b34dc58e435e3f23713c0a5ec746096af06e23a14bf0f57fb",
+      "sha256": "387d62088ec45a43eccefbb51c21c6ff51c7bb1281155fb126b7348f6c4b6f01",
       "size": [
-        1280,
-        800
+        1440,
+        900
       ],
       "source": "actual_title_codex_navigation"
     },
     {
       "key": "settings",
       "path": "res://docs/blueprint/evidence/ink-screens-20260925/settings.png",
-      "sha256": "5787790279071873340edf9920b193aea038cf96266496a16435f7f1e34b61ce",
+      "sha256": "3d544d19496e99b29d6cbe8c7778b435a38bd003d141f6ae56511cf8a6b958e4",
       "size": [
-        1280,
-        800
+        1440,
+        900
       ],
       "source": "actual_title_settings_navigation"
     },
     {
       "key": "setup",
       "path": "res://docs/blueprint/evidence/ink-screens-20260925/setup.png",
-      "sha256": "f80f358d0b49f7ecf280c6ca1737b3b44419ecb5a9382d5cba32239e51fc5ac4",
+      "sha256": "7ab69ef5bb49a0962350235c469ddeecd7ae2956261930bd2a6a3419c6b61c7a",
       "size": [
-        1280,
-        800
+        1440,
+        900
       ],
       "source": "ordinary_screen_navigation"
     },
     {
       "key": "briefing",
       "path": "res://docs/blueprint/evidence/ink-screens-20260925/briefing.png",
-      "sha256": "9c0072abde3cbd901f31237d7911760515ddc2cfa36228cfbef4c6994052fdf9",
+      "sha256": "e36c58aa2d5126024611d27f98f6b49b9679daf27b5ead845d62df5071d9b3a6",
       "size": [
-        1280,
-        800
+        1440,
+        900
       ],
       "source": "ordinary_screen_navigation"
     },
@@ -98,20 +98,20 @@
     {
       "key": "resolution",
       "path": "docs/blueprint/evidence/ink-screens-20260925/resolution.png",
-      "sha256": "ff163db1352b46c953a347bc0f96167bf474cf3619f510370c5fae465f262748",
+      "sha256": "afc8365c6638fc9ae365ccf8204d1146e4a89e91b0d8f1bf32bdf3717196fc7c",
       "size": [
-        1280,
-        800
+        1440,
+        900
       ],
       "source": "actual_resolver_fixed_plan_native_capture"
     },
     {
       "key": "four-slots",
       "path": "docs/blueprint/evidence/ink-screens-20260925/four-slots.png",
-      "sha256": "cc15b637a01ff97439b72770c7d91665b52227be9eddbd840c2be0f44c7f5da4",
+      "sha256": "d31e78d9540c80b287aac4f51fdee7d332cf3083546c85b1bc032334c7fd62fb",
       "size": [
-        1280,
-        800
+        1440,
+        900
       ],
       "source": "actual_resolver_fixed_plan_native_capture"
     }

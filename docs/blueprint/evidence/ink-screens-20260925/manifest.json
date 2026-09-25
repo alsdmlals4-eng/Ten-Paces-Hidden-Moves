@@ -1,6 +1,6 @@
 {
   "engine": "4.7.1-stable (official)",
-  "source_revision": "0f4d446ad8d02f0852faa8f59b09d2c692febeb4",
+  "source_revision": "ce56315dca0fd8df4ca552ce0ba49f4f2c99f01d",
   "source_state": "working tree source hashes are authoritative for this capture",
   "source_hashes": {
     "assets/backgrounds/frontal_courtyard_duel_background_01_v1.png": "27778369c3896d7d6237990ec70620c54ad0d636f660c9aa80322b0632262d06",
@@ -163,7 +163,7 @@
     "src/ui/action_selection/action_detail_panel.gd": "ddf26a0ce2b4f508dfd7f0e1e162c0dd9f8d9c93b08f81e4dab5ed2907fc2430",
     "src/ui/action_selection/action_intent_panel.gd": "7835319efd914b436acd8e422c8e6876da20746df7c850f6deb020eb5fc1275b",
     "src/ui/action_selection/action_placement_controller.gd": "d90b14a39311bd99ad2cdefa8db2605660915b6b86def9ef68a3ab37712a55b2",
-    "src/ui/action_selection/action_selection_dock.gd": "c77e852e63f7cbd9fde207194821c2815a87ef3aa8ec57ba785c923dcbc13077",
+    "src/ui/action_selection/action_selection_dock.gd": "731923f40005fcc167b2ad2f6ee55f37bd713c69091154e54126adfd38575cda",
     "src/ui/action_selection/action_view_model_adapter.gd": "aabc6fcd884eaaa9ea68b7d8d861685949181cb961326ce6419cc803f7f423b5",
     "src/ui/action_selection/basic_action_panel.gd": "04c4bda1268733ce8488593dd4a60ce006ab0973d53a4b80ef91cf113c69611a",
     "src/ui/action_selection/linked_action_block.gd": "dc75c1cae76b82cfaebee5173385bab076e0eb20fc9b167458e50f414c7f14c8",
@@ -1341,19 +1341,19 @@
         }
       ],
       "path": "docs/visual-assets/candidates/TEN-INK-STYLES-20260924/clash-v2/runtime-bundles.mp4",
-      "path_sha256": "fcf9b8a2fabbb8f2a2a36395afbe43ba84796f6c5cc0fbc4f1f78d6bac116aeb",
+      "path_sha256": "22bb9a71b455d237d7124415da11f1ae45b6b92b86e6234e2c40197212e74cd8",
       "poster": "docs/blueprint/evidence/ink-screens-20260925/resolution.png",
-      "poster_sha256": "ff163db1352b46c953a347bc0f96167bf474cf3619f510370c5fae465f262748",
+      "poster_sha256": "afc8365c6638fc9ae365ccf8204d1146e4a89e91b0d8f1bf32bdf3717196fc7c",
       "timeline": [],
       "timeline_basis": "NATIVE_FIXED_FPS_24",
-      "frames": 735,
+      "frames": 708,
       "distinct_frames": 511,
       "visual_status": "FRAME_CHANGES_OBSERVED",
-      "duration_seconds": 30.625,
+      "duration_seconds": 29.5,
       "audio": "NOT_CAPTURED",
       "evidence_kind": "ACTUAL_RESOLVER_FIXED_PLAN_NATIVE_CAPTURE",
       "scope": "MAIN_SOURCE",
-      "source_revision": "0f4d446ad8d02f0852faa8f59b09d2c692febeb4",
+      "source_revision": "ce56315dca0fd8df4ca552ce0ba49f4f2c99f01d",
       "outcomes": [
         "clash_loss",
         "clash_win",
@@ -1369,18 +1369,18 @@
   "method": "Actual CombatBoardPreview with actual resolver fixed plans; not offline compositing",
   "native_receipt": {
     "captures": {
-      "bundle-1-complete": 210,
-      "bundle-2-complete": 428,
-      "bundle-3-complete": 735,
+      "bundle-1-complete": 201,
+      "bundle-2-complete": 410,
+      "bundle-3-complete": 708,
       "clash-contact": 59,
       "clash-keyshot": 95,
-      "four-slots": 560,
+      "four-slots": 542,
       "preparation-before": 0,
       "resolved-damage": 127
     },
     "engine": "4.7.1-stable (official)",
     "fps": 24,
-    "frames": 735,
+    "frames": 708,
     "source": "Actual CombatBoardPreview with actual resolver fixed plans; not offline compositing"
   },
   "limits": "Silent fixed plans; nine native UI captures. Result/rest do not prove a won campaign. Human/Android NOT_RUN."

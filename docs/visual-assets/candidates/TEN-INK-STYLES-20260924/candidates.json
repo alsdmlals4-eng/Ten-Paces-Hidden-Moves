@@ -276,23 +276,23 @@
       },
       {
         "file": "clash-v2/runtime-bundles.mp4",
-        "sha256": "fcf9b8a2fabbb8f2a2a36395afbe43ba84796f6c5cc0fbc4f1f78d6bac116aeb",
-        "bytes": 18393548
+        "sha256": "22bb9a71b455d237d7124415da11f1ae45b6b92b86e6234e2c40197212e74cd8",
+        "bytes": 23457297
       },
       {
         "file": "clash-v2/runtime-contact.png",
-        "sha256": "31fb806b2e15ebf1608d30fe9574a842d835edff3a0834a3770c89347f3b11ad",
-        "bytes": 1250298
+        "sha256": "d1d44339055fb90594ba61ca3e1f01275d2249bd7563e9a226889fd88d2add8a",
+        "bytes": 1501811
       },
       {
         "file": "clash-v2/runtime-result.png",
-        "sha256": "ff163db1352b46c953a347bc0f96167bf474cf3619f510370c5fae465f262748",
-        "bytes": 1306921
+        "sha256": "afc8365c6638fc9ae365ccf8204d1146e4a89e91b0d8f1bf32bdf3717196fc7c",
+        "bytes": 1560295
       },
       {
         "file": "clash-v2/runtime-four-slots.png",
-        "sha256": "cc15b637a01ff97439b72770c7d91665b52227be9eddbd840c2be0f44c7f5da4",
-        "bytes": 1298783
+        "sha256": "d31e78d9540c80b287aac4f51fdee7d332cf3083546c85b1bc032334c7fd62fb",
+        "bytes": 1558654
       }
     ],
     "source_art": [
@@ -368,9 +368,9 @@
       "capture": "clash-v2/runtime-capture.json",
       "video": "clash-v2/runtime-bundles.mp4",
       "source": "Actual Godot CombatBoardPreview and resolver with fixed committed plans; silent automated capture",
-      "frames": 735,
+      "frames": 708,
       "fps": 24,
-      "duration_seconds": 30.625,
+      "duration_seconds": 29.5,
       "preserves_existing_preparation": true,
       "rules_modified": false,
       "save_modified": false,
