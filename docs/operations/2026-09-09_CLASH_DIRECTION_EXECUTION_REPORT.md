@@ -100,3 +100,5 @@
 
 - 집중 영향 확인: 전체 pytest603개 중601통과/2실패를 먼저 기록했다. 하나는 촬영/발행 중 manifest의 resolution이 아직 결합되지 않은 시점, 하나는 화면 목록을9개로 고정한 옛 기대값이었다. 최종11화면 발행 후 도감/설정 menu분류·중복없는 경로까지 확인하도록 교정하고 해당2파일11검사가 모두 PASS했다. 전체603개를 마지막 상태에서 한 번에 재실행했다고 주장하지 않는다.
 - HTML1268 view/21499 local link PASS. 인앱 브라우저에서30.125초 MP4가 readyState4, ended=true, media error없음으로 끝까지 재생됐다. 브라우저 error log0. 구조도 하단에 남던 옛 준비 참고안/합 삽화 표기도 현재 촬영 근거를 읽도록 교정했다.
+
+- PR365 원격 영향 교정: full-validation의 기존 카드 상단 band/양 검객 동일 높이·같은 바닥선 검사가 승인된 좌측 삽화/대각선3:2구도와 충돌했다. 실제 source-alpha 독립 측정 및80% 축소 negative control은 유지하고 새3:2비율·깊이·모션 envelope90%상한·카드 내부 영역/글자 비중첩으로 검사했다. 해당 workflow native31종 전부 로컬 PASS; 제품 bytes는 추가 변경하지 않았다. Windows50/50·ZIP해시/CRC PASS, 최종 HTML1270view/21563local link PASS.
