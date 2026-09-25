@@ -155,3 +155,7 @@ Python unittest 전체579검사의 첫 실행은577PASS/1FAIL/1ERROR였다. 신�
 0f4d446a로 Windows release export와 실행 파일의50시나리오를 재실행해50PASS/0FAIL을 확인했다. `build/windows/TenPaces-Reference-Preparation-20260925-Windows.zip`은 EXE·PCK·한국어 실행 안내를 포함하며188682153bytes, SHA256 `584d127e7a00f7a81a9e6da2d6009634389fed3dcb23e6113f6d314501fe48b0`이다. ZIP CRC와 압축 전후 각 파일 SHA256 일치 PASS. 로컬 근거는 `output/prep-layout/reference-delivery.json`과 `reference-windows-final/`이다. export 종료의 기존45 ObjectDB/22 resource 정리 경고는 남아 있으며 실제 제품 시나리오는 오류0이다.
 
 동일 제품 코드에서 native9화면+해결2화면, 실제 판정기의 고정3/3/4 묶음735프레임/24fps/30.625초/서로 다른511프레임을 다시 촬영·발행했다. 촬영 자체의 `INK_SCREEN_CAPTURE count=9`와 `INK_COMBAT_RUNTIME failures=0 frames=735`를 확인했고 manifest에 소스와 미디어 해시를 갱신했다. 최종 HTML과 브라우저 재생 readback은 이 발행본을 사용한다. 원본 사용자52리뷰·기존 작업·Godot AI addon313파일을 보호한다. 새 시각 결과의 사용자 최종 확정 전이므로 PR367은 Draft이며 main 병합·Human/Android·출시는 완료로 보고하지 않는다.
+
+최종 브라우저에서735프레임 영상이30.625초 끝까지 재생된 ended=true/readyState4/media error=null/console errors0과 준비 원본1086×1448의 정상 확대를 확인했다. Godot AI run15 LIVE/fresh framebuffer/현재 실행 오류없음, addon313해시와 사용자 리뷰 해시 보존을 다시 확인했다. HTML1276view/21682연결 PASS. 로컬 readback은 `output/prep-layout/reference-browser-final.json`이다.
+
+f0901652 원격 검사32개는 PASS했다. 제품 job은 원래15분 제한으로 취소됐지만, 그 직전 실제 normal-speed 캠페인은295입력·비무10승·보상10회·행로36회·545748ms·실패0으로 완료됐다. 후속 단계와 근거 업로드는 취소되어 PASS로 간주하지 않는다. 원인인 job 전체 한도만25분으로 늘려, 캠페인 자체의15분 유한 한도와 사전 import/나머지 검사를 모두 수용한다. 실제 판정·일반 연출 속도·반례·검사 항목은 줄이지 않는다. 새 HEAD 원격 결과는 동일 PR367의 live metadata가 소유한다.
