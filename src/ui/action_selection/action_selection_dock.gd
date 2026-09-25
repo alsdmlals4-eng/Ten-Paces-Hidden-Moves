@@ -440,8 +440,8 @@ func layout_preparation() -> void:
         sort.position = Vector2(872,13)
         sort.size = Vector2(138,31)
     constraint_summary.set_anchors_preset(Control.PRESET_TOP_LEFT)
-    constraint_summary.position = Vector2(670,3)
-    constraint_summary.size = Vector2(192,49)
+    constraint_summary.position = Vector2(682,3)
+    constraint_summary.size = Vector2(180,49)
     constraint_summary.add_theme_font_size_override("font_size",16)
     var footer = get_node_or_null("PreparationKeyHints")
     if footer != null:

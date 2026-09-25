@@ -159,7 +159,10 @@ func _verify_board_context_and_geometry(viewport_size: Vector2) -> void:
 			await process_frame
 			last_manual.grab_focus()
 			await process_frame
-			_check(manual_viewport_rect.grow(0.5).encloses(last_manual.get_global_rect()), "Keyboard focus must automatically reveal the last manual at %s." % str(viewport_size))
+			# Native scrolling is integer-valued in the unscaled reference canvas.
+			# Bound its rounding to one native pixel after the parent transform.
+			var focus_pixel_tolerance := maxf(0.5, absf(martial.manual_scroll.get_global_transform().get_scale().x)) + 0.01
+			_check(manual_viewport_rect.grow(focus_pixel_tolerance).encloses(last_manual.get_global_rect()), "Keyboard focus must automatically reveal the last manual at %s (viewport=%s card=%s scroll=%s/%s page=%s)." % [str(viewport_size), str(manual_viewport_rect), str(last_manual.get_global_rect()), str(horizontal_bar.value), str(horizontal_bar.max_value), str(horizontal_bar.page)])
 		for button in martial.technique_buttons:
 			var technique_rect := (button as Control).get_global_rect()
 			_check(host_rect.encloses(technique_rect), "Every real martial technique card must stay inside the content host at %s." % str(viewport_size))
