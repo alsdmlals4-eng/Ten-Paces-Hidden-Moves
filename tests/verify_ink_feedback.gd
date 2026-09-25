@@ -66,7 +66,7 @@ func run() -> void:
         board.action_selection_dock.basic_panel.buttons[2].emit_signal("pressed")
         await process_frame
         var placed = board.find_child("LinkedActionBlock01", true, false)
-        check(placed != null and placed.action_label.get_theme_color("font_color").get_luminance() > 0.5, "Placed action stays legible against its dark surface under the parchment shell theme")
+        check(placed != null and placed.action_label.get_theme_color("font_color").get_luminance() < 0.2, "Placed action stays legible against the new parchment planning strip")
     shell.queue_free()
     await process_frame
     for message in failures: push_error(message)

@@ -112,3 +112,16 @@
 최종 exact-head의 [일반 속도 native 입력 캠페인](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/actions/runs/36078610083/job/107895307586)은451114ms/입력295회/비무10승/보상10회/행로36회/실패0이며 이후 저장·카드·휴식 검사까지 전부 통과했다. 승인 종료 파생본은 adapter를 commit한 뒤 Git의 정규 bytes 기준으로 재생성해 Windows 줄바꿈 해시 차이를 예방했다.
 
 승인 종료의 로컬 검사에서는 작업 사본 adapter만 CRLF로 남아 raw-byte 기대값1개가 먼저 실패했다. 해당 파일을 저장소에서 지정한 LF로 정규화한 뒤 lifecycle/기준선/adapter9검사가 모두 PASS했다. 승인 operating contract와 postmerge canon 검사도 PASS이며 제품 diff는 없다.
+
+
+## 2026-09-25 참조 준비 화면의 UI 배치·구도 교정
+
+기준 main89cee855 / BUILD / combat-ux-and-accessibility: design-review, ten-paces-verification: runtime-validation, Hera live-editor: 실제 입력·기하. 최신 사용자960093f1참조와 UI배치·구도라는 정정으로 승인 범위를 한정했다. 기존 수묵 원화 재사용, 양끝 소형 HUD/초상·중앙 거리·오른쪽 관찰·종이 계획 한 줄·오른쪽 실행·5×2 카드/고정 상세를 연결했다. 규칙·AI·저장·연출 코드는 변경하지 않는다. 같은 결정의 공식 Control 근거 REUSED_EVIDENCE, FEASIBLE.
+
+검토1: 정본/실제13표현파일/공유 카드·상세·HUD 소비자/기존31native검사와 신규4크기 반례를 대조했다. 초기 RED93개, 이후 작은 viewport 카드·탭/안내 겹침과 관찰/실행 버튼 중첩, 원어 폰트 요약 높이, 확장 전장 HUD영역 경계, 빈 상세 초기 상태, 카드효과 tooltip 대응을 교정했다. 예전 가로카드/거대한HUD/왼쪽 실행 그룹을 고정한 테스트는 최신 승인 구도로 갱신하고 실제 입력·대응결과·정보비공개 검사는 유지했다. 신규 원화·도구 설치·코어 복제 없음.
+
+검토2: 수정 후보 전체 diff와 미변경 판정/카메라/저장·별도도감 소비자를 다시 대조했다.4실제 viewport의 카드/헤더/상세/관찰/실행 비중첩, 공개 자원과 숨은 적자원, 고정미리보기와 실제배치 분리를 검사했다. 실제 폰트 상속으로 작은 글자를 보강했고 관찰 갱신의 낡은 안내2반례, 기존64px 최소 슬롯과84px 부모의 넘침, 이전 결과의 옛 오른쪽 빈칸 의존을 발견했다. 각각 갱신 레이아웃,96px 계획 줄,계획 위 결과 한 줄로 교정해 기존 입력/정보 경계/inline 회귀를 통과했다. 전체 검토는 정확히2회이며 이후는 발견 결함의 영향 검사다.
+
+Godot AI4.2.3 exact session `ten-paces-hidden-moves@e3c0b4f76e16bdac`에서 사용자 addon313파일을 해시로 보존했다. 별도 저장 fixture에서 실제 마우스 막기3개→키보드 실행→`next_bundle_ready/bundle2/placements0/detail_visible=true`와 결과 문구를 확인했다. run9 LIVE/current_run_errors=[] 및 fresh game framebuffer를 확인했다. 앞선 두 읽기 eval의 잘못된 속성 접근은 제품 오류와 분리하고 종료/재실행했다. 원본 플레이 저장과 코멘트에는 쓰지 않았다.
+
+전체 Python603검사의 최초 실행은601PASS/2FAIL이었다. 하나는 옛 상단 고정 card anchor 검사로 새 하단 anchor와 native 비중첩 검사에 맞춰 교정했고, 다른 하나는 화면 재촬영 중 미완성 capture manifest를 동시에 읽은 경우였다. publish 완료 후 해당11검사 전부 PASS했다. 실제732프레임/30.5초 영상과11화면을 현 소스 해시로 다시 연결했다. 자동/Windows/HTML/PR 최종 결과는 아래에 누적하며 사용자 시각 검수·Android·출시는 NOT_RUN이다.

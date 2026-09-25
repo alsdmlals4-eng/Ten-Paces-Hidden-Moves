@@ -27,6 +27,8 @@ const RESTRAINED_GOLD := Color("b99254")
 @onready var content_host: Control = %ContentHost
 @onready var detail_host: Control = %DetailHost
 
+var preparation_layout := false
+
 var active_source := "basic"
 var interaction_state := "planning"
 var runtime_context: Dictionary = {}
@@ -65,6 +67,7 @@ func _ready() -> void:
     _build_detail_panel()
     _apply_state()
     resized.connect(queue_redraw)
+    resized.connect(layout_preparation)
     set_meta("manual_is_not_directly_placeable", true)
     set_meta("virtual_combo_enabled", false)
     set_meta("presentation_surface", "paper_ink_r1")
@@ -98,7 +101,10 @@ func set_interaction_state(state: String) -> void:
     if interaction_state == "new_combat":
         active_source = "basic"
         interaction_state = "planning"
-        clear_detail()
+        if preparation_layout:
+            request_detail(basic_panel.actions[4], false)
+        else:
+            clear_detail()
     switching_enabled = interaction_state not in LOCKED_STATES
     _apply_state()
 
@@ -199,6 +205,8 @@ func request_detail(value: Dictionary, pinned: bool = false) -> void:
     detail_requested.emit(value.duplicate(true), pinned)
 
 func clear_detail() -> void:
+    if preparation_layout:
+        return
     if is_instance_valid(action_detail_panel):
         action_detail_panel.clear_detail()
     detail_cleared.emit()
@@ -356,3 +364,44 @@ func _notification(what: int) -> void:
     if what == NOTIFICATION_RESIZED:
         if is_instance_valid(_backdrop):
             _backdrop.queue_redraw()
+
+func enable_preparation_layout() -> void:
+    preparation_layout = true
+    content_host.custom_minimum_size.x = 0
+    detail_host.custom_minimum_size.x = 218
+    for panel in [basic_panel, martial_panel, ultimate_panel, action_intent_panel]:
+        panel.custom_minimum_size.x = 0
+    basic_panel.title_label.hide()
+    action_detail_panel.custom_minimum_size.x = 0
+    action_detail_panel.set_meta("ink_preparation", true)
+    action_detail_panel.add_theme_stylebox_override("panel", preload("res://src/ui/ink/ink_preparation_layout.gd").paper_style())
+    request_detail(basic_panel.actions[4], false)
+    _backdrop.add_theme_stylebox_override("panel", preload("res://src/ui/ink/ink_preparation_layout.gd").paper_style(Color("242720"), 0))
+    layout_preparation()
+
+func layout_preparation() -> void:
+    if not preparation_layout or not is_node_ready():
+        return
+    var column: VBoxContainer = $DockColumn
+    column.offset_left = 10
+    column.offset_right = -10
+    column.offset_top = 6
+    column.offset_bottom = -28
+    column.add_theme_constant_override("separation", 8)
+    var detail_width := clampf(size.x * 0.23, 208, 300)
+    detail_host.custom_minimum_size.x = detail_width
+    content_host.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    for button in [basic_tab, martial_tab, ultimate_tab]:
+        button.custom_minimum_size = Vector2(clampf((size.x-detail_width-40)/3, 100, 220), 34)
+        button.add_theme_font_size_override("font_size", 19)
+    # Keep the information hierarchy at every viewport; real font metrics still
+    # define the lower bound. The grid receives all spare vertical space.
+    var card_height := maxf(112, (size.y - 87) * 0.5)
+    for button in basic_panel.buttons:
+        button.custom_minimum_size.y = card_height
+    var footer = get_node_or_null("PreparationKeyHints")
+    if is_instance_valid(footer):
+        footer.position = Vector2(10, size.y - 23)
+        footer.size = Vector2(size.x - 20, 22)
+    constraint_summary.offset_left = size.x - detail_width
+    constraint_summary.offset_bottom = 34

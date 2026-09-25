@@ -139,3 +139,10 @@ FEASIBLE: 승인 삽화와 현재 UI/판정 모듈을 재사용한다. 준비는
 CURRENT_SOURCE_RELEVANCE_CHECK: 기존 같은 스타일·전투 연출 조사 재사용 + Godot 공식 Tween/Control 문서 확인(2026-09-25). https://docs.godotengine.org/en/stable/classes/class_tween.html / https://docs.godotengine.org/en/stable/classes/class_control.html . 화면/보간 API만 참고하며 규칙 근거로 쓰지 않는다.
 
 Godot AI 업데이트: 기존 작업 폴더의 사용자 addon 4.2.3과 서버 4.2.3, Godot 4.7.1 프로젝트 연결을 확인. 플러그인 업데이트 원본은 보존하고 정확한 세션의 실행·입력·상태·캡처 기능을 검증에 사용한다. 원본 사용자 저장은 읽기 전용 복사본으로 재현한다. 두 전체 검토와 결함 교정, 자동/네이티브/HTML 검증을 분리해 기존 실행 보고서에 누적한다. 사람 체감·Android·출시 평가는 별도다.
+
+
+## 2026-09-25 준비 화면 배치와 구도 후속
+
+최신 사용자 지시와 첨부960093f1 참조: 화풍 변경이 아닌 UI 배치·구도 교정. 기존 원화를 재사용하고 작은 상단 상태, 넓은 대각선 대치, 한 줄 종이 계획과 오른쪽 실행, 5×2 삽화 카드와 고정 상세 칸을 구현한다. 선택·배치·방향·취소·확정,3/3/4,판정·AI·저장은 보호한다.
+
+REUSED_APPROVAL / CURRENT_SOURCE_RELEVANCE_CHECK: REUSED_EVIDENCE. 동일 결정의 사용자 참조와 Godot Control 공식 근거를 재사용하며 새 외부 기술·규칙 판단이 없다. FEASIBLE: 기존 컴포넌트의 표현과 기하만 바꾸고 네이티브 크기별 입력·잘림을 검증한다. 두 전체 검토·실행·HTML 증거는 기존 실행 보고서 최신 절에 누적한다.

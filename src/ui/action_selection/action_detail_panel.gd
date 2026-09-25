@@ -201,7 +201,7 @@ func _apply_content() -> void:
             _source.text = ""
     # Preserve all existing decision rows; large art is supplementary scroll content.
     if detail_mode == "action":
-        _add_approved_illustration(APPROVED_ART.action_illustration(definition))
+        _add_approved_illustration(_detail_illustration())
     elif detail_mode == "manual":
         _add_approved_illustration(APPROVED_ART.manual_illustration(
             str(manual_definition.get("manual_id", "")), int(manual_definition.get("mastery", 0))))
@@ -223,6 +223,9 @@ func _add_approved_illustration(texture: Texture2D) -> void:
     illustration.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     illustration.mouse_filter = Control.MOUSE_FILTER_IGNORE
     _content.add_child(illustration)
+    if bool(get_meta("ink_preparation", false)):
+        illustration.custom_minimum_size.y = clampf(size.y * 0.28, 62, 104)
+        _content.move_child(illustration, 0)
 
 func _apply_action() -> void:
     _title.text = str(definition.get("name", "행동"))
@@ -387,13 +390,13 @@ func _add_row(key: String, value: String) -> void:
     key_label.custom_minimum_size = Vector2(44.0 if compact else 54.0, 0.0)
     key_label.text = key
     key_label.add_theme_color_override("font_color", Color("4d4032") if compact else Color("cda960"))
-    key_label.add_theme_font_size_override("font_size", 11 if compact else 12)
+    key_label.add_theme_font_size_override("font_size", 13 if compact else 14)
     var value_label := Label.new()
     value_label.text = value
     value_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     value_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     value_label.add_theme_color_override("font_color", Color("211c17") if compact else Color("e9dfcd"))
-    value_label.add_theme_font_size_override("font_size", 11 if compact else 12)
+    value_label.add_theme_font_size_override("font_size", 13 if compact else 14)
     row.add_child(key_label)
     row.add_child(value_label)
     _content.add_child(row)
@@ -405,12 +408,12 @@ func _add_section(title: String, value: String, muted := false) -> void:
         var label := Label.new()
         label.text = title
         label.add_theme_color_override("font_color", Color("4d4032") if compact else Color("cda960"))
-        label.add_theme_font_size_override("font_size", 11 if compact else 12)
+        label.add_theme_font_size_override("font_size", 13 if compact else 14)
         _content.add_child(label)
     var body := Label.new()
     body.text = value
     body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    body.add_theme_font_size_override("font_size", 11 if compact else 12)
+    body.add_theme_font_size_override("font_size", 13 if compact else 14)
     body.add_theme_color_override("font_color", (Color("6a5843") if muted else Color("211c17")) if compact else (Color("9f9484") if muted else Color("e9dfcd")))
     _content.add_child(body)
 
@@ -459,3 +462,17 @@ func _contract_style() -> StyleBoxFlat:
     style.content_margin_top = 4.0
     style.content_margin_bottom = 4.0
     return style
+
+func _detail_illustration() -> Texture2D:
+    var texture := APPROVED_ART.action_illustration(definition)
+    if texture != null:
+        return texture
+    var spec: Dictionary = definition.get("illustration", {})
+    var path := str(spec.get("atlas", ""))
+    var region: Array = spec.get("region", [])
+    if region.size() == 4 and ResourceLoader.exists(path):
+        var atlas := AtlasTexture.new()
+        atlas.atlas = load(path) as Texture2D
+        atlas.region = Rect2(region[0],region[1],region[2],region[3])
+        return atlas
+    return null

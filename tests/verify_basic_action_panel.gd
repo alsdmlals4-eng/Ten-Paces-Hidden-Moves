@@ -15,7 +15,7 @@ func _run() -> void:
         return
     var panel = packed.instantiate()
     panel.set_anchors_preset(Control.PRESET_TOP_LEFT)
-    panel.size = Vector2(1280, 260)
+    panel.size = Vector2(900, 340)
     root.add_child(panel)
     await process_frame
     await process_frame
@@ -42,15 +42,15 @@ func _run() -> void:
         var summary := button.get_node_or_null("CardSummary") as VBoxContainer
         var illustration := button.get_node_or_null("CardIllustration") as TextureRect
         var name_label := button.get_node_or_null("CardName") as Label
-        _check(is_instance_valid(summary), "Every basic card must retain its three-line summary.")
+        _check(is_instance_valid(summary), "Every basic card must retain its cost and range summary.")
         _check(is_instance_valid(illustration), "Every basic card must retain its illustration.")
         _check(is_instance_valid(name_label), "Every basic card must retain its readable name.")
-        _check(button.custom_minimum_size.y <= 112.0, "Every basic card must fit the cross-platform two-row height budget.")
+        _check(button.custom_minimum_size.y <= 150.0, "Every basic card must fit the cross-platform two-row height budget.")
         if is_instance_valid(summary):
-            _check(summary.get_child_count() == 3, "Every basic card must retain exactly three summary lines.")
+            _check(summary.get_child_count() == 2, "Every basic card must retain two concise summary lines, with effects in the right detail.")
             _check(button.custom_minimum_size.y >= summary.offset_top + summary.get_combined_minimum_size().y + 4.0, "Basic card height must contain native summary metrics plus bottom padding.")
         if is_instance_valid(illustration):
-            _check(illustration.size.y >= 80.0 and illustration.size.x >= 40.0, "Basic card illustration must retain a readable full-height area.")
+            _check(illustration.size.y >= 60.0 and illustration.size.x >= 40.0, "Basic card illustration must retain a readable full-height area.")
             _check(button.get_global_rect().encloses(illustration.get_global_rect()), "Basic card illustration must stay inside the card.")
         if is_instance_valid(illustration) and is_instance_valid(name_label):
             _check(not illustration.get_global_rect().intersects(name_label.get_global_rect()), "Illustration and card name must not overlap.")

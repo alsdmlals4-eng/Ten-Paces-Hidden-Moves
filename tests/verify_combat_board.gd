@@ -176,8 +176,8 @@ func _verify_cards_and_overlays(board: CombatBoardPreview, snapshot: Dictionary)
         failures.append("Progress button must start disabled before placements.")
     elif board.combat_progress_button.get_button_text() != "행동 실행":
         failures.append("A completed bundle must expose the approved single-execute action.")
-    elif board.combat_progress_button.size.x > 104.0 or board.combat_progress_button.size.y > 72.0:
-        failures.append("Progress control must remain compact beside the timing strip.")
+    elif board.combat_progress_button.size.x > 220.0 or board.combat_progress_button.size.y > 72.0:
+        failures.append("Progress control must fit the right end of the planning strip.")
 
 func _card_definition(board: CombatBoardPreview, card_id: String) -> Dictionary:
     for definition in board.action_selection_dock.basic_panel.actions:
@@ -474,7 +474,7 @@ func _verify_layout(board: CombatBoardPreview, snapshot: Dictionary) -> void:
         failures.append("Card tray must not overlap action timing.")
     if tray_bottom > board.size.y + SIZE_TOLERANCE:
         failures.append("Card tray must remain inside the viewport.")
-    if is_instance_valid(board.combat_log_panel) and is_instance_valid(board.combat_progress_button):
+    if is_instance_valid(board.combat_log_panel) and board.combat_log_panel.visible and is_instance_valid(board.combat_progress_button):
         if board.combat_log_panel.get_global_rect().intersects(board.combat_progress_button.get_global_rect()):
             failures.append("Compact bundle execution control must not be covered by the combat-log toggle.")
 

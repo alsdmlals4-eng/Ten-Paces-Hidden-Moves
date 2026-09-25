@@ -2,8 +2,8 @@ extends SceneTree
 
 const BOARD_SCENE_PATH := "res://scenes/combat/combat_board_preview.tscn"
 const VIEWPORT_SIZE := Vector2(1440.0, 900.0)
-const TARGET_TOP_OVERLAY_RATIO := 0.20
-const TARGET_PLANNING_TOP_RATIO := 0.50
+const TARGET_TOP_OVERLAY_RATIO := 0.135
+const TARGET_PLANNING_TOP_RATIO := 0.455
 
 var failures: Array[String] = []
 var art_oracles: Dictionary = {}
@@ -52,7 +52,7 @@ func _verify_three_screen_surfaces(board: CombatBoardPreview) -> void:
 	var dock := board.get_node_or_null("ActionSelectionDock") as Control
 	_expect(top_rect.end.y <= duel_rect.position.y + 0.5, "Top status surface must end before the semantic duel stage begins.")
 	_expect(duel_rect.end.y <= planning_rect.position.y + 0.5, "Duel stage must end before the planning surface begins.")
-	_expect(absf(top_rect.size.y / board.size.y - TARGET_TOP_OVERLAY_RATIO) <= 0.035, "Top status overlay must occupy about 20 percent of the preparation view.")
+	_expect(absf(top_rect.size.y / board.size.y - TARGET_TOP_OVERLAY_RATIO) <= 0.035, "Top status overlay must occupy about 14 percent of the preparation view.")
 	_expect(absf((planning_rect.position.y - board.global_position.y) / board.size.y - TARGET_PLANNING_TOP_RATIO) <= 0.045, "The expanded 5 by 2 summary-card surface must preserve a bounded lower preparation split.")
 	# Sep02 stage-only owner supersedes these old behind-HUD fixture expectations.
 	_expect(board.battle_background.get_global_rect().encloses(duel_rect) and board.battle_background.get_global_rect().position.y <= top_rect.position.y, "One continuous ink painting underlies HUD and confrontation.")
@@ -78,17 +78,17 @@ func _verify_reference_preparation_hierarchy(board: CombatBoardPreview) -> void:
 	_expect(is_instance_valid(hud.player_momentum) and not hud.player_momentum.visible, "Momentum must live inside the player status frame, not in a detached top panel.")
 	_expect(is_instance_valid(hud.enemy_momentum) and not hud.enemy_momentum.visible, "Momentum must live inside the enemy status frame, not in a detached top panel.")
 	if is_instance_valid(hud.player_panel):
-		_expect(not hud.player_panel._portrait.visible, "Player live status reserves its width for resources, not a portrait.")
+		_expect(hud.player_panel._portrait.visible, "Player portrait and resource lane are visible.")
 		_expect(player_rect.encloses(hud.player_panel._health_label.get_global_rect()), "Player resource label stays inside the status panel.")
 	if is_instance_valid(hud.enemy_panel):
-		_expect(not hud.enemy_panel._portrait.visible, "Enemy live status uses the same portrait-free hierarchy.")
+		_expect(hud.enemy_panel._portrait.visible, "Enemy portrait mirrors the player hierarchy.")
 		_expect(enemy_rect.encloses(hud.enemy_panel._health_label.get_global_rect()), "Enemy resource label stays inside the status panel.")
 
 	var planning_rect := board.planning_surface.get_global_rect() if is_instance_valid(board.planning_surface) else Rect2()
 	var timing_rect := board.action_timing_panel.get_global_rect() if is_instance_valid(board.action_timing_panel) else Rect2()
 	var progress_rect := board.combat_progress_button.get_global_rect() if is_instance_valid(board.combat_progress_button) else Rect2()
-	_expect(timing_rect.size.x + progress_rect.size.x <= planning_rect.size.x * 0.66, "Current action bundle and lock must form one compact left planning group, leaving room for details and observation.")
-	_expect(absf(progress_rect.get_center().y - timing_rect.get_center().y) <= 4.0 and progress_rect.position.x - timing_rect.end.x <= 12.0, "Action-plan lock must align immediately beside the current action bundle instead of floating at the far edge.")
+	_expect(timing_rect.size.x + progress_rect.size.x <= planning_rect.size.x * 0.96 and timing_rect.size.x + progress_rect.size.x >= planning_rect.size.x * 0.8, "Current action bundle and lock must form one full-width planning strip.")
+	_expect(absf(progress_rect.get_center().y - timing_rect.get_center().y) <= 6.0 and progress_rect.position.x - timing_rect.end.x <= 24.0, "Action-plan lock must align immediately beside the current action bundle at the right end.")
 	_expect(not board.sound_toggle_button.visible and not board.sound_volume_slider.visible and not board.fast_replay_button.visible and not board.reduced_motion_button.visible and not board.combat_log_panel.visible, "Preparation view must not expose debug playback, sound, or record panels absent from the approved reference screen.")
 
 func _verify_reference_information_columns(board: CombatBoardPreview) -> void:
@@ -122,10 +122,10 @@ func _verify_reference_information_columns(board: CombatBoardPreview) -> void:
 	_expect(content_rect.end.x + 250 <= planning_rect.end.x, "The five-by-two illustrated grid leaves a full detail column.")
 	_expect(detail_rect.position.x >= content_rect.end.x + 6.0 and detail_rect.size.x >= planning_rect.size.x * 0.13, "Technique detail must occupy its own readable column beside the card grid.")
 	var detail_panel := dock.detail_host.get_node_or_null("ActionDetailPanel") as ActionDetailPanel
-	_expect(is_instance_valid(detail_panel) and not detail_panel.visible, "The detail column must reserve its geometry but keep an empty card detail hidden until the player hovers or pins a real action.")
+	_expect(is_instance_valid(detail_panel) and detail_panel.visible, "The detail column must reserve its geometry but keep a real action preview visible.")
 	if is_instance_valid(detail_panel):
 		var empty_detail: Dictionary = detail_panel.get_detail_snapshot()
-		_expect(str(empty_detail.get("mode", "")) == "empty" and str(empty_detail.get("title", "")) == "" and bool(empty_detail.get("hover_preview", false)), "An idle detail panel must reserve the hover target without pretending an unselected action is planned.")
+		_expect(str(empty_detail.get("mode", "")) == "action" and board.action_timing_panel.get_placement_list().is_empty() and bool(empty_detail.get("hover_preview", false)), "An initial preview must never actually place that card into the plan.")
 		_expect(detail_panel.has_method("get_layout_snapshot"), "Detail panel must expose its compact text safe-area geometry for the approved frame regression check.")
 		if detail_panel.has_method("get_layout_snapshot"):
 			detail_panel.show_action({
@@ -147,7 +147,7 @@ func _verify_reference_information_columns(board: CombatBoardPreview) -> void:
 			detail_panel.clear_detail()
 	_expect(observation.visible and board.duel_stage_surface.get_global_rect().encloses(observation_rect), "Observation remains visible beside the confrontation before a reveal.")
 	_expect(observation_rect.end.y <= planning_rect.position.y, "Observation stays above planning and technique details.")
-	_expect(observation_rect.size.x / maxf(1.0, observation_rect.size.y) <= 1.02, "Observation must preserve the approved vertical frame instead of horizontally squeezing its text rows.")
+	_expect(observation_rect.size.x / maxf(1.0, observation_rect.size.y) <= 1.65, "Observation paper must have a readable right-hand lane.")
 	var detail_scene := load("res://scenes/ui/action_selection/action_detail_panel.tscn") as PackedScene
 	var reusable_detail := detail_scene.instantiate() as ActionDetailPanel if detail_scene != null else null
 	_expect(is_instance_valid(reusable_detail), "Technique detail must remain a reusable action-panel component.")
@@ -255,7 +255,7 @@ func _verify_stage(board: CombatBoardPreview, expanded: bool) -> void:
 	if expanded:
 		_expect(absf(stage.end.y - (board.global_position.y + board.size.y)) <= 0.5, "CTA and every timing must use the full remaining execution stage.")
 	else:
-		_expect(board.planning_surface.position.y / board.size.y >= 0.47 and board.planning_surface.position.y / board.size.y <= 0.55, "Next planning restores the responsive two-row card layout.")
+		_expect(board.planning_surface.position.y / board.size.y >= 0.37 and board.planning_surface.position.y / board.size.y <= 0.50, "Next planning restores the responsive two-row card layout.")
 	for role in ["player", "enemy"]:
 		_expect(stage.grow(1).has_point(board.global_position + board.get_character_foot_anchor(role)), "Both depth anchors remain in the visible painting.")
 

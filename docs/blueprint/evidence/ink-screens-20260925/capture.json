@@ -2,8 +2,8 @@
   "engine": "4.7.1-stable (official)",
   "fixture_seed": 1,
   "opponent": "slot1_dogyeom",
-  "project": "C:/Users/user/.codex/worktrees/ink-playability-feedback-20260925/Ten-Paces-Hidden-Moves/",
-  "save_isolation": "res://output/ink-screen-validation/fixture-save-12260.json",
+  "project": "C:/Users/user/.codex/worktrees/ink-preparation-layout-20260925/Ten-Paces-Hidden-Moves/",
+  "save_isolation": "res://output/ink-screen-validation/fixture-save-28940.json",
   "shots": [
     {
       "key": "main",
@@ -58,7 +58,7 @@
     {
       "key": "preparation",
       "path": "res://docs/blueprint/evidence/ink-screens-20260925/preparation.png",
-      "sha256": "f78c6ca35008eb5db4a247ede64f491e29eec12c2ceb9503b41e52e1904474b0",
+      "sha256": "73ac484f42c4e99fb2f0c5bd07138ce7c9b8839b540ddb115423f93989cc07c1",
       "size": [
         1280,
         800
@@ -78,7 +78,7 @@
     {
       "key": "journey",
       "path": "res://docs/blueprint/evidence/ink-screens-20260925/journey.png",
-      "sha256": "16a7ab77d744009b1493757b67550ef25942658d6a2d72a243b9195c7667074b",
+      "sha256": "323c4547b7148b2e65ec0921db9c3077a74603dc4318bd4065229e942beb30e4",
       "size": [
         1280,
         800
@@ -98,7 +98,7 @@
     {
       "key": "resolution",
       "path": "docs/blueprint/evidence/ink-screens-20260925/resolution.png",
-      "sha256": "ff163db1352b46c953a347bc0f96167bf474cf3619f510370c5fae465f262748",
+      "sha256": "5636cec81e22a9b2aebfa58582148532d8e3e4a9d0c31813267d7a99014efbdf",
       "size": [
         1280,
         800
@@ -108,7 +108,7 @@
     {
       "key": "four-slots",
       "path": "docs/blueprint/evidence/ink-screens-20260925/four-slots.png",
-      "sha256": "cc15b637a01ff97439b72770c7d91665b52227be9eddbd840c2be0f44c7f5da4",
+      "sha256": "68e16913011257cdabbf853d6fd6bf88e6072ba0eec26ead1fdb9f65cf19c829",
       "size": [
         1280,
         800

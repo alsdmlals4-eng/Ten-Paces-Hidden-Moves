@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "9f0ce7ddf3a7aad95e82b725d99bbd5248bdd60d",
+  "decision_ids": [
+    "TEN-DEC-20260924-INK-WUXIA-STYLE-AND-FLOW-01"
+  ],
+  "approved_paths": [
+    "src/combat/combat_board_preview_auto.gd",
+    "src/ui/ink/ink_preparation_layout.gd",
+    "src/ui/top_combat_hud.gd",
+    "src/ui/combatant_status_panel.gd",
+    "src/ui/round_hud_panel.gd",
+    "src/ui/observation_reveal_panel.gd",
+    "src/ui/action_timing_panel.gd",
+    "src/ui/action_timing_slot.gd",
+    "src/ui/action_timing_panel_auto.gd",
+    "src/ui/action_selection/action_choice_card.gd",
+    "src/ui/action_selection/action_selection_dock.gd",
+    "src/ui/action_selection/action_detail_panel.gd",
+    "src/ui/action_selection/linked_action_block.gd",
+    "src/ui/ink/ink_preparation_layout.gd.uid"
+  ],
+  "approval_source": "2026-09-25 user: make preparation like attached image; clarify UI layout and composition, reuse current art. Existing implementation, verification and HTML authorization continues.",
+  "approval_time": "2026-09-25T10:16:24.037954+09:00",
+  "scope_summary": "Preparation only: compact status, diagonal arena, paper plan strip, two illustrated card rows with persistent right detail. Preserve rules, inputs, information boundary and resolution."
+}

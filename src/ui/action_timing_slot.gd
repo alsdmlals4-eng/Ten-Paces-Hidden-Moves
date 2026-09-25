@@ -301,6 +301,11 @@ func _layout() -> void:
     _placeholder_label.size = Vector2(width, maxf(20.0, size.y - 45.0))
     _status_label.position = Vector2(4.0, maxf(39.0, size.y - 22.0))
     _status_label.size = Vector2(width, 18.0)
+    if bool(get_meta("ink_preparation", false)):
+        _frame.hide()
+        for label in [_timing_label, _placeholder_label, _status_label]:
+            label.add_theme_color_override("font_color", Color("414134"))
+            label.add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
     queue_redraw()
 
 func _notification(what: int) -> void:
@@ -308,6 +313,12 @@ func _notification(what: int) -> void:
         queue_redraw()
 
 func _draw() -> void:
+    if bool(get_meta("ink_preparation", false)):
+        draw_rect(Rect2(Vector2.ZERO, size), Color("e9dfc9"))
+        draw_rect(Rect2(Vector2.ONE, size-Vector2(2,2)), Color("a59b81"), false, 1)
+        if has_focus():
+            draw_rect(Rect2(Vector2(3,3), size-Vector2(6,6)), Color("635027"), false, 2)
+        return
     var accent := _display_color()
     var fill := PANEL_ACTIVE if slot_state == "current" else PANEL
     if slot_state == "locked":

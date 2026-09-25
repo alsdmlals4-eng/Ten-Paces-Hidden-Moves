@@ -59,7 +59,7 @@ func get_anchor_rect(anchor_index: int) -> Rect2:
         return Rect2()
     var left := first_slot.position.x + 3.0
     var right := last_slot.position.x + last_slot.size.x - 3.0
-    var top := first_slot.position.y + 22.0
+    var top := first_slot.position.y + (17.0 if bool(get_meta("ink_preparation", false)) else 22.0)
     var bottom := first_slot.position.y + first_slot.size.y - 4.0
     return Rect2(Vector2(left, top), Vector2(maxf(1.0, right - left), maxf(1.0, bottom - top)))
 
@@ -243,6 +243,7 @@ func _refresh_linked_blocks() -> void:
         block.name = "LinkedActionBlock%02d" % anchor_index
         block.clip_contents = true
         block.custom_minimum_size = Vector2.ZERO
+        block.set_meta("ink_preparation", bool(get_meta("ink_preparation", false)))
         block.configure(placement)
         block.block_activated.connect(_on_linked_block_activated)
         block.block_drag_requested.connect(_on_linked_block_drag_requested)

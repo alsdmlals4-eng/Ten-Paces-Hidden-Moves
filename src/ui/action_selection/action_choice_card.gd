@@ -8,9 +8,9 @@ const PAPER_HOVER := Color("eee2c9")
 const CHARCOAL_INK := Color("211c17")
 const RESTRAINED_GOLD := Color("b99254")
 const RESOLUTION_ENGINE_SCRIPT := preload("res://src/combat/combat_resolution_engine.gd")
-const CARD_CONTENT_TOP := 49.0
+const CARD_CONTENT_TOP := 79.0
 const CARD_BOTTOM_PADDING := 4.0
-const CROSS_PLATFORM_CARD_HEIGHT := 104.0
+const CROSS_PLATFORM_CARD_HEIGHT := 136.0
 
 var action_definition: Dictionary = {}
 
@@ -20,6 +20,7 @@ func configure_action(definition: Dictionary, illustration_policy: String, statu
 		child.queue_free()
 	custom_minimum_size = Vector2(0.0, CROSS_PLATFORM_CARD_HEIGHT)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	size_flags_vertical = Control.SIZE_EXPAND_FILL
 	focus_mode = Control.FOCUS_ALL
 	text = ""
 	tooltip_text = _tooltip_text(status_text)
@@ -36,6 +37,9 @@ func configure_action(definition: Dictionary, illustration_policy: String, statu
 		_add_illustration()
 	_add_name_label()
 	_add_summary(preview_actor)
+	if not resized.is_connected(_layout_summary): resized.connect(_layout_summary)
+	if not theme_changed.is_connected(_layout_summary): theme_changed.connect(_layout_summary)
+	call_deferred("_layout_summary")
 
 func _add_illustration() -> void:
 	var illustration := TextureRect.new()
@@ -46,12 +50,12 @@ func _add_illustration() -> void:
 	illustration.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	illustration.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	illustration.modulate = Color.WHITE
-	illustration.anchor_right = 0.36
+	illustration.anchor_right = 1.0
 	illustration.anchor_bottom = 1.0
 	illustration.offset_left = 7.0
-	illustration.offset_top = 5.0
+	illustration.offset_top = 27.0
 	illustration.offset_right = -7.0
-	illustration.offset_bottom = -5.0
+	illustration.offset_bottom = -37.0
 	add_child(illustration)
 
 func _add_name_label() -> void:
@@ -62,14 +66,14 @@ func _add_name_label() -> void:
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.clip_text = true
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.add_theme_font_size_override("font_size", 12)
+	label.add_theme_font_size_override("font_size", 17)
 	label.add_theme_color_override("font_color", CHARCOAL_INK)
 	label.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	label.anchor_left = 0.36
+	label.anchor_left = 0.0
 	label.offset_left = 2.0
 	label.offset_right = -5.0
-	label.offset_top = 12.0
-	label.offset_bottom = 32.0
+	label.offset_top = 3.0
+	label.offset_bottom = 26.0
 	add_child(label)
 
 func _add_summary(preview_actor: Dictionary) -> void:
@@ -77,12 +81,12 @@ func _add_summary(preview_actor: Dictionary) -> void:
 	summary.name = "CardSummary"
 	summary.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	summary.add_theme_constant_override("separation", 0)
-	summary.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	summary.anchor_left = 0.36
+	summary.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	summary.anchor_left = 0.0
 	summary.offset_left = 2.0
 	summary.offset_right = -4.0
-	summary.offset_top = 35.0
-	summary.offset_bottom = CROSS_PLATFORM_CARD_HEIGHT - CARD_BOTTOM_PADDING
+	summary.offset_top = -35.0
+	summary.offset_bottom = -CARD_BOTTOM_PADDING
 	add_child(summary)
 	var momentum_text := " · 기세 %d" % int(action_definition.get("momentum_cost", 0)) if int(action_definition.get("momentum_cost", 0)) > 0 else ""
 	_add_summary_line(summary, "%d수 · 기력 %d · 내력 %d%s" % [int(action_definition.get("action_slots", 1)), int(action_definition.get("stamina_cost", 0)), int(action_definition.get("internal_cost", 0)), momentum_text])
@@ -93,16 +97,18 @@ func _add_summary(preview_actor: Dictionary) -> void:
 	if movement > 0:
 		range_line += " · 이동 %d칸" % movement
 	_add_summary_line(summary, range_line)
-	_add_summary_line(summary, _primary_summary(preview_actor))
+	# Full effect belongs in the adjacent detail, leaving room for the illustration.
+	set_meta("primary_effect", _primary_summary(preview_actor))
+	tooltip_text += "\n" + _primary_summary(preview_actor)
 	_fit_card_to_summary(summary)
 
 func _fit_card_to_summary(summary: VBoxContainer) -> void:
 	# Linux and Windows can resolve the Korean fallback font to different line
 	# heights. Size from the actual native labels, with a small cross-platform
-	# floor, so the third line never relies on one platform's fallback metrics.
+	# floor, so the cost/range lines do not rely on one platform's metrics.
 	var required_height := ceilf(CARD_CONTENT_TOP + summary.get_combined_minimum_size().y + CARD_BOTTOM_PADDING)
 	custom_minimum_size.y = maxf(CROSS_PLATFORM_CARD_HEIGHT, required_height)
-	summary.offset_bottom = custom_minimum_size.y - CARD_BOTTOM_PADDING
+	summary.offset_bottom = -CARD_BOTTOM_PADDING
 
 func _add_summary_line(parent: VBoxContainer, value: String) -> void:
 	var label := Label.new()
@@ -110,7 +116,7 @@ func _add_summary_line(parent: VBoxContainer, value: String) -> void:
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.clip_text = true
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.add_theme_font_size_override("font_size", 11)
+	label.add_theme_font_size_override("font_size", 13)
 	label.add_theme_color_override("font_color", Color("4d4032"))
 	parent.add_child(label)
 
@@ -217,9 +223,9 @@ func _has_illustration_spec() -> bool:
 func _apply_paper_style(category: String, locked: bool) -> void:
 	var normal := StyleBoxFlat.new()
 	normal.bg_color = PAPER_SURFACE if not locked else Color("777064")
-	normal.border_color = _category_accent(category) if not locked else Color("5d5448")
-	normal.set_border_width_all(2)
-	normal.set_corner_radius_all(3)
+	normal.border_color = Color("746b59") if not locked else Color("5d5448")
+	normal.set_border_width_all(1)
+	normal.set_corner_radius_all(0)
 	normal.content_margin_left = 8.0
 	normal.content_margin_right = 8.0
 	var hover := normal.duplicate() as StyleBoxFlat
@@ -264,3 +270,16 @@ func _category_accent(category: String) -> Color:
 			return Color("705184")
 		_:
 			return RESTRAINED_GOLD
+
+func _layout_summary() -> void:
+	var summary := get_node_or_null("CardSummary") as VBoxContainer
+	var art := get_node_or_null("CardIllustration") as TextureRect
+	var title := get_node_or_null("CardName") as Label
+	if summary == null:
+		return
+	var height := ceilf(summary.get_combined_minimum_size().y) + CARD_BOTTOM_PADDING
+	summary.offset_top = -height
+	summary.offset_bottom = -CARD_BOTTOM_PADDING
+	if art != null:
+		art.offset_top = maxf(28, title.get_combined_minimum_size().y + 6)
+		art.offset_bottom = -height - 3

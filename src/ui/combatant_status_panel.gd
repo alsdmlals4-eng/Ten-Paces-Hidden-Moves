@@ -148,6 +148,9 @@ func _layout() -> void:
     if _name_label == null:
         return
 
+    if bool(get_meta("ink_preparation", false)):
+        _layout_ink_preparation()
+        return
     # Keep legacy portrait resources addressable, but the live status surface
     # reserves its width for actual resources instead of a baked portrait frame.
     var portrait_size := minf(size.x * 0.232, size.y * 0.70)
@@ -192,6 +195,9 @@ func _notification(what: int) -> void:
         queue_redraw()
 
 func _draw() -> void:
+    if bool(get_meta("ink_preparation", false)):
+        _draw_ink_preparation()
+        return
     # Native live UI, not an illustration: no baked values or duplicate wells.
     draw_rect(Rect2(Vector2.ZERO, size), Color(0.025, 0.045, 0.06, 0.94))
     draw_rect(Rect2(Vector2.ONE, size - Vector2(2.0, 2.0)), Color("ae8c55"), false, 1.0)
@@ -206,6 +212,12 @@ func _draw() -> void:
     _draw_momentum(resource_x, resource_x + resource_width)
 
 func get_resource_layout_snapshot() -> Dictionary:
+    if bool(get_meta("ink_preparation", false)):
+        var x := 100.0 if side == "player" else 0.0
+        var width := size.x - 102.0
+        return {"resource_x":x, "resource_width":width,
+            "label_rects":[_health_label.get_rect(), _stamina_label.get_rect(), _internal_label.get_rect()],
+            "bar_rects":[Rect2(x,44,width,2),Rect2(x,61,width,2),Rect2(x,78,width,2)]}
     var resource_x := 16.0
     var resource_width := maxf(30.0, size.x - 32.0)
     var label_rects: Array[Rect2] = []
@@ -254,3 +266,58 @@ func _status_color(kind: String) -> Color:
             return Color("c79a50")
         _:
             return Color("8a795f")
+
+func _layout_ink_preparation() -> void:
+    var left := side == "player"
+    var x := 100.0 if left else 0.0
+    var width := size.x - 102.0
+    _portrait.visible = true
+    var path := "res://assets/combat/ink_wuxia/player-0.png"
+    if not left:
+        path = "res://assets/combat/ink_wuxia/slot1_dogyeom/enemy-0.png" if str(combatant.get("candidate_id", "")) == DOGYEOM_CANDIDATE_ID else "res://assets/combat/ink_wuxia/enemy-0.png"
+    if ResourceLoader.exists(path):
+        var original := load(path) as Texture2D
+        var portrait := AtlasTexture.new()
+        portrait.atlas = original
+        portrait.region = Rect2(original.get_width()*0.30, original.get_height()*0.07, original.get_width()*0.50, original.get_height()*0.50)
+        _portrait.texture = portrait
+    _portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+    _portrait.position = Vector2(0 if left else size.x - 98, -7)
+    _portrait.size = Vector2(98, 120)
+    _name_label.position = Vector2(x, 0)
+    _name_label.size = Vector2(width, 24)
+    _name_label.add_theme_font_size_override("font_size", 18)
+    _epithet_label.hide()
+    var labels := [_health_label, _stamina_label, _internal_label]
+    for i in range(3):
+        labels[i].position = Vector2(x, 27 + i * 17)
+        labels[i].size = Vector2(width, 16)
+        labels[i].add_theme_font_size_override("font_size", 11)
+    for label in [_name_label, _health_label, _stamina_label, _internal_label]:
+        label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT if left else HORIZONTAL_ALIGNMENT_RIGHT
+        label.add_theme_color_override("font_color", Color("242820"))
+        label.add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
+    for i in range(_status_labels.size()):
+        var label: Label = _status_labels[i]
+        label.position = Vector2(x + i * 38, 90)
+        label.size = Vector2(36, 16)
+        label.add_theme_color_override("font_color", Color("242820"))
+        label.add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
+    queue_redraw()
+
+func _draw_ink_preparation() -> void:
+    var x := 100.0 if side == "player" else 0.0
+    var width := size.x - 102.0
+    # Translucent paper supports native values without a heavy enclosing box.
+    draw_rect(Rect2(x - 5, 0, width + 10, 87), Color(0.90, 0.87, 0.79, 0.90))
+    var keys := ["health", "stamina", "internal"]
+    var colors := [HEALTH_COLOR, STAMINA_COLOR, INTERNAL_COLOR]
+    for i in range(3):
+        var rect := Rect2(x, 44 + i * 17, width, 2)
+        draw_rect(rect, Color("8f8a7d"))
+        var ratio := get_visible_resource_ratio(keys[i])
+        if ratio >= 0:
+            rect.size.x *= ratio
+            draw_rect(rect, colors[i])
+    for i in range(momentum.y):
+        draw_circle(Vector2(x + 7 + i * 12, 84), 3, Color("a78947") if i < momentum.x else Color("77715f"))

@@ -99,9 +99,34 @@ func _refresh() -> void:
 	accessibility_description = tooltip_text
 	set_meta("revealed_types", _revealed_types.duplicate())
 	set_meta("observation_private_fields_visible", false)
+	if bool(get_meta("ink_preparation", false)):
+		_layout()
 
 func _layout() -> void:
 	if _title == null:
+		return
+	if bool(get_meta("ink_preparation", false)):
+		_frame.hide()
+		var compact := size.y < 125
+		_hint.visible = not compact
+		_title.position = Vector2(12, 2)
+		_title.size = Vector2(size.x - 24, 22 if compact else 30)
+		_title.text = "관찰 정보"
+		_hint.position = Vector2(12, size.y - 30)
+		_hint.size = Vector2(size.x - 24, 24)
+		_hint.text = "관찰로 단서 확인" if _revealed_types.is_empty() else "확인한 행동 유형"
+		_hint.add_theme_color_override("font_color", Color("575448"))
+		_hint.add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
+		for i in range(_rows.size()):
+			_rows[i].position = Vector2(12, (26 if compact else 38) + i * (15 if compact else 31))
+			_rows[i].size = Vector2(size.x - 24, 15 if compact else 28)
+			_rows[i].add_theme_font_size_override("font_size", 11 if compact else 14)
+			_rows[i].add_theme_color_override("font_color", Color("262720"))
+			_rows[i].add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
+		if _revealed_types.is_empty():
+			_rows[0].text = "아직 확인된 단서 없음"
+			_rows[0].show()
+		queue_redraw()
 		return
 	var width := maxf(1.0, size.x)
 	var height := maxf(1.0, size.y)
@@ -117,3 +142,10 @@ func _layout() -> void:
 		var row := _rows[index]
 		row.position = Vector2(width * 0.40, height * (0.445 + float(index) * 0.15))
 		row.size = Vector2(width * 0.41, height * 0.085)
+
+func _draw() -> void:
+	if not bool(get_meta("ink_preparation", false)):
+		return
+	draw_rect(Rect2(Vector2.ZERO, size), Color("e3dac5ef"))
+	draw_rect(Rect2(Vector2.ZERO, Vector2(size.x,34)), Color("292b24"))
+	draw_rect(Rect2(Vector2.ONE, size - Vector2(2,2)), Color("6b6556"), false, 1)

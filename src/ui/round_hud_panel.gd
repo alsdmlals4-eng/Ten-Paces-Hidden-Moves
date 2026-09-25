@@ -57,7 +57,7 @@ func _refresh() -> void:
 func _layout() -> void:
     if _round_label == null:
         return
-    var compact := size.x <= 190.0
+    var compact := size.x <= 190.0 or bool(get_meta("ink_preparation", false))
     var width := maxf(1.0, size.x - 16.0)
     _round_label.position = Vector2(8.0, 3.0)
     _round_label.size = Vector2(width, 22.0)
@@ -76,6 +76,10 @@ func _notification(what: int) -> void:
         queue_redraw()
 
 func _draw() -> void:
+    if bool(get_meta("ink_preparation", false)):
+        var points := PackedVector2Array([Vector2(8,3),Vector2(size.x-12,0),Vector2(size.x,12),Vector2(size.x-6,size.y-7),Vector2(24,size.y),Vector2(0,size.y-11)])
+        draw_colored_polygon(points, Color("272923"))
+        return
     draw_rect(Rect2(Vector2.ZERO, size), PANEL, true)
     draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color(GOLD, 0.70), false, 2.0)
     if size.x > 190.0:

@@ -4,6 +4,8 @@ const PREPARE_ENGINE_SCRIPT := preload("res://src/combat/combat_resolution_engin
 const ACTION_PLACEMENT_CONTROLLER_SCRIPT := preload("res://src/ui/action_selection/action_placement_controller.gd")
 const ACTION_SELECTION_DOCK_SCENE := preload("res://scenes/ui/action_selection/action_selection_dock.tscn")
 
+const PREPARATION_LAYOUT := preload("res://src/ui/ink/ink_preparation_layout.gd")
+
 var action_placement_controller: ActionPlacementController
 var action_selection_dock: ActionSelectionDock
 var _pending_controller_definition: Dictionary = {}
@@ -17,6 +19,7 @@ func _ready() -> void:
     combat_state = resolution_engine.make_initial_state(top_hud.hud_data, _player_tile, _enemy_tile)
     combat_state["ai_enabled"] = true
     _build_product_action_selection_dock()
+    PREPARATION_LAYOUT.configure(self)
     _configure_action_placement_controller()
     _configure_ultimate_menu()
     _sync_runtime_context()
@@ -338,7 +341,11 @@ func _apply_state_derived_product_layout() -> void:
     if not size.is_finite() or size.x <= 0.0 or size.y <= 0.0:
         return
     var expanded := _uses_expanded_execution_layout()
+    top_hud.position = Vector2(maxf(18.0, size.x * 0.025), 8)
+    top_hud.size = Vector2(size.x - top_hud.position.x * 2, 106)
+    top_hud._layout()
     var duel_y := top_hud.position.y + top_hud.size.y + 8.0 + 5.0
+    top_hud_surface.size = Vector2(size.x, duel_y - 5)
     var planning_top := _ink_planning_top()
     var active_rect := Rect2(0.0, duel_y, size.x, size.y - duel_y if expanded else planning_top - duel_y - 5.0)
     if not active_rect.position.is_finite() or not active_rect.size.is_finite() or not active_rect.has_area():
@@ -410,51 +417,23 @@ func _layout_board() -> void:
     _apply_state_derived_product_layout()
 
 func _layout_product_action_dock() -> void:
-    if not is_instance_valid(action_selection_dock) or size.x <= 0.0 or size.y <= 0.0:
+    if not is_instance_valid(action_selection_dock) or size.x <= 0 or size.y <= 0:
         return
-    var lower_margin := maxf(18.0, size.x * 0.035)
-    var lower_bottom := maxf(8.0, size.y * 0.012)
-    # The summary-card continuation moves the planning ink frame only enough
-    # to keep two readable rows at 720p while retaining the top HUD and a
-    # distinct frontal duel field.
-    var planning_top := _ink_planning_top()
-    var timing_height := clampf(size.y * 0.105, 70.0, 92.0)
-    var timing_y := planning_top + 8.0
-    var dock_y := timing_y + timing_height + 8.0
-    var dock_height := maxf(142.0, size.y - dock_y - lower_bottom)
-    action_selection_dock.position = Vector2(lower_margin, dock_y)
-    action_selection_dock.size = Vector2(maxf(1.0, size.x - lower_margin * 2.0), dock_height)
-    action_selection_dock.content_host.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-
-    if is_instance_valid(action_timing_panel) and is_instance_valid(combat_progress_button):
-        var timing_width := clampf(size.x * 0.48, 540.0, 640.0)
-        var progress_width := clampf(size.x * 0.075, 78.0, 96.0)
-        action_timing_panel.position = Vector2(lower_margin, timing_y)
-        action_timing_panel.size = Vector2(timing_width, timing_height)
-        combat_progress_button.position.x = lower_margin + timing_width + 8.0
-        combat_progress_button.size = Vector2(progress_width, minf(timing_height, 60.0))
-        combat_progress_button.position.y = timing_y + (timing_height - combat_progress_button.size.y) * 0.5
-        _shift_battlefield_above(planning_top - 24.0)
-        _layout_screen_surfaces(planning_top)
-
-    if is_instance_valid(observation_reveal_panel):
-        var observation_width := clampf(size.x * 0.155, 170.0, 220.0)
-        var observation_y := top_hud.position.y + top_hud.size.y + 20.0
-        observation_reveal_panel.position = Vector2(size.x - lower_margin - observation_width, observation_y)
-        observation_reveal_panel.size = Vector2(observation_width, maxf(160, planning_top - observation_y - 12))
-        observation_reveal_panel.z_index = 6
-
-    for control_value in [sound_toggle_button, sound_volume_slider, fast_replay_button, reduced_motion_button, combat_log_panel]:
-        if is_instance_valid(control_value):
-            var control := control_value as Control
-            control.visible = false
-            control.focus_mode = Control.FOCUS_NONE
-    _hide_legacy_action_ui()
+    PREPARATION_LAYOUT.layout(self)
 
 func _ink_planning_top() -> float:
-    # Two complete native-font card rows outrank decorative battlefield height.
-    var timing_height := clampf(size.y * 0.105, 70.0, 92.0)
-    return clampf(minf(size.y * 0.54, size.y - timing_height - 292.0), 260.0, size.y - 242.0)
+    return PREPARATION_LAYOUT.planning_top(size.y)
+
+func _settle_inline_result_row(_row_height: float, _row_gap: float) -> void:
+    if not is_instance_valid(inline_result_label):
+        return
+    # The previous result stays above the plan. The new right-hand execute
+    # button occupies the lane used by the old layout's result label.
+    inline_result_label.position = Vector2(size.x * 0.20, _ink_planning_top() - 28)
+    inline_result_label.size = Vector2(size.x * 0.58, 24)
+    inline_result_label.add_theme_color_override("font_color", PREPARATION_LAYOUT.INK)
+    inline_result_label.add_theme_stylebox_override("normal", PREPARATION_LAYOUT.paper_style(Color("e3dac5ed"), 2))
+    set_meta("inline_result_row_bounded", true)
 
 func _frontal_anchor_pair(player_tile: int, enemy_tile: int, floor_y: float) -> Dictionary:
     var normalized_distance := clampf(float(absi(enemy_tile - player_tile)) / 4.0, 0.0, 1.0)
@@ -497,7 +476,7 @@ func _apply_frontal_duel_composition() -> bool:
             enemy_character.place_foot_at(anchors.enemy)
 
     if is_instance_valid(range_readout_panel):
-        var range_size := Vector2(clampf(size.x * 0.090, 104.0, 122.0), 44.0)
+        var range_size := Vector2(170, 66)
         var range_y := duel_rect.position.y + duel_rect.size.y * 0.30
         range_readout_panel.position = Vector2(duel_center_x - range_size.x * 0.5, range_y)
         range_readout_panel.size = range_size
