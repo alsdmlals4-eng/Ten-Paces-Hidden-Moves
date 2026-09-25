@@ -110,3 +110,5 @@
 검토 HEAD `92be01fb1385ab8373f06ad27117268acc538fd7`의 최신 workflow별 33SUCCESS/실패0/진행0, 미해결 검토0, 최신 main을 확인하고 2026-09-25T00:54:47Z에 main `9f0ce7ddf3a7aad95e82b725d99bbd5248bdd60d`로 정상 병합했다. 전체 tracked tree가 동일하다. 원본 사용자 저장8개와 사용자 코멘트 SHA256 `afd73518d7bf507728e500045733ef5b9c7a466dc3feeba3c62331455cdd2dac` 동일함을 확인했다. Windows 실행 파일/PCK/설명서 ZIP의 해시와 CRC 검증 PASS. 로컬 실제 실행·자동 CI·사용자 시각 승인·출시를 구분한다. 일회 승인 종료는 `docs/operations/2026-09-25_PR365_PROTECTED_CHANGE_APPROVAL_RECORD.md`.
 
 최종 exact-head의 [일반 속도 native 입력 캠페인](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/actions/runs/36078610083/job/107895307586)은451114ms/입력295회/비무10승/보상10회/행로36회/실패0이며 이후 저장·카드·휴식 검사까지 전부 통과했다. 승인 종료 파생본은 adapter를 commit한 뒤 Git의 정규 bytes 기준으로 재생성해 Windows 줄바꿈 해시 차이를 예방했다.
+
+승인 종료의 로컬 검사에서는 작업 사본 adapter만 CRLF로 남아 raw-byte 기대값1개가 먼저 실패했다. 해당 파일을 저장소에서 지정한 LF로 정규화한 뒤 lifecycle/기준선/adapter9검사가 모두 PASS했다. 승인 operating contract와 postmerge canon 검사도 PASS이며 제품 diff는 없다.
