@@ -236,7 +236,7 @@ func _run() -> void:
     corrupt_v2.close()
     shell = await make_shell()
     check(shell.session.status == "CORRUPT", "corrupt active v2 fails closed without resurrecting old generation")
-    check(not shell.find_child("MainContinueButton", true, false).visible, "corrupt v2 cannot continue")
+    check(shell.find_child("MainContinueButton", true, false).visible and shell.find_child("MainContinueButton", true, false).disabled, "corrupt v2 cannot continue; entry remains visible")
     shell.queue_free()
     await process_frame
     # Keep legacy backup recovery on an independent genuine v1 fixture.
@@ -262,7 +262,7 @@ func _run() -> void:
     future.close()
     shell = await make_shell()
     check(shell.session.status == "INCOMPATIBLE", "future schema title fails closed without backup downgrade")
-    check(not shell.find_child("MainContinueButton", true, false).visible, "future schema cannot continue")
+    check(shell.find_child("MainContinueButton", true, false).visible and shell.find_child("MainContinueButton", true, false).disabled, "future schema cannot continue; entry remains visible")
     check("버전" in shell.find_child("SaveContinueNotice", true, false).text, "future schema explains incompatibility")
     shell.queue_free()
     await process_frame

@@ -15,7 +15,10 @@
     "output/blueprint-candidates/opponent-dogyeom.png": "assets/characters/portraits/slot1_dogyeom_ink_20260925.png",
     "docs/visual-assets/approved/TEN-USER-VISUAL-SOURCE-SET-20260826/KakaoTalk_20260826_193205188_11.png": "assets/combat/ink_wuxia/slot1_dogyeom/enemy-0.png",
     "docs/visual-assets/candidates/TEN-ATLAS-SUCCESSOR-20260908/duel-courtyard-v1.png": "assets/combat/ink_wuxia/background.png",
-    "docs/visual-assets/candidates/WANDERER_COMBAT_BATTLER_02_20260902_v2.png": "assets/combat/ink_wuxia/player-0.png"
+    "docs/visual-assets/candidates/WANDERER_COMBAT_BATTLER_02_20260902_v2.png": "assets/combat/ink_wuxia/player-0.png",
+    "assets/characters/enemy_masked_battler_rgba_v2.png": "assets/combat/ink_wuxia/enemy-0.png",
+    "docs/visual-assets/approved/MASKED_SWORDSMAN_COMBAT_BATTLER_02_20260902_v2.png": "assets/combat/ink_wuxia/enemy-0.png",
+    "docs/visual-assets/candidates/MASKED_SWORDSMAN_COMBAT_BATTLER_02_20260902_v2.png": "assets/combat/ink_wuxia/enemy-0.png"
   },
   "added_asset_ids": [
     "ink_screen_main_20260925",

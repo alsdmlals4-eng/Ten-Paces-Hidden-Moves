@@ -10,7 +10,7 @@ const PAPER := Color("d8c9aa")
 const GOLD := Color("b99254")
 const PLAYER_ART_PATH := "res://assets/combat/ink_wuxia/player-0.png"
 const MASKED_INK_ART_PATH := "res://assets/combat/ink_wuxia/masked_baekmujin/enemy-0.png"
-const ENEMY_ART_PATH := "res://assets/characters/enemy_masked_battler_rgba_v2.png"
+const ENEMY_ART_PATH := "res://assets/combat/ink_wuxia/enemy-0.png"
 const DOGYEOM_ART_PATH := "res://assets/combat/ink_wuxia/slot1_dogyeom/enemy-0.png"
 
 var role: String = "player"

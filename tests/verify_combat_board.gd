@@ -480,18 +480,18 @@ func _verify_layout(board: CombatBoardPreview, snapshot: Dictionary) -> void:
 
 func _verify_character_anchors(board: CombatBoardPreview, snapshot: Dictionary) -> void:
     failures.append_array(_character_ink_scale_errors(board, snapshot))
-    if str(board.get_meta("character_scale_profile", "")) != "distant_frontal_duel":
-        failures.append("Combat presentation must declare the approved distant frontal-duel scale profile.")
+    if str(board.get_meta("character_scale_profile", "")) != "ink_diagonal_preparation":
+        failures.append("Combat presentation must declare the approved diagonal preparation scale profile.")
     var player_foot: Vector2 = snapshot.get("player_foot", Vector2.ZERO)
     var enemy_foot: Vector2 = snapshot.get("enemy_foot", Vector2.ZERO)
     if player_foot.x >= enemy_foot.x - POSITION_TOLERANCE:
         failures.append("Combat presentation must keep the player left of the enemy in the duel composition.")
-    if enemy_foot.x - player_foot.x < board.size.x * 0.36:
-        failures.append("Combat presentation must retain a readable distant frontal separation.")
-    if absf(player_foot.y - enemy_foot.y) > board.size.y * 0.01:
-        failures.append("Combat presentation must keep both battlers on one shared grounded frontal duel line.")
-    if str(board.get_meta("duel_composition", "")) != "player_left|enemy_right|shared_ground|distance_center":
-        failures.append("Combat presentation must report the approved shared-ground frontal duel composition.")
+    if enemy_foot.x - player_foot.x < board.size.x * 0.28:
+        failures.append("Combat presentation must retain a readable diagonal confrontation separation.")
+    if player_foot.y - enemy_foot.y < board.get_duel_stage_rect().size.y * 0.15:
+        failures.append("Combat presentation must place the farther enemy above the near player ground line.")
+    if str(board.get_meta("duel_composition", "")) != "player_near_left|enemy_far_right|diagonal_depth|distance_center":
+        failures.append("Combat presentation must report the approved diagonal-depth duel composition.")
 
 func _character_ink_scale_errors(board: CombatBoardPreview, snapshot: Dictionary) -> Array[String]:
     var errors: Array[String] = []
@@ -508,15 +508,15 @@ func _character_ink_scale_errors(board: CombatBoardPreview, snapshot: Dictionary
     if not player_ink.has_area() or not enemy_ink.has_area():
         errors.append("Both source images must have positive visible-ink bounds.")
         return errors
-    if absf(player_ink.size.y - enemy_ink.size.y) > SIZE_TOLERANCE:
-        errors.append("Combat presentation must keep both battlers at a comparable frontal-duel scale.")
+    if absf(player_ink.size.y / enemy_ink.size.y - 1.5) > 0.05:
+        errors.append("Combat presentation must preserve the 3:2 near/far visible-ink scale.")
     for actor in [board.player_character, board.enemy_character]:
         var idle := _independent_character_ink(actor, false)
         var animated := _independent_character_ink(actor, true)
-        if not animated.has_area() or animated.size.y > stage.size.y * 0.52 + SIZE_TOLERANCE:
-            errors.append("Current visible-ink height must remain within the 52 percent stage cap: " + actor.role)
-        if idle.size.y * 1.12 > stage.size.y * 0.52 + SIZE_TOLERANCE:
-            errors.append("The complete existing 1.12 motion envelope must remain within the 52 percent stage cap: " + actor.role)
+        if not animated.has_area() or animated.size.y > stage.size.y * 0.90 + SIZE_TOLERANCE:
+            errors.append("Current visible-ink height must remain within the 90 percent stage cap: " + actor.role)
+        if idle.size.y * 1.12 > stage.size.y * 0.90 + SIZE_TOLERANCE:
+            errors.append("The complete existing 1.12 motion envelope must remain within the 90 percent stage cap: " + actor.role)
     return errors
 
 func _independent_character_ink(actor: CombatCharacterPlaceholder, include_motion: bool) -> Rect2:
@@ -570,9 +570,9 @@ func _verify_unequal_ink_negative_control(board: CombatBoardPreview, snapshot: D
     actor.scale = original_scale # Synchronous test-only mutation; no frame/tween/domain advance.
     if not original_ink.has_area() or absf(unequal_ink.size.y - original_ink.size.y * 0.8) > SIZE_TOLERANCE:
         failures.append("Negative control must actually reduce the rendered enemy height to 80 percent.")
-    if not negative_errors.has("Combat presentation must keep both battlers at a comparable frontal-duel scale."):
+    if not negative_errors.has("Combat presentation must preserve the 3:2 near/far visible-ink scale."):
         failures.append("Visible-ink scale oracle must reject the actual unequal-height negative control.")
-    print("INK_SCALE_NEGATIVE_CONTROL original=%s scaled=%s mismatch_detected=%s" % [original_ink.size.y, unequal_ink.size.y, negative_errors.has("Combat presentation must keep both battlers at a comparable frontal-duel scale.")])
+    print("INK_SCALE_NEGATIVE_CONTROL original=%s scaled=%s mismatch_detected=%s" % [original_ink.size.y, unequal_ink.size.y, negative_errors.has("Combat presentation must preserve the 3:2 near/far visible-ink scale.")])
     if actor.scale != original_scale or absf(_independent_character_ink(actor, false).size.y - original_ink.size.y) > SIZE_TOLERANCE:
         failures.append("Negative control must restore the original enemy transform and visible height.")
     failures.append_array(_character_ink_scale_errors(board, snapshot))

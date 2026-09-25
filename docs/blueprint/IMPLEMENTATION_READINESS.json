@@ -574,6 +574,42 @@
       "status": "DELETED_BY_USER_REQUEST",
       "processed_at": "2026-09-25",
       "source": "2026-09-25 latest user: 필요한 이미지 제작,게임에 연결,구현까지 진행하고 html에도 다 반영; 이미지 변경하고 기존이미지 폐기"
+    },
+    {
+      "id": "retired-ece68f29978aca08",
+      "path": "assets/characters/enemy_masked_battler_rgba_v2.png",
+      "number": 264,
+      "name": "교체 후 삭제 · enemy_masked_battler_rgba_v2.png",
+      "sha256": "0841505d275ca970d7d085d7ab206788276517d2290a63960d829e657dfbe17f",
+      "replacement": "assets/combat/ink_wuxia/enemy-0.png",
+      "reason": "옛 일반 상대 그림의 마지막 준비 consumer를 현재 수묵 연출과 통일",
+      "status": "DELETED_BY_USER_REQUEST",
+      "processed_at": "2026-09-25",
+      "source": "2026-09-25 latest user: 필요한 이미지 제작,게임에 연결,구현까지 진행하고 html에도 다 반영; 이미지 변경하고 기존이미지 폐기"
+    },
+    {
+      "id": "retired-8d6d7cb140ecf586",
+      "path": "docs/visual-assets/approved/MASKED_SWORDSMAN_COMBAT_BATTLER_02_20260902_v2.png",
+      "number": 267,
+      "name": "교체 후 삭제 · MASKED_SWORDSMAN_COMBAT_BATTLER_02_20260902_v2.png",
+      "sha256": "0841505d275ca970d7d085d7ab206788276517d2290a63960d829e657dfbe17f",
+      "replacement": "assets/combat/ink_wuxia/enemy-0.png",
+      "reason": "옛 일반 상대 그림의 마지막 준비 consumer를 현재 수묵 연출과 통일",
+      "status": "DELETED_BY_USER_REQUEST",
+      "processed_at": "2026-09-25",
+      "source": "2026-09-25 latest user: 필요한 이미지 제작,게임에 연결,구현까지 진행하고 html에도 다 반영; 이미지 변경하고 기존이미지 폐기"
+    },
+    {
+      "id": "retired-b97ff08f8b6547ff",
+      "path": "docs/visual-assets/candidates/MASKED_SWORDSMAN_COMBAT_BATTLER_02_20260902_v2.png",
+      "number": 272,
+      "name": "교체 후 삭제 · MASKED_SWORDSMAN_COMBAT_BATTLER_02_20260902_v2.png",
+      "sha256": "0841505d275ca970d7d085d7ab206788276517d2290a63960d829e657dfbe17f",
+      "replacement": "assets/combat/ink_wuxia/enemy-0.png",
+      "reason": "옛 일반 상대 그림의 마지막 준비 consumer를 현재 수묵 연출과 통일",
+      "status": "DELETED_BY_USER_REQUEST",
+      "processed_at": "2026-09-25",
+      "source": "2026-09-25 latest user: 필요한 이미지 제작,게임에 연결,구현까지 진행하고 html에도 다 반영; 이미지 변경하고 기존이미지 폐기"
     }
   ],
   "image_replacements": [

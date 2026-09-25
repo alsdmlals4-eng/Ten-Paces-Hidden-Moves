@@ -16,7 +16,7 @@ STYLE = 'docs/visual-assets/candidates/TEN-INK-STYLES-20260924'
 
 
 def publish():
-    for name, marker in [('screens-final.log','INK_SCREEN_CAPTURE count=7'),
+    for name, marker in [('screens-final.log','INK_SCREEN_CAPTURE count=9'),
                          ('runtime-capture.log','INK_COMBAT_RUNTIME failures=0')]:
         log = (ROOT/'output/ink-screen-validation'/name).read_text(encoding='utf-8')
         if marker not in log or 'ERROR:' in log:
@@ -63,7 +63,7 @@ def publish():
         source_state='working tree source hashes are authoritative for this capture',
         source_hashes=binary,source_text_hashes=text,text_hash_policy='UTF8_UNIVERSAL_NEWLINES',
         clips=[clip],method=motion['source'],native_receipt=motion,
-        limits='Silent fixed plans; seven native UI fixtures. Result/rest do not prove a won campaign. Human/Android NOT_RUN.')
+        limits='Silent fixed plans; nine native UI captures. Result/rest do not prove a won campaign. Human/Android NOT_RUN.')
     (ROOT/OUT/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     (ROOT/STYLE/'clash-v2/runtime-capture.json').write_text(json.dumps(motion,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     candidates = read(ROOT, STYLE+'/candidates.json')

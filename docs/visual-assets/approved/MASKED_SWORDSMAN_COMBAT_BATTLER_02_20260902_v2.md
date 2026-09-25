@@ -1,5 +1,7 @@
 # MASKED_SWORDSMAN_COMBAT_BATTLER_02_20260902_v2
 
+2026-09-25: 아래는 과거 승인 이력이다. 최신 수묵 교체·폐기 승인에 따라 일반 적 준비 consumer도 `assets/combat/ink_wuxia/enemy-0.png`로 바꿨다. 동일한 구 PNG의 runtime/approved/candidate 세 파일을 실제 삭제했다. 번호·해시는 `docs/blueprint/IMPLEMENTATION_READINESS.json`의 폐기 기록을 따른다.
+
 - **Asset ID:** `enemy_masked_battler_rgba_v2`
 - **Lifecycle:** `USER_FINAL_LOCKED → CANON_REGISTERED → IMPLEMENTED → MACHINE_RUNTIME_VERIFIED_20260902`
 - **Approved source:** `docs/visual-assets/candidates/MASKED_SWORDSMAN_COMBAT_BATTLER_02_20260902_v2.png`

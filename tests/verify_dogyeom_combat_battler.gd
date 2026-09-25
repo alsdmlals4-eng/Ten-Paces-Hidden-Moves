@@ -3,7 +3,7 @@ extends SceneTree
 
 const CHARACTER_SCENE := preload("res://scenes/combat/combat_character_placeholder.tscn")
 const DOGYEOM_BATTLER_PATH := "res://assets/combat/ink_wuxia/slot1_dogyeom/enemy-0.png"
-const GENERIC_ENEMY_BATTLER_PATH := "res://assets/characters/enemy_masked_battler_rgba_v2.png"
+const GENERIC_ENEMY_BATTLER_PATH := "res://assets/combat/ink_wuxia/enemy-0.png"
 
 var failures: Array[String] = []
 

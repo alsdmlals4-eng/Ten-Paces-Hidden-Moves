@@ -14,7 +14,10 @@ func _run() -> void:
         _finish()
         return
     var panel = packed.instantiate()
+    panel.set_anchors_preset(Control.PRESET_TOP_LEFT)
+    panel.size = Vector2(1280, 260)
     root.add_child(panel)
+    await process_frame
     await process_frame
 
     var snapshot: Dictionary = panel.get_panel_snapshot()
@@ -47,10 +50,11 @@ func _run() -> void:
             _check(summary.get_child_count() == 3, "Every basic card must retain exactly three summary lines.")
             _check(button.custom_minimum_size.y >= summary.offset_top + summary.get_combined_minimum_size().y + 4.0, "Basic card height must contain native summary metrics plus bottom padding.")
         if is_instance_valid(illustration):
-            _check(illustration.offset_bottom - illustration.offset_top >= 24.0, "Basic card illustration must retain a readable visual band.")
-            _check(illustration.offset_top >= 0.0 and illustration.offset_bottom <= button.custom_minimum_size.y, "Basic card illustration must stay inside the card.")
+            _check(illustration.size.y >= 80.0 and illustration.size.x >= 40.0, "Basic card illustration must retain a readable full-height area.")
+            _check(button.get_global_rect().encloses(illustration.get_global_rect()), "Basic card illustration must stay inside the card.")
         if is_instance_valid(illustration) and is_instance_valid(name_label):
-            _check(illustration.offset_bottom <= name_label.offset_top, "Illustration and card name must not overlap.")
+            _check(not illustration.get_global_rect().intersects(name_label.get_global_rect()), "Illustration and card name must not overlap.")
+            _check(not illustration.get_global_rect().intersects(summary.get_global_rect()), "Illustration and summary must not overlap.")
 
     panel.set_interaction_enabled(false)
     _check(not bool(panel.get_panel_snapshot().get("interaction_enabled", true)), "Basic panel must report disabled interaction.")

@@ -17,7 +17,7 @@ var title_label: Label
 var description_label: Label
 var primary_button: Button
 var failure_end_button: Button
-var setup_options_container: VBoxContainer
+var setup_options_container: GridContainer
 
 var _combat_view: Control
 var _combat_view_duel_index: int = 0
@@ -162,6 +162,11 @@ func _build_shell() -> void:
     main_title_screen.name = "MainTitleScreen"
     main_title_screen.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     main_title_screen.connect("start_requested", Callable(self, "_on_primary_button_pressed"))
+    main_title_screen.exit_requested.connect(func():
+        _initialize_run_session()
+        if session.flush_stable(): get_tree().quit())
+    main_title_screen.preferences_changed.connect(func():
+        if is_instance_valid(_combat_view): main_title_screen.preferences.apply(_combat_view))
     add_child(main_title_screen)
 
     combat_host = Control.new()
@@ -190,10 +195,10 @@ func _build_shell() -> void:
     content_panel.add_theme_stylebox_override("panel", panel_style)
 
     var margin := MarginContainer.new()
-    margin.add_theme_constant_override("margin_left", 40)
-    margin.add_theme_constant_override("margin_top", 30)
-    margin.add_theme_constant_override("margin_right", 40)
-    margin.add_theme_constant_override("margin_bottom", 30)
+    margin.add_theme_constant_override("margin_left", 20)
+    margin.add_theme_constant_override("margin_top", 16)
+    margin.add_theme_constant_override("margin_right", 20)
+    margin.add_theme_constant_override("margin_bottom", 16)
     content_panel.add_child(margin)
 
     var stack := VBoxContainer.new()
@@ -211,14 +216,16 @@ func _build_shell() -> void:
     description_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     description_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
     description_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    description_label.custom_minimum_size = Vector2(0.0, 100.0)
+    description_label.custom_minimum_size = Vector2(0.0, 50.0)
     description_label.add_theme_color_override("font_color", Color("403d35"))
     description_label.add_theme_font_size_override("font_size", 17)
     stack.add_child(description_label)
 
-    setup_options_container = VBoxContainer.new()
+    setup_options_container = GridContainer.new()
     setup_options_container.name = "SetupManualOptions"
-    setup_options_container.add_theme_constant_override("separation", 6)
+    setup_options_container.columns = 3
+    setup_options_container.add_theme_constant_override("h_separation", 10)
+    setup_options_container.add_theme_constant_override("v_separation", 10)
     setup_options_container.visible = false
     stack.add_child(setup_options_container)
 
@@ -247,19 +254,9 @@ func _build_setup_options() -> void:
             continue
         var option := option_value as Dictionary
         var manual_id := str(option.get("manual_id", ""))
-        var button := Button.new()
+        var button := preload("res://src/ui/ink/ink_manual_choice.gd").new()
         button.name = "Starter_%s" % manual_id
-        button.toggle_mode = true
-        button.custom_minimum_size = Vector2(0.0, 48.0)
-        button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-        button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-        button.text = "[%s] %s · 3성 %s · %s/%s" % [
-            str(option.get("faction", "")),
-            str(option.get("manual_name", "")),
-            str(option.get("star3_card_name", "")),
-            str(option.get("primary_stat", "")),
-            str(option.get("secondary_stat", ""))
-        ]
+        button.configure(option)
         button.set_meta("manual_id", manual_id)
         button.toggled.connect(_on_setup_manual_toggled.bind(manual_id))
         setup_options_container.add_child(button)
@@ -554,6 +551,7 @@ func _ensure_combat_view() -> void:
     _combat_view.visible = session == null or not session.busy
     _combat_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     combat_host.add_child(_combat_view)
+    main_title_screen.preferences.apply(_combat_view)
 
     var opponent: Dictionary = run_state.get_current_opponent()
     var current_encounter: Dictionary = run_state.get_current_encounter()

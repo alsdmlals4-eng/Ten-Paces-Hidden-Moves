@@ -4,8 +4,8 @@
   "approved_revision": "c95ec7e671b14cfa1e8954f1f495ba2833bbd101",
   "status": "USER_APPROVED__CANON_REGISTERED",
   "runtime_evidence": "47 texture loads;30 actual card/detail bindings; native briefing+combat capture; explanatory clash remains document-only",
-  "preserved_existing_records_sha256": "ace684fbed189fe9fbf0b53d3207dd25dd4b22f9d42cb52e7b50c7dff4a67b4f",
-  "preserved_existing_record_count": 22,
+  "preserved_existing_records_sha256": "0a394412d6a9e2260d015f30c3dc6f2df3ab02d1f1edcdeb5c7a23ec7d7ad264",
+  "preserved_existing_record_count": 21,
   "portraits": {
     "masked_baekmujin": "res://assets/characters/portraits/masked_baekmujin_ink_20260925.png",
     "slot1_yeongyo": "res://assets/characters/portraits/slot1_yeongyo_portrait_v1.png",

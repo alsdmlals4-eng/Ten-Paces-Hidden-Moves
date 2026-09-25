@@ -43,14 +43,15 @@ func _add_illustration() -> void:
 	var approved_texture := APPROVED_ART.action_illustration(action_definition)
 	illustration.texture = approved_texture if approved_texture != null else _texture_from_spec(action_definition.get("illustration", {}))
 	illustration.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	illustration.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED if approved_texture != null else TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	illustration.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	illustration.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	illustration.modulate = Color.WHITE if approved_texture != null else Color(0.30, 0.27, 0.23, 0.94)
-	illustration.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	illustration.modulate = Color.WHITE
+	illustration.anchor_right = 0.36
+	illustration.anchor_bottom = 1.0
 	illustration.offset_left = 7.0
 	illustration.offset_top = 5.0
 	illustration.offset_right = -7.0
-	illustration.offset_bottom = 31.0
+	illustration.offset_bottom = -5.0
 	add_child(illustration)
 
 func _add_name_label() -> void:
@@ -64,10 +65,11 @@ func _add_name_label() -> void:
 	label.add_theme_font_size_override("font_size", 12)
 	label.add_theme_color_override("font_color", CHARCOAL_INK)
 	label.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	label.offset_left = 5.0
+	label.anchor_left = 0.36
+	label.offset_left = 2.0
 	label.offset_right = -5.0
-	label.offset_top = 31.0
-	label.offset_bottom = 49.0
+	label.offset_top = 12.0
+	label.offset_bottom = 32.0
 	add_child(label)
 
 func _add_summary(preview_actor: Dictionary) -> void:
@@ -76,9 +78,10 @@ func _add_summary(preview_actor: Dictionary) -> void:
 	summary.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	summary.add_theme_constant_override("separation", 0)
 	summary.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	summary.offset_left = 4.0
+	summary.anchor_left = 0.36
+	summary.offset_left = 2.0
 	summary.offset_right = -4.0
-	summary.offset_top = CARD_CONTENT_TOP
+	summary.offset_top = 35.0
 	summary.offset_bottom = CROSS_PLATFORM_CARD_HEIGHT - CARD_BOTTOM_PADDING
 	add_child(summary)
 	var momentum_text := " · 기세 %d" % int(action_definition.get("momentum_cost", 0)) if int(action_definition.get("momentum_cost", 0)) > 0 else ""
