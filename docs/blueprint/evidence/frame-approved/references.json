@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "decision": "TEN-DEC-20260925-FRAME-TIMELINE-PROLOGUE-01",
+  "reference_kind": "APPROVED_LAYOUT_REFERENCE",
+  "runtime_status": "NOT_RUNTIME_EVIDENCE",
+  "references": [
+    {
+      "id": "frame-layout-main",
+      "screen": "main",
+      "name": "메인 화면 배치",
+      "path": "docs/blueprint/evidence/frame-approved/main.png",
+      "sha256": "49b02359c52a1969cabad8c6792bf0bfad8fec752a3dd83c708af682f9b5d3ed",
+      "source_path": "C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa\\exec-0016f1cf-967c-4d92-b0c7-4e3fa983a65b.png",
+      "source_sha256": "49b02359c52a1969cabad8c6792bf0bfad8fec752a3dd83c708af682f9b5d3ed",
+      "kind": "APPROVED_LAYOUT_REFERENCE",
+      "limit": "승인한 화면 배치 참고. 그림에 박힌 텍스트·수치·버튼은 실제 게임 상태 또는 런타임 근거가 아님."
+    },
+    {
+      "id": "frame-layout-prologue",
+      "screen": "prologue",
+      "name": "출사표 도입 배치",
+      "path": "docs/blueprint/evidence/frame-approved/prologue.png",
+      "sha256": "9dbfa4de7af9c58426f4a68669b5fd96bd75a70f6da7b39bab2ef9324d1c3034",
+      "source_path": "C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa\\exec-520ba541-9ecf-4ce7-af57-d9ef1c5ff853.png",
+      "source_sha256": "9dbfa4de7af9c58426f4a68669b5fd96bd75a70f6da7b39bab2ef9324d1c3034",
+      "kind": "APPROVED_LAYOUT_REFERENCE",
+      "limit": "승인한 화면 배치 참고. 그림에 박힌 텍스트·수치·버튼은 실제 게임 상태 또는 런타임 근거가 아님."
+    },
+    {
+      "id": "frame-layout-journey",
+      "screen": "journey",
+      "name": "노드형 강호행로 배치",
+      "path": "docs/blueprint/evidence/frame-approved/journey.png",
+      "sha256": "4c6a00747978f161b216b468bbcb2ae89d6eac281ac54b4b243900e01b01afdd",
+      "source_path": "C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa\\exec-3c365675-cd8c-4bab-bc75-958b255d24da.png",
+      "source_sha256": "4c6a00747978f161b216b468bbcb2ae89d6eac281ac54b4b243900e01b01afdd",
+      "kind": "APPROVED_LAYOUT_REFERENCE",
+      "limit": "승인한 화면 배치 참고. 그림에 박힌 텍스트·수치·버튼은 실제 게임 상태 또는 런타임 근거가 아님."
+    },
+    {
+      "id": "frame-layout-briefing",
+      "screen": "briefing",
+      "name": "비무 브리핑 배치",
+      "path": "docs/blueprint/evidence/frame-approved/briefing.png",
+      "sha256": "84b46d8ac4a3802447054ee3622226d4d6aab9e03dd51e1123ca254552b21b60",
+      "source_path": "C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa\\exec-2c8fa2c8-4b5e-46d4-bafd-c0be65484653.png",
+      "source_sha256": "84b46d8ac4a3802447054ee3622226d4d6aab9e03dd51e1123ca254552b21b60",
+      "kind": "APPROVED_LAYOUT_REFERENCE",
+      "limit": "승인한 화면 배치 참고. 그림에 박힌 텍스트·수치·버튼은 실제 게임 상태 또는 런타임 근거가 아님."
+    },
+    {
+      "id": "frame-layout-preparation",
+      "screen": "preparation",
+      "name": "10초 행동 설계 배치",
+      "path": "docs/blueprint/evidence/frame-approved/preparation.png",
+      "sha256": "e2984aac93622ea82650ffd6b1c501864bb3f489ff6624515a64c20666b2d2be",
+      "source_path": "C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa\\exec-51956564-f252-4ca0-9cdf-5ef187e602b2.png",
+      "source_sha256": "e2984aac93622ea82650ffd6b1c501864bb3f489ff6624515a64c20666b2d2be",
+      "kind": "APPROVED_LAYOUT_REFERENCE",
+      "limit": "승인한 화면 배치 참고. 그림에 박힌 텍스트·수치·버튼은 실제 게임 상태 또는 런타임 근거가 아님."
+    },
+    {
+      "id": "frame-layout-result",
+      "screen": "result",
+      "name": "비무 결과 배치",
+      "path": "docs/blueprint/evidence/frame-approved/result.png",
+      "sha256": "a7644ac1c213e55a93d8b61981a59d9c6de17c6346eb834b8ea4e5c26e5dab30",
+      "source_path": "C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa\\exec-0882535d-1e93-4897-8cb2-ade02925a3a1.png",
+      "source_sha256": "a7644ac1c213e55a93d8b61981a59d9c6de17c6346eb834b8ea4e5c26e5dab30",
+      "kind": "APPROVED_LAYOUT_REFERENCE",
+      "limit": "승인한 화면 배치 참고. 그림에 박힌 텍스트·수치·버튼은 실제 게임 상태 또는 런타임 근거가 아님."
+    },
+    {
+      "id": "frame-layout-review",
+      "screen": "review",
+      "name": "비무 복기 배치",
+      "path": "docs/blueprint/evidence/frame-approved/review.png",
+      "sha256": "95856c65a1312be1eb42240f560c2b958d65eea2186802c3d3fb549d7e1391c7",
+      "source_path": "C:\\Users\\user\\.codex\\generated_images\\01a08da6-5204-7991-b5ac-41990ea2f7fa\\exec-fe6e0682-da90-43ae-98a6-c52d615042f1.png",
+      "source_sha256": "95856c65a1312be1eb42240f560c2b958d65eea2186802c3d3fb549d7e1391c7",
+      "kind": "APPROVED_LAYOUT_REFERENCE",
+      "limit": "승인한 화면 배치 참고. 그림에 박힌 텍스트·수치·버튼은 실제 게임 상태 또는 런타임 근거가 아님."
+    }
+  ]
+}

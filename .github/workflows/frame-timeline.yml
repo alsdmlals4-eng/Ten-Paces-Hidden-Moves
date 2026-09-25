@@ -1,0 +1,42 @@
+name: Ten-second frame combat
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'data/**'
+      - 'tests/verify_frame_*.gd'
+      - '.github/workflows/frame-timeline.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frame-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: chickensoft-games/setup-godot@f166999204a4f2722c6fe042fbaa3b3ea0d9c789
+        with:
+          version: 4.7.1
+          use-dotnet: false
+          include-templates: false
+      - name: Import project
+        run: godot --headless --editor --path . --quit
+      - name: Frame domain, onboarding, acquisition and durable playback
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p output/frame-ci
+          for test in timeline prologue save acquisition bridge durability onboarding_ui noncombat_ui playback_view; do
+            godot --headless --path . --script "res://tests/verify_frame_${test}.gd" 2>&1 | tee "output/frame-ci/${test}.log"
+            if grep -Eq '^(SCRIPT ERROR|ERROR):' "output/frame-ci/${test}.log"; then exit 1; fi
+          done
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
+        with:
+          name: frame-contract-logs
+          path: output/frame-ci
+          retention-days: 3

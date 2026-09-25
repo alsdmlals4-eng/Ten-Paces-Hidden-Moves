@@ -31,6 +31,13 @@ for(const clip of data.experience.clips){
  const result=check(`movie(${JSON.stringify(clip)})`);
  assert(result.includes('data-inspect-copy'));
  if(clip.timeline?.length)assert(result.includes('data-phase-video'));
+ if(!clip.historical){
+  assert(result.includes('<video ')&&result.includes('controls playsinline'),'Current video must use native controls');
+  assert(result.includes('clip-receipt.json'),'Current video lost its validation receipt');
+  assert(!result.includes('고정 상황의 연출 확인용'),'Whole-flow recording mislabeled as a fixed fixture');
+  const selected=check(`movies('current',[${JSON.stringify(clip.id)}])`);
+  assert(selected.includes('현재 규칙의 실제 진행 영상')&&!selected.includes('아래 영상은 이전 슬롯'),'Current clip incorrectly marked historical');
+ }
 }
 const first=data.inspection.records[0];
 assert.equal(vm.runInContext("typeof reviewSeekTime",env),'function','Short review loops need a frame-level boundary');
@@ -45,19 +52,24 @@ const candidateRecord=data.inspection.records.find(r=>r.id==='asset:pr342-clash_
 assert(candidateRecord.tasks.some(t=>t.id==='PRESENTATION-PREFERENCES'&&t.scope==='PR342_CANDIDATE'),'Candidate asset lost its candidate PM');
 assert(vm.runInContext(`requestFor(recordById(${JSON.stringify(candidateRecord.id)}))`,env).includes(data.candidate.revision),'Candidate request lost exact source revision');
 const all=check('home()');
-const starterEvidence=data.inspection.records.find(r=>r.id==='screen:starter');
-assert(starterEvidence.states.runtime.includes('정지화면 촬영'),'Starter screen must show its verified still capture');
-assert(!starterEvidence.flags.includes('capture'));
-const starterSource=data.experience.contexts.starter.still_capture.path;
-const starterAsset=data.inspection.records.find(r=>r.kind==='자산'&&r.sources.includes(starterSource));
-assert(starterAsset.states.runtime.includes('정지화면 촬영'),'Starter asset must retain the same evidence');
-assert(!data.inspection.records.find(r=>r.id==='screen:plan').flags.includes('capture'),'Verified current preparation capture must be linked');
+for(const [id,context] of Object.entries(data.experience.contexts)){
+ const state=data.inspection.records.find(r=>r.id==='screen:'+id);
+ const currentMovie=id==='resolve'&&data.experience.clips.some(c=>!c.historical&&c.freshness.status!=='STALE');
+ assert.equal(state.flags.includes('capture'),!context.still_capture&&!currentMovie,'Current evidence state must follow validated captures or video for '+id);
+ check(`maps('game-loop',${JSON.stringify(id)})`);
+ if(context.still_capture)assert.equal(context.still_capture.path,context.preview.path);
+}
+assert(check("maps('game-loop','menu')").includes('href="#maps/game-loop/prologue"'),'New game must enter prologue');
+assert(check("maps('game-loop','tutorial')").includes('선딜'));
+assert(check("maps('game-loop','first_route')").includes('첫 비전투'));
+assert(check("maps('game-loop','review')").includes('보상'));
 // Approved media/table correction: compact overview, shared progression and exact card playback.
 const screenCards=check("reader('reader-006')");
 assert(screenCards.includes('screen-gallery'),'Atlas must group screen/label/comment in one card');
-assert.equal((screenCards.match(/data-screen-context=/g)||[]).length,11);
+assert.equal((screenCards.match(/data-screen-context=/g)||[]).length,data.pages.find(p=>p.id==='reader-006').blocks.filter(b=>b.kind==='image').length);
 assert(screenCards.includes('강호 도감') && screenCards.includes('감상 설정'), 'Title subpages must be visible in the screen gallery');
-assert(screenCards.includes('전투 준비 화면'));
+assert(screenCards.includes('전투 준비'));
+assert(screenCards.includes('승인 배치 참고 · 실행 화면 아님'));
 const manualComparison=check('manualCatalog()');
 assert.equal((manualComparison.match(/data-common-growth/g)||[]).length,1,'Growth belongs in one common table');
 assert.equal((manualComparison.match(/data-card=/g)||[]).length,30);
@@ -69,17 +81,17 @@ assert.equal((eventReading.match(/class="choice-number"/g)||[]).length,30,'Three
 assert(eventReading.includes('일반 사건 · 기연 없음')&&eventReading.includes('성공 후 추가 10%'));
 const escapedEvent=vm.runInContext(`eventCatalogView({chance_rule:D.giyun.chance_rule,events:[{id:'evil',title:'<img onerror=alert(1)>',text:'<script>',choices:[]}]})`,env);
 assert(!escapedEvent.includes('<img onerror')&&!escapedEvent.includes('<script>'),'Event source text must be escaped');
-assert(!check('movies()').includes('<video '),'Clip index should use selectable medium thumbnails');
+const movieIndex=check('movies()');
+assert.equal((movieIndex.match(/<video /g)||[]).length,data.experience.clips.filter(c=>!c.historical).length,'Only validated current-flow videos should mount in the index; historical clips stay selectable thumbnails');
 assert(check('basicActionCards()').includes('sprite-window'),'Crop real img elements to recover clear image errors');
 const growthOverview=check('home()');
 assert(growthOverview.indexOf('id="overview-manuals"')<growthOverview.indexOf('data-common-growth'),'Existing growth links must land before the common table');
 assert.equal((check("reader('reader-030')").match(/class="screen-card card"/g)||[]).length,16,'Portrait list should use16compact cells');
 for(let n=97;n<=104;n++){const comparison=check('reader('+JSON.stringify('reader-'+String(n).padStart(3,'0'))+')');assert(comparison.includes('class="tactics-table"'));assert(comparison.includes('약점')&&comparison.includes('대응'));}
 assert(check("reader('reader-005')").includes('screen-gallery'));
-assert(check("reader('reader-020')").includes('image-comparison-table'));
 const executionComparison=check("reader('reader-020')");
-assert(executionComparison.includes('common-screen-info'),'Shared progress/result needs its own screen-wide row');
-assert(!executionComparison.split('</tbody>')[0].includes('현재 계획  1 / 3'),'Whole-screen result must not be attached to opponent card');
+assert(executionComparison.includes('다음 10초 계획'),'Execution reader must explain the next frame window');
+assert(!executionComparison.includes('현재 계획  1 / 3'),'Old bundle counter cannot be current explanation');
 
 const sequence=check("reader('reader-022')");assert(sequence.includes('sequence-comparison'));assert(sequence.includes('첫째 타격')&&sequence.includes('셋째 타격'));
 const actionCatalog=check('basicActionCards()');
@@ -87,7 +99,7 @@ const basicArt=data.image_catalog.find(r=>r.number===19);
 assert.equal((actionCatalog.match(/data-basic-action=/g)||[]).length,10);
 assert.equal((actionCatalog.match(new RegExp('data-user-review="'+basicArt.record_id+'"','g'))||[]).length,1,'Basic action atlas must keep its shared inline comment');
 const planThumb=check('atlasPreview(D.experience.contexts.plan.preview,0,0,200,88)');
-assert(planThumb.includes(data.experience.contexts.plan.still_capture.path),'Preparation thumbnail must show the verified current capture');
+assert(planThumb.includes(data.experience.contexts.plan.preview.path),'Preparation thumbnail must show its explicitly classified reference or capture');
 const removedImage=data.assets.find(a=>a.image_number===141);
 assert(check(`userReviewPanel(recordById('asset:${removedImage.id}'))`).includes('삭제 완료'),'Direct deletion must not be labelled as a move');
 for(const page of data.pages)assert(all.includes(`data-reader="${page.id}"`),'Overview omits explanation '+page.id);
@@ -112,7 +124,8 @@ for(const n of [50,300]){
  assert(check('searchResults()').includes(encodeURIComponent(row.record_id)),'Exact image number search missing');
 }
 element('search').value='';
-const cropped=data.pages.flatMap(p=>p.blocks).find(b=>b.region);
+const cropSource=data.experience.actions[0].illustration;
+const cropped={kind:'image',path:cropSource.path,size:cropSource.size,region:cropSource.region};
 assert(check('block('+JSON.stringify(cropped)+')').includes('data-image-number='),'Cropped image caption missing');
 assert(firstNumbered,'The numbered image catalog must start at one');
 const firstTile=check(`tile(${JSON.stringify(firstNumbered)})`);

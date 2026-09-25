@@ -180,3 +180,41 @@ f0901652 원격 검사32개는 PASS했다. 제품 job은 원래15분 제한으�
 기존 준비 화면 최종 이미지의 사용자 검수와 PR367 Draft 이유는 미해소다. 새 Windows 배포본·Android·Human·병합은 이번 폐기 작업의 검증으로 주장하지 않는다. 다음 화면 개편 및 프레임 판정/AI/저장 전환은 구체 계획 제시 후 사용자 구현 승인 대기다.
 
 738ef4bc 원격 검사에서 발견한 후속 결함2건: freshness 설정이 폐기130번 SVG를 필수 파일로 요구했고, 저장 내용 해시에 포함된 배지20필드 변경으로 schema5 기존 저장이 거절됐다. 삭제 SVG의 현행 consumer를 폐기 원장/파일 부재 검사로 옮기고, 저장 해시 계산에만 알려진10기초 행동의 배지 필드를 정확한 과거 값으로 대응시켰다. 런타임 카드와 삭제 파일은 복원하지 않는다. 새 회귀 RED 뒤 기존 schema5 고정 해시와 pending/applied 저장 읽기, 비용 변경·필드 누락·미등록 배지 변경의 거절을 GREEN으로 확인했다. Godot EVENT_CHECKS 및 RUN_SAVE_STORE PASS/0failures, canonical freshness와 영향 계약9종 PASS. 게임 규칙과 저장 schema는 그대로이며 프레임 전환 구현은 포함하지 않는다.
+
+### 예시 화면·10초 계획·출사표 도입 · 2026-09-25
+
+기준9d2f543029a9b8f44ae4d8c5450725b374d88df9 / PLAN / imagegen + brainstorming / planning-visualization·bounded in-chat design. 최신 사용자 요청은 우선 예시 이미지 제작이며, 도중에10초 설계 구간·관찰 단계×약3초·출사표 튜토리얼 후 강호행로1회→비무 방향을 추가했다. 현행 시작 무공 consumer `src/run/vertical_slice_starter_manual_catalog.gd`와 시작 흐름 `src/run/vertical_slice_shell.gd`를 읽었다. 선택6종 중4종/3성은 재사용하고 새로운 시작 순서는 설계로만 기록했다. GitHub main 관측89cee855b1beb6a8a73a08a579aeb964ec398cbf, 관련PR367은Draft이며 이 시안은 제품 구현·병합 근거가 아니다.
+
+CURRENT_SOURCE_RELEVANCE_CHECK: 사용자 지정 순서·직전 승인 화풍·동일 작업의 원화와 실제 시작 consumer를 재사용했다. 새로운 외부 게임/UX 효과를 사실로 주장하지 않는 대화용 시안이므로 추가 인터넷 비교는 NOT_APPLICABLE. FEASIBLE: 내장 이미지 도구로 정지 시안 생성/표시. 프레임 제품 구현 가능성과 사용자 학습 효과의 검증은 이번 정지 시안으로 판정하지 않는다.
+
+제작: 메인 메뉴(인물 없음), 노드형 강호행로, 비무 결과,10초 시간축 복기, 비무 브리핑,10초 준비 화면,출사표 총7개 현행 검토 시안. 최초3초 준비 시안은10초 시안으로 검토 기준을 대체했다. 생성 파일은 대화용이므로 `C:/Users/user/.codex/generated_images/01a08da6-5204-7991-b5ac-41990ea2f7fa/`에 유지했다. 파일 식별: 메인 `exec-0016f1cf-967c-4d92-b0c7-4e3fa983a65b.png`, 행로 `exec-3c365675-cd8c-4bab-bc75-958b255d24da.png`, 결과 `exec-0882535d-1e93-4897-8cb2-ade02925a3a1.png`, 복기 `exec-fe6e0682-da90-43ae-98a6-c52d615042f1.png`, 브리핑 `exec-2c8fa2c8-4b5e-46d4-bafd-c0be65484653.png`,10초 준비 `exec-51956564-f252-4ca0-9cdf-5ef187e602b2.png`, 출사표 `exec-520ba541-9ecf-4ce7-af57-d9ef1c5ff853.png`. 참조는 앞선 시안·사용자 UI 참조이며, 모든 신규 bitmap은 내장 이미지 도구로 제작했다.
+
+검토: 사용자 순서와 시안/현행 제품의 경계, 무공 선택 consumer, 첫 전투 전 행로1회,3/3/4의 재도입 여부를 대조했다. 이어 생성 이미지를 시각 확인하여 출사표의 단독 낭인·짧은 상황문·다음 무공 선택 버튼·하단 여정 순서, 준비의0~10초 시간축·6초 공개 경계·3/6/9초 관찰 표기를 확인했다. 복기 시안의 일부 판정 문구/시간축은 설명용 그림 예시이며 실제 전투 계산과 일치한다고 주장하지 않는다. 시안은 화면 구조 검토용이고, 최종 문구·수치·콘텐츠는 실제 제품 연결 때 별도 대조해야 한다.
+
+미검증: 새 도입·10초 판정·관찰·저장/이어하기·실제 영상·게임/HTML 반영·사용자 학습 효과·기기 실행은 NOT_RUN. 이번 범위에서 제품 코드·게임 자산·HTML·기존 파일 삭제는 변경하지 않았고, 최신 사용자 방향만 ACTIVE_CONTEXT에 갱신했다. 다음은 사용자 시안 피드백과 앞서 요청된 구체 구현/폐기안 검토다.
+
+
+### 10초 전투·출사표 실제 구현 · 2026-09-25
+
+기준9d2f543029a9b8f44ae4d8c5450725b374d88df9 / BUILD·REVIEW / project workflow router, executing-plans, TDD, dispatching-parallel-agents, imagegen, HTML blueprint, Hera live-editor / 승인 구현·독립 도메인 작업·통합 검증. 최신 명시 승인은 “좋아 잘 이해했어 지금걸로 맞춰서 만들자. 실제 게임데이터 구현,html 연결까지 진행해줘”이며 Decision `TEN-DEC-20260925-FRAME-TIMELINE-PROLOGUE-01`로 현재 코어를 승격했다. 원본 사용자 checkout과 다른 PR의 작업은 변경하지 않는다.
+
+CURRENT_SOURCE_RELEVANCE_CHECK=REUSED_EVIDENCE: 동일 승인 시안7개와 현행 runtime/저장/HTML consumers, Godot 공식 [Control](https://docs.godotengine.org/en/stable/classes/class_control.html) 및 [processing](https://docs.godotengine.org/en/stable/tutorials/scripting/idle_and_physics_processing.html)의 입력·렌더링/논리 주기 구분을 재사용한다. 새로운 게임 비교나 효과 수치를 외부 근거로 발명하지 않는다. FEASIBLE: 실제4.7.1 실행 환경·기술 정의·기존 효과 프로그램·버전 저장·이미지 도구를 확인했다. 갱신 Godot AI가 공개한 세션은 다른 ink-screen-refresh 작업 폴더라 그 세션에 쓰지 않았고, 정확한 현 작업 폴더의 native Godot 실행으로 검증했다.
+
+제품: 새 게임은 출사표→삽화6중4→규칙·시간축 실습→첫 비전투 사건1회→브리핑→비무. 기술은100틱/10초에 선딜·발동·후딜로 배치하고 실제 유효 구간·거리에서 합/방어/회피/중단을 판정한다. 잔여 동작과 일회 비용/효과를 다음 구간에 이월한다. 관찰은 완료 후30/60/90틱만 먼저 확정된 적 계획을 공개한다. 실제 이벤트/상태 변화로 먹 동작·2줄 시간축·하단 결과와 읽기 전용 복기를 연결했다. 기존 무공 정의를 재사용하며 무공별 새 모션은 만들지 않았다. 새 schema7은 확정 전후 경계와 시작 자원·상대/소유 무공·전체 해결을 재검증하고, 구형1/2/5/6 저장은 원래 실행 규칙으로 읽는다.
+
+시각: 메인 인물을 제거하고 오른쪽 여백에 실제5버튼을 놓았다. 메인·출사표·준비용 text-free 배경3개는 실제 이미지 도구로 제작했고 해시/프롬프트/참조/consumer를 `assets/ui/ink_frame/provenance.json` 및 중앙 manifest에 등록했다. 준비의 대각선 대치·초상/상태·거리·오른쪽 관찰·5×2삽화/상세 구도를 사용한다. 실제 촬영에서 상태 문구가 배경에 묻힌 부분과 시간축 끝 표시를 교정했다. 승인 시안과 실제 촬영, 기존 구형 영상을 HTML에서 구별한다. 신규 파생 원화의 사용자 final lock 및 독립 출시 권리는 이 검증으로 주장하지 않는다.
+
+전체 검토1: 정본과 각 실제 변경·미변경 효과/AI/저장/성장/HTML consumer를 대조했다. 초기 코어·도입·schema 회귀 RED 뒤 기본 GREEN을 확인했다. 다섯 번째 획득 무공이 고정4권 제한에 걸리던 연결, 시작 전 상태를 변조해도 replay가 일치하던 검증 구멍, 이동2칸 설정이 막기를 막던 문제, 빈 이월 계획의 확정·저장·재생 누락, 실제 패배 뒤 복기 진입을 교정했다. 획득 시점 이전의 보상/제약을 현재 소유 무공으로 소급 정당화하지 않도록 역사별 소유 목록으로 검증한다.
+
+전체 검토2: 독립 검토가 전투·bridge·공개 뷰·save/runtime·보상·도입·기존 consumer를 다시 공격했다. 발동 첫 틱의 사거리 실패 뒤 유효 구간의 접촉을 놓치는 반례, 관찰 끝135틱 뒤142/155틱 실제 발동/완료 시각이 노출되던 반례를 RED7개로 재현하고 고쳤다. 공개 구간은 view-only로 잘리며 실제 연출이 도달하면 같은 uid의 진짜 기록으로 바뀐다. 비용·선행 방어 효과·타격은 반복되지 않는다. 실제 pointer rename 실패로 확정/정산/재시도 중 효과가 중복되지 않는32검사, 획득 후 다음 비무·수련·저장64검사, 실제 패배/복기/재도전14검사를 확인했다. 리뷰 담당자가 작성한 비전투/소유 목록 코드는 주 작업이 별도로 비교했으며 독립 검토라고 부풀리지 않는다. 후속 재생2반례(초기 공개 정보 소실, 완료 이벤트가 공격 연출을 다시 시작)는3개 표시 회귀 RED→GREEN으로 교정했다.
+
+검증: 코어152, 도입158, 무공 획득64, 확정 저장·재시도32, bridge26, frame save8, 도입UI26, playback UI3개 검사와 기존 효과/무공/기연/가변상대·저장 호환 회귀가 PASS다. Windows native 촬영에서 실제 두 구간14.1초 후 승리(플레이어25/30·상대0)→보상→행로→사건과 별도 실제 패배→복기를 확인했다. 승리를 주입하지 않고 현재 공개 거리와 자기 자원만 사용한 장풍/명상 입력이다. 다른 시드의 전체 흐름은473프레임/24fps/19.708초로 기록했고, 첫10초는일반속도·이후구간만8배속이다. strict PASS receipt·PNG/MP4 SHA256을 통한 HTML 연결만 허용한다.
+
+Python 전체588검사 최초 실행은586PASS/2FAIL이었다. 첫 실패는 신규 배경3개가 기존 자산 기록의 불변 해시 검사에 포함된 것으로, 새3ID/실제 PNG·참조 해시를 별도 검증하고 옛 해시는 유지했다. 둘째는 legacy lifecycle 검사가 새 여정에서 SETUP으로 바로 가는 옛 전제를 쓴 것으로, 실제 새 출사표 저장 실패·재시도를 먼저 검증한 뒤 legacy bundle lifecycle은 명시적인 구형 fixture로 분리했다. 나머지 독립 프로세스 저장/변조/회복 검사는 첫 전체 실행에서도 통과했다. 발견 실패의 집중 재검증·최종 HTML/browser/export 결과는 아래에 누적한다.
+
+남은 기존 정본 불일치: 대력금강장7성의 기록 방어 추가 피해, 금강호체3성의 다음 자기 행동 전까지 완전 흡수 보상과 미정 수치, 일부 SPECIAL_CLASH 전용 무공의 공격 설명과 HP 피해 연결, 합 위력 증가의 미지정 만료 시점은 이전 데이터/효과 프로그램과 승인 설명의 차이다. 여래신장의 선딜 전 방어·강건 및 실제 방어 손실 보너스(최대6)는 명시된 수치로 새 frame 프로그램에서 교정했다. 나머지 미정 효과를 임의 발명하거나 모든 무공 의미가 완결됐다고 주장하지 않는다. 기능 검토본·PR367 Draft로 제공하고 사람 재미/세부 밸런스·Android·접근성 사용자·신규 원화 최종 확정·출시는 NOT_RUN이다.
+
+
+최종 로컬 readback: 위 Python2실패를 교정한 집중4검사 모두 PASS(36.846초). 최종 native 원본11장+실제 승리/보상 뒤4장, H.264/yuv420p/faststart 영상473프레임·24fps·19.708333초를 strict receipt로 발행했다. Blueprint107검사,1357뷰/20667로컬연결 PASS. Chrome에서 currentTime7.46181→duration19.708333/ended=true/readyState4/error=null,콘솔오류·경고없음 확인. 브라우저 screenshot API의 CDP timeout2회는 native 원본 이미지 직접 검수와 실제 재생/readback 결과로 구분하며 캡처 성공으로 세지 않는다.
+
+Windows4.7.1 release EXE/PCK를 생성하고 격리 저장 경로로 실행하여 NVIDIA OpenGL main 초기화/exit0/실행오류없음을 확인했다. ZIP194891820bytes, SHA256 b0ce5b6ac568d48e6daa6fd9f58b052fe63c29a7c110a27476d27113a0053029. ZIP CRC와 EXE/PCK/실행하기.cmd/설명서의 압축 전후 해시 일치 PASS. `output/frame-final/delivery.json`이 실행본을 식별한다. exporter 종료의 기존 ObjectDB45/resource22 정리 경고는 남아 있고 제품 실행 stderr는 비어 있다. 운영 계약·canonical reference freshness·combat docs 검사 PASS. 원격 exact HEAD와 PR 상태는 전달 전 별도 확인하며 자동 검증을 Human/Android/최종 원화/출시 승인으로 올리지 않는다.

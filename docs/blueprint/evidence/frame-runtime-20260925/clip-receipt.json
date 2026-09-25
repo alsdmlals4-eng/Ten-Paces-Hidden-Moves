@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "path": "docs/blueprint/evidence/frame-runtime-20260925/walkthrough.mp4",
+  "sha256": "e16e84c99a1899653640e322f47e0e7ff71f0216a7f2fa56989c7fadeaa313d2",
+  "duration_seconds": 19.708333333333332,
+  "frames": 473,
+  "fps": 24,
+  "evidence": "ACTUAL_GODOT_RUNTIME_MOVIE",
+  "playback_note": "First combat window at normal speed; following windows at 8x; actual resolver loss and read-only review.",
+  "source": "tools/capture_frame_runtime.gd"
+}

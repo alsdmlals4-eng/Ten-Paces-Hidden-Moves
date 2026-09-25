@@ -19,8 +19,17 @@ class MediaTableTests(unittest.TestCase):
         atlas = next(p for p in pages if p['id'] == 'reader-006')
         self.assertEqual(atlas.get('layout'), 'screen_gallery')
         pictures = [b for b in atlas['blocks'] if b['kind'] == 'image']
-        self.assertEqual(len(pictures), 11)
-        self.assertEqual(len({b['path'] for b in pictures}), 11)
+        from html_blueprint_frame import frame_assets, RUNTIME
+        references = {row['path'] for row in frame_assets(model.ROOT) if row['kind'] == 'APPROVED_LAYOUT_REFERENCE'}
+        self.assertEqual(len(references), 7)
+        self.assertTrue(references <= {b['path'] for b in pictures})
+        self.assertEqual(len({b['path'] for b in pictures}), len(pictures))
+        for picture in pictures:
+            if picture['path'].startswith(RUNTIME):
+                self.assertTrue((model.ROOT / picture['path']).is_file())
+                self.assertEqual(picture['evidence_kind'], 'RUNTIME_CAPTURE')
+            elif picture['path'] in references:
+                self.assertIn('실행 화면 아님', picture['screen_label'])
         for name in ('library', 'settings'):
             menu = next(b for b in pictures if b['path'].endswith(f'/{name}.png'))
             self.assertEqual(menu['screen_context'], 'menu')

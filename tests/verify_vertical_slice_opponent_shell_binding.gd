@@ -34,7 +34,7 @@ func _run() -> void:
     _expect_true(bool(shell.get_meta("opponent_catalog_bound", false)), "Runtime shell must record successful opponent-catalog binding.")
     _expect_eq(str(shell.get_meta("opponent_selection_binding", "")), "REVERSIBLE_SELECTION_BINDING", "Runtime shell must preserve the reversible selection-binding status.")
 
-    _expect_true(shell.start_new_run(), "Runtime shell must start a configured run.")
+    _expect_true(shell.run_state.start_new_giyun_run(20260820, "legacy-opponent-fixture"), "Legacy runtime shell must start a configured run.")
     var current: Dictionary = shell.run_state.get_current_opponent()
     _expect_true(not current.is_empty(), "Runtime shell must lock a Duel 1 candidate at run start.")
     var encounter: Dictionary = shell.run_state.get_current_encounter()

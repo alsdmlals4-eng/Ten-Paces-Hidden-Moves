@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "decision_id": "TEN-DEC-20260925-FRAME-TIMELINE-PROLOGUE-01",
+  "tick_seconds": 0.1,
+  "window_ticks": 100,
+  "observation_ticks_per_level": 30,
+  "observation_max_level": 3,
+  "enemy_lock_ahead_ticks": 200,
+  "window_momentum_gain": 1,
+  "startup_effect_prefix_by_card": {"shaolin_arhat_vajra_art_star10": 3},
+  "defense_loss_bonus_cards": ["shaolin_arhat_vajra_art_star10"],
+  "outcome_labels": {
+    "startup": "준비 동작", "active": "발동", "executed": "실행", "martial_completed": "실행",
+    "martial_failed": "조건 불충족", "clash_draw": "합 무승부", "clash_win": "합 승리", "clash_loss": "합 패배",
+    "miss_range": "사거리 벗어남", "miss_direction": "방향 빗나감", "interrupted": "중단", "fortitude": "강건으로 버팀",
+    "complete": "동작 완료", "move": "이동", "resource_insufficient": "자원 부족"
+  },
+  "timing_policy": "half_open_startup_active_recovery; costs_at_start; observation_at_completion; one_effect_program_per_action",
+  "cards": {
+    "basic_move": {"startup": 2, "active": 2, "recovery": 6},
+    "basic_footwork": {"startup": 2, "active": 3, "recovery": 7},
+    "basic_guard": {"startup": 1, "active": 12, "recovery": 5},
+    "basic_evade": {"startup": 1, "active": 6, "recovery": 7},
+    "basic_quick_attack": {"startup": 3, "active": 2, "recovery": 5},
+    "basic_heavy_attack": {"startup": 12, "active": 3, "recovery": 10},
+    "basic_palm": {"startup": 10, "active": 3, "recovery": 7},
+    "basic_observe": {"startup": 5, "active": 1, "recovery": 9},
+    "basic_meditate": {"startup": 5, "active": 1, "recovery": 9},
+    "basic_stance": {"startup": 3, "active": 1, "recovery": 6},
+    "ultimate_ten_paces_wave": {"startup": 4, "active": 3, "recovery": 8},
+    "ultimate_cleave_peak": {"startup": 14, "active": 4, "recovery": 12},
+    "ultimate_void_sword_qi": {"startup": 22, "active": 5, "recovery": 13}
+  },
+  "martial_timing_by_slots": {
+    "1": {"startup": 6, "active": 3, "recovery": 6},
+    "2": {"startup": 12, "active": 4, "recovery": 9},
+    "3": {"startup": 18, "active": 5, "recovery": 12}
+  },
+  "martial_response_timing_by_slots": {
+    "1": {"startup": 2, "active": 14, "recovery": 7},
+    "2": {"startup": 4, "active": 20, "recovery": 10},
+    "3": {"startup": 6, "active": 26, "recovery": 13}
+  },
+  "effect_text_overrides": {
+    "basic_guard": "발동 구간에 들어오는 공격에서 방어도를 차감하고 남은 피해를 50%로 줄인다.",
+    "basic_evade": "발동 구간에 들어오는 공격을 회피한다. 필중 공격은 회피하지 못한다.",
+    "basic_observe": "동작 완료 뒤 관찰 단계가 최대 3까지 오른다. 완료 시점부터 단계당 3초의 확정된 적 행동을 확인한다.",
+    "basic_stance": "다음 비이동 행동을 강화한다. 공격에는 위력 +2와 강건, 막기에는 방어 강화, 명상에는 기세 +1을 적용한다."
+  }
+}

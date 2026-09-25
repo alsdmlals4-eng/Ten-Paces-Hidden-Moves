@@ -183,4 +183,5 @@ def refine(pages, giyun):
     for page in pages:
         for block in page['blocks']:
             block['page_id'] = page['id']
-    return pages
+    from html_blueprint_frame import reader_current
+    return reader_current(pages)

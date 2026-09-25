@@ -131,7 +131,7 @@ func _verify_result_and_reward_contract() -> void:
     for _index in range(3):
         await process_frame
 
-    _expect_true(shell.start_new_run(), "Shell must start a run.")
+    _expect_true(shell.run_state.start_new_giyun_run(20260820, "legacy-result-fixture"), "Legacy shell must start a run.")
     for manual_id in DEFAULT_STARTERS:
         _expect_true(shell.toggle_setup_manual(manual_id), "Starter selection must succeed: %s" % manual_id)
     _expect_true(shell.advance_noncombat(), "SETUP → INTRO")

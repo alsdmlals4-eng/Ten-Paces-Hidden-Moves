@@ -47,10 +47,16 @@ class InspectionTests(unittest.TestCase):
         import html_blueprint as model
         context=experience.build(model.collect_reader())['contexts']['starter']
         still=context.get('still_capture')
-        self.assertIsNotNone(still, 'Actual setup screenshot must not report missing runtime evidence')
-        self.assertEqual(still['path'],context['preview']['path'])
-        self.assertEqual(still['sha256'],model.sha(model.ROOT/still['path']))
-        self.assertEqual(still['screen'],'SETUP')
+        from html_blueprint_frame import validated_captures
+        present = 'setup' in validated_captures(model.ROOT)
+        self.assertEqual(still is not None, present, 'Only the current frame-rule setup capture is runtime evidence')
+        if present:
+            self.assertEqual(still['path'],context['preview']['path'])
+            self.assertEqual(still['sha256'],model.sha(model.ROOT/still['path']))
+            self.assertEqual(still['screen'],'SETUP')
+        else:
+            pending = (model.ROOT/'docs/blueprint/evidence/frame-runtime-20260925/setup.png').is_file()
+            self.assertEqual(context['runtime_status'], 'CAPTURE_PENDING_VALIDATION' if pending else 'NOT_RUN')
 
     def test_stale_source_keeps_history_but_corrupt_video_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:

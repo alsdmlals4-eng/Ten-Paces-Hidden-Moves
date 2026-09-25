@@ -24,9 +24,13 @@ class ReaderCleanupTests(unittest.TestCase):
         import html_blueprint as model
         from html_blueprint_experience import build
         c=build(model.collect_reader())['contexts']
-        self.assertTrue(c['starter']['preview']['path'].endswith('/setup.png'))
-        self.assertNotIn('martial-summary',c['starter']['preview']['path'])
-        self.assertIn('실제 Godot',c['plan']['preview_kind'])
+        if c['starter']['preview']:
+            self.assertTrue(c['starter']['preview']['path'].endswith('frame-runtime-20260925/setup.png'))
+            self.assertNotIn('martial-summary',c['starter']['preview']['path'])
+        else:
+            present = (model.ROOT/'docs/blueprint/evidence/frame-runtime-20260925/setup.png').is_file()
+            self.assertEqual(c['starter']['runtime_status'], 'CAPTURE_PENDING_VALIDATION' if present else 'NOT_RUN')
+        self.assertTrue('승인 배치 참고' in c['plan']['preview_kind'] or '검증된 실행 캡처' in c['plan']['preview_kind'])
         self.assertNotIn('region',c['plan']['preview'])
 
     def test_route_order_tables_sources_and_preserved_ids(self):

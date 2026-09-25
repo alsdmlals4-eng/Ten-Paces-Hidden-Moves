@@ -31,7 +31,7 @@ GitHub의 REPOSITORY_HUMAN_FACING_CANON / REPOSITORY_STRUCTURED_CANON / REPOSITO
 ## 제품 불변식
 
 - 1대1 10칸 일자형 논리 전장, 시작 공개 거리 2, 거리 0 `[밀착]`, 화면은 `거리 N` 중심.
-- `3수 → 해결 → 3수 → 해결 → 4수 → 해결`. 공개 상태·해결 이력 기반 상대 추론. AI는 미확정 계획·숨은 기술 배치·UI 의도를 읽지 않는다.
+- 새 게임: `10초 행동 설계 → 전투 진행`. 0.1초 논리 눈금에 선딜·발동·후딜을 배치한다. `TEN-DEC-20260925-FRAME-TIMELINE-PROLOGUE-01`이 기존 3·3·4 코어를 대체하며 구형 저장은 호환 경로로만 유지한다. 공개 상태·해결 이력 기반 상대 추론. AI는 미확정 계획·숨은 기술 배치·UI 의도를 읽지 않는다.
 - 덱·손패·드로우·장착 기술 제한 없음. 현재 해금 기술을 수에 배치한다. 합·방어도·회피·중단·강건·복기를 보존한다. 성장은 파훼 선택지를 확장한다.
 - platform_decision: TEN-DEC-20260806-WINDOWS-ANDROID-DUAL-TARGET-01; design_platforms: WINDOWS_ANDROID; platform_core_architecture: SINGLE_CORE_PLATFORM_ADAPTERS; android_runtime_evidence: NOT_RUN.
 - 전투 규칙·AI·콘텐츠·ID·수치·저장 Schema는 하나의 공유 코어이며 UI/VFX/audio가 재계산하지 않는다. localization `ko/en/ja/zh-*`, Chinese variant 미확정. responsive `pc_standard / pc_wide_or_ultrawide / mobile_landscape` 의미 동등성을 보호한다.

@@ -52,6 +52,7 @@ function candidatePresentation(clip){const presets=D.candidate?.presets;if(!pres
 const baseMovie=movie;
 movie=function(clip,prefix='clip'){
  const id=prefix+'-'+clip.id;
+ if(!clip.historical)return baseMovie(clip,prefix).replace('</article>',`<div class="notice">${clip.freshness.status==='STALE'?'촬영 이후 입력 변경 · 재촬영 검토 필요':'촬영 확인서 PASS · 영상 파일 일치'} · ${E(clip.audio_label)}${clip.freshness.changed_paths.length?'<details><summary>변경된 촬영 입력</summary><pre>'+E(clip.freshness.changed_paths.join('\n'))+'</pre></details>':''}</div>${recordControls(recordById('clip:'+clip.id),id)}</article>`);
  const phases=clip.timeline||[];
  return baseMovie(clip,prefix).replace('</article>',`<div class="phase-track"><h4>실제 기록의 연출 단계</h4><div class="phase-buttons">${phases.map((p,i)=>`<button data-phase-video="${E(id)}" data-phase-index="${i}" data-clip-id="${E(clip.id)}">${p.start.toFixed(2)}초 · ${E(phaseName(clip,p))}</button>`).join('')||'<p>이 영상에는 단계 시점 기록이 없습니다.</p>'}</div><p><output data-phase-status="${E(id)}">단계를 선택하면 해당 시점으로 이동합니다.</output></p><label><input type="checkbox" data-loop-video="${E(id)}"> 선택 구간 반복</label><p><small>엔진의 준비·타격·정리 상태를 촬영 프레임에서 읽었습니다. 접근·복귀를 별도 단계로 나눈 시점 근거는 없습니다. 프레임 변화 수는 고유 동작 완성 판정이 아닙니다.</small></p></div><div class="notice">${clip.freshness.status==='STALE'?'촬영 갱신 필요 · 과거 영상으로 보존':'발행 시점에 촬영 입력과 일치'} · 소리 검수 제외${clip.freshness.changed_paths.length?'<details><summary>변경된 촬영 입력</summary><pre>'+E(clip.freshness.changed_paths.join('\n'))+'</pre></details>':''}</div>${candidatePresentation(clip)}${recordControls(recordById('clip:'+clip.id),id)}</article>`);
 };
@@ -59,8 +60,8 @@ const baseStage=stagePanel;
 stagePanel=function(id){const c=D.experience.contexts[id],r=recordById('screen:'+id);if(!c)return '';
  const previous=Object.entries(D.experience.contexts).filter(([,v])=>v.next.includes(id));
  const next=c.next.map(n=>`<a class="screen-hotspot" href="#maps/game-loop/${n}">${E(D.experience.contexts[n].title)} →</a>`).join('');
- const picture=block(c.preview).replace(/<figcaption>[\s\S]*?<\/figcaption>/,'');
- const preview=`<div class="screen-preview"><div class="screen-surface">${picture}${id==='menu'?'<a class="menu-start-hotspot" href="#maps/game-loop/starter" aria-label="화면 속 새 여정 · 시작 무공으로" title="새 여정 → 시작 무공">새 여정</a>':''}</div><nav class="screen-actions" aria-label="이 화면에서 이어지는 선택">${next}</nav></div><p><small>자료: ${E(c.preview_kind)}. 선택은 HTML 탐색이며 실제 게임 입력이 아닙니다.</small></p>`;
+ const picture=c.preview?block(c.preview).replace(/<figcaption>[\s\S]*?<\/figcaption>/,''):`<p class="notice">${E(c.preview_kind)} · 아래 승인 설명을 확인하세요.</p>`;
+ const preview=`<div class="screen-preview"><div class="screen-surface">${picture}${id==='menu'?'<a class="menu-start-hotspot" href="#maps/game-loop/prologue" aria-label="화면 속 새 여정 · 출사표로" title="새 여정 → 출사표">새 여정</a>':''}</div><nav class="screen-actions" aria-label="이 화면에서 이어지는 선택">${next}</nav></div><p><small>자료: ${E(c.preview_kind)}. 선택은 HTML 탐색이며 실제 게임 입력이 아닙니다.</small></p>`;
  return baseStage(id).replace('<div class="eyebrow">',`<nav class="breadcrumb" aria-label="화면 경로"><a href="#maps/game-loop">전체 구조</a><span> / ${E(c.title)}</span>${previous.map(([key,v])=>`<a href="#maps/game-loop/${key}">← ${E(v.title)}</a>`).join('')}</nav>${preview}${inspectionSummary(r)}<div class="eyebrow">`);
 };
 const inspectMaps=maps;

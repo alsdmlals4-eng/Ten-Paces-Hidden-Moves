@@ -44,7 +44,7 @@ func run() -> void:
         await process_frame
         check(not is_instance_valid(title._front_page), "Escape closes settings without using a detached viewport")
         DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
-    shell.start_new_run()
+    shell.run_state.start_new_giyun_run(20260820, "legacy-ink-feedback-fixture")
     for button in shell._setup_buttons.values():
         var art = button.find_child("ManualIllustration", true, false)
         check(art != null and art.texture != null, "Each starter choice has approved illustration")

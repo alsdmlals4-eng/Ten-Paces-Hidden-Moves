@@ -36,6 +36,10 @@ var _save_retry_button: Button
 var _replacement_dialog: ConfirmationDialog
 var _explicit_pause := false
 var _application_suspended := false
+var _onboarding_view: Control
+var _briefing_own_status: VBoxContainer
+var _briefing_faceoff: VBoxContainer
+var _briefing_enemy_portrait: TextureRect
 
 
 func _ready() -> void:
@@ -74,7 +78,7 @@ func start_new_run(replacement_confirmed: bool = false) -> bool:
         return false
     _setup_selected_manual_ids.clear()
     _refresh_setup_selection_ui()
-    return session.transact(func(): return run_state.start_new_giyun_run(randi(), session.save_id), true)
+    return session.transact(func(): return run_state.start_new_frame_run(randi(), session.save_id), true)
 
 
 func advance_noncombat() -> bool:
@@ -244,6 +248,22 @@ func _build_shell() -> void:
     failure_end_button.pressed.connect(end_failed_run)
     stack.add_child(failure_end_button)
 
+    _onboarding_view = preload("res://src/ui/ink/ink_onboarding_view.gd").new()
+    _onboarding_view.name = "FrameOnboarding"
+    _onboarding_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+    _onboarding_view.visible = false
+    _onboarding_view.command_requested.connect(_on_onboarding_command)
+    add_child(_onboarding_view)
+
+
+func _on_onboarding_command(command: String, value: String) -> void:
+    _initialize_run_session()
+    match command:
+        "advance": advance_noncombat()
+        "practice": session.transact(func(): return run_state.complete_frame_practice(int(value)))
+        "enter_journey": session.transact(Callable(run_state, "enter_first_journey"))
+        "choice": session.transact(func(): return run_state.select_first_journey_choice(value))
+
 
 func _build_setup_options() -> void:
     _setup_buttons.clear()
@@ -331,6 +351,10 @@ func _render_current_screen() -> void:
 
     var screen := run_state.get_current_screen()
     _apply_screen_art(screen)
+    var onboarding := screen in ["PROLOGUE", "TUTORIAL", "FIRST_JOURNEY"]
+    if _onboarding_view != null:
+        _onboarding_view.visible = onboarding
+        if onboarding: _onboarding_view.configure(run_state)
     var keeps_combat_visible := (
         screen == VerticalSliceRunState.SCREEN_COMBAT
         or screen == VerticalSliceRunState.SCREEN_REVIEW
@@ -338,7 +362,7 @@ func _render_current_screen() -> void:
 
     var showing_main := screen == VerticalSliceRunState.SCREEN_MAIN
     combat_host.visible = keeps_combat_visible
-    content_panel.visible = not keeps_combat_visible and not showing_main
+    content_panel.visible = not keeps_combat_visible and not showing_main and not onboarding
     if is_instance_valid(main_title_screen):
         main_title_screen.visible = showing_main
     if setup_options_container != null:
@@ -348,6 +372,9 @@ func _render_current_screen() -> void:
 
     if keeps_combat_visible:
         _ensure_combat_view()
+        _apply_session_input_lock()
+        return
+    if onboarding:
         _apply_session_input_lock()
         return
 
@@ -441,6 +468,8 @@ func _render_briefing() -> void:
         str(opponent.get("ambiguity_or_counterexample", "")),
         _player_manual_names_text()
     ]
+    if run_state.is_frame_run():
+        description = "공개 정보\n%s\n\n공개 무공\n%s\n\n알려진 습관\n%s\n\n의심할 점\n%s\n\n관찰 단서\n상대의 미래 행동은 아직 미확인입니다. 비무에서 관찰한 범위만 드러납니다." % [str(opponent.get("epithet", opponent.get("martial_identity", ""))), manual_label, str(opponent.get("readable_habit", "")), str(opponent.get("ambiguity_or_counterexample", ""))]
     _set_content(
         "비무 %d · %s" % [run_state.duel_index, str(opponent.get("working_name", ""))],
         description,
@@ -459,6 +488,11 @@ func get_bimu_constraint_panel() -> VBoxContainer:
 
 
 func _show_bimu_briefing() -> void:
+    if run_state.is_frame_run():
+        _show_frame_briefing()
+        return
+    if _briefing_body != null and _briefing_body.has_meta("frame_layout"):
+        _clear_briefing_layout()
     var stack := primary_button.get_parent()
     if _briefing_body == null:
         _briefing_body = HBoxContainer.new()
@@ -500,6 +534,158 @@ func _show_bimu_briefing() -> void:
     _bimu_constraint_panel.configure(run_state, manual_registry)
 
 
+func _clear_briefing_layout() -> void:
+    var stack := primary_button.get_parent()
+    if description_label.get_parent() != stack: description_label.reparent(stack)
+    if _briefing_body != null:
+        _briefing_body.get_parent().remove_child(_briefing_body)
+        _briefing_body.queue_free()
+    _briefing_body = null
+    _approved_portrait = null
+    _briefing_description_scroll = null
+    _bimu_constraint_panel = null
+
+
+func _show_frame_briefing() -> void:
+    if _briefing_body != null and not _briefing_body.has_meta("frame_layout"):
+        _clear_briefing_layout()
+    var stack := primary_button.get_parent()
+    if _briefing_body == null:
+        _briefing_body = HBoxContainer.new()
+        _briefing_body.name = "BimuBriefingBody"
+        _briefing_body.set_meta("frame_layout", true)
+        _briefing_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
+        _briefing_body.add_theme_constant_override("separation", 18)
+        stack.add_child(_briefing_body)
+        stack.move_child(_briefing_body, 1)
+        var own_scroll := ScrollContainer.new()
+        own_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        own_scroll.size_flags_stretch_ratio = 0.8
+        own_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+        own_scroll.follow_focus = true
+        _briefing_body.add_child(own_scroll)
+        _briefing_own_status = VBoxContainer.new()
+        _briefing_own_status.name = "BriefingOwnStatus"
+        _briefing_own_status.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        _briefing_own_status.add_theme_constant_override("separation", 10)
+        own_scroll.add_child(_briefing_own_status)
+        _briefing_faceoff = VBoxContainer.new()
+        _briefing_faceoff.name = "BriefingFaceoff"
+        _briefing_faceoff.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        _briefing_faceoff.size_flags_stretch_ratio = 1.8
+        _briefing_body.add_child(_briefing_faceoff)
+        var portraits := HBoxContainer.new()
+        portraits.name = "BriefingDuelPortraits"
+        portraits.custom_minimum_size.y = 160
+        portraits.add_theme_constant_override("separation", 10)
+        _briefing_faceoff.add_child(portraits)
+        var own_portrait := _briefing_portrait("PlayerBriefingPortrait")
+        own_portrait.texture = load("res://assets/portraits/player_wanderer_ink_v1.png")
+        portraits.add_child(own_portrait)
+        var versus := _briefing_text("對", 40)
+        versus.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+        versus.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+        portraits.add_child(versus)
+        _approved_portrait = _briefing_portrait("ApprovedOpponentPortrait")
+        portraits.add_child(_approved_portrait)
+        _bimu_constraint_panel = preload("res://src/ui/bimu_constraint_panel.gd").new()
+        _bimu_constraint_panel.name = "BimuConstraintPanel"
+        _bimu_constraint_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+        _briefing_faceoff.add_child(_bimu_constraint_panel)
+        _bimu_constraint_panel.selection_changed.connect(_on_bimu_selection_changed)
+        _bimu_constraint_panel.submit_selection = Callable(self, "_submit_bimu_constraints")
+        _briefing_description_scroll = ScrollContainer.new()
+        _briefing_description_scroll.name = "PublicOpponentBriefing"
+        _briefing_description_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+        _briefing_description_scroll.focus_mode = Control.FOCUS_ALL
+        _briefing_description_scroll.accessibility_name = "공개된 상대 정보 · 위아래로 스크롤"
+        _briefing_description_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        _briefing_description_scroll.size_flags_stretch_ratio = 1.0
+        _briefing_body.add_child(_briefing_description_scroll)
+    _briefing_body.visible = true
+    description_label.reparent(_briefing_description_scroll)
+    description_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    description_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+    description_label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+    content_panel.anchor_left = 0.025
+    content_panel.anchor_right = 0.975
+    content_panel.anchor_top = 0.035
+    content_panel.anchor_bottom = 0.965
+    _bimu_constraint_panel.configure(run_state, manual_registry)
+    _refresh_briefing_own_status()
+    var art = preload("res://src/ui/approved_blueprint_art.gd")
+    for id in _bimu_constraint_panel.option_buttons:
+        var button: Button = _bimu_constraint_panel.option_buttons[id]
+        var manual_id := "mount_hua_plum_blossom_sword"
+        if "RESPONSE" in id: manual_id = "wudang_taiji_sword"
+        elif "RECOVERY" in id or "RESOURCE" in id: manual_id = "mount_hua_purple_mist_art"
+        elif "MOMENTUM" in id: manual_id = "xiaoyao_lingbo_footwork"
+        button.icon = art.manual_illustration(manual_id, 10 if "ULTIMATE" in id else 3)
+        button.expand_icon = true
+        button.add_theme_constant_override("icon_max_width", 48)
+        button.custom_minimum_size.y = 58
+        if id == "CST_TECH_MULTI_SLOT_SEAL":
+            button.text = button.text.replace("연속 수 봉인", "긴 동작 봉인")
+            var explanation := button.get_parent().get_child(1) as Label
+            if explanation != null: explanation.text = "여러 동작 분량을 차지하는 무공 기술을 이번 비무에서 사용할 수 없습니다."
+    _bimu_constraint_panel.summary_label.text = _bimu_constraint_panel.summary_label.text.replace("연속 수 봉인", "긴 동작 봉인")
+
+
+func _refresh_briefing_own_status() -> void:
+    for child in _briefing_own_status.get_children():
+        _briefing_own_status.remove_child(child)
+        child.queue_free()
+    _briefing_own_status.add_child(_briefing_text("강호낭인", 25))
+    var resources := run_state.get_player_run_resources()
+    for key in ["health", "stamina", "internal"]:
+        var pair: Array = resources[key]
+        var labels := {"health": "체력", "stamina": "기력", "internal": "내력"}
+        _briefing_own_status.add_child(_briefing_text("%s  %d / %d" % [labels[key], pair[0], pair[1]], 18))
+        var bar := ProgressBar.new()
+        bar.max_value = float(pair[1])
+        bar.value = float(pair[0])
+        bar.show_percentage = false
+        bar.custom_minimum_size.y = 9
+        var background := StyleBoxFlat.new()
+        background.bg_color = Color("c9bfa9")
+        bar.add_theme_stylebox_override("background", background)
+        var fill := StyleBoxFlat.new()
+        var colors := {"health": "933e31", "stamina": "476e8d", "internal": "38756d"}
+        fill.bg_color = Color(colors[key])
+        bar.add_theme_stylebox_override("fill", fill)
+        _briefing_own_status.add_child(bar)
+    _briefing_own_status.add_child(_briefing_text("보유 무공", 21))
+    var mastery := run_state.get_player_mastery_by_manual()
+    for id in run_state.get_player_manual_loadout():
+        var row := HBoxContainer.new()
+        var illustration := _briefing_portrait("ManualArt")
+        illustration.custom_minimum_size = Vector2(50, 62)
+        illustration.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+        illustration.texture = preload("res://src/ui/approved_blueprint_art.gd").manual_illustration(str(id), int(mastery.get(id, 3)))
+        row.add_child(illustration)
+        row.add_child(_briefing_text("%s\n%d성" % [manual_registry.get_manual(id).get("manual_name", id), int(mastery.get(id, 3))], 16))
+        _briefing_own_status.add_child(row)
+
+
+func _briefing_portrait(node_name: String) -> TextureRect:
+    var portrait := TextureRect.new()
+    portrait.name = node_name
+    portrait.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+    portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+    portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    return portrait
+
+
+func _briefing_text(text: String, font_size: int) -> Label:
+    var label := Label.new()
+    label.text = text
+    label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+    label.add_theme_font_size_override("font_size", font_size)
+    label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    return label
+
+
 func _on_bimu_selection_changed(receipt: Dictionary) -> void:
     primary_button.text = "제약 없이 비무 시작" if (receipt.get("selections", []) as Array).is_empty() else "선택한 제약으로 비무 시작"
 
@@ -527,9 +713,12 @@ func _set_content(title: String, description: String, button_text: String) -> vo
         description_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
         description_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
     title_label.text = title
+    title_label.add_theme_font_size_override("font_size", 30)
     description_label.text = description
+    description_label.add_theme_font_size_override("font_size", 17)
     primary_button.text = button_text
     primary_button.disabled = false
+    primary_button.visible = true
 
 
 func _ensure_combat_view() -> void:
@@ -542,7 +731,7 @@ func _ensure_combat_view() -> void:
         else:
             _discard_combat_view()
 
-    _combat_view = COMBAT_SCENE.instantiate() as Control
+    _combat_view = load("res://src/run/frame_combat_bridge.gd").new() as Control if run_state.is_frame_run() else COMBAT_SCENE.instantiate() as Control
     if _combat_view == null:
         push_error("Vertical Slice shell could not instantiate the combat bridge.")
         return
@@ -723,7 +912,10 @@ func _build_save_recovery() -> void:
 func _apply_session_input_lock() -> void:
     if session == null: return
     var locked: bool = not session.accepts_commands()
-    for host in [content_panel, main_title_screen, combat_host]: _lock_session_buttons(host, locked)
+    for host in [content_panel, main_title_screen, combat_host, _onboarding_view]:
+        if is_instance_valid(host): _lock_session_buttons(host, locked)
+    var journey_map := get_node_or_null("FrameJourneyMap")
+    if journey_map != null: _lock_session_buttons(journey_map, locked)
     if is_instance_valid(_combat_view):
         _combat_view.session_input_blocked = locked
         _combat_view.session_suspended = session.suspended
@@ -790,6 +982,13 @@ func _apply_screen_art(screen: String, resting := false) -> void:
     var backdrop := get_node_or_null("ShellBackdrop") as TextureRect
     if backdrop != null:
         backdrop.texture = preload("res://src/ui/ink/ink_screen_art.gd").backdrop(screen,resting)
+        if screen in ["PROLOGUE", "TUTORIAL"]:
+            var prologue_path := "res://assets/ui/ink_frame/prologue_background.png"
+            if ResourceLoader.exists(prologue_path): backdrop.texture = load(prologue_path)
+        elif screen == "FIRST_JOURNEY":
+            backdrop.texture = preload("res://src/ui/ink/ink_screen_art.gd").backdrop("JIANGHU")
     var side_panel := resting or screen == VerticalSliceRunState.SCREEN_SETUP
     content_panel.anchor_left = 0.52 if resting else 0.42 if side_panel else 0.14
     content_panel.anchor_right = 0.96 if side_panel else 0.86
+    content_panel.anchor_top = 0.08
+    content_panel.anchor_bottom = 0.92

@@ -74,7 +74,7 @@ func run_fixture() -> void:
     if replay_initial:
         if not require(shell.continue_saved_run(), "continue shared initial fixture"): return
     else:
-        if not require(shell.start_new_run(), "start"): return
+        if not require(shell.session.transact(func(): return shell.run_state.start_new_giyun_run(randi(), shell.session.save_id), true), "start legacy durable fixture"): return
         var initial_file := FileAccess.open(initial_path, FileAccess.WRITE)
         initial_file.store_string(JSON.stringify(shell.session.last_durable))
         initial_file.close()

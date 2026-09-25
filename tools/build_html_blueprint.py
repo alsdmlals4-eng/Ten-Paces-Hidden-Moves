@@ -13,6 +13,7 @@ import shutil
 from urllib.parse import quote
 
 import html_blueprint as model
+import html_blueprint_frame as frame_model
 
 ROOT = model.ROOT
 OUT = ROOT / 'output/blueprint'
@@ -169,6 +170,7 @@ def build(out=OUT, include_candidate=True):
         pm['items'].extend(candidate_info['work_items'])
     import html_blueprint_audit as audit_model
     audit_model.extend_inventory(ROOT, assets, candidate_info['revision'] if candidate_info else None, out)
+    frame_model.extend_inventory(assets, ROOT)
     decisions = model.read(ROOT, 'docs/blueprint/IMPLEMENTATION_READINESS.json')
     for replacement in decisions.get('image_replacements', []):
         asset = next(a for a in assets if a['scope']=='MAIN_SOURCE' and a['path']==replacement['path'])
@@ -203,6 +205,9 @@ def build(out=OUT, include_candidate=True):
     manuals = [model.read(ROOT, f'data/cards/martial_manuals/{mid}.json') for mid in art['manuals']]
     for manual in manuals:
         manual['readable_tables'] = model.manual_readable_tables(manual)
+        frame_model.attach_timing(manual['cards'].values(), ROOT)
+        for row, card in zip(manual['readable_tables']['techniques'], manual['cards'].values()):
+            row[2] = card['frame_timing_text']
         for card in manual['cards'].values():
             card['effect_descriptions'] = [narrative.describe(step) for step in card.get('effect_steps',[])]
     from html_blueprint_diagrams import build as diagram_views
@@ -247,8 +252,16 @@ def build(out=OUT, include_candidate=True):
         'tools/capture_blueprint_motion.gd','tools/encode_blueprint_motion.py',experience_model.MOTION_MANIFEST,
         experience_model.INK_MANIFEST,experience_model.SCREEN_CAPTURE,
         'data/run/bimu_constraints.json','data/cards/basic_cards.json']
-    experience_paths.extend(c['preview']['path'] for c in experience['contexts'].values())
+    experience_paths.extend(c['preview']['path'] for c in experience['contexts'].values() if c.get('preview'))
+    experience_paths.extend([frame_model.DECISION, frame_model.FLOW_OWNER, frame_model.TIMING, frame_model.INTRO, frame_model.REFERENCES, frame_model.LAYERS, 'tools/html_blueprint_frame.py'])
+    experience_paths.extend(row['path'] for row in experience['frame_assets'])
+    for receipt in [frame_model.CAPTURE_RECEIPT, frame_model.WIN_CAPTURE_RECEIPT]:
+        if (ROOT / receipt).is_file():
+            experience_paths.append(receipt)
+    if (ROOT / frame_model.CLIP_RECEIPT).is_file():
+        experience_paths.append(frame_model.CLIP_RECEIPT)
     for clip in experience['clips']:
+        experience_paths.append(clip['manifest'])
         experience_paths.append(clip['path'])
         if clip.get('poster'): experience_paths.append(clip['poster'])
     for path in experience_paths:
@@ -306,6 +319,24 @@ def build(out=OUT, include_candidate=True):
         inputs[path] = model.sha(ROOT/path)
     from html_blueprint_inspection import build as inspection_index
     audit_model.group_assets(assets, payload['people'], manuals, art)
+    frame_art = {row['path']: row for row in experience['frame_assets']}
+    screen_names = {'main':'메인', 'prologue':'출사표', 'setup':'삽화 무공 선택', 'tutorial':'10초 규칙 안내',
+                    'first_journey':'첫 행로', 'event':'첫 사건 선택', 'journey':'후속 강호행로',
+                    'briefing':'비무 브리핑', 'preparation':'전투 준비', 'resolution':'전투 진행',
+                    'result':'패배 결과', 'review':'패배 복기', 'victory':'승리 결과',
+                    'victory-review':'승리 복기', 'later-event':'후속 행로 사건'}
+    for key, capture in frame_model.validated_captures(ROOT).items():
+        frame_art[capture['path']] = dict(name=screen_names.get(key, key)+' · 검증된 실행 캡처',
+            kind='RUNTIME_CAPTURE', limit='촬영 확인서 PASS · 현재 화면의 정지 촬영 · Human/기기 검증은 별도',
+            owner=capture['source'])
+    for asset in assets:
+        if asset['path'] in frame_art:
+            row = frame_art[asset['path']]
+            asset['name'] = row['name']
+            asset['owner'] = row['owner']
+            asset['details'].update(frame_evidence_kind=row['kind'], usage=row['limit'])
+            asset['approval_record'] = row['limit']
+            asset['group'] = dict(id='screen:frame-reference', label='화면 · 10초 설계', role=row['name'], basis=row['owner'])
     for asset in assets:
         if asset['details'].get('reference_edit'):
             asset['group'] = {'id':'screen:plan','label':'전투 · 수 배치','role':'상태창 여백 편집 참고안','basis':'사용자142 수정 요청'}
