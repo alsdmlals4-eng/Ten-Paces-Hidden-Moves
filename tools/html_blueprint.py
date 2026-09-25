@@ -69,6 +69,7 @@ class Reader:
     def __init__(self):
         self.pages = []
         self.c = self
+        self.retired = {row['path']: row for row in read(ROOT, 'docs/blueprint/IMPLEMENTATION_READINESS.json').get('retired_images', [])}
 
     def add(self, kind, **values):
         self.pages[-1]['blocks'].append({'kind': kind, **values})
@@ -95,6 +96,9 @@ class Reader:
 
     def photo(self, path, *args):
         relative = Path(path).resolve().relative_to(ROOT).as_posix()
+        if relative in self.retired:
+            self.add('retired_image', path=relative)
+            return
         verified_file(ROOT, relative)
         self.add('image', path=relative)
 
@@ -195,6 +199,8 @@ def collect_assets(root):
     for entry in read(root, 'assets/ASSET_MANIFEST.json')['assets']:
         path = entry['path'].removeprefix('res://')
         local_path(root, path)
+        if path in retired:
+            continue
         approved = approval_state(entry) == 'USER_APPROVED'
         item = {'id': 'asset-' + entry['id'], 'path': path, 'name': entry.get('role', entry['id']),
                 'approval': 'USER_APPROVED' if approved else 'APPROVAL_UNVERIFIED',
@@ -224,7 +230,7 @@ def collect_assets(root):
         if not original or not original.endswith(('.png', '.jpg', '.webp')):
             continue
         path = local_path(root, original)
-        if path.is_file() and original not in by_path:
+        if path.is_file() and original not in by_path and original not in retired:
             by_path[original] = {**item, 'id': item['id']+'-original', 'path': original,
                 'name': item['name']+' · 제작 원본', 'sha256': sha(path), 'consumers': [],
                 'derived_asset_id': item['id'], 'active': None}
@@ -233,7 +239,7 @@ def collect_assets(root):
             if path.suffix.lower() not in {'.png', '.jpg', '.jpeg', '.webp'}:
                 continue
             relative = path.relative_to(root).as_posix()
-            if relative not in by_path:
+            if relative not in by_path and relative not in retired:
                 by_path[relative] = {'id': 'asset-'+hashlib.sha256(relative.encode()).hexdigest()[:16],
                     'path': relative, 'name': path.stem, 'scope': 'MAIN_SOURCE', 'active': None, 'consumers': [],
                     'approval': 'APPROVAL_UNVERIFIED', 'approval_record': '파일 존재만 확인; 폴더 이름으로 승인을 추정하지 않음',

@@ -86,6 +86,10 @@ func _verify_catalog() -> void:
             if typeof(spec) != TYPE_DICTIONARY:
                 failures.append("%s.%s는 Dictionary여야 합니다." % [card_id, spec_key])
                 continue
+            if spec_key != "illustration" and spec.is_empty():
+                if str(card.get("source_label", "")).is_empty() or str(card.get("category_label", "")).is_empty():
+                    failures.append("이미지 배지 없이도 소속과 행동 종류를 읽을 수 있어야 합니다.")
+                continue
             var atlas_path := str(spec.get("atlas", ""))
             var region = spec.get("region", [])
             if atlas_path.is_empty() or not ResourceLoader.exists(atlas_path):
@@ -131,6 +135,13 @@ func _verify_preview_scene() -> void:
     var card_views := preview.find_children("*", "CardView", true, false)
     if card_views.size() != EXPECTED_CARD_COUNT:
         failures.append("미리보기 CardView는 %d개여야 합니다. actual=%d" % [EXPECTED_CARD_COUNT, card_views.size()])
+    for card_view in card_views:
+        var visible_text: Array[String] = []
+        for label in card_view.find_children("*", "Label", true, false):
+            if label.is_visible_in_tree(): visible_text.append(label.text)
+        for required in ["기초", str(card_view.definition.category_label), "수", "기력", "내력"]:
+            if required not in visible_text:
+                failures.append("옛 아이콘 없이 카드 의미를 읽을 수 있어야 합니다: " + required)
 
     var detail_panels := preview.find_children("*", "CardDetailPanel", true, false)
     if detail_panels.size() != 1:

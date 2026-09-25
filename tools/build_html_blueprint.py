@@ -180,13 +180,16 @@ def build(out=OUT, include_candidate=True):
     if retired:
         asset_audit['move_status'] = f'사용자 폐기 요청 {len(retired)}개 처리 · 개별 삭제/이동 결과는 폐기 이력에서 확인'
     for entry in retired:
+        disposition = {'DELETED_BY_USER_REQUEST':'삭제 완료',
+                       'EXCLUDED_TOOL_RESOURCE':'HTML 목록 제외 · 검사 도구 내부 파일 유지',
+                       'REMOVED_CANDIDATE_EXPORT':'발행 사본 삭제 · 별도 PR 원본 유지'}.get(entry['status'], '삭제대기 이동 완료 · 사용자가 최종 삭제')
         assets.append({**entry, 'scope':'MAIN_SOURCE', 'revision':None, 'available':False, 'active':False,
             'details':{'retired':True,'disposal':entry}, 'consumers':[], 'approval':'USER_DISCARDED',
-            'approval_record':'사용자 요청으로 파일 삭제' if entry['status']=='DELETED_BY_USER_REQUEST' else '사용자 폐기 요청 처리 · 삭제대기 폴더로 이동',
+            'approval_record':disposition,
             'owner':'docs/blueprint/IMPLEMENTATION_READINESS.json',
             'audit':{'flags':['discarded'], 'reasons':[entry['reason']], 'safe_to_move':False,
                 'runtime_references':[], 'document_references':[], 'replacement_ids':[], 'duplicate_ids':[],
-                'disposition':'삭제 완료' if entry['status']=='DELETED_BY_USER_REQUEST' else '삭제대기 이동 완료 · 사용자가 최종 삭제', 'category':'폐기 이력'}})
+                'disposition':disposition, 'category':'폐기 이력'}})
     for asset in assets:
         asset['related_work'] = [item['work_item_id'] for item in pm['items']
             if set(item.get('actual_consumers', [])) & {asset['path'], *asset['consumers']}
@@ -204,6 +207,10 @@ def build(out=OUT, include_candidate=True):
             card['effect_descriptions'] = [narrative.describe(step) for step in card.get('effect_steps',[])]
     from html_blueprint_diagrams import build as diagram_views
     diagrams = diagram_views()
+    retired_paths = {row['path'] for row in retired}
+    for diagram in diagrams:
+        for node in diagram['nodes']:
+            node['sources'] = [p for p in node['sources'] if p not in retired_paths]
     for asset in assets:
         asset.setdefault('url', '../../' + quote(asset['path'], safe='/'))
         file = out / asset['url'] if asset['scope'] == 'PR342_CANDIDATE' else model.local_path(ROOT, asset['path'])
@@ -229,7 +236,8 @@ def build(out=OUT, include_candidate=True):
                     'assets/ASSET_MANIFEST.json', 'docs/planning-data/current_operating_state.json',
                     'docs/planning-data/current_user_planning_status.json', '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md']
     for path in source_paths:
-        inputs[path] = model.sha(model.local_path(ROOT, path))
+        if path not in retired_paths:
+            inputs[path] = model.sha(model.local_path(ROOT, path))
     for diagram in diagrams:
         for node in diagram['nodes']:
             for path in node['sources']:
@@ -241,7 +249,8 @@ def build(out=OUT, include_candidate=True):
         'data/run/bimu_constraints.json','data/cards/basic_cards.json']
     experience_paths.extend(c['preview']['path'] for c in experience['contexts'].values())
     for clip in experience['clips']:
-        experience_paths.extend([clip['path'],clip['poster']])
+        experience_paths.append(clip['path'])
+        if clip.get('poster'): experience_paths.append(clip['poster'])
     for path in experience_paths:
         inputs[path] = model.sha(model.local_path(ROOT,path))
     # The selected style comparison is a reviewed local page, with an explicit
@@ -281,7 +290,10 @@ def build(out=OUT, include_candidate=True):
                'historical_reader': {'approval_date': '2026-09-11', 'approved_revision': model.read(ROOT, 'docs/planning-data/current_user_planning_status.json')['blueprint_final_approval']['approved_revision']}}
     payload['giyun'] = model.read(ROOT, 'data/run/giyun_rules.json')
     payload['giyun_capture'] = 'docs/blueprint/evidence/giyun-route-20260923.png'
-    inputs[payload['giyun_capture']] = model.sha(ROOT/payload['giyun_capture'])
+    if payload['giyun_capture'] in {row['path'] for row in retired}:
+        payload['giyun_capture'] = None
+    else:
+        inputs[payload['giyun_capture']] = model.sha(ROOT/payload['giyun_capture'])
     for path in ['data/run/giyun_rules.json','src/run/giyun_rules.gd','src/run/vertical_slice_metrics_combat_resolution_engine.gd','src/run/vertical_slice_run_state.gd','docs/decisions/2026-09-23_GIYUN_DDD_BLUEPRINT.md']:
         inputs[path] = model.sha(ROOT/path)
     payload['current_design'] = (ROOT/'docs/01_GAME_DESIGN.md').read_text(encoding='utf-8').split('## 2026-09-23 · 현재 게임 설명과 DDD', 1)[1]

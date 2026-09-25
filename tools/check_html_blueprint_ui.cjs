@@ -129,7 +129,8 @@ for(const id of ['reader-013','reader-015']){
 }
 assert(!check("block({kind:'image',path:'docs/blueprint/evidence/reference-screens/54d7b849fff7d6b9a639007f08147401.png',page_id:'reader-013'})").includes('clash_explanation_v1'),'Replacement must be scoped to a semantic page');
 const whole=check('home()');assert(whole.indexOf('id="all-reader-010"')<whole.indexOf('id="all-reader-009"'));
-assert.equal((whole.match(/data-numbered-image="inventory-13fcfaaa5d6cee4a"/g)||[]).length,1,'Disposal tombstone appears once in the overview');
+assert.equal((whole.match(/data-numbered-image="inventory-13fcfaaa5d6cee4a"/g)||[]).length,0,'Completed disposal must leave the default image list');
+assert(check("asset('inventory-13fcfaaa5d6cee4a')").includes('삭제 완료'),'Original image number and review history remain reachable');
 assert(check('userReviewPanel(inspections[0])').includes('자동 저장'));
 assert(check('auditGallery()').includes('폐기 요청'));
 
@@ -176,6 +177,15 @@ for(let attempt=0;attempt<3;attempt++){
 assert.equal(vm.runInContext('typeof userReviewPanel',env),'function','Missing user status/comment editing');
 assert(check('reviewQueue()').includes('코멘트'));
 assert(check('auditGallery()').includes('정리'));
+const activeLibrary=check('assets()'),activeAudit=check('auditGallery()');
+vm.runInContext("auditFilter='discarded'",env);
+const disposalHistory=check('auditGallery()');
+vm.runInContext("auditFilter='all'",env);
+for(const retired of data.retired_images){
+ assert(!activeLibrary.includes('href="#asset/'+retired.id+'"'),'Disposed resource returned to the asset library');
+ assert(!activeAudit.includes('href="#asset/'+retired.id+'"'),'Disposed resource returned to the default image list');
+ assert(disposalHistory.includes('href="#asset/'+retired.id+'"'),'Disposal history must remain accessible');
+}
 assert(check("intentPanel(recordById('screen:menu'))").includes('만든 이유'));
 assert(vm.runInContext("requestFor(recordById('screen:menu'))",env).includes('만든 이유'));
 assert(check("userReviewPanel(recordById('screen:menu'))").includes('textarea'));

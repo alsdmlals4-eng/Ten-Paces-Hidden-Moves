@@ -163,3 +163,18 @@ f0901652 원격 검사32개는 PASS했다. 제품 job은 원래15분 제한으�
 취소된 이후23검사를 로컬에서 실행해 제약 안내 영역의 탭 경계4px 교차, 옛 초상 숨김 기대, 정수 스크롤의 변환 후0.552px 반올림을0.5px로 제한한 기대를 확인했다. ce56315d에서 안내의 오른쪽 기준을 유지하고 영역만12px 좁혔다. 초상 검사는 실제 참조 AtlasTexture 표시와 자원바 비중첩을 확인하도록 옮겼으며, 키보드 자동 스크롤은 최대1 native pixel을 부모 transform으로 변환한 유한 오차만 허용한다. 제약 UI·카드 요약·atlas consumer·참조 배치 집중 재검사 PASS, 나머지21개도 실행 PASS다. 새 round/전투/저장 규칙은 없다. 준비 PNG bytes는 이전 후보와 동일하다.
 
 전달 최종 제품 ce56315d에서 Windows50/50·실패0, 새11화면,708프레임/24fps/29.5초/고유511프레임을 다시 생성·발행했다. ZIP188681969bytes, SHA256 `304f02793f706abaf924e8d6fffc8c1bf1269239324b73d52f59ab9f7135a85a`, 압축 CRC/구성 파일 해시 일치 PASS다. `output/prep-layout/reference-delivery.json`과 `reference-windows-current/`가 최신 로컬 실행본을 식별한다. 첫 Windows helper 실행은 구 PowerShell의 빈 ExitCode 때문에 보고 단계가 실패했지만 실제50시나리오는 성공했으며, 현재 PowerShell7로 재검증해 실제 종료0과 근거 생성을 확인했다. 원격 최종 통과 전에는 CI 전체 PASS를 주장하지 않는다.
+
+
+### HTML 폐기 요청 실행 · 2026-09-25
+
+기준0906af9b72889181c0ef4120f020614202eaae51 / BUILD·REVIEW / building-reviewable-html-blueprints + project workflow router / asset cleanup·reference freshness. 최신 사용자의 실제 폐기 지시와 GUT13파일 유지 답변을 재사용한 승인 범위다. CURRENT_SOURCE_RELEVANCE_CHECK: 파일 폐기 판단은 공용 검토 기록·실제 참조·원본 해시가 직접 근거이므로 외부 조사는 NOT_APPLICABLE. FEASIBLE. 별도 화면 개편과 프레임 전투는 계획만 수행한다.
+
+공용 reviews.json revision108·SHA256 cc4201ad3c187520ba128b9b5a48fa09b3f993fdec8f18511cdea3f6a133cd88의102요청: 저장소85원본+삭제대기2캡처 삭제, 기존1삭제 확인, GUT13원본 유지/목록 제외, PR342후보1발행 사본 삭제. 총342개 원본·파생 미리보기·sidecar 파일의 부재를 확인했다. 다른 PR의 원본과 요청하지 않은 승인/런타임 복사본은 이번 변경에 포함하지 않는다. 파일별 번호·요청ID/시간·원래 경로·해시·복구 기준은 IMPLEMENTATION_READINESS.json의 기존 retired_images에 누적했다.316/317은 삭제대기 사본과 이전 Git 촬영본의 해시를 별도로 명시했다. IMAGE_NUMBERS.json 및105개 사용자 코멘트 원본의 해시는 그대로다.
+
+기초 CardView의 구 배지·비용 SVG 사용을 제거하고 기존 종류·수·기력·내력 값을 Label로 표시했다. basic_cards.json은20개 badge 참조만 비우고 모든 행동ID·삽화·효과·비용·거리 필드는 기준과 동일하다. HTML generator가 알려진 폐기 자료만 처리 이력으로 바꾸며, 미등록 누락과 변조 영상은 여전히 실패한다. 폐기 영상 poster만 생략하고37개 실제 영상은 유지한다. 최초10화풍/초기혼합 시안 전용 gallery는 제거하며 승인된 합 미리보기는 유지한다.
+
+전체 검토1:102요청·Git원본·제품 consumer·파생본을 대조해 실제 카드 atlas2개와 GUT13이미지 의존, 별도 PR342원본 경계를 확인했다. 카드 소비처를 교체하고 GUT는 사용자 답변대로 제외만 처리했다. 전체 검토2:실제 diff·미변경 준비/전투/저장·builder·사용자 기록·복구정보·목록을 대조해 후보29 재번호, 삭제된 사건 촬영의 본문/검수 증거, 기본 이미지 목록에 남는 폐기 항목,316/317의 복구 해시 혼동을 교정했다. 이후는 해당 반례의 집중 검증만 수행했다.
+
+검증: 폐기 회귀4개 RED→GREEN(누락파일/영상poster/후보번호), HTML37검사, 자산/기획 관련12검사 PASS; 카드·전투보드 계약 PASS. Godot4.7.1 STEP0_GODOT_VERIFY_OK, PREPARATION_REFERENCE PASS/0failures. HTML112설명·기존412번호,1280뷰/18737로컬연결 검사 PASS. 일반 이미지 목록은 폐기 항목 제외, 별도 폐기 필터/개별번호로 코멘트 이력 확인 가능. 로컬 산출/검증은 output/blueprint-disposal-*.json·output/disposal-*.log. 일괄 삭제 자동 검토가 blocked by policy로 거부한 최초 시도는 아무 파일도 변경하지 않았고, 추적 파일/정확한 해시의 삭제대기 파일/작업 폴더 안 파생본으로 나눠 정상 처리했다. 사용자 원본 작업 폴더, addon 원본13파일, shared review 파일은 변경하지 않았다.
+
+기존 준비 화면 최종 이미지의 사용자 검수와 PR367 Draft 이유는 미해소다. 새 Windows 배포본·Android·Human·병합은 이번 폐기 작업의 검증으로 주장하지 않는다. 다음 화면 개편 및 프레임 판정/AI/저장 전환은 구체 계획 제시 후 사용자 구현 승인 대기다.

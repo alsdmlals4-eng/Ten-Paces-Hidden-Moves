@@ -83,12 +83,17 @@ def load_clips(manifest_path=None):
                 if path not in current:
                     current[path] = hashlib.sha256(file.read_text(encoding='utf-8').encode('utf-8')).hexdigest()
     clips = manifest['clips']
+    retired = {r['path']: r for r in read(ROOT, 'docs/blueprint/IMPLEMENTATION_READINESS.json').get('retired_images', [])}
     unique_ids(clips)
     for clip in clips:
         clip['manifest'] = manifest_path
         clip['freshness'] = clip_freshness(clip, manifest, current)
-        for field in ['path','poster']:
-            verified_file(ROOT, clip[field], clip[field+'_sha256'])
+        verified_file(ROOT, clip['path'], clip['path_sha256'])
+        if clip.get('poster') in retired:
+            clip['poster_disposal'] = retired[clip['poster']]
+            clip['poster'] = None
+        elif clip.get('poster'):
+            verified_file(ROOT, clip['poster'], clip['poster_sha256'])
         if clip.get('gif'):
             verified_file(ROOT, clip['gif'], clip['gif_sha256'])
     return clips
@@ -96,13 +101,10 @@ def load_clips(manifest_path=None):
 
 def build(pages):
     contexts = build_contexts()
-    images = [b for p in pages if p['id']=='reader-006' for b in p['blocks'] if b['kind']=='image']
     page_ids = {p['id'] for p in pages}
     for context in contexts.values():
         if not set(context['pages']) <= page_ids:
             raise ValueError('Atlas context links to an unknown explanation')
-        context['preview'] = images[context['atlas_image_index']]
-        context['preview_kind'] = '승인 기획의 화면 자료'
     stills = {s['key']:s for s in read(ROOT, SCREEN_CAPTURE)['shots']}
     for key, shot in {'menu':'main','starter':'setup','brief':'briefing','plan':'preparation',
                       'resolve':'resolution','result':'result','route':'journey','end':'result'}.items():

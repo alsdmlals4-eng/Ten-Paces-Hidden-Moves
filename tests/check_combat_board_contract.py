@@ -294,8 +294,10 @@ def main() -> None:
     assert title_logo["runtime_consumer"] == "MainTitleScreen in src/ui/main_title_screen.gd"
     assert title_logo["transparency_audit"]["alpha_extrema"] == [0, 255]
     title_logo_source = ROOT / title_logo["source_asset"]
-    assert title_logo_source.exists()
-    assert hashlib.sha256(title_logo_source.read_bytes()).hexdigest() == title_logo["source_png_sha256"]
+    source_retirement = next(r for r in load_json('docs/blueprint/IMPLEMENTATION_READINESS.json')['retired_images'] if r['path'] == title_logo['source_asset'])
+    assert source_retirement['status'] == 'DELETED_BY_USER_REQUEST'
+    assert not title_logo_source.exists()
+    assert source_retirement['sha256'] == title_logo["source_png_sha256"]
     assert hashlib.sha256(res_file(title_logo["path"]).read_bytes()).hexdigest() == title_logo["source_png_sha256"]
     attack_clash_vfx = next(asset for asset in active_assets if asset["id"] == "attack_clash_ink_gold_atlas_01_v1")
     assert attack_clash_vfx["source_asset"] == "docs/visual-assets/approved/ATTACK_CLASH_INK_GOLD_ATLAS_01_v1.png"
@@ -395,7 +397,7 @@ def main() -> None:
         "assets/combat/ink_wuxia/slot1_dogyeom/enemy-0.png",
         "assets/combat/ink_wuxia/enemy-0.png",
         "assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
-        "assets/reference/step_02_character_scale_and_tile_placement.svg",
+        "assets/ui/ink_preparation/reference_painting.png",
         "scenes/combat/combat_board_preview.tscn",
         "scenes/combat/combat_board_tile.tscn",
         "scenes/ui/action_timing_panel.tscn",
@@ -442,7 +444,7 @@ def main() -> None:
     verifier = (ROOT / "tests/verify_combat_board.gd").read_text(encoding="utf-8")
     response_verifier = (ROOT / "tests/verify_response_rules.gd").read_text(encoding="utf-8")
     powershell = (ROOT / "tools/verify_and_commit_combat_foundation.ps1").read_text(encoding="utf-8")
-    reference_svg = (ROOT / "assets/reference/step_02_character_scale_and_tile_placement.svg").read_text(encoding="utf-8")
+    retired_reference = next(r for r in load_json("docs/blueprint/IMPLEMENTATION_READINESS.json")["retired_images"] if r["path"] == "assets/reference/step_02_character_scale_and_tile_placement.svg")
 
     assert all(token in tile_script for token in ("signal tile_clicked", "set_interaction_state", "movable", "attackable"))
     assert all(token in timing_script for token in ("set_placement_target", "get_pending_target_anchor", "are_current_bundle_targets_ready", "are_current_bundle_resources_ready", "preview_player_plan", "projected_combat_state"))
@@ -488,10 +490,10 @@ def main() -> None:
     assert "res://tests/verify_combat_assistive_labels.gd" in powershell
     assert "OpponentHypothesisPanel" not in controller
     assert "SkipPresentationButton" not in controller
-    assert "플레이어 4번 / 상대 7번" in reference_svg  # historical visual reference; not runtime authority
-    assert "플레이어 · 4번 칸" in reference_svg
-    assert "상대 · 7번 칸" in reference_svg
-    assert "플레이어 3번 / 상대 8번" not in reference_svg
+    assert retired_reference['status'] == 'DELETED_BY_USER_REQUEST'
+    assert not (ROOT / retired_reference['path']).exists()
+    assert retired_reference['number'] == 130
+    assert len(retired_reference['sha256']) == 64
 
     print("combat board STEP 1-10.6 contract with current start tiles 4 and 6: PASS")
 

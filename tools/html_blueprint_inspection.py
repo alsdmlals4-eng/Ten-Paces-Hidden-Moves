@@ -32,9 +32,11 @@ def build(payload):
     stills = {c['still_capture']['path']:c['still_capture'] for c in payload['experience']['contexts'].values() if c.get('still_capture')}
     receipt_path = 'docs/operations/2026-09-22_HTML_BLUEPRINT_WORK_CONTRACT_RECEIPT.json'
     event_still = read(ROOT, receipt_path)['event_checks_readability_followup']['tests']['native_capture']
-    if sha(local_path(ROOT, event_still['path'])) != event_still['sha256']:
-        raise ValueError('Event capture identity mismatch')
-    stills[event_still['path']] = dict(event_still, source=receipt_path, label='Godot 사건 선택 정지화면 촬영 · 전체 플레이 검증과 별도')
+    retired = {r['path'] for r in read(ROOT, 'docs/blueprint/IMPLEMENTATION_READINESS.json').get('retired_images', [])}
+    if event_still['path'] not in retired:
+        if sha(local_path(ROOT, event_still['path'])) != event_still['sha256']:
+            raise ValueError('Event capture identity mismatch')
+        stills[event_still['path']] = dict(event_still, source=receipt_path, label='Godot 사건 선택 정지화면 촬영 · 전체 플레이 검증과 별도')
     def record(id, kind, name, route, sources, linked_assets=(), clip_ids=(), planning='원본 기록 있음', match_sources=None, scope=None, revision=None, still=None):
         if still: sources = list(sources) + [still['path'], still['source']]
         sources = sorted(set(sources))

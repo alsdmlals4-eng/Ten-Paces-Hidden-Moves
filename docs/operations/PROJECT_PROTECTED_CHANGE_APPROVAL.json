@@ -8,12 +8,22 @@
   ],
   "approved_paths": [
     "assets/ASSET_MANIFEST.json",
+    "assets/backgrounds/step3_mountain_fortress.svg",
+    "assets/backgrounds/step3_mountain_fortress.svg.import",
+    "assets/reference/step_02_character_scale_and_tile_placement.svg",
+    "assets/reference/step_02_character_scale_and_tile_placement.svg.import",
+    "assets/ui/cards/card_asset_manifest.json",
+    "assets/ui/cards/card_badge_atlas.svg",
+    "assets/ui/cards/card_badge_atlas.svg.import",
+    "assets/ui/cards/cost_icon_atlas.svg",
+    "assets/ui/cards/cost_icon_atlas.svg.import",
     "assets/ui/ink_preparation/reference_details.png",
     "assets/ui/ink_preparation/reference_details.png.import",
     "assets/ui/ink_preparation/reference_painting.png",
     "assets/ui/ink_preparation/reference_painting.png.import",
     "assets/ui/ink_preparation/standing_characters.png",
     "assets/ui/ink_preparation/standing_characters.png.import",
+    "data/cards/basic_cards.json",
     "src/combat/combat_board_preview_auto.gd",
     "src/ui/action_selection/action_choice_card.gd",
     "src/ui/action_selection/action_detail_panel.gd",
@@ -22,6 +32,7 @@
     "src/ui/action_timing_panel.gd",
     "src/ui/action_timing_panel_auto.gd",
     "src/ui/action_timing_slot.gd",
+    "src/ui/card_view.gd",
     "src/ui/combat_progress_button.gd",
     "src/ui/combatant_status_panel.gd",
     "src/ui/ink/ink_preparation_layout.gd",
@@ -32,7 +43,7 @@
     "src/ui/round_hud_panel.gd",
     "src/ui/top_combat_hud.gd"
   ],
-  "approval_source": "2026-09-25 explicit user correction: 이미지 그대로 구현시키고 캐릭만 맞춰서 바꿔. Exact supplied preparation composition and textures, game character replacement, existing implementation/runtime/HTML approval reused.",
+  "approval_source": "2026-09-25 explicit user correction: 이미지 그대로 구현시키고 캐릭만 맞춰서 바꿔. Exact supplied preparation composition and textures, game character replacement, existing implementation/runtime/HTML approval reused. 2026-09-25 user: html에서 폐기 요청 누른것들 확인해서 폐기해; tool icons 13 explicitly HTML-only exclusion with internal files retained.",
   "approval_time": "2026-09-25T10:16:24.037954+09:00",
-  "scope_summary": "Reference-faithful 1086x1448 preparation painting with native interactive controls, proportional fit, game character standing/portrait replacement. Game domain/AI/save/resolution unchanged. New generated art remains final-visual-review pending."
+  "scope_summary": "Reference-faithful 1086x1448 preparation painting with native interactive controls, proportional fit, game character standing/portrait replacement. Game domain/AI/save/resolution unchanged. New generated art remains final-visual-review pending. Requested media disposal only; remove legacy badge/cost atlas dependencies with equivalent text. New frame-timeline combat and four-screen redesign are planning only, not implementation approval."
 }
