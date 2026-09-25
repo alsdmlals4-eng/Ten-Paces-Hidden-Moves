@@ -495,6 +495,11 @@ func _layout() -> void:
         return
     var side_margin := 12.0
     var width := maxf(1.0, size.x - side_margin * 2.0)
+    if bool(get_meta("ink_preparation", false)):
+        _title_label.add_theme_color_override("font_color", Color("2b2b24"))
+        _title_label.add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
+    if bool(get_meta("reference_preparation",false)):
+        _title_label.add_theme_font_size_override("font_size",22)
     _title_label.position = Vector2(side_margin, 5.0)
     _title_label.size = Vector2(width, 19.0)
     _sequence_label.visible = false
@@ -504,7 +509,7 @@ func _layout() -> void:
     if visible_indices.is_empty():
         return
     _refresh_slot_visibility()
-    var base_gap := 8.0
+    var base_gap := 26.0 if bool(get_meta("ink_preparation", false)) else 8.0
     var total_gap := base_gap * float(maxi(0, visible_indices.size() - 1))
     var slot_width := maxf(48.0, (width - total_gap) / float(visible_indices.size()))
     var slot_y := 28.0
@@ -515,6 +520,9 @@ func _layout() -> void:
         var slot := get_slot(int(timing_value))
         if slot == null:
             continue
+        if bool(get_meta("ink_preparation", false)):
+            slot.set_meta("ink_preparation", true)
+            slot.set_meta("reference_preparation",bool(get_meta("reference_preparation",false)))
         slot.position = Vector2(x, slot_y)
         slot.size = Vector2(slot_width, slot_height)
         x += slot_width + base_gap
@@ -563,6 +571,14 @@ func _notification(what: int) -> void:
         queue_redraw()
 
 func _draw() -> void:
+    if bool(get_meta("ink_preparation", false)):
+        if not bool(get_meta("reference_preparation",false)):
+            draw_rect(Rect2(Vector2.ZERO, size), Color("e3dac5"))
+        var indices := get_visible_timing_indices()
+        for i in range(indices.size() - 1):
+            var rect := get_slot(int(indices[i])).get_rect()
+            draw_string(get_theme_default_font(), Vector2(rect.end.x + 5, rect.get_center().y + 7), "→", HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color("48483b"))
+        return
     draw_rect(Rect2(Vector2.ZERO, size), PANEL, true)
     draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color("211c17"), false, 2.0)
     draw_rect(Rect2(Vector2(4.0, 4.0), size - Vector2(8.0, 8.0)), Color(GOLD, 0.62), false, 1.0)

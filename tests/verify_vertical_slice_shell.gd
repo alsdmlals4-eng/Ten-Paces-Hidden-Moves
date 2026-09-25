@@ -47,7 +47,9 @@ func _run() -> void:
     _expect_false(shell.find_child("VisualReferenceStatus", true, false) != null, "MAIN must not expose technical visual-reference status copy to players.")
 
     if start_button != null:
-        start_button.emit_signal("pressed")
+        # This runner protects the saved legacy combat shell; the frame onboarding
+        # runner verifies the visible title action and the new default flow.
+        shell.run_state.start_new_giyun_run(20260820, "legacy-shell-fixture")
         await process_frame
     _expect_eq(shell.run_state.get_current_screen(), "SETUP", "The visible MAIN start action must start a new run.")
     _select_default_setup(shell)

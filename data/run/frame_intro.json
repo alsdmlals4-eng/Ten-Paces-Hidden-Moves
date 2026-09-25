@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "prologue": {
+    "title": "출사표",
+    "subtitle": "강호에 첫발을 내딛다",
+    "text": "아직 강호에 이름을 알리지 못한 낭인.\n지금껏 익힌 무공을 챙겨 첫 길에 오른다.\n길 위에서 만난 선택은 너의 수가 되고,\n첫 비무는 그 수를 시험할 것이다."
+  },
+  "lessons": [
+    {"title": "열 초에 담는 나의 수", "text": "한 번에 10초의 행동을 설계합니다.\n시간축의 원하는 시점에 기술을 놓고, 확정한 뒤 두 사람의 행동을 함께 봅니다.\n확정 전에는 배치를 바꾸거나 취소할 수 있습니다.", "kind": "window"},
+    {"title": "선딜 · 발동 · 후딜", "text": "선딜은 기술을 준비하는 시간, 발동은 실제로 공격하거나 방어하는 구간, 후딜은 몸을 추스르는 시간입니다.\n같은 인물의 동작은 겹칠 수 없습니다. 10초를 넘어 남은 동작은 다음 구간에 이어집니다.", "kind": "phases"},
+    {"title": "관찰한 만큼 앞을 읽다", "text": "상대의 미래 행동은 처음에는 미확인입니다.\n관찰을 마친 시점부터 1단계는 3초, 2단계는 6초, 3단계는 9초의 행동을 확인합니다.\n확인 범위 밖의 행동은 계속 숨겨져 있습니다.", "kind": "observation"},
+    {"title": "작게 한 번, 시간에 놓아 보기", "text": "아래 연습 기술을 2초 지점에 놓아 보세요.\n선딜 1초 → 발동 0.5초 → 후딜 1.5초가 이어집니다.\n여기는 배치 연습이며 체력·자원·보상은 바뀌지 않습니다.", "kind": "practice"}
+  ],
+  "event": {
+    "id": "first_journey_fallen_signpost",
+    "title": "갈림길의 나그네",
+    "text": "산길에서 만난 나그네가 쓰러진 이정표를 가리킨다.\n“비무터로 가려는데, 어느 쪽 길인지 알 수가 없군요.”\n주변의 흔적을 살피거나, 이정표를 함께 세울 수 있다.",
+    "choices": [
+      {"id": "observe", "label": "발자국과 길의 흔적을 살핀다", "check": {"stat": "insight", "difficulty": 3}, "success": {"training": 2}, "failure": {"training": 0}},
+      {"id": "assist", "label": "힘을 보태 이정표를 세운다", "check": {"stat": "constitution", "difficulty": 3}, "success": {"training": 2}, "failure": {"training": 0}},
+      {"id": "leave", "label": "나그네와 천천히 길을 확인한다", "success": {"training": 1}, "failure": {"training": 1}}
+    ]
+  }
+}

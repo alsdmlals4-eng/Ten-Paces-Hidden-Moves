@@ -44,7 +44,12 @@ func _run() -> void:
     root.add_child(basic_card)
     _check((basic_card.get_node("CardIllustration") as TextureRect).texture is AtlasTexture, "Basic atlas preserved")
     detail.show_action(basic)
-    _check(detail.find_child("ApprovedManualIllustration", true, false) == null, "No stale manual art on basic action")
+    var basic_detail_art := detail.find_child("ApprovedManualIllustration", true, false) as TextureRect
+    _check(basic_detail_art != null and basic_detail_art.texture is AtlasTexture, "Basic detail replaces manual art with the basic illustration")
+    if basic_detail_art != null and basic_detail_art.texture is AtlasTexture:
+        var expected_basic := (basic_card.get_node("CardIllustration") as TextureRect).texture as AtlasTexture
+        var actual_basic := basic_detail_art.texture as AtlasTexture
+        _check(actual_basic.atlas == expected_basic.atlas and actual_basic.region == expected_basic.region, "No stale manual illustration or wrong basic crop survives the source change")
     detail.clear_detail()
     _check(not detail.visible, "Empty panel remains hidden")
     basic_card.free()

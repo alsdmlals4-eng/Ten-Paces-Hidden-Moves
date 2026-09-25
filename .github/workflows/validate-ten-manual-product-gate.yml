@@ -77,7 +77,9 @@ jobs:
 
   automated-product-evidence:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Import and other native checks share this job with the campaign's own
+    # 15-minute wall bound. Preserve ordinary animation speed and all checks.
+    timeout-minutes: 25
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1

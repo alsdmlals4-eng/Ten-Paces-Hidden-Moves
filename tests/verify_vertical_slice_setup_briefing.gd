@@ -73,7 +73,7 @@ func _run() -> void:
     root.add_child(shell)
     await process_frame
 
-    _expect_true(shell.start_new_run(), "Shell must enter Setup from Main.")
+    _expect_true(shell.run_state.start_new_giyun_run(20260820, "legacy-setup-fixture"), "Legacy shell must enter Setup from Main.")
     await process_frame
     _expect_eq(shell.run_state.get_current_screen(), "SETUP", "Run must be at Setup before manual selection.")
     _expect_eq(shell.get_setup_option_button_count(), 6, "Setup UI must render six selectable manual options.")

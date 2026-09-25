@@ -139,3 +139,19 @@ FEASIBLE: 승인 삽화와 현재 UI/판정 모듈을 재사용한다. 준비는
 CURRENT_SOURCE_RELEVANCE_CHECK: 기존 같은 스타일·전투 연출 조사 재사용 + Godot 공식 Tween/Control 문서 확인(2026-09-25). https://docs.godotengine.org/en/stable/classes/class_tween.html / https://docs.godotengine.org/en/stable/classes/class_control.html . 화면/보간 API만 참고하며 규칙 근거로 쓰지 않는다.
 
 Godot AI 업데이트: 기존 작업 폴더의 사용자 addon 4.2.3과 서버 4.2.3, Godot 4.7.1 프로젝트 연결을 확인. 플러그인 업데이트 원본은 보존하고 정확한 세션의 실행·입력·상태·캡처 기능을 검증에 사용한다. 원본 사용자 저장은 읽기 전용 복사본으로 재현한다. 두 전체 검토와 결함 교정, 자동/네이티브/HTML 검증을 분리해 기존 실행 보고서에 누적한다. 사람 체감·Android·출시 평가는 별도다.
+
+
+## 2026-09-25 준비 화면 배치와 구도 후속
+
+최신 사용자 지시와 첨부960093f1 참조: 화풍 변경이 아닌 UI 배치·구도 교정. 기존 원화를 재사용하고 작은 상단 상태, 넓은 대각선 대치, 한 줄 종이 계획과 오른쪽 실행, 5×2 삽화 카드와 고정 상세 칸을 구현한다. 선택·배치·방향·취소·확정,3/3/4,판정·AI·저장은 보호한다.
+
+REUSED_APPROVAL / CURRENT_SOURCE_RELEVANCE_CHECK: REUSED_EVIDENCE. 동일 결정의 사용자 참조와 Godot Control 공식 근거를 재사용하며 새 외부 기술·규칙 판단이 없다. FEASIBLE: 기존 컴포넌트의 표현과 기하만 바꾸고 네이티브 크기별 입력·잘림을 검증한다. 두 전체 검토·실행·HTML 증거는 기존 실행 보고서 최신 절에 누적한다.
+
+
+## 2026-09-25 최신 참조 그대로 구현 · 캐릭터만 교체
+
+사용자 원문: “UI가 아직도 별로다. 이미지 그대로 먼저 구현시켜”, “이미지 그대로 구현시키고 캐릭만 맞춰서 바꿔”. 이전 가로 재배치 후보는 시각 불합격으로 superseded이며 PR367을 Draft로 되돌렸다. 최신5676141a와 동일 계열 고해상도18211d8c 참조의 세로1086×1448 구도·산수 배경·먹 테두리·관찰창·계획 줄·5×2 카드·우측 상세를 그대로 재현한다. 창 크기에는 비율을 유지해 맞추며 대치 인물/초상만 현재 게임 정체성으로 교체한다.
+
+내장 이미지 도구로 문자 없는 배경 skin과 투명 standing 원화를 제작했다. 기본 카드 삽화는 사용자가 지정한 원본의 그림 영역만 AtlasTexture로 재사용하며 원본의 수치/버튼을 게임 UI로 표시하지 않는다. 실제 레이블·거리·비공개 상태·조작·소모·판정은 기존 consumer가 소유한다. 새 원화와 참조 파생 skin의 최종 시각 승인은 미확정이다. 생성/입력 출처·해시·권리 한계는 assets/ASSET_MANIFEST.json의 reference_preparation_* 항목이다.
+
+REUSED_APPROVAL / CURRENT_SOURCE_RELEVANCE_CHECK: 최신 직접 지정 참조가 시각 기준이다. 기존 공식 Godot Control/AtlasTexture 근거를 재사용하며 새 외부 게임 설계나 수치 판단은 없다. FEASIBLE: 실제 native controls/입력/캡처로 검증한다. 3/3/4 계획·비용·AI 비공개 경계·저장·확정 뒤 합 연출 계산은 변경하지 않는다.

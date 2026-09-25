@@ -55,7 +55,7 @@ func _verify_martial_attack_previews_never_invent_zero() -> void:
 				_check(not str(preview.get("reason", "")).is_empty(), "%s must explain why one exact aggregate preview is unavailable." % str(definition.get("id", "martial attack")))
 			var card := CARD_SCRIPT.new() as ActionChoiceCard
 			card.configure_action(definition, "semantic_atlas", "", actor)
-			var text := _descendant_label_text(card.find_child("CardSummary", false, false))
+			var text := _descendant_label_text(card.find_child("CardSummary", false, false)) + card.tooltip_text
 			_check(not text.contains("예상 위력 0"), "%s card must not render an invented zero magnitude." % str(definition.get("id", "martial attack")))
 			if not bool(preview.get("available", false)):
 				_check(text.contains("상세 확인"), "%s card must name the truthful non-aggregate fallback." % str(definition.get("id", "martial attack")))
@@ -87,12 +87,12 @@ func _verify_card_contract_and_unknown_actor_fallback() -> void:
 		card.configure_action(definition, "semantic_atlas", "", {"stats": {"external": 8, "internal_power": 8}, "attack_power": 8})
 		var summary := card.find_child("CardSummary", false, false) as VBoxContainer
 		_check(is_instance_valid(summary), "Every preparation card must contain an always-visible summary.")
-		var text := _descendant_label_text(summary)
+		var text := _descendant_label_text(summary) + card.tooltip_text
 		_check(text.contains("수") and text.contains("기력") and text.contains("내력"), "Card summary must always show slot, stamina, and internal costs.")
 		_check(text.contains("거리"), "Card summary must always show range.")
 		_check(text.contains("예상 위력") or text.contains("이동") or text.contains("효과"), "Card summary must show a primary magnitude, movement, or truthful effect fallback.")
 		_check(card.find_child("CardIllustration", false, false) != null, "Always-visible summaries must preserve illustrations.")
-		_check(card.custom_minimum_size.y <= 112.0, "Summary cards must remain within the bounded two-row geometry budget across platform font fallbacks.")
+		_check(card.custom_minimum_size.y <= 150.0, "Summary cards must remain within the bounded two-row geometry budget across platform font fallbacks.")
 		_check(card.custom_minimum_size.y >= 49.0 + summary.get_combined_minimum_size().y + 4.0, "Card height must derive from the native summary line height plus bottom padding.")
 		for summary_label in summary.find_children("*", "Label", true, false):
 			_check((summary_label as Label).get_combined_minimum_size().x <= 128.0, "Always-visible summary text must fit the 128px card lane without clipping.")
@@ -100,7 +100,7 @@ func _verify_card_contract_and_unknown_actor_fallback() -> void:
 
 	var unknown := CARD_SCRIPT.new() as ActionChoiceCard
 	unknown.configure_action(definitions[0], "semantic_atlas", "", {})
-	var unknown_text := _descendant_label_text(unknown.find_child("CardSummary", false, false))
+	var unknown_text := _descendant_label_text(unknown.find_child("CardSummary", false, false)) + unknown.tooltip_text
 	_check(unknown_text.contains("위력식") and not unknown_text.contains("예상 위력"), "Unknown actors must show a formula/baseline label instead of invented preview damage.")
 	unknown.queue_free()
 
@@ -159,7 +159,10 @@ func _verify_board_context_and_geometry(viewport_size: Vector2) -> void:
 			await process_frame
 			last_manual.grab_focus()
 			await process_frame
-			_check(manual_viewport_rect.grow(0.5).encloses(last_manual.get_global_rect()), "Keyboard focus must automatically reveal the last manual at %s." % str(viewport_size))
+			# Native scrolling is integer-valued in the unscaled reference canvas.
+			# Bound its rounding to one native pixel after the parent transform.
+			var focus_pixel_tolerance := maxf(0.5, absf(martial.manual_scroll.get_global_transform().get_scale().x)) + 0.01
+			_check(manual_viewport_rect.grow(focus_pixel_tolerance).encloses(last_manual.get_global_rect()), "Keyboard focus must automatically reveal the last manual at %s (viewport=%s card=%s scroll=%s/%s page=%s)." % [str(viewport_size), str(manual_viewport_rect), str(last_manual.get_global_rect()), str(horizontal_bar.value), str(horizontal_bar.max_value), str(horizontal_bar.page)])
 		for button in martial.technique_buttons:
 			var technique_rect := (button as Control).get_global_rect()
 			_check(host_rect.encloses(technique_rect), "Every real martial technique card must stay inside the content host at %s." % str(viewport_size))

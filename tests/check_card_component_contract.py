@@ -45,7 +45,10 @@ def main() -> None:
         assert card["source_label"] == "기초"
         assert card["action_slots"] >= 1
         for key in ("source_badge", "category_badge", "illustration"):
-            validate_spec(card[key])
+            if key == "illustration" or card[key]:
+                validate_spec(card[key])
+            else:
+                assert card[key] == {} and card["source_label"] and card["category_label"]
 
     move = by_id["basic_move"]
     footwork = by_id["basic_footwork"]

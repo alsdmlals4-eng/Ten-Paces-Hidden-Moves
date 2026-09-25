@@ -27,6 +27,8 @@ const RESTRAINED_GOLD := Color("b99254")
 @onready var content_host: Control = %ContentHost
 @onready var detail_host: Control = %DetailHost
 
+var preparation_layout := false
+
 var active_source := "basic"
 var interaction_state := "planning"
 var runtime_context: Dictionary = {}
@@ -65,6 +67,7 @@ func _ready() -> void:
     _build_detail_panel()
     _apply_state()
     resized.connect(queue_redraw)
+    resized.connect(layout_preparation)
     set_meta("manual_is_not_directly_placeable", true)
     set_meta("virtual_combo_enabled", false)
     set_meta("presentation_surface", "paper_ink_r1")
@@ -98,7 +101,10 @@ func set_interaction_state(state: String) -> void:
     if interaction_state == "new_combat":
         active_source = "basic"
         interaction_state = "planning"
-        clear_detail()
+        if preparation_layout:
+            request_detail(basic_panel.actions[4], false)
+        else:
+            clear_detail()
     switching_enabled = interaction_state not in LOCKED_STATES
     _apply_state()
 
@@ -148,6 +154,8 @@ func set_runtime_context(context: Dictionary) -> void:
                 reservation_values.append((value as Dictionary).duplicate(true))
         ultimate_panel.set_reservations(reservation_values)
     set_meta("runtime_context", runtime_context)
+    if preparation_layout and get_node_or_null("ReferenceSort") != null:
+        call_deferred("_on_reference_sort",get_node("ReferenceSort").selected)
 
 func _set_manual_context(loadout: Array, mastery_by_manual: Dictionary) -> void:
     if _manual_context_initialized and _manual_loadout_cache == loadout and _manual_mastery_cache == mastery_by_manual:
@@ -199,6 +207,8 @@ func request_detail(value: Dictionary, pinned: bool = false) -> void:
     detail_requested.emit(value.duplicate(true), pinned)
 
 func clear_detail() -> void:
+    if preparation_layout:
+        return
     if is_instance_valid(action_detail_panel):
         action_detail_panel.clear_detail()
     detail_cleared.emit()
@@ -307,6 +317,8 @@ func _refresh_source_content() -> void:
     if is_instance_valid(ultimate_panel):
         ultimate_panel.visible = not showing_intents and active_source == "ultimate"
     set_meta("visible_source", "intent" if showing_intents else active_source)
+    if get_node_or_null("ReferenceSort") != null:
+        get_node("ReferenceSort").visible = active_source == "basic" and not showing_intents
 
 func _on_intent_selected(intent: Dictionary) -> void:
     intent_selected.emit(intent.duplicate(true))
@@ -314,11 +326,20 @@ func _on_intent_selected(intent: Dictionary) -> void:
 func _set_tab_state(button: Button, source: String, label: String) -> void:
     var selected := active_source == source
     button.button_pressed = selected
-    button.text = ("● " if selected else "○ ") + label
+    button.text = label if preparation_layout else ("● " if selected else "○ ") + label
     button.accessibility_name = "%s 탭%s" % [label, " 선택됨" if selected else ""]
     _apply_tab_presentation(button, selected)
 
 func _apply_tab_presentation(button: Button, selected: bool) -> void:
+    if preparation_layout:
+        var skin = preload("res://src/ui/ink/reference_preparation_skin.gd")
+        var box = skin.paper(Rect2(55,833,207,39) if selected else Rect2(658,833,206,39))
+        for state in ["normal","hover","pressed","disabled"]:
+            button.add_theme_stylebox_override(state,box)
+        button.add_theme_stylebox_override("focus",skin.emphasis())
+        for state in ["font_color","font_hover_color","font_pressed_color"]:
+            button.add_theme_color_override(state,Color("25251f") if selected else Color("e3dac5"))
+        return
     var normal := StyleBoxFlat.new()
     normal.bg_color = PAPER_SURFACE if selected else CHARCOAL_SOFT
     normal.border_color = CHARCOAL_INK if selected else Color(RESTRAINED_GOLD, 0.68)
@@ -356,3 +377,73 @@ func _notification(what: int) -> void:
     if what == NOTIFICATION_RESIZED:
         if is_instance_valid(_backdrop):
             _backdrop.queue_redraw()
+
+func enable_preparation_layout() -> void:
+    if preparation_layout:
+        return
+    preparation_layout = true
+    content_host.custom_minimum_size = Vector2.ZERO
+    detail_host.custom_minimum_size = Vector2.ZERO
+    for node in [basic_tab,martial_tab,ultimate_tab,content_host,detail_host]:
+        node.reparent(self,false)
+        node.set_anchors_preset(Control.PRESET_TOP_LEFT)
+    $DockColumn.hide()
+    _backdrop.hide()
+    for panel in [basic_panel,martial_panel,ultimate_panel,action_intent_panel]:
+        panel.custom_minimum_size.x = 0
+    basic_panel.title_label.hide()
+    basic_panel.action_grid.add_theme_constant_override("h_separation",9)
+    basic_panel.action_grid.add_theme_constant_override("v_separation",16)
+    action_detail_panel.enable_reference_layout()
+    request_detail(basic_panel.actions[4],false)
+    for button in basic_panel.buttons:
+        button.enable_reference_layout()
+    var sort := OptionButton.new()
+    sort.name = "ReferenceSort"
+    sort.add_item("기본순")
+    sort.add_item("소모순")
+    sort.add_theme_font_size_override("font_size",20)
+    for state in ["normal","hover","pressed"]:
+        sort.add_theme_stylebox_override(state,preload("res://src/ui/ink/reference_preparation_skin.gd").clear_style(4))
+    sort.add_theme_color_override("font_color",Color("e3dac5"))
+    sort.add_theme_color_override("font_hover_color",Color("e3dac5"))
+    sort.item_selected.connect(_on_reference_sort)
+    add_child(sort)
+    _refresh_tabs()
+    layout_preparation()
+
+func _on_reference_sort(index: int) -> void:
+    var ordered: Array = basic_panel.buttons.duplicate()
+    if index == 1:
+        ordered.sort_custom(func(a,b): return int(a.action_definition.get("stamina_cost",0))*10+int(a.action_definition.get("internal_cost",0)) < int(b.action_definition.get("stamina_cost",0))*10+int(b.action_definition.get("internal_cost",0)))
+    for i in range(ordered.size()):
+        basic_panel.action_grid.move_child(ordered[i],i)
+
+func layout_preparation() -> void:
+    if not preparation_layout or not is_node_ready():
+        return
+    for i in range(3):
+        var button: Button = [basic_tab,martial_tab,ultimate_tab][i]
+        button.position = Vector2(26+i*219,3)
+        button.custom_minimum_size = Vector2.ZERO
+        button.size = Vector2(210,49)
+        button.add_theme_font_size_override("font_size",30)
+    content_host.position = Vector2(17,69)
+    content_host.size = Vector2(748,459)
+    detail_host.position = Vector2(800,69)
+    detail_host.size = Vector2(212,460)
+    for button in basic_panel.buttons:
+        button.custom_minimum_size.y = 220
+        button.enable_reference_layout()
+    var sort := get_node_or_null("ReferenceSort") as OptionButton
+    if sort != null:
+        sort.position = Vector2(872,13)
+        sort.size = Vector2(138,31)
+    constraint_summary.set_anchors_preset(Control.PRESET_TOP_LEFT)
+    constraint_summary.position = Vector2(682,3)
+    constraint_summary.size = Vector2(180,49)
+    constraint_summary.add_theme_font_size_override("font_size",16)
+    var footer = get_node_or_null("PreparationKeyHints")
+    if footer != null:
+        footer.position = Vector2(9,570)
+        footer.size = Vector2(995,30)

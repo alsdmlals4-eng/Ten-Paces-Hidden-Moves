@@ -111,10 +111,13 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
         self.assertIn("PLANNING_ONLY", CORE_SCENE_BOARD_DECISION.read_text(encoding="utf-8"))
         self.assertIn("NOT_A_RUNTIME_ASSET", CORE_SCENE_BOARD_DECISION.read_text(encoding="utf-8"))
         self.assertIn("USER_FINAL_LOCKED_PLANNING_ONLY", CORE_SCENE_BOARD_DECISION.read_text(encoding="utf-8"))
-        self.assertTrue(CORE_SCENE_BOARD_ARTIFACT.is_file())
+        retired = next(r for r in json.loads((ROOT / 'docs/blueprint/IMPLEMENTATION_READINESS.json').read_text(encoding='utf-8'))['retired_images']
+                       if r['path'] == CORE_SCENE_BOARD_ARTIFACT.relative_to(ROOT).as_posix())
+        self.assertEqual(retired['status'], 'DELETED_BY_USER_REQUEST')
+        self.assertFalse(CORE_SCENE_BOARD_ARTIFACT.exists())
         self.assertEqual(
             "24fdd3a827ea36ead0364ed35c2a03689c969b4a1444823fa2e5ad94ac93ea33",
-            sha256(CORE_SCENE_BOARD_ARTIFACT.read_bytes()).hexdigest(),
+            retired['sha256'],
         )
 
     def test_screen_first_audit_keeps_p0_coverage_separate_from_image_generation(self) -> None:
@@ -209,16 +212,19 @@ class VisualConsumerAssetProductionPolicyTests(unittest.TestCase):
 
         self.assertTrue(MARTIAL_MANUAL_PRESENTATION_DECISION.is_file())
         self.assertTrue(ACTION_CARD_ILLUSTRATION_EXTENSION_DECISION.is_file())
-        self.assertTrue(MARTIAL_ULTIMATE_ATLAS_CANDIDATE.is_file())
+        retired = next(r for r in json.loads((ROOT / 'docs/blueprint/IMPLEMENTATION_READINESS.json').read_text(encoding='utf-8'))['retired_images']
+                       if r['path'] == MARTIAL_ULTIMATE_ATLAS_CANDIDATE.relative_to(ROOT).as_posix())
+        self.assertEqual(retired['status'], 'DELETED_BY_USER_REQUEST')
+        self.assertFalse(MARTIAL_ULTIMATE_ATLAS_CANDIDATE.exists())
         self.assertTrue(MARTIAL_ULTIMATE_ATLAS_RECORD.is_file())
         self.assertTrue(MARTIAL_ULTIMATE_ATLAS_APPROVED.is_file())
         self.assertTrue(MARTIAL_ULTIMATE_ATLAS_RUNTIME.is_file())
         self.assertEqual(
-            sha256(MARTIAL_ULTIMATE_ATLAS_CANDIDATE.read_bytes()).hexdigest(),
+            retired['sha256'],
             sha256(MARTIAL_ULTIMATE_ATLAS_APPROVED.read_bytes()).hexdigest(),
         )
         self.assertEqual(
-            sha256(MARTIAL_ULTIMATE_ATLAS_CANDIDATE.read_bytes()).hexdigest(),
+            retired['sha256'],
             sha256(MARTIAL_ULTIMATE_ATLAS_RUNTIME.read_bytes()).hexdigest(),
         )
         self.assertEqual(

@@ -1,6 +1,11 @@
 import hashlib,json,unittest
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
+FRAME_BACKGROUND_IDS = {
+    'ink_frame_main_background_20260925',
+    'ink_frame_prologue_background_20260925',
+    'ink_frame_preparation_background_20260925',
+}
 def read(p): return json.loads((ROOT/p).read_text(encoding='utf-8-sig'))
 class ApprovedBlueprintArtTests(unittest.TestCase):
     def test_exact_approved_set_bytes_and_mapping(self):
@@ -35,10 +40,30 @@ class ApprovedBlueprintArtTests(unittest.TestCase):
         self.assertEqual({a['id'] for a in central if a['id'] in ink_ids},ink_ids)
         refresh_ids=set(read('docs/visual-assets/candidates/TEN-INK-SCREENS-20260925/replacement-map.json')['added_asset_ids'])
         self.assertEqual({a['id'] for a in central if a['id'] in refresh_ids},refresh_ids)
-        old=[a for a in central if a['id'] not in new_ids | ink_ids | refresh_ids]
+        reference_ids={f'reference_preparation_{name}_20260925' for name in ('reference_painting','standing_characters','reference_details')}
+        self.assertEqual({a['id'] for a in central if a['id'] in reference_ids},reference_ids)
+        self.assertEqual({a['id'] for a in central if a['id'] in FRAME_BACKGROUND_IDS},FRAME_BACKGROUND_IDS)
+        old=[a for a in central if a['id'] not in new_ids | ink_ids | refresh_ids | reference_ids | FRAME_BACKGROUND_IDS]
         digest=hashlib.sha256(json.dumps(old,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest()
         self.assertEqual(digest,manifest['preserved_existing_records_sha256'])
         self.assertEqual(len(old),manifest['preserved_existing_record_count'])
         self.assertEqual({a['id'] for a in central if a['id'] in new_ids},new_ids)
         self.assertEqual([a for a in central if a['id'] in new_ids],manifest['assets'])
+    def test_exact_frame_background_additions_match_provenance_and_bytes(self):
+        central = read('assets/ASSET_MANIFEST.json')['assets']
+        records = {a['id']: a for a in central if a['id'] in FRAME_BACKGROUND_IDS}
+        owner = 'assets/ui/ink_frame/provenance.json'
+        provenance = read(owner)['assets']
+        self.assertEqual(len(records), 3)
+        self.assertEqual({f"ink_frame_{a['id']}_20260925" for a in provenance}, FRAME_BACKGROUND_IDS)
+        for layer in provenance:
+            record = records[f"ink_frame_{layer['id']}_20260925"]
+            self.assertEqual(record['provenance'], owner)
+            self.assertEqual(record['path'].removeprefix('res://'), layer['path'])
+            self.assertEqual(record['source_png_sha256'], layer['sha256'])
+            self.assertEqual(hashlib.sha256((ROOT / layer['path']).read_bytes()).hexdigest(), layer['sha256'])
+            self.assertEqual(record['dimensions'], f"{layer['width']}x{layer['height']}")
+            self.assertEqual(record['prompt'], layer['prompts'][-1]['text'])
+            self.assertEqual(record['source_asset'], f"docs/blueprint/evidence/frame-approved/{layer['id'].removesuffix('_background')}.png")
+            self.assertEqual(hashlib.sha256((ROOT / record['source_asset']).read_bytes()).hexdigest(), layer['source']['sha256'])
 if __name__=='__main__': unittest.main()

@@ -74,9 +74,14 @@ class FrontalDuelActionFlowBlueprintContractTests(unittest.TestCase):
         )
 
         self.assertIn("### D. 이미지 우선 블루프린트 기준", blueprint)
+        retired = {r['path']: r for r in json.loads((REPOSITORY_ROOT / 'docs/blueprint/IMPLEMENTATION_READINESS.json').read_text(encoding='utf-8'))['retired_images']}
         for relative_path in required_visual_inputs:
             self.assertIn(relative_path, blueprint)
-            self.assertTrue((REPOSITORY_ROOT / relative_path).exists(), relative_path)
+            if relative_path in retired:
+                self.assertEqual(retired[relative_path]['status'], 'DELETED_BY_USER_REQUEST')
+                self.assertFalse((REPOSITORY_ROOT / relative_path).exists(), relative_path)
+            else:
+                self.assertTrue((REPOSITORY_ROOT / relative_path).exists(), relative_path)
         self.assertIn("체커보드처럼 직접 싣지 않고", blueprint)
 
     def test_human_pdf_keeps_the_structural_blueprint_layer_alongside_images(self) -> None:

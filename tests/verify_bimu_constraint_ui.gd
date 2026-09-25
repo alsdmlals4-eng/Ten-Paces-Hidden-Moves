@@ -18,7 +18,7 @@ func _run() -> void:
     var shell = load("res://scenes/run/vertical_slice_shell.tscn").instantiate()
     root.add_child(shell)
     await process_frame
-    shell.start_new_run()
+    shell.run_state.start_new_giyun_run(20260820, "legacy-constraint-ui-fixture")
     for id in STARTERS: shell.toggle_setup_manual(id)
     shell.advance_noncombat()
     shell.advance_noncombat()

@@ -7,6 +7,9 @@ var _route_logical_option_count: int = 0
 var _route_scroll: ScrollContainer
 var _route_stack: VBoxContainer
 var _route_margin: Control
+var _frame_journey_map: Control
+var _route_preview_id := ""
+var _route_preview_step := ""
 
 
 func _ready() -> void:
@@ -72,6 +75,7 @@ func _render_current_screen() -> void:
     if route_options_container == null or run_state == null:
         return
     var screen := run_state.get_current_screen()
+    if _frame_journey_map != null: _frame_journey_map.visible = screen == VerticalSliceRunState.SCREEN_JIANGHU and run_state.is_frame_run()
     route_options_container.visible = screen in [VerticalSliceRunState.SCREEN_JIANGHU, VerticalSliceRunState.SCREEN_ROUTE_GROWTH, VerticalSliceRunState.SCREEN_ROUTE_INFO]
     if screen == VerticalSliceRunState.SCREEN_JIANGHU:
         _render_jianghu()
@@ -141,7 +145,58 @@ func _render_jianghu() -> void:
         route_options_container.add_child(button)
     primary_button.text = "다음 갈림길" if step < 3 else "다음 비무 브리핑"
     primary_button.disabled = pending.is_empty()
+    if run_state.is_frame_run(): _render_frame_journey_map(options, pending, giyun)
     _apply_session_input_lock()
+
+
+func _render_frame_journey_map(options: Array, pending: Dictionary, giyun: Dictionary) -> void:
+    if _frame_journey_map == null:
+        _frame_journey_map = preload("res://src/ui/ink/ink_journey_map.gd").new()
+        _frame_journey_map.name = "FrameJourneyMap"
+        _frame_journey_map.anchor_left = 0.035
+        _frame_journey_map.anchor_right = 0.49
+        _frame_journey_map.anchor_top = 0.16
+        _frame_journey_map.anchor_bottom = 0.86
+        add_child(_frame_journey_map)
+        _frame_journey_map.node_selected.connect(func(id: String):
+            if session != null and not session.accepts_commands(): return
+            _route_preview_id = id
+            _render_current_screen())
+    _frame_journey_map.visible = true
+    content_panel.anchor_left = 0.52
+    content_panel.anchor_right = 0.965
+    content_panel.anchor_top = 0.06
+    content_panel.anchor_bottom = 0.94
+    var token := "%d:%d" % [run_state.completed_duels, run_state.jianghu_step]
+    if token != _route_preview_step:
+        _route_preview_step = token
+        _route_preview_id = ""
+    var event_pending: bool = not giyun.is_empty() and not giyun.pending_event.is_empty()
+    if not pending.is_empty():
+        _frame_journey_map.configure([{"id": str(pending.id), "label": str(pending.label), "disabled": true}], "산길\n행로 %d / 4" % (run_state.jianghu_step + 1), str(pending.id))
+    elif event_pending:
+        _frame_journey_map.configure([{"id": "event", "label": str(giyun.pending_event.title), "disabled": true}], "산길\n현재 위치", "event")
+    else:
+        _frame_journey_map.configure(options, "비무터\n지난 길" if run_state.jianghu_step == 0 else "산길\n현재 위치", _route_preview_id)
+        _clear_route_options()
+        _route_logical_option_count = options.size()
+        if _route_preview_id.is_empty():
+            description_label.text = "지도에서 다음 길을 고르세요.\n\n세 갈래 길의 상황과 효과를 비교한 뒤 이동합니다.\n현재 선택하지 않은 길에서는 효과를 얻지 않습니다."
+            primary_button.text = "지도에서 목적지를 선택하세요"
+        else:
+            for option in options:
+                if str(option.id) != _route_preview_id: continue
+                description_label.text = "%s\n\n%s\n\n이 길로 이동하면 선택이 확정됩니다." % [option.label, option.effect]
+                var enter := Button.new()
+                enter.name = "FrameRouteEnter"
+                enter.text = "이곳으로 향한다  ›"
+                enter.custom_minimum_size.y = 64
+                enter.pressed.connect(_choose_jianghu.bind(str(option.id), run_state.jianghu_step))
+                route_options_container.add_child(enter)
+            primary_button.text = "목적지 확인"
+        primary_button.visible = false
+        return
+    primary_button.visible = true
 
 
 func _set_route_composition(resting: bool) -> void:

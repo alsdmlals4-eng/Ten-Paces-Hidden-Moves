@@ -114,6 +114,30 @@ func _selection_text(bundle_index: int, timing_sequence: Array) -> String:
 func _layout() -> void:
     if not is_instance_valid(player_panel):
         return
+    if bool(get_meta("reference_preparation", false)):
+        player_panel.position = Vector2.ZERO
+        enemy_panel.position = Vector2(size.x - 343, 0)
+        for panel in [player_panel, enemy_panel]:
+            panel.size = Vector2(343,197)
+            panel._layout()
+        player_momentum.hide()
+        enemy_momentum.hide()
+        round_panel.position = Vector2(400-15,0)
+        round_panel.size = Vector2(270,82)
+        round_panel._layout()
+        return
+    if bool(get_meta("ink_preparation", false)):
+        var width := clampf(size.x * 0.28, 252, 350)
+        player_panel.position = Vector2.ZERO
+        enemy_panel.position = Vector2(size.x - width, 0)
+        for panel in [player_panel, enemy_panel]:
+            panel.size = Vector2(width, 106)
+            panel._layout()
+        player_momentum.hide()
+        enemy_momentum.hide()
+        round_panel.position = Vector2(size.x * 0.5 - 100, 0)
+        round_panel.size = Vector2(200, 62)
+        return
     var side_width := clampf(size.x * 0.32, 340.0, 420.0)
     var side_height := maxf(1.0, minf(size.y - 2.0, side_width / 2.65))
     var center_width := clampf(size.x * 0.11, 136.0, 156.0)

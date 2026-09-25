@@ -44,7 +44,7 @@ func run() -> void:
         await process_frame
         check(not is_instance_valid(title._front_page), "Escape closes settings without using a detached viewport")
         DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
-    shell.start_new_run()
+    shell.run_state.start_new_giyun_run(20260820, "legacy-ink-feedback-fixture")
     for button in shell._setup_buttons.values():
         var art = button.find_child("ManualIllustration", true, false)
         check(art != null and art.texture != null, "Each starter choice has approved illustration")
@@ -66,7 +66,7 @@ func run() -> void:
         board.action_selection_dock.basic_panel.buttons[2].emit_signal("pressed")
         await process_frame
         var placed = board.find_child("LinkedActionBlock01", true, false)
-        check(placed != null and placed.action_label.get_theme_color("font_color").get_luminance() > 0.5, "Placed action stays legible against its dark surface under the parchment shell theme")
+        check(placed != null and placed.action_label.get_theme_color("font_color").get_luminance() < 0.2, "Placed action stays legible against the new parchment planning strip")
     shell.queue_free()
     await process_frame
     for message in failures: push_error(message)

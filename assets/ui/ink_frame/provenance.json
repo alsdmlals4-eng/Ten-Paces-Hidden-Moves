@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "decision": "TEN-DEC-20260925-FRAME-TIMELINE-PROLOGUE-01",
+  "created_date": "2026-09-25",
+  "baseline_sha": "9d2f543029a9b8f44ae4d8c5450725b374d88df9",
+  "tool": "built-in image_gen.imagegen",
+  "method": "Referenced-image edits only. Originals retained. Final PNGs copied without raster alteration.",
+  "approval_basis": "USER_APPROVED_BUILD: approved mockup visual direction and creation/integration of image layers; source screenshots are references, not live UI or numeric truth.",
+  "status": "INTEGRATED_REVIEW_BUILD",
+  "user_final_lock": "NOT_RUN",
+  "runtime_validation": "WINDOWS_NATIVE_CAPTURE_PASS",
+  "assets": [
+    {
+      "id": "main_background",
+      "path": "assets/ui/ink_frame/main_background.png",
+      "role": "Main menu background: no characters; left pine, stairway and mountains; open ivory space on the right for live title and controls.",
+      "width": 1671,
+      "height": 941,
+      "sha256": "c1d568ebedff662180c7ae3c12165a8f5a0390863f4259d555760fc1b72d96c0",
+      "source": {
+        "role": "approved_mockup_reference_and_edit_target",
+        "path": "C:/Users/user/.codex/generated_images/01a08da6-5204-7991-b5ac-41990ea2f7fa/exec-0016f1cf-967c-4d92-b0c7-4e3fa983a65b.png",
+        "sha256": "49b02359c52a1969cabad8c6792bf0bfad8fec752a3dd83c708af682f9b5d3ed"
+      },
+      "generated_original": {
+        "path": "C:/Users/user/.codex/generated_images/01a0d76e-2b63-7542-9d7e-2aa724c6735f/exec-436dfcae-a193-4f22-a4ed-005f4c10ba37.png",
+        "sha256": "c1d568ebedff662180c7ae3c12165a8f5a0390863f4259d555760fc1b72d96c0"
+      },
+      "prompts": [
+        {
+          "stage": "interface_removal",
+          "text": "Use case: precise-object-edit.\nAsset type: production game background artwork layer, landscape 16:9.\nInput image 1 is the approved main-menu screenshot and the edit target. Extract its clean painted environment by removing every interface element. Preserve the beautiful original wuxia ink-and-wash painting style, crinkled warm ivory paper texture, intricate massive pine tree and branches on the left, the stone stairway and pavilion on the left cliffs, distant layered mountains, mist, soft amber sun, and restrained red autumn leaves. Remove ALL typography, including the large Korean calligraphy, subtitle, red seal, every button and its outline, and all thin black/gold decorative UI rails and screen borders. Reconstruct their locations as uninterrupted matching painting and paper. The right half should be airy, softly lit ivory parchment with delicate mist and extremely faint distant mountain wash, generous empty space where real live title and controls will later be drawn; keep the richly painted visual weight mostly to the left and bottom. No people, no characters, no silhouettes, no weapons. Do not add icons, panels, signs, symbols, letters, numbers, labels, interface shapes, watermarks or a mockup frame. Output only one seamless full-bleed 16:9 clean background illustration, no baked interface."
+        }
+      ],
+      "visual_qa": {
+        "image_inspected": true,
+        "result": "PASS_FOR_ART_LAYER_HANDOFF",
+        "no_baked_typography": true,
+        "no_baked_interface": true,
+        "characters": "none",
+        "limits": "Visual inspection of background only. In-game composition, human approval and platform runtime are separate evidence."
+      }
+    },
+    {
+      "id": "prologue_background",
+      "path": "assets/ui/ink_frame/prologue_background.png",
+      "role": "Prologue background: approved wanderer, stone bridge and mountain gate on the left; open ivory paper on the right for live prose and controls.",
+      "width": 1672,
+      "height": 941,
+      "sha256": "21d469aee9ecf8d684e2bcf6a54807c021f6f75a0d339f19f41f869ae4252dd7",
+      "source": {
+        "role": "approved_mockup_reference_and_edit_target",
+        "path": "C:/Users/user/.codex/generated_images/01a08da6-5204-7991-b5ac-41990ea2f7fa/exec-520ba541-9ecf-4ce7-af57-d9ef1c5ff853.png",
+        "sha256": "9dbfa4de7af9c58426f4a68669b5fd96bd75a70f6da7b39bab2ef9324d1c3034"
+      },
+      "generated_original": {
+        "path": "C:/Users/user/.codex/generated_images/01a0d76e-2b63-7542-9d7e-2aa724c6735f/exec-1400b8f4-b09b-47c2-935c-111de0dccfc9.png",
+        "sha256": "21d469aee9ecf8d684e2bcf6a54807c021f6f75a0d339f19f41f869ae4252dd7"
+      },
+      "prompts": [
+        {
+          "stage": "initial_interface_removal",
+          "text": "Use case: precise-object-edit.\nAsset type: production game prologue background artwork layer, landscape 16:9.\nInput image 1 is the approved prologue screenshot and the edit target. Keep the exact approved traditional wuxia ink-and-wash scene and character identity: a young black-haired wanderer viewed from behind in a weathered black robe with long red ribbons stands on the stone bridge on the left, facing the distant mountain gate and amber sunrise amid mist. Preserve his silhouette, pose, clothing, sword at his side, bridge, pines, red leaves, mountains, warm mist and ivory paper texture. Remove EVERY text glyph and seal, including the large calligraphy at top-left, all subtitles and headings, the writing on the upright stone, the top-right small label, all prose, every medallion/illustrated icon on the right, divider marks, buttons, bottom journey timeline/progress markers and bottom dark interface bar. Reconstruct removed left-side headings as pale sky and warm mist; reconstruct the bottom rail as continuing bridge/landscape. The entire right half must be open, beautifully textured warm ivory paper with only subtle soft mountain/mist wash near edges, completely empty and clear for live game text and controls. A very delicate outer paper edge may remain, but no panel, card, UI border or black/gold screen rail. No additional people, no new symbols, no typography, no numbers, no labels, no buttons, no progress indicators, no watermark. Output one continuous clean 16:9 background illustration, never a finished interface screenshot."
+        },
+        {
+          "stage": "local_inscription_removal",
+          "text": "Use case: precise-object-edit.\nAsset type: production prologue background artwork layer.\nInput image is the clean generated prologue background and the exact edit target. Make ONE tiny local correction only: on the tall upright stone marker at the extreme lower-left (approximately x=3-11%, y=64-84%), remove all carved ink writing, letters, inscription marks and calligraphy. Replace only those inscription strokes with the same natural pale-gray stone grain and faint physical cracks, so the stone face is entirely unlettered. Preserve everything else exactly: young black-haired wanderer in black with red ribbons standing on the left bridge, silhouette and pose, gate, mountains, pines, leaves, bridge, sun, mist, completely open ivory right half and 16:9 composition. Do not add any text, signs, symbols, emblems, interface, borders or watermark anywhere. Output the same clean background with an uninscribed natural stone marker."
+        }
+      ],
+      "intermediate": {
+        "path": "C:/Users/user/.codex/generated_images/01a0d76e-2b63-7542-9d7e-2aa724c6735f/exec-27adfdeb-f2d4-4a59-8e73-d924c2279319.png",
+        "sha256": "e9255535d6d27ffb2c1cd761e2c90be9de095ae2be3eb2a78b8658aee35d6c0d",
+        "retained": true,
+        "reason": "Not integrated: stone inscription remained; corrected by a targeted image edit."
+      },
+      "visual_qa": {
+        "image_inspected": true,
+        "result": "PASS_FOR_ART_LAYER_HANDOFF",
+        "no_baked_typography": true,
+        "no_baked_interface": true,
+        "characters": "single approved protagonist retained",
+        "limits": "Visual inspection of background only. In-game composition, human approval and platform runtime are separate evidence."
+      }
+    },
+    {
+      "id": "preparation_background",
+      "path": "assets/ui/ink_frame/preparation_background.png",
+      "role": "Preparation environment: continuous portrait ink mountains and open stone courtyard; no characters or weapons, for independently rendered actors and interface.",
+      "width": 1086,
+      "height": 1448,
+      "sha256": "58fa28648ab9630d0a7c0e8cd953e666b08275fb41b7e5ea51d926bcba2dee24",
+      "source": {
+        "role": "approved_mockup_reference_and_edit_target",
+        "path": "C:/Users/user/.codex/generated_images/01a08da6-5204-7991-b5ac-41990ea2f7fa/exec-51956564-f252-4ca0-9cdf-5ef187e602b2.png",
+        "sha256": "e2984aac93622ea82650ffd6b1c501864bb3f489ff6624515a64c20666b2d2be"
+      },
+      "generated_original": {
+        "path": "C:/Users/user/.codex/generated_images/01a0d76e-2b63-7542-9d7e-2aa724c6735f/exec-67f9a526-0414-462f-b3a7-0548c3bf3368.png",
+        "sha256": "58fa28648ab9630d0a7c0e8cd953e666b08275fb41b7e5ea51d926bcba2dee24"
+      },
+      "prompts": [
+        {
+          "stage": "interface_removal",
+          "text": "Use case: precise-object-edit.\nAsset type: production game battle-preparation environmental artwork layer, portrait 3:4.\nInput image 1 is the approved preparation screenshot and the edit target. Retain ONLY its upper environmental painting as the visual source: traditional wuxia ink-and-wash mountains, softly golden sun, ivory rice-paper sky, distant pagodas, pine trees, mist and broad level stone courtyard. Remove the large foreground swordsman, the opponent, both portrait thumbnails, all weapons and person silhouettes, all HUD, health bars, all writing/headings/numbers, observation panel, divider rails, the entire timeline, cards, tabs, buttons and every lower interface area. Use the upper landscape as a painting to extend into one continuous full-height portrait 3:4 landscape. The upper two-thirds show graceful layered misty mountains and side-cliff pines with the distant temples; the lower third is an unobstructed level stone courtyard with restrained worn slabs and mist, open enough for real game characters and live controls to be overlaid separately. Do not replace the lower interface with a blank panel: complete the landscape itself coherently. Preserve warm ivory parchment, monochrome charcoal ink strokes and sparse muted ochre from the original. No people anywhere, no faces, no weapons, no foreground silhouette, no text in any language, no labels, no symbols, no cards, no medallions, no gauges, no frames or borders, no UI, no watermark. Output only one clean full-bleed portrait 3:4 environment background illustration."
+        }
+      ],
+      "visual_qa": {
+        "image_inspected": true,
+        "result": "PASS_FOR_ART_LAYER_HANDOFF",
+        "no_baked_typography": true,
+        "no_baked_interface": true,
+        "characters": "none",
+        "limits": "Visual inspection of background only. In-game composition, human approval and platform runtime are separate evidence."
+      }
+    }
+  ],
+  "runtime_evidence": "docs/blueprint/evidence/frame-runtime-20260925/capture-receipt.json"
+}

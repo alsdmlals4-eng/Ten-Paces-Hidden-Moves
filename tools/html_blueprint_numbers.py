@@ -45,7 +45,8 @@ def allocate(registry, keys):
 
 
 def asset_key(asset):
-    return ('candidate:' + asset['id']) if asset['scope'] != 'MAIN_SOURCE' else asset['path']
+    scope = asset.get('details', {}).get('disposal', {}).get('source_scope', asset['scope'])
+    return ('candidate:' + asset['id']) if scope != 'MAIN_SOURCE' else asset['path']
 
 
 def attach(payload, root):

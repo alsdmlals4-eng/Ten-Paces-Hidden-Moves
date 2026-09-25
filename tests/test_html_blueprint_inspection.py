@@ -16,10 +16,27 @@ class InspectionTests(unittest.TestCase):
         path='docs/blueprint/evidence/jianghu-events-v2-native-20260924.png'
         asset={'id':'event-still','path':path,'name':'jianghu-events-v2-native-20260924',
                'scope':'MAIN_SOURCE','owner':path,'consumers':[],'approval':'UNVERIFIED',
-               'sha256':inspection.sha(inspection.ROOT/path)}
+               'sha256':hashlib.sha256(b'fixture').hexdigest()}
         payload={'assets':[asset],'experience':{'clips':[],'contexts':{}},'pm':{'items':[]},
                  'manuals':[],'people':[]}
-        result=inspection.build(payload)['records'][0]
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            capture=root/path
+            capture.parent.mkdir(parents=True)
+            capture.write_bytes(b'fixture')
+            receipt=root/'docs/operations/2026-09-22_HTML_BLUEPRINT_WORK_CONTRACT_RECEIPT.json'
+            receipt.parent.mkdir(parents=True)
+            receipt.write_text(json.dumps({'event_checks_readability_followup': {'tests': {
+                'native_capture': {'path':path, 'sha256':asset['sha256']}}}}), encoding='utf-8')
+            ledger=root/'docs/blueprint/IMPLEMENTATION_READINESS.json'
+            ledger.write_text('{"retired_images":[]}', encoding='utf-8')
+            with patch.object(inspection,'ROOT',root):
+                result=inspection.build(payload)['records'][0]
+                ledger.write_text(json.dumps({'retired_images':[{'path':path}]}), encoding='utf-8')
+                capture.unlink()
+                retired=inspection.build(payload)['records'][0]
+                self.assertIn('capture',retired['flags'])
+                self.assertNotIn('사건 선택 정지화면 촬영',retired['states']['runtime'])
         self.assertIn('사건 선택', result['states']['runtime'])
         self.assertNotIn('capture', result['flags'])
         self.assertNotIn('시작 설정', result['states']['runtime'])
@@ -30,14 +47,23 @@ class InspectionTests(unittest.TestCase):
         import html_blueprint as model
         context=experience.build(model.collect_reader())['contexts']['starter']
         still=context.get('still_capture')
-        self.assertIsNotNone(still, 'Actual setup screenshot must not report missing runtime evidence')
-        self.assertEqual(still['path'],context['preview']['path'])
-        self.assertEqual(still['sha256'],model.sha(model.ROOT/still['path']))
-        self.assertEqual(still['screen'],'SETUP')
+        from html_blueprint_frame import validated_captures
+        present = 'setup' in validated_captures(model.ROOT)
+        self.assertEqual(still is not None, present, 'Only the current frame-rule setup capture is runtime evidence')
+        if present:
+            self.assertEqual(still['path'],context['preview']['path'])
+            self.assertEqual(still['sha256'],model.sha(model.ROOT/still['path']))
+            self.assertEqual(still['screen'],'SETUP')
+        else:
+            pending = (model.ROOT/'docs/blueprint/evidence/frame-runtime-20260925/setup.png').is_file()
+            self.assertEqual(context['runtime_status'], 'CAPTURE_PENDING_VALIDATION' if pending else 'NOT_RUN')
 
     def test_stale_source_keeps_history_but_corrupt_video_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory)
+            ledger=root/'docs/blueprint/IMPLEMENTATION_READINESS.json'
+            ledger.parent.mkdir(parents=True)
+            ledger.write_text('{"retired_images":[]}',encoding='utf-8')
             for name in ['source.gd','movie.mp4','poster.jpg']:(root/name).write_bytes(b'original')
             digest=hashlib.sha256(b'original').hexdigest()
             manifest={'source_hashes':{},'source_text_hashes':{'source.gd':digest},'clips':[{'id':'clip','path':'movie.mp4','poster':'poster.jpg','path_sha256':digest,'poster_sha256':digest}]}

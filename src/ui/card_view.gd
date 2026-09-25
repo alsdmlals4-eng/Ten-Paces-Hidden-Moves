@@ -3,16 +3,11 @@ extends PanelContainer
 
 signal card_selected(card_id: String)
 
-const COST_ATLAS := "res://assets/ui/cards/cost_icon_atlas.svg"
-const SLOT_SPEC := {"atlas": COST_ATLAS, "region": [9, 7, 65, 70]}
-const STAMINA_SPEC := {"atlas": COST_ATLAS, "region": [91, 7, 70, 70]}
-const INTERNAL_SPEC := {"atlas": COST_ATLAS, "region": [175, 7, 70, 70]}
-
 var definition: Dictionary = {}
 var _built := false
-var _source: TextureRect
+var _source: Label
 var _range: Label
-var _category: TextureRect
+var _category: Label
 var _name: Label
 var _art: TextureRect
 var _slot: Label
@@ -43,7 +38,7 @@ func _build() -> void:
     header.alignment = BoxContainer.ALIGNMENT_CENTER
     header.add_theme_constant_override("separation", 14)
     column.add_child(header)
-    _source = _texture_rect(Vector2(58, 66)); header.add_child(_source)
+    _source = _text_badge("기초"); header.add_child(_source)
     var range_panel := PanelContainer.new()
     range_panel.custom_minimum_size = Vector2(72, 38)
     range_panel.add_theme_stylebox_override("panel", _range_style())
@@ -51,7 +46,7 @@ func _build() -> void:
     _range.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
     _range.add_theme_font_size_override("font_size", 22)
     range_panel.add_child(_range); header.add_child(range_panel)
-    _category = _texture_rect(Vector2(62, 62)); header.add_child(_category)
+    _category = _text_badge(""); header.add_child(_category)
     _name = Label.new(); _name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     _name.add_theme_font_size_override("font_size", 34)
     _name.add_theme_color_override("font_color", Color("211c17")); column.add_child(_name)
@@ -60,14 +55,14 @@ func _build() -> void:
     _art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED; column.add_child(_art)
     var footer := HBoxContainer.new(); footer.alignment = BoxContainer.ALIGNMENT_CENTER
     footer.add_theme_constant_override("separation", 14); column.add_child(footer)
-    _slot = _add_cost(footer, SLOT_SPEC, "행동 슬롯")
-    _stamina = _add_cost(footer, STAMINA_SPEC, "기력")
-    _internal = _add_cost(footer, INTERNAL_SPEC, "내력")
+    _slot = _add_cost(footer, "수")
+    _stamina = _add_cost(footer, "기력")
+    _internal = _add_cost(footer, "내력")
 
 func _apply_definition() -> void:
     if not _built or definition.is_empty(): return
-    _source.texture = _texture_from_spec(definition.source_badge)
-    _category.texture = _texture_from_spec(definition.category_badge)
+    _source.text = str(definition.get("source_label", ""))
+    _category.text = str(definition.get("category_label", ""))
     _art.texture = _texture_from_spec(definition.illustration)
     _range.text = str(definition.get("range_text", "-"))
     _name.text = str(definition.get("name", ""))
@@ -76,9 +71,17 @@ func _apply_definition() -> void:
     _internal.text = str(definition.get("internal_cost", 0))
     tooltip_text = "%s · %s · 사거리 %s" % [definition.source_label, definition.category_label, definition.range_text]
 
-func _add_cost(parent: HBoxContainer, spec: Dictionary, hint: String) -> Label:
+func _text_badge(text: String) -> Label:
+    var label := Label.new()
+    label.text = text
+    label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    label.add_theme_font_size_override("font_size", 18)
+    label.add_theme_color_override("font_color", Color("211c17"))
+    return label
+
+func _add_cost(parent: HBoxContainer, hint: String) -> Label:
     var box := VBoxContainer.new(); box.custom_minimum_size = Vector2(64, 64)
-    var icon := _texture_rect(Vector2(36, 36)); icon.texture = _texture_from_spec(spec); box.add_child(icon)
+    box.add_child(_text_badge(hint))
     var value := Label.new(); value.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     value.add_theme_font_size_override("font_size", 22); value.tooltip_text = hint
     box.add_child(value); parent.add_child(box); return value

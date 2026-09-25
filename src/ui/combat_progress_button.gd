@@ -184,7 +184,7 @@ func get_request_context() -> Dictionary:
 func _refresh() -> void:
     if _button == null:
         return
-    _button.text = get_button_text()
+    _button.text = "진행  ›" if bool(get_meta("reference_preparation",false)) else get_button_text()
     _button.tooltip_text = "행동 실행 · 완성된 현재 행동 묶음을 한 번 실행합니다."
     _button.accessibility_name = "행동 실행"
     _button.accessibility_description = "완성된 현재 행동 묶음을 한 번 실행합니다."
@@ -237,6 +237,8 @@ func _notification(what: int) -> void:
         queue_redraw()
 
 func _draw() -> void:
+    if bool(get_meta("reference_preparation",false)):
+        return
     draw_rect(Rect2(Vector2.ZERO, size), PANEL, true)
     draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), Color("211c17"), false, 2.0)
     draw_rect(Rect2(Vector2(4.0, 4.0), size - Vector2(8.0, 8.0)), Color(GOLD, 0.72 if progress_enabled else 0.34), false, 1.0)

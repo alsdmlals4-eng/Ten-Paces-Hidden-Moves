@@ -98,8 +98,17 @@ func _run() -> void:
         await tap_action("ui_accept")
         check(shell.session.blocked, "actual new journey failure blocks")
         shell.session.store.io_guard = Callable()
-        check(await shell.retry_durable_save(), "new generation retry saves setup")
+        check(await shell.retry_durable_save(), "new generation retry saves prologue")
+        check(shell.run_state.get_current_screen()=="PROLOGUE", "new journey retry publishes the approved prologue")
+        check(shell.advance_noncombat(), "acknowledged prologue advances to selection")
         check(shell.primary_button.disabled and shell.get_setup_selected_manual_ids().is_empty(), "new journey retry respects SETUP zero-of-four disabled CTA")
+        # The rest of this historical suite exercises the legacy bundle bridge.
+        # Frame transactions and carry are exercised by verify_frame_durability.
+        shell.queue_free()
+        await process_frame
+        storage += "_legacy_playback"
+        shell = await make_shell()
+        check(shell.session.transact(func():return shell.run_state.start_new_giyun_run(83,shell.session.save_id),true), "explicit legacy lifecycle fixture")
         var options: Array = shell.starter_manual_catalog.get_options()
         for option in options.slice(0, 4): shell.toggle_setup_manual(str(option.manual_id))
         check(shell.advance_noncombat(), "starter confirmation saves")
@@ -282,6 +291,8 @@ func _run() -> void:
     check(FileAccess.get_sha256(primary) == hash, "preservation failure never overwrites source")
     shell.session.store.io_guard = Callable()
     check(await shell.retry_durable_save(), "replacement retries original pending generation")
+    check(shell.run_state.get_current_screen()=="PROLOGUE", "replacement retry publishes prologue")
+    check(shell.advance_noncombat(), "replacement prologue advances after durable acknowledgment")
     check(shell.primary_button.disabled and shell.get_setup_selected_manual_ids().is_empty(), "replacement retry respects SETUP zero-of-four disabled CTA")
     check(FileAccess.file_exists(storage.path_join("primary_evidence_" + hash + ".json")), "original corrupt evidence retained")
     shell.queue_free()

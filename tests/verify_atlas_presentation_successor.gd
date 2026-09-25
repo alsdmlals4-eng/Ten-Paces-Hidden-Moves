@@ -28,7 +28,10 @@ func run_check() -> void:
     var status = board.top_hud.player_panel
     check(status.get_node("StatusHudFrame").show_behind_parent, "resource fill must render above authored frame")
     check(not status.get_node("StatusHudFrame").visible, "retire duplicated baked bar wells in live status UI")
-    check(not status.get_node("CombatantInkPortrait").visible, "status reserves space for resources instead of portrait")
+    var portrait: TextureRect = status.get_node("CombatantInkPortrait")
+    check(portrait.visible and portrait.texture is AtlasTexture, "reference preparation shows the game character portrait")
+    for bar in status.call("get_resource_layout_snapshot").bar_rects:
+        check(not portrait.get_rect().intersects(bar), "reference portrait leaves actual resource bars unobscured")
     check(board.top_hud.enemy_panel.call("get_visible_resource_ratio", "health") == -1.0, "hidden enemy resources must not leak through bar length")
     check(status.call("get_visible_resource_ratio", "health") == 1.0, "player bar shows actual fraction")
     status.size = Vector2(340.0, 128.0)

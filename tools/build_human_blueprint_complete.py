@@ -103,7 +103,7 @@ def compose(b):
     source(ROOT/'docs/blueprint/OPPONENT_BUDGET.json')
     source(REF/'provenance.json')
     for required in ['reference-screens/preparation-hud-edited-v2.png','execution-024.png','capture.json']:
-        if not (CAP/required).is_file():raise FileNotFoundError(CAP/required)
+        if not (CAP/required).is_file() and (CAP/required).relative_to(ROOT).as_posix() not in getattr(b, 'retired', {}):raise FileNotFoundError(CAP/required)
     for rel in ['src/run/vertical_slice_route_model.gd','src/run/vertical_slice_opponent_catalog.gd','src/run/vertical_slice_result_model.gd','data/combat/combat_hud_preview.json','docs/02_COMBAT_RULES.md','docs/07_COMBAT_UI_SPEC.md','docs/10_COMBAT_PRESENTATION_PLAN.md','docs/decisions/2026-09-09_RUN_START_OPPONENT_ROSTER_AND_GROWTH.md']:
         source(ROOT/rel)
     atlas=ROOT/'docs/visual-assets/candidates/TEN-HUMAN-BLUEPRINT-20260904/TEN_PACES_3X3_SCREEN_ATLAS_20260904_v1.png'

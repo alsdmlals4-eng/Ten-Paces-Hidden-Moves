@@ -1,0 +1,1563 @@
+{
+	"engine": "4.7.1-stable (official)",
+	"first_duel_result": {
+		"attempt_id": 0,
+		"battle_metrics": {
+			"clash_wins": 0,
+			"player_health_lost": 30,
+			"rounds_elapsed": 2,
+			"successful_dodges": 0,
+			"ultimate_uses": 0
+		},
+		"duel_index": 1,
+		"enemy_health": 24,
+		"outcome": "loss",
+		"player_health": 0,
+		"player_resources": {
+			"health": [
+				0,
+				30
+			],
+			"internal": [
+				2,
+				4
+			],
+			"stamina": [
+				5,
+				5
+			]
+		},
+		"presentation_state": "COMPLETED",
+		"review_causes": [
+			{
+				"event": "combat_loss",
+				"label": "전투에서 패배했습니다."
+			}
+		],
+		"review_summary": {
+			"elapsed_seconds": 13.1,
+			"format": "frame-v1",
+			"windows": [
+				{
+					"end_tick": 100,
+					"events": [
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_heavy_attack",
+									"card_name": "강공",
+									"outcome": "startup"
+								}
+							],
+							"actor": "enemy",
+							"changes": "상대 기력 -1 · 상대 내력 -2",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": -2,
+									"momentum": 0,
+									"stamina": -1
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "강공 · 준비 동작",
+							"tick": 0,
+							"window_tick": 0
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_footwork",
+									"card_name": "보법",
+									"outcome": "startup"
+								}
+							],
+							"actor": "player",
+							"changes": "내 내력 -1",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": -1,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "보법 · 준비 동작",
+							"tick": 0,
+							"window_tick": 0
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_footwork",
+									"card_name": "보법",
+									"outcome": "move"
+								}
+							],
+							"actor": "player",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "보법 · 이동",
+							"tick": 2,
+							"window_tick": 2
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_footwork",
+									"card_name": "보법",
+									"outcome": "complete"
+								}
+							],
+							"actor": "player",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "보법 · 동작 완료",
+							"tick": 12,
+							"window_tick": 12
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_heavy_attack",
+									"card_name": "강공",
+									"damage": 10,
+									"defense_outcome": "hit",
+									"outcome": "martial_completed"
+								}
+							],
+							"actor": "enemy",
+							"changes": "내 체력 -10",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": -10,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "강공 · 실행 · 피해 10",
+							"tick": 12,
+							"window_tick": 12
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_guard",
+									"card_name": "막기",
+									"outcome": "startup"
+								}
+							],
+							"actor": "player",
+							"changes": "내 기력 -1",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": -1
+								}
+							},
+							"text": "막기 · 준비 동작",
+							"tick": 15,
+							"window_tick": 15
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_guard",
+									"card_name": "막기",
+									"outcome": "active"
+								}
+							],
+							"actor": "player",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "막기 · 발동",
+							"tick": 16,
+							"window_tick": 16
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_heavy_attack",
+									"card_name": "강공",
+									"outcome": "complete"
+								}
+							],
+							"actor": "enemy",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "강공 · 동작 완료",
+							"tick": 25,
+							"window_tick": 25
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_palm",
+									"card_name": "장풍",
+									"outcome": "startup"
+								}
+							],
+							"actor": "enemy",
+							"changes": "상대 내력 -1",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": -1,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "장풍 · 준비 동작",
+							"tick": 25,
+							"window_tick": 25
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_guard",
+									"card_name": "막기",
+									"outcome": "complete"
+								}
+							],
+							"actor": "player",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "막기 · 동작 완료",
+							"tick": 33,
+							"window_tick": 33
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_heavy_attack",
+									"card_name": "강공",
+									"outcome": "startup"
+								}
+							],
+							"actor": "player",
+							"changes": "내 기력 -1 · 내 내력 -2",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": -2,
+									"momentum": 0,
+									"stamina": -1
+								}
+							},
+							"text": "강공 · 준비 동작",
+							"tick": 35,
+							"window_tick": 35
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_palm",
+									"card_name": "장풍",
+									"damage": 6,
+									"defense_outcome": "hit",
+									"outcome": "martial_completed"
+								}
+							],
+							"actor": "enemy",
+							"changes": "내 체력 -6",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": -6,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "장풍 · 실행 · 피해 6",
+							"tick": 35,
+							"window_tick": 35
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_heavy_attack",
+									"card_name": "강공",
+									"outcome": "interrupted"
+								}
+							],
+							"actor": "player",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "강공 · 중단",
+							"tick": 35,
+							"window_tick": 35
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_palm",
+									"card_name": "장풍",
+									"outcome": "complete"
+								}
+							],
+							"actor": "enemy",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "장풍 · 동작 완료",
+							"tick": 45,
+							"window_tick": 45
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_meditate",
+									"card_name": "명상",
+									"outcome": "startup"
+								}
+							],
+							"actor": "enemy",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "명상 · 준비 동작",
+							"tick": 45,
+							"window_tick": 45
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_meditate",
+									"card_name": "명상",
+									"outcome": "executed"
+								}
+							],
+							"actor": "enemy",
+							"changes": "상대 기력 +1 · 상대 내력 +1",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 1,
+									"momentum": 0,
+									"stamina": 1
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "명상 · 실행",
+							"tick": 50,
+							"window_tick": 50
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_meditate",
+									"card_name": "명상",
+									"outcome": "complete"
+								}
+							],
+							"actor": "enemy",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "명상 · 동작 완료",
+							"tick": 60,
+							"window_tick": 60
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_heavy_attack",
+									"card_name": "강공",
+									"outcome": "startup"
+								}
+							],
+							"actor": "enemy",
+							"changes": "상대 기력 -1 · 상대 내력 -2",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": -2,
+									"momentum": 0,
+									"stamina": -1
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "강공 · 준비 동작",
+							"tick": 60,
+							"window_tick": 60
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_meditate",
+									"card_name": "명상",
+									"outcome": "startup"
+								}
+							],
+							"actor": "player",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "명상 · 준비 동작",
+							"tick": 60,
+							"window_tick": 60
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_meditate",
+									"card_name": "명상",
+									"outcome": "executed"
+								}
+							],
+							"actor": "player",
+							"changes": "내 기력 +1 · 내 내력 +1",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 1,
+									"momentum": 0,
+									"stamina": 1
+								}
+							},
+							"text": "명상 · 실행",
+							"tick": 65,
+							"window_tick": 65
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_heavy_attack",
+									"card_name": "강공",
+									"damage": 10,
+									"defense_outcome": "hit",
+									"outcome": "martial_completed"
+								}
+							],
+							"actor": "enemy",
+							"changes": "내 체력 -10",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": -10,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "강공 · 실행 · 피해 10",
+							"tick": 72,
+							"window_tick": 72
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_meditate",
+									"card_name": "명상",
+									"outcome": "complete"
+								}
+							],
+							"actor": "player",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "명상 · 동작 완료",
+							"tick": 75,
+							"window_tick": 75
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_observe",
+									"card_name": "관찰",
+									"outcome": "startup"
+								}
+							],
+							"actor": "player",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "관찰 · 준비 동작",
+							"tick": 80,
+							"window_tick": 80
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_heavy_attack",
+									"card_name": "강공",
+									"outcome": "complete"
+								}
+							],
+							"actor": "enemy",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "강공 · 동작 완료",
+							"tick": 85,
+							"window_tick": 85
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_move",
+									"card_name": "이동",
+									"outcome": "startup"
+								}
+							],
+							"actor": "enemy",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "이동 · 준비 동작",
+							"tick": 85,
+							"window_tick": 85
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_observe",
+									"card_name": "관찰",
+									"outcome": "active"
+								}
+							],
+							"actor": "player",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "관찰 · 발동",
+							"tick": 85,
+							"window_tick": 85
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_move",
+									"card_name": "이동",
+									"outcome": "move"
+								}
+							],
+							"actor": "enemy",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "이동 · 이동",
+							"tick": 87,
+							"window_tick": 87
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_observe",
+									"card_name": "관찰",
+									"outcome": "complete"
+								}
+							],
+							"actor": "player",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "관찰 · 동작 완료",
+							"tick": 95,
+							"window_tick": 95
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_move",
+									"card_name": "이동",
+									"outcome": "complete"
+								}
+							],
+							"actor": "enemy",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "이동 · 동작 완료",
+							"tick": 95,
+							"window_tick": 95
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_move",
+									"card_name": "이동",
+									"outcome": "startup"
+								}
+							],
+							"actor": "enemy",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "이동 · 준비 동작",
+							"tick": 95,
+							"window_tick": 95
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_move",
+									"card_name": "이동",
+									"outcome": "move"
+								}
+							],
+							"actor": "enemy",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "이동 · 이동",
+							"tick": 97,
+							"window_tick": 97
+						},
+						{
+							"actions": [],
+							"actor": "",
+							"changes": "내 기세 +1 · 상대 기세 +1",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 1,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 1,
+									"stamina": 0
+								}
+							},
+							"text": "10초 판정 완료",
+							"tick": 100,
+							"window_tick": 100
+						}
+					],
+					"outcome": "ongoing",
+					"start_tick": 0,
+					"window_index": 0
+				},
+				{
+					"end_tick": 131,
+					"events": [
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_palm",
+									"card_name": "장풍",
+									"outcome": "startup"
+								}
+							],
+							"actor": "player",
+							"changes": "내 내력 -1",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": -1,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "장풍 · 준비 동작",
+							"tick": 100,
+							"window_tick": 0
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_move",
+									"card_name": "이동",
+									"outcome": "complete"
+								}
+							],
+							"actor": "enemy",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "이동 · 동작 완료",
+							"tick": 105,
+							"window_tick": 5
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_meditate",
+									"card_name": "명상",
+									"outcome": "startup"
+								}
+							],
+							"actor": "enemy",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "명상 · 준비 동작",
+							"tick": 105,
+							"window_tick": 5
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_meditate",
+									"card_name": "명상",
+									"outcome": "executed"
+								}
+							],
+							"actor": "enemy",
+							"changes": "상대 기력 +1 · 상대 내력 +1",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 1,
+									"momentum": 0,
+									"stamina": 1
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "명상 · 실행",
+							"tick": 110,
+							"window_tick": 10
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_palm",
+									"card_name": "장풍",
+									"damage": 6,
+									"defense_outcome": "hit",
+									"outcome": "martial_completed"
+								}
+							],
+							"actor": "player",
+							"changes": "상대 체력 -6",
+							"delta": {
+								"enemy": {
+									"health": -6,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "장풍 · 실행 · 피해 6",
+							"tick": 110,
+							"window_tick": 10
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_palm",
+									"card_name": "장풍",
+									"outcome": "complete"
+								}
+							],
+							"actor": "player",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "장풍 · 동작 완료",
+							"tick": 120,
+							"window_tick": 20
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_meditate",
+									"card_name": "명상",
+									"outcome": "complete"
+								}
+							],
+							"actor": "enemy",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "명상 · 동작 완료",
+							"tick": 120,
+							"window_tick": 20
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_palm",
+									"card_name": "장풍",
+									"outcome": "startup"
+								}
+							],
+							"actor": "enemy",
+							"changes": "상대 내력 -1",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": -1,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "장풍 · 준비 동작",
+							"tick": 120,
+							"window_tick": 20
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_meditate",
+									"card_name": "명상",
+									"outcome": "startup"
+								}
+							],
+							"actor": "player",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "명상 · 준비 동작",
+							"tick": 120,
+							"window_tick": 20
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_meditate",
+									"card_name": "명상",
+									"outcome": "executed"
+								}
+							],
+							"actor": "player",
+							"changes": "내 기력 +1 · 내 내력 +1",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 1,
+									"momentum": 0,
+									"stamina": 1
+								}
+							},
+							"text": "명상 · 실행",
+							"tick": 125,
+							"window_tick": 25
+						},
+						{
+							"actions": [
+								{
+									"actor": "enemy",
+									"card_id": "basic_palm",
+									"card_name": "장풍",
+									"damage": 4,
+									"defense_outcome": "hit",
+									"outcome": "martial_completed"
+								}
+							],
+							"actor": "enemy",
+							"changes": "내 체력 -4",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": -4,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "장풍 · 실행 · 피해 4",
+							"tick": 130,
+							"window_tick": 30
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_meditate",
+									"card_name": "명상",
+									"outcome": "interrupted"
+								}
+							],
+							"actor": "player",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "명상 · 중단",
+							"tick": 130,
+							"window_tick": 30
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_meditate",
+									"card_name": "명상",
+									"outcome": "interrupted"
+								}
+							],
+							"actor": "player",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "명상 · 중단",
+							"tick": 130,
+							"window_tick": 30
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_meditate",
+									"card_name": "명상",
+									"outcome": "interrupted"
+								}
+							],
+							"actor": "player",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "명상 · 중단",
+							"tick": 130,
+							"window_tick": 30
+						},
+						{
+							"actions": [
+								{
+									"actor": "player",
+									"card_id": "basic_meditate",
+									"card_name": "명상",
+									"outcome": "interrupted"
+								}
+							],
+							"actor": "player",
+							"changes": "자원 변화 없음",
+							"delta": {
+								"enemy": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								},
+								"player": {
+									"health": 0,
+									"internal": 0,
+									"momentum": 0,
+									"stamina": 0
+								}
+							},
+							"text": "명상 · 중단",
+							"tick": 130,
+							"window_tick": 30
+						}
+					],
+					"outcome": "loss",
+					"start_tick": 100,
+					"window_index": 1
+				}
+			]
+		},
+		"terminal": true
+	},
+	"project": "C:/Users/user/.codex/worktrees/ink-preparation-layout-20260925/Ten-Paces-Hidden-Moves/",
+	"shots": [
+		{
+			"evidence": "ACTUAL_GODOT_DETERMINISTIC_INPUT",
+			"key": "main",
+			"path": "docs/blueprint/evidence/frame-runtime-20260925/main.png",
+			"screen": "MAIN",
+			"sha256": "dfa6ccf6591b70bfeb6465761e7d66402d2729e38d2b7107571c2130e5825cd7",
+			"size": [
+				1440,
+				1000
+			],
+			"status": "PASS"
+		},
+		{
+			"evidence": "ACTUAL_GODOT_DETERMINISTIC_INPUT",
+			"key": "prologue",
+			"path": "docs/blueprint/evidence/frame-runtime-20260925/prologue.png",
+			"screen": "PROLOGUE",
+			"sha256": "a52e8398afd8a4ab33e79e892facdc482aaa58984e63796617e8ae402647f1d5",
+			"size": [
+				1440,
+				1000
+			],
+			"status": "PASS"
+		},
+		{
+			"evidence": "ACTUAL_GODOT_DETERMINISTIC_INPUT",
+			"key": "setup",
+			"path": "docs/blueprint/evidence/frame-runtime-20260925/setup.png",
+			"screen": "SETUP",
+			"sha256": "0d69ea09983b24f2ba46fac9b6b9a5fc6ef2f60e62235404673daddf0745748a",
+			"size": [
+				1440,
+				1000
+			],
+			"status": "PASS"
+		},
+		{
+			"evidence": "ACTUAL_GODOT_DETERMINISTIC_INPUT",
+			"key": "tutorial",
+			"path": "docs/blueprint/evidence/frame-runtime-20260925/tutorial.png",
+			"screen": "TUTORIAL",
+			"sha256": "a9502e6e6a8addc16376a4d8ebd9b2f8debb64a3ed19108e6b64a2d4ec3bc511",
+			"size": [
+				1440,
+				1000
+			],
+			"status": "PASS"
+		},
+		{
+			"evidence": "ACTUAL_GODOT_DETERMINISTIC_INPUT",
+			"key": "first_journey",
+			"path": "docs/blueprint/evidence/frame-runtime-20260925/first_journey.png",
+			"screen": "FIRST_JOURNEY",
+			"sha256": "24182ac0110136f829f58e5475a192b9f0fd4a7439b1094bf6241c3df0859b25",
+			"size": [
+				1440,
+				1000
+			],
+			"status": "PASS"
+		},
+		{
+			"evidence": "ACTUAL_GODOT_DETERMINISTIC_INPUT",
+			"key": "event",
+			"path": "docs/blueprint/evidence/frame-runtime-20260925/event.png",
+			"screen": "FIRST_JOURNEY",
+			"sha256": "d0c073793ce1bf21ef8d208fea8d409a9da9f4bd5947b6f52a692a8b698ac485",
+			"size": [
+				1440,
+				1000
+			],
+			"status": "PASS"
+		},
+		{
+			"evidence": "ACTUAL_GODOT_DETERMINISTIC_INPUT",
+			"key": "briefing",
+			"path": "docs/blueprint/evidence/frame-runtime-20260925/briefing.png",
+			"screen": "BRIEFING",
+			"sha256": "748df0a7d5ebf69978bbb4f22d400a792807671a6be1380a7cc24da11dbd5f2a",
+			"size": [
+				1440,
+				1000
+			],
+			"status": "PASS"
+		},
+		{
+			"evidence": "ACTUAL_GODOT_DETERMINISTIC_INPUT",
+			"key": "preparation",
+			"path": "docs/blueprint/evidence/frame-runtime-20260925/preparation.png",
+			"screen": "COMBAT",
+			"sha256": "63dda002557e4796ea7b0bb70dd3bcc8f9e90a22a689a8d83dc418bb95806281",
+			"size": [
+				1440,
+				1000
+			],
+			"status": "PASS"
+		},
+		{
+			"evidence": "ACTUAL_GODOT_DETERMINISTIC_INPUT",
+			"key": "resolution",
+			"path": "docs/blueprint/evidence/frame-runtime-20260925/resolution.png",
+			"screen": "COMBAT",
+			"sha256": "d3c5914428e34b5cc2b6110d8c09101a71f058dc4b8f26f08cd2a3cbd1e46089",
+			"size": [
+				1440,
+				1000
+			],
+			"status": "PASS"
+		},
+		{
+			"evidence": "ACTUAL_GODOT_DETERMINISTIC_INPUT",
+			"key": "result",
+			"path": "docs/blueprint/evidence/frame-runtime-20260925/result.png",
+			"screen": "FAILURE_RETRY",
+			"sha256": "bac3d48069eb311ea2bf40653f230b3df96174200885591c123ac2a8690668cc",
+			"size": [
+				1440,
+				1000
+			],
+			"status": "PASS"
+		},
+		{
+			"evidence": "ACTUAL_GODOT_DETERMINISTIC_INPUT",
+			"key": "review",
+			"path": "docs/blueprint/evidence/frame-runtime-20260925/review.png",
+			"screen": "FAILURE_RETRY",
+			"sha256": "f9ae73e1f2c53f76265df0d14b4b9a57a4e0bf39868ec398bc509e97228d61bd",
+			"size": [
+				1440,
+				1000
+			],
+			"status": "PASS"
+		}
+	],
+	"status": "PASS"
+}

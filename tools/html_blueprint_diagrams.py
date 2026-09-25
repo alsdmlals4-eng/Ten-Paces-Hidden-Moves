@@ -15,30 +15,38 @@ def edge(id, source, target, label, points, label_at, variant='normal'):
 
 
 def build():
-    game={'id':'game-loop','kind':'workflow','title':'한 회차가 이어지는 방식','width':1080,'height':720,
-        'note':'주요 화면과 분기를 읽는 설명용 흐름입니다. 첫 패배 재도전·저장·보상 세부 규칙은 연결된 원본과 게임 이해에서 확인합니다.',
+    game={'id':'game-loop','kind':'workflow','title':'출사표에서 10초 비무와 복기까지','width':1380,'height':850,
+        'note':'2026-09-25 승인 흐름입니다. 배치 참고·배경 레이어·실행 캡처를 구분하며 없는 촬영은 NOT_RUN입니다.',
         'nodes':[
             node('menu','메인 화면','새 여정 또는 저장된 여정 이어하기.','src/ui/main_title_screen.gd',40,40),
-            node('starter','시작 무공','새 여정의 시작 무공을 선택한다.','src/run/vertical_slice_starter_manual_catalog.gd',390,40),
-            node('brief','상대 브리핑','확정된 상대·공개 정보·제약을 확인한다.','src/run/vertical_slice_shell.gd',740,40),
-            node('plan','수를 배치','현재 해금 기술로 3수·3수·4수를 계획한다.','src/ui/action_selection/action_selection_dock.gd',740,290),
-            node('resolve','합과 해결','공유 코어가 공개된 행동을 판정한다.','src/combat/combat_resolution_engine.gd',390,290),
-            node('result','결과와 복기','승패·보상·첫 패배 재도전·종료를 구분한다.','src/run/vertical_slice_result_model.gd',40,290),
-            node('route','강호행로','비무 사이 4회 선택 뒤 다음 상대를 만난다.','src/run/vertical_slice_route_model.gd',40,540),
-            node('end','여정 종료','10전 승리 또는 종료 조건에 따라 메인으로 복귀한다.','src/run/vertical_slice_run_state.gd',390,540)],
+            node('prologue','출사표','낭인의 첫 여정을 소개한다.','data/run/frame_intro.json',390,40),
+            node('starter','삽화 무공 선택','후보 6권 중 4권을 각 3성으로 선택.','src/run/vertical_slice_starter_manual_catalog.gd',740,40),
+            node('tutorial','10초 규칙 익히기','시간축과 관찰·배치를 연습한다.','data/run/frame_intro.json',1090,40),
+            node('first_route','첫 행로 · 1회','비전투 사건을 한 번 선택한다.','src/run/frame_intro_model.gd',1090,290),
+            node('brief','비무 브리핑','내 상태·대치·공개 상대·제약 확인.','src/run/vertical_slice_shell.gd',740,290),
+            node('plan','10초 행동 설계','선딜·발동·후딜과 관찰 범위를 읽는다.','data/combat/frame_timeline.json',390,290),
+            node('resolve','전투 진행','확정한 사건을 인물·효과·결과로 읽는다.','src/combat/frame_timeline_engine.gd',40,290),
+            node('result','비무 결과','승패·지급 결과와 계속·종료 선택.','src/run/vertical_slice_result_model.gd',40,540),
+            node('review','복기','같은 사건 재생 · 판정·보상 중복 없음.','docs/decisions/2026-09-25_FRAME_TIMELINE_AND_PROLOGUE.md',390,540),
+            node('route','후속 강호행로','기존 비무·성장·행로 자료를 이어간다.','src/run/vertical_slice_route_model.gd',740,540),
+            node('end','여정 종료','종료 조건에 따라 메인으로 복귀.','src/run/vertical_slice_run_state.gd',1090,540)],
         'edges':[
-            edge('new','menu','starter','새 여정',[[260,85],[390,85]],[325,65]),
-            edge('start','starter','brief','선택 확정',[[610,85],[740,85]],[675,65]),
-            edge('enter','brief','plan','비무 시작',[[850,130],[850,290]],[900,210]),
-            edge('commit','plan','resolve','행동 실행',[[740,335],[610,335]],[675,315]),
-            edge('resolved','resolve','result','비무 종료',[[390,335],[260,335]],[325,315]),
-            edge('next','result','route','승리·계속',[[150,380],[150,540]],[95,450]),
-            edge('finish','result','end','종료 조건',[[220,380],[220,450],[500,450],[500,540]],[355,432]),
-            edge('repeat','route','brief','다음 비무',[[260,590],[1030,590],[1030,85],[960,85]],[1020,235],'return') ]}
-    # Keep the return corridor below the end node instead of crossing it.
-    game['edges'][-1]['points']=[[150,630],[150,680],[1030,680],[1030,85],[960,85]]
-    game['nodes'][4]['sources'].append('src/combat/combat_board_preview.gd')
-    game['edges'].append(edge('continue-bundle','resolve','plan','다음 묶음 · 3/3/4 반복',[[610,365],[685,365],[685,425],[850,425],[850,380]],[775,454],'return'))
+            edge('new','menu','prologue','새 게임',[[260,85],[390,85]],[325,65]),
+            edge('intro','prologue','starter','길을 나선다',[[610,85],[740,85]],[675,65]),
+            edge('start','starter','tutorial','4권 확정',[[960,85],[1090,85]],[1025,65]),
+            edge('practice','tutorial','first_route','규칙·배치 연습',[[1200,130],[1200,290]],[1270,210]),
+            edge('first-choice','first_route','brief','결과 확인',[[1090,335],[960,335]],[1025,315]),
+            edge('enter','brief','plan','비무 시작',[[740,335],[610,335]],[675,315]),
+            edge('commit','plan','resolve','확정·진행',[[390,335],[260,335]],[325,315]),
+            edge('resolved','resolve','result','비무 종료',[[150,380],[150,540]],[85,465]),
+            edge('open-review','result','review','복기 보기',[[260,585],[390,585]],[325,565]),
+            edge('close-review','review','result','결과로 복귀',[[500,630],[500,660],[150,660],[150,630]],[325,680],'return'),
+            edge('next','result','route','승리·계속',[[150,630],[150,710],[850,710],[850,630]],[720,695]),
+            edge('finish','result','end','종료 조건',[[150,630],[150,750],[1200,750],[1200,630]],[1020,735]),
+            edge('repeat','route','brief','다음 비무',[[850,540],[850,380]],[930,465],'return'),
+            edge('continue-bundle','resolve','plan','다음 10초',[[260,365],[325,365],[325,450],[500,450],[500,380]],[420,480],'return'),
+            edge('return-menu','end','menu','메인으로',[[1200,630],[1200,800],[20,800],[20,85],[40,85]],[665,825],'return')]}
+    game['nodes'][7]['sources'].append('src/combat/combat_board_preview.gd')
     flow={'id':'source-to-review','kind':'dataflow','title':'기획·자산이 검수 화면으로 연결되는 방식','width':1080,'height':480,
         'note':'기획·승인·게임 원본은 저장소에 남습니다. HTML은 읽기용 파생본이며 사용자 검수는 원본 수정의 근거로 연결됩니다.',
         'nodes':[

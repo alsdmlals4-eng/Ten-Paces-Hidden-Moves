@@ -49,12 +49,16 @@ def basic_actions():
 
 def build_contexts():
     rows = {
-        'menu': ('메인 화면', ['reader-006','reader-007'], 0, ['starter']),
-        'starter': ('시작 무공', ['reader-065','reader-079'], 0, ['brief']),
+        'menu': ('메인 화면', ['reader-006','reader-005'], 0, ['prologue']),
+        'prologue': ('출사표', ['reader-007'], 0, ['starter']),
+        'starter': ('삽화 시작 무공 · 6권 중 4권', ['reader-065','reader-008'], 0, ['tutorial']),
+        'tutorial': ('10초 규칙 익히기', ['reader-008','reader-016','reader-019'], 0, ['first_route']),
+        'first_route': ('첫 비전투 행로 · 1회', ['reader-008'], 1, ['brief']),
         'brief': ('상대 브리핑 · 비무 제약', ['reader-015','reader-028','reader-029'], 3, ['plan']),
-        'plan': ('수 배치 · 행동 선택', ['reader-017','reader-018','reader-019'], 5, ['resolve']),
-        'resolve': ('격돌 · 합 · 카드 연출', ['reader-020','reader-024','reader-025','reader-026'], 6, ['plan','result']),
-        'result': ('결과 · 복기 · 보상', ['reader-027'], 8, ['route','end']),
+        'plan': ('10초 행동 설계', ['reader-017','reader-018','reader-019'], 5, ['resolve']),
+        'resolve': ('전투 진행 · 합과 사건 기록', ['reader-020','reader-024','reader-025','reader-026'], 6, ['plan','result']),
+        'result': ('비무 결과 · 지급·진행', ['reader-027'], 8, ['review','route','end']),
+        'review': ('복기 · 해결된 사건 다시 보기', ['reader-027'], 8, ['result']),
         'route': ('강호행로', ['reader-010','reader-009','reader-011','reader-012','reader-013','reader-014'], 1, ['brief']),
         'end': ('여정 종료', ['reader-027','reader-008'], 8, ['menu']),
     }
@@ -83,12 +87,17 @@ def load_clips(manifest_path=None):
                 if path not in current:
                     current[path] = hashlib.sha256(file.read_text(encoding='utf-8').encode('utf-8')).hexdigest()
     clips = manifest['clips']
+    retired = {r['path']: r for r in read(ROOT, 'docs/blueprint/IMPLEMENTATION_READINESS.json').get('retired_images', [])}
     unique_ids(clips)
     for clip in clips:
         clip['manifest'] = manifest_path
         clip['freshness'] = clip_freshness(clip, manifest, current)
-        for field in ['path','poster']:
-            verified_file(ROOT, clip[field], clip[field+'_sha256'])
+        verified_file(ROOT, clip['path'], clip['path_sha256'])
+        if clip.get('poster') in retired:
+            clip['poster_disposal'] = retired[clip['poster']]
+            clip['poster'] = None
+        elif clip.get('poster'):
+            verified_file(ROOT, clip['poster'], clip['poster_sha256'])
         if clip.get('gif'):
             verified_file(ROOT, clip['gif'], clip['gif_sha256'])
     return clips
@@ -96,27 +105,22 @@ def load_clips(manifest_path=None):
 
 def build(pages):
     contexts = build_contexts()
-    images = [b for p in pages if p['id']=='reader-006' for b in p['blocks'] if b['kind']=='image']
     page_ids = {p['id'] for p in pages}
     for context in contexts.values():
         if not set(context['pages']) <= page_ids:
             raise ValueError('Atlas context links to an unknown explanation')
-        context['preview'] = images[context['atlas_image_index']]
-        context['preview_kind'] = '승인 기획의 화면 자료'
-    stills = {s['key']:s for s in read(ROOT, SCREEN_CAPTURE)['shots']}
-    for key, shot in {'menu':'main','starter':'setup','brief':'briefing','plan':'preparation',
-                      'resolve':'resolution','result':'result','route':'journey','end':'result'}.items():
-        still = stills[shot]
-        path = still['path'].removeprefix('res://')
-        verified_file(ROOT, path, still['sha256'])
-        contexts[key]['preview'] = dict(kind='image',path=path,size=still['size'])
-        contexts[key]['still_capture'] = dict(still,path=path,screen='SETUP' if key=='starter' else shot.upper(),source=SCREEN_CAPTURE)
-        contexts[key]['preview_kind'] = '현재 수묵 화면 · 실제 Godot 격리 촬영'
-    for key in ['result','route','end']:
-        contexts[key]['preview_kind'] = '현재 수묵 화면 · 결과·행로 UI 확인용 고정 상황 촬영'
-    contexts['end']['preview_kind'] = '비무 결과 화면 참고 · 여정 종료 전용 캡처는 별도'
-    for key, context in contexts.items():
-        context['preview'] = dict(context['preview'], page_id='screen:'+key)
-    return {'contexts': contexts, 'clips': load_clips(INK_MANIFEST)+load_clips(),
+    from html_blueprint_frame import screen_media, rules_summary, attach_timing, frame_assets, validated_walkthrough
+    for key, media in screen_media(ROOT).items():
+        contexts[key].update(media)
+    clips = load_clips(INK_MANIFEST)+load_clips()
+    for clip in clips:
+        clip['historical'] = True
+        clip['rule_set'] = 'SUPERSEDED_SLOT_TIMELINE'
+        clip['caption'] = '이전 규칙의 Godot 촬영 · 현재 10초 규칙의 실행 근거 아님'
+    walkthrough = validated_walkthrough(ROOT)
+    if walkthrough:
+        clips.insert(0, walkthrough)
+    return {'contexts': contexts, 'clips': clips, 'frame_rules': rules_summary(ROOT),
+            'frame_assets': frame_assets(ROOT),
             'constraints': read(ROOT, 'data/run/bimu_constraints.json'),
-            'actions': basic_actions()}
+            'actions': attach_timing(basic_actions(), ROOT)}

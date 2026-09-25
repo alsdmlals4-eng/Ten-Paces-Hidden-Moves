@@ -21,6 +21,8 @@ const SNAPSHOT_FIELDS := {
 const ROSTER_FIELDS := ["ruleset_id", "roster_version", "roster_seed", "roster_save_id", "resolved_encounters", "roster_digest"]
 var _roster: Dictionary = {}
 var _giyun: Dictionary = {}
+var _frame: Dictionary = {}
+var _frame_intro = preload("res://src/run/frame_intro_model.gd").new()
 var _giyun_rules = preload("res://src/run/giyun_rules.gd").new()
 
 func export_snapshot() -> Dictionary:
@@ -28,13 +30,15 @@ func export_snapshot() -> Dictionary:
     for key in SNAPSHOT_FIELDS: snapshot[key] = get(SNAPSHOT_FIELDS[key])
     snapshot.merge(_roster, true)
     if not _giyun.is_empty(): snapshot["giyun"] = _giyun.duplicate(true)
+    if not _frame.is_empty(): snapshot["frame"] = _frame.duplicate(true)
     return snapshot.duplicate(true)
 
 
 func validate_snapshot(snapshot: Dictionary) -> Dictionary:
     var bad := CHECKPOINT_CODEC.error("CORRUPT", "Invalid run snapshot")
     var variable: bool = snapshot.has("ruleset_id")
-    if not CHECKPOINT_CODEC.json_safe(snapshot, 0, [0]) or snapshot.size() != SNAPSHOT_FIELDS.size() + 1 + (ROSTER_FIELDS.size() if variable else 0) + (1 if snapshot.has("giyun") else 0): return bad
+    if not CHECKPOINT_CODEC.json_safe(snapshot, 0, [0]) or snapshot.size() != SNAPSHOT_FIELDS.size() + 1 + (ROSTER_FIELDS.size() if variable else 0) + (1 if snapshot.has("giyun") else 0) + (1 if snapshot.has("frame") else 0): return bad
+    if snapshot.has("frame") and (not variable or not snapshot.has("giyun") or not _frame_intro.valid(CHECKPOINT_CODEC.normalized(snapshot))): return bad
     if snapshot.has("giyun") and (not variable or not _valid_giyun(snapshot)): return bad
     if variable and not _valid_roster(snapshot): return bad
     var template := {"progression": _progression.get_snapshot()}
@@ -46,6 +50,7 @@ func validate_snapshot(snapshot: Dictionary) -> Dictionary:
         elif typeof(template[key]) != typeof(snapshot[key]): return bad
     var s: Dictionary = CHECKPOINT_CODEC.normalized(snapshot)
     var screens := [SCREEN_MAIN, SCREEN_SETUP, SCREEN_INTRO, SCREEN_BRIEFING, SCREEN_COMBAT, SCREEN_REVIEW, SCREEN_FAILURE_RETRY, SCREEN_RESULT, SCREEN_JIANGHU, SCREEN_COMPLETION]
+    if s.has("frame"): screens.append_array([SCREEN_PROLOGUE, SCREEN_TUTORIAL, SCREEN_FIRST_JOURNEY])
     if s.current_screen not in screens or s.flow_history.is_empty() or s.flow_history[-1] != s.current_screen: return bad
     for screen in s.flow_history:
         if typeof(screen) != TYPE_STRING or screen not in screens: return bad
@@ -62,7 +67,7 @@ func validate_snapshot(snapshot: Dictionary) -> Dictionary:
         if not _starter_catalog.validate_selection(s.player_manual_loadout) or s.player_mastery_by_manual.size() != STARTER_SELECTION_COUNT: return bad
         for id in s.player_manual_loadout:
             if s.player_mastery_by_manual.get(id) != STARTER_MASTERY or not CHECKPOINT_CODEC.integer(s.player_mastery_by_manual.get(id), 3, 3) or id not in s.progression.owned_manual_ids: return bad
-    elif s.current_screen not in [SCREEN_MAIN, SCREEN_SETUP] or not s.player_mastery_by_manual.is_empty() or not s.progression.owned_manual_ids.is_empty(): return bad
+    elif s.current_screen not in [SCREEN_MAIN, SCREEN_SETUP, SCREEN_PROLOGUE] or not s.player_mastery_by_manual.is_empty() or not s.progression.owned_manual_ids.is_empty(): return bad
     for key in ["reward_history", "duel_history", "route_history", "pending_bimu_constraints"]:
         for row in s[key]:
             if typeof(row) != TYPE_DICTIONARY: return bad
@@ -86,8 +91,10 @@ func validate_snapshot(snapshot: Dictionary) -> Dictionary:
     if not s.pending_growth_route.is_empty() or not s.pending_route_intel.is_empty(): return bad # Retired two-node flow is not schema 1.
     for i in range(s.reward_history.size()):
         var row: Dictionary = s.reward_history[i]
-        if row.get("duel_index") != i + 1 or row.get("opponent_candidate_id") != catalog.select_campaign_candidate_id(i + 1) or not _valid_reward(row, s.player_manual_loadout, catalog.get_candidate(catalog.select_campaign_candidate_id(i + 1))): return bad
-    if not s.pending_result_reward.is_empty() and (s.current_screen != SCREEN_RESULT or not _valid_reward(s.pending_result_reward, s.player_manual_loadout, catalog.get_candidate(s.current_opponent_id))): return bad
+        var eligible: Array = _frame_manuals_after_rewards(s, i) if s.has("frame") else s.player_manual_loadout
+        if row.get("duel_index") != i + 1 or row.get("opponent_candidate_id") != catalog.select_campaign_candidate_id(i + 1) or not _valid_reward(row, eligible, catalog.get_candidate(catalog.select_campaign_candidate_id(i + 1))): return bad
+    var reward_manuals: Array = _frame_manuals_after_rewards(s, s.reward_history.size()) if s.has("frame") else s.player_manual_loadout
+    if not s.pending_result_reward.is_empty() and (s.current_screen != SCREEN_RESULT or not _valid_reward(s.pending_result_reward, reward_manuals, catalog.get_candidate(s.current_opponent_id))): return bad
     for i in range(s.route_history.size()):
         if not s.has("giyun") and not _valid_jianghu_receipt(s.route_history[i], i / 4 + 1, i % 4, catalog): return bad
     if not s.pending_jianghu.is_empty() and (s.current_screen != SCREEN_JIANGHU or (not s.has("giyun") and not _valid_jianghu_receipt(s.pending_jianghu, s.completed_duels, s.jianghu_step, catalog))): return bad
@@ -100,7 +107,9 @@ func validate_snapshot(snapshot: Dictionary) -> Dictionary:
     if intel_candidate._intel_by_candidate != s.intel_by_candidate: return bad
     var enemy_candidate: Dictionary = catalog.get_candidate(s.current_opponent_id)
     if variable: enemy_candidate = catalog.for_stage(s.duel_index)
-    var receipt: Dictionary = _bimu_model.validate_selection(s.pending_bimu_constraints, s.player_manual_loadout, _manual_ids(enemy_candidate))
+    # The current fight's constraints predate its reward, including on the route/result screens.
+    var bimu_manuals: Array = _frame_manuals_after_rewards(s, s.duel_index - 1) if s.has("frame") else s.player_manual_loadout
+    var receipt: Dictionary = _bimu_model.validate_selection(s.pending_bimu_constraints, bimu_manuals, _manual_ids(enemy_candidate))
     if not receipt.valid or receipt.selections != s.pending_bimu_constraints: return bad
     if not s.frozen_bimu_receipt.is_empty():
         receipt["duel_index"] = s.duel_index
@@ -129,6 +138,14 @@ func _valid_reward(receipt: Dictionary, loadout: Array, opponent: Dictionary) ->
     return false
 
 
+func _frame_manuals_after_rewards(snapshot: Dictionary, count: int) -> Array:
+    var owned: Array = snapshot.player_manual_loadout.duplicate()
+    for receipt in snapshot.reward_history.slice(0, mini(count, snapshot.reward_history.size())):
+        if receipt.get("reward_type") == "faction_transfer" and receipt.get("manual_id") not in owned:
+            owned.append(receipt.get("manual_id"))
+    return owned
+
+
 func _valid_progression_history(s: Dictionary, catalog) -> bool:
     # Validate accounting in a disposable domain model. Import never replays effects on live state.
     var audit = get_script().new()
@@ -139,6 +156,9 @@ func _valid_progression_history(s: Dictionary, catalog) -> bool:
         audit.start_new_run()
         if not audit.confirm_setup_loadout(s.player_manual_loadout, s.player_mastery_by_manual): return false
     if s.has("giyun"): audit._giyun = _giyun_rules.initial(int(s.giyun.version))
+    if s.has("frame") and not s.frame.onboarding.journey_receipt.is_empty():
+        var intro_training := int(s.frame.onboarding.journey_receipt.training)
+        if intro_training > 0 and not audit._progression.add_free_training(intro_training): return false
     for row in s.reward_history:
         var receipt: Dictionary = row.duplicate(true)
         receipt.erase("duel_index")
@@ -243,10 +263,14 @@ func import_snapshot(snapshot: Dictionary) -> Dictionary:
         for key in ROSTER_FIELDS: _roster[key] = next[key]
     _opponent_catalog = catalog
     _giyun = next.get("giyun", {}).duplicate(true)
+    _frame = next.get("frame", {}).duplicate(true)
     return {"ok": true, "status": "VALID"}
 
 const SCREEN_MAIN := "MAIN"
 const SCREEN_SETUP := "SETUP"
+const SCREEN_PROLOGUE := "PROLOGUE"
+const SCREEN_TUTORIAL := "TUTORIAL"
+const SCREEN_FIRST_JOURNEY := "FIRST_JOURNEY"
 const SCREEN_INTRO := "INTRO"
 const SCREEN_BRIEFING := "BRIEFING"
 const SCREEN_COMBAT := "COMBAT"
@@ -483,6 +507,8 @@ func confirm_setup_loadout(loadout, mastery_by_manual: Dictionary) -> bool:
 
 
 func get_player_manual_loadout() -> Array:
+    if is_frame_run() and _progression != null:
+        return _progression.owned_manual_ids.duplicate()
     return _player_manual_loadout.duplicate()
 
 
@@ -634,6 +660,7 @@ func start_new_run() -> bool:
         return false
     _reset_bimu_constraints()
     _giyun.clear()
+    _frame.clear()
     duel_index = 1
     completed_duels = 0
     route_visits = 0
@@ -666,8 +693,25 @@ func start_new_run() -> bool:
 
 func advance() -> bool:
     match _current_screen:
+        SCREEN_PROLOGUE:
+            return _transition_to(SCREEN_SETUP) if is_frame_run() else false
         SCREEN_SETUP:
+            if is_frame_run():
+                if _player_manual_loadout.size() != STARTER_SELECTION_COUNT: return false
+                return _transition_to(SCREEN_TUTORIAL)
             return _transition_to(SCREEN_INTRO)
+        SCREEN_TUTORIAL:
+            if not is_frame_run(): return false
+            if _frame.onboarding.tutorial_step < 3:
+                _frame.onboarding.tutorial_step += 1
+                screen_changed.emit(SCREEN_TUTORIAL, SCREEN_TUTORIAL)
+                return true
+            if not _frame.onboarding.practice_complete: return false
+            return _transition_to(SCREEN_FIRST_JOURNEY)
+        SCREEN_FIRST_JOURNEY:
+            if not is_frame_run() or _frame.onboarding.journey_receipt.is_empty(): return false
+            _frame.onboarding.completed = true
+            return _transition_to(SCREEN_BRIEFING)
         SCREEN_INTRO:
             return _transition_to(SCREEN_BRIEFING)
         SCREEN_BRIEFING:
@@ -796,6 +840,11 @@ func retry_failed_duel() -> bool:
 func end_failed_run() -> bool:
     if _current_screen != SCREEN_FAILURE_RETRY:
         return false
+    var ended_frame_run := is_frame_run()
+    _frame.clear()
+    if ended_frame_run:
+        _giyun.clear()
+        _flow_history.clear()
     _reset_bimu_constraints()
     last_combat_result.clear()
     _failure_receipt.clear()
@@ -1063,6 +1112,45 @@ func start_new_variable_run(seed_value: int, save_identity: String) -> bool:
 func start_new_giyun_run(seed_value: int, save_identity: String) -> bool:
     if not start_new_variable_run(seed_value, save_identity): return false
     _giyun = _giyun_rules.initial()
+    return true
+
+func start_new_frame_run(seed_value: int, save_identity: String) -> bool:
+    if not start_new_giyun_run(seed_value, save_identity): return false
+    _frame = _frame_intro.initial()
+    _flow_history = [SCREEN_MAIN]
+    return _transition_to(SCREEN_PROLOGUE)
+
+func is_frame_run() -> bool:
+    return not _frame.is_empty()
+
+func get_frame_onboarding() -> Dictionary:
+    return _frame.get("onboarding", {}).duplicate(true)
+
+func get_frame_intro_content() -> Dictionary:
+    return _frame_intro.data.duplicate(true)
+
+func complete_frame_practice(start_tick: int) -> bool:
+    if _current_screen != SCREEN_TUTORIAL or not is_frame_run(): return false
+    if _frame.onboarding.tutorial_step != 3 or _frame.onboarding.practice_complete or start_tick != 20: return false
+    _frame.onboarding.practice_complete = true
+    return true
+
+func enter_first_journey() -> bool:
+    if _current_screen != SCREEN_FIRST_JOURNEY or not is_frame_run() or _frame.onboarding.journey_entered: return false
+    _frame.onboarding.journey_entered = true
+    return true
+
+func get_first_journey_options() -> Array:
+    if _current_screen != SCREEN_FIRST_JOURNEY or not is_frame_run(): return []
+    if not _frame.onboarding.journey_entered or not _frame.onboarding.journey_receipt.is_empty(): return []
+    return _frame_intro.options()
+
+func select_first_journey_choice(choice_id: String) -> bool:
+    if get_first_journey_options().is_empty(): return false
+    var receipt: Dictionary = _frame_intro.resolve(_run_seed, choice_id)
+    if receipt.is_empty(): return false
+    if int(receipt.training) > 0 and not _progression.add_free_training(int(receipt.training)): return false
+    _frame.onboarding.journey_receipt = receipt
     return true
 
 func get_giyun_state() -> Dictionary:

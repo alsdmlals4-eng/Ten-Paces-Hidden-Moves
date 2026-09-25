@@ -30,27 +30,34 @@ def build(payload):
     for a in assets: a['name'] = names.get(a['name'],a['name'])
     tasks = payload['pm']['items']
     stills = {c['still_capture']['path']:c['still_capture'] for c in payload['experience']['contexts'].values() if c.get('still_capture')}
+    for context in payload['experience']['contexts'].values():
+        for capture in context.get('additional_captures', []):
+            stills[capture['path']] = capture
     receipt_path = 'docs/operations/2026-09-22_HTML_BLUEPRINT_WORK_CONTRACT_RECEIPT.json'
     event_still = read(ROOT, receipt_path)['event_checks_readability_followup']['tests']['native_capture']
-    if sha(local_path(ROOT, event_still['path'])) != event_still['sha256']:
-        raise ValueError('Event capture identity mismatch')
-    stills[event_still['path']] = dict(event_still, source=receipt_path, label='Godot 사건 선택 정지화면 촬영 · 전체 플레이 검증과 별도')
+    retired = {r['path'] for r in read(ROOT, 'docs/blueprint/IMPLEMENTATION_READINESS.json').get('retired_images', [])}
+    if event_still['path'] not in retired:
+        if sha(local_path(ROOT, event_still['path'])) != event_still['sha256']:
+            raise ValueError('Event capture identity mismatch')
+        stills[event_still['path']] = dict(event_still, source=receipt_path, label='Godot 사건 선택 정지화면 촬영 · 전체 플레이 검증과 별도')
     def record(id, kind, name, route, sources, linked_assets=(), clip_ids=(), planning='원본 기록 있음', match_sources=None, scope=None, revision=None, still=None):
         if still: sources = list(sources) + [still['path'], still['source']]
         sources = sorted(set(sources))
         related = related_work_items(tasks, sources if match_sources is None else match_sources, scope, revision)
         media = [c for c in clips if c['id'] in clip_ids]
         art = [a for a in assets if a['id'] in linked_assets]
-        stale = any(c['freshness']['status'] == 'STALE' for c in media)
+        current_media = [c for c in media if not c.get('historical')]
+        historical_media = bool(media) and not current_media
+        stale = any(c['freshness']['status'] == 'STALE' for c in current_media)
         flags = ['human']
         if art and any(not a['consumers'] for a in art): flags.append('unlinked')
-        if (not media and not still) or stale: flags.append('capture')
+        if (not current_media and not still) or stale: flags.append('capture')
         if any(c['visual_status'] == 'STATIC_OR_EFFECT_ONLY' for c in media): flags.append('motion')
         states = {
             'planning': planning,
             'asset': '승인 기록 있음' if art and all(a['approval']=='USER_APPROVED' for a in art) else '승인 범위 개별 확인',
             'implementation': '원본 연결 있음 · 실행과 별도' if sources else '직접 연결 미확인',
-            'runtime': '촬영 갱신 필요' if stale else '고정 상황 촬영 있음' if media else still.get('label','Godot 시작 설정 정지화면 촬영 · 전체 플레이 검증과 별도') if still else '이 항목의 현재 촬영 근거 없음',
+            'runtime': still.get('label','Godot 정지화면 촬영 · 전체 플레이 검증과 별도') if still else '이전 규칙 촬영 보존 · 현재 10초 실행 근거 없음' if historical_media else '촬영 갱신 필요' if stale else '현재 10초 규칙 실행 영상 · 촬영 확인서 PASS · Human 별도' if current_media else '이 항목의 현재 촬영 근거 없음',
             'human': '항목별 사용자 검수 미기록',
         }
         row = {'id':id, 'kind':kind, 'name':name, 'route':route, 'sources':sources,
@@ -106,7 +113,7 @@ def build(payload):
         row['fingerprint'] = hashlib.sha256(json.dumps(row,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
     for clip in clips:
         record('clip:'+clip['id'],'연출',clip['title'],'#motion/'+clip['id'],
-               ['src/combat/combat_board_preview.gd','docs/blueprint/evidence/motion/manifest.json'],
+               ['src/combat/combat_board_preview.gd',clip['manifest'],clip['path']],
                clip_ids=[clip['id']],planning='촬영 상황·사건 기록 연결')
     for task in tasks:
         scope = task.get('scope', 'MAIN_SOURCE')

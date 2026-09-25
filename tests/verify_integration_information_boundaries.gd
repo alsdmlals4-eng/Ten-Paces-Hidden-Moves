@@ -28,7 +28,7 @@ func _run() -> void:
         for index in timing.get_visible_timing_indices():
             var rect: Rect2 = timing.get_slot(index).get_rect()
             _expect(rect.position.x >= previous_end, "Bundle %d slots must not overlap without resize" % bundle)
-            _expect(Rect2(Vector2.ZERO, timing.size).encloses(rect), "Visible slot must fit panel")
+            _expect(Rect2(Vector2.ZERO, timing.size).encloses(rect), "Visible slot %s must fit panel %s" % [rect, timing.size])
             previous_end = rect.end.x
         timing.advance_after_resolution()
 

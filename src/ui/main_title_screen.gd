@@ -32,7 +32,8 @@ func _build_surface() -> void:
 		child.queue_free()
 	var background := TextureRect.new()
 	background.name = "CourtyardBackdrop"
-	background.texture = load(BACKGROUND_PATH) as Texture2D
+	var new_background := "res://assets/ui/ink_frame/main_background.png"
+	background.texture = load(new_background if ResourceLoader.exists(new_background) else BACKGROUND_PATH) as Texture2D
 	background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -48,13 +49,11 @@ func _build_surface() -> void:
 	foreground_banner.name = "DuelForegroundBanner"
 	foreground_banner.visible = false
 	add_child(foreground_banner)
-	_add_battler("PlayerTitleBattler", PLAYER_PATH, true)
-	_add_battler("EnemyTitleBattler", ENEMY_PATH, false)
 	var center := VBoxContainer.new()
 	center.name = "TitleCenter"
-	center.anchor_left = 0.28
+	center.anchor_left = 0.55
 	center.anchor_top = 0.06
-	center.anchor_right = 0.72
+	center.anchor_right = 0.95
 	center.anchor_bottom = 0.94
 	center.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	center.grow_vertical = Control.GROW_DIRECTION_BOTH
@@ -75,7 +74,7 @@ func _build_surface() -> void:
 	title_logo.accessibility_name = "십보강호: 숨은 수의 비무"
 	title_logo.accessibility_description = "열 걸음 안에서 숨은 수를 읽는 일대일 비무."
 	center.add_child(title_logo)
-	var promise := _make_label("세 수를 고르고, 한 수씩 드러나는 승부를 읽으십시오.", 17, INK)
+	var promise := _make_label("열 초의 수를 설계하고, 드러나는 승부를 읽으십시오.", 17, INK)
 	promise.name = "GamePromise"
 	promise.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	promise.custom_minimum_size = Vector2(0.0, 46.0)
@@ -86,7 +85,7 @@ func _build_surface() -> void:
 	start_button.custom_minimum_size = Vector2(286.0, 48.0)
 	start_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	start_button.accessibility_name = "비무행 시작"
-	start_button.accessibility_description = "무공을 고르고 첫 비무를 시작합니다."
+	start_button.accessibility_description = "출사표와 무공 선택, 규칙 안내와 첫 행로를 거쳐 비무를 시작합니다."
 	_apply_start_style(start_button)
 	start_button.pressed.connect(func(): start_requested.emit())
 	center.add_child(start_button)
@@ -121,6 +120,10 @@ func _build_surface() -> void:
 func _fit_title() -> void:
 	var logo := find_child("GameTitleLogo", true, false) as TextureRect
 	if logo != null: logo.custom_minimum_size.y = clampf(size.y * 0.18, 82.0, 160.0)
+	var menu := get_node_or_null("TitleCenter") as Control
+	if menu != null:
+		menu.anchor_left = 0.55 if size.x >= 900 else 0.36
+		menu.anchor_right = 0.95
 
 func _open_front_page(button_name: String) -> void:
 	if is_instance_valid(_front_page): return
@@ -157,7 +160,12 @@ func configure_continue(payload: Dictionary, status: String) -> void:
 		var run: Dictionary = payload.run_state
 		var place := "비무 %d" % int(run.duel_index)
 		if run.current_screen == "JIANGHU": place += " · 행로 %d/4" % (int(run.jianghu_step) + 1)
-		elif not payload.combat_checkpoint.is_empty(): place += " · %d번째 묶음" % int(payload.combat_checkpoint.state.bundle_index)
+		elif run.current_screen == "PROLOGUE": place = "출사표"
+		elif run.current_screen == "SETUP": place = "무공 선택"
+		elif run.current_screen == "TUTORIAL": place = "규칙 익히기"
+		elif run.current_screen == "FIRST_JOURNEY": place = "첫 행로"
+		elif not payload.combat_checkpoint.is_empty():
+			place += " · 10초 행동설계" if run.has("frame") else " · %d번째 묶음" % int(payload.combat_checkpoint.state.bundle_index)
 		button.text = "이어하기 · " + place
 		notice.text = "마지막으로 확정된 진행부터 이어집니다.\n확정 전 배치는 다시 고릅니다."
 		if status == "RECOVERED_BACKUP": notice.text = "백업에서 진행을 복구했습니다.\n" + notice.text
