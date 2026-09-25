@@ -127,3 +127,5 @@ Godot AI4.2.3 exact session `ten-paces-hidden-moves@e3c0b4f76e16bdac`에서 사�
 전체 Python603검사의 최초 실행은601PASS/2FAIL이었다. 하나는 옛 상단 고정 card anchor 검사로 새 하단 anchor와 native 비중첩 검사에 맞춰 교정했고, 다른 하나는 화면 재촬영 중 미완성 capture manifest를 동시에 읽은 경우였다. publish 완료 후 해당11검사 전부 PASS했다. 실제732프레임/30.5초 영상과11화면을 현 소스 해시로 다시 연결했다. 자동/Windows/HTML/PR 최종 결과는 아래에 누적하며 사용자 시각 검수·Android·출시는 NOT_RUN이다.
 
 교정 영향 검사: full-validation workflow의32native 시나리오 전부 exit0/ERROR0, Windows export의실제50시나리오50PASS, HTML1270view/21572내부연결 PASS. export 작업 자체는 성공했으나 에디터 종료 시22resource/45ObjectDB 정리 경고가 남았고, 제품 실행 검사에서는 오류가 없었다. 새 코드·실제 촬영·Windows PCK를 함께 검증했으며 task-local capture4크기는960×640/1280×720/1280×800/1920×1080이다.
+
+원격 영향 검사에서는 준비용 글꼴이 결과창까지 상속돼 Linux960×640의 긴 행동명과 결과가 겹치는 반례를 발견했다. 새 테마를 준비 조작부에만 적용해 기존 해결 화면의 폰트와 줄바꿈을 유지했다. 기존 card-context 검사는 제거된 세 번째 자식 대신 실제 tooltip 효과를, bridge 검사는 새 승인 원화의 유효한 AtlasTexture 영역과 상대 ID 경로를 확인하도록 갱신했다. 두 검사 및 전체32native 재실행 PASS. 제품 코드50a60ab6에서 Windows50/50 재검증, 실제11화면과726프레임/24fps/30.25초/서로 다른511프레임을 다시 촬영해 source manifest와 HTML에 반영했다. 초기 원격 승인 검사는 PR label 미부착이 원인이며 기존 사용자 승인에 맞춰 정상 label을 적용한 이후 PASS했다.

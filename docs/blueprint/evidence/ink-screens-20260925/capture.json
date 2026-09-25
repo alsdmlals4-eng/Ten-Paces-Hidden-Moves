@@ -3,7 +3,7 @@
   "fixture_seed": 1,
   "opponent": "slot1_dogyeom",
   "project": "C:/Users/user/.codex/worktrees/ink-preparation-layout-20260925/Ten-Paces-Hidden-Moves/",
-  "save_isolation": "res://output/ink-screen-validation/fixture-save-28940.json",
+  "save_isolation": "res://output/ink-screen-validation/fixture-save-23932.json",
   "shots": [
     {
       "key": "main",
@@ -98,7 +98,7 @@
     {
       "key": "resolution",
       "path": "docs/blueprint/evidence/ink-screens-20260925/resolution.png",
-      "sha256": "5636cec81e22a9b2aebfa58582148532d8e3e4a9d0c31813267d7a99014efbdf",
+      "sha256": "ff163db1352b46c953a347bc0f96167bf474cf3619f510370c5fae465f262748",
       "size": [
         1280,
         800
@@ -108,7 +108,7 @@
     {
       "key": "four-slots",
       "path": "docs/blueprint/evidence/ink-screens-20260925/four-slots.png",
-      "sha256": "68e16913011257cdabbf853d6fd6bf88e6072ba0eec26ead1fdb9f65cf19c829",
+      "sha256": "cc15b637a01ff97439b72770c7d91665b52227be9eddbd840c2be0f44c7f5da4",
       "size": [
         1280,
         800
