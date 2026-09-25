@@ -126,3 +126,16 @@ CURRENT_SOURCE_RELEVANCE_CHECK: 기존 ProjectMoon·Nine Sols 공식 연출 조�
 소비자는 `src/ui/ink/ink_screen_art.gd`, `src/ui/main_title_screen.gd`, `src/run/vertical_slice_shell.gd`, 준비 배경/인물과 `src/ui/ink/`다. 원본·파생·교체 표는 `TEN-INK-SCREENS-20260925/generation.json`, `replacement-map.json` 및 자산 manifest에 연결한다. 구 이미지13개는 교체 사용처와 해시 확인 뒤 실제 삭제하고, PDF 역사와 삭제 기록만 유지한다. HTML은 현재 Godot 촬영9장을 사용하고 이전36개 기술 녹화는 역사 촬영으로 명시한다.
 
 CURRENT_SOURCE_RELEVANCE_CHECK: 이미 승인된 동일 화풍·ProjectMoon/Nine Sols 조사·CanvasItem 구현 근거를 REUSED_EVIDENCE로 사용한다. 새 게임 규칙이나 외부 기술 판단은 없다. FEASIBLE: 현재 내장 생성 도구·동일 Godot4.7.1·기존 renderer/HTML 발행기를 재사용한다. 추가 설치·전역 설정 변경 없음.
+
+
+## 2026-09-25 사용자 화면 피드백 · 실행 복구와 화면 연결
+
+사용자 최신 요청: 실제 행동 실행 중단 교정, 시작 무공의 삽화 선택, 메인 이어하기·도감·설정·종료, 대각선 대치 준비 화면, 합·반격·회피 사이의 자연스러운 컷 연결. 최신 요청이 앞선 준비 화면 배치 보존 범위를 갱신한다. 선택·배치·방향·취소·확정 조작과 3/3/4수, 판정·AI 비공개 정보·성장·저장 schema는 보호한다.
+
+REUSED_APPROVAL: 같은 대화의 구현·자산·검증·HTML 반영 승인을 재사용한다. 실제 저장 복사본에서 basic_stance가 만드는 fortitude status.description을 codec이 거부해 해결 경계 저장이 막히는 오류를 재현했다. 정상 producer의 설명 필드만 엄격하게 수용하고 잘못된 타입·알 수 없는 필드 거부는 유지한다.
+
+FEASIBLE: 승인 삽화와 현재 UI/판정 모듈을 재사용한다. 준비는 근경 좌측/원경 우측 배치와 중앙 거리, 하단 계획/삽화 조작으로 정리한다. 도감은 현재 기술 데이터의 읽기 전용 탐색, 설정은 효과음·볼륨·모션 감소·빠른 재생, 종료는 마지막 확정 상태 저장을 거친다. 연출은 접점·카메라·포즈의 연결을 부드럽게 하며 실제 사건을 새로 만들지 않는다.
+
+CURRENT_SOURCE_RELEVANCE_CHECK: 기존 같은 스타일·전투 연출 조사 재사용 + Godot 공식 Tween/Control 문서 확인(2026-09-25). https://docs.godotengine.org/en/stable/classes/class_tween.html / https://docs.godotengine.org/en/stable/classes/class_control.html . 화면/보간 API만 참고하며 규칙 근거로 쓰지 않는다.
+
+Godot AI 업데이트: 기존 작업 폴더의 사용자 addon 4.2.3과 서버 4.2.3, Godot 4.7.1 프로젝트 연결을 확인. 플러그인 업데이트 원본은 보존하고 정확한 세션의 실행·입력·상태·캡처 기능을 검증에 사용한다. 원본 사용자 저장은 읽기 전용 복사본으로 재현한다. 두 전체 검토와 결함 교정, 자동/네이티브/HTML 검증을 분리해 기존 실행 보고서에 누적한다. 사람 체감·Android·출시 평가는 별도다.

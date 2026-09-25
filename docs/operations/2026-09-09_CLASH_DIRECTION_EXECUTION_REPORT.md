@@ -84,3 +84,19 @@
 검토 HEAD `0af72791199b41bbefdcbdf2bd43de4920eb8f26`, 최신 workflow별 34SUCCESS/실패0/진행0, 미해결 검토0을 확인하고 2026-09-24T19:49:31Z에 main `df3b7538f16e66208e29f4f4c04c85567c34ff5c`로 정상 병합했다. 전체 tracked tree가 동일하다. 최종 HTML1266화면/21595내부링크 PASS와 브라우저28.583333초 ended=true/error없음을 확인했다. Windows 검수 ZIP의 실행 파일/PCK bytes와 CRC를 검증했다. 기존 사용자 코멘트 SHA256 `afd73518d7bf507728e500045733ef5b9c7a466dc3feeba3c62331455cdd2dac`은 동일하다. 일회 승인 종료는 `docs/operations/2026-09-25_PR363_PROTECTED_CHANGE_APPROVAL_RECORD.md`로 연결한다.
 
 원격 ordinary_defaults native 캠페인은447829ms 동안295회 실제 입력으로 비무10승·보상10회·행로36회를 완료했고 실패0이다. [원격 제품 검사](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/actions/runs/36049087231/job/107800173797)의 NATIVE_CAMPAIGN_SUMMARY를 근거로 한다. 사람 플레이의 재미나 최종 시각 승인을 대신하지 않는다.
+
+## 실제 실행·메뉴·준비 구도 후속 · 2026-09-25
+
+- 기준 SHA `549dc3aaed9781c02d9c9915ea5f294689c3038c`; Work Mode BUILD/REVIEW, Skill Mode implementation/runtime-validation/reference-freshness. 프로젝트 router·combat UX/구현·검증, HTML blueprint, Godot live-editor의 기존 접수와 승인을 재사용한다.
+- 범위: 저장 오류로 잠긴 전투 실행 복구, 삽화 6종 중 4권 시작 선택, 이어하기/도감/감상 설정/종료의 실제 동작, 대각선 준비 구도, 연속 합·반격·회피와 확대 컷의 연결. 3/3/4·행동 선택/취소/확정·공유 판정·숨은 상대 정보·AI·저장 schema는 유지한다. 새 라이브러리·설치·원화 생성 비용은 없다.
+- CURRENT_SOURCE_RELEVANCE_CHECK / FEASIBLE: 기존 승인 수묵 원화·Project Moon 조사·실제 consumer를 REUSED_EVIDENCE로 사용했다. 공식 [Tween](https://docs.godotengine.org/en/stable/classes/class_tween.html)·[Control](https://docs.godotengine.org/en/stable/classes/class_control.html) 문서를 대조했으며 실제 채택 Godot4.7.1에서 입력·좌표·캡처·회귀를 확인했다. 외부 문서를 현재 작품의 재미/아트 승인으로 쓰지 않는다.
+- 실제 사용자 저장의 읽기 전용 복사본에서 이동→회피→준비 해결 후 `[강건]`의 정상 문자열 `description`을 codec이 거부하는 RED를 재현했다. 선택 문자열만 허용하고 숫자/객체 description·알 수 없는 필드는 계속 거부하는 GREEN을 확인했다. 기존 schema6 bytes나 게임 규칙 변경 없음.
+- 업데이트 Godot AI4.2.3을 정확한 `ink-screen-refresh-20260925` editor/session에 연결했다. 사용자가 수정한 addon은 보존하고 hash-guard로 승인 src만 복사해 검증했다. 원본 저장에는 쓰지 않았다. 실제 Continue→2번째 묶음 복구, 마우스 막기3개 배치→실행→3번째 묶음/SAVED/blocked=false, 공개된 3수 결과, 도감 삽화·탭·Esc, 설정·Esc, 종료 버튼으로 game stopped를 확인했다. 읽기용 eval에서 잘못된 속성 접근으로 발생한 도구 검수 오류2건은 제품 오류와 분리하고 재실행했다.
+- 전체 검토1: 다섯 요청과 정본·전체 diff·미변경 resolver/AI/save/다른 화면·비용/유지보수를 대조했다. 기초 도감의 누락 삽화, 작은 창의 잘린 카드, Esc에서 제거된 viewport 접근을 발견해 실제 atlas/두 줄 높이/닫기 순서로 교정했다. 실제 native 화면과 RED→GREEN 및 기존 입력 회귀를 함께 확인했다.
+- 전체 검토2: 교정된 전체 후보와 열린 PR342의 겹치는 표시 모듈, 브리핑/보상/행로/기존 저장·HTML 번호/코멘트·검증·장기 책임을 다시 대조했다. 종이 테마를 상속한 계획 글자가 검은 바탕에서 사라지는 문제와 확대 원화의 양옆 직사각형 경계를 발견했다. 계획 글자 색상을 고정하고 확대 화면을 영역 전체에 맞추며 회귀 RED→GREEN을 확인했다. 미생성 상대는 공통 수묵 자세를 사용하고 고유 외형 완성으로 주장하지 않는다. 전체 검토는 정확히2회이며 이후는 이 결함들의 영향 검사다.
+- 교체 완료된 구 일반 적 원화의 runtime/approved/candidate 동일 PNG3개를 SHA256 확인 후 실제 삭제했다. 번호와 승인 이력은 기존 폐기 ledger에 남겼다. 승인47삽화와 기존21개 자산 기록의 hash, 상대별 고유 기존 초상은 별도 보호한다.
+- 로컬 증거: unittest579 PASS, 저장 준비 회귀/새 UI/모션 연속성/기존 카드·배치·키보드·초점·전투 정보·저장 검증 PASS. 최종 native11화면과 실제 resolver 고정계획3/3/4 녹화723프레임/24fps/30.125초/서로 다른511프레임을 HTML source manifest에 연결했다. 도감·설정은 실제 title consumer이며 결과/행로/휴식 촬영은 명시 UI fixture다.
+- 검증의 한계: 새 연출의 멋·자연스러움에 대한 사용자 최종 검수, 모든 적의 고유 수묵 자세, Android·실기기·출시 성능/권리는 별도다. editor import 종료에 기존 resource22 정리 경고가 남아 있으므로 무경고라 주장하지 않는다. 최종 pytest/Windows 빌드/HTML 브라우저/PR 체크와 main readback은 아래에 누적한다.
+
+- 집중 영향 확인: 전체 pytest603개 중601통과/2실패를 먼저 기록했다. 하나는 촬영/발행 중 manifest의 resolution이 아직 결합되지 않은 시점, 하나는 화면 목록을9개로 고정한 옛 기대값이었다. 최종11화면 발행 후 도감/설정 menu분류·중복없는 경로까지 확인하도록 교정하고 해당2파일11검사가 모두 PASS했다. 전체603개를 마지막 상태에서 한 번에 재실행했다고 주장하지 않는다.
+- HTML1268 view/21499 local link PASS. 인앱 브라우저에서30.125초 MP4가 readyState4, ended=true, media error없음으로 끝까지 재생됐다. 브라우저 error log0. 구조도 하단에 남던 옛 준비 참고안/합 삽화 표기도 현재 촬영 근거를 읽도록 교정했다.

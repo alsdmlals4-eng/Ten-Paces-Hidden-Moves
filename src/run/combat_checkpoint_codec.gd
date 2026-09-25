@@ -169,8 +169,9 @@ func _actor(actor) -> bool:
         if not integer(value): return false
     if typeof(actor.statuses) != TYPE_ARRAY: return false
     for status in actor.statuses:
-        if not _keys(status, ["label", "kind"]): return false
+        if not _keys(status, ["label", "kind"], ["description"]): return false
         if typeof(status.label) != TYPE_STRING or typeof(status.kind) != TYPE_STRING: return false
+        if status.has("description") and typeof(status.description) != TYPE_STRING: return false
     for key in ["status_counts", "battle_uses"]:
         if actor.has(key):
             if typeof(actor[key]) != TYPE_DICTIONARY: return false

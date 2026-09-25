@@ -23,6 +23,9 @@ var _drag_emitted := false
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_STOP
+    source_label.add_theme_color_override("font_color", MUTED)
+    action_label.add_theme_color_override("font_color", PAPER)
+    stages_label.add_theme_color_override("font_color", PAPER)
     focus_mode = Control.FOCUS_ALL
     gui_input.connect(_on_gui_input)
     mouse_exited.connect(func(): _drag_emitted = false)

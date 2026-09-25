@@ -22,6 +22,12 @@ func capture() -> void:
 	root.add_child(shell)
 	await create_timer(0.5).timeout
 	await shot("main")
+	shell.main_title_screen._open_front_page("MainLibraryButton")
+	await shot("library", "actual_title_codex_navigation")
+	shell.main_title_screen._close_front_page()
+	shell.main_title_screen._open_front_page("MainSettingsButton")
+	await shot("settings", "actual_title_settings_navigation")
+	shell.main_title_screen._close_front_page()
 	# Select a reproducible current-art opponent without changing the random public start command.
 	var roster := VariableOpponentRoster.new()
 	for seed in range(1000):

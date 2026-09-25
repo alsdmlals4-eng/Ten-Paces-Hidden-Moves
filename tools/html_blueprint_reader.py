@@ -93,8 +93,8 @@ def refine(pages, giyun):
                 block['path']='docs/blueprint/evidence/ink-screens-20260925/'+screen_files[file]+'.png'
                 block.pop('region',None)
     by_id['reader-082']['title']='준비 화면 · 현재 수묵 배경과 인물'
-    by_id['reader-082']['subtitle']='실제 Godot 화면 · 기존 행동 선택·배치·확정 유지'
-    by_id['reader-082']['blocks']=[b for b in by_id['reader-082']['blocks'] if b['kind']=='image']+[note('승인 수묵 화풍의 배경·인물을 적용한 현재 준비 화면입니다. 조작과 공개 정보·게임 규칙은 유지합니다.')]
+    by_id['reader-082']['subtitle']='실제 Godot 화면 · 대각선 대치와 삽화 선택 · 행동 배치·확정 유지'
+    by_id['reader-082']['blocks']=[b for b in by_id['reader-082']['blocks'] if b['kind']=='image']+[note('가까운 왼쪽의 플레이어와 먼 오른쪽의 상대가 대각선으로 대치합니다. 오른쪽 관찰 정보, 하단 행동 묶음과 삽화 선택을 함께 봅니다. 논리 거리·공개 정보·3/3/4 규칙은 같습니다.')]
     # The PDF emits picture then label. Keep them in one card so a label cannot
     # appear to describe the next, unrelated full-width picture.
     # Similar long image lists retain their source order and text in compact views.
@@ -111,7 +111,7 @@ def refine(pages, giyun):
     atlas_page['layout'] = 'screen_gallery'
     atlas_page['subtitle'] = '현재 수묵 화면의 실제 Godot 촬영입니다. 나의 상태는 기존 배치 참고안이며, 결과·행로·휴식은 격리된 UI 확인 상황입니다.'
     contexts = iter(['menu','route','status','brief','rest','plan','resolve','evade','result'])
-    categories = {'menu': ('메인 메뉴', '새 여정·이어하기'), 'route': ('강호행로', '행로 선택'),
+    categories = {'menu': ('메인 메뉴', '새 여정·이어하기·도감·설정·종료'), 'route': ('강호행로', '행로 선택'),
                   'status': ('플레이어', '상태창'), 'brief': ('전투', '비무 브리핑'),
                   'rest': ('강호행로', '주막·휴식'), 'plan': ('전투', '전투 준비 화면'),
                   'resolve': ('전투', '합·해결 설명'), 'evade': ('전투', '4수 행동 묶음 진행'), 'result': ('전투', '결과·복기')}
@@ -129,6 +129,8 @@ def refine(pages, giyun):
                 block.pop('region', None)
                 block['screen_label'] = categories[context][1] + ' · 수묵 화풍 실제 화면'
                 label['text'] = block['screen_label']
+    for screen, label in [('library', '강호 도감 · 기초 행동과 무공 삽화'), ('settings', '감상 설정 · 효과음·모션 감소·빠른 재생')]:
+        atlas_page['blocks'].append(dict(kind='image', path=f'docs/blueprint/evidence/ink-screens-20260925/{screen}.png', screen_context='menu', screen_label=label, screen_kind='메인 메뉴', screen_usage=label))
     # The PDF's tiny placement examples must not become 13 full-width pictures.
     atlas = 'assets/ui/cards/basic_technique_ink_atlas_01_v1.png'
     plan = by_id['reader-017']

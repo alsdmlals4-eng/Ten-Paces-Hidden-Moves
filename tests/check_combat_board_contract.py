@@ -212,7 +212,7 @@ def main() -> None:
         assert res_file(asset["path"]).exists()
         assert hashlib.sha256(res_file(asset["path"]).read_bytes()).hexdigest() == asset["sha256"]
     original_assets = [asset for asset in asset_manifest["assets"] if asset["id"] not in blueprint_ids | ink_ids | refresh_ids]
-    assert len(original_assets) == blueprint["preserved_existing_record_count"] == 22
+    assert len(original_assets) == blueprint["preserved_existing_record_count"] == 21
     original_digest = hashlib.sha256(json.dumps(original_assets, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     assert original_digest == blueprint["preserved_existing_records_sha256"]
     for asset in blueprint_assets:
@@ -230,7 +230,6 @@ def main() -> None:
         "player_wanderer_ink_v1",
         "enemy_masked_ink_v1",
         "dogyeom_status_portrait_01_v1",
-        "enemy_masked_battler_rgba_v2",
         "basic_technique_ink_atlas_01_v1",
         "martial_ultimate_card_illustration_atlas_01_v1",
         "ten_paces_hidden_moves_title_logo_01_v1",
@@ -302,7 +301,8 @@ def main() -> None:
     assert hashlib.sha256(attack_clash_source.read_bytes()).hexdigest() == attack_clash_vfx["source_png_sha256"]
     assert hashlib.sha256(res_file(attack_clash_vfx["path"]).read_bytes()).hexdigest() == attack_clash_vfx["source_png_sha256"]
     for asset_id in ("enemy_masked_battler_rgba_v2",):
-        character_art = next(asset for asset in active_assets if asset["id"] == asset_id)
+        character_art = next(asset for asset in asset_manifest["retired_assets"] if asset["id"] == asset_id)
+        assert not res_file(character_art["path"]).exists()
         audit = character_art["transparency_audit"]
         assert character_art.get("source_asset") or character_art.get("source_png_sha256")
         assert audit["has_alpha"] is True
@@ -387,7 +387,7 @@ def main() -> None:
         "assets/foregrounds/frontal_courtyard_banner_overlay_01_v1.png",
         "assets/combat/ink_wuxia/player-0.png",
         "assets/combat/ink_wuxia/slot1_dogyeom/enemy-0.png",
-        "assets/characters/enemy_masked_battler_rgba_v2.png",
+        "assets/combat/ink_wuxia/enemy-0.png",
         "assets/ui/cards/basic_technique_ink_atlas_01_v1.png",
         "assets/reference/step_02_character_scale_and_tile_placement.svg",
         "scenes/combat/combat_board_preview.tscn",
@@ -463,7 +463,7 @@ def main() -> None:
     assert all(token in character_script for token in (
         "ink_wuxia/player-0.png",
         "slot1_dogyeom/enemy-0.png",
-        "enemy_masked_battler_rgba_v2.png",
+        "ink_wuxia/enemy-0.png",
         "get_render_texture",
         "character_art_path",
     ))

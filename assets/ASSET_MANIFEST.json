@@ -102,48 +102,6 @@
       "active": true
     },
     {
-      "id": "enemy_masked_battler_rgba_v2",
-      "path": "res://assets/characters/enemy_masked_battler_rgba_v2.png",
-      "role": "무명 검객 정면 대치 전장 전신 원화 — 무협 애니메이션 키아트",
-      "generator": "OpenAI built-in image generation",
-      "generation_output_id": "exec-3eae95cf-fa7d-44f4-b326-8a2e839d7fbe",
-      "source_png_sha256": "0841505d275ca970d7d085d7ab206788276517d2290a63960d829e657dfbe17f",
-      "dimensions": "1024x1536",
-      "prompt": "Original full-body Korean wuxia animation key-art masked opponent, facing left in a grounded low ready stance; dark armor-robe, muted red lining, one short body-proportional low sword ending near the forward boot, transparent background, no baked floor, text, logo, UI, watermark, franchise identity, or copied reference pose.",
-      "reference_usage": "User-provided image informed only broad style requirements: animated wuxia silhouette, charcoal outline, low weapon, and shared-ground readability. No reference pixel, identity, pose, UI, or composition was included.",
-      "license": "User final-locked AI-generated project asset; retain provenance and independent similarity review.",
-      "approval": "user explicit: 방금 2 이미지는 승인 (2026-09-02)",
-      "source_asset": "docs/visual-assets/approved/MASKED_SWORDSMAN_COMBAT_BATTLER_02_20260902_v2.png",
-      "runtime_consumer": "src/combat/combat_character_placeholder.gd ENEMY_ART_PATH; src/ui/main_title_screen.gd ENEMY_PATH",
-      "transparency_required": true,
-      "transparency_audit": {
-        "mode": "RGBA",
-        "has_alpha": true,
-        "alpha_extrema": [
-          0,
-          255
-        ],
-        "transparent_pixels": 970318,
-        "partially_transparent_pixels": 602546,
-        "corner_alpha": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "alpha_bounds_at_threshold_16": [
-          88,
-          124,
-          1000,
-          1428
-        ],
-        "foot_safe_bottom_margin_px": 107,
-        "status": "APPROVED_ACTIVE"
-      },
-      "active": true,
-      "lifecycle_status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_RUNTIME_VERIFIED_20260902"
-    },
-    {
       "id": "dogyeom_status_portrait_01_v1",
       "path": "res://assets/portraits/dogyeom_status_portrait_01_v1.png",
       "role": "도겸 상태 패널 초상",
@@ -2456,6 +2414,48 @@
       "rights_review": "RELEASE_BLOCKED_UNVERIFIED: exact service/model/account terms and reference input rights are not established by visual approval",
       "active": true,
       "transparency_required": false
+    },
+    {
+      "id": "enemy_masked_battler_rgba_v2",
+      "path": "res://assets/characters/enemy_masked_battler_rgba_v2.png",
+      "role": "무명 검객 정면 대치 전장 전신 원화 — 무협 애니메이션 키아트",
+      "generator": "OpenAI built-in image generation",
+      "generation_output_id": "exec-3eae95cf-fa7d-44f4-b326-8a2e839d7fbe",
+      "source_png_sha256": "0841505d275ca970d7d085d7ab206788276517d2290a63960d829e657dfbe17f",
+      "dimensions": "1024x1536",
+      "prompt": "Original full-body Korean wuxia animation key-art masked opponent, facing left in a grounded low ready stance; dark armor-robe, muted red lining, one short body-proportional low sword ending near the forward boot, transparent background, no baked floor, text, logo, UI, watermark, franchise identity, or copied reference pose.",
+      "reference_usage": "User-provided image informed only broad style requirements: animated wuxia silhouette, charcoal outline, low weapon, and shared-ground readability. No reference pixel, identity, pose, UI, or composition was included.",
+      "license": "User final-locked AI-generated project asset; retain provenance and independent similarity review.",
+      "approval": "user explicit: 방금 2 이미지는 승인 (2026-09-02)",
+      "source_asset": "docs/visual-assets/approved/MASKED_SWORDSMAN_COMBAT_BATTLER_02_20260902_v2.png",
+      "runtime_consumer": "src/combat/combat_character_placeholder.gd ENEMY_ART_PATH; src/ui/main_title_screen.gd ENEMY_PATH",
+      "transparency_required": true,
+      "transparency_audit": {
+        "mode": "RGBA",
+        "has_alpha": true,
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "transparent_pixels": 970318,
+        "partially_transparent_pixels": 602546,
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "alpha_bounds_at_threshold_16": [
+          88,
+          124,
+          1000,
+          1428
+        ],
+        "foot_safe_bottom_margin_px": 107,
+        "status": "APPROVED_ACTIVE"
+      },
+      "active": true,
+      "lifecycle_status": "USER_FINAL_LOCKED__CANON_REGISTERED__IMPLEMENTED__MACHINE_RUNTIME_VERIFIED_20260902"
     }
   ]
 }

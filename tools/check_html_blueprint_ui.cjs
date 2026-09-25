@@ -55,7 +55,8 @@ assert(!data.inspection.records.find(r=>r.id==='screen:plan').flags.includes('ca
 // Approved media/table correction: compact overview, shared progression and exact card playback.
 const screenCards=check("reader('reader-006')");
 assert(screenCards.includes('screen-gallery'),'Atlas must group screen/label/comment in one card');
-assert.equal((screenCards.match(/data-screen-context=/g)||[]).length,9);
+assert.equal((screenCards.match(/data-screen-context=/g)||[]).length,11);
+assert(screenCards.includes('강호 도감') && screenCards.includes('감상 설정'), 'Title subpages must be visible in the screen gallery');
 assert(screenCards.includes('전투 준비 화면'));
 const manualComparison=check('manualCatalog()');
 assert.equal((manualComparison.match(/data-common-growth/g)||[]).length,1,'Growth belongs in one common table');

@@ -55,7 +55,7 @@ func _verify_three_screen_surfaces(board: CombatBoardPreview) -> void:
 	_expect(absf(top_rect.size.y / board.size.y - TARGET_TOP_OVERLAY_RATIO) <= 0.035, "Top status overlay must occupy about 20 percent of the preparation view.")
 	_expect(absf((planning_rect.position.y - board.global_position.y) / board.size.y - TARGET_PLANNING_TOP_RATIO) <= 0.045, "The expanded 5 by 2 summary-card surface must preserve a bounded lower preparation split.")
 	# Sep02 stage-only owner supersedes these old behind-HUD fixture expectations.
-	_expect(_rect_near(board.battle_background.get_global_rect(), duel_rect), "Courtyard background must equal the active duel stage, excluding HUD/planning.")
+	_expect(board.battle_background.get_global_rect().encloses(duel_rect) and board.battle_background.get_global_rect().position.y <= top_rect.position.y, "One continuous ink painting underlies HUD and confrontation.")
 	_expect(_rect_near(board.duel_foreground_banner.get_global_rect(), duel_rect), "Banner must equal the stage-only background.")
 	_expect(planning_rect.encloses(board.action_timing_panel.get_global_rect()), "Action bundle display must sit on the lower planning surface.")
 	if is_instance_valid(dock) and not planning_rect.encloses(dock.get_global_rect()):
@@ -118,8 +118,8 @@ func _verify_reference_information_columns(board: CombatBoardPreview) -> void:
 	var content_rect := dock.content_host.get_global_rect()
 	var detail_rect := dock.detail_host.get_global_rect()
 	var observation_rect := observation.get_global_rect()
-	_expect(content_rect.position.x >= board.global_position.x + board.size.x * 0.07, "Current-plan cards must begin on the same intentional inset as the reference, not at the viewport edge.")
-	_expect(content_rect.size.x <= planning_rect.size.x * 0.66, "The five-by-two card grid must leave a dedicated right-side detail and observation area.")
+	_expect(content_rect.position.x >= board.global_position.x + board.size.x * 0.03, "Current-plan cards retain a deliberate outer inset.")
+	_expect(content_rect.end.x + 250 <= planning_rect.end.x, "The five-by-two illustrated grid leaves a full detail column.")
 	_expect(detail_rect.position.x >= content_rect.end.x + 6.0 and detail_rect.size.x >= planning_rect.size.x * 0.13, "Technique detail must occupy its own readable column beside the card grid.")
 	var detail_panel := dock.detail_host.get_node_or_null("ActionDetailPanel") as ActionDetailPanel
 	_expect(is_instance_valid(detail_panel) and not detail_panel.visible, "The detail column must reserve its geometry but keep an empty card detail hidden until the player hovers or pins a real action.")
@@ -145,8 +145,8 @@ func _verify_reference_information_columns(board: CombatBoardPreview) -> void:
 			_expect(detail_body_rect.size.x >= 200.0, "Compact technique detail needs one full-width readable text lane for cost, effect, and range instead of collapsing values into ornamental space.")
 			_expect(detail_body_rect.end.x <= detail_rect.end.x - 8.0, "Compact technique detail text must keep a deliberate inset inside its own right-side panel.")
 			detail_panel.clear_detail()
-	_expect(observation.visible and planning_rect.encloses(observation_rect), "Observation must remain a visible lower-planning column even before a safe action type has been revealed.")
-	_expect(observation_rect.position.x >= detail_rect.end.x + 6.0, "Observation must sit beside, not on top of, the technique detail column.")
+	_expect(observation.visible and board.duel_stage_surface.get_global_rect().encloses(observation_rect), "Observation remains visible beside the confrontation before a reveal.")
+	_expect(observation_rect.end.y <= planning_rect.position.y, "Observation stays above planning and technique details.")
 	_expect(observation_rect.size.x / maxf(1.0, observation_rect.size.y) <= 1.02, "Observation must preserve the approved vertical frame instead of horizontally squeezing its text rows.")
 	var detail_scene := load("res://scenes/ui/action_selection/action_detail_panel.tscn") as PackedScene
 	var reusable_detail := detail_scene.instantiate() as ActionDetailPanel if detail_scene != null else null
@@ -186,10 +186,10 @@ func isolation_safe_free(timing: ActionTimingPanel) -> void:
 	timing.queue_free()
 
 func _verify_distant_frontal_duel(board: CombatBoardPreview) -> void:
-	_expect(str(board.get_meta("character_scale_profile", "")) == "distant_frontal_duel", "Frontal combat must declare its distant character-scale profile.")
+	_expect(str(board.get_meta("character_scale_profile", "")) == "ink_diagonal_preparation", "Preparation declares the approved diagonal perspective.")
 	var player_foot := board.get_character_foot_anchor("player")
 	var enemy_foot := board.get_character_foot_anchor("enemy")
-	_expect(enemy_foot.x - player_foot.x >= board.size.x * 0.42, "Combatants must retain a readable distant frontal separation instead of a close-up confrontation.")
+	_expect(enemy_foot.x - player_foot.x >= board.size.x * 0.35 and enemy_foot.y < player_foot.y - 15, "Initial distance two separates foreground player from distant enemy.")
 	var duel_surface := board.get_node_or_null("DuelStageSurface") as Control
 	if is_instance_valid(duel_surface):
 		for actor in [board.player_character, board.enemy_character]:
@@ -232,10 +232,10 @@ func _verify_ink(board: CombatBoardPreview, actor: CombatCharacterPlaceholder, i
 	var stage := board.duel_stage_surface.get_global_rect()
 	var ink := _independent_ink(actor)
 	_expect(ink.has_area() and stage.grow(0.5).encloses(ink), "Occupied ink must remain in stage: %s / %s (%s)" % [ink, stage, actor.role])
-	_expect(ink.size.y <= stage.size.y * 0.52 + 0.5, "Animated occupied ink exceeds 52 percent.")
+	_expect(ink.size.y <= stage.size.y * 0.88 + 0.5, "Animated ink remains below the HUD throughout the diagonal stance.")
 	if idle:
-		_expect(absf(ink.size.y / stage.size.y - 0.46) <= 0.002, "Idle occupied ink must reach 46 percent at reference viewport, got %s" % (ink.size.y / stage.size.y))
-		_expect(ink.size.y * 1.12 <= stage.size.y * 0.52 + 0.5, "Complete existing motion envelope must obey 52 percent, not sampled frames alone.")
+		_expect(_independent_ink(board.player_character, false).size.y > _independent_ink(board.enemy_character, false).size.y * 1.2, "Foreground ink is visibly larger than the distant opponent.")
+		_expect(ink.size.y * 1.12 <= stage.size.y * 0.88 + 0.5, "Complete existing motion envelope stays below the HUD.")
 		var foot: Vector2 = actor.get_global_transform() * actor.get_foot_anchor_local()
 		var peak := Rect2(foot + (ink.position - foot) * 1.12, ink.size * 1.12)
 		# Conservative union of every unchanged horizontal visual offset (max .22w).
@@ -248,15 +248,16 @@ func _verify_ink(board: CombatBoardPreview, actor: CombatCharacterPlaceholder, i
 func _verify_stage(board: CombatBoardPreview, expanded: bool) -> void:
 	var stage := board.duel_stage_surface.get_global_rect()
 	_expect(stage.has_area(), "Active stage must be positive.")
-	for surface in [board.battle_background, board.duel_foreground_banner, board._background_readability_tint]:
+	_expect(board.battle_background.get_global_rect().encloses(stage), "Continuous upper painting covers the active stage.")
+	for surface in [board.duel_foreground_banner, board._background_readability_tint]:
 		_expect(_rect_near(surface.get_global_rect(), stage), "Every background/banner/tint consumer must equal the final active stage.")
 	_expect(board.top_hud_surface.get_global_rect().end.y <= stage.position.y, "Stage must not occupy HUD.")
 	if expanded:
 		_expect(absf(stage.end.y - (board.global_position.y + board.size.y)) <= 0.5, "CTA and every timing must use the full remaining execution stage.")
 	else:
-		_expect(absf(board.planning_surface.position.y / board.size.y - 0.50) <= 0.002, "Next planning restores the 50 percent split.")
+		_expect(board.planning_surface.position.y / board.size.y >= 0.47 and board.planning_surface.position.y / board.size.y <= 0.55, "Next planning restores the responsive two-row card layout.")
 	for role in ["player", "enemy"]:
-		_expect(absf(board.get_character_foot_anchor(role).y - board.battle_background.get_duel_floor_y(board.size)) <= 0.5, "Feet must use displayed background floor, not hidden timing/tile anchor.")
+		_expect(stage.grow(1).has_point(board.global_position + board.get_character_foot_anchor(role)), "Both depth anchors remain in the visible painting.")
 
 func _verify_measured_execution(packed: PackedScene, viewport: Vector2) -> void:
 	var board := packed.instantiate() as CombatBoardPreview
@@ -468,11 +469,11 @@ func _verify_snapshot_movement(board: CombatBoardPreview) -> void:
 	await create_timer(0.30).timeout
 	_verify_stage(board, true)
 	_expect(board.get_combat_state_snapshot() == changed and int(board.get_meta("resolution_count", 0)) == resolution_count, "Resize and original continuation cannot resolve again or alter timing domain state.")
-	_expect(absf((board.get_character_foot_anchor("enemy").x - board.get_character_foot_anchor("player").x) / board.size.x - 0.4125) < 0.001, "Distance1 retains its existing 41.25 percent mapping.")
+	_expect(absf((board.get_character_foot_anchor("enemy").x - board.get_character_foot_anchor("player").x) / board.size.x - 0.325) < 0.001, "Distance one narrows the diagonal confrontation consistently.")
 	changed.player.tile = 6
 	board._reduced_motion = true
 	await board._apply_timing_snapshot(changed)
-	_expect(absf((board.get_character_foot_anchor("enemy").x - board.get_character_foot_anchor("player").x) / board.size.x - 0.38) < 0.001, "Contact retains 38 percent; initial42 is not a permanent minimum.")
+	_expect(absf((board.get_character_foot_anchor("enemy").x - board.get_character_foot_anchor("player").x) / board.size.x - 0.29) < 0.001, "Contact remains the closest stance without changing logical distance zero.")
 	_verify_stage(board, true)
 
 func _expect(condition: bool, message: String) -> void:

@@ -19,7 +19,11 @@ class MediaTableTests(unittest.TestCase):
         atlas = next(p for p in pages if p['id'] == 'reader-006')
         self.assertEqual(atlas.get('layout'), 'screen_gallery')
         pictures = [b for b in atlas['blocks'] if b['kind'] == 'image']
-        self.assertEqual(len(pictures), 9)
+        self.assertEqual(len(pictures), 11)
+        self.assertEqual(len({b['path'] for b in pictures}), 11)
+        for name in ('library', 'settings'):
+            menu = next(b for b in pictures if b['path'].endswith(f'/{name}.png'))
+            self.assertEqual(menu['screen_context'], 'menu')
         combat = next(b for b in pictures if b['path'].endswith('/preparation.png'))
         self.assertEqual(combat['screen_context'], 'plan')
         self.assertIn('전투 준비',combat['screen_label'])

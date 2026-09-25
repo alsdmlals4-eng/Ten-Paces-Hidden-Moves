@@ -38,6 +38,8 @@ on:
       - "tests/verify_actor_ultimate_presentation.gd"
       - "tests/verify_ink_resolution_model.gd"
       - "tests/verify_ink_combat_runtime.gd"
+      - "tests/verify_ink_feedback.gd"
+      - "tests/verify_ink_motion_continuity.gd"
       - "tests/verify_card_motion_presets.gd"
       - "tests/verify_frontal_duel_screen_partition.gd"
       - "tests/verify_combat_action_reveal.gd"
@@ -103,6 +105,10 @@ jobs:
         run: godot --headless --path . --script res://tests/verify_ink_combat_runtime.gd
       - name: Verify enlarged ink results and current opponent routing
         run: godot --headless --path . --script res://tests/verify_ink_screen_refresh.gd
+      - name: Verify title menus, illustrated choices and diagonal preparation
+        run: godot --headless --path . --script res://tests/verify_ink_feedback.gd
+      - name: Verify continuous ink camera and pose transitions
+        run: godot --headless --path . --script res://tests/verify_ink_motion_continuity.gd
       - name: Verify card motion facts and fallback
         run: godot --headless --path . --script res://tests/verify_card_motion_presets.gd
       - name: Verify fifty ten-manual product scenarios

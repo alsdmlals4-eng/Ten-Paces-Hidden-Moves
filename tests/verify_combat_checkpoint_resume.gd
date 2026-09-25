@@ -112,6 +112,7 @@ func _run() -> void:
         await _ultimate_resume()
         await _observation_without_plan()
         await _zero_health_carry_entry()
+        await _prepare_status_roundtrip()
         board = null
     if is_instance_valid(board): board.queue_free()
     await process_frame
@@ -121,6 +122,34 @@ func _finish() -> void:
     for failure in failures: push_error(failure)
     print("COMBAT_CHECKPOINT_RESUME: %s (%d failures)" % ["PASS" if failures.is_empty() else "FAIL", failures.size()])
     quit(0 if failures.is_empty() else 1)
+
+func _prepare_status_roundtrip() -> void:
+    var board = await _board()
+    board.checkpoint_writer = func(_dto): return false
+    for item in [[1, "basic_guard"], [2, "basic_evade"], [3, "basic_stance"]]:
+        board.action_timing_panel.place_card(board.resolution_engine.cards_by_id[item[1]], item[0])
+    await board._on_progress_requested(board.action_timing_panel.get_runtime_context())
+    var restored = await _board()
+    restored.checkpoint_writer = func(_dto): return false
+    _expect(restored.restore_combat_checkpoint(_json(board.get_last_stable_checkpoint())).ok, "Resume committed prepare plan")
+    var dto: Dictionary = _json(restored.get_last_stable_checkpoint())
+    _expect(dto.phase == "BUNDLE_RESOLVED" and dto.state.player.fortitude_next_attack, "Real prepare producer grants fortitude")
+    var codec = load("res://src/run/run_checkpoint_codec.gd").new()
+    var encoded: Dictionary = codec.encode("prepare-regression", "resolved", 1, run_state.export_snapshot(), dto)
+    _expect(encoded.ok, "Real prepare status description must survive durable save")
+    if encoded.ok:
+        _expect(codec.decode(encoded.text).ok, "Prepare checkpoint reloads after JSON serialization")
+    var combat_codec = load("res://src/run/combat_checkpoint_codec.gd").new()
+    for invalid in [42, {"nested": "unsupported"}]:
+        var corrupt := dto.duplicate(true)
+        corrupt.state.player.statuses[-1].description = invalid
+        _expect(not combat_codec.validate(corrupt).ok, "Non-text status description remains rejected")
+    var corrupt := dto.duplicate(true)
+    corrupt.state.player.statuses[-1]["hidden_future_action"] = "attack"
+    _expect(not combat_codec.validate(corrupt).ok, "Unknown status fields remain rejected")
+    board.queue_free()
+    restored.queue_free()
+    await process_frame
 
 func _zero_health_carry_entry() -> void:
     var original = run_state

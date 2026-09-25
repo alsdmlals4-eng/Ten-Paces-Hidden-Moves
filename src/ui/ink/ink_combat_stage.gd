@@ -16,6 +16,7 @@ var reduced := false
 var _world := Transform2D.IDENTITY
 var opponent_id := "__unset__"
 var unarmed_enemy := false
+var _pose_blends := {}
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -51,6 +52,9 @@ func begin(value: Dictionary) -> void:
 	entry_pose = pose.duplicate()
 	cue = value
 	progress = 0.0
+	for role in ["player", "enemy"]:
+		var index := int(pose.p if role == "player" else pose.e)
+		_pose_blends[role] = {"from":index, "to":index, "at":0.0, "weight":1.0}
 
 func sample(value: float, reduce_motion: bool) -> void:
 	progress = clampf(value,0.0,1.0)
@@ -62,6 +66,7 @@ func sample(value: float, reduce_motion: bool) -> void:
 	if reduced:
 		pose = entry_pose.duplicate()
 		pose.zoom = 1.0
+		_pose_blends.clear()
 		queue_redraw()
 		return
 	if kind == "clash":
@@ -112,10 +117,34 @@ func sample(value: float, reduce_motion: bool) -> void:
 		pose.pr = -float(pose.er)
 		pose.er = -lean
 	# Blend roots from the prior action; no neutral-pose or position snap per slot.
-	var enter := _ease(minf(progress/0.18,1.0))
+	var enter := _ease(minf(progress/0.28,1.0))
 	for key in ["px","py","ex","ey","pr","er","zoom"]:
 		pose[key] = lerpf(float(entry_pose[key]),float(pose[key]),enter)
+	_blend_pose_changes()
 	queue_redraw()
+
+func _blend_pose_changes() -> void:
+	# Short, foot-aligned overlaps bridge ink key drawings without delaying events.
+	var transition := clampf(0.075 / maxf(float(cue.get("duration", 1.0)), 0.1), 0.025, 0.16)
+	for role in ["player", "enemy"]:
+		var index := int(pose.p if role == "player" else pose.e)
+		if not _pose_blends.has(role):
+			_pose_blends[role] = {"from":index, "to":index, "at":progress, "weight":1.0}
+		var blend: Dictionary = _pose_blends[role]
+		if int(blend.to) != index:
+			blend.from = blend.to
+			blend.to = index
+			blend.at = progress
+		blend.weight = _ease(clampf((progress-float(blend.at))/transition, 0, 1)) if blend.from != blend.to else 1.0
+
+func close_shot_opacity() -> float:
+	if reduced or hero == null or cue.get("kind") != "clash" or not cue.get("contact", false): return 0.0
+	return smoothstep(2.27, 2.48, effect_time) * (1.0-smoothstep(2.55, 2.73, effect_time))
+
+func close_shot_rect() -> Rect2:
+	var source := hero.get_size() if hero != null else Vector2(1280,720)
+	var cover := source * maxf(size.x/source.x, size.y/source.y)
+	return Rect2((size-cover)*0.5, cover)
 
 func _key_pose(t: float) -> Dictionary:
 	var keys: Array = catalog.keyframes
@@ -133,10 +162,12 @@ func _ease(u: float) -> float:
 func _draw() -> void:
 	if background == null or size.y <= 0:
 		return
-	draw_texture_rect(background,Rect2(Vector2.ZERO,size),false,Color(1,1,1,1))
 	var scale_factor := minf(size.x/1280.0,size.y/720.0)
 	var offset := (size-Vector2(1280,720)*scale_factor)*0.5
 	var zoom := 1.0 if reduced else float(pose.zoom)
+	# The scenery follows the same camera centre and zoom as the fighters.
+	draw_set_transform_matrix(Transform2D(0, Vector2.ONE*zoom, 0, size*0.5*(1.0-zoom)))
+	draw_texture_rect(background,Rect2(Vector2.ZERO,size),false,Color.WHITE)
 	_world = Transform2D(0,Vector2.ONE*scale_factor*zoom,0,offset+Vector2(640,360)*scale_factor*(1.0-zoom))
 	draw_set_transform_matrix(_world)
 	_actor("enemy",int(pose.e),Vector2(pose.ex,pose.ey),1.10,float(pose.er))
@@ -165,16 +196,24 @@ func _draw() -> void:
 			var tip := origin.lerp(target,reach)
 			var side := (tip-origin).normalized().orthogonal()*22
 			draw_polygon(PackedVector2Array([origin-side,origin+side,tip+side,tip-side]),PackedColorArray([Color(1,1,1,0.75*(1.0-clampf((progress-0.65)/0.20,0,1)))]),PackedVector2Array([Vector2(0,0),Vector2(0,1),Vector2(1,1),Vector2(1,0)]),brush)
-	if hero != null and cue.get("kind") == "clash" and not reduced and effect_time >= 2.50 and effect_time < 2.68:
-		draw_texture_rect(hero,Rect2(0,0,1280,720),false)
+	var close_alpha := close_shot_opacity()
+	if close_alpha > 0.0:
+		# A contact-led dissolve exposes the continuing pose again before recovery.
+		draw_set_transform_matrix(Transform2D.IDENTITY)
+		draw_texture_rect(hero,close_shot_rect(),false,Color(1,1,1,close_alpha))
 	draw_set_transform_matrix(Transform2D.IDENTITY)
 
 func _actor(role: String, index: int, foot: Vector2, actor_scale: float, angle: float) -> void:
-	var spec: Dictionary = catalog.poses[role][index]
 	var transform := Transform2D(deg_to_rad(angle),Vector2.ONE*actor_scale,0,foot)
 	draw_set_transform_matrix(_world*transform)
+	var blend: Dictionary = _pose_blends.get(role, {"from":index,"to":index,"weight":1.0})
+	var weight := float(blend.weight)
+	if int(blend.from) != index and weight < 1.0:
+		var previous: Dictionary = catalog.poses[role][int(blend.from)]
+		draw_texture(textures[role][int(blend.from)], -Vector2(previous.foot[0],previous.foot[1]), Color(1,1,1,1.0-weight))
+	var spec: Dictionary = catalog.poses[role][index]
 	var anchor := Vector2(spec.foot[0],spec.foot[1])
-	draw_texture(textures[role][index],-anchor)
+	draw_texture(textures[role][index],-anchor,Color(1,1,1,weight))
 
 func _weapon_point(role: String, point_name: String, state: Dictionary = {}) -> Vector2:
 	var s: Dictionary = pose if state.is_empty() else state

@@ -4,6 +4,12 @@ extends Control
 signal start_requested
 signal continue_requested
 signal reread_requested
+signal exit_requested
+signal preferences_changed
+
+var preferences = preload("res://src/ui/ink/ink_preferences.gd").new()
+var _front_page: Control
+var _return_focus: String
 
 const BACKGROUND_PATH := "res://assets/backgrounds/ink_wuxia/main.png"
 const PLAYER_PATH := "res://assets/combat/ink_wuxia/player-0.png"
@@ -77,7 +83,7 @@ func _build_surface() -> void:
 	var start_button := Button.new()
 	start_button.name = "MainStartButton"
 	start_button.text = "새 여정"
-	start_button.custom_minimum_size = Vector2(286.0, 58.0)
+	start_button.custom_minimum_size = Vector2(286.0, 48.0)
 	start_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	start_button.accessibility_name = "비무행 시작"
 	start_button.accessibility_description = "무공을 고르고 첫 비무를 시작합니다."
@@ -93,8 +99,17 @@ func _build_surface() -> void:
 	continue_button.pressed.connect(func():
 		if continue_button.get_meta("read_retry", false): reread_requested.emit()
 		else: continue_requested.emit())
-	continue_button.visible = false
 	center.add_child(continue_button)
+	for item in [["MainLibraryButton", "도감"], ["MainSettingsButton", "설정"], ["MainExitButton", "종료"]]:
+		var button := Button.new()
+		button.name = item[0]
+		button.text = item[1]
+		button.custom_minimum_size = Vector2(286, 42)
+		button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		_apply_start_style(button)
+		if item[0] == "MainExitButton": button.pressed.connect(func(): exit_requested.emit())
+		else: button.pressed.connect(_open_front_page.bind(item[0]))
+		center.add_child(button)
 	var save_notice := _make_label("", 14, INK)
 	save_notice.name = "SaveContinueNotice"
 	save_notice.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -105,13 +120,37 @@ func _build_surface() -> void:
 
 func _fit_title() -> void:
 	var logo := find_child("GameTitleLogo", true, false) as TextureRect
-	if logo != null: logo.custom_minimum_size.y = clampf(size.y * 0.24, 128.0, 210.0)
+	if logo != null: logo.custom_minimum_size.y = clampf(size.y * 0.18, 82.0, 160.0)
+
+func _open_front_page(button_name: String) -> void:
+	if is_instance_valid(_front_page): return
+	_return_focus = button_name
+	get_node("TitleCenter").hide()
+	if button_name == "MainLibraryButton":
+		_front_page = preload("res://src/ui/ink/ink_title_library.gd").new()
+	else:
+		_front_page = preload("res://src/ui/ink/ink_settings_panel.gd").new()
+		_front_page.preferences = preferences
+		_front_page.preferences_changed.connect(func(): preferences_changed.emit())
+	_front_page.closed.connect(_close_front_page)
+	add_child(_front_page)
+	var close := _front_page.find_child("LibraryClose", true, false) as Button
+	if close == null: close = _front_page.find_child("SettingsClose", true, false) as Button
+	if close != null: close.grab_focus()
+
+func _close_front_page() -> void:
+	if is_instance_valid(_front_page):
+		remove_child(_front_page)
+		_front_page.queue_free()
+	_front_page = null
+	get_node("TitleCenter").show()
+	(find_child(_return_focus, true, false) as Button).grab_focus()
 
 func configure_continue(payload: Dictionary, status: String) -> void:
 	var button := find_child("MainContinueButton", true, false) as Button
 	var notice := find_child("SaveContinueNotice", true, false) as Label
 	button.set_meta("read_retry", status == "IO_FAILURE")
-	button.visible = not payload.is_empty() or status == "IO_FAILURE"
+	button.visible = true
 	button.disabled = payload.is_empty() and status != "IO_FAILURE"
 	(find_child("MainStartButton", true, false) as Button).disabled = false
 	if not payload.is_empty():
@@ -123,9 +162,9 @@ func configure_continue(payload: Dictionary, status: String) -> void:
 		notice.text = "마지막으로 확정된 진행부터 이어집니다.\n확정 전 배치는 다시 고릅니다."
 		if status == "RECOVERED_BACKUP": notice.text = "백업에서 진행을 복구했습니다.\n" + notice.text
 	else:
-		button.text = "저장 다시 읽기"
+		button.text = "저장 다시 읽기" if status == "IO_FAILURE" else "이어하기"
 		var notices := {"CORRUPT": "저장 기록을 읽을 수 없습니다. 새 여정을 선택하면 진단 사본을 보존합니다.", "INCOMPATIBLE": "이 버전에서 사용할 수 없는 저장 기록입니다. 원본을 보존합니다.", "IO_FAILURE": "저장 위치를 읽지 못했습니다. 파일 접근 상태를 확인해 주세요."}
-		notice.text = str(notices.get(status, ""))
+		notice.text = str(notices.get(status, "아직 이어갈 여정이 없습니다."))
 
 func _add_battler(node_name: String, path: String, is_left: bool) -> void:
 	var battler := TextureRect.new()
