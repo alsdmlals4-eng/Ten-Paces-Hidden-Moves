@@ -104,3 +104,7 @@
 - PR365 원격 영향 교정: full-validation의 기존 카드 상단 band/양 검객 동일 높이·같은 바닥선 검사가 승인된 좌측 삽화/대각선3:2구도와 충돌했다. 실제 source-alpha 독립 측정 및80% 축소 negative control은 유지하고 새3:2비율·깊이·모션 envelope90%상한·카드 내부 영역/글자 비중첩으로 검사했다. 해당 workflow native31종 전부 로컬 PASS; 제품 bytes는 추가 변경하지 않았다. Windows50/50·ZIP해시/CRC PASS, 최종 HTML1270view/21563local link PASS.
 
 - 같은 원격 제품 job의 일반속도 캠페인은452225ms/실제 입력295회/비무10승/보상10회/행로36회/실패0으로 완료됐다. 근거는 [PR365 native 캠페인](https://github.com/alsdmlals4-eng/Ten-Paces-Hidden-Moves/actions/runs/36077007132/job/107890430945)의 NATIVE_CAMPAIGN_SUMMARY다. 이후 Linux에서 네 무공이 모두 들어가는데도 스크롤을 필수로 기대한 구 검사가 실패했다. 전부 보이는 상태를 검사하고 시험용 넓은 버튼으로 실제 overflow/마지막 항목 접근/키보드 자동 스크롤을 강제 검증하도록 고쳤다. 강제 overflow의 경계 좌표 오차0.00005px는 다른 기하 검사와 같은0.5px 허용으로 다뤘다. 세 viewport를 포함한 해당 검사와 휴식/atlas 후속 검사는 PASS이며 제품 bytes는 그대로다. 원격 job 전체 성공은 새 exact-head 결과에서 확인한다.
+
+### 최종 전달 readback · PR365
+
+검토 HEAD `92be01fb1385ab8373f06ad27117268acc538fd7`의 최신 workflow별 33SUCCESS/실패0/진행0, 미해결 검토0, 최신 main을 확인하고 2026-09-25T00:54:47Z에 main `9f0ce7ddf3a7aad95e82b725d99bbd5248bdd60d`로 정상 병합했다. 전체 tracked tree가 동일하다. 원본 사용자 저장8개와 사용자 코멘트 SHA256 `afd73518d7bf507728e500045733ef5b9c7a466dc3feeba3c62331455cdd2dac` 동일함을 확인했다. Windows 실행 파일/PCK/설명서 ZIP의 해시와 CRC 검증 PASS. 로컬 실제 실행·자동 CI·사용자 시각 승인·출시를 구분한다. 일회 승인 종료는 `docs/operations/2026-09-25_PR365_PROTECTED_CHANGE_APPROVAL_RECORD.md`.
