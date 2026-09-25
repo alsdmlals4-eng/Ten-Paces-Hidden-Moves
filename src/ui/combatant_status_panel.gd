@@ -218,6 +218,11 @@ func _draw() -> void:
     _draw_momentum(resource_x, resource_x + resource_width)
 
 func get_resource_layout_snapshot() -> Dictionary:
+    if bool(get_meta("reference_preparation", false)):
+        var x := 139.0 if side == "player" else 2.0
+        return {"resource_x":x, "resource_width":191.0,
+            "label_rects":[_health_label.get_rect(), _stamina_label.get_rect(), _internal_label.get_rect()],
+            "bar_rects":[Rect2(x,84,191,5),Rect2(x,111,191,5),Rect2(x,138,191,5)]}
     if bool(get_meta("ink_preparation", false)):
         var x := 100.0 if side == "player" else 0.0
         var width := size.x - 102.0
@@ -362,8 +367,9 @@ func _layout_reference_preparation() -> void:
 
 func _draw_reference_preparation() -> void:
     var x := 139.0 if side == "player" else 2.0
+    var bars: Array = get_resource_layout_snapshot().bar_rects
     for i in range(3):
-        var rect := Rect2(x,84+i*27,191,5)
+        var rect: Rect2 = bars[i]
         draw_rect(rect,Color("898579"))
         var ratio := get_visible_resource_ratio(["health","stamina","internal"][i])
         if ratio >= 0:

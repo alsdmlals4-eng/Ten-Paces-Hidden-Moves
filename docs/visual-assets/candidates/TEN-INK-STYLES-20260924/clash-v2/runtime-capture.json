@@ -1,16 +1,16 @@
 {
   "captures": {
-    "bundle-1-complete": 206,
-    "bundle-2-complete": 420,
-    "bundle-3-complete": 723,
+    "bundle-1-complete": 209,
+    "bundle-2-complete": 427,
+    "bundle-3-complete": 734,
     "clash-contact": 59,
     "clash-keyshot": 95,
-    "four-slots": 552,
+    "four-slots": 559,
     "preparation-before": 0,
     "resolved-damage": 127
   },
   "engine": "4.7.1-stable (official)",
   "fps": 24,
-  "frames": 723,
+  "frames": 734,
   "source": "Actual CombatBoardPreview with actual resolver fixed plans; not offline compositing"
 }

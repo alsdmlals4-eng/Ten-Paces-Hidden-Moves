@@ -37,31 +37,21 @@ func _run() -> void:
 		await _verify_measured_execution(packed, viewport)
 	_finish()
 
+func _reference_rect(board: CombatBoardPreview) -> Rect2:
+	return board.get_node("ReferencePreparationPainting").get_global_rect()
+
 func _verify_three_screen_surfaces(board: CombatBoardPreview) -> void:
-	var top_surface := board.get_node_or_null("TopHudSurface") as Control
-	var duel_surface := board.get_node_or_null("DuelStageSurface") as Control
-	var planning_surface := board.get_node_or_null("PlanningSurface") as Control
-	_expect(is_instance_valid(top_surface), "Top HUD must have an independent surface behind status and round information.")
-	_expect(is_instance_valid(duel_surface), "Duel must have a dedicated middle-stage surface.")
-	_expect(is_instance_valid(planning_surface), "Planning tabs and cards must have an independent lower surface.")
-	if not is_instance_valid(top_surface) or not is_instance_valid(duel_surface) or not is_instance_valid(planning_surface):
-		return
-	var top_rect := top_surface.get_global_rect()
-	var duel_rect := duel_surface.get_global_rect()
-	var planning_rect := planning_surface.get_global_rect()
-	var dock := board.get_node_or_null("ActionSelectionDock") as Control
-	_expect(top_rect.end.y <= duel_rect.position.y + 0.5, "Top status surface must end before the semantic duel stage begins.")
-	_expect(duel_rect.end.y <= planning_rect.position.y + 0.5, "Duel stage must end before the planning surface begins.")
-	_expect(absf(top_rect.size.y / board.size.y - TARGET_TOP_OVERLAY_RATIO) <= 0.035, "Top status overlay must occupy about 14 percent of the preparation view.")
-	_expect(absf((planning_rect.position.y - board.global_position.y) / board.size.y - TARGET_PLANNING_TOP_RATIO) <= 0.045, "The expanded 5 by 2 summary-card surface must preserve a bounded lower preparation split.")
-	# Sep02 stage-only owner supersedes these old behind-HUD fixture expectations.
-	_expect(board.battle_background.get_global_rect().encloses(duel_rect) and board.battle_background.get_global_rect().position.y <= top_rect.position.y, "One continuous ink painting underlies HUD and confrontation.")
-	_expect(_rect_near(board.duel_foreground_banner.get_global_rect(), duel_rect), "Banner must equal the stage-only background.")
-	_expect(planning_rect.encloses(board.action_timing_panel.get_global_rect()), "Action bundle display must sit on the lower planning surface.")
-	if is_instance_valid(dock) and not planning_rect.encloses(dock.get_global_rect()):
-		print("PARTITION_DIAGNOSTIC planning=%s dock=%s" % [str(planning_rect), str(dock.get_global_rect())])
-	_expect(is_instance_valid(dock) and planning_rect.encloses(dock.get_global_rect()), "Action tabs and card selection must sit on the lower planning surface.")
-	_expect(top_rect.encloses(board.top_hud.get_global_rect()), "Status and round HUD must sit on the top information surface.")
+	var reference := _reference_rect(board)
+	_expect(absf(reference.size.x / reference.size.y - 1086.0/1448.0) < 0.001, "Preparation preserves the exact portrait reference proportions.")
+	_expect(Rect2(board.global_position,board.size).grow(0.5).encloses(reference), "The complete paper fits the viewport without cropping.")
+	for control in [board.top_hud,board.action_timing_panel,board.action_selection_dock,board.combat_progress_button,board.observation_reveal_panel]:
+		_expect(reference.grow(0.5).encloses(control.get_global_rect()), "Every visible preparation control stays inside the reference: " + str(control.name))
+	var plan := board.action_timing_panel.get_global_rect()
+	var dock: Rect2 = board.action_selection_dock.get_global_rect()
+	_expect(plan.position.y > reference.position.y+reference.size.y*0.44 and plan.end.y < reference.position.y+reference.size.y*0.53, "The plan occupies the reference paper strip.")
+	_expect(dock.position.y > reference.position.y+reference.size.y*0.56 and dock.position.y < reference.position.y+reference.size.y*0.58, "Tabs and cards start below the plan at the reference divider.")
+	_expect(board.top_hud.get_global_rect().end.y < reference.position.y+reference.size.y*0.16, "Portraits and resources stay in the upper corners.")
+	_expect(board.get_node("ReferencePreparationPainting").visible and not board.player_character.visible and not board.enemy_character.visible, "Reference actors replace the side-on execution actors during planning.")
 
 func _verify_reference_preparation_hierarchy(board: CombatBoardPreview) -> void:
 	var hud := board.top_hud
@@ -71,10 +61,10 @@ func _verify_reference_preparation_hierarchy(board: CombatBoardPreview) -> void:
 	var player_rect := hud.player_panel.get_global_rect() if is_instance_valid(hud.player_panel) else Rect2()
 	var enemy_rect := hud.enemy_panel.get_global_rect() if is_instance_valid(hud.enemy_panel) else Rect2()
 	var round_rect := hud.round_panel.get_global_rect() if is_instance_valid(hud.round_panel) else Rect2()
-	_expect(player_rect.size.x / maxf(1.0, player_rect.size.y) >= 2.55, "Player status frame must preserve its wide ink-brush aspect instead of compressing text over the portrait.")
-	_expect(enemy_rect.size.x / maxf(1.0, enemy_rect.size.y) >= 2.55, "Enemy status frame must preserve its wide ink-brush aspect instead of compressing text over the portrait.")
-	_expect(absf((round_rect.get_center().x - board.global_position.x) - board.size.x * 0.5) <= 4.0, "Round information must remain centered between the two wide status frames.")
-	_expect(round_rect.size.x <= minf(player_rect.size.x, enemy_rect.size.x) * 0.62, "Round information must be a compact center marker, not a third full-width panel.")
+	_expect(player_rect.size.x / maxf(1.0, player_rect.size.y) >= 1.70 and player_rect.size.x / player_rect.size.y <= 1.80, "Player status frame must preserve its reference portrait-and-state aspect instead of compressing text over the portrait.")
+	_expect(enemy_rect.size.x / maxf(1.0, enemy_rect.size.y) >= 1.70 and enemy_rect.size.x / enemy_rect.size.y <= 1.80, "Enemy status frame must preserve its reference portrait-and-state aspect instead of compressing text over the portrait.")
+	_expect(absf((round_rect.get_center().x - board.global_position.x) - board.size.x * 0.5) <= _reference_rect(board).size.x * 0.02, "Round information must remain centered between the two wide status frames.")
+	_expect(round_rect.size.x <= minf(player_rect.size.x, enemy_rect.size.x) * 0.82 and round_rect.size.y < player_rect.size.y * 0.45, "Round information must be a compact center marker, not a third full-width panel.")
 	_expect(is_instance_valid(hud.player_momentum) and not hud.player_momentum.visible, "Momentum must live inside the player status frame, not in a detached top panel.")
 	_expect(is_instance_valid(hud.enemy_momentum) and not hud.enemy_momentum.visible, "Momentum must live inside the enemy status frame, not in a detached top panel.")
 	if is_instance_valid(hud.player_panel):
@@ -84,11 +74,11 @@ func _verify_reference_preparation_hierarchy(board: CombatBoardPreview) -> void:
 		_expect(hud.enemy_panel._portrait.visible, "Enemy portrait mirrors the player hierarchy.")
 		_expect(enemy_rect.encloses(hud.enemy_panel._health_label.get_global_rect()), "Enemy resource label stays inside the status panel.")
 
-	var planning_rect := board.planning_surface.get_global_rect() if is_instance_valid(board.planning_surface) else Rect2()
+	var planning_rect := _reference_rect(board)
 	var timing_rect := board.action_timing_panel.get_global_rect() if is_instance_valid(board.action_timing_panel) else Rect2()
 	var progress_rect := board.combat_progress_button.get_global_rect() if is_instance_valid(board.combat_progress_button) else Rect2()
 	_expect(timing_rect.size.x + progress_rect.size.x <= planning_rect.size.x * 0.96 and timing_rect.size.x + progress_rect.size.x >= planning_rect.size.x * 0.8, "Current action bundle and lock must form one full-width planning strip.")
-	_expect(absf(progress_rect.get_center().y - timing_rect.get_center().y) <= 6.0 and progress_rect.position.x - timing_rect.end.x <= 24.0, "Action-plan lock must align immediately beside the current action bundle at the right end.")
+	_expect(absf(progress_rect.get_center().y - timing_rect.get_center().y) <= planning_rect.size.y * 0.012 and progress_rect.position.x > timing_rect.end.x and progress_rect.position.x - timing_rect.end.x <= planning_rect.size.x * 0.03, "Action-plan lock must align immediately beside the current action bundle at the right end.")
 	_expect(not board.sound_toggle_button.visible and not board.sound_volume_slider.visible and not board.fast_replay_button.visible and not board.reduced_motion_button.visible and not board.combat_log_panel.visible, "Preparation view must not expose debug playback, sound, or record panels absent from the approved reference screen.")
 
 func _verify_reference_information_columns(board: CombatBoardPreview) -> void:
@@ -114,12 +104,12 @@ func _verify_reference_information_columns(board: CombatBoardPreview) -> void:
 	_expect(is_instance_valid(observation), "Preparation reference requires a separate observation information column.")
 	if not is_instance_valid(dock) or not is_instance_valid(observation):
 		return
-	var planning_rect := board.planning_surface.get_global_rect()
+	var planning_rect := _reference_rect(board)
 	var content_rect := dock.content_host.get_global_rect()
 	var detail_rect := dock.detail_host.get_global_rect()
 	var observation_rect := observation.get_global_rect()
 	_expect(content_rect.position.x >= board.global_position.x + board.size.x * 0.03, "Current-plan cards retain a deliberate outer inset.")
-	_expect(content_rect.end.x + 250 <= planning_rect.end.x, "The five-by-two illustrated grid leaves a full detail column.")
+	_expect(content_rect.end.x + planning_rect.size.x * 0.20 <= planning_rect.end.x, "The five-by-two illustrated grid leaves a full detail column.")
 	_expect(detail_rect.position.x >= content_rect.end.x + 6.0 and detail_rect.size.x >= planning_rect.size.x * 0.13, "Technique detail must occupy its own readable column beside the card grid.")
 	var detail_panel := dock.detail_host.get_node_or_null("ActionDetailPanel") as ActionDetailPanel
 	_expect(is_instance_valid(detail_panel) and detail_panel.visible, "The detail column must reserve its geometry but keep a real action preview visible.")
@@ -142,17 +132,17 @@ func _verify_reference_information_columns(board: CombatBoardPreview) -> void:
 			await process_frame
 			var detail_layout: Dictionary = detail_panel.get_layout_snapshot()
 			var detail_body_rect: Rect2 = detail_layout.get("body_rect", Rect2()) as Rect2
-			_expect(detail_body_rect.size.x >= 200.0, "Compact technique detail needs one full-width readable text lane for cost, effect, and range instead of collapsing values into ornamental space.")
-			_expect(detail_body_rect.end.x <= detail_rect.end.x - 8.0, "Compact technique detail text must keep a deliberate inset inside its own right-side panel.")
+			_expect(detail_body_rect.size.x >= detail_rect.size.x * 0.78, "Compact technique detail needs one full-width readable text lane for cost, effect, and range instead of collapsing values into ornamental space.")
+			_expect(detail_body_rect.end.x <= detail_rect.end.x - detail_rect.size.x * 0.03, "Compact technique detail text must keep a deliberate inset inside its own right-side panel.")
 			detail_panel.clear_detail()
-	_expect(observation.visible and board.duel_stage_surface.get_global_rect().encloses(observation_rect), "Observation remains visible beside the confrontation before a reveal.")
-	_expect(observation_rect.end.y <= planning_rect.position.y, "Observation stays above planning and technique details.")
+	_expect(observation.visible and planning_rect.encloses(observation_rect), "Observation remains visible beside the confrontation before a reveal.")
+	_expect(observation_rect.end.y <= board.action_timing_panel.get_global_rect().position.y, "Observation stays above planning and technique details.")
 	_expect(observation_rect.size.x / maxf(1.0, observation_rect.size.y) <= 1.65, "Observation paper must have a readable right-hand lane.")
 	var detail_scene := load("res://scenes/ui/action_selection/action_detail_panel.tscn") as PackedScene
 	var reusable_detail := detail_scene.instantiate() as ActionDetailPanel if detail_scene != null else null
 	_expect(is_instance_valid(reusable_detail), "Technique detail must remain a reusable action-panel component.")
 	if is_instance_valid(reusable_detail):
-		_expect(reusable_detail.custom_minimum_size.x <= detail_rect.size.x and reusable_detail.custom_minimum_size.y <= detail_rect.size.y, "Technique detail scene minimum size must fit the allocated right-hand detail column.")
+		_expect(detail_panel.custom_minimum_size.x <= dock.detail_host.size.x and detail_panel.custom_minimum_size.y <= dock.detail_host.size.y, "Technique detail scene minimum size must fit the allocated right-hand detail column.")
 		reusable_detail.queue_free()
 
 func _verify_current_bundle_only(board: CombatBoardPreview) -> void:
@@ -255,7 +245,7 @@ func _verify_stage(board: CombatBoardPreview, expanded: bool) -> void:
 	if expanded:
 		_expect(absf(stage.end.y - (board.global_position.y + board.size.y)) <= 0.5, "CTA and every timing must use the full remaining execution stage.")
 	else:
-		_expect(board.planning_surface.position.y / board.size.y >= 0.37 and board.planning_surface.position.y / board.size.y <= 0.50, "Next planning restores the responsive two-row card layout.")
+		_expect(_reference_rect(board).grow(0.5).encloses(board.action_selection_dock.get_global_rect()) and _reference_rect(board).grow(0.5).encloses(board.action_timing_panel.get_global_rect()), "Next planning restores the responsive two-row card layout.")
 	for role in ["player", "enemy"]:
 		_expect(stage.grow(1).has_point(board.global_position + board.get_character_foot_anchor(role)), "Both depth anchors remain in the visible painting.")
 

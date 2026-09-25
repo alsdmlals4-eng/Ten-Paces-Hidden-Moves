@@ -143,3 +143,7 @@ Godot AI4.2.3 exact session `ten-paces-hidden-moves@e3c0b4f76e16bdac`에서 사�
 Python unittest 전체579검사의 첫 실행은577PASS/1FAIL/1ERROR였다. 신규3자산을 이전21불변 기록에 섞은 기대값은 신규 ID3개를 명시적으로 분리하고 기존 hash/count를 그대로 유지한다. ERROR는 실제 화면 촬영 중 아직 resolution이 추가되지 않은 manifest를 읽은 동시 발행 시점이다. 발행 완료 후 영향 검사를 별도로 재실행한다. 전체579재실행이나 사용자 최종 시각 승인으로 확대하지 않는다.
 
 업데이트 Godot AI4.2.3 exact session ten-paces-hidden-moves@e3c0b4f76e16bdac의 실제 게임 창에서 입력·상태·fresh framebuffer를 확인했다. 진단용 eval의 들여쓰기 오류1건으로 중단된run11은 제품 오류와 구분하고run12로 다시 시작했다. 사용자 addon313파일, 원본 사용자 작업/저장/52리뷰는 보호한다. 새 시각 결과는 사용자 final lock 전이므로 PR367은 Draft이며 이 후보의 main 병합·Human/Android/출시는 NOT_RUN이다. 최종 실행본·HTML·원격 체크 결과는 아래에 누적한다.
+
+집중 영향 교정: 원격56d1fb06의 실패는 신규자산3개를 옛21개에 포함한 별도 combat-contract 기대, 승인경로 목록의 중앙 manifest 누락, 옛 가로 상태창/계획면에 고정된17기하 기대였다. 기존21해시와47승인 삽화 불변 검사는 유지하며 신규3ID/원본 해시/검수대기 상태를 정확히 검사한다. 보호경로 승인은 기존 사용자 지시에 포함된 중앙 등록 경로1개를 보완했다. 실제 그려지는 준비 자원바와 진단 snapshot을 같은 좌표로 연결했다. 참조 내부의실제Control 경계·정보/초상·다음묶음 복귀를 검사하고 해결 중 원화 alpha·이동궤적·negative control은 그대로 보존했다. 해당 contract·partition·product viewports·기초/무공 아트·inline·정보경계 관련 검사가 PASS다.
+
+실제 촬영은 최종734프레임/24fps/30.583초/서로 다른511프레임,11화면이다. 발행 후 Python 실패 관련7검사가 PASS했다. 앞선Windows 제품56d1fb06의50/50과ZIP CRC/실행파일/PCK byte일치 PASS, HTML1276view/21682내부연결 PASS를 확인했다. 인앱브라우저 준비 그림1086×1448과 확대, 앞선723프레임 영상30.125초의 끝까지 재생/미디어 오류없음/콘솔오류0을 확인했다. 자원바 진단 교정 뒤 갱신된734프레임과 최종 실행본은 전달 전 다시 확인한다. 이전 촬영과 현재 촬영의 수치를 섞어 완료 주장하지 않는다.

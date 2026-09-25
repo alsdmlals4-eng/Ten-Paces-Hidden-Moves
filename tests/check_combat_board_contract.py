@@ -211,7 +211,13 @@ def main() -> None:
     for asset in refresh_assets:
         assert res_file(asset["path"]).exists()
         assert hashlib.sha256(res_file(asset["path"]).read_bytes()).hexdigest() == asset["sha256"]
-    original_assets = [asset for asset in asset_manifest["assets"] if asset["id"] not in blueprint_ids | ink_ids | refresh_ids]
+    reference_ids = {f"reference_preparation_{name}_20260925" for name in ("reference_painting", "standing_characters", "reference_details")}
+    reference_assets = [asset for asset in asset_manifest["assets"] if asset["id"] in reference_ids]
+    assert {asset["id"] for asset in reference_assets} == reference_ids
+    for asset in reference_assets:
+        assert asset["lifecycle_status"] == "USER_REQUESTED_REFERENCE_IMPLEMENTATION__FINAL_VISUAL_REVIEW_PENDING"
+        assert hashlib.sha256(res_file(asset["path"]).read_bytes()).hexdigest() == asset["source_png_sha256"]
+    original_assets = [asset for asset in asset_manifest["assets"] if asset["id"] not in blueprint_ids | ink_ids | refresh_ids | reference_ids]
     assert len(original_assets) == blueprint["preserved_existing_record_count"] == 21
     original_digest = hashlib.sha256(json.dumps(original_assets, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     assert original_digest == blueprint["preserved_existing_records_sha256"]
@@ -239,10 +245,10 @@ def main() -> None:
         "current_action_slot_frame_01_v1",
         "technique_detail_frame_01_v1",
         "observation_reveal_frame_01_v1",
-    } | blueprint_ids | ink_ids | refresh_ids
+    } | blueprint_ids | ink_ids | refresh_ids | reference_ids
     for asset in active_assets:
         assert res_file(asset["path"]).exists(), asset["path"]
-        assert asset.get("prompt") or asset.get("source_png_sha256"), asset["id"]
+        assert asset.get("prompt") or asset.get("source_png_sha256") or (asset["id"] in reference_ids and asset.get("prompt_summary")), asset["id"]
         assert asset.get("license", asset_manifest.get("license", ""))
     for asset_id in (
         "status_hud_frame_01_v1",
