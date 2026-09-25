@@ -147,3 +147,11 @@ Python unittest 전체579검사의 첫 실행은577PASS/1FAIL/1ERROR였다. 신�
 집중 영향 교정: 원격56d1fb06의 실패는 신규자산3개를 옛21개에 포함한 별도 combat-contract 기대, 승인경로 목록의 중앙 manifest 누락, 옛 가로 상태창/계획면에 고정된17기하 기대였다. 기존21해시와47승인 삽화 불변 검사는 유지하며 신규3ID/원본 해시/검수대기 상태를 정확히 검사한다. 보호경로 승인은 기존 사용자 지시에 포함된 중앙 등록 경로1개를 보완했다. 실제 그려지는 준비 자원바와 진단 snapshot을 같은 좌표로 연결했다. 참조 내부의실제Control 경계·정보/초상·다음묶음 복귀를 검사하고 해결 중 원화 alpha·이동궤적·negative control은 그대로 보존했다. 해당 contract·partition·product viewports·기초/무공 아트·inline·정보경계 관련 검사가 PASS다.
 
 실제 촬영은 최종734프레임/24fps/30.583초/서로 다른511프레임,11화면이다. 발행 후 Python 실패 관련7검사가 PASS했다. 앞선Windows 제품56d1fb06의50/50과ZIP CRC/실행파일/PCK byte일치 PASS, HTML1276view/21682내부연결 PASS를 확인했다. 인앱브라우저 준비 그림1086×1448과 확대, 앞선723프레임 영상30.125초의 끝까지 재생/미디어 오류없음/콘솔오류0을 확인했다. 자원바 진단 교정 뒤 갱신된734프레임과 최종 실행본은 전달 전 다시 확인한다. 이전 촬영과 현재 촬영의 수치를 섞어 완료 주장하지 않는다.
+
+### 참조 재현 실행본 전달 · 최종 제품 코드 0f4d446a
+
+7b6b776f의 원격33검사 중32개는 통과했고 automated-product-evidence는 Linux 대체 글꼴의 실제 최소높이27px가 상태 이름의23px 칸을 넘는2반례로 실패했다. 0f4d446a에서 해당 이름만 실제 글꼴 최소높이에 맞춰 축소했다. Windows 준비 화면의 PNG bytes는 교정 전후 동일하며 참조의 위치·여백은 유지했다. 기존 실제 기하·해결 원화·이동 negative control을 포함한 partition 집중 재검사가 PASS했다. 원격 최종 HEAD 결과는 PR367의 live metadata를 따르며 이전 실패를 성공으로 취급하지 않는다.
+
+0f4d446a로 Windows release export와 실행 파일의50시나리오를 재실행해50PASS/0FAIL을 확인했다. `build/windows/TenPaces-Reference-Preparation-20260925-Windows.zip`은 EXE·PCK·한국어 실행 안내를 포함하며188682153bytes, SHA256 `584d127e7a00f7a81a9e6da2d6009634389fed3dcb23e6113f6d314501fe48b0`이다. ZIP CRC와 압축 전후 각 파일 SHA256 일치 PASS. 로컬 근거는 `output/prep-layout/reference-delivery.json`과 `reference-windows-final/`이다. export 종료의 기존45 ObjectDB/22 resource 정리 경고는 남아 있으며 실제 제품 시나리오는 오류0이다.
+
+동일 제품 코드에서 native9화면+해결2화면, 실제 판정기의 고정3/3/4 묶음735프레임/24fps/30.625초/서로 다른511프레임을 다시 촬영·발행했다. 촬영 자체의 `INK_SCREEN_CAPTURE count=9`와 `INK_COMBAT_RUNTIME failures=0 frames=735`를 확인했고 manifest에 소스와 미디어 해시를 갱신했다. 최종 HTML과 브라우저 재생 readback은 이 발행본을 사용한다. 원본 사용자52리뷰·기존 작업·Godot AI addon313파일을 보호한다. 새 시각 결과의 사용자 최종 확정 전이므로 PR367은 Draft이며 main 병합·Human/Android·출시는 완료로 보고하지 않는다.
