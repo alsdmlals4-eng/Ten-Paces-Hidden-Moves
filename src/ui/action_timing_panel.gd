@@ -498,6 +498,8 @@ func _layout() -> void:
     if bool(get_meta("ink_preparation", false)):
         _title_label.add_theme_color_override("font_color", Color("2b2b24"))
         _title_label.add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
+    if bool(get_meta("reference_preparation",false)):
+        _title_label.add_theme_font_size_override("font_size",22)
     _title_label.position = Vector2(side_margin, 5.0)
     _title_label.size = Vector2(width, 19.0)
     _sequence_label.visible = false
@@ -520,6 +522,7 @@ func _layout() -> void:
             continue
         if bool(get_meta("ink_preparation", false)):
             slot.set_meta("ink_preparation", true)
+            slot.set_meta("reference_preparation",bool(get_meta("reference_preparation",false)))
         slot.position = Vector2(x, slot_y)
         slot.size = Vector2(slot_width, slot_height)
         x += slot_width + base_gap
@@ -569,7 +572,8 @@ func _notification(what: int) -> void:
 
 func _draw() -> void:
     if bool(get_meta("ink_preparation", false)):
-        draw_rect(Rect2(Vector2.ZERO, size), Color("e3dac5"))
+        if not bool(get_meta("reference_preparation",false)):
+            draw_rect(Rect2(Vector2.ZERO, size), Color("e3dac5"))
         var indices := get_visible_timing_indices()
         for i in range(indices.size() - 1):
             var rect := get_slot(int(indices[i])).get_rect()

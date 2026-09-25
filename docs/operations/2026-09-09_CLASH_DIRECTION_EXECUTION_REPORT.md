@@ -129,3 +129,17 @@ Godot AI4.2.3 exact session `ten-paces-hidden-moves@e3c0b4f76e16bdac`에서 사�
 교정 영향 검사: full-validation workflow의32native 시나리오 전부 exit0/ERROR0, Windows export의실제50시나리오50PASS, HTML1270view/21572내부연결 PASS. export 작업 자체는 성공했으나 에디터 종료 시22resource/45ObjectDB 정리 경고가 남았고, 제품 실행 검사에서는 오류가 없었다. 새 코드·실제 촬영·Windows PCK를 함께 검증했으며 task-local capture4크기는960×640/1280×720/1280×800/1920×1080이다.
 
 원격 영향 검사에서는 준비용 글꼴이 결과창까지 상속돼 Linux960×640의 긴 행동명과 결과가 겹치는 반례를 발견했다. 새 테마를 준비 조작부에만 적용해 기존 해결 화면의 폰트와 줄바꿈을 유지했다. 기존 card-context 검사는 제거된 세 번째 자식 대신 실제 tooltip 효과를, bridge 검사는 새 승인 원화의 유효한 AtlasTexture 영역과 상대 ID 경로를 확인하도록 갱신했다. 두 검사 및 전체32native 재실행 PASS. 제품 코드50a60ab6에서 Windows50/50 재검증, 실제11화면과726프레임/24fps/30.25초/서로 다른511프레임을 다시 촬영해 source manifest와 HTML에 반영했다. 초기 원격 승인 검사는 PR label 미부착이 원인이며 기존 사용자 승인에 맞춰 정상 label을 적용한 이후 PASS했다.
+
+## 2026-09-25 참조 그대로 구현 · 캐릭터만 교체
+
+앞 절의 가로 재해석 후보는 사용자에게 거절됐다. 최신 지시 “이미지 그대로 구현시키고 캐릭만 맞춰서 바꿔”와5676141a참조, 같은 고해상도18211d8c참조로 범위를 다시 고정했다. 기준 main89cee855 / 작업 시작9c5aed6e / BUILD·REVIEW / 기존 project router·combat UX·Hera live-editor·imagegen·HTML blueprint·runtime validation의 승인을 재사용한다. CURRENT_SOURCE_RELEVANCE_CHECK=REUSED_EVIDENCE: 기존 공식 Control/AtlasTexture 및 같은 준비 화면 소비자 근거를 재사용하며 새 게임 규칙 판단은 없다. 실제 네이티브 Controls·실행 환경·기존 입력 검사를 대조한 결과 FEASIBLE이다.
+
+참조의1086×1448세로 비율, 초상/상태·중앙 거리·관찰·계획/진행·5×2카드·고정 상세·하단 안내 위치를 재현했다. text-free 배경과 세 캐릭터 영역을 실제 이미지 도구로 제작하고, 사용자 제공 참조에서 기초10삽화 영역만 런타임 AtlasTexture로 사용한다. 수치·버튼·선택·판정은 실제 Controls와 기존 데이터가 소유한다. 첫 만남 도겸은 이름·초상·대치 외형을 같은 인물로 연결했다. 새로운 배경/캐릭터/참조사용3자산은 중앙 manifest에 출처·해시·consumer·최종 시각 검수 대기 상태로 등록했다. 기존47삽화와21기존 기록의 불변 해시는 변경하지 않는다. 외부 참고 이미지의 독립 원저작권·출시 권리 완료를 주장하지 않는다.
+
+전체 검토1: 새 후보 전체의 참조 구도·모든 변경 모듈·공유 카드/상세/HUD·미변경 판정/AI/저장/해결 연출·작업 비용/책임을 대조했다. 초기 비율/배경8반례를 RED로 확인했다. 이웃 검객의 칼 조각, 초상 사각 경계, 카드 삽화 영역, 부모 scale을 무시하는 이전 기하 진단, 상세 문구 밀도를 교정했다. 유효 alpha·실제 노드 경계·30기술/도감 소비자·기존32native 결과와 다섯 크기의 실제 화면을 확인했다. 상단 숨은 상대 수치를 임의 생성하지 않는다.
+
+전체 검토2: 전체 수정 후보와 정본·미변경 전투/저장·개인 리뷰·addon·영상/HTML·권리 상태를 다시 대조했다. Godot AI 실제 막기3개 입력→진행→bundle2/next_bundle_ready/placements0/detail_visible=true를 확인하고 무공 탭까지 눌렀다. 이후 결과 안내가 옛 가로 좌표로 덮이는 반례를 발견했다.4viewport RED를 먼저 추가하고 결과 안내의 단일 참조 좌표 consumer로 교정해 GREEN 및 inline 기존 검사 PASS를 확인했다. 옛 원격 검사의 “기초 상세에는 삽화 없음” 기대는 현재 기초 삽화의 정확한 atlas/영역으로 대체해30무공 전환 뒤 남는 삽화가 없음을 검사했다. 전체 검토는 정확히2회이며 이후는 발견 결함의 영향 확인이다.
+
+Python unittest 전체579검사의 첫 실행은577PASS/1FAIL/1ERROR였다. 신규3자산을 이전21불변 기록에 섞은 기대값은 신규 ID3개를 명시적으로 분리하고 기존 hash/count를 그대로 유지한다. ERROR는 실제 화면 촬영 중 아직 resolution이 추가되지 않은 manifest를 읽은 동시 발행 시점이다. 발행 완료 후 영향 검사를 별도로 재실행한다. 전체579재실행이나 사용자 최종 시각 승인으로 확대하지 않는다.
+
+업데이트 Godot AI4.2.3 exact session ten-paces-hidden-moves@e3c0b4f76e16bdac의 실제 게임 창에서 입력·상태·fresh framebuffer를 확인했다. 진단용 eval의 들여쓰기 오류1건으로 중단된run11은 제품 오류와 구분하고run12로 다시 시작했다. 사용자 addon313파일, 원본 사용자 작업/저장/52리뷰는 보호한다. 새 시각 결과는 사용자 final lock 전이므로 PR367은 Draft이며 이 후보의 main 병합·Human/Android/출시는 NOT_RUN이다. 최종 실행본·HTML·원격 체크 결과는 아래에 누적한다.

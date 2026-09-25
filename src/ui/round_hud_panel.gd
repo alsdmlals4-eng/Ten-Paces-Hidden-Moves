@@ -57,6 +57,20 @@ func _refresh() -> void:
 func _layout() -> void:
     if _round_label == null:
         return
+    if bool(get_meta("reference_preparation",false)):
+        _round_label.position = Vector2(0,0)
+        _round_label.size = Vector2(size.x,34)
+        _round_label.add_theme_font_size_override("font_size",28)
+        _bundle_label.position = Vector2(0,35)
+        _bundle_label.size = Vector2(size.x,26)
+        _bundle_label.text = "3 / 3 / 4"
+        _bundle_label.add_theme_font_size_override("font_size",22)
+        _selection_label.hide()
+        _order_label.hide()
+        queue_redraw()
+        return
+    _round_label.add_theme_font_size_override("font_size",17)
+    _bundle_label.add_theme_font_size_override("font_size",12)
     var compact := size.x <= 190.0 or bool(get_meta("ink_preparation", false))
     var width := maxf(1.0, size.x - 16.0)
     _round_label.position = Vector2(8.0, 3.0)
@@ -76,6 +90,11 @@ func _notification(what: int) -> void:
         queue_redraw()
 
 func _draw() -> void:
+    if bool(get_meta("reference_preparation", false)):
+        var current := int(round_data.get("bundle_index",1))
+        for i in range(10):
+            draw_circle(Vector2(40+i*21,73),5,Color("c3a156") if i < [3,6,10][clampi(current-1,0,2)] else Color("66645a"))
+        return
     if bool(get_meta("ink_preparation", false)):
         var points := PackedVector2Array([Vector2(8,3),Vector2(size.x-12,0),Vector2(size.x,12),Vector2(size.x-6,size.y-7),Vector2(24,size.y),Vector2(0,size.y-11)])
         draw_colored_polygon(points, Color("272923"))

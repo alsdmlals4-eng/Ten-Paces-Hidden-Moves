@@ -35,7 +35,9 @@ class ApprovedBlueprintArtTests(unittest.TestCase):
         self.assertEqual({a['id'] for a in central if a['id'] in ink_ids},ink_ids)
         refresh_ids=set(read('docs/visual-assets/candidates/TEN-INK-SCREENS-20260925/replacement-map.json')['added_asset_ids'])
         self.assertEqual({a['id'] for a in central if a['id'] in refresh_ids},refresh_ids)
-        old=[a for a in central if a['id'] not in new_ids | ink_ids | refresh_ids]
+        reference_ids={f'reference_preparation_{name}_20260925' for name in ('reference_painting','standing_characters','reference_details')}
+        self.assertEqual({a['id'] for a in central if a['id'] in reference_ids},reference_ids)
+        old=[a for a in central if a['id'] not in new_ids | ink_ids | refresh_ids | reference_ids]
         digest=hashlib.sha256(json.dumps(old,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest()
         self.assertEqual(digest,manifest['preserved_existing_records_sha256'])
         self.assertEqual(len(old),manifest['preserved_existing_record_count'])

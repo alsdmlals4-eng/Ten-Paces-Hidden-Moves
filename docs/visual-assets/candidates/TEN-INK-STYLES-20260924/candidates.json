@@ -276,8 +276,8 @@
       },
       {
         "file": "clash-v2/runtime-bundles.mp4",
-        "sha256": "d659343bed3f5c8ae088fa2e0970aa53ec0c9eec5b3c5d71ad0eafed866a41dd",
-        "bytes": 18331692
+        "sha256": "c2ff4e0241831ba7ff4406d047ea531d2118527724ecec3ae24afffb033b7171",
+        "bytes": 18344703
       },
       {
         "file": "clash-v2/runtime-contact.png",
@@ -368,9 +368,9 @@
       "capture": "clash-v2/runtime-capture.json",
       "video": "clash-v2/runtime-bundles.mp4",
       "source": "Actual Godot CombatBoardPreview and resolver with fixed committed plans; silent automated capture",
-      "frames": 726,
+      "frames": 723,
       "fps": 24,
-      "duration_seconds": 30.25,
+      "duration_seconds": 30.125,
       "preserves_existing_preparation": true,
       "rules_modified": false,
       "save_modified": false,

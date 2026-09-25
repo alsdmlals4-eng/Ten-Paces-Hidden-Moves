@@ -16,8 +16,17 @@ func run() -> void:
         board._layout_board()
         await process_frame
         var dock = board.action_selection_dock
-        check(board.top_hud.size.y <= 116, "Compact top status at %s" % viewport)
-        check(board.combat_progress_button.get_rect().end.x > board.size.x * 0.8, "Progress at the right end of the plan strip")
+        var reference_rect: Rect2 = board.get_meta("reference_preparation_rect", Rect2())
+        check(reference_rect.has_area(), "Reference painting is the active preparation surface")
+        if reference_rect.has_area():
+            check(absf(reference_rect.size.x / reference_rect.size.y - 1086.0 / 1448.0) < 0.001, "Preserve the supplied portrait proportions")
+            check(Rect2(Vector2.ZERO, Vector2(viewport)).encloses(reference_rect), "Reference composition fits inside each viewport")
+            var progress_rect: Rect2 = board.combat_progress_button.get_global_rect()
+            check(progress_rect.position.x >= reference_rect.position.x + reference_rect.size.x * 0.79, "Progress follows reference paper strip")
+            board._settle_inline_result_row(24, 4)
+            check(reference_rect.encloses(board.inline_result_label.get_global_rect()), "Result refresh remains inside the reference paper after a bundle")
+        check(board.get_node_or_null("ReferencePreparationPainting") != null, "Native UI has a text-free reference painting")
+
         check(dock.action_detail_panel.visible, "Selected action detail always occupies the right column")
         check(board.observation_reveal_panel.get_global_rect().end.y <= board.action_timing_panel.get_global_rect().position.y, "Observation never covers planning or execution")
         var buttons = dock.basic_panel.buttons

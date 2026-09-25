@@ -8,7 +8,7 @@ func capture() -> void:
     var board = load("res://scenes/combat/combat_board_preview.tscn").instantiate()
     board.theme = load("res://src/ui/ink/ink_screen_art.gd").theme()
     root.add_child(board)
-    for resolution in [Vector2i(1280,800), Vector2i(1280,720), Vector2i(960,640), Vector2i(1920,1080)]:
+    for resolution in [Vector2i(1086,1448), Vector2i(1280,800), Vector2i(1280,720), Vector2i(960,640), Vector2i(1920,1080)]:
         root.size = resolution
         await create_timer(0.35).timeout
         board._layout_board()

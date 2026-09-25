@@ -43,7 +43,10 @@ func capture() -> void:
 	shell.advance_noncombat()
 	await shot("briefing")
 	shell.advance_noncombat()
+	root.content_scale_size = Vector2i.ZERO
+	root.size = Vector2i(1086,1448)
 	await shot("preparation")
+	root.size = Vector2i(1280,800)
 	shell.complete_combat_for_runtime({"outcome":"win","player_resources":{"health":[12,40],"stamina":[2,5],"internal":[1,4]}})
 	shell.complete_review_for_runtime()
 	await shot("result","terminal_UI_fixture_not_a_won_duel")

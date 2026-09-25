@@ -148,6 +148,9 @@ func _layout() -> void:
     if _name_label == null:
         return
 
+    if bool(get_meta("reference_preparation", false)):
+        _layout_reference_preparation()
+        return
     if bool(get_meta("ink_preparation", false)):
         _layout_ink_preparation()
         return
@@ -195,6 +198,9 @@ func _notification(what: int) -> void:
         queue_redraw()
 
 func _draw() -> void:
+    if bool(get_meta("reference_preparation", false)):
+        _draw_reference_preparation()
+        return
     if bool(get_meta("ink_preparation", false)):
         _draw_ink_preparation()
         return
@@ -321,3 +327,47 @@ func _draw_ink_preparation() -> void:
             draw_rect(rect, colors[i])
     for i in range(momentum.y):
         draw_circle(Vector2(x + 7 + i * 12, 84), 3, Color("a78947") if i < momentum.x else Color("77715f"))
+
+func _layout_reference_preparation() -> void:
+    var skin = preload("res://src/ui/ink/reference_preparation_skin.gd")
+    var left := side == "player"
+    var x := 139.0 if left else 2.0
+    _portrait.show()
+    _portrait.texture = skin.character(side, str(combatant.get("candidate_id","")), true)
+    _portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+    _portrait.position = Vector2(-22 if left else 208, -4)
+    _portrait.size = Vector2(161,213)
+    if _portrait.material == null:
+        _portrait.material = skin.portrait_material()
+    _name_label.position = Vector2(x,21)
+    _name_label.size = Vector2(197,35)
+    _name_label.add_theme_font_size_override("font_size",27)
+    _epithet_label.hide()
+    var labels := [_health_label, _stamina_label, _internal_label]
+    for i in range(3):
+        labels[i].position = Vector2(x,61 + i * 27)
+        labels[i].size = Vector2(193,23)
+        labels[i].add_theme_font_size_override("font_size",20)
+    for label in [_name_label,_health_label,_stamina_label,_internal_label]:
+        label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT if left else HORIZONTAL_ALIGNMENT_RIGHT
+        label.add_theme_color_override("font_color",Color("25251f"))
+        label.add_theme_color_override("font_shadow_color",Color.TRANSPARENT)
+    for i in range(_status_labels.size()):
+        _status_labels[i].position = Vector2(x + i*47,155)
+        _status_labels[i].size = Vector2(44,24)
+        _status_labels[i].add_theme_font_size_override("font_size",18)
+        _status_labels[i].add_theme_color_override("font_color",Color("35352b"))
+        _status_labels[i].add_theme_color_override("font_shadow_color",Color.TRANSPARENT)
+    queue_redraw()
+
+func _draw_reference_preparation() -> void:
+    var x := 139.0 if side == "player" else 2.0
+    for i in range(3):
+        var rect := Rect2(x,84+i*27,191,5)
+        draw_rect(rect,Color("898579"))
+        var ratio := get_visible_resource_ratio(["health","stamina","internal"][i])
+        if ratio >= 0:
+            rect.size.x *= ratio
+            draw_rect(rect,[HEALTH_COLOR,STAMINA_COLOR,INTERNAL_COLOR][i])
+    for i in range(momentum.y):
+        draw_circle(Vector2(x+6+i*16,148),4,Color("987c42") if i < momentum.x else Color("7a7464"))

@@ -31,7 +31,8 @@ func _ready() -> void:
             label.add_theme_color_override("font_color", Color("292c23"))
         source_label.visible = false
         action_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-        action_label.add_theme_font_size_override("font_size", 17)
+        action_label.add_theme_font_size_override("font_size", 24)
+        stages_label.add_theme_font_size_override("font_size",18)
     focus_mode = Control.FOCUS_ALL
     gui_input.connect(_on_gui_input)
     mouse_exited.connect(func(): _drag_emitted = false)
@@ -158,7 +159,11 @@ func _draw() -> void:
         border = Color("b85a4a")
     elif not bool(snapshot.get("target_ready", true)):
         border = Color("e6a84f")
-    draw_rect(Rect2(Vector2.ZERO, size), Color("d9ccad") if bool(get_meta("ink_preparation", false)) else PANEL, true)
+    if bool(get_meta("ink_preparation",false)):
+        var style = preload("res://src/ui/ink/reference_preparation_skin.gd").paper(Rect2(388,686,232,54))
+        draw_style_box(style,Rect2(Vector2.ZERO,size))
+    else:
+        draw_rect(Rect2(Vector2.ZERO,size),PANEL,true)
     draw_rect(Rect2(Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), border, false, 2.0)
     if has_focus():
         draw_rect(Rect2(Vector2(4.0, 4.0), size - Vector2(8.0, 8.0)), Color.WHITE, false, 2.0)

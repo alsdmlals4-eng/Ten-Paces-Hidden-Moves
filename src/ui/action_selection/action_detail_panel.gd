@@ -205,6 +205,8 @@ func _apply_content() -> void:
     elif detail_mode == "manual":
         _add_approved_illustration(APPROVED_ART.manual_illustration(
             str(manual_definition.get("manual_id", "")), int(manual_definition.get("mastery", 0))))
+    if bool(get_meta("reference_preparation",false)):
+        _style_reference_content()
     _refresh_mode_label()
     set_meta("detail_mode", detail_mode)
     set_meta("pinned", pinned)
@@ -238,6 +240,22 @@ func _apply_action() -> void:
     var effect_text := str(detail.get("effect_text", definition.get("effect_text", "")))
     _primary_effect = _compact_effect_text(definition, effect_text)
 
+    if bool(get_meta("reference_preparation",false)):
+        _add_row("행동 종류",str(definition.get("category_label","행동")))
+        _add_row("사거리",str(definition.get("range_text","-")))
+        _add_row("대상",str(detail.get("target",definition.get("target",""))))
+        _add_separator()
+        _add_section("효과",_primary_effect)
+        var reference_condition := str(detail.get("condition",definition.get("condition","")))
+        if not reference_condition.is_empty() and reference_condition != "없음":
+            _add_section("조건",reference_condition)
+        var reference_tags := _string_list(definition.get("tags",[]))
+        if not reference_tags.is_empty():
+            _add_section("특성"," · ".join(reference_tags))
+        _add_separator()
+        _add_section("",effect_text,true)
+        _add_row("소모","기력 %d · 내력 %d" % [stamina,internal])
+        return
     # The first viewport of this small right panel is the decision contract:
     # title, payment, result.  Provenance and advanced tactical facts remain
     # below it for scroll/keyboard inspection instead of invading the card grid.
@@ -464,6 +482,10 @@ func _contract_style() -> StyleBoxFlat:
     return style
 
 func _detail_illustration() -> Texture2D:
+    if bool(get_meta("reference_preparation",false)):
+        var reference_art = preload("res://src/ui/ink/reference_preparation_skin.gd").basic_art(str(definition.get("name","")))
+        if reference_art != null:
+            return reference_art
     var texture := APPROVED_ART.action_illustration(definition)
     if texture != null:
         return texture
@@ -476,3 +498,32 @@ func _detail_illustration() -> Texture2D:
         atlas.region = Rect2(region[0],region[1],region[2],region[3])
         return atlas
     return null
+
+func enable_reference_layout() -> void:
+    set_meta("ink_preparation",true)
+    set_meta("reference_preparation",true)
+    custom_minimum_size = Vector2.ZERO
+    var skin = preload("res://src/ui/ink/reference_preparation_skin.gd")
+    add_theme_stylebox_override("panel",skin.clear_style(9))
+    var header = get_node("ActionDetailColumn/ActionDetailHeaderSurface")
+    var lane = get_node("ActionDetailColumn/ActionDetailContentLane")
+    header.add_theme_stylebox_override("panel",skin.clear_style())
+    lane.add_theme_stylebox_override("panel",skin.clear_style())
+    _title.add_theme_font_size_override("font_size",30)
+    _title.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+    _source.add_theme_font_size_override("font_size",20)
+    _content.add_theme_constant_override("separation",10)
+    _style_reference_content()
+
+func _style_reference_content() -> void:
+    _source.text = "%d수" % int(definition.get("action_slots",1)) if detail_mode == "action" else "무공"
+    for child in _content.get_children():
+        if child is TextureRect:
+            child.custom_minimum_size.y = 132
+        elif child is Label:
+            child.add_theme_font_size_override("font_size",19)
+        elif child is HBoxContainer:
+            for item in child.get_children():
+                if item is Label:
+                    item.add_theme_font_size_override("font_size",18)
+            child.get_child(0).custom_minimum_size.x = 78

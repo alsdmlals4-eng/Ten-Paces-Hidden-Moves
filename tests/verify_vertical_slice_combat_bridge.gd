@@ -66,10 +66,10 @@ func _run() -> void:
     _expect_eq(str(enemy.get("epithet", "")), str(current_opponent.get("epithet", current_opponent.get("martial_identity", ""))), "Combat status must show the locked opponent martial identity instead of the default HUD epithet.")
     var portrait := bridge.top_hud.enemy_panel.get_node_or_null("CombatantInkPortrait") as TextureRect
     if str(enemy.get("candidate_id", "")) == "slot1_dogyeom":
-        _expect_true(_portrait_art_path(portrait) == "res://assets/combat/ink_wuxia/slot1_dogyeom/enemy-0.png", "Dogyeom preparation portrait must crop the approved current opponent art.")
+        _expect_true(_portrait_art_path(portrait) == "res://assets/ui/ink_preparation/standing_characters.png" and (portrait.texture as AtlasTexture).region.position.x >= 1085, "Dogyeom preparation portrait must crop the approved current opponent art.")
         _expect_true(bridge.enemy_character != null and str(bridge.enemy_character.get_meta("character_art_path", "")) == "res://assets/combat/ink_wuxia/slot1_dogyeom/enemy-0.png", "Dogyeom runtime bridge must route the approved frontal combat battler.")
     else:
-        _expect_true(_portrait_art_path(portrait) == "res://assets/combat/ink_wuxia/enemy-0.png", "Non-Dogyeom preparation portrait must crop the approved generic enemy art.")
+        _expect_true(_portrait_art_path(portrait) == "res://assets/ui/ink_preparation/standing_characters.png" and (portrait.texture as AtlasTexture).region.position.x < 1085, "Non-Dogyeom preparation portrait must crop the approved generic enemy art.")
     player["health"] = [10, 30]
     player["stamina"] = [2, 5]
     player["internal"] = [1, 4]

@@ -24,18 +24,18 @@ func _verify_viewport(viewport_size: Vector2) -> void:
         await process_frame
 
     var bounds := Rect2(Vector2.ZERO, viewport_size)
-    _require_inside("top HUD", Rect2(board.top_hud.position, board.top_hud.size), bounds, viewport_size)
+    _require_inside("top HUD", _relative_bounds(board, board.top_hud), bounds, viewport_size)
     _require_inside("player HUD", _hud_rect(board, board.top_hud.player_panel), bounds, viewport_size)
     _require_inside("player momentum", _hud_rect(board, board.top_hud.player_momentum), bounds, viewport_size)
     _require_inside("round HUD", _hud_rect(board, board.top_hud.round_panel), bounds, viewport_size)
     _require_inside("enemy momentum", _hud_rect(board, board.top_hud.enemy_momentum), bounds, viewport_size)
     _require_inside("enemy HUD", _hud_rect(board, board.top_hud.enemy_panel), bounds, viewport_size)
     _require_inside("ultimate list", Rect2(board.ultimate_list_panel.position, board.ultimate_list_panel.size), bounds, viewport_size)
-    _require_inside("action timing", Rect2(board.action_timing_panel.position, board.action_timing_panel.size), bounds, viewport_size)
-    _require_inside("progress", Rect2(board.combat_progress_button.position, board.combat_progress_button.size), bounds, viewport_size)
+    _require_inside("action timing", _relative_bounds(board, board.action_timing_panel), bounds, viewport_size)
+    _require_inside("progress", _relative_bounds(board, board.combat_progress_button), bounds, viewport_size)
     _require_inside("card tray", Rect2(board.basic_card_tray.position, board.basic_card_tray.size), bounds, viewport_size)
 
-    var timing_rect := Rect2(board.action_timing_panel.position, board.action_timing_panel.size)
+    var timing_rect := _relative_bounds(board, board.action_timing_panel)
     var tray_rect := Rect2(board.basic_card_tray.position, board.basic_card_tray.size)
     if timing_rect.end.y > tray_rect.position.y:
         failures.append("Action timing must remain above the card tray at %s." % str(viewport_size))
@@ -114,7 +114,12 @@ func _expect(condition: bool, message: String) -> void:
         failures.append(message)
 
 func _hud_rect(board: CombatBoardPreview, child: Control) -> Rect2:
-    return Rect2(board.top_hud.position + child.position, child.size)
+    return _relative_bounds(board, child)
+
+func _relative_bounds(board: Control, child: Control) -> Rect2:
+    var rect := _global_bounds(child)
+    rect.position -= board.global_position
+    return rect
 
 func _require_inside(label: String, rect: Rect2, bounds: Rect2, viewport_size: Vector2) -> void:
     if rect.position.x < -0.5 or rect.position.y < -0.5 or rect.end.x > bounds.end.x + 0.5 or rect.end.y > bounds.end.y + 0.5:

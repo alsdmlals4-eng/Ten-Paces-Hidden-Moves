@@ -341,6 +341,7 @@ func _apply_state_derived_product_layout() -> void:
     if not size.is_finite() or size.x <= 0.0 or size.y <= 0.0:
         return
     var expanded := _uses_expanded_execution_layout()
+    PREPARATION_LAYOUT.set_active(self, not expanded)
     top_hud.position = Vector2(maxf(18.0, size.x * 0.025), 8)
     top_hud.size = Vector2(size.x - top_hud.position.x * 2, 106)
     top_hud._layout()
@@ -387,6 +388,8 @@ func _apply_state_derived_product_layout() -> void:
     _has_applied_active_duel_rect = true
     set_meta("duel_stage_surface_rect", active_rect)
     set_meta("locked_duel_stage_expanded", expanded)
+    if not expanded:
+        PREPARATION_LAYOUT.layout(self)
 
 func _layout_locked_plan_execute_prompt() -> void:
     if not _plan_locked or not is_instance_valid(combat_progress_button):
@@ -426,6 +429,10 @@ func _ink_planning_top() -> float:
 
 func _settle_inline_result_row(_row_height: float, _row_gap: float) -> void:
     if not is_instance_valid(inline_result_label):
+        return
+    if not _uses_expanded_execution_layout():
+        PREPARATION_LAYOUT.layout_inline_result(self)
+        set_meta("inline_result_row_bounded", true)
         return
     # The previous result stays above the plan. The new right-hand execute
     # button occupies the lane used by the old layout's result label.
@@ -655,3 +662,21 @@ func _presentation_summary_for_event(event: Dictionary, fallback: String) -> Str
     if str(event.get("action_stage", "execution")) == "preparation":
         return "[전조] %s" % str(event.get("card_name", "행동"))
     return super._presentation_summary_for_event(event, fallback)
+
+func get_layout_snapshot() -> Dictionary:
+    var value: Dictionary = super.get_layout_snapshot()
+    if is_instance_valid(action_selection_dock) and not _uses_expanded_execution_layout():
+        var origin := global_position
+        var timing := action_timing_panel.get_global_rect()
+        var tray := action_selection_dock.get_global_rect()
+        var progress := combat_progress_button.get_global_rect()
+        value["action_timing_top"] = timing.position.y - origin.y
+        value["action_timing_bottom"] = timing.end.y - origin.y
+        value["basic_card_tray_top"] = tray.position.y - origin.y
+        value["basic_card_tray_bottom"] = tray.end.y - origin.y
+        value["progress_button_left"] = progress.position.x - origin.x
+        value["progress_button_right"] = progress.end.x - origin.x
+        value["progress_button_top"] = progress.position.y - origin.y
+        value["progress_button_bottom"] = progress.end.y - origin.y
+        value["reference_preparation_rect"] = get_meta("reference_preparation_rect",Rect2())
+    return value

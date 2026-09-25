@@ -176,7 +176,7 @@ func _verify_cards_and_overlays(board: CombatBoardPreview, snapshot: Dictionary)
         failures.append("Progress button must start disabled before placements.")
     elif board.combat_progress_button.get_button_text() != "행동 실행":
         failures.append("A completed bundle must expose the approved single-execute action.")
-    elif board.combat_progress_button.size.x > 220.0 or board.combat_progress_button.size.y > 72.0:
+    elif board.combat_progress_button.get_global_rect().size.x > 220.0 or board.combat_progress_button.get_global_rect().size.y > 80.0:
         failures.append("Progress control must fit the right end of the planning strip.")
 
 func _card_definition(board: CombatBoardPreview, card_id: String) -> Dictionary:

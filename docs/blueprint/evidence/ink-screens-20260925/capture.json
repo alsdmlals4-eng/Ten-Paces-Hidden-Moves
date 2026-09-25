@@ -3,7 +3,7 @@
   "fixture_seed": 1,
   "opponent": "slot1_dogyeom",
   "project": "C:/Users/user/.codex/worktrees/ink-preparation-layout-20260925/Ten-Paces-Hidden-Moves/",
-  "save_isolation": "res://output/ink-screen-validation/fixture-save-23932.json",
+  "save_isolation": "res://output/ink-screen-validation/fixture-save-15812.json",
   "shots": [
     {
       "key": "main",
@@ -58,17 +58,17 @@
     {
       "key": "preparation",
       "path": "res://docs/blueprint/evidence/ink-screens-20260925/preparation.png",
-      "sha256": "73ac484f42c4e99fb2f0c5bd07138ce7c9b8839b540ddb115423f93989cc07c1",
+      "sha256": "569b805521ec8ea4c34782303844263b9d50524cbf6f2c7de99d90b4f2a75605",
       "size": [
-        1280,
-        800
+        1086,
+        1448
       ],
       "source": "ordinary_screen_navigation"
     },
     {
       "key": "result",
       "path": "res://docs/blueprint/evidence/ink-screens-20260925/result.png",
-      "sha256": "015f468d6d675c1afe3eda4315ffaca2621df07a6fe3014c6ecd95793e018b68",
+      "sha256": "9a27ef11a1584e4e0e1e9314cf106738ac4822aae3e8ec23e7842929a7ca981c",
       "size": [
         1280,
         800
@@ -78,7 +78,7 @@
     {
       "key": "journey",
       "path": "res://docs/blueprint/evidence/ink-screens-20260925/journey.png",
-      "sha256": "323c4547b7148b2e65ec0921db9c3077a74603dc4318bd4065229e942beb30e4",
+      "sha256": "a716cf25ee38ba10ee650d1169603eaefac946dfd8442f45295f1a304b57f172",
       "size": [
         1280,
         800
@@ -88,7 +88,7 @@
     {
       "key": "rest",
       "path": "res://docs/blueprint/evidence/ink-screens-20260925/rest.png",
-      "sha256": "71621eca9f9914e4c55e112cd87be4fcdca2bfe91618df121c58bacf8a3a898a",
+      "sha256": "851b51c1e4f40996fda2ab5e26fefeafb0c50ddfe2db136f01469253c6f171cf",
       "size": [
         1280,
         800

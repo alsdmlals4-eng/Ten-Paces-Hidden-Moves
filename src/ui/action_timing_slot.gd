@@ -301,6 +301,10 @@ func _layout() -> void:
     _placeholder_label.size = Vector2(width, maxf(20.0, size.y - 45.0))
     _status_label.position = Vector2(4.0, maxf(39.0, size.y - 22.0))
     _status_label.size = Vector2(width, 18.0)
+    if bool(get_meta("reference_preparation",false)):
+        _timing_label.add_theme_font_size_override("font_size",19)
+        _placeholder_label.add_theme_font_size_override("font_size",22)
+        _status_label.add_theme_font_size_override("font_size",17)
     if bool(get_meta("ink_preparation", false)):
         _frame.hide()
         for label in [_timing_label, _placeholder_label, _status_label]:
@@ -314,7 +318,8 @@ func _notification(what: int) -> void:
 
 func _draw() -> void:
     if bool(get_meta("ink_preparation", false)):
-        draw_rect(Rect2(Vector2.ZERO, size), Color("e9dfc9"))
+        if not bool(get_meta("reference_preparation",false)):
+            draw_rect(Rect2(Vector2.ZERO, size), Color("e9dfc9"))
         draw_rect(Rect2(Vector2.ONE, size-Vector2(2,2)), Color("a59b81"), false, 1)
         if has_focus():
             draw_rect(Rect2(Vector2(3,3), size-Vector2(6,6)), Color("635027"), false, 2)
