@@ -68,6 +68,27 @@ static func compatible_candidate_identity(candidates: Array) -> Array:
             candidate["portrait"] = "output/blueprint-candidates/opponent-baekmujin-v1.png"
     return result
 
+static func compatible_card_identity(cards: Dictionary) -> Dictionary:
+    # The 2026-09-25 approved disposal replaces these two badges with text.
+    # Older saves hashed the art metadata too. Reconstruct only those known
+    # historical bytes in the fingerprint, never in a live card or texture load.
+    var regions := {
+        "basic_move": [136,12,112,112], "basic_footwork": [136,12,112,112],
+        "basic_guard": [8,148,112,112], "basic_evade": [8,148,112,112],
+        "basic_quick_attack": [264,12,112,112], "basic_heavy_attack": [264,12,112,112],
+        "basic_observe": [136,148,112,112], "basic_meditate": [136,148,112,112],
+        "basic_stance": [264,148,112,112], "basic_palm": [264,12,112,112]
+    }
+    var result := cards.duplicate(true)
+    for card_id in regions:
+        if not result.has(card_id): continue
+        var card: Dictionary = result[card_id]
+        if card.get("source_badge") == {}:
+            card["source_badge"] = {"atlas":"res://assets/ui/cards/card_badge_atlas.svg", "region":[8,5,112,126]}
+        if card.get("category_badge") == {}:
+            card["category_badge"] = {"atlas":"res://assets/ui/cards/card_badge_atlas.svg", "region":regions[card_id]}
+    return result
+
 static func error(status: String, detail: String) -> Dictionary:
     return {"ok": false, "status": status, "error": detail}
 
@@ -105,7 +126,7 @@ func content_identity() -> String:
             if not binding.get("valid", false): return ""
             bindings.append(binding)
         # Domain-owned catalogs supply compatibility input; the codec never opens save files.
-        _content_identity = digest({"contract": SEMANTIC_CONTRACT_VERSION, "manuals": manuals.manuals, "opponents": opponents.get_all_candidates(), "runtime_bindings": bindings, "constraints": constraints.get_options(), "constraint_policy": constraints.get_selection_policy(), "resolution_rules": engine.rules, "basic_and_ultimate_cards": engine.cards_by_id, "route_options": route_script.JIANGHU_ALTERNATIVES, "growth_seeds": route_script.GROWTH_SEEDS, "next_star_costs": progression_script.NEXT_STAR_COSTS, "default_resources": progression_script.DEFAULT_RESOURCES})
+        _content_identity = digest({"contract": SEMANTIC_CONTRACT_VERSION, "manuals": manuals.manuals, "opponents": opponents.get_all_candidates(), "runtime_bindings": bindings, "constraints": constraints.get_options(), "constraint_policy": constraints.get_selection_policy(), "resolution_rules": engine.rules, "basic_and_ultimate_cards": compatible_card_identity(engine.cards_by_id), "route_options": route_script.JIANGHU_ALTERNATIVES, "growth_seeds": route_script.GROWTH_SEEDS, "next_star_costs": progression_script.NEXT_STAR_COSTS, "default_resources": progression_script.DEFAULT_RESOURCES})
     return _content_identity
 
 func validate_payload(run_state, combat_checkpoint = {}) -> Dictionary:

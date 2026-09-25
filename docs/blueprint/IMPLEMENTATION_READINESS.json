@@ -2149,6 +2149,8 @@
       "combat_board_contract": "PASS",
       "godot_step0": "PASS",
       "godot_preparation_reference": "PASS 0 failures",
+      "canonical_reference_freshness": "PASS after retired SVG consumer update",
+      "existing_save_compatibility": "EVENT_CHECKS and RUN_SAVE_STORE PASS; known retired badge metadata aliases only",
       "rendered_views": 1280,
       "checked_local_links": 18737,
       "screen_redesign": "NOT_IMPLEMENTED; user approval pending",

@@ -65,6 +65,7 @@
     "optimizing-ai-model-and-prompt-costs"
   ],
   "forbidden_active_paths": [
+    "assets/reference/step_02_character_scale_and_tile_placement.svg",
     "[기획서]/00_프로젝트_허브/PROJECT_SKILL_MAP.md",
     "[기획서]/00_프로젝트_허브/SKILL_MAP_PUBLICATION_MANIFEST.json",
     "skills/foundation/project-operations-and-handoff/SKILL.md",
@@ -105,7 +106,7 @@
     "tests/verify_combat_board.gd",
     "tests/verify_response_rules.gd",
     "tools/verify_and_commit_combat_foundation.ps1",
-    "assets/reference/step_02_character_scale_and_tile_placement.svg",
+    "docs/blueprint/IMPLEMENTATION_READINESS.json",
     "skills/game-design/ten-paces-game-design/SKILL.md",
     "skills/engineering/combat-implementation-handoff/SKILL.md",
     "skills/ux-ui-accessibility/combat-ux-and-accessibility/SKILL.md",
@@ -339,10 +340,9 @@
       "4→5",
       "7→6"
     ],
-    "assets/reference/step_02_character_scale_and_tile_placement.svg": [
-      "플레이어 4번 / 상대 7번",
-      "플레이어 · 4번 칸",
-      "상대 · 7번 칸"
+    "docs/blueprint/IMPLEMENTATION_READINESS.json": [
+      "assets/reference/step_02_character_scale_and_tile_placement.svg",
+      "DELETED_BY_USER_REQUEST"
     ],
     "skills/game-design/ten-paces-game-design/SKILL.md": [
       "WHY",

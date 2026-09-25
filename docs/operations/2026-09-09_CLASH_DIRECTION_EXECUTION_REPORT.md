@@ -178,3 +178,5 @@ f0901652 원격 검사32개는 PASS했다. 제품 job은 원래15분 제한으�
 검증: 폐기 회귀4개 RED→GREEN(누락파일/영상poster/후보번호), HTML37검사, 자산/기획 관련12검사 PASS; 카드·전투보드 계약 PASS. Godot4.7.1 STEP0_GODOT_VERIFY_OK, PREPARATION_REFERENCE PASS/0failures. HTML112설명·기존412번호,1280뷰/18737로컬연결 검사 PASS. 일반 이미지 목록은 폐기 항목 제외, 별도 폐기 필터/개별번호로 코멘트 이력 확인 가능. 로컬 산출/검증은 output/blueprint-disposal-*.json·output/disposal-*.log. 일괄 삭제 자동 검토가 blocked by policy로 거부한 최초 시도는 아무 파일도 변경하지 않았고, 추적 파일/정확한 해시의 삭제대기 파일/작업 폴더 안 파생본으로 나눠 정상 처리했다. 사용자 원본 작업 폴더, addon 원본13파일, shared review 파일은 변경하지 않았다.
 
 기존 준비 화면 최종 이미지의 사용자 검수와 PR367 Draft 이유는 미해소다. 새 Windows 배포본·Android·Human·병합은 이번 폐기 작업의 검증으로 주장하지 않는다. 다음 화면 개편 및 프레임 판정/AI/저장 전환은 구체 계획 제시 후 사용자 구현 승인 대기다.
+
+738ef4bc 원격 검사에서 발견한 후속 결함2건: freshness 설정이 폐기130번 SVG를 필수 파일로 요구했고, 저장 내용 해시에 포함된 배지20필드 변경으로 schema5 기존 저장이 거절됐다. 삭제 SVG의 현행 consumer를 폐기 원장/파일 부재 검사로 옮기고, 저장 해시 계산에만 알려진10기초 행동의 배지 필드를 정확한 과거 값으로 대응시켰다. 런타임 카드와 삭제 파일은 복원하지 않는다. 새 회귀 RED 뒤 기존 schema5 고정 해시와 pending/applied 저장 읽기, 비용 변경·필드 누락·미등록 배지 변경의 거절을 GREEN으로 확인했다. Godot EVENT_CHECKS 및 RUN_SAVE_STORE PASS/0failures, canonical freshness와 영향 계약9종 PASS. 게임 규칙과 저장 schema는 그대로이며 프레임 전환 구현은 포함하지 않는다.

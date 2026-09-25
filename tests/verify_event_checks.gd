@@ -64,6 +64,22 @@ func run_tests() -> void:
     var changed_rules := art_candidate.duplicate(true)
     changed_rules.signature_manual_id = "different_manual"
     check(legacy.digest(identity_candidate) != legacy.digest(legacy.compatible_candidate_identity([changed_rules])), "Art compatibility must still reject changed gameplay content")
+    check(legacy.has_method("compatible_card_identity"), "Retired card badges need save-only identity compatibility")
+    if legacy.has_method("compatible_card_identity"):
+        var card_engine = load("res://src/combat/combat_resolution_engine.gd").new()
+        var live_cards: Dictionary = card_engine.cards_by_id
+        var identity_cards: Dictionary = legacy.compatible_card_identity(live_cards)
+        check(live_cards.basic_guard.source_badge == {} and live_cards.basic_guard.category_badge == {}, "Save compatibility must not restore deleted art references in live cards")
+        check(identity_cards.basic_guard.category_badge.get("region") == [8,148,112,112], "Known retired badge keeps its historical fingerprint")
+        var changed_cards := live_cards.duplicate(true)
+        changed_cards.basic_quick_attack.stamina_cost += 1
+        check(legacy.digest(identity_cards) != legacy.digest(legacy.compatible_card_identity(changed_cards)), "Badge compatibility must still reject changed gameplay costs")
+        changed_cards = live_cards.duplicate(true)
+        changed_cards.basic_guard.erase("source_badge")
+        check(legacy.digest(identity_cards) != legacy.digest(legacy.compatible_card_identity(changed_cards)), "Missing fields are not authorized badge retirement aliases")
+        changed_cards = live_cards.duplicate(true)
+        changed_cards.basic_guard.source_badge = {"atlas":"unexpected.png"}
+        check(legacy.digest(identity_cards) != legacy.digest(legacy.compatible_card_identity(changed_cards)), "Unrecognized badge changes must not be silently accepted")
     check(legacy.content_identity_for_schema(5) == "5363363676e6c1e66ac36bb4725dea1b2918c6f35744c50e453999d61e442884", "Schema5 content identity remains byte-compatible")
     for boundary in ["pending","applied"]:
         var decoded: Dictionary = legacy.decode(FileAccess.get_file_as_string("res://tests/fixtures/giyun_v1/"+boundary+".json"))

@@ -25,6 +25,7 @@
     "assets/ui/ink_preparation/standing_characters.png.import",
     "data/cards/basic_cards.json",
     "src/combat/combat_board_preview_auto.gd",
+    "src/run/run_checkpoint_codec.gd",
     "src/ui/action_selection/action_choice_card.gd",
     "src/ui/action_selection/action_detail_panel.gd",
     "src/ui/action_selection/action_selection_dock.gd",
@@ -45,5 +46,5 @@
   ],
   "approval_source": "2026-09-25 explicit user correction: 이미지 그대로 구현시키고 캐릭만 맞춰서 바꿔. Exact supplied preparation composition and textures, game character replacement, existing implementation/runtime/HTML approval reused. 2026-09-25 user: html에서 폐기 요청 누른것들 확인해서 폐기해; tool icons 13 explicitly HTML-only exclusion with internal files retained.",
   "approval_time": "2026-09-25T10:16:24.037954+09:00",
-  "scope_summary": "Reference-faithful 1086x1448 preparation painting with native interactive controls, proportional fit, game character standing/portrait replacement. Game domain/AI/save/resolution unchanged. New generated art remains final-visual-review pending. Requested media disposal only; remove legacy badge/cost atlas dependencies with equivalent text. New frame-timeline combat and four-screen redesign are planning only, not implementation approval."
+  "scope_summary": "Reference-faithful 1086x1448 preparation painting with native interactive controls, proportional fit, game character standing/portrait replacement. Game rules/AI/save schema/resolution unchanged. New generated art remains final-visual-review pending. Requested media disposal only; remove legacy badge/cost atlas dependencies with equivalent text and preserve existing save fingerprints using narrowly scoped badge metadata aliases. New frame-timeline combat and four-screen redesign are planning only, not implementation approval."
 }
