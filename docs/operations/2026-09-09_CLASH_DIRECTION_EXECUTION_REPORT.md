@@ -125,3 +125,5 @@
 Godot AI4.2.3 exact session `ten-paces-hidden-moves@e3c0b4f76e16bdac`에서 사용자 addon313파일을 해시로 보존했다. 별도 저장 fixture에서 실제 마우스 막기3개→키보드 실행→`next_bundle_ready/bundle2/placements0/detail_visible=true`와 결과 문구를 확인했다. run9 LIVE/current_run_errors=[] 및 fresh game framebuffer를 확인했다. 앞선 두 읽기 eval의 잘못된 속성 접근은 제품 오류와 분리하고 종료/재실행했다. 원본 플레이 저장과 코멘트에는 쓰지 않았다.
 
 전체 Python603검사의 최초 실행은601PASS/2FAIL이었다. 하나는 옛 상단 고정 card anchor 검사로 새 하단 anchor와 native 비중첩 검사에 맞춰 교정했고, 다른 하나는 화면 재촬영 중 미완성 capture manifest를 동시에 읽은 경우였다. publish 완료 후 해당11검사 전부 PASS했다. 실제732프레임/30.5초 영상과11화면을 현 소스 해시로 다시 연결했다. 자동/Windows/HTML/PR 최종 결과는 아래에 누적하며 사용자 시각 검수·Android·출시는 NOT_RUN이다.
+
+교정 영향 검사: full-validation workflow의32native 시나리오 전부 exit0/ERROR0, Windows export의실제50시나리오50PASS, HTML1270view/21572내부연결 PASS. export 작업 자체는 성공했으나 에디터 종료 시22resource/45ObjectDB 정리 경고가 남았고, 제품 실행 검사에서는 오류가 없었다. 새 코드·실제 촬영·Windows PCK를 함께 검증했으며 task-local capture4크기는960×640/1280×720/1280×800/1920×1080이다.
