@@ -19,10 +19,12 @@ static func configure(board) -> void:
     var font := SystemFont.new()
     font.font_names = PackedStringArray(["Malgun Gothic", "Noto Sans CJK KR", "sans-serif"])
     # A local Control override does not propagate to the child card labels.
-    # Scope the readable body font to this board, preserving the paper styles.
+    # Scope the readable body font to preparation controls. Resolution keeps its
+    # original theme and font metrics, including long wrapped result callouts.
     var preparation_theme := preload("res://src/ui/ink/ink_screen_art.gd").theme()
     preparation_theme.default_font = font
-    board.theme = preparation_theme
+    for control in [board.top_hud, board.action_selection_dock, board.action_timing_panel, board.observation_reveal_panel, board.combat_progress_button, board.range_readout_panel]:
+        control.theme = preparation_theme
     board.top_hud.custom_minimum_size.y = 0
     board.top_hud.player_panel.custom_minimum_size.y = 0
     board.top_hud.enemy_panel.custom_minimum_size.y = 0

@@ -66,10 +66,10 @@ func _run() -> void:
     _expect_eq(str(enemy.get("epithet", "")), str(current_opponent.get("epithet", current_opponent.get("martial_identity", ""))), "Combat status must show the locked opponent martial identity instead of the default HUD epithet.")
     var portrait := bridge.top_hud.enemy_panel.get_node_or_null("CombatantInkPortrait") as TextureRect
     if str(enemy.get("candidate_id", "")) == "slot1_dogyeom":
-        _expect_true(portrait != null and portrait.texture != null and portrait.texture.resource_path == "res://assets/portraits/dogyeom_status_portrait_01_v1.png", "Dogyeom runtime bridge must route the approved status portrait.")
+        _expect_true(_portrait_art_path(portrait) == "res://assets/combat/ink_wuxia/slot1_dogyeom/enemy-0.png", "Dogyeom preparation portrait must crop the approved current opponent art.")
         _expect_true(bridge.enemy_character != null and str(bridge.enemy_character.get_meta("character_art_path", "")) == "res://assets/combat/ink_wuxia/slot1_dogyeom/enemy-0.png", "Dogyeom runtime bridge must route the approved frontal combat battler.")
     else:
-        _expect_true(portrait != null and portrait.texture != null and portrait.texture.resource_path == "res://assets/portraits/enemy_masked_ink_v1.png", "Non-Dogyeom runtime bridge must retain the generic enemy portrait.")
+        _expect_true(_portrait_art_path(portrait) == "res://assets/combat/ink_wuxia/enemy-0.png", "Non-Dogyeom preparation portrait must crop the approved generic enemy art.")
     player["health"] = [10, 30]
     player["stamina"] = [2, 5]
     player["internal"] = [1, 4]
@@ -160,6 +160,14 @@ func _run() -> void:
     await process_frame
     _finish()
 
+
+func _portrait_art_path(portrait: TextureRect) -> String:
+    if portrait == null or not portrait.texture is AtlasTexture:
+        return ""
+    var crop := portrait.texture as AtlasTexture
+    if crop.atlas == null or not Rect2(Vector2.ZERO, crop.atlas.get_size()).encloses(crop.region):
+        return ""
+    return crop.atlas.resource_path
 
 func _select_default_setup(shell) -> void:
     for manual_id in DEFAULT_STARTERS:

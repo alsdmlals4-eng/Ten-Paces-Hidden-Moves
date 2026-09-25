@@ -116,10 +116,9 @@ func _mastery(value: int) -> Dictionary:
 func _first_technique_preview_text(dock) -> String:
     if dock.martial_panel.technique_buttons.is_empty():
         return ""
-    var summary: Node = dock.martial_panel.technique_buttons[0].get_node_or_null("CardSummary")
-    if not is_instance_valid(summary) or summary.get_child_count() < 3:
-        return ""
-    return str(summary.get_child(2).text)
+    # Effect previews moved from the third card line to the actual tooltip and
+    # adjacent detail; cost/range stay on the compact illustrated card.
+    return str(dock.martial_panel.technique_buttons[0].tooltip_text)
 
 func _expect_true(value: bool, message: String) -> void:
     if not value:
